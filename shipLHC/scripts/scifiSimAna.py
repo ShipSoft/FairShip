@@ -45,7 +45,7 @@ ut.bookHist(h,'Edigi','digitized signal',100,0.0,150.)
 ut.bookHist(h,'clusterSize','cluster size',20,-0.5,19.5)
 ut.bookHist(h,'clusterSize_muon','cluster size',20,-0.5,19.5)
 ut.bookHist(h,'doca','closest distance;[micron]',100,-500.,500.)
-ut.bookHist(h,'doca_muon','closest distance; [micron] ',100,-200.,200.)
+ut.bookHist(h,'doca_muon','closest distance; [micron] ',100,-500.,500.)
 ut.bookHist(h,'docaCl','closest distance;[micron]',100,-500.,500.)
 ut.bookHist(h,'docaCl_muon','closest distance; [micron] ',100,-200.,200.)
 ut.bookHist(h,'pangle','angle of particle entering;mrad',100,-10.,10.)
@@ -109,52 +109,20 @@ for sTree in f.cbmsim:
           else:
               rc = h['pdx_muon'].Fill(A[1]-impactPoint[1])
 
-   hitMap = {}
-   for d in sTree.Digi_ScifiHits:
+   hitDict = {}
+   for k in range(sTree.Digi_ScifiHits.GetEntries()):
+      d = sTree.Digi_ScifiHits[k]
       if not d.isValid(): continue 
       rc = h['Edigi'].Fill(d.GetEnergy())
-      hitMap[d.GetDetectorID()]=d
-   hitList = list(hitMap.keys())
-   if len(hitList)<1: continue
-   hitList.sort()
+      hitDict[d.GetDetectorID()] = k
    L = sTree.Digi_ScifiHits2MCPoints[0]
-   clusters = {0:[ [hitList[0]],[] ]}
-   cprev = hitList[0]
-   ncl = 0
-   last = len(hitList)-1
-   for i in range(len(hitList)):
-        if i==0 and len(hitList)>1: continue
-        c=hitList[i]
-        if (c-cprev)==1: 
-             clusters[ncl][0].append(c)
-        if (c-cprev)!=1 or c==hitList[last]:
-# make clusterCentre:
-            weight = 0
-            meanPosA=ROOT.TVector3(0,0,0)
-            meanPosB=ROOT.TVector3(0,0,0)
-            for aHit in clusters[ncl][0]:
-                 scifi.GetSiPMPosition(aHit, A, B)
-                 w = hitMap[aHit].GetEnergy()
-                 weight+=w
-                 meanPosA+=w*ROOT.TVector3(A)
-                 meanPosB+=w*ROOT.TVector3(B)
-            winv = 1./weight
-            meanPosA=meanPosA*winv
-            meanPosB=meanPosB*winv
-            clusters[ncl][1].append(ROOT.TVector3(meanPosA))
-            clusters[ncl][1].append(ROOT.TVector3(meanPosB))
-            if c!=hitList[last]:
-                ncl+=1
-                clusters[ncl]=[[c],[]]
-        cprev = c
-   # if len(hitList)>50: 1/0
-   for x in clusters:
-        cl = clusters[x]
-       # cl[0]: list of hits, cl[1]:A,B
+   for cl in sTree.Cluster_Scifi:
         isMuon = True
         meanImpact = ROOT.TVector3(0,0,0)
         nPoints = 0
-        for c in cl[0]:
+        first = cl.GetFirst()
+        cl_size = cl.GetN()
+        for c in range(first,cl_size+first):
         # origin of digis:
             points = L.wList(c)
             for p in points:
@@ -169,35 +137,22 @@ for sTree in f.cbmsim:
                 nPoints+=1
         w = 1./nPoints
         meanImpact=meanImpact*w
-        cl_size = len(cl[0])
         rc = h['clusterSize'].Fill(cl_size)
         if isMuon: rc = h['clusterSize_muon'].Fill(cl_size)
         # goto local coordinates in detector plane
-        aHit =   cl[0][0]
-        # scifi.cdPlane(aHit)
-        s =  int(aHit/1000000)
-        path = "/cave_1/volTarget_1/ScifiVolume_"+str(s)+"000000/"
-        vertical = int(aHit/100000)%10 == 1
-        if vertical: path+= "ScifiVertPlaneVol_"+str(s)+"000000"
-        else:                        path+= "ScifiHorPlaneVol_"+str(s)+"000000"
-        nav.cd(path)
-        A = cl[1][0]
-        globCluster = array('d',[A[0],A[1],A[2]])
-        locCluster = array('d',[0,0,0])
-        nav.MasterToLocal(globCluster,locCluster)
-        globPart = array('d',[meanImpact[0],meanImpact[1],meanImpact[2]])
-        locPart = array('d',[0,0,0])
-        nav.MasterToLocal(globPart,locPart)
+        vertical = int(first/100000)%10 == 1
+        cl.GetPosition(A,B)
+        locCluster = scifi.GetLocalPos(first,A)
+        locPart       = scifi.GetLocalPos(first,meanImpact)
+
         if vertical: delta = locCluster[0]-locPart[0]
-        else: delta = locCluster[1]-locPart[1]
+        else:           delta = locCluster[1]-locPart[1]
         rc = h['docaCl'].Fill(delta/u.um)
-        if isMuon:
-            rc = h['docaCl_muon'].Fill(delta/u.um)
-        for aHit in cl[0]:
+        if isMuon:     rc = h['docaCl_muon'].Fill(delta/u.um)
+
+        for aHit in range(first,cl_size+first):
                 scifi.GetSiPMPosition(aHit, A, B)
-                glob = array('d',[A[0],A[1],A[2]])
-                loc    = array('d',[0,0,0])
-                nav.MasterToLocal(glob,loc)
+                loc = scifi.GetLocalPos(aHit,A)
                 if vertical: delta = loc[0]-locPart[0]
                 else: delta = loc[1]-locPart[1]
                 rc = h['doca'].Fill(delta/u.um)
