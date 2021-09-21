@@ -61,6 +61,7 @@ class Floor : public  FairDetector
                              Double_t eLoss,Int_t pdgcode,TVector3 Lpos, TVector3 Lmom);
 
     inline void SetEmin(float E) {fEmin = E;}  // set min  kin energy for tracking
+    inline void SetZmax(float Z) {fzPos = Z;}  // set max z position for which energy cut is applied. 
     inline void SetFastMuon() {fFastMuon=true;}  // kill all tracks except of muons
     inline void MakeSensitive() {fMakeSensitive=true;}  // make Tunnel sensitive
 

@@ -35,6 +35,7 @@ parser.add_argument("--EVz",    dest="EVz",    help="particle gun zpos", require
 parser.add_argument("--FollowMuon",dest="followMuon", help="Make muonshield active to follow muons", required=False, action="store_true")
 parser.add_argument("--FastMuon",  dest="fastMuon",  help="Only transport muons for a fast muon only background estimate", required=False, action="store_true")
 parser.add_argument('--eMin', type=float, help="energy cut", dest='ecut', default=-1.)
+parser.add_argument('--zMax', type=float, help="max distance to apply energy cut", dest='zmax', default=70000.)
 parser.add_argument("--Nuage",     dest="nuage",  help="Use Nuage, neutrino generator of OPERA", required=False, action="store_true")
 parser.add_argument("--MuDIS",     dest="mudis",  help="Use muon deep inelastic scattering generator", required=False, action="store_true")
 parser.add_argument("-n", "--nEvents",dest="nEvents",  help="Number of events to generate", required=False,  default=100, type=int)
@@ -160,7 +161,9 @@ if simEngine == "muonDIS":
    DISgen = ROOT.MuDISGenerator()
    mu_start, mu_end = (-3.7-2.0)*u.m , -0.3*u.m # tunnel wall -30cm in front of SND
    DISgen.SetPositions(0, mu_start, mu_end)
-   if options.ecut > 0:  modules['Floor'].SetEmin(options.ecut)
+   if options.ecut > 0:  
+            modules['Floor'].SetEmin(options.ecut)
+            modules['Floor'].SetZmax(options.zmax)
    DISgen.Init(inputFile,options.firstEvent) 
    primGen.AddGenerator(DISgen)
    options.nEvents = min(options.nEvents,DISgen.GetNevents())
