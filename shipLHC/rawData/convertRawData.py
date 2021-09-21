@@ -19,11 +19,26 @@ runNr   = str(options.runNumber).zfill(6)
 path      = options.path+'run_'+ runNr+'/'
 outFile = "sndsw_raw_"+runNr
 
-# calibration data
+if path.find('eos')<0 or os.path.isdir(path):
+   fqdc_cal = open(path+'qdc_cal.csv')
+   Lqdc = fqdc_cal.readlines()
+   ftdc_cal = open(path+'tdc_cal.csv')
+   Ltdc = ftdc_cal.readlines()
+else:
+   from XRootD import client
+   server = os.environ['EOSSHIP']
+   with client.File() as f:
+      # "/eos/experiment/sndlhc/testbeam/MuFilter/run_000032/qdc_cal.csv"
+      f.open(server+path+"qdc_cal.csv")
+      status, Lqdc = f.read()
+   with client.File() as f:
+      f.open(server+path+"tdc_cal.csv")
+      status, Ltdc = f.read()
+
+# calibration dahttps://xrootd.slac.stanford.edu/doc/python/xrootd-python-0.1.0/examples.htmlta
 qdc_cal = {}
 
-fqdc_cal = open(path+'qdc_cal.csv')
-L = fqdc_cal.readlines()
+L = Lqdc
 for l in range(1,len(L)):
     tmp = L[l].replace('\n','').split(',')
     board_id = int(tmp[0])
@@ -40,9 +55,7 @@ for l in range(1,len(L)):
     X['c']=float(tmp[6])
     X['d']=float(tmp[8])
     X['e']=float(tmp[10])
-
-ftdc_cal = open(path+'tdc_cal.csv')
-L = ftdc_cal.readlines()
+L=Ltdc
 for l in range(1,len(L)):
     tmp = L[l].replace('\n','').split(',')
     board_id = int(tmp[0])
@@ -110,9 +123,11 @@ sTree     = ROOT.TTree('rawConv','raw data converted')
 ROOT.gDirectory.pwd()
 header  = ROOT.FairEventHeader()
 eventSND  = sTree.Branch("EventHeader",header,32000,-1)
-        # SciFi   using MuFilterHit hit class while waiting for SciFi hit class
-digiSciFi   = ROOT.TClonesArray("SndlhcHit")
+
+digiSciFi   = ROOT.TClonesArray("sndScifiHit")
 digiSciFiBranch   = sTree.Branch("Digi_SciFiHits",digiSciFi,32000,1)
+digiMuFilter   = ROOT.TClonesArray("MuFilterHit")
+digiMuFilterHitBranch   = sTree.Branch("Digi_MuFilterHit",digiMuFilter,32000,1)
 
 def run(nEvent):
  event = f0.event
@@ -147,7 +162,7 @@ def run(nEvent):
 #         ROOT.SndlhcHit(detID,nSiPMs,nSides)
 
              detID = 100000*nStation + chan
-             if not detID in digiSciFiStore: digiSciFiStore[detID] =  ROOT.SndlhcHit(detID)
+             if not detID in digiSciFiStore: digiSciFiStore[detID] =  ROOT.sndScifiHit(detID)
              digiSciFiStore[detID].SetDigi(QDC,TDC)
              if options.debug:
                   print('create hit: tdc = ',detID)
