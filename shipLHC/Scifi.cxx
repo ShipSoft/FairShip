@@ -137,7 +137,7 @@ void Scifi::ConstructGeometry()
         double dz_survey[fNplanes] = {15.22,15.22,15.22,15.22,15.22};
 	for(int i=0;i<fNplanes;i++)
 	{		
-	  volTarget->AddNode(volScifi,n,new TGeoTranslation(dx_survey[i]+XDimension/2., dy_survey[i], dz_survey[i]+YDimension/2.)); //target starts with first wall
+	  volTarget->AddNode(volScifi,n,new TGeoTranslation(dx_survey[i]-XDimension/2., dz_survey[i]+YDimension/2., dy_survey[i]+ZDimension/2.)); //target starts with first wall
 	  n++;
 	}   
 }
