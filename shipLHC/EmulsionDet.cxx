@@ -262,7 +262,7 @@ void EmulsionDet::ConstructGeometry()
 
 	for(Int_t n=0; n<NPlates; n++)
 	{
-		volBrick->AddNode(volPassive, n, new TGeoTranslation(0,0,-BrickZ/2+ EmPlateWidth + PassiveThickness/2 + n*AllPlateWidth)); //LEAD
+		volBrick->AddNode(volPassive, n, new TGeoTranslation(0,-BrickZ/2+ EmPlateWidth + PassiveThickness/2 + n*AllPlateWidth,0)); //LEAD
 	}
 
 	TGeoBBox *EmulsionFilm = new TGeoBBox("EmulsionFilm", EmulsionX/2, EmulsionY/2, EmPlateWidth/2);
@@ -272,12 +272,15 @@ void EmulsionDet::ConstructGeometry()
 	if (fPassiveOption == 0) AddSensitiveVolume(volEmulsionFilm);
 	for(Int_t n=0; n<NPlates+1; n++)
 	{
-		volBrick->AddNode(volEmulsionFilm, n, new TGeoTranslation(0,0,-BrickZ/2+ EmPlateWidth/2 + n*AllPlateWidth));
+		volBrick->AddNode(volEmulsionFilm, n, new TGeoTranslation(0,-BrickZ/2+ EmPlateWidth/2 + n*AllPlateWidth,0));
 	}
 
 	volBrick->SetVisibility(kTRUE);
-
-	top->AddNode(volTarget,1,new TGeoTranslation(ShiftX,ShiftY,fCenterZ));
+        //test adding new geometries
+        double dx_survey[fNWall] = {5.74,5.74,5.74,5.74,5.74};
+        double dy_survey[fNWall] = {288.89,301.89,314.89,327.89,340.89};
+        double dz_survey[fNWall] = {16.63,16.63,16.63,16.63,16.63};
+	top->AddNode(volTarget,1,new TGeoTranslation(0,0,0));
 
 	//adding walls
 
@@ -285,7 +288,7 @@ void EmulsionDet::ConstructGeometry()
 
 	for(int l = 0; l < fNWall; l++)
 	  {
-		volTarget->AddNode(volWall,l,new TGeoTranslation(0, 0, d_cl_z +BrickZ/2));
+		volTarget->AddNode(volWall,l,new TGeoTranslation(dx_survey[l]+XDimension/2., dy_survey[l], dz_survey[l]+YDimension/2.)); //the survey points refer to the down-left corner
 		d_cl_z += BrickZ + TTrackerZ;
 	  }
 
@@ -294,7 +297,7 @@ void EmulsionDet::ConstructGeometry()
        
         for(int k= 0; k< fNRow; k++)
 	  {
-	  volWall->AddNode(volRow,k,new TGeoTranslation(0, d_cl_y + BrickY/2, 0));
+	  volWall->AddNode(volRow,k,new TGeoTranslation(0, 0, d_cl_y + BrickY/2));
         
 	  // 2mm is the distance for the structure that holds the brick
 	  d_cl_y += BrickY;
