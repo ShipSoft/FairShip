@@ -24,7 +24,7 @@ def configure(run,ship_geo,Gfield=''):
  #latestCharmGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/charm-geometry_config.py")
  latestGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/shipLHC_geom_config.py")
 # -----Create media-------------------------------------------------
- run.SetMaterials("media.geo")  # Materials
+ if hasattr(run,'SetMaterials'):  run.SetMaterials("media.geo")  # Materials
  
 # -----Create geometry----------------------------------------------
  cave= ROOT.ShipCave("CAVE")
@@ -98,10 +98,12 @@ def configure(run,ship_geo,Gfield=''):
  MuFilter.SetDigiParameters(mu.AttenuationLength,mu.VandUpAttenuationLength,mu.SiPMcalibration,mu.DynRangeLow,mu.DynRangeHigh)
 
  detectorList.append(MuFilter)
-
- for x in detectorList:
-   run.AddModule(x)
-# return list of detector elements
  detElements = {}
- for x in run.GetListOfModules(): detElements[x.GetName()]=x
+ if hasattr(run,'SetMaterials'):  
+  for x in detectorList:
+    run.AddModule(x)
+# return list of detector elements
+  for x in run.GetListOfModules(): detElements[x.GetName()]=x
+ else:
+  for x in detectorList: detElements[x.GetName()]=x
  return detElements
