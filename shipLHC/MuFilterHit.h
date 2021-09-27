@@ -25,6 +25,7 @@ class MuFilterHit : public SndlhcHit
 
     void setInvalid() {flag = false;}
     bool isValid() const {return flag;}
+    int GetSystem(){return floor(fDetectorID/10000);}
     bool isVertical();
   private:
     /** Copy constructor **/
