@@ -30,6 +30,7 @@ sndCluster::sndCluster(Int_t first, Int_t N,std::vector<sndScifiHit*> hitlist)
 	Double_t winv = 1./weight;
 	fMeanPositionA = TVector3(fMeanPositionA)*winv;
 	fMeanPositionB = TVector3(fMeanPositionB)*winv;
+	fEnergy = weight;
 }
 
 sndCluster::sndCluster(Int_t first, Int_t N,std::vector<MuFilterHit*>)

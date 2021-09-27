@@ -23,7 +23,8 @@ from argparse import ArgumentParser
 parser = ArgumentParser()
 parser.add_argument("-f", "--inputFile", dest="inputFile", help="single input file", required=True)
 parser.add_argument("-g", "--geoFile", dest="geoFile", help="geofile", required=True)
-parser.add_argument("-n", "--nEvents", dest="nEvents", help="number of events to process", default=100000)
+parser.add_argument("-n", "--nEvents", dest="nEvents",  type=int, help="number of events to process", default=100000)
+parser.add_argument("-ts", "--thresholdScifi", dest="ts", type=float, help="threshold energy for Scifi [keV]", default=50)
 parser.add_argument("-d", "--Debug", dest="debug", help="debug", default=False)
 
 options = parser.parse_args()
@@ -58,12 +59,13 @@ global_variables.snd_geo = snd_geo
 global_variables.modules = modules
 
 global_variables.iEvent = 0
+global_variables.ts = options.ts
 
 # import reco tasks
 import SndlhcDigi
 Sndlhc = SndlhcDigi.SndlhcDigi(outFile)
 
-nEvents   = min(Sndlhc.sTree.GetEntries(),int(options.nEvents))
+nEvents   = min(Sndlhc.sTree.GetEntries(),options.nEvents)
 # main loop
 for global_variables.iEvent in range(firstEvent, nEvents):
     if global_variables.iEvent % 50000 == 0 or global_variables.debug:

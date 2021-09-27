@@ -146,6 +146,48 @@ def moreChecks(modules):
 					rc = h['dx'].Fill(dx)
 					rc = h['dy'].Fill(dy)
 					rc = h['dz'].Fill(dz)
-
-
+def someDrawings(F,channel):
+   AF = ROOT.TVector3()
+   BF = ROOT.TVector3()
+   ut.bookCanvas(h,'c1',' ;x;y',800,800,1,1)
+   s = int(channel/1000000)
+   o = int( (channel-1000000*s)/100000)
+   locChannel = channel%100000
+   fibreVol = sGeo.FindVolumeFast('FiberVolume')
+   R = fibreVol.GetShape().GetDX()
+   sipmVol = sGeo.FindVolumeFast("ChannelVol")
+   DY = sipmVol.GetShape().GetDY()
+   DZ = sipmVol.GetShape().GetDZ()
+   n = 0
+   xmin = 999.
+   xmax = -999.
+   ymin = 999.
+   ymax = -999.
+   for fibre in F[locChannel]:
+      globFibre = int(s*1000000 + o*100000 + fibre)
+      scifi.GetPosition(globFibre,AF,BF)
+      loc = scifi.GetLocalPos(globFibre,AF)
+      h['ellipse'+str(n)]=ROOT.TEllipse(loc[0],loc[2],R,0)
+      n+=1
+      if xmin>loc[0]: xmin = loc[0]
+      if ymin>loc[2]: ymin = loc[2]
+      if xmax<loc[0]: xmax = loc[0]
+      if ymax<loc[2]: ymax = loc[2]
+   print(xmin,xmax,ymin,ymax)
+   D = ymax - ymin+3*R
+   x0 = (xmax+xmin)/2.
+   ut.bookHist(h,'x','',100,x0-D/2,x0+D/2,100,ymin-1.5*R,ymax+1.5*R)
+   h['x'].SetStats(0)
+   h['x'].Draw()
+   for i in range(n):
+      print(fibre,globFibre,loc[0],loc[1],loc[2])
+      el = h['ellipse'+str(i)]
+      el.SetFillColor(6)
+      el.Draw('same')
+   scifi.GetSiPMPosition(channel,AF,BF)
+   loc = scifi.GetLocalPos(globFibre,AF)
+   h['rectang']=ROOT.TBox(loc[0]-DY,loc[2]-DZ,loc[0]+DY,loc[2]+DZ)
+   h['rectang'].SetFillColor(4)
+   h['rectang'].SetFillStyle(3001)
+   h['rectang'].Draw('same')
 

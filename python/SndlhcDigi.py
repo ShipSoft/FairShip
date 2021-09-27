@@ -92,7 +92,9 @@ class SndlhcDigi:
                for p in hitContainer[detID]:
                     allPoints.push_back(p[0])
                     allWeights.push_back(p[1])
-               aHit = ROOT.sndScifiHit(detID,allPoints,allWeights)
+               aHit = ROOT.sndScifiHit()
+               aHit.SetThreshold(global_variables.ts)
+               aHit.makeHit(detID,allPoints,allWeights)
                if self.digiScifi.GetSize() == index: self.digiScifi.Expand(index+100)
                self.digiScifi[index]=aHit
                index+=1
