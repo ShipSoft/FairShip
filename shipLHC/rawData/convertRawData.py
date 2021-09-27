@@ -19,28 +19,59 @@ runNr   = str(options.runNumber).zfill(6)
 path      = options.path+'run_'+ runNr+'/'
 outFile = "sndsw_raw_"+runNr
 
+local = False
 if path.find('eos')<0 or os.path.isdir(path):
-   fqdc_cal = open(path+'qdc_cal.csv')
+   local = True
+   fqdc_cal = open(path+'/qdc_cal.csv')
    Lqdc = fqdc_cal.readlines()
-   ftdc_cal = open(path+'tdc_cal.csv')
+   ftdc_cal = open(path+'/tdc_cal.csv')
    Ltdc = ftdc_cal.readlines()
 else:
    from XRootD import client
+   # https://xrootd.slac.stanford.edu/doc/python/xrootd-python-0.1.0/examples.html
    server = os.environ['EOSSHIP']
    with client.File() as f:
       # "/eos/experiment/sndlhc/testbeam/MuFilter/run_000032/qdc_cal.csv"
-      f.open(server+path+"qdc_cal.csv")
-      status, Lqdc = f.read()
-   with client.File() as f:
-      f.open(server+path+"tdc_cal.csv")
-      status, Ltdc = f.read()
+      f.open(server+path+"/qdc_cal.csv")
+      status, L = f.read()
+      Lqdc = L.decode().split('\n')
+      f.close()
+      f.open(server+path+"/tdc_cal.csv")
+      status, L = f.read()
+      Ltdc = L.decode().split('\n')
+      f.close()
 
-# calibration dahttps://xrootd.slac.stanford.edu/doc/python/xrootd-python-0.1.0/examples.htmlta
+# read MuFilter mappings of SiPM channel to tofpet_id and tofpet_channel
+import csv
+SiPMmap={}
+TofpetMap = {}
+for system in ['DS','US','Veto']:
+   infile = "/eos/experiment/sndlhc/testbeam/MuFilter/SiPM_mappings/"+system+"_SiPM_mapping_full.csv"
+   SiPMmap[system] = {}
+   if path.find('eos')<0 or os.path.isdir(path):
+      with open(infile, "r") as f:
+          reader = csv.DictReader(f, delimiter=',')
+          for i, row in enumerate(reader):
+                 SiPMmap[system][int(row['SiPM'])] = [int(row['CN']), int(row['pin']), int(row['TOFPET']), int(row['CHANNEL'])]
+   else:
+       with client.File() as f:
+          f.open(server+infile)
+          status, tmp = f.read()
+       for x in tmp.decode().split('\r\n'):
+          if x.find('TOF')>0: continue
+          row = x.split(',')
+          SiPMmap[system][int(row[0])] = [int(row[1]), int(row[2]), int(row[3]), int(row[4])]
+   TofpetMap[system] = {}
+   for channel in SiPMmap[system]:
+         row = SiPMmap[system][channel]
+         TofpetMap[system][row[2]*1000+row[3]] = channel
+# calibration data
 qdc_cal = {}
 
 L = Lqdc
 for l in range(1,len(L)):
     tmp = L[l].replace('\n','').split(',')
+    if len(tmp)<10:continue
     board_id = int(tmp[0])
     if not board_id in qdc_cal: qdc_cal[board_id]={}
     fe_id = int(tmp[1])
@@ -58,6 +89,7 @@ for l in range(1,len(L)):
 L=Ltdc
 for l in range(1,len(L)):
     tmp = L[l].replace('\n','').split(',')
+    if len(tmp)<9:continue
     board_id = int(tmp[0])
     if not board_id in qdc_cal: qdc_cal[board_id]={}
     fe_id = int(tmp[1])
@@ -103,12 +135,34 @@ stations['M4X'] =  {0:8, 1:50, 2:49}
 stations['M5Y'] =  {0:19, 1:13, 2:36}
 stations['M5X'] =  {0:21, 1:10, 2:6}
 
+# board mapping for Scifi
+boardMaps = {}
+boardMaps['Scifi'] = {}
+for station in stations:
+    for mat in stations[station]:
+         board = 'board_'+str(stations[station][mat])
+         boardMaps['Scifi'][board]=[station,mat]
+
+boardMaps['MuFilter'] = {}
+planes = {}
+planes['US'] = {'US3L':[169],'US4L':[95]}
+boardMaps['MuFilter']['board_42'] = 'DS'
+# testbeam US3 left 42A, US4 left 42B
+
+boardMaps['MuFilter']['board_43'] = []
+boardMaps['MuFilter']['board_52'] = []
+boardMaps['MuFilter']['board_55'] = []
+boardMaps['MuFilter']['board_59'] = []
+boardMaps['MuFilter']['board_60'] = []
+
 def channel(tofpet_id,tofpet_channel,position):
     return (64 * tofpet_id + 63 - tofpet_channel + 512*position) # 512 channels per mat, 1536 channels per plane
                                                                                                                                      # one channel covers all 6 layers of fibres
 
 # reading hits and converting to event information
-f0=ROOT.TFile(path+'data.root')
+X=''
+if not local: X = server
+f0=ROOT.TFile.Open(X+path+'data.root')
 if options.nEvents<0:  nEvent = f0.event.GetEntries()
 else: nEvent = options.nEvents
 
@@ -139,37 +193,72 @@ def run(nEvent):
    indexSciFi=0
    digiSciFi.Delete()
    digiSciFiStore = {}
-   nStation = -1
-   for station in stations:
-      nStation += 1
-      for position in stations[station]:
-         b = stations[station][position]
-         board = boards['board_'+str(b)]
-         rc  = board.GetEvent(n)
-         for n in range(board.n_hits):
-             chan = channel(board.tofpet_id[n],board.tofpet_channel[n],position)
+   indexMuFilter=0
+   digiMuFilter.Delete()
+   digiMuFilterStore = {}
+   for board in boards:
+      print(board)
+      board_id = int(board.split('_')[1])
+      scifi = True
+      if board in boardMaps['Scifi']:
+          station,mat = boardMaps['Scifi'][board]
+      elif board in boardMaps['MuFilter']:
+          scifi = False
+      else: 
+           print(board+' not known. Serious error, stop')
+           1/0
+      bt = boards[board]
+      rc  = bt.GetEvent(n)
+      for n in range(bt.n_hits):
              if options.debug:
-                  print(chan,board.tofpet_id[n],board.tofpet_channel[n],board.tac[n],board.t_coarse[n],board.t_fine[n],board.v_coarse[n],board.v_fine[n])
-             TDC = time_calibration(b,board.tofpet_id[n],board.tofpet_channel[n],board.tac[n],board.t_coarse[n],board.t_fine[n])
-             QDC = qdc_calibration(b,board.tofpet_id[n],board.tofpet_channel[n],board.tac[n],board.v_coarse[n],board.v_fine[n],TDC-board.t_coarse[n])
+                  print(scifi,board_id,bt.tofpet_id[n],bt.tofpet_channel[n],bt.tac[n],bt.t_coarse[n],bt.t_fine[n],bt.v_coarse[n],bt.v_fine[n])
+             TDC = time_calibration(board_id,bt.tofpet_id[n]%2,bt.tofpet_channel[n],bt.tac[n],bt.t_coarse[n],bt.t_fine[n])
+             QDC = qdc_calibration(board_id,bt.tofpet_id[n]%2,bt.tofpet_channel[n],bt.tac[n],bt.v_coarse[n],bt.v_fine[n],TDC-bt.t_coarse[n])
              if options.debug:
                   print('calibrated: tdc = ',TDC,'  qdc = ',QDC)  # TDC clock cycle = 160 MHz or 6.25ns
-# for creating hit objects, need to know the mapping between electronic  channel and hit channel.
+
+# in case it is ever needed to read a UChar_t format:
+             # Id = int(bin(ord(board.tofpet_id))[2:],2) ch = int(bin(ord(board.tofpet_channel))[2:],2)
+
+ # for creating hit objects, need to know the mapping between electronic  channel and hit channel.
 # in addition for   MuFilter Veto and Up, which SiPM channel. Problem, creating and filling unsorted. Easier for SciFi and downstream
 # first check which detector it is Veto/Up/Down -> make MuFilterHit
 #                                                                  SciFi                       -> make ScifiHit
 #         for the moment, only have SciFi data. For MuFilterHit, need to know nSiPM per side and number of sides
 #         ROOT.SndlhcHit(detID,nSiPMs,nSides)
-
-             detID = 100000*nStation + chan
-             if not detID in digiSciFiStore: digiSciFiStore[detID] =  ROOT.sndScifiHit(detID)
-             digiSciFiStore[detID].SetDigi(QDC,TDC)
-             if options.debug:
-                  print('create hit: tdc = ',detID)
+             if not scifi:
+                system = boardMaps['MuFilter'][board]
+                key = (bt.tofpet_id[n]%2)*1000 + bt.tofpet_channel[n]
+                if options.debug: print(system,key,board,bt.tofpet_id[n]%2,bt.tofpet_channel[n])
+                sipmChannel = 65
+                if not key in TofpetMap[system]:
+                        print('key does not exist',key)
+                        print(system, key, TofpetMap[system])
+                else:
+                       sipmChannel = TofpetMap[system][key]
+                       print(system,sipmChannel)
+                # which system? Veto, US or DS?
+                detID = sipmChannel + 1000*bt.tofpet_id[n]
+                if not detID in digiMuFilterStore: digiMuFilterStore[detID] =  ROOT.MuFilterHit(detID)
+                digiMuFilterStore[detID].SetDigi(QDC,TDC)
+                if options.debug:
+                    print('create mu hit: tdc = ',detID)
+             else:
+                chan = channel(board.tofpet_id[n],board.tofpet_channel[n],position)
+                detID = 100000*int(station[1]) + chan
+                if not detID in digiSciFiStore: digiSciFiStore[detID] =  ROOT.sndScifiHit(detID)
+                digiSciFiStore[detID].SetDigi(QDC,TDC)
+                if options.debug:
+                    print('create scifi hit: tdc = ',detID)
    for detID in digiSciFiStore:
              if digiSciFi.GetSize() == indexSciFi: digiSciFi.Expand(indexSciFi+100)
              digiSciFi[indexSciFi]=digiSciFiStore[detID]
              indexSciFi+=1
+   for detID in digiMuFilterStore:
+             if digiMuFilter.GetSize() == indexMuFilter: digiMuFilter.Expand(indexMuFilter+100)
+             digiMuFilter[indexMuFilter]=digiMuFilterStore[detID]
+             indexMuFilter+=1
+
 # fill TTree
    sTree.Fill()
  if options.debug:
