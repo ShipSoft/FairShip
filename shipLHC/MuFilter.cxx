@@ -254,7 +254,6 @@ void MuFilter::ConstructGeometry()
 {
 	TGeoVolume *top=gGeoManager->GetTopVolume();
 	if(top) cout<<" top volume found! "<<endl;
-	gGeoManager->SetVisLevel(10);
 
 	//Materials 
 	InitMedium("air");
@@ -333,7 +332,6 @@ void MuFilter::ConstructGeometry()
 	{
 	  string name = "volMuUpstreamDet_"+std::to_string(l);
 	  volUpstreamDet = new TGeoVolume(name.c_str(), UpstreamDetBox, air);
-	  volUpstreamDet->SetLineColor(kRed+2);
 	  dz = (fFeBlockZ + fUpstreamDetZ)*l;
 	  dy = dz * TMath::Tan(TMath::DegToRad() * fSlope);
 	  //last upstream station does not follow slope, start of support. Same dy is used for downstream planes
@@ -375,7 +373,6 @@ void MuFilter::ConstructGeometry()
 	{
 	  string name = "volMuDownstreamDet_"+std::to_string(l);
 	  volDownstreamDet = new TGeoVolumeAssembly(name.c_str());
-	  volDownstreamDet->SetLineColor(kRed+2);
 	  volMuFilter->AddNode(volDownstreamDet,l+fNUpstreamPlanes+fNVetoPlanes, new TGeoTranslation(0,fMuFilterY/2-fFeBlockY/2+dy,-fMuFilterZ/2+fFeBlockZ+fDownstreamDetZ/2+dz));
 	  if (l<fNDownstreamPlanes-1){
 		volMuFilter->AddNode(volFeBlock,l+fNUpstreamPlanes+fNVetoPlanes, new TGeoTranslation(0,fMuFilterY/2-fFeBlockY/2+dy,-fMuFilterZ/2+fFeBlockZ/2+dz));}
