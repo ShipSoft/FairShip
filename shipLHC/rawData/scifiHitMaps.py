@@ -4,72 +4,104 @@ h={}
 from argparse import ArgumentParser
 parser = ArgumentParser()
 parser.add_argument("-r", "--runNumber", dest="runNumber", help="run number", type=int,required=True)
+parser.add_argument("-g", "--geoFile", dest="geoFile", help="geofile", required=True)
 options = parser.parse_args()
+
+fgeo = ROOT.TFile.Open(options.geoFile)
+from ShipGeoConfig import ConfigRegistry
+from rootpyPickler import Unpickler
+#load geo dictionary
+upkl    = Unpickler(fgeo)
+snd_geo = upkl.load('ShipGeo')
+# -----Create geometry----------------------------------------------
+import shipLHC_conf as sndDet_conf
+run = ROOT.FairRunSim()
+modules = sndDet_conf.configure(run,snd_geo)
+sGeo = fgeo.FAIRGeom
+modules['Scifi'].SiPMmapping()
 
 f=ROOT.TFile('sndsw_raw_'+str(options.runNumber).zfill(6)+'.root')
 
-def xPos(detID):
-        nStation = detID//100000
-        chan = detID - nStation*100000
-        mat   = chan//512
-        X = chan-mat*512
-        return [nStation,mat,X]   # even numbers are Y, odd numbers X
+def slopes(Nev=-1):
+    A,B = ROOT.TVector3(),ROOT.TVector3()
+    ut.bookHist(h,'slopesX','slope diffs',1000,-1.0,1.0)
+    ut.bookHist(h,'slopesY','slope diffs',1000,-1.0,1.0)
+# assuming cosmics make straight line
+    if Nev < 0 : Nev = f.rawConv.GetEntries()
+    for sTree in f.rawConv:
+        if Nev<0: break
+        Nev=Nev-1
+        clusters = []
+        hitDict = {}
+        for k in range(sTree.Digi_ScifiHits.GetEntries()):
+            d = sTree.Digi_ScifiHits[k]
+            if not d.isValid(): continue 
+            hitDict[d.GetDetectorID()] = k
+        hitList = list(hitDict.keys())
+        if len(hitList)>0:
+              hitList.sort()
+              tmp = [ hitList[0] ]
+              cprev = hitList[0]
+              ncl = 0
+              last = len(hitList)-1
+              hitlist = ROOT.std.vector("sndScifiHit*")()
+              for i in range(len(hitList)):
+                   if i==0 and len(hitList)>1: continue
+                   c=hitList[i]
+                   if (c-cprev)==1: 
+                        tmp.append(c)
+                   if (c-cprev)!=1 or c==hitList[last]:
+                        first = tmp[0]
+                        N = len(tmp)
+                        hitlist.clear()
+                        for aHit in tmp: hitlist.push_back( sTree.Digi_ScifiHits[hitDict[aHit]])
+                        aCluster = ROOT.sndCluster(first,N,hitlist)
+                        clusters.append(aCluster)
+                        if c!=hitList[last]:
+                             ncl+=1
+                             tmp = [c]
+                   cprev = c
+        xHits = {}
+        yHits = {}
+        for s in range(5):
+             xHits[s]=[]
+             yHits[s]=[]
+        for aCl in clusters:
+             aCl.GetPosition(A,B)
+             vertical = int(aCl.GetFirst()/100000)%10==1
+             s = int(aCl.GetFirst()/1000000)-1
+             if vertical: xHits[s].append(ROOT.TVector3(A))
+             else: yHits[s].append(ROOT.TVector3(A))
+        proj = {'X':xHits,'Y':yHits}
+        for p in proj:
+          sls = []
+          for  s1 in range(0,5):
+             if len(proj[p][s1]) !=1: continue
+             cl1 = proj[p][s1][0]
+             for s2 in range(s1+1,5):
+                if len(proj[p][s2]) !=1: continue
+                cl2 = proj[p][s2][0]
+                dz = abs(cl1[2]-cl2[2])
+                if dz < 5: continue
+                dzRep = 1./dz
+                m =  dzRep*(cl2-cl1)
+                sls.append( m )
+          for ix1 in range(0,len(sls)-1):
+             for ix2 in range(ix1+1,len(sls)):
+                if p=="X": rc = h['slopes'+p].Fill( sls[ix2][0]-sls[ix1][0])
+                if p=="Y": rc = h['slopes'+p].Fill( sls[ix2][1]-sls[ix1][1])
 
-def makeDisplayHit(x,y,col):
-      dHit = ROOT.TGraph()
-      dHit.SetPoint(0,x-5,y)
-      dHit.SetPoint(1,x+5,y)
-      dHit.SetPoint(2,x,y)
-      dHit.SetPoint(3,x,y+0.1)
-      dHit.SetPoint(4,x,y-0.1)
-      dHit.SetLineColor(col)
-      return dHit
 
-def loopEvents(start=0,save=False):
- ut.bookHist(h,'xy',' ',200,-0.5,3*512.,10,-0.5,5.5)
- ut.bookCanvas(h,'event','event',1024,768,1,2)
- h['xy'].SetStats(0)
-
- N = -1
- Tprev = -1
- for sTree in f.rawConv:
-    color={0:ROOT.kBlue,1:ROOT.kGreen}
-    ptext={0:'   Y projection',1:'   X projection'}
-    text = ROOT.TLatex()
-    N+=1
-    if N<start: continue
-    T = sTree.EventHeader.GetEventTime()
-    dT = 0
-    if Tprev >0: dT = T-Tprev
-    print('event ',N,':',dT/160.E6)
-    Tprev = T
-    h['hits0']=[]
-    h['hits1']=[]
-    for aHit in sTree.Digi_SciFiHits:
-        X =  xPos(aHit.GetDetectorID())
-        proj = X[0]%2
-        h['hits'+str(proj)].append(makeDisplayHit(X[2]+512*X[1],int(X[0]/2+0.5),color[proj]))
-        print('hit:',X)
-    for p in range(2):
-       tc = h['event'].cd(p+1)
-       h['xy'].Draw()
-       for x in h['hits'+str(p)]: x.Draw('same')
-       text.DrawLatex(20,5.8,'event '+str(N)+ptext[p])
-    h['event'].Update()
-    if save: h['event'].Print('event_'+"{:04d}".format(N)+'.png')
-    rc = input("hit return for next event: ")
-    print(rc)
-    if rc=='q': break
- if save: os.system("convert -delay 60 -loop 0 *.png animated.gif")
-
-def hitMaps():
+def hitMaps(Nev=-1):
  for mat in range(30):
     ut.bookHist(h,'mat_'+str(mat),'hit map / mat',512,-0.5,511.5)
     ut.bookHist(h,'sig_'+str(mat),'signal / mat',150,0.0,150.)
  N=-1
+ if Nev < 0 : Nev = f.rawConv.GetEntries()
  for sTree in f.rawConv:
     N+=1
-    for aHit in sTree.Digi_SciFiHits:
+    if N>Nev: break
+    for aHit in sTree.Digi_ScifiHits:
         X =  xPos(aHit.GetDetectorID())
         rc = h['mat_'+str(X[0]*3+X[1])].Fill(X[2])
         rc  = h['sig_'+str(X[0]*3+X[1])].Fill(aHit.GetSignal(0))
