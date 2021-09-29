@@ -9,6 +9,8 @@ import shipunit as u
 from decorators import *
 import shipRoot_conf,shipDet_conf
 shipRoot_conf.configure()
+G = open('eveGlobal.py','w')
+G.close()
 
 fMan = None
 fRun = None
@@ -20,7 +22,8 @@ gEnv.SetValue('Eve.Viewer.HideMenus','off')
 withMCTracks      = True
 withAllMCTracks = False
 
-transparentMaterials = {'iron':99,'aluminium':90,'EmulsionFilmMixture':90,'CarbonComposite':90,'Aluminum':90,'rohacell':90,'Scintillator':90,'tungstenalloySND':99}
+transparentMaterials = {'air':99,'iron':99,'aluminium':90,'EmulsionFilmMixture':90,'Polycarbonate':90,
+'CarbonComposite':90,'Aluminum':90,'rohacell':90,'Scintillator':90,'tungstenalloySND':99,'polyvinyltoluene':90}
 
 parser = ArgumentParser()
 
@@ -58,8 +61,11 @@ class DrawDigi(ROOT.FairTask):
    self.comp.DestroyElements()
    self.comp.OpenCompound()
    nav = ROOT.gGeoManager.GetCurrentNavigator()
-   digis = [sTree.Digi_MuFilterHits,sTree.Digi_ScifiHits]
+   digis = []
+   if sTree.FindBranch("Digi_ScifiHits"): digis.append(sTree.Digi_ScifiHits)
+   if sTree.FindBranch("Digi_MuFilterHits"): digis.append(sTree.Digi_MuFilterHits)
    for branch in digis:
+    print('digis:',branch.GetName(),":",branch.GetEntries())
     for digi in branch:
      if not digi.isValid(): continue
      B=ROOT.TVector3()
@@ -75,12 +81,29 @@ class DrawDigi(ROOT.FairTask):
              else:                          vol = sGeo.GetVolume('volMuDownstreamBar_hor')
          color = ROOT.kGreen
          shape = vol.GetShape()
+         dx,dy,dz = shape.GetDX(),shape.GetDY(),shape.GetDZ()
+         origin = shape.GetOrigin()
+     elif digi.GetName()  == 'sndScifiHit':
+         modules['Scifi'].GetSiPMPosition(detID,A,B)
+         p = nav.GetPath()
+         nav.cd(p[:p.find('/Fi')])
+         mPoint = 0.5*(A+B)
+         master = array('d',[mPoint[0],mPoint[1],mPoint[2]])
+         o = array('d',[0,0,0])
+         nav.MasterToLocal(master,o)
+         vol = sGeo.GetVolume('ChannelVol')
+         color = ROOT.kWhite
+         shape = vol.GetShape()
+         if digi.isVertical(): 
+              dy,dx,dz = shape.GetDX(),shape.GetDY(),shape.GetDZ()
+                                   # fLengthScifiMat/2, fWidthChannel/2, fZEpoxyMat/2
+         else:
+              dx,dy,dz = shape.GetDX(),shape.GetDY(),shape.GetDZ()
+
      bx = ROOT.TEveBox( digi.GetName()+'_'+str(digi.GetDetectorID()) )
      bx.SetPickable(ROOT.kTRUE)
      bx.SetTitle(digi.__repr__())
      bx.SetMainColor(color)
-     dx,dy,dz = shape.GetDX(),shape.GetDY(),shape.GetDZ()
-     o = shape.GetOrigin()
      master = array('d',[0,0,0])
      n=0
      for edge in [ [-dx,-dy,-dz],[-dx,+dy,-dz],[+dx,+dy,-dz],[+dx,-dy,-dz],[-dx,-dy, dz],[-dx,+dy, dz],[+dx,+dy, dz],[+dx,-dy, dz]]:
@@ -308,6 +331,7 @@ class EventLoop(ROOT.FairTask):
    self.n = 0
    self.first = True
    rc = sTree.GetEvent(0)
+   modules['Scifi'].SiPMmapping()
    self.digi = DrawDigi()
    self.digi.InitTask()
    self.tracks = DrawTracks()
@@ -348,14 +372,16 @@ class EventLoop(ROOT.FairTask):
    if i<0: self.n+=1
    else  : self.n=i
    fRun.Run(self.n,self.n+1) # go for first event
-   if sTree.FindBranch("Digi_MuFilterHits"): self.digi.ExecuteTask()
+   if sTree.FindBranch("Digi_MuFilterHits") or sTree.FindBranch("Digi_ScifiHits"):
+      self.digi.ExecuteTask()
    print('Event %i ready'%(self.n))
 # make pointsets pickable
-   for x in mcHits: 
-     p = ROOT.gEve.GetCurrentEvent().FindChild(mcHits[x].GetName())
-     if p: 
-      p.SetPickable(ROOT.kTRUE)
-      p.SetTitle(p.__repr__())
+   if isMC:
+     for x in mcHits: 
+       p = ROOT.gEve.GetCurrentEvent().FindChild(mcHits[x].GetName())
+       if p: 
+         p.SetPickable(ROOT.kTRUE)
+         p.SetTitle(p.__repr__())
  def rotateView(self,hor=0,ver=0):
   v   = ROOT.gEve.GetDefaultGLViewer()
   cam  = v.CurrentCamera()
@@ -381,6 +407,10 @@ class EventLoop(ROOT.FairTask):
      if not mat:continue
      if mode.lower()=='on' or mode==1:
        mat.SetTransparency(transparentMaterials[m])
+       vol = sGeo.FindVolumeFast('HorMatVolume')
+       vol.SetTransparency(99)
+       vol = sGeo.FindVolumeFast('VertMatVolume')
+       vol.SetTransparency(99)
        self.TransparentMode = 1
      else: 
        mat.SetTransparency("\x00")
@@ -442,20 +472,6 @@ def readCameraSetting(fname='camSetting.root'):
  cam.IncTimeStamp()
  gEve.GetDefaultGLViewer().RequestDraw()
  f.Close()
-def speedUp():
- for x in ["wire","gas","rockD","rockS","rockSFe"]:  
-   xvol = sGeo.GetVolume(x)
-   if xvol: xvol.SetVisibility(0) 
- for k in range(1,7):
-     va = sGeo.GetVolume("T"+str(k))
-     if not va: continue
-     for x in va.GetNodes():
-       nm = x.GetName()
-       if not nm.find("Inner")<0 and k < 3: 
-          x.SetVisDaughters(False)
-          x.SetVisibility(False)
-       if not nm.find("LiSc")<0: x.SetVisDaughters(False)
-       if not nm.find("RibPhi")<0: x.SetVisDaughters(False)
 
 # set display properties for tau nu target
 
@@ -531,11 +547,22 @@ if options.geoFile:
  fRun.SetGeomFile(options.geoFile)
 
 if options.InputFile[0:4] == "/eos": options.InputFile=ROOT.gSystem.Getenv("EOSSHIP")+options.InputFile
-if hasattr(fRun,'SetSource'):
- inFile = ROOT.FairFileSource(options.InputFile)
- fRun.SetSource(inFile)
-else:
- fRun.SetInputFile(options.InputFile)
+inFile = ROOT.FairFileSource(options.InputFile)
+
+isMC = True
+if inFile.GetInFile().FindKey('rawConv'):
+   inFile.Close()
+   print('set name rawConv')
+   isMC = False
+   configFolder = os.environ["VMCWORKDIR"]+"/config"
+   if not os.path.isdir(configFolder): rc = os.mkdir(configFolder)
+   tmp = open(os.environ["VMCWORKDIR"]+"/config/rootmanager.dat",'w')
+   tmp.write("treename=rawConv")
+   tmp.close()
+   inFile = ROOT.FairFileSource(options.InputFile,'rawConv')
+   # os.system("rm "+configFolder+"/rootmanager.dat")
+fRun.SetSource(inFile)
+
 if options.OutputFile == None:
   options.OutputFile = ROOT.TMemFile('event_display_output', 'recreate')
 fRun.SetOutputFile(options.OutputFile)
@@ -559,14 +586,14 @@ ShipGeo = upkl.load('ShipGeo')
 import shipLHC_conf as sndDet_conf
 modules = sndDet_conf.configure(fRun,ShipGeo)
 
-mcHits = {}
+if isMC:
+   mcHits = {}
+   mcHits['MuFilterPoints']  = ROOT.FairMCPointDraw("MuFilterPoint", ROOT.kBlue, ROOT.kFullSquare)  
+   mcHits['ScifiPoints']  = ROOT.FairMCPointDraw("ScifiPoint", ROOT.kGreen, ROOT.kFullCircle)
+   mcHits['EmulsionDetPoints'] = ROOT.FairMCPointDraw("EmulsionDetPoint", ROOT.kMagenta, ROOT.kFullDiamond)
+   for x in mcHits: fMan.AddTask(mcHits[x])
 
-mcHits['MuFilterPoints']  = ROOT.FairMCPointDraw("MuFilterPoint", ROOT.kBlue, ROOT.kFullSquare)  
-mcHits['ScifiPoints']  = ROOT.FairMCPointDraw("ScifiPoint", ROOT.kGreen, ROOT.kFullCircle)
-mcHits['EmulsionDetPoints'] = ROOT.FairMCPointDraw("EmulsionDetPoint", ROOT.kMagenta, ROOT.kFullDiamond)
-for x in mcHits: fMan.AddTask(mcHits[x])
-
-fMan.Init(1,4,10) # default Init(visopt=1, vislvl=3, maxvisnds=10000), ecal display requires vislvl=4
+fMan.Init(1,4,10) # default Init(visopt=1, vislvl=3, maxvisnds=10000)
 #visopt, set drawing mode :
 # option=0 (default) all nodes drawn down to vislevel
 # option=1           leaves and nodes at vislevel drawn
@@ -579,8 +606,6 @@ lsOfGlobals = ROOT.gROOT.GetListOfGlobals()
 lsOfGlobals.Add(sTree) 
 sGeo  = ROOT.gGeoManager 
 top   = sGeo.GetTopVolume()
-# manipulate colors and transparency before scene created
-speedUp()
 gEve  = ROOT.gEve
 
 br = gEve.GetBrowser()

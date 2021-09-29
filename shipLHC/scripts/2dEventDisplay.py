@@ -41,8 +41,9 @@ nav = ROOT.gGeoManager.GetCurrentNavigator()
 def loopEvents(start=0,save=False):
  if 'simpleDisplay' not in h: ut.bookCanvas(h,key='simpleDisplay',title='simple event display',nx=1200,ny=1600,cx=1,cy=2)
  h['simpleDisplay'].cd(1)
- ut.bookHist(h,'xz','x vs z',500,-50.,300.,100,-100.,120.)
- ut.bookHist(h,'yz','y vs z',500,-50.,300.,100,-100.,120.)
+ zStart = -40. # old coordinate system with origin in middle of target
+ ut.bookHist(h,'xz','x vs z',500,zStart,zStart+250.,100,-100.,10.)
+ ut.bookHist(h,'yz','y vs z',500,zStart,zStart+250.,100,0.,80.)
  proj = {1:'xz',2:'yz'}
  h['xz'].SetStats(0)
  h['yz'].SetStats(0)
@@ -56,8 +57,13 @@ def loopEvents(start=0,save=False):
     N+=1
     if N<start: continue
     print( "event ->",N )
-    digis = [sTree.Digi_MuFilterHits,sTree.Digi_ScifiHits]
-    if digis[0].GetEntries()<1 and digis[1].GetEntries()<1: continue
+    digis = []
+    if sTree.FindBranch("Digi_ScifiHits"): digis.append(sTree.Digi_ScifiHits)
+    if sTree.FindBranch("Digi_MuFilterHits"): digis.append(sTree.Digi_MuFilterHits)
+    empty = True
+    for x in digis:
+       if x.GetEntries()>0: empty = False
+    if empty: continue
     h['hitCollectionX']= {'Scifi':[0,ROOT.TGraph()],'US':[0,ROOT.TGraph()],'DS':[0,ROOT.TGraph()]}
     h['hitCollectionY']= {'Veto':[0,ROOT.TGraph()],'Scifi':[0,ROOT.TGraph()],'US':[0,ROOT.TGraph()],'DS':[0,ROOT.TGraph()]}
     systems = {1:'Veto',2:'US',3:'DS',0:'Scifi'}
@@ -70,7 +76,6 @@ def loopEvents(start=0,save=False):
        T = sTree.EventHeader.GetEventTime()
        dT = 0
        if Tprev >0: dT = T-Tprev
-       print('event ',N,':',dT/160.E6)
        Tprev = T
     for p in proj:
        rc = h[ 'simpleDisplay'].cd(p)
