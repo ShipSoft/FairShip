@@ -24,7 +24,7 @@ parser = ArgumentParser()
 parser.add_argument("-f", "--inputFile", dest="inputFile", help="single input file", required=True)
 parser.add_argument("-g", "--geoFile", dest="geoFile", help="geofile", required=True)
 parser.add_argument("-n", "--nEvents", dest="nEvents",  type=int, help="number of events to process", default=100000)
-parser.add_argument("-ts", "--thresholdScifi", dest="ts", type=float, help="threshold energy for Scifi [keV]", default=50)
+parser.add_argument("-ts", "--thresholdScifi", dest="ts", type=float, help="threshold energy for Scifi [keV]", default=3.5)
 parser.add_argument("-d", "--Debug", dest="debug", help="debug", default=False)
 
 options = parser.parse_args()
