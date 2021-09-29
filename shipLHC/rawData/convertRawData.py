@@ -260,7 +260,8 @@ def run(nEvent):
                 chan = channel(bt.tofpet_id[n],bt.tofpet_channel[n],mat)             
                 orientation = 0
                 if station[2]=="Y": orientation = 1
-                sipmID = 1000000*int(station[1]) + 100000*orientation + 10000*mat + 1000*int(chan/128)%4 + chan%128
+                sipmLocal = (chan - mat*512)
+                sipmID = 1000000*int(station[1]) + 100000*orientation + 10000*mat + 1000*(sipmLocal%4) + chan%128
                 if not sipmID in digiSciFiStore: digiSciFiStore[sipmID] =  ROOT.sndScifiHit(sipmID)
                 digiSciFiStore[sipmID].SetDigi(QDC,TDC)
                 if options.debug:
