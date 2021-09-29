@@ -13,6 +13,7 @@ parser.add_argument("-p", "--path", dest="path", help="path to raw data", defaul
 parser.add_argument("-n", "--nEvents", dest="nEvents", help="number of events to process", type=int,default=-1)
 parser.add_argument("-d", "--Debug", dest="debug", help="debug", default=False)
 parser.add_argument("-s",dest="stop", help="do not start running", default=False)
+withGeoFile = False
 
 options = parser.parse_args()
 runNr   = str(options.runNumber).zfill(6)
@@ -48,12 +49,14 @@ TofpetMap = {}
 for system in ['DS','US','Veto']:
    infile = "/eos/experiment/sndlhc/testbeam/MuFilter/SiPM_mappings/"+system+"_SiPM_mapping_full.csv"
    SiPMmap[system] = {}
-   if path.find('eos')<0 or os.path.isdir(path):
+   if os.path.isdir("/eos/experiment/sndlhc/testbeam/MuFilter/SiPM_mappings"):
       with open(infile, "r") as f:
           reader = csv.DictReader(f, delimiter=',')
           for i, row in enumerate(reader):
                  SiPMmap[system][int(row['SiPM'])] = [int(row['CN']), int(row['pin']), int(row['TOFPET']), int(row['CHANNEL'])]
    else:
+       from XRootD import client
+       server = os.environ['EOSSHIP']
        with client.File() as f:
           f.open(server+infile)
           status, tmp = f.read()
@@ -172,24 +175,35 @@ for b in f0.GetListOfKeys():
         if name.find('board')!=0: continue
         boards[name]=f0.Get(name)
 
-F = ROOT.TFile(outFile+'.root','recreate')
+fSink = ROOT.FairRootFileSink(outFile+'.root')
 sTree     = ROOT.TTree('rawConv','raw data converted')
 ROOT.gDirectory.pwd()
 header  = ROOT.FairEventHeader()
 eventSND  = sTree.Branch("EventHeader",header,32000,-1)
 
 digiSciFi   = ROOT.TClonesArray("sndScifiHit")
-digiSciFiBranch   = sTree.Branch("Digi_SciFiHits",digiSciFi,32000,1)
+digiSciFiBranch   = sTree.Branch("Digi_ScifiHits",digiSciFi,32000,1)
 digiMuFilter   = ROOT.TClonesArray("MuFilterHit")
 digiMuFilterHitBranch   = sTree.Branch("Digi_MuFilterHit",digiMuFilter,32000,1)
+#scifi clusters
+if withGeoFile:
+  clusScifi   = ROOT.TClonesArray("sndCluster")
+  clusScifiBranch    = sTree.Branch("Cluster_Scifi",clusScifi,32000,1)
+
+B = ROOT.TList()
+B.SetName('BranchList')
+B.Add(ROOT.TObjString('sndScifiHit'))
+B.Add(ROOT.TObjString('MuFilterHit'))
+B.Add(ROOT.TObjString('FairEventHeader'))
+fSink.WriteObject(B,"BranchList", ROOT.TObject.kSingleKey)
 
 def run(nEvent):
  event = f0.event
- for n in range(nEvent):
-   event.GetEvent(n)
+ for eventNumber in range(nEvent):
+   event.GetEvent(eventNumber)
    header.SetEventTime(event.timestamp)
    header.SetRunId(options.runNumber)
-   if options.debug: print('event:',n,event.timestamp)
+   if options.debug: print('event:',eventNumber,event.timestamp)
    indexSciFi=0
    digiSciFi.Delete()
    digiSciFiStore = {}
@@ -197,7 +211,6 @@ def run(nEvent):
    digiMuFilter.Delete()
    digiMuFilterStore = {}
    for board in boards:
-      print(board)
       board_id = int(board.split('_')[1])
       scifi = True
       if board in boardMaps['Scifi']:
@@ -208,12 +221,12 @@ def run(nEvent):
            print(board+' not known. Serious error, stop')
            1/0
       bt = boards[board]
-      rc  = bt.GetEvent(n)
+      rc  = bt.GetEvent(eventNumber)
       for n in range(bt.n_hits):
              if options.debug:
                   print(scifi,board_id,bt.tofpet_id[n],bt.tofpet_channel[n],bt.tac[n],bt.t_coarse[n],bt.t_fine[n],bt.v_coarse[n],bt.v_fine[n])
-             TDC = time_calibration(board_id,bt.tofpet_id[n]%2,bt.tofpet_channel[n],bt.tac[n],bt.t_coarse[n],bt.t_fine[n])
-             QDC = qdc_calibration(board_id,bt.tofpet_id[n]%2,bt.tofpet_channel[n],bt.tac[n],bt.v_coarse[n],bt.v_fine[n],TDC-bt.t_coarse[n])
+             TDC = time_calibration(board_id,bt.tofpet_id[n],bt.tofpet_channel[n],bt.tac[n],bt.t_coarse[n],bt.t_fine[n])
+             QDC = qdc_calibration(board_id,bt.tofpet_id[n],bt.tofpet_channel[n],bt.tac[n],bt.v_coarse[n],bt.v_fine[n],TDC-bt.t_coarse[n])
              if options.debug:
                   print('calibrated: tdc = ',TDC,'  qdc = ',QDC)  # TDC clock cycle = 160 MHz or 6.25ns
 
@@ -223,7 +236,7 @@ def run(nEvent):
  # for creating hit objects, need to know the mapping between electronic  channel and hit channel.
 # in addition for   MuFilter Veto and Up, which SiPM channel. Problem, creating and filling unsorted. Easier for SciFi and downstream
 # first check which detector it is Veto/Up/Down -> make MuFilterHit
-#                                                                  SciFi                       -> make ScifiHit
+#                                     tm->WriteObject(input.get());                             SciFi                       -> make ScifiHit
 #         for the moment, only have SciFi data. For MuFilterHit, need to know nSiPM per side and number of sides
 #         ROOT.SndlhcHit(detID,nSiPMs,nSides)
              if not scifi:
@@ -244,21 +257,63 @@ def run(nEvent):
                 if options.debug:
                     print('create mu hit: tdc = ',detID)
              else:
-                chan = channel(board.tofpet_id[n],board.tofpet_channel[n],position)
-                detID = 100000*int(station[1]) + chan
-                if not detID in digiSciFiStore: digiSciFiStore[detID] =  ROOT.sndScifiHit(detID)
-                digiSciFiStore[detID].SetDigi(QDC,TDC)
+                chan = channel(bt.tofpet_id[n],bt.tofpet_channel[n],mat)             
+                orientation = 0
+                if station[2]=="Y": orientation = 1
+                sipmID = 1000000*int(station[1]) + 100000*orientation + 10000*mat + 1000*int(chan/128)%4 + chan%128
+                if not sipmID in digiSciFiStore: digiSciFiStore[sipmID] =  ROOT.sndScifiHit(sipmID)
+                digiSciFiStore[sipmID].SetDigi(QDC,TDC)
                 if options.debug:
-                    print('create scifi hit: tdc = ',detID)
-   for detID in digiSciFiStore:
+                    print('create scifi hit: tdc = ',board,sipmID,QDC,TDC)
+                    print('tofpet:', bt.tofpet_id[n],bt.tofpet_channel[n],mat,chan)
+                    print(station[1],station[2],mat,chan,int(chan/128)%4,chan%128)
+
+   for sipmID in digiSciFiStore:
              if digiSciFi.GetSize() == indexSciFi: digiSciFi.Expand(indexSciFi+100)
-             digiSciFi[indexSciFi]=digiSciFiStore[detID]
+             digiSciFi[indexSciFi]=digiSciFiStore[sipmID]
              indexSciFi+=1
    for detID in digiMuFilterStore:
              if digiMuFilter.GetSize() == indexMuFilter: digiMuFilter.Expand(indexMuFilter+100)
              digiMuFilter[indexMuFilter]=digiMuFilterStore[detID]
              indexMuFilter+=1
-
+# make simple clustering for scifi, only works with geometry file. Don't think it is a good idea at the moment
+   if withGeoFile:
+    index = 0
+    hitDict = {}
+    for k in range(digiSciFi.GetEntries()):
+        d = digiSciFi[k]
+        if not d.isValid(): continue 
+        hitDict[d.GetDetectorID()] = k
+        hitList = list(hitDict.keys())
+        if len(hitList)>0:
+              hitList.sort()
+              tmp = [ hitList[0] ]
+              cprev = hitList[0]
+              ncl = 0
+              last = len(hitList)-1
+              hitlist = ROOT.std.vector("sndScifiHit*")()
+              for i in range(len(hitList)):
+                   if i==0 and len(hitList)>1: continue
+                   c=hitList[i]
+                   if (c-cprev)==1: 
+                        tmp.append(c)
+                   if (c-cprev)!=1 or c==hitList[last]:
+                        first = tmp[0]
+                        N = len(tmp)
+                        hitlist.clear()
+                        for aHit in tmp: 
+                                hitlist.push_back( digiSciFi[hitDict[aHit]])
+                                print(aHit,hitDict[aHit],digiSciFi[hitDict[aHit]].GetDetectorID())
+                        print(hitlist.size())
+                        aCluster = ROOT.sndCluster(first,N,hitlist)
+                        print("cluster created")
+                        if  clusScifi.GetSize() == index: clusScifi.Expand(index+10)
+                        clusScifi[index]=aCluster
+                        index+=1
+                        if c!=hitList[last]:
+                             ncl+=1
+                             tmp = [c]
+                   cprev = c
 # fill TTree
    sTree.Fill()
  if options.debug:
@@ -272,5 +327,10 @@ def run(nEvent):
 # v_coarse: 0-1023, QDC mode: it represents the number of clock cycles the charge integration lasted.
 # v_fine = 0-1023, QDC mode: represents the charge measured. Requires calibration.
 
-if not options.stop: run(nEvent)
+if not options.stop: 
+   run(nEvent)
+   f0.Close()
+   fSink.Close()
+   print("File closed")
+
 
