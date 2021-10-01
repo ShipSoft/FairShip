@@ -1,5 +1,6 @@
 import ROOT,os
 import rootUtils as ut
+import shipunit as u
 h={}
 from argparse import ArgumentParser
 parser = ArgumentParser()
@@ -70,7 +71,7 @@ def slopes(Nev=-1):
                         N = len(tmp)
                         hitlist.clear()
                         for aHit in tmp: hitlist.push_back( event.Digi_ScifiHits[hitDict[aHit]])
-                        aCluster = ROOT.sndCluster(first,N,hitlist)
+                        aCluster = ROOT.sndCluster(first,N,hitlist,scifiDet)
                         clusters.append(aCluster)
                         if c!=hitList[last]:
                              ncl+=1
@@ -153,7 +154,7 @@ def slopes(Nev=-1):
                         N = len(tmp)
                         hitlist.clear()
                         for aHit in tmp: hitlist.push_back( event.Digi_ScifiHits[hitDict[aHit]])
-                        aCluster = ROOT.sndCluster(first,N,hitlist)
+                        aCluster = ROOT.sndCluster(first,N,hitlist,scifiDet)
                         clusters.append(aCluster)
                         if c!=hitList[last]:
                              ncl+=1
@@ -249,7 +250,3 @@ def beamSpot():
             else: yMean+=A[1]
             w+=1
         rc = h['bs'].Fill(xMean/w,yMean/w)
-
-
-
-            

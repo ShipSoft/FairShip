@@ -1,7 +1,6 @@
 import ROOT
 import os
 import shipunit as u
-import global_variables
 import SciFiMapping
 from array import array
 
@@ -28,9 +27,12 @@ class SndlhcDigi:
         self.digiScifi2MCPoints =  ROOT.TClonesArray("Hit2MCPoints")
         self.digiScifi2MCPoints.BypassStreamer(ROOT.kTRUE)
         self.digiScifi2MCPointsBranch   = self.sTree.Branch("Digi_ScifiHits2MCPoints",self.digiScifi2MCPoints,32000,1)
+        lsOfGlobals  = ROOT.gROOT.GetListOfGlobals()
+        self.scifiDet = lsOfGlobals.FindObject('Scifi')
+        self.mufiDet = lsOfGlobals.FindObject('MuFilter')
 # make sipm to fibre mapping
-        self.fibresSiPM = SciFiMapping.getFibre2SiPMCPP(global_variables.modules)
-        self.siPMFibres = SciFiMapping.getSiPM2FibreCPP(global_variables.modules)
+        self.fibresSiPM = SciFiMapping.getFibre2SiPMCPP(self.scifiDet)
+        self.siPMFibres = SciFiMapping.getSiPM2FibreCPP(self.scifiDet)
         #scifi clusters
         self.clusScifi   = ROOT.TClonesArray("sndCluster")
         self.clusScifiBranch    = self.sTree.Branch("Cluster_Scifi",self.clusScifi,32000,1)
@@ -156,8 +158,8 @@ class SndlhcDigi:
                         first = tmp[0]
                         N = len(tmp)
                         hitlist.clear()
-                        for aHit in tmp: hitlist.push_back( self.sTree.Digi_ScifiHits[hitDict[aHit]])
-                        aCluster = ROOT.sndCluster(first,N,hitlist)
+                        for aHit in tmp: hitlist.push_back( self.sTree.Digi_ScifiHits[hitDict[aHit]],)
+                        aCluster = ROOT.sndCluster(first,N,hitlist,self.scifi)
                         if self.clusScifi.GetSize() == index: self.clusScifi.Expand(index+10)
                         self.clusScifi[index]=aCluster
                         index+=1

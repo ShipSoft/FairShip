@@ -26,6 +26,9 @@ run = ROOT.FairRunSim()
 modules = sndDet_conf.configure(run,snd_geo)
 sGeo = fgeo.FAIRGeom
 modules['Scifi'].SiPMmapping()
+lsOfGlobals = ROOT.gROOT.GetListOfGlobals()
+lsOfGlobals.Add(modules['Scifi'])
+lsOfGlobals.Add(modules['MuFilter'])
 
 mc = False
 if options.inputFile=="":
@@ -166,7 +169,6 @@ def addTrack():
              h['aLine'+str(p)].Draw('same')
              tc.Update()
              h[ 'simpleDisplay'].Update()
-             print("draw line")
 
 import SndlhcTracking
 trackTask = SndlhcTracking.Tracking() 

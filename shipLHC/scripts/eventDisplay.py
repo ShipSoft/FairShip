@@ -121,7 +121,6 @@ class DrawTracks(ROOT.FairTask):
 # prepare container for fitted tracks
   self.comp  = ROOT.TEveCompound('Tracks')
   gEve.AddElement(self.comp)
-  self.trackColors = {13:ROOT.kGreen,211:ROOT.kRed,11:ROOT.kOrange,321:ROOT.kMagenta}
   self.niter = 100
   self.dz = (200.) / float(self.niter)
   self.parallelToZ = ROOT.TVector3(0., 0., 1.) 
@@ -137,6 +136,28 @@ class DrawTracks(ROOT.FairTask):
     elif globals()['withMCTracks']:      self.DrawMCTracks()
   self.comp.CloseCompound()
   gEve.ElementChanged(self.evscene,True,True)
+
+ def DrawFittedTracks(self,option=''):
+  n,ntot = -1,0
+  for fT in sTree.fittedTracks:
+   n+=1
+   fst = fT.getFitStatus()
+   if not fst.isFitConverged(): continue
+   DTrack = ROOT.TEveLine()
+   DTrack.SetPickable(ROOT.kTRUE)
+   DTrack.SetTitle(fT.__repr__())
+   for n in range(fT.getNumPoints()):
+       fstate = fT.getFittedState(n)
+       fPos = fstate.getPos()
+       DTrack.SetNextPoint(fPos.X(),fPos.Y(),fPos.Z())
+   DTrack.SetName('FitTrack_'+str(n))
+   c = ROOT.kOrange
+   DTrack.SetMainColor(c)
+   DTrack.SetLineWidth(3)
+   self.comp.AddElement(DTrack)
+   ntot+=1
+  print("draw ",ntot," fitted tracks")
+
  def DrawMCTrack(self,n):
   self.comp.OpenCompound()
   fT = sTree.MCTrack[n]
@@ -286,6 +307,12 @@ class IO():
         bld.SetWidth(150)
         bld.SetToolTipText('decrease light power. Front, Side, Specular')
         bld.SetCommand('TPython::Exec("import evdsnd_commands ;  rc=evdsnd_commands.light(-0.5)")')
+        guiFrame.AddFrame(bld, ROOT.TGLayoutHints(ROOT.kLHintsExpandX))
+
+        bld = ROOT.TGTextButton(guiFrame, "fit track")
+        bld.SetWidth(150)
+        bld.SetToolTipText('simple PR, fit track')
+        bld.SetCommand('TPython::Exec("import evdsnd_commands ;  rc=evdsnd_commands.fittrack")')
         guiFrame.AddFrame(bld, ROOT.TGLayoutHints(ROOT.kLHintsExpandX))
 
 #
@@ -438,6 +465,10 @@ class EventLoop(ROOT.FairTask):
        newPw = str(status[s]+step)
        exec("ls.Set"+s+"Power("+newPw+")")
    self.update()
+ def fittrack(self):
+   trackTask.ExecuteTask()
+   print('tracks found',len(sTree.fittedTracks) )
+   self.tracks.DrawFittedTracks()
 
 # add projections DOES NOT WORK YET AS FORESEEN, under investigation. 30.11.2016
 def projection():
@@ -624,7 +655,10 @@ fMan.Init(1,4,10) # default Init(visopt=1, vislvl=3, maxvisnds=10000)
 fRman = ROOT.FairRootManager.Instance()
 sTree = fRman.GetInChain()
 lsOfGlobals = ROOT.gROOT.GetListOfGlobals()
-lsOfGlobals.Add(sTree) 
+lsOfGlobals.Add(sTree)
+lsOfGlobals.Add(modules['Scifi'])
+lsOfGlobals.Add(modules['MuFilter'])
+
 sGeo  = ROOT.gGeoManager 
 top   = sGeo.GetTopVolume()
 gEve  = ROOT.gEve

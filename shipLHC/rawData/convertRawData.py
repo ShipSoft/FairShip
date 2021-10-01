@@ -325,7 +325,7 @@ def run(nEvent):
                                 hitlist.push_back( digiSciFi[hitDict[aHit]])
                                 print(aHit,hitDict[aHit],digiSciFi[hitDict[aHit]].GetDetectorID())
                         print(hitlist.size())
-                        aCluster = ROOT.sndCluster(first,N,hitlist)
+                        aCluster = ROOT.sndCluster(first,N,hitlist,scifiDet)
                         print("cluster created")
                         if  clusScifi.GetSize() == index: clusScifi.Expand(index+10)
                         clusScifi[index]=aCluster

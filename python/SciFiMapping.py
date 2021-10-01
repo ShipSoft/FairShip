@@ -28,8 +28,7 @@ if __name__ == "__main__":
 #                                                                                     <- ScifiVertPlaneVol<-VertMatVolume<-FibreVolume
 
 # get mapping from C++
-def getFibre2SiPMCPP(modules):
-	scifi   = modules['Scifi']
+def getFibre2SiPMCPP(scifi):
 	scifi.SiPMOverlap()
 	scifi.SiPMmapping()
 	F=scifi.GetSiPMmap()
@@ -40,8 +39,7 @@ def getFibre2SiPMCPP(modules):
 			fibresSiPM[x.first][z.first]={'weight':z.second[0],'xpos':z.second[1]}
 	return fibresSiPM
 
-def getSiPM2FibreCPP(modules):
-	scifi   = modules['Scifi']
+def getSiPM2FibreCPP(scifi):
 	X=scifi.GetFibresMap()
 	siPMFibres = {}
 	for x in X:

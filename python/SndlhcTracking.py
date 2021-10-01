@@ -11,6 +11,10 @@ class Tracking(ROOT.FairTask):
    fM.init(bfield)
    ROOT.genfit.MaterialEffects.getInstance().init(geoMat)
    ROOT.genfit.MaterialEffects.getInstance().setNoEffects()
+   lsOfGlobals  = ROOT.gROOT.GetListOfGlobals()
+   self.scifiDet = lsOfGlobals.FindObject('Scifi')
+   self.mufiDet = lsOfGlobals.FindObject('MuFilter')
+
    self.fitter = ROOT.genfit.KalmanFitter()
    self.fitter.setMaxIterations(50)
    self.sigma_spatial = 100.*u.um
@@ -56,8 +60,7 @@ class Tracking(ROOT.FairTask):
                         N = len(tmp)
                         hitlist.clear()
                         for aHit in tmp: hitlist.push_back( self.event.Digi_ScifiHits[hitDict[aHit]])
-                        print('debug',first,N,hitlist)
-                        aCluster = ROOT.sndCluster(first,N,hitlist)
+                        aCluster = ROOT.sndCluster(first,N,hitlist,self.scifiDet)
                         clusters.append(aCluster)
                         if c!=hitList[last]:
                              ncl+=1

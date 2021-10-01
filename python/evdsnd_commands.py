@@ -15,3 +15,7 @@ def transparentMode():
 def light(step):
   SHiPDisplay = eveGlobal.SHiPDisplay
   SHiPDisplay.light(step)
+
+def fittrack():
+  SHiPDisplay = eveGlobal.SHiPDisplay
+  SHiPDisplay.fittrack()
