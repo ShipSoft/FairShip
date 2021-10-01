@@ -47,7 +47,7 @@ import csv
 SiPMmap={}
 TofpetMap = {}
 for system in ['DS','US','Veto']:
-   infile = "/eos/experiment/sndlhc/testbeam/MuFilter/SiPM_mappings/"+system+"_SiPM_mapping_full.csv"
+   infile = "/eos/experiment/sndlhc/testbeam/MuFilter/SiPM_mappings/"+system+"_SiPM_mapping.csv"
    SiPMmap[system] = {}
    if os.path.isdir("/eos/experiment/sndlhc/testbeam/MuFilter/SiPM_mappings"):
       with open(infile, "r") as f:
@@ -147,16 +147,29 @@ for station in stations:
          boardMaps['Scifi'][board]=[station,mat]
 
 boardMaps['MuFilter'] = {}
-planes = {}
-planes['US'] = {'US3L':[169],'US4L':[95]}
-boardMaps['MuFilter']['board_42'] = 'DS'
-# testbeam US3 left 42A, US4 left 42B
+# H6
+boardMaps['MuFilter']['board_43'] = {'A':'US1Left','B':'US2Left','C':'US2Right','D':'US1Right'}
+boardMaps['MuFilter']['board_60'] = {'A':'US3Left','B':'US4Left','C':'US4Right','D':'US3Right'}
+boardMaps['MuFilter']['board_41'] = {'A':'US5Left','B':'DS1Left','C':'DS1Right','D':'US5Right'}
+boardMaps['MuFilter']['board_59'] = {'A':'DS2Left','B':'DS1Vert','C':'DS1Right','D':'DS2Right'}
+slots = {0:'A',1:'A',2:'B',3:'B',4:'C',5:'C',6:'D',7:'D'}
 
-boardMaps['MuFilter']['board_43'] = []
-boardMaps['MuFilter']['board_52'] = []
-boardMaps['MuFilter']['board_55'] = []
-boardMaps['MuFilter']['board_59'] = []
-boardMaps['MuFilter']['board_60'] = []
+# For the DS, Marco said the SiPM 1 is at the top. 
+
+offMap={}
+                                      # first bar, number of sipm channels / bar and direction
+for s in range(1,3):
+   for o in ['Left','Right']: 
+      offMap['VETO'+str(s)+o] =[10000 + (s-1)*1000+ 9,-8]
+for s in range(1,6):
+   for o in ['Left','Right']: 
+      offMap['US'+str(s)+o] =[20000 + (s-1)*1000+ 9,-8]
+for s in range(1,5):
+   for o in ['Vert']: 
+      offMap['DS'+str(s)+o] =[30000 + (s-1)*1000+ 60,+1] # direction not known
+   if s>3: continue
+   for o in ['Left','Right']: 
+      offMap['DS'+str(s)+o] =[30000 + (s-1)*1000+ 59,-1]   # direction not known
 
 def channel(tofpet_id,tofpet_channel,position):
     return (64 * tofpet_id + 63 - tofpet_channel + 512*position) # 512 channels per mat, 1536 channels per plane
@@ -239,25 +252,31 @@ def run(nEvent):
 #                                     tm->WriteObject(input.get());                             SciFi                       -> make ScifiHit
 #         for the moment, only have SciFi data. For MuFilterHit, need to know nSiPM per side and number of sides
 #         ROOT.SndlhcHit(detID,nSiPMs,nSides)
+
              if not scifi:
-                system = boardMaps['MuFilter'][board]
+# mufi encoding
+                slot = bt.tofpet_id[n]
+                system = boardMaps['MuFilter'][board][slot]
                 key = (bt.tofpet_id[n]%2)*1000 + bt.tofpet_channel[n]
                 if options.debug: print(system,key,board,bt.tofpet_id[n]%2,bt.tofpet_channel[n])
-                sipmChannel = 65
+                sipmChannel = 99
                 if not key in TofpetMap[system]:
                         print('key does not exist',key)
                         print(system, key, TofpetMap[system])
                 else:
                        sipmChannel = TofpetMap[system][key]
-                       print(system,sipmChannel)
-                # which system? Veto, US or DS?
-                detID = sipmChannel + 1000*bt.tofpet_id[n]
+                direction            = offMap[system][1]/abs(offMap[system][1])
+                detID                   = offMap[system][0] + direction*sipmChannel//abs(offMap[system][1])
+                sipm_number = sipmChannel%abs(offMap[system][1])
+                if system.find('Right')>0:
+                       sipm_number + abs(offMap[system][1])
                 if not detID in digiMuFilterStore: digiMuFilterStore[detID] =  ROOT.MuFilterHit(detID)
-                digiMuFilterStore[detID].SetDigi(QDC,TDC)
+                digiMuFilterStore[detID].SetDigi(QDC,TDC,sipm_number)
                 if options.debug:
-                    print('create mu hit: tdc = ',detID)
+                    print('create mu hit: ',detID,system,offMap[system],sipm_number,QDC,TDC)
              else:
-                chan = channel(bt.tofpet_id[n],bt.tofpet_channel[n],mat)             
+# scifi encoding
+                chan = channel(bt.tofpet_id[n],bt.tofpet_channel[n],mat)
                 orientation = 0
                 if station[2]=="Y": orientation = 1
                 sipmLocal = (chan - mat*512)
