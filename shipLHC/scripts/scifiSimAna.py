@@ -53,6 +53,7 @@ for s in range(1,6):
 ut.bookHist(h,'E','dE',100,0.0,300.)
 ut.bookHist(h,'Edigi_all','digitized signal',150,0.0,150.)
 ut.bookHist(h,'Edigi','digitized valid signal',150,0.0,150.)
+ut.bookHist(h,'Edigi_muon','digitized valid signal',150,0.0,150.)
 ut.bookHist(h,'Ecluster','cluster energy',150,0.0,150.)
 ut.bookHist(h,'clusterSize','cluster size',20,-0.5,19.5)
 ut.bookHist(h,'clusterSize_muon','cluster size',20,-0.5,19.5)
@@ -174,6 +175,9 @@ for sTree in tchain:
         if isMuon:
              NmuonHit +=1
              rc = h['clusterSize_muon'].Fill(cl_size)
+             for hitID in range(first,first+cl_size):
+                 d = sTree.Digi_ScifiHits[hitDict[hitID]]
+                 r = h['Edigi_muon'].Fill(d.GetEnergy())
         # goto local coordinates in detector plane
         vertical = int(first/100000)%10 == 1
         cl.GetPosition(A,B)
