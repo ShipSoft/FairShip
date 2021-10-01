@@ -263,26 +263,31 @@ class IO():
         guiFrame = ROOT.TGVerticalFrame(hf)
         hf.AddFrame(guiFrame, ROOT.TGLayoutHints(ROOT.kLHintsExpandX))
         guiFrame.SetCleanup(ROOT.kDeepCleanup)
-        bt = ROOT.TGTextButton(guiFrame, "switch transparent mode on/off")
-        bt.SetWidth(150)
-        bt.SetToolTipText('switch transparent mode on/off for better visibility of tracks')
-        bt.SetCommand('TPython::ExecScript("'+os.environ['FAIRSHIP']+'/macro/evd_transparentMode.py")')
-        guiFrame.AddFrame(bt, ROOT.TGLayoutHints(ROOT.kLHintsExpandX))
+
         bnx = ROOT.TGTextButton(guiFrame, "next event")
         bnx.SetWidth(150)
         bnx.SetToolTipText('click for next event')
-        bnx.SetCommand('TPython::ExecScript("'+os.environ['FAIRSHIP']+'/macro/evd_nextEvent.py")')
+        bnx.SetCommand('TPython::Exec("import evdsnd_commands ;  rc=evdsnd_commands.nextEvent()")')
+        bnx.SetTextColor(ROOT.kBlue)
         guiFrame.AddFrame(bnx, ROOT.TGLayoutHints(ROOT.kLHintsExpandX))
-        bzt = ROOT.TGTextButton(guiFrame, "synch zoom top->side")
-        bzt.SetWidth(150)
-        bzt.SetToolTipText('synchronize zoom top with side')
-        bzt.SetCommand('TPython::ExecScript("'+os.environ['FAIRSHIP']+'/macro/evd_synchZoomt.py")')
-        guiFrame.AddFrame(bzt, ROOT.TGLayoutHints(ROOT.kLHintsExpandX))
-        bzs = ROOT.TGTextButton(guiFrame, "synch zoom side->top")
-        bzs.SetWidth(150)
-        bzs.SetToolTipText('synchronize zoom side with top')
-        bzs.SetCommand('TPython::ExecScript("'+os.environ['FAIRSHIP']+'/macro/evd_synchZooms.py")')
-        guiFrame.AddFrame(bzs, ROOT.TGLayoutHints(ROOT.kLHintsExpandX))
+
+        bt = ROOT.TGTextButton(guiFrame, "switch transparent mode on/off")
+        bt.SetWidth(150)
+        bt.SetToolTipText('switch transparent mode on/off for better visibility of tracks')
+        bt.SetCommand('TPython::Exec("import evdsnd_commands ;  rc=evdsnd_commands.transparentMode()")')
+        guiFrame.AddFrame(bt, ROOT.TGLayoutHints(ROOT.kLHintsExpandX))
+
+        blu = ROOT.TGTextButton(guiFrame, "more light")
+        blu.SetWidth(150)
+        blu.SetToolTipText('increase light power. Front, Side, Specular')
+        blu.SetCommand('TPython::Exec("import evdsnd_commands ;  rc=evdsnd_commands.light(0.5)")')
+        guiFrame.AddFrame(blu, ROOT.TGLayoutHints(ROOT.kLHintsExpandX))
+        bld = ROOT.TGTextButton(guiFrame, "less light")
+        bld.SetWidth(150)
+        bld.SetToolTipText('decrease light power. Front, Side, Specular')
+        bld.SetCommand('TPython::Exec("import evdsnd_commands ;  rc=evdsnd_commands.light(-0.5)")')
+        guiFrame.AddFrame(bld, ROOT.TGLayoutHints(ROOT.kLHintsExpandX))
+
 #
         cf.MapSubwindows()
         cf.Layout()
@@ -350,9 +355,6 @@ class EventLoop(ROOT.FairTask):
    tunnel = sGeo.GetVolume('Tunnel')
    tunnel.SetVisibility(0)
    tunnel.SetVisDaughters(0)
-   for x in sGeo.GetListOfVolumes():
-            if x.GetName() in SND:
-                 x.SetTransparency(60)
    br = gEve.GetBrowser()
    br.SetWindowName('SND@LHC Eve Window')
    br.SetWidth(1600)
@@ -367,6 +369,11 @@ class EventLoop(ROOT.FairTask):
      center = array('d',[-9.,46.,28.])
      camera.Configure(1.6, 0, center, -1.57, 0)
      v.DoDraw()
+
+def update():
+   sc    = gEve.GetScenes()
+   geoscene = sc.FindChild('Geometry scene')
+   gEve.ElementChanged(geoscene,True,True)
 
  def NextEvent(self,i=-1):
    if i<0: self.n+=1
@@ -415,9 +422,22 @@ class EventLoop(ROOT.FairTask):
      else: 
        mat.SetTransparency("\x00")
        self.TransparentMode = 0  
-   sc    = gEve.GetScenes()
-   geoscene = sc.FindChild('Geometry scene')
-   if geoscene:   gEve.ElementChanged(geoscene,True,True)
+  self.update()
+ def light(self,step=0.2,source='all'):
+   v1 = gEve.GetDefaultViewer()
+   gl  = v1.GetGLViewer()
+   status = {}
+   sources = ["Side","Front","Specular"]
+   ls = gl.GetLightSet()
+   for s in sources:
+       exec("status['"+s+"']=ls.Get"+s+"Power()")
+   print(status)
+   if source!='all': sources = [source]
+   for s in sources:
+       newPw = str(status[s]+step)
+       exec("ls.Set"+s+"Power("+newPw+")")
+   self.update()
+
 # add projections DOES NOT WORK YET AS FORESEEN, under investigation. 30.11.2016
 def projection():
 #if 1>0:
