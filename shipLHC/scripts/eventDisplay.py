@@ -1,5 +1,5 @@
 #!/usr/bin/env python -i
-import ROOT,sys,os,tkinter,atexit
+import ROOT,sys,os
 
 from argparse import ArgumentParser
 from ShipGeoConfig import ConfigRegistry
@@ -370,7 +370,9 @@ class EventLoop(ROOT.FairTask):
      camera.Configure(1.6, 0, center, -1.57, 0)
      v.DoDraw()
 
-def update():
+   trackTask.InitTask(sTree)
+
+ def update(self):
    sc    = gEve.GetScenes()
    geoscene = sc.FindChild('Geometry scene')
    gEve.ElementChanged(geoscene,True,True)
@@ -422,7 +424,7 @@ def update():
      else: 
        mat.SetTransparency("\x00")
        self.TransparentMode = 0  
-  self.update()
+   self.update()
  def light(self,step=0.2,source='all'):
    v1 = gEve.GetDefaultViewer()
    gl  = v1.GetGLViewer()
@@ -431,7 +433,6 @@ def update():
    ls = gl.GetLightSet()
    for s in sources:
        exec("status['"+s+"']=ls.Get"+s+"Power()")
-   print(status)
    if source!='all': sources = [source]
    for s in sources:
        newPw = str(status[s]+step)
@@ -637,6 +638,10 @@ import eveGlobal
 eveGlobal.SHiPDisplay = SHiPDisplay
 SHiPDisplay.SetName('SHiP Displayer')
 lsOfGlobals.Add(SHiPDisplay) 
+
+import SndlhcTracking
+trackTask = SndlhcTracking.Tracking() 
+
 SHiPDisplay.InitTask()
 
 print('Help on GL viewer can be found by pressing Help button followed by help on GL viewer')

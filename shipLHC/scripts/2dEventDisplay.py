@@ -1,6 +1,8 @@
 import ROOT,os
 import rootUtils as ut
 from array import array
+import shipunit as u
+
 h={}
 from argparse import ArgumentParser
 parser = ArgumentParser()
@@ -37,8 +39,17 @@ else:
   else:   eventTree = f.rawConv
 
 nav = ROOT.gGeoManager.GetCurrentNavigator()
+for p in [0,1]:
+    h['aLine'+str(p)] = ROOT.TGraph()
 
-def loopEvents(start=0,save=False):
+def goodEvent():
+           stations = {}
+           for d in eventTree.Digi_ScifiHits:
+               stations[d.GetDetectorID()//1000000] = 1
+           if len(stations) == 5: return True
+           else: False
+
+def loopEvents(start=0,save=False,withTrack=False):
  if 'simpleDisplay' not in h: ut.bookCanvas(h,key='simpleDisplay',title='simple event display',nx=1200,ny=1600,cx=1,cy=2)
  h['simpleDisplay'].cd(1)
  zStart = -40. # old coordinate system with origin in middle of target
@@ -57,6 +68,7 @@ def loopEvents(start=0,save=False):
     N+=1
     if N<start: continue
     print( "event ->",N )
+
     digis = []
     if sTree.FindBranch("Digi_ScifiHits"): digis.append(sTree.Digi_ScifiHits)
     if sTree.FindBranch("Digi_MuFilterHits"): digis.append(sTree.Digi_MuFilterHits)
@@ -127,10 +139,35 @@ def loopEvents(start=0,save=False):
           h[collection][c][1].SetMarkerStyle(29+k)
           rc=h[collection][c][1].Draw('sameP')
           h['display:'+c]=h[collection][c][1]
+    if goodEvent() and withTrack:
+          addTrack()
     h[ 'simpleDisplay'].Update()
     if save: h['simpleDisplay'].Print('event_'+"{:04d}".format(N)+'.png')
     rc = input("hit return for next event or q for quit: ")
     if rc=='q': break
  if save: os.system("convert -delay 60 -loop 0 *.png animated.gif")
 
+def addTrack():
+   distance = 100.
+   trackTask.ExecuteTask()
+   for   aTrack in eventTree.fittedTracks:
+         state = aTrack.getFittedState()
+         pos = state.getPos()
+         mom = state.getMom()
+         proj = [ROOT.TGraph(),ROOT.TGraph()]
+         for p in [0,1]:
+             h['aLine'+str(p)].SetPoint(0,pos[2],pos[p])
+             zend = pos[2] + distance 
+             t = pos[p]+mom[p]/mom[2]*distance
+             h['aLine'+str(p)].SetPoint(1,zend,t)
+             tc = h[ 'simpleDisplay'].cd(p+1)
+             h['aLine'+str(p)].SetLineColor(ROOT.kRed)
+             h['aLine'+str(p)].SetLineWidth(2)
+             h['aLine'+str(p)].Draw('same')
+             tc.Update()
+             h[ 'simpleDisplay'].Update()
+             print("draw line")
 
+import SndlhcTracking
+trackTask = SndlhcTracking.Tracking() 
+trackTask.InitTask(eventTree)
