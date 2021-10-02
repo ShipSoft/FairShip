@@ -209,18 +209,28 @@ def hitMaps(Nev=-1):
     h['sig_'+str(mat)].Draw()
 def eventTime():
  Tprev = -1
- ut.bookHist(h,'Etime','delta event time',100,0.0,1.)
- ut.bookCanvas(h,'E',' ',1024,768,1,1)
+ freq = 160.E6
+ ut.bookHist(h,'Etime','delta event time; dt [s]',100,0.0,1.)
+ ut.bookCanvas(h,'E',' ',1024,2*768,1,2)
+ eventTree.GetEvent(0)
+ t0 =  eventTree.EventHeader.GetEventTime()/160.E6
+ eventTree.GetEvent(eventTree.GetEntries()-1)
+ tmax = eventTree.EventHeader.GetEventTime()/160.E6
+ ut.bookHist(h,'time','elapsed time; t [s]',1000,t0,tmax)
  for event in eventTree:
     T = event.EventHeader.GetEventTime()
     dT = 0
     if Tprev >0: dT = T-Tprev
     Tprev = T
-    rc = h['Etime'].Fill(dT/160.E6)
- tc = h['E'].cd()
+    rc = h['Etime'].Fill(dT/freq)
+    rc = h['time'].Fill( (T/freq-t0))
+ tc = h['E'].cd(1)
  rc = h['Etime'].Fit('expo')
+ tc.Update()
  stats = h['Etime'].FindObject("stats")
  stats.SetOptFit(111)
+ tc = h['E'].cd(2)
+ h['time'].Draw()
 
 def mergeSignals(hstore):
   ut.bookHist(hstore,'signalAll','signal all mat',150,0.0,150.)
