@@ -19,6 +19,13 @@ MuFilterHit::MuFilterHit(Int_t detID)
 {
  flag = true;
 }
+MuFilterHit::MuFilterHit(Int_t detID,Int_t nSiPMs,Int_t nSides)
+  : SndlhcHit(detID,nSiPMs,nSides)
+{
+ flag = true;
+}
+
+
 // -----   constructor from MuFilterPoint   ------------------------------------------
 MuFilterHit::MuFilterHit(int detID, std::vector<MuFilterPoint*> V)
   : SndlhcHit()

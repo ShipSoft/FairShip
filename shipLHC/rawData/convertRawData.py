@@ -148,10 +148,10 @@ for station in stations:
 
 boardMaps['MuFilter'] = {}
 # H6
-boardMaps['MuFilter']['board_43'] = {'A':'US1Left','B':'US2Left','C':'US2Right','D':'US1Right'}
-boardMaps['MuFilter']['board_60'] = {'A':'US3Left','B':'US4Left','C':'US4Right','D':'US3Right'}
-boardMaps['MuFilter']['board_41'] = {'A':'US5Left','B':'DS1Left','C':'DS1Right','D':'US5Right'}
-boardMaps['MuFilter']['board_59'] = {'A':'DS2Left','B':'DS1Vert','C':'DS1Right','D':'DS2Right'}
+boardMaps['MuFilter']['board_43'] = {'A':'US_1Left','B':'US_2Left','C':'US_2Right','D':'US_1Right'}
+boardMaps['MuFilter']['board_60'] = {'A':'US_3Left','B':'US_4Left','C':'US_4Right','D':'US_3Right'}
+boardMaps['MuFilter']['board_41'] = {'A':'US_5Left','B':'DS_1Left','C':'DS_1Right','D':'US_5Right'}
+boardMaps['MuFilter']['board_59'] = {'A':'DS_2Left','B':'DS_1Vert','C':'DS_2Vert','D':'DS_2Right'}
 slots = {0:'A',1:'A',2:'B',3:'B',4:'C',5:'C',6:'D',7:'D'}
 
 # For the DS, Marco said the SiPM 1 is at the top. 
@@ -160,16 +160,16 @@ offMap={}
                                       # first bar, number of sipm channels / bar and direction
 for s in range(1,3):
    for o in ['Left','Right']: 
-      offMap['VETO'+str(s)+o] =[10000 + (s-1)*1000+ 9,-8]
+      offMap['VETO_'+str(s)+o] =[10000 + (s-1)*1000+ 9,-8,2]
 for s in range(1,6):
    for o in ['Left','Right']: 
-      offMap['US'+str(s)+o] =[20000 + (s-1)*1000+ 9,-8]
+      offMap['US_'+str(s)+o] =[20000 + (s-1)*1000+ 9,-8,2]
 for s in range(1,5):
    for o in ['Vert']: 
-      offMap['DS'+str(s)+o] =[30000 + (s-1)*1000+ 60,+1] # direction not known
+      offMap['DS_'+str(s)+o] =[30000 + (s-1)*1000+ 119, -1,1] # direction not known
    if s>3: continue
    for o in ['Left','Right']: 
-      offMap['DS'+str(s)+o] =[30000 + (s-1)*1000+ 59,-1]   # direction not known
+      offMap['DS_'+str(s)+o] =[30000 + (s-1)*1000+ 59,-1,2]   # direction not known
 
 def channel(tofpet_id,tofpet_channel,position):
     return (64 * tofpet_id + 63 - tofpet_channel + 512*position) # 512 channels per mat, 1536 channels per plane
@@ -214,6 +214,7 @@ def run(nEvent):
  event = f0.event
  for eventNumber in range(nEvent):
    event.GetEvent(eventNumber)
+   if eventNumber%1000==0: print('now at event',eventNumber)
    header.SetEventTime(event.timestamp)
    header.SetRunId(options.runNumber)
    if options.debug: print('event:',eventNumber,event.timestamp)
@@ -256,24 +257,34 @@ def run(nEvent):
              if not scifi:
 # mufi encoding
                 slot = bt.tofpet_id[n]
-                system = boardMaps['MuFilter'][board][slot]
-                key = (bt.tofpet_id[n]%2)*1000 + bt.tofpet_channel[n]
-                if options.debug: print(system,key,board,bt.tofpet_id[n]%2,bt.tofpet_channel[n])
+                tmp = boardMaps['MuFilter'][board][slots[slot]]
+                system = tmp.split('_')[0]
+                key = (slot%2)*1000 + bt.tofpet_channel[n]
+                if options.debug: print(system,key,board,bt.tofpet_id[n],bt.tofpet_id[n]%2,bt.tofpet_channel[n])
                 sipmChannel = 99
                 if not key in TofpetMap[system]:
                         print('key does not exist',key)
                         print(system, key, TofpetMap[system])
                 else:
-                       sipmChannel = TofpetMap[system][key]
-                direction            = offMap[system][1]/abs(offMap[system][1])
-                detID                   = offMap[system][0] + direction*sipmChannel//abs(offMap[system][1])
-                sipm_number = sipmChannel%abs(offMap[system][1])
-                if system.find('Right')>0:
-                       sipm_number + abs(offMap[system][1])
-                if not detID in digiMuFilterStore: digiMuFilterStore[detID] =  ROOT.MuFilterHit(detID)
+                       sipmChannel = TofpetMap[system][key]-1
+                nSiPMs = abs(offMap[tmp][1])
+                nSides =   abs(offMap[tmp][2])
+                direction            = int(offMap[tmp][1]/nSiPMs)
+                detID                   = offMap[tmp][0] + direction*(sipmChannel//(nSiPMs))
+                sipm_number = sipmChannel%(nSiPMs)
+                if tmp.find('Right')>0:
+                       sipm_number += nSiPMs
+                if not detID in digiMuFilterStore:
+                        digiMuFilterStore[detID] =  ROOT.MuFilterHit(detID,nSiPMs,nSides)
+                test = digiMuFilterStore[detID].GetSignal(sipm_number)
                 digiMuFilterStore[detID].SetDigi(QDC,TDC,sipm_number)
                 if options.debug:
-                    print('create mu hit: ',detID,system,offMap[system],sipm_number,QDC,TDC)
+                    print('create mu hit: ',detID,tmp,system,slot,offMap[tmp],sipmChannel,nSiPMs,nSides,test,slot)
+                    print('                ',detID,sipm_number,QDC,TDC)
+                if test>0 or detID%1000>200 or sipm_number>15:
+                    print('what goes wrong?',detID,sipm_number,system,key,board,bt.tofpet_id[n],bt.tofpet_channel[n],test)
+                    1/0
+
              else:
 # scifi encoding
                 chan = channel(bt.tofpet_id[n],bt.tofpet_channel[n],mat)

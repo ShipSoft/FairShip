@@ -49,7 +49,10 @@ def goodEvent():
            stations = {}
            for d in eventTree.Digi_ScifiHits:
                stations[d.GetDetectorID()//1000000] = 1
-           if len(stations) == 5: return True
+           for d in eventTree.Digi_MuFilterHit:
+               plane = 100*(d.GetDetectorID()//1000)
+               stations[plane] = 1
+           if len(stations) > 3: return True
            else: False
 
 def loopEvents(start=0,save=False,withTrack=False):
@@ -70,11 +73,12 @@ def loopEvents(start=0,save=False,withTrack=False):
  for sTree in eventTree:
     N+=1
     if N<start: continue
+    # if not goodEvent(): continue
     print( "event ->",N )
 
     digis = []
     if sTree.FindBranch("Digi_ScifiHits"): digis.append(sTree.Digi_ScifiHits)
-    if sTree.FindBranch("Digi_MuFilterHits"): digis.append(sTree.Digi_MuFilterHits)
+    if sTree.FindBranch("Digi_MuFilterHit"): digis.append(sTree.Digi_MuFilterHit)
     empty = True
     for x in digis:
        if x.GetEntries()>0: empty = False

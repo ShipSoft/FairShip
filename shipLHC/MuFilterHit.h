@@ -13,8 +13,11 @@ class MuFilterHit : public SndlhcHit
     /** Default constructor **/
     MuFilterHit();
     MuFilterHit(Int_t detID);
+    /** Constructor with detector id, number of SiPMs per side, number of sides **/
+    MuFilterHit(Int_t detID,Int_t nSiPMs,Int_t nSides);
+
     // Constructor from MuFilterPoint
-    MuFilterHit(int detID,std::vector<MuFilterPoint*>);
+    MuFilterHit(Int_t detID,std::vector<MuFilterPoint*>);
 
  /** Destructor **/
     virtual ~MuFilterHit();
