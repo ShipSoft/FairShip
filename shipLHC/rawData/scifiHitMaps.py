@@ -5,11 +5,12 @@ h={}
 from argparse import ArgumentParser
 parser = ArgumentParser()
 parser.add_argument("-r", "--runNumber", dest="runNumber", help="run number", type=int,required=True)
+parser.add_argument("-p", "--path", dest="path", help="run number",required=False,default="")
 parser.add_argument("-f", "--inputFile", dest="fname", help="file name for MC", type=str,default=None,required=False)
 parser.add_argument("-g", "--geoFile", dest="geoFile", help="geofile", required=True)
 options = parser.parse_args()
 
-fgeo = ROOT.TFile.Open(options.geoFile)
+fgeo = ROOT.TFile.Open(options.path+options.geoFile)
 from ShipGeoConfig import ConfigRegistry
 from rootpyPickler import Unpickler
 #load geo dictionary
@@ -30,7 +31,7 @@ def xPos(detID):
         return [nStation,mat,X]   # even numbers are Y (horizontal plane), odd numbers X (vertical plane)
 
 if options.runNumber>0: 
-              f=ROOT.TFile.Open('sndsw_raw_'+str(options.runNumber).zfill(6)+'.root')
+              f=ROOT.TFile.Open(options.path+'sndsw_raw_'+str(options.runNumber).zfill(6)+'.root')
               eventTree = f.rawConv
 else:
               f=ROOT.TFile.Open(options.fname)
