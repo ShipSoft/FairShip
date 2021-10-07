@@ -27,6 +27,7 @@
 #include "TParticlePDG.h"
 #include "TParticleClassPDG.h"
 #include "TVirtualMCStack.h"
+#include "TGeoCompositeShape.h"
 
 #include "FairVolume.h"
 #include "FairGeoVolume.h"
@@ -240,13 +241,18 @@ void EmulsionDet::ConstructGeometry()
 	//  //Volumes definition
 	//    //
 
-	//Walls
+	
+	TGeoBBox *Walltot = new TGeoBBox("walltot",XDimension/2, YDimension/2, (WallZDim-0.1)/2);
+        TGeoBBox *Wallint = new TGeoBBox("wallint",WallXDim/2, WallYDim/2, WallZDim/2);
 
-	TGeoBBox *Wall = new TGeoBBox("wall",XDimension/2, YDimension/2, BrickZ/2);
-        TGeoVolume *volWall = new TGeoVolume("Wall",Wall,air);
+        TGeoCompositeShape *Wallborder = new TGeoCompositeShape("wallborder","walltot - wallint");
+        TGeoVolume *volWallborder = new TGeoVolume("volWallborder", Wallborder, Fe);
+        volWallborder->SetLineColor(kGray);
+
+        TGeoVolume *volWall = new TGeoVolume("Wall",Wallint,air);
 	
 	//Rows
-	TGeoBBox *Row = new TGeoBBox("row",XDimension/2, BrickY/2, BrickZ/2);
+	TGeoBBox *Row = new TGeoBBox("row",WallXDim/2, BrickY/2, BrickZ/2);
         TGeoVolume *volRow = new TGeoVolume("Row",Row,air);
 
 	//Bricks
@@ -288,7 +294,8 @@ void EmulsionDet::ConstructGeometry()
 
 	for(int l = 0; l < fNWall; l++)
 	  {
-		volTarget->AddNode(volWall,l,new TGeoTranslation(dx_survey[l]-XDimension/2., dz_survey[l]+YDimension/2., dy_survey[l]+ZDimension/2.)); //the survey points refer to the down-left corner
+		volTarget->AddNode(volWallborder,l,new TGeoTranslation(dx_survey[l]-XDimension/2., dz_survey[l]+YDimension/2., dy_survey[l]+BrickZ/2.)); //the survey points refer to the down-left corner
+		volTarget->AddNode(volWall,l,new TGeoTranslation(dx_survey[l]-XDimension/2., dz_survey[l]+YDimension/2., dy_survey[l]+BrickZ/2.)); //the survey points refer to the down-left corner
 		d_cl_z += BrickZ + TTrackerZ;
 	  }
 

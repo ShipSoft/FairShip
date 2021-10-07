@@ -25,17 +25,17 @@ with ConfigRegistry.register_config("basic") as c:
         c.EmulsionDet.AllPW = c.EmulsionDet.PassiveTh + c.EmulsionDet.EPlW
 
         c.EmulsionDet.BrPackZ = 0.*u.cm
-        c.EmulsionDet.BrPackX = 2*0.3*u.cm
-        c.EmulsionDet.BrPackY = 2*0.3*u.cm
+        c.EmulsionDet.BrPackX = 2*0.05*u.cm
+        c.EmulsionDet.BrPackY = 2*0.05*u.cm
         
         c.EmulsionDet.BrX = c.EmulsionDet.EmX + c.EmulsionDet.BrPackX
         c.EmulsionDet.BrY = c.EmulsionDet.EmY + c.EmulsionDet.BrPackY
         c.EmulsionDet.BrZ = c.EmulsionDet.n_plates * c.EmulsionDet.AllPW + c.EmulsionDet.EPlW + c.EmulsionDet.BrPackZ
 
-        c.EmulsionDet.xdim = c.EmulsionDet.BrX * c.EmulsionDet.col
-        c.EmulsionDet.ydim = c.EmulsionDet.BrY * c.EmulsionDet.row
-        c.EmulsionDet.WallXDim = c.EmulsionDet.xdim
-        c.EmulsionDet.WallYDim = c.EmulsionDet.ydim
+        c.EmulsionDet.xdim = 42.2 *u.cm #external wall dimensions
+        c.EmulsionDet.ydim = 42.2 *u.cm
+        c.EmulsionDet.WallXDim = 38.6 *u.cm #internal wall dimensions
+        c.EmulsionDet.WallYDim = 38.6 *u.cm
         c.EmulsionDet.WallZDim = c.EmulsionDet.BrZ
         c.EmulsionDet.TTz = 3.0*u.cm
         c.EmulsionDet.zdim = c.EmulsionDet.wall* c.EmulsionDet.WallZDim + c.EmulsionDet.wall*c.EmulsionDet.TTz
@@ -87,7 +87,7 @@ with ConfigRegistry.register_config("basic") as c:
         c.MuFilter.VetoBarZ = 1 * u.cm
 
         #veto should end at the start of first ECC target
-        c.MuFilter.VetozC = c.EmulsionDet.zC - c.EmulsionDet.zdim/2. - (c.MuFilter.NVetoPlanes * c.MuFilter.VetoPlaneZ)/2.
+        c.MuFilter.VetozC = 288.89 *u.cm - (c.MuFilter.NVetoPlanes * c.MuFilter.VetoPlaneZ)/2.
 
         #c.MuFilter.X = c.EmulsionDet.xdim + 20*u.cm
         c.MuFilter.X = 80.0*u.cm
