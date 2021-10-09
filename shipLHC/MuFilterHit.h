@@ -28,16 +28,20 @@ class MuFilterHit : public SndlhcHit
 
     void setInvalid() {flag = false;}
     bool isValid() const {return flag;}
+    bool isMasked(Int_t i) const {return fMasked[i];}
+    void SetMasked(Int_t i) {fMasked[i]=kTRUE;}
     int GetSystem(){return floor(fDetectorID/10000);}
     bool isVertical();
+    bool isShort(Int_t);
   private:
     /** Copy constructor **/
     MuFilterHit(const MuFilterHit& hit);
     MuFilterHit operator=(const MuFilterHit& hit);
 
     Float_t flag;   ///< flag
-
-    ClassDef(MuFilterHit,1);
+    Float_t fMasked[16];  /// masked signal
+    std::set<int> shortSiPM = {3,6,11,14,19,22,27,30,35,38,43,46,51,54,59,62,67,70,75,78};
+    ClassDef(MuFilterHit,2);
     
 
 };

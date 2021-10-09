@@ -12,17 +12,20 @@ MuFilterHit::MuFilterHit()
   : SndlhcHit()
 {
  flag = true;
+ for (Int_t i=0;i<16;i++){fMasked[i]=kFALSE;}
 }
 // -----   Standard constructor   ------------------------------------------
 MuFilterHit::MuFilterHit(Int_t detID)
   : SndlhcHit(detID)
 {
  flag = true;
+ for (Int_t i=0;i<16;i++){fMasked[i]=kFALSE;}
 }
 MuFilterHit::MuFilterHit(Int_t detID,Int_t nSiPMs,Int_t nSides)
   : SndlhcHit(detID,nSiPMs,nSides)
 {
  flag = true;
+ for (Int_t i=0;i<16;i++){fMasked[i]=kFALSE;}
 }
 
 
@@ -72,6 +75,7 @@ MuFilterHit::MuFilterHit(int detID, std::vector<MuFilterPoint*> V)
         }
      }
      flag = true;
+     for (Int_t i=0;i<16;i++){fMasked[i]=kFALSE;}
      LOG(DEBUG) << "signal created";
 }
 
@@ -93,6 +97,11 @@ Float_t MuFilterHit::GetEnergy()
 
 bool MuFilterHit::isVertical(){
   if  (floor(fDetectorID/10000)==3&&fDetectorID%1000>59) {return kTRUE;}
+  else{return kFALSE;}
+}
+
+bool MuFilterHit::isShort(Int_t i){
+  if (shortSiPM.find(i+1) != shortSiPM.end()) {return kTRUE;}
   else{return kFALSE;}
 }
 
