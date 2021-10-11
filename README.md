@@ -149,7 +149,7 @@ Commands are similar to the previous case, but without access to CVMFS you need 
 
 # Run Instructions
 
-updated  1 June 2021
+updated  11 October 2021 for the use with raw data
 
  Set up the bulk of the environment from CVMFS. 
 
@@ -164,15 +164,15 @@ updated  1 June 2021
  ```     
 
   ```bash 
- python $SNDSW_ROOT/shipLHC/run_simSND.py  --Ntuple  -n 100 -f /eos/experiment/sndlhc/MonteCarlo/FLUKA/muons_up/version1/unit30_Nm.root  --eMin 1.0
+ python $SNDSW\_ROOT/shipLHC/run\_simSND.py  --Ntuple  -n 100 -f /eos/experiment/sndlhc/MonteCarlo/FLUKA/muons\_up/version1/unit30\_Nm.root  --eMin 1.0
  >> Macro finished succesfully. 
  ```
- >> Output files are  sndLHC.Ntuple-TGeant4.root (events) and  geofile_full.Ntuple-TGeant4.root  (setup) 
+ >> Output files are  sndLHC.Ntuple-TGeant4.root (events) and  geofile\_full.Ntuple-TGeant4.root  (setup) 
 
  Run the event display: 
 
  ```bash 
- python -i $SNDSW_ROOT/macro/eventDisplay.py -f sndLHC.Ntuple-TGeant4.root -g geofile_full.Ntuple-TGeant4.root 
+ python -i $SNDSW\_ROOT/macro/eventDisplay.py -f sndLHC.Ntuple-TGeant4.root -g geofile\_full.Ntuple-TGeant4.root 
  // use SHiP Event Display GUI 
  Use quit() or Ctrl-D (i.e. EOF) to exit 
  ``` 
@@ -182,23 +182,63 @@ updated  1 June 2021
  
  c) At python prompt: sTree.MCTrack.Dump() will display info about all MC particles 
 
-## Use cases covered by run_simSND.py:
+## Use cases covered by run\_simSND.py:
 
 1. Transport muons, output of FLUKA simulation, to TI18 and the detector. Positive and negative muons, up and down crossing angles, exist.
 Possible options are setting minimum energy for transporting particles, transport only muons, increase EM cross sections of muons.
 
  ```bash 
- python $SNDSW_ROOT/shipLHC/run_simSND.py  --Ntuple  -n nEvents  -f /eos/experiment/sndlhc/MonteCarlo/FLUKA/muons_up/version1/unit30_Nm.root  --eMin ecut
+ python $SNDSW\_ROOT/shipLHC/run\_simSND.py  --Ntuple  -n nEvents  -f /eos/experiment/sndlhc/MonteCarlo/FLUKA/muons\_up/version1/unit30\_Nm.root  --eMin ecut
  ```
 
 2. Muon deep inelastic scattering events, produced with pythia6, and then positioned in T18 and transported by Geant4:
  ```bash 
- python  $SNDSW_ROOT/shipLHC/run_simSND.py  -F --MuDIS -n nEvents -f  /eos/experiment/sndlhc/MonteCarlo/Pythia6/MuonDIS/muonDis_1001.root  --eMin ecut
+ python  $SNDSW\_ROOT/shipLHC/run\_simSND.py  -F --MuDIS -n nEvents -f  /eos/experiment/sndlhc/MonteCarlo/Pythia6/MuonDIS/muonDis\_1001.root  --eMin ecut
  ```
 3. WORK ONGOING: Neutrino events, produced by GENIE, sndsw/macro/makeSNDGenieEvents.py, and then positioned in T18 and transported by Geant4:
  ```bash 
- python  $SNDSW_ROOT/shipLHC/run_simSND.py  --Genie -n nEvents -f ...
+ python  $SNDSW\_ROOT/shipLHC/run\_simSND.py  --Genie -n nEvents -f ...
  ```
+
+## Digitization of MC data:
+
+1. Convert MC points to detector hits. Input required, data from simulation together with the geometry file created when running simulation. New objects created are Digi\_ScifiHits together with Cluster\_Scifi and Digi\_MuFilterHit, and in parallel objects to make the link to the original MC points, Digi\_MuFilterHits2MCPoints and Digi\_ScifiHits2MCPoints.
+
+ ```bash 
+ python $SNDSW\_ROOT/shipLHC/run\_digiSND.py   -f sndLHC.Ntuple-TGeant4.root -g geofile\_full.Ntuple-TGeant4.root
+ ```
+
+## Converting raw data to sndsw format:
+
+1. Runs the calibration procedure and creates Digi\_ScifiHits and Digi\_MuFilterHit with signal and time information from SiPM channels.
+
+ ```bash 
+ python $SNDSW\_ROOT/shipLHC/rawData/convertRawData.py -p /eos/experiment/sndlhc/testbeam/scifi-cosmic/ -r 35
+ ```
+2. For the MuFilter testbeam in H8, a specialized script needs to be used to also synchronize the readout boards.
+
+ ```bash 
+ python $SNDSW\_ROOT/shipLHC/rawData/convertRawData\_convertRawData\_muTestbeam.py -p /eos/experiment/sndlhc/testbeam/MuFilter/TB\_data\_commissioning/ -n 5000000  -r 91
+ ```
+## Example scripts for accessing the raw data and making histograms:
+1.  For scifi data:
+ ```bash 
+ python $SNDSW\_ROOT/shipLHC/rawData/scifiHitMaps.py -p /eos/experiment/sndlhc/testbeam/scifi/sndsw/ -r 1 -g geofile\_full.Ntuple-TGeant4.root 
+ ```
+
+2. For MuFi data:
+ ```bash 
+ python $SNDSW\_ROOT/shipLHC/rawData/mufiHitMaps.py -p /eos/experiment/sndlhc/testbeam/MuFilter/TB\_data\_commissioning/sndsw/ -r 90 -g geofile\_full.Ntuple-TGeant4.root 
+ ```
+Two methods implemented, hitMaps(Nev = -1) and eventTime().
+
+## simple 2d event display with Scifi tracking:
+1. Use method loopEvents(start=0,save=False,goodEvents=False,withTrack=False)
+ ```bash 
+ python $SNDSW\_ROOT/shipLHC/scripts/scifiHitMaps.py -p /eos/experiment/sndlhc/testbeam/scifi/sndsw/ -r 1 -g geofile\_full.Ntuple-TGeant4.root 
+ ```
+
+
 # Docker Instructions
 
 Docker is **not** the recommended way to run `sndsw` locally. It is ideal
@@ -220,7 +260,7 @@ desirable.
     ```bash
     docker run -i -t --rm \
     -e DISPLAY=unix$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix \
-    -v /local_workdir:/image_workdir \
+    -v /local\_workdir:/image\_workdir \
     sndsw /bin/bash
     ``` 
     The option `-e DISPLAY=unix$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix` forwards graphics from the docker to your local system (similar to `ssh -X`). The option `-v /local_workdir:/image_workdir` mounts `/local_workdir` on the local system as `/image_workdir` within docker.
