@@ -450,7 +450,7 @@ def getMapEvent2Time():
 # for run 80
 asyn = {41:288439008, 43:116829892, 59:740955516, 60:135082280}
 
-def asynInfo(run,debug):
+def asynInfo(run):
     server = os.environ['EOSSHIP']
     with client.File() as f:
       location = "/eos/experiment/sndlhc/testbeam/MuFilter/Cal_tb2/run_logs/log_"+str(run)+".txt"
@@ -471,6 +471,7 @@ def asynInfo(run,debug):
     T = list(info.keys())
 # correction procedure
     A = {41:{},43:{},59:{},60:{}}
+    C = {}
     prev = {41:False,43:False,59:False,60:False}
     errorCounter = 0
     for tag in T:
