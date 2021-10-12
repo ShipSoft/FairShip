@@ -13,23 +13,12 @@ parser.add_argument("-g", "--geoFile", dest="geoFile", help="geofile", required=
 options = parser.parse_args()
 trans2local = False
 
-fgeo = ROOT.TFile.Open(options.path+options.geoFile)
-from ShipGeoConfig import ConfigRegistry
-from rootpyPickler import Unpickler
-#load geo dictionary
-upkl    = Unpickler(fgeo)
-snd_geo = upkl.load('ShipGeo')
- 
-# -----Create geometry----------------------------------------------
-import shipLHC_conf as sndDet_conf
+import SndlhcGeo
+geo = SndlhcGeo.GeoInterface(options.geoFile)
 
-run = ROOT.FairRunSim()
-modules = sndDet_conf.configure(run,snd_geo)
-sGeo = fgeo.FAIRGeom
-modules['Scifi'].SiPMmapping()
 lsOfGlobals = ROOT.gROOT.GetListOfGlobals()
-lsOfGlobals.Add(modules['Scifi'])
-lsOfGlobals.Add(modules['MuFilter'])
+lsOfGlobals.Add(geo.modules['Scifi'])
+lsOfGlobals.Add(geo.modules['MuFilter'])
 
 mc = False
 if options.inputFile=="":
@@ -43,8 +32,6 @@ else:
   else:   eventTree = f.rawConv
 
 nav = ROOT.gGeoManager.GetCurrentNavigator()
-for p in [0,1]:
-    h['aLine'+str(p)] = ROOT.TGraph()
 
 def goodEvent():
            stations = {}
@@ -56,7 +43,7 @@ def goodEvent():
            if len(stations) > 3: return True
            else: False
 
-def loopEvents(start=0,save=False,withTrack=False):
+def loopEvents(start=0,save=False,goodEvents=False,withTrack=False):
  if 'simpleDisplay' not in h: ut.bookCanvas(h,key='simpleDisplay',title='simple event display',nx=1200,ny=1600,cx=1,cy=2)
  h['simpleDisplay'].cd(1)
  zStart = -40. # old coordinate system with origin in middle of target
@@ -74,7 +61,7 @@ def loopEvents(start=0,save=False,withTrack=False):
  for sTree in eventTree:
     N+=1
     if N<start: continue
-    # if not goodEvent(): continue
+    if goodEvents and not goodEvent(): continue
     print( "event ->",N )
 
     digis = []
@@ -107,13 +94,13 @@ def loopEvents(start=0,save=False,withTrack=False):
          detID = digi.GetDetectorID()
          if digi.GetName()  == 'MuFilterHit':
             system = digi.GetSystem()
-            modules['MuFilter'].GetPosition(detID,A,B)
+            geo.modules['MuFilter'].GetPosition(detID,A,B)
             if trans2local:
                 curPath = nav.GetPath()
                 tmp = curPath.rfind('/')
                 nav.cd(curPath[:tmp])
          else:
-            modules['Scifi'].GetSiPMPosition(detID,A,B)
+            geo.modules['Scifi'].GetSiPMPosition(detID,A,B)
             if trans2local:
                 curPath = nav.GetPath()
                 tmp = curPath.rfind('/')
@@ -159,15 +146,14 @@ def addTrack():
    distance = 100.
    trackTask.ExecuteTask()
    for   aTrack in eventTree.fittedTracks:
-         state = aTrack.getFittedState()
-         pos = state.getPos()
-         mom = state.getMom()
-         proj = [ROOT.TGraph(),ROOT.TGraph()]
+      for p in [0,1]:
+          h['aLine'+str(p)] = ROOT.TGraph()
+      for i in range(aTrack.getNumPointsWithMeasurement()):
+         state = aTrack.getFittedState(i)
+         pos    = state.getPos()
          for p in [0,1]:
-             h['aLine'+str(p)].SetPoint(0,pos[2],pos[p])
-             zend = pos[2] + distance 
-             t = pos[p]+mom[p]/mom[2]*distance
-             h['aLine'+str(p)].SetPoint(1,zend,t)
+             h['aLine'+str(p)].SetPoint(i,pos[2],pos[p])
+      for p in [0,1]:
              tc = h[ 'simpleDisplay'].cd(p+1)
              h['aLine'+str(p)].SetLineColor(ROOT.kRed)
              h['aLine'+str(p)].SetLineWidth(2)
