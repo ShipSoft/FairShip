@@ -447,9 +447,6 @@ def getMapEvent2Time():
           k+=1
           if k%10000000==0: print('key time map: now at ',k)
 
-# for run 80
-asyn = {41:288439008, 43:116829892, 59:740955516, 60:135082280}
-
 def asynInfo(run):
     server = os.environ['EOSSHIP']
     with client.File() as f:
@@ -468,17 +465,18 @@ def asynInfo(run):
       else:
           if X.find('disc')>0: info[tag]['summary'] = eval(X)
           else: info[tag]['detail'] = eval(X)
-    T = list(info.keys())
 # correction procedure
     A = {41:{},43:{},59:{},60:{}}
     C = {}
-    prev = {41:False,43:False,59:False,60:False}
+    prev = {41:None,43:None,59:None,60:None}
     errorCounter = 0
+    T = list(info.keys())
+    T.sort()
     for tag in T:
-          C[tag] = {41:{},43:{},59:{},60:{}}
           test = info[tag]['summary']
           lastT = test['last_timestamp']
           if not 'desync_info' in test: continue
+          C[tag] = {41:{},43:{},59:{},60:{}}
           for L in test['desync_info']:
              board = L[0]
              t = L[1][0]
@@ -490,7 +488,7 @@ def asynInfo(run):
               break
           for board in C[tag]:
               if not c in C[tag][board]:
-                  print('different trigger counts, problematic',tag,C[tag])
+                  #print('different trigger counts, problematic',tag,C[tag])
                   errorCounter+=1
               else:
                   if not prev[board] == None:
@@ -498,6 +496,7 @@ def asynInfo(run):
                               print('desync changed, problematic',tag,prev,C[tag])
                   prev[board] = C[tag][board][c]-tref
     
+    T = list(C.keys())
     for b in C[T[0]]:
         for c in C[T[0]][b]:
             A[b]= C[T[0]][b][c]
@@ -520,7 +519,7 @@ if not options.stop:
    else: 
      getMapEvent2Time()
      dumpMap()
-     asyn = asynInfo(options.runNumber)
+   asyn = asynInfo(options.runNumber)
    run(nEvent)
    f0.Close()
    fSink.Close()
