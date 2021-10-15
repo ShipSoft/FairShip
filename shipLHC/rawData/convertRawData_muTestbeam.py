@@ -7,6 +7,7 @@ import shipRoot_conf
 shipRoot_conf.configure()
 
 chi2Max = 9999.
+mufi_hitThreshold = 2
 
 from argparse import ArgumentParser
 parser = ArgumentParser()
@@ -96,7 +97,8 @@ for l in range(1,len(L)):
     X['c']=float(tmp[6])
     X['d']=float(tmp[8])
     X['e']=float(tmp[10])
-    X['chi2']=float(tmp[7])
+    if float(tmp[9]) < 2: X['chi2Ndof'] = 999999.
+    else:                  X['chi2Ndof']=float(tmp[7])/float(tmp[9])
 L=Ltdc
 for l in range(1,len(L)):
     tmp = L[l].replace('\n','').split(',')
@@ -127,7 +129,7 @@ def qdc_calibration(board_id,tofpet_id,channel,tac,v_coarse,v_fine,tf):
     return value
 def qdc_chi2(board_id,tofpet_id,channel,tac,v_coarse,v_fine,tf):
     par = qdc_cal[board_id][tofpet_id][channel][tac]
-    return par['chi2']
+    return par['chi2Ndof']
 
 def time_calibration(board_id,tofpet_id,channel,tac,t_coarse,t_fine,TDC=0):  #??
     par = qdc_cal[board_id][tofpet_id][channel][tac][TDC]
@@ -257,13 +259,14 @@ def run(nEvent):
              if newT<0 or dt==0: continue
              if newT in theMap:
                 if options.debug: print("found",eventNumber)
-                found = True
                 key = theMap[newT]
+                if key < 0 : continue    # event time had already been used
+                found = True
                 if not board_id in otherEvents: 
                    otherEvents[board_id]={}                   
-                otherEvents[board_id][boardx_id]=theMap[newT]
+                otherEvents[board_id][boardx_id]=[newT,theMap[newT]]
 # problem if more than one board has links to another event.
-   if found and options.debug: print("+++",otherEvents)
+   if found and options.debug:     print("+++",otherEvents)
 
    if len(otherEvents)>1:
            print("Houston we have a problem, more than one board match with other events",eventNumber,otherEvents)
@@ -271,26 +274,28 @@ def run(nEvent):
                rc = boards["board_"+str(b)].GetEvent(eventNumber)
                txt = "mult "+str( boards["board_"+str(b)].n_hits )
                for bx in otherEvents[b]:
-                   rc = boards["board_"+str(bx)].GetEvent(otherEvents[b][bx])
+                   rc = boards["board_"+str(bx)].GetEvent(otherEvents[b][bx][1])
                    txt+= " " +str( boards["board_"+str(bx)].n_hits )
-               print(txt)     
+               print(txt)
            errorCounter['mult']+=1
            continue
+
    if len(otherEvents)==0:
-           errorCounter['noise']+=1
-           if maxHits>1: 
+           if maxHits>mufi_hitThreshold: 
                 otherEvents[maxBoard]={}
-                otherEvents[maxBoard][maxBoard] = eventNumber
+                otherEvents[maxBoard][maxBoard] = [T,eventNumber]
            else: continue
    else:
            thisBoard = list(otherEvents.keys())[0]
-           otherEvents[thisBoard][thisBoard] = eventNumber
+           otherEvents[thisBoard][thisBoard] = [T,eventNumber]
    listOfBoards = {}
-   if found and options.debug: print("+++",otherEvents)
    for x in otherEvents:
       for b in otherEvents[x]:
-         listOfBoards[b]=otherEvents[x][b]
-   if found and options.debug: print("---",listOfBoards)
+         tmp = otherEvents[x][b]
+         listOfBoards[b]=tmp[1]
+         theMap[tmp[0]] = -1    # use event only once
+
+   if options.debug: print("---",listOfBoards)
 
    header.SetEventTime(event.timestamp)
    header.SetRunId(options.runNumber)
@@ -356,8 +361,6 @@ def run(nEvent):
                         digiMuFilterStore[detID] =  ROOT.MuFilterHit(detID,nSiPMs,nSides)
                 test = digiMuFilterStore[detID].GetSignal(sipm_number)
                 digiMuFilterStore[detID].SetDigi(QDC,TDC,sipm_number)
-                if qdc_chi2(board_id,bt.tofpet_id[n],bt.tofpet_channel[n],bt.tac[n],bt.v_coarse[n],bt.v_fine[n],TDC-bt.t_coarse[n]) > chi2Max:
-                        digiMuFilterStore[detID].SetMasked(sipm_number)
                 if options.debug:
                     ncreated +=1
                     print('create mu hit: ',detID,tmp,system,slot,offMap[tmp],sipmChannel,nSiPMs,nSides,test,slot)
@@ -516,6 +519,7 @@ if not options.stop:
      print('map exists')
      fin = open('map'+str(options.runNumber)+'.pkl','rb')
      theMap = pickle.load(fin)
+     fin.close()
    else: 
      getMapEvent2Time()
      dumpMap()
