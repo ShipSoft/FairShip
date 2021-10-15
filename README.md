@@ -164,15 +164,15 @@ updated  11 October 2021 for the use with raw data
  ```     
 
   ```bash 
- python $SNDSW\_ROOT/shipLHC/run\_simSND.py  --Ntuple  -n 100 -f /eos/experiment/sndlhc/MonteCarlo/FLUKA/muons\_up/version1/unit30\_Nm.root  --eMin 1.0
+ python $SNDSW_ROOT/shipLHC/run_simSND.py  --Ntuple  -n 100 -f /eos/experiment/sndlhc/MonteCarlo/FLUKA/muons_up/version1/unit30_Nm.root  --eMin 1.0
  >> Macro finished succesfully. 
  ```
- >> Output files are  sndLHC.Ntuple-TGeant4.root (events) and  geofile\_full.Ntuple-TGeant4.root  (setup) 
+ >> Output files are  sndLHC.Ntuple-TGeant4.root (events) and  geofile_full.Ntuple-TGeant4.root  (setup) 
 
  Run the event display: 
 
  ```bash 
- python -i $SNDSW\_ROOT/macro/eventDisplay.py -f sndLHC.Ntuple-TGeant4.root -g geofile\_full.Ntuple-TGeant4.root 
+ python -i $SNDSW_ROOT/macro/eventDisplay.py -f sndLHC.Ntuple-TGeant4.root -g geofile_full.Ntuple-TGeant4.root 
  // use SHiP Event Display GUI 
  Use quit() or Ctrl-D (i.e. EOF) to exit 
  ``` 
@@ -182,60 +182,60 @@ updated  11 October 2021 for the use with raw data
  
  c) At python prompt: sTree.MCTrack.Dump() will display info about all MC particles 
 
-## Use cases covered by run\_simSND.py:
+## Use cases covered by `run_simSND.py`:
 
 1. Transport muons, output of FLUKA simulation, to TI18 and the detector. Positive and negative muons, up and down crossing angles, exist.
 Possible options are setting minimum energy for transporting particles, transport only muons, increase EM cross sections of muons.
 
  ```bash 
- python $SNDSW\_ROOT/shipLHC/run\_simSND.py  --Ntuple  -n nEvents  -f /eos/experiment/sndlhc/MonteCarlo/FLUKA/muons\_up/version1/unit30\_Nm.root  --eMin ecut
+ python $SNDSW_ROOT/shipLHC/run_simSND.py  --Ntuple  -n nEvents  -f /eos/experiment/sndlhc/MonteCarlo/FLUKA/muons_up/version1/unit30_Nm.root  --eMin ecut
  ```
 
 2. Muon deep inelastic scattering events, produced with pythia6, and then positioned in T18 and transported by Geant4:
  ```bash 
- python  $SNDSW\_ROOT/shipLHC/run\_simSND.py  -F --MuDIS -n nEvents -f  /eos/experiment/sndlhc/MonteCarlo/Pythia6/MuonDIS/muonDis\_1001.root  --eMin ecut
+ python  $SNDSW_ROOT/shipLHC/run_simSND.py  -F --MuDIS -n nEvents -f  /eos/experiment/sndlhc/MonteCarlo/Pythia6/MuonDIS/muonDis_1001.root  --eMin ecut
  ```
 3. WORK ONGOING: Neutrino events, produced by GENIE, sndsw/macro/makeSNDGenieEvents.py, and then positioned in T18 and transported by Geant4:
  ```bash 
- python  $SNDSW\_ROOT/shipLHC/run\_simSND.py  --Genie -n nEvents -f ...
+ python  $SNDSW_ROOT/shipLHC/run_simSND.py  --Genie -n nEvents -f ...
  ```
 
 ## Digitization of MC data:
 
-1. Convert MC points to detector hits. Input required, data from simulation together with the geometry file created when running simulation. New objects created are Digi\_ScifiHits together with Cluster\_Scifi and Digi\_MuFilterHit, and in parallel objects to make the link to the original MC points, Digi\_MuFilterHits2MCPoints and Digi\_ScifiHits2MCPoints.
+1. Convert MC points to detector hits. Input required, data from simulation together with the geometry file created when running simulation. New objects created are `Digi_ScifiHits` together with `Cluster_Scifi` and `Digi_MuFilterHit`, and in parallel objects to make the link to the original MC points, `Digi_MuFilterHits2MCPoints` and `Digi_ScifiHits2MCPoints`.
 
  ```bash 
- python $SNDSW\_ROOT/shipLHC/run\_digiSND.py   -f sndLHC.Ntuple-TGeant4.root -g geofile\_full.Ntuple-TGeant4.root
+ python $SNDSW_ROOT/shipLHC/run_digiSND.py   -f sndLHC.Ntuple-TGeant4.root -g geofile_full.Ntuple-TGeant4.root
  ```
 
 ## Converting raw data to sndsw format:
 
-1. Runs the calibration procedure and creates Digi\_ScifiHits and Digi\_MuFilterHit with signal and time information from SiPM channels.
+1. Runs the calibration procedure and creates `Digi_ScifiHits` and `Digi_MuFilterHit` with signal and time information from SiPM channels.
 
  ```bash 
- python $SNDSW\_ROOT/shipLHC/rawData/convertRawData.py -p /eos/experiment/sndlhc/testbeam/scifi-cosmic/ -r 35
+ python $SNDSW_ROOT/shipLHC/rawData/convertRawData.py -p /eos/experiment/sndlhc/testbeam/scifi-cosmic/ -r 35
  ```
 2. For the MuFilter testbeam in H8, a specialized script needs to be used to also synchronize the readout boards.
 
  ```bash 
- python $SNDSW\_ROOT/shipLHC/rawData/convertRawData\_convertRawData\_muTestbeam.py -p /eos/experiment/sndlhc/testbeam/MuFilter/TB\_data\_commissioning/ -n 5000000  -r 91
+ python $SNDSW_ROOT/shipLHC/rawData/convertRawData_convertRawData_muTestbeam.py -p /eos/experiment/sndlhc/testbeam/MuFilter/TB_data_commissioning/ -n 5000000  -r 91
  ```
 ## Example scripts for accessing the raw data and making histograms:
 1.  For scifi data:
  ```bash 
- python $SNDSW\_ROOT/shipLHC/rawData/scifiHitMaps.py -p /eos/experiment/sndlhc/testbeam/scifi/sndsw/ -r 1 -g geofile\_full.Ntuple-TGeant4.root 
+ python $SNDSW_ROOT/shipLHC/rawData/scifiHitMaps.py -p /eos/experiment/sndlhc/testbeam/scifi/sndsw/ -r 1 -g geofile_full.Ntuple-TGeant4.root 
  ```
 
 2. For MuFi data:
  ```bash 
- python $SNDSW\_ROOT/shipLHC/rawData/mufiHitMaps.py -p /eos/experiment/sndlhc/testbeam/MuFilter/TB\_data\_commissioning/sndsw/ -r 90 -g geofile\_full.Ntuple-TGeant4.root 
+ python $SNDSW_ROOT/shipLHC/rawData/mufiHitMaps.py -p /eos/experiment/sndlhc/testbeam/MuFilter/TB_data_commissioning/sndsw/ -r 90 -g geofile_full.Ntuple-TGeant4.root 
  ```
 Two methods implemented, hitMaps(Nev = -1) and eventTime().
 
 ## simple 2d event display with Scifi tracking:
 1. Use method loopEvents(start=0,save=False,goodEvents=False,withTrack=False)
  ```bash 
- python $SNDSW\_ROOT/shipLHC/scripts/scifiHitMaps.py -p /eos/experiment/sndlhc/testbeam/scifi/sndsw/ -r 1 -g geofile\_full.Ntuple-TGeant4.root 
+ python $SNDSW_ROOT/shipLHC/scripts/scifiHitMaps.py -p /eos/experiment/sndlhc/testbeam/scifi/sndsw/ -r 1 -g geofile_full.Ntuple-TGeant4.root 
  ```
 
 
