@@ -16,9 +16,13 @@ if path.find('eos')>0: path = os.environ['EOSSHIP']+options.path
 import SndlhcGeo
 geo = SndlhcGeo.GeoInterface(path+options.geoFile)
 MuFilter = geo.modules['MuFilter']
+
 A,B = ROOT.TVector3(),ROOT.TVector3()
 zPos={}
 systemAndPlanes = {1:2,2:5,3:7}
+
+freq = 160.E6
+
 for s in systemAndPlanes:
        for plane in range(systemAndPlanes[s]):
           bar = 4
@@ -82,7 +86,7 @@ def hitMaps(Nev = -1):
  Tprev = 0
  if Nev < 0 : Nev = eventTree.GetEntries()
  eventTree.GetEvent(0)
- t0 =  eventTree.EventHeader.GetEventTime()/160.E6
+ t0 =  eventTree.EventHeader.GetEventTime()/freq
  for event in eventTree:
     N+=1
     if N>Nev: break
@@ -130,7 +134,7 @@ def hitMaps(Nev = -1):
                 if smallSiPMchannel(c[0]) : rc  = h['sigS_'+str(s)+str(l)].Fill(c[1])
                 elif c[0]<8: rc  = h['sigL_'+str(s)+str(l)].Fill(c[1])
                 else             : rc  = h['sigR_'+str(s)+str(l)].Fill(c[1])
-            else: rc  = h['sig_'+str(s)+str(l)].Fill(c[1])
+            rc  = h['sig_'+str(s)+str(l)].Fill(c[1])
     maxOneBar = True
     for key in planes:
         if len(planes[key]) > 2: maxOneBar = False
@@ -213,18 +217,22 @@ def hitMaps(Nev = -1):
       h[canvas].Update()
       h[canvas].Print(canvas+'-run'+str(options.runNumber)+'.png')
 
-def eventTime():
+def eventTime(Nev=-1):
  Tprev = -1
- freq = 160.E6
+ if Nev < 0 : Nev = eventTree.GetEntries()
  ut.bookHist(h,'Etime','delta event time; dt [s]',100,0.0,1.)
  ut.bookHist(h,'EtimeZ','delta event time; dt [ns]',1000,0.0,10000.)
- ut.bookCanvas(h,'E',' ',1024,2*768,1,2)
+ ut.bookCanvas(h,'T',' ',1024,2*768,1,2)
  eventTree.GetEvent(0)
  t0 =  eventTree.EventHeader.GetEventTime()/160.E6
- eventTree.GetEvent(eventTree.GetEntries()-1)
+ eventTree.GetEvent(Nev-1)
  tmax = eventTree.EventHeader.GetEventTime()/160.E6
  ut.bookHist(h,'time','elapsed time; t [s]',1000,0,tmax-t0)
+
+ N=-1
  for event in eventTree:
+    N+=1
+    if N>Nev: break
     T = event.EventHeader.GetEventTime()
     dT = 0
     if Tprev >0: dT = T-Tprev
@@ -232,11 +240,14 @@ def eventTime():
     rc = h['Etime'].Fill(dT/freq)
     rc = h['EtimeZ'].Fill(dT*1E9/160.E6)
     rc = h['time'].Fill( (T/freq-t0))
- tc = h['E'].cd(1)
- h['Etime'].Draw()
+ tc = h['T'].cd(1)
+ tc.SetLogy(1)
+ h['EtimeZ'].Draw()
  tc.Update()
- tc = h['E'].cd(2)
+ tc = h['T'].cd(2)
  h['time'].Draw()
+ h['T'].Update()
+ h['T'].Print('time-run'+str(options.runNumber)+'.png')
 
 def beamSpot():
    trackTask.ExecuteTask()
