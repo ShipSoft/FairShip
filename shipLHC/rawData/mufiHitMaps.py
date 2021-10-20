@@ -328,9 +328,13 @@ def deltaTime(aHit):
               else:  # right side
                   nR+=1
                   meanR+=c[1]
-        if nL >1:        meanL = meanL/nL * 1E9/freq
-        if nR >1:        meanR = meanR/nR  * 1E9/freq
-        return meanL-meanR
+        if nL >0 and nR>0:
+                meanL = meanL/nL * 1E9/freq
+                meanR = meanR/nR  * 1E9/freq
+                dt = meanL-meanR
+        else: 
+               dt = -999.
+        return dt
 
 def USEfficiency(Nev=-1):
  name = {1:'Veto',2:'US',3:'DS'}
@@ -514,7 +518,7 @@ def analyze_USefficiency():
   h['TDS'].Print('dTvsXDS'+'-run'+str(options.runNumber)+'.png')
 
 def timing(Nev = -1):
- binning = {1:50,2:50,3:5}
+ binning = {1:50,2:50,3:50}
  for s in systemAndPlanes:
     for l in range(systemAndPlanes[s]):
        ut.bookHist(h,'timeDiffsL_'+str(s*10+l),' deviation from mean'+str(s*10+l)+'; [ns]',100,-binning[s],binning[s])
@@ -550,8 +554,8 @@ def timing(Nev = -1):
               else:  # right side
                   nR+=1
                   meanR+=c[1]
-        if nL >1:        meanL = meanL/nL * 1E9/freq
-        if nR >1:        meanR = meanR/nR  * 1E9/freq
+        if nL >0:        meanL = meanL/nL * 1E9/freq
+        if nR >0:        meanR = meanR/nR  * 1E9/freq
         if nL>0 and nR>0:  rc = h['timeDiffsLR_'+str(s*10+l)].Fill(meanL-meanR)
         for c in allChannels:
               if  nSiPMs > c[0]:  # left side
