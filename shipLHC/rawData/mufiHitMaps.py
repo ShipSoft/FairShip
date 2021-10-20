@@ -59,7 +59,8 @@ def hitMaps(Nev = -1):
  for s in systemAndPlanes:
     for l in range(systemAndPlanes[s]):
        ut.bookHist(h,'hit_'+str(s*10+l),'channel map / plane '+str(s*10+l),160,-0.5,159.5)
-       ut.bookHist(h,'bar_'+str(s*10+l),'hit map / plane '+str(s*10+l),10,-0.5,9.5)
+       if s==3:  ut.bookHist(h,'bar_'+str(s*10+l),'hit map / plane '+str(s*10+l),60,-0.5,59.5)
+       else:       ut.bookHist(h,'bar_'+str(s*10+l),'hit map / plane '+str(s*10+l),10,-0.5,9.5)
        ut.bookHist(h,'sig_'+str(s*10+l),'signal / plane '+str(s*10+l),150,0.0,150.)
        if s==2: 
                ut.bookHist(h,'sigS_'+str(s*10+l),'signal / plane '+str(s*10+l),150,0.0,150.)
@@ -334,6 +335,9 @@ def deltaTime(aHit):
 def USEfficiency(Nev=-1):
  name = {1:'Veto',2:'US',3:'DS'}
  for s in systemAndPlanes:
+    for l in range(systemAndPlanes[s]):
+        if s==3: ut.bookHist(h,'dtLRvsX_'+name[s]+str(s*10+l),'dt vs x track '+str(s*10+l)+";X [cm]; dt [ns]",80,-70.,10.,100,-1.,1.)
+        else:      ut.bookHist(h,'dtLRvsX_'+name[s]+str(s*10+l),'dt vs x track '+str(s*10+l)+";X [cm]; dt [ns]",80,-70.,10.,100,-10.,10.)
     if s!=2 : continue
     for l in range(systemAndPlanes[s]):
         ut.bookHist(h,'resY_'+name[s]+str(s*10+l),'residual Y '+str(s*10+l),100,-20.,20.)
@@ -341,7 +345,6 @@ def USEfficiency(Nev=-1):
         ut.bookHist(h,'resY_'+name[s]+'R'+str(s*10+l),'residual Y '+str(s*10+l),100,-20.,20.)
         ut.bookHist(h,'resY_'+name[s]+'S'+str(s*10+l),'residual Y '+str(s*10+l),100,-20.,20.)
         ut.bookHist(h,'track_'+name[s]+str(s*10+l),'track x/y '+str(s*10+l),80,-70.,10.,80,0.,80.)
-        ut.bookHist(h,'dtLRvsX_'+name[s]+str(s*10+l),'dt vs x track '+str(s*10+l)+";X [cm]; dt [ns]",80,-70.,10.,100,-10.,10.)
         for bar in range(10):
             ut.bookHist(h,'nSiPMs_'+name[s]+str(s*10+l)+'_'+str(bar),'#sipms',16,-0.5,15.5)
             ut.bookHist(h,'signalS_'+name[s]+str(s*10+l)+'_'+str(bar),'signal',100,0.,200.)
@@ -358,14 +361,15 @@ def USEfficiency(Nev=-1):
     state = theTrack.getFittedState()
     pos    = state.getPos()
     mom = state.getMom()
-    s = 2
+
     dsHits = {}
-    for p in range(5): dsHits[s*10+p]=[]
+    for s in range(2,4):
+       for p in range(5): dsHits[s*10+p]=[]
     for aHit in eventTree.Digi_MuFilterHit:
          if not aHit.isValid(): continue
          plane = (aHit.GetDetectorID()//1000)
-         if not plane//10 == 2: continue
          dsHits[plane].append(aHit)
+    s = 2
     for plane in range(5):
          z = zPos[s*10+plane]
          lam = (z-pos.z())/mom.z()
@@ -405,12 +409,27 @@ def USEfficiency(Nev=-1):
 #   look at delta time vs track X
                   dt = deltaTime(aHit)
                   h['dtLRvsX_US'+str(s*10+plane)].Fill(xEx,dt)
+# check DS
+    s = 3
+    for plane in range(4):
+         z = zPos[s*10+plane]
+         lam = (z-pos.z())/mom.z()
+         xEx,yEx = pos.x()+lam*mom.x(),pos.y()+lam*mom.y()
+         for aHit in dsHits[s*10+plane]:
+              # only horizontal layers have two sides
+              if not aHit.GetnSides()==2: continue
+              detID = aHit.GetDetectorID()
+              MuFilter.GetPosition(detID,A,B)
+              dt = deltaTime(aHit)
+              h['dtLRvsX_DS'+str(s*10+plane)].Fill(xEx,dt)
+
     theTrack.Delete()
 
 latex = ROOT.TLatex()
 def analyze_USefficiency():
   ut.bookCanvas(h,'E','',1200,2000,4,5)
   ut.bookCanvas(h,'T','',800,1600,1,5)
+  ut.bookCanvas(h,'TDS','',800,900,1,2)
   s=2
   for plane in range(5):
      tc = h['E'].cd(4*plane+1)
@@ -467,13 +486,40 @@ def analyze_USefficiency():
      latex.DrawLatexNDC(0.2,0.8,txt)
   h['T'].Print('dTvsX'+'-run'+str(options.runNumber)+'.png')
 
+  # for DS
+  s = 3
+  for plane in range(2):
+     tc = h['TDS'].cd(plane+1)
+     hist = h['dtLRvsX_DS'+str(s*10+plane)]
+     hist.SetStats(0)
+     hist.Draw('colz')
+# get time x correlation, X = m*dt + b
+     h['gdtLRvsX_DS'+str(s*10+plane)] = ROOT.TGraph()
+     g = h['gdtLRvsX_DS'+str(s*10+plane)]
+     xproj = hist.ProjectionX('tmpx')
+     for nx in range(1,hist.GetNbinsX()+1):
+            tmp = hist.ProjectionY('tmp',nx,nx)
+            X   = xproj.GetBinCenter(nx)
+            dt = tmp.GetMean()
+            g.SetPoint(nx-1,X,dt)
+     g.SetLineColor(ROOT.kBlue)
+     g.SetLineWidth(2)
+     g.Draw('same')
+     rc = g.Fit('pol1','S','',-50.,-10.)
+     result = rc.Get()
+     m = 1./result.Parameter(1)
+     b = -result.Parameter(0) * m
+     txt = 'dt X relation: X = #frac{dt}{%5.2F} +%5.2F '%(1./m,b)
+     latex.DrawLatexNDC(0.2,0.8,txt)
+  h['TDS'].Print('dTvsXDS'+'-run'+str(options.runNumber)+'.png')
 
 def timing(Nev = -1):
+ binning = {1:50,2:50,3:5}
  for s in systemAndPlanes:
     for l in range(systemAndPlanes[s]):
-       ut.bookHist(h,'timeDiffsL_'+str(s*10+l),' deviation from mean'+str(s*10+l)+'; [ns]',100,-50.,50.)
-       ut.bookHist(h,'timeDiffsR_'+str(s*10+l),' deviation from mean'+str(s*10+l)+'; [ns]',100,-50.,50.)
-       ut.bookHist(h,'timeDiffsLR_'+str(s*10+l),' mean left - mean right'+str(s*10+l)+'; [ns]',100,-50.,50.)
+       ut.bookHist(h,'timeDiffsL_'+str(s*10+l),' deviation from mean'+str(s*10+l)+'; [ns]',100,-binning[s],binning[s])
+       ut.bookHist(h,'timeDiffsR_'+str(s*10+l),' deviation from mean'+str(s*10+l)+'; [ns]',100,-binning[s],binning[s])
+       ut.bookHist(h,'timeDiffsLR_'+str(s*10+l),' mean left - mean right'+str(s*10+l)+'; [ns]',100,-binning[s],binning[s])
 
  N=-1
  if Nev < 0 : Nev = eventTree.GetEntries()
