@@ -405,6 +405,7 @@ def USEfficiency(Nev=-1):
 #   look at delta time vs track X
                   dt = deltaTime(aHit)
                   h['dtLRvsX_US'+str(s*10+plane)].Fill(xEx,dt)
+    theTrack.Delete()
 
 latex = ROOT.TLatex()
 def analyze_USefficiency():
@@ -485,6 +486,11 @@ def timing(Nev = -1):
         s = detID//10000
         l  = (detID%10000)//1000  # plane number
         bar = (detID%1000)
+        if s>2: 
+               l=2*l
+               if bar>59:
+                    bar=bar-60
+                    l+=1
         nSides  = aHit.GetnSides()
         nSiPMs = aHit.GetnSiPMs()
 
