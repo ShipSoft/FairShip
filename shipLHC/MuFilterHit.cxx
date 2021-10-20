@@ -139,6 +139,30 @@ std::map<Int_t,Float_t> MuFilterHit::GetAllTimes(Bool_t mask)
           return allTimes;
 }
 
+// -----   Public method Get time difference mean Left - mean Right   -----------------
+Float_t MuFilterHit::GetDeltaT(Bool_t mask)
+{
+          Float_t mean[] = {0,0}; 
+          Int_t count[] = {0,0}; 
+          Float_t dT = -999.;
+          for (unsigned int s=0; s<nSides; ++s){
+              for (unsigned int j=0; j<nSiPMs; ++j){
+               unsigned int channel = j+s*nSiPMs;
+               if (signals[channel]> 0){
+                 if (!fMasked[channel] || !mask){
+                    mean[s] += times[channel];
+                    count[s] += 1;
+                    }
+                }
+              }
+          }
+          if (count[0]>0 && count[1]>0) {
+                dT = mean[0]/count[0] - mean[1]/count[1];
+          }
+          return dT;
+}
+
+
 // -----   Public method Print   -------------------------------------------
 void MuFilterHit::Print() const
 {

@@ -317,31 +317,11 @@ def DS_track():
     theTrack = trackTask.fitTrack(hitlist)
     return theTrack
 
-def deltaTime(aHit):
-        allChannels = aHit.GetAllTimes(False)  # masking not yet correctly done in the raw conversion
-        meanL, meanR = 0,0
-        nL,nR = 0,0
-        for c in allChannels:
-              if  aHit.GetnSiPMs() > c[0]:  # left side
-                  nL+=1
-                  meanL+=c[1]
-              else:  # right side
-                  nR+=1
-                  meanR+=c[1]
-        if nL >0 and nR>0:
-                meanL = meanL/nL * 1E9/freq
-                meanR = meanR/nR  * 1E9/freq
-                dt = meanL-meanR
-        else: 
-               dt = -999.
-        return dt
-
 def USEfficiency(Nev=-1):
  name = {1:'Veto',2:'US',3:'DS'}
  for s in systemAndPlanes:
     for l in range(systemAndPlanes[s]):
-        if s==3: ut.bookHist(h,'dtLRvsX_'+name[s]+str(s*10+l),'dt vs x track '+str(s*10+l)+";X [cm]; dt [ns]",80,-70.,10.,100,-1.,1.)
-        else:      ut.bookHist(h,'dtLRvsX_'+name[s]+str(s*10+l),'dt vs x track '+str(s*10+l)+";X [cm]; dt [ns]",80,-70.,10.,100,-10.,10.)
+        ut.bookHist(h,'dtLRvsX_'+name[s]+str(s*10+l),'dt vs x track '+str(s*10+l)+";X [cm]; dt [ns]",80,-70.,10.,100,-10.,10.)
     if s!=2 : continue
     for l in range(systemAndPlanes[s]):
         ut.bookHist(h,'resY_'+name[s]+str(s*10+l),'residual Y '+str(s*10+l),100,-20.,20.)
@@ -411,8 +391,8 @@ def USEfficiency(Nev=-1):
                       if smallSiPMchannel(x.first): rc = h['signalS_US'+str(s*10+plane)+'_'+str(bar)].Fill(x.second)
                       else:                                    rc = h['signalL_US'+str(s*10+plane)+'_'+str(bar)].Fill(x.second)
 #   look at delta time vs track X
-                  dt = deltaTime(aHit)
-                  h['dtLRvsX_US'+str(s*10+plane)].Fill(xEx,dt)
+                  dt = aHit.GetDeltaT(False)
+                  h['dtLRvsX_US'+str(s*10+plane)].Fill(xEx,dt*1E9/freq)
 # check DS
     s = 3
     for plane in range(4):
@@ -424,8 +404,8 @@ def USEfficiency(Nev=-1):
               if not aHit.GetnSides()==2: continue
               detID = aHit.GetDetectorID()
               MuFilter.GetPosition(detID,A,B)
-              dt = deltaTime(aHit)
-              h['dtLRvsX_DS'+str(s*10+plane)].Fill(xEx,dt)
+              dt = aHit.GetDeltaT(False)
+              h['dtLRvsX_DS'+str(s*10+plane)].Fill(xEx,dt*1E9/freq)
 
     theTrack.Delete()
 

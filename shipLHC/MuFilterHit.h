@@ -28,7 +28,7 @@ class MuFilterHit : public SndlhcHit
     Float_t GetEnergy();
     std::map<Int_t,Float_t> GetAllSignals(Bool_t mask=kTRUE);
     std::map<Int_t,Float_t> GetAllTimes(Bool_t mask=kTRUE);
-
+    Float_t  GetDeltaT(Bool_t mask=kTRUE);
     void setInvalid() {flag = false;}
     bool isValid() const {return flag;}
     bool isMasked(Int_t i) const {return fMasked[i];}
