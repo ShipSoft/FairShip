@@ -21,8 +21,8 @@ MuFilterHit::MuFilterHit(Int_t detID)
  flag = true;
  for (Int_t i=0;i<16;i++){fMasked[i]=kFALSE;}
 }
-MuFilterHit::MuFilterHit(Int_t detID,Int_t nSiPMs,Int_t nSides)
-  : SndlhcHit(detID,nSiPMs,nSides)
+MuFilterHit::MuFilterHit(Int_t detID,Int_t nP,Int_t nS)
+  : SndlhcHit(detID,nP,nS)
 {
  flag = true;
  for (Int_t i=0;i<16;i++){fMasked[i]=kFALSE;}
@@ -103,6 +103,40 @@ bool MuFilterHit::isVertical(){
 bool MuFilterHit::isShort(Int_t i){
   if (shortSiPM.find(i+1) != shortSiPM.end()) {return kTRUE;}
   else{return kFALSE;}
+}
+
+// -----   Public method Get List of signals   -------------------------------------------
+std::map<Int_t,Float_t> MuFilterHit::GetAllSignals(Bool_t mask)
+{
+          std::map<Int_t,Float_t> allSignals;
+          for (unsigned int s=0; s<nSides; ++s){
+              for (unsigned int j=0; j<nSiPMs; ++j){
+               unsigned int channel = j+s*nSiPMs;
+               if (signals[channel]> 0){
+                 if (!fMasked[channel] || !mask){
+                    allSignals[channel] = signals[channel];
+                    }
+                }
+              }
+          }
+          return allSignals;
+}
+
+// -----   Public method Get List of time measurements   -------------------------------------------
+std::map<Int_t,Float_t> MuFilterHit::GetAllTimes(Bool_t mask)
+{
+          std::map<Int_t,Float_t> allTimes;
+          for (unsigned int s=0; s<nSides; ++s){
+              for (unsigned int j=0; j<nSiPMs; ++j){
+               unsigned int channel = j+s*nSiPMs;
+               if (signals[channel]> 0){
+                 if (!fMasked[channel] || !mask){
+                    allTimes[channel] = times[channel];
+                    }
+                }
+              }
+          }
+          return allTimes;
 }
 
 // -----   Public method Print   -------------------------------------------

@@ -5,6 +5,7 @@
 #include "MuFilterPoint.h"
 #include "TObject.h"
 #include "TVector3.h"
+#include <map>
 
 class MuFilterHit : public SndlhcHit
 {
@@ -14,7 +15,7 @@ class MuFilterHit : public SndlhcHit
     MuFilterHit();
     MuFilterHit(Int_t detID);
     /** Constructor with detector id, number of SiPMs per side, number of sides **/
-    MuFilterHit(Int_t detID,Int_t nSiPMs,Int_t nSides);
+    MuFilterHit(Int_t detID,Int_t nP,Int_t nS);
 
     // Constructor from MuFilterPoint
     MuFilterHit(Int_t detID,std::vector<MuFilterPoint*>);
@@ -25,6 +26,8 @@ class MuFilterHit : public SndlhcHit
     /** Output to screen **/
     void Print() const;
     Float_t GetEnergy();
+    std::map<Int_t,Float_t> GetAllSignals(Bool_t mask=kTRUE);
+    std::map<Int_t,Float_t> GetAllTimes(Bool_t mask=kTRUE);
 
     void setInvalid() {flag = false;}
     bool isValid() const {return flag;}

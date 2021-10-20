@@ -316,6 +316,21 @@ def DS_track():
     theTrack = trackTask.fitTrack(hitlist)
     return theTrack
 
+def deltaTime(aHit):
+        allChannels = aHit.GetAllTimes(False)  # masking not yet correctly done in the raw conversion
+        meanL, meanR = 0,0
+        nL,nR = 0,0
+        for c in allChannels:
+              if  aHit.GetnSiPMs() > c[0]:  # left side
+                  nL+=1
+                  meanL+=c[1]
+              else:  # right side
+                  nR+=1
+                  meanR+=c[1]
+        if nL >1:        meanL = meanL/nL * 1E9/freq
+        if nR >1:        meanR = meanR/nR  * 1E9/freq
+        return meanL-meanR
+
 def USEfficiency(Nev=-1):
  name = {1:'Veto',2:'US',3:'DS'}
  for s in systemAndPlanes:
@@ -326,6 +341,7 @@ def USEfficiency(Nev=-1):
         ut.bookHist(h,'resY_'+name[s]+'R'+str(s*10+l),'residual Y '+str(s*10+l),100,-20.,20.)
         ut.bookHist(h,'resY_'+name[s]+'S'+str(s*10+l),'residual Y '+str(s*10+l),100,-20.,20.)
         ut.bookHist(h,'track_'+name[s]+str(s*10+l),'track x/y '+str(s*10+l),80,-70.,10.,80,0.,80.)
+        ut.bookHist(h,'dtLRvsX_'+name[s]+str(s*10+l),'dt vs x track '+str(s*10+l)+";X [cm]; dt [ns]",80,-70.,10.,100,-10.,10.)
         for bar in range(10):
             ut.bookHist(h,'nSiPMs_'+name[s]+str(s*10+l)+'_'+str(bar),'#sipms',16,-0.5,15.5)
             ut.bookHist(h,'signalS_'+name[s]+str(s*10+l)+'_'+str(bar),'signal',100,0.,200.)
@@ -353,7 +369,7 @@ def USEfficiency(Nev=-1):
     for plane in range(5):
          z = zPos[s*10+plane]
          lam = (z-pos.z())/mom.z()
-         x,y = pos.x()+lam*mom.x(),pos.y()+lam*mom.y()
+         xEx,yEx = pos.x()+lam*mom.x(),pos.y()+lam*mom.y()
          # tag with station close by
          if plane ==0: tag = 1
          else: tag = plane -1
@@ -361,15 +377,15 @@ def USEfficiency(Nev=-1):
          for aHit in dsHits[s*10+tag]:
               detID = aHit.GetDetectorID()
               MuFilter.GetPosition(detID,A,B)
-              dy = (A[1]+B[1])/2. - y
+              dy = (A[1]+B[1])/2. - yEx
               if abs(dy)<5: tagged = True
          if not tagged: continue
-         rc = h['track_US'+str(s*10+plane)].Fill(x,y)
+         rc = h['track_US'+str(s*10+plane)].Fill(xEx,yEx)
          for aHit in dsHits[s*10+plane]:
               detID = aHit.GetDetectorID()
               bar = detID%1000
               MuFilter.GetPosition(detID,A,B)
-              dy = (A[1]+B[1])/2. - y
+              dy = (A[1]+B[1])/2. - yEx
               rc = h['resY_US'+str(s*10+plane)].Fill(dy)
               S = aHit.GetAllSignals()
               # check for signal in left / right or small sipm
@@ -386,10 +402,14 @@ def USEfficiency(Nev=-1):
                   for x in S:
                       if smallSiPMchannel(x.first): rc = h['signalS_US'+str(s*10+plane)+'_'+str(bar)].Fill(x.second)
                       else:                                    rc = h['signalL_US'+str(s*10+plane)+'_'+str(bar)].Fill(x.second)
+#   look at delta time vs track X
+                  dt = deltaTime(aHit)
+                  h['dtLRvsX_US'+str(s*10+plane)].Fill(xEx,dt)
 
 latex = ROOT.TLatex()
 def analyze_USefficiency():
   ut.bookCanvas(h,'E','',1200,2000,4,5)
+  ut.bookCanvas(h,'T','',800,1600,1,5)
   s=2
   for plane in range(5):
      tc = h['E'].cd(4*plane+1)
@@ -419,5 +439,100 @@ def analyze_USefficiency():
       effErr = fitResult.ParError(0)/tracks
       latex.DrawLatexNDC(0.2,0.8,'eff=%5.2F+/-%5.2F%%'%(eff,effErr))
   h['E'].Print('Eff'+'-run'+str(options.runNumber)+'.png')
+
+  latex.SetTextColor(ROOT.kRed)
+  for plane in range(5):
+     tc = h['T'].cd(plane+1)
+     hist = h['dtLRvsX_US'+str(s*10+plane)]
+     hist.SetStats(0)
+     hist.Draw('colz')
+# get time x correlation, X = m*dt + b
+     h['gdtLRvsX_US'+str(s*10+plane)] = ROOT.TGraph()
+     g = h['gdtLRvsX_US'+str(s*10+plane)]
+     xproj = hist.ProjectionX('tmpx')
+     for nx in range(1,hist.GetNbinsX()+1):
+            tmp = hist.ProjectionY('tmp',nx,nx)
+            X   = xproj.GetBinCenter(nx)
+            dt = tmp.GetMean()
+            g.SetPoint(nx-1,X,dt)
+     g.SetLineColor(ROOT.kBlue)
+     g.SetLineWidth(2)
+     g.Draw('same')
+     rc = g.Fit('pol1','S','',-50.,-10.)
+     result = rc.Get()
+     m = 1./result.Parameter(1)
+     b = -result.Parameter(0) * m
+     txt = 'dt X relation: X = #frac{dt}{%5.2F} +%5.2F '%(1./m,b)
+     latex.DrawLatexNDC(0.2,0.8,txt)
+  h['T'].Print('dTvsX'+'-run'+str(options.runNumber)+'.png')
+
+
+def timing(Nev = -1):
+ for s in systemAndPlanes:
+    for l in range(systemAndPlanes[s]):
+       ut.bookHist(h,'timeDiffsL_'+str(s*10+l),' deviation from mean'+str(s*10+l)+'; [ns]',100,-50.,50.)
+       ut.bookHist(h,'timeDiffsR_'+str(s*10+l),' deviation from mean'+str(s*10+l)+'; [ns]',100,-50.,50.)
+       ut.bookHist(h,'timeDiffsLR_'+str(s*10+l),' mean left - mean right'+str(s*10+l)+'; [ns]',100,-50.,50.)
+
+ N=-1
+ if Nev < 0 : Nev = eventTree.GetEntries()
+ for event in eventTree:
+    N+=1
+    if N>Nev: break
+    for aHit in event.Digi_MuFilterHit:
+        if not aHit.isValid(): continue
+        detID = aHit.GetDetectorID()
+        s = detID//10000
+        l  = (detID%10000)//1000  # plane number
+        bar = (detID%1000)
+        nSides  = aHit.GetnSides()
+        nSiPMs = aHit.GetnSiPMs()
+
+        allChannels = aHit.GetAllTimes(False)  # masking not yet correctly done in the raw conversion
+        meanL, meanR = 0,0
+        nL,nR = 0,0
+        for c in allChannels:
+              if  nSiPMs > c[0]:  # left side
+                  nL+=1
+                  meanL+=c[1]
+              else:  # right side
+                  nR+=1
+                  meanR+=c[1]
+        if nL >1:        meanL = meanL/nL * 1E9/freq
+        if nR >1:        meanR = meanR/nR  * 1E9/freq
+        if nL>0 and nR>0:  rc = h['timeDiffsLR_'+str(s*10+l)].Fill(meanL-meanR)
+        for c in allChannels:
+              if  nSiPMs > c[0]:  # left side
+                  dt = c[1]* 1E9/freq - meanL
+                  rc = h['timeDiffsL_'+str(s*10+l)].Fill(dt)
+              else:
+                  dt = c[1]* 1E9/freq - meanR
+                  rc = h['timeDiffsR_'+str(s*10+l)].Fill(dt)
+
+ installed_stations = {0:0,1:5,2:4}
+ x = 0
+ y = 0
+ for s in installed_stations: 
+    if installed_stations[s]>0: x+=1
+    if installed_stations[s]>y: y = installed_stations[s]
+ ut.bookCanvas(h,'dt',' ',800,1600,1,5)
+ ut.bookCanvas(h,'dtLR',' ',1200,1600,x,y)
+
+ for S in installed_stations:
+   for l in range(installed_stations[S]):
+     if S==1:
+         n = 1+ l
+         tc = h['dt'].cd(n)
+         tc.SetLogy(1)
+         h['timeDiffsL_'+str(S+1)+str(l)].SetLineColor(ROOT.kRed)
+         h['timeDiffsL_'+str(S+1)+str(l)].Draw()
+         h['timeDiffsR_'+str(S+1)+str(l)].SetLineColor(ROOT.kGreen)
+         h['timeDiffsR_'+str(S+1)+str(l)].Draw('same')
+     n = S + l*x
+     tc = h['dtLR'].cd(n)
+     h['timeDiffsLR_'+str(S+1)+str(l)].Draw()
+ h['dt'].Print('dt'+'-run'+str(options.runNumber)+'.png')
+ h['dtLR'].Print('dtLR'+'-run'+str(options.runNumber)+'.png')
+
 
 
