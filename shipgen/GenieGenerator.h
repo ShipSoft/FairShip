@@ -56,26 +56,27 @@ class GenieGenerator : public FairGenerator
   Double_t fDeltaE_GenieFLUKA_nu;
   Double_t Yvessel,Xvessel,Lvessel,ztarget,startZ,endZ;
   Double_t Ev,pxv,pyv,pzv, El,pxl, pyl, pzl,vtxx,vtxy,vtxz,vtxt;
-  Double_t Ef[500], pxf[500], pyf[500], pzf[500];
-  Int_t pdgf[500];
-  std::vector<TVector3> dVecs;
-  std::vector<TVector3> boxs;
+  Double_t fcrossingangle; //crossing angle of the beam protons in LHC
   Bool_t cc, nuel;
   Int_t nf,neu;
   Int_t fGenOption;
-  FairLogger*  fLogger; //!   don't make it persistent, magic ROOT command
-  TFile* fInputFile;
-  TTree* fTree;
-  TTree* fFLUKANuTree;
   int fNevents;
   int fn;
   bool fFirst,fNuOnly;
   Double_t fznu0,fznu11,fXnu11,fYnu11;
   Double_t fEntrDz_inner,fEntrDz_outer,fEntrZ_inner,fEntrZ_outer,fEntrA,fEntrB,fL1z,fScintDz;
+
+  FairLogger*  fLogger; //!   don't make it persistent, magic ROOT command
+  Double_t Ef[500], pxf[500], pyf[500], pzf[500]; //!
+  Int_t pdgf[500]; //!
+  TFile* fInputFile;//!
+  TTree* fTree;//!
+  TTree* fFLUKANuTree;//!
+  std::vector<TVector3> dVecs;//!
+  std::vector<TVector3> boxs;//!
   TH1D* pxhist[3000];//!
   TH1D* pyslice[3000][500];//!
-  Double_t fcrossingangle; //crossing angle of the beam protons in LHC
-  TClonesArray *ancstr;
+  TClonesArray *ancstr;//!
 
   ClassDef(GenieGenerator,2);
 };
