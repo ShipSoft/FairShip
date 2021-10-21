@@ -294,8 +294,8 @@ void EmulsionDet::ConstructGeometry()
 
 	for(int l = 0; l < fNWall; l++)
 	  {
-		volTarget->AddNode(volWallborder,l,new TGeoTranslation(dx_survey[l]-XDimension/2., dz_survey[l]+YDimension/2., dy_survey[l]+BrickZ/2.)); //the survey points refer to the down-left corner
-		volTarget->AddNode(volWall,l,new TGeoTranslation(dx_survey[l]-XDimension/2., dz_survey[l]+YDimension/2., dy_survey[l]+BrickZ/2.)); //the survey points refer to the down-left corner
+		volTarget->AddNode(volWallborder,l,new TGeoTranslation(-dx_survey[l]-XDimension/2., dz_survey[l]+YDimension/2., dy_survey[l]+BrickZ/2.)); //the survey points refer to the down-left corner
+		volTarget->AddNode(volWall,l,new TGeoTranslation(-dx_survey[l]-XDimension/2., dz_survey[l]+YDimension/2., dy_survey[l]+BrickZ/2.)); //the survey points refer to the down-left corner
 		d_cl_z += BrickZ + TTrackerZ;
 	  }
 

@@ -46,8 +46,8 @@ with ConfigRegistry.register_config("basic") as c:
         c.EmulsionDet.zC = c.EmulsionDet.startpos + c.EmulsionDet.zdim/2.
 
         c.Scifi = AttrDict(z=0*u.cm)
-        c.Scifi.xdim = c.EmulsionDet.xdim
-        c.Scifi.ydim = c.EmulsionDet.ydim
+        c.Scifi.xdim = 39.0 * u.cm #sensitive only
+        c.Scifi.ydim = 39.0 * u.cm 
         c.Scifi.zdim = c.EmulsionDet.TTz
         c.Scifi.DZ = c.EmulsionDet.BrZ
         c.Scifi.nplanes = c.EmulsionDet.wall
