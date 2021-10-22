@@ -17,7 +17,9 @@ class Tracking(ROOT.FairTask):
 
    self.fitter = ROOT.genfit.KalmanFitter()
    self.fitter.setMaxIterations(50)
-   self.sigma_spatial = 100.*u.um
+   self.sigmaScifi_spatial = 100.*u.um
+   self.sigmaMufiUS_spatial = 2.*u.cm
+   self.sigmaMufiDS_spatial = 0.3*u.cm
    self.Debug = False
    self.event = event
 
@@ -72,11 +74,29 @@ class Tracking(ROOT.FairTask):
 # very simple for the moment, take all scifi clusters
     trackCandidates = []
     hitlist = {}
-    stations = {}
+    ScifiStations = {}
     for k in range(len(self.clusters)):
            hitlist[k] = self.clusters[k]
-           stations[hitlist[k].GetFirst()//1000000] = 1
-    if len(stations) == 5:
+           ScifiStations[hitlist[k].GetFirst()//1000000] = 1
+# take fired muonFilter bars if more than 2 SiPMs have fired
+    nMin = 1
+    MuFiPlanes = {}
+    for k in range(self.event.Digi_MuFilterHit.GetEntries()):
+         aHit = self.event.Digi_MuFilterHit[k]
+         if not aHit.isValid(): continue
+         detID = aHit.GetDetectorID()
+         sy    = detID//10000
+         l       = (detID%10000)//1000  # plane number
+         bar = (detID%1000)
+         nSiPMs = aHit.GetnSiPMs()
+         nSides  = aHit.GetnSides()
+         nFired = 0
+         for i in range(nSides*nSiPMs):
+              if aHit.GetSignal(i) > 0: nFired+=1
+         if nMin > nFired: continue
+         hitlist[k*1000] = self.event.Digi_MuFilterHit[k]
+         MuFiPlanes[sy*100+l] = 1
+    if (len(ScifiStations) == 5 or len(MuFiPlanes)>4) and len(hitlist)<20:
            trackCandidates.append(hitlist)
     return trackCandidates
 
@@ -90,7 +110,7 @@ class Tracking(ROOT.FairTask):
 
 # approximate covariance
     covM = ROOT.TMatrixDSym(6)
-    res = self.sigma_spatial
+    res = self.sigmaScifi_spatial
     for  i in range(3):   covM[i][i] = res*res
     for  i in range(3,6): covM[i][i] = ROOT.TMath.Power(res / (4.*2.) / ROOT.TMath.Sqrt(3), 2)
     rep = ROOT.genfit.RKTrackRep(13)
@@ -110,9 +130,19 @@ class Tracking(ROOT.FairTask):
     tmpList = {}
     A,B = ROOT.TVector3(),ROOT.TVector3()
     for k in hitlist:
+        isSifi = False
+        isUS  =False
+        isDS  =False
         aCl = hitlist[k]
-        detID = aCl.GetFirst()
-        aCl.GetPosition(A,B)
+        if hasattr(aCl,"GetFirst"):
+            isSifi = True
+            detID = aCl.GetFirst()
+            aCl.GetPosition(A,B)
+        else:
+            detID = aCl.GetDetectorID()
+            if detID//10000 < 2: isUS  = True
+            else: isDS  = True
+            self.mufiDet.GetPosition(detID,A,B)
         distance = 0
         tmp = array('d',[A[0],A[1],A[2],B[0],B[1],B[2],distance])
         unSortedList[A[2]] = [ROOT.TVectorD(7,tmp),detID,k]
@@ -121,9 +151,18 @@ class Tracking(ROOT.FairTask):
     for z in sorted_z:
         tp = ROOT.genfit.TrackPoint() # note how the point is told which track it belongs to
         hitCov = ROOT.TMatrixDSym(7)
+        if isDS:      
+              res = self.sigmaMufiDS_spatial
+              maxDis = 1.0
+        elif isUS:  
+              res = self.sigmaMufiUS_spatial
+              maxDis = 5.0
+        else:         
+              res = self.sigmaScifi_spatial
+              maxDis = 0.1
         hitCov[6][6] = res*res
         measurement = ROOT.genfit.WireMeasurement(unSortedList[z][0],hitCov,1,6,tp) # the measurement is told which trackpoint it belongs to
-        measurement.setMaxDistance(0.1)
+        measurement.setMaxDistance(maxDis)
         measurement.setDetId(unSortedList[z][1])
         measurement.setHitId(unSortedList[z][2])
         tp.addRawMeasurement(measurement) # package measurement in the TrackPoint                                          
