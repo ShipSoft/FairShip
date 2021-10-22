@@ -16,6 +16,8 @@ class GeoInterface():
    self.modules = sndDet_conf.configure(run,snd_geo)
    self.sGeo = self.fgeo.FAIRGeom
    self.modules['Scifi'].SiPMmapping()
+   lsOfGlobals = ROOT.gROOT.GetListOfGlobals()
+   for m in self.modules: lsOfGlobals.Add(self.modules[m])
 
  def FinishEvent(self):
   pass
