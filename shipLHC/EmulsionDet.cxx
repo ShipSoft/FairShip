@@ -198,14 +198,8 @@ void EmulsionDet::ConstructGeometry()
 	InitMedium("air");
 	TGeoMedium *air =gGeoManager->GetMedium("air");
 
-	InitMedium("iron");
-	TGeoMedium *Fe =gGeoManager->GetMedium("iron");
-
-	InitMedium("CoilAluminium");
-	TGeoMedium *Al  = gGeoManager->GetMedium("CoilAluminium");
-
-	InitMedium("CoilCopper");
-	TGeoMedium *Cu  = gGeoManager->GetMedium("CoilCopper");
+	InitMedium("Aluminum");
+	TGeoMedium *Al  = gGeoManager->GetMedium("Aluminum");
 
 	InitMedium("PlasticBase");
 	TGeoMedium *PBase =gGeoManager->GetMedium("PlasticBase");
@@ -246,7 +240,7 @@ void EmulsionDet::ConstructGeometry()
         TGeoBBox *Wallint = new TGeoBBox("wallint",WallXDim/2, WallYDim/2, WallZDim/2);
 
         TGeoCompositeShape *Wallborder = new TGeoCompositeShape("wallborder","walltot - wallint");
-        TGeoVolume *volWallborder = new TGeoVolume("volWallborder", Wallborder, Fe);
+        TGeoVolume *volWallborder = new TGeoVolume("volWallborder", Wallborder, Al);
         volWallborder->SetLineColor(kGray);
 
         TGeoVolume *volWall = new TGeoVolume("Wall",Wallint,air);
