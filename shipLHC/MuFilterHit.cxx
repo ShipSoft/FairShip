@@ -171,18 +171,18 @@ Float_t MuFilterHit::SumOfSignals(char* opt,Bool_t mask)
         sum of signals right small SiPM: RS
 */
           Float_t theSum = 0;
-          if (strcmp(opt,"LL")){}
+/* work in progress          if (strcmp(opt,"LL")){}
           for (unsigned int s=0; s<nSides; ++s){
               for (unsigned int j=0; j<nSiPMs; ++j){
                unsigned int channel = j+s*nSiPMs;
                if (signals[channel]> 0){
                  if (!fMasked[channel] || !mask){
-                    allSignals[channel] = signals[channel];
+                    theSum+= signals[channel];
                     }
                 }
               }
           }
-
+*/
 
 }
 
