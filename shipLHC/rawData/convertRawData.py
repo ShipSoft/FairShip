@@ -2,17 +2,27 @@
 import ROOT,os,sys,getopt
 import global_variables
 import shipRoot_conf
+import rootUtils as ut
+h={}
 
 # raw data from Ettore: https://cernbox.cern.ch/index.php/s/Ten7ilKuD3qdnM2 
 shipRoot_conf.configure()
+
+chi2Max = 2000.
+saturationLimit     = 0.95
 
 from argparse import ArgumentParser
 parser = ArgumentParser()
 parser.add_argument("-r", "--runNumber", dest="runNumber", help="run number", type=int,required=True)
 parser.add_argument("-p", "--path", dest="path", help="path to raw data", default='/mnt/hgfs/VMgate/')
 parser.add_argument("-n", "--nEvents", dest="nEvents", help="number of events to process", type=int,default=-1)
+parser.add_argument("-t", "--nStart", dest="nStart", help="first event to process", type=int,default=-1)
 parser.add_argument("-d", "--Debug", dest="debug", help="debug", default=False)
 parser.add_argument("-s",dest="stop", help="do not start running", default=False)
+parser.add_argument("-zM",dest="minMuHits", help="noise suppresion min MuFi hits", default=-1, type=int)
+parser.add_argument("-zS",dest="minScifiHits", help="noise suppresion min ScifFi hits", default=-1, type=int)
+parser.add_argument("-b", "--heartBeat", dest="heartBeat", help="heart beat", type=int,default=10000)
+
 withGeoFile = False
 
 options = parser.parse_args()
@@ -89,6 +99,9 @@ for l in range(1,len(L)):
     X['c']=float(tmp[6])
     X['d']=float(tmp[8])
     X['e']=float(tmp[10])
+    if float(tmp[9]) < 2: X['chi2Ndof'] = 999999.
+    else:                  X['chi2Ndof']=float(tmp[7])/float(tmp[9])
+
 L=Ltdc
 for l in range(1,len(L)):
     tmp = L[l].replace('\n','').split(',')
@@ -108,6 +121,8 @@ for l in range(1,len(L)):
     X['b']=float(tmp[6])
     X['c']=float(tmp[7])
     X['d']=float(tmp[9])
+    if float(tmp[10]) < 2: X['chi2Ndof'] = 999999.
+    else:                  X['chi2Ndof']=float(tmp[8])/float(tmp[10])
 
 # following procedure in https://gitlab.cern.ch/scifi-telescope/scifi-rec/-/blob/ettore-tofpet/lib/processors/applycalibration.cpp
 def qdc_calibration(board_id,tofpet_id,channel,tac,v_coarse,v_fine,tf):
@@ -118,12 +133,43 @@ def qdc_calibration(board_id,tofpet_id,channel,tac,v_coarse,v_fine,tf):
     value = (v_fine-fqdc)/GQDC
     return value
 
+def qdc_chi2(board_id,tofpet_id,channel,tac,TDC=0):
+    par    = qdc_cal[board_id][tofpet_id][channel][tac]
+    parT = qdc_cal[board_id][tofpet_id][channel][tac][TDC]
+    return max(par['chi2Ndof'],parT['chi2Ndof'])
+
+def qdc_sat(board_id,tofpet_id,channel,tac,v_fine):
+    par = qdc_cal[board_id][tofpet_id][channel][tac]
+    return v_fine/par['d']
+
 def time_calibration(board_id,tofpet_id,channel,tac,t_coarse,t_fine,TDC=0):  #??
     par = qdc_cal[board_id][tofpet_id][channel][tac][TDC]
     x = t_fine
     ftdc = (-par['b']-ROOT.TMath.Sqrt(par['b']**2-4*par['a']*(par['c']-x)))/(2*par['a'])+par['d']
     timestamp = t_coarse+ftdc
     return timestamp
+
+def calibrationReport():
+    ut.bookHist(h,'chi2','chi2',1000,0.,10000)
+    report = {}
+    TDC = 0
+    for b in qdc_cal:
+         for t in  qdc_cal[b]:
+              for c in qdc_cal[b][t]:
+                   for tac in qdc_cal[b][t][c]:
+                             par    = qdc_cal[b][t][c][tac]
+                             if 'chi2Ndof' in par:                             chi2 = par['chi2Ndof']
+                             else: chi2=-1
+                             parT = qdc_cal[b][t][c][tac][TDC]
+                             if 'chi2Ndof' in parT:   chi2T = parT['chi2Ndof']
+                             else: chi2T=-1
+                             key = tac +10*c + t*10*100 + b*10*100*100
+                             if not key in report: report[key]=[chi2,chi2T]
+    for key in report:
+         rc=h['chi2'].Fill(report[key][0])
+         rc=h['chi2'].Fill(report[key][1])
+    h['chi2'].Draw()
+    return report
 
 # station mapping for SciFi
 stations = {}
@@ -182,6 +228,7 @@ if not local: X = server
 f0=ROOT.TFile.Open(X+path+'data.root')
 if options.nEvents<0:  nEvent = f0.event.GetEntries()
 else: nEvent = options.nEvents
+print('converting ',nEvent,' events ',' of run',options.runNumber)
 
 boards = {}
 for b in f0.GetListOfKeys():
@@ -211,11 +258,15 @@ B.Add(ROOT.TObjString('MuFilterHit'))
 B.Add(ROOT.TObjString('FairEventHeader'))
 fSink.WriteObject(B,"BranchList", ROOT.TObject.kSingleKey)
 
+import time
 def run(nEvent):
  event = f0.event
- for eventNumber in range(nEvent):
-   event.GetEvent(eventNumber)
-   if eventNumber%1000==0: print('now at event',eventNumber)
+ for eventNumber in range(options.nStart,nEvent):
+   rc = event.GetEvent(eventNumber)
+   if eventNumber%options.heartBeat==0:
+      tt = time.ctime()
+      print('run ',options.runNumber, ' event',eventNumber," ",tt)
+
    header.SetEventTime(event.timestamp)
    header.SetRunId(options.runNumber)
    if options.debug: print('event:',eventNumber,event.timestamp)
@@ -238,22 +289,38 @@ def run(nEvent):
       bt = boards[board]
       rc  = bt.GetEvent(eventNumber)
       for n in range(bt.n_hits):
+             mask = False
              if options.debug:
                   print(scifi,board_id,bt.tofpet_id[n],bt.tofpet_channel[n],bt.tac[n],bt.t_coarse[n],bt.t_fine[n],bt.v_coarse[n],bt.v_fine[n])
              TDC = time_calibration(board_id,bt.tofpet_id[n],bt.tofpet_channel[n],bt.tac[n],bt.t_coarse[n],bt.t_fine[n])
              QDC = qdc_calibration(board_id,bt.tofpet_id[n],bt.tofpet_channel[n],bt.tac[n],bt.v_coarse[n],bt.v_fine[n],TDC-bt.t_coarse[n])
+             Chi2ndof = qdc_chi2(    board_id,bt.tofpet_id[n],bt.tofpet_channel[n],bt.tac[n])
+             satur = qdc_sat(board_id,bt.tofpet_id[n],bt.tofpet_channel[n],bt.tac[n],bt.v_fine[n])
+             if Chi2ndof > chi2Max:
+                       if QDC>1E20:    QDC = 997.   # checking for inf
+                       if QDC != QDC:  QDC = 998.   # checking for nan
+                       if QDC>0: QDC = -QDC
+                       mask = True
+             elif satur  > saturationLimit or QDC>1E20 or QDC != QDC:
+                       if QDC>1E20:    QDC = 987.   # checking for inf
+                       if options.debug: 
+                              print('inf',board_id,bt.tofpet_id[n],bt.tofpet_channel[n],bt.tac[n],bt.v_coarse[n],bt.v_fine[n],TDC-bt.t_coarse[n],eventNumber,Chi2ndof)
+                       if QDC != QDC:  QDC = 988.   # checking for nan
+                       if options.debug: 
+                               print('nan',board_id,bt.tofpet_id[n],bt.tofpet_channel[n],bt.tac[n],bt.v_coarse[n],bt.v_fine[n],\
+                                        TDC-bt.t_coarse[n],TDC,bt.t_coarse[n],eventNumber,Chi2ndof)
+                       A = int(min( QDC,1000))
+                       B = min(satur,999)/1000.
+                       QDC = A+B
+                       mask = True
+             elif Chi2ndof > chi2Max:
+                       if QDC>0: QDC = -QDC
+                       mask = True
              if options.debug:
                   print('calibrated: tdc = ',TDC,'  qdc = ',QDC)  # TDC clock cycle = 160 MHz or 6.25ns
 
 # in case it is ever needed to read a UChar_t format:
              # Id = int(bin(ord(board.tofpet_id))[2:],2) ch = int(bin(ord(board.tofpet_channel))[2:],2)
-
- # for creating hit objects, need to know the mapping between electronic  channel and hit channel.
-# in addition for   MuFilter Veto and Up, which SiPM channel. Problem, creating and filling unsorted. Easier for SciFi and downstream
-# first check which detector it is Veto/Up/Down -> make MuFilterHit
-#                                     tm->WriteObject(input.get());                             SciFi                       -> make ScifiHit
-#         for the moment, only have SciFi data. For MuFilterHit, need to know nSiPM per side and number of sides
-#         ROOT.SndlhcHit(detID,nSiPMs,nSides)
 
              if not scifi:
 # mufi encoding
@@ -279,13 +346,13 @@ def run(nEvent):
                         digiMuFilterStore[detID] =  ROOT.MuFilterHit(detID,nSiPMs,nSides)
                 test = digiMuFilterStore[detID].GetSignal(sipm_number)
                 digiMuFilterStore[detID].SetDigi(QDC,TDC,sipm_number)
+                if mask: digiMuFilterStore[detID].SetMasked(sipm_number)
+
                 if options.debug:
                     print('create mu hit: ',detID,tmp,system,slot,offMap[tmp],sipmChannel,nSiPMs,nSides,test,slot)
                     print('                ',detID,sipm_number,QDC,TDC)
                 if test>0 or detID%1000>200 or sipm_number>15:
                     print('what goes wrong?',detID,sipm_number,system,key,board,bt.tofpet_id[n],bt.tofpet_channel[n],test)
-                    1/0
-
              else:
 # scifi encoding
                 chan = channel(bt.tofpet_id[n],bt.tofpet_channel[n],mat)
@@ -295,6 +362,7 @@ def run(nEvent):
                 sipmID = 1000000*int(station[1]) + 100000*orientation + 10000*mat + 1000*(sipmLocal//128) + chan%128
                 if not sipmID in digiSciFiStore: digiSciFiStore[sipmID] =  ROOT.sndScifiHit(sipmID)
                 digiSciFiStore[sipmID].SetDigi(QDC,TDC)
+                if mask: digiSciFiStore[sipmID].setInvalid()
                 if options.debug:
                     print('create scifi hit: tdc = ',board,sipmID,QDC,TDC)
                     print('tofpet:', bt.tofpet_id[n],bt.tofpet_channel[n],mat,chan)

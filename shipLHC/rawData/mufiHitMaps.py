@@ -61,12 +61,12 @@ def hitMaps(Nev = -1):
        ut.bookHist(h,'hit_'+str(s*10+l),'channel map / plane '+str(s*10+l),160,-0.5,159.5)
        if s==3:  ut.bookHist(h,'bar_'+str(s*10+l),'hit map / plane '+str(s*10+l),60,-0.5,59.5)
        else:       ut.bookHist(h,'bar_'+str(s*10+l),'hit map / plane '+str(s*10+l),10,-0.5,9.5)
-       ut.bookHist(h,'sig_'+str(s*10+l),'signal / plane '+str(s*10+l),150,0.0,150.)
+       ut.bookHist(h,'sig_'+str(s*10+l),'signal / plane '+str(s*10+l),200,0.0,200.)
        if s==2: 
-               ut.bookHist(h,'sigS_'+str(s*10+l),'signal / plane '+str(s*10+l),150,0.0,150.)
-               ut.bookHist(h,'sigL_'+str(s*10+l),'signal / plane '+str(s*10+l),150,0.0,150.)
-               ut.bookHist(h,'sigR_'+str(s*10+l),'signal / plane '+str(s*10+l),150,0.0,150.)
-       ut.bookHist(h,'Tsig_'+str(s*10+l),'signal / plane '+str(s*10+l),150,0.0,150.)
+               ut.bookHist(h,'sigS_'+str(s*10+l),'signal / plane '+str(s*10+l),200,0.0,200.)
+               ut.bookHist(h,'sigL_'+str(s*10+l),'signal / plane '+str(s*10+l),200,0.0,200.)
+               ut.bookHist(h,'sigR_'+str(s*10+l),'signal / plane '+str(s*10+l),200,0.0,200.)
+       ut.bookHist(h,'Tsig_'+str(s*10+l),'signal / plane '+str(s*10+l),200,0.0,200.)
        ut.bookHist(h,'occ_'+str(s*10+l),'channel occupancy '+str(s*10+l),100,0.0,200.)
        ut.bookHist(h,'occTag_'+str(s*10+l),'channel occupancy '+str(s*10+l),100,0.0,200.)
 
