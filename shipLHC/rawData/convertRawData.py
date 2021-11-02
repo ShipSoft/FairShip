@@ -227,7 +227,7 @@ X=''
 if not local: X = server
 f0=ROOT.TFile.Open(X+path+'data.root')
 if options.nEvents<0:  nEvent = f0.event.GetEntries()
-else: nEvent = options.nEvents
+else: nEvent = min(options.nEvents,f0.event.GetEntries())
 print('converting ',nEvent,' events ',' of run',options.runNumber)
 
 boards = {}

@@ -74,6 +74,26 @@ def TEvePointSetPrintOut(P):
   txt += '%6i %7.1F,%7.1F,%9.1F x,y,z cm\n'%(n,x.value,y.value,z.value)
  return txt
 
+def sndScifiHitPrintOut(x):
+  txt = "sndScifiHit: Scifi hit in station %i"%(x.GetStation())
+  if x.isVertical(): txt+= " vertical plane "
+  else:                     txt+=  " horizontal plane "
+  txt+="SiPM nr %3i   SiPM channel %3i "%(x.GetSiPM(),x.GetSiPMChan())
+  return txt
+def MuFilterHitPrintOut(x):
+  txt ="MuFilterHit: MuFilter hit  in detector %i"%(x.GetDetectorID())
+  if x.GetDetectorID()//10000==3 and x.GetDetectorID()%1000>59:
+     txt+= " with vertical bars  top digis: "
+     for j in range(x.GetnSiPMs()):
+         txt += " %7.4F "%(x.GetSignal(j))
+  else:
+      txt+= " with horizontal bars"
+      for s in range(x.GetnSides()):
+         if s==0:  txt+= " left digis:"
+         else: txt+= " right digis:"
+         for j in range(x.GetnSiPMs()):
+            txt += " %7.4F "%(x.GetSignal(j))
+  return txt
 
 ROOT.FairMCPoint.__repr__ = MCPointPrintOut
 ROOT.ShipMCTrack.__repr__ = MCTrackPrintOut
@@ -89,3 +109,5 @@ ROOT.vetoHit.__repr__ = vetoHitPrintOut
 ROOT.muonHit.__repr__ = muonHitPrintOut
 ROOT.TimeDetHit.__repr__ = TimeDetHitPrintOut
 ROOT.TLorentzVector.__repr__ = TLorentzVectorPrintOut
+ROOT.sndScifiHit.__repr__ =  sndScifiHitPrintOut
+ROOT.MuFilterHit.__repr__ =  MuFilterHitPrintOut
