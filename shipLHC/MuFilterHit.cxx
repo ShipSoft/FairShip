@@ -1,5 +1,6 @@
 #include "MuFilterHit.h"
 #include "MuFilter.h"
+#include "TROOT.h"
 #include "FairRunSim.h"
 #include "TGeoNavigator.h"
 #include "TGeoManager.h"
@@ -33,7 +34,7 @@ MuFilterHit::MuFilterHit(Int_t detID,Int_t nP,Int_t nS)
 MuFilterHit::MuFilterHit(int detID, std::vector<MuFilterPoint*> V)
   : SndlhcHit()
 {
-     MuFilter* MuFilterDet = dynamic_cast<MuFilter*> (FairRunSim::Instance()->GetListOfModules()->FindObject("MuFilter") );
+     MuFilter* MuFilterDet = dynamic_cast<MuFilter*> (gROOT->GetListOfGlobals()->FindObject("MuFilter"));
      // get parameters from the MuFilter detector for simulating the digitized information
      Float_t attLength;
      if (floor(detID/10000==3)) { attLength = MuFilterDet->AttenuationLengthVandUp();}
@@ -193,15 +194,18 @@ void MuFilterHit::Print() const
 
   if ( floor(fDetectorID/10000)==3&&fDetectorID%1000>59) {
      std::cout << " with vertical bars"<<std::endl;
-     std::cout << "digis:";
+     std::cout << "top digis:";
      for (unsigned int j=0; j<nSiPMs; ++j){
          std::cout << signals[j] <<" ";
      }
   }else{
      std::cout << " with horizontal bars"<<std::endl;
-     std::cout << "digis:";
-     for (unsigned int j=0; j<nSiPMs; ++j){
+     for (unsigned int s=0; s<nSides; ++s){
+       if (s==0) {std::cout << "left digis:";}
+       else {std::cout << "right digis:";}
+       for (unsigned int j=0; j<nSiPMs; ++j){
          std::cout << signals[j] <<" ";
+      }
      }
  }
 std::cout << std::endl;
