@@ -30,6 +30,8 @@ class SndlhcDigi:
         lsOfGlobals  = ROOT.gROOT.GetListOfGlobals()
         self.scifiDet = lsOfGlobals.FindObject('Scifi')
         self.mufiDet = lsOfGlobals.FindObject('MuFilter')
+        if not self.scifiDet or not self.mufiDet: 
+              exit('detector(s) not found, stop')
 # make sipm to fibre mapping
         self.fibresSiPM = SciFiMapping.getFibre2SiPMCPP(self.scifiDet)
         self.siPMFibres = SciFiMapping.getSiPM2FibreCPP(self.scifiDet)
@@ -43,6 +45,11 @@ class SndlhcDigi:
         self.digiMuFilter2MCPoints =  ROOT.TClonesArray("Hit2MCPoints")
         self.digiMuFilter2MCPoints.BypassStreamer(ROOT.kTRUE)
         self.digiMuFilter2MCPointsBranch   = self.sTree.Branch("Digi_MuFilterHits2MCPoints",self.digiMuFilter2MCPoints,32000,1)
+
+    def setThresholds(self,S=0,ML=0,MS=0):
+        self.ScifiThreshold = S
+        self.MufiLargeThreshold = ML
+        self.MufiSmallThreshold = MS
 
     def digitize(self):
 
@@ -95,7 +102,7 @@ class SndlhcDigi:
                     allPoints.push_back(p[0])
                     allWeights.push_back(p[1])
                aHit = ROOT.sndScifiHit()
-               aHit.SetThreshold(global_variables.ts)
+               aHit.SetThreshold(self.ScifiThreshold)
                aHit.makeHit(detID,allPoints,allWeights)
                if self.digiScifi.GetSize() == index: self.digiScifi.Expand(index+100)
                self.digiScifi[index]=aHit
@@ -159,7 +166,7 @@ class SndlhcDigi:
                         N = len(tmp)
                         hitlist.clear()
                         for aHit in tmp: hitlist.push_back( self.sTree.Digi_ScifiHits[hitDict[aHit]],)
-                        aCluster = ROOT.sndCluster(first,N,hitlist,self.scifi)
+                        aCluster = ROOT.sndCluster(first,N,hitlist,self.scifiDet)
                         if self.clusScifi.GetSize() == index: self.clusScifi.Expand(index+10)
                         self.clusScifi[index]=aCluster
                         index+=1

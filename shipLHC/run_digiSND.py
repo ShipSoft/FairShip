@@ -25,53 +25,43 @@ parser.add_argument("-f", "--inputFile", dest="inputFile", help="single input fi
 parser.add_argument("-g", "--geoFile", dest="geoFile", help="geofile", required=True)
 parser.add_argument("-n", "--nEvents", dest="nEvents",  type=int, help="number of events to process", default=100000)
 parser.add_argument("-ts", "--thresholdScifi", dest="ts", type=float, help="threshold energy for Scifi [keV]", default=3.5)
+parser.add_argument("-tML", "--thresholdMufiL", dest="tml", type=float, help="threshold energy for Mufi large [keV]", default=0.0)
+parser.add_argument("-tMS", "--thresholdMufiS", dest="tms", type=float, help="threshold energy for Mufi small [keV]", default=0.0)
 parser.add_argument("-d", "--Debug", dest="debug", help="debug", default=False)
 
 options = parser.parse_args()
 
+if options.inputFile.find('/eos')==0:
+      x = options.inputFile
+      filename = x[x.rfind('/')+1:]
+      os.system('xrdcp '+os.environ['EOSSHIP']+options.inputFile+' '+filename)
+      options.inputFile = filename
 outFile = options.inputFile.replace('.root','_dig.root') 
 # outfile should be in local directory
 tmp = outFile.split('/')
 outFile = tmp[len(tmp)-1]
 os.system('cp '+options.inputFile+' '+outFile)
 
-fgeo = ROOT.TFile.Open(options.geoFile)
-from ShipGeoConfig import ConfigRegistry
-from rootpyPickler import Unpickler
-#load geo dictionary
-upkl    = Unpickler(fgeo)
-snd_geo = upkl.load('ShipGeo')
- 
 # -----Create geometry----------------------------------------------
 import shipLHC_conf as sndDet_conf
 
-run = ROOT.FairRunSim()
-run.SetName("TGeant4")  # Transport engine
-run.SetOutputFile(ROOT.TMemFile('output', 'recreate'))  # Output file
-run.SetUserConfig("g4Config_basic.C") # geant4 transport not used
-rtdb = run.GetRuntimeDb()
-modules = sndDet_conf.configure(run,snd_geo)
-sGeo = fgeo.FAIRGeom
+if options.geoFile.find('/eos')==0:
+       options.geofile = os.environ['EOSSHIP']+options.geoFile
+import SndlhcGeo
+snd_geo = SndlhcGeo.GeoInterface(options.geoFile)
 
-# make global variables
-global_variables.debug = options.debug
-global_variables.snd_geo = snd_geo
-global_variables.modules = modules
-
-global_variables.iEvent = 0
-global_variables.ts = options.ts
-
-# import reco tasks
+# import digi task
 import SndlhcDigi
 Sndlhc = SndlhcDigi.SndlhcDigi(outFile)
+Sndlhc.setThresholds(options.ts,options.tml,options.tms)
 
 nEvents   = min(Sndlhc.sTree.GetEntries(),options.nEvents)
 # main loop
-for global_variables.iEvent in range(firstEvent, nEvents):
-    if global_variables.iEvent % 50000 == 0 or global_variables.debug:
-        print('event ', global_variables.iEvent, nEvents - firstEvent)
-    Sndlhc.iEvent = global_variables.iEvent
-    rc = Sndlhc.sTree.GetEvent(global_variables.iEvent)
+for iEvent in range(firstEvent, nEvents):
+    if iEvent % 50000 == 0 or options.debug:
+        print('event ', iEvent, nEvents - firstEvent)
+    Sndlhc.iEvent = iEvent
+    rc = Sndlhc.sTree.GetEvent(iEvent)
     Sndlhc.digitize()
  # memory monitoring
  # mem_monitor()

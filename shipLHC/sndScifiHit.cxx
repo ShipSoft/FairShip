@@ -1,5 +1,6 @@
 #include "sndScifiHit.h"
 #include "Scifi.h"
+#include "TROOT.h"
 #include "FairRunSim.h"
 #include "TGeoNavigator.h"
 #include "TGeoManager.h"
@@ -35,8 +36,7 @@ sndScifiHit::sndScifiHit(Int_t detID)
 // -----   make hit  ------------------------------------------
 void sndScifiHit::makeHit(int SiPMChan, std::vector<ScifiPoint*> V, std::vector<Float_t> W)
 {
-     Scifi* ScifiDet = dynamic_cast<Scifi*> (FairRunSim::Instance()->GetListOfModules()->FindObject("Scifi") );
-     nSiPMs  = 1;
+     Scifi* ScifiDet = dynamic_cast<Scifi*> (gROOT->GetListOfGlobals()->FindObject("Scifi") );
      nSides   = 1;
      for (unsigned int j=0; j<16; ++j){
         signals[j] = -1;

@@ -25,7 +25,7 @@ class sndScifiHit : public SndlhcHit
 
 	void setInvalid() {flag = false;}
 	bool isValid() const {return flag;}
-	Int_t GetStation(){return int(fDetectorID/10000000);}
+	Int_t GetStation(){return floor(fDetectorID/1000000);}
 	bool isVertical(){
 		if ( int(fDetectorID/100000)%10 == 1){return true;}
 		else{return (false);}
