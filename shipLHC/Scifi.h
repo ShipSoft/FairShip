@@ -56,7 +56,13 @@ public:
     std::map<Int_t,std::map<Int_t,std::array<float, 2>>> GetFibresMap(){return siPMFibres;}
     std::map<Int_t,float> GetSiPMPos(){return SiPMPos;}
     virtual void SiPMOverlap();
-    
+    void SetConfPar(TString name, Float_t value){conf_floats[name]=value;}
+    void SetConfPar(TString name, Int_t value){conf_ints[name]=value;}
+    void SetConfPar(TString name, TString value){conf_strings[name]=value;}
+    Float_t  GetConfParF(TString name){return conf_floats[name];} 
+    Int_t       GetConfParI(TString name){return conf_ints[name];}
+    TString  GetConfParS(TString name){return conf_strings[name];}
+
     /**      Initialization of the detector is done here    */
     virtual void Initialize();
     
@@ -120,7 +126,11 @@ private:
     std::map<Int_t,float> SiPMPos;  //! local SiPM channel position
     /** container for data points */
     TClonesArray*  fScifiPointCollection;
-    
+    /** configuration parameters **/
+    std::map<TString,Float_t> conf_floats;
+    std::map<TString,Int_t> conf_ints;
+    std::map<TString,TString> conf_strings;
+
 protected:
     
     Double_t fXDimension; //Dimension of Scifi planes

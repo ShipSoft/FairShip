@@ -16,6 +16,7 @@ def mem_monitor():
 import ROOT,os,sys,getopt
 import global_variables
 import shipRoot_conf
+import shipunit as u
 
 shipRoot_conf.configure()
 
@@ -49,6 +50,22 @@ if options.geoFile.find('/eos')==0:
        options.geofile = os.environ['EOSSHIP']+options.geoFile
 import SndlhcGeo
 snd_geo = SndlhcGeo.GeoInterface(options.geoFile)
+
+# set digitization parameters for MuFilter
+lsOfGlobals  = ROOT.gROOT.GetListOfGlobals()
+scifiDet  = lsOfGlobals.FindObject('Scifi')
+mufiDet = lsOfGlobals.FindObject('MuFilter')
+mufiDet.SetConfPar("MuFilter/DsAttenuationLength",350 * u.cm)		#  values between 300 cm and 400cm observed for H6 testbeam
+mufiDet.SetConfPar("MuFilter/DsTAttenuationLength",700 * u.cm)		# top readout with mirror on bottom
+mufiDet.SetConfPar("MuFilter/VandUpAttenuationLength",999 * u.cm)	# no significante attenuation observed for H6 testbeam
+mufiDet.SetConfPar("MuFilter/DsSiPMcalibrationS",25.*1000.)			# in MC: 1.65 keV are about 41.2 qdc
+mufiDet.SetConfPar("MuFilter/VandUpSiPMcalibration",25.*1000.);
+mufiDet.SetConfPar("MuFilter/VandUpSiPMcalibrationS",25.*1000.);
+
+scifiDet.SetConfPar("Scifi/nphe_min",3.5)   # threshold
+scifiDet.SetConfPar("Scifi/nphe_max ",104) # saturation
+scifiDet.SetConfPar("Scifi/timeResol",150.*u.picosecond) # time resolution in ps
+scifiDet.SetConfPar("MuFilter/timeResol",150.*u.picosecond) # time resolution in ps, first guess
 
 # import digi task
 import SndlhcDigi

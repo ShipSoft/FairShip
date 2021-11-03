@@ -95,6 +95,8 @@ with ConfigRegistry.register_config("basic") as c:
         c.Scifi.scifi_separation = c.Scifi.zdim + c.EmulsionDet.BrZ  
         c.Scifi.offset_z = - c.EmulsionDet.zdim/2 + c.EmulsionDet.BrZ  #SciFi starts at the end of the first ECC
         
+        c.Scifi.timeResol = 150.*u.picosecond
+
         c.MuFilter = AttrDict(z=0*u.cm)
         #Veto station parameters
         c.MuFilter.VetonSiPMs = 8
@@ -164,10 +166,12 @@ with ConfigRegistry.register_config("basic") as c:
         c.MuFilter.ShiftYEnd= 7.5*u.cm + c.MuFilter.Y/2. #shift for downstream section
 
         #digitization parameters
-        c.MuFilter.AttenuationLength = 28 * u.cm # Bologna prototype of DS bar
-        c.MuFilter.SiPMcalibration         = 0.208        # Volt/Mev Bologna prototype, this for Amplitude, 200 V/MeV for QDC
-        c.MuFilter.DynRangeLow           = 0.01       # just for test, don't know realistic value
-        c.MuFilter.DynRangeHigh          = 1.0         # just for test, don't know realistic value
-        c.MuFilter.VandUpAttenuationLength = 75 * u.cm # to be defined
+        c.MuFilter.DsAttenuationLength   =  350 * u.cm                #  values between 300 cm and 400cm observed for H6 testbeam
+        c.MuFilter.DsTAttenuationLength =  700 * u.cm                # top readout with mirror on bottom
+        c.MuFilter.VandUpAttenuationLength = 999 * u.cm        # no significante attenuation observed for H6 testbeam
+        c.MuFilter.VandUpSiPMcalibrationL         = 25.*1000.       # 1.65 MeV = 41 qcd 
+        c.MuFilter.VandUpSiPMcalibrationS         = 25.*1000.
+        c.MuFilter.DsSiPMcalibration                       = 25.*1000.
+        c.MuFilter.timeResol = 150.*u.picosecond
 
         c.Floor = AttrDict(z=483262./10.*u.cm)   # Antonia, 482000mm (FASER+2, P3) + 1017mm (DZ) + 245mm (centre emulsion)

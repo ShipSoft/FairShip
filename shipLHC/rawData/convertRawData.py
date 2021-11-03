@@ -199,6 +199,9 @@ boardMaps['MuFilter']['board_43'] = {'A':'US_1Left','B':'US_2Left','C':'US_2Righ
 boardMaps['MuFilter']['board_60'] = {'A':'US_3Left','B':'US_4Left','C':'US_4Right','D':'US_3Right'}
 boardMaps['MuFilter']['board_41'] = {'A':'US_5Left','B':'DS_1Left','C':'DS_1Right','D':'US_5Right'}
 boardMaps['MuFilter']['board_59'] = {'A':'DS_2Left','B':'DS_1Vert','C':'DS_2Vert','D':'DS_2Right'}
+boardMaps['MuFilter']['board_42'] = {'A':'DS_3Left','B':'DS_4Vert','C':'DS_3Vert','D':'DS_3Right'}
+boardMaps['MuFilter']['board_52'] = {'A':'Veto_1Left','B':'Veto_2Left','C':'Veto_2Right','D':'Veto_1Right'}
+
 slots = {0:'A',1:'A',2:'B',3:'B',4:'C',5:'C',6:'D',7:'D'}
 
 # For the DS, Marco said the SiPM 1 is at the top. 
@@ -207,7 +210,7 @@ offMap={}
                                       # first bar, number of sipm channels / bar and direction
 for s in range(1,3):
    for o in ['Left','Right']: 
-      offMap['VETO_'+str(s)+o] =[10000 + (s-1)*1000+ 9,-8,2]
+      offMap['Veto_'+str(s)+o] =[10000 + (s-1)*1000+ 6,-8,2]    # first channel, nSiPMs, nSides
 for s in range(1,6):
    for o in ['Left','Right']: 
       offMap['US_'+str(s)+o] =[20000 + (s-1)*1000+ 9,-8,2]

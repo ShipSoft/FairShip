@@ -112,7 +112,7 @@ def hitMaps(Nev = -1):
         nSides  = aHit.GetnSides()
 
 # check left/right
-        allChannels = aHit.GetAllSignals(False)  # masking not yet correctly done in the raw conversion
+        allChannels = aHit.GetAllSignals()  #  aHit.GetAllSignals(False)  overwriting masking
         if nSides==2:
            Nleft    = 0
            Nright = 0
@@ -524,7 +524,7 @@ def timing(Nev = -1):
         nSides  = aHit.GetnSides()
         nSiPMs = aHit.GetnSiPMs()
 
-        allChannels = aHit.GetAllTimes(False)  # masking not yet correctly done in the raw conversion
+        allChannels = aHit.GetAllTimes()
         meanL, meanR = 0,0
         nL,nR = 0,0
         for c in allChannels:

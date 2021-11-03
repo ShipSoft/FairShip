@@ -14,6 +14,7 @@
 #include <string>                       // for string
 
 #include "TVector3.h"
+#include "TString.h"
 #include "TLorentzVector.h"
 
 class MuFilterPoint;
@@ -59,19 +60,18 @@ class MuFilter : public FairDetector
                void SetDS4ZGap(Double_t);
     /** Getposition **/
                  void GetPosition(Int_t id, TVector3& vLeft, TVector3& vRight); // or top and bottom
-    /** Set Digi parameters **/
-                 void SetDigiParameters(Float_t a, Float_t b, Float_t c, Float_t l, Float_t h ){attLength=a; attLengthVandUp=b; siPMcalibration=c;  dynRangeLow=l; dynRangeHigh=h;}
-   /** Get Digi parameters **/
-                 Float_t AttenuationLength(){return attLength;}
-                 Float_t AttenuationLengthVandUp(){return attLengthVandUp;}
-                 Float_t GetDynRangeLow(){return  dynRangeLow;}
-                 Float_t GetDynRangeHigh(){return  dynRangeHigh;}
-                 Float_t GetSiPMcalibration(){return  siPMcalibration;}
    /** set readout parameters **/
                  void SetReadout(Int_t nV,Int_t nU,Int_t nD,Int_t sV,Int_t sU,Int_t sD){
                                           nSiPMs[0]=nV;nSiPMs[1]=nU;nSiPMs[2]=nD;nSides[0]=sV;nSides[1]=sU;nSides[2]=sD;}
                  Int_t GetnSiPMs(Int_t detID);
                  Int_t GetnSides(Int_t detID);
+
+		void SetConfPar(TString name, Float_t value){conf_floats[name]=value;}
+		void SetConfPar(TString name, Int_t value){conf_ints[name]=value;}
+		void SetConfPar(TString name, TString value){conf_strings[name]=value;}
+		Float_t  GetConfParF(TString name){return conf_floats[name];} 
+		Int_t       GetConfParI(TString name){return conf_ints[name];}
+		TString  GetConfParS(TString name){return conf_strings[name];}
 
 		/**      Initialization of the detector is done here    */
 		virtual void Initialize();
@@ -122,6 +122,11 @@ class MuFilter : public FairDetector
 
 			/** container for data points */
 			TClonesArray*  fMuFilterPointCollection;
+
+			/** configuration parameters **/
+			std::map<TString,Float_t> conf_floats;
+			std::map<TString,Int_t> conf_ints;
+			std::map<TString,TString> conf_strings;
 
 	protected:
 			Double_t fVetoShiftX;  //|Shift of Veto with respect to beam line

@@ -5,6 +5,7 @@
 #include "TGeoNavigator.h"
 #include "TGeoManager.h"
 #include "TGeoBBox.h"
+#include <TRandom.h>
 #include <iomanip> 
 
 Double_t speedOfLight = TMath::C() *100./1000000000.0 ; // from m/sec to cm/ns
@@ -31,31 +32,45 @@ MuFilterHit::MuFilterHit(Int_t detID,Int_t nP,Int_t nS)
 
 
 // -----   constructor from MuFilterPoint   ------------------------------------------
-MuFilterHit::MuFilterHit(int detID, std::vector<MuFilterPoint*> V)
+MuFilterHit::MuFilterHit(Int_t detID, std::vector<MuFilterPoint*> V)
   : SndlhcHit()
 {
      MuFilter* MuFilterDet = dynamic_cast<MuFilter*> (gROOT->GetListOfGlobals()->FindObject("MuFilter"));
      // get parameters from the MuFilter detector for simulating the digitized information
-     Float_t attLength;
-     if (floor(detID/10000==3)) { attLength = MuFilterDet->AttenuationLengthVandUp();}
-     else { attLength = MuFilterDet->AttenuationLength();}
-     Float_t siPMcalibration = MuFilterDet->GetSiPMcalibration();
      nSiPMs  = MuFilterDet->GetnSiPMs(detID);
      nSides   = MuFilterDet->GetnSides(detID);
+
+     Float_t timeResol = MuFilterDet->GetConfParF("MuFilter/timeResol");
+
+     Float_t attLength=0;
+     Float_t siPMcalibration=0;
+     Float_t siPMcalibrationS=0;
+     if (floor(detID/10000==3)) { 
+              if (nSides==2){attLength = MuFilterDet->GetConfParF("MuFilter/DsAttenuationLength");}
+              else                    {attLength = MuFilterDet->GetConfParF("MuFilter/DsTAttenuationLength");}
+              siPMcalibration = MuFilterDet->GetConfParF("MuFilter/DsSiPMcalibrationS");
+     }
+     else { 
+              attLength = MuFilterDet->GetConfParF("MuFilter/VandUpAttenuationLength");
+              siPMcalibration = MuFilterDet->GetConfParF("MuFilter/VandUpSiPMcalibration");
+              siPMcalibrationS = MuFilterDet->GetConfParF("MuFilter/VandUpSiPMcalibrationS");
+     }
+
      for (unsigned int j=0; j<16; ++j){
         signals[j] = -1;
         times[j]    =-1;
      }
      LOG(DEBUG) << "detid "<<detID<< " size "<<nSiPMs<< "  side "<<nSides;
 
-     Float_t dynRangeLow   = MuFilterDet->GetDynRangeLow();
-     Float_t dynRangeHigh  = MuFilterDet->GetDynRangeHigh();
-
      fDetectorID  = detID;
      Float_t signalLeft    = 0;
      Float_t signalRight = 0;
+     Float_t earliestToA = 1E20;
      for(auto p = std::begin(V); p!= std::end(V); ++p) {
-        
+
+      // for the timing, find earliest particle and smear with time resolution
+        if ( (*p)->GetTime()<earliestToA){earliestToA=(*p)->GetTime();}
+
         Double_t signal = (*p)->GetEnergyLoss();
      
       // Find distances from MCPoint centre to ends of bar 
@@ -67,12 +82,18 @@ MuFilterHit::MuFilterHit(int detID, std::vector<MuFilterPoint*> V)
         signalLeft+=signal*TMath::Exp(-distance_Left/attLength);
         signalRight+=signal*TMath::Exp(-distance_Right/attLength);
      }
-     // downstream, only top is readout; missing, which channels have high/low dynamic range?
+     // shortSiPM = {3,6,11,14,19,22,27,30,35,38,43,46,51,54,59,62,67,70,75,78};
      for (unsigned int j=0; j<nSiPMs; ++j){
-        signals[j] = signalRight/float(nSiPMs);   // most simplest model, divide signal individually.
-        // times[j] = ?
+        if (j==3 or j==6){
+           signals[j] = signalRight/float(nSiPMs) * siPMcalibrationS;   // most simplest model, divide signal individually. Small SiPMS special
+           times[j] = gRandom->Gaus(earliestToA, timeResol);
+        }else{
+           signals[j] = signalRight/float(nSiPMs) * siPMcalibration;   // most simplest model, divide signal individually. 
+           times[j] = gRandom->Gaus(earliestToA, timeResol);
+        }
         if (nSides>1){ 
-            signals[j+nSiPMs] = signalLeft/float(nSiPMs);   // most simplest model, divide signal individually.
+            signals[j+nSiPMs] = signalLeft/float(nSiPMs) * siPMcalibration;   // most simplest model, divide signal individually.
+            times[j+nSiPMs] = gRandom->Gaus(earliestToA, timeResol);
         }
      }
      flag = true;

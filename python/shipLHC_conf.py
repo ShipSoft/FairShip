@@ -79,8 +79,7 @@ def configure(run,ship_geo,Gfield=''):
  MuFilter.SetYPlanesDisplacement(mu.ShiftYEnd)
 
  MuFilter.SetReadout(mu.VetonSiPMs,mu.UpstreamnSiPMs,mu.DownstreamnSiPMs,mu.VetonSides,mu.UpstreamnSides,mu.DownstreamnSides )
- MuFilter.SetDigiParameters(mu.AttenuationLength,mu.VandUpAttenuationLength,mu.SiPMcalibration,mu.DynRangeLow,mu.DynRangeHigh)
-
+ 
  detectorList.append(MuFilter)
  detElements = {}
  if hasattr(run,'SetMaterials'):  

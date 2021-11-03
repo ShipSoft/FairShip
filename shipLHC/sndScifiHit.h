@@ -13,8 +13,8 @@ class sndScifiHit : public SndlhcHit
     /** Default constructor **/
     sndScifiHit();
     sndScifiHit(Int_t detID);
-    // make hit
-    void makeHit(int detID,std::vector<ScifiPoint*>,std::vector<Float_t>);
+    //  Constructor from ScifiPoint
+    sndScifiHit(int detID,std::vector<ScifiPoint*>,std::vector<Float_t>);
 
  /** Destructor **/
     virtual ~sndScifiHit();
@@ -34,20 +34,16 @@ class sndScifiHit : public SndlhcHit
 	Int_t  GetSiPM(){return ( int(fDetectorID/10000)%10);}
 	Int_t GetSiPMChan(){return ( fDetectorID%1000);}
 	Int_t GetChannelID(){return fDetectorID;}
-	void SetThreshold(Float_t x){nphe_min = x;}
-	Float_t GetThreshold(){return nphe_min;}
 /*  
 	from Guido (22.9.2021): A threshold of 3.5pe should be used, which corresponds to 0.031MeV.
 	1 SiPM channel has 104 pixels, pixel can only see 0 or >0 photons.
 */
-	Float_t nphe_min;
-	Float_t nphe_max = 104;
   private:
     /** Copy constructor **/
     sndScifiHit(const sndScifiHit& hit);
     sndScifiHit operator=(const sndScifiHit& hit);
     Float_t ly_loss_mean(Float_t distance, Float_t* params);
-    Float_t MeanAndRMS(Double_t ly);
+    Float_t MeanAndRMS(Double_t ly, Float_t T);
     Float_t flag;   ///< flag
 
 // get parameters from the Scifi detector for simulating the digitized information

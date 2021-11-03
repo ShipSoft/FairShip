@@ -20,7 +20,7 @@ class SndlhcDigi:
 
         # event header
         self.header  = ROOT.FairEventHeader()
-        self.eventHeader  = self.sTree.Branch("ShipEventHeader",self.header,32000,1)
+        self.eventHeader  = self.sTree.Branch("EventHeader",self.header,32000,1)
         #scifi
         self.digiScifi   = ROOT.TClonesArray("sndScifiHit")
         self.digiScifiBranch   = self.sTree.Branch("Digi_ScifiHits",self.digiScifi,32000,1)
@@ -101,9 +101,7 @@ class SndlhcDigi:
                for p in hitContainer[detID]:
                     allPoints.push_back(p[0])
                     allWeights.push_back(p[1])
-               aHit = ROOT.sndScifiHit()
-               aHit.SetThreshold(self.ScifiThreshold)
-               aHit.makeHit(detID,allPoints,allWeights)
+               aHit = ROOT.sndScifiHit(detID,allPoints,allWeights)
                if self.digiScifi.GetSize() == index: self.digiScifi.Expand(index+100)
                self.digiScifi[index]=aHit
                index+=1
@@ -134,6 +132,7 @@ class SndlhcDigi:
             for p in hitContainer[detID]:
                  allPoints.push_back(p)
             aHit = ROOT.MuFilterHit(detID,allPoints)
+            
             if self.digiMuFilter.GetSize() == index: self.digiMuFilter.Expand(index+100)
             self.digiMuFilter[index]=aHit
             index+=1
