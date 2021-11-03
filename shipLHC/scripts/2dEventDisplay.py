@@ -40,15 +40,15 @@ def goodEvent():
            for d in eventTree.Digi_MuFilterHit:
                plane = 100*(d.GetDetectorID()//1000)
                stations[plane] = 1
-           if len(stations) > 3: return True
+           if len(stations) > 6: return True
            else: False
 
 def loopEvents(start=0,save=False,goodEvents=False,withTrack=False):
  if 'simpleDisplay' not in h: ut.bookCanvas(h,key='simpleDisplay',title='simple event display',nx=1200,ny=1600,cx=1,cy=2)
  h['simpleDisplay'].cd(1)
- zStart = -40. # old coordinate system with origin in middle of target
- ut.bookHist(h,'xz','x vs z',500,zStart,zStart+250.,100,-100.,10.)
- ut.bookHist(h,'yz','y vs z',500,zStart,zStart+250.,100,0.,80.)
+ zStart = -270. # old coordinate system with origin in middle of target
+ ut.bookHist(h,'xz','x vs z',500,zStart,zStart+300.,100,-100.,10.)
+ ut.bookHist(h,'yz','y vs z',500,zStart,zStart+300.,100,0.,80.)
  proj = {1:'xz',2:'yz'}
  h['xz'].SetStats(0)
  h['yz'].SetStats(0)
@@ -131,7 +131,8 @@ def loopEvents(start=0,save=False,goodEvents=False,withTrack=False):
        for c in h[collection]:
           print(collection.split('ion')[1],c, h[collection][c][1].GetN())
           if h[collection][c][1].GetN()<1: continue
-          h[collection][c][1].SetMarkerStyle(29+k)
+          h[collection][c][1].SetMarkerStyle(20+k)
+          h[collection][c][1].SetMarkerSize(1.5)
           rc=h[collection][c][1].Draw('sameP')
           h['display:'+c]=h[collection][c][1]
     if goodEvent() and withTrack:
