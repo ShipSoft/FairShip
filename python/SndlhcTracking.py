@@ -51,22 +51,29 @@ class Tracking(ROOT.FairTask):
               cprev = hitList[0]
               ncl = 0
               last = len(hitList)-1
-              hitlist = ROOT.std.vector("sndScifiHit*")()
+              hitvector = ROOT.std.vector("sndScifiHit*")()
               for i in range(len(hitList)):
                    if i==0 and len(hitList)>1: continue
                    c=hitList[i]
-                   if (c-cprev)==1: 
+                   neighbour = False
+                   if (c-cprev)==1:    # does not account for neighbours across sipms
+                        neighbour = True
                         tmp.append(c)
-                   if (c-cprev)!=1 or c==hitList[last]:
+                   if not neighbour  or c==hitList[last]:
                         first = tmp[0]
                         N = len(tmp)
-                        hitlist.clear()
-                        for aHit in tmp: hitlist.push_back( self.event.Digi_ScifiHits[hitDict[aHit]])
-                        aCluster = ROOT.sndCluster(first,N,hitlist,self.scifiDet)
+                        hitvector.clear()
+                        for aHit in tmp: hitvector.push_back( self.event.Digi_ScifiHits[hitDict[aHit]])
+                        aCluster = ROOT.sndCluster(first,N,hitvector,self.scifiDet)
                         clusters.append(aCluster)
                         if c!=hitList[last]:
                              ncl+=1
                              tmp = [c]
+                        elif not neighbour :   # save last channel
+                            hitvector.clear()
+                            hitvector.push_back( self.event.Digi_ScifiHits[hitDict[c]])
+                            aCluster = ROOT.sndCluster(c,1,hitvector,self.scifiDet)
+                            clusters.append(aCluster)
                    cprev = c
        return clusters
 
