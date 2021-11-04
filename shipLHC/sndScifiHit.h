@@ -49,7 +49,7 @@ class sndScifiHit : public SndlhcHit
 // get parameters from the Scifi detector for simulating the digitized information
 	Float_t ly_loss_params[4] = {20.78, -0.26, 7.89, -3.06};
 
-    ClassDef(sndScifiHit,1);
+    ClassDef(sndScifiHit,2);
 
 };
 

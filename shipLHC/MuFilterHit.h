@@ -49,7 +49,7 @@ class MuFilterHit : public SndlhcHit
     Float_t DsTAttenuationLength;
     Float_t VandUpAttenuationLength;
 
-    ClassDef(MuFilterHit,2);
+    ClassDef(MuFilterHit,3);
     
 
 };
