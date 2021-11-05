@@ -68,9 +68,9 @@ Bool_t NtupleGenerator_FLUKA::ReadEvent(FairPrimaryGenerator* cpg)
    if (fn > fNevents) {
      LOG(WARNING) << "No more input events";
      return kFALSE; }
-  // what to do with generation info?
-   cpg->AddTrack(int(id[0]),px[0],py[0],pz[0],x[0],y[0],z[0]-SND_Z,-1,true,E[0],t[0],w[0],(TMCProcess)generation[0]);
-   LOG(DEBUG) << "NtupleGenerator_FLUKA: add muon " << id[0]<<","<<px[0]<<","<<py[0]<<","<<pz[0]<<","<<x[0]<<","<<y[0]<<","<<z[0]-SND_Z<<","<<generation[0]<<","<<E[0]<<","<<t[0]<<","<<w[0];
+  // what to do with generation info?   convert time from ns to sec
+   cpg->AddTrack(int(id[0]),px[0],py[0],pz[0],x[0],y[0],z[0]-SND_Z,-1,true,E[0],t[0]/1E9,w[0],(TMCProcess)generation[0]);
+   LOG(DEBUG) << "NtupleGenerator_FLUKA: add muon " << id[0]<<","<<px[0]<<","<<py[0]<<","<<pz[0]<<","<<x[0]<<","<<y[0]<<","<<z[0]-SND_Z<<","<<generation[0]<<","<<E[0]<<","<<t[0]<<"ns,"<<w[0];
 
    return kTRUE;
 }
