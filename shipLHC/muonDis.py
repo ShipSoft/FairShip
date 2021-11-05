@@ -169,7 +169,7 @@ def convertAscii2Root(fname,version=2):
               column.append(0)        # time had been dropped unfortunately
               column.append(line[10])
        else:
-             column.append(line[10]/u.nanosecond)
+             column.append(line[10]*u.s)
              if version == 0:   column.append(409.*u.m)
              if version == 1:  column.append(418.684*u.m + line[6]*ROOT.TMath.Tan(2.338/180.*ROOT.TMath.Pi()))
        column.append(P*ROOT.TMath.Sqrt(1-line[8]**2-line[9]**2))
