@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 import ROOT,os,sys,getopt
-import global_variables
 import shipRoot_conf
 import rootUtils as ut
+import numpy as np
 h={}
 
 # raw data from Ettore: https://cernbox.cern.ch/index.php/s/Ten7ilKuD3qdnM2 
@@ -56,7 +56,8 @@ else:
 import csv
 SiPMmap={}
 TofpetMap = {}
-for system in ['DS','US','Veto']:
+key = {'DS':2,'US':1,'Veto':0}
+for system in key:
    infile = "/eos/experiment/sndlhc/testbeam/MuFilter/SiPM_mappings/"+system+"_SiPM_mapping.csv"
    SiPMmap[system] = {}
    if os.path.isdir("/eos/experiment/sndlhc/testbeam/MuFilter/SiPM_mappings"):
@@ -74,10 +75,10 @@ for system in ['DS','US','Veto']:
           if x.find('TOF')>0: continue
           row = x.split(',')
           SiPMmap[system][int(row[0])] = [int(row[1]), int(row[2]), int(row[3]), int(row[4])]
-   TofpetMap[system] = {}
+   TofpetMap[key[system]] = {}
    for channel in SiPMmap[system]:
          row = SiPMmap[system][channel]
-         TofpetMap[system][row[2]*1000+row[3]] = channel
+         TofpetMap[key[system]][row[2]*1000+row[3]] = channel
 # calibration data
 qdc_cal = {}
 
@@ -123,6 +124,37 @@ for l in range(1,len(L)):
     X['d']=float(tmp[9])
     if float(tmp[10]) < 2: X['chi2Ndof'] = 999999.
     else:                  X['chi2Ndof']=float(tmp[8])/float(tmp[10])
+    
+
+if 0>1: # replacing python dict by numpy arrays did not improved memory access, became 10% slower
+ # convert to fixed size numpy array:
+ boards   = list(qdc_cal.keys())
+ boards.sort()
+ fes      = list(qdc_cal[boards[0]].keys())
+ channels = list(qdc_cal[boards[0]][fes[0]].keys())
+ channels.sort()
+ tacs     = list(qdc_cal[boards[0]][fes[0]][channels[0]].keys())
+ tacs.sort()
+ pars     = list(qdc_cal[boards[0]][fes[0]][channels[0]][tacs[0]].keys())
+ T        = list(qdc_cal[boards[0]][fes[0]][channels[0]][tacs[0]][0].keys())
+
+ NPqdc_cal = np.zeros( (boards[len(boards)-1]+1,len(fes),len(channels),len(tacs),2,6),dtype=np.double)
+ for kb in boards:
+  for kf in fes:
+     if not kf in qdc_cal[kb]: continue
+     for kc in channels:
+        if not kc in qdc_cal[kb][kf]: continue
+        for kt in tacs:
+           if not kt in qdc_cal[kb][kf][kc]: continue
+           kp = -1 
+           for p in ['a', 'b', 'c', 'd', 'e', 'chi2Ndof']:
+              kp+=1
+              if not p in qdc_cal[kb][kf][kc][kt]: continue
+              NPqdc_cal[kb][kf][kc][kt][0][kp] =  qdc_cal[kb][kf][kc][kt][p]
+              if p=='e': continue
+              if not 1 in qdc_cal[kb][kf][kc][kt]: continue
+              NPqdc_cal[kb][kf][kc][kt][1][kp] =  qdc_cal[kb][kf][kc][kt][0][p]
+                  
 
 # following procedure in https://gitlab.cern.ch/scifi-telescope/scifi-rec/-/blob/ettore-tofpet/lib/processors/applycalibration.cpp
 def qdc_calibration(board_id,tofpet_id,channel,tac,v_coarse,v_fine,tf):
@@ -142,10 +174,47 @@ def qdc_sat(board_id,tofpet_id,channel,tac,v_fine):
     par = qdc_cal[board_id][tofpet_id][channel][tac]
     return v_fine/par['d']
 
-def time_calibration(board_id,tofpet_id,channel,tac,t_coarse,t_fine,TDC=0):  #??
+def time_calibration(board_id,tofpet_id,channel,tac,t_coarse,t_fine,TDC=0):
     par = qdc_cal[board_id][tofpet_id][channel][tac][TDC]
     x = t_fine
     ftdc = (-par['b']-ROOT.TMath.Sqrt(par['b']**2-4*par['a']*(par['c']-x)))/(2*par['a'])+par['d']
+    timestamp = t_coarse+ftdc
+    return timestamp
+    
+def comb_calibration(board_id,tofpet_id,channel,tac,v_coarse,v_fine,t_coarse,t_fine,GQDC = 1.0, TDC=0): # max gain QDC = 3.6
+    par  = qdc_cal[board_id][tofpet_id][channel][tac]
+    parT = par[TDC]
+    x    = t_fine
+    ftdc = (-parT['b']-ROOT.TMath.Sqrt(parT['b']**2-4*parT['a']*(parT['c']-x)))/(2*parT['a'])+parT['d']
+    timestamp = t_coarse + ftdc
+    tf = timestamp - t_coarse
+    x = v_coarse - tf
+    fqdc = -par['c']*ROOT.TMath.Log(1+ROOT.TMath.Exp( par['a']*(x-par['e'])**2-par['b']*(x-par['e']) )) + par['d']
+    value = (v_fine-fqdc)/GQDC
+    return timestamp,value,max(par['chi2Ndof'],parT['chi2Ndof']),v_fine/par['d']
+
+def NPqdc_calibration(board_id,tofpet_id,channel,tac,v_coarse,v_fine,tf):
+    GQDC = 1.0 # or 3.6
+    par = NPqdc_cal[board_id][tofpet_id][channel][tac][0]
+    x = v_coarse - tf
+    # ['a', 'b', 'c', 'd', 'e', 'chi2Ndof']
+    fqdc = -par[2]*ROOT.TMath.Log(1+ROOT.TMath.Exp( par[0]*(x-par[4])**2-par[1]*(x-par[4]) )) + par[3]
+    value = (v_fine-fqdc)/GQDC
+    return value
+
+def NPqdc_chi2(board_id,tofpet_id,channel,tac):
+    par  = NPqdc_cal[board_id][tofpet_id][channel][tac][0]
+    parT = NPqdc_cal[board_id][tofpet_id][channel][tac][1]
+    return max(par[5],parT[5])
+
+def NPqdc_sat(board_id,tofpet_id,channel,tac,v_fine):
+    par = NPqdc_cal[board_id][tofpet_id][channel][tac][0]
+    return v_fine/par[4]
+
+def NPtime_calibration(board_id,tofpet_id,channel,tac,t_coarse,t_fine):
+    par = NPqdc_cal[board_id][tofpet_id][channel][tac][0]
+    x = t_fine
+    ftdc = (-par[1]-ROOT.TMath.Sqrt(par[1]**2-4*par[0]*(par[2]-x)))/(2*par[0])+par[3]
     timestamp = t_coarse+ftdc
     return timestamp
 
@@ -201,10 +270,20 @@ boardMaps['MuFilter']['board_41'] = {'A':'US_5Left','B':'DS_1Left','C':'DS_1Righ
 boardMaps['MuFilter']['board_59'] = {'A':'DS_2Left','B':'DS_1Vert','C':'DS_2Vert','D':'DS_2Right'}
 boardMaps['MuFilter']['board_42'] = {'A':'DS_3Left','B':'DS_4Vert','C':'DS_3Vert','D':'DS_3Right'}
 boardMaps['MuFilter']['board_52'] = {'A':'Veto_2Left','B':'Veto_1Left','C':'Veto_1Right','D':'Veto_2Right'}
-
 slots = {0:'A',1:'A',2:'B',3:'B',4:'C',5:'C',6:'D',7:'D'}
 
-# For the DS, Marco said the SiPM 1 is at the top. 
+
+MufiSystem = {}
+for b in boardMaps['MuFilter']:
+  board_id = int(b.split('_')[1])
+  MufiSystem[board_id]={}
+  for x in boardMaps['MuFilter'][b]:
+     for slot in slots:
+         s = 0
+         tmp = boardMaps['MuFilter'][b][x].split('_')[0]
+         if tmp=='US': s = 1
+         elif tmp=='DS': s = 2
+         if slots[slot]==x: MufiSystem[board_id][slot]=s
 
 offMap={}
                                       # first bar, number of sipm channels / bar and direction
@@ -262,9 +341,11 @@ B.Add(ROOT.TObjString('FairEventHeader'))
 fSink.WriteObject(B,"BranchList", ROOT.TObject.kSingleKey)
 
 import time
+counters = {'N':0,'event':0,'qdc':0,'tdc':0,'chi2':0,'make':0,'storage':0,'createScifi':0,'createMufi':0}
 def run(nEvent):
  event = f0.event
  for eventNumber in range(options.nStart,nEvent):
+   tE = time.time_ns()
    rc = event.GetEvent(eventNumber)
    if eventNumber%options.heartBeat==0:
       tt = time.ctime()
@@ -295,10 +376,12 @@ def run(nEvent):
              mask = False
              if options.debug:
                   print(scifi,board_id,bt.tofpet_id[n],bt.tofpet_channel[n],bt.tac[n],bt.t_coarse[n],bt.t_fine[n],bt.v_coarse[n],bt.v_fine[n])
-             TDC = time_calibration(board_id,bt.tofpet_id[n],bt.tofpet_channel[n],bt.tac[n],bt.t_coarse[n],bt.t_fine[n])
-             QDC = qdc_calibration(board_id,bt.tofpet_id[n],bt.tofpet_channel[n],bt.tac[n],bt.v_coarse[n],bt.v_fine[n],TDC-bt.t_coarse[n])
-             Chi2ndof = qdc_chi2(    board_id,bt.tofpet_id[n],bt.tofpet_channel[n],bt.tac[n])
-             satur = qdc_sat(board_id,bt.tofpet_id[n],bt.tofpet_channel[n],bt.tac[n],bt.v_fine[n])
+             t0 = time.time_ns()
+             tofpet_id = bt.tofpet_id[n]
+             tofpet_channel = bt.tofpet_channel[n]
+             tac = bt.tac[n]
+             TDC,QDC,Chi2ndof,satur = comb_calibration(board_id,tofpet_id,tofpet_channel,tac,bt.v_coarse[n],bt.v_fine[n],bt.t_coarse[n],bt.t_fine[n])
+             t1 = time.time_ns()
              if Chi2ndof > chi2Max:
                        if QDC>1E20:    QDC = 997.   # checking for inf
                        if QDC != QDC:  QDC = 998.   # checking for nan
@@ -321,17 +404,20 @@ def run(nEvent):
                        mask = True
              if options.debug:
                   print('calibrated: tdc = ',TDC,'  qdc = ',QDC)  # TDC clock cycle = 160 MHz or 6.25ns
+             t4 = time.time_ns()
+             counters['qdc']+=t1-t0
+             counters['make']+=t4-t0
 
 # in case it is ever needed to read a UChar_t format:
              # Id = int(bin(ord(board.tofpet_id))[2:],2) ch = int(bin(ord(board.tofpet_channel))[2:],2)
 
              if not scifi:
 # mufi encoding
-                slot = bt.tofpet_id[n]
-                tmp = boardMaps['MuFilter'][board][slots[slot]]
-                system = tmp.split('_')[0]
-                key = (slot%2)*1000 + bt.tofpet_channel[n]
-                if options.debug: print(system,key,board,bt.tofpet_id[n],bt.tofpet_id[n]%2,bt.tofpet_channel[n])
+                system = MufiSystem[board_id][tofpet_id]
+                key = (tofpet_id%2)*1000 + tofpet_channel
+                tmp = boardMaps['MuFilter'][board][slots[tofpet_id]]
+
+                if options.debug: print(system,key,board,tofpet_id,tofpet_id%2,tofpet_channel)
                 sipmChannel = 99
                 if not key in TofpetMap[system]:
                         print('key does not exist',key)
@@ -352,13 +438,16 @@ def run(nEvent):
                 if mask: digiMuFilterStore[detID].SetMasked(sipm_number)
 
                 if options.debug:
-                    print('create mu hit: ',detID,tmp,system,slot,offMap[tmp],sipmChannel,nSiPMs,nSides,test,slot)
+                    print('create mu hit: ',detID,tmp,system,tofpet_id,offMap[tmp],sipmChannel,nSiPMs,nSides,test)
                     print('                ',detID,sipm_number,QDC,TDC)
                 if test>0 or detID%1000>200 or sipm_number>15:
-                    print('what goes wrong?',detID,sipm_number,system,key,board,bt.tofpet_id[n],bt.tofpet_channel[n],test)
+                    print('what goes wrong?',detID,sipm_number,system,key,board,tofpet_id,tofpet_channel,test)
+                t5 = time.time_ns()
+                counters['createMufi']+=t5-t4
+
              else:
 # scifi encoding
-                chan = channel(bt.tofpet_id[n],bt.tofpet_channel[n],mat)
+                chan = channel(tofpet_id,tofpet_channel,mat)
                 orientation = 0
                 if station[2]=="Y": orientation = 1
                 sipmLocal = (chan - mat*512)
@@ -368,9 +457,13 @@ def run(nEvent):
                 if mask: digiSciFiStore[sipmID].setInvalid()
                 if options.debug:
                     print('create scifi hit: tdc = ',board,sipmID,QDC,TDC)
-                    print('tofpet:', bt.tofpet_id[n],bt.tofpet_channel[n],mat,chan)
+                    print('tofpet:', tofpet_id,tofpet_channel,mat,chan)
                     print(station[1],station[2],mat,chan,int(chan/128)%4,chan%128)
+                t5 = time.time_ns()
+                counters['createScifi']+=t5-t4
 
+   counters['N']+=1
+   t6 = time.time_ns()
    for sipmID in digiSciFiStore:
              if digiSciFi.GetSize() == indexSciFi: digiSciFi.Expand(indexSciFi+100)
              digiSciFi[indexSciFi]=digiSciFiStore[sipmID]
@@ -379,6 +472,9 @@ def run(nEvent):
              if digiMuFilter.GetSize() == indexMuFilter: digiMuFilter.Expand(indexMuFilter+100)
              digiMuFilter[indexMuFilter]=digiMuFilterStore[detID]
              indexMuFilter+=1
+   counters['storage']+=time.time_ns()-t6
+   counters['event']+=time.time_ns()-tE
+
 # make simple clustering for scifi, only works with geometry file. Don't think it is a good idea at the moment
    if withGeoFile:
     index = 0

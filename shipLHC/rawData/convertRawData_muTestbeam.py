@@ -151,6 +151,30 @@ def time_calibration(board_id,tofpet_id,channel,tac,t_coarse,t_fine,TDC=0):  #??
     timestamp = t_coarse+ftdc
     return timestamp
 
+def comb_calibration(board_id,tofpet_id,channel,tac,v_coarse,v_fine,t_coarse,t_fine,GQDC = 1.0, TDC=0): # max gain QDC = 3.6
+    par  = qdc_cal[board_id][tofpet_id][channel][tac]
+    parT = par[TDC]
+    x    = t_fine
+    ftdc = (-parT['b']-ROOT.TMath.Sqrt(parT['b']**2-4*parT['a']*(parT['c']-x)))/(2*parT['a'])+parT['d']
+    timestamp = t_coarse + ftdc
+    tf = timestamp - t_coarse
+    x = v_coarse - tf
+    fqdc = -par['c']*ROOT.TMath.Log(1+ROOT.TMath.Exp( par['a']*(x-par['e'])**2-par['b']*(x-par['e']) )) + par['d']
+    value = (v_fine-fqdc)/GQDC
+    return timestamp,value,max(par['chi2Ndof'],parT['chi2Ndof']),v_fine/par['d']
+
+def comb_calibration(board_id,tofpet_id,channel,tac,v_coarse,v_fine,t_coarse,t_fine,GQDC = 1.0, TDC=0): # max gain QDC = 3.6
+    par  = qdc_cal[board_id][tofpet_id][channel][tac]
+    parT = par[TDC]
+    x    = t_fine
+    ftdc = (-parT['b']-ROOT.TMath.Sqrt(parT['b']**2-4*parT['a']*(parT['c']-x)))/(2*parT['a'])+parT['d']
+    timestamp = t_coarse + ftdc
+    tf = timestamp - t_coarse
+    x = v_coarse - tf
+    fqdc = -par['c']*ROOT.TMath.Log(1+ROOT.TMath.Exp( par['a']*(x-par['e'])**2-par['b']*(x-par['e']) )) + par['d']
+    value = (v_fine-fqdc)/GQDC
+    return timestamp,value,max(par['chi2Ndof'],parT['chi2Ndof']),v_fine/par['d']
+
 def calibrationReport():
     ut.bookHist(h,'chi2','chi2',1000,0.,10000)
     report = {}
@@ -203,7 +227,17 @@ boardMaps['MuFilter']['board_41'] = {'A':'US_5Left','B':'DS_1Left','C':'DS_1Righ
 boardMaps['MuFilter']['board_59'] = {'A':'DS_2Left','B':'DS_1Vert','C':'DS_2Vert','D':'DS_2Right'}
 slots = {0:'A',1:'A',2:'B',3:'B',4:'C',5:'C',6:'D',7:'D'}
 
-# For the DS, Marco said the SiPM 1 is at the top. 
+MufiSystem = {}
+for b in boardMaps['MuFilter']:
+  board_id = int(b.split('_')[1])
+  MufiSystem[board_id]={}
+  for x in boardMaps['MuFilter'][b]:
+     for slot in slots:
+         s = 0
+         tmp = boardMaps['MuFilter'][b][x].split('_')[0]
+         if tmp=='US': s = 1
+         elif tmp=='DS': s = 2
+         if slots[slot]==x: MufiSystem[board_id][slot]=s
 
 offMap={}
                                       # first bar, number of sipm channels / bar and direction
@@ -354,10 +388,10 @@ def run(nEvent):
              mask = False
              if options.debug:
                   print(scifi,board_id,bt.tofpet_id[n],bt.tofpet_channel[n],bt.tac[n],bt.t_coarse[n],bt.t_fine[n],bt.v_coarse[n],bt.v_fine[n])
-             TDC = time_calibration(board_id,bt.tofpet_id[n],bt.tofpet_channel[n],bt.tac[n],bt.t_coarse[n],bt.t_fine[n])
-             QDC = qdc_calibration(board_id,bt.tofpet_id[n],bt.tofpet_channel[n],bt.tac[n],bt.v_coarse[n],bt.v_fine[n],TDC-bt.t_coarse[n])
-             Chi2ndof = qdc_chi2(    board_id,bt.tofpet_id[n],bt.tofpet_channel[n],bt.tac[n])
-             satur = qdc_sat(board_id,bt.tofpet_id[n],bt.tofpet_channel[n],bt.tac[n],bt.v_fine[n])
+             tofpet_id = bt.tofpet_id[n]
+             tofpet_channel = bt.tofpet_channel[n]
+             tac = bt.tac[n]
+             TDC,QDC,Chi2ndof,satur = comb_calibration(board_id,tofpet_id,tofpet_channel,tac,bt.v_coarse[n],bt.v_fine[n],bt.t_coarse[n],bt.t_fine[n])
              if Chi2ndof > chi2Max:
                        if QDC>1E20:    QDC = 997.   # checking for inf
                        if QDC != QDC:  QDC = 998.   # checking for nan
