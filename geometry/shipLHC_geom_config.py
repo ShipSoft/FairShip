@@ -173,5 +173,7 @@ with ConfigRegistry.register_config("basic") as c:
         c.MuFilter.VandUpSiPMcalibrationS         = 25.*1000.
         c.MuFilter.DsSiPMcalibration                       = 25.*1000.
         c.MuFilter.timeResol = 150.*u.picosecond
+        c.MuFilter.VandUpPropSpeed    = 12.5*u.cm/u.nanosecond
+        c.MuFilter.DsPropSpeed        = 14.3*u.cm/u.nanosecond
 
         c.Floor = AttrDict(z=483262./10.*u.cm)   # Antonia, 482000mm (FASER+2, P3) + 1017mm (DZ) + 245mm (centre emulsion)
