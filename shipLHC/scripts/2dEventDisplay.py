@@ -37,16 +37,17 @@ def goodEvent():
            stations = {}
            for d in eventTree.Digi_ScifiHits:
                stations[d.GetDetectorID()//1000000] = 1
-           for d in eventTree.Digi_MuFilterHit:
+           for d in eventTree.Digi_MuFilterHits:
                plane = 100*(d.GetDetectorID()//1000)
                stations[plane] = 1
            if len(stations) > 6: return True
            else: False
 
-def loopEvents(start=0,save=False,goodEvents=False,withTrack=False):
+def loopEvents(start=0,save=False,goodEvents=False,withTrack=False,Setup=''):
  if 'simpleDisplay' not in h: ut.bookCanvas(h,key='simpleDisplay',title='simple event display',nx=1200,ny=1600,cx=1,cy=2)
  h['simpleDisplay'].cd(1)
- zStart = -270. # old coordinate system with origin in middle of target
+ zStart = -50. # old coordinate system with origin in middle of target
+ if Setup == 'H6': zStart = -250.
  ut.bookHist(h,'xz','x vs z',500,zStart,zStart+300.,100,-100.,10.)
  ut.bookHist(h,'yz','y vs z',500,zStart,zStart+300.,100,0.,80.)
  proj = {1:'xz',2:'yz'}
@@ -66,6 +67,7 @@ def loopEvents(start=0,save=False,goodEvents=False,withTrack=False):
 
     digis = []
     if sTree.FindBranch("Digi_ScifiHits"): digis.append(sTree.Digi_ScifiHits)
+    if sTree.FindBranch("Digi_MuFilterHits"): digis.append(sTree.Digi_MuFilterHits)
     if sTree.FindBranch("Digi_MuFilterHit"): digis.append(sTree.Digi_MuFilterHit)
     empty = True
     for x in digis:
