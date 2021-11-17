@@ -165,6 +165,16 @@ with ConfigRegistry.register_config("basic") as c:
         c.MuFilter.ShiftY = 9.6 * u.cm + c.MuFilter.Y/2. #shift of first block of upstream section
         c.MuFilter.ShiftYEnd= 7.5*u.cm + c.MuFilter.Y/2. #shift for downstream section
 
+# soft alignment
+        c.MuFilter.USShiftX     = 0
+        c.MuFilter.USShiftY     = 0
+        c.MuFilter.USShiftZ     = 0
+        c.MuFilter.DSHShiftX = 0
+        c.MuFilter.DSHShiftY = 0
+        c.MuFilter.DSVShiftX  = 0
+        c.MuFilter.DSVShiftY  = 0
+        c.MuFilter.DSShiftZ     = 0
+
         #digitization parameters
         c.MuFilter.DsAttenuationLength   =  350 * u.cm                #  values between 300 cm and 400cm observed for H6 testbeam
         c.MuFilter.DsTAttenuationLength =  700 * u.cm                # top readout with mirror on bottom
