@@ -27,6 +27,7 @@ class MuFilterHit : public SndlhcHit
     void Print() const;
     Float_t GetEnergy();
     Float_t SumOfSignals(char* opt,Bool_t mask=kTRUE);
+    std::map<TString,Float_t> SumOfSignals(Bool_t mask=kTRUE);
     std::map<Int_t,Float_t> GetAllSignals(Bool_t mask=kTRUE);
     std::map<Int_t,Float_t> GetAllTimes(Bool_t mask=kTRUE);
     Float_t  GetDeltaT(Bool_t mask=kTRUE);
