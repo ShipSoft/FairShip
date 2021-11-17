@@ -131,9 +131,16 @@ void Scifi::ConstructGeometry()
 	Double_t d_tt = -FullDetZdim/2 + ZDimension/2;
 	Double_t zpos = 0;
 	Int_t n = 0;
+        //test adding new geometries
+        double dx_survey[fNplanes] = {4.34,4.34,4.34,4.34,4.34};
+        double dy_survey[fNplanes] = {298.94,311.94,324.94,337.94,350.94};
+        double dz_survey[fNplanes] = {15.22,15.22,15.22,15.22,15.22};
+
+        double dxborder = 3.5; //first canal from border
+        double dzborder = 3.5;
 	for(int i=0;i<fNplanes;i++)
 	{		
-	  volTarget->AddNode(volScifi,n,new TGeoTranslation(0,0, DeltaZ + d_tt+i*(ZDimension+DeltaZ))); //target starts with first wall
+	  volTarget->AddNode(volScifi,n,new TGeoTranslation(-dx_survey[i]-dxborder-XDimension/2., dz_survey[i]+dzborder+YDimension/2., dy_survey[i])); //target starts with first wall
 	  n++;
 	}   
 }

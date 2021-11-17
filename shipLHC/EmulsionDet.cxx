@@ -27,6 +27,7 @@
 #include "TParticlePDG.h"
 #include "TParticleClassPDG.h"
 #include "TVirtualMCStack.h"
+#include "TGeoCompositeShape.h"
 
 #include "FairVolume.h"
 #include "FairGeoVolume.h"
@@ -197,14 +198,8 @@ void EmulsionDet::ConstructGeometry()
 	InitMedium("air");
 	TGeoMedium *air =gGeoManager->GetMedium("air");
 
-	InitMedium("iron");
-	TGeoMedium *Fe =gGeoManager->GetMedium("iron");
-
-	InitMedium("CoilAluminium");
-	TGeoMedium *Al  = gGeoManager->GetMedium("CoilAluminium");
-
-	InitMedium("CoilCopper");
-	TGeoMedium *Cu  = gGeoManager->GetMedium("CoilCopper");
+	InitMedium("Aluminum");
+	TGeoMedium *Al  = gGeoManager->GetMedium("Aluminum");
 
 	InitMedium("PlasticBase");
 	TGeoMedium *PBase =gGeoManager->GetMedium("PlasticBase");
@@ -240,13 +235,18 @@ void EmulsionDet::ConstructGeometry()
 	//  //Volumes definition
 	//    //
 
-	//Walls
+	
+	TGeoBBox *Walltot = new TGeoBBox("walltot",XDimension/2, YDimension/2, (WallZDim-0.1)/2);
+        TGeoBBox *Wallint = new TGeoBBox("wallint",WallXDim/2, WallYDim/2, WallZDim/2);
 
-	TGeoBBox *Wall = new TGeoBBox("wall",XDimension/2, YDimension/2, BrickZ/2);
-        TGeoVolume *volWall = new TGeoVolume("Wall",Wall,air);
+        TGeoCompositeShape *Wallborder = new TGeoCompositeShape("wallborder","walltot - wallint");
+        TGeoVolume *volWallborder = new TGeoVolume("volWallborder", Wallborder, Al);
+        volWallborder->SetLineColor(kGray);
+
+        TGeoVolume *volWall = new TGeoVolume("Wall",Wallint,air);
 	
 	//Rows
-	TGeoBBox *Row = new TGeoBBox("row",XDimension/2, BrickY/2, BrickZ/2);
+	TGeoBBox *Row = new TGeoBBox("row",WallXDim/2, BrickY/2, BrickZ/2);
         TGeoVolume *volRow = new TGeoVolume("Row",Row,air);
 
 	//Bricks
@@ -276,8 +276,11 @@ void EmulsionDet::ConstructGeometry()
 	}
 
 	volBrick->SetVisibility(kTRUE);
-
-	top->AddNode(volTarget,1,new TGeoTranslation(ShiftX,ShiftY,fCenterZ));
+        //test adding new geometries
+        double dx_survey[fNWall] = {5.74,5.74,5.74,5.74,5.74};
+        double dy_survey[fNWall] = {288.89,301.89,314.89,327.89,340.89};
+        double dz_survey[fNWall] = {16.63,16.63,16.63,16.63,16.63};
+	top->AddNode(volTarget,1,new TGeoTranslation(0,0,0));
 
 	//adding walls
 
@@ -285,7 +288,8 @@ void EmulsionDet::ConstructGeometry()
 
 	for(int l = 0; l < fNWall; l++)
 	  {
-		volTarget->AddNode(volWall,l,new TGeoTranslation(0, 0, d_cl_z +BrickZ/2));
+		volTarget->AddNode(volWallborder,l,new TGeoTranslation(-dx_survey[l]-XDimension/2., dz_survey[l]+YDimension/2., dy_survey[l]+BrickZ/2.)); //the survey points refer to the down-left corner
+		volTarget->AddNode(volWall,l,new TGeoTranslation(-dx_survey[l]-XDimension/2., dz_survey[l]+YDimension/2., dy_survey[l]+BrickZ/2.)); //the survey points refer to the down-left corner
 		d_cl_z += BrickZ + TTrackerZ;
 	  }
 
@@ -294,7 +298,7 @@ void EmulsionDet::ConstructGeometry()
        
         for(int k= 0; k< fNRow; k++)
 	  {
-	  volWall->AddNode(volRow,k,new TGeoTranslation(0, d_cl_y + BrickY/2, 0));
+	  volWall->AddNode(volRow,k,new TGeoTranslation(0, d_cl_y + BrickY/2,0));
         
 	  // 2mm is the distance for the structure that holds the brick
 	  d_cl_y += BrickY;
