@@ -49,37 +49,10 @@ def configure(run,ship_geo,Gfield=''):
  detectorList.append(Scifi)
 
  MuFilter = ROOT.MuFilter("MuFilter",ROOT.kTRUE)
- mu = ship_geo.MuFilter
- #upstream veto section
- MuFilter.SetVetoCenterPosition(mu.VetozC)
- MuFilter.SetVetoShift(mu.VetoShiftX, mu.VetoShiftY)
- MuFilter.SetVetoPlaneShiftY(mu.VetoPlaneShiftY)
- MuFilter.SetNVetoPlanes(mu.NVetoPlanes)
- MuFilter.SetNVetoBars(mu.NVetoBars)
- MuFilter.SetVetoPlanesDimensions(mu.VetoPlaneX, mu.VetoPlaneY, mu.VetoPlaneZ)
- MuFilter.SetVetoBarsDimensions(mu.VetoBarX, mu.VetoBarY, mu.VetoBarZ)
- MuFilter.SetMuFilterDimensions(mu.X, mu.Y, mu.Z)
- MuFilter.SetIronBlockDimensions(mu.FeX, mu.FeY, mu.FeZ)
- #upstream section
- MuFilter.SetUpstreamPlanesDimensions(mu.UpstreamDetX, mu.UpstreamDetY, mu.UpstreamDetZ)
- MuFilter.SetNUpstreamPlanes(mu.NUpstreamPlanes)
- MuFilter.SetUpstreamBarsDimensions(mu.UpstreamBarX, mu.UpstreamBarY, mu.UpstreamBarZ)
- MuFilter.SetNUpstreamBars(mu.NUpstreamBars)
- #downstream section
- MuFilter.SetDownstreamPlanesDimensions(mu.DownstreamDetX, mu.DownstreamDetY, mu.DownstreamDetZ)
- MuFilter.SetNDownstreamPlanes(mu.NDownstreamPlanes)
- MuFilter.SetDownstreamBarsDimensions(mu.DownstreamBarX, mu.DownstreamBarY, mu.DownstreamBarZ)
- MuFilter.SetDownstreamVerticalBarsDimensions(mu.DownstreamBarX_ver, mu.DownstreamBarY_ver, mu.DownstreamBarZ_ver)
- MuFilter.SetNDownstreamBars(mu.NDownstreamBars)
- MuFilter.SetDS4ZGap(mu.DS4ZGap)
+ for parName in ship_geo.MuFilter:
+    parValue = eval('ship_geo.MuFilter.'+parName)
+    MuFilter.SetConfPar("MuFilter/"+parName, parValue)
 
- MuFilter.SetCenterZ(mu.Zcenter)
- MuFilter.SetXYDisplacement(mu.ShiftX, mu.ShiftY)
- MuFilter.SetSlope(mu.Slope)
- MuFilter.SetYPlanesDisplacement(mu.ShiftYEnd)
-
- MuFilter.SetReadout(mu.VetonSiPMs,mu.UpstreamnSiPMs,mu.DownstreamnSiPMs,mu.VetonSides,mu.UpstreamnSides,mu.DownstreamnSides )
- 
  detectorList.append(MuFilter)
  detElements = {}
  if hasattr(run,'SetMaterials'):  

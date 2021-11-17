@@ -31,38 +31,8 @@ class MuFilter : public FairDetector
 		/**      Create the detector geometry        */
 		void ConstructGeometry();
 
-		/** Other functions **/
-		void SetVetoCenterPosition(Double_t); //veto position
-		void SetNVetoPlanes(Int_t); //number of veto planes
-		void SetNVetoBars(Int_t);
-		void SetVetoShift(Double_t , Double_t);
-		void SetVetoPlaneShiftY(Double_t);		
-		void SetVetoPlanesDimensions(Double_t, Double_t, Double_t);	
-		void SetVetoBarsDimensions(Double_t, Double_t, Double_t);
-		
-		void SetIronBlockDimensions(Double_t , Double_t, Double_t);	       
-		void SetMuFilterDimensions(Double_t, Double_t, Double_t);
-		void SetCenterZ(Double_t);
-                void SetXYDisplacement(Double_t , Double_t ); //global xy position
-                void SetYPlanesDisplacement(Double_t); //displacement for downstream plates
-                void SetSlope(Double_t);
-
-		void SetUpstreamPlanesDimensions(Double_t, Double_t, Double_t);
-		void SetNUpstreamPlanes(Int_t);
-		void SetUpstreamBarsDimensions(Double_t, Double_t, Double_t);
-		void SetNUpstreamBars(Int_t);
-
-		void SetDownstreamPlanesDimensions(Double_t, Double_t, Double_t);
-		void SetNDownstreamPlanes(Int_t);
-		void SetDownstreamBarsDimensions(Double_t, Double_t, Double_t);
-        	void SetDownstreamVerticalBarsDimensions(Double_t, Double_t, Double_t);
-		void SetNDownstreamBars(Int_t);
-               void SetDS4ZGap(Double_t);
     /** Getposition **/
                  void GetPosition(Int_t id, TVector3& vLeft, TVector3& vRight); // or top and bottom
-   /** set readout parameters **/
-                 void SetReadout(Int_t nV,Int_t nU,Int_t nD,Int_t sV,Int_t sU,Int_t sD){
-                                          nSiPMs[0]=nV;nSiPMs[1]=nU;nSiPMs[2]=nD;nSides[0]=sV;nSides[1]=sU;nSides[2]=sD;}
                  Int_t GetnSiPMs(Int_t detID);
                  Int_t GetnSides(Int_t detID);
 
@@ -157,6 +127,10 @@ class MuFilter : public FairDetector
 			Double_t fUpstreamDetY;	//|
 			Double_t fUpstreamDetZ;	//|			
 
+			Double_t fUSShiftX;  //| US with respect to nominal
+			Double_t fUSShiftY;  //|
+			Double_t fUSShiftZ;  //|
+
 			Int_t fNUpstreamPlanes;	//|Number of planes
 
 			Double_t fUpstreamBarX; //|Staggered bars of upstream section
@@ -168,6 +142,13 @@ class MuFilter : public FairDetector
 			Double_t fDownstreamDetX;	//|Downstream muon detector planes dimensions
 			Double_t fDownstreamDetY;	//|
 			Double_t fDownstreamDetZ;	//|
+
+			Double_t fDSHShiftX;  //| DS with respect to nominal
+			Double_t fDSHShiftY;  //|
+			Double_t fDSHShiftZ;  //|
+			Double_t fDSVShiftX;  //|  
+			Double_t fDSVShiftY;  //|
+			Double_t fDSVShiftZ;  //|
 
 			Int_t fNDownstreamPlanes;	//|Number of planes
 
