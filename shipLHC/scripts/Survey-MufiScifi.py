@@ -567,6 +567,8 @@ def USshower(Nev=-1):
        ut.bookHist(h,'showerX'+x,'energy vs z',200,0.,10000.,20,-250.,-100.)
        ut.bookHist(h,'wshower'+x,'z weighted energy ',100,-300.,0.)
        ut.bookHist(h,'zyshower'+x,'y vs z weighted energy ',20,-250.,-100.,11,-0.5,10.5)
+    for p in range(systemAndPlanes[2]):
+       ut.bookHist(h,'SvsL'+str(p),'small vs large Sipms plane' +str(p)+';large   [QCD]; small   [QCD] ',100,0.1,250.,100,0.1,100.)
     if Nev < 0 : Nev = eventTree.GetEntries()
     N=0
     for event in eventTree:
@@ -579,8 +581,9 @@ def USshower(Nev=-1):
            detID = aHit.GetDetectorID()
            s = aHit.GetDetectorID()//10000
            if s!=2: continue
+           p = (aHit.GetDetectorID()//1000)%10
            S = aHit.SumOfSignals()
-
+           rc = h['SvsL'+str(p)].Fill(S['SumL'],S['SumS'])
            plane = (aHit.GetDetectorID()//1000)%10
            bar = aHit.GetDetectorID()%100
            if not plane in UShits: 
@@ -599,7 +602,7 @@ def USshower(Nev=-1):
        for plane in UShits:
            z = zPos['MuFilter'][s*10+plane%100]
            x = ''
-           if plane > 100: x='-small'
+           if plane > 99: x='-small'
            rc = h ['shower'+x].Fill(UShits[plane],z)
            if 0 in UShits:
                if UShits[0]>750: rc = h['showerX'+x].Fill(UShits[plane],z)
@@ -626,6 +629,18 @@ def USshower(Nev=-1):
     h ['zyshower-small'].SetStats(0)
     h ['zyshower-small'].Draw('lego2')
     myPrint(h['lego'],'shower',withRootFile=True)
+    
+    ut.bookCanvas(h,'CorLS','',900,1200,1,5)
+    h['SvsL'] =  h['SvsL0'].Clone('SvsL')
+    h['SvsL'].SetTitle('small vs large Sipms all planes')
+    for p in range(1,systemAndPlanes[2]):
+        h['SvsL'].Add(h['SvsL'+str(p)])
+    h['SvsL'].SetStats(0)
+    for p in range(systemAndPlanes[2]):
+        tc = h['CorLS'].cd(p+1)
+        h['SvsL'+str(p)].SetStats(0)
+        h['SvsL'+str(p)].Draw('colz')
+    myPrint(h['CorLS'],'QCDsmallCSQCDlarge')
 
 def Mufi_Efficiency(Nev=-1,optionTrack='DS',NbinsRes=100):
  for s in systemAndPlanes:
