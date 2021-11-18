@@ -131,7 +131,7 @@ bool MuFilterHit::isVertical(){
 }
 
 bool MuFilterHit::isShort(Int_t i){
-  if (shortSiPM.find(i+1) != shortSiPM.end()) {return kTRUE;}
+  if (i%8==3 || i%8==6) {return kTRUE;}
   else{return kFALSE;}
 }
 
