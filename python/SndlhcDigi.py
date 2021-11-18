@@ -46,11 +46,6 @@ class SndlhcDigi:
         self.digiMuFilter2MCPoints.BypassStreamer(ROOT.kTRUE)
         self.digiMuFilter2MCPointsBranch   = self.sTree.Branch("Digi_MuFilterHits2MCPoints",self.digiMuFilter2MCPoints,32000,1)
 
-    def setThresholds(self,S=0,ML=0,MS=0):
-        self.ScifiThreshold = S
-        self.MufiLargeThreshold = ML
-        self.MufiSmallThreshold = MS
-
     def digitize(self):
 
         self.header.SetRunId( self.sTree.MCEventHeader.GetRunID() )
