@@ -56,7 +56,7 @@ fScifiPointCollection(new TClonesArray("ScifiPoint"))
 {
 }
 
-Scifi::Scifi(const char* name, const Double_t xdim, const Double_t ydim, const Double_t zdim, Bool_t Active, const char* Title)
+Scifi::Scifi(const char* name, Bool_t Active, const char* Title)
 : FairDetector(name, true, kLHCScifi),
 fTrackID(-1),
 fVolumeID(-1),
@@ -67,9 +67,7 @@ fLength(-1.),
 fELoss(-1),
 fScifiPointCollection(new TClonesArray("ScifiPoint"))
 {
-	fXDimension = xdim;
-	fYDimension = ydim;
-	fZDimension = zdim;
+
 }
 
 Scifi::~Scifi()
@@ -78,94 +76,6 @@ Scifi::~Scifi()
         fScifiPointCollection->Delete();
         delete fScifiPointCollection;
     }
-}
-
-void Scifi::SetScifiParam(Double_t xdim, Double_t ydim, Double_t zdim)
-{
-	fXDimension = xdim;
-	fYDimension = ydim;
-	fZDimension = zdim;
-}
-
-void Scifi::SetMatParam(Double_t scifimat_width, Double_t scifimat_length, Double_t scifimat_z, Double_t epoxymat_z, Double_t scifimat_gap)
-{   
-    fWidthScifiMat = scifimat_width;  
-    fLengthScifiMat = scifimat_length;
-    fZScifiMat = scifimat_z;
-    fZEpoxyMat = epoxymat_z;
-    fGapScifiMat = scifimat_gap; //dead zone between mats
-}
-
-void Scifi::SetFiberParam(Double_t fiber_length, Double_t scintcore_rmax, Double_t clad1_rmax, Double_t clad2_rmax)
-{
-
-    fFiberLength = fiber_length;
-    fScintCore_rmax = scintcore_rmax;   
-    fClad1_rmin = fScintCore_rmax;
-    fClad1_rmax = clad1_rmax;
-    fClad2_rmin = clad1_rmax;
-    fClad2_rmax = clad2_rmax;
-}
-
-void Scifi::SetFiberPosParam(Double_t horizontal_pitch, Double_t vertical_pitch, Double_t rowlong_offset, Double_t rowshort_offset)
-{
-    fHorPitch = horizontal_pitch;       
-    fVertPitch= vertical_pitch;         
-    fOffsetRowS = rowlong_offset;             
-    fOffsetRowL= rowshort_offset;       
-}
-
-void Scifi::SetPlaneParam(Double_t carbonfiber_z, Double_t honeycomb_z)
-{
-    fZCarbonFiber = carbonfiber_z; 
-    fZHoneycomb = honeycomb_z; 
-}
-
-void Scifi::SetPlastBarParam(Double_t plastbar_x, Double_t plastbar_y, Double_t plastbar_z)
-{
-    fXPlastBar = plastbar_x;
-    fYPlastBar = plastbar_y; 
-    fZPlastBar = plastbar_z; 
-}
-
-void Scifi::SetNFibers(Int_t nfibers_shortrow, Int_t nfibers_longrow, Int_t nfibers_z)
-{
-    fNFibers_Srow = nfibers_shortrow;  
-    fNFibers_Lrow = nfibers_longrow;    
-    fNFibers_z = nfibers_z;                 
-}
-
-void Scifi::SetScifiSep(Double_t scifi_separation)
-{
-    fSeparationBrick = scifi_separation;
-}
-
-void Scifi::SetZOffset(Double_t offset_z)
-{
-    fZOffset = offset_z;
-}
-
-void Scifi::SetNMats(Int_t nmats)
-{
-    fNMats = nmats;
-}
-
-void Scifi::SetNScifi(Int_t nscifi)
-{
-    fNScifi = nscifi;
-}
-
-void Scifi::SiPMParams(Double_t channel_width, Double_t charr_width, Double_t sipm_edge, 
-                                                  Double_t charr_gap, Double_t sipm_diegap, Int_t nsipm_channels, Int_t nsipm_mat,Double_t X)
-{  
-    fWidthChannel = channel_width;
-    fCharr = charr_width;
-    fEdge = sipm_edge;
-    fCharrGap = charr_gap;
-    fBigGap = sipm_diegap;
-    fNSiPMChan = nsipm_channels;
-    fNSiPMs  = nsipm_mat;
-    firstChannelX = X;
 }
 
 void Scifi::Initialize()
@@ -221,6 +131,54 @@ void Scifi::ConstructGeometry()
   TGeoMedium *Epoxy = gGeoManager->GetMedium("Epoxy");
 
   TGeoVolume *volTarget = gGeoManager->GetVolume("volTarget");
+
+// external parameters
+	Double_t fXDimension = conf_floats["Scifi/xdim"];
+	Double_t fYDimension = conf_floats["Scifi/ydim"];
+	Double_t fZDimension = conf_floats["Scifi/zdim"];
+
+	Double_t fWidthScifiMat   = conf_floats["Scifi/scifimat_width"];
+	Double_t fLengthScifiMat = conf_floats["Scifi/scifimat_length"];
+	Double_t fZScifiMat              = conf_floats["Scifi/scifimat_z"];
+	Double_t fZEpoxyMat          = conf_floats["Scifi/epoxymat_z"];
+	Double_t fGapScifiMat        = conf_floats["Scifi/scifimat_gap"]; //dead zone between mats
+
+	Double_t fFiberLength         = conf_floats["Scifi/fiber_length"];
+	Double_t fScintCore_rmax  =  conf_floats["Scifi/scintcore_rmax"];
+	Double_t fClad1_rmin           =  fScintCore_rmax;
+	Double_t fClad1_rmax =  conf_floats["Scifi/clad1_rmax"];
+	Double_t fClad2_rmin =   conf_floats["Scifi/clad1_rmin"];
+	Double_t fClad2_rmax =  conf_floats["Scifi/clad2_rmax"];
+
+	Double_t fHorPitch         =  conf_floats["Scifi/horizontal_pitch"]; //Fiber position params
+	Double_t fVertPitch        =  conf_floats["Scifi/vertical_pitch"];
+	Double_t fOffsetRowS  =  conf_floats["Scifi/rowlong_offset"];
+	Double_t fOffsetRowL  =  conf_floats["Scifi/rowshort_offset"];
+
+	Double_t fZCarbonFiber = conf_floats["Scifi/carbonfiber_z"];
+	Double_t fZHoneycomb = conf_floats["Scifi/honeycomb_z"];
+
+	Double_t fXPlastBar = conf_floats["Scifi/plastbar_x"]; //Dimension of plastic bar
+	Double_t fYPlastBar = conf_floats["Scifi/plastbar_y"]; 
+	Double_t fZPlastBar = conf_floats["Scifi/plastbar_z"];
+
+	Int_t fNFibers_Srow = conf_ints["Scifi/nfibers_shortrow"]; 
+	Int_t fNFibers_Lrow = conf_ints["Scifi/nfibers_longrow"]; 
+	Int_t fNFibers_z = conf_ints["Scifi/nfibers_z"]; 
+
+	Double_t fSeparationBrick = conf_floats["Scifi/scifi_separation"];  //Separation between successive SciFi volumes
+	Double_t fZOffset = conf_floats["Scifi/offset_z"]; 
+	Int_t fNMats   = conf_ints["Scifi/nmats"];             //Number of mats in one SciFi plane
+	Int_t fNScifi    = conf_ints["Scifi/nscifi"];               //Number of Scifi walls
+	Int_t fNSiPMs  = conf_ints["Scifi/nsipm_mat"]; //Number of SiPMs per SciFi mat
+
+	Double_t fWidthChannel = conf_floats["Scifi/channel_width"]; //One channel width 
+	Double_t fCharr = conf_floats["Scifi/charr_width"]; //Width of an array of 64 channels without gaps
+	Double_t fEdge = conf_floats["Scifi/sipm_edge"]; //Edge at the left and right sides of the SiPM
+	Double_t fCharrGap = conf_floats["Scifi/charr_gap"]; //Gap between two charr
+	Double_t fBigGap = conf_floats["Scifi/sipm_diegap"]; //Gap between two arrays
+	Int_t fNSiPMChan = conf_ints["Scifi/nsipm_channels"]; //Number of channels in each SiPM
+	Double_t firstChannelX = conf_floats["Scifi/firstChannelX"]; //local X Position of first channel in plane
 
   //Carbon Fiber Film
   TGeoVolume *CarbonFiberVolume = gGeoManager->MakeBox("CarbonFiber", CarbonComposite, fXDimension/2, fYDimension/2, fZCarbonFiber/2);
@@ -279,7 +237,6 @@ void Scifi::ConstructGeometry()
     TGeoVolumeAssembly *ScifiVolume = new TGeoVolumeAssembly("ScifiVolume");
      Int_t node = 1e6*(istation+1);
     volTarget->AddNode(ScifiVolume, node, new TGeoTranslation(0, 0, fZOffset + istation*fSeparationBrick));
-    
     TGeoVolumeAssembly *ScifiHorPlaneVol = new TGeoVolumeAssembly("ScifiHorPlaneVol");
     TGeoVolumeAssembly *ScifiVertPlaneVol = new TGeoVolumeAssembly("ScifiVertPlaneVol");
 
@@ -341,11 +298,25 @@ void Scifi::ConstructGeometry()
                 }
             }
         }
-}}}
+}}
+
+}
 
 void Scifi::SiPMOverlap()
 {   
     if (gGeoManager->FindVolumeFast("SiPMmapVol")){return;}
+	Double_t fLengthScifiMat = conf_floats["Scifi/scifimat_length"];
+	Double_t fWidthChannel = conf_floats["Scifi/channel_width"];
+	Double_t fZEpoxyMat          = conf_floats["Scifi/epoxymat_z"];
+	Int_t fNSiPMChan = conf_ints["Scifi/nsipm_channels"];
+	Int_t fNSiPMs  = conf_ints["Scifi/nsipm_mat"];
+	Int_t fNMats   = conf_ints["Scifi/nmats"]; 
+	Double_t fEdge = conf_floats["Scifi/sipm_edge"];
+	Double_t fCharr = conf_floats["Scifi/charr_width"];
+	Double_t fCharrGap = conf_floats["Scifi/charr_gap"];
+	Double_t fBigGap = conf_floats["Scifi/sipm_diegap"];
+	Double_t firstChannelX = conf_floats["Scifi/firstChannelX"];
+
     //Contains all plane SiPMs, defined for horizontal fiber plane
     //To obtain SiPM map for vertical fiber plane rotate by 90 degrees around Z
     TGeoVolumeAssembly *SiPMmapVol = new TGeoVolumeAssembly("SiPMmapVol");
@@ -493,6 +464,7 @@ void Scifi::GetSiPMPosition(Int_t SiPMChan, TVector3& A, TVector3& B)
 	Int_t locNumber            = SiPMChan%100000;
 	Int_t globNumber         = int(SiPMChan/100000)*100000;
 	Float_t locPosition        = SiPMPos[locNumber]; // local position in plane of reference plane.
+	Double_t fFiberLength  = conf_floats["Scifi/fiber_length"];
 	// find first fibre for this SiPM
 	auto tmp = *fibresSiPM[locNumber].begin();
 	Int_t fid          = tmp.first;
@@ -587,8 +559,9 @@ void Scifi::SiPMmapping(){
 			Float_t t2 = fibre->GetMatrix()->GetTranslation()[1];
 			Int_t fID = fibre->GetNumber()%100000;     // local fibre number, global fibre number = SO+fID
 			Float_t a = t1+t2;
+
 	//  check for overlap with any of the SiPM channels in the same mat
-			for(Int_t nChan = 0; nChan<Nodes->GetEntriesFast();nChan++){        // 12 SiPMs total and 4 SiPMs per mat times 128 channels
+			for(Int_t nChan = 0; nChan< Nodes->GetEntriesFast();nChan++){        // 12 SiPMs total and 4 SiPMs per mat times 128 channels
 				vol = static_cast<TGeoNode*>(Nodes->At(nChan));
 				Int_t N = vol->GetNumber()%100000;
 				if (imat!=int(N/10000)){continue;}

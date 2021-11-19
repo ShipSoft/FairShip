@@ -130,6 +130,8 @@ void MuFilter::ConstructGeometry()
 	InitMedium("polyvinyltoluene");
 	TGeoMedium *Scint =gGeoManager->GetMedium("polyvinyltoluene");
 
+	Float_t nSiPMs[3];             //  number of SiPMs per side
+	Float_t nSides[3];             //  number of sides readout
 	nSiPMs[0] = conf_ints["MuFilter/nV"];
 	nSiPMs[1] = conf_ints["MuFilter/nU"];
 	nSiPMs[2] = conf_ints["MuFilter/nD"];
@@ -137,36 +139,35 @@ void MuFilter::ConstructGeometry()
 	nSides[1]  = conf_ints["MuFilter/sU"];
 	nSides[2]  = conf_ints["MuFilter/sD"];
 
-	// MuFilter dimensions
-	fMuFilterX = conf_floats["MuFilter/X"];
-	fMuFilterY = conf_floats["MuFilter/Y"];
-	fMuFilterZ = conf_floats["MuFilter/Z"];
+	Double_t fMuFilterX = conf_floats["MuFilter/X"]; // MuonFilterBox dimensions
+	Double_t fMuFilterY = conf_floats["MuFilter/Y"];
+	Double_t fMuFilterZ = conf_floats["MuFilter/Z"];
 
-	fNUpstreamPlanes = conf_ints["MuFilter/NUpstreamPlanes"];
-	fNUpstreamBars = conf_ints["MuFilter/NUpstreamBars"];
-	fNDownstreamPlanes =  conf_ints["MuFilter/NDownstreamPlanes"];
-	fNDownstreamBars =  conf_ints["MuFilter/NDownstreamBars"];
-	fDownstreamBarX_ver = conf_floats["MuFilter/DownstreamBarX_ver"];
-	fDownstreamBarY_ver = conf_floats["MuFilter/DownstreamBarY_ver"];
-	fDownstreamBarZ_ver = conf_floats["MuFilter/DownstreamBarZ_ver"];
-	fDS4ZGap = conf_floats["MuFilter/DS4ZGap"];
+	Int_t fNUpstreamPlanes = conf_ints["MuFilter/NUpstreamPlanes"]; // Number of planes
+	Int_t fNUpstreamBars = conf_ints["MuFilter/NUpstreamBars"]; // Number of staggered bars
+	Int_t fNDownstreamPlanes =  conf_ints["MuFilter/NDownstreamPlanes"]; // Number of planes
+	Int_t fNDownstreamBars =  conf_ints["MuFilter/NDownstreamBars"]; // Number of staggered bars
+	Double_t fDownstreamBarX_ver = conf_floats["MuFilter/DownstreamBarX_ver"]; // Staggered bars of upstream section, vertical bars for x measurement
+	Double_t fDownstreamBarY_ver = conf_floats["MuFilter/DownstreamBarY_ver"];
+	Double_t fDownstreamBarZ_ver = conf_floats["MuFilter/DownstreamBarZ_ver"];
+	Double_t fDS4ZGap = conf_floats["MuFilter/DS4ZGap"];
 
 	//Definition of the box containing veto planes
 	TGeoVolumeAssembly *volVeto = new TGeoVolumeAssembly("volVeto");
 	
 	//Veto Planes
-	fVetoPlaneX = conf_floats["MuFilter/VetoPlaneX"];
-	fVetoPlaneY = conf_floats["MuFilter/VetoPlaneY"];
-	fVetoPlaneZ = conf_floats["MuFilter/VetoPlaneZ"];
-	fVetoBarX     = conf_floats["MuFilter/VetoBarX"];
-	fVetoBarY     = conf_floats["MuFilter/VetoBarY"];
-	fVetoBarZ     = conf_floats["MuFilter/VetoBarZ"];
-	fVetoShiftX  = conf_floats["MuFilter/VetoShiftX"];
-	fVetoShiftY  = conf_floats["MuFilter/VetoShiftY"];
-	fVetoCenterZ = conf_floats["MuFilter/VetozC"];
-	fNVetoPlanes = conf_ints["MuFilter/NVetoPlanes"];
-	fNVetoBars     = conf_ints["MuFilter/NVetoBars"];
-	fVetoPlaneShiftY = conf_ints["MuFilter/VetoPlaneShiftY"];
+	Double_t fVetoPlaneX = conf_floats["MuFilter/VetoPlaneX"]; // Veto Plane dimensions
+	Double_t fVetoPlaneY = conf_floats["MuFilter/VetoPlaneY"];
+	Double_t fVetoPlaneZ = conf_floats["MuFilter/VetoPlaneZ"];
+	Double_t fVetoBarX     = conf_floats["MuFilter/VetoBarX"]; // Veto Bar dimensions
+	Double_t fVetoBarY     = conf_floats["MuFilter/VetoBarY"];
+	Double_t fVetoBarZ     = conf_floats["MuFilter/VetoBarZ"];
+	Double_t fVetoShiftX  = conf_floats["MuFilter/VetoShiftX"]; // Shift of Veto with respect to beam line
+	Double_t fVetoShiftY  = conf_floats["MuFilter/VetoShiftY"];
+	Double_t fVetoCenterZ = conf_floats["MuFilter/VetozC"];
+	Int_t fNVetoPlanes = conf_ints["MuFilter/NVetoPlanes"];
+	Int_t fNVetoBars     = conf_ints["MuFilter/NVetoBars"];
+	Double_t fVetoPlaneShiftY = conf_ints["MuFilter/VetoPlaneShiftY"];
 
 	TGeoBBox *VetoPlane = new TGeoBBox("VetoPlane",fVetoPlaneX/2., fVetoPlaneY/2., fVetoPlaneZ/2.);
 	// TGeoVolume *volVetoPlane = new TGeoVolume("volVetoPlane",VetoPlane,air);
@@ -206,15 +207,15 @@ void MuFilter::ConstructGeometry()
 	TGeoVolumeAssembly *volMuFilter = new TGeoVolumeAssembly("volMuFilter");
 	
 	//Iron blocks volume definition
-	fFeBlockX = conf_floats["MuFilter/FeX"];
-	fFeBlockY = conf_floats["MuFilter/FeY"];
-	fFeBlockZ = conf_floats["MuFilter/FeZ"];
-	fShiftX       =  conf_floats["MuFilter/ShiftX"];
-	fShiftY       =  conf_floats["MuFilter/ShiftY"];
-	fUSShiftX       =  conf_floats["MuFilter/USShiftX"];
-	fUSShiftY       =  conf_floats["MuFilter/USShiftY"];
-	fUSShiftZ       =  conf_floats["MuFilter/USShiftZ"];
-	fCenterZ   =  conf_floats["MuFilter/Zcenter"];
+	Double_t fFeBlockX = conf_floats["MuFilter/FeX"]; // Passive Iron blocks dimensions
+	Double_t fFeBlockY = conf_floats["MuFilter/FeY"];
+	Double_t fFeBlockZ = conf_floats["MuFilter/FeZ"];
+	Double_t fShiftX       =  conf_floats["MuFilter/ShiftX"]; // Shift in x-y wrt beam line
+	Double_t fShiftY       =  conf_floats["MuFilter/ShiftY"];
+	Double_t fCenterZ   =  conf_floats["MuFilter/Zcenter"];
+	Double_t fUSShiftX       =  conf_floats["MuFilter/USShiftX"];
+	Double_t fUSShiftY       =  conf_floats["MuFilter/USShiftY"];
+	Double_t fUSShiftZ       =  conf_floats["MuFilter/USShiftZ"];
 
 	TGeoBBox *FeBlockBox = new TGeoBBox("FeBlockBox",fFeBlockX/2, fFeBlockY/2, fFeBlockZ/2);
 	TGeoVolume *volFeBlock = new TGeoVolume("volFeBlock",FeBlockBox,Fe);
@@ -225,24 +226,24 @@ void MuFilter::ConstructGeometry()
 	Double_t dy = 0;
 	Double_t dz = 0;
 	//Upstream Detector planes definition
-	fUpstreamDetX =  conf_floats["MuFilter/UpstreamDetX"];
-	fUpstreamDetY =  conf_floats["MuFilter/UpstreamDetY"];
-	fUpstreamDetZ =  conf_floats["MuFilter/UpstreamDetZ"];
+	Double_t fUpstreamDetX =  conf_floats["MuFilter/UpstreamDetX"]; // Upstream muon detector planes dimensions
+	Double_t fUpstreamDetY =  conf_floats["MuFilter/UpstreamDetY"];
+	Double_t fUpstreamDetZ =  conf_floats["MuFilter/UpstreamDetZ"];
 	TGeoBBox *UpstreamDetBox = new TGeoBBox("UpstreamDetBox",fUpstreamDetX/2,fUpstreamDetY/2,fUpstreamDetZ/2);
 
 	// create pointer for upstream plane to be re-used
 	TGeoVolume* volUpstreamDet;
-	fUpstreamBarX = conf_floats["MuFilter/UpstreamBarX"];
-	fUpstreamBarY = conf_floats["MuFilter/UpstreamBarY"];
-	fUpstreamBarZ = conf_floats["MuFilter/UpstreamBarZ"];
+	Double_t fUpstreamBarX = conf_floats["MuFilter/UpstreamBarX"]; //Staggered bars of upstream section
+	Double_t fUpstreamBarY = conf_floats["MuFilter/UpstreamBarY"];
+	Double_t fUpstreamBarZ = conf_floats["MuFilter/UpstreamBarZ"];
 	//adding staggered bars, first part, only 11 bars, (single stations, readout on both ends)
 	TGeoBBox *MuUpstreamBar = new TGeoBBox("MuUpstreamBar",fUpstreamBarX/2, fUpstreamBarY/2, fUpstreamBarZ/2);
 	TGeoVolume *volMuUpstreamBar = new TGeoVolume("volMuUpstreamBar",MuUpstreamBar,Scint);
 	volMuUpstreamBar->SetLineColor(kBlue+2);
 	AddSensitiveVolume(volMuUpstreamBar);
 
-	fSlope =  conf_floats["MuFilter/Slope"];
-	fShiftYEnd = conf_floats["MuFilter/ShiftYEnd"];
+	Double_t fSlope =  conf_floats["MuFilter/Slope"]; //Slope for floor
+	Double_t fShiftYEnd = conf_floats["MuFilter/ShiftYEnd"]; // Shift for Downstream station
 	for(Int_t l=0; l<fNUpstreamPlanes; l++)
 	{
 	  string name = "volMuUpstreamDet_"+std::to_string(l);
@@ -256,7 +257,7 @@ void MuFilter::ConstructGeometry()
 	  volMuFilter->AddNode(volFeBlock,l,
                                     new TGeoTranslation(fUSShiftX,fUSShiftY+fMuFilterY/2-fFeBlockY/2+dy,fUSShiftZ-fMuFilterZ/2+fFeBlockZ/2+dz));
 	  volMuFilter->AddNode(volUpstreamDet,fNVetoPlanes+l,
-                                    new TGeoTranslation(fUSShiftX,fUSShiftY+fMuFilterY/2-fFeBlockY/2+dy,fUSShiftZ+fMuFilterZ/2+fFeBlockZ+fUpstreamDetZ/2+dz));
+                                    new TGeoTranslation(fUSShiftX,fUSShiftY+fMuFilterY/2-fFeBlockY/2+dy,fUSShiftZ-fMuFilterZ/2+fFeBlockZ+fUpstreamDetZ/2+dz));
 	  dz+=fFeBlockZ+fUpstreamDetZ;
 
 	  for (Int_t ibar = 0; ibar < fNUpstreamBars; ibar++){
@@ -275,18 +276,21 @@ void MuFilter::ConstructGeometry()
 	TGeoVolume* volDownstreamDet;
 
 	//adding staggered bars, second part, 77 bars, each for x and y coordinates
-	fDownstreamBarX = conf_floats["MuFilter/DownstreamBarX"];
-	fDownstreamBarY = conf_floats["MuFilter/DownstreamBarY"];
-	fDownstreamBarZ = conf_floats["MuFilter/DownstreamBarZ"];
+	Double_t fDownstreamDetX = conf_floats["MuFilter/DownstreamDetX"]; // Downstream muon detector planes dimensions
+	Double_t fDownstreamDetY = conf_floats["MuFilter/DownstreamDetY"];
+	Double_t fDownstreamDetZ = conf_floats["MuFilter/DownstreamDetZ"];
 
-	fDownstreamDetX = conf_floats["MuFilter/DownstreamDetX"];
-	fDownstreamDetY = conf_floats["MuFilter/DownstreamDetY"];
-	fDownstreamDetZ = conf_floats["MuFilter/DownstreamDetZ"];
+	Double_t fDownstreamBarX = conf_floats["MuFilter/DownstreamBarX"]; // Staggered bars of upstream section
+	Double_t fDownstreamBarY = conf_floats["MuFilter/DownstreamBarY"];
+	Double_t fDownstreamBarZ = conf_floats["MuFilter/DownstreamBarZ"];
+
 	
-	fDSHShiftX       =  conf_floats["MuFilter/DSHShiftX"];
-	fDSHShiftY       =  conf_floats["MuFilter/DSHShiftY"];
-	fDSVShiftX       =  conf_floats["MuFilter/DSVShiftX"];
-	fDSVShiftY       =  conf_floats["MuFilter/DSVShiftY"];
+	Double_t fDSHShiftX       =  conf_floats["MuFilter/DSHShiftX"]; // DS with respect to nominal
+	Double_t fDSHShiftY       =  conf_floats["MuFilter/DSHShiftY"];
+	Double_t fDSHShiftZ       =  conf_floats["MuFilter/DSHShiftZ"];
+	Double_t fDSVShiftX       =  conf_floats["MuFilter/DSVShiftX"];
+	Double_t fDSVShiftY       =  conf_floats["MuFilter/DSVShiftY"];
+	Double_t fDSVShiftZ       =  conf_floats["MuFilter/DSVShiftZ"];
 
 
 	TGeoBBox *MuDownstreamBar_hor = new TGeoBBox("MuDownstreamBar_hor",fDownstreamBarX/2, fDownstreamBarY/2, fDownstreamBarZ/2);
@@ -476,12 +480,16 @@ void MuFilter::GetPosition(Int_t fDetectorID, TVector3& vLeft, TVector3& vRight)
 }
 
    Int_t MuFilter::GetnSiPMs(Int_t detID){
-       int subsystem     = floor(detID/10000);
-       return nSiPMs[subsystem-1];
+       int subsystem     = floor(detID/10000)-1;
+       if (subsystem==0){return conf_ints["MuFilter/nV"];}
+       if (subsystem==1){return conf_ints["MuFilter/nU"];}
+       return conf_ints["MuFilter/nD"];
    }
    Int_t MuFilter::GetnSides(Int_t detID){
-       int subsystem     = floor(detID/10000);
-       return nSides[subsystem-1];
+       int subsystem     = floor(detID/10000)-1;
+       if (subsystem==0){return conf_ints["MuFilter/sV"];}
+       if (subsystem==1){return conf_ints["MuFilter/sU"];}
+       return conf_ints["MuFilter/sD"];
   }
 
 ClassImp(MuFilter)
