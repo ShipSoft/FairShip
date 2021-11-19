@@ -559,6 +559,7 @@ def Scifi_track():
     for k in range(len(clusters)):
            hitlist[k] = clusters[k]
     theTrack = trackTask.fitTrack(hitlist)
+    eventTree.ScifiClusters = clusters
     return theTrack
 
 def USshower(Nev=-1):
@@ -709,7 +710,7 @@ def Mufi_Efficiency(Nev=-1,optionTrack='DS',NbinsRes=100):
          for aHit in muHits[s*10+tag]:
               detID = aHit.GetDetectorID()
               MuFilter.GetPosition(detID,A,B)
-              if aHit.isVertical() : D = (A[0]+B[0])/2. - yEx
+              if aHit.isVertical() : D = (A[0]+B[0])/2. - xEx
               else:                             D = (A[1]+B[1])/2. - yEx
               if abs(D)<5: tagged = True
          # if not tagged: continue
@@ -1136,7 +1137,7 @@ def Scifi_slopes(Nev=-1):
                         N = len(tmp)
                         hitlist.clear()
                         for aHit in tmp: hitlist.push_back( event.Digi_ScifiHits[hitDict[aHit]])
-                        aCluster = ROOT.sndCluster(first,N,hitlist,scifiDet)
+                        aCluster = ROOT.sndCluster(first,N,hitlist,Scifi)
                         clusters.append(aCluster)
                         if c!=hitList[last]:
                              ncl+=1
@@ -1277,4 +1278,63 @@ def scifi_beamSpot():
             else: yMean+=A[1]
             w+=1
         rc = h['bs'].Fill(xMean/w,yMean/w)
+
+def Scifi_residuals(Nev=-1,NbinsRes=100,xmin=-500.):
+    projs = {1:'Y',0:'X'}
+    for s in range(1,6):
+     for o in range(2):
+        for p in projs:
+           proj = projs[p]
+           xmax = -xmin
+           ut.bookHist(h,'res'+proj+'_Scifi'+str(s*10+o),'residual  '+proj+str(s*10+o)+'; [#mum]',NbinsRes,xmin,xmax)
+           ut.bookHist(h,'res'+proj+'_Scifi'+str(s*10+o),'residual '+proj+str(s*10+o)+'; [#mum]',NbinsRes,xmin,xmax)
+           ut.bookHist(h,'res'+proj+'_Scifi'+str(s*10+o),'residual '+proj+str(s*10+o)+'; [#mum]',NbinsRes,xmin,xmax)
+           ut.bookHist(h,'res'+proj+'_Scifi'+str(s*10+o),'residual '+proj+str(s*10+o)+'; [#mum]',NbinsRes,xmin,xmax)
+           ut.bookHist(h,'track_Scifi'+str(s*10+o),'track x/y '+str(s*10+o),80,-70.,10.,80,0.,80.)
+    if Nev < 0 : Nev = eventTree.GetEntries()
+    N=0
+    for event in eventTree:
+       N+=1
+       if N>Nev: break
+       theTrack = Scifi_track()
+       if not hasattr(theTrack,"getFittedState"): continue
+# check residuals
+       if not theTrack.getFitStatus().isFitConverged(): continue
+
+       state = theTrack.getFittedState()
+       pos    = state.getPos()
+       mom = state.getMom()
+       sortedClusters={}
+       for aCl in eventTree.ScifiClusters:
+           so = aCl.GetFirst()//100000
+           if not so in sortedClusters: sortedClusters[so]=[]
+           sortedClusters[so].append(aCl)
+
+       for s in range(1,6):
+         for o in range(2):
+            so = s*10+o
+            if not so in sortedClusters: continue
+            z = zPos['Scifi'][so] 
+            lam = (z-pos.z())/mom.z()
+            xEx,yEx = pos.x()+lam*mom.x(),pos.y()+lam*mom.y()
+            rc = h['track_Scifi'+str(so)].Fill(xEx,yEx)
+            for aCl in sortedClusters[so]:
+              aCl.GetPosition(A,B)
+              if o==1 : D = (A[0]+B[0])/2. - xEx
+              else:         D = (A[1]+B[1])/2. - yEx
+              rc = h['res'+projs[o]+'_Scifi'+str(so)].Fill(D/u.um)
+
+    ut.bookCanvas(h,'scifiRes','',1600,1900,2,5)
+    k=1
+    for s in range(1,6):
+         for o in range(2):
+            so = s*10+o
+            tc = h['scifiRes'].cd(k)
+            k+=1
+            h['res'+projs[o]+'_Scifi'+str(so)].Draw()
+
+
+
+
+
 
