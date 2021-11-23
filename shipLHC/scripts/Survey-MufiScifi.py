@@ -1,6 +1,65 @@
 #python -i MufiScifi.py -r 46 -p /eos/experiment/sndlhc/testbeam/MuFilter/TB_data_commissioning/sndsw/ -g geofile_sndlhc_H6.root
 
 import ROOT,os
+import time
+# for fixing a root bug
+ROOT.gInterpreter.Declare("""
+#include "MuFilterHit.h"
+#include "AbsMeasurement.h"
+#include "TrackPoint.h"
+
+void fixRoot(MuFilterHit& aHit,std::vector<int>& key,std::vector<float>& value) {
+   std::map<int,float> m = aHit.GetAllSignals();
+   std::map<int, float>::iterator it = m.begin();
+   while (it != m.end())
+    {
+        key.push_back(it->first);
+        value.push_back(it->second);
+        it++;
+    }
+}
+void fixRoot(MuFilterHit& aHit, std::vector<TString>& key,std::vector<float>& value) {
+   std::map<TString, float> m = aHit.SumOfSignals();
+   std::map<TString, float>::iterator it = m.begin();
+   while (it != m.end())
+    {
+        key.push_back(it->first);
+        value.push_back(it->second);
+        it++;
+    }
+}
+
+void fixRoot(std::vector<genfit::TrackPoint*>& points, std::vector<int>& d,std::vector<int>& k) {
+      for(std::size_t i = 0; i < points.size(); ++i) {
+        genfit::AbsMeasurement*  m = points[i]->getRawMeasurement();
+        d.push_back( m->getDetId() );
+        k.push_back( int(m->getHitId()/1000) );
+    }
+}
+""")
+
+
+Tkey  = ROOT.std.vector('TString')()
+Ikey   = ROOT.std.vector('int')()
+Value = ROOT.std.vector('float')()
+
+def map2Dict(aHit,T='GetAllSignals'):
+     if T=="SumOfSignals":
+        key = Tkey
+     elif T=="GetAllSignals":
+        key = Ikey
+     else: 
+           print('use case not known',T)
+           1/0
+     key.clear()
+     Value.clear()
+     ROOT.fixRoot(aHit,key,Value)
+     theDict = {}
+     for k in range(key.size()):
+         if T=="SumOfSignals": theDict[key[k].Data()] = Value[k]
+         else: theDict[key[k]] = Value[k]
+     return theDict
+
 import rootUtils as ut
 import shipunit as u
 h={}
@@ -10,6 +69,7 @@ parser.add_argument("-r", "--runNumber", dest="runNumber", help="run number", ty
 parser.add_argument("-p", "--path", dest="path", help="run number",required=False,default="")
 parser.add_argument("-f", "--inputFile", dest="fname", help="file name for MC", type=str,default=None,required=False)
 parser.add_argument("-g", "--geoFile", dest="geoFile", help="geofile", required=True)
+parser.add_argument("-b", "--heartBeat", dest="heartBeat", help="heart beat", default=10000,type=int)
 options = parser.parse_args()
 
 path = options.path
@@ -195,6 +255,7 @@ def Scifi_hitMaps(Nev=-1):
  if Nev < 0 : Nev = eventTree.GetEntries()
  for event in eventTree:
     N+=1
+    if N%options.heartBeat == 0: print('event ',N,' ',time.ctime())
     if N>Nev: break
     for aHit in event.Digi_ScifiHits:
         if not aHit.isValid(): continue
@@ -252,6 +313,7 @@ def Mufi_hitMaps(Nev = -1):
 
  for event in eventTree:
     N+=1
+    if N%options.heartBeat == 0: print('event ',N,' ',time.ctime())
     if N>Nev: break
     withX = False
     planes = {}
@@ -269,35 +331,36 @@ def Mufi_hitMaps(Nev = -1):
                     bar=bar-60
                     l+=1
         if not key in planes: planes[key] = {}
-        sumSignal = aHit.SumOfSignals()
+        sumSignal = map2Dict(aHit,'SumOfSignals')
         planes[key][bar] = [sumSignal['SumL'],sumSignal['SumR']]
         nSiPMs = aHit.GetnSiPMs()
         nSides  = aHit.GetnSides()
-
 # check left/right
-        allChannels = aHit.GetAllSignals(False)  # masking not yet correctly done in the raw conversion
+        allChannels = map2Dict(aHit,'GetAllSignals')
         if nSides==2:
            Nleft    = 0
            Nright = 0
            Sleft    = 0
            Sright = 0
            for c in allChannels:
-              if  nSiPMs > c[0]:  # left side
+              if  nSiPMs > c:  # left side
                     Nleft+=1
-                    Sleft+=c[1]
+                    Sleft+=allChannels[c]
               else:
                     Nright+=1
-                    Sright+=c[1]
+                    Sright+=allChannels[c]
            rc = h['leftvsright_'+str(s)].Fill(Nleft,Nright)
            rc = h['leftvsright_signal_'+str(s)].Fill(Sleft,Sright)
+
         for c in allChannels:
-            channel = bar*nSiPMs*nSides + c[0]
+            channel = bar*nSiPMs*nSides + c
             rc = h['hit_'+str(s)+str(l)].Fill( int(channel))
             rc = h['bar_'+str(s)+str(l)].Fill(bar)
-            if s==2 and smallSiPMchannel(c[0]) : rc  = h['sigS_'+str(s)+str(l)].Fill(c[1])
-            elif c[0]<nSiPMs: rc  = h['sigL_'+str(s)+str(l)].Fill(c[1])
-            else             :             rc  = h['sigR_'+str(s)+str(l)].Fill(c[1])
-            rc  = h['sig_'+str(s)+str(l)].Fill(c[1])
+            if s==2 and smallSiPMchannel(c) : rc  = h['sigS_'+str(s)+str(l)].Fill(allChannels[c])
+            elif c<nSiPMs: rc  = h['sigL_'+str(s)+str(l)].Fill(allChannels[c])
+            else             :             rc  = h['sigR_'+str(s)+str(l)].Fill(allChannels[c])
+            rc  = h['sig_'+str(s)+str(l)].Fill(allChannels[c])
+        allChannels.clear()
     maxOneBar = True
     for key in planes:
         if len(planes[key]) > 2: maxOneBar = False
@@ -321,7 +384,7 @@ def Mufi_hitMaps(Nev = -1):
 
  for S in installed_stations:
    for l in range(installed_stations[S]):
-      n = S-1 + l*x
+      n = S + l*x
       tc = h['hitmaps'].cd(n)
       h['hit_'+str(S)+str(l)].Draw()
       tc = h['barmaps'].cd(n)
@@ -330,6 +393,21 @@ def Mufi_hitMaps(Nev = -1):
       h['sig_'+str(S)+str(l)].Draw()
       tc = h['Tsignal'].cd(n)
       h['Tsig_'+str(S)+str(l)].Draw()
+
+ ut.bookCanvas(h,'VETO',' ',1200,1800,1,2)
+ for l in range(2):
+    tc = h['VETO'].cd(l+1)
+    hname = 'hit_'+str(1)+str(l)
+    h[hname].SetStats(0)
+    h[hname].Draw()
+    for n in range(7):
+       x = (n+1)*16-0.5
+       y = h['hit_'+str(1)+str(l)].GetMaximum()
+       lname = 'L'+str(n)+hname
+       h[lname] = ROOT.TLine(x,0,x,y)
+       h[lname].SetLineColor(ROOT.kRed)
+       h[lname].SetLineStyle(9)
+       h[lname].Draw('same')
 
  ut.bookCanvas(h,'USBars',' ',1200,900,1,1)
  colours = {0:ROOT.kOrange,1:ROOT.kRed,2:ROOT.kGreen,3:ROOT.kBlue,4:ROOT.kMagenta}
@@ -476,10 +554,13 @@ def beamSpot():
          pos    = state.getPos()
          rc = h['bs'].Fill(pos.x(),pos.y())
          points = aTrack.getPoints()
-         for p in points:
-             m = p.getRawMeasurement()
-             detID = m.getDetId()
-             key = m.getHitId()//1000 # for mufi
+         keys     = ROOT.std.vector('int')()
+         detIDs = ROOT.std.vector('int')()
+         ROOT.fixRoot(points, detIDs,keys)
+         for k in range(keys.size()):
+             #                                     m = p.getRawMeasurement()
+             detID =detIDs[k] # m.getDetId()
+             key = keys[k]          # m.getHitId()//1000 # for mufi
              aHit = eventTree.Digi_MuFilterHits[key]
              if aHit.GetDetectorID() != detID: continue # not a Mufi hit
              s = detID//10000
@@ -583,7 +664,7 @@ def USshower(Nev=-1):
            s = aHit.GetDetectorID()//10000
            if s!=2: continue
            p = (aHit.GetDetectorID()//1000)%10
-           S = aHit.SumOfSignals()
+           S = map2Dict(aHit,'SumOfSignals')
            rc = h['SvsL'+str(p)].Fill(S['SumL'],S['SumS'])
            plane = (aHit.GetDetectorID()//1000)%10
            bar = aHit.GetDetectorID()%100
@@ -725,15 +806,15 @@ def Mufi_Efficiency(Nev=-1,optionTrack='DS',NbinsRes=100):
               dx = (A[0]+B[0])/2. - xEx
               rc = h['resY_'+sdict[s]+str(s*10+plane)].Fill(dy)
               rc = h['resX_'+sdict[s]+str(s*10+plane)].Fill(dx)
-              S = aHit.GetAllSignals()
+              S = map2Dict(aHit,'GetAllSignals')
               # check for signal in left / right or small sipm
               left,right,smallL,smallR,Sleft,Sright = 0,0,0,0,0,0
               for x in S:
-                  if x.first<nSiPMs: 
-                       if smallSiPMchannel(x.first):  smallL+=1
+                  if x<nSiPMs: 
+                       if smallSiPMchannel(x):  smallL+=1
                        else:    left+=1
                   else:           
-                       if smallSiPMchannel(x.first):  smallR+=1
+                       if smallSiPMchannel(x):  smallR+=1
                        else:   right+=1
               if left>0:
                     rc = h['resY_'+sdict[s]+'L'+str(s*10+plane)].Fill(dy)
