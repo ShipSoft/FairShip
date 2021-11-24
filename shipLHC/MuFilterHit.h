@@ -5,6 +5,7 @@
 #include "MuFilterPoint.h"
 #include "TObject.h"
 #include "TVector3.h"
+#include <map>
 
 class MuFilterHit : public SndlhcHit
 {
@@ -13,8 +14,11 @@ class MuFilterHit : public SndlhcHit
     /** Default constructor **/
     MuFilterHit();
     MuFilterHit(Int_t detID);
+    /** Constructor with detector id, number of SiPMs per side, number of sides **/
+    MuFilterHit(Int_t detID,Int_t nP,Int_t nS);
+
     // Constructor from MuFilterPoint
-    MuFilterHit(int detID,std::vector<MuFilterPoint*>);
+    MuFilterHit(Int_t detID,std::vector<MuFilterPoint*>);
 
  /** Destructor **/
     virtual ~MuFilterHit();
@@ -22,18 +26,27 @@ class MuFilterHit : public SndlhcHit
     /** Output to screen **/
     void Print() const;
     Float_t GetEnergy();
-
+    Float_t SumOfSignals(char* opt,Bool_t mask=kTRUE);
+    std::map<TString,Float_t> SumOfSignals(Bool_t mask=kTRUE);
+    std::map<Int_t,Float_t> GetAllSignals(Bool_t mask=kTRUE);
+    std::map<Int_t,Float_t> GetAllTimes(Bool_t mask=kTRUE);
+    Float_t  GetDeltaT(Bool_t mask=kTRUE);
     void setInvalid() {flag = false;}
     bool isValid() const {return flag;}
+    bool isMasked(Int_t i) const {return fMasked[i];}
+    void SetMasked(Int_t i) {fMasked[i]=kTRUE;}
+    int GetSystem(){return floor(fDetectorID/10000);}
     bool isVertical();
+    bool isShort(Int_t);
   private:
     /** Copy constructor **/
     MuFilterHit(const MuFilterHit& hit);
     MuFilterHit operator=(const MuFilterHit& hit);
 
     Float_t flag;   ///< flag
+    Float_t fMasked[16];  /// masked signal
 
-    ClassDef(MuFilterHit,1);
+    ClassDef(MuFilterHit,4);
     
 
 };

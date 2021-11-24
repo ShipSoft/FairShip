@@ -26,7 +26,7 @@ class SndlhcHit : public TObject
 
 
     /** Constructor with detector id, number of SiPMs per side, number of sides **/
-    SndlhcHit(Int_t detID);
+    SndlhcHit(Int_t detID,Int_t nSiPMs=1,Int_t nSides=0);
 
     /** Destructor **/
     virtual ~SndlhcHit();
@@ -34,12 +34,12 @@ class SndlhcHit : public TObject
 
     /** Accessors **/
     Int_t    GetDetectorID()    const { return fDetectorID;  };
-    Float_t GetSignal(Int_t nChannel);
-    Float_t GetTime(Int_t nChannel);
+    Float_t GetSignal(Int_t nChannel=0);
+    Float_t GetTime(Int_t nChannel=0);
     Int_t GetnSiPMs() const { return nSiPMs;  };
     Int_t GetnSides() const { return nSides;  };
     /** Modifiers **/
-    void SetDigi(Int_t i, Float_t s, Float_t t) { signals[i]=s;times[i]=t; }
+    void SetDigi(Float_t s, Float_t t,Int_t i=0) { signals[i]=s;times[i]=t; }
     void SetDetectorID(Int_t detID) { fDetectorID = detID; }
 
 // to be implemented by the subdetector

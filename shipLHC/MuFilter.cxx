@@ -89,146 +89,6 @@ MuFilter::~MuFilter()
     }
 }
 
-void MuFilter::SetXYZ(TString plane,Float_t Dx,Float_t Dy,Float_t Dz){
-   geoParameters[plane]=TVector3(Dx,Dz,Dy);    // flip y with z axis
-   std::cout<<"geoParameters "<<plane<<" "<<Dx<<" "<<Dz<<" "<<Dy<<std::endl;
-}
-
-void MuFilter::SetVetoShift(Double_t x, Double_t y)
-{
-  fVetoShiftX = x;
-  fVetoShiftY = y;
-}
-
-void MuFilter::SetVetoPlanesDimensions(Double_t x, Double_t y, Double_t z)
-{
-  fVetoPlaneX = x;
-  fVetoPlaneY = y;
-  fVetoPlaneZ = z;
-}
-
-void MuFilter::SetVetoBarsDimensions(Double_t x, Double_t y, Double_t z)
-{
-  fVetoBarX = x;
-  fVetoBarY = y;
-  fVetoBarZ = z;
-}
-
-void MuFilter::SetVetoCenterPosition(Double_t z)
-{
-  fVetoCenterZ = z;
-}
-
-void MuFilter::SetNVetoPlanes(Int_t n)
-{
-  fNVetoPlanes = n;
-}
-
-void MuFilter::SetNVetoBars(Int_t n)
-{
-  fNVetoBars = n;
-}
-
-void MuFilter::SetVetoPlaneShiftY(Double_t y)
-{
-  fVetoPlaneShiftY = y;
-}
-
-void MuFilter::SetIronBlockDimensions(Double_t x, Double_t y, Double_t z)
-{
-	fFeBlockX = x;
-	fFeBlockY = y;
-	fFeBlockZ = z;
-}
-
-void MuFilter::SetMuFilterDimensions(Double_t x, Double_t y, Double_t z)
-{	
-	fMuFilterX = x;
-	fMuFilterY = y;
-	fMuFilterZ = z;
-}
-
-void MuFilter::SetUpstreamPlanesDimensions(Double_t x, Double_t y, Double_t z)
-{
-	fUpstreamDetX = x;
-	fUpstreamDetY = y;
-	fUpstreamDetZ = z;
-}
-
-void MuFilter::SetNUpstreamPlanes(Int_t n)
-{
-	fNUpstreamPlanes = n;
-}
-
-void MuFilter::SetUpstreamBarsDimensions(Double_t x, Double_t y, Double_t z)
-{
-        fUpstreamBarX = x;
-	fUpstreamBarY = y;
-	fUpstreamBarZ = z;
-}
-
-void MuFilter::SetNUpstreamBars(Int_t n)
-{
-	fNUpstreamBars = n;
-}
-
-void MuFilter::SetDownstreamPlanesDimensions(Double_t x, Double_t y, Double_t z)
-{
-	fDownstreamDetX = x;
-	fDownstreamDetY = y;
-	fDownstreamDetZ = z;
-}
-
-void MuFilter::SetNDownstreamPlanes(Int_t n)
-{
-	fNDownstreamPlanes = n;
-}
-
-void MuFilter::SetDownstreamBarsDimensions(Double_t x, Double_t y, Double_t z)
-{
-        fDownstreamBarX = x;
-	fDownstreamBarY = y;
-	fDownstreamBarZ = z;
-}
-
-void MuFilter::SetDownstreamVerticalBarsDimensions(Double_t x, Double_t y, Double_t z)
-{
-        fDownstreamBarX_ver = x;
-	fDownstreamBarY_ver = y;
-	fDownstreamBarZ_ver = z;
-}
-
-void MuFilter::SetNDownstreamBars(Int_t n)
-{
-	fNDownstreamBars = n;
-}
-
-void MuFilter::SetDS4ZGap(Double_t z)
-{
-	fDS4ZGap = z;
-}
-
-void MuFilter::SetCenterZ(Double_t z)
-{
-	fCenterZ = z;
-}
-
-void MuFilter::SetXYDisplacement(Double_t x, Double_t y)
-{
-	fShiftX = x;
-	fShiftY = y;
-}
-
-void MuFilter::SetYPlanesDisplacement(Double_t y)
-{
-        fShiftYEnd = y;
-}
-
-void MuFilter::SetSlope(Double_t Slope)
-{
-        fSlope = Slope;
-}
-
 void MuFilter::Initialize()
 {
 	FairDetector::Initialize();
@@ -259,7 +119,6 @@ void MuFilter::ConstructGeometry()
 {
 	TGeoVolume *top=gGeoManager->FindVolumeFast("Detector");
 	if(!top)  LOG(ERROR) << "no Detector volume found " ;
-	gGeoManager->SetVisLevel(10);
 
 	//Materials 
 
@@ -269,9 +128,48 @@ void MuFilter::ConstructGeometry()
 	InitMedium("polyvinyltoluene");
 	TGeoMedium *Scint =gGeoManager->GetMedium("polyvinyltoluene");
 
+	Float_t nSiPMs[3];             //  number of SiPMs per side
+	Float_t nSides[3];             //  number of sides readout
+	nSiPMs[0] = conf_ints["MuFilter/nV"];
+	nSiPMs[1] = conf_ints["MuFilter/nU"];
+	nSiPMs[2] = conf_ints["MuFilter/nD"];
+	nSides[0]  = conf_ints["MuFilter/sV"];
+	nSides[1]  = conf_ints["MuFilter/sU"];
+	nSides[2]  = conf_ints["MuFilter/sD"];
+
+	Double_t fMuFilterX = conf_floats["MuFilter/X"]; // MuonFilterBox dimensions
+	Double_t fMuFilterY = conf_floats["MuFilter/Y"];
+	Double_t fMuFilterZ = conf_floats["MuFilter/Z"];
+
+	Int_t fNUpstreamPlanes = conf_ints["MuFilter/NUpstreamPlanes"]; // Number of planes
+	Int_t fNUpstreamBars = conf_ints["MuFilter/NUpstreamBars"]; // Number of staggered bars
+	Int_t fNDownstreamPlanes =  conf_ints["MuFilter/NDownstreamPlanes"]; // Number of planes
+	Int_t fNDownstreamBars =  conf_ints["MuFilter/NDownstreamBars"]; // Number of staggered bars
+	Double_t fDownstreamBarX_ver = conf_floats["MuFilter/DownstreamBarX_ver"]; // Staggered bars of upstream section, vertical bars for x measurement
+	Double_t fDownstreamBarY_ver = conf_floats["MuFilter/DownstreamBarY_ver"];
+	Double_t fDownstreamBarZ_ver = conf_floats["MuFilter/DownstreamBarZ_ver"];
+	Double_t fDS4ZGap = conf_floats["MuFilter/DS4ZGap"];
+
 	//Definition of the box containing veto planes
 	TGeoVolumeAssembly *volVeto = new TGeoVolumeAssembly("volVeto");
 	
+	//Veto Planes
+	Double_t fVetoPlaneX = conf_floats["MuFilter/VetoPlaneX"]; // Veto Plane dimensions
+	Double_t fVetoPlaneY = conf_floats["MuFilter/VetoPlaneY"];
+	Double_t fVetoPlaneZ = conf_floats["MuFilter/VetoPlaneZ"];
+	Double_t fVetoBarX     = conf_floats["MuFilter/VetoBarX"]; // Veto Bar dimensions
+	Double_t fVetoBarY     = conf_floats["MuFilter/VetoBarY"];
+	Double_t fVetoBarZ     = conf_floats["MuFilter/VetoBarZ"];
+	Double_t fVetoShiftX  = conf_floats["MuFilter/VetoShiftX"]; // Shift of Veto with respect to beam line
+	Double_t fVetoShiftY  = conf_floats["MuFilter/VetoShiftY"];
+	Double_t fVetoCenterZ = conf_floats["MuFilter/VetozC"];
+	Int_t fNVetoPlanes = conf_ints["MuFilter/NVetoPlanes"];
+	Int_t fNVetoBars     = conf_ints["MuFilter/NVetoBars"];
+	Double_t fVetoPlaneShiftY = conf_ints["MuFilter/VetoPlaneShiftY"];
+
+	TGeoBBox *VetoPlane = new TGeoBBox("VetoPlane",fVetoPlaneX/2., fVetoPlaneY/2., fVetoPlaneZ/2.);
+	// TGeoVolume *volVetoPlane = new TGeoVolume("volVetoPlane",VetoPlane,air);
+
 	//Veto bars
 	TGeoVolume *volVetoBar = gGeoManager->MakeBox("volVetoBar",Scint,fVetoBarX/2., fVetoBarY/2., fVetoBarZ/2.);
 
@@ -279,7 +177,6 @@ void MuFilter::ConstructGeometry()
 	AddSensitiveVolume(volVetoBar);
 
 	//adding mother volume
-        std::cout << "test geoparameters"<<geoParameters["Veto1"][0]<<" "<<geoParameters["Veto1"][1]<<" "<<geoParameters["Veto1"][2]<<std::endl;
 	top->AddNode(volVeto, 1, new TGeoTranslation(fVetoShiftX, fVetoShiftY,fVetoCenterZ));
 
 	//adding veto planes
@@ -305,6 +202,17 @@ void MuFilter::ConstructGeometry()
 
 		//Definition of the box containing Fe Blocks + Timing Detector planes 
 	TGeoVolumeAssembly *volMuFilter = new TGeoVolumeAssembly("volMuFilter");
+	
+	//Iron blocks volume definition
+	Double_t fFeBlockX = conf_floats["MuFilter/FeX"]; // Passive Iron blocks dimensions
+	Double_t fFeBlockY = conf_floats["MuFilter/FeY"];
+	Double_t fFeBlockZ = conf_floats["MuFilter/FeZ"];
+	Double_t fShiftX       =  conf_floats["MuFilter/ShiftX"]; // Shift in x-y wrt beam line
+	Double_t fShiftY       =  conf_floats["MuFilter/ShiftY"];
+	Double_t fCenterZ   =  conf_floats["MuFilter/Zcenter"];
+	Double_t fUSShiftX       =  conf_floats["MuFilter/USShiftX"];
+	Double_t fUSShiftY       =  conf_floats["MuFilter/USShiftY"];
+	Double_t fUSShiftZ       =  conf_floats["MuFilter/USShiftZ"];
 
 	//Iron blocks volume definition
 	TGeoVolume *volFeBlock = gGeoManager->MakeBox("volFeBlock",Fe,fFeBlockX/2, fFeBlockY/2, fFeBlockZ/2);
@@ -315,15 +223,23 @@ void MuFilter::ConstructGeometry()
 	Double_t dy = 0;
 	Double_t dz = 0;
 	//Upstream Detector planes definition
+	Double_t fUpstreamDetX =  conf_floats["MuFilter/UpstreamDetX"]; // Upstream muon detector planes dimensions
+	Double_t fUpstreamDetY =  conf_floats["MuFilter/UpstreamDetY"];
+	Double_t fUpstreamDetZ =  conf_floats["MuFilter/UpstreamDetZ"];
+	TGeoBBox *UpstreamDetBox = new TGeoBBox("UpstreamDetBox",fUpstreamDetX/2,fUpstreamDetY/2,fUpstreamDetZ/2);
 
 	// create pointer for upstream plane to be re-used
 	TGeoVolume* volUpstreamDet;
-
+	Double_t fUpstreamBarX = conf_floats["MuFilter/UpstreamBarX"]; //Staggered bars of upstream section
+	Double_t fUpstreamBarY = conf_floats["MuFilter/UpstreamBarY"];
+	Double_t fUpstreamBarZ = conf_floats["MuFilter/UpstreamBarZ"];
 	//adding staggered bars, first part, only 11 bars, (single stations, readout on both ends)
 	TGeoVolume *volMuUpstreamBar = gGeoManager->MakeBox("volMuUpstreamBar",Scint,fUpstreamBarX/2, fUpstreamBarY/2, fUpstreamBarZ/2);
 	volMuUpstreamBar->SetLineColor(kBlue+2);
 	AddSensitiveVolume(volMuUpstreamBar);
 
+	Double_t fSlope =  conf_floats["MuFilter/Slope"]; //Slope for floor
+	Double_t fShiftYEnd = conf_floats["MuFilter/ShiftYEnd"]; // Shift for Downstream station
 	for(Int_t l=0; l<fNUpstreamPlanes; l++)
 	{
 	  string name = "volMuUpstreamDet_"+std::to_string(l);
@@ -335,8 +251,10 @@ void MuFilter::ConstructGeometry()
 	  if (l == fNUpstreamPlanes - 1) dy = fShiftYEnd - fShiftY;
 
 	  // Double check all these distances
-	  volMuFilter->AddNode(volFeBlock,l,new TGeoTranslation(0,fMuFilterY/2-fFeBlockY/2+dy,-fMuFilterZ/2+fFeBlockZ/2+dz));
-	  volMuFilter->AddNode(volUpstreamDet,fNVetoPlanes+l,new TGeoTranslation(0,fMuFilterY/2-fFeBlockY/2+dy,-fMuFilterZ/2+fFeBlockZ+fUpstreamDetZ/2+dz));
+	  volMuFilter->AddNode(volFeBlock,l,
+                                    new TGeoTranslation(fUSShiftX,fUSShiftY+fMuFilterY/2-fFeBlockY/2+dy,fUSShiftZ-fMuFilterZ/2+fFeBlockZ/2+dz));
+	  volMuFilter->AddNode(volUpstreamDet,fNVetoPlanes+l,
+                                    new TGeoTranslation(fUSShiftX,fUSShiftY+fMuFilterY/2-fFeBlockY/2+dy,fUSShiftZ-fMuFilterZ/2+fFeBlockZ+fUpstreamDetZ/2+dz));
 	  dz+=fFeBlockZ+fUpstreamDetZ;
 
 	  for (Int_t ibar = 0; ibar < fNUpstreamBars; ibar++){
@@ -355,6 +273,22 @@ void MuFilter::ConstructGeometry()
 	TGeoVolume* volDownstreamDet;
 
 	//adding staggered bars, second part, 77 bars, each for x and y coordinates
+	Double_t fDownstreamDetX = conf_floats["MuFilter/DownstreamDetX"]; // Downstream muon detector planes dimensions
+	Double_t fDownstreamDetY = conf_floats["MuFilter/DownstreamDetY"];
+	Double_t fDownstreamDetZ = conf_floats["MuFilter/DownstreamDetZ"];
+
+	Double_t fDownstreamBarX = conf_floats["MuFilter/DownstreamBarX"]; // Staggered bars of upstream section
+	Double_t fDownstreamBarY = conf_floats["MuFilter/DownstreamBarY"];
+	Double_t fDownstreamBarZ = conf_floats["MuFilter/DownstreamBarZ"];
+
+	
+	Double_t fDSHShiftX       =  conf_floats["MuFilter/DSHShiftX"]; // DS with respect to nominal
+	Double_t fDSHShiftY       =  conf_floats["MuFilter/DSHShiftY"];
+	Double_t fDSHShiftZ       =  conf_floats["MuFilter/DSHShiftZ"];
+	Double_t fDSVShiftX       =  conf_floats["MuFilter/DSVShiftX"];
+	Double_t fDSVShiftY       =  conf_floats["MuFilter/DSVShiftY"];
+	Double_t fDSVShiftZ       =  conf_floats["MuFilter/DSVShiftZ"];
+
 	TGeoVolume *volMuDownstreamBar_hor = gGeoManager->MakeBox("volMuDownstreamBar_hor",Scint,fDownstreamBarX/2, fDownstreamBarY/2, fDownstreamBarZ/2);
 	volMuDownstreamBar_hor->SetLineColor(kBlue+2);
 	AddSensitiveVolume(volMuDownstreamBar_hor);
@@ -368,29 +302,32 @@ void MuFilter::ConstructGeometry()
 	{
 	  string name = "volMuDownstreamDet_"+std::to_string(l);
 	  volDownstreamDet = new TGeoVolumeAssembly(name.c_str());
-	  volDownstreamDet->SetLineColor(kRed+2);
-	  volMuFilter->AddNode(volDownstreamDet,l+fNUpstreamPlanes+fNVetoPlanes, new TGeoTranslation(0,fMuFilterY/2-fFeBlockY/2+dy,-fMuFilterZ/2+fFeBlockZ+fDownstreamDetZ/2+dz));
+          volDownstreamDet->SetLineColor(kRed+2);
+	  volMuFilter->AddNode(volDownstreamDet,l+fNUpstreamPlanes+fNVetoPlanes, 
+                      new TGeoTranslation(0,fMuFilterY/2-fFeBlockY/2+dy,-fMuFilterZ/2+fFeBlockZ+fDownstreamDetZ/2+dz));
 	  if (l<fNDownstreamPlanes-1){
-		volMuFilter->AddNode(volFeBlock,l+fNUpstreamPlanes+fNVetoPlanes, new TGeoTranslation(0,fMuFilterY/2-fFeBlockY/2+dy,-fMuFilterZ/2+fFeBlockZ/2+dz));}
+		volMuFilter->AddNode(volFeBlock,l+fNUpstreamPlanes+fNVetoPlanes,
+                      new TGeoTranslation(0,fMuFilterY/2-fFeBlockY/2+dy,-fMuFilterZ/2+fFeBlockZ/2+dz));}
 	  if (l<fNDownstreamPlanes-2){dz+=fFeBlockZ+fDownstreamDetZ;}
 	  else{dz+= fDS4ZGap+fDownstreamDetZ/2;}
 
 	//second loop, adding bars within each detector box
 	  if (l!=fNDownstreamPlanes-1) {
+		Double_t dz_bar_hor = -fDownstreamDetZ/2. + fDownstreamBarZ/2.;
 		for (Int_t ibar = 0; ibar < fNDownstreamBars; ibar++){
 	                 //adding horizontal bars for y
 			Double_t dy_bar = -fDownstreamDetY/2 + fDownstreamBarY/2. + fDownstreamBarY*ibar; // so just fDownstreamBarY*ibar?
-		    	Double_t dz_bar_hor = -fDownstreamDetZ/2. + fDownstreamBarZ/2.;
-		    	TGeoTranslation *yztrans = new TGeoTranslation(0,dy_bar,dz_bar_hor);
+		    	TGeoTranslation *yztrans = new TGeoTranslation(fDSHShiftX,fDSHShiftY+dy_bar,fDSHShiftZ+dz_bar_hor);
 		    	volDownstreamDet->AddNode(volMuDownstreamBar_hor,3e+4+l*1e+3+ibar,yztrans);
 		}
 	  }
 	    //adding vertical bars for x
+	  Double_t dz_bar_ver = -fDownstreamDetZ/2. + 2*fDownstreamBarZ + fDownstreamBarZ/2.;
 	  for (Int_t i_vbar = 0; i_vbar<fNDownstreamBars; i_vbar++) {
 		Double_t dx_bar =  fDownstreamDetX/2 - fDownstreamBarX_ver/2. - fDownstreamBarX_ver*i_vbar; //they do not cover all the x region, but only 60 x 60.
-		Double_t dz_bar_ver = -fDownstreamDetZ/2. + 2*fDownstreamBarZ + fDownstreamBarZ/2.;
-		TGeoTranslation *xztrans = new TGeoTranslation(dx_bar,0,dz_bar_ver);
-		volDownstreamDet->AddNode(volMuDownstreamBar_ver,3e+4+l*1e+3+i_vbar+60,xztrans);   // I added a 60 here to make each horizontal + vetical
+		TGeoTranslation *xztrans = new TGeoTranslation(fDSVShiftX+dx_bar,fDSVShiftY,fDSVShiftZ+dz_bar_ver);
+		Int_t i_vbar_rev = fNDownstreamBars-1-i_vbar;
+		volDownstreamDet->AddNode(volMuDownstreamBar_ver,3e+4+l*1e+3+i_vbar_rev+60,xztrans);   // I added a 60 here to make each horizontal + vertical
 			// sub-plane contain bars given detIDs as one plane. So the first bar in the vert. sub plane is the 60th etc. 		  
 		}
 	}
@@ -451,7 +388,7 @@ void MuFilter::Register()
 {
 
     /** This will create a branch in the output tree called
- *      TargetPoint, setting the last parameter to kFALSE means:
+ *      MuFilterPoint, setting the last parameter to kFALSE means:
  *           this collection will not be written to the file, it will exist
  *                only during the simulation.
  *                     */
@@ -504,7 +441,7 @@ void MuFilter::GetPosition(Int_t fDetectorID, TVector3& vLeft, TVector3& vRight)
       barName = "/volMuUpstreamBar_";
       break;
   case 3: 
-      path+="volMuFilter_1/volMuDownstreamDet_"+std::to_string(plane)+"_"+std::to_string(plane+5);
+      path+="volMuFilter_1/volMuDownstreamDet_"+std::to_string(plane)+"_"+std::to_string(plane+7);
       barName = "/volMuDownstreamBar_";
       if (bar_number<60){barName+="hor_";}
       else{barName+="ver_";}
@@ -538,13 +475,16 @@ void MuFilter::GetPosition(Int_t fDetectorID, TVector3& vLeft, TVector3& vRight)
 }
 
    Int_t MuFilter::GetnSiPMs(Int_t detID){
-       int subsystem     = floor(detID/10000);
-       return nSiPMs[subsystem-1];
+       int subsystem     = floor(detID/10000)-1;
+       if (subsystem==0){return conf_ints["MuFilter/nV"];}
+       if (subsystem==1){return conf_ints["MuFilter/nU"];}
+       return conf_ints["MuFilter/nD"];
    }
    Int_t MuFilter::GetnSides(Int_t detID){
-       int subsystem     = floor(detID/10000);
-       return nSides[subsystem-1];
+       int subsystem     = floor(detID/10000)-1;
+       if (subsystem==0){return conf_ints["MuFilter/sV"];}
+       if (subsystem==1){return conf_ints["MuFilter/sU"];}
+       return conf_ints["MuFilter/sD"];
   }
-
 
 ClassImp(MuFilter)

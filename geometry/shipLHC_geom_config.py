@@ -44,13 +44,103 @@ with ConfigRegistry.register_config("basic") as c:
 
         c.EmulsionDet.startpos =  -25.4750 * u.cm + c.EmulsionDet.z
         c.EmulsionDet.zC = c.EmulsionDet.startpos + c.EmulsionDet.zdim/2.
+        
+        # survey points in survey coordinate system!
+        c.EmulsionDet.Xpos0 = 5.74
+        c.EmulsionDet.Xpos1 = 5.74
+        c.EmulsionDet.Xpos2 = 5.74
+        c.EmulsionDet.Xpos3 = 5.74
+        c.EmulsionDet.Xpos4 = 5.74
+        c.EmulsionDet.Ypos0 = 288.89
+        c.EmulsionDet.Ypos1 = 301.89
+        c.EmulsionDet.Ypos2 = 314.89
+        c.EmulsionDet.Ypos3 = 327.89
+        c.EmulsionDet.Ypos4 = 340.89
+        c.EmulsionDet.Zpos0 = 16.63
+        c.EmulsionDet.Zpos1 = 16.63
+        c.EmulsionDet.Zpos2 = 16.63
+        c.EmulsionDet.Zpos3 = 16.63
+        c.EmulsionDet.Zpos4 = 16.63
 
+        #SciFi parameters
         c.Scifi = AttrDict(z=0*u.cm)
         c.Scifi.xdim = 39.0 * u.cm #sensitive only
         c.Scifi.ydim = 39.0 * u.cm 
         c.Scifi.zdim = c.EmulsionDet.TTz
         c.Scifi.DZ = c.EmulsionDet.BrZ
-        c.Scifi.nplanes = c.EmulsionDet.wall
+        c.Scifi.nmats = 3
+        c.Scifi.nscifi   = 5
+
+        #SiPM parameters
+        c.Scifi.channel_width     = 0.25 *u.mm
+        c.Scifi.sipm_edge = 0.17*u.mm    # on both ends
+        c.Scifi.charr_gap = 0.2 *u.mm
+        c.Scifi.charr_width = 64 * c.Scifi.channel_width
+        c.Scifi.sipm_diegap     = 0.06*u.mm
+        c.Scifi.SiPMarray_width = c.Scifi.sipm_edge+c.Scifi.charr_width+c.Scifi.charr_gap+c.Scifi.charr_width+c.Scifi.sipm_edge
+        c.Scifi.nsipm_channels  = 128
+        c.Scifi.nsipm_mat             = 4
+        c.Scifi.nsipms = c.Scifi.nsipm_mat *  c.Scifi.nmats  # 12 per SciFi plane
+        c.Scifi.sipmarr_width  = c.Scifi.charr_gap + 2.*c.Scifi.charr_width
+        c.Scifi.firstChannelX = -19.528*u.cm  # to agree with SiPM positions of engineering design
+
+        c.Scifi.nfibers_shortrow = 471
+        c.Scifi.nfibers_longrow  = 472
+        c.Scifi.nfibers_z = 6
+        
+# Guido: Fibre mat total width 500um less wide than 4 SiPM arrays mounted on a single bar, therefore 32.6mm x 4 -0.5=129.9mm 
+        c.Scifi.scifimat_width = (c.Scifi.SiPMarray_width+c.Scifi.sipm_diegap)*c.Scifi.nsipm_mat -0.5*u.mm
+        c.Scifi.scifimat_length = 40 *u.cm
+        c.Scifi.scifimat_z = 0.135 *u.cm
+        c.Scifi.epoxymat_z = 0.17 *u.cm
+        c.Scifi.scifimat_gap = 0.05 *u.cm
+        
+        c.Scifi.fiber_length = c.Scifi.scifimat_length
+        c.Scifi.scintcore_rmax = 0.011 *u.cm  
+        c.Scifi.clad1_rmax = 0.01175 *u.cm    
+        c.Scifi.clad2_rmax = 0.0125 *u.cm
+
+        c.Scifi.horizontal_pitch = 0.0275 *u.cm
+        c.Scifi.vertical_pitch = 0.021 *u.cm
+        c.Scifi.rowlong_offset = 0.035 *u.cm 
+        c.Scifi.rowshort_offset = 0.0215 *u.cm 
+
+        c.Scifi.carbonfiber_z = 0.02 *u.cm
+        c.Scifi.honeycomb_z = 0.5 *u.cm
+       
+        c.Scifi.plastbar_x = 1.5 *u.cm
+        c.Scifi.plastbar_y = 40 *u.cm
+        c.Scifi.plastbar_z = 0.195 *u.cm
+
+        c.Scifi.scifi_separation = c.Scifi.zdim + c.EmulsionDet.BrZ  
+        c.Scifi.offset_z = - c.EmulsionDet.zdim/2 + c.EmulsionDet.BrZ  #SciFi starts at the end of the first ECC
+       
+        c.Scifi.timeResol = 150.*u.picosecond
+
+        # should be survey points in survey coordinate system, but aren't, only lower left corner of a plane for which the relative position to first channel is not know, not very useful!
+        c.Scifi.Xpos0 = 4.34*u.cm
+        c.Scifi.Xpos1 = 4.34*u.cm
+        c.Scifi.Xpos2 = 4.34*u.cm
+        c.Scifi.Xpos3 = 4.34*u.cm
+        c.Scifi.Xpos4 = 4.34*u.cm
+        c.Scifi.Ypos0 = 298.94*u.cm
+        c.Scifi.Ypos1 = 311.94*u.cm
+        c.Scifi.Ypos2 = 324.94*u.cm
+        c.Scifi.Ypos3 = 337.94*u.cm
+        c.Scifi.Ypos4 = 350.94*u.cm
+        c.Scifi.Zpos0 = 15.22*u.cm
+        c.Scifi.Zpos1 = 15.22*u.cm
+        c.Scifi.Zpos2 = 15.22*u.cm
+        c.Scifi.Zpos3 = 15.22*u.cm
+        c.Scifi.Zpos4 = 15.22*u.cm
+
+# Scifi technical drawing, distance from first channel on vertical / horizontal plane to survey point C
+        c.Scifi.FirstChannelV2CX = (-195.28 - 315.0)*u.mm
+        c.Scifi.FirstChannelV2CY = (-200.0 - 120.0)*u.mm
+        c.Scifi.FirstChannelV2CZ = (-12.92 + 10.0)*u.mm
+        c.Scifi.FirstChannelH2CX = (-200.0 - 315.0)*u.mm
+        c.Scifi.FirstChannelH2CY = (-195.28 - 120.0)*u.mm
+        c.Scifi.FirstChannelH2CZ = (-7.07 + 10.0)*u.mm
 
         c.MuFilter = AttrDict(z=0*u.cm)
         #coordinates in local gravity based system, not complete, for testing interface
@@ -60,14 +150,13 @@ with ConfigRegistry.register_config("basic") as c:
         c.MuFilter.Veto2 = AttrDict(Dz=-130.804*u.mm)
         c.MuFilter.Veto2.Dx = -44.108*u.mm
         c.MuFilter.Veto2.Dy = 2841.41*u.mm
+
         c.MuFilter.Iron1 = AttrDict(Dz=-102.137*u.mm)
         c.MuFilter.Iron1.Dx = 27.958*u.mm
         c.MuFilter.Iron1.Dy = 3581.523*u.mm
         c.MuFilter.Muon1 = AttrDict(Dz=-99.894*u.mm)
         c.MuFilter.Muon1.Dx = 51.07*u.mm
         c.MuFilter.Muon1.Dy = 3762.027*u.mm
-
-
         #Veto station parameters
         c.MuFilter.VetonSiPMs = 8
         c.MuFilter.VetonSides = 2
@@ -135,10 +224,25 @@ with ConfigRegistry.register_config("basic") as c:
         c.MuFilter.ShiftY = 9.6 * u.cm + c.MuFilter.Y/2. #shift of first block of upstream section
         c.MuFilter.ShiftYEnd= 7.5*u.cm + c.MuFilter.Y/2. #shift for downstream section
 
+# soft alignment
+        c.MuFilter.USShiftX     = 0
+        c.MuFilter.USShiftY     = 0
+        c.MuFilter.USShiftZ     = 0
+        c.MuFilter.DSHShiftX = 0
+        c.MuFilter.DSHShiftY = 0
+        c.MuFilter.DSVShiftX  = 0
+        c.MuFilter.DSVShiftY  = 0
+        c.MuFilter.DSShiftZ     = 0
+
         #digitization parameters
-        c.MuFilter.AttenuationLength = 28 * u.cm # Bologna prototype of DS bar
-        c.MuFilter.SiPMcalibration         = 0.208        # Volt/Mev Bologna prototype, this for Amplitude, 200 V/MeV for QDC
-        c.MuFilter.DynRangeLow           = 0.01       # just for test, don't know realistic value
-        c.MuFilter.DynRangeHigh          = 1.0         # just for test, don't know realistic value
+        c.MuFilter.DsAttenuationLength   =  350 * u.cm                #  values between 300 cm and 400cm observed for H6 testbeam
+        c.MuFilter.DsTAttenuationLength =  700 * u.cm                # top readout with mirror on bottom
+        c.MuFilter.VandUpAttenuationLength = 999 * u.cm        # no significante attenuation observed for H6 testbeam
+        c.MuFilter.VandUpSiPMcalibrationL         = 25.*1000.       # 1.65 MeV = 41 qcd 
+        c.MuFilter.VandUpSiPMcalibrationS         = 25.*1000.
+        c.MuFilter.DsSiPMcalibration                       = 25.*1000.
+        c.MuFilter.timeResol = 150.*u.picosecond
+        c.MuFilter.VandUpPropSpeed    = 12.5*u.cm/u.nanosecond
+        c.MuFilter.DsPropSpeed        = 14.3*u.cm/u.nanosecond
 
         c.Floor = AttrDict(z=48000.*u.cm) # to place tunnel in SND_@LHC coordinate system

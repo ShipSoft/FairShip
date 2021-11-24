@@ -19,17 +19,35 @@ class TClonesArray;
 class Scifi : public FairDetector
 {
 public:
-    Scifi(const char* name, const Double_t DX, Double_t DY, const Double_t DZ, Bool_t Active, const char* Title = "Brick");
+    Scifi(const char* name, Bool_t Active, const char* Title = "Scifi");
     Scifi();
     virtual ~Scifi();
  
     
     /**      Create the detector geometry        */
     void ConstructGeometry();
-    void SetTotZDimension(Double_t Zdim){FullDetZdim = Zdim;}
-    void SetDetectorDimension(Double_t xdim, Double_t ydim, Double_t zdim);
-    void SetScifiNplanes(Int_t n) {fNplanes = n;}
-    void SetGapBrick(Double_t d) {DeltaZ = d;}
+
+    /** Get position of single fibre in global coordinate system**/
+    void GetPosition(Int_t id, TVector3& vLeft, TVector3& vRight); // or top and bottom
+    /** Transform global position to local position in plane **/
+    TVector3 GetLocalPos(Int_t id, TVector3* glob);
+    /** mean position of fibre2 associated with SiPM channel **/
+    void GetSiPMPosition(Int_t SiPMChan, TVector3& A, TVector3& B) ;
+    Double_t ycross(Double_t a,Double_t R,Double_t x);
+    Double_t integralSqrt(Double_t ynorm);
+    Double_t fraction(Double_t R,Double_t x,Double_t y);
+    Double_t area(Double_t a,Double_t R,Double_t xL,Double_t xR);
+    void SiPMmapping();
+    std::map<Int_t,std::map<Int_t,std::array<float, 2>>> GetSiPMmap(){return fibresSiPM;}
+    std::map<Int_t,std::map<Int_t,std::array<float, 2>>> GetFibresMap(){return siPMFibres;}
+    std::map<Int_t,float> GetSiPMPos(){return SiPMPos;}
+    virtual void SiPMOverlap();
+    void SetConfPar(TString name, Float_t value){conf_floats[name]=value;}
+    void SetConfPar(TString name, Int_t value){conf_ints[name]=value;}
+    void SetConfPar(TString name, TString value){conf_strings[name]=value;}
+    Float_t  GetConfParF(TString name){return conf_floats[name];} 
+    Int_t       GetConfParI(TString name){return conf_ints[name];}
+    TString  GetConfParS(TString name){return conf_strings[name];}
 
     /**      Initialization of the detector is done here    */
     virtual void Initialize();
@@ -75,7 +93,7 @@ public:
     Scifi(const Scifi&);
     Scifi& operator=(const Scifi&);
     
-    ClassDef(Scifi,1)
+    ClassDef(Scifi,2)
     
 private:
     
@@ -89,19 +107,18 @@ private:
     Double32_t     fTime;              //!  time
     Double32_t     fLength;            //!  length
     Double32_t     fELoss;             //!  energy loss
-    
+    std::map<Int_t,std::map<Int_t,std::array<float, 2>>> fibresSiPM;  //! mapping of fibres to SiPM channels
+    std::map<Int_t,std::map<Int_t,std::array<float, 2>>> siPMFibres;  //! inverse mapping
+    std::map<Int_t,float> SiPMPos;  //! local SiPM channel position
     /** container for data points */
     TClonesArray*  fScifiPointCollection;
-    
+    /** configuration parameters **/
+    std::map<TString,Float_t> conf_floats;
+    std::map<TString,Int_t> conf_ints;
+    std::map<TString,TString> conf_strings;
+
 protected:
     
-    Double_t XDimension; // Dimension of Scifi planes
-    Double_t YDimension; //
-    Double_t ZDimension; //
-    Double_t FullDetZdim; //Z Dimension whole detector 
-    Double_t DeltaZ; //Distance between each target tracker plane (= Brick)
-    Int_t fNplanes;
-        
     Int_t InitMedium(const char* name);
     
 };

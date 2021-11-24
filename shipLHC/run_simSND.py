@@ -21,7 +21,7 @@ MCTracksWithHitsOrEnergyCut = False # or of above, factor 2 file size increase c
 parser = ArgumentParser()
 group = parser.add_mutually_exclusive_group()
 
-parser.add_argument("--Genie",   dest="genie",   help="Genie for reading and processing neutrino interactions", required=False, action="store_true")
+parser.add_argument("--Genie",   dest="genie",   help="Genie for reading and processing neutrino interactions (1 standard, 2 FLUKA, 3 Pythia)", required=False, default = 0, type = int)
 parser.add_argument("--Ntuple",  dest="ntuple",  help="Use ntuple as input", required=False, action="store_true")
 parser.add_argument("--MuonBack",dest="muonback",  help="Generate events from muon background file, --Cosmics=0 for cosmic generator data", required=False, action="store_true")
 parser.add_argument("--Pythia8", dest="pythia8", help="Use Pythia8", required=False, action="store_true")
@@ -35,6 +35,7 @@ parser.add_argument("--EVz",    dest="EVz",    help="particle gun zpos", require
 parser.add_argument("--FollowMuon",dest="followMuon", help="Make muonshield active to follow muons", required=False, action="store_true")
 parser.add_argument("--FastMuon",  dest="fastMuon",  help="Only transport muons for a fast muon only background estimate", required=False, action="store_true")
 parser.add_argument('--eMin', type=float, help="energy cut", dest='ecut', default=-1.)
+parser.add_argument('--zMax', type=float, help="max distance to apply energy cut", dest='zmax', default=70000.)
 parser.add_argument("--Nuage",     dest="nuage",  help="Use Nuage, neutrino generator of OPERA", required=False, action="store_true")
 parser.add_argument("--MuDIS",     dest="mudis",  help="Use muon deep inelastic scattering generator", required=False, action="store_true")
 parser.add_argument("-n", "--nEvents",dest="nEvents",  help="Number of events to generate", required=False,  default=100, type=int)
@@ -101,7 +102,8 @@ print("SND@LHC setup for",simEngine,"to produce",options.nEvents,"events")
 ROOT.gRandom.SetSeed(options.theSeed)  # this should be propagated via ROOT to Pythia8 and Geant4VMC
 shipRoot_conf.configure(0)     # load basic libraries, prepare atexit for python
 
-snd_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/shipLHC_geom_config.py")
+# snd_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/shipLHC_geom_config.py")
+snd_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/sndlhcH6_geom_config.py")
 
 # Output file name, add dy to be able to setup geometry with ambiguities.
 if simEngine == "PG": tag = simEngine + "_"+str(options.pID)+"-"+mcEngine
@@ -160,7 +162,9 @@ if simEngine == "muonDIS":
    DISgen = ROOT.MuDISGenerator()
    mu_start, mu_end = (-3.7-2.0)*u.m , -0.3*u.m # tunnel wall -30cm in front of SND
    DISgen.SetPositions(0, mu_start, mu_end)
-   if options.ecut > 0:  modules['Floor'].SetEmin(options.ecut)
+   if options.ecut > 0:  
+            modules['Floor'].SetEmin(options.ecut)
+            modules['Floor'].SetZmax(options.zmax)
    DISgen.Init(inputFile,options.firstEvent) 
    primGen.AddGenerator(DISgen)
    options.nEvents = min(options.nEvents,DISgen.GetNevents())
@@ -186,8 +190,12 @@ if simEngine=="Genie":
    ut.checkFileExists(inputFile)
    primGen.SetTarget(0., 0.) # do not interfere with GenieGenerator
    Geniegen = ROOT.GenieGenerator()
+   Geniegen.SetGenerationOption(options.genie - 1) # 0 standard, 1 FLUKA,2 Pythia
    Geniegen.Init(inputFile,options.firstEvent)
-   Geniegen.SetPositions(snd_geo.EmulsionDet.zC-480*u.m, -snd_geo.EmulsionDet.zdim/2,snd_geo.EmulsionDet.zdim/2)
+   Geniegen.SetCrossingAngle(150e-6) #used only in option 2
+   Geniegen.SetPositions(snd_geo.EmulsionDet.zC-480*u.m, snd_geo.EmulsionDet.zC-snd_geo.EmulsionDet.zdim/2,snd_geo.EmulsionDet.zC+snd_geo.EmulsionDet.zdim/2)
+   #Geniegen.SetPositions(snd_geo.EmulsionDet.zC+60*u.cm, snd_geo.EmulsionDet.zC-snd_geo.EmulsionDet.zdim/2,snd_geo.EmulsionDet.zC+snd_geo.EmulsionDet.zdim/2) #FLUKA scoring position
+   Geniegen.SetDeltaE_Matching_FLUKAGenie(10.) #energy range for the search of a GENIE interaction with similar energy of FLUKA neutrino
    primGen.AddGenerator(Geniegen)
    options.nEvents = min(options.nEvents,Geniegen.GetNevents())
    run.SetPythiaDecayer('DecayConfigPy8.C')
@@ -213,16 +221,6 @@ if simEngine == "MuonBack":
  MuonBackgen = ROOT.MuonBackGenerator()
  # MuonBackgen.FollowAllParticles() # will follow all particles after hadron absorber, not only muons
  MuonBackgen.Init(inputFile,options.firstEvent,options.phiRandom)
- if options.charm == 0: MuonBackgen.SetSmearBeam(5 * u.cm) # radius of ring, thickness 8mm
- elif DownScaleDiMuon: 
-    if inputFile[0:4] == "/eos": test = os.environ["EOSSHIP"]+inputFile
-    else: test = inputFile
-    testf = ROOT.TFile.Open(test)
-    if not testf.FileHeader.GetTitle().find('diMu100.0')<0:
-        MuonBackgen.SetDownScaleDiMuon()   # avoid interference with boosted channels
-        print("MuonBackgenerator: set downscale for dimuon on")
-    testf.Close()
- if options.sameSeed: MuonBackgen.SetSameSeed(options.sameSeed)
  primGen.AddGenerator(MuonBackgen)
  options.nEvents = min(options.nEvents,MuonBackgen.GetNevents())
  MCTracksWithHitsOnly = True # otherwise, output file becomes too big
@@ -313,14 +311,7 @@ saveBasicParameters.execute(geoFile,snd_geo)
 
 # checking for overlaps
 if checking4overlaps:
- fGeo = ROOT.gGeoManager
- fGeo.SetNmeshPoints(10000)
- fGeo.CheckOverlaps(0.1)  # 1 micron takes 5minutes
- fGeo.PrintOverlaps()
- # check subsystems in more detail
- for x in fGeo.GetTopNode().GetNodes(): 
-   x.CheckOverlaps(0.0001)
-   fGeo.PrintOverlaps()
+      checkOverlaps()
 # -----Finish-------------------------------------------------------
 timer.Stop()
 rtime = timer.RealTime()
@@ -333,6 +324,16 @@ print("Geometry file is ",geoFile)
 print("Real time ",rtime, " s, CPU time ",ctime,"s")
 
 # ------------------------------------------------------------------------
+def checkOverlaps():
+ fGeo = ROOT.gGeoManager
+ fGeo.SetNmeshPoints(10000)
+ fGeo.CheckOverlaps(0.1)  # 1 micron takes 5minutes
+ fGeo.PrintOverlaps()
+ # check subsystems in more detail
+ for x in fGeo.GetTopNode().GetNodes(): 
+   x.CheckOverlaps(0.0001)
+   fGeo.PrintOverlaps()
+
 def checkOverlapsWithGeant4():
  # after /run/initialize, but prints warning messages, problems with TGeo volume
  mygMC = ROOT.TGeant4.GetMC()

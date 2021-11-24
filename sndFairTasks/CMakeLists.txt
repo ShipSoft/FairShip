@@ -6,6 +6,7 @@ set(INCLUDE_DIRECTORIES
 ${BASE_INCLUDE_DIRECTORIES}
 ${CMAKE_SOURCE_DIR}/shipdata
 ${CMAKE_SOURCE_DIR}/shipLHC
+${CMAKE_SOURCE_DIR}/sndFairTasks
 ${CMAKE_SOURCE_DIR}/veto
 ${ROOT_INCLUDE_DIR}
 ${FAIRROOT_INCLUDE_DIR}
@@ -26,23 +27,12 @@ ${FAIRROOT_LIBRARY_DIR}
 link_directories( ${LINK_DIRECTORIES})
 
 set(SRCS
-Floor.cxx
-boxTarget.cxx
-EmulsionDet.cxx
-EmulsionDetPoint.cxx
-EmulsionDetContFact.cxx
-Scifi.cxx
-ScifiPoint.cxx
-MuFilter.cxx
-MuFilterPoint.cxx
-MuFilterHit.cxx
-sndScifiHit.cxx
-sndCluster.cxx
+DigiTaskSND.cxx
 )
 
-Set(HEADERS )
-Set(LINKDEF shipLHCLinkDef.h)
-Set(LIBRARY_NAME shipLHC)
-Set(DEPENDENCIES Base ShipData GeoBase ParBase Geom Core)
+Set(HEADERS)
+Set(LINKDEF sndFairTasksLinkDef.h)
+Set(LIBRARY_NAME sndFairTasks)
+Set(DEPENDENCIES Base ShipData shipLHC GeoBase ParBase Geom Core)
 
 GENERATE_LIBRARY()

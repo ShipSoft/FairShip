@@ -903,10 +903,10 @@ def muInterGeant4(version=2,njobs=100):
 def muondEdX(version=2,njobs=100,path='',withFaser=False, plotOnly=True):
 # version 1   /home/truf/ubuntu-1710/ship-ubuntu-1710-48/SND/MuonDis/
 
- #  python -i $SNDBUILD/sndsw/macro/run_simScript.py --shiplhc --PG --Estart 10 --Eend    5000 --EVz -7100 --EVx -30 --EVy 40 --pID 13 -n 100000 --FastMuon
- #  python -i $SNDBUILD/sndsw/macro/run_simScript.py --shiplhc --PG --Estart 10 --Eend    5000 --EVz -7100 --EVx -30 --EVy 40 --pID -13 -n 100000 --FastMuon
- #  python  $SNDSW_ROOT/macro/run_simScript.py --shiplhc -f unit30_Nm.root --Ntuple --FastMuon --output muMinusGeant4 -n 999999999
- #  python  $SNDSW_ROOT/macro/run_simScript.py --shiplhc -f unit30_Pm.root   --Ntuple --FastMuon --output muPlusGeant4 -n 999999999
+ #  python -i $SNDBUILD/sndsw/shipLHC/run_simSND.py --PG --Estart 10 --Eend    5000 --EVz -7100 --EVx -30 --EVy 40 --pID 13 -n 100000 --FastMuon
+ #  python -i $SNDBUILD/sndsw/shipLHC/run_simSND.py  --PG --Estart 10 --Eend    5000 --EVz -7100 --EVx -30 --EVy 40 --pID -13 -n 100000 --FastMuon
+ #  python  $SNDSW_ROOT/shipLHC/run_simSND.py -f unit30_Nm.root --Ntuple --FastMuon --output muMinusGeant4 -n 999999999
+ #  python  $SNDSW_ROOT/shipLHC/run_simSND.py  -f unit30_Pm.root --Ntuple --FastMuon --output muPlusGeant4 -n 999999999
  neuPartList = [22,130,310,2112,-2112,3122,-3122,3322,-3322]
  if not plotOnly:
    norm = normalization[version]
@@ -1989,7 +1989,7 @@ def signalNeutrinos():
             line += ' & '+'$%5.1F$'%(N)
          line +=' \\\\'
          print(line)
-
+python sndsw/shipLHC/muonDis.py -c make 
 def missing3Dproj(hist,ymin,ymax):
      h[hist+'XZ']=h[hist].Project3D('xz')
      h[hist+'XZ'].SetName(hist+'XZ')

@@ -118,72 +118,38 @@ Int_t EmulsionDet::InitMedium(const char* name)
     return geoBuild->createMedium(ShipMedium);
 }
 
-void EmulsionDet::SetCenterZ(Double_t z)
-{
-  fCenterZ = z;
-}
-
-void EmulsionDet::SetDetectorDimension(Double_t xdim, Double_t ydim, Double_t zdim)
-{
-  XDimension = xdim;
-  YDimension = ydim;
-  ZDimension = zdim;
-}
-
-void EmulsionDet::SetNumberBricks(Double_t col, Double_t row, Double_t wall)
-{
-  fNCol = col;
-  fNRow = row;
-  fNWall = wall; 
-}
-
-void EmulsionDet::SetNumberTargets(Int_t target)
-{
-  fNTarget = target;
-}
-
-void EmulsionDet::SetTargetWallDimension(Double_t WallXDim_, Double_t WallYDim_, Double_t WallZDim_)
-{
-  WallXDim = WallXDim_;
-  WallYDim = WallYDim_;
-  WallZDim = WallZDim_;
-}
-
-
-void EmulsionDet::SetEmulsionParam(Double_t EmTh, Double_t EmX, Double_t EmY, Double_t PBTh, Double_t EPlW,Double_t PassiveTh, Double_t AllPW)
-{
-  EmulsionThickness = EmTh;
-  EmulsionX = EmX;
-  EmulsionY = EmY;
-  PlasticBaseThickness = PBTh;
-  EmPlateWidth = EPlW;
-  PassiveThickness = PassiveTh;
-  AllPlateWidth = AllPW;
-}
-
-void EmulsionDet::SetEmulsionPassiveOption(Int_t PassiveOption)
-{
-  fPassiveOption=PassiveOption;
-}
-
-void EmulsionDet::SetBrickParam(Double_t BrX, Double_t BrY, Double_t BrZ, Double_t BrPackX, Double_t BrPackY, Double_t BrPackZ, Int_t number_of_plates_)
-{
-  BrickPackageX = BrPackX;
-  BrickPackageY = BrPackY;
-  BrickPackageZ = BrPackZ;
-  BrickX = BrX;
-  BrickY = BrY;
-  BrickZ = BrZ;
-  number_of_plates = number_of_plates_;
-}
-
-void EmulsionDet::SetTTzdimension(Double_t TTZ)
-{
- TTrackerZ = TTZ;
-}
-
 void EmulsionDet::ConstructGeometry()
-{   
+{
+	// configuration parameters
+	fCenterZ        = conf_floats["EmulsionDet/zC"];
+	XDimension = conf_floats["EmulsionDet/xdim"];
+	YDimension = conf_floats["EmulsionDet/ydim"];
+	ZDimension = conf_floats["EmulsionDet/zdim"];
+	fNCol        = conf_ints["EmulsionDet/col"];
+	fNRow     = conf_ints["EmulsionDet/row"];
+	fNWall      = conf_ints["EmulsionDet/wall"];
+	fNTarget = conf_ints["EmulsionDet/target"];
+	WallXDim = conf_floats["EmulsionDet/WallXDim"];
+	WallYDim = conf_floats["EmulsionDet/WallYDim"];
+	WallZDim = conf_floats["EmulsionDet/WallZDim"];
+	EmulsionThickness = conf_floats["EmulsionDet/EmTh"];
+	EmulsionX = conf_floats["EmulsionDet/EmX"];
+	EmulsionY = conf_floats["EmulsionDet/EmY"];
+	PlasticBaseThickness = conf_floats["EmulsionDet/PBTh"];
+	EmPlateWidth = conf_floats["EmulsionDet/EPlW"];
+	PassiveThickness = conf_floats["EmulsionDet/PassiveTh"];
+	AllPlateWidth = conf_floats["EmulsionDet/AllPW"];
+	fPassiveOption = conf_ints["EmulsionDet/PassiveOption"];
+	BrickPackageX = conf_floats["EmulsionDet/BrPackX"];
+	BrickPackageY = conf_floats["EmulsionDet/BrPackY"];
+	BrickPackageZ = conf_floats["EmulsionDet/BrPackZ"];
+	BrickX = conf_floats["EmulsionDet/BrX"];
+	BrickY = conf_floats["EmulsionDet/BrY"];
+	BrickZ = conf_floats["EmulsionDet/BrZ"];
+	number_of_plates = conf_ints["EmulsionDet/n_plates"];
+	TTrackerZ = conf_floats["EmulsionDet/TTz"];
+	ShiftX = conf_floats["EmulsionDet/ShiftX"];
+	ShiftY = conf_floats["EmulsionDet/ShiftY"];
 	TGeoVolume *top=gGeoManager->FindVolumeFast("Detector");
 	if(!top)  LOG(ERROR) << "no Detector volume found " ;
 	gGeoManager->SetVisLevel(10);
@@ -276,11 +242,13 @@ void EmulsionDet::ConstructGeometry()
 	}
 
 	volBrick->SetVisibility(kTRUE);
-        //test adding new geometries
-        double dx_survey[fNWall] = {5.74,5.74,5.74,5.74,5.74};
-        double dy_survey[fNWall] = {288.89,301.89,314.89,327.89,340.89};
-        double dz_survey[fNWall] = {16.63,16.63,16.63,16.63,16.63};
-	top->AddNode(volTarget,1,new TGeoTranslation(0,0,0));
+
+//alignment
+	double dx_survey[fNWall] = {conf_floats["Scifi/Xpos0"],conf_floats["Scifi/Xpos1"],conf_floats["Scifi/Xpos2"],conf_floats["Scifi/Xpos3"],conf_floats["Scifi/Xpos4"]};
+	double dy_survey[fNWall] = {conf_floats["Scifi/Ypos0"],conf_floats["Scifi/Ypos1"],conf_floats["Scifi/Ypos2"],conf_floats["Scifi/Ypos3"],conf_floats["Scifi/Ypos4"]};
+	double dz_survey[fNWall] = {conf_floats["Scifi/Zpos0"],conf_floats["Scifi/Zpos1"],conf_floats["Scifi/Zpos2"],conf_floats["Scifi/Zpos3"],conf_floats["Scifi/Zpos4"]};
+
+ 	top->AddNode(volTarget,1,new TGeoTranslation(0,0,0));
 
 	//adding walls
 

@@ -102,8 +102,10 @@ void Floor::PreTrack(){
         gMC->StopTrack();
     }
     TLorentzVector  mom;
+    TLorentzVector pos;
     gMC->TrackMomentum(mom);
-    if  ( (mom.E()-mom.M() )<fEmin){
+    gMC->TrackPosition(pos);
+    if  ( (mom.E()-mom.M() )<fEmin && pos.Z()<fzPos){
       gMC->StopTrack();
       return;
     }

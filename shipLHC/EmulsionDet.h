@@ -30,17 +30,6 @@ public:
     /**      Create the detector geometry        */
     void ConstructGeometry();  
     
-    /** Other functions */
-void SetTargetWallDimension(Double_t WallXDim, Double_t WallYDim, Double_t WallZDim);
-    void SetDetectorDimension(Double_t xdim, Double_t ydim, Double_t zdim);
-void SetEmulsionParam(Double_t EmTh, Double_t EmX, Double_t EmY, Double_t PBTh,Double_t EPlW, Double_t PassiveTh, Double_t AllPW);
-    void SetBrickParam(Double_t BrX, Double_t BrY, Double_t BrZ, Double_t BrPackX, Double_t BrPackY,Double_t BrPackZ, Int_t number_of_plates_);
-    void SetNumberBricks(Double_t col, Double_t row, Double_t wall);
-    void SetTTzdimension(Double_t TTZ);
-    void SetNumberTargets(Int_t target);
- void SetCenterZ(Double_t z);
-   void SetDisplacement(Double_t x, Double_t y) {ShiftX=x; ShiftY=y;}
-  void SetEmulsionPassiveOption(Int_t PassiveOption);
     /**      Initialization of the detector is done here    */
     virtual void Initialize();
     
@@ -72,10 +61,17 @@ void SetEmulsionParam(Double_t EmTh, Double_t EmX, Double_t EmY, Double_t PBTh,D
     virtual void   PreTrack(){;}
     virtual void   BeginEvent() {;}
 
+    void SetConfPar(TString name, Float_t value){conf_floats[name]=value;}
+    void SetConfPar(TString name, Int_t value){conf_ints[name]=value;}
+    void SetConfPar(TString name, TString value){conf_strings[name]=value;}
+    Float_t  GetConfParF(TString name){return conf_floats[name];} 
+    Int_t       GetConfParI(TString name){return conf_ints[name];}
+    TString  GetConfParS(TString name){return conf_strings[name];}
+
     EmulsionDet(const EmulsionDet&);
     EmulsionDet& operator=(const EmulsionDet&);
     
-    ClassDef(EmulsionDet,4)
+    ClassDef(EmulsionDet,5)
     
 private:
     
@@ -90,7 +86,11 @@ private:
     
     /** container for data points */
     TClonesArray*  fEmulsionDetPointCollection;
-    
+        /** configuration parameters **/
+    std::map<TString,Float_t> conf_floats;
+    std::map<TString,Int_t> conf_ints;
+    std::map<TString,TString> conf_strings;
+
 protected:
    
     Double_t XDimension; //dimension of the target box 

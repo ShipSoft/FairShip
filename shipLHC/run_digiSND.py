@@ -14,8 +14,8 @@ def mem_monitor():
     print("memory: virtuell = %5.2F MB  physical = %5.2F MB"%(vmsize/1.0E3,pmsize/1.0E3))
 
 import ROOT,os,sys,getopt
-import global_variables
 import shipRoot_conf
+import shipunit as u
 
 shipRoot_conf.configure()
 
@@ -23,55 +23,102 @@ from argparse import ArgumentParser
 parser = ArgumentParser()
 parser.add_argument("-f", "--inputFile", dest="inputFile", help="single input file", required=True)
 parser.add_argument("-g", "--geoFile", dest="geoFile", help="geofile", required=True)
-parser.add_argument("-n", "--nEvents", dest="nEvents", help="number of events to process", default=100000)
+parser.add_argument("-n", "--nEvents", dest="nEvents",  type=int, help="number of events to process", default=100000)
+parser.add_argument("-ts", "--thresholdScifi", dest="ts", type=float, help="threshold energy for Scifi [keV]", default=3.5)
+parser.add_argument("-tML", "--thresholdMufiL", dest="tml", type=float, help="threshold energy for Mufi large [keV]", default=0.0)
+parser.add_argument("-tMS", "--thresholdMufiS", dest="tms", type=float, help="threshold energy for Mufi small [keV]", default=0.0)
+parser.add_argument("-cpp", "--digiCPP", action='store_true', dest="FairTask_digi", help="perform digitization using DigiTaskSND", default=False)
 parser.add_argument("-d", "--Debug", dest="debug", help="debug", default=False)
 
 options = parser.parse_args()
+# -----Timer-------------
+timer = ROOT.TStopwatch()
+timer.Start()
 
-outFile = options.inputFile.replace('.root','_dig.root') 
 # outfile should be in local directory
-tmp = outFile.split('/')
-outFile = tmp[len(tmp)-1]
-os.system('cp '+options.inputFile+' '+outFile)
-
-fgeo = ROOT.TFile.Open(options.geoFile)
-from ShipGeoConfig import ConfigRegistry
-from rootpyPickler import Unpickler
-#load geo dictionary
-upkl    = Unpickler(fgeo)
-snd_geo = upkl.load('ShipGeo')
- 
+tmp     = options.inputFile.split('/')
+outFile = tmp[len(tmp)-1].replace('.root','_dig.root')
+if options.inputFile.find('/eos')==0:
+   if options.FairTask_digi:
+       options.inputFile = os.environ['EOSSHIP']+options.inputFile
+   else:   
+       os.system('xrdcp '+os.environ['EOSSHIP']+options.inputFile+' '+outFile)
+else:
+    if not options.FairTask_digi:
+       os.system('cp '+options.inputFile+' '+outFile) 
+    
 # -----Create geometry----------------------------------------------
 import shipLHC_conf as sndDet_conf
 
-run = ROOT.FairRunSim()
-run.SetName("TGeant4")  # Transport engine
-run.SetOutputFile(ROOT.TMemFile('output', 'recreate'))  # Output file
-run.SetUserConfig("g4Config_basic.C") # geant4 transport not used
-rtdb = run.GetRuntimeDb()
-modules = sndDet_conf.configure(run,snd_geo)
-fgeo.FAIRGeom
+if options.geoFile.find('/eos')==0:
+       options.geoFile = os.environ['EOSSHIP']+options.geoFile
+import SndlhcGeo
+snd_geo = SndlhcGeo.GeoInterface(options.geoFile)
 
-# make global variables
-global_variables.debug = options.debug
-global_variables.snd_geo = snd_geo
+# set digitization parameters for MuFilter
+lsOfGlobals  = ROOT.gROOT.GetListOfGlobals()
+scifiDet     = lsOfGlobals.FindObject('Scifi')
+mufiDet      = lsOfGlobals.FindObject('MuFilter')
+mufiDet.SetConfPar("MuFilter/DsAttenuationLength",350 * u.cm)		#  values between 300 cm and 400cm observed for H6 testbeam
+mufiDet.SetConfPar("MuFilter/DsTAttenuationLength",700 * u.cm)		# top readout with mirror on bottom
+mufiDet.SetConfPar("MuFilter/VandUpAttenuationLength",999 * u.cm)	# no significante attenuation observed for H6 testbeam
+mufiDet.SetConfPar("MuFilter/DsSiPMcalibrationS",25.*1000.)			# in MC: 1.65 keV are about 41.2 qdc
+mufiDet.SetConfPar("MuFilter/VandUpSiPMcalibration",25.*1000.);
+mufiDet.SetConfPar("MuFilter/VandUpSiPMcalibrationS",25.*1000.);
+mufiDet.SetConfPar("MuFilter/VandUpPropSpeed",12.5*u.cm/u.nanosecond);
+mufiDet.SetConfPar("MuFilter/DsPropSpeed",14.3*u.cm/u.nanosecond);
+scifiDet.SetConfPar("Scifi/nphe_min",3.5)   # threshold
+scifiDet.SetConfPar("Scifi/nphe_max ",104) # saturation
+scifiDet.SetConfPar("Scifi/timeResol",150.*u.picosecond) # time resolution in ps
+scifiDet.SetConfPar("MuFilter/timeResol",150.*u.picosecond) # time resolution in ps, first guess
 
-global_variables.iEvent = 0
 
-# import reco tasks
-import SndlhcDigi
-Sndlhc = SndlhcDigi.SndlhcDigi(outFile)
+# Fair digitization task
+if options.FairTask_digi:
+  run = ROOT.FairRunAna()
+  ioman = ROOT.FairRootManager.Instance()
+  ioman.RegisterInputObject('Scifi', snd_geo.modules['Scifi'])
+  ioman.RegisterInputObject('MuFilter', snd_geo.modules['MuFilter'])
+  # Set input
+  fileSource = ROOT.FairFileSource(options.inputFile)
+  run.SetSource(fileSource)
+  # Set output
+  outfile = ROOT.FairRootFileSink(outFile.replace('.root','CPP.root'))
+  run.SetSink(outfile)
 
-nEvents   = min(Sndlhc.sTree.GetEntries(),int(options.nEvents))
+  # Set number of events to process
+  inRootFile = ROOT.TFile.Open(options.inputFile)
+  inTree = inRootFile.Get('cbmsim')
+  nEventsInFile = inTree.GetEntries()
+  nEvents = min(nEventsInFile, options.nEvents)
+
+  rtdb = run.GetRuntimeDb()
+  run.AddTask(ROOT.DigiTaskSND())
+  run.Init()
+  run.Run(firstEvent, nEvents)
+
+# Digitization using python code SndlhcDigi
+else:
+ # import digi task
+  import SndlhcDigi
+  Sndlhc = SndlhcDigi.SndlhcDigi(outFile)
+
+  nEvents   = min(Sndlhc.sTree.GetEntries(),options.nEvents)
 # main loop
-for global_variables.iEvent in range(firstEvent, nEvents):
-    if global_variables.iEvent % 50000 == 0 or global_variables.debug:
-        print('event ', global_variables.iEvent, nEvents - firstEvent)
-    Sndlhc.iEvent = global_variables.iEvent
-    rc = Sndlhc.sTree.GetEvent(global_variables.iEvent)
+  for iEvent in range(firstEvent, nEvents):
+    if iEvent % 50000 == 0 or options.debug:
+        print('event ', iEvent, nEvents - firstEvent)
+    Sndlhc.iEvent = iEvent
+    rc = Sndlhc.sTree.GetEvent(iEvent)
     Sndlhc.digitize()
  # memory monitoring
  # mem_monitor()
 
-# end loop over events
-Sndlhc.finish()
+  # end loop over events
+  Sndlhc.finish()
+  
+timer.Stop()
+rtime = timer.RealTime()
+ctime = timer.CpuTime()
+print(' ') 
+print("Real time ",rtime, " s, CPU time ",ctime,"s")
