@@ -316,10 +316,11 @@ Bool_t  EmulsionDet::ProcessHits(FairVolume* vol)
         Double_t ymean = (fPos.Y()+Pos.Y())/2. ;      
         Double_t zmean = (fPos.Z()+Pos.Z())/2. ;     
         
-	
-	AddHit(fTrackID,fVolumeID, TVector3(xmean, ymean,  zmean),
-               TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength,
-               fELoss, pdgCode);
+        TLorentzVector Mom;
+        gMC->TrackMomentum(Mom);
+        AddHit(fTrackID, fVolumeID, TVector3(xmean, ymean,  zmean),
+           TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength,
+           fELoss,pdgCode,TVector3(Pos.X(), Pos.Y(), Pos.Z()),TVector3(Mom.Px(), Mom.Py(), Mom.Pz()) );
 	
         // Increment number of muon det points in TParticle
         ShipStack* stack = (ShipStack*) gMC->GetStack();
@@ -365,19 +366,11 @@ void EmulsionDet::Reset()
 EmulsionDetPoint* EmulsionDet::AddHit(Int_t trackID,Int_t detID,
                            TVector3 pos, TVector3 mom,
                            Double_t time, Double_t length,
-			    Double_t eLoss, Int_t pdgCode)
+			    Double_t eLoss, Int_t pdgCode,TVector3 Lpos, TVector3 Lmom)
 {
     TClonesArray& clref = *fEmulsionDetPointCollection;
     Int_t size = clref.GetEntriesFast();
     return new(clref[size]) EmulsionDetPoint(trackID,detID, pos, mom,
-					time, length, eLoss, pdgCode);
+					time, length, eLoss, pdgCode,Lpos,Lmom);
 }
 ClassImp(EmulsionDet)
-
-
-
-
-
-
-
-

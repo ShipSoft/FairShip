@@ -48,8 +48,7 @@ public:
     /**      How to add your own point of type EmulsionDetPoint to the clones array */
 
     EmulsionDetPoint* AddHit(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom,
-		     Double_t time, Double_t length, Double_t eLoss, Int_t pdgCode);
-    
+		Double_t time, Double_t length,Double_t eLoss,Int_t pdgcode,TVector3 Lpos, TVector3 Lmom);
         
     virtual void   CopyClones( TClonesArray* cl1,  TClonesArray* cl2 , Int_t offset) {;}
     virtual void   SetSpecialPhysicsCuts() {;}
