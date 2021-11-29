@@ -20,7 +20,9 @@ def configure(run,ship_geo,Gfield=''):
  detectorList.append(floor)
  
  EmulsionDet = ROOT.EmulsionDet("EmulsionDet",ROOT.kTRUE)
-
+ for parName in ship_geo.EmulsionDet:
+    parValue = eval('ship_geo.EmulsionDet.'+parName)
+    EmulsionDet.SetConfPar("EmulsionDet/"+parName, parValue)
  detectorList.append(EmulsionDet)
 
  Scifi = ROOT.Scifi("Scifi", ROOT.kTRUE)

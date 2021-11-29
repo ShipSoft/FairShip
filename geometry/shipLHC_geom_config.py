@@ -90,7 +90,7 @@ with ConfigRegistry.register_config("basic") as c:
         
 # Guido: Fibre mat total width 500um less wide than 4 SiPM arrays mounted on a single bar, therefore 32.6mm x 4 -0.5=129.9mm 
         c.Scifi.scifimat_width = (c.Scifi.SiPMarray_width+c.Scifi.sipm_diegap)*c.Scifi.nsipm_mat -0.5*u.mm
-        c.Scifi.scifimat_length = 40 *u.cm
+        c.Scifi.scifimat_length = c.Scifi.ydim
         c.Scifi.scifimat_z = 0.135 *u.cm
         c.Scifi.epoxymat_z = 0.17 *u.cm
         c.Scifi.scifimat_gap = 0.05 *u.cm
@@ -109,7 +109,7 @@ with ConfigRegistry.register_config("basic") as c:
         c.Scifi.honeycomb_z = 0.5 *u.cm
        
         c.Scifi.plastbar_x = 1.5 *u.cm
-        c.Scifi.plastbar_y = 40 *u.cm
+        c.Scifi.plastbar_y = c.Scifi.ydim
         c.Scifi.plastbar_z = 0.195 *u.cm
 
         c.Scifi.scifi_separation = c.Scifi.zdim + c.EmulsionDet.BrZ  
@@ -117,7 +117,7 @@ with ConfigRegistry.register_config("basic") as c:
        
         c.Scifi.timeResol = 150.*u.picosecond
 
-        # should be survey points in survey coordinate system, but aren't, only lower left corner of a plane for which the relative position to first channel is not know, not very useful!
+        # absolute edge point positions in survey coordinate system
         c.Scifi.Xpos0 = 4.34*u.cm
         c.Scifi.Xpos1 = 4.34*u.cm
         c.Scifi.Xpos2 = 4.34*u.cm
@@ -134,29 +134,44 @@ with ConfigRegistry.register_config("basic") as c:
         c.Scifi.Zpos3 = 15.22*u.cm
         c.Scifi.Zpos4 = 15.22*u.cm
 
-# Scifi technical drawing, distance from first channel on vertical / horizontal plane to survey point C
-        c.Scifi.FirstChannelV2CX = (-195.28 - 315.0)*u.mm
-        c.Scifi.FirstChannelV2CY = (-200.0 - 120.0)*u.mm
-        c.Scifi.FirstChannelV2CZ = (-12.92 + 10.0)*u.mm
-        c.Scifi.FirstChannelH2CX = (-200.0 - 315.0)*u.mm
-        c.Scifi.FirstChannelH2CY = (-195.28 - 120.0)*u.mm
-        c.Scifi.FirstChannelH2CZ = (-7.07 + 10.0)*u.mm
+# Scifi technical drawing, distance from first channel on vertical / horizontal plane to edge point  225,225,0, xy plane z perpendicularc.Scifi.ydim
+        c.Scifi.EdgeAX =  225*u.mm
+        c.Scifi.EdgeAY =  225*u.mm
+        c.Scifi.EdgeAZ =  0*u.mm
 
+        c.Scifi.FirstChannelVX = -195.28*u.mm
+        c.Scifi.FirstChannelVY = -200.0*u.mm
+        c.Scifi.FirstChannelVZ = -12.92*u.mm
+
+        c.Scifi.FirstChannelHX = -200.0*u.mm
+        c.Scifi.FirstChannelHY = -195.28*u.mm
+        c.Scifi.FirstChannelHZ = -7.07*u.mm
+
+# Local Scifi position of first channel on a vertical scifi plane in software
+        c.Scifi.LfirstChannelVX = -195.135*u.mm
+        c.Scifi.LfirstChannelVY = 195.0*u.mm   # sipm on top
+        c.Scifi.LfirstChannelVZ = 11.85*u.mm
+
+# Local Scifi position of last channel (=first channel on technical drawing) on a horizontal scifi plane in software
+        c.Scifi.LfirstChannelHX = -195.0*u.mm   # sipm on the right side direction away from IP1
+        c.Scifi.LfirstChannelHY = 195.178*u.mm
+        c.Scifi.LfirstChannelHZ = 6.25*u.mm
+ 
         c.MuFilter = AttrDict(z=0*u.cm)
         #coordinates in local gravity based system, not complete, for testing interface
-        c.MuFilter.Veto1 = AttrDict(Dz=-151.312*u.mm)
-        c.MuFilter.Veto1.Dx = -44.108*u.mm
-        c.MuFilter.Veto1.Dy = 2800.662*u.mm
-        c.MuFilter.Veto2 = AttrDict(Dz=-130.804*u.mm)
-        c.MuFilter.Veto2.Dx = -44.108*u.mm
-        c.MuFilter.Veto2.Dy = 2841.41*u.mm
+        c.MuFilter.Veto1Dx = 44.5*u.mm
+        c.MuFilter.Veto1Dy = 2798*u.mm
+        c.MuFilter.Veto1Dz = 185.9*u.mm
+        c.MuFilter.Veto2Dx = 44.5*u.mm
+        c.MuFilter.Veto2Dy = 2839*u.mm
+        c.MuFilter.Veto2Dz = 165.9*u.mm
 
-        c.MuFilter.Iron1 = AttrDict(Dz=-102.137*u.mm)
-        c.MuFilter.Iron1.Dx = 27.958*u.mm
-        c.MuFilter.Iron1.Dy = 3581.523*u.mm
-        c.MuFilter.Muon1 = AttrDict(Dz=-99.894*u.mm)
-        c.MuFilter.Muon1.Dx = 51.07*u.mm
-        c.MuFilter.Muon1.Dy = 3762.027*u.mm
+        c.MuFilter.Iron1Dx = -24.2*u.mm
+        c.MuFilter.Iron1Dy = 3579.6*u.mm
+        c.MuFilter.Iron1Dz = 146.6*u.mm
+        c.MuFilter.Muon1Dz = -99.894*u.mm
+        c.MuFilter.Muon1Dx = 51.07*u.mm
+        c.MuFilter.Muon1Dy = 3762.027*u.mm
         #Veto station parameters
         c.MuFilter.VetonSiPMs = 8
         c.MuFilter.VetonSides = 2
