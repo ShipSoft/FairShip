@@ -102,8 +102,8 @@ print("SND@LHC setup for",simEngine,"to produce",options.nEvents,"events")
 ROOT.gRandom.SetSeed(options.theSeed)  # this should be propagated via ROOT to Pythia8 and Geant4VMC
 shipRoot_conf.configure(0)     # load basic libraries, prepare atexit for python
 
-# snd_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/shipLHC_geom_config.py")
-snd_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/sndlhcH6_geom_config.py")
+snd_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/shipLHC_geom_config.py")
+# snd_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/sndlhcH6_geom_config.py")
 
 # Output file name, add dy to be able to setup geometry with ambiguities.
 if simEngine == "PG": tag = simEngine + "_"+str(options.pID)+"-"+mcEngine
