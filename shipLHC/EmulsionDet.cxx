@@ -150,6 +150,7 @@ void EmulsionDet::ConstructGeometry()
 	TTrackerZ = conf_floats["EmulsionDet/TTz"];
 	ShiftX = conf_floats["EmulsionDet/ShiftX"];
 	ShiftY = conf_floats["EmulsionDet/ShiftY"];
+
 	TGeoVolume *top=gGeoManager->FindVolumeFast("Detector");
 	if(!top)  LOG(ERROR) << "no Detector volume found " ;
 	gGeoManager->SetVisLevel(10);
@@ -244,9 +245,9 @@ void EmulsionDet::ConstructGeometry()
 	volBrick->SetVisibility(kTRUE);
 
 //alignment
-	double dx_survey[fNWall] = {conf_floats["Scifi/Xpos0"],conf_floats["Scifi/Xpos1"],conf_floats["Scifi/Xpos2"],conf_floats["Scifi/Xpos3"],conf_floats["Scifi/Xpos4"]};
-	double dy_survey[fNWall] = {conf_floats["Scifi/Ypos0"],conf_floats["Scifi/Ypos1"],conf_floats["Scifi/Ypos2"],conf_floats["Scifi/Ypos3"],conf_floats["Scifi/Ypos4"]};
-	double dz_survey[fNWall] = {conf_floats["Scifi/Zpos0"],conf_floats["Scifi/Zpos1"],conf_floats["Scifi/Zpos2"],conf_floats["Scifi/Zpos3"],conf_floats["Scifi/Zpos4"]};
+	double dx_survey[fNWall] = {conf_floats["EmulsionDet/Xpos0"],conf_floats["EmulsionDet/Xpos1"],conf_floats["EmulsionDet/Xpos2"],conf_floats["EmulsionDet/Xpos3"],conf_floats["EmulsionDet/Xpos4"]};
+	double dy_survey[fNWall] = {conf_floats["EmulsionDet/Ypos0"],conf_floats["EmulsionDet/Ypos1"],conf_floats["EmulsionDet/Ypos2"],conf_floats["EmulsionDet/Ypos3"],conf_floats["EmulsionDet/Ypos4"]};
+	double dz_survey[fNWall] = {conf_floats["EmulsionDet/Zpos0"],conf_floats["EmulsionDet/Zpos1"],conf_floats["EmulsionDet/Zpos2"],conf_floats["EmulsionDet/Zpos3"],conf_floats["EmulsionDet/Zpos4"]};
 
  	top->AddNode(volTarget,1,new TGeoTranslation(0,0,0));
 
