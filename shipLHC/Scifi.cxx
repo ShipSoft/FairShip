@@ -147,7 +147,7 @@ void Scifi::ConstructGeometry()
 	Double_t fScintCore_rmax  =  conf_floats["Scifi/scintcore_rmax"];
 	Double_t fClad1_rmin           =  fScintCore_rmax;
 	Double_t fClad1_rmax =  conf_floats["Scifi/clad1_rmax"];
-	Double_t fClad2_rmin =   conf_floats["Scifi/clad1_rmin"];
+	Double_t fClad2_rmin =   fClad1_rmax;
 	Double_t fClad2_rmax =  conf_floats["Scifi/clad2_rmax"];
 
 	Double_t fHorPitch         =  conf_floats["Scifi/horizontal_pitch"]; //Fiber position params
