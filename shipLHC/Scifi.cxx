@@ -290,6 +290,10 @@ void Scifi::ConstructGeometry()
                new TGeoTranslation(DeltasV[istation][0], DeltasH[istation][1], DeltasH[istation][2]));
 
     //Creating Scifi planes by appending fiber mats
+    Double_t offsetS =  -fWidthScifiMat/2 + fOffsetRowS;
+    Double_t offsetL =  -fWidthScifiMat/2 + fOffsetRowL;
+    Double_t zPosM;
+ 
     for (int imat = 0; imat < fNMats; imat++){
         
         //Placing mats along Y 
@@ -297,15 +301,15 @@ void Scifi::ConstructGeometry()
         
         //Adding horizontal fibers
         for (int irow = 0; irow < fNFibers_z; irow++){
-    
+            zPosM =  -fZScifiMat/2 + fClad2_rmax/2 + irow*fVertPitch;
             if (irow%2 == 0){
                 for (int ifiber = 0; ifiber < fNFibers_Srow; ifiber++){
-                    HorMatVolume->AddNode(FiberVolume, 1e6*(istation+1) + 1e4*(imat + 1) + 1e3*(irow + 1) + ifiber + 1, new TGeoCombiTrans("rottranshor0", 0, -fWidthScifiMat/2 + fOffsetRowS + ifiber*fHorPitch, -fZScifiMat/2 + fClad2_rmax/2 + irow*fVertPitch, rothorfiber));
+                    HorMatVolume->AddNode(FiberVolume, 1e6*(istation+1) + 1e4*(imat + 1) + 1e3*(irow + 1) + ifiber + 1, new TGeoCombiTrans("rottranshor0", 0, offsetS + ifiber*fHorPitch, zPosM, rothorfiber));
                 }
             }
             else{
                 for (int ifiber = 0; ifiber < fNFibers_Lrow; ifiber++){
-                    HorMatVolume->AddNode(FiberVolume, 1e6*(istation+1) + 1e4*(imat + 1) + 1e3*(irow + 1) + ifiber + 1, new TGeoCombiTrans("rottranshor1", 0, -fWidthScifiMat/2 + fOffsetRowL + ifiber*fHorPitch, -fZScifiMat/2 + fClad2_rmax/2 + irow*fVertPitch, rothorfiber));
+                    HorMatVolume->AddNode(FiberVolume, 1e6*(istation+1) + 1e4*(imat + 1) + 1e3*(irow + 1) + ifiber + 1, new TGeoCombiTrans("rottranshor1", 0, offsetL + ifiber*fHorPitch, zPosM, rothorfiber));
                 }
             }
         }
@@ -316,12 +320,12 @@ void Scifi::ConstructGeometry()
         for (int irow = 0; irow < fNFibers_z; irow++){
             if (irow%2 == 0){
                 for (int ifiber = 0; ifiber < fNFibers_Srow; ifiber++){
-                    VertMatVolume->AddNode(FiberVolume, 1e6*(istation+1) + 1e5 + 1e4*(imat + 1) + 1e3*(irow + 1) + ifiber + 1, new TGeoCombiTrans("rottransvert0", -fWidthScifiMat/2 + fOffsetRowS + ifiber*fHorPitch, 0, -fZScifiMat/2 + fClad2_rmax/2 + irow*fVertPitch, rotvertfiber));
+                    VertMatVolume->AddNode(FiberVolume, 1e6*(istation+1) + 1e5 + 1e4*(imat + 1) + 1e3*(irow + 1) + ifiber + 1, new TGeoCombiTrans("rottransvert0", offsetS + ifiber*fHorPitch, 0, zPosM, rotvertfiber));
                 }
             }
             else{
                 for (int ifiber = 0; ifiber < fNFibers_Lrow; ifiber++){
-                    VertMatVolume->AddNode(FiberVolume, 1e6*(istation+1) + 1e5 + 1e4*(imat + 1) + 1e3*(irow + 1) + ifiber + 1, new TGeoCombiTrans("rottransvert1", -fWidthScifiMat/2 + fOffsetRowL + ifiber*fHorPitch, 0, -fZScifiMat/2 + fClad2_rmax/2 + irow*fVertPitch, rotvertfiber));
+                    VertMatVolume->AddNode(FiberVolume, 1e6*(istation+1) + 1e5 + 1e4*(imat + 1) + 1e3*(irow + 1) + ifiber + 1, new TGeoCombiTrans("rottransvert1", offsetL + ifiber*fHorPitch, 0, zPosM, rotvertfiber));
                 }
             }
         }

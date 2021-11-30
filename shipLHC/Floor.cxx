@@ -177,10 +177,11 @@ void Floor::ConstructGeometry()
                                                     -0.00660651, -0.0124347, 0.999901,
                                                    -4.69368*10^-15, 0.999923, 0.0124349}
          **/
-         // with y-axis upwards
-         Double_t M[9] = {0.999978,       -0.006606,   0.0000821516,
-                                             -0.00660651,  0.999901,  -0.0124347,
-                                               0.0,                     0.0124349,0.999923};
+         // with y-axis upwards, R = ((-1,0,0),(0,0,1),(0,1,0)), M = M R^-1
+         Double_t M[9] = {0.999978,   -0.006606,   0.0000821516,
+                                    0.00660651,  0.999901,  -0.0124347,
+                                    4.69368E-15, 0.0124349, 0.999923};
+
          auto localSND_physCS_rot      = new TGeoRotation("localSND_physCS_rot");
          localSND_physCS_rot ->SetMatrix(M);
          auto localSND_physCS_comb = new TGeoCombiTrans("localSND_physCS",0.,0.,0.,localSND_physCS_rot);    // origin is 480m downstream of IP1
