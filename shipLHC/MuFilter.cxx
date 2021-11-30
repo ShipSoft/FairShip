@@ -150,6 +150,17 @@ void MuFilter::ConstructGeometry()
 	Double_t fDownstreamBarZ_ver = conf_floats["MuFilter/DownstreamBarZ_ver"];
 	Double_t fDS4ZGap = conf_floats["MuFilter/DS4ZGap"];
 
+	// position of left bottom edges in survey coordinate system
+	std::map<int, TVector3 > edge_Veto;
+	edge_Veto[1] = TVector3( -conf_floats["MuFilter/Veto1Dx"],conf_floats["MuFilter/Veto1Dz"],conf_floats["MuFilter/Veto1Dy"]) ;
+	edge_Veto[2] = TVector3( -conf_floats["MuFilter/Veto2Dx"],conf_floats["MuFilter/Veto2Dz"],conf_floats["MuFilter/Veto2Dy"]) ;
+	std::map<int, TVector3 > edge_Iron;
+	std::map<int, TVector3 > edge_MuFilter;
+	for (int i=1;i<9;i++){
+		string si = to_string(i);
+		edge_Iron[i]       = TVector3( -conf_floats["MuFilter/Iron"+si+"Dx"],conf_floats["MuFilter/Iron"+si+"Dz"],conf_floats["MuFilter/Iron"+si+"Dy"]) ;
+		edge_MuFilter[i] = TVector3( -conf_floats["MuFilter/Muon"+si+"Dx"],conf_floats["MuFilter/Muon"+si+"Dz"],conf_floats["MuFilter/Muon"+si+"Dy"]) ;
+	}
 	//Definition of the box containing veto planes
 	TGeoVolumeAssembly *volVeto = new TGeoVolumeAssembly("volVeto");
 	
