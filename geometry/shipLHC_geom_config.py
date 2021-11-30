@@ -169,9 +169,59 @@ with ConfigRegistry.register_config("basic") as c:
         c.MuFilter.Iron1Dx = -24.2*u.mm
         c.MuFilter.Iron1Dy = 3579.6*u.mm
         c.MuFilter.Iron1Dz = 146.6*u.mm
-        c.MuFilter.Muon1Dz = -99.894*u.mm
-        c.MuFilter.Muon1Dx = 51.07*u.mm
-        c.MuFilter.Muon1Dy = 3762.027*u.mm
+        c.MuFilter.Muon1Dx = -47.1*u.mm
+        c.MuFilter.Muon1Dy = 3760.2*u.mm
+        c.MuFilter.Muon1Dz = 146.6*u.mm
+
+        c.MuFilter.Iron2Dx = -24.2*u.mm
+        c.MuFilter.Iron2Dy = 3804.6*u.mm
+        c.MuFilter.Iron2Dz = 136.6*u.mm
+        c.MuFilter.Muon2Dx = -47.1*u.mm
+        c.MuFilter.Muon2Dy = 3985.2*u.mm
+        c.MuFilter.Muon2Dz = 136.6*u.mm
+
+        c.MuFilter.Iron3Dx = -24.2*u.mm
+        c.MuFilter.Iron3Dy = 4029.6*u.mm
+        c.MuFilter.Iron3Dz = 126.6*u.mm
+        c.MuFilter.Muon3Dx = -47.1*u.mm
+        c.MuFilter.Muon3Dy = 4210.2*u.mm
+        c.MuFilter.Muon3Dz = 126.6*u.mm
+
+        c.MuFilter.Iron4Dx = -24.2*u.mm
+        c.MuFilter.Iron4Dy = 4254.6*u.mm
+        c.MuFilter.Iron4Dz = 116.7*u.mm
+        c.MuFilter.Muon4Dx = -47.1*u.mm
+        c.MuFilter.Muon4Dy = 4435.2*u.mm
+        c.MuFilter.Muon4Dz = 116.7*u.mm
+
+        c.MuFilter.Iron5Dx = -24.2*u.mm
+        c.MuFilter.Iron5Dy = 4479.6*u.mm
+        c.MuFilter.Iron5Dz = 127.7*u.mm
+        c.MuFilter.Muon5Dx = -47.1*u.mm
+        c.MuFilter.Muon5Dy = 4660.2*u.mm
+        c.MuFilter.Muon5Dz = 127.7*u.mm
+
+        c.MuFilter.Iron6Dx = -24.2*u.mm
+        c.MuFilter.Iron6Dy = 4704.6*u.mm
+        c.MuFilter.Iron6Dz = 127.7*u.mm
+        c.MuFilter.Muon6Dx = -47.1*u.mm
+        c.MuFilter.Muon6Dy = 4884.9*u.mm
+        c.MuFilter.Muon6Dz = 127.7*u.mm
+
+        c.MuFilter.Iron7Dx = -24.2*u.mm
+        c.MuFilter.Iron7Dy = 4943.6*u.mm
+        c.MuFilter.Iron7Dz = 127.7*u.mm
+        c.MuFilter.Muon7Dx = -47.1*u.mm
+        c.MuFilter.Muon7Dy = 5123.9*u.mm
+        c.MuFilter.Muon7Dz = 127.7*u.mm
+
+        c.MuFilter.Iron8Dx = -24.2*u.mm
+        c.MuFilter.Iron8Dy = 5183.9*u.mm
+        c.MuFilter.Iron8Dz = 127.7*u.mm
+        c.MuFilter.Muon8Dx = -47.1*u.mm
+        c.MuFilter.Muon8Dy = 5383.7*u.mm
+        c.MuFilter.Muon8Dz = 127.7*u.mm
+
         #Veto station parameters
         c.MuFilter.VetonSiPMs = 8
         c.MuFilter.VetonSides = 2
