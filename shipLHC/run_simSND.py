@@ -309,9 +309,6 @@ run.CreateGeometryFile(geoFile)
 import saveBasicParameters
 saveBasicParameters.execute(geoFile,snd_geo)
 
-# checking for overlaps
-if checking4overlaps:
-      checkOverlaps()
 # -----Finish-------------------------------------------------------
 timer.Stop()
 rtime = timer.RealTime()
@@ -340,3 +337,7 @@ def checkOverlapsWithGeant4():
  mygMC.ProcessGeantCommand("/geometry/test/recursion_start 0")
  mygMC.ProcessGeantCommand("/geometry/test/recursion_depth 2")
  mygMC.ProcessGeantCommand("/geometry/test/run")
+
+# checking for overlaps
+if checking4overlaps:
+      checkOverlaps()
