@@ -158,7 +158,7 @@ with ConfigRegistry.register_config("basic") as c:
         c.Scifi.LfirstChannelHZ = 6.25*u.mm
  
         c.MuFilter = AttrDict(z=0*u.cm)
-        #coordinates in local gravity based system, not complete, for testing interface
+        #coordinates in local gravity based system
         c.MuFilter.Veto1Dx = 44.5*u.mm
         c.MuFilter.Veto1Dy = 2798*u.mm
         c.MuFilter.Veto1Dz = 185.9*u.mm
@@ -222,6 +222,30 @@ with ConfigRegistry.register_config("basic") as c:
         c.MuFilter.Muon8Dy = 5383.7*u.mm
         c.MuFilter.Muon8Dz = 127.7*u.mm
 
+        c.MuFilter.DS4ZGap = 8.82*u.cm
+
+        c.MuFilter.Muon9Dx = -47.1*u.mm   + 45.0*u.mm
+        c.MuFilter.Muon9Dy = 5383.7*u.mm + c.MuFilter.DS4ZGap
+        c.MuFilter.Muon9Dz = 127.7*u.mm
+        c.MuFilter.Iron9Dx = 175.8*u.mm
+        c.MuFilter.Iron9Dy = 5529.7*u.mm
+        c.MuFilter.Iron9Dz = 127.7*u.mm
+
+        # relation between edge and first bar
+        c.MuFilter.DSHLocX = 10.5*u.mm
+        c.MuFilter.DSHLocY = 32.0*u.mm
+        c.MuFilter.DSHLocZ = 607.0*u.mm
+        c.MuFilter.DSVLocX = 623.0*u.mm
+        c.MuFilter.DSVLocY = 47.0*u.mm
+        c.MuFilter.DSVLocZ = 641.3*u.mm
+
+        # offsets in Z of first US bar 
+        c.MuFilter.USOffZ1 = 4.35*u.mm
+        c.MuFilter.USOffZ2 = 5.0*u.mm
+        c.MuFilter.USOffZ3 = 4.2*u.mm
+        c.MuFilter.USOffZ4 = 5.21*u.mm
+        c.MuFilter.USOffZ5 = 4.74*u.mm
+
         #Veto station parameters
         c.MuFilter.VetonSiPMs = 8
         c.MuFilter.VetonSides = 2
@@ -243,51 +267,37 @@ with ConfigRegistry.register_config("basic") as c:
         #veto should end at the start of first ECC target
         c.MuFilter.VetozC = 288.89 *u.cm - (c.MuFilter.NVetoPlanes * c.MuFilter.VetoPlaneZ)/2.
 
-        #c.MuFilter.X = c.EmulsionDet.xdim + 20*u.cm
-        c.MuFilter.X = 80.0*u.cm
-        #c.MuFilter.Y = c.EmulsionDet.ydim + 20*u.cm+10.0*u.cm
-        c.MuFilter.Y = 60.0*u.cm
-        c.MuFilter.FeX = c.MuFilter.X
-        #c.MuFilter.FeY = c.EmulsionDet.ydim + 20*u.cm
-        c.MuFilter.FeY = c.MuFilter.Y
+        c.MuFilter.FeX = 80*u.cm
+        c.MuFilter.FeY = 60*u.cm
         c.MuFilter.FeZ = 20*u.cm
-        c.MuFilter.UpstreamDetX = c.MuFilter.X
-        c.MuFilter.UpstreamDetY = c.MuFilter.FeY
+        c.MuFilter.FeEndX = 20*u.cm
+        c.MuFilter.FeEndY = 10*u.cm
+        c.MuFilter.FeEndZ = 20*u.cm
+
         c.MuFilter.UpstreamDetZ = 2.6*u.cm
         c.MuFilter.UpstreamnSiPMs = 8
         c.MuFilter.UpstreamnSides = 2
         c.MuFilter.NUpstreamPlanes = 5
-        c.MuFilter.DownstreamDetX = c.MuFilter.X
-        c.MuFilter.DownstreamDetY = c.MuFilter.FeY
         c.MuFilter.DownstreamDetZ = 3.9*u.cm
         c.MuFilter.DownstreamnSiPMs = 1
         c.MuFilter.DownstreamnSides = 2   # only for horizontal, vertical only one side
         c.MuFilter.NDownstreamPlanes = 4
-        c.MuFilter.DS4ZGap = 8.82*u.cm
         #upstream bars configuration
         c.MuFilter.NUpstreamBars = 10
-        c.MuFilter.UpstreamBarX = c.MuFilter.UpstreamDetX
-        c.MuFilter.UpstreamBarY = c.MuFilter.UpstreamDetY/c.MuFilter.NUpstreamBars #computed for staggering
-        c.MuFilter.UpstreamBarZ = 1*u.cm
+        c.MuFilter.UpstreamBarX = 82.525*u.cm
+        c.MuFilter.UpstreamBarY = 6.0*u.cm
+        c.MuFilter.UpstreamBarZ = 1.0*u.cm
+        c.MuFilter.UpstreamBarGap = 0.1*u.mm
 
         #downstream bars configuration
         c.MuFilter.NDownstreamBars = 60 #n.d.r. both for x and y in this case
-        c.MuFilter.DownstreamBarX = c.MuFilter.DownstreamDetX
-        c.MuFilter.DownstreamBarY = c.MuFilter.DownstreamDetY/c.MuFilter.NDownstreamBars #computed for staggering
+        c.MuFilter.DownstreamBarX = 82.525*u.cm
+        c.MuFilter.DownstreamBarY = 1*u.cm
         c.MuFilter.DownstreamBarZ = 1*u.cm
-
-        c.MuFilter.DownstreamBarX_ver = c.MuFilter.DownstreamDetY/c.MuFilter.NDownstreamBars #the vertical bars cover a region only 60 x 60 cm2
-        c.MuFilter.DownstreamBarY_ver = 63.5*u.cm 
+        c.MuFilter.DownstreamBarGap = 0.1*u.mm
+        c.MuFilter.DownstreamBarX_ver = 1*u.cm 
+        c.MuFilter.DownstreamBarY_ver = 63.525*u.cm  #the vertical bars cover a region only 60 x 60 cm2
         c.MuFilter.DownstreamBarZ_ver = 1*u.cm
-
-        #total z thickness and position
-        c.MuFilter.Z = c.MuFilter.NUpstreamPlanes*(c.MuFilter.FeZ+c.MuFilter.UpstreamDetZ) + (c.MuFilter.NDownstreamPlanes - 1)*(c.MuFilter.FeZ+c.MuFilter.DownstreamDetZ) + c.MuFilter.DS4ZGap + c.MuFilter.DownstreamDetZ/2 #doesn't include veto
-        c.MuFilter.Zcenter = c.EmulsionDet.zC+c.EmulsionDet.zdim/2+c.MuFilter.Z/2
-        c.MuFilter.ShiftX = -2.8 * u.cm - c.MuFilter.X/2.
-        
-        c.MuFilter.Slope = -3.2 #in degrees
-        c.MuFilter.ShiftY = 9.6 * u.cm + c.MuFilter.Y/2. #shift of first block of upstream section
-        c.MuFilter.ShiftYEnd= 7.5*u.cm + c.MuFilter.Y/2. #shift for downstream section
 
 # soft alignment
         c.MuFilter.USShiftX     = 0
