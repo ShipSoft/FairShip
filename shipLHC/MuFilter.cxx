@@ -179,7 +179,7 @@ void MuFilter::ConstructGeometry()
 	//Veto bars
 	TGeoVolume *volVetoBar = gGeoManager->MakeBox("volVetoBar",Scint,fVetoBarX/2., fVetoBarY/2., fVetoBarZ/2.);
 
-	volVetoBar->SetLineColor(kBlue+2);
+	volVetoBar->SetLineColor(kRed-3);
 	AddSensitiveVolume(volVetoBar);
 
 	//adding mother volume
@@ -192,7 +192,6 @@ void MuFilter::ConstructGeometry()
 	  
 	  string name = "volVetoPlane_"+to_string(iplane);
 	  volVetoPlane = new TGeoVolumeAssembly(name.c_str());
-	  volVetoPlane->SetLineColor(kGray);
 	  /*displacement = edge_Veto[iplane+1] + LocBarV -
                          TVector3(-fVetoBarX/2, fVetoBarY/2,-fVetoBarZ/2)*/
 	  volVeto->AddNode(volVetoPlane,iplane, new TGeoTranslation(0,-fVetoPlaneShiftY/2. + iplane * fVetoPlaneShiftY, startZ + fVetoPlaneZ/2. + iplane * fVetoPlaneZ));
@@ -221,9 +220,9 @@ void MuFilter::ConstructGeometry()
 
 	//Iron blocks volume definition
 	TGeoVolume *volFeBlock = gGeoManager->MakeBox("volFeBlock",Fe,fFeBlockX/2, fFeBlockY/2, fFeBlockZ/2);
-	volFeBlock->SetLineColor(19);
+	volFeBlock->SetLineColor(kGreen-4);
 	TGeoVolume *volFeBlockEnd = gGeoManager->MakeBox("volFeBlockEnd",Fe,fFeBlockEndX/2, fFeBlockEndY/2, fFeBlockEndZ/2);
-	volFeBlockEnd->SetLineColor(19);
+	volFeBlockEnd->SetLineColor(kGreen-4);
 
 	top->AddNode(volMuFilter,1);
 
@@ -251,7 +250,6 @@ void MuFilter::ConstructGeometry()
 	{
 	  string name = "volMuUpstreamDet_"+std::to_string(l);
 	  volUpstreamDet = new TGeoVolumeAssembly(name.c_str());
-	  volUpstreamDet->SetLineColor(kRed+2);
 
 	  displacement = edge_Iron[l+1] - TVector3(fFeBlockX/2,-fFeBlockY/2,-fFeBlockZ/2);
 	  volMuFilter->AddNode(volFeBlock,l,
@@ -287,12 +285,12 @@ void MuFilter::ConstructGeometry()
 	Double_t fDownstreamBarGap = conf_floats["MuFilter/DownstreamBarGap"];
 	
 	TGeoVolume *volMuDownstreamBar_hor = gGeoManager->MakeBox("volMuDownstreamBar_hor",Scint,fDownstreamBarX/2, fDownstreamBarY/2, fDownstreamBarZ/2);
-	volMuDownstreamBar_hor->SetLineColor(kBlue+2);
+	volMuDownstreamBar_hor->SetLineColor(kAzure+7);
 	AddSensitiveVolume(volMuDownstreamBar_hor);
 
 	//vertical bars, for x measurement
 	TGeoVolume *volMuDownstreamBar_ver = gGeoManager->MakeBox("volMuDownstreamBar_ver",Scint,fDownstreamBarX_ver/2, fDownstreamBarY_ver/2, fDownstreamBarZ/2);
-	volMuDownstreamBar_ver->SetLineColor(kGreen+2);
+	volMuDownstreamBar_ver->SetLineColor(kViolet-2);
 	AddSensitiveVolume(volMuDownstreamBar_ver);
 
 	for(Int_t l=0; l<fNDownstreamPlanes; l++)
