@@ -8,10 +8,6 @@
 #include "MuFilterPoint.h"
 
 #include "TGeoManager.h"
-#include "FairRun.h"                    // for FairRun
-#include "FairRuntimeDb.h"              // for FairRuntimeDb
-#include "TList.h"                      // for TListIter, TList (ptr only)
-#include "TObjArray.h"                  // for TObjArray
 #include "TString.h"                    // for TString
 
 #include "TClonesArray.h"
@@ -20,6 +16,8 @@
 #include "TGeoBBox.h"
 #include "TGeoMaterial.h"
 #include "TGeoMedium.h"
+#include "TGeoBBox.h"
+#include "TGeoCompositeShape.h"
 
 #include "TParticle.h"
 #include "TParticlePDG.h"
@@ -37,13 +35,11 @@
 #include "FairGeoMedium.h"
 #include "FairGeoBuilder.h"
 #include "FairRun.h"
-#include "FairRuntimeDb.h"
 
 #include "ShipDetectorList.h"
 #include "ShipUnit.h"
 #include "ShipStack.h"
 
-#include "TGeoUniformMagField.h"
 #include <stddef.h>                     // for NULL
 #include <iostream>                     // for operator<<, basic_ostream,etc
 #include <string.h>
@@ -124,7 +120,8 @@ void MuFilter::ConstructGeometry()
 
 	InitMedium("iron");
 	TGeoMedium *Fe =gGeoManager->GetMedium("iron");
-
+	InitMedium("aluminium");
+	TGeoMedium *Al =gGeoManager->GetMedium("aluminium");
 	InitMedium("polyvinyltoluene");
 	TGeoMedium *Scint =gGeoManager->GetMedium("polyvinyltoluene");
 
@@ -217,6 +214,14 @@ void MuFilter::ConstructGeometry()
 	Double_t fFeBlockEndX = conf_floats["MuFilter/FeEndX"]; // last Iron block dimensions
 	Double_t fFeBlockEndY = conf_floats["MuFilter/FeEndY"];
 	Double_t fFeBlockEndZ = conf_floats["MuFilter/FeEndZ"];
+	Double_t fSupportBoxW = conf_floats["MuFilter/SupportBoxW"]; // SupportBox dimensions
+
+	TVector3 DSBox1 = TVector3(-conf_floats["MuFilter/DSBoxX1"],conf_floats["MuFilter/DSBoxZ1"],conf_floats["MuFilter/DSBoxY1"]); // bottom front left
+	TVector3 DSBox2 = TVector3(-conf_floats["MuFilter/DSBoxX2"],conf_floats["MuFilter/DSBoxZ2"],conf_floats["MuFilter/DSBoxY2"]); // top back right
+	TVector3 DSBoxDim = TVector3( DSBox1.X()-DSBox2.X(), DSBox2.Y()-DSBox1.Y(), DSBox2.Z()-DSBox1.Z() ) ;
+	TVector3 USBox1 = TVector3(-conf_floats["MuFilter/DSBoxX1"],conf_floats["MuFilter/DSBoxZ1"],conf_floats["MuFilter/USBoxY1"]); // bottom front left
+	TVector3 USBox2 = TVector3(-conf_floats["MuFilter/DSBoxX2"],conf_floats["MuFilter/DSBoxZ2"],conf_floats["MuFilter/USBoxY2"]); // top back right
+	TVector3 USBoxDim = TVector3( USBox1.X()-USBox2.X(), USBox2.Y()-USBox1.Y(), USBox2.Z()-USBox1.Z() ) ;
 
 	//Iron blocks volume definition
 	TGeoVolume *volFeBlock = gGeoManager->MakeBox("volFeBlock",Fe,fFeBlockX/2, fFeBlockY/2, fFeBlockZ/2);
@@ -224,16 +229,28 @@ void MuFilter::ConstructGeometry()
 	TGeoVolume *volFeBlockEnd = gGeoManager->MakeBox("volFeBlockEnd",Fe,fFeBlockEndX/2, fFeBlockEndY/2, fFeBlockEndZ/2);
 	volFeBlockEnd->SetLineColor(kGreen-4);
 
+	// support box
+	TGeoBBox  *supDSBoxInner  = new TGeoBBox("supDSBoxI",DSBoxDim.X()/2,DSBoxDim.Y()/2,DSBoxDim.Z()/2);
+	TGeoBBox  *supDSBoxOuter = new TGeoBBox("supDSBoxO",DSBoxDim.X()/2+fSupportBoxW,DSBoxDim.Y()/2+fSupportBoxW,DSBoxDim.Z()/2+fSupportBoxW);
+	TGeoCompositeShape *subDSBoxShape = new TGeoCompositeShape("subDSBoxShape", "supDSBoxO-supDSBoxI");
+	TGeoVolume *subDSBox = new TGeoVolume("subDSBox", subDSBoxShape, Al);     
+	subDSBox->SetLineColor(kGray+1);
+	TGeoBBox  *supUSBoxInner  = new TGeoBBox("supUSBoxI",USBoxDim.X()/2,USBoxDim.Y()/2,USBoxDim.Z()/2);
+	TGeoBBox  *supUSBoxOuter = new TGeoBBox("supUSBoxO",USBoxDim.X()/2+fSupportBoxW,USBoxDim.Y()/2+fSupportBoxW,USBoxDim.Z()/2+fSupportBoxW);
+	TGeoCompositeShape *subUSBoxShape = new TGeoCompositeShape("subUSBoxShape", "supUSBoxO-supUSBoxI");
+	TGeoVolume *subUSBox = new TGeoVolume("subUSBox", subUSBoxShape, Al);     
+	subUSBox->SetLineColor(kGray+1);
+
 	top->AddNode(volMuFilter,1);
 
 	Double_t dy = 0;
 	Double_t dz = 0;
 	//Upstream Detector planes definition
 	Double_t fUpstreamDetZ =  conf_floats["MuFilter/UpstreamDetZ"];
-	// local position of top horizontal bar to survey edge
+	// local position of bottom horizontal bar to survey edge
 	TVector3 LocBarUS = TVector3(
 		-conf_floats["MuFilter/DSHLocX"],
-		conf_floats["MuFilter/DSHLocZ"] + conf_floats["MuFilter/DownstreamBarY"]/2 - conf_floats["MuFilter/UpstreamBarY"]/2,
+		conf_floats["MuFilter/DSHLocZ"] - conf_floats["MuFilter/DownstreamBarY"]/2 + conf_floats["MuFilter/UpstreamBarY"]/2,
 		conf_floats["MuFilter/DSHLocY"]);
 
 	TGeoVolume* volUpstreamDet;
@@ -259,12 +276,16 @@ void MuFilter::ConstructGeometry()
 	  volMuFilter->AddNode(volUpstreamDet,fNVetoPlanes+l,
                                     new TGeoTranslation(displacement.X(),displacement.Y(),displacement.Z()));
 
-	  displacement = LocBarUS - 
-                         TVector3(fUpstreamBarX/2, fNUpstreamBars*fUpstreamBarY-fUpstreamBarY/2,-fUpstreamBarZ/2);
+	 //  USBox1 = bottom front left
+	  displacement = edge_MuFilter[l+1] +USBox1 + TVector3(-USBoxDim.X()/2,USBoxDim.Y()/2,USBoxDim.Z()/2);
+	  volMuFilter->AddNode(subUSBox,l+fNVetoPlanes,
+		new TGeoTranslation(displacement.X(),displacement.Y(),displacement.Z()));
+
+	  displacement = LocBarUS + TVector3(-fUpstreamBarX/2, 0, 0);
 	  for (Int_t ibar = 0; ibar < fNUpstreamBars; ibar++){
 	    Double_t dy_bar =  (fUpstreamBarY + fUpstreamBarGap)*ibar; 
 	    volUpstreamDet->AddNode(volMuUpstreamBar,2e+4+l*1e+3+ibar,
-				new TGeoTranslation(displacement.X(),displacement.Y()+dy_bar+conf_floats["MuFilter/USOffZ"+to_string(l+1)],displacement.Z()));
+				new TGeoTranslation(displacement.X(),displacement.Y()+conf_floats["MuFilter/USOffZ"+to_string(l+1)]+dy_bar,displacement.Z()));
 	  }
 
 	}
@@ -274,7 +295,7 @@ void MuFilter::ConstructGeometry()
     // first loop, adding detector main boxes
 	TGeoVolume* volDownstreamDet;
 
-	// local position of top horizontal bar to survey edge
+	// local position of bottom horizontal bar to survey edge
 	TVector3 LocBarH = TVector3(-conf_floats["MuFilter/DSHLocX"],conf_floats["MuFilter/DSHLocZ"],conf_floats["MuFilter/DSHLocY"]);
 	// local position of l left vertical bar to survey edge
 	TVector3 LocBarV = TVector3(-conf_floats["MuFilter/DSVLocX"],conf_floats["MuFilter/DSVLocZ"],conf_floats["MuFilter/DSVLocY"]);
@@ -317,8 +338,7 @@ void MuFilter::ConstructGeometry()
 
 	//adding bars within each detector box
 	if (l!=fNDownstreamPlanes-1) {
-		displacement = LocBarH - 
-                         TVector3(fDownstreamBarX/2, fNDownstreamBars*fDownstreamBarY-fDownstreamBarY/2,-fDownstreamBarZ/2);
+		displacement = LocBarH + TVector3(-fDownstreamBarX/2, 0,0);
 		for (Int_t ibar = 0; ibar < fNDownstreamBars; ibar++){
 	                 //adding horizontal bars for y
 			Double_t dy_bar = (fDownstreamBarY + fDownstreamBarGap)*ibar;
@@ -326,9 +346,13 @@ void MuFilter::ConstructGeometry()
 				new TGeoTranslation(displacement.X(),displacement.Y()+dy_bar,displacement.Z()));
 			}
 		}
+	 //  DSBox1 = bottom front left
+	displacement = edge_MuFilter[l+fNUpstreamPlanes+1] +DSBox1 +
+			TVector3(-DSBoxDim.X()/2,DSBoxDim.Y()/2,DSBoxDim.Z()/2);
+		volMuFilter->AddNode(subDSBox,l+fNUpstreamPlanes+fNVetoPlanes,
+		new TGeoTranslation(displacement.X(),displacement.Y(),displacement.Z()));
 	//adding vertical bars for x
-	displacement = LocBarV - 
-                         TVector3(-fDownstreamBarX_ver/2, fDownstreamBarY_ver/2,-fDownstreamBarZ/2);
+	displacement = LocBarV + TVector3(0, -fDownstreamBarY_ver/2,0);
 	for (Int_t i_vbar = 0; i_vbar<fNDownstreamBars; i_vbar++) {
 		Double_t dx_bar = fDownstreamBarX_ver*i_vbar;
 		Int_t i_vbar_rev  = fNDownstreamBars-1-i_vbar;   // TO BE CHECKED IF NUMBERING AGREES WITH DAQ  TR Nov21

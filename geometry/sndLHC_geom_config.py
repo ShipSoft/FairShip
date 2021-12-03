@@ -195,28 +195,28 @@ with ConfigRegistry.register_config("basic") as c:
         c.MuFilter.Muon4Dz = 116.7*u.mm
 
         c.MuFilter.Iron5Dx = -24.2*u.mm
-        c.MuFilter.Iron5Dy = 4479.6*u.mm
+        c.MuFilter.Iron5Dy = 4479.6*u.mm    # +225.0mm
         c.MuFilter.Iron5Dz = 127.7*u.mm
         c.MuFilter.Muon5Dx = -47.1*u.mm
         c.MuFilter.Muon5Dy = 4660.2*u.mm
         c.MuFilter.Muon5Dz = 127.7*u.mm
 
         c.MuFilter.Iron6Dx = -24.2*u.mm
-        c.MuFilter.Iron6Dy = 4704.6*u.mm
+        c.MuFilter.Iron6Dy = 4704.6*u.mm     # +225.0mm
         c.MuFilter.Iron6Dz = 127.7*u.mm
         c.MuFilter.Muon6Dx = -47.1*u.mm
         c.MuFilter.Muon6Dy = 4884.9*u.mm
         c.MuFilter.Muon6Dz = 127.7*u.mm
 
         c.MuFilter.Iron7Dx = -24.2*u.mm
-        c.MuFilter.Iron7Dy = 4943.6*u.mm
+        c.MuFilter.Iron7Dy = 4943.6*u.mm       # +239.0mm
         c.MuFilter.Iron7Dz = 127.7*u.mm
         c.MuFilter.Muon7Dx = -47.1*u.mm
         c.MuFilter.Muon7Dy = 5123.9*u.mm
         c.MuFilter.Muon7Dz = 127.7*u.mm
 
         c.MuFilter.Iron8Dx = -24.2*u.mm
-        c.MuFilter.Iron8Dy = 5183.9*u.mm
+        c.MuFilter.Iron8Dy = 5183.9*u.mm        # +240.3mm
         c.MuFilter.Iron8Dz = 127.7*u.mm
         c.MuFilter.Muon8Dx = -4.7*u.mm
         c.MuFilter.Muon8Dy = 5383.7*u.mm
@@ -231,10 +231,11 @@ with ConfigRegistry.register_config("basic") as c:
         c.MuFilter.Iron9Dy = 5529.7*u.mm
         c.MuFilter.Iron9Dz = 127.7*u.mm
 
-        # relation between edge and first bar
+        # relation between edge and bottom bar
         c.MuFilter.DSHLocX = 10.5*u.mm
         c.MuFilter.DSHLocY = 32.0*u.mm
-        c.MuFilter.DSHLocZ = 607.0*u.mm
+        c.MuFilter.DSHLocZ = 11.1*u.mm
+        # relation between edge and right bar
         c.MuFilter.DSVLocX = 623.0*u.mm
         c.MuFilter.DSVLocY = 47.0*u.mm
         c.MuFilter.DSVLocZ = 641.3*u.mm
@@ -299,17 +300,20 @@ with ConfigRegistry.register_config("basic") as c:
         c.MuFilter.DownstreamBarY_ver = 63.525*u.cm  #the vertical bars cover a region only 60 x 60 cm2
         c.MuFilter.DownstreamBarZ_ver = 1*u.cm
 
-# soft alignment
-        c.MuFilter.USShiftX     = 0
-        c.MuFilter.USShiftY     = 0
-        c.MuFilter.USShiftZ     = 0
-        c.MuFilter.DSHShiftX = 0
-        c.MuFilter.DSHShiftY = 0
-        c.MuFilter.DSVShiftX  = 0
-        c.MuFilter.DSVShiftY  = 0
-        c.MuFilter.DSShiftZ     = 0
+        # DS and US support box, inner, Z pointing upward
+        c.MuFilter.SupportBoxD  = 0.5*u.mm  # empty space between bars and box
+        c.MuFilter.SupportBoxW = 2*u.mm
+        c.MuFilter.DSBoxX1        = 10.5*u.mm - c.MuFilter.SupportBoxD
+        c.MuFilter.DSBoxX2        = c.MuFilter.DSBoxX1 + c.MuFilter.DownstreamBarX + c.MuFilter.SupportBoxD
+        c.MuFilter.DSBoxZ1        = 11.1*u.mm - c.MuFilter.DownstreamBarZ/2 - c.MuFilter.SupportBoxD
+        c.MuFilter.DSBoxZ2        = 641.3*u.mm + c.MuFilter.SupportBoxD
+        c.MuFilter.DSBoxY1        = 32*u.mm - c.MuFilter.DownstreamBarZ/2 - c.MuFilter.SupportBoxD
+        c.MuFilter.DSBoxY2        = 47*u.mm + c.MuFilter.DownstreamBarZ/2 + c.MuFilter.SupportBoxD
 
-        #digitization parameters
+        c.MuFilter.USBoxY1        = 32*u.mm - c.MuFilter.DownstreamBarZ/2 - c.MuFilter.SupportBoxD
+        c.MuFilter.USBoxY2        = 32*u.mm + c.MuFilter.DownstreamBarZ/2 + c.MuFilter.SupportBoxD
+
+       #digitization parameters
         c.MuFilter.DsAttenuationLength   =  350 * u.cm                #  values between 300 cm and 400cm observed for H6 testbeam
         c.MuFilter.DsTAttenuationLength =  700 * u.cm                # top readout with mirror on bottom
         c.MuFilter.VandUpAttenuationLength = 999 * u.cm        # no significante attenuation observed for H6 testbeam
@@ -321,3 +325,6 @@ with ConfigRegistry.register_config("basic") as c:
         c.MuFilter.DsPropSpeed        = 14.3*u.cm/u.nanosecond
 
         c.Floor = AttrDict(z=48000.*u.cm) # to place tunnel in SND_@LHC coordinate system
+        c.Floor.DX = 1.0*u.cm 
+        c.Floor.DY = -4.5*u.cm #  subtract 4.5cm to avoid overlaps 
+        c.Floor.DZ = 0.
