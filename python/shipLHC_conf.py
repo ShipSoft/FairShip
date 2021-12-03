@@ -16,7 +16,9 @@ def configure(run,ship_geo,Gfield=''):
  detectorList.append(cave)
 
  floor = ROOT.Floor()
- floor.SetSND_Z(ship_geo.Floor.z)
+ for parName in ship_geo.Floor:
+    parValue = eval('ship_geo.Floor.'+parName)
+    floor.SetConfPar("Floor/"+parName, parValue)
  detectorList.append(floor)
  
  EmulsionDet = ROOT.EmulsionDet("EmulsionDet",ROOT.kTRUE)
