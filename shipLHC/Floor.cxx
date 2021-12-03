@@ -160,6 +160,7 @@ TVector3 Floor::crossing(TVector3 H1,TVector3 H2,TVector3 H3,TVector3 P1,TVector
 }
 void Floor::ConstructGeometry()
 {
+	SND_Z = conf_floats["Floor/z"];
 
 	TGeoVolume *top = gGeoManager->GetTopVolume();
 	InitMedium("Concrete");
@@ -188,6 +189,10 @@ void Floor::ConstructGeometry()
          localSND_physCS_comb->RegisterYourself();
          top->AddNode(detector, 0,localSND_physCS_comb);
 
+         Double_t fTunnelDX = conf_floats["Floor/DX"];
+         Double_t fTunnelDY = conf_floats["Floor/DY"];
+         Double_t fTunnelDZ = conf_floats["Floor/DZ"];
+
 // from Fluka, geo4SND.inp, 25.12.2020
   std::vector<double> TI18_o1  = {-221.4191473578 , 76.66172460057,   48820.152816717, 131.72892289383,   33.003800302801, -543.2846767937, 200.28612174928};
   std::vector<double> TI18_i1   = {-221.4191473578 , 76.66172460057,   48820.152816717, 131.72892289383,   33.003800302801, -543.2846767937, 175.0}; 
@@ -205,13 +210,13 @@ void Floor::ConstructGeometry()
   std::vector<double> tu010_i = {   -451.24339295,      30., 4.4607412772E+04, -89.817671994, 0.0,1955.4422017, 220.0};
   std::vector<double> tu010_o = {   -451.24339295,     30., 4.4607412772E+04, -89.817671994, 0.0,1955.4422017, 250.0,750.,1100.};
 // PLA   TI18_01 and TI18_02
-  std::vector<double> TI18_1_bot = {   0.67644808637366, -74.85571453913, -4.530940169849, -221.4171473578, -18.33127539943-3.5,48818.967816717,  // subtract 3.5cm to agree with Antonio measurements
+  std::vector<double> TI18_1_bot = {   0.67644808637366, -74.85571453913, -4.530940169849, -221.4171473578, -18.33127539943,48818.967816717, 
                                                                                  0.63027909276104 ,-74.86684394728, -4.35010639392,   -221.4171473578, -93.32587539943,48818.036016717};
 // side PLA TI18_08 and PLA TI18_09 
   std::vector<double> TI18_1_sid = {   -95.08832719702, 21.886725033285, -21.89021009926, -39.11837578468,3.7557255037298,48858.930618475,
                                                                                -94.65075310463, -21.38126814052,  -24.16767074894,-402.3825398293,  5.6093808446198,48770.79950338};
 // PLA TI18_04 and PLA TI18_03 
-  std::vector<double> TI18_2_bot = {   1.590393176461, -74.48871190132, -8.55964069504,     -92.6293750264,     13.94692460057-3.5, 48287.934643717,    // subtract 3.5cm to agree with Antonio measurements
+  std::vector<double> TI18_2_bot = {   1.590393176461, -74.48871190132, -8.55964069504,     -92.6293750264,     13.94692460057, 48287.934643717,    
                                                                                  1.12692975448,   -74.65145228529, -7.089125547405,    -92.57914735775, -61.04827539943, 48286.672816717};
 // side PLA TI18_81 and PLA TI18_91 
   std::vector<double> TI18_2_sid = {   9.5229226656561, -2.052234306283, 2.2588218587662, 119.6722824853, -43.26523379053, 48132.959403311,
@@ -432,7 +437,7 @@ exitPlane->SetVisibility(kFALSE);
 if (fMakeSensitive) {AddSensitiveVolume(exitPlane);}
 tunnel->AddNode(exitPlane,1, new TGeoTranslation(0,0,1000.));
 
-  top->AddNode(tunnel , 1);
+  top->AddNode(tunnel , 1,new TGeoTranslation(fTunnelDX,fTunnelDY,fTunnelDZ));
 }
 
 vetoPoint* Floor::AddHit(Int_t trackID, Int_t detID,
