@@ -106,6 +106,9 @@ protected:
     Double_t WallYDim;
     Double_t WallZDim;
 
+    Double_t TotalWallZDim; //including the aluminium border
+    Double_t WallZBorder_offset; //border is asymmetric, 14 mm before, 4.5 mm after
+
     Double_t EmulsionThickness;
     Double_t EmulsionX;
     Double_t EmulsionY;

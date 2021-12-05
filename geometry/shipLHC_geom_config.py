@@ -34,11 +34,13 @@ with ConfigRegistry.register_config("basic") as c:
 
         c.EmulsionDet.xdim = 42.2 *u.cm #external wall dimensions
         c.EmulsionDet.ydim = 42.2 *u.cm
+        c.EmulsionDet.TotalWallZDim = 10.0 *u.cm #wall dimension along z, including border
         c.EmulsionDet.WallXDim = 38.6 *u.cm #internal wall dimensions
         c.EmulsionDet.WallYDim = 38.6 *u.cm
-        c.EmulsionDet.WallZDim = c.EmulsionDet.BrZ
+        c.EmulsionDet.WallZDim = 8.15 *u.cm
+        c.EmulsionDet.WallZBorder_offset = 4.75 * u.mm
         c.EmulsionDet.TTz = 3.0*u.cm
-        c.EmulsionDet.zdim = c.EmulsionDet.wall* c.EmulsionDet.WallZDim + c.EmulsionDet.wall*c.EmulsionDet.TTz
+        c.EmulsionDet.zdim = c.EmulsionDet.wall* c.EmulsionDet.TotalWallZDim + c.EmulsionDet.wall*c.EmulsionDet.TTz
         c.EmulsionDet.ShiftX = -8.0*u.cm - c.EmulsionDet.xdim/2.
         c.EmulsionDet.ShiftY = 15.5*u.cm + c.EmulsionDet.ydim/2.
 
@@ -250,9 +252,6 @@ with ConfigRegistry.register_config("basic") as c:
         c.MuFilter.VetonSiPMs = 8
         c.MuFilter.VetonSides = 2
         c.MuFilter.NVetoPlanes = 2
-        c.MuFilter.VetoShiftX = c.EmulsionDet.ShiftX
-        c.MuFilter.VetoShiftY = c.EmulsionDet.ShiftY
-        c.MuFilter.VetoPlaneShiftY = 1*u.cm
         
         c.MuFilter.VetoPlaneX = 42 *u.cm
         c.MuFilter.VetoPlaneY = 42 *u.cm
@@ -300,14 +299,12 @@ with ConfigRegistry.register_config("basic") as c:
         c.MuFilter.DownstreamBarZ_ver = 1*u.cm
 
 # soft alignment
-        c.MuFilter.USShiftX     = 0
-        c.MuFilter.USShiftY     = 0
-        c.MuFilter.USShiftZ     = 0
-        c.MuFilter.DSHShiftX = 0
-        c.MuFilter.DSHShiftY = 0
-        c.MuFilter.DSVShiftX  = 0
-        c.MuFilter.DSVShiftY  = 0
-        c.MuFilter.DSShiftZ     = 0
+        c.MuFilter.VetoShiftX   = 0
+        c.MuFilter.VetoShiftY   = 0
+        c.MuFilter.VetoShiftZ   = 0
+        c.MuFilter.ShiftX     = 0
+        c.MuFilter.ShiftY     = 0
+        c.MuFilter.ShiftZ     = 0
 
         #digitization parameters
         c.MuFilter.DsAttenuationLength   =  350 * u.cm                #  values between 300 cm and 400cm observed for H6 testbeam
@@ -321,3 +318,26 @@ with ConfigRegistry.register_config("basic") as c:
         c.MuFilter.DsPropSpeed        = 14.3*u.cm/u.nanosecond
 
         c.Floor = AttrDict(z=48000.*u.cm) # to place tunnel in SND_@LHC coordinate system
+
+# for H6 / H8 testbeam and commissioning
+        H6 = False
+        if H6:
+           c.Floor.z = 0   # no tunnel, no slope
+# scifi moved 46cm behind the iron block of second DS station.
+# and lifted by 10-15 cm.
+
+# alignment parameters for H6 MuFilter relative to SciFi
+alignParametersForH6 = {'1X':-13.0,'2X':1.2,    '3HX':0.7,     '3VX':-18.5,
+                                        '1Y':-13.2,'2Y':-19.9,'3HY':-15.4,'3VY':-19.4}
+
+           c.MuFilter.ShiftY = -12.5*u.cm
+           c.MuFilter.ShiftZ = -12.5*u.cm
+           c.MuFilter.VetoShiftZ =  
+           c.MuFilter.ShiftZ       =  -23.5*u.cm
+
+muFilter moved by muZH6
+>         # for H6, Veto  placed directly in front of first US
+>         c.MuFilter.VetozC = c.MuFilter.Zcenter - c.MuFilter.Z/2 - c.MuFilter.VetoPlaneZ
+>         c.MuFilter.VetoShiftY = c.MuFilter.VetoShiftY + muXH6
+
+

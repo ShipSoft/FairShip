@@ -132,6 +132,8 @@ void EmulsionDet::ConstructGeometry()
 	WallXDim = conf_floats["EmulsionDet/WallXDim"];
 	WallYDim = conf_floats["EmulsionDet/WallYDim"];
 	WallZDim = conf_floats["EmulsionDet/WallZDim"];
+        TotalWallZDim = conf_floats["EmulsionDet/TotalWallZDim"];
+        WallZBorder_offset = conf_floats["EmulsionDet/WallZBorder_offset"];
 	EmulsionThickness = conf_floats["EmulsionDet/EmTh"];
 	EmulsionX = conf_floats["EmulsionDet/EmX"];
 	EmulsionY = conf_floats["EmulsionDet/EmY"];
@@ -203,10 +205,13 @@ void EmulsionDet::ConstructGeometry()
 	//    //
 
 	
-	TGeoBBox *Walltot = new TGeoBBox("walltot",XDimension/2, YDimension/2, (WallZDim-0.1)/2);
+	TGeoBBox *Walltot = new TGeoBBox("walltot",XDimension/2, YDimension/2, TotalWallZDim/2);
         TGeoBBox *Wallint = new TGeoBBox("wallint",WallXDim/2, WallYDim/2, WallZDim/2);
+ 
+        TGeoTranslation * Wallborderpos = new TGeoTranslation("Walborderpos",0,0,WallZBorder_offset);
+        Wallborderpos->RegisterYourself();
 
-        TGeoCompositeShape *Wallborder = new TGeoCompositeShape("wallborder","walltot - wallint");
+        TGeoCompositeShape *Wallborder = new TGeoCompositeShape("wallborder","walltot - (wallint:Walborderpos)");
         TGeoVolume *volWallborder = new TGeoVolume("volWallborder", Wallborder, Al);
         volWallborder->SetLineColor(kGray);
 
