@@ -187,7 +187,6 @@ void Floor::ConstructGeometry()
          localSND_physCS_rot ->SetMatrix(M);
          auto localSND_physCS_comb = new TGeoCombiTrans("localSND_physCS",0.,0.,0.,localSND_physCS_rot);    // origin is 480m downstream of IP1
          localSND_physCS_comb->RegisterYourself();
-         top->AddNode(detector, 0,localSND_physCS_comb);
 
          Double_t fTunnelDX = conf_floats["Floor/DX"];
          Double_t fTunnelDY = conf_floats["Floor/DY"];
@@ -437,7 +436,13 @@ exitPlane->SetVisibility(kFALSE);
 if (fMakeSensitive) {AddSensitiveVolume(exitPlane);}
 tunnel->AddNode(exitPlane,1, new TGeoTranslation(0,0,1000.));
 
-  top->AddNode(tunnel , 1,new TGeoTranslation(fTunnelDX,fTunnelDY,fTunnelDZ));
+if (SND_Z<0.1){ // for H6 and H8 testbeam setup
+   top->AddNode(detector, 0);
+ }else{
+   top->AddNode(detector, 0,localSND_physCS_comb);
+   top->AddNode(tunnel , 1,new TGeoTranslation(fTunnelDX,fTunnelDY,fTunnelDZ));
+ }
+
 }
 
 vetoPoint* Floor::AddHit(Int_t trackID, Int_t detID,
