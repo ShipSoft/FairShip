@@ -1,19 +1,35 @@
 import ROOT
 import numpy as np
 import scipy.ndimage
+import warnings
 
-def hit_finder( slope, intercept, box_centers, box_ds) :
+def hit_finder(slope, intercept, box_centers, box_ds) :
     """ Finds hits intersected by Hough line """
+
+#    print("HIT FINDER STARTS!!")
+    
+#    print(box_centers)
+#    print(box_ds)
+
     # First check if track at center of box is within box limits
-    d = np.abs(box_centers[:,1] - (box_centers[:,0]*slope + intercept))
-    center_in_box = d < box_ds[:,1]/2.
-    
+
+    d = np.abs(box_centers[0,:,1] - (box_centers[0,:,0]*slope + intercept))
+
+#    print(d)
+
+    center_in_box = d < box_ds[0,:,1]/2.
+
+#    print(center_in_box)
+
     # Now check if, assuming line is not in box at box center, the slope is large enough for line to clip the box at corner
-    clips_corner = np.abs(slope) > np.abs((d - box_ds[:,1]/2.)/box_ds[:,0]/2.)
-    
+    clips_corner = np.abs(slope) > np.abs((d - box_ds[0,:,1]/2.)/box_ds[0,:,0]/2.)
+
+#    print(clips_corner)
     # If either of these is true, line goes through hit:
     hit_mask = np.logical_or(center_in_box, clips_corner)
 
+#    print(hit_mask)
+#    print(np.where(hit_mask))
     # Return indices
     return np.where(hit_mask)[0]
 
@@ -55,7 +71,6 @@ class hough() :
 
         # Smooth accumulator
         self.accumulator = scipy.ndimage.gaussian_filter(self.accumulator, 3)
-        
 
         if draw :
             pass
@@ -98,7 +113,10 @@ class hough() :
             fit = self.fit(random_hit_collection, draw, weights)
         else :
             fit = self.fit(hit_collection, draw, weights)
-            
+
+        print("Done randomized fit. Returning")
+        return fit
+
         # Find hits that match track
 #        z0 = np.min(hit_collection[:,0])
 #        z1 = np.max(hit_collection[:,0])
@@ -108,33 +126,337 @@ class hough() :
         
 #        l_fit = np.array([[z0, y0], [z1, y1]])
 
-        hit_indices = hit_finder(fit[0], fit[1], hit_collection, hit_d)
+#        hit_indices = hit_finder(fit[0], fit[1], hit_collection, hit_d)
 
 #        for i in range(len(hit_collection)) :
 #            if lineseg_intersects_box(l_fit, [hit_collection[i,0], hit_collection[i,1]], [hit_d[i,0], hit_d[i,1]]) :
 #                hit_indices.append(i)
 
         # Find track start and track end
-        if len(hit_indices) :
-            z_min = np.min(hit_collection[hit_indices][:,0])
-            z_max = np.max(hit_collection[hit_indices][:,0])
-        else :
-            z_min = -1
-            z_max = -1
-            success = False
-        return (fit[0], fit[1], np.array([[z_min, fit[0]*z_min + fit[1]], [z_max,fit[0]*z_max + fit[1]]]), hit_indices, success)
+#        if len(hit_indices) :
+#            z_min = np.min(hit_collection[hit_indices][:,0])
+#            z_max = np.max(hit_collection[hit_indices][:,0])
+#        else :
+#            z_min = -1
+#            z_max = -1
+#            success = False
+#        return (fit[0], fit[1], np.array([[z_min, fit[0]*z_min + fit[1]], [z_max,fit[0]*z_max + fit[1]]]), hit_indices, success)
 
 class MuonReco(ROOT.FairTask) :
     " Muon reconstruction "
-    def InitTasl(self, event) :
-        lsOfGlobals  = ROOT.gROOT.GetListOfGlobals()
-        self.scifiDet = lsOfGlobals.FindObject('Scifi')
-        self.mufiDet = lsOfGlobals.FindObject('MuFilter')
+    def Init(self) :
+
+        print("Initializing task!")
+        self.lsOfGlobals  = ROOT.gROOT.GetListOfGlobals()
+        self.scifiDet = self.lsOfGlobals.FindObject('Scifi')
+        self.mufiDet = self.lsOfGlobals.FindObject('MuFilter')
+        ioman = ROOT.FairRootManager.Instance()
+
+        # Fetch digi hit collections.
+        # Try the FairRoot way first
+        self.MuFilterHits = ioman.GetObject("Digi_MuFilterHits")
+        self.ScifiHits = ioman.GetObject("Digi_ScifiHits")
+
+        # If that doesn't work, try using standard ROOT
+        if self.MuFilterHits == None :
+            warnings.warn("Digi_MuFilterHits not in branch list")
+            self.MuFilterHits = ioman.GetInTree().Digi_MuFilterHits
+        if self.ScifiHits == None :
+            warnings.warn("Digi_ScigiHits not in branch list")
+            self.ScifiHits = ioman.GetInTree().Digi_ScifiHits
         
+        if self.MuFilterHits == None :
+            raise RuntimeException("Digi_MuFilterHits not found in input file.")
+        if self.ScifiHits == None :
+            raise RuntimeException("Digi_ScifiHits not found in input file.")
+
+        # Initialize hough transform
+        # Reco parameters (these should be registered in the rtdb?):
+        # Maximum absolute value of reconstructed angle
+        max_angle = np.pi*0.1
+        # Number of bins per Hough accumulator axis
+        n = 1000
+        # Number of random throws per hit
+        self.n_random = 5
+        # MuFilter weight. Muon filter hits are thrown more times than scifi
+        self.muon_weight = 100
+        # Minimum number of hits in each of the downstream muon filter views to try to reconstruct a muon
+        self.min_hits = 3
+
+        # Ideally I should get this from the geometry object. Keep it like this for now...
+        self.MuFilter_ds_dx = 1.
+        self.MuFilter_ds_dy = 1.
+        self.MuFilter_ds_dz = 1.
+
+        self.MuFilter_us_dx = 1.
+        self.MuFilter_us_dy = 6.
+        self.MuFilter_us_dz = 1.
+
+        self.Scifi_dx = 250e-4
+        self.Scifi_dy = 250e-4
+        self.Scifi_dz = 0.162
         
+        # Initialize Hough transforms for both views:
+        self.h_ZX = hough(n, [-80, 0], n, [-max_angle+np.pi/2., max_angle+np.pi/2.], False)
+        self.h_ZY = hough(n, [0, 80], n, [-max_angle+np.pi/2., max_angle+np.pi/2.], False)
+
+        # Now initialize output
+        self.muon_tracks = ROOT.TClonesArray("sndRecoTrack", 10)
+        ioman.Register("Reco_MuonTracks", "", self.muon_tracks, ROOT.kTRUE);
+
+        # To keep temporary detector information
+        self.a = ROOT.TVector3()
+        self.b = ROOT.TVector3()
+
+        return 0
         
+    def Exec(self, opt) :
+        print("Exec ing")
+        self.muon_tracks.Clear()
+
+        # Read hits
+        # For downstream muon filter hits
+        mu_ds = {"pos" : [[], [], []], 
+                 "d" : [[], [], []], 
+                 "vert" : [], 
+                 "index" : [],
+                 "system" : [],
+                 "detectorID" : []}
+
+        # For upstream muon filter hits
+        mu_us = {"pos" : [[], [], []], 
+                 "d" : [[], [], []], 
+                 "vert" : [],
+                 "index" : [],
+                 "system" : [],
+                 "detectorID" : []}
+
+        # For scifi hits
+        scifi = {"pos" : [[], [], []], 
+                 "d" : [[], [], []], 
+                 "vert" : [],
+                 "index" : [], 
+                 "system" : [],
+                 "detectorID" : []}
         
-    def FinishEvent(self, event) :
-        pass
-    def ExecuteTask(self, option = '') :
-        pass
+        # Loop through hits
+        for i_hit, muFilterHit in enumerate(self.MuFilterHits) :
+        
+            # Don't use veto for fitting
+            if muFilterHit.GetSystem() == 1 :
+                continue
+            elif muFilterHit.GetSystem() == 2 :
+                mu = mu_us
+            elif muFilterHit.GetSystem() == 3 :
+                mu = mu_ds
+            else :
+                print("WARNING! Unknown MuFilter system!!")
+
+            self.mufiDet.GetPosition(muFilterHit.GetDetectorID(), self.a, self.b)
+
+            mu["pos"][0].append(self.a.X())
+            mu["pos"][1].append(self.a.Y())
+            mu["pos"][2].append(self.a.Z())
+
+            mu["vert"].append(muFilterHit.isVertical())
+            mu["system"].append(muFilterHit.GetSystem())
+
+            mu["d"][0].append(self.MuFilter_ds_dx)
+            mu["d"][2].append(self.MuFilter_ds_dz)
+        
+            mu["index"].append(i_hit)
+
+            mu["detectorID"].append(muFilterHit.GetDetectorID())
+
+            # Downstream
+            if muFilterHit.GetSystem() == 3 :
+                mu["d"][1].append(self.MuFilter_ds_dx)
+            # Upstream
+            else :
+                mu["d"][1].append(self.MuFilter_us_dy)
+        
+        for i_hit, scifiHit in enumerate(self.ScifiHits) :
+            self.scifiDet.GetSiPMPosition(scifiHit.GetDetectorID(), self.a, self.b)
+            scifi["pos"][0].append(self.a.X())
+            scifi["pos"][1].append(self.a.Y())
+            scifi["pos"][2].append(self.a.Z())
+
+            scifi["d"][0].append(self.Scifi_dx)
+            scifi["d"][1].append(self.Scifi_dy)
+            scifi["d"][2].append(self.Scifi_dz)
+            
+            scifi["vert"].append(scifiHit.isVertical())
+            scifi["index"].append(i_hit)
+            
+            scifi["system"].append(0)
+
+            scifi["detectorID"].append(scifiHit.GetDetectorID())
+    
+        # Make the hit collections numpy arrays.
+        for hit_collection in [mu_ds, mu_us, scifi] :
+            for key, item in hit_collection.items() :
+                if key == 'vert' :
+                    this_dtype = np.bool
+                elif key == "index" or key == "system" :
+                    this_dtype = np.int
+                else :
+                    this_dtype = np.float
+                hit_collection[key] = np.array(item, dtype = this_dtype)
+
+        # Reconstruct muons until there are not enough hits in downstream muon filter
+        while True :
+            i_muon = 0
+            vertical_ds_hits = mu_ds["vert"].sum()
+            if vertical_ds_hits < self.min_hits :
+                break
+            
+            horizontal_ds_hits = len(mu_ds["vert"]) - vertical_ds_hits
+            if horizontal_ds_hits < self.min_hits :
+                break
+                
+
+            # Get hits in hough transform format
+            ZX = np.dstack([np.concatenate([np.tile(mu_ds["pos"][2][mu_ds["vert"]], self.muon_weight), 
+                                            np.tile(mu_us["pos"][2][mu_us["vert"]], self.muon_weight), 
+                                            scifi["pos"][2][scifi["vert"]]]), 
+                            np.concatenate([np.tile(mu_ds["pos"][0][mu_ds["vert"]], self.muon_weight),
+                                            np.tile(mu_us["pos"][0][mu_us["vert"]], self.muon_weight), 
+                                            scifi["pos"][0][scifi["vert"]]])])[0]
+
+            d_ZX = np.dstack([np.concatenate([np.tile(mu_ds["d"][2][mu_ds["vert"]], self.muon_weight), 
+                                              np.tile(mu_us["d"][2][mu_us["vert"]], self.muon_weight), 
+                                              scifi["d"][2][scifi["vert"]]]), 
+                              np.concatenate([np.tile(mu_ds["d"][0][mu_ds["vert"]], self.muon_weight), 
+                                              np.tile(mu_us["d"][0][mu_us["vert"]], self.muon_weight), 
+                                              scifi["d"][0][scifi["vert"]]])])[0]
+
+            ZY = np.dstack([np.concatenate([np.tile(mu_ds["pos"][2][~mu_ds["vert"]], self.muon_weight), 
+                                            np.tile(mu_us["pos"][2][~mu_us["vert"]], self.muon_weight), 
+                                            scifi["pos"][2][~scifi["vert"]]]), 
+                            np.concatenate([np.tile(mu_ds["pos"][1][~mu_ds["vert"]], self.muon_weight), 
+                                            np.tile(mu_us["pos"][1][~mu_us["vert"]], self.muon_weight), 
+                                            scifi["pos"][1][~scifi["vert"]]])])[0]
+
+            d_ZY = np.dstack([np.concatenate([np.tile(mu_ds["d"][2][~mu_ds["vert"]], self.muon_weight), 
+                                              np.tile(mu_us["d"][2][~mu_us["vert"]], self.muon_weight), 
+                                              scifi["d"][2][~scifi["vert"]]]), 
+                              np.concatenate([np.tile(mu_ds["d"][1][~mu_ds["vert"]], self.muon_weight), 
+                                              np.tile(mu_us["d"][1][~mu_us["vert"]], self.muon_weight), 
+                                              scifi["d"][1][~scifi["vert"]]])])[0]
+
+            ZX_hough = self.h_ZX.fit_randomize(ZX, d_ZX, self.n_random)
+            ZY_hough = self.h_ZY.fit_randomize(ZY, d_ZY, self.n_random)
+            
+            # Check if track intersects minimum number of hits in each plane.
+            track_hits_ds_ZX = hit_finder(ZX_hough[0], ZX_hough[1], 
+                                          np.dstack([mu_ds["pos"][2][mu_ds["vert"]], 
+                                                     mu_ds["pos"][0][mu_ds["vert"]]]), 
+                                          np.dstack([mu_ds["d"][2][mu_ds["vert"]], 
+                                                     mu_ds["d"][0][mu_ds["vert"]]]))
+            print("Found {0} ds ZX hits".format(len(track_hits_ds_ZX)))
+            if len(track_hits_ds_ZX) < self.min_hits :
+                break
+            
+            track_hits_ds_ZY = hit_finder(ZY_hough[0], ZY_hough[1], 
+                                          np.dstack([mu_ds["pos"][2][~mu_ds["vert"]], 
+                                                     mu_ds["pos"][1][~mu_ds["vert"]]]), 
+                                          np.dstack([mu_ds["d"][2][~mu_ds["vert"]],
+                                                     mu_ds["d"][1][~mu_ds["vert"]]]))
+
+            print("Found {0} ds ZY hits".format(len(track_hits_ds_ZY)))
+            if len(track_hits_ds_ZY) < self.min_hits :
+                break
+
+            track_hits_us_ZY = hit_finder(ZY_hough[0], ZY_hough[1], 
+                                          np.dstack([mu_us["pos"][2][~mu_us["vert"]],
+                                                     mu_us["pos"][1][~mu_us["vert"]]]), 
+                                          np.dstack([mu_us["d"][2][~mu_us["vert"]], 
+                                                     mu_us["d"][1][~mu_us["vert"]]]))
+            
+            track_hits_sf_ZX = hit_finder(ZX_hough[0], ZX_hough[1], 
+                                          np.dstack([scifi["pos"][2][scifi["vert"]], 
+                                                     scifi["pos"][0][scifi["vert"]]]), 
+                                          np.dstack([scifi["d"][2][scifi["vert"]], 
+                                                     scifi["d"][0][scifi["vert"]]]))
+            
+            track_hits_sf_ZY = hit_finder(ZY_hough[0], ZY_hough[1], 
+                                          np.dstack([scifi["pos"][2][~scifi["vert"]], 
+                                                     scifi["pos"][1][~scifi["vert"]]]), 
+                                          np.dstack([scifi["d"][2][~scifi["vert"]], 
+                                                     scifi["d"][1][~scifi["vert"]]]))
+            
+            # Get hit detectorIDs and add to reco track collection
+            hit_detectorIDs = np.concatenate([mu_ds["detectorID"][mu_ds["vert"]][track_hits_ds_ZX],
+                                              mu_ds["detectorID"][~mu_ds["vert"]][track_hits_ds_ZY],
+                                              mu_us["detectorID"][~mu_us["vert"]][track_hits_us_ZY],
+                                              scifi["detectorID"][scifi["vert"]][track_hits_sf_ZX],
+                                              scifi["detectorID"][~scifi["vert"]][track_hits_sf_ZY]])
+
+            # Find start and stop position
+            hit_z = np.concatenate([mu_ds["pos"][2][mu_ds["vert"]][track_hits_ds_ZX],
+                                    mu_ds["pos"][2][~mu_ds["vert"]][track_hits_ds_ZY],
+                                    mu_us["pos"][2][~mu_us["vert"]][track_hits_us_ZY],
+                                    scifi["pos"][2][scifi["vert"]][track_hits_sf_ZX],
+                                    scifi["pos"][2][~scifi["vert"]][track_hits_sf_ZY]])
+            
+            min_z = np.min(hit_z)
+            max_z = np.max(hit_z)
+
+            min_x = ZX_hough[0]*min_z + ZX_hough[1]
+            max_x = ZX_hough[0]*max_z + ZX_hough[1]
+
+            min_y = ZY_hough[0]*min_z + ZX_hough[1]
+            max_y = ZY_hough[0]*max_z + ZX_hough[1]
+
+            # Save track
+            this_track = self.muon_tracks.ConstructedAt(i_muon)
+            this_track.setStart(ROOT.TVector3(min_x, min_y, min_z))
+            this_track.setStop(ROOT.TVector3(max_x, max_y, max_z))
+            this_track.setHits(hit_detectorIDs)
+            this_track.setHitsLoose(hit_detectorIDs)
+            i_muon += 1
+            
+            # Remove track hits and try to find an additional track
+
+            # Find array index to be removed
+            index_ZX = np.where(np.in1d(mu_ds["index"], mu_ds["index"][mu_ds["vert"]][track_hits_ds_ZX]))[0]
+            index_ZY = np.where(np.in1d(mu_ds["index"], mu_ds["index"][~mu_ds["vert"]][track_hits_ds_ZY]))[0]
+            index_to_remove = np.concatenate( [index_ZX, index_ZY] )
+            print("Removing", index_to_remove)
+            
+            # Remove dictionary entries
+            print("BEFORE")
+            print(mu_ds)
+            for key in mu_ds.keys() :
+                print("Looking at ", key)
+#                if len(mu_ds[key].shape) == 1 :
+                print("It's 1D")
+                print("Before assignment")
+                print(np.delete(mu_ds[key], index_to_remove))
+                mu_ds[key] = np.delete(mu_ds[key], index_to_remove)
+                print("After assignment")
+                print(mu_ds[key])
+#                elif len(mu_ds[key].shape) == 2 :
+#                    print("It's 2D")
+#                    for i in range(len(mu_ds[key])) :
+#                        print("Looking at dimension", i)
+#                        print(mu_ds[key][i])
+#                        print(len(mu_ds[key][i]))
+#                        print(index_to_remove)
+#                        print(np.delete(mu_ds[key][i], index_to_remove))
+#                        print("doit temp")
+#                        temp = np.delete(mu_ds[key][i], index_to_remove)
+#                        print(temp)
+#                        print(mu_ds[key][i])
+#                        print("assign temp")
+#                        print(mu_ds[key].shape)
+#                        print(mu_ds[key][i].shape)
+#                        mu_ds[key][i] = temp
+#                else :
+#                    raise Exception("Wrong number of dimensions found when deleting hits in iterative muon identification algorithm.")
+            print("AFTER")
+            print(mu_ds)
+            break
+
+    def FinishTask(self) :
+        self.muon_tracks.Delete()
