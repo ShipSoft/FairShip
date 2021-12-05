@@ -231,7 +231,12 @@ with ConfigRegistry.register_config("basic") as c:
         c.MuFilter.Iron9Dy = 5529.7*u.mm
         c.MuFilter.Iron9Dz = 127.7*u.mm
 
-        # relation between edge and bottom bar
+        # relation between edge and bottom bar for VETO
+        c.MuFilter.VETOLocX = 20.0*u.mm
+        c.MuFilter.VETOLocY = 20.0*u.mm
+        c.MuFilter.VETOLocZ = 46.7*u.mm
+
+        # relation between edge and bottom bar for US and DS
         c.MuFilter.DSHLocX = 10.5*u.mm
         c.MuFilter.DSHLocY = 32.0*u.mm
         c.MuFilter.DSHLocZ = 11.1*u.mm
@@ -249,24 +254,14 @@ with ConfigRegistry.register_config("basic") as c:
 
         #Veto station parameters
         c.MuFilter.VetonSiPMs = 8
-        c.MuFilter.VetonSides = 2
+        c.MuFilter.VetonSides  = 2
         c.MuFilter.NVetoPlanes = 2
-        c.MuFilter.VetoShiftX = c.EmulsionDet.ShiftX
-        c.MuFilter.VetoShiftY = c.EmulsionDet.ShiftY
-        c.MuFilter.VetoPlaneShiftY = 1*u.cm
-        
-        c.MuFilter.VetoPlaneX = 42 *u.cm
-        c.MuFilter.VetoPlaneY = 42 *u.cm
-        c.MuFilter.VetoPlaneZ = 4 * u.cm
+        c.MuFilter.NVetoBars    = 7
 
-        c.MuFilter.NVetoBars = 7
-
-        c.MuFilter.VetoBarX = c.MuFilter.VetoPlaneX
-        c.MuFilter.VetoBarY = c.MuFilter.VetoPlaneY / c.MuFilter.NVetoBars
+        c.MuFilter.VetoBarX = 42 *u.cm
+        c.MuFilter.VetoBarY = 6 * u.cm
         c.MuFilter.VetoBarZ = 1 * u.cm
-
-        #veto should end at the start of first ECC target
-        c.MuFilter.VetozC = 288.89 *u.cm - (c.MuFilter.NVetoPlanes * c.MuFilter.VetoPlaneZ)/2.
+        c.MuFilter.VetoBarGap = 2*30*u.um  # wrapping material
 
         c.MuFilter.FeX = 80*u.cm
         c.MuFilter.FeY = 60*u.cm
@@ -274,6 +269,9 @@ with ConfigRegistry.register_config("basic") as c:
         c.MuFilter.FeEndX = 40*u.cm
         c.MuFilter.FeEndY = 40*u.cm
         c.MuFilter.FeEndZ = 20*u.cm
+        c.MuFilter.FeBotX = 80*u.cm
+        c.MuFilter.FeBotY =   9*u.cm
+        c.MuFilter.FeBotZ = 40*u.cm
 
         c.MuFilter.UpstreamDetZ = 2.6*u.cm
         c.MuFilter.UpstreamnSiPMs = 8
@@ -303,23 +301,32 @@ with ConfigRegistry.register_config("basic") as c:
         # DS and US support box, inner, Z pointing upward
         c.MuFilter.SupportBoxD  = 0.5*u.mm  # empty space between bars and box
         c.MuFilter.SupportBoxW = 2*u.mm
-        c.MuFilter.DSBoxX1        = 10.5*u.mm - c.MuFilter.SupportBoxD
-        c.MuFilter.DSBoxX2        = c.MuFilter.DSBoxX1 + c.MuFilter.DownstreamBarX + c.MuFilter.SupportBoxD
-        c.MuFilter.DSBoxZ1        = 11.1*u.mm - c.MuFilter.DownstreamBarZ/2 - c.MuFilter.SupportBoxD
-        c.MuFilter.DSBoxZ2        = 641.3*u.mm + c.MuFilter.SupportBoxD
-        c.MuFilter.DSBoxY1        = 32*u.mm - c.MuFilter.DownstreamBarZ/2 - c.MuFilter.SupportBoxD
-        c.MuFilter.DSBoxY2        = 47*u.mm + c.MuFilter.DownstreamBarZ/2 + c.MuFilter.SupportBoxD
+        c.MuFilter.DSBoxX1        = c.MuFilter.DSHLocX - c.MuFilter.SupportBoxD
+        c.MuFilter.DSBoxX2        = c.MuFilter.DSHLocX + c.MuFilter.DownstreamBarX + c.MuFilter.SupportBoxD
+        c.MuFilter.DSBoxZ1        = c.MuFilter.DSHLocZ - c.MuFilter.DownstreamBarY/2 - c.MuFilter.SupportBoxD
+        c.MuFilter.DSBoxZ2        = c.MuFilter.DSVLocZ + c.MuFilter.SupportBoxD
+        c.MuFilter.DSBoxY1        = c.MuFilter.DSHLocY - c.MuFilter.DownstreamBarZ/2 - c.MuFilter.SupportBoxD
+        c.MuFilter.DSBoxY2        = c.MuFilter.DSVLocY + c.MuFilter.DownstreamBarZ/2 + c.MuFilter.SupportBoxD
 
-        c.MuFilter.USBoxY1        = 32*u.mm - c.MuFilter.DownstreamBarZ/2 - c.MuFilter.SupportBoxD
-        c.MuFilter.USBoxY2        = 32*u.mm + c.MuFilter.DownstreamBarZ/2 + c.MuFilter.SupportBoxD
+        c.MuFilter.USBoxY1        = c.MuFilter.DSHLocY - c.MuFilter.DownstreamBarZ/2 - c.MuFilter.SupportBoxD
+        c.MuFilter.USBoxY2        = c.MuFilter.DSHLocY + c.MuFilter.DownstreamBarZ/2 + c.MuFilter.SupportBoxD
+
+       # VETO support box
+        c.MuFilter.SupportBoxVW = 4*u.mm
+        c.MuFilter.VETOBoxX1        = c.MuFilter.VETOLocX - c.MuFilter.SupportBoxD
+        c.MuFilter.VETOBoxX2        = c.MuFilter.VETOLocX + c.MuFilter.VetoBarX + c.MuFilter.SupportBoxD
+        c.MuFilter.VETOBoxZ1        = c.MuFilter.VETOLocZ - c.MuFilter.VetoBarY/2 - c.MuFilter.SupportBoxD
+        c.MuFilter.VETOBoxZ2        = c.MuFilter.VETOLocZ + (c.MuFilter.NVetoBars-1)*(c.MuFilter.VetoBarY+c.MuFilter.VetoBarGap) + c.MuFilter.VetoBarZ/2 + c.MuFilter.SupportBoxD
+        c.MuFilter.VETOBoxY1        = c.MuFilter.VETOLocY - c.MuFilter.VetoBarZ/2 - c.MuFilter.SupportBoxD
+        c.MuFilter.VETOBoxY2        = c.MuFilter.VETOLocY + c.MuFilter.VetoBarZ/2 + c.MuFilter.SupportBoxD
 
        #digitization parameters
         c.MuFilter.DsAttenuationLength   =  350 * u.cm                #  values between 300 cm and 400cm observed for H6 testbeam
         c.MuFilter.DsTAttenuationLength =  700 * u.cm                # top readout with mirror on bottom
         c.MuFilter.VandUpAttenuationLength = 999 * u.cm        # no significante attenuation observed for H6 testbeam
-        c.MuFilter.VandUpSiPMcalibrationL         = 25.*1000.       # 1.65 MeV = 41 qcd 
-        c.MuFilter.VandUpSiPMcalibrationS         = 25.*1000.
-        c.MuFilter.DsSiPMcalibration                       = 25.*1000.
+        c.MuFilter.VandUpSiPMcalibrationL    = 25.*1000.       # 1.65 MeV = 41 qcd 
+        c.MuFilter.VandUpSiPMcalibrationS    = 25.*1000.
+        c.MuFilter.DsSiPMcalibration             = 25.*1000.
         c.MuFilter.timeResol = 150.*u.picosecond
         c.MuFilter.VandUpPropSpeed    = 12.5*u.cm/u.nanosecond
         c.MuFilter.DsPropSpeed        = 14.3*u.cm/u.nanosecond
