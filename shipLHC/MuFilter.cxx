@@ -154,24 +154,39 @@ void MuFilter::ConstructGeometry()
 		edge_Iron[i] = TVector3( -conf_floats["MuFilter/Iron"+si+"Dx"],conf_floats["MuFilter/Iron"+si+"Dz"],conf_floats["MuFilter/Iron"+si+"Dy"]);
 		edge_MuFilter[i]  = TVector3( -conf_floats["MuFilter/Muon"+si+"Dx"],conf_floats["MuFilter/Muon"+si+"Dz"],conf_floats["MuFilter/Muon"+si+"Dy"]);
 	}
+	// system alignment parameters
+	Double_t fVetoShiftX   = conf_floats["MuFilter/VetoShiftX"];
+	Double_t fVetoShiftY   = conf_floats["MuFilter/VetoShiftY"];
+	Double_t fVetoShiftZ   = conf_floats["MuFilter/VetoShiftZ"];
+	Double_t fShiftX     = conf_floats["MuFilter/ShiftX"];
+	Double_t fShiftY     = conf_floats["MuFilter/ShiftY"];
+	Double_t fShiftZ     = conf_floats["MuFilter/ShiftZ"];
+
 	TVector3 displacement;
 
 	//Definition of the box containing veto planes
 	TGeoVolumeAssembly *volVeto = new TGeoVolumeAssembly("volVeto");
 	
 	//Veto Planes
-	Double_t fVetoPlaneX = conf_floats["MuFilter/VetoPlaneX"]; // Veto Plane dimensions
-	Double_t fVetoPlaneY = conf_floats["MuFilter/VetoPlaneY"];
-	Double_t fVetoPlaneZ = conf_floats["MuFilter/VetoPlaneZ"];
 	Double_t fVetoBarX     = conf_floats["MuFilter/VetoBarX"]; // Veto Bar dimensions
 	Double_t fVetoBarY     = conf_floats["MuFilter/VetoBarY"];
 	Double_t fVetoBarZ     = conf_floats["MuFilter/VetoBarZ"];
-	Double_t fVetoShiftX  = conf_floats["MuFilter/VetoShiftX"]; // Shift of Veto with respect to beam line
-	Double_t fVetoShiftY  = conf_floats["MuFilter/VetoShiftY"];
-	Double_t fVetoCenterZ = conf_floats["MuFilter/VetozC"];
-	Int_t fNVetoPlanes = conf_ints["MuFilter/NVetoPlanes"];
-	Int_t fNVetoBars     = conf_ints["MuFilter/NVetoBars"];
-	Double_t fVetoPlaneShiftY = conf_ints["MuFilter/VetoPlaneShiftY"];
+	Double_t fVetoBarGap     = conf_floats["MuFilter/VetoBarGap"];
+	Int_t fNVetoPlanes       = conf_ints["MuFilter/NVetoPlanes"];
+	Int_t fNVetoBars          = conf_ints["MuFilter/NVetoBars"];
+	Double_t fSupportBoxVW = conf_floats["MuFilter/SupportBoxVW"]; // SupportBox dimensions
+	// local position of bottom horizontal bar to survey edge
+	TVector3 LocBarVeto = TVector3(-conf_floats["MuFilter/VETOLocX"], conf_floats["MuFilter/VETOLocZ"],conf_floats["MuFilter/VETOLocY"]);
+
+	TVector3 VetoBox1 = TVector3(-conf_floats["MuFilter/VETOBoxX1"],conf_floats["MuFilter/VETOBoxZ1"],conf_floats["MuFilter/VETOBoxY1"]); // bottom front left
+	TVector3 VetoBox2 = TVector3(-conf_floats["MuFilter/VETOBoxX2"],conf_floats["MuFilter/VETOBoxZ2"],conf_floats["MuFilter/VETOBoxY2"]); // top back right
+	TVector3 VetoBoxDim = TVector3( VetoBox1.X()-VetoBox2.X(), VetoBox2.Y()-VetoBox1.Y(), VetoBox2.Z()-VetoBox1.Z() ) ;
+	// support box
+	TGeoBBox  *supVetoBoxInner  = new TGeoBBox("supVetoBoxI",VetoBoxDim.X()/2,VetoBoxDim.Y()/2,VetoBoxDim.Z()/2);
+	TGeoBBox  *supVetoBoxOuter = new TGeoBBox("supVetoBoxO",VetoBoxDim.X()/2+fSupportBoxVW,VetoBoxDim.Y()/2+fSupportBoxVW,VetoBoxDim.Z()/2+fSupportBoxVW);
+	TGeoCompositeShape *subVetoBoxShape = new TGeoCompositeShape("subVetoBoxShape", "supVetoBoxO-supVetoBoxI");
+	TGeoVolume *subVetoBox = new TGeoVolume("subVetoBox", subVetoBoxShape, Al);     
+	subVetoBox->SetLineColor(kGray+1);
 
 	//Veto bars
 	TGeoVolume *volVetoBar = gGeoManager->MakeBox("volVetoBar",Scint,fVetoBarX/2., fVetoBarY/2., fVetoBarZ/2.);
@@ -180,26 +195,25 @@ void MuFilter::ConstructGeometry()
 	AddSensitiveVolume(volVetoBar);
 
 	//adding mother volume
-	top->AddNode(volVeto, 1, new TGeoTranslation(fVetoShiftX, fVetoShiftY,fVetoCenterZ));
+	top->AddNode(volVeto, 1,new TGeoTranslation(fVetoShiftX,fVetoShiftY,fVetoShiftZ)) ;
 
 	//adding veto planes
 	TGeoVolume* volVetoPlane;
-	Double_t startZ = -(fNVetoPlanes * fVetoPlaneZ)/2.;
 	for (int iplane=0; iplane < fNVetoPlanes; iplane++){
 	  
 	  string name = "volVetoPlane_"+to_string(iplane);
 	  volVetoPlane = new TGeoVolumeAssembly(name.c_str());
-	  /*displacement = edge_Veto[iplane+1] + LocBarV -
-                         TVector3(-fVetoBarX/2, fVetoBarY/2,-fVetoBarZ/2)*/
-	  volVeto->AddNode(volVetoPlane,iplane, new TGeoTranslation(0,-fVetoPlaneShiftY/2. + iplane * fVetoPlaneShiftY, startZ + fVetoPlaneZ/2. + iplane * fVetoPlaneZ));
+	 //  VETOBox1 = bottom front left
+	  displacement = edge_Veto[iplane+1] +VetoBox1 + TVector3(-VetoBoxDim.X()/2,VetoBoxDim.Y()/2,VetoBoxDim.Z()/2);
+	  volVeto->AddNode(subVetoBox,iplane,
+		new TGeoTranslation(displacement.X(),displacement.Y(),displacement.Z()));
 
-	  	//adding veto bars
-	  for (int ibar=0; ibar < fNVetoBars; ibar++){
-
-	  	Double_t dy_vetobar = -fVetoPlaneY/2. + fVetoBarY/2 + ibar * fVetoBarY;
-	  	TGeoTranslation* vetobar_trans = new TGeoTranslation(0, dy_vetobar, 0);
-		volVetoPlane->AddNode(volVetoBar, 1e+4+iplane*1e+3+ibar, vetobar_trans);
-		}
+	  displacement = LocBarVeto + TVector3(-fVetoBarX/2, 0, 0);
+	  for (Int_t ibar = 0; ibar < fNVetoBars; ibar++){
+	    Double_t dy_bar =  (fVetoBarY + fVetoBarGap)*ibar; 
+	    volVetoPlane->AddNode(volVetoBar, 1e+4+iplane*1e+3+ibar,
+				new TGeoTranslation(displacement.X(),displacement.Y()+dy_bar,displacement.Z()));
+	  }
 	}
 	
 	//*****************************************UPSTREAM SECTION*********************************//
@@ -214,6 +228,9 @@ void MuFilter::ConstructGeometry()
 	Double_t fFeBlockEndX = conf_floats["MuFilter/FeEndX"]; // last Iron block dimensions
 	Double_t fFeBlockEndY = conf_floats["MuFilter/FeEndY"];
 	Double_t fFeBlockEndZ = conf_floats["MuFilter/FeEndZ"];
+	Double_t fFeBlockBotX = conf_floats["MuFilter/FeBotX"]; // bottom Iron block dimensions
+	Double_t fFeBlockBotY = conf_floats["MuFilter/FeBotY"];
+	Double_t fFeBlockBotZ = conf_floats["MuFilter/FeBotZ"];
 	Double_t fSupportBoxW = conf_floats["MuFilter/SupportBoxW"]; // SupportBox dimensions
 
 	TVector3 DSBox1 = TVector3(-conf_floats["MuFilter/DSBoxX1"],conf_floats["MuFilter/DSBoxZ1"],conf_floats["MuFilter/DSBoxY1"]); // bottom front left
@@ -228,6 +245,8 @@ void MuFilter::ConstructGeometry()
 	volFeBlock->SetLineColor(kGreen-4);
 	TGeoVolume *volFeBlockEnd = gGeoManager->MakeBox("volFeBlockEnd",Fe,fFeBlockEndX/2, fFeBlockEndY/2, fFeBlockEndZ/2);
 	volFeBlockEnd->SetLineColor(kGreen-4);
+	TGeoVolume *volFeBlockBot = gGeoManager->MakeBox("volFeBlockBot",Fe,fFeBlockBotX/2, fFeBlockBotY/2, fFeBlockBotZ/2);
+	volFeBlockBot->SetLineColor(kGreen-4);
 
 	// support box
 	TGeoBBox  *supDSBoxInner  = new TGeoBBox("supDSBoxI",DSBoxDim.X()/2,DSBoxDim.Y()/2,DSBoxDim.Z()/2);
@@ -241,7 +260,7 @@ void MuFilter::ConstructGeometry()
 	TGeoVolume *subUSBox = new TGeoVolume("subUSBox", subUSBoxShape, Al);     
 	subUSBox->SetLineColor(kGray+1);
 
-	top->AddNode(volMuFilter,1);
+	top->AddNode(volMuFilter,1,new TGeoTranslation(fShiftX,fShiftY,fShiftZ ));
 
 	Double_t dy = 0;
 	Double_t dz = 0;
@@ -324,7 +343,10 @@ void MuFilter::ConstructGeometry()
 		}else{
 // more iron
 		displacement = edge_Iron[l+fNUpstreamPlanes+1]  - TVector3(fFeBlockEndX/2,-fFeBlockEndY/2,-fFeBlockEndZ/2);
-		volMuFilter->AddNode(volFeBlockEnd,l+fNUpstreamPlanes+fNVetoPlanes,
+		volMuFilter->AddNode(volFeBlockEnd,1,
+				new TGeoTranslation(displacement.X(),displacement.Y(),displacement.Z()));
+		displacement = edge_Iron[l+fNUpstreamPlanes+1]  - TVector3(fFeBlockBotX/2-10.0, fFeBlockBotY/2,fFeBlockBotZ/2-fFeBlockEndZ);
+		volMuFilter->AddNode(volFeBlockBot,1,
 				new TGeoTranslation(displacement.X(),displacement.Y(),displacement.Z()));
 	}
 
