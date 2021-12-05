@@ -131,7 +131,7 @@ bool MuFilterHit::isVertical(){
 }
 
 bool MuFilterHit::isShort(Int_t i){
-  if (shortSiPM.find(i+1) != shortSiPM.end()) {return kTRUE;}
+  if (i%8==3 || i%8==6) {return kTRUE;}
   else{return kFALSE;}
 }
 
@@ -192,28 +192,40 @@ Float_t MuFilterHit::GetDeltaT(Bool_t mask)
           return dT;
 }
 
-Float_t MuFilterHit::SumOfSignals(char* opt,Bool_t mask)
+std::map<TString,Float_t> MuFilterHit::SumOfSignals(Bool_t mask)
 {   
-/*    use cases for Veto and US, for DS small/large ignored
-        sum of signals left large SiPM: LL
-        sum of signals left small SiPM: LS
+/*    use cases, for Veto and DS small/large ignored
+        sum of signals left large SiPM:    LL
         sum of signals right large SiPM: RL
+        sum of signals left small SiPM:    LS
         sum of signals right small SiPM: RS
+        sum of signals left and right:  
 */
-          Float_t theSum = 0;
-/* work in progress          if (strcmp(opt,"LL")){}
+          Float_t theSumL     = 0;
+          Float_t theSumR    = 0;
+          Float_t theSumLS   = 0;
+          Float_t theSumRS  = 0;
           for (unsigned int s=0; s<nSides; ++s){
               for (unsigned int j=0; j<nSiPMs; ++j){
                unsigned int channel = j+s*nSiPMs;
                if (signals[channel]> 0){
                  if (!fMasked[channel] || !mask){
-                    theSum+= signals[channel];
+                    if (s==0 and !isShort(j)){theSumL+= signals[channel];}
+                    if (s==0 and isShort(j)){theSumLS+= signals[channel];}
+                    if (s==1 and !isShort(j)){theSumR+= signals[channel];}
+                    if (s==1 and isShort(j)){theSumRS+= signals[channel];}
                     }
                 }
               }
           }
-*/
-
+         std::map<TString,Float_t> sumSignals;
+         sumSignals["SumL"]=theSumL;
+         sumSignals["SumR"]=theSumR;
+         sumSignals["SumLS"]=theSumLS;
+         sumSignals["SumRS"]=theSumRS;
+         sumSignals["Sum"]=theSumL+theSumR;
+         sumSignals["SumS"]=theSumLS+theSumRS;
+         return sumSignals;
 }
 
 // -----   Public method Print   -------------------------------------------

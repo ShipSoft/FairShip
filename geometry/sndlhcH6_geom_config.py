@@ -2,6 +2,9 @@ import ROOT as r
 import shipunit as u
 from ShipGeoConfig import AttrDict, ConfigRegistry
 
+# alignment parameters for H6 MuFilter relative to SciFi
+alignParametersForH6 = {'1X':-13.0,'2X':1.2,    '3HX':0.7,     '3VX':-18.5,
+                                                       '1Y':-13.2,'2Y':-19.9,'3HY':-15.4,'3VY':-19.4}
 
 with ConfigRegistry.register_config("basic") as c:
 # cave parameters
@@ -95,8 +98,6 @@ with ConfigRegistry.register_config("basic") as c:
         c.Scifi.scifi_separation = c.Scifi.zdim + c.EmulsionDet.BrZ  
         c.Scifi.offset_z = - c.EmulsionDet.zdim/2 + c.EmulsionDet.BrZ  #SciFi starts at the end of the first ECC
         
-        c.Scifi.timeResol = 150.*u.picosecond
-
         c.MuFilter = AttrDict(z=0*u.cm)
         #Veto station parameters
         c.MuFilter.VetonSiPMs = 8
@@ -105,7 +106,8 @@ with ConfigRegistry.register_config("basic") as c:
         c.MuFilter.VetoShiftX = c.EmulsionDet.ShiftX
         c.MuFilter.VetoShiftY = c.EmulsionDet.ShiftY
         c.MuFilter.VetoPlaneShiftY = 1*u.cm
-        
+
+
         c.MuFilter.VetoPlaneX = 42 *u.cm
         c.MuFilter.VetoPlaneY = 42 *u.cm
         c.MuFilter.VetoPlaneZ = 4 * u.cm
@@ -117,7 +119,7 @@ with ConfigRegistry.register_config("basic") as c:
         c.MuFilter.VetoBarZ = 1 * u.cm
 
         #veto should end at the start of first ECC target
-        c.MuFilter.VetozC = c.EmulsionDet.zC - c.EmulsionDet.zdim/2. - (c.MuFilter.NVetoPlanes * c.MuFilter.VetoPlaneZ)/2.
+        # c.MuFilter.VetozC = c.EmulsionDet.zC - c.EmulsionDet.zdim/2. - (c.MuFilter.NVetoPlanes * c.MuFilter.VetoPlaneZ)/2.
 
         #c.MuFilter.X = c.EmulsionDet.xdim + 20*u.cm
         c.MuFilter.X = 80.0*u.cm
@@ -158,21 +160,39 @@ with ConfigRegistry.register_config("basic") as c:
 
         #total z thickness and position
         c.MuFilter.Z = c.MuFilter.NUpstreamPlanes*(c.MuFilter.FeZ+c.MuFilter.UpstreamDetZ) + (c.MuFilter.NDownstreamPlanes - 1)*(c.MuFilter.FeZ+c.MuFilter.DownstreamDetZ) + c.MuFilter.DS4ZGap + c.MuFilter.DownstreamDetZ/2 #doesn't include veto
-        c.MuFilter.Zcenter = c.EmulsionDet.zC+c.EmulsionDet.zdim/2+c.MuFilter.Z/2
+
+# for H6 commissioning
+# scifi moved 46cm behind the iron block of second DS station. 
+# and lifted by 10-15 cm.
+
+        muXH6 = 12.5*u.cm
+        muZH6 = -23.5*u.cm
+#ScifiVolume_1000000      : z=  -16.7800cm  dZ=    0.9050cm  [  -17.6850     -15.8750] dx=   20.0000cm [  -47.8000      -7.8000] dy=   20.0000cm [   15.3000      55.3000]                dummy
+# volFeBlock_9                        : z=  -73.6450cm  dZ=   10.0000cm  [  -83.6450     -63.6450] dx=   40.0000cm [  -82.8000      -2.8000] dy=   30.0000cm [   -5.0000      55.0000]                 iron
+
+        c.MuFilter.Zcenter = c.EmulsionDet.zC - c.EmulsionDet.zdim/2 - c.MuFilter.Z/2 + muZH6
+        c.MuFilter.Slope = 0  #in degrees
+
+        # for H6 placed directly in front of first US
+        c.MuFilter.VetozC = c.MuFilter.Zcenter - c.MuFilter.Z/2 - c.MuFilter.VetoPlaneZ
+        c.MuFilter.VetoShiftY = c.MuFilter.VetoShiftY + muXH6
+
         c.MuFilter.ShiftX = -2.8 * u.cm - c.MuFilter.X/2.
         
-        c.MuFilter.Slope = -3.2 #in degrees
-        c.MuFilter.ShiftY = 9.6 * u.cm + c.MuFilter.Y/2. #shift of first block of upstream section
-        c.MuFilter.ShiftYEnd= 7.5*u.cm + c.MuFilter.Y/2. #shift for downstream section
+        c.MuFilter.ShiftY           = muXH6 + 9.6 * u.cm + c.MuFilter.Y/2. #shift of first block of upstream section
+        c.MuFilter.ShiftYEnd   = muXH6 + 7.5*u.cm + c.MuFilter.Y/2. #shift for downstream section
 
 # soft alignment
-        c.MuFilter.USShiftX     = 0
-        c.MuFilter.USShiftY     = 0
+        c.MuFilter.VetoShiftX = c.MuFilter.VetoShiftX + alignParametersForH6['1X']
+        c.MuFilter.VetoShiftY = c.MuFilter.VetoShiftY + alignParametersForH6['1Y']
+
+        c.MuFilter.USShiftX     =   alignParametersForH6['2X']
+        c.MuFilter.USShiftY     =   alignParametersForH6['2Y']
         c.MuFilter.USShiftZ     = 0
-        c.MuFilter.DSHShiftX = 0
-        c.MuFilter.DSHShiftY = 0
-        c.MuFilter.DSVShiftX  = 0
-        c.MuFilter.DSVShiftY  = 0
+        c.MuFilter.DSHShiftX =   alignParametersForH6['3HX']
+        c.MuFilter.DSHShiftY =   alignParametersForH6['3HY']
+        c.MuFilter.DSVShiftX  =  alignParametersForH6['3VX']
+        c.MuFilter.DSVShiftY  =  alignParametersForH6['3VY']
         c.MuFilter.DSShiftZ     = 0
 
         #digitization parameters
@@ -184,6 +204,7 @@ with ConfigRegistry.register_config("basic") as c:
         c.MuFilter.DsSiPMcalibration                       = 25.*1000.
         c.MuFilter.timeResol = 150.*u.picosecond
         c.MuFilter.VandUpPropSpeed    = 12.5*u.cm/u.nanosecond
-        c.MuFilter.DsPropSpeed        = 14.3*u.cm/u.nanosecond
+        c.MuFilter.DsPropSpeed               = 14.3*u.cm/u.nanosecond
 
-        c.Floor = AttrDict(z=483262./10.*u.cm)   # Antonia, 482000mm (FASER+2, P3) + 1017mm (DZ) + 245mm (centre emulsion)
+# for H6 commissioning, move cavern out of the way
+        c.Floor = AttrDict(z=2*483262./10.*u.cm)   # Antonia, 482000mm (FASER+2, P3) + 1017mm (DZ) + 245mm (centre emulsion)

@@ -14,7 +14,7 @@
 
 
 // -----   Standard constructor   ------------------------------------------
-ShipPixelHit::ShipPixelHit(Int_t detID,  Float_t digi) : ShipHit(detID, digi) {
+ShipPixelHit::ShipPixelHit(Int_t detIDX,  Float_t digi) : ShipHit(detIDX, digi) {
 }
 
 HitID ShipPixelHit::GetPixel()
@@ -46,17 +46,17 @@ int32_t ShipPixelHit::GetModule()
 
 int32_t ShipPixelHit::GetDetectorID(){return fDetectorID; }
 
-void ShipPixelHit::GetPixelXYZ(TVector3 &pixel, int detID) { //, std::shared_ptr <std::unordered_map<int, TVector3>> PixelPositionMap
+void ShipPixelHit::GetPixelXYZ(TVector3 &pixel, int detIDX) { //, std::shared_ptr <std::unordered_map<int, TVector3>> PixelPositionMap
   if (!ShipPixelHit::PixelPositionMap) {
     ShipPixelHit::PixelPositionMap = ShipPixelHit::MakePositionMap();
   }
 
   int max_detID = 10000000*2 + 1000000*7 + 1000*336 + 80 ;
-  if (detID%1000000 == 0) {
+  if (detIDX%1000000 == 0) {
     return;
   }
-  if (detID > max_detID) {
-    std::cout << "PixelDetector::PixelDecode, detectorID out of range "<<detID<<std::endl;
+  if (detIDX > max_detID) {
+    std::cout << "PixelDetector::PixelDecode, detectorID out of range "<<detIDX<<std::endl;
     return;
   }
   // retrieving position of pixelbox mother volume
@@ -79,7 +79,7 @@ void ShipPixelHit::GetPixelXYZ(TVector3 &pixel, int detID) { //, std::shared_ptr
   origin[1] = origin[1] - pixelmodulebox->GetDY()/2.;
   pixelmodulenode->LocalToMaster(origin, pixelmoduleorigin);
   
-  TVector3 pixel_pos = (*ShipPixelHit::PixelPositionMap)[detID];
+  TVector3 pixel_pos = (*ShipPixelHit::PixelPositionMap)[detIDX];
   //translations to pass from LOCAL coordinates system to GLOBAL FairShip coordinates
   pixel.SetX(pixel_pos.X()+ pixelboxcenter[0]);
   pixel.SetY(pixel_pos.Y() + pixelboxcenter[1]);

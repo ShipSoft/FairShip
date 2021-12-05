@@ -32,55 +32,18 @@ def configure(run,ship_geo,Gfield=''):
  EmulsionDet.SetEmulsionPassiveOption(ship_geo.EmulsionDet.PassiveOption)
  detectorList.append(EmulsionDet)
 
- Scifi = ROOT.Scifi("Scifi", ship_geo.Scifi.xdim, ship_geo.Scifi.ydim, ship_geo.Scifi.zdim, ROOT.kTRUE)
- Scifi.SetScifiParam(ship_geo.Scifi.xdim, ship_geo.Scifi.ydim, ship_geo.Scifi.zdim) 
- Scifi.SetMatParam(ship_geo.Scifi.scifimat_width, ship_geo.Scifi.scifimat_length, ship_geo.Scifi.scifimat_z, ship_geo.Scifi.epoxymat_z, ship_geo.Scifi.scifimat_gap)
- Scifi.SetFiberParam(ship_geo.Scifi.fiber_length, ship_geo.Scifi.scintcore_rmax, ship_geo.Scifi.clad1_rmax, ship_geo.Scifi.clad2_rmax)
- Scifi.SetFiberPosParam(ship_geo.Scifi.horizontal_pitch, ship_geo.Scifi.vertical_pitch, ship_geo.Scifi.rowlong_offset, ship_geo.Scifi.rowshort_offset)
- Scifi.SetPlaneParam(ship_geo.Scifi.carbonfiber_z, ship_geo.Scifi.honeycomb_z)
- Scifi.SetPlastBarParam(ship_geo.Scifi.plastbar_x, ship_geo.Scifi.plastbar_y, ship_geo.Scifi.plastbar_z)
- Scifi.SetNFibers(ship_geo.Scifi.nfibers_shortrow, ship_geo.Scifi.nfibers_longrow, ship_geo.Scifi.nfibers_z)
- Scifi.SetScifiSep(ship_geo.Scifi.scifi_separation)
- Scifi.SetZOffset(ship_geo.Scifi.offset_z)
- Scifi.SetNMats(ship_geo.Scifi.nmats)
- Scifi.SetNScifi(ship_geo.Scifi.nscifi)
- Scifi.SiPMParams(ship_geo.Scifi.channel_width, ship_geo.Scifi.charr_width, ship_geo.Scifi.sipm_edge,
-                                      ship_geo.Scifi.charr_gap, ship_geo.Scifi.sipm_diegap, ship_geo.Scifi.nsipm_channels, ship_geo.Scifi.nsipm_mat,ship_geo.Scifi.firstChannelX )
+ Scifi = ROOT.Scifi("Scifi", ROOT.kTRUE)
+ for parName in ship_geo.Scifi:
+    parValue = eval('ship_geo.Scifi.'+parName)
+    Scifi.SetConfPar("Scifi/"+parName, parValue)
  detectorList.append(Scifi)
 
  MuFilter = ROOT.MuFilter("MuFilter",ROOT.kTRUE)
- mu = ship_geo.MuFilter
- #upstream veto section
- MuFilter.SetVetoCenterPosition(mu.VetozC)
- MuFilter.SetVetoShift(mu.VetoShiftX, mu.VetoShiftY)
- MuFilter.SetVetoPlaneShiftY(mu.VetoPlaneShiftY)
- MuFilter.SetNVetoPlanes(mu.NVetoPlanes)
- MuFilter.SetNVetoBars(mu.NVetoBars)
- MuFilter.SetVetoPlanesDimensions(mu.VetoPlaneX, mu.VetoPlaneY, mu.VetoPlaneZ)
- MuFilter.SetVetoBarsDimensions(mu.VetoBarX, mu.VetoBarY, mu.VetoBarZ)
- MuFilter.SetMuFilterDimensions(mu.X, mu.Y, mu.Z)
- MuFilter.SetIronBlockDimensions(mu.FeX, mu.FeY, mu.FeZ)
- #upstream section
- MuFilter.SetUpstreamPlanesDimensions(mu.UpstreamDetX, mu.UpstreamDetY, mu.UpstreamDetZ)
- MuFilter.SetNUpstreamPlanes(mu.NUpstreamPlanes)
- MuFilter.SetUpstreamBarsDimensions(mu.UpstreamBarX, mu.UpstreamBarY, mu.UpstreamBarZ)
- MuFilter.SetNUpstreamBars(mu.NUpstreamBars)
- #downstream section
- MuFilter.SetDownstreamPlanesDimensions(mu.DownstreamDetX, mu.DownstreamDetY, mu.DownstreamDetZ)
- MuFilter.SetNDownstreamPlanes(mu.NDownstreamPlanes)
- MuFilter.SetDownstreamBarsDimensions(mu.DownstreamBarX, mu.DownstreamBarY, mu.DownstreamBarZ)
- MuFilter.SetDownstreamVerticalBarsDimensions(mu.DownstreamBarX_ver, mu.DownstreamBarY_ver, mu.DownstreamBarZ_ver)
- MuFilter.SetNDownstreamBars(mu.NDownstreamBars)
- MuFilter.SetDS4ZGap(mu.DS4ZGap)
-
- MuFilter.SetCenterZ(mu.Zcenter)
- MuFilter.SetXYDisplacement(mu.ShiftX, mu.ShiftY)
- MuFilter.SetSlope(mu.Slope)
- MuFilter.SetYPlanesDisplacement(mu.ShiftYEnd)
-
- MuFilter.SetReadout(mu.VetonSiPMs,mu.UpstreamnSiPMs,mu.DownstreamnSiPMs,mu.VetonSides,mu.UpstreamnSides,mu.DownstreamnSides )
- 
+ for parName in ship_geo.MuFilter:
+    parValue = eval('ship_geo.MuFilter.'+parName)
+    MuFilter.SetConfPar("MuFilter/"+parName, parValue)
  detectorList.append(MuFilter)
+
  detElements = {}
  if hasattr(run,'SetMaterials'):  
   for x in detectorList:

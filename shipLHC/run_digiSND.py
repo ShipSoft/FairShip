@@ -14,7 +14,6 @@ def mem_monitor():
     print("memory: virtuell = %5.2F MB  physical = %5.2F MB"%(vmsize/1.0E3,pmsize/1.0E3))
 
 import ROOT,os,sys,getopt
-import global_variables
 import shipRoot_conf
 import shipunit as u
 
@@ -28,33 +27,38 @@ parser.add_argument("-n", "--nEvents", dest="nEvents",  type=int, help="number o
 parser.add_argument("-ts", "--thresholdScifi", dest="ts", type=float, help="threshold energy for Scifi [keV]", default=3.5)
 parser.add_argument("-tML", "--thresholdMufiL", dest="tml", type=float, help="threshold energy for Mufi large [keV]", default=0.0)
 parser.add_argument("-tMS", "--thresholdMufiS", dest="tms", type=float, help="threshold energy for Mufi small [keV]", default=0.0)
+parser.add_argument("-cpp", "--digiCPP", action='store_true', dest="FairTask_digi", help="perform digitization using DigiTaskSND", default=False)
 parser.add_argument("-d", "--Debug", dest="debug", help="debug", default=False)
 
 options = parser.parse_args()
+# -----Timer-------------
+timer = ROOT.TStopwatch()
+timer.Start()
 
-if options.inputFile.find('/eos')==0:
-      x = options.inputFile
-      filename = x[x.rfind('/')+1:]
-      os.system('xrdcp '+os.environ['EOSSHIP']+options.inputFile+' '+filename)
-      options.inputFile = filename
-outFile = options.inputFile.replace('.root','_dig.root') 
 # outfile should be in local directory
-tmp = outFile.split('/')
-outFile = tmp[len(tmp)-1]
-os.system('cp '+options.inputFile+' '+outFile)
-
+tmp     = options.inputFile.split('/')
+outFile = tmp[len(tmp)-1].replace('.root','_dig.root')
+if options.inputFile.find('/eos')==0:
+   if options.FairTask_digi:
+       options.inputFile = os.environ['EOSSHIP']+options.inputFile
+   else:   
+       os.system('xrdcp '+os.environ['EOSSHIP']+options.inputFile+' '+outFile)
+else:
+    if not options.FairTask_digi:
+       os.system('cp '+options.inputFile+' '+outFile) 
+    
 # -----Create geometry----------------------------------------------
 import shipLHC_conf as sndDet_conf
 
 if options.geoFile.find('/eos')==0:
-       options.geofile = os.environ['EOSSHIP']+options.geoFile
+       options.geoFile = os.environ['EOSSHIP']+options.geoFile
 import SndlhcGeo
 snd_geo = SndlhcGeo.GeoInterface(options.geoFile)
 
 # set digitization parameters for MuFilter
 lsOfGlobals  = ROOT.gROOT.GetListOfGlobals()
-scifiDet  = lsOfGlobals.FindObject('Scifi')
-mufiDet = lsOfGlobals.FindObject('MuFilter')
+scifiDet     = lsOfGlobals.FindObject('Scifi')
+mufiDet      = lsOfGlobals.FindObject('MuFilter')
 mufiDet.SetConfPar("MuFilter/DsAttenuationLength",350 * u.cm)		#  values between 300 cm and 400cm observed for H6 testbeam
 mufiDet.SetConfPar("MuFilter/DsTAttenuationLength",700 * u.cm)		# top readout with mirror on bottom
 mufiDet.SetConfPar("MuFilter/VandUpAttenuationLength",999 * u.cm)	# no significante attenuation observed for H6 testbeam
@@ -68,14 +72,40 @@ scifiDet.SetConfPar("Scifi/nphe_max ",104) # saturation
 scifiDet.SetConfPar("Scifi/timeResol",150.*u.picosecond) # time resolution in ps
 scifiDet.SetConfPar("MuFilter/timeResol",150.*u.picosecond) # time resolution in ps, first guess
 
-# import digi task
-import SndlhcDigi
-Sndlhc = SndlhcDigi.SndlhcDigi(outFile)
-Sndlhc.setThresholds(options.ts,options.tml,options.tms)
 
-nEvents   = min(Sndlhc.sTree.GetEntries(),options.nEvents)
+# Fair digitization task
+if options.FairTask_digi:
+  run = ROOT.FairRunAna()
+  ioman = ROOT.FairRootManager.Instance()
+  ioman.RegisterInputObject('Scifi', snd_geo.modules['Scifi'])
+  ioman.RegisterInputObject('MuFilter', snd_geo.modules['MuFilter'])
+  # Set input
+  fileSource = ROOT.FairFileSource(options.inputFile)
+  run.SetSource(fileSource)
+  # Set output
+  outfile = ROOT.FairRootFileSink(outFile.replace('.root','CPP.root'))
+  run.SetSink(outfile)
+
+  # Set number of events to process
+  inRootFile = ROOT.TFile.Open(options.inputFile)
+  inTree = inRootFile.Get('cbmsim')
+  nEventsInFile = inTree.GetEntries()
+  nEvents = min(nEventsInFile, options.nEvents)
+
+  rtdb = run.GetRuntimeDb()
+  run.AddTask(ROOT.DigiTaskSND())
+  run.Init()
+  run.Run(firstEvent, nEvents)
+
+# Digitization using python code SndlhcDigi
+else:
+ # import digi task
+  import SndlhcDigi
+  Sndlhc = SndlhcDigi.SndlhcDigi(outFile)
+
+  nEvents   = min(Sndlhc.sTree.GetEntries(),options.nEvents)
 # main loop
-for iEvent in range(firstEvent, nEvents):
+  for iEvent in range(firstEvent, nEvents):
     if iEvent % 50000 == 0 or options.debug:
         print('event ', iEvent, nEvents - firstEvent)
     Sndlhc.iEvent = iEvent
@@ -84,5 +114,11 @@ for iEvent in range(firstEvent, nEvents):
  # memory monitoring
  # mem_monitor()
 
-# end loop over events
-Sndlhc.finish()
+  # end loop over events
+  Sndlhc.finish()
+  
+timer.Stop()
+rtime = timer.RealTime()
+ctime = timer.CpuTime()
+print(' ') 
+print("Real time ",rtime, " s, CPU time ",ctime,"s")

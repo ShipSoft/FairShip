@@ -88,8 +88,8 @@ class Tracking(ROOT.FairTask):
 # take fired muonFilter bars if more than 2 SiPMs have fired
     nMin = 1
     MuFiPlanes = {}
-    for k in range(self.event.Digi_MuFilterHit.GetEntries()):
-         aHit = self.event.Digi_MuFilterHit[k]
+    for k in range(self.event.Digi_MuFilterHits.GetEntries()):
+         aHit = self.event.Digi_MuFilterHits[k]
          if not aHit.isValid(): continue
          detID = aHit.GetDetectorID()
          sy    = detID//10000
@@ -101,7 +101,7 @@ class Tracking(ROOT.FairTask):
          for i in range(nSides*nSiPMs):
               if aHit.GetSignal(i) > 0: nFired+=1
          if nMin > nFired: continue
-         hitlist[k*1000] = self.event.Digi_MuFilterHit[k]
+         hitlist[k*1000] = self.event.Digi_MuFilterHits[k]
          MuFiPlanes[sy*100+l] = 1
     if (len(ScifiStations) == 5 or len(MuFiPlanes)>4) and len(hitlist)<20:
            trackCandidates.append(hitlist)

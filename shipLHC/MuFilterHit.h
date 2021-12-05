@@ -27,6 +27,7 @@ class MuFilterHit : public SndlhcHit
     void Print() const;
     Float_t GetEnergy();
     Float_t SumOfSignals(char* opt,Bool_t mask=kTRUE);
+    std::map<TString,Float_t> SumOfSignals(Bool_t mask=kTRUE);
     std::map<Int_t,Float_t> GetAllSignals(Bool_t mask=kTRUE);
     std::map<Int_t,Float_t> GetAllTimes(Bool_t mask=kTRUE);
     Float_t  GetDeltaT(Bool_t mask=kTRUE);
@@ -44,12 +45,8 @@ class MuFilterHit : public SndlhcHit
 
     Float_t flag;   ///< flag
     Float_t fMasked[16];  /// masked signal
-    std::set<int> shortSiPM = {3,6,11,14,19,22,27,30,35,38,43,46,51,54,59,62,67,70,75,78};
-    Float_t DsAttenuationLength;
-    Float_t DsTAttenuationLength;
-    Float_t VandUpAttenuationLength;
 
-    ClassDef(MuFilterHit,3);
+    ClassDef(MuFilterHit,4);
     
 
 };
