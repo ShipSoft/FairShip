@@ -194,21 +194,22 @@ void MuFilter::ConstructGeometry()
 	volVetoBar->SetLineColor(kRed-3);
 	AddSensitiveVolume(volVetoBar);
 
-	//adding mother volume
-	top->AddNode(volVeto, 1,new TGeoTranslation(fVetoShiftX,fVetoShiftY,fVetoShiftZ)) ;
-
 	//adding veto planes
 	TGeoVolume* volVetoPlane;
 	for (int iplane=0; iplane < fNVetoPlanes; iplane++){
 	  
 	  string name = "volVetoPlane_"+to_string(iplane);
 	  volVetoPlane = new TGeoVolumeAssembly(name.c_str());
+
+	  displacement = edge_Veto[iplane+1] + LocBarVeto + TVector3(-fVetoBarX/2, 0, 0);
+	  volVeto->AddNode(volVetoPlane,iplane,
+				new TGeoTranslation(displacement.X(),displacement.Y(),displacement.Z()));
 	 //  VETOBox1 = bottom front left
 	  displacement = edge_Veto[iplane+1] +VetoBox1 + TVector3(-VetoBoxDim.X()/2,VetoBoxDim.Y()/2,VetoBoxDim.Z()/2);
 	  volVeto->AddNode(subVetoBox,iplane,
 		new TGeoTranslation(displacement.X(),displacement.Y(),displacement.Z()));
 
-	  displacement = LocBarVeto + TVector3(-fVetoBarX/2, 0, 0);
+	  displacement = TVector3(0, 0, 0);
 	  for (Int_t ibar = 0; ibar < fNVetoBars; ibar++){
 	    Double_t dy_bar =  (fVetoBarY + fVetoBarGap)*ibar; 
 	    volVetoPlane->AddNode(volVetoBar, 1e+4+iplane*1e+3+ibar,
@@ -216,6 +217,9 @@ void MuFilter::ConstructGeometry()
 	  }
 	}
 	
+		//adding to detector volume
+	top->AddNode(volVeto, 1,new TGeoTranslation(fVetoShiftX,fVetoShiftY,fVetoShiftZ)) ;
+
 	//*****************************************UPSTREAM SECTION*********************************//
 
 		//Definition of the box containing Fe Blocks + Timing Detector planes 
@@ -291,7 +295,7 @@ void MuFilter::ConstructGeometry()
 	  volMuFilter->AddNode(volFeBlock,l,
                                     new TGeoTranslation(displacement.X(),displacement.Y(),displacement.Z()));
 
-	  displacement = edge_MuFilter[l+1];
+	  displacement = edge_MuFilter[l+1]+LocBarUS + TVector3(-fUpstreamBarX/2, 0, 0);
 	  volMuFilter->AddNode(volUpstreamDet,fNVetoPlanes+l,
                                     new TGeoTranslation(displacement.X(),displacement.Y(),displacement.Z()));
 
@@ -300,7 +304,7 @@ void MuFilter::ConstructGeometry()
 	  volMuFilter->AddNode(subUSBox,l+fNVetoPlanes,
 		new TGeoTranslation(displacement.X(),displacement.Y(),displacement.Z()));
 
-	  displacement = LocBarUS + TVector3(-fUpstreamBarX/2, 0, 0);
+	  displacement = TVector3(0, 0, 0);
 	  for (Int_t ibar = 0; ibar < fNUpstreamBars; ibar++){
 	    Double_t dy_bar =  (fUpstreamBarY + fUpstreamBarGap)*ibar; 
 	    volUpstreamDet->AddNode(volMuUpstreamBar,2e+4+l*1e+3+ibar,
@@ -353,14 +357,14 @@ void MuFilter::ConstructGeometry()
 	// add detectors
 	string name = "volMuDownstreamDet_"+std::to_string(l);
 	volDownstreamDet = new TGeoVolumeAssembly(name.c_str());
-	displacement = edge_MuFilter[l+fNUpstreamPlanes+1];
+	displacement = edge_MuFilter[l+fNUpstreamPlanes+1] + LocBarH + TVector3(-fDownstreamBarX/2, 0,0);
 	
 	volMuFilter->AddNode(volDownstreamDet,l+fNUpstreamPlanes+fNVetoPlanes,
 				new TGeoTranslation(displacement.X(),displacement.Y(),displacement.Z()));
 
 	//adding bars within each detector box
 	if (l!=fNDownstreamPlanes-1) {
-		displacement = LocBarH + TVector3(-fDownstreamBarX/2, 0,0);
+		displacement = TVector3(0, 0,0);
 		for (Int_t ibar = 0; ibar < fNDownstreamBars; ibar++){
 	                 //adding horizontal bars for y
 			Double_t dy_bar = (fDownstreamBarY + fDownstreamBarGap)*ibar;
@@ -374,10 +378,10 @@ void MuFilter::ConstructGeometry()
 		volMuFilter->AddNode(subDSBox,l+fNUpstreamPlanes+fNVetoPlanes,
 		new TGeoTranslation(displacement.X(),displacement.Y(),displacement.Z()));
 	//adding vertical bars for x
-	displacement = LocBarV + TVector3(0, -fDownstreamBarY_ver/2,0);
+	displacement = LocBarV + TVector3(0, -fDownstreamBarY_ver/2,0) - LocBarH - TVector3(-fDownstreamBarX/2, 0,0);
 	for (Int_t i_vbar = 0; i_vbar<fNDownstreamBars; i_vbar++) {
-		Double_t dx_bar = fDownstreamBarX_ver*i_vbar;
-		Int_t i_vbar_rev  = fNDownstreamBars-1-i_vbar;   // TO BE CHECKED IF NUMBERING AGREES WITH DAQ  TR Nov21
+		Double_t dx_bar = (fDownstreamBarX_ver+ fDownstreamBarGap)*i_vbar;
+		Int_t i_vbar_rev  = fNDownstreamBars-1-i_vbar;
 		volDownstreamDet->AddNode(volMuDownstreamBar_ver,3e+4+l*1e+3+i_vbar_rev+60,
 				new TGeoTranslation(displacement.X()+dx_bar,displacement.Y(),displacement.Z())); 
  		// Andrew added a 60 here to make each horizontal + vertical sub-plane contain bars given detIDs as one plane. So the first bar in the vert. sub plane is the 60th etc. 
@@ -472,28 +476,44 @@ MuFilterPoint* MuFilter::AddHit(Int_t trackID,Int_t detID,
                                         time, length, eLoss, pdgCode);
 }
 
-void MuFilter::GetPosition(Int_t fDetectorID, TVector3& vLeft, TVector3& vRight) 
+void MuFilter::GetLocalPosition(Int_t fDetectorID, TVector3& vLeft, TVector3& vRight)
+{
+  GetPosition(fDetectorID, vLeft, vRight);
+  TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
+  TString path = nav->GetPath();
+  TString loc( path(0, path.Last('/') ) );
+  nav->cd(loc);
+  Double_t A[3] = {vLeft.X(),vLeft.Y(),vLeft.Z()};
+  Double_t B[3] = {vRight.X(),vRight.Y(),vRight.Z()};
+  Double_t locA[3] = {0,0,0};
+  Double_t locB[3] = {0,0,0};
+  nav->MasterToLocal(A, locA);   nav->MasterToLocal(B, locB);
+  vLeft.SetXYZ(locA[0],locA[1],locA[2]);
+  vRight.SetXYZ(locB[0],locB[1],locB[2]);
+}
+
+void MuFilter::GetPosition(Int_t fDetectorID, TVector3& vLeft, TVector3& vRight)
 {
 
   int subsystem     = floor(fDetectorID/10000);
   int plane             = floor(fDetectorID/1000) - 10*subsystem;
   int bar_number   = fDetectorID%1000;
 
-  TString path = "/cave_1/";
+  TString path = "/cave_1/Detector_0/";
   TString barName;
 
   switch(subsystem) {
   
   case 1: 
-      path+="Detector_0/volVeto_1/volVetoPlane_"+std::to_string(plane)+"_"+std::to_string(plane);
+      path+="volVeto_1/volVetoPlane_"+std::to_string(plane)+"_"+std::to_string(plane);
       barName = "/volVetoBar_";
       break;
   case 2: 
-      path+="Detector_0/volMuFilter_1/volMuUpstreamDet_"+std::to_string(plane)+"_"+std::to_string(plane+2);
+      path+="volMuFilter_1/volMuUpstreamDet_"+std::to_string(plane)+"_"+std::to_string(plane+2);
       barName = "/volMuUpstreamBar_";
       break;
   case 3: 
-      path+="Detector_0/volMuFilter_1/volMuDownstreamDet_"+std::to_string(plane)+"_"+std::to_string(plane+7);
+      path+="volMuFilter_1/volMuDownstreamDet_"+std::to_string(plane)+"_"+std::to_string(plane+7);
       barName = "/volMuDownstreamBar_";
       if (bar_number<60){barName+="hor_";}
       else{barName+="ver_";}

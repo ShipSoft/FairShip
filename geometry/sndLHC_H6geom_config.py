@@ -316,7 +316,7 @@ with ConfigRegistry.register_config("basic") as c:
         c.MuFilter.VETOBoxX1        = c.MuFilter.VETOLocX - c.MuFilter.SupportBoxD
         c.MuFilter.VETOBoxX2        = c.MuFilter.VETOLocX + c.MuFilter.VetoBarX + c.MuFilter.SupportBoxD
         c.MuFilter.VETOBoxZ1        = c.MuFilter.VETOLocZ - c.MuFilter.VetoBarY/2 - c.MuFilter.SupportBoxD
-        c.MuFilter.VETOBoxZ2        = c.MuFilter.VETOLocZ + (c.MuFilter.NVetoBars-1)*(c.MuFilter.VetoBarY+c.MuFilter.VetoBarGap) + c.MuFilter.VetoBarZ/2 + c.MuFilter.SupportBoxD
+        c.MuFilter.VETOBoxZ2        = c.MuFilter.VETOLocZ + (c.MuFilter.NVetoBars-1)*(c.MuFilter.VetoBarY+c.MuFilter.VetoBarGap) + c.MuFilter.VetoBarY/2 + c.MuFilter.SupportBoxD
         c.MuFilter.VETOBoxY1        = c.MuFilter.VETOLocY - c.MuFilter.VetoBarZ/2 - c.MuFilter.SupportBoxD
         c.MuFilter.VETOBoxY2        = c.MuFilter.VETOLocY + c.MuFilter.VetoBarZ/2 + c.MuFilter.SupportBoxD
 
@@ -343,13 +343,10 @@ with ConfigRegistry.register_config("basic") as c:
            c.MuFilter.Iron9Dy = 0*u.mm # move iron blocks at the end out of the way
 # scifi moved 46cm behind the iron block of second DS station and lifted by 10-15 cm.
 # equal to move MuFilter in front of target and lower by 10-15cm, from 289 to 538+46, delta = -295
-           c.MuFilter.ShiftX =   -1.5*u.cm
-           c.MuFilter.ShiftY =   -13.5*u.cm
+           c.MuFilter.ShiftX =   -3.5*u.cm
+           c.MuFilter.ShiftY =   -7.5*u.cm
            c.MuFilter.ShiftZ = -275.0*u.cm            # -295cm was 20cm too much
 # for H6, Veto  placed directly in front of first US
-           c.MuFilter.VetoShiftZ = 95*u.cm + c.MuFilter.ShiftZ
-           c.MuFilter.VetoShiftX = -17.6*u.cm
-           c.MuFilter.VetoShiftY = +13*u.cm
-# alignment parameters for H6 MuFilter relative to SciFi
-           alignParametersForH6 = {'1X':-13.0,'2X':1.2,    '3HX':0.7,     '3VX':-18.5,
-                                        '1Y':-13.2,'2Y':-19.9,'3HY':-15.4,'3VY':-19.4}
+           c.MuFilter.VetoShiftZ = 70*u.cm + c.MuFilter.ShiftZ
+           c.MuFilter.VetoShiftX = -13.5*u.cm
+           c.MuFilter.VetoShiftY = -7*u.cm
