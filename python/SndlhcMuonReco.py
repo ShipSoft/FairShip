@@ -6,30 +6,16 @@ import warnings
 def hit_finder(slope, intercept, box_centers, box_ds) :
     """ Finds hits intersected by Hough line """
 
-#    print("HIT FINDER STARTS!!")
-    
-#    print(box_centers)
-#    print(box_ds)
-
     # First check if track at center of box is within box limits
-
     d = np.abs(box_centers[0,:,1] - (box_centers[0,:,0]*slope + intercept))
-
-#    print(d)
-
     center_in_box = d < box_ds[0,:,1]/2.
-
-#    print(center_in_box)
 
     # Now check if, assuming line is not in box at box center, the slope is large enough for line to clip the box at corner
     clips_corner = np.abs(slope) > np.abs((d - box_ds[0,:,1]/2.)/box_ds[0,:,0]/2.)
 
-#    print(clips_corner)
     # If either of these is true, line goes through hit:
     hit_mask = np.logical_or(center_in_box, clips_corner)
 
-#    print(hit_mask)
-#    print(np.where(hit_mask))
     # Return indices
     return np.where(hit_mask)[0]
 
@@ -117,31 +103,6 @@ class hough() :
 
         print("Done randomized fit. Returning")
         return fit
-
-        # Find hits that match track
-#        z0 = np.min(hit_collection[:,0])
-#        z1 = np.max(hit_collection[:,0])
-        
-#        y0 = fit[0]*z0 + fit[1]
-#        y1 = fit[0]*z1 + fit[1]
-        
-#        l_fit = np.array([[z0, y0], [z1, y1]])
-
-#        hit_indices = hit_finder(fit[0], fit[1], hit_collection, hit_d)
-
-#        for i in range(len(hit_collection)) :
-#            if lineseg_intersects_box(l_fit, [hit_collection[i,0], hit_collection[i,1]], [hit_d[i,0], hit_d[i,1]]) :
-#                hit_indices.append(i)
-
-        # Find track start and track end
-#        if len(hit_indices) :
-#            z_min = np.min(hit_collection[hit_indices][:,0])
-#            z_max = np.max(hit_collection[hit_indices][:,0])
-#        else :
-#            z_min = -1
-#            z_max = -1
-#            success = False
-#        return (fit[0], fit[1], np.array([[z_min, fit[0]*z_min + fit[1]], [z_max,fit[0]*z_max + fit[1]]]), hit_indices, success)
 
 class MuonReco(ROOT.FairTask) :
     " Muon reconstruction "
@@ -419,45 +380,19 @@ class MuonReco(ROOT.FairTask) :
             i_muon += 1
             
             # Remove track hits and try to find an additional track
-
             # Find array index to be removed
             index_ZX = np.where(np.in1d(mu_ds["index"], mu_ds["index"][mu_ds["vert"]][track_hits_ds_ZX]))[0]
             index_ZY = np.where(np.in1d(mu_ds["index"], mu_ds["index"][~mu_ds["vert"]][track_hits_ds_ZY]))[0]
             index_to_remove = np.concatenate( [index_ZX, index_ZY] )
-#            print("Removing", index_to_remove)
             
             # Remove dictionary entries
-#            print("BEFORE")
-#            print(mu_ds)
             for key in mu_ds.keys() :
-#                print("Looking at ", key)
                 if len(mu_ds[key].shape) == 1 :
-#                    print("It's 1D")
-#                    print("Original")
-#                    print(mu_ds[key])
-#                    print(mu_ds[key].shape)
-#                    print("Before assignment")
-#                    print(np.delete(mu_ds[key], index_to_remove))
                     mu_ds[key] = np.delete(mu_ds[key], index_to_remove)
-#                    print("After assignment")
-#                    print(mu_ds[key])
-#                    print(mu_ds[key].shape)
                 elif len(mu_ds[key].shape) == 2 :
-#                    print("It's 2D")
-#                    print("Original")
-#                    print(mu_ds[key])
-#                    print(mu_ds[key].shape)
-#                    print("Before assignment")
-#                    print(np.delete(mu_ds[key], index_to_remove, axis = 1))
                     mu_ds[key] = np.delete(mu_ds[key], index_to_remove, axis = 1)
-#                    print("After assignment")
-#                    print(mu_ds[key])
-#                    print(mu_ds[key].shape)
                 else :
                     raise Exception("Wrong number of dimensions found when deleting hits in iterative muon identification algorithm.")
-#            print("AFTER")
-#            print(mu_ds)
-#            break
 
     def FinishTask(self) :
         self.muon_tracks.Delete()

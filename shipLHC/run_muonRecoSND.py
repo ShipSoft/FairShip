@@ -24,6 +24,7 @@ if options.inputFile.find('/eos')==0:
       filename = x[x.rfind('/')+1:]
       os.system('xrdcp '+os.environ['EOSSHIP']+options.inputFile+' '+filename)
       options.inputFile = filename
+
 outFile = options.inputFile.replace('.root','_muonReco.root') 
 
 os.system('cp '+options.inputFile+' '+outFile)
