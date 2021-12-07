@@ -72,6 +72,7 @@ class hough() :
         # Smooth accumulator
         self.accumulator = scipy.ndimage.gaussian_filter(self.accumulator, 3)
 
+        # This might be useful for debugging, but leave out for now.
         if draw :
             pass
 #            plt.figure()
@@ -211,7 +212,6 @@ class MuonReco(ROOT.FairTask) :
         return 0
         
     def Exec(self, opt) :
-        print("Exec ing")
         self.muon_tracks.Clear()
 
         # Read hits
@@ -314,7 +314,8 @@ class MuonReco(ROOT.FairTask) :
             if horizontal_ds_hits < self.min_hits :
                 break
                 
-
+            print("Finding muon {0}".format(i_muon))    
+            
             # Get hits in hough transform format
             ZX = np.dstack([np.concatenate([np.tile(mu_ds["pos"][2][mu_ds["vert"]], self.muon_weight), 
                                             np.tile(mu_us["pos"][2][mu_us["vert"]], self.muon_weight), 
@@ -353,7 +354,7 @@ class MuonReco(ROOT.FairTask) :
                                                      mu_ds["pos"][0][mu_ds["vert"]]]), 
                                           np.dstack([mu_ds["d"][2][mu_ds["vert"]], 
                                                      mu_ds["d"][0][mu_ds["vert"]]]))
-            print("Found {0} ds ZX hits".format(len(track_hits_ds_ZX)))
+            print("Found {0} downstream ZX hits associated to muon track".format(len(track_hits_ds_ZX)))
             if len(track_hits_ds_ZX) < self.min_hits :
                 break
             
@@ -363,10 +364,11 @@ class MuonReco(ROOT.FairTask) :
                                           np.dstack([mu_ds["d"][2][~mu_ds["vert"]],
                                                      mu_ds["d"][1][~mu_ds["vert"]]]))
 
-            print("Found {0} ds ZY hits".format(len(track_hits_ds_ZY)))
+            print("Found {0} downstream ZY hits associated to muon track".format(len(track_hits_ds_ZY)))
             if len(track_hits_ds_ZY) < self.min_hits :
                 break
 
+            print("Muon found!")
             track_hits_us_ZY = hit_finder(ZY_hough[0], ZY_hough[1], 
                                           np.dstack([mu_us["pos"][2][~mu_us["vert"]],
                                                      mu_us["pos"][1][~mu_us["vert"]]]), 
@@ -422,41 +424,40 @@ class MuonReco(ROOT.FairTask) :
             index_ZX = np.where(np.in1d(mu_ds["index"], mu_ds["index"][mu_ds["vert"]][track_hits_ds_ZX]))[0]
             index_ZY = np.where(np.in1d(mu_ds["index"], mu_ds["index"][~mu_ds["vert"]][track_hits_ds_ZY]))[0]
             index_to_remove = np.concatenate( [index_ZX, index_ZY] )
-            print("Removing", index_to_remove)
+#            print("Removing", index_to_remove)
             
             # Remove dictionary entries
-            print("BEFORE")
-            print(mu_ds)
+#            print("BEFORE")
+#            print(mu_ds)
             for key in mu_ds.keys() :
-                print("Looking at ", key)
-#                if len(mu_ds[key].shape) == 1 :
-                print("It's 1D")
-                print("Before assignment")
-                print(np.delete(mu_ds[key], index_to_remove))
-                mu_ds[key] = np.delete(mu_ds[key], index_to_remove)
-                print("After assignment")
-                print(mu_ds[key])
-#                elif len(mu_ds[key].shape) == 2 :
+#                print("Looking at ", key)
+                if len(mu_ds[key].shape) == 1 :
+#                    print("It's 1D")
+#                    print("Original")
+#                    print(mu_ds[key])
+#                    print(mu_ds[key].shape)
+#                    print("Before assignment")
+#                    print(np.delete(mu_ds[key], index_to_remove))
+                    mu_ds[key] = np.delete(mu_ds[key], index_to_remove)
+#                    print("After assignment")
+#                    print(mu_ds[key])
+#                    print(mu_ds[key].shape)
+                elif len(mu_ds[key].shape) == 2 :
 #                    print("It's 2D")
-#                    for i in range(len(mu_ds[key])) :
-#                        print("Looking at dimension", i)
-#                        print(mu_ds[key][i])
-#                        print(len(mu_ds[key][i]))
-#                        print(index_to_remove)
-#                        print(np.delete(mu_ds[key][i], index_to_remove))
-#                        print("doit temp")
-#                        temp = np.delete(mu_ds[key][i], index_to_remove)
-#                        print(temp)
-#                        print(mu_ds[key][i])
-#                        print("assign temp")
-#                        print(mu_ds[key].shape)
-#                        print(mu_ds[key][i].shape)
-#                        mu_ds[key][i] = temp
-#                else :
-#                    raise Exception("Wrong number of dimensions found when deleting hits in iterative muon identification algorithm.")
-            print("AFTER")
-            print(mu_ds)
-            break
+#                    print("Original")
+#                    print(mu_ds[key])
+#                    print(mu_ds[key].shape)
+#                    print("Before assignment")
+#                    print(np.delete(mu_ds[key], index_to_remove, axis = 1))
+                    mu_ds[key] = np.delete(mu_ds[key], index_to_remove, axis = 1)
+#                    print("After assignment")
+#                    print(mu_ds[key])
+#                    print(mu_ds[key].shape)
+                else :
+                    raise Exception("Wrong number of dimensions found when deleting hits in iterative muon identification algorithm.")
+#            print("AFTER")
+#            print(mu_ds)
+#            break
 
     def FinishTask(self) :
         self.muon_tracks.Delete()
