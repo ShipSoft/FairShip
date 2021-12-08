@@ -268,8 +268,12 @@ boardMaps['MuFilter']['board_43'] = {'A':'US_1Left','B':'US_2Left','C':'US_2Righ
 boardMaps['MuFilter']['board_60'] = {'A':'US_3Left','B':'US_4Left','C':'US_4Right','D':'US_3Right'}
 boardMaps['MuFilter']['board_41'] = {'A':'US_5Left','B':'DS_1Left','C':'DS_1Right','D':'US_5Right'}
 boardMaps['MuFilter']['board_59'] = {'A':'DS_2Left','B':'DS_1Vert','C':'DS_2Vert','D':'DS_2Right'}
-boardMaps['MuFilter']['board_42'] = {'A':'DS_3Left','B':'DS_4Vert','C':'DS_3Vert','D':'DS_3Right'}
-boardMaps['MuFilter']['board_52'] = {'A':'Veto_2Left','B':'Veto_1Left','C':'Veto_1Right','D':'Veto_2Right'}
+if path.find("data_commissioning_dune")>0: 
+    boardMaps['MuFilter']['board_42'] = {'A':'DS_3Left','B':'DS_3Vert','C':'notconnected','D':'notconnected'}
+    boardMaps['MuFilter']['board_52'] = {'A':'DS_3Right','B':'notconnected','C':'notconnected','D':'notconnected'}
+else:
+    boardMaps['MuFilter']['board_42'] = {'A':'DS_3Left','B':'DS_4Vert','C':'DS_3Vert','D':'DS_3Right'}
+    boardMaps['MuFilter']['board_52'] = {'A':'Veto_2Left','B':'Veto_1Left','C':'Veto_1Right','D':'Veto_2Right'}
 slots = {0:'A',1:'A',2:'B',3:'B',4:'C',5:'C',6:'D',7:'D'}
 
 
@@ -416,12 +420,11 @@ def run(nEvent):
                 system = MufiSystem[board_id][tofpet_id]
                 key = (tofpet_id%2)*1000 + tofpet_channel
                 tmp = boardMaps['MuFilter'][board][slots[tofpet_id]]
-
-                if options.debug: print(system,key,board,tofpet_id,tofpet_id%2,tofpet_channel)
+                if options.debug or not tmp.find('not')<0: print('debug',tmp,system,key,board,tofpet_id,tofpet_id%2,tofpet_channel)
                 sipmChannel = 99
                 if not key in TofpetMap[system]:
                         print('key does not exist',key)
-                        print(system, key, TofpetMap[system])
+                        print(system, key,board,tofpet_id, TofpetMap[system])
                 else:
                        sipmChannel = TofpetMap[system][key]-1
                 nSiPMs = abs(offMap[tmp][1])
@@ -448,8 +451,8 @@ def run(nEvent):
              else:
 # scifi encoding
                 chan = channel(tofpet_id,tofpet_channel,mat)
-                orientation = 0
-                if station[2]=="Y": orientation = 1
+                orientation = 1
+                if station[2]=="Y": orientation = 0
                 sipmLocal = (chan - mat*512)
                 sipmID = 1000000*int(station[1]) + 100000*orientation + 10000*mat + 1000*(sipmLocal//128) + chan%128
                 if not sipmID in digiSciFiStore: digiSciFiStore[sipmID] =  ROOT.sndScifiHit(sipmID)
