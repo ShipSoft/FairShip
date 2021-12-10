@@ -21,6 +21,7 @@ MCTracksWithHitsOrEnergyCut = False # or of above, factor 2 file size increase c
 parser = ArgumentParser()
 group = parser.add_mutually_exclusive_group()
 
+parser.add_argument("--H6",   dest="testbeam",   help="use geometry of H8/H6 testbeam setup", required=False, default = 0, type = int)
 parser.add_argument("--Genie",   dest="genie",   help="Genie for reading and processing neutrino interactions (1 standard, 2 FLUKA, 3 Pythia)", required=False, default = 0, type = int)
 parser.add_argument("--Ntuple",  dest="ntuple",  help="Use ntuple as input", required=False, action="store_true")
 parser.add_argument("--MuonBack",dest="muonback",  help="Generate events from muon background file, --Cosmics=0 for cosmic generator data", required=False, action="store_true")
@@ -102,8 +103,8 @@ print("SND@LHC setup for",simEngine,"to produce",options.nEvents,"events")
 ROOT.gRandom.SetSeed(options.theSeed)  # this should be propagated via ROOT to Pythia8 and Geant4VMC
 shipRoot_conf.configure(0)     # load basic libraries, prepare atexit for python
 
-snd_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/sndLHC_geom_config.py")
-# snd_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/sndlhcH6_geom_config.py")
+if options.testbeam:  snd_geo = ConfigRegistry.loadpy("$SNDSW_ROOT/geometry/sndLHC_H6geom_config.py")
+else:                         snd_geo = ConfigRegistry.loadpy("$SNDSW_ROOT/geometry/sndLHC_geom_config.py")
 
 # Output file name, add dy to be able to setup geometry with ambiguities.
 if simEngine == "PG": tag = simEngine + "_"+str(options.pID)+"-"+mcEngine
