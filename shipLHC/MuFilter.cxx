@@ -124,6 +124,8 @@ void MuFilter::ConstructGeometry()
 	TGeoMedium *Al =gGeoManager->GetMedium("aluminium");
 	InitMedium("polyvinyltoluene");
 	TGeoMedium *Scint =gGeoManager->GetMedium("polyvinyltoluene");
+	InitMedium("Concrete");
+	TGeoMedium *concrete = gGeoManager->GetMedium("Concrete");
 
 	Float_t nSiPMs[3];             //  number of SiPMs per side
 	Float_t nSides[3];             //  number of sides readout
@@ -249,8 +251,8 @@ void MuFilter::ConstructGeometry()
 	volFeBlock->SetLineColor(kGreen-4);
 	TGeoVolume *volFeBlockEnd = gGeoManager->MakeBox("volFeBlockEnd",Fe,fFeBlockEndX/2, fFeBlockEndY/2, fFeBlockEndZ/2);
 	volFeBlockEnd->SetLineColor(kGreen-4);
-	TGeoVolume *volFeBlockBot = gGeoManager->MakeBox("volFeBlockBot",Fe,fFeBlockBotX/2, fFeBlockBotY/2, fFeBlockBotZ/2);
-	volFeBlockBot->SetLineColor(kGreen-4);
+	TGeoVolume *volBlockBot = gGeoManager->MakeBox("volBlockBot",concrete,fFeBlockBotX/2, fFeBlockBotY/2, fFeBlockBotZ/2);
+	volBlockBot->SetLineColor(kGreen-4);
 
 	// support box
 	TGeoBBox  *supDSBoxInner  = new TGeoBBox("supDSBoxI",DSBoxDim.X()/2,DSBoxDim.Y()/2,DSBoxDim.Z()/2);
@@ -350,7 +352,7 @@ void MuFilter::ConstructGeometry()
 		volMuFilter->AddNode(volFeBlockEnd,1,
 				new TGeoTranslation(displacement.X(),displacement.Y(),displacement.Z()));
 		displacement = edge_Iron[l+fNUpstreamPlanes+1]  - TVector3(fFeBlockBotX/2-10.0, fFeBlockBotY/2,fFeBlockBotZ/2-fFeBlockEndZ);
-		volMuFilter->AddNode(volFeBlockBot,1,
+		volMuFilter->AddNode(volBlockBot,1,
 				new TGeoTranslation(displacement.X(),displacement.Y(),displacement.Z()));
 	}
 
