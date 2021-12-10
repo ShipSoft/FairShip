@@ -34,11 +34,13 @@ with ConfigRegistry.register_config("basic") as c:
 
         c.EmulsionDet.xdim = 42.2 *u.cm #external wall dimensions
         c.EmulsionDet.ydim = 42.2 *u.cm
+        c.EmulsionDet.TotalWallZDim = 10.0 *u.cm #wall dimension along z, including border
         c.EmulsionDet.WallXDim = 38.6 *u.cm #internal wall dimensions
         c.EmulsionDet.WallYDim = 38.6 *u.cm
-        c.EmulsionDet.WallZDim = c.EmulsionDet.BrZ
+        c.EmulsionDet.WallZDim = 8.15 *u.cm
+        c.EmulsionDet.WallZBorder_offset = 4.75 * u.mm
         c.EmulsionDet.TTz = 3.0*u.cm
-        c.EmulsionDet.zdim = c.EmulsionDet.wall* c.EmulsionDet.WallZDim + c.EmulsionDet.wall*c.EmulsionDet.TTz
+        c.EmulsionDet.zdim = c.EmulsionDet.wall* c.EmulsionDet.TotalWallZDim + c.EmulsionDet.wall*c.EmulsionDet.TTz
         c.EmulsionDet.ShiftX = -8.0*u.cm - c.EmulsionDet.xdim/2.
         c.EmulsionDet.ShiftY = 15.5*u.cm + c.EmulsionDet.ydim/2.
 
@@ -169,6 +171,7 @@ with ConfigRegistry.register_config("basic") as c:
         c.MuFilter.Iron1Dx = -24.2*u.mm
         c.MuFilter.Iron1Dy = 3579.6*u.mm
         c.MuFilter.Iron1Dz = 146.6*u.mm
+        # US1
         c.MuFilter.Muon1Dx = -47.1*u.mm
         c.MuFilter.Muon1Dy = 3760.2*u.mm
         c.MuFilter.Muon1Dz = 146.6*u.mm
@@ -176,6 +179,7 @@ with ConfigRegistry.register_config("basic") as c:
         c.MuFilter.Iron2Dx = -24.2*u.mm
         c.MuFilter.Iron2Dy = 3804.6*u.mm
         c.MuFilter.Iron2Dz = 136.6*u.mm
+        # US2
         c.MuFilter.Muon2Dx = -47.1*u.mm
         c.MuFilter.Muon2Dy = 3985.2*u.mm
         c.MuFilter.Muon2Dz = 136.6*u.mm
@@ -183,6 +187,7 @@ with ConfigRegistry.register_config("basic") as c:
         c.MuFilter.Iron3Dx = -24.2*u.mm
         c.MuFilter.Iron3Dy = 4029.6*u.mm
         c.MuFilter.Iron3Dz = 126.6*u.mm
+        # US3
         c.MuFilter.Muon3Dx = -47.1*u.mm
         c.MuFilter.Muon3Dy = 4210.2*u.mm
         c.MuFilter.Muon3Dz = 126.6*u.mm
@@ -190,6 +195,7 @@ with ConfigRegistry.register_config("basic") as c:
         c.MuFilter.Iron4Dx = -24.2*u.mm
         c.MuFilter.Iron4Dy = 4254.6*u.mm
         c.MuFilter.Iron4Dz = 116.7*u.mm
+        # US4
         c.MuFilter.Muon4Dx = -47.1*u.mm
         c.MuFilter.Muon4Dy = 4435.2*u.mm
         c.MuFilter.Muon4Dz = 116.7*u.mm
@@ -197,6 +203,7 @@ with ConfigRegistry.register_config("basic") as c:
         c.MuFilter.Iron5Dx = -24.2*u.mm
         c.MuFilter.Iron5Dy = 4479.6*u.mm    # +225.0mm
         c.MuFilter.Iron5Dz = 127.7*u.mm
+        # US5
         c.MuFilter.Muon5Dx = -47.1*u.mm
         c.MuFilter.Muon5Dy = 4660.2*u.mm
         c.MuFilter.Muon5Dz = 127.7*u.mm
@@ -204,6 +211,7 @@ with ConfigRegistry.register_config("basic") as c:
         c.MuFilter.Iron6Dx = -24.2*u.mm
         c.MuFilter.Iron6Dy = 4704.6*u.mm     # +225.0mm
         c.MuFilter.Iron6Dz = 127.7*u.mm
+        # DS1
         c.MuFilter.Muon6Dx = -47.1*u.mm
         c.MuFilter.Muon6Dy = 4884.9*u.mm
         c.MuFilter.Muon6Dz = 127.7*u.mm
@@ -211,6 +219,7 @@ with ConfigRegistry.register_config("basic") as c:
         c.MuFilter.Iron7Dx = -24.2*u.mm
         c.MuFilter.Iron7Dy = 4943.6*u.mm       # +239.0mm
         c.MuFilter.Iron7Dz = 127.7*u.mm
+        # DS2
         c.MuFilter.Muon7Dx = -47.1*u.mm
         c.MuFilter.Muon7Dy = 5123.9*u.mm
         c.MuFilter.Muon7Dz = 127.7*u.mm
@@ -218,12 +227,13 @@ with ConfigRegistry.register_config("basic") as c:
         c.MuFilter.Iron8Dx = -24.2*u.mm
         c.MuFilter.Iron8Dy = 5183.9*u.mm        # +240.3mm
         c.MuFilter.Iron8Dz = 127.7*u.mm
+        # DS3
         c.MuFilter.Muon8Dx = -4.7*u.mm
         c.MuFilter.Muon8Dy = 5383.7*u.mm
         c.MuFilter.Muon8Dz = 127.7*u.mm
 
         c.MuFilter.DS4ZGap = 8.82*u.cm
-
+        # DS4V
         c.MuFilter.Muon9Dx = -4.7*u.mm
         c.MuFilter.Muon9Dy = 5383.7*u.mm + c.MuFilter.DS4ZGap
         c.MuFilter.Muon9Dz = 127.7*u.mm
