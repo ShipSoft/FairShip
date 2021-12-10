@@ -25,6 +25,13 @@ class Floor : public  FairDetector
     Floor(const char* name, Bool_t Active);
     Floor();
     virtual ~Floor();
+	void SetConfPar(TString name, Float_t value){conf_floats[name]=value;}
+	void SetConfPar(TString name, Int_t value){conf_ints[name]=value;}
+	void SetConfPar(TString name, TString value){conf_strings[name]=value;}
+	Float_t  GetConfParF(TString name){return conf_floats[name];} 
+	Int_t      GetConfParI(TString name){return conf_ints[name];}
+	TString  GetConfParS(TString name){return conf_strings[name];}
+
     /**      Initialization of the detector is done here    */
     virtual void   Initialize();
 
@@ -67,11 +74,14 @@ class Floor : public  FairDetector
 
    Int_t InitMedium(const char* name);
 
-    void SetSND_Z(Double_t x){SND_Z = x;}
-
     TVector3 crossing(TVector3 H1,TVector3 H2,TVector3 H3,TVector3 P1,TVector3 P2,TVector3 P3);
  
 private:
+	/** configuration parameters **/
+	std::map<TString,Float_t> conf_floats;
+	std::map<TString,Int_t> conf_ints;
+	std::map<TString,TString> conf_strings;
+
     Int_t          fTrackID;           //!  track index
     Int_t          fVolumeID;          //!  volume id
     TLorentzVector fPos;               //!  position at entrance

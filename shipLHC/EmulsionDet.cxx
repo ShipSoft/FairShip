@@ -27,6 +27,7 @@
 #include "TParticlePDG.h"
 #include "TParticleClassPDG.h"
 #include "TVirtualMCStack.h"
+#include "TGeoCompositeShape.h"
 
 #include "FairVolume.h"
 #include "FairGeoVolume.h"
@@ -117,73 +118,43 @@ Int_t EmulsionDet::InitMedium(const char* name)
     return geoBuild->createMedium(ShipMedium);
 }
 
-void EmulsionDet::SetCenterZ(Double_t z)
-{
-  fCenterZ = z;
-}
-
-void EmulsionDet::SetDetectorDimension(Double_t xdim, Double_t ydim, Double_t zdim)
-{
-  XDimension = xdim;
-  YDimension = ydim;
-  ZDimension = zdim;
-}
-
-void EmulsionDet::SetNumberBricks(Double_t col, Double_t row, Double_t wall)
-{
-  fNCol = col;
-  fNRow = row;
-  fNWall = wall; 
-}
-
-void EmulsionDet::SetNumberTargets(Int_t target)
-{
-  fNTarget = target;
-}
-
-void EmulsionDet::SetTargetWallDimension(Double_t WallXDim_, Double_t WallYDim_, Double_t WallZDim_)
-{
-  WallXDim = WallXDim_;
-  WallYDim = WallYDim_;
-  WallZDim = WallZDim_;
-}
-
-
-void EmulsionDet::SetEmulsionParam(Double_t EmTh, Double_t EmX, Double_t EmY, Double_t PBTh, Double_t EPlW,Double_t PassiveTh, Double_t AllPW)
-{
-  EmulsionThickness = EmTh;
-  EmulsionX = EmX;
-  EmulsionY = EmY;
-  PlasticBaseThickness = PBTh;
-  EmPlateWidth = EPlW;
-  PassiveThickness = PassiveTh;
-  AllPlateWidth = AllPW;
-}
-
-void EmulsionDet::SetEmulsionPassiveOption(Int_t PassiveOption)
-{
-  fPassiveOption=PassiveOption;
-}
-
-void EmulsionDet::SetBrickParam(Double_t BrX, Double_t BrY, Double_t BrZ, Double_t BrPackX, Double_t BrPackY, Double_t BrPackZ, Int_t number_of_plates_)
-{
-  BrickPackageX = BrPackX;
-  BrickPackageY = BrPackY;
-  BrickPackageZ = BrPackZ;
-  BrickX = BrX;
-  BrickY = BrY;
-  BrickZ = BrZ;
-  number_of_plates = number_of_plates_;
-}
-
-void EmulsionDet::SetTTzdimension(Double_t TTZ)
-{
- TTrackerZ = TTZ;
-}
-
 void EmulsionDet::ConstructGeometry()
-{   
-	TGeoVolume *top=gGeoManager->GetTopVolume();       
+{
+	// configuration parameters
+	fCenterZ        = conf_floats["EmulsionDet/zC"];
+	XDimension = conf_floats["EmulsionDet/xdim"];
+	YDimension = conf_floats["EmulsionDet/ydim"];
+	ZDimension = conf_floats["EmulsionDet/zdim"];
+	fNCol        = conf_ints["EmulsionDet/col"];
+	fNRow     = conf_ints["EmulsionDet/row"];
+	fNWall      = conf_ints["EmulsionDet/wall"];
+	fNTarget = conf_ints["EmulsionDet/target"];
+	WallXDim = conf_floats["EmulsionDet/WallXDim"];
+	WallYDim = conf_floats["EmulsionDet/WallYDim"];
+	WallZDim = conf_floats["EmulsionDet/WallZDim"];
+	TotalWallZDim = conf_floats["EmulsionDet/TotalWallZDim"];
+	WallZBorder_offset = conf_floats["EmulsionDet/WallZBorder_offset"];
+	EmulsionThickness = conf_floats["EmulsionDet/EmTh"];
+	EmulsionX = conf_floats["EmulsionDet/EmX"];
+	EmulsionY = conf_floats["EmulsionDet/EmY"];
+	PlasticBaseThickness = conf_floats["EmulsionDet/PBTh"];
+	EmPlateWidth = conf_floats["EmulsionDet/EPlW"];
+	PassiveThickness = conf_floats["EmulsionDet/PassiveTh"];
+	AllPlateWidth = conf_floats["EmulsionDet/AllPW"];
+	fPassiveOption = conf_ints["EmulsionDet/PassiveOption"];
+	BrickPackageX = conf_floats["EmulsionDet/BrPackX"];
+	BrickPackageY = conf_floats["EmulsionDet/BrPackY"];
+	BrickPackageZ = conf_floats["EmulsionDet/BrPackZ"];
+	BrickX = conf_floats["EmulsionDet/BrX"];
+	BrickY = conf_floats["EmulsionDet/BrY"];
+	BrickZ = conf_floats["EmulsionDet/BrZ"];
+	number_of_plates = conf_ints["EmulsionDet/n_plates"];
+	TTrackerZ = conf_floats["EmulsionDet/TTz"];
+	ShiftX = conf_floats["EmulsionDet/ShiftX"];
+	ShiftY = conf_floats["EmulsionDet/ShiftY"];
+
+	TGeoVolume *top=gGeoManager->FindVolumeFast("Detector");
+	if(!top)  LOG(ERROR) << "no Detector volume found " ;
 	gGeoManager->SetVisLevel(10);
 
 	LOG(INFO) << "fCenterZ:   "<<fCenterZ;
@@ -196,14 +167,8 @@ void EmulsionDet::ConstructGeometry()
 	InitMedium("air");
 	TGeoMedium *air =gGeoManager->GetMedium("air");
 
-	InitMedium("iron");
-	TGeoMedium *Fe =gGeoManager->GetMedium("iron");
-
-	InitMedium("CoilAluminium");
-	TGeoMedium *Al  = gGeoManager->GetMedium("CoilAluminium");
-
-	InitMedium("CoilCopper");
-	TGeoMedium *Cu  = gGeoManager->GetMedium("CoilCopper");
+	InitMedium("Aluminum");
+	TGeoMedium *Al  = gGeoManager->GetMedium("Aluminum");
 
 	InitMedium("PlasticBase");
 	TGeoMedium *PBase =gGeoManager->GetMedium("PlasticBase");
@@ -239,13 +204,21 @@ void EmulsionDet::ConstructGeometry()
 	//  //Volumes definition
 	//    //
 
-	//Walls
+	
+	TGeoBBox *Walltot = new TGeoBBox("walltot",XDimension/2, YDimension/2, TotalWallZDim/2);
+        TGeoBBox *Wallint = new TGeoBBox("wallint",WallXDim/2, WallYDim/2, WallZDim/2);
+ 
+        TGeoTranslation * Wallborderpos = new TGeoTranslation("Walborderpos",0,0,WallZBorder_offset);
+        Wallborderpos->RegisterYourself();
 
-	TGeoBBox *Wall = new TGeoBBox("wall",XDimension/2, YDimension/2, BrickZ/2);
-        TGeoVolume *volWall = new TGeoVolume("Wall",Wall,air);
+        TGeoCompositeShape *Wallborder = new TGeoCompositeShape("wallborder","walltot - (wallint:Walborderpos)");
+        TGeoVolume *volWallborder = new TGeoVolume("volWallborder", Wallborder, Al);
+        volWallborder->SetLineColor(kGray);
+
+        TGeoVolume *volWall = new TGeoVolume("Wall",Wallint,air);
 	
 	//Rows
-	TGeoBBox *Row = new TGeoBBox("row",XDimension/2, BrickY/2, BrickZ/2);
+	TGeoBBox *Row = new TGeoBBox("row",WallXDim/2, BrickY/2, BrickZ/2);
         TGeoVolume *volRow = new TGeoVolume("Row",Row,air);
 
 	//Bricks
@@ -276,7 +249,12 @@ void EmulsionDet::ConstructGeometry()
 
 	volBrick->SetVisibility(kTRUE);
 
-	top->AddNode(volTarget,1,new TGeoTranslation(ShiftX,ShiftY,fCenterZ));
+//alignment
+	double dx_survey[fNWall] = {conf_floats["EmulsionDet/Xpos0"],conf_floats["EmulsionDet/Xpos1"],conf_floats["EmulsionDet/Xpos2"],conf_floats["EmulsionDet/Xpos3"],conf_floats["EmulsionDet/Xpos4"]};
+	double dy_survey[fNWall] = {conf_floats["EmulsionDet/Ypos0"],conf_floats["EmulsionDet/Ypos1"],conf_floats["EmulsionDet/Ypos2"],conf_floats["EmulsionDet/Ypos3"],conf_floats["EmulsionDet/Ypos4"]};
+	double dz_survey[fNWall] = {conf_floats["EmulsionDet/Zpos0"],conf_floats["EmulsionDet/Zpos1"],conf_floats["EmulsionDet/Zpos2"],conf_floats["EmulsionDet/Zpos3"],conf_floats["EmulsionDet/Zpos4"]};
+
+ 	top->AddNode(volTarget,1,new TGeoTranslation(0,0,0));
 
 	//adding walls
 
@@ -284,7 +262,8 @@ void EmulsionDet::ConstructGeometry()
 
 	for(int l = 0; l < fNWall; l++)
 	  {
-		volTarget->AddNode(volWall,l,new TGeoTranslation(0, 0, d_cl_z +BrickZ/2));
+		volTarget->AddNode(volWallborder,l,new TGeoTranslation(-dx_survey[l]-XDimension/2., dz_survey[l]+YDimension/2., dy_survey[l]+BrickZ/2.)); //the survey points refer to the down-left corner
+		volTarget->AddNode(volWall,l,new TGeoTranslation(-dx_survey[l]-XDimension/2., dz_survey[l]+YDimension/2., dy_survey[l]+BrickZ/2.+WallZBorder_offset)); //the survey points refer to the down-left corner
 		d_cl_z += BrickZ + TTrackerZ;
 	  }
 
@@ -293,7 +272,7 @@ void EmulsionDet::ConstructGeometry()
        
         for(int k= 0; k< fNRow; k++)
 	  {
-	  volWall->AddNode(volRow,k,new TGeoTranslation(0, d_cl_y + BrickY/2, 0));
+	  volWall->AddNode(volRow,k,new TGeoTranslation(0, d_cl_y + BrickY/2,0));
         
 	  // 2mm is the distance for the structure that holds the brick
 	  d_cl_y += BrickY;
@@ -343,10 +322,11 @@ Bool_t  EmulsionDet::ProcessHits(FairVolume* vol)
         Double_t ymean = (fPos.Y()+Pos.Y())/2. ;      
         Double_t zmean = (fPos.Z()+Pos.Z())/2. ;     
         
-	
-	AddHit(fTrackID,fVolumeID, TVector3(xmean, ymean,  zmean),
-               TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength,
-               fELoss, pdgCode);
+        TLorentzVector Mom;
+        gMC->TrackMomentum(Mom);
+        AddHit(fTrackID, fVolumeID, TVector3(xmean, ymean,  zmean),
+           TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength,
+           fELoss,pdgCode,TVector3(Pos.X(), Pos.Y(), Pos.Z()),TVector3(Mom.Px(), Mom.Py(), Mom.Pz()) );
 	
         // Increment number of muon det points in TParticle
         ShipStack* stack = (ShipStack*) gMC->GetStack();
@@ -392,19 +372,11 @@ void EmulsionDet::Reset()
 EmulsionDetPoint* EmulsionDet::AddHit(Int_t trackID,Int_t detID,
                            TVector3 pos, TVector3 mom,
                            Double_t time, Double_t length,
-			    Double_t eLoss, Int_t pdgCode)
+			    Double_t eLoss, Int_t pdgCode,TVector3 Lpos, TVector3 Lmom)
 {
     TClonesArray& clref = *fEmulsionDetPointCollection;
     Int_t size = clref.GetEntriesFast();
     return new(clref[size]) EmulsionDetPoint(trackID,detID, pos, mom,
-					time, length, eLoss, pdgCode);
+					time, length, eLoss, pdgCode,Lpos,Lmom);
 }
 ClassImp(EmulsionDet)
-
-
-
-
-
-
-
-

@@ -14,6 +14,9 @@
 # drives me crazy how to stop this tons of output !!!
 /process/em/verbose 0
 /process/eLoss/verbose 0
+/process/had/verbose 0
+
+/process/verbose 0
 
 #/mcVerbose/composedPhysicsList 0
 #/mcVerbose/trackManager 2

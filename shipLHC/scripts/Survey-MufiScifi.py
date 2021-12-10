@@ -835,16 +835,17 @@ def Mufi_Efficiency(Nev=-1,optionTrack='DS',NbinsRes=100):
                   rc = h['nSiPMsL_'+sdict[s]+str(s*10+plane)+'_'+str(bar)].Fill(left,dL)
                   rc = h['nSiPMsR_'+sdict[s]+str(s*10+plane)+'_'+str(bar)].Fill(right,dR)
                   for x in S:
-                      if x.first<nSiPMs: 
-                         if s==2 and smallSiPMchannel(x.first): rc = h['signalSL_'+sdict[s]+str(s*10+plane)+'_'+str(bar)].Fill(x.second,dL)
+                      qcd = S[x]
+                      if x<nSiPMs: 
+                         if s==2 and smallSiPMchannel(x): rc = h['signalSL_'+sdict[s]+str(s*10+plane)+'_'+str(bar)].Fill(qcd,dL)
                          else:                                    
-                               rc = h['signalL_'+sdict[s]+str(s*10+plane)+'_'+str(bar)].Fill(x.second,dL)
-                               Sleft+=x.second
+                               rc = h['signalL_'+sdict[s]+str(s*10+plane)+'_'+str(bar)].Fill(qcd,dL)
+                               Sleft+=qcd
                       else: 
-                         if s==2 and smallSiPMchannel(x.first): rc = h['signalSR_'+sdict[s]+str(s*10+plane)+'_'+str(bar)].Fill(x.second,dR)
+                         if s==2 and smallSiPMchannel(x): rc = h['signalSR_'+sdict[s]+str(s*10+plane)+'_'+str(bar)].Fill(qcd,dR)
                          else:
-                               rc = h['signalR_'+sdict[s]+str(s*10+plane)+'_'+str(bar)].Fill(x.second,dR)
-                               Sright+=x.second
+                               rc = h['signalR_'+sdict[s]+str(s*10+plane)+'_'+str(bar)].Fill(qcd,dR)
+                               Sright+=qcd
                   rc = h['signalTL_'+sdict[s]+str(s*10+plane)+'_'+str(bar)].Fill(Sleft,dL)
                   rc = h['signalTR_'+sdict[s]+str(s*10+plane)+'_'+str(bar)].Fill(Sright,dR)
 
