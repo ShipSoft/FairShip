@@ -263,17 +263,30 @@ for station in stations:
          boardMaps['Scifi'][board]=[station,mat]
 
 boardMaps['MuFilter'] = {}
-# H6
-boardMaps['MuFilter']['board_43'] = {'A':'US_1Left','B':'US_2Left','C':'US_2Right','D':'US_1Right'}
-boardMaps['MuFilter']['board_60'] = {'A':'US_3Left','B':'US_4Left','C':'US_4Right','D':'US_3Right'}
-boardMaps['MuFilter']['board_41'] = {'A':'US_5Left','B':'DS_1Left','C':'DS_1Right','D':'US_5Right'}
-boardMaps['MuFilter']['board_59'] = {'A':'DS_2Left','B':'DS_1Vert','C':'DS_2Vert','D':'DS_2Right'}
-if path.find("data_commissioning_dune")>0: 
-    boardMaps['MuFilter']['board_42'] = {'A':'DS_3Left','B':'DS_3Vert','C':'notconnected','D':'notconnected'}
-    boardMaps['MuFilter']['board_52'] = {'A':'DS_3Right','B':'notconnected','C':'notconnected','D':'notconnected'}
-else:
-    boardMaps['MuFilter']['board_42'] = {'A':'DS_3Left','B':'DS_4Vert','C':'DS_3Vert','D':'DS_3Right'}
-    boardMaps['MuFilter']['board_52'] = {'A':'Veto_2Left','B':'Veto_1Left','C':'Veto_1Right','D':'Veto_2Right'}
+# hopefully final mapping of TI18
+boardMaps['MuFilter']['board_52'] = {'B':'Veto_1Left','C':'Veto_1Right','A':'Veto_2Left','D':'Veto_2Right'}
+boardMaps['MuFilter']['board_43'] = {'D':'US_1Left','A':'US_1Right','C':'US_2Left','B':'US_2Right'}
+boardMaps['MuFilter']['board_60'] = {'D':'US_3Left','A':'US_3Right','C':'US_4Left','B':'US_4Right'}
+boardMaps['MuFilter']['board_41'] = {'D':'US_5Left','A':'US_5Right','C':'DS_1Left','B':'DS_1Right'}
+boardMaps['MuFilter']['board_42'] = {'D':'DS_2Left','A':'DS_2Right','B':'DS_1Vert','C':'DS_2Vert'}
+boardMaps['MuFilter']['board_55'] = {'D':'DS_3Left','A':'DS_3Right','B':'DS_3Vert','C':'DS_4Vert'}
+
+if path.find("commissioning-h6")>0 or  path.find("TB_data_commissioning")>0 :
+# H6 / H8
+   boardMaps['MuFilter']['board_43'] = {'A':'US_1Left','B':'US_2Left','C':'US_2Right','D':'US_1Right'}
+   boardMaps['MuFilter']['board_60'] = {'A':'US_3Left','B':'US_4Left','C':'US_4Right','D':'US_3Right'}
+   boardMaps['MuFilter']['board_41'] = {'A':'US_5Left','B':'DS_1Left','C':'DS_1Right','D':'US_5Right'}
+   boardMaps['MuFilter']['board_59'] = {'A':'DS_2Left','B':'DS_1Vert','C':'DS_2Vert','D':'DS_2Right'}
+   boardMaps['MuFilter']['board_42'] = {'A':'DS_3Left','B':'DS_4Vert','C':'DS_3Vert','D':'DS_3Right'}
+   boardMaps['MuFilter']['board_52'] = {'A':'Veto_2Left','B':'Veto_1Left','C':'Veto_1Right','D':'Veto_2Right'}
+if path.find("data_commissioning_dune")>0:    # does not work
+   boardMaps['MuFilter']['board_43'] = {'A':'US_1Left','B':'US_2Left','C':'US_2Right','D':'US_1Right'}
+   boardMaps['MuFilter']['board_60'] = {'A':'US_3Left','B':'US_4Left','C':'US_4Right','D':'US_3Right'}
+   boardMaps['MuFilter']['board_41'] = {'A':'US_5Left','B':'DS_1Left','C':'DS_1Right','D':'US_5Right'}
+   boardMaps['MuFilter']['board_59'] = {'A':'DS_2Left','B':'DS_1Vert','C':'DS_2Vert','D':'DS_2Right'}
+   boardMaps['MuFilter']['board_42'] = {'A':'DS_3Left','B':'DS_3Vert','C':'notconnected','D':'notconnected'}
+   boardMaps['MuFilter']['board_52'] = {'A':'DS_3Right','B':'notconnected','C':'notconnected','D':'notconnected'}
+
 slots = {0:'A',1:'A',2:'B',3:'B',4:'C',5:'C',6:'D',7:'D'}
 
 
@@ -293,10 +306,10 @@ offMap={}
                                       # first bar, number of sipm channels / bar and direction
 for s in range(1,3):
    for o in ['Left','Right']: 
-      offMap['Veto_'+str(s)+o] =[10000 + (s-1)*1000+ 6,-8,2]    # first channel, nSiPMs, nSides
+      offMap['Veto_'+str(s)+o] =[10000 + (s-1)*1000+ 0,8,2]    # first channel, nSiPMs, nSides, from bottom to top
 for s in range(1,6):
    for o in ['Left','Right']: 
-      offMap['US_'+str(s)+o] =[20000 + (s-1)*1000+ 9,-8,2]
+      offMap['US_'+str(s)+o] =[20000 + (s-1)*1000+ 9,-8,2]     # from top to bottom
 for s in range(1,5):
    for o in ['Vert']: 
       offMap['DS_'+str(s)+o] =[30000 + (s-1)*1000+ 119, -1,1] # direction not known
@@ -535,4 +548,14 @@ if not options.stop:
    fSink.Close()
    print("File closed")
 
+def debugMapping(board,tofpet_id,tofpet_channel):
+                key = (tofpet_id%2)*1000 + tofpet_channel
+                tmp = boardMaps['MuFilter'][board][slots[tofpet_id]]
+                sipmChannel = TofpetMap[system][key]-1
+                nSiPMs =   abs(offMap[tmp][1])
+                nSides =   abs(offMap[tmp][2])
+                direction            = int(offMap[tmp][1]/nSiPMs)
+                detID                   = offMap[tmp][0] + direction*(sipmChannel//(nSiPMs))
+                sipm_number = sipmChannel%(nSiPMs)
+                print(sipmChannel,nSiPMs,nSides,detID,sipm_number)
 
