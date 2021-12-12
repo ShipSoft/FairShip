@@ -262,8 +262,8 @@ class MuonReco(ROOT.FairTask) :
                 hit_collection[key] = np.array(item, dtype = this_dtype)
 
         # Reconstruct muons until there are not enough hits in downstream muon filter
+        i_muon = 0
         while True :
-            i_muon = 0
             vertical_ds_hits = mu_ds["vert"].sum()
             if vertical_ds_hits < self.min_hits :
                 break
@@ -378,10 +378,10 @@ class MuonReco(ROOT.FairTask) :
             
             # Remove track hits and try to find an additional track
             # Find array index to be removed
-            index_ZX = np.where(np.in1d(mu_ds["index"], mu_ds["index"][mu_ds["vert"]][track_hits_ds_ZX]))[0]
-            index_ZY = np.where(np.in1d(mu_ds["index"], mu_ds["index"][~mu_ds["vert"]][track_hits_ds_ZY]))[0]
+            index_ZX = np.where(np.in1d(mu_ds["detectorID"], mu_ds["detectorID"][mu_ds["vert"]][track_hits_ds_ZX]))[0]
+            index_ZY = np.where(np.in1d(mu_ds["detectorID"], mu_ds["detectorID"][~mu_ds["vert"]][track_hits_ds_ZY]))[0]
             index_to_remove = np.concatenate( [index_ZX, index_ZY] )
-            
+
             # Remove dictionary entries
             for key in mu_ds.keys() :
                 if len(mu_ds[key].shape) == 1 :

@@ -45,5 +45,5 @@ run.AddTask(SndlhcMuonReco.MuonReco())
 
 run.Init()
 print("Done init about to Run")
-run.Run()
+run.Run(0, options.nEvents)
 print("Done running")
