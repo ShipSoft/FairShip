@@ -82,8 +82,6 @@ class hough() :
         if not len(hit_collection) :
             return (-1, -1, [[],[]], [], False)
 
-        print("Starting randomized fit. Number of hits: {0}".format(len(hit_collection)))
-
         # Randomize hits
         if (n_random > 0) :
             random_hit_collection = []
@@ -101,7 +99,6 @@ class hough() :
         else :
             fit = self.fit(hit_collection, draw, weights)
 
-        print("Done randomized fit. Returning")
         return fit
 
 class MuonReco(ROOT.FairTask) :
@@ -226,7 +223,7 @@ class MuonReco(ROOT.FairTask) :
             mu["d"][2].append(self.MuFilter_ds_dz)
         
             mu["index"].append(i_hit)
-
+            
             mu["detectorID"].append(muFilterHit.GetDetectorID())
 
             # Downstream
@@ -258,8 +255,8 @@ class MuonReco(ROOT.FairTask) :
             for key, item in hit_collection.items() :
                 if key == 'vert' :
                     this_dtype = np.bool
-                elif key == "index" or key == "system" :
-                    this_dtype = np.int
+                elif key == "index" or key == "system" or key == "detectorID" :
+                    this_dtype = np.int32
                 else :
                     this_dtype = np.float
                 hit_collection[key] = np.array(item, dtype = this_dtype)
