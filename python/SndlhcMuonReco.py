@@ -368,8 +368,8 @@ class MuonReco(ROOT.FairTask) :
             min_x = ZX_hough[0]*min_z + ZX_hough[1]
             max_x = ZX_hough[0]*max_z + ZX_hough[1]
 
-            min_y = ZY_hough[0]*min_z + ZX_hough[1]
-            max_y = ZY_hough[0]*max_z + ZX_hough[1]
+            min_y = ZY_hough[0]*min_z + ZY_hough[1]
+            max_y = ZY_hough[0]*max_z + ZY_hough[1]
 
             # Save track
             this_track = self.muon_tracks.ConstructedAt(i_muon)
