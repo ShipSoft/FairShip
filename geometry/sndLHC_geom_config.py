@@ -39,13 +39,13 @@ with ConfigRegistry.register_config("basic") as c:
         c.EmulsionDet.WallYDim = 38.6 *u.cm
         c.EmulsionDet.WallZDim = 8.15 *u.cm
         c.EmulsionDet.WallZBorder_offset = 4.75 * u.mm
-        c.EmulsionDet.TTz = 3.0*u.cm
-        c.EmulsionDet.zdim = c.EmulsionDet.wall* c.EmulsionDet.TotalWallZDim + c.EmulsionDet.wall*c.EmulsionDet.TTz
+        c.EmulsionDet.TTz = 3.0*u.cm     
         c.EmulsionDet.ShiftX = -8.0*u.cm - c.EmulsionDet.xdim/2.
         c.EmulsionDet.ShiftY = 15.5*u.cm + c.EmulsionDet.ydim/2.
 
         c.EmulsionDet.startpos =  289.3369 *u.cm #value from getGeoInformation output
         c.EmulsionDet.zC = 321.3055 * u.cm #value from getGeoInformation output
+        c.EmulsionDet.zdim = (c.EmulsionDet.zC - c.EmulsionDet.startpos)*2 #scifi volume thickness is not equal to c.EmulsionDet.TTz anymore, getting zdim from positions
         
         # survey points in survey coordinate system!
         c.EmulsionDet.Xpos0 = 5.74
