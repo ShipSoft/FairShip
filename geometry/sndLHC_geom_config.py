@@ -44,8 +44,8 @@ with ConfigRegistry.register_config("basic") as c:
         c.EmulsionDet.ShiftX = -8.0*u.cm - c.EmulsionDet.xdim/2.
         c.EmulsionDet.ShiftY = 15.5*u.cm + c.EmulsionDet.ydim/2.
 
-        c.EmulsionDet.startpos =  -25.4750 * u.cm + c.EmulsionDet.z
-        c.EmulsionDet.zC = c.EmulsionDet.startpos + c.EmulsionDet.zdim/2.
+        c.EmulsionDet.startpos =  289.3369 *u.cm #value from getGeoInformation output
+        c.EmulsionDet.zC = 321.3055 * u.cm #value from getGeoInformation output
         
         # survey points in survey coordinate system!
         c.EmulsionDet.Xpos0 = 5.74
