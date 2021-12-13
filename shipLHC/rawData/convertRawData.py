@@ -276,7 +276,8 @@ if path.find("commissioning-h6")>0 or  path.find("TB_data_commissioning")>0 :
    boardMaps['MuFilter']['board_43'] = {'A':'US_1Left','B':'US_2Left','C':'US_2Right','D':'US_1Right'}
    boardMaps['MuFilter']['board_60'] = {'A':'US_3Left','B':'US_4Left','C':'US_4Right','D':'US_3Right'}
    boardMaps['MuFilter']['board_41'] = {'A':'US_5Left','B':'DS_1Left','C':'DS_1Right','D':'US_5Right'}
-   boardMaps['MuFilter']['board_59'] = {'A':'DS_2Left','B':'DS_1Vert','C':'DS_2Vert','D':'DS_2Right'}
+   if path.find("commissioning-h6")>0: boardMaps['MuFilter']['board_59'] = {'A':'DS_2Right','B':'DS_2Vert','C':'DS_1Vert','D':'DS_2Left'}
+   else:                                                boardMaps['MuFilter']['board_59'] = {'A':'DS_2Left','B':'DS_1Vert','C':'DS_2Vert','D':'DS_2Right'}
    boardMaps['MuFilter']['board_42'] = {'A':'DS_3Left','B':'DS_4Vert','C':'DS_3Vert','D':'DS_3Right'}
    boardMaps['MuFilter']['board_52'] = {'A':'Veto_2Left','B':'Veto_1Left','C':'Veto_1Right','D':'Veto_2Right'}
 if path.find("data_commissioning_dune")>0:    # does not work
