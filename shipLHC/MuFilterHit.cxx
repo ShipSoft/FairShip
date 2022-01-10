@@ -191,6 +191,37 @@ Float_t MuFilterHit::GetDeltaT(Bool_t mask)
           }
           return dT;
 }
+// -----   Public method Get mean time  -----------------
+Float_t MuFilterHit::GetImpactT(Bool_t mask)
+{
+          Float_t mean[] = {0,0}; 
+          Int_t count[] = {0,0}; 
+          Float_t dT = -999.;
+          Float_t dL;
+          MuFilter* MuFilterDet = dynamic_cast<MuFilter*> (gROOT->GetListOfGlobals()->FindObject("MuFilter"));
+          if (floor(fDetectorID/10000==3)) { 
+             dL = MuFilterDet->GetConfParF("MuFilterDet/DownstreamBarX") / MuFilterDet->GetConfParF("MuFilter/DsPropSpeed");}
+          else if (floor(fDetectorID/10000==2)) { 
+             dL = MuFilterDet->GetConfParF("MuFilterDet/UpstreamBarX") / MuFilterDet->GetConfParF("MuFilter/VandUpPropSpeed");}
+          else { 
+             dL = MuFilterDet->GetConfParF("MuFilterDet/VeoBarX") / MuFilterDet->GetConfParF("MuFilter/VandUpPropSpeed");}
+
+          for (unsigned int s=0; s<nSides; ++s){
+              for (unsigned int j=0; j<nSiPMs; ++j){
+               unsigned int channel = j+s*nSiPMs;
+               if (signals[channel]> 0){
+                 if (!fMasked[channel] || !mask){
+                    mean[s] += times[channel];
+                    count[s] += 1;
+                    }
+                }
+              }
+          }
+          if (count[0]>0 && count[1]>0) {
+                dT = (mean[0]/count[0] + mean[1]/count[1])/2.*6.25 -  dL/2.; // TDC to ns = 6.25
+          }
+          return dT;
+}
 
 std::map<TString,Float_t> MuFilterHit::SumOfSignals(Bool_t mask)
 {   
