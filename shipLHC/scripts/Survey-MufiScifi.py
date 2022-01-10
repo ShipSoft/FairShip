@@ -1856,6 +1856,8 @@ def Scifi_residuals(Nev=-1,NbinsRes=100,xmin=-500.,alignPar=False):
            ut.bookHist(h,'resY'+proj+'_Scifi'+str(s*10+o),'residual '+proj+str(s*10+o)+'; [#mum]',NbinsRes,xmin,xmax,100,10.,60.)
            ut.bookHist(h,'resC'+proj+'_Scifi'+str(s*10+o),'residual '+proj+str(s*10+o)+'; [#mum]',NbinsRes,xmin,xmax,128*4*3,-0.5,128*4*3-0.5)
            ut.bookHist(h,'track_Scifi'+str(s*10+o),'track x/y '+str(s*10+o),80,-70.,10.,80,0.,80.)
+    ut.bookHist(h,'trackChi2/ndof','track chi2/ndof vs ndof',100,0,100,20,0,20)
+    ut.bookHist(h,'trackSlopes','track slope; x [mrad]; y [mrad]',1000,-100,100,1000,-100,100)
     parallelToZ = ROOT.TVector3(0., 0., 1.)
 
     if Nev < 0 : Nev = eventTree.GetEntries()
@@ -1871,7 +1873,6 @@ def Scifi_residuals(Nev=-1,NbinsRes=100,xmin=-500.,alignPar=False):
        theTrack = Scifi_track(nPlanes = 10, nClusters = 11)
        if not hasattr(theTrack,"getFittedState"): continue
        theTrack.Delete()
-       clusters = trackTask.scifiCluster()
        sortedClusters={}
        for aCl in eventTree.ScifiClusters:
            so = aCl.GetFirst()//100000
@@ -1881,16 +1882,23 @@ def Scifi_residuals(Nev=-1,NbinsRes=100,xmin=-500.,alignPar=False):
        for s in range(1,6):
 # build trackCandidate
             hitlist = {}
-            for k in range(len(clusters)):
-                    detID  = clusters[k].GetFirst()
-                    if  detID//1000000 == s: continue
-                    hitlist[k] = clusters[k]
+            k=0
+            for so in sortedClusters:
+                    if so//10 == s: continue
+                    for x in sortedClusters[so]:
+                       hitlist[k] = x
+                       k+=1
             theTrack = trackTask.fitTrack(hitlist)
             if not hasattr(theTrack,"getFittedState"): continue
 # check residuals
-            if not theTrack.getFitStatus().isFitConverged(): 
+            fitStatus = theTrack.getFitStatus()
+            if not fitStatus.isFitConverged(): 
                  theTrack.Delete()
                  continue
+            rc = h['trackChi2/ndof'].Fill(fitStatus.getChi2()/(fitStatus.getNdf()+1E-10),fitStatus.getNdf() )
+            fstate =  theTrack.getFittedState()
+            mom = fstate.getMom()
+            rc = h['trackSlopes'].Fill(mom.X()/mom.Z()*1000,mom.Y()/mom.Z()*1000)
 # test plane 
             for o in range(2):
                 testPlane = s*10+o
@@ -1918,12 +1926,13 @@ def Scifi_residuals(Nev=-1,NbinsRes=100,xmin=-500.,alignPar=False):
                    aCl.GetPosition(A,B)
                    if o==1 :   D = (A[0]+B[0])/2. - xEx
                    else:         D = (A[1]+B[1])/2. - yEx
-                detID = aCl.GetFirst()
-                channel = detID%1000 + ((detID%10000)//1000)*128 + (detID%100000//10000)*512
-                rc = h['res'+projs[o]+'_Scifi'+str(testPlane)].Fill(D/u.um)
-                rc = h['resX'+projs[o]+'_Scifi'+str(testPlane)].Fill(D/u.um,xEx)
-                rc = h['resY'+projs[o]+'_Scifi'+str(testPlane)].Fill(D/u.um,yEx)
-                rc = h['resC'+projs[o]+'_Scifi'+str(testPlane)].Fill(D/u.um,channel)
+                   detID = aCl.GetFirst()
+                   channel = detID%1000 + ((detID%10000)//1000)*128 + (detID%100000//10000)*512
+                   rc = h['res'+projs[o]+'_Scifi'+str(testPlane)].Fill(D/u.um)
+                   rc = h['resX'+projs[o]+'_Scifi'+str(testPlane)].Fill(D/u.um,xEx)
+                   rc = h['resY'+projs[o]+'_Scifi'+str(testPlane)].Fill(D/u.um,yEx)
+                   rc = h['resC'+projs[o]+'_Scifi'+str(testPlane)].Fill(D/u.um,channel)
+
             theTrack.Delete()
 # analysis and plots 
     P = {'':'','X':'colz','Y':'colz','C':'colz'}
@@ -2010,7 +2019,13 @@ def printScifi_residuals(tag='v0'):
                   mean.append(Scifi.GetConfParF(x)/u.um)
              XM = (mean[0]+mean[1]+mean[2])/3.
              print("      mean value %8.2F            delta s: %8.2F  %8.2F  %8.2F"%(XM,mean[0]-XM,mean[1]-XM,mean[2]-XM))
-
+# for H6 beam
+    h['trackSlopes'].GetYaxis().SetRangeUser(-20,20)
+    h['trackSlopes'].GetXaxis().SetRangeUser(-40,0)
+    ut.bookCanvas(h,'beamSpot','track slopes',750,750,1,1)
+    tc = h['beamSpot'].cd()
+    h['trackSlopes'].Draw('colz')
+    myPrint(h['beamSpot'],tag+'-beamSpot')
 
 def minimizeAlignScifi(first=True,level=1,minuit=False):
     h['chisq'] = []
