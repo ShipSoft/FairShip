@@ -499,6 +499,7 @@ void Scifi::GetSiPMPosition(Int_t SiPMChan, TVector3& A, TVector3& B)
 
 	TString sID;
 	sID.Form("%i",SiPMChan);
+	locPosition += conf_floats["Scifi/LocM"+TString(sID(0,3))];
 	Double_t loc[3] = {0,0,0};
 	TString path = "/cave_1/Detector_0/volTarget_1/ScifiVolume"+TString(sID(0,1))+"_"+TString(sID(0,1))+"000000/";
 	if (sID(1,1)=="0"){

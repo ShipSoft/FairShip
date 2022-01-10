@@ -39,30 +39,20 @@ with ConfigRegistry.register_config("basic") as c:
         c.EmulsionDet.WallYDim = 38.6 *u.cm
         c.EmulsionDet.WallZDim = 8.15 *u.cm
         c.EmulsionDet.WallZBorder_offset = 4.75 * u.mm
-        c.EmulsionDet.TTz = 3.0*u.cm     
+        c.EmulsionDet.TTz = 3.0*u.cm
+        c.EmulsionDet.zdim = c.EmulsionDet.wall* c.EmulsionDet.TotalWallZDim + c.EmulsionDet.wall*c.EmulsionDet.TTz
         c.EmulsionDet.ShiftX = -8.0*u.cm - c.EmulsionDet.xdim/2.
         c.EmulsionDet.ShiftY = 15.5*u.cm + c.EmulsionDet.ydim/2.
 
-        c.EmulsionDet.startpos =  289.3369 *u.cm #value from getGeoInformation output
-        c.EmulsionDet.zC = 321.3055 * u.cm #value from getGeoInformation output
-        c.EmulsionDet.zdim = (c.EmulsionDet.zC - c.EmulsionDet.startpos)*2 #scifi volume thickness is not equal to c.EmulsionDet.TTz anymore, getting zdim from positions
+        c.EmulsionDet.startpos =  -25.4750 * u.cm + c.EmulsionDet.z
+        c.EmulsionDet.zC = c.EmulsionDet.startpos + c.EmulsionDet.zdim/2.
         
         # survey points in survey coordinate system!
-        c.EmulsionDet.Xpos0 = 5.74
-        c.EmulsionDet.Xpos1 = 5.74
-        c.EmulsionDet.Xpos2 = 5.74
-        c.EmulsionDet.Xpos3 = 5.74
-        c.EmulsionDet.Xpos4 = 5.74
-        c.EmulsionDet.Ypos0 = 288.89
-        c.EmulsionDet.Ypos1 = 301.89
-        c.EmulsionDet.Ypos2 = 314.89
-        c.EmulsionDet.Ypos3 = 327.89
-        c.EmulsionDet.Ypos4 = 340.89
-        c.EmulsionDet.Zpos0 = 16.63
-        c.EmulsionDet.Zpos1 = 16.63
-        c.EmulsionDet.Zpos2 = 16.63
-        c.EmulsionDet.Zpos3 = 16.63
-        c.EmulsionDet.Zpos4 = 16.63
+        c.EmulsionDet.Xpos0,c.EmulsionDet.Ypos0,c.EmulsionDet.Zpos0 = 5.74*u.cm, 288.89*u.cm, 16.63*u.cm
+        c.EmulsionDet.Xpos1,c.EmulsionDet.Ypos1,c.EmulsionDet.Zpos1 = 5.74*u.cm, 301.89*u.cm, 16.63*u.cm
+        c.EmulsionDet.Xpos2,c.EmulsionDet.Ypos2,c.EmulsionDet.Zpos2 = 5.74*u.cm, 314.89*u.cm, 16.63*u.cm
+        c.EmulsionDet.Xpos3,c.EmulsionDet.Ypos3,c.EmulsionDet.Zpos3 = 5.74*u.cm, 327.89*u.cm, 16.63*u.cm
+        c.EmulsionDet.Xpos4,c.EmulsionDet.Ypos4,c.EmulsionDet.Zpos4 = 5.74*u.cm, 340.89*u.cm, 16.63*u.cm
 
         #SciFi parameters
         c.Scifi = AttrDict(z=0*u.cm)
@@ -120,140 +110,78 @@ with ConfigRegistry.register_config("basic") as c:
         c.Scifi.timeResol = 150.*u.picosecond
 
         # absolute edge point positions in survey coordinate system
-        c.Scifi.Xpos0 = 4.34*u.cm
-        c.Scifi.Xpos1 = 4.34*u.cm
-        c.Scifi.Xpos2 = 4.34*u.cm
-        c.Scifi.Xpos3 = 4.34*u.cm
-        c.Scifi.Xpos4 = 4.34*u.cm
-        c.Scifi.Ypos0 = 298.94*u.cm
-        c.Scifi.Ypos1 = 311.94*u.cm
-        c.Scifi.Ypos2 = 324.94*u.cm
-        c.Scifi.Ypos3 = 337.94*u.cm
-        c.Scifi.Ypos4 = 350.94*u.cm
-        c.Scifi.Zpos0 = 15.22*u.cm
-        c.Scifi.Zpos1 = 15.22*u.cm
-        c.Scifi.Zpos2 = 15.22*u.cm
-        c.Scifi.Zpos3 = 15.22*u.cm
-        c.Scifi.Zpos4 = 15.22*u.cm
+        c.Scifi.Xpos0,c.Scifi.Ypos0,c.Scifi.Zpos0 = 4.34*u.cm, 298.94*u.cm, 15.22*u.cm
+        c.Scifi.Xpos1,c.Scifi.Ypos1,c.Scifi.Zpos1 = 4.34*u.cm, 311.94*u.cm, 15.22*u.cm
+        c.Scifi.Xpos2,c.Scifi.Ypos2,c.Scifi.Zpos2 = 4.34*u.cm, 324.94*u.cm, 15.22*u.cm
+        c.Scifi.Xpos3,c.Scifi.Ypos3,c.Scifi.Zpos3 = 4.34*u.cm, 337.94*u.cm, 15.22*u.cm
+        c.Scifi.Xpos4,c.Scifi.Ypos4,c.Scifi.Zpos4 = 4.34*u.cm, 350.94*u.cm, 15.22*u.cm
 
 # Scifi technical drawing, distance from first channel on vertical / horizontal plane to edge point  225,225,0, xy plane z perpendicularc.Scifi.ydim
-        c.Scifi.EdgeAX =  225*u.mm
-        c.Scifi.EdgeAY =  225*u.mm
-        c.Scifi.EdgeAZ =  0*u.mm
+        c.Scifi.EdgeAX, c.Scifi.EdgeAY, c.Scifi.EdgeAZ =  225*u.mm, 225*u.mm, 0*u.mm
 
-        c.Scifi.FirstChannelVX = -195.28*u.mm
-        c.Scifi.FirstChannelVY = -200.0*u.mm
-        c.Scifi.FirstChannelVZ = -12.92*u.mm
+        c.Scifi.FirstChannelVX,c.Scifi.FirstChannelVY,c.Scifi.FirstChannelVZ = -195.28*u.mm, -200.0*u.mm, -12.92*u.mm
 
-        c.Scifi.FirstChannelHX = -200.0*u.mm
-        c.Scifi.FirstChannelHY = -195.28*u.mm
-        c.Scifi.FirstChannelHZ = -7.07*u.mm
+        c.Scifi.FirstChannelHX,c.Scifi.FirstChannelHY,c.Scifi.FirstChannelHZ = -200.0*u.mm, -195.28*u.mm, -7.07*u.mm
 
 # Local Scifi position of first channel on a vertical scifi plane in software
-        c.Scifi.LfirstChannelVX = -195.135*u.mm
-        c.Scifi.LfirstChannelVY = 195.0*u.mm   # sipm on top
-        c.Scifi.LfirstChannelVZ = 11.85*u.mm
+        c.Scifi.LfirstChannelVX,c.Scifi.LfirstChannelVY,c.Scifi.LfirstChannelVZ = -195.135*u.mm, 195.0*u.mm, 11.85*u.mm   # sipm on top
 
 # Local Scifi position of last channel (=first channel on technical drawing) on a horizontal scifi plane in software
-        c.Scifi.LfirstChannelHX = -195.0*u.mm   # sipm on the right side direction away from IP1
-        c.Scifi.LfirstChannelHY = 195.178*u.mm
-        c.Scifi.LfirstChannelHZ = 6.25*u.mm
- 
+        c.Scifi.LfirstChannelHX,c.Scifi.LfirstChannelHY,c.Scifi.LfirstChannelHZ = -195.0*u.mm, 195.178*u.mm,  6.25*u.mm  # sipm on the right side direction away from IP1
+
+ # relative mat alignments
+        c.Scifi.LocM100,c.Scifi.LocM101,c.Scifi.LocM102 =  0.0*u.um,     0.0*u.um,          0.0*u.um
+        c.Scifi.LocM110,c.Scifi.LocM111,c.Scifi.LocM112=   0.0*u.um,     0.0*u.um,          0.0*u.um
+        c.Scifi.LocM200,c.Scifi.LocM201,c.Scifi.LocM202=   0.0*u.um,     0.0*u.um,          0.0*u.um
+        c.Scifi.LocM210,c.Scifi.LocM211,c.Scifi.LocM212 =  0.0*u.um,     0.0*u.um,          0.0*u.um
+        c.Scifi.LocM300,c.Scifi.LocM301,c.Scifi.LocM302=   0.0*u.um,     0.0*u.um,          0.0*u.um
+        c.Scifi.LocM310,c.Scifi.LocM311,c.Scifi.LocM312=   0.0*u.um,     0.0*u.um,          0.0*u.um
+        c.Scifi.LocM400,c.Scifi.LocM401,c.Scifi.LocM402 =  0.0*u.um,     0.0*u.um,          0.0*u.um
+        c.Scifi.LocM410,c.Scifi.LocM411,c.Scifi.LocM412=   0.0*u.um,     0.0*u.um,          0.0*u.um
+        c.Scifi.LocM500,c.Scifi.LocM501,c.Scifi.LocM502=   0.0*u.um,     0.0*u.um,          0.0*u.um
+        c.Scifi.LocM510,c.Scifi.LocM511,c.Scifi.LocM512=   0.0*u.um,     0.0*u.um,          0.0*u.um
+
         c.MuFilter = AttrDict(z=0*u.cm)
         #coordinates in local gravity based system
-        c.MuFilter.Veto1Dx = 44.5*u.mm
-        c.MuFilter.Veto1Dy = 2798*u.mm
-        c.MuFilter.Veto1Dz = 185.9*u.mm
-        c.MuFilter.Veto2Dx = 44.5*u.mm
-        c.MuFilter.Veto2Dy = 2839*u.mm
-        c.MuFilter.Veto2Dz = 165.9*u.mm
-
-        c.MuFilter.Iron1Dx = -24.2*u.mm
-        c.MuFilter.Iron1Dy = 3579.6*u.mm
-        c.MuFilter.Iron1Dz = 146.6*u.mm
+        c.MuFilter.Veto1Dx,c.MuFilter.Veto1Dy,c.MuFilter.Veto1Dz = 44.5*u.mm,    2798*u.mm, 185.9*u.mm
+        c.MuFilter.Veto2Dx,c.MuFilter.Veto2Dy,c.MuFilter.Veto2Dz = 44.5*u.mm,    2839*u.mm, 165.9*u.mm
+        c.MuFilter.Iron1Dx, c.MuFilter.Iron1Dy, c.MuFilter.Iron1Dz = -24.2*u.mm, 3579.6*u.mm, 146.6*u.mm
         # US1
-        c.MuFilter.Muon1Dx = -47.1*u.mm
-        c.MuFilter.Muon1Dy = 3760.2*u.mm
-        c.MuFilter.Muon1Dz = 146.6*u.mm
-
-        c.MuFilter.Iron2Dx = -24.2*u.mm
-        c.MuFilter.Iron2Dy = 3804.6*u.mm
-        c.MuFilter.Iron2Dz = 136.6*u.mm
+        c.MuFilter.Muon1Dx,c.MuFilter.Muon1Dy,c.MuFilter.Muon1Dz = -47.1*u.mm, 3760.2*u.mm, 146.6*u.mm
+        c.MuFilter.Iron2Dx,  c.MuFilter.Iron2Dy,   c.MuFilter.Iron2Dz   = -24.2*u.mm,  3804.6*u.mm, 136.6*u.mm
         # US2
-        c.MuFilter.Muon2Dx = -47.1*u.mm
-        c.MuFilter.Muon2Dy = 3985.2*u.mm
-        c.MuFilter.Muon2Dz = 136.6*u.mm
-
-        c.MuFilter.Iron3Dx = -24.2*u.mm
-        c.MuFilter.Iron3Dy = 4029.6*u.mm
-        c.MuFilter.Iron3Dz = 126.6*u.mm
+        c.MuFilter.Muon2Dx,c.MuFilter.Muon2Dy,c.MuFilter.Muon2Dz = -47.1*u.mm, 3985.2*u.mm, 136.6*u.mm
+        c.MuFilter.Iron3Dx,  c.MuFilter.Iron3Dy,   c.MuFilter.Iron3Dz    = -24.2*u.mm, 4029.6*u.mm, 126.6*u.mm
         # US3
-        c.MuFilter.Muon3Dx = -47.1*u.mm
-        c.MuFilter.Muon3Dy = 4210.2*u.mm
-        c.MuFilter.Muon3Dz = 126.6*u.mm
-
-        c.MuFilter.Iron4Dx = -24.2*u.mm
-        c.MuFilter.Iron4Dy = 4254.6*u.mm
-        c.MuFilter.Iron4Dz = 116.7*u.mm
+        c.MuFilter.Muon3Dx,c.MuFilter.Muon3Dy,c.MuFilter.Muon3Dz = -47.1*u.mm, 4210.2*u.mm, 126.6*u.mm
+        c.MuFilter.Iron4Dx,  c.MuFilter.Iron4Dy,   c.MuFilter.Iron4Dz    = -24.2*u.mm, 4254.6*u.mm, 116.7*u.mm
         # US4
-        c.MuFilter.Muon4Dx = -47.1*u.mm
-        c.MuFilter.Muon4Dy = 4435.2*u.mm
-        c.MuFilter.Muon4Dz = 116.7*u.mm
-
-        c.MuFilter.Iron5Dx = -24.2*u.mm
-        c.MuFilter.Iron5Dy = 4479.6*u.mm    # +225.0mm
-        c.MuFilter.Iron5Dz = 127.7*u.mm
+        c.MuFilter.Muon4Dx,c.MuFilter.Muon4Dy,c.MuFilter.Muon4Dz = -47.1*u.mm, 4435.2*u.mm, 116.7*u.mm
+        c.MuFilter.Iron5Dx,   c.MuFilter.Iron5Dy,  c.MuFilter.Iron5Dz    = -24.2*u.mm, 4479.6*u.mm, 127.7*u.mm    # 0 +225.0mm 0
         # US5
-        c.MuFilter.Muon5Dx = -47.1*u.mm
-        c.MuFilter.Muon5Dy = 4660.2*u.mm
-        c.MuFilter.Muon5Dz = 127.7*u.mm
-
-        c.MuFilter.Iron6Dx = -24.2*u.mm
-        c.MuFilter.Iron6Dy = 4704.6*u.mm     # +225.0mm
-        c.MuFilter.Iron6Dz = 127.7*u.mm
+        c.MuFilter.Muon5Dx,c.MuFilter.Muon5Dy,c.MuFilter.Muon5Dz = -47.1*u.mm, 4660.2*u.mm, 127.7*u.mm
+        c.MuFilter.Iron6Dx,   c.MuFilter.Iron6Dy,  c.MuFilter.Iron6Dz    = -24.2*u.mm, 4704.6*u.mm,127.7*u.mm     # 0 +225.0mm 0
         # DS1
-        c.MuFilter.Muon6Dx = -47.1*u.mm
-        c.MuFilter.Muon6Dy = 4884.9*u.mm
-        c.MuFilter.Muon6Dz = 127.7*u.mm
-
-        c.MuFilter.Iron7Dx = -24.2*u.mm
-        c.MuFilter.Iron7Dy = 4943.6*u.mm       # +239.0mm
-        c.MuFilter.Iron7Dz = 127.7*u.mm
+        c.MuFilter.Muon6Dx,c.MuFilter.Muon6Dy,c.MuFilter.Muon6Dz = -47.1*u.mm, 4884.9*u.mm, 127.7*u.mm
+        c.MuFilter.Iron7Dx,   c.MuFilter.Iron7Dy,  c.MuFilter.Iron7Dz    = -24.2*u.mm, 4943.6*u.mm, 127.7*u.mm       # 0 +239.0mm 0
         # DS2
-        c.MuFilter.Muon7Dx = -47.1*u.mm
-        c.MuFilter.Muon7Dy = 5123.9*u.mm
-        c.MuFilter.Muon7Dz = 127.7*u.mm
-
-        c.MuFilter.Iron8Dx = -24.2*u.mm
-        c.MuFilter.Iron8Dy = 5183.9*u.mm        # +240.3mm
-        c.MuFilter.Iron8Dz = 127.7*u.mm
+        c.MuFilter.Muon7Dx,c.MuFilter.Muon7Dy,c.MuFilter.Muon7Dz = -47.1*u.mm, 5123.9*u.mm, 127.7*u.mm
+        c.MuFilter.Iron8Dx,   c.MuFilter.Iron8Dy,  c.MuFilter.Iron8Dz    = -24.2*u.mm, 5183.9*u.mm, 127.7*u.mm        # 0 +240.3mm 0 
         # DS3
-        c.MuFilter.Muon8Dx = -4.7*u.mm
-        c.MuFilter.Muon8Dy = 5383.7*u.mm
-        c.MuFilter.Muon8Dz = 127.7*u.mm
+        c.MuFilter.Muon8Dx,c.MuFilter.Muon8Dy,c.MuFilter.Muon8Dz = -4.7*u.mm, 5383.7*u.mm, 127.7*u.mm
 
         c.MuFilter.DS4ZGap = 8.82*u.cm
         # DS4V
-        c.MuFilter.Muon9Dx = -4.7*u.mm
-        c.MuFilter.Muon9Dy = 5383.7*u.mm + c.MuFilter.DS4ZGap
-        c.MuFilter.Muon9Dz = 127.7*u.mm
-        c.MuFilter.Iron9Dx = 175.8*u.mm
-        c.MuFilter.Iron9Dy = 5529.7*u.mm
-        c.MuFilter.Iron9Dz = 127.7*u.mm
+        c.MuFilter.Muon9Dx,c.MuFilter.Muon9Dy,c.MuFilter.Muon9Dz = -4.7*u.mm,    5383.7*u.mm + c.MuFilter.DS4ZGap, 127.7*u.mm
+        c.MuFilter.Iron9Dx,  c.MuFilter.Iron9Dy,   c.MuFilter.Iron9Dz    = 175.8*u.mm, 5529.7*u.mm, 127.7*u.mm
 
         # relation between edge and bottom bar for VETO
-        c.MuFilter.VETOLocX = 20.0*u.mm
-        c.MuFilter.VETOLocY = 20.0*u.mm
-        c.MuFilter.VETOLocZ = 46.7*u.mm
+        c.MuFilter.VETOLocX,c.MuFilter.VETOLocY,c.MuFilter.VETOLocZ = 20.0*u.mm,20.0*u.mm,46.7*u.mm
 
         # relation between edge and bottom bar for US and DS
-        c.MuFilter.DSHLocX = 10.5*u.mm
-        c.MuFilter.DSHLocY = 32.0*u.mm
-        c.MuFilter.DSHLocZ = 11.1*u.mm
+        c.MuFilter.DSHLocX,c.MuFilter.DSHLocY,c.MuFilter.DSHLocZ      = 10.5*u.mm, 32.0*u.mm, 11.1*u.mm
         # relation between edge and right bar
-        c.MuFilter.DSVLocX = 623.0*u.mm
-        c.MuFilter.DSVLocY = 47.0*u.mm
-        c.MuFilter.DSVLocZ = 641.3*u.mm
+        c.MuFilter.DSVLocX,c.MuFilter.DSVLocY,c.MuFilter.DSVLocZ       = 623.0*u.mm, 47.0*u.mm, 641.3*u.mm
 
         # offsets in Z of first US bar 
         c.MuFilter.USOffZ1 = 4.35*u.mm
@@ -268,20 +196,12 @@ with ConfigRegistry.register_config("basic") as c:
         c.MuFilter.NVetoPlanes = 2
         c.MuFilter.NVetoBars    = 7
 
-        c.MuFilter.VetoBarX = 42 *u.cm
-        c.MuFilter.VetoBarY = 6 * u.cm
-        c.MuFilter.VetoBarZ = 1 * u.cm
+        c.MuFilter.VetoBarX,c.MuFilter.VetoBarY,c.MuFilter.VetoBarZ = 42 *u.cm, 6 * u.cm, 1 * u.cm
         c.MuFilter.VetoBarGap = 2*30*u.um  # wrapping material
 
-        c.MuFilter.FeX = 80*u.cm
-        c.MuFilter.FeY = 60*u.cm
-        c.MuFilter.FeZ = 20*u.cm
-        c.MuFilter.FeEndX = 40*u.cm
-        c.MuFilter.FeEndY = 40*u.cm
-        c.MuFilter.FeEndZ = 20*u.cm
-        c.MuFilter.FeBotX = 80*u.cm
-        c.MuFilter.FeBotY =   9*u.cm
-        c.MuFilter.FeBotZ = 40*u.cm
+        c.MuFilter.FeX,c.MuFilter.FeY,c.MuFilter.FeZ                  = 80*u.cm, 60*u.cm, 20*u.cm
+        c.MuFilter.FeEndX,c.MuFilter.FeEndY,c.MuFilter.FeEndZ = 40*u.cm, 40*u.cm, 20*u.cm
+        c.MuFilter.FeBotX,c.MuFilter.FeBotY,c.MuFilter.FeBotY   = 80*u.cm,   9*u.cm, 40*u.cm
 
         c.MuFilter.UpstreamDetZ = 2.6*u.cm
         c.MuFilter.UpstreamnSiPMs = 8
@@ -293,20 +213,14 @@ with ConfigRegistry.register_config("basic") as c:
         c.MuFilter.NDownstreamPlanes = 4
         #upstream bars configuration
         c.MuFilter.NUpstreamBars = 10
-        c.MuFilter.UpstreamBarX = 82.525*u.cm
-        c.MuFilter.UpstreamBarY = 6.0*u.cm
-        c.MuFilter.UpstreamBarZ = 1.0*u.cm
+        c.MuFilter.UpstreamBarX,c.MuFilter.UpstreamBarY,c.MuFilter.UpstreamBarZ = 82.525*u.cm, 6.0*u.cm, 1.0*u.cm
         c.MuFilter.UpstreamBarGap = 0.1*u.mm
 
         #downstream bars configuration
         c.MuFilter.NDownstreamBars = 60 #n.d.r. both for x and y in this case
-        c.MuFilter.DownstreamBarX = 82.525*u.cm
-        c.MuFilter.DownstreamBarY = 1*u.cm
-        c.MuFilter.DownstreamBarZ = 1*u.cm
+        c.MuFilter.DownstreamBarX,c.MuFilter.DownstreamBarY,c.MuFilter.DownstreamBarZ = 82.525*u.cm, 1*u.cm, 1*u.cm
         c.MuFilter.DownstreamBarGap = 0.1*u.mm
-        c.MuFilter.DownstreamBarX_ver = 1*u.cm 
-        c.MuFilter.DownstreamBarY_ver = 63.525*u.cm  #the vertical bars cover a region only 60 x 60 cm2
-        c.MuFilter.DownstreamBarZ_ver = 1*u.cm
+        c.MuFilter.DownstreamBarX_ver,c.MuFilter.DownstreamBarY_ver,c.MuFilter.DownstreamBarZ_ver = 1*u.cm, 63.525*u.cm, 1*u.cm
 
         # DS and US support box, inner, Z pointing upward
         c.MuFilter.SupportBoxD  = 0.5*u.mm  # empty space between bars and box
