@@ -289,7 +289,7 @@ with ConfigRegistry.register_config("basic") as c:
            c.Scifi.Xpos1+=  -810.00  *u.um
            c.Scifi.Zpos2+=   22.00  *u.um
            c.Scifi.Xpos2+=  1602.8  *u.um
-           c.Scifi.Zpos3+=  16262  *u.um
+           c.Scifi.Zpos3+=  162.62  *u.um
            c.Scifi.Xpos3+=  -322.53  *u.um
            c.Scifi.Zpos4+=  229.08  *u.um
            c.Scifi.Xpos4+= -122.04  *u.um
