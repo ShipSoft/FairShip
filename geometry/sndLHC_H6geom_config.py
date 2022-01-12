@@ -201,7 +201,7 @@ with ConfigRegistry.register_config("basic") as c:
 
         c.MuFilter.FeX,c.MuFilter.FeY,c.MuFilter.FeZ                  = 80*u.cm, 60*u.cm, 20*u.cm
         c.MuFilter.FeEndX,c.MuFilter.FeEndY,c.MuFilter.FeEndZ = 40*u.cm, 40*u.cm, 20*u.cm
-        c.MuFilter.FeBotX,c.MuFilter.FeBotY,c.MuFilter.FeBotY   = 80*u.cm,   9*u.cm, 40*u.cm
+        c.MuFilter.FeBotX,c.MuFilter.FeBotY,c.MuFilter.FeBotZ   = 80*u.cm,   9*u.cm, 40*u.cm
 
         c.MuFilter.UpstreamDetZ = 2.6*u.cm
         c.MuFilter.UpstreamnSiPMs = 8
