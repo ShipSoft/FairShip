@@ -311,7 +311,40 @@ Bool_t  EmulsionDet::ProcessHits(FairVolume* vol)
         gMC->IsTrackDisappeared()   ) {
         fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
 	gMC->CurrentVolID(fVolumeID);
+
+        //finding number of wall, row and column
+        Int_t detID = fVolumeID;
+        Int_t MaxLevel = gGeoManager->GetLevel();
+        const Int_t MaxL = MaxLevel;
+        //cout << "MaxLevel = " << MaxL << endl;
+        //cout << gMC->CurrentVolPath()<< endl;
 	
+
+        Int_t motherV[MaxL];
+        Int_t NPlate =0;
+        const char *name;
+	
+        name = gMC->CurrentVolName();
+        //cout << name << endl;
+        NPlate = detID;
+	
+        Int_t  NWall = -2, NColumn =-2, NRow =-2;
+
+        for(Int_t i = 0; i < MaxL;i++)
+        {	 
+         gMC->CurrentVolOffID(i, motherV[i]);         
+	 const char *mumname = gMC->CurrentVolOffName(i);                 
+		
+	 if(strcmp(mumname, "Brick") == 0) NColumn = motherV[i] +1; //1 or 2
+	 if(strcmp(mumname, "Row") == 0) NRow = motherV[i] + 1; // 1 or 2
+	 if(strcmp(mumname, "Wall") == 0) NWall = motherV[i] + 1; //1,2,3,4
+                    
+        }
+
+        detID = NWall*1E4+(NRow*2+NColumn)*1E3+(NPlate+1);
+        fVolumeID = detID;
+	//found number of row, column and wall
+        //if (NColumn > 2 || NRow > 2 || NWall > 5) cout<<"Debug test for detID "<<detID<<" is "<<NColumn<<" "<<NRow<<" "<<NWall<<" "<<NPlate<<endl;
 	if (fELoss == 0. ) { return kFALSE; }
         TParticle* p=gMC->GetStack()->GetCurrentTrack();
 	Int_t pdgCode = p->GetPdgCode();
