@@ -330,7 +330,7 @@ Bool_t  EmulsionDet::ProcessHits(FairVolume* vol)
 	
         Int_t  NWall = -2, NColumn =-2, NRow =-2;
 
-        for(Int_t i = 0; i < MaxL;i++)
+        for(Int_t i = 0; i <= MaxL;i++)
         {	 
          gMC->CurrentVolOffID(i, motherV[i]);         
 	 const char *mumname = gMC->CurrentVolOffName(i);                 
