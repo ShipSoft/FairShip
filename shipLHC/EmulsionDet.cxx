@@ -335,13 +335,13 @@ Bool_t  EmulsionDet::ProcessHits(FairVolume* vol)
          gMC->CurrentVolOffID(i, motherV[i]);         
 	 const char *mumname = gMC->CurrentVolOffName(i);                 
 		
-	 if(strcmp(mumname, "Brick") == 0) NColumn = motherV[i] +1; //1 or 2
-	 if(strcmp(mumname, "Row") == 0) NRow = motherV[i] + 1; // 1 or 2
-	 if(strcmp(mumname, "Wall") == 0) NWall = motherV[i] + 1; //1,2,3,4
+	 if(strcmp(mumname, "Brick") == 0) NColumn = (1-motherV[i]); //0 or 1 (0 higher x, 1 lower x, x are negative, so higher x are closer to the beam)
+	 if(strcmp(mumname, "Row") == 0) NRow = motherV[i]; // 0 or 1 (0 lower y, 1 higher y)
+	 if(strcmp(mumname, "Wall") == 0) NWall = motherV[i]; //0,1,2,3 (increasing along the beam verse)
                     
         }
 
-        detID = NWall*1E4+(NRow*2+NColumn)*1E3+(NPlate+1);
+        detID = (NWall+1)*1E4+(NRow*2+NColumn+1)*1E3+(NPlate+1);
         fVolumeID = detID;
 	//found number of row, column and wall
         //if (NColumn > 2 || NRow > 2 || NWall > 5) cout<<"Debug test for detID "<<detID<<" is "<<NColumn<<" "<<NRow<<" "<<NWall<<" "<<NPlate<<endl;
