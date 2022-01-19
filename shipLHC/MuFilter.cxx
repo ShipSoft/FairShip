@@ -127,6 +127,8 @@ void MuFilter::ConstructGeometry()
 	InitMedium("Concrete");
 	TGeoMedium *concrete = gGeoManager->GetMedium("Concrete");
 
+	Float_t SND_Z = conf_floats["Floor/z"];   // if <0.1 for H6 and H8 testbeam setup
+
 	Float_t nSiPMs[3];             //  number of SiPMs per side
 	Float_t nSides[3];             //  number of sides readout
 	nSiPMs[0] = conf_ints["MuFilter/nV"];
@@ -296,7 +298,14 @@ void MuFilter::ConstructGeometry()
 	  displacement = edge_Iron[l+1] - TVector3(fFeBlockX/2,-fFeBlockY/2,-fFeBlockZ/2);
 	  volMuFilter->AddNode(volFeBlock,l,
                                     new TGeoTranslation(displacement.X(),displacement.Y(),displacement.Z()));
-
+// place for H8 mockup target 20cm in front of US1
+	  if (SND_Z <0.1 && l==0) { 
+		TGeoVolume *volFeTarget = gGeoManager->MakeBox("volFeTarget",Fe,80./2, 60./2, 29.5/2);
+		volFeTarget->SetLineColor(kGreen-4);
+		displacement = edge_Iron[l+1] - TVector3(80/2,-60/2,29.5/2+fFeBlockZ );
+		volMuFilter->AddNode(volFeTarget,1,
+                                    new TGeoTranslation(displacement.X(),displacement.Y(),displacement.Z()));
+	}
 	  displacement = edge_MuFilter[l+1]+LocBarUS + TVector3(-fUpstreamBarX/2, 0, 0);
 	  volMuFilter->AddNode(volUpstreamDet,fNVetoPlanes+l,
                                     new TGeoTranslation(displacement.X(),displacement.Y(),displacement.Z()));
@@ -346,7 +355,7 @@ void MuFilter::ConstructGeometry()
 		displacement = edge_Iron[l+fNUpstreamPlanes+1] - TVector3(fFeBlockX/2,-fFeBlockY/2,-fFeBlockZ/2);
 		volMuFilter->AddNode(volFeBlock,l+fNUpstreamPlanes+fNVetoPlanes,
 				new TGeoTranslation(displacement.X(),displacement.Y(),displacement.Z()));
-		}else{
+		}else if (SND_Z >0.1) {
 // more iron
 		displacement = edge_Iron[l+fNUpstreamPlanes+1]  - TVector3(fFeBlockEndX/2,-fFeBlockEndY/2,-fFeBlockEndZ/2);
 		volMuFilter->AddNode(volFeBlockEnd,1,
