@@ -118,6 +118,37 @@ Int_t EmulsionDet::InitMedium(const char* name)
     return geoBuild->createMedium(ShipMedium);
 }
 
+void EmulsionDet::DecodeBrickID(Int_t detID, Int_t &NWall, Int_t &NRow, Int_t &NColumn, Int_t &NPlate){
+
+  NWall = detID/1E4;
+  Int_t NTransverse = (detID - NWall*1E4)/1E3;
+  switch (NTransverse){
+    case (1):  
+      NColumn = 1;
+      NRow = 2;
+      break;
+      
+    case (2):
+      NColumn = 1;
+      NRow = 1;
+      break;
+    
+    case (3):
+      NColumn = 2;
+      NRow = 2;
+      break;
+
+    case (4):
+      NColumn = 2;
+      NRow = 1;
+      break;
+    }
+
+  NPlate = detID - NWall*1E4 - NTransverse*1E3;
+  
+
+}
+
 void EmulsionDet::ConstructGeometry()
 {
 	// configuration parameters
