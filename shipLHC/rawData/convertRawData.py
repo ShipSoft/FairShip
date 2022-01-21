@@ -328,6 +328,8 @@ B.Add(ROOT.TObjString('FairEventHeader'))
 fSink.WriteObject(B,"BranchList", ROOT.TObject.kSingleKey)
 
 import time
+if not hasattr('time_ns'):
+     time.time_ns=time.time
 counters = {'N':0,'event':0,'qdc':0,'tdc':0,'chi2':0,'make':0,'storage':0,'createScifi':0,'createMufi':0}
 def run(nEvent):
  event = f0.event
