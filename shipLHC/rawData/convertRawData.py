@@ -243,9 +243,14 @@ def calibrationReport():
     return report
 
 if options.json:   # read mapping from EOS
-   with client.File() as f:
-      f.open(server+path+"/board_mapping.json")
-      status, jsonStr = f.read()
+   if local:
+       with open(path+'board_mapping.json') as f:
+           jsonStr = f.read()
+   else:
+      with client.File() as f:
+         server = os.environ['EOSSHIP']
+         f.open(server+path+"/board_mapping.json")
+         status, jsonStr = f.read()
 
   # pass the read string to getBoardMapping()
    boardMaps = boardMappingParser.getBoardMapping(jsonStr)
