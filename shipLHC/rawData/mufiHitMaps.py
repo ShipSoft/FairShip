@@ -1,3 +1,5 @@
+#python -i mufiMIP.py -r 46 -p /eos/experiment/sndlhc/testbeam/MuFilter/TB_data_commissioning/sndsw/ -g geofile_sndlhc_H6.root
+
 import ROOT,os
 import rootUtils as ut
 import shipunit as u
@@ -20,6 +22,7 @@ MuFilter = geo.modules['MuFilter']
 A,B = ROOT.TVector3(),ROOT.TVector3()
 zPos={}
 systemAndPlanes = {1:2,2:5,3:7}
+systemAndBars      = {1:7,2:10,3:60}
 
 freq = 160.E6
 
@@ -47,6 +50,10 @@ else:
               f=ROOT.TFile.Open(options.fname)
               eventTree = f.cbmsim
 
+# backward compatbility for early converted events
+eventTree.GetEvent(0)
+if eventTree.GetBranch('Digi_MuFilterHit'): eventTree.Digi_MuFilterHits = eventTree.Digi_MuFilterHit
+
 import SndlhcTracking
 trackTask = SndlhcTracking.Tracking() 
 trackTask.InitTask(eventTree)
@@ -62,16 +69,17 @@ def hitMaps(Nev = -1):
        if s==3:  ut.bookHist(h,'bar_'+str(s*10+l),'hit map / plane '+str(s*10+l),60,-0.5,59.5)
        else:       ut.bookHist(h,'bar_'+str(s*10+l),'hit map / plane '+str(s*10+l),10,-0.5,9.5)
        ut.bookHist(h,'sig_'+str(s*10+l),'signal / plane '+str(s*10+l),200,0.0,200.)
-       if s==2: 
-               ut.bookHist(h,'sigS_'+str(s*10+l),'signal / plane '+str(s*10+l),200,0.0,200.)
-               ut.bookHist(h,'sigL_'+str(s*10+l),'signal / plane '+str(s*10+l),200,0.0,200.)
-               ut.bookHist(h,'sigR_'+str(s*10+l),'signal / plane '+str(s*10+l),200,0.0,200.)
+       if s==2:    ut.bookHist(h,'sigS_'+str(s*10+l),'signal / plane '+str(s*10+l),200,0.0,200.)
+       ut.bookHist(h,'sigL_'+str(s*10+l),'signal / plane '+str(s*10+l),200,0.0,200.)
+       ut.bookHist(h,'sigR_'+str(s*10+l),'signal / plane '+str(s*10+l),200,0.0,200.)
        ut.bookHist(h,'Tsig_'+str(s*10+l),'signal / plane '+str(s*10+l),200,0.0,200.)
        ut.bookHist(h,'occ_'+str(s*10+l),'channel occupancy '+str(s*10+l),100,0.0,200.)
        ut.bookHist(h,'occTag_'+str(s*10+l),'channel occupancy '+str(s*10+l),100,0.0,200.)
 
- ut.bookHist(h,'leftvsright_2','US hits in left / right',8,-0.5,7.5,8,-0.5,7.5)
+ ut.bookHist(h,'leftvsright_1','Veto hits in left / right',10,-0.5,9.5,10,-0.5,9.5)
+ ut.bookHist(h,'leftvsright_2','US hits in left / right',10,-0.5,9.5,10,-0.5,9.5)
  ut.bookHist(h,'leftvsright_3','DS hits in left / right',2,-0.5,1.5,2,-0.5,1.5)
+ ut.bookHist(h,'leftvsright_signal_1','Veto signal in left / right',100,-0.5,200.,100,-0.5,200.)
  ut.bookHist(h,'leftvsright_signal_2','US signal in left / right',100,-0.5,200.,100,-0.5,200.)
  ut.bookHist(h,'leftvsright_signal_3','DS signal in left / right',100,-0.5,200.,100,-0.5,200.)
 
@@ -88,12 +96,13 @@ def hitMaps(Nev = -1):
  if Nev < 0 : Nev = eventTree.GetEntries()
  eventTree.GetEvent(0)
  t0 =  eventTree.EventHeader.GetEventTime()/freq
+
  for event in eventTree:
     N+=1
     if N>Nev: break
     withX = False
     planes = {}
-    for aHit in event.Digi_MuFilterHit:
+    for aHit in event.Digi_MuFilterHits:
         if not aHit.isValid(): continue
         detID = aHit.GetDetectorID()
         if aHit.isVertical():     withX = True
@@ -101,18 +110,19 @@ def hitMaps(Nev = -1):
         l  = (detID%10000)//1000  # plane number
         bar = (detID%1000)
         key = s*100+l
-        if not key in planes: planes[key] = {}
-        planes[key][bar] = 1
-        if s>2: 
+        if s>2:
                l=2*l
                if bar>59:
                     bar=bar-60
                     l+=1
+        if not key in planes: planes[key] = {}
+        sumSignal = aHit.SumOfSignals()
+        planes[key][bar] = [sumSignal['SumL'],sumSignal['SumR']]
         nSiPMs = aHit.GetnSiPMs()
         nSides  = aHit.GetnSides()
 
 # check left/right
-        allChannels = aHit.GetAllSignals()  #  aHit.GetAllSignals(False)  overwriting masking
+        allChannels = aHit.GetAllSignals(False)  # masking not yet correctly done in the raw conversion
         if nSides==2:
            Nleft    = 0
            Nright = 0
@@ -131,17 +141,21 @@ def hitMaps(Nev = -1):
             channel = bar*nSiPMs*nSides + c[0]
             rc = h['hit_'+str(s)+str(l)].Fill( int(channel))
             rc = h['bar_'+str(s)+str(l)].Fill(bar)
-            if s==2:
-                if smallSiPMchannel(c[0]) : rc  = h['sigS_'+str(s)+str(l)].Fill(c[1])
-                elif c[0]<8: rc  = h['sigL_'+str(s)+str(l)].Fill(c[1])
-                else             : rc  = h['sigR_'+str(s)+str(l)].Fill(c[1])
+            if s==2 and smallSiPMchannel(c[0]) : rc  = h['sigS_'+str(s)+str(l)].Fill(c[1])
+            elif c[0]<nSiPMs: rc  = h['sigL_'+str(s)+str(l)].Fill(c[1])
+            else             :             rc  = h['sigR_'+str(s)+str(l)].Fill(c[1])
             rc  = h['sig_'+str(s)+str(l)].Fill(c[1])
     maxOneBar = True
     for key in planes:
         if len(planes[key]) > 2: maxOneBar = False
     if withX and maxOneBar:  beamSpot()
 
- installed_stations = {0:0,1:5,2:4}
+ installed_stations = {}
+ for  s in range(1,4):
+   for l in range(systemAndPlanes[s]):
+    if h['hit_'+str(s)+str(l)].GetEntries()>0:
+         if not s in installed_stations: installed_stations[s]=0
+         installed_stations[s]+=1
  x = 0
  y = 0
  for s in installed_stations: 
@@ -154,15 +168,15 @@ def hitMaps(Nev = -1):
 
  for S in installed_stations:
    for l in range(installed_stations[S]):
-      n = S + l*x
+      n = S-1 + l*x
       tc = h['hitmaps'].cd(n)
-      h['hit_'+str(S+1)+str(l)].Draw()
+      h['hit_'+str(S)+str(l)].Draw()
       tc = h['barmaps'].cd(n)
-      h['bar_'+str(S+1)+str(l)].Draw()
+      h['bar_'+str(S)+str(l)].Draw()
       tc = h['signal'].cd(n)
-      h['sig_'+str(S+1)+str(l)].Draw()
+      h['sig_'+str(S)+str(l)].Draw()
       tc = h['Tsignal'].cd(n)
-      h['Tsig_'+str(S+1)+str(l)].Draw()
+      h['Tsig_'+str(S)+str(l)].Draw()
 
  ut.bookCanvas(h,'USBars',' ',1200,900,1,1)
  colours = {0:ROOT.kOrange,1:ROOT.kRed,2:ROOT.kGreen,3:ROOT.kBlue,4:ROOT.kMagenta}
@@ -192,29 +206,81 @@ def hitMaps(Nev = -1):
     h['lbar3'].AddEntry(h['hit_3'+str(i)],'plane '+str(i+1),"f")
  h['lbar3'].Draw()
 
- ut.bookCanvas(h,'LR',' ',1200,900,2,2)
+ ut.bookCanvas(h,'LR',' ',1800,900,3,2)
  h['LR'].cd(1)
- h['leftvsright_'+str(3)].Draw('textBox')
+ h['leftvsright_'+str(1)].Draw('textBox')
  h['LR'].cd(2)
  h['leftvsright_'+str(2)].Draw('textBox')
  h['LR'].cd(3)
+ h['leftvsright_'+str(3)].Draw('textBox')
+ h['LR'].cd(4)
+ h['leftvsright_signal_1'].SetMaximum(h['leftvsright_signal_1'].GetBinContent(10,10))
  h['leftvsright_signal_2'].SetMaximum(h['leftvsright_signal_2'].GetBinContent(10,10))
  h['leftvsright_signal_3'].SetMaximum(h['leftvsright_signal_3'].GetBinContent(10,10))
- h['leftvsright_signal_'+str(3)].Draw('colz')
- h['LR'].cd(4)
+ h['leftvsright_signal_'+str(1)].Draw('colz')
+ h['LR'].cd(5)
  h['leftvsright_signal_'+str(2)].Draw('colz')
+ h['LR'].cd(6)
+ h['leftvsright_signal_'+str(3)].Draw('colz')
 
-# check US, left/right/small
- ut.bookCanvas(h,'signalUS',' ',1200,1600,3,5)
+ ut.bookCanvas(h,'LRinEff',' ',1800,450,3,1)
+ for s in range(1,4):
+   h['lLRinEff'+str(s)]=ROOT.TLegend(0.6,0.54,0.99,0.93)
+   name = 'leftvsright_signal_'+str(s)
+   h[name+'0Y'] = h[name].ProjectionY(name+'0Y',1,1)
+   h[name+'0X'] = h[name].ProjectionX(name+'0X',1,1)
+   h[name+'1X'] = h[name].ProjectionY(name+'1Y')
+   h[name+'1Y'] = h[name].ProjectionX(name+'1X')
+   tc = h['LRinEff'].cd(s)
+   tc.SetLogy()
+   h[name+'0X'].SetStats(0)
+   h[name+'0Y'].SetStats(0)
+   h[name+'1X'].SetStats(0)
+   h[name+'1Y'].SetStats(0)
+   h[name+'0X'].SetLineColor(ROOT.kRed)
+   h[name+'0Y'].SetLineColor(ROOT.kGreen)
+   h[name+'1X'].SetLineColor(ROOT.kMagenta)
+   h[name+'1Y'].SetLineColor(ROOT.kCyan)
+   h[name+'0X'].SetMaximum(max(h[name+'1X'].GetMaximum(),h[name+'1Y'].GetMaximum()))
+   h[name+'0X'].Draw()
+   h[name+'0Y'].Draw('same')
+   h[name+'1X'].Draw('same')
+   h[name+'1Y'].Draw('same')
+   # Fill(Sleft,Sright)
+   h['lLRinEff'+str(s)].AddEntry(h[name+'0X'],'left with no signal right',"f")
+   h['lLRinEff'+str(s)].AddEntry(h[name+'0Y'],'right with no signal left',"f")
+   h['lLRinEff'+str(s)].AddEntry(h[name+'1X'],'left all',"f")
+   h['lLRinEff'+str(s)].AddEntry(h[name+'1Y'],'right all',"f")
+   h['lLRinEff'+str(s)].Draw()
+
+
+
+ ut.bookCanvas(h,'signalUSVeto',' ',1200,1600,3,7)
+ s = 1
+ l = 1
+ for plane in range(2):
+     for side in ['L','R','S']:
+         tc = h['signalUSVeto'].cd(l)
+         l+=1
+         if side=='S': continue
+         h['sig'+side+'_'+str( s*10+plane)].Draw()
  s=2
  for plane in range(5):
-     l = 1
      for side in ['L','R','S']:
-         tc = h['signalUS'].cd(3*plane+l)
+         tc = h['signalUSVeto'].cd(l)
+         l+=1
+         h['sig'+side+'_'+str( s*10+plane)].Draw()
+ ut.bookCanvas(h,'signalDS',' ',900,1600,2,7)
+ s = 3
+ l = 1
+ for plane in range(7):
+     for side in ['L','R']:
+         tc = h['signalDS'].cd(l)
          l+=1
          h['sig'+side+'_'+str( s*10+plane)].Draw()
 
- for canvas in ['signalUS','LR','hitmaps','barmaps','signal','Tsignal','USBars']:
+
+ for canvas in ['signalUSVeto','LR','hitmaps','barmaps','signal','Tsignal','USBars']:
       h[canvas].Update()
       h[canvas].Print(canvas+'-run'+str(options.runNumber)+'.png')
 
@@ -263,7 +329,8 @@ def beamSpot():
              m = p.getRawMeasurement()
              detID = m.getDetId()
              key = m.getHitId()//1000 # for mufi
-             aHit = eventTree.Digi_MuFilterHit[key]
+             aHit = eventTree.Digi_MuFilterHits[key]
+             if aHit.GetDetectorID() != detID: continue # not a Mufi hit
              s = detID//10000
              l  = (detID%10000)//1000  # plane number
              bar = (detID%1000)
@@ -297,7 +364,7 @@ def DS_track():
        for plane in range(systemAndPlanes[s]): 
           stations[s*10+plane] = {}
     k=-1
-    for aHit in eventTree.Digi_MuFilterHit:
+    for aHit in eventTree.Digi_MuFilterHits:
          k+=1
          if not aHit.isValid(): continue
          s = aHit.GetDetectorID()//10000
@@ -349,7 +416,7 @@ def USEfficiency(Nev=-1):
     dsHits = {}
     for s in range(2,4):
        for p in range(5): dsHits[s*10+p]=[]
-    for aHit in eventTree.Digi_MuFilterHit:
+    for aHit in eventTree.Digi_MuFilterHits:
          if not aHit.isValid(): continue
          plane = (aHit.GetDetectorID()//1000)
          dsHits[plane].append(aHit)
@@ -510,7 +577,7 @@ def timing(Nev = -1):
  for event in eventTree:
     N+=1
     if N>Nev: break
-    for aHit in event.Digi_MuFilterHit:
+    for aHit in event.Digi_MuFilterHits:
         if not aHit.isValid(): continue
         detID = aHit.GetDetectorID()
         s = detID//10000

@@ -55,7 +55,7 @@ class sndCluster : public TObject
     void serialize(Archive& ar, const unsigned int version)
     {
         ar& boost::serialization::base_object<TObject>(*this);
-        ar&  fFirst;
+        ar& fFirst;
         ar& fN;
         ar& fEnergy;
         ar& fMeanPositionA;

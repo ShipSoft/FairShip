@@ -33,23 +33,28 @@ else:
 
 nav = ROOT.gGeoManager.GetCurrentNavigator()
 
+Nlimit = 4
+onlyScifi = True
 def goodEvent():
-           stations = {}
+           stations = {'Scifi':{},'Mufi':{}}
            for d in eventTree.Digi_ScifiHits:
-               stations[d.GetDetectorID()//1000000] = 1
+               stations['Scifi'][d.GetDetectorID()//1000000] = 1
            for d in eventTree.Digi_MuFilterHits:
-               plane = 100*(d.GetDetectorID()//1000)
-               stations[plane] = 1
-           if len(stations) > 6: return True
+               plane = d.GetDetectorID()//1000
+               stations['Mufi'][plane] = 1
+           totalN = len(stations['Mufi'])+len(stations['Scifi'])
+           if onlyScifi and len(stations['Scifi'])>Nlimit: return True
+           elif not onlyScifi  and totalN >  Nlimit: return True
            else: False
 
-def loopEvents(start=0,save=False,goodEvents=False,withTrack=False,Setup=''):
+def loopEvents(start=0,save=False,goodEvents=False,withTrack=-1,Setup=''):
  if 'simpleDisplay' not in h: ut.bookCanvas(h,key='simpleDisplay',title='simple event display',nx=1200,ny=1600,cx=1,cy=2)
  h['simpleDisplay'].cd(1)
- zStart = -50. # old coordinate system with origin in middle of target
- if Setup == 'H6': zStart = -250.
- ut.bookHist(h,'xz','x vs z',500,zStart,zStart+300.,100,-100.,10.)
- ut.bookHist(h,'yz','y vs z',500,zStart,zStart+300.,100,0.,80.)
+ zStart = 250. # TI18 coordinate system
+ if Setup == 'H6': zStart = 60.
+ if Setup == 'TP': zStart = -50. # old coordinate system with origin in middle of target
+ ut.bookHist(h,'xz','x vs z',500,zStart,zStart+320.,100,-100.,10.)
+ ut.bookHist(h,'yz','y vs z',500,zStart,zStart+320.,100,0.,80.)
  proj = {1:'xz',2:'yz'}
  h['xz'].SetStats(0)
  h['yz'].SetStats(0)
@@ -137,25 +142,33 @@ def loopEvents(start=0,save=False,goodEvents=False,withTrack=False,Setup=''):
           h[collection][c][1].SetMarkerSize(1.5)
           rc=h[collection][c][1].Draw('sameP')
           h['display:'+c]=h[collection][c][1]
-    if goodEvent() and withTrack:
-          addTrack()
+    if goodEvent():
+         if withTrack == 1: addTrack()
+         if withTrack == 2: addTrack(True)
+         dumpVeto()
     h[ 'simpleDisplay'].Update()
     if save: h['simpleDisplay'].Print('event_'+"{:04d}".format(N)+'.png')
     rc = input("hit return for next event or q for quit: ")
     if rc=='q': break
  if save: os.system("convert -delay 60 -loop 0 *.png animated.gif")
 
-def addTrack():
-   distance = 100.
-   trackTask.ExecuteTask()
+def addTrack(scifi=False,zEx=50):
+   if scifi:  Scifi_track()
+   else:     trackTask.ExecuteTask()
    for   aTrack in eventTree.fittedTracks:
       for p in [0,1]:
           h['aLine'+str(p)] = ROOT.TGraph()
+      mom    = aTrack.getFittedState().getMom()
+      pos      = aTrack.getFittedState().getPos()
+      lam      = (zEx-pos.z())/mom.z()
+      Ex        = [pos.x()+lam*mom.x(),pos.y()+lam*mom.y()]
+      for p in [0,1]:   h['aLine'+str(p)].SetPoint(0,zEx,Ex[p])
       for i in range(aTrack.getNumPointsWithMeasurement()):
          state = aTrack.getFittedState(i)
          pos    = state.getPos()
          for p in [0,1]:
-             h['aLine'+str(p)].SetPoint(i,pos[2],pos[p])
+             h['aLine'+str(p)].SetPoint(i+1,pos[2],pos[p])
+
       for p in [0,1]:
              tc = h[ 'simpleDisplay'].cd(p+1)
              h['aLine'+str(p)].SetLineColor(ROOT.kRed)
@@ -164,6 +177,50 @@ def addTrack():
              tc.Update()
              h[ 'simpleDisplay'].Update()
 
+def Scifi_track():
+# check for low occupancy and enough hits in Scifi
+    eventTree.fittedTracks = []
+    clusters = trackTask.scifiCluster()
+    stations = {}
+    for s in range(1,6):
+       for o in range(2):
+          stations[s*10+o] = []
+    for cl in clusters:
+         detID = cl.GetFirst()
+         s  = detID//1000000
+         o = (detID//100000)%10
+         stations[s*10+o].append(detID)
+    nclusters = 0
+    check = {}
+    for s in range(1,6):
+       for o in range(2):
+            if len(stations[s*10+o]) > 0: check[s*10+o]=1
+            nclusters+=len(stations[s*10+o])
+    if len(check)<8 or nclusters > 9: return -1
+# build trackCandidate
+    hitlist = {}
+    for k in range(len(clusters)):
+           hitlist[k] = clusters[k]
+    theTrack = trackTask.fitTrack(hitlist)
+    eventTree.ScifiClusters = clusters
+    eventTree.fittedTracks.append(theTrack)
+def dumpVeto():
+    muHits = {10:[],11:[]}
+    for aHit in eventTree.Digi_MuFilterHits:
+         if not aHit.isValid(): continue
+         s = aHit.GetDetectorID()//10000
+         if s>1: continue
+         p = (aHit.GetDetectorID()//1000)%10
+         bar = (aHit.GetDetectorID()%1000)%60
+         plane = s*10+p
+         muHits[plane].append(aHit)
+    for plane in [10,11]:
+        for aHit in muHits[plane]:
+          S =aHit.GetAllSignals()
+          txt = ""
+          for x in S:
+              if x[1]>0: txt+=str(x[1])+" "
+          print(plane, (aHit.GetDetectorID()%1000)%60, txt)
 import SndlhcTracking
 trackTask = SndlhcTracking.Tracking() 
 trackTask.InitTask(eventTree)

@@ -33,6 +33,7 @@ class MuFilter : public FairDetector
 
     /** Getposition **/
                  void GetPosition(Int_t id, TVector3& vLeft, TVector3& vRight); // or top and bottom
+                 void GetLocalPosition(Int_t id, TVector3& vLeft, TVector3& vRight);
                  Int_t GetnSiPMs(Int_t detID);
                  Int_t GetnSides(Int_t detID);
 

@@ -2,6 +2,7 @@
 import ROOT,os,sys,getopt
 import shipRoot_conf
 import rootUtils as ut
+import boardMappingParser
 import numpy as np
 h={}
 
@@ -22,6 +23,7 @@ parser.add_argument("-s",dest="stop", help="do not start running", default=False
 parser.add_argument("-zM",dest="minMuHits", help="noise suppresion min MuFi hits", default=-1, type=int)
 parser.add_argument("-zS",dest="minScifiHits", help="noise suppresion min ScifFi hits", default=-1, type=int)
 parser.add_argument("-b", "--heartBeat", dest="heartBeat", help="heart beat", type=int,default=10000)
+parser.add_argument("-j", "--json", dest="json", help="read board mapping from EOS", type=int,default=1)
 
 withGeoFile = False
 
@@ -240,38 +242,23 @@ def calibrationReport():
     h['chi2'].Draw()
     return report
 
-# station mapping for SciFi
-stations = {}
-stations['M1Y'] =  {0:29, 1:3, 2:30}         # three fibre mats per plane
-stations['M1X'] =  {0:11, 1:17, 2:28}
-stations['M2Y'] =  {0:16, 1:14, 2:18}
-stations['M2X'] =  {0:1, 1:2, 2:25}
-stations['M3Y'] =  {0:15, 1:9, 2:5}
-stations['M3X'] =  {0:22, 1:27, 2:4}
-if path.find("commissioning-h6")>0: stations['M4Y'] =  {0:46, 1:40, 2:20}  # board 40 replaces 23
-else:                                                                   stations['M4Y'] =  {0:46, 1:23, 2:20}
-stations['M4X'] =  {0:8, 1:50, 2:49}
-stations['M5Y'] =  {0:19, 1:13, 2:36}
-stations['M5X'] =  {0:21, 1:10, 2:6}
+if options.json:   # read mapping from EOS
+   if local:
+       with open(path+'board_mapping.json') as f:
+           jsonStr = f.read()
+   else:
+      with client.File() as f:
+         server = os.environ['EOSSHIP']
+         f.open(server+path+"/board_mapping.json")
+         status, jsonStr = f.read()
 
-# board mapping for Scifi
-boardMaps = {}
-boardMaps['Scifi'] = {}
-for station in stations:
-    for mat in stations[station]:
-         board = 'board_'+str(stations[station][mat])
-         boardMaps['Scifi'][board]=[station,mat]
+  # pass the read string to getBoardMapping()
+   boardMaps = boardMappingParser.getBoardMapping(jsonStr)
 
-boardMaps['MuFilter'] = {}
-# H6
-boardMaps['MuFilter']['board_43'] = {'A':'US_1Left','B':'US_2Left','C':'US_2Right','D':'US_1Right'}
-boardMaps['MuFilter']['board_60'] = {'A':'US_3Left','B':'US_4Left','C':'US_4Right','D':'US_3Right'}
-boardMaps['MuFilter']['board_41'] = {'A':'US_5Left','B':'DS_1Left','C':'DS_1Right','D':'US_5Right'}
-boardMaps['MuFilter']['board_59'] = {'A':'DS_2Left','B':'DS_1Vert','C':'DS_2Vert','D':'DS_2Right'}
-boardMaps['MuFilter']['board_42'] = {'A':'DS_3Left','B':'DS_4Vert','C':'DS_3Vert','D':'DS_3Right'}
-boardMaps['MuFilter']['board_52'] = {'A':'Veto_2Left','B':'Veto_1Left','C':'Veto_1Right','D':'Veto_2Right'}
+else: # old internal mapping with IF statements
+   boardMaps = boardMappingParser.oldMapping(path)
+
 slots = {0:'A',1:'A',2:'B',3:'B',4:'C',5:'C',6:'D',7:'D'}
-
 
 MufiSystem = {}
 for b in boardMaps['MuFilter']:
@@ -289,10 +276,10 @@ offMap={}
                                       # first bar, number of sipm channels / bar and direction
 for s in range(1,3):
    for o in ['Left','Right']: 
-      offMap['Veto_'+str(s)+o] =[10000 + (s-1)*1000+ 6,-8,2]    # first channel, nSiPMs, nSides
+      offMap['Veto_'+str(s)+o] =[10000 + (s-1)*1000+ 0,8,2]    # first channel, nSiPMs, nSides, from bottom to top
 for s in range(1,6):
    for o in ['Left','Right']: 
-      offMap['US_'+str(s)+o] =[20000 + (s-1)*1000+ 9,-8,2]
+      offMap['US_'+str(s)+o] =[20000 + (s-1)*1000+ 9,-8,2]     # from top to bottom
 for s in range(1,5):
    for o in ['Vert']: 
       offMap['DS_'+str(s)+o] =[30000 + (s-1)*1000+ 119, -1,1] # direction not known
@@ -341,6 +328,8 @@ B.Add(ROOT.TObjString('FairEventHeader'))
 fSink.WriteObject(B,"BranchList", ROOT.TObject.kSingleKey)
 
 import time
+if not hasattr(time,'time_ns'):
+     time.time_ns=time.time
 counters = {'N':0,'event':0,'qdc':0,'tdc':0,'chi2':0,'make':0,'storage':0,'createScifi':0,'createMufi':0}
 def run(nEvent):
  event = f0.event
@@ -416,12 +405,11 @@ def run(nEvent):
                 system = MufiSystem[board_id][tofpet_id]
                 key = (tofpet_id%2)*1000 + tofpet_channel
                 tmp = boardMaps['MuFilter'][board][slots[tofpet_id]]
-
-                if options.debug: print(system,key,board,tofpet_id,tofpet_id%2,tofpet_channel)
+                if options.debug or not tmp.find('not')<0: print('debug',tmp,system,key,board,tofpet_id,tofpet_id%2,tofpet_channel)
                 sipmChannel = 99
                 if not key in TofpetMap[system]:
                         print('key does not exist',key)
-                        print(system, key, TofpetMap[system])
+                        print(system, key,board,tofpet_id, TofpetMap[system])
                 else:
                        sipmChannel = TofpetMap[system][key]-1
                 nSiPMs = abs(offMap[tmp][1])
@@ -448,8 +436,8 @@ def run(nEvent):
              else:
 # scifi encoding
                 chan = channel(tofpet_id,tofpet_channel,mat)
-                orientation = 0
-                if station[2]=="Y": orientation = 1
+                orientation = 1
+                if station[2]=="Y": orientation = 0
                 sipmLocal = (chan - mat*512)
                 sipmID = 1000000*int(station[1]) + 100000*orientation + 10000*mat + 1000*(sipmLocal//128) + chan%128
                 if not sipmID in digiSciFiStore: digiSciFiStore[sipmID] =  ROOT.sndScifiHit(sipmID)
@@ -526,10 +514,29 @@ def run(nEvent):
 # v_coarse: 0-1023, QDC mode: it represents the number of clock cycles the charge integration lasted.
 # v_fine = 0-1023, QDC mode: represents the charge measured. Requires calibration.
 
+# check against boardMappingParser
+if options.stop:
+   print('check board mapping')
+   M = boardMappingParser.oldMapping(path)
+
+   for s in M:
+      for board in M[s]:
+         print(s,board,M[s][board], boardMaps[s][board],M[s][board]==boardMaps[s][board])
+
 if not options.stop: 
    run(nEvent)
    f0.Close()
    fSink.Close()
    print("File closed")
 
+def debugMapping(board,tofpet_id,tofpet_channel):
+                key = (tofpet_id%2)*1000 + tofpet_channel
+                tmp = boardMaps['MuFilter'][board][slots[tofpet_id]]
+                sipmChannel = TofpetMap[system][key]-1
+                nSiPMs =   abs(offMap[tmp][1])
+                nSides =   abs(offMap[tmp][2])
+                direction            = int(offMap[tmp][1]/nSiPMs)
+                detID                   = offMap[tmp][0] + direction*(sipmChannel//(nSiPMs))
+                sipm_number = sipmChannel%(nSiPMs)
+                print(sipmChannel,nSiPMs,nSides,detID,sipm_number)
 

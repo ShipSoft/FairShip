@@ -21,6 +21,7 @@ MCTracksWithHitsOrEnergyCut = False # or of above, factor 2 file size increase c
 parser = ArgumentParser()
 group = parser.add_mutually_exclusive_group()
 
+parser.add_argument("--H6",   dest="testbeam",   help="use geometry of H8/H6 testbeam setup", required=False, default = 0, type = int)
 parser.add_argument("--Genie",   dest="genie",   help="Genie for reading and processing neutrino interactions (1 standard, 2 FLUKA, 3 Pythia)", required=False, default = 0, type = int)
 parser.add_argument("--Ntuple",  dest="ntuple",  help="Use ntuple as input", required=False, action="store_true")
 parser.add_argument("--MuonBack",dest="muonback",  help="Generate events from muon background file, --Cosmics=0 for cosmic generator data", required=False, action="store_true")
@@ -102,9 +103,9 @@ print("SND@LHC setup for",simEngine,"to produce",options.nEvents,"events")
 ROOT.gRandom.SetSeed(options.theSeed)  # this should be propagated via ROOT to Pythia8 and Geant4VMC
 shipRoot_conf.configure(0)     # load basic libraries, prepare atexit for python
 
-snd_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/shipLHC_geom_config.py")
+if options.testbeam:  snd_geo = ConfigRegistry.loadpy("$SNDSW_ROOT/geometry/sndLHC_H6geom_config.py")
+else:                         snd_geo = ConfigRegistry.loadpy("$SNDSW_ROOT/geometry/sndLHC_geom_config.py")
 
-# Output file name, add dy to be able to setup geometry with ambiguities.
 if simEngine == "PG": tag = simEngine + "_"+str(options.pID)+"-"+mcEngine
 else: tag = simEngine+"-"+mcEngine
 
@@ -308,16 +309,6 @@ run.CreateGeometryFile(geoFile)
 import saveBasicParameters
 saveBasicParameters.execute(geoFile,snd_geo)
 
-# checking for overlaps
-if checking4overlaps:
- fGeo = ROOT.gGeoManager
- fGeo.SetNmeshPoints(10000)
- fGeo.CheckOverlaps(0.1)  # 1 micron takes 5minutes
- fGeo.PrintOverlaps()
- # check subsystems in more detail
- for x in fGeo.GetTopNode().GetNodes(): 
-   x.CheckOverlaps(0.0001)
-   fGeo.PrintOverlaps()
 # -----Finish-------------------------------------------------------
 timer.Stop()
 rtime = timer.RealTime()
@@ -330,9 +321,29 @@ print("Geometry file is ",geoFile)
 print("Real time ",rtime, " s, CPU time ",ctime,"s")
 
 # ------------------------------------------------------------------------
+def checkOverlaps():
+ sGeo = ROOT.gGeoManager
+ for n in range(1,6):
+    Hscifi = sGeo.FindVolumeFast('ScifiVolume'+str(n))
+    removalList = []
+    for x in Hscifi.GetNodes():
+          if x.GetName().find('Scifi')==0: removalList.append(x)
+    for x in removalList: Hscifi.RemoveNode(x)
+ sGeo.SetNmeshPoints(10000)
+ sGeo.CheckOverlaps(0.1)  # 1 micron takes 5minutes
+ sGeo.PrintOverlaps()
+# check subsystems in more detail
+ for x in sGeo.GetTopNode().GetNodes(): 
+   x.CheckOverlaps(0.0001)
+   sGeo.PrintOverlaps()
+
 def checkOverlapsWithGeant4():
  # after /run/initialize, but prints warning messages, problems with TGeo volume
  mygMC = ROOT.TGeant4.GetMC()
  mygMC.ProcessGeantCommand("/geometry/test/recursion_start 0")
  mygMC.ProcessGeantCommand("/geometry/test/recursion_depth 2")
  mygMC.ProcessGeantCommand("/geometry/test/run")
+
+# checking for overlaps
+if checking4overlaps:
+      checkOverlaps()
