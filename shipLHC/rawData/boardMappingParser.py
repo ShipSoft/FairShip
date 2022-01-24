@@ -126,16 +126,20 @@ def oldMapping(path):
       boardMaps['MuFilter']['board_52'] = {'A':'DS_3Right','B':'notconnected','C':'notconnected','D':'notconnected'}
    return boardMaps
 
-from XRootD import client
 import os
-server = os.environ['EOSSHIP']
 path    = "/eos/experiment/sndlhc/testbeam/commissioning-h6/run_000010/"
 
 def main():
   # open the file as a normal text file and read it
-  with client.File() as f:
-      f.open(server+path+"/board_mapping.json")
-      status, jsonStr = f.read()
+  if path.find('eos')<0 or os.path.isdir(path):
+     f = open(path+"/board_mapping.json")
+     jsonStr = f.read()
+  else:
+     from XRootD import client
+     server = os.environ['EOSSHIP']
+     with client.File() as f:
+        f.open(server+path+"/board_mapping.json")
+        status, jsonStr = f.read()
 
   # pass the read string to getBoardMapping()
   return getBoardMapping(jsonStr)
