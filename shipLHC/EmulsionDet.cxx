@@ -149,6 +149,16 @@ void EmulsionDet::DecodeBrickID(Int_t detID, Int_t &NWall, Int_t &NRow, Int_t &N
 
 }
 
+TString EmulsionDet::PathBrickID(Int_t detID){
+  //provide path to the node, from the detectorID
+  Int_t NWall, NRow, NColumn, NPlate;
+  DecodeBrickID(detID, NWall, NRow, NColumn, NPlate);
+  
+  TString emulsionpath = TString::Format("/cave_1/Detector_0/volTarget_1/Wall_%i/Row_%i/Brick_%i/Emulsion_%i",NWall-1,NRow-1,NColumn-1,NPlate -1);
+
+  return emulsionpath;
+}
+
 void EmulsionDet::ConstructGeometry()
 {
 	// configuration parameters
