@@ -2,6 +2,7 @@ import ROOT
 import numpy as np
 import scipy.ndimage
 import warnings
+from array import array
 
 def hit_finder(slope, intercept, box_centers, box_ds) :
     """ Finds hits intersected by Hough line """
@@ -162,19 +163,38 @@ class MuonReco(ROOT.FairTask) :
         self.h_ZX = hough(n, [-80, 0], n, [-max_angle+np.pi/2., max_angle+np.pi/2.], False)
         self.h_ZY = hough(n, [0, 80], n, [-max_angle+np.pi/2., max_angle+np.pi/2.], False)
 
-        # Now initialize output
-        self.muon_tracks = ROOT.TClonesArray("sndRecoTrack", 10)
-        ioman.Register("Reco_MuonTracks", "", self.muon_tracks, ROOT.kTRUE);
-
         # To keep temporary detector information
         self.a = ROOT.TVector3()
         self.b = ROOT.TVector3()
 
-        return 0
+        # Now initialize output
+        self.muon_tracks = ROOT.TClonesArray("sndRecoTrack", self.max_reco_muons)
+        ioman.Register("Reco_MuonTracks", "", self.muon_tracks, ROOT.kTRUE);
+
+        self.kalman_tracks = ROOT.TClonesArray(ROOT.genfit.Track().ClassName(), self.max_reco_muons);
+        ioman.Register("Reco_KalmanTracks", "", self.kalman_tracks, ROOT.kTRUE);
+
+        # Kalman filter stuff
+        geoMat = ROOT.genfit.TGeoMaterialInterface()
+        bfield = ROOT.genfit.ConstField(0, 0, 0)
+        fM = ROOT.genfit.FieldManager.getInstance()
+        fM.init(bfield)
+        ROOT.genfit.MaterialEffects.getInstance().init(geoMat)
+        ROOT.genfit.MaterialEffects.getInstance().setNoEffects()
         
+        self.kalman_fitter = ROOT.genfit.KalmanFitter()
+        self.kalman_fitter.setMaxIterations(50)
+        self.kalman_sigmaScifi_spatial = self.scifiDet.GetConfParF("Scifi/channel_width") / 12**0.5
+        self.kalman_sigmaMufiUS_spatial = self.mufiDet.GetConfParF("MuFilter/UpstreamBarY") / 12**0.5
+        self.kalman_sigmaMufiDS_spatial = self.mufiDet.GetConfParF("MuFilter/DownstreamBarY") / 12**0.5
+        
+        # Init() MUST return int
+        return 0
+
     def Exec(self, opt) :
         self.muon_tracks.Clear()
-
+        self.kalman_tracks.Clear()
+        
         # Read hits
         # For downstream muon filter hits
         mu_ds = {"pos" : [[], [], []], 
@@ -182,7 +202,8 @@ class MuonReco(ROOT.FairTask) :
                  "vert" : [], 
                  "index" : [],
                  "system" : [],
-                 "detectorID" : []}
+                 "detectorID" : [],
+                 "B" : [[], [], []]}
 
         # For upstream muon filter hits
         mu_us = {"pos" : [[], [], []], 
@@ -190,7 +211,8 @@ class MuonReco(ROOT.FairTask) :
                  "vert" : [],
                  "index" : [],
                  "system" : [],
-                 "detectorID" : []}
+                 "detectorID" : [],
+                 "B" : [[], [], []]}
 
         # For scifi hits
         scifi = {"pos" : [[], [], []], 
@@ -198,7 +220,8 @@ class MuonReco(ROOT.FairTask) :
                  "vert" : [],
                  "index" : [], 
                  "system" : [],
-                 "detectorID" : []}
+                 "detectorID" : [],
+                 "B" : [[], [], []]}
         
         # Loop through hits
         for i_hit, muFilterHit in enumerate(self.MuFilterHits) :
@@ -218,6 +241,10 @@ class MuonReco(ROOT.FairTask) :
             mu["pos"][0].append(self.a.X())
             mu["pos"][1].append(self.a.Y())
             mu["pos"][2].append(self.a.Z())
+
+            mu["B"][0].append(self.b.X())
+            mu["B"][1].append(self.b.Y())
+            mu["B"][2].append(self.b.Z())
 
             mu["vert"].append(muFilterHit.isVertical())
             mu["system"].append(muFilterHit.GetSystem())
@@ -241,6 +268,10 @@ class MuonReco(ROOT.FairTask) :
             scifi["pos"][0].append(self.a.X())
             scifi["pos"][1].append(self.a.Y())
             scifi["pos"][2].append(self.a.Z())
+
+            scifi["B"][0].append(self.b.X())
+            scifi["B"][1].append(self.b.Y())
+            scifi["B"][2].append(self.b.Z())
 
             scifi["d"][0].append(self.Scifi_dx)
             scifi["d"][1].append(self.Scifi_dy)
@@ -378,6 +409,154 @@ class MuonReco(ROOT.FairTask) :
             this_track.setHits(hit_detectorIDs)
             this_track.setHitsLoose(hit_detectorIDs)
             
+            # Onto Kalman fitter (based on SndlhcTracking.py)
+            posM    = ROOT.TVector3(0, 0, 0.)
+            momM = ROOT.TVector3(0,0,100.)  # default track with high momentum
+
+            # approximate covariance
+            covM = ROOT.TMatrixDSym(6)
+            res = self.kalman_sigmaScifi_spatial
+            for  i in range(3):   covM[i][i] = res*res
+            for  i in range(3,6): covM[i][i] = ROOT.TMath.Power(res / (4.*2.) / ROOT.TMath.Sqrt(3), 2)
+            rep = ROOT.genfit.RKTrackRep(13)
+
+            # start state
+            state = ROOT.genfit.MeasuredStateOnPlane(rep)
+            rep.setPosMomCov(state, posM, momM, covM)
+            
+            # create track
+            seedState = ROOT.TVectorD(6)
+            seedCov   = ROOT.TMatrixDSym(6)
+            rep.get6DStateCov(state, seedState, seedCov)
+            theTrack = ROOT.genfit.Track(rep, seedState, seedCov)
+            
+            # Sort measurements in Z
+            # Start with Scifi
+            hit_z_scifi = np.concatenate([scifi["pos"][2][scifi["vert"]][track_hits_sf_ZX],
+                                          scifi["pos"][2][~scifi["vert"]][track_hits_sf_ZY]])
+            hit_A0_scifi = np.concatenate([scifi["pos"][0][scifi["vert"]][track_hits_sf_ZX],
+                                           scifi["pos"][0][~scifi["vert"]][track_hits_sf_ZY]])
+            hit_A1_scifi = np.concatenate([scifi["pos"][1][scifi["vert"]][track_hits_sf_ZX],
+                                           scifi["pos"][1][~scifi["vert"]][track_hits_sf_ZY]])
+            hit_B0_scifi = np.concatenate([scifi["B"][0][scifi["vert"]][track_hits_sf_ZX],
+                                           scifi["B"][0][~scifi["vert"]][track_hits_sf_ZY]])
+            hit_B1_scifi = np.concatenate([scifi["B"][1][scifi["vert"]][track_hits_sf_ZX],
+                                           scifi["B"][1][~scifi["vert"]][track_hits_sf_ZY]])
+            hit_B2_scifi = np.concatenate([scifi["B"][2][scifi["vert"]][track_hits_sf_ZX],
+                                           scifi["B"][2][~scifi["vert"]][track_hits_sf_ZY]])
+            hit_detid_scifi = np.concatenate([scifi["detectorID"][scifi["vert"]][track_hits_sf_ZX],
+                                              scifi["detectorID"][~scifi["vert"]][track_hits_sf_ZY]])
+            hitID = 0 # Does it matter? We don't have a global hit ID.
+            for i_z_sorted in hit_z_scifi.argsort() :
+                tp = ROOT.genfit.TrackPoint()
+                hitCov = ROOT.TMatrixDSym(7)
+                maxDis = 0.1
+                hitCov[6][6] = self.kalman_sigmaScifi_spatial**2
+                measurement = ROOT.genfit.WireMeasurement(ROOT.TVectorD(7, array('d', [hit_A0_scifi[i_z_sorted],
+                                                                                       hit_A1_scifi[i_z_sorted],
+                                                                                       hit_z_scifi[i_z_sorted],
+                                                                                       hit_B0_scifi[i_z_sorted],
+                                                                                       hit_B1_scifi[i_z_sorted],
+                                                                                       hit_B2_scifi[i_z_sorted],
+                                                                                       0.])),
+                                                          hitCov,
+                                                          1, # detid?
+                                                          6, # hitid?
+                                                          tp)
+                
+                measurement.setMaxDistance(maxDis)
+                measurement.setDetId(int(hit_detid_scifi[i_z_sorted]))
+                measurement.setHitId(int(hitID))
+                hitID += 1
+                tp.addRawMeasurement(measurement)
+                theTrack.insertPoint(tp)
+
+            # Repeat for upstream
+            hit_z_mu_us = mu_us["pos"][2][~mu_us["vert"]][track_hits_us_ZY]
+            hit_A0_mu_us = mu_us["pos"][0][~mu_us["vert"]][track_hits_us_ZY]
+            hit_A1_mu_us = mu_us["pos"][1][~mu_us["vert"]][track_hits_us_ZY]
+            hit_B0_mu_us = mu_us["B"][0][~mu_us["vert"]][track_hits_us_ZY]
+            hit_B1_mu_us = mu_us["B"][1][~mu_us["vert"]][track_hits_us_ZY]
+            hit_B2_mu_us = mu_us["B"][2][~mu_us["vert"]][track_hits_us_ZY]
+            hit_detid_mu_us = mu_us["detectorID"][~mu_us["vert"]][track_hits_us_ZY]
+            
+            for i_z_sorted in hit_z_mu_us.argsort() :
+                tp = ROOT.genfit.TrackPoint()
+                hitCov = ROOT.TMatrixDSym(7)
+                maxDis = 5.0
+                hitCov[6][6] = self.kalman_sigmaMufiUS_spatial**2
+                measurement = ROOT.genfit.WireMeasurement(ROOT.TVectorD(7, array('d', [hit_A0_mu_us[i_z_sorted],
+                                                                                       hit_A1_mu_us[i_z_sorted],
+                                                                                       hit_z_mu_us[i_z_sorted],
+                                                                                       hit_B0_mu_us[i_z_sorted],
+                                                                                       hit_B1_mu_us[i_z_sorted],
+                                                                                       hit_B2_mu_us[i_z_sorted],
+                                                                                       0.])),
+                                                          hitCov,
+                                                          1, # detid?
+                                                          6, # hitid?
+                                                          tp)
+                measurement.setMaxDistance(maxDis)
+                measurement.setDetId(int(hit_detid_mu_us[i_z_sorted]))
+                measurement.setHitId(int(hitID))
+                hitID += 1
+                tp.addRawMeasurement(measurement)
+                theTrack.insertPoint(tp)
+
+            # And for downstream
+            hit_z_mu_ds = np.concatenate([mu_ds["pos"][2][mu_ds["vert"]][track_hits_ds_ZX],
+                                          mu_ds["pos"][2][~mu_ds["vert"]][track_hits_ds_ZY]])
+            hit_A0_mu_ds = np.concatenate([mu_ds["pos"][0][mu_ds["vert"]][track_hits_ds_ZX],
+                                           mu_ds["pos"][0][~mu_ds["vert"]][track_hits_ds_ZY]])
+            hit_A1_mu_ds = np.concatenate([mu_ds["pos"][1][mu_ds["vert"]][track_hits_ds_ZX],
+                                           mu_ds["pos"][1][~mu_ds["vert"]][track_hits_ds_ZY]])
+            hit_B0_mu_ds = np.concatenate([mu_ds["B"][0][mu_ds["vert"]][track_hits_ds_ZX],
+                                           mu_ds["B"][0][~mu_ds["vert"]][track_hits_ds_ZY]])
+            hit_B1_mu_ds = np.concatenate([mu_ds["B"][1][mu_ds["vert"]][track_hits_ds_ZX],
+                                           mu_ds["B"][1][~mu_ds["vert"]][track_hits_ds_ZY]])
+            hit_B2_mu_ds = np.concatenate([mu_ds["B"][2][mu_ds["vert"]][track_hits_ds_ZX],
+                                           mu_ds["B"][2][~mu_ds["vert"]][track_hits_ds_ZY]])
+            hit_detid_mu_ds = np.concatenate([mu_ds["detectorID"][mu_ds["vert"]][track_hits_ds_ZX],
+                                              mu_ds["detectorID"][~mu_ds["vert"]][track_hits_ds_ZY]])
+            
+            for i_z_sorted in hit_z_mu_ds.argsort() :
+                tp = ROOT.genfit.TrackPoint()
+                hitCov = ROOT.TMatrixDSym(7)
+                maxDis = 1.0
+                hitCov[6][6] = self.kalman_sigmaMufiDS_spatial**2
+                measurement = ROOT.genfit.WireMeasurement(ROOT.TVectorD(7, array('d', [hit_A0_mu_ds[i_z_sorted],
+                                                                                       hit_A1_mu_ds[i_z_sorted],
+                                                                                       hit_z_mu_ds[i_z_sorted],
+                                                                                       hit_B0_mu_ds[i_z_sorted],
+                                                                                       hit_B1_mu_ds[i_z_sorted],
+                                                                                       hit_B2_mu_ds[i_z_sorted],
+                                                                                       0.])),
+                                                          hitCov,
+                                                          1, # detid?
+                                                          6, # hitid?
+                                                          tp)
+                measurement.setMaxDistance(maxDis)
+                measurement.setDetId(int(hit_detid_mu_ds[i_z_sorted]))
+                measurement.setHitId(int(hitID))
+                hitID += 1
+                tp.addRawMeasurement(measurement)
+                theTrack.insertPoint(tp)
+
+            if not theTrack.checkConsistency():
+                theTrack.Delete()
+                raise RuntimeException("Kalman fitter track consistency check failed.")
+
+            # do the fit
+            self.kalman_fitter.processTrack(theTrack) # processTrackWithRep(theTrack,rep,True)
+
+            fitStatus = theTrack.getFitStatus()
+            if not fitStatus.isFitConverged() and 0>1:
+                theTrack.Delete()
+                raise RuntimeException("Kalman fit did not converge.")
+            
+            # Now save the track!
+            self.kalman_tracks[i_muon] = theTrack
+
             # Remove track hits and try to find an additional track
             # Find array index to be removed
             index_ZX = np.where(np.in1d(mu_ds["detectorID"], mu_ds["detectorID"][mu_ds["vert"]][track_hits_ds_ZX]))[0]

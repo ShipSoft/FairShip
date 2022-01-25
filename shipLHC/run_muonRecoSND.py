@@ -42,7 +42,7 @@ rtdb.setOutput(parFile);
 rtdb.saveOutput();
 
 run.AddTask(SndlhcMuonReco.MuonReco())
-
+print("Done adding task. Muon reco constructed")
 run.Init()
 print("Done init about to Run")
 run.Run(0, options.nEvents)
