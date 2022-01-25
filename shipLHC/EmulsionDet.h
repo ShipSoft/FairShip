@@ -60,6 +60,10 @@ public:
     virtual void   PreTrack(){;}
     virtual void   BeginEvent() {;}
 
+    /** Obtain info about brick position from detectorID**/
+    void DecodeBrickID(Int_t detID, Int_t &NWall, Int_t &NRow, Int_t &NColumn, Int_t &NPlate);
+    TString PathBrickID(Int_t detID);
+
     void SetConfPar(TString name, Float_t value){conf_floats[name]=value;}
     void SetConfPar(TString name, Int_t value){conf_ints[name]=value;}
     void SetConfPar(TString name, TString value){conf_strings[name]=value;}
