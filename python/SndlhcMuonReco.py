@@ -142,18 +142,21 @@ class MuonReco(ROOT.FairTask) :
         # Minimum number of hits in each of the downstream muon filter views to try to reconstruct a muon
         self.min_hits = 3
 
-        # Ideally I should get this from the geometry object. Keep it like this for now...
-        self.MuFilter_ds_dx = 1.
-        self.MuFilter_ds_dy = 1.
-        self.MuFilter_ds_dz = 1.
+        # Maximum number of muons to find. To avoid spending too much time on events with lots of downstream activity.
+        self.max_reco_muons = 5
 
-        self.MuFilter_us_dx = 1.
-        self.MuFilter_us_dy = 6.
-        self.MuFilter_us_dz = 1.
+        # Get sensor dimensions from geometry
+        self.MuFilter_ds_dx = self.mufiDet.GetConfParF("MuFilter/DownstreamBarY") # Assume y dimensions in vertical bars are the same as x dimensions in horizontal bars.
+        self.MuFilter_ds_dy = self.mufiDet.GetConfParF("MuFilter/DownstreamBarY") # Assume y dimensions in vertical bars are the same as x dimensions in horizontal bars.
+        self.MuFilter_ds_dz = self.mufiDet.GetConfParF("MuFilter/DownstreamBarZ")
 
-        self.Scifi_dx = 250e-4
-        self.Scifi_dy = 250e-4
-        self.Scifi_dz = 0.162
+        self.MuFilter_us_dx = self.mufiDet.GetConfParF("MuFilter/UpstreamBarX")
+        self.MuFilter_us_dy = self.mufiDet.GetConfParF("MuFilter/UpstreamBarY")
+        self.MuFilter_us_dz = self.mufiDet.GetConfParF("MuFilter/UpstreamBarZ")
+
+        self.Scifi_dx = self.scifiDet.GetConfParF("Scifi/channel_width")
+        self.Scifi_dy = self.scifiDet.GetConfParF("Scifi/channel_width")
+        self.Scifi_dz = self.scifiDet.GetConfParF("Scifi/epoxymat_z") # From Scifi.cxx This is the variable used to define the z dimension of SiPM channels, so seems like the right dimension to use.
         
         # Initialize Hough transforms for both views:
         self.h_ZX = hough(n, [-80, 0], n, [-max_angle+np.pi/2., max_angle+np.pi/2.], False)
@@ -262,8 +265,8 @@ class MuonReco(ROOT.FairTask) :
                 hit_collection[key] = np.array(item, dtype = this_dtype)
 
         # Reconstruct muons until there are not enough hits in downstream muon filter
-        i_muon = 0
-        while True :
+        for i_muon in range(self.max_reco_muons) :
+
             vertical_ds_hits = mu_ds["vert"].sum()
             if vertical_ds_hits < self.min_hits :
                 break
@@ -374,7 +377,6 @@ class MuonReco(ROOT.FairTask) :
             this_track.setStop(ROOT.TVector3(max_x, max_y, max_z))
             this_track.setHits(hit_detectorIDs)
             this_track.setHitsLoose(hit_detectorIDs)
-            i_muon += 1
             
             # Remove track hits and try to find an additional track
             # Find array index to be removed
