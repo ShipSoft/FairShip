@@ -73,7 +73,18 @@ sndScifiHit::sndScifiHit (int SiPMChan, std::vector<ScifiPoint*> V, std::vector<
 
      LOG(DEBUG) << "signal created";
 }
-
+// -----    Copy constructor ----------------------------------------------------
+sndScifiHit::sndScifiHit(const sndScifiHit& hit)
+  : SndlhcHit()
+{
+      fDetectorID = hit.fDetectorID;
+      nSiPMs = hit.nSiPMs;
+      nSides = hit.nSides;
+      signals[0] = hit.signals[0];
+      times[0] = hit.times[0];
+      flag = hit.flag;
+      //LOG(DEBUG) << "sndScifiHit is copied";
+}
 // -----   Destructor   ----------------------------------------------------
 sndScifiHit::~sndScifiHit() { }
 // -------------------------------------------------------------------------
