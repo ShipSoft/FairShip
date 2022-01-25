@@ -378,12 +378,12 @@ void ConvRawData::Exec(Option_t* /*opt*/)
   t6 = high_resolution_clock::now();
   for (auto it_sipmID : digiSciFiStore)
   {
-    new ((*fDigiSciFi)[indexSciFi]) sndScifiHit(*digiSciFiStore[it_sipmID.first]);
+    (*fDigiSciFi)[indexSciFi]=digiSciFiStore[it_sipmID.first];
     indexSciFi+= 1;
   }
   for (auto it_detID : digiMuFilterStore)
   {
-    new ((*fDigiMuFilter)[indexMuFilter]) MuFilterHit(*digiMuFilterStore[it_detID.first]);
+    (*fDigiMuFilter)[indexMuFilter]=digiMuFilterStore[it_detID.first];
     indexMuFilter+= 1;
   }
   counters["storage"]+= duration_cast<nanoseconds>(high_resolution_clock::now() - t6).count();
@@ -678,12 +678,13 @@ void ConvRawData::read_csv(string Path)
   vector<int> row{};
   map<string, int> key { {"DS",2}, {"US",1}, {"Veto",0} };
   struct stat buffer;
-  string infile_SiPMmap = "/eos/experiment/sndlhc/testbeam/MuFilter/SiPM_mappings";
+  string infile_SiPMmap = "/afs/cern.ch/user/s/sii/SND_master";///eos/experiment/sndlhc/testbeam/MuFilter/SiPM_mappings";
   string path_SiPMmap;
   for (auto system : key)
   {
     if (stat(infile_SiPMmap.c_str(), &buffer) == 0) // path exists
     {
+      //infile.open(Form("/afs/cern.ch/user/s/sii/SND_master/%s_SiPM_mapping.csv", system.first.c_str()));
       path_SiPMmap = infile_SiPMmap;      
     }
     else

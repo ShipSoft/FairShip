@@ -19,11 +19,8 @@ class MuFilterHit : public SndlhcHit
 
     // Constructor from MuFilterPoint
     MuFilterHit(Int_t detID,std::vector<MuFilterPoint*>);
-    
-    /** Copy constructor **/
-    MuFilterHit(const MuFilterHit&);
 
-    /** Destructor **/
+ /** Destructor **/
     virtual ~MuFilterHit();
 
     /** Output to screen **/
@@ -43,6 +40,8 @@ class MuFilterHit : public SndlhcHit
     bool isVertical();
     bool isShort(Int_t);
   private:
+    /** Copy constructor **/
+    MuFilterHit(const MuFilterHit& hit);
     MuFilterHit operator=(const MuFilterHit& hit);
 
     Float_t flag;   ///< flag

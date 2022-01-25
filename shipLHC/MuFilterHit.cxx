@@ -108,21 +108,7 @@ MuFilterHit::MuFilterHit(Int_t detID, std::vector<MuFilterPoint*> V)
      for (Int_t i=0;i<16;i++){fMasked[i]=kFALSE;}
      LOG(DEBUG) << "signal created";
 }
-// -----    Copy constructor ----------------------------------------------------
-MuFilterHit::MuFilterHit(const MuFilterHit& hit)
-  : SndlhcHit()
-{
-      fDetectorID = hit.fDetectorID;
-      nSiPMs = hit.nSiPMs;
-      nSides = hit.nSides;
-      for (Int_t i=0; i<16; i++)
-      {
-        signals[i] = hit.signals[i];
-        times[i]   = hit.times[i];
-        fMasked[i] = hit.fMasked[i];
-      }
-      //LOG(DEBUG) << "MuFilterHit is copied";
-}
+
 // -----   Destructor   ----------------------------------------------------
 MuFilterHit::~MuFilterHit() { }
 // -------------------------------------------------------------------------
