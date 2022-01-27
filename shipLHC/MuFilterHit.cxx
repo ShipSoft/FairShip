@@ -171,6 +171,7 @@ std::map<Int_t,Float_t> MuFilterHit::GetAllTimes(Bool_t mask)
 
 // -----   Public method Get time difference mean Left - mean Right   -----------------
 Float_t MuFilterHit::GetDeltaT(Bool_t mask)
+// based on mean TDC measured on Left and Right
 {
           Float_t mean[] = {0,0}; 
           Int_t count[] = {0,0}; 
@@ -191,6 +192,28 @@ Float_t MuFilterHit::GetDeltaT(Bool_t mask)
           }
           return dT;
 }
+Float_t MuFilterHit::GetFastDeltaT(Bool_t mask)
+// based on fastest (earliest) TDC measured on Left and Right
+{
+          Float_t first[] = {1E20,1E20}; 
+          Float_t dT = -999.;
+          for (unsigned int s=0; s<nSides; ++s){
+              for (unsigned int j=0; j<nSiPMs; ++j){
+               unsigned int channel = j+s*nSiPMs;
+               if (signals[channel]> 0){
+                 if (!fMasked[channel] || !mask){
+                    if  (times[channel]<first[s]) {first[s] = times[channel];}
+                    }
+                }
+              }
+          }
+          if (first[0]<1E10 && first[1]<1E10) {
+                dT = first[0] - first[1];
+          }
+          return dT;
+}
+
+
 // -----   Public method Get mean time  -----------------
 Float_t MuFilterHit::GetImpactT(Bool_t mask)
 {
