@@ -118,6 +118,47 @@ Int_t EmulsionDet::InitMedium(const char* name)
     return geoBuild->createMedium(ShipMedium);
 }
 
+void EmulsionDet::DecodeBrickID(Int_t detID, Int_t &NWall, Int_t &NRow, Int_t &NColumn, Int_t &NPlate){
+
+  NWall = detID/1E4;
+  Int_t NTransverse = (detID - NWall*1E4)/1E3;
+  switch (NTransverse){
+    case (1):  
+      NColumn = 1;
+      NRow = 2;
+      break;
+      
+    case (2):
+      NColumn = 1;
+      NRow = 1;
+      break;
+    
+    case (3):
+      NColumn = 2;
+      NRow = 2;
+      break;
+
+    case (4):
+      NColumn = 2;
+      NRow = 1;
+      break;
+    }
+
+  NPlate = detID - NWall*1E4 - NTransverse*1E3;
+  
+
+}
+
+TString EmulsionDet::PathBrickID(Int_t detID){
+  //provide path to the node, from the detectorID
+  Int_t NWall, NRow, NColumn, NPlate;
+  DecodeBrickID(detID, NWall, NRow, NColumn, NPlate);
+  
+  TString emulsionpath = TString::Format("/cave_1/Detector_0/volTarget_1/Wall_%i/Row_%i/Brick_%i/Emulsion_%i",NWall-1,NRow-1,NColumn-1,NPlate -1);
+
+  return emulsionpath;
+}
+
 void EmulsionDet::ConstructGeometry()
 {
 	// configuration parameters
@@ -311,7 +352,40 @@ Bool_t  EmulsionDet::ProcessHits(FairVolume* vol)
         gMC->IsTrackDisappeared()   ) {
         fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
 	gMC->CurrentVolID(fVolumeID);
+
+        //finding number of wall, row and column
+        Int_t detID = fVolumeID;
+        Int_t MaxLevel = gGeoManager->GetLevel();
+        const Int_t MaxL = MaxLevel;
+        //cout << "MaxLevel = " << MaxL << endl;
+        //cout << gMC->CurrentVolPath()<< endl;
 	
+
+        Int_t motherV[MaxL];
+        Int_t NPlate =0;
+        const char *name;
+	
+        name = gMC->CurrentVolName();
+        //cout << name << endl;
+        NPlate = detID;
+	
+        Int_t  NWall = -2, NColumn =-2, NRow =-2;
+
+        for(Int_t i = 0; i <= MaxL;i++)
+	  {	 
+	    gMC->CurrentVolOffID(i, motherV[i]);         
+	    const char *mumname = gMC->CurrentVolOffName(i);                 
+	    
+	    if(strcmp(mumname, "Brick") == 0) NColumn = (1-motherV[i]); //0 or 1 (0 higher x, 1 lower x, x are negative, so higher x are closer to the beam)
+	    if(strcmp(mumname, "Row") == 0) NRow = motherV[i]; // 0 or 1 (0 lower y, 1 higher y)
+	    if(strcmp(mumname, "Wall") == 0) NWall = motherV[i]; //0,1,2,3 (increasing along the beam verse)
+	    
+	  }
+
+        detID = (NWall+1)*1E4+(NRow*2+NColumn+1)*1E3+(NPlate+1);
+        fVolumeID = detID;
+	//found number of row, column and wall
+        //if (NColumn > 2 || NRow > 2 || NWall > 5) cout<<"Debug test for detID "<<detID<<" is "<<NColumn<<" "<<NRow<<" "<<NWall<<" "<<NPlate<<endl;
 	if (fELoss == 0. ) { return kFALSE; }
         TParticle* p=gMC->GetStack()->GetCurrentTrack();
 	Int_t pdgCode = p->GetPdgCode();
