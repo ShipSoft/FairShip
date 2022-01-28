@@ -77,6 +77,7 @@ tuple<map<string, map<string, map<string, int>> >, map<string, map<string, map<s
   quicktype::Info_scifi info_scifi;
   
   string bString;
+  char c;
     
   for (auto& el : j.items())
    {
@@ -99,7 +100,8 @@ tuple<map<string, map<string, map<string, int>> >, map<string, map<string, map<s
         for (int i = 0; i < info_scifi.boards.size(); i++)
         {
           bString = Form("board_%i", info_scifi.boards.at(i));
-          boardMaps["Scifi"][bString][subel.key()] = i;
+          c =::toupper(subel.key()[1]);
+          boardMaps["Scifi"][bString][Form("M%c%c", subel.key()[0], c )] = i;          
         }
       }
       else if (el.key() =="veto")
@@ -118,7 +120,6 @@ tuple<map<string, map<string, map<string, int>> >, map<string, map<string, map<s
           boardMapsMu["MuFilter"][bString] = {};
         }          
         // Loop over the slots (the first is always left, the second always right)
-        // Beware some slots arrays in json have one value only!
         for (int i = 0; i < info.slots.size(); i++)
         {
           bString = Form("board_%i", info.board);
@@ -142,7 +143,6 @@ tuple<map<string, map<string, map<string, int>> >, map<string, map<string, map<s
           boardMapsMu["MuFilter"][bString] = {};
         }
         // Loop over the slots (the first is always left, the second always right)
-        // Beware some slots arrays in json have one value only!
         for (int i = 0; i < info.slots.size(); i++)
         {
           bString = Form("board_%i", info.board);
@@ -164,14 +164,22 @@ tuple<map<string, map<string, map<string, int>> >, map<string, map<string, map<s
         if (boardMapsMu["MuFilter"].find(bString.c_str()) == boardMapsMu["MuFilter"].end())
         {
           boardMapsMu["MuFilter"][bString] = {};
-        }          
-        // Loop over the slots (the first is always left, the second always right)
-        // Beware some slots arrays in json have one value only!
-        for (int i = 0; i < info.slots.size(); i++)
+        }
+        // for DS we have the additional complication of vertival planes, 
+        // but they are two different plane types (snd_dsh and snd_dsv)
+        if(info.type == "snd_dsh")
         {
-          bString = Form("board_%i", info.board);
-          if (i==0) boardMapsMu["MuFilter"][bString][info.slots.at(i)] = Form("DS_%iLeft", stoi(subel.key()));
-          else if (i==1) boardMapsMu["MuFilter"][bString][info.slots.at(i)] = Form("DS_%iRight", stoi(subel.key()));
+          // Loop over the slots (the first is always left, the second always right)
+          for (int i = 0; i < info.slots.size(); i++)
+          {
+            bString = Form("board_%i", info.board);
+            if (i==0) boardMapsMu["MuFilter"][bString][info.slots.at(i)] = Form("DS_%iLeft", stoi(subel.key()));
+            else if (i==1) boardMapsMu["MuFilter"][bString][info.slots.at(i)] = Form("DS_%iRight", stoi(subel.key()));
+          }
+        }
+        else
+        {
+          boardMapsMu["MuFilter"][bString][info.slots.at(0)] = Form("DS_%iVert", stoi(subel.key()));
         }
       }
       else 
@@ -195,13 +203,13 @@ tuple<map<string, map<string, map<string, int>> >, map<string, map<string, map<s
                                        {"M2X", {{0,1},  {1,2},  {2,25}}},
                                        {"M3Y", {{0,15}, {1,9},  {2,5}}},
                                        {"M3X", {{0,22}, {1,27}, {2,4}}},
-                                       {"M4X", {{0,8},  {1,50}, {2,49}}},
                                        {"M4Y", {{0,46}, {1,23}, {2,20}}},
+                                       {"M4X", {{0,8},  {1,50}, {2,49}}},
                                        {"M5Y", {{0,19}, {1,13}, {2,36}}},
                                        {"M5X", {{0,21}, {1,10}, {2,6}}} };
   if ( path.find("commissioning-h6") != string::npos )
   {
-       stations["M4Y"] = {{0,46}, {1,40}, {2,20}}; // board 40 replaces 23
+       stations["M4Y"] = {{0,46}, {1,40}, {2,20}}; // board 40 replaces 23       
   }
   
   // Board Maps for Scifi
@@ -211,7 +219,7 @@ tuple<map<string, map<string, map<string, int>> >, map<string, map<string, map<s
     for (auto mat : stations[plane.first])
     {
       board = Form("board_%i", mat.second);
-      boardMaps["Scifi"][board][plane.first] = mat.first;
+      boardMaps["Scifi"][board][plane.first] = mat.first;      
     }
   }
   
@@ -242,8 +250,8 @@ tuple<map<string, map<string, map<string, int>> >, map<string, map<string, map<s
                                             {"C","DS_1Right"}, {"D","US_5Right"} };
     if (path.find("commissioning-h6") != string::npos)
     {
-      boardMapsMu["MuFilter"]["board_59"] = { {"A","DS_2Right"},  {"B","DS_1Vert"},
-                                            {"C","DS_2Vert"},  {"D","DS_2Left"} };
+      boardMapsMu["MuFilter"]["board_59"] = { {"A","DS_2Right"},  {"B","DS_2Vert"},
+                                            {"C","DS_1Vert"},  {"D","DS_2Left"} };
     }
     else
     {
