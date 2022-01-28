@@ -114,10 +114,11 @@ InitStatus ConvRawData::Init()
     }
     
     bool local = false; 
-  
+    
+    struct stat buffer;  
     // Setting path to input data
     string set_path;
-    if( fpath.find("eos") != string::npos )
+    if( fpath.find("eos") == string::npos || stat(fpath.c_str(), &buffer) == 0)
     {
       local = true;
       set_path = fpath; 
@@ -144,7 +145,8 @@ InitStatus ConvRawData::Init()
     
     eventNumber = fnStart-1;
     
-    if (stop) { cout << "Stop flag set! Exiting ..." << endl; exit(0);}
+    // Check against boardMappingParser
+    if (stop && isjson) checkBoardMapping(set_path);      
     
     return kSUCCESS;
 }
@@ -175,7 +177,7 @@ void ConvRawData::Exec(Option_t* /*opt*/)
   int nSiPMs{}, nSides{}, direction{}, detID{}, sipm_number{}, chan{}, orientation{}, sipmLocal{};
   int sipmID{};
   double test{};
-  TStopwatch timer;
+  //TStopwatch timer;
       
   // Manually change event number as input file is not set for this task
   if (eventNumber > fnEvents)
@@ -186,7 +188,7 @@ void ConvRawData::Exec(Option_t* /*opt*/)
   eventNumber++;
   
   tE = high_resolution_clock::now();
-  timer.Start();
+  //timer.Start();
   fEventTree->GetEvent(eventNumber);
   if ( eventNumber%fheartBeat == 0 )
   {
@@ -198,7 +200,7 @@ void ConvRawData::Exec(Option_t* /*opt*/)
      
   fEventHeader->SetRunId(frunNumber);
   fEventHeader->SetEventTime(fEventTree->GetLeaf("evtTimestamp")->GetValue());
-  /*if (debug)*/ cout << "event: " << eventNumber << " timestamp: "
+  if (debug) cout << "event: " << eventNumber << " timestamp: "
                   << fEventTree->GetLeaf("evtTimestamp")->GetValue() << endl;
   // Reset counters
   indexMuFilter =0; indexSciFi =0;
@@ -299,17 +301,22 @@ void ConvRawData::Exec(Option_t* /*opt*/)
            system = MufiSystem[board_id][tofpet_id];
            key = (tofpet_id%2)*1000 + tofpet_channel;
            tmp = boardMapsMu["MuFilter"][board.first][slots[tofpet_id]];
-           if (debug) cout << system << " " << key << " " << board.first << " " << tofpet_id
-                             << " " << tofpet_id%2 << " " << tofpet_channel << endl;
+           if (debug || !tmp.find("not") == string::npos )
+           {
+             cout << system << " " << key << " " << board.first << " " << tofpet_id
+                            << " " << tofpet_id%2 << " " << tofpet_channel << endl;
+           }
            sipmChannel = 99;
            if ( TofpetMap[system].count(key) == 0)
            {
-                        cout<<"key "<< key <<" does not exist. "<< endl
-                            << "System " << system << " has Tofpet map elements: " << endl;
+                        cout << "key " << key << " does not exist. " << endl
+                             << board.first << " Tofpet id " << tofpet_id
+                             << " System " << system << " has Tofpet map elements: {";
                         for ( auto it : TofpetMap[system])
                         {
-                          cout << it.first << " " << it.second << endl;
+                          cout << it.first << " : " << it.second << ", ";
                         }
+                        cout << "}\n";
            }
            else sipmChannel = TofpetMap[system][key]-1;
            
@@ -348,8 +355,8 @@ void ConvRawData::Exec(Option_t* /*opt*/)
          else // now Scifi encoding
          {
            chan = channel_func(tofpet_id, tofpet_channel, mat);
-           orientation = 0;
-           if (station[2]=='Y') orientation = 1;
+           orientation = 1;
+           if (station[2]=='Y') orientation = 0;
            sipmLocal = (chan - mat*512);
            sipmID = 1000000*int(station[1]-'0') + 100000*orientation + 10000*mat
                                             + 1000*(int(sipmLocal/128)) + chan%128;
@@ -388,7 +395,7 @@ void ConvRawData::Exec(Option_t* /*opt*/)
   }
   counters["storage"]+= duration_cast<nanoseconds>(high_resolution_clock::now() - t6).count();
   counters["event"]+= duration_cast<nanoseconds>(high_resolution_clock::now() - tE).count();
-  timer.Stop();
+  //timer.Stop();
   //cout<<timer.RealTime()<<endl;
     
   /* 
@@ -449,7 +456,7 @@ void ConvRawData::Exec(Option_t* /*opt*/)
     cout << "number of events processed " << fnEvents << " "
          << fEventTree->GetEntries()<< endl;
   }
-  
+  /*
   cout << "Monitor computing time:" << endl;
   for (auto it: counters)
   {
@@ -463,7 +470,7 @@ void ConvRawData::Exec(Option_t* /*opt*/)
        cout << "stage " << it.first<< " took " << it.second*1e-9 << " [s]" << endl;
      }
   }
-  cout << "File closed." << endl;
+  */
 
 }
   
@@ -519,8 +526,8 @@ void ConvRawData::DetMapping(string Path)
   {
     if (i<3)
     {
-      offMap[Form("Veto_%iLeft",i)]  = {10000 + (i-1)*1000+ 6, -8, 2};//first channel, nSiPMs, nSides
-      offMap[Form("Veto_%iRight",i)] = {10000 + (i-1)*1000+ 6, -8, 2};
+      offMap[Form("Veto_%iLeft",i)]  = {10000 + (i-1)*1000+ 0, 8, 2};//first channel, nSiPMs, nSides
+      offMap[Form("Veto_%iRight",i)] = {10000 + (i-1)*1000+ 0, 8, 2};
     }
     if (i<4)
     {
@@ -532,7 +539,7 @@ void ConvRawData::DetMapping(string Path)
     {
       offMap[Form("DS_%iVert",i)] = {30000 + (i-1)*1000+ 119, -1, 1};// direction not known
     }
-    offMap[Form("US_%iLeft",i)]  = {20000 + (i-1)*1000+ 9, -8, 2};
+    offMap[Form("US_%iLeft",i)]  = {20000 + (i-1)*1000+ 9, -8, 2}; // from top to bottom
     offMap[Form("US_%iRight",i)] = {20000 + (i-1)*1000+ 9, -8, 2};
   }
 }
@@ -618,7 +625,7 @@ int ConvRawData::channel_func( int tofpet_id, int tofpet_channel, int position)
 /** Read csv data files **/
 void ConvRawData::read_csv(string Path)
 {
-  fstream infile;
+  ifstream infile; // ifstream is the stream class to only read! from files.
   string line, element;
   double chi2_Ndof{};
   // counter of number of elements
@@ -678,13 +685,12 @@ void ConvRawData::read_csv(string Path)
   vector<int> row{};
   map<string, int> key { {"DS",2}, {"US",1}, {"Veto",0} };
   struct stat buffer;
-  string infile_SiPMmap = "/afs/cern.ch/user/s/sii/SND_master";///eos/experiment/sndlhc/testbeam/MuFilter/SiPM_mappings";
+  string infile_SiPMmap = "/eos/experiment/sndlhc/testbeam/MuFilter/SiPM_mappings";
   string path_SiPMmap;
   for (auto system : key)
   {
     if (stat(infile_SiPMmap.c_str(), &buffer) == 0) // path exists
     {
-      //infile.open(Form("/afs/cern.ch/user/s/sii/SND_master/%s_SiPM_mapping.csv", system.first.c_str()));
       path_SiPMmap = infile_SiPMmap;      
     }
     else
@@ -693,7 +699,7 @@ void ConvRawData::read_csv(string Path)
       path_SiPMmap = server.Data()+infile_SiPMmap;      
     }
     
-    cout << "path to use: "<< path_SiPMmap << endl;
+    cout << "path to SiPM maps: "<< path_SiPMmap << endl;
     infile.open(Form("%s/%s_SiPM_mapping.csv", path_SiPMmap.c_str(), system.first.c_str()));
     if(! infile.is_open()) {
       cout<< "Error opening file"<<endl;
@@ -724,6 +730,75 @@ void ConvRawData::read_csv(string Path)
     }
     infile.close();
   } // end filling SiPMmap and TofpetMap
+}
+void ConvRawData::checkBoardMapping(string Path)
+{
+      cout << "Check board mapping" << endl;
+      map<string, map<string, map<string, int>> > boardMapsOld{};
+      map<string, map<string, map<string, string>> > boardMapsMuOld{};
+      tie(boardMapsOld, boardMapsMuOld) = oldMapping(Path);
+      // Scifi
+      cout << "New maping\n";
+      for (auto brd : boardMaps["Scifi"])
+      {
+        cout << "Scifi " << brd.first;        
+        for (auto it : boardMaps["Scifi"][brd.first])
+        {
+           cout << " [" << it.first << ", " << it.second << "] "
+                << "is identical to old map entry " 
+                << (boardMapsOld["Scifi"][brd.first] == boardMaps["Scifi"][brd.first]) << endl;
+        }
+      }
+      cout << " Old mapping\n";
+      for (auto brd : boardMapsOld["Scifi"])
+      {
+        cout << "Scifi " << brd.first;
+        for (auto it : boardMapsOld["Scifi"][brd.first])
+        {
+           cout << " [" << it.first << ", " << it.second << "]\n";
+        }
+      }
+      // MuFilter
+      cout << "New maping\n";
+      for (auto brd : boardMapsMu["MuFilter"])
+      {
+        cout << "MuFilter " << brd.first;
+        for (auto it : boardMapsMu["MuFilter"][brd.first])
+        {
+           cout << " {" << it.first << ": " << it.second << "}";
+        }
+        cout << " is identical to old map entry "
+             << (boardMapsMuOld["MuFilter"][brd.first] == boardMapsMu["MuFilter"][brd.first])
+             << endl;
+      }
+      cout << "Old maping\n";
+      for (auto brd : boardMapsMuOld["MuFilter"])
+      {
+        cout << "MuFilter " << brd.first;
+        for (auto it : boardMapsMuOld["MuFilter"][brd.first])
+        {
+           cout << " {" << it.first << ": " << it.second << "}";  
+        }
+        cout << "\n";
+      }
+}
+void ConvRawData::debugMapping(string brd, int tofpetID, int tofpetChannel)
+{
+  int Key{}, SiPMChannel{}, n_SiPMs{}, n_Sides{}, Direction{}, DetID{}, SiPM_number{};
+  string Tmp;
+  int brdID{}, System{};
+  Key = (tofpetID%2)*1000 + tofpetChannel;
+  Tmp = boardMapsMu["MuFilter"][brd][slots[tofpetID]];
+  brdID = stoi(brd.substr(brd.find("_")+1));
+  System = MufiSystem[brdID][tofpetID];
+  SiPMChannel = TofpetMap[System][Key]-1;
+  n_SiPMs = abs(offMap[Tmp][1]);
+  n_Sides = abs(offMap[Tmp][2]);
+  Direction = int(offMap[Tmp][1]/n_SiPMs);
+  DetID = offMap[Tmp][0] + Direction*int(SiPMChannel/n_SiPMs);
+  SiPM_number = SiPMChannel%(n_SiPMs);
+  cout << "SiPM channel " << SiPMChannel << " nSiPM " << n_SiPMs << " nSides " << n_Sides
+       << " detID " << DetID << " SiPM number " << SiPM_number << endl;
 }
 
 ClassImp(ConvRawData);

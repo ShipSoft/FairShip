@@ -31,6 +31,8 @@ class ConvRawData : public FairTask
     private:
       /** Board mapping for Scifi and MuFilter **/
       void DetMapping(string path);
+      void checkBoardMapping(string path);
+      void debugMapping(string board, int tofpetID, int tofpetChannel);
       /** Define calibration functions **/
       double qdc_calibration( int board_id, int tofpet_id, int channel, int tac, 
                               uint16_t v_coarse, uint16_t v_fine, uint16_t tf);
