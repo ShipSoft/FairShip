@@ -51,6 +51,8 @@ string(REPLACE ".cc" ".h"  HEADERS "${HEADERS}")
 set(HEADERS "${HEADERS}"
   ${CMAKE_SOURCE_DIR}/genfit/utilities/include/mySpacepointDetectorHit.h
   ${CMAKE_SOURCE_DIR}/genfit/utilities/include/mySpacepointMeasurement.h
+  ${CMAKE_SOURCE_DIR}/genfit/core/include/SharedPlanePtr.h
+  ${CMAKE_SOURCE_DIR}/genfit/core/include/AbsHMatrix.h
 )
 Set(SRCS ${library_sources})
 Set(LINKDEF ${CMAKE_SOURCE_DIR}/genfit/genfitLinkDef.h)
