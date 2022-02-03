@@ -436,34 +436,25 @@ def Mufi_hitMaps(Nev = options.nEvents):
     for key in planes:
         if len(planes[key]) > 2: maxOneBar = False
     if withX and maxOneBar:  beamSpot()
+    
+ S = {1:[1800,800,2,1],2:[1800,1500,2,3],3:[1800,1800,2,4]}
+ for s in S:
+   ut.bookCanvas(h,'hitmaps' +str(s),' ',S[s][0],S[s][1],S[s][2],S[s][3])
+   ut.bookCanvas(h,'barmaps'+str(s),' ',S[s][0],S[s][1],S[s][2],S[s][3])
+   ut.bookCanvas(h,'signal'    +str(s),' ',S[s][0],S[s][1],S[s][2],S[s][3])
+   ut.bookCanvas(h,'Tsignal'   +str(s),' ',S[s][0],S[s][1],S[s][2],S[s][3])
 
- installed_stations = {}
- for  s in range(1,4):
-   installed_stations[s] = []
    for l in range(systemAndPlanes[s]):
-    if h['hit_'+str(s)+str(l)].GetEntries()>0:
-         installed_stations[s].append(l)
- x = 0
- y = 0
- for s in installed_stations: 
-    if len(installed_stations[s])>0: x+=1
-    if len(installed_stations[s])>y: y = len(installed_stations[s])
- ut.bookCanvas(h,'hitmaps',' ',1200,1600,x,y)
- ut.bookCanvas(h,'barmaps',' ',1200,1600,x,y)
- ut.bookCanvas(h,'signal',' ',1200,1600,x,y)
- ut.bookCanvas(h,'Tsignal',' ',1200,1600,x,y)
-
- for S in installed_stations:
-   for l in range(len(installed_stations[S])):
-      n = S + l*x
-      tc = h['hitmaps'].cd(n)
-      tag = str(S)+str(installed_stations[S][l])
+      n = l+1
+      if s==3 and n==7: n=8
+      tc = h['hitmaps'+str(s)].cd(n)
+      tag = str(s)+str(l)
       h['hit_'+tag].Draw()
-      tc = h['barmaps'].cd(n)
+      tc = h['barmaps'+str(s)].cd(n)
       h['bar_'+tag].Draw()
-      tc = h['signal'].cd(n)
+      tc = h['signal'+str(s)].cd(n)
       h['sig_'+tag].Draw()
-      tc = h['Tsignal'].cd(n)
+      tc = h['Tsignal'+str(s)].cd(n)
       h['Tsig_'+tag].Draw()
 
  ut.bookCanvas(h,'VETO',' ',1200,1800,1,2)
@@ -581,9 +572,13 @@ def Mufi_hitMaps(Nev = options.nEvents):
          h['sig'+side+'_'+str( s*10+plane)].Draw()
 
 
- for canvas in ['signalUSVeto','LR','hitmaps','barmaps','signal','Tsignal','USBars']:
+ for canvas in ['signalUSVeto','LR','USBars']:
       h[canvas].Update()
       myPrint(h[canvas],canvas)
+ for canvas in ['hitmaps','barmaps','signal','Tsignal']:
+      for s in range(1,4):
+         h[canvas+str(s)].Update()
+         myPrint(h[canvas+str(s)],canvas+sdict[s])
 
 def eventTime(Nev=options.nEvents):
  Tprev = -1
@@ -709,7 +704,7 @@ def beamSpot():
                l=2*l
                if bar>59:
                     bar=bar-60
-                    l+=1
+                    if l<6: l+=1
              if s==3 and l%2==0: Ybar=bar
              if s==3 and l%2==1: Xbar=bar
              nSiPMs = aHit.GetnSiPMs()
@@ -743,7 +738,7 @@ def DS_track():
          bar = aHit.GetDetectorID()%1000
          plane = s*10+p
          if s==3:
-           if bar<60: plane = s*10+2*p
+           if bar<60 or p==3: plane = s*10+2*p
            else:  plane = s*10+2*p+1
          stations[plane][k] = aHit
     if not len(stations[30])*len(stations[31])*len(stations[32])*len(stations[33]) == 1: return -1
@@ -875,7 +870,8 @@ def Mufi_Efficiency(Nev=options.nEvents,optionTrack=options.trackType,NbinsRes=1
  for s in systemAndPlanes:
     for l in range(systemAndPlanes[s]):
       ut.bookHist(h,'dtLRvsX_'+sdict[s]+str(s*10+l),'dt vs x track '+str(s*10+l)+";X [cm]; dt [ns]",100,-70.,30.,260,-8.,5.)
-      ut.bookHist(h,'atLRvsX_'+sdict[s]+str(s*10+l),'mean time - T0 vs x track '+str(s*10+l)+";X [cm]; dt [ns]",20,-70.,30.,250,-10.,15.0)
+      ut.bookHist(h,'atLRvsX_'+sdict[s]+str(s*10+l),'mean time - T0track vs x '+str(s*10+l)+";X [cm]; dt [ns]",20,-70.,30.,250,-10.,15.0)
+      ut.bookHist(h,'VetoatLRvsX_'+sdict[s]+str(s*10+l),'mean time - T0Veto vs x '+str(s*10+l)+";X [cm]; dt [ns]",20,-70.,30.,250,-10.,15.0)
 
       scale = 1.
       if s==3: scale = 0.4
@@ -954,8 +950,8 @@ def Mufi_Efficiency(Nev=options.nEvents,optionTrack=options.trackType,NbinsRes=1
 # get T0 from Track
     if optionTrack=='DS':
        # don't know yet what to do
-         T0 = 0
-         Z0 = 0
+         T0track = 0
+         Z0track = 0
     else:
          M = theTrack.getPointWithMeasurement(0)
          W = M.getRawMeasurement()
@@ -966,9 +962,9 @@ def Mufi_Efficiency(Nev=options.nEvents,optionTrack=options.trackType,NbinsRes=1
          X = B-pos
          L0 = X.Mag()/v
          # need to correct for signal propagation along fibre
-         T0 = aHit.GetTime()*TDC2ns - L0
+         T0track = aHit.GetTime()*TDC2ns - L0
          TZero = aHit.GetTime()*TDC2ns
-         Z0 = pos[2]
+         Z0track = pos[2]
          times = {}
          for nM in range(theTrack.getNumPointsWithMeasurement()):
             state   = theTrack.getFittedState(nM)
@@ -983,7 +979,7 @@ def Mufi_Efficiency(Nev=options.nEvents,optionTrack=options.trackType,NbinsRes=1
             else: X = A-posM
             L = X.Mag()/v
          # need to correct for signal propagation along fibre
-            dT = aHit.GetTime()*TDC2ns - L - T0 - (posM[2] -Z0)/u.speedOfLight
+            dT = aHit.GetTime()*TDC2ns - L - T0track - (posM[2] -Z0track)/u.speedOfLight
             ss = str(aHit.GetStation())
             prj = 'X'
             l = posM[0]
@@ -1012,6 +1008,28 @@ def Mufi_Efficiency(Nev=options.nEvents,optionTrack=options.trackType,NbinsRes=1
            if aHit.isVertical(): plane = s*10+2*p+1
            else:                         plane = s*10+2*p
          muHits[plane].append(aHit)
+
+# get T0 from VETO
+    s = 1
+    Z0Veto = zPos['MuFilter'][1*10+0]
+    dZ = zPos['MuFilter'][1*10+1] - zPos['MuFilter'][1*10+0]
+    avT = {}
+    for p in range(systemAndPlanes[s]): 
+         plane = s*10+p
+         if len(muHits[plane])!=1: continue
+         aHit = muHits[plane][0]
+# check if hit within track extrapolation
+         zEx = zPos['MuFilter'][s*10+plane]
+         lam = (zEx-pos.z())/mom.z()
+         xEx,yEx = pos.x()+lam*mom.x(),pos.y()+lam*mom.y()
+         detID = aHit.GetDetectorID()
+         MuFilter.GetPosition(detID,A,B)
+         D = (A[1]+B[1])/2. - yEx
+         if abs(D)>5: continue
+         avT[plane] = aHit.GetImpactT()
+    T0Veto = -999
+    if len(avT)==2:
+         T0Veto = (avT[10]+(avT[11]-dZ/u.speedOfLight))/2.
 
     vetoHits = {0:[],1:[]}
     for s in sdict:
@@ -1122,14 +1140,15 @@ def Mufi_Efficiency(Nev=options.nEvents,optionTrack=options.trackType,NbinsRes=1
                   if not aHit.isVertical():
                      dt    = aHit.GetDeltaT()
                      dtF  = aHit.GetFastDeltaT()
-                     mt = aHit.GetImpactT() - T0 - (globPos[2] - Z0)/u.speedOfLight
-                     # print("?",mt,aHit.GetImpactT(),T0,(globPos[2] - Z0)/u.speedOfLight)
+                     mtTrack = aHit.GetImpactT() - T0track - (globPos[2] - Z0track)/u.speedOfLight
+                     mtVeto  = aHit.GetImpactT() - T0Veto - (globPos[2] - Z0Veto)/u.speedOfLight
                      h['dtLRvsX_'+sdict[s]+str(s*10+plane)].Fill(xEx,dt*TDC2ns)
                      h['dtLRvsX_'+barName].Fill(xEx,dt*TDC2ns)
                      if left==6 and right==6:  h['dtF12LRvsX_'+barName].Fill(xEx,dt*TDC2ns)
                      h['dtfastLRvsX_'+barName].Fill(xEx,dtF*TDC2ns)
-                     h['atLRvsX_'+sdict[s]+str(s*10+plane)].Fill(xEx,mt)
-                     h['atLRvsX_'+barName].Fill(xEx,mt)
+                     h['atLRvsX_'+sdict[s]+str(s*10+plane)].Fill(xEx,mtTrack)
+                     h['VetoatLRvsX_'+sdict[s]+str(s*10+plane)].Fill(xEx,mtVeto)
+                     h['atLRvsX_'+barName].Fill(xEx,mtTrack)
 
     theTrack.Delete()
  ut.writeHists(h,'MuFilterEff_run'+str(options.runNumber)+'.root')
