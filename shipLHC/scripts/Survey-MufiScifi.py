@@ -1,6 +1,6 @@
 #python -i MufiScifi.py -r 46 -p /eos/experiment/sndlhc/testbeam/MuFilter/TB_data_commissioning/sndsw/ -g geofile_sndlhc_H6.root
 
-import ROOT,os
+import ROOT,os,subprocess
 import time
 import ctypes
 from array import array
@@ -12,6 +12,16 @@ ROOT.gInterpreter.Declare("""
 
 void fixRoot(MuFilterHit& aHit,std::vector<int>& key,std::vector<float>& value) {
    std::map<int,float> m = aHit.GetAllSignals();
+   std::map<int, float>::iterator it = m.begin();
+   while (it != m.end())
+    {
+        key.push_back(it->first);
+        value.push_back(it->second);
+        it++;
+    }
+}
+void fixRootT(MuFilterHit& aHit,std::vector<int>& key,std::vector<float>& value) {
+   std::map<int,float> m = aHit.GetAllTimes();
    std::map<int, float>::iterator it = m.begin();
    while (it != m.end())
     {
@@ -48,14 +58,15 @@ Value = ROOT.std.vector('float')()
 def map2Dict(aHit,T='GetAllSignals'):
      if T=="SumOfSignals":
         key = Tkey
-     elif T=="GetAllSignals":
+     elif T=="GetAllSignals" or T=="GetAllTimes":
         key = Ikey
      else: 
            print('use case not known',T)
            1/0
      key.clear()
      Value.clear()
-     ROOT.fixRoot(aHit,key,Value)
+     if T=="GetAllTimes": ROOT.fixRootT(aHit,key,Value)
+     else: ROOT.fixRoot(aHit,key,Value)
      theDict = {}
      for k in range(key.size()):
          if T=="SumOfSignals": theDict[key[k].Data()] = Value[k]
@@ -77,8 +88,22 @@ parser.add_argument("-n", "--nEvents", dest="nEvents", help="number of events", 
 parser.add_argument("-t", "--trackType", dest="trackType", help="DS or Scifi", default="DS")
 options = parser.parse_args()
 
-path = options.path
-if path.find('eos')>0: path = os.environ['EOSSHIP']+options.path
+runNr   = str(options.runNumber).zfill(6)
+path     = options.path
+partitions = 0
+if path.find('eos')>0:
+    path     = os.environ['EOSSHIP']+options.path
+    dirlist  = str( subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls "+options.path,shell=True) )
+# single file, before Feb'22
+    data = "sndsw_raw_"+runNr+".root"
+    if  dirlist.find(data)<0:
+# check for partitions
+       dirlist  = str( subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls "+options.path+"run_"+runNr,shell=True) )
+       while 1>0:
+        data = "raw-"+ str(partitions).zfill(4)
+        if dirlist.find(data)>0:
+            partitions+=1
+        else: break
 
 import SndlhcGeo
 if (options.geoFile).find('../')<0: geo = SndlhcGeo.GeoInterface(path+options.geoFile)
@@ -257,8 +282,13 @@ def makeAnimation(histname,j0=1,j1=2,animated=True, findMinMax=True, lim = 50):
 zPos = getAverageZpositions()
 
 if options.runNumber>0:
-              f=ROOT.TFile.Open(path+'sndsw_raw_'+str(options.runNumber).zfill(6)+'.root')
-              eventTree = f.rawConv
+              eventTree = ROOT.TChain('rawConv')
+              if partitions==0:
+                   eventTree.Add(path+'sndsw_raw_'+str(options.runNumber).zfill(6)+'.root')
+              else:
+                   for p in range(partitions):
+                       eventTree.Add(path+'run_'+runNr+'/sndsw_raw-'+str(p).zfill(4)+'.root')
+
 else:
 # for MC data
               f=ROOT.TFile.Open(options.fname)
@@ -400,7 +430,7 @@ def Mufi_hitMaps(Nev = options.nEvents):
                l=2*l
                if bar>59:
                     bar=bar-60
-                    if l<3: l+=1
+                    if l<6: l+=1
         if not key in planes: planes[key] = {}
         sumSignal = map2Dict(aHit,'SumOfSignals')
         planes[key][bar] = [sumSignal['SumL'],sumSignal['SumR']]
@@ -473,7 +503,8 @@ def Mufi_hitMaps(Nev = options.nEvents):
        h[lname].Draw('same')
 
  ut.bookCanvas(h,'USBars',' ',1200,900,1,1)
- colours = {0:ROOT.kOrange,1:ROOT.kRed,2:ROOT.kGreen,3:ROOT.kBlue,4:ROOT.kMagenta}
+ colours = {0:ROOT.kOrange,1:ROOT.kRed,2:ROOT.kGreen,3:ROOT.kBlue,4:ROOT.kMagenta,5:ROOT.kCyan,
+                  6:ROOT.kAzure,7:ROOT.kPink,8:ROOT.kSpring}
  for i in range(5): 
        h['bar_2'+str(i)].SetLineColor(colours[i])
        h['bar_2'+str(i)].SetLineWidth(2)
@@ -487,16 +518,15 @@ def Mufi_hitMaps(Nev = options.nEvents):
  for i in range(5): 
     h['lbar2'].AddEntry(h['bar_2'+str(i)],'plane '+str(i+1),"f")
  h['lbar2'].Draw()
- for i in range(4): 
+ for i in range(7): 
        h['hit_3'+str(i)].SetLineColor(colours[i])
        h['hit_3'+str(i)].SetLineWidth(2)
        h['hit_3'+str(i)].SetStats(0)
  h['hit_30'].Draw()
- h['hit_31'].Draw('same')
- h['hit_32'].Draw('same')
- h['hit_33'].Draw('same')
+ for i in range(1,7):
+     h['hit_3'+str(i)].Draw('same')
  h['lbar3']=ROOT.TLegend(0.6,0.6,0.99,0.99)
- for i in range(4): 
+ for i in range(7): 
     h['lbar3'].AddEntry(h['hit_3'+str(i)],'plane '+str(i+1),"f")
  h['lbar3'].Draw()
 
@@ -875,19 +905,20 @@ def Mufi_Efficiency(Nev=options.nEvents,optionTrack=options.trackType,NbinsRes=1
 
       scale = 1.
       if s==3: scale = 0.4
-      for proj in ['X','Y']:
-        xmin = -X*NbinsRes/100. * scale
-        xmax = -xmin
-        for side in ['','L','R','S']:
+      for side in ['','L','R','S']:
+        for proj in ['X','Y']:
+          xmin = -X*NbinsRes/100. * scale
+          xmax = -xmin
           ut.bookHist(h,'res'+proj+'_'+sdict[s]+side+str(s*10+l),'residual  '+proj+str(s*10+l),NbinsRes,xmin,xmax,40,-20.,100.)
           ut.bookHist(h,'gres'+proj+'_'+sdict[s]+side+str(s*10+l),'residual  '+proj+str(s*10+l),NbinsRes,xmin,xmax,40,-20.,100.)
           if side=='S': continue
           if side=='':
              if s==1: ut.bookHist(h,'resBar'+proj+'_'+sdict[s]+str(s*10+l),'residual '+proj+str(s*10+l),NbinsRes,xmin,xmax,7,-0.5,6.5)
+        if side=='':
              ut.bookHist(h,'track_'+sdict[s]+str(s*10+l),'track x/y '+str(s*10+l)+';X [cm];Y [cm]',100,-90.,10.,100,-20.,80.)
              ut.bookHist(h,'locBarPos_'+sdict[s]+str(s*10+l),'bar sizes;X [cm];Y [cm]',100,-100,100,100,-100,100)
              ut.bookHist(h,'locEx_'+sdict[s]+str(s*10+l),'loc track pos;X [cm];Y [cm]',100,-100,100,100,-100,100)
-          for bar in range(systemAndBars[s]):
+        for bar in range(systemAndBars[s]):
              key = sdict[s]+str(s*10+l)+'_'+str(bar)
              if side=="":
                 ut.bookHist(h,'dtLRvsX_'+key,'dt vs x track '+str(s*10+l)+";X [cm]; dt [ns]",100,-70.,30.,260,-8.,5.)
@@ -901,9 +932,11 @@ def Mufi_Efficiency(Nev=options.nEvents,optionTrack=options.trackType,NbinsRes=1
                             ut.bookHist(h,'signalS'+side+'_'+key+'-c'+str(i),'signal',200,0.,100.,20,0.,100.)
                         else:
                             ut.bookHist(h,'signal'+side+'_'+key+'-c'+str(i),'signal',200,0.,100.,20,0.,100.)
+                        if s==3: continue
+                        ut.bookHist(h,'sigmaTDC'+side+'_'+key+'-c'+str(i),'rms TDC ;dt [ns]',400,-4.0,4.0)
+
                 ut.bookHist(h,'signalT'+side+'_'+key,'signal',400,0.,400.,20,0.,100.)
                 ut.bookHist(h,'signalTS'+side+'_'+key,'signal',400,0.,400.,20,0.,100.)
-        
                 ut.bookHist(h,'signal'+side+'_'+key,'signal',200,0.,100.,20,0.,100.)
 
  ut.bookHist(h,'resVETOY_1','channel vs residual  1',NbinsRes,xmin,xmax,112,-0.5,111.5)
@@ -1149,8 +1182,39 @@ def Mufi_Efficiency(Nev=options.nEvents,optionTrack=options.trackType,NbinsRes=1
                      h['atLRvsX_'+sdict[s]+str(s*10+plane)].Fill(xEx,mtTrack)
                      h['VetoatLRvsX_'+sdict[s]+str(s*10+plane)].Fill(xEx,mtVeto)
                      h['atLRvsX_'+barName].Fill(xEx,mtTrack)
+# TDC channel variations
+                  if s==3: continue
+                  allTDCs = map2Dict(aHit,'GetAllTimes')
+                  meanL,meanR,nL,nR=0,0,0,0
+                  for i in allTDCs:
+                      if smallSiPMchannel(i): continue
+                      if  nSiPMs > i:  # left side
+                          nL+=1
+                          meanL+=allTDCs[i]
+                      else:
+                          nR+=1
+                          meanR+=allTDCs[i]
+                  for i in allTDCs:
+                     if smallSiPMchannel(i): continue
+                     if i<nSiPMs and nL>0:
+                          key =  sdict[s]+str(s*10+plane)+'_'+str(bar)+'-c'+str(i)
+                          rc = h['sigmaTDCL_'+key].Fill( (allTDCs[i]-meanL/nL)*TDC2ns )
+                     elif not(i<nSiPMs) and nR>0:
+                          key =  sdict[s]+str(s*10+plane)+'_'+str(bar)+'-c'+str(i-nSiPMs)
+                          rc = h['sigmaTDCR_'+key].Fill((allTDCs[i]-meanR/nR)*TDC2ns )
 
     theTrack.Delete()
+
+ for s in [1,2]:
+    for l in range(systemAndPlanes[s]):
+        for side in ['L','R']:
+           for bar in range(systemAndBars[s]):
+              key = 'sigmaTDC'+side+'_'+sdict[s]+str(s*10+l)+'_'+str(bar)
+              h[key]=h[key+'-c0'].Clone(key)
+              h[key].Reset()
+              for i in range(systemAndChannels[s][1]+systemAndChannels[s][0]):
+                    h[key].Add(h[key+'-c'+str(i)])
+
  ut.writeHists(h,'MuFilterEff_run'+str(options.runNumber)+'.root')
 
 def mips(readHists=True,option=0):
