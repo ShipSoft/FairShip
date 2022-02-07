@@ -31,10 +31,14 @@ else:
         mc = True
   else:   eventTree = f.rawConv
 
+# backward compatbility for early converted events
+eventTree.GetEvent(0)
+if eventTree.GetBranch('Digi_MuFilterHit'): eventTree.Digi_MuFilterHits = eventTree.Digi_MuFilterHit
+
 nav = ROOT.gGeoManager.GetCurrentNavigator()
 
 Nlimit = 4
-onlyScifi = True
+onlyScifi = False
 def goodEvent():
            stations = {'Scifi':{},'Mufi':{}}
            for d in eventTree.Digi_ScifiHits:
@@ -152,9 +156,11 @@ def loopEvents(start=0,save=False,goodEvents=False,withTrack=-1,Setup=''):
     if rc=='q': break
  if save: os.system("convert -delay 60 -loop 0 *.png animated.gif")
 
-def addTrack(scifi=False,zEx=50):
+def addTrack(scifi=False):
+   xax = h['xz'].GetXaxis()
    if scifi:  Scifi_track()
    else:     trackTask.ExecuteTask()
+   zEx = xax.GetBinCenter(1)
    for   aTrack in eventTree.fittedTracks:
       for p in [0,1]:
           h['aLine'+str(p)] = ROOT.TGraph()
