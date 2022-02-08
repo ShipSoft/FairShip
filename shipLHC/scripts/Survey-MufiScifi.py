@@ -1,6 +1,6 @@
 #python -i MufiScifi.py -r 46 -p /eos/experiment/sndlhc/testbeam/MuFilter/TB_data_commissioning/sndsw/ -g geofile_sndlhc_H6.root
 
-import ROOT,os
+import ROOT,os,subprocess
 import time
 import ctypes
 from array import array
@@ -12,6 +12,16 @@ ROOT.gInterpreter.Declare("""
 
 void fixRoot(MuFilterHit& aHit,std::vector<int>& key,std::vector<float>& value) {
    std::map<int,float> m = aHit.GetAllSignals();
+   std::map<int, float>::iterator it = m.begin();
+   while (it != m.end())
+    {
+        key.push_back(it->first);
+        value.push_back(it->second);
+        it++;
+    }
+}
+void fixRootT(MuFilterHit& aHit,std::vector<int>& key,std::vector<float>& value) {
+   std::map<int,float> m = aHit.GetAllTimes();
    std::map<int, float>::iterator it = m.begin();
    while (it != m.end())
     {
@@ -48,14 +58,15 @@ Value = ROOT.std.vector('float')()
 def map2Dict(aHit,T='GetAllSignals'):
      if T=="SumOfSignals":
         key = Tkey
-     elif T=="GetAllSignals":
+     elif T=="GetAllSignals" or T=="GetAllTimes":
         key = Ikey
      else: 
            print('use case not known',T)
            1/0
      key.clear()
      Value.clear()
-     ROOT.fixRoot(aHit,key,Value)
+     if T=="GetAllTimes": ROOT.fixRootT(aHit,key,Value)
+     else: ROOT.fixRoot(aHit,key,Value)
      theDict = {}
      for k in range(key.size()):
          if T=="SumOfSignals": theDict[key[k].Data()] = Value[k]
@@ -72,10 +83,27 @@ parser.add_argument("-p", "--path", dest="path", help="run number",required=Fals
 parser.add_argument("-f", "--inputFile", dest="fname", help="file name for MC", type=str,default=None,required=False)
 parser.add_argument("-g", "--geoFile", dest="geoFile", help="geofile", required=True)
 parser.add_argument("-b", "--heartBeat", dest="heartBeat", help="heart beat", default=10000,type=int)
+parser.add_argument("-c", "--command", dest="command", help="command", default="")
+parser.add_argument("-n", "--nEvents", dest="nEvents", help="number of events", default=-1,type=int)
+parser.add_argument("-t", "--trackType", dest="trackType", help="DS or Scifi", default="DS")
 options = parser.parse_args()
 
-path = options.path
-if path.find('eos')>0: path = os.environ['EOSSHIP']+options.path
+runNr   = str(options.runNumber).zfill(6)
+path     = options.path
+partitions = 0
+if path.find('eos')>0:
+    path     = os.environ['EOSSHIP']+options.path
+    dirlist  = str( subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls "+options.path,shell=True) )
+# single file, before Feb'22
+    data = "sndsw_raw_"+runNr+".root"
+    if  dirlist.find(data)<0:
+# check for partitions
+       dirlist  = str( subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls "+options.path+"run_"+runNr,shell=True) )
+       while 1>0:
+        data = "raw-"+ str(partitions).zfill(4)
+        if dirlist.find(data)>0:
+            partitions+=1
+        else: break
 
 import SndlhcGeo
 if (options.geoFile).find('../')<0: geo = SndlhcGeo.GeoInterface(path+options.geoFile)
@@ -89,9 +117,15 @@ latex = ROOT.TLatex()
 
 
 # MuFilter mapping of planes and bars 
-systemAndPlanes = {1:2,2:5,3:7}
+systemAndPlanes  = {1:2,2:5,3:7}
 systemAndBars     = {1:7,2:10,3:60}
-sdict                            = {1:'Veto',2:'US',3:'DS'}
+def systemAndOrientation(s,plane):
+   if s==1 or s==2: return "horizontal"
+   if plane%2==1 or plane == 6: return "vertical"
+   return "horizontal"
+
+systemAndChannels     = {1:[8,0],2:[6,2],3:[1,0]}
+sdict                     = {1:'Veto',2:'US',3:'DS'}
 
 freq      = 160.E6
 TDC2ns = 1E9/freq
@@ -125,9 +159,13 @@ def smallSiPMchannel(i):
     if i==2 or i==5 or i==10 or i==13: return True
     else: return False
 
-def fit_langau(hist,o,bmin,bmax):
-   params = {0:'Width(scale)',1:'mostProbable',2:'norm',3:'sigma'}
-   F = ROOT.TF1('langau',langaufun,0,200,4)
+def fit_langau(hist,o,bmin,bmax,opt=''):
+   if opt == 2:
+     params = {0:'Width(scale)',1:'mostProbable',2:'norm',3:'sigma',4:'N2'}
+     F = ROOT.TF1('langau',langaufun,0,200,len(params))
+   else:
+     params = {0:'Width(scale)',1:'mostProbable',2:'norm',3:'sigma'}
+     F = ROOT.TF1('langau',twoLangaufun,0,200,len(params))
    for p in params: F.SetParName(p,params[p])
    rc = hist.Fit('landau','S'+o,'',bmin,bmax)
    res = rc.Get()
@@ -136,14 +174,19 @@ def fit_langau(hist,o,bmin,bmax):
    F.SetParameter(1,res.Parameter(1))
    F.SetParameter(0,res.Parameter(2))
    F.SetParameter(3,res.Parameter(2))
-   F.SetParLimits(0,0,10)
+   F.SetParameter(4,0)
+   F.SetParLimits(0,0,100)
    F.SetParLimits(1,0,100)
    F.SetParLimits(3,0,10)
-
-   rc = hist.Fit(F,'S','',bmin,bmax)
+   rc = hist.Fit(F,'S'+o,'',bmin,bmax)
    res = rc.Get()
    return res
 
+def twoLangaufun(x,par):
+   N1 = langaufun(x,par)
+   par2 = [par[0],par[1]*2,par[4],par[3]]
+   N2 = langaufun(x,par2)
+   return N1+abs(N2)
 
 def  langaufun(x,par):
    #Fit parameters:
@@ -172,7 +215,7 @@ def  langaufun(x,par):
       mpc = par[1] - mpshift * par[0]
 #
       # Range of convolution integral
-      xlow = x[0] - sc * par[3]
+      xlow = max(0,x[0] - sc * par[3])
       xupp = x[0] + sc * par[3]
 #
       step = (xupp-xlow) / np
@@ -193,8 +236,45 @@ def  langaufun(x,par):
       return (par[2] * step * summe * invsq2pi / par[3])
 
 def myPrint(tc,name,withRootFile=False):
+     tc.Update()
      tc.Print(name+'-run'+str(options.runNumber)+'.png')
      if withRootFile: tc.Print(name+'-run'+str(options.runNumber)+'.root')
+
+def makeAnimation(histname,j0=1,j1=2,animated=True, findMinMax=True, lim = 50):
+    ut.bookCanvas(h,'ani','',900,800,1,1)
+    tc = h['ani'].cd()
+    jmin,jmax = j0,j1
+    if findMinMax:
+       jmin,jmax = 0,0
+       for j in range(j0,j1):
+            tmp = histname.replace('$$$',str(j))
+            if tmp in h:
+                  if h[tmp].GetEntries()>lim:
+                       jmin = j
+                       print(j,tmp,h[tmp].GetEntries())
+                       break
+       for j in range(j1,j0,-1):
+            tmp = histname.replace('$$$',str(j))
+            if tmp in h:
+                  if h[tmp].GetEntries()>lim:
+                       jmax = j
+                       break
+    for j in range(jmin,jmax):
+            tmp = histname.replace('$$$',str(j))
+            h[tmp].Draw()
+            tc.Update()
+            stats = h[tmp].FindObject('stats')
+            stats.SetOptFit(1111111)
+            h[tmp].Draw()
+            if animated: 
+               h['ani'].Print('picAni'+str(j)+'.png')
+            else:
+               rc = input("hit return for next event or q for quit: ")
+               if rc=='q': break
+    if animated and jmax > jmin: 
+           os.system("convert -delay 60 -loop 0 picAni*.png "+histname+".gif")
+           os.system('rm picAni*.png')
+
 
 
 # initialize 
@@ -202,8 +282,13 @@ def myPrint(tc,name,withRootFile=False):
 zPos = getAverageZpositions()
 
 if options.runNumber>0:
-              f=ROOT.TFile.Open(path+'sndsw_raw_'+str(options.runNumber).zfill(6)+'.root')
-              eventTree = f.rawConv
+              eventTree = ROOT.TChain('rawConv')
+              if partitions==0:
+                   eventTree.Add(path+'sndsw_raw_'+str(options.runNumber).zfill(6)+'.root')
+              else:
+                   for p in range(partitions):
+                       eventTree.Add(path+'run_'+runNr+'/sndsw_raw-'+str(p).zfill(4)+'.root')
+
 else:
 # for MC data
               f=ROOT.TFile.Open(options.fname)
@@ -253,9 +338,7 @@ def help():
     print("     rough estimate of Scifi resolution by comparing slopes  build with two stations, x and y projection")
     print("             Scifi_slopes(Nev=-1)")
 
-print ('waiting for command. Enter help() for more infomation')
-
-def Scifi_hitMaps(Nev=-1):
+def Scifi_hitMaps(Nev=options.nEvents):
  scifi = geo.modules['Scifi']
  A=ROOT.TVector3()
  B=ROOT.TVector3()
@@ -290,7 +373,7 @@ def Scifi_hitMaps(Nev=-1):
     tc = h['signal'].cd(mat+1)
     h['sig_'+str(mat)].Draw()
 
-def Mufi_hitMaps(Nev = -1):
+def Mufi_hitMaps(Nev = options.nEvents):
  # veto system 2 layers with 7 bars and 8 sipm channels on both ends
  # US system 5 layers with 10 bars and 8 sipm channels on both ends
  # DS system horizontal(3) planes, 60 bars, readout on both sides, single channel
@@ -347,7 +430,7 @@ def Mufi_hitMaps(Nev = -1):
                l=2*l
                if bar>59:
                     bar=bar-60
-                    l+=1
+                    if l<6: l+=1
         if not key in planes: planes[key] = {}
         sumSignal = map2Dict(aHit,'SumOfSignals')
         planes[key][bar] = [sumSignal['SumL'],sumSignal['SumR']]
@@ -383,34 +466,25 @@ def Mufi_hitMaps(Nev = -1):
     for key in planes:
         if len(planes[key]) > 2: maxOneBar = False
     if withX and maxOneBar:  beamSpot()
+    
+ S = {1:[1800,800,2,1],2:[1800,1500,2,3],3:[1800,1800,2,4]}
+ for s in S:
+   ut.bookCanvas(h,'hitmaps' +str(s),' ',S[s][0],S[s][1],S[s][2],S[s][3])
+   ut.bookCanvas(h,'barmaps'+str(s),' ',S[s][0],S[s][1],S[s][2],S[s][3])
+   ut.bookCanvas(h,'signal'    +str(s),' ',S[s][0],S[s][1],S[s][2],S[s][3])
+   ut.bookCanvas(h,'Tsignal'   +str(s),' ',S[s][0],S[s][1],S[s][2],S[s][3])
 
- installed_stations = {}
- for  s in range(1,4):
-   installed_stations[s] = []
    for l in range(systemAndPlanes[s]):
-    if h['hit_'+str(s)+str(l)].GetEntries()>0:
-         installed_stations[s].append(l)
- x = 0
- y = 0
- for s in installed_stations: 
-    if len(installed_stations[s])>0: x+=1
-    if len(installed_stations[s])>y: y = len(installed_stations[s])
- ut.bookCanvas(h,'hitmaps',' ',1200,1600,x,y)
- ut.bookCanvas(h,'barmaps',' ',1200,1600,x,y)
- ut.bookCanvas(h,'signal',' ',1200,1600,x,y)
- ut.bookCanvas(h,'Tsignal',' ',1200,1600,x,y)
-
- for S in installed_stations:
-   for l in range(len(installed_stations[S])):
-      n = S + l*x
-      tc = h['hitmaps'].cd(n)
-      tag = str(S)+str(installed_stations[S][l])
+      n = l+1
+      if s==3 and n==7: n=8
+      tc = h['hitmaps'+str(s)].cd(n)
+      tag = str(s)+str(l)
       h['hit_'+tag].Draw()
-      tc = h['barmaps'].cd(n)
+      tc = h['barmaps'+str(s)].cd(n)
       h['bar_'+tag].Draw()
-      tc = h['signal'].cd(n)
+      tc = h['signal'+str(s)].cd(n)
       h['sig_'+tag].Draw()
-      tc = h['Tsignal'].cd(n)
+      tc = h['Tsignal'+str(s)].cd(n)
       h['Tsig_'+tag].Draw()
 
  ut.bookCanvas(h,'VETO',' ',1200,1800,1,2)
@@ -429,7 +503,8 @@ def Mufi_hitMaps(Nev = -1):
        h[lname].Draw('same')
 
  ut.bookCanvas(h,'USBars',' ',1200,900,1,1)
- colours = {0:ROOT.kOrange,1:ROOT.kRed,2:ROOT.kGreen,3:ROOT.kBlue,4:ROOT.kMagenta}
+ colours = {0:ROOT.kOrange,1:ROOT.kRed,2:ROOT.kGreen,3:ROOT.kBlue,4:ROOT.kMagenta,5:ROOT.kCyan,
+                  6:ROOT.kAzure,7:ROOT.kPink,8:ROOT.kSpring}
  for i in range(5): 
        h['bar_2'+str(i)].SetLineColor(colours[i])
        h['bar_2'+str(i)].SetLineWidth(2)
@@ -443,16 +518,15 @@ def Mufi_hitMaps(Nev = -1):
  for i in range(5): 
     h['lbar2'].AddEntry(h['bar_2'+str(i)],'plane '+str(i+1),"f")
  h['lbar2'].Draw()
- for i in range(4): 
+ for i in range(7): 
        h['hit_3'+str(i)].SetLineColor(colours[i])
        h['hit_3'+str(i)].SetLineWidth(2)
        h['hit_3'+str(i)].SetStats(0)
  h['hit_30'].Draw()
- h['hit_31'].Draw('same')
- h['hit_32'].Draw('same')
- h['hit_33'].Draw('same')
+ for i in range(1,7):
+     h['hit_3'+str(i)].Draw('same')
  h['lbar3']=ROOT.TLegend(0.6,0.6,0.99,0.99)
- for i in range(4): 
+ for i in range(7): 
     h['lbar3'].AddEntry(h['hit_3'+str(i)],'plane '+str(i+1),"f")
  h['lbar3'].Draw()
 
@@ -528,11 +602,15 @@ def Mufi_hitMaps(Nev = -1):
          h['sig'+side+'_'+str( s*10+plane)].Draw()
 
 
- for canvas in ['signalUSVeto','LR','hitmaps','barmaps','signal','Tsignal','USBars']:
+ for canvas in ['signalUSVeto','LR','USBars']:
       h[canvas].Update()
       myPrint(h[canvas],canvas)
+ for canvas in ['hitmaps','barmaps','signal','Tsignal']:
+      for s in range(1,4):
+         h[canvas+str(s)].Update()
+         myPrint(h[canvas+str(s)],canvas+sdict[s])
 
-def eventTime(Nev=-1):
+def eventTime(Nev=options.nEvents):
  Tprev = -1
  if Nev < 0 : Nev = eventTree.GetEntries()
  ut.bookHist(h,'Etime','delta event time; dt [s]',100,0.0,1.)
@@ -564,7 +642,7 @@ def eventTime(Nev=-1):
  h['T'].Update()
  myPrint(h['T'],'time')
 
-def TimeStudy(Nev=-1,withDisplay=False):
+def TimeStudy(Nev=options.nEvents,withDisplay=False):
  if Nev < 0 : Nev = eventTree.GetEntries()
  ut.bookHist(h,'Vetotime','time',1000,0.,50.)
  ut.bookHist(h,'UStime','time',1000,0.,50.)
@@ -656,7 +734,7 @@ def beamSpot():
                l=2*l
                if bar>59:
                     bar=bar-60
-                    l+=1
+                    if l<6: l+=1
              if s==3 and l%2==0: Ybar=bar
              if s==3 and l%2==1: Xbar=bar
              nSiPMs = aHit.GetnSiPMs()
@@ -690,7 +768,7 @@ def DS_track():
          bar = aHit.GetDetectorID()%1000
          plane = s*10+p
          if s==3:
-           if bar<60: plane = s*10+2*p
+           if bar<60 or p==3: plane = s*10+2*p
            else:  plane = s*10+2*p+1
          stations[plane][k] = aHit
     if not len(stations[30])*len(stations[31])*len(stations[32])*len(stations[33]) == 1: return -1
@@ -729,7 +807,7 @@ def Scifi_track(nPlanes = 8, nClusters = 11):
     eventTree.ScifiClusters = clusters
     return theTrack
 
-def USshower(Nev=-1):
+def USshower(Nev=options.nEvents):
     for x in ['','-small']:
        ut.bookHist(h,'shower'+x,'energy vs z',200,0.,10000.,20,-250.,-100.)
        ut.bookHist(h,'showerX'+x,'energy vs z',200,0.,10000.,20,-250.,-100.)
@@ -810,7 +888,7 @@ def USshower(Nev=-1):
         h['SvsL'+str(p)].Draw('colz')
     myPrint(h['CorLS'],'QCDsmallCSQCDlarge')
 
-def Mufi_Efficiency(Nev=-1,optionTrack='DS',NbinsRes=100,X=10.):
+def Mufi_Efficiency(Nev=options.nEvents,optionTrack=options.trackType,NbinsRes=100,X=10.):
  
  projs = {1:'Y',0:'X'}
  for s in range(1,6):
@@ -822,33 +900,43 @@ def Mufi_Efficiency(Nev=-1,optionTrack='DS',NbinsRes=100,X=10.):
  for s in systemAndPlanes:
     for l in range(systemAndPlanes[s]):
       ut.bookHist(h,'dtLRvsX_'+sdict[s]+str(s*10+l),'dt vs x track '+str(s*10+l)+";X [cm]; dt [ns]",100,-70.,30.,260,-8.,5.)
-      ut.bookHist(h,'atLRvsX_'+sdict[s]+str(s*10+l),'mean time - T0 vs x track '+str(s*10+l)+";X [cm]; dt [ns]",20,-70.,30.,250,-10.,15.0)
+      ut.bookHist(h,'atLRvsX_'+sdict[s]+str(s*10+l),'mean time - T0track vs x '+str(s*10+l)+";X [cm]; dt [ns]",20,-70.,30.,250,-10.,15.0)
+      ut.bookHist(h,'VetoatLRvsX_'+sdict[s]+str(s*10+l),'mean time - T0Veto vs x '+str(s*10+l)+";X [cm]; dt [ns]",20,-70.,30.,250,-10.,15.0)
 
       scale = 1.
       if s==3: scale = 0.4
-      for proj in ['X','Y']:
-        xmin = -X*NbinsRes/100. * scale
-        xmax = -xmin
-        for side in ['','L','R','S']: 
+      for side in ['','L','R','S']:
+        for proj in ['X','Y']:
+          xmin = -X*NbinsRes/100. * scale
+          xmax = -xmin
           ut.bookHist(h,'res'+proj+'_'+sdict[s]+side+str(s*10+l),'residual  '+proj+str(s*10+l),NbinsRes,xmin,xmax,40,-20.,100.)
           ut.bookHist(h,'gres'+proj+'_'+sdict[s]+side+str(s*10+l),'residual  '+proj+str(s*10+l),NbinsRes,xmin,xmax,40,-20.,100.)
           if side=='S': continue
           if side=='':
              if s==1: ut.bookHist(h,'resBar'+proj+'_'+sdict[s]+str(s*10+l),'residual '+proj+str(s*10+l),NbinsRes,xmin,xmax,7,-0.5,6.5)
+        if side=='':
              ut.bookHist(h,'track_'+sdict[s]+str(s*10+l),'track x/y '+str(s*10+l)+';X [cm];Y [cm]',100,-90.,10.,100,-20.,80.)
              ut.bookHist(h,'locBarPos_'+sdict[s]+str(s*10+l),'bar sizes;X [cm];Y [cm]',100,-100,100,100,-100,100)
              ut.bookHist(h,'locEx_'+sdict[s]+str(s*10+l),'loc track pos;X [cm];Y [cm]',100,-100,100,100,-100,100)
-          for bar in range(systemAndBars[s]):
+        for bar in range(systemAndBars[s]):
              key = sdict[s]+str(s*10+l)+'_'+str(bar)
              if side=="":
                 ut.bookHist(h,'dtLRvsX_'+key,'dt vs x track '+str(s*10+l)+";X [cm]; dt [ns]",100,-70.,30.,260,-8.,5.)
+                ut.bookHist(h,'dtF12LRvsX_'+key,'dt vs x track '+str(s*10+l)+";X [cm]; dt [ns]",100,-70.,30.,260,-8.,5.)
+                ut.bookHist(h,'dtfastLRvsX_'+key,'dt vs x track '+str(s*10+l)+";X [cm]; dt [ns]",100,-70.,30.,260,-8.,5.)
                 ut.bookHist(h,'atLRvsX_'+key,'dt vs x track '+str(s*10+l)+";X [cm]; dt [ns]",100,-70.,30.,260,-8.,5.)
              else:
                 ut.bookHist(h,'nSiPMs'+side+'_'+key,'#sipms',16,-0.5,15.5,20,0.,100.)
-                ut.bookHist(h,'signalS'+side+'_'+key,'signal',200,0.,100.,20,0.,100.)
-                ut.bookHist(h,'signal'+side+'_'+key,'signal',200,0.,100.,20,0.,100.)
+                for i in range(systemAndChannels[s][1]+systemAndChannels[s][0]):
+                        if s==2 and smallSiPMchannel(i):
+                            ut.bookHist(h,'signalS'+side+'_'+key+'-c'+str(i),'signal',200,0.,100.,20,0.,100.)
+                        else:
+                            ut.bookHist(h,'signal'+side+'_'+key+'-c'+str(i),'signal',200,0.,100.,20,0.,100.)
+                        if s==3: continue
+                        ut.bookHist(h,'sigmaTDC'+side+'_'+key+'-c'+str(i),'rms TDC ;dt [ns]',400,-4.0,4.0)
+
                 ut.bookHist(h,'signalT'+side+'_'+key,'signal',400,0.,400.,20,0.,100.)
-        
+                ut.bookHist(h,'signalTS'+side+'_'+key,'signal',400,0.,400.,20,0.,100.)
                 ut.bookHist(h,'signal'+side+'_'+key,'signal',200,0.,100.,20,0.,100.)
 
  ut.bookHist(h,'resVETOY_1','channel vs residual  1',NbinsRes,xmin,xmax,112,-0.5,111.5)
@@ -868,7 +956,7 @@ def Mufi_Efficiency(Nev=-1,optionTrack='DS',NbinsRes=100,X=10.):
     if optionTrack=='DS': theTrack = DS_track()
     else                                   : theTrack = Scifi_track()
     if not hasattr(theTrack,"getFittedState"): continue
-    if not theTrack.getFitStatus().isFitConverged(): 
+    if not theTrack.getFitStatus().isFitConverged() and optionTrack!='DS':   # for H8 where only two planes / proj were avaiable
                  theTrack.Delete()
                  continue
 # now extrapolate to US and check for hits.
@@ -881,12 +969,13 @@ def Mufi_Efficiency(Nev=-1,optionTrack='DS',NbinsRes=100,X=10.):
     rc = h['NdofvsNMeas'].Fill(fitStatus.getNdf(),theTrack.getNumPointsWithMeasurement())
 # map clusters to hit keys
     DetID2Key={}
-    for aCluster in event.ScifiClusters:
+    if event.FindBranch("ScifiClusters") or hasattr(eventTree,'ScifiClusters'):
+     for aCluster in event.ScifiClusters:
         for nHit in range(event.Digi_ScifiHits.GetEntries()):
             if event.Digi_ScifiHits[nHit].GetDetectorID()==aCluster.GetFirst():
                DetID2Key[aCluster.GetFirst()] = nHit
 
-    if chi2Ndof> 9: 
+    if chi2Ndof> 9 and optionTrack!='DS': 
        rc = h['trackslxy_badChi2'].Fill(mom.x()/mom.Mag(),mom.y()/mom.Mag())
        theTrack.Delete()
        continue
@@ -894,8 +983,8 @@ def Mufi_Efficiency(Nev=-1,optionTrack='DS',NbinsRes=100,X=10.):
 # get T0 from Track
     if optionTrack=='DS':
        # don't know yet what to do
-         T0 = 0
-         Z0 = 0
+         T0track = 0
+         Z0track = 0
     else:
          M = theTrack.getPointWithMeasurement(0)
          W = M.getRawMeasurement()
@@ -906,9 +995,9 @@ def Mufi_Efficiency(Nev=-1,optionTrack='DS',NbinsRes=100,X=10.):
          X = B-pos
          L0 = X.Mag()/v
          # need to correct for signal propagation along fibre
-         T0 = aHit.GetTime()*TDC2ns - L0
+         T0track = aHit.GetTime()*TDC2ns - L0
          TZero = aHit.GetTime()*TDC2ns
-         Z0 = pos[2]
+         Z0track = pos[2]
          times = {}
          for nM in range(theTrack.getNumPointsWithMeasurement()):
             state   = theTrack.getFittedState(nM)
@@ -923,7 +1012,7 @@ def Mufi_Efficiency(Nev=-1,optionTrack='DS',NbinsRes=100,X=10.):
             else: X = A-posM
             L = X.Mag()/v
          # need to correct for signal propagation along fibre
-            dT = aHit.GetTime()*TDC2ns - L - T0 - (posM[2] -Z0)/u.speedOfLight
+            dT = aHit.GetTime()*TDC2ns - L - T0track - (posM[2] -Z0track)/u.speedOfLight
             ss = str(aHit.GetStation())
             prj = 'X'
             l = posM[0]
@@ -952,6 +1041,28 @@ def Mufi_Efficiency(Nev=-1,optionTrack='DS',NbinsRes=100,X=10.):
            if aHit.isVertical(): plane = s*10+2*p+1
            else:                         plane = s*10+2*p
          muHits[plane].append(aHit)
+
+# get T0 from VETO
+    s = 1
+    Z0Veto = zPos['MuFilter'][1*10+0]
+    dZ = zPos['MuFilter'][1*10+1] - zPos['MuFilter'][1*10+0]
+    avT = {}
+    for p in range(systemAndPlanes[s]): 
+         plane = s*10+p
+         if len(muHits[plane])!=1: continue
+         aHit = muHits[plane][0]
+# check if hit within track extrapolation
+         zEx = zPos['MuFilter'][s*10+plane]
+         lam = (zEx-pos.z())/mom.z()
+         xEx,yEx = pos.x()+lam*mom.x(),pos.y()+lam*mom.y()
+         detID = aHit.GetDetectorID()
+         MuFilter.GetPosition(detID,A,B)
+         D = (A[1]+B[1])/2. - yEx
+         if abs(D)>5: continue
+         avT[plane] = aHit.GetImpactT()
+    T0Veto = -999
+    if len(avT)==2:
+         T0Veto = (avT[10]+(avT[11]-dZ/u.speedOfLight))/2.
 
     vetoHits = {0:[],1:[]}
     for s in sdict:
@@ -996,7 +1107,7 @@ def Mufi_Efficiency(Nev=-1,optionTrack='DS',NbinsRes=100,X=10.):
               rc = h['gresX_'+sdict[s]+str(s*10+plane)].Fill(gdx,globEx[1])
               S = map2Dict(aHit,'GetAllSignals')
               # check for signal in left / right or small sipm
-              left,right,smallL,smallR,Sleft,Sright = 0,0,0,0,0,0
+              left,right,smallL,smallR,Sleft,Sright,SleftS,SrightS = 0,0,0,0,0,0,0,0
               if  s==1:        
                     vetoHits[plane].append( [gdy,bar] )
                     rc = h['resBarY_'+sdict[s]+str(s*10+plane)].Fill(gdy,bar)
@@ -1025,75 +1136,136 @@ def Mufi_Efficiency(Nev=-1,optionTrack='DS',NbinsRes=100,X=10.):
                      rc = h['resX_'+sdict[s]+'S'+str(s*10+plane)].Fill(dx,locEx[0])
                      rc = h['gresY_'+sdict[s]+'S'+str(s*10+plane)].Fill(gdy,globEx[1])
                      rc = h['gresX_'+sdict[s]+'S'+str(s*10+plane)].Fill(gdx,globEx[0])
-              if abs(dy)<3.0:   # check channels
+              dist = abs(dy)
+              if aHit.isVertical() : dist = abs(dx)
+              if dist<3.0:   # check channels
                   if aHit.isVertical():
                      dL  = locA[1]- locEx[1]
                      dR = locEx[1] - locB[1]
                   else:
                      dR = locA[0] - locEx[0]
                      dL =  locEx[0] - locB[0]
-                  rc = h['nSiPMsL_'+sdict[s]+str(s*10+plane)+'_'+str(bar)].Fill(left,dL)
-                  rc = h['nSiPMsR_'+sdict[s]+str(s*10+plane)+'_'+str(bar)].Fill(right,dR)
+                  barName = sdict[s]+str(s*10+plane)+'_'+str(bar)
+                  rc = h['nSiPMsL_'+barName].Fill(left,dL)
+                  rc = h['nSiPMsR_'+barName].Fill(right,dR)
                   for x in S:
                       qcd = S[x]
-                      if x<nSiPMs: 
-                         if s==2 and smallSiPMchannel(x): rc = h['signalSL_'+sdict[s]+str(s*10+plane)+'_'+str(bar)].Fill(qcd,dL)
-                         else:                                    
-                               rc = h['signalL_'+sdict[s]+str(s*10+plane)+'_'+str(bar)].Fill(qcd,dL)
+                      if x<nSiPMs:
+                         if s==2 and smallSiPMchannel(x): 
+                               rc = h['signalSL_'+barName+'-c'+str(x)].Fill(qcd,dL)
+                               SleftS+=qcd
+                         else:
+                               rc = h['signalL_'+barName+'-c'+str(x)].Fill(qcd,dL)
                                Sleft+=qcd
                       else: 
-                         if s==2 and smallSiPMchannel(x): rc = h['signalSR_'+sdict[s]+str(s*10+plane)+'_'+str(bar)].Fill(qcd,dR)
+                         if s==2 and smallSiPMchannel(x): 
+                               rc = h['signalSR_'+barName+'-c'+str(x-nSiPMs)].Fill(qcd,dR)
+                               SrightS+=qcd
                          else:
-                               rc = h['signalR_'+sdict[s]+str(s*10+plane)+'_'+str(bar)].Fill(qcd,dR)
+                               rc = h['signalR_'+barName+'-c'+str(x-nSiPMs)].Fill(qcd,dR)
                                Sright+=qcd
-                  rc = h['signalTL_'+sdict[s]+str(s*10+plane)+'_'+str(bar)].Fill(Sleft,dL)
-                  rc = h['signalTR_'+sdict[s]+str(s*10+plane)+'_'+str(bar)].Fill(Sright,dR)
+                  rc = h['signalTL_'+barName].Fill(Sleft,dL)
+                  rc = h['signalTR_'+barName].Fill(Sright,dR)
+                  rc = h['signalTSL_'+barName].Fill(SleftS,dL)
+                  rc = h['signalTSR_'+barName].Fill(SrightS,dR)
 
 #   look at delta time vs track X, works only for horizontal planes.
                   if not aHit.isVertical():
-                     dt  = aHit.GetDeltaT()
-                     mt = aHit.GetImpactT() - T0 - (globPos[2] - Z0)/u.speedOfLight
-                     # print("?",mt,aHit.GetImpactT(),T0,(globPos[2] - Z0)/u.speedOfLight)
+                     dt    = aHit.GetDeltaT()
+                     dtF  = aHit.GetFastDeltaT()
+                     mtTrack = aHit.GetImpactT() - T0track - (globPos[2] - Z0track)/u.speedOfLight
+                     mtVeto  = aHit.GetImpactT() - T0Veto - (globPos[2] - Z0Veto)/u.speedOfLight
                      h['dtLRvsX_'+sdict[s]+str(s*10+plane)].Fill(xEx,dt*TDC2ns)
-                     h['dtLRvsX_'+sdict[s]+str(s*10+plane)+'_'+str(bar)].Fill(xEx,dt*TDC2ns)
-                     h['atLRvsX_'+sdict[s]+str(s*10+plane)].Fill(xEx,mt)
-                     h['atLRvsX_'+sdict[s]+str(s*10+plane)+'_'+str(bar)].Fill(xEx,mt)
+                     h['dtLRvsX_'+barName].Fill(xEx,dt*TDC2ns)
+                     if left==6 and right==6:  h['dtF12LRvsX_'+barName].Fill(xEx,dt*TDC2ns)
+                     h['dtfastLRvsX_'+barName].Fill(xEx,dtF*TDC2ns)
+                     h['atLRvsX_'+sdict[s]+str(s*10+plane)].Fill(xEx,mtTrack)
+                     h['VetoatLRvsX_'+sdict[s]+str(s*10+plane)].Fill(xEx,mtVeto)
+                     h['atLRvsX_'+barName].Fill(xEx,mtTrack)
+# TDC channel variations
+                  if s==3: continue
+                  allTDCs = map2Dict(aHit,'GetAllTimes')
+                  meanL,meanR,nL,nR=0,0,0,0
+                  for i in allTDCs:
+                      if smallSiPMchannel(i): continue
+                      if  nSiPMs > i:  # left side
+                          nL+=1
+                          meanL+=allTDCs[i]
+                      else:
+                          nR+=1
+                          meanR+=allTDCs[i]
+                  for i in allTDCs:
+                     if smallSiPMchannel(i): continue
+                     if i<nSiPMs and nL>0:
+                          key =  sdict[s]+str(s*10+plane)+'_'+str(bar)+'-c'+str(i)
+                          rc = h['sigmaTDCL_'+key].Fill( (allTDCs[i]-meanL/nL)*TDC2ns )
+                     elif not(i<nSiPMs) and nR>0:
+                          key =  sdict[s]+str(s*10+plane)+'_'+str(bar)+'-c'+str(i-nSiPMs)
+                          rc = h['sigmaTDCR_'+key].Fill((allTDCs[i]-meanR/nR)*TDC2ns )
 
     theTrack.Delete()
+
+ for s in [1,2]:
+    for l in range(systemAndPlanes[s]):
+        for side in ['L','R']:
+           for bar in range(systemAndBars[s]):
+              key = 'sigmaTDC'+side+'_'+sdict[s]+str(s*10+l)+'_'+str(bar)
+              h[key]=h[key+'-c0'].Clone(key)
+              h[key].Reset()
+              for i in range(systemAndChannels[s][1]+systemAndChannels[s][0]):
+                    h[key].Add(h[key+'-c'+str(i)])
+
  ut.writeHists(h,'MuFilterEff_run'+str(options.runNumber)+'.root')
 
-def mips(readHists=False):
+def mips(readHists=True,option=0):
 # plot mean sipm channel fired vs X
     if readHists:
         for x in h: 
             if hasattr(x,'Reset'): x.Reset()
-        ut.readHists(h,'LandauFits_run'+str(options.runNumber)+'.root')
+        ut.readHists(h,'MuFilterEff_run'+str(options.runNumber)+'.root')
     s = 2
     for plane in range(5):
         for bar in range(10):
            for p in ['L','R']:
-               for T in ['','T']:
-                    name = 'signal'+T+p+'_US'+str(s*10+plane)+'_'+str(bar)
-                    histo = h[name]
-                    for x in  ['M','W','S','eM','eW','eS']:
-                      h[x+name]=histo.ProjectionY(x+name)
-                      h[x+name].Reset()
-                      h[x+name].SetTitle(histo.GetName()+';distance [cm]')
-                    for n in range(1,h['M'+name].GetNbinsX()+1):
+               for T in ['T','']:
+                    if T=='T': nloop = 1
+                    else: nloop = systemAndChannels[s][1]+systemAndChannels[s][0]
+                    for i in range(nloop):
+                        if s==2 and smallSiPMchannel(i): continue
+                        name = 'signal'+T+p+'_US'+str(s*10+plane)+'_'+str(bar)
+                        if nloop>1: name += '-c'+str(i)
+                        histo = h[name]
+                        for x in  ['M','C','W','S','E']:
+                          h[x+name]=histo.ProjectionY(x+name)
+                          h[x+name].Reset()
+                          h[x+name].SetTitle(histo.GetName()+';distance [cm]')
+                        for n in range(1,h['M'+name].GetNbinsX()+1):
                               h[name+'-X'+str(n)] = h[name].ProjectionX(name+'-X'+str(n),n,n)
                               tmp = h[name+'-X'+str(n)]
-                              if tmp.GetEntries()>10:
-                                        print('Fit ',name,n)
-                                        if T=='T': bmin,bmax = 0,150
+                              h['C'+name].SetBinContent(n,-1)
+                              h['E'+name].SetBinContent(n,tmp.GetEntries())
+                              if tmp.GetEntries()>50:
+                                        print('Fit ',options.runNumber,name,n)
+                                        if T=='T': bmin,bmax = 10,tmp.GetMaximumBin()
                                         else: bmin,bmax = 0,30
-                                        res = fit_langau(tmp,'L',bmin,bmax)
+                                        for k in range(tmp.GetMaximumBin(),1,-1):
+                                              if tmp.GetBinContent(k)<2:
+                                                 bmin = k
+                                                 break
+                                        for k in range(tmp.GetMaximumBin(),tmp.GetNbinsX()):
+                                              if tmp.GetBinContent(k) + tmp.GetBinContent(k+1)<2:
+                                                 bmax = k
+                                                 break
+                                        res = fit_langau(tmp,'LQ',0.8*tmp.GetBinCenter(bmin),1.5*tmp.GetBinCenter(bmax))
                                         if not res: continue
+                                        if not res.IsValid(): continue
+                                        h['C'+name].SetBinContent(n,res.Chi2()/res.Ndf())
                                         h['M'+name].SetBinContent(n,res.Parameter(1))
-                                        h['eM'+name].SetBinContent(n,res.ParError(1))
+                                        h['M'+name].SetBinError(n,res.ParError(1))
                                         h['W'+name].SetBinContent(n,res.Parameter(0))
-                                        h['eW'+name].SetBinError(n,res.ParError(0))
+                                        h['W'+name].SetBinError(n,res.ParError(0))
                                         h['S'+name].SetBinContent(n,res.Parameter(3))
-                                        h['eS'+name].SetBinError(n,res.ParError(3))
+                                        h['S'+name].SetBinError(n,res.ParError(3))
                name = 'nSiPMs'+p+'_US'+str(s*10+plane)+'_'+str(bar)
                histo = h[name]
                x='N'
@@ -1124,11 +1296,16 @@ def mips(readHists=False):
           for n in range(1,h['M'+name].GetNbinsX()+1):
                  h[name+'-X'+str(n)] = h[name].ProjectionX(name+'-X'+str(n),n,n)
                  tmp = h[name+'-X'+str(n)]
-                 if tmp.GetEntries()>10:
-                    print('Fit ',name,n)
+                 if tmp.GetEntries()>50:
+                    print('Fit ',options.runNumber,name,n)
                     bmin,bmax = 0,80
-                    res = fit_langau(tmp,'L',bmin,bmax)
+                    for k in range(tmp.GetMaximumBin(),1,-1):
+                          if tmp.GetBinContent(k)<2:
+                              bmin = k
+                              break
+                    res = fit_langau(tmp,'LQ',0.8*tmp.GetBinCenter(bmin),1.5*tmp.GetBinCenter(bmax))
                     if not res: continue
+                    if not res.IsValid(): continue
                     h['M'+name].SetBinContent(n,res.Parameter(1))
                     h['M'+name].SetBinError(n,res.ParError(1))
                     h['W'+name].SetBinContent(n,res.Parameter(0))
@@ -1137,11 +1314,37 @@ def mips(readHists=False):
                     h['S'+name].SetBinError(n,res.ParError(3))
 
     ut.writeHists(h,'LandauFits_run'+str(options.runNumber)+'.root')
+def mipsAfterBurner(readhisto=True):
+    if readhisto:  ut.readHists(h,'LandauFits_run'+str(options.runNumber)+'.root')
+    s=2
+    for plane in range(5):
+           for p in ['L','R']:
+                for bar in range(10):
+                     name = 'signalT'+p+'_US'+str(s*10+plane)+'_'+str(bar)
+                     for nb in range(1,h['M'+name].GetNbinsX()+1):
+                          tmp = h[name+'-X'+str(nb)]
+                          N = tmp.GetEntries()
+                          if N>50 and h['M'+name].GetBinContent(nb)==0: 
+                               fg  =  tmp.GetFunction('langau')
+                               bmin,bmax = fg.GetXmin(),fg.GetXmax()
+                               res = fit_langau(tmp,'LQ',bmin,bmax)
+                               if res.IsValid():
+                                    print(name,nb,N,'fixed')
+                                    h['M'+name].SetBinContent(nb,res.Parameter(1))
+                                    h['M'+name].SetBinError(nb,res.ParError(1))
+                                    h['W'+name].SetBinContent(nb,res.Parameter(0))
+                                    h['W'+name].SetBinError(nb,res.ParError(0))
+                                    h['S'+name].SetBinContent(nb,res.Parameter(3))
+                                    h['S'+name].SetBinError(nb,res.ParError(3))
+                               else:
+                                    print(name,nb,N,'problem')
+barColor = [ROOT.kRed,ROOT.kRed-7,ROOT.kMagenta,ROOT.kMagenta-6,ROOT.kBlue,ROOT.kBlue-9,
+                      ROOT.kCyan,ROOT.kAzure-4,ROOT.kGreen,ROOT.kGreen+3]
 
 def plotMips(readhisto=True):
     if readhisto:  ut.readHists(h,'LandauFits_run'+str(options.runNumber)+'.root')
     langau = ROOT.TF1('Langau',langaufun,0.,100.,4)
-    ut.bookCanvas(h,'Msignal','',1200,2000,2,5)
+    ut.bookCanvas(h,'CsignalT','',1200,2000,2,5)
     ut.bookCanvas(h,'WsignalT','',1200,2000,2,5)
     ut.bookCanvas(h,'SsignalT','',1200,2000,2,5)
     ut.bookCanvas(h,'Msignal1','',900,600,1,1)
@@ -1150,7 +1353,7 @@ def plotMips(readhisto=True):
     ut.bookCanvas(h,'NnSiPMs1','',900,600,1,1)
     ut.bookCanvas(h,'NnSiPMs','',1200,2000,2,5)
 #example plots:
-    for T in ['','T']:
+    for T in ['T']:
        name = 'signal'+T+'L_US22_5-X10'
        tc = h['Msignal'+T+'1'].cd()
        h[name].Draw()
@@ -1170,46 +1373,148 @@ def plotMips(readhisto=True):
     myPrint(h['NnSiPMs1'],'nSiPMs1')
 
     s=2
+# make summary of mpv and att length
+    ut.bookCanvas(h,'Mpvs','',2400,1200,1,2)
+    ut.bookCanvas(h,'attLs','',2400,1200,1,2)
+    tc = h['Mpvs'].cd(1)
+    h['attLengthL'],h['attLengthR'],h['attLengthLC'],h['attLengthRC']= ROOT.TGraph(),ROOT.TGraph(),ROOT.TGraph(),ROOT.TGraph()
+    h['mpv0L'],h['mpv0R'],h['mpv0LC'],h['mpv0RC'] = ROOT.TGraph(),ROOT.TGraph(),ROOT.TGraph(),ROOT.TGraph()
+    for t in ['T','']:
+     for p in ['L','R']:
+       nk = 0
+       for plane in range(5):
+            for bar in range(10):
+                    if t=='T': nloop = 1
+                    else: nloop = systemAndChannels[s][1]+systemAndChannels[s][0]
+                    for i in range(nloop):
+                        if s==2 and smallSiPMchannel(i): continue
+                        name = 'Msignal'+t+p+'_US'+str(s*10+plane)+'_'+str(bar)
+                        chi2N = 'Csignal'+t+p+'_US'+str(s*10+plane)+'_'+str(bar)
+                        if nloop>1: 
+                              name += '-c'+str(i)
+                              chi2N += '-c'+str(i)
+                     # find fit limits
+                        limits = []
+                        for i in range(1,h[chi2N].GetNbinsX()+1):
+                            funL = h[name[1:]+'-X'+str(i)].GetFunction('langau')
+                            if not funL: continue
+                            if not funL.GetParameter(2)>0: continue
+                            mpvRelErr = funL.GetParError(1)/funL.GetParameter(1)*ROOT.TMath.Sqrt(h[name[1:]+'-X'+str(i)].GetEntries())
+                            if mpvRelErr < 0.1: 
+                                    print('exclude bin ',name,i,mpvRelErr,h[name[1:]+'-X'+str(i)].GetEntries())
+                                    continue
+                            if len(limits)==0 and h[chi2N].GetBinContent(i)>0 and h[chi2N].GetBinContent(i)<9:
+                               limits.append(h[chi2N].GetBinCenter(i))
+                               break
+                        for i in range(h[chi2N].GetNbinsX(),1,-1):
+                            funL = h[name[1:]+'-X'+str(i)].GetFunction('langau')
+                            if not funL: continue
+                            if not funL.GetParameter(2)>0: continue
+                            mpvRelErr = funL.GetParError(1)/funL.GetParameter(1)*ROOT.TMath.Sqrt(h[name[1:]+'-X'+str(i)].GetEntries())
+                            if mpvRelErr < 0.1: 
+                                    print('exclude bin ',name,i,mpvRelErr,h[name[1:]+'-X'+str(i)].GetEntries())
+                                    continue
+                            if len(limits)==1 and h[chi2N].GetBinContent(i)>0 and h[chi2N].GetBinContent(i)<9:
+                               limits.append(h[chi2N].GetBinCenter(i))
+                               break
+                        if len(limits)<2:
+                           X = nk+0.5
+                           tag = p
+                           if nloop>1: 
+                               tag = p+'C'
+                               X = nk/6.
+                           h['mpv0'+tag].SetPoint(nk,X,-1)
+                           h['attLength'+tag].SetPoint(nk,X,0)
+                           nk+=1
+                           continue 
+                        rc = h[name].Fit('expo','SQ','',limits[0],limits[1])
+                        fun = h[name].GetFunction('expo')
+                        fun.SetLineColor(barColor[bar%10])
+                        res = rc.Get()
+                        tag = p
+                        X = nk+0.5
+                        val = fun.Eval(40)
+                        if nloop>1: 
+                               tag = p+'C'
+                               X = nk/6.
+                               val = fun.Eval(0)
+                        h['mpv0'+tag].SetPoint(nk,X,val)
+                        h['attLength'+tag].SetPoint(nk,X,-1./res.Parameter(1))
+                        nk+=1
+
+    ut.bookHist(h,'hMpvs',';stations with bars; MPV [QCD]',101,-0.5,50.5)
+    ut.bookHist(h,'hAttl',';plane number; att length [cm]',101,-0.5,50.5)
+    params = {'hMpvs':['Mpvs',20,'mpv0',0.], 'hAttl':['attLs',0.,'attLength',-2000.]}
+    side = {'L':[ROOT.kBlue,''], 'R':[ROOT.kRed,'same']}
+    for P in params:
+       h[P].SetStats(0)
+       h[P].SetMaximum(params[P][1])
+       h[P].SetMinimum(params[P][3])
+       X = h[P].GetXaxis()
+       X.SetTitleFont(42)
+       X.SetNdivisions(51)
+       for tag in ['','C']:
+         tc = h[params[P][0]].cd(1)
+         if tag == 'C': tc = h[params[P][0]].cd(2)
+         tc.SetGridx(1)
+         h[P].DrawClone()
+         for S in side:
+           h[params[P][2]+S+tag].SetMarkerStyle(92)
+           if tag=='C': 
+              h[params[P][2]+S+tag].SetMarkerSize(1)
+              h[params[P][2]+S+tag].SetMarkerStyle(71)
+           else: h[params[P][2]+S+tag].SetMarkerSize(2)
+           h[params[P][2]+S+tag].SetMarkerColor(side[S][0])
+           h[params[P][2]+S+tag].Draw('P'+side[S][1])
+
+    myPrint(h['Mpvs'],'Mpvs')
+    myPrint(h['attLs'],'AttLength')
+
     k=1
+    tMax = {'CsignalT':0,'MsignalT':0,'NnSiPMs':0,'WsignalT':0,'SsignalT':0}
     for plane in range(5):
            for p in ['L','R']:
-            for t in ['Msignal','MsignalT','NnSiPMs','WsignalT','SsignalT']:
+            for t in tMax:
+              for bar in range(10):
+                name = t+p+'_US'+str(s*10+plane)+'_'+str(bar)
+                nmax = h[name].GetBinContent(h[name].GetMaximumBin())
+                err = h[name].GetBinError(h[name].GetMaximumBin())
+                if err/nmax > 0.2: continue
+                if nmax > tMax[t]: tMax[t]=nmax
+    for plane in range(5):
+           for p in ['L','R']:
+            for t in tMax:
                 tc = h[t].cd(k)
-                first = True
                 for bar in range(10):
-                     color = ROOT.kMagenta + (5-bar)
+                     color = barColor[bar%10]
                      name = t+p+'_US'+str(s*10+plane)+'_'+str(bar)
                      h[name].SetStats(0)
+                     h[name].SetMarkerStyle(34)
+                     h[name].SetMarkerColor(color)
                      h[name].SetLineColor(color)
-                     if first:
-                        h[name].SetMinimum(0.)
-                        if name.find('MsignalT')==0:  
-                                   h[name].SetMaximum(100.)
-                                   h[name].SetMinimum(0.)
-                                   h[name].SetTitle('QDC sum;d [cm]')
-                        elif name.find('Msignal')==0:  
-                                   h[name].SetMaximum(20.)
-                                   h[name].SetMinimum(0.)
-                                   h[name].SetTitle('QDC;d [cm]')
-                        elif name.find('SsignalT')==0:  
-                                   h[name].SetMaximum(20.)
-                                   h[name].SetTitle('sigma;d [cm]')
-                        elif name.find('WsignalT')==0: 
-                                   h[name].SetMaximum(20.)
-                                   h[name].SetTitle('width;d [cm]')
-                        h[name].DrawCopy()
-                        if  t == 'NnSiPMs' and k==1: 
+                     dropt = ''
+                     if len(tc.GetListOfPrimitives())>0: dropt='same'
+                     h[name].SetMinimum(0.)
+                     h[name].SetMaximum(tMax[t]*1.1)
+                     if name.find('CsignalT')==0:  
+                                   h[name].SetTitle('station '+p+' '+str(plane+1)+';chi2/nDoF')
+                     if name.find('MsignalT')==0:  
+                                   h[name].SetTitle('QDC sum station '+p+' '+str(plane+1)+';d [cm];QDC')
+                     elif name.find('SsignalT')==0:  
+                                   h[name].SetTitle('sigma '+p+' '+str(plane+1)+';d [cm];QDC')
+                     elif name.find('WsignalT')==0: 
+                                   h[name].SetTitle('width '+p+' '+str(plane+1)+';d [cm];QDC')
+                     if t== 'MsignalT':  rc = h[name].Draw('P'+dropt)
+                     else:                     rc = h[name].Draw('PL'+dropt)
+                     if  t == 'NnSiPMs' : 
                              tc = h['NnSiPMs1'].cd(1)
                              h[name].SetMinimum(3)
-                             h[name].Draw()
-                        first = False
-                     h[name].DrawCopy('same')
-                     if  t == 'NnSiPMs': 
-                          tc = h['NnSiPMs1'].cd(1)
-                          h[name].Draw('same')
+                             if k>1: dropt = 'same'
+                             h[name].Draw(dropt)
             k+=1
-    for t in ['Msignal','MsignalT','NnSiPMs','WsignalT','SsignalT']:             myPrint(h[t],t)
+    for t in ['MsignalT','NnSiPMs','WsignalT','SsignalT']:             myPrint(h[t],t)
     myPrint(h['NnSiPMs1'],'nSiPMsAll')
+
 # DS
     ut.bookCanvas(h,'Msignal1','',900,600,1,1)
 #example plots:
@@ -1268,6 +1573,139 @@ def plotMips(readhisto=True):
              latex.DrawLatexNDC(0.3,0+y,txt)
              y += 0.05
     myPrint(h['MDSsignal'],'DSattenuation')
+def plotMipsGainRatio():
+    t = 'MsignalT'
+    for run in [89,90,91]:
+        h[run] = {}
+        f = ROOT.TFile('LandauFits_run'+str(run)+'.root')
+        for plane in range(5):
+           for p in ['L','R']:
+              for bar in range(10):
+                  name = t+p+'_US'+str(s*10+plane)+'_'+str(bar)
+                  h[run][name] = f.FindObjectAny(name).Clone()
+                  h[run][name].SetDirectory(ROOT.gROOT)
+    nRef = 90    # 90 is with gain 2.5 and stable
+    for run in [89,91]:   
+        ut.bookCanvas(h,'MsignalN'+str(run),'',1200,2000,2,5)
+        k = 1
+        for plane in range(5):
+           for p in ['L','R']:
+              nMax = 0
+              for bar in range(10):
+                  name = t+p+'_US'+str(s*10+plane)+'_'+str(bar)
+                  h[run]['N'+name] = h[run][name].Clone('N'+name)
+                  h[run]['N'+name].Divide(h[nRef][name])
+                  tc = h['MsignalN'+str(run)].cd(k)
+                  color = barColor[bar]
+                  h[run]['N'+name].SetStats(0)
+                  h[run]['N'+name].SetMarkerStyle(34)
+                  h[run]['N'+name].SetMarkerColor(color)
+                  h[run]['N'+name].SetLineColor(color)
+                  M = h[run]['N'+name].GetBinContent(h[run]['N'+name].GetMaximumBin())
+                  if M>nMax and M<20: nMax = M
+              for bar in range(10):
+                  name = t+p+'_US'+str(s*10+plane)+'_'+str(bar)
+                  h[run]['N'+name].SetMaximum(1.2*nMax)
+                  h[run]['N'+name].SetMinimum(0)
+                  opt = 'P'
+                  if bar>0: opt+='same'
+                  h[run]['N'+name].Draw(opt)
+              k+=1
+        h['MsignalN'+str(run)].Print('MPVgainRatio_'+str(run)+'_'+str(nRef)+'.png')
+
+def plotMipsTimeRes(readHists=True):
+    maxRes = {1:0.6,2:1.0,3:0.6}
+    if readHists:
+        for x in h: 
+            if hasattr(x,'Reset'): x.Reset()
+        ut.readHists(h,'MuFilterEff_run'+str(options.runNumber)+'.root')
+    ut.bookCanvas(h,'dummy','',900,800,1,1)
+    S = [1,2,3]
+    if options.runNumber<100:  S = [2,3]
+    for mode in ['','fast','F12']:
+     for s in S:
+       if s==1: ut.bookCanvas(h,mode+'TimeLR-'+str(s),'',1800,800,2,1)
+       if s==2: ut.bookCanvas(h,mode+'TimeLR-'+str(s),'',1800,1500,2,3)
+       if s==3: ut.bookCanvas(h,mode+'TimeLR-'+str(s),'',900,1500,1,3)
+       nbars = 0
+       for plane in range(systemAndPlanes[s]):
+          if  systemAndOrientation(s,plane) == "vertical": continue
+          nbars += systemAndBars[s]
+       ut.bookHist(h,mode+'tsigma_'+str(s),';'+str(systemAndBars[s])+'*station + bar number;#sigma_{t} [ns]',nbars,-0.5,nbars-0.5)
+       k = 1
+       for plane in range(systemAndPlanes[s]):
+        if  systemAndOrientation(s,plane) == "vertical": continue
+        for bar in range(systemAndBars[s]):
+           tc = h['dummy'].cd()
+           name0 = 'dt'+mode+'LRvsX_'+sdict[s]+str(s*10+plane)+'_'+str(bar)
+           name   = 'Rdt'+mode+'LRvsX_'+sdict[s]+str(s*10+plane)+'_'+str(bar)
+           tname  = mode+'TimeRes_'+sdict[s]+str(s*10+plane)+'_'+str(bar)
+           h[name] = h[name0].Clone(name)
+           rc = h[name].RebinX(2)
+           h[tname] = h[name].ProjectionX(tname)
+           h[tname].Reset()
+           xax = h[tname].GetXaxis()
+           yax = h[tname].GetYaxis()
+           yax.SetTitle('#sigma_{t} [ns]')
+           ymin = h[name].GetYaxis().GetBinCenter(1)
+           ymax = h[name].GetYaxis().GetBinCenter(h[name].GetYaxis().GetNbins())
+           minContent = max(50,h[name].GetEntries()*0.02)  # remove tails from bad track reconstruction and extrapolation.)
+           for j in range(1,xax.GetNbins()+1):
+                jname = name+'-X'+str(j)
+                h[jname] = h[name].ProjectionY(jname,j,j)
+                if h[jname].GetEntries()<minContent: continue
+                xx =  h[jname].GetBinCenter(h[jname].GetMaximumBin())
+                xmin  = max(ymin,xx-2.)
+                xmax = min(ymax,xx+2.)
+                rc = h[jname].Fit('gaus','SQL','',xmin,xmax)
+                res = rc.Get()
+                h[tname].SetBinContent(j,res.Parameter(2))
+                h[tname].SetBinError(j,res.ParError(2))
+           A = weightedY(h[tname])
+           if A[1]<100:
+              h[mode+'tsigma_'+str(s)].SetBinContent(plane*10+bar,A[0])
+              h[mode+'tsigma_'+str(s)].SetBinError(plane*10+bar,A[1])
+           if bar==0: opt=''
+           else:         opt='same'
+           color = barColor[bar%10]
+           h[tname].SetMaximum(maxRes[s])
+           h[tname].SetStats(0)
+           h[tname].SetMarkerStyle(34)
+           h[tname].SetMarkerColor(color)
+           h[tname].SetLineColor(color)
+           tc = h[mode+'TimeLR-'+str(s)].cd(k)
+           h[tname].Draw('P'+opt)
+           h[tname].Draw('HISTLSAME')
+        k+=1
+
+       ut.bookCanvas(h,mode+'dummy'+sdict[s],'',900,800,1,1)
+       tc = h[mode+'dummy'+sdict[s]].cd()
+       tc.SetGridx(1)
+       name = mode+'tsigma_'+str(s)
+       h[name].SetStats(0)
+       h[name].SetMarkerColor(ROOT.kBlue)
+       h[name].SetMarkerStyle(34)
+       h[name].SetMarkerSize(2)
+       X = h[name].GetXaxis()
+       X.SetTitleFont(42)
+       X.SetNdivisions(505)
+       h[name].Draw('P')
+       myPrint(h[mode+'dummy'+sdict[s]],mode+'TimeResol-'+sdict[s])
+       myPrint(h[mode+'TimeLR-'+str(s)],mode+'TimeResol-'+sdict[s]+'vsX')
+def weightedY(aHist):
+    xax = aHist.GetXaxis()
+    nx = xax.GetNbins()
+    W = 1E-20
+    mean = 0
+    for j in range(1,nx+1):
+             N = aHist.GetBinContent(j)
+             if not N>0: continue
+             E = aHist.GetBinError(j)
+             if E>0:
+                mean+=N/E**2
+                W+= 1/E**2
+    return [mean/W,1./W]
+
 
 def makeDetPrints():
   for s in range(1,4):
@@ -1346,6 +1784,7 @@ def analyze_EfficiencyAndResiduals(readHists=False,mode='S',local=True,zoom=Fals
       ut.bookCanvas(h,'EVetoUS'+proj,'',1200,2000,4,7)
       ut.bookCanvas(h,'EDS'+proj,'',1200,2000,3,7)
    k = 1
+   residualsAndSigma = {}
    for s in  [1,2,3]:
     if mode == "S" and s<3 and proj=="X": continue
     if s==3: k=1
@@ -1374,26 +1813,50 @@ def analyze_EfficiencyAndResiduals(readHists=False,mode='S',local=True,zoom=Fals
            else:      resH.GetXaxis().SetRangeUser(-10.,10.)
       resH.Draw()
       binw = resH.GetBinWidth(1)
-      myGauss = ROOT.TF1('gauss','abs([0])*'+str(binw)+'/(abs([2])*sqrt(2*pi))*exp(-0.5*((x-[1])/[2])**2)+abs([3])',4)
-      myGauss.SetParameter(0,resH.GetEntries())
-      myGauss.SetParameter(1,0)
-      myGauss.SetParameter(2,2.)
-      rc = resH.Fit(myGauss,'SL','',-15.,15.)
-      fitResult = rc.Get()
-      tc.Update()
-      stats = resH.FindObject('stats')
-      stats.SetOptFit(111111)
-      stats.SetX1NDC(0.63)
-      stats.SetY1NDC(0.25)
-      stats.SetX2NDC(0.98)
-      stats.SetY2NDC(0.94)
-      tracks = h['track_'+key].GetEntries()
-      if tracks >0:
-         eff = fitResult.Parameter(0)/tracks
-         effErr = fitResult.ParError(0)/tracks
-         latex.DrawLatexNDC(0.2,0.8,'eff=%5.2F+/-%5.2F%%'%(eff,effErr))
+      if resH.GetEntries()>10:
+         myGauss = ROOT.TF1('gauss','abs([0])*'+str(binw)+'/(abs([2])*sqrt(2*pi))*exp(-0.5*((x-[1])/[2])**2)+abs([3])',4)
+         myGauss.SetParameter(0,resH.GetEntries())
+         myGauss.SetParameter(1,0)
+         myGauss.SetParameter(2,2.)
+         rc = resH.Fit(myGauss,'SL','',-15.,15.)
+         fitResult = rc.Get()
+         if not (s*10+plane) in residualsAndSigma:
+             residualsAndSigma[s*10+plane] = [fitResult.Parameter(1)/u.mm,fitResult.ParError(1)/u.mm,abs(fitResult.Parameter(2)/u.cm),fitResult.ParError(2)/u.cm]
+         tc.Update()
+         stats = resH.FindObject('stats')
+         stats.SetOptFit(111111)
+         stats.SetX1NDC(0.63)
+         stats.SetY1NDC(0.25)
+         stats.SetX2NDC(0.98)
+         stats.SetY2NDC(0.94)
+         tracks = h['track_'+key].GetEntries()
+         if tracks >0:
+             eff = fitResult.Parameter(0)/tracks
+             effErr = fitResult.ParError(0)/tracks
+             latex.DrawLatexNDC(0.2,0.8,'eff=%5.2F+/-%5.2F%%'%(eff,effErr))
    if 'EVetoUS'+proj in h: myPrint(h['EVetoUS'+proj],'EVetoUS'+proj)
    if 'EDS'+proj in h:        myPrint(h['EDS'+proj],'EDS'+proj)
+# summary plot of residuals
+   h['gResiduals'], h['gSigma'] = ROOT.TGraphErrors(), ROOT.TGraphErrors()
+   k = 0 
+   for sp in residualsAndSigma:
+       h['gResiduals'].SetPoint(k,sp,residualsAndSigma[sp][0])
+       h['gResiduals'].SetPointError(k,0.5,residualsAndSigma[sp][1])
+       h['gSigma'].SetPoint(k,sp,residualsAndSigma[sp][2])
+       h['gSigma'].SetPointError(k,0.5,residualsAndSigma[sp][3])
+       k+=1
+   h['gResiduals'].SetLineWidth(2)
+   h['gSigma'].SetLineWidth(2)
+   ut.bookCanvas(h,'MufiRes','Mufi residuals',750,750,1,1)
+   tc = h['MufiRes'].cd()
+   h['gResiduals'].SetTitle(';station; offset [mm]')
+   h['gResiduals'].Draw("AP")
+   ut.bookCanvas(h,'MufiSigm','Mufi sigma',750,750,1,1)
+   tc = h['MufiSigm'].cd()
+   h['gSigma'].SetTitle(';station; #sigma [cm]')
+   h['gSigma'].Draw("AP")
+   myPrint(h['MufiRes'],'MufiResiduals')
+   myPrint(h['MufiSigm'],'MufiSigma')
 
   ut.bookCanvas(h,'TVE','',800,900,1,2)
   ut.bookCanvas(h,'TUS','',800,2000,1,5)
@@ -1468,13 +1931,14 @@ def analyze_EfficiencyAndResiduals(readHists=False,mode='S',local=True,zoom=Fals
 
 # timing relative to Scifi tracks
   colors = {1:ROOT.kGreen,2:ROOT.kRed,3:ROOT.kBlue}
-  ut.bookCanvas(h,'relT','',800,1600,1,7)
+  ut.bookCanvas(h,'relT','',800,1000,1,7)
   for s in systemAndPlanes:
      for plane in range(systemAndPlanes[s]):
        hname = 'atLRvsX_'+sdict[s]+str(s*10+plane)
        h[hname+'_proj'] = h[hname].ProjectionY(hname+'_proj')
        h[hname+'_proj'].SetLineColor(colors[s])
-       h[hname+'_proj'].SetTitle(sdict[s]+str(s*10+plane)+'; #Deltat [ns]')
+       h[hname+'_proj'].SetStats(0)
+       h[hname+'_proj'].SetTitle('; #Deltat [ns]')
        if s==1 and plane == 0: h[hname+'_proj'] .Draw()
        else: h[hname+'_proj'] .Draw('same')
 
@@ -1496,22 +1960,29 @@ def analyze_EfficiencyAndResiduals(readHists=False,mode='S',local=True,zoom=Fals
         fitResult = rc.Get()
 
 #  Scifi specific code
-def TimeCalibrationNtuple():
-    maxD = 50
-    fNtuple = ROOT.TFile("scifi_timing.root",'recreate')
+def TimeCalibrationNtuple(Nev=options.nEvents,nStart=0):
+    if Nev < 0 : Nev = eventTree.GetEntries()
+    maxD = 100
+    fNtuple = ROOT.TFile("scifi_timing_"+str(options.runNumber)+".root",'recreate')
     tTimes  = ROOT.TTree('tTimes','Scifi time calib') 
     nChannels    = array('i',1*[0])
     detIDs          = array('i',maxD*[0])
     tdc               = array('f',maxD*[0.])
+    qdc              = array('f',maxD*[0.])
     dL                = array('f',maxD*[0.])
     D                 = array('f',maxD*[0.])
     tTimes.Branch('nChannels',nChannels,'nChannels/I')
     tTimes.Branch('detIDs',detIDs,'detIDs[nChannels]/I')
     tTimes.Branch('tdc',tdc,'tdc[nChannels]/F') 
+    tTimes.Branch('qdc',tdc,'qdc[nChannels]/F') 
     tTimes.Branch('D',D,'D[nChannels]/F')
     tTimes.Branch('dL',dL,'dL[nChannels]/F')
 
-    for event in eventTree:
+    for n_ in range(nStart,nStart+Nev):
+       rc = eventTree.GetEvent(n_)
+       event = eventTree
+       n_+=1
+       if n_%100000==0: print("now at event ",n_)
        theTrack = Scifi_track()
        if not hasattr(theTrack,"getFittedState"): continue
        status = theTrack.getFitStatus()
@@ -1536,20 +2007,34 @@ def TimeCalibrationNtuple():
                  dL[nHit] = X.Mag()
                  detIDs[nHit] = detID
                  tdc[nHit] = aHit.GetTime()*TDC2ns
+                 qdc[nHit] = aHit.GetSignal()
                  N = B-A
                  X = posM-A
                  V = X.Cross(N)
                  D[nHit] = 0
                  if abs(V.Z())>0: D[nHit] = V.Mag()/N.Mag()*V.Z()/abs(V.Z())
                  nHit += 1
+                 if nHit==maxD: 
+                     print('too many hits:',n_)
+                     break
+            if nHit==maxD: break
           nChannels[0] = nHit
           tTimes.Fill()
        theTrack.Delete()
     fNtuple.Write() 
     fNtuple.Close()
 
-def analyzeTimings(c='',vsignal = 15., args={}):
-  fNtuple = ROOT.TFile("scifi_timing.root")
+def analyzeTimings(c='',vsignal = 15., args={},opt=0):
+  print('-->',c)
+  if c=='':
+       analyzeTimings(c='findMax',vsignal = 15.)
+       new_list = sorted(h['mult'].items(), key=lambda x: x[1], reverse=True)
+       args = {"detID0":new_list[0][0]}
+       print(args)
+       analyzeTimings(c='firstIteration',vsignal = 15., args=args,opt=0)
+       h['dTtwin'].Draw()
+       return
+  fNtuple = ROOT.TFile("scifi_timing_"+str(options.runNumber)+".root")
   tTimes  = fNtuple.tTimes
   if c=="findMax":
      h['mult'] = {}
@@ -1562,6 +2047,7 @@ def analyzeTimings(c='',vsignal = 15., args={}):
      detID0 = new_list[0][0]  #   args = {"detID0":new_list[0][0]}
   if c=="firstIteration":
      ut.bookHist(h,'dTtwin','dt between neighbours',100,-5,5)
+     ut.bookHist(h,'dTtwinMax','dt between neighbours',100,-5,5)
      for x in h:
          if x[0]=='c':h[x].Reset()
 
@@ -1571,19 +2057,23 @@ def analyzeTimings(c='',vsignal = 15., args={}):
               if nt.detIDs[nHit] == args["detID0"]:
                    tag = nHit
                    break
+          if not tag: continue
           for nHit in range(nt.nChannels):
                detID = nt.detIDs[nHit]
-               dLL    = (nt.dL[nHit] - nt.dL[tag]) / vsignal
+               dLL    = (nt.dL[nHit] - nt.dL[tag]) / vsignal  # light propagation in cm/ns
                dtdc   = nt.tdc[nHit] - nt.tdc[tag]
-               hname = 'c'+str(detID)
-               if not hname in h: ut.bookHist(h,hname,";dt [ns]",200,-10.,10.)
-               rc = h[hname].Fill(dtdc-dLL)
+               if opt>0:
+                  hname = 'c'+str(detID)
+                  if not hname in h: ut.bookHist(h,hname,";dt [ns]",200,-10.,10.)
+                  rc = h[hname].Fill(dtdc-dLL)
                for nHit2 in range(nHit+1,nt.nChannels):
                   detID2 = nt.detIDs[nHit2]
                   if abs(detID-detID2)==1:
                      dt = nt.tdc[nHit] - nt.tdc[nHit2]
                      if detID2>detID: dt=-dt
+                     if nt.qdc[nHit] < 15 or  nt.qdc[nHit2] < 15: continue
                      rc = h['dTtwin'].Fill(dt)
+                     if detID == args["detID0"]: rc = h['dTtwinMax'].Fill(dt)
 
 # h['c'+str(new_list[3][0])].Draw()
 def ScifiChannel_residuals():
@@ -1667,7 +2157,7 @@ def Scifi_xPos(detID):
         X = detID%1000+(detID%10000)//1000*128
         return [nStation,mat,X]   # even numbers are Y (horizontal plane), odd numbers X (vertical plane)
 
-def Scifi_slopes(Nev=-1):
+def Scifi_slopes(Nev=options.nEvents):
     A,B = ROOT.TVector3(),ROOT.TVector3()
     ut.bookHist(h,'slopesX','slope diffs',1000,-1.0,1.0)
     ut.bookHist(h,'slopesY','slope diffs',1000,-1.0,1.0)
@@ -1844,7 +2334,7 @@ def scifi_beamSpot():
             w+=1
         rc = h['bs'].Fill(xMean/w,yMean/w)
 
-def Scifi_residuals(Nev=-1,NbinsRes=100,xmin=-500.,alignPar=False):
+def Scifi_residuals(Nev=options.nEvents,NbinsRes=100,xmin=-500.,alignPar=False):
     projs = {1:'V',0:'H'}
     for s in range(1,6):
      for o in range(2):
@@ -2317,4 +2807,18 @@ def plotsForCollabMeeting():
    myPrint(h['TVE'],'dTvsX_Veto')
    myPrint(h['TUS'],'dTvsX_US')
    myPrint(h['TDS'],'dTvsX_DS')
+#
+if options.command:
+    tmp = options.command.split(';')
+    command = tmp[0]+"("
+    for i in range(1,len(tmp)):
+         command+=tmp[i]
+         if i<len(tmp)-1: command+=","
+    command+=")"
+    print('executing ' + command + "for run ",options.runNumber)
+    eval(command)
+    print('finished ' + command + "for run ",options.runNumber)
+    exit()
+else:
+    print ('waiting for command. Enter help() for more infomation')
 
