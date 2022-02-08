@@ -207,7 +207,7 @@ tuple<map<string, map<string, map<string, int>> >, map<string, map<string, map<s
                                        {"M4X", {{0,8},  {1,50}, {2,49}}},
                                        {"M5Y", {{0,19}, {1,13}, {2,36}}},
                                        {"M5X", {{0,21}, {1,10}, {2,6}}} };
-  if ( path.find("commissioning-h6") != string::npos )
+  if ( path.find("H6") != string::npos )
   {
        stations["M4Y"] = {{0,46}, {1,40}, {2,20}}; // board 40 replaces 23       
   }
@@ -239,7 +239,7 @@ tuple<map<string, map<string, map<string, int>> >, map<string, map<string, map<s
                                           {"B", "DS_3Vert"}, {"C", "DS_4Vert"} };
   
   // string.find func: If no matches are found, the function returns string::npos.
-  if (path.find("commissioning-h6") != string::npos || path.find("TB_data_commissioning") != string::npos)
+  if (path.find("H6") != string::npos || path.find("TB_data_commissioning") != string::npos)
   {
     // H6 / H8  
     boardMapsMu["MuFilter"]["board_43"] = { {"A", "US_1Left"}, {"B", "US_2Left"},
@@ -248,7 +248,7 @@ tuple<map<string, map<string, map<string, int>> >, map<string, map<string, map<s
                                             {"C","US_4Right"}, {"D","US_3Right"} };
     boardMapsMu["MuFilter"]["board_41"] = { {"A","US_5Left"},  {"B","DS_1Left"},
                                             {"C","DS_1Right"}, {"D","US_5Right"} };
-    if (path.find("commissioning-h6") != string::npos)
+    if (path.find("H6") != string::npos)
     {
       boardMapsMu["MuFilter"]["board_59"] = { {"A","DS_2Right"},  {"B","DS_2Vert"},
                                             {"C","DS_1Vert"},  {"D","DS_2Left"} };
@@ -263,7 +263,7 @@ tuple<map<string, map<string, map<string, int>> >, map<string, map<string, map<s
     boardMapsMu["MuFilter"]["board_52"] = { {"A","Veto_2Left"},  {"B","Veto_1Left"},
                                             {"C","Veto_1Right"}, {"D","Veto_2Right"} };
   }
-  if (path.find("data_commissioning_dune") != string::npos)  // does not work
+  if (path.find("dune") != string::npos)  // does not work
   {
     boardMapsMu["MuFilter"]["board_43"] = { {"A", "US_1Left"}, {"B", "US_2Left"},
                                           {"C", "US_2Right"}, {"D", "US_1Right"} };
