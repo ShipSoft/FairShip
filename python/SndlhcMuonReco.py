@@ -4,16 +4,16 @@ import scipy.ndimage
 import warnings
 from array import array
 
-def hit_finder(slope, intercept, box_centers, box_ds) :
+def hit_finder(slope, intercept, box_centers, box_ds, tol = 0.) :
     """ Finds hits intersected by Hough line """
-
+    
     # First check if track at center of box is within box limits
     d = np.abs(box_centers[0,:,1] - (box_centers[0,:,0]*slope + intercept))
-    center_in_box = d < box_ds[0,:,1]/2.
+    center_in_box = d < (box_ds[0,:,1]+tol)/2.
 
     # Now check if, assuming line is not in box at box center, the slope is large enough for line to clip the box at corner
-    clips_corner = np.abs(slope) > np.abs((d - box_ds[0,:,1]/2.)/box_ds[0,:,0]/2.)
-
+    clips_corner = np.abs(slope) > np.abs((d - (box_ds[0,:,1]+tol)/2.)/(box_ds[0,:,0]+tol)/2.)
+    
     # If either of these is true, line goes through hit:
     hit_mask = np.logical_or(center_in_box, clips_corner)
 
@@ -23,13 +23,15 @@ def hit_finder(slope, intercept, box_centers, box_ds) :
 class hough() :
     """ Hough transform implementation """
 
-    def __init__(self, n_r, r_range, n_theta, theta_range, squaretheta = False) :
+    def __init__(self, n_r, r_range, n_theta, theta_range, tolerance = 0., squaretheta = False) :
 
         self.n_r = n_r
         self.n_theta = n_theta
 
         self.r_range = r_range
         self.theta_range = theta_range
+
+        self.tolerance = tolerance
 
         self.r_bins = np.linspace(self.r_range[0], self.r_range[1], n_r)
         if not squaretheta :
@@ -146,6 +148,9 @@ class MuonReco(ROOT.FairTask) :
         # Maximum number of muons to find. To avoid spending too much time on events with lots of downstream activity.
         self.max_reco_muons = 5
 
+        # How far away from Hough line hits will be assigned to the muon, for Kalman tracking
+        self.tolerance = 1.
+
         # Get sensor dimensions from geometry
         self.MuFilter_ds_dx = self.mufiDet.GetConfParF("MuFilter/DownstreamBarY") # Assume y dimensions in vertical bars are the same as x dimensions in horizontal bars.
         self.MuFilter_ds_dy = self.mufiDet.GetConfParF("MuFilter/DownstreamBarY") # Assume y dimensions in vertical bars are the same as x dimensions in horizontal bars.
@@ -160,8 +165,8 @@ class MuonReco(ROOT.FairTask) :
         self.Scifi_dz = self.scifiDet.GetConfParF("Scifi/epoxymat_z") # From Scifi.cxx This is the variable used to define the z dimension of SiPM channels, so seems like the right dimension to use.
         
         # Initialize Hough transforms for both views:
-        self.h_ZX = hough(n, [-80, 0], n, [-max_angle+np.pi/2., max_angle+np.pi/2.], False)
-        self.h_ZY = hough(n, [0, 80], n, [-max_angle+np.pi/2., max_angle+np.pi/2.], False)
+        self.h_ZX = hough(n, [-80, 0], n, [-max_angle+np.pi/2., max_angle+np.pi/2.], tolerance = self.tolerance, squaretheta = False)
+        self.h_ZY = hough(n, [0, 80], n, [-max_angle+np.pi/2., max_angle+np.pi/2.], tolerance = self.tolerance, squaretheta = False)
 
         # To keep temporary detector information
         self.a = ROOT.TVector3()
@@ -171,10 +176,12 @@ class MuonReco(ROOT.FairTask) :
         self.muon_tracks = ROOT.TClonesArray("sndRecoTrack", self.max_reco_muons)
         ioman.Register("Reco_MuonTracks", "", self.muon_tracks, ROOT.kTRUE);
 
-        self.kalman_tracks = ROOT.TClonesArray(ROOT.genfit.Track().ClassName(), self.max_reco_muons);
+#        self.kalman_tracks = ROOT.TClonesArray(ROOT.genfit.Track().ClassName(), self.max_reco_muons);
+        self.kalman_tracks = ROOT.TObjArray(self.max_reco_muons);
         ioman.Register("Reco_KalmanTracks", "", self.kalman_tracks, ROOT.kTRUE);
 
         # Kalman filter stuff
+
         geoMat = ROOT.genfit.TGeoMaterialInterface()
         bfield = ROOT.genfit.ConstField(0, 0, 0)
         fM = ROOT.genfit.FieldManager.getInstance()
@@ -361,23 +368,39 @@ class MuonReco(ROOT.FairTask) :
                 break
 
             print("Muon found!")
+            
+            # This time with non-zero tolerance, for kalman filter
+            track_hits_ds_ZX = hit_finder(ZX_hough[0], ZX_hough[1], 
+                                          np.dstack([mu_ds["pos"][2][mu_ds["vert"]], 
+                                                     mu_ds["pos"][0][mu_ds["vert"]]]), 
+                                          np.dstack([mu_ds["d"][2][mu_ds["vert"]], 
+                                                     mu_ds["d"][0][mu_ds["vert"]]]), tol = self.tolerance)
+
+            track_hits_ds_ZY = hit_finder(ZY_hough[0], ZY_hough[1], 
+                                          np.dstack([mu_ds["pos"][2][~mu_ds["vert"]], 
+                                                     mu_ds["pos"][1][~mu_ds["vert"]]]), 
+                                          np.dstack([mu_ds["d"][2][~mu_ds["vert"]],
+                                                     mu_ds["d"][1][~mu_ds["vert"]]]), tol = self.tolerance)
+
+
+
             track_hits_us_ZY = hit_finder(ZY_hough[0], ZY_hough[1], 
                                           np.dstack([mu_us["pos"][2][~mu_us["vert"]],
                                                      mu_us["pos"][1][~mu_us["vert"]]]), 
                                           np.dstack([mu_us["d"][2][~mu_us["vert"]], 
-                                                     mu_us["d"][1][~mu_us["vert"]]]))
+                                                     mu_us["d"][1][~mu_us["vert"]]]), tol = self.tolerance)
             
             track_hits_sf_ZX = hit_finder(ZX_hough[0], ZX_hough[1], 
                                           np.dstack([scifi["pos"][2][scifi["vert"]], 
                                                      scifi["pos"][0][scifi["vert"]]]), 
                                           np.dstack([scifi["d"][2][scifi["vert"]], 
-                                                     scifi["d"][0][scifi["vert"]]]))
+                                                     scifi["d"][0][scifi["vert"]]]), tol = self.tolerance)
             
             track_hits_sf_ZY = hit_finder(ZY_hough[0], ZY_hough[1], 
                                           np.dstack([scifi["pos"][2][~scifi["vert"]], 
                                                      scifi["pos"][1][~scifi["vert"]]]), 
                                           np.dstack([scifi["d"][2][~scifi["vert"]], 
-                                                     scifi["d"][1][~scifi["vert"]]]))
+                                                     scifi["d"][1][~scifi["vert"]]]), tol = self.tolerance)
             
             # Get hit detectorIDs and add to reco track collection
             hit_detectorIDs = np.concatenate([mu_ds["detectorID"][mu_ds["vert"]][track_hits_ds_ZX],
@@ -428,6 +451,11 @@ class MuonReco(ROOT.FairTask) :
             seedState = ROOT.TVectorD(6)
             seedCov   = ROOT.TMatrixDSym(6)
             rep.get6DStateCov(state, seedState, seedCov)
+#            theTrack = self.kalman_tracks.ConstructedAt(i_muon)
+#            theTrack.addTrackRep(rep)
+#            theTrack.setStateSeed(seedState)
+#            theTrack.setCovSeed(seedCov)
+            
             theTrack = ROOT.genfit.Track(rep, seedState, seedCov)
             
             # Sort measurements in Z
@@ -555,7 +583,11 @@ class MuonReco(ROOT.FairTask) :
                 raise RuntimeException("Kalman fit did not converge.")
             
             # Now save the track!
-            self.kalman_tracks[i_muon] = theTrack
+#            savedTrack = self.kalman_tracks.ConstructedAt(i_muon)
+#            savedTrack.swap(theTrack)
+
+#            self.kalman_tracks[i_muon] = theTrack
+            self.kalman_tracks.Add(theTrack)
 
             # Remove track hits and try to find an additional track
             # Find array index to be removed
