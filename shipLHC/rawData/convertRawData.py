@@ -43,7 +43,7 @@ if options.FairTask_convRaw:
   X=''
   server = os.environ['EOSSHIP']
   if not local: X = server
-  fIN=ROOT.TFile(path+'data.root')
+  fIN = ROOT.TFile.Open(X+path+'data.root')
   # Pass raw data file as input object
   ioman.RegisterInputObject("rawData", fIN)
 
