@@ -1,6 +1,7 @@
 #include <iostream>
 #include <algorithm>
 #include <fstream>
+#include <sstream>
 #include <map>
 #include <tuple>                // to return multiple values
 #include <chrono>               // for time estimations
@@ -36,9 +37,11 @@
 #include "TString.h"
 #include "nlohmann/json.hpp"     // library to operate with json files
 #include "boardMappingParser.h"  // for board mapping
+#include "XrdCl/XrdClFile.hh"
 
 using namespace std;
 using namespace std::chrono;
+using namespace XrdCl;
 
 
 ConvRawData::ConvRawData()
@@ -98,7 +101,7 @@ InitStatus ConvRawData::Init()
      if ( name.find("board") == string::npos ) continue;
      boards[name] = (TTree*)f0->Get(name.c_str());
     }
-      
+     
     fEventHeader = new FairEventHeader();
     ioman->Register("EventHeader", "sndEventHeader", fEventHeader, kTRUE);
     fDigiSciFi    = new TClonesArray("sndScifiHit");
@@ -113,7 +116,7 @@ InitStatus ConvRawData::Init()
       ioman->Register("Cluster_Scifi", "ScifiCluster_det", fClusScifi, kTRUE);
     }
     
-    bool local = false; 
+    local = false; 
     
     struct stat buffer;  
     // Setting path to input data
@@ -485,12 +488,41 @@ void ConvRawData::Exec(Option_t* /*opt*/)
 /** Board mapping for Scifi and MuFilter **/
 void ConvRawData::DetMapping(string Path)
 {
+  nlohmann::json j;
+  // reading file with xrootd protocol
+  File file;
+  XRootDStatus status;
+  StatInfo *info;
+  uint64_t offset = 0;
+  uint32_t size;
+  uint32_t bytesRead = 0;
   // Call boardMappingParser
   if(isjson)
   {
-    ifstream jsonfile(Form("%s/board_mapping.json", Path.c_str()));
-    nlohmann::json j;
-    jsonfile >> j; 
+    if (local)
+    {
+      ifstream jsonfile(Form("%s/board_mapping.json", Path.c_str()));      
+      jsonfile >> j;
+    }
+    else
+    {
+      status = file.Open(Form("%s/board_mapping.json", Path.c_str()), OpenFlags::Read);
+      if( !status.IsOK() )
+      {
+        cout << "Error opening file\n";
+        exit(0);
+      }
+      file.Stat(false, info);
+      size = info->GetSize();
+      char *buff = new char[size];
+      status = file.Read(offset, size, buff, bytesRead);
+      vector<char> vec;
+      for (int i = 0; i < size; i++){vec.push_back(buff[i]);}
+      j = json::parse(vec);
+      status = file.Close();
+      delete info;
+      delete [] buff;    
+    }
     // Pass the read string to getBoardMapping()
     tie(boardMaps, boardMapsMu) = getBoardMapping(j);
   }
@@ -541,7 +573,7 @@ void ConvRawData::DetMapping(string Path)
     }
     offMap[Form("US_%iLeft",i)]  = {20000 + (i-1)*1000+ 9, -8, 2}; // from top to bottom
     offMap[Form("US_%iRight",i)] = {20000 + (i-1)*1000+ 9, -8, 2};
-  }
+  }  
 }
 /* Define calibration functions **/
 double ConvRawData::qdc_calibration( int board_id, int tofpet_id, int channel,
@@ -626,21 +658,52 @@ int ConvRawData::channel_func( int tofpet_id, int tofpet_channel, int position)
 void ConvRawData::read_csv(string Path)
 {
   ifstream infile; // ifstream is the stream class to only read! from files.
+  stringstream X;
+  // reading file with xrootd protocol
+  File file;
+  XRootDStatus status;
+  StatInfo *info;
+  uint64_t offset = 0;
+  uint32_t size;
+  uint32_t bytesRead = 0;
+  
   string line, element;
   double chi2_Ndof{};
   // counter of number of elements
   vector<int> key_vector{};
   
   // Get QDC calibration data
-  infile.open(Form("%s/qdc_cal.csv", Path.c_str()));
+  if (local)
+  {
+   infile.open(Form("%s/qdc_cal.csv", Path.c_str()));
+   X << infile.rdbuf();
+   infile.close();
+  }
+  else
+  {
+    status = file.Open(Form("%s/qdc_cal.csv", Path.c_str()), OpenFlags::Read);
+    if( !status.IsOK() )
+    {
+      cout << "Error opening file\n";
+      exit(0);
+    }
+    file.Stat(false, info);
+    size = info->GetSize();
+    char *buff = new char[size];
+    status = file.Read(offset, size, buff, bytesRead);
+    X << buff;
+    status = file.Close();
+    delete info;
+    delete [] buff;  
+  }
   cout<<"Read_csv "<<Path.c_str()<<endl;
   // Skip 1st line
-  getline(infile, line);
+  getline(X, line);
   cout << "In QDC cal file: " << line << endl;
   vector<double> qdcData{};
   // Read all other lines
-  while (getline(infile, line))
-  {
+  while (getline(X, line) && X.peek() != EOF)
+  {    
     qdcData.clear();
     stringstream items(line);
     while (getline(items, element, ','))
@@ -654,15 +717,38 @@ void ConvRawData::read_csv(string Path)
     X_qdc[key_vector] = { {"a",qdcData[4]}, {"b",qdcData[5]}, {"c",qdcData[6]},
                           {"d",qdcData[8]}, {"e",qdcData[10]}, {"chi2Ndof",chi2_Ndof} };
   }
-  infile.close();
+  X.str(string()); X.clear(); line.clear();
+  size = 0; offset = 0; bytesRead = 0;
   // Get TDC calibration data
-  infile.open(Form("%s/tdc_cal.csv", Path.c_str()));
+  if (local)
+  {
+   infile.open(Form("%s/tdc_cal.csv", Path.c_str()));
+   X << infile.rdbuf();
+   infile.close();
+  }
+  else
+  {
+    status = file.Open(Form("%s/tdc_cal.csv", Path.c_str()), OpenFlags::Read);
+    if( !status.IsOK() )
+    {
+      cout << "Error opening file\n";
+      exit(0);
+    }
+    file.Stat(false, info);
+    size = info->GetSize();
+    char *buff = new char[size];
+    status = file.Read(offset, size, buff, bytesRead);
+    X << buff;
+    status = file.Close();
+    delete info;
+    delete [] buff;
+  }
   // Skip 1st line
-  getline(infile, line);
+  getline(X, line);
   cout << "In TDC cal file: " << line << endl;
   vector<double> tdcData{};
   // Read all other lines
-  while (getline(infile, line))
+  while (getline(X, line) && X.peek() != EOF)
   {
     tdcData.clear();
     stringstream items(line);
@@ -677,8 +763,9 @@ void ConvRawData::read_csv(string Path)
     X_tdc[key_vector] = { {"a",tdcData[5]}, {"b",tdcData[6]}, {"c",tdcData[7]},
                           {"d",tdcData[9]}, {"chi2Ndof",chi2_Ndof} };
   }
-  infile.close();
-
+  X.str(string()); X.clear(); line.clear();
+  size = 0; offset = 0; bytesRead = 0;
+  
   int SiPM{};
   vector<int> data_vector{};
   map<string, map<int, vector<int>> > SiPMmap{};
@@ -687,29 +774,41 @@ void ConvRawData::read_csv(string Path)
   struct stat buffer;
   string infile_SiPMmap = "/eos/experiment/sndlhc/testbeam/MuFilter/SiPM_mappings";
   string path_SiPMmap;
-  for (auto system : key)
+  for (auto sys : key)
   {
     if (stat(infile_SiPMmap.c_str(), &buffer) == 0) // path exists
     {
-      path_SiPMmap = infile_SiPMmap;      
+      path_SiPMmap = infile_SiPMmap;
+      infile.open(Form("%s/%s_SiPM_mapping.csv", path_SiPMmap.c_str(), sys.first.c_str()));
+      X << infile.rdbuf();
+      infile.close();
     }
     else
     {
       TString server = gSystem->Getenv("EOSSHIP");
-      path_SiPMmap = server.Data()+infile_SiPMmap;      
+      path_SiPMmap = server.Data()+infile_SiPMmap;
+      status = file.Open(Form("%s/%s_SiPM_mapping.csv", path_SiPMmap.c_str(), sys.first.c_str()), OpenFlags::Read);
+      if( !status.IsOK() )
+      {
+        cout << "Error opening file\n";
+        exit(0);
+      }
+      file.Stat(false, info);
+      size = info->GetSize();
+      char *buff = new char[size];
+      status = file.Read(offset, size, buff, bytesRead);
+      X << buff;
+      status = file.Close();
+      delete info;
+      delete [] buff;      
     }
     
     cout << "path to SiPM maps: "<< path_SiPMmap << endl;
-    infile.open(Form("%s/%s_SiPM_mapping.csv", path_SiPMmap.c_str(), system.first.c_str()));
-    if(! infile.is_open()) {
-      cout<< "Error opening file"<<endl;
-      exit(1);
-    }
     // Skip 1st line
-    getline(infile,line);
-    cout << "In " << system.first << " SiPM map file: " << line << endl;
+    getline(X,line);
+    cout << "In " << sys.first << " SiPM map file: " << line << endl;
     // Read all other lines
-    while (getline(infile,line))
+    while (getline(X,line) && X.peek() != EOF)
     {
         data_vector.clear();
         stringstream items(line);
@@ -721,14 +820,15 @@ void ConvRawData::read_csv(string Path)
         {
            data_vector.push_back(stoi(element));
         }
-        SiPMmap[system.first][SiPM] = data_vector;
+        SiPMmap[sys.first][SiPM] = data_vector;
     }
-    for (auto channel : SiPMmap[system.first])
+    X.str(string()); X.clear(); line.clear();
+    size = 0; offset = 0; bytesRead = 0;
+    for (auto channel : SiPMmap[sys.first])
     {
       row = channel.second;
-      TofpetMap[system.second][row.at(2)*1000+row.at(3)] = channel.first;
+      TofpetMap[sys.second][row.at(2)*1000+row.at(3)] = channel.first;
     }
-    infile.close();
   } // end filling SiPMmap and TofpetMap
 }
 void ConvRawData::checkBoardMapping(string Path)

@@ -71,7 +71,7 @@ class ConvRawData : public FairTask
   
       Scifi* ScifiDet;
       TFile* fOut;
-      TTree* rawTree;
+      bool local;
       /** Input data **/
       TTree* fEventTree;
       // Board_x data
