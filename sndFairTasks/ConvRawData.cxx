@@ -702,7 +702,7 @@ void ConvRawData::read_csv(string Path)
   cout << "In QDC cal file: " << line << endl;
   vector<double> qdcData{};
   // Read all other lines
-  while (getline(X, line) && X.peek() != EOF)
+  while (getline(X, line))
   {    
     qdcData.clear();
     stringstream items(line);
@@ -716,6 +716,7 @@ void ConvRawData::read_csv(string Path)
     chi2_Ndof = (qdcData[9] < 2) ? 999999. : qdcData[7]/qdcData[9]; 
     X_qdc[key_vector] = { {"a",qdcData[4]}, {"b",qdcData[5]}, {"c",qdcData[6]},
                           {"d",qdcData[8]}, {"e",qdcData[10]}, {"chi2Ndof",chi2_Ndof} };
+    if (X.peek() == EOF) break;
   }
   X.str(string()); X.clear(); line.clear();
   size = 0; offset = 0; bytesRead = 0;
@@ -748,7 +749,7 @@ void ConvRawData::read_csv(string Path)
   cout << "In TDC cal file: " << line << endl;
   vector<double> tdcData{};
   // Read all other lines
-  while (getline(X, line) && X.peek() != EOF)
+  while (getline(X, line))
   {
     tdcData.clear();
     stringstream items(line);
@@ -762,6 +763,7 @@ void ConvRawData::read_csv(string Path)
     chi2_Ndof = (tdcData[10] < 2) ? 999999. : tdcData[8]/tdcData[10]; 
     X_tdc[key_vector] = { {"a",tdcData[5]}, {"b",tdcData[6]}, {"c",tdcData[7]},
                           {"d",tdcData[9]}, {"chi2Ndof",chi2_Ndof} };
+    if (X.peek() == EOF) break;
   }
   X.str(string()); X.clear(); line.clear();
   size = 0; offset = 0; bytesRead = 0;
@@ -808,7 +810,7 @@ void ConvRawData::read_csv(string Path)
     getline(X,line);
     cout << "In " << sys.first << " SiPM map file: " << line << endl;
     // Read all other lines
-    while (getline(X,line) && X.peek() != EOF)
+    while (getline(X,line))
     {
         data_vector.clear();
         stringstream items(line);
@@ -821,6 +823,7 @@ void ConvRawData::read_csv(string Path)
            data_vector.push_back(stoi(element));
         }
         SiPMmap[sys.first][SiPM] = data_vector;
+        if (X.peek() == EOF) break;
     }
     X.str(string()); X.clear(); line.clear();
     size = 0; offset = 0; bytesRead = 0;
