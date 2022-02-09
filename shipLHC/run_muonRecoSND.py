@@ -32,8 +32,10 @@ os.system('cp '+options.inputFile+' '+outFile)
 
 run = ROOT.FairRunAna()
 
-run.SetSource(ROOT.FairFileSource(options.inputFile))
-run.SetSink(ROOT.FairRootFileSink(outFile))
+source = ROOT.FairFileSource(options.inputFile)
+run.SetSource(source)
+sink = ROOT.FairRootFileSink(outFile)
+run.SetSink(sink)
 rtdb = run.GetRuntimeDb()
 
 parFile = ROOT.FairParRootFileIo()
@@ -42,9 +44,14 @@ rtdb.setFirstInput(parFile)
 rtdb.setOutput(parFile);
 rtdb.saveOutput();
 
-run.AddTask(SndlhcMuonReco.MuonReco())
+muon_reco_task = SndlhcMuonReco.MuonReco()
+
+muon_reco_task.SetTolerance(options.tolerance)
+
+run.AddTask(muon_reco_task)
 print("Done adding task. Muon reco constructed")
 run.Init()
 print("Done init about to Run")
 run.Run(0, options.nEvents)
 print("Done running")
+

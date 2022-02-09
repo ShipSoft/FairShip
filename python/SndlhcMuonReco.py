@@ -104,6 +104,17 @@ class hough() :
 
         return fit
 
+def numPlanesHit(systems, detector_ids) :
+    scifi_stations = []
+    mufi_ds_planes = []
+    mufi_us_planes = []
+
+    scifi_stations.append( detector_ids[systems == 0]//1000000 )
+    mufi_ds_planes.append( (detector_ids[systems == 3]%10000)//1000 )
+    mufi_us_planes.append( (detector_ids[systems == 2]%10000)//1000 )
+
+    return len(np.unique(scifi_stations)) + len(np.unique(mufi_ds_planes)) + len(np.unique(mufi_us_planes))
+    
 class MuonReco(ROOT.FairTask) :
     " Muon reconstruction "
     def Init(self) :
@@ -142,14 +153,18 @@ class MuonReco(ROOT.FairTask) :
         self.n_random = 5
         # MuFilter weight. Muon filter hits are thrown more times than scifi
         self.muon_weight = 100
-        # Minimum number of hits in each of the downstream muon filter views to try to reconstruct a muon
-        self.min_hits = 3
+        # Minimum number of planes hit in each of the downstream muon filter (if muon filter hits used) or scifi (if muon filter hits not used) views to try to reconstruct a muon
+        self.min_planes_hit = 3
 
         # Maximum number of muons to find. To avoid spending too much time on events with lots of downstream activity.
         self.max_reco_muons = 5
 
         # How far away from Hough line hits will be assigned to the muon, for Kalman tracking
         self.tolerance = 1.
+
+        # Which hits to use. By default use both scifi and muon filter.
+        self.use_scifi = True
+        self.use_mufi = True
 
         # Get sensor dimensions from geometry
         self.MuFilter_ds_dx = self.mufiDet.GetConfParF("MuFilter/DownstreamBarY") # Assume y dimensions in vertical bars are the same as x dimensions in horizontal bars.
@@ -197,6 +212,15 @@ class MuonReco(ROOT.FairTask) :
         
         # Init() MUST return int
         return 0
+    
+    def SetTolerance(self, tolerance) :
+        self.tolerance = tolerance
+
+    def SetUseSciFi(self, use_scifi) :
+        self.use_scifi = use_scifi
+
+    def SetUseMuFi(self, use_mufi) :
+        self.use_mufi = use_mufi
 
     def Exec(self, opt) :
         self.muon_tracks.Clear()
@@ -230,66 +254,69 @@ class MuonReco(ROOT.FairTask) :
                  "detectorID" : [],
                  "B" : [[], [], []]}
         
-        # Loop through hits
-        for i_hit, muFilterHit in enumerate(self.MuFilterHits) :
-        
-            # Don't use veto for fitting
-            if muFilterHit.GetSystem() == 1 :
-                continue
-            elif muFilterHit.GetSystem() == 2 :
-                mu = mu_us
-            elif muFilterHit.GetSystem() == 3 :
-                mu = mu_ds
-            else :
-                print("WARNING! Unknown MuFilter system!!")
-
-            self.mufiDet.GetPosition(muFilterHit.GetDetectorID(), self.a, self.b)
-
-            mu["pos"][0].append(self.a.X())
-            mu["pos"][1].append(self.a.Y())
-            mu["pos"][2].append(self.a.Z())
-
-            mu["B"][0].append(self.b.X())
-            mu["B"][1].append(self.b.Y())
-            mu["B"][2].append(self.b.Z())
-
-            mu["vert"].append(muFilterHit.isVertical())
-            mu["system"].append(muFilterHit.GetSystem())
-
-            mu["d"][0].append(self.MuFilter_ds_dx)
-            mu["d"][2].append(self.MuFilter_ds_dz)
-        
-            mu["index"].append(i_hit)
+        if self.use_mufi :
+            # Loop through muon filter hits
+            for i_hit, muFilterHit in enumerate(self.MuFilterHits) :
+                
+                # Don't use veto for fitting
+                if muFilterHit.GetSystem() == 1 :
+                    continue
+                elif muFilterHit.GetSystem() == 2 :
+                    mu = mu_us
+                elif muFilterHit.GetSystem() == 3 :
+                    mu = mu_ds
+                else :
+                    print("WARNING! Unknown MuFilter system!!")
             
-            mu["detectorID"].append(muFilterHit.GetDetectorID())
-
-            # Downstream
-            if muFilterHit.GetSystem() == 3 :
-                mu["d"][1].append(self.MuFilter_ds_dx)
-            # Upstream
-            else :
-                mu["d"][1].append(self.MuFilter_us_dy)
+                self.mufiDet.GetPosition(muFilterHit.GetDetectorID(), self.a, self.b)
+            
+                mu["pos"][0].append(self.a.X())
+                mu["pos"][1].append(self.a.Y())
+                mu["pos"][2].append(self.a.Z())
+            
+                mu["B"][0].append(self.b.X())
+                mu["B"][1].append(self.b.Y())
+                mu["B"][2].append(self.b.Z())
+            
+                mu["vert"].append(muFilterHit.isVertical())
+                mu["system"].append(muFilterHit.GetSystem())
+            
+                mu["d"][0].append(self.MuFilter_ds_dx)
+                mu["d"][2].append(self.MuFilter_ds_dz)
+            
+                mu["index"].append(i_hit)
+                
+                mu["detectorID"].append(muFilterHit.GetDetectorID())
+            
+                # Downstream
+                if muFilterHit.GetSystem() == 3 :
+                    mu["d"][1].append(self.MuFilter_ds_dx)
+                # Upstream
+                else :
+                    mu["d"][1].append(self.MuFilter_us_dy)
         
-        for i_hit, scifiHit in enumerate(self.ScifiHits) :
-            self.scifiDet.GetSiPMPosition(scifiHit.GetDetectorID(), self.a, self.b)
-            scifi["pos"][0].append(self.a.X())
-            scifi["pos"][1].append(self.a.Y())
-            scifi["pos"][2].append(self.a.Z())
-
-            scifi["B"][0].append(self.b.X())
-            scifi["B"][1].append(self.b.Y())
-            scifi["B"][2].append(self.b.Z())
-
-            scifi["d"][0].append(self.Scifi_dx)
-            scifi["d"][1].append(self.Scifi_dy)
-            scifi["d"][2].append(self.Scifi_dz)
+        if self.use_scifi :
+            # Loop through scifi hits
+            for i_hit, scifiHit in enumerate(self.ScifiHits) :
+                self.scifiDet.GetSiPMPosition(scifiHit.GetDetectorID(), self.a, self.b)
+                scifi["pos"][0].append(self.a.X())
+                scifi["pos"][1].append(self.a.Y())
+                scifi["pos"][2].append(self.a.Z())
             
-            scifi["vert"].append(scifiHit.isVertical())
-            scifi["index"].append(i_hit)
+                scifi["B"][0].append(self.b.X())
+                scifi["B"][1].append(self.b.Y())
+                scifi["B"][2].append(self.b.Z())
             
-            scifi["system"].append(0)
-
-            scifi["detectorID"].append(scifiHit.GetDetectorID())
+                scifi["d"][0].append(self.Scifi_dx)
+                scifi["d"][1].append(self.Scifi_dy)
+                scifi["d"][2].append(self.Scifi_dz)
+                
+                scifi["vert"].append(scifiHit.isVertical())
+                scifi["index"].append(i_hit)
+                
+                scifi["system"].append(0)
+            
+                scifi["detectorID"].append(scifiHit.GetDetectorID())
     
         # Make the hit collections numpy arrays.
         for hit_collection in [mu_ds, mu_us, scifi] :
@@ -305,14 +332,31 @@ class MuonReco(ROOT.FairTask) :
         # Reconstruct muons until there are not enough hits in downstream muon filter
         for i_muon in range(self.max_reco_muons) :
 
-            vertical_ds_hits = mu_ds["vert"].sum()
-            if vertical_ds_hits < self.min_hits :
-                break
+            # Minimum plane conditions
+            if self.use_mufi :
+                n_planes_ds_ZX = numPlanesHit(mu_ds["system"][mu_ds["vert"]], mu_ds["detectorID"][mu_ds["vert"]])
+                if n_planes_ds_ZX < self.min_planes_hit :
+                    break
+                n_planes_ds_ZY = numPlanesHit(mu_ds["system"][~mu_ds["vert"]], mu_ds["detectorID"][~mu_ds["vert"]])
+                if n_planes_ds_ZY < self.min_planes_hit :
+                    break
             
-            horizontal_ds_hits = len(mu_ds["vert"]) - vertical_ds_hits
-            if horizontal_ds_hits < self.min_hits :
-                break
-                
+
+            if (not self.use_mufi) and self.use_scifi :
+                print("ABOUT TO GET NPLANES")
+                n_planes_sf_ZX = numPlanesHit(scifi["system"][scifi["vert"]], scifi["detectorID"][scifi["vert"]])
+                if n_planes_sf_ZX < self.min_planes_hit :
+                    break
+                n_planes_sf_ZY = numPlanesHit(scifi["system"][~scifi["vert"]], scifi["detectorID"][~scifi["vert"]])
+                if n_planes_sf_ZY < self.min_planes_hit :
+                    break
+            elif self.use_mufi :
+                pass
+            else :
+                raise RuntimeException("Invalid triplet condition. Need at least Scifi or Muon filter hits enabled")
+
+
+  
             print("Finding muon {0}".format(i_muon))    
             
             # Get hits in hough transform format
@@ -353,21 +397,31 @@ class MuonReco(ROOT.FairTask) :
                                                      mu_ds["pos"][0][mu_ds["vert"]]]), 
                                           np.dstack([mu_ds["d"][2][mu_ds["vert"]], 
                                                      mu_ds["d"][0][mu_ds["vert"]]]))
-            print("Found {0} downstream ZX hits associated to muon track".format(len(track_hits_ds_ZX)))
-            if len(track_hits_ds_ZX) < self.min_hits :
-                break
-            
+
             track_hits_ds_ZY = hit_finder(ZY_hough[0], ZY_hough[1], 
                                           np.dstack([mu_ds["pos"][2][~mu_ds["vert"]], 
                                                      mu_ds["pos"][1][~mu_ds["vert"]]]), 
                                           np.dstack([mu_ds["d"][2][~mu_ds["vert"]],
                                                      mu_ds["d"][1][~mu_ds["vert"]]]))
 
-            print("Found {0} downstream ZY hits associated to muon track".format(len(track_hits_ds_ZY)))
-            if len(track_hits_ds_ZY) < self.min_hits :
-                break
+            # Triplet conditions. At least three unique planes in MuFi if use_mufi or scifi if not use_mufi
+            if self.use_mufi :
+                n_planes_ds_ZX = numPlanesHit(mu_ds["system"][track_hits_ds_ZX], mu_ds["detectorID"][track_hits_ds_ZX])
+                if n_planes_ds_ZX < self.min_planes_hit :
+                    break
+                n_planes_ds_ZY = numPlanesHit(mu_ds["system"][track_hits_ds_ZY], mu_ds["detectorID"][track_hits_ds_ZY])
+                if n_planes_ds_ZY < self.min_planes_hit :
+                    break
+                
 
-            print("Muon found!")
+            print("Found {0} downstream ZX hits associated to muon track".format(len(track_hits_ds_ZX)))
+#            if len(track_hits_ds_ZX) < self.min_planes_hit :
+#                break
+            
+            print("Found {0} downstream ZY hits associated to muon track".format(len(track_hits_ds_ZY)))
+#            if len(track_hits_ds_ZY) < self.min_planes_hit :
+#                break
+
             
             # This time with non-zero tolerance, for kalman filter
             track_hits_ds_ZX = hit_finder(ZX_hough[0], ZX_hough[1], 
@@ -402,6 +456,22 @@ class MuonReco(ROOT.FairTask) :
                                           np.dstack([scifi["d"][2][~scifi["vert"]], 
                                                      scifi["d"][1][~scifi["vert"]]]), tol = self.tolerance)
             
+            # Triplet conditions. At least three unique planes in MuFi if use_mufi or scifi if not use_mufi
+            if (not self.use_mufi) and self.use_scifi :
+                print("ABOUT TO GET NPLANES")
+                n_planes_sf_ZX = numPlanesHit(scifi["system"][track_hits_sf_ZX], scifi["detectorID"][track_hits_sf_ZX])
+                if n_planes_sf_ZX < self.min_planes_hit :
+                    break
+                n_planes_sf_ZY = numPlanesHit(scifi["system"][track_hits_sf_ZY], scifi["detectorID"][track_hits_sf_ZY])
+                if n_planes_sf_ZY < self.min_planes_hit :
+                    break
+            elif self.use_mufi :
+                pass
+            else :
+                raise RuntimeException("Invalid triplet condition. Need at least Scifi or Muon filter hits enabled")
+
+            print("Muon found!")
+
             # Get hit detectorIDs and add to reco track collection
             hit_detectorIDs = np.concatenate([mu_ds["detectorID"][mu_ds["vert"]][track_hits_ds_ZX],
                                               mu_ds["detectorID"][~mu_ds["vert"]][track_hits_ds_ZY],
