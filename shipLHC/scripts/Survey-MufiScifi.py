@@ -406,6 +406,9 @@ def Mufi_hitMaps(Nev = options.nEvents):
  ut.bookHist(h,'bsDS','beam spot',60,-0.5,59.5,60,-0.5,59.5)
  ut.bookHist(h,'slopes','track slopes',100,-0.1,0.1,100,-0.1,0.1)
 
+ for s in range(1,4):
+    ut.bookHist(h,sdict[s]+'Mult','QDCs vs nr hits',100,0.,500.,200,0.,600.)
+
  N=-1
  Tprev = 0
  if Nev < 0 : Nev = eventTree.GetEntries()
@@ -418,6 +421,7 @@ def Mufi_hitMaps(Nev = options.nEvents):
     if N>Nev: break
     withX = False
     planes = {}
+    listOfHits = {1:[],2:[],3:[]}
     for aHit in event.Digi_MuFilterHits:
         if not aHit.isValid(): continue
         detID = aHit.GetDetectorID()
@@ -438,6 +442,8 @@ def Mufi_hitMaps(Nev = options.nEvents):
         nSides  = aHit.GetnSides()
 # check left/right
         allChannels = map2Dict(aHit,'GetAllSignals')
+        for c in allChannels:
+           listOfHits[s].append(c)
         if nSides==2:
            Nleft    = 0
            Nright = 0
@@ -462,6 +468,13 @@ def Mufi_hitMaps(Nev = options.nEvents):
             else             :             rc  = h['sigR_'+str(s)+str(l)].Fill(allChannels[c])
             rc  = h['sig_'+str(s)+str(l)].Fill(allChannels[c])
         allChannels.clear()
+
+    for s in listOfHits:
+         N = len(listOfHits[s])
+         qcdsum = 0
+         for i in range(N):
+             rc = h[sdict[s]+'Mult'].Fill(N, listOfHits[s][i])
+
     maxOneBar = True
     for key in planes:
         if len(planes[key]) > 2: maxOneBar = False
@@ -922,11 +935,13 @@ def Mufi_Efficiency(Nev=options.nEvents,optionTrack=options.trackType,NbinsRes=1
              key = sdict[s]+str(s*10+l)+'_'+str(bar)
              if side=="":
                 ut.bookHist(h,'dtLRvsX_'+key,'dt vs x track '+str(s*10+l)+";X [cm]; dt [ns]",100,-70.,30.,260,-8.,5.)
-                ut.bookHist(h,'dtF12LRvsX_'+key,'dt vs x track '+str(s*10+l)+";X [cm]; dt [ns]",100,-70.,30.,260,-8.,5.)
+                ut.bookHist(h,'dtF1LRvsX_'+key,'dt vs x track '+str(s*10+l)+";X [cm]; dt [ns]",100,-70.,30.,260,-8.,5.)
                 ut.bookHist(h,'dtfastLRvsX_'+key,'dt vs x track '+str(s*10+l)+";X [cm]; dt [ns]",100,-70.,30.,260,-8.,5.)
                 ut.bookHist(h,'atLRvsX_'+key,'dt vs x track '+str(s*10+l)+";X [cm]; dt [ns]",100,-70.,30.,260,-8.,5.)
              else:
                 ut.bookHist(h,'nSiPMs'+side+'_'+key,'#sipms',16,-0.5,15.5,20,0.,100.)
+                ut.bookHist(h,'tvsX'+side+'_'+key,"t-t0 vs x track;X [cm]; dt [ns]",100,-70.,30.,200,-12.,12.)
+                ut.bookHist(h,'tFastvsX'+side+'_'+key,"t-t0 vs x track;X [cm]; dt [ns]",100,-70.,30.,200,-12.,12.)
                 for i in range(systemAndChannels[s][1]+systemAndChannels[s][0]):
                         if s==2 and smallSiPMchannel(i):
                             ut.bookHist(h,'signalS'+side+'_'+key+'-c'+str(i),'signal',200,0.,100.,20,0.,100.)
@@ -934,6 +949,7 @@ def Mufi_Efficiency(Nev=options.nEvents,optionTrack=options.trackType,NbinsRes=1
                             ut.bookHist(h,'signal'+side+'_'+key+'-c'+str(i),'signal',200,0.,100.,20,0.,100.)
                         if s==3: continue
                         ut.bookHist(h,'sigmaTDC'+side+'_'+key+'-c'+str(i),'rms TDC ;dt [ns]',400,-4.0,4.0)
+                        ut.bookHist(h,'tvsX'+side+'_'+key+'-c'+str(i),"t-t0 vs x track;X [cm]; dt [ns]",100,-70.,30.,200,-12.,12.)
 
                 ut.bookHist(h,'signalT'+side+'_'+key,'signal',400,0.,400.,20,0.,100.)
                 ut.bookHist(h,'signalTS'+side+'_'+key,'signal',400,0.,400.,20,0.,100.)
@@ -982,14 +998,26 @@ def Mufi_Efficiency(Nev=options.nEvents,optionTrack=options.trackType,NbinsRes=1
     rc = h['trackslxy'].Fill(mom.x()/mom.Mag(),mom.y()/mom.Mag())
 # get T0 from Track
     if optionTrack=='DS':
-       # don't know yet what to do
+    # define T0 using mean TDC L/R of the horizontal planes
          T0track = 0
-         Z0track = 0
+         Z0track = -1
+         T0s = []
+         for nM in range(theTrack.getNumPointsWithMeasurement()):
+            M = theTrack.getPointWithMeasurement(nM)
+            W = M.getRawMeasurement()
+            detID = W.getDetId()
+            hkey  = W.getHitId()
+            aHit = event.Digi_MuFilterHits[ hkey ]
+            if aHit.isVertical(): continue
+            allTDCs = map2Dict(aHit,'GetAllTimes')
+            if (0 in allTDCs) and (1 in allTDCs) : T0s.append( (allTDCs[0]+allTDCs[1])/2. )
+         if len(T0s)==2: 
+            T0track = (T0s[0]+T0s[1])/2.
+            Z0track = theTrack.getFittedState(0).getPos()[2]
     else:
          M = theTrack.getPointWithMeasurement(0)
          W = M.getRawMeasurement()
          detID = W.getDetId()
-         hkey  = W.getHitId()
          aHit = event.Digi_ScifiHits[ DetID2Key[detID] ]
          geo.modules['Scifi'].GetSiPMPosition(detID,A,B)
          X = B-pos
@@ -1005,7 +1033,6 @@ def Mufi_Efficiency(Nev=options.nEvents,optionTrack=options.trackType,NbinsRes=1
             M = theTrack.getPointWithMeasurement(nM)
             W = M.getRawMeasurement()
             detID = W.getDetId()
-            hkey  = W.getHitId()
             aHit = event.Digi_ScifiHits[ DetID2Key[detID] ]
             geo.modules['Scifi'].GetSiPMPosition(detID,A,B)
             if aHit.isVertical(): X = B-posM
@@ -1170,25 +1197,33 @@ def Mufi_Efficiency(Nev=options.nEvents,optionTrack=options.trackType,NbinsRes=1
                   rc = h['signalTSR_'+barName].Fill(SrightS,dR)
 
 #   look at delta time vs track X, works only for horizontal planes.
+                  allTDCs = map2Dict(aHit,'GetAllTimes')
                   if not aHit.isVertical():
                      dt    = aHit.GetDeltaT()
                      dtF  = aHit.GetFastDeltaT()
-                     mtTrack = aHit.GetImpactT() - T0track - (globPos[2] - Z0track)/u.speedOfLight
                      mtVeto  = aHit.GetImpactT() - T0Veto - (globPos[2] - Z0Veto)/u.speedOfLight
                      h['dtLRvsX_'+sdict[s]+str(s*10+plane)].Fill(xEx,dt*TDC2ns)
                      h['dtLRvsX_'+barName].Fill(xEx,dt*TDC2ns)
-                     if left==6 and right==6:  h['dtF12LRvsX_'+barName].Fill(xEx,dt*TDC2ns)
+                     if (1 in allTDCs) and (9 in allTDCs):  h['dtF1LRvsX_'+barName].Fill(xEx,(allTDCs[1]-allTDCs[9])*TDC2ns)
                      h['dtfastLRvsX_'+barName].Fill(xEx,dtF*TDC2ns)
-                     h['atLRvsX_'+sdict[s]+str(s*10+plane)].Fill(xEx,mtTrack)
+                     if Z0track>0:
+                        mtTrack = aHit.GetImpactT() - T0track - (globPos[2] - Z0track)/u.speedOfLight
+                        h['atLRvsX_'+sdict[s]+str(s*10+plane)].Fill(xEx,mtTrack)
+                        h['atLRvsX_'+barName].Fill(xEx,mtTrack)
+                        if s <3:
+                           for i in allTDCs:
+                              dt = (allTDCs[i]-T0track)*TDC2ns
+                              if i<nSiPMs: h['tvsXL_'+barName+'-c'+str(i)].Fill(xEx,dt)
+                              else:
+                                                 h['tvsXR_'+barName+'-c'+str(i-nSiPMs)].Fill(xEx,dt)
+
                      h['VetoatLRvsX_'+sdict[s]+str(s*10+plane)].Fill(xEx,mtVeto)
-                     h['atLRvsX_'+barName].Fill(xEx,mtTrack)
 # TDC channel variations
                   if s==3: continue
-                  allTDCs = map2Dict(aHit,'GetAllTimes')
                   meanL,meanR,nL,nR=0,0,0,0
                   for i in allTDCs:
                       if smallSiPMchannel(i): continue
-                      if  nSiPMs > i:  # left side
+                      if  nSiPMs < i:  # left side
                           nL+=1
                           meanL+=allTDCs[i]
                       else:
@@ -1222,7 +1257,7 @@ def mips(readHists=True,option=0):
     if readHists:
         for x in h: 
             if hasattr(x,'Reset'): x.Reset()
-        ut.readHists(h,'MuFilterEff_run'+str(options.runNumber)+'.root')
+        ut.readHists(h,'MuFilterEff_run'+str(options.runNumber)+'.root',withProj=False)
     s = 2
     for plane in range(5):
         for bar in range(10):
@@ -1315,7 +1350,7 @@ def mips(readHists=True,option=0):
 
     ut.writeHists(h,'LandauFits_run'+str(options.runNumber)+'.root')
 def mipsAfterBurner(readhisto=True):
-    if readhisto:  ut.readHists(h,'LandauFits_run'+str(options.runNumber)+'.root')
+    if readhisto:  ut.readHists(h,'LandauFits_run'+str(options.runNumber)+'.root',withProj=False)
     s=2
     for plane in range(5):
            for p in ['L','R']:
@@ -1342,7 +1377,7 @@ barColor = [ROOT.kRed,ROOT.kRed-7,ROOT.kMagenta,ROOT.kMagenta-6,ROOT.kBlue,ROOT.
                       ROOT.kCyan,ROOT.kAzure-4,ROOT.kGreen,ROOT.kGreen+3]
 
 def plotMips(readhisto=True):
-    if readhisto:  ut.readHists(h,'LandauFits_run'+str(options.runNumber)+'.root')
+    if readhisto:  ut.readHists(h,'LandauFits_run'+str(options.runNumber)+'.root',withProj=False)
     langau = ROOT.TF1('Langau',langaufun,0.,100.,4)
     ut.bookCanvas(h,'CsignalT','',1200,2000,2,5)
     ut.bookCanvas(h,'WsignalT','',1200,2000,2,5)
@@ -1398,7 +1433,7 @@ def plotMips(readhisto=True):
                         for i in range(1,h[chi2N].GetNbinsX()+1):
                             funL = h[name[1:]+'-X'+str(i)].GetFunction('langau')
                             if not funL: continue
-                            if not funL.GetParameter(2)>0: continue
+                            if not funL.GetParameter(1)>0: continue
                             mpvRelErr = funL.GetParError(1)/funL.GetParameter(1)*ROOT.TMath.Sqrt(h[name[1:]+'-X'+str(i)].GetEntries())
                             if mpvRelErr < 0.1: 
                                     print('exclude bin ',name,i,mpvRelErr,h[name[1:]+'-X'+str(i)].GetEntries())
@@ -1409,7 +1444,7 @@ def plotMips(readhisto=True):
                         for i in range(h[chi2N].GetNbinsX(),1,-1):
                             funL = h[name[1:]+'-X'+str(i)].GetFunction('langau')
                             if not funL: continue
-                            if not funL.GetParameter(2)>0: continue
+                            if not funL.GetParameter(1)>0: continue
                             mpvRelErr = funL.GetParError(1)/funL.GetParameter(1)*ROOT.TMath.Sqrt(h[name[1:]+'-X'+str(i)].GetEntries())
                             if mpvRelErr < 0.1: 
                                     print('exclude bin ',name,i,mpvRelErr,h[name[1:]+'-X'+str(i)].GetEntries())
@@ -1613,16 +1648,88 @@ def plotMipsGainRatio():
               k+=1
         h['MsignalN'+str(run)].Print('MPVgainRatio_'+str(run)+'_'+str(nRef)+'.png')
 
+def plotMipsTimeResT0(readHists=True):
+    if readHists:
+        for x in h: 
+            if hasattr(x,'Reset'): x.Reset()
+        ut.readHists(h,'MuFilterEff_run'+str(options.runNumber)+'.root',withProj=False)
+    ut.bookCanvas(h,'dummy','',900,800,1,1)
+    S = [1,2]
+    if options.runNumber<100:  S = [2]
+    for mode in ['t0']:
+     for s in S:
+        for side in ['L','R']:
+           if s==1: ut.bookCanvas(h,mode+'Time'+side+'-'+str(s),'',1800,800,2,1)
+           if s==2: ut.bookCanvas(h,mode+'Time'+side+'-'+str(s),'',1800,1500,2,3)
+        nbars = 0
+        for plane in range(systemAndPlanes[s]):
+           if  systemAndOrientation(s,plane) == "vertical": continue
+           nbars += systemAndBars[s]
+        ut.bookHist(h,mode+'tsigma_'+str(s),';'+str(systemAndBars[s])+'*station + bar number;#sigma_{t} [ns]',nbars,-0.5,nbars-0.5)
+
+    resultsT0 = {}
+    tc = h['dummy'].cd()
+    mode = 't0'
+    for s in S:
+        for l in range(systemAndPlanes[s]):
+         resultsT0[s*10+l]={}
+         for side in ['L','R']:
+          resultsT0[s][side]={}
+          for bar in range(systemAndBars[s]):
+            resultsT0[s][side][bar]={}
+            for sipm in range(systemAndChannels[s][0]+systemAndChannels[s][1]):
+                resultsT0[s][side][bar][sipm] = {}
+                key = sdict[s]+str(s*10+l)+'_'+str(bar)
+                name = 'tvsX'+side+'_'+key+'-c'+str(sipm)
+                tname = 'T'+name
+                h[tname] = h[name].ProjectionX(tname)
+                h[tname].Reset()
+                xax = h[tname].GetXaxis()
+                yax = h[tname].GetYaxis()
+                yax.SetTitle('#sigma_{t} [ns]')
+                minContent = 50
+                for j in range(1,xax.GetNbins()+1):
+                    jname = name+'-X'+str(j)
+                    h[jname] = h[name].ProjectionY(jname,j,j)
+                    if h[jname].GetEntries()<minContent:  continue
+                    rc = h[jname].Fit('gaus','SQ0')
+                    res = rc.Get()
+                    h[tname].SetBinContent(j,res.Parameter(2))
+                    h[tname].SetBinError(j,res.ParError(2))
+                A = weightedY(h[tname])
+                if A[1]<100:
+                   resultsT0[s][side][bar][sipm]['meanSigma'] = A[0]
+                   resultsT0[s][side][bar][sipm]['errorSigma'] = A[1]
+
+    tc = h['dummy'].cd()
+    for s in S:
+        for l in range(systemAndPlanes[s]):
+         for bar in range(systemAndBars[s]):
+          for side in ['L','R']:
+            txt=str(s*10+l)+side+"_"+str(bar)
+            for sipm in range(systemAndChannels[s][0]+systemAndChannels[s][1]):
+               if smallSiPMchannel(sipm): continue
+               X = resultsT0[s][side][bar][sipm]
+               if len(X)==2: txt+=" "+"%5.2F"%(X['meanSigma'] )
+               else: txt+=" "+"%5.2F"%(-1)
+               key = sdict[s]+str(s*10+l)+'_'+str(bar)
+               name = 'tvsX'+side+'_'+key+'-c'+str(sipm)
+               tname = 'T'+name
+               h[name].Draw('colz')
+               myPrint(h['dummy'],name+'X.png')
+            print(txt, tname)
+    os.system("convert -delay 120 -loop 0 *X.png TDCallChannels.gif")
+
 def plotMipsTimeRes(readHists=True):
     maxRes = {1:0.6,2:1.0,3:0.6}
     if readHists:
         for x in h: 
             if hasattr(x,'Reset'): x.Reset()
-        ut.readHists(h,'MuFilterEff_run'+str(options.runNumber)+'.root')
+        ut.readHists(h,'MuFilterEff_run'+str(options.runNumber)+'.root',withProj=False)
     ut.bookCanvas(h,'dummy','',900,800,1,1)
     S = [1,2,3]
     if options.runNumber<100:  S = [2,3]
-    for mode in ['','fast','F12']:
+    for mode in ['','fast','F1']:
      for s in S:
        if s==1: ut.bookCanvas(h,mode+'TimeLR-'+str(s),'',1800,800,2,1)
        if s==2: ut.bookCanvas(h,mode+'TimeLR-'+str(s),'',1800,1500,2,3)
@@ -1641,7 +1748,6 @@ def plotMipsTimeRes(readHists=True):
            name   = 'Rdt'+mode+'LRvsX_'+sdict[s]+str(s*10+plane)+'_'+str(bar)
            tname  = mode+'TimeRes_'+sdict[s]+str(s*10+plane)+'_'+str(bar)
            h[name] = h[name0].Clone(name)
-           rc = h[name].RebinX(2)
            h[tname] = h[name].ProjectionX(tname)
            h[tname].Reset()
            xax = h[tname].GetXaxis()
@@ -1663,8 +1769,8 @@ def plotMipsTimeRes(readHists=True):
                 h[tname].SetBinError(j,res.ParError(2))
            A = weightedY(h[tname])
            if A[1]<100:
-              h[mode+'tsigma_'+str(s)].SetBinContent(plane*10+bar,A[0])
-              h[mode+'tsigma_'+str(s)].SetBinError(plane*10+bar,A[1])
+              h[mode+'tsigma_'+str(s)].SetBinContent(plane*systemAndBars[s]+bar,A[0])
+              h[mode+'tsigma_'+str(s)].SetBinError(plane*systemAndBars[s]+bar,A[1])
            if bar==0: opt=''
            else:         opt='same'
            color = barColor[bar%10]
@@ -1765,7 +1871,7 @@ def drawArea(s=3,p=0,opt='',color=ROOT.kGreen):
      l.Draw('same')
 
 def analyze_EfficiencyAndResiduals(readHists=False,mode='S',local=True,zoom=False):
-  if readHists:   ut.readHists(h,'MuFilterEff_run'+str(options.runNumber)+'.root')
+  if readHists:   ut.readHists(h,'MuFilterEff_run'+str(options.runNumber)+'.root',withProj=False)
 # start with tracks
   ut.bookCanvas(h,'Tracks','',900,1600,1,2)
   h['Tracks'].cd(1)
@@ -2810,6 +2916,11 @@ def plotsForCollabMeeting():
 #
 if options.command:
     tmp = options.command.split(';')
+
+    if tmp[0].find('.C')>0:    # execute a C macro
+        ROOT.gROOT.LoadMacro(tmp[0])
+        ROOT.Execute()
+        exit()
     command = tmp[0]+"("
     for i in range(1,len(tmp)):
          command+=tmp[i]
