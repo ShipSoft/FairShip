@@ -228,8 +228,8 @@ void EmulsionDet::ConstructGeometry()
 
 	TGeoMedium *Emufilm = new TGeoMedium("EmulsionFilm",100,emufilmmixture);
 
-	InitMedium("tungstenalloySND");
-	TGeoMedium *tungsten = gGeoManager->GetMedium("tungstenalloySND");
+	InitMedium("tungstensifon");
+	TGeoMedium *tungsten = gGeoManager->GetMedium("tungstensifon");
 
 
 	Int_t NPlates = number_of_plates; //Number of doublets emulsion + Pb	
