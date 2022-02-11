@@ -407,13 +407,14 @@ def Mufi_hitMaps(Nev = options.nEvents):
  ut.bookHist(h,'slopes','track slopes',100,-0.1,0.1,100,-0.1,0.1)
 
  for s in range(1,4):
-    ut.bookHist(h,sdict[s]+'Mult','QDCs vs nr hits',100,0.,500.,200,0.,600.)
+    ut.bookHist(h,sdict[s]+'Mult','QDCs vs nr hits',200,0.,1600.,100,0.,100.)
 
  N=-1
  Tprev = 0
  if Nev < 0 : Nev = eventTree.GetEntries()
  eventTree.GetEvent(0)
  t0 =  eventTree.EventHeader.GetEventTime()/freq
+ listOfHits = {1:[],2:[],3:[]}
 
  for event in eventTree:
     N+=1
@@ -421,7 +422,9 @@ def Mufi_hitMaps(Nev = options.nEvents):
     if N>Nev: break
     withX = False
     planes = {}
-    listOfHits = {1:[],2:[],3:[]}
+    listOfHits[1].clear()
+    listOfHits[2].clear()
+    listOfHits[3].clear()
     for aHit in event.Digi_MuFilterHits:
         if not aHit.isValid(): continue
         detID = aHit.GetDetectorID()
@@ -458,7 +461,7 @@ def Mufi_hitMaps(Nev = options.nEvents):
                     Sright+=allChannels[c]
            rc = h['leftvsright_'+str(s)].Fill(Nleft,Nright)
            rc = h['leftvsright_signal_'+str(s)].Fill(Sleft,Sright)
-
+#
         for c in allChannels:
             channel = bar*nSiPMs*nSides + c
             rc = h['hit_'+str(s)+str(l)].Fill( int(channel))
@@ -468,12 +471,12 @@ def Mufi_hitMaps(Nev = options.nEvents):
             else             :             rc  = h['sigR_'+str(s)+str(l)].Fill(allChannels[c])
             rc  = h['sig_'+str(s)+str(l)].Fill(allChannels[c])
         allChannels.clear()
-
+#
     for s in listOfHits:
-         N = len(listOfHits[s])
+         nhits = len(listOfHits[s])
          qcdsum = 0
-         for i in range(N):
-             rc = h[sdict[s]+'Mult'].Fill(N, listOfHits[s][i])
+         for i in range(nhits):
+             rc = h[sdict[s]+'Mult'].Fill(nhits, listOfHits[s][i])
 
     maxOneBar = True
     for key in planes:
