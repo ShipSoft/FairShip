@@ -31,6 +31,8 @@ link_directories( ${LINK_DIRECTORIES})
 
 set(SRCS
 DigiTaskSND.cxx
+ConvRawData.cxx
+boardMappingParser.cxx
 )
 
 Set(HEADERS)

@@ -5,6 +5,7 @@
 #pragma link off all functions;
 
 #pragma link C++ class DigiTaskSND;
+#pragma link C++ class ConvRawData;
 #endif
 
 
