@@ -80,7 +80,7 @@ class ConvRawData : public FairTask
       int frunNumber;
       int fnStart, fnEvents;
       int fheartBeat;
-      int withGeoFile, debug, stop, isjson;
+      int withGeoFile, debug, stop;
       string fpath; 
       int eventNumber;  
     

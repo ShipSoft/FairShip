@@ -23,7 +23,6 @@ parser.add_argument("-s",dest="stop", help="do not start running", default=False
 parser.add_argument("-zM",dest="minMuHits", help="noise suppresion min MuFi hits", default=-1, type=int)
 parser.add_argument("-zS",dest="minScifiHits", help="noise suppresion min ScifFi hits", default=-1, type=int)
 parser.add_argument("-b", "--heartBeat", dest="heartBeat", help="heart beat", type=int,default=10000)
-parser.add_argument("-j", "--json", dest="json", help="read board mapping from EOS", type=int,default=1)
 parser.add_argument("-cpp", "--convRawCPP", action='store_true', dest="FairTask_convRaw", help="convert raw data using ConvRawData FairTask", default=False)
 
 withGeoFile = False
@@ -43,7 +42,7 @@ if options.FairTask_convRaw:
   X=''
   server = os.environ['EOSSHIP']
   if not local: X = server
-  fIN = ROOT.TFile.Open(X+path+'data.root')
+  fIN = ROOT.TFile.Open(X+path+'data_0000.root')
   # Pass raw data file as input object
   ioman.RegisterInputObject("rawData", fIN)
 
@@ -62,7 +61,6 @@ if options.FairTask_convRaw:
   ioman.RegisterInputObject('stop', ROOT.TObjString(str(options.stop)))
   ioman.RegisterInputObject('heartBeat', ROOT.TObjString(str(options.heartBeat)))
   ioman.RegisterInputObject('withGeoFile', ROOT.TObjString(str(withGeoFile)))
-  ioman.RegisterInputObject('isjson', ROOT.TObjString(str(options.json)))
 
   # Set output
   outfile = ROOT.FairRootFileSink(outFile+'_CPP.root')
@@ -105,23 +103,14 @@ else:
   TofpetMap = {}
   key = {'DS':2,'US':1,'Veto':0}
   for system in key:
-     infile = "/eos/experiment/sndlhc/testbeam/MuFilter/SiPM_mappings/"+system+"_SiPM_mapping.csv"
+     sndswPath = os.environ['SNDSW_ROOT']
+     infile = sndswPath+"/geometry/"+system+"_SiPM_mapping.csv"
      SiPMmap[system] = {}
-     if os.path.isdir("/eos/experiment/sndlhc/testbeam/MuFilter/SiPM_mappings"):
+     if os.path.isdir(sndswPath+"/geometry"):
         with open(infile, "r") as f:
             reader = csv.DictReader(f, delimiter=',')
             for i, row in enumerate(reader):
                    SiPMmap[system][int(row['SiPM'])] = [int(row['CN']), int(row['pin']), int(row['TOFPET']), int(row['CHANNEL'])]
-     else:
-         from XRootD import client
-         server = os.environ['EOSSHIP']
-         with client.File() as f:
-            f.open(server+infile)
-            status, tmp = f.read()
-         for x in tmp.decode().split('\r\n'):
-            if x.find('TOF')>0: continue
-            row = x.split(',')
-            SiPMmap[system][int(row[0])] = [int(row[1]), int(row[2]), int(row[3]), int(row[4])]
      TofpetMap[key[system]] = {}
      for channel in SiPMmap[system]:
            row = SiPMmap[system][channel]
@@ -234,7 +223,7 @@ else:
       par  = qdc_cal[board_id][tofpet_id][channel][tac]
       parT = par[TDC]
       x    = t_fine
-      ftdc = (-parT['b']-ROOT.TMath.Sqrt(parT['b']**2-4*parT['a']*(parT['c']-x)))/(2*parT['a'])+parT['d']
+      ftdc = (-parT['b']-ROOT.TMath.Sqrt(parT['b']**2-4*parT['a']*(parT['c']-x)))/2*parT['a'] #   Ettore 28/01/2022 +par['d']
       timestamp = t_coarse + ftdc
       tf = timestamp - t_coarse
       x = v_coarse - tf
@@ -291,21 +280,17 @@ else:
 
   timerBMap = ROOT.TStopwatch()
   timerBMap.Start()
-  if options.json:   # read mapping from EOS
-     if local:
-         with open(path+'board_mapping.json') as f:
-             jsonStr = f.read()
-     else:
-        with client.File() as f:
-           server = os.environ['EOSSHIP']
-           f.open(server+path+"/board_mapping.json")
-           status, jsonStr = f.read()
+  if local:
+     with open(path+'board_mapping.json') as f:
+        jsonStr = f.read()
+  else:
+     with client.File() as f:
+        server = os.environ['EOSSHIP']
+        f.open(server+path+"/board_mapping.json")
+        status, jsonStr = f.read()
 
-     # pass the read string to getBoardMapping()
-     boardMaps = boardMappingParser.getBoardMapping(jsonStr)
-
-  else: # old internal mapping with IF statements
-     boardMaps = boardMappingParser.oldMapping(path)
+  # pass the read string to getBoardMapping()
+  boardMaps = boardMappingParser.getBoardMapping(jsonStr)
 
   timerBMap.Stop()
   print("Time to set board maps ", timerBMap.RealTime())
@@ -346,7 +331,7 @@ else:
   # reading hits and converting to event information
   X=''
   if not local: X = server
-  f0=ROOT.TFile.Open(X+path+'data.root')
+  f0=ROOT.TFile.Open(X+path+'data_0000.root')
   if options.nEvents<0:  nEvent = f0.event.GetEntries()
   else: nEvent = min(options.nEvents,f0.event.GetEntries())
   print('converting ',nEvent,' events ',' of run',options.runNumber)
@@ -555,7 +540,6 @@ else:
                      cprev = c
   # fill TTree
      sTree.Fill()
-     for el in counters: print(el, counters[el])
    if options.debug:
        print('number of events processed',sTree.GetEntries(),f0.event.GetEntries())
    sTree.Write()

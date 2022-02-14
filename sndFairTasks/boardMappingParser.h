@@ -12,6 +12,5 @@ using namespace std;
 using json = nlohmann::json;
 
 tuple<map<string, map<string, map<string, int>> >, map<string, map<string, map<string, string>> > > getBoardMapping(json j);
-tuple<map<string, map<string, map<string, int>> >, map<string, map<string, map<string, string>> > > oldMapping(string path);
 
 #endif

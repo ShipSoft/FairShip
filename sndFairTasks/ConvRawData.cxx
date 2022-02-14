@@ -74,7 +74,6 @@ InitStatus ConvRawData::Init()
     TObjString* stop_obj = dynamic_cast<TObjString*>(ioman->GetObject("stop"));
     TObjString* heartBeat_obj = dynamic_cast<TObjString*>(ioman->GetObject("heartBeat"));
     TObjString* withGeoFile_obj = dynamic_cast<TObjString*>(ioman->GetObject("withGeoFile"));
-    TObjString* isjson_obj = dynamic_cast<TObjString*>(ioman->GetObject("isjson"));
     // Input raw data file is read from the FairRootManager
     // This allows to have it in custom format, e.g. have arbitary names of TTrees
     TFile* f0 = dynamic_cast<TFile*>(ioman->GetObject("rawData"));
@@ -87,7 +86,6 @@ InitStatus ConvRawData::Init()
     std::istringstream(stop_obj->GetString().Data()) >> stop;
     std::istringstream(heartBeat_obj->GetString().Data()) >> fheartBeat;
     std::istringstream(withGeoFile_obj->GetString().Data()) >> withGeoFile;
-    std::istringstream(isjson_obj->GetString().Data()) >> isjson;
     
     fEventTree = (TTree*)f0->Get("event"); 
     // Get board_x data
@@ -147,9 +145,6 @@ InitStatus ConvRawData::Init()
     cout<<"Time to set the board mapping "<<timerBMap.RealTime()<<endl;
     
     eventNumber = fnStart-1;
-    
-    // Check against boardMappingParser
-    if (stop && isjson) checkBoardMapping(set_path);      
     
     return kSUCCESS;
 }
@@ -497,39 +492,32 @@ void ConvRawData::DetMapping(string Path)
   uint32_t size;
   uint32_t bytesRead = 0;
   // Call boardMappingParser
-  if(isjson)
+  if (local)
   {
-    if (local)
-    {
-      ifstream jsonfile(Form("%s/board_mapping.json", Path.c_str()));      
-      jsonfile >> j;
-    }
-    else
-    {
-      status = file.Open(Form("%s/board_mapping.json", Path.c_str()), OpenFlags::Read);
-      if( !status.IsOK() )
-      {
-        cout << "Error opening file\n";
-        exit(0);
-      }
-      file.Stat(false, info);
-      size = info->GetSize();
-      char *buff = new char[size];
-      status = file.Read(offset, size, buff, bytesRead);
-      vector<char> vec;
-      for (int i = 0; i < size; i++){vec.push_back(buff[i]);}
-      j = json::parse(vec);
-      status = file.Close();
-      delete info;
-      delete [] buff;    
-    }
-    // Pass the read string to getBoardMapping()
-    tie(boardMaps, boardMapsMu) = getBoardMapping(j);
+    ifstream jsonfile(Form("%s/board_mapping.json", Path.c_str()));      
+    jsonfile >> j;
   }
   else
   {
-    tie(boardMaps, boardMapsMu) = oldMapping(Path);
+    status = file.Open(Form("%s/board_mapping.json", Path.c_str()), OpenFlags::Read);
+    if( !status.IsOK() )
+    {
+      cout << "Error opening file\n";
+      exit(0);
+    }
+    file.Stat(false, info);
+    size = info->GetSize();
+    char *buff = new char[size];
+    status = file.Read(offset, size, buff, bytesRead);
+    vector<char> vec;
+    for (int i = 0; i < size; i++){vec.push_back(buff[i]);}
+    j = json::parse(vec);
+    status = file.Close();
+    delete info;
+    delete [] buff;    
   }
+  // Pass the read string to getBoardMapping()
+  tie(boardMaps, boardMapsMu) = getBoardMapping(j);
   
   int board_id_mu{}, s{};
   string tmp;
@@ -614,7 +602,7 @@ tuple<double, double, double, double> ConvRawData::comb_calibration( int board_i
     map<string, double> parT = X_tdc[{board_id,tofpet_id,channel,tac,TDC}];
     double x    = t_fine;
     double ftdc = (-parT["b"]-sqrt(pow(parT["b"],2)
-                  -4*parT["a"]*(parT["c"]-x)))/(2*parT["a"])+parT["d"];
+                  -4*parT["a"]*(parT["c"]-x)))/2*parT["a"]; // Ettore 28/01/2022 +par['d']
     double timestamp = t_coarse + ftdc;
     double tf = timestamp - t_coarse;
     x = v_coarse - tf;
@@ -774,38 +762,20 @@ void ConvRawData::read_csv(string Path)
   vector<int> row{};
   map<string, int> key { {"DS",2}, {"US",1}, {"Veto",0} };
   struct stat buffer;
-  string infile_SiPMmap = "/eos/experiment/sndlhc/testbeam/MuFilter/SiPM_mappings";
-  string path_SiPMmap;
+  TString sndRoot = gSystem->Getenv("SNDSW_ROOT");
+  string sndswPath = sndRoot.Data();
+  string path_SiPMmap = Form("%s/geometry", sndswPath.c_str());
+  if (stat(path_SiPMmap.c_str(), &buffer) != 0)
+  {
+    cout << "Path "<< path_SiPMmap.c_str() << " does not exist!\n";
+    exit (0); 
+  }
   for (auto sys : key)
   {
-    if (stat(infile_SiPMmap.c_str(), &buffer) == 0) // path exists
-    {
-      path_SiPMmap = infile_SiPMmap;
-      infile.open(Form("%s/%s_SiPM_mapping.csv", path_SiPMmap.c_str(), sys.first.c_str()));
-      X << infile.rdbuf();
-      infile.close();
-    }
-    else
-    {
-      TString server = gSystem->Getenv("EOSSHIP");
-      path_SiPMmap = server.Data()+infile_SiPMmap;
-      status = file.Open(Form("%s/%s_SiPM_mapping.csv", path_SiPMmap.c_str(), sys.first.c_str()), OpenFlags::Read);
-      if( !status.IsOK() )
-      {
-        cout << "Error opening file\n";
-        exit(0);
-      }
-      file.Stat(false, info);
-      size = info->GetSize();
-      char *buff = new char[size];
-      status = file.Read(offset, size, buff, bytesRead);
-      X << buff;
-      status = file.Close();
-      delete info;
-      delete [] buff;      
-    }
-    
-    cout << "path to SiPM maps: "<< path_SiPMmap << endl;
+    infile.open(Form("%s/%s_SiPM_mapping.csv", path_SiPMmap.c_str(), sys.first.c_str()));
+    X << infile.rdbuf();
+    infile.close();
+          
     // Skip 1st line
     getline(X,line);
     cout << "In " << sys.first << " SiPM map file: " << line << endl;
@@ -833,57 +803,6 @@ void ConvRawData::read_csv(string Path)
       TofpetMap[sys.second][row.at(2)*1000+row.at(3)] = channel.first;
     }
   } // end filling SiPMmap and TofpetMap
-}
-void ConvRawData::checkBoardMapping(string Path)
-{
-      cout << "Check board mapping" << endl;
-      map<string, map<string, map<string, int>> > boardMapsOld{};
-      map<string, map<string, map<string, string>> > boardMapsMuOld{};
-      tie(boardMapsOld, boardMapsMuOld) = oldMapping(Path);
-      // Scifi
-      cout << "New maping\n";
-      for (auto brd : boardMaps["Scifi"])
-      {
-        cout << "Scifi " << brd.first;        
-        for (auto it : boardMaps["Scifi"][brd.first])
-        {
-           cout << " [" << it.first << ", " << it.second << "] "
-                << "is identical to old map entry " 
-                << (boardMapsOld["Scifi"][brd.first] == boardMaps["Scifi"][brd.first]) << endl;
-        }
-      }
-      cout << " Old mapping\n";
-      for (auto brd : boardMapsOld["Scifi"])
-      {
-        cout << "Scifi " << brd.first;
-        for (auto it : boardMapsOld["Scifi"][brd.first])
-        {
-           cout << " [" << it.first << ", " << it.second << "]\n";
-        }
-      }
-      // MuFilter
-      cout << "New maping\n";
-      for (auto brd : boardMapsMu["MuFilter"])
-      {
-        cout << "MuFilter " << brd.first;
-        for (auto it : boardMapsMu["MuFilter"][brd.first])
-        {
-           cout << " {" << it.first << ": " << it.second << "}";
-        }
-        cout << " is identical to old map entry "
-             << (boardMapsMuOld["MuFilter"][brd.first] == boardMapsMu["MuFilter"][brd.first])
-             << endl;
-      }
-      cout << "Old maping\n";
-      for (auto brd : boardMapsMuOld["MuFilter"])
-      {
-        cout << "MuFilter " << brd.first;
-        for (auto it : boardMapsMuOld["MuFilter"][brd.first])
-        {
-           cout << " {" << it.first << ": " << it.second << "}";  
-        }
-        cout << "\n";
-      }
 }
 void ConvRawData::debugMapping(string brd, int tofpetID, int tofpetChannel)
 {
