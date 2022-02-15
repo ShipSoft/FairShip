@@ -1,4 +1,3 @@
-// ROOT.gROOT.LoadMacro('hsimple.C')
 #include "Scifi.h"
 #include "MuFilter.h"
 
@@ -10,8 +9,6 @@ void Execute() {
    auto lsOfGlobals = gROOT->GetListOfGlobals();
    Scifi *Scifi = dynamic_cast<class Scifi*>(lsOfGlobals->FindObject("Scifi"));
    MuFilter* Mufi = dynamic_cast<class MuFilter*>(lsOfGlobals->FindObject("MuFilter"));
-
-// dynamic_cast<genfit::KalmanFitterInfo*>(fitTrack->getPointWithMeasurement(i)->getFitterInfo(rep))->getWeights();
    
    std::cout<<"Nevents "<<eventTree->GetEntries()<<std::endl;
    TVector3 A;
