@@ -117,6 +117,7 @@ def numPlanesHit(systems, detector_ids) :
     
 class MuonReco(ROOT.FairTask) :
     " Muon reconstruction "
+
     def Init(self) :
 
         print("Initializing muon reconstruction task!")
@@ -159,13 +160,6 @@ class MuonReco(ROOT.FairTask) :
         # Maximum number of muons to find. To avoid spending too much time on events with lots of downstream activity.
         self.max_reco_muons = 5
 
-        # How far away from Hough line hits will be assigned to the muon, for Kalman tracking
-        self.tolerance = 1.
-
-        # Which hits to use. By default use both scifi and muon filter.
-        self.use_scifi = True
-        self.use_mufi = True
-
         # Get sensor dimensions from geometry
         self.MuFilter_ds_dx = self.mufiDet.GetConfParF("MuFilter/DownstreamBarY") # Assume y dimensions in vertical bars are the same as x dimensions in horizontal bars.
         self.MuFilter_ds_dy = self.mufiDet.GetConfParF("MuFilter/DownstreamBarY") # Assume y dimensions in vertical bars are the same as x dimensions in horizontal bars.
@@ -178,6 +172,13 @@ class MuonReco(ROOT.FairTask) :
         self.Scifi_dx = self.scifiDet.GetConfParF("Scifi/channel_width")
         self.Scifi_dy = self.scifiDet.GetConfParF("Scifi/channel_width")
         self.Scifi_dz = self.scifiDet.GetConfParF("Scifi/epoxymat_z") # From Scifi.cxx This is the variable used to define the z dimension of SiPM channels, so seems like the right dimension to use.
+
+        # How far away from Hough line hits will be assigned to the muon, for Kalman tracking
+        self.tolerance = 0.
+
+        # Which hits to use. By default use both scifi and muon filter.
+        self.use_scifi = True
+        self.use_mufi = True
         
         # Initialize Hough transforms for both views:
         self.h_ZX = hough(n, [-80, 0], n, [-max_angle+np.pi/2., max_angle+np.pi/2.], tolerance = self.tolerance, squaretheta = False)
@@ -298,6 +299,7 @@ class MuonReco(ROOT.FairTask) :
         if self.use_scifi :
             # Loop through scifi hits
             for i_hit, scifiHit in enumerate(self.ScifiHits) :
+                print("GOT SCIFI HIT {0} {1}".format(i_hit, scifiHit.GetDetectorID()))
                 self.scifiDet.GetSiPMPosition(scifiHit.GetDetectorID(), self.a, self.b)
                 scifi["pos"][0].append(self.a.X())
                 scifi["pos"][1].append(self.a.Y())
@@ -340,13 +342,26 @@ class MuonReco(ROOT.FairTask) :
                 n_planes_ds_ZY = numPlanesHit(mu_ds["system"][~mu_ds["vert"]], mu_ds["detectorID"][~mu_ds["vert"]])
                 if n_planes_ds_ZY < self.min_planes_hit :
                     break
-            
 
             if (not self.use_mufi) and self.use_scifi :
+                print(scifi["system"])
+                print(scifi["vert"])
+                print(scifi["detectorID"])
+                print(scifi["pos"][2])
+
+
+                print(scifi["system"][scifi["vert"]])
+                print(scifi["detectorID"][scifi["vert"]])
+
                 n_planes_sf_ZX = numPlanesHit(scifi["system"][scifi["vert"]], scifi["detectorID"][scifi["vert"]])
+                print("SF ZX PLANES")
+                print(n_planes_sf_ZX)
                 if n_planes_sf_ZX < self.min_planes_hit :
                     break
                 n_planes_sf_ZY = numPlanesHit(scifi["system"][~scifi["vert"]], scifi["detectorID"][~scifi["vert"]])
+                print("SF ZY PLANES")
+                print(n_planes_sf_ZY)
+
                 if n_planes_sf_ZY < self.min_planes_hit :
                     break
             elif self.use_mufi :
@@ -391,31 +406,28 @@ class MuonReco(ROOT.FairTask) :
             ZY_hough = self.h_ZY.fit_randomize(ZY, d_ZY, self.n_random)
             
             # Check if track intersects minimum number of hits in each plane.
-            track_hits_ds_ZX_for_triplet = hit_finder(ZX_hough[0], ZX_hough[1], 
-                                                      np.dstack([mu_ds["pos"][2][mu_ds["vert"]], 
-                                                                 mu_ds["pos"][0][mu_ds["vert"]]]), 
-                                                      np.dstack([mu_ds["d"][2][mu_ds["vert"]], 
-                                                                 mu_ds["d"][0][mu_ds["vert"]]]))
-
-            track_hits_ds_ZY_for_triplet = hit_finder(ZY_hough[0], ZY_hough[1], 
-                                                      np.dstack([mu_ds["pos"][2][~mu_ds["vert"]], 
-                                                                 mu_ds["pos"][1][~mu_ds["vert"]]]), 
-                                                      np.dstack([mu_ds["d"][2][~mu_ds["vert"]],
-                                                                 mu_ds["d"][1][~mu_ds["vert"]]]))
-
-            # Triplet conditions. At least three unique planes in MuFi if use_mufi or scifi if not use_mufi
             if self.use_mufi :
+                track_hits_ds_ZX_for_triplet = hit_finder(ZX_hough[0], ZX_hough[1], 
+                                                          np.dstack([mu_ds["pos"][2][mu_ds["vert"]], 
+                                                                     mu_ds["pos"][0][mu_ds["vert"]]]), 
+                                                          np.dstack([mu_ds["d"][2][mu_ds["vert"]], 
+                                                                     mu_ds["d"][0][mu_ds["vert"]]]))
+    
+                track_hits_ds_ZY_for_triplet = hit_finder(ZY_hough[0], ZY_hough[1], 
+                                                          np.dstack([mu_ds["pos"][2][~mu_ds["vert"]], 
+                                                                     mu_ds["pos"][1][~mu_ds["vert"]]]), 
+                                                          np.dstack([mu_ds["d"][2][~mu_ds["vert"]],
+                                                                     mu_ds["d"][1][~mu_ds["vert"]]]))
+    
+                # Triplet conditions. At least three unique planes in MuFi if use_mufi or scifi if not use_mufi
                 n_planes_ds_ZX = numPlanesHit(mu_ds["system"][mu_ds["vert"]][track_hits_ds_ZX_for_triplet], mu_ds["detectorID"][mu_ds["vert"]][track_hits_ds_ZX_for_triplet])
                 if n_planes_ds_ZX < self.min_planes_hit :
                     break
                 n_planes_ds_ZY = numPlanesHit(mu_ds["system"][~mu_ds["vert"]][track_hits_ds_ZY_for_triplet], mu_ds["detectorID"][~mu_ds["vert"]][track_hits_ds_ZY_for_triplet])
                 if n_planes_ds_ZY < self.min_planes_hit :
                     break
-                
-
-            print("Found {0} downstream ZX hits associated to muon track".format(len(track_hits_ds_ZX_for_triplet)))
-            
-            print("Found {0} downstream ZY hits associated to muon track".format(len(track_hits_ds_ZY_for_triplet)))
+                print("Found {0} downstream ZX planes associated to muon track".format(n_planes_ds_ZX))
+                print("Found {0} downstream ZY planes associated to muon track".format(n_planes_ds_ZY))
             
             # This time with non-zero tolerance, for kalman filter
             track_hits_ds_ZX = hit_finder(ZX_hough[0], ZX_hough[1], 
@@ -458,11 +470,14 @@ class MuonReco(ROOT.FairTask) :
                 n_planes_sf_ZY = numPlanesHit(scifi["system"][~scifi["vert"]][track_hits_sf_ZY], scifi["detectorID"][~scifi["vert"]][track_hits_sf_ZY])
                 if n_planes_sf_ZY < self.min_planes_hit :
                     break
+                print("Found {0} SciFi ZX planes associated to muon track".format(n_planes_sf_ZX))
+                print("Found {0} SciFi ZY planes associated to muon track".format(n_planes_sf_ZY))
+
             elif self.use_mufi :
                 pass
             else :
                 raise RuntimeException("Invalid triplet condition. Need at least Scifi or Muon filter hits enabled")
-
+                
             print("Muon found!")
 
             # Get hit detectorIDs and add to reco track collection
@@ -650,18 +665,33 @@ class MuonReco(ROOT.FairTask) :
 
             # Remove track hits and try to find an additional track
             # Find array index to be removed
-            index_ZX = np.where(np.in1d(mu_ds["detectorID"], mu_ds["detectorID"][mu_ds["vert"]][track_hits_ds_ZX_for_triplet]))[0]
-            index_ZY = np.where(np.in1d(mu_ds["detectorID"], mu_ds["detectorID"][~mu_ds["vert"]][track_hits_ds_ZY_for_triplet]))[0]
-            index_to_remove = np.concatenate( [index_ZX, index_ZY] )
+            if self.use_mufi :
+                index_ZX = np.where(np.in1d(mu_ds["detectorID"], mu_ds["detectorID"][mu_ds["vert"]][track_hits_ds_ZX_for_triplet]))[0]
+                index_ZY = np.where(np.in1d(mu_ds["detectorID"], mu_ds["detectorID"][~mu_ds["vert"]][track_hits_ds_ZY_for_triplet]))[0]
+                index_to_remove = np.concatenate( [index_ZX, index_ZY] )
 
-            # Remove dictionary entries
-            for key in mu_ds.keys() :
-                if len(mu_ds[key].shape) == 1 :
-                    mu_ds[key] = np.delete(mu_ds[key], index_to_remove)
-                elif len(mu_ds[key].shape) == 2 :
-                    mu_ds[key] = np.delete(mu_ds[key], index_to_remove, axis = 1)
-                else :
-                    raise Exception("Wrong number of dimensions found when deleting hits in iterative muon identification algorithm.")
+                # Remove dictionary entries
+                for key in mu_ds.keys() :
+                    if len(mu_ds[key].shape) == 1 :
+                        mu_ds[key] = np.delete(mu_ds[key], index_to_remove)
+                    elif len(mu_ds[key].shape) == 2 :
+                        mu_ds[key] = np.delete(mu_ds[key], index_to_remove, axis = 1)
+                    else :
+                        raise Exception("Wrong number of dimensions found when deleting hits in iterative muon identification algorithm.")
+            if (not self.use_mufi) and self.use_scifi :
+                index_ZX = np.where(np.in1d(scifi["detectorID"], scifi["detectorID"][scifi["vert"]][track_hits_sf_ZX]))[0]
+                index_ZY = np.where(np.in1d(scifi["detectorID"], scifi["detectorID"][~scifi["vert"]][track_hits_sf_ZY]))[0]
+                index_to_remove = np.concatenate( [index_ZX, index_ZY] )
+
+                # Remove dictionary entries
+                for key in scifi.keys() :
+                    if len(scifi[key].shape) == 1 :
+                        scifi[key] = np.delete(scifi[key], index_to_remove)
+                    elif len(scifi[key].shape) == 2 :
+                        scifi[key] = np.delete(scifi[key], index_to_remove, axis = 1)
+                    else :
+                        raise Exception("Wrong number of dimensions found when deleting hits in iterative muon identification algorithm.")
+            
 
     def FinishTask(self) :
         self.muon_tracks.Delete()
