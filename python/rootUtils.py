@@ -12,7 +12,7 @@ except:
 from ROOT import TFile,gROOT,TH3D,TH2D,TH1D,TCanvas,TProfile,gSystem
 import os,sys
 
-def readHists(h,fname,wanted=[]):
+def readHists(h,fname,wanted=[],withProj=True):
   if fname[0:4] == "/eos":
     eospath = gSystem.Getenv("EOSSHIP")+fname
     f = TFile.Open(eospath)
@@ -37,7 +37,7 @@ def readHists(h,fname,wanted=[]):
       if hasattr(h[hname],"GetSumw2N"):
               if h[hname].GetSumw2N()==0 : h[hname].Sumw2() 
     h[hname].SetDirectory(gROOT)
-    if cln == 'TH2D' or cln == 'TH2F':
+    if (cln == 'TH2D' or cln == 'TH2F') and withProj:
          for p in [ '_projx','_projy']:
            if type(hname) == type('s'): projname = hname+p
            else: projname = str(hname)+p
