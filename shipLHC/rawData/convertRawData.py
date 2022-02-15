@@ -15,6 +15,7 @@ saturationLimit     = 0.95
 from argparse import ArgumentParser
 parser = ArgumentParser()
 parser.add_argument("-r", "--runNumber", dest="runNumber", help="run number", type=int,required=True)
+parser.add_argument("-P", "--partition", dest="partition", help="partition of data", type=int,required=False,default=-1)
 parser.add_argument("-p", "--path", dest="path", help="path to raw data", default='/mnt/hgfs/VMgate/')
 parser.add_argument("-n", "--nEvents", dest="nEvents", help="number of events to process", type=int,default=-1)
 parser.add_argument("-t", "--nStart", dest="nStart", help="first event to process", type=int,default=-1)
@@ -30,7 +31,14 @@ withGeoFile = False
 options = parser.parse_args()
 runNr   = str(options.runNumber).zfill(6)
 path      = options.path+'run_'+ runNr+'/'
-outFile = "sndsw_raw_"+runNr
+
+if options.partition < 0:
+  inFile   = 'data.root'
+  outFile = "sndsw_raw_"+runNr+'.root'
+else:
+  part = str(options.partition).zfill(4)
+  inFile   = 'data_'+part+'.root'
+  outFile = "sndsw_raw_"+runNr+'-'+part+'.root'
 
 local = False
 
@@ -42,7 +50,7 @@ if options.FairTask_convRaw:
   X=''
   server = os.environ['EOSSHIP']
   if not local: X = server
-  fIN = ROOT.TFile.Open(X+path+'data_0000.root')
+  fIN = ROOT.TFile.Open(X+path+inFile)
   # Pass raw data file as input object
   ioman.RegisterInputObject("rawData", fIN)
 
