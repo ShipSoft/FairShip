@@ -119,7 +119,7 @@ class MuonReco(ROOT.FairTask) :
     " Muon reconstruction "
     def Init(self) :
 
-        print("Initializing task!")
+        print("Initializing muon reconstruction task!")
         self.lsOfGlobals  = ROOT.gROOT.GetListOfGlobals()
         self.scifiDet = self.lsOfGlobals.FindObject('Scifi')
         self.mufiDet = self.lsOfGlobals.FindObject('MuFilter')
@@ -343,7 +343,6 @@ class MuonReco(ROOT.FairTask) :
             
 
             if (not self.use_mufi) and self.use_scifi :
-                print("ABOUT TO GET NPLANES")
                 n_planes_sf_ZX = numPlanesHit(scifi["system"][scifi["vert"]], scifi["detectorID"][scifi["vert"]])
                 if n_planes_sf_ZX < self.min_planes_hit :
                     break
@@ -392,36 +391,31 @@ class MuonReco(ROOT.FairTask) :
             ZY_hough = self.h_ZY.fit_randomize(ZY, d_ZY, self.n_random)
             
             # Check if track intersects minimum number of hits in each plane.
-            track_hits_ds_ZX = hit_finder(ZX_hough[0], ZX_hough[1], 
-                                          np.dstack([mu_ds["pos"][2][mu_ds["vert"]], 
-                                                     mu_ds["pos"][0][mu_ds["vert"]]]), 
-                                          np.dstack([mu_ds["d"][2][mu_ds["vert"]], 
-                                                     mu_ds["d"][0][mu_ds["vert"]]]))
+            track_hits_ds_ZX_for_triplet = hit_finder(ZX_hough[0], ZX_hough[1], 
+                                                      np.dstack([mu_ds["pos"][2][mu_ds["vert"]], 
+                                                                 mu_ds["pos"][0][mu_ds["vert"]]]), 
+                                                      np.dstack([mu_ds["d"][2][mu_ds["vert"]], 
+                                                                 mu_ds["d"][0][mu_ds["vert"]]]))
 
-            track_hits_ds_ZY = hit_finder(ZY_hough[0], ZY_hough[1], 
-                                          np.dstack([mu_ds["pos"][2][~mu_ds["vert"]], 
-                                                     mu_ds["pos"][1][~mu_ds["vert"]]]), 
-                                          np.dstack([mu_ds["d"][2][~mu_ds["vert"]],
-                                                     mu_ds["d"][1][~mu_ds["vert"]]]))
+            track_hits_ds_ZY_for_triplet = hit_finder(ZY_hough[0], ZY_hough[1], 
+                                                      np.dstack([mu_ds["pos"][2][~mu_ds["vert"]], 
+                                                                 mu_ds["pos"][1][~mu_ds["vert"]]]), 
+                                                      np.dstack([mu_ds["d"][2][~mu_ds["vert"]],
+                                                                 mu_ds["d"][1][~mu_ds["vert"]]]))
 
             # Triplet conditions. At least three unique planes in MuFi if use_mufi or scifi if not use_mufi
             if self.use_mufi :
-                n_planes_ds_ZX = numPlanesHit(mu_ds["system"][track_hits_ds_ZX], mu_ds["detectorID"][track_hits_ds_ZX])
+                n_planes_ds_ZX = numPlanesHit(mu_ds["system"][mu_ds["vert"]][track_hits_ds_ZX_for_triplet], mu_ds["detectorID"][mu_ds["vert"]][track_hits_ds_ZX_for_triplet])
                 if n_planes_ds_ZX < self.min_planes_hit :
                     break
-                n_planes_ds_ZY = numPlanesHit(mu_ds["system"][track_hits_ds_ZY], mu_ds["detectorID"][track_hits_ds_ZY])
+                n_planes_ds_ZY = numPlanesHit(mu_ds["system"][~mu_ds["vert"]][track_hits_ds_ZY_for_triplet], mu_ds["detectorID"][~mu_ds["vert"]][track_hits_ds_ZY_for_triplet])
                 if n_planes_ds_ZY < self.min_planes_hit :
                     break
                 
 
-            print("Found {0} downstream ZX hits associated to muon track".format(len(track_hits_ds_ZX)))
-#            if len(track_hits_ds_ZX) < self.min_planes_hit :
-#                break
+            print("Found {0} downstream ZX hits associated to muon track".format(len(track_hits_ds_ZX_for_triplet)))
             
-            print("Found {0} downstream ZY hits associated to muon track".format(len(track_hits_ds_ZY)))
-#            if len(track_hits_ds_ZY) < self.min_planes_hit :
-#                break
-
+            print("Found {0} downstream ZY hits associated to muon track".format(len(track_hits_ds_ZY_for_triplet)))
             
             # This time with non-zero tolerance, for kalman filter
             track_hits_ds_ZX = hit_finder(ZX_hough[0], ZX_hough[1], 
@@ -458,11 +452,10 @@ class MuonReco(ROOT.FairTask) :
             
             # Triplet conditions. At least three unique planes in MuFi if use_mufi or scifi if not use_mufi
             if (not self.use_mufi) and self.use_scifi :
-                print("ABOUT TO GET NPLANES")
-                n_planes_sf_ZX = numPlanesHit(scifi["system"][track_hits_sf_ZX], scifi["detectorID"][track_hits_sf_ZX])
+                n_planes_sf_ZX = numPlanesHit(scifi["system"][scifi["vert"]][track_hits_sf_ZX], scifi["detectorID"][scifi["vert"]][track_hits_sf_ZX])
                 if n_planes_sf_ZX < self.min_planes_hit :
                     break
-                n_planes_sf_ZY = numPlanesHit(scifi["system"][track_hits_sf_ZY], scifi["detectorID"][track_hits_sf_ZY])
+                n_planes_sf_ZY = numPlanesHit(scifi["system"][~scifi["vert"]][track_hits_sf_ZY], scifi["detectorID"][~scifi["vert"]][track_hits_sf_ZY])
                 if n_planes_sf_ZY < self.min_planes_hit :
                     break
             elif self.use_mufi :
@@ -653,16 +646,12 @@ class MuonReco(ROOT.FairTask) :
                 raise RuntimeException("Kalman fit did not converge.")
             
             # Now save the track!
-#            savedTrack = self.kalman_tracks.ConstructedAt(i_muon)
-#            savedTrack.swap(theTrack)
-
-#            self.kalman_tracks[i_muon] = theTrack
             self.kalman_tracks.Add(theTrack)
 
             # Remove track hits and try to find an additional track
             # Find array index to be removed
-            index_ZX = np.where(np.in1d(mu_ds["detectorID"], mu_ds["detectorID"][mu_ds["vert"]][track_hits_ds_ZX]))[0]
-            index_ZY = np.where(np.in1d(mu_ds["detectorID"], mu_ds["detectorID"][~mu_ds["vert"]][track_hits_ds_ZY]))[0]
+            index_ZX = np.where(np.in1d(mu_ds["detectorID"], mu_ds["detectorID"][mu_ds["vert"]][track_hits_ds_ZX_for_triplet]))[0]
+            index_ZY = np.where(np.in1d(mu_ds["detectorID"], mu_ds["detectorID"][~mu_ds["vert"]][track_hits_ds_ZY_for_triplet]))[0]
             index_to_remove = np.concatenate( [index_ZX, index_ZY] )
 
             # Remove dictionary entries
