@@ -71,12 +71,15 @@ if options.FairTask_convRaw:
   ioman.RegisterInputObject('withGeoFile', ROOT.TObjString(str(withGeoFile)))
 
   # Set output
-  outfile = ROOT.FairRootFileSink(outFile+'_CPP.root')
+  outfile = ROOT.FairRootFileSink(outFile.replace('.root','_CPP.root'))
   run.SetSink(outfile)
 
   run.AddTask(ROOT.ConvRawData())
   # Don't use FairRoot's default event header settings
   run.SetEventHeaderPersistence(False)
+  xrdb = ROOT.FairRuntimeDb.instance()
+  parset = xrdb.getContainer("FairBaseParSet")
+  parset.setStatic()
   run.Init()
   run.Run(options.nStart, nEvents)
 
