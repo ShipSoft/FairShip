@@ -232,10 +232,6 @@ void Scifi::ConstructGeometry()
   PlasticAirVolume->AddNode(PlasticBarVolume, 0, new TGeoTranslation(- fXDimension/2 + fXPlastBar/2, 0, 0));  //bars are placed || to y
   PlasticAirVolume->AddNode(PlasticBarVolume, 1, new TGeoTranslation(+ fXDimension/2 - fXPlastBar/2, 0, 0));
 
-  //SciFi mats for X and Y fiber planes
-  TGeoVolume *HorMatVolume  = gGeoManager->MakeBox("HorMatVolume", Epoxy, fLengthScifiMat/2, fWidthScifiMat/2, fZEpoxyMat/2); 
-  TGeoVolume *VertMatVolume = gGeoManager->MakeBox("VertMatVolume", Epoxy, fWidthScifiMat/2, fLengthScifiMat/2, fZEpoxyMat/2); 
-
   //Fiber volume that contains the scintillating core and double cladding
   TGeoVolumeAssembly *FiberVolume = new TGeoVolumeAssembly("FiberVolume");
 
@@ -296,6 +292,10 @@ void Scifi::ConstructGeometry()
  
     for (int imat = 0; imat < fNMats; imat++){
         
+        //SciFi mats for X and Y fiber planes
+        TGeoVolume *HorMatVolume  = gGeoManager->MakeBox("HorMatVolume", Epoxy, fLengthScifiMat/2, fWidthScifiMat/2, fZEpoxyMat/2); 
+        TGeoVolume *VertMatVolume = gGeoManager->MakeBox("VertMatVolume", Epoxy, fWidthScifiMat/2, fLengthScifiMat/2, fZEpoxyMat/2); 
+ 
         //Placing mats along Y 
         ScifiHorPlaneVol->AddNode(HorMatVolume, 1e6*(istation+1) + 1e4*(imat + 1), new TGeoTranslation(0, (imat-1)*(fWidthScifiMat+fGapScifiMat), 0));
         
