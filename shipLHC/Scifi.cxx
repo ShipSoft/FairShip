@@ -456,11 +456,12 @@ void Scifi::GetPosition(Int_t fDetectorID, TVector3& A, TVector3& B)
 	if (sID(1,1)=="0"){
 		path+="ScifiHorPlaneVol"+TString(sID(0,1))+"_"+TString(sID(0,1))+"000000/";
 		path+="HorMatVolume_"+TString(sID(0,3))+"0000/";
+		path+="FiberVolume_"+TString(sID(3,4));
 	}else{
 		path+="ScifiVertPlaneVol"+TString(sID(0,1))+"_"+TString(sID(0,1))+"000000/";
 		path+="VertMatVolume_"+TString(sID(0,3))+"0000/";
+		path+="FiberVolume_10"+TString(sID(3,4));
 	}
-	path+="FiberVolume_"+sID;
 	TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
 	nav->cd(path);
 	LOG(DEBUG) <<path<<" "<<fDetectorID;
@@ -596,7 +597,7 @@ void Scifi::SiPMmapping(){
 				fibresRadius = S->GetDX();
 			}
 			Float_t t2 = fibre->GetMatrix()->GetTranslation()[1];
-			Int_t fID = fibre->GetNumber()%100000;     // local fibre number, global fibre number = SO+fID
+			Int_t fID = fibre->GetNumber() + imat*1e4;     // local fibre number, global fibre number = SO+fID
 			Float_t a = t1+t2;
 
 	//  check for overlap with any of the SiPM channels in the same mat
