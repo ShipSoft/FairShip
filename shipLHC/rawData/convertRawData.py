@@ -78,10 +78,15 @@ if options.FairTask_convRaw:
   # Don't use FairRoot's default event header settings
   run.SetEventHeaderPersistence(False)
   xrdb = ROOT.FairRuntimeDb.instance()
-  parset = xrdb.getContainer("FairBaseParSet")
-  parset.setStatic()
+  xrdb.getContainer("FairBaseParSet").setStatic()
+  xrdb.getContainer("FairGeoParSet").setStatic()
   run.Init()
   run.Run(options.nStart, nEvents)
+  # overwrite cbmsim 
+  F = outfile.GetRootFile()
+  T = F.Get("cbmsim")
+  T.SetName('rawConv')
+  T.Write()
 
 else:
   timerCSV = ROOT.TStopwatch()
