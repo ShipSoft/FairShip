@@ -18,7 +18,7 @@ parser.add_argument("-r", "--runNumber", dest="runNumber", help="run number", ty
 parser.add_argument("-P", "--partition", dest="partition", help="partition of data", type=int,required=False,default=-1)
 parser.add_argument("-p", "--path", dest="path", help="path to raw data", default='/mnt/hgfs/VMgate/')
 parser.add_argument("-n", "--nEvents", dest="nEvents", help="number of events to process", type=int,default=-1)
-parser.add_argument("-t", "--nStart", dest="nStart", help="first event to process", type=int,default=-1)
+parser.add_argument("-t", "--nStart", dest="nStart", help="first event to process", type=int,default=0)
 parser.add_argument("-d", "--Debug", dest="debug", help="debug", default=False)
 parser.add_argument("-s",dest="stop", help="do not start running", default=False)
 parser.add_argument("-zM",dest="minMuHits", help="noise suppresion min MuFi hits", default=-1, type=int)
@@ -71,14 +71,22 @@ if options.FairTask_convRaw:
   ioman.RegisterInputObject('withGeoFile', ROOT.TObjString(str(withGeoFile)))
 
   # Set output
-  outfile = ROOT.FairRootFileSink(outFile+'_CPP.root')
+  outfile = ROOT.FairRootFileSink(outFile.replace('.root','_CPP.root'))
   run.SetSink(outfile)
 
   run.AddTask(ROOT.ConvRawData())
   # Don't use FairRoot's default event header settings
   run.SetEventHeaderPersistence(False)
+  xrdb = ROOT.FairRuntimeDb.instance()
+  xrdb.getContainer("FairBaseParSet").setStatic()
+  xrdb.getContainer("FairGeoParSet").setStatic()
   run.Init()
   run.Run(options.nStart, nEvents)
+  # overwrite cbmsim 
+  F = outfile.GetRootFile()
+  T = F.Get("cbmsim")
+  T.SetName('rawConv')
+  T.Write()
 
 else:
   timerCSV = ROOT.TStopwatch()
@@ -339,7 +347,7 @@ else:
   # reading hits and converting to event information
   X=''
   if not local: X = server
-  f0=ROOT.TFile.Open(X+path+'data_0000.root')
+  f0=ROOT.TFile.Open(X+path+inFile)
   if options.nEvents<0:  nEvent = f0.event.GetEntries()
   else: nEvent = min(options.nEvents,f0.event.GetEntries())
   print('converting ',nEvent,' events ',' of run',options.runNumber)
