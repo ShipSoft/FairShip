@@ -260,17 +260,20 @@ void Scifi::ConstructGeometry()
   Double_t offsetS =  -fWidthScifiMat/2 + fOffsetRowS;
   Double_t offsetL =  -fWidthScifiMat/2 + fOffsetRowL;
 
+  // All fibres will be assigned station number 1 and mat number 1, to keep compatibility with the STMRFFF format.
+  int dummy_station = 1;
+  int dummy_mat = 1;
   //Adding horizontal fibers
   for (int irow = 0; irow < fNFibers_z; irow++){
     zPosM =  -fZScifiMat/2 + fClad2_rmax/2 + irow*fVertPitch;
     if (irow%2 == 0){
       for (int ifiber = 0; ifiber < fNFibers_Srow; ifiber++){
-	HorMatVolume->AddNode(FiberVolume, 1e3*(irow + 1) + ifiber + 1, new TGeoCombiTrans("rottranshor0", 0, offsetS + ifiber*fHorPitch, zPosM, rothorfiber));
+	HorMatVolume->AddNode(FiberVolume, 1e6*dummy_station + 1e5*0 + 1e4*dummy_mat + 1e3*(irow + 1) + ifiber + 1, new TGeoCombiTrans("rottranshor0", 0, offsetS + ifiber*fHorPitch, zPosM, rothorfiber));
       }
     }
     else{
       for (int ifiber = 0; ifiber < fNFibers_Lrow; ifiber++){
-	HorMatVolume->AddNode(FiberVolume, 1e3*(irow + 1) + ifiber + 1, new TGeoCombiTrans("rottranshor1", 0, offsetL + ifiber*fHorPitch, zPosM, rothorfiber));
+	HorMatVolume->AddNode(FiberVolume, 1e6*dummy_station + 1e5*0 + 1e4*dummy_mat + 1e3*(irow + 1) + ifiber + 1, new TGeoCombiTrans("rottranshor1", 0, offsetL + ifiber*fHorPitch, zPosM, rothorfiber));
       }
     }
   }
@@ -279,12 +282,12 @@ void Scifi::ConstructGeometry()
   for (int irow = 0; irow < fNFibers_z; irow++){
     if (irow%2 == 0){
       for (int ifiber = 0; ifiber < fNFibers_Srow; ifiber++){
-	VertMatVolume->AddNode(FiberVolume, 1e5 + 1e3*(irow + 1) + ifiber + 1, new TGeoCombiTrans("rottransvert0", offsetS + ifiber*fHorPitch, 0, zPosM, rotvertfiber));
+	VertMatVolume->AddNode(FiberVolume, 1e6*dummy_station + 1e5*1 + 1e4*dummy_mat +  1e3*(irow + 1) + ifiber + 1, new TGeoCombiTrans("rottransvert0", offsetS + ifiber*fHorPitch, 0, zPosM, rotvertfiber));
       }
     }
     else{
       for (int ifiber = 0; ifiber < fNFibers_Lrow; ifiber++){
-	VertMatVolume->AddNode(FiberVolume, 1e5 + 1e3*(irow + 1) + ifiber + 1, new TGeoCombiTrans("rottransvert1", offsetL + ifiber*fHorPitch, 0, zPosM, rotvertfiber));
+	VertMatVolume->AddNode(FiberVolume, 1e6*dummy_station + 1e5*1 + 1e4*dummy_mat + 1e3*(irow + 1) + ifiber + 1, new TGeoCombiTrans("rottransvert1", offsetL + ifiber*fHorPitch, 0, zPosM, rotvertfiber));
       }
     }
   }
@@ -389,13 +392,14 @@ Bool_t  Scifi::ProcessHits(FairVolume* vol)
 		gMC->TrackMomentum(fMom);
 		TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
 
-		int fibre_local_id = nav->GetMother()->GetNumber(); // Local ID within the mat.
+		int fibre_local_id = nav->GetMother()->GetNumber() - 1e6 - 1e4; // Local ID within the mat.
 		int fibre_mat_id = nav->GetMother(2)->GetNumber(); // Get mat ID.
 
 		int fibre_station_number = int( fibre_mat_id / 1e6); // Get the station number from the mat
 
 		int fibre_mat_id_station_removed = fibre_mat_id - fibre_station_number*1e6;
 		int fibre_mat_number = int((fibre_mat_id_station_removed - int(fibre_mat_id_station_removed/1e5)*1e5)/1e4);
+
 		fVolumeID = fibre_local_id + fibre_station_number*1e6 + fibre_mat_number*1e4;
 
 		if (fVolumeID==0){std::cout<<"fiber vol id "<<nav->GetMother()->GetName()<<std::endl;}
@@ -450,6 +454,14 @@ void Scifi::GetPosition(Int_t fDetectorID, TVector3& A, TVector3& B)
  Fourth digit R: 		row number (in Z direction)
  Last three digits F: 	fiber number
 */
+
+	Int_t station_number = int(fDetectorID/1e6);
+	Int_t mat_number = int(fDetectorID/1e4)%int(fDetectorID/1e5);
+
+	Int_t local_fibre_id = fDetectorID - (station_number-1)*1e6 - (mat_number-1)*1e4;
+	TString sLocalID;
+	sLocalID.Form("%i", local_fibre_id);
+
 	TString sID;
 	sID.Form("%i",fDetectorID);
 	TString path = "/cave_1/Detector_0/volTarget_1/ScifiVolume"+TString(sID(0,1))+"_"+TString(sID(0,1))+"000000/";
@@ -460,7 +472,7 @@ void Scifi::GetPosition(Int_t fDetectorID, TVector3& A, TVector3& B)
 		path+="ScifiVertPlaneVol"+TString(sID(0,1))+"_"+TString(sID(0,1))+"000000/";
 		path+="VertMatVolume_"+TString(sID(0,3))+"0000/";
 	}
-	path+="FiberVolume_"+sID;
+	path+="FiberVolume_"+sLocalID;
 	TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
 	nav->cd(path);
 	LOG(DEBUG) <<path<<" "<<fDetectorID;
@@ -596,7 +608,7 @@ void Scifi::SiPMmapping(){
 				fibresRadius = S->GetDX();
 			}
 			Float_t t2 = fibre->GetMatrix()->GetTranslation()[1];
-			Int_t fID = fibre->GetNumber()%100000;     // local fibre number, global fibre number = SO+fID
+			Int_t fID = fibre->GetNumber()%100000 + imat*1e4;     // local fibre number, global fibre number = SO+fID
 			Float_t a = t1+t2;
 
 	//  check for overlap with any of the SiPM channels in the same mat
