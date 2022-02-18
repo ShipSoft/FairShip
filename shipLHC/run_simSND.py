@@ -321,14 +321,15 @@ print("Geometry file is ",geoFile)
 print("Real time ",rtime, " s, CPU time ",ctime,"s")
 
 # ------------------------------------------------------------------------
-def checkOverlaps():
+def checkOverlaps(removeScifi=False):
  sGeo = ROOT.gGeoManager
- for n in range(1,6):
-    Hscifi = sGeo.FindVolumeFast('ScifiVolume'+str(n))
-    removalList = []
-    for x in Hscifi.GetNodes():
-          if x.GetName().find('Scifi')==0: removalList.append(x)
-    for x in removalList: Hscifi.RemoveNode(x)
+ if removeScifi:
+    for n in range(1,6):
+       Hscifi = sGeo.FindVolumeFast('ScifiVolume'+str(n))
+       removalList = []
+       for x in Hscifi.GetNodes():
+             if x.GetName().find('Scifi')==0: removalList.append(x)
+       for x in removalList: Hscifi.RemoveNode(x)
  sGeo.SetNmeshPoints(10000)
  sGeo.CheckOverlaps(0.1)  # 1 micron takes 5minutes
  sGeo.PrintOverlaps()
