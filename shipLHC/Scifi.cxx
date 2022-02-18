@@ -391,7 +391,7 @@ Bool_t  Scifi::ProcessHits(FairVolume* vol)
 		gMC->TrackPosition(fPos);
 		gMC->TrackMomentum(fMom);
 		TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
-		
+
 		int fibre_local_id = nav->GetMother()->GetNumber() - 1e6 - 1e4; // Local ID within the mat.
 		int fibre_mat_id = nav->GetMother(2)->GetNumber(); // Get mat ID.
 
@@ -472,7 +472,7 @@ void Scifi::GetPosition(Int_t fDetectorID, TVector3& A, TVector3& B)
 		path+="ScifiVertPlaneVol"+TString(sID(0,1))+"_"+TString(sID(0,1))+"000000/";
 		path+="VertMatVolume_"+TString(sID(0,3))+"0000/";
 	}
-	path+="FiberVolume_"+TString(sLocalID);
+	path+="FiberVolume_"+sLocalID;
 	TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
 	nav->cd(path);
 	LOG(DEBUG) <<path<<" "<<fDetectorID;
