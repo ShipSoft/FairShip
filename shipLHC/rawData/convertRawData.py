@@ -231,7 +231,7 @@ else:
   def time_calibration(board_id,tofpet_id,channel,tac,t_coarse,t_fine,TDC=0):
       par = qdc_cal[board_id][tofpet_id][channel][tac][TDC]
       x = t_fine
-      ftdc = (-par['b']-ROOT.TMath.Sqrt(par['b']**2-4*par['a']*(par['c']-x)))/(2*par['a'])+par['d']
+      ftdc = (-par['b']-ROOT.TMath.Sqrt(par['b']**2-4*par['a']*(par['c']-x)))/(2*par['a'])
       timestamp = t_coarse+ftdc
       return timestamp
     
@@ -239,7 +239,7 @@ else:
       par  = qdc_cal[board_id][tofpet_id][channel][tac]
       parT = par[TDC]
       x    = t_fine
-      ftdc = (-parT['b']-ROOT.TMath.Sqrt(parT['b']**2-4*parT['a']*(parT['c']-x)))/2*parT['a'] #   Ettore 28/01/2022 +par['d']
+      ftdc = (-parT['b']-ROOT.TMath.Sqrt(parT['b']**2-4*parT['a']*(parT['c']-x)))/(2*parT['a']) #   Ettore 28/01/2022 +par['d']
       timestamp = t_coarse + ftdc
       tf = timestamp - t_coarse
       x = v_coarse - tf

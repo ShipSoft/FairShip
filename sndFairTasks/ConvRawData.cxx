@@ -592,7 +592,7 @@ double ConvRawData::time_calibration( int board_id, int tofpet_id, int channel,
     map<string, double> parT = X_tdc[{board_id,tofpet_id,channel,tac, TDC}];
     double x = t_fine;
     double ftdc = (-parT["b"]-sqrt(pow(parT["b"],2)
-                  -4*parT["a"]*(parT["c"]-x)))/(2*parT["a"])+parT["d"];
+                  -4*parT["a"]*(parT["c"]-x)))/(2*parT["a"]);
     double timestamp = t_coarse+ftdc;
     return timestamp;
 }
@@ -602,7 +602,7 @@ tuple<double, double, double, double> ConvRawData::comb_calibration( int board_i
     map<string, double> parT = X_tdc[{board_id,tofpet_id,channel,tac,TDC}];
     double x    = t_fine;
     double ftdc = (-parT["b"]-sqrt(pow(parT["b"],2)
-                  -4*parT["a"]*(parT["c"]-x)))/2*parT["a"]; // Ettore 28/01/2022 +par['d']
+                  -4*parT["a"]*(parT["c"]-x)))/(2*parT["a"]); // Ettore 28/01/2022 +par['d']
     double timestamp = t_coarse + ftdc;
     double tf = timestamp - t_coarse;
     x = v_coarse - tf;
