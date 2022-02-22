@@ -189,12 +189,8 @@ class MuonReco(ROOT.FairTask) :
         self.b = ROOT.TVector3()
 
         # Now initialize output
-        self.muon_tracks = ROOT.TClonesArray("sndRecoTrack", self.max_reco_muons)
-        ioman.Register("Reco_MuonTracks", "", self.muon_tracks, ROOT.kTRUE);
-
-#        self.kalman_tracks = ROOT.TClonesArray(ROOT.genfit.Track().ClassName(), self.max_reco_muons);
         self.kalman_tracks = ROOT.TObjArray(self.max_reco_muons);
-        ioman.Register("Reco_KalmanTracks", "", self.kalman_tracks, ROOT.kTRUE);
+        ioman.Register("Reco_MuonTracks", "", self.kalman_tracks, ROOT.kTRUE);
 
         # Kalman filter stuff
 
@@ -224,7 +220,6 @@ class MuonReco(ROOT.FairTask) :
         self.use_mufi = use_mufi
 
     def Exec(self, opt) :
-        self.muon_tracks.Clear()
         self.kalman_tracks.Clear()
         
         # Read hits
@@ -487,13 +482,6 @@ class MuonReco(ROOT.FairTask) :
 
             min_y = ZY_hough[0]*min_z + ZY_hough[1]
             max_y = ZY_hough[0]*max_z + ZY_hough[1]
-
-            # Save track
-            this_track = self.muon_tracks.ConstructedAt(i_muon)
-            this_track.setStart(ROOT.TVector3(min_x, min_y, min_z))
-            this_track.setStop(ROOT.TVector3(max_x, max_y, max_z))
-            this_track.setHits(hit_detectorIDs)
-            this_track.setHitsLoose(hit_detectorIDs)
             
             # Onto Kalman fitter (based on SndlhcTracking.py)
             posM    = ROOT.TVector3(0, 0, 0.)
@@ -679,4 +667,4 @@ class MuonReco(ROOT.FairTask) :
             
 
     def FinishTask(self) :
-        self.muon_tracks.Delete()
+        pass
