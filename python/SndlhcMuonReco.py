@@ -299,7 +299,6 @@ class MuonReco(ROOT.FairTask) :
         if self.use_scifi :
             # Loop through scifi hits
             for i_hit, scifiHit in enumerate(self.ScifiHits) :
-                print("GOT SCIFI HIT {0} {1}".format(i_hit, scifiHit.GetDetectorID()))
                 self.scifiDet.GetSiPMPosition(scifiHit.GetDetectorID(), self.a, self.b)
                 scifi["pos"][0].append(self.a.X())
                 scifi["pos"][1].append(self.a.Y())
@@ -344,24 +343,10 @@ class MuonReco(ROOT.FairTask) :
                     break
 
             if (not self.use_mufi) and self.use_scifi :
-                print(scifi["system"])
-                print(scifi["vert"])
-                print(scifi["detectorID"])
-                print(scifi["pos"][2])
-
-
-                print(scifi["system"][scifi["vert"]])
-                print(scifi["detectorID"][scifi["vert"]])
-
                 n_planes_sf_ZX = numPlanesHit(scifi["system"][scifi["vert"]], scifi["detectorID"][scifi["vert"]])
-                print("SF ZX PLANES")
-                print(n_planes_sf_ZX)
                 if n_planes_sf_ZX < self.min_planes_hit :
                     break
                 n_planes_sf_ZY = numPlanesHit(scifi["system"][~scifi["vert"]], scifi["detectorID"][~scifi["vert"]])
-                print("SF ZY PLANES")
-                print(n_planes_sf_ZY)
-
                 if n_planes_sf_ZY < self.min_planes_hit :
                     break
             elif self.use_mufi :
