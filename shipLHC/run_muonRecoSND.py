@@ -57,6 +57,6 @@ muon_reco_task.SetUseMuFi(options.use_mufi)
 if options.passthrough :
       muon_reco_task.Passthrough()
 
-run.Run(options.firstEvent, options.nEvents)
+run.Run(options.firstEvent, options.firstEvent + options.nEvents)
 print("Done running")
 
