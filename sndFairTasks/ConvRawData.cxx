@@ -700,6 +700,7 @@ void ConvRawData::read_csv(string Path)
     stringstream items(line);
     while (getline(items, element, ','))
     {
+      if(iscntrl(element[0])) break;
       qdcData.push_back(stof(element));
     }
     if (qdcData.size()<10) continue;
@@ -747,6 +748,7 @@ void ConvRawData::read_csv(string Path)
     stringstream items(line);
     while (getline(items, element, ','))
     {
+      if(iscntrl(element[0])) break;
       tdcData.push_back(stof(element));
     }
     if (tdcData.size()<9) continue;
