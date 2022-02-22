@@ -6,6 +6,8 @@
 #include "FairTask.h"           // for FairTask, InitStatus
 #include "FairEventHeader.h"    // for FairEventHeader
 #include "Scifi.h"              // for Scifi detector
+#include "sndScifiHit.h"	// for SciFi Hit
+#include "MuFilterHit.h"	// for Muon Filter Hit
 
 #include <iostream>
 #include <tuple>
@@ -54,6 +56,8 @@ class ConvRawData : public FairTask
       void read_csv(string path);
     
       /** Data structures to be used in the class **/
+      map<int, MuFilterHit* > digiMuFilterStore{};
+      map<int, sndScifiHit* > digiSciFiStore{}; 
       map<vector<int>, map<string, double> > X_qdc{};
       map<vector<int>, map<string, double> > X_tdc{};
       map<string, map<string, map<string, int>> > boardMaps{};

@@ -151,16 +151,12 @@ InitStatus ConvRawData::Init()
 
 void ConvRawData::Exec(Option_t* /*opt*/)
 {
-
   fDigiSciFi->Delete();
   fDigiMuFilter->Delete();
   fClusScifi->Delete();
     
   // Set number of events to process
   int indexSciFi{}, indexMuFilter{};
-  // maps with detID and point
-  map<int, MuFilterHit* > digiMuFilterStore{};
-  map<int, sndScifiHit* > digiSciFiStore{};
   bool scifi = false, mask = false;
   int board_id{};
   TTree* bt;
@@ -200,13 +196,21 @@ void ConvRawData::Exec(Option_t* /*opt*/)
   fEventHeader->SetEventTime(fEventTree->GetLeaf("evtTimestamp")->GetValue());
   if (debug) cout << "event: " << eventNumber << " timestamp: "
                   << fEventTree->GetLeaf("evtTimestamp")->GetValue() << endl;
-  // Reset counters
-  indexMuFilter =0; indexSciFi =0;
+  // Delete pointer map elements
+  TStopwatch timerDel;
+  timerDel.Start();
+  for (auto it : digiSciFiStore)
+  {
+      delete it.second;
+  }
   digiSciFiStore.clear();
+  for (auto it : digiMuFilterStore)
+  {
+      delete it.second;
+  }
   digiMuFilterStore.clear();
-  fDigiSciFi->Delete();
-  fDigiMuFilter->Delete();
-  if (withGeoFile) fClusScifi->Delete();
+  timerDel.Stop();
+  //cout<<timerDel.RealTime()<< " CPU "<< timerDel.CpuTime()<<endl;
      
   // Loop over boards
   for ( auto board : boards )// loop over TTrees
