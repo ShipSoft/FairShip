@@ -239,7 +239,7 @@ else:
       par  = qdc_cal[board_id][tofpet_id][channel][tac]
       parT = par[TDC]
       x    = t_fine
-      ftdc = (-parT['b']-ROOT.TMath.Sqrt(parT['b']**2-4*parT['a']*(parT['c']-x)))/(2*parT['a']) #   Ettore 28/01/2022 +par['d']
+      ftdc = (-parT['b']-ROOT.TMath.Sqrt(parT['b']**2-4*parT['a']*(parT['c']-x)))/(2*parT['a']) #   Ettore 28/01/2022 +parT['d']
       timestamp = t_coarse + ftdc
       tf = timestamp - t_coarse
       x = v_coarse - tf
@@ -358,7 +358,7 @@ else:
           if name.find('board')!=0: continue
           boards[name]=f0.Get(name)
 
-  fSink = ROOT.FairRootFileSink(outFile+'.root')
+  fSink = ROOT.FairRootFileSink(outFile)
   sTree     = ROOT.TTree('rawConv','raw data converted')
   ROOT.gDirectory.pwd()
   header  = ROOT.FairEventHeader()
