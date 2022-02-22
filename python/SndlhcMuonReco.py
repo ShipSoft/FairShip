@@ -23,7 +23,7 @@ def hit_finder(slope, intercept, box_centers, box_ds, tol = 0.) :
 class hough() :
     """ Hough transform implementation """
 
-    def __init__(self, n_r, r_range, n_theta, theta_range, tolerance = 0., squaretheta = False) :
+    def __init__(self, n_r, r_range, n_theta, theta_range, tolerance = 0., squaretheta = False, smooth = True) :
 
         self.n_r = n_r
         self.n_theta = n_theta
@@ -32,6 +32,8 @@ class hough() :
         self.theta_range = theta_range
 
         self.tolerance = tolerance
+
+        self.smooth = smooth
 
         self.r_bins = np.linspace(self.r_range[0], self.r_range[1], n_r)
         if not squaretheta :
@@ -59,7 +61,8 @@ class hough() :
                 self.accumulator[hit_r_i, self.theta_i[out_of_range]] += 1
 
         # Smooth accumulator
-        self.accumulator = scipy.ndimage.gaussian_filter(self.accumulator, 3)
+        if self.smooth :
+            self.accumulator = scipy.ndimage.gaussian_filter(self.accumulator, 3)
 
         # This might be useful for debugging, but leave out for now.
         if draw :
@@ -124,20 +127,20 @@ class MuonReco(ROOT.FairTask) :
         self.lsOfGlobals  = ROOT.gROOT.GetListOfGlobals()
         self.scifiDet = self.lsOfGlobals.FindObject('Scifi')
         self.mufiDet = self.lsOfGlobals.FindObject('MuFilter')
-        ioman = ROOT.FairRootManager.Instance()
+        self.ioman = ROOT.FairRootManager.Instance()
 
         # Fetch digi hit collections.
         # Try the FairRoot way first
-        self.MuFilterHits = ioman.GetObject("Digi_MuFilterHits")
-        self.ScifiHits = ioman.GetObject("Digi_ScifiHits")
+        self.MuFilterHits = self.ioman.GetObject("Digi_MuFilterHits")
+        self.ScifiHits = self.ioman.GetObject("Digi_ScifiHits")
 
         # If that doesn't work, try using standard ROOT
         if self.MuFilterHits == None :
             warnings.warn("Digi_MuFilterHits not in branch list")
-            self.MuFilterHits = ioman.GetInTree().Digi_MuFilterHits
+            self.MuFilterHits = self.ioman.GetInTree().Digi_MuFilterHits
         if self.ScifiHits == None :
             warnings.warn("Digi_ScigiHits not in branch list")
-            self.ScifiHits = ioman.GetInTree().Digi_ScifiHits
+            self.ScifiHits = self.ioman.GetInTree().Digi_ScifiHits
         
         if self.MuFilterHits == None :
             raise RuntimeException("Digi_MuFilterHits not found in input file.")
@@ -179,7 +182,7 @@ class MuonReco(ROOT.FairTask) :
         # Which hits to use. By default use both scifi and muon filter.
         self.use_scifi = True
         self.use_mufi = True
-        
+
         # Initialize Hough transforms for both views:
         self.h_ZX = hough(n, [-80, 0], n, [-max_angle+np.pi/2., max_angle+np.pi/2.], tolerance = self.tolerance, squaretheta = False)
         self.h_ZY = hough(n, [0, 80], n, [-max_angle+np.pi/2., max_angle+np.pi/2.], tolerance = self.tolerance, squaretheta = False)
@@ -190,7 +193,7 @@ class MuonReco(ROOT.FairTask) :
 
         # Now initialize output
         self.kalman_tracks = ROOT.TObjArray(self.max_reco_muons);
-        ioman.Register("Reco_MuonTracks", "", self.kalman_tracks, ROOT.kTRUE);
+        self.ioman.Register("Reco_MuonTracks", "", self.kalman_tracks, ROOT.kTRUE);
 
         # Kalman filter stuff
 
@@ -218,6 +221,51 @@ class MuonReco(ROOT.FairTask) :
 
     def SetUseMuFi(self, use_mufi) :
         self.use_mufi = use_mufi
+        if not self.use_mufi :
+            # No smoothing of Hough map needed if MuFilter is not used.
+            self.h_ZX.smooth = False
+            self.h_ZY.smooth = False
+
+    def Passthrough(self) :
+        objects_to_write_names = {}
+        objects_to_write_names["MCTrack"] =  "ShipMCTrack"
+        objects_to_write_names["vetoPoint"] =  "vetoPoints"
+        objects_to_write_names["EmulsionDetPoint"] =  "EmulsionDetPoints"
+        objects_to_write_names["ScifiPoint"] =  "ScifiPoints"
+        objects_to_write_names["MuFilterPoint"] =  "MuFilterPoints"
+        objects_to_write_names["MCEventHeader."] =  "MCEventHeader"
+        objects_to_write_names["Digi_ScifiHits"] =  "DigiScifiHit_det"
+        objects_to_write_names["Digi_ScifiHits2MCPoints"] =  "DigiScifiHits2MCPoints_det"
+        objects_to_write_names["Cluster_scifi"] =  "ScifiCluster_det"
+        objects_to_write_names["Digi_MuFilterHits"] =  "DigiMuFilterHit_det"
+        objects_to_write_names["Digi_MuFilterHits2MCPoints"] =  "DigiMuFilterHits2MCPoints_det"
+        
+        print("PASSING THROUGH")
+        print(objects_to_write_names)
+
+        self.objs_to_write = {}
+        for obj_name, obj_type in objects_to_write_names.items() :
+            print("REGISTERING {0}".format(obj_name))
+            if obj_name not in ["Digi_MuFilterHits", "Digi_ScifiHits"] :
+                this_obj = self.ioman.GetObject(obj_name)
+                print(this_obj)
+                if this_obj == None :
+                    print("NOT FOUND")
+                else :
+                    self.objs_to_write[obj_name] = this_obj
+                    self.ioman.Register(obj_name, obj_type, self.objs_to_write[obj_name], ROOT.kTRUE)
+                    print("Registered")
+            else :
+                if obj_name == "Digi_MuFilterHits" :
+                    self.ioman.Register(obj_name, obj_type, self.MuFilterHits, ROOT.kTRUE)
+                    print("Registered")
+                elif obj_name == "Digi_ScifiHits" :
+                    self.ioman.Register(obj_name, obj_type, self.ScifiHits, ROOT.kTRUE)
+                    print("Registered")
+                else :
+                    raise RuntimeException("Error in passthrough! Expect Digi_MuFilterHits or Digi_ScifiHits but got neither!")
+        print("DONE SETTING UP PASSTHROUGH. THE FOLLOWING OBJECTS WILL BE WRITTEN")
+        print(self.objs_to_write)
 
     def Exec(self, opt) :
         self.kalman_tracks.Clear()
@@ -351,7 +399,7 @@ class MuonReco(ROOT.FairTask) :
 
 
   
-            print("Finding muon {0}".format(i_muon))    
+#            print("Finding muon {0}".format(i_muon))    
             
             # Get hits in hough transform format
             ZX = np.dstack([np.concatenate([np.tile(mu_ds["pos"][2][mu_ds["vert"]], self.muon_weight), 
@@ -406,8 +454,8 @@ class MuonReco(ROOT.FairTask) :
                 n_planes_ds_ZY = numPlanesHit(mu_ds["system"][~mu_ds["vert"]][track_hits_ds_ZY_for_triplet], mu_ds["detectorID"][~mu_ds["vert"]][track_hits_ds_ZY_for_triplet])
                 if n_planes_ds_ZY < self.min_planes_hit :
                     break
-                print("Found {0} downstream ZX planes associated to muon track".format(n_planes_ds_ZX))
-                print("Found {0} downstream ZY planes associated to muon track".format(n_planes_ds_ZY))
+#                print("Found {0} downstream ZX planes associated to muon track".format(n_planes_ds_ZX))
+#                print("Found {0} downstream ZY planes associated to muon track".format(n_planes_ds_ZY))
             
             # This time with non-zero tolerance, for kalman filter
             track_hits_ds_ZX = hit_finder(ZX_hough[0], ZX_hough[1], 
@@ -450,15 +498,15 @@ class MuonReco(ROOT.FairTask) :
                 n_planes_sf_ZY = numPlanesHit(scifi["system"][~scifi["vert"]][track_hits_sf_ZY], scifi["detectorID"][~scifi["vert"]][track_hits_sf_ZY])
                 if n_planes_sf_ZY < self.min_planes_hit :
                     break
-                print("Found {0} SciFi ZX planes associated to muon track".format(n_planes_sf_ZX))
-                print("Found {0} SciFi ZY planes associated to muon track".format(n_planes_sf_ZY))
+#                print("Found {0} SciFi ZX planes associated to muon track".format(n_planes_sf_ZX))
+#                print("Found {0} SciFi ZY planes associated to muon track".format(n_planes_sf_ZY))
 
             elif self.use_mufi :
                 pass
             else :
                 raise RuntimeException("Invalid triplet condition. Need at least Scifi or Muon filter hits enabled")
                 
-            print("Muon found!")
+#            print("Muon found!")
 
             # Get hit detectorIDs and add to reco track collection
             hit_detectorIDs = np.concatenate([mu_ds["detectorID"][mu_ds["vert"]][track_hits_ds_ZX],
