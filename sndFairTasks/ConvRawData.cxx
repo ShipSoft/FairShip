@@ -746,6 +746,7 @@ void ConvRawData::read_csv(string Path)
   {
     tdcData.clear();
     stringstream items(line);
+    if (line.length()<5){continue;}
     while (getline(items, element, ','))
     {
       if(iscntrl(element[0])) break;
