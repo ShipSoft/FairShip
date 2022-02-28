@@ -6,6 +6,7 @@ import SndlhcMuonReco
 
 parser = ArgumentParser()
 parser.add_argument("-f", "--inputFile", dest="inputFile", help="single input file", required=True)
+parser.add_argument("-o", "--withOutput", dest="withOutput", help="persistent output", action='store_true',default=False)
 parser.add_argument("-g", "--geoFile", dest="geoFile", help="geofile", required=True)
 parser.add_argument("-n", "--nEvents", dest="nEvents",  type=int, help="number of events to process", default=100000)
 parser.add_argument("-i", "--firstEvent",dest="firstEvent",  help="First event of input file to use", required=False,  default=0, type=int)
@@ -17,7 +18,7 @@ parser.add_argument("--use_mufi", dest="use_mufi",  help="Use Muon Filter hits. 
 parser.add_argument("--no-use_mufi", dest="use_mufi",  help="Do not use Muon Filter hits. The triplet condition will be based on SciFi hits.", action='store_false')
 parser.set_defaults(use_mufi=True)
 parser.add_argument("--no-passthrough", dest="passthrough", help = "[PASSTHROUGH IS CURRENTLY BROKEN!] By default all input data is passed through to the output. Use this flag to keep only reconstructed tracks in the output file.", action = 'store_false')
-parser.set_defaults(passthrough = False)
+parser.set_defaults(passthrough = True)
 
 options = parser.parse_args()
 
@@ -28,20 +29,30 @@ lsOfGlobals = ROOT.gROOT.GetListOfGlobals()
 lsOfGlobals.Add(geo.modules['Scifi'])
 lsOfGlobals.Add(geo.modules['MuFilter'])
 
+x = options.inputFile
+filename = x[x.rfind('/')+1:]
+outFileName = filename.replace('.root','_muonReco.root')
+
+fullPath = options.inputFile
 if options.inputFile.find('/eos')==0:
-      x = options.inputFile
-      filename = x[x.rfind('/')+1:]
-      os.system('xrdcp '+os.environ['EOSSHIP']+options.inputFile+' '+filename)
-      options.inputFile = filename
+     fullPath = os.environ['EOSSHIP']+options.inputFile
+F = ROOT.TFile.Open(fullPath)
 
-outFile = options.inputFile.replace('.root','_muonReco.root') 
-
-os.system('cp '+options.inputFile+' '+outFile)
+if options.withOutput:
+  print("prepare output file")
+  if options.inputFile.find('/eos')==0: os.system('xrdcp '+fullPath+' '+outFileName)
+  else: os.system('cp '+fullPath+' '+outFileName)
+  outFile = ROOT.TFile(outFileName,'update')
+else:
+  options.passthrough=False
+  outFile = ROOT.TMemFile(outFileName,'CREATE')
 
 run = ROOT.FairRunAna()
 print("Initialized FairRunAna")
-source = ROOT.FairFileSource(options.inputFile)
+
+source = ROOT.FairFileSource(F)
 run.SetSource(source)
+
 sink = ROOT.FairRootFileSink(outFile)
 run.SetSink(sink)
 
