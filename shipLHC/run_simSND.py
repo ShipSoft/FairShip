@@ -193,8 +193,18 @@ if simEngine=="Genie":
    Geniegen.SetGenerationOption(options.genie - 1) # 0 standard, 1 FLUKA,2 Pythia
    Geniegen.Init(inputFile,options.firstEvent)
    Geniegen.SetCrossingAngle(150e-6) #used only in option 2
-   Geniegen.SetPositions(snd_geo.EmulsionDet.zC-480*u.m, snd_geo.EmulsionDet.zC-snd_geo.EmulsionDet.zdim/2,snd_geo.EmulsionDet.zC+snd_geo.EmulsionDet.zdim/2)
-   #Geniegen.SetPositions(snd_geo.EmulsionDet.zC+60*u.cm, snd_geo.EmulsionDet.zC-snd_geo.EmulsionDet.zdim/2,snd_geo.EmulsionDet.zC+snd_geo.EmulsionDet.zdim/2) #FLUKA scoring position
+
+
+   # Neutrino vertex generation range in z:
+   # Tolerance for neutrino vertex generation range. Mostly to account for tilt in geometry alignment. Take difference in z coordinate of vertical fibres of around 0.5 cm over the fibre length, 39 cm. Assume maximum difference in z is 1 m * 0.5/39.
+   tolerance_vtx_z = 1*u.m * 0.5/39
+   # From first veto bar
+   neutrino_vtx_start_z = snd_geo.MuFilter.Veto1Dy - snd_geo.MuFilter.VetoBarZ/2. - tolerance_vtx_z
+   # To last Scifi plane
+   neutrino_vtx_end_z = snd_geo.Scifi.Ypos4 + snd_geo.Scifi.zdim/2. + tolerance_vtx_z
+
+   Geniegen.SetPositions(-480*u.m, neutrino_vtx_start_z, neutrino_vtx_end_z)
+
    Geniegen.SetDeltaE_Matching_FLUKAGenie(10.) #energy range for the search of a GENIE interaction with similar energy of FLUKA neutrino
    primGen.AddGenerator(Geniegen)
    options.nEvents = min(options.nEvents,Geniegen.GetNevents())
