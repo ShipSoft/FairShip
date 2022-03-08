@@ -100,8 +100,6 @@ protected:
     Double_t YDimension;
     Double_t ZDimension; 
 
-    Double_t fCenterZ;
-
     Int_t fNWall, fNRow, fNCol;
     Int_t fNTarget;
     Int_t number_of_plates; ////

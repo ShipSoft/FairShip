@@ -162,7 +162,6 @@ TString EmulsionDet::PathBrickID(Int_t detID){
 void EmulsionDet::ConstructGeometry()
 {
 	// configuration parameters
-	fCenterZ        = conf_floats["EmulsionDet/zC"];
 	XDimension = conf_floats["EmulsionDet/xdim"];
 	YDimension = conf_floats["EmulsionDet/ydim"];
 	ZDimension = conf_floats["EmulsionDet/zdim"];
@@ -198,7 +197,6 @@ void EmulsionDet::ConstructGeometry()
 	if(!top)  LOG(ERROR) << "no Detector volume found " ;
 	gGeoManager->SetVisLevel(10);
 
-	LOG(INFO) << "fCenterZ:   "<<fCenterZ;
         LOG(INFO) << "    X: "<< XDimension<< "  "<< YDimension<<"   Z: "<<ZDimension;
 	LOG(INFO) <<"  BrickX: "<< BrickX<<"  Y: "<< BrickY<< "  Z: "<< BrickZ;
 	//Materials 
