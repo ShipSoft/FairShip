@@ -194,7 +194,6 @@ if simEngine=="Genie":
    Geniegen.Init(inputFile,options.firstEvent)
    Geniegen.SetCrossingAngle(150e-6) #used only in option 2
 
-
    # Neutrino vertex generation range in z:
    # Tolerance for neutrino vertex generation range. Mostly to account for tilt in geometry alignment. Take difference in z coordinate of vertical fibres of around 0.5 cm over the fibre length, 39 cm. Assume maximum difference in z is 1 m * 0.5/39.
    tolerance_vtx_z = 1*u.m * 0.5/39
