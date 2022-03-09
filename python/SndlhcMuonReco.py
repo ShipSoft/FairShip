@@ -227,45 +227,13 @@ class MuonReco(ROOT.FairTask) :
             self.h_ZY.smooth = False
 
     def Passthrough(self) :
-        objects_to_write_names = {}
-        objects_to_write_names["MCTrack"] =  "ShipMCTrack"
-        objects_to_write_names["vetoPoint"] =  "vetoPoints"
-        objects_to_write_names["EmulsionDetPoint"] =  "EmulsionDetPoints"
-        objects_to_write_names["ScifiPoint"] =  "ScifiPoints"
-        objects_to_write_names["MuFilterPoint"] =  "MuFilterPoints"
-        objects_to_write_names["MCEventHeader."] =  "MCEventHeader"
-        objects_to_write_names["Digi_ScifiHits"] =  "DigiScifiHit_det"
-        objects_to_write_names["Digi_ScifiHits2MCPoints"] =  "DigiScifiHits2MCPoints_det"
-        objects_to_write_names["Cluster_scifi"] =  "ScifiCluster_det"
-        objects_to_write_names["Digi_MuFilterHits"] =  "DigiMuFilterHit_det"
-        objects_to_write_names["Digi_MuFilterHits2MCPoints"] =  "DigiMuFilterHits2MCPoints_det"
-        
+        T = self.ioman.GetInTree()
+        for x in T.GetListOfBranches():
+             obj_name = x.GetName()
+             obj_type   = x.GetClonesName()
+             obj_array = eval("T."+obj_name)
+             self.ioman.Register(obj_name, obj_type, obj_array, ROOT.kTRUE)        
         print("PASSING THROUGH")
-        print(objects_to_write_names)
-
-        self.objs_to_write = {}
-        for obj_name, obj_type in objects_to_write_names.items() :
-            print("REGISTERING {0}".format(obj_name))
-            if obj_name not in ["Digi_MuFilterHits", "Digi_ScifiHits"] :
-                this_obj = self.ioman.GetObject(obj_name)
-                print(this_obj)
-                if this_obj == None :
-                    print("NOT FOUND")
-                else :
-                    self.objs_to_write[obj_name] = this_obj
-                    self.ioman.Register(obj_name, obj_type, self.objs_to_write[obj_name], ROOT.kTRUE)
-                    print("Registered")
-            else :
-                if obj_name == "Digi_MuFilterHits" :
-                    self.ioman.Register(obj_name, obj_type, self.MuFilterHits, ROOT.kTRUE)
-                    print("Registered")
-                elif obj_name == "Digi_ScifiHits" :
-                    self.ioman.Register(obj_name, obj_type, self.ScifiHits, ROOT.kTRUE)
-                    print("Registered")
-                else :
-                    raise RuntimeException("Error in passthrough! Expect Digi_MuFilterHits or Digi_ScifiHits but got neither!")
-        print("DONE SETTING UP PASSTHROUGH. THE FOLLOWING OBJECTS WILL BE WRITTEN")
-        print(self.objs_to_write)
 
     def Exec(self, opt) :
         self.kalman_tracks.Clear()
@@ -297,7 +265,6 @@ class MuonReco(ROOT.FairTask) :
                  "system" : [],
                  "detectorID" : [],
                  "B" : [[], [], []]}
-        
         if self.use_mufi :
             # Loop through muon filter hits
             for i_hit, muFilterHit in enumerate(self.MuFilterHits) :
