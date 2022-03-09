@@ -245,6 +245,7 @@ def  langaufun(x,par):
 def myPrint(tc,name,withRootFile=True):
      tc.Update()
      tc.Print(name+'-run'+str(options.runNumber)+'.png')
+     tc.Print(name+'-run'+str(options.runNumber)+'.pdf')
      if withRootFile: tc.Print(name+'-run'+str(options.runNumber)+'.root')
 
 def makeAnimation(histname,j0=1,j1=2,animated=True, findMinMax=True, lim = 50):
@@ -305,9 +306,27 @@ else:
 eventTree.GetEvent(0)
 if eventTree.GetBranch('Digi_MuFilterHit'): eventTree.Digi_MuFilterHits = eventTree.Digi_MuFilterHit
 
-import SndlhcTracking
-trackTask = SndlhcTracking.Tracking() 
-trackTask.InitTask(eventTree)
+run      = ROOT.FairRunAna()
+ioman = ROOT.FairRootManager.Instance()
+ioman.SetTreeName(eventTree.GetName())
+outFile = ROOT.TMemFile('dummy','CREATE')
+source = ROOT.FairFileSource(eventTree.GetCurrentFile())
+run.SetSource(source)
+sink = ROOT.FairRootFileSink(outFile)
+run.SetSink(sink)
+
+houghTransform = False # under construction, not yet tested
+if houghTransform:
+   muon_reco_task = SndlhcMuonReco.MuonReco()
+   muon_reco_task.SetName("houghTransform")
+   run.AddTask(muon_reco_task)
+else:
+   import SndlhcTracking
+   trackTask = SndlhcTracking.Tracking() 
+   trackTask.SetName('simpleTracking')
+   run.AddTask(trackTask)
+
+run.Init()
 
 # wait for user action 
 
@@ -522,6 +541,7 @@ def Mufi_hitMaps(Nev = options.nEvents):
  for s in systemAndPlanes:
      for l in range(systemAndPlanes[s]):
            tc = h['hitmult'].cd(k)
+           tc.SetLogy(1)
            k+=1
            rc = h['hitmult_'+str(s*10+l)].Draw()
 
@@ -747,6 +767,17 @@ def smallVsLargeSiPMs(Nev=-1):
                k+=1
       myPrint(h['cor'+side+str(l)],'QDCcor'+side+str(l))
 
+def makeLogVersion(run):
+   for l in range(5):
+      for side in ['L','R']:
+         fname = 'QDCcor'+side+str(l)+'-run'+str(run)
+         f=ROOT.TFile('QDCcor'+side+str(l)+'-run'+str(run)+'.root')
+         c = 'cor'+side+str(l)
+         h['X'] = f.Get(c).Clone(c)
+         for pad in h['X'].GetListOfPrimitives():
+             pad.SetLogz(1)
+         h['X'].Draw()
+         h['X'].Print(fname+'.pdf')
 
 
 def eventTime(Nev=options.nEvents):
@@ -850,9 +881,10 @@ def TimeStudy(Nev=options.nEvents,withDisplay=False):
 
 def beamSpot():
    trackTask.ExecuteTask()
+   T = ioman.GetObject("Reco_MuonTracks")
    Xbar = -10
    Ybar = -10
-   for  aTrack in eventTree.fittedTracks:
+   for  aTrack in T:
          state = aTrack.getFittedState()
          pos    = state.getPos()
          rc = h['bs'].Fill(pos.x(),pos.y())
@@ -1820,6 +1852,24 @@ def plotRMS(readHists=True):
       s=2
       h['tdcCalib'] = {}
       for l in range(systemAndPlanes[s]):
+        for bar in range(systemAndBars[s]):
+           for side in ['L','R']:
+              key = sdict[s]+str(s*10+l)+'_'+str(bar)
+              for i in range(systemAndChannels[s][1]+systemAndChannels[s][0]):
+                  j = side+'_'+key+'-c'+str(i)
+                  for x in ['TDCcalib']:
+                     if i==4: continue
+                     # get TDC calibration constants:
+                     if x.find('calib')>0:
+                            h['tdcCalib'][j] =[0,0,0,0]
+                            if h[x+j].GetEntries()>10: 
+                              rc =  h[x+j].Fit('gaus','SNQ')
+                              rc =  h[x+j].Fit('gaus','SNQ')
+                              if rc:
+                                res = rc.Get()
+                                h['tdcCalib'][j] =[res.Parameter(1),res.ParError(1),res.Parameter(2),res.ParError(2)]
+
+      for l in range(systemAndPlanes[s]):
         ut.bookCanvas(h,'sigmaTDC'+str(l),'TDC RMS',2000,600,systemAndBars[s],2)
         ut.bookCanvas(h,  'TDCcalib'+str(l),'TDC TDCi-T0',2000,600,systemAndBars[s],2)
         ut.bookCanvas(h,'sigmaQDC'+str(l),'QDC RMS',2000,600,systemAndBars[s],2)
@@ -1830,20 +1880,11 @@ def plotRMS(readHists=True):
               for i in range(systemAndChannels[s][1]+systemAndChannels[s][0]):
                   j = side+'_'+key+'-c'+str(i)
                   for x in ['sigmaTDC','TDCcalib','sigmaQDC']:
-                     if x.find('calib')>0 and i==0: continue
+                     if x.find('calib')>0 and (i==4):  continue
                      tc=h[x+str(l)].cd(k)
                      opt='same'
                      if i==0 and x.find('calib')<0: opt=""
                      if i==1 and x.find('calib')>0: opt=""
-                     # get TDC calibration constants:
-                     if x.find('calib')>0:
-                            h['tdcCalib'][j] =[0,0,0,0]
-                            if h[x+j].GetEntries()>10: 
-                              rc =  h[x+j].Fit('gaus','SQ')
-                              rc =  h[x+j].Fit('gaus','SQ')
-                              if rc:
-                                res = rc.Get()
-                                h['tdcCalib'][j] =[res.Parameter(1),res.ParError(1),res.Parameter(2),res.ParError(2)]
                      h[x+j].SetLineColor(barColor[i])
                      if x.find('QDC')>0: h[x+j].GetXaxis().SetRangeUser(-15,15)
                      else:                     h[x+j].GetXaxis().SetRangeUser(-5,5)
@@ -3404,7 +3445,8 @@ if options.command:
     print('executing ' + command + "for run ",options.runNumber)
     eval(command)
     print('finished ' + command + "for run ",options.runNumber)
-    exit()
+    print("make suicid")
+    os.system('kill '+str(os.getpid()))
 else:
     print ('waiting for command. Enter help() for more infomation')
 

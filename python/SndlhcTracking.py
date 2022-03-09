@@ -4,7 +4,7 @@ import shipunit as u
 
 class Tracking(ROOT.FairTask):
  " Tracking "
- def InitTask(self,event):
+ def Init(self):
    geoMat =  ROOT.genfit.TGeoMaterialInterface()
    bfield     = ROOT.genfit.ConstField(0,0,0)   # constant field of zero
    fM = ROOT.genfit.FieldManager.getInstance()
@@ -17,31 +17,105 @@ class Tracking(ROOT.FairTask):
 
    self.fitter = ROOT.genfit.KalmanFitter()
    self.fitter.setMaxIterations(50)
-   self.sigmaScifi_spatial = 100.*u.um
+   self.sigmaScifi_spatial = 150.*u.um
    self.sigmaMufiUS_spatial = 2.*u.cm
    self.sigmaMufiDS_spatial = 0.3*u.cm
    self.Debug = False
-   self.event = event
+   self.kalman_tracks = ROOT.TObjArray(10);
+   self.ioman = ROOT.FairRootManager.Instance()
+   self.event = self.ioman.GetInChain()
+
+   if self.event.GetBranch('Digi_MuFilterHits'):
+         self.MuFilterHits = self.event.Digi_MuFilterHits
+   elif self.ioman.GetInTree().GetBranch('Digi_MuFilterHit'):
+         self.MuFilterHits =self.event.Digi_MuFilterHit
+   self.ScifiHits = self.event.Digi_ScifiHits
+
+   self.ioman.Register("Reco_MuonTracks", "", self.kalman_tracks, ROOT.kTRUE);
+
+   self.systemAndPlanes  = {1:2,2:5,3:7}
+   self.nPlanes = 8
+   self.nClusters = 11
+   return 0
 
  def FinishEvent(self):
   pass
 
  def ExecuteTask(self,option=''):
+    self.kalman_tracks.Clear()
     self.clusters = self.scifiCluster()
-    self.trackCandidates = self.patternReco()
-    self.event.fittedTracks = []
+    if option=='DS':  self.trackCandidates = self.DStrack()
+    if option=='Scifi':  self.trackCandidates = self.Scifi_track()
+    else:                   self.trackCandidates = self.patternReco()
     for aTrack in self.trackCandidates:
            rc = self.fitTrack(aTrack)
            if type(rc)==type(1):
                 print('trackfit failed',rc,aTrack)
            else:
-                self.event.fittedTracks.append(rc)
+                self.kalman_tracks.Add(rc)
+
+ def DStrack(self):
+# special for H8 testbeam, make track with 2 DS stations only for low occupancy events
+    trackCandidates = []
+    stations = {}
+    for s in self.systemAndPlanes:
+       for plane in range(self.systemAndPlanes[s]): 
+          stations[s*10+plane] = {}
+    k=-1
+    for aHit in self.MuFilterHits:
+         k+=1
+         if not aHit.isValid(): continue
+         s = aHit.GetDetectorID()//10000
+         p = (aHit.GetDetectorID()//1000)%10
+         bar = aHit.GetDetectorID()%1000
+         plane = s*10+p
+         if s==3:
+           if bar<60 or p==3: plane = s*10+2*p
+           else:  plane = s*10+2*p+1
+         stations[plane][k] = aHit
+    success = True
+    for p in range(30,34):
+         if len(stations[p])>2 or len(stations[p])<1: success = False
+    if success:
+ # build trackCandidate
+      hitlist = {}
+      for p in range(30,34):
+         k = list(stations[p].keys())[0]
+         hitlist[k] = stations[p][k]
+      trackCandidates.append(hitlist)
+    return trackCandidates
+
+ def Scifi_track(self):
+# check for low occupancy and enough hits in Scifi
+    trackCandidates = []
+    stations = {}
+    for s in range(1,6):
+       for o in range(2):
+          stations[s*10+o] = []
+    for cl in self.clusters:
+         detID = cl.GetFirst()
+         s  = detID//1000000
+         o = (detID//100000)%10
+         stations[s*10+o].append(detID)
+    nclusters = 0
+    check = {}
+    for s in range(1,6):
+       for o in range(2):
+            if len(stations[s*10+o]) > 0: check[s*10+o]=1
+            nclusters+=len(stations[s*10+o])
+    if len(check)>=self.nPlanes and nclusters >= self.nClusters:
+# build trackCandidate
+       hitlist = {}
+       for k in range(len(clusters)):
+           hitlist[k] = clusters[k]
+       trackCandidates.append(hitlist)
+    return trackCandidates
 
  def scifiCluster(self):
        clusters = []
        hitDict = {}
-       for k in range(self.event.Digi_ScifiHits.GetEntries()):
-            d = self.event.Digi_ScifiHits[k]
+       for k in range(self.ScifiHits.GetEntries()):
+            d = self.ScifiHits[k]
             if not d.isValid(): continue 
             hitDict[d.GetDetectorID()] = k
        hitList = list(hitDict.keys())
@@ -63,7 +137,7 @@ class Tracking(ROOT.FairTask):
                         first = tmp[0]
                         N = len(tmp)
                         hitvector.clear()
-                        for aHit in tmp: hitvector.push_back( self.event.Digi_ScifiHits[hitDict[aHit]])
+                        for aHit in tmp: hitvector.push_back( self.ScifiHits[hitDict[aHit]])
                         aCluster = ROOT.sndCluster(first,N,hitvector,self.scifiDet)
                         clusters.append(aCluster)
                         if c!=hitList[last]:
@@ -71,7 +145,7 @@ class Tracking(ROOT.FairTask):
                              tmp = [c]
                         elif not neighbour :   # save last channel
                             hitvector.clear()
-                            hitvector.push_back( self.event.Digi_ScifiHits[hitDict[c]])
+                            hitvector.push_back( self.ScifiHits[hitDict[c]])
                             aCluster = ROOT.sndCluster(c,1,hitvector,self.scifiDet)
                             clusters.append(aCluster)
                    cprev = c
@@ -88,8 +162,8 @@ class Tracking(ROOT.FairTask):
 # take fired muonFilter bars if more than 2 SiPMs have fired
     nMin = 1
     MuFiPlanes = {}
-    for k in range(self.event.Digi_MuFilterHits.GetEntries()):
-         aHit = self.event.Digi_MuFilterHits[k]
+    for k in range(self.MuFilterHits.GetEntries()):
+         aHit = self.MuFilterHits[k]
          if not aHit.isValid(): continue
          detID = aHit.GetDetectorID()
          sy    = detID//10000
@@ -101,7 +175,7 @@ class Tracking(ROOT.FairTask):
          for i in range(nSides*nSiPMs):
               if aHit.GetSignal(i) > 0: nFired+=1
          if nMin > nFired: continue
-         hitlist[k*1000] = self.event.Digi_MuFilterHits[k]
+         hitlist[k*1000] = self.MuFilterHits[k]
          MuFiPlanes[sy*100+l] = 1
     if (len(ScifiStations) == 5 or len(MuFiPlanes)>4) and len(hitlist)<20:
            trackCandidates.append(hitlist)

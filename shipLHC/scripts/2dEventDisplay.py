@@ -2,6 +2,7 @@ import ROOT,os
 import rootUtils as ut
 from array import array
 import shipunit as u
+import SndlhcMuonReco
 
 h={}
 from argparse import ArgumentParser
@@ -10,7 +11,19 @@ parser.add_argument("-r", "--runNumber", dest="runNumber", help="run number", ty
 parser.add_argument("-p", "--path", dest="path", help="run number",required=False,default="")
 parser.add_argument("-f", "--inputFile", dest="inputFile", help="input file MC",default="",required=False)
 parser.add_argument("-g", "--geoFile", dest="geoFile", help="geofile", required=True)
+parser.add_argument("-P", "--partition", dest="partition", help="partition of data", type=int,required=False,default=-1)
+
+parser.add_argument("-H", "--houghTransform", dest="houghTransform", help="do not use hough transform for track reco", action='store_false',default=True)
+parser.add_argument("-t", "--tolerance", dest="tolerance",  type=float, help="How far away from Hough line hits assigned to the muon can be. In cm.", default=0.)
+parser.add_argument("--use_scifi", dest="use_scifi",  help="Use SciFi hits. [Default]", action='store_true')
+parser.add_argument("--no-use_scifi", dest="use_scifi",  help="Do not use SciFi hits.", action='store_false')
+parser.set_defaults(use_scifi=True)
+parser.add_argument("--use_mufi", dest="use_mufi",  help="Use Muon Filter hits. Muon tracks are required to have three DS Muon Filter planes hit. [Default]", action='store_true')
+parser.add_argument("--no-use_mufi", dest="use_mufi",  help="Do not use Muon Filter hits. The triplet condition will be based on SciFi hits.", action='store_false')
+parser.set_defaults(use_mufi=True)
+
 options = parser.parse_args()
+
 trans2local = False
 
 import SndlhcGeo
@@ -20,45 +33,90 @@ lsOfGlobals = ROOT.gROOT.GetListOfGlobals()
 lsOfGlobals.Add(geo.modules['Scifi'])
 lsOfGlobals.Add(geo.modules['MuFilter'])
 
+detSize = {}
+si = geo.snd_geo.Scifi
+detSize[0] =[si.channel_width, si.channel_width, si.scifimat_z ]
+mi = geo.snd_geo.MuFilter
+detSize[1] =[mi.VetoBarX/2,                   mi.VetoBarY/2,            mi.VetoBarZ/2]
+detSize[2] =[mi.UpstreamBarX/2,           mi.UpstreamBarY/2,    mi.UpstreamBarZ/2]
+detSize[3] =[mi.DownstreamBarX_ver/2,mi.DownstreamBarY/2,mi.DownstreamBarZ/2]
+
 mc = False
+
+run      = ROOT.FairRunAna()
+ioman = ROOT.FairRootManager.Instance()
+
 if options.inputFile=="":
   f=ROOT.TFile.Open(options.path+'sndsw_raw_'+str(options.runNumber).zfill(6)+'.root')
-  eventTree = f.rawConv
 else:
   f=ROOT.TFile.Open(options.path+options.inputFile)
-  if f.FindKey('cbmsim'):
+
+if f.FindKey('cbmsim'):
         eventTree = f.cbmsim
-        mc = True
-  else:   eventTree = f.rawConv
+        if eventTree.GetBranch('ScifiPoint'): mc = True
+else:   
+        eventTree = f.rawConv
+        ioman.SetTreeName('rawConv')
+
+outFile = ROOT.TMemFile('dummy','CREATE')
+source = ROOT.FairFileSource(f)
+run.SetSource(source)
+sink = ROOT.FairRootFileSink(outFile)
+run.SetSink(sink)
+
+if options.houghTransform:
+  muon_reco_task = SndlhcMuonReco.MuonReco()
+  run.AddTask(muon_reco_task)
+else:
+  import SndlhcTracking
+  trackTask = SndlhcTracking.Tracking() 
+  trackTask.SetName('simpleTracking')
+  run.AddTask(trackTask)
+
+run.Init()
+
+if options.houghTransform:
+# prepare track reco with hough transform
+  muon_reco_task.SetTolerance(options.tolerance)
+  muon_reco_task.SetUseSciFi(options.use_scifi)
+  muon_reco_task.SetUseMuFi(options.use_mufi)
+
+nav = ROOT.gGeoManager.GetCurrentNavigator()
 
 # backward compatbility for early converted events
 eventTree.GetEvent(0)
 if eventTree.GetBranch('Digi_MuFilterHit'): eventTree.Digi_MuFilterHits = eventTree.Digi_MuFilterHit
 
-nav = ROOT.gGeoManager.GetCurrentNavigator()
-
 Nlimit = 4
 onlyScifi = False
-def goodEvent():
+def goodEvent(event):
+# can be replaced by any user selection
            stations = {'Scifi':{},'Mufi':{}}
-           for d in eventTree.Digi_ScifiHits:
+           if event.Digi_ScifiHits.GetEntries()>25: return False
+           for d in event.Digi_ScifiHits:
                stations['Scifi'][d.GetDetectorID()//1000000] = 1
-           for d in eventTree.Digi_MuFilterHits:
+           for d in event.Digi_MuFilterHits:
                plane = d.GetDetectorID()//1000
                stations['Mufi'][plane] = 1
            totalN = len(stations['Mufi'])+len(stations['Scifi'])
+           if len(stations['Scifi'])>4 and len(stations['Mufi'])>6: return True
+           else: False
            if onlyScifi and len(stations['Scifi'])>Nlimit: return True
            elif not onlyScifi  and totalN >  Nlimit: return True
-           else: False
+           else: return False
 
-def loopEvents(start=0,save=False,goodEvents=False,withTrack=-1,Setup=''):
+def loopEvents(start=0,save=False,goodEvents=False,withTrack=-1,nTracks=0,Setup='',verbose=0):
  if 'simpleDisplay' not in h: ut.bookCanvas(h,key='simpleDisplay',title='simple event display',nx=1200,ny=1600,cx=1,cy=2)
  h['simpleDisplay'].cd(1)
  zStart = 250. # TI18 coordinate system
  if Setup == 'H6': zStart = 60.
  if Setup == 'TP': zStart = -50. # old coordinate system with origin in middle of target
- ut.bookHist(h,'xz','x vs z',500,zStart,zStart+320.,100,-100.,10.)
- ut.bookHist(h,'yz','y vs z',500,zStart,zStart+320.,100,0.,80.)
+ if 'xz' in h: 
+        h.pop('xz').Delete()
+        h.pop('yz').Delete()
+ ut.bookHist(h,'xz','; z [cm]; x [cm]',500,zStart,zStart+320.,100,-100.,10.)
+ ut.bookHist(h,'yz','; z [cm]; y [cm]',500,zStart,zStart+320.,100,0.,80.)
+
  proj = {1:'xz',2:'yz'}
  h['xz'].SetStats(0)
  h['yz'].SetStats(0)
@@ -68,36 +126,56 @@ def loopEvents(start=0,save=False,goodEvents=False,withTrack=-1,Setup=''):
  A,B = ROOT.TVector3(),ROOT.TVector3()
  ptext={0:'   Y projection',1:'   X projection'}
  text = ROOT.TLatex()
- for sTree in eventTree:
-    N+=1
-    if N<start: continue
-    if goodEvents and not goodEvent(): continue
+ event = eventTree
+ OT = sink.GetOutTree()
+ for N in range(start, event.GetEntries()):
+    rc = event.GetEvent(N)
+    if goodEvents and not goodEvent(event): continue
+    if withTrack:
+       if options.houghTransform:
+          rc = source.GetInTree().GetEvent(N)
+          muon_reco_task.Exec(0)
+          ntracks = OT.Reco_MuonTracks.GetEntries()
+          uniqueTracks = cleanTracks()
+          if len(uniqueTracks)<nTracks: continue
+       else:
+          if withTrack==2:  Scifi_track()
+          else:     trackTask.ExecuteTask()
+          ntracks = len(OT.Reco_MuonTracks)
+       if ntracks<nTracks: continue
+
+       if verbose>0:
+          for aTrack in OT.Reco_MuonTracks:
+             mom    = aTrack.getFittedState().getMom()
+             pos      = aTrack.getFittedState().getPos()
+             mom.Print()
+             pos.Print()
     print( "event ->",N )
 
     digis = []
-    if sTree.FindBranch("Digi_ScifiHits"): digis.append(sTree.Digi_ScifiHits)
-    if sTree.FindBranch("Digi_MuFilterHits"): digis.append(sTree.Digi_MuFilterHits)
-    if sTree.FindBranch("Digi_MuFilterHit"): digis.append(sTree.Digi_MuFilterHit)
+    if event.FindBranch("Digi_ScifiHits"): digis.append(event.Digi_ScifiHits)
+    if event.FindBranch("Digi_MuFilterHits"): digis.append(event.Digi_MuFilterHits)
+    if event.FindBranch("Digi_MuFilterHit"): digis.append(event.Digi_MuFilterHit)
     empty = True
     for x in digis:
        if x.GetEntries()>0: empty = False
     if empty: continue
-    h['hitCollectionX']= {'Scifi':[0,ROOT.TGraph()],'US':[0,ROOT.TGraph()],'DS':[0,ROOT.TGraph()]}
-    h['hitCollectionY']= {'Veto':[0,ROOT.TGraph()],'Scifi':[0,ROOT.TGraph()],'US':[0,ROOT.TGraph()],'DS':[0,ROOT.TGraph()]}
+    h['hitCollectionX']= {'Scifi':[0,ROOT.TGraphErrors()],'DS':[0,ROOT.TGraphErrors()]}
+    h['hitCollectionY']= {'Veto':[0,ROOT.TGraphErrors()],'Scifi':[0,ROOT.TGraphErrors()],'US':[0,ROOT.TGraphErrors()],'DS':[0,ROOT.TGraphErrors()]}
     systems = {1:'Veto',2:'US',3:'DS',0:'Scifi'}
     for collection in ['hitCollectionX','hitCollectionY']:
        for c in h[collection]:
           rc=h[collection][c][1].SetName(c)
           rc=h[collection][c][1].Set(0)
 
-    if sTree.FindBranch("EventHeader"):
-       T = sTree.EventHeader.GetEventTime()
+    if event.FindBranch("EventHeader"):
+       T = event.EventHeader.GetEventTime()
        dT = 0
        if Tprev >0: dT = T-Tprev
        Tprev = T
     for p in proj:
        rc = h[ 'simpleDisplay'].cd(p)
-       h[proj[p]].SetStats(0)
+       if p==1: h[proj[p]].SetTitle('event '+str(N))
        h[proj[p]].Draw('b')
 
     for D in digis:
@@ -123,11 +201,14 @@ def loopEvents(start=0,save=False,goodEvents=False,withTrack=-1,Setup=''):
          if digi.isVertical():
                    collection = 'hitCollectionX'
                    Y = locA[0]
+                   sY = detSize[system][0]
          else:                         
                    collection = 'hitCollectionY'
                    Y = locA[1]
+                   sY = detSize[system][1]
          c = h[collection][systems[system]]
          rc = c[1].SetPoint(c[0],Z,Y)
+         rc = c[1].SetPointError(c[0],detSize[system][2],sY)
          c[0]+=1 
     h['hitCollectionY']['Veto'][1].SetMarkerColor(ROOT.kRed)
     h['hitCollectionY']['Scifi'][1].SetMarkerColor(ROOT.kBlue)
@@ -146,47 +227,57 @@ def loopEvents(start=0,save=False,goodEvents=False,withTrack=-1,Setup=''):
           h[collection][c][1].SetMarkerSize(1.5)
           rc=h[collection][c][1].Draw('sameP')
           h['display:'+c]=h[collection][c][1]
-    if goodEvent():
-         if withTrack == 1: addTrack()
-         if withTrack == 2: addTrack(True)
-         dumpVeto()
+
+    if withTrack == 1: addTrack()
+    if withTrack == 2: addTrack(True)
+
     h[ 'simpleDisplay'].Update()
     if save: h['simpleDisplay'].Print('event_'+"{:04d}".format(N)+'.png')
     rc = input("hit return for next event or q for quit: ")
     if rc=='q': break
- if save: os.system("convert -delay 60 -loop 0 *.png animated.gif")
+ if save: os.system("convert -delay 60 -loop 0 event*.png animated.gif")
 
 def addTrack(scifi=False):
    xax = h['xz'].GetXaxis()
-   if scifi:  Scifi_track()
-   else:     trackTask.ExecuteTask()
-   zEx = xax.GetBinCenter(1)
-   for   aTrack in eventTree.fittedTracks:
+   nTrack = 0
+   OT = sink.GetOutTree()
+   for   aTrack in OT.Reco_MuonTracks:
       for p in [0,1]:
-          h['aLine'+str(p)] = ROOT.TGraph()
+          h['aLine'+str(nTrack*10+p)] = ROOT.TGraph()
+
+      zEx = xax.GetBinCenter(1)
       mom    = aTrack.getFittedState().getMom()
       pos      = aTrack.getFittedState().getPos()
       lam      = (zEx-pos.z())/mom.z()
       Ex        = [pos.x()+lam*mom.x(),pos.y()+lam*mom.y()]
-      for p in [0,1]:   h['aLine'+str(p)].SetPoint(0,zEx,Ex[p])
+      for p in [0,1]:   h['aLine'+str(nTrack*10+p)].SetPoint(0,zEx,Ex[p])
+
       for i in range(aTrack.getNumPointsWithMeasurement()):
          state = aTrack.getFittedState(i)
          pos    = state.getPos()
          for p in [0,1]:
-             h['aLine'+str(p)].SetPoint(i+1,pos[2],pos[p])
+             h['aLine'+str(nTrack*10+p)].SetPoint(i+1,pos[2],pos[p])
+
+      zEx = xax.GetBinCenter(xax.GetLast())
+      mom    = aTrack.getFittedState().getMom()
+      pos      = aTrack.getFittedState().getPos()
+      lam      = (zEx-pos.z())/mom.z()
+      Ex        = [pos.x()+lam*mom.x(),pos.y()+lam*mom.y()]
+      for p in [0,1]:   h['aLine'+str(nTrack*10+p)].SetPoint(i+2,zEx,Ex[p])
 
       for p in [0,1]:
              tc = h[ 'simpleDisplay'].cd(p+1)
-             h['aLine'+str(p)].SetLineColor(ROOT.kRed)
-             h['aLine'+str(p)].SetLineWidth(2)
-             h['aLine'+str(p)].Draw('same')
+             h['aLine'+str(nTrack*10+p)].SetLineColor(ROOT.kRed)
+             h['aLine'+str(nTrack*10+p)].SetLineWidth(2)
+             h['aLine'+str(nTrack*10+p)].Draw('same')
              tc.Update()
              h[ 'simpleDisplay'].Update()
+      nTrack+=1
 
 def Scifi_track():
 # check for low occupancy and enough hits in Scifi
-    eventTree.fittedTracks = []
     clusters = trackTask.scifiCluster()
+    trackTask.kalman_tracks.Clear()
     stations = {}
     for s in range(1,6):
        for o in range(2):
@@ -202,14 +293,14 @@ def Scifi_track():
        for o in range(2):
             if len(stations[s*10+o]) > 0: check[s*10+o]=1
             nclusters+=len(stations[s*10+o])
-    if len(check)<8 or nclusters > 9: return -1
+    if len(check)<8 or nclusters > 12: return -1
 # build trackCandidate
     hitlist = {}
     for k in range(len(clusters)):
            hitlist[k] = clusters[k]
     theTrack = trackTask.fitTrack(hitlist)
     eventTree.ScifiClusters = clusters
-    eventTree.fittedTracks.append(theTrack)
+    trackTask.kalman_tracks.Add(theTrack)
 def dumpVeto():
     muHits = {10:[],11:[]}
     for aHit in eventTree.Digi_MuFilterHits:
@@ -227,6 +318,28 @@ def dumpVeto():
           for x in S:
               if x[1]>0: txt+=str(x[1])+" "
           print(plane, (aHit.GetDetectorID()%1000)%60, txt)
-import SndlhcTracking
-trackTask = SndlhcTracking.Tracking() 
-trackTask.InitTask(eventTree)
+
+def cleanTracks():
+    T = sink.GetOutTree()
+    listOfDetIDs = {}
+    n = 0
+    for aTrack in T.Reco_MuonTracks:
+        listOfDetIDs[n] = []
+        for i in range(aTrack.getNumPointsWithMeasurement()):
+           M =  aTrack.getPointWithMeasurement(i)
+           R =  M.getRawMeasurement()
+           listOfDetIDs[n].append(R.getDetId())
+           if R.getDetId()>0: listOfDetIDs[n].append(R.getDetId()-1)
+           listOfDetIDs[n].append(R.getDetId()+1)
+        n+=1
+    uniqueTracks = []
+    for n1 in range( len(listOfDetIDs) ):
+       unique = True
+       for n2 in range( len(listOfDetIDs) ):
+             if n1==n2: continue
+             I = set(listOfDetIDs[n1]).intersection(listOfDetIDs[n2])
+             if len(I)>0:  unique = False
+       if unique: uniqueTracks.append(n1)
+    if len(uniqueTracks)>1: 
+         for n1 in range( len(listOfDetIDs) ): print(listOfDetIDs[n1])
+    return uniqueTracks
