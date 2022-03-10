@@ -7,7 +7,7 @@
 
 # Check if cmake has the required version
 CMAKE_MINIMUM_REQUIRED(VERSION 3.9.4 FATAL_ERROR)
-
+include(CMakePrintHelpers)
 foreach(p
   CMP0028 # double colon for imported and alias targets
   CMP0074 # use _ROOT env variables
@@ -130,7 +130,17 @@ find_package2(PUBLIC GEANT4)
 find_package2(PUBLIC GEANT4DATA)
 find_package2(PUBLIC GEANT4VMC)
 find_package2(PUBLIC HEPMC)
+
+cmake_print_variables(ROOT_vmc_FOUND)
+if(ROOT_FOUND_VERSION GREATER 62599)
+  find_package2(PUBLIC VMC REQUIRED)
+  set(VMCLIB VMCLibrary)
+else()
+  set(VMCLIB ROOT::VMC)
+endif()
+
 find_package2(PUBLIC FairRoot REQUIRED)
+
 find_package2(PUBLIC FairLogger REQUIRED)
 
 IF(DEFINED ${BOOST_ROOT})

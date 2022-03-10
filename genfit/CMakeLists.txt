@@ -23,6 +23,7 @@ set(INCLUDE_DIRECTORIES
 	${CMAKE_SOURCE_DIR}/genfit/trackReps/include
 	${CMAKE_SOURCE_DIR}/genfit/utilities/include
 	${CMAKE_SOURCE_DIR}/field
+	${VMC_INCLUDE_DIRS}
 )
 
 include_directories( ${INCLUDE_DIRECTORIES})
