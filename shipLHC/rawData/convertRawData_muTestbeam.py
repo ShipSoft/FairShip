@@ -266,8 +266,8 @@ def channel(tofpet_id,tofpet_channel,position):
 X=''
 if not local: X = server
 part = ""
-if options.partition > 0:   part = str(options.partition).zfill(4)
-dataName = 'data_'+part+'.root'
+if not (options.partition < 0):   part = '_'+str(options.partition).zfill(4)
+dataName = 'data'+part+'.root'
 f0=ROOT.TFile.Open(X+path+dataName)
 if options.nEvents<0:  nEvent = f0.event.GetEntries()
 else: nEvent = min(options.nEvents,f0.event.GetEntries())
