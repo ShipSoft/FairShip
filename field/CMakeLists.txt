@@ -1,6 +1,8 @@
 # Create a library called "libField” which includes the source files given in
 # the array .
 # The extension is already found.  Any number of sources could be listed here.
+include(CMakePrintHelpers)
+cmake_print_variables(VMC_INCLUDE_DIRS)
 
 set(INCLUDE_DIRECTORIES
 ${CMAKE_SOURCE_DIR}/field 
@@ -10,6 +12,7 @@ ${GEANT4_INCLUDE_DIR}
 ${FAIRROOT_INCLUDE_DIR}
 ${FairLogger_INCDIR}
 ${FMT_INCLUDE_DIR}
+${VMC_INCLUDE_DIRS}
 )
 
 include_directories( ${INCLUDE_DIRECTORIES} 
