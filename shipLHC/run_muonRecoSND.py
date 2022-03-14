@@ -17,8 +17,6 @@ parser.set_defaults(use_scifi=True)
 parser.add_argument("--use_mufi", dest="use_mufi",  help="Use Muon Filter hits. Muon tracks are required to have three DS Muon Filter planes hit. [Default]", action='store_true')
 parser.add_argument("--no-use_mufi", dest="use_mufi",  help="Do not use Muon Filter hits. The triplet condition will be based on SciFi hits.", action='store_false')
 parser.set_defaults(use_mufi=True)
-parser.add_argument("--no-passthrough", dest="passthrough", help = "[PASSTHROUGH IS CURRENTLY BROKEN!] By default all input data is passed through to the output. Use this flag to keep only reconstructed tracks in the output file.", action = 'store_false')
-parser.set_defaults(passthrough = True)
 
 options = parser.parse_args()
 
@@ -39,12 +37,8 @@ if options.inputFile.find('/eos')==0:
 F = ROOT.TFile.Open(fullPath)
 
 if options.withOutput:
-  print("prepare output file")
-  if options.inputFile.find('/eos')==0: os.system('xrdcp '+fullPath+' '+outFileName)
-  else: os.system('cp '+fullPath+' '+outFileName)
-  outFile = ROOT.TFile(outFileName,'update')
+  outFile = ROOT.TFile(outFileName, 'RECREATE')
 else:
-  options.passthrough=False
   outFile = ROOT.TMemFile(outFileName,'CREATE')
 
 run = ROOT.FairRunAna()
@@ -65,8 +59,6 @@ run.Init()
 muon_reco_task.SetTolerance(options.tolerance)
 muon_reco_task.SetUseSciFi(options.use_scifi)
 muon_reco_task.SetUseMuFi(options.use_mufi)
-if options.passthrough :
-      muon_reco_task.Passthrough()
 
 run.Run(options.firstEvent, options.firstEvent + options.nEvents)
 print("Done running")

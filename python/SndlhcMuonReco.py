@@ -23,15 +23,13 @@ def hit_finder(slope, intercept, box_centers, box_ds, tol = 0.) :
 class hough() :
     """ Hough transform implementation """
 
-    def __init__(self, n_r, r_range, n_theta, theta_range, tolerance = 0., squaretheta = False, smooth = True) :
+    def __init__(self, n_r, r_range, n_theta, theta_range, squaretheta = False, smooth = True) :
 
         self.n_r = n_r
         self.n_theta = n_theta
 
         self.r_range = r_range
         self.theta_range = theta_range
-
-        self.tolerance = tolerance
 
         self.smooth = smooth
 
@@ -129,6 +127,9 @@ class MuonReco(ROOT.FairTask) :
         self.mufiDet = self.lsOfGlobals.FindObject('MuFilter')
         self.ioman = ROOT.FairRootManager.Instance()
 
+        # Pass input data through to output.
+        self.Passthrough()
+
         # Fetch digi hit collections.
         # Try the FairRoot way first
         self.MuFilterHits = self.ioman.GetObject("Digi_MuFilterHits")
@@ -184,8 +185,8 @@ class MuonReco(ROOT.FairTask) :
         self.use_mufi = True
 
         # Initialize Hough transforms for both views:
-        self.h_ZX = hough(n, [-80, 0], n, [-max_angle+np.pi/2., max_angle+np.pi/2.], tolerance = self.tolerance, squaretheta = False)
-        self.h_ZY = hough(n, [0, 80], n, [-max_angle+np.pi/2., max_angle+np.pi/2.], tolerance = self.tolerance, squaretheta = False)
+        self.h_ZX = hough(n, [-80, 0], n, [-max_angle+np.pi/2., max_angle+np.pi/2.])
+        self.h_ZY = hough(n, [0, 80], n, [-max_angle+np.pi/2., max_angle+np.pi/2.])
 
         # To keep temporary detector information
         self.a = ROOT.TVector3()
@@ -193,7 +194,7 @@ class MuonReco(ROOT.FairTask) :
 
         # Now initialize output
         self.kalman_tracks = ROOT.TObjArray(self.max_reco_muons);
-        self.ioman.Register("Reco_MuonTracks", "", self.kalman_tracks, ROOT.kTRUE);
+        self.ioman.Register("Reco_MuonTracks", self.ioman.GetFolderName(), self.kalman_tracks, ROOT.kTRUE);
 
         # Kalman filter stuff
 
@@ -228,12 +229,12 @@ class MuonReco(ROOT.FairTask) :
 
     def Passthrough(self) :
         T = self.ioman.GetInTree()
+        
         for x in T.GetListOfBranches():
              obj_name = x.GetName()
-             obj_type   = x.GetClonesName()
-             obj_array = eval("T."+obj_name)
-             self.ioman.Register(obj_name, obj_type, obj_array, ROOT.kTRUE)        
-        print("PASSING THROUGH")
+             if self.ioman.GetObject(obj_name) == None :
+                 continue
+             self.ioman.Register(obj_name, self.ioman.GetFolderName(), self.ioman.GetObject(obj_name), ROOT.kTRUE) 
 
     def Exec(self, opt) :
         self.kalman_tracks.Clear()
