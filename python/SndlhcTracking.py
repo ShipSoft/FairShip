@@ -45,7 +45,7 @@ class Tracking(ROOT.FairTask):
     self.kalman_tracks.Clear()
     self.clusters = self.scifiCluster()
     if option=='DS':  self.trackCandidates = self.DStrack()
-    if option=='Scifi':  self.trackCandidates = self.Scifi_track()
+    elif option=='Scifi':  self.trackCandidates = self.Scifi_track()
     else:                   self.trackCandidates = self.patternReco()
     for aTrack in self.trackCandidates:
            rc = self.fitTrack(aTrack)

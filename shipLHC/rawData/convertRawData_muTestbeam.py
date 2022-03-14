@@ -16,6 +16,7 @@ mufi_hitThreshold = 2
 from argparse import ArgumentParser
 parser = ArgumentParser()
 parser.add_argument("-r", "--runNumber", dest="runNumber", help="run number", type=int,required=True)
+parser.add_argument("-P", "--partition", dest="partition", help="partition of data", type=int,required=False,default=-1)
 parser.add_argument("-p", "--path", dest="path", help="path to raw data", default='/mnt/hgfs/VMgate/')
 parser.add_argument("-n", "--nEvents", dest="nEvents", help="number of events to process", type=int,default=-1)
 parser.add_argument("-t", "--nStart", dest="nStart", help="first event to process", type=int,default=-1)
@@ -30,7 +31,10 @@ withGeoFile = False
 options = parser.parse_args()
 runNr   = str(options.runNumber).zfill(6)
 path      = options.path+'run_'+ runNr+'/'
-outFile = "sndsw_raw_"+runNr
+part = ""
+if options.partition > 0:   part = str(options.partition).zfill(4)
+inFile   = 'data_'+part+'.root'
+outFile = "sndsw_raw_"+runNr+'-'+part+'.root'
 
 local = False
 if path.find('eos')<0 or os.path.isdir(path):
@@ -261,7 +265,10 @@ def channel(tofpet_id,tofpet_channel,position):
 # reading hits and converting to event information
 X=''
 if not local: X = server
-f0=ROOT.TFile.Open(X+path+'data.root')
+part = ""
+if not (options.partition < 0):   part = '_'+str(options.partition).zfill(4)
+dataName = 'data'+part+'.root'
+f0=ROOT.TFile.Open(X+path+dataName)
 if options.nEvents<0:  nEvent = f0.event.GetEntries()
 else: nEvent = min(options.nEvents,f0.event.GetEntries())
 print('converting ',nEvent,' events ',' of run',options.runNumber)
@@ -272,7 +279,7 @@ for b in f0.GetListOfKeys():
         if name.find('board')!=0: continue
         boards[name]=f0.Get(name)
 
-fSink = ROOT.FairRootFileSink(outFile+'.root')
+fSink = ROOT.FairRootFileSink(outFile)
 sTree     = ROOT.TTree('rawConv','raw data converted')
 ROOT.gDirectory.pwd()
 header  = ROOT.FairEventHeader()
@@ -281,7 +288,7 @@ eventSND  = sTree.Branch("EventHeader",header,32000,-1)
 digiSciFi   = ROOT.TClonesArray("sndScifiHit")
 digiSciFiBranch   = sTree.Branch("Digi_ScifiHits",digiSciFi,32000,1)
 digiMuFilter   = ROOT.TClonesArray("MuFilterHit")
-digiMuFilterHitBranch   = sTree.Branch("Digi_MuFilterHit",digiMuFilter,32000,1)
+digiMuFilterHitBranch   = sTree.Branch("Digi_MuFilterHits",digiMuFilter,32000,1)
 #scifi clusters
 if withGeoFile:
   clusScifi   = ROOT.TClonesArray("sndCluster")
@@ -534,7 +541,7 @@ def getMapEvent2Time():
 def asynInfo(run):
     server = os.environ['EOSSHIP']
     with client.File() as f:
-      location = "/eos/experiment/sndlhc/testbeam/MuFilter/Cal_tb2/run_logs/log_"+str(run)+".txt"
+      location = "/eos/experiment/sndlhc/raw_data/commissioning/TB_H8_october/run_logs/log_"+str(run)+".txt"
       f.open(server+location)
       status, L = f.read()
       A = L.decode().split('\n')
