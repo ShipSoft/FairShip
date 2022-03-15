@@ -529,8 +529,6 @@ class MuonReco(ROOT.FairTask) :
             index_to_remove = np.concatenate([index_to_remove_ZX, index_to_remove_ZY])
             
             # Remove dictionary entries 
-            print("BEFORE")
-            print(hit_collection["detectorID"])
             for key in hit_collection.keys() :
                 if len(hit_collection[key].shape) == 1 :
                     hit_collection[key] = np.delete(hit_collection[key], index_to_remove)
@@ -538,9 +536,6 @@ class MuonReco(ROOT.FairTask) :
                     hit_collection[key] = np.delete(hit_collection[key], index_to_remove, axis = 1)
                 else :
                     raise Exception("Wrong number of dimensions found when deleting hits in iterative muon identification algorithm.")
-            print("AFTER")
-            print(hit_collection["detectorID"])
-
 
     def FinishTask(self) :
         pass
