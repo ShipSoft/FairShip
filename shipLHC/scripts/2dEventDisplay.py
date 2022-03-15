@@ -15,12 +15,8 @@ parser.add_argument("-P", "--partition", dest="partition", help="partition of da
 
 parser.add_argument("-H", "--houghTransform", dest="houghTransform", help="do not use hough transform for track reco", action='store_false',default=True)
 parser.add_argument("-t", "--tolerance", dest="tolerance",  type=float, help="How far away from Hough line hits assigned to the muon can be. In cm.", default=0.)
-parser.add_argument("--use_scifi", dest="use_scifi",  help="Use SciFi hits. [Default]", action='store_true')
-parser.add_argument("--no-use_scifi", dest="use_scifi",  help="Do not use SciFi hits.", action='store_false')
-parser.set_defaults(use_scifi=True)
-parser.add_argument("--use_mufi", dest="use_mufi",  help="Use Muon Filter hits. Muon tracks are required to have three DS Muon Filter planes hit. [Default]", action='store_true')
-parser.add_argument("--no-use_mufi", dest="use_mufi",  help="Do not use Muon Filter hits. The triplet condition will be based on SciFi hits.", action='store_false')
-parser.set_defaults(use_mufi=True)
+parser.add_argument("--hits_to_fit", dest = "hits_to_fit", type=str, help="Which detectors to use in the fit, in the format: vesfusds, where [ve] is veto, [sf] is Scifi, [us] is Upstream muon filter, and [ds] is downstream muon filter", default = "sfusds")
+parser.add_argument("--hits_for_triplet", dest = "hits_for_triplet", type=str, help="Which detectors to use for the triplet condition. In the same format as --hits_to_fit", default = "ds")
 
 options = parser.parse_args()
 
@@ -78,8 +74,8 @@ run.Init()
 if options.houghTransform:
 # prepare track reco with hough transform
   muon_reco_task.SetTolerance(options.tolerance)
-  muon_reco_task.SetUseSciFi(options.use_scifi)
-  muon_reco_task.SetUseMuFi(options.use_mufi)
+  muon_reco_task.SetHitsToFit(options.hits_to_fit)
+  muon_reco_task.SetHitsForTriplet(options.hits_for_triplet)
 
 nav = ROOT.gGeoManager.GetCurrentNavigator()
 
@@ -238,6 +234,7 @@ def loopEvents(start=0,save=False,goodEvents=False,withTrack=-1,nTracks=0,Setup=
  if save: os.system("convert -delay 60 -loop 0 event*.png animated.gif")
 
 def addTrack(scifi=False):
+   print("ADDING TRACK!")
    xax = h['xz'].GetXaxis()
    nTrack = 0
    OT = sink.GetOutTree()
@@ -270,6 +267,7 @@ def addTrack(scifi=False):
              h['aLine'+str(nTrack*10+p)].SetLineColor(ROOT.kRed)
              h['aLine'+str(nTrack*10+p)].SetLineWidth(2)
              h['aLine'+str(nTrack*10+p)].Draw('same')
+             print("DRAWING LINE!!!")
              tc.Update()
              h[ 'simpleDisplay'].Update()
       nTrack+=1
