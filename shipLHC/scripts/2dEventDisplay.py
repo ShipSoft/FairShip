@@ -234,7 +234,6 @@ def loopEvents(start=0,save=False,goodEvents=False,withTrack=-1,nTracks=0,Setup=
  if save: os.system("convert -delay 60 -loop 0 event*.png animated.gif")
 
 def addTrack(scifi=False):
-   print("ADDING TRACK!")
    xax = h['xz'].GetXaxis()
    nTrack = 0
    OT = sink.GetOutTree()
@@ -267,7 +266,6 @@ def addTrack(scifi=False):
              h['aLine'+str(nTrack*10+p)].SetLineColor(ROOT.kRed)
              h['aLine'+str(nTrack*10+p)].SetLineWidth(2)
              h['aLine'+str(nTrack*10+p)].Draw('same')
-             print("DRAWING LINE!!!")
              tc.Update()
              h[ 'simpleDisplay'].Update()
       nTrack+=1
