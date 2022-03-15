@@ -290,27 +290,27 @@ def makeAnimation(histname,j0=1,j1=2,animated=True, findMinMax=True, lim = 50):
 zPos = getAverageZpositions()
 
 if options.runNumber>0:
-              eventTree = ROOT.TChain('rawConv')
+              eventChain = ROOT.TChain('rawConv')
               if partitions==0:
-                   eventTree.Add(path+'sndsw_raw_'+str(options.runNumber).zfill(6)+'.root')
+                   eventChain.Add(path+'sndsw_raw_'+str(options.runNumber).zfill(6)+'.root')
               else:
                    for p in range(partitions):
-                       eventTree.Add(path+'run_'+runNr+'/sndsw_raw-'+str(p).zfill(4)+'.root')
+                       eventChain.Add(path+'run_'+runNr+'/sndsw_raw-'+str(p).zfill(4)+'.root')
 
 else:
 # for MC data
               f=ROOT.TFile.Open(options.fname)
-              eventTree = f.cbmsim
-
-# backward compatbility for early converted events
-eventTree.GetEvent(0)
-if eventTree.GetBranch('Digi_MuFilterHit'): eventTree.Digi_MuFilterHits = eventTree.Digi_MuFilterHit
+              eventChain = f.cbmsim
+eventChain.GetEvent(0)
 
 run      = ROOT.FairRunAna()
 ioman = ROOT.FairRootManager.Instance()
-ioman.SetTreeName(eventTree.GetName())
+ioman.SetTreeName(eventChain.GetName())
 outFile = ROOT.TMemFile('dummy','CREATE')
-source = ROOT.FairFileSource(eventTree.GetCurrentFile())
+source = ROOT.FairFileSource(eventChain.GetCurrentFile())
+if partitions>0:
+    for p in range(1,partitions):
+                       source.AddFile(path+'run_'+runNr+'/sndsw_raw-'+str(p).zfill(4)+'.root')
 run.SetSource(source)
 sink = ROOT.FairRootFileSink(outFile)
 run.SetSink(sink)
@@ -327,6 +327,10 @@ else:
    run.AddTask(trackTask)
 
 run.Init()
+eventTree = ioman.GetInTree()
+# backward compatbility for early converted events
+eventTree.GetEvent(0)
+if eventTree.GetBranch('Digi_MuFilterHit'): eventTree.Digi_MuFilterHits = eventTree.Digi_MuFilterHit
 
 # wait for user action 
 
@@ -676,9 +680,9 @@ def smallVsLargeSiPMs(Nev=-1):
           for i1 in range(7):
              for i2 in range(i1+1,8):
                tag=''
-               if smallSiPMchannel(i1): tag = 's'+str(i1)
+               if S==2 and smallSiPMchannel(i1): tag = 's'+str(i1)
                else:                              tag = 'l'+str(i1)
-               if smallSiPMchannel(i2): tag += 's'+str(i2)
+               if S==2 and smallSiPMchannel(i2): tag += 's'+str(i2)
                else:                              tag += 'l'+str(i2)
                ut.bookHist(h,'cor'+tag+'_'+side+str(l),'QDC channel i vs channel j',200,0.,200.,200,0.,200.)
                for bar in range(systemAndBars[S]):
@@ -721,9 +725,9 @@ def smallVsLargeSiPMs(Nev=-1):
              qdc1 = allChannels[i1]
              for i2 in range(i1+1,offset+8):
                if not (i2) in allChannels: continue
-               if smallSiPMchannel(i1): tag = 's'+str(i1-offset)
+               if s==2 and smallSiPMchannel(i1): tag = 's'+str(i1-offset)
                else: tag = 'l'+str(i1-offset)
-               if smallSiPMchannel(i2): tag += 's'+str(i2-offset)
+               if s==2 and smallSiPMchannel(i2): tag += 's'+str(i2-offset)
                else: tag += 'l'+str(i2-offset)
                qdc2 = allChannels[i2]
                rc = h['cor'+tag+'_'+side+str(l)].Fill(qdc1,qdc2)
@@ -758,14 +762,39 @@ def smallVsLargeSiPMs(Nev=-1):
       for i1 in range(7):
              for i2 in range(i1+1,8):
                tag=''
-               if smallSiPMchannel(i1): tag = 's'+str(i1)
+               if S==2 and smallSiPMchannel(i1): tag = 's'+str(i1)
                else:                              tag = 'l'+str(i1)
-               if smallSiPMchannel(i2): tag += 's'+str(i2)
+               if S==2 and smallSiPMchannel(i2): tag += 's'+str(i2)
                else:                              tag += 'l'+str(i2)
                tc = h['cor'+side+str(l)].cd(k)
-               h['cor'+tag+'_'+side+str(l)].Draw('colz')
+               for bar in range(systemAndBars[S]):
+                    if bar == 0: h['cor'+tag+'_'+side+str(l)+str(bar)].Draw('colz')
+                    else: h['cor'+tag+'_'+side+str(l)+str(bar)].Draw('colzsame')
                k+=1
       myPrint(h['cor'+side+str(l)],'QDCcor'+side+str(l))
+
+
+def makeIndiviualPlots(run=options.runNumber):
+   ut.bookCanvas(h,'dummy','',900,800,1,1)
+   if not "run"+str(run) in os.listdir(): os.system("mkdir run"+str(run))
+   tc=h['dummy'].cd()
+   tc.SetLogz(1)
+   for l in range(5):
+       for side in ['L','R']:
+           f=ROOT.TFile('QDCcor'+side+str(l)+'-run'+str(run)+'.root')
+           tcanv = f.Get('cor'+side+str(l))
+           for pad in tcanv.GetListOfPrimitives():
+              if not hasattr(pad,"GetListOfPrimitives"): continue
+              for aHist in pad.GetListOfPrimitives():
+                 if not aHist.ClassName() == 'TH2D': continue
+                 hname = aHist.GetName()
+                 tmp = hname.split('_')
+                 bar = tmp[1][2]
+                 pname = 'corUS'+str(l)+'-'+str(bar)+side+'_'+tmp[0][3:]
+                 aHist.Draw('colz')
+                 tc.Update()
+                 tc.Print('run'+str(run)+'/'+pname+'.png')
+   os.system("convert -delay 120 -loop 0 run"+str(run)+"/corUS*.png corUS-"+str(run)+".gif")
 
 def makeLogVersion(run):
    for l in range(5):
@@ -1130,6 +1159,7 @@ def Mufi_Efficiency(Nev=options.nEvents,optionTrack=options.trackType,NbinsRes=1
  if Nev < 0 : Nev = eventTree.GetEntries()
  N=0
  for event in eventTree:
+    rc = ioman.GetInTree().GetEvent(N)
     N+=1
     if N>Nev: break
     if optionTrack=='DS': theTrack = DS_track()
@@ -1223,6 +1253,8 @@ def Mufi_Efficiency(Nev=options.nEvents,optionTrack=options.trackType,NbinsRes=1
                deltaT = times[str(s)+'X'][0] - times[str(s)+'Y'][0]
                deltaL = times[str(s)+'X'][1] - times[str(s)+'Y'][1]
                rc = h['dtScifivsdL_'+str(s)].Fill(deltaL,deltaT)
+         deltaZ02 = 40. # to be fixed
+         ToF = 1.
             #print(detID,aHit.GetDetectorID(),aHit.GetTime()*TDC2ns-TZero,dT,L,aHit.GetTime()*TDC2ns - L,T0)
 
     muHits = {}
@@ -1313,10 +1345,10 @@ def Mufi_Efficiency(Nev=options.nEvents,optionTrack=options.trackType,NbinsRes=1
                       nc = x + 2*nSiPMs*bar
                       h['resVETOY_'+str(plane+1)].Fill(dy,nc)
                   if x<nSiPMs: 
-                       if smallSiPMchannel(x):  smallL+=1
+                       if s==2 and smallSiPMchannel(x):  smallL+=1
                        else:    left+=1
                   else:           
-                       if smallSiPMchannel(x):  smallR+=1
+                       if s==2 and smallSiPMchannel(x):  smallR+=1
                        else:   right+=1
               if left>0:
                     rc = h['resY_'+sdict[s]+'L'+str(s*10+plane)].Fill(dy,locEx[1])
@@ -1400,7 +1432,7 @@ def Mufi_Efficiency(Nev=options.nEvents,optionTrack=options.trackType,NbinsRes=1
                       if i==12: t0Right = allTDCs[i]
 
                   for i in allTDCs:
-                      if smallSiPMchannel(i): continue
+                      if s==2 and smallSiPMchannel(i): continue
                       if  i < nSiPMs:  # left side
                           nL+=1
                           meanL+=allTDCs[i]
@@ -1408,7 +1440,7 @@ def Mufi_Efficiency(Nev=options.nEvents,optionTrack=options.trackType,NbinsRes=1
                           nR+=1
                           meanR+=allTDCs[i]
                   for i in allTDCs:
-                     if smallSiPMchannel(i): continue
+                     if s==2 and smallSiPMchannel(i): continue
                      if i<nSiPMs and nL>0:
                           key =  sdict[s]+str(s*10+plane)+'_'+str(bar)+'-c'+str(i)
                           rc =                     h['sigmaTDCL_'+key].Fill( (allTDCs[i]-meanL/nL)*TDC2ns )
@@ -1420,7 +1452,7 @@ def Mufi_Efficiency(Nev=options.nEvents,optionTrack=options.trackType,NbinsRes=1
 
                   meanL,meanR,nL,nR=0,0,0,0
                   for i in S:
-                      if smallSiPMchannel(i): continue
+                      if s==2 and smallSiPMchannel(i): continue
                       if  i < nSiPMs:  # left side
                           nL+=1
                           meanL+=S[i]
@@ -1428,7 +1460,7 @@ def Mufi_Efficiency(Nev=options.nEvents,optionTrack=options.trackType,NbinsRes=1
                           nR+=1
                           meanR+=S[i]
                   for i in S:
-                     if smallSiPMchannel(i): continue
+                     if s==2 and smallSiPMchannel(i): continue
                      if i<nSiPMs and nL>0:
                           key =  sdict[s]+str(s*10+plane)+'_'+str(bar)+'-c'+str(i)
                           rc = h['sigmaQDCL_'+key].Fill( (S[i]-meanL/nL) )
@@ -1846,106 +1878,111 @@ def plotMipsGainRatio():
               k+=1
         h['MsignalN'+str(run)].Print('MPVgainRatio_'+str(run)+'_'+str(nRef)+'.png')
 
-def plotRMS(readHists=True):
-      if readHists:
-         ut.readHists(h,'MuFilterEff_run'+str(options.runNumber)+'.root',withProj=False)
-      s=2
-      h['tdcCalib'] = {}
+def plotRMS(readHists=True,t0_channel=4):
+    if readHists:
+       ut.readHists(h,options.path+"MuFilterEff_run"+str(r)+".root",withProj=False)
+    for s in [1,2]:
+      h['tdcCalib'+sdict[s]] = {}
       for l in range(systemAndPlanes[s]):
         for bar in range(systemAndBars[s]):
            for side in ['L','R']:
               key = sdict[s]+str(s*10+l)+'_'+str(bar)
               for i in range(systemAndChannels[s][1]+systemAndChannels[s][0]):
+                  if i==t0_channel: continue
                   j = side+'_'+key+'-c'+str(i)
-                  for x in ['TDCcalib']:
-                     if i==4: continue
-                     # get TDC calibration constants:
-                     if x.find('calib')>0:
-                            h['tdcCalib'][j] =[0,0,0,0]
-                            if h[x+j].GetEntries()>10: 
-                              rc =  h[x+j].Fit('gaus','SNQ')
-                              rc =  h[x+j].Fit('gaus','SNQ')
-                              if rc:
-                                res = rc.Get()
-                                h['tdcCalib'][j] =[res.Parameter(1),res.ParError(1),res.Parameter(2),res.ParError(2)]
-
+                  x = 'TDCcalib'+j
+                  # get TDC calibration constants:
+                  h['tdcCalib'+sdict[s]][j] =[0,0,0,0]
+                  if h[x].GetEntries()>10: 
+                       rc =  h[x].Fit('gaus','SNQ')
+                       rc =  h[x].Fit('gaus','SNQ')
+                       if rc:
+                          res = rc.Get()
+                          h['tdcCalib'+sdict[s]][j] =[res.Parameter(1),res.ParError(1),res.Parameter(2),res.ParError(2)]
+#
       for l in range(systemAndPlanes[s]):
-        ut.bookCanvas(h,'sigmaTDC'+str(l),'TDC RMS',2000,600,systemAndBars[s],2)
-        ut.bookCanvas(h,  'TDCcalib'+str(l),'TDC TDCi-T0',2000,600,systemAndBars[s],2)
-        ut.bookCanvas(h,'sigmaQDC'+str(l),'QDC RMS',2000,600,systemAndBars[s],2)
+        tag = sdict[s]+str(l)
+        ut.bookCanvas(h,'sigmaTDC_'+tag,'TDC RMS',2000,600,systemAndBars[s],2)
+        ut.bookCanvas(h,  'TDCcalib_'+tag,'TDC TDCi-T0',2000,600,systemAndBars[s],2)
+        ut.bookCanvas(h,'sigmaQDC_'+tag,'QDC RMS',2000,600,systemAndBars[s],2)
         k=1
         for bar in range(systemAndBars[s]):
            for side in ['L','R']:
-              key = sdict[s]+str(s*10+l)+'_'+str(bar)
+              key = sdict[s]+str(10*s+l)+'_'+str(bar)
               for i in range(systemAndChannels[s][1]+systemAndChannels[s][0]):
                   j = side+'_'+key+'-c'+str(i)
-                  for x in ['sigmaTDC','TDCcalib','sigmaQDC']:
-                     if x.find('calib')>0 and (i==4):  continue
-                     tc=h[x+str(l)].cd(k)
+                  for x in ['sigmaTDC_'+tag,'TDCcalib_'+tag,'sigmaQDC_'+tag]:
+                     if x.find('calib')>0 and (i==t0_channel):  continue
+                     tc=h[x].cd(k)
                      opt='same'
                      if i==0 and x.find('calib')<0: opt=""
                      if i==1 and x.find('calib')>0: opt=""
-                     h[x+j].SetLineColor(barColor[i])
-                     if x.find('QDC')>0: h[x+j].GetXaxis().SetRangeUser(-15,15)
-                     else:                     h[x+j].GetXaxis().SetRangeUser(-5,5)
-                     h[x+j].Draw(opt)
-                     h[x+j].Draw(opt+'HIST')
+                     aHist = x.split('_')[0]+j
+                     h[aHist].SetLineColor(barColor[i])
+                     if x.find('QDC')>0: h[aHist].GetXaxis().SetRangeUser(-15,15)
+                     else:                     h[aHist].GetXaxis().SetRangeUser(-5,5)
+                     h[aHist].Draw(opt)
+                     h[aHist].Draw(opt+'HIST')
               k+=1
-        myPrint(h['sigmaTDC'+str(l)],'TDCrms'+str(l))
-        myPrint(h['TDCcalib'+str(l)],'TDCcalib'+str(l))
-        myPrint(h['sigmaQDC'+str(l)],'QDCrms'+str(l))
+        myPrint(h['sigmaTDC'+tag],'TDCrms'+tag)
+        myPrint(h['TDCcalib'+tag],'TDCcalib'+tag)
+        myPrint(h['sigmaQDC'+tag],'QDCrms'+tag)
 
-        ut.bookHist(h,'TDCcalibMean_'+str(l),';SiPM channel ; [ns]',160,0.,160.)
-        ut.bookHist(h,'TDCcalibSigma_'+str(l),';SiPM channel ; [ns]',160,0.,160.)
-        h['gTDCcalibMean_'+str(l)]=ROOT.TGraphErrors()
-        h['gTDCcalibSigma_'+str(l)]=ROOT.TGraphErrors()
+        ut.bookHist(h,'TDCcalibMean_'+tag,';SiPM channel ; [ns]',160,0.,160.)
+        ut.bookHist(h,'TDCcalibSigma_'+tag,';SiPM channel ; [ns]',160,0.,160.)
+        h['gTDCcalibMean_'+tag]=ROOT.TGraphErrors()
+        h['gTDCcalibSigma_'+tag]=ROOT.TGraphErrors()
 
-      for x in h['tdcCalib']:
-               tmp =  h['tdcCalib'][x]
-               side = 0
-               if x[0]=='R': side = 1
-               l = x[5:6]
-               bar = x[7:8]
-               c = x[10:11]
-               xbin = int(bar)*16+side*8+int(c)
-               rc = h['TDCcalibMean_'+str(l)].SetBinContent(xbin+1,tmp[0])
-               rc = h['TDCcalibMean_'+str(l)].SetBinError(xbin+1,tmp[1])
-               rc = h['TDCcalibSigma_'+str(l)].SetBinContent(xbin+1,tmp[2])
-               rc = h['TDCcalibSigma_'+str(l)].SetBinError(xbin+1,tmp[3])
-               #print("%s %5.2F+/-%5.2F  %5.2F+/-%5.2F"%(x,tmp[0],tmp[1],tmp[2],tmp[3]))
-      ut.bookCanvas(h,'tTDCcalib','TDC calib',2400,1800,2,5)
+      x = 'TDCcalib'+sdict[s]
+      tmp =  h['tdcCalib'+sdict[s]][x]
+      side = 0
+      if x[0]=='R': side = 1
+      l = x[5:6]
+      bar = x[7:8]
+      c = x[10:11]
+      xbin = int(bar)*16+side*8+int(c)
+      tag = sdict[s]+"_"+str(l)
+      rc = h['TDCcalibMean_'+tag].SetBinContent(xbin+1,tmp[0])
+      rc = h['TDCcalibMean_'+tag].SetBinError(xbin+1,tmp[1])
+      rc = h['TDCcalibSigma_'+tag].SetBinContent(xbin+1,tmp[2])
+      rc = h['TDCcalibSigma_'+tag].SetBinError(xbin+1,tmp[3])
+      #print("%s %5.2F+/-%5.2F  %5.2F+/-%5.2F"%(x,tmp[0],tmp[1],tmp[2],tmp[3]))
+      ut.bookCanvas(h,'tTDCcalib'+sdict[s],'TDC calib',2400,1800,2,5)
       for l in range(systemAndPlanes[s]):
-           aHistS = h['TDCcalibSigma_'+str(l)]
-           aHistM = h['TDCcalibMean_'+str(l)]
+           tag = sdict[s]+"_"+str(l)
+           aHistS  = h['TDCcalibSigma_'+tag]
+           aHistM = h['TDCcalibMean_'+tag]
            k=0
            for i in range(1,aHistS.GetNbinsX()):
                if aHistS.GetBinContent(i)>0:
-                 h['gTDCcalibSigma_'+str(l)].SetPoint(k,i-1,aHistS.GetBinContent(i))
-                 h['gTDCcalibSigma_'+str(l)].SetPointError(k,0.5,aHistS.GetBinError(i))
-                 h['gTDCcalibMean_'+str(l)].SetPoint(k,i-1,aHistM.GetBinContent(i))
-                 h['gTDCcalibMean_'+str(l)].SetPointError(k,0.5,aHistM.GetBinError(i))
+                 h['gTDCcalibSigma_'+tag].SetPoint(k,i-1,aHistS.GetBinContent(i))
+                 h['gTDCcalibSigma_'+tag].SetPointError(k,0.5,aHistS.GetBinError(i))
+                 h['gTDCcalibMean_'+tag].SetPoint(k,i-1,aHistM.GetBinContent(i))
+                 h['gTDCcalibMean_'+tag].SetPointError(k,0.5,aHistM.GetBinError(i))
                  k+=1
 
       planeColor = {0:ROOT.kBlue,1:ROOT.kRed,2:ROOT.kGreen,3:ROOT.kCyan,4:ROOT.kMagenta}
       for l in range(systemAndPlanes[s]):
+                tag = sdict[s]+"_"+str(l)
                 tc = h['tTDCcalib'].cd(2*l+1)
-                aHistS = h['TDCcalibSigma_'+str(l)]
+                aHistS = h['TDCcalibSigma_'+tag]
                 aHistS.Reset()
                 aHistS.SetMaximum(2.0)
                 aHistS.Draw()
-                h['gTDCcalibSigma_'+str(l)].SetLineColor(planeColor[l])
-                h['gTDCcalibSigma_'+str(l)].Draw('same')
+                h['gTDCcalibSigma_'+tag].SetLineColor(planeColor[l])
+                h['gTDCcalibSigma_'+tag].Draw('same')
 
       for l in range(systemAndPlanes[s]):
-                tc = h['tTDCcalib'].cd(2*l+2)
-                aHistM = h['TDCcalibMean_'+str(l)]
+                tag = sdict[s]+"_"+str(l)
+                tc = h['tTDCcalib'+sdict[s]]+cd(2*l+2)
+                aHistM = h['TDCcalibMean_'+tag]
                 aHistM.Reset()
                 aHistM.SetMaximum(2.0)
                 aHistM.SetMinimum(-2.0)
                 aHistM.Draw()
-                h['gTDCcalibMean_'+str(l)].SetLineColor(planeColor[l])
-                h['gTDCcalibMean_'+str(l)].Draw('same')
-      myPrint(h['tTDCcalib'],'TDCcalibration')
+                h['gTDCcalibMean_'+tag].SetLineColor(planeColor[l])
+                h['gTDCcalibMean_'+tag].Draw('same')
+      myPrint(h['tTDCcalib'+sdict[s]],'TDCcalibration'+sdict[s])
 
 def plotMipsTimeResT0(readHists=True,animation=False):
     if readHists:
@@ -2130,7 +2167,7 @@ def plotMipsTimeResT0(readHists=True,animation=False):
           for side in ['L','R']:
             txt=str(s*10+l)+side+"_"+str(bar)
             for sipm in range(systemAndChannels[s][0]+systemAndChannels[s][1]):
-               if smallSiPMchannel(sipm): continue
+               if s==2 and smallSiPMchannel(sipm): continue
                X = resultsT0[s][side][bar][sipm]
                if len(X)==2: txt+=" "+"%5.2F"%(X['meanSigma'] )
                else: txt+=" "+"%5.2F"%(-1)
