@@ -150,10 +150,11 @@ class MuonReco(ROOT.FairTask) :
 
         # Initialize hough transform
         # Reco parameters (these should be registered in the rtdb?):
-        # Maximum absolute value of reconstructed angle
-        max_angle = np.pi*0.1
+        # Maximum absolute value of reconstructed angle (+/- 1 rad is the maximum angle to form a triplet in the SciFi)
+        max_angle = 2.
         # Number of bins per Hough accumulator axis
-        n = 1000
+        n_accumulator_rho = 1000
+        n_accumulator_angle = 5000
         # Number of random throws per hit
         self.n_random = 5
         # MuFilter weight. Muon filter hits are thrown more times than scifi
@@ -185,8 +186,8 @@ class MuonReco(ROOT.FairTask) :
         self.use_mufi = True
 
         # Initialize Hough transforms for both views:
-        self.h_ZX = hough(n, [-80, 0], n, [-max_angle+np.pi/2., max_angle+np.pi/2.])
-        self.h_ZY = hough(n, [0, 80], n, [-max_angle+np.pi/2., max_angle+np.pi/2.])
+        self.h_ZX = hough(n_accumulator_rho, [-80, 0], n_accumulator_angle, [-max_angle+np.pi/2., max_angle+np.pi/2.])
+        self.h_ZY = hough(n_accumulator_rho, [0, 80], n_accumulator_angle, [-max_angle+np.pi/2., max_angle+np.pi/2.])
 
         # To keep temporary detector information
         self.a = ROOT.TVector3()
