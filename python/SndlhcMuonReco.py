@@ -151,10 +151,10 @@ class MuonReco(ROOT.FairTask) :
         # Initialize hough transform
         # Reco parameters (these should be registered in the rtdb?):
         # Maximum absolute value of reconstructed angle (+/- 1 rad is the maximum angle to form a triplet in the SciFi)
-        max_angle = 2.
+        max_angle = 1.
         # Number of bins per Hough accumulator axis
         n_accumulator_rho = 1000
-        n_accumulator_angle = 5000
+        n_accumulator_angle = 2500
         # Number of random throws per hit
         self.n_random = 5
         # MuFilter weight. Muon filter hits are thrown more times than scifi
