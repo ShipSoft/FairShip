@@ -12,6 +12,7 @@ sndCluster::sndCluster()
 sndCluster::sndCluster(Int_t first, Int_t N,std::vector<sndScifiHit*> hitlist,Scifi* ScifiDet)
   :TObject(),
 	fType(0),
+	fTime(999),
 	fFirst(first),
 	fN(N)
 {
@@ -22,9 +23,11 @@ sndCluster::sndCluster(Int_t first, Int_t N,std::vector<sndScifiHit*> hitlist,Sc
 	for (int k = 0;k<fN; ++k){
 		ScifiDet->GetSiPMPosition(k+fFirst, A, B);
 		Double_t w = dynamic_cast<sndScifiHit*> (hitlist.at(k))->GetEnergy();
+		Double_t t = 6.25 * dynamic_cast<sndScifiHit*> (hitlist.at(k))->GetTime();
 		weight+=w;
 		fMeanPositionA+=w*TVector3(A);
 		fMeanPositionB+=w*TVector3(B);
+		if(t<fTime){fTime = t;}
 	}
 	Double_t winv = 1./weight;
 	fMeanPositionA = TVector3(fMeanPositionA)*winv;

@@ -42,6 +42,8 @@ class sndCluster : public TObject
     Int_t    GetN()    const { return fN;  };
     /*** Get total energy */
     Double_t GetEnergy()    const { return fEnergy;  };
+    /*** Get time in ns, use fastest TDC of cluster*/
+    Double_t GetTime()    const { return fTime;  };
     /*** Get position */
     virtual void GetPosition(TVector3& L,TVector3& R) {
 	L.SetXYZ(fMeanPositionA[0],fMeanPositionA[1],fMeanPositionA[2]);
@@ -72,7 +74,8 @@ class sndCluster : public TObject
     TVector3   fMeanPositionA;   /// mean position 
     TVector3   fMeanPositionB;   /// mean position 
     Double_t fEnergy;  /// total energy
-    ClassDef(sndCluster,1);
+    Double_t fTime;  /// Time from fastest hit TDC
+    ClassDef(sndCluster,2);
 };
 
 #endif
