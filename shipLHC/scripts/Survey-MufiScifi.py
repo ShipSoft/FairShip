@@ -377,29 +377,39 @@ def Scifi_hitMaps(Nev=options.nEvents):
  scifi = geo.modules['Scifi']
  A=ROOT.TVector3()
  B=ROOT.TVector3()
+ 
  for s in range(10):
     ut.bookHist(h,'posX_'+str(s),'x',2000,-100.,100.)
     ut.bookHist(h,'posY_'+str(s),'y',2000,-100.,100.)
+    if s%2==1: ut.bookHist(h,'mult_'+str(s),'mult vertical station '+str(s//2+1),100,-0.5,99.5)
+    else: ut.bookHist(h,'mult_'+str(s),'mult horizontal station '+str(s//2+1),100,-0.5,99.5)
  for mat in range(30):
     ut.bookHist(h,'mat_'+str(mat),'hit map / mat',512,-0.5,511.5)
     ut.bookHist(h,'sig_'+str(mat),'signal / mat',150,0.0,150.)
+    ut.bookHist(h,'tdc_'+str(mat),'tdc / mat',100,0.0,4.)
  N=-1
  if Nev < 0 : Nev = eventTree.GetEntries()
  for event in eventTree:
     N+=1
     if N%options.heartBeat == 0: print('event ',N,' ',time.ctime())
     if N>Nev: break
+    mult = [0]*10
     for aHit in event.Digi_ScifiHits:
         if not aHit.isValid(): continue
         X =  Scifi_xPos(aHit.GetDetectorID())
         rc = h['mat_'+str(X[0]*3+X[1])].Fill(X[2])
         rc  = h['sig_'+str(X[0]*3+X[1])].Fill(aHit.GetSignal(0))
+        rc  = h['tdc_'+str(X[0]*3+X[1])].Fill(aHit.GetTime(0))
         scifi.GetSiPMPosition(aHit.GetDetectorID(),A,B)
         if aHit.isVertical(): rc = h['posX_'+str(X[0])].Fill(A[0])
         else:                     rc = h['posY_'+str(X[0])].Fill(A[1])
+        mult[X[0]]+=1
+    for s in range(10):
+       rc = h['mult_'+str(s)].Fill(mult[s])
 
  ut.bookCanvas(h,'hitmaps',' ',1024,768,6,5)
  ut.bookCanvas(h,'signal',' ',1024,768,6,5)
+ ut.bookCanvas(h,'tdc',' ',1024,768,6,5)
  for mat in range(30):
     tc = h['hitmaps'].cd(mat+1)
     A = h['mat_'+str(mat)].GetSumOfWeights()/512.
@@ -407,8 +417,24 @@ def Scifi_hitMaps(Nev=options.nEvents):
     h['mat_'+str(mat)].Draw()
     tc = h['signal'].cd(mat+1)
     h['sig_'+str(mat)].Draw()
+    tc = h['tdc'].cd(mat+1)
+    h['tdc_'+str(mat)].Draw()
 
- for canvas in ['hitmaps','signal']:
+ ut.bookCanvas(h,'positions',' ',2048,768,5,2)
+ ut.bookCanvas(h,'mult',' ',2048,768,5,2)
+ for s in range(5):
+    tc = h['positions'].cd(s+1)
+    h['posY_'+str(2*s)].Draw()
+    tc = h['positions'].cd(s+6)
+    h['posX_'+str(2*s+1)].Draw()
+    tc = h['mult'].cd(s+1)
+    tc.SetLogy(1)
+    h['mult_'+str(2*s)].Draw()
+    tc = h['mult'].cd(s+6)
+    tc.SetLogy(1)
+    h['mult_'+str(2*s+1)].Draw()
+
+ for canvas in ['hitmaps','signal','mult']:
       h[canvas].Update()
       myPrint(h[canvas],"Scifi-"+canvas)
 
@@ -829,12 +855,14 @@ def eventTime(Nev=options.nEvents):
  if Nev < 0 : Nev = eventTree.GetEntries()
  ut.bookHist(h,'Etime','delta event time; dt [s]',100,0.0,1.)
  ut.bookHist(h,'EtimeZ','delta event time; dt [ns]',1000,0.0,10000.)
- ut.bookCanvas(h,'T',' ',1024,2*768,1,2)
+ ut.bookCanvas(h,'T',' ',1024,3*768,1,3)
  eventTree.GetEvent(0)
  t0 =  eventTree.EventHeader.GetEventTime()/160.E6
  eventTree.GetEvent(Nev-1)
  tmax = eventTree.EventHeader.GetEventTime()/160.E6
- ut.bookHist(h,'time','elapsed time; t [s]',1000,0,tmax-t0)
+ nbins = 1000
+ yunit = "events per %5.0F s"%( (tmax-t0)/nbins)
+ ut.bookHist(h,'time','elapsed time; t [s];'+yunit,nbins,0,tmax-t0)
 
  N=-1
  for event in eventTree:
@@ -845,14 +873,21 @@ def eventTime(Nev=options.nEvents):
     if Tprev >0: dT = T-Tprev
     Tprev = T
     rc = h['Etime'].Fill(dT/freq)
-    rc = h['EtimeZ'].Fill(dT*1E9/160.E6)
+    rc = h['EtimeZ'].Fill(dT*1E9/freq)
     rc = h['time'].Fill( (T/freq-t0))
+
  tc = h['T'].cd(1)
+ h['time'].Draw()
+ tc = h['T'].cd(2)
  tc.SetLogy(1)
  h['EtimeZ'].Draw()
- tc.Update()
- tc = h['T'].cd(2)
- h['time'].Draw()
+ tc = h['T'].cd(3)
+ tc.SetLogy(1)
+ h['Etime'].Draw()
+ rc = h['Etime'].Fit('expo','S')
+ h['T'].Update()
+ stats = h['Etime'].FindObject('stats')
+ stats.SetOptFit(1111111)
  h['T'].Update()
  myPrint(h['T'],'time')
 
