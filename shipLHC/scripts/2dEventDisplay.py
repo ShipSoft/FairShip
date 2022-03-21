@@ -69,7 +69,16 @@ else:
   trackTask.SetName('simpleTracking')
   run.AddTask(trackTask)
 
+#avoiding some error messages
+xrdb = ROOT.FairRuntimeDb.instance()
+xrdb.getContainer("FairBaseParSet").setStatic()
+xrdb.getContainer("FairGeoParSet").setStatic()
+
 run.Init()
+eventTree = ioman.GetInTree()
+# backward compatbility for early converted events
+eventTree.GetEvent(0)
+if eventTree.GetBranch('Digi_MuFilterHit'): eventTree.Digi_MuFilterHits = eventTree.Digi_MuFilterHit
 
 if options.houghTransform:
 # prepare track reco with hough transform
@@ -78,10 +87,6 @@ if options.houghTransform:
   muon_reco_task.SetHitsForTriplet(options.hits_for_triplet)
 
 nav = ROOT.gGeoManager.GetCurrentNavigator()
-
-# backward compatbility for early converted events
-eventTree.GetEvent(0)
-if eventTree.GetBranch('Digi_MuFilterHit'): eventTree.Digi_MuFilterHits = eventTree.Digi_MuFilterHit
 
 Nlimit = 4
 onlyScifi = False
