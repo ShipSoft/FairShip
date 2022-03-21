@@ -16,7 +16,6 @@ parser.add_argument("-cpp", "--convRawCPP", action='store_true', dest="FairTask_
 
 global options
 options = parser.parse_args()
-runList = []
 
 Mext = ''  
 if options.FairTask_convRaw: 
@@ -146,22 +145,22 @@ def mips():
     while count_python_processes('Survey-MufiScifi')>multiprocessing.cpu_count()-2: 
        time.sleep(200)
 
-
+runList = []
 if options.prod == "TI18":
       path = "/eos/experiment/sndlhc/raw_data/commissioning/TI18/data/"
       pathConv = "/eos/experiment/sndlhc/convertedData/commissioning/TI18/"
-      if len(runList)==0: 
+      if options.runNumbers=="": 
           runList = [1,6,7,8,16,18,19,20,21,23,24,25,26,27]
           # 6,7,8   14,15,22 corrupted
           # 
 elif options.prod == "H6":
       path     = "/eos/experiment/sndlhc/raw_data/commissioning/TB_H6/data/"
       pathConv = "/eos/experiment/sndlhc/convertedData/commissioning/TB_H6/"
-      if len(runList)==0: 
+      if options.runNumbers=="": 
           runList = [273,276,283,284,285,286,295,296,290,294,298,301,298,292,23,27,34,35,39,40, 41, 42, 43, 44, 45, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 123, 146, 165, 184] 
 elif options.prod == "epfl":
       path = "/eos/experiment/sndlhc/raw_data/commissioning/scifi_cosmics_epfl/data/"   
-      if len(runList)==0: 
+      if options.runNumbers=="": 
           runList = [3,8]
 
 else:
