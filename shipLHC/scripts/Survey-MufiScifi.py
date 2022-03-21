@@ -410,7 +410,7 @@ def Scifi_hitMaps(Nev=options.nEvents):
 
  for canvas in ['hitmaps','signal']:
       h[canvas].Update()
-      myPrint(h[canvas],"Scifi-"canvas)
+      myPrint(h[canvas],"Scifi-"+canvas)
 
 def Mufi_hitMaps(Nev = options.nEvents):
  # veto system 2 layers with 7 bars and 8 sipm channels on both ends
