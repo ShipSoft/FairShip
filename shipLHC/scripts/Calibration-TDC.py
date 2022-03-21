@@ -51,10 +51,10 @@ def getRunStatistics(r):
     F.Close()
     return ntracks
 
-def extractMeanAndSigma(tdcCanvas):
+def extractMeanAndSigma(tdcCanvas,s):
     C = {}
     f = ROOT.TFile.Open(tdcCanvas)
-    tTDCcalib = f.Get('tTDCcalib').Clone()
+    tTDCcalib = f.Get('tTDCcalib_'+sdict[s]).Clone()
     for pad in tTDCcalib.GetListOfPrimitives():
         for z in pad.GetListOfPrimitives():
              if z.Class_Name() == 'TH1D':     tag = z.GetName()
@@ -75,34 +75,34 @@ def getCalibrationParameters(runList=options.runNumbers):
           for s in [1,2]:
              if int(r)<100 and s==1: continue   # no veto in H8
              tdcCanvas = options.path+"TDC/TDCcalibration_"+sdict[s]+"-run"+r+'.root'
-             C[int(r)][s] = extractMeanAndSigma(tdcCanvas)
+             C[int(r)][s] = extractMeanAndSigma(tdcCanvas,s)
    return C
           
 def runStability(C=None):
     if not C: C = getCalibrationParameters(options.runNumbers)
     runEvol = {1:{},2:{}}
     badChannels = {1:{},2:{}}
-    for s in [1,2]:
-       for r in C:
-          for l in C[r]:
-            for i in C[r][l]['mean']:
-               value = C[r][l]['mean'][i]
+    for r in C:
+       for s in C[r]:
+          for l in C[r][s]:
+            for i in C[r][s][l]['mean']:
+               value = C[r][s][l]['mean'][i]
                key = l+'_'+str(i)
                rError = value[1] / value[0]
                if rError > 0.05: continue # remove distributions with low statistics
-               if not key in runEvol: runEvol[key] = ROOT.TGraph()
-               n = runEvol[key].GetN()
-               runEvol[key].SetPoint(n,value[0],1.)
-       ut.bookHist(h,'rms','rms',1000,-1.,1.)
-       ut.bookCanvas(h,'dummy','',900,600,1,1)
-       h['dummy'].cd()
-       for key in runEvol:
-          x = runEvol[key].GetRMS()/runEvol[key].GetMean()
-          rc = h['rms'].Fill(x)
-          if abs(x)>0.2: badChannels[key]=x
-          print("%s : %5.2F  %5.2F  %5.2F"%(key,x,runEvol[key].GetRMS(),runEvol[key].GetMean()))
-       h['rms'+sdict[s]+'100']=h['rms'+sdict[s]].Rebin(10,'rms100')
-       h['rms'+sdict[s]+'100'].Draw()
+               if not key in runEvol[s]: runEvol[s][key] = ROOT.TGraph()
+               n = runEvol[s][key].GetN()
+               runEvol[s][key].SetPoint(n,value[0],1.)
+          ut.bookHist(h,'rms'+sdict[s],'rms',1000,-1.,1.)
+          ut.bookCanvas(h,sdict[s],'',900,600,1,1)
+          h[sdict[s]].cd()
+          for key in runEvol[s]:
+            x = runEvol[s][key].GetRMS()/runEvol[s][key].GetMean()
+            rc = h['rms'+sdict[s]].Fill(x)
+            if abs(x)>0.2: badChannels[key]=x
+            print("%s : %5.2F  %5.2F  %5.2F"%(key,x,runEvol[s][key].GetRMS(),runEvol[s][key].GetMean()))
+          h['rms'+sdict[s]+'100']=h['rms'+sdict[s]].Rebin(10,'rms'+sdict[s]+'100')
+          h['rms'+sdict[s]+'100'].Draw()
     return runEvol,badChannels
 
 def makeCalibrationHistos(X=options.runNumbers,readHists=True,t0_channel=4):
@@ -111,7 +111,7 @@ def makeCalibrationHistos(X=options.runNumbers,readHists=True,t0_channel=4):
        F = ROOT.TFile.Open(options.path+"MuFilterEff_run"+str(r)+".root")
     options.runNumber = r
     for s in [1,2]:
-      if s==1 and r<100: continue       # no Veto in H8
+      if s==1 and int(r)<100: continue       # no Veto in H8
       h['tdcCalib'+sdict[s]] = {}
       for l in range(systemAndPlanes[s]):
         for bar in range(systemAndBars[s]):
