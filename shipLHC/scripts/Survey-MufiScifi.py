@@ -326,6 +326,11 @@ else:
    trackTask.SetName('simpleTracking')
    run.AddTask(trackTask)
 
+#avoiding some error messages
+xrdb = ROOT.FairRuntimeDb.instance()
+xrdb.getContainer("FairBaseParSet").setStatic()
+xrdb.getContainer("FairGeoParSet").setStatic()
+
 run.Init()
 eventTree = ioman.GetInTree()
 # backward compatbility for early converted events
@@ -402,6 +407,10 @@ def Scifi_hitMaps(Nev=options.nEvents):
     h['mat_'+str(mat)].Draw()
     tc = h['signal'].cd(mat+1)
     h['sig_'+str(mat)].Draw()
+
+ for canvas in ['hitmaps','signal']:
+      h[canvas].Update()
+      myPrint(h[canvas],"Scifi-"canvas)
 
 def Mufi_hitMaps(Nev = options.nEvents):
  # veto system 2 layers with 7 bars and 8 sipm channels on both ends
@@ -793,6 +802,12 @@ def makeIndiviualPlots(run=options.runNumber):
                  pname = 'corUS'+str(l)+'-'+str(bar)+side+'_'+tmp[0][3:]
                  aHist.Draw('colz')
                  tc.Update()
+                 stats = aHist.FindObject('stats')
+                 stats.SetOptStat(11)
+                 stats.SetX1NDC(0.15)
+                 stats.SetY1NDC(0.75)
+                 stats.SetX2NDC(0.35)
+                 stats.SetY2NDC(0.88)
                  tc.Print('run'+str(run)+'/'+pname+'.png')
    os.system("convert -delay 120 -loop 0 run"+str(run)+"/corUS*.png corUS-"+str(run)+".gif")
 
@@ -1095,10 +1110,10 @@ def Mufi_Efficiency(Nev=options.nEvents,optionTrack=options.trackType,NbinsRes=1
  
  projs = {1:'Y',0:'X'}
  for s in range(1,6):
-    for o in range(2):
-       for p in projs:
-         ut.bookHist(h,'dtScifivsX_'+str(s)+projs[o],'dt vs x track '+projs[o]+";X [cm]; dt [ns]",100,-10.,40.,260,-8.,5.)
-    ut.bookHist(h,'dtScifivsdL_'+str(s),'dt vs dL '+str(s)+";X [cm]; dt [ns]",100,-40.,0.,100,-2.,8.)
+     for p in projs:
+         ut.bookHist(h,'dtScifivsX_'+str(s)+projs[p],'dt vs x track '+projs[p]+";X [cm]; dt [ns]",100,-10.,40.,260,-8.,5.)
+         ut.bookHist(h,'clN_'+str(s)+projs[p],'cluster size '+projs[p],10,-0.5,9.5)
+     ut.bookHist(h,'dtScifivsdL_'+str(s),'dt vs dL '+str(s)+";X [cm]; dt [ns]",100,-40.,0.,200,-5.,5.)
 
  for s in systemAndPlanes:
     for l in range(systemAndPlanes[s]):
@@ -1184,6 +1199,12 @@ def Mufi_Efficiency(Nev=options.nEvents,optionTrack=options.trackType,NbinsRes=1
             if event.Digi_ScifiHits[nHit].GetDetectorID()==aCluster.GetFirst():
                DetID2Key[aCluster.GetFirst()] = nHit
 
+    for aCluster in event.ScifiClusters:
+         detID = aCluster.GetFirst()
+         s = int(detID/1000000)
+         p= int(detID/100000)%10
+         rc = h['clN_'+str(s)+projs[p]].Fill(aCluster.GetN())
+
     if chi2Ndof> 9 and optionTrack!='DS': 
        rc = h['trackslxy_badChi2'].Fill(mom.x()/mom.Mag(),mom.y()/mom.Mag())
        theTrack.Delete()
@@ -1223,8 +1244,10 @@ def Mufi_Efficiency(Nev=options.nEvents,optionTrack=options.trackType,NbinsRes=1
          X = B-pos
          L0 = X.Mag()/v
          # need to correct for signal propagation along fibre
-         T0track = aHit.GetTime()*TDC2ns - L0
-         TZero = aHit.GetTime()*TDC2ns
+         clkey  = W.getHitId()
+         aCl = event.ScifiClusters[clkey]
+         T0track = aCl.GetTime() - L0
+         TZero    = aCl.GetTime()
          Z0track = pos[2]
          times = {}
          for nM in range(theTrack.getNumPointsWithMeasurement()):
@@ -1233,13 +1256,15 @@ def Mufi_Efficiency(Nev=options.nEvents,optionTrack=options.trackType,NbinsRes=1
             M = theTrack.getPointWithMeasurement(nM)
             W = M.getRawMeasurement()
             detID = W.getDetId()
+            clkey = W.getHitId()
+            aCl = event.ScifiClusters[clkey]
             aHit = event.Digi_ScifiHits[ DetID2Key[detID] ]
             geo.modules['Scifi'].GetSiPMPosition(detID,A,B)
             if aHit.isVertical(): X = B-posM
             else: X = A-posM
             L = X.Mag()/v
          # need to correct for signal propagation along fibre
-            dT = aHit.GetTime()*TDC2ns - L - T0track - (posM[2] -Z0track)/u.speedOfLight
+            dT = aCl.GetTime() - L - T0track - (posM[2] -Z0track)/u.speedOfLight
             ss = str(aHit.GetStation())
             prj = 'X'
             l = posM[0]
@@ -1247,7 +1272,7 @@ def Mufi_Efficiency(Nev=options.nEvents,optionTrack=options.trackType,NbinsRes=1
                  prj='Y'
                  l = posM[1]
             rc = h['dtScifivsX_'+ss+prj].Fill(X.Mag(),dT)
-            times[ss+prj]=[aHit.GetTime()*TDC2ns,L*v,detID,l]
+            times[ss+prj]=[aCl.GetTime(),L*v,detID,l]
          for s in range(1,6):
             if str(s)+'X' in times and  str(s)+'Y' in times:
                deltaT = times[str(s)+'X'][0] - times[str(s)+'Y'][0]
@@ -2622,11 +2647,13 @@ def TimeCalibrationNtuple(Nev=options.nEvents,nStart=0):
     fNtuple = ROOT.TFile("scifi_timing_"+str(options.runNumber)+".root",'recreate')
     tTimes  = ROOT.TTree('tTimes','Scifi time calib') 
     nChannels    = array('i',1*[0])
+    fTime           = array('f',1*[0])
     detIDs          = array('i',maxD*[0])
     tdc               = array('f',maxD*[0.])
     qdc              = array('f',maxD*[0.])
     dL                = array('f',maxD*[0.])
     D                 = array('f',maxD*[0.])
+    tTimes.Branch('fTime',fTime,'fTime/F')
     tTimes.Branch('nChannels',nChannels,'nChannels/I')
     tTimes.Branch('detIDs',detIDs,'detIDs[nChannels]/I')
     tTimes.Branch('tdc',tdc,'tdc[nChannels]/F') 
@@ -2654,6 +2681,7 @@ def TimeCalibrationNtuple(Nev=options.nEvents,nStart=0):
             W = M.getRawMeasurement()
             clkey  = W.getHitId()
             aCl = eventTree.ScifiClusters[clkey]
+            fTime[0] = aCl.GetTime()
             for nh in range(aCl.GetN()):
                  detID = aCl.GetFirst() + nh
                  aHit = event.Digi_ScifiHits[ DetID2Key[detID] ]
@@ -2683,11 +2711,11 @@ def TimeCalibrationNtuple(Nev=options.nEvents,nStart=0):
 def analyzeTimings(c='',vsignal = 15., args={},opt=0):
   print('-->',c)
   if c=='':
-       analyzeTimings(c='findMax',vsignal = 15.)
+       analyzeTimings(c='findMax',vsignal = vsignal)
        new_list = sorted(h['mult'].items(), key=lambda x: x[1], reverse=True)
        args = {"detID0":new_list[0][0]}
        print(args)
-       analyzeTimings(c='firstIteration',vsignal = 15., args=args,opt=0)
+       analyzeTimings(c='firstIteration',vsignal = vsignal, args=args,opt=0)
        h['dTtwin'].Draw()
        return
   fNtuple = ROOT.TFile("scifi_timing_"+str(options.runNumber)+".root")
@@ -2733,6 +2761,18 @@ def analyzeTimings(c='',vsignal = 15., args={},opt=0):
      ut.bookCanvas(h,'scifidT','',1200,900,1,1)
      tc = h['scifidT'].cd()
      h['dTtwin'].Draw()
+
+def scifiTimings():
+# plot TDC vs dL
+  fNtuple = ROOT.TFile("scifi_timing_"+str(options.runNumber)+".root")
+  tTimes  = fNtuple.tTimes
+  ut.bookHist(h,'dTtwin','dt between neighbours;[ns]',100,-5,5)
+  for nt in tTimes:
+      for nHit in range(nt.nChannels):
+               detID = nt.detIDs[nHit]
+               dLL    = (nt.dL[nHit] - nt.dL[tag]) / vsignal  # light propagation in cm/ns
+               dtdc   = nt.tdc[nHit] - nt.tdc[tag]
+
 
 # h['c'+str(new_list[3][0])].Draw()
 def ScifiChannel_residuals():
@@ -2993,7 +3033,7 @@ def scifi_beamSpot():
             w+=1
         rc = h['bs'].Fill(xMean/w,yMean/w)
 
-def Scifi_residuals(Nev=options.nEvents,NbinsRes=100,xmin=-500.,alignPar=False):
+def Scifi_residuals(Nev=options.nEvents,NbinsRes=100,xmin=-2000.,alignPar=False):
     projs = {1:'V',0:'H'}
     for s in range(1,6):
      for o in range(2):
