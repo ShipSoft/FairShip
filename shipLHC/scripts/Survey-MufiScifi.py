@@ -809,11 +809,9 @@ def smallVsLargeSiPMs(Nev=-1):
       myPrint(h['cor'+side+str(l)],'QDCcor'+side+str(l))
 
 
-def makeIndiviualPlots(run=options.runNumber):
+def makeIndividualPlots(run=options.runNumber):
    ut.bookCanvas(h,'dummy','',900,800,1,1)
    if not "run"+str(run) in os.listdir(): os.system("mkdir run"+str(run))
-   tc=h['dummy'].cd()
-   tc.SetLogz(1)
    for l in range(5):
        for side in ['L','R']:
            f=ROOT.TFile('QDCcor'+side+str(l)+'-run'+str(run)+'.root')
@@ -826,6 +824,10 @@ def makeIndiviualPlots(run=options.runNumber):
                  tmp = hname.split('_')
                  bar = tmp[1][2]
                  pname = 'corUS'+str(l)+'-'+str(bar)+side+'_'+tmp[0][3:]
+                 aHist.SetDirectory(ROOT.gROOT)
+                 ROOT.gROOT.cd()
+                 tc=h['dummy'].cd()
+                 tc.SetLogz(1)
                  aHist.Draw('colz')
                  tc.Update()
                  stats = aHist.FindObject('stats')
@@ -834,8 +836,9 @@ def makeIndiviualPlots(run=options.runNumber):
                  stats.SetY1NDC(0.75)
                  stats.SetX2NDC(0.35)
                  stats.SetY2NDC(0.88)
+                 h['dummy'].Update()
                  tc.Print('run'+str(run)+'/'+pname+'.png')
-   os.system("convert -delay 120 -loop 0 run"+str(run)+"/corUS*.png corUS-"+str(run)+".gif")
+   #os.system("convert -delay 120 -loop 0 run"+str(run)+"/corUS*.png corUS-"+str(run)+".gif")
 
 def makeLogVersion(run):
    for l in range(5):
@@ -3388,6 +3391,7 @@ def minimizeAlignScifi(first=True,level=1,minuit=False):
        #gMinuit.FixParameter(28)
        #gMinuit.FixParameter(29)
 
+    h['iter'] = 0
     strat = array('d',[0])
     gMinuit.mnexcm("SET STR",strat,1,ierflg) # 0 faster, 2 more reliable
     gMinuit.mnexcm("SIMPLEX",vstart,npar,ierflg)
@@ -3403,6 +3407,7 @@ def minimizeAlignScifi(first=True,level=1,minuit=False):
 
 def FCN(npar, gin, f, par, iflag):
 #calculate chisquare
+   h['iter']+=1
    chisq  = 0
    alignPar = {}
    for p in range(h['npar']):
@@ -3420,7 +3425,7 @@ def FCN(npar, gin, f, par, iflag):
    X = Scifi_residuals(Nev=h['Nevents'],NbinsRes=100,xmin=h['xmin'],alignPar=alignPar)
    for name in X:
        chisq += abs(X[name])
-   print('chisq=',chisq,iflag)
+   print('chisq=',chisq,iflag,h['iter'])
    f.value = int(chisq)
    h['chisq'].append(chisq)
    return
