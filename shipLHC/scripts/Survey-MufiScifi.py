@@ -332,7 +332,7 @@ xrdb.getContainer("FairBaseParSet").setStatic()
 xrdb.getContainer("FairGeoParSet").setStatic()
 
 run.Init()
-eventTree = ioman.GetInTree()
+eventTree = ioman.GetInChain()
 # backward compatbility for early converted events
 eventTree.GetEvent(0)
 if eventTree.GetBranch('Digi_MuFilterHit'): eventTree.Digi_MuFilterHits = eventTree.Digi_MuFilterHit
@@ -3210,7 +3210,7 @@ def Scifi_residuals(Nev=options.nEvents,NbinsRes=100,xmin=-2000.,alignPar=False)
        if p.find('mean')==0:
           for n in range(globalPos[p].GetN()):
              rc = globalPos[p].GetPoint(n,S,M)
-             print("station %i: offset %s =  %5.2F"%(S.value,p[4:5],M.value))
+             print("station %i: offset %s =  %5.2F um"%(S.value,p[4:5],M.value))
              s = int(S.value*10)
              if p[4:5] == "V": s+=1
              alignPar["Scifi/LocD"+str(s)] = M.value
@@ -3223,7 +3223,7 @@ def Scifi_residuals(Nev=options.nEvents,NbinsRes=100,xmin=-2000.,alignPar=False)
        if p.find('mean')==0:
           for n in range(h['globalPosM'][p].GetN()):
              rc = h['globalPosM'][p].GetPoint(n,S,M)
-             print("station %i: offset %s =  %5.2F"%(S.value,p[4:5],M.value))
+             print("station %i: offset %s =  %5.2F um"%(S.value,p[4:5],M.value))
              s = int(S.value*10)
              if p[4:5] == "V": s+=1
              alignPar["Scifi/LocM"+str(s)] = M.value
