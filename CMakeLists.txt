@@ -244,8 +244,8 @@ IF(NOT FairRoot_FOUND)
 Message("--- FairRoot not found ...")
 ENDIF (NOT FairRoot_FOUND)
 
-add_subdirectory (sndFairTasks) #<--- new
-add_subdirectory (shipLHC)  #<--- new
+add_subdirectory (sndFairTasks)
+add_subdirectory (shipLHC)
 add_subdirectory (shipdata)
 add_subdirectory (passive)
 add_subdirectory (nutaudet)

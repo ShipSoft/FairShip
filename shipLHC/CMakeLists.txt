@@ -42,4 +42,9 @@ Set(LINKDEF shipLHCLinkDef.h)
 Set(LIBRARY_NAME shipLHC)
 Set(DEPENDENCIES Base ShipData GeoBase ParBase Geom Core)
 
+include(FindPythonInterp)
+list(APPEND PYTHONPATH  "${CMAKE_SOURCE_DIR}/shipLHC/scripts")
+list(APPEND PYTHONPATH  "${CMAKE_SOURCE_DIR}/shipLHC/python")
+list(APPEND PYTHONPATH  "${CMAKE_SOURCE_DIR}/shipLHC/rawData")
+
 GENERATE_LIBRARY()

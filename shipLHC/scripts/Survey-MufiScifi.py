@@ -838,6 +838,7 @@ def makeIndividualPlots(run=options.runNumber):
                  stats.SetY2NDC(0.88)
                  h['dummy'].Update()
                  tc.Print('run'+str(run)+'/'+pname+'.png')
+                 tc.Print('run'+str(run)+'/'+pname+'.root')
    #os.system("convert -delay 120 -loop 0 run"+str(run)+"/corUS*.png corUS-"+str(run)+".gif")
 
 def makeLogVersion(run):
@@ -3547,6 +3548,17 @@ def plotsForCollabMeeting():
    myPrint(h['TUS'],'dTvsX_US')
    myPrint(h['TDS'],'dTvsX_DS')
 #
+def testReversChannelMapping():
+  import reverseMapping
+  R = reverseMapping.reversChannelMapping()
+  p = options.path.replace("convertedData","raw_data")+"/data/run_"+runNr
+  R.Init(p)
+  for event in eventTree:
+     for aHit in eventTree.Digi_MuFilterHits:
+        allChannels = map2Dict(aHit,'GetAllSignals')
+        for c in allChannels:
+           print(R.daqChannel(aHit,c))
+
 if options.command:
     tmp = options.command.split(';')
 
