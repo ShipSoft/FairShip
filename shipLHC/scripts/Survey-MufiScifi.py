@@ -855,36 +855,70 @@ def makeLogVersion(run):
 
 
 def eventTime(Nev=options.nEvents):
- Tprev = -1
  if Nev < 0 : Nev = eventTree.GetEntries()
  ut.bookHist(h,'Etime','delta event time; dt [s]',100,0.0,1.)
  ut.bookHist(h,'EtimeZ','delta event time; dt [ns]',1000,0.0,10000.)
  ut.bookCanvas(h,'T',' ',1024,3*768,1,3)
- eventTree.GetEvent(0)
- t0 =  eventTree.EventHeader.GetEventTime()/160.E6
- eventTree.GetEvent(Nev-1)
- tmax = eventTree.EventHeader.GetEventTime()/160.E6
+ 
+# need to make extra gymnastiques since absolute time is missing
+ Ntinter = []
+ N = 0
+ for f in eventTree.GetListOfFiles():
+    dN =  f.GetEntries()
+    rc = eventTree.GetEvent(N)
+    t0 = eventTree.EventHeader.GetEventTime()/freq
+    rc = eventTree.GetEvent(N+dN-1)
+    tmax = eventTree.EventHeader.GetEventTime()/freq
+    Ntinter.append([t0,tmax])
+    N+=dN
+
+ Tduration = 0
+ for x in Ntinter:
+    Tduration += (x[1]-x[0])
+ tsep = 3600.
+ t0 =  Ntinter[0][0]
+ tmax = Tduration+(tsep*(len(Ntinter)-1)) 
  nbins = 1000
  yunit = "events per %5.0F s"%( (tmax-t0)/nbins)
+ if 'time' in h: h.pop('time').Delete()
  ut.bookHist(h,'time','elapsed time; t [s];'+yunit,nbins,0,tmax-t0)
 
  N=-1
+ Tprev  = 0
+ Toffset = 0
  for event in eventTree:
     N+=1
     if N>Nev: break
-    T = event.EventHeader.GetEventTime()
-    dT = 0
-    if Tprev >0: dT = T-Tprev
+    T   = event.EventHeader.GetEventTime()
+    dT = T-Tprev
+    if N>0 and dT >0:
+           rc = h['Etime'].Fill( dT/freq )
+           rc = h['EtimeZ'].Fill( dT*1E9/freq )
+           rc = h['time'].Fill( (T+Toffset)/freq-t0 )
+    elif dT<0: 
+           Toffset+=tsep*freq+Tprev
+           rc = h['time'].Fill( (T+Toffset)/freq-t0 )
+    else: rc = h['time'].Fill( T/freq-t0 ) # very first event
     Tprev = T
-    rc = h['Etime'].Fill(dT/freq)
-    rc = h['EtimeZ'].Fill(dT*1E9/freq)
-    rc = h['time'].Fill( (T/freq-t0))
 
  tc = h['T'].cd(1)
+ h['time'].SetStats(0)
  h['time'].Draw()
+ tend = 0
+ for x in Ntinter:
+    tend += x[1]+tsep/2.
+    m = str(int(tend))
+    h['line'+m]=ROOT.TLine(tend,0,tend,h['time'].GetMaximum())
+    h['line'+m].SetLineColor(ROOT.kRed)
+    h['line'+m].Draw()
+    tend += tsep/2.
  tc = h['T'].cd(2)
  tc.SetLogy(1)
  h['EtimeZ'].Draw()
+ rc = h['EtimeZ'].Fit('expo','S','',0.,250.)
+ h['T'].Update()
+ stats = h['EtimeZ'].FindObject('stats')
+ stats.SetOptFit(1111111)
  tc = h['T'].cd(3)
  tc.SetLogy(1)
  h['Etime'].Draw()
