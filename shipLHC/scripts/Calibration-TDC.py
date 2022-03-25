@@ -36,10 +36,15 @@ parser.add_argument("-p", "--Path", dest="path", help="path to histograms",defau
 parser.add_argument("-r", "--runNumbers", dest="runNumbers", help="list of run numbers, comma separated",default=None,required=True)
 parser.add_argument("-c", "--command", dest="command", help="command", default="")
 
+h = {}
 gain={'H8':{}}
 gain['H8'][3.65] = [49,50,51,52,53,58,59,71,74,80,86,89]
 gain['H8'][2.5]   =[46,47,54,55,56,60,72,81,87,90]
 gain['H8'][1.0]   =[73,82,88,91]
+gain={'H6':{}}
+gain['H6'][3.65] =[247,248,249,250,251,252,253,254,255,284,290]
+gain['H6'][2.5]   =[286,292,298,301]
+gain['H6'][1.0]   =[288,300,302]
 
 options = parser.parse_args()
 if options.path.find("/eos")==0: options.path= eosroot+options.path
@@ -67,6 +72,72 @@ def extractMeanAndSigma(tdcCanvas,s):
         for n in range(graph.GetN()):
            C[station][case][ int(z.GetPointX(n)) ]=[ z.GetPointY(n),z.GetErrorY(n)]
     return C
+
+def overlayMean(tdcCanvas,s):
+   f = ROOT.TFile.Open(tdcCanvas)
+   tTDCcalib = f.Get('tTDCcalib_'+sdict[s]).Clone()
+   names = []
+   for pad in tTDCcalib.GetListOfPrimitives():
+        for z in pad.GetListOfPrimitives():
+             if z.Class_Name().find('TH1')==0:  tag = z.GetName()
+        if tag.find('Mean')<0: continue
+        for z in pad.GetListOfPrimitives():
+             if z.Class_Name().find('TH1')==0:
+                 h[tag] = z.Clone('h'+tag)
+                 h[tag].SetDirectory(ROOT.gROOT)
+                 Ltag = tag
+             if z.Class_Name() == 'TGraphErrors': 
+                  h['g'+tag] = z.Clone()
+                  names.append('g'+tag)
+   # split in left and right TGraphs
+   for  g in names: 
+      h['L'+g] = ROOT.TGraphErrors()
+      h['R'+g] = ROOT.TGraphErrors()
+      for x in ['L','R']:
+           h[x+g].SetLineColor(h[g].GetLineColor())
+           h[x+g].SetMarkerStyle(h[g].GetMarkerStyle())
+      for n in range(h[g].GetN()):
+          if h[g].GetPointX(n)<80:
+             nl = h['L'+g].GetN()
+             h['L'+g].SetPoint(nl,h[g].GetPointX(n),h[g].GetPointY(n))
+             h['L'+g].SetPointError(nl,h[g].GetErrorX(n),h[g].GetErrorY(n))
+          else:
+             nr = h['R'+g].GetN()
+             h['R'+g].SetPoint(nr,h[g].GetPointX(n)-80,h[g].GetPointY(n))
+             h['R'+g].SetPointError(nr,h[g].GetErrorX(n)-80,h[g].GetErrorY(n))
+   ROOT.gROOT.cd()
+   h[Ltag].SetStats(0)
+   h['T'] = ROOT.TCanvas('T',sdict[s],1,1,1200,900)
+   h['T'].cd()
+   h[Ltag].GetXaxis().SetRange(1,81)
+   h[Ltag].Draw()
+   for  g in names: 
+        h['L'+g].Draw('same')
+        h['R'+g].Draw('same')
+   return
+
+def getTDCdelays(path="TDCdelays.txt"):
+  f = open(path)
+  L = f.readlines()
+  delays = {}
+  lstart = 0
+  if len(L)>20: lstart = 21
+  for l in range(lstart,len(L)):
+       tmp = L[l].split(',')
+       for z in tmp:
+           x = z.split('=')
+           if len(x)<2: continue
+           value = float(x[1])
+           name = int(x[0].split('_')[1])
+           delays[name]=value
+  h['D'] = ROOT.TGraph()
+  h['D'].SetLineWidth(2)
+  n = 0
+  for bar_number in range(systemAndBars[2]):
+      for channel in range(8):
+          h['D'].SetPoint(n,n,delays[10*bar_number+channel]/1000.)
+          n+=1
+  
 
 def getCalibrationParameters(runList=options.runNumbers):
    C = {}
@@ -214,6 +285,13 @@ def makeCalibrationHistos(X=options.runNumbers,readHists=True,t0_channel=4):
                 h['gTDCcalibMean_'+tag].Draw('same')
       myPrint(h['tTDCcalib_'+sdict[s]],'TDC/TDCcalibration_'+sdict[s])
 
+
+def checkPattern(C):
+   for r in C:
+    for system in C[r]:
+       for plane in C[r][sytem]:
+         for channel in C[r][sytem]['mean']:
+             continue
 
 if options.command:
     tmp = options.command.split(';')
