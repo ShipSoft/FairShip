@@ -106,11 +106,14 @@ if path.find('eos')>0:
         else: break
 else:
 # check for partitions
-       dirlist  = os.listdir(options.path+"run_"+runNr)
-       for x in dirlist:
-        data = "raw-"+ str(partitions).zfill(4)
-        if x.find(data)>0:
-            partitions+=1
+       data = "sndsw_raw_"+runNr+".root"
+       dirlist = os.listdir(options.path)
+       if  not data in dirlist:
+          dirlist  = os.listdir(options.path+"run_"+runNr)
+          for x in dirlist:
+            data = "raw-"+ str(partitions).zfill(4)
+            if x.find(data)>0:
+               partitions+=1
 
 import SndlhcGeo
 if (options.geoFile).find('../')<0: geo = SndlhcGeo.GeoInterface(path+options.geoFile)
@@ -332,7 +335,8 @@ xrdb.getContainer("FairBaseParSet").setStatic()
 xrdb.getContainer("FairGeoParSet").setStatic()
 
 run.Init()
-eventTree = ioman.GetInChain()
+if partitions>0:  eventTree = ioman.GetInChain()
+else:                 eventTree = ioman.GetInTree()
 # backward compatbility for early converted events
 eventTree.GetEvent(0)
 if eventTree.GetBranch('Digi_MuFilterHit'): eventTree.Digi_MuFilterHits = eventTree.Digi_MuFilterHit
@@ -1247,7 +1251,7 @@ def Mufi_Efficiency(Nev=options.nEvents,optionTrack=options.trackType,NbinsRes=1
  if Nev < 0 : Nev = eventTree.GetEntries()
  N=0
  for event in eventTree:
-    rc = ioman.GetInTree().GetEvent(N)
+    rc = eventTree.GetEvent(N)
     N+=1
     if N>Nev: break
     if optionTrack=='DS': theTrack = DS_track()
@@ -1266,13 +1270,12 @@ def Mufi_Efficiency(Nev=options.nEvents,optionTrack=options.trackType,NbinsRes=1
     rc = h['NdofvsNMeas'].Fill(fitStatus.getNdf(),theTrack.getNumPointsWithMeasurement())
 # map clusters to hit keys
     DetID2Key={}
-    if event.FindBranch("ScifiClusters") or hasattr(eventTree,'ScifiClusters'):
+    if eventTree.FindBranch("ScifiClusters") or hasattr(eventTree,'ScifiClusters'):
      for aCluster in event.ScifiClusters:
         for nHit in range(event.Digi_ScifiHits.GetEntries()):
             if event.Digi_ScifiHits[nHit].GetDetectorID()==aCluster.GetFirst():
                DetID2Key[aCluster.GetFirst()] = nHit
-
-    for aCluster in event.ScifiClusters:
+     for aCluster in event.ScifiClusters:
          detID = aCluster.GetFirst()
          s = int(detID/1000000)
          p= int(detID/100000)%10
