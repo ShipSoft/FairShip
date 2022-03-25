@@ -58,7 +58,7 @@ The basic commands are the same regardless of whether CVMFS is used:
   On CVMFS, it is recommended to add <code>--always-prefer-system</code> to ensure packages are used from CVMFS instead of being rebuilt.</dd>
   <dt><code>aliDoctor &lt;package-name&gt;  -c snddist</code></dt>
   <dd>Provide troubleshooting information and hints on which packages can be used from the system for <code>&lt;package-name&gt;</code> and its dependencies.</dd>
-  <dt><code>alienv &lt;package-name&gt; /latest -c snddist</code></dt>
+  <dt><code>alienv enter &lt;package-name&gt; /latest -c snddist</code></dt>
   <dd>Enter an environment with <code>&lt;package-name&gt;</code> and its dependencies.</dd>
 </dl>
 
