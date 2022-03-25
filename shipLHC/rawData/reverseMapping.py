@@ -60,7 +60,8 @@ class reversChannelMapping:
            self.revBoardMaps['MuFilter'][key]=[board,slot]
 #
  def daqChannel(self,aHit,channel):
-      fDetectorID  = aHit.GetDetectorID()
+      if type(aHit).__name__ == 'int':  fDetectorID  = aHit
+      else:                                     fDetectorID  = aHit.GetDetectorID()
       subsystem    = fDetectorID//10000
       plane        = fDetectorID//1000 - 10*subsystem
       bar_number   = fDetectorID%1000
