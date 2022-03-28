@@ -9,7 +9,7 @@ sndCluster::sndCluster()
 }
 
 // -----   Standard constructor   ------------------------------------------
-sndCluster::sndCluster(Int_t first, Int_t N,std::vector<sndScifiHit*> hitlist,Scifi* ScifiDet)
+sndCluster::sndCluster(Int_t first, Int_t N,std::vector<sndScifiHit*> hitlist,Scifi* ScifiDet, Bool_t withQDC)
   :TObject(),
 	fType(0),
 	fTime(999),
@@ -22,7 +22,8 @@ sndCluster::sndCluster(Int_t first, Int_t N,std::vector<sndScifiHit*> hitlist,Sc
 // make clusterCentre:
 	for (int k = 0;k<fN; ++k){
 		ScifiDet->GetSiPMPosition(k+fFirst, A, B);
-		Double_t w = dynamic_cast<sndScifiHit*> (hitlist.at(k))->GetEnergy();
+		Double_t w = 1.;
+		if (withQDC) {dynamic_cast<sndScifiHit*> (hitlist.at(k))->GetEnergy();}
 		Double_t t = 6.25 * dynamic_cast<sndScifiHit*> (hitlist.at(k))->GetTime();
 		weight+=w;
 		fMeanPositionA+=w*TVector3(A);
