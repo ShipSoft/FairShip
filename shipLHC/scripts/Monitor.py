@@ -8,6 +8,55 @@ import rootUtils as ut
 import shipunit as u
 import SndlhcGeo
 
+ROOT.gInterpreter.Declare("""
+#include "MuFilterHit.h"
+#include "AbsMeasurement.h"
+#include "TrackPoint.h"
+
+void fixRoot(MuFilterHit& aHit,std::vector<int>& key,std::vector<float>& value, bool mask) {
+   std::map<int,float> m = aHit.GetAllSignals(false);
+   std::map<int, float>::iterator it = m.begin();
+   while (it != m.end())
+    {
+        key.push_back(it->first);
+        value.push_back(it->second);
+        it++;
+    }
+}
+void fixRootT(MuFilterHit& aHit,std::vector<int>& key,std::vector<float>& value, bool mask) {
+   std::map<int,float> m = aHit.GetAllTimes(false);
+   std::map<int, float>::iterator it = m.begin();
+   while (it != m.end())
+    {
+        key.push_back(it->first);
+        value.push_back(it->second);
+        it++;
+    }
+}
+void fixRoot(MuFilterHit& aHit, std::vector<TString>& key,std::vector<float>& value, bool mask) {
+   std::map<TString, float> m = aHit.SumOfSignals();
+   std::map<TString, float>::iterator it = m.begin();
+   while (it != m.end())
+    {
+        key.push_back(it->first);
+        value.push_back(it->second);
+        it++;
+    }
+}
+
+void fixRoot(std::vector<genfit::TrackPoint*>& points, std::vector<int>& d,std::vector<int>& k, bool mask) {
+      for(std::size_t i = 0; i < points.size(); ++i) {
+        genfit::AbsMeasurement*  m = points[i]->getRawMeasurement();
+        d.push_back( m->getDetId() );
+        k.push_back( int(m->getHitId()/1000) );
+    }
+}
+""")
+
+Tkey  = ROOT.std.vector('TString')()
+Ikey   = ROOT.std.vector('int')()
+Value = ROOT.std.vector('float')()
+
 class Monitoring():
    " set of monitor histograms "
    def __init__(self,options,FairTasks):
@@ -36,7 +85,19 @@ class Monitoring():
 
 # setup input
         if options.online:
-            self.eventTree = options.online.fSink.GetOutTree
+            import ConvRawData
+            options.chi2Max = 2000.
+            options.saturationLimit  = 0.95
+            options.stop = False
+            options.withGeoFile = False
+            self.converter = ConvRawData.ConvRawDataPY()
+            self.converter.Init(options)
+            self.options.online = self.converter
+            for T in FairTasks:
+               self.converter.run.AddTask(T)
+               self.converter.run.Init()
+               self.run = self.converter.run
+               self.eventTree = options.online.fSink.GetOutTree
             return
         else:
             self.runNr   = str(options.runNumber).zfill(6)
@@ -79,7 +140,8 @@ class Monitoring():
 
             rc = eventChain.GetEvent(0)
 # start FairRunAna
-            self.run      = ROOT.FairRunAna()
+            if not ROOT.FairRootManager.Instance():
+                 self.run  = ROOT.FairRunAna()
             ioman = ROOT.FairRootManager.Instance()
             ioman.SetTreeName(eventChain.GetName())
             outFile = ROOT.TMemFile('dummy','CREATE')
@@ -150,6 +212,36 @@ class Monitoring():
         mat   = (detID%100000)//10000
         X = detID%1000+(detID%10000)//1000*128
         return [nStation,mat,X]   # even numbers are Y (horizontal plane), odd numbers X (vertical plane)
+
+# decode MuFilter detID
+   def MuFilter_PlaneBars(self,detID):
+         s = detID//10000
+         l  = (detID%10000)//1000  # plane number
+         bar = (detID%1000)
+         if s>2:
+             l=2*l
+             if bar>59:
+                  bar=bar-60
+                  if l<6: l+=1
+         return {'station':s,'plane':l,'bar':bar}
+
+   def map2Dict(self,aHit,T='GetAllSignals',mask=True):
+      if T=="SumOfSignals":
+         key = Tkey
+      elif T=="GetAllSignals" or T=="GetAllTimes":
+         key = Ikey
+      else: 
+           print('use case not known',T)
+           1/0
+      key.clear()
+      Value.clear()
+      if T=="GetAllTimes": ROOT.fixRootT(aHit,key,Value,mask)
+      else:                         ROOT.fixRoot(aHit,key,Value,mask)
+      theDict = {}
+      for k in range(key.size()):
+          if T=="SumOfSignals": theDict[key[k].Data()] = Value[k]
+          else: theDict[key[k]] = Value[k]
+      return theDict
 
    def fit_langau(self,hist,o,bmin,bmax,opt=''):
       if opt == 2:

@@ -9,8 +9,8 @@ import time
 class ConvRawDataPY(ROOT.FairTask):
    " raw data conversion by event "
    def Init(self,options):
-      self.debug = options.debug
-      self.monitoring = False
+      self.debug        = options.debug
+      self.monitoring = options.online
       local = False
       if options.path.find('eos')<0 or os.path.isdir(options.path):    local = True
       if local: server = ''
@@ -28,13 +28,12 @@ class ConvRawDataPY(ROOT.FairTask):
              part = str(options.partition).zfill(4)
              inFile   = 'data_'+part+'.root'
              self.outFile = "sndsw_raw_"+runNr+'-'+part+'.root'
-      else:  # this is an online stream
-         server = "???"
+      if self.monitoring:  # this is an online stream
+         server = os.environ['EOSSHIP']
          runNr   = str( abs(options.runNumber) ).zfill(6)
-         path     = options.path
-         inFile   = 'data.root'   # don't know yet'
+         path    = server+options.path
+         inFile   = 'data_'+part+'.root'
          self.outFile = ROOT.TMemFile('monitorRawData', 'recreate')
-         self.monitoring = True
 
       self.run     = ROOT.FairRunAna()
       ioman = ROOT.FairRootManager.Instance()
@@ -55,21 +54,21 @@ class ConvRawDataPY(ROOT.FairTask):
       ioman.RegisterInputObject('heartBeat', ROOT.TObjString(str(options.heartBeat)))
       ioman.RegisterInputObject('withGeoFile', ROOT.TObjString(str(options.withGeoFile)))
       self.options = options
-# Fair convRawData task
-      if options.FairTask_convRaw:
   # Pass raw data file as input object
-          ioman.RegisterInputObject("rawData", self.fiN)
+      ioman.RegisterInputObject("rawData", self.fiN)
 
   # Set output
-          self.outfile = ROOT.FairRootFileSink(self.outFile.replace('.root','_CPP.root'))
-          self.run.SetSink(self.outfile)
+      self.outfile = ROOT.FairRootFileSink(self.outFile.replace('.root','_CPP.root'))
+      self.run.SetSink(self.outfile)
 
-          self.run.AddTask(ROOT.ConvRawData())
   # Don't use FairRoot's default event header settings
-          self.run.SetEventHeaderPersistence(False)
-          xrdb = ROOT.FairRuntimeDb.instance()
-          xrdb.getContainer("FairBaseParSet").setStatic()
-          xrdb.getContainer("FairGeoParSet").setStatic()
+      self.run.SetEventHeaderPersistence(False)
+      self.xrdb = ROOT.FairRuntimeDb.instance()
+      self.xrdb.getContainer("FairBaseParSet").setStatic()
+      self.xrdb.getContainer("FairGeoParSet").setStatic()
+# Fair convRawData task
+      if options.FairTask_convRaw:
+          self.run.AddTask(ROOT.ConvRawData())
           self.run.Init()
 
 #-------end of init for cpp ------------------------------------

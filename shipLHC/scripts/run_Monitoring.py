@@ -1,7 +1,14 @@
 #!/usr/bin/env python
-import ROOT,os,sys,getopt,subprocess
+import ROOT,os,sys,getopt,subprocess,atexit
 import Monitor
 import Scifi_monitoring
+import Mufi_monitoring
+
+def pyExit():
+    if options.online:
+       print("Make suicide until solution found for freezing")
+       os.system('kill '+str(os.getpid()))
+atexit.register(pyExit)
 
 from argparse import ArgumentParser
 
@@ -36,24 +43,22 @@ else:
    trackTask.SetName('simpleTracking')
    FairTasks.append(trackTask)
 
-if options.online:
-    import ConvRawData
-    options.chi2Max = 2000.
-    options.saturationLimit  = 0.95
-    options.stop = False
-    options.withGeoFile = False
-    converter = ConvRawData.ConvRawDataPY()
-    converter.Init(options)
-    options.online = converter
-
 M = Monitor.Monitoring(options,FairTasks)
 if options.nEvents < 0 : options.nEvents = M.eventTree.GetEntries()
 
-S = Scifi_monitoring.Scifi_hitMaps()
-S.Init(options,M)
+monitorTasks = {}
+monitorTasks['Scifi_hitMaps'] = Scifi_monitoring.Scifi_hitMaps()
+monitorTasks['Scifi_hitMaps'] = Mufi_monitoring.Mufi_hitMaps()
+
+for m in monitorTasks:
+    monitorTasks[m].Init(options,M)
 
 for n in range(options.nStart,options.nEvents):
   event = M.GetEvent(n)
-  S.ExecuteEvent(M.eventTree)
+  trackTask.event = event
+  for m in monitorTasks:
+      monitorTasks[m].ExecuteEvent(M.eventTree)
 
-S.Plot()
+ROOT.gROOT.cd()
+for m in monitorTasks:
+     monitorTasks[m].Plot()
