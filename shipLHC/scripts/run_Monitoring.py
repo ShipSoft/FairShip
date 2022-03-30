@@ -28,6 +28,11 @@ parser.add_argument("-c", "--command", dest="command", help="command", default="
 parser.add_argument("-n", "--nEvents", dest="nEvents", help="number of events", default=-1,type=int)
 parser.add_argument("-s", "--nStart", dest="nStart", help="first event", default=0,type=int)
 parser.add_argument("-t", "--trackType", dest="trackType", help="DS or Scifi", default="DS")
+
+parser.add_argument("--ScifiNbinsRes", dest="ScifiNbinsRes", default=100)
+parser.add_argument("--Scifixmin", dest="Scifixmin", default=-2000.)
+parser.add_argument("--ScifialignPar", dest="ScifialignPar", default=False)
+
 options = parser.parse_args()
 
 # prepare tasks:
@@ -47,8 +52,9 @@ M = Monitor.Monitoring(options,FairTasks)
 if options.nEvents < 0 : options.nEvents = M.eventTree.GetEntries()
 
 monitorTasks = {}
-monitorTasks['Scifi_hitMaps'] = Scifi_monitoring.Scifi_hitMaps()
-monitorTasks['Scifi_hitMaps'] = Mufi_monitoring.Mufi_hitMaps()
+monitorTasks['Scifi_hitMaps']   = Scifi_monitoring.Scifi_hitMaps()
+monitorTasks['Scifi_hitMaps']   = Mufi_monitoring.Mufi_hitMaps()
+# monitorTasks['Scifi_residuals'] = Scifi_monitoring.Scifi_residuals()
 
 for m in monitorTasks:
     monitorTasks[m].Init(options,M)

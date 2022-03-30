@@ -89,7 +89,7 @@ class Monitoring():
             options.chi2Max = 2000.
             options.saturationLimit  = 0.95
             options.stop = False
-            options.withGeoFile = False
+            options.withGeoFile = True
             self.converter = ConvRawData.ConvRawDataPY()
             self.converter.Init(options)
             self.options.online = self.converter
