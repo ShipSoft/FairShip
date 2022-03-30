@@ -24,8 +24,9 @@ class Monitoring():
         path     = options.path
         if path.find('eos')>0:
              path  = os.environ['EOSSHIP']+options.path
-# start FairRunAna
-        self.run      = ROOT.FairRunAna()
+        if options.online:
+             path = path.replace("raw_data","convertedData").replace("data/","")
+
 # setup geometry
         if (options.geoFile).find('../')<0: self.snd_geo = SndlhcGeo.GeoInterface(path+options.geoFile)
         else:                                         self.snd_geo = SndlhcGeo.GeoInterface(options.geoFile[3:])
@@ -35,7 +36,8 @@ class Monitoring():
 
 # setup input
         if options.online:
-            eventChain = ''
+            self.eventTree = options.online.fSink.GetOutTree
+            return
         else:
             self.runNr   = str(options.runNumber).zfill(6)
             partitions = 0
@@ -74,7 +76,10 @@ class Monitoring():
 # for MC data
                 f=ROOT.TFile.Open(options.fname)
                 eventChain = f.cbmsim
+
             rc = eventChain.GetEvent(0)
+# start FairRunAna
+            self.run      = ROOT.FairRunAna()
             ioman = ROOT.FairRootManager.Instance()
             ioman.SetTreeName(eventChain.GetName())
             outFile = ROOT.TMemFile('dummy','CREATE')
@@ -97,6 +102,14 @@ class Monitoring():
             self.run.Init()
             if partitions>0:  self.eventTree = ioman.GetInChain()
             else:                 self.eventTree = ioman.GetInTree()
+
+   def GetEvent(self,n):
+      if self.options.online:
+            self.options.online.executeEvent(n)
+            self.eventTree = self.options.online.sTree
+      else: 
+            self.eventTree.GetEvent(n)
+      return self.eventTree
 
    def systemAndOrientation(self,s,plane):
       if s==1 or s==2: return "horizontal"
