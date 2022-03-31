@@ -14,6 +14,7 @@ from argparse import ArgumentParser
 
 parser = ArgumentParser()
 parser.add_argument("-M", "--online", dest="online", help="online mode",default=False,action='store_true')
+parser.add_argument("--server", dest="server", help="xrootd server",default=os.environ["EOSSHIP"])
 parser.add_argument("-r", "--runNumber", dest="runNumber", help="run number", type=int,required=True)
 parser.add_argument("-p", "--path", dest="path", help="run number",required=False,default="")
 parser.add_argument("-P", "--partition", dest="partition", help="partition of data", type=int,required=False,default=-1)
@@ -53,8 +54,8 @@ if options.nEvents < 0 : options.nEvents = M.eventTree.GetEntries()
 
 monitorTasks = {}
 monitorTasks['Scifi_hitMaps']   = Scifi_monitoring.Scifi_hitMaps()
-monitorTasks['Scifi_hitMaps']   = Mufi_monitoring.Mufi_hitMaps()
-# monitorTasks['Scifi_residuals'] = Scifi_monitoring.Scifi_residuals()
+monitorTasks['Mufi_hitMaps']   = Mufi_monitoring.Mufi_hitMaps()
+monitorTasks['Scifi_residuals'] = Scifi_monitoring.Scifi_residuals()   # time consuming
 
 for m in monitorTasks:
     monitorTasks[m].Init(options,M)

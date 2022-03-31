@@ -305,6 +305,8 @@ class ConvRawDataPY(ROOT.FairTask):
      indexMuFilter = 0
      self.digiMuFilter.Delete()
      digiMuFilterStore = {}
+     if self.options.withGeoFile:
+           self.clusScifi.Delete()
 
      for board in self.boards:
         board_id = int(board.split('_')[1])

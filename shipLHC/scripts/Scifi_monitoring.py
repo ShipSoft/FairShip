@@ -101,11 +101,11 @@ class Scifi_residuals(ROOT.FairTask):
    def ExecuteEvent(self,event):
        h = self.M.h
 # select events with clusters in each plane
-       theTrack = self.Scifi_track(nPlanes = 10, nClusters = 11)
+       theTrack = self.Scifi_track(event,nPlanes = 10, nClusters = 11)
        if not hasattr(theTrack,"getFittedState"): return
        theTrack.Delete()
        sortedClusters={}
-       for aCl in eventTree.ScifiClusters:
+       for aCl in event.Cluster_Scifi:
            so = aCl.GetFirst()//100000
            if not so in sortedClusters: sortedClusters[so]=[]
            sortedClusters[so].append(aCl)
@@ -119,7 +119,7 @@ class Scifi_residuals(ROOT.FairTask):
                     for x in sortedClusters[so]:
                        hitlist[k] = x
                        k+=1
-            theTrack = trackTask.fitTrack(hitlist)
+            theTrack = self.trackTask.fitTrack(hitlist)
             if not hasattr(theTrack,"getFittedState"): continue
 # check residuals
             fitStatus = theTrack.getFitStatus()
@@ -235,9 +235,12 @@ class Scifi_residuals(ROOT.FairTask):
                  alignPar["Scifi/LocM"+str(s)] = M.value
        return alignPar
        
-   def Scifi_track(self,nPlanes = 8, nClusters = 11):
+   def Scifi_track(self,event,nPlanes = 8, nClusters = 11):
 # check for low occupancy and enough hits in Scifi
-        clusters = self.trackTask.scifiCluster()
+        if hasattr(event,"Cluster_Scifi"):
+               clusters = event.Cluster_Scifi
+        else:
+               clusters = self.trackTask.scifiCluster()
         stations = {}
         for s in range(1,6):
            for o in range(2):
@@ -258,7 +261,8 @@ class Scifi_residuals(ROOT.FairTask):
         hitlist = {}
         for k in range(len(clusters)):
            hitlist[k] = clusters[k]
-        theTrack = trackTask.fitTrack(hitlist)
+        theTrack = self.trackTask.fitTrack(hitlist)
+        print('debug',theTrack)
         eventTree.ScifiClusters = clusters
         return theTrack
 

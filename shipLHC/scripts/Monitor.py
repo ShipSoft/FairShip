@@ -72,7 +72,7 @@ class Monitoring():
 
         path     = options.path
         if path.find('eos')>0:
-             path  = os.environ['EOSSHIP']+options.path
+             path  = options.server+options.path
         if options.online:
              path = path.replace("raw_data","convertedData").replace("data/","")
 
@@ -103,12 +103,12 @@ class Monitoring():
             self.runNr   = str(options.runNumber).zfill(6)
             partitions = 0
             if path.find('eos')>0:
-                dirlist  = str( subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls "+options.path,shell=True) )
+                dirlist  = str( subprocess.check_output("xrdfs "+options.server+" ls "+options.path,shell=True) )
 # single file, before Feb'22
                 data = "sndsw_raw_"+self.runNr+".root"
                 if  dirlist.find(data)<0:
 # check for partitions
-                   dirlist  = str( subprocess.check_output("xrdfs "+os.environ['EOSSHIP']+" ls "+options.path+"run_"+self.runNr,shell=True) )
+                   dirlist  = str( subprocess.check_output("xrdfs "+options.server+" ls "+options.path+"run_"+self.runNr,shell=True) )
                    while 1>0:
                       data = "raw-"+ str(partitions).zfill(4)
                       if dirlist.find(data)>0:
