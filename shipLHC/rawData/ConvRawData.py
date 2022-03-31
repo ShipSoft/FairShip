@@ -29,7 +29,7 @@ class ConvRawDataPY(ROOT.FairTask):
              inFile   = 'data_'+part+'.root'
              self.outFile = "sndsw_raw_"+runNr+'-'+part+'.root'
       if self.monitoring:  # this is an online stream
-         server = os.environ['EOSSHIP']
+         server = options.server
          runNr   = str( abs(options.runNumber) ).zfill(6)
          path    = options.path+'run_'+ runNr+'/'
          inFile   = 'data_'+part+'.root'
@@ -281,6 +281,16 @@ class ConvRawDataPY(ROOT.FairTask):
                   sipm_number = sipmChannel%(nSiPMs)
                   print(sipmChannel,nSiPMs,nSides,detID,sipm_number)
 
+   def printChannelInfo(self):
+         runNr   = str( abs(options.runNumber) ).zfill(6)
+         path    = options.path+'run_'+ runNr+'/'
+         with client.File() as f:
+               f.open(self.options.server+path+"/channels.csv")
+               status, L = f.read()
+               Lchannel = L.decode().split('\n')
+               f.close()
+         for l in Lchannel: print(l)
+           
   # reading hits and converting to event information
 
   # https://gitlab.cern.ch/snd-scifi/software/-/wikis/Raw-data-format 

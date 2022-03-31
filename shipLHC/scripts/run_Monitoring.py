@@ -67,5 +67,6 @@ for n in range(options.nStart,options.nEvents):
       monitorTasks[m].ExecuteEvent(M.eventTree)
 
 ROOT.gROOT.cd()
-for m in monitorTasks:
-     monitorTasks[m].Plot()
+if options.nEvents>0:
+    for m in monitorTasks:
+        monitorTasks[m].Plot()
