@@ -31,7 +31,7 @@ class ConvRawDataPY(ROOT.FairTask):
       if self.monitoring:  # this is an online stream
          server = os.environ['EOSSHIP']
          runNr   = str( abs(options.runNumber) ).zfill(6)
-         path    = server+options.path
+         path    = options.path+'run_'+ runNr+'/'
          inFile   = 'data_'+part+'.root'
          self.outFile = ROOT.TMemFile('monitorRawData', 'recreate')
 
@@ -58,7 +58,8 @@ class ConvRawDataPY(ROOT.FairTask):
       ioman.RegisterInputObject("rawData", self.fiN)
 
   # Set output
-      self.outfile = ROOT.FairRootFileSink(self.outFile.replace('.root','_CPP.root'))
+      if self.monitoring:  self.outfile = ROOT.FairRootFileSink(self.outFile)
+      else:                     self.outfile = ROOT.FairRootFileSink(self.outFile.replace('.root','_CPP.root'))
       self.run.SetSink(self.outfile)
 
   # Don't use FairRoot's default event header settings
@@ -209,7 +210,8 @@ class ConvRawDataPY(ROOT.FairTask):
   #scifi clusters
        if self.options.withGeoFile:
            self.clusScifi   = ROOT.TClonesArray("sndCluster")
-           self.clusScifiBranch    = self.sTree.Branch("Cluster_Scifi",clusScifi,32000,1)
+           self.clusScifiBranch    = self.sTree.Branch("Cluster_Scifi",self.clusScifi,32000,1)
+           self.scifiDet = ROOT.gROOT.GetListOfGlobals().FindObject('Scifi')
 
        B = ROOT.TList()
        B.SetName('BranchList')
@@ -409,12 +411,12 @@ class ConvRawDataPY(ROOT.FairTask):
                self.digiMuFilter[indexMuFilter]=digiMuFilterStore[detID]
                indexMuFilter+=1
 
-  # make simple clustering for scifi, only works with geometry file. Don't think it is a good idea at the moment
+  # make simple clustering for scifi, only works with geometry file.
      if self.options.withGeoFile:
       index = 0
       hitDict = {}
-      for k in range(digiSciFi.GetEntries()):
-          d = digiSciFi[k]
+      for k in range(self.digiSciFi.GetEntries()):
+          d = self.digiSciFi[k]
           if not d.isValid(): continue 
           hitDict[d.GetDetectorID()] = k
           hitList = list(hitDict.keys())
@@ -435,13 +437,13 @@ class ConvRawDataPY(ROOT.FairTask):
                           N = len(tmp)
                           hitlist.clear()
                           for aHit in tmp: 
-                                  hitlist.push_back( digiSciFi[hitDict[aHit]])
-                                  if self.options.debug: print(aHit,hitDict[aHit],digiSciFi[hitDict[aHit]].GetDetectorID())
+                                  hitlist.push_back( self.digiSciFi[hitDict[aHit]])
+                                  if self.options.debug: print(aHit,hitDict[aHit],self.digiSciFi[hitDict[aHit]].GetDetectorID())
                           if self.options.debug: print(hitlist.size())
-                          aCluster = ROOT.sndCluster(first,N,hitlist,scifiDet,False)
+                          aCluster = ROOT.sndCluster(first,N,hitlist,self.scifiDet,False)
                           if self.options.debug: print("cluster created")
-                          if  clusScifi.GetSize() == index: clusScifi.Expand(index+10)
-                          clusScifi[index]=aCluster
+                          if  self.clusScifi.GetSize() == index: self.clusScifi.Expand(index+10)
+                          self.clusScifi[index]=aCluster
                           index+=1
                           if c!=hitList[last]:
                                ncl+=1
