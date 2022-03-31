@@ -12,7 +12,7 @@ class ConvRawDataPY(ROOT.FairTask):
       self.debug        = options.debug
       self.monitoring = options.online
       local = False
-      if options.path.find('eos')<0 or os.path.isdir(options.path):    local = True
+      if (options.path.find('eos')<0 and not options.online) or os.path.isdir(options.path):    local = True
       if local: server = ''
       else:
            server = os.environ['EOSSHIP']
