@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import ROOT,os,sys
 import rootUtils as ut
+import ctypes
 
 A,B  = ROOT.TVector3(),ROOT.TVector3()
 
@@ -188,6 +189,7 @@ class Scifi_residuals(ROOT.FairTask):
                   if proj == '':
                      rc = h[hname].Fit('gaus','SQ')
                      fitResult = rc.Get()
+                     if not fitResult: continue
                      for p in Par:
                           globalPos[p+self.projs[o]].SetPoint(s-1,s,fitResult.Parameter(Par[p]))
                           globalPos[p+self.projs[o]].SetPointError(s-1,0.5,fitResult.ParError(1))
