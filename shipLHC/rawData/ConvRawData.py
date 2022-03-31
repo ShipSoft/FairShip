@@ -282,8 +282,8 @@ class ConvRawDataPY(ROOT.FairTask):
                   print(sipmChannel,nSiPMs,nSides,detID,sipm_number)
 
    def printChannelInfo(self):
-         runNr   = str( abs(options.runNumber) ).zfill(6)
-         path    = options.path+'run_'+ runNr+'/'
+         runNr   = str( abs(self.options.runNumber) ).zfill(6)
+         path    = self.options.path+'run_'+ runNr+'/'
          with client.File() as f:
                f.open(self.options.server+path+"/channels.csv")
                status, L = f.read()
