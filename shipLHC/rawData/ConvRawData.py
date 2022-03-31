@@ -91,7 +91,8 @@ class ConvRawDataPY(ROOT.FairTask):
                Ltdc = L.decode().split('\n')
                f.close()
   # calibration data
-         qdc_cal = {}
+         self.qdc_cal = {}
+         qdc_cal = self.qdc_cal
          L = Lqdc
          for l in range(1,len(L)):
                tmp = L[l].replace('\n','').split(',')
@@ -228,15 +229,18 @@ class ConvRawDataPY(ROOT.FairTask):
 
   # following procedure in https://gitlab.cern.ch/scifi-telescope/scifi-rec/-/blob/ettore-tofpet/lib/processors/applycalibration.cpp
    def qdc_chi2(self,board_id,tofpet_id,channel,tac,TDC=0):
+      qdc_cal = self.qdc_cal
       par    = qdc_cal[board_id][tofpet_id][channel][tac]
       parT = qdc_cal[board_id][tofpet_id][channel][tac][TDC]
       return max(par['chi2Ndof'],parT['chi2Ndof'])
 
    def qdc_sat(self,board_id,tofpet_id,channel,tac,v_fine):
+      qdc_cal = self.qdc_cal
       par = qdc_cal[board_id][tofpet_id][channel][tac]
       return v_fine/par['d']
     
    def comb_calibration(self,board_id,tofpet_id,channel,tac,v_coarse,v_fine,t_coarse,t_fine,GQDC = 1.0, TDC=0): # max gain QDC = 3.6
+      qdc_cal = self.qdc_cal
       par  = qdc_cal[board_id][tofpet_id][channel][tac]
       parT = par[TDC]
       x    = t_fine
@@ -249,6 +253,7 @@ class ConvRawDataPY(ROOT.FairTask):
       return timestamp,value,max(par['chi2Ndof'],parT['chi2Ndof']),v_fine/par['d']
 
    def calibrationReport(self):
+      qdc_cal = self.qdc_cal
       report = {}
       TDC = 0
       for b in qdc_cal:
@@ -328,7 +333,7 @@ class ConvRawDataPY(ROOT.FairTask):
                if self.options.debug:
                     print(scifi,board_id,bt.tofpet_id[n],bt.tofpet_channel[n],bt.tac[n],bt.t_coarse[n],bt.t_fine[n],bt.v_coarse[n],bt.v_fine[n])
                tac = bt.tac[n]
-               TDC,QDC,Chi2ndof,satur = comb_calibration(board_id,tofpet_id,tofpet_channel,tac,bt.v_coarse[n],bt.v_fine[n],bt.t_coarse[n],bt.t_fine[n])
+               TDC,QDC,Chi2ndof,satur = self.comb_calibration(board_id,tofpet_id,tofpet_channel,tac,bt.v_coarse[n],bt.v_fine[n],bt.t_coarse[n],bt.t_fine[n])
            else:
                TDC = bt.timestamp[n]
                QDC = bt.value[n]
