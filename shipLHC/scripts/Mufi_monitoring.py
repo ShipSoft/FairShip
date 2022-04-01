@@ -21,34 +21,35 @@ class Mufi_hitMaps(ROOT.FairTask):
        self.T = ROOT.FairRootManager.Instance().GetObject("Reco_MuonTracks")
 
        for s in monitor.systemAndPlanes:
-            ut.bookHist(h,sdict[s]+'Mult','QDCs vs nr hits',200,0.,800.,200,0.,300.)
+            ut.bookHist(h,sdict[s]+'Mult','QDCs vs nr hits; #hits; QDC [a.u.]',200,0.,800.,200,0.,300.)
             for l in range(monitor.systemAndPlanes[s]):
-                  ut.bookHist(h,'hitmult_'+str(s*10+l),'hit mult / plane '+str(s*10+l),61,-0.5,60.5)
-                  ut.bookHist(h,'hit_'+str(s*10+l),'channel map / plane '+str(s*10+l),160,-0.5,159.5)
-                  if s==3:  ut.bookHist(h,'bar_'+str(s*10+l),'hit map / plane '+str(s*10+l),60,-0.5,59.5)
-                  else:       ut.bookHist(h,'bar_'+str(s*10+l),'hit map / plane '+str(s*10+l),10,-0.5,9.5)
-                  ut.bookHist(h,'sig_'+str(s*10+l),'signal / plane '+str(s*10+l),200,0.0,200.)
-                  if s==2:    ut.bookHist(h,'sigS_'+str(s*10+l),'signal / plane '+str(s*10+l),200,0.0,200.)
-                  ut.bookHist(h,'sigL_'+str(s*10+l),'signal / plane '+str(s*10+l),200,0.0,200.)
-                  ut.bookHist(h,'sigR_'+str(s*10+l),'signal / plane '+str(s*10+l),200,0.0,200.)
-                  ut.bookHist(h,'Tsig_'+str(s*10+l),'signal / plane '+str(s*10+l),200,0.0,200.)
+                  ut.bookHist(h,'hitmult_'+str(s*10+l),'hit mult / plane '+str(s*10+l)+'; #hits',61,-0.5,60.5)
+                  ut.bookHist(h,'hit_'+str(s*10+l),'channel map / plane '+str(s*10+l)+'; #channel',160,-0.5,159.5)
+                  if s==3:  ut.bookHist(h,'bar_'+str(s*10+l),'bar map / plane '+str(s*10+l)+'; #bar',60,-0.5,59.5)
+                  else:       ut.bookHist(h,'bar_'+str(s*10+l),'bar map / plane '+str(s*10+l)+'; #bar',10,-0.5,9.5)
+                  ut.bookHist(h,'sig_'+str(s*10+l),'signal / plane '+str(s*10+l)+'; QDC [a.u.]',200,0.0,200.)
+                  if s==2:    ut.bookHist(h,'sigS_'+str(s*10+l),'signal / plane '+str(s*10+l)+'; QDC [a.u.]',200,0.0,200.)
+                  ut.bookHist(h,'sigL_'+str(s*10+l),'signal / plane '+str(s*10+l)+'; QDC [a.u.]',200,0.0,200.)
+                  ut.bookHist(h,'sigR_'+str(s*10+l),'signal / plane '+str(s*10+l)+'; QDC [a.u.]',200,0.0,200.)
+                  ut.bookHist(h,'Tsig_'+str(s*10+l),'signal / plane '+str(s*10+l)+'; QDC [a.u.]',200,0.0,200.)
+                  # not used currently?
                   ut.bookHist(h,'occ_'+str(s*10+l),'channel occupancy '+str(s*10+l),100,0.0,200.)
                   ut.bookHist(h,'occTag_'+str(s*10+l),'channel occupancy '+str(s*10+l),100,0.0,200.)
 
-                  ut.bookHist(h,'leftvsright_1','Veto hits in left / right',10,-0.5,9.5,10,-0.5,9.5)
-                  ut.bookHist(h,'leftvsright_2','US hits in left / right',10,-0.5,9.5,10,-0.5,9.5)
-                  ut.bookHist(h,'leftvsright_3','DS hits in left / right',2,-0.5,1.5,2,-0.5,1.5)
-                  ut.bookHist(h,'leftvsright_signal_1','Veto signal in left / right',100,-0.5,200.,100,-0.5,200.)
-                  ut.bookHist(h,'leftvsright_signal_2','US signal in left / right',100,-0.5,200.,100,-0.5,200.)
-                  ut.bookHist(h,'leftvsright_signal_3','DS signal in left / right',100,-0.5,200.,100,-0.5,200.)
+                  ut.bookHist(h,'leftvsright_1','Veto hits in left / right; Left: # hits; Right: # hits',10,-0.5,9.5,10,-0.5,9.5)
+                  ut.bookHist(h,'leftvsright_2','US hits in left / right; L: # hits; R: # hits',10,-0.5,9.5,10,-0.5,9.5)
+                  ut.bookHist(h,'leftvsright_3','DS hits in left / right; L: # hits; R: # hits',2,-0.5,1.5,2,-0.5,1.5)
+                  ut.bookHist(h,'leftvsright_signal_1','Veto signal in left / right; Left: QDC [a.u.]; Right: QDC [a.u.]',100,-0.5,200.,100,-0.5,200.)
+                  ut.bookHist(h,'leftvsright_signal_2','US signal in left / right; L: QDC [a.u.]; R: QDC [a.u.]',100,-0.5,200.,100,-0.5,200.)
+                  ut.bookHist(h,'leftvsright_signal_3','DS signal in left / right; L: QDC [a.u.]; R: QDC [a.u.]',100,-0.5,200.,100,-0.5,200.)
 
                   ut.bookHist(h,'dtime','delta event time; dt [ns]',100,0.0,1000.)
                   ut.bookHist(h,'dtimeu','delta event time; dt [us]',100,0.0,1000.)
                   ut.bookHist(h,'dtimem','delta event time; dt [ms]',100,0.0,1000.)
 
-                  ut.bookHist(h,'bs','beam spot',100,-100.,10.,100,0.,80.)
-                  ut.bookHist(h,'bsDS','beam spot',60,-0.5,59.5,60,-0.5,59.5)
-                  ut.bookHist(h,'slopes','track slopes',100,-0.1,0.1,100,-0.1,0.1)
+                  ut.bookHist(h,'bs','beam spot; x[cm]; y[cm]',100,-100.,10.,100,0.,80.)
+                  ut.bookHist(h,'bsDS','beam spot, #bar X, #bar Y',60,-0.5,59.5,60,-0.5,59.5)
+                  ut.bookHist(h,'slopes','track slopes; slope X [rad]; slope Y [rad]',100,-0.1,0.1,100,-0.1,0.1)
 
        self.listOfHits = {1:[],2:[],3:[]}
    def ExecuteEvent(self,event):

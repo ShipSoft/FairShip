@@ -11,14 +11,14 @@ class Scifi_hitMaps(ROOT.FairTask):
        self.M = monitor
        h = self.M.h
        for s in range(10):
-          ut.bookHist(h,'posX_'+str(s),'x',2000,-100.,100.)
-          ut.bookHist(h,'posY_'+str(s),'y',2000,-100.,100.)
-          if s%2==1: ut.bookHist(h,'mult_'+str(s),'mult vertical station '+str(s//2+1),100,-0.5,99.5)
-          else: ut.bookHist(h,'mult_'+str(s),'mult horizontal station '+str(s//2+1),100,-0.5,99.5)
+          ut.bookHist(h,'posX_'+str(s),'x; x [cm]',2000,-100.,100.)
+          ut.bookHist(h,'posY_'+str(s),'y; y[cm]',2000,-100.,100.)
+          if s%2==1: ut.bookHist(h,'mult_'+str(s),'mult vertical station '+str(s//2+1)+'; #hits',100,-0.5,99.5)
+          else: ut.bookHist(h,'mult_'+str(s),'mult horizontal station '+str(s//2+1)+'; #hits',100,-0.5,99.5)
        for mat in range(30):
-          ut.bookHist(h,'mat_'+str(mat),'hit map / mat',512,-0.5,511.5)
-          ut.bookHist(h,'sig_'+str(mat),'signal / mat',200,-50.0,150.)
-          ut.bookHist(h,'tdc_'+str(mat),'tdc / mat',200,-1.,4.)
+          ut.bookHist(h,'mat_'+str(mat),'hit map / mat; mat',512,-0.5,511.5)
+          ut.bookHist(h,'sig_'+str(mat),'signal / mat; QDC [a.u.]',200,-50.0,150.)
+          ut.bookHist(h,'tdc_'+str(mat),'tdc / mat; timestamp [LHC clock cycles]',200,-1.,4.)
    def ExecuteEvent(self,event):
        h = self.M.h
        mult = [0]*10
@@ -91,8 +91,8 @@ class Scifi_residuals(ROOT.FairTask):
                ut.bookHist(h,'resX'+proj+'_Scifi'+str(s*10+o),'residual '+proj+str(s*10+o)+'; [#mum]',NbinsRes,xmin,xmax,100,-50.,0.)
                ut.bookHist(h,'resY'+proj+'_Scifi'+str(s*10+o),'residual '+proj+str(s*10+o)+'; [#mum]',NbinsRes,xmin,xmax,100,10.,60.)
                ut.bookHist(h,'resC'+proj+'_Scifi'+str(s*10+o),'residual '+proj+str(s*10+o)+'; [#mum]',NbinsRes,xmin,xmax,128*4*3,-0.5,128*4*3-0.5)
-               ut.bookHist(h,'track_Scifi'+str(s*10+o),'track x/y '+str(s*10+o),80,-70.,10.,80,0.,80.)
-               ut.bookHist(h,'trackChi2/ndof','track chi2/ndof vs ndof',100,0,100,20,0,20)
+               ut.bookHist(h,'track_Scifi'+str(s*10+o),'track x/y '+str(s*10+o)+'; x [cm]; y [cm]',80,-70.,10.,80,0.,80.)
+               ut.bookHist(h,'trackChi2/ndof','track chi2/ndof vs ndof; #chi^{2}/Ndof; Ndof',100,0,100,20,0,20)
                ut.bookHist(h,'trackSlopes','track slope; x [mrad]; y [mrad]',1000,-100,100,1000,-100,100)
 
        if alignPar:
