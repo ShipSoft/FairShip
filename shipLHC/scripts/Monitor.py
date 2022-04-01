@@ -140,8 +140,7 @@ class Monitoring():
 
             rc = eventChain.GetEvent(0)
 # start FairRunAna
-            if not ROOT.FairRootManager.Instance():
-                 self.run  = ROOT.FairRunAna()
+            self.run  = ROOT.FairRunAna()
             ioman = ROOT.FairRootManager.Instance()
             ioman.SetTreeName(eventChain.GetName())
             outFile = ROOT.TMemFile('dummy','CREATE')
