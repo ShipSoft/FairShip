@@ -284,13 +284,25 @@ class ConvRawDataPY(ROOT.FairTask):
    def printChannelInfo(self):
          runNr   = str( abs(self.options.runNumber) ).zfill(6)
          path    = self.options.path+'run_'+ runNr+'/'
+         from XRootD import client
          with client.File() as f:
                f.open(self.options.server+path+"/channels.csv")
                status, L = f.read()
                Lchannel = L.decode().split('\n')
                f.close()
          for l in Lchannel: print(l)
-           
+
+   def printCurrentRun(self):
+         filename = "currently_processed_file.txt"
+         path    = self.options.path
+         from XRootD import client
+         with client.File() as f:
+               f.open(self.options.server+path+filename)
+               status, L = f.read()
+               Lchannel = L.decode().split('\n')
+               f.close()
+         for l in Lchannel: print(l)
+
   # reading hits and converting to event information
 
   # https://gitlab.cern.ch/snd-scifi/software/-/wikis/Raw-data-format 
