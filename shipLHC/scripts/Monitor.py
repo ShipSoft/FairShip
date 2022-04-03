@@ -61,11 +61,12 @@ class Monitoring():
    " set of monitor histograms "
    def __init__(self,options,FairTasks):
         self.options = options
+        self.EventNumber = -1
 # MuFilter mapping of planes and bars 
         self.systemAndPlanes  = {1:2,2:5,3:7}
         self.systemAndBars     = {1:7,2:10,3:60}
         self.systemAndChannels     = {1:[8,0],2:[6,2],3:[1,0]}
-        self.sdict                     = {1:'Veto',2:'US',3:'DS'}
+        self.sdict                     = {0:'Scifi',1:'Veto',2:'US',3:'DS'}
 
         self.freq      = 160.E6
         self.TDC2ns = 1E9/self.freq
@@ -170,6 +171,7 @@ class Monitoring():
             self.eventTree = self.options.online.sTree
       else: 
             self.eventTree.GetEvent(n)
+      self.EventNumber = n
       return self.eventTree
 
    def systemAndOrientation(self,s,plane):
@@ -319,8 +321,11 @@ class Monitoring():
       return (par[2] * step * summe * invsq2pi / par[3])
 
    def myPrint(self,tc,name,withRootFile=True):
+     srun = 'run'+str(self.options.runNumber)
+     if not os.path.isdir(srun): os.system('mkdir '+sdir)
      tc.Update()
-     tc.Print(name+'-run'+str(self.options.runNumber)+'.png')
-     tc.Print(name+'-run'+str(self.options.runNumber)+'.pdf')
-     if withRootFile: tc.Print(name+'-run'+str(self.options.runNumber)+'.root')
+     pname = srun+'/'+name+'-'+srun
+     tc.Print(pname+'.png')
+     tc.Print(pname+'.pdf')
+     if withRootFile: tc.Print(pname+'.root')
 
