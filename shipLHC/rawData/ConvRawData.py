@@ -288,9 +288,9 @@ class ConvRawDataPY(ROOT.FairTask):
          with client.File() as f:
                f.open(self.options.server+path+"/channels.csv")
                status, L = f.read()
-               Lchannel = L.decode().split('\n')
+               self.Lchannel = L.decode().split('\n')
                f.close()
-         for l in Lchannel: print(l)
+         for l in self.Lchannel: print(l)
 
    def printCurrentRun(self):
          filename = "currently_processed_file.txt"
@@ -299,9 +299,9 @@ class ConvRawDataPY(ROOT.FairTask):
          with client.File() as f:
                f.open(self.options.server+path+filename)
                status, L = f.read()
-               Lchannel = L.decode().split('\n')
+               self.Lcrun = L.decode().split('\n')
                f.close()
-         for l in Lchannel: print(l)
+         for l in self.Lcrun: print(l)
 
   # reading hits and converting to event information
 

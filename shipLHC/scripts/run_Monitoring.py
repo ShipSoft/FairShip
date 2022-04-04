@@ -40,11 +40,35 @@ parser.add_argument("--goodEvents", dest="goodEvents", action='store_true',defau
 parser.add_argument("--withTrack", dest="withTrack", action='store_true',default=False)
 parser.add_argument("--nTracks", dest="nTracks",default=0,type=int)
 parser.add_argument("--save", dest="save", action='store_true',default=False)
-
 options = parser.parse_args()
+
+options.dashboard = "currently_processed_file.txt"
+
+def currentRun():
+      with client.File() as f:
+            f.open(options.server+options.path+options.dashboard)
+            status, L = f.read()
+            Lcrun = L.decode().split('\n')
+            f.close()
+         for l in Lcrun:
+            if not l.find('/home/snd/snd/') < 0:
+                 tmp = l.split('/')
+                 currentRun = tmp[len(tmp)-2]
+                 currentPart = tmp[len(tmp)-1]
+                 break
+      return currentRun,currentPart
+
+('run_000045', 'data_0000.root')
+
+
 if options.auto:
    options.online = True
    from XRootD import client
+# search for current run
+   if options.runNumber < 0:
+        currentRun,currentPart =  currentRun()
+        options.runNumber = int(currentRun.split('_')[1])
+        options.partition = int(currentPart.split('_')[1].split('.')[0])
 else:
    if options.runNumber < 0:
        print("run number required for non-auto mode")
@@ -97,7 +121,6 @@ else:
          check every 5 seconds: if no new file re-open again
          if new file, finish run, publish histograms, and restart with new file
    """
-   dashboard = "currently_processed_file.txt"
 
    dN = 10
    Nupdate = 10000
@@ -129,17 +152,7 @@ else:
          continue
       else:  
       # check if file has changed
-         with client.File() as f:
-            f.open(options.server+options.path+dashboard)
-            status, L = f.read()
-            Lchannel = L.decode().split('\n')
-            f.close()
-         for l in Lchannel:
-            if not l.find('/home/snd/snd/') < 0:
-                 tmp = l.split('/')
-                 currentRun = tmp[len(tmp)-2]
-                 currentPart = tmp[len(tmp)-1]
-                 break
+         currentRun,currentPart =  currentRun()
          if not currentRun == lastRun:
             for m in monitorTasks:
                monitorTasks[m].Plot()
