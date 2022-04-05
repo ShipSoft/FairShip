@@ -145,9 +145,9 @@ void Scifi::ConstructGeometry()
 
 	Double_t fFiberLength         = conf_floats["Scifi/fiber_length"];
 	Double_t fScintCore_rmax  =  conf_floats["Scifi/scintcore_rmax"];
-	Double_t fClad1_rmin           =  fScintCore_rmax;
+	Double_t fClad1_rmin  =  conf_floats["Scifi/clad1_rmin"];
 	Double_t fClad1_rmax =  conf_floats["Scifi/clad1_rmax"];
-	Double_t fClad2_rmin =   fClad1_rmax;
+	Double_t fClad2_rmin  =  conf_floats["Scifi/clad2_rmin"];
 	Double_t fClad2_rmax =  conf_floats["Scifi/clad2_rmax"];
 
 	Double_t fHorPitch         =  conf_floats["Scifi/horizontal_pitch"]; //Fiber position params
@@ -280,6 +280,7 @@ void Scifi::ConstructGeometry()
   
   //Adding vertical fibers
   for (int irow = 0; irow < fNFibers_z; irow++){
+    zPosM =  -fZScifiMat/2 + fClad2_rmax/2 + irow*fVertPitch;
     if (irow%2 == 0){
       for (int ifiber = 0; ifiber < fNFibers_Srow; ifiber++){
 	VertMatVolume->AddNode(FiberVolume, 1e6*dummy_station + 1e5*1 + 1e4*dummy_mat +  1e3*(irow + 1) + ifiber + 1, new TGeoCombiTrans("rottransvert0", offsetS + ifiber*fHorPitch, 0, zPosM, rotvertfiber));
