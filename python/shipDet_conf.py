@@ -133,6 +133,7 @@ def configure(run,ship_geo):
       ship_geo.hadronAbsorber.WithConstField, ship_geo.muShield.WithConstField)
  elif ship_geo.muShieldDesign == 8:
   MuonShield = ROOT.ShipMuonShield(ship_geo.muShieldGeo,
+                                   ship_geo.cave.floorHeightMuonShield,
                                    ship_geo.muShieldWithCobaltMagnet,
                                    ship_geo.muShieldStepGeo,
                                    ship_geo.hadronAbsorber.WithConstField,

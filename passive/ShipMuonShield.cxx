@@ -27,6 +27,7 @@ ShipMuonShield::~ShipMuonShield() {}
 ShipMuonShield::ShipMuonShield() : FairModule("ShipMuonShield", "") {}
 
 ShipMuonShield::ShipMuonShield(TString geofile,
+                               Double_t Floor,
                                const Int_t withCoMagnet, const Bool_t StepGeo,
                                const Bool_t WithConstAbsorberField, const Bool_t WithConstShieldField)
   : FairModule("MuonShield", "ShipMuonShield")
@@ -39,7 +40,7 @@ ShipMuonShield::ShipMuonShield(TString geofile,
   auto f = TFile::Open(geofile, "read");
   TVectorT<Double_t> params;
   params.Read("params");
-  Double_t LE = 10. * m, floor = 5. * m;
+  Double_t LE = 10. * m, floor = Floor;
   fDesign = 8;
   fField = 1.7;
   dZ0 = 1 * m;
