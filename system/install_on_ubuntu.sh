@@ -21,6 +21,10 @@ sudo pip3 install matplotlib numpy scipy certifi ipython ipywidgets ipykernel no
 
 #ubuntu 20.04 comments
 
+Useful way to setup python3 as default, instead of the now unused python2:
+
+sudo apt-get install python-is-python3
+
 linuxbrew-wrapper is not present anymore. 
 
 metakernel requires pexpect, which appears to be incompatible with the ubuntu 20 version
