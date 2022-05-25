@@ -145,5 +145,4 @@ void TimeDetHit::Print() const
 
 
 // -----------------------------------------------------
-ClassImp(TimeDetHit)
 

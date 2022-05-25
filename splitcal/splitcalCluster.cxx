@@ -242,5 +242,4 @@ void splitcalCluster::Print() const
 }
 // -------------------------------------------------------------------------
 
-ClassImp(splitcalCluster)
 

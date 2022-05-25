@@ -110,4 +110,3 @@ void SciFiHit::GetSciFiXYZ(TVector3 &v, int detID)
 
 }
 
-ClassImp(SciFiHit)

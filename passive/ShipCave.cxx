@@ -16,7 +16,6 @@
 
 #include <stddef.h>                     // for NULL
 
-ClassImp(ShipCave)
 
 void ShipCave::ConstructGeometry()
 {

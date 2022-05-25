@@ -140,4 +140,3 @@ void ecalAnalysisMaterial::Finish()
     fTree->Write();
 }
 
-ClassImp(ecalAnalysisMaterial)

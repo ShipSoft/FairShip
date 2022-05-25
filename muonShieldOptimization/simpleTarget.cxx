@@ -178,4 +178,3 @@ void simpleTarget::Reset()
   fsimpleTargetPointCollection->Clear();
 }
 
-ClassImp(simpleTarget)

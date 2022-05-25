@@ -111,4 +111,3 @@ void ShipTdcSource::FillEventHeader(FairEventHeader *feh)
    return;
 }
 
-ClassImp(ShipTdcSource)

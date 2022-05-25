@@ -4,7 +4,6 @@
 using std::cout;
 using std::endl;
 
-ClassImp(PixelModulesPoint)
 
 // -----   Default constructor   -------------------------------------------
 PixelModulesPoint::PixelModulesPoint()
@@ -41,4 +40,3 @@ void PixelModulesPoint::Print(const Option_t* opt) const
 }
 // -------------------------------------------------------------------------
 
-ClassImp(PixelModulesPoint)

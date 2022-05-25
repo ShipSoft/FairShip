@@ -277,4 +277,3 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
 }
 // -------------------------------------------------------------------------
 
-ClassImp(Pythia8Generator)

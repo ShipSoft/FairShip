@@ -3,7 +3,6 @@
 
 #include <iostream>
 
-ClassImp(strawtubesContFact)
 
 // static strawtubesContFact gstrawtubesContFact;
 

@@ -85,4 +85,3 @@ Bool_t tPythia6Generator::ReadEvent(FairPrimaryGenerator* cpg)
   return kTRUE;
 }
 
-ClassImp(tPythia6Generator)

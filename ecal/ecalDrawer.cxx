@@ -658,4 +658,3 @@ ecalDrawer::ecalDrawer()
 {
 }
 
-ClassImp(ecalDrawer);

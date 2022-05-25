@@ -226,5 +226,4 @@ void splitcalHit::Print() const
 }
 // -------------------------------------------------------------------------
 
-ClassImp(splitcalHit)
 

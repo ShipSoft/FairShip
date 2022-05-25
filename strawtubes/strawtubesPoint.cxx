@@ -41,5 +41,4 @@ void strawtubesPoint::Print() const
 }
 // -------------------------------------------------------------------------
 
-ClassImp(strawtubesPoint)
 

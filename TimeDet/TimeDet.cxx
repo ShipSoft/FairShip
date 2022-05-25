@@ -324,4 +324,3 @@ double TimeDet::GetZBar(int ir,int ic) const
 }
 
 
-ClassImp(TimeDet)

@@ -95,4 +95,3 @@ Int_t ALPACAGenerator::GetNevents()
 }
 
 
-ClassImp(ALPACAGenerator)

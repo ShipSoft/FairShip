@@ -5,7 +5,6 @@
 
 #include <iostream>
 
-ClassImp(ecalContFact)
 
 //static ecalContFact gecalContFact;
 

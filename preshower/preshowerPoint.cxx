@@ -40,5 +40,4 @@ void preshowerPoint::Print(const Option_t* opt) const
 }
 // -------------------------------------------------------------------------
 
-ClassImp(preshowerPoint)
 

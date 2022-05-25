@@ -363,4 +363,3 @@ void DPPythia8Generator::SetParameters(char* par)
 
 // -------------------------------------------------------------------------
 
-ClassImp(DPPythia8Generator)

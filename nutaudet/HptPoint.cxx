@@ -40,5 +40,4 @@ void HptPoint::Print(const Option_t* opt) const
 }
 // -------------------------------------------------------------------------
 
-ClassImp(HptPoint)
 

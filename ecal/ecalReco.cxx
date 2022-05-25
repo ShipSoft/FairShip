@@ -302,4 +302,3 @@ TClonesArray* ecalReco::InitPython(TClonesArray* clusters, ecalStructure* str, e
   return fReconstucted;
 }
 
-ClassImp(ecalReco)

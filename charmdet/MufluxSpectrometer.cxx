@@ -1427,4 +1427,3 @@ MufluxSpectrometerPoint* MufluxSpectrometer::AddHit(Int_t trackID, Int_t detID,
 }
 
 
-ClassImp(MufluxSpectrometer)

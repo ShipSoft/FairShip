@@ -21,7 +21,6 @@ class FairParSet;
 
 using namespace std;
 
-ClassImp(ShipPassiveContFact)
 
 //static ShipPassiveContFact gShipPassiveContFact;
 

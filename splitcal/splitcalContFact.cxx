@@ -3,7 +3,6 @@
 
 #include <iostream>
 
-ClassImp(splitcalContFact)
 
 //static splitcalContFact gsplitcalContFact;
 

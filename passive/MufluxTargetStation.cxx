@@ -288,4 +288,3 @@ void MufluxTargetStation::ConstructGeometry()
 
 }
 
-ClassImp(MufluxTargetStation)

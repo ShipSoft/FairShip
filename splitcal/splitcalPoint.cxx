@@ -41,5 +41,4 @@ void splitcalPoint::Print() const
 }
 // -------------------------------------------------------------------------
 
-ClassImp(splitcalPoint)
 

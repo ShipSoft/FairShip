@@ -41,5 +41,4 @@ void MuonTaggerPoint::Print(const Option_t* opt) const
 }
 // -------------------------------------------------------------------------
 
-ClassImp(MuonTaggerPoint)
 

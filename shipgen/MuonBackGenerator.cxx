@@ -243,4 +243,3 @@ void MuonBackGenerator::CloseFile()
  delete fInputFile;
 }
 
-ClassImp(MuonBackGenerator)

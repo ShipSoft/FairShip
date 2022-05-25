@@ -4,7 +4,6 @@
 using std::cout;
 using std::endl;
 
-ClassImp(SpectrometerPoint)
 
 // -----   Default constructor   -------------------------------------------
 SpectrometerPoint::SpectrometerPoint()
@@ -41,4 +40,3 @@ void SpectrometerPoint::Print(const Option_t* opt) const
 }
 // -------------------------------------------------------------------------
 
-ClassImp(SpectrometerPoint)

@@ -601,4 +601,3 @@ strawtubesPoint* strawtubes::AddHit(Int_t trackID, Int_t detID,
          time, length, eLoss);
 }
 
-ClassImp(strawtubes)

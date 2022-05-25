@@ -39,4 +39,3 @@ ecalMaximum::ecalMaximum(ecalCell* cell, Double_t z)
   fX/=me; fY/=me;
 }
 
-ClassImp(ecalMaximum)

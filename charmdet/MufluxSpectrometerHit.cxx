@@ -204,4 +204,3 @@ void MufluxSpectrometerHit::Print() const
 // ------------------------------------------------------------------------- 
 
  
- ClassImp(MufluxSpectrometerHit) 

@@ -84,4 +84,3 @@ ecalClusterCalibration::~ecalClusterCalibration()
   ;
 }
 
-ClassImp(ecalClusterCalibration)

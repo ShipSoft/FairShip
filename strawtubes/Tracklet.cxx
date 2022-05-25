@@ -38,5 +38,4 @@ Int_t Tracklet::link2MCTrack(TClonesArray* strawPoints, Float_t min=0.6)
  
 }
 
-ClassImp(Tracklet)
 

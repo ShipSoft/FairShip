@@ -55,5 +55,4 @@ Float_t hcalModuleMC::GetTrackClusterEnergy(Int_t num)
   return energy;
 }
 
-ClassImp(hcalModuleMC)
 

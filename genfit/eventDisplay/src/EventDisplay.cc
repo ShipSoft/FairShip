@@ -57,7 +57,6 @@
 #include "boost/scoped_ptr.hpp"
 
 
-ClassImp(genfit::EventDisplay)
 
 namespace genfit {
 

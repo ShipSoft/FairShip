@@ -488,4 +488,3 @@ void ShipStack::SelectTracks()
 
 
 
-ClassImp(ShipStack)

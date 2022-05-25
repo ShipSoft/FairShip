@@ -137,4 +137,3 @@ void RPCUnpack::Reset()
    fNHits = 0;
 }
 
-ClassImp(RPCUnpack)

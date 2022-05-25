@@ -156,6 +156,5 @@ void ShipBellField::Print() {
 
 
 
-ClassImp(ShipBellField)
 
 
