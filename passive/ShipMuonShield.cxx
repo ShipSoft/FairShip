@@ -945,37 +945,31 @@ void ShipMuonShield::ConstructGeometry()
       // Place in origin of SHiP coordinate system as subnodes placed correctly
       top->AddNode(tShield, 1);
 
-// Concrete around first magnets. i.e. Tunnel
-      Double_t dZ = dZ1 + dZ2;
-      Double_t ZT  = zEndOfAbsorb + dZ;
-      TGeoBBox *box1    = new TGeoBBox("box1", 10*m,10*m,dZ);
-      TGeoBBox *box2    = new TGeoBBox("box2", 15*m,15*m,dZ);
-      TGeoCompositeShape *compRockS = new TGeoCompositeShape("compRockS", "box2-box1");
-      TGeoVolume *rockS   = new TGeoVolume("rockS", compRockS, concrete);
-      rockS->SetLineColor(11);  // grey
-      rockS->SetTransparency(50);
-      top->AddNode(rockS, 1, new TGeoTranslation(0, 0, ZT ));
-// Concrete around decay tunnel
-      Double_t dZD =  100*m + fMuonShieldLength;
-      TGeoBBox *box3    = new TGeoBBox("box3", 15*m, 15*m,dZD/2.);
-      TGeoBBox *box4    = new TGeoBBox("box4", 10*m, 10*m,dZD/2.);
+      // Create TCC8 tunnel around muon shield
+      Double_t TCC8_length =  170 * m;
+      Double_t z_transition = zEndOfAbsorb + 15 * m;
+      auto *muon_shield_cavern = new TGeoBBox("muon_shield_cavern", 5 * m, 3.75 * m, TCC8_length / 2.);
+      auto *muon_shield_rock = new TGeoBBox("muon_shield_rock", 20 * m,20 * m, TCC8_length / 2.);
+      auto *TCC8_shift = new TGeoTranslation("TCC8_shift", 2.3 * m, 2.55 * m, 0 * m)
+      TCC8_shift->RegisterYourself();
+      auto *compRockS = new TGeoCompositeShape("compRockS", "muon_shield_rock - muon_shield_cavern:TCC8_shift");
+      auto *TCC8 = new TGeoVolume("TCC8", compRockS, concrete);
+      TCC8->SetLineColor(11);  // grey
+      TCC8->SetTransparency(50);
+      top->AddNode(TCC8, 1, new TGeoTranslation(0, 0, z_transition - TCC8_length / 2.));
 
-      if (fDesign >= 7 && fFloor > 0) {
-	// Only add floor for new shield
-	TGeoBBox *box5 = new TGeoBBox("shield_floor", 10 * m, fFloor / 2.,
-				      fMuonShieldLength / 2. - dZ - 14.2 * cm); // substract CoatWall
-	TGeoVolume *floor = new TGeoVolume("floorM", box5, concrete);
-	floor->SetLineColor(11); // grey
-	top->AddNode(floor, 1, new TGeoTranslation(0, -10 * m + fFloor / 2.,
-						   zEndOfAbsorb +
-						       fMuonShieldLength / 2. +dZ + 14.2 * cm)); // avoiding overlap with CoatWall
-      }
-      TGeoCompositeShape *compRockD =
-	  new TGeoCompositeShape("compRockD", "(box3-box4)");
-      TGeoVolume *rockD   = new TGeoVolume("rockD", compRockD, concrete);
-      rockD->SetLineColor(11);  // grey
-      rockD->SetTransparency(50);
-      top->AddNode(rockD, 1, new TGeoTranslation(0, 0, zEndOfAbsorb + 2*dZ + dZD/2.));
+      // Create ECN3 cavern around vessel
+      Double_t ECN3_length =  100 * m;
+      auto *experiment_rock = new TGeoBBox("experiment_rock", 20 * m, 20 * m, ECN3_length / 2.);
+      auto *experiment_cavern = new TGeoBBox("experiment_cavern", 10 * m, 10 * m, ECN3_length / 2.);
+      auto *ECN3_shift = new TGeoTranslation("ECN3_shift", 3.5 * m, 4.7 * m, 0 * m)
+      ECN3_shift->RegisterYourself();
+
+      auto *compRockD = new TGeoCompositeShape("compRockD", "(experiment_rock - experiment_cavern:ECN3_shift)");
+      auto *ECN3 = new TGeoVolume("ECN3", compRockD, concrete);
+      ECN3->SetLineColor(11);  // grey
+      ECN3->SetTransparency(50);
+      top->AddNode(ECN3, 1, new TGeoTranslation(0, 0, z_transition + ECN3_length / 2.));
 //
     } else {
      Fatal("ShipMuonShield","Design %i does not match implemented designs",fDesign);
