@@ -6,6 +6,7 @@ set(INCLUDE_DIRECTORIES
 ${CMAKE_SOURCE_DIR}/shipdata
 ${CMAKE_SOURCE_DIR}/genfit/core/include
 ${CMAKE_SOURCE_DIR}/genfit/fitters/include
+${VMC_INCLUDE_DIRS}
 )
 
 include_directories( ${INCLUDE_DIRECTORIES}  ${FAIRROOT_INCLUDE_DIR} ${FairLogger_INCDIR} ${FMT_INCLUDE_DIR}

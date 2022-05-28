@@ -133,6 +133,14 @@ find_package2(PUBLIC HEPMC)
 find_package2(PUBLIC FairRoot REQUIRED)
 find_package2(PUBLIC FairLogger REQUIRED)
 
+if(ROOT_FOUND_VERSION GREATER 62599)
+  find_package2(PUBLIC VMC REQUIRED)
+  set(VMCLIB VMCLibrary)
+else()
+  set(VMCLIB ROOT::VMC)
+endif()
+
+
 IF(DEFINED ${BOOST_ROOT})
   Set(Boost_NO_SYSTEM_PATHS TRUE)
   Set(Boost_NO_BOOST_CMAKE TRUE)
@@ -252,7 +260,7 @@ add_subdirectory (genfit)
 add_subdirectory (preshower)
 add_subdirectory (pid)
 add_subdirectory (muonShieldOptimization)
-add_subdirectory (online)
+# add_subdirectory (online)  is not anymore compatible with FairRoot
 add_subdirectory (millepede)
 
 FIND_PATH(TEvePath NAMES TEveEventManager.h PATHS
