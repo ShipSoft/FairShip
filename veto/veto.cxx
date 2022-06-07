@@ -212,7 +212,7 @@ double wx(double z){
     }
   }
   
-  return wx1+(z-z1)*(wx2-wx1)/(z2-z1);
+  return 0.8 * (wx1 + (z - z1) * (wx2 - wx1) / (z2 - z1));
 }
 
 double wy(double z){
@@ -246,7 +246,7 @@ double wy(double z){
     }
   }
   
-  return wy1+(z-z1)*(wy2-wy1)/(z2-z1);
+  return 0.8* (wy1 + (z - z1) * (wy2 - wy1) / (z2 - z1));
 }
 
 
