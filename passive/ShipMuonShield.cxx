@@ -947,12 +947,16 @@ void ShipMuonShield::ConstructGeometry()
 
       // Create TCC8 tunnel around muon shield
       Double_t TCC8_length =  170 * m;
-      Double_t z_transition = zEndOfAbsorb + 15 * m;
+      Double_t TCC8_trench_length = 15 * m;
+      Double_t z_transition = zEndOfAbsorb + TCC8_trench_length;
       auto *muon_shield_cavern = new TGeoBBox("muon_shield_cavern", 5 * m, 3.75 * m, TCC8_length / 2.);
       auto *muon_shield_rock = new TGeoBBox("muon_shield_rock", 20 * m,20 * m, TCC8_length / 2.);
-      auto *TCC8_shift = new TGeoTranslation("TCC8_shift", 2.3 * m, 2.55 * m, 0 * m)
+      auto *muon_shield_trench = new TGeoBBox("muon_shield_trench", 1 * m, 2 * m, TCC8_trench_length / 2.);
+      auto *TCC8_trench_shift = new TGeoTranslation("TCC8_trench_shift", 0 * m, 0 * m, TCC8_length / 2. - TCC8_trench_length / 2.);
+      TCC8_trench_shift->RegisterYourself();
+      auto *TCC8_shift = new TGeoTranslation("TCC8_shift", 2.3 * m, 2.55 * m, 0 * m);
       TCC8_shift->RegisterYourself();
-      auto *compRockS = new TGeoCompositeShape("compRockS", "muon_shield_rock - muon_shield_cavern:TCC8_shift");
+      auto *compRockS = new TGeoCompositeShape("compRockS", "muon_shield_rock - muon_shield_cavern:TCC8_shift - muon_shield_trench:TCC8_trench_shift");
       auto *TCC8 = new TGeoVolume("TCC8", compRockS, concrete);
       TCC8->SetLineColor(11);  // grey
       TCC8->SetTransparency(50);
@@ -962,7 +966,7 @@ void ShipMuonShield::ConstructGeometry()
       Double_t ECN3_length =  100 * m;
       auto *experiment_rock = new TGeoBBox("experiment_rock", 20 * m, 20 * m, ECN3_length / 2.);
       auto *experiment_cavern = new TGeoBBox("experiment_cavern", 10 * m, 10 * m, ECN3_length / 2.);
-      auto *ECN3_shift = new TGeoTranslation("ECN3_shift", 3.5 * m, 4.7 * m, 0 * m)
+      auto *ECN3_shift = new TGeoTranslation("ECN3_shift", 3.5 * m, 4.7 * m, 0 * m);
       ECN3_shift->RegisterYourself();
 
       auto *compRockD = new TGeoCompositeShape("compRockD", "(experiment_rock - experiment_cavern:ECN3_shift)");
