@@ -969,7 +969,19 @@ void ShipMuonShield::ConstructGeometry()
       auto *ECN3_shift = new TGeoTranslation("ECN3_shift", 3.5 * m, 4.7 * m, 0 * m);
       ECN3_shift->RegisterYourself();
 
-      auto *compRockD = new TGeoCompositeShape("compRockD", "(experiment_rock - experiment_cavern:ECN3_shift)");
+      auto* ECN3_wide_trench = new TGeoBBox("ECN3_wide_trench", 7 * m, 4.3 * m, 25 / 2. * m);
+      auto *ECN3_wide_trench_shift = new TGeoTranslation("ECN3_wide_trench_shift", 3.5 * m, 0 * m, 25 / 2. * m);
+      ECN3_wide_trench_shift->RegisterYourself();
+
+      auto* ECN3_narrow_trench = new TGeoBBox("ECN3_narrow_trench", 3.5 * m, 4.3 * m, 25 / 2. * m);
+      auto *ECN3_narrow_trench_shift = new TGeoTranslation("ECN3_narrow_trench_shift", 0 * m, 0 * m, - 25 / 2.* m);
+      ECN3_narrow_trench_shift->RegisterYourself();
+
+      auto *compRockD = new TGeoCompositeShape("compRockD",
+                                               "experiment_rock - experiment_cavern:ECN3_shift"
+                                               "- ECN3_narrow_trench:ECN3_narrow_trench_shift"
+                                               "- ECN3_wide_trench:ECN3_wide_trench_shift"
+      );
       auto *ECN3 = new TGeoVolume("ECN3", compRockD, concrete);
       ECN3->SetLineColor(11);  // grey
       ECN3->SetTransparency(50);
