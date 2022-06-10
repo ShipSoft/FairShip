@@ -969,14 +969,11 @@ if options.geoFile:
  fRun.SetGeomFile(options.geoFile)
 
 if options.InputFile[0:4] == "/eos": options.InputFile=ROOT.gSystem.Getenv("EOSSHIP")+options.InputFile
-if hasattr(fRun,'SetSource'):
- inFile = ROOT.FairFileSource(options.InputFile)
- fRun.SetSource(inFile)
-else:
- fRun.SetInputFile(options.InputFile)
+inFile = ROOT.FairFileSource(options.InputFile)
+fRun.SetSource(inFile)
 if options.OutputFile == None:
   options.OutputFile = ROOT.TMemFile('event_display_output', 'recreate')
-fRun.SetOutputFile(options.OutputFile)
+fRun.SetSink(ROOT.FairRootFileSink(options.OutputFile))
 
 if options.ParFile:
  rtdb      = fRun.GetRuntimeDb()
