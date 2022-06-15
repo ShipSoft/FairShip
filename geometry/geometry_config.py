@@ -3,8 +3,8 @@ import shipunit as u
 import ROOT as r
 from ShipGeoConfig import AttrDict, ConfigRegistry
 # the following params should be passed through 'ConfigRegistry.loadpy' method
-# muShieldDesign = 5  # 1=passive 2=active 5=TP design 6=magnetized hadron absorber 9=optimised with T4 as constraint, 8=requires config file
-#                      10=with field map for hadron absorber, 11=9 with field map for muon shield
+# muShieldDesign = 7  #  7 = short magnet design 9 = optimised with T4 as constraint, 8=requires config file
+#                      10 = with field map for hadron absorber, 11 = 9 with field map for muon shield
 # nuTargetPassive = 1  #0 = with active layers, 1 = only passive
 # nuTauTargetDesign  =   #0 = TP, 1 = NEW with magnet, 2 = NEW without magnet, 3 = 2018 design
 
@@ -13,7 +13,7 @@ from ShipGeoConfig import AttrDict, ConfigRegistry
 # preshowerOption = 0 # 1=simple preShower detector for conceptual studies, moves calo and muon stations
 # tankDesign = 5 #  4=TP elliptical tank design, 5 = optimized conical rectangular design, 6=5 without segment-1
 if "muShieldDesign" not in globals():
-    muShieldDesign = 5
+    muShieldDesign = 7
 if "muShieldGeo" not in globals():
     muShieldGeo = None
 if "nuTargetPassive" not in globals():
@@ -309,7 +309,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.muShield.Field = 1.8 # in units of Tesla expected by ShipMuonShield
     # design 4,5,6
     c.muShield.LE  = 10*u.m     # - 0.5 m air - Goliath: 4.5 m - 0.5 m air - nu-tau mu-det: 3 m - 0.5 m air. finally 10m asked by Giovanni
-    c.muShield.dZ0 = 2.5*u.m if muShieldDesign == 6 else 1*u.m
+    c.muShield.dZ0 = 1*u.m
     c.muShield.dZ1 = 3.5*u.m
     c.muShield.dZ2 = 6.*u.m
     c.muShield.dZ3 = 2.5*u.m
@@ -391,44 +391,8 @@ with ConfigRegistry.register_config("basic") as c:
         ) + c.muShield.LE
         c.muShield.z = -(c.decayVolume.length + c.muShield.length) / 2.
 
-    if muShieldDesign == 3:
-     c.muShield.dZ1 = 3.5*u.m
-     c.muShield.dZ2 = 5.*u.m
-     c.muShield.dZ3 = 3.5*u.m
-     c.muShield.dZ4 = 2.0*u.m
-     c.muShield.dZ5 = 1.*u.m
-     c.muShield.dZ6 = 3.*u.m
-     c.muShield.dZ7 = 3.*u.m
-     c.muShield.dZ8 = 3.*u.m
-     c.muShield.dXgap = 0.2*u.m
-
-    if muShieldDesign == 2:
-     c.muShield.dZ0 = 0*u.m      #  extra hadron absorber
-     c.muShield.dZ1 = 2.5*u.m
-     c.muShield.dZ2 = 3.5*u.m
-     c.muShield.dZ3 = 3.0*u.m
-     c.muShield.dZ4 = 3.0*u.m
-     c.muShield.dZ5 = 2.5*u.m
-     c.muShield.dZ6 = 2.5*u.m
-     c.muShield.length = 2*(c.muShield.dZ1+c.muShield.dZ2+c.muShield.dZ3+c.muShield.dZ4+
-                         c.muShield.dZ5+c.muShield.dZ6) + c.muShield.LE  # leave some space for nu-tau detector   
-    # for passive design, fDesign==1
-    if muShieldDesign == 1:
-        c.muShield.length =  70*u.m 
-        c.muShield.z  =  -c.decayVolume.length/2.-c.muShield.length/2. - c.muShield.LE  # leave some space for nu-tau 
-    if muShieldDesign == 3 or muShieldDesign == 4 or muShieldDesign == 5: 
-     c.muShield.length = 2*(c.muShield.dZ0+c.muShield.dZ1+c.muShield.dZ2+c.muShield.dZ3+c.muShield.dZ4+c.muShield.dZ5+c.muShield.dZ6
-                         +c.muShield.dZ7+c.muShield.dZ8 ) + c.muShield.LE  # leave some space for nu-tau 
-     c.muShield.z  =  -c.decayVolume.length/2.-c.muShield.length/2.
-    if muShieldDesign == 6: 
-     c.muShield.length = 2*(c.muShield.dZ1+c.muShield.dZ2+c.muShield.dZ3+c.muShield.dZ4+c.muShield.dZ5+c.muShield.dZ6
-                         +c.muShield.dZ7+c.muShield.dZ8 ) + c.muShield.LE  # leave some space for nu-tau 
-     c.muShield.z  =  -c.decayVolume.length/2.-c.muShield.length/2.
-
     c.hadronAbsorber              =  AttrDict(z=0*u.cm)
-    if muShieldDesign > 5:  c.hadronAbsorber.length =  5.00*u.m
-    if muShieldDesign > 6:  c.hadronAbsorber.length =     0*u.m # magnetized, counted inside muonshield 
-    else:                   c.hadronAbsorber.length =  3.00*u.m
+    c.hadronAbsorber.length =     0*u.m # magnetized, counted inside muonshield
     c.hadronAbsorber.z     =  c.muShield.z - c.muShield.length/2. - c.hadronAbsorber.length/2.
 
     c.hadronAbsorber.WithConstField = True

@@ -97,7 +97,7 @@ def configure(run,ship_geo):
  else: cave.SetGeometryFileName("caveWithAir.geo")
  detectorList.append(cave)
 
- if ship_geo.muShieldDesign in [6, 7, 8, 9,10]:  # magnetized hadron absorber defined in ShipMuonShield 
+ if ship_geo.muShieldDesign in [7, 8, 9, 10]:  # magnetized hadron absorber defined in ShipMuonShield
   TargetStation = ROOT.ShipTargetStation("TargetStation",ship_geo.target.length,
                                                         ship_geo.target.z,ship_geo.targetOpt,ship_geo.target.sl)
  else:
@@ -113,13 +113,7 @@ def configure(run,ship_geo):
   TargetStation.SetLayerPosMat(ship_geo.target.xy,slices_length,slices_material)
  detectorList.append(TargetStation)
 
- if ship_geo.muShieldDesign==1:
-  MuonShield = ROOT.ShipMuonShield("MuonShield",ship_geo.muShieldDesign,"ShipMuonShield",ship_geo.muShield.z,ship_geo.muShield.dZ0,ship_geo.muShield.length,\
-                                   ship_geo.muShield.LE) 
- elif ship_geo.muShieldDesign==2:
-  MuonShield = ROOT.ShipMuonShield("MuonShield",ship_geo.muShieldDesign,"ShipMuonShield",ship_geo.muShield.z,ship_geo.muShield.dZ0,ship_geo.muShield.dZ1,\
-               ship_geo.muShield.dZ2,ship_geo.muShield.dZ3,ship_geo.muShield.dZ4,ship_geo.muShield.dZ5,ship_geo.muShield.dZ6,ship_geo.muShield.LE) 
- elif ship_geo.muShieldDesign in [3, 4, 5, 6, 7, 9]:
+ if ship_geo.muShieldDesign in [7, 9]:
   MuonShield = ROOT.ShipMuonShield(
       "MuonShield", ship_geo.muShieldDesign, "ShipMuonShield",
       ship_geo.muShield.z, ship_geo.muShield.dZ0, ship_geo.muShield.dZ1,
@@ -189,7 +183,7 @@ def configure(run,ship_geo):
  detectorList.append(Veto)
  if hasattr(ship_geo,'tauMudet'): # don't support old designs
 
-  if ship_geo.muShieldDesign not in [2,3,4] and hasattr(ship_geo.tauMudet,'Xtot'):
+  if ship_geo.muShieldDesign >= 7 and hasattr(ship_geo.tauMudet,'Xtot'):
    taumuondetector = ROOT.NuTauMudet("NuTauMudet", ship_geo.tauMudet.zMudetC,  ROOT.kTRUE)
    taumuondetector.SetDesign(ship_geo.nuTauTargetDesign)
    taumuondetector.SetTotDimensions(ship_geo.tauMudet.Xtot,ship_geo.tauMudet.Ytot, ship_geo.tauMudet.Ztot )
@@ -461,7 +455,6 @@ def configure(run,ship_geo):
  if not hasattr(ship_geo.Bfield,"fieldMap"):
   if ship_geo.strawDesign == 4 or ship_geo.strawDesign == 10 : fMagField = ROOT.ShipBellField("wilfried", ship_geo.Bfield.max ,ship_geo.Bfield.z,2,ship_geo.Yheight/2.*u.m )  
   else :                                                      fMagField = ROOT.ShipBellField("wilfried", ship_geo.Bfield.max ,ship_geo.Bfield.z,1,ship_geo.Yheight/2.*u.m )  
-  if ship_geo.muShieldDesign==6: fMagField.IncludeTarget(ship_geo.target.xy, ship_geo.target.z0, ship_geo.target.length)
   run.SetField(fMagField)
 #
  exclusionList = []
