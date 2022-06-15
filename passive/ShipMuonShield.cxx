@@ -77,27 +77,9 @@ ShipMuonShield::ShipMuonShield(const char* name, const Int_t Design, const char*
  fWithConstShieldField = WithConstShieldField;
  fStepGeo = StepGeo;
  fWithCoMagnet = withCoMagnet;
- if (fDesign==1){
-     fMuonShieldLength = L1;   
-    }
- if (fDesign==2 || fDesign==3 || fDesign==4 ){
+ if (fDesign < 7){
      Fatal("ShipMuonShield","Design %i not anymore supported",fDesign);
-    }
- if (fDesign==5 || fDesign==6){
-     dZ0 = L0;
-     dZ1 = L1;
-     dZ2 = L2;
-     dZ3 = L3;
-     dZ4 = L4;
-     dZ5 = L5;
-     dZ6 = L6;
-     dZ7 = L7;
-     dZ8 = L8;
-     dXgap= gap;
-     fMuonShieldLength = 2*(dZ1+dZ2+dZ3+dZ4+dZ5+dZ6+dZ7+dZ8) + LE ; //leave some space for nu-tau detector   
-    }
-    
- if (fDesign>=7){
+ } else if (fDesign >= 7){
      dZ1 = L1;
      dZ2 = L2;
      dZ3 = L3;
@@ -108,12 +90,14 @@ ShipMuonShield::ShipMuonShield(const char* name, const Int_t Design, const char*
      dZ8 = L8;
      fMuonShieldLength =
 	 2 * (dZ1 + dZ2 + dZ3 + dZ4 + dZ5 + dZ6 + dZ7 + dZ8) + LE;
-   }
+ }
     
  fFloor = (fDesign >= 7) ? floor : 0;
 
  zEndOfAbsorb = Z + dZ0 - fMuonShieldLength/2.;   
- if(fDesign>=6){zEndOfAbsorb = Z - fMuonShieldLength/2.;}
+ if(fDesign >= 7){
+     zEndOfAbsorb = Z - fMuonShieldLength/2.;
+ }
  fSupport = false;
 }
 
@@ -260,7 +244,7 @@ void ShipMuonShield::CreateMagnet(TString magnetName,TGeoMedium* medium,TGeoVolu
        gap2 = std::max(2., gap2);
     }
 
-    Double_t anti_overlap = (fDesign == 5) ? 0.0 : 0.1; // gap between fields in the
+    Double_t anti_overlap = 0.1; // gap between fields in the
 						   // corners for mitred joints
 						   // (Geant goes crazy when
 						   // they touch each other)
@@ -294,7 +278,7 @@ void ShipMuonShield::CreateMagnet(TString magnetName,TGeoMedium* medium,TGeoVolu
                                           dY2};
 
     std::array<Double_t, 16> cornersMainSideL = 
-      fDesign <= 7 ?
+      fDesign == 7 ?
       std::array<Double_t, 16>{
 	dX + middleGap + gap, -HmainSideMag,
 	dX + middleGap + gap, HmainSideMag,
@@ -320,7 +304,7 @@ void ShipMuonShield::CreateMagnet(TString magnetName,TGeoMedium* medium,TGeoVolu
        cornersMainSideR, cornersCLTA, cornersCRBA,
        cornersCRTA, cornersTR, cornersBL, cornersBR;
 
-    if (fDesign <= 7) {
+    if (fDesign == 7) {
        cornersCLBA = {dX + middleGap + gap,
                       -HmainSideMag,
                       2 * dX + middleGap + gap,
@@ -379,7 +363,7 @@ void ShipMuonShield::CreateMagnet(TString magnetName,TGeoMedium* medium,TGeoVolu
       CreateArb8(magnetName + str1R, medium, dZ, cornersMainR, color[0], fields[0], tShield,  0, 0, Z, stepGeo);
       CreateArb8(magnetName + str2, medium, dZ, cornersMainSideL, color[1], fields[1], tShield,  0, 0, Z, stepGeo);
       CreateArb8(magnetName + str3, medium, dZ, cornersMainSideR, color[1], fields[1], tShield,  0, 0, Z, stepGeo);
-      if (fDesign <= 7) {
+      if (fDesign == 7) {
          CreateArb8(magnetName + str4, medium, dZ, cornersCLBA, color[1], fields[1], tShield, 0, 0, Z, stepGeo);
          CreateArb8(magnetName + str5, medium, dZ, cornersCLTA, color[1], fields[1], tShield, 0, 0, Z, stepGeo);
          CreateArb8(magnetName + str6, medium, dZ, cornersCRTA, color[1], fields[1], tShield, 0, 0, Z, stepGeo);
@@ -395,7 +379,7 @@ void ShipMuonShield::CreateMagnet(TString magnetName,TGeoMedium* medium,TGeoVolu
       CreateArb8(magnetName + str1R, medium, dZ, cornersMainR, color[1], fields[1], tShield,  0, 0, Z, stepGeo);
       CreateArb8(magnetName + str2, medium, dZ, cornersMainSideL, color[0], fields[0], tShield,  0, 0, Z, stepGeo);
       CreateArb8(magnetName + str3, medium, dZ, cornersMainSideR, color[0], fields[0], tShield,  0, 0, Z, stepGeo);
-      if (fDesign <= 7) {
+      if (fDesign == 7) {
          CreateArb8(magnetName + str4, medium, dZ, cornersCLBA, color[0], fields[0], tShield, 0, 0, Z, stepGeo);
          CreateArb8(magnetName + str5, medium, dZ, cornersCLTA, color[0], fields[0], tShield, 0, 0, Z, stepGeo);
          CreateArb8(magnetName + str6, medium, dZ, cornersCRTA, color[0], fields[0], tShield, 0, 0, Z, stepGeo);
@@ -420,7 +404,7 @@ Int_t ShipMuonShield::Initialize(std::vector<TString> &magnetName,
 				std::vector<Double_t> &gapIn, std::vector<Double_t> &gapOut,
 				std::vector<Double_t> &Z) {
 
-  const Int_t nMagnets = (fDesign >= 7) ? 9 : 8;
+  const Int_t nMagnets = 9;
   magnetName.reserve(nMagnets);
   fieldDirection.reserve(nMagnets);
   for (auto i :
@@ -429,7 +413,7 @@ Int_t ShipMuonShield::Initialize(std::vector<TString> &magnetName,
     i->reserve(nMagnets);
   }
 
-  Double_t zgap = (fDesign > 6) ? 10 : 0;  // fixed distance between magnets in Z-axis
+  Double_t zgap = 10 * cm;  // fixed distance between magnets in Z-axis
 
   if (fDesign == 8) {
 
@@ -743,7 +727,7 @@ void ShipMuonShield::ConstructGeometry()
     InitMedium("Concrete");
     TGeoMedium *concrete  =gGeoManager->GetMedium("Concrete");
     
-    if (fDesign >= 5 && fDesign <= 9) {
+    if (fDesign >= 7 && fDesign <= 9) {
       Double_t ironField = fField*tesla;
       TGeoUniformMagField *magFieldIron = new TGeoUniformMagField(0.,ironField,0.);
       TGeoUniformMagField *RetField     = new TGeoUniformMagField(0.,-ironField,0.);
@@ -760,19 +744,7 @@ void ShipMuonShield::ConstructGeometry()
 		 gapOut, Z);
       
 
-      if (fDesign == 6){
-	Double_t dA = 3*m;
-	CreateMagnet("AbsorberStop-1",iron,tShield,fields,FieldDirection::up,
-		  dA/6.,dA/6.,dA/6.,dA/6.,dZ0/3.,0,0,dA/12.,dA/12.,0,0,zEndOfAbsorb - 5.*dZ0/3.,0, false);
-	CreateMagnet("AbsorberStop-2",iron,tShield,fields,FieldDirection::up,
-		  dA/2.,dA/2.,dA/2.,dA/2.,dZ0*2./3.,0,0,dA/4.,dA/4.,0,0,zEndOfAbsorb - 2.*dZ0/3.,0, false);
-        TGeoBBox* fullAbsorber = new TGeoBBox("fullAbsorber", dA, dA, dZ0/3.);
-        TGeoBBox* cutOut = new TGeoBBox("cutout", dA/3.+20*cm, dA/3.+20*cm, dZ0/3.+0.1*mm); //no idea why to add 20cm
-        TGeoSubtraction *subtraction = new TGeoSubtraction("fullAbsorber","cutout");
-        TGeoCompositeShape *Tc = new TGeoCompositeShape("passiveAbsorberStopSubtr", subtraction);
-        TGeoVolume* passivAbsorber = new TGeoVolume("passiveAbsorberStop-1",Tc, iron);
-        tShield->AddNode(passivAbsorber, 1, new TGeoTranslation(0,0,zEndOfAbsorb - 5.*dZ0/3.));
-      } else if (fDesign >= 7) {
+      if (fDesign >= 7) {
         float mField = 1.6 * tesla;
 	TGeoUniformMagField *fieldsAbsorber[4] = {
 	    new TGeoUniformMagField(0., mField, 0.),
@@ -800,7 +772,7 @@ void ShipMuonShield::ConstructGeometry()
       mag2->RegisterYourself();
       mag_trans.push_back(mag2);
 
-      Double_t zgap = 10;
+      Double_t zgap = 10 * cm;
       Double_t absorber_offset = zgap;
       Double_t absorber_half_length = (dZf[0] + dZf[1]) + zgap / 2.;
       auto abs = new TGeoBBox("absorber", 3.95 * m, 3.4 * m, absorber_half_length);
