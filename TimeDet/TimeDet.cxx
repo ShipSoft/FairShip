@@ -81,8 +81,8 @@ TimeDet::TimeDet(const char* name, Bool_t active)
     fELoss(-1),
     //
     fzPos(0),
-    fxSize(500),
-    fySize(1000),
+    fxSize(400),
+    fySize(800),
     fxBar(168),
     fyBar(6),
     fzBar(1),
@@ -263,7 +263,7 @@ void TimeDet::ConstructGeometry()
 
     double xbar=0,ybar=0,zbar=0;
     xbar = GetXCol(icol);
-    ybar = GetYRow(irow);
+    ybar = GetYRow(irow);    
     zbar = GetZBar(irow,icol);
 
     fDetector->AddNode(plate, ib, new TGeoTranslation( xbar,ybar,zbar) );
@@ -295,7 +295,7 @@ TimeDetPoint* TimeDet::AddHit(Int_t trackID, Int_t detID,
 
 void TimeDet::GetBarRowCol(int ib,int &irow,int& icol) const
 {
-  irow = ib / fNCol;
+  irow = ib /fNCol;
   icol = (ib%fNCol);
   return;
 }
