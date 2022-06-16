@@ -57,4 +57,3 @@ FairField* ShipFieldCreator::createFairField()
 }
 
 
-ClassImp(ShipFieldCreator)

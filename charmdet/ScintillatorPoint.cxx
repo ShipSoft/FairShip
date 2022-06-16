@@ -4,7 +4,6 @@
 using std::cout;
 using std::endl;
 
-ClassImp(ScintillatorPoint)
 
 // -----   Default constructor   -------------------------------------------
 ScintillatorPoint::ScintillatorPoint()
@@ -41,4 +40,3 @@ void ScintillatorPoint::Print(const Option_t* opt) const
 }
 // -------------------------------------------------------------------------
 
-ClassImp(ScintillatorPoint)

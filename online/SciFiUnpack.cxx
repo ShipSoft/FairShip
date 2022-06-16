@@ -110,4 +110,3 @@ void SciFiUnpack::Reset()
   fNHits = 0;
 }
 
-ClassImp(SciFiUnpack)

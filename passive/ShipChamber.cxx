@@ -95,7 +95,6 @@ void ShipChamber::ConstructGeometry()
 
 
 
-ClassImp(ShipChamber)
 
 
 

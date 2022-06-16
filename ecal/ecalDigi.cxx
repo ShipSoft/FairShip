@@ -129,4 +129,3 @@ ecalDigi::~ecalDigi()
   ;
 }
 
-ClassImp(ecalDigi)

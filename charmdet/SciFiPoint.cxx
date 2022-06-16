@@ -4,7 +4,6 @@
 using std::cout;
 using std::endl;
 
-ClassImp(SciFiPoint)
 
 // -----   Default constructor   -------------------------------------------
 SciFiPoint::SciFiPoint()
@@ -42,4 +41,3 @@ void SciFiPoint::Print(const Option_t* opt) const
 }
 // -------------------------------------------------------------------------
 
-ClassImp(SciFiPoint)

@@ -145,4 +145,3 @@ void ecalLightMap::Normalize()
       fData[i]/=v;
 }
 
-ClassImp(ecalLightMap)

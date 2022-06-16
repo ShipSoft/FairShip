@@ -125,4 +125,3 @@ ecalPrepare::~ecalPrepare()
   ;
 }
 
-ClassImp(ecalPrepare)

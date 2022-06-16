@@ -99,4 +99,3 @@ Double_t ShipParticle::GetMass()
  GetMomentum(momentum);
  return momentum.M();
 }
-ClassImp(ShipParticle)

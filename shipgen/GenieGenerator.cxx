@@ -575,4 +575,3 @@ Int_t GenieGenerator::GetNevents()
 }
 
 
-ClassImp(GenieGenerator)

@@ -1269,4 +1269,3 @@ void veto::InnerAddToMap(Int_t ncpy, Double_t x, Double_t y, Double_t z, Double_
   fCenters[ncpy]=TVector3(x, y, z);
 }
 
-ClassImp(veto)

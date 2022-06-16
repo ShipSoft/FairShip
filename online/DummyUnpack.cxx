@@ -37,4 +37,3 @@ Bool_t DummyUnpack::DoUnpack(Int_t *data, Int_t size)
 // Reset: Public method
 void DummyUnpack::Reset() {}
 
-ClassImp(DummyUnpack)

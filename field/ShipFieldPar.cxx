@@ -182,5 +182,4 @@ void ShipFieldPar::SetParameters(FairField* field) {
     
     
 
-ClassImp(ShipFieldPar)
 

@@ -88,7 +88,6 @@ void ShipTAUMagneticSpectrometer::ConstructGeometry()
 
 
 
-ClassImp(ShipTAUMagneticSpectrometer)
 
 
 

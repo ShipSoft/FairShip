@@ -165,4 +165,3 @@ void hcalAnalysisSimple::Finish()
     fTree->Write();
 }
 
-ClassImp(hcalAnalysisSimple)

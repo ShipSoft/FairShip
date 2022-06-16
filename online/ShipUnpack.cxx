@@ -44,4 +44,3 @@ void ShipUnpack::Register()
    }
 }
 
-ClassImp(ShipUnpack)

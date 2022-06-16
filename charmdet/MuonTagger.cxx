@@ -519,7 +519,6 @@ void MuonTagger::EndPoints(Int_t fDetectorID, TVector3 &vbot, TVector3 &vtop) {
   }       
 }
 
-ClassImp(MuonTagger)
 
 
 

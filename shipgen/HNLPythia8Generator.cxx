@@ -262,4 +262,3 @@ void HNLPythia8Generator::SetParameters(char* par)
 
 // -------------------------------------------------------------------------
 
-ClassImp(HNLPythia8Generator)

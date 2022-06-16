@@ -300,4 +300,3 @@ Int_t MuDISGenerator::GetNevents()
  return fNevents;
 }
 
-ClassImp(MuDISGenerator)

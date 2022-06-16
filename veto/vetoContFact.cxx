@@ -3,7 +3,6 @@
 
 #include <iostream>
 
-ClassImp(vetoContFact)
 
 //static vetoContFact gvetoContFact;
 

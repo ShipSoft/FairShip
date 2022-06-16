@@ -28,4 +28,3 @@ vetoHitOnTrack::~vetoHitOnTrack() { }
 // -------------------------------------------------------------------------
 
 
-ClassImp(vetoHitOnTrack)

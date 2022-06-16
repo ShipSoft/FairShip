@@ -52,5 +52,4 @@ void TargetPoint::Print(const Option_t* opt) const
 }
 // -------------------------------------------------------------------------
 
-ClassImp(TargetPoint)
 

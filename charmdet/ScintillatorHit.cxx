@@ -5,4 +5,3 @@ ScintillatorHit::ScintillatorHit(Int_t detID, Float_t digi, Float_t signal_width
 {
 }
 
-ClassImp(ScintillatorHit)

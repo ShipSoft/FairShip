@@ -41,5 +41,4 @@ void BoxPoint::Print(const Option_t* opt) const
 }
 // -------------------------------------------------------------------------
 
-ClassImp(BoxPoint)
 

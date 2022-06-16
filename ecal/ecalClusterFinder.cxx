@@ -249,4 +249,3 @@ ecalClusterFinder::ecalClusterFinder()
   ;
 }
 
-ClassImp(ecalClusterFinder)

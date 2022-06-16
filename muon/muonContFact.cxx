@@ -3,7 +3,6 @@
 
 #include <iostream>
 
-ClassImp(muonContFact)
 
 //static muonContFact gmuonContFact;
 

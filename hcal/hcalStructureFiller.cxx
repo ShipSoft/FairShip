@@ -144,4 +144,3 @@ void hcalStructureFiller::Finish()
 // -------------------------------------------------------------------------
 
 
-ClassImp(hcalStructureFiller)

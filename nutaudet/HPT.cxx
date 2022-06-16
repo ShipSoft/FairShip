@@ -419,4 +419,3 @@ HptPoint* Hpt::AddHit(Int_t trackID, Int_t detID,
 }
 
 
-ClassImp(Hpt)

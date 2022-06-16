@@ -264,4 +264,3 @@ void exitHadronAbsorber::Reset()
   fexitHadronAbsorberPointCollection->Clear();
 }
 
-ClassImp(exitHadronAbsorber)

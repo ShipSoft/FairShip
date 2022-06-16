@@ -159,4 +159,3 @@ void ecalAnalysisSimple::Finish()
     fTree->Write();
 }
 
-ClassImp(ecalAnalysisSimple)

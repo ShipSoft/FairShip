@@ -599,4 +599,3 @@ Int_t NuageGenerator::GetNevents()
 }
 
 
-ClassImp(NuageGenerator)

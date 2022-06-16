@@ -50,5 +50,4 @@ void ShipRpcPoint::Print(const Option_t* opt) const
 }
 // -------------------------------------------------------------------------
 
-ClassImp(ShipRpcPoint)
 

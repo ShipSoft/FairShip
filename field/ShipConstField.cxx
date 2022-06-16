@@ -180,4 +180,3 @@ void ShipConstField::Print() {
 
 
 
-ClassImp(ShipConstField)
