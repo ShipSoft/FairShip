@@ -288,4 +288,3 @@ void DriftTubeUnpack::Reset()
    fRawTriggers->Clear();
 }
 
-ClassImp(DriftTubeUnpack)

@@ -212,4 +212,3 @@ void ShipMCTrack::SetNPoints(Int_t iDet, Int_t nPoints)
 
 
 
-ClassImp(ShipMCTrack)

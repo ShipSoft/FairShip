@@ -40,5 +40,4 @@ void hcalPoint::Print(const Option_t* opt) const
 }
 // -------------------------------------------------------------------------
 
-ClassImp(hcalPoint)
 

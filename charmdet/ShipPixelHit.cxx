@@ -219,4 +219,3 @@ void ShipPixelHit::Print()
 
 std::unordered_map<int, TVector3>* ShipPixelHit::PixelPositionMap = nullptr;
 
-ClassImp(ShipPixelHit)

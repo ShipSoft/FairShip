@@ -19,7 +19,6 @@
 #include <iostream>                     // for cout
 
 using namespace std;
-ClassImp(ShipGeoCave)
 
 ShipGeoCave::ShipGeoCave()
   : FairGeoSet(),

@@ -1224,7 +1224,6 @@ BoxPoint* Box::AddHit(Int_t trackID,Int_t detID,
     return new(clref[size]) BoxPoint(trackID,detID, pos, mom,
 					time, length, eLoss, pdgCode);
 }
-ClassImp(Box)
 
 
 

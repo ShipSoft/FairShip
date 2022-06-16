@@ -184,4 +184,3 @@ void ecalMatch::InitPython(ecalStructure* str, TClonesArray* reconstructed, TClo
   fEv=0;
 }
 
-ClassImp(ecalMatch)

@@ -145,4 +145,3 @@ void hcalLightMap::Normalize()
       fData[i]/=v;
 }
 
-ClassImp(hcalLightMap)

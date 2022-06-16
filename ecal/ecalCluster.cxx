@@ -114,4 +114,3 @@ ecalCluster::~ecalCluster()
   delete [] fMaximums;
 }
 
-ClassImp(ecalCluster)

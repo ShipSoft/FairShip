@@ -105,5 +105,4 @@ void vetoHit::Print(Int_t detID) const
 
 // -------------------------------------------------------------------------
 
-ClassImp(vetoHit)
 

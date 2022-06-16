@@ -615,4 +615,3 @@ void EmulsionMagnet::ConstructGeometry()
 }
 
 
-ClassImp(EmulsionMagnet)

@@ -243,7 +243,6 @@ void ShipMagnet::ConstructGeometry()
 
 
 
-ClassImp(ShipMagnet)
 
 
 

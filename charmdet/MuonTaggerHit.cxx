@@ -51,4 +51,3 @@ void MuonTaggerHit::EndPoints(TVector3 &vbot, TVector3 &vtop) {
   }      
 }
 
-ClassImp(MuonTaggerHit)

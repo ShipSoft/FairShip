@@ -207,6 +207,5 @@ void ShipGoliathField::Print() {
 
 
 
-ClassImp(ShipGoliathField)
 
 

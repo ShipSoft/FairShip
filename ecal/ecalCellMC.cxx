@@ -77,5 +77,4 @@ void ecalCellMC::GetTrackTimeSlow(Int_t n, Int_t& trackid, Float_t& time)
   trackid=p->first; time=p->second;
 }
 
-ClassImp(ecalCellMC)
 

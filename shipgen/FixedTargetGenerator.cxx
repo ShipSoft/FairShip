@@ -414,4 +414,3 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg)
 }
 // -------------------------------------------------------------------------
 
-ClassImp(FixedTargetGenerator)

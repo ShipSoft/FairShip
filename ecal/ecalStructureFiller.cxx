@@ -163,4 +163,3 @@ void ecalStructureFiller::Finish()
 // -------------------------------------------------------------------------
 
 
-ClassImp(ecalStructureFiller)

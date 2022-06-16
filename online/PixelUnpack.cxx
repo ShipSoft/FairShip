@@ -90,4 +90,3 @@ void PixelUnpack::Reset()
    fNHits = 0;
 }
 
-ClassImp(PixelUnpack)

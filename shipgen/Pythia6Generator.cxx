@@ -125,5 +125,4 @@ void Pythia6Generator::CloseInput() {
 // ------------------------------------------------------------------------
 
 
-ClassImp(Pythia6Generator)
 

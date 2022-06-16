@@ -109,5 +109,4 @@ void strawtubesHit::Print() const
 }
 // -------------------------------------------------------------------------
 
-ClassImp(strawtubesHit)
 

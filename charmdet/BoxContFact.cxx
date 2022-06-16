@@ -21,7 +21,6 @@ class FairParSet;
 
 using namespace std;
 
-ClassImp(BoxContFact)
 
 static BoxContFact gBoxContFact;
 

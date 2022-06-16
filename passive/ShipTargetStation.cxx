@@ -191,4 +191,3 @@ void ShipTargetStation::ConstructGeometry()
     }
 }
 
-ClassImp(ShipTargetStation)

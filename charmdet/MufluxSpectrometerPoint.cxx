@@ -4,7 +4,6 @@
 using std::cout;
 using std::endl;
 
-ClassImp(MufluxSpectrometerPoint)
 
 // -----   Default constructor   -------------------------------------------
 MufluxSpectrometerPoint::MufluxSpectrometerPoint()
@@ -41,4 +40,3 @@ void MufluxSpectrometerPoint::Print(const Option_t* opt) const
 }
 // -------------------------------------------------------------------------
 
-ClassImp(MufluxSpectrometerPoint)

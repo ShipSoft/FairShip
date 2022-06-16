@@ -3,7 +3,6 @@
 
 #include <iostream>
 
-ClassImp(preshowerContFact)
 
 //static preshowerContFact gpreshowerContFact;
 

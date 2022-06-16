@@ -349,5 +349,4 @@ void UpstreamTaggerHit::Print() const
 
 
 // -----------------------------------------------------
-ClassImp(UpstreamTaggerHit)
 

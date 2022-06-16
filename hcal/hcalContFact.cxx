@@ -5,7 +5,6 @@
 
 #include <iostream>
 
-ClassImp(hcalContFact)
 
 //static hcalContFact ghcalContFact;
 

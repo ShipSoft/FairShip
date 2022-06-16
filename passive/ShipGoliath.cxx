@@ -275,7 +275,6 @@ void ShipGoliath::ConstructGeometry()
     top->AddNode(volLateralS2_c, 1, m2_c);
 }
 
-ClassImp(ShipGoliath)
 
 
 
