@@ -1,4 +1,4 @@
-import os,sys,getopt
+import os,sys
 import numpy,math
 import ROOT
 
