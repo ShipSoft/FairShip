@@ -234,7 +234,7 @@ timer.Start()
 # -----Create simulation run----------------------------------------
 run = ROOT.FairRunSim()
 run.SetName(mcEngine)  # Transport engine
-run.SetOutputFile(outFile)  # Output file
+run.SetSink(ROOT.FairRootFileSink(outFile))  # Output file
 run.SetUserConfig("g4Config.C") # user configuration file default g4Config.C 
 rtdb = run.GetRuntimeDb() 
 # -----Create geometry----------------------------------------------
