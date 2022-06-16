@@ -6,7 +6,7 @@
 from __future__ import print_function
 import global_variables
 import shipPatRec_prev 
-import ROOT,os,sys,getopt
+import ROOT,os,sys
 import shipDet_conf
 import shipunit  as u
 
