@@ -2,9 +2,6 @@
 import argparse
 import ROOT
 
-# Fix https://root-forum.cern.ch/t/pyroot-hijacks-help/15207 :
-ROOT.PyConfig.IgnoreCommandLineOptions = True
-
 
 def main():
     source = ROOT.ShipTdcSource(args.input)
