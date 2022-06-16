@@ -1,7 +1,9 @@
 from __future__ import print_function
 from __future__ import division
 # example for accessing smeared hits and fitted tracks
-import ROOT,os,sys,getopt
+import os
+import sys
+import ROOT
 import ctypes
 import rootUtils as ut
 import shipunit as u

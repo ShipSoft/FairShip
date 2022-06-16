@@ -742,7 +742,6 @@ void ShipMuonShield::ConstructGeometry()
       const Int_t nMagnets = Initialize(magnetName, fieldDirection, dXIn, dYIn, dXOut, dYOut, dZf,
 		 midGapIn, midGapOut, HmainSideMagIn, HmainSideMagOut, gapIn,
 		 gapOut, Z);
-      
 
       if (fDesign >= 7) {
         float mField = 1.6 * tesla;
@@ -807,13 +806,18 @@ void ShipMuonShield::ConstructGeometry()
       tShield->AddNode(absorber, 1, new TGeoTranslation(0, 0, zEndOfAbsorb + absorber_half_length + absorber_offset));
 
       if (fDesign > 7) {
-         auto coatBox = new TGeoBBox("coat", 10 * m - 1 * mm, 10 * m - 1 * mm, absorber_half_length);
-         auto coatShape = new TGeoCompositeShape("CoatShape", "coat-absorber");
+         auto *TCC8_shift_noZ = new TGeoTranslation("TCC8_shift_noZ", 2.3 * m, 2.55 * m, 0);
+         TCC8_shift_noZ->RegisterYourself();
+         auto coatBox = new TGeoBBox("coat", 5 * m - 1 * mm, 3.75 * m - 1 * mm, absorber_half_length);
+         auto coatShape = new TGeoCompositeShape("CoatShape", "coat:TCC8_shift_noZ-absorber");
          auto coat = new TGeoVolume("CoatVol", coatShape, concrete);
-         tShield->AddNode(coat, 1, new TGeoTranslation(0, 0, zEndOfAbsorb + absorber_half_length + absorber_offset ));
-         TGeoVolume *coatWall = gGeoManager->MakeBox("CoatWall",concrete,10 * m - 1 * mm, 10 * m - 1 * mm, 7 * cm - 1 * mm);
+         tShield->AddNode(coat, 1, new TGeoTranslation(0, 0, zEndOfAbsorb + absorber_half_length + absorber_offset));
+         TGeoVolume *coatWall = gGeoManager->MakeBox("CoatWall",concrete, 5 * m - 1 * mm, 3.75 * m - 1 * mm, 7 * cm - 1 * mm);
+         auto *coatWall_shift = new TGeoTranslation(0, 0, zEndOfAbsorb + 2 * absorber_half_length + absorber_offset + 7 * cm);
+         coatWall_shift->Add(TCC8_shift_noZ);
+         coatWall_shift->RegisterYourself();
          coatWall->SetLineColor(kRed);
-         tShield->AddNode(coatWall, 1, new TGeoTranslation(0, 0, zEndOfAbsorb + 2*absorber_half_length + absorber_offset+7 * cm));
+         tShield->AddNode(coatWall, 1, coatWall_shift);
 
       }
       std::array<double, 9> fieldScale = {{1., 1., 1., 1., 1., 1., 1., 1., 1.}};
