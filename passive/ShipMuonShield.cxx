@@ -742,7 +742,52 @@ void ShipMuonShield::ConstructGeometry()
       const Int_t nMagnets = Initialize(magnetName, fieldDirection, dXIn, dYIn, dXOut, dYOut, dZf,
 		 midGapIn, midGapOut, HmainSideMagIn, HmainSideMagOut, gapIn,
 		 gapOut, Z);
-      
+
+      // Create TCC8 tunnel around muon shield
+      Double_t TCC8_length =  170 * m;
+      Double_t ECN3_length =  100 * m;
+      Double_t TCC8_trench_length = 15 * m;
+      Double_t zgap = 10 * cm;
+      Double_t absorber_offset = zgap;
+      Double_t absorber_half_length = (dZf[0] + dZf[1]) + zgap / 2.;
+      Double_t z_transition = zEndOfAbsorb + 2 * absorber_half_length + absorber_offset + 14 * cm + TCC8_trench_length;
+      auto *muon_shield_cavern = new TGeoBBox("muon_shield_cavern", 5 * m, 3.75 * m, TCC8_length / 2.);
+      auto *muon_shield_rock = new TGeoBBox("muon_shield_rock", 20 * m, 20 * m, TCC8_length / 2.);
+      auto *muon_shield_trench = new TGeoBBox("muon_shield_trench", 1.2 * m, 2.4 * m, TCC8_trench_length / 2.);
+      auto *TCC8_shift = new TGeoTranslation("TCC8_shift", 2.3 * m, 2.55 * m, 0 * m);
+      TCC8_shift->RegisterYourself();
+      auto *TCC8_trench_shift = new TGeoTranslation("TCC8_trench_shift", 0 * m, 0 * m, TCC8_length / 2. - TCC8_trench_length / 2.);
+      TCC8_trench_shift->RegisterYourself();
+      auto *compRockS = new TGeoCompositeShape("compRockS", "muon_shield_rock - muon_shield_cavern:TCC8_shift - muon_shield_trench:TCC8_trench_shift");
+      auto *TCC8 = new TGeoVolume("TCC8", compRockS, concrete);
+      TCC8->SetLineColor(11);  // grey
+      TCC8->SetTransparency(50);
+      top->AddNode(TCC8, 1, new TGeoTranslation(0, 0, z_transition - TCC8_length / 2.));
+
+      // Create ECN3 cavern around vessel
+      auto *experiment_rock = new TGeoBBox("experiment_rock", 20 * m, 20 * m, ECN3_length / 2.);
+      auto *experiment_cavern = new TGeoBBox("experiment_cavern", 10 * m, 10 * m, ECN3_length / 2.);
+      auto *ECN3_shift = new TGeoTranslation("ECN3_shift", 3.5 * m, 4.7 * m, 0 * m);
+      ECN3_shift->RegisterYourself();
+
+      auto* ECN3_wide_trench = new TGeoBBox("ECN3_wide_trench", 7 * m, 4.3 * m, 25 / 2. * m);
+      auto *ECN3_wide_trench_shift = new TGeoTranslation("ECN3_wide_trench_shift", 3.5 * m, 0 * m, 25 / 2. * m);
+      ECN3_wide_trench_shift->RegisterYourself();
+
+      auto* ECN3_narrow_trench = new TGeoBBox("ECN3_narrow_trench", 3.5 * m, 4.3 * m, 25 / 2. * m);
+      auto *ECN3_narrow_trench_shift = new TGeoTranslation("ECN3_narrow_trench_shift", 0 * m, 0 * m, - 25 / 2.* m);
+      ECN3_narrow_trench_shift->RegisterYourself();
+
+      auto *compRockD = new TGeoCompositeShape("compRockD",
+                                               "experiment_rock - experiment_cavern:ECN3_shift"
+                                               "- ECN3_narrow_trench:ECN3_narrow_trench_shift"
+                                               "- ECN3_wide_trench:ECN3_wide_trench_shift"
+      );
+      auto *ECN3 = new TGeoVolume("ECN3", compRockD, concrete);
+      ECN3->SetLineColor(11);  // grey
+      ECN3->SetTransparency(50);
+      top->AddNode(ECN3, 1, new TGeoTranslation(0, 0, z_transition + ECN3_length / 2.));
+//
 
         float mField = 1.6 * tesla;
 	TGeoUniformMagField *fieldsAbsorber[4] = {
@@ -771,9 +816,6 @@ void ShipMuonShield::ConstructGeometry()
       mag2->RegisterYourself();
       mag_trans.push_back(mag2);
 
-      Double_t zgap = 10 * cm;
-      Double_t absorber_offset = zgap;
-      Double_t absorber_half_length = (dZf[0] + dZf[1]) + zgap / 2.;
       auto abs = new TGeoBBox("absorber", 3.95 * m, 3.4 * m, absorber_half_length);
       const std::vector<TString> absorber_magnets =
          (fDesign == 7) ? std::vector<TString>{"MagnAbsorb1", "MagnAbsorb2"} : std::vector<TString>{"MagnAbsorb2"};
@@ -810,9 +852,11 @@ void ShipMuonShield::ConstructGeometry()
          auto coatShape = new TGeoCompositeShape("CoatShape", "coat-absorber");
          auto coat = new TGeoVolume("CoatVol", coatShape, concrete);
          tShield->AddNode(coat, 1, new TGeoTranslation(0, 0, zEndOfAbsorb + absorber_half_length + absorber_offset ));
-         TGeoVolume *coatWall = gGeoManager->MakeBox("CoatWall",concrete,10 * m - 1 * mm, 10 * m - 1 * mm, 7 * cm - 1 * mm);
+         TGeoVolume *coatWall = gGeoManager->MakeBox("CoatWall",concrete, 10 * m - 1 * mm, 10 * m - 1 * mm, 7 * cm - 1 * mm);
+         auto *coatWall_shift = new TGeoTranslation(0, 0, zEndOfAbsorb + 2 * absorber_half_length + absorber_offset + 7 * cm);
+         coatWall_shift->RegisterYourself();
          coatWall->SetLineColor(kRed);
-         tShield->AddNode(coatWall, 1, new TGeoTranslation(0, 0, zEndOfAbsorb + 2*absorber_half_length + absorber_offset+7 * cm));
+         tShield->AddNode(coatWall, 1, coatWall_shift);
 
       }
       std::array<double, 9> fieldScale = {{1., 1., 1., 1., 1., 1., 1., 1., 1.}};
@@ -902,48 +946,6 @@ void ShipMuonShield::ConstructGeometry()
       // Place in origin of SHiP coordinate system as subnodes placed correctly
       top->AddNode(tShield, 1);
 
-      // Create TCC8 tunnel around muon shield
-      Double_t TCC8_length =  170 * m;
-      Double_t TCC8_trench_length = 15 * m;
-      Double_t z_transition = zEndOfAbsorb + TCC8_trench_length;
-      auto *muon_shield_cavern = new TGeoBBox("muon_shield_cavern", 5 * m, 3.75 * m, TCC8_length / 2.);
-      auto *muon_shield_rock = new TGeoBBox("muon_shield_rock", 20 * m,20 * m, TCC8_length / 2.);
-      auto *muon_shield_trench = new TGeoBBox("muon_shield_trench", 1 * m, 2 * m, TCC8_trench_length / 2.);
-      auto *TCC8_trench_shift = new TGeoTranslation("TCC8_trench_shift", 0 * m, 0 * m, TCC8_length / 2. - TCC8_trench_length / 2.);
-      TCC8_trench_shift->RegisterYourself();
-      auto *TCC8_shift = new TGeoTranslation("TCC8_shift", 2.3 * m, 2.55 * m, 0 * m);
-      TCC8_shift->RegisterYourself();
-      auto *compRockS = new TGeoCompositeShape("compRockS", "muon_shield_rock - muon_shield_cavern:TCC8_shift - muon_shield_trench:TCC8_trench_shift");
-      auto *TCC8 = new TGeoVolume("TCC8", compRockS, concrete);
-      TCC8->SetLineColor(11);  // grey
-      TCC8->SetTransparency(50);
-      top->AddNode(TCC8, 1, new TGeoTranslation(0, 0, z_transition - TCC8_length / 2.));
-
-      // Create ECN3 cavern around vessel
-      Double_t ECN3_length =  100 * m;
-      auto *experiment_rock = new TGeoBBox("experiment_rock", 20 * m, 20 * m, ECN3_length / 2.);
-      auto *experiment_cavern = new TGeoBBox("experiment_cavern", 10 * m, 10 * m, ECN3_length / 2.);
-      auto *ECN3_shift = new TGeoTranslation("ECN3_shift", 3.5 * m, 4.7 * m, 0 * m);
-      ECN3_shift->RegisterYourself();
-
-      auto* ECN3_wide_trench = new TGeoBBox("ECN3_wide_trench", 7 * m, 4.3 * m, 25 / 2. * m);
-      auto *ECN3_wide_trench_shift = new TGeoTranslation("ECN3_wide_trench_shift", 3.5 * m, 0 * m, 25 / 2. * m);
-      ECN3_wide_trench_shift->RegisterYourself();
-
-      auto* ECN3_narrow_trench = new TGeoBBox("ECN3_narrow_trench", 3.5 * m, 4.3 * m, 25 / 2. * m);
-      auto *ECN3_narrow_trench_shift = new TGeoTranslation("ECN3_narrow_trench_shift", 0 * m, 0 * m, - 25 / 2.* m);
-      ECN3_narrow_trench_shift->RegisterYourself();
-
-      auto *compRockD = new TGeoCompositeShape("compRockD",
-                                               "experiment_rock - experiment_cavern:ECN3_shift"
-                                               "- ECN3_narrow_trench:ECN3_narrow_trench_shift"
-                                               "- ECN3_wide_trench:ECN3_wide_trench_shift"
-      );
-      auto *ECN3 = new TGeoVolume("ECN3", compRockD, concrete);
-      ECN3->SetLineColor(11);  // grey
-      ECN3->SetTransparency(50);
-      top->AddNode(ECN3, 1, new TGeoTranslation(0, 0, z_transition + ECN3_length / 2.));
-//
     } else {
      Fatal("ShipMuonShield","Design %i does not match implemented designs",fDesign);
     }
