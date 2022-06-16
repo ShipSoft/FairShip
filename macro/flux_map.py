@@ -3,8 +3,6 @@ from __future__ import division
 import argparse
 import numpy as np
 import ROOT as r
-# Fix https://root-forum.cern.ch/t/pyroot-hijacks-help/15207 :
-r.PyConfig.IgnoreCommandLineOptions = True
 import shipunit as u
 import rootUtils as ut
 import logger as log
