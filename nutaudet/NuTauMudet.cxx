@@ -286,7 +286,23 @@ void NuTauMudet::ConstructGeometry()
 {
   TGeoVolume *top = gGeoManager->GetTopVolume();
   TGeoVolumeAssembly *tTauNuDet = new TGeoVolumeAssembly("tTauNuDet");
-  top->AddNode(tTauNuDet, 1, new TGeoTranslation(0, 0, 0));
+   // TODO: temporary substitution of TauNuDet
+   ///------------------------------------------------------------------------------------------
+   TGeoVolumeAssembly *tTempTauNu = new TGeoVolumeAssembly("tTempTauNu");
+   top->AddNode(tTempTauNu, 1, new TGeoTranslation(0, 0, 0));
+   InitMedium("tungsten");
+   TGeoMedium *tungsten =gGeoManager->GetMedium("tungsten");
+   TGeoBBox *TauNuBox = new TGeoBBox("TauNuBox", 120/2, 340/2, 80/2);
+   TGeoVolume *volTauNu = new TGeoVolume("volTauNu",TauNuBox,tungsten);
+   volTauNu->SetLineColor(1);
+   tTempTauNu->AddNode(volTauNu, 1, new TGeoTranslation(0,0,fZcenter));
+   tTempTauNu->AddNode(volTauNu, 2, new TGeoTranslation(0,0,fZcenter-80-40-20));
+   tTempTauNu->AddNode(volTauNu, 3, new TGeoTranslation(0,0,fZcenter-2*(80+40+20)));
+   tTempTauNu->AddNode(volTauNu, 4, new TGeoTranslation(0,0,fZcenter-3*(80+40+20)));
+   tTempTauNu->AddNode(volTauNu, 5, new TGeoTranslation(0,0,fZcenter-4*(80+40+20)));
+
+  ///------------------------------------------------------------------------------------------
+ // top->AddNode(tTauNuDet, 1, new TGeoTranslation(0, 0, 0));
 
   InitMedium("RPCgas");
   TGeoMedium *RPCmat =gGeoManager->GetMedium("RPCgas");

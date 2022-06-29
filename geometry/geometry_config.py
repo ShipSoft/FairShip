@@ -389,7 +389,7 @@ with ConfigRegistry.register_config("basic") as c:
               c.muShield.dZ5 + c.muShield.dZ6 +
               c.muShield.dZ7 + c.muShield.dZ8
         ) + c.muShield.LE
-        c.muShield.z = -(c.decayVolume.length + c.muShield.length) / 2.
+        c.muShield.z = -(c.decayVolume.length + c.muShield.length) / 2. + 1.6*u.m
 
     c.hadronAbsorber              =  AttrDict(z=0*u.cm)
     c.hadronAbsorber.length =     0*u.m # magnetized, counted inside muonshield
@@ -612,6 +612,7 @@ with ConfigRegistry.register_config("basic") as c:
         c.tauMudet.Ytot = c.tauMudet.YFe + c.tauMudet.UpperSupportY + c.tauMudet.LowerSupportY 
         c.tauMudet.Ztot = c.tauMudet.NRpc*c.tauMudet.ZRpc+c.tauMudet.NFethick*c.tauMudet.ZFethick + c.tauMudet.NFethin*c.tauMudet.ZFethin
         #c.tauMudet.zMudetC = -c.decayVolume.length/2. - c.tauMudet.Ztot/2
+        #c.tauMudet.zMudetC = c.Chamber1.z -c.chambers.Tub1length - c.tauMudet.Ztot/2 -31*u.cm;
         c.tauMudet.zMudetC = c.Chamber1.z -c.chambers.Tub1length - c.tauMudet.Ztot/2 -31*u.cm;
         #lateral cuts
         c.tauMudet.CutHeight = 78.548 * u.cm
@@ -796,29 +797,29 @@ with ConfigRegistry.register_config("basic") as c:
     #Upstream Tagger
     c.UpstreamTagger = AttrDict(z=0)
     c.UpstreamTagger.Z_Glass = 0.2 * u.cm
-    c.UpstreamTagger.Y_Glass = 84 * u.cm   
-    c.UpstreamTagger.X_Glass = 178.4 * u.cm   
+    c.UpstreamTagger.Y_Glass = 105 * u.cm   
+    c.UpstreamTagger.X_Glass = 223 * u.cm   
     c.UpstreamTagger.Z_Glass_Border = 0.2 * u.cm
     c.UpstreamTagger.Y_Glass_Border = 1.0 * u.cm
     c.UpstreamTagger.X_Glass_Border = 1.0 * u.cm
     c.UpstreamTagger.Z_PMMA = 0.8 * u.cm
-    c.UpstreamTagger.Y_PMMA = 86.4 * u.cm
-    c.UpstreamTagger.X_PMMA = 180.8 * u.cm
+    c.UpstreamTagger.Y_PMMA = 108 * u.cm
+    c.UpstreamTagger.X_PMMA = 226 * u.cm
     c.UpstreamTagger.DY_PMMA = 1.5 * u.cm
     c.UpstreamTagger.DX_PMMA = 1.5 * u.cm
     c.UpstreamTagger.DZ_PMMA = 0.1 * u.cm
     c.UpstreamTagger.Z_FreonSF6 = 0.1 * u.cm
-    c.UpstreamTagger.Y_FreonSF6 = 85.6 * u.cm
-    c.UpstreamTagger.X_FreonSF6 = 180 * u.cm
+    c.UpstreamTagger.Y_FreonSF6 = 107 * u.cm
+    c.UpstreamTagger.X_FreonSF6 = 225 * u.cm
     c.UpstreamTagger.Z_FreonSF6_2 = 0.8 * u.cm
     c.UpstreamTagger.Y_FreonSF6_2 = 0.5 * u.cm
     c.UpstreamTagger.X_FreonSF6_2 = 0.5 * u.cm
     c.UpstreamTagger.Z_FR4 = 0.15 * u.cm
-    c.UpstreamTagger.Y_FR4 = 88.8 * u.cm
-    c.UpstreamTagger.X_FR4 = 183.2 * u.cm
+    c.UpstreamTagger.Y_FR4 = 111 * u.cm
+    c.UpstreamTagger.X_FR4 = 229 * u.cm
     c.UpstreamTagger.Z_Aluminium = 1.1503 * u.cm
-    c.UpstreamTagger.Y_Aluminium = 88.8 * u.cm
-    c.UpstreamTagger.X_Aluminium = 186.4 * u.cm
+    c.UpstreamTagger.Y_Aluminium = 111 * u.cm
+    c.UpstreamTagger.X_Aluminium = 233 * u.cm
     c.UpstreamTagger.DZ_Aluminium = 0.1 * u.cm
     c.UpstreamTagger.DY_Aluminium = 1 * u.cm
     c.UpstreamTagger.DX_Aluminium = 0.2 * u.cm
@@ -827,7 +828,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.UpstreamTagger.X_Air = 2 * u.cm
     c.UpstreamTagger.Z_Strip = 0.0003 * u.cm
     c.UpstreamTagger.Y_Strip = 3.1 * u.cm
-    c.UpstreamTagger.X_Strip = 183.2 * u.cm
+    c.UpstreamTagger.X_Strip = 229 * u.cm
     c.UpstreamTagger.X_Strip64 = 3.3 * u.cm
-    c.UpstreamTagger.Y_Strip64 = 88.8 * u.cm
+    c.UpstreamTagger.Y_Strip64 = 111 * u.cm
     c.UpstreamTagger.Z_Position = c.tauMudet.zMudetC + (c.tauMudet.Ztot)/2 + 12.0*u.cm
