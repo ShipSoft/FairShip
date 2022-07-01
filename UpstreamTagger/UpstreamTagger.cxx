@@ -379,7 +379,7 @@ void UpstreamTagger::ConstructGeometry()
 
   InitMedium("vacuum");  
   TGeoMedium *Vacuum_box =gGeoManager->GetMedium("vacuum");
-  double xbox=233.4; double ybox = 90.4; double zbox = 1.3503;
+  double xbox=188.5; double ybox = 91; double zbox = 1.3503;
 
   //RPC Module with 32 horizontal strips
   TGeoVolume *Rpc_module_upstream = gGeoManager->MakeBox("UpstreamTagger",Vacuum_box, xbox/2.0, ybox/2.0, zbox/2.0);

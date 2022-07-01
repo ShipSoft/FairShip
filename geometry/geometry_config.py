@@ -797,13 +797,13 @@ with ConfigRegistry.register_config("basic") as c:
     #Upstream Tagger
     c.UpstreamTagger = AttrDict(z=0)
     c.UpstreamTagger.Z_Glass = 0.2 * u.cm
-    c.UpstreamTagger.Y_Glass = 84 * u.cm   
-    c.UpstreamTagger.X_Glass = 178.4 * u.cm   
+    c.UpstreamTagger.Y_Glass = 83.5 * u.cm   
+    c.UpstreamTagger.X_Glass = 178. * u.cm   
     c.UpstreamTagger.Z_Glass_Border = 0.2 * u.cm
     c.UpstreamTagger.Y_Glass_Border = 1.0 * u.cm
     c.UpstreamTagger.X_Glass_Border = 1.0 * u.cm
     c.UpstreamTagger.Z_PMMA = 0.8 * u.cm
-    c.UpstreamTagger.Y_PMMA = 86.4 * u.cm
+    c.UpstreamTagger.Y_PMMA = 85.7 * u.cm
     c.UpstreamTagger.X_PMMA = 180.8 * u.cm
     c.UpstreamTagger.DY_PMMA = 1.5 * u.cm
     c.UpstreamTagger.DX_PMMA = 1.5 * u.cm
@@ -818,7 +818,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.UpstreamTagger.Y_FR4 = 88.8 * u.cm
     c.UpstreamTagger.X_FR4 = 183.2 * u.cm
     c.UpstreamTagger.Z_Aluminium = 1.1503 * u.cm
-    c.UpstreamTagger.Y_Aluminium = 88.8 * u.cm
+    c.UpstreamTagger.Y_Aluminium = 89. * u.cm
     c.UpstreamTagger.X_Aluminium = 186.4 * u.cm
     c.UpstreamTagger.DZ_Aluminium = 0.1 * u.cm
     c.UpstreamTagger.DY_Aluminium = 1 * u.cm
