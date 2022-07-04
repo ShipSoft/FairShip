@@ -846,13 +846,14 @@ void ShipMuonShield::ConstructGeometry()
          auto coatBox = new TGeoBBox("coat", 10 * m - 1 * mm, 10 * m - 1 * mm, absorber_half_length);
          auto coatShape = new TGeoCompositeShape("CoatShape", "coat-absorber");
          auto coat = new TGeoVolume("CoatVol", coatShape, concrete);
-         tShield->AddNode(coat, 1, new TGeoTranslation(0, 0, zEndOfAbsorb + absorber_half_length + absorber_offset));
+         auto *coat_shift = new TGeoTranslation("coat_shift", 0, 0, zEndOfAbsorb + absorber_half_length + absorber_offset);
+         coat_shift->RegisterYourself();
+         tShield->AddNode(coat, 1, coat_shift);
          TGeoVolume *coatWall = gGeoManager->MakeBox("CoatWall",concrete, 10 * m - 1 * mm, 10 * m - 1 * mm, 7 * cm - 1 * mm);
-         auto *coatWall_shift = new TGeoTranslation(0, 0, zEndOfAbsorb + 2 * absorber_half_length + absorber_offset + 7 * cm);
+         auto *coatWall_shift = new TGeoTranslation("coatWall_shift", 0, 0, zEndOfAbsorb + 2 * absorber_half_length + absorber_offset + 7 * cm);
          coatWall_shift->RegisterYourself();
          coatWall->SetLineColor(kRed);
          tShield->AddNode(coatWall, 1, coatWall_shift);
-
       }
       std::array<double, 9> fieldScale = {{1., 1., 1., 1., 1., 1., 1., 1., 1.}};
       if (fWithCoMagnet > 0)
