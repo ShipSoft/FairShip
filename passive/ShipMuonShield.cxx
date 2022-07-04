@@ -773,17 +773,6 @@ void ShipMuonShield::ConstructGeometry()
       auto *ECN3_narrow_trench_shift = new TGeoTranslation("ECN3_narrow_trench_shift", 0 * m, 0 * m, - 25 / 2.* m + ECN3_length / 2.);
       ECN3_narrow_trench_shift->RegisterYourself();
 
-      auto *compRock = new TGeoCompositeShape("compRock",
-                                               "rock - muon_shield_cavern:TCC8_shift - muon_shield_trench:TCC8_trench_shift"
-                                               "- experiment_cavern:ECN3_shift"
-                                               "- ECN3_narrow_trench:ECN3_narrow_trench_shift"
-                                               "- ECN3_wide_trench:ECN3_wide_trench_shift"
-      );
-      auto *Cavern = new TGeoVolume("Cavern", compRock, concrete);
-      Cavern->SetLineColor(11);  // grey
-      Cavern->SetTransparency(50);
-      top->AddNode(Cavern, 1, new TGeoTranslation(0, 0, z_transition));
-
         float mField = 1.6 * tesla;
 	TGeoUniformMagField *fieldsAbsorber[4] = {
 	    new TGeoUniformMagField(0., mField, 0.),
@@ -848,13 +837,32 @@ void ShipMuonShield::ConstructGeometry()
          auto coat = new TGeoVolume("CoatVol", coatShape, concrete);
          auto *coat_shift = new TGeoTranslation("coat_shift", 0, 0, zEndOfAbsorb + absorber_half_length + absorber_offset);
          coat_shift->RegisterYourself();
+         auto *coat_shift_transition = new TGeoTranslation("coat_shift_transition", 0, 0, zEndOfAbsorb - z_transition + absorber_half_length + absorber_offset);
+         coat_shift_transition->RegisterYourself();
          tShield->AddNode(coat, 1, coat_shift);
          TGeoVolume *coatWall = gGeoManager->MakeBox("CoatWall",concrete, 10 * m - 1 * mm, 10 * m - 1 * mm, 7 * cm - 1 * mm);
          auto *coatWall_shift = new TGeoTranslation("coatWall_shift", 0, 0, zEndOfAbsorb + 2 * absorber_half_length + absorber_offset + 7 * cm);
          coatWall_shift->RegisterYourself();
+         auto *coatWall_shift_transition = new TGeoTranslation("coatWall_shift_transition", 0, 0, zEndOfAbsorb - z_transition + 2 * absorber_half_length + absorber_offset + 7 * cm);
+         coatWall_shift_transition->RegisterYourself();
          coatWall->SetLineColor(kRed);
          tShield->AddNode(coatWall, 1, coatWall_shift);
       }
+
+      auto *compRock = new TGeoCompositeShape("compRock",
+                                              "rock - muon_shield_cavern:TCC8_shift - muon_shield_trench:TCC8_trench_shift"
+                                              "- experiment_cavern:ECN3_shift"
+                                              "- ECN3_narrow_trench:ECN3_narrow_trench_shift"
+                                              "- ECN3_wide_trench:ECN3_wide_trench_shift"
+                                              "- coat:coat_shift_transition"
+                                              "- CoatWall:coatWall_shift_transition"
+      );
+      auto *Cavern = new TGeoVolume("Cavern", compRock, concrete);
+      Cavern->SetLineColor(11);  // grey
+      Cavern->SetTransparency(50);
+      top->AddNode(Cavern, 1, new TGeoTranslation(0, 0, z_transition));
+
+
       std::array<double, 9> fieldScale = {{1., 1., 1., 1., 1., 1., 1., 1., 1.}};
       if (fWithCoMagnet > 0)
       {
