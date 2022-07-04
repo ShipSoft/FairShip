@@ -744,7 +744,6 @@ void ShipMuonShield::ConstructGeometry()
 		 gapOut, Z);
       
 
-      if (fDesign >= 7) {
         float mField = 1.6 * tesla;
 	TGeoUniformMagField *fieldsAbsorber[4] = {
 	    new TGeoUniformMagField(0., mField, 0.),
@@ -899,20 +898,6 @@ void ShipMuonShield::ConstructGeometry()
   				     Z[nM] + dZf[nM] - length));
   }
       }
-          
-      } else {
-	CreateTube("AbsorberAdd", iron, 15, 400, dZ0, 43, tShield, 0, 0, zEndOfAbsorb - dZ0);
-	CreateTube("AbsorberAddCore", iron, 0, 15, dZ0, 38, tShield, 0, 0, zEndOfAbsorb - dZ0);
-
-	for (Int_t nM = 0; nM < (nMagnets - 1); nM++) {
-	  CreateMagnet(magnetName[nM],iron,tShield,fields,fieldDirection[nM],
-		   dXIn[nM],dYIn[nM],dXOut[nM],dYOut[nM],dZf[nM],
-		   midGapIn[nM],midGapOut[nM],HmainSideMagIn[nM],HmainSideMagOut[nM],
-		   gapIn[nM],gapOut[nM],Z[nM],0, fStepGeo);
-	}
-      }
-      Double_t dX1 = dXIn[0];
-      Double_t dY = dYIn[0];
 
       // Place in origin of SHiP coordinate system as subnodes placed correctly
       top->AddNode(tShield, 1);
