@@ -306,27 +306,17 @@ with ConfigRegistry.register_config("basic") as c:
 
     c.muShield       =  AttrDict(z=0*u.cm)
     c.muShieldDesign = muShieldDesign
-    c.muShield.Field = 1.8 # in units of Tesla expected by ShipMuonShield
-    # design 4,5,6
-    c.muShield.LE  = 10*u.m     # - 0.5 m air - Goliath: 4.5 m - 0.5 m air - nu-tau mu-det: 3 m - 0.5 m air. finally 10m asked by Giovanni
-    c.muShield.dZ0 = 1*u.m
-    c.muShield.dZ1 = 3.5*u.m
-    c.muShield.dZ2 = 6.*u.m
-    c.muShield.dZ3 = 2.5*u.m
-    c.muShield.dZ4 = 3.*u.m
-    c.muShield.dZ5 = 0.*u.m     # 28Oct #5 removed
-    c.muShield.dZ6 = 3.*u.m
-    c.muShield.dZ7 = 3.*u.m
-    c.muShield.dZ8 = 3.*u.m
-    c.muShield.dXgap = 0.2*u.m
-    c.muShield.dZgap = 0.1*u.m
+    c.muShield.Field = 1.7 # in units of Tesla expected by ShipMuonShield
+    c.muShield.LE = 8.4*u.m     # - 0.5 m air - Goliath: 4.5 m - 0.5 m air - nu-tau mu-det: 3 m - 0.5 m air. finally 10m asked by Giovanni
+    c.muShield.dZ0 = 1 * u.m
 
     c.muShieldStepGeo = muShieldStepGeo
     c.muShieldWithCobaltMagnet = muShieldWithCobaltMagnet
 
     # zGap to compensate automatic shortening of magnets
-    zGap = 0.5 * c.muShield.dZgap  # halflengh of gap
+    zGap = 0.05 * u.m  # halflengh of gap
     if muShieldDesign == 7:
+        c.muShield.Field = 1.8  # Tesla
         c.muShield.dZ1 = 0.7 * u.m + zGap
         c.muShield.dZ2 = 1.7 * u.m + zGap
         c.muShield.dZ3 = 2.0*u.m + zGap
@@ -337,7 +327,6 @@ with ConfigRegistry.register_config("basic") as c:
         c.muShield.dZ8 = 2.35*u.m + zGap
         c.muShield.dXgap = 0.*u.m
     elif muShieldDesign == 9:
-        c.muShield.Field = 1.7  # Tesla
         c.muShield.dZ1 = 0.35 * u.m + zGap
         c.muShield.dZ2 = 2.26 * u.m + zGap
         c.muShield.dZ3 = 2.08 * u.m + zGap
@@ -381,15 +370,16 @@ with ConfigRegistry.register_config("basic") as c:
             c.muShield.half_Y_max = max(c.muShield.half_Y_max, h_l + f_l, h_r + f_r)
         c.muShield.half_X_max += 15 * u.cm
         c.muShield.half_Y_max += 15 * u.cm
+    else:
+        raise NotImplementedError(f"muShieldDesign {muShieldDesign} not supported")
 
-    if muShieldDesign in range(7, 10):
-        c.muShield.length = 2 * (
-              c.muShield.dZ1 + c.muShield.dZ2 +
-              c.muShield.dZ3 + c.muShield.dZ4 +
-              c.muShield.dZ5 + c.muShield.dZ6 +
-              c.muShield.dZ7 + c.muShield.dZ8
-        ) + c.muShield.LE
-        c.muShield.z = -(c.decayVolume.length + c.muShield.length) / 2. + 1.6*u.m
+    c.muShield.length = 2 * (
+            c.muShield.dZ1 + c.muShield.dZ2 +
+            c.muShield.dZ3 + c.muShield.dZ4 +
+            c.muShield.dZ5 + c.muShield.dZ6 +
+            c.muShield.dZ7 + c.muShield.dZ8
+    ) + c.muShield.LE
+    c.muShield.z = -(c.decayVolume.length + c.muShield.length) / 2.
 
     c.hadronAbsorber              =  AttrDict(z=0*u.cm)
     c.hadronAbsorber.length =     0*u.m # magnetized, counted inside muonshield
