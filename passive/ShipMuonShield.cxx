@@ -59,8 +59,7 @@ ShipMuonShield::ShipMuonShield(TString geofile,
 
   Double_t Z = -25 * m - fMuonShieldLength / 2.;
 
-  zEndOfAbsorb = Z + dZ0 - fMuonShieldLength / 2.;
-  zEndOfAbsorb -= dZ0;
+  zEndOfAbsorb = Z + - fMuonShieldLength / 2.;
 }
 
 ShipMuonShield::ShipMuonShield(const char* name, const Int_t Design, const char* Title,
@@ -92,12 +91,10 @@ ShipMuonShield::ShipMuonShield(const char* name, const Int_t Design, const char*
 	 2 * (dZ1 + dZ2 + dZ3 + dZ4 + dZ5 + dZ6 + dZ7 + dZ8) + LE;
  }
     
- fFloor = (fDesign >= 7) ? floor : 0;
+ fFloor = floor;
 
- zEndOfAbsorb = Z + dZ0 - fMuonShieldLength/2.;   
- if(fDesign >= 7){
-     zEndOfAbsorb = Z - fMuonShieldLength/2.;
- }
+ zEndOfAbsorb = Z - fMuonShieldLength/2.;
+
  fSupport = false;
 }
 
