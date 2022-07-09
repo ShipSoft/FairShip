@@ -40,7 +40,7 @@ ShipMuonShield::ShipMuonShield(TString geofile,
   auto f = TFile::Open(geofile, "read");
   TVectorT<Double_t> params;
   params.Read("params");
-  Double_t LE = 8.4 * m;
+  Double_t LE = 7 * m;
   fDesign = 8;
   fField = 1.7;
   dZ0 = 1 * m;
