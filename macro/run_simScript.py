@@ -43,8 +43,9 @@ inputFile    = "/eos/experiment/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-97
 defaultInputFile = True
 
 globalDesigns = {'2016':{'dy':10.,'dv':5,'ds':7,'nud':1,'caloDesign':0,'strawDesign':4},\
-                 '2018':{'dy':10.,'dv':6,'ds':9,'nud':3,'caloDesign':3,'strawDesign':10}}
-default = '2018'
+                 '2018':{'dy':10.,'dv':6,'ds':9,'nud':3,'caloDesign':3,'strawDesign':10},\
+                 '2022':{'dy':8.,'dv':6,'ds':9,'nud':3,'caloDesign':3,'strawDesign':10}}
+default = '2022'
 
 inactivateMuonProcesses = False   # provisionally for making studies of various muon background sources
 
@@ -89,8 +90,8 @@ parser.add_argument("-o", "--output",dest="outputDir",  help="Output directory",
 parser.add_argument("-Y",        dest="dy",  help="max height of vacuum tank", required=False, default=globalDesigns[default]['dy'])
 parser.add_argument("--tankDesign", dest="dv",      help="4=TP elliptical tank design, 5 = optimized conical rectangular design, 6=5 without segment-1"\
                                             ,required=False, default=globalDesigns[default]['dv'], type=int)
-parser.add_argument("--muShieldDesign", dest="ds",  help="5=TP muon shield, 6=magnetized hadron, 7=short magnet design, 9=optimised with T4 as constraint, 8=requires config file\
-                                            ,10=with field map for hadron absorber", required=False, default=globalDesigns[default]['ds'], type=int)
+parser.add_argument("--muShieldDesign", dest="ds",  help="7=short magnet design, 9=optimised with T4 as constraint, 8=requires config file\
+                                            ,10=with field map for hadron absorber", required=False, choices=range(7,11), default=globalDesigns[default]['ds'], type=int)
 parser.add_argument("--nuTauTargetDesign", dest="nud", help="0=TP, 1=new magnet option for short muon shield, 2= no magnet surrounding neutrino detector"\
                                             ,required=False, default=globalDesigns[default]['nud'], type=int)
 parser.add_argument("--caloDesign", dest="caloDesign",   help="0=ECAL/HCAL TP  1=ECAL/HCAL TP + preshower 2=splitCal  3=ECAL/ passive HCAL"\
@@ -178,12 +179,9 @@ if (simEngine == "Ntuple" or simEngine == "MuonBack") and defaultInputFile :
   sys.exit()
 ROOT.gRandom.SetSeed(options.theSeed)  # this should be propagated via ROOT to Pythia8 and Geant4VMC
 shipRoot_conf.configure(0)     # load basic libraries, prepare atexit for python
-# - muShieldDesign = 2  # 1=passive 5=active (default) 7=short design+magnetized hadron absorber
+# - muShieldDesign = 7  # 7 = short design+magnetized hadron absorber
 # - targetOpt      = 5  # 0=solid   >0 sliced, 5: 5 pieces of tungsten, 4 H20 slits, 17: Mo + W +H2O (default)
 #   nuTauTargetDesign = 0 # 0 = TP, 1 = NEW with magnet, 2 = NEW without magnet, 3 = 2018 design
-if options.muShieldWithCobaltMagnet and options.ds < 3:
-	print("--coMuonShield works only for muShieldDesign >2")
-	sys.exit()
 if options.charm == 0: ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = options.dy, tankDesign = options.dv, \
                                                 muShieldDesign = options.ds, nuTauTargetDesign=options.nud, CaloDesign=options.caloDesign, \
                                                 strawDesign=options.strawDesign, muShieldGeo=options.geofile,

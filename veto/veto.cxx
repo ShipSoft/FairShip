@@ -212,7 +212,7 @@ double wx(double z){
     }
   }
   
-  return wx1+(z-z1)*(wx2-wx1)/(z2-z1);
+  return 0.8 * (wx1 + (z - z1) * (wx2 - wx1) / (z2 - z1));
 }
 
 double wy(double z){
@@ -246,7 +246,7 @@ double wy(double z){
     }
   }
   
-  return wy1+(z-z1)*(wy2-wy1)/(z2-z1);
+  return 0.8* (wy1 + (z - z1) * (wy2 - wy1) / (z2 - z1));
 }
 
 
@@ -1197,12 +1197,6 @@ void veto::ConstructGeometry()
       Double_t dx1 = slopex*(zpos - zFocusX);
       Double_t dy  = slopey*(zpos - zFocusY);
    // make the entrance window
-      // add floor:
-      Double_t Length = zStartMagVol - zStartDecayVol - 2.2*m;
-      TGeoBBox *box = new TGeoBBox("box1",  10 * m, floorHeightA/2., Length/2.);
-      TGeoVolume *floor = new TGeoVolume("floor1",box,concrete);
-      floor->SetLineColor(11);
-      tDecayVol->AddNode(floor, 0, new TGeoTranslation(0, -10*m+floorHeightA/2.,Length/2.));
       //entrance lid
       TGeoVolume* T1Lid = MakeLidSegments(1,dx1,dy);
       tDecayVol->AddNode(T1Lid, 1, new TGeoTranslation(0, 0, zpos - zStartDecayVol+f_LidThickness/2.1));
@@ -1215,17 +1209,7 @@ void veto::ConstructGeometry()
       fTub2length=fTub2length+fTub1length+tgap/2.;
       TGeoVolume* seg2 = MakeSegments(fTub2length,dx1,dy,slopex,slopey,floorHeightA);
       tDecayVol->AddNode(seg2, 1, new TGeoTranslation(0, 0, fTub2z-zStartDecayVol));
-//////////////?????
-      Length = fTub6length+fTub2length+3*m; // extend under ecal and muon detectors
-      box = new TGeoBBox("box2",  10 * m, floorHeightB/2., Length/2.);
-      floor = new TGeoVolume("floor2",box,concrete);
-      floor->SetLineColor(11);
-      tMaGVol->AddNode(floor, 0, new TGeoTranslation(0, -10*m+floorHeightB/2., Length/2.-2*fTub3length - 0.5*m));
 
-      //TGeoVolume*  magnetInnerWalls = MakeMagnetSegment(3);
-      //tMaGVol->AddNode(magnetInnerWalls, 1, new TGeoTranslation(0, 0, fTub4z - zStartMagVol));      
-      
-      
    // make the exit window
       Double_t dx2 = slopex*(fTub6z +fTub6length - zFocusX);
       TGeoVolume *T6Lid = gGeoManager->MakeBox("T6Lid",supportMedOut,dx2,dy,f_LidThickness/2.);

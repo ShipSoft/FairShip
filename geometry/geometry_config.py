@@ -3,8 +3,8 @@ import shipunit as u
 import ROOT as r
 from ShipGeoConfig import AttrDict, ConfigRegistry
 # the following params should be passed through 'ConfigRegistry.loadpy' method
-# muShieldDesign = 5  # 1=passive 2=active 5=TP design 6=magnetized hadron absorber 9=optimised with T4 as constraint, 8=requires config file
-#                      10=with field map for hadron absorber, 11=9 with field map for muon shield
+# muShieldDesign = 7  #  7 = short magnet design 9 = optimised with T4 as constraint, 8=requires config file
+#                      10 = with field map for hadron absorber, 11 = 9 with field map for muon shield
 # nuTargetPassive = 1  #0 = with active layers, 1 = only passive
 # nuTauTargetDesign  =   #0 = TP, 1 = NEW with magnet, 2 = NEW without magnet, 3 = 2018 design
 
@@ -13,7 +13,7 @@ from ShipGeoConfig import AttrDict, ConfigRegistry
 # preshowerOption = 0 # 1=simple preShower detector for conceptual studies, moves calo and muon stations
 # tankDesign = 5 #  4=TP elliptical tank design, 5 = optimized conical rectangular design, 6=5 without segment-1
 if "muShieldDesign" not in globals():
-    muShieldDesign = 5
+    muShieldDesign = 7
 if "muShieldGeo" not in globals():
     muShieldGeo = None
 if "nuTargetPassive" not in globals():
@@ -51,7 +51,7 @@ with ConfigRegistry.register_config("basic") as c:
     # global muShieldDesign, targetOpt, strawDesign, Yheight
     c.Yheight = Yheight*u.m
     # decision by the SP 
-    totalLength       = 2.5*c.Yheight + 35*u.m
+    totalLength       = 3.125*c.Yheight + 35*u.m
     extraVesselLength = totalLength - 50*u.m
     windowBulge = 1*u.m
     if tankDesign > 5: windowBulge = 25*u.cm
@@ -84,7 +84,7 @@ with ConfigRegistry.register_config("basic") as c:
      1/0 
     else:
      c.chambers.Length = totalLength
-     c.chambers.Tub1length = 2.5*u.m
+     c.chambers.Tub1length = 3.125*u.m
      c.chambers.Tub2length = 17.68*u.m+extraVesselLength/2.
      c.chambers.Tub3length = 0.8*u.m
      c.chambers.Tub4length = 2.*u.m+magnetIncrease/2.
@@ -125,7 +125,7 @@ with ConfigRegistry.register_config("basic") as c:
      # envelope (46,1.2) or (46,0.9) end at T4: (100.,2.5)  London slides, https://indico.cern.ch/event/508465/contributions/2166894/    
      c.zFocusX = +10*u.m # Decision taken 15/12/2016, Physics and Detector meeting
      c.zFocusY = -5*u.m # for the moment, identical to X
-     c.xMax    = +2.5*u.m # max horizontal width at T4
+     c.xMax    = +2.*u.m # max horizontal width at T4
      # 
      c.TrackStation4 = AttrDict(z=z4)
      zset=z4-200.*u.cm
@@ -161,7 +161,7 @@ with ConfigRegistry.register_config("basic") as c:
      c.strawtubes.YLayerOffset = 1.9*u.cm        
      c.strawtubes.YPlaneOffset = 1.3*u.cm
      c.strawtubes.FrameMaterial      = "steel"
-     c.strawtubes.FrameLateralWidth  = 1.2*u.m
+     c.strawtubes.FrameLateralWidth  = 0.96*u.m
      c.strawtubes.DeltazFrame        = 2.5*u.cm
 
     c.strawtubes.WallThickness      = 0.0039*u.cm
@@ -171,21 +171,21 @@ with ConfigRegistry.register_config("basic") as c:
     c.strawtubes.ViewAngle          = 5
     c.strawtubes.WireThickness      = 0.003*u.cm
     c.strawtubes.DeltazView         = 10.*u.cm
-    c.strawtubes.VacBox_x           = 300.*u.cm
+    c.strawtubes.VacBox_x           = 240.*u.cm
     c.strawtubes.VacBox_y           = 600.*u.cm * c.Yheight / (10.*u.m)
            
     c.Bfield = AttrDict(z=c.z)
     c.Bfield.max = 0 # 1.4361*u.kilogauss  # was 1.15 in EOI
     c.Bfield.y   = c.Yheight
-    c.Bfield.x   = 3.*u.m
+    c.Bfield.x   = 2.4*u.m
     c.Bfield.fieldMap = "field/MainSpectrometerField.txt"
     if c.magnetDesign>3:                          # MISIS design
-      c.Bfield.YokeWidth=0.85*u.m  # full width       200.*cm; 
-      c.Bfield.YokeDepth=1.75*u.m  # half length      200 *cm;
+      c.Bfield.YokeWidth=0.68*u.m  # full width       200.*cm; 
+      c.Bfield.YokeDepth=1.4*u.m  # half length      200 *cm;
       c.Bfield.CoilThick=25.*u.cm  # thickness
       VesselThick=37.*u.cm;   # full thickness
-      c.Bfield.x = 251.*u.cm+VesselThick; # half apertures
-      c.Bfield.y = 501.*u.cm+VesselThick+c.Bfield.CoilThick
+      c.Bfield.x = 201.*u.cm+VesselThick; # half apertures
+      c.Bfield.y = 401.*u.cm+VesselThick+c.Bfield.CoilThick
 
 # TimeDet
     c.TimeDet = AttrDict(z=0)
@@ -193,8 +193,8 @@ with ConfigRegistry.register_config("basic") as c:
     c.TimeDet.dzBarCol = 2.4 * u.cm
     c.TimeDet.zBar = 1 * u.cm
     c.TimeDet.DZ = (c.TimeDet.dzBarRow + c.TimeDet.dzBarCol + c.TimeDet.zBar) / 2
-    c.TimeDet.DX = 250 * u.cm
-    c.TimeDet.DY = 500 * u.cm
+    c.TimeDet.DX = 200 * u.cm
+    c.TimeDet.DY = 400 * u.cm
     c.TimeDet.z = c.Chamber6.z + c.chambers.Tub6length + c.Veto.lidThickness + c.TimeDet.DZ + 1*u.cm # safety margin
 
     if CaloDesign==0:
@@ -226,7 +226,7 @@ with ConfigRegistry.register_config("basic") as c:
      c.PreshowerStation0 = AttrDict(z= c.PreshowerFilter0.z + 10*u.cm )
 
      c.Preshower = AttrDict(z=0)
-     c.Preshower.XMax    =  300.*u.cm
+     c.Preshower.XMax    =  240.*u.cm
      c.Preshower.YMax    =  600.*u.cm * c.Yheight / (10.*u.m)
      c.Preshower.ActiveThickness = 0.5*u.cm
      c.Preshower.FilterThickness0 = 1.4*u.cm
@@ -241,8 +241,8 @@ with ConfigRegistry.register_config("basic") as c:
 
     c.SplitCal = AttrDict(z=0)
     c.SplitCal.ZStart = c.TimeDet.z + c.TimeDet.DZ + 5*u.cm + presShowerDeltaZ 
-    c.SplitCal.XMax = 600.*u.cm/2. #290.*u.cm  #half length
-    c.SplitCal.YMax = 1200.*u.cm/2. #510.*u.cm * c.Yheight / (10.*u.m)   #half length  
+    c.SplitCal.XMax = 480.*u.cm/2. #290.*u.cm  #half length
+    c.SplitCal.YMax = 960.*u.cm/2. #510.*u.cm * c.Yheight / (10.*u.m)   #half length  
     c.SplitCal.Empty = 0*u.cm
     c.SplitCal.BigGap = 100*u.cm
     c.SplitCal.ActiveECALThickness = 0.56*u.cm
@@ -294,7 +294,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.MuonFilter2 = AttrDict(z=c.MuonStation0.z+250.*u.cm)
 
     c.Muon = AttrDict(z=0)
-    c.Muon.XMax    =  300.*u.cm
+    c.Muon.XMax    =  240.*u.cm
     c.Muon.YMax    =  600.*u.cm * c.Yheight / (10.*u.m)
 
     c.Muon.ActiveThickness = 0.5*u.cm
@@ -306,27 +306,17 @@ with ConfigRegistry.register_config("basic") as c:
 
     c.muShield       =  AttrDict(z=0*u.cm)
     c.muShieldDesign = muShieldDesign
-    c.muShield.Field = 1.8 # in units of Tesla expected by ShipMuonShield
-    # design 4,5,6
-    c.muShield.LE  = 10*u.m     # - 0.5 m air - Goliath: 4.5 m - 0.5 m air - nu-tau mu-det: 3 m - 0.5 m air. finally 10m asked by Giovanni
-    c.muShield.dZ0 = 2.5*u.m if muShieldDesign == 6 else 1*u.m
-    c.muShield.dZ1 = 3.5*u.m
-    c.muShield.dZ2 = 6.*u.m
-    c.muShield.dZ3 = 2.5*u.m
-    c.muShield.dZ4 = 3.*u.m
-    c.muShield.dZ5 = 0.*u.m     # 28Oct #5 removed
-    c.muShield.dZ6 = 3.*u.m
-    c.muShield.dZ7 = 3.*u.m
-    c.muShield.dZ8 = 3.*u.m
-    c.muShield.dXgap = 0.2*u.m
-    c.muShield.dZgap = 0.1*u.m
+    c.muShield.Field = 1.7 # in units of Tesla expected by ShipMuonShield
+    c.muShield.LE = 7 * u.m     # - 0.5 m air - Goliath: 4.5 m - 0.5 m air - nu-tau mu-det: 3 m - 0.5 m air. finally 10m asked by Giovanni
+    c.muShield.dZ0 = 1 * u.m
 
     c.muShieldStepGeo = muShieldStepGeo
     c.muShieldWithCobaltMagnet = muShieldWithCobaltMagnet
 
     # zGap to compensate automatic shortening of magnets
-    zGap = 0.5 * c.muShield.dZgap  # halflengh of gap
+    zGap = 0.05 * u.m  # halflengh of gap
     if muShieldDesign == 7:
+        c.muShield.Field = 1.8  # Tesla
         c.muShield.dZ1 = 0.7 * u.m + zGap
         c.muShield.dZ2 = 1.7 * u.m + zGap
         c.muShield.dZ3 = 2.0*u.m + zGap
@@ -337,7 +327,6 @@ with ConfigRegistry.register_config("basic") as c:
         c.muShield.dZ8 = 2.35*u.m + zGap
         c.muShield.dXgap = 0.*u.m
     elif muShieldDesign == 9:
-        c.muShield.Field = 1.7  # Tesla
         c.muShield.dZ1 = 0.35 * u.m + zGap
         c.muShield.dZ2 = 2.26 * u.m + zGap
         c.muShield.dZ3 = 2.08 * u.m + zGap
@@ -381,54 +370,19 @@ with ConfigRegistry.register_config("basic") as c:
             c.muShield.half_Y_max = max(c.muShield.half_Y_max, h_l + f_l, h_r + f_r)
         c.muShield.half_X_max += 15 * u.cm
         c.muShield.half_Y_max += 15 * u.cm
+    else:
+        raise NotImplementedError(f"muShieldDesign {muShieldDesign} not supported")
 
-    if muShieldDesign in range(7, 10):
-        c.muShield.length = 2 * (
-              c.muShield.dZ1 + c.muShield.dZ2 +
-              c.muShield.dZ3 + c.muShield.dZ4 +
-              c.muShield.dZ5 + c.muShield.dZ6 +
-              c.muShield.dZ7 + c.muShield.dZ8
-        ) + c.muShield.LE
-        c.muShield.z = -(c.decayVolume.length + c.muShield.length) / 2.
-
-    if muShieldDesign == 3:
-     c.muShield.dZ1 = 3.5*u.m
-     c.muShield.dZ2 = 5.*u.m
-     c.muShield.dZ3 = 3.5*u.m
-     c.muShield.dZ4 = 2.0*u.m
-     c.muShield.dZ5 = 1.*u.m
-     c.muShield.dZ6 = 3.*u.m
-     c.muShield.dZ7 = 3.*u.m
-     c.muShield.dZ8 = 3.*u.m
-     c.muShield.dXgap = 0.2*u.m
-
-    if muShieldDesign == 2:
-     c.muShield.dZ0 = 0*u.m      #  extra hadron absorber
-     c.muShield.dZ1 = 2.5*u.m
-     c.muShield.dZ2 = 3.5*u.m
-     c.muShield.dZ3 = 3.0*u.m
-     c.muShield.dZ4 = 3.0*u.m
-     c.muShield.dZ5 = 2.5*u.m
-     c.muShield.dZ6 = 2.5*u.m
-     c.muShield.length = 2*(c.muShield.dZ1+c.muShield.dZ2+c.muShield.dZ3+c.muShield.dZ4+
-                         c.muShield.dZ5+c.muShield.dZ6) + c.muShield.LE  # leave some space for nu-tau detector   
-    # for passive design, fDesign==1
-    if muShieldDesign == 1:
-        c.muShield.length =  70*u.m 
-        c.muShield.z  =  -c.decayVolume.length/2.-c.muShield.length/2. - c.muShield.LE  # leave some space for nu-tau 
-    if muShieldDesign == 3 or muShieldDesign == 4 or muShieldDesign == 5: 
-     c.muShield.length = 2*(c.muShield.dZ0+c.muShield.dZ1+c.muShield.dZ2+c.muShield.dZ3+c.muShield.dZ4+c.muShield.dZ5+c.muShield.dZ6
-                         +c.muShield.dZ7+c.muShield.dZ8 ) + c.muShield.LE  # leave some space for nu-tau 
-     c.muShield.z  =  -c.decayVolume.length/2.-c.muShield.length/2.
-    if muShieldDesign == 6: 
-     c.muShield.length = 2*(c.muShield.dZ1+c.muShield.dZ2+c.muShield.dZ3+c.muShield.dZ4+c.muShield.dZ5+c.muShield.dZ6
-                         +c.muShield.dZ7+c.muShield.dZ8 ) + c.muShield.LE  # leave some space for nu-tau 
-     c.muShield.z  =  -c.decayVolume.length/2.-c.muShield.length/2.
+    c.muShield.length = 2 * (
+            c.muShield.dZ1 + c.muShield.dZ2 +
+            c.muShield.dZ3 + c.muShield.dZ4 +
+            c.muShield.dZ5 + c.muShield.dZ6 +
+            c.muShield.dZ7 + c.muShield.dZ8
+    ) + c.muShield.LE
+    c.muShield.z = -(c.decayVolume.length + c.muShield.length) / 2.
 
     c.hadronAbsorber              =  AttrDict(z=0*u.cm)
-    if muShieldDesign > 5:  c.hadronAbsorber.length =  5.00*u.m
-    if muShieldDesign > 6:  c.hadronAbsorber.length =     0*u.m # magnetized, counted inside muonshield 
-    else:                   c.hadronAbsorber.length =  3.00*u.m
+    c.hadronAbsorber.length =     0*u.m # magnetized, counted inside muonshield
     c.hadronAbsorber.z     =  c.muShield.z - c.muShield.length/2. - c.hadronAbsorber.length/2.
 
     c.hadronAbsorber.WithConstField = True
@@ -648,6 +602,7 @@ with ConfigRegistry.register_config("basic") as c:
         c.tauMudet.Ytot = c.tauMudet.YFe + c.tauMudet.UpperSupportY + c.tauMudet.LowerSupportY 
         c.tauMudet.Ztot = c.tauMudet.NRpc*c.tauMudet.ZRpc+c.tauMudet.NFethick*c.tauMudet.ZFethick + c.tauMudet.NFethin*c.tauMudet.ZFethin
         #c.tauMudet.zMudetC = -c.decayVolume.length/2. - c.tauMudet.Ztot/2
+        #c.tauMudet.zMudetC = c.Chamber1.z -c.chambers.Tub1length - c.tauMudet.Ztot/2 -31*u.cm;
         c.tauMudet.zMudetC = c.Chamber1.z -c.chambers.Tub1length - c.tauMudet.Ztot/2 -31*u.cm;
         #lateral cuts
         c.tauMudet.CutHeight = 78.548 * u.cm
@@ -832,29 +787,29 @@ with ConfigRegistry.register_config("basic") as c:
     #Upstream Tagger
     c.UpstreamTagger = AttrDict(z=0)
     c.UpstreamTagger.Z_Glass = 0.2 * u.cm
-    c.UpstreamTagger.Y_Glass = 105 * u.cm   
-    c.UpstreamTagger.X_Glass = 223 * u.cm   
+    c.UpstreamTagger.Y_Glass = 83.5 * u.cm   
+    c.UpstreamTagger.X_Glass = 178. * u.cm   
     c.UpstreamTagger.Z_Glass_Border = 0.2 * u.cm
     c.UpstreamTagger.Y_Glass_Border = 1.0 * u.cm
     c.UpstreamTagger.X_Glass_Border = 1.0 * u.cm
     c.UpstreamTagger.Z_PMMA = 0.8 * u.cm
-    c.UpstreamTagger.Y_PMMA = 108 * u.cm
-    c.UpstreamTagger.X_PMMA = 226 * u.cm
+    c.UpstreamTagger.Y_PMMA = 85.7 * u.cm
+    c.UpstreamTagger.X_PMMA = 180.8 * u.cm
     c.UpstreamTagger.DY_PMMA = 1.5 * u.cm
     c.UpstreamTagger.DX_PMMA = 1.5 * u.cm
     c.UpstreamTagger.DZ_PMMA = 0.1 * u.cm
     c.UpstreamTagger.Z_FreonSF6 = 0.1 * u.cm
-    c.UpstreamTagger.Y_FreonSF6 = 107 * u.cm
-    c.UpstreamTagger.X_FreonSF6 = 225 * u.cm
+    c.UpstreamTagger.Y_FreonSF6 = 85.6 * u.cm
+    c.UpstreamTagger.X_FreonSF6 = 180 * u.cm
     c.UpstreamTagger.Z_FreonSF6_2 = 0.8 * u.cm
     c.UpstreamTagger.Y_FreonSF6_2 = 0.5 * u.cm
     c.UpstreamTagger.X_FreonSF6_2 = 0.5 * u.cm
     c.UpstreamTagger.Z_FR4 = 0.15 * u.cm
-    c.UpstreamTagger.Y_FR4 = 111 * u.cm
-    c.UpstreamTagger.X_FR4 = 229 * u.cm
+    c.UpstreamTagger.Y_FR4 = 88.8 * u.cm
+    c.UpstreamTagger.X_FR4 = 183.2 * u.cm
     c.UpstreamTagger.Z_Aluminium = 1.1503 * u.cm
-    c.UpstreamTagger.Y_Aluminium = 111 * u.cm
-    c.UpstreamTagger.X_Aluminium = 233 * u.cm
+    c.UpstreamTagger.Y_Aluminium = 89. * u.cm
+    c.UpstreamTagger.X_Aluminium = 186.4 * u.cm
     c.UpstreamTagger.DZ_Aluminium = 0.1 * u.cm
     c.UpstreamTagger.DY_Aluminium = 1 * u.cm
     c.UpstreamTagger.DX_Aluminium = 0.2 * u.cm
@@ -862,8 +817,8 @@ with ConfigRegistry.register_config("basic") as c:
     c.UpstreamTagger.Y_Air = 0 * u.cm
     c.UpstreamTagger.X_Air = 2 * u.cm
     c.UpstreamTagger.Z_Strip = 0.0003 * u.cm
-    c.UpstreamTagger.Y_Strip = 3.1 * u.cm
-    c.UpstreamTagger.X_Strip = 229 * u.cm
-    c.UpstreamTagger.X_Strip64 = 3.3 * u.cm
-    c.UpstreamTagger.Y_Strip64 = 111 * u.cm
+    c.UpstreamTagger.Y_Strip = 2.48 * u.cm
+    c.UpstreamTagger.X_Strip = 183.2 * u.cm
+    c.UpstreamTagger.X_Strip64 = 2.64 * u.cm
+    c.UpstreamTagger.Y_Strip64 = 88.8 * u.cm
     c.UpstreamTagger.Z_Position = c.tauMudet.zMudetC + (c.tauMudet.Ztot)/2 + 12.0*u.cm
