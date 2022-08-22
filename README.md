@@ -40,12 +40,12 @@ even if you already know Git, as it explains how development is done on GitHub.
     ```
 3. Source the setUp script
     ```bash
-    source /cvmfs/ship.cern.ch/SHiP-2021/latest/setUp.sh
+    source /cvmfs/ship.cern.ch/SHiP-2022/May/setUp.sh
     ```
 
 4. Build the software using aliBuild
     ```bash
-    aliBuild build FairShip --default fairship --always-prefer-system --config-dir $SHIPDIST
+    aliBuild build FairShip --always-prefer-system --config-dir $SHIPDIST
     ```
     If you are not building `master`, you will need to select the appropriate default (see [Branches](#branches)).
 
