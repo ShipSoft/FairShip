@@ -758,7 +758,7 @@ void ShipMuonShield::ConstructGeometry()
 
       // Create ECN3 cavern around vessel
       auto *experiment_rock = new TGeoBBox("experiment_rock", 20 * m, 20 * m, ECN3_length / 2.);
-      auto *experiment_cavern = new TGeoBBox("experiment_cavern", 10 * m, 10 * m, ECN3_length / 2.);
+      auto *experiment_cavern = new TGeoBBox("experiment_cavern", 8 * m, 7.5 * m, ECN3_length / 2.);
       auto *ECN3_shift = new TGeoTranslation("ECN3_shift", 3.5 * m, 4.7 * m, ECN3_length / 2.);
       ECN3_shift->RegisterYourself();
 
