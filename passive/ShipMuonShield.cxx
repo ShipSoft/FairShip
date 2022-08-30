@@ -751,15 +751,15 @@ void ShipMuonShield::ConstructGeometry()
       auto *rock = new TGeoBBox("rock", 20 * m, 20 * m, TCC8_length / 2. + ECN3_length / 2. + 5 * m);
       auto *muon_shield_cavern = new TGeoBBox("muon_shield_cavern", 5 * m, 3.75 * m, TCC8_length / 2.);
       auto *muon_shield_trench = new TGeoBBox("muon_shield_trench", 1.2 * m, 2.4 * m, TCC8_trench_length / 2.);
-      auto *TCC8_shift = new TGeoTranslation("TCC8_shift", 2.3 * m, 2.55 * m, - TCC8_length / 2.);
+      auto *TCC8_shift = new TGeoTranslation("TCC8_shift", 2.3 * m, 2.05 * m, - TCC8_length / 2.);
       TCC8_shift->RegisterYourself();
       auto *TCC8_trench_shift = new TGeoTranslation("TCC8_trench_shift", 0 * m, 0 * m, - TCC8_trench_length / 2.);
       TCC8_trench_shift->RegisterYourself();
 
       // Create ECN3 cavern around vessel
       auto *experiment_rock = new TGeoBBox("experiment_rock", 20 * m, 20 * m, ECN3_length / 2.);
-      auto *experiment_cavern = new TGeoBBox("experiment_cavern", 10 * m, 10 * m, ECN3_length / 2.);
-      auto *ECN3_shift = new TGeoTranslation("ECN3_shift", 3.5 * m, 4.7 * m, ECN3_length / 2.);
+      auto *experiment_cavern = new TGeoBBox("experiment_cavern", 8 * m, 7.5 * m, ECN3_length / 2.);
+      auto *ECN3_shift = new TGeoTranslation("ECN3_shift", 3.5 * m, 4.2 * m, ECN3_length / 2.);
       ECN3_shift->RegisterYourself();
 
       auto* ECN3_wide_trench = new TGeoBBox("ECN3_wide_trench", 7 * m, 4.3 * m, 25 / 2. * m);
