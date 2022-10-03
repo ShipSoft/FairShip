@@ -1226,7 +1226,7 @@ void veto::ConstructGeometry()
      if (fFastMuon && fFollowMuon){
         const char* Vol  = "TGeoVolume";
         const char* Mag  = "Mag";
-        const char* Rock = "rock";
+        const char* Cavern = "Cavern";
         const char* Ain  = "AbsorberAdd";
         const char* Aout = "AbsorberAddCore";
         TObjArray* volumelist = gGeoManager->GetListOfVolumes();
@@ -1236,7 +1236,7 @@ void veto::ConstructGeometry()
          const char* volumename = volumelist->At(volumeiterator)->GetName();
          const char* classname  = volumelist->At(volumeiterator)->ClassName();
          if (strstr(classname,Vol)){
-          if (strstr(volumename,Mag) || strstr(volumename,Rock)|| strstr(volumename,Ain) || strstr(volumename,Aout)){
+          if (strstr(volumename, Mag) || strstr(volumename, Cavern)|| strstr(volumename, Ain) || strstr(volumename, Aout)){
             AddSensitiveVolume(gGeoManager->GetVolume(volumename));
             cout << "veto: made sensitive for following muons: "<< volumename <<endl;
           }
