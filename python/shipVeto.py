@@ -109,9 +109,14 @@ class Task:
   nav.SetCurrentPoint(aPoint.x(),aPoint.y(),aPoint.z())
   cNode = 'outside'
   aNode = nav.FindNode()
-  if aNode: cNode = aNode.GetName()
-  if cNode != 'T2decayVol_0' and cNode != 'T1decayVol_0': 
-   distmin = 0. 
+  if aNode:
+   cNode = aNode.GetName()
+  if cNode not in ('DecayVacuum_block4_0',
+                   'DecayVacuum_block5_0',
+                   'DecayVacuum_block3_0',
+                   'DecayVacuum_block2_0',
+                   'DecayVacuum_block1_0'):
+   distmin = 0.
   else:
    for n in range(nSteps):
    # set direction
