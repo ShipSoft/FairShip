@@ -9,6 +9,7 @@ class Task:
  def __init__(self,t):
   self.SBTefficiency = 0.99  # Surrounding Background tagger: 99% efficiency picked up from TP
   self.SVTefficiency = 0.995 # Straw Veto tagger: guestimate, including dead channels
+  self.UBTefficiency = 0.9  # Upstream background tagger
   self.random = ROOT.TRandom()
   ROOT.gRandom.SetSeed(13)
   self.detList  = self.detMap()
@@ -79,6 +80,23 @@ class Task:
   if veto: w = 0.
   #print 'RPC :',nHits
   return veto,w,nHits
+
+ def UBT_decision(self, mcParticle=None):
+  nHits = 0
+  mom = ROOT.TVector3()
+  for ahit in self.sTree.UpstreamTaggerPoint:
+     if mcParticle:
+        if mcParticle > 0 and mcParticle != ahit.GetTrackID():
+         continue
+        if mcParticle < 0 and abs(mcParticle) == ahit.GetTrackID():
+         continue
+     ahit.Momentum(mom)
+     if mom.Mag() > 0.1:
+      nHits+=1
+  w = (1 - self.UBTefficiency) ** nHits
+  veto = self.random.Rndm() > w
+  return veto, w, nHits
+
  def Track_decision(self,mcParticle=None):
   nMultCon = 0
   k = -1
@@ -109,9 +127,14 @@ class Task:
   nav.SetCurrentPoint(aPoint.x(),aPoint.y(),aPoint.z())
   cNode = 'outside'
   aNode = nav.FindNode()
-  if aNode: cNode = aNode.GetName()
-  if cNode != 'T2decayVol_0' and cNode != 'T1decayVol_0': 
-   distmin = 0. 
+  if aNode:
+   cNode = aNode.GetName()
+  if cNode not in ('DecayVacuum_block4_0',
+                   'DecayVacuum_block5_0',
+                   'DecayVacuum_block3_0',
+                   'DecayVacuum_block2_0',
+                   'DecayVacuum_block1_0'):
+   distmin = 0.
   else:
    for n in range(nSteps):
    # set direction
