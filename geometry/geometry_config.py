@@ -462,6 +462,7 @@ with ConfigRegistry.register_config("basic") as c:
     #Parameters for tau neutrino target Magnet
     if nuTauTargetDesign!=2:
         c.EmuMagnet = AttrDict(z=0*u.cm)
+        c.EmuMagnet.MagneticField = False #activates the magnetic field
         c.EmuMagnet.Design = nuTauTargetDesign
         c.EmuMagnet.B=1.25*u.tesla
         c.EmuMagnet.GapDown = 25*u.cm
