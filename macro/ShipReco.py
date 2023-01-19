@@ -195,4 +195,6 @@ for global_variables.iEvent in range(options.firstEvent, options.nEvents):
  # memory monitoring
  # mem_monitor()
 # end loop over events
+if ShipGeo.muShieldGeo==8:
+  os.system("rm  tmp_muShieldGeo.root")
 SHiP.finish()
