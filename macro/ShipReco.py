@@ -104,6 +104,8 @@ run.SetOutputFile(ROOT.TMemFile('output', 'recreate'))  # Output file
 run.SetUserConfig("g4Config_basic.C") # geant4 transport not used, only needed for creating VMC field
 rtdb = run.GetRuntimeDb()
 # -----Create geometry----------------------------------------------
+import numpy as np
+from array import array
 def generate_shield_rootfile(geofile, params):
   f = ROOT.TFile.Open(geofile, 'recreate')
   params =  np.array(params, dtype=float)
@@ -126,10 +128,10 @@ def generate_shield_params_from_geofile(lfGeo):
   for node in cave_node.GetNodes():
       for subnode in node.GetNodes():
           nodeName = subnode.GetName()
-          if "MagRetR" in nodeName and 'Absorb' not in nodeName: 
+          if "MagRetR" in nodeName and 'Absorb' not in nodeName and "7" not in nodeName: 
               lVol =  subnode.GetVolume().GetShape()
               dots = lVol.GetVertices()
-              dZ.append(lVol.GetDZ())
+              dZ.append(lVol.GetDZ() + 5)
               vetz = [dots[i] for i in range(16)]
               Y = vetz[1::2]
               X = np.absolute(vetz[::2])
@@ -138,8 +140,8 @@ def generate_shield_params_from_geofile(lfGeo):
               x_out.append(np.max(X[4:]) - np.min(X[4:]))
               gap_in.append(np.min(X[:4]) - x_in[-1])
               gap_out.append(np.min(X[4:]) - x_out[-1])
-              y_in.append(max(Y[:4]) - x_in[-1])
-              y_out.append(max(Y[4:]) - x_out[-1])
+              y_in.append(max(Y[:4]) - x_in[-1] + 0.1)
+              y_out.append(max(Y[4:]) - x_out[-1] + 0.1)
 
   out_params = dZ
   for i in range(8):
@@ -151,8 +153,8 @@ def generate_shield_params_from_geofile(lfGeo):
     out_params.append(gap_out[i])
   return out_params
 
-if ShipGeo.muShieldGeo==8:
-  shiedlParams = generate_shield_options_from_geo(fgeo)
+if ShipGeo.muShieldDesign==8:
+  shiedlParams = generate_shield_params_from_geofile(fgeo)
   generate_shield_rootfile('tmp_muShieldGeo.root', shiedlParams)
   ShipGeo.muShieldGeo = 'tmp_muShieldGeo.root'
 
@@ -195,6 +197,6 @@ for global_variables.iEvent in range(options.firstEvent, options.nEvents):
  # memory monitoring
  # mem_monitor()
 # end loop over events
-if ShipGeo.muShieldGeo==8:
+if ShipGeo.muShieldDesign==8:
   os.system("rm  tmp_muShieldGeo.root")
 SHiP.finish()
