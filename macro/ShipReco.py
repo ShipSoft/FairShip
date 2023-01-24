@@ -104,60 +104,6 @@ run.SetOutputFile(ROOT.TMemFile('output', 'recreate'))  # Output file
 run.SetUserConfig("g4Config_basic.C") # geant4 transport not used, only needed for creating VMC field
 rtdb = run.GetRuntimeDb()
 # -----Create geometry----------------------------------------------
-import numpy as np
-from array import array
-def generate_shield_rootfile(geofile, params):
-  f = ROOT.TFile.Open(geofile, 'recreate')
-  params =  np.array(params, dtype=float)
-  parray = ROOT.TVectorD(len(params), array('d',params))
-  parray.Write('params')
-  f.Close()
-  print('Geofile constructed at ' + geofile)
-  return geofile
-
-def generate_shield_params_from_geofile(lfGeo):
-  geo = lfGeo.Get("FAIRGeom")
-  cave_node = geo.GetTopNode()
-  x_in = [40, 80]
-  x_out = [40, 80]
-  y_in = [150, 150]
-  y_out = [150, 150]
-  gap_in = [2, 2]
-  gap_out = [2, 2]
-  dZ = [70, 170]
-  for node in cave_node.GetNodes():
-      for subnode in node.GetNodes():
-          nodeName = subnode.GetName()
-          if "MagRetR" in nodeName and 'Absorb' not in nodeName and "7" not in nodeName: 
-              lVol =  subnode.GetVolume().GetShape()
-              dots = lVol.GetVertices()
-              dZ.append(lVol.GetDZ() + 5)
-              vetz = [dots[i] for i in range(16)]
-              Y = vetz[1::2]
-              X = np.absolute(vetz[::2])
-
-              x_in.append(np.max(X[:4]) - np.min(X[:4]))
-              x_out.append(np.max(X[4:]) - np.min(X[4:]))
-              gap_in.append(np.min(X[:4]) - x_in[-1])
-              gap_out.append(np.min(X[4:]) - x_out[-1])
-              y_in.append(max(Y[:4]) - x_in[-1] + 0.1)
-              y_out.append(max(Y[4:]) - x_out[-1] + 0.1)
-
-  out_params = dZ
-  for i in range(8):
-    out_params.append(x_in[i])
-    out_params.append(x_out[i])
-    out_params.append(y_in[i])
-    out_params.append(y_out[i])
-    out_params.append(gap_in[i])
-    out_params.append(gap_out[i])
-  return out_params
-
-if ShipGeo.muShieldDesign==8:
-  shiedlParams = generate_shield_params_from_geofile(fgeo)
-  generate_shield_rootfile('tmp_muShieldGeo.root', shiedlParams)
-  ShipGeo.muShieldGeo = 'tmp_muShieldGeo.root'
-
 modules = shipDet_conf.configure(run,ShipGeo)
 # run.Init()
 fgeo.FAIRGeom
@@ -197,6 +143,4 @@ for global_variables.iEvent in range(options.firstEvent, options.nEvents):
  # memory monitoring
  # mem_monitor()
 # end loop over events
-if ShipGeo.muShieldDesign==8:
-  os.system("rm  tmp_muShieldGeo.root")
 SHiP.finish()

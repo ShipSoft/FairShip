@@ -5,6 +5,8 @@ from __future__ import division
 import ROOT,os
 import shipunit as u
 from ShipGeoConfig import AttrDict,ConfigRegistry
+import numpy as np
+from array import array
 detectorList = []
 
 def getParameter(x,ship_geo,latestShipGeo):
@@ -72,6 +74,53 @@ def posEcal(z,efile):
  ecal = ROOT.ecal("Ecal", ROOT.kTRUE, sz)
  return ecal,EcalZSize
 
+def generate_shield_rootfile(geofile, params):
+    f = ROOT.TFile.Open(geofile, 'recreate')
+    params =  np.array(params, dtype=float)
+    parray = ROOT.TVectorD(len(params), array('d',params))
+    parray.Write('params')
+    f.Close()
+    print('Geofile constructed at ' + geofile)
+    return geofile
+
+def generate_shield_params_from_geofile(lfGeo):
+  geo = lfGeo.Get("FAIRGeom")
+  cave_node = geo.GetTopNode()
+  x_in = [40, 80]
+  x_out = [40, 80]
+  y_in = [150, 150]
+  y_out = [150, 150]
+  gap_in = [2, 2]
+  gap_out = [2, 2]
+  dZ = [70, 170]
+  for node in cave_node.GetNodes():
+      for subnode in node.GetNodes():
+          nodeName = subnode.GetName()
+          if "MagRetR" in nodeName and 'Absorb' not in nodeName and "7" not in nodeName: 
+              lVol =  subnode.GetVolume().GetShape()
+              dots = lVol.GetVertices()
+              dZ.append(lVol.GetDZ() + 5)
+              vetz = [dots[i] for i in range(16)]
+              Y = vetz[1::2]
+              X = np.absolute(vetz[::2])
+
+              x_in.append(np.max(X[:4]) - np.min(X[:4]))
+              x_out.append(np.max(X[4:]) - np.min(X[4:]))
+              gap_in.append(np.min(X[:4]) - x_in[-1])
+              gap_out.append(np.min(X[4:]) - x_out[-1])
+              y_in.append(max(Y[:4]) - x_in[-1] + 0.1)
+              y_out.append(max(Y[4:]) - x_out[-1] + 0.1)
+
+  out_params = dZ
+  for i in range(8):
+    out_params.append(x_in[i])
+    out_params.append(x_out[i])
+    out_params.append(y_in[i])
+    out_params.append(y_out[i])
+    out_params.append(gap_in[i])
+    out_params.append(gap_out[i])
+  return out_params
+
 def configure(run,ship_geo):
 # ---- for backward compatibility ----
  if not hasattr(ship_geo,"tankDesign"): ship_geo.tankDesign = 5
@@ -85,7 +134,16 @@ def configure(run,ship_geo):
    ship_geo.cave.floorHeightTankB   = 2.*u.m
  if not hasattr(ship_geo,'NuTauTT') : ship_geo.NuTauTT= AttrDict(z=0*u.cm)
  if not hasattr(ship_geo.NuTauTT,'design') : ship_geo.NuTauTT.design = 0
- if not hasattr(ship_geo,'EcalOption'):     ship_geo.EcalOption = 1      
+ if not hasattr(ship_geo,'EcalOption'):     ship_geo.EcalOption = 1    
+ if ship_geo.muShieldDesign==8:
+  geometry_list = ROOT.gROOT.GetListOfFiles()
+  if geometry_list.GetSize() > 0:
+    for geo_cand in geometry_list:
+      if "geofile" in geo_cand.GetName():
+        shiedlParams = generate_shield_params_from_geofile(geo_cand)
+        generate_shield_rootfile('tmp_muShieldGeo.root', shiedlParams)
+        ship_geo.muShieldGeo = 'tmp_muShieldGeo.root'
+  
  latestShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py",Yheight = ship_geo.Yheight/u.m, tankDesign = ship_geo.tankDesign, muShieldDesign = ship_geo.muShieldDesign, nuTauTargetDesign = ship_geo.nuTauTargetDesign, muShieldGeo = ship_geo.muShieldGeo)
 # -----Create media-------------------------------------------------
  run.SetMaterials("media.geo")  # Materials
