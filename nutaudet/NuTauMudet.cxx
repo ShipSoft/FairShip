@@ -286,7 +286,7 @@ void NuTauMudet::ConstructGeometry()
 {
   TGeoVolume *top = gGeoManager->GetTopVolume();
   TGeoVolumeAssembly *tTauNuDet = new TGeoVolumeAssembly("tTauNuDet");
-  // top->AddNode(tTauNuDet, 1, new TGeoTranslation(0, 0, 0));
+  top->AddNode(tTauNuDet, 1, new TGeoTranslation(0, 0, 0));
 
   InitMedium("RPCgas");
   TGeoMedium *RPCmat =gGeoManager->GetMedium("RPCgas");
@@ -317,7 +317,7 @@ void NuTauMudet::ConstructGeometry()
     
   Double_t d = 0;
 
-  if(fDesign!=3)
+  if(fDesign<3)
     {
       TGeoVolumeAssembly *volMudetBox = new TGeoVolumeAssembly("volNuTauMudet");
       tTauNuDet->AddNode(volMudetBox, 1, new TGeoTranslation(0,10*cm,fZcenter));
@@ -755,6 +755,69 @@ void NuTauMudet::ConstructGeometry()
 
       
     }
+
+    if(fDesign==4){
+      //mufilter 
+      const Double_t FeBlockX = 1.950*m;
+      const Double_t FeBlockY = 3.850*m;
+      const Double_t FeThickZ = 30.* cm; //everything thin, to start with  
+      const Double_t FeThinZ = 10.* cm; //everything thin, to start with
+  
+      const Int_t nblocksthick = 2;
+      const Int_t nblocksthin = 4;
+
+
+      const Double_t XRpc = FeBlockX;
+      const Double_t YRpc = FeBlockY;
+      const Double_t ZRpc = 8.*cm;
+
+      const Int_t nrpc = nblocksthick + nblocksthin;
+
+      const Double_t MuFilterX = XRpc;
+      const Double_t MuFilterY = YRpc;
+      const Double_t MuFilterZ = nrpc * ZRpc + nblocksthick * FeThickZ + nblocksthin * FeThinZ;
+
+      const Double_t EmuTargetGapMuFilter = 25 * cm;
+      //simplified mufilter version
+
+      TGeoBBox *FeBlockThick = new TGeoBBox("FeBlockThick", FeBlockX/2, FeBlockY/2, FeThickZ/2);
+      TGeoVolume *volFeBlockThick = new TGeoVolume("FeBlockThick",FeBlockThick,Iron); //THICK
+      volFeBlockThick->SetLineColor(kGreen);
+
+      TGeoBBox *FeBlockThin = new TGeoBBox("FeBlockThin", FeBlockX/2, FeBlockY/2, FeThinZ/2);
+      TGeoVolume *volFeBlockThin = new TGeoVolume("FeBlockThin",FeBlockThin,Iron); //THIN
+      volFeBlockThin->SetLineColor(kGreen);
+
+      TGeoBBox *RPC = new TGeoBBox("RPC", XRpc/2.,YRpc/2.,ZRpc/2.);
+      TGeoVolume *volRPC = new TGeoVolume("volRPC",RPC,RPCmat); //RPC
+      volRPC->SetLineColor(kRed);
+
+      TGeoBBox *MuFilter = new TGeoBBox("MuFilter",MuFilterX/2., MuFilterY/2., MuFilterZ/2.);
+      TGeoVolume *volMuFilter = new TGeoVolume("volMuFilter",MuFilter,air); //MuFilter
+
+      volMuFilter->SetLineColor(kGray);
+  
+      //top->AddNode()
+
+      //adding volumes
+
+      Double_t d_mu_z = -MuFilterZ/2.;
+      for (int n=0;n< nblocksthick;n++){
+        volMuFilter->AddNode(volFeBlockThick,n,new TGeoTranslation(0,0,d_mu_z + FeThickZ/2.));
+        volMuFilter->AddNode(volRPC,n,new TGeoTranslation(0,0,d_mu_z + FeThickZ + ZRpc/2.));
+
+        d_mu_z = d_mu_z + FeThickZ + ZRpc; 
+      }
+  
+      for (int n=0;n< nblocksthin;n++){
+        volMuFilter->AddNode(volFeBlockThin,n,new TGeoTranslation(0,0,d_mu_z + FeThinZ/2.));
+        volMuFilter->AddNode(volRPC,n + nblocksthick,new TGeoTranslation(0,0,d_mu_z + FeThinZ + ZRpc/2.));
+
+        d_mu_z = d_mu_z + FeThinZ + ZRpc; 
+      }
+
+      tTauNuDet->AddNode(volMuFilter,1,new TGeoTranslation(0,0,fZcenter));
+    } //end option 4
 
 }
 
