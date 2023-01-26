@@ -126,14 +126,17 @@ def configure(run,ship_geo):
       ship_geo.muShieldWithCobaltMagnet, ship_geo.muShieldStepGeo,
       ship_geo.hadronAbsorber.WithConstField, ship_geo.muShield.WithConstField)
  elif ship_geo.muShieldDesign == 8:
-  MuonShield = ROOT.ShipMuonShield(ship_geo.muShieldGeo,
+  if ROOT.gROOT.gGeoManager:
+     print('muShieldDesign 8 detected and geometry already loaded, will not instantiate mushield object')
+  else:
+     MuonShield = ROOT.ShipMuonShield(ship_geo.muShieldGeo,
                                    ship_geo.cave.floorHeightMuonShield,
                                    ship_geo.muShieldWithCobaltMagnet,
                                    ship_geo.muShieldStepGeo,
                                    ship_geo.hadronAbsorber.WithConstField,
                                    ship_geo.muShield.WithConstField)
  
- detectorList.append(MuonShield)
+     detectorList.append(MuonShield)
 
  if not hasattr(ship_geo,"magnetDesign"):
  # backward compatibility
