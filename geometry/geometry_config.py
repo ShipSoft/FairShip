@@ -1,6 +1,8 @@
 from __future__ import print_function
 import shipunit as u
 import ROOT as r
+import numpy as np
+from array import array
 from ShipGeoConfig import AttrDict, ConfigRegistry
 # the following params should be passed through 'ConfigRegistry.loadpy' method
 # muShieldDesign = 7  #  7 = short magnet design 9 = optimised with T4 as constraint, 8=requires config file
@@ -12,6 +14,45 @@ from ShipGeoConfig import AttrDict, ConfigRegistry
 # strawOpt       = 0  # 0=simplistic tracking stations defined in veto.cxx  1=detailed strawtube design 4=sophisticated straw tube design, horizontal wires (default) 10=2cm straw diameter for 2018 layout
 # preshowerOption = 0 # 1=simple preShower detector for conceptual studies, moves calo and muon stations
 # tankDesign = 5 #  4=TP elliptical tank design, 5 = optimized conical rectangular design, 6=5 without segment-1
+
+def generate_shield_params_from_geofile(lfGeo):
+  geo = lfGeo.Get("FAIRGeom")
+  cave_node = geo.GetTopNode()
+  x_in = [40, 80]
+  x_out = [40, 80]
+  y_in = [150, 150]
+  y_out = [150, 150]
+  gap_in = [2, 2]
+  gap_out = [2, 2]
+  dZ = [70, 170]
+  for node in cave_node.GetNodes():
+      for subnode in node.GetNodes():
+          nodeName = subnode.GetName()
+          if "MagRetR" in nodeName and 'Absorb' not in nodeName and "7" not in nodeName: 
+              lVol =  subnode.GetVolume().GetShape()
+              dots = lVol.GetVertices()
+              dZ.append(lVol.GetDZ() + 5)
+              vetz = [dots[i] for i in range(16)]
+              Y = vetz[1::2]
+              X = np.absolute(vetz[::2])
+
+              x_in.append(np.max(X[:4]) - np.min(X[:4]))
+              x_out.append(np.max(X[4:]) - np.min(X[4:]))
+              gap_in.append(np.min(X[:4]) - x_in[-1])
+              gap_out.append(np.min(X[4:]) - x_out[-1])
+              y_in.append(max(Y[:4]) - x_in[-1] + 0.1)
+              y_out.append(max(Y[4:]) - x_out[-1] + 0.1)
+
+  out_params = dZ
+  for i in range(8):
+    out_params.append(x_in[i])
+    out_params.append(x_out[i])
+    out_params.append(y_in[i])
+    out_params.append(y_out[i])
+    out_params.append(gap_in[i])
+    out_params.append(gap_out[i])
+  return out_params
+  
 if "muShieldDesign" not in globals():
     muShieldDesign = 7
 if "muShieldGeo" not in globals():
@@ -340,12 +381,16 @@ with ConfigRegistry.register_config("basic") as c:
         c.muShield.half_Y_max = 317 * u.cm
     elif muShieldDesign == 8:
         assert muShieldGeo
-        c.muShieldGeo = muShieldGeo
-        print("Load geo")
-        f = r.TFile.Open(muShieldGeo)
-        params = r.TVectorD()
-        params.Read('params')
-        f.Close()
+        if hasattr(muShieldGeo,'Get'):
+           print("read params from geofile")
+           params = generate_shield_params_from_geofile(muShieldGeo)
+        else:
+           c.muShieldGeo = muShieldGeo
+           print("Load geo")
+           f = r.TFile.Open(muShieldGeo)
+           params = r.TVectorD()
+           params.Read('params')
+           f.Close()
         c.muShield.dZ1 = 0.35*u.m + zGap
         c.muShield.dZ2 = 2.26*u.m + zGap
         c.muShield.dZ3 = params[2]
