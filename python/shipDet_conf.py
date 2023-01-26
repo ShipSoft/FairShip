@@ -126,7 +126,12 @@ def configure(run,ship_geo):
       ship_geo.muShieldWithCobaltMagnet, ship_geo.muShieldStepGeo,
       ship_geo.hadronAbsorber.WithConstField, ship_geo.muShield.WithConstField)
  elif ship_geo.muShieldDesign == 8:
-  if ROOT.gROOT.gGeoManager:
+  withGeoFile = False
+  for F in ROOT.gROOT.GetListOfFiles():
+    if F.GetName().find('geo'): 
+       withGeoFile = True
+       break
+  if withGeoFile:
      print('muShieldDesign 8 detected and geometry already loaded, will not instantiate mushield object')
   else:
      MuonShield = ROOT.ShipMuonShield(ship_geo.muShieldGeo,
