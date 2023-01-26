@@ -90,7 +90,7 @@ def configure(run,ship_geo):
  if ship_geo.muShieldDesign==8:  # avoid reading combi.root
   withGeoFile = False
   for F in ROOT.gROOT.GetListOfFiles():
-    if F.GetName().find('geo'):
+    if not F.GetName().find('geo')<0:
        withGeoFile = True
        ship_geo.muShieldGeo = F
        break
