@@ -274,7 +274,7 @@ def configure(run,ship_geo):
     NuTauTarget.SetCoilDownHeight(ship_geo.EmuMagnet.Height2)
    if ship_geo.nuTauTargetDesign!=2 and ship_geo.nuTauTargetDesign!=4 :
     NuTauTarget.SetMagneticField(ship_geo.EmuMagnet.B)
-   if ship_geo.nuTauTargetDesign==2:
+   if (ship_geo.nuTauTargetDesign==2 or ship_geo.nuTauTargetDesign==4):
     NuTauTarget.SetPillarDimension(ship_geo.NuTauTarget.PillarX,ship_geo.NuTauTarget.PillarY,ship_geo.NuTauTarget.PillarZ)
     NuTauTarget.SetBaseDimension(ship_geo.NuTauTarget.BaseX, ship_geo.NuTauTarget.BaseY, ship_geo.NuTauTarget.BaseZ)
     
