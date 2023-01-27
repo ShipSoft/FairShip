@@ -713,19 +713,19 @@ with ConfigRegistry.register_config("basic") as c:
         c.NuTauTarget.col = 2
         c.NuTauTarget.wall = 13
         c.NuTauTarget.n_plates = 59
-        c.NuTauTarget.EmX = 19.2 * u.cm
-        c.NuTauTarget.EmY = 19.2 * u.cm
+        c.NuTauTarget.EmX = 20. * u.cm
+        c.NuTauTarget.EmY = 20. * u.cm
         c.NuTauTarget.BrPackX = 2 * 0.05 * u.cm
         c.NuTauTarget.BrPackY = 2 * 0.05 * u.cm
-        c.NuTauTarget.BrPackZ = 0
+        c.NuTauTarget.BrPackZ = 2.21 * u.cm
         c.NuTauTarget.BrX = c.NuTauTarget.BrPackX + c.NuTauTarget.EmX
         c.NuTauTarget.BrY = c.NuTauTarget.BrPackY + c.NuTauTarget.EmY
 
         c.NuTauTarget.EPlW = 2* c.NuTauTarget.EmTh + c.NuTauTarget.PBTh
         c.NuTauTarget.AllPW = c.NuTauTarget.LeadTh + c.NuTauTarget.EPlW
 
-        #c.NuTauTarget.BrZ = c.NuTauTarget.n_plates * c.NuTauTarget.AllPW + c.NuTauTarget.EPlW + c.NuTauTarget.BrPackZ
-        c.NuTauTarget.BrZ = 10. * u.cm #hardcoded wall width
+        c.NuTauTarget.BrZ = c.NuTauTarget.n_plates * c.NuTauTarget.AllPW + c.NuTauTarget.EPlW + c.NuTauTarget.BrPackZ #10 cm
+        #c.NuTauTarget.BrZ = 10. * u.cm #hardcoded wall width
         c.NuTauTarget.SingleEmFilm = False
 
  #TargetTrackers!
@@ -757,12 +757,12 @@ with ConfigRegistry.register_config("basic") as c:
         c.NuTauTT.scifimat_hor = c.NuTauTarget.WallXDim #13.045 * 7 + endpieces = length of hor. mats
         c.NuTauTT.scifimat_vert = c.NuTauTarget.WallYDim #13.045 * 11 + endpieces = length of vert. mats
         c.NuTauTT.scifimat_z = 0.145 * u.cm   # Scintillating fiber mat
-        c.NuTauTT.support_z = 0.02 * u.cm     # Support carbon composite
+        c.NuTauTT.support_z = 1.355 * u.cm     # More space for support (total TTZ 5 cm)
         c.NuTauTT.honeycomb_z = 2 * u.cm      # Airex (or Nomex)
         c.NuTauTT.TTX = c.NuTauTT.scifimat_hor
         c.NuTauTT.TTY = c.NuTauTT.scifimat_vert
         c.NuTauTT.TTZ = 2 * c.NuTauTT.support_z + 2 * c.NuTauTT.scifimat_z + c.NuTauTT.honeycomb_z 
-        c.NuTauTT.n = c.NuTauTarget.wall
+        c.NuTauTT.n = c.NuTauTarget.wall + 1 #starts and end with TT, no HPT
         # should be called after TTX, TTY
         c.NuTauTarget.xdim = c.NuTauTT.TTX 
         c.NuTauTarget.ydim = c.NuTauTT.TTY 
