@@ -664,8 +664,6 @@ with ConfigRegistry.register_config("basic") as c:
         c.NuTauTarget.zC = c.EmuMagnet.zC
     if nuTauTargetDesign==2:
         c.NuTauTarget.zC = -c.decayVolume.length/2. - c.tauMudet.GapD - c.tauMudet.Ztot -2.5*u.m
-    if nuTauTargetDesign==4:
-        c.NuTauTarget.zC = c.tauMudet.zMudetC - c.tauMudet.Ztot/2 - c.EmuMagnet.GapDown - 80 * u.cm
 
     if c.NuTauTarget.Design == 0: #TP                         
         c.NuTauTarget.row=7
@@ -709,9 +707,9 @@ with ConfigRegistry.register_config("basic") as c:
     c.NuTauTarget.BrZ = c.NuTauTarget.n_plates * c.NuTauTarget.AllPW + c.NuTauTarget.EPlW + c.NuTauTarget.BrPackZ
 
     if c.NuTauTarget.Design == 4: #new geometry, for ECN3
-        c.NuTauTarget.row = 4
+        c.NuTauTarget.row = 2
         c.NuTauTarget.col = 2
-        c.NuTauTarget.wall = 13
+        c.NuTauTarget.wall = 26
         c.NuTauTarget.n_plates = 59
         c.NuTauTarget.EmX = 20. * u.cm
         c.NuTauTarget.EmY = 20. * u.cm
@@ -818,10 +816,17 @@ with ConfigRegistry.register_config("basic") as c:
         c.NuTauTarget.CESW = 0*u.cm
         c.NuTauTarget.CellW = c.NuTauTarget.BrZ
         c.NuTauTarget.zdim = c.NuTauTarget.wall* c.NuTauTarget.CellW + (c.NuTauTarget.wall+1)*c.NuTauTT.TTZ
+    if nuTauTargetDesign==4:
+        c.NuTauTarget.zC = c.tauMudet.zMudetC - c.tauMudet.Ztot/2 - c.EmuMagnet.GapDown - c.NuTauTarget.zdim/2.    
 
     c.NuTauTarget.BaseX =  c.NuTauTarget.xdim + 20*u.cm
     c.NuTauTarget.BaseY = 20*u.cm
-    c.NuTauTarget.BaseZ = c.NuTauTarget.zdim +40*u.cm
+    if nuTauTargetDesign!=4:
+     c.NuTauTarget.BaseZ = c.NuTauTarget.zdim +40*u.cm
+    if nuTauTargetDesign==4:
+     c.NuTauTarget.BaseZ = c.NuTauTarget.zdim +10*u.cm
+
+
     c.NuTauTarget.PillarX = 0.5*u.m
     c.NuTauTarget.PillarZ = 0.5*u.m
     c.NuTauTarget.PillarY = 10*u.m - c.NuTauTarget.ydim/2 -c.NuTauTarget.BaseY- 0.1*u.mm - c.cave.floorHeightMuonShield
