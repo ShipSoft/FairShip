@@ -187,43 +187,48 @@ def configure(run,ship_geo):
    taumuondetector = ROOT.NuTauMudet("NuTauMudet", ship_geo.tauMudet.zMudetC,  ROOT.kTRUE)
    taumuondetector.SetDesign(ship_geo.nuTauTargetDesign)
    taumuondetector.SetTotDimensions(ship_geo.tauMudet.Xtot,ship_geo.tauMudet.Ytot, ship_geo.tauMudet.Ztot )
-   if hasattr(ship_geo.tauMudet,'ZFethin'):
+   if( ship_geo.nuTauTargetDesign<4): #muon filter design
+    if hasattr(ship_geo.tauMudet,'ZFethin'):
       taumuondetector.SetFeDimensions(ship_geo.tauMudet.XFe,ship_geo.tauMudet.YFe, ship_geo.tauMudet.ZFethick,ship_geo.tauMudet.ZFethin)
       taumuondetector.SetNFeInArm(ship_geo.tauMudet.NFethick, ship_geo.tauMudet.NFethin)
       taumuondetector.SetLateralCutSize(ship_geo.tauMudet.CutHeight, ship_geo.tauMudet.CutLength)
       taumuondetector.SetSupportTransverseDimensions(ship_geo.tauMudet.UpperSupportX,ship_geo.tauMudet.UpperSupportY, \
                                                      ship_geo.tauMudet.LowerSupportX, ship_geo.tauMudet.LowerSupportY, \
                                                      ship_geo.tauMudet.LateralSupportX, ship_geo.tauMudet.LateralSupportY, ship_geo.tauMudet.YSpacing)
-   else: #geometry used before new iron sampling
+    else: #geometry used before new iron sampling
       taumuondetector.SetFeDimensions(ship_geo.tauMudet.XFe,ship_geo.tauMudet.YFe, ship_geo.tauMudet.ZFe)
       taumuondetector.SetNFeInArm(ship_geo.tauMudet.NFe)
-   taumuondetector.SetRpcDimensions(ship_geo.tauMudet.XRpc,ship_geo.tauMudet.YRpc, ship_geo.tauMudet.ZRpc)
-   taumuondetector.SetRpcGasDimensions(ship_geo.tauMudet.XGas,ship_geo.tauMudet.YGas, ship_geo.tauMudet.ZGas)
-   taumuondetector.SetRpcStripDimensions(ship_geo.tauMudet.XStrip,ship_geo.tauMudet.YStrip, ship_geo.tauMudet.ZStrip)
-   taumuondetector.SetRpcElectrodeDimensions(ship_geo.tauMudet.XEle,ship_geo.tauMudet.YEle, ship_geo.tauMudet.ZEle)
-   taumuondetector.SetRpcPETDimensions(ship_geo.tauMudet.XPet,ship_geo.tauMudet.YPet, ship_geo.tauMudet.ZPet)
-   taumuondetector.SetNRpcInArm(ship_geo.tauMudet.NRpc)
-   if( ship_geo.nuTauTargetDesign ==3):
-    taumuondetector.SetUpperCoverDimensions(ship_geo.tauMudet.XCov, ship_geo.tauMudet.YCov, ship_geo.tauMudet.ZCov)
-    taumuondetector.SetLateralCoverDimensions(ship_geo.tauMudet.XLateral, ship_geo.tauMudet.YLateral, ship_geo.tauMudet.ZLateral)
-    taumuondetector.SetCrossDimensions(ship_geo.tauMudet.XCross, ship_geo.tauMudet.YCross, ship_geo.tauMudet.ZCross, ship_geo.tauMudet.WidthArm)
-    taumuondetector.SetRpcOuterDimensions(ship_geo.tauMudet.XRpc_outer, ship_geo.tauMudet.YRpc_outer, ship_geo.tauMudet.ZRpc_outer)
-    taumuondetector.SetRpcInnerDimensions(ship_geo.tauMudet.XRpc_inner, ship_geo.tauMudet.YRpc_inner, ship_geo.tauMudet.ZRpc_inner)
-    taumuondetector.SetRpcGapDimensions(ship_geo.tauMudet.XRpcGap, ship_geo.tauMudet.YRpcGap, ship_geo.tauMudet.ZRpcGap)
-    taumuondetector.SetPillarDimensions(ship_geo.tauMudet.PillarX,ship_geo.tauMudet.PillarY, ship_geo.tauMudet.PillarZ)
-   detectorList.append(taumuondetector)
-   if ship_geo.nuTauTargetDesign==3:
-    if hasattr(ship_geo.tauMudet, "deltax"): #now replaced with veto taggers
-     taumuondetector.SetRpcDimDifferences(ship_geo.tauMudet.deltax, ship_geo.tauMudet.deltay)
-   if ship_geo.nuTauTargetDesign<3:
-    taumuondetector.SetReturnYokeDimensions(ship_geo.tauMudet.XRyoke,ship_geo.tauMudet.YRyoke, ship_geo.tauMudet.ZRyoke)
-    taumuondetector.SetSmallerYokeDimensions(ship_geo.tauMudet.XRyoke_s,ship_geo.tauMudet.YRyoke_s, ship_geo.tauMudet.ZRyoke_s)
-    taumuondetector.SetZDimensionArm(ship_geo.tauMudet.ZArm)
-    taumuondetector.SetGapDownstream(ship_geo.tauMudet.GapD)
-    taumuondetector.SetGapMiddle(ship_geo.tauMudet.GapM)
-    taumuondetector.SetMagneticField(ship_geo.tauMudet.B)
-    taumuondetector.SetCoilParameters(ship_geo.tauMudet.CoilH, ship_geo.tauMudet.CoilW, ship_geo.tauMudet.N, ship_geo.tauMudet.CoilG)
+    taumuondetector.SetRpcDimensions(ship_geo.tauMudet.XRpc,ship_geo.tauMudet.YRpc, ship_geo.tauMudet.ZRpc)
+    taumuondetector.SetRpcGasDimensions(ship_geo.tauMudet.XGas,ship_geo.tauMudet.YGas, ship_geo.tauMudet.ZGas)
+    taumuondetector.SetRpcStripDimensions(ship_geo.tauMudet.XStrip,ship_geo.tauMudet.YStrip, ship_geo.tauMudet.ZStrip)
+    taumuondetector.SetRpcElectrodeDimensions(ship_geo.tauMudet.XEle,ship_geo.tauMudet.YEle, ship_geo.tauMudet.ZEle)
+    taumuondetector.SetRpcPETDimensions(ship_geo.tauMudet.XPet,ship_geo.tauMudet.YPet, ship_geo.tauMudet.ZPet)
+    taumuondetector.SetNRpcInArm(ship_geo.tauMudet.NRpc)
+    if( ship_geo.nuTauTargetDesign ==3):
+     taumuondetector.SetUpperCoverDimensions(ship_geo.tauMudet.XCov, ship_geo.tauMudet.YCov, ship_geo.tauMudet.ZCov)
+     taumuondetector.SetLateralCoverDimensions(ship_geo.tauMudet.XLateral, ship_geo.tauMudet.YLateral, ship_geo.tauMudet.ZLateral)
+     taumuondetector.SetCrossDimensions(ship_geo.tauMudet.XCross, ship_geo.tauMudet.YCross, ship_geo.tauMudet.ZCross, ship_geo.tauMudet.WidthArm)
+     taumuondetector.SetRpcOuterDimensions(ship_geo.tauMudet.XRpc_outer, ship_geo.tauMudet.YRpc_outer, ship_geo.tauMudet.ZRpc_outer)
+     taumuondetector.SetRpcInnerDimensions(ship_geo.tauMudet.XRpc_inner, ship_geo.tauMudet.YRpc_inner, ship_geo.tauMudet.ZRpc_inner)
+     taumuondetector.SetRpcGapDimensions(ship_geo.tauMudet.XRpcGap, ship_geo.tauMudet.YRpcGap, ship_geo.tauMudet.ZRpcGap)
+     taumuondetector.SetPillarDimensions(ship_geo.tauMudet.PillarX,ship_geo.tauMudet.PillarY, ship_geo.tauMudet.PillarZ)   
+    if ship_geo.nuTauTargetDesign==3:
+     if hasattr(ship_geo.tauMudet, "deltax"): #now replaced with veto taggers
+      taumuondetector.SetRpcDimDifferences(ship_geo.tauMudet.deltax, ship_geo.tauMudet.deltay)
+    if ship_geo.nuTauTargetDesign<3:
+     taumuondetector.SetReturnYokeDimensions(ship_geo.tauMudet.XRyoke,ship_geo.tauMudet.YRyoke, ship_geo.tauMudet.ZRyoke)
+     taumuondetector.SetSmallerYokeDimensions(ship_geo.tauMudet.XRyoke_s,ship_geo.tauMudet.YRyoke_s, ship_geo.tauMudet.ZRyoke_s)
+     taumuondetector.SetZDimensionArm(ship_geo.tauMudet.ZArm)
+     taumuondetector.SetGapDownstream(ship_geo.tauMudet.GapD)
+     taumuondetector.SetGapMiddle(ship_geo.tauMudet.GapM)
+     taumuondetector.SetMagneticField(ship_geo.tauMudet.B)
+     taumuondetector.SetCoilParameters(ship_geo.tauMudet.CoilH, ship_geo.tauMudet.CoilW, ship_geo.tauMudet.N, ship_geo.tauMudet.CoilG)
 
+   if ship_geo.nuTauTargetDesign==4: #magnetic field is back in taumuondetector for mufilter
+     taumuondetector.SetRpcDimensions(ship_geo.tauMudet.XRpc,ship_geo.tauMudet.YRpc, ship_geo.tauMudet.ZRpc)
+     taumuondetector.SetGapMiddle(ship_geo.tauMudet.GapM)
+     taumuondetector.SetMagneticField(ship_geo.tauMudet.B)
+   detectorList.append(taumuondetector)
    if ship_geo.nuTauTargetDesign==0 or ship_geo.nuTauTargetDesign==1 or ship_geo.nuTauTargetDesign==3:
     EmuMagnet = ROOT.EmulsionMagnet("EmuMagnet",ship_geo.EmuMagnet.zC,"EmulsionMagnet")
     EmuMagnet.SetDesign(ship_geo.EmuMagnet.Design)
