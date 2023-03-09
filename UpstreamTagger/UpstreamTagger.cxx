@@ -379,7 +379,7 @@ void UpstreamTagger::ConstructGeometry()
 
   InitMedium("vacuum");  
   TGeoMedium *Vacuum_box =gGeoManager->GetMedium("vacuum");
-  double xbox=188.5; double ybox = 91; double zbox = 1.3503;
+  double xbox=188.5; double ybox = 67.8; double zbox = 1.3503;
 
   //RPC Module with 32 horizontal strips
   TGeoVolume *Rpc_module_upstream = gGeoManager->MakeBox("UpstreamTagger",Vacuum_box, xbox/2.0, ybox/2.0, zbox/2.0);
@@ -506,7 +506,7 @@ void UpstreamTagger::ConstructGeometry()
   UpstreamTagger_fulldet = gGeoManager->MakeBox("Upstream_Tagger", Vacuum_box, xbox_fulldet/2.0, ybox_fulldet/2.0, zbox_fulldet/2.0);
   UpstreamTagger_fulldet->SetLineColor(kWhite);
   
-  ybox_fulldet = 399; //resize box to define the modules position from active area of the detectors (discounting the aluminium box + acrilic)
+  ybox_fulldet = 309; //resize box to define the modules position from active area of the detectors (discounting the aluminium box + acrilic)
 
   //First Layer of full Rpc detector covering 2.23 x 4.99 meters with 32 strips
   module[1][0] = 0; module[1][1] = ((ybox_fulldet/2.0) - ((det_yGlassPos)/2.0));  module[1][2] = (-(zbox_fulldet/2.0) + (det_zAlPos/2.0) + det_dzAlPos);

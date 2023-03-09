@@ -246,7 +246,7 @@ double wy(double z){
     }
   }
   
-  return 0.8* (wy1 + (z - z1) * (wy2 - wy1) / (z2 - z1));
+  return 0.6* (wy1 + (z - z1) * (wy2 - wy1) / (z2 - z1));
 }
 
 

@@ -40,10 +40,37 @@ HNL          = True
 inputFile    = "/eos/experiment/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-978Bpot.root"
 defaultInputFile = True
 
-globalDesigns = {'2016':{'dy':10.,'dv':5,'ds':7,'nud':1,'caloDesign':0,'strawDesign':4},\
-                 '2018':{'dy':10.,'dv':6,'ds':9,'nud':3,'caloDesign':3,'strawDesign':10},\
-                 '2022':{'dy':8.,'dv':6,'ds':9,'nud':3,'caloDesign':3,'strawDesign':10}, \
-                 '2023':{'dy':8.,'dv':6,'ds':9,'nud':4,'caloDesign':3,'strawDesign':10}}
+globalDesigns = {
+     '2016' : {
+          'dy' : 10.,
+          'dv' : 5,
+          'ds' : 7,
+          'nud' : 1,
+          'caloDesign' : 0,
+          'strawDesign' : 4
+     }, '2018' : {
+          'dy' : 10.,
+          'dv' : 6,
+          'ds' : 9,
+          'nud' : 3,
+          'caloDesign' : 3,
+          'strawDesign' : 10
+     }, '2022' : {
+          'dy' : 8.,
+          'dv' : 6,
+          'ds' : 9,
+          'nud' : 3,
+          'caloDesign' : 3,
+          'strawDesign' : 10
+     }, '2023' : {
+          'dy' : 6.,
+          'dv' : 6,
+          'ds' : 9,
+          'nud' : 4,
+          'caloDesign' : 3,
+          'strawDesign' : 10
+     }
+}
 default = '2023'
 
 inactivateMuonProcesses = False   # provisionally for making studies of various muon background sources

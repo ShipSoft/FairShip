@@ -51,7 +51,7 @@ with ConfigRegistry.register_config("basic") as c:
     # global muShieldDesign, targetOpt, strawDesign, Yheight
     c.Yheight = Yheight*u.m
     # decision by the SP 
-    totalLength       = 3.125*c.Yheight + 35*u.m
+    totalLength       = 60 * u.m
     extraVesselLength = totalLength - 50*u.m
     windowBulge = 1*u.m
     if tankDesign > 5: windowBulge = 25*u.cm
@@ -84,7 +84,7 @@ with ConfigRegistry.register_config("basic") as c:
      1/0 
     else:
      c.chambers.Length = totalLength
-     c.chambers.Tub1length = 3.125*u.m
+     c.chambers.Tub1length = 2.5 * u.m
      c.chambers.Tub2length = 17.68*u.m+extraVesselLength/2.
      c.chambers.Tub3length = 0.8*u.m
      c.chambers.Tub4length = 2.*u.m+magnetIncrease/2.
@@ -125,7 +125,7 @@ with ConfigRegistry.register_config("basic") as c:
      # envelope (46,1.2) or (46,0.9) end at T4: (100.,2.5)  London slides, https://indico.cern.ch/event/508465/contributions/2166894/    
      c.zFocusX = +10*u.m # Decision taken 15/12/2016, Physics and Detector meeting
      c.zFocusY = -5*u.m # for the moment, identical to X
-     c.xMax    = +2.*u.m # max horizontal width at T4
+     c.xMax = 2 * u.m  # max horizontal width at T4
      # 
      c.TrackStation4 = AttrDict(z=z4)
      zset=z4-200.*u.cm
@@ -161,7 +161,7 @@ with ConfigRegistry.register_config("basic") as c:
      c.strawtubes.YLayerOffset = 1.9*u.cm        
      c.strawtubes.YPlaneOffset = 1.3*u.cm
      c.strawtubes.FrameMaterial      = "steel"
-     c.strawtubes.FrameLateralWidth  = 0.96*u.m
+     c.strawtubes.FrameLateralWidth = 0.96 * u.m
      c.strawtubes.DeltazFrame        = 2.5*u.cm
 
     c.strawtubes.WallThickness      = 0.0039*u.cm
@@ -171,21 +171,21 @@ with ConfigRegistry.register_config("basic") as c:
     c.strawtubes.ViewAngle          = 5
     c.strawtubes.WireThickness      = 0.003*u.cm
     c.strawtubes.DeltazView         = 10.*u.cm
-    c.strawtubes.VacBox_x           = 240.*u.cm
+    c.strawtubes.VacBox_x = 180. * u.cm
     c.strawtubes.VacBox_y           = 600.*u.cm * c.Yheight / (10.*u.m)
            
     c.Bfield = AttrDict(z=c.z)
     c.Bfield.max = 0 # 1.4361*u.kilogauss  # was 1.15 in EOI
     c.Bfield.y   = c.Yheight
-    c.Bfield.x   = 2.4*u.m
+    c.Bfield.x   = 2.4 * u.m
     c.Bfield.fieldMap = "field/MainSpectrometerField.txt"
     if c.magnetDesign>3:                          # MISIS design
-      c.Bfield.YokeWidth=0.68*u.m  # full width       200.*cm; 
-      c.Bfield.YokeDepth=1.4*u.m  # half length      200 *cm;
+      c.Bfield.YokeWidth = 0.68 * u.m  # full width       200.*cm;
+      c.Bfield.YokeDepth = 1.4 * u.m  # half length      200 *cm;
       c.Bfield.CoilThick=25.*u.cm  # thickness
       VesselThick=37.*u.cm;   # full thickness
       c.Bfield.x = 201.*u.cm+VesselThick; # half apertures
-      c.Bfield.y = 401.*u.cm+VesselThick+c.Bfield.CoilThick
+      c.Bfield.y = 301.*u.cm+VesselThick+c.Bfield.CoilThick
 
 # TimeDet
     c.TimeDet = AttrDict(z=0)
@@ -242,7 +242,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.SplitCal = AttrDict(z=0)
     c.SplitCal.ZStart = c.TimeDet.z + c.TimeDet.DZ + 5*u.cm + presShowerDeltaZ 
     c.SplitCal.XMax = 480.*u.cm/2. #290.*u.cm  #half length
-    c.SplitCal.YMax = 960.*u.cm/2. #510.*u.cm * c.Yheight / (10.*u.m)   #half length  
+    c.SplitCal.YMax = 720. * u.cm / 2. #510.*u.cm * c.Yheight / (10.*u.m)   #half length
     c.SplitCal.Empty = 0*u.cm
     c.SplitCal.BigGap = 100*u.cm
     c.SplitCal.ActiveECALThickness = 0.56*u.cm
@@ -849,25 +849,25 @@ with ConfigRegistry.register_config("basic") as c:
     #Upstream Tagger
     c.UpstreamTagger = AttrDict(z=0)
     c.UpstreamTagger.Z_Glass = 0.2 * u.cm
-    c.UpstreamTagger.Y_Glass = 83.5 * u.cm   
+    c.UpstreamTagger.Y_Glass = 63 * u.cm
     c.UpstreamTagger.X_Glass = 178. * u.cm   
     c.UpstreamTagger.Z_Glass_Border = 0.2 * u.cm
     c.UpstreamTagger.Y_Glass_Border = 1.0 * u.cm
     c.UpstreamTagger.X_Glass_Border = 1.0 * u.cm
     c.UpstreamTagger.Z_PMMA = 0.8 * u.cm
-    c.UpstreamTagger.Y_PMMA = 85.7 * u.cm
+    c.UpstreamTagger.Y_PMMA = 64.8 * u.cm
     c.UpstreamTagger.X_PMMA = 180.8 * u.cm
     c.UpstreamTagger.DY_PMMA = 1.5 * u.cm
     c.UpstreamTagger.DX_PMMA = 1.5 * u.cm
     c.UpstreamTagger.DZ_PMMA = 0.1 * u.cm
     c.UpstreamTagger.Z_FreonSF6 = 0.1 * u.cm
-    c.UpstreamTagger.Y_FreonSF6 = 85.6 * u.cm
+    c.UpstreamTagger.Y_FreonSF6 = 64.2 * u.cm
     c.UpstreamTagger.X_FreonSF6 = 180 * u.cm
     c.UpstreamTagger.Z_FreonSF6_2 = 0.8 * u.cm
     c.UpstreamTagger.Y_FreonSF6_2 = 0.5 * u.cm
     c.UpstreamTagger.X_FreonSF6_2 = 0.5 * u.cm
     c.UpstreamTagger.Z_FR4 = 0.15 * u.cm
-    c.UpstreamTagger.Y_FR4 = 88.8 * u.cm
+    c.UpstreamTagger.Y_FR4 = 66.6 * u.cm
     c.UpstreamTagger.X_FR4 = 183.2 * u.cm
     c.UpstreamTagger.Z_Aluminium = 1.1503 * u.cm
     c.UpstreamTagger.Y_Aluminium = 89. * u.cm
@@ -879,8 +879,8 @@ with ConfigRegistry.register_config("basic") as c:
     c.UpstreamTagger.Y_Air = 0 * u.cm
     c.UpstreamTagger.X_Air = 2 * u.cm
     c.UpstreamTagger.Z_Strip = 0.0003 * u.cm
-    c.UpstreamTagger.Y_Strip = 2.48 * u.cm
+    c.UpstreamTagger.Y_Strip = 1.86 * u.cm
     c.UpstreamTagger.X_Strip = 183.2 * u.cm
     c.UpstreamTagger.X_Strip64 = 2.64 * u.cm
-    c.UpstreamTagger.Y_Strip64 = 88.8 * u.cm
+    c.UpstreamTagger.Y_Strip64 = 66.6 * u.cm
     c.UpstreamTagger.Z_Position = c.tauMudet.zMudetC + (c.tauMudet.Ztot)/2 + 12.0*u.cm
