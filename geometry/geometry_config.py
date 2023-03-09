@@ -193,8 +193,8 @@ with ConfigRegistry.register_config("basic") as c:
     c.TimeDet.dzBarCol = 2.4 * u.cm
     c.TimeDet.zBar = 1 * u.cm
     c.TimeDet.DZ = (c.TimeDet.dzBarRow + c.TimeDet.dzBarCol + c.TimeDet.zBar) / 2
-    c.TimeDet.DX = 200 * u.cm
-    c.TimeDet.DY = 400 * u.cm
+    c.TimeDet.DX = 225 * u.cm
+    c.TimeDet.DY = 325 * u.cm
     c.TimeDet.z = c.Chamber6.z + c.chambers.Tub6length + c.Veto.lidThickness + c.TimeDet.DZ + 1*u.cm # safety margin
 
     if CaloDesign==0:
