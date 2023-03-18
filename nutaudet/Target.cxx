@@ -404,14 +404,12 @@ void Target::ConstructGeometry()
    volTungsten = new TGeoVolume("Tungsten",Tungsten,tungsten);
    volTungsten->SetTransparency(1);
    volTungsten->SetLineColor(kGray);
-   //volLead->SetField(magField2);
-
   }
     
   for(Int_t n=0; n<NPlates; n++)
     {
-      if (fDesign < 4) volBrick->AddNode(volLead, n, new TGeoTranslation(0,0,-BrickZ/2+BrickPackageZ/2+ EmPlateWidth + LeadThickness/2 + n*AllPlateWidth)); //LEAD
-      else volBrick->AddNode(volTungsten, n, new TGeoTranslation(0,0,-BrickZ/2+BrickPackageZ/2+ EmPlateWidth + LeadThickness/2 + n*AllPlateWidth)); //LEAD
+      //decide to use lead or tungsten, according to fDesign
+      volBrick->AddNode(fDesign < 4 ? volLead: volTungsten, n, new TGeoTranslation(0,0,-BrickZ/2+BrickPackageZ/2+ EmPlateWidth + LeadThickness/2 + n*AllPlateWidth));
     }
   if (fsingleemulsionfilm){  //simplified configuration, unique sensitive layer for the whole emulsion plate
    TGeoBBox *EmulsionFilm = new TGeoBBox("EmulsionFilm", EmulsionX/2, EmulsionY/2, EmPlateWidth/2);
