@@ -19,6 +19,8 @@ class Task:
    self.Particles   = self.sTree.Branch("Particles",  self.fPartArray,32000,-1)
   else: 
    self.Particles = self.sTree.Particles
+  self.HNL_PID = ROOT.std.vector('int')()
+  self.HNL_PIDs = self.sTree.Branch("HNL_PIDs",self.HNL_PID, 32000,-1)
   self.reps,self.states,self.newPosDir = {},{},{}
   self.LV={1:ROOT.TLorentzVector(),2:ROOT.TLorentzVector()}
   self.h = hp
@@ -48,6 +50,7 @@ class Task:
   # make particles persistent
   self.TwoTrackVertex()
   self.Particles.Fill()
+  self.HNL_PIDs.Fill()
  #define global data and functions for vertex fit with TMinuit
  y_data = np.array([0.,0.,0.,0.,0.,0.,0.,0.,0.,0.])
  z0 = 0
@@ -77,6 +80,7 @@ class Task:
  
  def TwoTrackVertex(self):
   self.fPartArray.Delete()
+  self.HNL_PID.clear()
   fittedTracks = getattr(self.sTree,self.fitTrackLoc)
   goodTracks = getattr(self.sTree,self.goodTracksLoc)
   if goodTracks.size() < 2: return
@@ -261,10 +265,15 @@ class Task:
      yFitErr = errors[1]
      zFitErr = errors[2]
      
-     #fixme: mass from track reconstraction needed 
-     m1 = self.PDG.GetParticle(PosDirCharge[t1]['pdgCode']).Mass()
-     m2 = self.PDG.GetParticle(PosDirCharge[t2]['pdgCode']).Mass()
-     
+     #fixme: mass from track reconstraction needed
+
+     masses = {0: self.PDG.GetParticle(211).Mass(),
+               1: self.PDG.GetParticle(321).Mass()}
+
+     rands = [ROOT.gRandom.Integer(2), ROOT.gRandom.Integer(2)]
+     m1 = masses[rands[0]]
+     m2 = masses[rands[1]]
+
      #self.h['VxpullFit'].Fill( (mctrack.GetStartX()-xFit)/xFitErr )
      #self.h['VypullFit'].Fill( (mctrack.GetStartY()-yFit)/yFitErr )
      #self.h['VzpullFit'].Fill( (mctrack.GetStartZ()-zFit)/zFitErr )
@@ -362,7 +371,8 @@ class Task:
      particle.SetDoca(doca)
      nParts   = particles.GetEntries()
      particles[nParts] = particle
-     
+     self.sTree.HNL_PIDs.push_back(sum(rands))
+
      #self.h['dMFit'].Fill( (1.-P.M()) )
      #self.h['MpullFit'].Fill( (1.-P.M())/ROOT.TMath.Sqrt(covP[3][3]) )
 

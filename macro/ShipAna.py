@@ -118,6 +118,9 @@ for x in ['','_pi0']:
  ut.bookHist(h,'IP0/mass'+x,'Impact Parameter to target vs mass',100,0.,2.,100,0.,100.)
  ut.bookHist(h,'HNL'+x,'reconstructed Mass',500,0.,2.)
 ut.bookHist(h,'HNLw','reconstructed Mass with weights',500,0.,2.)
+ut.bookHist(h,'HNLpiK','reconstructed Mass with weights',100,0.,2.)
+ut.bookHist(h,'HNLpipi','reconstructed Mass with weights',100,0.,2.)
+ut.bookHist(h,'HNLKK','reconstructed Mass with weights',100,0.,2.)
 ut.bookHist(h,'meas','number of measurements',40,-0.5,39.5)
 ut.bookHist(h,'meas2','number of measurements, fitted track',40,-0.5,39.5)
 ut.bookHist(h,'measVSchi2','number of measurements vs chi2/meas',40,-0.5,39.5,100,0.,10.)
@@ -683,7 +686,7 @@ def myEventLoop(n):
    h['IP'].Fill(dist) 
 # ---
 # loop over particles, 2-track combinations
-  for HNL in sTree.Particles:
+  for id, HNL in enumerate(sTree.Particles):
     t1,t2 = HNL.GetDaughter(0),HNL.GetDaughter(1) 
 # kill tracks outside fiducial volume, if enabled
     if not checkFiducialVolume(sTree,t1,dy) or not checkFiducialVolume(sTree,t2,dy) : continue
@@ -727,6 +730,14 @@ def myEventLoop(n):
     h['IP0'].Fill(dist)  
     h['IP0/mass'].Fill(mass,dist)
     h['HNL'].Fill(mass)
+    if sTree.HNL_PIDs[id] == 0:
+      h['HNLpipi'].Fill(mass)
+    elif sTree.HNL_PIDs[id] == 1:
+      h['HNLpiK'].Fill(mass)
+    elif sTree.HNL_PIDs[id] == 2:
+      h['HNLKK'].Fill(mass)
+    else:
+      assert False
     h['HNLw'].Fill(mass,wg)
 #
     vetoDets['SBT'] = veto.SBT_decision()
