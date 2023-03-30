@@ -654,8 +654,8 @@ with ConfigRegistry.register_config("basic") as c:
      c.tauMudet.ZEle = 1*u.mm
 
     if nuTauTargetDesign==4:
-     c.tauMudet.XRpc = 400 *u.cm
-     c.tauMudet.YRpc = 400 *u.cm
+     c.tauMudet.XRpc = 120 *u.cm
+     c.tauMudet.YRpc = 120 *u.cm
      c.tauMudet.ZRpc = 8 *u.cm
      #magnetized region
      c.tauMudet.Xtot  = c.tauMudet.XRpc
