@@ -663,7 +663,7 @@ with ConfigRegistry.register_config("basic") as c:
      c.tauMudet.GapM = 200 * u.cm #magnetized region length, gap between sepctrometer planes
 
      c.tauMudet.Ztot = 3 * u.m #space allocated to Muon spectrometer
-     c.tauMudet.B = 3.0 * u.tesla #magnetic field is back in MuFilter!
+     c.tauMudet.B = 1.2 * u.tesla #magnetic field is back in MuFilter!
      c.tauMudet.zMudetC = c.Chamber1.z -c.chambers.Tub1length - c.tauMudet.Ztot/2 -31*u.cm
 
     if nuTauTargetDesign==0 or nuTauTargetDesign==1:
@@ -723,7 +723,7 @@ with ConfigRegistry.register_config("basic") as c:
     if c.NuTauTarget.Design == 4: #new geometry, for ECN3
         c.NuTauTarget.row = 2
         c.NuTauTarget.col = 2
-        c.NuTauTarget.wall = 13
+        c.NuTauTarget.wall = 17
         c.NuTauTarget.n_plates = 59
         c.NuTauTarget.EmX = 20. * u.cm
         c.NuTauTarget.EmY = 20. * u.cm
@@ -831,7 +831,7 @@ with ConfigRegistry.register_config("basic") as c:
         c.NuTauTarget.CellW = c.NuTauTarget.BrZ
         c.NuTauTarget.zdim = c.NuTauTarget.wall* c.NuTauTarget.CellW + (c.NuTauTarget.wall+1)*c.NuTauTT.TTZ
     if nuTauTargetDesign==4:
-        c.EmuMagnet.GapDown = 98 * u.cm
+        c.EmuMagnet.GapDown = 20 * u.cm
         c.NuTauTarget.zC = c.tauMudet.zMudetC - c.tauMudet.Ztot/2 - c.EmuMagnet.GapDown - c.NuTauTarget.zdim/2.    
 
     c.NuTauTarget.BaseX =  c.NuTauTarget.xdim + 20*u.cm
