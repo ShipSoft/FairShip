@@ -674,16 +674,16 @@ with ConfigRegistry.register_config("basic") as c:
      c.tauMudet.ZEle = 1*u.mm
 
     if nuTauTargetDesign==4:
-     c.tauMudet.XRpc = 120 *u.cm
-     c.tauMudet.YRpc = 120 *u.cm
+     c.tauMudet.XRpc = 400 *u.cm
+     c.tauMudet.YRpc = 400 *u.cm
      c.tauMudet.ZRpc = 8 *u.cm
      #magnetized region
      c.tauMudet.Xtot  = c.tauMudet.XRpc
      c.tauMudet.Ytot  = c.tauMudet.YRpc
-     c.tauMudet.GapM = 200 * u.cm #magnetized region length, gap between sepctrometer planes
+     c.tauMudet.GapM = 20 * u.cm #magnetized region length, gap between sepctrometer planes
 
      c.tauMudet.Ztot = 3 * u.m #space allocated to Muon spectrometer
-     c.tauMudet.B = 1.2 * u.tesla #magnetic field is back in MuFilter!
+     c.tauMudet.B = 1.0 * u.tesla #magnetic field is back in MuFilter!
      c.tauMudet.zMudetC = c.Chamber1.z -c.chambers.Tub1length - c.tauMudet.Ztot/2 -31*u.cm
 
     if nuTauTargetDesign==0 or nuTauTargetDesign==1:

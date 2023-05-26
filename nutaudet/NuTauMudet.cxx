@@ -763,7 +763,7 @@ void NuTauMudet::ConstructGeometry()
       TGeoVolume *volMuFilter = new TGeoVolume("volMuFilter",MuFilter,air); //MuFilter
       volMuFilter->SetLineColor(kGray);
 
-      TGeoBBox *MagCheckBox = new TGeoBBox("MagCheckBox",fXtot/2., fYtot/2., fGapMiddle/2.);
+      TGeoBBox *MagCheckBox = new TGeoBBox("MagCheckBox",fXtot/2., fYtot/2., fZtot/2.);
       TGeoVolume *volMagCheckRegion = new TGeoVolume("volMagCheckRegion",MagCheckBox,air); //Magnetized Region for taumudet
       volMagCheckRegion->SetLineColor(kGray);
       volMagCheckRegion->SetVisibility(kFALSE);
@@ -778,13 +778,13 @@ void NuTauMudet::ConstructGeometry()
       TGeoUniformMagField *magcheckfield    = new TGeoUniformMagField(fField,0.,0.); //for now along x direction;
       volMagCheckRegion->SetField(magcheckfield);
       //first two counters upstream
-      volMuFilter->AddNode(volRPC,1,new TGeoTranslation(0,0,-fZtot/2. + fZRpc/2.));
-      volMuFilter->AddNode(volRPC,2,new TGeoTranslation(0,0,-fGapMiddle/2. - fZRpc/2.));
+      volMagCheckRegion->AddNode(volRPC,1,new TGeoTranslation(0,0,-fZtot/2. + fZRpc/2.));
       //magnetized region in the middle
       volMuFilter->AddNode(volMagCheckRegion,1,new TGeoTranslation(0,0,0.));
+      volMagCheckRegion->AddNode(volRPC,2,new TGeoTranslation(0,0,-fGapMiddle/2. - fZRpc/2.)); //these are INSIDE the magnetized region
+      volMagCheckRegion->AddNode(volRPC,3,new TGeoTranslation(0,0,+fGapMiddle/2. + fZRpc/2.));
       //last two counters downstream
-      volMuFilter->AddNode(volRPC,3,new TGeoTranslation(0,0,+fGapMiddle/2. + fZRpc/2.));
-      volMuFilter->AddNode(volRPC,4,new TGeoTranslation(0,0,+fZtot/2. - fZRpc/2.));
+      volMagCheckRegion->AddNode(volRPC,4,new TGeoTranslation(0,0,+fZtot/2. - fZRpc/2.));
 
     } //end option 4
 
