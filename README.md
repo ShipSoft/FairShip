@@ -1,5 +1,19 @@
 # FairShip
 
+<!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc-refresh-toc -->
+**Table of Contents**
+
+- [FairShip](#fairship)
+    - [Introduction](#introduction)
+        - [Branches](#branches)
+    - [Build Instructions using CVMFS](#build-instructions-using-cvmfs)
+    - [Local build, without access to CVMFS](#local-build-without-access-to-cvmfs)
+    - [Run Instructions](#run-instructions)
+    - [Docker Instructions](#docker-instructions)
+    - [Contributing Code](#contributing-code)
+
+<!-- markdown-toc end -->
+
 ## Introduction
 
 FairShip is the software framework for the SHiP experiment which is based on
