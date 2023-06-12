@@ -9,5 +9,6 @@
 #pragma link C++ class  exitHadronAbsorber+;
 #pragma link C++ class  pyFairModule+;
 #pragma link C++ class  simpleTarget+;
+#pragma link C++ class  ScoringPlane+;
 #endif
 

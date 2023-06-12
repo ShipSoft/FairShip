@@ -86,7 +86,7 @@ def configure(run,ship_geo):
  if not hasattr(ship_geo,'NuTauTT') : ship_geo.NuTauTT= AttrDict(z=0*u.cm)
  if not hasattr(ship_geo.NuTauTT,'design') : ship_geo.NuTauTT.design = 0
  if not hasattr(ship_geo,'EcalOption'):     ship_geo.EcalOption = 1      
- latestShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py",Yheight = ship_geo.Yheight/u.m, tankDesign = ship_geo.tankDesign, muShieldDesign = ship_geo.muShieldDesign, nuTauTargetDesign = ship_geo.nuTauTargetDesign, muShieldGeo = ship_geo.muShieldGeo)
+ latestShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py",Yheight = ship_geo.Yheight/u.m, tankDesign = ship_geo.tankDesign, muShieldDesign = ship_geo.muShieldDesign, nuTauTargetDesign = ship_geo.nuTauTargetDesign, muShieldGeo = ship_geo.muShieldGeo, SC_mag=ship_geo.SC_mag)
 # -----Create media-------------------------------------------------
  run.SetMaterials("media.geo")  # Materials
 # ------------------------------------------------------------------------
@@ -131,7 +131,8 @@ def configure(run,ship_geo):
                                    ship_geo.muShieldWithCobaltMagnet,
                                    ship_geo.muShieldStepGeo,
                                    ship_geo.hadronAbsorber.WithConstField,
-                                   ship_geo.muShield.WithConstField)
+                                   ship_geo.muShield.WithConstField,
+                                   ship_geo.SC_mag)
  
  detectorList.append(MuonShield)
 
@@ -450,6 +451,15 @@ def configure(run,ship_geo):
  timeDet.SetSizeX(2 * ship_geo.TimeDet.DX)
  timeDet.SetSizeY(2 * ship_geo.TimeDet.DY)
  detectorList.append(timeDet)
+
+ z_coord = [-3100, -2800, -2600]
+  #z_coord = []
+ for i in range(len(z_coord)):
+  scorplane = ROOT.ScoringPlane("sc_pl_" + str(i), ROOT.kTRUE, ROOT.kFALSE, 116.7, 253.5, 0.1)
+  scorplane.SetVetoPointName("sco" + "_" + str(i))
+  scorplane.SetZposition(z_coord[i])
+  detectorList.append(scorplane)
+
 
 #-----   Magnetic field   -------------------------------------------
  if not hasattr(ship_geo.Bfield,"fieldMap"):

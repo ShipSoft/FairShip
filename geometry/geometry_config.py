@@ -46,8 +46,11 @@ if "muShieldStepGeo" not in globals():
     muShieldStepGeo = False
 if "muShieldWithCobaltMagnet" not in globals():
     muShieldWithCobaltMagnet = 0
+if "muShieldWithCobaltMagnet" not in globals():
+    SC_mag = False
 
 with ConfigRegistry.register_config("basic") as c:
+    c.SC_mag = SC_mag
     # global muShieldDesign, targetOpt, strawDesign, Yheight
     c.Yheight = Yheight*u.m
     # decision by the SP 

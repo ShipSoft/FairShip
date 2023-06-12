@@ -286,6 +286,24 @@ void NuTauMudet::ConstructGeometry()
 {
   TGeoVolume *top = gGeoManager->GetTopVolume();
   TGeoVolumeAssembly *tTauNuDet = new TGeoVolumeAssembly("tTauNuDet");
+// TODO: temporary substitution of TauNuDet
+    ///------------------------------------------------------------------------------------------
+    TGeoVolumeAssembly *tTempTauNu = new TGeoVolumeAssembly("tTempTauNu");
+    top->AddNode(tTempTauNu, 1, new TGeoTranslation(0, 0, 0));
+    InitMedium("tungsten");
+    TGeoMedium *tungsten =gGeoManager->GetMedium("tungsten");
+    double cm = 1;
+    double wall_length = 80 * cm;
+    double wall_gap = 20 * cm;
+    TGeoBBox *TauNuBox = new TGeoBBox("TauNuBox", 120 / 2 * cm, 340 / 2 * cm, wall_length/2);
+    TGeoVolume *volTauNu = new TGeoVolume("volTauNu",TauNuBox,tungsten);
+    volTauNu->SetLineColor(1);
+    tTempTauNu->AddNode(volTauNu, 1, new TGeoTranslation(0,0,fZcenter));
+    tTempTauNu->AddNode(volTauNu, 2, new TGeoTranslation(0, 0, fZcenter - wall_length - wall_gap));
+    tTempTauNu->AddNode(volTauNu, 3, new TGeoTranslation(0, 0, fZcenter - 2 * (wall_length + wall_gap)));
+    tTempTauNu->AddNode(volTauNu, 4, new TGeoTranslation(0, 0, fZcenter - 3 * (wall_length + wall_gap)));
+    tTempTauNu->AddNode(volTauNu, 5, new TGeoTranslation(0, 0, fZcenter - 4 * (wall_length + wall_gap)));
+
   // top->AddNode(tTauNuDet, 1, new TGeoTranslation(0, 0, 0));
 
   InitMedium("RPCgas");
