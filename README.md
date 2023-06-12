@@ -11,8 +11,8 @@ FairRoot. The dependencies of FairShip are tracked and installed using
 <dl>
   <dt><code>master</code></dt>
   <dd>Main development branch.
-      All python code is <b>required to be compatible with python 2 and 3</b> until compatibility with python 2 can be dropped.
-      Requires aliBuild default <code>fairship</code>.</dd>
+      All python code is <b>required to be python 3</b>. Python 2 is no longer supported.
+      Requires aliBuild default <code>release</code>.</dd>
   <dt><code>SHiP-2018</code></dt>
   <dd>Frozen branch for the CDS, kept for backward compatibility. 
       Python 2 only.
@@ -83,14 +83,14 @@ Commands are similar to the previous case, but without access to CVMFS you need 
 Set up the bulk of the environment from CVMFS.
 
 ```bash
-source /cvmfs/ship.cern.ch/SHiP-2021/latest/setUp.sh
+source /cvmfs/ship.cern.ch/SHiP-2022/May/setUp.sh
 ```
 
 Load your local FairShip environment.
 
 ```bash
 alibuild/alienv enter (--shellrc) FairShip/latest
-```    
+```
 
 Now you can for example simulate some events, run reconstruction and analysis:
 
@@ -142,23 +142,6 @@ desirable.
 
 ## Contributing Code
 
-### Build Targets Related to C++ Code Style-Guide
-
-The following targets are only available if `clang-format`, `clang-tidy` and `git` are installed.
-
-Build targets indicated with `*` always come in three different flavors.
-  * `no-suffix`: executes the target on source files that changed compared to origin/master -- e.g. `make check-format`
-  * `-staged`: executes the target on source files that have been staged -- e.g. `make check-format-staged`
-  * `-all`: executes the target on all source files in the project -- e.g. `make check-format-all`
-
-| Target          | Description  |
-| --------------- | ------------ |
-| `check-format*` | run clang-format on selected files. Fails if any file needs to be reformatted |
-| `show-format*` | run clang-format on selected files and display differences |
-| `format*` | run clang-format on selected files and update them in-place |
-| `check-tidy*` | run clang-tidy on selected files. Fails if errors are found |
-| `show-tidy*` | run clang-tidy on selected files and display errors. |
-| `tidy*` | run clang-tidy on selected files and attempt to fix any warning automatically |
-| `check-cpplint*` | run cpplint on selected files. Fails if errors are found and displays them. |
-| `check-submission` | will build, run all tests, check formatting, code style, and generate documentation and coverage report |
-| `fix-submission` | will attempt to fix the reported issues using `clang-format` and `clang-tidy`. Failing build, tests, compiler warnings, issues from cpplint and warnings from doxygen must be fixed manually. Also some `clang-tidy` issues cannot be resolved automatically |
+* Any and all contributions are welcome!
+* Contributions via pull requests are preferred, but if you require help with git, don't hesitate to write reach out to us.
+* Please split your work into small commits with self-contained changes to make them easy to review and check.
