@@ -115,7 +115,7 @@ class Task:
        try:
         PosDirCharge[tr]['rep'].extrapolateToPoint(PosDirCharge[tr]['newstate'], newPos, False)
        except:
-        ut.reportError('shipVertex: extrapolation did not worked')
+        ut.reportError('shipVertex: extrapolation did not work')
         rc = False  
         break
        self.newPosDir[tr] = {'position':PosDirCharge[tr]['rep'].getPos(PosDirCharge[tr]['newstate']),\
@@ -126,7 +126,7 @@ class Task:
       dz = abs(zBefore-newPos[2])
       step+=1
       if step > 10:  
-         ut.reportError("shipVertex::abort iteration, too many steps")
+         ut.reportError("shipVertex: abort iteration, too many steps")
          if global_variables.debug:
           print('abort iteration, too many steps, pos=',newPos[0],newPos[1],newPos[2],' doca=',doca,'z before and dz',zBefore,dz)
          rc = False
@@ -164,12 +164,12 @@ class Task:
      try:
       st1.extrapolateToPlane(plane)
      except:
-      ut.reportError("shipVertex::TwoTrackVertex: extrapolation does not worked")
+      ut.reportError("shipVertex.TwoTrackVertex: extrapolation did not work")
       continue
      try:
       st2.extrapolateToPlane(plane)
      except:
-      ut.reportError("shipVertex::TwoTrackVertex: extrapolation does not worked")
+      ut.reportError("shipVertex.TwoTrackVertex: extrapolation did not work")
       continue
      mom1 = st1.getMom()
      mom2 = st2.getMom()

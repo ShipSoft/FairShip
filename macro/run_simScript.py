@@ -44,8 +44,9 @@ defaultInputFile = True
 
 globalDesigns = {'2016':{'dy':10.,'dv':5,'ds':7,'nud':1,'caloDesign':0,'strawDesign':4},\
                  '2018':{'dy':10.,'dv':6,'ds':9,'nud':3,'caloDesign':3,'strawDesign':10},\
-                 '2022':{'dy':8.,'dv':6,'ds':9,'nud':3,'caloDesign':3,'strawDesign':10}}
-default = '2022'
+                 '2022':{'dy':8.,'dv':6,'ds':9,'nud':3,'caloDesign':3,'strawDesign':10}, \
+                 '2023':{'dy':8.,'dv':6,'ds':9,'nud':4,'caloDesign':3,'strawDesign':10}}
+default = '2023'
 
 inactivateMuonProcesses = False   # provisionally for making studies of various muon background sources
 
@@ -92,8 +93,8 @@ parser.add_argument("--tankDesign", dest="dv",      help="4=TP elliptical tank d
                                             ,required=False, default=globalDesigns[default]['dv'], type=int)
 parser.add_argument("--muShieldDesign", dest="ds",  help="7=short magnet design, 9=optimised with T4 as constraint, 8=requires config file\
                                             ,10=with field map for hadron absorber", required=False, choices=range(7,11), default=globalDesigns[default]['ds'], type=int)
-parser.add_argument("--nuTauTargetDesign", dest="nud", help="0=TP, 1=new magnet option for short muon shield, 2= no magnet surrounding neutrino detector"\
-                                            ,required=False, default=globalDesigns[default]['nud'], type=int)
+parser.add_argument("--nuTauTargetDesign", dest="nud"\
+  ,help="0=TP, 1=new magnet option for short muon shield, 2= no magnet surrounding neutrino detector, 3= emulsion spectrometer and muon filter as in CDS, 4= not magnetized target and muon spectrometer for ECN3",required=False, default=globalDesigns[default]['nud'], type=int)
 parser.add_argument("--caloDesign", dest="caloDesign",   help="0=ECAL/HCAL TP  1=ECAL/HCAL TP + preshower 2=splitCal  3=ECAL/ passive HCAL"\
                                             ,required=False, default=globalDesigns[default]['caloDesign'], type=int)
 parser.add_argument("--strawDesign", dest="strawDesign", help="simplistic tracker design,  4=sophisticated straw tube design, horizontal wires (default), 10=2cm straw"

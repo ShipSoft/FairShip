@@ -463,12 +463,12 @@ with ConfigRegistry.register_config("basic") as c:
        c.strawtubes.tr34ydim           = int(c.Yheight/2.)
 
     #Parameters for tau neutrino target Magnet
-    if nuTauTargetDesign!=2:
-        c.EmuMagnet = AttrDict(z=0*u.cm)
-        c.EmuMagnet.MagneticField = False #activates the magnetic field
+    c.EmuMagnet = AttrDict(z=0*u.cm)
+    c.EmuMagnet.MagneticField = False #activates the magnetic field
+    c.EmuMagnet.GapDown = 25*u.cm
+    if (nuTauTargetDesign!=2 and nuTauTargetDesign!= 4) :
         c.EmuMagnet.Design = nuTauTargetDesign
         c.EmuMagnet.B=1.25*u.tesla
-        c.EmuMagnet.GapDown = 25*u.cm
         if c.EmuMagnet.Design==3:
             scale=1.
             c.EmuMagnet.WithConstField=False  #now loaded field map
@@ -605,6 +605,7 @@ with ConfigRegistry.register_config("basic") as c:
         c.tauMudet.Xtot = c.tauMudet.XFe + 2 * c.tauMudet.LateralSupportX#now we need to include also supports.
         c.tauMudet.Ytot = c.tauMudet.YFe + c.tauMudet.UpperSupportY + c.tauMudet.LowerSupportY 
         c.tauMudet.Ztot = c.tauMudet.NRpc*c.tauMudet.ZRpc+c.tauMudet.NFethick*c.tauMudet.ZFethick + c.tauMudet.NFethin*c.tauMudet.ZFethin
+        
         #c.tauMudet.zMudetC = -c.decayVolume.length/2. - c.tauMudet.Ztot/2
         #c.tauMudet.zMudetC = c.Chamber1.z -c.chambers.Tub1length - c.tauMudet.Ztot/2 -31*u.cm;
         c.tauMudet.zMudetC = c.Chamber1.z -c.chambers.Tub1length - c.tauMudet.Ztot/2 -31*u.cm;
@@ -641,18 +642,32 @@ with ConfigRegistry.register_config("basic") as c:
         c.tauMudet.PillarX = 40*u.cm
         c.tauMudet.PillarZ = 50*u.cm
         c.tauMudet.PillarY = 10*u.m - c.cave.floorHeightMuonShield - c.tauMudet.Ytot/2 - 0.1*u.mm
-    c.tauMudet.XGas =  c.tauMudet.XRpc
-    c.tauMudet.YGas =  c.tauMudet.YRpc
-    c.tauMudet.ZGas = 1*u.mm
-    c.tauMudet.XStrip =  c.tauMudet.XRpc
-    c.tauMudet.YStrip =  c.tauMudet.YRpc
-    c.tauMudet.ZStrip = 0.02*u.mm
-    c.tauMudet.XPet =  c.tauMudet.XRpc
-    c.tauMudet.YPet =  c.tauMudet.YRpc
-    c.tauMudet.ZPet = 0.1*u.mm
-    c.tauMudet.XEle =  c.tauMudet.XRpc
-    c.tauMudet.YEle =  c.tauMudet.YRpc
-    c.tauMudet.ZEle = 1*u.mm
+    if nuTauTargetDesign<4:
+     c.tauMudet.XGas =  c.tauMudet.XRpc
+     c.tauMudet.YGas =  c.tauMudet.YRpc
+     c.tauMudet.ZGas = 1*u.mm
+     c.tauMudet.XStrip =  c.tauMudet.XRpc
+     c.tauMudet.YStrip =  c.tauMudet.YRpc
+     c.tauMudet.ZStrip = 0.02*u.mm
+     c.tauMudet.XPet =  c.tauMudet.XRpc
+     c.tauMudet.YPet =  c.tauMudet.YRpc
+     c.tauMudet.ZPet = 0.1*u.mm
+     c.tauMudet.XEle =  c.tauMudet.XRpc
+     c.tauMudet.YEle =  c.tauMudet.YRpc
+     c.tauMudet.ZEle = 1*u.mm
+
+    if nuTauTargetDesign==4:
+     c.tauMudet.XRpc = 120 *u.cm
+     c.tauMudet.YRpc = 120 *u.cm
+     c.tauMudet.ZRpc = 8 *u.cm
+     #magnetized region
+     c.tauMudet.Xtot  = c.tauMudet.XRpc
+     c.tauMudet.Ytot  = c.tauMudet.YRpc
+     c.tauMudet.GapM = 200 * u.cm #magnetized region length, gap between sepctrometer planes
+
+     c.tauMudet.Ztot = 3 * u.m #space allocated to Muon spectrometer
+     c.tauMudet.B = 1.2 * u.tesla #magnetic field is back in MuFilter!
+     c.tauMudet.zMudetC = c.Chamber1.z -c.chambers.Tub1length - c.tauMudet.Ztot/2 -31*u.cm
 
     if nuTauTargetDesign==0 or nuTauTargetDesign==1:
        c.EmuMagnet.zC = -c.decayVolume.length/2. - c.tauMudet.GapD - c.tauMudet.Ztot - c.EmuMagnet.GapDown - c.EmuMagnet.Z/2
@@ -663,7 +678,7 @@ with ConfigRegistry.register_config("basic") as c:
     #tau Bricks
     c.NuTauTarget = AttrDict(z=0*u.cm)
     c.NuTauTarget.Design = nuTauTargetDesign
-    if nuTauTargetDesign!=2:
+    if nuTauTargetDesign!=2 and nuTauTargetDesign!=4:
         c.NuTauTarget.zC = c.EmuMagnet.zC
     if nuTauTargetDesign==2:
         c.NuTauTarget.zC = -c.decayVolume.length/2. - c.tauMudet.GapD - c.tauMudet.Ztot -2.5*u.m
@@ -708,6 +723,26 @@ with ConfigRegistry.register_config("basic") as c:
     c.NuTauTarget.BrPackY = c.NuTauTarget.BrY - c.NuTauTarget.EmY
     c.NuTauTarget.BrZ = c.NuTauTarget.n_plates * c.NuTauTarget.AllPW + c.NuTauTarget.EPlW + c.NuTauTarget.BrPackZ
 
+    if c.NuTauTarget.Design == 4: #new geometry, for ECN3
+        c.NuTauTarget.row = 2
+        c.NuTauTarget.col = 2
+        c.NuTauTarget.wall = 17
+        c.NuTauTarget.n_plates = 59
+        c.NuTauTarget.EmX = 20. * u.cm
+        c.NuTauTarget.EmY = 20. * u.cm
+        c.NuTauTarget.BrPackX = 2 * 0.05 * u.cm
+        c.NuTauTarget.BrPackY = 2 * 0.05 * u.cm
+        c.NuTauTarget.BrPackZ = 2.21 * u.cm
+        c.NuTauTarget.BrX = c.NuTauTarget.BrPackX + c.NuTauTarget.EmX
+        c.NuTauTarget.BrY = c.NuTauTarget.BrPackY + c.NuTauTarget.EmY
+
+        c.NuTauTarget.EPlW = 2* c.NuTauTarget.EmTh + c.NuTauTarget.PBTh
+        c.NuTauTarget.AllPW = c.NuTauTarget.LeadTh + c.NuTauTarget.EPlW
+
+        c.NuTauTarget.BrZ = c.NuTauTarget.n_plates * c.NuTauTarget.AllPW + c.NuTauTarget.EPlW + c.NuTauTarget.BrPackZ #10 cm
+        #c.NuTauTarget.BrZ = 10. * u.cm #hardcoded wall width
+        c.NuTauTarget.SingleEmFilm = False
+
  #TargetTrackers!
     c.NuTauTT = AttrDict(z=0*u.cm)
     c.NuTauTT.design = nuTauTargetDesign
@@ -729,6 +764,24 @@ with ConfigRegistry.register_config("basic") as c:
     c.NuTauTarget.WallXDim = c.NuTauTarget.col*c.NuTauTarget.BrX
     c.NuTauTarget.WallYDim = c.NuTauTarget.row*c.NuTauTarget.BrY+(c.NuTauTarget.row-1)*c.NuTauTarget.Ydist
     c.NuTauTarget.WallZDim = c.NuTauTarget.BrZ
+
+    if (c.NuTauTT.design==4):
+        c.NuTauTT.n_hor_planes = 1
+        c.NuTauTT.n_vert_planes = 1 #simplified
+        c.NuTauTT.scifimat_width = 13.06 * u.cm # old value 13.045
+        c.NuTauTT.scifimat_hor = c.NuTauTarget.WallXDim #13.045 * 7 + endpieces = length of hor. mats
+        c.NuTauTT.scifimat_vert = c.NuTauTarget.WallYDim #13.045 * 11 + endpieces = length of vert. mats
+        c.NuTauTT.scifimat_z = 0.145 * u.cm   # Scintillating fiber mat
+        c.NuTauTT.support_z = 1.355 * u.cm     # More space for support (total TTZ 5 cm)
+        c.NuTauTT.honeycomb_z = 2 * u.cm      # Airex (or Nomex)
+        c.NuTauTT.TTX = c.NuTauTT.scifimat_hor
+        c.NuTauTT.TTY = c.NuTauTT.scifimat_vert
+        c.NuTauTT.TTZ = 2 * c.NuTauTT.support_z + 2 * c.NuTauTT.scifimat_z + c.NuTauTT.honeycomb_z 
+        c.NuTauTT.n = c.NuTauTarget.wall + 1 #starts and end with TT, no HPT
+        # should be called after TTX, TTY
+        c.NuTauTarget.xdim = c.NuTauTT.TTX 
+        c.NuTauTarget.ydim = c.NuTauTT.TTY 
+
 
  #HPT
     c.tauHPT = AttrDict(z=0*u.cm)
@@ -759,7 +812,7 @@ with ConfigRegistry.register_config("basic") as c:
         c.tauHPT.DZ = c.tauHPT.TZ
         c.tauHPT.nHPT = 5 # number of downstream trackers after neutrino target
 
-    if nuTauTargetDesign!=2: #TP or NEW with magnet
+    if nuTauTargetDesign!=2 and nuTauTargetDesign!=4: #TP or NEW with magnet
         c.NuTauTarget.RohG = 1.5 * u.cm
         c.NuTauTarget.LayerCESW = c.NuTauTarget.RohG + c.NuTauTarget.EPlW
         c.NuTauTarget.CESPack = 0.3055 * u.cm
@@ -773,17 +826,25 @@ with ConfigRegistry.register_config("basic") as c:
             c.tauHPT.TotalDZ = (c.EmuMagnet.Z - c.EmuMagnet.Height1) - c.NuTauTarget.zdim # MagRegion-Target 
             c.tauHPT.distHPT = (c.tauHPT.TotalDZ - c.tauHPT.nHPT * c.tauHPT.DZ) / (c.tauHPT.nHPT - 1)                    
 
-    if nuTauTargetDesign == 2:  #NEW with NO magnet
+    if nuTauTargetDesign == 2 or nuTauTargetDesign == 4:  #NEW with NO magnet
         c.NuTauTarget.RohG = 0 * u.cm
         c.NuTauTarget.LayerCESW =0 *u.cm
         c.NuTauTarget.CESPack = 0* u.cm
         c.NuTauTarget.CESW = 0*u.cm
         c.NuTauTarget.CellW = c.NuTauTarget.BrZ
         c.NuTauTarget.zdim = c.NuTauTarget.wall* c.NuTauTarget.CellW + (c.NuTauTarget.wall+1)*c.NuTauTT.TTZ
+    if nuTauTargetDesign==4:
+        c.EmuMagnet.GapDown = 20 * u.cm
+        c.NuTauTarget.zC = c.tauMudet.zMudetC - c.tauMudet.Ztot/2 - c.EmuMagnet.GapDown - c.NuTauTarget.zdim/2.    
 
     c.NuTauTarget.BaseX =  c.NuTauTarget.xdim + 20*u.cm
     c.NuTauTarget.BaseY = 20*u.cm
-    c.NuTauTarget.BaseZ = c.NuTauTarget.zdim +40*u.cm
+    if nuTauTargetDesign!=4:
+     c.NuTauTarget.BaseZ = c.NuTauTarget.zdim +40*u.cm
+    if nuTauTargetDesign==4:
+     c.NuTauTarget.BaseZ = c.NuTauTarget.zdim +10*u.cm
+
+
     c.NuTauTarget.PillarX = 0.5*u.m
     c.NuTauTarget.PillarZ = 0.5*u.m
     c.NuTauTarget.PillarY = 10*u.m - c.NuTauTarget.ydim/2 -c.NuTauTarget.BaseY- 0.1*u.mm - c.cave.floorHeightMuonShield

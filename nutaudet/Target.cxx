@@ -309,6 +309,9 @@ void Target::ConstructGeometry()
 
   InitMedium("lead");
   TGeoMedium *lead = gGeoManager->GetMedium("lead");
+
+  InitMedium("tungsten");
+  TGeoMedium *tungsten = gGeoManager->GetMedium("tungsten");
     
   InitMedium("rohacell");
   TGeoMedium *rohacell = gGeoManager->GetMedium("rohacell");
@@ -327,7 +330,7 @@ void Target::ConstructGeometry()
   TGeoVolume *volTarget = new TGeoVolume("volTarget",TargetBox, air);
       
   // In both fDesign=0 & fDesign=1 the emulsion target is inserted within a magnet
-  if(fDesign!=2)
+  if(fDesign!=2 && fDesign!=4)
     {
       TGeoVolume *MagnetVol;
 
@@ -351,7 +354,7 @@ void Target::ConstructGeometry()
 	}
 
       //Definition of the target box containing emulsion bricks + CES + target trackers (TT) 
-      if (fDesign != 3) volTarget->SetField(magField2);
+      if (fDesign != 3 && fDesign != 4) volTarget->SetField(magField2);
       volTarget->SetVisibility(1);
       volTarget->SetVisDaughters(1);
       if(fDesign==0) //TP
@@ -385,16 +388,28 @@ void Target::ConstructGeometry()
   TGeoVolume *volBrick = new TGeoVolume("Brick",Brick,air);
   volBrick->SetLineColor(kCyan);
   volBrick->SetTransparency(1);   
+
+  TGeoBBox *Lead, *Tungsten; //need to separate the two cases
+  TGeoVolume *volLead, *volTungsten;
     
-  TGeoBBox *Lead = new TGeoBBox("Pb", EmulsionX/2, EmulsionY/2, LeadThickness/2);
-  TGeoVolume *volLead = new TGeoVolume("Lead",Lead,lead);
-  volLead->SetTransparency(1);
-  volLead->SetLineColor(kGray);
-  //volLead->SetField(magField2);
+  if (fDesign < 4){  
+   Lead = new TGeoBBox("Pb", EmulsionX/2, EmulsionY/2, LeadThickness/2);
+   volLead = new TGeoVolume("Lead",Lead,lead);
+   volLead->SetTransparency(1);
+   volLead->SetLineColor(kGray);
+   //volLead->SetField(magField2);
+  }
+  else{
+   Tungsten = new TGeoBBox("W", EmulsionX/2, EmulsionY/2, LeadThickness/2);
+   volTungsten = new TGeoVolume("Tungsten",Tungsten,tungsten);
+   volTungsten->SetTransparency(1);
+   volTungsten->SetLineColor(kGray);
+  }
     
   for(Int_t n=0; n<NPlates; n++)
     {
-      volBrick->AddNode(volLead, n, new TGeoTranslation(0,0,-BrickZ/2+BrickPackageZ/2+ EmPlateWidth + LeadThickness/2 + n*AllPlateWidth)); //LEAD
+      //decide to use lead or tungsten, according to fDesign
+      volBrick->AddNode(fDesign < 4 ? volLead: volTungsten, n, new TGeoTranslation(0,0,-BrickZ/2+BrickPackageZ/2+ EmPlateWidth + LeadThickness/2 + n*AllPlateWidth));
     }
   if (fsingleemulsionfilm){  //simplified configuration, unique sensitive layer for the whole emulsion plate
    TGeoBBox *EmulsionFilm = new TGeoBBox("EmulsionFilm", EmulsionX/2, EmulsionY/2, EmPlateWidth/2);
@@ -437,7 +452,7 @@ void Target::ConstructGeometry()
   volBrick->SetVisibility(kTRUE);
 
   //The CES is required only in the option with magnet surrounding the emulsion target
-  if(fDesign!=2)
+  if(fDesign!=2 && fDesign!=4)
     {    
       //CES
    
@@ -539,9 +554,9 @@ void Target::ConstructGeometry()
     }
 
 
-  //in fDesign==2 the emulsion target is not surrounded by a magnet => no magnetic field inside
+  //in fDesign==2 and fDesign==4 the emulsion target is not surrounded by a magnet => no magnetic field inside
   //In the no Magnetic field option, no CES is needed => only brick walls + TT
-  if(fDesign==2)
+  if(fDesign==2 || fDesign == 4)
     {
       EmulsionMagnet emuMag;
 
@@ -562,6 +577,7 @@ void Target::ConstructGeometry()
 	}
       TGeoBBox *Wall = new TGeoBBox("wall",XDimension/2, YDimension/2, BrickZ/2);
       TGeoVolume *volWall = new TGeoVolume("Wall",Wall,air);
+      volWall->SetLineColor(kGreen);
     
       Double_t d_cl_y = -WallYDim/2;
       for(int k= 0; k< fNRow; k++)
@@ -583,24 +599,23 @@ void Target::ConstructGeometry()
 	  //6 cm is the distance between 2 columns of consecutive Target for TT placement
 	  d_cl_z += BrickZ + TTrackerZ;
 	}
-      
-      TGeoBBox *Base = new TGeoBBox("Base", fBaseX/2, fBaseY/2, fBaseZ/2);
-      TGeoVolume *volBase = new TGeoVolume("volBase",Base,Conc);
-      volBase->SetLineColor(kYellow-3);
-      tTauNuDet->AddNode(volBase,1, new TGeoTranslation(0,-WallYDim/2 - fBaseY/2,fCenterZ));
-
       if(fDesign==2)
 	{
-	  TGeoBBox *PillarBox = new TGeoBBox(fPillarX/2,fPillarY/2, fPillarZ/2);
+    	TGeoBBox *Base = new TGeoBBox("Base", fBaseX/2, fBaseY/2, fBaseZ/2);
+    	TGeoVolume *volBase = new TGeoVolume("volBase",Base,Conc);
+    	volBase->SetLineColor(kYellow-3);
+    	tTauNuDet->AddNode(volBase,1, new TGeoTranslation(0,-WallYDim/2 - fBaseY/2,fCenterZ));
+	
+    	TGeoBBox *PillarBox = new TGeoBBox(fPillarX/2,fPillarY/2, fPillarZ/2);
 	  TGeoVolume *PillarVol = new TGeoVolume("PillarVol",PillarBox,Steel);
 	  PillarVol->SetLineColor(kGreen+3);
 	  tTauNuDet->AddNode(PillarVol,1, new TGeoTranslation(-XDimension/2+fPillarX/2,-YDimension/2-fBaseY-fPillarY/2, fCenterZ-ZDimension/2+fPillarZ/2));
 	  tTauNuDet->AddNode(PillarVol,2, new TGeoTranslation(XDimension/2-fPillarX/2,-YDimension/2-fBaseY-fPillarY/2, fCenterZ-ZDimension/2+fPillarZ/2));
 	  tTauNuDet->AddNode(PillarVol,3, new TGeoTranslation(-XDimension/2+fPillarX/2,-YDimension/2-fBaseY-fPillarY/2, fCenterZ+ZDimension/2-fPillarZ/2));
 	  tTauNuDet->AddNode(PillarVol,4, new TGeoTranslation(XDimension/2-fPillarX/2,-YDimension/2-fBaseY-fPillarY/2, fCenterZ+ZDimension/2-fPillarZ/2));
-	}
     }
-}
+  }
+}//end construct geometry
 
 Bool_t  Target::ProcessHits(FairVolume* vol)
 {

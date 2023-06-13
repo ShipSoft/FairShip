@@ -335,7 +335,7 @@ void NuTauMudet::ConstructGeometry()
     
   Double_t d = 0;
 
-  if(fDesign!=3)
+  if(fDesign<3)
     {
       TGeoVolumeAssembly *volMudetBox = new TGeoVolumeAssembly("volNuTauMudet");
       tTauNuDet->AddNode(volMudetBox, 1, new TGeoTranslation(0,10*cm,fZcenter));
@@ -774,6 +774,38 @@ void NuTauMudet::ConstructGeometry()
       
     }
 
+    if(fDesign==4){
+      //Now the filter is replaced by a magnetic spectrometer       
+
+      TGeoBBox *MuFilter = new TGeoBBox("MuFilter",fXtot/2., fYtot/2., fZtot/2.);
+      TGeoVolume *volMuFilter = new TGeoVolume("volMuFilter",MuFilter,air); //MuFilter
+      volMuFilter->SetLineColor(kGray);
+
+      TGeoBBox *MagCheckBox = new TGeoBBox("MagCheckBox",fXtot/2., fYtot/2., fGapMiddle/2.);
+      TGeoVolume *volMagCheckRegion = new TGeoVolume("volMagCheckRegion",MagCheckBox,air); //Magnetized Region for taumudet
+      volMagCheckRegion->SetLineColor(kGray);
+      volMagCheckRegion->SetVisibility(kFALSE);
+
+      tTauNuDet->AddNode(volMuFilter,1,new TGeoTranslation(0,0,fZcenter));
+
+      TGeoBBox *RPC = new TGeoBBox("RPC", fXRpc/2.,fYRpc/2.,fZRpc/2.);
+      TGeoVolume *volRPC = new TGeoVolume("volRPC",RPC,RPCmat); //RPC
+      volRPC->SetLineColor(kRed);
+      AddSensitiveVolume(volRPC);
+
+      TGeoUniformMagField *magcheckfield    = new TGeoUniformMagField(fField,0.,0.); //for now along x direction;
+      volMagCheckRegion->SetField(magcheckfield);
+      //first two counters upstream
+      volMuFilter->AddNode(volRPC,1,new TGeoTranslation(0,0,-fZtot/2. + fZRpc/2.));
+      volMuFilter->AddNode(volRPC,2,new TGeoTranslation(0,0,-fGapMiddle/2. - fZRpc/2.));
+      //magnetized region in the middle
+      volMuFilter->AddNode(volMagCheckRegion,1,new TGeoTranslation(0,0,0.));
+      //last two counters downstream
+      volMuFilter->AddNode(volRPC,3,new TGeoTranslation(0,0,+fGapMiddle/2. + fZRpc/2.));
+      volMuFilter->AddNode(volRPC,4,new TGeoTranslation(0,0,+fZtot/2. - fZRpc/2.));
+
+    } //end option 4
+
 }
 
 
@@ -802,9 +834,10 @@ Bool_t  NuTauMudet::ProcessHits(FairVolume* vol)
     Int_t pdgCode = p->GetPdgCode();
     Int_t detID=0;
     gMC->CurrentVolID(detID);
+    //cutting this part, does not work in this new layout, since we only have simple planes
     //cout<<"THIS HIT"<<endl;
     //cout<< "detID = " << detID << endl;
-    Int_t MaxLevel = gGeoManager->GetLevel();
+    /*Int_t MaxLevel = gGeoManager->GetLevel();
     const Int_t MaxL = MaxLevel;
     //cout << "MaxLevel = " << MaxL << endl;
     //cout << gMC->CurrentVolPath()<< endl;
@@ -815,11 +848,11 @@ Bool_t  NuTauMudet::ProcessHits(FairVolume* vol)
     Int_t motherID = 0;
     if( strcmp(name, "volRpc")==0){motherID = gGeoManager->GetMother(1)->GetNumber();}
     else{motherID = gGeoManager->GetMother(0)->GetNumber();}
-    /* This up here is made because of a strange behaviour of the script, volRpc gets different
-    Mother volume number even if it has the correct path */
-    const char *mumname = gMC->CurrentVolOffName(1);
+    // This up here is made because of a strange behaviour of the script, volRpc gets different
+   //Mother volume number even if it has the correct path 
+    const char *mumname = gMC->CurrentVolOffName(1);*/
     //cout<<mumname<<"   "<< motherID<<endl;
-    detID = motherID;
+    //detID = motherID;
     //cout<< "detID = " << detID << endl;
     //cout<<endl;
     fVolumeID = detID;
