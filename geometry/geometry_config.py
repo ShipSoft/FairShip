@@ -12,6 +12,16 @@ from ShipGeoConfig import AttrDict, ConfigRegistry
 # strawOpt       = 0  # 0=simplistic tracking stations defined in veto.cxx  1=detailed strawtube design 4=sophisticated straw tube design, horizontal wires (default) 10=2cm straw diameter for 2018 layout
 # preshowerOption = 0 # 1=simple preShower detector for conceptual studies, moves calo and muon stations
 # tankDesign = 5 #  4=TP elliptical tank design, 5 = optimized conical rectangular design, 6=5 without segment-1
+shield_db = {
+    'combi': [ 70.  , 170.  , 208.  , 207.  , 281.  , 172.82, 212.54, 168.64,
+    40.  ,  40.  , 150.  , 150.  ,   2.  ,   2.  ,  80.  ,  80.  ,
+    150.  , 150.  ,   2.  ,   2.  ,  72.  ,  51.  ,  29.  ,  46.  ,
+    10.  ,   7.  ,  54.  ,  38.  ,  46.  , 192.  ,  14.  ,   9.  ,
+    10.  ,  31.  ,  35.  ,  31.  ,  51.  ,  11.  ,   3.  ,  32.  ,
+    54.  ,  24.  ,   8.  ,   8.  ,  22.  ,  32.  , 209.  ,  35.  ,
+    8.  ,  13.  ,  33.  ,  77.  ,  85.  , 241.  ,   9.  ,  26.  ],
+    'sc_v6': [70,170,0,353.078,125.083,184.834,150.193,186.812,40,40,150,150,2,2,80,80,150,150,2,2,72,51,29,46,10,7,45.6888,45.6888,22.1839,22.1839,27.0063,16.2448,10,31,35,31,51,11,24.7961,48.7639,8,104.732,15.7991,16.7793,3,100,192,192,2,4.8004,3,100,8,172.729,46.8285,2]
+}
 if "muShieldDesign" not in globals():
     muShieldDesign = 7
 if "muShieldGeo" not in globals():
@@ -46,8 +56,14 @@ if "muShieldStepGeo" not in globals():
     muShieldStepGeo = False
 if "muShieldWithCobaltMagnet" not in globals():
     muShieldWithCobaltMagnet = 0
+if "SC_mag" not in globals():
+    SC_mag = False
+if "scName" not in globals():
+    scName = None
 
 with ConfigRegistry.register_config("basic") as c:
+    c.SC_mag = SC_mag
+    c.scName = scName
     # global muShieldDesign, targetOpt, strawDesign, Yheight
     c.Yheight = Yheight*u.m
     # decision by the SP 
@@ -338,13 +354,18 @@ with ConfigRegistry.register_config("basic") as c:
         c.muShield.half_X_max = 179 * u.cm
         c.muShield.half_Y_max = 317 * u.cm
     elif muShieldDesign == 8:
-        assert muShieldGeo
-        c.muShieldGeo = muShieldGeo
-        print("Load geo")
-        f = r.TFile.Open(muShieldGeo)
-        params = r.TVectorD()
-        params.Read('params')
-        f.Close()
+        if not SC_mag:
+            assert muShieldGeo
+            c.muShieldGeo = muShieldGeo
+            print("Load geo")
+            f = r.TFile.Open(muShieldGeo)
+            params = r.TVectorD()
+            params.Read('params')
+            f.Close()
+        else:
+            assert scName
+            params = shield_db[scName]
+            c.muShield.params = params
         c.muShield.dZ1 = 0.35*u.m + zGap
         c.muShield.dZ2 = 2.26*u.m + zGap
         c.muShield.dZ3 = params[2]
