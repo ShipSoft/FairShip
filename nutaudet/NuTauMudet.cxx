@@ -763,28 +763,68 @@ void NuTauMudet::ConstructGeometry()
       TGeoVolume *volMuFilter = new TGeoVolume("volMuFilter",MuFilter,air); //MuFilter
       volMuFilter->SetLineColor(kGray);
 
-      TGeoBBox *MagCheckBox = new TGeoBBox("MagCheckBox",fXtot/2., fYtot/2., fZtot/2.);
-      TGeoVolume *volMagCheckRegion = new TGeoVolume("volMagCheckRegion",MagCheckBox,air); //Magnetized Region for taumudet
-      volMagCheckRegion->SetLineColor(kGray);
-      volMagCheckRegion->SetVisibility(kFALSE);
+      TGeoUniformMagField *magcheckfield    = new TGeoUniformMagField(fField,0.,0.); //along x direction;
 
       tTauNuDet->AddNode(volMuFilter,1,new TGeoTranslation(0,0,fZcenter));
+
+      //adapting code from AdvSND
+      //code by Daniele from ADVSND air core magnet
+      Double_t  fOutMagX = fXtot;
+      Double_t  fOutMagY = fYtot;
+      Double_t  fMagZ = fZtot;
+
+      Double_t fInMagX = fXRpc;
+      Double_t fInMagY = fYRpc;
 
       TGeoBBox *RPC = new TGeoBBox("RPC", fXRpc/2.,fYRpc/2.,fZRpc/2.);
       TGeoVolume *volRPC = new TGeoVolume("volRPC",RPC,RPCmat); //RPC
       volRPC->SetLineColor(kRed);
       AddSensitiveVolume(volRPC);
+      //applying the values in the geometry
 
-      TGeoUniformMagField *magcheckfield    = new TGeoUniformMagField(fField,0.,0.); //for now along x direction;
-      volMagCheckRegion->SetField(magcheckfield);
+
+      // Shapes creation
+      TGeoBBox *CoilContainer = new TGeoBBox("CoilContainer", fOutMagX/2., fOutMagY/2., fMagZ/2.);
+      TGeoBBox *MagRegion = new TGeoBBox("MagRegion", fInMagX/2., fInMagY/2., fMagZ/2.+0.5);
+      TGeoBBox *Coil = new TGeoBBox("Coil", fCoilW/2., fCoilH/2., fMagZ/2.+0.5);
+
+      // Translations
+      TGeoTranslation *CoilUpPos = new TGeoTranslation("CoilUpPos", 0, (fInMagY+fCoilH)/2.-0.001, 0);
+      TGeoTranslation *CoilDownPos = new TGeoTranslation("CoilDownPos", 0, -(fInMagY+fCoilH)/2.+0.001, 0);
+      CoilUpPos->RegisterYourself();
+      CoilDownPos->RegisterYourself();
+
+      // Yoke shape
+      TGeoCompositeShape *FeYoke = new TGeoCompositeShape("FeYoke", "CoilContainer-MagRegion-(Coil:CoilUpPos)-(Coil:CoilDownPos)");
+
+      // Volumes
+      TGeoVolume *volFeYoke = new TGeoVolume("volFeYoke", FeYoke, Iron);
+      volFeYoke->SetLineColor(kGray);
+      TGeoVolume *volCoil = new TGeoVolume("volCoil", Coil, Cu);
+      volCoil->SetLineColor(kOrange+1);
+      TGeoVolume *volMagRegion = new TGeoVolume("volMagRegion", MagRegion, air);
+      volMagRegion->SetField(magcheckfield);
+
+      // Positioning
+      volMuFilter->AddNode(volFeYoke, 0);
+      volMuFilter->AddNode(volCoil, 0, new TGeoTranslation(0, (fInMagY+fCoilH)/2., 0));
+      volMuFilter->AddNode(volCoil, 1, new TGeoTranslation(0, -(fInMagY+fCoilH)/2., 0));
+      volMuFilter->AddNode(volMagRegion, 0, 0);
+
+      volMagRegion->SetField(magcheckfield);
       //first two counters upstream
-      volMagCheckRegion->AddNode(volRPC,1,new TGeoTranslation(0,0,-fZtot/2. + fZRpc/2.));
+      volMagRegion->AddNode(volRPC,1,new TGeoTranslation(0,0,-fZtot/2. + fZRpc/2.));
+      //magnetized region in the first quarter
+      volMagRegion->AddNode(volRPC,2,new TGeoTranslation(0,0,-fZtot/4.-fGapMiddle/2. - fZRpc/2.)); //these are INSIDE the magnetized region
+      volMagRegion->AddNode(volRPC,3,new TGeoTranslation(0,0,-fZtot/4.+fGapMiddle/2. + fZRpc/2.));
       //magnetized region in the middle
-      volMuFilter->AddNode(volMagCheckRegion,1,new TGeoTranslation(0,0,0.));
-      volMagCheckRegion->AddNode(volRPC,2,new TGeoTranslation(0,0,-fGapMiddle/2. - fZRpc/2.)); //these are INSIDE the magnetized region
-      volMagCheckRegion->AddNode(volRPC,3,new TGeoTranslation(0,0,+fGapMiddle/2. + fZRpc/2.));
+      volMagRegion->AddNode(volRPC,4,new TGeoTranslation(0,0,-fGapMiddle/2. - fZRpc/2.)); //these are INSIDE the magnetized region
+      volMagRegion->AddNode(volRPC,5,new TGeoTranslation(0,0,+fGapMiddle/2. + fZRpc/2.));
+      //magnetized region in the third quarter
+      volMagRegion->AddNode(volRPC,6,new TGeoTranslation(0,0,+fZtot/4.-fGapMiddle/2. - fZRpc/2.)); //these are INSIDE the magnetized region
+      volMagRegion->AddNode(volRPC,7,new TGeoTranslation(0,0,+fZtot/4.+fGapMiddle/2. + fZRpc/2.));
       //last two counters downstream
-      volMagCheckRegion->AddNode(volRPC,4,new TGeoTranslation(0,0,+fZtot/2. - fZRpc/2.));
+      volMagRegion->AddNode(volRPC,8,new TGeoTranslation(0,0,+fZtot/2. - fZRpc/2.));
 
     } //end option 4
 
