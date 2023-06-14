@@ -187,12 +187,7 @@ double wx(double z){
   double wx2=2522*mm;
   double z1=0*m;
   double z2=14.4*m;
-  if(z>14.4*m){
-    z1=14.4*m;
-    z2=15.2*m;
-    wx1=2522*mm;
-    wx2=2578*mm;
-    if(z>15.2*m){
+  if(z>14.4*m){{
       z1=15.2*m;
       z2=24.0*m;
       wx1=2578*mm;
@@ -221,12 +216,7 @@ double wy(double z){
   double wy2=6244*mm;
   double z1=0*m;
   double z2=14.4*m;
-  if(z>14.4*m){
-    z1=14.4*m;
-    z2=15.2*m;
-    wy1=6244*mm;
-    wy2=6350*mm;
-    if(z>15.2*m){
+  if(z>14.4*m){{
       z1=15.2*m;
       z2=24.0*m;
       wy1=6350*mm;
@@ -246,7 +236,7 @@ double wy(double z){
     }
   }
   
-  return 0.8* (wy1 + (z - z1) * (wy2 - wy1) / (z2 - z1));
+  return 0.6* (wy1 + (z - z1) * (wy2 - wy1) / (z2 - z1));
 }
 
 
@@ -864,99 +854,74 @@ TGeoVolume* veto::MakeSegments(Double_t dz,Double_t dx_start,Double_t dy_start,D
 	    TGeoVolumeAssembly *ttLiSc = new TGeoVolumeAssembly(nameLiSc);
         int liScCounter=0;
 
-	  //********************************   Block1: ************************************************************* 
-	    double z1=0*m;
-	    double z2=14.4*m;
-	    double wz=(z2-z1);//to delete
-	    double slX=(wx(z2)-wx(z1))/2/wz;//to delete
-	    double slY=(wy(z2)-wy(z1))/2/wz;//to delete
-	    
-	    double wallThick= 20*mm;//wall thiknes
-	    double liscThick1= 300*mm;
-	    double liscThick2= 300*mm;
-	    double ribThick = 10*mm;
-	    
-	    double Zshift=-dz + wz/2;//calibration of Z position
-	    double shiftPlot=0;//calibration of Z position
-	    
-	    int nx=4; // number of Longitudinal ribs on X
-	    int ny=6; // number of Longitudinal ribs on Y
-	    
-	    double distC = 150*mm; //rib distance from corner
+	     //********************************   Block1: ************************************************************* 
+      double z1=0*m;
+      double z2=14.4*m;
+      double wz=(z2-z1);//to delete
+      double slX=(wx(z2)-wx(z1))/2/wz;//to delete
+      double slY=(wy(z2)-wy(z1))/2/wz;//to delete
+      
+      double wallThick= 20*mm;//wall thicknes
+      double liscThick= 200*mm;
+      double ribThick = 10*mm;
+      
+      double Zshift=-dz + wz/2;//calibration of Z position
+      double shiftPlot=0;//calibration of Z position
+      
+      int nx=4; // number of Longitudinal ribs on X
+      int ny=6; // number of Longitudinal ribs on Y
+      
+      double distC = 150*mm; //rib distance from corner
  
-
-	    
-	   AddBlock(tInnerWall,tDecayVacuum,tOuterWall,tLongitRib,tVerticalRib,ttLiSc, liScCounter,
+      AddBlock(tInnerWall,tDecayVacuum,tOuterWall,tLongitRib,tVerticalRib,ttLiSc, liScCounter,
                     1, nx, ny, z1,z2,Zshift,dist,distC,
-                wallThick,liscThick1,liscThick2,ribThick);
-	      
-	      
+                wallThick,liscThick,liscThick,ribThick);
+                
 
-	      
-	      
-// 	  //********************************   Block2: p1  ************************************************************* 
-	    Zshift+=wz/2;
-	    z1=14.4*m;
-	    z2=15.2*m;
-	    wz=(z2-z1);
-	    Zshift+=wz/2;
-	    liscThick2=410*mm;
-// 	    
-// 	    Zshift+=shiftPlot;
-// 	    
-	    AddBlock(tInnerWall,tDecayVacuum,tOuterWall,tLongitRib,tVerticalRib,ttLiSc, liScCounter,
-                     2, nx, ny, z1,z2,Zshift,dist,distC,
-		      wallThick,liscThick1,liscThick2,ribThick);
-
-	  //********************************   Block3:  p2  ************************************************************* 
-	    Zshift+=wz/2;
-	    z1=15.2*m;
-	    z2=24.0*m;
-	    wz=z2-z1;
-	    Zshift+=wz/2;
-// 	    
-// 	    Zshift+=shiftPlot;
-// 	    
-	    liscThick1=410*mm;
-	    	   AddBlock(tInnerWall,tDecayVacuum,tOuterWall,tLongitRib,tVerticalRib,ttLiSc, liScCounter,
-                    3, nx, ny, z1,z2,Zshift,dist,distC,
-		     wallThick,liscThick1,liscThick2,ribThick);
+    //********************************   Block2:  p1  ************************************************************* 
+      Zshift+=wz/2;
+      z1=14.4*m;
+      z2=24.0*m;
+      wz=z2-z1;
+      Zshift+=wz/2;
+      
+//      Zshift+=shiftPlot;
+      
+      AddBlock(tInnerWall,tDecayVacuum,tOuterWall,tLongitRib,tVerticalRib,ttLiSc, liScCounter,
+                    2, nx, ny, z1,z2,Zshift,dist,distC,
+         wallThick,liscThick,liscThick,ribThick);
    
-// 
-// 	  //********************************   Block4:  p3  ************************************************************* 
-	    Zshift+=wz/2;
-	    z1=24.0*m;
-	    z2=33.6*m;
-	    wz=z2-z1;
-	    Zshift+=wz/2;
+ 
+//    //********************************   Block3:  p2  ************************************************************* 
+      Zshift+=wz/2;
+      z1=24.0*m;
+      z2=33.6*m;
+      wz=z2-z1;
+      Zshift+=wz/2;
 
-// 	    Zshift+=shiftPlot;
-// 	    
-	     nx=7;//number of Longitudinal ribs on X
-	    ny=11;//number of Longitudinal ribs on Y
-	    
-	  	   AddBlock(tInnerWall,tDecayVacuum,tOuterWall,tLongitRib,tVerticalRib,ttLiSc, liScCounter,
-                    4, nx, ny, z1,z2,Zshift,dist,distC,
-		     wallThick,liscThick1,liscThick2,ribThick);
+//      Zshift+=shiftPlot;
+      
+      nx=7;//number of Longitudinal ribs on X
+      ny=11;//number of Longitudinal ribs on Y
+      
+      AddBlock(tInnerWall,tDecayVacuum,tOuterWall,tLongitRib,tVerticalRib,ttLiSc, liScCounter,
+                    3, nx, ny, z1,z2,Zshift,dist,distC,
+         wallThick,liscThick,liscThick,ribThick);
 
 //   
-	  //********************************   Block5:    ************************************************************* 
-	    Zshift+=wz/2;
-	    z1=33.6*m;
-	    z2=50.0*m;
-	    wz=z2-z1;
-	    Zshift+=wz/2;
-	    
-	    wallThick= 30*mm;
-	    liscThick1=390*mm;
-	    liscThick2=390*mm;
-	    
-// 	    Zshift+=shiftPlot;
-// 	    
-           	   AddBlock(tInnerWall,tDecayVacuum,tOuterWall,tLongitRib,tVerticalRib,ttLiSc, liScCounter,
-                    5, nx, ny, z1,z2,Zshift,dist,distC,
-		     wallThick,liscThick1,liscThick2,ribThick);
-	      
+    //********************************   Block4:    ************************************************************* 
+      Zshift+=wz/2;
+      z1=33.6*m;
+      z2=50.0*m;
+      wz=z2-z1;
+      Zshift+=wz/2;
+      
+//      Zshift+=shiftPlot;
+      
+        AddBlock(tInnerWall,tDecayVacuum,tOuterWall,tLongitRib,tVerticalRib,ttLiSc, liScCounter,
+                    4, nx, ny, z1,z2,Zshift,dist,distC,
+         wallThick,liscThick,liscThick,ribThick);
+
 	      
 
 	 if(isInnerWall)tTankVol->AddNode(tInnerWall,0, new TGeoTranslation(0, 0,0 ));
