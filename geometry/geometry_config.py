@@ -180,12 +180,11 @@ with ConfigRegistry.register_config("basic") as c:
     c.Bfield.x   = 2.4 * u.m
     c.Bfield.fieldMap = "field/MainSpectrometerField.txt"
     if c.magnetDesign>3:                          # MISIS design
-      c.Bfield.YokeWidth = 0.68 * u.m  # full width       200.*cm;
+      c.Bfield.YokeWidth = 0.8 * u.m  # full width       200.*cm
       c.Bfield.YokeDepth = 1.4 * u.m  # half length      200 *cm;
       c.Bfield.CoilThick=25.*u.cm  # thickness
-      VesselThick=37.*u.cm;   # full thickness
-      c.Bfield.x = 201.*u.cm+VesselThick; # half apertures
-      c.Bfield.y = 301.*u.cm+VesselThick+c.Bfield.CoilThick
+      c.Bfield.x = 2.2 * u.m # half apertures
+      c.Bfield.y = 3.5 * u.m
 
 # TimeDet
     c.TimeDet = AttrDict(z=0)
