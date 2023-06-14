@@ -178,31 +178,27 @@ TGeoVolume* veto::GeoTrapezoidNew(TString xname,Double_t thick,Double_t wz,
       return T;
 }
 
-
-
-
 double wx(double z){
   
   double wx1=1520*mm;
   double wx2=2522*mm;
   double z1=0*m;
   double z2=14.4*m;
-  if(z>14.4*m){{
-      z1=15.2*m;
-      z2=24.0*m;
-      wx1=2578*mm;
-      wx2=3190*mm;
-      if(z>24.0*m){
-	z1=24.0*m;
-	z2=33.6*m;
-	wx1=3190*mm;
-	wx2=3859*mm;
-	if(z>33.6*m){
-	  z1=33.6*m;
-	  z2=50.0*m;
-	  wx1=3859*mm;
-	  wx2=5000*mm;
-	}
+  if(z>14.4*m){
+    z1=15.2*m;
+    z2=24.0*m;
+    wx1=2578*mm;
+    wx2=3190*mm;
+    if(z>24.0*m){
+      z1=24.0*m;
+      z2=33.6*m;
+      wx1=3190*mm;
+      wx2=3859*mm;
+      if(z>33.6*m){
+        z1=33.6*m;
+        z2=50.0*m;
+        wx1=3859*mm;
+        wx2=5000*mm;
       }
     }
   }
@@ -216,27 +212,26 @@ double wy(double z){
   double wy2=6244*mm;
   double z1=0*m;
   double z2=14.4*m;
-  if(z>14.4*m){{
-      z1=15.2*m;
-      z2=24.0*m;
-      wy1=6350*mm;
-      wy2=7526*mm;
-      if(z>24.0*m){
-	z1=24.0*m;
-	z2=33.6*m;
-	wy1=7526*mm;
-	wy2=8809*mm;
-	if(z>33.6*m){
-	  z1=33.6*m;
-	  z2=50.0*m;
-	  wy1=8809*mm;
-	  wy2=11000*mm;
-	}
+  if(z>14.4*m){
+    z1=15.2*m;
+    z2=24.0*m;
+    wy1=6350*mm;
+    wy2=7526*mm;
+    if(z>24.0*m){
+      z1=24.0*m;
+      z2=33.6*m;
+      wy1=7526*mm;
+      wy2=8809*mm;
+      if(z>33.6*m){
+        z1=33.6*m;
+        z2=50.0*m;
+        wy1=8809*mm;
+        wy2=11000*mm;
       }
     }
   }
-  
-  return 0.6* (wy1 + (z - z1) * (wy2 - wy1) / (z2 - z1));
+
+  return 0.6 * (wy1 + (z - z1) * (wy2 - wy1) / (z2 - z1));
 }
 
 
