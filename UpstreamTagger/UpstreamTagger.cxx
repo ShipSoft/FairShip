@@ -518,7 +518,8 @@ void UpstreamTagger::ConstructGeometry()
   const double z_layer_3 = z_layer_2 + z_layer_spacing;
   const double z_layer_4 = z_layer_3 + z_layer_spacing;
   const double y_odd_extreme = (ybox_fulldet/2.0) - ((det_yGlassPos)/2.0);
-  const double y_even = (ybox_fulldet/2.0) - ((det_yGlassPos)) - ((det_yGlassPos)/2.0) + extra_y;
+  // const double y_even = (ybox_fulldet/2.0) - ((det_yGlassPos)) - ((det_yGlassPos)/2.0) + extra_y;
+  const double y_even = y_odd_extreme;
 
   const int n_modules = 10;
 
@@ -563,6 +564,10 @@ void UpstreamTagger::ConstructGeometry()
   
   // Add detector nodes
   for (auto &&i: TSeq(1, n_modules + 1)) {
+    if(i%5 == 1 || i%5 == 3) {
+      // skip unneeded modules to have 3 instead of 5
+      continue;
+    }
     UpstreamTagger_fulldet->AddNode(Rpc_module_upstream1, i, new TGeoTranslation(module[i][0], module[i][1], module[i][2]));
     UpstreamTagger_fulldet->AddNode(Rpc_module_upstream, i + n_modules, new TGeoTranslation(module[i][0], module[i][1], -module[n_modules + 1 - i][2]));
   }
