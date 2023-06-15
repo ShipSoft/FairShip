@@ -510,23 +510,51 @@ void UpstreamTagger::ConstructGeometry()
   
   ybox_fulldet = 309; //resize box to define the modules position from active area of the detectors (discounting the aluminium box + acrilic)
 
+  const double z_layer_1 = -(zbox_fulldet/2.0) + (det_zAlPos/2.0) + det_dzAlPos;
+  const double z_layer_spacing = det_zAlPos + det_dzAlPos*2.0 + z_space_layers;
+  const double z_layer_2 = z_layer_1 + z_layer_spacing;
+  const double z_layer_3 = z_layer_2 + z_layer_spacing;
+  const double z_layer_4 = z_layer_3 + z_layer_spacing;
+  const double y_odd_extreme = (ybox_fulldet/2.0) - ((det_yGlassPos)/2.0);
+  const double y_even = (ybox_fulldet/2.0) - ((det_yGlassPos)) - ((det_yGlassPos)/2.0) + extra_y;
+
   //First Layer of full Rpc detector covering 2.23 x 4.99 meters with 32 strips
-  module[1][0] = 0; module[1][1] = ((ybox_fulldet/2.0) - ((det_yGlassPos)/2.0));  module[1][2] = (-(zbox_fulldet/2.0) + (det_zAlPos/2.0) + det_dzAlPos);
-  module[2][0] = 0; module[2][1] = 0; module[2][2] = (-(zbox_fulldet/2.0) + (det_zAlPos/2.0) + det_dzAlPos);
-  module[3][0] = 0; module[3][1] = -((ybox_fulldet/2.0) - ((det_yGlassPos)/2.0)); module[3][2] = (-(zbox_fulldet/2.0) + (det_zAlPos/2.0) + det_dzAlPos);
+  module[1][0] = 0;
+  module[1][1] = y_odd_extreme;
+  module[1][2] = z_layer_1;
+  module[2][0] = 0;
+  module[2][1] = 0;
+  module[2][2] = z_layer_1;
+  module[3][0] = 0;
+  module[3][1] = -y_odd_extreme;
+  module[3][2] = z_layer_1;
    
   //Second Layer of full Rpc detector covering 2.23 x 4.99 meters with 32 strips
-  module[4][0] = 0; module[4][1] = ((ybox_fulldet/2.0) - ((det_yGlassPos)) - ((det_yGlassPos)/2.0) + extra_y); module[4][2] = (-(zbox_fulldet/2.0) + det_zAlPos + det_dzAlPos*3.0 + z_space_layers + (det_zAlPos/2.0)); 
-  module[5][0] = 0; module[5][1] = -((ybox_fulldet/2.0) - ((det_yGlassPos)) - ((det_yGlassPos)/2.0) + extra_y);  module[5][2] = (-(zbox_fulldet/2.0) + det_zAlPos + det_dzAlPos*3.0 + z_space_layers + (det_zAlPos/2.0));
+  module[4][0] = 0;
+  module[4][1] = y_even;
+  module[4][2] = z_layer_2;
+  module[5][0] = 0;
+  module[5][1] = -y_even;
+  module[5][2] = z_layer_2;
 
   //Third Layer of full Rpc detector covering 2.23 x 4.99 meters with 64 strips
-  module[6][0] = 0; module[6][1] = ((ybox_fulldet/2.0) - ((det_yGlassPos)/2.0));  module[6][2] = (-(zbox_fulldet/2.0) + (det_zAlPos*2.0) + det_dzAlPos*5.0 + (z_space_layers*2.0) + (det_zAlPos/2.0));
-  module[7][0] = 0; module[7][1] = 0; module[7][2] = (-(zbox_fulldet/2.0) + (det_zAlPos*2.0) + det_dzAlPos*5.0 + (z_space_layers*3.0) + (det_zAlPos/2.0));
-  module[8][0] = 0; module[8][1] = -((ybox_fulldet/2.0) - ((det_yGlassPos)/2.0)); module[8][2] = (-(zbox_fulldet/2.0) + (det_zAlPos*2.0) + det_dzAlPos*5.0 + (z_space_layers*2.0) + (det_zAlPos/2.0));
+  module[6][0] = 0;
+  module[6][1] = y_odd_extreme;
+  module[6][2] = z_layer_3;
+  module[7][0] = 0;
+  module[7][1] = 0;
+  module[7][2] = z_layer_3 + z_space_layers;  // TODO is this a typo or necessary?
+  module[8][0] = 0;
+  module[8][1] = -y_odd_extreme;
+  module[8][2] = z_layer_3;
    
   //Fourth Layer of full Rpc detector covering 2.23 x 4.99 meters with 64 strips
-  module[9][0] = 0; module[9][1] = ((ybox_fulldet/2.0) - ((det_yGlassPos)) - ((det_yGlassPos)/2.0) + extra_y); module[9][2] = (-(zbox_fulldet/2.0) + (det_zAlPos*3.0) + det_dzAlPos*7.0 + (z_space_layers*3.0) + (det_zAlPos/2.0)); 
-  module[10][0] = 0; module[10][1] = -((ybox_fulldet/2.0) - ((det_yGlassPos)) - ((det_yGlassPos)/2.0) + extra_y);  module[10][2] = (-(zbox_fulldet/2.0) + (det_zAlPos*3.0) + det_dzAlPos*7.0 + (z_space_layers*3.0) + (det_zAlPos/2.0));
+  module[9][0] = 0;
+  module[9][1] = y_even;
+  module[9][2] = z_layer_4;
+  module[10][0] = 0;
+  module[10][1] = -y_even;
+  module[10][2] = z_layer_4;
   
   //First Layer of full Rpc detector1 covering 2.23 x 4.99 meters
   UpstreamTagger_fulldet->AddNode(Rpc_module_upstream, 1, new TGeoTranslation(module[1][0], module[1][1], module[1][2]));
