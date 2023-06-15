@@ -103,9 +103,10 @@ class UpstreamTagger: public FairDetector
     virtual void   PostTrack() {;}
     virtual void   PreTrack() {;}
     virtual void   BeginEvent() {;}
+
+    Double_t module[11][3];  // x,y,z centre positions for each module
+    // TODO Avoid 1-indexed array!
    
-    Double_t module[11][3];
-  
     /** Track information to be stored until the track leaves the active volume.*/
     Int_t          fTrackID;            //!  track index
     Int_t          fVolumeID;           //!  volume id
@@ -164,7 +165,7 @@ class UpstreamTagger: public FairDetector
     Double_t     det_yStripPos;     //!  y-size of Strip for modules with 32 strips
     Double_t     det_zStripPos;     //!  z-size of Strip
     
-    Double_t xbox_fulldet = 1.2 * m;
+    Double_t xbox_fulldet = 1.2 * m; //cm
     Double_t ybox_fulldet = 2.9 * m;
     Double_t zbox_fulldet = 17.0024;
     Double_t z_space_layers = 0.2;  
