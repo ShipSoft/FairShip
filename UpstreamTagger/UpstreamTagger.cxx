@@ -543,7 +543,7 @@ void UpstreamTagger::ConstructGeometry()
   module[6][2] = z_layer_3;
   module[7][0] = 0;
   module[7][1] = 0;
-  module[7][2] = z_layer_3 + z_space_layers;  // TODO is this a typo or necessary?
+  module[7][2] = z_layer_3;
   module[8][0] = 0;
   module[8][1] = -y_odd_extreme;
   module[8][2] = z_layer_3;
