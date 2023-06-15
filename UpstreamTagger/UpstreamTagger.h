@@ -11,6 +11,7 @@ class FairVolume;
 class TClonesArray;
 
 using ShipUnit::m;
+using ShipUnit::cm;
 
 class UpstreamTagger: public FairDetector
 {
@@ -163,11 +164,12 @@ class UpstreamTagger: public FairDetector
     Double_t     det_yStripPos;     //!  y-size of Strip for modules with 32 strips
     Double_t     det_zStripPos;     //!  z-size of Strip
     
-    Double_t xbox_fulldet = 233.4; //cm 
-    Double_t ybox_fulldet = 507; 
+    Double_t xbox_fulldet = 1.2 * m;
+    Double_t ybox_fulldet = 2.9 * m;
     Double_t zbox_fulldet = 17.0024;
     Double_t z_space_layers = 0.2;  
-    Double_t extra_y = 6.5; 
+    Double_t extra_y = 6.5 * cm;  // overlap between modules
+
     
   private:
 
