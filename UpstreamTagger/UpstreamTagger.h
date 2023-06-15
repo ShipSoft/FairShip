@@ -4,11 +4,13 @@
 #include "FairDetector.h"
 #include "TVector3.h"
 #include "TLorentzVector.h"
+#include "ShipUnit.h"
 
 class UpstreamTaggerPoint;
 class FairVolume;
 class TClonesArray;
 
+using ShipUnit::m;
 
 class UpstreamTagger: public FairDetector
 {
