@@ -35,6 +35,8 @@
 #include <sstream>
 using std::cout;
 using std::endl;
+using ShipUnit::m;
+using ShipUnit::cm;
 
 
 UpstreamTagger::UpstreamTagger()
