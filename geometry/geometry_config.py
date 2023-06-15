@@ -867,7 +867,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.NuTauTarget.PillarY = 10*u.m - c.NuTauTarget.ydim/2 -c.NuTauTarget.BaseY- 0.1*u.mm - c.cave.floorHeightMuonShield
 
     #Upstream Tagger
-    UBT_x_crop = 113 * u.cm
+    UBT_x_crop = 113.4 * u.cm
     c.UpstreamTagger = AttrDict(z=0)
     c.UpstreamTagger.Z_Glass = 0.2 * u.cm
     c.UpstreamTagger.Y_Glass = 105 * u.cm

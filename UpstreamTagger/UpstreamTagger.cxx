@@ -512,7 +512,7 @@ void UpstreamTagger::ConstructGeometry()
   UpstreamTagger_fulldet = gGeoManager->MakeBox("Upstream_Tagger", Vacuum_box, xbox_fulldet/2.0, ybox_fulldet/2.0, zbox_fulldet/2.0);
   UpstreamTagger_fulldet->SetLineColor(kWhite);
   
-  ybox_fulldet = 290 * cm; //resize box to define the modules position from active area of the detectors (discounting the aluminium box + acrilic)
+  ybox_fulldet = 289 * cm; //resize box to define the modules position from active area of the detectors (discounting the aluminium box + acrilic)
 
   const double z_layer_1 = -(zbox_fulldet/2.0) + (det_zAlPos/2.0) + det_dzAlPos;
   const double z_layer_spacing = det_zAlPos + det_dzAlPos*2.0 + z_space_layers;
