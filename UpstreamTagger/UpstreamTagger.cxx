@@ -386,6 +386,7 @@ void UpstreamTagger::ConstructGeometry()
   double xbox=xbox_fulldet; double ybox = 113; double zbox = 1.3503;
 
   //RPC Module with 32 horizontal strips
+  // TODO Make construction easier to understand (GeoAssemblies!)
   TGeoVolume *Rpc_module_upstream = gGeoManager->MakeBox("UpstreamTagger",Vacuum_box, xbox/2.0, ybox/2.0, zbox/2.0);
   Rpc_module_upstream->SetLineColor(kRed);
 
@@ -445,6 +446,7 @@ void UpstreamTagger::ConstructGeometry()
   }
 
   //RPC Module with 64 vertical strips
+  // TODO Make construction easier to understand (GeoAssemblies!)
   TGeoVolume *Rpc_module_upstream1 = gGeoManager->MakeBox("UpstreamTagger1",Vacuum_box, xbox/2.0, ybox/2.0, zbox/2.0);
   Rpc_module_upstream1->SetLineColor(kRed);
 
