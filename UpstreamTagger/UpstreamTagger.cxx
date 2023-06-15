@@ -31,10 +31,12 @@
 #include "TParticle.h" 
 #include "TVector3.h"
 
+#include <ROOT/TSeq.hxx>
 #include <iostream>
 #include <sstream>
 using std::cout;
 using std::endl;
+using ROOT::TSeq;
 using ShipUnit::m;
 using ShipUnit::cm;
 
@@ -518,7 +520,10 @@ void UpstreamTagger::ConstructGeometry()
   const double y_odd_extreme = (ybox_fulldet/2.0) - ((det_yGlassPos)/2.0);
   const double y_even = (ybox_fulldet/2.0) - ((det_yGlassPos)) - ((det_yGlassPos)/2.0) + extra_y;
 
-  //First Layer of full Rpc detector covering 2.23 x 4.99 meters with 32 strips
+  const int n_modules = 10;
+
+  // Module positions
+  // First Layer
   module[1][0] = 0;
   module[1][1] = y_odd_extreme;
   module[1][2] = z_layer_1;
@@ -529,7 +534,7 @@ void UpstreamTagger::ConstructGeometry()
   module[3][1] = -y_odd_extreme;
   module[3][2] = z_layer_1;
    
-  //Second Layer of full Rpc detector covering 2.23 x 4.99 meters with 32 strips
+  // Second Layer
   module[4][0] = 0;
   module[4][1] = y_even;
   module[4][2] = z_layer_2;
@@ -537,7 +542,7 @@ void UpstreamTagger::ConstructGeometry()
   module[5][1] = -y_even;
   module[5][2] = z_layer_2;
 
-  //Third Layer of full Rpc detector covering 2.23 x 4.99 meters with 64 strips
+  // Third Layer
   module[6][0] = 0;
   module[6][1] = y_odd_extreme;
   module[6][2] = z_layer_3;
@@ -548,7 +553,7 @@ void UpstreamTagger::ConstructGeometry()
   module[8][1] = -y_odd_extreme;
   module[8][2] = z_layer_3;
    
-  //Fourth Layer of full Rpc detector covering 2.23 x 4.99 meters with 64 strips
+  // Fourth Layer
   module[9][0] = 0;
   module[9][1] = y_even;
   module[9][2] = z_layer_4;
@@ -556,37 +561,12 @@ void UpstreamTagger::ConstructGeometry()
   module[10][1] = -y_even;
   module[10][2] = z_layer_4;
   
-  //First Layer of full Rpc detector1 covering 2.23 x 4.99 meters
-  UpstreamTagger_fulldet->AddNode(Rpc_module_upstream, 1, new TGeoTranslation(module[1][0], module[1][1], module[1][2]));
-  UpstreamTagger_fulldet->AddNode(Rpc_module_upstream, 2, new TGeoTranslation(module[2][0], module[2][1], module[2][2])); 
-  UpstreamTagger_fulldet->AddNode(Rpc_module_upstream, 3, new TGeoTranslation(module[3][0], module[3][1], module[3][2]));
-  //Second Layer of full Rpc detector1 covering 2.23 x 4.99 meters
-  UpstreamTagger_fulldet->AddNode(Rpc_module_upstream, 4, new TGeoTranslation(module[4][0], module[4][1], module[4][2])); 
-  UpstreamTagger_fulldet->AddNode(Rpc_module_upstream, 5, new TGeoTranslation(module[5][0], module[5][1], module[5][2]));
-  //Third Layer of full Rpc detector1 covering 2.23 x 4.99 meters
-  UpstreamTagger_fulldet->AddNode(Rpc_module_upstream1, 6, new TGeoTranslation(module[6][0], module[6][1], module[6][2]));
-  UpstreamTagger_fulldet->AddNode(Rpc_module_upstream1, 7, new TGeoTranslation(module[7][0], module[7][1], module[7][2])); 
-  UpstreamTagger_fulldet->AddNode(Rpc_module_upstream1, 8, new TGeoTranslation(module[8][0], module[8][1], module[8][2]));
-  //Fourth Layer of full Rpc detector1 covering 2.23 x 4.99 meters
-  UpstreamTagger_fulldet->AddNode(Rpc_module_upstream1, 9, new TGeoTranslation(module[9][0], module[9][1], module[9][2])); 
-  UpstreamTagger_fulldet->AddNode(Rpc_module_upstream1, 10, new TGeoTranslation(module[10][0], module[10][1], module[10][2]));
+  // Add detector nodes
+  for (auto &&i: TSeq(1, n_modules + 1)) {
+    UpstreamTagger_fulldet->AddNode(Rpc_module_upstream1, i, new TGeoTranslation(module[i][0], module[i][1], module[i][2]));
+    UpstreamTagger_fulldet->AddNode(Rpc_module_upstream, i + n_modules, new TGeoTranslation(module[i][0], module[i][1], -module[n_modules + 1 - i][2]));
+  }
 
-
-  //First Layer of full Rpc detector2 covering 2.23 x 4.99 meters
-  UpstreamTagger_fulldet->AddNode(Rpc_module_upstream, 11, new TGeoTranslation(module[1][0], module[1][1], -module[9][2]));
-  UpstreamTagger_fulldet->AddNode(Rpc_module_upstream, 12, new TGeoTranslation(module[2][0], module[2][1], -module[9][2])); 
-  UpstreamTagger_fulldet->AddNode(Rpc_module_upstream, 13, new TGeoTranslation(module[3][0], module[3][1], -module[9][2]));
-  //Second Layer of full Rpc detector2 covering 2.23 x 4.99 meters
-  UpstreamTagger_fulldet->AddNode(Rpc_module_upstream, 14, new TGeoTranslation(module[4][0], module[4][1], -module[6][2])); 
-  UpstreamTagger_fulldet->AddNode(Rpc_module_upstream, 15, new TGeoTranslation(module[5][0], module[5][1], -module[6][2]));
-  //Third Layer of full Rpc detector2 covering 2.23 x 4.99 meters
-  UpstreamTagger_fulldet->AddNode(Rpc_module_upstream1, 16, new TGeoTranslation(module[6][0], module[6][1], -module[4][2]));
-  UpstreamTagger_fulldet->AddNode(Rpc_module_upstream1, 17, new TGeoTranslation(module[7][0], module[7][1], -module[4][2])); 
-  UpstreamTagger_fulldet->AddNode(Rpc_module_upstream1, 18, new TGeoTranslation(module[8][0], module[8][1], -module[4][2]));
-  //Fourth Layer of full Rpc detector2 covering 2.23 x 4.99 meters
-  UpstreamTagger_fulldet->AddNode(Rpc_module_upstream1, 19, new TGeoTranslation(module[9][0], module[9][1], -module[1][2])); 
-  UpstreamTagger_fulldet->AddNode(Rpc_module_upstream1, 20, new TGeoTranslation(module[10][0], module[10][1], -module[1][2]));
- 
   top->AddNode(UpstreamTagger_fulldet, 1, new TGeoTranslation(0.0, 0.0, det_zPos));
   
   cout << " Z Position (Upstream Tagger1) " << det_zPos << endl;
