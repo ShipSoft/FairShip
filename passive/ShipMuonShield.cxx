@@ -846,11 +846,8 @@ void ShipMuonShield::ConstructGeometry()
       Double_t z_transition = zEndOfAbsorb + 2 * absorber_half_length + absorber_offset + 14 * cm + TCC8_trench_length;
       auto *rock = new TGeoBBox("rock", 20 * m, 20 * m, TCC8_length / 2. + ECN3_length / 2. + 5 * m);
       auto *muon_shield_cavern = new TGeoBBox("muon_shield_cavern", 5 * m, 3.75 * m, TCC8_length / 2.);
-      auto *muon_shield_trench = new TGeoBBox("muon_shield_trench", 1.2 * m, 2.4 * m, TCC8_trench_length / 2.);
       auto *TCC8_shift = new TGeoTranslation("TCC8_shift", 2.3 * m, 1.75 * m, - TCC8_length / 2.);
       TCC8_shift->RegisterYourself();
-      auto *TCC8_trench_shift = new TGeoTranslation("TCC8_trench_shift", 0 * m, 0 * m, - TCC8_trench_length / 2.);
-      TCC8_trench_shift->RegisterYourself();
 
       // Create ECN3 cavern around vessel
       auto *experiment_rock = new TGeoBBox("experiment_rock", 20 * m, 20 * m, ECN3_length / 2.);
@@ -858,13 +855,9 @@ void ShipMuonShield::ConstructGeometry()
       auto *ECN3_shift = new TGeoTranslation("ECN3_shift", 3.5 * m, 4 * m, ECN3_length / 2.);
       ECN3_shift->RegisterYourself();
 
-      auto* ECN3_wide_trench = new TGeoBBox("ECN3_wide_trench", 7 * m, 4.3 * m, 25 / 2. * m);
-      auto *ECN3_wide_trench_shift = new TGeoTranslation("ECN3_wide_trench_shift", 3.5 * m, 0 * m, 25 / 2. * m + ECN3_length / 2.);
-      ECN3_wide_trench_shift->RegisterYourself();
-
-      auto* ECN3_narrow_trench = new TGeoBBox("ECN3_narrow_trench", 3.5 * m, 4.3 * m, 25 / 2. * m);
-      auto *ECN3_narrow_trench_shift = new TGeoTranslation("ECN3_narrow_trench_shift", 0 * m, 0 * m, - 25 / 2.* m + ECN3_length / 2.);
-      ECN3_narrow_trench_shift->RegisterYourself();
+      auto *yoke_pit = new TGeoBBox("yoke_pit", 3.5 * m, 4.3 * m + 1 * cm, 2.5 * m);
+      auto *yoke_pit_shift = new TGeoTranslation("yoke_pit_shift", 0 * m, 0 * m, 31 * m - z_transition);
+      yoke_pit_shift->RegisterYourself();
 
         float mField = 1.6 * tesla;
 	TGeoUniformMagField *fieldsAbsorber[4] = {
@@ -943,10 +936,9 @@ void ShipMuonShield::ConstructGeometry()
       }
 
       auto *compRock = new TGeoCompositeShape("compRock",
-                                              "rock - muon_shield_cavern:TCC8_shift - muon_shield_trench:TCC8_trench_shift"
+                                              "rock - muon_shield_cavern:TCC8_shift"
                                               "- experiment_cavern:ECN3_shift"
-                                              "- ECN3_narrow_trench:ECN3_narrow_trench_shift"
-                                              "- ECN3_wide_trench:ECN3_wide_trench_shift"
+                                              "- yoke_pit:yoke_pit_shift"
                                               "- coat:coat_shift_transition"
                                               "- CoatWall:coatWall_shift_transition"
       );
