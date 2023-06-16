@@ -309,8 +309,8 @@ with ConfigRegistry.register_config("basic") as c:
     c.MuonFilter2 = AttrDict(z=c.MuonStation0.z+250.*u.cm)
 
     c.Muon = AttrDict(z=0)
-    c.Muon.XMax    =  240.*u.cm
-    c.Muon.YMax    =  600.*u.cm * c.Yheight / (10.*u.m)
+    c.Muon.XMax = 250. * u.cm
+    c.Muon.YMax = 325. * u.cm
 
     c.Muon.ActiveThickness = 0.5*u.cm
     c.Muon.FilterThickness = 30.*u.cm
