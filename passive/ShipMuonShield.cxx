@@ -839,7 +839,7 @@ void ShipMuonShield::ConstructGeometry()
       // Create TCC8 tunnel around muon shield
       Double_t TCC8_length =  170 * m;
       Double_t ECN3_length =  100 * m;
-      Double_t TCC8_trench_length = 15 * m;
+      Double_t TCC8_trench_length = 12 * m;
       Double_t zgap = 10 * cm;
       Double_t absorber_offset = zgap;
       Double_t absorber_half_length = (dZf[0] + dZf[1]) + zgap / 2.;
@@ -858,6 +858,10 @@ void ShipMuonShield::ConstructGeometry()
       auto *yoke_pit = new TGeoBBox("yoke_pit", 3.5 * m, 4.3 * m + 1 * cm, 2.5 * m);
       auto *yoke_pit_shift = new TGeoTranslation("yoke_pit_shift", 0 * m, 0 * m, 31 * m - z_transition);
       yoke_pit_shift->RegisterYourself();
+
+      auto *target_pit = new TGeoBBox("target_pit", 2 * m, 0.5 * m, 2 * m);
+      auto *target_pit_shift = new TGeoTranslation("target_pit_shift", 0 * m, -2.5 * m, zEndOfAbsorb - 2 * m - z_transition);
+      target_pit_shift->RegisterYourself();
 
         float mField = 1.6 * tesla;
 	TGeoUniformMagField *fieldsAbsorber[4] = {
@@ -939,6 +943,7 @@ void ShipMuonShield::ConstructGeometry()
                                               "rock - muon_shield_cavern:TCC8_shift"
                                               "- experiment_cavern:ECN3_shift"
                                               "- yoke_pit:yoke_pit_shift"
+                                              "- target_pit:target_pit_shift"
                                               "- coat:coat_shift_transition"
                                               "- CoatWall:coatWall_shift_transition"
       );
