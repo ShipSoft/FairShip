@@ -177,7 +177,7 @@ with ConfigRegistry.register_config("basic") as c:
      c.strawtubes.YLayerOffset = 1.9*u.cm        
      c.strawtubes.YPlaneOffset = 1.3*u.cm
      c.strawtubes.FrameMaterial      = "steel"
-     c.strawtubes.FrameLateralWidth = 0.96 * u.m
+     c.strawtubes.FrameLateralWidth = 0.25 * u.m
      c.strawtubes.DeltazFrame        = 2.5*u.cm
 
     c.strawtubes.WallThickness      = 0.0039*u.cm
@@ -187,8 +187,8 @@ with ConfigRegistry.register_config("basic") as c:
     c.strawtubes.ViewAngle          = 5
     c.strawtubes.WireThickness      = 0.003*u.cm
     c.strawtubes.DeltazView         = 10.*u.cm
-    c.strawtubes.VacBox_x = 180. * u.cm
-    c.strawtubes.VacBox_y           = 600.*u.cm * c.Yheight / (10.*u.m)
+    c.strawtubes.VacBox_x = 240. * u.cm
+    c.strawtubes.VacBox_y = 600.*u.cm * c.Yheight / (10.*u.m)
            
     c.Bfield = AttrDict(z=c.z)
     c.Bfield.max = 0 # 1.4361*u.kilogauss  # was 1.15 in EOI
