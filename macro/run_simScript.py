@@ -13,8 +13,6 @@ import rootUtils as ut
 from ShipGeoConfig import ConfigRegistry
 from argparse import ArgumentParser
 
-dryrun = False # True: just setup Pythia and exit
-
 DownScaleDiMuon = False
 
 # Default HNL parameters
