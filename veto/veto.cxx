@@ -92,7 +92,7 @@ veto::veto(const char* name, Bool_t active)
     vetoMed_name("Scintillator"),   // for liquid scintillator
     supportMedIn_name("steel"),        // for vacuum option
     supportMedOut_name("Aluminum"),    // for vacuum option
-    f_RibThickness(3.*cm),
+    f_RibThickness(1.5 * cm),
     decayVolumeMed_name("vacuums")    // for vacuum option
 {
   fUseSupport=1;
@@ -184,8 +184,8 @@ TGeoVolume* veto::GeoTrapezoidNew(TString xname,Double_t thick,Double_t wz,
 
 double wx(double z){
   
-  double wx1 = 1000 * mm;
-  double wx2 = 4200 * mm;
+  double wx1 = 920 * mm;
+  double wx2 = 4120 * mm;
   double z1 = 0 * m;
   double z2 = 50 * m;
 
@@ -194,8 +194,8 @@ double wx(double z){
 
 double wy(double z){
   
-  double wy1 = 2700 * mm;
-  double wy2 = 6200 * mm;
+  double wy1 = 2620 * mm;
+  double wy2 = 6120 * mm;
   double z1 = 0 * m;
   double z2 = 50 * m;
 
@@ -826,7 +826,7 @@ TGeoVolume* veto::MakeSegments(Double_t dz,Double_t dx_start,Double_t dy_start,D
 
       double wallThick = 20 * mm;  // wall thickness
       double liscThick= 200*mm;
-      double ribThick = 10*mm;
+      double ribThick = 15 * mm;
 
       double Zshift=-dz + wz/2;//calibration of Z position
       double shiftPlot=0;//calibration of Z position

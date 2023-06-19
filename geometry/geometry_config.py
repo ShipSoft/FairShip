@@ -132,10 +132,10 @@ with ConfigRegistry.register_config("basic") as c:
       c.Veto.outerSupport = 8.*u.mm
       c.Veto.outerSupportMed = "Aluminum"
       c.Veto.lidThickness = 80.*u.mm
-     c.Veto.sensitiveThickness = 0.3*u.m
+     c.Veto.sensitiveThickness = 0.2 * u.m
      c.Veto.sensitiveMed = "Scintillator"
      c.Veto.decayMed = "vacuums"
-     c.Veto.rib = 3.*u.cm
+     c.Veto.rib = 1.5 * u.cm
      c.Veto.ribMed = "steel"
      # horizontal width at start and focus point, for conical/rectangular size
      # envelope (46,1.2) or (46,0.9) end at T4: (100.,2.5)  London slides, https://indico.cern.ch/event/508465/contributions/2166894/    
