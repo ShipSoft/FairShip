@@ -93,7 +93,11 @@ veto::veto(const char* name, Bool_t active)
     supportMedIn_name("steel"),        // for vacuum option
     supportMedOut_name("Aluminum"),    // for vacuum option
     f_RibThickness(1.5 * cm),
-    decayVolumeMed_name("vacuums")    // for vacuum option
+    decayVolumeMed_name("vacuums"),    // for vacuum option
+    VetoStartInnerX(920. * mm),
+    VetoStartInnerY(2620. * mm),
+    VetoEndInnerX(4120. * mm),
+    VetoEndInnerY(6120. * mm)
 {
   fUseSupport=1;
   fPlasticVeto=0;
@@ -1126,7 +1130,9 @@ void veto::ConstructGeometry()
       Double_t dy  = slopey*(zpos - zFocusY);
    // make the entrance window
       //entrance lid
-      TGeoVolume* T1Lid = MakeLidSegments(1,dx1,dy);
+      double wallThick = 20 * mm;  // wall thickness
+      TGeoVolume* T1Lid = MakeLidSegments(1, VetoStartInnerX / 2. + wallThick, VetoStartInnerY / 2. + wallThick);
+
       tDecayVol->AddNode(T1Lid, 1, new TGeoTranslation(0, 0, zpos - zStartDecayVol+f_LidThickness/2.1));
 
       //without segment1, recalculate the z and (half)length of segment 2:
