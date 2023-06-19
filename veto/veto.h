@@ -148,6 +148,11 @@ class veto: public FairDetector
     Float_t zFocusX,zFocusY; // focus points for conical design
     Float_t floorHeightA,floorHeightB; // height of floor
 
+    Float_t VetoStartInnerX;
+    Float_t VetoStartInnerY;
+    Float_t VetoEndInnerX;
+    Float_t VetoEndInnerY;
+
     Int_t fUseSupport;
     Int_t fPlasticVeto;
     Int_t fLiquidVeto;
