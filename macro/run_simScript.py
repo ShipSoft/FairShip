@@ -630,6 +630,8 @@ if simEngine == "MuonBack":
  if not fin: fin   = ROOT.TFile.Open(outFile)
  t     = fin.cbmsim
  fout  = ROOT.TFile(tmpFile,'recreate')
+ fSink = ROOT.FairRootFileSink(fout)
+
  sTree = t.CloneTree(0)
  nEvents = 0
  pointContainers = []
@@ -644,7 +646,27 @@ if simEngine == "MuonBack":
      if not empty:
         rc = sTree.Fill()
         nEvents+=1
+
+ branches = ROOT.TList()
+ branches.SetName('BranchList')
+ branches.Add(ROOT.TObjString('MCTrack'))
+ branches.Add(ROOT.TObjString('vetoPoint'))
+ branches.Add(ROOT.TObjString('ShipRpcPoint'))
+ branches.Add(ROOT.TObjString('TargetPoint'))
+ branches.Add(ROOT.TObjString('TTPoint'))
+ branches.Add(ROOT.TObjString('ScoringPoint'))
+ branches.Add(ROOT.TObjString('strawtubesPoint'))
+ branches.Add(ROOT.TObjString('EcalPoint'))
+ branches.Add(ROOT.TObjString('sEcalPointLite'))
+ branches.Add(ROOT.TObjString('smuonPoint'))
+ branches.Add(ROOT.TObjString('TimeDetPoint'))
+ branches.Add(ROOT.TObjString('MCEventHeader'))
+ branches.Add(ROOT.TObjString('sGeoTracks'))
+
  sTree.AutoSave()
+ fSink.WriteObject(branches, "BranchList", ROOT.TObject.kSingleKey)
+ fSink.SetOutTree(sTree)
+
  fout.Close()
  print("removed empty events, left with:", nEvents)
  rc1 = os.system("rm  "+outFile)
