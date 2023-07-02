@@ -771,7 +771,7 @@ void NuTauMudet::ConstructGeometry()
       //code by Daniele from ADVSND air core magnet
       Double_t  fOutMagX = fXtot;
       Double_t  fOutMagY = fYtot;
-      Double_t  fMagZ = fZtot;
+      Double_t  fMagZ = fZtot-0.5*2;
 
       Double_t fInMagX = fXRpc;
       Double_t fInMagY = fYRpc;
@@ -807,8 +807,8 @@ void NuTauMudet::ConstructGeometry()
 
       // Positioning
       volMuFilter->AddNode(volFeYoke, 0);
-      volMuFilter->AddNode(volCoil, 0, new TGeoTranslation(0, (fInMagY+fCoilH)/2., 0));
-      volMuFilter->AddNode(volCoil, 1, new TGeoTranslation(0, -(fInMagY+fCoilH)/2., 0));
+      volMuFilter->AddNode(volCoil, 0, new TGeoTranslation(0, (fInMagY+fCoilH)/2.-0.001, 0));
+      volMuFilter->AddNode(volCoil, 1, new TGeoTranslation(0, -(fInMagY+fCoilH)/2.+0.001, 0));
       volMuFilter->AddNode(volMagRegion, 0, 0);
 
       volMagRegion->SetField(magcheckfield);
