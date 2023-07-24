@@ -789,11 +789,13 @@ with ConfigRegistry.register_config("basic") as c:
     c.NuTauTarget.WallZDim = c.NuTauTarget.BrZ
 
     if (c.NuTauTT.design==4):
-        c.NuTauTT.n_hor_planes = 1
-        c.NuTauTT.n_vert_planes = 1 #simplified
+        c.NuTauTT.n_hor_planes = 4
+        c.NuTauTT.n_vert_planes = 4 #now same number, walls are squared
         c.NuTauTT.scifimat_width = 13.06 * u.cm # old value 13.045
-        c.NuTauTT.scifimat_hor = c.NuTauTarget.WallXDim #13.045 * 7 + endpieces = length of hor. mats
-        c.NuTauTT.scifimat_vert = c.NuTauTarget.WallYDim #13.045 * 11 + endpieces = length of vert. mats
+        #c.NuTauTT.scifimat_hor = 42.08 #13.045 * 3 + endpieces (~2.9cm from previous geom) = length of hor. mats
+        #c.NuTauTT.scifimat_vert = 42.08 #13.045 * 3 + endpieces (~2.9cm from previous geom) = length of vert. mats
+        c.NuTauTT.scifimat_hor = 55.14 #13.045 * 3 + endpieces (~2.9cm from previous geom) = length of hor. mats
+        c.NuTauTT.scifimat_vert = 55.14 #13.045 * 3 + endpieces (~2.9cm from previous geom) = length of vert. mats
         c.NuTauTT.scifimat_z = 0.145 * u.cm   # Scintillating fiber mat
         c.NuTauTT.support_z = 1.355 * u.cm     # More space for support (total TTZ 5 cm)
         c.NuTauTT.honeycomb_z = 2 * u.cm      # Airex (or Nomex)
