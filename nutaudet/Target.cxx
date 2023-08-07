@@ -516,7 +516,7 @@ void Target::ConstructGeometry()
       volCell->AddNode(volBrick,1,new TGeoTranslation(0,0,-CellWidth/2 + BrickZ/2));
       volCell->AddNode(volCES,1,new TGeoTranslation(0,0,-CellWidth/2 + BrickZ + CESWidth/2));
 
-      TGeoBBox *Row = new TGeoBBox("row",XDimension/2, BrickY/2, CellWidth/2);
+      TGeoBBox *Row = new TGeoBBox("row",WallXDim/2, BrickY/2, CellWidth/2);
       TGeoVolume *volRow = new TGeoVolume("Row",Row,air);
       volRow->SetLineColor(20);
     
@@ -527,7 +527,7 @@ void Target::ConstructGeometry()
 	  d_cl_x += BrickX;
 	}
 
-      TGeoBBox *Wall = new TGeoBBox("wall",XDimension/2, YDimension/2, CellWidth/2);
+      TGeoBBox *Wall = new TGeoBBox("wall",WallXDim/2, WallYDim/2, CellWidth/2);
       TGeoVolume *volWall = new TGeoVolume("Wall",Wall,air);
     
       Double_t d_cl_y = -WallYDim/2;
@@ -565,7 +565,7 @@ void Target::ConstructGeometry()
     
       tTauNuDet->AddNode(volTarget,1,new TGeoTranslation(0,0,fCenterZ));
 	
-      TGeoBBox *Row = new TGeoBBox("row",XDimension/2, BrickY/2, CellWidth/2);
+      TGeoBBox *Row = new TGeoBBox("row",WallXDim/2, BrickY/2, WallZDim/2);
       TGeoVolume *volRow = new TGeoVolume("Row",Row,air);
       volRow->SetLineColor(20);
     
@@ -575,7 +575,7 @@ void Target::ConstructGeometry()
 	  volRow->AddNode(volBrick,j,new TGeoTranslation(d_cl_x+BrickX/2, 0, 0));
 	  d_cl_x += BrickX;
 	}
-      TGeoBBox *Wall = new TGeoBBox("wall",XDimension/2, YDimension/2, BrickZ/2);
+      TGeoBBox *Wall = new TGeoBBox("wall",WallXDim/2, WallYDim/2, WallZDim/2);
       TGeoVolume *volWall = new TGeoVolume("Wall",Wall,air);
       volWall->SetLineColor(kGreen);
     
