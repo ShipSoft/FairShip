@@ -52,14 +52,16 @@ even if you already know Git, as it explains how development is done on GitHub.
     ```bash
     ls /cvmfs/ship.cern.ch
     ```
-3. Source the setUp script
+3. Source the `setUp.sh` script from the CVMFS release you want to use.
     ```bash
     source /cvmfs/ship.cern.ch/SHiP-2022/May/setUp.sh
     ```
+    Info about different releases can be found in a [dedicated repository](https://github.com/ShipSoft/cvmfs_release).
+    Please report issues with particular releases or the setup script there.
 
 4. Build the software using aliBuild
     ```bash
-    aliBuild build FairShip --always-prefer-system --config-dir $SHIPDIST
+    aliBuild build FairShip --always-prefer-system --config-dir $SHIPDIST --defaults release
     ```
     If you are not building `master`, you will need to select the appropriate default (see [Branches](#branches)).
 
