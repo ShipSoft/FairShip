@@ -56,7 +56,6 @@ def create_csv_field_map(options):
 
 if __name__ == '__main__':
     parser = ArgumentParser()
-    group = parser.add_mutually_exclusive_group()
 
     parser.add_argument("--muShieldDesign", dest="ds", required=True, type=int)
     parser.add_argument("--stepMuonShield", dest="muShieldStepGeo", help="activate steps geometry for the muon shield",
