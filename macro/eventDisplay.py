@@ -16,13 +16,6 @@ from decorators import *
 import shipRoot_conf,shipDet_conf
 shipRoot_conf.configure()
 
-def evExit():
- if ROOT.gROOT.FindObject('Root Canvas EnergyLoss'):
-  print("make suicide before framework makes seg fault") 
-  os.kill(os.getpid(),9)
-# apperantly problem disappeared in more recent root versions
-if float(ROOT.gROOT.GetVersion().split('/')[0])>6.07: atexit.register(evExit)
-
 fMan = None
 fRun = None
 pdg  = ROOT.TDatabasePDG.Instance()
