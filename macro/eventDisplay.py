@@ -16,12 +16,15 @@ from decorators import *
 import shipRoot_conf,shipDet_conf
 shipRoot_conf.configure()
 
+
 def evExit():
- if ROOT.gROOT.FindObject('Root Canvas EnergyLoss'):
-  print("make suicide before framework makes seg fault") 
-  os.kill(os.getpid(),9)
-# apperantly problem disappeared in more recent root versions
-if float(ROOT.gROOT.GetVersion().split('/')[0])>6.07: atexit.register(evExit)
+    """Prevent double delete due to a FairRoot bug."""
+    # Check whether the Eve window was closed/destructed
+    if ROOT.addressof(ROOT.gEve) == 0:
+        # Prevent the FairEventManager destructor from being called
+        ROOT.SetOwnership(fMan, False)
+
+atexit.register(evExit)
 
 fMan = None
 fRun = None
