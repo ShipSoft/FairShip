@@ -22,3 +22,5 @@ it in future.
 ### Changed
 
 ### Removed
+
+* Removed obsolete files related to old ways of installing or testing FairShip
