@@ -14,7 +14,7 @@ it in future.
 
 ### Added
 
-* Add pre-commit config: This will be phased in to improve code quality and spot issues as early as possible.
+* Add pre-commit config: This will be phased in to improve code quality and spot issues as early as possible. Status visible in README and CI enabled for new pull requests.
 * Add CHANGELOG.md
 
 ### Fixed

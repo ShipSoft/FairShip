@@ -1,5 +1,7 @@
 # FairShip
 
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/ShipSoft/FairShip/master.svg)](https://results.pre-commit.ci/latest/github/ShipSoft/FairShip/master)
+
 <!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc-refresh-toc -->
 **Table of Contents**
 
@@ -28,7 +30,7 @@ FairRoot. The dependencies of FairShip are tracked and installed using
       All python code is <b>required to be python 3</b>. Python 2 is no longer supported.
       Requires aliBuild default <code>release</code>.</dd>
   <dt><code>SHiP-2018</code></dt>
-  <dd>Frozen branch for the CDS, kept for backward compatibility. 
+  <dd>Frozen branch for the CDS, kept for backward compatibility.
       Python 2 only.
       Requires aliBuild default <code>fairship-2018</code>.</dd>
   <dt><code>muflux</code></dt>
@@ -142,18 +144,18 @@ desirable.
     git clone https://github.com/ShipSoft/FairShip.git
     cd FairShip
     docker build -t fairship .
-    ``` 
+    ```
 2. Run the `FairShip` docker image:
     ```bash
     docker run -i -t --rm fairship /bin/bash
-    ``` 
+    ```
 3. Advanced docker run options:
     ```bash
     docker run -i -t --rm \
     -e DISPLAY=unix$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix \
     -v /local_workdir:/image_workdir \
     fairship /bin/bash
-    ``` 
+    ```
     The option `-e DISPLAY=unix$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix` forwards graphics from the docker to your local system (similar to `ssh -X`). The option `-v /local_workdir:/image_workdir` mounts `/local_workdir` on the local system as `/image_workdir` within docker.
 
 ## Contributing Code
