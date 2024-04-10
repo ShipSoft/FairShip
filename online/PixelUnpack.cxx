@@ -89,4 +89,3 @@ void PixelUnpack::Reset()
    fRawData->Clear();
    fNHits = 0;
 }
-

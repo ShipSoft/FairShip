@@ -136,4 +136,3 @@ void RPCUnpack::Reset()
    fRawData->Clear();
    fNHits = 0;
 }
-

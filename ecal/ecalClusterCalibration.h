@@ -19,14 +19,14 @@ public:
   ecalClusterCalibration(const char* name, Int_t iVerbose=0);
   /** Destructor **/
   virtual ~ecalClusterCalibration();
-  /** Initialization of the task **/  
+  /** Initialization of the task **/
   virtual InitStatus Init();
   ecalClusterCalibration* InitPython() {return this;}
-  /** Executed task **/ 
+  /** Executed task **/
   virtual void Exec(Option_t* option);
-  /** Finish task **/ 
+  /** Finish task **/
   virtual void Finish();
- 
+
   void SetStraightCalibration(Int_t celltype, TFormula* f)
     {fStraightCalibration[celltype]=f;}
   void SetCalibration(Int_t celltype, TFormula* f)

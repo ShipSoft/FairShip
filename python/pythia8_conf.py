@@ -17,8 +17,8 @@ def configurerpvsusy(P8gen, mass, couplings, sfermionmass, benchmark, inclusive,
         P8gen = MethodLogger(P8gen, sink=pythia_log)
     h = make_interpolators(
         os.path.expandvars("$FAIRSHIP/shipgen/branchingratiosrpvsusybench{}.dat".format(benchmark)))
-    P8gen.UseRandom3() 
-    P8gen.SetMom(400)  # beam momentum in GeV 
+    P8gen.UseRandom3()
+    P8gen.SetMom(400)  # beam momentum in GeV
     if deepCopy: P8gen.UseDeepCopy()
     pdg = ROOT.TDatabasePDG.Instance()
     # let strange particle decay in Geant4
@@ -49,7 +49,7 @@ def configurerpvsusy(P8gen, mass, couplings, sfermionmass, benchmark, inclusive,
         # 12 14 16 neutrinos replace with N2
         charmhistograms = ['d_mu','ds_mu']
         # no tau decay here to consider
-        totaltauBR      = 0.0 
+        totaltauBR      = 0.0
         maxsumBR        = getmaxsumbrrpvsusy(h,charmhistograms,mass,couplings)
         exit_if_zero_br(maxsumBR, inclusive, mass, particle='RPV neutralino')
         totalBR         = gettotalbrrpvsusy(h,charmhistograms,mass,couplings)
@@ -142,10 +142,10 @@ def configure(P8gen, mass, production_couplings, decay_couplings, process_select
         pythia_log=open('pythia8_conf.txt','w')
         P8gen = MethodLogger(P8gen, sink=pythia_log)
 
-    fairship_root = os.environ['FAIRSHIP'] 
+    fairship_root = os.environ['FAIRSHIP']
     histograms = make_interpolators(fairship_root + '/shipgen/branchingratios.dat')
     P8gen.UseRandom3() # TRandom1 or TRandom3 ?
-    P8gen.SetMom(400)  # beam momentum in GeV 
+    P8gen.SetMom(400)  # beam momentum in GeV
     if deepCopy: P8gen.UseDeepCopy()
     pdg = ROOT.TDatabasePDG.Instance()
     P8gen.SetParameters("Next:numberCount    =  0")

@@ -30,7 +30,7 @@ print("end IGNOREIGNOREIGNOREIGNOREIGNOREIGNOREIGNOREIGNOREIGNORE")
 def yBeam(Mproton = 0.938272081, pbeam = 400.):
     Ebeam   = ROOT.TMath.Sqrt(pbeam**2+Mproton**2)
     betaCM  = pbeam / (Ebeam + Mproton)
-    y_beam  = 0.5*ROOT.TMath.Log( (1+betaCM)/(1-betaCM))   # https://arxiv.org/pdf/1604.02651.pdf 
+    y_beam  = 0.5*ROOT.TMath.Log( (1+betaCM)/(1-betaCM))   # https://arxiv.org/pdf/1604.02651.pdf
     return y_beam
 
 generators = {'p':ROOT.Pythia8.Pythia(),'n':ROOT.Pythia8.Pythia()}
@@ -112,7 +112,7 @@ for n in range(int(options.NPoT)):
           if py.event[d0].id() < 0:
               nlep      = py.event[d0]
               nantilep  = py.event[d1]
-          else: 
+          else:
               nlep      = py.event[d1]
               nantilep  = py.event[d0]
           P1pl = nlep.e()+nlep.pz()
@@ -199,7 +199,7 @@ def na50(online=True):
       fraction = h['M'].Integral(Mmin,Mmax)/options.NPoT
    # taking polarization into account.
       print("cross section a la NA50, -0.5<cosCS<0.5: %5.2F pb"%(fraction*sigma*1E9))
-   
+
 def muflux():
    Z_Mo = 96.
    P_Mo = 42

@@ -1,10 +1,10 @@
 #ifndef SPLITCALCLUSTER_H
 #define SPLITCALCLUSTER_H 1
 
-#include "TObject.h"              //  
+#include "TObject.h"              //
 
 #include "splitcalHit.h"
-#include <vector> 
+#include <vector>
 //#include <boost/python.hpp>
 
 // ROOT headers
@@ -65,7 +65,7 @@ class splitcalCluster : public TObject
 
     regression LinearRegression(std::vector<double >& x, std::vector<double >& y);
     void ComputeEtaPhiE();
-    
+
     // temporary for test
     double GetSlopeZX() {return _mZX;}
     double GetInterceptZX() {return _qZX;}
@@ -88,7 +88,7 @@ class splitcalCluster : public TObject
     double _mZY, _qZY;
 
     ClassDef(splitcalCluster,1);
-    
+
 };
 
 #endif

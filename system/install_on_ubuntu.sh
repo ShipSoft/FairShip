@@ -1,12 +1,12 @@
 # installation on blank Ubuntu 18.04 LTS:
 # FROM ubuntu:18.04
-sudo apt-get update 
+sudo apt-get update
 sudo apt-get install python3-dev python3-pip python3-tk make patch sed git-all gedit environment-modules \
    libx11-dev libxpm-dev libxext-dev ncurses-dev libxml2-dev libxft-dev \
    libxmu-dev  ncurses-dev  curl bzip2  libbz2-dev gzip unzip tar gfortran libkrb5-dev \
     wget automake autoconf libtool bison  flex byacc libgif-dev libjpeg-dev libtiff5-dev\
    libexpat1-dev libcurl4-openssl-dev libssl-dev libbz2-dev libbz2-dev libglu1-mesa libglu1-mesa-dev\
-   autopoint texinfo gettext libtool libtool-bin pkg-config python-tk cmake linuxbrew-wrapper 
+   autopoint texinfo gettext libtool libtool-bin pkg-config python-tk cmake linuxbrew-wrapper
 
 sudo pip3 install --upgrade pip
 sudo pip3 install matplotlib numpy scipy certifi ipython ipywidgets ipykernel notebook metakernel pyyaml sklearn future
@@ -25,6 +25,6 @@ Useful way to setup python3 as default, instead of the now unused python2:
 
 sudo apt-get install python-is-python3
 
-linuxbrew-wrapper is not present anymore. 
+linuxbrew-wrapper is not present anymore.
 
 metakernel requires pexpect, which appears to be incompatible with the ubuntu 20 version

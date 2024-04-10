@@ -35,7 +35,7 @@ def GetGoodAndBadRuns(startDate,endDate):
  N=0
  for r in runs:
    tmp = r.split(' ')
-   if len(tmp) != 9: 
+   if len(tmp) != 9:
       print("wrong format",tmp)
       continue
    date = tmp[5].split('-')
@@ -57,7 +57,7 @@ def GetGoodAndBadRuns(startDate,endDate):
       tmpF = False
       f = globalPath+str(theRun)+"/"+x+"/"+fileName
       if fnames+"tmp" in test2:
-        tmpF = True 
+        tmpF = True
         f = f+"tmp"
       elif fnames in test2:
         f = f
@@ -66,7 +66,7 @@ def GetGoodAndBadRuns(startDate,endDate):
         continue
       try:
          t = ROOT.TFile.Open(os.environ["EOSSHIP"]+f)
-         if not t: 
+         if not t:
            badRuns.append(theRun)
            continue
          if N%1000 == 0: print(N,t.GetName())
@@ -91,12 +91,12 @@ def addRuns(goodRuns,Nstart=0):
     cmd += " $EOSSHIP"+goodRuns[i]
   tmpFile = "pythia8_Geant4_"+ecut+"_c"+str(N+Nstart)+".root"
   rc = os.system("hadd -j 10 -O "+tmpFile + " " +cmd)
-  if rc != 0: 
+  if rc != 0:
     print("hadd failed, stop",N)
     return
   rc = os.system("xrdcp "+tmpFile+" $EOSSHIP/eos/experiment/ship/data/Mbias/background-prod-2018/"+tmpFile)
-  if rc != 0: 
-    print("copy to EOS failed, stop",N,N+Nstart) 
+  if rc != 0:
+    print("copy to EOS failed, stop",N,N+Nstart)
   else:
     rc = os.system("rm "+tmpFile)
   N+=1000
@@ -116,9 +116,9 @@ def YandexProd():
  #endDate   = datetime.datetime(2018, 2, 2, 0, 0)
  #startDate = datetime.datetime(2018, 1, 1,  0, 0) #  start with 1 GeV production
  #endDate   = datetime.datetime(2018, 2, 27, 0, 0) # N=0
- #startDate = datetime.datetime(2018, 2, 27,  0, 0) #   
+ #startDate = datetime.datetime(2018, 2, 27,  0, 0) #
  #endDate   = datetime.datetime(2018, 3, 6, 0, 0) # N=3000
- #startDate = datetime.datetime(2018, 3, 6,  0, 0) #   
+ #startDate = datetime.datetime(2018, 3, 6,  0, 0) #
  #endDate   = datetime.datetime(2018, 3, 12, 0, 0) # N=9000
  goodRuns,badRuns = GetGoodAndBadRuns(startDate,endDate)
  pName = 'goodAndBadRuns'+prod+'_'+startDate.__str__().split(' ')[0]+'_'+endDate.__str__().split(' ')[0]+'.pkl'
@@ -147,7 +147,7 @@ def addAllHistograms():
  for x in h.keys():
    if h[x].GetName().find('proj')>0: rc = h.pop(x)
  ut.writeHists(h,"pythia8_Geant4_"+ecut+"_c"+str(Nmax)+"-histos.root")
- 
+
 def compactifyCascade(cycle):
  ncpus = 20
  path = "/afs/cern.ch/project/lbcern/vol1/truf/charm/"
@@ -162,7 +162,7 @@ def compactifyCascade(cycle):
     if not l.find('Macro finished succesfully')<0: success = True
    if not success:
      print("job not finished properly",fName)
-     continue  
+     continue
    cmd += fName +" "
    f.close()
    Ntot+= NperJob
@@ -173,8 +173,8 @@ def compactifyCascade(cycle):
   outFile = "Cascade-run"+str(cycle)+"-"+str(cycle+ncpus-1)+"-parp16-MSTP82-1-MSEL4-"+stat+".root"
   rc = os.system("hadd -O "+outFile + " " +cmd)
   rc = os.system("xrdcp "+outFile+" $EOSSHIP/eos/experiment/ship/data/Mbias/background-prod-2018/"+outFile)
-  if rc != 0: 
-    print("copy to EOS failed, stop",outFile) 
+  if rc != 0:
+    print("copy to EOS failed, stop",outFile)
   else:
     rc = os.system("rm "+outFile)
 
@@ -196,21 +196,21 @@ def compactify(charm):
      for k in range(20):
        sr = "{0:0>2}".format(k)
        if not x.find(nr+sr)<0:
-         if not x.find('log')<0: continue 
+         if not x.find('log')<0: continue
          fn = 'pythia8_Geant4_'+nr+sr+'_'+ecut+'.root'
          aFile = globalPath+"/charm/"+x+'/'+fn
-         if os.path.exists(aFile): 
+         if os.path.exists(aFile):
           try:
            t = ROOT.TFile.Open(aFile)
            if not t:
             badFiles.append(d)
             continue
-           if t.ReadKeys()==0: 
+           if t.ReadKeys()==0:
             badFiles.append(d)
             continue
            if t.FindObjectAny('cbmsim'):
             subruns.append(aFile)
-          except: 
+          except:
            badFiles.append(aFile)
            continue
    ldir = ' '
@@ -236,16 +236,16 @@ def compactify(charm):
      if os.path.exists(ftmp):f=ftmp+' '
      try:
        t = ROOT.TFile.Open(f)
-       if not t: 
+       if not t:
         badFiles.append(d)
         continue
-       if t.ReadKeys()==0: 
+       if t.ReadKeys()==0:
         badFiles.append(d)
         continue
        if t.FindObjectAny('cbmsim'):
          ldir+=f
      except:
-       badFiles.append(d) 
+       badFiles.append(d)
        continue
    os.system('hadd '+output+' '+ldir)
    makeHistos(output)
@@ -309,7 +309,7 @@ def makePrintout():
  for i in range( 1,hbiased['pids'].GetNbinsX() + 1 ):
    c = hbiased['pids'].GetBinContent(i)
    if c>0: p[int(hbiased['pids'].GetBinCenter(i))]=c
- 
+
  sorted_p = sorted(p.items(), key=operator.itemgetter(1))
  for p in sorted_p:
   print("%25s : %5.2G"%(pdg.GetParticle(p[0]).GetName(),float(p[1])))
@@ -326,12 +326,12 @@ def makePrintout():
   else:
    print("%40s : %5.2G "%(p[0],float(p[1])))
 
-if len(sys.argv)>1: 
+if len(sys.argv)>1:
  runMin=sys.argv[1]
  runMax=sys.argv[2]
  if len(sys.argv)>3: charm=sys.argv[3]
  compactify(charm)
-else:  
+else:
 # production without boost factor
 #runMin = 1000000
 #runMax = 1000600
@@ -356,7 +356,7 @@ else:
 # chicc=1.7e-3;     //prob to produce primary ccbar pair/pot
 # 20*2000000 are equal to 23.5E9
 # for beauty
-# chibb=1.6e-7; 
+# chibb=1.6e-7;
 
 # something went wrong Yandex2018Prod-23000.root onwards up to 43000, only have of yield, 44000 ok !!!
 def removeStupidFiles():
@@ -376,17 +376,14 @@ def check4DoubleRuns():
   dn = pickle.load(fn)
   Nruns += len(dn['goodruns'])
  print("Total number of runs:",Nruns)
- 
+
  for n in range( len(allRuns)-1 ):
   fn = open(allRuns[n])
   dn = pickle.load(fn)
   for m in range( n+1, len(allRuns)  ):
    fm = open(allRuns[m])
    dm = pickle.load(fm)
-   for rn in dn['goodruns']: 
-    for rm in dm['goodruns']: 
-     if rn == rm : 
+   for rn in dn['goodruns']:
+    for rm in dm['goodruns']:
+     if rn == rm :
        print("double entry found",rn,allRuns[n],allRuns[m])
-
-
-

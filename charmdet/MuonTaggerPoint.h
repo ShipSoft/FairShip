@@ -26,7 +26,7 @@ class MuonTaggerPoint : public FairMCPoint
      *@param eLoss    Energy deposit [GeV]
      **/
 
-    
+
     MuonTaggerPoint(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom,
 		Double_t tof, Double_t length, Double_t eLoss, Int_t pdgCode);
 
@@ -35,7 +35,7 @@ class MuonTaggerPoint : public FairMCPoint
 
     /** Output to screen **/
     virtual void Print(const Option_t* opt) const;
-    
+
 
     Int_t PdgCode() const {return fPdgCode;}
 
@@ -43,9 +43,9 @@ class MuonTaggerPoint : public FairMCPoint
 
 
     Int_t fPdgCode;
-    
+
     /** Copy constructor **/
-    
+
     MuonTaggerPoint(const MuonTaggerPoint& point);
     MuonTaggerPoint operator=(const MuonTaggerPoint& point);
 

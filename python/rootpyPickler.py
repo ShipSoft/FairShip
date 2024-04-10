@@ -2,7 +2,7 @@
 # distributed under the terms of the GNU General Public License
 # Original author: Scott Snyder scott.snyder(a)cern.ch, 2004.
 
-# copied and modified by T.Ruf for the standalone use in FAIRSHIP 
+# copied and modified by T.Ruf for the standalone use in FAIRSHIP
 """Pickle python data into a ROOT file, preserving references to ROOT objects.
 
 This module allows pickling python objects into a ROOT file. The python
@@ -304,7 +304,7 @@ class Unpickler(pickle.Unpickler):
             try:
                 ## Employ very nasty hack to get around error during
                 ## unpicklying of files.
-                ## `copy_reg` and `__builtin__` comes from PY2, 
+                ## `copy_reg` and `__builtin__` comes from PY2,
                 ## for some reason that I don't understand, they are now
                 ## in the files we try to unpickle
                 if sys.version_info[0] >2:

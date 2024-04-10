@@ -24,4 +24,3 @@ protected:
 };
 
 #endif //GOLIATH_H
-

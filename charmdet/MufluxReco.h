@@ -1,6 +1,6 @@
 #ifndef MUFLUXRECO_H
 #define MUFLUXRECO_H 1
-#include "TChain.h" 
+#include "TChain.h"
 #include "MufluxSpectrometerHit.h"
 #include "MufluxSpectrometerPoint.h"
 #include "ScintillatorHit.h"

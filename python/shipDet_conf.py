@@ -12,23 +12,23 @@ def getParameter(x,ship_geo,latestShipGeo):
   lv = x.split('.')
   last = lv[len(lv)-1]
   top = ''
-  for l in range(len(lv)-1): 
+  for l in range(len(lv)-1):
     top += lv[l]
-    if l<len(lv)-2: top +='.' 
+    if l<len(lv)-2: top +='.'
   a = getattr(ship_geo,top)
   if hasattr(a,last): return getattr(a,last)
 # not in the list of recorded parameteres. probably added after
 # creation of file. Check newest geometry_config:
   a = getattr(latestShipGeo,top)
   return getattr(a,last)
-    
-def posHcal(z,hfile,HcalOption): 
+
+def posHcal(z,hfile,HcalOption):
  HcalZSize = 0
  sz = hfile+"z"+str(z)+".geo"
  floc = os.environ["FAIRSHIP"]+"/geometry"
  f_hcal  = floc+"/"+hfile
  f_hcalz = floc+"/"+sz
- f = open(f_hcal) 
+ f = open(f_hcal)
  rewrite = True
  if sz in os.listdir(floc):
   test = os.popen("diff "+ f_hcal+ " "+ f_hcalz).read()
@@ -40,7 +40,7 @@ def posHcal(z,hfile,HcalOption):
       l ="ZPos="+str(z)+ "	#Position of Hcal  center	[cm]\n"
     fn.write(l)
    if not l.find("HcalZSize")<0:
-     HcalZSize = float(l[len('HcalZSize')+1:].split('#')[0]) 
+     HcalZSize = float(l[len('HcalZSize')+1:].split('#')[0])
  f.close()
  if rewrite: fn.close()
  if HcalOption==2: hcal = ROOT.hcal("Hcal", ROOT.kFALSE, sz)
@@ -52,7 +52,7 @@ def makeEcalGeoFile(z,efile):
  floc = os.environ["FAIRSHIP"]+"/geometry"
  f_ecal  = floc+"/"+efile
  f_ecalz = floc+"/"+sz
- f = open(f_ecal) 
+ f = open(f_ecal)
  rewrite = True
  if sz in os.listdir(floc):
   test = os.popen("diff "+ f_ecal+ " "+ f_ecalz).read()
@@ -64,9 +64,9 @@ def makeEcalGeoFile(z,efile):
       l ="ZPos="+str(z)+ "	#Position of Ecal start		[cm]\n"
     fn.write(l)
    if not l.find("EcalZSize")<0:
-     EcalZSize = float(l[len('EcalZSize')+1:].split('#')[0]) 
+     EcalZSize = float(l[len('EcalZSize')+1:].split('#')[0])
  f.close()
- if rewrite: fn.close()  
+ if rewrite: fn.close()
  return EcalZSize,sz
 def posEcal(z,efile):
  EcalZSize,sz = makeEcalGeoFile(z,efile)
@@ -79,19 +79,19 @@ def configure(run,ship_geo):
  if not hasattr(ship_geo,"muShieldGeo"): ship_geo.muShieldGeo = None
  if not hasattr(ship_geo.hcal,"File"):  ship_geo.hcal.File = "hcal.geo"
  if not hasattr(ship_geo.Bfield,'x') :  ship_geo.Bfield.x   = 3.*u.m
- if not hasattr(ship_geo,'cave') :       
+ if not hasattr(ship_geo,'cave') :
    ship_geo.cave = AttrDict(z=0*u.cm)
    ship_geo.cave.floorHeightMuonShield = 5*u.m
    ship_geo.cave.floorHeightTankA   = 4.5*u.m
    ship_geo.cave.floorHeightTankB   = 2.*u.m
  if not hasattr(ship_geo,'NuTauTT') : ship_geo.NuTauTT= AttrDict(z=0*u.cm)
  if not hasattr(ship_geo.NuTauTT,'design') : ship_geo.NuTauTT.design = 0
- if not hasattr(ship_geo,'EcalOption'):     ship_geo.EcalOption = 1      
+ if not hasattr(ship_geo,'EcalOption'):     ship_geo.EcalOption = 1
  latestShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py",Yheight = ship_geo.Yheight/u.m, tankDesign = ship_geo.tankDesign, muShieldDesign = ship_geo.muShieldDesign, nuTauTargetDesign = ship_geo.nuTauTargetDesign, muShieldGeo = ship_geo.muShieldGeo, SC_mag=ship_geo.SC_mag, scName=ship_geo.scName)
 # -----Create media-------------------------------------------------
  run.SetMaterials("media.geo")  # Materials
 # ------------------------------------------------------------------------
-  
+
 # -----Create geometry----------------------------------------------
  cave= ROOT.ShipCave("CAVE")
  if ship_geo.tankDesign < 5: cave.SetGeometryFileName("cave.geo")
@@ -104,7 +104,7 @@ def configure(run,ship_geo):
  else:
   TargetStation = ROOT.ShipTargetStation("TargetStation",ship_geo.target.length,ship_geo.hadronAbsorber.length,
                                                         ship_geo.target.z,ship_geo.hadronAbsorber.z,ship_geo.targetOpt,ship_geo.target.sl)
-   
+
  if ship_geo.targetOpt>10:
   slices_length   = ROOT.std.vector('float')()
   slices_material = ROOT.std.vector('std::string')()
@@ -150,23 +150,23 @@ def configure(run,ship_geo):
   if ship_geo.tankDesign == 5: magnet_design = 3
   if ship_geo.tankDesign == 6: magnet_design = 4
   ship_geo.magnetDesign = magnet_design
-  ship_geo.Bfield.YokeWidth = 200.*u.cm 
+  ship_geo.Bfield.YokeWidth = 200.*u.cm
   ship_geo.Bfield.YokeDepth = 200.*u.cm
   ship_geo.Bfield.CoilThick = 25.*u.cm
 # sanity check, 2018 layout ship_geo.tankDesign == 6 has to be together with ship_geo.nuTauTargetDesign == 3
  if (ship_geo.tankDesign == 6 and ship_geo.nuTauTargetDesign < 3) or (ship_geo.tankDesign != 6 and ship_geo.nuTauTargetDesign == 3):
-   print("version of tankDesign and nuTauTargetDesign are not compatible, should be 6 and 3, it is ",ship_geo.tankDesign, ship_geo.nuTauTargetDesign) 
+   print("version of tankDesign and nuTauTargetDesign are not compatible, should be 6 and 3, it is ",ship_geo.tankDesign, ship_geo.nuTauTargetDesign)
    exit()
- if ship_geo.strawDesign > 1 : 
+ if ship_geo.strawDesign > 1 :
   if ship_geo.magnetDesign>3:
    B = ship_geo.Bfield
    magnet = ROOT.ShipMagnet("Magnet","SHiP Magnet",B.z, ship_geo.magnetDesign, B.x, B.y, ship_geo.cave.floorHeightTankB, B.YokeWidth, B.YokeDepth, B.CoilThick)
-#                                                               xaperture,  yaperture 
-  else: 
+#                                                               xaperture,  yaperture
+  else:
    magnet = ROOT.ShipMagnet("Magnet","SHiP Magnet",ship_geo.Bfield.z, ship_geo.magnetDesign, ship_geo.Bfield.x, ship_geo.Bfield.y, ship_geo.cave.floorHeightTankB)
  else: magnet = ROOT.ShipMagnet("Magnet","SHiP Magnet",ship_geo.Bfield.z)
  detectorList.append(magnet)
-  
+
  Veto = ROOT.veto("Veto", ROOT.kTRUE)   # vacuum tank
  Veto.SetLiquidVeto(1)  # liquid scintillator
  Veto.SetPlasticVeto(1) # plastic scintillator
@@ -178,10 +178,10 @@ def configure(run,ship_geo):
                     ship_geo.chambers.Tub6length)
  Veto.SetB(ship_geo.Yheight/2.)
  Veto.SetFloorHeight(ship_geo.cave.floorHeightTankA,ship_geo.cave.floorHeightTankB)
- if ship_geo.tankDesign > 4: 
-    dzX = ship_geo.zFocusX+ship_geo.target.z0    
+ if ship_geo.tankDesign > 4:
+    dzX = ship_geo.zFocusX+ship_geo.target.z0
     x1  = ship_geo.xMax/(ship_geo.Chamber1.z -ship_geo.chambers.Tub1length-dzX)*(ship_geo.TrackStation4.z-dzX)
-    dzY = ship_geo.zFocusY+ship_geo.target.z0    
+    dzY = ship_geo.zFocusY+ship_geo.target.z0
     y1  = ship_geo.Yheight/(ship_geo.Chamber1.z -ship_geo.chambers.Tub1length-dzY)*(ship_geo.TrackStation4.z-dzY)
     Veto.SetXYstart(x1,dzX,y1,dzY)
     Veto.SetVesselStructure(ship_geo.Veto.innerSupport,ship_geo.Veto.sensitiveThickness,ship_geo.Veto.outerSupport,\
@@ -220,7 +220,7 @@ def configure(run,ship_geo):
      taumuondetector.SetRpcOuterDimensions(ship_geo.tauMudet.XRpc_outer, ship_geo.tauMudet.YRpc_outer, ship_geo.tauMudet.ZRpc_outer)
      taumuondetector.SetRpcInnerDimensions(ship_geo.tauMudet.XRpc_inner, ship_geo.tauMudet.YRpc_inner, ship_geo.tauMudet.ZRpc_inner)
      taumuondetector.SetRpcGapDimensions(ship_geo.tauMudet.XRpcGap, ship_geo.tauMudet.YRpcGap, ship_geo.tauMudet.ZRpcGap)
-     taumuondetector.SetPillarDimensions(ship_geo.tauMudet.PillarX,ship_geo.tauMudet.PillarY, ship_geo.tauMudet.PillarZ)   
+     taumuondetector.SetPillarDimensions(ship_geo.tauMudet.PillarX,ship_geo.tauMudet.PillarY, ship_geo.tauMudet.PillarZ)
     if ship_geo.nuTauTargetDesign==3:
      if hasattr(ship_geo.tauMudet, "deltax"): #now replaced with veto taggers
       taumuondetector.SetRpcDimDifferences(ship_geo.tauMudet.deltax, ship_geo.tauMudet.deltay)
@@ -250,7 +250,7 @@ def configure(run,ship_geo):
     if ship_geo.nuTauTargetDesign==0 or ship_geo.nuTauTargetDesign==1:
       EmuMagnet.SetCoilParameters(ship_geo.EmuMagnet.Radius, ship_geo.EmuMagnet.Height1, ship_geo.EmuMagnet.Height2, ship_geo.EmuMagnet.Distance)
     if ship_geo.nuTauTargetDesign==3:
-      EmuMagnet.SetCoilParameters(ship_geo.EmuMagnet.CoilX,ship_geo.EmuMagnet.CoilY,ship_geo.EmuMagnet.Height1, ship_geo.EmuMagnet.Height2, ship_geo.EmuMagnet.Thickness) 
+      EmuMagnet.SetCoilParameters(ship_geo.EmuMagnet.CoilX,ship_geo.EmuMagnet.CoilY,ship_geo.EmuMagnet.Height1, ship_geo.EmuMagnet.Height2, ship_geo.EmuMagnet.Thickness)
       EmuMagnet.SetCutDimensions(ship_geo.EmuMagnet.CutLength, ship_geo.EmuMagnet.CutHeight)
     EmuMagnet.SetMagnetColumn(ship_geo.EmuMagnet.ColX, ship_geo.EmuMagnet.ColY, ship_geo.EmuMagnet.ColZ)
     EmuMagnet.SetBaseDim(ship_geo.EmuMagnet.BaseX, ship_geo.EmuMagnet.BaseY, ship_geo.EmuMagnet.BaseZ)
@@ -269,7 +269,7 @@ def configure(run,ship_geo):
    if ship_geo.nuTauTargetDesign==3:
     NuTauTarget.SetCenterZ(ship_geo.EmuMagnet.zC) #now the centers of emumagnet and nutautarget are different (target does not include HPT)
     NuTauTarget.SetNumberTargets(ship_geo.NuTauTarget.target)
-    NuTauTarget.SetHpTParam(ship_geo.tauHPT.nHPT, ship_geo.tauHPT.distHPT, ship_geo.tauHPT.DZ) 
+    NuTauTarget.SetHpTParam(ship_geo.tauHPT.nHPT, ship_geo.tauHPT.distHPT, ship_geo.tauHPT.DZ)
    NuTauTarget.SetNumberBricks(ship_geo.NuTauTarget.col,ship_geo.NuTauTarget.row,ship_geo.NuTauTarget.wall)
    NuTauTarget.SetDetectorDimension(ship_geo.NuTauTarget.xdim, ship_geo.NuTauTarget.ydim, ship_geo.NuTauTarget.zdim)
    if hasattr(ship_geo.NuTauTarget,"WallXDim") and hasattr(ship_geo.NuTauTarget,"WallYDim") and hasattr(ship_geo.NuTauTarget,"WallZDim"):
@@ -293,8 +293,8 @@ def configure(run,ship_geo):
    if (ship_geo.nuTauTargetDesign==2 or ship_geo.nuTauTargetDesign==4):
     NuTauTarget.SetPillarDimension(ship_geo.NuTauTarget.PillarX,ship_geo.NuTauTarget.PillarY,ship_geo.NuTauTarget.PillarZ)
     NuTauTarget.SetBaseDimension(ship_geo.NuTauTarget.BaseX, ship_geo.NuTauTarget.BaseY, ship_geo.NuTauTarget.BaseZ)
-    
-# Target Tracker 
+
+# Target Tracker
    NuTauTT = ROOT.TargetTracker("TargetTrackers", ship_geo.NuTauTT.TTX, ship_geo.NuTauTT.TTY, ship_geo.NuTauTT.TTZ, ROOT.kTRUE)
    NuTauTT.SetDesign(ship_geo.NuTauTT.design)
    if hasattr(ship_geo.NuTauTT, "scifimat_width"):#for backward compatibility
@@ -344,7 +344,7 @@ def configure(run,ship_geo):
    ship_geo.strawtubes.FrameLateralWidth = 1.*u.cm
    ship_geo.strawtubes.FrameMaterial = "aluminium"
 
-  Strawtubes = ROOT.strawtubes("Strawtubes", ROOT.kTRUE)    
+  Strawtubes = ROOT.strawtubes("Strawtubes", ROOT.kTRUE)
   Strawtubes.SetZpositions(ship_geo.vetoStation.z, ship_geo.TrackStation1.z, ship_geo.TrackStation2.z, ship_geo.TrackStation3.z, ship_geo.TrackStation4.z)
   Strawtubes.SetDeltazFrame(ship_geo.strawtubes.DeltazFrame)
   Strawtubes.SetFrameLateralWidth(ship_geo.strawtubes.FrameLateralWidth)
@@ -361,24 +361,24 @@ def configure(run,ship_geo):
   Strawtubes.SetVacBox_x(ship_geo.strawtubes.VacBox_x)
   Strawtubes.SetVacBox_y(ship_geo.strawtubes.VacBox_y)
   Strawtubes.SetStrawLength(ship_geo.strawtubes.StrawLength)
- 
+
   if hasattr(ship_geo.strawtubes,"StrawLengthVeto"):
-   Strawtubes.SetStrawLengthVeto(ship_geo.strawtubes.StrawLengthVeto) 
+   Strawtubes.SetStrawLengthVeto(ship_geo.strawtubes.StrawLengthVeto)
    Strawtubes.SetStrawLength12(ship_geo.strawtubes.StrawLength12)
-   Strawtubes.SetVetoYDim(ship_geo.strawtubes.vetoydim)  
+   Strawtubes.SetVetoYDim(ship_geo.strawtubes.vetoydim)
    Strawtubes.SetTr12YDim(ship_geo.strawtubes.tr12ydim)
-   Strawtubes.SetTr34YDim(ship_geo.strawtubes.tr34ydim)    
+   Strawtubes.SetTr34YDim(ship_geo.strawtubes.tr34ydim)
   else:
-   Strawtubes.SetStrawLengthVeto(ship_geo.strawtubes.StrawLength) 
+   Strawtubes.SetStrawLengthVeto(ship_geo.strawtubes.StrawLength)
    Strawtubes.SetStrawLength12(ship_geo.strawtubes.StrawLength)
-   Strawtubes.SetVetoYDim(ship_geo.Yheight/2.)  
+   Strawtubes.SetVetoYDim(ship_geo.Yheight/2.)
    Strawtubes.SetTr12YDim(ship_geo.Yheight/2.)
-   Strawtubes.SetTr34YDim(ship_geo.Yheight/2.)    
+   Strawtubes.SetTr34YDim(ship_geo.Yheight/2.)
   # for the digitizing step
   Strawtubes.SetStrawResolution(getParameter("strawtubes.v_drift",ship_geo,latestShipGeo),getParameter("strawtubes.sigma_spatial",ship_geo,latestShipGeo) )
   detectorList.append(Strawtubes)
 
- if ship_geo.EcalOption == 1:  # shashlik design TP 
+ if ship_geo.EcalOption == 1:  # shashlik design TP
   if ship_geo.preshowerOption > 0 :
    Preshower = ROOT.preshower("Preshower", ROOT.kTRUE)
    Preshower.SetZStationPosition2(ship_geo.PreshowerStation0.z,ship_geo.PreshowerStation1.z)
@@ -394,7 +394,7 @@ def configure(run,ship_geo):
 
  if ship_geo.EcalOption == 2:  # splitCal with pointing information
   SplitCal = ROOT.splitcal("SplitCal", ROOT.kTRUE)
-  x = ship_geo.SplitCal 
+  x = ship_geo.SplitCal
   SplitCal.SetThickness(x.ActiveECALThickness,x.ActiveHCALThickness,x.FilterECALThickness,x.FilterECALThickness_first,x.FilterHCALThickness,x.ActiveECAL_gas_Thickness)
   SplitCal.SetMaterial(x.ActiveECALMaterial,x.ActiveHCALMaterial,x.FilterECALMaterial ,x.FilterHCALMaterial)
   SplitCal.SetNSamplings(x.nECALSamplings,x.nHCALSamplings,x.ActiveHCAL)
@@ -471,8 +471,8 @@ def configure(run,ship_geo):
 
 #-----   Magnetic field   -------------------------------------------
  if not hasattr(ship_geo.Bfield,"fieldMap"):
-  if ship_geo.strawDesign == 4 or ship_geo.strawDesign == 10 : fMagField = ROOT.ShipBellField("wilfried", ship_geo.Bfield.max ,ship_geo.Bfield.z,2,ship_geo.Yheight/2.*u.m )  
-  else :                                                      fMagField = ROOT.ShipBellField("wilfried", ship_geo.Bfield.max ,ship_geo.Bfield.z,1,ship_geo.Yheight/2.*u.m )  
+  if ship_geo.strawDesign == 4 or ship_geo.strawDesign == 10 : fMagField = ROOT.ShipBellField("wilfried", ship_geo.Bfield.max ,ship_geo.Bfield.z,2,ship_geo.Yheight/2.*u.m )
+  else :                                                      fMagField = ROOT.ShipBellField("wilfried", ship_geo.Bfield.max ,ship_geo.Bfield.z,1,ship_geo.Yheight/2.*u.m )
   run.SetField(fMagField)
 #
  exclusionList = []

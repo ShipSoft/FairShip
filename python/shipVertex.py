@@ -17,7 +17,7 @@ class Task:
   self.fPartArray  = ROOT.TClonesArray("ShipParticle")
   if not self.sTree.GetBranch("Particles"):
    self.Particles   = self.sTree.Branch("Particles",  self.fPartArray,32000,-1)
-  else: 
+  else:
    self.Particles = self.sTree.Particles
   self.reps,self.states,self.newPosDir = {},{},{}
   self.LV={1:ROOT.TLorentzVector(),2:ROOT.TLorentzVector()}
@@ -28,7 +28,7 @@ class Task:
   #ut.bookHist(self.h,'Vzpull','Vz pull',100,-3.,3.)
   #ut.bookHist(self.h,'Vxpull','Vx pull',100,-3.,3.)
   #ut.bookHist(self.h,'Vypull','Vy pull',100,-3.,3.)
-  
+
   #ut.bookHist(self.h,'dVx','vertex X residual;X^{RECO}-X^{MC}, cm',400,-10.,10.)
   #ut.bookHist(self.h,'dVy','vertex Y residual;Y^{RECO}-Y^{MC}, cm',400,-10.,10.)
   #ut.bookHist(self.h,'dVz','vertex Z residual;Z^{RECO}-Z^{MC}, cm',500,-50.,50.)
@@ -43,7 +43,7 @@ class Task:
 
   #ut.bookHist(self.h,'N_raveVtx','Number of RAVE vtx',5,-0.5,4.5)
   #ut.bookHist(self.h,'N_Vtx','Number of vtx',5,-0.5,4.5)
-  
+
  def execute(self):
   # make particles persistent
   self.TwoTrackVertex()
@@ -51,8 +51,8 @@ class Task:
  #define global data and functions for vertex fit with TMinuit
  y_data = np.array([0.,0.,0.,0.,0.,0.,0.,0.,0.,0.])
  z0 = 0
- Vy = np.zeros(100)    
- def chi2(self,res,Vy):       
+ Vy = np.zeros(100)
+ def chi2(self,res,Vy):
   s=0
   for i in range(100):
     s+=Vy[i]*res[i//10]*res[i%10]
@@ -60,13 +60,13 @@ class Task:
  def residuals(self,y_data,a,z0):
   res = np.zeros(10)
   res[0] = abs(y_data[0]) - a[5]
-  res[1] = y_data[1] - a[3] 
-  res[2] = y_data[2] - a[4] 
+  res[1] = y_data[1] - a[3]
+  res[2] = y_data[2] - a[4]
   res[3] = y_data[3] - a[0] - a[3]*(a[2] - z0)
   res[4] = y_data[4] - a[1] - a[4]*(a[2] - z0)
-  res[5] = abs(y_data[5]) - a[8] 
-  res[6] = y_data[6] - a[6] 
-  res[7] = y_data[7] - a[7] 
+  res[5] = abs(y_data[5]) - a[8]
+  res[6] = y_data[6] - a[6]
+  res[7] = y_data[7] - a[7]
   res[8] = y_data[8] - a[0] - a[6]*(a[2] - z0)
   res[9] = y_data[9] - a[1] - a[7]*(a[2] - z0)
   return res
@@ -74,7 +74,7 @@ class Task:
   res = self.residuals(self.y_data,par,self.z0)
   f = self.chi2(res,self.Vy)
   return
- 
+
  def TwoTrackVertex(self):
   self.fPartArray.Delete()
   fittedTracks = getattr(self.sTree,self.fitTrackLoc)
@@ -88,35 +88,35 @@ class Task:
    pid   = xx.getPDG()
    if not global_variables.pidProton and abs(pid) == 2212:
      pid = int(math.copysign(211,pid))
-   rep   = ROOT.genfit.RKTrackRep(xx.getPDG())  
+   rep   = ROOT.genfit.RKTrackRep(xx.getPDG())
    state = ROOT.genfit.StateOnPlane(rep)
    rep.setPosMom(state,xx.getPos(),xx.getMom())
    PosDirCharge[tr] = {'position':xx.getPos(),'direction':xx.getDir(),\
                           'momentum':xx.getMom(),'charge':xx.getCharge(),'pdgCode':pid,'state':xx,'rep':rep,'newstate':state}
-   CovMat[tr] = xx.get6DCov() 
+   CovMat[tr] = xx.get6DCov()
 #
   if len(PosDirCharge) < 2: return
   if len(PosDirCharge) > 4: return # abort too busy events
   for t1 in PosDirCharge:
-   c1  = PosDirCharge[t1]['charge'] 
+   c1  = PosDirCharge[t1]['charge']
    for t2 in PosDirCharge:
      if not t2>t1: continue
-     # ignore this for background studies 
+     # ignore this for background studies
      if PosDirCharge[t2]['charge'] == c1 : continue
      newPos,doca    = self.VertexError(t1,t2,PosDirCharge)
 # as we have learned, need iterative procedure
      dz = 99999.
-     rc = True 
+     rc = True
      step = 0
      while dz > 0.01:
       zBefore = newPos[2]
      # make a new rep for track 1,2
-      for tr in [t1,t2]:     
+      for tr in [t1,t2]:
        try:
         PosDirCharge[tr]['rep'].extrapolateToPoint(PosDirCharge[tr]['newstate'], newPos, False)
        except:
         ut.reportError('shipVertex: extrapolation did not work')
-        rc = False  
+        rc = False
         break
        self.newPosDir[tr] = {'position':PosDirCharge[tr]['rep'].getPos(PosDirCharge[tr]['newstate']),\
                              'direction':PosDirCharge[tr]['rep'].getDir(PosDirCharge[tr]['newstate']),\
@@ -125,13 +125,13 @@ class Task:
       newPos,doca = self.VertexError(t1,t2,self.newPosDir)
       dz = abs(zBefore-newPos[2])
       step+=1
-      if step > 10:  
+      if step > 10:
          ut.reportError("shipVertex: abort iteration, too many steps")
          if global_variables.debug:
           print('abort iteration, too many steps, pos=',newPos[0],newPos[1],newPos[2],' doca=',doca,'z before and dz',zBefore,dz)
          rc = False
-         break 
-#       
+         break
+#
      if not rc: continue # extrapolation failed, makes no sense to continue
 # now go for the last step and vertex error
      scalFac[t1] = (PosDirCharge[t1]['position'][2]-newPos[2])/PosDirCharge[t1]['direction'][2]/PosDirCharge[t1]['momentum'].Mag()
@@ -153,10 +153,10 @@ class Task:
       #self.h['dVx'].Fill( (mctrack.GetStartX()-HNLPos[0]) )
       #self.h['dVy'].Fill( (mctrack.GetStartY()-HNLPos[1]) )
       #self.h['dVz'].Fill( (mctrack.GetStartZ()-HNLPos[2]) )
-      
-     
+
+
      #print "*********************************** vertex fit precise   ******************************************** "
-     
+
      detPlane = ROOT.genfit.DetPlane(ROOT.TVector3(0,0,HNLPos[2]),ROOT.TVector3(1,0,0),ROOT.TVector3(0,1,0))
      plane = ROOT.genfit.RKTrackRep().makePlane(ROOT.TVector3(0,0,HNLPos[2]),ROOT.TVector3(1,0,0),ROOT.TVector3(0,1,0))
      st1  = fittedTracks[t1].getFittedState()
@@ -182,7 +182,7 @@ class Task:
          if i>4 and j>4: cov[i][j]=cov2[i-5][j-5]
      covInv = ROOT.TMatrixDSym()
      ROOT.genfit.tools.invertMatrix(cov,covInv)
-     
+
      self.y_data = np.array([0.,0.,0.,0.,0.,0.,0.,0.,0.,0.])
      stVal1 = st1.getState()
      stVal2 = st2.getState()
@@ -193,7 +193,7 @@ class Task:
      self.Vy = np.zeros(100)
      for i in range(100):
        self.Vy[i] = covInv[i//10][i%10]
-     
+
      f=np.array([0.])
      gMinuit = ROOT.TMinuit(9)
      tempFcn = self.fcn
@@ -260,18 +260,18 @@ class Task:
      xFitErr = errors[0]
      yFitErr = errors[1]
      zFitErr = errors[2]
-     
-     #fixme: mass from track reconstraction needed 
+
+     #fixme: mass from track reconstraction needed
      m1 = self.PDG.GetParticle(PosDirCharge[t1]['pdgCode']).Mass()
      m2 = self.PDG.GetParticle(PosDirCharge[t2]['pdgCode']).Mass()
-     
+
      #self.h['VxpullFit'].Fill( (mctrack.GetStartX()-xFit)/xFitErr )
      #self.h['VypullFit'].Fill( (mctrack.GetStartY()-yFit)/yFitErr )
      #self.h['VzpullFit'].Fill( (mctrack.GetStartZ()-zFit)/zFitErr )
      #self.h['dVxFit'].Fill( (mctrack.GetStartX()-xFit) )
      #self.h['dVyFit'].Fill( (mctrack.GetStartY()-yFit) )
      #self.h['dVzFit'].Fill( (mctrack.GetStartZ()-zFit) )
-     
+
      def getP(fitValues,cov,m1,m2):
        a3=fitValues[3]
        a4=fitValues[4]
@@ -303,37 +303,37 @@ class Task:
        M_AtoP[0][3] = (1.-a6*a6/A8)/(a8*ROOT.TMath.Sqrt(A8))
        M_AtoP[0][4] = (-a6*a7/A8)/(a8*ROOT.TMath.Sqrt(A8))
        M_AtoP[0][5] = (-a6)/(a8*a8*ROOT.TMath.Sqrt(A8))
-       
+
        M_AtoP[1][0] = (-a3*a4/A5)/(a5*ROOT.TMath.Sqrt(A5))
        M_AtoP[1][1] = (1.-a4*a4/A5)/(a5*ROOT.TMath.Sqrt(A5))
        M_AtoP[1][2] = (-a4)/(a5*a5*ROOT.TMath.Sqrt(A5))
        M_AtoP[1][3] = (-a6*a7/A8)/(a8*ROOT.TMath.Sqrt(A8))
        M_AtoP[1][4] = (1.-a7*a7/A8)/(a8*ROOT.TMath.Sqrt(A8))
        M_AtoP[1][5] = (-a7)/(a8*a8*ROOT.TMath.Sqrt(A8))
-       
+
        M_AtoP[2][0] = (-a3/A5)/(a5*ROOT.TMath.Sqrt(A5))
        M_AtoP[2][1] = (-a4/A5)/(a5*ROOT.TMath.Sqrt(A5))
        M_AtoP[2][2] = (-1.)/(a5*a5*ROOT.TMath.Sqrt(A5))
        M_AtoP[2][3] = (-a6/A8)/(a8*ROOT.TMath.Sqrt(A8))
        M_AtoP[2][4] = (-a7/A8)/(a8*ROOT.TMath.Sqrt(A8))
        M_AtoP[2][5] = (-1.)/(a8*a8*ROOT.TMath.Sqrt(A8))
-       
+
        a5a8 = a5*a8*ROOT.TMath.Sqrt(A5)*ROOT.TMath.Sqrt(A8)
-       
+
        M_AtoP[3][0] = (-2*a6/a5a8 + 2*a3*E2/(a5*a5*A5*E1))/MM
        M_AtoP[3][1] = (-2*a7/a5a8 + 2*a4*E2/(a5*a5*A5*E1))/MM
        M_AtoP[3][2] = (2*(1+a3*a6+a4*a7)/(a5*a5a8) - 2*(1.+a3*a3+a4*a4)*E2/(a5*a5*a5*A5*E1))/MM
        M_AtoP[3][3] = (-2*a3/a5a8 + 2*a6*E1/(a8*a8*A8*E2))/MM
        M_AtoP[3][4] = (-2*a4/a5a8 + 2*a7*E1/(a8*a8*A8*E2))/MM
        M_AtoP[3][5] = (2*(1+a3*a6+a4*a7)/(a8*a5a8) - 2*(1.+a6*a6+a7*a7)*E1/(a8*a8*a8*A8*E2))/MM
-       
+
        for i in range(4):
          for j in range(6):
            MT_AtoP[j][i] = M_AtoP[i][j]
-       
+
        for i in range(36):
          covA[i//6][i%6] = cov[i//6+3+(i%6+3)*9]
-       
+
        tmp   = ROOT.TMatrixD(4,6)
        tmp.Mult(M_AtoP,covA)
        covP  = ROOT.TMatrixD(4,4)
@@ -341,10 +341,10 @@ class Task:
        P = ROOT.TLorentzVector()
        P.SetXYZM(Px,Py,Pz,M)
        return P,covP
-      
+
      P,covP = getP(values,emat,m1,m2)
      #print "******************************************************************************* "
-     
+
      #create ship particle
      #notes:
      #P-TLorentzVector of fitted HNL prticle
@@ -353,7 +353,7 @@ class Task:
      #covV - comariance matrix of the vtx position
      covV = array('d',[emat[0],emat[1],emat[2],emat[1+9],emat[2+9],emat[2+2*9]])
      covP = array('d',[covP[0][0],covP[0][1],covP[0][2],covP[0][3],covP[1][1],covP[1][2],covP[1][3],covP[2][2],covP[2][3],covP[3][3]])
-          
+
 # try to make it persistent
      vx = ROOT.TLorentzVector(HNLPosFit,0)  # time at vertex still needs to be evaluated from time of tracks and time of flight
      particle = ROOT.ShipParticle(9900015,0,-1,-1,t1,t2,P,vx)
@@ -362,7 +362,7 @@ class Task:
      particle.SetDoca(doca)
      nParts   = particles.GetEntries()
      particles[nParts] = particle
-     
+
      #self.h['dMFit'].Fill( (1.-P.M()) )
      #self.h['MpullFit'].Fill( (1.-P.M())/ROOT.TMath.Sqrt(covP[3][3]) )
 
@@ -388,7 +388,7 @@ class Task:
    T = ROOT.TMatrixD(3,12)
    for i in range(3):
      for k in range(4):
-       for j in range(3): 
+       for j in range(3):
         KD = 0
         if i==j: KD = 1
         if k==0 or k==2:
@@ -408,18 +408,18 @@ class Task:
        # covv
          aNAZ = denom*( 2*ca.Dot(u)*v[j] - ca.Dot(v)*u[j] - ca[j]*UV )
          aZAN = ( ca.Dot(u)*Vsq-ca.Dot(v)*UV )*2*( v[j]*Usq-u[j]*UV )
-         bNAZ = denom*( ca.Dot(u)*u[j]-ca[j]*Usq ) 
+         bNAZ = denom*( ca.Dot(u)*u[j]-ca[j]*Usq )
          bZAN = ( ca.Dot(u)*UV-ca.Dot(v)*Usq )*2*( v[j]*Usq-u[j]*UV )
-         T[i][3*k+j] = 0.5*(Vb*KD + u[i]/denom**2*(aNAZ-aZAN) + v[i]/denom**2*(bNAZ-bZAN) ) 
+         T[i][3*k+j] = 0.5*(Vb*KD + u[i]/denom**2*(aNAZ-aZAN) + v[i]/denom**2*(bNAZ-bZAN) )
    transT = ROOT.TMatrixD(12,3)
    transT.Transpose(T)
    CovTracks = ROOT.TMatrixD(12,12)
    tlist = [t1,t2]
    for k in range(2):
      for i in range(6):
-       for j in range(6): 
+       for j in range(6):
         xfac = 1.
-        if i>2: xfac = scalFac[tlist[k]]  
+        if i>2: xfac = scalFac[tlist[k]]
         if j>2: xfac = xfac * scalFac[tlist[k]]
         CovTracks[i+k*6][j+k*6] = CovMat[tlist[k]][i][j] * xfac
         # if i==5 or j==5 :  CovMat[tlist[k]][i][j] = 0 # ignore error on z-direction

@@ -53,10 +53,10 @@ def ecalClusterPrintOut(cl):
   return txt
 def Dump(x):
   k=0
-  for obj in x: 
+  for obj in x:
     print(k,obj.__repr__())
-    k+=1 
-  
+    k+=1
+
 def TVector3PrintOut(x):
   txt = '%9.5F,%9.5F,%9.5F'%(x.X(),x.Y(),x.Z())
   return txt

@@ -162,7 +162,7 @@ void SciFi::ConstructGeometry()
   }
   TGeoVolumeAssembly *volSciFiBox = new TGeoVolumeAssembly("volSciFiBox");
   //positioning the mother volume
-  top->AddNode(volSciFiBox, 1, new TGeoTranslation(0,0,zBoxPosition)); 
+  top->AddNode(volSciFiBox, 1, new TGeoTranslation(0,0,zBoxPosition));
 
 
   TGeoBBox *SciFiy = new TGeoBBox("SciFiy", DimX/2, DimY/2, DimZ/2); //long along y
@@ -274,5 +274,3 @@ SciFiPoint* SciFi::AddHit(Int_t trackID, Int_t detID,
 
   return new(clref[size]) SciFiPoint(trackID, detID, pos, mom,time, length, eLoss, pdgCode);
 }
-
-

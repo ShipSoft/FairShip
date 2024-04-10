@@ -16,7 +16,7 @@ def ALPACAFormatting(s):
         s= s.replace('+','')
     return s
 
- 
+
 def Ctau(mres,gax):
     return c_light*hGeV*65.*math.pi/((float(gax)*float(gax))*(float(mres)*float(mres)*float(mres)))
 

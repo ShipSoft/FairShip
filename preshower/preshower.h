@@ -105,7 +105,7 @@ class preshower: public FairDetector
     Double_t     fF0z;               //!  z-position of veto station
     Double_t     fF1z;               //!  z-position of tracking station 1
     // Double_t     fF2z;               //!  z-position of tracking station 2
- 
+
     Double_t fFilterThickness0;
     Double_t fActiveThickness;
     Double_t fFilterThickness1;

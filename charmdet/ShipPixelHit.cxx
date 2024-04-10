@@ -60,7 +60,7 @@ void ShipPixelHit::GetPixelXYZ(TVector3 &pixel, int detID) { //, std::shared_ptr
     return;
   }
   // retrieving position of pixelbox mother volume
-  TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();  
+  TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
   double origin[3] = {0,0,0};
   double pixelboxcenter[3] = {0,0,0};
   double pixelmoduleorigin[3] = {0,0,0};
@@ -78,7 +78,7 @@ void ShipPixelHit::GetPixelXYZ(TVector3 &pixel, int detID) { //, std::shared_ptr
   origin[0] = origin[0] - pixelmodulebox->GetDX()/2.;
   origin[1] = origin[1] - pixelmodulebox->GetDY()/2.;
   pixelmodulenode->LocalToMaster(origin, pixelmoduleorigin);
-  
+
   TVector3 pixel_pos = (*ShipPixelHit::PixelPositionMap)[detID];
   //translations to pass from LOCAL coordinates system to GLOBAL FairShip coordinates
   pixel.SetX(pixel_pos.X()+ pixelboxcenter[0]);
@@ -218,4 +218,3 @@ void ShipPixelHit::Print()
 // -------------------------------------------------------------------------
 
 std::unordered_map<int, TVector3>* ShipPixelHit::PixelPositionMap = nullptr;
-

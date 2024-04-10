@@ -21,8 +21,8 @@ class ShipMuonShield : public FairModule
   public:
 
    ShipMuonShield(const char* name, const Int_t Design=1,  const char* Title="ShipMuonShield",
-                               Double_t Z=0, Double_t L0=0, Double_t L1=0, Double_t L2=0, Double_t L3=0, Double_t L4=0, Double_t L5=0, Double_t L6=0, 
-                               Double_t L7=0, Double_t L8=0,Double_t gap=0,Double_t LE=0,Double_t y=400, Double_t floor=500, Double_t field=1.7, 
+                               Double_t Z=0, Double_t L0=0, Double_t L1=0, Double_t L2=0, Double_t L3=0, Double_t L4=0, Double_t L5=0, Double_t L6=0,
+                               Double_t L7=0, Double_t L8=0,Double_t gap=0,Double_t LE=0,Double_t y=400, Double_t floor=500, Double_t field=1.7,
                                const Int_t withCoMagnet=0, const Bool_t StepGeo=false,
                                const Bool_t WithConstAbsorberField=true, const Bool_t WithConstShieldField=true);
 
@@ -35,13 +35,13 @@ class ShipMuonShield : public FairModule
    void ConstructGeometry();
    ClassDef(ShipMuonShield,4)
 
-  void SetSupports(Bool_t supports) { 
+  void SetSupports(Bool_t supports) {
     fSupport = supports;
     LOG(WARNING) <<"Setting supports to %s. This will not have any effect if called after the geometry has been constructed.", fSupport ? "true" : "false";
   }
-    
+
  protected:
-  
+
   Int_t  fDesign;       // design of muon shield, 1=passive, active = ...
   TString fGeofile;
   Double_t  fMuonShieldLength,fY,fField;
@@ -67,7 +67,7 @@ class ShipMuonShield : public FairModule
       std::array<Double_t, 16> corners, Int_t color,
       TGeoUniformMagField *magField, TGeoVolume *top,
       Double_t x_translation, Double_t y_translation,
-      Double_t z_translation, 
+      Double_t z_translation,
       Bool_t stepGeo);
 
   void CreateTube(TString tubeName, TGeoMedium *medium, Double_t dX,

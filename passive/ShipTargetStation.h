@@ -9,7 +9,7 @@
 class ShipTargetStation : public FairModule
 {
   public:
-    ShipTargetStation(const char* name,const Double_t tl,const Double_t al,const Double_t tz,const Double_t az, 
+    ShipTargetStation(const char* name,const Double_t tl,const Double_t al,const Double_t tz,const Double_t az,
                       const int nS, const Double_t sl, const char* Title="ShipTargetStation");
     ShipTargetStation(const char* name,const Double_t tl,const Double_t tz,
                       const int nS, const Double_t sl, const char* Title="ShipTargetStation");
@@ -17,13 +17,13 @@ class ShipTargetStation : public FairModule
     virtual ~ShipTargetStation();
     void ConstructGeometry();
     void SetLayerPosMat(Float_t d, std::vector<float> L, std::vector<std::string> M){
-     fDiameter = d;  
+     fDiameter = d;
      fL = L;
      fM = M;
      }
     ClassDef(ShipTargetStation,4)
  protected:
-  
+
   Double_t fTargetLength;       //
   Double_t fAbsorberLength;       //
   Double_t fAbsorberZ;       //

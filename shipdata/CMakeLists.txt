@@ -19,12 +19,12 @@ ${FAIRROOT_LIBRARY_DIR}
 ${CMAKE_SOURCE_DIR}/shipdata
 
 )
- 
+
 link_directories( ${LINK_DIRECTORIES})
 
 set(SRCS
-ShipHit.cxx 
-ShipStack.cxx 
+ShipHit.cxx
+ShipStack.cxx
 ShipMCTrack.cxx
 ShipParticle.cxx
 TrackInfo.cxx
@@ -36,4 +36,3 @@ Set(LIBRARY_NAME ShipData)
 Set(DEPENDENCIES Base EG Physics Core genfit)
 
 GENERATE_LIBRARY()
-

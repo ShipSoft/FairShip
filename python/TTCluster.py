@@ -15,7 +15,7 @@ from ShipGeoConfig import ConfigRegistry
 #####################################################
 
 # Position of SiPMs in the detector (left/right and up/down)
-sipm_hor_pos = +1 # at X = +len_vert / 2 
+sipm_hor_pos = +1 # at X = +len_vert / 2
 sipm_vert_pos = -1 # at Y = -len_hor /  2
 
 # If reversed is true the channels counted in reverse way
@@ -24,10 +24,10 @@ is_sipm_hor_reversed = True
 is_sipm_vert_reversed = True
 
 # SiPM geometry
-# hw - half width, pitch - one channel width, charr - array of 64 channels without gaps, 
-# edge - from left and right sides of the SiPM, gap - between two charr, 
-# array - 128 channels with the gap, biggap - gap between two arrays, 
-# ch_max_num - max channel in the SiPM (0-511), 
+# hw - half width, pitch - one channel width, charr - array of 64 channels without gaps,
+# edge - from left and right sides of the SiPM, gap - between two charr,
+# array - 128 channels with the gap, biggap - gap between two arrays,
+# ch_max_num - max channel in the SiPM (0-511),
 # n_solid_sipms - number of "charr" arrays
 
 hw = 13.06 / 2.
@@ -41,7 +41,7 @@ ch_max_num = 511
 n_solid_sipms = 8
 
 # SiPM geometry. If a point is in the solid part then the position will be counted.
-# Else false value returns. When 
+# Else false value returns. When
 sipm_map = (
 	(-hw, -hw+edge, False),
 	(-hw+edge, -hw+edge+charr, (-0.5, 63.5)),
@@ -64,27 +64,27 @@ sipm_map = (
 
 # If a point is in the dead space then the following channel value will be selected
 gaps_map = {
-	0.: -0.5, 
+	0.: -0.5,
 	1.: 63.5,
-	2.: 127.5, 
+	2.: 127.5,
 	3.: 191.5,
-	4.: 255.5, 
+	4.: 255.5,
 	5.: 319.5,
 	6.: 383.5,
-	7.: 447.5, 
+	7.: 447.5,
 	8.: 511.5
 }
 
 # Light yield attenuation A*exp(B*x) + C*exp(D*x)
-# Sigma depends on the distance from a SiPM the also. The following parameters 
+# Sigma depends on the distance from a SiPM the also. The following parameters
 ly_loss_params = 20.78, -0.26, 7.89, -3.06
 ly_loss_sigma_params = 6.8482, -0.5757, 3.4458
 cluster_width_mean_params = 0.6661, -0.006955, 2.163
 cluster_width_sigma_params = 1.103, -0.0005751
 
 # The random width in the range is manually set as 1% of events
-# It covers cases where the width is 5-10 
-random_width_persent = 0.01 
+# It covers cases where the width is 5-10
+random_width_persent = 0.01
 
 # Possible values of LY, channel position and cluser width
 ly_min = 4.5
@@ -98,32 +98,32 @@ cluster_width_max = 10
 # Energy more then 0.477 MeV converts randomly with approximation distribution.
 energy_range = 0.18, 0.477
 
-# The maximum value of the CDF integral 
+# The maximum value of the CDF integral
 CDF_integral = 0.0185640424
 
-# Parameters that are used for linear conversion of deposit energy to the range 
+# Parameters that are used for linear conversion of deposit energy to the range
 # equal to the light yield range
 ly_linear_params = 332.882, -58.7085
 
 # The coefficient between the maximums of CDF(E) and CDF(LY), a little differs
 k_cdfs_corr = 0.993076766938
 
-# The addition of a little randomness in the converting from the energy distibution to 
+# The addition of a little randomness in the converting from the energy distibution to
 # the light yield distibution
 sigma_in_percent = 0.01
 
 # 4 sigma range includes 95% of events. It needs for creating a cluster
 sigma_from_width = 1 / 4.
 
-# The following parameters will be used in the converting from the energy distibution to 
+# The following parameters will be used in the converting from the energy distibution to
 # the light yield distibution.
 # Dictionaries format is following - (x_min, x_max) : (parameters), approximating function.
 
-# ly_CDF_params - approximation of CDF of the light yield distribution. 
+# ly_CDF_params - approximation of CDF of the light yield distribution.
 # It is doesn't used already.
 ly_CDF_params = {
 	(4.5, 13): (
-		(-13.2, 1.976), 
+		(-13.2, 1.976),
 		lambda ly, *p: exp(p[0] + p[1]*sqrt(ly))
 	),
 	(13, 104): (
@@ -133,11 +133,11 @@ ly_CDF_params = {
 }
 
 
-# Get a CDF value from LY (actually from an energy deposit which preliminarily linearly 
+# Get a CDF value from LY (actually from an energy deposit which preliminarily linearly
 # converted to the range of the light yield (4.5 - 104 ph.e.)
 ly_CDF_landau_params = {
 	(4.5, 15): (
-		(0.001038, -0.000378, 3.53e-05), 
+		(0.001038, -0.000378, 3.53e-05),
 		lambda ly, *p: p[0] + p[1]*ly + p[2]*ly**2
 	),
 	(15, 40): (
@@ -153,7 +153,7 @@ ly_CDF_landau_params = {
 # Get a light yild value from a CDF values
 CDF_ly_params = {
 	(0., 0.0006): (
-		(89., 4.152, 0.0001574, -1.326e+04, 4.3), 
+		(89., 4.152, 0.0001574, -1.326e+04, 4.3),
 		lambda cdf, *p: p[0] * sqrt(p[1]*(cdf+p[2])) * (1-exp(p[3]*cdf)) + p[4]
 	),
 	(0.0006, 0.012): (
@@ -166,7 +166,7 @@ CDF_ly_params = {
 	),
 	(0.018561405, 0.0185640424): (
 		(9.36, 335.984, -18100, -400, 15),
-		lambda cdf, *p: (p[0] * log((p[1]-p[2]*0.018561405)/(p[1]+p[2]*0.018561405)) 
+		lambda cdf, *p: (p[0] * log((p[1]-p[2]*0.018561405)/(p[1]+p[2]*0.018561405))
 			+ p[3]*0.018561405 + p[4])
 	)
 }
@@ -178,20 +178,20 @@ CDF_ly_params = {
 design2018 = {'dy': 10.,'dv': 6,'ds': 9,'nud': 3,'caloDesign': 3,'strawDesign': 10}
 dy = design2018['dy']
 dv = design2018['dv']
-ds = design2018['ds'] 
-nud = design2018['nud'] 
-caloDesign = design2018['caloDesign'] 
+ds = design2018['ds']
+nud = design2018['nud']
+caloDesign = design2018['caloDesign']
 strawDesign = design2018['strawDesign']
 geofile = None
 
-ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight=dy, 
-	tankDesign=dv, muShieldDesign=ds, nuTauTargetDesign=nud, CaloDesign=caloDesign, 
+ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight=dy,
+	tankDesign=dv, muShieldDesign=ds, nuTauTargetDesign=nud, CaloDesign=caloDesign,
 	strawDesign=strawDesign, muShieldGeo=geofile)
 
 n_hor_planes = ship_geo.NuTauTT.n_hor_planes # 11
 n_vert_planes = ship_geo.NuTauTT.n_vert_planes # 7
 scifimat_hor = ship_geo.NuTauTT.scifimat_hor
-scifimat_vert = ship_geo.NuTauTT.scifimat_vert 
+scifimat_vert = ship_geo.NuTauTT.scifimat_vert
 scifimat_width = ship_geo.NuTauTT.scifimat_width # 13.06 cm
 scifimat_z = ship_geo.NuTauTT.scifimat_z # 0.145 cm
 n_tt_stations = ship_geo.NuTauTT.n # 19
@@ -202,9 +202,9 @@ n_tt_stations = ship_geo.NuTauTT.n # 19
 
 def cm_to_channel(locpos, sipm_map=sipm_map, gaps_map=gaps_map, pitch=pitch, charr=charr,
 				  reverse=False, ch_max_num=ch_max_num, n_solid_sipms=n_solid_sipms):
-	
+
 	"""
-	It converts a particle position (an event) measured in cm to a position measured 
+	It converts a particle position (an event) measured in cm to a position measured
 	in channels. The SiPM map is used. The position is in the scifi modul frame.
 	"""
 
@@ -228,7 +228,7 @@ def cm_to_channel(locpos, sipm_map=sipm_map, gaps_map=gaps_map, pitch=pitch, cha
 def channel_to_cm(channelpos, sipm_map=sipm_map, reverse=False, pitch=pitch):
 
 	"""
-	It converts a particle position measured channels to a position measured 
+	It converts a particle position measured channels to a position measured
 	in cm. The SiPM map is used. The position is in the scifi modul frame.
 	"""
 
@@ -261,7 +261,7 @@ def GetMatNum(DetID):
 
 	"""
 	It returns an id (number) of a scifi module. In current version one plane have 7 vertical
-	and 11 horisontal scifi assemblies. 
+	and 11 horisontal scifi assemblies.
 	"""
 
 	return int(DetID % 1000 % 100)
@@ -269,14 +269,14 @@ def GetMatNum(DetID):
 def GetMatLength(DetID):
 
 	"""
-	It returns a length of a scifi mat. The values 'scifimat_vert', 'scifimat_hor' are set 
+	It returns a length of a scifi mat. The values 'scifimat_vert', 'scifimat_hor' are set
 	in the FairShip geometry file.
 	"""
 
 	global scifimat_vert, scifimat_hor
 
 	if GetMatType(DetID) == 1:
-		return scifimat_vert 
+		return scifimat_vert
 	elif GetMatType(DetID) == 0:
 		return scifimat_hor
 
@@ -290,7 +290,7 @@ def GetMatQty(DetID):
 	global n_vert_planes, n_hor_planes
 
 	if GetMatType(DetID) == 1:
-		return n_vert_planes 
+		return n_vert_planes
 	elif GetMatType(DetID) == 0:
 		return n_hor_planes
 
@@ -341,7 +341,7 @@ def ly_attenuation(distance):
 	It return the light yield losses in percent depending on the distance to SiPMs
 	"""
 
-	res_ly_loss = ly_loss_mean(distance) / ly_loss_mean(0.) 
+	res_ly_loss = ly_loss_mean(distance) / ly_loss_mean(0.)
 	return res_ly_loss
 
 def cluster_width_mean(distance, params=cluster_width_mean_params):
@@ -362,11 +362,11 @@ def cluster_width_sigma(distance, params=cluster_width_sigma_params):
 	A, B = params
 	return A + B*distance
 
-def cluster_width_random(distance, ly, persent=random_width_persent, 
+def cluster_width_random(distance, ly, persent=random_width_persent,
 						 cluster_width_min=cluster_width_min, cluster_width_max=cluster_width_max):
-	
+
 	"""
-	It generates a cluster. The cluster have 'ly' photoelectrons. 
+	It generates a cluster. The cluster have 'ly' photoelectrons.
 	The cluster width depends on the distance to SiPM
 	"""
 
@@ -385,7 +385,7 @@ def cluster_width_random(distance, ly, persent=random_width_persent,
 def approx_function(var, approx_data):
 
 	"""
-	This universal function substitutes the parameters to the function. 
+	This universal function substitutes the parameters to the function.
 	The parameters and the function are in the dictionary
 	"""
 
@@ -394,21 +394,21 @@ def approx_function(var, approx_data):
 			return func(var, *params)
 	return False
 
-def edep_to_ly(energy, CDF_integral=CDF_integral, energy_range=energy_range, 
-	ly_linear_params=ly_linear_params, k_cdfs_corr=k_cdfs_corr, sigma_in_percent=sigma_in_percent, 
+def edep_to_ly(energy, CDF_integral=CDF_integral, energy_range=energy_range,
+	ly_linear_params=ly_linear_params, k_cdfs_corr=k_cdfs_corr, sigma_in_percent=sigma_in_percent,
 	ly_CDF_params=ly_CDF_params, CDF_ly_params=CDF_ly_params, ly_CDF_landau_params=ly_CDF_landau_params):
-	
+
 	"""
-	It returns the light yield calculated from the energy deposit. The calculations are based 
+	It returns the light yield calculated from the energy deposit. The calculations are based
 	on the equality of the cumulative distribution functions (CDF) :
 	energy => CDF(energy) => CDF(light yield) => ly
 
 	The linear converting range 0.18 MeV < dE < 0.477 MeV corresponds 4.5 < LY < 104 ph.e.
 
-	If energy more then 0.477 MeV the light yield calculated randomly (uniformly in the range) 
+	If energy more then 0.477 MeV the light yield calculated randomly (uniformly in the range)
 	according to the distribution
 
-	Also a little randomness is added to the CDF value with a normal distribution and 
+	Also a little randomness is added to the CDF value with a normal distribution and
 	standard deviation with 'sigma_in_percent' (in percent of the whole range 0 - max CDF)
 	"""
 
@@ -418,9 +418,9 @@ def edep_to_ly(energy, CDF_integral=CDF_integral, energy_range=energy_range,
 		ly_lin = A * energy + C
 		cdf_raw = approx_function(ly_lin, ly_CDF_landau_params) * k_cdfs_corr
 	elif e_max <= energy:
-		cdf_raw = CDF_integral * np.random.uniform(0., 1.0) 
+		cdf_raw = CDF_integral * np.random.uniform(0., 1.0)
 	else:
-		return 0.	 
+		return 0.
 	cdf_random = random.gauss(cdf_raw, sigma_in_percent * CDF_integral)
 
 	# Generate again while the CDF value is not in the range
@@ -429,19 +429,19 @@ def edep_to_ly(energy, CDF_integral=CDF_integral, energy_range=energy_range,
 
 	return approx_function(cdf_random, CDF_ly_params)
 
-def cluster_generator(amplitude, width, wmp, cluster_width_max=cluster_width_max, 
+def cluster_generator(amplitude, width, wmp, cluster_width_max=cluster_width_max,
 	chpos_min=chpos_min, chpos_max=chpos_max):
 
 	"""
-	It generates an event cluster with given weighted mean position in channels, width and 
-	amplitude. 
+	It generates an event cluster with given weighted mean position in channels, width and
+	amplitude.
 
-	If right side of the cluster can be out of range, the maximum of the right side will be 
+	If right side of the cluster can be out of range, the maximum of the right side will be
 	right channel.
 
-	At first an array [0, 0, 0, ... ] is generated which corresponds to the channels. 
-	Next the cluster generated in the array. 
-	Final array will be like [0, 0, ..., 1, 2, 5, 1, 0, ...], 
+	At first an array [0, 0, 0, ... ] is generated which corresponds to the channels.
+	Next the cluster generated in the array.
+	Final array will be like [0, 0, ..., 1, 2, 5, 1, 0, ...],
 	[0, 17, 0, ...] or etc.
 	"""
 
@@ -452,13 +452,13 @@ def cluster_generator(amplitude, width, wmp, cluster_width_max=cluster_width_max
 	cluster = [0 for _ in range(max_fired_ch)]
 	mean = wmp
 	if width == 1:
-		if wmp == chpos_min:	
+		if wmp == chpos_min:
 			fired_channel = 0
-		elif wmp == chpos_max: 
+		elif wmp == chpos_max:
 			fired_channel = int(chpos_max)
-		else: 
+		else:
 			fired_channel = int(wmp + 0.5)
-		cluster[fired_channel] += amplitude	
+		cluster[fired_channel] += amplitude
 	else:
 		sigma = width * sigma_from_width
 		for _ in range(amplitude):
@@ -482,7 +482,7 @@ def is_realistic(cluster, width):
 		return False
 	else:
 		return True
-	
+
 def create_cluster(amplitude, width, wmp):
 
 	"""
@@ -542,7 +542,7 @@ class TTCluster:
 		self.recovery_globalpos = 0
 		self.delta = -13
 		# The default values should be set
-		self.sipm_hor_pos = +1 # +1 at X = +len_vert / 2 
+		self.sipm_hor_pos = +1 # +1 at X = +len_vert / 2
 		self.sipm_vert_pos = +1 #-1 at Y = -len_hor /  2
 		self.is_sipm_hor_reversed = False # Channels and axis are co-directional or not
 		self.is_sipm_vert_reversed = False
@@ -602,15 +602,15 @@ class TTCluster:
 		self.recovery_globalpos = local_to_global(self.DetID, recovery_localpos)
 		self.delta = first_coord - self.recovery_globalpos
 
-		# Some edge events may be reconstructed incorrectly 
-		if abs(self.delta) > 1: 
+		# Some edge events may be reconstructed incorrectly
+		if abs(self.delta) > 1:
 			return False
 
 		if GetMatType(self.DetID) == 1: # vert
 			self.Xrec = self.recovery_globalpos
 		elif GetMatType(self.DetID) == 0: # hor
 			self.Yrec = self.recovery_globalpos
-		self.is_created = True	
+		self.is_created = True
 		return cluster
 
 	def GetXYZ(self):
@@ -639,7 +639,7 @@ if __name__ == '__main__':
 
 	for index, event in enumerate(tree):
 		for hit in event.TTPoint:
-			
+
 			pnt = TTCluster(hit.GetDetectorID(), hit.GetX(), hit.GetY(), hit.GetEnergyLoss())
 			pnt.SetLYRange(ly_min, ly_max)
 			pnt.SetSipmPosition(sipm_hor_pos, sipm_vert_pos)
@@ -662,7 +662,7 @@ if __name__ == '__main__':
 			tt_raw.append([
 				hit.GetTrackID(), # 0
 				hit.GetTime(), # 1 ; ns
-				hit.PdgCode(), # 2 
+				hit.PdgCode(), # 2
 				hit.GetEventID(), # 3
 				hit.GetDetectorID(), # 4
 				hit.GetX(), # 5 ; cm
@@ -678,7 +678,7 @@ if __name__ == '__main__':
 	tt_raw = np.array(tt_raw)
 	tt_points = np.array(tt_points)
 
-	# HPT 
+	# HPT
 	for index, event in enumerate(tree):
 		for hit in event.HptPoint:
 			pnt = TTCluster(hit.GetDetectorID(), hit.GetX(), hit.GetY(), hit.GetEnergyLoss())
@@ -700,7 +700,7 @@ if __name__ == '__main__':
 			hpt_raw.append([
 				hit.GetTrackID(), # 0
 				hit.GetTime(), # 1 ; ns
-				hit.PdgCode(), # 2 
+				hit.PdgCode(), # 2
 				hit.GetEventID(), # 3
 				hit.GetDetectorID(), # 4
 				hit.GetX(), # 5 ; cm
@@ -725,7 +725,7 @@ if __name__ == '__main__':
 
 	# ---- 3. SHOW THE DATA --------------------------
 	fig, axs = plt.subplots(2,2)
-	plt.subplot(2, 2, 1) 
+	plt.subplot(2, 2, 1)
 	axs = plt.gca()
 	ly_bins = np.linspace(4,104,100)
 	plt.hist(tt_points[:,4], bins=ly_bins, label="Light yield")
@@ -733,7 +733,7 @@ if __name__ == '__main__':
 	axs.set_ylabel("Events")
 	plt.legend(loc="upper right")
 
-	plt.subplot(2, 2, 2) 
+	plt.subplot(2, 2, 2)
 	axs = plt.gca()
 	nbins = 24
 	plt.hist(tt_points[:,1], bins=nbins, label="TT station")
@@ -759,7 +759,7 @@ if __name__ == '__main__':
 	xz_points = np.array(xz_points)
 	yz_points = np.array(yz_points)
 
-	plt.subplot(2, 2, 3) 
+	plt.subplot(2, 2, 3)
 	axs = plt.gca()
 	axs.scatter(xz_points[:,0], xz_points[:, 1])
 	axs.set_xlabel("Z, [cm]")
@@ -777,8 +777,7 @@ if __name__ == '__main__':
 	# ----------------------------------------------
 
 	fig, axs = plt.subplots(1,1)
-	plt.subplot(1, 1, 1) 
+	plt.subplot(1, 1, 1)
 	axs = plt.gca()
 	plt.hist(tt_points[:,8], bins=100, label="delta")
 	plt.show()
-

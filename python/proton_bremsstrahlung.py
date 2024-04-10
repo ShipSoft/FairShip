@@ -73,7 +73,7 @@ def wba(p, theta, mDarkPhoton, epsilon):
     mA2 = mDarkPhoton*mDarkPhoton
 
     p1 = (1. + oneMinusZSquare) / zeta(p,theta)
-    p2 = ( 2. * zeta(p,theta) * (1.-zeta(p,theta)) * ( (2.*mp2 + mA2)/ H(p,theta,mDarkPhoton) 
+    p2 = ( 2. * zeta(p,theta) * (1.-zeta(p,theta)) * ( (2.*mp2 + mA2)/ H(p,theta,mDarkPhoton)
             - pow(zeta(p,theta),2.)*2.*mp2*mp2/h2 ) )
     #p3 = 2.*zeta(p,theta)*(1.-zeta(p,theta))*(zeta(p,theta)+oneMinusZSquare)*mp2*mA2/h2
     p3 = 2.*zeta(p,theta)*(1.-zeta(p,theta))*(1+oneMinusZSquare)*mp2*mA2/h2
@@ -90,7 +90,7 @@ def sigma(s): # s in GeV^2 ---> sigma in mb
     a5 = 0.545
     a6 = 0.458
     a7 = 42.53
-    p1 = a2*pow(math.log(s/a3),2.) 
+    p1 = a2*pow(math.log(s/a3),2.)
     p2 = a4*pow((1./s),a5)
     p3 = a7*pow((1./s),a6)
     return a1 + p1 - p2 + p3
@@ -200,5 +200,3 @@ def hProdPDF(mDarkPhoton, epsilon, norm, binsp, binstheta, tmin = -0.5 * math.pi
     del angles
     del momenta
     return hPDF
-
-

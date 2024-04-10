@@ -16,7 +16,7 @@
 class ecalCell : public TObject
 {
 public:
-  ecalCell(Int_t cellnumber, Float_t x1=0, Float_t y1=0, Float_t x2=0, Float_t y2=0, Char_t type=0, Float_t energy=0) 
+  ecalCell(Int_t cellnumber, Float_t x1=0, Float_t y1=0, Float_t x2=0, Float_t y2=0, Char_t type=0, Float_t energy=0)
     : TObject(), fNumber(cellnumber), fX1(x1), fY1(y1), fX2(x2),
     fY2(y2), fType(type), fEnergy(energy), fADC(-1111), fNeighbors(), f5x5Cluster(),fTime(-1111)
   {};
@@ -38,7 +38,7 @@ public:
   inline Short_t GetADC() const {return fADC;}
 
   inline Int_t   GetCellNumber() const {return fNumber;}
-	
+
   inline Float_t GetEnergy() const {return fEnergy;}
   Float_t GetTime() const {return fTime;}
   void SetTime(Float_t time) {fTime=time;}
@@ -66,7 +66,7 @@ public:
   /** Reset all energies in cell **/
   void ResetEnergyFast();
   inline void AddEnergy(Float_t energy) {fEnergy+=energy;}
-	
+
   // code=0 for "3x3" cluster
   void GetClusterEnergy(Float_t& EcalEnergy);
 
@@ -74,7 +74,7 @@ public:
     { fX1=x1; fY1=y1; fX2=x2; fY2=y2; }
   inline void SetType(Char_t type) {fType=type;}
   /** returns number of neighbors in lst with cell **/
-  Int_t CountNeighbors(const std::list<ecalCell*>& lst) const; 
+  Int_t CountNeighbors(const std::list<ecalCell*>& lst) const;
 private:
   /**  cell number within the module **/
   Int_t fNumber;
@@ -105,7 +105,7 @@ private:
 
   ClassDef(ecalCell,1);
 };
-  
+
 inline void ecalCell::ResetEnergyFast()
 {
   fEnergy=0;

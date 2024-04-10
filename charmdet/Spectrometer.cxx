@@ -2,7 +2,7 @@
 // Magnetic Spectrometer, four tracking stations in a magnetic field.
 
 #include "Spectrometer.h"
-//#include "MagneticSpectrometer.h" 
+//#include "MagneticSpectrometer.h"
 #include "SpectrometerPoint.h"
 #include "TGeoManager.h"
 #include "FairRun.h"                    // for FairRun
@@ -72,7 +72,7 @@ Spectrometer::Spectrometer(const char* name, const Double_t DX, const Double_t D
     fLength(-1.),
     fELoss(-1),
     fSpectrometerPointCollection(new TClonesArray("SpectrometerPoint"))
-{ 
+{
   DimX = DX;
   DimY = DY;
   DimZ = DZ;
@@ -91,7 +91,7 @@ void Spectrometer::Initialize()
     FairDetector::Initialize();
 }
 
-// -----   Private method InitMedium 
+// -----   Private method InitMedium
 Int_t Spectrometer::InitMedium(const char* name)
 {
    static FairGeoLoader *geoLoad=FairGeoLoader::Instance();
@@ -122,7 +122,7 @@ void Spectrometer::SetBoxParam(Double_t SX, Double_t SY, Double_t SZ, Double_t z
 
 
 void Spectrometer::SetSciFiDetPositions(Double_t zSciFi1, Double_t zSciFi2)
-{ 
+{
  zposSciFi1 = zSciFi1;
  zposSciFi2 = zSciFi2;
 }
@@ -132,7 +132,7 @@ void Spectrometer::SetSciFiDetPositions(Double_t zSciFi1, Double_t zSciFi2)
 void Spectrometer::SetTransverseSizes(Double_t D1short, Double_t D1long){
   Dim1Short = D1short;
   Dim1Long = D1long;
-}   
+}
 
 
 //Methods for Goliath by Annarita
@@ -153,13 +153,13 @@ void Spectrometer::SetCoilParameters(Double_t CoilR, Double_t UpCoilH, Double_t 
 }
 //
 void Spectrometer::ConstructGeometry()
-{ 
+{
     InitMedium("air");
   TGeoMedium *air = gGeoManager->GetMedium("air");
 
     InitMedium("iron");
     TGeoMedium *Fe =gGeoManager->GetMedium("iron");
-    
+
     InitMedium("silicon");
     TGeoMedium *Silicon = gGeoManager->GetMedium("silicon");
 
@@ -171,22 +171,22 @@ void Spectrometer::ConstructGeometry()
 
     InitMedium("TTmedium");
     TGeoMedium *TT  = gGeoManager->GetMedium("TTmedium");
-    
+
     InitMedium("STTmix8020_2bar");
     TGeoMedium *sttmix8020_2bar   = gGeoManager->GetMedium("STTmix8020_2bar");
-  
+
     TGeoVolume *top = gGeoManager->GetTopVolume();
 
 
-    TGeoBBox *SciFi1 = new TGeoBBox("SciFi1", DimSciFi1X/2, DimSciFi1Y/2, DimZ/2); 
+    TGeoBBox *SciFi1 = new TGeoBBox("SciFi1", DimSciFi1X/2, DimSciFi1Y/2, DimZ/2);
     TGeoVolume *subvolSciFi1 = new TGeoVolume("volSciFi1",SciFi1,sttmix8020_2bar);
     subvolSciFi1->SetLineColor(kBlue-5);
     AddSensitiveVolume(subvolSciFi1);
-  		
+
     TGeoBBox *SciFi2 = new TGeoBBox("SciFi2", DimSciFi2X/2, DimSciFi2Y/2, DimZ/2);
     TGeoVolume *subvolSciFi2 = new TGeoVolume("volSciFi2",SciFi2,sttmix8020_2bar);
     subvolSciFi2->SetLineColor(kBlue-5);
-    AddSensitiveVolume(subvolSciFi2);    
+    AddSensitiveVolume(subvolSciFi2);
 
     top->AddNode(subvolSciFi1,1,new TGeoTranslation(0,0,zposSciFi1)); //DetectorIDs are 1 and 2
     top->AddNode(subvolSciFi2,2,new TGeoTranslation(0,0,zposSciFi2));
@@ -205,7 +205,7 @@ Bool_t  Spectrometer::ProcessHits(FairVolume* vol)
     }
     // Sum energy loss for all steps in the active volume
     fELoss += gMC->Edep();
-    
+
     // Create muonPoint at exit of active volume
     if ( gMC->IsTrackExiting()    ||
         gMC->IsTrackStop()       ||
@@ -216,21 +216,21 @@ Bool_t  Spectrometer::ProcessHits(FairVolume* vol)
         TParticle* p=gMC->GetStack()->GetCurrentTrack();
         Int_t pdgCode = p->GetPdgCode();
 	//Int_t fMotherID =p->GetFirstMother();
-        gMC->CurrentVolID(fVolumeID);	
+        gMC->CurrentVolID(fVolumeID);
 
-        TLorentzVector Pos; 
-        gMC->TrackPosition(Pos); 
-        Double_t xmean = (fPos.X()+Pos.X())/2. ;      
-        Double_t ymean = (fPos.Y()+Pos.Y())/2. ;      
-        Double_t zmean = (fPos.Z()+Pos.Z())/2. ;     
+        TLorentzVector Pos;
+        gMC->TrackPosition(Pos);
+        Double_t xmean = (fPos.X()+Pos.X())/2. ;
+        Double_t ymean = (fPos.Y()+Pos.Y())/2. ;
+        Double_t zmean = (fPos.Z()+Pos.Z())/2. ;
 
 	AddHit(fTrackID, fVolumeID, TVector3(xmean, ymean,  zmean), TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength,fELoss, pdgCode);
-        
+
         // Increment number of muon det points in TParticle
         ShipStack* stack = (ShipStack*) gMC->GetStack();
         stack->AddPoint(kSpectrometer);
     }
-    
+
     return kTRUE;
 }
 
@@ -242,13 +242,13 @@ void Spectrometer::EndOfEvent()
 
 void Spectrometer::Register()
 {
-    
+
     /** This will create a branch in the output tree called
      SpectrometerPoint, setting the last parameter to kFALSE means:
      this collection will not be written to the file, it will exist
      only during the simulation.
      */
-    
+
     FairRootManager::Instance()->Register("SpectrometerPoint", "Spectrometer",
                                           fSpectrometerPointCollection, kTRUE);
 }
@@ -283,5 +283,3 @@ SpectrometerPoint* Spectrometer::AddHit(Int_t trackID, Int_t detID,
 
     return new(clref[size]) SpectrometerPoint(trackID, detID, pos, mom,time, length, eLoss, pdgCode);
 }
-
-

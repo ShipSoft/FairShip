@@ -103,22 +103,22 @@ void ShipStack::PushTrack(Int_t toBeDone, Int_t parentId, Int_t pdgCode,
   Int_t daughter1Id = -1;
   Int_t daughter2Id = -1;
   TParticle* particle =
-    new(partArray[fNParticles++]) TParticle(pdgCode, trackId, parentId,nPoints, 
+    new(partArray[fNParticles++]) TParticle(pdgCode, trackId, parentId,nPoints,
         daughter1Id, daughter2Id, px, py, pz, e, vx, vy, vz, time);
-// from root, how does this fit ? misuse of status and mother2 ??? status is used for trackID definetely 
-// TParticle(Int_t pdg, Int_t status, Int_t mother1, Int_t mother2, 
+// from root, how does this fit ? misuse of status and mother2 ??? status is used for trackID definetely
+// TParticle(Int_t pdg, Int_t status, Int_t mother1, Int_t mother2,
 //   Int_t daughter1, Int_t daughter2, Double_t px, Double_t py, Double_t pz, Double_t etot, Double_t vx, Double_t vy, Double_t vz, Double_t time)
   particle->SetPolarisation(polx, poly, polz);
   particle->SetWeight(weight);
   particle->SetUniqueID(proc);
 // TR August 2014, still trying to understand the logic of FairRoot, due to misuse of secondparentID, all is a big mess
-  if (parentId < 0){ 
+  if (parentId < 0){
      particle->SetFirstMother(secondparentID);
      particle->SetLastMother(secondparentID);
   }
-  else {            
-      particle->SetFirstMother(parentId);  
-      particle->SetLastMother(parentId);  
+  else {
+      particle->SetFirstMother(parentId);
+      particle->SetLastMother(parentId);
   }
   // --> Increment counter
   if (parentId < 0) { fNPrimaries++; }
@@ -462,8 +462,8 @@ void ShipStack::SelectTracks()
     }
     // --> Set storage flag
     fStoreMap[i] = store;
-// special case for Ship generators, want to keep all original particles with their mother daughter relationship 
-// independent if tracked or not. apply a dirty trick and use second mother to identify original generator particles. 
+// special case for Ship generators, want to keep all original particles with their mother daughter relationship
+// independent if tracked or not. apply a dirty trick and use second mother to identify original generator particles.
 // doesn't work, always true: Int_t iMother2 = GetParticle(i)->GetMother(1); maybe should set Mother2 to -1 in the generator
 // if (iMother == iMother2) {fStoreMap[i] = kTRUE;}
   }
@@ -485,6 +485,3 @@ void ShipStack::SelectTracks()
 
 }
 // -------------------------------------------------------------------------
-
-
-

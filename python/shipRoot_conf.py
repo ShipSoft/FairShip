@@ -91,4 +91,3 @@ def configure(darkphoton=None):
       addDPtoROOT()
    else:
       addHNLtoROOT()
-

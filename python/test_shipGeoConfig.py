@@ -30,7 +30,7 @@ class TestInheritance(unittest.TestCase):
         with ConfigRegistry.register_config("bb") as c:
             c.length = 10
             c.width = 20
-            c.muShield = AttrDict(z=10) 
+            c.muShield = AttrDict(z=10)
         with ConfigRegistry.register_config("cc", base="bb") as c:
             c.height = 30
             c.volume = c.length * c.height * c.width

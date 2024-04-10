@@ -22,10 +22,10 @@ public:
 
   Float_t GetTrackEnergy(Int_t num) const;
   Float_t GetTrackEnergy2(Int_t num) const;
-	
+
   /** Reset all energies in module **/
   void ResetEnergy();
-	
+
   inline void SetTrackEnergy(Int_t num, Float_t energy)
     { fTrackEnergy[num]=energy; }
   inline void AddTrackEnergy(Int_t num, Float_t energy)
@@ -35,7 +35,7 @@ public:
     { fTrackEnergy2[num]=energy; }
   inline void AddTrackEnergy2(Int_t num, Float_t energy)
     { fTrackEnergy2[num]+=energy;}
-  
+
   // same for tracks
   Float_t GetTrackClusterEnergy(Int_t num);
 
@@ -58,6 +58,6 @@ private:
 
   ClassDef(hcalModuleMC,1);
 };
-  
+
 
 #endif

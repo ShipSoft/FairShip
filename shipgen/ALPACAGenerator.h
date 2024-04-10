@@ -11,20 +11,20 @@ class FairPrimaryGenerator;
 class ALPACAGenerator : public FairGenerator
 {
  public:
-  
+
   /** default constructor **/
   ALPACAGenerator();
-  
+
   /** destructor **/
   virtual ~ALPACAGenerator();
-  
+
   /** public method ReadEvent **/
-  Bool_t ReadEvent(FairPrimaryGenerator*);  
+  Bool_t ReadEvent(FairPrimaryGenerator*);
   virtual Bool_t Init(const char*, int); //!
   virtual Bool_t Init(const char*); //!
   Int_t GetNevents();
  private:
-  
+
  protected:
   Float_t pdg,parent,event,track;
   Float_t e,tof,x,y,z,px,py,pz;

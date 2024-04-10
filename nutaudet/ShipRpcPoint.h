@@ -39,7 +39,7 @@ class ShipRpcPoint : public FairMCPoint
     /** Output to screen **/
     virtual void Print(const Option_t* opt) const;
     Int_t PdgCode() const {return fPdgCode;}
-/*   
+/*
     Int_t NArm() const {return fNArm;}
     Int_t NRpc() const {return fNRpc;}
     Int_t NHpt() const {return fNHpt;}

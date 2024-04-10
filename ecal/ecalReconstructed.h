@@ -8,7 +8,7 @@ class ecalReconstructed : public TObject
 friend class ecalReco;
 public:
   /** For framework compatibility **/
-  ecalReconstructed() : TObject() {}; 
+  ecalReconstructed() : TObject() {};
   /** Standard constructor**/
   ecalReconstructed(Float_t rawE, Float_t recoE, Float_t x, Float_t y, Int_t cellnum, Int_t clusternum, Int_t mc=-1111)
     : TObject(), fRawE(rawE), fRecoE(recoE), fX(x), fY(y), fCellNum(cellnum), fClusterNum(clusternum), fMCTrack(mc)

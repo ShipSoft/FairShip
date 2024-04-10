@@ -39,7 +39,7 @@ Bool_t HNLPythia8Generator::Init()
      if (0 == strncmp("/eos",fextFile,4) ) {
      TString tmp = gSystem->Getenv("EOSSHIP");
      tmp+=fextFile;
-     fInputFile  = TFile::Open(tmp); 
+     fInputFile  = TFile::Open(tmp);
      LOGF(info, "Open external file with charm or beauty hadrons on eos: %s", tmp.Data());
      if (!fInputFile) {
       LOG(FATAL) << "Error opening input file. You may have forgotten to provide a krb5 token. Try kinit username@lxplus.cern.ch";
@@ -261,4 +261,3 @@ void HNLPythia8Generator::SetParameters(char* par)
 }
 
 // -------------------------------------------------------------------------
-

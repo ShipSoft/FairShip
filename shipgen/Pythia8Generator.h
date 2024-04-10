@@ -13,20 +13,20 @@ class FairPrimaryGenerator;
 class Pythia8Generator : public FairGenerator
 {
  public:
-  
+
   /** default constructor **/
   Pythia8Generator();
-  
+
   /** destructor **/
   virtual ~Pythia8Generator();
-  
+
   /** public method ReadEvent **/
   Bool_t ReadEvent(FairPrimaryGenerator*);
   void SetParameters(char*);
   void Print(); //!
-  
+
   virtual Bool_t Init(); //!
-  
+
   void SetMom(Double_t mom) { fMom = mom; };
   void SetId(Double_t id) { fId  = id; };
   void UseRandom1() { fUseRandom1 = kTRUE; fUseRandom3 = kFALSE; };
@@ -37,9 +37,9 @@ class Pythia8Generator : public FairGenerator
   Int_t nrOfRetries(){ return fnRetries; };
 
  private:
-  
+
   Pythia8::RndmEngine* fRandomEngine;  //!
-  
+
  protected:
 
   Double_t fMom;       // proton momentum
@@ -52,10 +52,10 @@ class Pythia8Generator : public FairGenerator
   Int_t  fNevents,fn,firstEvent,fShipEventNr;
   TFile* fInputFile;   //! pointer to a file
   FairLogger*  fLogger; //!   don't make it persistent, magic ROOT command
-  TTree* fTree;        //! 
+  TTree* fTree;        //!
   Pythia8::Pythia* fPythia;             //!
   Double_t fFDs;       // correction for Pythia6 to match measured Ds production
-  Int_t fnRetries;     // 
+  Int_t fnRetries;     //
   GenieGenerator* fMaterialInvestigator;  //!
   ClassDef(Pythia8Generator,3);
   TString targetName;

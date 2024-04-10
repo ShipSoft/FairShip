@@ -67,7 +67,7 @@ hcalModule* hcalStructure::CreateModule(char type, Int_t number, Float_t x1, Flo
 //-----------------------------------------------------------------------------
 
 hcalStructure::hcalStructure(hcalInf* hcalinf)
-  : TNamed("hcalStructure", "Hadron calorimeter structure"), 
+  : TNamed("hcalStructure", "Hadron calorimeter structure"),
     fUseMC(0),
     fX1(0.),
     fY1(0.),
@@ -98,7 +98,7 @@ void hcalStructure::Construct()
   char type;
 
   fStructure.resize(fHcalInf->GetXSize()*fHcalInf->GetYSize(), NULL);
-	
+
   dx=fHcalInf->GetModuleSize();
   dy=fHcalInf->GetModuleSize();
   //Creating ECAL Matrix
@@ -121,54 +121,54 @@ void hcalStructure::Construct()
   list<hcalModule*> neib;
   vector<hcalModule*> cl;
   vector<hcalModule*>::const_iterator pcl;
-  
+
   Int_t num;
   //We want neighbors for ecalModules be ecalModules
   for(i=0;i<fHcalInf->GetXSize();i++)
     for(j=0;j<fHcalInf->GetYSize();j++)
       if (fStructure[GetNum(i,j)]) {
 	neib.clear();
-	
+
 	num=GetNumber(i-1,j);
 	if (-1!=num) {
 	  neib.push_back(fStructure[num]);
 	}
-			
+
 	num=GetNumber(i-1,j+1);
 	if (-1!=num) {
 	  neib.push_back(fStructure[num]);
 	}
-	
+
 	num=GetNumber(i,j+1);
 	if (-1!=num) {
 	  neib.push_back(fStructure[num]);
 	}
-	
+
 	num=GetNumber(i+1,j+1);
 	if (-1!=num) {
 	  neib.push_back(fStructure[num]);
 	}
-	
+
 	num=GetNumber(i+1,j);
 	if (-1!=num) {
 	  neib.push_back(fStructure[num]);
 	}
-			
+
 	num=GetNumber(i+1,j-1);
 	if (-1!=num) {
 	  neib.push_back(fStructure[num]);
 	}
-	
+
 	num=GetNumber(i,j-1);
 	if (-1!=num) {
 	  neib.push_back(fStructure[num]);
 	}
-	
+
 	num=GetNumber(i-1,j-1);
 	if (-1!=num) {
 	  neib.push_back(fStructure[num]);
 	}
-	
+
 	num=GetNumber(i,j);
 	fStructure[num]->SetNeighborsList(neib);
       }
@@ -197,12 +197,12 @@ void hcalStructure::GetHitXY(const Int_t hitId, Float_t& x, Float_t& y) const
   /** Hit Id -> (x,y) **/
 
   // Some translation from x*100+y  to y*sizex+x coding...
- 
+
   Int_t mnum=hitId/10;
   Int_t cellx = mnum/100;
   Int_t celly = mnum%100;
   mnum = GetNum(cellx, celly);
-  
+
   // end translation
 
   hcalModule* module=fStructure[mnum];
@@ -215,14 +215,14 @@ void hcalStructure::GetHitXY(const Int_t hitId, Float_t& x, Float_t& y) const
 hcalModule* hcalStructure::GetHitModule(const Int_t hitId) const
 {
   /** Hit Id -> Cell **/
- 
+
   // Some translation from x*100+y  to y*sizex+x coding...
- 
+
   Int_t mnum=hitId/10;
   Int_t cellx = mnum/100;
   Int_t celly = mnum%100;
   mnum = GetNum(cellx, celly);
-  
+
   // end translation
 
   return fStructure[mnum];

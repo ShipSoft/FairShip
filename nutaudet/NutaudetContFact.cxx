@@ -61,4 +61,3 @@ FairParSet* NutaudetContFact::createContainer(FairContainer* c)
 */
    return 0;
 }
-

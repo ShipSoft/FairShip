@@ -110,4 +110,3 @@ void ShipTdcSource::FillEventHeader(FairEventHeader *feh)
    feh->SetRunId(fRunId);
    return;
 }
-

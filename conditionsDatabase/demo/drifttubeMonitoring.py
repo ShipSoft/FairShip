@@ -27,9 +27,9 @@ DAFfitter    = True
 withMaterial = True
 MCdata = False
 ########
-# before RT correction: MCsmearing=0.04  #  + 0.027**2 -> 0.05  
+# before RT correction: MCsmearing=0.04  #  + 0.027**2 -> 0.05
 MCsmearing=0.022  #  + 0.027**2 -> 0.035
-####### 
+#######
 cuts={}
 cuts['Ndf'] = 9
 cuts['deltaNdf'] = 2
@@ -90,7 +90,7 @@ if options.catalog:
         if fname.find("root")<0:continue
         f=ROOT.TFile.Open(fname)
         sTree = f.cbmsim
-        if not sTree.GetBranch("FitTracks"): 
+        if not sTree.GetBranch("FitTracks"):
             print "does not contain FitTracks",fname
             f.Close()
             continue
@@ -103,12 +103,12 @@ fname = fnames[0]
 if options.updateFile:
     f=ROOT.TFile(fname,'update')
     sTree=f.Get('cbmsim')
-    if not sTree: 
+    if not sTree:
         print "Problem with updateFile",f
         exit(-1)
 else:
     sTree = ROOT.TChain('cbmsim')
-    for f in fnames: 
+    for f in fnames:
         print "add ",f
         if options.onEOS: sTree.Add(os.environ['EOSSHIP']+f)
         else:             sTree.Add(f)
@@ -161,14 +161,14 @@ ypos = {}
 yposb = {}
 zpos = {}
 residuals = [0.]*24
-# positions are relative to the top / bottom end plates of a station, corrected from survey positions with known offset in y, 
+# positions are relative to the top / bottom end plates of a station, corrected from survey positions with known offset in y,
 # 2cm + length of the bolt 150mm on the top and 50mm on the bottom
 Nchannels = {1:12,2:12,3:48,4:48}
 
 #survey
 survey = {} # X survey[xxx][1] Y survey[xxx][2] Z survey[xxx][0]
 daniel = {}
-# For T1 and 2, the survey target is placed above/below the endplates, offset in y. 
+# For T1 and 2, the survey target is placed above/below the endplates, offset in y.
 # For T3 it is placed 7cm in front and for T4 7cm behind the endplate, so there is an offset in z
 
 api_factory = APIFactory()
@@ -196,7 +196,7 @@ Lcorrection['T2_MD_03'] = (20.+50.+8.45)/10.   # 8.45 or 4.45
 Lcorrection['T2_MD_04'] = (20.+50.+8.45)/10.   # 8.45 or 4.45
 
 surveyXYZ = {}
-for s in survey: 
+for s in survey:
     surveyXYZ[s]=[survey[s][1]*100.,survey[s][2]*100.,survey[s][0]*100.]
 for s in daniel: daniel[s]=[daniel[s][0]/10.,daniel[s][1]/10.,daniel[s][2]/10.]
 
@@ -208,7 +208,7 @@ for s in ['T1_MA_','T1_MB_','T2_MC_','T2_MD_']:
     delx = surveyXYZ[s+'02'][0]-surveyXYZ[s+'03'][0]
     dely = surveyXYZ[s+'02'][1]-surveyXYZ[s+'03'][1]
     Langle[s+'02-03'] = ROOT.TMath.ATan2(dely,delx)
-for s in survey: 
+for s in survey:
     if s.find('T1')<0 and s.find('T2')<0: continue
     if s.find('01')>0:   a = s.replace('01','01-04')
     elif s.find('04')>0: a = s.replace('04','01-04')
@@ -238,7 +238,7 @@ rn['T1_MB_01'] = [21.55,72.60]    # top left = 1
 rn['T1_MB_02'] = [-23.65,72.60]   # top right = 2
 rn['T1_MB_04'] = [21.55,-62.60]   # bottom left = 4
 rn['T1_MB_03'] = [-23.65,-62.60]  # bottom right = 3
-rn['T2_MC_01'] = rn['T1_MB_01'] 
+rn['T2_MC_01'] = rn['T1_MB_01']
 rn['T2_MC_02'] = rn['T1_MB_02']
 rn['T2_MC_04'] = rn['T1_MB_04']
 rn['T2_MC_03'] = rn['T1_MB_03']
@@ -249,30 +249,30 @@ zpos['T1X'] = (daniel['T1_MA_01'][2]+daniel['T1_MA_02'][2]+daniel['T1_MA_03'][2]
 ypos['T1X'] = [(daniel['T1_MA_01'][1]+daniel['T1_MA_02'][1])/2.,(daniel['T1_MA_04'][1]+daniel['T1_MA_03'][1])/2.]
 test = ROOT.MufluxSpectrometerHit(10002012,0.)
 test.MufluxSpectrometerEndPoints(vbot,vtop)
-deltaZ = zpos['T1X']-(vbot[2]+vtop[2])/2. 
+deltaZ = zpos['T1X']-(vbot[2]+vtop[2])/2.
 n = 10002012
 start = daniel['T1_MA_01'][0] # (daniel['T1_MA_01'][0]+daniel['T1_MA_04'][0])/2. bottom survey measurements do not match nominal distance
 delta = (start - (daniel['T1_MA_02'][0]+daniel['T1_MA_03'][0])/2.-1.1-2.1) / 10.
 delta = 4.2
-for i in range(12): 
+for i in range(12):
     xpos[n-i] = start - delta * i
     ypos[n-i] = ypos['T1X']
     zpos[n-i] = zpos['T1X']-deltaZ
 n = 10012001
 start =  daniel['T1_MA_02'][0] +1.1 #   (daniel['T1_MA_02'][0]+daniel['T1_MA_03'][0])/2. +1.1
-for i in range(12): 
+for i in range(12):
     xpos[n+i] = start + delta * i
     ypos[n+i] = ypos['T1X']
     zpos[n+i] = zpos['T1X']+3.64-deltaZ
 n = 10102001
 start = start -1.1 #  (daniel['T1_MA_02'][0]+daniel['T1_MA_03'][0])/2.
-for i in range(12): 
+for i in range(12):
     xpos[n+i] = start + delta * i
     ypos[n+i] = ypos['T1X']
     zpos[n+i] = zpos['T1X']+3.64+4.06-deltaZ
 n = 10112001
 start = start - 2.1 #  (daniel['T1_MA_02'][0]+daniel['T1_MA_03'][0])/2. - 2.1
-for i in range(12): 
+for i in range(12):
     xpos[n+i] = start + delta * i
     ypos[n+i] = ypos['T1X']
     zpos[n+i] = zpos['T1X']+3.64+4.06+3.64-deltaZ
@@ -300,7 +300,7 @@ delta = (start - ( (rn['T1_MB_02'][0]+rn['T1_MB_03'][0])/2.+1.1+2.1) )/ 10.
 delta = 4.2
 
 n = 11002012
-for i in range(12): 
+for i in range(12):
     xnom = start - delta * i
     ynom = L/2.
     xpos[n-i] = xnom *ROOT.TMath.Cos(angle) - ynom*ROOT.TMath.Sin(angle) + tx
@@ -311,7 +311,7 @@ for i in range(12):
     zpos[n-i] = zpos['T1U']-deltaZ
 n = 11012001
 start = (rn['T1_MB_02'][0]+rn['T1_MB_03'][0])/2.+1.1
-for i in range(12): 
+for i in range(12):
     xnom = start + delta * i
     ynom = L/2.
     xpos[n+i] = xnom *ROOT.TMath.Cos(angle) - ynom*ROOT.TMath.Sin(angle) + tx
@@ -322,7 +322,7 @@ for i in range(12):
     zpos[n+i] = zpos['T1U']+3.64-deltaZ
 n = 11102001
 start = (rn['T1_MB_02'][0]+rn['T1_MB_03'][0])/2.
-for i in range(12): 
+for i in range(12):
     xnom = start + delta * i
     ynom = L/2.
     xpos[n+i] = xnom *ROOT.TMath.Cos(angle) - ynom*ROOT.TMath.Sin(angle) + tx
@@ -333,7 +333,7 @@ for i in range(12):
     zpos[n+i] = zpos['T1U']+3.64+4.06 -deltaZ
 n = 11112001
 start = start - 2.1
-for i in range(12): 
+for i in range(12):
     xnom = start + delta * i
     ynom = L/2.
     xpos[n+i] = xnom *ROOT.TMath.Cos(angle) - ynom*ROOT.TMath.Sin(angle) + tx
@@ -351,25 +351,25 @@ start = daniel['T2_MD_03'][0] # (daniel['T2_MD_02'][0]+daniel['T2_MD_03'][0])/2.
 delta = ( (daniel['T2_MD_01'][0]+daniel['T2_MD_04'][0])/2. - (start+1.1-2.1)) / 11.
 delta = 4.2  # nominal distance, more reliable
 
-for i in range(12): 
+for i in range(12):
     xpos[n+i] = start + delta * i
     ypos[n+i] = ypos['T2X']
     zpos[n+i] = zpos['T2X']+3.64+4.06+3.64-deltaZ
 n = 21102001
 start = start - 2.1
-for i in range(12): 
+for i in range(12):
     xpos[n+i] = start + delta * i
     ypos[n+i] = ypos['T2X']
     zpos[n+i] = zpos['T2X']+3.64+4.06-deltaZ
 n = 21012001
 start = start + 1.1
-for i in range(12): 
+for i in range(12):
     xpos[n+i] = start + delta * i
     ypos[n+i] = ypos['T2X']
     zpos[n+i] = zpos['T2X']+3.64-deltaZ
 n = 21002001
 start = start + 2.1
-for i in range(12): 
+for i in range(12):
     xpos[n+i] = start + delta * i
     ypos[n+i] = ypos['T2X']
     zpos[n+i] = zpos['T2X']-deltaZ
@@ -397,7 +397,7 @@ start = (rn['T2_MC_02'][0]+rn['T2_MC_03'][0])/2.
 delta = ((rn['T2_MC_01'][0]+rn['T2_MC_04'][0])/2. - ( (rn['T2_MC_02'][0]+rn['T2_MC_03'][0])/2.-2.1+1.1)) / 11.
 delta = 4.2
 
-for i in range(12): 
+for i in range(12):
     xnom = start + delta * i
     ynom = L/2.
     xpos[n+i] = xnom *ROOT.TMath.Cos(angle) - ynom*ROOT.TMath.Sin(angle) + tx
@@ -408,7 +408,7 @@ for i in range(12):
     zpos[n+i] = zpos['T2V']+3.64+4.06+3.64-deltaZ
 n = 20102001
 start = start - 2.1
-for i in range(12): 
+for i in range(12):
     xnom = start + delta * i
     ynom = L/2.
     xpos[n+i] = xnom *ROOT.TMath.Cos(angle) - ynom*ROOT.TMath.Sin(angle) + tx
@@ -419,7 +419,7 @@ for i in range(12):
     zpos[n+i] = zpos['T2V']+3.64+4.06-deltaZ
 n = 20012012
 start = (rn['T2_MC_01'][0]+rn['T2_MC_04'][0])/2.
-for i in range(12): 
+for i in range(12):
     xnom = start - delta * i
     ynom = L/2.
     xpos[n-i] = xnom *ROOT.TMath.Cos(angle) - ynom*ROOT.TMath.Sin(angle) + tx
@@ -430,7 +430,7 @@ for i in range(12):
     zpos[n-i] = zpos['T2V']+3.64-deltaZ
 n = 20002012
 start = start + 2.1
-for i in range(12): 
+for i in range(12):
     xnom = start - delta * i
     ynom = L/2.
     xpos[n-i] = xnom *ROOT.TMath.Cos(angle) - ynom*ROOT.TMath.Sin(angle) + tx
@@ -449,22 +449,22 @@ delta = 4.2
 
 n = 30002037
 start = (daniel['T3_T02'][0] + daniel['T3_B02'][0])/2. -delta +2.1 -delta
-for i in range(12): 
+for i in range(12):
     xpos[n+i] = start + delta * i
     zpos[n+i] = zpos['T3aX']-deltaZ
 n = 30012037
 start = (daniel['T3_T02'][0] + daniel['T3_B02'][0])/2. -delta
-for i in range(12): 
+for i in range(12):
     xpos[n+i] = start + delta * i
     zpos[n+i] = zpos['T3aX']+3.64-deltaZ
 n = 30102037
 start = (daniel['T3_T02'][0] + daniel['T3_B02'][0])/2. -delta -1.1
-for i in range(12): 
+for i in range(12):
     xpos[n+i] = start + delta * i
     zpos[n+i] = zpos['T3aX']+3.64+4.06-deltaZ
 n = 30112037
 start = (daniel['T3_T02'][0] + daniel['T3_B02'][0])/2. -delta -1.1 -2.1
-for i in range(12): 
+for i in range(12):
     xpos[n+i] = start + delta * i
     zpos[n+i] = zpos['T3aX']+3.64+4.06+3.64-deltaZ
 
@@ -477,12 +477,12 @@ delta = 4.2
 
 n = 30002025
 start =  (daniel['T3_T04'][0] + daniel['T3_B04'][0])/2.  -delta +2.1 -delta
-for i in range(12): 
+for i in range(12):
     xpos[n+i] = start + delta * i
     zpos[n+i] = zpos['T3bX']-deltaZ
 n = 30012025
-start =  (daniel['T3_T04'][0] + daniel['T3_B04'][0])/2.  -delta 
-for i in range(12): 
+start =  (daniel['T3_T04'][0] + daniel['T3_B04'][0])/2.  -delta
+for i in range(12):
     xpos[n+i] = start + delta * i
     zpos[n+i] = zpos['T3bX']+3.64-deltaZ
 n = 30102025
@@ -509,7 +509,7 @@ for i in range(12):
     xpos[n+i] = start + delta * i
     zpos[n+i] = zpos['T3cX']-deltaZ
 n = 30012013
-start = (daniel['T3_T06'][0] + daniel['T3_B06'][0])/2. -delta 
+start = (daniel['T3_T06'][0] + daniel['T3_B06'][0])/2. -delta
 for i in range(12):
     xpos[n+i] = start + delta * i
     zpos[n+i] = zpos['T3cX']+3.64-deltaZ
@@ -534,11 +534,11 @@ delta = 4.2
 
 n = 30002001
 start = (daniel['T3_T08'][0] + daniel['T3_B08'][0])/2. -delta +2.1 -delta
-for i in range(12): 
+for i in range(12):
     xpos[n+i] = start + delta * i
     zpos[n+i] = zpos['T3dX'] -deltaZ
 n = 30012001
-start = (daniel['T3_T08'][0] + daniel['T3_B08'][0])/2. -delta 
+start = (daniel['T3_T08'][0] + daniel['T3_B08'][0])/2. -delta
 for i in range(12):
     xpos[n+i] = start + delta * i
     zpos[n+i] = zpos['T3dX']+3.64-deltaZ
@@ -571,7 +571,7 @@ for i in range(12):
     xpos[n+i] = start + delta * i
     zpos[n+i] = zpos['T4aX']+3.64-deltaZ
 n = 40102037
-start = (daniel['T4_T02'][0] + daniel['T4_B02'][0])/2.  -delta  
+start = (daniel['T4_T02'][0] + daniel['T4_B02'][0])/2.  -delta
 for i in range(12):
     xpos[n+i] = start + delta * i
     zpos[n+i] = zpos['T4aX']+3.64+4.06-deltaZ
@@ -599,7 +599,7 @@ for i in range(12):
     xpos[n+i] = start + delta * i
     zpos[n+i] = zpos['T4bX']+3.64-deltaZ
 n = 40102025
-start = (daniel['T4_T04'][0] + daniel['T4_B04'][0])/2. -delta 
+start = (daniel['T4_T04'][0] + daniel['T4_B04'][0])/2. -delta
 for i in range(12):
     xpos[n+i] = start + delta * i
     zpos[n+i] = zpos['T4bX']+3.64+4.06-deltaZ
@@ -627,7 +627,7 @@ for i in range(12):
     xpos[n+i] = start + delta * i
     zpos[n+i] = zpos['T4cX']+3.64-deltaZ
 n = 40102013
-start = (daniel['T4_T06'][0] + daniel['T4_B06'][0])/2.  -delta  
+start = (daniel['T4_T06'][0] + daniel['T4_B06'][0])/2.  -delta
 for i in range(12):
     xpos[n+i] = start + delta * i
     zpos[n+i] = zpos['T4cX']+3.64+4.06-deltaZ
@@ -675,7 +675,7 @@ if debug:
         for top in ['01','02']:
             delx = surveyXYZ[s+top][0]-surveyXYZ[s+top.replace('01','04').replace('02','03')][0]
             dely = surveyXYZ[s+top][1]-surveyXYZ[s+top.replace('01','04').replace('02','03')][1]
-            r = ROOT.TMath.Sqrt(delx**2+dely**2) 
+            r = ROOT.TMath.Sqrt(delx**2+dely**2)
             angle = ROOT.TMath.ATan2(delx,dely)*180./ROOT.TMath.Pi()
             print s+top,angle,r
 
@@ -702,10 +702,10 @@ def compareAlignment():
         else:
             m = (vtop[1]-vbot[1])/(vtop[0]-vbot[0])
             b = vtop[1]-m*vtop[0]
-            x0 = -b/m 
+            x0 = -b/m
         if abs(vtopD[0]-vbotD[0])<1:
             x0D = (vtopD[0]+vbotD[0])/2.
-        else:   
+        else:
             mD = (vtopD[1]-vbotD[1])/(vtopD[0]-vbotD[0])
             bD = vtopD[1]-mD*vtopD[0]
             x0D = -bD/mD
@@ -783,10 +783,10 @@ def surveyVSfairship():
     xposAty0 = -b/m
     m = (daniel['T1_MB_01'][1]-daniel['T1_MB_04'][1])/(daniel['T1_MB_01'][0]-daniel['T1_MB_04'][0])
     b = daniel['T1_MB_01'][1] - m*daniel['T1_MB_01'][0]
-    xposAty0D = -b/m 
+    xposAty0D = -b/m
     m = (vbot[1]-vtop[1])/(vbot[0]-vtop[0])
     b = vbot[1] - m*vbot[0]
-    xposAty0F = -b/m 
+    xposAty0F = -b/m
     print "                               X@Y=0       topY    botY     Z"
     print "%s, %7.3F,%7.3F,%7.3F,%7.3F"%("T1_MB_01/04 survey corrected",xposAty0,surveyXYZ['T1_MB_01'][1],surveyXYZ['T1_MB_04'][1],z1b-z1)
     print "%s, %7.3F,%7.3F,%7.3F,%7.3F"%("T1_MB_01/04 Daniel          ",xposAty0D,daniel['T1_MB_01'][1],daniel['T1_MB_04'][1],(daniel['T1_MB_01'][2]+daniel['T1_MB_04'][2])/2.-3.03-3.64-4.06-3.64-z1)
@@ -799,10 +799,10 @@ def surveyVSfairship():
     xposAty0 = -b/m
     m = (daniel['T2_MC_01'][1]-daniel['T2_MC_04'][1])/(daniel['T2_MC_01'][0]-daniel['T2_MC_04'][0])
     b = daniel['T2_MC_01'][1] - m*daniel['T2_MC_01'][0]
-    xposAty0D = -b/m 
+    xposAty0D = -b/m
     m = (vbot[1]-vtop[1])/(vbot[0]-vtop[0])
     b = vbot[1] - m*vbot[0]
-    xposAty0F = -b/m 
+    xposAty0F = -b/m
     print "%s, %7.3F,%7.3F,%7.3F,%7.3F"%("T2_MC_01/04 survey corrected",xposAty0,surveyXYZ['T2_MC_01'][1],surveyXYZ['T2_MC_04'][1],z2b-z1)
     print "%s, %7.3F,%7.3F,%7.3F,%7.3F"%("T2_MC_01/04 Daniel          ",xposAty0D,daniel['T2_MC_01'][1],daniel['T2_MC_04'][1],(daniel['T2_MC_01'][2]+daniel['T2_MC_04'][2])/2.+3.03+3.64-z1)
     print "%s, %7.3F,%7.3F,%7.3F,%7.3F"%("tube 20012012               ",xposAty0F,vbot[1],vtop[1],vtop[2]-z1F)
@@ -821,7 +821,7 @@ def surveyVSfairship():
     print "%s, %7.3F,%7.3F,%7.3F,%7.3F"%("tube 40102046               ",vtop[0],vbot[1],vtop[1],vtop[2]-z1F)
 
 def checkZtilts():
-    # station 1 and 2  01: +x,+y 02: -x,+y, 03: -x,-y 04: +x,-y 
+    # station 1 and 2  01: +x,+y 02: -x,+y, 03: -x,-y 04: +x,-y
     for s in ['T1_MA_','T1_MB_','T2_MC_','T2_MD_']:
         meanZ = 0
         for x in ['01','02','03','04']:
@@ -834,7 +834,7 @@ def checkZtilts():
         diffTopBot =  daniel[s+'01'][2]-daniel[s+'04'][2],daniel[s+'02'][2]-daniel[s+'03'][2]
         diffLefRig =  daniel[s+'01'][2]-daniel[s+'02'][2],daniel[s+'04'][2]-daniel[s+'03'][2]
         print s,meanZ,rms,' top/bot ',diffTopBot,' left/right ',diffLefRig
-    # station 1 and 2  01: +x,+y 02: -x,+y, 03: -x,-y 04: +x,-y 
+    # station 1 and 2  01: +x,+y 02: -x,+y, 03: -x,-y 04: +x,-y
     for s in ['T3','T4']:
         meanZ = 0
         for y in ['_T','_B']:
@@ -869,7 +869,7 @@ def dispTrack3D(theTrack):
         zstart+=delz
         rc,pos,mom = extrapolateToPlane(theTrack,zstart)
         if not rc: print "extrap failed"
-        else: 
+        else:
             h['dispTrack3D'][nt].SetPoint(nP,pos[0],pos[1],pos[2])
     rc = ROOT.gROOT.FindObject('c1').cd()
     h['dispTrack3D'][nt].Draw('oglsame')
@@ -931,15 +931,15 @@ def plotEvent(n=-1):
             stereoHit.SetPoint(1,vtop[2],vtop[0])
             h['stereoHits'].append(stereoHit)
             continue
-        if statnb<3:  
-            c = h['hitCollection']['upstream'] 
-            rc = c[1].SetPoint(c[0],vbot[2],vbot[0])
-            c[0]+=1 
-        else:
-            c = h['hitCollection']['downstream'] 
+        if statnb<3:
+            c = h['hitCollection']['upstream']
             rc = c[1].SetPoint(c[0],vbot[2],vbot[0])
             c[0]+=1
-    c  = h['hitCollection']['muonTaggerX'] 
+        else:
+            c = h['hitCollection']['downstream']
+            rc = c[1].SetPoint(c[0],vbot[2],vbot[0])
+            c[0]+=1
+    c  = h['hitCollection']['muonTaggerX']
     cy = h['hitCollection']['muonTaggerY']
     if sTree.GetBranch("Digi_MuonTaggerHits"):
         for hit in sTree.Digi_MuonTaggerHits:
@@ -954,7 +954,7 @@ def plotEvent(n=-1):
                 c[0]+=1
             if view == 0:
                 y,z =  (vtop[1]+vbot[1])/2.,(vtop[2]+vbot[2])/2.
-                rc = cy[1].SetPoint(cy[0],z,y)  
+                rc = cy[1].SetPoint(cy[0],z,y)
                 cy[0]+=1
     h['hitCollection']['downstream'][1].SetMarkerColor(ROOT.kRed)
     h['hitCollection']['upstream'][1].SetMarkerColor(ROOT.kBlue)
@@ -997,7 +997,7 @@ for s in range(1,5):
             for view in ['_x','_u','_v']:
                 if (s==1 and view=='_v') or (s==2 and view=='_u') or (s>2 and view != '_x'): continue
                 ut.bookHist(h,str(1000*s+100*p+10*l)+view,'hit map station'+str(s)+' plane'+str(p)+' layer '+str(l)+view,50,-0.5,49.5)
-                v = 0 
+                v = 0
                 if s==2 and view == "_x": v = 1
                 if s==1 and view == "_u": v = 1
                 myDetID = s * 1000 + v * 100 + p * 10 + l
@@ -1026,7 +1026,7 @@ gol =  sGeo.GetTopVolume().GetNode("volGoliath_1")
 zgoliath = gol.GetMatrix().GetTranslation()[2]
 
 for n in range(1,5):
-    for x in ROOT.gGeoManager.GetTopVolume().GetNodes(): 
+    for x in ROOT.gGeoManager.GetTopVolume().GetNodes():
         if x.GetName().find('volDriftTube')<0: continue
         for y in x.GetVolume().GetNodes():
             if y.GetName().find('plane')<0: continue
@@ -1074,7 +1074,7 @@ xSHiP = ROOT.TTreeReader(sTree)
 muflux_Reco = ROOT.MufluxReco(xSHiP)
 for x in cuts: muflux_Reco.setCuts(x,cuts[x])
 DTEfficiencyFudgefactor(method=-1)
-if sTree.GetBranch('MCTrack'):  
+if sTree.GetBranch('MCTrack'):
       muflux_Reco.setNoisyChannels(deadChannels4MC)
       muflux_Reco.setDeadChannels(deadChannelsRPC4MC)
 def MakeKeysToDThits(minToT=-999):
@@ -1100,7 +1100,7 @@ def MakeKeysToDThits(minToT=-999):
         if not hit.hasTimeOverThreshold(): continue
         if hit.GetTimeOverThreshold()<minToT : continue
         detID=hit.GetDetectorID()
-        if not keysToDThits.has_key(detID): 
+        if not keysToDThits.has_key(detID):
             print "MakeKeysToDThits, late hit but no first one",detID
             keysToDThits[detID]=[-1]
         keysToDThits[detID].append(key)
@@ -1116,7 +1116,7 @@ def studyLateDTHits(nevents=1000,nStart=0):
         keysToDThits=MakeKeysToDThits()
         for channel in keysToDThits:
             if keysToDThits[channel][0]<0: rc=h['multLateDTHits'].Fill(-1)
-            else: 
+            else:
                 nHits+=1
                 rc=h['multLateDTHits'].Fill(len(keysToDThits[channel])-1)
                 for n in range(1,len(keysToDThits[channel])):
@@ -1151,7 +1151,7 @@ def nicePrintout(hits):
                     else:
                         tdc+="%5.0F %5.0F "%(hit.GetDigi()-t0,hit.GetTimeOverThreshold())
                     lateArrivals = len(keysToDThits[hit.GetDetectorID()])
-                    if lateArrivals>1 and not MCdata: 
+                    if lateArrivals>1 and not MCdata:
                         tmp = str(s) + ' '+viewC[v]+' '+str(l)+' : '+str(channelID)+' '
                         for n in range(1,len(keysToDThits[hit.GetDetectorID()])):
                             key = keysToDThits[hit.GetDetectorID()][n]
@@ -1168,7 +1168,7 @@ def plotHitMaps(onlyPlotting=False):
 def hitMapsFromFittedTracks():
     for s in range(1,5):
         for p in range(2):
-            for l in range(2): 
+            for l in range(2):
                 xLayers[s][p][l]['_x'].Reset()
                 if s==1: xLayers[s][p][l]['_u'].Reset()
                 if s==2: xLayers[s][p][l]['_v'].Reset()
@@ -1273,7 +1273,7 @@ def printScalers():
     for x in scalers.GetListOfBranches():
         name = x.GetName()
         s = eval('scalers.'+name)
-        if name!='slices': 
+        if name!='slices':
             print "%20s :%8i"%(name,s)
             rc=h['scalers'].Fill(ns,s)
             ns+=1
@@ -1306,10 +1306,10 @@ def plotRPCHitmap():
             j+=1
             rc = h['rpcPlot'].cd(j)
             h['rpcHitmap'+str(n)+str(l)].SetStats(0)
-            if l==0: 
+            if l==0:
               h['rpcHitmap'+str(n)+str(l)].SetTitle('RPC hitmap station '+str(n)+'Y readout; channel number N')
               h['rpcHitmap'+str(n)+str(l)].GetXaxis().SetRangeUser(0,120)
-            else: 
+            else:
               h['rpcHitmap'+str(n)+str(l)].SetTitle('RPC hitmap station '+str(n)+'X readout; channel number N')
             h['rpcHitmap'+str(n)+str(l)].Draw()
     rc = h['rpcPlot'].cd(j)
@@ -1362,7 +1362,7 @@ def plotTimeOverThreshold(N,Debug=False):
                 for view in viewsI[s]:
                     for l in range(4):
                         for hit in spectrHitsSorted[view][s][l]:
-                            print s,viewC[view],l,hit.GetDetectorID()%1000,hit.GetTimeOverThreshold()  
+                            print s,viewC[view],l,hit.GetDetectorID()%1000,hit.GetTimeOverThreshold()
 
 from array import array
 
@@ -1382,7 +1382,7 @@ fitter.setMaxIterations(50)
 
 def materialEffects(switch):
     mat = ROOT.genfit.MaterialEffects.getInstance()
-    if not switch: 
+    if not switch:
         mat.setNoEffects()
     else:
         mat.setMscModel('GEANE')
@@ -1424,7 +1424,7 @@ def extractMinAndMax():
                 p.Update()
 
 def extractRTPanda(hname= 'TDC1000_x'):
-    R = ShipGeo.MufluxSpectrometer.InnerTubeDiameter/2. #  = 3.63*u.cm 
+    R = ShipGeo.MufluxSpectrometer.InnerTubeDiameter/2. #  = 3.63*u.cm
     h['rt'+hname] = ROOT.TGraph()
     h['rt'+hname].SetName('rt'+hname)
     n0 = h[hname].FindBin(h['tMinAndTmax'][hname][0])
@@ -1448,7 +1448,7 @@ def extractRTPanda(hname= 'TDC1000_x'):
     h['rt'+hname].Draw('same')
 
 def makeRTrelations():
-    if not h.has_key('RTrelations'): 
+    if not h.has_key('RTrelations'):
         ut.bookCanvas(h,key='RTrelations',title='RT relations',nx=800,ny=500,cx=1,cy=1)
         h['RTrelations'].cd(1)
         x = h['TDC0']
@@ -1471,7 +1471,7 @@ def RT(hit,t):
     if MCdata:
         t0 = t-sTree.ShipEventHeader.GetEventTime()
         r =  t0*ShipGeo.MufluxSpectrometer.v_drift
-        if MCsmearing: 
+        if MCsmearing:
             r+=rnr.Gaus(0,MCsmearing)
             r=abs(r)
     else:
@@ -1482,7 +1482,7 @@ def RT(hit,t):
         if t==0: t=0.1
         if t > h['tMinAndTmax'][name][1]:  r = R
         elif t< h['tMinAndTmax'][name][0]: r = 0
-        else: 
+        else:
             r = h['rt'+name].Eval(t)
         if h.has_key('RTcorr'): r+=h['RTcorrFun_'+str(s)+view+str(2*p+l)].Eval(r)
     h['TDC2R'].Fill(t-t0,r)
@@ -1537,7 +1537,7 @@ def check4muon(m,debug=False):
   return check
 
 def minbias():
-# onurs files, ~18 M POT 
+# onurs files, ~18 M POT
     #f=ROOT.TFile.Open(os.environ['EOSSHIP']+'/eos/experiment/ship/user/truf/muflux-sim/ship.conical.FixedTarget-TGeant4_merged_dig.root')
     ut.bookHist(h,'mom','momentum',400,0.,400.)
     N=-1
@@ -1556,7 +1556,7 @@ def minbias():
            mu=False
            if abs(pid)!=13: mu = check4muon(event.MCTrack[mcID],True)
            if not mu: rc = h[hname].Fill(sta.getMomMag())
-           if abs(pid)!=13: 
+           if abs(pid)!=13:
               print N,pid, event.MCTrack[mcID].GetStartZ(),event.MCTrack[event.MCTrack[mcID].GetMotherId()].GetPdgCode(),mu
               #sTree.MCTrack.Dump()
     h['stats']={}
@@ -1596,7 +1596,7 @@ def yBeam():
     Mproton = 0.938272081
     pbeam   = 400.
     Ebeam   = ROOT.TMath.Sqrt(400.**2+Mproton**2)
-    beta    = 400./Ebeam # p/E 
+    beta    = 400./Ebeam # p/E
     sqrtS   = ROOT.TMath.Sqrt(2*Mproton**2+2*Ebeam*Mproton)
     y_beam  = ROOT.TMath.Log(sqrtS/Mproton)   # Carlos Lourenco, private communication
     return y_beam
@@ -1624,7 +1624,7 @@ def MCJpsiProd(onlyPlotting=False):
                   mu = sTree.TrackInfos[k].McTrack()
                   if mu<0: continue
                   if sTree.MCTrack[mu].GetMotherId()==m: nRec += 1
-                if nRec == 2: 
+                if nRec == 2:
                    rc=h[names[p.GetPdgCode()]+'PandPt_rec'].Fill(p.GetP(),p.GetPt())
                    rc=h[names[p.GetPdgCode()]+'Y_rec'].Fill(p.GetRapidity()-beam)
                 break
@@ -1674,7 +1674,7 @@ def MCJpsiProd(onlyPlotting=False):
 
 
 # from TrackExtrapolateTool
-parallelToZ = ROOT.TVector3(0., 0., 1.) 
+parallelToZ = ROOT.TVector3(0., 0., 1.)
 def extrapolateToPlane(fT,z,cplusplus=True):
     rc,pos,mom = False,None,None
     fst = fT.getFitStatus()
@@ -1699,7 +1699,7 @@ def extrapolateToPlane(fT,z,cplusplus=True):
             # print "extr to state m",m,fT.getNumPointsWithMeasurement()
             # if not fT.getPointWithMeasurementAndFitterInfo(m,rep): continue
                 try:     st = fT.getFittedState(m)
-                except:  
+                except:
                     print "cannot get fitted state"
                     continue
                 Pos = st.getPos()
@@ -1709,15 +1709,15 @@ def extrapolateToPlane(fT,z,cplusplus=True):
             fstate =  fT.getFittedState(mClose)
             NewPosition = ROOT.TVector3(0., 0., z)
             pdgcode = -int(13*fstate.getCharge())
-            rep    = ROOT.genfit.RKTrackRep( pdgcode ) 
-            state  = ROOT.genfit.StateOnPlane(rep) 
+            rep    = ROOT.genfit.RKTrackRep( pdgcode )
+            state  = ROOT.genfit.StateOnPlane(rep)
             pos,mom = fstate.getPos(),fstate.getMom()
             rep.setPosMom(state,pos,mom)
-            try:    
+            try:
                 rep.extrapolateToPlane(state, NewPosition, parallelToZ )
                 pos,mom = state.getPos(),state.getMom()
-                rc = True 
-            except: 
+                rc = True
+            except:
                 print 'error with extrapolation: z=',z/u.m,'m',pos.X(),pos.Y(),pos.Z(),mom.X(),mom.Y(),mom.Z()
                 error =  "extrapolateToPlane: error with extrapolation: z=%7.3F m %7.3F %7.3F %7.3F %7.3F %7.3F %7.3F "%(z/u.m,pos.X(),pos.Y(),pos.Z(),mom.X(),mom.Y(),mom.Z())
                 ut.reportError(error)
@@ -1730,9 +1730,9 @@ def extrapolateToPlane(fT,z,cplusplus=True):
                 fstate = fT.getFittedState(0)
             elif z > DT['Station_4_x_plane_1_layer_1_40110000'][2]:
                 M = min(fT.getNumPointsWithMeasurement()-1,30)
-                try: 
+                try:
                     fstate = fT.getFittedState(fT.getNumPointsWithMeasurement()-1)
-                except: 
+                except:
                     fstate = fT.getFittedState(0)
             pos,mom = fstate.getPos(),fstate.getMom()
 # use linear extrap
@@ -1786,7 +1786,7 @@ def displayTrack(theTrack,debug=False):
         zstart+=delz
         rc,pos,mom = extrapolateToPlane(theTrack,zstart)
         if not rc: print "dispTrack extrap failed"
-        else: 
+        else:
             h['dispTrack'][nt].SetPoint(nP,zstart,pos[0])
             h['dispTrackY'][nt].SetPoint(nP,zstart,pos[1])
             if debug:
@@ -1842,7 +1842,7 @@ def plotMuonTaggerTrack(muTracks):
             x = muTrack[0]*zEnd+muTrack[1]
             h['dispTrack'][nt].SetPoint(1,zEnd,x)
             if view == 'X': h['dispTrack'][nt].SetLineColor(ROOT.kRed)
-            else:  
+            else:
                h['dispTrack'][nt].SetLineColor(ROOT.kBlue)
                h['dispTrack'][nt].SetLineStyle(10)
             h['dispTrack'][nt].SetLineWidth(3)
@@ -1882,7 +1882,7 @@ def fitTracks(nMax=-1,simpleEvents=True,withDisplay=False,nStart=0,debug=False,P
             if sTree.Digi_MufluxSpectrometerHits.GetEntries() != sTree.MufluxSpectrometerPoint.GetEntries():
                 print "digi does not agree with MC, break",n
                 break
-                if PR<10 and sTree.ShipEventHeader.GetUniqueID()==1: continue # non reconstructed events 
+                if PR<10 and sTree.ShipEventHeader.GetUniqueID()==1: continue # non reconstructed events
         if not withDisplay and n%10000==0: print "event #",n
         if nMax==0: break
         if simpleEvents and simpleEvents<2:
@@ -1958,7 +1958,7 @@ def fitTracks(nMax=-1,simpleEvents=True,withDisplay=False,nStart=0,debug=False,P
                 fitStatus   = theTrack.getFitStatus()
                 if not fitStatus.isFitConverged(): continue
                 displayTrack(theTrack,debug)
-            next = raw_input("Next (Ret/Quit): ")         
+            next = raw_input("Next (Ret/Quit): ")
             if next<>'':  break
         if len(theTracks)>0: nMax-=1
         if not hasattr(theTracks,'Class'):
@@ -2004,10 +2004,10 @@ def momDisplay():
             h['px'+x]=h['p/pt'+x].ProjectionX()
             h['px'+x].SetName('px'+x)
             h['px'+x].SetTitle('#it{p} [GeV/c]')
-            h['px'+x].Draw()  
+            h['px'+x].Draw()
         h[t].Update()
 
-sigma_spatial = 0.25 # almost binary resolution! (ShipGeo.MufluxSpectrometer.InnerTubeDiameter/2.)/ROOT.TMath.Sqrt(12) 
+sigma_spatial = 0.25 # almost binary resolution! (ShipGeo.MufluxSpectrometer.InnerTubeDiameter/2.)/ROOT.TMath.Sqrt(12)
 
 def bestTracks():
     theTracks1 = findTracks(PR=11)
@@ -2044,12 +2044,12 @@ def fitTrack(hitlist,Pstart=3.):
     else: detIDToKey=MakeKeysToDThits(cuts['lateArrivalsToT'])
     for nhit in hitlist:
         numHit = 0
-        if type(nhit)==type(1):   
+        if type(nhit)==type(1):
             hit = sTree.Digi_MufluxSpectrometerHits[nhit]
             numHit = nhit
         else:    hit = nhit
         tdc = hit.GetDigi()
-        if type(nhit)!=type(1):   
+        if type(nhit)!=type(1):
             detID = hit.GetDetectorID()
             keyList = detIDToKey[detID]
             numHit  = keyList[0]
@@ -2081,7 +2081,7 @@ def fitTrack(hitlist,Pstart=3.):
         measurement.setDetId(unSortedList[k[0]][1])
         # if Debug: print "trackfit add detid",unSortedList[k[0]][1],unSortedList[k[0]][0][6]
         measurement.setHitId(unSortedList[k[0]][2])
-        tp.addRawMeasurement(measurement) # package measurement in the TrackPoint                                          
+        tp.addRawMeasurement(measurement) # package measurement in the TrackPoint
         theTrack.insertPoint(tp)  # add point to Track
     if not theTrack.checkConsistency():
         print "track not consistent"
@@ -2090,7 +2090,7 @@ def fitTrack(hitlist,Pstart=3.):
 # do the fit
     timer.Start()
     try:  fitter.processTrack(theTrack) # processTrackWithRep(theTrack,rep,True)
-    except:   
+    except:
         print "fit failed"
         timer.Stop()
         theTrack.Delete()
@@ -2105,7 +2105,7 @@ def fitTrack(hitlist,Pstart=3.):
     if not fitStatus.isFitConverged():
         theTrack.Delete()
         return -1
-    if Debug: 
+    if Debug:
         chi2 = fitStatus.getChi2()/fitStatus.getNdf()
         fittedState = theTrack.getFittedState()
         P = fittedState.getMomMag()
@@ -2120,7 +2120,7 @@ def fitTrack(hitlist,Pstart=3.):
             print s,view,2*p+l,channelID,"weights",info.getWeights()[0],info.getWeights()[1]
     if fitStatus.getNdf() < cuts['Ndf']:
         theTrack.Delete()
-        return -2 
+        return -2
     return theTrack
 
 def getSlopes(cl1,cl2,view='_x'):
@@ -2216,7 +2216,7 @@ def testPR(onlyHits=False):
     track_hits = MufluxPatRec.execute(DTHits, TaggerHits, withNTaggerHits, withTDCPR)
     hitlist = {}
     k = 0
-    if Debug: 
+    if Debug:
         print "PR returned %i track candidates"%(len(track_hits))
         plotTracklets(track_hits)
     for nTrack in track_hits:
@@ -2304,7 +2304,7 @@ def findDTClusters(removeBigClusters=True):
         for view in viewsI[s]:
             allHits = {}
             ncl=0
-            for l in range(4): 
+            for l in range(4):
                 allHits[l]={}
                 for hit in spectrHitsSorted[view][s][l]:
                     channelID = hit.GetDetectorID()%1000
@@ -2334,11 +2334,11 @@ def findDTClusters(removeBigClusters=True):
                             tmp[ncl].append(allHits[1][i1])
                             perLayer[1]=i1
                     for i2 in range( max(1,i-1), min(Nchannels[s]+1,i+2)):
-                        if allHits[2].has_key(i2):  
+                        if allHits[2].has_key(i2):
                             tmp[ncl].append(allHits[2][i2])
                             perLayer[2]=i2
                     for i3 in range( max(1,i-1), min(Nchannels[s]+1,i+2)):
-                        if allHits[3].has_key(i3): 
+                        if allHits[3].has_key(i3):
                             tmp[ncl].append(allHits[3][i3])
                             perLayer[3]=i3
                     if ( (perLayer[0]>0) + (perLayer[1]>0) + (perLayer[2]>0) + (perLayer[3]>0) ) > level:
@@ -2360,7 +2360,7 @@ def findDTClusters(removeBigClusters=True):
 # more cleanup, outliers
                 tmpClean[ncl]=[]
                 for cl in test:
-                    if abs(mean-cl[1])<2.5 : 
+                    if abs(mean-cl[1])<2.5 :
                         tmpClean[ncl].append(cl[0])
 # cleanup, remove lists contained in another list
             clusters[s][view]=[]
@@ -2405,7 +2405,7 @@ def findDTClusters(removeBigClusters=True):
             check = {}
             for cl in clusters[s][view]:
                 if len(cl)>5:
-                    for hit in cl: 
+                    for hit in cl:
                         if not tmp.has_key(hit[3]):
                             tmp[hit[3]]  =[]
                             check[hit[3]]=[]
@@ -2430,7 +2430,7 @@ def findDTClustersDebug1(n,tmp):
 def findDTClustersDebug2(L):
     for l in L:
         for hit in L[l]:
-            print stationInfo(hit),hit.GetTimeOverThreshold() 
+            print stationInfo(hit),hit.GetTimeOverThreshold()
 
 def findTracks(PR = 1,linearTrackModel = False,withCloneKiller=True):
     if PR == 3:
@@ -2454,10 +2454,10 @@ def findTracks(PR = 1,linearTrackModel = False,withCloneKiller=True):
            P = 5.
            fst = oTrack.getFitStatus()
            if fst.isFitConverged() and fst.getNdf()>1:
-            try: 
+            try:
              sta = oTrack.getFittedState(0)
              P   = sta.getMomMag()
-            except: 
+            except:
              print "cannot get fittedState(0)"
            hitList=[]
            for n in range(trInfo.N()):
@@ -2476,7 +2476,7 @@ def findTracks(PR = 1,linearTrackModel = False,withCloneKiller=True):
     T3ybot = vbot[1]
     trackCandidates = []
     clusters = findDTClusters(removeBigClusters=True)
-    # now we have to make a loop over all combinations 
+    # now we have to make a loop over all combinations
     allStations = True
     for s in range(1,5):
         if len(clusters[s][0])==0: allStations = False
@@ -2518,7 +2518,7 @@ def findTracks(PR = 1,linearTrackModel = False,withCloneKiller=True):
                     h['simpleDisplay'].cd(1)
                     h['dispTrackSeg'][nt].Draw('same')
                     nt+=1
-        if Debug: 
+        if Debug:
             print "trackCandidates",len(t1t2cand),len(t3t4cand)
             h['simpleDisplay'].Update()
         nTrx = -1
@@ -2533,14 +2533,14 @@ def findTracks(PR = 1,linearTrackModel = False,withCloneKiller=True):
 # makes only sense for zero field
                 if linearTrackModel: makeLinearExtrapolations(t1t2,t3t4)
                 if abs(delx) < cuts['delxAtGoliath']:
-# check for matching u and v hits, make uv combination and check extrap to 
+# check for matching u and v hits, make uv combination and check extrap to
                     stereoHits = {}
                     if Debug:  print "stereo clusters",len(clusters[1][1]),len(clusters[2][2])
                     for nu in range(len(clusters[1][1])):
                         stereoHits[1]={}
                         clu = clusters[1][1][nu]
                         mean_u = 0
-                        n_u = 0 
+                        n_u = 0
                         for cl in clu:
                             botA,topA = strawPositionsBotTop[cl[0].GetDetectorID()]
                             z = (botA[2]+topA[2])/2.
@@ -2562,10 +2562,10 @@ def findTracks(PR = 1,linearTrackModel = False,withCloneKiller=True):
 # new idea, calulate average of y coordinates, reject hits with distance > 2.5cm!!!!!
                         for nv in range(len(clusters[2][2])):
                             mean_v = 0
-                            n_v = 0 
+                            n_v = 0
                             stereoHits[2]={}
                             clv =  clusters[2][2][nv]
-                            for cl in clv: 
+                            for cl in clv:
                                 botA,topA = strawPositionsBotTop[cl[0].GetDetectorID()]
                                 z = (botA[2]+topA[2])/2.
                                 sl  = (botA[1]-topA[1])/(botA[0]-topA[0])
@@ -2587,7 +2587,7 @@ def findTracks(PR = 1,linearTrackModel = False,withCloneKiller=True):
                             if Debug:  print "stereo  u v",len(stereoHits[1]),len(stereoHits[2])
                             if len(stereoHits[1])<cuts['minLayersUV'] or len(stereoHits[2])<cuts['minLayersUV']: continue
                             slopeA,bA = getSlopes(stereoHits[1],stereoHits[2],'_uv')
-                            if Debug: 
+                            if Debug:
                                 print "y slope",slopeA,bA
                                 print '----> u'
                                 for x in stereoHits[1]:  print stereoHits[1][x][3],stereoHits[1][x][4]
@@ -2595,7 +2595,7 @@ def findTracks(PR = 1,linearTrackModel = False,withCloneKiller=True):
                                 for x in stereoHits[2]:  print stereoHits[2][x][3],stereoHits[2][x][4]
                             # remove unphysical combinations, pointing outside t3
                             yAtT3 = T3z*slopeA + bA
-                            if Debug: print "uv",nu,nv,yAtT3,T3ybot ,T3ytop , (yAtT3 - T3ybot)  > 2*cuts['yMax'] ,(T3ytop - yAtT3) > 2*cuts['yMax'] 
+                            if Debug: print "uv",nu,nv,yAtT3,T3ybot ,T3ytop , (yAtT3 - T3ybot)  > 2*cuts['yMax'] ,(T3ytop - yAtT3) > 2*cuts['yMax']
                             if  (yAtT3 - T3ybot)  > 2*cuts['yMax']  or (T3ytop - yAtT3) > 2*cuts['yMax'] : continue
                             if Debug:
                                 nt = len(h['dispTrackSeg'])
@@ -2625,7 +2625,7 @@ def findTracks(PR = 1,linearTrackModel = False,withCloneKiller=True):
                                         key = keysToDThits[x.GetDetectorID()][k]
                                         tmp.append(sTree.Digi_LateMufluxSpectrometerHits[key])
                                 hitList=hitList+tmp
-                            if linearTrackModel: 
+                            if linearTrackModel:
                                 trackCandidates = hitList
                             else:
                                 if zeroField: momFromptkick = 1000.
@@ -2640,7 +2640,7 @@ def findTracks(PR = 1,linearTrackModel = False,withCloneKiller=True):
                                     if ( (pos[1] - T3ybot)  > 1.2*cuts['yMax'] or (T3ytop - pos[1]) > 1.2*cuts['yMax'] ): reject = True
                                     mStatistics = countMeasurements(aTrack,PR)
                                     if len(mStatistics['u'])<cuts['minLayersUV'] or len(mStatistics['v'])<cuts['minLayersUV']: reject = True # require 2 measurements in each view
-                                    if not reject: 
+                                    if not reject:
                                     # check ghostrate, only MC
                                         if MCdata:
                                             ghFraction,mcTrackID = ghostFraction(aTrack)
@@ -2649,7 +2649,7 @@ def findTracks(PR = 1,linearTrackModel = False,withCloneKiller=True):
                                         trackCandidates.append(aTrack)
                                     else:
                                         aTrack.Delete()
-                                        if Debug: 
+                                        if Debug:
                                             print "track rejected, outside T3 acceptance or not enough u/v measurements"
                                             print  (pos[1] - T3ybot)  > 1.2*cuts['yMax'] , (T3ytop - pos[1]) > 1.2*cuts['yMax'] , \
                                                     len(mStatistics['u'])<2, len(mStatistics['v'])<2
@@ -2691,11 +2691,11 @@ def countMeasurements(aTrack,PR=1):
             hit = ROOT.MufluxSpectrometerHit(detID,0)
             s,v,p,l,view,channelID,tdcId,mdoduleId = stationInfo(hit)
             if trInfo.wL(n) <0.1 and trInfo.wR(n) <0.1: continue
-            if view != '_x': 
+            if view != '_x':
                 mStatistics['uv'].append(detID)
                 if view == '_u':  mStatistics['u'].append(detID)
                 if view == '_v':  mStatistics['v'].append(detID)
-            else:            
+            else:
                 mStatistics['xAll'].append(detID)
                 mStatistics['x'+str(s)].append(detID)
             if s > 2:        mStatistics['xDown'].append(detID)
@@ -2709,7 +2709,7 @@ def countMeasurements(aTrack,PR=1):
             test = ROOT.MufluxSpectrometerHit(detID,0.)
             s,v,p,l,view,channelID,tdcId,nRT = stationInfo(test)
             if info.getWeights()[0] <0.1 and info.getWeights()[1] <0.1: continue
-            if view != '_x': 
+            if view != '_x':
                 mStatistics['uv'].append(detID)
                 if view != '_u':  mStatistics['u'].append(detID)
                 if view != '_v':  mStatistics['v'].append(detID)
@@ -2769,7 +2769,7 @@ def cloneKiller(trackCandidates):
         # not yet ready
             #if len(detIDs[j]['xAll'])==len(detIDs[k]['xAll']):
             # if len(overlap(detIDs[j]['xAll'],detIDs[k]['xAll']))==len(detIDs[j]['xAll']):
-# only differ in stereo 
+# only differ in stereo
             #  if len(detIDs['uv']
             o = overlap(detIDs[j]['xDown'],detIDs[k]['xDown'])
             tk = float(len(detIDs[k]['xDown']))
@@ -2787,7 +2787,7 @@ def cloneKiller(trackCandidates):
     for aTrack in trackCandidates:
         j+=1
         if Debug: print "clone killer at work",j,len(detIDs[j]['xDown'])
-        if  len(detIDs[j]['xDown'])>0: 
+        if  len(detIDs[j]['xDown'])>0:
             cloneKilledTracks.append(aTrack)
     j=-1
     for aTrack in trackCandidates:
@@ -2931,7 +2931,7 @@ def plotBiasedResiduals(nEvent=-1,nTot=1000,PR=11,onlyPlotting=False,minP=3.):
                     for p in aTrack.getPoints():
                         rawM = p.getRawMeasurement()
                         s = rawM.getDetId()/10000000
-                        if s < 1 or s > 4: 
+                        if s < 1 or s > 4:
                             print "error with rawM", rawM.getDetId()
                         stations[s]+=1
                     if not (stations[1]>1 and stations[2]>1 and stations[3]>1 and stations[4]>1) : continue
@@ -3028,7 +3028,7 @@ def plotBiasedResiduals(nEvent=-1,nTot=1000,PR=11,onlyPlotting=False,minP=3.):
                     timer.Start()
             timerStats['analysis']+=timer.RealTime()
             for aTrack in trackCandidates:   aTrack.Delete()
-    if not h.has_key('biasedResiduals'): 
+    if not h.has_key('biasedResiduals'):
         ut.bookCanvas(h,key='biasedResiduals',title='biasedResiduals',nx=1600,ny=1200,cx=4,cy=6)
         ut.bookCanvas(h,key='biasedResidualsX',title='biasedResiduals function of X',nx=1600,ny=1200,cx=4,cy=6)
         ut.bookCanvas(h,key='biasedResidualsY',title='biasedResiduals function of Y',nx=1600,ny=1200,cx=4,cy=6)
@@ -3044,7 +3044,7 @@ def plotBiasedResiduals(nEvent=-1,nTot=1000,PR=11,onlyPlotting=False,minP=3.):
                 h[hnameProjX] = h[hname].ProjectionX()
                 tc = h['biasedResiduals'].cd(j)
                 if h[hname].GetEntries()<10:
-                    h[hnameProjX].Draw() 
+                    h[hnameProjX].Draw()
                     j+=1
                     continue
                 fitResult = h[hnameProjX].Fit('gaus','SQ','',-0.5,0.5)
@@ -3091,9 +3091,9 @@ def plotBiasedResiduals(nEvent=-1,nTot=1000,PR=11,onlyPlotting=False,minP=3.):
                     hmean = hname+'_mean'+p
                     h[hmean] = h[hname].ProjectionY(hname+'_mean')
                     h[hmean].Reset()
-                    rc = h['biasedResiduals'+p].cd(j)  
+                    rc = h['biasedResiduals'+p].cd(j)
                     for k in range(1,h[hname].GetNbinsY()+1):
-                        sli = hname+'_'+str(k) 
+                        sli = hname+'_'+str(k)
                         h[sli] = h[hname].ProjectionX(sli,k,k)
                         if h[sli].GetEntries()<10: continue
                         fitResult = h[sli].Fit('gaus','SQ','',-0.5,0.5)
@@ -3123,7 +3123,7 @@ def plotBiasedResiduals(nEvent=-1,nTot=1000,PR=11,onlyPlotting=False,minP=3.):
                     if amax<3. and amin>-3.:
                         h[hmean].SetMaximum(0.2)
                         h[hmean].SetMinimum(-0.2)
-                    else: 
+                    else:
                         h[hmean].SetLineColor(ROOT.kRed)
                         h[hmean].SetMaximum(0.2)
                         h[hmean].SetMinimum(-0.2)
@@ -3179,7 +3179,7 @@ def calculateRTcorrection():
                 h['RTcorr'+v].SetPoint(N,tmpx.GetBinCenter(n),rc.GetParams()[1])
                 h[hresol].SetBinContent(n,rc.GetParams()[2])
                 N+=1
-    if not h.has_key('RTCorrection'): 
+    if not h.has_key('RTCorrection'):
         ut.bookCanvas(h,key='RTCorrection',title='RTCorrection',nx=1200,ny=1400,cx=1,cy=2)
         ut.bookCanvas(h,'dummy',' ',900,600,1,1)
     case = {'dummy':1,'RTCorrection':1}
@@ -3216,9 +3216,9 @@ def calculateRTcorrection():
      h['resVsDr'].Draw()
      for x in h:
         if x.find('resVsDr')!=0: continue
-        if x.find('u')>0 or x.find('v')>0: 
+        if x.find('u')>0 or x.find('v')>0:
             h[x].SetLineColor(ROOT.kGreen)
-        elif x.find('_3')>0 or x.find('_4')>0: 
+        elif x.find('_3')>0 or x.find('_4')>0:
             h[x].SetLineColor(ROOT.kRed)
         h[x].Draw('same')
 def testConvOfGausses():
@@ -3278,7 +3278,7 @@ def analyzeSingleDT():
         else: print "channel:%i : mean=%6.3Fmm,  sigma=%6.3Fmm"%(detID,mean*10,rms*10)
 
 def plot2dResiduals(minEntries=-1):
-    if not h.has_key('biasedResiduals2dX'): 
+    if not h.has_key('biasedResiduals2dX'):
         ut.bookCanvas(h,key='biasedResiduals2dX',title='biasedResiduals function of X',nx=1600,ny=1200,cx=4,cy=6)
         ut.bookCanvas(h,key='biasedResiduals2dY',title='biasedResiduals function of Y',nx=1600,ny=1200,cx=4,cy=6)
     j=1
@@ -3407,7 +3407,7 @@ def DTeffWithRPCTracks(Nevents=0,onlyPlotting=False,fHisto=None):
                             pos[(vbot[2]+vtop[2])/2.]=(vbot[0]+vtop[0])/2.
 # with drift time problem of LR ambiguity
                             withTDC = False
-                            if withTDC: 
+                            if withTDC:
                                 tdc = hit.GetDigi()
                                 distance = RT(hit,tdc)
                                 pos[(vbot[2]+vtop[2])/2.]=(vbot[0]+vtop[0])/2. + distance
@@ -3457,7 +3457,7 @@ def DTeffWithRPCTracks(Nevents=0,onlyPlotting=False,fHisto=None):
                             if c=='':
                                 rc = h['upStreamOccWithTrack'+str(tag_s)].Fill(upStreamOcc)
                                 Ntrack[tag_s] += 1
-                            if c=='mu':   
+                            if c=='mu':
                                 rc = h['upStreamOccWithTrack_mu'+str(tag_s)].Fill(upStreamOcc)
                                 anyTrack[s] = True
                             if c=='muX':  rc = h['upStreamOccWithTrack_muX'+str(tag_s)].Fill(upStreamOcc)
@@ -3493,7 +3493,7 @@ def DTeffWithRPCTracks(Nevents=0,onlyPlotting=False,fHisto=None):
     else:
 # analysis part
         ut.bookHist(h,'effLayer','efficiency per Layer',24,-0.5,23.5)
-        if not h.has_key('hits1_1'): 
+        if not h.has_key('hits1_1'):
             if fHisto:  ut.readHists(h,fHisto)
             else: ut.readHists(h,'DTEff.root')
         effPerLayer = {}
@@ -3542,7 +3542,7 @@ def DTeffWithRPCTracks(Nevents=0,onlyPlotting=False,fHisto=None):
             myPrint(h[t],'DTeffPerLayer-station'+str(tag_s)+'_res')
         print "tagging station                   :   1       2       3       4"
         for s in range(1,5):
-            for l in range(4): 
+            for l in range(4):
                 text = "efficiencies for station %i layer %i:"%(s,l)
                 for tag_s in range(1,5):
                     text+=" %5.2F%% "%(effPerLayer[tag_s][10*s+l]*100)
@@ -3597,7 +3597,7 @@ def DTeffWithRPCTracks(Nevents=0,onlyPlotting=False,fHisto=None):
             h[xx].SetLineColor(choice[s][1])
             h[xx].SetLineWidth(2)
             h[xx].SetMarkerStyle(20)
-            if first: 
+            if first:
                 h[xx].GetXaxis().SetRangeUser(-0.5,5.5)
                 h[xx].GetXaxis().SetLabelSize(0.05)
                 h[xx].GetXaxis().SetTitleSize(0.04)
@@ -3651,7 +3651,7 @@ def checkTrackEfficiencyPerSpill():
         interestingHistos.append('upStreamOccWithTrack_Chi2mu'+str(k))
     for f in os.listdir(path):
         if f.find("histos-DTEffSPILLDATA_")==0:
-            for x in interestingHistos: 
+            for x in interestingHistos:
                 if h.has_key(x): h[x].Reset()
             print " now analyzing histo",f
             fHisto=path+"/"+f
@@ -3685,7 +3685,7 @@ def efficiencyEstimates(method=2,MCdata=False):
     if h['biasResDist'].GetEntries()==0:
         h.clear()
         if not MCdata: ut.readHists(h,'residuals.root')
-        else: 
+        else:
             ut.readHists(h,'residuals-mbias.root')
             ut.readHists(h,'residuals-charm.root')
     print "don't forget to set MCdata = True for MC"
@@ -3721,7 +3721,7 @@ def efficiencyEstimates(method=2,MCdata=False):
                 else:                          hname = 'biasResXL_'+str(s)+view+str(l)+'_projx'
                 xmin = -3.5
                 xmax =  3.5
-                if method==0 or method==1: 
+                if method==0 or method==1:
                     xmin = -0.7
                     xmax =  0.7
                 fitResult = h[hname].Fit('gaus','SQ','',xmin,xmax)
@@ -3764,18 +3764,18 @@ def efficiencyEstimates(method=2,MCdata=False):
                     rc = h['effLayerBinary'].SetBinError(j,effBinaryError)
                 eff = estSignal/float(Ntracks)
                 effError = ROOT.TMath.Sqrt(Ntracks-estSignal)/float(Ntracks)
-                if method==2: 
+                if method==2:
                     print "eff for %s = %5.2F binary %5.2F"%(hname,eff,effBinary)
-                else: 
+                else:
                     print "eff for %s = %5.2F"%(hname,eff)
                 h['effDict'][hname]=eff
                 effStation += eff
                 rc = h['effLayer'].SetBinContent(j,eff)
                 rc = h['effLayer'].SetBinError(j,effError)
                 j+=1
-        if method==2: 
+        if method==2:
             print "station, %i %s, average efficiency: %5.3F binary %5.2F"%(s,view,effStation/4.,effStationBinary/4.)
-        else: 
+        else:
             print "station, %i %s, average efficiency: %5.3F"%(s,view,effStation/4.)
     for p in h['biasedResiduals'].GetListOfPrimitives():   p.SetLogy(1)
     tc1 = ROOT.gROOT.FindObject('c1')
@@ -3870,14 +3870,14 @@ def debugTrackFit(nEvents,nStart=0,simpleEvents=True,singleTrack=True,PR=1):
             st = atrack.getFitStatus()
             if not st.isFitConverged(): continue
             rc,pos,mom = extrapolateToPlane(atrack,zRPC1)
-            if not rc: continue 
+            if not rc: continue
             if abs(pos[0]-X)>5. : continue # not worth checking Y
             delta = pos[1]-Y
             if Debug: print "event# %i difference in X,Y %5.3F %5.3F "%(n,pos[0]-X,delta)
             rc = h['extrapX'].Fill(pos[0]-X)
             rc = h['extrapY'].Fill(delta)
             if abs(delta)<10. :     matches['good'].append(n)  # within ~3sigma
-            else :                  
+            else :
                 matches['bad'].append(n)
                 print "event# %i difference in X,Y %5.3F %5.3F "%(n,pos[0]-X,delta)
             Nmeas = atrack.getNumPointsWithMeasurement()
@@ -3892,7 +3892,7 @@ def debugTrackFit(nEvents,nStart=0,simpleEvents=True,singleTrack=True,PR=1):
                     rawM  = p.getRawMeasurement()
                     detID = rawM.getDetId()
                     info  = p.getFitterInfo()
-                    if info: 
+                    if info:
                         wL = info.getWeights()[0]
                         wR = info.getWeights()[1]
                 else:
@@ -3918,7 +3918,7 @@ def debugTrackFit(nEvents,nStart=0,simpleEvents=True,singleTrack=True,PR=1):
             vbot,vtop = strawPositionsBotTop[detID]
             x = channelID
             if s > 2: x+= (s-2)*200 + 48*(2*l+p)
-            else: 
+            else:
                 if view == '_u':   x+=50
                 elif view == '_v': x+=100
                 elif s==2: x+=150
@@ -3935,7 +3935,7 @@ def debugTrackFit(nEvents,nStart=0,simpleEvents=True,singleTrack=True,PR=1):
     return matches
 
 def plotLinearResiduals():
-    if not h.has_key('linearResiduals2dX'): 
+    if not h.has_key('linearResiduals2dX'):
         plotRPCExtrap(0,-1)
         ut.bookCanvas(h,key='linearResiduals2dX',title='linear track model, residuals function of X',nx=1600,ny=1200,cx=4,cy=4)
         ut.bookCanvas(h,key='linearResidualsX',title='linear track model, residuals',nx=1600,ny=1200,cx=4,cy=4)
@@ -3954,9 +3954,9 @@ def plotLinearResiduals():
         for view in ['_x']:
             for l in range(0,4):
                 hname = 'linearRes'+str(s)+view+str(l)
-                rc = h['linearResiduals2dX'].cd(j)  
+                rc = h['linearResiduals2dX'].cd(j)
                 h[hname].Draw('box')
-                rc = h['linearResidualsX'].cd(j)  
+                rc = h['linearResidualsX'].cd(j)
                 proj = h[hname].ProjectionX(hname+'_projx')
                 proj.Draw()
                 print "%s: %7.3F"%(hname, proj.GetMean())
@@ -3970,14 +3970,14 @@ def plotLinearResiduals():
         j+=1
 
 def mergeHistosForMomResol(withFitPoints=False):
-    # 1GeV mbias,      1.8 Billion PoT 
+    # 1GeV mbias,      1.8 Billion PoT
     # 1GeV charm,     10.2 Billion PoT,  10 files
-    # 10GeV MC,         65 Billion PoT 
-    # 10GeV charm    153.3 Billion PoT 
+    # 10GeV MC,         65 Billion PoT
+    # 10GeV charm    153.3 Billion PoT
     versions = ['-repro',"-0"]  # ","-multHits" -noDeadChannels -withDeadChannels"
     MCStats   = 1.806E9
     MC10Stats = 66.02E9
-    sim10fact = MCStats/(MC10Stats) # normalize 10GeV to 1GeV stats 
+    sim10fact = MCStats/(MC10Stats) # normalize 10GeV to 1GeV stats
     charmNorm  = {1:MCStats/10.21E9,10:MC10Stats/153.90E9}
     beautyNorm = {1:0.,   10:0.01218}
     sources = {"":1.,"Hadronic inelastic":100.,"Lepton pair":100.,"Positron annihilation":100.,
@@ -3986,7 +3986,7 @@ def mergeHistosForMomResol(withFitPoints=False):
         interestingHistos = []
         for a in ['trueMom','recoMom','momResol','curvResol','Fitpoints_u1','Fitpoints_v2','Fitpoints_x1','Fitpoints_x2','Fitpoints_x3','Fitpoints_x4']:
             for source in sources:  interestingHistos.append(a+source)
-        for v in versions: 
+        for v in versions:
             h[v]={'1GeV':{},'1GeVCharm':{},'10GeV':{}}
             if v.find('repro')<0:
              ut.readHists(h[v]['1GeV'],       'momDistributions-1GeV-mbias'+v+'.root',interestingHistos)
@@ -4014,7 +4014,7 @@ def mergeHistosForMomResol(withFitPoints=False):
             for a in ['trueMom','recoMom']:
                 h[res+a]=h["MC10"+res+a].Clone()
                 for n in range(h[a].GetNbinsX()):
-                    if h[res+a].GetBinCenter(n)<20. : 
+                    if h[res+a].GetBinCenter(n)<20. :
                         h[res+a].SetBinContent(n,h["MC"+res+a].GetBinContent(n))
             h[res+'trueMom'].SetLineColor(ROOT.kGreen)
             ut.makeIntegralDistrib(h,res+'trueMom')
@@ -4059,7 +4059,7 @@ def mergeHistosForMomResol(withFitPoints=False):
             if h[hname+str(n)].GetEntries()<50: continue
             if n>10: h[hname+str(n)].Rebin(5)
             fitFunction = h[hname+str(n)].GetFunction('gauss')
-            if not fitFunction: fitFunction = myGauss 
+            if not fitFunction: fitFunction = myGauss
             fitFunction.SetParameter(0,h[hname+str(n)].GetMaximum()*0.02)
             fitFunction.SetParameter(1,0.)
             fitFunction.SetParameter(2,0.01)
@@ -4128,7 +4128,7 @@ def checkRPCAcceptance():
             rc,pos,mom = extrapolateToPlane(aTrack,cuts['zRPC1'])
             if not rc: continue
             Ntracks+=1
-            if pos[0]>cuts['xLRPC1'] and pos[0]<cuts['xRRPC1'] and pos[1]>cuts['yBRPC1'] and pos[1]<cuts['yTRPC1']: 
+            if pos[0]>cuts['xLRPC1'] and pos[0]<cuts['xRRPC1'] and pos[1]>cuts['yBRPC1'] and pos[1]<cuts['yTRPC1']:
                 inAcc+=1
     print "number of tracks ",Ntracks," in acceptance ",inAcc,"=","%F5.2"%(inAcc/float(Ntracks)*100),"%"
 
@@ -4137,7 +4137,7 @@ def matchedRPCHits(aTrack,maxDistance=10.):
     rc,pos,mom = extrapolateToPlane(aTrack,zRPC1)
     Nmatched = 0
     inAcc    = False
-    if rc: 
+    if rc:
         if pos[0]>cuts['xLRPC1'] and pos[0]<cuts['xRRPC1'] and pos[1]>cuts['yBRPC1'] and pos[1]<cuts['yTRPC1']:
             inAcc = True
         for hit in sTree.Digi_MuonTaggerHits:
@@ -4238,7 +4238,7 @@ def plotRPCExtrap(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False):
                 rc,pos1,mom = extrapolateToPlane(aTrack,cuts['zRPC1'])
                 if not rc: continue
                 inAcc=False
-                if pos1[0]>cuts['xLRPC1'] and pos1[0]<cuts['xRRPC1'] and pos1[1]>cuts['yBRPC1'] and pos1[1]<cuts['yTRPC1']: 
+                if pos1[0]>cuts['xLRPC1'] and pos1[0]<cuts['xRRPC1'] and pos1[1]>cuts['yBRPC1'] and pos1[1]<cuts['yTRPC1']:
                     inAcc=True
                 for hit in sTree.Digi_MuonTaggerHits:
                     if hit.GetDetectorID() in deadChannelsRPC4MC: continue
@@ -4300,7 +4300,7 @@ def plotRPCExtrap(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False):
                     rc = h['RPC_p'].Fill(p)
                     for k in range(2,20):
                         if Nmatched<k: rc = h['RPC<'+str(k)+'_p'].Fill(p)
-    if not h.has_key('RPCResiduals'): 
+    if not h.has_key('RPCResiduals'):
         ut.bookCanvas(h,key='RPCResiduals',title='RPCResiduals',nx=1600,ny=1200,cx=2,cy=5)
         ut.bookCanvas(h,key='RPCResidualsXY',title='RPCResiduals function of Y/X',nx=1600,ny=1200,cx=2,cy=5)
         ut.bookCanvas(h,key='RPCResidualsP',title='RPCResiduals function of muon momentum',nx=900,ny=900,cx=1,cy=1)
@@ -4309,11 +4309,11 @@ def plotRPCExtrap(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False):
     T.SetTextSize(0.1)
     for s in range(1,6):
         for v in range(0,2):  # 1 = x layer vertical strip, 0 = y layer horizontal strips
-            if v==1:     
+            if v==1:
                 hname = 'RPCResX_'+str(s)+str(v)
                 p='X'
                 jk = 2*j
-            elif v==0:   
+            elif v==0:
                 hname = 'RPCResY_'+str(s)+str(v)
                 p='Y'
                 jk = 2*j-1
@@ -4353,13 +4353,13 @@ def plotRPCExtrap(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False):
             t = "#sigma_{av}=%5.2Fcm"%(avRMS)
             rc = T.DrawLatexNDC(0.13,0.7,t)
             # make plot of mean as function of X,Y
-            rc = h['RPCResidualsXY'].cd(jk)   
+            rc = h['RPCResidualsXY'].cd(jk)
             hname = 'RPCRes'+p+'_'+str(s)+str(v)
             hmean = hname+'_mean'+p
             h[hmean] = h[hname].ProjectionY(hname+'_mean')
             h[hmean].Reset()
             for k in range(1,h[hname].GetNbinsY()+1):
-                sli = hname+'_'+str(k) 
+                sli = hname+'_'+str(k)
                 h[sli] = h[hname].ProjectionX(sli,k,k)
                 if h[sli].GetEntries()<10: continue
                 myGauss.SetParameter(0,h[sli].GetMaximum())
@@ -4378,18 +4378,18 @@ def plotRPCExtrap(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False):
                 rc = h[hmean].SetBinError(k,rms)
             h[hmean].Draw()
         j+=1
-    if not h.has_key('RPCResiduals2dXY'): 
+    if not h.has_key('RPCResiduals2dXY'):
         ut.bookCanvas(h,key='RPCResiduals2dXY',title='muon tagger Residuals function of X/Y',nx=1600,ny=1200,cx=2,cy=5)
     j=1
     for s in range(1,6):
         for v in range(0,2):  # 1 = x layer vertical strip, 0 = y layer horizontal strips
-            if v==0: 
+            if v==0:
                 p = 'Y'
                 jk = j*2-1
-            if v==1: 
+            if v==1:
                 p = 'X'
-                jk = j*2 
-            rc = h['RPCResiduals2dXY'].cd(jk)  
+                jk = j*2
+            rc = h['RPCResiduals2dXY'].cd(jk)
             hname = 'RPCRes'+p+'_'+str(s)+str(v)
             h[hname].Draw('box')
         j+=1
@@ -4421,10 +4421,10 @@ def plotRPCExtrap(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False):
     T=ROOT.TLatex()
     for s in range(1,5):
         for v in range(3):
-            if v==2: 
+            if v==2:
                 hname = 'RPCfired_or_'+str(s)
                 h['Eff'+hname]=ROOT.TEfficiency(h[hname],h['RPCextTrack_'+str(s)+str(0)+'_projx'])
-            else: 
+            else:
                 hname = 'RPCfired_'+str(s)+str(v)
                 h['Eff'+hname]=ROOT.TEfficiency(h[hname],h['RPCextTrack_'+str(s)+str(v)+'_projx'])
             pad = h['RPCEff'].cd(l)
@@ -4448,16 +4448,16 @@ def plotRPCExtrap(nEvent=-1,nTot=1000,PR=1,onlyPlotting=False):
             rc = T.DrawLatexNDC(0.2,0.8,txt)
     myPrint(h['RPCEff'],"rpchiteff")
     h['RPCResiduals'].Draw()
-    for x in h['RPCResiduals'].GetListOfPrimitives():  
+    for x in h['RPCResiduals'].GetListOfPrimitives():
         for xx in x.GetListOfPrimitives():
             if  xx.ClassName()=='TH1D':
                 stats = xx.GetListOfFunctions().FindObject("stats")
                 stats.SetOptStat(1000000001)
                 stats.SetOptFit(10001)
-                stats.SetX1NDC(0.70) 
-                stats.SetY1NDC(0.23) 
-                stats.SetX2NDC(0.97) 
-                stats.SetY2NDC(0.94) 
+                stats.SetX1NDC(0.70)
+                stats.SetY1NDC(0.23)
+                stats.SetX2NDC(0.97)
+                stats.SetY2NDC(0.94)
     h['RPCResiduals'].Update()
     myPrint(h['RPCResiduals'],'RPCResiduals')
     print "do not forget there were runs without one RPC station"
@@ -4554,7 +4554,7 @@ def correctAlignment(hit):
         if s==1 and view=='_u': x+=4
         if s==2 and view=='_v': x+=8
         if s==2 and view=='_x': x+=12
-        if s==3 : 
+        if s==3 :
             x+=16
             if vbot[0]>0:x+=4
         if s==4:
@@ -4580,16 +4580,16 @@ def correctAlignment(hit):
     if s==1 and view=='_u': x = pl+4
     if s==2 and view=='_v': x = pl+8
     if s==2 and view=='_x': x = pl+12
-    if s==3 : 
+    if s==3 :
         x=pl+16
         if vbot[0]>0:x+=4
     if s==4:
         x=pl+24
         if vbot[0]>0:x+=4
-    if s==3: 
+    if s==3:
         vbot[0] += slopeX[s][pl]*vbot[0]
         vtop[0] += slopeX[s][pl]*vtop[0]
-    if s==2: 
+    if s==2:
         vbot[0] += (slopeY[s][pl]*vbot[1] + slopeX[s][pl]*vbot[0])
         vtop[0] += (slopeY[s][pl]*vtop[1] + slopeX[s][pl]*vtop[0])
     for i in range(3):
@@ -4598,8 +4598,8 @@ def correctAlignment(hit):
     return vbot,vtop
 
 def loopTracks(r,w):
-    os.close(r) 
-    w = os.fdopen(w, 'w') 
+    os.close(r)
+    w = os.fdopen(w, 'w')
     chisq=0
     for Nr in listOfTracks:
         rc=sTree.GetEvent(Nr)
@@ -4679,18 +4679,18 @@ def debugGeometrie():
     print vtop[1],vbot[1]
     statnb,vnb,pnb,lnb,view,channelID,tdcId,nRT = stationInfo(test)
     nav = ROOT.gGeoManager.GetCurrentNavigator()
-    prefix = "Station_"+str(statnb)+str(view)+"_plane_"+str(pnb)+"_" 
+    prefix = "Station_"+str(statnb)+str(view)+"_plane_"+str(pnb)+"_"
     plane = prefix+str(statnb)+str(vnb)+str(pnb)+"00000"
-    layer = prefix+"layer_"+str(lnb)+"_"+str(statnb)+str(vnb)+str(pnb)+str(lnb)+"0000" 
+    layer = prefix+"layer_"+str(lnb)+"_"+str(statnb)+str(vnb)+str(pnb)+str(lnb)+"0000"
     wire = "gas_"+str(test.GetDetectorID())
     if statnb<3: wire = "gas_12_"+str(test.GetDetectorID())
-    stat = "volDriftTube"+str(statnb)+"_"+str(statnb) 
+    stat = "volDriftTube"+str(statnb)+"_"+str(statnb)
     path = "/"+stat+"/"+plane+"/"+layer+"/"+wire
     rc = nav.cd(path)
     W = nav.GetCurrentNode()
     S = W.GetVolume().GetShape()
     top = array('d',[0,0,S.GetDZ()])
-    bot = array('d',[0,0,-S.GetDZ()]) 
+    bot = array('d',[0,0,-S.GetDZ()])
     Gtop = array('d',[0,0,0])
     Gbot = array('d',[0,0,0])
     nav.LocalToMaster(top, Gtop)
@@ -4714,7 +4714,7 @@ def residualLoop(nstart=0,nend=50000):
             name = 'biasResY_'+s+str(2*p+l)
             h['un'+name] = h[name].Clone('un'+name)
     exclude_layer = None
-    if not h.has_key('unbiasedResiduals'): 
+    if not h.has_key('unbiasedResiduals'):
         ut.bookCanvas(h,key='unbiasedResiduals',title='unbiasedResiduals',nx=1600,ny=1200,cx=4,cy=6)
         ut.bookCanvas(h,key='unbiasedResidualsX',title='unbiasedResiduals function of X',nx=1600,ny=1200,cx=4,cy=6)
         ut.bookCanvas(h,key='unbiasedResidualsY',title='unbiasedResiduals function of Y',nx=1600,ny=1200,cx=4,cy=6)
@@ -4727,7 +4727,7 @@ def residualLoop(nstart=0,nend=50000):
                 hname = 'biasResX_'+str(s)+view+str(l)
                 hnameProjX = 'biasRes_'+str(s)+view+str(l)
                 if h[hname].GetEntries()<10:
-                    h[hnameProjX].Draw() 
+                    h[hnameProjX].Draw()
                     j+=1
                     continue
                 h[hnameProjX] = h[hname].ProjectionX()
@@ -4773,9 +4773,9 @@ def residualLoop(nstart=0,nend=50000):
                     hmean = hname+'_mean'+p
                     h[hmean] = h[hname].ProjectionY(hname+'_mean')
                     h[hmean].Reset()
-                    rc = h['unbiasedResiduals'+p].cd(j)  
+                    rc = h['unbiasedResiduals'+p].cd(j)
                     for k in range(1,h[hname].GetNbinsY()+1):
-                        sli = hname+'_'+str(k) 
+                        sli = hname+'_'+str(k)
                         h[sli] = h[hname].ProjectionX(sli,k,k)
                         if h[sli].GetEntries()<10: continue
                         myGauss.SetParameter(0,h[sli].GetMaximum())
@@ -4793,7 +4793,7 @@ def residualLoop(nstart=0,nend=50000):
                     if amax<3. and amin>-3.:
                         h[hmean].SetMaximum(2.)
                         h[hmean].SetMinimum(-2.)
-                    else: 
+                    else:
                         h[hmean].SetLineColor(ROOT.kRed)
                         h[hmean].SetMaximum(10.)
                         h[hmean].SetMinimum(-10.)
@@ -4900,7 +4900,7 @@ def muonTaggerClustering(PR=11):
                 for s in range(1,6):
                     if found: break
                     for cl in clustersPerStation[10*s+l]:
-                        if clustersPerStation[10*s+l][cl][1]==coord: 
+                        if clustersPerStation[10*s+l][cl][1]==coord:
                             zpositions.append(clustersPerStation[10*s+l][cl][2])
                             found = True
                             break
@@ -4924,13 +4924,13 @@ def testForSameDetID(nEvent=-1,nTot=1000):
         for hit in sTree.Digi_MufluxSpectrometerHits:
             detID = hit.GetDetectorID()
             if detID<0: continue # feature for converted data in February'19
-            if not listOfDigits.has_key(detID): 
+            if not listOfDigits.has_key(detID):
                 listOfDigits[detID]=[0,[]]
                 listOfTDCs[detID]={}
             tdcModule = hit.GetTDC()
             if not listOfTDCs[detID].has_key(tdcModule):
                 listOfTDCs[detID][tdcModule] = 0
-            listOfTDCs[detID][tdcModule] +=1 
+            listOfTDCs[detID][tdcModule] +=1
             listOfDigits[detID][0]+=1
             listOfDigits[detID][1].append(hit.GetDigi())
         for x in listOfDigits:
@@ -4945,7 +4945,7 @@ def testForSameDetID(nEvent=-1,nTot=1000):
         for detID in listOfTDCs:
             test = ROOT.MufluxSpectrometerHit(detID,0.)
             s,v,p,l,view,channelID,tdcId,nRT = stationInfo(test)
-            if tdcId not in listOfTDCs[detID].keys(): 
+            if tdcId not in listOfTDCs[detID].keys():
                 print "not matching TDC id",detID,tdcId,listOfTDCs[detID]
             if len(listOfTDCs[detID])>1:
                 print detID,listOfTDCs[detID]
@@ -4970,7 +4970,7 @@ def clusterSizesPerLayer(nevents):
                     for Acl in clustersPerLayer:
                         rc = h['multHits_'+str(s)+viewC[view]+str(l)].Fill(len(clustersPerLayer[Acl]))
                         if len(clustersPerLayer[Acl])>3:
-                            for aHit in spectrHitsSorted[view][s][l]: 
+                            for aHit in spectrHitsSorted[view][s][l]:
                                     #print Nr,s,view,l,aHit.GetDetectorID()%1000,aHit.GetWidth()
                                 h['ToverT'].Fill(aHit.GetTimeOverThreshold())
     ut.bookCanvas(h,key='clusSizes',title='Cluster sizes per Layer',nx=1600,ny=1200,cx=4,cy=6)
@@ -5002,7 +5002,7 @@ def studyDeltaRays(onlyPlots=False):
         h['MCstation1Occ'].SetLineColor(ROOT.kRed)
         h['MCstation1Occ'].Draw("same")
         return
-    #MC 
+    #MC
     ut.bookHist(h,'station1Occ','station1 Occupancy',50,0.0,50.)
     ut.bookHist(h,'station1OccX','station1 Occupancy deltaRay present',50,0.0,50.)
     ut.bookHist(h,'deltaRay','E vs z',100,-1.0,1.0,100,0.0,10.)
@@ -5021,9 +5021,9 @@ def studyDeltaRays(onlyPlots=False):
             for m in sTree.MCTrack:
                 pName = m.GetProcName().Data()
                 if not pName.find('Delta ray')<0:
-                    if m.GetStartZ()/100. < 0.05 and m.GetStartZ()/100. > -0.3: 
+                    if m.GetStartZ()/100. < 0.05 and m.GetStartZ()/100. > -0.3:
                         rc = h['deltaRayNvsE'].Fill(m.GetP(),N)
-                        if m.GetP()>0.01:  
+                        if m.GetP()>0.01:
                             rc = h['station1OccX'].Fill(N)
                             found = True
                     rc = h['deltaRay'].Fill(m.GetStartZ()/100.,m.GetP())
@@ -5098,7 +5098,7 @@ def studyGhosts():
         h['I-'+x].Scale(1./h['I-'+x].GetBinContent(1))
         h['I-'+x].SetLineWidth(2)
         h['I-'+x].SetStats(0)
-        if x.find('perfect')>0: 
+        if x.find('perfect')>0:
             h['I-'+x].SetMinimum(0.001)
             h['I-'+x].Draw()
         h['I-'+x].Draw('hist same')
@@ -5172,9 +5172,9 @@ def myVertex(t1,t2,PosDir,xproj=False):
     dist  = pq.Dot(uCrossv)/(uCrossv.Mag()+1E-8)
     # u.a - u.c + s*|u|**2 - u.v*t    = 0
     # v.a - v.c + s*v.u    - t*|v|**2 = 0
-    E = u.Dot(a) - u.Dot(c) 
-    F = v.Dot(a) - v.Dot(c) 
-    A,B = u.Mag2(), -u.Dot(v) 
+    E = u.Dot(a) - u.Dot(c)
+    F = v.Dot(a) - v.Dot(c)
+    A,B = u.Mag2(), -u.Dot(v)
     C,D = u.Dot(v), -v.Mag2()
     t = -(C*E-A*F)/(B*C-A*D)
     X = c.x()+v.x()*t
@@ -5247,7 +5247,7 @@ def makeRTrelPersistent(RTrelations):
                 rc = os.system("xrdcp -f $EOSSHIP"+fname+" "+newName)
                 if rc == 0: break
                 time.sleep(30)
-            if rc != 0: 
+            if rc != 0:
                 print "Problem with copying file",fname,rc
                 continue
         ftemp = ROOT.TFile.Open(newName,'update')
@@ -5409,13 +5409,13 @@ def monitorMasterTrigger():
         rc=sTree.GetEvent(n)
         for mt in sTree.Digi_MasterTrigger:
             rc = h['masterTrigger'].Fill(mt.GetDigi())
-        if sTree.Digi_MasterTrigger.GetEntries()==0: 
+        if sTree.Digi_MasterTrigger.GetEntries()==0:
             rc = h['masterTrigger'].Fill(201.)
         else:
             tdcDict = {}
             for k in range(sTree.Digi_Triggers.GetEntries()):
                 hit = sTree.Digi_Triggers[k]
-                if tdcDict.has_key(k): 
+                if tdcDict.has_key(k):
                     print "Error, double trigger TDC ID",k
                     if not hit.GetDigi()<tdcDict[k]: continue
                 tdcDict[hit.GetTDC()]=hit.GetDigi()
@@ -5454,7 +5454,7 @@ def checkForDiMuon():
     for t in sTree.MCTrack:
         if abs(t.GetPdgCode())!=13: continue
         moID  = abs(sTree.MCTrack[t.GetMotherId()].GetPdgCode())
-        if moID in muSourcesIDs: 
+        if moID in muSourcesIDs:
             boost = True
             break
         pName = t.GetProcName().Data()
@@ -5472,7 +5472,7 @@ def muonOrigin():
         # if sTree.FitTracks.GetEntries()==0: continue
         muP = 0
         processed = []
-        for hit in sTree.MufluxSpectrometerPoint: 
+        for hit in sTree.MufluxSpectrometerPoint:
             i=hit.GetTrackID()
             if i<0: continue
             if i in processed: continue
@@ -5481,8 +5481,8 @@ def muonOrigin():
             if abs(t.GetPdgCode())!=13: continue
             moID  = abs(sTree.MCTrack[t.GetMotherId()].GetPdgCode())
             pName = t.GetProcName().Data()
-            if muP!=0: 
-                if pName!=muP: 
+            if muP!=0:
+                if pName!=muP:
                         # print "two muons, two processes",n,muP,pName
                     doubleProc[1] +=1
             else:
@@ -5539,7 +5539,7 @@ def splitOffBoostedEvents():
     newf1.Close()
     newf2.Close()
     sTree.GetCurrentFile().Close()
-    if n12 == N: 
+    if n12 == N:
         print "check OK"
         os.system('mv '+newFile2+' '+curFile)
     else: print "unitarity violated",f,n1,n2,sTree.GetEntries()
@@ -5585,7 +5585,7 @@ def plotDTPoints(onlyPlotting=False):
     cases = {'FitPoints':'Fitpoints'}
     if MCdata: cases['MC-DTPoints']='points'
     for t in cases:
-        if not h.has_key(t): 
+        if not h.has_key(t):
             ut.bookCanvas(h,key=t,title=t,nx=1200,ny=600,cx=3,cy=2)
             ut.bookCanvas(h,key=t+'proj',title=t,nx=1200,ny=600,cx=3,cy=2)
         n = 1
@@ -5602,7 +5602,7 @@ def plotDTPoints(onlyPlotting=False):
             h[twoHit34].SetMaximum(-1111)
             h[twoHit34].SetMinimum(-1111)
             for k in range(1,h[mean].GetNbinsX()):
-                test = h[cases[t]+view].ProjectionY('test',k,k) 
+                test = h[cases[t]+view].ProjectionY('test',k,k)
                 h[mean].SetBinContent(k,test.GetMean())
                 h[mean].SetBinError(k,0)
                 ratio = float(test.GetBinContent(2))/(test.GetBinContent(3)+test.GetBinContent(4)+test.GetBinContent(5)+1E-6)
@@ -5632,7 +5632,7 @@ def plotFitPoints():
     for view in views: interestingHistos.append(t+view)
     ut.readHists(hMC,'../DTPoints-mbias.root',interestingHistos)
     ut.readHists(h,'momDistributions.root',interestingHistos)
-    if not h.has_key(t): 
+    if not h.has_key(t):
         ut.bookCanvas(h,key=t,title=t,nx=1200,ny=600,cx=3,cy=2)
         ut.bookCanvas(h,key=t+'proj',title=t,nx=1200,ny=600,cx=3,cy=2)
     histos = {'data':h,'MC':hMC}
@@ -5651,7 +5651,7 @@ def plotFitPoints():
             h[twoHit34].SetMaximum(-1111)
             h[twoHit34].SetMinimum(-1111)
             for k in range(1,h[mean].GetNbinsX()):
-                test = hx[t+view].ProjectionY('test',k,k) 
+                test = hx[t+view].ProjectionY('test',k,k)
                 h[mean].SetBinContent(k,test.GetMean())
                 h[mean].SetBinError(k,0)
                 ratio = float(test.GetBinContent(2))/(test.GetBinContent(3)+test.GetBinContent(4)+test.GetBinContent(5)+1E-6)
@@ -5681,10 +5681,10 @@ def plotFitPoints():
             tc.SetLogy()
             hname = data+t+view+'proj'
             h[hname].GetXaxis().SetRangeUser(-0.5,6.5)
-            if data == 'MC':    
+            if data == 'MC':
                 h[hname].SetLineColor(ROOT.kGreen)
                 h[hname].Draw('histsame')
-            else:    
+            else:
                 h[hname].SetLineColor(ROOT.kBlue)
                 h[hname].Draw('hist')
             n+=1
@@ -5787,7 +5787,7 @@ def checkMCEffTuning():
     h['leg'+t]=ROOT.TLegend(0.55,0.65,0.85,0.85)
     n = 0
     plot = '' # 'I-'
-    for m in methods: 
+    for m in methods:
         if m == 'default':continue
         ihist = plot+m+'OverDefault'
         h[ihist] = h[plot+'MC'+m+a].Clone(ihist)
@@ -5826,9 +5826,9 @@ def ghostSuppression(hname = "sumHistos--simulation10GeV-withDeadChannels.root")
         for c in cuts:
             ntracks[c] = h[c+'p/pt'+x+'_projx'].Integral(5,15)
             h[c+x] = h[c+'p/pt'+x+'_projx'].Clone(c+x)
-            if c=='':  
+            if c=='':
                 h['p/pt'+x+'_projx'].Draw()
-            else: 
+            else:
                 h[c+'p/pt'+x+'_projx'].Draw('same')
                 h[c+x].Divide(h['p/pt'+x+'_projx'])
                 h[c+'p/pt'+x+'2d'].Divide(h['p/pt'+x+'2d'])
@@ -5839,12 +5839,12 @@ def ghostSuppression(hname = "sumHistos--simulation10GeV-withDeadChannels.root")
 def MCcomparison(pot = -1, pMin = 5.,pMax=300.,ptMax = 4.,simpleEffCor=0.023,effCor=False,eric=False,version="-repro",withOverFlow=False,withDisplay=True,cuts='',noTitle=False):
     # possible cuts: '', 'All', 'Chi2<', 'Delx<', 'Dely<'
     # efficiency MC larger than data, 0.105 for cuts = All, but only for muon tagged!
-    # otherwise only Chi2 cut, 0.034 
+    # otherwise only Chi2 cut, 0.034
     # covered cases: cuts = '',      simpleEffCor=0.024, simpleEffCorMu=0.024
     # covered cases: cuts = 'Chi2<', simpleEffCor=0.058, simpleEffCorMu=0.058
     # covered cases: cuts = 'All', simpleEffCor=0.058,   simpleEffCorMu=0.129
     simpleEffCorMu = simpleEffCor
-    if cuts=='All': 
+    if cuts=='All':
         simpleEffCorMu = simpleEffCor + 0.130
         simpleEffCor  += 0.056
     if cuts=='Chi2<':
@@ -5852,10 +5852,10 @@ def MCcomparison(pot = -1, pMin = 5.,pMax=300.,ptMax = 4.,simpleEffCor=0.023,eff
         simpleEffCorMu = 0.021
 
     label = 'MC-Comparison'+cuts.replace('<','')
-    # 1GeV mbias,      1.806 Billion PoT 
+    # 1GeV mbias,      1.806 Billion PoT
     # 1GeV charm,     10.21 Billion PoT,  10 files
-    # 10GeV MC,       66.02 Billion PoT 
-    # 10GeV charm    153.90 Billion PoT 
+    # 10GeV MC,       66.02 Billion PoT
+    # 10GeV charm    153.90 Billion PoT
     # using 626 POT/mu-event and preliminary counting of good tracks -> 12.63 -> pot factor 7.02
     # using 710 POT/mu-event, full field
     # mbias POT/ charm POT = 0.177 (1GeV), 0.429 (10GeV)
@@ -5863,7 +5863,7 @@ def MCcomparison(pot = -1, pMin = 5.,pMax=300.,ptMax = 4.,simpleEffCor=0.023,eff
     MC10Stats = 66.02E9
     mcSysError = 0.03
     daSysError = 0.021
-    sim10fact = MCStats/(MC10Stats) # normalize 10GeV to 1GeV stats 
+    sim10fact = MCStats/(MC10Stats) # normalize 10GeV to 1GeV stats
     muPerPot = 710 # 626
     charmNorm  = {1:MCStats/10.21E9,10:MC10Stats/153.90E9}
     beautyNorm = {1:0.,   10:0.01218}
@@ -5921,7 +5921,7 @@ def MCcomparison(pot = -1, pMin = 5.,pMax=300.,ptMax = 4.,simpleEffCor=0.023,eff
         for a in ['p/pt','pz/Abspx','p1/p2','p1/p2s']:
             for x in ['','mu']:
                 if a.find('p1/p2')==0 and x!='': continue
-                for hstore in [hMC,hCharm,hMC10GeV]: 
+                for hstore in [hMC,hCharm,hMC10GeV]:
 # for new category "G4default", subtract dimuons made by SHiP modification to G4
                     hstore[a+x+"G4default"]=hstore[a+x].Clone(a+x+"G4default")
                     hstore[a+x+"G4default"].Add(hstore[a+x+"Hadronic inelastic"],-1.)
@@ -6019,7 +6019,7 @@ def MCcomparison(pot = -1, pMin = 5.,pMax=300.,ptMax = 4.,simpleEffCor=0.023,eff
             if not i.find('MC10')<0:
                 i = 'MC10'
                 source = i1.split('MC10')[1]
-            elif not i.find('MC')<0: 
+            elif not i.find('MC')<0:
                 i = 'MC'
                 source = i1.split('MC')[1]
             z = x+source
@@ -6071,10 +6071,10 @@ def MCcomparison(pot = -1, pMin = 5.,pMax=300.,ptMax = 4.,simpleEffCor=0.023,eff
         for i1 in opt:
             i = i1
             source = ""
-            if not i.find('MC10')<0: 
+            if not i.find('MC10')<0:
                 i = 'MC10'
                 source = i1.split('MC10')[1]
-            elif not i.find('MC')<0: 
+            elif not i.find('MC')<0:
                 i = 'MC'
                 source = i1.split('MC')[1]
             z = x+source
@@ -6089,7 +6089,7 @@ def MCcomparison(pot = -1, pMin = 5.,pMax=300.,ptMax = 4.,simpleEffCor=0.023,eff
                         h[hname].SetBinError(n,0.)
                 ut.makeIntegralDistrib(h,hname,withOverFlow)
                 h['I-'+hname].GetXaxis().SetRangeUser(pMin,pMax)
-                if i == "MC":  
+                if i == "MC":
                     h['I-'+i+a+z+'_x']=h['I-'+hname].Clone('I-'+i+a+z+'_x')
                 ut.makeIntegralDistrib(h,i+a+z+'_y',withOverFlow)
             if i != "MC10":
@@ -6122,7 +6122,7 @@ def MCcomparison(pot = -1, pMin = 5.,pMax=300.,ptMax = 4.,simpleEffCor=0.023,eff
     for d in ['','I-']:
         for x in ['','mu']:
             t = d+'MC-Comparison'+x
-            if not h.has_key(t): 
+            if not h.has_key(t):
                 ut.bookCanvas(h,key=t,title=d+' MC / Data '+x,nx=1800,ny=900,cx=4,cy=2)
                 ut.bookCanvas(h,key='simple'+t,title=d+' MC / Data '+x,nx=1800,ny=900,cx=4,cy=2)
 # start with pz
@@ -6142,7 +6142,7 @@ def MCcomparison(pot = -1, pMin = 5.,pMax=300.,ptMax = 4.,simpleEffCor=0.023,eff
                     if d != "":continue
                     i = 'MC10'
                     source = i1.split('MC10')[1]
-                elif not i.find('MC')<0: 
+                elif not i.find('MC')<0:
                     i = 'MC'
                     source = i1.split('MC')[1]
                 xx = x+source
@@ -6152,7 +6152,7 @@ def MCcomparison(pot = -1, pMin = 5.,pMax=300.,ptMax = 4.,simpleEffCor=0.023,eff
                 histo.SetMarkerSize(1)
                 histo.SetLineColor(opt[i1][1])
                 histo.SetStats(0)
-                if i =='': 
+                if i =='':
                     histo.SetMinimum( histo.GetBinContent(histo.FindBin(pMax)-1)*0.01 )
                     histo.GetXaxis().SetRangeUser(pMin,pMax)
                 if i =='MC' and d=='':    histo.GetXaxis().SetRangeUser(pMin,30.)
@@ -6170,11 +6170,11 @@ def MCcomparison(pot = -1, pMin = 5.,pMax=300.,ptMax = 4.,simpleEffCor=0.023,eff
             for i1 in optSorted:
                 i = i1
                 source = ""
-                if not i.find('MC10')<0: 
+                if not i.find('MC10')<0:
                     if d != "":continue
                     i = 'MC10'
                     source = i1.split('MC10')[1]
-                elif not i.find('MC')<0: 
+                elif not i.find('MC')<0:
                     i = 'MC'
                     source = i1.split('MC')[1]
                 xx = x+source
@@ -6202,7 +6202,7 @@ def MCcomparison(pot = -1, pMin = 5.,pMax=300.,ptMax = 4.,simpleEffCor=0.023,eff
                 i = i1
                 source = ""
                 if not i.find('MC10')<0: continue
-                elif not i.find('MC')<0: 
+                elif not i.find('MC')<0:
                     i = 'MC'
                     source = i1.split('MC')[1]
                 if i=='MC10': continue
@@ -6213,7 +6213,7 @@ def MCcomparison(pot = -1, pMin = 5.,pMax=300.,ptMax = 4.,simpleEffCor=0.023,eff
                 histo.SetMarkerSize(1)
                 histo.SetLineColor(opt[i1][1])
                 histo.SetStats(0)
-                if i =='': 
+                if i =='':
                     histo.SetMinimum( histo.GetBinContent(histo.FindBin(ptMax))*0.01 )
                     histo.GetXaxis().SetRangeUser(0.,ptMax)
                 if noTitle: histo.SetTitle('')
@@ -6229,7 +6229,7 @@ def MCcomparison(pot = -1, pMin = 5.,pMax=300.,ptMax = 4.,simpleEffCor=0.023,eff
                 i = i1
                 source = ""
                 if not i.find('MC10')<0: continue
-                elif not i.find('MC')<0: 
+                elif not i.find('MC')<0:
                     i = 'MC'
                     source = i1.split('MC')[1]
                 if i=='MC10': continue
@@ -6255,11 +6255,11 @@ def MCcomparison(pot = -1, pMin = 5.,pMax=300.,ptMax = 4.,simpleEffCor=0.023,eff
             for i1 in optSorted:
                 i = i1
                 source = ""
-                if not i.find('MC10')<0: 
+                if not i.find('MC10')<0:
                     if d != "":continue
                     i = 'MC10'
                     source = i1.split('MC10')[1]
-                elif not i.find('MC')<0: 
+                elif not i.find('MC')<0:
                     i = 'MC'
                     source = i1.split('MC')[1]
                 xx = x+source
@@ -6269,7 +6269,7 @@ def MCcomparison(pot = -1, pMin = 5.,pMax=300.,ptMax = 4.,simpleEffCor=0.023,eff
                 histo.SetMarkerSize(1)
                 histo.SetLineColor(opt[i1][1])
                 histo.SetStats(0)
-                if i =='': 
+                if i =='':
                     histo.SetMinimum( histo.GetBinContent(histo.FindBin(pMax)-1)*0.01 )
                     histo.GetXaxis().SetRangeUser(pMin,pMax)
                 if d != '': histo.GetXaxis().SetRangeUser(pMin,pMax)
@@ -6293,11 +6293,11 @@ def MCcomparison(pot = -1, pMin = 5.,pMax=300.,ptMax = 4.,simpleEffCor=0.023,eff
             for i1 in optSorted:
                 i = i1
                 source = ""
-                if not i.find('MC10')<0: 
+                if not i.find('MC10')<0:
                     if d != "":continue
                     i = 'MC10'
                     source = i1.split('MC10')[1]
-                elif not i.find('MC')<0: 
+                elif not i.find('MC')<0:
                     i = 'MC'
                     source = i1.split('MC')[1]
                 xx = x+source
@@ -6331,7 +6331,7 @@ def MCcomparison(pot = -1, pMin = 5.,pMax=300.,ptMax = 4.,simpleEffCor=0.023,eff
                 i = i1
                 source = ""
                 if not i.find('MC10')<0:continue
-                elif not i.find('MC')<0: 
+                elif not i.find('MC')<0:
                     i = 'MC'
                     source = i1.split('MC')[1]
                 if i=='MC10': continue # Pt/Px distributions from 1GeV and 10GeV are merged into one
@@ -6342,7 +6342,7 @@ def MCcomparison(pot = -1, pMin = 5.,pMax=300.,ptMax = 4.,simpleEffCor=0.023,eff
                 histo.SetMarkerSize(1)
                 histo.SetLineColor(opt[i1][1])
                 histo.SetStats(0)
-                if i =='': 
+                if i =='':
                     histo.SetMinimum( histo.GetBinContent(histo.FindBin(ptMax))*0.01 )
                     histo.GetXaxis().SetRangeUser(0.,ptMax)
                 if noTitle: histo.SetTitle('')
@@ -6364,7 +6364,7 @@ def MCcomparison(pot = -1, pMin = 5.,pMax=300.,ptMax = 4.,simpleEffCor=0.023,eff
                 i = i1
                 source = ""
                 if not i.find('MC10')<0:continue
-                elif not i.find('MC')<0: 
+                elif not i.find('MC')<0:
                     i = 'MC'
                     source = i1.split('MC')[1]
                 if i=='MC10': continue
@@ -6565,16 +6565,16 @@ def MCcomparison(pot = -1, pMin = 5.,pMax=300.,ptMax = 4.,simpleEffCor=0.023,eff
                         ratio.SetBinContent(mx,ratio.GetBinContent(mx)/Nmc)
                 if withAllTracks and x == '': continue
                 t = 'MC-Comparison ratios'+proj+xx
-                if not h.has_key(t): 
+                if not h.has_key(t):
                     ut.bookCanvas(h,key=t,title='Data / MC',nx=900,ny=600,cx=1,cy=1)
                 h[t].cd(1)
                 h['leg'+t]=ROOT.TLegend(0.11,0.67,0.56,0.86)
                 histo = h['I-'+proj+xx+'Ratio']
                 histo.SetLineColor(ROOT.kBlue)
                 histo.SetMaximum(3.)
-                if xx.find('_x')<0: 
+                if xx.find('_x')<0:
                     histo.GetXaxis().SetRangeUser(0.,ptMax)
-                else:               
+                else:
                     histo.GetXaxis().SetRangeUser(pMin,pMax)
                 histo.SetMinimum(0.0)
                 histo.SetTitle('Ratio Data/MC '+h['I-'+proj+xx+'Ratio'].GetTitle())
@@ -6599,7 +6599,7 @@ def MCcomparison(pot = -1, pMin = 5.,pMax=300.,ptMax = 4.,simpleEffCor=0.023,eff
 # now in 2D
             asymVersion = False
             t = 'MC-Comparison ratios'+proj+'2D'
-            if not h.has_key(t): 
+            if not h.has_key(t):
                     ut.bookCanvas(h,key=t,title='Data / MC',nx=1800,ny=900,cx=1,cy=1)
             h[t].cd(1)
             ROOT.gStyle.SetPaintTextFormat("5.2f")
@@ -6641,7 +6641,7 @@ def MCcomparison(pot = -1, pMin = 5.,pMax=300.,ptMax = 4.,simpleEffCor=0.023,eff
                         else: # ratio  version
                            R = (Nda/Nmc)
                            eR = ROOT.TMath.Sqrt( (R/Nmc*eNmc)**2+(R/Nda*eNda)**2 )
-                    else:      
+                    else:
                         R  = 0. # -1      # R = 0
                         eR = 0.
                     h[proj+x+'Ratio'].SetBinContent(mx,my,R)
@@ -6658,7 +6658,7 @@ def MCcomparison(pot = -1, pMin = 5.,pMax=300.,ptMax = 4.,simpleEffCor=0.023,eff
             myPrint(h[t],label+'Ratios2D'+proj.replace('/',''))
 # data
     t='pPt2d'
-    if not h.has_key(t): 
+    if not h.has_key(t):
         ut.bookCanvas(h,key=t,title='Data',nx=1200,ny=900,cx=1,cy=1)
     tc = h[t].cd()
     tc.SetLogz(1)
@@ -6680,7 +6680,7 @@ def MCcomparison(pot = -1, pMin = 5.,pMax=300.,ptMax = 4.,simpleEffCor=0.023,eff
 
 # pt in slices of P
     for t in ['MC-Comparison Pt']:
-        if not h.has_key(t): 
+        if not h.has_key(t):
             if pMax > 310: ut.bookCanvas(h,key=t,title=' MC / Data '+t.split(' ')[1],nx=1800,ny=900,cx=6,cy=2)
             else:          ut.bookCanvas(h,key=t,title=' MC / Data '+t.split(' ')[1],nx=1800,ny=900,cx=5,cy=2)
         y = 1
@@ -6696,10 +6696,10 @@ def MCcomparison(pot = -1, pMin = 5.,pMax=300.,ptMax = 4.,simpleEffCor=0.023,eff
             for i1 in optSorted:
                 i = i1
                 source = ""
-                if not i.find('MC10')<0: 
+                if not i.find('MC10')<0:
                     i = 'MC10'
                     source = i1.split('MC10')[1]
-                elif not i.find('MC')<0: 
+                elif not i.find('MC')<0:
                     i = 'MC'
                     source = i1.split('MC')[1]
                 if i=='MC10': continue
@@ -6710,7 +6710,7 @@ def MCcomparison(pot = -1, pMin = 5.,pMax=300.,ptMax = 4.,simpleEffCor=0.023,eff
                 mx1 = ut.findMaximumAndMinimum(h[ proj+x+interval])[1]
                 mx2 = ut.findMaximumAndMinimum(h['MC'+proj+x+interval])[1]
                 hMaPx = max(mx1,mx2)
-                if rebinValue>1: 
+                if rebinValue>1:
                   h[hname].Rebin(rebinValue)
                   h[hname].Scale(1./rebinValue)
                 h[hname].GetXaxis().SetRangeUser(0.,ptMax)
@@ -6812,10 +6812,10 @@ def MCcomparison(pot = -1, pMin = 5.,pMax=300.,ptMax = 4.,simpleEffCor=0.023,eff
                 if i1.find('MC')<0: continue
                 if i1.find('MC10')<0 and case==21: continue
                 if not i1.find('MC10')<0 and case==6: continue
-                if not i1.find('MC10')<0: 
+                if not i1.find('MC10')<0:
                     i = 'MC10'
                     source = i1.split('MC10')[1]
-                elif not i.find('MC')<0: 
+                elif not i.find('MC')<0:
                     i = 'MC'
                     source = i1.split('MC')[1]
                 if source == '': continue
@@ -6843,12 +6843,12 @@ def singlePtSlices():
    t='MC-Comparison Pt'
    tx = h['dummy'].cd()
    tx.SetLogy(0)
-   for c in h[t].GetListOfPrimitives(): 
+   for c in h[t].GetListOfPrimitives():
       histos = {}
       k = 2
       for p in c.GetListOfPrimitives():
          if p.GetName().find('p/pt')==0: histos[1]=p
-         elif p.GetName().find('MCp/pt')==0: 
+         elif p.GetName().find('MCp/pt')==0:
              histos[k]=p
              k+=1
          elif p.GetTitle().find('Legend')==0:histos[0]=p
@@ -6884,7 +6884,7 @@ def MCcomparisonHitmaps(MC='1GeV',first=False):
         f.Close()
         for s in range(1,5):
             for p in range(2):
-                for l in range(2): 
+                for l in range(2):
                     xLayers[s][p][l]['_x'].Reset()
                     if s==1: xLayers[s][p][l]['_u'].Reset()
                     if s==2: xLayers[s][p][l]['_v'].Reset()
@@ -6983,19 +6983,19 @@ def compareRuns(runs=[]):
             if not os.path.isdir(x): continue
             r = int(x[x.rfind('/')+1:].split('_')[2])
             if r in noField: continue
-            if not hruns.has_key(r): 
+            if not hruns.has_key(r):
                 runs.append(r)
                 hruns[r]={}
                 ut.readHists(hruns[r],'momDistributions-'+r+'.root',interestingHistos)
     else:
         for r in runs:
-            if not hruns.has_key(r): 
+            if not hruns.has_key(r):
                 hruns[r]={}
                 ut.readHists(hruns[r],'momDistributions_RUN_8000_'+str(r)+'.root')
     runs.sort()
     first = True
     j=0
-    if not h.has_key('RunComparison'): 
+    if not h.has_key('RunComparison'):
         ut.bookCanvas(h,key='RunComparison',title='Momentum',nx=1600,ny=1200,cx=1,cy=0)
         ut.bookCanvas(h,key='EventStatistics',title='Event Statistics',nx=1800,ny=800,cx=1,cy=0)
         ut.bookHist(h,'HEventStatistics','Event Statistics;run number',100,2000,3000)
@@ -7005,7 +7005,7 @@ def compareRuns(runs=[]):
     for r in runs:
         first = False
         hname = 'p/pt_projx'
-        if not hruns[r].has_key('Trscalers'): 
+        if not hruns[r].has_key('Trscalers'):
             print "!!!!!   no entry for RUN",r
             continue
         print ">>>>>>   statistics for RUN",r
@@ -7024,7 +7024,7 @@ def compareRuns(runs=[]):
         hruns[r][hname].SetLineWidth(3)
         hruns[r][hname].SetStats(0)
         hruns[r][hname].SetTitle(str(r))
-        if first:  
+        if first:
             hruns[r][hname].Draw('PLC PMC')
             first = False
         else:  hruns[r][hname].Draw('same PLC PMC')
@@ -7497,10 +7497,10 @@ def recoStep0():
     for s in h['tMinAndTmax']: RTrelations['rt'+s] = h['rt'+s]
     makeRTrelPersistent(RTrelations)
 def recoStep1(PR=11):
-# make fitted tracks  
+# make fitted tracks
     #disableBranches()
     global MCdata
-    fGenFitArray = ROOT.TClonesArray("genfit::Track") 
+    fGenFitArray = ROOT.TClonesArray("genfit::Track")
     fGenFitArray.BypassStreamer(ROOT.kTRUE)
     fitTracks   = sTree.Branch("FitTracks", fGenFitArray,32000,-1)
     fTrackInfoArray = ROOT.TClonesArray("TrackInfo")
@@ -7508,7 +7508,7 @@ def recoStep1(PR=11):
     TrackInfos      = sTree.Branch("TrackInfos", fTrackInfoArray,32000,-1)
     fRPCTrackArray = {'X':ROOT.TClonesArray("RPCTrack"),'Y':ROOT.TClonesArray("RPCTrack")}
     RPCTrackbranch = {}
-    for x in fRPCTrackArray: 
+    for x in fRPCTrackArray:
         fRPCTrackArray[x].BypassStreamer(ROOT.kTRUE)
         RPCTrackbranch[x] = sTree.Branch("RPCTrack"+x, fRPCTrackArray[x],32000,-1)
     if sTree.GetBranch('MCTrack'): MCdata = True
@@ -7558,7 +7558,7 @@ def getParOfRTcorrectio():
 def recoStep2():
 # refit tracks with improved RT relation
     global MCdata
-    fGenFitArray = ROOT.TClonesArray("genfit::Track") 
+    fGenFitArray = ROOT.TClonesArray("genfit::Track")
     fGenFitArray.BypassStreamer(ROOT.kTRUE)
     fitTracks   = sTree.Branch("FitTracks_refitted", fGenFitArray,32000,-1)
     fTrackInfoArray = ROOT.TClonesArray("TrackInfo")
@@ -7605,14 +7605,14 @@ def recoMuonTaggerTracks():
         sTree = f.cbmsim
     fRPCTrackArray = {'X':ROOT.TClonesArray("RPCTrack"),'Y':ROOT.TClonesArray("RPCTrack")}
     RPCTrackbranch = {}
-    for x in fRPCTrackArray: 
+    for x in fRPCTrackArray:
         fRPCTrackArray[x].BypassStreamer(ROOT.kTRUE)
         RPCTrackbranch[x] = sTree.Branch("RPCTrack"+x, fRPCTrackArray[x],32000,-1)
     for n in range(sTree.GetEntries()):
         if n%10000==0: print "Now at event",n,"of",sTree.GetEntries(),sTree.GetCurrentFile().GetName(),time.ctime()
         rc = sTree.GetEvent(n)
         for x in ['X','Y']: fRPCTrackArray[x].Clear()
-        if MCdata: 
+        if MCdata:
             if sTree.FitTracks.GetEntries()==0:
                 for x in ['X','Y']: RPCTrackbranch[x].Fill()
                 continue
@@ -7664,7 +7664,7 @@ def anaResiduals():
 if options.command == "":
     print "existing methods"
     print " --- plotHitMaps(): hitmaps / layer, TDC / layer, together with list of noisy channels"
-    print " --- plotEvent(n) : very basic event display, just x hits in x/z projection " 
+    print " --- plotEvent(n) : very basic event display, just x hits in x/z projection "
     print " --- plotRPCHitmap() : basic plots for RPC "
     print " --- momentum plot and track fitting tests:"
     print " ---     fitTracks(100) and fitTracks(100,True,True) with simple Display and 3d display of tracks with detector, low occupancy events"
@@ -7710,7 +7710,7 @@ elif options.command == "recoStep1":
         importRTrel()
         withDefaultAlignment = False
         sigma_spatial = 0.25
-        withCorrections = True  
+        withCorrections = True
     print "add fitted tracks"
     importAlignmentConstants()
     recoStep1(PR=11)
@@ -7725,7 +7725,7 @@ elif options.command == "recoStep2":
         importRTrel()
         withDefaultAlignment = False
         sigma_spatial = 0.25
-        withCorrections = True  
+        withCorrections = True
     print "add refitted tracks"
     importAlignmentConstants()
     recoStep2()
@@ -7752,7 +7752,7 @@ elif options.command == "alignment":
         importRTrel()
         withDefaultAlignment = False
         sigma_spatial = 0.25
-        withCorrections = True   
+        withCorrections = True
     h['hitMapsX'] = 1
     importAlignmentConstants()
     plotBiasedResiduals(PR=13,minP=10)
@@ -7787,7 +7787,7 @@ elif options.command == "studyDeltaRays":
     if sTree.GetBranch('MCTrack'): MCdata = True
     studyDeltaRays()
 elif options.command == "MCJpsiProd":
-    MCJpsiProd() 
+    MCJpsiProd()
 elif options.command == "test":
     yep.start('output.prof')
     for x in sTree.GetListOfBranches(): sTree.SetBranchStatus(x.GetName(),0)

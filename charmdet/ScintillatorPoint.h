@@ -25,7 +25,7 @@ class ScintillatorPoint:public FairMCPoint
      *@param length   Track length since creation [cm]
      *@param eLoss    Energy deposit [GeV]
      **/
-    
+
 
     ScintillatorPoint(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom,
                      Double_t tof, Double_t length, Double_t eLoss, Int_t pdgcode);
@@ -38,12 +38,12 @@ class ScintillatorPoint:public FairMCPoint
     virtual void Print(const Option_t* opt) const;
     Int_t PdgCode() const {return fPdgCode;}
 
-    
+
   private:
-    
-    Int_t fPdgCode; 
+
+    Int_t fPdgCode;
     /** Copy constructor **/
-    
+
     ScintillatorPoint(const ScintillatorPoint& point);
     ScintillatorPoint operator=(const ScintillatorPoint& point);
 

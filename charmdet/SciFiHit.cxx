@@ -14,18 +14,18 @@ void SciFiHit::GetSciFiXYZ(TVector3 &v, int detID)
 {
   TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
   double origin[3] = {0,0,0};
-  double scifiboxcenter[3] = {0,0,0}; // CHANGE  
+  double scifiboxcenter[3] = {0,0,0}; // CHANGE
   TGeoNode *scifiboxnode = nav->GetCurrentNode();
   scifiboxnode->LocalToMaster(origin,scifiboxcenter);
-  
+
   TGeoVolume *scifibox = nav->GetCurrentVolume();
   double scifiboxdz = ((TGeoBBox*) scifibox->GetShape())->GetDZ(); //semithickness
-  
+
   int32_t partitionID;
   const int boardId = (fDetectorID) / pow(10,5);
   ch = (fDetectorID - boardId * pow(10,5));
 
-  // layer (0,1,..,7) 
+  // layer (0,1,..,7)
   int layer = ch/1536;
 
   double gap_die  = 0.0220;// cm
@@ -48,10 +48,10 @@ void SciFiHit::GetSciFiXYZ(TVector3 &v, int detID)
   z=z_midpoint_Ref[layer];
 
   // how much the channels should be shifted so that channels ranges btw 0-1535
-  int nshift = layer*1536;  
+  int nshift = layer*1536;
 
   // channel in each layer ranging from 0-1535
-  int ch_layer = ch - nshift; 
+  int ch_layer = ch - nshift;
 
   //compute half layer width to be entered in the middle of the plane
   double half_layer = 1536./2 * ch_width + 6 * gap_die + 5.5 * gap_SiPM;
@@ -109,4 +109,3 @@ void SciFiHit::GetSciFiXYZ(TVector3 &v, int detID)
   v.SetXYZ(x,y,z);
 
 }
-

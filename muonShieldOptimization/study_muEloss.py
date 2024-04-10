@@ -1,4 +1,4 @@
-#!/usr/bin/env python 
+#!/usr/bin/env python
 from __future__ import print_function
 import ROOT,os,sys,time,shipRoot_conf
 ROOT.gROOT.ProcessLine('#include "FairModule.h"')
@@ -12,12 +12,12 @@ runnr        = 1
 nev          = 1000000
 
 setup = {}
-# 
+#
 setup['NA62'] = {'thickness': 125*u.cm/2., 'material':'krypton','momentum': 10*u.GeV,'maxTheta':350*u.GeV} # 3000s for 5M
 # rad length 4.71cm  125/4.71 = 27
 # https://indico.in2p3.fr/event/420/contributions/29860/attachments/24033/29479/moriond.pdf
 setup['ATLAS'] = {'thickness': 172*u.cm/2., 'material':'iron','momentum': 350*u.GeV,'maxTheta':350*u.GeV} # 3000s for 5M
-# atlas testbeam http://cds.cern.ch/record/1123152/files/CERN-THESIS-2008-070.pdf?version=1 
+# atlas testbeam http://cds.cern.ch/record/1123152/files/CERN-THESIS-2008-070.pdf?version=1
 # LArEM ~24X0  TileCal 4 compartments, same size LiqAr rad length 14cm
 # http://cds.cern.ch/record/1263861/files/ATL-CAL-PUB-2010-001.pdf    tile cal mainly iron, LAr 1.35 DM 0.63 TileCal 8.18
 # iron intlen 16.97 -> (1.35 + 0.63 + 8.18)*16.97
@@ -42,7 +42,7 @@ outFile = "msc"+s+".root"
 theSeed      = 0
 ecut      = 0.0
 
-import rootUtils as ut 
+import rootUtils as ut
 h={}
 
 def run():
@@ -60,9 +60,9 @@ def run():
  if nev==0: run.SetOutputFile("dummy.root")
  else: run.SetOutputFile(outFile)  # Output file
  run.SetUserConfig("g4Config.C") # user configuration file default g4Config.C
- rtdb = run.GetRuntimeDb() 
+ rtdb = run.GetRuntimeDb()
 # -----Materials----------------------------------------------
- run.SetMaterials("media.geo")  
+ run.SetMaterials("media.geo")
 # -----Create geometry----------------------------------------------
  cave= ROOT.ShipCave("CAVE")
  cave.SetGeometryFileName("cave.geo")
@@ -71,7 +71,7 @@ def run():
  target = ROOT.simpleTarget()
  material, thickness, 0
 #
- target.SetEnergyCut(ecut*u.GeV) 
+ target.SetEnergyCut(ecut*u.GeV)
  if storeOnlyMuons: target.SetOnlyMuons()
  target.SetParameters(material,thickness,0.)
  run.AddModule(target)
@@ -108,9 +108,9 @@ def run():
  timer.Stop()
  rtime = timer.RealTime()
  ctime = timer.CpuTime()
- print(' ') 
- print("Macro finished succesfully.") 
- print("Output file is ",  outFile) 
+ print(' ')
+ print("Macro finished succesfully.")
+ print("Output file is ",  outFile)
  print("Real time ",rtime, " s, CPU time ",ctime,"s")
 
 def makePlot(f,book=True):
@@ -135,7 +135,7 @@ def makePlot(f,book=True):
   Ein  = sTree.MCTrack[0].GetEnergy()
   M = sTree.MCTrack[0].GetMass()
   Eloss = 0
-  for aHit in sTree.vetoPoint: 
+  for aHit in sTree.vetoPoint:
     Eloss+=aHit.GetEnergyLoss()
     print(Ein,Eloss/Ein)
   rc = h['eloss'].Fill(Ein,Eloss/Ein)
@@ -208,7 +208,7 @@ def NA62():
 
 def makeSummaryPlot():
 # using data in /mnt/hgfs/microDisk/Data/eloss/eloss_sum.root
-# krypton total interaction length= 1.97246306079 total rad length= 26.5231000393 
+# krypton total interaction length= 1.97246306079 total rad length= 26.5231000393
  pdg={10.0:1.914,14.0:1.978,20.0:2.055,30.0:2.164,40.0:2.263,80.0:2.630,100.:2.810,140.:3.170,200.:3.720,277.:4.420,300.:4.631,400.:5.561}
  h['Gpdg'] = ROOT.TGraph(len(pdg))
  Gpdg = h['Gpdg']
@@ -234,10 +234,10 @@ def makeSummaryPlot():
   rc = h[t].Divide(h['0'] )
   h[t].Rebin(2)
   h[t].Scale(1./2.)
-  if t!=93: 
+  if t!=93:
     h[t].SetMarkerColor(ROOT.kBlue)
     h[t].Draw('same')
-  else: 
+  else:
     h[t].SetMaximum(1E-5)
     h[t].SetMarkerColor(ROOT.kMagenta)
     h[t].SetXTitle('incoming muon momentum [GeV/c]')

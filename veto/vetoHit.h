@@ -23,7 +23,7 @@ class vetoHit : public ShipHit
     /** Destructor **/
     virtual ~vetoHit();
 
-    /** Accessors **/   
+    /** Accessors **/
     Double_t GetX();
     Double_t GetY();
     Double_t GetZ();
@@ -31,7 +31,7 @@ class vetoHit : public ShipHit
     TGeoNode* GetNode();
     /** Modifier **/
     void SetEloss(Double_t val){fdigi=val;}
-    void SetTDC(Double_t val){ft=val;}     
+    void SetTDC(Double_t val){ft=val;}
 
     /** Output to screen **/
 

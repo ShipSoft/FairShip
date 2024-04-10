@@ -13,7 +13,7 @@ class ShipFieldPar;
 
 class FairField;
 
-class ShipFieldCreator : public FairFieldFactory 
+class ShipFieldCreator : public FairFieldFactory
 {
 
  public:
@@ -22,10 +22,10 @@ class ShipFieldCreator : public FairFieldFactory
   virtual FairField* createFairField();
   virtual void SetParm();
   ClassDef(ShipFieldCreator,1);
-  
+
  protected:
   ShipFieldPar* fFieldPar;
-  
+
  private:
   ShipFieldCreator(const ShipFieldCreator&);
   ShipFieldCreator& operator=(const ShipFieldCreator&);

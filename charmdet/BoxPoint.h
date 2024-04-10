@@ -26,7 +26,7 @@ class BoxPoint : public FairMCPoint
      *@param eLoss    Energy deposit [GeV]
      **/
 
-    
+
     BoxPoint(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom,
 		Double_t tof, Double_t length, Double_t eLoss, Int_t pdgCode);
 
@@ -35,7 +35,7 @@ class BoxPoint : public FairMCPoint
 
     /** Output to screen **/
     virtual void Print(const Option_t* opt) const;
-    
+
 
     Int_t PdgCode() const {return fPdgCode;}
 
@@ -43,9 +43,9 @@ class BoxPoint : public FairMCPoint
 
 
     Int_t fPdgCode;
-    
+
     /** Copy constructor **/
-    
+
     BoxPoint(const BoxPoint& point);
     BoxPoint operator=(const BoxPoint& point);
 

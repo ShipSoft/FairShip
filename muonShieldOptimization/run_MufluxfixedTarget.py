@@ -1,4 +1,4 @@
-#!/usr/bin/env python 
+#!/usr/bin/env python
 from __future__ import print_function
 import ROOT,os,sys,time,shipRoot_conf
 import shipunit as u
@@ -28,10 +28,10 @@ outputDir    = "."
 theSeed      = int(10000 * time.time() % 10000000)
 work_dir  = "./"
 ecut      = 0.5 # GeV   with 1 : ~1sec / event, with 2: 0.4sec / event, 10: 0.13sec
-                 
+
 dy           = 10.
 dv           = 5 # 4=TP elliptical tank design, 5 = optimized conical rectangular design
-ds           = 7 # 5=TP muon shield, 6=magnetized hadron, 7=short magnet design 
+ds           = 7 # 5=TP muon shield, 6=magnetized hadron, 7=short magnet design
 nud          = 1 # 0=TP, 1=new magnet option for short muon shield, 2= no magnet surrounding neutrino detector
 
 # example for primary interaction, nobias: python $FAIRSHIP/muonShieldOptimization/run_fixedTarget.py -n 10000 -e 10 -f -r 10
@@ -82,7 +82,7 @@ def init():
   ap.add_argument('-C', '--charm',      action='store_true',  dest='charm',  default=charm, help="generate charm decays")
   ap.add_argument('-B', '--beauty',     action='store_true',  dest='beauty', default=beauty, help="generate beauty decays")
   ap.add_argument('-M', '--storeOnlyMuons',  action='store_true',  dest='storeOnlyMuons',  default=storeOnlyMuons, help="store only muons, ignore neutrinos")
-# for charm production       
+# for charm production
   ap.add_argument('-cc','--chicc',action='store_true',  dest='chicc',  default=chicc, help="ccbar over mbias cross section")
   ap.add_argument('-bb','--chibb',action='store_true',  dest='chibb',  default=chibb, help="bbbar over mbias cross section")
   ap.add_argument('-p','--pot',action='store_true',  dest='npot',  default=npot, help="number of protons on target per spill to normalize on")
@@ -116,7 +116,7 @@ def init():
   withEvtGen     = args.withEvtGen
   charm  = args.charm
   beauty = args.beauty
-  if charm and beauty: 
+  if charm and beauty:
     logger.warn("charm and beauty decays are set! Beauty gets priority")
     charm = False
   charmInputFile = args.charmInputFile
@@ -166,10 +166,10 @@ run = ROOT.FairRunSim()
 run.SetName(mcEngine)  # Transport engine
 run.SetOutputFile(outFile)  # Output file
 run.SetUserConfig("g4Config.C") # user configuration file default g4Config.C
-rtdb = run.GetRuntimeDb() 
+rtdb = run.GetRuntimeDb()
 
 # -----Materials----------------------------------------------
-run.SetMaterials("media.geo")  
+run.SetMaterials("media.geo")
 # -----Create geometry----------------------------------------------
 import charmDet_conf as shipDet_conf
 modules = shipDet_conf.configure(run,ship_geo)
@@ -183,7 +183,7 @@ else:
  P8gen.SetCharmTarget() #looks for charm target instead of SHiP standard target
  P8gen.SetTarget("volTarget_1",0.,0.) # will distribute PV inside target, beam offset x=y=0.
  if ship_geo.Box.gausbeam:
-  primGen.SetBeam(0.,0., 0.5, 0.5) #more central beam, for hits in downstream detectors    
+  primGen.SetBeam(0.,0., 0.5, 0.5) #more central beam, for hits in downstream detectors
   primGen.SmearGausVertexXY(True) #sigma = x
  else:
   primGen.SetBeam(0.,0., ship_geo.Box.TX-1., ship_geo.Box.TY-1.) #Uniform distribution in x/y on the target (0.5 cm of margin at both sides)
@@ -205,7 +205,7 @@ if charm or beauty:
 primGen.AddGenerator(P8gen)
 #
 run.SetGenerator(primGen)
- 
+
 # -----Initialize simulation run------------------------------------
 run.Init()
 
@@ -236,9 +236,9 @@ run.Run(nev)
 timer.Stop()
 rtime = timer.RealTime()
 ctime = timer.CpuTime()
-print(' ') 
-print("Macro finished succesfully.") 
-print("Output file is ",  outFile) 
+print(' ')
+print("Macro finished succesfully.")
+print("Output file is ",  outFile)
 print("Real time ",rtime, " s, CPU time ",ctime,"s")
 
 if (ship_geo.MufluxSpectrometer.muflux==True):
@@ -252,7 +252,7 @@ if (ship_geo.MufluxSpectrometer.muflux==True):
  # normalization for charm
   poteq = P8gen.GetPotForCharm()
   fHeader.SetTitle("POT equivalent = %7.3G"%(poteq))
- else: 
+ else:
   fHeader.SetTitle("POT = "+str(nev))
  print("Data generated ", fHeader.GetTitle())
  t     = fin.cbmsim
@@ -261,13 +261,13 @@ if (ship_geo.MufluxSpectrometer.muflux==True):
  nEvents = 0
  for n in range(t.GetEntries()):
      rc = t.GetEvent(n)
-     if (t.ScintillatorPoint.GetEntries()>0): 
+     if (t.ScintillatorPoint.GetEntries()>0):
           rc = sTree.Fill()
-          nEvents+=1  
+          nEvents+=1
      #t.Clear()
  fout.cd()
  for x in fin.GetList():
-  if not x.Class().GetName().find('TH')<0: 
+  if not x.Class().GetName().find('TH')<0:
     xcopy = x.Clone()
     rc = xcopy.Write()
  sTree.AutoSave()
@@ -278,7 +278,7 @@ if (ship_geo.MufluxSpectrometer.muflux==True):
  fout.Close()
  os.system("mv "+tmpFile+" "+outFile)
 
- print("Number of events produced with activity after hadron absorber:",nEvents) 
+ print("Number of events produced with activity after hadron absorber:",nEvents)
 
 else:
  print("No post processing done")
@@ -293,4 +293,3 @@ if checkOverlap:
  run.CreateGeometryFile("%s/geofile_full.root" % (outputDir))
  import saveBasicParameters
  saveBasicParameters.execute("%s/geofile_full.root" % (outputDir),ship_geo)
-

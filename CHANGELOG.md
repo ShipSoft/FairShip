@@ -19,6 +19,8 @@ it in future.
 
 ### Fixed
 
+* Remove trailing whitespace and fix line endings
+
 ### Changed
 
 ### Removed

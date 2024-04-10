@@ -39,5 +39,3 @@ void hcalPoint::Print(const Option_t* opt) const
        << " cm,  Energy loss " << fELoss*1.0e06 << " keV" << endl;
 }
 // -------------------------------------------------------------------------
-
-

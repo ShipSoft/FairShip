@@ -17,14 +17,14 @@ class muonHit : public ShipHit
 
     /** Constructor with arguments
      *@param detID    Detector ID
-     *@param digi      digitized/measured TDC 
-     *@param flag      True/False, false if there is another hit with smaller tdc 
+     *@param digi      digitized/measured TDC
+     *@param flag      True/False, false if there is another hit with smaller tdc
      **/
     muonHit(Int_t detID, Float_t digi, Bool_t isValid);
     muonHit(muonPoint* p, Double_t t0);
 
     Int_t DetIDfromXYZ(TVector3 p); //provide mapping, true xyz to detectorID
-    TVector3 XYZfromDetID(Int_t detID);  // return centre of muon tile  
+    TVector3 XYZfromDetID(Int_t detID);  // return centre of muon tile
 /** Destructor **/
     virtual ~muonHit();
 

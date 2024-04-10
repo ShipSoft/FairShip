@@ -1,7 +1,7 @@
 #ifndef SHIPHIT_H
 #define SHIPHIT_H 1
 
-#include "TObject.h"              //  
+#include "TObject.h"              //
 
 #include "Rtypes.h"                     // for Double_t, Int_t, Double32_t, etc
 #include "TVector3.h"                   // for TVector3
@@ -33,7 +33,7 @@ class ShipHit : public TObject
     /** Accessors **/
     Double_t GetDigi()          const { return fdigi;      };
     Int_t    GetDetectorID()    const { return fDetectorID;  };
- 
+
     /** Modifiers **/
     void SetDigi(Float_t d) { fdigi = d; }
     void SetDetectorID(Int_t detID) { fDetectorID = detID; }

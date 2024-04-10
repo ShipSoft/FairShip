@@ -1,8 +1,8 @@
 # The name of our project is "ShipRoot".  CMakeLists files in this project can
-# refer to the root source directory of the project as ${ShipRoot_SOURCE_DIR} 
-# or as ${CMAKE_SOURCE_DIR} and to the root binary directory of the project as 
+# refer to the root source directory of the project as ${ShipRoot_SOURCE_DIR}
+# or as ${CMAKE_SOURCE_DIR} and to the root binary directory of the project as
 # ${ShipRoot_BINARY_DIR} or ${CMAKE_BINARY_DIR}.
-# This difference is important for the base classes which are in FAIRROOT 
+# This difference is important for the base classes which are in FAIRROOT
 # and ShipRoot.
 
 # Check if cmake has the required version
@@ -18,7 +18,7 @@ foreach(p
 endforeach()
 
 # Set name of our project to "ShipRoot". Has to be done
-# after check of cmake version since this is a new feature                  
+# after check of cmake version since this is a new feature
 project(ShipRoot)
 
 FIND_PATH(FAIRBASE NAMES FairRun.h  PATHS
@@ -38,7 +38,7 @@ Else (FAIRBASE)
   SET(FAIRROOTPATH $ENV{FAIRROOTPATH})
 EndIf (FAIRBASE)
 
-# where to look first for cmake modules, before ${CMAKE_ROOT}/Modules/ 
+# where to look first for cmake modules, before ${CMAKE_ROOT}/Modules/
 # is checked
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
 set(CMAKE_MODULE_PATH "${FAIRROOTPATH}/share/fairbase/cmake/modules"  ${CMAKE_MODULE_PATH})
@@ -106,14 +106,14 @@ CHECK_OUT_OF_SOURCE_BUILD()
 # message
 IF(NOT UNIX)
   MESSAGE(FATAL_ERROR "You're not on an UNIX system. The project was up to now only tested on UNIX systems, so we break here. If you want to go on please edit the CMakeLists.txt in the source directory.")
-ENDIF(NOT UNIX)  
+ENDIF(NOT UNIX)
 
 # Check if the external packages are installed into a separate install
 # directory
 CHECK_EXTERNAL_PACKAGE_INSTALL_DIR()
 
-# Set the build type. Possibilities are None, Debug, Release, 
-# RelWithDebInfo and MinSizeRel 
+# Set the build type. Possibilities are None, Debug, Release,
+# RelWithDebInfo and MinSizeRel
 #SET(CMAKE_BUILD_TYPE Debug)
 
 # searches for needed packages
@@ -155,8 +155,8 @@ ENDIF(DEFINED $ENV{GSL_ROOT})
 
   Message("-- Looking for Boost ...")
   # If an older version of boost is found both of the variables below are
-  # cached and in a second cmake run, a good boost version is found even 
-  # if the version is to old. 
+  # cached and in a second cmake run, a good boost version is found even
+  # if the version is to old.
   # To overcome this problem both variables are cleared before checking
   # for boost.
   Unset(Boost_INCLUDE_DIR CACHE)
@@ -178,8 +178,8 @@ SetBasicVariables()
 # compiler will not generate any warnings. This is usefull since one is only
 # interested about warnings from the own project. SYSTEM_INCLUDE_DIRECTORIES
 # is defined in FairMacros.cmake. In the moment the defined directories are
-# the root and boost include directories. 
-Set(SYSTEM_INCLUDE_DIRECTORIES 
+# the root and boost include directories.
+Set(SYSTEM_INCLUDE_DIRECTORIES
   ${SYSTEM_INCLUDE_DIRECTORIES}
   ${BASE_INCLUDE_DIRECTORIES}
   ${FAIRLOGGER_INCLUDE_DIR}
@@ -215,7 +215,7 @@ SET(LD_LIBRARY_PATH  ${CBMLIBDIR} ${LD_LIBRARY_PATH})
 #  Message("Set default install path ...")
 #ENDIF(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
 
-install(DIRECTORY geometry DESTINATION pnd_install 
+install(DIRECTORY geometry DESTINATION pnd_install
           PATTERN ".svn" EXCLUDE
           )
 

@@ -38,7 +38,7 @@ private:
   Double_t fY;
   /** A mark. Used for maximum exclusion. **/
   Int_t fMark;
-  /** Theta angle. 0 by default. Should be set outside if information 
+  /** Theta angle. 0 by default. Should be set outside if information
    * about photon origin are here. **/
   Double_t fTheta;
 
@@ -54,4 +54,3 @@ inline ecalMaximum::ecalMaximum(ecalCell* cell, Double_t cx, Double_t cy, Double
   ;
 }
 #endif
-

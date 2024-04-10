@@ -12,7 +12,7 @@ black=1
 red=2
 green=3
 blue=4
-yellow=5 
+yellow=5
 magenta=6
 cyan=7
 purple=9
@@ -22,8 +22,8 @@ def lhcbstyleSetup():
 ##################################
 # PURPOSE:
 #
-# This macro defines a standard style for (black-and-white) 
-# "publication quality" LHCb ROOT plots. 
+# This macro defines a standard style for (black-and-white)
+# "publication quality" LHCb ROOT plots.
 #
 # USAGE:
 #
@@ -37,14 +37,14 @@ def lhcbstyleSetup():
 # COMMENTS:
 #
 # Font:
-# 
+#
 # The font is chosen to be 62, this is helvetica-bold-r-normal with
 # precision 2.
 #
 # "Landscape histograms":
 #
 # The style here is designed for more or less square plots.
-# For longer histograms, or canvas with many pads, adjustements are needed. 
+# For longer histograms, or canvas with many pads, adjustements are needed.
 # For instance, for a canvas with 1x5 histograms:
 #  TCanvas* c1 = new TCanvas("c1", "L0 muons", 600, 800)
 #  c1.Divide(1,5)
@@ -111,7 +111,7 @@ def lhcbstyleSetup():
  lhcbstyle.SetLabelOffset(0.015)
 
 # by default, do not display histogram decorations:
- lhcbstyle.SetOptStat(0)  
+ lhcbstyle.SetOptStat(0)
  lhcbstyle.SetOptStat("emr")  # show only nent -e , mean - m , rms -r
 # full opts at http:#root.cern.ch/root/html/TStyle.html#TStyle:SetOptStat
  lhcbstyle.SetStatFormat("6.3g") # specified as c printf options
@@ -157,12 +157,12 @@ def lhcbstyleSetup():
 
 def printLHCb(optLR="L", optPrelim="Final", optText=""):
 #####################################
-# routine to print 'LHCb', 'LHCb Preliminary' on plots 
+# routine to print 'LHCb', 'LHCb Preliminary' on plots
 # options: optLR=L (top left) / R (top right) of plots
 #          optPrelim= Final (LHCb), Prelim (LHCb Preliminary), Other
 #          optText= text printed if 'Other' specified
 ##################################
-  if optLR=="R" :   
+  if optLR=="R" :
     lhcbName = TPaveText(0.70 - lhcbstyle.GetPadRightMargin(),
                          0.75 - lhcbstyle.SetPadTopMargin(0.05),
                          0.95 - lhcbstyle.GetPadRightMargin(),
@@ -175,11 +175,11 @@ def printLHCb(optLR="L", optPrelim="Final", optText=""):
                          0.95 - lhcbstyle.GetPadTopMargin(),
                                         "BRNDC")
   else :
-   print("printLHCb: option unknown" , optLR)  
+   print("printLHCb: option unknown" , optLR)
   if optPrelim=="Final":
     lhcbName.AddText("LHCb")
   elif optPrelim=="Prelim":
-    lhcbName.AddText("#splitline{LHCb}{#scale[1.0]{Preliminary}}")  
+    lhcbName.AddText("#splitline{LHCb}{#scale[1.0]{Preliminary}}")
   elif optPrelim=="Other":
     lhcbName.AddText(optText)
   else :

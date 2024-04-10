@@ -113,4 +113,3 @@ ecalCluster::~ecalCluster()
 {
   delete [] fMaximums;
 }
-

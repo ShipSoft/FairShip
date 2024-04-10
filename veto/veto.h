@@ -111,8 +111,8 @@ class veto: public FairDetector
     Float_t     fT2z;               //!  z-position of tracking station 2
     Float_t     fT3z;               //!  z-position of tracking station 3
     Float_t     fT4z;               //!  z-position of tracking station 4
-    Int_t          fDesign;            //!  1: cylindrical with basic tracking chambers, 
-                                       //   2: conical with basic tracking chambers, but no trscking chamber at entrance 
+    Int_t          fDesign;            //!  1: cylindrical with basic tracking chambers,
+                                       //   2: conical with basic tracking chambers, but no trscking chamber at entrance
                                        //   3: cylindrical, no tracking chambers defined but sensitive walls, strawchambers separated
                                        //   4: design used for TP, smaller upstream part in x
                                        //   5: optimized design, changed to trapezoidal shape
@@ -139,10 +139,10 @@ class veto: public FairDetector
     TString supportMedIn_name;    //! medium of support structure, iron, balloon
     TString supportMedOut_name;   //! medium of support structure, aluminium, balloon
     TString decayVolumeMed_name;  //! medium of decay volume, vacuum/air/helium
-    TGeoMedium *vetoMed;    //! 
-    TGeoMedium *supportMedIn; //! 
-    TGeoMedium *supportMedOut; //! 
-    TGeoMedium *decayVolumeMed; //! 
+    TGeoMedium *vetoMed;    //!
+    TGeoMedium *supportMedIn; //!
+    TGeoMedium *supportMedOut; //!
+    TGeoMedium *decayVolumeMed; //!
 
     Float_t fXstart,fYstart; // horizontal/vertical width at start of tank
     Float_t zFocusX,zFocusY; // focus points for conical design
@@ -169,12 +169,12 @@ class veto: public FairDetector
                      int blockNr , int nx, int ny,
 		  double z1, double z2 , double Zshift, double dist, double distC,
 		    double wallThick, double liscThick1, double liscThick2,double ribThick);
-    
+
     TGeoVolumeAssembly* GeoCornerRib(TString xname, double ribThick, double lt1,double lt2 , double dz, double slopeX, double slopeY,Int_t color, TGeoMedium *material, Bool_t sens);
    int makeId(double z,double x, double y);
    int liscId(TString ShapeTypeName,int blockNr,int Zlayer,int number, int position);
-    
-   
+
+
         TGeoVolume* GeoSideObj(TString xname, double dz,
 			     double a1, double b1,double a2, double b2,double dA, double dB,
 				Int_t color, TGeoMedium *material, Bool_t sens);
@@ -190,15 +190,15 @@ class veto: public FairDetector
     TGeoVolume* MakeMagnetSegment(Int_t seg);
     TGeoVolume* MakeLidSegments(Int_t seg,Double_t dx,Double_t dy);
 
-    
+
     Int_t fDeltaCpy;	//Delta in copy number for solid plastic veto
-    std::map<Int_t, TVector3> fCenters; //! Map of copy number to center of tiles 
+    std::map<Int_t, TVector3> fCenters; //! Map of copy number to center of tiles
 
     // Return copy number for solid plastic scitillator veto
-    inline Int_t GetCopyNumber(Int_t iz, Int_t iplank, Int_t region) 
+    inline Int_t GetCopyNumber(Int_t iz, Int_t iplank, Int_t region)
     { return (iz*1000+iplank)*10+region+fDeltaCpy; }
 
-    // Add center of volume and its dx, dy and dz (currently dummy) to a map for futher export 
+    // Add center of volume and its dx, dy and dz (currently dummy) to a map for futher export
     void InnerAddToMap(Int_t ncpy, Double_t x, Double_t y, Double_t z, Double_t dx=-1111, Double_t dy=-1111, Double_t dz=-1111);
 
 

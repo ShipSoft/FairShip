@@ -61,4 +61,3 @@ FairParSet* BoxContFact::createContainer(FairContainer* c)
 */
    return 0;
 }
-

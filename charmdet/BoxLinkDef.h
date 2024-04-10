@@ -30,7 +30,3 @@
 #pragma link C++ class MillepedeCaller+;
 
 #endif
-
-
-
-

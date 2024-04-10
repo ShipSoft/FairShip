@@ -92,7 +92,7 @@ class ConfigRegistry(with_metaclass(_SingletonDict, dict)):
 
 
 class AttrDict(dict):
-    """ 
+    """
     dict class that can address its keys as fields, e.g.
     d['key'] = 1
     assert d.key == 1

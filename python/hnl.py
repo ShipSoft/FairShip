@@ -85,7 +85,7 @@ class constants():
                             'eta':1.2*0.130*u.GeV,
                             'eta1':0.152*u.GeV,
                             'eta_c':0.335*u.GeV,
-                            'rho+':0.209*u.GeV, 
+                            'rho+':0.209*u.GeV,
                             'rho0':0.209*u.GeV,
                             'omega':0.195*u.GeV,
                             'phi':0.229*u.GeV,
@@ -170,7 +170,7 @@ class HNLbranchings():
                         'N -> eta_c nu_tau' ]
         if self.MN>=1.:
             self.QCD_corr = self.QCD_correction()
-            
+
         if debug:
             print("HNLbranchings instance initialized with couplings:")
             print("\tU2e   = %s"%self.U2[0])
@@ -178,17 +178,17 @@ class HNLbranchings():
             print("\tU2tau = %s"%self.U2[2])
             print("and mass:")
             print("\tm = %s GeV"%(self.MN))
-    
+
     def sqrt_lambda(self,a,b,c):
         """
         Useful function for decay kinematics. Returns 0 for kinematically forbidden region
         """
         l = a**2 + b**2 + c**2 - 2*a*b - 2*b*c - 2*a*c
-        if l<0: 
+        if l<0:
             return 0
         else:
             return math.sqrt(l)
-        
+
     def QCD_correction(self):
         """
         Returns 3-loops QCD correction to HNL decay width into quarks
@@ -199,7 +199,7 @@ class HNLbranchings():
         qcd_corr += 5.2 * (a_s / math.pi)**2.
         qcd_corr += 26.4 * (a_s / math.pi)**3.
         return qcd_corr
-    
+
     def Width_3nu(self):
         """
         Returns the HNL decay width into three neutrinos
@@ -207,7 +207,7 @@ class HNLbranchings():
         width = (c.GF**2.)*(self.MN**5.)*sum(self.U2)/(192.*(u.pi**3.))
         width = 2.*width # Majorana case (charge conjugate channels)
         return width
-    
+
     def Width_nu_f_fbar(self, alpha, beta):
         """
         Returns the HNL tree level decay width into the fermion-antifermion pair and a neutrino (decay through Z boson or Z and W)
@@ -251,7 +251,7 @@ class HNLbranchings():
                         + 4.*C2*( x**2. *(2.+10.*x**2. -12.*x**4.) * math.sqrt(1.-4.*x**2) + 6.*x**4. *(1.-2.*x**2+2.*x**4)*L ) )
         width = 2.*width # Majorana case (charge conjugate channels)
         return width
-    
+
     def Integrand(self,xx,xi):
         """
         Function to integrate needed for numerical integration using ROOT. Needed for 3-body decays trough W boson.
@@ -269,12 +269,12 @@ class HNLbranchings():
         res *= self.sqrt_lambda(x,xl2,xd2)
         res *= self.sqrt_lambda(1.,x,xu2)
         return res
-    
+
     def I(self,x1,x2,x3):
         """
         Numerical integral needed for 3-body decays trough W boson.
         xi = mi/MN
-        """ 
+        """
         theFunction = self.Integrand
         func = ROOT.TF1('func',theFunction,0,1,3) # Setting function
         func.SetParameters(x1,x2,x3)
@@ -286,7 +286,7 @@ class HNLbranchings():
         ig.SetRelTolerance(0.001)
         res = 12. * ig.Integral(xmin,xmax)
         return res
-    
+
     def Width_l1_l2_nu2(self, alpha, beta):
         """
         Returns the HNL decay width into two different flavour leptons and a neutrino (decay through W boson)
@@ -309,7 +309,7 @@ class HNLbranchings():
         width = width*self.I(x1,x2,0)
         width = 2.*width # Majorana case (charge conjugate channels)
         return width
-    
+
     def Width_l_u_d(self, alpha, beta, gamma):
         """
         Returns the HNL tree level decay width into a charged lepton, up quark and down quark (decay through W boson)
@@ -388,7 +388,7 @@ class HNLbranchings():
             width *= ( (1. - xl**2.)**2. + xh**2.*(1. + xl**2.) - 2.*xh**4. )
         width = 2.*width # Majorana case (charge conjugate channels)
         return width
-    
+
     def Width_charged_leptons(self):
         """
         Returns the total HNL leptonic decay width with charged leptons in final state
@@ -399,7 +399,7 @@ class HNLbranchings():
                 width += self.Width_nu_f_fbar(l1,l2)
                 width += self.Width_l1_l2_nu2(l1,l2)
         return width
-    
+
     def Width_neutral_mesons(self):
         """
         Returns the total HNL decay width into a neutral meson and a neutrino
@@ -410,7 +410,7 @@ class HNLbranchings():
             for l in [1,2,3]:
                 width += self.Width_H0_nu(m,l)
         return width
-    
+
     def Width_charged_mesons(self):
         """
         Returns the total HNL decay width into a charged meson and a charged lepton
@@ -468,11 +468,11 @@ class HNLbranchings():
         """
         br = 0.
         totalWidth = self.NDecayWidth()
-        
+
         if (decayString not in self.decays) and (decayString not in ['N -> hadrons','N -> charged hadrons']):
             print('findBranchingRatio ERROR: unknown decay %s'%decayString)
             quit()
-        
+
         if decayString == 'N -> nu nu nu' or decayString == 'N -> 3nu': br = self.Width_3nu() / totalWidth # inclusive
         if decayString == 'N -> e- e+ nu_e': br = self.Width_nu_f_fbar(1,1) / totalWidth
         if decayString == 'N -> e- e+ nu_mu': br = self.Width_nu_f_fbar(2,1) / totalWidth
@@ -515,7 +515,7 @@ class HNLbranchings():
         if decayString == 'N -> eta_c nu_e': br = self.Width_H0_nu('eta_c',1) / totalWidth
         if decayString == 'N -> eta_c nu_mu': br = self.Width_H0_nu('eta_c',2) / totalWidth
         if decayString == 'N -> eta_c nu_tau': br = self.Width_H0_nu('eta_c',3) / totalWidth
-        
+
         if decayString == 'N -> hadrons':
             mesonWidth = self.Width_neutral_mesons() + self.Width_charged_mesons()
             quarkWidth = self.Width_quarks_neutrino() + self.Width_quarks_lepton()
@@ -594,7 +594,7 @@ class HNLbranchings():
             allowedDecays.update({'N -> eta_c nu_e':'yes'})
             allowedDecays.update({'N -> eta_c nu_mu':'yes'})
             allowedDecays.update({'N -> eta_c nu_tau':'yes'})
-       
+
         for decay in self.decays:
             if decay not in allowedDecays:
                 allowedDecays.update({decay:'no'})
@@ -626,4 +626,3 @@ class HNL(HNLbranchings):
         self.NLifetime = c.hGeV / self.NDecayWidth()
         if system == "FairShip": self.NLifetime *= 1.e9
         return self.NLifetime
-

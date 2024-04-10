@@ -1,22 +1,22 @@
 ************************************************************************************************************************************
-* 
+*
 * Changes since '2006 edition:
-* 
-* 1. Exclusive cross sections at sqrt(s) < 2. GeV are updated and resummed to obtain 
+*
+* 1. Exclusive cross sections at sqrt(s) < 2. GeV are updated and resummed to obtain
 *    the total cross section and hence the R ratio.
 *
 * Note on format:
 *
-* Normalization and point-to-point systematic errors are separated where possible. 
-* If a normalization uncertainty varies from point to point within the same experiment 
-* then it is printed in the 'sys(ptp,%)+-' column, we'll fix this in a while. 
-* In any case carefully read the 'ptp_comment' column or refer to original publications 
-* for systematic issues. 
+* Normalization and point-to-point systematic errors are separated where possible.
+* If a normalization uncertainty varies from point to point within the same experiment
+* then it is printed in the 'sys(ptp,%)+-' column, we'll fix this in a while.
+* In any case carefully read the 'ptp_comment' column or refer to original publications
+* for systematic issues.
 * Note that one point may contain several point-to-point uncertainties from different sources.
-*    
-* More details can be found in http://arXiv.org/hep-ph/0312114 
+*
+* More details can be found in http://arXiv.org/hep-ph/0312114
 * (to be revised soon to include recent changes, in any case see the latest version).
-* 
+*
 * A sample fortran code reading this table is given after it. Ignore lines beginning with an asterisk.
 *
 ** 1152 points ** 31.08.2007 *******************************************************************************************************
@@ -1262,7 +1262,7 @@
  188.70000   188.70000  188.70000     8.57479    +0.14751   -0.14751     0.18000  'ACCIARRI 99M   ' 'PL 479B, 101   '   +1.30  -1.30 '                                                                                                                                    '
 ************************************************************************************************************************************
 *
-*      real ecm(5000), ecm_min(5000), ecm_max(5000), 
+*      real ecm(5000), ecm_min(5000), ecm_max(5000),
 *     &     r(5000), stat_up(5000), stat_down(5000),
 *     &     norm(5000),
 *     &     sys_up(5000,10), sys_down(5000,10)
@@ -1271,16 +1271,16 @@
 *      real x, x_min, x_max, y, dy_up, dy_down, nrm, sy_up, sy_down
 *      character*15  sc, ref
 *      character*132 comment
-*      
+*
 *      open(unit=1,file='r_current.dat',blank='null',status='old')
-*      
+*
 *      i = 0
-*01    write(*,*) i      
-*      read(*,fmt=100,end=04) x,x_min,x_max, 
-*     &                      y,dy_up,dy_down, 
+*01    write(*,*) i
+*      read(*,fmt=100,end=04) x,x_min,x_max,
+*     &                      y,dy_up,dy_down,
 *     &                      nrm,
-*     &                      sc,ref, 
-*     &                      sy_up,sy_down, 
+*     &                      sc,ref,
+*     &                      sy_up,sy_down,
 *     &                      comment
 *      if (x.gt.0.0) goto 02
 *      nsys(i) = nsys(i) + 1

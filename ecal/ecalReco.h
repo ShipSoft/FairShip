@@ -1,5 +1,5 @@
 /* Reconstruction for the calorimeter
- * Operates over EcalClusters 
+ * Operates over EcalClusters
  * Very simple at the momemnt: no real unfolding by tries to divide energy deposition in common cells. */
 
 #ifndef ECALRECO

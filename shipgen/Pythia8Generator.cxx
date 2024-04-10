@@ -15,23 +15,23 @@ Int_t counter = 0;
 const Double_t mbarn = 1E-3*1E-24*TMath::Na(); // cm^2 * Avogadro
 
 // -----   Default constructor   -------------------------------------------
-Pythia8Generator::Pythia8Generator() 
+Pythia8Generator::Pythia8Generator()
 {
-  fUseRandom1 = kFALSE; 
+  fUseRandom1 = kFALSE;
   fUseRandom3 = kTRUE;
   fId         = 2212; // proton
   fMom        = 400;  // proton
   fFDs        = 7.7/10.4;    // correction for Pythia6 to match measured Ds production
   fextFile    = "";
   fInputFile  = NULL;
-  targetName = ""; 
+  targetName = "";
   xOff=0; yOff=0;
   fPythia =  new Pythia8::Pythia();
 }
 // -------------------------------------------------------------------------
 
 // -----   Default constructor   -------------------------------------------
-Bool_t Pythia8Generator::Init() 
+Bool_t Pythia8Generator::Init()
 {
   if (fUseRandom1) fRandomEngine = new PyTr1Rng();
   if (fUseRandom3) fRandomEngine = new PyTr3Rng();
@@ -39,7 +39,7 @@ Bool_t Pythia8Generator::Init()
     if (0 == strncmp("/eos",fextFile,4) ) {
      TString tmp = gSystem->Getenv("EOSSHIP");
      tmp+=fextFile;
-     fInputFile  = TFile::Open(tmp); 
+     fInputFile  = TFile::Open(tmp);
      LOGF(info, "Open external file with charm or beauty hadrons on eos: %s", tmp.Data());
      if (!fInputFile) {
       LOG(FATAL) << "Error opening input file. You may have forgotten to provide a krb5 token. Try kinit username@lxplus.cern.ch";
@@ -61,8 +61,8 @@ Bool_t Pythia8Generator::Init()
      fTree->SetBranchAddress("px",&hpx);   // momentum
      fTree->SetBranchAddress("py",&hpy);
      fTree->SetBranchAddress("pz",&hpz);
-     fTree->SetBranchAddress("E",&hE);     
-     fTree->SetBranchAddress("M",&hM);     
+     fTree->SetBranchAddress("E",&hE);
+     fTree->SetBranchAddress("M",&hM);
      fTree->SetBranchAddress("mid",&mid);   // mother
      fTree->SetBranchAddress("mpx",&mpx);   // momentum
      fTree->SetBranchAddress("mpy",&mpy);
@@ -93,7 +93,7 @@ Bool_t Pythia8Generator::Init()
       LOGF(info, "Made %s stable for Pythia, should decay in Geant4", p->name().c_str());
       }
      }
-  } else {  
+  } else {
    fPythia->setRndmEnginePtr(fRandomEngine);
    fPythia->settings.mode("Beams:idA",  fId);
    fPythia->settings.mode("Beams:idB",  2212);
@@ -129,7 +129,7 @@ Bool_t Pythia8Generator::Init()
 
 
 // -----   Destructor   ----------------------------------------------------
-Pythia8Generator::~Pythia8Generator() 
+Pythia8Generator::~Pythia8Generator()
 {
 }
 // -------------------------------------------------------------------------
@@ -142,22 +142,22 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
   fnRetries =0;
 // take charm hadrons from external file
 // correct eventually for too much primary Ds produced by pythia6
-  key=0; 
-  bool l = true; 
-  while(l){ 
+  key=0;
+  bool l = true;
+  while(l){
      if (fn==fNevents) {LOG(WARNING) <<  "End of input file. Rewind.";}
      fTree->GetEntry((fn+1)%fNevents);
 // check that this and next entry is charm, otherwise continue reading
      l = false;
-     if (int(mE[0])== 0){ l = true; } 
+     if (int(mE[0])== 0){ l = true; }
      bool isDs = false;
-     if ( int(fabs(hid[0]) ) == 431){ isDs = true; }   
+     if ( int(fabs(hid[0]) ) == 431){ isDs = true; }
      fTree->GetEntry(fn%fNevents);
-     if (int(mE[0])== 0){ l = true; }   
+     if (int(mE[0])== 0){ l = true; }
      fn++;
      if ( int(fabs(hid[0]) ) == 431 || isDs ){
        Double_t rnr = gRandom->Uniform(0,1);
-       if( rnr>fFDs ) { 
+       if( rnr>fFDs ) {
         l = true;
         fn++;
        }
@@ -176,9 +176,9 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
    Int_t nInter = ck[0]; if (nInter>16){nInter=16;}
    for( Int_t nI=0; nI<nInter; nI++){
     // if (!subprocCodes[nI]<90){continue;}  //if process is not inelastic, go to next. Changed by taking now collision length
-    prob2int = -1.;   
+    prob2int = -1.;
     Int_t intLengthFactor = 1; // for nucleons
-    if (TMath::Abs(ancestors[nI]) < 1000){intLengthFactor = 1.16;} // for mesons 
+    if (TMath::Abs(ancestors[nI]) < 1000){intLengthFactor = 1.16;} // for mesons
     // Fe: nuclear /\ 16.77 cm pion 20.42 cm  f=1.22
     // W:  nuclear /\ 9.946 cm pion 11.33 cm  f=1.14
     // Mo: nuclear /\ 15.25 cm pion 17.98 cm  f=1.18
@@ -187,7 +187,7 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
       zinter = gRandom->Uniform(zinterStart,end[2]);
       Double_t point[3]={xOff,yOff,zinter};
       bparam = fMaterialInvestigator->MeanMaterialBudget(start, point, mparam);
-      Double_t interLength = mparam[8]  * intLengthFactor * 1.7; // 1.7 = interaction length / collision length from PDG Tables 
+      Double_t interLength = mparam[8]  * intLengthFactor * 1.7; // 1.7 = interaction length / collision length from PDG Tables
       TGeoNode *node = gGeoManager->FindNode(point[0],point[1],point[2]);
       TGeoMaterial *mat = 0;
       if (node && !gGeoManager->IsOutside()) {
@@ -198,11 +198,11 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
       }else{
          prob2int=0.;
       }
-      rndm = gRandom->Uniform(0.,1.); 
+      rndm = gRandom->Uniform(0.,1.);
       count+=1;
     }
     zinterStart = zinter;
-   } 
+   }
    zinter = zinter*cm;
   }
   for(Int_t c=0; c<2; c++){
@@ -215,7 +215,7 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
     fPythia->event.append( id, 1, 0, 0, hpx[0],  hpy[0],  hpz[0],  hE[0],  hM[0], 0., 9. );
 //simulate displaced vertex, Pythia8 will not do it
     Double_t tau0 = fPythia->particleData.tau0(id); // ctau in mm
-    dl = gRandom->Exp(tau0) / hM[0]; // mm/GeV       
+    dl = gRandom->Exp(tau0) / hM[0]; // mm/GeV
     fPythia->next();
     Int_t addedParticles = 0;
     if(c==0){
@@ -231,7 +231,7 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
      addedParticles +=1;
     }
     for(Int_t ii=1; ii<fPythia->event.size(); ii++){
-     id = fPythia->event[ii].id(); 
+     id = fPythia->event[ii].id();
      Bool_t wanttracking=false;
      if(fPythia->event[ii].isFinal()){ wanttracking=true; }
      if (ii>1){
@@ -246,21 +246,21 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
       tof = fPythia->event[ii].tProd() / (10*c_light) ; // to go from mm to s
      }
      pz = fPythia->event[ii].pz();
-     px = fPythia->event[ii].px();  
-     py = fPythia->event[ii].py();  
+     px = fPythia->event[ii].px();
+     py = fPythia->event[ii].py();
      e  = fPythia->event[ii].e();
      im = fPythia->event[ii].mother1()+key;
 
      if (ii==1){im = 0;}
      cpg->AddTrack(id,px,py,pz,x/cm,y/cm,z/cm,im,wanttracking,e,tof,1.);
      addedParticles+=1;
-    } 
+    }
     key+=addedParticles-1; // pythia counts from 1
-  } 
-  counter+=1; 
+  }
+  counter+=1;
 // now the underyling event
   bool lx = true;
-  while(lx){      
+  while(lx){
     fTree->GetEntry(fn%fNevents);
     lx = false;
     if (mE[0] == 0){
@@ -269,11 +269,10 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
      cpg->AddTrack((Int_t)hid[0],hpx[0],hpy[0],hpz[0],(mpx[0]+fPythia->event[0].xProd())/cm,
                                                       (mpy[0]+fPythia->event[0].yProd())/cm,
                                                       (mpz[0]+fPythia->event[0].zProd())/cm+zinter/cm,-1,true);
-     // mpx,mpy,mpz are the vertex coordinates with respect to charm hadron, first particle in Pythia is (system) 
+     // mpx,mpy,mpz are the vertex coordinates with respect to charm hadron, first particle in Pythia is (system)
    }
-  } 
-   
+  }
+
   return kTRUE;
 }
 // -------------------------------------------------------------------------
-

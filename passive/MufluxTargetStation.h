@@ -9,13 +9,13 @@
 class MufluxTargetStation : public FairModule
 {
   public:
-    MufluxTargetStation(const char* name,const Double_t tl,const Double_t al,const Double_t tz,const Double_t az, 
+    MufluxTargetStation(const char* name,const Double_t tl,const Double_t al,const Double_t tz,const Double_t az,
                       const int nS, const Double_t sl, const char* Title="MufluxTargetStation");
     MufluxTargetStation(const char* name,const Double_t tl,const Double_t tz,
                       const int nS, const Double_t sl, const char* Title="MufluxTargetStation");
     MufluxTargetStation();
     virtual ~MufluxTargetStation();
-    
+
     void SetIronAbsorber(Double_t absorber_x, Double_t absorber_y);
     void SetAbsorberCutout(Double_t absorbercutout_x ,Double_t absorbercutout_y);
     void SetIronShield(Double_t ironshield_x, Double_t ironshield_y, Double_t ironshield_z);
@@ -26,15 +26,15 @@ class MufluxTargetStation : public FairModule
     void SetFloor(Double_t floor_x, Double_t floor_y, Double_t floor_z);
     void SetFloorT34(Double_t floorT34_x, Double_t floorT34_y, Double_t floorT34_z);
     void SetFloorRPC(Double_t floorRPC_x, Double_t floorRPC_y, Double_t floorRPC_z);
-    
+
     void ConstructGeometry();
     void SetLayerPosMat(Float_t d, std::vector<float> L, std::vector<std::string> M){
-     fDiameter = d;  
+     fDiameter = d;
      fL = L;
      fM = M;
      }
     ClassDef(MufluxTargetStation,4)
-    
+
  private:
   Double_t fabsorber_x;
   Double_t fabsorber_y;
@@ -61,10 +61,10 @@ class MufluxTargetStation : public FairModule
   Double_t ffloorT34_z;
   Double_t ffloorRPC_x;
   Double_t ffloorRPC_y;
-  Double_t ffloorRPC_z;    
-        
+  Double_t ffloorRPC_z;
+
  protected:
-  
+
   Double_t fTargetLength;       //
   Double_t fAbsorberLength;       //
   Double_t fAbsorberZ;       //

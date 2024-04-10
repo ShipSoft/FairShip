@@ -21,19 +21,19 @@ class Hpt:public FairDetector
   Hpt(const char* name, const Double_t DX, const Double_t DY, const Double_t DZ,Bool_t Active, const char* Title="HighPrecisionTrackers");
     Hpt();
     virtual ~Hpt();
-      
+
     void ConstructGeometry();
 
-    void SetSciFiParam(Double_t scifimat_width, Double_t scifimat_hor, Double_t scifimat_vert,   
+    void SetSciFiParam(Double_t scifimat_width, Double_t scifimat_hor, Double_t scifimat_vert,
                        Double_t scifimat_z, Double_t support_z, Double_t honeycomb_z);
     void SetHPTrackerParam(Double_t HPTX, Double_t HPTY, Double_t HPTZ);
     void SetNumberSciFi(Int_t n_hor_planes_, Int_t n_vert_planes_);
     void SetZsize(const Double_t Mudetsize);
     void SetConcreteBaseDim(Double_t X, Double_t Y, Double_t Z);
-    
+
     void SetDesign(Int_t Design);
-    //methods for design 3 
-    void SetDistanceHPTs(Double_t dd);       
+    //methods for design 3
+    void SetDistanceHPTs(Double_t dd);
     void SetHPTNumber(Int_t nHPT);
     void SetSurroundingDetHeight(Double_t height);
     void GetMagnetGeometry(Double_t EmuzC, Double_t EmuY);
@@ -41,21 +41,21 @@ class Hpt:public FairDetector
     //
     /**      Initialization of the detector is done here    */
     virtual void Initialize();
-    
+
     /**       this method is called for each step during simulation
      *       (see FairMCApplication::Stepping())
      */
     virtual Bool_t ProcessHits( FairVolume* v=0);
-    
+
     /**       Registers the produced collections in FAIRRootManager.     */
     virtual void   Register();
-    
+
     /** Gets the produced collections */
     virtual TClonesArray* GetCollection(Int_t iColl) const ;
-    
+
     /**      has to be called after each event to reset the containers      */
     virtual void   Reset();
-    
+
     /**      This method is an example of how to add your own point
      *       of type muonPoint to the clones array
      */
@@ -67,7 +67,7 @@ class Hpt:public FairDetector
     /** The following methods can be implemented if you need to make
      *  any optional action in your detector during the transport.
      */
-    
+
     virtual void   CopyClones( TClonesArray* cl1,  TClonesArray* cl2 ,
                               Int_t offset) {;}
     virtual void   SetSpecialPhysicsCuts() {;}
@@ -80,9 +80,9 @@ class Hpt:public FairDetector
     virtual void   BeginEvent() {;}
 
     void DecodeVolumeID(Int_t detID,int &nHPT, int &nplane, Bool_t &ishor);
-    
+
 private:
-    
+
     /** Track information to be stored until the track leaves the
      active volume.
      */
@@ -94,16 +94,16 @@ private:
     Double32_t     fTime;              //!  time
     Double32_t     fLength;            //!  length
     Double32_t     fELoss;             //!  energy loss
-    
+
     /** container for data points */
     TClonesArray*  fHptPointCollection;
-    
+
     Int_t InitMedium(const char* name);
-    
-    
-    
+
+
+
 protected:
-    
+
     Double_t DimX;
     Double_t DimY;
     Double_t DimZ;
@@ -121,11 +121,11 @@ protected:
     Double_t HPTrackerY;
     Double_t HPTrackerZ;
 
-    Double_t scifimat_width;     
+    Double_t scifimat_width;
     Double_t scifimat_hor;
-    Double_t scifimat_vert; 
-    Double_t scifimat_z; 
-    Double_t support_z; 
+    Double_t scifimat_vert;
+    Double_t scifimat_z;
+    Double_t support_z;
     Double_t honeycomb_z;
     Int_t n_hor_planes;
     Int_t n_vert_planes;
@@ -140,5 +140,4 @@ protected:
     ClassDef(Hpt,5)
 
 };
-#endif 
-
+#endif

@@ -1,4 +1,4 @@
-#!/usr/bin/env python 
+#!/usr/bin/env python
 #prints z-coordinators of SHiP detector volumes
 #WARNING: printing the entire geometry takes a lot of time
 #24-02-2015 comments to EvH
@@ -22,7 +22,7 @@ def local2Global(n):
      x = ROOT.gGeoManager.GetVerboseLevel()
      ROOT.gGeoManager.SetVerboseLevel(0)
      Info['weight']=Info['node'].GetVolume().Weight() # kg
-     Info['cubicmeter']=Info['node'].GetVolume().Capacity()/1000000. # 
+     Info['cubicmeter']=Info['node'].GetVolume().Capacity()/1000000. #
      ROOT.gGeoManager.SetVerboseLevel(x)
     o = [tmp.GetOrigin()[0],tmp.GetOrigin()[1],tmp.GetOrigin()[2]]
     Info['locorign'] = o

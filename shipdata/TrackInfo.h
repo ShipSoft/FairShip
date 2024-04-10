@@ -1,7 +1,7 @@
 #ifndef TRACKINFO_H
 #define TRACKINFO_H 1
 
-#include "TObject.h"              //  
+#include "TObject.h"              //
 
 #include "Rtypes.h"                     // for Double_t, Int_t, Double32_t, etc
 #include "TVector.h"                   // for TVector

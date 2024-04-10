@@ -1,6 +1,6 @@
 //
 //  TargetTracker.cxx
-//  
+//
 //
 //  Created by Annarita Buonaura on 21/10/15.
 //
@@ -111,9 +111,9 @@ Int_t TargetTracker::InitMedium(const char* name)
     static FairGeoInterface *geoFace=geoLoad->getGeoInterface();
     static FairGeoMedia *media=geoFace->getMedia();
     static FairGeoBuilder *geoBuild=geoLoad->getGeoBuilder();
-    
+
     FairGeoMedium *ShipMedium=media->getMedium(name);
-    
+
     if (!ShipMedium)
     {
         Fatal("InitMedium","Material %s not defined in media file.", name);
@@ -125,15 +125,15 @@ Int_t TargetTracker::InitMedium(const char* name)
     return geoBuild->createMedium(ShipMedium);
 }
 
-void TargetTracker::SetSciFiParam(Double_t scifimat_width_, Double_t scifimat_hor_, Double_t scifimat_vert_, 
+void TargetTracker::SetSciFiParam(Double_t scifimat_width_, Double_t scifimat_hor_, Double_t scifimat_vert_,
                                     Double_t scifimat_z_, Double_t support_z_, Double_t honeycomb_z_)
 {
   scifimat_width = scifimat_width_;
   scifimat_hor = scifimat_hor_;
   scifimat_vert = scifimat_vert_;
   scifimat_z = scifimat_z_;
-  support_z = support_z_; 
-  honeycomb_z = honeycomb_z_;  
+  support_z = support_z_;
+  honeycomb_z = honeycomb_z_;
 }
 
 void TargetTracker::SetNumberSciFi(Int_t n_hor_planes_, Int_t n_vert_planes_)
@@ -185,8 +185,8 @@ void TargetTracker::ConstructGeometry()
 
   InitMedium("Airex");
   TGeoMedium *Airex = gGeoManager->GetMedium("Airex");
-  
-  //Target Tracker 
+
+  //Target Tracker
   TGeoVolume *volTarget = gGeoManager->GetVolume("volTarget");
 
   TGeoBBox* TT_box = new TGeoBBox("TT_box", TTrackerX / 2, TTrackerY / 2, TTrackerZ / 2);
@@ -216,8 +216,8 @@ void TargetTracker::ConstructGeometry()
   TGeoBBox* TT_scifi_plane_vert_box = new TGeoBBox("TT_scifi_plane_vert_box", TTrackerX / 2, TTrackerY / 2, scifimat_z / 2);
   TGeoVolume* TT_scifi_plane_vert_volume = new TGeoVolume("TT_scifi_plane_vert", TT_scifi_plane_vert_box, SciFiMat);
   TT_scifi_plane_vert_volume->SetVisibility(1);
-  
-  //SciFi mats for X and Y 
+
+  //SciFi mats for X and Y
   TGeoBBox* TT_scifimat_hor_box = new TGeoBBox("TT_scifimat_hor_box", scifimat_hor / 2, scifimat_width / 2, scifimat_z / 2);
   TGeoVolume* TT_scifimat_hor_volume = new TGeoVolume("TT_scifimat_hor", TT_scifimat_hor_box, SciFiMat);
   TT_scifimat_hor_volume->SetLineColor(kCyan-9);
@@ -246,10 +246,10 @@ void TargetTracker::ConstructGeometry()
 
   Double_t first_tt_position = -ZDimension / 2 + TTrackerZ / 2;
 
-  //fNTT - number of TT walls 
+  //fNTT - number of TT walls
   for (int l = 0; l < fNTT; ++l){
     volTarget->AddNode(TT_volume, 1000*(l+1), new TGeoTranslation(0, 0, first_tt_position + l * (TTrackerZ + CellWidth)));
-  } 
+  }
 
 }
 
@@ -267,7 +267,7 @@ Bool_t TargetTracker::ProcessHits(FairVolume* vol)
   }
   // Sum energy loss for all steps in the active volume
   fELoss += gMC->Edep();
-  
+
   // Create muonPoint at exit of active volume
   if (gMC->IsTrackExiting()     ||
       gMC->IsTrackStop()        ||
@@ -277,20 +277,20 @@ Bool_t TargetTracker::ProcessHits(FairVolume* vol)
     Int_t pdgCode = p->GetPdgCode();
     fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
 
-    gMC->CurrentVolID(fVolumeID); 
+    gMC->CurrentVolID(fVolumeID);
     Int_t detID = fVolumeID;
-    Int_t TTstationID; 
-    gMC->CurrentVolOffID(2, TTstationID); 
+    Int_t TTstationID;
+    gMC->CurrentVolOffID(2, TTstationID);
     fVolumeID = TTstationID + detID;
 
-    TLorentzVector Pos; 
-    gMC->TrackPosition(Pos); 
-    Double_t xmean = (fPos.X()+Pos.X())/2. ;      
-    Double_t ymean = (fPos.Y()+Pos.Y())/2. ;      
-    Double_t zmean = (fPos.Z()+Pos.Z())/2. ; 
+    TLorentzVector Pos;
+    gMC->TrackPosition(Pos);
+    Double_t xmean = (fPos.X()+Pos.X())/2. ;
+    Double_t ymean = (fPos.Y()+Pos.Y())/2. ;
+    Double_t zmean = (fPos.Z()+Pos.Z())/2. ;
 
     AddHit(fTrackID, fVolumeID, TVector3(xmean, ymean,  zmean),
-           TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), 
+           TVector3(fMom.Px(), fMom.Py(), fMom.Pz()),
            fTime, fLength, fELoss, pdgCode);
 
     // Increment number of muon det points in TParticle
@@ -322,13 +322,13 @@ void TargetTracker::EndOfEvent()
 
 void TargetTracker::Register()
 {
-    
+
     /** This will create a branch in the output tree called
      TargetPoint, setting the last parameter to kFALSE means:
      this collection will not be written to the file, it will exist
      only during the simulation.
      */
-    
+
     FairRootManager::Instance()->Register("TTPoint", "TargetTracker",
                                           fTTPointCollection, kTRUE);
 }
@@ -356,5 +356,3 @@ TTPoint* TargetTracker::AddHit(Int_t trackID,Int_t detID,
     return new(clref[size]) TTPoint(trackID,detID, pos, mom,
 					time, length, eLoss, pdgCode);
 }
-
-

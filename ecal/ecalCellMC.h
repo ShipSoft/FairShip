@@ -22,10 +22,10 @@ public:
 
   Float_t GetTrackEnergy(Int_t num) const;
   Float_t GetTrackTime(Int_t num) const;
-	
+
   /** Reset all energies in cell **/
   void ResetEnergy();
-	
+
   inline void SetTrackEnergy(Int_t num, Float_t energy, Float_t time=-1111)
   {fTrackEnergy[num]=energy; fTrackTime[num]=time; }
   inline void AddTrackEnergy(Int_t num, Float_t energy, Float_t time=-1111)
@@ -40,7 +40,7 @@ public:
   // same for tracks
   Float_t GetTrackClusterEnergy(Int_t num);
 
-  // For python users 
+  // For python users
   Int_t TrackEnergySize() const {return fTrackEnergy.size();}
   Int_t TrackTimeSize() const {return fTrackEnergy.size();}
   // Don't use slow methods except in emergency!!!
@@ -66,6 +66,6 @@ private:
 
   ClassDef(ecalCellMC,1);
 };
-  
+
 
 #endif

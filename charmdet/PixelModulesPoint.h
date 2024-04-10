@@ -25,7 +25,7 @@ class PixelModulesPoint:public FairMCPoint
      *@param length   Track length since creation [cm]
      *@param eLoss    Energy deposit [GeV]
      **/
-    
+
 
     PixelModulesPoint(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom,
                      Double_t tof, Double_t length, Double_t eLoss, Int_t pdgcode);
@@ -40,11 +40,11 @@ class PixelModulesPoint:public FairMCPoint
 
 
   private:
-    
+
     Int_t fPdgCode;
-    
+
     /** Copy constructor **/
-    
+
     PixelModulesPoint(const PixelModulesPoint& point);
     PixelModulesPoint operator=(const PixelModulesPoint& point);
 

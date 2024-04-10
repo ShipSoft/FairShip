@@ -26,7 +26,7 @@ ROOT.gROOT.ProcessLine(
 # The field map is assumed to obey the following co-ordinate bin ordering:
 # z is increased first, y is increased 2nd, x is increased last.
 # So we only store the field components (x,y,z is known from the ordering).
-# For the coordinate bin (iX, iY, iZ), the field bin = (iX*Ny + iY)*Nz + iZ, 
+# For the coordinate bin (iX, iY, iZ), the field bin = (iX*Ny + iY)*Nz + iZ,
 # where Ny and Nz are the number of y and z bins
 
 ROOT.gROOT.ProcessLine(
@@ -37,7 +37,7 @@ ROOT.gROOT.ProcessLine(
 };");
 
 
-def run(inFileName  = 'test07_10cm_grid.table', 
+def run(inFileName  = 'test07_10cm_grid.table',
         outFileName = 'MuonFilterBFieldMap1.txt'):
 
     # Text format
@@ -53,7 +53,7 @@ def createTextMap(inFileName, outFileName):
     print('Creating text map {0} from {1}'.format(outFileName, inFileName))
 
     tmpFileName = 'tmpFile.txt'
-    
+
     inFile = open(inFileName, 'r')
     tmpFile = open(tmpFileName, 'w')
 
@@ -67,7 +67,7 @@ def createTextMap(inFileName, outFileName):
     zMin = 0.0
     zMax = 0.0
     dz = 0.0
-    
+
     # Offsets (in cm)
     #ox = 0.0
     #oy = 0.0
@@ -76,7 +76,7 @@ def createTextMap(inFileName, outFileName):
     iLine = 0
     # Convert metres to centimetres
     m2cm = 100.0
-    
+
     # For finding the delta bin widths
     xOld = 0.0
     yOld = 0.0
@@ -123,7 +123,7 @@ def createTextMap(inFileName, outFileName):
                 zMin = z
                 zMax = z
                 zOld = z
-        
+
             if x < xMin:
                 xMin = x
             if x > xMax:
@@ -171,7 +171,7 @@ def createTextMap(inFileName, outFileName):
 
     # Copy the tmp file data
     for tLine in tmpFile2:
-    
+
         outFile.write(tLine)
 
     outFile.close()
@@ -181,8 +181,8 @@ def formatNumber(x):
 
     # To save disk space, reduce the precision of the field value
     # as we go below various thresholds
-    
-    # Let the general precision be 0.01 mT. Anything below this 
+
+    # Let the general precision be 0.01 mT. Anything below this
     # is set to zero.
     xWord = '{0:.5f}'.format(x)
 
@@ -220,7 +220,7 @@ def createRootMap(inFileName, outFileName):
 
     # Field components with (x,y,z) coordinate binning ordered such that
     # z, then y, then x is increased. For the coordinate bin (iX, iY, iZ),
-    # the field bin = (iX*Ny + iY)*Nz + iZ, where Ny and Nz are the number 
+    # the field bin = (iX*Ny + iY)*Nz + iZ, where Ny and Nz are the number
     # of y and z bins
     dStruct = ROOT.dataStruct()
     dataTree.Branch('Bx', ROOT.AddressOf(dStruct, 'Bx'), 'Bx/F')
@@ -281,7 +281,7 @@ def createRootMap(inFileName, outFileName):
                 #dStruct.z = rStruct.dz*(zBin + 0.5) + rStruct.zMin
 
                 dataTree.Fill()
-                
+
     theFile.cd()
     rangeTree.Write()
     dataTree.Write()

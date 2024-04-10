@@ -7,7 +7,7 @@ def configure(run,ship_geo):
 # -----Create media-------------------------------------------------
  run.SetMaterials("media.geo")  # Materials
 # ------------------------------------------------------------------------
-  
+
 # -----Create geometry----------------------------------------------
  cave= ROOT.ShipCave("CAVE")
  cave.SetGeometryFileName("cave.geo")

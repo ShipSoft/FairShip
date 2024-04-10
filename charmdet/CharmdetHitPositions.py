@@ -51,7 +51,7 @@ if options.catalog:
   if fname.find("root")<0:continue
   f=ROOT.TFile.Open(fname)
   sTree = f.cbmsim
-  if not sTree.GetBranch("FitTracks"): 
+  if not sTree.GetBranch("FitTracks"):
    print("does not contain FitTracks: ",fname)
    f.Close()
    continue
@@ -64,12 +64,12 @@ fname = fnames[0]
 if options.updateFile:
  f=ROOT.TFile(fname,'update')
  sTree=f.Get('cbmsim')
- if not sTree: 
+ if not sTree:
    print("Problem with updateFile: ",f)
    exit(-1)
 else:
  sTree = ROOT.TChain('cbmsim')
- for f in fnames: 
+ for f in fnames:
   print("add ",f)
   if options.onEOS: sTree.Add(os.environ['EOSSHIP']+f)
   else:             sTree.Add(f)
@@ -91,8 +91,8 @@ sGeo = ROOT.gGeoManager
 nav = sGeo.GetCurrentNavigator()
 top = sGeo.GetTopVolume()
 top.SetVisibility(0)
-if options.withDisplay: 
- try: 
+if options.withDisplay:
+ try:
    #building the EVE display instead of the simple root one allows to add new objects there (instead of a separate canvas)
    ROOT.TEveManager.Create()
    gEve = ROOT.gEve
@@ -106,9 +106,9 @@ if options.withDisplay:
    for node in top.GetNodes():
      evenode = ROOT.TEveGeoTopNode(sGeo,node)
      evenode.UseNodeTrans()
-     gEve.AddGlobalElement(evenode) 
+     gEve.AddGlobalElement(evenode)
    gEve.FullRedraw3D(kTRUE)
-   
+
  except: pass
 
 saveGeofile = False
@@ -126,7 +126,7 @@ vtop = ROOT.TVector3()
 
 def GetPixelPositions(n=1,draw=True,writentuple=False):
   """ retrieves the position of the pixel hit using the pixel map """
-  if not options.withDisplay:  
+  if not options.withDisplay:
    draw = False
 
   sTree.GetEntry(n)
@@ -161,7 +161,7 @@ def GetPixelPositions(n=1,draw=True,writentuple=False):
 
 def GetSciFiPositions(n=1,draw=True,writentuple=False):
   """ retrieves the position of the pixel hit using the pixel map """
-  if not options.withDisplay:   
+  if not options.withDisplay:
    draw = False
 
   scifitree.GetEntry(n)
@@ -172,12 +172,12 @@ def GetSciFiPositions(n=1,draw=True,writentuple=False):
   hitx = []
   hity = []
   hitz = []
-  for scifihits in scifihitslist:     
+  for scifihits in scifihitslist:
    for hit in scifihits:
     nscifipoints = nscifipoints + 1
     detID = hit.GetDetectorID()
     hit.GetSciFiXYZ(pos,detID)
-    #print("This is the position of our scifi hit: ", detID, pos[0], pos[1], pos[2]) 
+    #print("This is the position of our scifi hit: ", detID, pos[0], pos[1], pos[2])
     hitx.append(pos[0])
     hity.append(pos[1])
     hitz.append(pos[2])
@@ -280,7 +280,7 @@ def loadRPCtracks(n=1,draw=True,writentuple=False,fittedtracks=False):
   clustersH = []
   clustersV = []
 
-  maxntracks = 20 
+  maxntracks = 20
   maxtrackID = 0
   hitxarray = numpy.zeros((maxntracks,5))
   hityarray = numpy.zeros((maxntracks,5))
@@ -298,9 +298,9 @@ def loadRPCtracks(n=1,draw=True,writentuple=False,fittedtracks=False):
     if fittedtracks: #clusters with already fitted tracks
      trackID = int(hit.GetDigi())
      if (trackID > maxtrackID): maxtrackID = trackID
-     #adding the point to two different lists according to the view  
+     #adding the point to two different lists according to the view
      # for each track we have a xyz position at each station (with at most two views)
-     if view == 0: #I have yz info     
+     if view == 0: #I have yz info
        hityarray[trackID-1][station-1] = y
        hitzarray[trackID-1][station-1] = z
        clustersH.append([x,y,z])
@@ -308,11 +308,11 @@ def loadRPCtracks(n=1,draw=True,writentuple=False,fittedtracks=False):
        hitxarray[trackID-1][station-1] = x
        hitzarray[trackID-1][station-1] = z
        clustersV.append([x,y,z])
-    else: 
-      hitx.append(x) 
+    else:
+      hitx.append(x)
       hity.append(y)
       hitz.append(z)
-      npoint = npoint+1 
+      npoint = npoint+1
       if writentuple:
        hitnumber = leafnhits[0]
        leafdetID[hitnumber] = detID
@@ -322,11 +322,11 @@ def loadRPCtracks(n=1,draw=True,writentuple=False,fittedtracks=False):
        leaftrackID[hitnumber] = 0
        leafsubdetector[hitnumber] = 4
        leafnhits[0] += 1
-    #print("Position of loaded cluster: ({},{},{}), station {} and view {}".format(x,y,z,station,view))    
+    #print("Position of loaded cluster: ({},{},{}), station {} and view {}".format(x,y,z,station,view))
   #fitting to two 2D tracks
   if fittedtracks:
-   mH,bH = getSlopes(clustersH,0) 
-   mV,bV = getSlopes(clustersV,1)   
+   mH,bH = getSlopes(clustersH,0)
+   mV,bV = getSlopes(clustersV,1)
    trackH = ROOT.RPCTrack(mH,bH)
    trackV = ROOT.RPCTrack(mV,bV)
    for itrk in range(maxtrackID):
@@ -338,7 +338,7 @@ def loadRPCtracks(n=1,draw=True,writentuple=False,fittedtracks=False):
         hitx[istation] = x
         hity[istation] = y
         hitz[istation] = z
-        npoint = 5      
+        npoint = 5
         if x == 0: subdetector = 40 #not paired cluster
         if y == 0: subdetector = 40
         if writentuple:
@@ -347,24 +347,24 @@ def loadRPCtracks(n=1,draw=True,writentuple=False,fittedtracks=False):
          leafposx[hitnumber] = x
          leafposy[hitnumber] = y
          leafposz[hitnumber] = z
-         leaftrackID[hitnumber] = itrk + 1 
+         leaftrackID[hitnumber] = itrk + 1
          leafsubdetector[hitnumber] = 4
          leafnhits[0] += 1
   #print("Line equation along horizontal: {}*z + {}".format(mH,bH))
   #print("Line equation along vertical: {}*z + {}".format(mV,bV))
    theta = ROOT.TMath.ATan(pow((mH**2+mV**2),0.5))
    phi = ROOT.TMath.ATan(mH/mV)
-  #print("Angles of 3D track: theta is {} and phi is {}".format(theta,phi))  
-    
+  #print("Angles of 3D track: theta is {} and phi is {}".format(theta,phi))
+
    lastpoint = ROOT.TVector3(hitx[4],hity[4],hitz[4])
    if draw:
       DrawTrack(theta,phi,lastpoint)
   if draw:
    DrawPoints(npoint,hitx,hity,hitz,"MuonTaggerHits")
- 
+
 
 def DrawPoints(nclusters,hitx,hity,hitz, name = "FairShipHits"):
-  """Draws clusters as TEvePointSet"""  
+  """Draws clusters as TEvePointSet"""
   clusterlist = ROOT.TEvePointSet(3)
   clusterlist.SetElementName(name)
   for icluster in range(nclusters):
@@ -395,7 +395,7 @@ def getSlopes(clusters,view=0):
   """using Numpy polyfit to obtain the slopes from the clusters. Adapted from the similar method in driftubeMonitoring.py"""
   x,z=[],[]
   line = []
-  for hit in clusters:     
+  for hit in clusters:
     if view==0: #horizontal strip, fitting in the zy plane
       x.append(hit[1])
       z.append(hit[2])
@@ -410,7 +410,7 @@ def getSlopes(clusters,view=0):
   return line[0],line[1]
 
 # what methods are launched?
-GetPixelPositions(nevent)    
+GetPixelPositions(nevent)
 GetSciFiPositions(nevent)
 GetDTPositions(nevent)
 RPCPosition()

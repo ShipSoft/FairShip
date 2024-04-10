@@ -27,5 +27,4 @@ def finalize():
    hname = 'histos-residuals-'+fname
    if os.path.exists(hname):   cmd += hname+' '
  os.system(cmd)
- 
 

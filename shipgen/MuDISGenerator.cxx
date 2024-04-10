@@ -33,11 +33,11 @@ Bool_t MuDISGenerator::Init(const char* fileName, const int firstEvent) {
   LOGF(info, "Opening input file %s", fileName);
 
   iMuon = 0;
-  dPart = 0; 
+  dPart = 0;
   if (0 == strncmp("/eos",fileName,4) ) {
     TString tmp = gSystem->Getenv("EOSSHIP");
     tmp+=fileName;
-    fInputFile  = TFile::Open(tmp); 
+    fInputFile  = TFile::Open(tmp);
     LOGF(info, "Open external file on eos: %s", tmp.Data());
   }else{
     fInputFile  = new TFile(fileName);
@@ -50,7 +50,7 @@ Bool_t MuDISGenerator::Init(const char* fileName, const int firstEvent) {
   fn = firstEvent;
   fTree->SetBranchAddress("InMuon",&iMuon);    // incoming muon
   fTree->SetBranchAddress("Particles",&dPart);
-  // cout << "muon DIS Generator number of events "<< fNevents << endl; 
+  // cout << "muon DIS Generator number of events "<< fNevents << endl;
   return kTRUE;
 }
 Double_t MuDISGenerator::MeanMaterialBudget(const Double_t *start, const Double_t *end, Double_t *mparam)
@@ -221,7 +221,7 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg)
     }
     int nf = dPart->GetEntries();
     //cout << "*********************************************************" << endl;
-    //cout << "muon DIS Generator debug " << iMuon->GetEntries()<< " "<< iMuon->AddrAt(0) << " nf "<< nf << " fn=" << fn <<endl; 
+    //cout << "muon DIS Generator debug " << iMuon->GetEntries()<< " "<< iMuon->AddrAt(0) << " nf "<< nf << " fn=" << fn <<endl;
 
     //some start/end positions in z (f.i. emulsion to Tracker 1)
     Double_t start[3]={0.,0.,startZ};
@@ -229,7 +229,7 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg)
 
 // incoming muon  array('d',[pid,px,py,pz,E,x,y,z,w])
     TVectorD* mu = dynamic_cast<TVectorD*>(iMuon->AddrAt(0));
-    //cout << "muon DIS Generator in muon " << int(mu[0][0])<< endl; 
+    //cout << "muon DIS Generator in muon " << int(mu[0][0])<< endl;
     Double_t x = mu[0][5]*100.; // come in m -> cm
     Double_t y = mu[0][6]*100.; // come in m -> cm
     Double_t z = mu[0][7]*100.; // come in m -> cm
@@ -277,7 +277,7 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg)
     //modify weight, by multiplying with average densiy along track??
     cpg->AddTrack(int(mu[0][0]),mu[0][1],mu[0][2],mu[0][3],xmu,ymu,zmu,-1,false,mu[0][4],0.,w);
     // in order to have a simulation of possible veto detector hits, let Geant4 follow the muon backward
-    // due to dE/dx, as soon as the muon travers thick material, this approximation will become bad. 
+    // due to dE/dx, as soon as the muon travers thick material, this approximation will become bad.
     // a proper implementation however would be to have this better integrated in Geant4, follow the muon, call DIS event, continue
     cpg->AddTrack(int(mu[0][0]),-mu[0][1],-mu[0][2],-mu[0][3],xmu,ymu,zmu,0,true,mu[0][4],0.,w);
 // outgoing particles, [did,dpx,dpy,dpz,E], put density along trajectory as weight, g/cm^2
@@ -285,10 +285,10 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg)
     for(int i=0; i<nf; i++)
     	{
          TVectorD* Part = dynamic_cast<TVectorD*>(dPart->AddrAt(i));
-         //cout << "muon DIS Generator out part " << int(Part[0][0]) << endl; 
-         //cout << "muon DIS Generator out part mom " << Part[0][1]<<" " << Part[0][2] <<" " << Part[0][3] << " " << Part[0][4] << endl; 
-         //cout << "muon DIS Generator out part pos " << mu[0][5]<<" " << mu[0][6] <<" " << mu[0][7] << endl; 
-         //cout << "muon DIS Generator out part w " << mu[0][8] << endl; 
+         //cout << "muon DIS Generator out part " << int(Part[0][0]) << endl;
+         //cout << "muon DIS Generator out part mom " << Part[0][1]<<" " << Part[0][2] <<" " << Part[0][3] << " " << Part[0][4] << endl;
+         //cout << "muon DIS Generator out part pos " << mu[0][5]<<" " << mu[0][6] <<" " << mu[0][7] << endl;
+         //cout << "muon DIS Generator out part w " << mu[0][8] << endl;
          cpg->AddTrack(int(Part[0][0]),Part[0][1],Part[0][2],Part[0][3],xmu,ymu,zmu,0,true,Part[0][4],0.,w);
          //cout << "muon DIS part added "<<endl;
        }
@@ -299,4 +299,3 @@ Int_t MuDISGenerator::GetNevents()
 {
  return fNevents;
 }
-

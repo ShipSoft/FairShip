@@ -28,9 +28,9 @@ class TargetPoint : public FairMCPoint
 
     /*TargetPoint(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom,
                      Double_t tof, Double_t length, Double_t eLoss, Int_t pdgCode,
-		Bool_t emTop, Bool_t emBot,Bool_t emCESTop, Bool_t emCESBot, Bool_t tt, 
+		Bool_t emTop, Bool_t emBot,Bool_t emCESTop, Bool_t emCESBot, Bool_t tt,
 		Int_t nPlate, Int_t nColumn, Int_t nRow, Int_t nWall);*/
-    
+
     TargetPoint(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom,
 		Double_t tof, Double_t length, Double_t eLoss, Int_t pdgCode);
 
@@ -39,7 +39,7 @@ class TargetPoint : public FairMCPoint
 
     /** Output to screen **/
     virtual void Print(const Option_t* opt) const;
-    
+
 
     Int_t PdgCode() const {return fPdgCode;}
 
@@ -49,9 +49,9 @@ class TargetPoint : public FairMCPoint
 
     Int_t fPdgCode;
 
-    
+
     /** Copy constructor **/
-    
+
     TargetPoint(const TargetPoint& point);
     TargetPoint operator=(const TargetPoint& point);
 

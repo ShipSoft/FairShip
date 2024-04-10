@@ -5,16 +5,16 @@ from argparse import ArgumentParser
 
 withHists = True
 pidProton = False # if true, take truth, if False fake with pion mass
- 
+
 import resource
 def mem_monitor():
- # Getting virtual memory size 
+ # Getting virtual memory size
     pid = os.getpid()
     with open(os.path.join("/proc", str(pid), "status")) as f:
         lines = f.readlines()
     _vmsize = [l for l in lines if l.startswith("VmSize")][0]
     vmsize = int(_vmsize.split()[1])
-    #Getting physical memory size  
+    #Getting physical memory size
     pmsize = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
     print("memory: virtuell = %5.2F MB  physical = %5.2F MB"%(vmsize/1.0E3,pmsize/1.0E3))
 
@@ -47,7 +47,7 @@ parser.add_argument("--Debug",           dest="Debug", help="Switch on debugging
 
 options = parser.parse_args()
 vertexing = not options.noVertexing
- 
+
 if options.EcalDebugDraw: ROOT.gSystem.Load("libASImage")
 
 # need to figure out which geometry was used, only needed if no geo file
@@ -62,11 +62,11 @@ if not options.dy:
 print('configured to process ', options.nEvents, ' events from ', options.inputFile,
       ' starting with event ', options.firstEvent, ' with option Yheight = ' ,dy,
       ' with vertexing', vertexing, ' and real pattern reco ', options.realPR)
-if not options.inputFile.find('_rec.root') < 0: 
+if not options.inputFile.find('_rec.root') < 0:
   outFile   = options.inputFile
-  options.inputFile = outFile.replace('_rec.root','.root') 
+  options.inputFile = outFile.replace('_rec.root','.root')
 else:
-  outFile = options.inputFile.replace('.root','_rec.root') 
+  outFile = options.inputFile.replace('.root','_rec.root')
 # outfile should be in local directory
   tmp = outFile.split('/')
   outFile = tmp[len(tmp)-1]

@@ -11,8 +11,8 @@ public:
    void EndPoints(TVector3 &top, TVector3 &bot);
 
 private:
-    MuonTaggerHit(const MuonTaggerHit& other); 
-    MuonTaggerHit operator=(const MuonTaggerHit& other); 
+    MuonTaggerHit(const MuonTaggerHit& other);
+    MuonTaggerHit operator=(const MuonTaggerHit& other);
 
    ClassDef(MuonTaggerHit, 1)
 };

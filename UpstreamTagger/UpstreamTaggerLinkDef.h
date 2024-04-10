@@ -11,4 +11,3 @@
 #pragma link C++ class UpstreamTaggerHit+;
 
 #endif
-

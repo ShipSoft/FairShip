@@ -2,7 +2,7 @@
 #
 # This script starts MongoDB on your local machine such
 # that it can be used for, for example, testing purposes.
-# 
+#
 # Note for Docker users:
 # Because of permissions restrictions for Docker containers,
 # systemd does not work by default. Therefore, background

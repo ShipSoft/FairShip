@@ -45,7 +45,7 @@ TVector3 vetoHit::GetXYZ()
     nav->LocalToMaster(origin,master);
     TVector3 pos = TVector3(master[0],master[1],master[2]);
     return pos;
-} 
+}
 Double_t vetoHit::GetX()
 { TVector3 pos = GetXYZ();
   return pos.X();
@@ -68,7 +68,7 @@ TGeoNode* vetoHit::GetNode()
    Int_t blockNr = (fDetectorID-ShapeType*100000)/10000;
    Int_t Zlayer = (fDetectorID-ShapeType*100000-blockNr*10000)/100;
    Int_t number = (fDetectorID-ShapeType*100000-blockNr*10000-Zlayer*100)/10;
-   
+
    if(ShapeType==1)path+="LiScX_";
    else if(ShapeType==2)path+="LiScY_";
    else if(ShapeType==3)path+="LiSc_L1_";
@@ -88,21 +88,19 @@ TGeoNode* vetoHit::GetNode()
    path+=number;
    path+="0_";
    path+=fDetectorID;
-   
+
    nav->cd(path);
    node=nav->GetCurrentNode();
    return node;
-} 
+}
 
 
 
 // -----   Public method Print   -------------------------------------------
 void vetoHit::Print(Int_t detID) const
-{ 
+{
   cout << "-I- vetoHit: veto hit " << " in detector " << fDetectorID << endl;
   cout << "  ADC " << fdigi << " ns" << endl;
 }
 
 // -------------------------------------------------------------------------
-
-

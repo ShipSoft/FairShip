@@ -1,4 +1,4 @@
-#!/usr/bin/env python 
+#!/usr/bin/env python
 from __future__ import print_function
 import ROOT,os,sys,time,shipRoot_conf
 ROOT.gROOT.ProcessLine('#include "FairModule.h"')
@@ -31,7 +31,7 @@ storeOnlyMuons = True
 outFile = "msc"+s+".root"
 theSeed      = int(10000 * time.time() % 10000000)
 ecut      = 0.0
-                 
+
 # -------------------------------------------------------------------
 ROOT.gRandom.SetSeed(theSeed)  # this should be propagated via ROOT to Pythia8 and Geant4VMC
 shipRoot_conf.configure()      # load basic libraries, prepare atexit for python
@@ -46,10 +46,10 @@ run = ROOT.FairRunSim()
 run.SetName(mcEngine)  # Transport engine
 run.SetOutputFile(outFile)  # Output file
 run.SetUserConfig("g4Config.C") # user configuration file default g4Config.C
-rtdb = run.GetRuntimeDb() 
+rtdb = run.GetRuntimeDb()
 
 # -----Materials----------------------------------------------
-run.SetMaterials("media.geo")  
+run.SetMaterials("media.geo")
 # -----Create geometry----------------------------------------------
 cave= ROOT.ShipCave("CAVE")
 cave.SetGeometryFileName("cave.geo")
@@ -67,7 +67,7 @@ class Block(ROOT.pyFairModule):
     geoBuild=geoLoad.getGeoBuilder()
     ShipMedium=media.getMedium(material)
     W = ROOT.gGeoManager.GetMedium(material)
-    if not W: 
+    if not W:
         rc = geoBuild.createMedium(ShipMedium)
         W = ROOT.gGeoManager.GetMedium(material)
     aBox = ROOT.gGeoManager.MakeBox("target", W, 100.*u.cm, 100.*u.cm, thickness)
@@ -76,7 +76,7 @@ class Block(ROOT.pyFairModule):
     print("not implemented!")
 
 sensPlane = ROOT.exitHadronAbsorber()
-sensPlane.SetEnergyCut(ecut*u.GeV) 
+sensPlane.SetEnergyCut(ecut*u.GeV)
 if storeOnlyMuons: sensPlane.SetOnlyMuons()
 sensPlane.SetZposition(thickness+10*u.cm)
 run.AddModule(sensPlane)
@@ -109,7 +109,7 @@ ROOT.gROOT.ProcessLine('#include "Geant4/G4EmParameters.hh"')
 emP = ROOT.G4EmParameters.Instance()
 emP.Dump()
 
-import rootUtils as ut 
+import rootUtils as ut
 
 f=ROOT.gROOT.GetListOfFiles()[0]
 h={}
@@ -139,7 +139,7 @@ f.Write(h['theta_100'].GetName())
 timer.Stop()
 rtime = timer.RealTime()
 ctime = timer.CpuTime()
-print(' ') 
-print("Macro finished succesfully.") 
-print("Output file is ",  outFile) 
+print(' ')
+print("Macro finished succesfully.")
+print("Output file is ",  outFile)
 print("Real time ",rtime, " s, CPU time ",ctime,"s")

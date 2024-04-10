@@ -1,6 +1,6 @@
 //
 //  TargetTracker.cxx
-//  
+//
 //
 //  Created by Annarita Buonaura.
 //  Design3 added by Antonio Iuliano for HPT
@@ -125,7 +125,7 @@ void Hpt::SetDesign(Int_t Design)
 }
 
 void Hpt::SetSurroundingDetHeight(Double_t height)
-{ 
+{
  fSRHeight = height;
 }
 
@@ -138,9 +138,9 @@ void Hpt::GetMagnetGeometry(Double_t EmuzC, Double_t EmuY)
 void Hpt::GetNumberofTargets(Int_t ntarget) //in nutautargetdesign 3 more than one neutrino target are considered
 {
    fntarget = ntarget;
-} 
+}
 
-// -----   Private method InitMedium 
+// -----   Private method InitMedium
 Int_t Hpt::InitMedium(const char* name)
 {
    static FairGeoLoader *geoLoad=FairGeoLoader::Instance();
@@ -161,14 +161,14 @@ Int_t Hpt::InitMedium(const char* name)
    return geoBuild->createMedium(ShipMedium);
 }
 
-void Hpt::SetSciFiParam(Double_t scifimat_width_, Double_t scifimat_hor_,  Double_t scifimat_vert_, 
+void Hpt::SetSciFiParam(Double_t scifimat_width_, Double_t scifimat_hor_,  Double_t scifimat_vert_,
                            Double_t scifimat_z_, Double_t support_z_, Double_t honeycomb_z_)
 {
     scifimat_width = scifimat_width_;
     scifimat_hor = scifimat_hor_;
     scifimat_vert = scifimat_vert_;
     scifimat_z = scifimat_z_;
-    support_z = support_z_; 
+    support_z = support_z_;
     honeycomb_z = honeycomb_z_;
 }
 
@@ -179,14 +179,14 @@ void Hpt::SetNumberSciFi(Int_t n_hor_planes_, Int_t n_vert_planes_)
 }
 
 void Hpt::SetHPTrackerParam(Double_t HPTX, Double_t HPTY, Double_t HPTZ)
-{   
+{
     HPTrackerX = HPTX;
     HPTrackerY = HPTY;
-    HPTrackerZ = HPTZ; 
+    HPTrackerZ = HPTZ;
 }
 
 void Hpt::ConstructGeometry()
-{  
+{
     InitMedium("HPTgas");
     TGeoMedium *HPTmat =gGeoManager->GetMedium("HPTgas");
 
@@ -200,7 +200,7 @@ void Hpt::ConstructGeometry()
     TGeoVolume *volHPT = new TGeoVolume("volHPT",HPT,HPTmat);
     volHPT->SetLineColor(kBlue-5);
     AddSensitiveVolume(volHPT);
-    
+
     TGeoBBox *Cbase = new TGeoBBox("Cbase", fConcreteX/2, fConcreteY/2, fConcreteZ/2);
     TGeoVolume *volCbase = new TGeoVolume("volCbase",Cbase,Conc);
     volCbase->SetLineColor(kOrange-7);
@@ -213,40 +213,40 @@ void Hpt::ConstructGeometry()
     //NB: 55 cm is the distance between the borders of the last 2 drift tubes
     volMudetBox->AddNode(volHPT,2,new TGeoTranslation(0,0,-zSizeMudet/2 + 3*DimZ/2 +55*cm));
     volMudetBox->AddNode(volCbase,2,new TGeoTranslation(0,-DimY/2-fConcreteY/2,-zSizeMudet/2 + 3*DimZ/2 +55*cm));
-   
+
     //Central Drift tubes // 3 closer to Arm1, 4 closer to Arm2
     volMudetBox->AddNode(volHPT,3,new TGeoTranslation(0,0,-72*cm/2 - DimZ/2));
 
     //NB: 72cm is the distance between the borders of the central drift tubes
     volMudetBox->AddNode(volHPT,4,new TGeoTranslation(0,0,72*cm/2 + DimZ/2));
-   
-    
+
+
     //After spectro Drift Tubes 5 closer to Arm, 6 closer to decay vessel
     volMudetBox->AddNode(volHPT,5,new TGeoTranslation(0,0,zSizeMudet/2 - 3*DimZ/2 - 55*cm));
-    volMudetBox->AddNode(volCbase,5,new TGeoTranslation(0,-DimY/2-fConcreteY/2,zSizeMudet/2 - 3*DimZ/2 - 55*cm));    
+    volMudetBox->AddNode(volCbase,5,new TGeoTranslation(0,-DimY/2-fConcreteY/2,zSizeMudet/2 - 3*DimZ/2 - 55*cm));
 
     volMudetBox->AddNode(volHPT,6,new TGeoTranslation(0,0,zSizeMudet/2 - DimZ/2));
     volMudetBox->AddNode(volCbase,6,new TGeoTranslation(0,-DimY/2-fConcreteY/2,zSizeMudet/2 - DimZ/2));
 
     }
     if (fDesign == 3){
-        //Trackers that in design 3 follow the target --------------------------------------------------------------------------------------    
-        TGeoVolume *volMagRegion=gGeoManager->GetVolume("volMagRegion"); 
+        //Trackers that in design 3 follow the target --------------------------------------------------------------------------------------
+        TGeoVolume *volMagRegion=gGeoManager->GetVolume("volMagRegion");
         TGeoVolume *volTarget =gGeoManager->GetVolume("volTarget");
-        TGeoVolume *tTauNuDet = gGeoManager->GetVolume("tTauNuDet");  
+        TGeoVolume *tTauNuDet = gGeoManager->GetVolume("tTauNuDet");
 
-        Double_t DZMagnetizedRegion = ((TGeoBBox*) volMagRegion->GetShape())->GetDZ() *2;  
-        Double_t DYMagnetizedRegion = ((TGeoBBox*) volMagRegion->GetShape())->GetDY() *2;  
-        Double_t DXMagnetizedRegion = ((TGeoBBox*) volMagRegion->GetShape())->GetDX() *2;      
+        Double_t DZMagnetizedRegion = ((TGeoBBox*) volMagRegion->GetShape())->GetDZ() *2;
+        Double_t DYMagnetizedRegion = ((TGeoBBox*) volMagRegion->GetShape())->GetDY() *2;
+        Double_t DXMagnetizedRegion = ((TGeoBBox*) volMagRegion->GetShape())->GetDX() *2;
 
-        Double_t DZTarget = ((TGeoBBox*) volTarget->GetShape())->GetDZ() *2;  
+        Double_t DZTarget = ((TGeoBBox*) volTarget->GetShape())->GetDZ() *2;
 
         //HPT is DownStreamTracker
         TGeoBBox *DT = new TGeoBBox("DT", DimX/2, DimY/2, DimZ/2);
-        TGeoVolume *volDT = new TGeoVolume("volDT",DT,HPTmat); 
+        TGeoVolume *volDT = new TGeoVolume("volDT",DT,HPTmat);
         volDT->SetLineColor(kBlue-5);
-        
-        // Creating of SciFi modules in HPT   
+
+        // Creating of SciFi modules in HPT
         InitMedium("CarbonComposite");
         TGeoMedium *CarbonComposite = gGeoManager->GetMedium("CarbonComposite");
 
@@ -254,7 +254,7 @@ void Hpt::ConstructGeometry()
         TGeoMedium *SciFiMat = gGeoManager->GetMedium("SciFiMat");
 
         InitMedium("Airex");
-        TGeoMedium *Airex = gGeoManager->GetMedium("Airex"); 
+        TGeoMedium *Airex = gGeoManager->GetMedium("Airex");
 
         //Support Carbon Composite
         TGeoBBox* HPT_support_box = new TGeoBBox("HPT_support_box", HPTrackerX / 2, HPTrackerY / 2, support_z / 2);
@@ -289,7 +289,7 @@ void Hpt::ConstructGeometry()
         AddSensitiveVolume(HPT_scifimat_hor_volume);
         AddSensitiveVolume(HPT_scifimat_vert_volume);
 
-        // Creating physical volumes and multiply 
+        // Creating physical volumes and multiply
         for (int i = 0; i < n_hor_planes; i++){
             HPT_scifi_plane_hor_volume->AddNode(HPT_scifimat_hor_volume, i+1, new TGeoTranslation(0, (-(n_hor_planes-1)/2.0 + i)*scifimat_width, 0));
         }
@@ -307,7 +307,7 @@ void Hpt::ConstructGeometry()
         Double_t first_DT_position = -DZMagnetizedRegion/2 + DZTarget + DimZ/2;
         for(int i=0;i<fnHPT;i++){
             for (int j = 0; j < fntarget; j++){
-                volMagRegion->AddNode(volDT,(i+1)*1000+j*fnHPT,new TGeoTranslation(0,0, first_DT_position + i*(fDistance+DimZ) + j*(DZTarget+ fnHPT * DimZ + (fnHPT-1)*fDistance)));              
+                volMagRegion->AddNode(volDT,(i+1)*1000+j*fnHPT,new TGeoTranslation(0,0, first_DT_position + i*(fDistance+DimZ) + j*(DZTarget+ fnHPT * DimZ + (fnHPT-1)*fDistance)));
             }
         }
     }
@@ -326,7 +326,7 @@ Bool_t  Hpt::ProcessHits(FairVolume* vol)
     }
     // Sum energy loss for all steps in the active volume
     fELoss += gMC->Edep();
-    
+
     // Create muonPoint at exit of active volume
     if ( gMC->IsTrackExiting()     ||
          gMC->IsTrackStop()        ||
@@ -342,21 +342,21 @@ Bool_t  Hpt::ProcessHits(FairVolume* vol)
         gMC->CurrentVolOffID(2, TTstationID);
         fVolumeID = TTstationID + detID;
 
-        TLorentzVector Pos; 
-        gMC->TrackPosition(Pos); 
-        Double_t xmean = (fPos.X()+Pos.X())/2. ;      
-        Double_t ymean = (fPos.Y()+Pos.Y())/2. ;      
-        Double_t zmean = (fPos.Z()+Pos.Z())/2. ;     
+        TLorentzVector Pos;
+        gMC->TrackPosition(Pos);
+        Double_t xmean = (fPos.X()+Pos.X())/2. ;
+        Double_t ymean = (fPos.Y()+Pos.Y())/2. ;
+        Double_t zmean = (fPos.Z()+Pos.Z())/2. ;
 
-        AddHit(fTrackID, fVolumeID, TVector3(xmean, ymean,  zmean), 
-               TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), 
+        AddHit(fTrackID, fVolumeID, TVector3(xmean, ymean,  zmean),
+               TVector3(fMom.Px(), fMom.Py(), fMom.Pz()),
                fTime, fLength,fELoss, pdgCode);
-            
+
         // Increment number of muon det points in TParticle
         ShipStack* stack = (ShipStack*) gMC->GetStack();
         stack->AddPoint(ktauRpc);
     }
-    
+
     return kTRUE;
 }
 
@@ -368,13 +368,13 @@ void Hpt::EndOfEvent()
 
 void Hpt::Register()
 {
-    
+
     /** This will create a branch in the output tree called
      HptPoint, setting the last parameter to kFALSE means:
      this collection will not be written to the file, it will exist
      only during the simulation.
      */
-    
+
     FairRootManager::Instance()->Register("HptPoint", "Hpt",
                                           fHptPointCollection, kTRUE);
 }
@@ -390,7 +390,7 @@ void Hpt::DecodeVolumeID(Int_t detID,int &nHPT, int &nplane, Bool_t &ishor)
    else if (idir == 0) ishor = kTRUE;
 
    nplane = (detID - nHPT*1000 - idir*100);
-  
+
 
 }
 
@@ -417,5 +417,3 @@ HptPoint* Hpt::AddHit(Int_t trackID, Int_t detID,
 
     return new(clref[size]) HptPoint(trackID, detID, pos, mom,time, length, eLoss, pdgCode);
 }
-
-

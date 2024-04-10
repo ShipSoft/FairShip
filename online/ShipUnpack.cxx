@@ -43,4 +43,3 @@ void ShipUnpack::Register()
       return;
    }
 }
-

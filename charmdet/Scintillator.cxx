@@ -72,7 +72,7 @@ Scintillator::Scintillator(const char* name, Bool_t Active,const char* Title)
     fLength(-1.),
     fELoss(-1),
     fScintillatorPointCollection(new TClonesArray("ScintillatorPoint"))
-{ 
+{
 
 }
 
@@ -90,7 +90,7 @@ void Scintillator::Initialize()
 }
 
 
-// -----   Private method InitMedium 
+// -----   Private method InitMedium
 Int_t Scintillator::InitMedium(const char* name)
 {
    static FairGeoLoader *geoLoad=FairGeoLoader::Instance();
@@ -137,22 +137,22 @@ void Scintillator::SetS_T1coords(Float_t S_T1_x, Float_t S_T1_y)
 void Scintillator::SetS_T2coords(Float_t S_T2_x, Float_t S_T2_y)
 {
      fS_T2_x = S_T2_x;    //! x origin of S_T2
-     fS_T2_y = S_T2_y;    //! y origin of S_T2     
+     fS_T2_y = S_T2_y;    //! y origin of S_T2
 }
 
 
 
 //
 void Scintillator::ConstructGeometry()
-{ 
+{
     InitMedium("vacuum");
     TGeoMedium *vacuum = gGeoManager->GetMedium("vacuum");
-  
-    InitMedium("ShipSens");    
-    TGeoMedium *Sens =gGeoManager->GetMedium("ShipSens");  
-    
+
+    InitMedium("ShipSens");
+    TGeoMedium *Sens =gGeoManager->GetMedium("ShipSens");
+
     TGeoVolume *top = gGeoManager->GetTopVolume();
-    
+
     gGeoManager->SetVisLevel(7);
     gGeoManager->SetTopVisible();
 
@@ -160,22 +160,22 @@ void Scintillator::ConstructGeometry()
     Double_t eps=0.0001;
     Double_t epsS=0.00001;
 
-    TGeoBBox *scoring1box = new TGeoBBox("T1Box",fScoring1X/2.,fScoring1Y/2.,1.25);    
+    TGeoBBox *scoring1box = new TGeoBBox("T1Box",fScoring1X/2.,fScoring1Y/2.,1.25);
     TGeoBBox *scoring2box = new TGeoBBox("T2Box",fScoring1X/2.,fScoring1Y/2.,1.25);
     TGeoVolume *scintillator1 = new TGeoVolume("SA",scoring1box,Sens);
     scintillator1->SetLineColor(kRed);
     scintillator1->SetVisibility(kTRUE);
- 
+
     TGeoVolume *scintillator2 = new TGeoVolume("SB",scoring2box,Sens);
     scintillator2->SetLineColor(kRed);
     scintillator2->SetVisibility(kTRUE);
-    
-	
-    //Add a sensitive plane after the absorber 
+
+
+    //Add a sensitive plane after the absorber
     AddSensitiveVolume(scintillator1);
     AddSensitiveVolume(scintillator2);
-    top->AddNode(scintillator1,6,new TGeoTranslation(0,0,fDistT1)); 
-    top->AddNode(scintillator2,7,new TGeoTranslation(0,0,fDistT2));     	
+    top->AddNode(scintillator1,6,new TGeoTranslation(0,0,fDistT1));
+    top->AddNode(scintillator2,7,new TGeoTranslation(0,0,fDistT2));
 
 }
 
@@ -192,23 +192,23 @@ Bool_t  Scintillator::ProcessHits(FairVolume* vol)
   }
   // Sum energy loss for all steps in the active volume
   fELoss += gMC->Edep();
-  
+
   // Create na61Point at exit of active volume
   if ( gMC->IsTrackExiting()    ||
        gMC->IsTrackStop()       ||
        gMC->IsTrackDisappeared()   ) {
     if (fELoss == 0. ) { return kFALSE; }
     TParticle* p=gMC->GetStack()->GetCurrentTrack();
-    Int_t pdgCode = p->GetPdgCode();       
+    Int_t pdgCode = p->GetPdgCode();
     fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
     fVolumeID = gGeoManager->FindVolumeFast(vol->GetName())->GetNumber();
-    TLorentzVector Pos; 
-    gMC->TrackPosition(Pos); 
-    TLorentzVector Mom; 
+    TLorentzVector Pos;
+    gMC->TrackPosition(Pos);
+    TLorentzVector Mom;
     gMC->TrackMomentum(Mom);
-    Double_t xmean = (fPos.X()+Pos.X())/2. ;      
-    Double_t ymean = (fPos.Y()+Pos.Y())/2. ;      
-    Double_t zmean = (fPos.Z()+Pos.Z())/2. ;     
+    Double_t xmean = (fPos.X()+Pos.X())/2. ;
+    Double_t ymean = (fPos.Y()+Pos.Y())/2. ;
+    Double_t zmean = (fPos.Z()+Pos.Z())/2. ;
     AddHit(fTrackID, fVolumeID, TVector3(xmean, ymean,  zmean),
            TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength,
            fELoss,pdgCode );
@@ -229,13 +229,13 @@ void Scintillator::EndOfEvent()
 
 void Scintillator::Register()
 {
-    
+
     /** This will create a branch in the output tree called
      ScintillatorPoint, setting the last parameter to kFALSE means:
      this collection will not be written to the file, it will exist
      only during the simulation.
      */
-    
+
     FairRootManager::Instance()->Register("ScintillatorPoint", "Scintillator",
                                           fScintillatorPointCollection, kTRUE);
 }
@@ -270,4 +270,3 @@ ScintillatorPoint* Scintillator::AddHit(Int_t trackID, Int_t detID,
   return new(clref[size]) ScintillatorPoint(trackID, detID, pos, mom,
          time, length, eLoss, pdgCode);
 }
-

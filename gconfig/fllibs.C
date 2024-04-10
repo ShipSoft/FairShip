@@ -21,7 +21,6 @@ void fllibs()
   cout << "Loading Fluka libraries ..." << endl;
 
   gSystem->Load("libfluka.so");
-  
+
   cout << "Loading Fluka libraries ... finished" << endl;
 }
-

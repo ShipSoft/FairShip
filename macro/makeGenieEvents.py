@@ -1,4 +1,4 @@
-#!/usr/bin/env python 
+#!/usr/bin/env python
 from __future__ import print_function
 from __future__ import division
 import ROOT,os,sys,time
@@ -32,7 +32,7 @@ defaultfiledir  = '/eos/experiment/ship/data/Mbias/background-prod-2018' #path o
 
 
 
-def get_arguments(): #available options  
+def get_arguments(): #available options
 
   parser = argparse.ArgumentParser(
       description='Run GENIE neutrino" simulation')
@@ -86,7 +86,7 @@ def makeEvents(nevents = 100):
   if p<0: print("scale number of "+sDict[p]+" events with %5.2F"%(1./nuOverNubar[abs(p)]))
   if not sDict[p] in os.listdir('.'): call('mkdir '+sDict[p],shell = True)
   os.chdir('./'+sDict[p])
-  # stop at 350 GeV, otherwise strange warning about "Lower energy neutrinos have a higher probability of 
+  # stop at 350 GeV, otherwise strange warning about "Lower energy neutrinos have a higher probability of
   # interacting than those at higher energy. pmaxLow(E=386.715)=2.157e-13 and  pmaxHigh(E=388.044)=2.15623e-13"
   N = nevents
   if p<0: N = int(nevents / nuOverNubar[abs(p)])
@@ -121,8 +121,8 @@ else:
  neutrinos = args.filedir+'/'+hfile #path of flux
 
  print('Seed used in this generation: ', args.seed)
- print('Splines file used', xsec) 
- 
+ print('Splines file used', xsec)
+
  pdg  = ROOT.TDatabasePDG()
  pDict = {}
  sDict = {}

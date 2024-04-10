@@ -10,7 +10,7 @@ def collect_hits(lsOfGlobals, checked_muons):
 
   fPos = ROOT.TVector3()
   fMom = ROOT.TVector3()
-  
+
   muon_to_follow = -1
   for index, track in enumerate(sTree.MCTrack):
     if abs(track.GetPdgCode()) == MUON and index not in checked_muons:

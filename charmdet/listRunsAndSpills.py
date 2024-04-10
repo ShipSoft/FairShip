@@ -24,4 +24,3 @@ else:
       except:
        print("error with spill",fname)
     print("PoT=",Npot)
-

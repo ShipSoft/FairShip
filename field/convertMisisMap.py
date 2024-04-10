@@ -1,8 +1,8 @@
 #!/bin/python
 
-# Python script to convert B field maps from MISIS text files into 
+# Python script to convert B field maps from MISIS text files into
 # ROOT files for FairShip. Text files are assumed to contain two
-# preamble lines giving the binning details and variable names, followed 
+# preamble lines giving the binning details and variable names, followed
 # by data lines x y z Bx By Bz, where the co-ordinates are assumed to
 # be in ascending z, y and x, in that order. Need distances in cm
 
@@ -27,7 +27,7 @@ ROOT.gROOT.ProcessLine(
 # The field map is assumed to obey the following co-ordinate bin ordering:
 # z is increased first, y is increased 2nd, x is increased last.
 # So we only store the field components (x,y,z is known from the ordering).
-# For the coordinate bin (iX, iY, iZ), the field bin = (iX*Ny + iY)*Nz + iZ, 
+# For the coordinate bin (iX, iY, iZ), the field bin = (iX*Ny + iY)*Nz + iZ,
 # where Ny and Nz are the number of y and z bins
 
 ROOT.gROOT.ProcessLine(
@@ -71,7 +71,7 @@ def createRootMap(inFileName, rootFileName):
 
     # Field components with (x,y,z) coordinate binning ordered such that
     # z, then y, then x is increased. For the coordinate bin (iX, iY, iZ),
-    # the field bin = (iX*Ny + iY)*Nz + iZ, where Ny and Nz are the number 
+    # the field bin = (iX*Ny + iY)*Nz + iZ, where Ny and Nz are the number
     # of y and z bins
     dStruct = ROOT.dataStruct()
     dataTree.Branch('Bx', ROOT.AddressOf(dStruct, 'Bx'), 'Bx/F')
@@ -152,7 +152,7 @@ def createRootMap(inFileName, rootFileName):
 
                 # Fill info into range tree
                 rangeTree.Fill()
-                
+
 
             # Field data values start from line 3
             elif iLine > 2:
@@ -170,7 +170,7 @@ def createRootMap(inFileName, rootFileName):
                 dStruct.Bz = float(sLine[5])
 
                 dataTree.Fill()
-                
+
     theFile.cd()
     rangeTree.Write()
     dataTree.Write()

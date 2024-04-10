@@ -287,4 +287,3 @@ void DriftTubeUnpack::Reset()
    fRawMasterTrigger->Clear();
    fRawTriggers->Clear();
 }
-

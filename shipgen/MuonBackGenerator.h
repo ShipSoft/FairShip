@@ -4,7 +4,7 @@
 #include "TROOT.h"
 #include "FairGenerator.h"
 #include "TTree.h"                      // for TTree
-#include "TClonesArray.h"               
+#include "TClonesArray.h"
 #include "FairLogger.h"                 // for FairLogger, MESSAGE_ORIGIN
 
 class FairPrimaryGenerator;
@@ -12,15 +12,15 @@ class FairPrimaryGenerator;
 class MuonBackGenerator : public FairGenerator
 {
  public:
-  
+
   /** default constructor **/
   MuonBackGenerator();
-  
+
   /** destructor **/
   virtual ~MuonBackGenerator();
-  
+
   /** public method ReadEvent **/
-  Bool_t ReadEvent(FairPrimaryGenerator*);  
+  Bool_t ReadEvent(FairPrimaryGenerator*);
   virtual Bool_t Init(const char*, int, const Bool_t fl); //!
   virtual Bool_t Init(const char*); //!
   Int_t GetNevents();//!
@@ -40,8 +40,8 @@ protected:
   Float_t id,parentid,pythiaid,w,px,py,pz,vx,vy,vz,ecut;
   TClonesArray* MCTrack; //!
   TClonesArray* vetoPoints; //!
-  TFile* fInputFile;    //! 
-  TTree* fTree;         //! 
+  TFile* fInputFile;    //!
+  TTree* fTree;         //!
   int fNevents;
   float f_zOffset;      //!
   int fn;

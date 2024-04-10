@@ -73,8 +73,8 @@ void preshower::Initialize()
 //  FairRuntimeDb* rtdb= FairRun::Instance()->GetRuntimeDb();
 //  preshowerGeoPar* par=(preshowerGeoPar*)(rtdb->getContainer("preshowerGeoPar"));
 }
-// -----   Private method InitMedium 
-Int_t preshower::InitMedium(const char* name) 
+// -----   Private method InitMedium
+Int_t preshower::InitMedium(const char* name)
 {
    static FairGeoLoader *geoLoad=FairGeoLoader::Instance();
    static FairGeoInterface *geoFace=geoLoad->getGeoInterface();
@@ -204,27 +204,27 @@ void preshower::ConstructGeometry()
   /** If you are using the standard ASCII input for the geometry
       just copy this and use it for your detector, otherwise you can
       implement here you own way of constructing the geometry. */
-    
+
     TGeoVolume *top=gGeoManager->GetTopVolume();
     TGeoVolume *tPreshower = new TGeoVolumeAssembly("PreshowerDetector");
 
     InitMedium("lead");
     InitMedium("Scintillator");
-    
+
     TGeoMedium *Al =gGeoManager->GetMedium("Scintillator");
     TGeoMedium *A2 =gGeoManager->GetMedium("lead");
-    
+
 //    TGeoBBox *detbox1 = new TGeoBBox("detbox1", 250, 250, 10);
 //    TGeoBBox *detbox2 = new TGeoBBox("detbox2", 245, 245, 10);
-    
-//    TGeoCompositeShape *detcomp1 = new TGeoCompositeShape("detcomp1", "detbox1-detbox2");    
+
+//    TGeoCompositeShape *detcomp1 = new TGeoCompositeShape("detcomp1", "detbox1-detbox2");
 
 //    TGeoVolume *detmu1 = new TGeoVolume("MuX", detcomp1, Al);
     TGeoVolume *preshowerdet0 = gGeoManager->MakeBox("preshowerdet0", Al, fXMax, fYMax, fActiveThickness);
     TGeoVolume *preshowerdet1 = gGeoManager->MakeBox("preshowerdet1", Al, fXMax, fYMax, fActiveThickness);
-//    TGeoVolume *preshowerdet2 = gGeoManager->MakeBox("preshowerdet2", Al, fXMax, fYMax, fActiveThickness); 
-//    TGeoVolume *preshowerdet3 = gGeoManager->MakeBox("preshowerdet3", Al, fXMax, fYMax, fActiveThickness); 
-    
+//    TGeoVolume *preshowerdet2 = gGeoManager->MakeBox("preshowerdet2", Al, fXMax, fYMax, fActiveThickness);
+//    TGeoVolume *preshowerdet3 = gGeoManager->MakeBox("preshowerdet3", Al, fXMax, fYMax, fActiveThickness);
+
     TGeoVolume *preshowerfilter0 = gGeoManager->MakeBox("preshowerfilter0", A2, fXMax, fYMax, fFilterThickness0);
     TGeoVolume *preshowerfilter1 = gGeoManager->MakeBox("preshowerfilter1", A2, fXMax, fYMax, fFilterThickness1);
 //    TGeoVolume *preshowerfilter2 = gGeoManager->MakeBox("preshowerfilter2", A2, fXMax, fYMax, fFilterThickness);
@@ -251,7 +251,7 @@ void preshower::ConstructGeometry()
           //finish assembly and position
     TGeoShapeAssembly* asmb = dynamic_cast<TGeoShapeAssembly*>(tPreshower->GetShape());
     Double_t totLength = asmb->GetDZ();
-    top->AddNode(tPreshower, 1, new TGeoTranslation(0, 0,zStartPreshower+totLength));  
+    top->AddNode(tPreshower, 1, new TGeoTranslation(0, 0,zStartPreshower+totLength));
 }
 
 preshowerPoint* preshower::AddHit(Int_t trackID, Int_t detID,
@@ -265,4 +265,3 @@ preshowerPoint* preshower::AddHit(Int_t trackID, Int_t detID,
   return new(clref[size]) preshowerPoint(trackID, detID, pos, mom,
          time, length, eLoss, pdgCode);
 }
-

@@ -15,7 +15,7 @@ def parse_arguments():
     ap = argparse.ArgumentParser(
         description='test configuration file')
     ap.add_argument('-d', '--debug', action='store_true')
-    ap.add_argument('-p', '--params', type=json.loads, 
+    ap.add_argument('-p', '--params', type=json.loads,
                     help="""config parameters in json form '{"a": 1, "b": 2}' """, default=None)
 
     ap.add_argument('config_file', help='config file to test')

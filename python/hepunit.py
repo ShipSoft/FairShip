@@ -49,7 +49,7 @@ mm  = millimeter
 mm2 = millimeter2
 mm3 = millimeter3
 
-cm  = centimeter  
+cm  = centimeter
 cm2 = centimeter2
 cm3 = centimeter3
 
@@ -66,7 +66,7 @@ pc = parsec
 #
 # Angle
 #
-radian      = 1.                  
+radian      = 1.
 milliradian = 1.e-3*radian
 degree = (3.14159265358979323846/180.0)*radian
 
@@ -212,13 +212,13 @@ mole = 1.
 #
 # Activity [T^-1]
 #
-becquerel = 1./second 
+becquerel = 1./second
 curie = 3.7e+10 * becquerel
 
 #
 # Absorbed dose [L^2][T^-2]
 #
-gray = joule/kilogram 
+gray = joule/kilogram
 
 #
 # Luminous intensity [I]
@@ -237,8 +237,8 @@ lux = lumen/meter2
 
 #
 # Miscellaneous
-# 
-perCent     = 0.01 
+#
+perCent     = 0.01
 perThousand = 0.001
 perMillion  = 0.000001
 
@@ -251,11 +251,11 @@ twopi  = 2.*pi
 halfpi = pi/2.
 pi2    = pi*pi
 
-# 
+#
 Avogadro = 6.0221367e+23/mole
 
 # c   = 299.792458 mm/ns
-# c^2 = 898.7404 (mm/ns)^2 
+# c^2 = 898.7404 (mm/ns)^2
 c_light   = 2.99792458e+8 * m/s
 c_squared = c_light * c_light
 
@@ -307,4 +307,3 @@ kGasThreshold   = 10.*mg/cm3
 
 #
 universe_mean_density = 1.e-25*g/cm3
-

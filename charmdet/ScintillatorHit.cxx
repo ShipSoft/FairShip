@@ -4,4 +4,3 @@ ScintillatorHit::ScintillatorHit(Int_t detID, Float_t digi, Float_t signal_width
    : ShipHit(detID, digi), time_over_threshold(signal_width), flags(flag), channel(ch)
 {
 }
-

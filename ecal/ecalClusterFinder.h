@@ -40,9 +40,9 @@ public:
   Double_t MinClusterE() const {return fMinClusterE;}
 
   /** Minimum precluster uncalibrated energy **/
-  void SetMinMaxE(Double_t minmaxe=0.015) {fMinMaxE=minmaxe;} 
+  void SetMinMaxE(Double_t minmaxe=0.015) {fMinMaxE=minmaxe;}
   /** Minimum uncalibrated energy of precluster maximum for consideration **/
-  void SetMinClusterE(Double_t minmaxe=0.03) {fMinClusterE=minmaxe;} 
+  void SetMinClusterE(Double_t minmaxe=0.03) {fMinClusterE=minmaxe;}
 private:
   /** Form clusters from precluster **/
   void FormClusters();
@@ -81,4 +81,3 @@ private:
 };
 
 #endif
-

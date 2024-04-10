@@ -8,8 +8,8 @@
 #include "MuonBackGenerator.h"
 #include "TDatabasePDG.h"               // for TDatabasePDG
 #include "TMath.h"                      // for Sqrt
-#include "vetoPoint.h"                
-#include "ShipMCTrack.h"                
+#include "vetoPoint.h"
+#include "ShipMCTrack.h"
 #include "TMCProcess.h"
 #include <algorithm>
 #include <unordered_map>
@@ -31,7 +31,7 @@ Bool_t MuonBackGenerator::Init(const char* fileName, const int firstEvent, const
   if (0 == strncmp("/eos",fileName,4) ) {
      TString tmp = gSystem->Getenv("EOSSHIP");
      tmp+=fileName;
-     fInputFile  = TFile::Open(tmp); 
+     fInputFile  = TFile::Open(tmp);
   }else{
   fInputFile  = new TFile(fileName);
   }
@@ -54,7 +54,7 @@ Bool_t MuonBackGenerator::Init(const char* fileName, const int firstEvent, const
    fTree->SetBranchAddress("ecut",&ecut);    // energy cut used in simulation
    fTree->SetBranchAddress("w",&w);                  // weight of event
 //  check if ntuple has information of momentum at origin
-   if (fTree->GetListOfLeaves()->GetSize() < 17){  
+   if (fTree->GetListOfLeaves()->GetSize() < 17){
     fTree->SetBranchAddress("x",&vx);   // position with respect to startOfTarget at -89.27m
     fTree->SetBranchAddress("y",&vy);
     fTree->SetBranchAddress("z",&vz);
@@ -77,7 +77,7 @@ Bool_t MuonBackGenerator::Init(const char* fileName, const int firstEvent, const
    vetoPoints = new TClonesArray("vetoPoint");
    fTree->SetBranchAddress("MCTrack",&MCTrack);
    fTree->SetBranchAddress("vetoPoint",&vetoPoints);
-  }    
+  }
   return kTRUE;
 }
 // -----   Destructor   ----------------------------------------------------
@@ -94,7 +94,7 @@ Bool_t MuonBackGenerator::checkDiMuon(Int_t muIndex){
         strncmp("Lepton pair production",pName.Data(),22)==0){
            check = true;}
    Int_t Pcode = TMath::Abs( ((ShipMCTrack*)MCTrack->At(mu->GetMotherId()))->GetPdgCode());
-   if (Pcode==221 || Pcode==223 || Pcode==333 || Pcode==113 || Pcode == 331){  
+   if (Pcode==221 || Pcode==223 || Pcode==333 || Pcode==113 || Pcode == 331){
            check = true;}
    return check;
 }
@@ -109,8 +109,8 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
   std::unordered_map<int, std::vector<int>> moList;
   while (fn<fNevents) {
    fTree->GetEntry(fn);
-   muList.clear(); 
-   moList.clear(); 
+   muList.clear();
+   moList.clear();
    fn++;
    if (fn%100000==0) {
        LOGF(info, "Reading event %i", fn);
@@ -124,8 +124,8 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
    if (id==-1){ // use tree as input file
      Bool_t found = false;
      for (int i = 0; i < vetoPoints->GetEntries(); i++) {
-         vetoPoint *v = (vetoPoint*)vetoPoints->At(i); 
-         Int_t abspid = TMath::Abs(v->PdgCode()); 
+         vetoPoint *v = (vetoPoint*)vetoPoints->At(i);
+         Int_t abspid = TMath::Abs(v->PdgCode());
          if (abspid==13 or (not followMuons and abspid!=12 and abspid!=14) ){
           found = true;
           Int_t muIndex = v->GetTrackID();
@@ -147,7 +147,7 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
         if (gRandom->Uniform(0.,1.)>0.99){
           std::vector<int> list = it->second;
           for ( Int_t i=0;i < list.size(); i++){
-             vetoPoint *v = (vetoPoint*)vetoPoints->At(list.at(i)); 
+             vetoPoint *v = (vetoPoint*)vetoPoints->At(list.at(i));
              Int_t muIndex = v->GetTrackID();
              muList.insert( { muIndex,i });
           }
@@ -160,10 +160,10 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
      if (found) {break;}
    }
   }
-  if (fn>fNevents-1){ 
+  if (fn>fNevents-1){
      LOGF(info, "End of file reached %i", fNevents);
      return kFALSE;
-  } 
+  }
   if (fSameSeed) {
     Int_t theSeed = fn + fSameSeed * fNevents;
     LOGF(debug, "Seed: %d", theSeed);
@@ -242,4 +242,3 @@ void MuonBackGenerator::CloseFile()
  fInputFile->Delete();
  delete fInputFile;
 }
-

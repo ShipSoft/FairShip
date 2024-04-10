@@ -81,14 +81,14 @@ Bool_t SciFiUnpack::DoUnpack(Int_t *data, Int_t size)
      auto triggerFlag = (hitData.ch >= 16000) ? 1 : 0;
      auto board = (triggerFlag == 1) ? (hitData.ch - 15999) : (hitData.ch / 512 + 1);
      auto layer = (board-1) / 3 + 1;
-     if (layer==1) layerID=111; 
-     else if (layer==2) layerID=112; 
-     else if (layer==3) layerID=121; 
-     else if (layer==4) layerID=122; 
-     else if (layer==5) layerID=131; 
-     else if (layer==6) layerID=132; 
-     else if (layer==7) layerID=141; 
-     else layerID=142; 
+     if (layer==1) layerID=111;
+     else if (layer==2) layerID=112;
+     else if (layer==3) layerID=121;
+     else if (layer==4) layerID=122;
+     else if (layer==5) layerID=131;
+     else if (layer==6) layerID=132;
+     else if (layer==7) layerID=141;
+     else layerID=142;
 
      //                0-25 * 10**5       +  0-16025;
      auto detectorId = board * pow(10, 5) + hitData.ch;
@@ -109,4 +109,3 @@ void SciFiUnpack::Reset()
   fRawData->Clear();
   fNHits = 0;
 }
-

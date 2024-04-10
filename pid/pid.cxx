@@ -11,7 +11,7 @@ pid::pid()
     fElectronID(-999),         //!  electron id
     fHadronID(-999),           //!  hadron id
     fMuonID(-999),             //!  muon id
-    fTrackPID(-999)            //!  track pid 
+    fTrackPID(-999)            //!  track pid
 {
 //   std::cout<<"create"<<std::endl;
 }
@@ -20,4 +20,3 @@ pid::~pid()
 {
 //   std::cout<<"delete"<<std::endl;
 }
-

@@ -11,10 +11,10 @@ pip install --upgrade pip
 pip install matplotlib numpy scipy certifi ipython ipywidgets ipykernel notebook metakernel pyyaml
 
 # for cvmfs
-# sudo yum install https://ecsft.cern.ch/dist/cvmfs/cvmfs-release/cvmfs-release-latest.noarch.rpm 
+# sudo yum install https://ecsft.cern.ch/dist/cvmfs/cvmfs-release/cvmfs-release-latest.noarch.rpm
 # sudo yum install cvmfs cvmfs-config-default
 # sudo cvmfs_config setup
-# put in /etc/cvmfs/default.local 
+# put in /etc/cvmfs/default.local
 # CVMFS_QUOTA_LIMIT='164494'
 # CVMFS_HTTP_PROXY='http://ca-proxy-meyrin.cern.ch:3128;http://ca-proxy.cern.ch:3128;http://ca01.cern.ch:3128|http://ca02.cern.ch:3128|http://ca03.cern.ch:3128|http://ca04.cern.ch:3128|http://ca05.cern.ch:3128|http://ca06.cern.ch:3128'
 # CVMFS_CACHE_BASE='/pool/cvmfs'

@@ -97,7 +97,7 @@ def lifetime(particle):
         return 1.5e-12
     elif particle=="B+" or particle=="B-":
         return 1.6e-12
-    
+
     return tPart.Lifetime()
 
 
@@ -123,7 +123,7 @@ class constants():
                               'D_s-':0.259*u.GeV,'D*_s-':0.259*u.GeV,
                               'B+':0.191*u.GeV,'B-':0.191*u.GeV,
                               'B0':0.191*u.GeV,'B_s0':0.228*u.GeV,
-                              'B0_bar':0.191*u.GeV,'B_s0_bar':0.228*u.GeV} 
+                              'B0_bar':0.191*u.GeV,'B_s0_bar':0.228*u.GeV}
 
         self.GF   = 1.166379e-05/(u.GeV*u.GeV)             # Fermi's constant (GeV^-2)
         self.MW   = 80.385*u.GeV
@@ -132,12 +132,12 @@ class constants():
         self.t2thetaw = self.s2thetaw/(1-self.s2thetaw)    # square tan of the Weinberg angle
         self.heV = 6.58211928*pow(10.,-16)                 # no units or it messes up!!
         self.hGeV = self.heV * pow(10.,-9)                 # no units or it messes up!!
-        # defined in Eq (30)--(32) of [1511.07436], but without 
+        # defined in Eq (30)--(32) of [1511.07436], but without
         # the coupling over sfermion mass, that will come later
         self.GST2 = {'slepton'   : self.gW2*self.t2thetaw*9./8.,
                      'sneutrino' : self.gW2*self.t2thetaw*9./8.,
                      'tlepton'   : self.gW2*self.t2thetaw*1./32.,
-                     'tneutrino' : self.gW2*self.t2thetaw*1./32.} 
+                     'tneutrino' : self.gW2*self.t2thetaw*1./32.}
 
 
 
@@ -219,9 +219,9 @@ class RPVSUSYbranchings():
                                     .format(bf, ' '.join(str(code) for code in codes)))
             if verbose:
                 print("debug readdecay table",particles,codes,bf)
-            
 
-            
+
+
     def Width_H_L(self, H, L):
         """
         Returns the RPV neutralino decay width into neutral meson and lepton
@@ -232,7 +232,7 @@ class RPVSUSYbranchings():
         """
         if self.MN < (mass(H)+mass(L)):
             return 0.
-        
+
         phsp=math.sqrt(self.MN**4+mass(H)**4+mass(L)**4-\
                        2*self.MN**2*mass(H)**2-2*self.MN**2*mass(L)**2-\
                        2*mass(H)**2*mass(L)**2)
@@ -245,7 +245,7 @@ class RPVSUSYbranchings():
             tmp_width = phsp/(self.sfmass**4*128*u.pi*self.MN**3)*\
                         c.GST2['slepton']*c.decayConstant[H]**2*\
                         (self.MN**2+mass(L)**2-mass(H)**2)
-            
+
         if 'K*' in H or 'D*' in H or "phi" in H:
             if 'nu_mu' in L or 'nu_e' in L or 'nu_tau' in L:
                 tmp_width = phsp/(self.sfmass**4*2*u.pi*self.MN**3)*\
@@ -262,9 +262,9 @@ class RPVSUSYbranchings():
         # contributions only from production coupling
         if self.bench==2 and ('eta' in H or 'phi' in H):
             width=self.U2[0]*tmp_width
-        
+
         # Majorana case (charge conjugate channels)
-        width = 2.*width 
+        width = 2.*width
         return width
 
 
@@ -275,13 +275,13 @@ class RPVSUSYbranchings():
         - H is a string (name of the meson)
         - L is a string (name of the lepton)
         """
-        
+
         if mass(H) < (self.MN+mass(L)):
             return 0.
         phsp=math.sqrt(self.MN**4+mass(H)**4+mass(L)**4-\
                        2*self.MN**2*mass(H)**2-2*self.MN**2*mass(L)**2-\
                        2*mass(H)**2*mass(L)**2)
-        
+
         tmp_width=0
         if 'nu_mu' in L or 'nu_e' in L or 'nu_tau' in L:
             tmp_width = phsp/(self.sfmass**4*64*u.pi*mass(H)**3)*\
@@ -291,7 +291,7 @@ class RPVSUSYbranchings():
             tmp_width = phsp/(self.sfmass**4*64*u.pi*mass(H)**3)*\
                         c.GST2['slepton']*c.decayConstant[H]**2*\
                         (mass(H)**2-self.MN**2-mass(L)**2)
-            
+
         if 'K*' in H or 'D*' in H or "phi" in H:
             if 'nu_mu' in L or 'nu_e' in L or 'nu_tau' in L:
                 tmp_width = phsp/(self.sfmass**4*3*u.pi*mass(H)**3)*\
@@ -301,9 +301,9 @@ class RPVSUSYbranchings():
                 tmp_width = phsp/(self.sfmass**4*3*u.pi*mass(H)**3)*\
                             c.GST2['tlepton']*c.decayConstant[H]**2*\
                             (mass(H)**2*(mass(H)**2+self.MN**2+mass(L)**2-2*(self.MN**2-mass(L)**2)**2))
-                            
+
         width=self.U2[0]*tmp_width
-        
+
         return width
 
 
@@ -348,7 +348,7 @@ class RPVSUSYbranchings():
                   "a different decay mode of out...\n")
             print(self.decays)
             return -999
-        
+
         corrdecstring = 'N -> %s %s'%(had,lep)
         listdecs      = self.decays[self.bench]
         gooddec       = False
@@ -364,7 +364,7 @@ class RPVSUSYbranchings():
                   "one of the following\n")
             print(self.decays)
             return -999
-                
+
         br = 0.
         totalwidth = self.NdecayWidth()
         if totalwidth > 0.0:
@@ -390,7 +390,7 @@ class RPVSUSYbranchings():
                   "a different decay mode of out...\n")
             print(self.decays)
             return -999
-        
+
         corrdecstring = '%s -> N %s'%(had,lep)
         listdecs      = self.prods[self.bench]
         gooddec       = False
@@ -406,7 +406,7 @@ class RPVSUSYbranchings():
                   "one of the following\n")
             print(self.decays)
             return -999
-        
+
         br = self.Width_N_L(had,lep)/(self.Width_N_L(had,lep)+c.hGeV/lifetime(had))
         return br
 
@@ -432,10 +432,9 @@ class RPVSUSY(RPVSUSYbranchings):
         Inputs:
         - system: choose between default (i.e. SI, result in s) or FairShip (result in ns)
         """
-        decwidth = self.NdecayWidth()  
+        decwidth = self.NdecayWidth()
         if decwidth == 0.0:
             return 0.0
         self.NLifetime = c.hGeV / decwidth
         if system == "FairShip": self.NLifetime *= 1.e9
         return self.NLifetime
-

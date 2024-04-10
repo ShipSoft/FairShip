@@ -31,7 +31,7 @@ void ScintillatorPoint::Print(const Option_t* opt) const
 {
   cout << "-I- ScintillatorPoint: Scintillator point for track " << fTrackID
        << " in detector " << fDetectorID << endl;
-  cout << "    Position (" << fX << ", " << fY << ", " << fZ 
+  cout << "    Position (" << fX << ", " << fY << ", " << fZ
        << ") cm" << endl;
   cout << "    Momentum (" << fPx << ", " << fPy << ", " << fPz
        << ") GeV" << endl;
@@ -39,4 +39,3 @@ void ScintillatorPoint::Print(const Option_t* opt) const
        << " cm,  Energy loss " << fELoss*1.0e06 << " keV" << endl;
 }
 // -------------------------------------------------------------------------
-

@@ -11,7 +11,7 @@ import shipunit as u
 
 def addHNLtoROOT(pid=9900015 ,m = 1.0, g=3.654203020370371E-21):
     pdg = ROOT.TDatabasePDG.Instance()
-    pdg.AddParticle('N2','HNL', m, False, g, 0., 'N2', pid) 
+    pdg.AddParticle('N2','HNL', m, False, g, 0., 'N2', pid)
 
 def getbr_rpvsusy(h,histoname,mass,coupling):
     if histoname in h:
@@ -22,11 +22,11 @@ def getbr_rpvsusy(h,histoname,mass,coupling):
     return br
 
 def getmaxsumbrrpvsusy(h,histograms,mass,couplings):
-    #0 MeV< mass < 3.200 GeV 
+    #0 MeV< mass < 3.200 GeV
     maxsumbr=0.0
     sumbrs={}
-    for histoname in histograms: 
-       item = histoname.split('_') 
+    for histoname in histograms:
+       item = histoname.split('_')
        lepton = item[len(item)-1]
        meson = item[0]
        coupling=couplings[1]
@@ -39,9 +39,9 @@ def getmaxsumbrrpvsusy(h,histograms,mass,couplings):
     return maxsumbr
 
 def gettotalbrrpvsusy(h,histograms,mass,couplings):
-    totalbr=0.0 
-    for histoname in histograms: 
-       item = histoname.split('_') 
+    totalbr=0.0
+    for histoname in histograms:
+       item = histoname.split('_')
        coupling=couplings[1]
        totalbr+=getbr_rpvsusy(h,histoname,mass,coupling)
     return totalbr

@@ -33,7 +33,7 @@ def check4OrphanVolumes(fGeo):
 
 def setMagnetField(flag=None):
     print('setMagnetField() called. Out of date, does not set field for tau neutrino detector!')
-    fGeo = ROOT.gGeoManager  
+    fGeo = ROOT.gGeoManager
     vols = fGeo.GetListOfVolumes()
     #copy field by hand to geant4
     listOfFields={}
@@ -46,7 +46,7 @@ def setMagnetField(flag=None):
      magFieldIron = G4UniformMagField(G4ThreeVector(bx,by,bz))
      FieldIronMgr = G4FieldManager(magFieldIron)
      FieldIronMgr.CreateChordFinder(magFieldIron)
-     listOfFields[v.GetName()]=FieldIronMgr  
+     listOfFields[v.GetName()]=FieldIronMgr
     gt = ROOT.G4TransportationManager.GetTransportationManager()
     gn = gt.GetNavigatorForTracking()
     world = gn.GetWorldVolume().GetLogicalVolume()
@@ -56,23 +56,23 @@ def setMagnetField(flag=None):
         vln  = vl0.GetName().c_str()
         lvl0 = vl0.GetLogicalVolume()
         if vln in listOfFields :  setField[lvl0]=vln
-        for dda in range(lvl0.GetNoDaughters()): 
+        for dda in range(lvl0.GetNoDaughters()):
          vl  = lvl0.GetDaughter(dda)
          vln = vl.GetName().c_str()
          lvl = vl.GetLogicalVolume()
          if vln in listOfFields :  setField[lvl]=vln
-    modified = False 
+    modified = False
     for lvl in setField:
        # check if field already exists
        fm = lvl.GetFieldManager()
        if not fm.DoesFieldExist():
         lvl.SetFieldManager(listOfFields[setField[lvl]],True)
-        modified = True  
-        if flag=='dump': 
+        modified = True
+        if flag=='dump':
             constField = listOfFields[setField[lvl]].GetDetectorField().GetConstantFieldValue()
             print('set field for ',setField[lvl], constField)
        else:
-        if flag=='dump': 
+        if flag=='dump':
          print('field already set:',setField[lvl])
     if modified:
      g4Run = G4RunManager.GetRunManager()
@@ -85,7 +85,7 @@ def printWF(vl,alreadyPrinted,onlyWithField=True):
     vln  = vname+' '+str(vl.GetCopyNo())
     mvl  = vl.GetMotherLogical().GetName().data()
     alreadyPrinted[vname]=mvl
-    if mvl !='cave': vln = mvl+'/'+vln   
+    if mvl !='cave': vln = mvl+'/'+vln
     lvl  = vl.GetLogicalVolume()
     cvol = lvl.GetSolid().GetCubicVolume()/G4Unit.m3
     M    = lvl.GetMass()/G4Unit.kg
@@ -93,8 +93,8 @@ def printWF(vl,alreadyPrinted,onlyWithField=True):
     if not fm and onlyWithField: return magnetMass
     if M  < 5000.:   print('%-35s volume = %5.2Fm3  mass = %5.2F kg'%(vln,cvol,M))
     else:            print('%-35s volume = %5.2Fm3  mass = %5.2F t'%(vln,cvol,M/1000.))
-    if fm:  
-       fi = fm.GetDetectorField() 
+    if fm:
+       fi = fm.GetDetectorField()
        if hasattr(fi,'GetConstantFieldValue'):
          print('   Magnetic field:',fi.GetConstantFieldValue()/G4Unit.tesla)
        else:
@@ -124,7 +124,7 @@ def nextLevel(lv,magnetMass,onlyWithField,exclude,alreadyPrinted):
     return tmp,magnetMass
 def printWeightsandFields(onlyWithField = True,exclude=[]):
    if len(exclude)!=0:
-      print("will not search in ",exclude)  
+      print("will not search in ",exclude)
    gt = ROOT.G4TransportationManager.GetTransportationManager()
    gn = gt.GetNavigatorForTracking()
    world = gn.GetWorldVolume().GetLogicalVolume()
@@ -139,10 +139,10 @@ def addVMCFields(shipGeo, controlFile = '', verbose = False, withVirtualMC = Tru
     Define VMC B fields, e.g. global field, field maps, local or local+global fields
     '''
     print('Calling addVMCFields')
-    
+
     fieldMaker = ROOT.ShipFieldMaker(verbose)
 
-    # Read the input control file. If this is empty then the only fields that are 
+    # Read the input control file. If this is empty then the only fields that are
     # defined (so far) are those within the C++ geometry classes
     if controlFile != '':
       fieldMaker.readInputFile(controlFile)
@@ -151,7 +151,7 @@ def addVMCFields(shipGeo, controlFile = '', verbose = False, withVirtualMC = Tru
     if hasattr(shipGeo, 'Bfield'):
       fieldsList = []
       fieldMaker.defineFieldMap('MainSpecMap', 'files/MainSpectrometerField.root',
-                                ROOT.TVector3(0.0, 0.0, shipGeo.Bfield.z))      
+                                ROOT.TVector3(0.0, 0.0, shipGeo.Bfield.z))
       fieldsList.append('MainSpecMap')
 
       if shipGeo.EmuMagnet.MagneticField:
@@ -162,7 +162,7 @@ def addVMCFields(shipGeo, controlFile = '', verbose = False, withVirtualMC = Tru
         fieldsList.append('NuMap')
 
       if not shipGeo.hadronAbsorber.WithConstField:
-       fieldMaker.defineFieldMap('HadronAbsorberMap','files/FieldHadronStopper_raised_20190411.root', ROOT.TVector3(0.0,0.0,shipGeo.hadronAbsorber.z))       
+       fieldMaker.defineFieldMap('HadronAbsorberMap','files/FieldHadronStopper_raised_20190411.root', ROOT.TVector3(0.0,0.0,shipGeo.hadronAbsorber.z))
        fieldsList.append('HadronAbsorberMap')
 
       if not shipGeo.muShield.WithConstField:
@@ -196,7 +196,7 @@ def printVMCFields():
     '''
     print('Printing VMC fields and associated volumes')
 
-    fGeo = ROOT.gGeoManager  
+    fGeo = ROOT.gGeoManager
     vols = fGeo.GetListOfVolumes()
 
     for v in vols:
@@ -204,7 +204,7 @@ def printVMCFields():
         field =  v.GetField()
         if field:
          print('Vol is {0}, field is {1}'.format(v.GetName(), field))
-        else: 
+        else:
          print('Vol is {0}'.format(v.GetName()))
 
         if field:
@@ -230,7 +230,7 @@ def debug():
    vl = world.GetDaughter(da)
    vmap[vl.GetName().c_str()] = vl
    print(da, vl.GetName())
-  lvl = vmap['MagB'].GetLogicalVolume() 
+  lvl = vmap['MagB'].GetLogicalVolume()
   print(lvl.GetMass()/G4Unit.kg,lvl.GetMaterial().GetName())
   print(lvl.GetFieldManager())
 #
@@ -238,8 +238,8 @@ def debug():
    vl = world.GetDaughter(da)
    vln = vl.GetName().c_str()
    lvl = vl.GetLogicalVolume()
-   fm = lvl.GetFieldManager() 
-   if fm : 
+   fm = lvl.GetFieldManager()
+   if fm :
     v = fm.GetDetectorField().GetConstantFieldValue()
     print(vln,fm,v.getX(),v.getY())
 # FairROOT view

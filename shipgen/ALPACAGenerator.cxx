@@ -93,5 +93,3 @@ Int_t ALPACAGenerator::GetNevents()
 {
  return fNevents/3;
 }
-
-

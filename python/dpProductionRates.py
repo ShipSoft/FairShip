@@ -10,7 +10,7 @@ protonFlux = 2e20
 
 
 def isDP(pdg):
-    if (pdg==9900015 or pdg==4900023): 
+    if (pdg==9900015 or pdg==4900023):
         return True
     return False
 
@@ -47,7 +47,7 @@ def mesonBRtoPhoton(mumPdg,doprint=False):
     if (mumPdg==223): br = 0.0834941
     if (mumPdg==331): br = 0.0219297
     if (doprint==True): print("BR of %d meson to photons: %.8g"%(mumPdg,br))
-    return br 
+    return br
 
 def brMesonToGammaDP(mass,epsilon,mumPdg,doprint=False):
     mMeson = PDG.GetParticle(mumPdg).Mass()
@@ -75,14 +75,14 @@ def brMesonToDP(mass,epsilon,mumPdg,doprint=False):
     if mumPdg==223: return brMesonToMesonDP(mass,epsilon,mumPdg,111,doprint)
     elif (mumPdg==111 or mumPdg==221): return brMesonToGammaDP(mass,epsilon,mumPdg,doprint)
     elif mumPdg==331: return brMesonToMesonDP(mass,epsilon,mumPdg,113,doprint),brMesonToGammaDP(mass,epsilon,mumPdg,doprint)
-    else: 
+    else:
         print("Warning! Unknown mother pdgId %d, not implemented. Setting br to 0."%mumPdg)
         return 1
 
 def mesonProdRate(mass,epsilon,mumPdg,doprint=False):
     brM2DP=brMesonToDP(mass,epsilon,mumPdg,doprint)
     if mumPdg==331:
-        avgMeson = getAverageMesonRate(mumPdg)*brM2DP[0] 
+        avgMeson = getAverageMesonRate(mumPdg)*brM2DP[0]
         avgMeson1 = getAverageMesonRate(mumPdg)*brM2DP[1]
         return avgMeson*0.6, avgMeson1*0.6
         #return avgMeson + avgMeson1

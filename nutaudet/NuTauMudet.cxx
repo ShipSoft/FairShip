@@ -74,20 +74,20 @@ NuTauMudet::NuTauMudet(const char* name, const Double_t Zcenter,Bool_t Active,co
 }
 
 void NuTauMudet::SetDesign(Int_t Design)
-{  
+{
   fDesign = Design;
   cout <<" Mag Spectro Design "<< fDesign<<endl;
 }
 
 void NuTauMudet::SetTotDimensions(Double_t X, Double_t Y, Double_t Z)
-{  
+{
   fXtot = X;
   fYtot = Y;
   fZtot = Z;
 }
 
 void NuTauMudet::SetFeDimensions(Double_t X, Double_t Y, Double_t Z, Double_t Zthin)
-{  
+{
   fXFe = X;
   fYFe = Y;
   fZFe = Z;
@@ -95,49 +95,49 @@ void NuTauMudet::SetFeDimensions(Double_t X, Double_t Y, Double_t Z, Double_t Zt
 }
 
 void NuTauMudet::SetRpcDimensions(Double_t X, Double_t Y, Double_t Z)
-{  
+{
   fXRpc = X;
   fYRpc = Y;
   fZRpc = Z;
 }
 
 void NuTauMudet::SetRpcGasDimensions(Double_t X, Double_t Y, Double_t Z)
-{  
+{
   fXGas = X;
   fYGas = Y;
   fZGas = Z;
 }
 
 void NuTauMudet::SetRpcPETDimensions(Double_t X, Double_t Y, Double_t Z)
-{  
+{
   fXPet = X;
   fYPet = Y;
   fZPet = Z;
 }
 
 void NuTauMudet::SetRpcElectrodeDimensions(Double_t X, Double_t Y, Double_t Z)
-{  
+{
   fXEle = X;
   fYEle = Y;
   fZEle = Z;
 }
 
 void NuTauMudet::SetRpcStripDimensions(Double_t X, Double_t Y, Double_t Z)
-{  
+{
   fXStrip = X;
   fYStrip = Y;
   fZStrip = Z;
 }
 
 void NuTauMudet::SetReturnYokeDimensions(Double_t X, Double_t Y, Double_t Z)
-{  
+{
   fXRyoke = X;
   fYRyoke = Y;
   fZRyoke = Z;
 }
 
 void NuTauMudet::SetSmallerYokeDimensions(Double_t X, Double_t Y, Double_t Z)
-{  
+{
   fXRyoke_s = X;
   fYRyoke_s = Y;
   fZRyoke_s = Z;
@@ -261,7 +261,7 @@ void NuTauMudet::Initialize()
   FairDetector::Initialize();
 }
 
-// -----   Private method InitMedium 
+// -----   Private method InitMedium
 Int_t NuTauMudet::InitMedium(const char* name)
 {
   static FairGeoLoader *geoLoad=FairGeoLoader::Instance();
@@ -290,19 +290,19 @@ void NuTauMudet::ConstructGeometry()
 
   InitMedium("RPCgas");
   TGeoMedium *RPCmat =gGeoManager->GetMedium("RPCgas");
-    
+
   InitMedium("Bakelite");
-  TGeoMedium *bakelite =gGeoManager->GetMedium("Bakelite");  
+  TGeoMedium *bakelite =gGeoManager->GetMedium("Bakelite");
 
   InitMedium("iron");
   TGeoMedium *Iron =gGeoManager->GetMedium("iron");
 
   InitMedium("steel");
   TGeoMedium *Steel =gGeoManager->GetMedium("steel");
-    
+
   InitMedium("copper");
   TGeoMedium *Cu =gGeoManager->GetMedium("copper");
-    
+
   InitMedium("Concrete");
   TGeoMedium *Conc =gGeoManager->GetMedium("Concrete");
 
@@ -311,34 +311,34 @@ void NuTauMudet::ConstructGeometry()
 
   InitMedium("Aluminum"); //new
   TGeoMedium *Al =gGeoManager->GetMedium("Aluminum"); //new
-    
+
   TGeoUniformMagField *retFieldU    = new TGeoUniformMagField(0.,0.,-fField); //magnetic field up return yoke
   TGeoUniformMagField *retFieldL   = new TGeoUniformMagField(0.,0.,fField); //magnetic field low return yoke
-    
+
   Double_t d = 0;
 
   if(fDesign<3)
     {
       TGeoVolumeAssembly *volMudetBox = new TGeoVolumeAssembly("volNuTauMudet");
       tTauNuDet->AddNode(volMudetBox, 1, new TGeoTranslation(0,10*cm,fZcenter));
-  
+
       TGeoBBox *UpYokeBox = new TGeoBBox("UpYokeBox", fXRyoke/2, fYRyoke/2, fZRyoke/2);
       TGeoVolume *volUpYoke = new TGeoVolume("volUpYoke",UpYokeBox,air);
       volMudetBox->AddNode(volUpYoke,1,new TGeoTranslation(0,fYtot/2 - fYRyoke/2,0));
       volUpYoke->SetField(retFieldU);
-    
-    
+
+
       TGeoBBox *FeYoke = new TGeoBBox("FeYoke",fXtot/2, fYRyoke/2, fZArm/2);
       TGeoVolume *volFeYoke = new TGeoVolume("volFeYoke",FeYoke,Iron);
       volFeYoke->SetLineColor(kGray+1);
-  
+
       TGeoBBox *FeYoke1 = new TGeoBBox("FeYoke1",fXtot/2, fYRyoke_s/2, fZRyoke_s/2);
       TGeoVolume *volFeYoke1 = new TGeoVolume("volFeYoke1",FeYoke1,Iron);
       volFeYoke1->SetLineColor(kGray+1);
-    
+
       TGeoBBox *CoilContainer = new TGeoBBox("CoilContainer",fXtot/2, fCoilH/2, 40*cm);
       TGeoVolume *volCoilContainer = new TGeoVolume("volCoilContainer",CoilContainer,air);
-    
+
       TGeoBBox *Coil = new TGeoBBox("Coil",fXtot/2, fCoilH/2, fCoilW/2);
       TGeoVolume *volCoil = new TGeoVolume("volCoil",Coil,Cu);
       volCoil->SetLineColor(kOrange -5);
@@ -346,7 +346,7 @@ void NuTauMudet::ConstructGeometry()
 	{
 	  volCoilContainer->AddNode(volCoil, i, new TGeoTranslation(0,0, -40*cm + fCoilW/2 + i*(fCoilGap + fCoilW)));
 	}
-    
+
       //vertical coils
       TGeoBBox *CoilV = new TGeoBBox("CoilV",fCoilH/2, fYRyoke/2 , fCoilW/2);
       TGeoVolume *volCoilV = new TGeoVolume("volCoilV",CoilV,Cu);
@@ -361,18 +361,18 @@ void NuTauMudet::ConstructGeometry()
 	}
 
       //cout <<"fZArm: " << fZArm<< endl;
-    
+
       volUpYoke->AddNode(volFeYoke,1, new TGeoTranslation(0,0,- (fZArm + fGapMiddle)/2));
       volUpYoke->AddNode(volFeYoke,2, new TGeoTranslation(0,0,(fZArm + fGapMiddle)/2));
       volUpYoke->AddNode(volFeYoke1,1,new TGeoTranslation(0,0,0));
       volUpYoke->AddNode(volCoilContainer,1,new TGeoTranslation(0,fYRyoke/2 - fCoilH/2,0)); //up
       volUpYoke->AddNode(volCoilContainer,2,new TGeoTranslation(0,-fYRyoke/2 + fCoilH/2,0)); //low
-    
+
       TGeoBBox *LowYokeBox = new TGeoBBox("LowYokeBox", fXRyoke/2, fYRyoke/2, fZRyoke/2);
       TGeoVolume *volLowYoke = new TGeoVolume("volLowYoke",LowYokeBox,air);
       volMudetBox->AddNode(volLowYoke,1,new TGeoTranslation(0,-fYtot/2 + fYRyoke/2,0));
       volLowYoke->SetField(retFieldL);
-   
+
       //vertical coils
       for(int i = 0; i < fNCoil; i++)
 	{
@@ -382,7 +382,7 @@ void NuTauMudet::ConstructGeometry()
 	{
 	  volLowYoke->AddNode(volCoilV, i, new TGeoTranslation(-fXRyoke/2 + fCoilH/2,0, -40*cm + fCoilW/2 + i*(fCoilGap + fCoilW)));
 	}
-    
+
       volLowYoke->AddNode(volFeYoke,3, new TGeoTranslation(0,0,- (fZArm + fGapMiddle)/2));
       volLowYoke->AddNode(volFeYoke,4, new TGeoTranslation(0,0,(fZArm + fGapMiddle)/2));
       volLowYoke->AddNode(volFeYoke1,1,new TGeoTranslation(0,0,0));
@@ -395,7 +395,7 @@ void NuTauMudet::ConstructGeometry()
       TGeoUniformMagField *magField1 = new TGeoUniformMagField(0.,-fField,0.); //magnetic field arm1
       volArm1->SetField(magField1);
       volMudetBox ->AddNode(volArm1,ArmNumber,new TGeoTranslation(0,0,-(fGapMiddle+fZArm)/2));
-    
+
       Int_t nr =  ArmNumber*1E4;
 
       TGeoBBox *IronLayer = new TGeoBBox("Iron",fXFe/2, fYFe/2, fZFe/2);
@@ -407,10 +407,10 @@ void NuTauMudet::ConstructGeometry()
 	  volArm1->AddNode(volIron,nr + 100 + i, new TGeoTranslation(0, 0, -fZArm/2+i*(fZFe +fZRpc) +fZFe/2));
 	}
 
-   
+
       TGeoBBox *RpcContainer = new TGeoBBox("RpcContainer", fXRpc/2, fYRpc/2, fZRpc/2);
-      TGeoVolume *volRpcContainer = new TGeoVolume("volRpcContainer",RpcContainer,air); 
-  
+      TGeoVolume *volRpcContainer = new TGeoVolume("volRpcContainer",RpcContainer,air);
+
       TGeoBBox *Strip = new TGeoBBox("Strip",fXStrip/2, fYStrip/2, fZStrip/2);
       TGeoVolume *volStrip = new TGeoVolume("volStrip",Strip,Cu);
       volStrip->SetLineColor(kRed);
@@ -430,14 +430,14 @@ void NuTauMudet::ConstructGeometry()
       TGeoVolume *volRpc = new TGeoVolume("volRpc",RpcGas,RPCmat);
       volRpc->SetLineColor(kCyan);
       volRpcContainer->AddNode(volRpc,1,new TGeoTranslation(0,0,0));
-   
+
       AddSensitiveVolume(volRpc);
-    
+
       for(Int_t i = 0; i < fNRpc; i++)
 	{
 	  volArm1->AddNode(volRpcContainer,nr + i,new TGeoTranslation(0, -fYFe/2 + fYRpc/2, -fZArm/2+(i+1)*fZFe + i*fZRpc +fZRpc/2));
 	}
-    
+
       ArmNumber = 2;
       nr =  ArmNumber*1E4;
 
@@ -450,9 +450,9 @@ void NuTauMudet::ConstructGeometry()
 
      //different volumes for second arm
 
-      TGeoVolume *volRpcContainer2 = new TGeoVolume("volRpcContainer2",RpcContainer,air);      
+      TGeoVolume *volRpcContainer2 = new TGeoVolume("volRpcContainer2",RpcContainer,air);
       TGeoVolume *volStrip2 = new TGeoVolume("volStrip2",Strip,Cu);
-      
+
       volStrip2->SetLineColor(kRed);
       volRpcContainer2->AddNode(volStrip2,1,new TGeoTranslation (0,0,-3.25*mm));
       volRpcContainer2->AddNode(volStrip2,2,new TGeoTranslation (0,0,3.25*mm));
@@ -466,22 +466,22 @@ void NuTauMudet::ConstructGeometry()
       volElectrode2->SetLineColor(kGreen);
       volRpcContainer2->AddNode(volElectrode2,1,new TGeoTranslation(0,0,-2*mm));
       volRpcContainer2->AddNode(volElectrode2,2,new TGeoTranslation(0,0, 2*mm));
-   
+
       TGeoVolume *volRpc2 = new TGeoVolume("volRpc2",RpcGas,RPCmat);
       volRpc2->SetLineColor(kCyan);
       volRpcContainer2->AddNode(volRpc2,1,new TGeoTranslation(0,0,0));
       AddSensitiveVolume(volRpc2);
-   
+
       for(Int_t i = 0; i < fNFe; i++)
 	{
 	  volArm2->AddNode(volIron2,nr + 100 + i,new TGeoTranslation(0, 0, -fZArm/2+i*(fZFe +fZRpc) +fZFe/2));
 	}
-    
+
       for(Int_t i = 0; i < fNRpc; i++)
 	{
 	  volArm2->AddNode(volRpcContainer2, nr + i,new TGeoTranslation(0, -fYFe/2 + fYRpc/2, -fZArm/2+(i+1)*fZFe + i*fZRpc +fZRpc/2));
 	}
-    
+
       //10 cm of Concrete on which the whole Magnetic Spectrometer volume (HPT included) will be placed
       TGeoBBox *Base = new TGeoBBox("Base", fXtot/2, 10*cm/2, fZtot/2);
       TGeoVolume *volBase = new TGeoVolume("volBase",Base,Conc);
@@ -503,7 +503,7 @@ void NuTauMudet::ConstructGeometry()
     {
       Double_t supportasymmetry = fUpSuppY - fLowSuppY; //upper and lower support have different dimensions, so the mother box must be large enough to contain both
       Int_t nr = 1E4;
-            
+
       TGeoVolumeAssembly *volMudetBox = new TGeoVolumeAssembly("volTauNuMudet");
       tTauNuDet->AddNode(volMudetBox, 1, new TGeoTranslation(0,0,fZcenter));
 
@@ -521,7 +521,7 @@ void NuTauMudet::ConstructGeometry()
       TGeoVolume *volUpperCover = new TGeoVolume("volUpperCover",UpperCover, Al);
       volUpperCover->SetLineColor(kYellow-7);
       volMudetBox->AddNode(volUpperCover, 1, new TGeoTranslation(0, fYFe/2+fYCov/2+fUpSuppY, -fZtot/2 + fZCov/2));
-      
+
       //**********LATERAL COVER**********
 
       TGeoBBox *LateralCover = new TGeoBBox("LateralCover",fXLateral/2, fYLateral/2, fZLateral/2);
@@ -534,7 +534,7 @@ void NuTauMudet::ConstructGeometry()
 
       //*********** LATERAL CROSSES************
 
-      Double_t Inclination =TMath::Pi()/2 - TMath::ATan(fYCross/(fZCross - fWidthArm)); 
+      Double_t Inclination =TMath::Pi()/2 - TMath::ATan(fYCross/(fZCross - fWidthArm));
       TGeoRotation *Crossrot1 = new TGeoRotation("Crossrot1", 0., 0.,0.); TGeoRotation *Crossrot2 = new TGeoRotation("Crossrot2", 0., 0.,0.);
       Crossrot1->RotateY(-90); Crossrot2->RotateY(90);
       Crossrot1->SetName("NegativeRot"); Crossrot2->SetName("PositiveRot");
@@ -564,17 +564,17 @@ void NuTauMudet::ConstructGeometry()
       const TGeoTranslation transright("trans",-fXFe/2.+ fCutLength/2,0,0);
       TGeoCombiTrans* combright = new TGeoCombiTrans(transright,rot);
       combright->SetName("MuDetcombright");
-      combright->RegisterYourself(); 
+      combright->RegisterYourself();
       //cut on the left (seen from beam)
       const TGeoTranslation transleft("transleft",+fXFe/2.- fCutLength/2,0,0);
       TGeoCombiTrans* combleft = new TGeoCombiTrans(transleft,rot1);
       combleft->SetName("MuDetcombleft");
-      combleft->RegisterYourself();  
+      combleft->RegisterYourself();
       //unique volume, we cut the triangles
-      TGeoCompositeShape *mudetcut = new TGeoCompositeShape("MUDETCUT", "(MUDETIRON-MUDETTRIANGLE:MuDetcombright)-MUDETTRIANGLE:MuDetcombleft");   
+      TGeoCompositeShape *mudetcut = new TGeoCompositeShape("MUDETCUT", "(MUDETIRON-MUDETTRIANGLE:MuDetcombright)-MUDETTRIANGLE:MuDetcombleft");
       mudetcut->SetName("MUDETTRIANGCUT");
       //same, for the thin layers
-      TGeoCompositeShape *mudetcut1 = new TGeoCompositeShape("MUDETCUT1", "(MUDETIRON1-MUDETTRIANGLE:MuDetcombright)-MUDETTRIANGLE:MuDetcombleft");   
+      TGeoCompositeShape *mudetcut1 = new TGeoCompositeShape("MUDETCUT1", "(MUDETIRON1-MUDETTRIANGLE:MuDetcombright)-MUDETTRIANGLE:MuDetcombleft");
       mudetcut1->SetName("MUDETTRIANGCUT1");
       //addition of iron support structures
       //support layers, fot thick layers upstream
@@ -594,12 +594,12 @@ void NuTauMudet::ConstructGeometry()
       //Translations (left is considered from the beam, positive x)
 
       TGeoTranslation * upright = new TGeoTranslation("MuDetupright",-fXFe/2.+fUpSuppX/2.,fYFe/2+fUpSuppY/2.,0);
-      TGeoTranslation * upleft = new TGeoTranslation("MuDetupleft",+fXFe/2.-fUpSuppX/2.,fYFe/2+fUpSuppY/2.,0); 
-      TGeoTranslation * lateralupleft = new TGeoTranslation("MuDetlateralupleft",+fXFe/2.+fLowSuppX/2.,fYFe/2-fLowSuppY/2.-fYSpacing,0); 
-      TGeoTranslation * lateralupright = new TGeoTranslation("MuDetlateralupright",-fXFe/2.-fLowSuppX/2.,fYFe/2-fLowSuppY/2.-fYSpacing,0); 
-      TGeoTranslation * laterallowleft = new TGeoTranslation("MuDetlaterallowleft",+fXFe/2.+fLowSuppX/2.,-fYFe/2+fLowSuppY/2.+fYSpacing,0); 
-      TGeoTranslation * laterallowright = new TGeoTranslation("MuDetlaterallowright",-fXFe/2.-fLowSuppX/2.,-fYFe/2+fLowSuppY/2.+fYSpacing,0); 
-      TGeoTranslation * lowright = new TGeoTranslation("MuDetlowright",-fXFe/2.+fLowSuppX/2.,-fYFe/2-fLowSuppY/2.,0); 
+      TGeoTranslation * upleft = new TGeoTranslation("MuDetupleft",+fXFe/2.-fUpSuppX/2.,fYFe/2+fUpSuppY/2.,0);
+      TGeoTranslation * lateralupleft = new TGeoTranslation("MuDetlateralupleft",+fXFe/2.+fLowSuppX/2.,fYFe/2-fLowSuppY/2.-fYSpacing,0);
+      TGeoTranslation * lateralupright = new TGeoTranslation("MuDetlateralupright",-fXFe/2.-fLowSuppX/2.,fYFe/2-fLowSuppY/2.-fYSpacing,0);
+      TGeoTranslation * laterallowleft = new TGeoTranslation("MuDetlaterallowleft",+fXFe/2.+fLowSuppX/2.,-fYFe/2+fLowSuppY/2.+fYSpacing,0);
+      TGeoTranslation * laterallowright = new TGeoTranslation("MuDetlaterallowright",-fXFe/2.-fLowSuppX/2.,-fYFe/2+fLowSuppY/2.+fYSpacing,0);
+      TGeoTranslation * lowright = new TGeoTranslation("MuDetlowright",-fXFe/2.+fLowSuppX/2.,-fYFe/2-fLowSuppY/2.,0);
       TGeoTranslation * lowleft = new TGeoTranslation("MuDetlowleft",+fXFe/2.-fLowSuppX/2.,-fYFe/2-fLowSuppY/2.,0);
       //necessary to put SetName, otherwise it will not find them
       upright->SetName("MuDetupright");
@@ -636,7 +636,7 @@ void NuTauMudet::ConstructGeometry()
           volMudetBox->AddNode(MudetIronLayer,nr + 100 + i, new TGeoTranslation(0, 0, dz));
 	}
       for(Int_t i = 0; i < fNFethin; i++)
-	{	  
+	{
           double dz = -fZtot/2+fNFe*(fZRpc+fZFe)+i*fZFethin+fZFethin/2+i*fZRpc;
           volMudetBox->AddNode(MudetIronLayer1,nr + 100 + fNFe + i, new TGeoTranslation(0, 0,dz));
 	}
@@ -644,7 +644,7 @@ void NuTauMudet::ConstructGeometry()
 
       TGeoBBox *RpcContainer_0 = new TGeoBBox("RpcContainer", fXRpc_outer/2, fYRpc_outer/2, fZRpc/2);
       RpcContainer_0->SetName("RPCCOINTAINER_0");
-      
+
       /*
       TGeoBBox *Strip = new TGeoBBox("Strip",fXStrip/2, fYStrip/2, fZStrip/2);
       TGeoVolume *volStrip = new TGeoVolume("volStrip",Strip,Cu);
@@ -666,7 +666,7 @@ void NuTauMudet::ConstructGeometry()
       volRpc->SetLineColor(kCyan);
       volRpcContainer->AddNode(volRpc,1,new TGeoTranslation(0,0,0));
       */
-      
+
       TGeoBBox *RpcOuter =  new TGeoBBox("RpcOuter", fXRpc_outer/2, fYRpc_outer/2, fZRpc_outer/2);
       RpcOuter->SetName("RPCOUTER");
       TGeoTrd2 *Indentation = new TGeoTrd2("Indentation", (fYRpc_outer- 2*(31.2*cm+15.*cm))/2, (fYRpc_outer-2*31.2*cm)/2, (fZRpc_outer+0.1*cm)/2,(fZRpc_outer+0.1*cm)/2,(15.*cm+0.1*cm)/2); // (b, B, Z_up, Z_down, h)
@@ -687,7 +687,7 @@ void NuTauMudet::ConstructGeometry()
       TGeoCompositeShape *RpcShell = new TGeoCompositeShape("RpcShell", "RPCOUTER-INDENTATION:RIGHTINDENT-INDENTATION:LEFTINDENT-RPCINNER:EXCLUSION");
       TGeoVolume *volRpcShell = new TGeoVolume("volRpcShell", RpcShell, Al);
       volRpcShell->SetLineColor(kGray);
-      
+
       TGeoBBox *GasShape = new TGeoBBox("GasShape", fXRpcGap/2, fYRpc_inner/2, fZGas/2);
       GasShape->SetName("RPCGAS");
       TGeoBBox *GapSpacing = new TGeoBBox("GapSpacing", fXRpcGap/2, 6./2*cm, (fZGas+0.01*cm)/2 );
@@ -701,14 +701,14 @@ void NuTauMudet::ConstructGeometry()
       TGeoCompositeShape *RpcGas = new TGeoCompositeShape("RpcGas", "RPCGAS-GAPSPACE:MUP-GAPSPACE:MDOWN");
       TGeoVolume *volRpc = new TGeoVolume("volRpc",RpcGas, RPCmat);
       volRpc->SetLineColor(kCyan);
-      
+
       //****RPC container framing*********
       TGeoTrd2 *Indentation_0 = new TGeoTrd2("Indentation_0", (fYRpc_outer- 2*(31.2*cm+15.*cm))/2, (fYRpc_outer-2*31.2*cm)/2, (fZRpc)/2,(fZRpc)/2,(15.*cm+0.1*cm)/2);
       Indentation_0->SetName("INDENTATION_0");
-      TGeoCompositeShape *RpcContainer = new TGeoCompositeShape("RpcContainer", "RPCCOINTAINER_0-INDENTATION_0:RIGHTINDENT-INDENTATION_0:LEFTINDENT"); 
+      TGeoCompositeShape *RpcContainer = new TGeoCompositeShape("RpcContainer", "RPCCOINTAINER_0-INDENTATION_0:RIGHTINDENT-INDENTATION_0:LEFTINDENT");
       TGeoVolume *volRpcContainer = new TGeoVolume("volRpcContainer",RpcContainer,air);
       //***********************************
-      
+
       TGeoBBox *GapShape = new TGeoBBox("GapShape", fXRpcGap/2, fYRpc_inner/2, fZRpcGap/2);
       GapShape->SetName("RPCGAP");
       TGeoBBox *GapSpacing1 = new TGeoBBox("GapSpacing1", fXRpcGap/2, 6./2*cm, (fZRpcGap+0.01*cm)/2);
@@ -716,7 +716,7 @@ void NuTauMudet::ConstructGeometry()
       TGeoCompositeShape *RpcGap = new TGeoCompositeShape("RpcGap", "RPCGAP-GAPSPACE1:MUP-GAPSPACE1:MDOWN");
       TGeoVolume *volRpcGap = new TGeoVolume("volRpcGap",RpcGap, bakelite);
       volRpcGap->SetLineColor(kOrange);
-      
+
       TGeoBBox *Strip = new TGeoBBox("Strip", fXRpc_inner/2, fYRpc_inner/2, fZStrip/2);
       TGeoVolume *volStrip= new TGeoVolume("volStrip", Strip, Cu);
       volStrip->SetLineColor(kOrange+5);
@@ -724,7 +724,7 @@ void NuTauMudet::ConstructGeometry()
       rot2.RotateY(180);
       const TGeoTranslation trans_rot(0., 0., fZGas/2+fZRpcGap+fZStrip+fZRpc_outer/2);
       TGeoCombiTrans *comb_1 = new TGeoCombiTrans(trans_rot, rot2);
-      
+
       volRpcContainer->AddNode(volRpcShell,1, new TGeoTranslation(0., 0., -fZGas/2-fZRpcGap-fZStrip-fZRpc_outer/2));
       volRpcContainer->AddNode(volRpcShell,2, comb_1);
       volRpcContainer->AddNode(volStrip, 1, new TGeoTranslation(0., 0., fZGas/2+fZRpcGap+fZStrip/2));
@@ -734,16 +734,16 @@ void NuTauMudet::ConstructGeometry()
       volRpcContainer->AddNode(volRpc, 1, new TGeoTranslation(0., 0., 0.));
 
       AddSensitiveVolume(volRpc);
-      
+
       for(Int_t i = 0; i < fNRpc; i++)
 	{
          double dy = 5.*cm;
          double dz = -fZtot/2 + (i+1)*fZFe + i*fZRpc + fZRpc/2;
          if (i >= fNFe) dz = dz - (i + 1 - fNFe) * (fZFe - fZFethin);
          if(i%2)volMudetBox->AddNode(volRpcContainer,nr + i,new TGeoTranslation(0, -dy, dz)); //staggering
-         else{volMudetBox->AddNode(volRpcContainer,nr + i,new TGeoTranslation(0, dy, dz));}          
+         else{volMudetBox->AddNode(volRpcContainer,nr + i,new TGeoTranslation(0, dy, dz));}
 	}
-    
+
       TGeoBBox *Pillar1Box = new TGeoBBox(fPillarX/2,fPillarY/2, fPillarZ/2);
       TGeoVolume *Pillar1Vol = new TGeoVolume("Pillar1Vol",Pillar1Box,Steel);
       Pillar1Vol->SetLineColor(kGreen+3);
@@ -753,11 +753,11 @@ void NuTauMudet::ConstructGeometry()
       //      tTauNuDet->AddNode(Pillar1Vol,3, new TGeoTranslation(-fXtot/2+fPillarX/2,-fYtot/2-fPillarY/2,fZcenter+fZtot/2-fPillarZ/2)); //eventually two pillars at the end. Now muon det is followed by veto, so its steel pillar supports both
       //tTauNuDet->AddNode(Pillar1Vol,4, new TGeoTranslation(fXtot/2-fPillarX/2,-fYtot/2-fPillarY/2,fZcenter+fZtot/2-fPillarZ/2));
 
-      
+
     }
 
     if(fDesign==4){
-      //Now the filter is replaced by a magnetic spectrometer       
+      //Now the filter is replaced by a magnetic spectrometer
 
       TGeoBBox *MuFilter = new TGeoBBox("MuFilter",fXtot/2., fYtot/2., fZtot/2.);
       TGeoVolume *volMuFilter = new TGeoVolume("volMuFilter",MuFilter,air); //MuFilter
@@ -844,7 +844,7 @@ Bool_t  NuTauMudet::ProcessHits(FairVolume* vol)
   }
   // Sum energy loss for all steps in the active volume
   fELoss += gMC->Edep();
-    
+
   // Create muonPoint at exit of active volume
   if ( gMC->IsTrackExiting()    ||
        gMC->IsTrackStop()       ||
@@ -871,7 +871,7 @@ Bool_t  NuTauMudet::ProcessHits(FairVolume* vol)
     if( strcmp(name, "volRpc")==0){motherID = gGeoManager->GetMother(1)->GetNumber();}
     else{motherID = gGeoManager->GetMother(0)->GetNumber();}
     // This up here is made because of a strange behaviour of the script, volRpc gets different
-   //Mother volume number even if it has the correct path 
+   //Mother volume number even if it has the correct path
     const char *mumname = gMC->CurrentVolOffName(1);*/
     //cout<<mumname<<"   "<< motherID<<endl;
     //detID = motherID;
@@ -879,19 +879,19 @@ Bool_t  NuTauMudet::ProcessHits(FairVolume* vol)
     //cout<<endl;
     fVolumeID = detID;
 
-    TLorentzVector Pos; 
-    gMC->TrackPosition(Pos); 
-    Double_t xmean = (fPos.X()+Pos.X())/2. ;      
-    Double_t ymean = (fPos.Y()+Pos.Y())/2. ;      
-    Double_t zmean = (fPos.Z()+Pos.Z())/2. ;     
-     
+    TLorentzVector Pos;
+    gMC->TrackPosition(Pos);
+    Double_t xmean = (fPos.X()+Pos.X())/2. ;
+    Double_t ymean = (fPos.Y()+Pos.Y())/2. ;
+    Double_t zmean = (fPos.Z()+Pos.Z())/2. ;
+
     AddHit(fTrackID, fVolumeID, TVector3(xmean, ymean,  zmean), TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength,fELoss, pdgCode);
-        
+
     // Increment number of muon det points in TParticle
     ShipStack* stack = (ShipStack*) gMC->GetStack();
     stack->AddPoint(ktauRpc);
   }
-    
+
   return kTRUE;
 }
 
@@ -903,13 +903,13 @@ void NuTauMudet::EndOfEvent()
 
 void NuTauMudet::Register()
 {
-    
+
   /** This will create a branch in the output tree called
       ShipRpcPoint, setting the last parameter to kFALSE means:
       this collection will not be written to the file, it will exist
       only during the simulation.
   */
-    
+
   FairRootManager::Instance()->Register("ShipRpcPoint", "NuTauMudet",
 					fShipRpcPointCollection, kTRUE);
 }
@@ -946,5 +946,3 @@ ShipRpcPoint* NuTauMudet::AddHit(Int_t trackID, Int_t detID,
   //    return new(clref[size]) ShipRpcPoint(trackID, detID, pos, mom,time, length, eLoss, pdgCode,NArm, NRpc, NHpt);
   return new(clref[size]) ShipRpcPoint(trackID, detID, pos, mom,time, length, eLoss, pdgCode);
 }
-
-

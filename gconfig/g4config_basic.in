@@ -14,7 +14,7 @@
 #/mcVerbose/composedPhysicsList 0
 #/mcVerbose/trackManager 2
 
-#/mcVerbose/regionsManager 3  
+#/mcVerbose/regionsManager 3
 
 #/run/particle/applyCuts
 #/mcTracking/saveSecondariesInStep true

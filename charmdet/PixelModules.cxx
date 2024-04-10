@@ -263,7 +263,7 @@ void PixelModules::ConstructGeometry()
    // place foil which covered the entry window of the pixelbox.
    volPixelBox->AddNode(volWindow, 0, new TGeoTranslation(0, 0, -DimZPixelBox / 2. + DimZWindow));
    volPixelBox->AddNode(volWindow, 1, new TGeoTranslation(0, 0, DimZPixelBox / 2. - DimZWindow));
-   
+
    // loop to create and align the active volumes ( == Sensors). Only the active material is sliced.
    for (Int_t ipixel = 0; ipixel < nSi; ipixel++) {
        // modules with large pixel pitch in y
@@ -272,7 +272,7 @@ void PixelModules::ConstructGeometry()
             new TGeoTranslation(xs[ipixel], ys[ipixel], (-DimZPixelBox / 2.) + zs[ipixel] + z_offset));
       } else { // modules with large pixel pitch in x
          // consider the two thinner modules
-         if (((PixelIDlist[ipixel] / nSlices) == 2) || ((PixelIDlist[ipixel] / nSlices) == 11)) { 
+         if (((PixelIDlist[ipixel] / nSlices) == 2) || ((PixelIDlist[ipixel] / nSlices) == 11)) {
             volPixelBox->AddNode(volPixelxthin, PixelIDlist[ipixel],
                new TGeoTranslation(xs[ipixel], ys[ipixel], (-DimZPixelBox / 2.) + zs[ipixel] + z_offset));
          } else {
@@ -423,5 +423,3 @@ PixelModulesPoint* PixelModules::AddHit(Int_t trackID, Int_t detID,
 
     return new(clref[size]) PixelModulesPoint(trackID, detID, pos, mom,time, length, eLoss, pdgCode);
 }
-
-

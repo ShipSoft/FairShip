@@ -1,4 +1,4 @@
-#!/usr/bin/env python 
+#!/usr/bin/env python
 from __future__ import print_function
 import ROOT,os,sys,time,shipRoot_conf
 import shipunit as u
@@ -28,7 +28,7 @@ nStart = 0
 outputDir    = "."
 work_dir  = "./"
 ecut      = 0.5 # GeV   with 1 : ~1sec / event, with 2: 0.4sec / event, 10: 0.13sec
-                 
+
 dy           = 10.
 dv           = 6 # 4=TP elliptical tank design, 5 = optimized conical rectangular design, 6=5 without segment-1
 ds           = 9 # 5=TP muon shield, 6=magnetized hadron, 7=short magnet design, 9=optimised with T4 as constraint, 8=requires config file
@@ -82,7 +82,7 @@ def init():
   ap.add_argument('-M', '--storeOnlyMuons',  action='store_true',  dest='storeOnlyMuons',  default=storeOnlyMuons, help="store only muons, ignore neutrinos")
   ap.add_argument('-N', '--skipNeutrinos',  action='store_true',  dest='skipNeutrinos',  default=False, help="skip neutrinos")
   ap.add_argument('-D', '--4darkPhoton',  action='store_true',  dest='FourDP',  default=False, help="enable ntuple production")
-# for charm production       
+# for charm production
   ap.add_argument('-cc','--chicc',action='store_true',  dest='chicc',  default=chicc, help="ccbar over mbias cross section")
   ap.add_argument('-bb','--chibb',action='store_true',  dest='chibb',  default=chibb, help="bbbar over mbias cross section")
   ap.add_argument('-p','--pot',action='store_true',  dest='npot',  default=npot, help="number of protons on target per spill to normalize on")
@@ -119,7 +119,7 @@ def init():
   withEvtGen     = args.withEvtGen
   charm  = args.charm
   beauty = args.beauty
-  if charm and beauty: 
+  if charm and beauty:
     logger.warn("charm and beauty decays are set! Beauty gets priority")
     charm = False
   charmInputFile = args.charmInputFile
@@ -168,10 +168,10 @@ run = ROOT.FairRunSim()
 run.SetName(mcEngine)  # Transport engine
 run.SetOutputFile(outFile)  # Output file
 run.SetUserConfig("g4Config.C") # user configuration file default g4Config.C
-rtdb = run.GetRuntimeDb() 
+rtdb = run.GetRuntimeDb()
 
 # -----Materials----------------------------------------------
-run.SetMaterials("media.geo")  
+run.SetMaterials("media.geo")
 # -----Create geometry----------------------------------------------
 cave= ROOT.ShipCave("CAVE")
 cave.SetGeometryFileName("caveWithAir.geo")
@@ -189,11 +189,11 @@ TargetStation.SetLayerPosMat(ship_geo.target.xy,slices_length,slices_material)
 run.AddModule(TargetStation)
 MuonShield = ROOT.ShipMuonShield("MuonShield",ship_geo.muShieldDesign,"ShipMuonShield",ship_geo.muShield.z,ship_geo.muShield.dZ0,ship_geo.muShield.dZ1,\
                ship_geo.muShield.dZ2,ship_geo.muShield.dZ3,ship_geo.muShield.dZ4,ship_geo.muShield.dZ5,ship_geo.muShield.dZ6,\
-               ship_geo.muShield.dZ7,ship_geo.muShield.dZ8,ship_geo.muShield.dXgap,ship_geo.muShield.LE,ship_geo.Yheight*4./10.,0.) 
-MuonShield.SetSupports(False) # otherwise overlap with sensitive Plane 
+               ship_geo.muShield.dZ7,ship_geo.muShield.dZ8,ship_geo.muShield.dXgap,ship_geo.muShield.LE,ship_geo.Yheight*4./10.,0.)
+MuonShield.SetSupports(False) # otherwise overlap with sensitive Plane
 run.AddModule(MuonShield) # needs to be added because of magn hadron shield.
 sensPlane = ROOT.exitHadronAbsorber()
-sensPlane.SetEnergyCut(ecut*u.GeV) 
+sensPlane.SetEnergyCut(ecut*u.GeV)
 if storeOnlyMuons: sensPlane.SetOnlyMuons()
 if skipNeutrinos: sensPlane.SkipNeutrinos()
 if FourDP: sensPlane.SetOpt4DP() # in case a ntuple should be filled with pi0,etas,omega
@@ -254,9 +254,9 @@ run.Run(nev)
 timer.Stop()
 rtime = timer.RealTime()
 ctime = timer.CpuTime()
-print(' ') 
-print("Macro finished succesfully.") 
-print("Output file is ",  outFile) 
+print(' ')
+print("Macro finished succesfully.")
+print("Output file is ",  outFile)
 print("Real time ",rtime, " s, CPU time ",ctime,"s")
 # ---post processing--- remove empty events --- save histograms
 tmpFile = outFile+"tmp"
@@ -270,7 +270,7 @@ if charm or beauty:
 # normalization for charm
  poteq = P8gen.GetPotForCharm()
  info = "POT equivalent = %7.3G"%(poteq)
-else: 
+else:
  info = "POT = "+str(nev)
 
 conditions = " with ecut="+str(ecut)
@@ -300,7 +300,7 @@ sTree = t.CloneTree(0)
 nEvents = 0
 for n in range(t.GetEntries()):
      rc = t.GetEvent(n)
-     if t.vetoPoint.GetEntries()>0: 
+     if t.vetoPoint.GetEntries()>0:
           rc = sTree.Fill()
           nEvents+=1
      #t.Clear()
@@ -308,7 +308,7 @@ fout.cd()
 for k in fin.GetListOfKeys():
  x = fin.Get(k.GetName())
  className = x.Class().GetName()
- if className.find('TTree')<0 and className.find('TNtuple')<0: 
+ if className.find('TTree')<0 and className.find('TNtuple')<0:
    xcopy = x.Clone()
    rc = xcopy.Write()
 sTree.AutoSave()
@@ -332,4 +332,3 @@ if checkOverlap:
  run.CreateGeometryFile("%s/geofile_full.root" % (outputDir))
  import saveBasicParameters
  saveBasicParameters.execute("%s/geofile_full.root" % (outputDir),ship_geo)
-

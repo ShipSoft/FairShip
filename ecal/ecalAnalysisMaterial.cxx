@@ -139,4 +139,3 @@ void ecalAnalysisMaterial::Finish()
   if (fTree)
     fTree->Write();
 }
-

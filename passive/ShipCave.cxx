@@ -26,7 +26,7 @@ void ShipCave::ConstructGeometry()
   GeoInterface->addGeoModule(MGeo);
   Bool_t rc = GeoInterface->readSet(MGeo);
   if ( rc ) { MGeo->create(loader->getGeoBuilder()); }
- 
+
 }
 ShipCave::ShipCave()
 :FairModule()

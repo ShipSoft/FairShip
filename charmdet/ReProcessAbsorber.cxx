@@ -84,4 +84,3 @@ Int_t ReProcessAbsorber::GetNevents()
 {
  return fNevents;
 }
-

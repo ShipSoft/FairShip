@@ -16,8 +16,8 @@
 using namespace std;
 
 // -----   Default constructor   -------------------------------------------
-ecalStructureFiller::ecalStructureFiller() 
-  : FairTask(), 
+ecalStructureFiller::ecalStructureFiller()
+  : FairTask(),
     fStr(NULL),
     fInf(NULL),
     fListECALpts(NULL),
@@ -31,7 +31,7 @@ ecalStructureFiller::ecalStructureFiller()
 // -------------------------------------------------------------------------
 
 // -----   Standard constructor   -------------------------------------------
-ecalStructureFiller::ecalStructureFiller(const char *name, const Int_t iVerbose, const char* fileGeo) 
+ecalStructureFiller::ecalStructureFiller(const char *name, const Int_t iVerbose, const char* fileGeo)
   : FairTask(name,iVerbose),
     fStr(NULL),
     fInf(ecalInf::GetInstance(fileGeo)),
@@ -70,14 +70,14 @@ InitStatus ecalStructureFiller::Init()
 //    return kFATAL;
   }
   //ECAL MC points
-  if (fUseMCPoints) 
+  if (fUseMCPoints)
     fListECALpts = (TClonesArray*)fManager->GetObject("EcalPointLite");
 
   //fInf->CheckVariables();
   fStr=new ecalStructure(fInf);
   if (fStoreTrackInfo) fStr->SetUseMC(1);
   fStr->Construct();
-  
+
   fManager->Register("EcalStructure", "ECAL", fStr, kFALSE);
   return kSUCCESS;
 }
@@ -161,5 +161,3 @@ void ecalStructureFiller::Finish()
   ;
 }
 // -------------------------------------------------------------------------
-
-

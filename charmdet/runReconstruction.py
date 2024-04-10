@@ -21,7 +21,7 @@ fileList = {}
 badFiles = []
 run = "RUN_8000_2395" # "RUN_8000_2396"
 
-eospath='/eos/experiment/ship/data/muflux/DATA_Rebuild_8000/rootdata/'+run 
+eospath='/eos/experiment/ship/data/muflux/DATA_Rebuild_8000/rootdata/'+run
 
 def getFilesFromEOS():
 # list of files
@@ -31,7 +31,7 @@ def getFilesFromEOS():
   if not x.find('START')<0: continue
   fname =  x[x.find('/eos'):]
   nentries = 0
-  try: 
+  try:
    f=ROOT.TFile.Open(os.environ['EOSSHIP']+fname)
    nentries=f.cbmsim.GetEntries()
    fileList[fname]=nentries
@@ -57,7 +57,7 @@ def getFilesLocal():
   test = fname.replace('.root','_RT.root')
   if os.path.isfile(test): continue
   nentries = 0
-  try: 
+  try:
    f=ROOT.TFile.Open(fname)
    nentries=f.cbmsim.GetEntries()
    fileList[fname]=nentries
@@ -90,7 +90,7 @@ def recoStep0(local=False):
   # check that enough files remain
   Nextsample = []
   Ntot = 0
-  for k in range(Ndone,Nfiles): 
+  for k in range(Ndone,Nfiles):
     Ntot += tmp[fnames[k]]
     Nextsample.append(fnames[k])
     if Ntot>350000: break
@@ -145,7 +145,7 @@ def recoStep1():
  fileList=[]
  # all RT files
  for x in os.listdir('.'):
-  if x.find('_RT')>0 and x.find('histos')<0: 
+  if x.find('_RT')>0 and x.find('histos')<0:
     test = ROOT.TFile(x)
     if test.cbmsim.GetBranch("FitTracks"): continue
     fileList.append(x)
@@ -156,7 +156,7 @@ def recoStep1():
     os.system(cmd)
     time.sleep(100)
     while 1>0:
-        if count_python_processes('drifttubeMonitoring')<ncpus: break 
+        if count_python_processes('drifttubeMonitoring')<ncpus: break
         time.sleep(100)
  print("finished all the tasks.")
 
@@ -173,14 +173,14 @@ def checkAlignment(fileList=[]):
     os.system(cmd)
     time.sleep(10)
     while 1>0:
-        if count_python_processes('drifttubeMonitoring')<ncpus: break 
+        if count_python_processes('drifttubeMonitoring')<ncpus: break
         time.sleep(100)
  print("finished all the tasks.")
 
 def runMC():
  # fast MC
  inputFile = "/eos/experiment/ship/data/Mbias/background-prod-2018/pythia8_Geant4_10.0_withCharmandBeauty0_mu.root" # entries 13450391L
- os.system("python $FAIRSHIP/macro/run_simScript.py -n 100000 --MuonBack --charm=1 --CharmdetSetup=0 -f "+inputFile) 
+ os.system("python $FAIRSHIP/macro/run_simScript.py -n 100000 --MuonBack --charm=1 --CharmdetSetup=0 -f "+inputFile)
  # full simulation
  os.system("python $SHIPBUILD/FairShip/macro/run_simScript.py --Muflux -n 1000 --charm=1 --CharmdetSetup=0 --charm=1 --CharmdetSetup=0")
 
@@ -191,7 +191,7 @@ def checkFilesWithTracks(D='.'):
  # all RT files
  if D.find('eos')<0:
   for x in os.listdir(D):
-   if x.find('_RT')>0 and x.find('histos')<0: 
+   if x.find('_RT')>0 and x.find('histos')<0:
     test = ROOT.TFile(D+'/'+x)
     if not test.GetKey('cbmsim'):
        zombie.append(x)
@@ -202,7 +202,7 @@ def checkFilesWithTracks(D='.'):
   for x in temp.split('\n'):
    if x.find('.root')<0: continue
    fname =  x[x.find('/eos'):]
-   try: 
+   try:
     test=ROOT.TFile.Open(os.environ['EOSSHIP']+fname)
     if not test.GetKey('cbmsim'):
        zombie.append(fname)
@@ -217,11 +217,11 @@ def checkFilesWithTracks2(D='.'):
  badFile=[]
  # all RT files
  for x in os.listdir(D):
-  if x.find('_RT')>0 and x.find('histos')<0: 
+  if x.find('_RT')>0 and x.find('histos')<0:
    test = ROOT.TFile(D+'/'+x)
    sTree = test.cbmsim
    if not sTree: badFile.append(x+"?")
-   elif sTree.GetBranch("FitTracks"): 
+   elif sTree.GetBranch("FitTracks"):
      prev = 0
      for n in range(min(20000,sTree.GetEntries())):
         rc = sTree.GetEvent(n)
@@ -237,10 +237,10 @@ def checkFilesWithTracks3(D='.'):
  badFile={}
  # all RT files
  for x in os.listdir(D):
-  if x.find('_RT')>0 and x.find('histos')<0: 
+  if x.find('_RT')>0 and x.find('histos')<0:
    test = ROOT.TFile(D+'/'+x)
    sTree = test.cbmsim
-   if not sTree: 
+   if not sTree:
     badFile.append(x+"?")
     continue
    b = sTree.GetBranch("FitTracks")
@@ -284,16 +284,16 @@ def importRecoFiles(local='.',remote='/media/truf/disk2/home/truf/ShipSoft/ship-
 
 def mergeHistos(local='.',case='residuals'):
  allFiles = os.listdir(local)
- if case == 'residuals':  
+ if case == 'residuals':
      dest = 'residuals.root'
      tag = 'histos-residuals'
- else:  
+ else:
      dest = 'momDistributions.root'
      tag = 'histos-analysis'
  cmd = "hadd -f "+dest+' '
  N=0
  for x in allFiles:
-  if not x.find(tag)<0 : 
+  if not x.find(tag)<0 :
      cmd += (local+'/'+x+' ')
      N+=1
   if N>500:
@@ -311,9 +311,9 @@ def checkRecoRun(eosLocation=eospath,local='.'):
   fname      =  x[x.rfind('/')+1:]
   RTname     = fname.replace('.root','_RT.root')
   histosName = "histos-residuals-"+RTname
-  if not os.path.isfile(RTname): 
+  if not os.path.isfile(RTname):
      print("missing RT file",fname)
-  if not os.path.isfile(histosName): 
+  if not os.path.isfile(histosName):
      print("missing histogram file",fname)
 def exportRunToEos(eosLocation="/eos/experiment/ship/user/truf/muflux-reco",run=run,local="."):
  temp = os.system("xrdfs "+os.environ['EOSSHIP']+" mkdir "+eosLocation+"/"+run)
@@ -343,7 +343,7 @@ def makeMomDistributions(run=0):
     os.system(cmd)
     time.sleep(10)
     while 1>0:
-        if count_python_processes('drifttubeMonitoring')<ncpus: break 
+        if count_python_processes('drifttubeMonitoring')<ncpus: break
         time.sleep(10)
  print("finished all the tasks.")
 
@@ -413,7 +413,7 @@ def redoMuonTracks():
     os.system(cmd)
     time.sleep(10)
     while 1>0:
-        if count_python_processes('drifttubeMonitoring')<ncpus: break 
+        if count_python_processes('drifttubeMonitoring')<ncpus: break
         time.sleep(10)
  print("finished all the tasks.")
 
@@ -443,7 +443,7 @@ def pot():
  fileList=[]
  # all RT files
  for x in os.listdir('.'):
-  if x.find('_RT')>0 and x.find('histos')<0: 
+  if x.find('_RT')>0 and x.find('histos')<0:
     fileList.append(x)
  fileList.sort()
  scalerStat = {}
@@ -471,13 +471,13 @@ def makeDTEfficiency(merge=False):
    os.system(cmd)
    time.sleep(10)
    while 1>0:
-        if count_python_processes('drifttubeMonitoring')<ncpus: break 
+        if count_python_processes('drifttubeMonitoring')<ncpus: break
         time.sleep(10)
-  elif merge and fname.find('histos-DTEff')==0: 
+  elif merge and fname.find('histos-DTEff')==0:
    cmd+=fname+' '
  if merge: os.system(cmd)
  print("finished all the tasks.")
- 
+
 
 def importMomDistr(keyword = 'RUN_8000_2'):
   pathHistos = '/media/truf/disk2/home/truf/ShipSoft/ship-ubuntu-1710-64/'
@@ -488,5 +488,3 @@ def importMomDistr(keyword = 'RUN_8000_2'):
    if not run in os.listdir('.'):
      os.system('mkdir '+run)
    os.system('cp '+pathHistos+run+'/momDistributions.root '+run)
-
-

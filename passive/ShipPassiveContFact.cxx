@@ -61,4 +61,3 @@ FairParSet* ShipPassiveContFact::createContainer(FairContainer* c)
 */
    return 0;
 }
-

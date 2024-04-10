@@ -38,7 +38,7 @@ class ShipBFieldMap : public TVirtualMagField
 
     //! Copy constructor with a new global transformation. Use this if you want
     //! to reuse the same field map information elsewhere in the geometry
-    /*! 
+    /*!
       \param [in] rhs The ShipBFieldMap object to be copied (retaining any symmetry)
       \param [in] newName The new description or title of the field
       \param [in] newXOffset The new global offset x co-ordinate (cm)
@@ -363,7 +363,7 @@ class ShipBFieldMap : public TVirtualMagField
 
     //! The number of bins along x
     Int_t Nx_;
-    
+
     //! The number of bins along y
     Int_t Ny_;
 

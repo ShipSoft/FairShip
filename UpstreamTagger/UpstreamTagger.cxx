@@ -27,8 +27,8 @@
 #include "TGeoTube.h"
 #include "TGeoMaterial.h"
 #include "TGeoMedium.h"
-#include "TMath.h" 
-#include "TParticle.h" 
+#include "TMath.h"
+#include "TParticle.h"
 #include "TVector3.h"
 
 #include <ROOT/TSeq.hxx>
@@ -51,50 +51,50 @@ UpstreamTagger::UpstreamTagger()
     fLength(-1.),
     fELoss(-1),
     //
-    det_zPos(0),     
+    det_zPos(0),
 
-    det_xGlassPos(0),    
-    det_yGlassPos(0),    
-    det_zGlassPos(0), 
+    det_xGlassPos(0),
+    det_yGlassPos(0),
+    det_zGlassPos(0),
 
-    det_xGlassBorderPos(0),    
-    det_yGlassBorderPos(0),    
-    det_zGlassBorderPos(0), 
+    det_xGlassBorderPos(0),
+    det_yGlassBorderPos(0),
+    det_zGlassBorderPos(0),
 
-    det_xPMMAPos(0),     
-    det_yPMMAPos(0),     
-    det_zPMMAPos(0),     
+    det_xPMMAPos(0),
+    det_yPMMAPos(0),
+    det_zPMMAPos(0),
 
-    det_dxPMMAPos(0),     
-    det_dyPMMAPos(0),     
-    det_dzPMMAPos(0),     
+    det_dxPMMAPos(0),
+    det_dyPMMAPos(0),
+    det_dzPMMAPos(0),
 
-    det_xFreonSF6Pos(0),    
-    det_yFreonSF6Pos(0),    
-    det_zFreonSF6Pos(0),    
+    det_xFreonSF6Pos(0),
+    det_yFreonSF6Pos(0),
+    det_zFreonSF6Pos(0),
 
-    det_xFR4Pos(0),    
-    det_yFR4Pos(0),    
-    det_zFR4Pos(0),    
+    det_xFR4Pos(0),
+    det_yFR4Pos(0),
+    det_zFR4Pos(0),
 
-    det_xAlPos(0),     
-    det_yAlPos(0),     
-    det_zAlPos(0),     
+    det_xAlPos(0),
+    det_yAlPos(0),
+    det_zAlPos(0),
 
-    det_dxAlPos(0),    
-    det_dyAlPos(0),    
-    det_dzAlPos(0),    
+    det_dxAlPos(0),
+    det_dyAlPos(0),
+    det_dzAlPos(0),
 
-    det_xAirPos(0),    
-    det_yAirPos(0),    
+    det_xAirPos(0),
+    det_yAirPos(0),
     det_zAirPos(0),
 
-    det_xStripPos64(0),    
+    det_xStripPos64(0),
     det_yStripPos64(0),
-    det_xStripPos(0),    
-    det_yStripPos(0),    
-    det_zStripPos(0),  
-    
+    det_xStripPos(0),
+    det_yStripPos(0),
+    det_zStripPos(0),
+
     //
     UpstreamTagger_fulldet(0),
   //
@@ -112,49 +112,49 @@ UpstreamTagger::UpstreamTagger(const char* name, Bool_t active)
     fLength(-1.),
     fELoss(-1),
     //
-    det_zPos(0),     
+    det_zPos(0),
 
-    det_xGlassPos(0),    
-    det_yGlassPos(0),    
-    det_zGlassPos(0),    
+    det_xGlassPos(0),
+    det_yGlassPos(0),
+    det_zGlassPos(0),
 
-    det_xGlassBorderPos(0),    
-    det_yGlassBorderPos(0),    
-    det_zGlassBorderPos(0), 
+    det_xGlassBorderPos(0),
+    det_yGlassBorderPos(0),
+    det_zGlassBorderPos(0),
 
-    det_xPMMAPos(0),     
-    det_yPMMAPos(0),     
-    det_zPMMAPos(0),     
+    det_xPMMAPos(0),
+    det_yPMMAPos(0),
+    det_zPMMAPos(0),
 
-    det_dxPMMAPos(0),     
-    det_dyPMMAPos(0),     
-    det_dzPMMAPos(0),     
+    det_dxPMMAPos(0),
+    det_dyPMMAPos(0),
+    det_dzPMMAPos(0),
 
-    det_xFreonSF6Pos(0),    
-    det_yFreonSF6Pos(0),    
-    det_zFreonSF6Pos(0),    
+    det_xFreonSF6Pos(0),
+    det_yFreonSF6Pos(0),
+    det_zFreonSF6Pos(0),
 
-    det_xFR4Pos(0),    
-    det_yFR4Pos(0),    
-    det_zFR4Pos(0),    
+    det_xFR4Pos(0),
+    det_yFR4Pos(0),
+    det_zFR4Pos(0),
 
-    det_xAlPos(0),     
-    det_yAlPos(0),     
-    det_zAlPos(0),     
+    det_xAlPos(0),
+    det_yAlPos(0),
+    det_zAlPos(0),
 
-    det_dxAlPos(0),    
-    det_dyAlPos(0),    
+    det_dxAlPos(0),
+    det_dyAlPos(0),
     det_dzAlPos(0),
 
-    det_xAirPos(0),    
-    det_yAirPos(0),    
+    det_xAirPos(0),
+    det_yAirPos(0),
     det_zAirPos(0),
 
-    det_xStripPos64(0),    
+    det_xStripPos64(0),
     det_yStripPos64(0),
-    det_xStripPos(0),    
-    det_yStripPos(0),    
-    det_zStripPos(0),  
+    det_xStripPos(0),
+    det_yStripPos(0),
+    det_zStripPos(0),
 
     //
     UpstreamTagger_fulldet(0),
@@ -182,7 +182,7 @@ UpstreamTagger::~UpstreamTagger()
 
 Int_t UpstreamTagger::InitMedium(const char* name)
 {
-  
+
    static FairGeoLoader *geoLoad=FairGeoLoader::Instance();
    static FairGeoInterface *geoFace=geoLoad->getGeoInterface();
    static FairGeoMedia *media=geoFace->getMedia();
@@ -200,7 +200,7 @@ Int_t UpstreamTagger::InitMedium(const char* name)
      return ShipMedium->getMediumIndex();
 
    return geoBuild->createMedium(ShipMedium);
-  
+
   return 0;
 }
 
@@ -257,7 +257,7 @@ Bool_t  UpstreamTagger::ProcessHits(FairVolume* vol)
     ShipStack* stack = (ShipStack*) gMC->GetStack();
     stack->AddPoint(kUpstreamTagger);
   }
-  
+
   return kTRUE;
 }
 
@@ -306,25 +306,25 @@ void UpstreamTagger::ConstructGeometry()
 
   //////////////////////////////////////////////////////
 
-  InitMedium("aluminium");  
-  TGeoMedium *rpc_al =gGeoManager->GetMedium("aluminium"); 
+  InitMedium("aluminium");
+  TGeoMedium *rpc_al =gGeoManager->GetMedium("aluminium");
 
-  InitMedium("TimeRpc_gas");  
-  TGeoMedium *rpc_gas =gGeoManager->GetMedium("TimeRpc_gas"); 
+  InitMedium("TimeRpc_gas");
+  TGeoMedium *rpc_gas =gGeoManager->GetMedium("TimeRpc_gas");
 
-  InitMedium("air");  
-  TGeoMedium *rpc_air =gGeoManager->GetMedium("air"); 
+  InitMedium("air");
+  TGeoMedium *rpc_air =gGeoManager->GetMedium("air");
 
   InitMedium("copper");
-  TGeoMedium *rpc_strip =gGeoManager->GetMedium("copper"); 
-    
-  InitMedium("TimeRpc_glass");  
+  TGeoMedium *rpc_strip =gGeoManager->GetMedium("copper");
+
+  InitMedium("TimeRpc_glass");
   TGeoMedium *rpc_glass =gGeoManager->GetMedium("TimeRpc_glass");
 
-  InitMedium("TimeRpc_pmma");  
+  InitMedium("TimeRpc_pmma");
   TGeoMedium *rpc_pmma =gGeoManager->GetMedium("TimeRpc_pmma");
 
-  InitMedium("TimeRpc_FR4");  
+  InitMedium("TimeRpc_FR4");
   TGeoMedium *rpc_FR4 =gGeoManager->GetMedium("TimeRpc_FR4");
 
   ///////////////////////////////////////////////////////
@@ -343,7 +343,7 @@ void UpstreamTagger::ConstructGeometry()
 
   TGeoVolume *vol_strip64 = gGeoManager->MakeBox("strip64", rpc_strip, (det_xStripPos64)/2.0, (det_yStripPos64)/2.0, det_zStripPos/2.0);
   vol_strip->SetLineColor(42);
-  
+
   TGeoVolume *vol_pmma1 = gGeoManager->MakeBox("pmma1", rpc_pmma, (det_xPMMAPos+(2*det_dxPMMAPos))/2.0, (det_yPMMAPos + (2*det_dyPMMAPos))/2.0, det_dzPMMAPos/2.0);
   vol_pmma1->SetLineColor(kYellow);
 
@@ -371,17 +371,17 @@ void UpstreamTagger::ConstructGeometry()
 
   TGeoVolume *vol_FrSF6 = gGeoManager->MakeBox("gas1", rpc_gas, det_xFreonSF6Pos/2.0, det_yFreonSF6Pos/2.0, det_zFreonSF6Pos/2.0);
   vol_FrSF6->SetLineColor(kGreen);
-  
+
   TGeoVolume *vol_FrSF6_2 = gGeoManager->MakeBox("gas2", rpc_gas, det_xPMMAPos/2.0, det_yFreonSF6Pos_2/2.0, det_zFreonSF6Pos_2/2.0);
   vol_FrSF6_2->SetLineColor(kGreen);
 
   TGeoVolume *vol_FrSF6_3 = gGeoManager->MakeBox("gas3", rpc_gas, det_xFreonSF6Pos_2/2.0, (det_yPMMAPos/2.0 - (2*det_yFreonSF6Pos_2)/2.0), det_zFreonSF6Pos_2/2.0);
   vol_FrSF6_2->SetLineColor(kGreen);
 
-    
+
   ////////////////////////////////////////////////////////////////////
 
-  InitMedium("vacuum");  
+  InitMedium("vacuum");
   TGeoMedium *Vacuum_box =gGeoManager->GetMedium("vacuum");
   double xbox=xbox_fulldet; double ybox = 113; double zbox = 1.3503;
 
@@ -391,19 +391,19 @@ void UpstreamTagger::ConstructGeometry()
   Rpc_module_upstream->SetLineColor(kRed);
 
   Rpc_module_upstream->AddNode(vol_al1, 145, new TGeoTranslation(0, 0, (-(det_zAlPos/2.0) - (det_dzAlPos/2.0)) ));
-  Rpc_module_upstream->AddNode(vol_al2, 146, new TGeoTranslation(0, ((-det_yAlPos/2.0) - (det_dyAlPos/2.0)), 0));	  
+  Rpc_module_upstream->AddNode(vol_al2, 146, new TGeoTranslation(0, ((-det_yAlPos/2.0) - (det_dyAlPos/2.0)), 0));
   Rpc_module_upstream->AddNode(vol_al2, 147, new TGeoTranslation(0, ((det_yAlPos/2.0) + (det_dyAlPos/2.0)), 0));
-  Rpc_module_upstream->AddNode(vol_al3, 148, new TGeoTranslation(((-det_xAlPos/2.0) - (det_dxAlPos/2.0)), 0, 0));	  
+  Rpc_module_upstream->AddNode(vol_al3, 148, new TGeoTranslation(((-det_xAlPos/2.0) - (det_dxAlPos/2.0)), 0, 0));
   Rpc_module_upstream->AddNode(vol_al3, 149, new TGeoTranslation(((det_xAlPos/2.0) + (det_dxAlPos/2.0)), 0, 0));
   Rpc_module_upstream->AddNode(vol_al1, 150, new TGeoTranslation(0, 0, ((det_zAlPos/2.0) + (det_dzAlPos/2.0)) ));
-  
+
   Rpc_module_upstream->AddNode(vol_pmma1, 151, new TGeoTranslation(0, 0, -((det_zAlPos/2.0) - (det_dzPMMAPos/2.0))));
-  Rpc_module_upstream->AddNode(vol_pmma2, 152, new TGeoTranslation(0, ((-det_yPMMAPos/2.0) - (det_dyPMMAPos/2.0)), 0 - (det_zFR4Pos + det_zStripPos)/2.0 ));   
+  Rpc_module_upstream->AddNode(vol_pmma2, 152, new TGeoTranslation(0, ((-det_yPMMAPos/2.0) - (det_dyPMMAPos/2.0)), 0 - (det_zFR4Pos + det_zStripPos)/2.0 ));
   Rpc_module_upstream->AddNode(vol_pmma2, 153, new TGeoTranslation(0, ((det_yPMMAPos/2.0) + (det_dyPMMAPos/2.0)),0 - (det_zFR4Pos + det_zStripPos)/2.0  ));
-  Rpc_module_upstream->AddNode(vol_pmma3, 154, new TGeoTranslation(((-det_xPMMAPos/2.0) - (det_dxPMMAPos/2.0)), 0, 0 - (det_zFR4Pos + det_zStripPos)/2.0 ));   
-  Rpc_module_upstream->AddNode(vol_pmma3, 155, new TGeoTranslation(((det_xPMMAPos/2.0) + (det_dxPMMAPos/2.0)), 0, 0 - (det_zFR4Pos + det_zStripPos)/2.0 ));   
+  Rpc_module_upstream->AddNode(vol_pmma3, 154, new TGeoTranslation(((-det_xPMMAPos/2.0) - (det_dxPMMAPos/2.0)), 0, 0 - (det_zFR4Pos + det_zStripPos)/2.0 ));
+  Rpc_module_upstream->AddNode(vol_pmma3, 155, new TGeoTranslation(((det_xPMMAPos/2.0) + (det_dxPMMAPos/2.0)), 0, 0 - (det_zFR4Pos + det_zStripPos)/2.0 ));
   Rpc_module_upstream->AddNode(vol_pmma1, 156, new TGeoTranslation(0, 0, -(det_zAlPos/2.0) + det_dzPMMAPos + det_zPMMAPos + (det_dzPMMAPos/2.0) ));
-      
+
   Rpc_module_upstream->AddNode(vol_glass_border, 157, new TGeoTranslation(0, ((det_yGlassPos/2.0) + (det_yGlassBorderPos/2.0)), ((det_zAlPos/2.0) - det_zFR4Pos - det_zStripPos - det_dzPMMAPos - (det_zGlassPos/2.0))));
   Rpc_module_upstream->AddNode(vol_glass_border, 158, new TGeoTranslation(0, (-(det_yGlassPos/2.0) - (det_yGlassBorderPos/2.0)), ((det_zAlPos/2.0) - det_zFR4Pos - det_zStripPos - det_dzPMMAPos - (det_zGlassPos/2.0))));
   Rpc_module_upstream->AddNode(vol_glass_border1, 159, new TGeoTranslation(((det_xGlassPos/2.0) + (det_xGlassBorderPos/2.0)), 0, ((det_zAlPos/2.0) - det_zFR4Pos - det_zStripPos - det_dzPMMAPos - (det_zGlassPos/2.0))));
@@ -413,7 +413,7 @@ void UpstreamTagger::ConstructGeometry()
   Rpc_module_upstream->AddNode(vol_glass_border, 162, new TGeoTranslation(0, (-(det_yGlassPos/2.0) - (det_yGlassBorderPos/2.0)),  ((det_zAlPos/2.0) - det_zFR4Pos - det_zStripPos - det_dzPMMAPos - det_zGlassPos -  det_zFreonSF6Pos - (det_zGlassPos/2.0))));
   Rpc_module_upstream->AddNode(vol_glass_border1, 163, new TGeoTranslation(((det_xGlassPos/2.0) + (det_xGlassBorderPos/2.0)), 0,  ((det_zAlPos/2.0) - det_zFR4Pos - det_zStripPos - det_dzPMMAPos - det_zGlassPos -  det_zFreonSF6Pos - (det_zGlassPos/2.0))));
   Rpc_module_upstream->AddNode(vol_glass_border1, 164, new TGeoTranslation((-(det_xGlassPos/2.0) - (det_xGlassBorderPos/2.0)), 0,  ((det_zAlPos/2.0) - det_zFR4Pos - det_zStripPos - det_dzPMMAPos - det_zGlassPos -  det_zFreonSF6Pos - (det_zGlassPos/2.0))));
-  
+
   Rpc_module_upstream->AddNode(vol_glass_border, 165, new TGeoTranslation(0, ((det_yGlassPos/2.0) + (det_yGlassBorderPos/2.0)), ((det_zAlPos/2.0) - det_zFR4Pos - det_zStripPos - det_dzPMMAPos - (det_zGlassPos*2.0) -  (det_zFreonSF6Pos*2.0) - (det_zGlassPos/2.0))));
   Rpc_module_upstream->AddNode(vol_glass_border, 166, new TGeoTranslation(0, (-(det_yGlassPos/2.0) - (det_yGlassBorderPos/2.0)), ((det_zAlPos/2.0) - det_zFR4Pos - det_zStripPos - det_dzPMMAPos - (det_zGlassPos*2.0) -  (det_zFreonSF6Pos*2.0) - (det_zGlassPos/2.0))));
   Rpc_module_upstream->AddNode(vol_glass_border1, 167, new TGeoTranslation(((det_xGlassPos/2.0) + (det_xGlassBorderPos/2.0)), 0, ((det_zAlPos/2.0 - det_zFR4Pos - det_zStripPos) - det_dzPMMAPos - (det_zGlassPos*2.0) -  (det_zFreonSF6Pos*2.0) - (det_zGlassPos/2.0))));
@@ -422,22 +422,22 @@ void UpstreamTagger::ConstructGeometry()
   Rpc_module_upstream->AddNode(vol_glass, 169, new TGeoTranslation(0, 0, ((det_zAlPos/2.0) - det_zFR4Pos - det_zStripPos - det_dzPMMAPos - (det_zGlassPos/2.0))));
   Rpc_module_upstream->AddNode(vol_glass, 170, new TGeoTranslation(0, 0, ((det_zAlPos/2.0) - det_zFR4Pos - det_zStripPos - det_dzPMMAPos - det_zGlassPos -  det_zFreonSF6Pos - (det_zGlassPos/2.0))));
   Rpc_module_upstream->AddNode(vol_glass, 171, new TGeoTranslation(0, 0, ((det_zAlPos/2.0) - det_zFR4Pos - det_zStripPos - det_dzPMMAPos - (det_zGlassPos*2.0) -  (det_zFreonSF6Pos*2.0) - (det_zGlassPos/2.0))));
-  
+
   Rpc_module_upstream->AddNode(vol_FrSF6, 172, new TGeoTranslation(0, 0, ((det_zAlPos/2.0) - det_zFR4Pos - det_zStripPos - det_dzPMMAPos - (det_zGlassPos*1.0)  -  (det_zFreonSF6Pos/2.0))));
   Rpc_module_upstream->AddNode(vol_FrSF6, 173, new TGeoTranslation(0, 0, ((det_zAlPos/2.0) - det_zFR4Pos - det_zStripPos - det_dzPMMAPos - (det_zGlassPos*2.0)  - (det_zFreonSF6Pos*1.0) - (det_zFreonSF6Pos/2.0))));
-  
+
   Rpc_module_upstream->AddNode(vol_FrSF6_2, 174, new TGeoTranslation(0, ((-det_yGlassPos/2.0) - det_yGlassBorderPos - (det_yFreonSF6Pos_2/2.0)), (-(det_zAlPos/2.0) + (det_dzPMMAPos) + (det_zFreonSF6Pos_2/2.0))));
   Rpc_module_upstream->AddNode(vol_FrSF6_2, 175, new TGeoTranslation(0, ((det_yGlassPos/2.0) + det_yGlassBorderPos + (det_yFreonSF6Pos_2/2.0)), (-(det_zAlPos/2.0) + (det_dzPMMAPos) + (det_zFreonSF6Pos_2/2.0))));
   Rpc_module_upstream->AddNode(vol_FrSF6_3, 176, new TGeoTranslation(((det_xGlassPos/2.0) + det_xGlassBorderPos + (det_xFreonSF6Pos_2/2.0)), 0, (-(det_zAlPos/2.0) + (det_dzPMMAPos) + (det_zFreonSF6Pos_2/2.0))));
   Rpc_module_upstream->AddNode(vol_FrSF6_3, 177, new TGeoTranslation(((-det_xGlassPos/2.0) - det_xGlassBorderPos - (det_xFreonSF6Pos_2/2.0)), 0, (-(det_zAlPos/2.0) + (det_dzPMMAPos) + (det_zFreonSF6Pos_2/2.0))));
-  
+
   Rpc_module_upstream->AddNode(vol_FR4, 178, new TGeoTranslation(0, 0, -(det_zAlPos/2.0) + det_dzPMMAPos + det_zPMMAPos + det_dzPMMAPos + det_zFR4Pos/2.0));
-  		     
+
   Rpc_module_upstream->AddNode(vol_air, 179, new TGeoTranslation(0, ((-det_yAlPos/2.0) + (det_yAirPos/2.0)), 0));
   Rpc_module_upstream->AddNode(vol_air, 180, new TGeoTranslation(0, ((det_yAlPos/2.0) - (det_yAirPos/2.0)), 0));
 
   Int_t interval = 0;
- 
+
   //Add 32 copper strips to the Rpc module
   for(int i = 181; i < 213; i++){
 
@@ -451,17 +451,17 @@ void UpstreamTagger::ConstructGeometry()
   Rpc_module_upstream1->SetLineColor(kRed);
 
   Rpc_module_upstream1->AddNode(vol_al1, 214, new TGeoTranslation(0, 0, (-(det_zAlPos/2.0) - (det_dzAlPos/2.0)) ));
-  Rpc_module_upstream1->AddNode(vol_al2, 215, new TGeoTranslation(0, ((-det_yAlPos/2.0) - (det_dyAlPos/2.0)), 0));	  
+  Rpc_module_upstream1->AddNode(vol_al2, 215, new TGeoTranslation(0, ((-det_yAlPos/2.0) - (det_dyAlPos/2.0)), 0));
   Rpc_module_upstream1->AddNode(vol_al2, 216, new TGeoTranslation(0, ((det_yAlPos/2.0) + (det_dyAlPos/2.0)), 0));
-  Rpc_module_upstream1->AddNode(vol_al3, 217, new TGeoTranslation(((-det_xAlPos/2.0) - (det_dxAlPos/2.0)), 0, 0));	  
+  Rpc_module_upstream1->AddNode(vol_al3, 217, new TGeoTranslation(((-det_xAlPos/2.0) - (det_dxAlPos/2.0)), 0, 0));
   Rpc_module_upstream1->AddNode(vol_al3, 218, new TGeoTranslation(((det_xAlPos/2.0) + (det_dxAlPos/2.0)), 0, 0));
   Rpc_module_upstream1->AddNode(vol_al1, 219, new TGeoTranslation(0, 0, ((det_zAlPos/2.0) + (det_dzAlPos/2.0)) ));
-  
+
   Rpc_module_upstream1->AddNode(vol_pmma1, 220, new TGeoTranslation(0, 0, -((det_zAlPos/2.0) - (det_dzPMMAPos/2.0))));
-  Rpc_module_upstream1->AddNode(vol_pmma2, 221, new TGeoTranslation(0, ((-det_yPMMAPos/2.0) - (det_dyPMMAPos/2.0)), 0 - (det_zFR4Pos + det_zStripPos)/2.0 ));   
+  Rpc_module_upstream1->AddNode(vol_pmma2, 221, new TGeoTranslation(0, ((-det_yPMMAPos/2.0) - (det_dyPMMAPos/2.0)), 0 - (det_zFR4Pos + det_zStripPos)/2.0 ));
   Rpc_module_upstream1->AddNode(vol_pmma2, 222, new TGeoTranslation(0, ((det_yPMMAPos/2.0) + (det_dyPMMAPos/2.0)),0 - (det_zFR4Pos + det_zStripPos)/2.0  ));
-  Rpc_module_upstream1->AddNode(vol_pmma3, 223, new TGeoTranslation(((-det_xPMMAPos/2.0) - (det_dxPMMAPos/2.0)), 0, 0 - (det_zFR4Pos + det_zStripPos)/2.0 ));   
-  Rpc_module_upstream1->AddNode(vol_pmma3, 224, new TGeoTranslation(((det_xPMMAPos/2.0) + (det_dxPMMAPos/2.0)), 0, 0 - (det_zFR4Pos + det_zStripPos)/2.0 ));   
+  Rpc_module_upstream1->AddNode(vol_pmma3, 223, new TGeoTranslation(((-det_xPMMAPos/2.0) - (det_dxPMMAPos/2.0)), 0, 0 - (det_zFR4Pos + det_zStripPos)/2.0 ));
+  Rpc_module_upstream1->AddNode(vol_pmma3, 224, new TGeoTranslation(((det_xPMMAPos/2.0) + (det_dxPMMAPos/2.0)), 0, 0 - (det_zFR4Pos + det_zStripPos)/2.0 ));
   Rpc_module_upstream1->AddNode(vol_pmma1, 225, new TGeoTranslation(0, 0, -(det_zAlPos/2.0) + det_dzPMMAPos + det_zPMMAPos + (det_dzPMMAPos/2.0) ));
 
   Rpc_module_upstream1->AddNode(vol_glass_border, 226, new TGeoTranslation(0, ((det_yGlassPos/2.0) + (det_yGlassBorderPos/2.0)), ((det_zAlPos/2.0) - det_zFR4Pos - det_zStripPos - det_dzPMMAPos - (det_zGlassPos/2.0))));
@@ -473,7 +473,7 @@ void UpstreamTagger::ConstructGeometry()
   Rpc_module_upstream1->AddNode(vol_glass_border, 231, new TGeoTranslation(0, (-(det_yGlassPos/2.0) - (det_yGlassBorderPos/2.0)),  ((det_zAlPos/2.0) - det_zFR4Pos - det_zStripPos - det_dzPMMAPos - det_zGlassPos -  det_zFreonSF6Pos - (det_zGlassPos/2.0))));
   Rpc_module_upstream1->AddNode(vol_glass_border1, 232, new TGeoTranslation(((det_xGlassPos/2.0) + (det_xGlassBorderPos/2.0)), 0,  ((det_zAlPos/2.0) - det_zFR4Pos - det_zStripPos - det_dzPMMAPos - det_zGlassPos -  det_zFreonSF6Pos - (det_zGlassPos/2.0))));
   Rpc_module_upstream1->AddNode(vol_glass_border1, 233, new TGeoTranslation((-(det_xGlassPos/2.0) - (det_xGlassBorderPos/2.0)), 0,  ((det_zAlPos/2.0) - det_zFR4Pos - det_zStripPos- det_dzPMMAPos - det_zGlassPos -  det_zFreonSF6Pos - (det_zGlassPos/2.0))));
-  
+
   Rpc_module_upstream1->AddNode(vol_glass_border, 234, new TGeoTranslation(0, ((det_yGlassPos/2.0) + (det_yGlassBorderPos/2.0)), ((det_zAlPos/2.0)  - det_zFR4Pos - det_zStripPos - det_dzPMMAPos - (det_zGlassPos*2.0) -  (det_zFreonSF6Pos*2.0) - (det_zGlassPos/2.0))));
   Rpc_module_upstream1->AddNode(vol_glass_border, 235, new TGeoTranslation(0, (-(det_yGlassPos/2.0) - (det_yGlassBorderPos/2.0)), ((det_zAlPos/2.0) - det_zFR4Pos - det_zStripPos - det_dzPMMAPos - (det_zGlassPos*2.0) -  (det_zFreonSF6Pos*2.0) - (det_zGlassPos/2.0))));
   Rpc_module_upstream1->AddNode(vol_glass_border1, 236, new TGeoTranslation(((det_xGlassPos/2.0) + (det_xGlassBorderPos/2.0)), 0, ((det_zAlPos/2.0) - det_zFR4Pos - det_zStripPos - det_dzPMMAPos - (det_zGlassPos*2.0) -  (det_zFreonSF6Pos*2.0) - (det_zGlassPos/2.0))));
@@ -482,36 +482,36 @@ void UpstreamTagger::ConstructGeometry()
   Rpc_module_upstream1->AddNode(vol_glass, 238, new TGeoTranslation(0, 0, ((det_zAlPos/2.0) - det_zFR4Pos - det_zStripPos - det_dzPMMAPos - (det_zGlassPos/2.0))));
   Rpc_module_upstream1->AddNode(vol_glass, 239, new TGeoTranslation(0, 0, ((det_zAlPos/2.0) - det_zFR4Pos - det_zStripPos - det_dzPMMAPos - det_zGlassPos -  det_zFreonSF6Pos - (det_zGlassPos/2.0))));
   Rpc_module_upstream1->AddNode(vol_glass, 240, new TGeoTranslation(0, 0, ((det_zAlPos/2.0) - det_zFR4Pos - det_zStripPos - det_dzPMMAPos - (det_zGlassPos*2.0) -  (det_zFreonSF6Pos*2.0) - (det_zGlassPos/2.0))));
-  
+
   Rpc_module_upstream1->AddNode(vol_FrSF6, 241, new TGeoTranslation(0, 0, ((det_zAlPos/2.0) - det_zFR4Pos - det_zStripPos - det_dzPMMAPos - (det_zGlassPos*1.0)  -  (det_zFreonSF6Pos/2.0))));
   Rpc_module_upstream1->AddNode(vol_FrSF6, 243, new TGeoTranslation(0, 0, ((det_zAlPos/2.0) - det_zFR4Pos - det_zStripPos - det_dzPMMAPos - (det_zGlassPos*2.0)  - (det_zFreonSF6Pos*1.0) - (det_zFreonSF6Pos/2.0))));
-  
+
   Rpc_module_upstream1->AddNode(vol_FrSF6_2, 243, new TGeoTranslation(0, ((-det_yGlassPos/2.0) - det_yGlassBorderPos - (det_yFreonSF6Pos_2/2.0)), (-(det_zAlPos/2.0) + (det_dzPMMAPos) + (det_zFreonSF6Pos_2/2.0))));
   Rpc_module_upstream1->AddNode(vol_FrSF6_2, 244, new TGeoTranslation(0, ((det_yGlassPos/2.0) + det_yGlassBorderPos + (det_yFreonSF6Pos_2/2.0)), (-(det_zAlPos/2.0) + (det_dzPMMAPos) + (det_zFreonSF6Pos_2/2.0))));
   Rpc_module_upstream1->AddNode(vol_FrSF6_3, 245, new TGeoTranslation(((det_xGlassPos/2.0) + det_xGlassBorderPos + (det_xFreonSF6Pos_2/2.0)), 0, (-(det_zAlPos/2.0) + (det_dzPMMAPos) + (det_zFreonSF6Pos_2/2.0))));
   Rpc_module_upstream1->AddNode(vol_FrSF6_3, 246, new TGeoTranslation(((-det_xGlassPos/2.0) - det_xGlassBorderPos - (det_xFreonSF6Pos_2/2.0)), 0, (-(det_zAlPos/2.0) + (det_dzPMMAPos) + (det_zFreonSF6Pos_2/2.0))));
-  
+
   Rpc_module_upstream1->AddNode(vol_FR4, 247, new TGeoTranslation(0, 0, -(det_zAlPos/2.0) + det_dzPMMAPos + det_zPMMAPos + det_dzPMMAPos + det_zFR4Pos/2.0));
-  		     
+
   Rpc_module_upstream1->AddNode(vol_air, 248, new TGeoTranslation(0, ((-det_yAlPos/2.0) + (det_yAirPos/2.0)), 0));
   Rpc_module_upstream1->AddNode(vol_air, 249, new TGeoTranslation(0, ((det_yAlPos/2.0) - (det_yAirPos/2.0)), 0));
 
   interval = 0;
- 
+
   //Add 64 copper strips to the Rpc module
   for(int i = 250; i < 314; i++){
 
     Rpc_module_upstream1->AddNode(vol_strip64, i, new TGeoTranslation((-det_xGlassPos/2.0) - det_xGlassBorderPos + 2.175 + (interval*det_xStripPos64) + (interval*0.15) + ((det_xStripPos64/2.0)), 0,  -(det_zAlPos/2.0) + det_dzPMMAPos + det_zPMMAPos + det_dzPMMAPos + det_zFR4Pos + (det_zStripPos/2.0) ));
     interval++;
   }
-  
 
-  /////////////////////////////////////////////////////////////////// 
-  
+
+  ///////////////////////////////////////////////////////////////////
+
   //UpstreamTagger_fulldet = new TGeoVolumeAssembly("Upstream_Tagger");
   UpstreamTagger_fulldet = gGeoManager->MakeBox("Upstream_Tagger", Vacuum_box, xbox_fulldet/2.0, ybox_fulldet/2.0, zbox_fulldet/2.0);
   UpstreamTagger_fulldet->SetLineColor(kWhite);
-  
+
   ybox_fulldet = 289 * cm; //resize box to define the modules position from active area of the detectors (discounting the aluminium box + acrilic)
 
   const double z_layer_1 = -(zbox_fulldet/2.0) + (det_zAlPos/2.0) + det_dzAlPos;
@@ -536,7 +536,7 @@ void UpstreamTagger::ConstructGeometry()
   module[3][0] = 0;
   module[3][1] = -y_odd_extreme;
   module[3][2] = z_layer_1;
-   
+
   // Second Layer
   module[4][0] = 0;
   module[4][1] = y_even;
@@ -555,7 +555,7 @@ void UpstreamTagger::ConstructGeometry()
   module[8][0] = 0;
   module[8][1] = -y_odd_extreme;
   module[8][2] = z_layer_3;
-   
+
   // Fourth Layer
   module[9][0] = 0;
   module[9][1] = y_even;
@@ -563,7 +563,7 @@ void UpstreamTagger::ConstructGeometry()
   module[10][0] = 0;
   module[10][1] = -y_even;
   module[10][2] = z_layer_4;
-  
+
   // Add detector nodes
   for (auto &&i: TSeq(1, n_modules + 1)) {
     if(i%5 == 1 || i%5 == 3) {
@@ -575,7 +575,7 @@ void UpstreamTagger::ConstructGeometry()
   }
 
   top->AddNode(UpstreamTagger_fulldet, 1, new TGeoTranslation(0.0, 0.0, det_zPos));
-  
+
   cout << " Z Position (Upstream Tagger1) " << det_zPos << endl;
   //////////////////////////////////////////////////////////////////
 
@@ -591,9 +591,7 @@ UpstreamTaggerPoint* UpstreamTagger::AddHit(Int_t trackID, Int_t detID,
 {
   TClonesArray& clref = *fUpstreamTaggerPointCollection;
   Int_t size = clref.GetEntriesFast();
-  
+
   return new(clref[size]) UpstreamTaggerPoint(trackID, detID, pos, mom,
 		         time, length, eLoss, pdgCode,Lpos,Lmom);
 }
-
-

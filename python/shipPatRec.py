@@ -984,12 +984,12 @@ def hit_in_window(x, y, k_bin, b_bin, window_width=1.):
 
 
 def get_zy_projection(z, xtop, ytop, xbot, ybot, k_y, b_y):
-    
+
     x = k_y * z + b_y
     k = (ytop - ybot) / (xtop - xbot + 10**-6)
     b = ytop - k * xtop
     y = k * x + b
-    
+
     return y
 
 

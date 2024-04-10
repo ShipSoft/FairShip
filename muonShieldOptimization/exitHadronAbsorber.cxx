@@ -68,7 +68,7 @@ Bool_t  exitHadronAbsorber::ProcessHits(FairVolume* vol)
     TParticle* p  = gMC->GetStack()->GetCurrentTrack();
     Int_t pdgCode = p->GetPdgCode();
     gMC->TrackMomentum(fMom);
-    if (!(fOnlyMuons && TMath::Abs(pdgCode)!=13)){ 
+    if (!(fOnlyMuons && TMath::Abs(pdgCode)!=13)){
      fTime   = gMC->TrackTime() * 1.0e09;
      fLength = gMC->TrackLength();
      gMC->TrackPosition(fPos);
@@ -145,9 +145,9 @@ void exitHadronAbsorber::PreTrack(){
     TParticle* p  = gMC->GetStack()->GetCurrentTrack();
     Int_t pdgCode = p->GetPdgCode();
 // record statistics for neutrinos, electrons and photons
-// add pi0 111 eta 221 eta' 331  omega 223 
+// add pi0 111 eta 221 eta' 331  omega 223
     Int_t idabs = TMath::Abs(pdgCode);
-    if (idabs<18 || idabs==22 || idabs==111 || idabs==221 || idabs==223 || idabs==331 
+    if (idabs<18 || idabs==22 || idabs==111 || idabs==221 || idabs==223 || idabs==331
                  || idabs==211  || idabs==321   || idabs==2212 ){
          Double_t wspill = p->GetWeight();
          Int_t idhnu=idabs+10000;
@@ -263,4 +263,3 @@ void exitHadronAbsorber::Reset()
 {
   fexitHadronAbsorberPointCollection->Clear();
 }
-

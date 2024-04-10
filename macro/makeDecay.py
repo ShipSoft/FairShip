@@ -1,7 +1,7 @@
 from __future__ import print_function
 from __future__ import division
 #Use Pythia8 to decay the signals (Charm/Beauty) as produced by makeCascade.
-#Output is an ntuple with muon/neutrinos 
+#Output is an ntuple with muon/neutrinos
 import ROOT,time,os,sys,random,getopt
 import rootUtils as ut
 ROOT.gROOT.LoadMacro("$VMCWORKDIR/gconfig/basiclibs.C")
@@ -46,9 +46,9 @@ nEvents = sTree.GetEntries()
 #Calculate weights, for the whole file.
 #get histogram with number of pot to normalise
 hc={}
-if fin.GetKey("2") : 
+if fin.GetKey("2") :
  hc['2']=fin.Get("2")
-else: 
+else:
  fhin = ROOT.TFile(FIN.replace('ntuple','hists'))
  hc['2']=fhin.Get("2")
 
@@ -67,7 +67,7 @@ n=1
 while n!=0:
   n = p8.particleData.nextId(n)
   p = p8.particleData.particleDataEntryPtr(n)
-  if p.tau0()>1: 
+  if p.tau0()>1:
     command = str(n)+":mayDecay = false"
     p8.readString(command)
     print("Pythia8 configuration: Made %s stable for Pythia, should decay in Geant4",p.name())
@@ -87,7 +87,7 @@ for idnu in range(12,18,2):
   for idadd in range(-1,3,2):
    idhnu=1000+idnu
    idw=idnu
-   if idadd==-1: 
+   if idadd==-1:
     idhnu+=1000
     idw=-idnu
    name=PDG.GetParticle(idw).GetName()
@@ -103,8 +103,8 @@ ntotprim=0
 for n in range(nEvents):
   rc = sTree.GetEvent(n)
 # check if we deal with charm or beauty:
-  if n == 0: 
-   if not setByHand and sTree.M>5: 
+  if n == 0:
+   if not setByHand and sTree.M>5:
      chicc = chibb
      print("automatic detection of beauty, configured for beauty")
      print('bb cross section / mbias ',chicc)
@@ -117,7 +117,7 @@ for n in range(nEvents):
   #sanity check, count number of p.o.t. on input file.
   pt=ROOT.TMath.Sqrt(sTree.mpx**2+sTree.mpy**2)
   #every event appears twice, i.e.
-  if pt<1.e-5 and int(sTree.mid)==2212: 
+  if pt<1.e-5 and int(sTree.mid)==2212:
     pot=pot+0.5
     ntotprim+=1
     idabs=int(abs(sTree.id))
@@ -143,10 +143,10 @@ for n in range(nEvents):
          ptot=ROOT.TMath.Sqrt(pt2+par.pz()**2)
          l10ptot=min(max(ROOT.TMath.Log10(ptot),-0.3),1.69999)
          l10pt=min(max(ROOT.TMath.Log10(ROOT.TMath.Sqrt(pt2)),-2.),0.4999)
-         h[str(idhnu)].Fill(ptot,wspill)                     
+         h[str(idhnu)].Fill(ptot,wspill)
          h[str(idhnu+100)].Fill(l10ptot,l10pt,wspill)
          h[str(idhnu+200)].Fill(l10ptot,l10pt,wspill)
-       
+
 print('Now at Ntup.Write() for pot=',pot,nrcpot)
 if (1.-pot/nrcpot)<1.e-2:
   print('write ntuple, weight/event=',nrpotspill,'x',chicc,'/',nrcpot,'=',wspill)
@@ -159,7 +159,7 @@ if (1.-pot/nrcpot)<1.e-2:
     for idadd in range(-1,3,2):
      idhnu=1000+idnu
      idw=idnu
-     if idadd==-1: 
+     if idadd==-1:
       idhnu+=1000
       idw=-idnu
      print(idhnu,h[str(idhnu)].GetTitle(),("%8.3E "%(h[str(idhnu)].Integral())))
@@ -170,10 +170,7 @@ if (1.-pot/nrcpot)<1.e-2:
   print('fDs of primary proton interactions in P6=',fDsP6, ' should be ',fDs)
 
 else:
-  print('*********** WARNING ***********')  
+  print('*********** WARNING ***********')
   print('number of POT does not agree between ntuple and hists, i.e.:',pot,'<>',nrcpot)
   print('mu/neutrino ntuple has NOT been written')
 #
-
-
-

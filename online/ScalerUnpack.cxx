@@ -97,4 +97,3 @@ void ScalerUnpack::Reset()
 {
    LOG(DEBUG) << "ScalerUnpack : Clearing Data Structure" ;
 }
-

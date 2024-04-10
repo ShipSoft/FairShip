@@ -6,17 +6,17 @@ f.close()
 found=False
 for al in l:
   tmp = al.split(';')
-  for x in tmp: 
-    if not x.find('FAIRSHIP_ROOT=')<0: 
-      found = True 
+  for x in tmp:
+    if not x.find('FAIRSHIP_ROOT=')<0:
+      found = True
       break
-if not found: 
+if not found:
  print "Path not found"
 else:
  tmp=x.split('FAIRSHIP_ROOT=')[1]
  p=tmp[:tmp.find('/sw')]
  print p
- x=tmp[tmp.find('/sw')+3:].find('/') 
+ x=tmp[tmp.find('/sw')+3:].find('/')
  f=open('newconfig.sh','w')
  A=tmp.replace(p,"$SHIPBUILD").replace(' ','')
  for al in l:
@@ -25,5 +25,3 @@ else:
   f.write(nl+'\n')
  f.close()
  os.system('mv newconfig.sh config.sh')
-
-

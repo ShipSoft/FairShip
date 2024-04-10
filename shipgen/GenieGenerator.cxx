@@ -33,7 +33,7 @@ Bool_t GenieGenerator::Init(const char* fileName, const int firstEvent) {
   if (0 == strncmp("/eos",fileName,4) ) {
    TString tmp = gSystem->Getenv("EOSSHIP");
    tmp+=fileName;
-   fInputFile  = TFile::Open(tmp); 
+   fInputFile  = TFile::Open(tmp);
    LOGF(info, "Opening input file on eos %s", tmp.Data());
   }else{
    fInputFile  = new TFile(fileName);
@@ -61,7 +61,7 @@ Bool_t GenieGenerator::Init(const char* fileName, const int firstEvent) {
   fTree->SetBranchAddress("pyl",&pyl);
   fTree->SetBranchAddress("pzl",&pzl);
   fTree->SetBranchAddress("Ef",&Ef);   // outgoing hadronic momenta
-  fTree->SetBranchAddress("pxf",&pxf);    
+  fTree->SetBranchAddress("pxf",&pxf);
   fTree->SetBranchAddress("pyf",&pyf);
   fTree->SetBranchAddress("pzf",&pzf);
   fTree->SetBranchAddress("nf",&nf);     // nr of outgoing hadrons
@@ -573,5 +573,3 @@ Int_t GenieGenerator::GetNevents()
 {
  return fNevents;
 }
-
-

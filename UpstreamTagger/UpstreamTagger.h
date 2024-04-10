@@ -15,7 +15,7 @@ using ShipUnit::cm;
 
 class UpstreamTagger: public FairDetector
 {
-  
+
   public:
 
     /**      Name :  Detector Name
@@ -84,7 +84,7 @@ class UpstreamTagger: public FairDetector
     void SetSizeX_Strip64(Double_t xstrip64) {det_xStripPos64 = xstrip64;}
     void SetSizeY_Strip64(Double_t ystrip64) {det_yStripPos64 = ystrip64;}
     void SetSizeZ_Strip(Double_t zstrip) {det_zStripPos = zstrip;}
-    
+
     /**  Create the detector geometry */
     void ConstructGeometry();
 
@@ -106,7 +106,7 @@ class UpstreamTagger: public FairDetector
 
     Double_t module[11][3];  // x,y,z centre positions for each module
     // TODO Avoid 1-indexed array!
-   
+
     /** Track information to be stored until the track leaves the active volume.*/
     Int_t          fTrackID;            //!  track index
     Int_t          fVolumeID;           //!  volume id
@@ -119,10 +119,10 @@ class UpstreamTagger: public FairDetector
     /** Detector parameters.*/
 
     Double_t     det_zPos;     //!  z-position of veto station
-    Double_t     det_xGlassPos;     //!  x-size of Active Glass plates 
+    Double_t     det_xGlassPos;     //!  x-size of Active Glass plates
     Double_t     det_yGlassPos;     //!  y-size of Active Glass plates
     Double_t     det_zGlassPos;     //!  z-size of Active Glass plates
-    
+
     Double_t     det_xGlassBorderPos;     //!  x-size of Inactive Glass plates
     Double_t     det_yGlassBorderPos;     //!  y-size of Inactive Glass plates
     Double_t     det_zGlassBorderPos;     //!  z-size of Inactive Glass plates
@@ -154,28 +154,28 @@ class UpstreamTagger: public FairDetector
     Double_t     det_dxAlPos;     //!  x-thickness of Aluminium box
     Double_t     det_dyAlPos;     //!  y-thickness of Aluminium box
     Double_t     det_dzAlPos;     //!  z-thickness of Aluminium box
-    
+
     Double_t     det_xAirPos;     //!  x-size of Aluminium box
     Double_t     det_yAirPos;     //!  y-size of Aluminium box
     Double_t     det_zAirPos;     //!  z-size of Aluminium box
-    
+
     Double_t     det_xStripPos64;     //!  x-size of Strip for modules with 64 strips
     Double_t     det_yStripPos64;     //!  y-size of Strip for modules with 64 strips
     Double_t     det_xStripPos;     //!  x-size of Strip for modules with 32 strips
     Double_t     det_yStripPos;     //!  y-size of Strip for modules with 32 strips
     Double_t     det_zStripPos;     //!  z-size of Strip
-    
+
     Double_t xbox_fulldet = 1.2 * m; //cm
     Double_t ybox_fulldet = 2.97 * m;
     Double_t zbox_fulldet = 17.0024;
-    Double_t z_space_layers = 0.2;  
+    Double_t z_space_layers = 0.2;
     Double_t extra_y = 6.5 * cm;  // overlap between modules
 
-    
+
   private:
 
     TGeoVolume* UpstreamTagger_fulldet; // Timing_detector_1 object
-   
+
     /** container for data points */
     TClonesArray* fUpstreamTaggerPointCollection;
 

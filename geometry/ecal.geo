@@ -11,7 +11,7 @@
 XPos=0		#Position of ECal center	[cm]
 YPos=0		#Position of ECal center	[cm]
 ZPos=2500	#Position of ECal start		[cm]
-NLayers=140	#Number of layers		
+NLayers=140	#Number of layers
 ModuleSize=12.0	#Module size			[cm]
 Lead=.1		#Absorber thickness in layer	[cm]
 Scin=.2		#Scintillator thickness in layer[cm]
@@ -33,7 +33,7 @@ LightMap[1]=none # Light collection
 LightMap[2]=none # efficiency maps for
 LightMap[3]=none # efficiency maps for
 LightMap[4]=none # different modules
-# Be as compatible to CbmEcal in physics as possible 
+# Be as compatible to CbmEcal in physics as possible
 usesimplegeo=1	#Use simplified geometry
 EcalZSize=50.0	#Z size of ECAL container	[cm]
 ECut=100e-6	#Geant cuts CUTGAM CUTELE BCUTE BCUTM DCUTE [GeV]
@@ -44,7 +44,7 @@ structure
 #Zero for no module here. ECALs with rectangular hole only can be constructed.
 #Number means number of divisions of ECAL module in both directions: vertical and horizontal.
 #So 2 states for module with 4 cells in it.
-#         1         2         3         4 
+#         1         2         3         4
 #12345678901234567890123456789012345678901
 000000000000000033333333330000000000000000 # 0
 000000000000033333333333333330000000000000 # 1
@@ -88,4 +88,3 @@ structure
 000000000003333333333333333333300000000000 #39
 000000000000033333333333333330000000000000 #40
 000000000000000033333333330000000000000000 #41
-

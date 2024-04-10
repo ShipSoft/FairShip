@@ -9,7 +9,7 @@ class TClonesArray;
 
 class ecalMaximumLocator : public FairTask
 {
-public: 
+public:
   /** An empty constructor **/
   ecalMaximumLocator();
   ecalMaximumLocator(const char* name, Int_t verbose);

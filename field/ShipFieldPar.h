@@ -6,20 +6,20 @@
 class FairField;
 class FairParamList;
 
-const int kMaxFieldMapType = 5;        
+const int kMaxFieldMapType = 5;
 
 class ShipFieldPar : public FairParGenericSet
 {
 
  public:
 
-  
+
   /** Standard constructor  **/
   ShipFieldPar(const char* name, const char* title, const char* context);
 
 /** default constructor  **/
   ShipFieldPar();
-  
+
   /** Destructor **/
   ~ShipFieldPar();
 
@@ -89,13 +89,13 @@ class ShipFieldPar : public FairParGenericSet
 
   /** Scaling factor for field map **/
   Double_t fScale;
- 
+
   /** field parameters**/
   Double_t fPeak;
   Double_t fMiddle;
   Double_t fBtube;
 
- 
+
   ShipFieldPar(const ShipFieldPar&);
   ShipFieldPar& operator=(const ShipFieldPar&);
 

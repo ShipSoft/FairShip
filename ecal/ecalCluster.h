@@ -86,7 +86,7 @@ private:
   Double_t fChi2;
   /** Status of the cluster: -1 --- rejected, 0 --- new, 1 --- reconstructed **/
   Short_t fStatus;
-  
+
   /** Serial numbers of cells in cluster **/
   TArrayI fCellNums;
   /** Serial numbers of peaks in cluster **/

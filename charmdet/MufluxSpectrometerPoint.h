@@ -25,7 +25,7 @@ class MufluxSpectrometerPoint:public FairMCPoint
      *@param length   Track length since creation [cm]
      *@param eLoss    Energy deposit [GeV]
      **/
-    
+
 
     MufluxSpectrometerPoint(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom,
                      Double_t tof, Double_t length, Double_t eLoss, Int_t pdgcode, Double_t dist);
@@ -40,12 +40,12 @@ class MufluxSpectrometerPoint:public FairMCPoint
     Double_t dist2Wire() const {return fdist2Wire;}
 
   private:
-    
+
     Int_t fPdgCode;
-    Double_t fdist2Wire; 
-        
+    Double_t fdist2Wire;
+
     /** Copy constructor **/
-    
+
     MufluxSpectrometerPoint(const MufluxSpectrometerPoint& point);
     MufluxSpectrometerPoint operator=(const MufluxSpectrometerPoint& point);
 

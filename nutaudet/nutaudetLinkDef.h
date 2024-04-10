@@ -18,4 +18,3 @@
 #pragma link C++ class TargetPoint+;
 
 #endif
-

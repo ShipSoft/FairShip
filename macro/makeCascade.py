@@ -24,8 +24,8 @@ try:
 except getopt.GetoptError:
         # print help information and exit:
         print(' enter -n: number of events to produce, default 20000')
-        print('       -m --msel=4 (5): charm (beauty) production, default charm') 
-        print('       -E --beam=: energy of beam, default 400 GeV') 
+        print('       -m --msel=4 (5): charm (beauty) production, default charm')
+        print('       -E --beam=: energy of beam, default 400 GeV')
         print('       -t: name of ntuple output file,    default: Cascade20k-parp16-MSTP82-1-MSEL"+msel+"-ntuple.root')
         print('       -s --seed: random number seed, integer, if not given, current time will be used.')
         print('       -P : store all particles produced together with charm')
@@ -50,7 +50,7 @@ print('Output ntuples written to: ',Fntuple)
 #some parameters for generating the chi (sigma(signal)/sigma(total) as a function of momentum
 # event/momentum, and number of momentum points taken to calculate sig/sigtot
 nev=5000
-nrpoints=20 
+nrpoints=20
 # cascade beam particles, anti-particles are generated automatically if they exist.
 idbeam=[2212,211,2112,321,130,310]
 target=['p+','n0']
@@ -65,7 +65,7 @@ print('Target particles: ',target,' fraction of protons in Mo=',fracp)
 
 # lower/upper momentum limit for beam, depends on msel..
 # signal particles wanted (and their antis), which could decay semi-leptonically.
-if mselcb==4: 
+if mselcb==4:
    pbeaml=34.
    idsig=[411, 421, 431,4122,4132,4232,4332,4412,4414,4422,4424,4432,4434,4444]
 elif mselcb==5:
@@ -107,14 +107,14 @@ def PoorE791_tune(P6):
   print(' ')
 
 def LHCb_tune(P6):
-# settings by LHCb for Pythia 6.427 
+# settings by LHCb for Pythia 6.427
 # https://twiki.cern.ch/twiki/bin/view/LHCb/SettingsSim08
   print(' ')
   print('********** LHCb_tune **********')
   #P6.SetCKIN(41,3.0)
   P6.SetMSTP(2,	2)
   P6.SetMSTP(33,	3)
-  #P6.SetMSTP(128,	2)  #store or not store 
+  #P6.SetMSTP(128,	2)  #store or not store
   P6.SetMSTP(81,	21)
   P6.SetMSTP(82,	3)
   P6.SetMSTP(52,	2)
@@ -159,7 +159,7 @@ def fillp1(hist):
             i1=i
             y1=y2
             p1=p2
- 
+
 
 #choose the Pythia tune:
 PoorE791_tune(myPythia)
@@ -195,7 +195,7 @@ for idp in range(0,len(idbeam)):
          name=PDG.GetParticle(idw).GetName()
 #  particle exists, book hists etc..
          id=id+1
-         for idnp in range(2): 
+         for idnp in range(2):
           idb=id*10+idnp*4
           ut.bookHist(h,str(idb+1),'sigma vs p, '+name+'->'+target[idnp],nb,0.5,pbeamh+0.5)
           ut.bookHist(h,str(idb+2),'sigma-tot vs p, '+name+'->'+target[idnp],nb,0.5,pbeamh+0.5)
@@ -216,14 +216,14 @@ for idp in range(0,len(idbeam)):
 #  new particle/momentum, init again, first signal run.
                myPythia.SetMSEL(mselcb)       # set forced ccbar or bbbar generation
                myPythia.Initialize('FIXT',name,target[idpn],pbw)
-               for iev in range(nev): 
+               for iev in range(nev):
                   myPythia.GenerateEvent()
 #  signal run finished, get cross-section
                h[str(id*10+1+idadd)].Fill(pbw,tp.getPyint5_XSEC(2,0))
 #  now total cross-section, i.e. msel=2
-               myPythia.SetMSEL(2)       
+               myPythia.SetMSEL(2)
                myPythia.Initialize('FIXT',name,target[idpn],pbw)
-               for iev in range(nev//10): 
+               for iev in range(nev//10):
 #                  if iev%100==0: print 'generated mbias events',iev,' seconds:',time.time()-t0
                   myPythia.GenerateEvent()
 #   get cross-section
@@ -231,7 +231,7 @@ for idp in range(0,len(idbeam)):
 #   for this beam particle, do arithmetics to get chi.
             h[str(id*10+3+idadd)].Divide(h[str(id*10+1+idadd)],h[str(id*10+2+idadd)],1.,1.)
 #   fill with lineair function between evaluated momentum points.
-            fillp1(h[str(id*10+3+idadd)])          
+            fillp1(h[str(id*10+3+idadd)])
 
 #  collected all, now re-scale to make max chi at 400 Gev==1.
 chimx=0.
@@ -249,7 +249,7 @@ for i in range(1,id+1):
 
 # switch output printing OFF for generation phase.
 # Generate ccbar (or bbbar) pairs according to probability in hists i*10+8.
-# some check histos 
+# some check histos
 ut.bookHist(h,str(1),'E of signals',100,0.,400.)
 ut.bookHist(h,str(2),'nr signal per cascade depth',50,0.5,50.5)
 ut.bookHist(h,str(3),'D0 pt**2',40,0.,4.)
@@ -286,7 +286,7 @@ for iev in range(nevgen):
       prbsig=0.
       for i in range(1,id+1):
 #   get hist id for this beam particle
-         if stack[nstack][0]==idhist[i]: 
+         if stack[nstack][0]==idhist[i]:
             idpn=0
 #   decide on p or n target in Mo
             if random.random>fracp: idpn=1
@@ -295,7 +295,7 @@ for iev in range(nevgen):
             prbsig=h[str(idw)].GetBinContent(ib)
       if prbsig>random.random():
 # last particle on the stack as beam particle
-         for k in range(1,4):  
+         for k in range(1,4):
             myPythia.SetP(1,k,stack[nstack][k])
             myPythia.SetP(2,k,0.)
 #   new particle/momentum, init again: signal run.
@@ -303,7 +303,7 @@ for iev in range(nevgen):
          myPythia.Initialize('3MOM',PDG.GetParticle(stack[nstack][0]).GetName(),target[idpn],0.)
          myPythia.GenerateEvent()
 #  look for the signal particles
-         charmFound = []   
+         charmFound = []
          for itrk in range(1,myPythia.GetN()+1):
             idabs = ROOT.TMath.Abs(myPythia.GetK(itrk,2))
             if idabs in idsig:
@@ -324,9 +324,9 @@ for iev in range(nevgen):
                     vl.append(float(stack[nstack][6][i]))
                   vl.append(float(myPythia.GetMSTI(1)))
                   for i in range(nsub+1,16):
-                    vl.append(float(0))                 
+                    vl.append(float(0))
                   Ntup.Fill(vl)
-                  charmFound.append(itrk)    
+                  charmFound.append(itrk)
                   h['1'].Fill(myPythia.GetP(itrk,4))
                   h['2'].Fill(stack[nstack][4])
                   if idabs==421 and stack[nstack][4]==1 :
@@ -352,10 +352,10 @@ for iev in range(nevgen):
                             float(myPythia.GetP(itP,4)),float(myPythia.GetP(itP,5)),-1,\
                             float(myPythia.GetV(itP,1)-myPythia.GetV(charmFound[0],1)),\
                             float(myPythia.GetV(itP,2)-myPythia.GetV(charmFound[0],2)),\
-                            float(myPythia.GetV(itP,3)-myPythia.GetV(charmFound[0],3)),0,0,stack[nstack][4])                        
+                            float(myPythia.GetV(itP,3)-myPythia.GetV(charmFound[0],3)),0,0,stack[nstack][4])
 
 #  now generate msel=2 to add new cascade particles to the stack
-      for k in range(1,4):  
+      for k in range(1,4):
          myPythia.SetP(1,k,stack[nstack][k])
          myPythia.SetP(2,k,0.)
 #   new particle/momentum, init again, generate total cross-section event
@@ -367,12 +367,12 @@ for iev in range(nevgen):
 # remove used particle from the stack, before adding new
 # first store its history: cascade depth and ancestors-list
       icas=stack[nstack][4]+1
-      if icas>98: icas=98 
+      if icas>98: icas=98
       anclist=copy.copy(stack[nstack][5])
       sublist=copy.copy(stack[nstack][6])
       #fill in interaction process of first proton
       if nstack==0: sublist[0]=myPythia.GetMSTI(1)
-      nstack=nstack-1  
+      nstack=nstack-1
       for itrk in range(1,myPythia.GetN()+1):
          if myPythia.GetK(itrk,1)==1:
             ptot=ROOT.TMath.Sqrt(myPythia.GetP(itrk,1)**2+myPythia.GetP(itrk,2)**2+myPythia.GetP(itrk,3)**2)
@@ -397,8 +397,7 @@ ftup.Close()
 timer.Stop()
 rtime = timer.RealTime()
 ctime = timer.CpuTime()
-print(' ') 
-print("Macro finished succesfully.") 
+print(' ')
+print("Macro finished succesfully.")
 print("Output file is ",  ftup.GetName())
 print("Real time ",rtime, " s, CPU time ",ctime,"s")
-

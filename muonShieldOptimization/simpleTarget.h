@@ -85,8 +85,8 @@ class simpleTarget: public FairDetector
     Double_t     fLength;            //!  length
     Double_t     fzPos;              //!  zPos
     Double_t     fThick;             //!  thickness
-    Double_t     fELoss;              //!  
-    Double_t     fTotalEloss;         //!  
+    Double_t     fELoss;              //!
+    Double_t     fTotalEloss;         //!
     TString      fMaterial;           //!  material
     Float_t EMax;  //! max energy to transport
     Bool_t fOnlyMuons;  //!

@@ -50,28 +50,28 @@ class NuTauMudet:public FairDetector
     void SetRpcGapDimensions(Double_t X, Double_t Y, Double_t Z);
 
     void ConstructGeometry();
-    
+
     /**      Initialization of the detector is done here    */
     virtual void Initialize();
-    
+
     /**       this method is called for each step during simulation
      *       (see FairMCApplication::Stepping())
      */
     virtual Bool_t ProcessHits( FairVolume* v=0);
-    
+
     /**       Registers the produced collections in FAIRRootManager.     */
     virtual void   Register();
-    
+
     /** Gets the produced collections */
     virtual TClonesArray* GetCollection(Int_t iColl) const ;
-    
+
     /**      has to be called after each event to reset the containers      */
     virtual void   Reset();
-    
+
     /**      This method is an example of how to add your own point
      *       of type muonPoint to the clones array
      */
-   
+
     ShipRpcPoint* AddHit(Int_t trackID, Int_t detID,
                          TVector3 pos, TVector3 mom,
                          Double_t time, Double_t length,
@@ -80,7 +80,7 @@ class NuTauMudet:public FairDetector
     /** The following methods can be implemented if you need to make
      *  any optional action in your detector during the transport.
      */
-    
+
     virtual void   CopyClones( TClonesArray* cl1,  TClonesArray* cl2 ,
                               Int_t offset) {;}
     virtual void   SetSpecialPhysicsCuts() {;}
@@ -93,9 +93,9 @@ class NuTauMudet:public FairDetector
     virtual void   BeginEvent() {;}
 
     void DecodeVolumeID(Int_t detID,int &nARM,int &nRPC);
-    
+
 private:
-    
+
     /** Track information to be stored until the track leaves the
      active volume.
      */
@@ -107,14 +107,14 @@ private:
     Double32_t     fTime;              //!  time
     Double32_t     fLength;            //!  length
     Double32_t     fELoss;             //!  energy loss
-    
+
     /** container for data points */
     TClonesArray*  fShipRpcPointCollection;
-    
+
     Int_t InitMedium(const char* name);
-    
-    
-    
+
+
+
 protected:
 
     Int_t fDesign;
@@ -137,7 +137,7 @@ protected:
     Double_t fXRyoke;
     Double_t fYRyoke;
     Double_t fZRyoke;
-    
+
     //Dimensions of the smaller part of the yoke
     Double_t fXRyoke_s;
     Double_t fYRyoke_s;
@@ -147,7 +147,7 @@ protected:
     Double_t fCoilH;
     Double_t fCoilW;
     Int_t fNCoil;
-    
+
     //Dimension for detailed RPC simulation:
     Double_t fXStrip;
     Double_t fYStrip;
@@ -208,4 +208,3 @@ protected:
 
 
 #endif //NuTauMudet_H
-

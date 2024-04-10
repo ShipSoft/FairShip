@@ -19,13 +19,13 @@ withT0 = False
 
 import resource
 def mem_monitor():
- # Getting virtual memory size 
+ # Getting virtual memory size
     pid = os.getpid()
     with open(os.path.join("/proc", str(pid), "status")) as f:
         lines = f.readlines()
     _vmsize = [l for l in lines if l.startswith("VmSize")][0]
     vmsize = int(_vmsize.split()[1])
-    #Getting physical memory size  
+    #Getting physical memory size
     pmsize = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
     print("memory: virtuell = %5.2F MB  physical = %5.2F MB"%(vmsize/1.0E3,pmsize/1.0E3))
 
@@ -84,11 +84,11 @@ if not dy:
 print('configured to process ', nEvents, ' events from ', inputFile,
       ' starting with event ', firstEvent, ' with option Yheight = ', dy,
       ' with vertexing', False,' and real pattern reco',realPR=="_PR")
-if not inputFile.find('_rec.root') < 0: 
+if not inputFile.find('_rec.root') < 0:
   outFile   = inputFile
-  inputFile = outFile.replace('_rec.root','.root') 
+  inputFile = outFile.replace('_rec.root','.root')
 else:
-  outFile = inputFile.replace('.root','_rec.root') 
+  outFile = inputFile.replace('.root','_rec.root')
 # outfile should be in local directory
   tmp = outFile.split('/')
   outFile = tmp[len(tmp)-1]
@@ -129,9 +129,9 @@ if withHists:
  ut.bookProf(h,'deltaPOverP','Pfitted/Ptrue-1 vs Ptrue',40,0.,400.,-10.,10.0)
  ut.bookHist(h,'Pfitted-Pgun','P-fitted vs P-gun',40,0.,400.,50,0.,500.0)
  ut.bookHist(h,'Px/Pzfitted','Px/Pz-fitted',100,-0.04,0.04)
- ut.bookHist(h,'Py/Pzfitted','Py/Pz-fitted',100,-0.04,0.04) 
+ ut.bookHist(h,'Py/Pzfitted','Py/Pz-fitted',100,-0.04,0.04)
  ut.bookHist(h,'Px/Pztrue','Px/Pz-true',100,-0.04,0.04)
- ut.bookHist(h,'Py/Pztrue','Py/Pz-true',100,-0.04,0.04) 
+ ut.bookHist(h,'Py/Pztrue','Py/Pz-true',100,-0.04,0.04)
  ut.bookHist(h,'Px/Pzfitted-noT4','Px/Pz-fitted only T1,T2,T3 ',100,-0.04,0.04)
  ut.bookHist(h,'Py/Pzfitted-noT4','Py/Pz-fitted only T1,T2,T3',100,-0.04,0.04)
  ut.bookHist(h,'Px/Pztrue-noT4','Px/Pz-true only T1,T2,T3',100,-0.04,0.04)
@@ -173,29 +173,29 @@ if withHists:
  ut.bookProf(h,'deltaPOverP-all','Pfitted/Ptrue-1 vs Ptrue',40,0.,400.,-10.,10.0)
  ut.bookHist(h,'Pfitted-Pgun-all','P-fitted vs P-gun only',40,0.,400.,50,0.,500.0)
  ut.bookHist(h,'p-value-all','p-value of fit',100,0.,1.)
- ut.bookHist(h,'hits-T1','x vs y hits in T1',50,-25.,25.,100,-50.,50) 
- ut.bookHist(h,'hits-T2','x vs y hits in T2',50,-25.,25.,100,-50.,50) 
- ut.bookHist(h,'hits-T1x','x vs y hits in T1 x plane',50,-25.,25.,100,-50.,50) 
- ut.bookHist(h,'hits-T1u','x vs y hits in T1 u plane',50,-25.,25.,100,-50.,50)  
- ut.bookHist(h,'hits-T2x','x vs y hits in T2 x plane',50,-25.,25.,100,-50.,50) 
- ut.bookHist(h,'hits-T2v','x vs y hits in T2 v plane',50,-25.,25.,100,-50.,50) 
- ut.bookHist(h,'hits-T3','x vs y hits in T3',200,-100.,100.,160,-80.,80) 
- ut.bookHist(h,'hits-T4','x vs y hits in T4',200,-100.,100.,160,-80.,80) 
+ ut.bookHist(h,'hits-T1','x vs y hits in T1',50,-25.,25.,100,-50.,50)
+ ut.bookHist(h,'hits-T2','x vs y hits in T2',50,-25.,25.,100,-50.,50)
+ ut.bookHist(h,'hits-T1x','x vs y hits in T1 x plane',50,-25.,25.,100,-50.,50)
+ ut.bookHist(h,'hits-T1u','x vs y hits in T1 u plane',50,-25.,25.,100,-50.,50)
+ ut.bookHist(h,'hits-T2x','x vs y hits in T2 x plane',50,-25.,25.,100,-50.,50)
+ ut.bookHist(h,'hits-T2v','x vs y hits in T2 v plane',50,-25.,25.,100,-50.,50)
+ ut.bookHist(h,'hits-T3','x vs y hits in T3',200,-100.,100.,160,-80.,80)
+ ut.bookHist(h,'hits-T4','x vs y hits in T4',200,-100.,100.,160,-80.,80)
 
  ut.bookHist(h,'muontaggerhits', 'Muon Tagger Points', 300, -150, 150, 200, -100, 100)
- h['muontaggerhits'].SetMarkerSize(15)  
+ h['muontaggerhits'].SetMarkerSize(15)
 
  ut.bookHist(h, 'muontagger_z', 'Z Hits', 600, 850, 2500)
  ut.bookHist(h, 'muontaggerdist', 'Muontagger Hits', 300, -150, 150, 200, -100, 100, 600, 850, 2000)
 
- 
+
  ut.bookHist(h, 'muontagger_clusters', 'Clusters', 50, 0, 50)
-   
+
  ut.bookHist(h,'NTrueTracks','Number of tracks.', 3, -0.5, 2.5)
  h['NTrueTracks'].GetXaxis().SetBinLabel(1,"Stations 1&2, Y views")
  h['NTrueTracks'].GetXaxis().SetBinLabel(2,"Stations 1&2, Stereo views")
  h['NTrueTracks'].GetXaxis().SetBinLabel(3,"Stations 3&4")
-    
+
  ut.bookHist(h,'Reco_y12','Number of recognized tracks, clones and ghosts in stations 1&2, Y views', 5, -0.5, 4.5)
  h['Reco_y12'].GetXaxis().SetBinLabel(1,"N total")
  h['Reco_y12'].GetXaxis().SetBinLabel(2,"N recognized tracks")
@@ -209,21 +209,21 @@ if withHists:
  h['Reco_stereo12'].GetXaxis().SetBinLabel(3,"N clones")
  h['Reco_stereo12'].GetXaxis().SetBinLabel(4,"N ghosts")
  h['Reco_stereo12'].GetXaxis().SetBinLabel(5,"N others")
-    
+
  ut.bookHist(h,'Reco_34','Number of recognized tracks, clones and ghosts in stations 3&4', 5, -0.5, 4.5)
  h['Reco_34'].GetXaxis().SetBinLabel(1,"N total")
  h['Reco_34'].GetXaxis().SetBinLabel(2,"N recognized tracks")
  h['Reco_34'].GetXaxis().SetBinLabel(3,"N clones")
  h['Reco_34'].GetXaxis().SetBinLabel(4,"N ghosts")
  h['Reco_34'].GetXaxis().SetBinLabel(5,"N others")
-    
- 
+
+
 
  ut.bookHist(h,'NTrueTracks_3hits','Number of tracks with more than 3 hits.', 3, -0.5, 2.5)
  h['NTrueTracks_3hits'].GetXaxis().SetBinLabel(1,"Stations 1&2, Y views")
  h['NTrueTracks_3hits'].GetXaxis().SetBinLabel(2,"Stations 1&2, Stereo views")
  h['NTrueTracks_3hits'].GetXaxis().SetBinLabel(3,"Stations 3&4")
-    
+
  ut.bookHist(h,'Reco_y12_3hits','Number of recognized tracks, clones and ghosts with more than 3 hits in stations 1&2, Y views', 5, -0.5, 4.5)
  h['Reco_y12_3hits'].GetXaxis().SetBinLabel(1,"N total")
  h['Reco_y12_3hits'].GetXaxis().SetBinLabel(2,"N recognized tracks")
@@ -237,21 +237,21 @@ if withHists:
  h['Reco_stereo12_3hits'].GetXaxis().SetBinLabel(3,"N clones")
  h['Reco_stereo12_3hits'].GetXaxis().SetBinLabel(4,"N ghosts")
  h['Reco_stereo12_3hits'].GetXaxis().SetBinLabel(5,"N others")
-    
+
  ut.bookHist(h,'Reco_34_3hits','Number of recognized tracks, clones and ghosts with more than 3 hits in stations 3&4', 5, -0.5, 4.5)
  h['Reco_34_3hits'].GetXaxis().SetBinLabel(1,"N total")
  h['Reco_34_3hits'].GetXaxis().SetBinLabel(2,"N recognized tracks")
  h['Reco_34_3hits'].GetXaxis().SetBinLabel(3,"N clones")
  h['Reco_34_3hits'].GetXaxis().SetBinLabel(4,"N ghosts")
  h['Reco_34_3hits'].GetXaxis().SetBinLabel(5,"N others")
-    
-    
-    
+
+
+
  ut.bookHist(h,'NTrueTracks_Tr4','Number of tracks. At least one hit in stations 1-4.', 3, -0.5, 2.5)
  h['NTrueTracks_Tr4'].GetXaxis().SetBinLabel(1,"Stations 1&2, Y views")
  h['NTrueTracks_Tr4'].GetXaxis().SetBinLabel(2,"Stations 1&2, Stereo views")
  h['NTrueTracks_Tr4'].GetXaxis().SetBinLabel(3,"Stations 3&4")
-    
+
  ut.bookHist(h,'Reco_y12_Tr4','Number of recognized tracks, clones and ghosts in stations 1&2, Y views. At least one hit in stations 1-4.', 5, -0.5, 4.5)
  h['Reco_y12_Tr4'].GetXaxis().SetBinLabel(1,"N total")
  h['Reco_y12_Tr4'].GetXaxis().SetBinLabel(2,"N recognized tracks")
@@ -265,7 +265,7 @@ if withHists:
  h['Reco_stereo12_Tr4'].GetXaxis().SetBinLabel(3,"N clones")
  h['Reco_stereo12_Tr4'].GetXaxis().SetBinLabel(4,"N ghosts")
  h['Reco_stereo12_Tr4'].GetXaxis().SetBinLabel(5,"N others")
-    
+
  ut.bookHist(h,'Reco_34_Tr4','Number of recognized tracks, clones and ghosts in stations 3&4. At least one hit in stations 1-4.', 5, -0.5, 4.5)
  h['Reco_34_Tr4'].GetXaxis().SetBinLabel(1,"N total")
  h['Reco_34_Tr4'].GetXaxis().SetBinLabel(2,"N recognized tracks")
@@ -330,7 +330,7 @@ if withHists:
  ut.bookHist(h,'Ghosts_muons_vs_p_true','Number of ghosts vs P MC truth',40,0.,400.)
  ut.bookHist(h,'True_muons_vs_p_true','Number of muons vs P MC truth',40,0.,400.)
  ut.bookHist(h,'True_all_tracks_vs_p_true','Number of muons vs P MC truth',40,0.,400.)
- 
+
 # -----Create geometry----------------------------------------------
 import charmDet_conf
 run = ROOT.FairRunSim()
@@ -373,7 +373,7 @@ for global_variables.iEvent in range(firstEvent, nEvents):
         SHiP.digitize()
  # IS BROKEN SHiP.reconstruct()
  # memory monitoring
- # mem_monitor() 
- 
+ # mem_monitor()
+
 # end loop over events
 SHiP.finish()

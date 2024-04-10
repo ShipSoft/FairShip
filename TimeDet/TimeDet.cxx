@@ -26,8 +26,8 @@
 #include "TGeoTube.h"
 #include "TGeoMaterial.h"
 #include "TGeoMedium.h"
-#include "TMath.h" 
-#include "TParticle.h" 
+#include "TMath.h"
+#include "TParticle.h"
 #include "TVector3.h"
 
 #include <iostream>
@@ -121,7 +121,7 @@ TimeDet::~TimeDet()
 
 Int_t TimeDet::InitMedium(const char* name)
 {
-  
+
    static FairGeoLoader *geoLoad=FairGeoLoader::Instance();
    static FairGeoInterface *geoFace=geoLoad->getGeoInterface();
    static FairGeoMedia *media=geoFace->getMedia();
@@ -139,7 +139,7 @@ Int_t TimeDet::InitMedium(const char* name)
      return ShipMedium->getMediumIndex();
 
    return geoBuild->createMedium(ShipMedium);
-  
+
   return 0;
 }
 
@@ -198,7 +198,7 @@ Bool_t  TimeDet::ProcessHits(FairVolume* vol)
     ShipStack* stack = (ShipStack*) gMC->GetStack();
     stack->AddPoint(kTimeDet);
   }
-  
+
   return kTRUE;
 }
 
@@ -244,10 +244,10 @@ void TimeDet::Reset()
 void TimeDet::ConstructGeometry()
 {
   TGeoVolume *top = gGeoManager->GetTopVolume();
-  
+
   InitMedium("polyvinyltoluene");
   TGeoMedium *Scint =gGeoManager->GetMedium("polyvinyltoluene");
-  
+
   ///////////////////////////////////////////////////////
 
   fDetector = new TGeoVolumeAssembly("Timing Detector");
@@ -267,7 +267,7 @@ void TimeDet::ConstructGeometry()
     zbar = GetZBar(irow,icol);
 
     fDetector->AddNode(plate, ib, new TGeoTranslation( xbar,ybar,zbar) );
-    
+
     // printf("%3i  %3i %2i   %8.3f %8.3f %8.3f\n",ib, irow,icol, xbar,ybar,zbar);
   }
 
@@ -322,5 +322,3 @@ double TimeDet::GetZBar(int ir,int ic) const
   double z = (ir%2) * fdzBarRow + (ic%2) * fdzBarCol;
   return z;
 }
-
-

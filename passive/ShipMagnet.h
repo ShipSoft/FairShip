@@ -17,7 +17,7 @@ class ShipMagnet : public FairModule
     void ConstructGeometry();
     ClassDef(ShipMagnet,5)
  protected:
-  
+
   Int_t  fDesign;       // design, 1=circular 5m, 2 = ellipse 5x10, 3 = rectangular
   Int_t  fSpecMagz;     // z position
   Double_t  fDy;          // y diameter of ellipse
@@ -29,4 +29,3 @@ class ShipMagnet : public FairModule
 };
 
 #endif //MAGNET_H
-

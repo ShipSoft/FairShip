@@ -20,4 +20,3 @@ class ShipCave : public FairModule
 };
 
 #endif //Cave_H
-

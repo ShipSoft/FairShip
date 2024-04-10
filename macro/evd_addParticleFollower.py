@@ -3,7 +3,7 @@ import ROOT,evd_fillEnergy
 gEve=ROOT.gEve
 import eveGlobal
 def execute():
- if not gEve.GetViewers().FindChild('Bar Embedded Viewer side'):   
+ if not gEve.GetViewers().FindChild('Bar Embedded Viewer side'):
   slot = ROOT.TEveWindow.CreateWindowInTab(gEve.GetBrowser().GetTabRight())
   pack1 = slot.MakePack()
   pack1.SetShowTitleBar(ROOT.kFALSE)
@@ -22,7 +22,7 @@ def execute():
    v.AddScene(gEve.GetEventScene())
    v.AddScene(gEve.GetScenes().FindChild('Geometry scene'))
    vw = v.GetGLViewer()
-   if c=='top': 
+   if c=='top':
     vw.SetCurrentCamera(ROOT.TGLViewer.kCameraOrthoZnOX)
    else:
     vw.SetCurrentCamera(ROOT.TGLViewer.kCameraOrthoZOY)
@@ -42,7 +42,7 @@ def execute():
     ls.SetSidePower(1.0)
     ls.SetFrontPower(1.0)
     ls.SetSpecularPower(1.0)
-   else:  
+   else:
     center = array('d',[0,0,0])
     cam.Configure(1.0,0.,center,0,0)
     co.SetShowOrthographic(True)
@@ -79,4 +79,3 @@ if __name__=="__main__":
   zmax = vtest.Z()
   print("?",zmin,zmax)
   evd_fillEnergy.execute()
-

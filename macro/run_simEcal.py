@@ -30,7 +30,7 @@ ship_geo = ShipGeoConfig.Config().loadpy("$FAIRSHIP/geometry/geometry_config.py"
 # Output file name
 outFile ="geant.root"
 
-# rm older files !!! 
+# rm older files !!!
 os.system("rm params.root")
 # Parameter file name
 parFile="params.root"
@@ -47,7 +47,7 @@ timer.Start()
 run = ROOT.FairRunSim()
 run.SetName(mcEngine)  # Transport engine
 run.SetOutputFile(outFile)  # Output file
-rtdb = run.GetRuntimeDb() 
+rtdb = run.GetRuntimeDb()
 # -----Create geometry----------------------------------------------
 import shipDet_conf
 shipDet_conf.configure(run)
@@ -73,7 +73,7 @@ run.Init()
 fStack = ROOT.gMC.GetStack()
 #fStack.SetEnergyCut(.3*u.MeV)
 # ------------------------------------------------------------------------
-if simEngine != "Genie" and simEngine != "Ntuple":  
+if simEngine != "Genie" and simEngine != "Ntuple":
 # -----Runtime database---------------------------------------------
  kParameterMerged = ROOT.kTRUE
  parOut = ROOT.FairParRootFileIo(kParameterMerged)
@@ -84,14 +84,14 @@ if simEngine != "Genie" and simEngine != "Ntuple":
 # -----Start run----------------------------------------------------
 run.Run(nEvents)
 # ------------------------------------------------------------------------
-run.CreateGeometryFile("geofile_full.root")  
+run.CreateGeometryFile("geofile_full.root")
 # -----Finish-------------------------------------------------------
 timer.Stop()
 rtime = timer.RealTime()
 ctime = timer.CpuTime()
-print(' ') 
-print("Macro finished succesfully.") 
-print("Output file is ",  outFile) 
+print(' ')
+print("Macro finished succesfully.")
+print("Output file is ",  outFile)
 print("Parameter file is ",parFile)
 print("Real time ",rtime, " s, CPU time ",ctime,"s")
 

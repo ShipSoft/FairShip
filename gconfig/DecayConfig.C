@@ -1,5 +1,3 @@
 void DecayConfig() {
      // do nothing
 }
-
-

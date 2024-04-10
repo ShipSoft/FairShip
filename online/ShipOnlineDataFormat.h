@@ -178,11 +178,11 @@ struct ChannelId {
      } else if (beamcounter || RC_signal) {
        return -1;
      }
-     
+
      int plane = 1 - (module_channel / 24);
      int layer = 1 - (module_channel % 24) / 12;
      int straw = (module >= 4 ? module : 3 - module) * 12 + (11 - (module_channel % 12)) + 1;
-     
+
      return station * 10000000 + plane * 100000 + layer * 10000 + 2000 + straw;
    };
 };

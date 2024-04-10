@@ -597,5 +597,3 @@ Int_t NuageGenerator::GetNevents()
 {
   return fNevents;
 }
-
-

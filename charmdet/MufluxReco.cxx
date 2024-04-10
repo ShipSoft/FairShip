@@ -23,9 +23,9 @@ TVector3* NewPosition = new TVector3(0., 0., 0.);
 std::vector<int> charmExtern = {4332,4232,4132,4232,4122,431,411,421};
 std::vector<int> beautyExtern = {5332,5232,5132,5232,5122,531,511,521};
 std::vector<int> muSources   = {221,223,333,113,331};
-// -----   Standard constructor   ------------------------------------------ 
+// -----   Standard constructor   ------------------------------------------
 MufluxReco::MufluxReco() {}
-// -----   Standard constructor   ------------------------------------------ 
+// -----   Standard constructor   ------------------------------------------
 MufluxReco::MufluxReco(TTreeReader* t)
 {
   xSHiP = t;
@@ -174,7 +174,7 @@ std::vector<std::vector<int>>  MufluxReco::findDTClusters(TClonesArray* hits, re
 # more cleanup, outliers
        tmpClean[ncl]=[]
        for cl in test:
-          if abs(mean-cl[1])<2.5 : 
+          if abs(mean-cl[1])<2.5 :
             tmpClean[ncl].append(cl[0])
 # cleanup, remove lists contained in another list
      clusters[s][view]=[]
@@ -218,13 +218,13 @@ std::vector<std::vector<int>>  MufluxReco::findDTClusters(TClonesArray* hits, re
      tmp = {}
      for cl in clusters[s][view]:
       if len(cl)>5:
-       for hit in cl: 
+       for hit in cl:
          if not tmp.has_key(hit[3]):tmp[hit[3]]=[]
          tmp[hit[3]].append(hit)
      for n in tmp:
        if len(tmp[n])>1:
          clusters[s][view].append(tmp[n])
-   if Debug: 
+   if Debug:
     for s in range(1,5):
      for view in viewsI[s]:
       printClustersPerStation(clusters,s,view)
@@ -260,7 +260,7 @@ Int_t MufluxReco::checkDiMuon(){
       if ( strcmp("Primary particle emission",pName) == 0){ channel = 1;}
       if(std::find(   muSources.begin(),muSources.end(),   moID)!=muSources.end())    {channel = 7;} // count dimuon channels separately
       if(std::find( charmExtern.begin(),charmExtern.end(), moID)!=charmExtern.end())  {channel = 5;} // this will go wrong for charm from beauty
-      if(std::find(beautyExtern.begin(),beautyExtern.end(),moID)!=beautyExtern.end()) {channel = 6;}  
+      if(std::find(beautyExtern.begin(),beautyExtern.end(),moID)!=beautyExtern.end()) {channel = 6;}
       if ( strcmp("Hadronic inelastic",pName) == 0){ channel = 2;}
       if ( strcmp("Lepton pair production",pName) == 0){ channel = 3;}
       if ( strcmp("Positron annihilation",pName) == 0){ channel = 4;}
@@ -397,7 +397,7 @@ void MufluxReco::RPCextrap(Int_t nMax){
         if (p>99.9){p=99.9;}
 /* try the following:
   require matched hit in station k+1
-  record how often hit matched in station k 
+  record how often hit matched in station k
 */
         for (Int_t k=1;k<5;k++) {
          for (Int_t v=0;v<2;v++) {
@@ -464,7 +464,7 @@ Double_t MufluxReco::extrapolateToPlane(genfit::Track* fT,Float_t z, TVector3& p
     }
     pos = fstate.getPos();
     mom = fstate.getMom();
-// use linear extrap 
+// use linear extrap
     Float_t lam = (z-pos[2])/mom[2];
     pos[2]=z;
     pos[0]=pos[0]+lam*mom[0];
@@ -483,9 +483,9 @@ StringVecIntMap MufluxReco::countMeasurements(TrackInfo* trInfo){
     MufluxSpectrometerHit* hit = new MufluxSpectrometerHit(detID,0);
     auto info = hit->StationInfo();
     delete hit;
-    Int_t s=info[0]; Int_t v=info[4]; Int_t p=info[2]; Int_t l=info[3]; Int_t channelNr=info[5]; 
+    Int_t s=info[0]; Int_t v=info[4]; Int_t p=info[2]; Int_t l=info[3]; Int_t channelNr=info[5];
     if (trInfo->wL(n) <0.1 && trInfo->wR(n) <0.1){ continue;}
-    if (v != 0){ 
+    if (v != 0){
        mStatistics["uv"].push_back(detID);
        if (v == 1) { mStatistics["u"].push_back(detID);}
        if (v == 2) { mStatistics["v"].push_back(detID);}
@@ -494,7 +494,7 @@ StringVecIntMap MufluxReco::countMeasurements(TrackInfo* trInfo){
      TString x = "x";x+=s;
      mStatistics[x.Data()].push_back(detID);
     }
-    if (s > 2){  
+    if (s > 2){
        mStatistics["xDown"].push_back(detID);
     }else{
        mStatistics["xUp"].push_back(detID);
@@ -518,7 +518,7 @@ Double_t MufluxReco::findTrueMomentum(TTree* sTree){
          kMin = ti->detId(k);
        }
       }
-      if (!(kMin<0)){ 
+      if (!(kMin<0)){
        for (Int_t n=0;n<MufluxSpectrometerPoints->GetEntries();n++) {
         MufluxSpectrometerPoint* hit = (MufluxSpectrometerPoint*)MufluxSpectrometerPoints->At(n);
         if (hit->GetDetectorID() == kMin) {
@@ -555,7 +555,7 @@ void MufluxReco::trackKinematics(Float_t chi2UL, Int_t nMax){
   while( itt!=tagged.end()){
    std::vector<TString>::iterator it1 = h1names.begin();
    while( it1!=h1names.end()){
-    TString hname = *it1+*itt+*its; 
+    TString hname = *it1+*itt+*its;
     h1D[hname] = (TH1D*)(gDirectory->GetList()->FindObject(hname));
     it1++;}
    std::vector<TString>::iterator it2 = h2names.begin();
@@ -796,9 +796,9 @@ void MufluxReco::fillHitMaps(Int_t nMax)
   for (Int_t k=0;k<Digi_MufluxSpectrometerHits.GetSize();k++) {
      MufluxSpectrometerHit* hit = &(Digi_MufluxSpectrometerHits[k]);
      auto info = hit->StationInfo();
-     Int_t s=info[0]; Int_t v=info[1]; Int_t p=info[2]; Int_t l=info[3]; Int_t channelNr=info[5]; 
+     Int_t s=info[0]; Int_t v=info[1]; Int_t p=info[2]; Int_t l=info[3]; Int_t channelNr=info[5];
      Int_t tdcId=info[6]; Int_t nRT=info[7]/cuts["RTsegmentation"];
-     TString view = "_x"; 
+     TString view = "_x";
      if (info[4]==1){view="_u";}
      if (info[4]==2){view="_v";}
      TString tot = "";
@@ -817,7 +817,7 @@ void MufluxReco::fillHitMaps(Int_t nMax)
      TString TDChisto = "TDC"; TDChisto+=nRT; TDChisto+=tot;
      h = (TH1D*)(gDirectory->GetList()->FindObject(TDChisto));
      if (!h){
-       std::cout<< "fillHitMaps: ERROR histo not known "<< TDChisto  <<" event "<< nx <<std::endl; 
+       std::cout<< "fillHitMaps: ERROR histo not known "<< TDChisto  <<" event "<< nx <<std::endl;
        continue;
      }
      h->Fill( hit->GetDigi()-t0);
@@ -831,4 +831,4 @@ void MufluxReco::fillHitMaps(Int_t nMax)
 MufluxReco::~MufluxReco() { }
 // -------------------------------------------------------------------------
 
- 
+

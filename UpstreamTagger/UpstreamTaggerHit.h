@@ -12,7 +12,7 @@
 class UpstreamTaggerHit : public ShipHit, UpstreamTagger
 {
   public:
-  
+
     /** Default constructor **/
     UpstreamTaggerHit();
 
@@ -26,8 +26,8 @@ class UpstreamTaggerHit : public ShipHit, UpstreamTagger
     Double_t GetY();
     Double_t GetZ();
     TVector3 GetXYZ();
-   
-      
+
+
     TGeoNode* GetNode(Double_t &hit_final, Int_t &mod);
     std::vector<double> GetTime(Double_t x);
     std::vector<double> GetTime();
@@ -46,7 +46,7 @@ class UpstreamTaggerHit : public ShipHit, UpstreamTagger
     Int_t GetStrip() const {return RpcStrip;}
     Int_t GetNeighbour() const {return Rpc_NeighbourStrip;}
     Int_t GetRpcDetector() const {return RpcDetector;}
-    
+
     //Rpc time is invalid if isValid returns False
     bool isValid() const {return flag;}
   private:
@@ -67,7 +67,7 @@ class UpstreamTaggerHit : public ShipHit, UpstreamTagger
     Int_t RpcDetector;  //Rpc detector 1 or 2
     Int_t Rpc_NeighbourStrip; //Neighbour strip likely to be activated
     Double_t det_zdet1;     //!  z-position of veto station
-    
+
     ClassDef(UpstreamTaggerHit,1);
 
 };

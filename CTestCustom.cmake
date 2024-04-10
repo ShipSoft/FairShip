@@ -28,7 +28,7 @@ set(CTEST_CUSTOM_WARNING_EXCEPTION
 	${CTEST_CUSTOM_WARNING_EXCEPTION}
 
 	# -- doxygen warnings
-# 	"of command \@param is not found in the argument list of" 
+# 	"of command \@param is not found in the argument list of"
 #	"for \\link command"
 #	"for \\ref command"
 #	"\\class statement"
@@ -55,7 +55,7 @@ set(CTEST_CUSTOM_WARNING_EXCEPTION
         # -- boost warnings
         "/include/boost/exception/exception.hpp:"
         "/include/boost/smart_ptr/detail/sp_convertible.hpp:"
-        "/include/boost/smart_ptr/shared_ptr.hpp:"  
+        "/include/boost/smart_ptr/shared_ptr.hpp:"
 
         # -- Root warnings when installed in installation dir
         "/include/root/"
@@ -118,7 +118,7 @@ set(CTEST_CUSTOM_WARNING_EXCEPTION
 set(CTEST_CUSTOM_WARNING_MATCH	${CTEST_CUSTOM_WARNING_MATCH}
 	)
 
-Set (CTEST_CUSTOM_COVERAGE_EXCLUDE 
+Set (CTEST_CUSTOM_COVERAGE_EXCLUDE
      "Dict.h"
      "Dict.cxx"
     )

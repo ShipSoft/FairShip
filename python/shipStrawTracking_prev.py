@@ -5,7 +5,7 @@
 
 from __future__ import print_function
 import global_variables
-import shipPatRec_prev 
+import shipPatRec_prev
 import ROOT,os,sys
 import shipDet_conf
 import shipunit  as u
@@ -38,7 +38,7 @@ saveDisk = options.saveDisk
 
 if (shipPatRec_prev.printhelp==True or len(sys.argv)==1):
    print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-   print("shipStrawTracking runs the straw tracker pattern recognition and fits the resulting tracks with DAF. Available options:") 
+   print("shipStrawTracking runs the straw tracker pattern recognition and fits the resulting tracks with DAF. Available options:")
    print("-c 1                      : uses MC true hit x,y instead of wire left&right coordinates and stereo projections. default 0")
    print("-d 1                      : print a lot of debug messages. default 0")
    print("-g name_of_geometry_file  : input geometry file. default='$FAIRSHIP/geofile_full.10.0.Pythia8-TGeant4.root'")
@@ -53,11 +53,11 @@ if (shipPatRec_prev.printhelp==True or len(sys.argv)==1):
    print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
    sys.exit()
 
-if not inputFile.find('_patrec.root') < 0: 
+if not inputFile.find('_patrec.root') < 0:
   outFile   = inputFile
-  inputFile = outFile.replace('_patrec.root','.root') 
+  inputFile = outFile.replace('_patrec.root','.root')
 else:
-  outFile = inputFile.replace('.root','_patrec.root') 
+  outFile = inputFile.replace('.root','_patrec.root')
   if saveDisk: os.system('mv '+inputFile+' '+outFile)
   else :       os.system('cp '+inputFile+' '+outFile)
 
@@ -77,7 +77,7 @@ sGeo   = fgeo.FAIRGeom
 bfield = ROOT.genfit.BellField(shipPatRec_prev.ship_geo.Bfield.max ,shipPatRec_prev.ship_geo.Bfield.z,2,shipPatRec_prev.ship_geo.Yheight/2.*u.m)
 fM = ROOT.genfit.FieldManager.getInstance()
 fM.init(bfield)
- 
+
 geoMat =  ROOT.genfit.TGeoMaterialInterface()
 ROOT.genfit.MaterialEffects.getInstance().init(geoMat)
 
@@ -95,7 +95,7 @@ if sTree.GetBranch("FitTracks_PR"):
   sTree.SetBranchStatus("SmearedHits",0)
   sTree.SetBranchStatus("Particles",0)
   sTree.SetBranchStatus("fitTrack2MC_PR",0)
-  sTree.SetBranchStatus("EcalClusters",0)       
+  sTree.SetBranchStatus("EcalClusters",0)
   rawFile = fout.replace("_patrec.root","_raw.root")
   recf = ROOT.TFile(rawFile,"recreate")
   newTree = sTree.CloneTree(0)
@@ -104,33 +104,33 @@ if sTree.GetBranch("FitTracks_PR"):
       rc = newTree.Fill()
   sTree.Clear()
   newTree.AutoSave()
-  f.Close() 
-  recf.Close() 
+  f.Close()
+  recf.Close()
   os.system('cp '+rawFile +' '+fout)
   fn = ROOT.TFile(fout,'update')
-  sTree     = fn.cbmsim   
-  
+  sTree     = fn.cbmsim
+
 if sTree.GetBranch("GeoTracks"): sTree.SetBranchStatus("GeoTracks",0)
 
 nEvents   = min(sTree.GetEntries(),nEvents)
 
-fPartArray_PR     = ROOT.TClonesArray("TParticle") 
-fGenFitArray_PR   = ROOT.TClonesArray("genfit::Track") 
+fPartArray_PR     = ROOT.TClonesArray("TParticle")
+fGenFitArray_PR   = ROOT.TClonesArray("genfit::Track")
 fGenFitArray_PR.BypassStreamer(ROOT.kFALSE)
 fitTrack2MC_PR = ROOT.std.vector('int')()
-SmearedHits    = ROOT.TClonesArray("TVectorD")  
+SmearedHits    = ROOT.TClonesArray("TVectorD")
 
-Particles_PR      = sTree.Branch("Particles_PR",  fPartArray_PR,32000,-1) 
+Particles_PR      = sTree.Branch("Particles_PR",  fPartArray_PR,32000,-1)
 SHbranch       = sTree.Branch("SmearedHits",SmearedHits,32000,-1)
-fitTracks_PR      = sTree.Branch("FitTracks_PR",  fGenFitArray_PR,32000,-1) 
+fitTracks_PR      = sTree.Branch("FitTracks_PR",  fGenFitArray_PR,32000,-1)
 mcLink_PR      = sTree.Branch("fitTrack2MC_PR",fitTrack2MC_PR,32000,-1)
- 
+
 if global_variables.debug:
   print("Straw tracker geometry parameters (cm)")
   print("--------------------------------------")
   print("Strawlength            :",2*shipPatRec_prev.ship_geo.strawtubes.StrawLength)
   print("Inner straw diameter   :",shipPatRec_prev.ship_geo.strawtubes.InnerStrawDiameter)
-  print("Straw wall thickness   :",shipPatRec_prev.ship_geo.strawtubes.WallThickness) 
+  print("Straw wall thickness   :",shipPatRec_prev.ship_geo.strawtubes.WallThickness)
   print("Outer straw diameter   :",shipPatRec_prev.ship_geo.strawtubes.OuterStrawDiameter)
   print("Wire thickness         :",shipPatRec_prev.ship_geo.strawtubes.WireThickness)
   print("Straw pitch            :",shipPatRec_prev.ship_geo.strawtubes.StrawPitch)
@@ -141,7 +141,7 @@ if global_variables.debug:
   print("z-offset between views :",shipPatRec_prev.ship_geo.strawtubes.DeltazView)
 
 shipPatRec_prev.initialize(fgeo)
-     
+
 def EventLoop(SmearedHits):
  #loop over events
  for n in range(nEvents):
@@ -150,12 +150,12 @@ def EventLoop(SmearedHits):
   fGenFitArray_PR.Delete()
   fitTrack2MC_PR.clear()
   fPartArray_PR.Delete()
-  
-  rc = sTree.GetEvent(n)    
-  
-  if shipPatRec_prev.monitor==True: 
+
+  rc = sTree.GetEvent(n)
+
+  if shipPatRec_prev.monitor==True:
      shipPatRec_prev.ReconstructibleMCTracks=shipPatRec_prev.getReconstructibleTracks(n,sTree,sGeo)
-     if len(shipPatRec_prev.ReconstructibleMCTracks)!=shipPatRec_prev.reconstructiblerequired : 
+     if len(shipPatRec_prev.ReconstructibleMCTracks)!=shipPatRec_prev.reconstructiblerequired :
         if global_variables.debug:
           print(
               "Number of reconstructible tracks =", len(shipPatRec_prev.ReconstructibleMCTracks),
@@ -166,11 +166,11 @@ def EventLoop(SmearedHits):
 
      if global_variables.debug:
        print("Reconstructible track ids", shipPatRec_prev.ReconstructibleMCTracks)
-     
-     
+
+
   #n = current event number, False=wire endpoints, True=MC truth
-    
-  SmearedHits  = shipPatRec_prev.SmearHits(n,sTree,modules,SmearedHits,shipPatRec_prev.ReconstructibleMCTracks)  
+
+  SmearedHits  = shipPatRec_prev.SmearHits(n,sTree,modules,SmearedHits,shipPatRec_prev.ReconstructibleMCTracks)
 
   fittedtrackids=shipPatRec_prev.execute(n,SmearedHits,sTree,shipPatRec_prev.ReconstructibleMCTracks)
   if fittedtrackids:
@@ -178,29 +178,29 @@ def EventLoop(SmearedHits):
      for ids in fittedtrackids:
         nTrack   = fGenFitArray_PR.GetEntries()
         fGenFitArray_PR[nTrack] = shipPatRec_prev.theTracks[tracknbr]
-        fitTrack2MC_PR.push_back(ids) 
-        tracknbr+=1  
-  
+        fitTrack2MC_PR.push_back(ids)
+        tracknbr+=1
+
   Particles_PR.Fill()
   fitTracks_PR.Fill()
-  mcLink_PR.Fill()    
-  SHbranch.Fill()  
-    
-    
- if global_variables.debug: 
+  mcLink_PR.Fill()
+  SHbranch.Fill()
+
+
+ if global_variables.debug:
    print(shipPatRec_prev.falsenegative,"matched tracks with wrong negative charge from deflection.")
    print(shipPatRec_prev.falsepositive,"matched tracks with wrong positive charge from deflection.")
-   print(shipPatRec_prev.morethan500,"events with more than 500 hits.")  
-   print(shipPatRec_prev.morethan100tracks,"events with more than 100 tracks.") 
-  
- return   
-            
+   print(shipPatRec_prev.morethan500,"events with more than 500 hits.")
+   print(shipPatRec_prev.morethan100tracks,"events with more than 100 tracks.")
+
+ return
+
 if global_variables.debug:
   if shipPatRec_prev.threeprong==1:
-    debugrootfile = ROOT.TFile(str(shipPatRec_prev.reconstructiblerequired)+"track-debug-mumunu-"+str(nEvents)+".root","RECREATE")   
-  else:  
-    debugrootfile = ROOT.TFile(str(shipPatRec_prev.reconstructiblerequired)+"track-debug-"+str(nEvents)+".root","RECREATE")   
-        
+    debugrootfile = ROOT.TFile(str(shipPatRec_prev.reconstructiblerequired)+"track-debug-mumunu-"+str(nEvents)+".root","RECREATE")
+  else:
+    debugrootfile = ROOT.TFile(str(shipPatRec_prev.reconstructiblerequired)+"track-debug-"+str(nEvents)+".root","RECREATE")
+
 EventLoop(SmearedHits)
 
 #1/0
@@ -226,10 +226,10 @@ shipPatRec_prev.h['fracsame34-stereo'].Scale(scale)
 
 scale=1.
 
-if shipPatRec_prev.monitor==1: 
+if shipPatRec_prev.monitor==1:
   shipPatRec_prev.totalafterpatrec=shipPatRec_prev.totalafterpatrec/(shipPatRec_prev.reconstructiblerequired**2)
   shipPatRec_prev.totalaftermatching=shipPatRec_prev.totalaftermatching/shipPatRec_prev.reconstructiblerequired
-  
+
 rc=shipPatRec_prev.h['eventspassed'].SetBinContent(1,shipPatRec_prev.reconstructibleevents)
 rc=shipPatRec_prev.h['eventspassed'].SetBinContent(2,shipPatRec_prev.reconstructiblehorizontalidsfound12)
 rc=shipPatRec_prev.h['eventspassed'].SetBinContent(3,shipPatRec_prev.reconstructiblestereoidsfound12)

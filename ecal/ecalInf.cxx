@@ -137,32 +137,32 @@ void ecalInf::AddVariable(const char* key, const char* value)
 }
 //=============================================================================
 ecalInf::ecalInf(const char* filename)
-  : TObject(), 
-    fVariables(new TMap(200)), 
-    fEcalStr(), 
-    fXPos(0.), 
+  : TObject(),
+    fVariables(new TMap(200)),
+    fEcalStr(),
+    fXPos(0.),
     fYPos(0.),
-    fZPos(0.), 
-    fNLayers(0), 
-    fXSize(0), 
-    fYSize(0), 
-    fModuleSize(0.), 
-    fLead(0.), 
-    fScin(0.), 
-    fTyveec(0.), 
+    fZPos(0.),
+    fNLayers(0),
+    fXSize(0),
+    fYSize(0),
+    fModuleSize(0.),
+    fLead(0.),
+    fScin(0.),
+    fTyveec(0.),
     fThicknessLayer(0.),
-    fCellSize(0.), 
-    fEcalSize(), 
-    fECut(0.), 
-    fHCut(0.), 
+    fCellSize(0.),
+    fEcalSize(),
+    fECut(0.),
+    fHCut(0.),
     fSemiX(0.),
     fSemiY(0.),
     fFastMC(-1),
-    fSuccess(1), 
-    fFileName(filename) 
+    fSuccess(1),
+    fFileName(filename)
 {
   /**
-   ** Constructor reads and parses the ascii file, and fill 
+   ** Constructor reads and parses the ascii file, and fill
    ** the ECAL geometry container
    **
   FairRunAna* ana = FairRunAna::Instance();
@@ -222,9 +222,9 @@ ecalInf::ecalInf(const char* filename)
               fSuccess=0;
 	      file.close();
 	      return;
-	      
+
 	    }
-	  
+
 	  str=new TObjString(message.c_str());
 	  fEcalStr.Add(str);
 	}
@@ -406,4 +406,3 @@ void ecalInf::DumpContainer() const
   }
 
 }
-

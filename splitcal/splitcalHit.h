@@ -16,8 +16,8 @@ class splitcalHit : public ShipHit
 
     /** Constructor with arguments
      *@param detID    Detector ID
-     *@param digi      digitized/measured TDC 
-     *@param flag      True/False, false if there is another hit with smaller tdc 
+     *@param digi      digitized/measured TDC
+     *@param flag      True/False, false if there is another hit with smaller tdc
      **/
     splitcalHit(Int_t detID, Float_t tdc);
     splitcalHit(splitcalPoint* p, Double_t t0);
@@ -30,13 +30,13 @@ class splitcalHit : public ShipHit
     void setInvalid() {flag = false;}
     bool isValid() const {return flag;}
 
-    std::string GetPaddedString(int& id); 
+    std::string GetPaddedString(int& id);
     std::string GetDetectorElementName(int& id);
     void Decoder(int& id, int& isPrecision, int& nLayer, int& nModuleX, int& nMdouleY, int& nStrip);
     void Decoder(std::string& encodedID, int& isPrecision, int& nLayer, int& nModuleX, int& nMdouleY, int& nStrip);
 
     void SetXYZ(double& x, double& y, double& z) {_x = x; _y = y; _z = z;}
-    void SetIDs(int& isPrecision, int& nLayer, int& nModuleX, int& nModuleY, int& nStrip) {_isPrecisionLayer = isPrecision; _nLayer = nLayer; _nModuleX = nModuleX; _nModuleY=nModuleY; _nStrip = nStrip;} 
+    void SetIDs(int& isPrecision, int& nLayer, int& nModuleX, int& nModuleY, int& nStrip) {_isPrecisionLayer = isPrecision; _nLayer = nLayer; _nModuleX = nModuleX; _nModuleY=nModuleY; _nStrip = nStrip;}
     void SetEnergy(double& e) {_energy = e;}
     void UpdateEnergy(double e) {_energy = _energy+e;}
     void SetIsX(bool x) {_isX = x;}
@@ -77,7 +77,7 @@ class splitcalHit : public ShipHit
 
   private:
 
-    Float_t flag;   
+    Float_t flag;
     double _x, _y, _z, _xError, _yError, _zError;
     double _energy;// _energyWeight;
     /* std::string _nameSubDetector;  */
@@ -87,7 +87,7 @@ class splitcalHit : public ShipHit
     std::vector<int > _vecClusterIndices;
 
     ClassDef(splitcalHit,3);
-    
+
 
 };
 

@@ -18,14 +18,14 @@ def dump(i,pcut):
  tree.GetEntry(i)
  print('   #         pid   px    py      pz     vx      vy       vz      mid')
  n=-1
- for mcp in tree.MCTrack: 
+ for mcp in tree.MCTrack:
    n+=1
    if mcp.GetP()/u.GeV < pcut :  continue
    printMCTrack(n,tree.MCTrack)
 def dumpStraw(i):
  tree = ROOT.gROOT.FindObjectAny('cbmsim')
  tree.GetEntry(i)
- for aStraw in tree.strawtubesPoint: 
+ for aStraw in tree.strawtubesPoint:
    trID = astraw.GetTrackID()
    if not trID < 0:
       printMCTrack(trID,tree.MCTrack)

@@ -1,7 +1,7 @@
 #ifndef vetoHitOnTrack_H
 #define vetoHitOnTrack_H 1
 
-#include "TObject.h"              //  
+#include "TObject.h"              //
 
 #include "Rtypes.h"                     // for Double_t, Int_t, Double32_t, etc
 #include "TVector3.h"                   // for TVector3
@@ -33,7 +33,7 @@ class vetoHitOnTrack : public TObject
     /** Accessors **/
     Double_t GetDist()          const { return fDist;      };
     Int_t    GetHitID()    const { return fHitID;  };
- 
+
     /** Modifiers **/
     void SetDist(Float_t d) { fDist = d; }
     void SetHitID(Int_t hitID) { fHitID = hitID; }
@@ -54,7 +54,7 @@ class vetoHitOnTrack : public TObject
     friend class boost::serialization::access;
 #endif // for BOOST serialization
 
-    Float_t fDist;   ///< distance to closest veto hit 
+    Float_t fDist;   ///< distance to closest veto hit
     Int_t   fHitID;     ///< hit ID
 
     ClassDef(vetoHitOnTrack,1);
