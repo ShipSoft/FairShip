@@ -1,5 +1,6 @@
 var NAVTREEINDEX58 =
 {
+"structDriftTubes_1_1ChannelId.html#a9d094b82ef09db7c79917061b8671e08":[12,0,2,0,5],
 "structDriftTubes_1_1ChannelId.html#a9f0e2acfe7d24e03c5c25d57023f12e6":[12,0,2,0,3],
 "structDriftTubes_1_1ChannelId.html#ae22d0db464bb87df7f13cfc9ad0d5a53":[12,0,2,0,2],
 "structDriftTubes_1_1ChannelId.html#af0b5cd97ba9c38430a1d063123fc0add":[12,0,2,0,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX58 =
 "test__online_8cpp.html#a19dc8f4d309f3bb1e29e620a05c369b0":[13,0,20,0,4],
 "test__online_8cpp.html#a33965eb4d7fd353aaf8218dda0a0af4d":[13,0,20,0,3],
 "test__online_8cpp.html#a515d87761d8b4234b66ea7f209750848":[13,0,20,0,12],
-"test__online_8cpp.html#a5b1ad20344fbbef4b84396fe2c02d7b7":[13,0,20,0,6],
-"test__online_8cpp.html#a60487e2594b7cdc4fe8adeda4680e2c7":[13,0,20,0,7]
+"test__online_8cpp.html#a5b1ad20344fbbef4b84396fe2c02d7b7":[13,0,20,0,6]
 };

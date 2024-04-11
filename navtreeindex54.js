@@ -1,5 +1,6 @@
 var NAVTREEINDEX54 =
 {
+"pythia8__conf__utils_8py.html#ada4402c223453c2df122b01dff054416":[13,0,15,26,17],
 "pythia8__conf__utils_8py.html#afb8d3a95256278c94768f0ea07686b1c":[13,0,15,26,1],
 "pythia8__conf__utils_8py_source.html":[13,0,15,26],
 "pythia8darkphoton__conf_8py.html":[13,0,15,27],
@@ -248,6 +249,5 @@ var NAVTREEINDEX54 =
 "run__MufluxfixedTarget_8py.html#abaa22f2274a5496abe9fe44c545bfbe0":[13,0,9,18,32],
 "run__MufluxfixedTarget_8py.html#abb0b2a7d9d0cc21ebdd2ed6bb523b9da":[13,0,9,18,38],
 "run__MufluxfixedTarget_8py.html#abe37b1152ead82fee05bf0f589221cca":[13,0,9,18,55],
-"run__MufluxfixedTarget_8py.html#ac136e248e0c02583a702836cc13f5be2":[13,0,9,18,13],
-"run__MufluxfixedTarget_8py.html#ac8735b486c816c7281ea3c3b638ddd59":[13,0,9,18,20]
+"run__MufluxfixedTarget_8py.html#ac136e248e0c02583a702836cc13f5be2":[13,0,9,18,13]
 };

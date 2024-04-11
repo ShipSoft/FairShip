@@ -206,6 +206,7 @@ var NAVTREEINDEX34 =
 "md_README.html#autotoc_md33":[10,4],
 "md_README.html#autotoc_md34":[10,5],
 "md_README.html#autotoc_md35":[10,6],
+"md_README.html#autotoc_md36":[10,7],
 "md_conditionsDatabase_README.html":[6],
 "md_conditionsDatabase_README.html#autotoc_md11":[6,0],
 "md_conditionsDatabase_README.html#autotoc_md12":[6,0,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX34 =
 "mergeMbias_8py.html#acbc928bd807084cceea18d29a3b78a3f":[13,0,6,16,12],
 "mergeMbias_8py.html#ad76b253d12e2a798dff088668ce0484c":[13,0,6,16,9],
 "mergeMbias_8py.html#ae3db1f346012489c08f80fc35e3bdd56":[13,0,6,16,24],
-"mergeMbias_8py.html#ae4f31cf299604390b6ab676d47656e61":[13,0,6,16,5],
-"mergeMbias_8py.html#aeb3c9d73c8dfa5a69c2ed3941fa290dd":[13,0,6,16,2]
+"mergeMbias_8py.html#ae4f31cf299604390b6ab676d47656e61":[13,0,6,16,5]
 };

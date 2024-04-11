@@ -1,5 +1,6 @@
 var NAVTREEINDEX53 =
 {
+"namespacestudy__thinTarget.html#a7bd06a17bb8831e6dabcf07c3e09402e":[11,0,125,3],
 "namespacestudy__thinTarget.html#a7c10cd1069ea56556ce9cde4d6a2c272":[11,0,125,1],
 "namespacestudy__thinTarget.html#a7d345676eb518ca2a793ac62d2f5f1aa":[11,0,125,30],
 "namespacestudy__thinTarget.html#a7dc873e4b7157264e2f8a2f0f5bbe654":[11,0,125,31],
@@ -248,6 +249,5 @@ var NAVTREEINDEX53 =
 "pythia8__conf__utils_8py.html#ac70e3b11b940b06ac3994772a4395c7a":[13,0,15,26,13],
 "pythia8__conf__utils_8py.html#ac813ca3e3ab368c6fb345d9441634940":[13,0,15,26,16],
 "pythia8__conf__utils_8py.html#acb89ee6646b4bc143e9fa4011fc40501":[13,0,15,26,12],
-"pythia8__conf__utils_8py.html#ace55a11529100114c43038d8c538b4c2":[13,0,15,26,11],
-"pythia8__conf__utils_8py.html#ada4402c223453c2df122b01dff054416":[13,0,15,26,17]
+"pythia8__conf__utils_8py.html#ace55a11529100114c43038d8c538b4c2":[13,0,15,26,11]
 };
