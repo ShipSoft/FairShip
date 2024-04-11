@@ -12,7 +12,7 @@
     - [Local build, without access to CVMFS](#local-build-without-access-to-cvmfs)
     - [Run instructions](#run-instructions)
     - [Docker instructions](#docker-instructions)
-    - [Troubleshooting_information](#troubleshooting-information)
+    - [Troubleshooting information](#troubleshooting-information)
     - [Contributing code](#contributing-code)
 
 <!-- markdown-toc end -->
