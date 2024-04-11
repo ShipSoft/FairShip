@@ -3,16 +3,17 @@
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/ShipSoft/FairShip/master.svg)](https://results.pre-commit.ci/latest/github/ShipSoft/FairShip/master)
 
 <!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc-refresh-toc -->
-**Table of Contents**
+**Table of contents**
 
 - [FairShip](#fairship)
     - [Introduction](#introduction)
         - [Branches](#branches)
-    - [Build Instructions using CVMFS](#build-instructions-using-cvmfs)
+    - [Build instructions using CVMFS](#build-instructions-using-cvmfs)
     - [Local build, without access to CVMFS](#local-build-without-access-to-cvmfs)
-    - [Run Instructions](#run-instructions)
-    - [Docker Instructions](#docker-instructions)
-    - [Contributing Code](#contributing-code)
+    - [Run instructions](#run-instructions)
+    - [Docker instructions](#docker-instructions)
+    - [Troubleshooting_information](#troubleshooting-information)
+    - [Contributing code](#contributing-code)
 
 <!-- markdown-toc end -->
 
@@ -96,7 +97,7 @@ Commands are similar to the previous case, but without access to CVMFS you need 
     ```bash
     alibuild/alienv enter FairShip/latest
     ```
-## Run Instructions
+## Run instructions
 
 Set up the bulk of the environment from CVMFS.
 
@@ -132,7 +133,7 @@ python -i $FAIRSHIP/macro/eventDisplay.py -f ship.conical.Pythia8-TGeant4_rec.ro
 Use quit() or Ctrl-D (i.e. EOF) to exit
 ```
 
-## Docker Instructions
+## Docker instructions
 
 Docker is **not** the recommended way to run `FairShip` locally. It is ideal
 for reproducing reproducible, stateless environments for debugging, HTCondor
@@ -158,7 +159,11 @@ desirable.
     ```
     The option `-e DISPLAY=unix$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix` forwards graphics from the docker to your local system (similar to `ssh -X`). The option `-v /local_workdir:/image_workdir` mounts `/local_workdir` on the local system as `/image_workdir` within docker.
 
-## Contributing Code
+## Troubleshooting information
+
+Please see the wiki for [FAQ](https://github.com/ShipSoft/FairShip/wiki/FAQ-and-common-issues#faq)s and [common issues](https://github.com/ShipSoft/FairShip/wiki/FAQ-and-common-issues#common-issues).
+
+## Contributing code
 
 * Any and all contributions are welcome!
 * Contributions via pull requests are preferred, but if you require help with git, don't hesitate to write reach out to us.
