@@ -1,0 +1,5 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" title=" " alt="" coords="5,13,61,39"/>
+<area shape="rect" id="node2" href="$classconditionsDatabase_1_1interface_1_1APIInterface.html" title="Conditions Database Interface definition." alt="" coords="109,5,327,47"/>
+<area shape="rect" id="node3" href="$classconditionsDatabase_1_1databases_1_1mongodb_1_1mongodbadapter_1_1MongoToCDBAPIAdapter.html" title=" " alt="" coords="375,5,780,47"/>
+</map>

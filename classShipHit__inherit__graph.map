@@ -1,0 +1,10 @@
+<map id="ShipHit" name="ShipHit">
+<area shape="rect" id="node1" title=" " alt="" coords="357,80,426,107"/>
+<area shape="rect" id="node3" href="$classTimeDetHit.html" title=" " alt="" coords="5,155,103,181"/>
+<area shape="rect" id="node4" href="$classUpstreamTaggerHit.html" title=" " alt="" coords="127,155,275,181"/>
+<area shape="rect" id="node5" href="$classmuonHit.html" title=" " alt="" coords="299,155,377,181"/>
+<area shape="rect" id="node6" href="$classsplitcalHit.html" title=" " alt="" coords="402,155,490,181"/>
+<area shape="rect" id="node7" href="$classstrawtubesHit.html" title=" " alt="" coords="515,155,628,181"/>
+<area shape="rect" id="node8" href="$classvetoHit.html" title=" " alt="" coords="652,155,723,181"/>
+<area shape="rect" id="node2" title=" " alt="" coords="355,5,427,32"/>
+</map>

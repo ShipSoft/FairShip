@@ -1,0 +1,9 @@
+<map id="ecalClusterFinder" name="ecalClusterFinder">
+<area shape="rect" id="node1" title=" " alt="" coords="138,260,273,287"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,81,80,108"/>
+<area shape="rect" id="node5" href="$classecalClusterCalibration.html" title=" " alt="" coords="42,171,209,197"/>
+<area shape="rect" id="node3" href="$classecalInf.html" title=" " alt="" coords="345,81,412,108"/>
+<area shape="rect" id="node6" href="$classecalStructure.html" title=" " alt="" coords="233,171,341,197"/>
+<area shape="rect" id="node4" title=" " alt="" coords="343,5,415,32"/>
+<area shape="rect" id="node7" title=" " alt="" coords="233,81,311,108"/>
+</map>

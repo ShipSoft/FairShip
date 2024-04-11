@@ -1,0 +1,4 @@
+<map id="ShipFieldMaker" name="ShipFieldMaker">
+<area shape="rect" id="node1" title="Creates various magnetic fields and assigns them to geometry regions." alt="" coords="55,80,176,107"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,5,225,32"/>
+</map>

@@ -1,0 +1,9 @@
+<map id="ecal/ecalMaximum.h" name="ecal/ecalMaximum.h">
+<area shape="rect" id="node1" title=" " alt="" coords="323,5,482,32"/>
+<area shape="rect" id="node2" href="$ecalCluster_8cxx.html" title=" " alt="" coords="5,80,157,107"/>
+<area shape="rect" id="node3" href="$ecalClusterFinder_8cxx.html" title=" " alt="" coords="467,155,659,181"/>
+<area shape="rect" id="node4" href="$ecalDrawer_8cxx.html" title=" " alt="" coords="233,80,386,107"/>
+<area shape="rect" id="node5" href="$ecalMaximum_8cxx.html" title=" " alt="" coords="411,80,584,107"/>
+<area shape="rect" id="node6" href="$ecalMaximumLocator_8cxx.html" title=" " alt="" coords="609,80,829,107"/>
+<area shape="rect" id="node7" href="$ecalPreCluster_8h.html" title=" " alt="" coords="853,80,1011,107"/>
+</map>

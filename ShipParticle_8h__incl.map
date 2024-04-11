@@ -1,0 +1,10 @@
+<map id="shipdata/ShipParticle.h" name="shipdata/ShipParticle.h">
+<area shape="rect" id="node1" title=" " alt="" coords="369,5,540,32"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,80,96,107"/>
+<area shape="rect" id="node3" href="$ShipDetectorList_8h.html" title=" " alt="" coords="120,80,261,107"/>
+<area shape="rect" id="node4" title=" " alt="" coords="286,80,365,107"/>
+<area shape="rect" id="node5" title=" " alt="" coords="389,80,520,107"/>
+<area shape="rect" id="node6" title=" " alt="" coords="544,80,619,107"/>
+<area shape="rect" id="node7" title=" " alt="" coords="643,80,733,107"/>
+<area shape="rect" id="node8" title=" " alt="" coords="757,80,880,107"/>
+</map>

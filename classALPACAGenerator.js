@@ -1,0 +1,28 @@
+var classALPACAGenerator =
+[
+    [ "ALPACAGenerator", "classALPACAGenerator.html#a232b38da939ef4edfd80bf8cc8d3e4db", null ],
+    [ "~ALPACAGenerator", "classALPACAGenerator.html#a6600a2aeda9474a5327e474cdf7dcd77", null ],
+    [ "ClassDef", "classALPACAGenerator.html#ac07f26c5c81dd9ae42f6fdc3e2b23108", null ],
+    [ "GetNevents", "classALPACAGenerator.html#a6d618e025fc30e864cfad689375ceb8b", null ],
+    [ "Init", "classALPACAGenerator.html#ad749298b950e3cb4434a8544153ec254", null ],
+    [ "Init", "classALPACAGenerator.html#a39cf529ba95c0dbeb717fe06ce6c9e28", null ],
+    [ "ReadEvent", "classALPACAGenerator.html#ac32aa5c4d2178ae6e85d4a565f216d52", null ],
+    [ "e", "classALPACAGenerator.html#a4bba8c309e01ee0b2f59e22f0c567dee", null ],
+    [ "event", "classALPACAGenerator.html#ad6913f8823cad8d6d1b73d4dde0bd66a", null ],
+    [ "fInputFile", "classALPACAGenerator.html#a116bc21e0f2094f9c874d0170ff4c67c", null ],
+    [ "fLogger", "classALPACAGenerator.html#ade6ea530721c2334bc948f02bbd0d932", null ],
+    [ "fn", "classALPACAGenerator.html#a9acb6a19ae019b99dfc835df9d5d5bad", null ],
+    [ "fNevents", "classALPACAGenerator.html#a04f25ec834bcde37bfd9892db2319bf2", null ],
+    [ "fTree", "classALPACAGenerator.html#a968f6254073d3f2033ac2ea2d84da4c0", null ],
+    [ "parent", "classALPACAGenerator.html#a66894901963cb8021781ca27236cfa12", null ],
+    [ "pdg", "classALPACAGenerator.html#ac56b60bbff75171a8d7f6495326a9dbe", null ],
+    [ "px", "classALPACAGenerator.html#a780765c338213d9d3e8711cc8f5c76e7", null ],
+    [ "py", "classALPACAGenerator.html#a3db1bcb50c4d51bedf8391778a9dd990", null ],
+    [ "pz", "classALPACAGenerator.html#a3d8f8f980682e0be446d2b160d4529a7", null ],
+    [ "tof", "classALPACAGenerator.html#a2ad82d722fb0f2a5369a2f048716b7cf", null ],
+    [ "track", "classALPACAGenerator.html#a342643a24e73c0c30029a75861c77aab", null ],
+    [ "w", "classALPACAGenerator.html#a87ee1733ebcde01fd1b6f012468a28a3", null ],
+    [ "x", "classALPACAGenerator.html#a32582d46be79ee00e7799d291b52d4b3", null ],
+    [ "y", "classALPACAGenerator.html#a0b7b195b2f2756b7346d5807c5790a19", null ],
+    [ "z", "classALPACAGenerator.html#a886aae8ad80fbc7c96c4d40c1d975285", null ]
+];

@@ -1,0 +1,28 @@
+var classTTCluster_1_1TTCluster =
+[
+    [ "__init__", "classTTCluster_1_1TTCluster.html#a802539f30c42a1e6e965593106be33e0", null ],
+    [ "ClusterGen", "classTTCluster_1_1TTCluster.html#a0e93d60593a8c812f49e3f9c9bd3a16d", null ],
+    [ "GetXYZ", "classTTCluster_1_1TTCluster.html#ad5aa1a586041a736b7d3b9e22fc2557c", null ],
+    [ "SetLYRange", "classTTCluster_1_1TTCluster.html#a75ae4a428ad83e36ea20320258f8c21f", null ],
+    [ "SetSipmIsReversed", "classTTCluster_1_1TTCluster.html#ae9bbbcf164d52418c058be1cc531280e", null ],
+    [ "SetSipmPosition", "classTTCluster_1_1TTCluster.html#adcab2848885feb47046d0e0725fa79e6", null ],
+    [ "cluster", "classTTCluster_1_1TTCluster.html#af0445c157a76ae5b85d69ef8f704a1b7", null ],
+    [ "delta", "classTTCluster_1_1TTCluster.html#afdcedfc3f5f8189cad035ddb22467984", null ],
+    [ "DetID", "classTTCluster_1_1TTCluster.html#ab0e406162e1073cf3d32507069588ca5", null ],
+    [ "Edep", "classTTCluster_1_1TTCluster.html#af2722933ea5e5fb1fb9f5531fe44fd11", null ],
+    [ "is_created", "classTTCluster_1_1TTCluster.html#a9351320a537224983c67ff342456c7e7", null ],
+    [ "is_sipm_hor_reversed", "classTTCluster_1_1TTCluster.html#a2d7c77e4a48214884522737796e9c651", null ],
+    [ "is_sipm_vert_reversed", "classTTCluster_1_1TTCluster.html#a5ad5599ca60a4d0a90143485234fd7bd", null ],
+    [ "ly", "classTTCluster_1_1TTCluster.html#a358ad769998f6fb63f96f69b20ed0d7c", null ],
+    [ "ly_max", "classTTCluster_1_1TTCluster.html#a6f4df8d216c7b71af7742a1d6b3f92e8", null ],
+    [ "ly_min", "classTTCluster_1_1TTCluster.html#a024d7880cbff9d99d161a946e6a5d457", null ],
+    [ "matnum", "classTTCluster_1_1TTCluster.html#a8101dae122ebaa367c29e9b6852ef35d", null ],
+    [ "recovery_globalpos", "classTTCluster_1_1TTCluster.html#a4948ff676618f20d7c506da9d7bf9111", null ],
+    [ "sipm_hor_pos", "classTTCluster_1_1TTCluster.html#ab86d9331a8fc8a57596e0094919e09d6", null ],
+    [ "sipm_vert_pos", "classTTCluster_1_1TTCluster.html#a1d9ca0a205ce4f7cdec05ff120cb182d", null ],
+    [ "station", "classTTCluster_1_1TTCluster.html#a5faee6641ca1337cf92c0a23052b7022", null ],
+    [ "Xraw", "classTTCluster_1_1TTCluster.html#ad680cf3d78401fb4eee25e9895cb73fa", null ],
+    [ "Xrec", "classTTCluster_1_1TTCluster.html#a78e56150edf0037dc5183d618383ff78", null ],
+    [ "Yraw", "classTTCluster_1_1TTCluster.html#a98f2784ef77429233b4d3f2290180dfd", null ],
+    [ "Yrec", "classTTCluster_1_1TTCluster.html#a4ea7960ff74ee5cbf72093a4fa70ebca", null ]
+];

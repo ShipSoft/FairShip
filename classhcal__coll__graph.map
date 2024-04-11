@@ -1,0 +1,9 @@
+<map id="hcal" name="hcal">
+<area shape="rect" id="node1" title=" " alt="" coords="249,185,298,212"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,81,107,108"/>
+<area shape="rect" id="node3" href="$classhcalLightMap.html" title=" " alt="" coords="131,81,240,108"/>
+<area shape="rect" id="node4" title=" " alt="" coords="147,5,224,32"/>
+<area shape="rect" id="node5" title=" " alt="" coords="265,81,383,108"/>
+<area shape="rect" id="node6" href="$classhcalInf.html" title=" " alt="" coords="408,81,475,108"/>
+<area shape="rect" id="node7" title=" " alt="" coords="405,5,477,32"/>
+</map>
