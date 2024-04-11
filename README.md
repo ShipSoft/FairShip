@@ -13,6 +13,7 @@
     - [Run instructions](#run-instructions)
     - [Docker instructions](#docker-instructions)
     - [Troubleshooting information](#troubleshooting-information)
+    - [Documentation](#documentation)
     - [Contributing code](#contributing-code)
 
 <!-- markdown-toc end -->
@@ -162,6 +163,10 @@ desirable.
 ## Troubleshooting information
 
 Please see the wiki for [FAQ](https://github.com/ShipSoft/FairShip/wiki/FAQ-and-common-issues#faq)s and [common issues](https://github.com/ShipSoft/FairShip/wiki/FAQ-and-common-issues#common-issues).
+
+## Documentation
+
+An [automatic class reference](https://shipsoft.github.io/FairShip/) is built using Doxygen from comments in the C++ code. Improving the comments will improve this documentation.
 
 ## Contributing code
 

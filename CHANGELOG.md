@@ -17,6 +17,7 @@ it in future.
 * Add pre-commit config: This will be phased in to improve code quality and spot issues as early as possible. Status visible in README and CI enabled for new pull requests.
 * Add CHANGELOG.md
 * Add `.git-blame-ignore-revs` to allow automatic reformatting etc. without polluting git blame
+* Automatically built documentation using Doxygen
 
 ### Fixed
 
