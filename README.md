@@ -60,7 +60,7 @@ On `lxplus` this is the recommended way to use `FairShip`. CVMFS can also be set
     ```
 3. Source the `setUp.sh` script from the CVMFS release you want to use.
     ```bash
-    source /cvmfs/ship.cern.ch/SHiP-2022/May/setUp.sh
+    source /cvmfs/ship.cern.ch/24.01/setUp.sh
     ```
     Info about different releases can be found in a [dedicated repository](https://github.com/ShipSoft/cvmfs_release).
     Please report issues with particular releases or the setup script there.
