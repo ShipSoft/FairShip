@@ -47,7 +47,7 @@ even if you already know Git, as it explains how development is done on GitHub.
 
 ## Build Instructions using CVMFS
 
-On `lxplus` this is the recommended way to use `FairShip`. CVMFS can also be setup on your own machine (please see the [CVMFS documentation](https://cvmfs.readthedocs.io/en/stable/cpt-quickstart.html)
+On `lxplus` this is the recommended way to use `FairShip`. CVMFS can also be setup on your own machine (please see the [CVMFS documentation](https://cvmfs.readthedocs.io/en/stable/cpt-quickstart.html))
 
 1. Download the FairShip software
     ```bash
