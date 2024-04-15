@@ -26,7 +26,6 @@
 
 #include "AbsMaterialInterface.h"
 
-
 namespace genfit {
 
 /**
@@ -34,43 +33,34 @@ namespace genfit {
  */
 class TGeoMaterialInterface : public AbsMaterialInterface {
 
- public:
+public:
+   TGeoMaterialInterface(){};
+   virtual ~TGeoMaterialInterface() { ; };
 
-  TGeoMaterialInterface() {};
-  virtual ~TGeoMaterialInterface(){;};
+   /** @brief Initialize the navigator at given position and with given
+       direction.  Returns true if the volume changed.
+    */
+   bool initTrack(double posX, double posY, double posZ, double dirX, double dirY, double dirZ);
 
-  /** @brief Initialize the navigator at given position and with given
-      direction.  Returns true if the volume changed.
-   */
-  bool initTrack(double posX, double posY, double posZ,
-                 double dirX, double dirY, double dirZ);
+   /** @brief Get material parameters in current material
+    */
+   void getMaterialParameters(double &density, double &Z, double &A, double &radiationLength, double &mEE);
 
-  /** @brief Get material parameters in current material
-   */
-  void getMaterialParameters(double& density,
-                             double& Z,
-                             double& A,
-                             double& radiationLength,
-                             double& mEE);
+   void getMaterialParameters(MaterialProperties &parameters);
 
-  void getMaterialParameters(MaterialProperties& parameters);
+   /** @brief Make a step (following the curvature) until step length
+    * sMax or the next boundary is reached.  After making a step to a
+    * boundary, the position has to be beyond the boundary, i.e. the
+    * current material has to be that beyond the boundary.  The actual
+    * step made is returned.
+    */
+   double findNextBoundary(const RKTrackRep *rep, const M1x7 &state7, double sMax, bool varField = true);
 
-  /** @brief Make a step (following the curvature) until step length
-   * sMax or the next boundary is reached.  After making a step to a
-   * boundary, the position has to be beyond the boundary, i.e. the
-   * current material has to be that beyond the boundary.  The actual
-   * step made is returned.
-   */
-  double findNextBoundary(const RKTrackRep* rep,
-                          const M1x7& state7,
-                          double sMax,
-                          bool varField = true);
+   double findNextBoundaryAndStepStraight(double sMax);
 
-  double findNextBoundaryAndStepStraight(double sMax);
+   ClassDef(TGeoMaterialInterface, 1);
 
-  ClassDef(TGeoMaterialInterface, 1);
-
- private:
+private:
 };
 
 } /* End of namespace genfit */

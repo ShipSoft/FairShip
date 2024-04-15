@@ -22,19 +22,20 @@
 
 namespace genfit {
 
-void AbsFitter::processTrack(Track* tr, bool resortHits) {
-  AbsTrackRep* cardRep = tr->getCardinalRep();
-  // process cardinal rep first
-  processTrackWithRep(tr, cardRep, resortHits);
+void AbsFitter::processTrack(Track *tr, bool resortHits)
+{
+   AbsTrackRep *cardRep = tr->getCardinalRep();
+   // process cardinal rep first
+   processTrackWithRep(tr, cardRep, resortHits);
 
-  // now process rest of reps, but don't change sorting anymore!
-  for (unsigned int i=0; i<tr->getNumReps(); ++i) {
-    if (tr->getTrackRep(i) != cardRep)
-      processTrackWithRep(tr, tr->getTrackRep(i), false);
-  }
+   // now process rest of reps, but don't change sorting anymore!
+   for (unsigned int i = 0; i < tr->getNumReps(); ++i) {
+      if (tr->getTrackRep(i) != cardRep)
+         processTrackWithRep(tr, tr->getTrackRep(i), false);
+   }
 
-  // self check
-  assert(tr->checkConsistency());
+   // self check
+   assert(tr->checkConsistency());
 }
 
 } /* End of namespace genfit */

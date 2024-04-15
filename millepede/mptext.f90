@@ -383,5 +383,3 @@ INTEGER(mpi) FUNCTION matint(pat,text,npat,ntext)
         matint=MAX(matint,npat-id(npat,jot))
     END DO
 END FUNCTION matint
-
-

@@ -21,6 +21,4 @@
 
 namespace genfit {
 
-
 } /* End of namespace genfit */
-

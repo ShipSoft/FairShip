@@ -150,7 +150,7 @@ MODULE mpmod
     INTEGER(mpi) :: nspc=1 !< number of precision for sparse global matrix (1=D, 2=D+F)
     INTEGER(mpi) :: nencdb !< encoding info (number bits for column counter)
     INTEGER(mpi) :: numMeas !< number of measurement groups for monitoring
-    REAL(mpd), PARAMETER :: measBinSize=0.1 !< bins size for monitoring 
+    REAL(mpd), PARAMETER :: measBinSize=0.1 !< bins size for monitoring
     INTEGER(mpi), DIMENSION(100) :: lbmnrs !< MINRES error labels
     REAL(mpd) :: fvalue !< function value (chi2 sum) solution
     REAL(mpd) :: flines !< function value line search
@@ -205,11 +205,11 @@ MODULE mpmod
     ! constraint sorting, blocks
     INTEGER(mpi), DIMENSION(:), ALLOCATABLE :: vecConsStart !< start of constraint in listConstraints (unsorted input)
     INTEGER(mpi), DIMENSION(:,:), ALLOCATABLE :: matConsSort !< keys and index for sorting
-    INTEGER(mpi), DIMENSION(:,:), ALLOCATABLE :: matConsBlocks !< start of constraint blocks, parameter range 
+    INTEGER(mpi), DIMENSION(:,:), ALLOCATABLE :: matConsBlocks !< start of constraint blocks, parameter range
     ! monitoring of input residuals
     INTEGER(mpi), DIMENSION(:), ALLOCATABLE :: measIndex !< mapping of 1. global label to measurement index
     INTEGER(mpi), DIMENSION(:), ALLOCATABLE :: measHists !< measurement histograms (100 bins per thread)
-    REAL(mpd), DIMENSION(:), ALLOCATABLE :: measRes !< average measurement error   
+    REAL(mpd), DIMENSION(:), ALLOCATABLE :: measRes !< average measurement error
     ! global parameter mapping
     INTEGER(mpi), DIMENSION(:,:), ALLOCATABLE :: globalParLabelIndex !< global parameters label, total -> var. index
     INTEGER(mpi), DIMENSION(:), ALLOCATABLE :: globalParHashTable    !< global parameters hash table

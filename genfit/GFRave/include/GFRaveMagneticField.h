@@ -30,7 +30,6 @@
 
 #include <rave/MagneticField.h>
 
-
 namespace genfit {
 
 /**
@@ -38,15 +37,14 @@ namespace genfit {
  * Uses the FieldManager to provide a magnetic field to rave.
  */
 class GFRaveMagneticField : public rave::MagneticField {
-  public:
-    GFRaveMagneticField(){};
-    virtual GFRaveMagneticField * copy() const;
-    virtual ~GFRaveMagneticField(){};
+public:
+   GFRaveMagneticField(){};
+   virtual GFRaveMagneticField *copy() const;
+   virtual ~GFRaveMagneticField(){};
 
-    virtual rave::Vector3D inTesla ( const rave::Point3D & ) const;
+   virtual rave::Vector3D inTesla(const rave::Point3D &) const;
 
-  private:
-
+private:
 };
 
 } /* End of namespace genfit */

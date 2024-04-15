@@ -39,9 +39,9 @@ protected:
    virtual void Register() override;
 
 private:
-   TClonesArray *fRawData;        /**< Array of output raw items. */
-   Int_t fNHits;              /**< Number of raw items in current event. */
-   Int_t fNHitsTotal;         /**< Total number of raw items. */
+   TClonesArray *fRawData; /**< Array of output raw items. */
+   Int_t fNHits;           /**< Number of raw items in current event. */
+   Int_t fNHitsTotal;      /**< Total number of raw items. */
    uint16_t fPartitionId;
 
    PixelUnpack(const PixelUnpack &);

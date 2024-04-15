@@ -18,7 +18,6 @@
 #include <TMatrixD.h>
 #include <TMatrixDSym.h>
 
-
 //! Namespace for the general broken lines package
 namespace gbl {
 
@@ -57,33 +56,28 @@ namespace gbl {
 
 class BorderedBandMatrix {
 public:
-	BorderedBandMatrix();
-	virtual ~BorderedBandMatrix();
-	void resize(unsigned int nSize, unsigned int nBorder = 1,
-			unsigned int nBand = 5);
-	void solveAndInvertBorderedBand(const VVector &aRightHandSide,
-			VVector &aSolution);
-	void addBlockMatrix(double aWeight,
-			const std::vector<unsigned int>* anIndex,
-			const std::vector<double>* aVector);
-	TMatrixDSym getBlockMatrix(const std::vector<unsigned int> anIndex) const;
-	void printMatrix() const;
+   BorderedBandMatrix();
+   virtual ~BorderedBandMatrix();
+   void resize(unsigned int nSize, unsigned int nBorder = 1, unsigned int nBand = 5);
+   void solveAndInvertBorderedBand(const VVector &aRightHandSide, VVector &aSolution);
+   void addBlockMatrix(double aWeight, const std::vector<unsigned int> *anIndex, const std::vector<double> *aVector);
+   TMatrixDSym getBlockMatrix(const std::vector<unsigned int> anIndex) const;
+   void printMatrix() const;
 
 private:
-	unsigned int numSize; ///< Matrix size
-	unsigned int numBorder; ///< Border size
-	unsigned int numBand; ///< Band width
-	unsigned int numCol; ///< Band matrix size
-	VSymMatrix theBorder; ///< Border part
-	VMatrix theMixed; ///< Mixed part
-	VMatrix theBand; ///< Band part
+   unsigned int numSize;   ///< Matrix size
+   unsigned int numBorder; ///< Border size
+   unsigned int numBand;   ///< Band width
+   unsigned int numCol;    ///< Band matrix size
+   VSymMatrix theBorder;   ///< Border part
+   VMatrix theMixed;       ///< Mixed part
+   VMatrix theBand;        ///< Band part
 
-	void decomposeBand();
-	VVector solveBand(const VVector &aRightHandSide) const;
-	VMatrix solveBand(const VMatrix &aRightHandSide) const;
-	VMatrix invertBand();
-	VMatrix bandOfAVAT(const VMatrix &anArray,
-			const VSymMatrix &aSymArray) const;
+   void decomposeBand();
+   VVector solveBand(const VVector &aRightHandSide) const;
+   VMatrix solveBand(const VMatrix &aRightHandSide) const;
+   VMatrix invertBand();
+   VMatrix bandOfAVAT(const VMatrix &anArray, const VSymMatrix &aSymArray) const;
 };
-}
+} // namespace gbl
 #endif /* BORDEREDBANDMATRIX_H_ */

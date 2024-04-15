@@ -39,10 +39,11 @@ int GetId(int ncrate, int nboard, int channel)
       break;
    }
    int direction = (nboardofstation < 4) ? vertical : horizontal;
-   int strip = direction == vertical
-                  ? channel - 3
-                  : (channel < 16) ? 10 - channel
-                                   : (channel < 32) ? 42 - channel : (channel < 48) ? 74 - channel : 106 - channel;
+   int strip = direction == vertical ? channel - 3
+               : (channel < 16)      ? 10 - channel
+               : (channel < 32)      ? 42 - channel
+               : (channel < 48)      ? 74 - channel
+                                     : 106 - channel;
    strip += (nboardofstation - (direction == vertical ? 1 : 4)) * 64;
    LOG(DEBUG) << ncrate << '\t' << nboard << '\t' << channel << '\t' << station << '\t' << strip << '\t'
               << (direction == vertical ? 'V' : 'H');

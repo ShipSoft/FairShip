@@ -26,91 +26,62 @@
 
 #include <TObject.h>
 
-
 namespace genfit {
-
 
 /**
  * @brief Material properties needed e.g. for material effects calculation.
  */
 class MaterialProperties : public TObject {
 
- public:
+public:
+   //! Compare material parameters
+   friend bool operator==(const MaterialProperties &lhs, const MaterialProperties &rhs);
+   friend bool operator!=(const MaterialProperties &lhs, const MaterialProperties &rhs);
 
-  //! Compare material parameters
-  friend bool operator== (const MaterialProperties& lhs, const MaterialProperties& rhs);
-  friend bool operator!= (const MaterialProperties& lhs, const MaterialProperties& rhs);
+   MaterialProperties();
+   MaterialProperties(const double &density, const double &Z, const double &A, const double &radiationLength,
+                      const double &mEE);
 
-  MaterialProperties();
-  MaterialProperties(const double& density,
-                     const double& Z,
-                     const double& A,
-                     const double& radiationLength,
-                     const double& mEE);
+   double getDensity() const { return density_; }
+   double getZ() const { return Z_; }
+   double getA() const { return A_; }
+   double getRadLen() const { return radiationLength_; }
+   double getMEE() const { return mEE_; }
 
-  double getDensity() const {return density_;}
-  double getZ() const {return Z_;}
-  double getA() const {return A_;}
-  double getRadLen() const {return radiationLength_;}
-  double getMEE() const {return mEE_;}
+   void getMaterialProperties(double &density, double &Z, double &A, double &radiationLength, double &mEE) const;
 
-  void getMaterialProperties(double& density,
-                             double& Z,
-                             double& A,
-                             double& radiationLength,
-                             double& mEE) const;
+   void setMaterialProperties(const double &density, const double &Z, const double &A, const double &radiationLength,
+                              const double &mEE);
 
-  void setMaterialProperties(const double& density,
-                             const double& Z,
-                             const double& A,
-                             const double& radiationLength,
-                             const double& mEE);
+   void Print(const Option_t * = "") const;
 
-  void Print(const Option_t* = "") const;
+private:
+   // material variables
+   //! density of material
+   double density_;
+   //! Atomic number Z of material
+   double Z_;
+   //! Mass number A of material
+   double A_;
+   //! radiation length X0
+   double radiationLength_;
+   //! mean excitation energy [eV]
+   double mEE_;
 
- private:
-
-  // material variables
-  //! density of material
-  double density_;
-  //! Atomic number Z of material
-  double Z_;
-  //! Mass number A of material
-  double A_;
-  //! radiation length X0
-  double radiationLength_;
-  //! mean excitation energy [eV]
-  double mEE_;
-
-
- public:
-  ClassDef(MaterialProperties, 1)
-
+public:
+   ClassDef(MaterialProperties, 1)
 };
 
-
-inline MaterialProperties::MaterialProperties() :
-  density_(0),
-  Z_(0),
-  A_(0),
-  radiationLength_(0),
-  mEE_(0)
+inline MaterialProperties::MaterialProperties() : density_(0), Z_(0), A_(0), radiationLength_(0), mEE_(0)
 {
-  ;
+   ;
 }
 
-inline MaterialProperties::MaterialProperties(const double& density,
-                   const double& Z,
-                   const double& A,
-                   const double& radiationLength,
-                   const double& mEE) :
-  density_(density),
-  Z_(Z),
-  A_(A),
-  radiationLength_(radiationLength),
-  mEE_(mEE)
+inline MaterialProperties::MaterialProperties(const double &density, const double &Z, const double &A,
+                                              const double &radiationLength, const double &mEE)
+   : density_(density), Z_(Z), A_(A), radiationLength_(radiationLength), mEE_(mEE)
 {
-  ;
+   ;
 }
 
 } /* End of namespace genfit */
