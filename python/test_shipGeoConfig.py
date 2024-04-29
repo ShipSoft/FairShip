@@ -98,7 +98,7 @@ with ConfigRegistry.register_config("basic") as c:
         assert self.key in ConfigRegistry.keys()
 
     def test_value(self):
-        assert ConfigRegistry[self.key].Bfield.max  == 1.5*u.kilogauss
+        assert ConfigRegistry[self.key].Bfield.max == 1.5 * u.kilogauss
 
     def tearDown(self):
         ConfigRegistry.clean()
@@ -143,14 +143,14 @@ with ConfigRegistry.register_config("basic") as c:
         self.assertTrue("muShield" in c)
         assert self.key in ConfigRegistry.keys()
         assert len(ConfigRegistry.keys()) == 1, list(ConfigRegistry.keys())
-        assert ConfigRegistry[self.key].Bfield.max  == 1.5*u.kilogauss
-        assert ConfigRegistry[self.key].muShield.dZ1 == 2.5*u.m
+        assert ConfigRegistry[self.key].Bfield.max == 1.5 * u.kilogauss
+        assert ConfigRegistry[self.key].muShield.dZ1 == 2.5 * u.m
 
     def test_false(self):
         ConfigRegistry.loadpys(self.config, MU_SHIELD_ENABLED=False)
         assert self.key in ConfigRegistry.keys()
         assert len(ConfigRegistry.keys()) == 1, list(ConfigRegistry.keys())
-        assert ConfigRegistry[self.key].Bfield.max  == 1.5*u.kilogauss
+        assert ConfigRegistry[self.key].Bfield.max == 1.5 * u.kilogauss
         self.assertTrue("muShield" not in ConfigRegistry[self.key])
 
     def tearDown(self):
@@ -170,16 +170,17 @@ class TestStringNewLine(unittest.TestCase):
     def test_true(self):
         c = ConfigRegistry.loadpys(self.config)
         self.assertTrue("vetoStation" in c)
-        assert ConfigRegistry[self.key].vetoStation.z == -2390*u.cm
+        assert ConfigRegistry[self.key].vetoStation.z == -2390 * u.cm
 
     def test_readDOS(self):
-        c = ConfigRegistry.loadpy(self.filename, Yheight = 1)
+        c = ConfigRegistry.loadpy(self.filename, Yheight=1)
         self.assertTrue("vetoStation" in c)
-        assert ConfigRegistry[self.key].vetoStation.z == -2390*u.cm
+        assert ConfigRegistry[self.key].vetoStation.z == -2390 * u.cm
 
     def tearDown(self):
         ConfigRegistry.clean()
         os.remove(self.filename)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()

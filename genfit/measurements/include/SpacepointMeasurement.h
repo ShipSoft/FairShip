@@ -26,7 +26,6 @@
 #include "AbsMeasurement.h"
 #include "AbsHMatrix.h"
 
-
 namespace genfit {
 
 /** @brief Class for measurements implementing a space point hit geometry.
@@ -45,40 +44,40 @@ namespace genfit {
  */
 class SpacepointMeasurement : public AbsMeasurement {
 
- public:
-  SpacepointMeasurement(int nDim = 3);
-  SpacepointMeasurement(const TVectorD& rawHitCoords, const TMatrixDSym& rawHitCov, int detId, int hitId, TrackPoint* trackPoint,
-      bool weightedPlaneContruction = true, bool cutCov = true);
+public:
+   SpacepointMeasurement(int nDim = 3);
+   SpacepointMeasurement(const TVectorD &rawHitCoords, const TMatrixDSym &rawHitCov, int detId, int hitId,
+                         TrackPoint *trackPoint, bool weightedPlaneContruction = true, bool cutCov = true);
 
-  virtual ~SpacepointMeasurement() {;}
+   virtual ~SpacepointMeasurement() { ; }
 
-  virtual AbsMeasurement* clone() const {return new SpacepointMeasurement(*this);}
+   virtual AbsMeasurement *clone() const { return new SpacepointMeasurement(*this); }
 
-  /**
-   * @brief Contruct the virtual detector plane
-   *
-   * Per default, the plane will be constructed such that it contains the measurement and POCA to the measurement in cartesian space.
-   * The plane is perpendicular to the track (at the POCA).
-   *
-   *  If weightedPlaneContruction_ is set, the POCA will be calculated in a space weighted with the inverse of the 3D covariance.
-   *  E.g. if the covariance is very oblate, the plane will be almost defined by the covariance shape.
-   *  If the covariance is very prolate, the behaviour will be very similar to the ProlateSpacepointHit.
-   */
-  virtual SharedPlanePtr constructPlane(const StateOnPlane& state) const;
+   /**
+    * @brief Contruct the virtual detector plane
+    *
+    * Per default, the plane will be constructed such that it contains the measurement and POCA to the measurement in
+    * cartesian space. The plane is perpendicular to the track (at the POCA).
+    *
+    *  If weightedPlaneContruction_ is set, the POCA will be calculated in a space weighted with the inverse of the 3D
+    * covariance. E.g. if the covariance is very oblate, the plane will be almost defined by the covariance shape. If
+    * the covariance is very prolate, the behaviour will be very similar to the ProlateSpacepointHit.
+    */
+   virtual SharedPlanePtr constructPlane(const StateOnPlane &state) const;
 
-  virtual std::vector<MeasurementOnPlane*> constructMeasurementsOnPlane(const StateOnPlane& state) const;
+   virtual std::vector<MeasurementOnPlane *> constructMeasurementsOnPlane(const StateOnPlane &state) const;
 
-  virtual const AbsHMatrix* constructHMatrix(const AbsTrackRep*) const;
+   virtual const AbsHMatrix *constructHMatrix(const AbsTrackRep *) const;
 
- private:
+private:
+   void initG();
 
-  void initG();
+   bool weightedPlaneContruction_; // false: use POCA to construct DetPlane. true: Use metric G to construct POCA
+                                   // (default)
+   TMatrixDSym G_;                 //! inverse of 3x3 cov
+   bool cutCov_;                   // false: project 3D cov onto DetPlane. true: cut 3D cov with DetPlane (default)
 
-  bool weightedPlaneContruction_; // false: use POCA to construct DetPlane. true: Use metric G to construct POCA (default)
-  TMatrixDSym G_; //! inverse of 3x3 cov
-  bool cutCov_; // false: project 3D cov onto DetPlane. true: cut 3D cov with DetPlane (default)
-
-  ClassDef(SpacepointMeasurement,3)
+   ClassDef(SpacepointMeasurement, 3)
 };
 
 } /* End of namespace genfit */

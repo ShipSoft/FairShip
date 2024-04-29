@@ -25,7 +25,6 @@
 
 #include "AbsBField.h"
 
-
 namespace genfit {
 
 /** @brief Bell Field for SHiP
@@ -33,22 +32,20 @@ namespace genfit {
  *  @author Thomas Ruf CERN
  */
 class BellField : public AbsBField {
- public:
+public:
+   /** Default constructor **/
+   BellField();
 
-  /** Default constructor **/
-  BellField();
+   /** Standard constructor **/
+   BellField(double Peak, double Middle);
 
-  /** Standard constructor **/
-  BellField(double Peak, double Middle);
+   //! return value at position
+   TVector3 get(const TVector3 &pos) const;
+   void get(const double &posX, const double &posY, const double &posZ, double &Bx, double &By, double &Bz) const;
 
-
-  //! return value at position
-  TVector3 get(const TVector3& pos) const;
-  void get(const double& posX, const double& posY, const double& posZ, double& Bx, double& By, double& Bz) const;
-
- private:
-  double fMiddle;
-  double fPeak;
+private:
+   double fMiddle;
+   double fPeak;
 };
 
 } /* End of namespace genfit */

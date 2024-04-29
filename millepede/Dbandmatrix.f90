@@ -943,5 +943,3 @@ SUBROUTINE dbfdec(w,mp1,n)
     END DO ! K
 
 END SUBROUTINE dbfdec
-
-

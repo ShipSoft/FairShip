@@ -30,7 +30,7 @@ Bool_t ScalerUnpack::Init()
 // Register: Protected method
 void ScalerUnpack::Register()
 {
-   LOG(DEBUG) << "ScalerUnpack : Registering..." ;
+   LOG(DEBUG) << "ScalerUnpack : Registering...";
 }
 
 struct ScalarFrame {
@@ -48,16 +48,16 @@ Bool_t ScalerUnpack::DoUnpack(Int_t *data, Int_t size)
 {
    static_assert(sizeof(ScalarFrame) == 88, "Scaler frame size incorrect!");
    auto df = reinterpret_cast<ScalarFrame *>(data);
-   LOG(DEBUG) << "ScalerUnpack : Unpacking frame... size/bytes = " << size ;
-   LOG(DEBUG) << "PSW = " << df->PSW ;
-   LOG(DEBUG) << "SPW = " << df->SPW ;
-   LOG(DEBUG) << "POT from SPS = " << df->scalars[0] ;
-   LOG(DEBUG) << "S1raw = " << df->scalars[1] ;
-   LOG(DEBUG) << "S1strobed = " << df->scalars[2] ;
-   LOG(DEBUG) << "S1*S2 TrgRaw = " << df->scalars[3] ;
-   LOG(DEBUG) << "S1*S2 TrgStrobed = " << df->scalars[4] ;
+   LOG(DEBUG) << "ScalerUnpack : Unpacking frame... size/bytes = " << size;
+   LOG(DEBUG) << "PSW = " << df->PSW;
+   LOG(DEBUG) << "SPW = " << df->SPW;
+   LOG(DEBUG) << "POT from SPS = " << df->scalars[0];
+   LOG(DEBUG) << "S1raw = " << df->scalars[1];
+   LOG(DEBUG) << "S1strobed = " << df->scalars[2];
+   LOG(DEBUG) << "S1*S2 TrgRaw = " << df->scalars[3];
+   LOG(DEBUG) << "S1*S2 TrgStrobed = " << df->scalars[4];
    for (auto i : ROOT::MakeSeq(df->getSliceCount())) {
-      LOG(DEBUG) << "Slice " << i << "= " << df->slices[i] ;
+      LOG(DEBUG) << "Slice " << i << "= " << df->slices[i];
    }
    auto f = fMan->GetOutFile();
    tree = dynamic_cast<TTree *>(f->Get("scalers"));
@@ -73,12 +73,12 @@ Bool_t ScalerUnpack::DoUnpack(Int_t *data, Int_t size)
          fDavid = int(int(df->scalars[i]) % 0x10000);
          tree->Branch("Goliath", &fGoliath);
          tree->Branch("David", &fDavid);
-         LOG(INFO) << "David: " << fDavid ;
-         LOG(INFO) << "Goliath: " << fGoliath ;
+         LOG(INFO) << "David: " << fDavid;
+         LOG(INFO) << "Goliath: " << fGoliath;
          break;
       }
       case 12:
-         LOG(INFO) << "Spill type: " << df->scalars[i] ;
+         LOG(INFO) << "Spill type: " << df->scalars[i];
          tree->Branch("spill_type", &(df->scalars[i]));
          break;
       default: tree->Branch(TString::Format("SC%.2d", i), &(df->scalars[i]));
@@ -95,5 +95,5 @@ Bool_t ScalerUnpack::DoUnpack(Int_t *data, Int_t size)
 // Reset: Public method
 void ScalerUnpack::Reset()
 {
-   LOG(DEBUG) << "ScalerUnpack : Clearing Data Structure" ;
+   LOG(DEBUG) << "ScalerUnpack : Clearing Data Structure";
 }

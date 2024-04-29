@@ -318,7 +318,7 @@ SUBROUTINE hmpdef(ih,xa,xb,text)           ! book, reset histogram
             ELSE
                 WRITE(lun,219) (fnhist(i,ihc),i=1,nbin)
             END IF
-    
+
             IF(khist(ihc) == 1) THEN
                 WRITE(lun,205) xl(4,ihc),xl(5,ihc)
             ELSE IF(khist(ihc) == 2) THEN
@@ -489,12 +489,12 @@ SUBROUTINE bintab(tab,n,xa,xb)             ! hist scale from data
         iexp=INT(101.0+LOG10(dx)-LOG10(6.0*bin(i)),mpi)
         iexp=iexp-100
         dd=bin(i)*10.0**iexp
-  
+
         n1=INT(ABS(x1)/dd,mpi)
         IF(x1 < 0.0) n1=-n1
         IF(REAL(n1,mps)*dd > x1) n1=n1-1
         !       WRITE(*,*) 'Bin ',I,N1,N1*DD,X1
-  
+
         n2=INT(ABS(x2)/dd,mpi)
         IF(x2 < 0.0) n2=-n2
         IF(REAL(n2,mps)*dd < x2) n2=n2+1
@@ -765,15 +765,15 @@ SUBROUTINE gmpdef(ig,ityp,text)            ! book, reset XY storage
                 WRITE(*,*) '   stored n-tuples,  not-stored n-tuples: ',  &
                     jflc(3,igc),', ',jflc(4,igc)
             END IF
-    
+
             CALL stmacp(jflc(1,igc),array,na) ! get all data
-    
+
             DO n=1,na
                 WRITE(*,102) n, array(1,n),array(2,n)
             END DO
-    
+
         ELSE IF(igtp(igc) == 4) THEN
-    
+
             WRITE(*,*) ' '
             WRITE(*,*) 'Store ',igc,': ',gtext(igc)
             IF(jflc(4,igc) == 0) THEN
@@ -782,16 +782,16 @@ SUBROUTINE gmpdef(ig,ityp,text)            ! book, reset XY storage
                 WRITE(*,*) '   stored n-tuples,  not-stored n-tuples: ',  &
                     jflc(3,igc),', ',jflc(4,igc)
             END IF
-    
+
             CALL stmacp(jflc(1,igc),array,na) ! get all data
             na=na/2
-    
+
             DO n=1,na
                 WRITE(*,102) n,(array4(j,n),j=1,4)
             END DO
-    
+
         ELSE IF(igtp(igc) == 5) THEN
-    
+
             CALL stmacp(kflc(1,igc),array,n) ! get data
             CALL stmarm(kflc(1,igc))         ! remove data
             n=n+n
@@ -813,7 +813,7 @@ SUBROUTINE gmpdef(ig,ityp,text)            ! book, reset XY storage
                 xyplws(3,igc)=0.5*(xyplws(8,igc)-xyplws(7,igc))
                 CALL stmadp(jflc(1,igc),xyplws(1,igc))
             END IF
-    
+
             WRITE(*,*) ' '
             WRITE(*,*) 'Store ',igc,': ',gtext(igc)
             IF(jflc(4,igc) == 0) THEN
@@ -822,7 +822,7 @@ SUBROUTINE gmpdef(ig,ityp,text)            ! book, reset XY storage
                 WRITE(*,*) '   stored n-tuples,  not-stored n-tuples: ',  &
                     jflc(3,igc),', ',jflc(4,igc)
             END IF
-    
+
             CALL stmacp(jflc(1,igc),array,na) ! get all data
             na=na/2
             DO n=1,na
@@ -848,7 +848,7 @@ SUBROUTINE gmpdef(ig,ityp,text)            ! book, reset XY storage
     END IF
     DO igc=iga,igb
         IF(igtp(igc) == 5) THEN
-    
+
             CALL stmacp(kflc(1,igc),array,n) ! get data
             CALL stmarm(kflc(1,igc))         ! remove data
             n=n+n
@@ -870,7 +870,7 @@ SUBROUTINE gmpdef(ig,ityp,text)            ! book, reset XY storage
                 xyplws(3,igc)=0.5*(xyplws(8,igc)-xyplws(7,igc))
                 CALL stmadp(jflc(1,igc),xyplws(1,igc))
             END IF
-    
+
         END IF
         IF(jflc(3,igc)+jflc(4,igc) /= 0) THEN
             WRITE(lun,204) ' '
@@ -1036,6 +1036,3 @@ SUBROUTINE rmesig(x,n,xloc,xsca)           ! robust mean and sigma
     CALL heapf(x,n) ! sort
     xsca=1.4826*0.5*(x((n+1)/2)+x((n+2)/2))  ! dispersion
 END SUBROUTINE rmesig
-
-
-

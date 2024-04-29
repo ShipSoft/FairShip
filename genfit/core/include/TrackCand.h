@@ -37,7 +37,6 @@
 
 #include <cmath>
 
-
 namespace genfit {
 
 /** @brief Track candidate -- seed values and indices
@@ -68,142 +67,140 @@ namespace genfit {
  */
 class TrackCand : public TObject {
 
+public:
+   // Constructors/Destructors ---------
+   TrackCand();
+   ~TrackCand();
 
- public:
+   //! copy constructor
+   TrackCand(const TrackCand &other);
+   //! assignment operator
+   TrackCand &operator=(TrackCand other);
+   void swap(TrackCand &other); // nothrow
 
+   //! == operator checks equality of TrackCandHits. Does not check for sorting parameters.
+   friend bool operator==(const TrackCand &lhs, const TrackCand &rhs);
+   friend bool operator!=(const TrackCand &lhs, const TrackCand &rhs) { return !(lhs == rhs); }
 
-  // Constructors/Destructors ---------
-  TrackCand();
-  ~TrackCand();
+   static bool compareTrackCandHits(const TrackCandHit *lhs, const TrackCandHit *rhs)
+   {
+      return (*lhs < *rhs);
+   } // operator< defined in TrackCandHit.h
 
-  //! copy constructor
-  TrackCand( const TrackCand& other );
-  //! assignment operator
-  TrackCand& operator=(TrackCand other);
-  void swap(TrackCand& other); // nothrow
+   // Accessors -----------------------
+   TrackCandHit *getHit(int i) const;
 
-  //! == operator checks equality of TrackCandHits. Does not check for sorting parameters.
-  friend bool operator== (const TrackCand& lhs, const TrackCand& rhs);
-  friend bool operator!= (const TrackCand& lhs, const TrackCand& rhs) {return !(lhs == rhs);}
+   //! Get detector Id and hit Id for hit number i
+   void getHit(int i, int &detId, int &hitId) const;
 
-  static bool compareTrackCandHits(const TrackCandHit* lhs, const TrackCandHit* rhs) {return (*lhs < *rhs);} // operator< defined in TrackCandHit.h
+   //! Get detector Id, hit Id and sorting parameter for hit number i
+   void getHit(int i, int &detId, int &hitId, double &sortingParameter) const;
 
-  // Accessors -----------------------
-  TrackCandHit* getHit(int i) const;
+   //! Get detector Id, hit Id and plane id for hit number i
+   void getHitWithPlane(int i, int &detId, int &hitId, int &planeId) const;
 
-  //!Get detector Id and hit Id for hit number i
-  void getHit(int i, int& detId, int& hitId) const;
+   unsigned int getNHits() const { return hits_.size(); }
 
-  //! Get detector Id, hit Id and sorting parameter for hit number i
-  void getHit(int i, int& detId, int& hitId, double& sortingParameter) const;
+   /**
+    * @brief Get hit ids of from a specific detector.
+    *
+    * DetId -1 gives hitIds of hits with default detId -1. The default argument -2 gives hit Ids of all hits.
+    */
+   std::vector<int> getHitIDs(int detId = -2) const;
 
-  //! Get detector Id, hit Id and plane id for hit number i
-  void getHitWithPlane(int i, int& detId, int& hitId, int& planeId) const;
+   //! Get detector IDs of all hits
+   std::vector<int> getDetIDs() const;
+   //! Get sorting parameterts of all hits
+   std::vector<double> getSortingParameters() const;
+   std::set<int> getUniqueDetIDs() const;
 
-  unsigned int getNHits() const {return hits_.size();}
+   //! Get the MCT track id, for MC simulations - default value = -1
+   int getMcTrackId() const { return mcTrackId_; }
 
-  /**
-   * @brief Get hit ids of from a specific detector.
-   *
-   * DetId -1 gives hitIds of hits with default detId -1. The default argument -2 gives hit Ids of all hits.
-   */
-  std::vector<int>    getHitIDs(int detId = -2) const;
+   /** @brief get the seed value for track: pos. Identical to the first 3 components of getStateSeed*/
+   TVector3 getPosSeed() const { return TVector3(state6D_(0), state6D_(1), state6D_(2)); }
 
-  //! Get detector IDs of all hits
-  std::vector<int>    getDetIDs() const;
-  //! Get sorting parameterts of all hits
-  std::vector<double> getSortingParameters() const;
-  std::set<int>       getUniqueDetIDs() const;
+   /** @brief get the seed value for track: mom. Identical to the last 3 components of getStateSeed*/
+   TVector3 getMomSeed() const { return TVector3(state6D_(3), state6D_(4), state6D_(5)); }
 
-  //! Get the MCT track id, for MC simulations - default value = -1
-  int getMcTrackId() const {return mcTrackId_;}
+   /** @brief set the covariance matrix seed (6D).  */
+   void setCovSeed(const TMatrixDSym &cov6D) { cov6D_ = cov6D; /* always 6D, no need to resize */ }
 
-  /** @brief get the seed value for track: pos. Identical to the first 3 components of getStateSeed*/
-  TVector3 getPosSeed() const {return TVector3(state6D_(0), state6D_(1), state6D_(2));}
+   /** @brief get the covariance matrix seed (6D).  */
+   const TMatrixDSym &getCovSeed() const { return cov6D_; }
 
-  /** @brief get the seed value for track: mom. Identical to the last 3 components of getStateSeed*/
-  TVector3 getMomSeed() const {return TVector3(state6D_(3), state6D_(4), state6D_(5));}
+   //! Returns the 6D seed state; should be in global coordinates.
+   const TVectorD &getStateSeed() const { return state6D_; }
 
-  /** @brief set the covariance matrix seed (6D).  */
-  void setCovSeed(const TMatrixDSym& cov6D) {cov6D_ = cov6D; /* always 6D, no need to resize */}
+   double getChargeSeed() const { return q_; }
 
-  /** @brief get the covariance matrix seed (6D).  */
-  const TMatrixDSym& getCovSeed() const {return cov6D_;}
+   //! Get the PDG code
+   int getPdgCode() const { return pdg_; }
 
-  //! Returns the 6D seed state; should be in global coordinates.
-  const TVectorD& getStateSeed() const {return state6D_;}
+   //! Is there a hit with detId and hitId in the TrackCand?
+   bool hitInTrack(int detId, int hitId) const;
 
-  double getChargeSeed() const {return q_;}
+   // Modifiers -----------------------
 
-  //! Get the PDG code
-  int getPdgCode() const {return pdg_;}
+   void addHit(int detId, int hitId, int planeId = -1, double sortingParameter = 0);
 
-  //! Is there a hit with detId and hitId in the TrackCand?
-  bool hitInTrack(int detId, int hitId) const;
+   void addHit(TrackCandHit *hit) { hits_.push_back(hit); }
 
-  // Modifiers -----------------------
+   //! Set the MCT track id, for MC simulations
+   void setMcTrackId(int i) { mcTrackId_ = i; }
 
-  void addHit(int detId, int hitId, int planeId = -1, double sortingParameter = 0);
+   //! Set a particle hypothesis in form of a PDG code. This will also set the charge attribute
+   void setPdgCode(int pdgCode);
 
-  void addHit(TrackCandHit* hit) {hits_.push_back(hit);}
+   //! Clone the TrackCandHit objects from the other TrackCand and append them to this TrackCand
+   void append(const TrackCand &);
 
-  //! Set the MCT track id, for MC simulations
-  void setMcTrackId(int i) {mcTrackId_ = i;}
+   //! Sort the hits that were already added to the trackCand using the sorting parameters.
+   void sortHits();
 
-  //! Set a particle hypothesis in form of a PDG code. This will also set the charge attribute
-  void setPdgCode(int pdgCode);
+   void sortHits(const std::vector<unsigned int> &indices);
 
-  //! Clone the TrackCandHit objects from the other TrackCand and append them to this TrackCand
-  void append(const TrackCand&);
+   // Operations ----------------------
+   //! Delete and clear the TrackCandHits
+   void reset();
 
-  //! Sort the hits that were already added to the trackCand using the sorting parameters.
-  void sortHits();
+   //! Write the content of all private attributes to the terminal
+   void Print(const Option_t * = "") const;
 
-  void sortHits(const std::vector<unsigned int>& indices);
+   /** @brief sets the state to seed the track fitting. State has to be a TVectorD(6). First 3 elements are the staring
+    * postion second 3 elements the starting momentum. Everything in global coordinates charge is the charge hypotheses
+    * of the particle charge
+    */
+   void set6DSeed(const TVectorD &state6D, const double charge);
 
-  // Operations ----------------------
-  //! Delete and clear the TrackCandHits
-  void reset();
+   /** @brief This function works the same as set6DSeed but instead of a charge hypothesis you can set a pdg code which
+    * will set the charge automatically
+    */
+   void set6DSeedAndPdgCode(const TVectorD &state6D, const int pdgCode);
 
-  //! Write the content of all private attributes to the terminal
-  void Print(const Option_t* = "") const ;
+   /** @brief sets the state to seed the track fitting. State has to be a TVector3 for position and a TVector3 for
+    * momentum. Everything in global coordinates charge is the charge hypotheses of the particle charge
+    */
+   void setPosMomSeed(const TVector3 &pos, const TVector3 &mom, const double charge);
 
-  /** @brief sets the state to seed the track fitting. State has to be a TVectorD(6). First 3 elements are the staring postion second 3 elements the starting momentum. Everything in global coordinates
-   * charge is the charge hypotheses of the particle charge
-   */
-  void set6DSeed(const TVectorD& state6D, const double charge);
+   /** @brief This function works the same as setPosMomSeed but instead of a charge hypothesis you can set a pdg code
+    * which will set the charge automatically
+    */
+   void setPosMomSeedAndPdgCode(const TVector3 &pos, const TVector3 &mom, const int pdgCode);
 
-  /** @brief This function works the same as set6DSeed but instead of a charge hypothesis you can set a pdg code which will set the charge automatically
-   */
-  void set6DSeedAndPdgCode(const TVectorD& state6D, const int pdgCode);
+private:
+   // Private Data Members ------------
+   std::vector<TrackCandHit *> hits_; //->
 
-  /** @brief sets the state to seed the track fitting. State has to be a TVector3 for position and a TVector3 for momentum. Everything in global coordinates
-   * charge is the charge hypotheses of the particle charge
-   */
-  void setPosMomSeed(const TVector3& pos, const TVector3& mom, const double charge);
+   int mcTrackId_; /**< if MC simulation, store the mc track id here */
+   int pdg_;       /**< particle data groupe's id for a particle*/
 
-  /** @brief This function works the same as setPosMomSeed but instead of a charge hypothesis you can set a pdg code which will set the charge automatically
-   */
-  void setPosMomSeedAndPdgCode(const TVector3& pos, const TVector3& mom, const int pdgCode);
+   TVectorD state6D_;  /**< global 6D position plus momentum state */
+   TMatrixDSym cov6D_; /**< global 6D position plus momentum state */
+   double q_;          /**< the charge of the particle in units of elementary charge */
 
-
- private:
-
-  // Private Data Members ------------
-  std::vector<TrackCandHit*> hits_; //->
-
-  int mcTrackId_; /**< if MC simulation, store the mc track id here */
-  int pdg_; /**< particle data groupe's id for a particle*/
-
-  TVectorD state6D_; /**< global 6D position plus momentum state */
-  TMatrixDSym cov6D_; /**< global 6D position plus momentum state */
-  double q_; /**< the charge of the particle in units of elementary charge */
-
-
- public:
-
-  ClassDef(TrackCand,1)
-
+public:
+   ClassDef(TrackCand, 1)
 };
 
 } /* End of namespace genfit */
