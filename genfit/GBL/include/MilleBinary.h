@@ -8,8 +8,8 @@
 #ifndef MILLEBINARY_H_
 #define MILLEBINARY_H_
 
-#include<fstream>
-#include<vector>
+#include <fstream>
+#include <vector>
 
 //! Namespace for the general broken lines package
 namespace gbl {
@@ -45,22 +45,19 @@ namespace gbl {
  */
 class MilleBinary {
 public:
-	MilleBinary(const std::string fileName = "milleBinaryISN.dat",
-			bool doublePrec = false, unsigned int aSize = 2000);
-	virtual ~MilleBinary();
-	void addData(double aMeas, double aPrec,
-			const std::vector<unsigned int> &indLocal,
-			const std::vector<double> &derLocal,
-			const std::vector<int> &labGlobal,
-			const std::vector<double> &derGlobal);
-	void writeRecord();
+   MilleBinary(const std::string fileName = "milleBinaryISN.dat", bool doublePrec = false, unsigned int aSize = 2000);
+   virtual ~MilleBinary();
+   void addData(double aMeas, double aPrec, const std::vector<unsigned int> &indLocal,
+                const std::vector<double> &derLocal, const std::vector<int> &labGlobal,
+                const std::vector<double> &derGlobal);
+   void writeRecord();
 
 private:
-	std::ofstream binaryFile; ///< Binary File
-	std::vector<int> intBuffer; ///< Integer buffer
-	std::vector<float> floatBuffer; ///< Float buffer
-	std::vector<double> doubleBuffer; ///< Double buffer
-	bool doublePrecision; ///< Flag for storage in as *double* values
+   std::ofstream binaryFile;         ///< Binary File
+   std::vector<int> intBuffer;       ///< Integer buffer
+   std::vector<float> floatBuffer;   ///< Float buffer
+   std::vector<double> doubleBuffer; ///< Double buffer
+   bool doublePrecision;             ///< Flag for storage in as *double* values
 };
-}
+} // namespace gbl
 #endif /* MILLEBINARY_H_ */

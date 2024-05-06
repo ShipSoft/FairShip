@@ -30,250 +30,240 @@
 #include "AbsKalmanFitter.h"
 #include <Math/ProbFunc.h>
 
-
-//#define DEBUG
+// #define DEBUG
 
 using namespace genfit;
 
+void AbsKalmanFitter::getChiSquNdf(const Track *tr, const AbsTrackRep *rep, double &bChi2, double &fChi2, double &bNdf,
+                                   double &fNdf) const
+{
 
+   bChi2 = 0;
+   fChi2 = 0;
+   bNdf = -1. * rep->getDim();
+   fNdf = -1. * rep->getDim();
 
-void AbsKalmanFitter::getChiSquNdf(const Track* tr, const AbsTrackRep* rep,
-    double& bChi2, double& fChi2,
-    double& bNdf,  double& fNdf) const {
+   const std::vector<TrackPoint *> &pointsWM = tr->getPointsWithMeasurement();
+   for (std::vector<TrackPoint *>::const_iterator tpIter = pointsWM.begin(), endIter = pointsWM.end();
+        tpIter != endIter; ++tpIter) {
+      if (!(*tpIter)->hasFitterInfo(rep))
+         continue;
 
-  bChi2 = 0;
-  fChi2 = 0;
-  bNdf = -1. * rep->getDim();
-  fNdf = -1. * rep->getDim();
+      AbsFitterInfo *afi = (*tpIter)->getFitterInfo(rep);
+      KalmanFitterInfo *fi = dynamic_cast<KalmanFitterInfo *>(afi);
+      if (!fi) {
+         Exception exc("AbsKalmanFitter::getChiSqu(): fitterInfo is not a KalmanFitterInfo", __LINE__, __FILE__);
+         throw exc;
+      }
 
-  const std::vector<TrackPoint*>& pointsWM = tr->getPointsWithMeasurement();
-  for (std::vector<TrackPoint*>::const_iterator tpIter = pointsWM.begin(), endIter = pointsWM.end(); tpIter != endIter; ++tpIter) {
-    if (! (*tpIter)->hasFitterInfo(rep))
-      continue;
+      KalmanFittedStateOnPlane *fup = fi->getForwardUpdate();
+      KalmanFittedStateOnPlane *bup = fi->getBackwardUpdate();
 
-    AbsFitterInfo* afi = (*tpIter)->getFitterInfo(rep);
-    KalmanFitterInfo* fi = dynamic_cast<KalmanFitterInfo*>(afi);
-    if (!fi) {
-      Exception exc("AbsKalmanFitter::getChiSqu(): fitterInfo is not a KalmanFitterInfo", __LINE__,__FILE__);
-      throw exc;
-    }
+      if (fup == NULL || bup == NULL) {
+         Exception exc("AbsKalmanFitter::getChiSqu(): fup == NULL || bup == NULL", __LINE__, __FILE__);
+         throw exc;
+      }
 
-    KalmanFittedStateOnPlane* fup = fi->getForwardUpdate();
-    KalmanFittedStateOnPlane* bup = fi->getBackwardUpdate();
+      bChi2 += bup->getChiSquareIncrement();
+      fChi2 += fup->getChiSquareIncrement();
 
-    if (fup == NULL || bup == NULL) {
-      Exception exc("AbsKalmanFitter::getChiSqu(): fup == NULL || bup == NULL", __LINE__,__FILE__);
-      throw exc;
-    }
+      bNdf += bup->getNdf();
+      fNdf += fup->getNdf();
+   }
 
-    bChi2 += bup->getChiSquareIncrement();
-    fChi2 += fup->getChiSquareIncrement();
+   if (bNdf < 0)
+      bNdf = 0;
 
-    bNdf += bup->getNdf();
-    fNdf += fup->getNdf();
-  }
-
-  if (bNdf < 0)
-    bNdf = 0;
-
-  if (fNdf < 0)
-    fNdf = 0;
+   if (fNdf < 0)
+      fNdf = 0;
 }
 
+double AbsKalmanFitter::getChiSqu(const Track *tr, const AbsTrackRep *rep, int direction) const
+{
+   double bChi2(0), fChi2(0), bNdf(0), fNdf(0);
 
-double AbsKalmanFitter::getChiSqu(const Track* tr, const AbsTrackRep* rep, int direction) const {
-  double bChi2(0), fChi2(0), bNdf(0), fNdf(0);
+   getChiSquNdf(tr, rep, bChi2, fChi2, bNdf, fNdf);
 
-  getChiSquNdf(tr, rep, bChi2, fChi2, bNdf, fNdf);
-
-  if (direction < 0)
-    return bChi2;
-  return fChi2;
+   if (direction < 0)
+      return bChi2;
+   return fChi2;
 }
 
-double AbsKalmanFitter::getNdf(const Track* tr, const AbsTrackRep* rep, int direction) const {
-  double bChi2(0), fChi2(0), bNdf(0), fNdf(0);
+double AbsKalmanFitter::getNdf(const Track *tr, const AbsTrackRep *rep, int direction) const
+{
+   double bChi2(0), fChi2(0), bNdf(0), fNdf(0);
 
-  getChiSquNdf(tr, rep, bChi2, fChi2, bNdf, fNdf);
+   getChiSquNdf(tr, rep, bChi2, fChi2, bNdf, fNdf);
 
-  if (direction < 0)
-    return bNdf;
-  return fNdf;
+   if (direction < 0)
+      return bNdf;
+   return fNdf;
 }
 
-double AbsKalmanFitter::getRedChiSqu(const Track* tr, const AbsTrackRep* rep, int direction) const {
-  double bChi2(0), fChi2(0), bNdf(0), fNdf(0);
+double AbsKalmanFitter::getRedChiSqu(const Track *tr, const AbsTrackRep *rep, int direction) const
+{
+   double bChi2(0), fChi2(0), bNdf(0), fNdf(0);
 
-  getChiSquNdf(tr, rep, bChi2, fChi2, bNdf, fNdf);
+   getChiSquNdf(tr, rep, bChi2, fChi2, bNdf, fNdf);
 
-  if (direction < 0)
-    return bChi2/bNdf;
-  return fChi2/fNdf;
+   if (direction < 0)
+      return bChi2 / bNdf;
+   return fChi2 / fNdf;
 }
 
-double AbsKalmanFitter::getPVal(const Track* tr, const AbsTrackRep* rep, int direction) const {
-  double bChi2(0), fChi2(0), bNdf(0), fNdf(0);
+double AbsKalmanFitter::getPVal(const Track *tr, const AbsTrackRep *rep, int direction) const
+{
+   double bChi2(0), fChi2(0), bNdf(0), fNdf(0);
 
-  getChiSquNdf(tr, rep, bChi2, fChi2, bNdf, fNdf);
+   getChiSquNdf(tr, rep, bChi2, fChi2, bNdf, fNdf);
 
-  if (direction < 0)
-    return ROOT::Math::chisquared_cdf_c(bChi2, bNdf);
-  return ROOT::Math::chisquared_cdf_c(fChi2, fNdf);
+   if (direction < 0)
+      return ROOT::Math::chisquared_cdf_c(bChi2, bNdf);
+   return ROOT::Math::chisquared_cdf_c(fChi2, fNdf);
 }
 
+bool AbsKalmanFitter::isTrackPrepared(const Track *tr, const AbsTrackRep *rep) const
+{
+   const std::vector<TrackPoint *> &points = tr->getPointsWithMeasurement();
 
-bool AbsKalmanFitter::isTrackPrepared(const Track* tr, const AbsTrackRep* rep) const {
-  const std::vector<TrackPoint*>& points = tr->getPointsWithMeasurement();
+   if (points.size() == 0)
+      return true;
 
-  if (points.size() == 0)
-    return true;
+   for (std::vector<TrackPoint *>::const_iterator pIt = points.begin(), pEnd = points.end(); pIt != pEnd; ++pIt) {
+      KalmanFitterInfo *fi = dynamic_cast<KalmanFitterInfo *>((*pIt)->getFitterInfo(rep));
 
-  for (std::vector<TrackPoint*>::const_iterator pIt = points.begin(), pEnd = points.end(); pIt != pEnd; ++pIt) {
-    KalmanFitterInfo* fi = dynamic_cast<KalmanFitterInfo*>((*pIt)->getFitterInfo(rep));
+      if (!fi)
+         continue;
 
-    if (!fi)
-      continue;
+      if (!(fi->checkConsistency()))
+         return false;
 
-    if (!(fi->checkConsistency()))
+      if (!(fi->hasReferenceState()))
+         return false;
+   }
+
+   return true;
+}
+
+bool AbsKalmanFitter::isTrackFitted(const Track *tr, const AbsTrackRep *rep) const
+{
+   if (!tr->getFitStatus(rep)->isFitted())
       return false;
 
-    if (!(fi->hasReferenceState()))
-      return false;
-  }
+   // in depth check
 
-  return true;
+   const std::vector<TrackPoint *> &points = tr->getPointsWithMeasurement();
+
+   if (points.size() == 0)
+      return true;
+
+   for (std::vector<TrackPoint *>::const_iterator pIt = points.begin(), pEnd = points.end(); pIt != pEnd; ++pIt) {
+      KalmanFitterInfo *fi = dynamic_cast<KalmanFitterInfo *>((*pIt)->getFitterInfo(rep));
+      if (!fi)
+         return false;
+
+      if (!(fi->checkConsistency()))
+         return false;
+
+      if (!(fi->hasForwardUpdate()))
+         return false;
+
+      if (!(fi->hasBackwardUpdate()))
+         return false;
+   }
+
+   return true;
 }
 
-bool AbsKalmanFitter::isTrackFitted(const Track* tr, const AbsTrackRep* rep) const {
-  if (! tr->getFitStatus(rep)->isFitted())
-    return false;
+const std::vector<MeasurementOnPlane *>
+AbsKalmanFitter::getMeasurements(const KalmanFitterInfo *fi, const TrackPoint *tp, int direction) const
+{
 
-  // in depth check
+   switch (multipleMeasurementHandling_) {
+   case weightedAverage:
+   case unweightedAverage: return fi->getMeasurementsOnPlane();
 
-  const std::vector< TrackPoint* >& points = tr->getPointsWithMeasurement();
-
-  if (points.size() == 0)
-    return true;
-
-  for (std::vector<TrackPoint*>::const_iterator pIt = points.begin(), pEnd = points.end(); pIt != pEnd; ++pIt) {
-    KalmanFitterInfo* fi = dynamic_cast<KalmanFitterInfo*>((*pIt)->getFitterInfo(rep));
-    if (!fi)
-      return false;
-
-    if (!(fi->checkConsistency()))
-      return false;
-
-    if (!(fi->hasForwardUpdate()))
-      return false;
-
-    if (!(fi->hasBackwardUpdate()))
-      return false;
-  }
-
-  return true;
-}
-
-
-const std::vector<MeasurementOnPlane *> AbsKalmanFitter::getMeasurements(const KalmanFitterInfo* fi, const TrackPoint* tp, int direction) const {
-
-  switch (multipleMeasurementHandling_) {
-    case weightedAverage :
-    case unweightedAverage :
-      return fi->getMeasurementsOnPlane();
-
-    case weightedClosestToReference :
-    case unweightedClosestToReference :
-    {
+   case weightedClosestToReference:
+   case unweightedClosestToReference: {
       if (!fi->hasReferenceState()) {
-        Exception e("AbsKalmanFitter::getMeasurement: no ReferenceState.", __LINE__,__FILE__);
-        e.setFatal();
-        throw e;
+         Exception e("AbsKalmanFitter::getMeasurement: no ReferenceState.", __LINE__, __FILE__);
+         e.setFatal();
+         throw e;
       }
       std::vector<MeasurementOnPlane *> retVal;
       retVal.push_back(fi->getClosestMeasurementOnPlane(fi->getReferenceState()));
       return retVal;
-    }
+   }
 
-    case weightedClosestToPrediction :
-    case unweightedClosestToPrediction :
-    {
+   case weightedClosestToPrediction:
+   case unweightedClosestToPrediction: {
       if (!fi->hasPrediction(direction)) {
-        Exception e("AbsKalmanFitter::getMeasurement: no prediction.", __LINE__,__FILE__);
-        e.setFatal();
-        throw e;
+         Exception e("AbsKalmanFitter::getMeasurement: no prediction.", __LINE__, __FILE__);
+         e.setFatal();
+         throw e;
       }
       std::vector<MeasurementOnPlane *> retVal;
       retVal.push_back(fi->getClosestMeasurementOnPlane(fi->getPrediction(direction)));
       return retVal;
-    }
+   }
 
+   case weightedClosestToReferenceWire:
+   case unweightedClosestToReferenceWire: {
+      if (tp->getNumRawMeasurements() == 1 && dynamic_cast<WireMeasurement *>(tp->getRawMeasurement()) != NULL) {
+         if (!fi->hasReferenceState()) {
+            Exception e("AbsKalmanFitter::getMeasurement: no ReferenceState.", __LINE__, __FILE__);
+            e.setFatal();
+            throw e;
+         }
+         std::vector<MeasurementOnPlane *> retVal;
+         retVal.push_back(fi->getClosestMeasurementOnPlane(fi->getReferenceState()));
+         return retVal;
+      } else
+         return fi->getMeasurementsOnPlane();
+   }
 
-    case weightedClosestToReferenceWire :
-    case unweightedClosestToReferenceWire :
-    {
-      if (tp->getNumRawMeasurements() == 1 && dynamic_cast<WireMeasurement*>(tp->getRawMeasurement()) != NULL) {
-        if (!fi->hasReferenceState()) {
-          Exception e("AbsKalmanFitter::getMeasurement: no ReferenceState.", __LINE__,__FILE__);
-          e.setFatal();
-          throw e;
-        }
-        std::vector<MeasurementOnPlane *> retVal;
-        retVal.push_back(fi->getClosestMeasurementOnPlane(fi->getReferenceState()));
-        return retVal;
-      }
-      else
-        return fi->getMeasurementsOnPlane();
-    }
+   case weightedClosestToPredictionWire:
+   case unweightedClosestToPredictionWire: {
+      if (tp->getNumRawMeasurements() == 1 && dynamic_cast<WireMeasurement *>(tp->getRawMeasurement()) != NULL) {
+         if (!fi->hasPrediction(direction)) {
+            Exception e("AbsKalmanFitter::getMeasurement: no prediction.", __LINE__, __FILE__);
+            e.setFatal();
+            throw e;
+         }
+         std::vector<MeasurementOnPlane *> retVal;
+         retVal.push_back(fi->getClosestMeasurementOnPlane(fi->getPrediction(direction)));
+         return retVal;
+      } else
+         return fi->getMeasurementsOnPlane();
+   }
 
-    case weightedClosestToPredictionWire :
-    case unweightedClosestToPredictionWire :
-    {
-      if (tp->getNumRawMeasurements() == 1 && dynamic_cast<WireMeasurement*>(tp->getRawMeasurement()) != NULL) {
-        if (!fi->hasPrediction(direction)) {
-          Exception e("AbsKalmanFitter::getMeasurement: no prediction.", __LINE__,__FILE__);
-          e.setFatal();
-          throw e;
-        }
-        std::vector<MeasurementOnPlane *> retVal;
-        retVal.push_back(fi->getClosestMeasurementOnPlane(fi->getPrediction(direction)));
-        return retVal;
-      }
-      else
-        return fi->getMeasurementsOnPlane();
-    }
-
-
-    default:
-    {
-      Exception e("AbsKalmanFitter::getMeasurement: choice not valid.", __LINE__,__FILE__);
+   default: {
+      Exception e("AbsKalmanFitter::getMeasurement: choice not valid.", __LINE__, __FILE__);
       e.setFatal();
       throw e;
-    }
-  }
+   }
+   }
 }
 
+bool AbsKalmanFitter::canIgnoreWeights() const
+{
+   switch (multipleMeasurementHandling_) {
+   case unweightedAverage:
+   case unweightedClosestToReference:
+   case unweightedClosestToPrediction:
+   case unweightedClosestToReferenceWire:
+   case unweightedClosestToPredictionWire: return true;
 
-bool AbsKalmanFitter::canIgnoreWeights() const {
-  switch (multipleMeasurementHandling_) {
-    case unweightedAverage :
-    case unweightedClosestToReference :
-    case unweightedClosestToPrediction :
-    case unweightedClosestToReferenceWire :
-    case unweightedClosestToPredictionWire :
-      return true;
+   case weightedAverage:
+   case weightedClosestToReference:
+   case weightedClosestToPrediction:
+   case weightedClosestToReferenceWire:
+   case weightedClosestToPredictionWire: return false;
 
-    case weightedAverage :
-    case weightedClosestToReference :
-    case weightedClosestToPrediction :
-    case weightedClosestToReferenceWire :
-    case weightedClosestToPredictionWire :
-      return false;
-
-    default:
-    {
-      Exception e("AbsKalmanFitter::canIgnoreWeights: choice not valid.", __LINE__,__FILE__);
+   default: {
+      Exception e("AbsKalmanFitter::canIgnoreWeights: choice not valid.", __LINE__, __FILE__);
       e.setFatal();
       throw e;
-    }
-  }
+   }
+   }
 }

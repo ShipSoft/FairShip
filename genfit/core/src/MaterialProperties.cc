@@ -23,57 +23,46 @@
 
 namespace genfit {
 
-bool operator== (const MaterialProperties& lhs, const MaterialProperties& rhs){
-  if (&lhs == &rhs)
-    return true;
-  if (lhs.density_ != rhs.density_ ||
-      lhs.Z_ != rhs.Z_ ||
-      lhs.A_ != rhs.A_ ||
-      lhs.radiationLength_ != rhs.radiationLength_ ||
-      lhs.mEE_ != rhs.mEE_)
-    return false;
+bool operator==(const MaterialProperties &lhs, const MaterialProperties &rhs)
+{
+   if (&lhs == &rhs)
+      return true;
+   if (lhs.density_ != rhs.density_ || lhs.Z_ != rhs.Z_ || lhs.A_ != rhs.A_ ||
+       lhs.radiationLength_ != rhs.radiationLength_ || lhs.mEE_ != rhs.mEE_)
+      return false;
 
-  return true;
+   return true;
 }
 
-bool operator!= (const MaterialProperties& lhs, const MaterialProperties& rhs) {
-  return !(lhs==rhs);
+bool operator!=(const MaterialProperties &lhs, const MaterialProperties &rhs)
+{
+   return !(lhs == rhs);
 }
 
-
-void MaterialProperties::getMaterialProperties(double& density,
-                                               double& Z,
-                                               double& A,
-                                               double& radiationLength,
-                                               double& mEE) const {
-  density = density_;
-  Z = Z_;
-  A = A_;
-  radiationLength = radiationLength_;
-  mEE = mEE_;
+void MaterialProperties::getMaterialProperties(double &density, double &Z, double &A, double &radiationLength,
+                                               double &mEE) const
+{
+   density = density_;
+   Z = Z_;
+   A = A_;
+   radiationLength = radiationLength_;
+   mEE = mEE_;
 }
 
-
-void MaterialProperties::setMaterialProperties(const double& density,
-                                               const double& Z,
-                                               const double& A,
-                                               const double& radiationLength,
-                                               const double& mEE) {
-  density_ = density;
-  Z_ = Z;
-  A_ = A;
-  radiationLength_ = radiationLength;
-  mEE_ = mEE;
+void MaterialProperties::setMaterialProperties(const double &density, const double &Z, const double &A,
+                                               const double &radiationLength, const double &mEE)
+{
+   density_ = density;
+   Z_ = Z;
+   A_ = A;
+   radiationLength_ = radiationLength;
+   mEE_ = mEE;
 }
 
-
-void MaterialProperties::Print(const Option_t*) const {
-  std::cout << "Density = " << density_ << ", \t" <<
-               "Z = " << Z_ << ", \t" <<
-               "A = " << A_ << ", \t" <<
-               "radiationLength = " << radiationLength_ << ", \t" <<
-               "mEE = " << mEE_ << "\n";
+void MaterialProperties::Print(const Option_t *) const
+{
+   std::cout << "Density = " << density_ << ", \t" << "Z = " << Z_ << ", \t" << "A = " << A_ << ", \t"
+             << "radiationLength = " << radiationLength_ << ", \t" << "mEE = " << mEE_ << "\n";
 }
-
 
 } /* End of namespace genfit */

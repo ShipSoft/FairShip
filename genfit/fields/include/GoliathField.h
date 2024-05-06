@@ -25,7 +25,6 @@
 
 #include "AbsBField.h"
 
-
 namespace genfit {
 
 /** @brief Constant Magnetic field
@@ -35,26 +34,21 @@ namespace genfit {
  *
  */
 class GoliathField : public AbsBField {
- public:
-  //! define the constant field in this ctor
-  GoliathField(double b1, double b2, double b3)
-    : field_(b1, b2, b3)
-  { ; }
+public:
+   //! define the constant field in this ctor
+   GoliathField(double b1, double b2, double b3) : field_(b1, b2, b3) { ; }
 
-  GoliathField(const TVector3& field)
-    : field_(field)
-  { ; }
-  Float_t coords[13][6];
- 
-  
-  //! return value at position
-  TVector3 get(const TVector3& pos) const;
-  void get(const double& posX, const double& posY, const double& posZ, double& Bx, double& By, double& Bz) const;
-  void getpos(TString vol, TVector3 &bot, TVector3 &top) const;
-  void setup();
- 
- private:
-  TVector3 field_;
+   GoliathField(const TVector3 &field) : field_(field) { ; }
+   Float_t coords[13][6];
+
+   //! return value at position
+   TVector3 get(const TVector3 &pos) const;
+   void get(const double &posX, const double &posY, const double &posZ, double &Bx, double &By, double &Bz) const;
+   void getpos(TString vol, TVector3 &bot, TVector3 &top) const;
+   void setup();
+
+private:
+   TVector3 field_;
 };
 
 } /* End of namespace genfit */

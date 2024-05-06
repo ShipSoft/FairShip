@@ -27,50 +27,59 @@
 
 namespace genfit {
 
-void MeasuredStateOnPlane::Print(Option_t*) const {
-  std::cout << "genfit::MeasuredStateOnPlane ";
-  std::cout << "my address " << this << " my plane's address " << this->sharedPlane_.get() << "; use count: " << sharedPlane_.use_count() << std::endl;
-  std::cout << " state vector: "; state_.Print();
-  std::cout << " covariance matrix: "; cov_.Print();
-  if (sharedPlane_ != NULL) {
-    std::cout << " defined in plane "; sharedPlane_->Print();
-    TVector3 pos, mom;
-    TMatrixDSym cov(6,6);
-    getRep()->getPosMomCov(*this, pos, mom, cov);
-    std::cout << " 3D position: "; pos.Print();
-    std::cout << " 3D momentum: "; mom.Print();
-    //std::cout << " 6D covariance: "; cov.Print();
-  }
+void MeasuredStateOnPlane::Print(Option_t *) const
+{
+   std::cout << "genfit::MeasuredStateOnPlane ";
+   std::cout << "my address " << this << " my plane's address " << this->sharedPlane_.get()
+             << "; use count: " << sharedPlane_.use_count() << std::endl;
+   std::cout << " state vector: ";
+   state_.Print();
+   std::cout << " covariance matrix: ";
+   cov_.Print();
+   if (sharedPlane_ != NULL) {
+      std::cout << " defined in plane ";
+      sharedPlane_->Print();
+      TVector3 pos, mom;
+      TMatrixDSym cov(6, 6);
+      getRep()->getPosMomCov(*this, pos, mom, cov);
+      std::cout << " 3D position: ";
+      pos.Print();
+      std::cout << " 3D momentum: ";
+      mom.Print();
+      // std::cout << " 6D covariance: "; cov.Print();
+   }
 }
 
-void MeasuredStateOnPlane::blowUpCov(double blowUpFac, bool resetOffDiagonals) {
+void MeasuredStateOnPlane::blowUpCov(double blowUpFac, bool resetOffDiagonals)
+{
 
-  if (resetOffDiagonals) {
-    unsigned int dim = cov_.GetNcols();
-    for (unsigned int i=0; i<dim; ++i) {
-      for (unsigned int j=0; j<dim; ++j) {
-        if (i != j)
-          cov_(i,j) = 0; // reset off-diagonals
-        else
-          cov_(i,j) *= blowUpFac; // blow up diagonals
+   if (resetOffDiagonals) {
+      unsigned int dim = cov_.GetNcols();
+      for (unsigned int i = 0; i < dim; ++i) {
+         for (unsigned int j = 0; j < dim; ++j) {
+            if (i != j)
+               cov_(i, j) = 0; // reset off-diagonals
+            else
+               cov_(i, j) *= blowUpFac; // blow up diagonals
+         }
       }
-    }
-  }
-  else
-    cov_ *= blowUpFac;
-
+   } else
+      cov_ *= blowUpFac;
 }
 
+MeasuredStateOnPlane
+calcAverageState(const MeasuredStateOnPlane &forwardState, const MeasuredStateOnPlane &backwardState)
+{
+   // check if both states are defined in the same plane
+   if (forwardState.getPlane() != backwardState.getPlane()) {
+      Exception e(
+         "KalmanFitterInfo::calcAverageState: forwardState and backwardState are not defined in the same plane.",
+         __LINE__, __FILE__);
+      throw e;
+   }
 
-MeasuredStateOnPlane calcAverageState(const MeasuredStateOnPlane& forwardState, const MeasuredStateOnPlane& backwardState) {
-  // check if both states are defined in the same plane
-  if (forwardState.getPlane() != backwardState.getPlane()) {
-    Exception e("KalmanFitterInfo::calcAverageState: forwardState and backwardState are not defined in the same plane.", __LINE__,__FILE__);
-    throw e;
-  }
-
-  // This code is called a lot, so some effort has gone into reducing
-  // the number of temporary objects being constructed.
+   // This code is called a lot, so some effort has gone into reducing
+   // the number of temporary objects being constructed.
 
 #if 0
   // For ease of understanding, here's a version of the code that is a
@@ -88,28 +97,27 @@ MeasuredStateOnPlane calcAverageState(const MeasuredStateOnPlane& forwardState, 
   return retVal;
 #endif
 
-  static TMatrixDSym fCovInv, bCovInv;  // Static to avoid re-constructing for every call
-  tools::invertMatrix(forwardState.getCov(), fCovInv);
-  tools::invertMatrix(backwardState.getCov(), bCovInv);
+   static TMatrixDSym fCovInv, bCovInv; // Static to avoid re-constructing for every call
+   tools::invertMatrix(forwardState.getCov(), fCovInv);
+   tools::invertMatrix(backwardState.getCov(), bCovInv);
 
-  // Using a StateOnPlane here turned out at least as fast as
-  // constructing a MeasuredStateOnPlane here, and then resetting its
-  // covariance matrix below, even though it means another copy in the
-  // return statement.
-  StateOnPlane sop(forwardState); // copies auxInfo, plane, rep in the process
-                                  // Using 'static' + subsequent assignment is measurably slower.
-                                  // Surprisingly, using only TVectorD
-                                  // sop(forwardState.getState()) with according
-                                  // changes below measured slower.
+   // Using a StateOnPlane here turned out at least as fast as
+   // constructing a MeasuredStateOnPlane here, and then resetting its
+   // covariance matrix below, even though it means another copy in the
+   // return statement.
+   StateOnPlane sop(forwardState); // copies auxInfo, plane, rep in the process
+                                   // Using 'static' + subsequent assignment is measurably slower.
+                                   // Surprisingly, using only TVectorD
+                                   // sop(forwardState.getState()) with according
+                                   // changes below measured slower.
 
-  sop.getState() *= fCovInv;
-  fCovInv += bCovInv;
-  tools::invertMatrix(fCovInv);  // This is now the covariance of the average.
-  sop.getState() += bCovInv*backwardState.getState();  // one temporary TVectorD
-  sop.getState() *= fCovInv;
+   sop.getState() *= fCovInv;
+   fCovInv += bCovInv;
+   tools::invertMatrix(fCovInv);                         // This is now the covariance of the average.
+   sop.getState() += bCovInv * backwardState.getState(); // one temporary TVectorD
+   sop.getState() *= fCovInv;
 
-  return MeasuredStateOnPlane(sop, fCovInv);
+   return MeasuredStateOnPlane(sop, fCovInv);
 }
-
 
 } /* End of namespace genfit */

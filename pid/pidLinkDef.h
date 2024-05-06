@@ -4,6 +4,6 @@
 #pragma link off all classes;
 #pragma link off all functions;
 
-#pragma link C++ class pid+;
+#pragma link C++ class pid + ;
 
 #endif

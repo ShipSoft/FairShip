@@ -29,7 +29,6 @@
 
 #include <TMatrixDSym.h>
 
-
 namespace genfit {
 
 /**
@@ -37,101 +36,123 @@ namespace genfit {
  */
 class MeasuredStateOnPlane : public StateOnPlane {
 
- public:
+public:
+   MeasuredStateOnPlane(const AbsTrackRep *rep = NULL);
+   MeasuredStateOnPlane(const TVectorD &state, const TMatrixDSym &cov, const genfit::SharedPlanePtr &plane,
+                        const AbsTrackRep *rep);
+   MeasuredStateOnPlane(const TVectorD &state, const TMatrixDSym &cov, const genfit::SharedPlanePtr &plane,
+                        const AbsTrackRep *rep, const TVectorD &auxInfo);
+   MeasuredStateOnPlane(const MeasuredStateOnPlane &o);
+   MeasuredStateOnPlane(const StateOnPlane &state, const TMatrixDSym &cov);
 
-  MeasuredStateOnPlane(const AbsTrackRep* rep = NULL);
-  MeasuredStateOnPlane(const TVectorD& state, const TMatrixDSym& cov, const genfit::SharedPlanePtr& plane, const AbsTrackRep* rep);
-  MeasuredStateOnPlane(const TVectorD& state, const TMatrixDSym& cov, const genfit::SharedPlanePtr& plane, const AbsTrackRep* rep, const TVectorD& auxInfo);
-  MeasuredStateOnPlane(const MeasuredStateOnPlane& o);
-  MeasuredStateOnPlane(const StateOnPlane& state, const TMatrixDSym& cov);
+   MeasuredStateOnPlane &operator=(MeasuredStateOnPlane other);
+   void swap(MeasuredStateOnPlane &other); // nothrow
 
-  MeasuredStateOnPlane& operator=(MeasuredStateOnPlane other);
-  void swap(MeasuredStateOnPlane& other); // nothrow
+   virtual ~MeasuredStateOnPlane() {}
 
-  virtual ~MeasuredStateOnPlane() {}
+   const TMatrixDSym &getCov() const { return cov_; }
+   TMatrixDSym &getCov() { return cov_; }
 
-  const TMatrixDSym& getCov() const {return cov_;}
-  TMatrixDSym& getCov() {return cov_;}
+   void blowUpCov(double blowUpFac, bool resetOffDiagonals = true);
 
-  void blowUpCov(double blowUpFac, bool resetOffDiagonals = true);
+   void setStateCov(const TVectorD &state, const TMatrixDSym &cov)
+   {
+      setState(state);
+      setCov(cov);
+   }
+   void setStateCovPlane(const TVectorD &state, const TMatrixDSym &cov, const SharedPlanePtr &plane)
+   {
+      setStatePlane(state, plane);
+      setCov(cov);
+   }
+   void setCov(const TMatrixDSym &cov)
+   {
+      if (cov_.GetNrows() == 0)
+         cov_.ResizeTo(cov);
+      cov_ = cov;
+   }
 
-  void setStateCov(const TVectorD& state, const TMatrixDSym& cov) {setState(state); setCov(cov);}
-  void setStateCovPlane(const TVectorD& state, const TMatrixDSym& cov, const SharedPlanePtr& plane) {setStatePlane(state, plane); setCov(cov);}
-  void setCov(const TMatrixDSym& cov) {if(cov_.GetNrows() == 0) cov_.ResizeTo(cov); cov_ = cov;}
+   // Shortcuts to TrackRep functions
+   TMatrixDSym get6DCov() const { return getRep()->get6DCov(*this); };
+   void getPosMomCov(TVector3 &pos, TVector3 &mom, TMatrixDSym &cov) const
+   {
+      getRep()->getPosMomCov(*this, pos, mom, cov);
+   }
+   void get6DStateCov(TVectorD &stateVec, TMatrixDSym &cov) const { getRep()->get6DStateCov(*this, stateVec, cov); }
+   double getMomVar() const { return getRep()->getMomVar(*this); }
 
-  // Shortcuts to TrackRep functions
-  TMatrixDSym get6DCov() const {return getRep()->get6DCov(*this);};
-  void getPosMomCov(TVector3& pos, TVector3& mom, TMatrixDSym& cov) const {getRep()->getPosMomCov(*this, pos, mom, cov);}
-  void get6DStateCov(TVectorD& stateVec, TMatrixDSym& cov) const {getRep()->get6DStateCov(*this, stateVec, cov);}
-  double getMomVar() const {return getRep()->getMomVar(*this);}
+   void setPosMomErr(const TVector3 &pos, const TVector3 &mom, const TVector3 &posErr, const TVector3 &momErr)
+   {
+      getRep()->setPosMomErr(*this, pos, mom, posErr, momErr);
+   }
+   void setPosMomCov(const TVector3 &pos, const TVector3 &mom, const TMatrixDSym &cov6x6)
+   {
+      getRep()->setPosMomCov(*this, pos, mom, cov6x6);
+   }
+   void setPosMomCov(const TVectorD &state6, const TMatrixDSym &cov6x6)
+   {
+      getRep()->setPosMomCov(*this, state6, cov6x6);
+   }
 
-  void setPosMomErr(const TVector3& pos, const TVector3& mom, const TVector3& posErr, const TVector3& momErr) {getRep()->setPosMomErr(*this, pos, mom, posErr, momErr);}
-  void setPosMomCov(const TVector3& pos, const TVector3& mom, const TMatrixDSym& cov6x6) {getRep()->setPosMomCov(*this, pos, mom, cov6x6);}
-  void setPosMomCov(const TVectorD& state6, const TMatrixDSym& cov6x6) {getRep()->setPosMomCov(*this, state6, cov6x6);}
+   virtual void Print(Option_t *option = "") const;
 
+protected:
+   TMatrixDSym cov_;
 
-  virtual void Print(Option_t* option = "") const;
-
- protected:
-
-  TMatrixDSym cov_;
-
- public:
-  ClassDef(MeasuredStateOnPlane,1)
-
+public:
+   ClassDef(MeasuredStateOnPlane, 1)
 };
-
 
 /**
  * @brief Calculate weighted average between two MeasuredStateOnPlanes
  */
-MeasuredStateOnPlane calcAverageState(const MeasuredStateOnPlane& forwardState, const MeasuredStateOnPlane& backwardState);
+MeasuredStateOnPlane
+calcAverageState(const MeasuredStateOnPlane &forwardState, const MeasuredStateOnPlane &backwardState);
 
-
-inline void MeasuredStateOnPlane::swap(MeasuredStateOnPlane& other) {
-  StateOnPlane::swap(other);
-  this->cov_.ResizeTo(other.cov_);
-  std::swap(this->cov_, other.cov_);
-}
-
-inline MeasuredStateOnPlane::MeasuredStateOnPlane(const AbsTrackRep* rep) :
-  StateOnPlane(rep), cov_(0,0)
+inline void MeasuredStateOnPlane::swap(MeasuredStateOnPlane &other)
 {
-  if (rep != NULL) {
-    cov_.ResizeTo(rep->getDim(), rep->getDim());
-  }
+   StateOnPlane::swap(other);
+   this->cov_.ResizeTo(other.cov_);
+   std::swap(this->cov_, other.cov_);
 }
 
-inline MeasuredStateOnPlane::MeasuredStateOnPlane(const TVectorD& state, const TMatrixDSym& cov, const SharedPlanePtr& plane, const AbsTrackRep* rep) :
-  StateOnPlane(state, plane, rep), cov_(cov)
+inline MeasuredStateOnPlane::MeasuredStateOnPlane(const AbsTrackRep *rep) : StateOnPlane(rep), cov_(0, 0)
 {
-  assert(rep != NULL);
-  //assert(cov_.GetNcols() == (signed)rep->getDim());
+   if (rep != NULL) {
+      cov_.ResizeTo(rep->getDim(), rep->getDim());
+   }
 }
 
-inline MeasuredStateOnPlane::MeasuredStateOnPlane(const TVectorD& state, const TMatrixDSym& cov, const SharedPlanePtr& plane, const AbsTrackRep* rep, const TVectorD& auxInfo) :
-  StateOnPlane(state, plane, rep, auxInfo), cov_(cov)
+inline MeasuredStateOnPlane::MeasuredStateOnPlane(const TVectorD &state, const TMatrixDSym &cov,
+                                                  const SharedPlanePtr &plane, const AbsTrackRep *rep)
+   : StateOnPlane(state, plane, rep), cov_(cov)
 {
-  assert(rep != NULL);
-  //assert(cov_.GetNcols() == (signed)rep->getDim());
+   assert(rep != NULL);
+   // assert(cov_.GetNcols() == (signed)rep->getDim());
 }
 
-inline MeasuredStateOnPlane::MeasuredStateOnPlane(const MeasuredStateOnPlane& o) :
-  StateOnPlane(o), cov_(o.cov_)
+inline MeasuredStateOnPlane::MeasuredStateOnPlane(const TVectorD &state, const TMatrixDSym &cov,
+                                                  const SharedPlanePtr &plane, const AbsTrackRep *rep,
+                                                  const TVectorD &auxInfo)
+   : StateOnPlane(state, plane, rep, auxInfo), cov_(cov)
 {
+   assert(rep != NULL);
+   // assert(cov_.GetNcols() == (signed)rep->getDim());
 }
 
-inline MeasuredStateOnPlane::MeasuredStateOnPlane(const StateOnPlane& state, const TMatrixDSym& cov) :
-  StateOnPlane(state), cov_(cov)
+inline MeasuredStateOnPlane::MeasuredStateOnPlane(const MeasuredStateOnPlane &o) : StateOnPlane(o), cov_(o.cov_) {}
+
+inline MeasuredStateOnPlane::MeasuredStateOnPlane(const StateOnPlane &state, const TMatrixDSym &cov)
+   : StateOnPlane(state), cov_(cov)
 {
-  //assert(cov_.GetNcols() == (signed)getRep()->getDim());
+   // assert(cov_.GetNcols() == (signed)getRep()->getDim());
 }
 
-inline MeasuredStateOnPlane& MeasuredStateOnPlane::operator=(MeasuredStateOnPlane other) {
-  swap(other);
-  return *this;
+inline MeasuredStateOnPlane &MeasuredStateOnPlane::operator=(MeasuredStateOnPlane other)
+{
+   swap(other);
+   return *this;
 }
-
 
 } /* End of namespace genfit */
 /** @} */
