@@ -103,7 +103,7 @@ struct ChannelId {
          return 6;
       } else if (scintillatorB) {
          return 7;
-      } else if(blacklisted) {
+      } else if (blacklisted) {
          return -2;
       }
       bool reverse_x = !(station == 2 || (TDC == 4 && channel >= 48));
@@ -120,8 +120,9 @@ struct ChannelId {
       }
 
       int view = (station == 1 || station == 2) * module % 2;
-      int plane = (TDC == 2) ? ((_channel % 48) / 24 + 1) % 2
-                             : (station == 3 && TDC == 4) ? 1 - (channel % 48) / 24 : (_channel % 48) / 24;
+      int plane = (TDC == 2)                   ? ((_channel % 48) / 24 + 1) % 2
+                  : (station == 3 && TDC == 4) ? 1 - (channel % 48) / 24
+                                               : (_channel % 48) / 24;
       if (station == 4 && TDC == 3) {
          plane -= 1;
       }
@@ -129,61 +130,63 @@ struct ChannelId {
       int straw = _channel % 12 + ((station == 3 || station == 4) ? 1 + (3 - module) * 12 : 1);
       return station * 10000000 + view * 1000000 + plane * 100000 + layer * 10000 + 2000 + straw;
    };
-  int GetDetectorIdCharm() const
+   int GetDetectorIdCharm() const
    {
-     bool trigger = false;
-     bool beamcounter = false;
-     bool RC_signal = false;
-     bool master_trigger = false;
-     int module = 0;
-     int station = 0;
-     int module_channel = 0;
-     switch (TDC) {
-     case 0:
-       trigger = channel == 126 || channel == 120;
-       RC_signal = channel == 121 || channel == 122;
-       master_trigger = channel == 123;
-       station = 3;
-       module = (channel < 96) ? 2 + (channel / 48) % 2 : 0;
-       module_channel = channel % 48;
-       //reverse front end board
-       if(module == 3) module_channel = 12*(module_channel/12)+(11-module_channel%12);
-       break;
-     case 1:
-       trigger = channel == 0;
-       beamcounter = channel >=2 && channel <= 5;
-       station = (channel < 80) ? 3 : 4;
-       module = (channel >= 32 && channel < 80) ? 1 : 0;
-       module_channel = (channel + 16) % 48;
-       //cable swap
-       if(module==1) module_channel += ( module_channel < 16 ) ? 16 : ( module_channel < 32 ) ? -16 : 0;
-       break;
-     case 2:
-       trigger = channel == 126;
-       station = 4;
-       module = (channel / 48)  + 1 ;
-       module_channel = channel % 48;
-       break;
-     case 3:
-       trigger = channel == 0;
-       station = (channel < 32 || channel >= 80) ? 4 : 3;
-       module = (channel < 32 ) ? 3 : 4;
-       module_channel = (channel + 16) % 48;
-       break;
-     }
-     if (trigger) {
-       return 0;
-     } else if (master_trigger) {
-       return 1;
-     } else if (beamcounter || RC_signal) {
-       return -1;
-     }
+      bool trigger = false;
+      bool beamcounter = false;
+      bool RC_signal = false;
+      bool master_trigger = false;
+      int module = 0;
+      int station = 0;
+      int module_channel = 0;
+      switch (TDC) {
+      case 0:
+         trigger = channel == 126 || channel == 120;
+         RC_signal = channel == 121 || channel == 122;
+         master_trigger = channel == 123;
+         station = 3;
+         module = (channel < 96) ? 2 + (channel / 48) % 2 : 0;
+         module_channel = channel % 48;
+         // reverse front end board
+         if (module == 3)
+            module_channel = 12 * (module_channel / 12) + (11 - module_channel % 12);
+         break;
+      case 1:
+         trigger = channel == 0;
+         beamcounter = channel >= 2 && channel <= 5;
+         station = (channel < 80) ? 3 : 4;
+         module = (channel >= 32 && channel < 80) ? 1 : 0;
+         module_channel = (channel + 16) % 48;
+         // cable swap
+         if (module == 1)
+            module_channel += (module_channel < 16) ? 16 : (module_channel < 32) ? -16 : 0;
+         break;
+      case 2:
+         trigger = channel == 126;
+         station = 4;
+         module = (channel / 48) + 1;
+         module_channel = channel % 48;
+         break;
+      case 3:
+         trigger = channel == 0;
+         station = (channel < 32 || channel >= 80) ? 4 : 3;
+         module = (channel < 32) ? 3 : 4;
+         module_channel = (channel + 16) % 48;
+         break;
+      }
+      if (trigger) {
+         return 0;
+      } else if (master_trigger) {
+         return 1;
+      } else if (beamcounter || RC_signal) {
+         return -1;
+      }
 
-     int plane = 1 - (module_channel / 24);
-     int layer = 1 - (module_channel % 24) / 12;
-     int straw = (module >= 4 ? module : 3 - module) * 12 + (11 - (module_channel % 12)) + 1;
+      int plane = 1 - (module_channel / 24);
+      int layer = 1 - (module_channel % 24) / 12;
+      int straw = (module >= 4 ? module : 3 - module) * 12 + (11 - (module_channel % 12)) + 1;
 
-     return station * 10000000 + plane * 100000 + layer * 10000 + 2000 + straw;
+      return station * 10000000 + plane * 100000 + layer * 10000 + 2000 + straw;
    };
 };
 enum Flag : uint16_t {
@@ -193,10 +196,10 @@ enum Flag : uint16_t {
    TDC2_PROBLEM = 1 << 3,
    TDC3_PROBLEM = 1 << 4,
    TDC4_PROBLEM = 1 << 5,
-   NoTrigger = 1<<12,
-   NoWidth = 1<<13,
-   NoDelay = 1<<14,
-   InValid = 1<<15,
+   NoTrigger = 1 << 12,
+   NoWidth = 1 << 13,
+   NoDelay = 1 << 14,
+   InValid = 1 << 15,
 };
 } // namespace DriftTubes
 

@@ -11,29 +11,28 @@
 
 using std::cout;
 using std::endl;
-using std::map;
 using std::list;
+using std::map;
 
 //-----------------------------------------------------------------------------
-Int_t hcalModule::CountNeighbors(const std::list<hcalModule*>& lst) const
+Int_t hcalModule::CountNeighbors(const std::list<hcalModule *> &lst) const
 {
-  Int_t c=0;
-  list<hcalModule*>::const_iterator p=lst.begin();
-  for(;p!=lst.end();++p)
-    if (find(fNeighbors.begin(), fNeighbors.end(), *p)!=fNeighbors.end())
-      ++c;
+   Int_t c = 0;
+   list<hcalModule *>::const_iterator p = lst.begin();
+   for (; p != lst.end(); ++p)
+      if (find(fNeighbors.begin(), fNeighbors.end(), *p) != fNeighbors.end())
+         ++c;
 
-  return c;
+   return c;
 }
 
 //-----------------------------------------------------------------------------
-void hcalModule::GetClusterEnergy(Float_t& EcalEnergy)
+void hcalModule::GetClusterEnergy(Float_t &EcalEnergy)
 {
-  EcalEnergy=-1;
-  EcalEnergy=GetEnergy();
-  list<hcalModule*>::const_iterator p;
-  for(p=fNeighbors.begin();p!=fNeighbors.end();++p)
-  {
-    EcalEnergy+=(*p)->GetEnergy();
-  }
+   EcalEnergy = -1;
+   EcalEnergy = GetEnergy();
+   list<hcalModule *>::const_iterator p;
+   for (p = fNeighbors.begin(); p != fNeighbors.end(); ++p) {
+      EcalEnergy += (*p)->GetEnergy();
+   }
 }

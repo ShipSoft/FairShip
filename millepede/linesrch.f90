@@ -143,7 +143,7 @@ SUBROUTINE ptline(n,x,f,g,s,step, info) ! - 2 arguments
         IF(dg < sfd(3,im)) THEN
             im=nsfd
         END IF
-  
+
         !        define interval indices IDGL and IDGR
         IF(dg <= 0.0_mpd) THEN
             IF(dg >= sfd(3,idgl)) idgl=nsfd
@@ -152,7 +152,7 @@ SUBROUTINE ptline(n,x,f,g,s,step, info) ! - 2 arguments
             IF(idgr == 0) idgr=nsfd
             IF(dg <= sfd(3,idgr)) idgr=nsfd
         END IF
-  
+
         IF(idgr == 0) THEN
             i1=nsfd-1
             i2=nsfd
@@ -163,7 +163,7 @@ SUBROUTINE ptline(n,x,f,g,s,step, info) ! - 2 arguments
         fp1=sfd(3,i1)
         fp2=sfd(3,i2)                       ! interpolation
         sfd(4,nsfd)=(sfd(1,i1)*fp2-sfd(1,i2)*fp1)/(fp2-fp1)
-  
+
         !        convergence tests
         IF(nsfd >= minf.AND.ABS(dg) <= ABS(dginit)*gtol) THEN
             !           normal convergence return with INFO=1 ----------------------
@@ -344,4 +344,3 @@ SUBROUTINE ptlprt(lunp)
 103 FORMAT(i3,f12.6,1X,a2,g15.6,g14.6,f12.6,f10.3)
 
 END SUBROUTINE ptlprt
-

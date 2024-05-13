@@ -53,13 +53,13 @@ SUBROUTINE qlini(n,m)
 
     npar=n
     ncon=m
-    ! allocate 
+    ! allocate
     length=npar*ncon
     CALL mpalloc(matV,length,'QLDEC: V')
     length=ncon*ncon
     CALL mpalloc(matL,length,'QLDEC: L')
     length=npar
-    CALL mpalloc(vecN,length,'QLDEC: v')    
+    CALL mpalloc(vecN,length,'QLDEC: v')
 END SUBROUTINE qlini
 
 !                                                 141217 C. Kleinwort, DESY-FH1
@@ -99,7 +99,7 @@ SUBROUTINE qldec(a)
 
     REAL(mpd), INTENT(IN)             :: a(*)
 
-    ! prepare 
+    ! prepare
     length=npar*ncon
     matV=a(1:length)
     matL=0.0_mpd
@@ -186,7 +186,7 @@ SUBROUTINE qldecb(a,nb,b)
     INTEGER(mpi), INTENT(IN)          :: nb
     INTEGER(mpi), INTENT(IN)          :: b(3,*)
 
-    ! prepare 
+    ! prepare
     length=npar*ncon
     matV=0.0_mpd
     matL=0.0_mpd
@@ -202,9 +202,9 @@ SUBROUTINE qldecb(a,nb,b)
             matV(ioff1+ifirst:ioff1+ilast)=a(ioff2+1:ioff2+npb)
             ioff1=ioff1+npar
             ioff2=ioff2+npb
-        END DO    
+        END DO
     END DO
- 
+
     ib=nb ! start with last block
     k1=b(1,ib) ! first constraint in block
     ! Householder procedure
@@ -214,7 +214,7 @@ SUBROUTINE qldecb(a,nb,b)
         IF (k < k1) THEN
             ib=ib-1
             k1=b(1,ib)
-        END IF    
+        END IF
         ! index if first non-zero element
         ifirst=b(2,ib)
         IF (ifirst > kn) CYCLE
@@ -234,12 +234,12 @@ SUBROUTINE qldecb(a,nb,b)
         ELSE
             vecN(kn)=vecN(kn)-nrm
         END IF
-        
+
         IF (ilast < kn) THEN
             ! create normal vector
             nrm = SQRT(dot_product(vecN(ifirst:ilast),vecN(ifirst:ilast))+vecN(kn)*vecN(kn))
             vecN(ifirst:ilast)=vecN(ifirst:ilast)/nrm
-            vecN(kn)=vecN(kn)/nrm  
+            vecN(kn)=vecN(kn)/nrm
             ! transformation
             DO i=k1,k
                 sp=dot_product(vecN(ifirst:ilast),matV(ioff2+ifirst:ioff2+ilast))
@@ -258,7 +258,7 @@ SUBROUTINE qldecb(a,nb,b)
                 ioff2=ioff2+npar
             END DO
         END IF
-            
+
         ! store column of L
         ioff3=(k-1)*ncon
         matL(ioff3+k:ioff3+ncon)=matV(ioff1+kn:ioff1+npar)
@@ -267,7 +267,7 @@ SUBROUTINE qldecb(a,nb,b)
         matV(ioff1+ifirst:ioff1+ilast)=vecN(ifirst:ilast)
         matV(ioff1+kn)=vecN(kn)
     END DO
-    
+
 END SUBROUTINE qldecb
 
 
@@ -461,7 +461,7 @@ SUBROUTINE qlssq(aprod,A,t)
         ! diagonal block
         ! v^t*A*v
         vtAv=dot_product(matV(ioff1+1:ioff1+kn),Av(1:kn))
-        ! update 
+        ! update
         ioff2=0
         DO i=1,kn
             ! correct with  2*(2v*vtAv*v^t - Av*v^t - (Av*v^t)^t)
@@ -515,7 +515,7 @@ SUBROUTINE qlpssq(aprod,B,m,t)
     REAL(mpd) :: vtAv
     REAL(mpd) :: vtAvp
     REAL(mpd) :: vtvp
-    REAL(mpd), DIMENSION(:), ALLOCATABLE :: Av   ! A*v 
+    REAL(mpd), DIMENSION(:), ALLOCATABLE :: Av   ! A*v
 
     REAL(mpd), INTENT(IN OUT)         :: B(*)
     INTEGER(mpi), INTENT(IN)          :: m
@@ -576,10 +576,10 @@ SUBROUTINE qlpssq(aprod,B,m,t)
             ioff2=(k2-1)*npar
             vtvp=dot_product(matV(ioff1+1:ioff1+npar),matV(ioff2+1:ioff2+npar)) ! v^t*v'
             vtAvp=dot_product(matV(ioff1+1:ioff1+npar),Av(ioff2+1:ioff2+npar)) ! v^t*(A*v')
-            DO i=1,kn 
+            DO i=1,kn
                 Av(ioff2+i)=Av(ioff2+i)+2.0_mpd*((2.0_mpd*matV(ioff1+i)*vtAv-Av(ioff1+i))*vtvp-matV(ioff1+i)*vtAvp)
             END DO
-            DO i=kn+1,npar 
+            DO i=kn+1,npar
                 Av(ioff2+i)=Av(ioff2+i)-2.0_mpd*Av(ioff1+i)*vtvp
             END DO
         END DO

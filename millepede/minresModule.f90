@@ -574,8 +574,8 @@ contains
        rnorm  = qrnorm
        rootl       = sqrt( gbar**2 +dbar**2  )  ! norm([gbar; dbar]);
        Arnorml     = rnorml*rootl               ! ||A r_{k-1} ||
-       relArnorml  = rootl  /  Anorm;           ! ||Ar|| / (||A|| ||r||)     
-       !relArnorml = Arnorml / Anorm;           ! ||Ar|| / ||A|| 
+       relArnorml  = rootl  /  Anorm;           ! ||Ar|| / (||A|| ||r||)
+       !relArnorml = Arnorml / Anorm;           ! ||Ar|| / ||A||
 
        ! Estimate  cond(A).
        ! In this version we look at the diagonals of  R  in the

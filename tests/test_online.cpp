@@ -65,13 +65,13 @@ TEST_CASE("Detector ID conversion", "[drifttubes]")
    REQUIRE(DetectorIdTest(2) == 10112010);
    REQUIRE(DetectorIdTest(1) == 10112011);
    REQUIRE(DetectorIdTest(0) == 10112012);
-   for ( auto &&i : ROOT::MakeSeq(5) ){
-      for ( auto &&j : ROOT::MakeSeq(128) ){
-	 uint16_t channel = i*256+j;
-	 if(channel != 1032) {
-	    std::cout << channel << std::endl;
-	    REQUIRE(DetectorIdTest(channel)!=30112016);
-	 }
+   for (auto &&i : ROOT::MakeSeq(5)) {
+      for (auto &&j : ROOT::MakeSeq(128)) {
+         uint16_t channel = i * 256 + j;
+         if (channel != 1032) {
+            std::cout << channel << std::endl;
+            REQUIRE(DetectorIdTest(channel) != 30112016);
+         }
       }
    }
 }

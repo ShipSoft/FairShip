@@ -31,7 +31,6 @@
 
 #include <TMatrixD.h>
 
-
 namespace genfit {
 
 /** @brief Exception class for error handling in GENFIT (provides storage for diagnostic information)
@@ -47,55 +46,53 @@ namespace genfit {
  */
 class Exception : public TObject {
 
- public:
-  /** @brief Initializing constructor
-   *
-   * @param excString error message.
-   * @param line line at which the exception is created. Can be set through __LINE__ macro.
-   * @param file sourcefile in which the exception is created. Can be set through __FILE__ macro.
-   */
-  Exception(std::string excString, int line, std::string  file);
-  virtual ~Exception() throw();
+public:
+   /** @brief Initializing constructor
+    *
+    * @param excString error message.
+    * @param line line at which the exception is created. Can be set through __LINE__ macro.
+    * @param file sourcefile in which the exception is created. Can be set through __FILE__ macro.
+    */
+   Exception(std::string excString, int line, std::string file);
+   virtual ~Exception() throw();
 
-  //! Set fatal flag.
-  void setFatal (bool b=true){fatal_=b;}
-  //! Get fatal flag.
-  bool isFatal (){return fatal_;}
-  //! Set list of numbers with description.
-  void setNumbers (std::string, const std::vector<double>&);
-  //! Set list of matrices with description.
-  void setMatrices(std::string, const std::vector<TMatrixD>&);
+   //! Set fatal flag.
+   void setFatal(bool b = true) { fatal_ = b; }
+   //! Get fatal flag.
+   bool isFatal() { return fatal_; }
+   //! Set list of numbers with description.
+   void setNumbers(std::string, const std::vector<double> &);
+   //! Set list of matrices with description.
+   void setMatrices(std::string, const std::vector<TMatrixD> &);
 
-  //! Print information in the exception object.
-  void info();
+   //! Print information in the exception object.
+   void info();
 
-  //! Standard error message handling for exceptions. use like "std::cerr << e.what();"
-  virtual const char* what() const throw();
+   //! Standard error message handling for exceptions. use like "std::cerr << e.what();"
+   virtual const char *what() const throw();
 
-  std::string getExcString(){return excString_;}
+   std::string getExcString() { return excString_; }
 
-  //! "std::cerr << e.what();" will not write anything.
-  static void quiet(bool b=true){quiet_=b;}
+   //! "std::cerr << e.what();" will not write anything.
+   static void quiet(bool b = true) { quiet_ = b; }
 
- private:
+private:
+   static bool quiet_;
 
-  static bool quiet_;
+   std::string excString_;
+   int line_;
+   std::string file_;
 
-  std::string excString_;
-  int line_;
-  std::string file_;
+   std::string errorMessage_;
 
-  std::string errorMessage_;
+   std::string numbersLabel_;
+   std::string matricesLabel_;
+   std::vector<double> numbers_;
+   std::vector<TMatrixD> matrices_;
 
-  std::string numbersLabel_;
-  std::string matricesLabel_;
-  std::vector<double> numbers_;
-  std::vector<TMatrixD> matrices_;
+   bool fatal_;
 
-  bool fatal_;
-
-  //ClassDef(Exception,1)
-
+   // ClassDef(Exception,1)
 };
 
 } /* End of namespace genfit */

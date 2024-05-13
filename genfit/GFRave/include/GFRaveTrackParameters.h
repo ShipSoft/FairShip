@@ -40,7 +40,6 @@
 
 #include <iostream>
 
-
 namespace genfit {
 
 /**
@@ -48,44 +47,43 @@ namespace genfit {
  * Contains a pointer to the original genfit::Track, the weight of the track in the vertex,
  * and smoothed (with the vertex information) state and covariance of the track.
  */
-class GFRaveTrackParameters : public TObject
-{
-  public:
-    // constructors, destructors
-    GFRaveTrackParameters();
-    GFRaveTrackParameters(const Track* track, MeasuredStateOnPlane* originalState, double weight, const TVectorD & state6, const TMatrixDSym & cov6x6, bool isSmoothed);
-    GFRaveTrackParameters(const Track* track, MeasuredStateOnPlane* originalState, double weight);
+class GFRaveTrackParameters : public TObject {
+public:
+   // constructors, destructors
+   GFRaveTrackParameters();
+   GFRaveTrackParameters(const Track *track, MeasuredStateOnPlane *originalState, double weight, const TVectorD &state6,
+                         const TMatrixDSym &cov6x6, bool isSmoothed);
+   GFRaveTrackParameters(const Track *track, MeasuredStateOnPlane *originalState, double weight);
 
-    // Accessors
-    double getWeight() const {return weight_;}
+   // Accessors
+   double getWeight() const { return weight_; }
 
-    bool hasTrack() const {return originalTrack_.GetObject() != NULL;}
-    const Track* getTrack() const {return  static_cast<Track*>(originalTrack_.GetObject());}
+   bool hasTrack() const { return originalTrack_.GetObject() != NULL; }
+   const Track *getTrack() const { return static_cast<Track *>(originalTrack_.GetObject()); }
 
-    UInt_t GetUniqueID() const {return originalTrack_.GetUniqueID();}
+   UInt_t GetUniqueID() const { return originalTrack_.GetUniqueID(); }
 
-    bool hasSmoothedData() const {return hasSmoothedData_;}
-    TVectorD getState() const {return state_;}
-    TVector3 getPos() const;
-    TVector3 getMom() const;
-    const TMatrixDSym & getCov() const {return cov_;}
+   bool hasSmoothedData() const { return hasSmoothedData_; }
+   TVectorD getState() const { return state_; }
+   TVector3 getPos() const;
+   TVector3 getMom() const;
+   const TMatrixDSym &getCov() const { return cov_; }
 
-    double getCharge() const;
-    double getPdg() const;
+   double getCharge() const;
+   double getPdg() const;
 
-    void Print(const Option_t* = "") const;
+   void Print(const Option_t * = "") const;
 
-  private:
+private:
+   const TRef originalTrack_; // NO ownership. We use TRef, since the Tracks could be stored in another file or tree.
 
-    const TRef originalTrack_; // NO ownership. We use TRef, since the Tracks could be stored in another file or tree.
+   double weight_;        // weight of the track in the vertex
+   TVectorD state_;       // x, y, z, px, py, pz
+   TMatrixDSym cov_;      // 6x6 covariance matrix
+   bool hasSmoothedData_; // true if state_ is forced to go through the vertex
 
-    double weight_; // weight of the track in the vertex
-    TVectorD state_; // x, y, z, px, py, pz
-    TMatrixDSym cov_; // 6x6 covariance matrix
-    bool hasSmoothedData_; // true if state_ is forced to go through the vertex
-
-  private:
-    ClassDef(GFRaveTrackParameters, 1)
+private:
+   ClassDef(GFRaveTrackParameters, 1)
 };
 
 } /* End of namespace genfit */

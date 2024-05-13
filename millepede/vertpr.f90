@@ -152,7 +152,7 @@ SUBROUTINE pzvert(n,x)
             IF(i == 1) THEN              ! ten'th column
                 i=MOD(j/10,10)+1
                 px(jm)(6+j:6+j)=ch(i)
-      
+
             END IF
         END IF
     END DO
@@ -194,9 +194,9 @@ SUBROUTINE pivert(n,list)                  !
     INTEGER(mpi), INTENT(IN)                      :: n
     INTEGER(mpi), INTENT(IN)                      :: list(n)
 
-    
+
     REAL(mps) :: y(60)
-    
+
     SAVE
     !     ...
     ll=(n+59)/60 ! compression factor
@@ -275,4 +275,3 @@ SUBROUTINE psvert(xa,xb)                     ! print scale
 101 FORMAT(3X,7G10.3)
     RETURN
 END SUBROUTINE psvert
-

@@ -1,3 +1,4 @@
-void DecayConfig() {
-     // do nothing
+void DecayConfig()
+{
+   // do nothing
 }
