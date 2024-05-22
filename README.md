@@ -60,7 +60,7 @@ On `lxplus` this is the recommended way to use `FairShip`. CVMFS can also be set
     ```
 3. Source the `setUp.sh` script from the CVMFS release you want to use.
     ```bash
-    source /cvmfs/ship.cern.ch/24.01/setUp.sh
+    source /cvmfs/ship.cern.ch/24.05.1/setUp.sh
     ```
     Info about different releases can be found in a [dedicated repository](https://github.com/ShipSoft/cvmfs_release).
     Please report issues with particular releases or the setup script there.
@@ -83,35 +83,43 @@ To load the FairShip environment, after you build the software you can simply us
 However, this won't work if you are using HTCondor. In such case you can do:
 
 ```bash
-eval alienv load FairShip/latest
+eval $(alienv load FairShip/latest --no-refresh)
 ```
 
 ## Local build, without access to CVMFS
 Commands are similar to the previous case, but without access to CVMFS you need to build the required packages.
-1. Download the FairShip software
+
+1. Install `alibuild` using `pipx` (recommended) or `pip`.
+2. Clone the FairShip repository:
     ```bash
     git clone https://github.com/ShipSoft/FairShip.git
     ```
-2. Build the software using aliBuild
+2. Clone the shipdist repository, which contains the recipes to build the software stack:
     ```bash
-    FairShip/aliBuild.sh
+    git clone https://github.com/ShipSoft/shipdist.git
     ```
+2. Build the software using aliBuild:
+    ```bash
+    aliBuild build FairShip --config-dir $SHIPDIST --defaults release
+    ```
+    NB: Depending on the platform you might have to pass the `--always-prefer-system` or `--force-unknown-architecture` flags to aliBuild. For debugging, `aliDoctor` is very useful!
+
 3. Load the environment
     ```bash
-    alibuild/alienv enter FairShip/latest
+    alienv enter FairShip/latest
     ```
 ## Run instructions
 
 Set up the bulk of the environment from CVMFS.
 
 ```bash
-source /cvmfs/ship.cern.ch/SHiP-2022/May/setUp.sh
+source /cvmfs/ship.cern.ch/24.05.1/setUp.sh
 ```
 
 Load your local FairShip environment.
 
 ```bash
-alibuild/alienv enter (--shellrc) FairShip/latest
+alienv enter (--shellrc) FairShip/latest
 ```
 
 Now you can for example simulate some events, run reconstruction and analysis:
