@@ -123,7 +123,7 @@ Build Instructions using CVMFS</h1>
 <ol type="1">
 <li>Download the FairShip software ```bash git clone <a href="https://github.com/ShipSoft/FairShip.git">https://github.com/ShipSoft/FairShip.git</a> ```</li>
 <li>Make sure you can access the SHiP CVMFS Repository ```bash ls /cvmfs/ship.cern.ch ``<code></code></li>
-<li><code>Source the</code>setUp.sh&lt;tt&gt;script from the CVMFS release you want to use. ``bash source /cvmfs/ship.cern.ch/24.01/setUp.sh ``` Info about different releases can be found in a <a href="https://github.com/ShipSoft/cvmfs_release">dedicated repository</a>. Please report issues with particular releases or the setup script there.</li>
+<li><code>Source the</code>setUp.sh&lt;tt&gt;script from the CVMFS release you want to use. ``bash source /cvmfs/ship.cern.ch/24.05.1/setUp.sh ``` Info about different releases can be found in a <a href="https://github.com/ShipSoft/cvmfs_release">dedicated repository</a>. Please report issues with particular releases or the setup script there.</li>
 <li>Build the software using aliBuild ```bash aliBuild build FairShip &ndash;always-prefer-system &ndash;config-dir $SHIPDIST &ndash;defaults release ``<code> If you are not building</code>master`, you will need to select the appropriate default (see <a href="#branches">Branches</a>).</li>
 </ol>
 <p>If you exit your shell session and you want to go back working on it, make sure to re-execute the third step.</p>
@@ -132,20 +132,27 @@ Build Instructions using CVMFS</h1>
 <li>Load the environment ```bash alienv enter FairShip/latest ```</li>
 </ol>
 <p>However, this won't work if you are using HTCondor. In such case you can do:</p>
-<div class="fragment"><div class="line">eval alienv load FairShip/latest</div>
+<div class="fragment"><div class="line">eval $(alienv load FairShip/latest --no-refresh)</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md31"></a>
 Local build, without access to CVMFS</h1>
-<p>Commands are similar to the previous case, but without access to CVMFS you need to build the required packages.</p><ol type="1">
-<li>Download the FairShip software ```bash git clone <a href="https://github.com/ShipSoft/FairShip.git">https://github.com/ShipSoft/FairShip.git</a> ```</li>
-<li>Build the software using aliBuild ```bash FairShip/aliBuild.sh ```</li>
-<li>Load the environment ```bash alibuild/alienv enter FairShip/latest ``` </li>
+<p>Commands are similar to the previous case, but without access to CVMFS you need to build the required packages.</p>
+<ol type="1">
+<li>Install <code>alibuild</code> using <code>pipx</code> (recommended) or <code>pip</code>.</li>
+<li>Clone the FairShip repository: ```bash git clone <a href="https://github.com/ShipSoft/FairShip.git">https://github.com/ShipSoft/FairShip.git</a> ```</li>
+</ol>
+<ol type="1">
+<li>Clone the shipdist repository, which contains the recipes to build the software stack: ```bash git clone <a href="https://github.com/ShipSoft/shipdist.git">https://github.com/ShipSoft/shipdist.git</a> ```</li>
+</ol>
+<ol type="1">
+<li>Build the software using aliBuild: ```bash aliBuild build FairShip &ndash;config-dir $SHIPDIST &ndash;defaults release ``<code> NB: Depending on the platform you might have to pass the</code>&ndash;always-prefer-system<code>or</code>&ndash;force-unknown-architecture<code>flags to aliBuild. For debugging,</code>aliDoctor` is very useful!</li>
+<li>Load the environment ```bash alienv enter FairShip/latest ``` </li>
 </ol>
 <h1><a class="anchor" id="autotoc_md32"></a>
 Run instructions</h1>
 <p>Set up the bulk of the environment from CVMFS.</p>
-<div class="fragment"><div class="line">source /cvmfs/ship.cern.ch/SHiP-2022/May/setUp.sh</div>
+<div class="fragment"><div class="line">source /cvmfs/ship.cern.ch/24.05.1/setUp.sh</div>
 </div><!-- fragment --><p>Load your local FairShip environment.</p>
-<div class="fragment"><div class="line">alibuild/alienv enter (--shellrc) FairShip/latest</div>
+<div class="fragment"><div class="line">alienv enter (--shellrc) FairShip/latest</div>
 </div><!-- fragment --><p>Now you can for example simulate some events, run reconstruction and analysis:</p>
 <div class="fragment"><div class="line">python $FAIRSHIP/macro/run_simScript.py</div>
 <div class="line">&gt;&gt; Macro finished succesfully.</div>
