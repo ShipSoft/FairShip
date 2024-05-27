@@ -29,84 +29,90 @@
 #include <TObject.h>
 #include <TVectorD.h>
 
-
 namespace genfit {
 
 class AbsTrackRep;
 class TrackPoint;
 
 /**
- *  @brief This class collects all information needed and produced by a specific  AbsFitter and is specific to one AbsTrackRep of the Track.
+ *  @brief This class collects all information needed and produced by a specific  AbsFitter and is specific to one
+ * AbsTrackRep of the Track.
  */
 class AbsFitterInfo : public TObject {
 
- public:
+public:
+   AbsFitterInfo();
+   AbsFitterInfo(const TrackPoint *trackPoint, const AbsTrackRep *rep);
 
-  AbsFitterInfo();
-  AbsFitterInfo(const TrackPoint* trackPoint, const AbsTrackRep* rep);
+   virtual ~AbsFitterInfo() {};
 
-  virtual ~AbsFitterInfo() {};
+   //! Deep copy ctor for polymorphic class.
+   virtual AbsFitterInfo *clone() const = 0;
 
-  //! Deep copy ctor for polymorphic class.
-  virtual AbsFitterInfo* clone() const = 0;
+   const TrackPoint *getTrackPoint() const { return trackPoint_; }
+   const AbsTrackRep *getRep() const { return rep_; }
 
-  const TrackPoint* getTrackPoint() const {return trackPoint_;}
-  const AbsTrackRep* getRep() const {return rep_;}
+   void setTrackPoint(const TrackPoint *tp) { trackPoint_ = tp; }
+   virtual void setRep(const AbsTrackRep *rep) { rep_ = rep; }
 
-  void setTrackPoint(const TrackPoint *tp) {trackPoint_ = tp;}
-  virtual void setRep(const AbsTrackRep* rep) {rep_ = rep;}
+   virtual bool hasMeasurements() const = 0;
+   virtual bool hasReferenceState() const = 0;
+   virtual bool hasForwardPrediction() const = 0;
+   virtual bool hasBackwardPrediction() const = 0;
+   virtual bool hasPrediction(int direction) const
+   {
+      if (direction >= 0)
+         return hasForwardPrediction();
+      return hasBackwardPrediction();
+   }
+   virtual bool hasForwardUpdate() const = 0;
+   virtual bool hasBackwardUpdate() const = 0;
+   virtual bool hasUpdate(int direction) const
+   {
+      if (direction >= 0)
+         return hasForwardUpdate();
+      return hasBackwardUpdate();
+   }
 
-  virtual bool hasMeasurements() const = 0;
-  virtual bool hasReferenceState() const = 0;
-  virtual bool hasForwardPrediction() const = 0;
-  virtual bool hasBackwardPrediction() const = 0;
-  virtual bool hasPrediction(int direction) const {if (direction >=0) return hasForwardPrediction(); return hasBackwardPrediction();}
-  virtual bool hasForwardUpdate() const = 0;
-  virtual bool hasBackwardUpdate() const = 0;
-  virtual bool hasUpdate(int direction) const {if (direction >=0) return hasForwardUpdate(); return hasBackwardUpdate();}
+   virtual void deleteForwardInfo() = 0;
+   virtual void deleteBackwardInfo() = 0;
+   virtual void deleteReferenceInfo() = 0;
+   virtual void deleteMeasurementInfo() = 0;
 
-  virtual void deleteForwardInfo() = 0;
-  virtual void deleteBackwardInfo() = 0;
-  virtual void deleteReferenceInfo() = 0;
-  virtual void deleteMeasurementInfo() = 0;
+   const SharedPlanePtr &getPlane() const { return sharedPlane_; }
+   virtual const MeasuredStateOnPlane &getFittedState(bool biased = true) const = 0;
+   virtual MeasurementOnPlane
+   getResidual(unsigned int iMeasurement = 0, bool biased = true, bool onlyMeasurementErrors = false) const = 0;
 
-  const SharedPlanePtr& getPlane() const {return sharedPlane_;}
-  virtual const MeasuredStateOnPlane& getFittedState(bool biased = true) const = 0;
-  virtual MeasurementOnPlane getResidual(unsigned int iMeasurement = 0, bool biased = true, bool onlyMeasurementErrors = false) const = 0;
+   void setPlane(const SharedPlanePtr &plane) { sharedPlane_ = plane; }
 
-  void setPlane(const SharedPlanePtr& plane) {sharedPlane_ = plane;}
+   virtual void Print(const Option_t * = "") const { ; }
 
-  virtual void Print(const Option_t* = "") const {;}
+   virtual bool checkConsistency() const = 0;
 
-  virtual bool checkConsistency() const = 0;
+protected:
+   /** Pointer to TrackPoint where the FitterInfo belongs to
+    */
+   const TrackPoint *trackPoint_; //! No ownership
 
- protected:
+   /** Pointer to AbsTrackRep with respect to which the FitterInfo is defined
+    */
+   const AbsTrackRep *rep_; //! No ownership
 
-  /** Pointer to TrackPoint where the FitterInfo belongs to
-   */
-  const TrackPoint* trackPoint_; //! No ownership
+   SharedPlanePtr sharedPlane_; //! Shared ownership.  '!' shuts up ROOT.
 
-  /** Pointer to AbsTrackRep with respect to which the FitterInfo is defined
-   */
-  const AbsTrackRep* rep_; //! No ownership
+private:
+   AbsFitterInfo(const AbsFitterInfo &);            // copy constructor
+   AbsFitterInfo &operator=(const AbsFitterInfo &); // assignment operator
 
-  SharedPlanePtr sharedPlane_; //! Shared ownership.  '!' shuts up ROOT.
-
-
- private:
-  AbsFitterInfo(const AbsFitterInfo&); // copy constructor
-  AbsFitterInfo& operator=(const AbsFitterInfo&); // assignment operator
-
-
- public:
-  ClassDef(AbsFitterInfo,1)
-
+public:
+   ClassDef(AbsFitterInfo, 1)
 };
 
 //! Needed for boost cloneability:
-inline AbsFitterInfo* new_clone( const AbsFitterInfo & a)
+inline AbsFitterInfo *new_clone(const AbsFitterInfo &a)
 {
-  return a.clone();
+   return a.clone();
 }
 
 } /* End of namespace genfit */

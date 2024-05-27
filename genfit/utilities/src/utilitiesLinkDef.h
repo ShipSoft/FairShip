@@ -19,17 +19,14 @@
 
 #ifdef __CINT__
 
-
 #pragma link off all globals;
 #pragma link off all classes;
 #pragma link off all functions;
 
-
-#pragma link C++ class genfit::HelixTrackModel+;
-#pragma link C++ class genfit::MeasurementCreator+;
-#pragma link C++ class genfit::mySpacepointDetectorHit+;
-#pragma link C++ class genfit::mySpacepointMeasurement+;
+#pragma link C++ class genfit::HelixTrackModel + ;
+#pragma link C++ class genfit::MeasurementCreator + ;
+#pragma link C++ class genfit::mySpacepointDetectorHit + ;
+#pragma link C++ class genfit::mySpacepointMeasurement + ;
 #pragma link C++ enum genfit::eMeasurementType;
 
 #endif
-

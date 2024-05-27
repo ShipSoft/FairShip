@@ -1,28 +1,29 @@
-""" Conditions Database interface definition. """
+"""Conditions Database interface definition."""
+
 from abc import ABCMeta, abstractmethod
 from datetime import datetime
 ## As of Python 3.8 we can do more with typing. It is recommended to make
 ## the API interface class final. Use the following import and provided
 ## decorator for the class.
-#from typing import final
+# from typing import final
 
 
 # Package metadata
-__author__    = "Tom Vrancken"
-__email__     = "dev@tomvrancken.nl"
+__author__ = "Tom Vrancken"
+__email__ = "dev@tomvrancken.nl"
 __copyright__ = "TU/e ST2019"
-__credits__   = ["Juan van der Heijden", "Georgios Azis"]
-__version__   = "1.0"
-__status__    = "Prototype"
+__credits__ = ["Juan van der Heijden", "Georgios Azis"]
+__version__ = "1.0"
+__status__ = "Prototype"
 
 
-_ABC = ABCMeta('ABC', (object,), {'__slots__': ()})  # Compatible with python 2 AND 3
+_ABC = ABCMeta("ABC", (object,), {"__slots__": ()})  # Compatible with python 2 AND 3
+
 
 ### Conditions Database Interface definition. This class defines the interface that all
 ### storage back-end adapters must implement.
-#TODO uncomment for python >= 3.8: @final
-class APIInterface(_ABC): # For Python 3 we could/should use 'metaclass=ABCMeta'
-
+# TODO uncomment for python >= 3.8: @final
+class APIInterface(_ABC):  # For Python 3 we could/should use 'metaclass=ABCMeta'
     ### Returns a list with all the detector names in the database.
     #   @param detector_id:     (optional) String identifying the parent detector to
     #                           retrieve the (sub)detector names for
@@ -91,9 +92,17 @@ class APIInterface(_ABC): # For Python 3 we could/should use 'metaclass=ABCMeta'
     #   @throw TypeError:       If input type is not as specified.
     #   @throw ValueError:      If detector_id does not exist.
     @abstractmethod
-    def add_condition(self, detector_id, name, tag, values, type=None,
-                      collected_at=datetime.now(), valid_since=datetime.now(),
-                      valid_until=datetime.max):
+    def add_condition(
+        self,
+        detector_id,
+        name,
+        tag,
+        values,
+        type=None,
+        collected_at=datetime.now(),
+        valid_since=datetime.now(),
+        valid_until=datetime.max,
+    ):
         pass
 
     ### Returns a list with all condition dictionaries associated with a detector.
@@ -162,7 +171,9 @@ class APIInterface(_ABC): # For Python 3 we could/should use 'metaclass=ABCMeta'
     #                                         'collected_at': datetime, 'valid_since': datetime,
     #                                         'valid_until': datetime, 'values': mixed }
     @abstractmethod
-    def get_conditions_by_name_and_validity(self, detector_id, name, start_date, end_date=None):
+    def get_conditions_by_name_and_validity(
+        self, detector_id, name, start_date, end_date=None
+    ):
         pass
 
     ### Returns a condition dictionary of a specific condition belonging to a detector,
@@ -199,7 +210,9 @@ class APIInterface(_ABC): # For Python 3 we could/should use 'metaclass=ABCMeta'
     #                                         'collected_at': datetime, 'valid_since': datetime,
     #                                         'valid_until': datetime, 'values': mixed }
     @abstractmethod
-    def get_condition_by_name_and_collection_date(self, detector_id, name, collected_at):
+    def get_condition_by_name_and_collection_date(
+        self, detector_id, name, collected_at
+    ):
         pass
 
     ### Updates the type, valid_since and valid_until values of a specific condition
@@ -218,6 +231,7 @@ class APIInterface(_ABC): # For Python 3 we could/should use 'metaclass=ABCMeta'
     #   @throw  TypeError:      If input type is not as specified.
     #   @throw  ValueError:     If detector_id does not exist.
     @abstractmethod
-    def update_condition_by_name_and_tag(self, detector_id, name, tag,
-                                         type=None, valid_since=None, valid_until=None):
+    def update_condition_by_name_and_tag(
+        self, detector_id, name, tag, type=None, valid_since=None, valid_until=None
+    ):
         pass

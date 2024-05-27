@@ -26,19 +26,22 @@
 
 namespace genfit {
 
-
-void StateOnPlane::Print(Option_t*) const {
-  std::cout << "genfit::StateOnPlane ";
-  std::cout << " state vector: "; state_.Print();
-  if (sharedPlane_ != NULL) {
-    std::cout << " defined in plane "; sharedPlane_->Print();
-    TVector3 pos, mom;
-    getRep()->getPosMom(*this, pos, mom);
-    std::cout << " 3D position: "; pos.Print();
-    std::cout << " 3D momentum: "; mom.Print();
-  }
+void StateOnPlane::Print(Option_t *) const
+{
+   std::cout << "genfit::StateOnPlane ";
+   std::cout << " state vector: ";
+   state_.Print();
+   if (sharedPlane_ != NULL) {
+      std::cout << " defined in plane ";
+      sharedPlane_->Print();
+      TVector3 pos, mom;
+      getRep()->getPosMom(*this, pos, mom);
+      std::cout << " 3D position: ";
+      pos.Print();
+      std::cout << " 3D momentum: ";
+      mom.Print();
+   }
 }
-
 
 // Modified from auto-generated Streamer to account for sharedPlane_
 // also ignore rep_, this has to be set when loading the object owning
@@ -47,25 +50,26 @@ void StateOnPlane::Streamer(TBuffer &R__b)
 {
    // Stream an object of class genfit::StateOnPlane.
 
-   //This works around a msvc bug and should be harmless on other platforms
+   // This works around a msvc bug and should be harmless on other platforms
    typedef ::genfit::StateOnPlane thisClass;
    UInt_t R__s, R__c;
    if (R__b.IsReading()) {
-      Version_t R__v = R__b.ReadVersion(&R__s, &R__c); if (R__v) { }
-      //TObject::Streamer(R__b);
+      Version_t R__v = R__b.ReadVersion(&R__s, &R__c);
+      if (R__v) {
+      }
+      // TObject::Streamer(R__b);
       state_.Streamer(R__b);
       auxInfo_.Streamer(R__b);
-      sharedPlane_.reset();  // needs to be set by owner;
-      rep_ = NULL;  // needs to be set by owner
+      sharedPlane_.reset(); // needs to be set by owner;
+      rep_ = NULL;          // needs to be set by owner
       R__b.CheckByteCount(R__s, R__c, thisClass::IsA());
    } else {
       R__c = R__b.WriteVersion(thisClass::IsA(), kTRUE);
-      //TObject::Streamer(R__b);
+      // TObject::Streamer(R__b);
       state_.Streamer(R__b);
       auxInfo_.Streamer(R__b);
       R__b.SetByteCount(R__c, kTRUE);
    }
 }
-
 
 } /* End of namespace genfit */

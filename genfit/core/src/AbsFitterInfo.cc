@@ -24,42 +24,40 @@
 
 namespace genfit {
 
-AbsFitterInfo::AbsFitterInfo() :
-  trackPoint_(NULL),
-  rep_(NULL)
+AbsFitterInfo::AbsFitterInfo() : trackPoint_(NULL), rep_(NULL)
 {
-  ;
+   ;
 }
 
-AbsFitterInfo::AbsFitterInfo(const TrackPoint* trackPoint, const AbsTrackRep* rep) :
-  trackPoint_(trackPoint),
-  rep_(rep)
+AbsFitterInfo::AbsFitterInfo(const TrackPoint *trackPoint, const AbsTrackRep *rep) : trackPoint_(trackPoint), rep_(rep)
 {
-  ;
+   ;
 }
 
 void AbsFitterInfo::Streamer(TBuffer &R__b)
 {
    // Stream an object of class genfit::AbsFitterInfo.
-   //This works around a msvc bug and should be harmless on other platforms
+   // This works around a msvc bug and should be harmless on other platforms
    typedef ::genfit::AbsFitterInfo thisClass;
    UInt_t R__s, R__c;
    if (R__b.IsReading()) {
-      Version_t R__v = R__b.ReadVersion(&R__s, &R__c); if (R__v) { }
-      //TObject::Streamer(R__b);
-      // See the long comment in AbsFinitePlane::Streamer.  This
-      // creates a duplicate of the DetPlane.
-      TClass* cl = TClass::Load(R__b);
-      DetPlane *p = (DetPlane*)(cl->New());
+      Version_t R__v = R__b.ReadVersion(&R__s, &R__c);
+      if (R__v) {
+      }
+      // TObject::Streamer(R__b);
+      //  See the long comment in AbsFinitePlane::Streamer.  This
+      //  creates a duplicate of the DetPlane.
+      TClass *cl = TClass::Load(R__b);
+      DetPlane *p = (DetPlane *)(cl->New());
       cl->Streamer(p, R__b);
       sharedPlane_.reset(p);
       R__b.CheckByteCount(R__s, R__c, thisClass::IsA());
    } else {
       R__c = R__b.WriteVersion(thisClass::IsA(), kTRUE);
-      //TObject::Streamer(R__b);
-      // See the long comment in AbsFinitePlane::Streamer.  This
-      // stores a duplicate of the DetPlane, allowing for typesafe
-      // reading.
+      // TObject::Streamer(R__b);
+      //  See the long comment in AbsFinitePlane::Streamer.  This
+      //  stores a duplicate of the DetPlane, allowing for typesafe
+      //  reading.
       sharedPlane_->IsA()->Store(R__b);
       sharedPlane_->Streamer(R__b);
       R__b.SetByteCount(R__c, kTRUE);

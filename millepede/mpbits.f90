@@ -164,7 +164,7 @@ SUBROUTINE clbits(in,jreqpe,jhispe,jsngpe,jcmprs,jextnd,idimb,iencdb,ispc)
     INTEGER(mpi) :: mb
     INTEGER(mpi) :: nbcol
     !$    INTEGER(mpi) :: OMP_GET_MAX_THREADS
-    ! save input parameter 
+    ! save input parameter
     n=in
     ireqpe=jreqpe
     isngpe=jsngpe
@@ -735,8 +735,8 @@ SUBROUTINE clbmap(in)
     INTEGER(mpl) :: noffd
     INTEGER(mpi) :: mb
 
-    ! save input parameter 
-    n2=in    
+    ! save input parameter
+    n2=in
     ! bit field array size
     noffd=INT(n2,mpl)*INT(n2-1,mpl)/2
     ndimb2=noffd/bs+n2
@@ -750,7 +750,7 @@ SUBROUTINE clbmap(in)
     CALL mpalloc(bitMap,ndimb2,'INBMAP: bit storage')
     bitMap=0
     RETURN
-END SUBROUTINE clbmap    
+END SUBROUTINE clbmap
 
 !> Fill bit map.
 !!
@@ -782,7 +782,7 @@ SUBROUTINE inbmap(im,jm)        ! include element (I,J)
     m=MOD(noffj,bs)
     bitMap(l)=ibset(bitMap(l),m)
     RETURN
-END SUBROUTINE inbmap 
+END SUBROUTINE inbmap
 
 !> Get pairs (statistic) from map.
 !!

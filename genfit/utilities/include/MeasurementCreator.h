@@ -21,7 +21,6 @@
  *
  */
 
-
 /** @addtogroup utilities
  * @{
  */
@@ -35,92 +34,86 @@
 #include <TObject.h>
 #include <TVector3.h>
 
-
 namespace genfit {
 
-
-enum eMeasurementType { Pixel = 0,
-        Spacepoint,
-        ProlateSpacepoint,
-        StripU,
-        StripV,
-        StripUV,
-        Wire,
-        WirePoint };
-
+enum eMeasurementType { Pixel = 0, Spacepoint, ProlateSpacepoint, StripU, StripV, StripUV, Wire, WirePoint };
 
 /**
  * @brief Create different measurement types along a HelixTrackModel for testing purposes.
  */
 class MeasurementCreator : public TObject {
 
+public:
+   // Constructors/Destructors ---------
+   MeasurementCreator();
 
- public:
+   ~MeasurementCreator() { delete trackModel_; }
 
-  // Constructors/Destructors ---------
-  MeasurementCreator();
+   //! Takes ownership!
+   void setTrackModel(const HelixTrackModel *model)
+   {
+      delete trackModel_;
+      trackModel_ = model;
+   }
+   void setResolution(double resolution) { resolution_ = resolution; }
+   void setResolutionWire(double resolutionWire) { resolutionWire_ = resolutionWire; }
+   void setOutlierProb(double outlierProb) { outlierProb_ = outlierProb; }
+   void setOutlierRange(double outlierRange) { outlierRange_ = outlierRange; }
+   void setThetaDetPlane(double thetaDetPlane) { thetaDetPlane_ = thetaDetPlane; }
+   void setPhiDetPlane(double phiDetPlane) { phiDetPlane_ = phiDetPlane; }
+   void setWireDir(const TVector3 wireDir)
+   {
+      wireDir_ = wireDir;
+      wireDir_.SetMag(1.);
+   }
+   void setMinDrift(double minDrift) { minDrift_ = minDrift; }
+   void setMaxDrift(double maxDrift) { maxDrift_ = maxDrift; }
+   void setIdealLRResolution(bool idealLRResolution) { idealLRResolution_ = idealLRResolution; }
+   void setUseSkew(bool useSkew) { useSkew_ = useSkew; }
+   void setSkewAngle(double skewAngle) { skewAngle_ = skewAngle; }
+   void setNSuperLayer(int nSuperLayer) { nSuperLayer_ = nSuperLayer; }
+   void setDebug(bool debug) { debug_ = debug; }
 
-  ~MeasurementCreator() {delete trackModel_;}
+   std::vector<genfit::AbsMeasurement *> create(eMeasurementType, double tracklength, bool &outlier, int &lr);
+   std::vector<genfit::AbsMeasurement *> create(eMeasurementType type, double tracklength)
+   {
+      bool dummy1;
+      int dummy2;
+      return create(type, tracklength, dummy1, dummy2);
+   }
 
-  //! Takes ownership!
-  void setTrackModel(const HelixTrackModel* model) {delete trackModel_; trackModel_ = model;}
-  void setResolution(double resolution) {resolution_ = resolution;}
-  void setResolutionWire(double resolutionWire) {resolutionWire_ = resolutionWire;}
-  void setOutlierProb(double outlierProb) {outlierProb_ = outlierProb;}
-  void setOutlierRange(double outlierRange) {outlierRange_ = outlierRange;}
-  void setThetaDetPlane(double thetaDetPlane) {thetaDetPlane_ = thetaDetPlane;}
-  void setPhiDetPlane(double phiDetPlane) {phiDetPlane_ = phiDetPlane;}
-  void setWireDir(const TVector3 wireDir) {wireDir_ = wireDir; wireDir_.SetMag(1.);}
-  void setMinDrift(double minDrift) {minDrift_ = minDrift;}
-  void setMaxDrift(double maxDrift) {maxDrift_ = maxDrift;}
-  void setIdealLRResolution(bool idealLRResolution) {idealLRResolution_ = idealLRResolution;}
-  void setUseSkew(bool useSkew) {useSkew_ = useSkew;}
-  void setSkewAngle(double skewAngle) {skewAngle_ = skewAngle;}
-  void setNSuperLayer(int nSuperLayer) {nSuperLayer_ = nSuperLayer;}
-  void setDebug(bool debug) {debug_ = debug;}
+   void reset();
 
+private:
+   const HelixTrackModel *trackModel_; // ownership
 
-  std::vector<genfit::AbsMeasurement*> create(eMeasurementType, double tracklength, bool& outlier, int& lr);
-  std::vector<genfit::AbsMeasurement*> create(eMeasurementType type, double tracklength) {
-    bool dummy1;
-    int dummy2;
-    return create(type, tracklength, dummy1, dummy2);
-  }
+   double resolution_; // cm; resolution of generated measurements
+   double
+      resolutionWire_; // cm; resolution in wire direction of generated measurements (wire and prolate sp measurements)
 
-  void reset();
+   double outlierProb_;
+   double outlierRange_;
 
- private:
+   // planarMeasurement specific
+   double thetaDetPlane_; // degree
+   double phiDetPlane_;   // degree
 
-  const HelixTrackModel* trackModel_; // ownership
+   // WireMeasurement specific
+   int wireCounter_;
+   TVector3 wireDir_;
+   double minDrift_;
+   double maxDrift_;
+   bool idealLRResolution_; // resolve the l/r ambiguities of the wire measurements
+   bool useSkew_;
+   double skewAngle_;
+   int nSuperLayer_;
 
-  double resolution_;  // cm; resolution of generated measurements
-  double resolutionWire_;  // cm; resolution in wire direction of generated measurements (wire and prolate sp measurements)
+   // misc
+   int measurementCounter_;
+   bool debug_;
 
-  double outlierProb_;
-  double outlierRange_;
-
-  // planarMeasurement specific
-  double thetaDetPlane_; // degree
-  double phiDetPlane_; // degree
-
-  // WireMeasurement specific
-  int wireCounter_;
-  TVector3 wireDir_;
-  double minDrift_;
-  double maxDrift_;
-  bool idealLRResolution_; // resolve the l/r ambiguities of the wire measurements
-  bool useSkew_;
-  double skewAngle_;
-  int nSuperLayer_;
-
-  // misc
-  int measurementCounter_;
-  bool debug_;
-
-
- public:
-  ClassDef(MeasurementCreator,1)
-
+public:
+   ClassDef(MeasurementCreator, 1)
 };
 
 } /* End of namespace genfit */

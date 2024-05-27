@@ -21,126 +21,106 @@
 
 #include <iostream>
 
-
 namespace genfit {
 
-ReferenceStateOnPlane::ReferenceStateOnPlane() :
-  StateOnPlane(),
-  forwardSegmentLength_(0),
-  backwardSegmentLength_(0),
-  forwardTransportMatrix_(),
-  backwardTransportMatrix_(),
-  forwardNoiseMatrix_(),
-  backwardNoiseMatrix_(),
-  forwardDeltaState_(),
-  backwardDeltaState_()
+ReferenceStateOnPlane::ReferenceStateOnPlane()
+   : StateOnPlane(), forwardSegmentLength_(0), backwardSegmentLength_(0), forwardTransportMatrix_(),
+     backwardTransportMatrix_(), forwardNoiseMatrix_(), backwardNoiseMatrix_(), forwardDeltaState_(),
+     backwardDeltaState_()
 {
-  ;
+   ;
 }
 
-ReferenceStateOnPlane::ReferenceStateOnPlane(const TVectorD& state,
-    const SharedPlanePtr& plane,
-    const AbsTrackRep* rep) :
-  StateOnPlane(state, plane, rep),
-  forwardSegmentLength_(0),
-  backwardSegmentLength_(0),
-  forwardTransportMatrix_(rep->getDim(), rep->getDim()),
-  backwardTransportMatrix_(rep->getDim(), rep->getDim()),
-  forwardNoiseMatrix_(rep->getDim()),
-  backwardNoiseMatrix_(rep->getDim()),
-  forwardDeltaState_(rep->getDim()),
-  backwardDeltaState_(rep->getDim())
+ReferenceStateOnPlane::ReferenceStateOnPlane(const TVectorD &state, const SharedPlanePtr &plane, const AbsTrackRep *rep)
+   : StateOnPlane(state, plane, rep), forwardSegmentLength_(0), backwardSegmentLength_(0),
+     forwardTransportMatrix_(rep->getDim(), rep->getDim()), backwardTransportMatrix_(rep->getDim(), rep->getDim()),
+     forwardNoiseMatrix_(rep->getDim()), backwardNoiseMatrix_(rep->getDim()), forwardDeltaState_(rep->getDim()),
+     backwardDeltaState_(rep->getDim())
 {
-  ;
+   ;
 }
 
-ReferenceStateOnPlane::ReferenceStateOnPlane(const TVectorD& state,
-    const SharedPlanePtr& plane,
-    const AbsTrackRep* rep,
-    const TVectorD& auxInfo) :
-  StateOnPlane(state, plane, rep, auxInfo),
-  forwardSegmentLength_(0),
-  backwardSegmentLength_(0),
-  forwardTransportMatrix_(rep->getDim(), rep->getDim()),
-  backwardTransportMatrix_(rep->getDim(), rep->getDim()),
-  forwardNoiseMatrix_(rep->getDim()),
-  backwardNoiseMatrix_(rep->getDim()),
-  forwardDeltaState_(rep->getDim()),
-  backwardDeltaState_(rep->getDim())
+ReferenceStateOnPlane::ReferenceStateOnPlane(const TVectorD &state, const SharedPlanePtr &plane, const AbsTrackRep *rep,
+                                             const TVectorD &auxInfo)
+   : StateOnPlane(state, plane, rep, auxInfo), forwardSegmentLength_(0), backwardSegmentLength_(0),
+     forwardTransportMatrix_(rep->getDim(), rep->getDim()), backwardTransportMatrix_(rep->getDim(), rep->getDim()),
+     forwardNoiseMatrix_(rep->getDim()), backwardNoiseMatrix_(rep->getDim()), forwardDeltaState_(rep->getDim()),
+     backwardDeltaState_(rep->getDim())
 {
-  ;
+   ;
 }
 
-
-ReferenceStateOnPlane::ReferenceStateOnPlane(const StateOnPlane& state) :
-  StateOnPlane(state),
-  forwardSegmentLength_(0),
-  backwardSegmentLength_(0),
-  forwardTransportMatrix_(state.getRep()->getDim(), state.getRep()->getDim()),
-  backwardTransportMatrix_(state.getRep()->getDim(), state.getRep()->getDim()),
-  forwardNoiseMatrix_(state.getRep()->getDim()),
-  backwardNoiseMatrix_(state.getRep()->getDim()),
-  forwardDeltaState_(state.getRep()->getDim()),
-  backwardDeltaState_(state.getRep()->getDim())
+ReferenceStateOnPlane::ReferenceStateOnPlane(const StateOnPlane &state)
+   : StateOnPlane(state), forwardSegmentLength_(0), backwardSegmentLength_(0),
+     forwardTransportMatrix_(state.getRep()->getDim(), state.getRep()->getDim()),
+     backwardTransportMatrix_(state.getRep()->getDim(), state.getRep()->getDim()),
+     forwardNoiseMatrix_(state.getRep()->getDim()), backwardNoiseMatrix_(state.getRep()->getDim()),
+     forwardDeltaState_(state.getRep()->getDim()), backwardDeltaState_(state.getRep()->getDim())
 {
-  std::cout << "should never come here" << std::endl;
-  exit(0);
+   std::cout << "should never come here" << std::endl;
+   exit(0);
 }
 
-
-StateOnPlane& ReferenceStateOnPlane::operator=(ReferenceStateOnPlane other) {
-  swap(other);
-  return *this;
+StateOnPlane &ReferenceStateOnPlane::operator=(ReferenceStateOnPlane other)
+{
+   swap(other);
+   return *this;
 }
 
-void ReferenceStateOnPlane::swap(ReferenceStateOnPlane& other) {
-  StateOnPlane::swap(other);
-  std::swap(this->forwardSegmentLength_, other.forwardSegmentLength_);
-  std::swap(this->backwardSegmentLength_, other.backwardSegmentLength_);
-  this->forwardTransportMatrix_.ResizeTo(other.forwardTransportMatrix_);
-  std::swap(this->forwardTransportMatrix_, other.forwardTransportMatrix_);
-  this->backwardTransportMatrix_.ResizeTo(other.backwardTransportMatrix_);
-  std::swap(this->backwardTransportMatrix_, other.backwardTransportMatrix_);
-  this->forwardNoiseMatrix_.ResizeTo(other.forwardNoiseMatrix_);
-  std::swap(this->forwardNoiseMatrix_, other.forwardNoiseMatrix_);
-  this->backwardNoiseMatrix_.ResizeTo(other.backwardNoiseMatrix_);
-  std::swap(this->backwardNoiseMatrix_, other.backwardNoiseMatrix_);
-  this->forwardDeltaState_.ResizeTo(other.forwardDeltaState_);
-  std::swap(this->forwardDeltaState_, other.forwardDeltaState_);
-  this->backwardDeltaState_.ResizeTo(other.backwardDeltaState_);
-  std::swap(this->backwardDeltaState_, other.backwardDeltaState_);
+void ReferenceStateOnPlane::swap(ReferenceStateOnPlane &other)
+{
+   StateOnPlane::swap(other);
+   std::swap(this->forwardSegmentLength_, other.forwardSegmentLength_);
+   std::swap(this->backwardSegmentLength_, other.backwardSegmentLength_);
+   this->forwardTransportMatrix_.ResizeTo(other.forwardTransportMatrix_);
+   std::swap(this->forwardTransportMatrix_, other.forwardTransportMatrix_);
+   this->backwardTransportMatrix_.ResizeTo(other.backwardTransportMatrix_);
+   std::swap(this->backwardTransportMatrix_, other.backwardTransportMatrix_);
+   this->forwardNoiseMatrix_.ResizeTo(other.forwardNoiseMatrix_);
+   std::swap(this->forwardNoiseMatrix_, other.forwardNoiseMatrix_);
+   this->backwardNoiseMatrix_.ResizeTo(other.backwardNoiseMatrix_);
+   std::swap(this->backwardNoiseMatrix_, other.backwardNoiseMatrix_);
+   this->forwardDeltaState_.ResizeTo(other.forwardDeltaState_);
+   std::swap(this->forwardDeltaState_, other.forwardDeltaState_);
+   this->backwardDeltaState_.ResizeTo(other.backwardDeltaState_);
+   std::swap(this->backwardDeltaState_, other.backwardDeltaState_);
 }
 
-
-void ReferenceStateOnPlane::resetForward() {
-  forwardSegmentLength_ = 0;
-  forwardTransportMatrix_.UnitMatrix();
-  forwardNoiseMatrix_.Zero();
-  forwardDeltaState_.Zero();
+void ReferenceStateOnPlane::resetForward()
+{
+   forwardSegmentLength_ = 0;
+   forwardTransportMatrix_.UnitMatrix();
+   forwardNoiseMatrix_.Zero();
+   forwardDeltaState_.Zero();
 }
 
-void ReferenceStateOnPlane::resetBackward() {
-  backwardSegmentLength_ = 0;
-  backwardTransportMatrix_.UnitMatrix();
-  backwardNoiseMatrix_.Zero();
-  backwardDeltaState_.Zero();
+void ReferenceStateOnPlane::resetBackward()
+{
+   backwardSegmentLength_ = 0;
+   backwardTransportMatrix_.UnitMatrix();
+   backwardNoiseMatrix_.Zero();
+   backwardDeltaState_.Zero();
 }
 
+void ReferenceStateOnPlane::Print(Option_t *) const
+{
+   StateOnPlane::Print();
 
-void ReferenceStateOnPlane::Print(Option_t*) const {
-  StateOnPlane::Print();
+   std::cout << " forwardSegmentLength: " << forwardSegmentLength_ << "\n";
+   std::cout << " forwardTransportMatrix: ";
+   forwardTransportMatrix_.Print();
+   std::cout << " forwardNoiseMatrix: ";
+   forwardNoiseMatrix_.Print();
+   std::cout << " forwardDeltaState: ";
+   forwardDeltaState_.Print();
 
-  std::cout << " forwardSegmentLength: " << forwardSegmentLength_ << "\n";
-  std::cout << " forwardTransportMatrix: "; forwardTransportMatrix_.Print();
-  std::cout << " forwardNoiseMatrix: "; forwardNoiseMatrix_.Print();
-  std::cout << " forwardDeltaState: "; forwardDeltaState_.Print();
-
-  std::cout << " backwardSegmentLength_: " << backwardSegmentLength_ << "\n";
-  std::cout << " backwardTransportMatrix: "; backwardTransportMatrix_.Print();
-  std::cout << " backwardNoiseMatrix: "; backwardNoiseMatrix_.Print();
-  std::cout << " backwardDeltaState: "; backwardDeltaState_.Print();
-
+   std::cout << " backwardSegmentLength_: " << backwardSegmentLength_ << "\n";
+   std::cout << " backwardTransportMatrix: ";
+   backwardTransportMatrix_.Print();
+   std::cout << " backwardNoiseMatrix: ";
+   backwardNoiseMatrix_.Print();
+   std::cout << " backwardDeltaState: ";
+   backwardDeltaState_.Print();
 }
-
 
 } /* End of namespace genfit */

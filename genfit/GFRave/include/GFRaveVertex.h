@@ -33,7 +33,6 @@
 #include "Track.h"
 #include "GFRaveTrackParameters.h"
 
-
 namespace genfit {
 
 /**
@@ -47,53 +46,51 @@ namespace genfit {
  */
 class GFRaveVertex : public TObject {
 
-  public:
-    // constructors, destructors
-    GFRaveVertex();
-    GFRaveVertex(const TVector3 & pos, const TMatrixDSym & cov,
-                 const std::vector < genfit::GFRaveTrackParameters* > & smoothedTracks,
-                 double ndf, double chi2, int id = -1);
+public:
+   // constructors, destructors
+   GFRaveVertex();
+   GFRaveVertex(const TVector3 &pos, const TMatrixDSym &cov,
+                const std::vector<genfit::GFRaveTrackParameters *> &smoothedTracks, double ndf, double chi2,
+                int id = -1);
 
-    GFRaveVertex(const GFRaveVertex &);
+   GFRaveVertex(const GFRaveVertex &);
 
-    GFRaveVertex& operator=(GFRaveVertex);
-    void swap(GFRaveVertex&);
+   GFRaveVertex &operator=(GFRaveVertex);
+   void swap(GFRaveVertex &);
 
-    ~GFRaveVertex();
+   ~GFRaveVertex();
 
+   // Accessors
+   //! get Position
+   TVector3 getPos() const { return pos_; }
 
-    // Accessors
-    //! get Position
-    TVector3 getPos() const {return pos_;}
+   //! get 3x3 covariance (error) of position.
+   TMatrixDSym getCov() const { return cov_; }
 
-    //!get 3x3 covariance (error) of position.
-    TMatrixDSym getCov() const {return cov_;}
+   double getNdf() const { return ndf_; }
+   double getChi2() const { return chi2_; }
 
-    double getNdf() const {return ndf_;}
-    double getChi2() const {return chi2_;}
+   //! Number of tracks the vertex is made of
+   unsigned int getNTracks() const { return smoothedTracks_.size(); }
+   GFRaveTrackParameters *getParameters(unsigned int i) const { return smoothedTracks_[i]; }
 
-    //! Number of tracks the vertex is made of
-    unsigned int getNTracks() const {return smoothedTracks_.size();}
-    GFRaveTrackParameters* getParameters(unsigned int i) const {return smoothedTracks_[i];}
+   int getId() const { return id_; }
 
-    int getId() const {return id_;}
+   void Print(const Option_t * = "") const;
 
-    void Print(const Option_t* = "") const;
+private:
+   TVector3 pos_;    // position of the vertex
+   TMatrixDSym cov_; // error of the vertex position
+   double ndf_;
+   double chi2_;
+   int id_; // id of the rave::vertex the GFVertex is created from
 
+   std::vector<genfit::GFRaveTrackParameters *>
+      smoothedTracks_; //-> track parameters of smoothed (with the vertex information) tracks, weights and original
+                       //tracks; Vertex has ownership!
 
-  private:
-
-    TVector3 pos_; // position of the vertex
-    TMatrixDSym cov_; // error of the vertex position
-    double ndf_;
-    double chi2_;
-    int id_; // id of the rave::vertex the GFVertex is created from
-
-    std::vector < genfit::GFRaveTrackParameters* > smoothedTracks_; //-> track parameters of smoothed (with the vertex information) tracks, weights and original tracks; Vertex has ownership!
-
-  public:
-    ClassDef(GFRaveVertex, 1)
-
+public:
+   ClassDef(GFRaveVertex, 1)
 };
 
 } /* End of namespace genfit */

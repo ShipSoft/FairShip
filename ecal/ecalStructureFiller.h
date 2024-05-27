@@ -24,93 +24,94 @@ class TClonesArray;
 class ecalStructureFiller : public FairTask {
 
 public:
-  /** Default constructor **/
-  ecalStructureFiller();
+   /** Default constructor **/
+   ecalStructureFiller();
 
-  /** Standard constructor **/
-  ecalStructureFiller(const char *name, const Int_t iVerbose=1, const char* fileGeo="ecal_FullMC.geo");
+   /** Standard constructor **/
+   ecalStructureFiller(const char *name, const Int_t iVerbose = 1, const char *fileGeo = "ecal_FullMC.geo");
 
-  /** Destructor **/
-  virtual ~ecalStructureFiller();
+   /** Destructor **/
+   virtual ~ecalStructureFiller();
 
-  /** Initialization of the task **/
-  virtual InitStatus Init();
+   /** Initialization of the task **/
+   virtual InitStatus Init();
 
-  ecalStructure* InitPython(TClonesArray* litePoints);
+   ecalStructure *InitPython(TClonesArray *litePoints);
 
-  /** Executed task **/
-  virtual void Exec(Option_t* option,TClonesArray* litePoints);
+   /** Executed task **/
+   virtual void Exec(Option_t *option, TClonesArray *litePoints);
 
-  /** Finish task **/
-  virtual void Finish();
+   /** Finish task **/
+   virtual void Finish();
 
-  /** Set data source for hit producer.
-   ** This must be called before Init()
-   ** (No effect other case)! **/
-  void SetUseMCPoints(Bool_t UseMCPoints);
+   /** Set data source for hit producer.
+    ** This must be called before Init()
+    ** (No effect other case)! **/
+   void SetUseMCPoints(Bool_t UseMCPoints);
 
-  ecalStructure* GetStructure() const;
-  void StoreTrackInformation(Bool_t storetrackinfo=kTRUE);
-  Bool_t GetStoreTrackInformation() const;
+   ecalStructure *GetStructure() const;
+   void StoreTrackInformation(Bool_t storetrackinfo = kTRUE);
+   Bool_t GetStoreTrackInformation() const;
 
-  Bool_t GetUseMCPoints() const;
-  Bool_t GetUseSummableHits() const;
-  Bool_t GetUseHits() const;
+   Bool_t GetUseMCPoints() const;
+   Bool_t GetUseSummableHits() const;
+   Bool_t GetUseHits() const;
+
 protected:
-
 private:
-  /** Init parameter containers **/
-  void SetParContainers();
-  /** Loop over MCPoints **/
-  void LoopForMCPoints();
-  ecalStructure* fStr;
-  ecalInf* fInf;		//ECAL geometry container
+   /** Init parameter containers **/
+   void SetParContainers();
+   /** Loop over MCPoints **/
+   void LoopForMCPoints();
+   ecalStructure *fStr;
+   ecalInf *fInf; // ECAL geometry container
 
-  TClonesArray* fListECALpts;   // ECAL MC points
-  Int_t fEvent;                 //! Internal event counter
+   TClonesArray *fListECALpts; // ECAL MC points
+   Int_t fEvent;               //! Internal event counter
 
-  /** Is Init() already done? **/
-  Bool_t fInited;
-  /** Should we take data from MCPoints? **/
-  Bool_t fUseMCPoints;
+   /** Is Init() already done? **/
+   Bool_t fInited;
+   /** Should we take data from MCPoints? **/
+   Bool_t fUseMCPoints;
 
-  /** Should we store information about tracks/energy depostion **/
-  Bool_t fStoreTrackInfo;
-  /** Geo file to use **/
-  TString fFileGeo;
+   /** Should we store information about tracks/energy depostion **/
+   Bool_t fStoreTrackInfo;
+   /** Geo file to use **/
+   TString fFileGeo;
 
-  ecalStructureFiller(const ecalStructureFiller&);
-  ecalStructureFiller& operator=(const ecalStructureFiller&);
+   ecalStructureFiller(const ecalStructureFiller &);
+   ecalStructureFiller &operator=(const ecalStructureFiller &);
 
-  ClassDef(ecalStructureFiller,1)
-
+   ClassDef(ecalStructureFiller, 1)
 };
 
 inline void ecalStructureFiller::SetUseMCPoints(Bool_t UseMCPoints)
 {
-	if (fInited) return;
-	fUseMCPoints=UseMCPoints;
+   if (fInited)
+      return;
+   fUseMCPoints = UseMCPoints;
 }
 
 inline Bool_t ecalStructureFiller::GetUseMCPoints() const
 {
-	return fUseMCPoints;
+   return fUseMCPoints;
 }
 
 inline void ecalStructureFiller::StoreTrackInformation(Bool_t storetrackinfo)
 {
-  if (fInited) return;
-  fStoreTrackInfo=storetrackinfo;
+   if (fInited)
+      return;
+   fStoreTrackInfo = storetrackinfo;
 }
 
 inline Bool_t ecalStructureFiller::GetStoreTrackInformation() const
 {
-  return fStoreTrackInfo;
+   return fStoreTrackInfo;
 }
 
-inline ecalStructure* ecalStructureFiller::GetStructure() const
+inline ecalStructure *ecalStructureFiller::GetStructure() const
 {
-  return fStr;
+   return fStr;
 }
 
 #endif
