@@ -17,31 +17,31 @@
    along with GENFIT.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #include "FitStatus.h"
 
 #include <iostream>
 
 namespace genfit {
 
-void FitStatus::Print(const Option_t*) const
+void FitStatus::Print(const Option_t *) const
 {
-  std::cout << "fitStatus \n";
-  if (isFitted_) {
-    std::cout << " track has been fitted,";
-    if (isFitConvergedFully_)
-      std::cout << " fit has converged fully,";
-    else if (isFitConvergedPartially_)
-      std::cout << " fit has converged partially,";
-    else
-      std::cout << " fit has NOT converged,";
-    std::cout << " " << nFailedPoints_ << " TrackPoints could not be processed,";
-    if (trackHasChanged_) std::cout << " track has changed since the fit,";
-    if (trackIsPruned_) std::cout << " track is pruned,";
-    std::cout << " fitted charge = " << charge_ << " \n";
-  }
-  else
-    std::cout << " track has NOT been fitted,";
+   std::cout << "fitStatus \n";
+   if (isFitted_) {
+      std::cout << " track has been fitted,";
+      if (isFitConvergedFully_)
+         std::cout << " fit has converged fully,";
+      else if (isFitConvergedPartially_)
+         std::cout << " fit has converged partially,";
+      else
+         std::cout << " fit has NOT converged,";
+      std::cout << " " << nFailedPoints_ << " TrackPoints could not be processed,";
+      if (trackHasChanged_)
+         std::cout << " track has changed since the fit,";
+      if (trackIsPruned_)
+         std::cout << " track is pruned,";
+      std::cout << " fitted charge = " << charge_ << " \n";
+   } else
+      std::cout << " track has NOT been fitted,";
 }
 
 } /* End of namespace genfit */

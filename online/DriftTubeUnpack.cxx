@@ -41,7 +41,7 @@ Bool_t DriftTubeUnpack::Init()
 // Register: Protected method
 void DriftTubeUnpack::Register()
 {
-   LOG(INFO) << "DriftTubeUnpack : Registering..." ;
+   LOG(INFO) << "DriftTubeUnpack : Registering...";
    auto fMan = FairRootManager::Instance();
    if (!fMan) {
       return;
@@ -60,16 +60,16 @@ void DriftTubeUnpack::Register()
 // DoUnpack: Public method
 Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
 {
-   LOG(DEBUG) << "DriftTubeUnpack : Unpacking frame... size/bytes = " << size ;
+   LOG(DEBUG) << "DriftTubeUnpack : Unpacking frame... size/bytes = " << size;
 
    auto df = reinterpret_cast<DataFrame *>(data);
    assert(df->header.size == size);
    switch (df->header.frameTime) {
-   case SoS: LOG(DEBUG) << "DriftTubeUnpacker: SoS frame." ; return kTRUE;
-   case EoS: LOG(DEBUG) << "DriftTubeUnpacker: EoS frame." ; return kTRUE;
+   case SoS: LOG(DEBUG) << "DriftTubeUnpacker: SoS frame."; return kTRUE;
+   case EoS: LOG(DEBUG) << "DriftTubeUnpacker: EoS frame."; return kTRUE;
    default: break;
    }
-   LOG(DEBUG) << "Sequential trigger number " << df->header.timeExtent ;
+   LOG(DEBUG) << "Sequential trigger number " << df->header.timeExtent;
    auto nhits = df->getHitCount();
    int nhitsTubes = 0;
    int nhitsLateTubes = 0;
@@ -81,15 +81,15 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
    int trigger = 0;
    int expected_triggers = 5;
    if ((flags & DriftTubes::All_OK) == DriftTubes::All_OK) {
-      LOG(DEBUG) << "All TDCs are OK" ;
+      LOG(DEBUG) << "All TDCs are OK";
    } else {
-      LOG(DEBUG) << "Not all TDCs are OK:" << std::bitset<16>(flags) ;
+      LOG(DEBUG) << "Not all TDCs are OK:" << std::bitset<16>(flags);
       for (auto i : ROOT::MakeSeq(5)) {
          if ((flags & 1 << (i + 1)) == 1 << (i + 1)) {
             expected_triggers--;
-            LOG(WARNING) << "TDC " << i << " NOT OK" ;
+            LOG(WARNING) << "TDC " << i << " NOT OK";
          } else {
-            LOG(DEBUG) << "TDC " << i << " OK" ;
+            LOG(DEBUG) << "TDC " << i << " OK";
          }
       }
    }
@@ -181,13 +181,13 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
          // Trigger
          trigger++;
          if (trigger_times.find(TDC) != trigger_times.end()) {
-            LOG(DEBUG) << "Found time " << trigger_times[TDC] << " for TDC " << TDC ;
+            LOG(DEBUG) << "Found time " << trigger_times[TDC] << " for TDC " << TDC;
             trigger_times[TDC] = std::min(hit_time, trigger_times[TDC]);
          } else {
-            LOG(DEBUG) << "Inserting new time " << hit_time ;
+            LOG(DEBUG) << "Inserting new time " << hit_time;
             trigger_times[TDC] = hit_time;
          }
-         LOG(DEBUG) << TDC << '\t' << hit_time << '\t' << trigger_times[TDC] ;
+         LOG(DEBUG) << TDC << '\t' << hit_time << '\t' << trigger_times[TDC];
          new ((*fRawTriggers)[nhitsTriggers])
             ScintillatorHit(detectorId, 0.098 * Float_t(hit_time), time_over_threshold, hit_flags, channel);
          nhitsTriggers++;
@@ -212,8 +212,7 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
       } else if (detectorId == 6 || detectorId == 7) {
          // trigger scintillator
          if (fCharm) {
-            LOG(ERROR) << "Scintillator hit found! There should not be any in the charmxsec measurement!"
-                       ;
+            LOG(ERROR) << "Scintillator hit found! There should not be any in the charmxsec measurement!";
          }
          continue;
          new ((*fRawScintillator)[nhitsScintillator])
@@ -226,10 +225,10 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
 
    int32_t delay = 13500; // Best guess based on data
    if (!trigger_times[4]) {
-      LOG(WARNING) << "No trigger in TDC 4, guessing delay" ;
+      LOG(WARNING) << "No trigger in TDC 4, guessing delay";
       flags |= DriftTubes::NoDelay;
    } else if (master_trigger_time == 0) {
-      LOG(WARNING) << "No master trigger, guessing delay" ;
+      LOG(WARNING) << "No master trigger, guessing delay";
       flags |= DriftTubes::NoDelay;
    } else {
       delay = trigger_times[4] - master_trigger_time;
@@ -252,7 +251,7 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
          time = 0.098 * (delay - trigger_time + raw_time);
       } catch (const std::out_of_range &e) {
          LOG(WARNING) << e.what() << "\t TDC " << TDC << "\t Detector ID " << detectorId << "\t Channel " << channel
-                      << "\t Sequential trigger number " << df->header.timeExtent ;
+                      << "\t Sequential trigger number " << df->header.timeExtent;
          time = 0.098 * raw_time;
          hit_flags |= DriftTubes::NoTrigger;
       }
@@ -268,9 +267,9 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
    }
 
    if (trigger < expected_triggers) {
-      LOG(INFO) << trigger << " triggers." ;
+      LOG(INFO) << trigger << " triggers.";
    } else {
-      LOG(DEBUG) << trigger << " triggers." ;
+      LOG(DEBUG) << trigger << " triggers.";
    }
 
    return kTRUE;
@@ -279,7 +278,7 @@ Bool_t DriftTubeUnpack::DoUnpack(Int_t *data, Int_t size)
 // Reset: Public method
 void DriftTubeUnpack::Reset()
 {
-   LOG(DEBUG) << "DriftTubeUnpack : Clearing Data Structure" ;
+   LOG(DEBUG) << "DriftTubeUnpack : Clearing Data Structure";
    fRawTubes->Clear();
    fRawLateTubes->Clear();
    fRawScintillator->Clear();

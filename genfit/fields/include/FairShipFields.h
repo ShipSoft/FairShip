@@ -1,4 +1,4 @@
-/* 
+/*
 generic interface to B fields of FairShip
 */
 
@@ -8,7 +8,6 @@ generic interface to B fields of FairShip
 #include "AbsBField.h"
 #include "ShipCompField.h"
 
-
 namespace genfit {
 
 /** @brief  Field for SHiP
@@ -16,20 +15,19 @@ namespace genfit {
  *  @author Thomas Ruf CERN
  */
 class FairShipFields : public AbsBField {
- public:
+public:
+   /** Default constructor **/
+   FairShipFields();
 
-  /** Default constructor **/
-  FairShipFields();
+   //! set field if not gMC present
+   inline void setField(ShipCompField *gField) { gField_ = gField; }
 
-  //! set field if not gMC present 
-  inline void setField(ShipCompField* gField)  { gField_ = gField; }
+   //! return value at position
+   TVector3 get(const TVector3 &pos) const;
+   void get(const double &posX, const double &posY, const double &posZ, double &Bx, double &By, double &Bz) const;
 
-  //! return value at position
-  TVector3 get(const TVector3& pos) const;
-  void get(const double& posX, const double& posY, const double& posZ, double& Bx, double& By, double& Bz) const;
-
- private:
-  ShipCompField* gField_;
+private:
+   ShipCompField *gField_;
 };
 
 } /* End of namespace genfit */

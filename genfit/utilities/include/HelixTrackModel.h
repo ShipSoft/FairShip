@@ -21,7 +21,6 @@
  *
  */
 
-
 /** @addtogroup utilities
  * @{
  */
@@ -32,7 +31,6 @@
 #include <TObject.h>
 #include <TVector3.h>
 
-
 namespace genfit {
 
 /**
@@ -40,32 +38,28 @@ namespace genfit {
  */
 class HelixTrackModel : public TObject {
 
- public:
+public:
+   // Constructors/Destructors ---------
+   HelixTrackModel(const TVector3 &pos, const TVector3 &mom, double charge);
 
-  // Constructors/Destructors ---------
-  HelixTrackModel(const TVector3& pos, const TVector3& mom, double charge);
+   TVector3 getPos(double tracklength) const;
+   void getPosMom(double tracklength, TVector3 &pos, TVector3 &mom) const;
+   void getPosDir(double tracklength, TVector3 &pos, TVector3 &dir) const
+   {
+      getPosMom(tracklength, pos, dir);
+      dir.SetMag(1);
+   }
 
-  TVector3 getPos(double tracklength) const;
-  void getPosMom(double tracklength, TVector3& pos, TVector3& mom) const;
-  void getPosDir(double tracklength, TVector3& pos, TVector3& dir) const {
-    getPosMom(tracklength, pos, dir);
-    dir.SetMag(1);
-  }
+private:
+   double sgn_;
+   double mom_;
+   double R_; // radius
+   TVector3 center_;
+   double alpha0_;
+   double theta_;
 
-
- private:
-
-  double sgn_;
-  double mom_;
-  double R_; // radius
-  TVector3 center_;
-  double alpha0_;
-  double theta_;
-
-
- public:
-  ClassDef(HelixTrackModel,1)
-
+public:
+   ClassDef(HelixTrackModel, 1)
 };
 
 } /* End of namespace genfit */

@@ -25,7 +25,6 @@
 
 #include "AbsKalmanFitter.h"
 
-
 namespace genfit {
 
 class KalmanFitterInfo;
@@ -35,79 +34,81 @@ class TrackPoint;
  * @brief Kalman filter implementation with linearization around a reference track
  */
 class KalmanFitterRefTrack : public AbsKalmanFitter {
- public:
-  KalmanFitterRefTrack(unsigned int maxIterations = 4, double deltaPval = 1e-3, double blowUpFactor = 1e3)
-    : AbsKalmanFitter(maxIterations, deltaPval, blowUpFactor), refitAll_(false), deltaChi2Ref_(1) {}
+public:
+   KalmanFitterRefTrack(unsigned int maxIterations = 4, double deltaPval = 1e-3, double blowUpFactor = 1e3)
+      : AbsKalmanFitter(maxIterations, deltaPval, blowUpFactor), refitAll_(false), deltaChi2Ref_(1)
+   {
+   }
 
-  virtual ~KalmanFitterRefTrack() {}
+   virtual ~KalmanFitterRefTrack() {}
 
-  /** @brief Fit the track.
-   *
-   * Needs a prepared track! Return last TrackPoint that has been processed.
-   */
-  TrackPoint* fitTrack(Track* tr, const AbsTrackRep* rep, double& chi2, double& ndf, int direction);
+   /** @brief Fit the track.
+    *
+    * Needs a prepared track! Return last TrackPoint that has been processed.
+    */
+   TrackPoint *fitTrack(Track *tr, const AbsTrackRep *rep, double &chi2, double &ndf, int direction);
 
-  void processTrackWithRep(Track* tr, const AbsTrackRep* rep, bool resortHits = false);
+   void processTrackWithRep(Track *tr, const AbsTrackRep *rep, bool resortHits = false);
 
-  /** @brief Prepare the track
-   *
-   * Calc all reference states.
-   * If setSortingParams is true, the extrapolation lengths will be set as sorting parameters
-   * of the TrackPoints.
-   * Returns if the track has been changed.
-   */
-  bool prepareTrack(Track* tr, const AbsTrackRep* rep, bool setSortingParams, int& nFailedHits);
+   /** @brief Prepare the track
+    *
+    * Calc all reference states.
+    * If setSortingParams is true, the extrapolation lengths will be set as sorting parameters
+    * of the TrackPoints.
+    * Returns if the track has been changed.
+    */
+   bool prepareTrack(Track *tr, const AbsTrackRep *rep, bool setSortingParams, int &nFailedHits);
 
-  //! If true always refit all points, otherwise fit points only if reference states have changed
-  void setRefitAll(bool refit = true) {refitAll_ = refit;}
+   //! If true always refit all points, otherwise fit points only if reference states have changed
+   void setRefitAll(bool refit = true) { refitAll_ = refit; }
 
-  /**
-   * When will the reference track be updated?
-   * If (smoothedState - referenceState) * smoothedCov^(-1) * (smoothedState - referenceState)^T >= deltaChi2Ref_.
-   */
-  void setDeltaChi2Ref(double dChi2) {deltaChi2Ref_ = dChi2;}
+   /**
+    * When will the reference track be updated?
+    * If (smoothedState - referenceState) * smoothedCov^(-1) * (smoothedState - referenceState)^T >= deltaChi2Ref_.
+    */
+   void setDeltaChi2Ref(double dChi2) { deltaChi2Ref_ = dChi2; }
 
- private:
-  void processTrackPoint(KalmanFitterInfo* fi, const KalmanFitterInfo* prevFi, const TrackPoint* tp, double& chi2, double& ndf, int direction);
+private:
+   void processTrackPoint(KalmanFitterInfo *fi, const KalmanFitterInfo *prevFi, const TrackPoint *tp, double &chi2,
+                          double &ndf, int direction);
 
-  /**
-   * @brief Remove referenceStates if they are too far from smoothed states.
-   *
-   * Does NOT remove forward and backward info, but returns from/to where they have to be removed later
-   * Return if anything has changed.
-   */
-  bool removeOutdated(Track* tr, const AbsTrackRep* rep, int& notChangedUntil, int& notChangedFrom);
+   /**
+    * @brief Remove referenceStates if they are too far from smoothed states.
+    *
+    * Does NOT remove forward and backward info, but returns from/to where they have to be removed later
+    * Return if anything has changed.
+    */
+   bool removeOutdated(Track *tr, const AbsTrackRep *rep, int &notChangedUntil, int &notChangedFrom);
 
-  //! If refitAll_, remove all information.
-  void removeForwardBackwardInfo(Track* tr, const AbsTrackRep* rep, int notChangedUntil, int notChangedFrom) const;
+   //! If refitAll_, remove all information.
+   void removeForwardBackwardInfo(Track *tr, const AbsTrackRep *rep, int notChangedUntil, int notChangedFrom) const;
 
-  bool refitAll_; // always refit all points or only if reference states have changed
-  double deltaChi2Ref_; // reference track update cut
+   bool refitAll_;       // always refit all points or only if reference states have changed
+   double deltaChi2Ref_; // reference track update cut
 
-  // aux variables for prepareTrack
-  TMatrixD FTransportMatrix_; //!
-  TMatrixD BTransportMatrix_; //!
-  TMatrixDSym FNoiseMatrix_; //!
-  TMatrixDSym BNoiseMatrix_; //!
-  TVectorD forwardDeltaState_; //!
-  TVectorD backwardDeltaState_; //!
+   // aux variables for prepareTrack
+   TMatrixD FTransportMatrix_;   //!
+   TMatrixD BTransportMatrix_;   //!
+   TMatrixDSym FNoiseMatrix_;    //!
+   TMatrixDSym BNoiseMatrix_;    //!
+   TVectorD forwardDeltaState_;  //!
+   TVectorD backwardDeltaState_; //!
 
-  // aux variables for processTrackPoint
-  TVectorD p_; //!
-  TMatrixDSym C_; //!
-  TMatrixDSym covSumInv_; //!
-  TMatrixDSym Rinv_; //!
-  TVectorD res_; //!
+   // aux variables for processTrackPoint
+   TVectorD p_;            //!
+   TMatrixDSym C_;         //!
+   TMatrixDSym covSumInv_; //!
+   TMatrixDSym Rinv_;      //!
+   TVectorD res_;          //!
 
-  // aux variables for removeOutdated
-  TVectorD resM_; //!
+   // aux variables for removeOutdated
+   TVectorD resM_; //!
 
- public:
-  ClassDef(KalmanFitterRefTrack, 1)
-
+public:
+   ClassDef(KalmanFitterRefTrack, 1)
 };
 
-}  /* End of namespace genfit */
+} /* End of namespace genfit */
 /** @} */
 
-#endif //genfit_KalmanFitterRefTrack_h
+#endif // genfit_KalmanFitterRefTrack_h

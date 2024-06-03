@@ -6,8 +6,8 @@
 #pragma link off all classes;
 #pragma link off all functions;
 
-#pragma link C++ class UpstreamTagger+;
-#pragma link C++ class UpstreamTaggerPoint+;
-#pragma link C++ class UpstreamTaggerHit+;
+#pragma link C++ class UpstreamTagger + ;
+#pragma link C++ class UpstreamTaggerPoint + ;
+#pragma link C++ class UpstreamTaggerHit + ;
 
 #endif

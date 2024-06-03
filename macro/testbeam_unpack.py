@@ -6,8 +6,8 @@ import ROOT
 def main():
     source = ROOT.ShipTdcSource(args.input)
 
-    source.AddUnpacker(0xc00, ROOT.DriftTubeUnpack(args.charm))
-    source.AddUnpacker(0xb00, ROOT.RPCUnpack())
+    source.AddUnpacker(0xC00, ROOT.DriftTubeUnpack(args.charm))
+    source.AddUnpacker(0xB00, ROOT.RPCUnpack())
     source.AddUnpacker(0x8100, ROOT.ScalerUnpack())
 
     if args.charm:

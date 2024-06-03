@@ -5,7 +5,7 @@
 #pragma link off all functions;
 
 #pragma link C++ class preshowerContFact;
-#pragma link C++ class preshower+;
-#pragma link C++ class preshowerPoint+;
+#pragma link C++ class preshower + ;
+#pragma link C++ class preshowerPoint + ;
 
 #endif

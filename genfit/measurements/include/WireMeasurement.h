@@ -27,7 +27,6 @@
 #include "AbsHMatrix.h"
 #include "MeasurementOnPlane.h"
 
-
 namespace genfit {
 
 /** @brief Class for measurements in wire detectors (Straw tubes and drift chambers)
@@ -51,17 +50,18 @@ namespace genfit {
  */
 class WireMeasurement : public AbsMeasurement {
 
- public:
-  WireMeasurement(int nDim = 7);
-  WireMeasurement(const TVectorD& rawHitCoords, const TMatrixDSym& rawHitCov, int detId, int hitId, TrackPoint* trackPoint);
+public:
+   WireMeasurement(int nDim = 7);
+   WireMeasurement(const TVectorD &rawHitCoords, const TMatrixDSym &rawHitCov, int detId, int hitId,
+                   TrackPoint *trackPoint);
 
-  virtual ~WireMeasurement() {;}
+   virtual ~WireMeasurement() { ; }
 
-  virtual AbsMeasurement* clone() const {return new WireMeasurement(*this);}
+   virtual AbsMeasurement *clone() const { return new WireMeasurement(*this); }
 
-  virtual SharedPlanePtr constructPlane(const StateOnPlane& state) const;
+   virtual SharedPlanePtr constructPlane(const StateOnPlane &state) const;
 
-  /**  Hits with a small drift distance get a higher weight, whereas hits with
+   /**  Hits with a small drift distance get a higher weight, whereas hits with
     * big drift distances become weighted down.
     * When these initial weights are used by the DAF, the smoothed track will be closer to the real
     * trajectory than if both sides are weighted with 0.5 regardless of the drift distance.
@@ -71,34 +71,31 @@ class WireMeasurement : public AbsMeasurement {
     * trajectory, whereas the wire position for hits with large drift radii is further away
     * from the trajectory and will therefore bias the fit if not weighted down.
     */
-  virtual std::vector<MeasurementOnPlane*> constructMeasurementsOnPlane(const StateOnPlane& state) const;
+   virtual std::vector<MeasurementOnPlane *> constructMeasurementsOnPlane(const StateOnPlane &state) const;
 
-  virtual const AbsHMatrix* constructHMatrix(const AbsTrackRep*) const;
+   virtual const AbsHMatrix *constructHMatrix(const AbsTrackRep *) const;
 
-  /** Set maximum drift distance. This is used to calculate the start weights of the two
-   * measurementsOnPlane.
-   */
-  void setMaxDistance(double d){maxDistance_ = d;}
-  /**
-   * select how to resolve the left/right ambiguity:
-   * -1: negative (left) side on vector (track direction) x (wire direction)
-   * 0: auto select (take side with smallest distance to track)
-   * 1: positive (right) side on vector (track direction) x (wire direction)
-   */
-  void setLeftRightResolution(int lr);
+   /** Set maximum drift distance. This is used to calculate the start weights of the two
+    * measurementsOnPlane.
+    */
+   void setMaxDistance(double d) { maxDistance_ = d; }
+   /**
+    * select how to resolve the left/right ambiguity:
+    * -1: negative (left) side on vector (track direction) x (wire direction)
+    * 0: auto select (take side with smallest distance to track)
+    * 1: positive (right) side on vector (track direction) x (wire direction)
+    */
+   void setLeftRightResolution(int lr);
 
-  double getMaxDistance(){return maxDistance_;}
-  int getLeftRightResolution() const {return leftRight_;}
+   double getMaxDistance() { return maxDistance_; }
+   int getLeftRightResolution() const { return leftRight_; }
 
- protected:
+protected:
+   double maxDistance_;
+   double leftRight_;
 
-  double maxDistance_;
-  double leftRight_;
-
- public:
-
-  ClassDef(WireMeasurement, 1)
-
+public:
+   ClassDef(WireMeasurement, 1)
 };
 
 } /* End of namespace genfit */

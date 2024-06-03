@@ -72,9 +72,10 @@ Bool_t PixelUnpack::DoUnpack(Int_t *data, Int_t size)
    for (auto &&hit : hits) {
       auto hitData = reinterpret_cast<HitData *>(&(hit.hitTime));
       auto channelId = reinterpret_cast<ChannelId *>(&(hit.channelId));
-      auto detectorID = (df->header.partitionId%0x0800) * 10000000 + 1000000 * hitData->moduleID + 1000 * channelId->row + channelId->column;
+      auto detectorID = (df->header.partitionId % 0x0800) * 10000000 + 1000000 * hitData->moduleID +
+                        1000 * channelId->row + channelId->column;
       auto tot = hitData->tot;
-      new ((*fRawData)[fNHits]) ShipPixelHit(detectorID, tot); //tot is measured in steps of 25 ns
+      new ((*fRawData)[fNHits]) ShipPixelHit(detectorID, tot); // tot is measured in steps of 25 ns
       fNHits++;
    }
 
@@ -85,7 +86,7 @@ Bool_t PixelUnpack::DoUnpack(Int_t *data, Int_t size)
 // Reset: Public method
 void PixelUnpack::Reset()
 {
-   LOG(DEBUG) << "PixelUnpack : Clearing Data Structure" ;
+   LOG(DEBUG) << "PixelUnpack : Clearing Data Structure";
    fRawData->Clear();
    fNHits = 0;
 }

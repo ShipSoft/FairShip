@@ -25,52 +25,39 @@
 
 #include "TrackCandHit.h"
 
-
 namespace genfit {
 
 /**
  * @brief Hit object for use in TrackCand. Provides additional left/right parameter.
  */
 class WireTrackCandHit : public TrackCandHit {
- public:
+public:
+   // Constructors/Destructors ---------
+   WireTrackCandHit(int detId = -1, int hitId = -1, int planeId = -1, double sortingParameter = 0., char leftRight = 0);
 
-  // Constructors/Destructors ---------
-  WireTrackCandHit(int detId   = -1,
-               int hitId   = -1,
-               int planeId = -1,
-               double sortingParameter  =  0.,
-               char leftRight = 0);
+   virtual ~WireTrackCandHit() { ; }
 
-  virtual ~WireTrackCandHit() {;}
+   virtual TrackCandHit *clone() const { return new WireTrackCandHit(*this); }
 
-  virtual TrackCandHit* clone() const {return new WireTrackCandHit(*this);}
+   // Accessors
+   double getLeftRightResolution() const { return leftRight_; }
 
-  // Accessors
-  double getLeftRightResolution() const {return leftRight_;}
+   // Modifiers
+   void setLeftRightResolution(double leftRight) { leftRight_ = leftRight; }
 
-  // Modifiers
-  void setLeftRightResolution(double leftRight) {leftRight_ = leftRight;}
+   virtual void Print(Option_t *option = "") const;
 
-  virtual void Print(Option_t* option = "") const;
+protected:
+   //! protect from calling copy c'tor from outside the class. Use #clone() if you want a copy!
+   WireTrackCandHit(const WireTrackCandHit &other) : TrackCandHit(other), leftRight_(other.leftRight_) { ; }
+   //! protect from calling assignment operator from outside the class. Use #clone() instead!
+   WireTrackCandHit &operator=(const WireTrackCandHit &);
 
+   // Data Members ------------
+   char leftRight_; // sorting parameter
 
- protected:
-
-  //! protect from calling copy c'tor from outside the class. Use #clone() if you want a copy!
-  WireTrackCandHit(const WireTrackCandHit& other) :
-    TrackCandHit(other), leftRight_(other.leftRight_) {;}
-  //! protect from calling assignment operator from outside the class. Use #clone() instead!
-  WireTrackCandHit& operator=(const WireTrackCandHit&);
-
-
-  // Data Members ------------
-  char leftRight_; // sorting parameter
-
-
- public:
-
-  ClassDef(WireTrackCandHit,1)
-
+public:
+   ClassDef(WireTrackCandHit, 1)
 };
 
 } /* End of namespace genfit */

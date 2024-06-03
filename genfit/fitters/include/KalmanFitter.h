@@ -29,7 +29,6 @@
 #include <boost/scoped_ptr.hpp>
 #endif
 
-
 namespace genfit {
 
 class KalmanFitterInfo;
@@ -41,49 +40,48 @@ class TrackPoint;
  */
 class KalmanFitter : public AbsKalmanFitter {
 
- private:
+private:
+   // These private functions are needed, otherwise strange things happen, no idea why!
+   KalmanFitter(const KalmanFitter &);
+   KalmanFitter &operator=(KalmanFitter const &);
 
-  // These private functions are needed, otherwise strange things happen, no idea why!
-  KalmanFitter(const KalmanFitter&);
-  KalmanFitter& operator=(KalmanFitter const&);
+public:
+   KalmanFitter(unsigned int maxIterations = 4, double deltaPval = 1e-3, double blowUpFactor = 1e3,
+                bool squareRootFormalism = false)
+      : AbsKalmanFitter(maxIterations, deltaPval, blowUpFactor), currentState_(NULL),
+        squareRootFormalism_(squareRootFormalism)
+   {
+   }
 
- public:
+   ~KalmanFitter() {}
 
-  KalmanFitter(unsigned int maxIterations = 4, double deltaPval = 1e-3, double blowUpFactor = 1e3, bool squareRootFormalism = false)
-    : AbsKalmanFitter(maxIterations, deltaPval, blowUpFactor), currentState_(NULL),
-      squareRootFormalism_(squareRootFormalism)
-  {}
+   //! Hit resorting currently NOT supported.
+   void processTrackWithRep(Track *tr, const AbsTrackRep *rep, bool resortHits = false);
 
-  ~KalmanFitter() {}
+   //! process only a part of the track. Can also be used to process the track only in backward direction.
+   //! Does not alter the FitStatus and does not do multiple iterations.
+   void processTrackPartially(Track *tr, const AbsTrackRep *rep, int startId = 0, int endId = -1);
 
-  //! Hit resorting currently NOT supported.
-  void processTrackWithRep(Track* tr, const AbsTrackRep* rep, bool resortHits = false);
+   void useSquareRootFormalism(bool squareRootFormalism = true) { squareRootFormalism_ = squareRootFormalism; }
 
-  //! process only a part of the track. Can also be used to process the track only in backward direction.
-  //! Does not alter the FitStatus and does not do multiple iterations.
-  void processTrackPartially(Track* tr, const AbsTrackRep* rep, int startId = 0, int endId = -1);
-
-  void useSquareRootFormalism(bool squareRootFormalism = true) {squareRootFormalism_ = squareRootFormalism;}
-
- private:
-  bool fitTrack(Track* tr, const AbsTrackRep* rep, double& chi2, double& ndf, int startId, int endId, int& nFailedHits);
-  void processTrackPoint(TrackPoint* tp,
-      const AbsTrackRep* rep, double& chi2, double& ndf, int direction);
+private:
+   bool
+   fitTrack(Track *tr, const AbsTrackRep *rep, double &chi2, double &ndf, int startId, int endId, int &nFailedHits);
+   void processTrackPoint(TrackPoint *tp, const AbsTrackRep *rep, double &chi2, double &ndf, int direction);
 
 #ifndef __CINT__
-  boost::scoped_ptr<MeasuredStateOnPlane> currentState_;
+   boost::scoped_ptr<MeasuredStateOnPlane> currentState_;
 #else
-  MeasuredStateOnPlane* currentState_;
+   MeasuredStateOnPlane *currentState_;
 #endif
 
-  bool squareRootFormalism_;
+   bool squareRootFormalism_;
 
- public:
-  ClassDef(KalmanFitter,1)
-
+public:
+   ClassDef(KalmanFitter, 1)
 };
 
 } /* End of namespace genfit */
 /** @} */
 
-#endif //genfit_KalmanFitter_h
+#endif // genfit_KalmanFitter_h

@@ -308,8 +308,8 @@ SUBROUTINE mptst2(imodel)         ! generate test files
         ip=0
         !       IF (ICOUNT.LE.3) IP=1
         CALL genln2(ip)      ! generate hits
-  
-  
+
+
         DO i=1,nhits
             ! simple straight line
             lyr=ihits(i)/nmxy+1
@@ -482,12 +482,12 @@ SUBROUTINE genln2(ip)
         !      multiple scattering
         dx=dx+gran()*the0
         dy=dy+gran()*the0
-  
+
         imx=INT((x+sizel*0.5)/sizel*REAL(nmx,mps),mpi)
         IF (imx < 0.OR.imx >= nmx) CYCLE
         imy=INT((y+sizel*0.5)/sizel*REAL(nmy,mps),mpi)
         IF (imy < 0.OR.imy >= nmy) CYCLE
-  
+
         ihit=((i-1)*nmy+imy)*nmx+imx
         ioff=((islyr(i)-1)*nmy+imy)*nmx+imx+1
         nhits=nhits+1
@@ -497,11 +497,10 @@ SUBROUTINE genln2(ip)
         xhits(nhits)=sarc(i)
         yhits(nhits)=(xl-xs)*spro(1,i)+(yl-ys)*spro(2,i)+gran()*ssig(i)
         sigma(nhits)=ssig(i)
-  
+
         IF(ip /= 0) THEN
             WRITE(*,101) nhits,i,ihit,x,y,xhits(nhits), yhits(nhits),sigma(nhits)
         END IF
     END DO
 101 FORMAT(3I3,5F8.4)
 END SUBROUTINE genln2
-

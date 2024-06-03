@@ -4,9 +4,9 @@
 #pragma link off all classes;
 #pragma link off all functions;
 
-#pragma link C++ class genfit::RKTrackRep-;
-#pragma link C++ class genfit::RKTools+;
-#pragma link C++ class genfit::TGeoMaterialInterface+;
-#pragma link C++ class genfit::MaterialEffects+;
+#pragma link C++ class genfit::RKTrackRep - ;
+#pragma link C++ class genfit::RKTools + ;
+#pragma link C++ class genfit::TGeoMaterialInterface + ;
+#pragma link C++ class genfit::MaterialEffects + ;
 
 #endif

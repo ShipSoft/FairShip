@@ -34,35 +34,34 @@
 namespace genfit {
 namespace tools {
 
-  /** @brief Invert a matrix, throwing an Exception when inversion fails.
-   * Optional calculation of determinant.
-   */
-  void invertMatrix(const TMatrixDSym& mat, TMatrixDSym& inv, double* determinant = NULL);
-  /** @brief Same, replacing its argument.
-   */
-  void invertMatrix(TMatrixDSym& mat, double* determinant = NULL);
+/** @brief Invert a matrix, throwing an Exception when inversion fails.
+ * Optional calculation of determinant.
+ */
+void invertMatrix(const TMatrixDSym &mat, TMatrixDSym &inv, double *determinant = NULL);
+/** @brief Same, replacing its argument.
+ */
+void invertMatrix(TMatrixDSym &mat, double *determinant = NULL);
 
-  /** @brief Solves R^t x = b, replacing b with the solution for x.  R is
-   *  assumed to be upper diagonal.
-   */
-  bool transposedForwardSubstitution(const TMatrixD& R, TVectorD& b);
-  /** @brief Same, for a column of the matrix b.  */
-  bool transposedForwardSubstitution(const TMatrixD& R, TMatrixD& b, int nCol);
-  /** @brief Inverts the transpose of the upper right matrix R into inv.  */
-  bool transposedInvert(const TMatrixD& R, TMatrixD& inv);
+/** @brief Solves R^t x = b, replacing b with the solution for x.  R is
+ *  assumed to be upper diagonal.
+ */
+bool transposedForwardSubstitution(const TMatrixD &R, TVectorD &b);
+/** @brief Same, for a column of the matrix b.  */
+bool transposedForwardSubstitution(const TMatrixD &R, TMatrixD &b, int nCol);
+/** @brief Inverts the transpose of the upper right matrix R into inv.  */
+bool transposedInvert(const TMatrixD &R, TMatrixD &inv);
 
-  /** @brief Replaces A with an upper right matrix connected to A by
-   *  an orthongonal transformation.  I.e., it computes R from a QR
-   *  decomposition of A = QR, replacing A.
-   */
-void QR(TMatrixD& A);
+/** @brief Replaces A with an upper right matrix connected to A by
+ *  an orthongonal transformation.  I.e., it computes R from a QR
+ *  decomposition of A = QR, replacing A.
+ */
+void QR(TMatrixD &A);
 
-  /** @brief This averages the covariance matrices C1, C2 in a
-   *  numerically stable way by using matrix square roots.  This code
-   *  is in no way optimized so use with care if speed is a concern.
-   */
-void safeAverage(const TMatrixDSym& C1, const TMatrixDSym& C2,
-		 TMatrixDSym& result);
+/** @brief This averages the covariance matrices C1, C2 in a
+ *  numerically stable way by using matrix square roots.  This code
+ *  is in no way optimized so use with care if speed is a concern.
+ */
+void safeAverage(const TMatrixDSym &C1, const TMatrixDSym &C2, TMatrixDSym &result);
 
 } /* End of namespace tools */
 } /* End of namespace genfit */
