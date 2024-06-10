@@ -17,31 +17,26 @@
    along with GENFIT.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #include "GFRaveMagneticField.h"
 #include <FieldManager.h>
 
 #include <iostream>
 
-
 namespace genfit {
 
-GFRaveMagneticField *
-GFRaveMagneticField::copy() const{
-  return new GFRaveMagneticField(*this);
-}
-
-
-rave::Vector3D
-GFRaveMagneticField::inTesla ( const rave::Point3D & position) const
+GFRaveMagneticField *GFRaveMagneticField::copy() const
 {
-  TVector3 pos(position.x(), position.y(), position.z());
-
-  TVector3 B = FieldManager::getInstance()->getFieldVal(pos); // magnetic field in kGauss
-  B *= 1.E-1;
-
-  return rave::Vector3D (B.X(), B.Y(), B.Z());
+   return new GFRaveMagneticField(*this);
 }
 
+rave::Vector3D GFRaveMagneticField::inTesla(const rave::Point3D &position) const
+{
+   TVector3 pos(position.x(), position.y(), position.z());
+
+   TVector3 B = FieldManager::getInstance()->getFieldVal(pos); // magnetic field in kGauss
+   B *= 1.E-1;
+
+   return rave::Vector3D(B.X(), B.Y(), B.Z());
+}
 
 } /* End of namespace genfit */

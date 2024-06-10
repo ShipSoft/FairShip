@@ -24,91 +24,92 @@ class TClonesArray;
 class hcalStructureFiller : public FairTask {
 
 public:
-  /** Default constructor **/
-  hcalStructureFiller();
+   /** Default constructor **/
+   hcalStructureFiller();
 
-  /** Standard constructor **/
-  hcalStructureFiller(const char *name, const Int_t iVerbose=1, const char* fileGeo="hcal.geo");
+   /** Standard constructor **/
+   hcalStructureFiller(const char *name, const Int_t iVerbose = 1, const char *fileGeo = "hcal.geo");
 
-  /** Destructor **/
-  virtual ~hcalStructureFiller();
+   /** Destructor **/
+   virtual ~hcalStructureFiller();
 
-  /** Initialization of the task **/
-  virtual InitStatus Init();
+   /** Initialization of the task **/
+   virtual InitStatus Init();
 
-  /** Executed task **/
-  virtual void Exec(Option_t* option);
+   /** Executed task **/
+   virtual void Exec(Option_t *option);
 
-  /** Finish task **/
-  virtual void Finish();
+   /** Finish task **/
+   virtual void Finish();
 
-  /** Set data source for hit producer.
-   ** This must be called before Init()
-   ** (No effect other case)! **/
-  void SetUseMCPoints(Bool_t UseMCPoints);
+   /** Set data source for hit producer.
+    ** This must be called before Init()
+    ** (No effect other case)! **/
+   void SetUseMCPoints(Bool_t UseMCPoints);
 
-  hcalStructure* GetStructure() const;
-  void StoreTrackInformation(Bool_t storetrackinfo=kTRUE);
-  Bool_t GetStoreTrackInformation() const;
+   hcalStructure *GetStructure() const;
+   void StoreTrackInformation(Bool_t storetrackinfo = kTRUE);
+   Bool_t GetStoreTrackInformation() const;
 
-  Bool_t GetUseMCPoints() const;
-  Bool_t GetUseSummableHits() const;
-  Bool_t GetUseHits() const;
+   Bool_t GetUseMCPoints() const;
+   Bool_t GetUseSummableHits() const;
+   Bool_t GetUseHits() const;
+
 protected:
-
 private:
-  /** Init parameter containers **/
-  void SetParContainers();
-  /** Loop over MCPoints **/
-  void LoopForMCPoints();
-  hcalStructure* fStr;
-  hcalInf* fInf;		//HCAL geometry container
+   /** Init parameter containers **/
+   void SetParContainers();
+   /** Loop over MCPoints **/
+   void LoopForMCPoints();
+   hcalStructure *fStr;
+   hcalInf *fInf; // HCAL geometry container
 
-  TClonesArray* fListHCALpts;   //HCAL MC points
-  Int_t fEvent;                 //! Internal event counter
+   TClonesArray *fListHCALpts; // HCAL MC points
+   Int_t fEvent;               //! Internal event counter
 
-  /** Is Init() already done? **/
-  Bool_t fInited;
-  /** Should we take data from MCPoints? **/
-  Bool_t fUseMCPoints;
+   /** Is Init() already done? **/
+   Bool_t fInited;
+   /** Should we take data from MCPoints? **/
+   Bool_t fUseMCPoints;
 
-  /** Should we store information about tracks/energy depostion **/
-  Bool_t fStoreTrackInfo;
-  /** Geo file to use **/
-  TString fFileGeo;
+   /** Should we store information about tracks/energy depostion **/
+   Bool_t fStoreTrackInfo;
+   /** Geo file to use **/
+   TString fFileGeo;
 
-  hcalStructureFiller(const hcalStructureFiller&);
-  hcalStructureFiller& operator=(const hcalStructureFiller&);
+   hcalStructureFiller(const hcalStructureFiller &);
+   hcalStructureFiller &operator=(const hcalStructureFiller &);
 
-  ClassDef(hcalStructureFiller,1)
-
+   ClassDef(hcalStructureFiller, 1)
 };
 
 inline void hcalStructureFiller::SetUseMCPoints(Bool_t UseMCPoints)
 {
-  if (fInited) return;
-  fUseMCPoints=UseMCPoints;
+   if (fInited)
+      return;
+   fUseMCPoints = UseMCPoints;
 }
 
 inline Bool_t hcalStructureFiller::GetUseMCPoints() const
 {
-  return fUseMCPoints;
+   return fUseMCPoints;
 }
 
 inline void hcalStructureFiller::StoreTrackInformation(Bool_t storetrackinfo)
 {
-  if (fInited) return;
-  fStoreTrackInfo=storetrackinfo;
+   if (fInited)
+      return;
+   fStoreTrackInfo = storetrackinfo;
 }
 
 inline Bool_t hcalStructureFiller::GetStoreTrackInformation() const
 {
-  return fStoreTrackInfo;
+   return fStoreTrackInfo;
 }
 
-inline hcalStructure* hcalStructureFiller::GetStructure() const
+inline hcalStructure *hcalStructureFiller::GetStructure() const
 {
-  return fStr;
+   return fStr;
 }
 
 #endif

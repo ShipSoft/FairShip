@@ -23,9 +23,7 @@
 #pragma link off all classes;
 #pragma link off all functions;
 
-
-#pragma link C++ class genfit::GFRaveVertex+;
-#pragma link C++ class genfit::GFRaveTrackParameters+;
+#pragma link C++ class genfit::GFRaveVertex + ;
+#pragma link C++ class genfit::GFRaveTrackParameters + ;
 
 #endif
-

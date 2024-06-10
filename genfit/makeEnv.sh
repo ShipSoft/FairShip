@@ -19,4 +19,3 @@ else
     echo "export RAVEPATH=$RAVEPATH" >> $ENVFILE
   fi
 fi
-

@@ -25,7 +25,6 @@
 
 #include "SpacepointMeasurement.h"
 
-
 namespace genfit {
 
 /** @brief Class for measurements implementing a space point hit geometry with a very prolate
@@ -45,27 +44,25 @@ namespace genfit {
  */
 class ProlateSpacepointMeasurement : public SpacepointMeasurement {
 
- public:
-  ProlateSpacepointMeasurement(int nDim = 3);
-  ProlateSpacepointMeasurement(const TVectorD& rawHitCoords, const TMatrixDSym& rawHitCov, int detId, int hitId, TrackPoint* trackPoint);
+public:
+   ProlateSpacepointMeasurement(int nDim = 3);
+   ProlateSpacepointMeasurement(const TVectorD &rawHitCoords, const TMatrixDSym &rawHitCov, int detId, int hitId,
+                                TrackPoint *trackPoint);
 
-  virtual ~ProlateSpacepointMeasurement() {;}
+   virtual ~ProlateSpacepointMeasurement() { ; }
 
-  virtual AbsMeasurement* clone() const {return new ProlateSpacepointMeasurement(*this);}
+   virtual AbsMeasurement *clone() const { return new ProlateSpacepointMeasurement(*this); }
 
-  virtual SharedPlanePtr constructPlane(const StateOnPlane& state) const;
+   virtual SharedPlanePtr constructPlane(const StateOnPlane &state) const;
 
+   const TVector3 &getLargestErrorDirection() { return largestErrorDirection_; }
+   void setLargestErrorDirection(const TVector3 &dir) { largestErrorDirection_ = dir.Unit(); }
 
-  const TVector3& getLargestErrorDirection(){return largestErrorDirection_;}
-  void setLargestErrorDirection(const TVector3& dir){largestErrorDirection_ = dir.Unit();}
+protected:
+   TVector3 largestErrorDirection_; // direction of largest error
 
- protected:
-  TVector3 largestErrorDirection_; // direction of largest error
-
- public:
-
-  ClassDef(ProlateSpacepointMeasurement,1)
-
+public:
+   ClassDef(ProlateSpacepointMeasurement, 1)
 };
 
 } /* End of namespace genfit */

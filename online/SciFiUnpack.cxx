@@ -49,7 +49,7 @@ Bool_t SciFiUnpack::Init()
 void SciFiUnpack::Register()
 {
 
-   LOG(INFO) << "SciFiUnpack : Registering..." ;
+   LOG(INFO) << "SciFiUnpack : Registering...";
    auto *fMan = FairRootManager::Instance();
    if (!fMan) {
       return;
@@ -61,12 +61,12 @@ void SciFiUnpack::Register()
 Bool_t SciFiUnpack::DoUnpack(Int_t *data, Int_t size)
 {
 
-   LOG(INFO) << "SciFiUnpack : Unpacking frame... size/bytes = " << size ;
+   LOG(INFO) << "SciFiUnpack : Unpacking frame... size/bytes = " << size;
 
    auto df = reinterpret_cast<SciFiDataFrame *>(data);
    switch (df->header.frameTime) {
-   case SoS: LOG(INFO) << "SciFiUnpack: SoS frame." ; return kTRUE;
-   case EoS: LOG(INFO) << "SciFiUnpack: EoS frame." ; return kTRUE;
+   case SoS: LOG(INFO) << "SciFiUnpack: SoS frame."; return kTRUE;
+   case EoS: LOG(INFO) << "SciFiUnpack: EoS frame."; return kTRUE;
    default: break;
    }
 
@@ -74,38 +74,46 @@ Bool_t SciFiUnpack::DoUnpack(Int_t *data, Int_t size)
    int layerID;
    assert(df->header.size == size);
    auto nhits = df->getHitCount();
-   LOG(INFO) << nhits << " hits." ;
+   LOG(INFO) << nhits << " hits.";
    std::vector<HitData> hits(df->hits, df->hits + nhits);
    // std::cout << df->header.size << "  " << size << "  " << nhits << std::endl;
    for (auto &&hitData : hits) {
-     auto triggerFlag = (hitData.ch >= 16000) ? 1 : 0;
-     auto board = (triggerFlag == 1) ? (hitData.ch - 15999) : (hitData.ch / 512 + 1);
-     auto layer = (board-1) / 3 + 1;
-     if (layer==1) layerID=111;
-     else if (layer==2) layerID=112;
-     else if (layer==3) layerID=121;
-     else if (layer==4) layerID=122;
-     else if (layer==5) layerID=131;
-     else if (layer==6) layerID=132;
-     else if (layer==7) layerID=141;
-     else layerID=142;
+      auto triggerFlag = (hitData.ch >= 16000) ? 1 : 0;
+      auto board = (triggerFlag == 1) ? (hitData.ch - 15999) : (hitData.ch / 512 + 1);
+      auto layer = (board - 1) / 3 + 1;
+      if (layer == 1)
+         layerID = 111;
+      else if (layer == 2)
+         layerID = 112;
+      else if (layer == 3)
+         layerID = 121;
+      else if (layer == 4)
+         layerID = 122;
+      else if (layer == 5)
+         layerID = 131;
+      else if (layer == 6)
+         layerID = 132;
+      else if (layer == 7)
+         layerID = 141;
+      else
+         layerID = 142;
 
-     //                0-25 * 10**5       +  0-16025;
-     auto detectorId = board * pow(10, 5) + hitData.ch;
-     bool trigflag = triggerFlag;
+      //                0-25 * 10**5       +  0-16025;
+      auto detectorId = board * pow(10, 5) + hitData.ch;
+      bool trigflag = triggerFlag;
 
-     new ((*fRawData)[fNHits]) SciFiHit(detectorId, layerID, hitData.ch, board, hitData.time, hitData.finetime, hitData.flags, trigflag);
+      new ((*fRawData)[fNHits])
+         SciFiHit(detectorId, layerID, hitData.ch, board, hitData.time, hitData.finetime, hitData.flags, trigflag);
 
-     fNHits++;
+      fNHits++;
    }
 
    fNHitsTotal += fNHits;
    return kTRUE;
-
 }
 
 void SciFiUnpack::Reset()
 {
-  fRawData->Clear();
-  fNHits = 0;
+   fRawData->Clear();
+   fNHits = 0;
 }

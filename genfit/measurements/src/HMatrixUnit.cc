@@ -21,9 +21,7 @@
 #include <cassert>
 #include <alloca.h>
 
-
 namespace genfit {
-
 
 // 1, 0, 0, 0, 0,
 // 0, 1, 0, 0, 0,
@@ -31,17 +29,14 @@ namespace genfit {
 // 0, 0, 0, 1, 0,
 // 0, 0, 0, 0, 1
 
-const TMatrixD& HMatrixUnit::getMatrix() const {
-  static const double HMatrixContent[5*5] = {1, 0, 0, 0, 0,
-                                               0, 1, 0, 0, 0,
-                                               0, 0, 1, 0, 0,
-                                               0, 0, 0, 1, 0,
-                                               0, 0, 0, 0, 1};
+const TMatrixD &HMatrixUnit::getMatrix() const
+{
+   static const double HMatrixContent[5 * 5] = {1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1,
+                                                0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1};
 
-  static const TMatrixD HMatrix(5,5, HMatrixContent);
+   static const TMatrixD HMatrix(5, 5, HMatrixContent);
 
-  return HMatrix;
+   return HMatrix;
 }
-
 
 } /* End of namespace genfit */
