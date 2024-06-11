@@ -1111,6 +1111,7 @@ void veto::ConstructGeometry()
     TGeoMedium *Sens =gGeoManager->GetMedium("ShipSens");
     InitMedium("Scintillator");
     TGeoMedium *Se =gGeoManager->GetMedium("Scintillator");
+    InitMedium("helium");
     gGeoManager->SetNsegments(100);
     vetoMed        = gGeoManager->GetMedium(vetoMed_name);      //! medium of veto counter, liquid or plastic scintillator
     supportMedIn   = gGeoManager->GetMedium(supportMedIn_name); //! medium of support structure, iron, balloon
