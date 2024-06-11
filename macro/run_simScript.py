@@ -138,6 +138,7 @@ parser.add_argument("--noSC", dest="SC_mag", help="Deactivate SC muon shield. Co
 parser.add_argument("--scName", help="The name of the SC shield in the database", default="sc_v6")
 parser.add_argument("--MesonMother",   dest="MM",  help="Choose DP production meson source", required=False,  default=True)
 parser.add_argument("--debug",  help="1: print weights and field 2: make overlap check", required=False, default=0, type=int, choices=range(0,3))
+parser.add_argument("--helium",  help="use helium bag for vacuum tank", required=False, action="store_const", const="air", default="vacuums")
 
 options = parser.parse_args()
 
@@ -214,7 +215,7 @@ if options.charm == 0: ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geom
                                                 muShieldDesign = options.ds, nuTauTargetDesign=options.nud, CaloDesign=options.caloDesign, \
                                                 strawDesign=options.strawDesign, muShieldGeo=options.geofile,
                                                 muShieldStepGeo=options.muShieldStepGeo, muShieldWithCobaltMagnet=options.muShieldWithCobaltMagnet,
-                                                SC_mag=options.SC_mag, scName=options.scName)
+                                                SC_mag=options.SC_mag, scName=options.scName, decayVolumeMed=options.helium)
 else:
  ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/charm-geometry_config.py", Setup = options.CharmdetSetup, cTarget = options.CharmTarget)
  if options.CharmdetSetup == 0: print("Setup for muon flux measurement has been set")

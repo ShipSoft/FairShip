@@ -60,6 +60,8 @@ if "SC_mag" not in globals():
     SC_mag = False
 if "scName" not in globals():
     scName = None
+if "decayVolumeMed" not in globals():
+    decayVolumeMed = "vacuums"
 
 with ConfigRegistry.register_config("basic") as c:
     c.SC_mag = SC_mag
@@ -134,7 +136,7 @@ with ConfigRegistry.register_config("basic") as c:
       c.Veto.lidThickness = 80.*u.mm
      c.Veto.sensitiveThickness = 0.2 * u.m
      c.Veto.sensitiveMed = "Scintillator"
-     c.Veto.decayMed = "vacuums"
+     c.Veto.decayMed = decayVolumeMed
      c.Veto.rib = 1.5 * u.cm
      c.Veto.ribMed = "steel"
      # horizontal width at start and focus point, for conical/rectangular size
