@@ -62,8 +62,8 @@ var searchData=
   ['boxgen_305',['boxGen',['../namespacerun__simEcal.html#a9645245051a6f84c94278b8a3b08e4a3',1,'run_simEcal']]],
   ['boxs_306',['boxs',['../classGenieGenerator.html#ac21037d4f14020030e9c93f153bf6a08',1,'GenieGenerator::boxs()'],['../classNuageGenerator.html#ac0dc4bd6b5701f815262dd135cc25e56',1,'NuageGenerator::boxs()']]],
   ['bparam_307',['bparam',['../classFixedTargetGenerator.html#a56e1bbca0149a15f64ea79646b813823',1,'FixedTargetGenerator::bparam()'],['../classPythia8Generator.html#a6cccef60f9c11c8de3e613df19421a71',1,'Pythia8Generator::bparam()']]],
-  ['br_308',['BR',['../namespaceg4Ex__gap__mergeFiles.html#aae067114d26712c0dfa8ef37ff4317ce',1,'g4Ex_gap_mergeFiles']]],
-  ['br_309',['br',['../namespaceeventDisplay.html#abe023ea1e3a4a6a7eac9907e09ed4ecc',1,'eventDisplay']]],
+  ['br_308',['br',['../namespaceeventDisplay.html#abe023ea1e3a4a6a7eac9907e09ed4ecc',1,'eventDisplay']]],
+  ['br_309',['BR',['../namespaceg4Ex__gap__mergeFiles.html#aae067114d26712c0dfa8ef37ff4317ce',1,'g4Ex_gap_mergeFiles']]],
   ['branches_310',['branches',['../namespacerun__simScript.html#aab4426f598376be65d04e68a577d8ae8',1,'run_simScript']]],
   ['brickpackagex_311',['BrickPackageX',['../classTarget.html#a982d11ad7c3f6c3b1c0420da9b3a4875',1,'Target']]],
   ['brickpackagey_312',['BrickPackageY',['../classTarget.html#a0c75620f3301ea63ea0c2c4b4840bdfa',1,'Target']]],
@@ -83,8 +83,8 @@ var searchData=
   ['bs_326',['bs',['../namespacempbits.html#a4b6174ff4f7f83f062c5e161555035db',1,'mpbits']]],
   ['buffer_327',['buffer',['../classShipTdcSource.html#a197ad756bd676cec739a578894039a87',1,'ShipTdcSource']]],
   ['bvalue_328',['Bvalue',['../namespacecharm-geometry__config.html#a8517dabc4a5eac244edeea9a59371c62',1,'charm-geometry_config']]],
-  ['bx_329',['BX',['../namespacecharm-geometry__config.html#aaa14d43f85f894da3f2efd8b7812ee97',1,'charm-geometry_config']]],
-  ['bx_330',['Bx',['../namespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring.html#aeb2acc15ca214a8ce30a830e2929c32c',1,'conditionsDatabase.demo.drifttubeMonitoring.Bx()'],['../namespacegoliath2root.html#a08201171c49eed8adcb907dad9c5f9ed',1,'goliath2root.Bx()']]],
+  ['bx_329',['Bx',['../namespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring.html#aeb2acc15ca214a8ce30a830e2929c32c',1,'conditionsDatabase.demo.drifttubeMonitoring.Bx()'],['../namespacegoliath2root.html#a08201171c49eed8adcb907dad9c5f9ed',1,'goliath2root.Bx()']]],
+  ['bx_330',['BX',['../namespacecharm-geometry__config.html#aaa14d43f85f894da3f2efd8b7812ee97',1,'charm-geometry_config']]],
   ['by_331',['By',['../namespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring.html#a3562a47e342a4c9042afc286c41f01cb',1,'conditionsDatabase.demo.drifttubeMonitoring.By()'],['../namespacegoliath2root.html#a57049317d3e1c9bae567e13a9214fa57',1,'goliath2root.By()']]],
   ['by_332',['BY',['../namespacecharm-geometry__config.html#aa1ab2772cf8253ba8e0fac74895d6a51',1,'charm-geometry_config']]],
   ['byte_333',['byte',['../namespacempdef.html#a43e4cb8c17435b65007fae4cbcf712ad',1,'mpdef']]],
@@ -122,6 +122,6 @@ var searchData=
   ['bytevvvvvvv_5fcfstr_365',['BYTEVVVVVVV_cfSTR',['../cfortran_8h.html#a45f4dd8ea618907039b3878b7566e1b8',1,'cfortran.h']]],
   ['bytevvvvvvv_5fcft_366',['BYTEVVVVVVV_cfT',['../cfortran_8h.html#ab68ae3f60b6764e9c5d38aa5edd37f49',1,'cfortran.h']]],
   ['bytevvvvvvv_5fcftype_367',['BYTEVVVVVVV_cfTYPE',['../cfortran_8h.html#a4402b17ae3d9eab50cdf4585fd6a0bff',1,'cfortran.h']]],
-  ['bz_368',['BZ',['../namespacecharm-geometry__config.html#a4a0ca34df45edc33befe8e55e5a35560',1,'charm-geometry_config']]],
-  ['bz_369',['Bz',['../namespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring.html#ae9bc4a0fc4f401fea2f32a9956c36190',1,'conditionsDatabase.demo.drifttubeMonitoring.Bz()'],['../namespacegoliath2root.html#aa1ed1b6fae74da44d96104e701884cb0',1,'goliath2root.Bz()']]]
+  ['bz_368',['Bz',['../namespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring.html#ae9bc4a0fc4f401fea2f32a9956c36190',1,'conditionsDatabase.demo.drifttubeMonitoring.Bz()'],['../namespacegoliath2root.html#aa1ed1b6fae74da44d96104e701884cb0',1,'goliath2root.Bz()']]],
+  ['bz_369',['BZ',['../namespacecharm-geometry__config.html#a4a0ca34df45edc33befe8e55e5a35560',1,'charm-geometry_config']]]
 ];

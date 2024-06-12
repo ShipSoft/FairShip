@@ -1,5 +1,6 @@
 var NAVTREEINDEX37 =
 {
+"muon_8cxx.html":[13,0,8,0],
 "muon_8cxx_source.html":[13,0,8,0],
 "muon_8h.html":[13,0,8,1],
 "muon_8h_source.html":[13,0,8,1],
@@ -248,6 +249,5 @@ var NAVTREEINDEX37 =
 "namespaceShipReco.html#aa37614fc3f0b1f396df209ddd402d176":[11,0,112,18],
 "namespaceShipReco.html#ab3f350587696737c07f798e0c105cde7":[11,0,112,16],
 "namespaceShipReco.html#aba8d4b220fb878568c7c6e33987a2186":[11,0,112,3],
-"namespaceShipReco.html#abe146546d4e5254c83e1db8cd00936ed":[11,0,112,27],
-"namespaceShipReco.html#ac8b44ebebde083d26d062978f205ead9":[11,0,112,33]
+"namespaceShipReco.html#abe146546d4e5254c83e1db8cd00936ed":[11,0,112,27]
 };

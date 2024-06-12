@@ -50,6 +50,7 @@ var geometry__config_8py =
     [ "CutLength", "geometry__config_8py.html#acb637669b09e0b790281d028e24a4ae7", null ],
     [ "decayMed", "geometry__config_8py.html#aaa5b07f40dfd22fa5ce06a64095a1187", null ],
     [ "decayVolume", "geometry__config_8py.html#ac59dba70c1ba33a531b0bb13de2db94e", null ],
+    [ "decayVolumeMed", "geometry__config_8py.html#a087b5d779df8c008f3104b74172a61c5", null ],
     [ "DeltazFrame", "geometry__config_8py.html#a2dcc0a3185e110fc8beb58c357ac09ef", null ],
     [ "DeltazLayer", "geometry__config_8py.html#a94b02c77459867cd7e806825568ab962", null ],
     [ "DeltazPlane", "geometry__config_8py.html#a298818313654e994fa87d1895485e313", null ],
