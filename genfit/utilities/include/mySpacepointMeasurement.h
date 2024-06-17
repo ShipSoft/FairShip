@@ -24,7 +24,6 @@
 #include "TrackCandHit.h"
 #include "mySpacepointDetectorHit.h"
 
-
 namespace genfit {
 
 /** @brief Example class for a spacepoint measurement which can be created
@@ -35,26 +34,23 @@ namespace genfit {
  */
 class mySpacepointMeasurement : public SpacepointMeasurement {
 
- public:
+public:
+   /** Default constructor for ROOT IO. */
+   mySpacepointMeasurement() : SpacepointMeasurement() { ; }
 
-  /** Default constructor for ROOT IO. */
-  mySpacepointMeasurement() :
-     SpacepointMeasurement() {;}
+   mySpacepointMeasurement(const mySpacepointDetectorHit *detHit, const TrackCandHit *hit) : SpacepointMeasurement()
+   {
+      rawHitCoords_(0) = detHit->getPos()(0);
+      rawHitCoords_(1) = detHit->getPos()(1);
+      rawHitCoords_(2) = detHit->getPos()(2);
+      rawHitCov_ = detHit->getCov();
+      detId_ = hit->getDetId();
+      hitId_ = hit->getHitId();
+   }
 
-  mySpacepointMeasurement(const mySpacepointDetectorHit* detHit, const TrackCandHit* hit) :
-    SpacepointMeasurement()
-  {
-    rawHitCoords_(0) = detHit->getPos()(0);
-    rawHitCoords_(1) = detHit->getPos()(1);
-    rawHitCoords_(2) = detHit->getPos()(2);
-    rawHitCov_ = detHit->getCov();
-    detId_ = hit->getDetId();
-    hitId_ = hit->getHitId();
-  }
+   virtual AbsMeasurement *clone() const { return new mySpacepointMeasurement(*this); }
 
-  virtual AbsMeasurement* clone() const {return new mySpacepointMeasurement(*this);}
-
-  ClassDef(mySpacepointMeasurement,1)
+   ClassDef(mySpacepointMeasurement, 1)
 };
 /** @} */
 

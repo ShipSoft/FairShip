@@ -5,15 +5,15 @@
 
 class FairContainer;
 
-class vetoContFact : public FairContFact
-{
-  private:
-    void setAllContainers();
-  public:
-    vetoContFact();
-    ~vetoContFact() {}
-    FairParSet* createContainer(FairContainer*);
-    ClassDef( vetoContFact,0) // Factory for all veto parameter containers
+class vetoContFact : public FairContFact {
+private:
+   void setAllContainers();
+
+public:
+   vetoContFact();
+   ~vetoContFact() {}
+   FairParSet *createContainer(FairContainer *);
+   ClassDef(vetoContFact, 0) // Factory for all veto parameter containers
 };
 
 #endif

@@ -26,85 +26,83 @@
 #include <cassert>
 #include <TBuffer.h>
 
-
 namespace genfit {
 
-FullMeasurement::FullMeasurement(int nDim)
-  : AbsMeasurement(nDim), plane_()
+FullMeasurement::FullMeasurement(int nDim) : AbsMeasurement(nDim), plane_()
 {
-  assert(nDim >= 1);
+   assert(nDim >= 1);
 }
 
-
-FullMeasurement::FullMeasurement(const MeasuredStateOnPlane& state, int detId, int hitId, TrackPoint* trackPoint)
-  : AbsMeasurement(state.getState(), state.getCov(), detId, hitId, trackPoint), plane_(state.getPlane())
+FullMeasurement::FullMeasurement(const MeasuredStateOnPlane &state, int detId, int hitId, TrackPoint *trackPoint)
+   : AbsMeasurement(state.getState(), state.getCov(), detId, hitId, trackPoint), plane_(state.getPlane())
 {
-  assert(rawHitCoords_.GetNrows() == (int)state.getRep()->getDim());
+   assert(rawHitCoords_.GetNrows() == (int)state.getRep()->getDim());
 }
 
-
-SharedPlanePtr FullMeasurement::constructPlane(const StateOnPlane&) const {
-  if (!plane_) {
-    Exception exc("FullMeasurement::constructPlane(): No plane has been set!", __LINE__,__FILE__);
-    throw exc;
-  }
-  return plane_;
+SharedPlanePtr FullMeasurement::constructPlane(const StateOnPlane &) const
+{
+   if (!plane_) {
+      Exception exc("FullMeasurement::constructPlane(): No plane has been set!", __LINE__, __FILE__);
+      throw exc;
+   }
+   return plane_;
 }
 
+std::vector<MeasurementOnPlane *> FullMeasurement::constructMeasurementsOnPlane(const StateOnPlane &state) const
+{
 
-std::vector<MeasurementOnPlane*> FullMeasurement::constructMeasurementsOnPlane(const StateOnPlane& state) const {
+   MeasurementOnPlane *mop = new MeasurementOnPlane(rawHitCoords_, rawHitCov_, state.getPlane(), state.getRep(),
+                                                    constructHMatrix(state.getRep()));
 
-  MeasurementOnPlane* mop = new MeasurementOnPlane(rawHitCoords_,
-       rawHitCov_,
-       state.getPlane(), state.getRep(), constructHMatrix(state.getRep()));
-
-  std::vector<MeasurementOnPlane*> retVal;
-  retVal.push_back(mop);
-  return retVal;
+   std::vector<MeasurementOnPlane *> retVal;
+   retVal.push_back(mop);
+   return retVal;
 }
 
+const AbsHMatrix *FullMeasurement::constructHMatrix(const AbsTrackRep *rep) const
+{
 
-const AbsHMatrix* FullMeasurement::constructHMatrix(const AbsTrackRep* rep) const {
+   if (dynamic_cast<const RKTrackRep *>(rep) == NULL) {
+      Exception exc("SpacepointMeasurement default implementation can only handle state vectors of type RKTrackRep!",
+                    __LINE__, __FILE__);
+      throw exc;
+   }
 
-  if (dynamic_cast<const RKTrackRep*>(rep) == NULL) {
-    Exception exc("SpacepointMeasurement default implementation can only handle state vectors of type RKTrackRep!", __LINE__,__FILE__);
-    throw exc;
-  }
-
-  return new HMatrixUnit();
+   return new HMatrixUnit();
 }
-
 
 void FullMeasurement::Streamer(TBuffer &R__b)
 {
    // Stream an object of class genfit::FullMeasurement.
 
-   //This works around a msvc bug and should be harmless on other platforms
+   // This works around a msvc bug and should be harmless on other platforms
    typedef ::genfit::FullMeasurement thisClass;
    UInt_t R__s, R__c;
    if (R__b.IsReading()) {
-      Version_t R__v = R__b.ReadVersion(&R__s, &R__c); if (R__v) { }
-      //This works around a msvc bug and should be harmless on other platforms
+      Version_t R__v = R__b.ReadVersion(&R__s, &R__c);
+      if (R__v) {
+      }
+      // This works around a msvc bug and should be harmless on other platforms
       typedef genfit::AbsMeasurement baseClass0;
       baseClass0::Streamer(R__b);
       char flag;
       R__b >> flag;
       plane_.reset();
       if (flag) {
-        plane_.reset(new DetPlane());
-        plane_->Streamer(R__b);
+         plane_.reset(new DetPlane());
+         plane_->Streamer(R__b);
       }
       R__b.CheckByteCount(R__s, R__c, thisClass::IsA());
    } else {
       R__c = R__b.WriteVersion(thisClass::IsA(), kTRUE);
-      //This works around a msvc bug and should be harmless on other platforms
+      // This works around a msvc bug and should be harmless on other platforms
       typedef genfit::AbsMeasurement baseClass0;
       baseClass0::Streamer(R__b);
       if (plane_) {
-        R__b << (char)1;
-        plane_->Streamer(R__b);
+         R__b << (char)1;
+         plane_->Streamer(R__b);
       } else {
-        R__b << (char)0;
+         R__b << (char)0;
       }
       R__b.SetByteCount(R__c, kTRUE);
    }

@@ -25,7 +25,6 @@
 
 #include <TVector3.h>
 
-
 namespace genfit {
 
 /** @brief Abstract Interface to magnetic fields in GENFIT
@@ -35,26 +34,31 @@ namespace genfit {
  */
 class AbsBField {
 public:
+   AbsBField() { ; }
+   virtual ~AbsBField() { ; }
 
-  AbsBField(){;}
-  virtual ~AbsBField(){;}
+   /**
+    * @brief Get the magneticField [kGauss] at position.
+    *
+    * Override this in your concrete implementation.
+    * Provided for compatibility with old genfit.  Use the other interface to avoid
+    * unnecessary TVector3 instantiations.
+    */
+   virtual TVector3 get(const TVector3 &position) const = 0;
 
-  /**
-   * @brief Get the magneticField [kGauss] at position.
-   *
-   * Override this in your concrete implementation.
-   * Provided for compatibility with old genfit.  Use the other interface to avoid
-   * unnecessary TVector3 instantiations.
-   */
-  virtual TVector3 get(const TVector3& position) const = 0;
-
-  /**
-   * @brief Get the magneticField [kGauss] at position.
-   *
-   * Override this in your concrete implementation.
-   */
-  virtual void get(const double& posX, const double& posY, const double& posZ, double& Bx, double& By, double& Bz) const { const TVector3& B(this->get(TVector3(posX, posY, posZ))); Bx = B.X(); By = B.Y(); Bz = B.Z(); }
-
+   /**
+    * @brief Get the magneticField [kGauss] at position.
+    *
+    * Override this in your concrete implementation.
+    */
+   virtual void
+   get(const double &posX, const double &posY, const double &posZ, double &Bx, double &By, double &Bz) const
+   {
+      const TVector3 &B(this->get(TVector3(posX, posY, posZ)));
+      Bx = B.X();
+      By = B.Y();
+      Bz = B.Z();
+   }
 };
 
 } /* End of namespace genfit */

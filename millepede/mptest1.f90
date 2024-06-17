@@ -254,7 +254,7 @@ SUBROUTINE mptest
         !       IF(ICOUNT.EQ.6309) IP=1
         !       IF(ICOUNT.EQ.7468) IP=1
         CALL genlin(ip)      ! generate hits
-  
+
         DO i=1,nhits
             derlc(1)=1.0
             derlc(2)=xhits(i)
