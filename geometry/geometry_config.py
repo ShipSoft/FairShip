@@ -923,7 +923,7 @@ with ConfigRegistry.register_config("basic") as c:
         c.NuTauTarget.zC = c.tauMudet.zMudetC - c.tauMudet.Ztot/2 - c.EmuMagnet.GapDown - c.NuTauTarget.zdim/2.
     if nuTauTargetDesign==5:
         c.tauMudet.GapDown = 0 * u.cm
-        c.NuTauTarget.zC = c.tauMudet.zMudetC - c.tauMudet.GapDown - c.NuTauTarget.zdim/2.
+        c.NuTauTarget.zC = c.tauMudet.zMudetC - c.tauMudet.Ztot/2 - c.tauMudet.GapDown - c.NuTauTarget.zdim/2.
 
     c.NuTauTarget.BaseX =  c.NuTauTarget.xdim + 20*u.cm
     c.NuTauTarget.BaseY = 20*u.cm     
@@ -975,7 +975,4 @@ with ConfigRegistry.register_config("basic") as c:
     c.UpstreamTagger.X_Strip = 229 * u.cm  - UBT_x_crop
     c.UpstreamTagger.X_Strip64 = 1.534 * u.cm
     c.UpstreamTagger.Y_Strip64 = 111 * u.cm
-    if (nuTauTargetDesign < 5):
-     c.UpstreamTagger.Z_Position = c.tauMudet.zMudetC + (c.tauMudet.Ztot/2.) + 12.0*u.cm
-    else:
-     c.UpstreamTagger.Z_Position = c.tauMudet.zMudetC + (c.tauMudet.Ztot) + 12.0*u.cm
+    c.UpstreamTagger.Z_Position = c.tauMudet.zMudetC + (c.tauMudet.Ztot/2.) + 12.0*u.cm

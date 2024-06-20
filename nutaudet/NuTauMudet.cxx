@@ -911,17 +911,17 @@ void NuTauMudet::ConstructGeometry()
     volMuonSysDet->SetLineColor(kGray-2);
     AddSensitiveVolume(volMuonSysDet);
 
-    volMuFilter->AddNode(volVertCoil, 0, new TGeoTranslation(0, 0, 0));
+    volMuFilter->AddNode(volVertCoil, 0, new TGeoTranslation(0, 0, -fZtot/2.+fCoilH/2.));
     for(int i = 0; i<fNFe; i++)
     {
-      volMuFilter->AddNode(volFeWall, i, new TGeoTranslation(0, 0, (fCoilH+fZFe)/2+i*(fZFe+fZRpc)));
-      volMuFilter->AddNode(volMagFe, i, new TGeoTranslation(0, 0, (fCoilH+fZFe)/2+i*(fZFe+fZRpc)));
+      volMuFilter->AddNode(volFeWall, i, new TGeoTranslation(0, 0, -fZtot/2+(fCoilH+fZFe)/2+i*(fZFe+fZRpc)));
+      volMuFilter->AddNode(volMagFe, i, new TGeoTranslation(0, 0, -fZtot/2+(fCoilH+fZFe)/2+i*(fZFe+fZRpc)));
       if (i == fNFe-1) continue;
-      volMuFilter->AddNode(volMuonSysDet, i, new TGeoTranslation(0, 0, (fCoilH+fZFe)/2+(fZFe+fZRpc)/2.+i*(fZFe+fZRpc)));
+      volMuFilter->AddNode(volMuonSysDet, i, new TGeoTranslation(0, 0, -fZtot/2+(fCoilH+fZFe)/2+(fZFe+fZRpc)/2.+i*(fZFe+fZRpc)));
     }
-    volMuFilter->AddNode(volCoil, 0, new TGeoTranslation(0, fYRpc/2.+fCoilH/2., (fCoilH+fZFe)/2+fCoilZ/2.-fZFe/2.));
-    volMuFilter->AddNode(volCoil, 1, new TGeoTranslation(0, -fYRpc/2.-fCoilH/2., (fCoilH+fZFe)/2+fCoilZ/2.-fZFe/2.));
-    volMuFilter->AddNode(volVertCoil, 1, new TGeoTranslation(0, 0, (fNFe-1)*(fZFe+fZRpc)+fCoilH+fZFe));
+    volMuFilter->AddNode(volCoil, 0, new TGeoTranslation(0, fYRpc/2.+fCoilH/2., -fZtot/2+(fCoilH+fZFe)/2+fCoilZ/2.-fZFe/2.));
+    volMuFilter->AddNode(volCoil, 1, new TGeoTranslation(0, -fYRpc/2.-fCoilH/2., -fZtot/2+(fCoilH+fZFe)/2+fCoilZ/2.-fZFe/2.));
+    volMuFilter->AddNode(volVertCoil, 1, new TGeoTranslation(0, 0, -fZtot/2+(fNFe-1)*(fZFe+fZRpc)+fCoilH+fZFe));
 
     }
 
