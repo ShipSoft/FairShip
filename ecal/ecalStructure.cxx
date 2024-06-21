@@ -251,7 +251,6 @@ void ecalStructure::CreateNLists(ecalCell* cell)
     cerr << "Cell: CenterX=" << x << ", CenterY=" << y << "." << endl;
     return;
   }
-  tl.empty();
   for(ptml=tml.begin();ptml!=tml.end();++ptml) {
     _add_not_null((*ptml)->GetCellsY(y-dy-d),tl);
     _add_not_null((*ptml)->GetCellsY(y+dy+d),tl);
