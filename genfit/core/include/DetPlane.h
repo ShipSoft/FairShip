@@ -40,7 +40,6 @@
 #include <boost/scoped_ptr.hpp>
 #endif
 
-
 namespace genfit {
 
 /** @brief Detector plane.
@@ -60,143 +59,132 @@ namespace genfit {
  */
 class DetPlane : public TObject {
 
- public:
+public:
+   // Constructors/Destructors ---------
+   DetPlane(AbsFinitePlane *finite = NULL);
 
+   DetPlane(const TVector3 &o, const TVector3 &u, const TVector3 &v, AbsFinitePlane *finite = NULL);
 
-  // Constructors/Destructors ---------
-  DetPlane(AbsFinitePlane* finite = NULL);
+   DetPlane(const TVector3 &o, const TVector3 &n, AbsFinitePlane *finite = NULL);
 
-  DetPlane(const TVector3& o,
-             const TVector3& u,
-             const TVector3& v,
-             AbsFinitePlane* finite = NULL);
+   virtual ~DetPlane();
 
-  DetPlane(const TVector3& o,
-             const TVector3& n,
-             AbsFinitePlane* finite = NULL);
+   DetPlane(const DetPlane &);
+   DetPlane &operator=(DetPlane);
+   void swap(DetPlane &other); // nothrow
 
-  virtual ~DetPlane();
+   // Accessors -----------------------
+   const TVector3 &getO() const { return o_; }
+   const TVector3 &getU() const { return u_; }
+   const TVector3 &getV() const { return v_; }
 
-  DetPlane(const DetPlane&);
-  DetPlane& operator=(DetPlane);
-  void swap(DetPlane& other); // nothrow
+   // Modifiers -----------------------
+   void set(const TVector3 &o, const TVector3 &u, const TVector3 &v);
+   void setO(const TVector3 &o);
+   void setO(double, double, double);
+   void setU(const TVector3 &u);
+   void setU(double, double, double);
+   void setV(const TVector3 &v);
+   void setV(double, double, double);
+   void setUV(const TVector3 &u, const TVector3 &v);
+   void setON(const TVector3 &o, const TVector3 &n);
 
-  // Accessors -----------------------
-  const TVector3& getO() const {return o_;}
-  const TVector3& getU() const {return u_;}
-  const TVector3& getV() const {return v_;}
+   //! Optionally, set the finite plane definition. This is most important for
+   //! avoiding fake intersection points in fitting of curlers. This should
+   //! be implemented for silicon detectors most importantly.
+   void setFinitePlane(AbsFinitePlane *finite) { finitePlane_.reset(finite); }
 
-  // Modifiers -----------------------
-  void set(const TVector3& o,
-           const TVector3& u,
-           const TVector3& v);
-  void setO(const TVector3& o);
-  void setO(double, double, double);
-  void setU(const TVector3& u);
-  void setU(double, double, double);
-  void setV(const TVector3& v);
-  void setV(double, double, double);
-  void setUV(const TVector3& u, const TVector3& v);
-  void setON(const TVector3& o, const TVector3& n);
+   // Operations ----------------------
+   TVector3 getNormal() const;
+   void setNormal(const TVector3 &n);
+   void setNormal(double, double, double);
+   void setNormal(const double &theta, const double &phi);
 
-  //! Optionally, set the finite plane definition. This is most important for
-  //! avoiding fake intersection points in fitting of curlers. This should
-  //! be implemented for silicon detectors most importantly.
-  void setFinitePlane(AbsFinitePlane* finite){finitePlane_.reset(finite);}
+   //! projecting a direction onto the plane:
+   TVector2 project(const TVector3 &x) const;
 
-  // Operations ----------------------
-  TVector3 getNormal() const;
-  void setNormal(const TVector3& n);
-  void setNormal(double, double, double);
-  void setNormal(const double& theta, const double& phi);
+   //! transform from Lab system into plane
+   TVector2 LabToPlane(const TVector3 &x) const;
 
-  //! projecting a direction onto the plane:
-  TVector2 project(const TVector3& x) const;
+   //! transform from plane coordinates to lab system
+   TVector3 toLab(const TVector2 &x) const;
 
-  //! transform from Lab system into plane
-  TVector2 LabToPlane(const TVector3& x) const;
+   // get vector from point to plane (normal)
+   TVector3 dist(const TVector3 &point) const;
 
-  //! transform from plane coordinates to lab system
-  TVector3 toLab(const TVector2& x) const;
+   //! gives u,v coordinates of the intersection point of a straight line with plane
+   TVector2 straightLineToPlane(const TVector3 &point, const TVector3 &dir) const;
 
-  // get vector from point to plane (normal)
-  TVector3 dist(const TVector3& point) const;
+   //! gives u,v coordinates of the intersection point of a straight line with plane
+   void straightLineToPlane(const double &posX, const double &posY, const double &posZ, const double &dirX,
+                            const double &dirY, const double &dirZ, double &u, double &v) const;
 
-  //! gives u,v coordinates of the intersection point of a straight line with plane
-  TVector2 straightLineToPlane(const TVector3& point, const TVector3& dir) const;
+   void Print(const Option_t * = "") const;
 
-  //! gives u,v coordinates of the intersection point of a straight line with plane
-  void straightLineToPlane(const double& posX, const double& posY, const double& posZ,
-                           const double& dirX, const double& dirY, const double& dirZ,
-                           double& u, double& v) const;
+   //! Checks equality of planes by comparing the 9 double values that define them.
+   friend bool operator==(const DetPlane &lhs, const DetPlane &rhs);
+   //! returns NOT ==
+   friend bool operator!=(const DetPlane &lhs, const DetPlane &rhs);
 
-  void Print(const Option_t* = "") const;
+   //! absolute distance from a point to the plane
+   double distance(const TVector3 &point) const;
+   double distance(double, double, double) const;
 
-  //! Checks equality of planes by comparing the 9 double values that define them.
-  friend bool operator== (const DetPlane& lhs, const DetPlane& rhs);
-  //! returns NOT ==
-  friend bool operator!= (const DetPlane& lhs, const DetPlane& rhs);
+   //! intersect in the active area? C.f. AbsFinitePlane
+   bool isInActive(const TVector3 &point, const TVector3 &dir) const
+   {
+      if (finitePlane_.get() == NULL)
+         return true;
+      return this->isInActive(this->straightLineToPlane(point, dir));
+   }
 
-  //! absolute distance from a point to the plane
-  double distance(const TVector3& point) const;
-  double distance(double, double, double) const;
+   //! intersect in the active area? C.f. AbsFinitePlane
+   bool isInActive(const double &posX, const double &posY, const double &posZ, const double &dirX, const double &dirY,
+                   const double &dirZ) const
+   {
+      if (finitePlane_.get() == NULL)
+         return true;
+      double u, v;
+      this->straightLineToPlane(posX, posY, posZ, dirX, dirY, dirZ, u, v);
+      return this->isInActive(u, v);
+   }
 
+   //! isInActive methods refer to finite plane. C.f. AbsFinitePlane
+   bool isInActive(double u, double v) const
+   {
+      if (finitePlane_.get() == NULL)
+         return true;
+      return finitePlane_->isInActive(u, v);
+   }
 
-  //! intersect in the active area? C.f. AbsFinitePlane
-  bool isInActive(const TVector3& point, const TVector3& dir) const {
-    if(finitePlane_.get() == NULL) return true;
-    return this->isInActive( this->straightLineToPlane(point,dir));
-  }
+   //! isInActive methods refer to finite plane. C.f. AbsFinitePlane
+   bool isInActive(const TVector2 &v) const { return isInActive(v.X(), v.Y()); }
 
-  //! intersect in the active area? C.f. AbsFinitePlane
-  bool isInActive(const double& posX, const double& posY, const double& posZ,
-                  const double& dirX, const double& dirY, const double& dirZ) const {
-    if(finitePlane_.get() == NULL) return true;
-    double u, v;
-    this->straightLineToPlane(posX, posY, posZ, dirX, dirY, dirZ, u, v);
-    return this->isInActive(u, v);
-  }
+   bool isFinite() const { return (finitePlane_.get() != NULL); }
 
-  //! isInActive methods refer to finite plane. C.f. AbsFinitePlane
-  bool isInActive(double u, double v) const{
-    if(finitePlane_.get() == NULL) return true;
-    return finitePlane_->isInActive(u,v);
-  }
+   //! rotate u and v around normal. Angle is in rad. More for debugging than for actual use.
+   void rotate(double angle);
 
-  //! isInActive methods refer to finite plane. C.f. AbsFinitePlane
-  bool isInActive(const TVector2& v) const{
-    return isInActive(v.X(),v.Y());
-  }
+   //! delete finitePlane_ and set O, U, V to default values
+   void reset();
 
-  bool isFinite() const {
-    return (finitePlane_.get() != NULL);
-  }
+private:
+   // Private Methods -----------------
+   //! ensures orthonormal coordinates
+   void sane();
 
-  //! rotate u and v around normal. Angle is in rad. More for debugging than for actual use.
-  void rotate(double angle);
-
-  //! delete finitePlane_ and set O, U, V to default values
-  void reset();
-
- private:
-  // Private Methods -----------------
-  //! ensures orthonormal coordinates
-  void sane();
-
-  TVector3 o_;
-  TVector3 u_;
-  TVector3 v_;
+   TVector3 o_;
+   TVector3 u_;
+   TVector3 v_;
 
 #ifndef __CINT__
-  boost::scoped_ptr<AbsFinitePlane> finitePlane_; // Ownership
+   boost::scoped_ptr<AbsFinitePlane> finitePlane_; // Ownership
 #else
-  class AbsFinitePlane* finitePlane_; //! Shut ROOT up, this class has a custom streamer.
+   class AbsFinitePlane *finitePlane_; //! Shut ROOT up, this class has a custom streamer.
 #endif
 
-
- public:
-  ClassDef(DetPlane,1)
-
+public:
+   ClassDef(DetPlane, 1)
 };
 
 } /* End of namespace genfit */

@@ -25,7 +25,6 @@
 
 #include "WireMeasurement.h"
 
-
 namespace genfit {
 
 /** @brief Class for measurements in wire detectors (Straw tubes and drift chambers)
@@ -50,25 +49,23 @@ namespace genfit {
  */
 class WirePointMeasurement : public WireMeasurement {
 
- public:
-  WirePointMeasurement(int nDim = 8);
-  WirePointMeasurement(const TVectorD& rawHitCoords, const TMatrixDSym& rawHitCov, int detId, int hitId, TrackPoint* trackPoint);
+public:
+   WirePointMeasurement(int nDim = 8);
+   WirePointMeasurement(const TVectorD &rawHitCoords, const TMatrixDSym &rawHitCov, int detId, int hitId,
+                        TrackPoint *trackPoint);
 
-  virtual ~WirePointMeasurement() {;}
+   virtual ~WirePointMeasurement() { ; }
 
-  virtual AbsMeasurement* clone() const {return new WirePointMeasurement(*this);}
+   virtual AbsMeasurement *clone() const { return new WirePointMeasurement(*this); }
 
-  virtual SharedPlanePtr constructPlane(const StateOnPlane& state) const;
+   virtual SharedPlanePtr constructPlane(const StateOnPlane &state) const;
 
-  virtual std::vector<MeasurementOnPlane*> constructMeasurementsOnPlane(const StateOnPlane& state) const;
+   virtual std::vector<MeasurementOnPlane *> constructMeasurementsOnPlane(const StateOnPlane &state) const;
 
-  virtual const AbsHMatrix* constructHMatrix(const AbsTrackRep*) const;
+   virtual const AbsHMatrix *constructHMatrix(const AbsTrackRep *) const;
 
-
- public:
-
-  ClassDef(WirePointMeasurement,1)
-
+public:
+   ClassDef(WirePointMeasurement, 1)
 };
 
 } /* End of namespace genfit */

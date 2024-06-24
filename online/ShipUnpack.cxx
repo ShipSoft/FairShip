@@ -12,8 +12,7 @@
 
 // ShipUnpack: Constructor
 ShipUnpack::ShipUnpack()
-   : FairUnpack(94, 9400, 10, 1, 3), fRawData(new TClonesArray()), fNHits(0), fNHitsTotal(0),
-     fPartitionId(-1)
+   : FairUnpack(94, 9400, 10, 1, 3), fRawData(new TClonesArray()), fNHits(0), fNHitsTotal(0), fPartitionId(-1)
 {
 }
 
@@ -37,7 +36,7 @@ void ShipUnpack::Reset() {}
 
 void ShipUnpack::Register()
 {
-   LOG(INFO) << "ShipUnpack : Registering..." ;
+   LOG(INFO) << "ShipUnpack : Registering...";
    auto *fMan = FairRootManager::Instance();
    if (!fMan) {
       return;

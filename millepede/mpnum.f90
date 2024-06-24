@@ -133,7 +133,7 @@ SUBROUTINE sqminv(v,b,n,nrank,diag,next)   ! matrix inversion
     DO i=1,n                    ! start of loop
         k  =0
         vkk=0.0_mpd
-  
+
         j=next0
         last=0
 05      IF(j > 0) THEN
@@ -147,7 +147,7 @@ SUBROUTINE sqminv(v,b,n,nrank,diag,next)   ! matrix inversion
             j=next(last)
             GO TO 05
         END IF
-  
+
         IF(k /= 0) THEN            ! pivot found
             kk=(k*k+k)/2
             IF(l == 0) THEN
@@ -248,7 +248,7 @@ SUBROUTINE sqminl(v,b,n,nrank,diag,next)   !
     INTEGER(mpl) :: jl
     INTEGER(mpl) :: llk
     INTEGER(mpl) :: ljl
-    
+
     REAL(mpd) :: vkk
     REAL(mpd) :: vjk
 
@@ -281,7 +281,7 @@ SUBROUTINE sqminl(v,b,n,nrank,diag,next)   !
             j=next(last)
             GO TO 05
         END IF
-  
+
         IF(k /= 0) THEN            ! pivot found
             k8=int8(k)
             kk=(k8*k8+k8)/2
@@ -760,7 +760,7 @@ SUBROUTINE choldc(g,n)
     INTEGER(mpi) :: jj
     INTEGER(mpi) :: k
     INTEGER(mpi) :: kk
-    
+
     REAL(mpd), INTENT(IN OUT)         :: g(*)
     INTEGER(mpi), INTENT(IN)                      :: n
 
@@ -805,7 +805,7 @@ SUBROUTINE cholsl(g,x,n)
     INTEGER(mpi) :: ii
     INTEGER(mpi) :: k
     INTEGER(mpi) :: kk
-    
+
     REAL(mpd), INTENT(IN)            :: g(*)
     REAL(mpd), INTENT(IN OUT)        :: x(n)
     INTEGER(mpi), INTENT(IN)                     :: n
@@ -917,7 +917,7 @@ SUBROUTINE vabdec(n,val,ilptr)
     INTEGER(mpi), INTENT(IN)                      :: n
     REAL(mpd), INTENT(IN OUT)         :: val(*)
     INTEGER(mpi), INTENT(IN)                      :: ilptr(n)
-    
+
     REAL(mpd) :: dgamma
     REAL(mpd) :: xi
     REAL(mpd) :: valkj
@@ -959,21 +959,21 @@ SUBROUTINE vabdec(n,val,ilptr)
 
     DO k=2,n
         mk=k-ilptr(k)+ilptr(k-1)+1
-  
+
         theta=0.0_mpd
-  
+
         DO j=mk,k
             mj=j-ilptr(j)+ilptr(j-1)+1
             kj=ilptr(k)-k+j        ! index kj
-    
+
             DO i=MAX(mj,mk),j-1
                 val(kj)=val(kj) &     ! L_kj := L_kj - L_ki D_ii L_ji
                     -val(ilptr(k)-k+i)*val(ilptr(i))*val(ilptr(j)-j+i)
-      
+
             END DO !
-    
+
             theta=MAX(theta,ABS(val(kj)))  ! maximum value of row
-    
+
             IF(j /= k) THEN
                 IF(val(ilptr(j)) /= 0.0_mpd) THEN
                     val(kj)=val(kj)/val(ilptr(j))
@@ -981,7 +981,7 @@ SUBROUTINE vabdec(n,val,ilptr)
                     val(kj)=0.0_mpd
                 END IF
             END IF                                ! L_kj := L_kj/D_jj ! D_kk
-    
+
             IF(j == k) THEN
                 valkj=val(kj)
                 IF(k <= in) THEN
@@ -993,7 +993,7 @@ SUBROUTINE vabdec(n,val,ilptr)
                 END IF
             END IF
         END DO ! J
-  
+
     END DO ! K
 
     DO k=1,n
@@ -1893,8 +1893,8 @@ SUBROUTINE lltdec(n,c,india,nrkd,iopt)
     INTEGER(mpi), INTENT(IN)              :: iopt
     REAL(mpd) eps
     !     ...
-    eps = 16.0_mpd * epsilon(eps) ! 16 * precision(mpd) 
-      
+    eps = 16.0_mpd * epsilon(eps) ! 16 * precision(mpd)
+
     !     ..
     nrkd=0
     diag=0.0_mpd
@@ -1912,15 +1912,15 @@ SUBROUTINE lltdec(n,c,india,nrkd,iopt)
             IF(j > 1) mj=j-india(j)+india(j-1)+1   ! first index in row J
             kj=india(k)-k+j              ! index kj
             diag=c(india(j))             ! j-th diagonal element
-    
+
             DO i=MAX(mj,mk),j-1
                 !        L_kj = L_kj - L_ki           *D_ii       *L_ji
                 c(kj)=c(kj) - c(india(k)-k+i)*c(india(j)-j+i)
             END DO ! I
-    
+
             IF(j /= k) c(kj)=c(kj)*diag
         END DO ! J
-  
+
         IF(c(india(k)) > eps*diag) THEN      ! test for linear dependence
             c(india(k))=1.0_mpd/SQRT(c(india(k))) ! square root
         ELSE
@@ -1938,7 +1938,7 @@ SUBROUTINE lltdec(n,c,india,nrkd,iopt)
                 END IF
             END IF
         END IF
-  
+
     END DO ! K
     RETURN
 END SUBROUTINE lltdec
@@ -1975,7 +1975,7 @@ SUBROUTINE lltfwd(n,c,india,x)
         END DO ! J
         x(k)=x(k)*c(india(k))
     END DO ! K
-    
+
     RETURN
 END SUBROUTINE lltfwd
 
@@ -1996,13 +1996,13 @@ SUBROUTINE lltbwd(n,c,india,x)
 
     IMPLICIT NONE
     INTEGER(mpi) :: j
-    INTEGER(mpi) :: k   
+    INTEGER(mpi) :: k
 
     INTEGER(mpi), INTENT(IN)              :: n
     REAL(mpd), INTENT(IN)     :: c(*)
     INTEGER(mpi), INTENT(IN)              :: india(n)
     REAL(mpd), INTENT(IN OUT) :: x(n)
-    
+
     DO k=n,2,-1                    ! backward loop
         x(k)=x(k)*c(india(k))
         DO j=k-india(k)+india(k-1)+1,k-1
@@ -2010,7 +2010,7 @@ SUBROUTINE lltbwd(n,c,india,x)
         END DO ! J
     END DO ! K
     x(1)=x(1)*c(india(1))
-    
+
     RETURN
 END SUBROUTINE lltbwd
 
@@ -2042,7 +2042,7 @@ SUBROUTINE equdec(n,m,ls,c,india,nrkd,nrkd2)
 
     INTEGER(mpi), INTENT(IN)              :: n
     INTEGER(mpi), INTENT(IN)              :: m
-    INTEGER(mpi), INTENT(IN)              :: ls    
+    INTEGER(mpi), INTENT(IN)              :: ls
     REAL(mpd), INTENT(IN OUT) :: c(*)
     INTEGER(mpi), INTENT(IN OUT)          :: india(n+m)
     INTEGER(mpi), INTENT(OUT)             :: nrkd
@@ -2052,9 +2052,9 @@ SUBROUTINE equdec(n,m,ls,c,india,nrkd,nrkd2)
 
     nrkd=0
     nrkd2=0
-    
+
     CALL lltdec(n,c,india,nrkd,ls)             ! decomposition G G^T
-    
+
     IF (m>0) THEN
         DO i=1,m
             CALL lltfwd(n,c,india,c(india(n)+(i-1)*n+1)) ! forward solution K
@@ -2109,9 +2109,9 @@ SUBROUTINE equslv(n,m,c,india,x)                   ! solution vector
     REAL(mpd), INTENT(IN)     :: c(*)
     INTEGER(mpi), INTENT(IN)              :: india(n+m)
     REAL(mpd), INTENT(IN OUT) :: x(n+m)
-    
+
     CALL lltfwd(n,c,india,x)                           ! result is u
-        
+
     IF (m>0) THEN
         DO i=1,m
             DO j=1,n
@@ -2132,9 +2132,9 @@ SUBROUTINE equslv(n,m,c,india,x)                   ! solution vector
             END DO
         END DO
     ENDIF
-    
+
     CALL lltbwd(n,c,india,x)                           ! result is x
-    
+
     RETURN
 END SUBROUTINE equslv
 
@@ -2190,7 +2190,7 @@ SUBROUTINE precon(p,n,c,cu,a,s,nrkd)
 
     REAL(mpd) :: div
     REAL(mpd) :: ratio
-    
+
     nrkd=0
     DO i=1,(p*p+p)/2
         s(i)=0.0_mpd
@@ -2254,7 +2254,7 @@ SUBROUTINE presol(p,n,cu,a,s,x,y) ! solution
 
     INTEGER(mpi), INTENT(IN)              :: p
     INTEGER(mpi), INTENT(IN)              :: n
-    
+
     REAL(mpd), INTENT(IN)     :: cu(n)
     REAL(mpd), INTENT(IN)     :: a(n,p)
     REAL(mpd), INTENT(IN)     :: s((p*p+p)/2)
@@ -2457,7 +2457,7 @@ SUBROUTINE sqmibb(v,b,n,nbdr,nbnd,inv,nrank,vbnd,vbdr,aux,vbk,vzru,scdiag,scflag
     nrank=nmb
 
     IF (nbdr == 0) THEN ! special case NBDR=0
-  
+
         CALL dbcslv(vbnd,mp1,nmb,b,b)
         IF (inv > 0) THEN
             IF (inv > 1) THEN
@@ -2466,9 +2466,9 @@ SUBROUTINE sqmibb(v,b,n,nbdr,nbnd,inv,nrank,vbnd,vbdr,aux,vbk,vzru,scdiag,scflag
                 CALL dbcinb(vbnd,mp1,nmb,v)
             END IF
         END IF
-  
+
     ELSE ! general case NBDR>0
-  
+
         ioff=nb1
         DO ib=1,nbdr
             !           solve for aux. vectors
@@ -2551,7 +2551,7 @@ SUBROUTINE sqmibb(v,b,n,nbdr,nbnd,inv,nrank,vbnd,vbdr,aux,vbk,vzru,scdiag,scflag
                 END DO
                 ip1=ip1-j0
                 ip2=ip2-j0
-      
+
                 DO ib=nbdr,1,-1
                     v(ip2)=0.0_mpd
                     joff=nb1
@@ -2564,12 +2564,12 @@ SUBROUTINE sqmibb(v,b,n,nbdr,nbnd,inv,nrank,vbnd,vbdr,aux,vbk,vzru,scdiag,scflag
                     ip2=ip2-1
                 END DO
             END DO
-    
+
             DO ip=(nbdr*nbdr+nbdr)/2,1,-1
                 v(ip2)=vbk(ip)
                 ip2=ip2-1
             END DO
-    
+
         END IF
     END IF
 
@@ -2710,7 +2710,7 @@ SUBROUTINE sqmibb2(v,b,n,nbdr,nbnd,inv,nrank,vbnd,vbdr,aux,vbk,vzru,scdiag,scfla
     nrank=nmb
 
     IF (nbdr == 0) THEN ! special case NBDR=0
-  
+
         CALL dbcslv(vbnd,mp1,nmb,b,b)
         IF (inv > 0) THEN
             IF (inv > 1) THEN
@@ -2719,9 +2719,9 @@ SUBROUTINE sqmibb2(v,b,n,nbdr,nbnd,inv,nrank,vbnd,vbdr,aux,vbk,vzru,scdiag,scfla
                 CALL dbcinb(vbnd,mp1,nmb,v)
             END IF
         END IF
-  
+
     ELSE ! general case NBDR>0
-  
+
         ioff=0
         DO ib=1,nbdr
             !           solve for aux. vectors
@@ -2744,7 +2744,7 @@ SUBROUTINE sqmibb2(v,b,n,nbdr,nbnd,inv,nrank,vbnd,vbdr,aux,vbk,vzru,scdiag,scfla
             DO jb=1,ib
                 ip=ip+1
                 vbk(ip)=vbdr(koff+jb)
-                DO i=1,nmb   
+                DO i=1,nmb
                     vbk(ip)=vbk(ip)-vbdr(ioff+i)*aux(joff+i)
                 END DO
                 joff=joff+n
@@ -2752,7 +2752,7 @@ SUBROUTINE sqmibb2(v,b,n,nbdr,nbnd,inv,nrank,vbnd,vbdr,aux,vbk,vzru,scdiag,scfla
             ioff=ioff+n
             koff=koff+n
         END DO
-        
+
         !        solve border part
         CALL sqminv(vbk,vzru,nbdr,nrankb,scdiag,scflag)
         IF (nrankb == nbdr) THEN

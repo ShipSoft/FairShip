@@ -1,5 +1,11 @@
-""" Contains a Mongo Engine model definition for a Condition. """
-from mongoengine import EmbeddedDocument, DynamicField, StringField, ComplexDateTimeField
+"""Contains a Mongo Engine model definition for a Condition."""
+
+from mongoengine import (
+    EmbeddedDocument,
+    DynamicField,
+    StringField,
+    ComplexDateTimeField,
+)
 
 
 ## This model represents meta-data about an experiment describing a specific (set of)

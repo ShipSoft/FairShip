@@ -1,4 +1,5 @@
-""" This module tests the factory. """
+"""This module tests the factory."""
+
 import os
 import pytest
 import yaml
@@ -17,6 +18,7 @@ def supply_dbAPI():
     db_api = factory.construct_DB_API()
     return db_api
 
+
 @pytest.mark.smoke_test
 def test_create_mongo_api():
     """
@@ -26,6 +28,7 @@ def test_create_mongo_api():
     db_api = factory.construct_DB_API()
     assert isinstance(db_api, MongoToCDBAPIAdapter)
 
+
 @pytest.mark.smoke_test
 def test_create_unknown_api():
     """
@@ -33,7 +36,9 @@ def test_create_unknown_api():
     if an unsupported database type is specified in the configuration file.
     """
     factory = APIFactory()
-    home_dir = os.getenv('FAIRSHIP')
+    home_dir = os.getenv("FAIRSHIP")
 
     with pytest.raises(NotImplementedError):
-        assert factory.construct_DB_API(home_dir + "/conditionsDatabase/tests/test_config.yml")
+        assert factory.construct_DB_API(
+            home_dir + "/conditionsDatabase/tests/test_config.yml"
+        )

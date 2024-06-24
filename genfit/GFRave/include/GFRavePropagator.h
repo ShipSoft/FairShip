@@ -39,7 +39,6 @@
 
 #include <map>
 
-
 namespace genfit {
 
 /**
@@ -52,26 +51,22 @@ namespace genfit {
  * extrapolates and then returns a new rave::track with the
  * extrapolated state and covariance.
  */
-class GFRavePropagator : public rave::Propagator
-{
-  public:
-    GFRavePropagator();
-    virtual GFRavePropagator* copy() const;
-    virtual rave::Track closestTo ( const rave::Track &,
-                                    const rave::Point3D &, bool transverse ) const;
-    virtual std::pair < rave::Track, double > to ( const rave::Track & orig,
-                                                   const ravesurf::Plane & ) const;
-    virtual std::pair < rave::Track, double > to ( const rave::Track & orig,
-                                                   const ravesurf::Cylinder & ) const;
+class GFRavePropagator : public rave::Propagator {
+public:
+   GFRavePropagator();
+   virtual GFRavePropagator *copy() const;
+   virtual rave::Track closestTo(const rave::Track &, const rave::Point3D &, bool transverse) const;
+   virtual std::pair<rave::Track, double> to(const rave::Track &orig, const ravesurf::Plane &) const;
+   virtual std::pair<rave::Track, double> to(const rave::Track &orig, const ravesurf::Cylinder &) const;
 
-    virtual ~GFRavePropagator();
+   virtual ~GFRavePropagator();
 
-    void setIdGFTrackStateMap(std::map < int, genfit::trackAndState > * map);
+   void setIdGFTrackStateMap(std::map<int, genfit::trackAndState> *map);
 
-  private:
-
-    // data members
-    std::map < int, genfit::trackAndState > * IdGFTrackStateMap_; // pointers to genfit::tracks and measuredStateOnPlanes via rave track ID
+private:
+   // data members
+   std::map<int, genfit::trackAndState>
+      *IdGFTrackStateMap_; // pointers to genfit::tracks and measuredStateOnPlanes via rave track ID
 };
 
 } /* End of namespace genfit */
