@@ -727,7 +727,7 @@ with ConfigRegistry.register_config("basic") as c:
 
        c.tauMudet.ZRyoke = c.tauMudet.Ztot
 
-       c.tauMudet.B = 1.0 * u.tesla #magnetic field is back in MuFilter!
+       c.tauMudet.B = 1.75 * u.tesla #magnetic field is back in MuFilter!
        c.tauMudet.zMudetC = c.Chamber1.z -c.chambers.Tub1length - c.tauMudet.Ztot -31*u.cm
 
 
