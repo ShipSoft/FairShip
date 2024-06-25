@@ -241,7 +241,6 @@ else: tag = simEngine+"-"+mcEngine
 if charmonly: tag = simEngine+"CharmOnly-"+mcEngine
 if options.eventDisplay: tag = tag+'_D'
 if options.dv > 4 : tag = 'conical.'+tag
-elif dy: tag = str(options.dy)+'.'+tag
 if not os.path.exists(options.outputDir):
   os.makedirs(options.outputDir)
 outFile = "%s/ship.%s.root" % (options.outputDir, tag)
