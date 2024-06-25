@@ -908,10 +908,10 @@ void NuTauMudet::ConstructGeometry()
     // Minimal configuration includes Silicon strip detectors, for now only a sensitive plane is implemented
     TGeoBBox *MuonSysDet = new TGeoBBox("MuonSysDet", fXRpc/2., fYRpc/2., fZRpc/2.);
     TGeoVolume *volMuonSysDet = new TGeoVolume("volMuonSysDet", MuonSysDet, Silicon);
-    volMuonSysDet->SetLineColor(kGray-2);
+    volMuonSysDet->SetLineColor(kGray+2);
     AddSensitiveVolume(volMuonSysDet);
 
-    volMuFilter->AddNode(volVertCoil, 0, new TGeoTranslation(0, 0, -fZtot/2.+fCoilH/2.));
+    volMuFilter->AddNode(volVertCoil, 0, new TGeoTranslation(0, 0, -fZtot/2.));
     for(int i = 0; i<fNFe; i++)
     {
       volMuFilter->AddNode(volFeWall, i, new TGeoTranslation(0, 0, -fZtot/2+(fCoilH+fZFe)/2+i*(fZFe+fZRpc)));
