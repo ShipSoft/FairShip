@@ -728,7 +728,7 @@ with ConfigRegistry.register_config("basic") as c:
        c.tauMudet.ZRyoke = c.tauMudet.Ztot
 
        c.tauMudet.B = 1.75 * u.tesla #magnetic field is back in MuFilter!
-       c.tauMudet.zMudetC = c.Chamber1.z -c.chambers.Tub1length - c.tauMudet.Ztot -31*u.cm
+       c.tauMudet.zMudetC = c.Chamber1.z -c.chambers.Tub1length - c.tauMudet.Ztot -170*u.cm
 
 
     if nuTauTargetDesign==0 or nuTauTargetDesign==1:
@@ -975,4 +975,4 @@ with ConfigRegistry.register_config("basic") as c:
     c.UpstreamTagger.X_Strip = 229 * u.cm  - UBT_x_crop
     c.UpstreamTagger.X_Strip64 = 1.534 * u.cm
     c.UpstreamTagger.Y_Strip64 = 111 * u.cm
-    c.UpstreamTagger.Z_Position = c.tauMudet.zMudetC + (c.tauMudet.Ztot/2.) + 12.0*u.cm
+    c.UpstreamTagger.Z_Position = c.Chamber1.z - c.chambers.Tub1length
