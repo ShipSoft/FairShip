@@ -143,9 +143,9 @@ class veto : public FairDetector
     Float_t fT4z;          //!  z-position of tracking station 4
     Int_t fDesign;         //!  1: cylindrical with basic tracking chambers,
                            //   2: conical with basic tracking chambers, but no trscking chamber at entrance
-    //   3: cylindrical, no tracking chambers defined but sensitive walls, strawchambers separated
-    //   4: design used for TP, smaller upstream part in x
-    //   5: optimized design, changed to trapezoidal shape
+                     //   3: cylindrical, no tracking chambers defined but sensitive walls, strawchambers separated
+                     //   4: design used for TP, smaller upstream part in x
+                     //   5: optimized design, changed to trapezoidal shape
     Bool_t fFastMuon, fFollowMuon;
     Float_t fTub1z;
     Float_t fTub2z;
@@ -225,7 +225,6 @@ class veto : public FairDetector
                   double z2,
                   double Zshift,
                   double dist,
-                  double distC,
                   double wallThick,
                   double liscThick1,
                   double liscThick2,
