@@ -165,10 +165,24 @@ class veto: public FairDetector
     TGeoVolume* GeoTrapezoid(TString xname,Double_t wz,Double_t wX_start,Double_t wX_end,Double_t wY_start,Double_t wY_end,
 				  Int_t color,TGeoMedium *material,Bool_t sens);
     TGeoVolume* GeoTrapezoidNew(TString xname,Double_t thick,Double_t wz,Double_t wX_start,Double_t wX_end,Double_t wY_start,Double_t wY_end,Int_t color,TGeoMedium *material,Bool_t sens);
-    void AddBlock(TGeoVolumeAssembly *tInnerWall,TGeoVolumeAssembly *tDecayVacuum, TGeoVolumeAssembly *tOuterWall,TGeoVolumeAssembly *tLongitRib,TGeoVolumeAssembly *tVerticalRib,TGeoVolumeAssembly *ttLiSc,  int& liScCounter,
-                     int blockNr , int nx, int ny,
-		  double z1, double z2 , double Zshift, double dist, double distC,
-		    double wallThick, double liscThick1, double liscThick2,double ribThick);
+    void AddBlock(TGeoVolumeAssembly *tInnerWall,
+                  TGeoVolumeAssembly *tDecayVacuum, 
+                  TGeoVolumeAssembly *tOuterWall,
+                  TGeoVolumeAssembly *tLongitRib,
+                  TGeoVolumeAssembly *tVerticalRib,
+                  TGeoVolumeAssembly *ttLiSc,  
+                  int& liScCounter,
+                  int blockNr , 
+                  int nx, 
+                  int ny,
+                  double z1, 
+                  double z2 , 
+                  double Zshift, 
+                  double dist, 
+                  double wallThick, 
+                  double liscThick1, 
+                  double liscThick2,
+                  double ribThick);
 
     TGeoVolumeAssembly* GeoCornerRib(TString xname, double ribThick, double lt1,double lt2 , double dz, double slopeX, double slopeY,Int_t color, TGeoMedium *material, Bool_t sens);
    int makeId(double z,double x, double y);
