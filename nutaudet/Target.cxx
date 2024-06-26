@@ -677,6 +677,10 @@ Bool_t  Target::ProcessHits(FairVolume* vol)
     const char *name;
 
     name = gMC->CurrentVolName();
+    if (strcmp(name,"volSNDTargetSensitive")==0){ //not bricks with emulsion films, but simple sensitive volumes
+      NPlate = detID;
+    }
+    else{
     //cout << name << endl;
 
     if(strcmp(name, "Emulsion") == 0)
@@ -739,7 +743,7 @@ Bool_t  Target::ProcessHits(FairVolume* vol)
 
 
     fVolumeID = detID;
-
+    } //end else
     if (fELoss == 0. ) { return kFALSE; }
     TParticle* p=gMC->GetStack()->GetCurrentTrack();
     //Int_t MotherID =gMC->GetStack()->GetCurrentParentTrackNumber();
