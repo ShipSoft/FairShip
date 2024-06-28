@@ -17,7 +17,7 @@
 //npckov - number of values used to define the optical properties of the medium.
 //----------------------------------------------------------
 // basic helium for Decay Volume; June 2024
-helium			   1  4.00    2    1.78e-3
+helium			   1  4.00    2    1.78e-4
 				   0  1  30.  .001
 				   0 
 
