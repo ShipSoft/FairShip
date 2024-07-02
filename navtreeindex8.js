@@ -1,5 +1,6 @@
 var NAVTREEINDEX8 =
 {
+"charm-geometry__config_8py.html#ae5fd66044e72697f2d4c4545481ad1aa":[13,0,4,0,276],
 "charm-geometry__config_8py.html#ae684fc165f1a65cb3d003e6966308d9e":[13,0,4,0,154],
 "charm-geometry__config_8py.html#ae68b6f818553a592d2d927441d3bf136":[13,0,4,0,226],
 "charm-geometry__config_8py.html#ae68dd12eb07171219b846c75d0103863":[13,0,4,0,185],
@@ -248,6 +249,5 @@ var NAVTREEINDEX8 =
 "classEmulsionMagnet.html#aabe4295a172de5379f8821383e8ca294":[12,0,63,6],
 "classEmulsionMagnet.html#aabf8435721eba0ea2e44e7d341e74281":[12,0,63,43],
 "classEmulsionMagnet.html#aaea484fa64e8dcbd4c1b28a222446a20":[12,0,63,8],
-"classEmulsionMagnet.html#aafc00862ccc1b15a4fc62a92aba2faab":[12,0,63,3],
-"classEmulsionMagnet.html#ab9fdee459c54e782161ace817b621193":[12,0,63,12]
+"classEmulsionMagnet.html#aafc00862ccc1b15a4fc62a92aba2faab":[12,0,63,3]
 };

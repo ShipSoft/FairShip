@@ -116,7 +116,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="g4Ex__gap_8py_source.html#l00295">295</a> of file <a class="el" href="g4Ex__gap_8py_source.html">g4Ex_gap.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="g4Ex__gap_8py_source.html#l00294">294</a> of file <a class="el" href="g4Ex__gap_8py_source.html">g4Ex_gap.py</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a39b4a165a687fbc8c07f12fe979a5d62"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a39b4a165a687fbc8c07f12fe979a5d62">&#9670;&nbsp;</a></span>PostUserTrackingAction()</h2>
@@ -144,9 +144,9 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="g4Ex__gap_8py_source.html#l00296">296</a> of file <a class="el" href="g4Ex__gap_8py_source.html">g4Ex_gap.py</a>.</p>
-<div class="fragment"><div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160; <span class="keyword">def </span>PostUserTrackingAction(self,atrack):</div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;    <span class="keywordflow">pass</span></div>
+<p class="definition">Definition at line <a class="el" href="g4Ex__gap_8py_source.html#l00295">295</a> of file <a class="el" href="g4Ex__gap_8py_source.html">g4Ex_gap.py</a>.</p>
+<div class="fragment"><div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160; <span class="keyword">def </span>PostUserTrackingAction(self,atrack):</div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;    <span class="keywordflow">pass</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -176,18 +176,18 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="g4Ex__gap_8py_source.html#l00298">298</a> of file <a class="el" href="g4Ex__gap_8py_source.html">g4Ex_gap.py</a>.</p>
-<div class="fragment"><div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160; <span class="keyword">def </span>PreUserTrackingAction(self,atrack):</div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;<span class="comment"># need to be careful with energy cut, anti-protons and anti-neutrons can always produce pions and kaons</span></div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;   part         = atrack.GetDynamicParticle()</div>
-<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;   pid          = part.GetPDGcode()</div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;   muCut = JpsiMainly <span class="keywordflow">and</span> abs(pid)!=13</div>
-<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;   qed          = pid <span class="keywordflow">in</span> qedlist  <span class="comment"># use cut only for photons, electrons, protons and neutrons</span></div>
-<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;   <span class="keywordflow">if</span> (atrack.GetKineticEnergy()/GeV &lt; ecut <span class="keywordflow">and</span> (qed <span class="keywordflow">or</span> allPart) ) <span class="keywordflow">or</span> muCut :</div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;      G4TrackingManager().SetStoreTrajectory(<span class="keyword">False</span>)</div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;      atrack.SetTrackStatus(atrack.GetTrackStatus().fStopAndKill)</div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160; </div>
-<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;<span class="comment"># ------------------------------------------------------------------</span></div>
+<p class="definition">Definition at line <a class="el" href="g4Ex__gap_8py_source.html#l00297">297</a> of file <a class="el" href="g4Ex__gap_8py_source.html">g4Ex_gap.py</a>.</p>
+<div class="fragment"><div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160; <span class="keyword">def </span>PreUserTrackingAction(self,atrack):</div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;<span class="comment"># need to be careful with energy cut, anti-protons and anti-neutrons can always produce pions and kaons</span></div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;   part         = atrack.GetDynamicParticle()</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;   pid          = part.GetPDGcode()</div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;   muCut = JpsiMainly <span class="keywordflow">and</span> abs(pid)!=13</div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;   qed          = pid <span class="keywordflow">in</span> qedlist  <span class="comment"># use cut only for photons, electrons, protons and neutrons</span></div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;   <span class="keywordflow">if</span> (atrack.GetKineticEnergy()/GeV &lt; ecut <span class="keywordflow">and</span> (qed <span class="keywordflow">or</span> allPart) ) <span class="keywordflow">or</span> muCut :</div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;      G4TrackingManager().SetStoreTrajectory(<span class="keyword">False</span>)</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;      atrack.SetTrackStatus(atrack.GetTrackStatus().fStopAndKill)</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160; </div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;<span class="comment"># ------------------------------------------------------------------</span></div>
 </div><!-- fragment -->
 </div>
 </div>

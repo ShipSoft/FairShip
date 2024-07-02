@@ -136,32 +136,32 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pi0Reco_8py_source.html#l00013">13</a> of file <a class="el" href="pi0Reco_8py_source.html">pi0Reco.py</a>.</p>
-<div class="fragment"><div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="keyword">def </span><a class="code" href="namespacepi0Reco.html#aac923c77c6e24564f5fca914711740ac">findPi0</a>(sTree,secVertex):</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; recoGammas = {}</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; pi0List = []</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; listOfGammas = <span class="keywordtype">None</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; <span class="keywordflow">for</span> aClu <span class="keywordflow">in</span>  sTree.EcalReconstructed:</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment"># short cut to exclude ecal clusters of charged tracks</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment"># would need another routine to extrapolate tracks to ecal and exclude matched showers</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;  mc = aClu.MCTrack()</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;  <span class="keywordflow">if</span> mc&lt;0: <span class="keywordflow">continue</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;  gamma = sTree.MCTrack[mc]</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;  <span class="keywordflow">if</span> gamma.GetPdgCode()!=22: <span class="keywordflow">continue</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;  <span class="keywordflow">if</span> gamma.GetMotherId()&lt;0: <span class="keywordflow">continue</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;  P = aClu.RecoE()</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;  direction = ROOT.TVector3(aClu.X()-secVertex.X(),aClu.Y()-secVertex.Y(),z_ecal-secVertex.Z())</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;  norm = direction.Mag()</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;  recoGammas[gamma] = ROOT.TLorentzVector(direction.X()/norm*P,direction.Y()/norm*P,direction.Z()/norm*P,P)</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;  sTree.MCTrack[mc].GetStartVertex(V)</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; <span class="keywordflow">if</span> len(recoGammas)==0: <span class="keywordflow">return</span> []</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; listOfGammas=list(recoGammas.values())</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; <span class="keywordflow">for</span> g1 <span class="keywordflow">in</span> range(len(listOfGammas)-1):</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  <span class="keywordflow">for</span> g2 <span class="keywordflow">in</span> range(g1+1,len(listOfGammas)):</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    pi0 = listOfGammas[g1] + listOfGammas[g2]</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    pi0List.append(pi0)</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; <span class="keywordflow">return</span> pi0List</div>
-<div class="ttc" id="anamespacepi0Reco_html_aac923c77c6e24564f5fca914711740ac"><div class="ttname"><a href="namespacepi0Reco.html#aac923c77c6e24564f5fca914711740ac">pi0Reco.findPi0</a></div><div class="ttdeci">def findPi0(sTree, secVertex)</div><div class="ttdef"><b>Definition:</b> <a href="pi0Reco_8py_source.html#l00013">pi0Reco.py:13</a></div></div>
+<p class="definition">Definition at line <a class="el" href="pi0Reco_8py_source.html#l00012">12</a> of file <a class="el" href="pi0Reco_8py_source.html">pi0Reco.py</a>.</p>
+<div class="fragment"><div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="keyword">def </span><a class="code" href="namespacepi0Reco.html#aac923c77c6e24564f5fca914711740ac">findPi0</a>(sTree,secVertex):</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; recoGammas = {}</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; pi0List = []</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; listOfGammas = <span class="keywordtype">None</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; <span class="keywordflow">for</span> aClu <span class="keywordflow">in</span>  sTree.EcalReconstructed:</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment"># short cut to exclude ecal clusters of charged tracks</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment"># would need another routine to extrapolate tracks to ecal and exclude matched showers</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;  mc = aClu.MCTrack()</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;  <span class="keywordflow">if</span> mc&lt;0: <span class="keywordflow">continue</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;  gamma = sTree.MCTrack[mc]</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;  <span class="keywordflow">if</span> gamma.GetPdgCode()!=22: <span class="keywordflow">continue</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;  <span class="keywordflow">if</span> gamma.GetMotherId()&lt;0: <span class="keywordflow">continue</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;  P = aClu.RecoE()</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;  direction = ROOT.TVector3(aClu.X()-secVertex.X(),aClu.Y()-secVertex.Y(),z_ecal-secVertex.Z())</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;  norm = direction.Mag()</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;  recoGammas[gamma] = ROOT.TLorentzVector(direction.X()/norm*P,direction.Y()/norm*P,direction.Z()/norm*P,P)</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;  sTree.MCTrack[mc].GetStartVertex(V)</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; <span class="keywordflow">if</span> len(recoGammas)==0: <span class="keywordflow">return</span> []</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; listOfGammas=list(recoGammas.values())</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; <span class="keywordflow">for</span> g1 <span class="keywordflow">in</span> range(len(listOfGammas)-1):</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  <span class="keywordflow">for</span> g2 <span class="keywordflow">in</span> range(g1+1,len(listOfGammas)):</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    pi0 = listOfGammas[g1] + listOfGammas[g2]</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    pi0List.append(pi0)</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; <span class="keywordflow">return</span> pi0List</div>
+<div class="ttc" id="anamespacepi0Reco_html_aac923c77c6e24564f5fca914711740ac"><div class="ttname"><a href="namespacepi0Reco.html#aac923c77c6e24564f5fca914711740ac">pi0Reco.findPi0</a></div><div class="ttdeci">def findPi0(sTree, secVertex)</div><div class="ttdef"><b>Definition:</b> <a href="pi0Reco_8py_source.html#l00012">pi0Reco.py:12</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -178,7 +178,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pi0Reco_8py_source.html#l00007">7</a> of file <a class="el" href="pi0Reco_8py_source.html">pi0Reco.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pi0Reco_8py_source.html#l00006">6</a> of file <a class="el" href="pi0Reco_8py_source.html">pi0Reco.py</a>.</p>
 
 </div>
 </div>
@@ -194,7 +194,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pi0Reco_8py_source.html#l00006">6</a> of file <a class="el" href="pi0Reco_8py_source.html">pi0Reco.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pi0Reco_8py_source.html#l00005">5</a> of file <a class="el" href="pi0Reco_8py_source.html">pi0Reco.py</a>.</p>
 
 </div>
 </div>
@@ -210,7 +210,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pi0Reco_8py_source.html#l00005">5</a> of file <a class="el" href="pi0Reco_8py_source.html">pi0Reco.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pi0Reco_8py_source.html#l00004">4</a> of file <a class="el" href="pi0Reco_8py_source.html">pi0Reco.py</a>.</p>
 
 </div>
 </div>
@@ -226,7 +226,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pi0Reco_8py_source.html#l00009">9</a> of file <a class="el" href="pi0Reco_8py_source.html">pi0Reco.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pi0Reco_8py_source.html#l00008">8</a> of file <a class="el" href="pi0Reco_8py_source.html">pi0Reco.py</a>.</p>
 
 </div>
 </div>
@@ -242,7 +242,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pi0Reco_8py_source.html#l00008">8</a> of file <a class="el" href="pi0Reco_8py_source.html">pi0Reco.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pi0Reco_8py_source.html#l00007">7</a> of file <a class="el" href="pi0Reco_8py_source.html">pi0Reco.py</a>.</p>
 
 </div>
 </div>
@@ -258,7 +258,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pi0Reco_8py_source.html#l00010">10</a> of file <a class="el" href="pi0Reco_8py_source.html">pi0Reco.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pi0Reco_8py_source.html#l00009">9</a> of file <a class="el" href="pi0Reco_8py_source.html">pi0Reco.py</a>.</p>
 
 </div>
 </div>

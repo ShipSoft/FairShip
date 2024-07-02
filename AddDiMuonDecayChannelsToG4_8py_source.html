@@ -85,34 +85,33 @@ $(document).ready(function(){initNavTree('AddDiMuonDecayChannelsToG4_8py_source.
 <div class="title">AddDiMuonDecayChannelsToG4.py</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="AddDiMuonDecayChannelsToG4_8py.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno"><a class="line" href="namespaceAddDiMuonDecayChannelsToG4.html">    1</a></span>&#160;<span class="keyword">from</span> __future__ <span class="keyword">import</span> division</div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="keyword">import</span> ROOT</div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;ROOT.gROOT.ProcessLine(<span class="stringliteral">&#39;#include &quot;Geant4/G4ParticleTable.hh&quot;&#39;</span>)</div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;ROOT.gROOT.ProcessLine(<span class="stringliteral">&#39;#include &quot;Geant4/G4DecayTable.hh&quot;&#39;</span>)</div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;ROOT.gROOT.ProcessLine(<span class="stringliteral">&#39;#include &quot;Geant4/G4PhaseSpaceDecayChannel.hh&quot;&#39;</span>)</div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
-<div class="line"><a name="l00007"></a><span class="lineno"><a class="line" href="namespaceAddDiMuonDecayChannelsToG4.html#a753e4ffd6a0356653c5896ba1f5a57cd">    7</a></span>&#160;<span class="keyword">def </span><a class="code" href="namespaceAddDiMuonDecayChannelsToG4.html#a753e4ffd6a0356653c5896ba1f5a57cd">Initialize</a>(p8):</div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment"># take decay and branching ratios from Pythia8</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;  pt = ROOT.G4ParticleTable.GetParticleTable()</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;  <span class="keywordflow">for</span> vreso <span class="keywordflow">in</span> [223,333,113]:</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;   particleG4  = pt.FindParticle(vreso)</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;   particleP8  = p8.particleData.particleDataEntryPtr(vreso)</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;   decayTable =  ROOT.G4DecayTable()</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;   <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(particleP8.sizeChannels()):</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    achannel = particleP8.channel(i)</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    bR  = achannel.bRatio()</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    mul = achannel.multiplicity()</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    dl = []</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <span class="keywordflow">for</span> daughter <span class="keywordflow">in</span> range(4):</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;      <span class="keywordflow">if</span> daughter&lt;mul:</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;       pid = achannel.product(daughter)</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;       dl.append(pt.FindParticle(pid).GetParticleName())</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;      <span class="keywordflow">else</span>:  dl.append(ROOT.G4String(<span class="stringliteral">&quot;&quot;</span>))</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    mode  = ROOT.G4PhaseSpaceDecayChannel(particleG4.GetParticleName(),bR,mul,dl[0],dl[1],dl[2],dl[3])</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    decayTable.Insert(mode)</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;   particleG4.SetDecayTable(decayTable)</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;   particleG4.DumpTable()</div>
-<div class="ttc" id="anamespaceAddDiMuonDecayChannelsToG4_html_a753e4ffd6a0356653c5896ba1f5a57cd"><div class="ttname"><a href="namespaceAddDiMuonDecayChannelsToG4.html#a753e4ffd6a0356653c5896ba1f5a57cd">AddDiMuonDecayChannelsToG4.Initialize</a></div><div class="ttdeci">def Initialize(p8)</div><div class="ttdef"><b>Definition:</b> <a href="AddDiMuonDecayChannelsToG4_8py_source.html#l00007">AddDiMuonDecayChannelsToG4.py:7</a></div></div>
+<a href="AddDiMuonDecayChannelsToG4_8py.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno"><a class="line" href="namespaceAddDiMuonDecayChannelsToG4.html">    1</a></span>&#160;<span class="keyword">import</span> ROOT</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;ROOT.gROOT.ProcessLine(<span class="stringliteral">&#39;#include &quot;Geant4/G4ParticleTable.hh&quot;&#39;</span>)</div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;ROOT.gROOT.ProcessLine(<span class="stringliteral">&#39;#include &quot;Geant4/G4DecayTable.hh&quot;&#39;</span>)</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;ROOT.gROOT.ProcessLine(<span class="stringliteral">&#39;#include &quot;Geant4/G4PhaseSpaceDecayChannel.hh&quot;&#39;</span>)</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160; </div>
+<div class="line"><a name="l00006"></a><span class="lineno"><a class="line" href="namespaceAddDiMuonDecayChannelsToG4.html#a753e4ffd6a0356653c5896ba1f5a57cd">    6</a></span>&#160;<span class="keyword">def </span><a class="code" href="namespaceAddDiMuonDecayChannelsToG4.html#a753e4ffd6a0356653c5896ba1f5a57cd">Initialize</a>(p8):</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment"># take decay and branching ratios from Pythia8</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;  pt = ROOT.G4ParticleTable.GetParticleTable()</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;  <span class="keywordflow">for</span> vreso <span class="keywordflow">in</span> [223,333,113]:</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;   particleG4  = pt.FindParticle(vreso)</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;   particleP8  = p8.particleData.particleDataEntryPtr(vreso)</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;   decayTable =  ROOT.G4DecayTable()</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;   <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(particleP8.sizeChannels()):</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    achannel = particleP8.channel(i)</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    bR  = achannel.bRatio()</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    mul = achannel.multiplicity()</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    dl = []</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <span class="keywordflow">for</span> daughter <span class="keywordflow">in</span> range(4):</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;      <span class="keywordflow">if</span> daughter&lt;mul:</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;       pid = achannel.product(daughter)</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;       dl.append(pt.FindParticle(pid).GetParticleName())</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;      <span class="keywordflow">else</span>:  dl.append(ROOT.G4String(<span class="stringliteral">&quot;&quot;</span>))</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    mode  = ROOT.G4PhaseSpaceDecayChannel(particleG4.GetParticleName(),bR,mul,dl[0],dl[1],dl[2],dl[3])</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    decayTable.Insert(mode)</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;   particleG4.SetDecayTable(decayTable)</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;   particleG4.DumpTable()</div>
+<div class="ttc" id="anamespaceAddDiMuonDecayChannelsToG4_html_a753e4ffd6a0356653c5896ba1f5a57cd"><div class="ttname"><a href="namespaceAddDiMuonDecayChannelsToG4.html#a753e4ffd6a0356653c5896ba1f5a57cd">AddDiMuonDecayChannelsToG4.Initialize</a></div><div class="ttdeci">def Initialize(p8)</div><div class="ttdef"><b>Definition:</b> <a href="AddDiMuonDecayChannelsToG4_8py_source.html#l00006">AddDiMuonDecayChannelsToG4.py:6</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

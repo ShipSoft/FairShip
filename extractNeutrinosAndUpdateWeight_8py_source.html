@@ -85,145 +85,144 @@ $(document).ready(function(){initNavTree('extractNeutrinosAndUpdateWeight_8py_so
 <div class="title">extractNeutrinosAndUpdateWeight.py</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="extractNeutrinosAndUpdateWeight_8py.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno"><a class="line" href="namespaceextractNeutrinosAndUpdateWeight.html">    1</a></span>&#160;<span class="keyword">from</span> __future__ <span class="keyword">import</span> print_function</div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="keyword">import</span> os,ROOT</div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keyword">import</span> rootUtils <span class="keyword">as</span> ut</div>
-<div class="line"><a name="l00004"></a><span class="lineno"><a class="line" href="namespaceextractNeutrinosAndUpdateWeight.html#a3539c4107e28dee7803a43188f942ca9">    4</a></span>&#160;path =  <span class="stringliteral">&#39;/eos/experiment/ship/data/Mbias/background-prod-2018/&#39;</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160; </div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment"># should fill hisograms with neutrinos, for mbias, exclude neutrinos from charm</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment"># update weight based on process/decay and PoT</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
-<div class="line"><a name="l00009"></a><span class="lineno"><a class="line" href="namespaceextractNeutrinosAndUpdateWeight.html#aeee9358256fe96e5c6483243deb0d884">    9</a></span>&#160;charmExtern = [4332,4232,4132,4232,4122,431,411,421,15]</div>
-<div class="line"><a name="l00010"></a><span class="lineno"><a class="line" href="namespaceextractNeutrinosAndUpdateWeight.html#a231600f6d820de2c9820efa1cb8f5cea">   10</a></span>&#160;neutrinos = [12,14,16]</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160; </div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment"># for 10GeV Yandex Production 65.041 Billion PoT, weight = 768.75 for 5E13 pot</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno"><a class="line" href="namespaceextractNeutrinosAndUpdateWeight.html#ada8cdca68067f6a53d1115bf882b2d2c">   13</a></span>&#160;weightMbias = 768.75</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment"># for 1GeV Yandex Production  1.8 Billion PoT, weight = 27778. for 5E13 pot</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno"><a class="line" href="namespaceextractNeutrinosAndUpdateWeight.html#ae01b4a5fe37389f539471726e4c843a5">   15</a></span>&#160;weightMbias1GeV = 27778.</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment"># for 10GeV charm Production 153.3 Billion PoT equivalent, weight = 489.24</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment"># added another cycle</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="namespaceextractNeutrinosAndUpdateWeight.html#ad87a3988a60e29920f8c02e9af1ad939">   19</a></span>&#160;weightCharm = 326.</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment"># for 1GeV charm Production 10.2 Billion PoT equivalent, weight = 4895.24</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno"><a class="line" href="namespaceextractNeutrinosAndUpdateWeight.html#ab760c708e24b90544e4fbd8e02fbf40c">   21</a></span>&#160;weightCharm1GeV = 4895.24</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment"># for 10GeV beauty Production 5336 Billion PoT equivalent, weight = 9.37</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="namespaceextractNeutrinosAndUpdateWeight.html#a219530ce37f64738a48b1c1f4f1c30e7">   24</a></span>&#160;weightBeauty = 9.37</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keyword">import</span> rootUtils <span class="keyword">as</span> ut</div>
-<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="namespaceextractNeutrinosAndUpdateWeight.html#aaa5f096d50107bebdd774fc21a774bb9">   27</a></span>&#160;h={}</div>
-<div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="namespaceextractNeutrinosAndUpdateWeight.html#a9b19cf3892e51b57f018a5562f771578">   28</a></span>&#160;PDG = ROOT.TDatabasePDG.Instance()</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keywordflow">for</span> idnu <span class="keywordflow">in</span> range(12,17,2):</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;  <span class="comment"># nu or anti-nu</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;   <span class="keywordflow">for</span> idadd <span class="keywordflow">in</span> range(-1,2):</div>
-<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="namespaceextractNeutrinosAndUpdateWeight.html#aaa48f3fbf2f4965a5e8e5aac5df79cc4">   32</a></span>&#160;    idw=idnu</div>
-<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="namespaceextractNeutrinosAndUpdateWeight.html#ac400864a3817612dd667b12b5a93fffe">   33</a></span>&#160;    idhnu=1000+idw</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="keywordflow">if</span> idadd==-1:</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;     idhnu+=1000</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;     idw=-idnu</div>
-<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="namespaceextractNeutrinosAndUpdateWeight.html#a7e4d69c73732e516b92a25f800d1a3df">   37</a></span>&#160;    name=PDG.GetParticle(idw).GetName()</div>
-<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="namespaceextractNeutrinosAndUpdateWeight.html#aade865149601dc3ac9e76ae1afc04a57">   38</a></span>&#160;    title = name+<span class="stringliteral">&quot; momentum (GeV)&quot;</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="namespaceextractNeutrinosAndUpdateWeight.html#a47804d77c17d9de386802c99c350d7a8">   39</a></span>&#160;    key = idhnu</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    ut.bookHist(h,key,title,400,0.,400.)</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    title = name+<span class="stringliteral">&quot;  log10-p vs log10-pt&quot;</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    key = idhnu+100</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    ut.bookHist(h,key,title,100,-0.3,1.7,100,-2.,0.5)</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    title = name+<span class="stringliteral">&quot;  log10-p vs log10-pt&quot;</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    key = idhnu+200</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    ut.bookHist(h,key,title,25,-0.3,1.7,100,-2.,0.5)</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
-<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="namespaceextractNeutrinosAndUpdateWeight.html#a3e9ee8c119953a43c64d7d1bbf68f074">   48</a></span>&#160;<span class="keyword">def </span><a class="code" href="namespaceextractNeutrinosAndUpdateWeight.html#a3e9ee8c119953a43c64d7d1bbf68f074">processFile</a>(fin,noCharm=True):</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    f   = ROOT.TFile.Open(os.environ[<span class="stringliteral">&#39;EOSSHIP&#39;</span>]+path+fin)</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    print(<span class="stringliteral">&quot;opened file &quot;</span>,fin)</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    sTree = f.cbmsim</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(sTree.GetEntries()):</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;      sTree.GetEntry(n)</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;      <span class="keywordflow">for</span> v <span class="keywordflow">in</span> sTree.vetoPoint:</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;       nu = v.GetTrackID()</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;       t = sTree.MCTrack[nu]</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;       pdgCode = t.GetPdgCode()</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;       <span class="keywordflow">if</span> abs(pdgCode) <span class="keywordflow">not</span> <span class="keywordflow">in</span> neutrinos: <span class="keywordflow">continue</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;       moID  = abs(sTree.MCTrack[t.GetMotherId()].GetPdgCode())</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;       <span class="keywordflow">if</span> moID <span class="keywordflow">in</span> charmExtern <span class="keywordflow">and</span> noCharm: <span class="keywordflow">continue</span>  <span class="comment"># take heavy flavours from separate production</span></div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;       idhnu=abs(pdgCode)+1000</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;       <span class="keywordflow">if</span> pdgCode&lt;0: idhnu+=1000</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;       l10ptot = ROOT.TMath.Min(ROOT.TMath.Max(ROOT.TMath.Log10(t.GetP()),-0.3),1.69999)</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;       l10pt   = ROOT.TMath.Min(ROOT.TMath.Max(ROOT.TMath.Log10(t.GetPt()),-2.),0.4999)</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;       key = idhnu</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;       h[key].Fill(t.GetP(),weight)</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;       key = idhnu+100</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;       h[key].Fill(l10ptot,l10pt,weight)</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;       key=idhnu+200</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;       h[key].Fill(l10ptot,l10pt,weight)</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
-<div class="line"><a name="l00072"></a><span class="lineno"><a class="line" href="namespaceextractNeutrinosAndUpdateWeight.html#a5bbce9041b2756079d353017ae37a6cb">   72</a></span>&#160;<span class="keyword">def </span><a class="code" href="namespaceextractNeutrinosAndUpdateWeight.html#a5bbce9041b2756079d353017ae37a6cb">run</a>():</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; tmp = <span class="stringliteral">&quot;pythia8_Geant4_10.0_cXX.root&quot;</span></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; <span class="keyword">global</span> weight</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; weight = weightMbias</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; <span class="keywordflow">for</span> run <span class="keywordflow">in</span> range(0,67000,1000):</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;   rc = <a class="code" href="namespaceextractNeutrinosAndUpdateWeight.html#a3e9ee8c119953a43c64d7d1bbf68f074">processFile</a>(tmp.replace(<span class="stringliteral">&#39;XX&#39;</span>,<a class="code" href="namespaceadd__noise__to__field.html#ac8c461fc99cff345995bf60fcdfefa01">str</a>(run)))</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; ut.writeHists(h,<span class="stringliteral">&#39;pythia8_Geant4_10.0_c0-67000_nu.root&#39;</span>)</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
-<div class="line"><a name="l00080"></a><span class="lineno"><a class="line" href="namespaceextractNeutrinosAndUpdateWeight.html#a6419448a88d0cb22da3531499fd51d79">   80</a></span>&#160;<span class="keyword">def </span><a class="code" href="namespaceextractNeutrinosAndUpdateWeight.html#a6419448a88d0cb22da3531499fd51d79">run1GeV</a>():</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; tmp = <span class="stringliteral">&quot;pythia8_Geant4_1.0_cXX.root&quot;</span></div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; <span class="keyword">global</span> weight</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; weight = weightMbias1GeV</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; <span class="keywordflow">for</span> run <span class="keywordflow">in</span> range(0,19000,1000):</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;   rc = <a class="code" href="namespaceextractNeutrinosAndUpdateWeight.html#a3e9ee8c119953a43c64d7d1bbf68f074">processFile</a>(tmp.replace(<span class="stringliteral">&#39;XX&#39;</span>,<a class="code" href="namespaceadd__noise__to__field.html#ac8c461fc99cff345995bf60fcdfefa01">str</a>(run)))</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; ut.writeHists(h,<span class="stringliteral">&#39;pythia8_Geant4_1.0_c0-19000_nu.root&#39;</span>)</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
-<div class="line"><a name="l00088"></a><span class="lineno"><a class="line" href="namespaceextractNeutrinosAndUpdateWeight.html#a9fadaf4f81fd8cc8987d280b0b044691">   88</a></span>&#160;<span class="keyword">def </span><a class="code" href="namespaceextractNeutrinosAndUpdateWeight.html#a9fadaf4f81fd8cc8987d280b0b044691">run4Charm</a>():</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; tmp = <span class="stringliteral">&quot;pythia8_Geant4_charm_XX-YY_10.0.root&quot;</span></div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160; <span class="keyword">global</span> weight</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; weight = weightCharm</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; <span class="keywordflow">for</span> cycle <span class="keywordflow">in</span> [0,1,2]:</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  <span class="keywordflow">for</span> run <span class="keywordflow">in</span> range(0,100,20):</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;   crun = run+cycle*1000</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;   fname = tmp.replace(<span class="stringliteral">&#39;XX&#39;</span>,<a class="code" href="namespaceadd__noise__to__field.html#ac8c461fc99cff345995bf60fcdfefa01">str</a>(crun)).replace(<span class="stringliteral">&#39;YY&#39;</span>,<a class="code" href="namespaceadd__noise__to__field.html#ac8c461fc99cff345995bf60fcdfefa01">str</a>(crun+19))</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;   rc = <a class="code" href="namespaceextractNeutrinosAndUpdateWeight.html#a3e9ee8c119953a43c64d7d1bbf68f074">processFile</a>(fname,<span class="keyword">False</span>)</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; ut.writeHists(h,<span class="stringliteral">&#39;pythia8_Geant4_charm_10.0_nu.root&#39;</span>)</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160; </div>
-<div class="line"><a name="l00099"></a><span class="lineno"><a class="line" href="namespaceextractNeutrinosAndUpdateWeight.html#a461116762335e5df8282d43479d998a2">   99</a></span>&#160;<span class="keyword">def </span><a class="code" href="namespaceextractNeutrinosAndUpdateWeight.html#a461116762335e5df8282d43479d998a2">run4Charm1GeV</a>():</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; fname = <span class="stringliteral">&quot;pythia8_Geant4_charm_0-19_1.0.root&quot;</span> <span class="comment"># renamed pythia8_Geant4_charm_XX-YY_10.0.root</span></div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160; <span class="keyword">global</span> weight</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160; weight = weightCharm1GeV</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; rc = <a class="code" href="namespaceextractNeutrinosAndUpdateWeight.html#a3e9ee8c119953a43c64d7d1bbf68f074">processFile</a>(fname,<span class="keyword">False</span>)</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; ut.writeHists(h,<span class="stringliteral">&#39;pythia8_Geant4_charm_1.0_nu.root&#39;</span>)</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160; </div>
-<div class="line"><a name="l00106"></a><span class="lineno"><a class="line" href="namespaceextractNeutrinosAndUpdateWeight.html#a40d7e70c2ecbd238d9a1a168f22d31a7">  106</a></span>&#160;<span class="keyword">def </span><a class="code" href="namespaceextractNeutrinosAndUpdateWeight.html#a40d7e70c2ecbd238d9a1a168f22d31a7">run4beauty</a>():</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160; <span class="keyword">global</span> weight</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160; weight = weightBeauty</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160; fname = <span class="stringliteral">&quot;pythia8_Geant4_beauty_5336B_10.0.root&quot;</span></div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160; rc = <a class="code" href="namespaceextractNeutrinosAndUpdateWeight.html#a3e9ee8c119953a43c64d7d1bbf68f074">processFile</a>(fname,<span class="keyword">False</span>)</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160; <span class="keywordflow">if</span> rc == 0:</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;     fmu = fname.replace(<span class="stringliteral">&#39;.root&#39;</span>,<span class="stringliteral">&quot;_mu.root&quot;</span>)</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;     rc = os.system(<span class="stringliteral">&quot;xrdcp &quot;</span>+fmu+<span class="stringliteral">&quot; $EOSSHIP/eos/experiment/ship/data/Mbias/background-prod-2018/&quot;</span>+fmu)</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;     <span class="keywordflow">if</span> rc != 0:</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;      print(<span class="stringliteral">&quot;copy to EOS failed, stop&quot;</span>,fmu)</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;     <span class="keywordflow">else</span>:</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;      rc = os.system(<span class="stringliteral">&quot;rm &quot;</span>+fmu)</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160; </div>
-<div class="line"><a name="l00119"></a><span class="lineno"><a class="line" href="namespaceextractNeutrinosAndUpdateWeight.html#ae5a8cabb10a306b3baeae8422cfad50a">  119</a></span>&#160;<span class="keyword">def </span><a class="code" href="namespaceextractNeutrinosAndUpdateWeight.html#ae5a8cabb10a306b3baeae8422cfad50a">finalResult</a>():</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160; h10={}</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160; ut.readHists(h10,<span class="stringliteral">&#39;pythia8_Geant4_10.0_c0-67000_nu.root&#39;</span>)</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160; h1={}</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160; ut.readHists(h1,<span class="stringliteral">&#39;pythia8_Geant4_1.0_c0-19000_nu.root&#39;</span>)</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160; c10={}</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160; ut.readHists(c10,<span class="stringliteral">&#39;pythia8_Geant4_charm_10.0_nu.root&#39;</span>)</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160; c1={}</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160; ut.readHists(c1,<span class="stringliteral">&#39;pythia8_Geant4_charm_1.0_nu.root&#39;</span>)</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160; cmd = <span class="stringliteral">&quot;hadd pythia8_Geant4_10.0_withCharm_nu.root pythia8_Geant4_10.0_c0-67000_nu.root pythia8_Geant4_charm_10.0_nu.root&quot;</span></div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160; os.system(cmd)</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160; cmd = <span class="stringliteral">&quot;hadd pythia8_Geant4_1.0_withCharm_nu.root pythia8_Geant4_1.0_c0-19000_nu.root pythia8_Geant4_charm_1.0_nu.root&quot;</span></div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160; os.system(cmd)</div>
+<a href="extractNeutrinosAndUpdateWeight_8py.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno"><a class="line" href="namespaceextractNeutrinosAndUpdateWeight.html">    1</a></span>&#160;<span class="keyword">import</span> os,ROOT</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="keyword">import</span> rootUtils <span class="keyword">as</span> ut</div>
+<div class="line"><a name="l00003"></a><span class="lineno"><a class="line" href="namespaceextractNeutrinosAndUpdateWeight.html#a3539c4107e28dee7803a43188f942ca9">    3</a></span>&#160;path =  <span class="stringliteral">&#39;/eos/experiment/ship/data/Mbias/background-prod-2018/&#39;</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160; </div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"># should fill hisograms with neutrinos, for mbias, exclude neutrinos from charm</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment"># update weight based on process/decay and PoT</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
+<div class="line"><a name="l00008"></a><span class="lineno"><a class="line" href="namespaceextractNeutrinosAndUpdateWeight.html#aeee9358256fe96e5c6483243deb0d884">    8</a></span>&#160;charmExtern = [4332,4232,4132,4232,4122,431,411,421,15]</div>
+<div class="line"><a name="l00009"></a><span class="lineno"><a class="line" href="namespaceextractNeutrinosAndUpdateWeight.html#a231600f6d820de2c9820efa1cb8f5cea">    9</a></span>&#160;neutrinos = [12,14,16]</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment"># for 10GeV Yandex Production 65.041 Billion PoT, weight = 768.75 for 5E13 pot</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno"><a class="line" href="namespaceextractNeutrinosAndUpdateWeight.html#ada8cdca68067f6a53d1115bf882b2d2c">   12</a></span>&#160;weightMbias = 768.75</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment"># for 1GeV Yandex Production  1.8 Billion PoT, weight = 27778. for 5E13 pot</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="namespaceextractNeutrinosAndUpdateWeight.html#ae01b4a5fe37389f539471726e4c843a5">   14</a></span>&#160;weightMbias1GeV = 27778.</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment"># for 10GeV charm Production 153.3 Billion PoT equivalent, weight = 489.24</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment"># added another cycle</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno"><a class="line" href="namespaceextractNeutrinosAndUpdateWeight.html#ad87a3988a60e29920f8c02e9af1ad939">   18</a></span>&#160;weightCharm = 326.</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment"># for 1GeV charm Production 10.2 Billion PoT equivalent, weight = 4895.24</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno"><a class="line" href="namespaceextractNeutrinosAndUpdateWeight.html#ab760c708e24b90544e4fbd8e02fbf40c">   20</a></span>&#160;weightCharm1GeV = 4895.24</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment"># for 10GeV beauty Production 5336 Billion PoT equivalent, weight = 9.37</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="namespaceextractNeutrinosAndUpdateWeight.html#a219530ce37f64738a48b1c1f4f1c30e7">   23</a></span>&#160;weightBeauty = 9.37</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keyword">import</span> rootUtils <span class="keyword">as</span> ut</div>
+<div class="line"><a name="l00026"></a><span class="lineno"><a class="line" href="namespaceextractNeutrinosAndUpdateWeight.html#aaa5f096d50107bebdd774fc21a774bb9">   26</a></span>&#160;h={}</div>
+<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="namespaceextractNeutrinosAndUpdateWeight.html#a9b19cf3892e51b57f018a5562f771578">   27</a></span>&#160;PDG = ROOT.TDatabasePDG.Instance()</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keywordflow">for</span> idnu <span class="keywordflow">in</span> range(12,17,2):</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;  <span class="comment"># nu or anti-nu</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;   <span class="keywordflow">for</span> idadd <span class="keywordflow">in</span> range(-1,2):</div>
+<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="namespaceextractNeutrinosAndUpdateWeight.html#aaa48f3fbf2f4965a5e8e5aac5df79cc4">   31</a></span>&#160;    idw=idnu</div>
+<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="namespaceextractNeutrinosAndUpdateWeight.html#ac400864a3817612dd667b12b5a93fffe">   32</a></span>&#160;    idhnu=1000+idw</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keywordflow">if</span> idadd==-1:</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;     idhnu+=1000</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;     idw=-idnu</div>
+<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="namespaceextractNeutrinosAndUpdateWeight.html#a7e4d69c73732e516b92a25f800d1a3df">   36</a></span>&#160;    name=PDG.GetParticle(idw).GetName()</div>
+<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="namespaceextractNeutrinosAndUpdateWeight.html#aade865149601dc3ac9e76ae1afc04a57">   37</a></span>&#160;    title = name+<span class="stringliteral">&quot; momentum (GeV)&quot;</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="namespaceextractNeutrinosAndUpdateWeight.html#a47804d77c17d9de386802c99c350d7a8">   38</a></span>&#160;    key = idhnu</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    ut.bookHist(h,key,title,400,0.,400.)</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    title = name+<span class="stringliteral">&quot;  log10-p vs log10-pt&quot;</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    key = idhnu+100</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    ut.bookHist(h,key,title,100,-0.3,1.7,100,-2.,0.5)</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    title = name+<span class="stringliteral">&quot;  log10-p vs log10-pt&quot;</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    key = idhnu+200</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    ut.bookHist(h,key,title,25,-0.3,1.7,100,-2.,0.5)</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
+<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="namespaceextractNeutrinosAndUpdateWeight.html#a3e9ee8c119953a43c64d7d1bbf68f074">   47</a></span>&#160;<span class="keyword">def </span><a class="code" href="namespaceextractNeutrinosAndUpdateWeight.html#a3e9ee8c119953a43c64d7d1bbf68f074">processFile</a>(fin,noCharm=True):</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    f   = ROOT.TFile.Open(os.environ[<span class="stringliteral">&#39;EOSSHIP&#39;</span>]+path+fin)</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    print(<span class="stringliteral">&quot;opened file &quot;</span>,fin)</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    sTree = f.cbmsim</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(sTree.GetEntries()):</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;      sTree.GetEntry(n)</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;      <span class="keywordflow">for</span> v <span class="keywordflow">in</span> sTree.vetoPoint:</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;       nu = v.GetTrackID()</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;       t = sTree.MCTrack[nu]</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;       pdgCode = t.GetPdgCode()</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;       <span class="keywordflow">if</span> abs(pdgCode) <span class="keywordflow">not</span> <span class="keywordflow">in</span> neutrinos: <span class="keywordflow">continue</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;       moID  = abs(sTree.MCTrack[t.GetMotherId()].GetPdgCode())</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;       <span class="keywordflow">if</span> moID <span class="keywordflow">in</span> charmExtern <span class="keywordflow">and</span> noCharm: <span class="keywordflow">continue</span>  <span class="comment"># take heavy flavours from separate production</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;       idhnu=abs(pdgCode)+1000</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;       <span class="keywordflow">if</span> pdgCode&lt;0: idhnu+=1000</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;       l10ptot = ROOT.TMath.Min(ROOT.TMath.Max(ROOT.TMath.Log10(t.GetP()),-0.3),1.69999)</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;       l10pt   = ROOT.TMath.Min(ROOT.TMath.Max(ROOT.TMath.Log10(t.GetPt()),-2.),0.4999)</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;       key = idhnu</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;       h[key].Fill(t.GetP(),weight)</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;       key = idhnu+100</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;       h[key].Fill(l10ptot,l10pt,weight)</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;       key=idhnu+200</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;       h[key].Fill(l10ptot,l10pt,weight)</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
+<div class="line"><a name="l00071"></a><span class="lineno"><a class="line" href="namespaceextractNeutrinosAndUpdateWeight.html#a5bbce9041b2756079d353017ae37a6cb">   71</a></span>&#160;<span class="keyword">def </span><a class="code" href="namespaceextractNeutrinosAndUpdateWeight.html#a5bbce9041b2756079d353017ae37a6cb">run</a>():</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; tmp = <span class="stringliteral">&quot;pythia8_Geant4_10.0_cXX.root&quot;</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; <span class="keyword">global</span> weight</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; weight = weightMbias</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; <span class="keywordflow">for</span> run <span class="keywordflow">in</span> range(0,67000,1000):</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;   rc = <a class="code" href="namespaceextractNeutrinosAndUpdateWeight.html#a3e9ee8c119953a43c64d7d1bbf68f074">processFile</a>(tmp.replace(<span class="stringliteral">&#39;XX&#39;</span>,<a class="code" href="namespaceadd__noise__to__field.html#ac8c461fc99cff345995bf60fcdfefa01">str</a>(run)))</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; ut.writeHists(h,<span class="stringliteral">&#39;pythia8_Geant4_10.0_c0-67000_nu.root&#39;</span>)</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
+<div class="line"><a name="l00079"></a><span class="lineno"><a class="line" href="namespaceextractNeutrinosAndUpdateWeight.html#a6419448a88d0cb22da3531499fd51d79">   79</a></span>&#160;<span class="keyword">def </span><a class="code" href="namespaceextractNeutrinosAndUpdateWeight.html#a6419448a88d0cb22da3531499fd51d79">run1GeV</a>():</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; tmp = <span class="stringliteral">&quot;pythia8_Geant4_1.0_cXX.root&quot;</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; <span class="keyword">global</span> weight</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; weight = weightMbias1GeV</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; <span class="keywordflow">for</span> run <span class="keywordflow">in</span> range(0,19000,1000):</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;   rc = <a class="code" href="namespaceextractNeutrinosAndUpdateWeight.html#a3e9ee8c119953a43c64d7d1bbf68f074">processFile</a>(tmp.replace(<span class="stringliteral">&#39;XX&#39;</span>,<a class="code" href="namespaceadd__noise__to__field.html#ac8c461fc99cff345995bf60fcdfefa01">str</a>(run)))</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; ut.writeHists(h,<span class="stringliteral">&#39;pythia8_Geant4_1.0_c0-19000_nu.root&#39;</span>)</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
+<div class="line"><a name="l00087"></a><span class="lineno"><a class="line" href="namespaceextractNeutrinosAndUpdateWeight.html#a9fadaf4f81fd8cc8987d280b0b044691">   87</a></span>&#160;<span class="keyword">def </span><a class="code" href="namespaceextractNeutrinosAndUpdateWeight.html#a9fadaf4f81fd8cc8987d280b0b044691">run4Charm</a>():</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; tmp = <span class="stringliteral">&quot;pythia8_Geant4_charm_XX-YY_10.0.root&quot;</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; <span class="keyword">global</span> weight</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160; weight = weightCharm</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; <span class="keywordflow">for</span> cycle <span class="keywordflow">in</span> [0,1,2]:</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;  <span class="keywordflow">for</span> run <span class="keywordflow">in</span> range(0,100,20):</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;   crun = run+cycle*1000</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;   fname = tmp.replace(<span class="stringliteral">&#39;XX&#39;</span>,<a class="code" href="namespaceadd__noise__to__field.html#ac8c461fc99cff345995bf60fcdfefa01">str</a>(crun)).replace(<span class="stringliteral">&#39;YY&#39;</span>,<a class="code" href="namespaceadd__noise__to__field.html#ac8c461fc99cff345995bf60fcdfefa01">str</a>(crun+19))</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;   rc = <a class="code" href="namespaceextractNeutrinosAndUpdateWeight.html#a3e9ee8c119953a43c64d7d1bbf68f074">processFile</a>(fname,<span class="keyword">False</span>)</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160; ut.writeHists(h,<span class="stringliteral">&#39;pythia8_Geant4_charm_10.0_nu.root&#39;</span>)</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; </div>
+<div class="line"><a name="l00098"></a><span class="lineno"><a class="line" href="namespaceextractNeutrinosAndUpdateWeight.html#a461116762335e5df8282d43479d998a2">   98</a></span>&#160;<span class="keyword">def </span><a class="code" href="namespaceextractNeutrinosAndUpdateWeight.html#a461116762335e5df8282d43479d998a2">run4Charm1GeV</a>():</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160; fname = <span class="stringliteral">&quot;pythia8_Geant4_charm_0-19_1.0.root&quot;</span> <span class="comment"># renamed pythia8_Geant4_charm_XX-YY_10.0.root</span></div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; <span class="keyword">global</span> weight</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160; weight = weightCharm1GeV</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160; rc = <a class="code" href="namespaceextractNeutrinosAndUpdateWeight.html#a3e9ee8c119953a43c64d7d1bbf68f074">processFile</a>(fname,<span class="keyword">False</span>)</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; ut.writeHists(h,<span class="stringliteral">&#39;pythia8_Geant4_charm_1.0_nu.root&#39;</span>)</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; </div>
+<div class="line"><a name="l00105"></a><span class="lineno"><a class="line" href="namespaceextractNeutrinosAndUpdateWeight.html#a40d7e70c2ecbd238d9a1a168f22d31a7">  105</a></span>&#160;<span class="keyword">def </span><a class="code" href="namespaceextractNeutrinosAndUpdateWeight.html#a40d7e70c2ecbd238d9a1a168f22d31a7">run4beauty</a>():</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; <span class="keyword">global</span> weight</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160; weight = weightBeauty</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160; fname = <span class="stringliteral">&quot;pythia8_Geant4_beauty_5336B_10.0.root&quot;</span></div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160; rc = <a class="code" href="namespaceextractNeutrinosAndUpdateWeight.html#a3e9ee8c119953a43c64d7d1bbf68f074">processFile</a>(fname,<span class="keyword">False</span>)</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160; <span class="keywordflow">if</span> rc == 0:</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;     fmu = fname.replace(<span class="stringliteral">&#39;.root&#39;</span>,<span class="stringliteral">&quot;_mu.root&quot;</span>)</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;     rc = os.system(<span class="stringliteral">&quot;xrdcp &quot;</span>+fmu+<span class="stringliteral">&quot; $EOSSHIP/eos/experiment/ship/data/Mbias/background-prod-2018/&quot;</span>+fmu)</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;     <span class="keywordflow">if</span> rc != 0:</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;      print(<span class="stringliteral">&quot;copy to EOS failed, stop&quot;</span>,fmu)</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;     <span class="keywordflow">else</span>:</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;      rc = os.system(<span class="stringliteral">&quot;rm &quot;</span>+fmu)</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160; </div>
+<div class="line"><a name="l00118"></a><span class="lineno"><a class="line" href="namespaceextractNeutrinosAndUpdateWeight.html#ae5a8cabb10a306b3baeae8422cfad50a">  118</a></span>&#160;<span class="keyword">def </span><a class="code" href="namespaceextractNeutrinosAndUpdateWeight.html#ae5a8cabb10a306b3baeae8422cfad50a">finalResult</a>():</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160; h10={}</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160; ut.readHists(h10,<span class="stringliteral">&#39;pythia8_Geant4_10.0_c0-67000_nu.root&#39;</span>)</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160; h1={}</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160; ut.readHists(h1,<span class="stringliteral">&#39;pythia8_Geant4_1.0_c0-19000_nu.root&#39;</span>)</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160; c10={}</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160; ut.readHists(c10,<span class="stringliteral">&#39;pythia8_Geant4_charm_10.0_nu.root&#39;</span>)</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160; c1={}</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160; ut.readHists(c1,<span class="stringliteral">&#39;pythia8_Geant4_charm_1.0_nu.root&#39;</span>)</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160; cmd = <span class="stringliteral">&quot;hadd pythia8_Geant4_10.0_withCharm_nu.root pythia8_Geant4_10.0_c0-67000_nu.root pythia8_Geant4_charm_10.0_nu.root&quot;</span></div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160; os.system(cmd)</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160; cmd = <span class="stringliteral">&quot;hadd pythia8_Geant4_1.0_withCharm_nu.root pythia8_Geant4_1.0_c0-19000_nu.root pythia8_Geant4_charm_1.0_nu.root&quot;</span></div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160; os.system(cmd)</div>
 <div class="ttc" id="anamespaceadd__noise__to__field_html_ac8c461fc99cff345995bf60fcdfefa01"><div class="ttname"><a href="namespaceadd__noise__to__field.html#ac8c461fc99cff345995bf60fcdfefa01">add_noise_to_field.str</a></div><div class="ttdeci">str</div><div class="ttdef"><b>Definition:</b> <a href="add__noise__to__field_8py_source.html#l00053">add_noise_to_field.py:53</a></div></div>
-<div class="ttc" id="anamespaceextractNeutrinosAndUpdateWeight_html_a3e9ee8c119953a43c64d7d1bbf68f074"><div class="ttname"><a href="namespaceextractNeutrinosAndUpdateWeight.html#a3e9ee8c119953a43c64d7d1bbf68f074">extractNeutrinosAndUpdateWeight.processFile</a></div><div class="ttdeci">def processFile(fin, noCharm=True)</div><div class="ttdef"><b>Definition:</b> <a href="extractNeutrinosAndUpdateWeight_8py_source.html#l00048">extractNeutrinosAndUpdateWeight.py:48</a></div></div>
-<div class="ttc" id="anamespaceextractNeutrinosAndUpdateWeight_html_a40d7e70c2ecbd238d9a1a168f22d31a7"><div class="ttname"><a href="namespaceextractNeutrinosAndUpdateWeight.html#a40d7e70c2ecbd238d9a1a168f22d31a7">extractNeutrinosAndUpdateWeight.run4beauty</a></div><div class="ttdeci">def run4beauty()</div><div class="ttdef"><b>Definition:</b> <a href="extractNeutrinosAndUpdateWeight_8py_source.html#l00106">extractNeutrinosAndUpdateWeight.py:106</a></div></div>
-<div class="ttc" id="anamespaceextractNeutrinosAndUpdateWeight_html_a461116762335e5df8282d43479d998a2"><div class="ttname"><a href="namespaceextractNeutrinosAndUpdateWeight.html#a461116762335e5df8282d43479d998a2">extractNeutrinosAndUpdateWeight.run4Charm1GeV</a></div><div class="ttdeci">def run4Charm1GeV()</div><div class="ttdef"><b>Definition:</b> <a href="extractNeutrinosAndUpdateWeight_8py_source.html#l00099">extractNeutrinosAndUpdateWeight.py:99</a></div></div>
-<div class="ttc" id="anamespaceextractNeutrinosAndUpdateWeight_html_a5bbce9041b2756079d353017ae37a6cb"><div class="ttname"><a href="namespaceextractNeutrinosAndUpdateWeight.html#a5bbce9041b2756079d353017ae37a6cb">extractNeutrinosAndUpdateWeight.run</a></div><div class="ttdeci">def run()</div><div class="ttdef"><b>Definition:</b> <a href="extractNeutrinosAndUpdateWeight_8py_source.html#l00072">extractNeutrinosAndUpdateWeight.py:72</a></div></div>
-<div class="ttc" id="anamespaceextractNeutrinosAndUpdateWeight_html_a6419448a88d0cb22da3531499fd51d79"><div class="ttname"><a href="namespaceextractNeutrinosAndUpdateWeight.html#a6419448a88d0cb22da3531499fd51d79">extractNeutrinosAndUpdateWeight.run1GeV</a></div><div class="ttdeci">def run1GeV()</div><div class="ttdef"><b>Definition:</b> <a href="extractNeutrinosAndUpdateWeight_8py_source.html#l00080">extractNeutrinosAndUpdateWeight.py:80</a></div></div>
-<div class="ttc" id="anamespaceextractNeutrinosAndUpdateWeight_html_a9fadaf4f81fd8cc8987d280b0b044691"><div class="ttname"><a href="namespaceextractNeutrinosAndUpdateWeight.html#a9fadaf4f81fd8cc8987d280b0b044691">extractNeutrinosAndUpdateWeight.run4Charm</a></div><div class="ttdeci">def run4Charm()</div><div class="ttdef"><b>Definition:</b> <a href="extractNeutrinosAndUpdateWeight_8py_source.html#l00088">extractNeutrinosAndUpdateWeight.py:88</a></div></div>
-<div class="ttc" id="anamespaceextractNeutrinosAndUpdateWeight_html_ae5a8cabb10a306b3baeae8422cfad50a"><div class="ttname"><a href="namespaceextractNeutrinosAndUpdateWeight.html#ae5a8cabb10a306b3baeae8422cfad50a">extractNeutrinosAndUpdateWeight.finalResult</a></div><div class="ttdeci">def finalResult()</div><div class="ttdef"><b>Definition:</b> <a href="extractNeutrinosAndUpdateWeight_8py_source.html#l00119">extractNeutrinosAndUpdateWeight.py:119</a></div></div>
+<div class="ttc" id="anamespaceextractNeutrinosAndUpdateWeight_html_a3e9ee8c119953a43c64d7d1bbf68f074"><div class="ttname"><a href="namespaceextractNeutrinosAndUpdateWeight.html#a3e9ee8c119953a43c64d7d1bbf68f074">extractNeutrinosAndUpdateWeight.processFile</a></div><div class="ttdeci">def processFile(fin, noCharm=True)</div><div class="ttdef"><b>Definition:</b> <a href="extractNeutrinosAndUpdateWeight_8py_source.html#l00047">extractNeutrinosAndUpdateWeight.py:47</a></div></div>
+<div class="ttc" id="anamespaceextractNeutrinosAndUpdateWeight_html_a40d7e70c2ecbd238d9a1a168f22d31a7"><div class="ttname"><a href="namespaceextractNeutrinosAndUpdateWeight.html#a40d7e70c2ecbd238d9a1a168f22d31a7">extractNeutrinosAndUpdateWeight.run4beauty</a></div><div class="ttdeci">def run4beauty()</div><div class="ttdef"><b>Definition:</b> <a href="extractNeutrinosAndUpdateWeight_8py_source.html#l00105">extractNeutrinosAndUpdateWeight.py:105</a></div></div>
+<div class="ttc" id="anamespaceextractNeutrinosAndUpdateWeight_html_a461116762335e5df8282d43479d998a2"><div class="ttname"><a href="namespaceextractNeutrinosAndUpdateWeight.html#a461116762335e5df8282d43479d998a2">extractNeutrinosAndUpdateWeight.run4Charm1GeV</a></div><div class="ttdeci">def run4Charm1GeV()</div><div class="ttdef"><b>Definition:</b> <a href="extractNeutrinosAndUpdateWeight_8py_source.html#l00098">extractNeutrinosAndUpdateWeight.py:98</a></div></div>
+<div class="ttc" id="anamespaceextractNeutrinosAndUpdateWeight_html_a5bbce9041b2756079d353017ae37a6cb"><div class="ttname"><a href="namespaceextractNeutrinosAndUpdateWeight.html#a5bbce9041b2756079d353017ae37a6cb">extractNeutrinosAndUpdateWeight.run</a></div><div class="ttdeci">def run()</div><div class="ttdef"><b>Definition:</b> <a href="extractNeutrinosAndUpdateWeight_8py_source.html#l00071">extractNeutrinosAndUpdateWeight.py:71</a></div></div>
+<div class="ttc" id="anamespaceextractNeutrinosAndUpdateWeight_html_a6419448a88d0cb22da3531499fd51d79"><div class="ttname"><a href="namespaceextractNeutrinosAndUpdateWeight.html#a6419448a88d0cb22da3531499fd51d79">extractNeutrinosAndUpdateWeight.run1GeV</a></div><div class="ttdeci">def run1GeV()</div><div class="ttdef"><b>Definition:</b> <a href="extractNeutrinosAndUpdateWeight_8py_source.html#l00079">extractNeutrinosAndUpdateWeight.py:79</a></div></div>
+<div class="ttc" id="anamespaceextractNeutrinosAndUpdateWeight_html_a9fadaf4f81fd8cc8987d280b0b044691"><div class="ttname"><a href="namespaceextractNeutrinosAndUpdateWeight.html#a9fadaf4f81fd8cc8987d280b0b044691">extractNeutrinosAndUpdateWeight.run4Charm</a></div><div class="ttdeci">def run4Charm()</div><div class="ttdef"><b>Definition:</b> <a href="extractNeutrinosAndUpdateWeight_8py_source.html#l00087">extractNeutrinosAndUpdateWeight.py:87</a></div></div>
+<div class="ttc" id="anamespaceextractNeutrinosAndUpdateWeight_html_ae5a8cabb10a306b3baeae8422cfad50a"><div class="ttname"><a href="namespaceextractNeutrinosAndUpdateWeight.html#ae5a8cabb10a306b3baeae8422cfad50a">extractNeutrinosAndUpdateWeight.finalResult</a></div><div class="ttdeci">def finalResult()</div><div class="ttdef"><b>Definition:</b> <a href="extractNeutrinosAndUpdateWeight_8py_source.html#l00118">extractNeutrinosAndUpdateWeight.py:118</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

@@ -116,7 +116,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="g4Ex__args_8py_source.html#l00250">250</a> of file <a class="el" href="g4Ex__args_8py_source.html">g4Ex_args.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="g4Ex__args_8py_source.html#l00249">249</a> of file <a class="el" href="g4Ex__args_8py_source.html">g4Ex_args.py</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="acbd21390a7073711f2ed4fefb673c1c4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#acbd21390a7073711f2ed4fefb673c1c4">&#9670;&nbsp;</a></span>__init__()</h2>
@@ -144,10 +144,10 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="g4Ex__args_8py_source.html#l00253">253</a> of file <a class="el" href="g4Ex__args_8py_source.html">g4Ex_args.py</a>.</p>
-<div class="fragment"><div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;  <span class="keyword">def </span>__init__(self,Name):</div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;    G4VSensitiveDetector.__init__(self, Name)</div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160; </div>
+<p class="definition">Definition at line <a class="el" href="g4Ex__args_8py_source.html#l00252">252</a> of file <a class="el" href="g4Ex__args_8py_source.html">g4Ex_args.py</a>.</p>
+<div class="fragment"><div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;  <span class="keyword">def </span>__init__(self,Name):</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;    G4VSensitiveDetector.__init__(self, Name)</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160; </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -184,25 +184,25 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="g4Ex__args_8py_source.html#l00256">256</a> of file <a class="el" href="g4Ex__args_8py_source.html">g4Ex_args.py</a>.</p>
-<div class="fragment"><div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;  <span class="keyword">def </span>ProcessHits(self, step, rohist):</div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;    preStepPoint = step.GetPreStepPoint()</div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;    track        = step.GetTrack()</div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;    part         = track.GetDynamicParticle()</div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;    pid          = part.GetPDGcode()</div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;    <span class="keywordflow">if</span> abs(pid) <span class="keywordflow">in</span> leptons :</div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;      mom = track.GetMomentum()</div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;      pos = track.GetPosition()</div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;<span class="comment">#</span></div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;      <span class="comment"># primPart = part.GetPrimaryParticle()</span></div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;      w = track.GetWeight()</div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;      parentid = <a class="code" href="namespaceadd__noise__to__field.html#a4aa6f75233f1922a97b2d4c15285c18e">int</a>(w)/100000-10000</div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;      pythiaid = <a class="code" href="namespaceadd__noise__to__field.html#a4aa6f75233f1922a97b2d4c15285c18e">int</a>(w)%100000-10000</div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;      h[<span class="stringliteral">&#39;ntuple&#39;</span>].Fill(<a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(pid), <a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(mom.x/GeV),<a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(mom.y/GeV),<a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(mom.z/GeV),</div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;                   <a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(pos.x/m),<a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(pos.y/m),<a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(pos.z/m),pythiaid,parentid)</div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;      <span class="comment">#print &#39;xxx&#39;,pid, float(mom.x/GeV),float(mom.y/GeV),float(mom.z/GeV),pythiaid,parentid,float(pos.x/m),float(pos.y/m),float(pos.z/m)</span></div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;      <span class="comment">#myPythia.EventListing()</span></div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160; </div>
+<p class="definition">Definition at line <a class="el" href="g4Ex__args_8py_source.html#l00255">255</a> of file <a class="el" href="g4Ex__args_8py_source.html">g4Ex_args.py</a>.</p>
+<div class="fragment"><div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;  <span class="keyword">def </span>ProcessHits(self, step, rohist):</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;    preStepPoint = step.GetPreStepPoint()</div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;    track        = step.GetTrack()</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;    part         = track.GetDynamicParticle()</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;    pid          = part.GetPDGcode()</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;    <span class="keywordflow">if</span> abs(pid) <span class="keywordflow">in</span> leptons :</div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;      mom = track.GetMomentum()</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;      pos = track.GetPosition()</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;<span class="comment">#</span></div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;      <span class="comment"># primPart = part.GetPrimaryParticle()</span></div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;      w = track.GetWeight()</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;      parentid = <a class="code" href="namespaceadd__noise__to__field.html#a4aa6f75233f1922a97b2d4c15285c18e">int</a>(w)/100000-10000</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;      pythiaid = <a class="code" href="namespaceadd__noise__to__field.html#a4aa6f75233f1922a97b2d4c15285c18e">int</a>(w)%100000-10000</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;      h[<span class="stringliteral">&#39;ntuple&#39;</span>].Fill(<a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(pid), <a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(mom.x/GeV),<a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(mom.y/GeV),<a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(mom.z/GeV),</div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;                   <a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(pos.x/m),<a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(pos.y/m),<a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(pos.z/m),pythiaid,parentid)</div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;      <span class="comment">#print &#39;xxx&#39;,pid, float(mom.x/GeV),float(mom.y/GeV),float(mom.z/GeV),pythiaid,parentid,float(pos.x/m),float(pos.y/m),float(pos.z/m)</span></div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;      <span class="comment">#myPythia.EventListing()</span></div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160; </div>
 <div class="ttc" id="anamespaceadd__noise__to__field_html_a0b17b62adeb5054f131bb6a46b054b48"><div class="ttname"><a href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">add_noise_to_field.float</a></div><div class="ttdeci">float</div><div class="ttdef"><b>Definition:</b> <a href="add__noise__to__field_8py_source.html#l00056">add_noise_to_field.py:56</a></div></div>
 <div class="ttc" id="anamespaceadd__noise__to__field_html_a4aa6f75233f1922a97b2d4c15285c18e"><div class="ttname"><a href="namespaceadd__noise__to__field.html#a4aa6f75233f1922a97b2d4c15285c18e">add_noise_to_field.int</a></div><div class="ttdeci">int</div><div class="ttdef"><b>Definition:</b> <a href="add__noise__to__field_8py_source.html#l00057">add_noise_to_field.py:57</a></div></div>
 </div><!-- fragment -->

@@ -85,20 +85,19 @@ $(document).ready(function(){initNavTree('getInteractionAndRadiationLength_8py_s
 <div class="title">getInteractionAndRadiationLength.py</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="getInteractionAndRadiationLength_8py.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno"><a class="line" href="namespacegetInteractionAndRadiationLength.html">    1</a></span>&#160;<span class="keyword">from</span> __future__ <span class="keyword">import</span> print_function</div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="keyword">from</span> array <span class="keyword">import</span> array</div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"># get dimensions by running getGeoInformation on the geofile</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"># python $FAIRSHIP/macro/getGeoInformation.py -g geofile_full.conical.Genie-TGeant4.root</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment"># python -i $FAIRSHIP/macro/run_simScript.py --Genie -f /eos/experiment/ship/data/GenieEvents/genie-nu_mu.root</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno"><a class="line" href="namespacegetInteractionAndRadiationLength.html#acb156e7c2455b7437dfa7ceb797dc4b8">    8</a></span>&#160;start=<a class="code" href="namespaceTTCluster.html#a16bc5b13d45537007e0ac7464ff5ea89">array</a>(<span class="stringliteral">&#39;d&#39;</span>,[0,0,3666.5])</div>
-<div class="line"><a name="l00009"></a><span class="lineno"><a class="line" href="namespacegetInteractionAndRadiationLength.html#a0bb5e2e407c672fbaca98f5615812e5b">    9</a></span>&#160;end=<a class="code" href="namespaceTTCluster.html#a16bc5b13d45537007e0ac7464ff5ea89">array</a>(<span class="stringliteral">&#39;d&#39;</span>,[0,0,3898.700])</div>
-<div class="line"><a name="l00010"></a><span class="lineno"><a class="line" href="namespacegetInteractionAndRadiationLength.html#aa0e9918aaad753c9ae2ef7d1cf39dc05">   10</a></span>&#160;mparam=<a class="code" href="namespaceTTCluster.html#a16bc5b13d45537007e0ac7464ff5ea89">array</a>(<span class="stringliteral">&#39;d&#39;</span>,[0,0,0,0,0,0,0,0,0,0,0,0])</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;Geniegen.MeanMaterialBudget(start, end, mparam)</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;print(mparam[8], <span class="stringliteral">&quot; equivalent interaction length fraction&quot;</span>)</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;print(mparam[1], <span class="stringliteral">&quot; equivalent rad length fraction&quot;</span>)</div>
+<a href="getInteractionAndRadiationLength_8py.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno"><a class="line" href="namespacegetInteractionAndRadiationLength.html">    1</a></span>&#160;<span class="keyword">from</span> array <span class="keyword">import</span> array</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"># get dimensions by running getGeoInformation on the geofile</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"># python $FAIRSHIP/macro/getGeoInformation.py -g geofile_full.conical.Genie-TGeant4.root</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160; </div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment"># python -i $FAIRSHIP/macro/run_simScript.py --Genie -f /eos/experiment/ship/data/GenieEvents/genie-nu_mu.root</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno"><a class="line" href="namespacegetInteractionAndRadiationLength.html#acb156e7c2455b7437dfa7ceb797dc4b8">    7</a></span>&#160;start=<a class="code" href="namespaceTTCluster.html#a16bc5b13d45537007e0ac7464ff5ea89">array</a>(<span class="stringliteral">&#39;d&#39;</span>,[0,0,3666.5])</div>
+<div class="line"><a name="l00008"></a><span class="lineno"><a class="line" href="namespacegetInteractionAndRadiationLength.html#a0bb5e2e407c672fbaca98f5615812e5b">    8</a></span>&#160;end=<a class="code" href="namespaceTTCluster.html#a16bc5b13d45537007e0ac7464ff5ea89">array</a>(<span class="stringliteral">&#39;d&#39;</span>,[0,0,3898.700])</div>
+<div class="line"><a name="l00009"></a><span class="lineno"><a class="line" href="namespacegetInteractionAndRadiationLength.html#aa0e9918aaad753c9ae2ef7d1cf39dc05">    9</a></span>&#160;mparam=<a class="code" href="namespaceTTCluster.html#a16bc5b13d45537007e0ac7464ff5ea89">array</a>(<span class="stringliteral">&#39;d&#39;</span>,[0,0,0,0,0,0,0,0,0,0,0,0])</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;Geniegen.MeanMaterialBudget(start, end, mparam)</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160; </div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;print(mparam[8], <span class="stringliteral">&quot; equivalent interaction length fraction&quot;</span>)</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;print(mparam[1], <span class="stringliteral">&quot; equivalent rad length fraction&quot;</span>)</div>
 <div class="ttc" id="anamespaceTTCluster_html_a16bc5b13d45537007e0ac7464ff5ea89"><div class="ttname"><a href="namespaceTTCluster.html#a16bc5b13d45537007e0ac7464ff5ea89">TTCluster.array</a></div><div class="ttdeci">float array</div><div class="ttdef"><b>Definition:</b> <a href="TTCluster_8py_source.html#l00038">TTCluster.py:38</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

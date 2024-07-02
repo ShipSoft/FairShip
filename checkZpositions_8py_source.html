@@ -85,26 +85,25 @@ $(document).ready(function(){initNavTree('checkZpositions_8py_source.html',''); 
 <div class="title">checkZpositions.py</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="checkZpositions_8py.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno"><a class="line" href="namespacecheckZpositions.html">    1</a></span>&#160;<span class="keyword">from</span> __future__ <span class="keyword">import</span> print_function</div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="keyword">import</span> ROOT,sys</div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keyword">from</span> rootpyPickler <span class="keyword">import</span> Unpickler</div>
-<div class="line"><a name="l00004"></a><span class="lineno"><a class="line" href="namespacecheckZpositions.html#a613c73e466c665705460cb8fad4c0a23">    4</a></span>&#160;badBoys={}</div>
-<div class="line"><a name="l00005"></a><span class="lineno"><a class="line" href="namespacecheckZpositions.html#a3e777c8f47a72a7a86c18eb6d37197ca">    5</a></span>&#160;f1,f2 = sys.argv[1], sys.argv[2]</div>
-<div class="line"><a name="l00006"></a><span class="lineno"><a class="line" href="namespacecheckZpositions.html#a8af6338ac5a1cf20ac37e2b23044596b">    6</a></span>&#160;fgeoOld=ROOT.TFile(f1)</div>
-<div class="line"><a name="l00007"></a><span class="lineno"><a class="line" href="namespacecheckZpositions.html#a3939bb02cc06ac3d1322ce214a9b42c3">    7</a></span>&#160;upkl    = <a class="code" href="classrootpyPickler_1_1Unpickler.html">Unpickler</a>(fgeoOld)</div>
-<div class="line"><a name="l00008"></a><span class="lineno"><a class="line" href="namespacecheckZpositions.html#ad76f19d29dcf49656a5149f193b9fa84">    8</a></span>&#160;ShipGeoOld = upkl.load(<span class="stringliteral">&#39;ShipGeo&#39;</span>)</div>
-<div class="line"><a name="l00009"></a><span class="lineno"><a class="line" href="namespacecheckZpositions.html#a0b40a172c1990bcb4e77bfad3643fc91">    9</a></span>&#160;fgeoNew=ROOT.TFile(f2)</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;upkl    = <a class="code" href="classrootpyPickler_1_1Unpickler.html">Unpickler</a>(fgeoNew)</div>
-<div class="line"><a name="l00011"></a><span class="lineno"><a class="line" href="namespacecheckZpositions.html#a14704aefad1faf37b6fc0cdab58c7abc">   11</a></span>&#160;ShipGeoNew = upkl.load(<span class="stringliteral">&#39;ShipGeo&#39;</span>)</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="keywordflow">for</span> x <span class="keywordflow">in</span> ShipGeoNew:</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;   <span class="keywordflow">if</span> hasattr(eval(<span class="stringliteral">&#39;ShipGeoNew.&#39;</span>+x),<span class="stringliteral">&#39;z&#39;</span>):</div>
-<div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="namespacecheckZpositions.html#a766185761e35ea4bb4e8076786316d7a">   14</a></span>&#160;     zold,znew = eval(<span class="stringliteral">&#39;ShipGeoOld.&#39;</span>+x+<span class="stringliteral">&#39;.z&#39;</span>),eval(<span class="stringliteral">&#39;ShipGeoNew.&#39;</span>+x+<span class="stringliteral">&#39;.z&#39;</span>)</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;     print(x,<span class="stringliteral">&#39;z=&#39;</span>,znew, <span class="stringliteral">&#39; old:&#39;</span>, zold)</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;     <span class="keywordflow">if</span>  zold!=znew: badBoys[x]=[znew,zold]</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keywordflow">if</span> len(badBoys)&gt;0: print(<span class="stringliteral">&quot;following differences detected:&quot;</span>)</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keywordflow">for</span> x <span class="keywordflow">in</span> badBoys:</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;  print(x,badBoys[x])</div>
-<div class="ttc" id="aclassrootpyPickler_1_1Unpickler_html"><div class="ttname"><a href="classrootpyPickler_1_1Unpickler.html">rootpyPickler.Unpickler</a></div><div class="ttdef"><b>Definition:</b> <a href="rootpyPickler_8py_source.html#l00219">rootpyPickler.py:219</a></div></div>
+<a href="checkZpositions_8py.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno"><a class="line" href="namespacecheckZpositions.html">    1</a></span>&#160;<span class="keyword">import</span> ROOT,sys</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="keyword">from</span> rootpyPickler <span class="keyword">import</span> Unpickler</div>
+<div class="line"><a name="l00003"></a><span class="lineno"><a class="line" href="namespacecheckZpositions.html#a613c73e466c665705460cb8fad4c0a23">    3</a></span>&#160;badBoys={}</div>
+<div class="line"><a name="l00004"></a><span class="lineno"><a class="line" href="namespacecheckZpositions.html#a3e777c8f47a72a7a86c18eb6d37197ca">    4</a></span>&#160;f1,f2 = sys.argv[1], sys.argv[2]</div>
+<div class="line"><a name="l00005"></a><span class="lineno"><a class="line" href="namespacecheckZpositions.html#a8af6338ac5a1cf20ac37e2b23044596b">    5</a></span>&#160;fgeoOld=ROOT.TFile(f1)</div>
+<div class="line"><a name="l00006"></a><span class="lineno"><a class="line" href="namespacecheckZpositions.html#a3939bb02cc06ac3d1322ce214a9b42c3">    6</a></span>&#160;upkl    = <a class="code" href="classrootpyPickler_1_1Unpickler.html">Unpickler</a>(fgeoOld)</div>
+<div class="line"><a name="l00007"></a><span class="lineno"><a class="line" href="namespacecheckZpositions.html#ad76f19d29dcf49656a5149f193b9fa84">    7</a></span>&#160;ShipGeoOld = upkl.load(<span class="stringliteral">&#39;ShipGeo&#39;</span>)</div>
+<div class="line"><a name="l00008"></a><span class="lineno"><a class="line" href="namespacecheckZpositions.html#a0b40a172c1990bcb4e77bfad3643fc91">    8</a></span>&#160;fgeoNew=ROOT.TFile(f2)</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;upkl    = <a class="code" href="classrootpyPickler_1_1Unpickler.html">Unpickler</a>(fgeoNew)</div>
+<div class="line"><a name="l00010"></a><span class="lineno"><a class="line" href="namespacecheckZpositions.html#a14704aefad1faf37b6fc0cdab58c7abc">   10</a></span>&#160;ShipGeoNew = upkl.load(<span class="stringliteral">&#39;ShipGeo&#39;</span>)</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keywordflow">for</span> x <span class="keywordflow">in</span> ShipGeoNew:</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;   <span class="keywordflow">if</span> hasattr(eval(<span class="stringliteral">&#39;ShipGeoNew.&#39;</span>+x),<span class="stringliteral">&#39;z&#39;</span>):</div>
+<div class="line"><a name="l00013"></a><span class="lineno"><a class="line" href="namespacecheckZpositions.html#a766185761e35ea4bb4e8076786316d7a">   13</a></span>&#160;     zold,znew = eval(<span class="stringliteral">&#39;ShipGeoOld.&#39;</span>+x+<span class="stringliteral">&#39;.z&#39;</span>),eval(<span class="stringliteral">&#39;ShipGeoNew.&#39;</span>+x+<span class="stringliteral">&#39;.z&#39;</span>)</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;     print(x,<span class="stringliteral">&#39;z=&#39;</span>,znew, <span class="stringliteral">&#39; old:&#39;</span>, zold)</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;     <span class="keywordflow">if</span>  zold!=znew: badBoys[x]=[znew,zold]</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keywordflow">if</span> len(badBoys)&gt;0: print(<span class="stringliteral">&quot;following differences detected:&quot;</span>)</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keywordflow">for</span> x <span class="keywordflow">in</span> badBoys:</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;  print(x,badBoys[x])</div>
+<div class="ttc" id="aclassrootpyPickler_1_1Unpickler_html"><div class="ttname"><a href="classrootpyPickler_1_1Unpickler.html">rootpyPickler.Unpickler</a></div><div class="ttdef"><b>Definition:</b> <a href="rootpyPickler_8py_source.html#l00203">rootpyPickler.py:203</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

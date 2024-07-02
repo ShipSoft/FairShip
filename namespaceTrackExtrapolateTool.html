@@ -91,6 +91,8 @@ $(document).ready(function(){initNavTree('namespaceTrackExtrapolateTool.html',''
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:ab4a32b4536ba6f317b889b2af9318f53"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceTrackExtrapolateTool.html#ab4a32b4536ba6f317b889b2af9318f53">cmp</a> (a, b)</td></tr>
+<tr class="separator:ab4a32b4536ba6f317b889b2af9318f53"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a891c3ca857b65a60e55dcf293fb586e8"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceTrackExtrapolateTool.html#a891c3ca857b65a60e55dcf293fb586e8">extrapolateToPlane</a> (fT, z)</td></tr>
 <tr class="separator:a891c3ca857b65a60e55dcf293fb586e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -106,6 +108,40 @@ Variables</h2></td></tr>
 <tr class="separator:aeb68a90b815acb1e2f1453cb90bf5b60"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="ab4a32b4536ba6f317b889b2af9318f53"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab4a32b4536ba6f317b889b2af9318f53">&#9670;&nbsp;</a></span>cmp()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">def TrackExtrapolateTool.cmp </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>b</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="TrackExtrapolateTool_8py_source.html#l00004">4</a> of file <a class="el" href="TrackExtrapolateTool_8py_source.html">TrackExtrapolateTool.py</a>.</p>
+<div class="fragment"><div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keyword">def </span><a class="code" href="namespaceTrackExtrapolateTool.html#ab4a32b4536ba6f317b889b2af9318f53">cmp</a>(a, b):</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;    <span class="keywordflow">return</span> (a &gt; b) - (a &lt; b)</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
+<div class="ttc" id="anamespaceTrackExtrapolateTool_html_ab4a32b4536ba6f317b889b2af9318f53"><div class="ttname"><a href="namespaceTrackExtrapolateTool.html#ab4a32b4536ba6f317b889b2af9318f53">TrackExtrapolateTool.cmp</a></div><div class="ttdeci">def cmp(a, b)</div><div class="ttdef"><b>Definition:</b> <a href="TrackExtrapolateTool_8py_source.html#l00004">TrackExtrapolateTool.py:4</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
 <a id="a891c3ca857b65a60e55dcf293fb586e8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a891c3ca857b65a60e55dcf293fb586e8">&#9670;&nbsp;</a></span>extrapolateToPlane()</h2>
 
@@ -146,7 +182,7 @@ Variables</h2></td></tr>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <span class="keywordflow">else</span>:                                    fstate = fstate1</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    zs = min(z,z_ecal)</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    NewPosition = ROOT.TVector3(0., 0., zs)</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    rep    = ROOT.genfit.RKTrackRep(13*cmp(fstate.getPDG(),0) )</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    rep    = ROOT.genfit.RKTrackRep(13*<a class="code" href="namespaceTrackExtrapolateTool.html#ab4a32b4536ba6f317b889b2af9318f53">cmp</a>(fstate.getPDG(),0) )</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    state  = ROOT.genfit.StateOnPlane(rep)</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    pos,mom = fstate.getPos(),fstate.getMom()</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    rep.setPosMom(state,pos,mom)</div>

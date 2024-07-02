@@ -85,321 +85,319 @@ $(document).ready(function(){initNavTree('pythia8__conf_8py_source.html',''); in
 <div class="title">pythia8_conf.py</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="pythia8__conf_8py.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno"><a class="line" href="namespacepythia8__conf.html">    1</a></span>&#160;<span class="keyword">from</span> __future__ <span class="keyword">import</span> print_function</div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="keyword">from</span> __future__ <span class="keyword">import</span> division</div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keyword">import</span> ROOT</div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keyword">import</span> os</div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="keyword">import</span> yaml</div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keyword">import</span> shipunit <span class="keyword">as</span> u</div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="keyword">import</span> hnl</div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keyword">import</span> rpvsusy</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keyword">from</span> pythia8_conf_utils <span class="keyword">import</span> *</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="keyword">from</span> method_logger <span class="keyword">import</span> MethodLogger</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keyword">import</span> readDecayTable</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
-<div class="line"><a name="l00013"></a><span class="lineno"><a class="line" href="namespacepythia8__conf.html#a970a3da10fa8b541ea748fd7097e9cbb">   13</a></span>&#160;<span class="keyword">def </span><a class="code" href="namespacepythia8__conf.html#a970a3da10fa8b541ea748fd7097e9cbb">configurerpvsusy</a>(P8gen, mass, couplings, sfermionmass, benchmark, inclusive, deepCopy=False, debug=True):</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    <span class="comment"># configure pythia8 for Ship usage</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <span class="keywordflow">if</span> debug:</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        pythia_log=open(<span class="stringliteral">&#39;pythia8_conf.txt&#39;</span>,<span class="stringliteral">&#39;w&#39;</span>)</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        P8gen = <a class="code" href="classmethod__logger_1_1MethodLogger.html">MethodLogger</a>(P8gen, sink=pythia_log)</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    h = <a class="code" href="namespacepythia8__conf__utils.html#aab227acdae1aee734f8b0028f89eb02f">make_interpolators</a>(</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        os.path.expandvars(<span class="stringliteral">&quot;$FAIRSHIP/shipgen/branchingratiosrpvsusybench{}.dat&quot;</span>.format(benchmark)))</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    P8gen.UseRandom3()</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    P8gen.SetMom(400)  <span class="comment"># beam momentum in GeV</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <span class="keywordflow">if</span> deepCopy: P8gen.UseDeepCopy()</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    pdg = ROOT.TDatabasePDG.Instance()</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="comment"># let strange particle decay in Geant4</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <a class="code" href="namespacepythia8__conf__utils.html#a43d55c0d1f126273135b7104b9c9be54">make_particles_stable</a>(P8gen, above_lifetime=1)</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="keywordflow">if</span> inclusive==<span class="stringliteral">&quot;True&quot;</span>:</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        <a class="code" href="namespacepythia8__conf.html#a2b3c56a66f8fd6da2994e4f2a75a36ff">setup_pythia_inclusive</a>(P8gen)</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="comment"># generate RPV neutralino from inclusive charm hadrons</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <span class="keywordflow">if</span> inclusive==<span class="stringliteral">&quot;c&quot;</span>:</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        P8gen.SetParameters(<span class="stringliteral">&quot;HardQCD::hardccbar  = on&quot;</span>)</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        <span class="comment"># add RPVSUSY</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        rpvsusy_instance = <a class="code" href="classrpvsusy_1_1RPVSUSY.html">rpvsusy.RPVSUSY</a>(mass, couplings, sfermionmass, benchmark, debug=<span class="keyword">True</span>)</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        ctau = rpvsusy_instance.computeNLifetime(system=<span class="stringliteral">&quot;FairShip&quot;</span>) * u.c_light * u.cm</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        print(<span class="stringliteral">&quot;RPVSUSY ctau &quot;</span>,ctau)</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        P8gen.SetParameters(<span class="stringliteral">&quot;9900015:new = N2 N2 2 0 0 {:.12} 0.0 0.0 0.0 {:.12}  0   1   0   1   0&quot;</span>.format(mass, ctau/u.mm))</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        P8gen.SetParameters(<span class="stringliteral">&quot;9900015:isResonance = false&quot;</span>)</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        P8gen.SetParameters(<span class="stringliteral">&quot;Next:numberCount    =  0&quot;</span>)</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        <span class="comment"># Configuring decay modes...</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        rpvsusy_instance.AddChannelsToPythia(P8gen)</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        <span class="comment"># Finish HNL setup...</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        P8gen.SetParameters(<span class="stringliteral">&quot;9900015:mayDecay = on&quot;</span>)</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        P8gen.SetHNLId(9900015)</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        <span class="comment"># also add to PDG</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        gamma = u.hbarc / <a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(ctau) <span class="comment">#197.3269631e-16 / float(ctau) # hbar*c = 197 MeV*fm = 197e-16 GeV*cm</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        <a class="code" href="namespacepythia8__conf__utils.html#a0cbb5682bb63fa7c1be81f0eaf9088cd">addHNLtoROOT</a>(pid=9900015,m=mass,g=gamma)</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        <span class="comment"># 12 14 16 neutrinos replace with N2</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        charmhistograms = [<span class="stringliteral">&#39;d_mu&#39;</span>,<span class="stringliteral">&#39;ds_mu&#39;</span>]</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        <span class="comment"># no tau decay here to consider</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        totaltauBR      = 0.0</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        maxsumBR        = <a class="code" href="namespacepythia8__conf__utils.html#acb89ee6646b4bc143e9fa4011fc40501">getmaxsumbrrpvsusy</a>(h,charmhistograms,mass,couplings)</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        <a class="code" href="namespacepythia8__conf__utils.html#a4af7d1d7ec65e763627523bb319bbf4e">exit_if_zero_br</a>(maxsumBR, inclusive, mass, particle=<span class="stringliteral">&#39;RPV neutralino&#39;</span>)</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        totalBR         = <a class="code" href="namespacepythia8__conf__utils.html#ac70e3b11b940b06ac3994772a4395c7a">gettotalbrrpvsusy</a>(h,charmhistograms,mass,couplings)</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        <span class="comment">#overwrite D_s+ decays</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        P8gen.SetParameters(<span class="stringliteral">&quot;431:new  D_s+  D_s-    1   3   0    1.96849&quot;</span>\</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                            <span class="stringliteral">&quot;    0.00000    0.00000    0.00000  1.49900e-01   0   1   0   1   0&quot;</span>)</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        sumBR=0.</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        <span class="keywordflow">if</span> <a class="code" href="namespacepythia8__conf__utils.html#ace55a11529100114c43038d8c538b4c2">getbr_rpvsusy</a>(h,<span class="stringliteral">&#39;ds_mu&#39;</span>,mass,couplings[1])&gt;0.:</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;            P8gen.SetParameters(<span class="stringliteral">&quot;431:addChannel      1  {:.12}    0      -13       9900015&quot;</span>\</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;                                .format(<a class="code" href="namespacepythia8__conf__utils.html#ace55a11529100114c43038d8c538b4c2">getbr_rpvsusy</a>(h,<span class="stringliteral">&#39;ds_mu&#39;</span>,mass,couplings[1])/maxsumBR))</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;            sumBR+=<a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(<a class="code" href="namespacepythia8__conf__utils.html#ace55a11529100114c43038d8c538b4c2">getbr_rpvsusy</a>(h,<span class="stringliteral">&#39;ds_mu&#39;</span>,mass,couplings[1])/maxsumBR)</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        <span class="keywordflow">if</span> sumBR&lt;1. <span class="keywordflow">and</span> sumBR&gt;0.:</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            P8gen.SetParameters(<span class="stringliteral">&quot;431:addChannel      1   {:.12}    0       22      -11&quot;</span>.format(1.-sumBR))</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        <span class="comment">#overwrite D+ decays</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        P8gen.SetParameters(<span class="stringliteral">&quot;411:new  D+ D-    1   3   0    1.86962&quot;</span>\</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;                            <span class="stringliteral">&quot;    0.00000    0.00000    0.00000  3.11800e-01   0   1   0   1   0&quot;</span>)</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        sumBR=0.</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        <span class="keywordflow">if</span> <a class="code" href="namespacepythia8__conf__utils.html#ace55a11529100114c43038d8c538b4c2">getbr_rpvsusy</a>(h,<span class="stringliteral">&#39;d_mu&#39;</span>,mass,couplings[1])&gt;0.:</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            P8gen.SetParameters(<span class="stringliteral">&quot;411:addChannel      1  {:.12}    0      -13       9900015&quot;</span>\</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;                                .format(<a class="code" href="namespacepythia8__conf__utils.html#ace55a11529100114c43038d8c538b4c2">getbr_rpvsusy</a>(h,<span class="stringliteral">&#39;d_mu&#39;</span>,mass,couplings[1])/maxsumBR))</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            sumBR+=<a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(<a class="code" href="namespacepythia8__conf__utils.html#ace55a11529100114c43038d8c538b4c2">getbr_rpvsusy</a>(h,<span class="stringliteral">&#39;d_mu&#39;</span>,mass,couplings[1])/maxsumBR)</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        <span class="keywordflow">if</span> sumBR&lt;1. <span class="keywordflow">and</span> sumBR&gt;0.:</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            P8gen.SetParameters(<span class="stringliteral">&quot;411:addChannel      1   {:.12}    0       22      -11&quot;</span>.format(1.-sumBR))</div>
+<a href="pythia8__conf_8py.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno"><a class="line" href="namespacepythia8__conf.html">    1</a></span>&#160;<span class="keyword">import</span> ROOT</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="keyword">import</span> os</div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keyword">import</span> yaml</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keyword">import</span> shipunit <span class="keyword">as</span> u</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="keyword">import</span> hnl</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keyword">import</span> rpvsusy</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="keyword">from</span> pythia8_conf_utils <span class="keyword">import</span> *</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keyword">from</span> method_logger <span class="keyword">import</span> MethodLogger</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keyword">import</span> readDecayTable</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
+<div class="line"><a name="l00011"></a><span class="lineno"><a class="line" href="namespacepythia8__conf.html#a970a3da10fa8b541ea748fd7097e9cbb">   11</a></span>&#160;<span class="keyword">def </span><a class="code" href="namespacepythia8__conf.html#a970a3da10fa8b541ea748fd7097e9cbb">configurerpvsusy</a>(P8gen, mass, couplings, sfermionmass, benchmark, inclusive, deepCopy=False, debug=True):</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    <span class="comment"># configure pythia8 for Ship usage</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    <span class="keywordflow">if</span> debug:</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;        pythia_log=open(<span class="stringliteral">&#39;pythia8_conf.txt&#39;</span>,<span class="stringliteral">&#39;w&#39;</span>)</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;        P8gen = <a class="code" href="classmethod__logger_1_1MethodLogger.html">MethodLogger</a>(P8gen, sink=pythia_log)</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    h = <a class="code" href="namespacepythia8__conf__utils.html#aab227acdae1aee734f8b0028f89eb02f">make_interpolators</a>(</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        os.path.expandvars(<span class="stringliteral">&quot;$FAIRSHIP/shipgen/branchingratiosrpvsusybench{}.dat&quot;</span>.format(benchmark)))</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    P8gen.UseRandom3()</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    P8gen.SetMom(400)  <span class="comment"># beam momentum in GeV</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <span class="keywordflow">if</span> deepCopy: P8gen.UseDeepCopy()</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    pdg = ROOT.TDatabasePDG.Instance()</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <span class="comment"># let strange particle decay in Geant4</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <a class="code" href="namespacepythia8__conf__utils.html#a43d55c0d1f126273135b7104b9c9be54">make_particles_stable</a>(P8gen, above_lifetime=1)</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <span class="keywordflow">if</span> inclusive==<span class="stringliteral">&quot;True&quot;</span>:</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        <a class="code" href="namespacepythia8__conf.html#a2b3c56a66f8fd6da2994e4f2a75a36ff">setup_pythia_inclusive</a>(P8gen)</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="comment"># generate RPV neutralino from inclusive charm hadrons</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <span class="keywordflow">if</span> inclusive==<span class="stringliteral">&quot;c&quot;</span>:</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        P8gen.SetParameters(<span class="stringliteral">&quot;HardQCD::hardccbar  = on&quot;</span>)</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        <span class="comment"># add RPVSUSY</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        rpvsusy_instance = <a class="code" href="classrpvsusy_1_1RPVSUSY.html">rpvsusy.RPVSUSY</a>(mass, couplings, sfermionmass, benchmark, debug=<span class="keyword">True</span>)</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        ctau = rpvsusy_instance.computeNLifetime(system=<span class="stringliteral">&quot;FairShip&quot;</span>) * u.c_light * u.cm</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        print(<span class="stringliteral">&quot;RPVSUSY ctau &quot;</span>,ctau)</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        P8gen.SetParameters(<span class="stringliteral">&quot;9900015:new = N2 N2 2 0 0 {:.12} 0.0 0.0 0.0 {:.12}  0   1   0   1   0&quot;</span>.format(mass, ctau/u.mm))</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        P8gen.SetParameters(<span class="stringliteral">&quot;9900015:isResonance = false&quot;</span>)</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        P8gen.SetParameters(<span class="stringliteral">&quot;Next:numberCount    =  0&quot;</span>)</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        <span class="comment"># Configuring decay modes...</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        rpvsusy_instance.AddChannelsToPythia(P8gen)</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        <span class="comment"># Finish HNL setup...</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        P8gen.SetParameters(<span class="stringliteral">&quot;9900015:mayDecay = on&quot;</span>)</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        P8gen.SetHNLId(9900015)</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        <span class="comment"># also add to PDG</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        gamma = u.hbarc / <a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(ctau) <span class="comment">#197.3269631e-16 / float(ctau) # hbar*c = 197 MeV*fm = 197e-16 GeV*cm</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        <a class="code" href="namespacepythia8__conf__utils.html#a0cbb5682bb63fa7c1be81f0eaf9088cd">addHNLtoROOT</a>(pid=9900015,m=mass,g=gamma)</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        <span class="comment"># 12 14 16 neutrinos replace with N2</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        charmhistograms = [<span class="stringliteral">&#39;d_mu&#39;</span>,<span class="stringliteral">&#39;ds_mu&#39;</span>]</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        <span class="comment"># no tau decay here to consider</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        totaltauBR      = 0.0</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        maxsumBR        = <a class="code" href="namespacepythia8__conf__utils.html#acb89ee6646b4bc143e9fa4011fc40501">getmaxsumbrrpvsusy</a>(h,charmhistograms,mass,couplings)</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        <a class="code" href="namespacepythia8__conf__utils.html#a4af7d1d7ec65e763627523bb319bbf4e">exit_if_zero_br</a>(maxsumBR, inclusive, mass, particle=<span class="stringliteral">&#39;RPV neutralino&#39;</span>)</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        totalBR         = <a class="code" href="namespacepythia8__conf__utils.html#ac70e3b11b940b06ac3994772a4395c7a">gettotalbrrpvsusy</a>(h,charmhistograms,mass,couplings)</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        <span class="comment">#overwrite D_s+ decays</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        P8gen.SetParameters(<span class="stringliteral">&quot;431:new  D_s+  D_s-    1   3   0    1.96849&quot;</span>\</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                            <span class="stringliteral">&quot;    0.00000    0.00000    0.00000  1.49900e-01   0   1   0   1   0&quot;</span>)</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        sumBR=0.</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        <span class="keywordflow">if</span> <a class="code" href="namespacepythia8__conf__utils.html#ace55a11529100114c43038d8c538b4c2">getbr_rpvsusy</a>(h,<span class="stringliteral">&#39;ds_mu&#39;</span>,mass,couplings[1])&gt;0.:</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;            P8gen.SetParameters(<span class="stringliteral">&quot;431:addChannel      1  {:.12}    0      -13       9900015&quot;</span>\</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                                .format(<a class="code" href="namespacepythia8__conf__utils.html#ace55a11529100114c43038d8c538b4c2">getbr_rpvsusy</a>(h,<span class="stringliteral">&#39;ds_mu&#39;</span>,mass,couplings[1])/maxsumBR))</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;            sumBR+=<a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(<a class="code" href="namespacepythia8__conf__utils.html#ace55a11529100114c43038d8c538b4c2">getbr_rpvsusy</a>(h,<span class="stringliteral">&#39;ds_mu&#39;</span>,mass,couplings[1])/maxsumBR)</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <span class="keywordflow">if</span> sumBR&lt;1. <span class="keywordflow">and</span> sumBR&gt;0.:</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;            P8gen.SetParameters(<span class="stringliteral">&quot;431:addChannel      1   {:.12}    0       22      -11&quot;</span>.format(1.-sumBR))</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        <span class="comment">#overwrite D+ decays</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        P8gen.SetParameters(<span class="stringliteral">&quot;411:new  D+ D-    1   3   0    1.86962&quot;</span>\</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;                            <span class="stringliteral">&quot;    0.00000    0.00000    0.00000  3.11800e-01   0   1   0   1   0&quot;</span>)</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        sumBR=0.</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        <span class="keywordflow">if</span> <a class="code" href="namespacepythia8__conf__utils.html#ace55a11529100114c43038d8c538b4c2">getbr_rpvsusy</a>(h,<span class="stringliteral">&#39;d_mu&#39;</span>,mass,couplings[1])&gt;0.:</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;            P8gen.SetParameters(<span class="stringliteral">&quot;411:addChannel      1  {:.12}    0      -13       9900015&quot;</span>\</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;                                .format(<a class="code" href="namespacepythia8__conf__utils.html#ace55a11529100114c43038d8c538b4c2">getbr_rpvsusy</a>(h,<span class="stringliteral">&#39;d_mu&#39;</span>,mass,couplings[1])/maxsumBR))</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            sumBR+=<a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(<a class="code" href="namespacepythia8__conf__utils.html#ace55a11529100114c43038d8c538b4c2">getbr_rpvsusy</a>(h,<span class="stringliteral">&#39;d_mu&#39;</span>,mass,couplings[1])/maxsumBR)</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        <span class="keywordflow">if</span> sumBR&lt;1. <span class="keywordflow">and</span> sumBR&gt;0.:</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            P8gen.SetParameters(<span class="stringliteral">&quot;411:addChannel      1   {:.12}    0       22      -11&quot;</span>.format(1.-sumBR))</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        P8gen.List(9900015)</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        P8gen.List(9900015)</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="keywordflow">if</span> inclusive==<span class="stringliteral">&quot;b&quot;</span>:</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        P8gen.SetParameters(<span class="stringliteral">&quot;HardQCD::hardbbbar  = on&quot;</span>)</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        <span class="comment"># add RPVSUSY</span></div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        rpvsusy_instance = <a class="code" href="classrpvsusy_1_1RPVSUSY.html">rpvsusy.RPVSUSY</a>(mass, couplings, sfermionmass, benchmark, debug=<span class="keyword">True</span>)</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        ctau = rpvsusy_instance.computeNLifetime(system=<span class="stringliteral">&quot;FairShip&quot;</span>) * u.c_light * u.cm</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        P8gen.SetParameters(<span class="stringliteral">&quot;9900015:new = N2 N2 2 0 0 {:.12} 0.0 0.0 0.0 {:.12}  0   1   0   1   0&quot;</span>.format(mass, ctau/u.mm))</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        P8gen.SetParameters(<span class="stringliteral">&quot;9900015:isResonance = false&quot;</span>)</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        <span class="comment"># Configuring decay modes...</span></div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        rpvsusy_instance.AddChannelsToPythia(P8gen)</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        <span class="comment"># Finish HNL setup...</span></div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        P8gen.SetParameters(<span class="stringliteral">&quot;9900015:mayDecay = on&quot;</span>)</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        P8gen.SetHNLId(9900015)</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        <span class="comment"># also add to PDG</span></div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        gamma = u.hbarc / <a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(ctau) <span class="comment">#197.3269631e-16 / float(ctau) # hbar*c = 197 MeV*fm = 197e-16 GeV*cm</span></div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        <a class="code" href="namespacepythia8__conf__utils.html#a0cbb5682bb63fa7c1be81f0eaf9088cd">addHNLtoROOT</a>(pid=9900015,m=mass,g=gamma)</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        <span class="comment"># 12 14 16 neutrinos replace with N2</span></div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        beautyhistograms = [<span class="stringliteral">&#39;b_mu&#39;</span>,<span class="stringliteral">&#39;b_tau&#39;</span>,<span class="stringliteral">&#39;b0_nu_mu&#39;</span>,<span class="stringliteral">&#39;b0_nu_tau&#39;</span>]</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        maxsumBR=<a class="code" href="namespacepythia8__conf__utils.html#acb89ee6646b4bc143e9fa4011fc40501">getmaxsumbrrpvsusy</a>(h,beautyhistograms,mass,couplings)</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        <a class="code" href="namespacepythia8__conf__utils.html#a4af7d1d7ec65e763627523bb319bbf4e">exit_if_zero_br</a>(maxsumBR, inclusive, mass, particle=<span class="stringliteral">&#39;RPV neutralino&#39;</span>)</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        totalBR=<a class="code" href="namespacepythia8__conf__utils.html#ac70e3b11b940b06ac3994772a4395c7a">gettotalbrrpvsusy</a>(h,beautyhistograms,mass,couplings)</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160; </div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        <span class="comment">#overwrite B+ decays</span></div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;        P8gen.SetParameters(<span class="stringliteral">&quot;521:new  B+               B-    1   3   0    5.27925&quot;</span>\</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;                            <span class="stringliteral">&quot;    0.00000    0.00000    0.00000  4.91100e-01   0   1   0   1   0&quot;</span>)</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        sumBR=0.</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        <span class="keywordflow">if</span> <a class="code" href="namespacepythia8__conf__utils.html#ace55a11529100114c43038d8c538b4c2">getbr_rpvsusy</a>(h,<span class="stringliteral">&#39;b_tau&#39;</span>,mass,couplings[1])&gt;0.:</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;            P8gen.SetParameters(<span class="stringliteral">&quot;521:addChannel      1  {:.12}    0       9900015      -15&quot;</span>\</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;                                .format(<a class="code" href="namespacepythia8__conf__utils.html#ace55a11529100114c43038d8c538b4c2">getbr_rpvsusy</a>(h,<span class="stringliteral">&#39;b_tau&#39;</span>,mass,couplings[1])/maxsumBR))</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;            sumBR+=<a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(<a class="code" href="namespacepythia8__conf__utils.html#ace55a11529100114c43038d8c538b4c2">getbr_rpvsusy</a>(h,<span class="stringliteral">&#39;b_tau&#39;</span>,mass,couplings[1])/maxsumBR)</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        <span class="keywordflow">if</span> sumBR&lt;1. <span class="keywordflow">and</span> sumBR&gt;0.:</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;            P8gen.SetParameters(<span class="stringliteral">&quot;521:addChannel      1   {:.12}    0       22      22&quot;</span>\</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;                                .format(1.-sumBR))</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160; </div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        <span class="comment">#overwrite B0 decays</span></div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;        P8gen.SetParameters(<span class="stringliteral">&quot;511:new  B0  Bbar0    1   0   0    5.27958&quot;</span>\</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;                            <span class="stringliteral">&quot;    0.00000    0.00000    0.00000  4.58700e-01   0   1   0   1   0&quot;</span>)</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        sumBR=0.</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        <span class="keywordflow">if</span> <a class="code" href="namespacepythia8__conf__utils.html#ace55a11529100114c43038d8c538b4c2">getbr_rpvsusy</a>(h,<span class="stringliteral">&#39;b0_nu_tau&#39;</span>,mass,couplings[1])&gt;0.:</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;            P8gen.SetParameters(<span class="stringliteral">&quot;511:addChannel      1  {:.12}   22       9900015      16&quot;</span>\</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;                                .format(<a class="code" href="namespacepythia8__conf__utils.html#ace55a11529100114c43038d8c538b4c2">getbr_rpvsusy</a>(h,<span class="stringliteral">&#39;b0_nu_tau&#39;</span>,mass,couplings[1])/maxsumBR))</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;        <span class="keywordflow">if</span> sumBR&lt;1. <span class="keywordflow">and</span> sumBR&gt;0.:</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;            P8gen.SetParameters(<span class="stringliteral">&quot;511:addChannel      1   {:.12}    0       22      22&quot;</span>\</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;                                .format(1.-sumBR))</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keywordflow">if</span> inclusive==<span class="stringliteral">&quot;b&quot;</span>:</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        P8gen.SetParameters(<span class="stringliteral">&quot;HardQCD::hardbbbar  = on&quot;</span>)</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        <span class="comment"># add RPVSUSY</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        rpvsusy_instance = <a class="code" href="classrpvsusy_1_1RPVSUSY.html">rpvsusy.RPVSUSY</a>(mass, couplings, sfermionmass, benchmark, debug=<span class="keyword">True</span>)</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        ctau = rpvsusy_instance.computeNLifetime(system=<span class="stringliteral">&quot;FairShip&quot;</span>) * u.c_light * u.cm</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        P8gen.SetParameters(<span class="stringliteral">&quot;9900015:new = N2 N2 2 0 0 {:.12} 0.0 0.0 0.0 {:.12}  0   1   0   1   0&quot;</span>.format(mass, ctau/u.mm))</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        P8gen.SetParameters(<span class="stringliteral">&quot;9900015:isResonance = false&quot;</span>)</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        <span class="comment"># Configuring decay modes...</span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        rpvsusy_instance.AddChannelsToPythia(P8gen)</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        <span class="comment"># Finish HNL setup...</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        P8gen.SetParameters(<span class="stringliteral">&quot;9900015:mayDecay = on&quot;</span>)</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        P8gen.SetHNLId(9900015)</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        <span class="comment"># also add to PDG</span></div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        gamma = u.hbarc / <a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(ctau) <span class="comment">#197.3269631e-16 / float(ctau) # hbar*c = 197 MeV*fm = 197e-16 GeV*cm</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        <a class="code" href="namespacepythia8__conf__utils.html#a0cbb5682bb63fa7c1be81f0eaf9088cd">addHNLtoROOT</a>(pid=9900015,m=mass,g=gamma)</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        <span class="comment"># 12 14 16 neutrinos replace with N2</span></div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        beautyhistograms = [<span class="stringliteral">&#39;b_mu&#39;</span>,<span class="stringliteral">&#39;b_tau&#39;</span>,<span class="stringliteral">&#39;b0_nu_mu&#39;</span>,<span class="stringliteral">&#39;b0_nu_tau&#39;</span>]</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        maxsumBR=<a class="code" href="namespacepythia8__conf__utils.html#acb89ee6646b4bc143e9fa4011fc40501">getmaxsumbrrpvsusy</a>(h,beautyhistograms,mass,couplings)</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        <a class="code" href="namespacepythia8__conf__utils.html#a4af7d1d7ec65e763627523bb319bbf4e">exit_if_zero_br</a>(maxsumBR, inclusive, mass, particle=<span class="stringliteral">&#39;RPV neutralino&#39;</span>)</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        totalBR=<a class="code" href="namespacepythia8__conf__utils.html#ac70e3b11b940b06ac3994772a4395c7a">gettotalbrrpvsusy</a>(h,beautyhistograms,mass,couplings)</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        <span class="comment">#overwrite B+ decays</span></div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        P8gen.SetParameters(<span class="stringliteral">&quot;521:new  B+               B-    1   3   0    5.27925&quot;</span>\</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;                            <span class="stringliteral">&quot;    0.00000    0.00000    0.00000  4.91100e-01   0   1   0   1   0&quot;</span>)</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;        sumBR=0.</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        <span class="keywordflow">if</span> <a class="code" href="namespacepythia8__conf__utils.html#ace55a11529100114c43038d8c538b4c2">getbr_rpvsusy</a>(h,<span class="stringliteral">&#39;b_tau&#39;</span>,mass,couplings[1])&gt;0.:</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;            P8gen.SetParameters(<span class="stringliteral">&quot;521:addChannel      1  {:.12}    0       9900015      -15&quot;</span>\</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;                                .format(<a class="code" href="namespacepythia8__conf__utils.html#ace55a11529100114c43038d8c538b4c2">getbr_rpvsusy</a>(h,<span class="stringliteral">&#39;b_tau&#39;</span>,mass,couplings[1])/maxsumBR))</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;            sumBR+=<a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(<a class="code" href="namespacepythia8__conf__utils.html#ace55a11529100114c43038d8c538b4c2">getbr_rpvsusy</a>(h,<span class="stringliteral">&#39;b_tau&#39;</span>,mass,couplings[1])/maxsumBR)</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        <span class="keywordflow">if</span> sumBR&lt;1. <span class="keywordflow">and</span> sumBR&gt;0.:</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;            P8gen.SetParameters(<span class="stringliteral">&quot;521:addChannel      1   {:.12}    0       22      22&quot;</span>\</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;                                .format(1.-sumBR))</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160; </div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        <span class="comment">#overwrite B0 decays</span></div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;        P8gen.SetParameters(<span class="stringliteral">&quot;511:new  B0  Bbar0    1   0   0    5.27958&quot;</span>\</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;                            <span class="stringliteral">&quot;    0.00000    0.00000    0.00000  4.58700e-01   0   1   0   1   0&quot;</span>)</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;        sumBR=0.</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;        <span class="keywordflow">if</span> <a class="code" href="namespacepythia8__conf__utils.html#ace55a11529100114c43038d8c538b4c2">getbr_rpvsusy</a>(h,<span class="stringliteral">&#39;b0_nu_tau&#39;</span>,mass,couplings[1])&gt;0.:</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;            P8gen.SetParameters(<span class="stringliteral">&quot;511:addChannel      1  {:.12}   22       9900015      16&quot;</span>\</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;                                .format(<a class="code" href="namespacepythia8__conf__utils.html#ace55a11529100114c43038d8c538b4c2">getbr_rpvsusy</a>(h,<span class="stringliteral">&#39;b0_nu_tau&#39;</span>,mass,couplings[1])/maxsumBR))</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;        <span class="keywordflow">if</span> sumBR&lt;1. <span class="keywordflow">and</span> sumBR&gt;0.:</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;            P8gen.SetParameters(<span class="stringliteral">&quot;511:addChannel      1   {:.12}    0       22      22&quot;</span>\</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;                                .format(1.-sumBR))</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160; </div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;        P8gen.List(9900015)</div>
 <div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160; </div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;        P8gen.List(9900015)</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    <span class="keywordflow">if</span> debug: pythia_log.close()</div>
 <div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160; </div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    <span class="keywordflow">if</span> debug: pythia_log.close()</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160; </div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160; </div>
-<div class="line"><a name="l00131"></a><span class="lineno"><a class="line" href="namespacepythia8__conf.html#aa390a2413d3b5fc056162feeac9cd5e7">  131</a></span>&#160;<span class="keyword">def </span><a class="code" href="namespacepythia8__conf.html#aa390a2413d3b5fc056162feeac9cd5e7">configure</a>(P8gen, mass, production_couplings, decay_couplings, process_selection,</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;              deepCopy=False, debug=True):</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;<span class="stringliteral">    This function configures a HNLPythia8Generator instance for SHiP usage.</span></div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;<span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160; </div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;    <span class="keywordflow">if</span> process_selection == <span class="keyword">True</span>: <span class="comment"># For backward compatibility</span></div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;        process_selection = <span class="stringliteral">&#39;inclusive&#39;</span></div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160; </div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;    <span class="comment"># Wrap the Pythia8 object into a class logging all of its method calls</span></div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;    <span class="keywordflow">if</span> debug:</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;        pythia_log=open(<span class="stringliteral">&#39;pythia8_conf.txt&#39;</span>,<span class="stringliteral">&#39;w&#39;</span>)</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;        P8gen = <a class="code" href="classmethod__logger_1_1MethodLogger.html">MethodLogger</a>(P8gen, sink=pythia_log)</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160; </div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;    fairship_root = os.environ[<span class="stringliteral">&#39;FAIRSHIP&#39;</span>]</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    histograms = <a class="code" href="namespacepythia8__conf__utils.html#aab227acdae1aee734f8b0028f89eb02f">make_interpolators</a>(fairship_root + <span class="stringliteral">&#39;/shipgen/branchingratios.dat&#39;</span>)</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;    P8gen.UseRandom3() <span class="comment"># TRandom1 or TRandom3 ?</span></div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    P8gen.SetMom(400)  <span class="comment"># beam momentum in GeV</span></div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;    <span class="keywordflow">if</span> deepCopy: P8gen.UseDeepCopy()</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    pdg = ROOT.TDatabasePDG.Instance()</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    P8gen.SetParameters(<span class="stringliteral">&quot;Next:numberCount    =  0&quot;</span>)</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    <span class="comment"># let strange particle decay in Geant4</span></div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    <a class="code" href="namespacepythia8__conf__utils.html#a43d55c0d1f126273135b7104b9c9be54">make_particles_stable</a>(P8gen, above_lifetime=1)</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160; </div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    <span class="comment"># Load particle &amp; decay data</span></div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    <span class="comment"># ==========================</span></div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160; </div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    datafile = fairship_root + <span class="stringliteral">&#39;/python/hnl_production.yaml&#39;</span></div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    <span class="keyword">with</span> open(datafile, <span class="stringliteral">&#39;rU&#39;</span>) <span class="keyword">as</span> f:</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;        data = yaml.load(f, Loader=yaml.FullLoader)</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    all_channels  = data[<span class="stringliteral">&#39;channels&#39;</span>]</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160; </div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    <span class="comment"># Inclusive</span></div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    <span class="comment"># =========</span></div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160; </div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;    <span class="keywordflow">if</span> process_selection==<span class="stringliteral">&#39;inclusive&#39;</span>:</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;        <a class="code" href="namespacepythia8__conf.html#a2b3c56a66f8fd6da2994e4f2a75a36ff">setup_pythia_inclusive</a>(P8gen)</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160; </div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    <span class="comment"># Charm decays only (with secondary production from tau)</span></div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    <span class="comment"># ======================================================</span></div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160; </div>
+<div class="line"><a name="l00129"></a><span class="lineno"><a class="line" href="namespacepythia8__conf.html#aa390a2413d3b5fc056162feeac9cd5e7">  129</a></span>&#160;<span class="keyword">def </span><a class="code" href="namespacepythia8__conf.html#aa390a2413d3b5fc056162feeac9cd5e7">configure</a>(P8gen, mass, production_couplings, decay_couplings, process_selection,</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;              deepCopy=False, debug=True):</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;<span class="stringliteral">    This function configures a HNLPythia8Generator instance for SHiP usage.</span></div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;<span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160; </div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    <span class="keywordflow">if</span> process_selection == <span class="keyword">True</span>: <span class="comment"># For backward compatibility</span></div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;        process_selection = <span class="stringliteral">&#39;inclusive&#39;</span></div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160; </div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;    <span class="comment"># Wrap the Pythia8 object into a class logging all of its method calls</span></div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;    <span class="keywordflow">if</span> debug:</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;        pythia_log=open(<span class="stringliteral">&#39;pythia8_conf.txt&#39;</span>,<span class="stringliteral">&#39;w&#39;</span>)</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;        P8gen = <a class="code" href="classmethod__logger_1_1MethodLogger.html">MethodLogger</a>(P8gen, sink=pythia_log)</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160; </div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    fairship_root = os.environ[<span class="stringliteral">&#39;FAIRSHIP&#39;</span>]</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    histograms = <a class="code" href="namespacepythia8__conf__utils.html#aab227acdae1aee734f8b0028f89eb02f">make_interpolators</a>(fairship_root + <span class="stringliteral">&#39;/shipgen/branchingratios.dat&#39;</span>)</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;    P8gen.UseRandom3() <span class="comment"># TRandom1 or TRandom3 ?</span></div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    P8gen.SetMom(400)  <span class="comment"># beam momentum in GeV</span></div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;    <span class="keywordflow">if</span> deepCopy: P8gen.UseDeepCopy()</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    pdg = ROOT.TDatabasePDG.Instance()</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;    P8gen.SetParameters(<span class="stringliteral">&quot;Next:numberCount    =  0&quot;</span>)</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    <span class="comment"># let strange particle decay in Geant4</span></div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    <a class="code" href="namespacepythia8__conf__utils.html#a43d55c0d1f126273135b7104b9c9be54">make_particles_stable</a>(P8gen, above_lifetime=1)</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160; </div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    <span class="comment"># Load particle &amp; decay data</span></div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    <span class="comment"># ==========================</span></div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160; </div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    datafile = fairship_root + <span class="stringliteral">&#39;/python/hnl_production.yaml&#39;</span></div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    <span class="keyword">with</span> open(datafile, <span class="stringliteral">&#39;rU&#39;</span>) <span class="keyword">as</span> f:</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;        data = yaml.load(f, Loader=yaml.FullLoader)</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    all_channels  = data[<span class="stringliteral">&#39;channels&#39;</span>]</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160; </div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    <span class="comment"># Inclusive</span></div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;    <span class="comment"># =========</span></div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160; </div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    <span class="keywordflow">if</span> process_selection==<span class="stringliteral">&#39;inclusive&#39;</span>:</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;        <a class="code" href="namespacepythia8__conf.html#a2b3c56a66f8fd6da2994e4f2a75a36ff">setup_pythia_inclusive</a>(P8gen)</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160; </div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    <span class="comment"># Charm decays only (with secondary production from tau)</span></div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;    <span class="comment"># ======================================================</span></div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160; </div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    <span class="keywordflow">if</span> process_selection==<span class="stringliteral">&#39;c&#39;</span>:</div>
 <div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160; </div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;    <span class="keywordflow">if</span> process_selection==<span class="stringliteral">&#39;c&#39;</span>:</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160; </div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;        selection = data[<span class="stringliteral">&#39;selections&#39;</span>][<span class="stringliteral">&#39;c&#39;</span>]</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;        <span class="keywordflow">for</span> cmd <span class="keywordflow">in</span> selection[<span class="stringliteral">&#39;parameters&#39;</span>]:</div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;            P8gen.SetParameters(cmd)</div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;        <a class="code" href="namespacepythia8__conf.html#af74451298b8c0e13a73dc3e6120b21c0">add_hnl</a>(P8gen, mass, decay_couplings)</div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160; </div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;        <span class="comment"># Add new charmed particles</span></div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;        <span class="comment"># -------------------------</span></div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160; </div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;        <span class="comment"># Select all charmed particles (+ tau lepton)</span></div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;        c_particles = selection[<span class="stringliteral">&#39;particles&#39;</span>]</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;        tau_id = 15 <span class="comment"># tau- Monte-Carlo ID</span></div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;        <a class="code" href="namespacepythia8__conf__utils.html#a360e1819533bcfdd8e337c98df19a9d6">add_particles</a>(P8gen, c_particles + [tau_id], data)</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160; </div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;        <span class="comment"># Add HNL production channels from charmed particles</span></div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;        <span class="comment"># --------------------------------------------------</span></div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160; </div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;        <span class="comment"># Find charm and tau decays to HNLs</span></div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;        c_channels = [ch <span class="keywordflow">for</span> ch <span class="keywordflow">in</span> all_channels <span class="keywordflow">if</span> ch[<span class="stringliteral">&#39;id&#39;</span>] <span class="keywordflow">in</span> c_particles]</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;        tau_channels = [ch <span class="keywordflow">for</span> ch <span class="keywordflow">in</span> all_channels <span class="keywordflow">if</span> ch[<span class="stringliteral">&#39;id&#39;</span>] == tau_id]</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;        <span class="comment"># Standard model process: tau+ production from D_s+ decay</span></div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;        ds_id = 431 <span class="comment"># D_s+ Monte-Carlo ID</span></div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;        ds_tau_br = 0.0548 <span class="comment"># SM branching ratio Br(D_s+ -&gt; tau+ nu_tau) (source: PDG 2018)</span></div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160; </div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;        <span class="comment"># Compute the branching ratio scaling factor, taking into account</span></div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;        <span class="comment"># secondary production from tau</span></div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;        <span class="comment"># Decay chains are encoded as follows:</span></div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;        <span class="comment">#     [(top level id A, [br A -&gt; B, br B -&gt; C, ...]), ...]</span></div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160; </div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;        <span class="comment"># Most charm particles directly decay to HNLs</span></div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;        primary_decays = [(ch[<span class="stringliteral">&#39;id&#39;</span>], [<a class="code" href="namespacepythia8__conf__utils.html#aaac2cedcf70b27b7c6d434969511cd02">get_br</a>(histograms, ch, mass, production_couplings)])</div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;                          <span class="keywordflow">for</span> ch <span class="keywordflow">in</span> c_channels]</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;        <span class="comment"># The D_s+ can indirectly produce a HNL by first producing a tau+</span></div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;        secondary_decays = [(ds_id, [ds_tau_br, <a class="code" href="namespacepythia8__conf__utils.html#aaac2cedcf70b27b7c6d434969511cd02">get_br</a>(histograms, ch, mass, production_couplings)])</div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;                            <span class="keywordflow">for</span> ch <span class="keywordflow">in</span> tau_channels]</div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;        all_decays = primary_decays + secondary_decays</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160; </div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;        <span class="comment"># Compute maximum total branching ratio (to rescale all BRs)</span></div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;        max_total_br = <a class="code" href="namespacepythia8__conf__utils.html#a1bbc54a2548959663c0e540dd3fee581">compute_max_total_br</a>(all_decays)</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;        <a class="code" href="namespacepythia8__conf__utils.html#a4af7d1d7ec65e763627523bb319bbf4e">exit_if_zero_br</a>(max_total_br, process_selection, mass)</div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;        <a class="code" href="namespacepythia8__conf__utils.html#ada4402c223453c2df122b01dff054416">print_scale_factor</a>(1/max_total_br)</div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160; </div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;        <span class="comment"># Add charm decays</span></div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;        <span class="keywordflow">for</span> ch <span class="keywordflow">in</span> c_channels:</div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;            <a class="code" href="namespacepythia8__conf__utils.html#a06cc5b68fd84222b36b3b64a1bbbc454">add_channel</a>(P8gen, ch, histograms, mass, production_couplings, 1/max_total_br)</div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;        <span class="comment"># Add tau production from D_s+</span></div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;        <span class="comment"># We can freely rescale Br(Ds -&gt; tau) and Br(tau -&gt; N X...) as long as</span></div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;        <span class="comment"># Br(Ds -&gt; tau -&gt; N X...) remains the same.</span></div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;        <span class="comment"># Here, we set Br(tau -&gt; N) to unity to make event generation more efficient.</span></div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;        <span class="comment"># The implicit assumption here is that we will disregard the tau during the analysis.</span></div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;        total_tau_br = sum(branching_ratios[1] <span class="keywordflow">for</span> (_, branching_ratios) <span class="keywordflow">in</span> secondary_decays)</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;        assert(ds_tau_br*total_tau_br &lt;= max_total_br + 1e-12)</div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;        P8gen.SetParameters(<span class="stringliteral">&quot;431:addChannel      1  {:.12}    0      -15       16&quot;</span>\</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;                            .format(ds_tau_br*total_tau_br/max_total_br))</div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;        <span class="comment"># Add secondary HNL production from tau</span></div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;        <span class="keywordflow">for</span> ch <span class="keywordflow">in</span> tau_channels:</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;            <span class="comment"># Rescale branching ratios only if some are non-zero. Otherwise leave them at zero.</span></div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;            <a class="code" href="namespacepythia8__conf__utils.html#a35c83a11f5ef4bb2e6396dcc1547b450">add_tau_channel</a>(P8gen, ch, histograms, mass, production_couplings, 1/(total_tau_br <span class="keywordflow">or</span> 1))</div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160; </div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;        <span class="comment"># Add dummy channels in place of SM processes</span></div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;        <a class="code" href="namespacepythia8__conf__utils.html#a436dfcedd1b1abcf03b6aa3134ff82ef">fill_missing_channels</a>(P8gen, max_total_br, all_decays)</div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160; </div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;        <span class="comment"># List channels to confirm that Pythia has been properly set up</span></div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;        P8gen.List(9900015)</div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160; </div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;    <span class="comment"># B/Bc decays only</span></div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;    <span class="comment"># ================</span></div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;        selection = data[<span class="stringliteral">&#39;selections&#39;</span>][<span class="stringliteral">&#39;c&#39;</span>]</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;        <span class="keywordflow">for</span> cmd <span class="keywordflow">in</span> selection[<span class="stringliteral">&#39;parameters&#39;</span>]:</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;            P8gen.SetParameters(cmd)</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;        <a class="code" href="namespacepythia8__conf.html#af74451298b8c0e13a73dc3e6120b21c0">add_hnl</a>(P8gen, mass, decay_couplings)</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160; </div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;        <span class="comment"># Add new charmed particles</span></div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;        <span class="comment"># -------------------------</span></div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160; </div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;        <span class="comment"># Select all charmed particles (+ tau lepton)</span></div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;        c_particles = selection[<span class="stringliteral">&#39;particles&#39;</span>]</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;        tau_id = 15 <span class="comment"># tau- Monte-Carlo ID</span></div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;        <a class="code" href="namespacepythia8__conf__utils.html#a360e1819533bcfdd8e337c98df19a9d6">add_particles</a>(P8gen, c_particles + [tau_id], data)</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160; </div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;        <span class="comment"># Add HNL production channels from charmed particles</span></div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;        <span class="comment"># --------------------------------------------------</span></div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160; </div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;        <span class="comment"># Find charm and tau decays to HNLs</span></div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;        c_channels = [ch <span class="keywordflow">for</span> ch <span class="keywordflow">in</span> all_channels <span class="keywordflow">if</span> ch[<span class="stringliteral">&#39;id&#39;</span>] <span class="keywordflow">in</span> c_particles]</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;        tau_channels = [ch <span class="keywordflow">for</span> ch <span class="keywordflow">in</span> all_channels <span class="keywordflow">if</span> ch[<span class="stringliteral">&#39;id&#39;</span>] == tau_id]</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;        <span class="comment"># Standard model process: tau+ production from D_s+ decay</span></div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;        ds_id = 431 <span class="comment"># D_s+ Monte-Carlo ID</span></div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;        ds_tau_br = 0.0548 <span class="comment"># SM branching ratio Br(D_s+ -&gt; tau+ nu_tau) (source: PDG 2018)</span></div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160; </div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;        <span class="comment"># Compute the branching ratio scaling factor, taking into account</span></div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;        <span class="comment"># secondary production from tau</span></div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;        <span class="comment"># Decay chains are encoded as follows:</span></div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;        <span class="comment">#     [(top level id A, [br A -&gt; B, br B -&gt; C, ...]), ...]</span></div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160; </div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;        <span class="comment"># Most charm particles directly decay to HNLs</span></div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;        primary_decays = [(ch[<span class="stringliteral">&#39;id&#39;</span>], [<a class="code" href="namespacepythia8__conf__utils.html#aaac2cedcf70b27b7c6d434969511cd02">get_br</a>(histograms, ch, mass, production_couplings)])</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;                          <span class="keywordflow">for</span> ch <span class="keywordflow">in</span> c_channels]</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;        <span class="comment"># The D_s+ can indirectly produce a HNL by first producing a tau+</span></div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;        secondary_decays = [(ds_id, [ds_tau_br, <a class="code" href="namespacepythia8__conf__utils.html#aaac2cedcf70b27b7c6d434969511cd02">get_br</a>(histograms, ch, mass, production_couplings)])</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;                            <span class="keywordflow">for</span> ch <span class="keywordflow">in</span> tau_channels]</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;        all_decays = primary_decays + secondary_decays</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160; </div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;        <span class="comment"># Compute maximum total branching ratio (to rescale all BRs)</span></div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;        max_total_br = <a class="code" href="namespacepythia8__conf__utils.html#a1bbc54a2548959663c0e540dd3fee581">compute_max_total_br</a>(all_decays)</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;        <a class="code" href="namespacepythia8__conf__utils.html#a4af7d1d7ec65e763627523bb319bbf4e">exit_if_zero_br</a>(max_total_br, process_selection, mass)</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;        <a class="code" href="namespacepythia8__conf__utils.html#ada4402c223453c2df122b01dff054416">print_scale_factor</a>(1/max_total_br)</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160; </div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;        <span class="comment"># Add charm decays</span></div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;        <span class="keywordflow">for</span> ch <span class="keywordflow">in</span> c_channels:</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;            <a class="code" href="namespacepythia8__conf__utils.html#a06cc5b68fd84222b36b3b64a1bbbc454">add_channel</a>(P8gen, ch, histograms, mass, production_couplings, 1/max_total_br)</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;        <span class="comment"># Add tau production from D_s+</span></div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;        <span class="comment"># We can freely rescale Br(Ds -&gt; tau) and Br(tau -&gt; N X...) as long as</span></div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;        <span class="comment"># Br(Ds -&gt; tau -&gt; N X...) remains the same.</span></div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;        <span class="comment"># Here, we set Br(tau -&gt; N) to unity to make event generation more efficient.</span></div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;        <span class="comment"># The implicit assumption here is that we will disregard the tau during the analysis.</span></div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;        total_tau_br = sum(branching_ratios[1] <span class="keywordflow">for</span> (_, branching_ratios) <span class="keywordflow">in</span> secondary_decays)</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;        assert(ds_tau_br*total_tau_br &lt;= max_total_br + 1e-12)</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;        P8gen.SetParameters(<span class="stringliteral">&quot;431:addChannel      1  {:.12}    0      -15       16&quot;</span>\</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;                            .format(ds_tau_br*total_tau_br/max_total_br))</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;        <span class="comment"># Add secondary HNL production from tau</span></div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;        <span class="keywordflow">for</span> ch <span class="keywordflow">in</span> tau_channels:</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;            <span class="comment"># Rescale branching ratios only if some are non-zero. Otherwise leave them at zero.</span></div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;            <a class="code" href="namespacepythia8__conf__utils.html#a35c83a11f5ef4bb2e6396dcc1547b450">add_tau_channel</a>(P8gen, ch, histograms, mass, production_couplings, 1/(total_tau_br <span class="keywordflow">or</span> 1))</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160; </div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;        <span class="comment"># Add dummy channels in place of SM processes</span></div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;        <a class="code" href="namespacepythia8__conf__utils.html#a436dfcedd1b1abcf03b6aa3134ff82ef">fill_missing_channels</a>(P8gen, max_total_br, all_decays)</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160; </div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;        <span class="comment"># List channels to confirm that Pythia has been properly set up</span></div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;        P8gen.List(9900015)</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160; </div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;    <span class="comment"># B/Bc decays only</span></div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;    <span class="comment"># ================</span></div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160; </div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;    <span class="keywordflow">if</span> process_selection <span class="keywordflow">in</span> [<span class="stringliteral">&#39;b&#39;</span>, <span class="stringliteral">&#39;bc&#39;</span>]:</div>
 <div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160; </div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;    <span class="keywordflow">if</span> process_selection <span class="keywordflow">in</span> [<span class="stringliteral">&#39;b&#39;</span>, <span class="stringliteral">&#39;bc&#39;</span>]:</div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160; </div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;        selection = data[<span class="stringliteral">&#39;selections&#39;</span>][process_selection]</div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;        <span class="keywordflow">for</span> cmd <span class="keywordflow">in</span> selection[<span class="stringliteral">&#39;parameters&#39;</span>]:</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;            P8gen.SetParameters(cmd)</div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;        <a class="code" href="namespacepythia8__conf.html#af74451298b8c0e13a73dc3e6120b21c0">add_hnl</a>(P8gen, mass, decay_couplings)</div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160; </div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;        <span class="comment"># Add particles</span></div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;        particles = selection[<span class="stringliteral">&#39;particles&#39;</span>]</div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;        <a class="code" href="namespacepythia8__conf__utils.html#a360e1819533bcfdd8e337c98df19a9d6">add_particles</a>(P8gen, particles, data)</div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160; </div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;        <span class="comment"># Find all decay channels</span></div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;        channels = [ch <span class="keywordflow">for</span> ch <span class="keywordflow">in</span> all_channels <span class="keywordflow">if</span> ch[<span class="stringliteral">&#39;id&#39;</span>] <span class="keywordflow">in</span> particles]</div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;        decays = [(ch[<span class="stringliteral">&#39;id&#39;</span>], [<a class="code" href="namespacepythia8__conf__utils.html#aaac2cedcf70b27b7c6d434969511cd02">get_br</a>(histograms, ch, mass, production_couplings)]) <span class="keywordflow">for</span> ch <span class="keywordflow">in</span> channels]</div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160; </div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;        <span class="comment"># Compute scaling factor</span></div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;        max_total_br = <a class="code" href="namespacepythia8__conf__utils.html#a1bbc54a2548959663c0e540dd3fee581">compute_max_total_br</a>(decays)</div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;        <a class="code" href="namespacepythia8__conf__utils.html#a4af7d1d7ec65e763627523bb319bbf4e">exit_if_zero_br</a>(max_total_br, process_selection, mass)</div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;        <a class="code" href="namespacepythia8__conf__utils.html#ada4402c223453c2df122b01dff054416">print_scale_factor</a>(1/max_total_br)</div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160; </div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;        <span class="comment"># Add beauty decays</span></div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;        <span class="keywordflow">for</span> ch <span class="keywordflow">in</span> channels:</div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;            <a class="code" href="namespacepythia8__conf__utils.html#a06cc5b68fd84222b36b3b64a1bbbc454">add_channel</a>(P8gen, ch, histograms, mass, production_couplings, 1/max_total_br)</div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160; </div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;        <span class="comment"># Add dummy channels in place of SM processes</span></div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;        <a class="code" href="namespacepythia8__conf__utils.html#a436dfcedd1b1abcf03b6aa3134ff82ef">fill_missing_channels</a>(P8gen, max_total_br, decays)</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;        selection = data[<span class="stringliteral">&#39;selections&#39;</span>][process_selection]</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;        <span class="keywordflow">for</span> cmd <span class="keywordflow">in</span> selection[<span class="stringliteral">&#39;parameters&#39;</span>]:</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;            P8gen.SetParameters(cmd)</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;        <a class="code" href="namespacepythia8__conf.html#af74451298b8c0e13a73dc3e6120b21c0">add_hnl</a>(P8gen, mass, decay_couplings)</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160; </div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;        <span class="comment"># Add particles</span></div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;        particles = selection[<span class="stringliteral">&#39;particles&#39;</span>]</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;        <a class="code" href="namespacepythia8__conf__utils.html#a360e1819533bcfdd8e337c98df19a9d6">add_particles</a>(P8gen, particles, data)</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160; </div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;        <span class="comment"># Find all decay channels</span></div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;        channels = [ch <span class="keywordflow">for</span> ch <span class="keywordflow">in</span> all_channels <span class="keywordflow">if</span> ch[<span class="stringliteral">&#39;id&#39;</span>] <span class="keywordflow">in</span> particles]</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;        decays = [(ch[<span class="stringliteral">&#39;id&#39;</span>], [<a class="code" href="namespacepythia8__conf__utils.html#aaac2cedcf70b27b7c6d434969511cd02">get_br</a>(histograms, ch, mass, production_couplings)]) <span class="keywordflow">for</span> ch <span class="keywordflow">in</span> channels]</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160; </div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;        <span class="comment"># Compute scaling factor</span></div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;        max_total_br = <a class="code" href="namespacepythia8__conf__utils.html#a1bbc54a2548959663c0e540dd3fee581">compute_max_total_br</a>(decays)</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;        <a class="code" href="namespacepythia8__conf__utils.html#a4af7d1d7ec65e763627523bb319bbf4e">exit_if_zero_br</a>(max_total_br, process_selection, mass)</div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;        <a class="code" href="namespacepythia8__conf__utils.html#ada4402c223453c2df122b01dff054416">print_scale_factor</a>(1/max_total_br)</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160; </div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;        <span class="comment"># Add beauty decays</span></div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;        <span class="keywordflow">for</span> ch <span class="keywordflow">in</span> channels:</div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;            <a class="code" href="namespacepythia8__conf__utils.html#a06cc5b68fd84222b36b3b64a1bbbc454">add_channel</a>(P8gen, ch, histograms, mass, production_couplings, 1/max_total_br)</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160; </div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;        <span class="comment"># Add dummy channels in place of SM processes</span></div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;        <a class="code" href="namespacepythia8__conf__utils.html#a436dfcedd1b1abcf03b6aa3134ff82ef">fill_missing_channels</a>(P8gen, max_total_br, decays)</div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160; </div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;        P8gen.List(9900015)</div>
 <div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160; </div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;        P8gen.List(9900015)</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;    <span class="keywordflow">if</span> debug: pythia_log.close()</div>
 <div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160; </div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;    <span class="keywordflow">if</span> debug: pythia_log.close()</div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160; </div>
-<div class="line"><a name="l00272"></a><span class="lineno"><a class="line" href="namespacepythia8__conf.html#af74451298b8c0e13a73dc3e6120b21c0">  272</a></span>&#160;<span class="keyword">def </span><a class="code" href="namespacepythia8__conf.html#af74451298b8c0e13a73dc3e6120b21c0">add_hnl</a>(P8gen, mass, decay_couplings):</div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;    <span class="stringliteral">&quot;Adds the HNL to Pythia and ROOT&quot;</span></div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;    hnl_instance = <a class="code" href="classhnl_1_1HNL.html">hnl.HNL</a>(mass, decay_couplings, debug=<span class="keyword">True</span>)</div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;    ctau = hnl_instance.computeNLifetime(system=<span class="stringliteral">&quot;FairShip&quot;</span>) * u.c_light * u.cm</div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;    print(<span class="stringliteral">&quot;HNL ctau {}&quot;</span>.format(ctau))</div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;    P8gen.SetParameters(<span class="stringliteral">&quot;9900015:new = N2 N2 2 0 0 {:.12} 0.0 0.0 0.0 {:.12}  0   1   0   1   0&quot;</span>.format(mass, ctau/u.mm))</div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;    P8gen.SetParameters(<span class="stringliteral">&quot;9900015:isResonance = false&quot;</span>)</div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;    <span class="comment"># Configuring decay modes...</span></div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;    <a class="code" href="namespacereadDecayTable.html#afdd4b332b245928769ff8d3156f8b843">readDecayTable.addHNLdecayChannels</a>(P8gen, hnl_instance, conffile=os.path.expandvars(<span class="stringliteral">&#39;$FAIRSHIP/python/DecaySelection.conf&#39;</span>), verbose=<span class="keyword">False</span>)</div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;    <span class="comment"># Finish HNL setup...</span></div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;    P8gen.SetParameters(<span class="stringliteral">&quot;9900015:mayDecay = on&quot;</span>)</div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;    P8gen.SetHNLId(9900015)</div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;    <span class="comment"># also add to PDG</span></div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;    gamma = u.hbarc / <a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(ctau) <span class="comment">#197.3269631e-16 / float(ctau) # hbar*c = 197 MeV*fm = 197e-16 GeV*cm</span></div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;    <a class="code" href="namespacepythia8__conf__utils.html#a0cbb5682bb63fa7c1be81f0eaf9088cd">addHNLtoROOT</a>(pid=9900015,m=mass,g=gamma)</div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160; </div>
-<div class="line"><a name="l00288"></a><span class="lineno"><a class="line" href="namespacepythia8__conf.html#a2b3c56a66f8fd6da2994e4f2a75a36ff">  288</a></span>&#160;<span class="keyword">def </span><a class="code" href="namespacepythia8__conf.html#a2b3c56a66f8fd6da2994e4f2a75a36ff">setup_pythia_inclusive</a>(P8gen):</div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;    P8gen.SetParameters(<span class="stringliteral">&quot;SoftQCD:inelastic = on&quot;</span>)</div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;    P8gen.SetParameters(<span class="stringliteral">&quot;PhotonCollision:gmgm2mumu = on&quot;</span>)</div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;    P8gen.SetParameters(<span class="stringliteral">&quot;PromptPhoton:all = on&quot;</span>)</div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;    P8gen.SetParameters(<span class="stringliteral">&quot;WeakBosonExchange:all = on&quot;</span>)</div>
-<div class="ttc" id="aclasshnl_1_1HNL_html"><div class="ttname"><a href="classhnl_1_1HNL.html">hnl.HNL</a></div><div class="ttdef"><b>Definition:</b> <a href="hnl_8py_source.html#l00606">hnl.py:606</a></div></div>
-<div class="ttc" id="aclassmethod__logger_1_1MethodLogger_html"><div class="ttname"><a href="classmethod__logger_1_1MethodLogger.html">method_logger.MethodLogger</a></div><div class="ttdef"><b>Definition:</b> <a href="method__logger_8py_source.html#l00008">method_logger.py:8</a></div></div>
-<div class="ttc" id="aclassrpvsusy_1_1RPVSUSY_html"><div class="ttname"><a href="classrpvsusy_1_1RPVSUSY.html">rpvsusy.RPVSUSY</a></div><div class="ttdef"><b>Definition:</b> <a href="rpvsusy_8py_source.html#l00413">rpvsusy.py:413</a></div></div>
+<div class="line"><a name="l00270"></a><span class="lineno"><a class="line" href="namespacepythia8__conf.html#af74451298b8c0e13a73dc3e6120b21c0">  270</a></span>&#160;<span class="keyword">def </span><a class="code" href="namespacepythia8__conf.html#af74451298b8c0e13a73dc3e6120b21c0">add_hnl</a>(P8gen, mass, decay_couplings):</div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;    <span class="stringliteral">&quot;Adds the HNL to Pythia and ROOT&quot;</span></div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;    hnl_instance = <a class="code" href="classhnl_1_1HNL.html">hnl.HNL</a>(mass, decay_couplings, debug=<span class="keyword">True</span>)</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;    ctau = hnl_instance.computeNLifetime(system=<span class="stringliteral">&quot;FairShip&quot;</span>) * u.c_light * u.cm</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;    print(<span class="stringliteral">&quot;HNL ctau {}&quot;</span>.format(ctau))</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;    P8gen.SetParameters(<span class="stringliteral">&quot;9900015:new = N2 N2 2 0 0 {:.12} 0.0 0.0 0.0 {:.12}  0   1   0   1   0&quot;</span>.format(mass, ctau/u.mm))</div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;    P8gen.SetParameters(<span class="stringliteral">&quot;9900015:isResonance = false&quot;</span>)</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;    <span class="comment"># Configuring decay modes...</span></div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;    <a class="code" href="namespacereadDecayTable.html#afdd4b332b245928769ff8d3156f8b843">readDecayTable.addHNLdecayChannels</a>(P8gen, hnl_instance, conffile=os.path.expandvars(<span class="stringliteral">&#39;$FAIRSHIP/python/DecaySelection.conf&#39;</span>), verbose=<span class="keyword">False</span>)</div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;    <span class="comment"># Finish HNL setup...</span></div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;    P8gen.SetParameters(<span class="stringliteral">&quot;9900015:mayDecay = on&quot;</span>)</div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;    P8gen.SetHNLId(9900015)</div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;    <span class="comment"># also add to PDG</span></div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;    gamma = u.hbarc / <a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(ctau) <span class="comment">#197.3269631e-16 / float(ctau) # hbar*c = 197 MeV*fm = 197e-16 GeV*cm</span></div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;    <a class="code" href="namespacepythia8__conf__utils.html#a0cbb5682bb63fa7c1be81f0eaf9088cd">addHNLtoROOT</a>(pid=9900015,m=mass,g=gamma)</div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160; </div>
+<div class="line"><a name="l00286"></a><span class="lineno"><a class="line" href="namespacepythia8__conf.html#a2b3c56a66f8fd6da2994e4f2a75a36ff">  286</a></span>&#160;<span class="keyword">def </span><a class="code" href="namespacepythia8__conf.html#a2b3c56a66f8fd6da2994e4f2a75a36ff">setup_pythia_inclusive</a>(P8gen):</div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;    P8gen.SetParameters(<span class="stringliteral">&quot;SoftQCD:inelastic = on&quot;</span>)</div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;    P8gen.SetParameters(<span class="stringliteral">&quot;PhotonCollision:gmgm2mumu = on&quot;</span>)</div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;    P8gen.SetParameters(<span class="stringliteral">&quot;PromptPhoton:all = on&quot;</span>)</div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;    P8gen.SetParameters(<span class="stringliteral">&quot;WeakBosonExchange:all = on&quot;</span>)</div>
+<div class="ttc" id="aclasshnl_1_1HNL_html"><div class="ttname"><a href="classhnl_1_1HNL.html">hnl.HNL</a></div><div class="ttdef"><b>Definition:</b> <a href="hnl_8py_source.html#l00604">hnl.py:604</a></div></div>
+<div class="ttc" id="aclassmethod__logger_1_1MethodLogger_html"><div class="ttname"><a href="classmethod__logger_1_1MethodLogger.html">method_logger.MethodLogger</a></div><div class="ttdef"><b>Definition:</b> <a href="method__logger_8py_source.html#l00006">method_logger.py:6</a></div></div>
+<div class="ttc" id="aclassrpvsusy_1_1RPVSUSY_html"><div class="ttname"><a href="classrpvsusy_1_1RPVSUSY.html">rpvsusy.RPVSUSY</a></div><div class="ttdef"><b>Definition:</b> <a href="rpvsusy_8py_source.html#l00411">rpvsusy.py:411</a></div></div>
 <div class="ttc" id="anamespaceadd__noise__to__field_html_a0b17b62adeb5054f131bb6a46b054b48"><div class="ttname"><a href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">add_noise_to_field.float</a></div><div class="ttdeci">float</div><div class="ttdef"><b>Definition:</b> <a href="add__noise__to__field_8py_source.html#l00056">add_noise_to_field.py:56</a></div></div>
-<div class="ttc" id="anamespacepythia8__conf__utils_html_a06cc5b68fd84222b36b3b64a1bbbc454"><div class="ttname"><a href="namespacepythia8__conf__utils.html#a06cc5b68fd84222b36b3b64a1bbbc454">pythia8_conf_utils.add_channel</a></div><div class="ttdeci">def add_channel(P8gen, ch, histograms, mass, couplings, scale_factor)</div><div class="ttdef"><b>Definition:</b> <a href="pythia8__conf__utils_8py_source.html#l00154">pythia8_conf_utils.py:154</a></div></div>
-<div class="ttc" id="anamespacepythia8__conf__utils_html_a0cbb5682bb63fa7c1be81f0eaf9088cd"><div class="ttname"><a href="namespacepythia8__conf__utils.html#a0cbb5682bb63fa7c1be81f0eaf9088cd">pythia8_conf_utils.addHNLtoROOT</a></div><div class="ttdeci">def addHNLtoROOT(pid=9900015, m=1.0, g=3.654203020370371E-21)</div><div class="ttdef"><b>Definition:</b> <a href="pythia8__conf__utils_8py_source.html#l00012">pythia8_conf_utils.py:12</a></div></div>
-<div class="ttc" id="anamespacepythia8__conf__utils_html_a1bbc54a2548959663c0e540dd3fee581"><div class="ttname"><a href="namespacepythia8__conf__utils.html#a1bbc54a2548959663c0e540dd3fee581">pythia8_conf_utils.compute_max_total_br</a></div><div class="ttdeci">def compute_max_total_br(decay_chains)</div><div class="ttdef"><b>Definition:</b> <a href="pythia8__conf__utils_8py_source.html#l00225">pythia8_conf_utils.py:225</a></div></div>
-<div class="ttc" id="anamespacepythia8__conf__utils_html_a35c83a11f5ef4bb2e6396dcc1547b450"><div class="ttname"><a href="namespacepythia8__conf__utils.html#a35c83a11f5ef4bb2e6396dcc1547b450">pythia8_conf_utils.add_tau_channel</a></div><div class="ttdeci">def add_tau_channel(P8gen, ch, histograms, mass, couplings, scale_factor)</div><div class="ttdef"><b>Definition:</b> <a href="pythia8__conf__utils_8py_source.html#l00167">pythia8_conf_utils.py:167</a></div></div>
-<div class="ttc" id="anamespacepythia8__conf__utils_html_a360e1819533bcfdd8e337c98df19a9d6"><div class="ttname"><a href="namespacepythia8__conf__utils.html#a360e1819533bcfdd8e337c98df19a9d6">pythia8_conf_utils.add_particles</a></div><div class="ttdeci">def add_particles(P8gen, particles, data)</div><div class="ttdef"><b>Definition:</b> <a href="pythia8__conf__utils_8py_source.html#l00133">pythia8_conf_utils.py:133</a></div></div>
-<div class="ttc" id="anamespacepythia8__conf__utils_html_a436dfcedd1b1abcf03b6aa3134ff82ef"><div class="ttname"><a href="namespacepythia8__conf__utils.html#a436dfcedd1b1abcf03b6aa3134ff82ef">pythia8_conf_utils.fill_missing_channels</a></div><div class="ttdeci">def fill_missing_channels(P8gen, max_total_br, decay_chains, epsilon=1e-6)</div><div class="ttdef"><b>Definition:</b> <a href="pythia8__conf__utils_8py_source.html#l00180">pythia8_conf_utils.py:180</a></div></div>
-<div class="ttc" id="anamespacepythia8__conf__utils_html_a43d55c0d1f126273135b7104b9c9be54"><div class="ttname"><a href="namespacepythia8__conf__utils.html#a43d55c0d1f126273135b7104b9c9be54">pythia8_conf_utils.make_particles_stable</a></div><div class="ttdeci">def make_particles_stable(P8gen, above_lifetime)</div><div class="ttdef"><b>Definition:</b> <a href="pythia8__conf__utils_8py_source.html#l00049">pythia8_conf_utils.py:49</a></div></div>
-<div class="ttc" id="anamespacepythia8__conf__utils_html_a4af7d1d7ec65e763627523bb319bbf4e"><div class="ttname"><a href="namespacepythia8__conf__utils.html#a4af7d1d7ec65e763627523bb319bbf4e">pythia8_conf_utils.exit_if_zero_br</a></div><div class="ttdeci">def exit_if_zero_br(max_total_br, selection, mass, particle='HNL')</div><div class="ttdef"><b>Definition:</b> <a href="pythia8__conf__utils_8py_source.html#l00261">pythia8_conf_utils.py:261</a></div></div>
-<div class="ttc" id="anamespacepythia8__conf__utils_html_aaac2cedcf70b27b7c6d434969511cd02"><div class="ttname"><a href="namespacepythia8__conf__utils.html#aaac2cedcf70b27b7c6d434969511cd02">pythia8_conf_utils.get_br</a></div><div class="ttdeci">def get_br(histograms, channel, mass, couplings)</div><div class="ttdef"><b>Definition:</b> <a href="pythia8__conf__utils_8py_source.html#l00123">pythia8_conf_utils.py:123</a></div></div>
-<div class="ttc" id="anamespacepythia8__conf__utils_html_aab227acdae1aee734f8b0028f89eb02f"><div class="ttname"><a href="namespacepythia8__conf__utils.html#aab227acdae1aee734f8b0028f89eb02f">pythia8_conf_utils.make_interpolators</a></div><div class="ttdeci">def make_interpolators(filepath, kind='linear')</div><div class="ttdef"><b>Definition:</b> <a href="pythia8__conf__utils_8py_source.html#l00110">pythia8_conf_utils.py:110</a></div></div>
-<div class="ttc" id="anamespacepythia8__conf__utils_html_ac70e3b11b940b06ac3994772a4395c7a"><div class="ttname"><a href="namespacepythia8__conf__utils.html#ac70e3b11b940b06ac3994772a4395c7a">pythia8_conf_utils.gettotalbrrpvsusy</a></div><div class="ttdeci">def gettotalbrrpvsusy(h, histograms, mass, couplings)</div><div class="ttdef"><b>Definition:</b> <a href="pythia8__conf__utils_8py_source.html#l00041">pythia8_conf_utils.py:41</a></div></div>
-<div class="ttc" id="anamespacepythia8__conf__utils_html_acb89ee6646b4bc143e9fa4011fc40501"><div class="ttname"><a href="namespacepythia8__conf__utils.html#acb89ee6646b4bc143e9fa4011fc40501">pythia8_conf_utils.getmaxsumbrrpvsusy</a></div><div class="ttdeci">def getmaxsumbrrpvsusy(h, histograms, mass, couplings)</div><div class="ttdef"><b>Definition:</b> <a href="pythia8__conf__utils_8py_source.html#l00024">pythia8_conf_utils.py:24</a></div></div>
-<div class="ttc" id="anamespacepythia8__conf__utils_html_ace55a11529100114c43038d8c538b4c2"><div class="ttname"><a href="namespacepythia8__conf__utils.html#ace55a11529100114c43038d8c538b4c2">pythia8_conf_utils.getbr_rpvsusy</a></div><div class="ttdeci">def getbr_rpvsusy(h, histoname, mass, coupling)</div><div class="ttdef"><b>Definition:</b> <a href="pythia8__conf__utils_8py_source.html#l00016">pythia8_conf_utils.py:16</a></div></div>
-<div class="ttc" id="anamespacepythia8__conf__utils_html_ada4402c223453c2df122b01dff054416"><div class="ttname"><a href="namespacepythia8__conf__utils.html#ada4402c223453c2df122b01dff054416">pythia8_conf_utils.print_scale_factor</a></div><div class="ttdeci">def print_scale_factor(scaling_factor)</div><div class="ttdef"><b>Definition:</b> <a href="pythia8__conf__utils_8py_source.html#l00267">pythia8_conf_utils.py:267</a></div></div>
-<div class="ttc" id="anamespacepythia8__conf_html_a2b3c56a66f8fd6da2994e4f2a75a36ff"><div class="ttname"><a href="namespacepythia8__conf.html#a2b3c56a66f8fd6da2994e4f2a75a36ff">pythia8_conf.setup_pythia_inclusive</a></div><div class="ttdeci">def setup_pythia_inclusive(P8gen)</div><div class="ttdef"><b>Definition:</b> <a href="pythia8__conf_8py_source.html#l00288">pythia8_conf.py:288</a></div></div>
-<div class="ttc" id="anamespacepythia8__conf_html_a970a3da10fa8b541ea748fd7097e9cbb"><div class="ttname"><a href="namespacepythia8__conf.html#a970a3da10fa8b541ea748fd7097e9cbb">pythia8_conf.configurerpvsusy</a></div><div class="ttdeci">def configurerpvsusy(P8gen, mass, couplings, sfermionmass, benchmark, inclusive, deepCopy=False, debug=True)</div><div class="ttdef"><b>Definition:</b> <a href="pythia8__conf_8py_source.html#l00013">pythia8_conf.py:13</a></div></div>
-<div class="ttc" id="anamespacepythia8__conf_html_aa390a2413d3b5fc056162feeac9cd5e7"><div class="ttname"><a href="namespacepythia8__conf.html#aa390a2413d3b5fc056162feeac9cd5e7">pythia8_conf.configure</a></div><div class="ttdeci">def configure(P8gen, mass, production_couplings, decay_couplings, process_selection, deepCopy=False, debug=True)</div><div class="ttdef"><b>Definition:</b> <a href="pythia8__conf_8py_source.html#l00131">pythia8_conf.py:132</a></div></div>
-<div class="ttc" id="anamespacepythia8__conf_html_af74451298b8c0e13a73dc3e6120b21c0"><div class="ttname"><a href="namespacepythia8__conf.html#af74451298b8c0e13a73dc3e6120b21c0">pythia8_conf.add_hnl</a></div><div class="ttdeci">def add_hnl(P8gen, mass, decay_couplings)</div><div class="ttdef"><b>Definition:</b> <a href="pythia8__conf_8py_source.html#l00272">pythia8_conf.py:272</a></div></div>
-<div class="ttc" id="anamespacereadDecayTable_html_afdd4b332b245928769ff8d3156f8b843"><div class="ttname"><a href="namespacereadDecayTable.html#afdd4b332b245928769ff8d3156f8b843">readDecayTable.addHNLdecayChannels</a></div><div class="ttdeci">def addHNLdecayChannels(P8Gen, hnl, conffile=os.path.expandvars(' $FAIRSHIP/python/DecaySelection.conf'), verbose=True)</div><div class="ttdef"><b>Definition:</b> <a href="readDecayTable_8py_source.html#l00048">readDecayTable.py:48</a></div></div>
+<div class="ttc" id="anamespacepythia8__conf__utils_html_a06cc5b68fd84222b36b3b64a1bbbc454"><div class="ttname"><a href="namespacepythia8__conf__utils.html#a06cc5b68fd84222b36b3b64a1bbbc454">pythia8_conf_utils.add_channel</a></div><div class="ttdeci">def add_channel(P8gen, ch, histograms, mass, couplings, scale_factor)</div><div class="ttdef"><b>Definition:</b> <a href="pythia8__conf__utils_8py_source.html#l00151">pythia8_conf_utils.py:151</a></div></div>
+<div class="ttc" id="anamespacepythia8__conf__utils_html_a0cbb5682bb63fa7c1be81f0eaf9088cd"><div class="ttname"><a href="namespacepythia8__conf__utils.html#a0cbb5682bb63fa7c1be81f0eaf9088cd">pythia8_conf_utils.addHNLtoROOT</a></div><div class="ttdeci">def addHNLtoROOT(pid=9900015, m=1.0, g=3.654203020370371E-21)</div><div class="ttdef"><b>Definition:</b> <a href="pythia8__conf__utils_8py_source.html#l00009">pythia8_conf_utils.py:9</a></div></div>
+<div class="ttc" id="anamespacepythia8__conf__utils_html_a1bbc54a2548959663c0e540dd3fee581"><div class="ttname"><a href="namespacepythia8__conf__utils.html#a1bbc54a2548959663c0e540dd3fee581">pythia8_conf_utils.compute_max_total_br</a></div><div class="ttdeci">def compute_max_total_br(decay_chains)</div><div class="ttdef"><b>Definition:</b> <a href="pythia8__conf__utils_8py_source.html#l00222">pythia8_conf_utils.py:222</a></div></div>
+<div class="ttc" id="anamespacepythia8__conf__utils_html_a35c83a11f5ef4bb2e6396dcc1547b450"><div class="ttname"><a href="namespacepythia8__conf__utils.html#a35c83a11f5ef4bb2e6396dcc1547b450">pythia8_conf_utils.add_tau_channel</a></div><div class="ttdeci">def add_tau_channel(P8gen, ch, histograms, mass, couplings, scale_factor)</div><div class="ttdef"><b>Definition:</b> <a href="pythia8__conf__utils_8py_source.html#l00164">pythia8_conf_utils.py:164</a></div></div>
+<div class="ttc" id="anamespacepythia8__conf__utils_html_a360e1819533bcfdd8e337c98df19a9d6"><div class="ttname"><a href="namespacepythia8__conf__utils.html#a360e1819533bcfdd8e337c98df19a9d6">pythia8_conf_utils.add_particles</a></div><div class="ttdeci">def add_particles(P8gen, particles, data)</div><div class="ttdef"><b>Definition:</b> <a href="pythia8__conf__utils_8py_source.html#l00130">pythia8_conf_utils.py:130</a></div></div>
+<div class="ttc" id="anamespacepythia8__conf__utils_html_a436dfcedd1b1abcf03b6aa3134ff82ef"><div class="ttname"><a href="namespacepythia8__conf__utils.html#a436dfcedd1b1abcf03b6aa3134ff82ef">pythia8_conf_utils.fill_missing_channels</a></div><div class="ttdeci">def fill_missing_channels(P8gen, max_total_br, decay_chains, epsilon=1e-6)</div><div class="ttdef"><b>Definition:</b> <a href="pythia8__conf__utils_8py_source.html#l00177">pythia8_conf_utils.py:177</a></div></div>
+<div class="ttc" id="anamespacepythia8__conf__utils_html_a43d55c0d1f126273135b7104b9c9be54"><div class="ttname"><a href="namespacepythia8__conf__utils.html#a43d55c0d1f126273135b7104b9c9be54">pythia8_conf_utils.make_particles_stable</a></div><div class="ttdeci">def make_particles_stable(P8gen, above_lifetime)</div><div class="ttdef"><b>Definition:</b> <a href="pythia8__conf__utils_8py_source.html#l00046">pythia8_conf_utils.py:46</a></div></div>
+<div class="ttc" id="anamespacepythia8__conf__utils_html_a4af7d1d7ec65e763627523bb319bbf4e"><div class="ttname"><a href="namespacepythia8__conf__utils.html#a4af7d1d7ec65e763627523bb319bbf4e">pythia8_conf_utils.exit_if_zero_br</a></div><div class="ttdeci">def exit_if_zero_br(max_total_br, selection, mass, particle='HNL')</div><div class="ttdef"><b>Definition:</b> <a href="pythia8__conf__utils_8py_source.html#l00258">pythia8_conf_utils.py:258</a></div></div>
+<div class="ttc" id="anamespacepythia8__conf__utils_html_aaac2cedcf70b27b7c6d434969511cd02"><div class="ttname"><a href="namespacepythia8__conf__utils.html#aaac2cedcf70b27b7c6d434969511cd02">pythia8_conf_utils.get_br</a></div><div class="ttdeci">def get_br(histograms, channel, mass, couplings)</div><div class="ttdef"><b>Definition:</b> <a href="pythia8__conf__utils_8py_source.html#l00120">pythia8_conf_utils.py:120</a></div></div>
+<div class="ttc" id="anamespacepythia8__conf__utils_html_aab227acdae1aee734f8b0028f89eb02f"><div class="ttname"><a href="namespacepythia8__conf__utils.html#aab227acdae1aee734f8b0028f89eb02f">pythia8_conf_utils.make_interpolators</a></div><div class="ttdeci">def make_interpolators(filepath, kind='linear')</div><div class="ttdef"><b>Definition:</b> <a href="pythia8__conf__utils_8py_source.html#l00107">pythia8_conf_utils.py:107</a></div></div>
+<div class="ttc" id="anamespacepythia8__conf__utils_html_ac70e3b11b940b06ac3994772a4395c7a"><div class="ttname"><a href="namespacepythia8__conf__utils.html#ac70e3b11b940b06ac3994772a4395c7a">pythia8_conf_utils.gettotalbrrpvsusy</a></div><div class="ttdeci">def gettotalbrrpvsusy(h, histograms, mass, couplings)</div><div class="ttdef"><b>Definition:</b> <a href="pythia8__conf__utils_8py_source.html#l00038">pythia8_conf_utils.py:38</a></div></div>
+<div class="ttc" id="anamespacepythia8__conf__utils_html_acb89ee6646b4bc143e9fa4011fc40501"><div class="ttname"><a href="namespacepythia8__conf__utils.html#acb89ee6646b4bc143e9fa4011fc40501">pythia8_conf_utils.getmaxsumbrrpvsusy</a></div><div class="ttdeci">def getmaxsumbrrpvsusy(h, histograms, mass, couplings)</div><div class="ttdef"><b>Definition:</b> <a href="pythia8__conf__utils_8py_source.html#l00021">pythia8_conf_utils.py:21</a></div></div>
+<div class="ttc" id="anamespacepythia8__conf__utils_html_ace55a11529100114c43038d8c538b4c2"><div class="ttname"><a href="namespacepythia8__conf__utils.html#ace55a11529100114c43038d8c538b4c2">pythia8_conf_utils.getbr_rpvsusy</a></div><div class="ttdeci">def getbr_rpvsusy(h, histoname, mass, coupling)</div><div class="ttdef"><b>Definition:</b> <a href="pythia8__conf__utils_8py_source.html#l00013">pythia8_conf_utils.py:13</a></div></div>
+<div class="ttc" id="anamespacepythia8__conf__utils_html_ada4402c223453c2df122b01dff054416"><div class="ttname"><a href="namespacepythia8__conf__utils.html#ada4402c223453c2df122b01dff054416">pythia8_conf_utils.print_scale_factor</a></div><div class="ttdeci">def print_scale_factor(scaling_factor)</div><div class="ttdef"><b>Definition:</b> <a href="pythia8__conf__utils_8py_source.html#l00264">pythia8_conf_utils.py:264</a></div></div>
+<div class="ttc" id="anamespacepythia8__conf_html_a2b3c56a66f8fd6da2994e4f2a75a36ff"><div class="ttname"><a href="namespacepythia8__conf.html#a2b3c56a66f8fd6da2994e4f2a75a36ff">pythia8_conf.setup_pythia_inclusive</a></div><div class="ttdeci">def setup_pythia_inclusive(P8gen)</div><div class="ttdef"><b>Definition:</b> <a href="pythia8__conf_8py_source.html#l00286">pythia8_conf.py:286</a></div></div>
+<div class="ttc" id="anamespacepythia8__conf_html_a970a3da10fa8b541ea748fd7097e9cbb"><div class="ttname"><a href="namespacepythia8__conf.html#a970a3da10fa8b541ea748fd7097e9cbb">pythia8_conf.configurerpvsusy</a></div><div class="ttdeci">def configurerpvsusy(P8gen, mass, couplings, sfermionmass, benchmark, inclusive, deepCopy=False, debug=True)</div><div class="ttdef"><b>Definition:</b> <a href="pythia8__conf_8py_source.html#l00011">pythia8_conf.py:11</a></div></div>
+<div class="ttc" id="anamespacepythia8__conf_html_aa390a2413d3b5fc056162feeac9cd5e7"><div class="ttname"><a href="namespacepythia8__conf.html#aa390a2413d3b5fc056162feeac9cd5e7">pythia8_conf.configure</a></div><div class="ttdeci">def configure(P8gen, mass, production_couplings, decay_couplings, process_selection, deepCopy=False, debug=True)</div><div class="ttdef"><b>Definition:</b> <a href="pythia8__conf_8py_source.html#l00129">pythia8_conf.py:130</a></div></div>
+<div class="ttc" id="anamespacepythia8__conf_html_af74451298b8c0e13a73dc3e6120b21c0"><div class="ttname"><a href="namespacepythia8__conf.html#af74451298b8c0e13a73dc3e6120b21c0">pythia8_conf.add_hnl</a></div><div class="ttdeci">def add_hnl(P8gen, mass, decay_couplings)</div><div class="ttdef"><b>Definition:</b> <a href="pythia8__conf_8py_source.html#l00270">pythia8_conf.py:270</a></div></div>
+<div class="ttc" id="anamespacereadDecayTable_html_afdd4b332b245928769ff8d3156f8b843"><div class="ttname"><a href="namespacereadDecayTable.html#afdd4b332b245928769ff8d3156f8b843">readDecayTable.addHNLdecayChannels</a></div><div class="ttdeci">def addHNLdecayChannels(P8Gen, hnl, conffile=os.path.expandvars(' $FAIRSHIP/python/DecaySelection.conf'), verbose=True)</div><div class="ttdef"><b>Definition:</b> <a href="readDecayTable_8py_source.html#l00046">readDecayTable.py:46</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

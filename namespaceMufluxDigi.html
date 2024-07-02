@@ -144,21 +144,21 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="MufluxDigi_8py_source.html#l00026">26</a> of file <a class="el" href="MufluxDigi_8py_source.html">MufluxDigi.py</a>.</p>
-<div class="fragment"><div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keyword">def </span><a class="code" href="namespaceMufluxDigi.html#ae28465375a1e8dae699245c0a677f352">StripX</a>(x):</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="keywordflow">if</span> x &lt; -total_width/2. <span class="keywordflow">or</span> x &gt; total_width/2.:</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        print(<span class="stringliteral">&quot;WARNING: x coordinate outside sensitive volume!&quot;</span>,x)</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <span class="keywordflow">if</span> x &lt;  -total_width/2.  + EXT_STRIP_XWIDTH_L + V_STRIP_OFF/2. : strip_x = 184</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keywordflow">elif</span> x &gt;  total_width/2. - EXT_STRIP_XWIDTH_R - V_STRIP_OFF/2. : strip_x = 1</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <span class="keywordflow">else</span>:</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;      x_start = x - total_width/2. + EXT_STRIP_XWIDTH_R</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;      strip_x = -<a class="code" href="namespaceadd__noise__to__field.html#a4aa6f75233f1922a97b2d4c15285c18e">int</a>(x_start/reduced_width*182.)+1</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;      <span class="keywordflow">if</span> <span class="keywordflow">not</span> (0 &lt; strip_x &lt;= NR_VER_STRIPS-1):</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        print(<span class="stringliteral">&quot;WARNING: X strip outside range!&quot;</span>,x,strip_x)</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        strip_x = 0</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="namespaceadd__noise__to__field.html#a4aa6f75233f1922a97b2d4c15285c18e">int</a>(strip_x)</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
-<div class="ttc" id="anamespaceMufluxDigi_html_ae28465375a1e8dae699245c0a677f352"><div class="ttname"><a href="namespaceMufluxDigi.html#ae28465375a1e8dae699245c0a677f352">MufluxDigi.StripX</a></div><div class="ttdeci">def StripX(x)</div><div class="ttdef"><b>Definition:</b> <a href="MufluxDigi_8py_source.html#l00026">MufluxDigi.py:26</a></div></div>
+<p class="definition">Definition at line <a class="el" href="MufluxDigi_8py_source.html#l00024">24</a> of file <a class="el" href="MufluxDigi_8py_source.html">MufluxDigi.py</a>.</p>
+<div class="fragment"><div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="keyword">def </span><a class="code" href="namespaceMufluxDigi.html#ae28465375a1e8dae699245c0a677f352">StripX</a>(x):</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <span class="keywordflow">if</span> x &lt; -total_width/2. <span class="keywordflow">or</span> x &gt; total_width/2.:</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        print(<span class="stringliteral">&quot;WARNING: x coordinate outside sensitive volume!&quot;</span>,x)</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="keywordflow">if</span> x &lt;  -total_width/2.  + EXT_STRIP_XWIDTH_L + V_STRIP_OFF/2. : strip_x = 184</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keywordflow">elif</span> x &gt;  total_width/2. - EXT_STRIP_XWIDTH_R - V_STRIP_OFF/2. : strip_x = 1</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <span class="keywordflow">else</span>:</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;      x_start = x - total_width/2. + EXT_STRIP_XWIDTH_R</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;      strip_x = -<a class="code" href="namespaceadd__noise__to__field.html#a4aa6f75233f1922a97b2d4c15285c18e">int</a>(x_start/reduced_width*182.)+1</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;      <span class="keywordflow">if</span> <span class="keywordflow">not</span> (0 &lt; strip_x &lt;= NR_VER_STRIPS-1):</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        print(<span class="stringliteral">&quot;WARNING: X strip outside range!&quot;</span>,x,strip_x)</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        strip_x = 0</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="namespaceadd__noise__to__field.html#a4aa6f75233f1922a97b2d4c15285c18e">int</a>(strip_x)</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
+<div class="ttc" id="anamespaceMufluxDigi_html_ae28465375a1e8dae699245c0a677f352"><div class="ttname"><a href="namespaceMufluxDigi.html#ae28465375a1e8dae699245c0a677f352">MufluxDigi.StripX</a></div><div class="ttdeci">def StripX(x)</div><div class="ttdef"><b>Definition:</b> <a href="MufluxDigi_8py_source.html#l00024">MufluxDigi.py:24</a></div></div>
 <div class="ttc" id="anamespaceadd__noise__to__field_html_a4aa6f75233f1922a97b2d4c15285c18e"><div class="ttname"><a href="namespaceadd__noise__to__field.html#a4aa6f75233f1922a97b2d4c15285c18e">add_noise_to_field.int</a></div><div class="ttdeci">int</div><div class="ttdef"><b>Definition:</b> <a href="add__noise__to__field_8py_source.html#l00057">add_noise_to_field.py:57</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -179,21 +179,21 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="MufluxDigi_8py_source.html#l00039">39</a> of file <a class="el" href="MufluxDigi_8py_source.html">MufluxDigi.py</a>.</p>
-<div class="fragment"><div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="keyword">def </span><a class="code" href="namespaceMufluxDigi.html#a68c8f20a456878fae0510b3ae06c1527">StripY</a>(y):</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    STRIP_YWIDTH = 0.8625  <span class="comment"># internal STRIP H, WIDTH, in cm</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    EXT_STRIP_YWIDTH = 0.3  <span class="comment"># measured external STRIP H, WIDTH, in cm</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    H_STRIP_OFF = 0.1983</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    NR_HORI_STRIPS = 116</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    total_height = (NR_HORI_STRIPS - 2) * STRIP_YWIDTH + 2 * EXT_STRIP_YWIDTH + (NR_HORI_STRIPS - 1) * H_STRIP_OFF</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    y_start = total_height / 2.</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    strip_y = (y_start - EXT_STRIP_YWIDTH + 1.5 * STRIP_YWIDTH + H_STRIP_OFF - y)//(STRIP_YWIDTH + H_STRIP_OFF)</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keywordflow">if</span> <span class="keywordflow">not</span> (0 &lt; strip_y &lt;= NR_HORI_STRIPS):</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        print(<span class="stringliteral">&quot;WARNING: Y strip outside range!&quot;</span>)</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        strip_y = 0</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="namespaceadd__noise__to__field.html#a4aa6f75233f1922a97b2d4c15285c18e">int</a>(strip_y)</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
-<div class="ttc" id="anamespaceMufluxDigi_html_a68c8f20a456878fae0510b3ae06c1527"><div class="ttname"><a href="namespaceMufluxDigi.html#a68c8f20a456878fae0510b3ae06c1527">MufluxDigi.StripY</a></div><div class="ttdeci">def StripY(y)</div><div class="ttdef"><b>Definition:</b> <a href="MufluxDigi_8py_source.html#l00039">MufluxDigi.py:39</a></div></div>
+<p class="definition">Definition at line <a class="el" href="MufluxDigi_8py_source.html#l00037">37</a> of file <a class="el" href="MufluxDigi_8py_source.html">MufluxDigi.py</a>.</p>
+<div class="fragment"><div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keyword">def </span><a class="code" href="namespaceMufluxDigi.html#a68c8f20a456878fae0510b3ae06c1527">StripY</a>(y):</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    STRIP_YWIDTH = 0.8625  <span class="comment"># internal STRIP H, WIDTH, in cm</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    EXT_STRIP_YWIDTH = 0.3  <span class="comment"># measured external STRIP H, WIDTH, in cm</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    H_STRIP_OFF = 0.1983</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    NR_HORI_STRIPS = 116</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    total_height = (NR_HORI_STRIPS - 2) * STRIP_YWIDTH + 2 * EXT_STRIP_YWIDTH + (NR_HORI_STRIPS - 1) * H_STRIP_OFF</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    y_start = total_height / 2.</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    strip_y = (y_start - EXT_STRIP_YWIDTH + 1.5 * STRIP_YWIDTH + H_STRIP_OFF - y)//(STRIP_YWIDTH + H_STRIP_OFF)</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keywordflow">if</span> <span class="keywordflow">not</span> (0 &lt; strip_y &lt;= NR_HORI_STRIPS):</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        print(<span class="stringliteral">&quot;WARNING: Y strip outside range!&quot;</span>)</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        strip_y = 0</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="namespaceadd__noise__to__field.html#a4aa6f75233f1922a97b2d4c15285c18e">int</a>(strip_y)</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
+<div class="ttc" id="anamespaceMufluxDigi_html_a68c8f20a456878fae0510b3ae06c1527"><div class="ttname"><a href="namespaceMufluxDigi.html#a68c8f20a456878fae0510b3ae06c1527">MufluxDigi.StripY</a></div><div class="ttdeci">def StripY(y)</div><div class="ttdef"><b>Definition:</b> <a href="MufluxDigi_8py_source.html#l00037">MufluxDigi.py:37</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -210,7 +210,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="MufluxDigi_8py_source.html#l00013">13</a> of file <a class="el" href="MufluxDigi_8py_source.html">MufluxDigi.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="MufluxDigi_8py_source.html#l00011">11</a> of file <a class="el" href="MufluxDigi_8py_source.html">MufluxDigi.py</a>.</p>
 
 </div>
 </div>
@@ -226,7 +226,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="MufluxDigi_8py_source.html#l00018">18</a> of file <a class="el" href="MufluxDigi_8py_source.html">MufluxDigi.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="MufluxDigi_8py_source.html#l00016">16</a> of file <a class="el" href="MufluxDigi_8py_source.html">MufluxDigi.py</a>.</p>
 
 </div>
 </div>
@@ -242,7 +242,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="MufluxDigi_8py_source.html#l00019">19</a> of file <a class="el" href="MufluxDigi_8py_source.html">MufluxDigi.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="MufluxDigi_8py_source.html#l00017">17</a> of file <a class="el" href="MufluxDigi_8py_source.html">MufluxDigi.py</a>.</p>
 
 </div>
 </div>
@@ -258,7 +258,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="MufluxDigi_8py_source.html#l00014">14</a> of file <a class="el" href="MufluxDigi_8py_source.html">MufluxDigi.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="MufluxDigi_8py_source.html#l00012">12</a> of file <a class="el" href="MufluxDigi_8py_source.html">MufluxDigi.py</a>.</p>
 
 </div>
 </div>
@@ -274,7 +274,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="MufluxDigi_8py_source.html#l00021">21</a> of file <a class="el" href="MufluxDigi_8py_source.html">MufluxDigi.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="MufluxDigi_8py_source.html#l00019">19</a> of file <a class="el" href="MufluxDigi_8py_source.html">MufluxDigi.py</a>.</p>
 
 </div>
 </div>
@@ -290,7 +290,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="MufluxDigi_8py_source.html#l00023">23</a> of file <a class="el" href="MufluxDigi_8py_source.html">MufluxDigi.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="MufluxDigi_8py_source.html#l00021">21</a> of file <a class="el" href="MufluxDigi_8py_source.html">MufluxDigi.py</a>.</p>
 
 </div>
 </div>
@@ -306,7 +306,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="MufluxDigi_8py_source.html#l00011">11</a> of file <a class="el" href="MufluxDigi_8py_source.html">MufluxDigi.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="MufluxDigi_8py_source.html#l00009">9</a> of file <a class="el" href="MufluxDigi_8py_source.html">MufluxDigi.py</a>.</p>
 
 </div>
 </div>
@@ -322,7 +322,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="MufluxDigi_8py_source.html#l00010">10</a> of file <a class="el" href="MufluxDigi_8py_source.html">MufluxDigi.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="MufluxDigi_8py_source.html#l00008">8</a> of file <a class="el" href="MufluxDigi_8py_source.html">MufluxDigi.py</a>.</p>
 
 </div>
 </div>
@@ -338,7 +338,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="MufluxDigi_8py_source.html#l00017">17</a> of file <a class="el" href="MufluxDigi_8py_source.html">MufluxDigi.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="MufluxDigi_8py_source.html#l00015">15</a> of file <a class="el" href="MufluxDigi_8py_source.html">MufluxDigi.py</a>.</p>
 
 </div>
 </div>
@@ -354,7 +354,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="MufluxDigi_8py_source.html#l00022">22</a> of file <a class="el" href="MufluxDigi_8py_source.html">MufluxDigi.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="MufluxDigi_8py_source.html#l00020">20</a> of file <a class="el" href="MufluxDigi_8py_source.html">MufluxDigi.py</a>.</p>
 
 </div>
 </div>
@@ -370,7 +370,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="MufluxDigi_8py_source.html#l00020">20</a> of file <a class="el" href="MufluxDigi_8py_source.html">MufluxDigi.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="MufluxDigi_8py_source.html#l00018">18</a> of file <a class="el" href="MufluxDigi_8py_source.html">MufluxDigi.py</a>.</p>
 
 </div>
 </div>

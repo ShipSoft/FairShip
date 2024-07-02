@@ -83,7 +83,6 @@ $(document).ready(function(){initNavTree('classrootpyPickler_1_1Unpickler.html',
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classrootpyPickler_1_1Unpickler-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -120,11 +119,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a01324ede38d7dc8d7dca81b1c71a812d"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrootpyPickler_1_1Unpickler.html#a01324ede38d7dc8d7dca81b1c71a812d">find_class</a> (self, module, name)</td></tr>
 <tr class="separator:a01324ede38d7dc8d7dca81b1c71a812d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
-Static Public Attributes</h2></td></tr>
-<tr class="memitem:ad3f1020ce8a7614ebc6c73e0025046e7"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrootpyPickler_1_1Unpickler.html#ad3f1020ce8a7614ebc6c73e0025046e7">find_global</a> = <a class="el" href="classrootpyPickler_1_1Unpickler.html#a01324ede38d7dc8d7dca81b1c71a812d">find_class</a></td></tr>
-<tr class="separator:ad3f1020ce8a7614ebc6c73e0025046e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
 <tr class="memitem:a06f0f2651888747c0c02b8a6c4a59ada"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrootpyPickler_1_1Unpickler.html#a06f0f2651888747c0c02b8a6c4a59ada">__use_proxy</a></td></tr>
@@ -140,7 +134,7 @@ Private Attributes</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="rootpyPickler_8py_source.html#l00219">219</a> of file <a class="el" href="rootpyPickler_8py_source.html">rootpyPickler.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rootpyPickler_8py_source.html#l00203">203</a> of file <a class="el" href="rootpyPickler_8py_source.html">rootpyPickler.py</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a1399e0a8bb1df37191e6c9ffccfc281f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1399e0a8bb1df37191e6c9ffccfc281f">&#9670;&nbsp;</a></span>__init__()</h2>
@@ -182,59 +176,56 @@ Private Attributes</h2></td></tr>
 <pre class="fragment">Create a ROOT unpickler.
 `file` should be a ROOT TFile.
 </pre> 
-<p class="definition">Definition at line <a class="el" href="rootpyPickler_8py_source.html#l00220">220</a> of file <a class="el" href="rootpyPickler_8py_source.html">rootpyPickler.py</a>.</p>
-<div class="fragment"><div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;    <span class="keyword">def </span>__init__(self, root_file, use_proxy=True, use_hash=False):</div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;        <span class="stringliteral">&quot;&quot;&quot;Create a ROOT unpickler.</span></div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;<span class="stringliteral">        `file` should be a ROOT TFile.</span></div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;<span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;        <span class="keyword">global</span> xserial</div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;        xserial += 1</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;        self.__use_proxy = use_proxy</div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;        self.__file = root_file</div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;        self.__io = IO_Wrapper()</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;        self.__n = 0</div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;        self.__serial = <span class="stringliteral">&#39;{0:d}-&#39;</span>.format(xserial).encode(<span class="stringliteral">&#39;utf-8&#39;</span>)</div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;        xdict[self.__serial] = root_file</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;        <span class="keywordflow">if</span> sys.version_info[0] &lt; 3:</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;            pickle.Unpickler.__init__(self, self.__io)</div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;        <span class="keywordflow">else</span>:</div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;            super(Unpickler, self).__init__(self.__io)</div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160; </div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;        <span class="keywordflow">if</span> use_hash:</div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;            htab = {}</div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;            ctab = {}</div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;            <span class="keywordflow">for</span> k <span class="keywordflow">in</span> root_file.GetListOfKeys():</div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;                nm = k.GetName()</div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;                cy = k.GetCycle()</div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;                htab[(nm, cy)] = k</div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;                <span class="keywordflow">if</span> cy &gt; ctab.get(nm, 0):</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;                    ctab[nm] = cy</div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;                    htab[(nm, 9999)] = k</div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;            root_file._htab = htab</div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;            oget = root_file.Get</div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160; </div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;            <span class="keyword">def </span>xget(nm0):</div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;                nm = nm0</div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;                ipos = nm.find(<span class="stringliteral">&#39;;&#39;</span>)</div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;                <span class="keywordflow">if</span> ipos &gt;= 0:</div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;                    cy = nm[ipos+1]</div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;                    <span class="keywordflow">if</span> cy == <span class="stringliteral">&#39;*&#39;</span>:</div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;                        cy = 10000</div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;                    <span class="keywordflow">else</span>:</div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;                        cy = <a class="code" href="namespaceadd__noise__to__field.html#a4aa6f75233f1922a97b2d4c15285c18e">int</a>(cy)</div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;                    nm = nm[:ipos - 1]</div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;                <span class="keywordflow">else</span>:</div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;                    cy = 9999</div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;                ret = htab.get((nm, cy), <span class="keywordtype">None</span>)</div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;                <span class="keywordflow">if</span> <span class="keywordflow">not</span> ret:</div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;                    print((<span class="stringliteral">&quot;warning didn&#39;t find {0} {1} {2}&quot;</span>,nm, cy, len(htab) ))</div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;                    <span class="keywordflow">return</span> oget(nm0)</div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;                <span class="comment">#ctx = ROOT.TDirectory.TContext(file)</span></div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;                ret = ret.ReadObj()</div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;                <span class="comment">#del ctx</span></div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;                <span class="keywordflow">return</span> ret</div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;            root_file.Get = xget</div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160; </div>
+<p class="definition">Definition at line <a class="el" href="rootpyPickler_8py_source.html#l00204">204</a> of file <a class="el" href="rootpyPickler_8py_source.html">rootpyPickler.py</a>.</p>
+<div class="fragment"><div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;    <span class="keyword">def </span>__init__(self, root_file, use_proxy=True, use_hash=False):</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;        <span class="stringliteral">&quot;&quot;&quot;Create a ROOT unpickler.</span></div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;<span class="stringliteral">        `file` should be a ROOT TFile.</span></div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;<span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;        <span class="keyword">global</span> xserial</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;        xserial += 1</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;        self.__use_proxy = use_proxy</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;        self.__file = root_file</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;        self.__io = IO_Wrapper()</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;        self.__n = 0</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;        self.__serial = <span class="stringliteral">&#39;{0:d}-&#39;</span>.format(xserial).encode(<span class="stringliteral">&#39;utf-8&#39;</span>)</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;        xdict[self.__serial] = root_file</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;        super(Unpickler, self).__init__(self.__io)</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160; </div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;        <span class="keywordflow">if</span> use_hash:</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;            htab = {}</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;            ctab = {}</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;            <span class="keywordflow">for</span> k <span class="keywordflow">in</span> root_file.GetListOfKeys():</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;                nm = k.GetName()</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;                cy = k.GetCycle()</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;                htab[(nm, cy)] = k</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;                <span class="keywordflow">if</span> cy &gt; ctab.get(nm, 0):</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;                    ctab[nm] = cy</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;                    htab[(nm, 9999)] = k</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;            root_file._htab = htab</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;            oget = root_file.Get</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160; </div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;            <span class="keyword">def </span>xget(nm0):</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;                nm = nm0</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;                ipos = nm.find(<span class="stringliteral">&#39;;&#39;</span>)</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;                <span class="keywordflow">if</span> ipos &gt;= 0:</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;                    cy = nm[ipos+1]</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;                    <span class="keywordflow">if</span> cy == <span class="stringliteral">&#39;*&#39;</span>:</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;                        cy = 10000</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;                    <span class="keywordflow">else</span>:</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;                        cy = <a class="code" href="namespaceadd__noise__to__field.html#a4aa6f75233f1922a97b2d4c15285c18e">int</a>(cy)</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;                    nm = nm[:ipos - 1]</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;                <span class="keywordflow">else</span>:</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;                    cy = 9999</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;                ret = htab.get((nm, cy), <span class="keywordtype">None</span>)</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;                <span class="keywordflow">if</span> <span class="keywordflow">not</span> ret:</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;                    print((<span class="stringliteral">&quot;warning didn&#39;t find {0} {1} {2}&quot;</span>,nm, cy, len(htab) ))</div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;                    <span class="keywordflow">return</span> oget(nm0)</div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;                <span class="comment">#ctx = ROOT.TDirectory.TContext(file)</span></div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;                ret = ret.ReadObj()</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;                <span class="comment">#del ctx</span></div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;                <span class="keywordflow">return</span> ret</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;            root_file.Get = xget</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160; </div>
 <div class="ttc" id="anamespaceadd__noise__to__field_html_a4aa6f75233f1922a97b2d4c15285c18e"><div class="ttname"><a href="namespaceadd__noise__to__field.html#a4aa6f75233f1922a97b2d4c15285c18e">add_noise_to_field.int</a></div><div class="ttdeci">int</div><div class="ttdef"><b>Definition:</b> <a href="add__noise__to__field_8py_source.html#l00057">add_noise_to_field.py:57</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -272,36 +263,37 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rootpyPickler_8py_source.html#l00302">302</a> of file <a class="el" href="rootpyPickler_8py_source.html">rootpyPickler.py</a>.</p>
-<div class="fragment"><div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;    <span class="keyword">def </span>find_class(self, module, name):</div>
-<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;        <span class="keywordflow">try</span>:</div>
-<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;            <span class="keywordflow">try</span>:</div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;                </div>
-<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;                <span class="keywordflow">if</span> sys.version_info[0] &gt;2:</div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;                    <span class="keywordflow">if</span> module == <span class="stringliteral">&#39;copy_reg&#39;</span>: module = <span class="stringliteral">&#39;copyreg&#39;</span></div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;                    <span class="keywordflow">if</span> module == <span class="stringliteral">&#39;__builtin__&#39;</span>: module = <span class="stringliteral">&#39;builtins&#39;</span></div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;                __import__(module)</div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;                mod = sys.modules[module]</div>
-<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;            <span class="keywordflow">except</span> ImportError:</div>
-<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;                <span class="comment">#log.info(&quot;Making dummy module {0}&quot;.format(module))</span></div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160; </div>
-<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;                <span class="keyword">class </span>DummyModule:</div>
-<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;                    <span class="keywordflow">pass</span></div>
-<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160; </div>
-<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;                mod = DummyModule()</div>
-<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;                sys.modules[module] = mod</div>
-<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;            klass = getattr(mod, name)</div>
-<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;            <span class="keywordflow">return</span> klass</div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;        <span class="keywordflow">except</span> AttributeError:</div>
-<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;            <span class="comment">#log.info(&quot;Making dummy class {0}.{1}&quot;.format(module, name))</span></div>
-<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;            mod = sys.modules[module]</div>
-<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160; </div>
-<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;            <span class="keyword">class </span>Dummy(object):</div>
-<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;                <span class="keywordflow">pass</span></div>
-<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160; </div>
-<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;            setattr(mod, name, Dummy)</div>
-<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;            <span class="keywordflow">return</span> Dummy</div>
-<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160; </div>
+<p class="definition">Definition at line <a class="el" href="rootpyPickler_8py_source.html#l00280">280</a> of file <a class="el" href="rootpyPickler_8py_source.html">rootpyPickler.py</a>.</p>
+<div class="fragment"><div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;    <span class="keyword">def </span>find_class(self, module, name):</div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;        <span class="keywordflow">try</span>:</div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;            <span class="keywordflow">try</span>:</div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;                </div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;                <span class="keywordflow">if</span> sys.version_info[0] &gt; 2:</div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;                    <span class="keywordflow">if</span> module == <span class="stringliteral">&#39;copy_reg&#39;</span>: module = <span class="stringliteral">&#39;copyreg&#39;</span></div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;                    <span class="keywordflow">if</span> module == <span class="stringliteral">&#39;__builtin__&#39;</span>: module = <span class="stringliteral">&#39;builtins&#39;</span></div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;                __import__(module)</div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;                mod = sys.modules[module]</div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;            <span class="keywordflow">except</span> ImportError:</div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;                <span class="comment">#log.info(&quot;Making dummy module {0}&quot;.format(module))</span></div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160; </div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;                <span class="keyword">class </span>DummyModule:</div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;                    <span class="keywordflow">pass</span></div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160; </div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;                mod = DummyModule()</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;                sys.modules[module] = mod</div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;            klass = getattr(mod, name)</div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;            <span class="keywordflow">return</span> klass</div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;        <span class="keywordflow">except</span> AttributeError:</div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;            <span class="comment">#log.info(&quot;Making dummy class {0}.{1}&quot;.format(module, name))</span></div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;            mod = sys.modules[module]</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160; </div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;            <span class="keyword">class </span>Dummy(object):</div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;                <span class="keywordflow">pass</span></div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160; </div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;            setattr(mod, name, Dummy)</div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;            <span class="keywordflow">return</span> Dummy</div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160; </div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160; </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -331,29 +323,26 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <pre class="fragment">Read a pickled object representation from the open file.</pre> 
-<p class="definition">Definition at line <a class="el" href="rootpyPickler_8py_source.html#l00272">272</a> of file <a class="el" href="rootpyPickler_8py_source.html">rootpyPickler.py</a>.</p>
-<div class="fragment"><div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;    <span class="keyword">def </span><a class="code" href="namespacerootpyPickler.html#a512bac7671f8f0f8505329eae04e5e4d">load</a>(self, key=None):</div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;        <span class="stringliteral">&quot;&quot;&quot;Read a pickled object representation from the open file.&quot;&quot;&quot;</span></div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;        <span class="keywordflow">if</span> key <span class="keywordflow">is</span> <span class="keywordtype">None</span>:</div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;            key = <span class="stringliteral">&#39;_pickle&#39;</span></div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;        obj = <span class="keywordtype">None</span></div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;        <span class="keywordflow">if</span> _compat_hooks:</div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;            save = _compat_hooks[0]()</div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;        <span class="keywordflow">try</span>:</div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;            self.__n += 1</div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;            s = self.__file.Get(key + <span class="stringliteral">&#39;;{0:d}&#39;</span>.format(self.__n))</div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;            self.__io.setvalue(s.GetName())</div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;            <span class="keywordflow">if</span> sys.version_info[0] &lt; 3:</div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;                obj = pickle.Unpickler.load(self)</div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;            <span class="keywordflow">else</span>:</div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;                obj = super(Unpickler, self).<a class="code" href="namespacerootpyPickler.html#a512bac7671f8f0f8505329eae04e5e4d">load</a>()</div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;            self.__io.reopen()</div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;        <span class="keywordflow">finally</span>:</div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;            <span class="keywordflow">if</span> _compat_hooks:</div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;                save = _compat_hooks[1](save)</div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;        <span class="keywordflow">return</span> obj</div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160; </div>
-<div class="ttc" id="anamespacerootpyPickler_html_a512bac7671f8f0f8505329eae04e5e4d"><div class="ttname"><a href="namespacerootpyPickler.html#a512bac7671f8f0f8505329eae04e5e4d">rootpyPickler.load</a></div><div class="ttdeci">def load(root_file, use_proxy=1, key=None)</div><div class="ttdef"><b>Definition:</b> <a href="rootpyPickler_8py_source.html#l00367">rootpyPickler.py:367</a></div></div>
+<p class="definition">Definition at line <a class="el" href="rootpyPickler_8py_source.html#l00253">253</a> of file <a class="el" href="rootpyPickler_8py_source.html">rootpyPickler.py</a>.</p>
+<div class="fragment"><div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;    <span class="keyword">def </span><a class="code" href="namespacerootpyPickler.html#a512bac7671f8f0f8505329eae04e5e4d">load</a>(self, key=None):</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;        <span class="stringliteral">&quot;&quot;&quot;Read a pickled object representation from the open file.&quot;&quot;&quot;</span></div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;        <span class="keywordflow">if</span> key <span class="keywordflow">is</span> <span class="keywordtype">None</span>:</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;            key = <span class="stringliteral">&#39;_pickle&#39;</span></div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;        obj = <span class="keywordtype">None</span></div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;        <span class="keywordflow">if</span> _compat_hooks:</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;            save = _compat_hooks[0]()</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;        <span class="keywordflow">try</span>:</div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;            self.__n += 1</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;            s = self.__file.Get(key + <span class="stringliteral">&#39;;{0:d}&#39;</span>.format(self.__n))</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;            self.__io.setvalue(s.GetName())</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;            obj = super(Unpickler, self).<a class="code" href="namespacerootpyPickler.html#a512bac7671f8f0f8505329eae04e5e4d">load</a>()</div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;            self.__io.reopen()</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;        <span class="keywordflow">finally</span>:</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;            <span class="keywordflow">if</span> _compat_hooks:</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;                save = _compat_hooks[1](save)</div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;        <span class="keywordflow">return</span> obj</div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160; </div>
+<div class="ttc" id="anamespacerootpyPickler_html_a512bac7671f8f0f8505329eae04e5e4d"><div class="ttname"><a href="namespacerootpyPickler.html#a512bac7671f8f0f8505329eae04e5e4d">rootpyPickler.load</a></div><div class="ttdeci">def load(root_file, use_proxy=1, key=None)</div><div class="ttdef"><b>Definition:</b> <a href="rootpyPickler_8py_source.html#l00342">rootpyPickler.py:342</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -383,16 +372,16 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rootpyPickler_8py_source.html#l00293">293</a> of file <a class="el" href="rootpyPickler_8py_source.html">rootpyPickler.py</a>.</p>
-<div class="fragment"><div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;    <span class="keyword">def </span>persistent_load(self, pid):</div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;        <span class="keywordflow">if</span> self.__use_proxy:</div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;            obj = ROOT_Proxy(self.__file, pid.decode(<span class="stringliteral">&#39;utf-8&#39;</span>))</div>
-<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;        <span class="keywordflow">else</span>:</div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;            obj = self.__file.Get(pid)</div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;        <span class="comment">#log.debug(&quot;load {0} {1}&quot;.format(pid, obj))</span></div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;        xdict[self.__serial + pid] = obj</div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;        <span class="keywordflow">return</span> obj</div>
-<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160; </div>
+<p class="definition">Definition at line <a class="el" href="rootpyPickler_8py_source.html#l00271">271</a> of file <a class="el" href="rootpyPickler_8py_source.html">rootpyPickler.py</a>.</p>
+<div class="fragment"><div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;    <span class="keyword">def </span>persistent_load(self, pid):</div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;        <span class="keywordflow">if</span> self.__use_proxy:</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;            obj = ROOT_Proxy(self.__file, pid.decode(<span class="stringliteral">&#39;utf-8&#39;</span>))</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;        <span class="keywordflow">else</span>:</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;            obj = self.__file.Get(pid)</div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;        <span class="comment">#log.debug(&quot;load {0} {1}&quot;.format(pid, obj))</span></div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;        xdict[self.__serial + pid] = obj</div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;        <span class="keywordflow">return</span> obj</div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160; </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -417,7 +406,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rootpyPickler_8py_source.html#l00227">227</a> of file <a class="el" href="rootpyPickler_8py_source.html">rootpyPickler.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rootpyPickler_8py_source.html#l00211">211</a> of file <a class="el" href="rootpyPickler_8py_source.html">rootpyPickler.py</a>.</p>
 
 </div>
 </div>
@@ -441,7 +430,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rootpyPickler_8py_source.html#l00228">228</a> of file <a class="el" href="rootpyPickler_8py_source.html">rootpyPickler.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rootpyPickler_8py_source.html#l00212">212</a> of file <a class="el" href="rootpyPickler_8py_source.html">rootpyPickler.py</a>.</p>
 
 </div>
 </div>
@@ -465,7 +454,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rootpyPickler_8py_source.html#l00229">229</a> of file <a class="el" href="rootpyPickler_8py_source.html">rootpyPickler.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rootpyPickler_8py_source.html#l00213">213</a> of file <a class="el" href="rootpyPickler_8py_source.html">rootpyPickler.py</a>.</p>
 
 </div>
 </div>
@@ -489,7 +478,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rootpyPickler_8py_source.html#l00230">230</a> of file <a class="el" href="rootpyPickler_8py_source.html">rootpyPickler.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rootpyPickler_8py_source.html#l00214">214</a> of file <a class="el" href="rootpyPickler_8py_source.html">rootpyPickler.py</a>.</p>
 
 </div>
 </div>
@@ -513,31 +502,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rootpyPickler_8py_source.html#l00226">226</a> of file <a class="el" href="rootpyPickler_8py_source.html">rootpyPickler.py</a>.</p>
-
-</div>
-</div>
-<a id="ad3f1020ce8a7614ebc6c73e0025046e7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad3f1020ce8a7614ebc6c73e0025046e7">&#9670;&nbsp;</a></span>find_global</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">def rootpyPickler.Unpickler.find_global = <a class="el" href="classrootpyPickler_1_1Unpickler.html#a01324ede38d7dc8d7dca81b1c71a812d">find_class</a></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="rootpyPickler_8py_source.html#l00336">336</a> of file <a class="el" href="rootpyPickler_8py_source.html">rootpyPickler.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rootpyPickler_8py_source.html#l00210">210</a> of file <a class="el" href="rootpyPickler_8py_source.html">rootpyPickler.py</a>.</p>
 
 </div>
 </div>

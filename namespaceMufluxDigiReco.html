@@ -126,25 +126,25 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="MufluxDigiReco_8py_source.html#l00023">23</a> of file <a class="el" href="MufluxDigiReco_8py_source.html">MufluxDigiReco.py</a>.</p>
-<div class="fragment"><div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keyword">def </span><a class="code" href="namespaceMufluxDigiReco.html#a2a57e6b404bf123eedf46d6bb00e91ce">StripX</a>(x):</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="comment"># defining constants for rpc properties</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    STRIP_XWIDTH = 0.8625  <span class="comment"># internal STRIP V, WIDTH, in cm</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    EXT_STRIP_XWIDTH_L = 0.9625  <span class="comment"># nominal (R&amp;L) and Left measured external STRIP V, WIDTH, in cm (beam along z, out from the V plane)</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    EXT_STRIP_XWIDTH_R = 0.86  <span class="comment"># measured Right external STRIP V, WIDTH,in cm (beam along z, out from the V plane)</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    V_STRIP_OFF = 0.200</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    NR_VER_STRIPS = 184</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    total_width = (NR_VER_STRIPS - 2) * STRIP_XWIDTH + EXT_STRIP_XWIDTH_L + EXT_STRIP_XWIDTH_R + (NR_VER_STRIPS - 1) * V_STRIP_OFF</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    x_start = (total_width - EXT_STRIP_XWIDTH_R + EXT_STRIP_XWIDTH_L) / 2</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="comment"># calculating strip as an integer</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    strip_x = (x_start - EXT_STRIP_XWIDTH_L + 1.5 * STRIP_XWIDTH + V_STRIP_OFF - x)//(STRIP_XWIDTH + V_STRIP_OFF)</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="keywordflow">if</span> <span class="keywordflow">not</span> (0 &lt; strip_x &lt;= NR_VER_STRIPS):</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        print(<span class="stringliteral">&quot;WARNING: X strip outside range!&quot;</span>)</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        strip_x = 0</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="namespaceadd__noise__to__field.html#a4aa6f75233f1922a97b2d4c15285c18e">int</a>(strip_x)</div>
+<p class="definition">Definition at line <a class="el" href="MufluxDigiReco_8py_source.html#l00022">22</a> of file <a class="el" href="MufluxDigiReco_8py_source.html">MufluxDigiReco.py</a>.</p>
+<div class="fragment"><div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keyword">def </span><a class="code" href="namespaceMufluxDigiReco.html#a2a57e6b404bf123eedf46d6bb00e91ce">StripX</a>(x):</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <span class="comment"># defining constants for rpc properties</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    STRIP_XWIDTH = 0.8625  <span class="comment"># internal STRIP V, WIDTH, in cm</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    EXT_STRIP_XWIDTH_L = 0.9625  <span class="comment"># nominal (R&amp;L) and Left measured external STRIP V, WIDTH, in cm (beam along z, out from the V plane)</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    EXT_STRIP_XWIDTH_R = 0.86  <span class="comment"># measured Right external STRIP V, WIDTH,in cm (beam along z, out from the V plane)</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    V_STRIP_OFF = 0.200</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    NR_VER_STRIPS = 184</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    total_width = (NR_VER_STRIPS - 2) * STRIP_XWIDTH + EXT_STRIP_XWIDTH_L + EXT_STRIP_XWIDTH_R + (NR_VER_STRIPS - 1) * V_STRIP_OFF</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    x_start = (total_width - EXT_STRIP_XWIDTH_R + EXT_STRIP_XWIDTH_L) / 2</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <span class="comment"># calculating strip as an integer</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    strip_x = (x_start - EXT_STRIP_XWIDTH_L + 1.5 * STRIP_XWIDTH + V_STRIP_OFF - x)//(STRIP_XWIDTH + V_STRIP_OFF)</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keywordflow">if</span> <span class="keywordflow">not</span> (0 &lt; strip_x &lt;= NR_VER_STRIPS):</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        print(<span class="stringliteral">&quot;WARNING: X strip outside range!&quot;</span>)</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        strip_x = 0</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="namespaceadd__noise__to__field.html#a4aa6f75233f1922a97b2d4c15285c18e">int</a>(strip_x)</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
-<div class="ttc" id="anamespaceMufluxDigiReco_html_a2a57e6b404bf123eedf46d6bb00e91ce"><div class="ttname"><a href="namespaceMufluxDigiReco.html#a2a57e6b404bf123eedf46d6bb00e91ce">MufluxDigiReco.StripX</a></div><div class="ttdeci">def StripX(x)</div><div class="ttdef"><b>Definition:</b> <a href="MufluxDigiReco_8py_source.html#l00023">MufluxDigiReco.py:23</a></div></div>
+<div class="ttc" id="anamespaceMufluxDigiReco_html_a2a57e6b404bf123eedf46d6bb00e91ce"><div class="ttname"><a href="namespaceMufluxDigiReco.html#a2a57e6b404bf123eedf46d6bb00e91ce">MufluxDigiReco.StripX</a></div><div class="ttdeci">def StripX(x)</div><div class="ttdef"><b>Definition:</b> <a href="MufluxDigiReco_8py_source.html#l00022">MufluxDigiReco.py:22</a></div></div>
 <div class="ttc" id="anamespaceadd__noise__to__field_html_a4aa6f75233f1922a97b2d4c15285c18e"><div class="ttname"><a href="namespaceadd__noise__to__field.html#a4aa6f75233f1922a97b2d4c15285c18e">add_noise_to_field.int</a></div><div class="ttdeci">int</div><div class="ttdef"><b>Definition:</b> <a href="add__noise__to__field_8py_source.html#l00057">add_noise_to_field.py:57</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -165,21 +165,21 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="MufluxDigiReco_8py_source.html#l00040">40</a> of file <a class="el" href="MufluxDigiReco_8py_source.html">MufluxDigiReco.py</a>.</p>
-<div class="fragment"><div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="keyword">def </span><a class="code" href="namespaceMufluxDigiReco.html#a5215030d8f51e0ea8208a19e1eff233e">StripY</a>(y):</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    STRIP_YWIDTH = 0.8625  <span class="comment"># internal STRIP H, WIDTH, in cm</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    EXT_STRIP_YWIDTH = 0.3  <span class="comment"># measured external STRIP H, WIDTH, in cm</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    H_STRIP_OFF = 0.1983</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    NR_HORI_STRIPS = 116</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    total_height = (NR_HORI_STRIPS - 2) * STRIP_YWIDTH + 2 * EXT_STRIP_YWIDTH + (NR_HORI_STRIPS - 1) * H_STRIP_OFF</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    y_start = total_height / 2</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    strip_y = (y_start - EXT_STRIP_YWIDTH + 1.5 * STRIP_YWIDTH + H_STRIP_OFF - y)//(STRIP_YWIDTH + H_STRIP_OFF)</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keywordflow">if</span> <span class="keywordflow">not</span> (0 &lt; strip_y &lt;= NR_HORI_STRIPS):</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        print(<span class="stringliteral">&quot;WARNING: Y strip outside range!&quot;</span>)</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        strip_y = 0</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="namespaceadd__noise__to__field.html#a4aa6f75233f1922a97b2d4c15285c18e">int</a>(strip_y)</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
-<div class="ttc" id="anamespaceMufluxDigiReco_html_a5215030d8f51e0ea8208a19e1eff233e"><div class="ttname"><a href="namespaceMufluxDigiReco.html#a5215030d8f51e0ea8208a19e1eff233e">MufluxDigiReco.StripY</a></div><div class="ttdeci">def StripY(y)</div><div class="ttdef"><b>Definition:</b> <a href="MufluxDigiReco_8py_source.html#l00040">MufluxDigiReco.py:40</a></div></div>
+<p class="definition">Definition at line <a class="el" href="MufluxDigiReco_8py_source.html#l00039">39</a> of file <a class="el" href="MufluxDigiReco_8py_source.html">MufluxDigiReco.py</a>.</p>
+<div class="fragment"><div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="keyword">def </span><a class="code" href="namespaceMufluxDigiReco.html#a5215030d8f51e0ea8208a19e1eff233e">StripY</a>(y):</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    STRIP_YWIDTH = 0.8625  <span class="comment"># internal STRIP H, WIDTH, in cm</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    EXT_STRIP_YWIDTH = 0.3  <span class="comment"># measured external STRIP H, WIDTH, in cm</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    H_STRIP_OFF = 0.1983</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    NR_HORI_STRIPS = 116</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    total_height = (NR_HORI_STRIPS - 2) * STRIP_YWIDTH + 2 * EXT_STRIP_YWIDTH + (NR_HORI_STRIPS - 1) * H_STRIP_OFF</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    y_start = total_height / 2</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    strip_y = (y_start - EXT_STRIP_YWIDTH + 1.5 * STRIP_YWIDTH + H_STRIP_OFF - y)//(STRIP_YWIDTH + H_STRIP_OFF)</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keywordflow">if</span> <span class="keywordflow">not</span> (0 &lt; strip_y &lt;= NR_HORI_STRIPS):</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        print(<span class="stringliteral">&quot;WARNING: Y strip outside range!&quot;</span>)</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        strip_y = 0</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="namespaceadd__noise__to__field.html#a4aa6f75233f1922a97b2d4c15285c18e">int</a>(strip_y)</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
+<div class="ttc" id="anamespaceMufluxDigiReco_html_a5215030d8f51e0ea8208a19e1eff233e"><div class="ttname"><a href="namespaceMufluxDigiReco.html#a5215030d8f51e0ea8208a19e1eff233e">MufluxDigiReco.StripY</a></div><div class="ttdeci">def StripY(y)</div><div class="ttdef"><b>Definition:</b> <a href="MufluxDigiReco_8py_source.html#l00039">MufluxDigiReco.py:39</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -196,7 +196,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="MufluxDigiReco_8py_source.html#l00019">19</a> of file <a class="el" href="MufluxDigiReco_8py_source.html">MufluxDigiReco.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="MufluxDigiReco_8py_source.html#l00018">18</a> of file <a class="el" href="MufluxDigiReco_8py_source.html">MufluxDigiReco.py</a>.</p>
 
 </div>
 </div>
@@ -212,7 +212,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="MufluxDigiReco_8py_source.html#l00018">18</a> of file <a class="el" href="MufluxDigiReco_8py_source.html">MufluxDigiReco.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="MufluxDigiReco_8py_source.html#l00017">17</a> of file <a class="el" href="MufluxDigiReco_8py_source.html">MufluxDigiReco.py</a>.</p>
 
 </div>
 </div>

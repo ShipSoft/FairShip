@@ -192,6 +192,9 @@ var hierarchy =
     [ "eventDisplay.IO", "classeventDisplay_1_1IO.html", null ],
     [ "rootpyPickler.IO_Wrapper", "classrootpyPickler_1_1IO__Wrapper.html", null ],
     [ "mpdef::listitem", "structmpdef_1_1listitem.html", null ],
+    [ "metaclass", null, [
+      [ "ShipGeoConfig.ConfigRegistry", "classShipGeoConfig_1_1ConfigRegistry.html", null ]
+    ] ],
     [ "Mille", "classMille.html", null ],
     [ "mpdalc::mpalloc", "interfacempdalc_1_1mpalloc.html", null ],
     [ "mpdalc::mpdealloc", "interfacempdalc_1_1mpdealloc.html", null ],
@@ -293,8 +296,5 @@ var hierarchy =
     [ "EmbeddedDocument", null, [
       [ "conditionsDatabase.databases.mongodb.models.condition.Condition", "classconditionsDatabase_1_1databases_1_1mongodb_1_1models_1_1condition_1_1Condition.html", null ],
       [ "conditionsDatabase.databases.mongodb.models.detector.Detector", "classconditionsDatabase_1_1databases_1_1mongodb_1_1models_1_1detector_1_1Detector.html", null ]
-    ] ],
-    [ "with_metaclass", null, [
-      [ "ShipGeoConfig.ConfigRegistry", "classShipGeoConfig_1_1ConfigRegistry.html", null ]
     ] ]
 ];

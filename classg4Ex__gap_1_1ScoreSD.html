@@ -116,7 +116,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="g4Ex__gap_8py_source.html#l00374">374</a> of file <a class="el" href="g4Ex__gap_8py_source.html">g4Ex_gap.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="g4Ex__gap_8py_source.html#l00373">373</a> of file <a class="el" href="g4Ex__gap_8py_source.html">g4Ex_gap.py</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a6d8f198068022d0e272fba31988500ef"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6d8f198068022d0e272fba31988500ef">&#9670;&nbsp;</a></span>__init__()</h2>
@@ -144,10 +144,10 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="g4Ex__gap_8py_source.html#l00377">377</a> of file <a class="el" href="g4Ex__gap_8py_source.html">g4Ex_gap.py</a>.</p>
-<div class="fragment"><div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;  <span class="keyword">def </span>__init__(self,Name):</div>
-<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;    G4VSensitiveDetector.__init__(self, Name)</div>
-<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160; </div>
+<p class="definition">Definition at line <a class="el" href="g4Ex__gap_8py_source.html#l00376">376</a> of file <a class="el" href="g4Ex__gap_8py_source.html">g4Ex_gap.py</a>.</p>
+<div class="fragment"><div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;  <span class="keyword">def </span>__init__(self,Name):</div>
+<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;    G4VSensitiveDetector.__init__(self, Name)</div>
+<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160; </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -184,35 +184,35 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="g4Ex__gap_8py_source.html#l00380">380</a> of file <a class="el" href="g4Ex__gap_8py_source.html">g4Ex_gap.py</a>.</p>
-<div class="fragment"><div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;  <span class="keyword">def </span>ProcessHits(self, step, rohist):</div>
-<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;    preStepPoint = step.GetPreStepPoint()</div>
-<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;    track        = step.GetTrack()</div>
-<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;    part         = track.GetDynamicParticle()</div>
-<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;    pid          = part.GetPDGcode()</div>
-<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;    vx           = track.GetVertexPosition()</div>
-<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;    pvx          = track.GetVertexMomentumDirection()</div>
-<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;    ekinvx       = track.GetVertexKineticEnergy()</div>
-<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;    M            = part.GetMass()</div>
-<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;    Pvx          = ROOT.TMath.Sqrt( ekinvx*(ekinvx+2*M) )</div>
-<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;    mom  = track.GetMomentum()</div>
-<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;    ekin = track.GetKineticEnergy()/GeV</div>
-<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;    pos = track.GetPosition()</div>
-<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;<span class="comment">#</span></div>
-<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;    <span class="comment"># primPart = part.GetPrimaryParticle()</span></div>
-<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;    w = track.GetWeight()</div>
-<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;    parentid = <a class="code" href="namespaceadd__noise__to__field.html#a4aa6f75233f1922a97b2d4c15285c18e">int</a>(w)/100000-10000</div>
-<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;    pythiaid = <a class="code" href="namespaceadd__noise__to__field.html#a4aa6f75233f1922a97b2d4c15285c18e">int</a>(w)%100000-10000</div>
-<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;    h[<span class="stringliteral">&#39;ntuple&#39;</span>].Fill(<a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(pid), <a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(mom.x/GeV),<a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(mom.y/GeV),<a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(mom.z/GeV),\</div>
-<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;                   <a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(pos.x/m),<a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(pos.y/m),<a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(pos.z/m),\</div>
-<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;                   <a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(Pvx*pvx.x/GeV),<a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(Pvx*pvx.y/GeV),<a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(Pvx*pvx.z/GeV),\</div>
-<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;                   <a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(vx.x/m),<a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(vx.y/m),<a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(vx.z/m),pythiaid,parentid)</div>
-<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;    <span class="keywordflow">if</span> debug:</div>
-<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;        print(<span class="stringliteral">&#39;xxx&#39;</span>,pid, <a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(mom.x/GeV),<a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(mom.y/GeV),<a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(mom.z/GeV),\</div>
-<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;                   <a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(pos.x/m),<a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(pos.y/m),<a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(pos.z/m),\</div>
-<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;                   <a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(Pvx*pvx.x/GeV),<a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(Pvx*pvx.y/GeV),<a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(Pvx*pvx.z/GeV),\</div>
-<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;                   <a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(vx.x/m),<a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(vx.y/m),<a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(vx.z/m),pythiaid,parentid)</div>
-<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160; </div>
+<p class="definition">Definition at line <a class="el" href="g4Ex__gap_8py_source.html#l00379">379</a> of file <a class="el" href="g4Ex__gap_8py_source.html">g4Ex_gap.py</a>.</p>
+<div class="fragment"><div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;  <span class="keyword">def </span>ProcessHits(self, step, rohist):</div>
+<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;    preStepPoint = step.GetPreStepPoint()</div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;    track        = step.GetTrack()</div>
+<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;    part         = track.GetDynamicParticle()</div>
+<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;    pid          = part.GetPDGcode()</div>
+<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;    vx           = track.GetVertexPosition()</div>
+<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;    pvx          = track.GetVertexMomentumDirection()</div>
+<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;    ekinvx       = track.GetVertexKineticEnergy()</div>
+<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;    M            = part.GetMass()</div>
+<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;    Pvx          = ROOT.TMath.Sqrt( ekinvx*(ekinvx+2*M) )</div>
+<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;    mom  = track.GetMomentum()</div>
+<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;    ekin = track.GetKineticEnergy()/GeV</div>
+<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;    pos = track.GetPosition()</div>
+<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;<span class="comment">#</span></div>
+<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;    <span class="comment"># primPart = part.GetPrimaryParticle()</span></div>
+<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;    w = track.GetWeight()</div>
+<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;    parentid = <a class="code" href="namespaceadd__noise__to__field.html#a4aa6f75233f1922a97b2d4c15285c18e">int</a>(w)/100000-10000</div>
+<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;    pythiaid = <a class="code" href="namespaceadd__noise__to__field.html#a4aa6f75233f1922a97b2d4c15285c18e">int</a>(w)%100000-10000</div>
+<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;    h[<span class="stringliteral">&#39;ntuple&#39;</span>].Fill(<a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(pid), <a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(mom.x/GeV),<a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(mom.y/GeV),<a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(mom.z/GeV),\</div>
+<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;                   <a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(pos.x/m),<a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(pos.y/m),<a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(pos.z/m),\</div>
+<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;                   <a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(Pvx*pvx.x/GeV),<a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(Pvx*pvx.y/GeV),<a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(Pvx*pvx.z/GeV),\</div>
+<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;                   <a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(vx.x/m),<a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(vx.y/m),<a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(vx.z/m),pythiaid,parentid)</div>
+<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;    <span class="keywordflow">if</span> debug:</div>
+<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;        print(<span class="stringliteral">&#39;xxx&#39;</span>,pid, <a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(mom.x/GeV),<a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(mom.y/GeV),<a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(mom.z/GeV),\</div>
+<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;                   <a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(pos.x/m),<a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(pos.y/m),<a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(pos.z/m),\</div>
+<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;                   <a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(Pvx*pvx.x/GeV),<a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(Pvx*pvx.y/GeV),<a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(Pvx*pvx.z/GeV),\</div>
+<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;                   <a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(vx.x/m),<a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(vx.y/m),<a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(vx.z/m),pythiaid,parentid)</div>
+<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160; </div>
 <div class="ttc" id="anamespaceadd__noise__to__field_html_a0b17b62adeb5054f131bb6a46b054b48"><div class="ttname"><a href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">add_noise_to_field.float</a></div><div class="ttdeci">float</div><div class="ttdef"><b>Definition:</b> <a href="add__noise__to__field_8py_source.html#l00056">add_noise_to_field.py:56</a></div></div>
 <div class="ttc" id="anamespaceadd__noise__to__field_html_a4aa6f75233f1922a97b2d4c15285c18e"><div class="ttname"><a href="namespaceadd__noise__to__field.html#a4aa6f75233f1922a97b2d4c15285c18e">add_noise_to_field.int</a></div><div class="ttdeci">int</div><div class="ttdef"><b>Definition:</b> <a href="add__noise__to__field_8py_source.html#l00057">add_noise_to_field.py:57</a></div></div>
 </div><!-- fragment -->

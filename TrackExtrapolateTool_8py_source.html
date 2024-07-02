@@ -85,11 +85,11 @@ $(document).ready(function(){initNavTree('TrackExtrapolateTool_8py_source.html',
 <div class="title">TrackExtrapolateTool.py</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="TrackExtrapolateTool_8py.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno"><a class="line" href="namespaceTrackExtrapolateTool.html">    1</a></span>&#160;<span class="keyword">from</span> __future__ <span class="keyword">import</span> print_function</div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="keyword">from</span> __future__ <span class="keyword">import</span> division</div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keyword">from</span> past.builtins <span class="keyword">import</span> cmp</div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keyword">import</span> ROOT</div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="keyword">import</span> shipunit <span class="keyword">as</span> u</div>
+<a href="TrackExtrapolateTool_8py.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno"><a class="line" href="namespaceTrackExtrapolateTool.html">    1</a></span>&#160;<span class="keyword">import</span> ROOT</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="keyword">import</span> shipunit <span class="keyword">as</span> u</div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
+<div class="line"><a name="l00004"></a><span class="lineno"><a class="line" href="namespaceTrackExtrapolateTool.html#ab4a32b4536ba6f317b889b2af9318f53">    4</a></span>&#160;<span class="keyword">def </span><a class="code" href="namespaceTrackExtrapolateTool.html#ab4a32b4536ba6f317b889b2af9318f53">cmp</a>(a, b):</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;    <span class="keywordflow">return</span> (a &gt; b) - (a &lt; b)</div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
 <div class="line"><a name="l00007"></a><span class="lineno"><a class="line" href="namespaceTrackExtrapolateTool.html#a88649c5e9feda4744213d5c7a41a94ad">    7</a></span>&#160;minNdf = 20</div>
 <div class="line"><a name="l00008"></a><span class="lineno"><a class="line" href="namespaceTrackExtrapolateTool.html#a1104e7a5752dd65cba8fc8bdb76a5ce5">    8</a></span>&#160;parallelToZ = ROOT.TVector3(0., 0., 1.)</div>
@@ -112,7 +112,7 @@ $(document).ready(function(){initNavTree('TrackExtrapolateTool_8py_source.html',
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <span class="keywordflow">else</span>:                                    fstate = fstate1</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    zs = min(z,z_ecal)</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    NewPosition = ROOT.TVector3(0., 0., zs)</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    rep    = ROOT.genfit.RKTrackRep(13*cmp(fstate.getPDG(),0) )</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    rep    = ROOT.genfit.RKTrackRep(13*<a class="code" href="namespaceTrackExtrapolateTool.html#ab4a32b4536ba6f317b889b2af9318f53">cmp</a>(fstate.getPDG(),0) )</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    state  = ROOT.genfit.StateOnPlane(rep)</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    pos,mom = fstate.getPos(),fstate.getMom()</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    rep.setPosMom(state,pos,mom)</div>
@@ -130,6 +130,7 @@ $(document).ready(function(){initNavTree('TrackExtrapolateTool_8py_source.html',
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;     pos = ROOT.TVector3( pos.X()+lam*px, pos.Y()+lam*py, z )</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  <span class="keywordflow">return</span> rc,pos,mom</div>
 <div class="ttc" id="anamespaceTrackExtrapolateTool_html_a891c3ca857b65a60e55dcf293fb586e8"><div class="ttname"><a href="namespaceTrackExtrapolateTool.html#a891c3ca857b65a60e55dcf293fb586e8">TrackExtrapolateTool.extrapolateToPlane</a></div><div class="ttdeci">def extrapolateToPlane(fT, z)</div><div class="ttdef"><b>Definition:</b> <a href="TrackExtrapolateTool_8py_source.html#l00015">TrackExtrapolateTool.py:15</a></div></div>
+<div class="ttc" id="anamespaceTrackExtrapolateTool_html_ab4a32b4536ba6f317b889b2af9318f53"><div class="ttname"><a href="namespaceTrackExtrapolateTool.html#ab4a32b4536ba6f317b889b2af9318f53">TrackExtrapolateTool.cmp</a></div><div class="ttdeci">def cmp(a, b)</div><div class="ttdef"><b>Definition:</b> <a href="TrackExtrapolateTool_8py_source.html#l00004">TrackExtrapolateTool.py:4</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

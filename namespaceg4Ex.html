@@ -197,57 +197,57 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00219">219</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
-<div class="fragment"><div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;<span class="keyword">def </span><a class="code" href="namespaceg4Ex.html#a061659168e123a4f98f22d3f2d8717fb">ConstructGeom</a>():</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;  print(<span class="stringliteral">&quot;* Constructing geometry...&quot;</span>)</div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;  world_r = 100.*m</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;  <span class="comment"># reset world material</span></div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;  vac = G4Material.GetMaterial(<span class="stringliteral">&quot;G4_Galactic&quot;</span>)</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;  g4py.ezgeom.SetWorldMaterial(vac)</div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;  g4py.ezgeom.ResizeWorld(world_r, world_r, world_r)</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;  <span class="comment"># a snoopy world is placed</span></div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;  <span class="keyword">global</span> snoopy,snoopyPhys,scoreLog</div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;  snoopy   = G4EzVolume(<span class="stringliteral">&quot;Snoopy&quot;</span>)</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;  snoopy.CreateTubeVolume(vac, 0., 10*m,  50.*m)</div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;  snoopyPhys = snoopy.PlaceIt(G4ThreeVector(0.,0.,0.*m))</div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;  snoopyLog  = snoopyPhys.GetLogicalVolume()</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;  snoopy.SetVisibility(<span class="keyword">False</span>)</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;  <span class="comment"># a target box is placed</span></div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;  <span class="keyword">global</span> target,targetPhys</div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;  iron     = G4Material.GetMaterial(<span class="stringliteral">&quot;G4_Fe&quot;</span>)</div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;  air      = G4Material.GetMaterial(<span class="stringliteral">&quot;G4_AIR&quot;</span>)</div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;  tungsten = G4Material.GetMaterial(<span class="stringliteral">&quot;G4_W&quot;</span>)</div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;  lead     = G4Material.GetMaterial(<span class="stringliteral">&quot;G4_Pb&quot;</span>)</div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;  alum     = G4Material.GetMaterial(<span class="stringliteral">&quot;G4_Al&quot;</span>)</div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;  target   = G4EzVolume(<span class="stringliteral">&quot;Target&quot;</span>)</div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;  target.CreateTubeVolume(tungsten, 0., 25.*cm,     25.*cm)</div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;  targetPhys = target.PlaceIt(G4ThreeVector(0.,0.,-50.*m+25.*cm),1,snoopy)</div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;  target.SetColor(G4Color(0.0,0.5,0.5,1.0))</div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;  target.SetVisibility(<span class="keyword">True</span>)</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;  <span class="comment"># = 0.1m3 = 2t</span></div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;  <span class="comment"># a hadron absorber is placed</span></div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;  absorber = G4EzVolume(<span class="stringliteral">&quot;Absorber&quot;</span>)</div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;<span class="comment"># iron alloys saturate at 1.6-2.2T</span></div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;  <span class="comment">#                             inner radius outer radius length</span></div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;  absorber.CreateTubeVolume(iron, 0.,         100.*cm,     150.*cm)</div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;  absorberPhys = absorber.PlaceIt(G4ThreeVector(0.,0.,-50*m+2*25.*cm+150.*cm),1,snoopy)</div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;  absorber.SetColor(G4Color(0.898,0.902,0.91,1.0))</div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;  absorber.SetVisibility(<span class="keyword">True</span>)</div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;  xx = G4VisAttributes()</div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;  xx.SetForceWireframe(<span class="keyword">True</span>)</div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;  absorberlog = absorberPhys.GetLogicalVolume()</div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;  absorberlog.SetVisAttributes(xx)</div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;<span class="comment"># scoring plane</span></div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;  scorez = -50.*m+2*25.*cm+2*150.*cm+1*mm</div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;  score  = G4EzVolume(<span class="stringliteral">&quot;Score&quot;</span>)</div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;  score.CreateTubeVolume(vac, 0.,          50.*m,     1.*mm)</div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;  scorePhys = score.PlaceIt(G4ThreeVector(0.,0.,scorez),1,snoopy)</div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;  scoreLog = scorePhys.GetLogicalVolume()</div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;  g4py.ezgeom.Construct()</div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160; </div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;g4py.NISTmaterials.Construct()</div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;<span class="comment">#print Geant4.gMaterialTable</span></div>
-<div class="ttc" id="anamespaceg4Ex_html_a061659168e123a4f98f22d3f2d8717fb"><div class="ttname"><a href="namespaceg4Ex.html#a061659168e123a4f98f22d3f2d8717fb">g4Ex.ConstructGeom</a></div><div class="ttdeci">def ConstructGeom()</div><div class="ttdef"><b>Definition:</b> <a href="g4Ex_8py_source.html#l00219">g4Ex.py:219</a></div></div>
+<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00218">218</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
+<div class="fragment"><div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;<span class="keyword">def </span><a class="code" href="namespaceg4Ex.html#a061659168e123a4f98f22d3f2d8717fb">ConstructGeom</a>():</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;  print(<span class="stringliteral">&quot;* Constructing geometry...&quot;</span>)</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;  world_r = 100.*m</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;  <span class="comment"># reset world material</span></div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;  vac = G4Material.GetMaterial(<span class="stringliteral">&quot;G4_Galactic&quot;</span>)</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;  g4py.ezgeom.SetWorldMaterial(vac)</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;  g4py.ezgeom.ResizeWorld(world_r, world_r, world_r)</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;  <span class="comment"># a snoopy world is placed</span></div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;  <span class="keyword">global</span> snoopy,snoopyPhys,scoreLog</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;  snoopy   = G4EzVolume(<span class="stringliteral">&quot;Snoopy&quot;</span>)</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;  snoopy.CreateTubeVolume(vac, 0., 10*m,  50.*m)</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;  snoopyPhys = snoopy.PlaceIt(G4ThreeVector(0.,0.,0.*m))</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;  snoopyLog  = snoopyPhys.GetLogicalVolume()</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;  snoopy.SetVisibility(<span class="keyword">False</span>)</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;  <span class="comment"># a target box is placed</span></div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;  <span class="keyword">global</span> target,targetPhys</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;  iron     = G4Material.GetMaterial(<span class="stringliteral">&quot;G4_Fe&quot;</span>)</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;  air      = G4Material.GetMaterial(<span class="stringliteral">&quot;G4_AIR&quot;</span>)</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;  tungsten = G4Material.GetMaterial(<span class="stringliteral">&quot;G4_W&quot;</span>)</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;  lead     = G4Material.GetMaterial(<span class="stringliteral">&quot;G4_Pb&quot;</span>)</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;  alum     = G4Material.GetMaterial(<span class="stringliteral">&quot;G4_Al&quot;</span>)</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;  target   = G4EzVolume(<span class="stringliteral">&quot;Target&quot;</span>)</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;  target.CreateTubeVolume(tungsten, 0., 25.*cm,     25.*cm)</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;  targetPhys = target.PlaceIt(G4ThreeVector(0.,0.,-50.*m+25.*cm),1,snoopy)</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;  target.SetColor(G4Color(0.0,0.5,0.5,1.0))</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;  target.SetVisibility(<span class="keyword">True</span>)</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;  <span class="comment"># = 0.1m3 = 2t</span></div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;  <span class="comment"># a hadron absorber is placed</span></div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;  absorber = G4EzVolume(<span class="stringliteral">&quot;Absorber&quot;</span>)</div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;<span class="comment"># iron alloys saturate at 1.6-2.2T</span></div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;  <span class="comment">#                             inner radius outer radius length</span></div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;  absorber.CreateTubeVolume(iron, 0.,         100.*cm,     150.*cm)</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;  absorberPhys = absorber.PlaceIt(G4ThreeVector(0.,0.,-50*m+2*25.*cm+150.*cm),1,snoopy)</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;  absorber.SetColor(G4Color(0.898,0.902,0.91,1.0))</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;  absorber.SetVisibility(<span class="keyword">True</span>)</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;  xx = G4VisAttributes()</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;  xx.SetForceWireframe(<span class="keyword">True</span>)</div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;  absorberlog = absorberPhys.GetLogicalVolume()</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;  absorberlog.SetVisAttributes(xx)</div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;<span class="comment"># scoring plane</span></div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;  scorez = -50.*m+2*25.*cm+2*150.*cm+1*mm</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;  score  = G4EzVolume(<span class="stringliteral">&quot;Score&quot;</span>)</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;  score.CreateTubeVolume(vac, 0.,          50.*m,     1.*mm)</div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;  scorePhys = score.PlaceIt(G4ThreeVector(0.,0.,scorez),1,snoopy)</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;  scoreLog = scorePhys.GetLogicalVolume()</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;  g4py.ezgeom.Construct()</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160; </div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;g4py.NISTmaterials.Construct()</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;<span class="comment">#print Geant4.gMaterialTable</span></div>
+<div class="ttc" id="anamespaceg4Ex_html_a061659168e123a4f98f22d3f2d8717fb"><div class="ttname"><a href="namespaceg4Ex.html#a061659168e123a4f98f22d3f2d8717fb">g4Ex.ConstructGeom</a></div><div class="ttdeci">def ConstructGeom()</div><div class="ttdef"><b>Definition:</b> <a href="g4Ex_8py_source.html#l00218">g4Ex.py:218</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -264,7 +264,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00080">80</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00079">79</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
 
 </div>
 </div>
@@ -280,7 +280,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00002">2</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00001">1</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
 
 </div>
 </div>
@@ -296,7 +296,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00013">13</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00012">12</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
 
 </div>
 </div>
@@ -312,7 +312,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00074">74</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00073">73</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
 
 </div>
 </div>
@@ -328,7 +328,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00274">274</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00273">273</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
 
 </div>
 </div>
@@ -344,7 +344,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00072">72</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00071">71</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
 
 </div>
 </div>
@@ -360,7 +360,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00077">77</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00076">76</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
 
 </div>
 </div>
@@ -376,7 +376,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00005">5</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00004">4</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
 
 </div>
 </div>
@@ -392,7 +392,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00004">4</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00003">3</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
 
 </div>
 </div>
@@ -408,7 +408,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00291">291</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00290">290</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
 
 </div>
 </div>
@@ -424,7 +424,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00009">9</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00008">8</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
 
 </div>
 </div>
@@ -440,7 +440,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00279">279</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00278">278</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
 
 </div>
 </div>
@@ -456,7 +456,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00043">43</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00042">42</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
 
 </div>
 </div>
@@ -472,7 +472,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00288">288</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00287">287</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
 
 </div>
 </div>
@@ -488,7 +488,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00282">282</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00281">281</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
 
 </div>
 </div>
@@ -504,7 +504,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00012">12</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00011">11</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
 
 </div>
 </div>
@@ -520,7 +520,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00010">10</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00009">9</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
 
 </div>
 </div>
@@ -536,7 +536,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00007">7</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00006">6</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
 
 </div>
 </div>
@@ -552,7 +552,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00008">8</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00007">7</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
 
 </div>
 </div>
@@ -568,7 +568,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00084">84</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00083">83</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
 
 </div>
 </div>
@@ -584,7 +584,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00269">269</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00268">268</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
 
 </div>
 </div>
@@ -600,7 +600,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00078">78</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00077">77</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
 
 </div>
 </div>
@@ -616,7 +616,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00063">63</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00062">62</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
 
 </div>
 </div>
@@ -632,7 +632,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00091">91</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00090">90</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
 
 </div>
 </div>
@@ -648,7 +648,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00079">79</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00078">78</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
 
 </div>
 </div>
@@ -664,7 +664,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00044">44</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00043">43</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
 
 </div>
 </div>
@@ -680,7 +680,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00006">6</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00005">5</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
 
 </div>
 </div>
@@ -696,7 +696,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00011">11</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00010">10</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
 
 </div>
 </div>
@@ -712,7 +712,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00297">297</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00296">296</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
 
 </div>
 </div>
@@ -728,7 +728,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00300">300</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00299">299</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
 
 </div>
 </div>
@@ -744,7 +744,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00302">302</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00301">301</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
 
 </div>
 </div>
@@ -760,7 +760,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00018">18</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00017">17</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
 
 </div>
 </div>
@@ -776,7 +776,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00003">3</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00002">2</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
 
 </div>
 </div>
@@ -792,7 +792,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00275">275</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00274">274</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
 
 </div>
 </div>

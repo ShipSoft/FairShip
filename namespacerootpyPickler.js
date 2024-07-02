@@ -11,7 +11,7 @@ var namespacerootpyPickler =
     [ "load", "namespacerootpyPickler.html#a512bac7671f8f0f8505329eae04e5e4d", null ],
     [ "__all__", "namespacerootpyPickler.html#a1fea7434ab1633a1a46070bc42996377", null ],
     [ "_compat_hooks", "namespacerootpyPickler.html#a2424d9ca2fa9ad1f186804ed7f80ce9f", null ],
-    [ "integer_types", "namespacerootpyPickler.html#a85bee2b8100ffb33b712e07ad2672390", null ],
+    [ "integer_types", "namespacerootpyPickler.html#ab44efd2a60d46ea21e61cf19916ef022", null ],
     [ "string_types", "namespacerootpyPickler.html#ae429cfd7de5349512a04544726926582", null ],
     [ "xdict", "namespacerootpyPickler.html#a1424245cf6556309cd62b43751b3c5b9", null ],
     [ "xserial", "namespacerootpyPickler.html#a0f8c91a0848212cd180c525ebef97476", null ]

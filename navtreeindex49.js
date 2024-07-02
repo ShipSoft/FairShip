@@ -1,5 +1,7 @@
 var NAVTREEINDEX49 =
 {
+"namespacepythia8darkphoton__conf.html#a9af34fec6042f47956df112cd7987f6d":[11,0,80,1],
+"namespacepythia8darkphoton__conf.html#abccb344f370f6e347b5df59a7c3dd72c":[11,0,80,2],
 "namespacepythia8darkphoton__conf.html#abf09dd3a8d5afdafed0abf06741d1fed":[11,0,80,6],
 "namespaceradio.html":[11,0,82],
 "namespaceradio.html#a2173c1232cd54d49a5435ae267c4f764":[11,0,82,4],
@@ -68,7 +70,7 @@ var NAVTREEINDEX49 =
 "namespacerootpyPickler.html#a3f3cf171ab92267e7271105edcf4a551":[11,0,85,4],
 "namespacerootpyPickler.html#a4a2ee768e293c5b380837c2cb3d7198e":[11,0,85,7],
 "namespacerootpyPickler.html#a512bac7671f8f0f8505329eae04e5e4d":[11,0,85,8],
-"namespacerootpyPickler.html#a85bee2b8100ffb33b712e07ad2672390":[11,0,85,11],
+"namespacerootpyPickler.html#ab44efd2a60d46ea21e61cf19916ef022":[11,0,85,11],
 "namespacerootpyPickler.html#ac77f7acc02057f22345b6855dd94a8a9":[11,0,85,6],
 "namespacerootpyPickler.html#ae429cfd7de5349512a04544726926582":[11,0,85,12],
 "namespacerpvsusy.html":[11,0,87],
@@ -247,7 +249,5 @@ var NAVTREEINDEX49 =
 "namespacerun__fixedTarget.html#a1f8bdd5b7146587c84fcf162730179a4":[11,0,89,41],
 "namespacerun__fixedTarget.html#a268f765c464340dfb1d5f00fb8af09fb":[11,0,89,31],
 "namespacerun__fixedTarget.html#a268fb420d1b4cf832469ab372827e014":[11,0,89,17],
-"namespacerun__fixedTarget.html#a2830cb8e3488463be1d6c14e4785bdee":[11,0,89,58],
-"namespacerun__fixedTarget.html#a2f69f87598f0df34248c0b62dee21180":[11,0,89,59],
-"namespacerun__fixedTarget.html#a2faa501f153ca8215496930a5fcf1e56":[11,0,89,1]
+"namespacerun__fixedTarget.html#a2830cb8e3488463be1d6c14e4785bdee":[11,0,89,58]
 };

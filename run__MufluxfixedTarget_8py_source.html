@@ -86,308 +86,307 @@ $(document).ready(function(){initNavTree('run__MufluxfixedTarget_8py_source.html
 </div><!--header-->
 <div class="contents">
 <a href="run__MufluxfixedTarget_8py.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html">    1</a></span>&#160;<span class="comment">#!/usr/bin/env python</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="keyword">from</span> __future__ <span class="keyword">import</span> print_function</div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keyword">import</span> ROOT,os,sys,time,shipRoot_conf</div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keyword">import</span> shipunit <span class="keyword">as</span> u</div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="keyword">from</span> ShipGeoConfig <span class="keyword">import</span> ConfigRegistry</div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
-<div class="line"><a name="l00007"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a15018f60894f78524068a70b385a3bd2">    7</a></span>&#160;mcEngine     = <span class="stringliteral">&quot;TGeant4&quot;</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a83d7eef27942882ff586c18b783f8efe">    8</a></span>&#160;simEngine    = <span class="stringliteral">&quot;Pythia8&quot;</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a9b824d99ff2e816b780c5cfdd80541c2">    9</a></span>&#160;runnr        = 1000</div>
-<div class="line"><a name="l00010"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a93b7407767146d7e9a4633dc975ec8b8">   10</a></span>&#160;nev          = 500</div>
-<div class="line"><a name="l00011"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#aa9bf33c978fbc7216ecbe7f027578906">   11</a></span>&#160;checkOverlap = <span class="keyword">False</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a07362038f9b4b1f26544bf7058638826">   12</a></span>&#160;G4only       = <span class="keyword">False</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a9c8cd634bfa2bdc845eb203ea2a33af0">   13</a></span>&#160;storeOnlyMuons = <span class="keyword">False</span></div>
-<div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#abe37b1152ead82fee05bf0f589221cca">   14</a></span>&#160;withEvtGen     = <span class="keyword">True</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a0ad886f5f1f2a0c9f08cf6abfe54c4fd">   15</a></span>&#160;boostDiMuon    = 1.</div>
-<div class="line"><a name="l00016"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#ae20fc2de5130b0c1a32fd3a06d9bd535">   16</a></span>&#160;boostFactor    = 1.</div>
-<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a16d8199e34a471a2c8f4647294807da3">   17</a></span>&#160;charm          = <span class="keyword">False</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#ad33bc8a8972feca0a1cdc703b940a979">   18</a></span>&#160;beauty         = <span class="keyword">False</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#ae67c35d2dff420c688d52ef5e9e243d7">   19</a></span>&#160;chicc = 1.7e-3</div>
-<div class="line"><a name="l00020"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a7f6f228bbd2267b8332203be24d8b6ec">   20</a></span>&#160;chibb = 1.6e-7</div>
-<div class="line"><a name="l00021"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a3fddc1f9619e9c498630420159e124eb">   21</a></span>&#160;npot  = 5E13</div>
-<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a509d29f17a8a6a7a68287d14f50b6346">   22</a></span>&#160;nStart = 0</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
-<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#ad30684cb892e70371f9e9d829b424ba7">   24</a></span>&#160;charmInputFile = <span class="stringliteral">&quot;root://eoslhcb.cern.ch//eos/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-76Mpot_1.root&quot;</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;nStart = 0</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
-<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#af8e43f746a236bc1e56f0f31486cceae">   27</a></span>&#160;outputDir    = <span class="stringliteral">&quot;.&quot;</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a559417498c339c8af005e6733659c1ba">   28</a></span>&#160;theSeed      = <a class="code" href="namespaceadd__noise__to__field.html#a4aa6f75233f1922a97b2d4c15285c18e">int</a>(10000 * time.time() % 10000000)</div>
-<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a21c8527ade1d389ff809aa71ecc3543a">   29</a></span>&#160;work_dir  = <span class="stringliteral">&quot;./&quot;</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a3a6188831136071a9581ac39a66c20ca">   30</a></span>&#160;ecut      = 0.5 <span class="comment"># GeV   with 1 : ~1sec / event, with 2: 0.4sec / event, 10: 0.13sec</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
-<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#aefb0c2519c91effca427c8d4d1417ba3">   32</a></span>&#160;dy           = 10.</div>
-<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#ac136e248e0c02583a702836cc13f5be2">   33</a></span>&#160;dv           = 5 <span class="comment"># 4=TP elliptical tank design, 5 = optimized conical rectangular design</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#aa6238cccc4e9988c94f65a6657ce7211">   34</a></span>&#160;ds           = 7 <span class="comment"># 5=TP muon shield, 6=magnetized hadron, 7=short magnet design</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a3d80e862299a215b41dace6c09a98c22">   35</a></span>&#160;nud          = 1 <span class="comment"># 0=TP, 1=new magnet option for short muon shield, 2= no magnet surrounding neutrino detector</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="comment"># example for primary interaction, nobias: python $FAIRSHIP/muonShieldOptimization/run_fixedTarget.py -n 10000 -e 10 -f -r 10</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="comment">#                                                               10000 events, energy cut 10GeV, run nr 10, override existing output folder</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="comment"># example for charm decays, python $FAIRSHIP/muonShieldOptimization/run_fixedTarget.py -C -M -n 10000 -e 10  -r 60 -b 50 -f</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment">#                                                               10000 events, charm decays, energy cut 10GeV, run nr 60, override existing output folder</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="comment">#                                                               increase di-muon BRs for resonances &lt; 1.1GeV by a factor 50</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="comment">#----------------------------- Yandex production ------------------------------</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="keyword">import</span> shutil</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="keyword">import</span> argparse</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="keyword">import</span> logging</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;logging.info(<span class="stringliteral">&quot;&quot;</span>)</div>
-<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a4c60f129db614770ae6c66bb3dc8f75d">   48</a></span>&#160;logger = logging.getLogger(os.path.splitext(os.path.basename(os.sys.argv[0]))[0])</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;logger.setLevel(logging.INFO)</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="keyword">import</span> ROOT,os,sys,time,shipRoot_conf</div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keyword">import</span> shipunit <span class="keyword">as</span> u</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keyword">from</span> ShipGeoConfig <span class="keyword">import</span> ConfigRegistry</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160; </div>
+<div class="line"><a name="l00006"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a15018f60894f78524068a70b385a3bd2">    6</a></span>&#160;mcEngine     = <span class="stringliteral">&quot;TGeant4&quot;</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a83d7eef27942882ff586c18b783f8efe">    7</a></span>&#160;simEngine    = <span class="stringliteral">&quot;Pythia8&quot;</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a9b824d99ff2e816b780c5cfdd80541c2">    8</a></span>&#160;runnr        = 1000</div>
+<div class="line"><a name="l00009"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a93b7407767146d7e9a4633dc975ec8b8">    9</a></span>&#160;nev          = 500</div>
+<div class="line"><a name="l00010"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#aa9bf33c978fbc7216ecbe7f027578906">   10</a></span>&#160;checkOverlap = <span class="keyword">False</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a07362038f9b4b1f26544bf7058638826">   11</a></span>&#160;G4only       = <span class="keyword">False</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a9c8cd634bfa2bdc845eb203ea2a33af0">   12</a></span>&#160;storeOnlyMuons = <span class="keyword">False</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#abe37b1152ead82fee05bf0f589221cca">   13</a></span>&#160;withEvtGen     = <span class="keyword">True</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a0ad886f5f1f2a0c9f08cf6abfe54c4fd">   14</a></span>&#160;boostDiMuon    = 1.</div>
+<div class="line"><a name="l00015"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#ae20fc2de5130b0c1a32fd3a06d9bd535">   15</a></span>&#160;boostFactor    = 1.</div>
+<div class="line"><a name="l00016"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a16d8199e34a471a2c8f4647294807da3">   16</a></span>&#160;charm          = <span class="keyword">False</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#ad33bc8a8972feca0a1cdc703b940a979">   17</a></span>&#160;beauty         = <span class="keyword">False</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#ae67c35d2dff420c688d52ef5e9e243d7">   18</a></span>&#160;chicc = 1.7e-3</div>
+<div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a7f6f228bbd2267b8332203be24d8b6ec">   19</a></span>&#160;chibb = 1.6e-7</div>
+<div class="line"><a name="l00020"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a3fddc1f9619e9c498630420159e124eb">   20</a></span>&#160;npot  = 5E13</div>
+<div class="line"><a name="l00021"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a509d29f17a8a6a7a68287d14f50b6346">   21</a></span>&#160;nStart = 0</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
+<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#ad30684cb892e70371f9e9d829b424ba7">   23</a></span>&#160;charmInputFile = <span class="stringliteral">&quot;root://eoslhcb.cern.ch//eos/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-76Mpot_1.root&quot;</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;nStart = 0</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
+<div class="line"><a name="l00026"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#af8e43f746a236bc1e56f0f31486cceae">   26</a></span>&#160;outputDir    = <span class="stringliteral">&quot;.&quot;</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a559417498c339c8af005e6733659c1ba">   27</a></span>&#160;theSeed      = <a class="code" href="namespaceadd__noise__to__field.html#a4aa6f75233f1922a97b2d4c15285c18e">int</a>(10000 * time.time() % 10000000)</div>
+<div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a21c8527ade1d389ff809aa71ecc3543a">   28</a></span>&#160;work_dir  = <span class="stringliteral">&quot;./&quot;</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a3a6188831136071a9581ac39a66c20ca">   29</a></span>&#160;ecut      = 0.5 <span class="comment"># GeV   with 1 : ~1sec / event, with 2: 0.4sec / event, 10: 0.13sec</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
+<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#aefb0c2519c91effca427c8d4d1417ba3">   31</a></span>&#160;dy           = 10.</div>
+<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#ac136e248e0c02583a702836cc13f5be2">   32</a></span>&#160;dv           = 5 <span class="comment"># 4=TP elliptical tank design, 5 = optimized conical rectangular design</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#aa6238cccc4e9988c94f65a6657ce7211">   33</a></span>&#160;ds           = 7 <span class="comment"># 5=TP muon shield, 6=magnetized hadron, 7=short magnet design</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a3d80e862299a215b41dace6c09a98c22">   34</a></span>&#160;nud          = 1 <span class="comment"># 0=TP, 1=new magnet option for short muon shield, 2= no magnet surrounding neutrino detector</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment"># example for primary interaction, nobias: python $FAIRSHIP/muonShieldOptimization/run_fixedTarget.py -n 10000 -e 10 -f -r 10</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="comment">#                                                               10000 events, energy cut 10GeV, run nr 10, override existing output folder</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="comment"># example for charm decays, python $FAIRSHIP/muonShieldOptimization/run_fixedTarget.py -C -M -n 10000 -e 10  -r 60 -b 50 -f</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="comment">#                                                               10000 events, charm decays, energy cut 10GeV, run nr 60, override existing output folder</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment">#                                                               increase di-muon BRs for resonances &lt; 1.1GeV by a factor 50</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="comment">#----------------------------- Yandex production ------------------------------</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keyword">import</span> shutil</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="keyword">import</span> argparse</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="keyword">import</span> logging</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;logging.info(<span class="stringliteral">&quot;&quot;</span>)</div>
+<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a4c60f129db614770ae6c66bb3dc8f75d">   47</a></span>&#160;logger = logging.getLogger(os.path.splitext(os.path.basename(os.sys.argv[0]))[0])</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;logger.setLevel(logging.INFO)</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
-<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a3b5e3c25ab9c50ccf5d6a934ca84de71">   52</a></span>&#160;<span class="keyword">def </span><a class="code" href="namespacerun__MufluxfixedTarget.html#a3b5e3c25ab9c50ccf5d6a934ca84de71">get_work_dir</a>(run_number,tag=None):</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  <span class="keyword">import</span> socket</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  host = socket.gethostname()</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  job_base_name = os.path.splitext(os.path.basename(os.sys.argv[0]))[0]</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  <span class="keywordflow">if</span> tag:  out_dir = <span class="stringliteral">&quot;{host}_{base}_{runnr}_{comment}&quot;</span>.format(host=host, base=job_base_name, runnr=run_number, comment=tag)</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  <span class="keywordflow">else</span>:    out_dir = <span class="stringliteral">&quot;{host}_{base}_{runnr}&quot;</span>.format(host=host, base=job_base_name, runnr=run_number)</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  <span class="keywordflow">return</span> out_dir</div>
+<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a3b5e3c25ab9c50ccf5d6a934ca84de71">   51</a></span>&#160;<span class="keyword">def </span><a class="code" href="namespacerun__MufluxfixedTarget.html#a3b5e3c25ab9c50ccf5d6a934ca84de71">get_work_dir</a>(run_number,tag=None):</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  <span class="keyword">import</span> socket</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  host = socket.gethostname()</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  job_base_name = os.path.splitext(os.path.basename(os.sys.argv[0]))[0]</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  <span class="keywordflow">if</span> tag:  out_dir = <span class="stringliteral">&quot;{host}_{base}_{runnr}_{comment}&quot;</span>.format(host=host, base=job_base_name, runnr=run_number, comment=tag)</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  <span class="keywordflow">else</span>:    out_dir = <span class="stringliteral">&quot;{host}_{base}_{runnr}&quot;</span>.format(host=host, base=job_base_name, runnr=run_number)</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  <span class="keywordflow">return</span> out_dir</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
-<div class="line"><a name="l00061"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#aa8c55dfb75dd485777269b1035e3316d">   61</a></span>&#160;<span class="keyword">def </span><a class="code" href="namespacerun__MufluxfixedTarget.html#aa8c55dfb75dd485777269b1035e3316d">init</a>():</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <span class="keyword">global</span> runnr, nev, ecut, G4only, tauOnly,JpsiMainly, work_dir,Debug,withEvtGen,boostDiMuon,\</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;         boostFactor,charm,beauty,charmInputFile,nStart,storeOnlyMuons,chicc,chibb,npot, nStart</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  logger.info(<span class="stringliteral">&quot;SHiP proton-on-taget simulator (C) Thomas Ruf, 2017&quot;</span>)</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  ap = argparse.ArgumentParser(</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;      description=<span class="stringliteral">&#39;Run SHiP &quot;pot&quot; simulation&#39;</span>)</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  ap.add_argument(<span class="stringliteral">&#39;-d&#39;</span>, <span class="stringliteral">&#39;--debug&#39;</span>, action=<span class="stringliteral">&#39;store_true&#39;</span>, dest=<span class="stringliteral">&#39;debug&#39;</span>)</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  ap.add_argument(<span class="stringliteral">&#39;-f&#39;</span>, <span class="stringliteral">&#39;--force&#39;</span>, action=<span class="stringliteral">&#39;store_true&#39;</span>, help=<span class="stringliteral">&quot;force overwriting output directory&quot;</span>)</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  ap.add_argument(<span class="stringliteral">&#39;-cs&#39;</span>, <span class="stringliteral">&#39;--CharmdetSetup&#39;</span>, type=int, dest=<span class="stringliteral">&#39;CharmdetSetup&#39;</span>,help=<span class="stringliteral">&quot;setting detector setup&quot;</span>, default=0)</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  ap.add_argument(<span class="stringliteral">&#39;-ct&#39;</span>, <span class="stringliteral">&#39;--CharmTarget&#39;</span>, type=int, dest=<span class="stringliteral">&#39;CharmTarget&#39;</span>,help=<span class="stringliteral">&quot;choosing target configuration for charm exposure&quot;</span>, default=3)</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  ap.add_argument(<span class="stringliteral">&#39;-r&#39;</span>, <span class="stringliteral">&#39;--run-number&#39;</span>, type=int, dest=<span class="stringliteral">&#39;runnr&#39;</span>, default=runnr)</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  ap.add_argument(<span class="stringliteral">&#39;-e&#39;</span>, <span class="stringliteral">&#39;--ecut&#39;</span>, type=float, help=<span class="stringliteral">&quot;energy cut&quot;</span>, dest=<span class="stringliteral">&#39;ecut&#39;</span>, default=ecut)</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  ap.add_argument(<span class="stringliteral">&#39;-n&#39;</span>, <span class="stringliteral">&#39;--num-events&#39;</span>, type=int, help=<span class="stringliteral">&quot;number of events to generate&quot;</span>, dest=<span class="stringliteral">&#39;nev&#39;</span>, default=nev)</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  ap.add_argument(<span class="stringliteral">&#39;-G&#39;</span>, <span class="stringliteral">&#39;--G4only&#39;</span>, action=<span class="stringliteral">&#39;store_true&#39;</span>, dest=<span class="stringliteral">&#39;G4only&#39;</span>,     default=<span class="keyword">False</span>, help=<span class="stringliteral">&quot;use Geant4 directly, no Pythia8&quot;</span>)</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  ap.add_argument(<span class="stringliteral">&#39;-P&#39;</span>, <span class="stringliteral">&#39;--PythiaDecay&#39;</span>, action=<span class="stringliteral">&#39;store_true&#39;</span>, dest=<span class="stringliteral">&#39;pythiaDecay&#39;</span>, default=<span class="keyword">False</span>,  help=<span class="stringliteral">&quot;use Pythia8 for decays&quot;</span>)</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  ap.add_argument(<span class="stringliteral">&#39;-V&#39;</span>, <span class="stringliteral">&#39;--EvtGen&#39;</span>,      action=<span class="stringliteral">&#39;store_true&#39;</span>, dest=<span class="stringliteral">&#39;withEvtGen&#39;</span>,  default=withEvtGen,   help=<span class="stringliteral">&quot;use EvtGen for decays&quot;</span>)</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  ap.add_argument(<span class="stringliteral">&#39;-t&#39;</span>, <span class="stringliteral">&#39;--tau-only&#39;</span>,     action=<span class="stringliteral">&#39;store_true&#39;</span>, dest=<span class="stringliteral">&#39;tauOnly&#39;</span>,     default=<span class="keyword">False</span>)</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  ap.add_argument(<span class="stringliteral">&#39;-J&#39;</span>, <span class="stringliteral">&#39;--Jpsi-mainly&#39;</span>,  action=<span class="stringliteral">&#39;store_true&#39;</span>, dest=<span class="stringliteral">&#39;JpsiMainly&#39;</span>,  default=<span class="keyword">False</span>)</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  ap.add_argument(<span class="stringliteral">&#39;-b&#39;</span>, <span class="stringliteral">&#39;--boostDiMuon&#39;</span>, type=float,   dest=<span class="stringliteral">&#39;boostDiMuon&#39;</span>,  default=boostDiMuon, help=<span class="stringliteral">&quot;boost Di-muon branching ratios&quot;</span>)</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  ap.add_argument(<span class="stringliteral">&#39;-X&#39;</span>, <span class="stringliteral">&#39;--boostFactor&#39;</span>, type=float,   dest=<span class="stringliteral">&#39;boostFactor&#39;</span>,  default=boostFactor, help=<span class="stringliteral">&quot;boost Di-muon prod cross sections&quot;</span>)</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  ap.add_argument(<span class="stringliteral">&#39;-C&#39;</span>, <span class="stringliteral">&#39;--charm&#39;</span>,      action=<span class="stringliteral">&#39;store_true&#39;</span>,  dest=<span class="stringliteral">&#39;charm&#39;</span>,  default=charm, help=<span class="stringliteral">&quot;generate charm decays&quot;</span>)</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  ap.add_argument(<span class="stringliteral">&#39;-B&#39;</span>, <span class="stringliteral">&#39;--beauty&#39;</span>,     action=<span class="stringliteral">&#39;store_true&#39;</span>,  dest=<span class="stringliteral">&#39;beauty&#39;</span>, default=beauty, help=<span class="stringliteral">&quot;generate beauty decays&quot;</span>)</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  ap.add_argument(<span class="stringliteral">&#39;-M&#39;</span>, <span class="stringliteral">&#39;--storeOnlyMuons&#39;</span>,  action=<span class="stringliteral">&#39;store_true&#39;</span>,  dest=<span class="stringliteral">&#39;storeOnlyMuons&#39;</span>,  default=storeOnlyMuons, help=<span class="stringliteral">&quot;store only muons, ignore neutrinos&quot;</span>)</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="comment"># for charm production</span></div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  ap.add_argument(<span class="stringliteral">&#39;-cc&#39;</span>,<span class="stringliteral">&#39;--chicc&#39;</span>,action=<span class="stringliteral">&#39;store_true&#39;</span>,  dest=<span class="stringliteral">&#39;chicc&#39;</span>,  default=chicc, help=<span class="stringliteral">&quot;ccbar over mbias cross section&quot;</span>)</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  ap.add_argument(<span class="stringliteral">&#39;-bb&#39;</span>,<span class="stringliteral">&#39;--chibb&#39;</span>,action=<span class="stringliteral">&#39;store_true&#39;</span>,  dest=<span class="stringliteral">&#39;chibb&#39;</span>,  default=chibb, help=<span class="stringliteral">&quot;bbbar over mbias cross section&quot;</span>)</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  ap.add_argument(<span class="stringliteral">&#39;-p&#39;</span>,<span class="stringliteral">&#39;--pot&#39;</span>,action=<span class="stringliteral">&#39;store_true&#39;</span>,  dest=<span class="stringliteral">&#39;npot&#39;</span>,  default=npot, help=<span class="stringliteral">&quot;number of protons on target per spill to normalize on&quot;</span>)</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  ap.add_argument(<span class="stringliteral">&#39;-S&#39;</span>,<span class="stringliteral">&#39;--nStart&#39;</span>,action=<span class="stringliteral">&#39;store_true&#39;</span>,  dest=<span class="stringliteral">&#39;nStart&#39;</span>,  default=nStart, help=<span class="stringliteral">&quot;first event of input file to start&quot;</span>)</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  ap.add_argument(<span class="stringliteral">&#39;-I&#39;</span>, <span class="stringliteral">&#39;--InputFile&#39;</span>, type=str, dest=<span class="stringliteral">&#39;charmInputFile&#39;</span>,  default=charmInputFile, help=<span class="stringliteral">&quot;input file for charm/beauty decays&quot;</span>)</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;  ap.add_argument(<span class="stringliteral">&#39;-o&#39;</span>,<span class="stringliteral">&#39;--output&#39;</span>    , type=str, help=<span class="stringliteral">&quot;output directory&quot;</span>, dest=<span class="stringliteral">&#39;work_dir&#39;</span>, default=<span class="keywordtype">None</span>)</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;  args = ap.parse_args()</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  <span class="keywordflow">if</span> args.debug:</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;      logger.setLevel(logging.DEBUG)</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;  runnr        = args.runnr</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;  nev          = args.nev</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;  ecut         = args.ecut</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;  tauOnly      = args.tauOnly</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;  JpsiMainly   = args.JpsiMainly</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;  G4only       = args.G4only</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;  boostFactor  = args.boostFactor</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;  boostDiMuon  = args.boostDiMuon</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;  storeOnlyMuons = args.storeOnlyMuons</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;  <span class="keywordflow">if</span> G4only:</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    args.charm  = <span class="keyword">False</span></div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    args.beauty = <span class="keyword">False</span></div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    args.withEvtGen = <span class="keyword">False</span></div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    args.pythiaDecay = <span class="keyword">False</span></div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;  <span class="keywordflow">elif</span> args.pythiaDecay:</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    withEvtGen = <span class="keyword">False</span></div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    args.withEvtGen = <span class="keyword">False</span></div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    logger.info(<span class="stringliteral">&quot;use Pythia8 as primary decayer&quot;</span>)</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;  <span class="keywordflow">else</span>:</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    withEvtGen = <span class="keyword">True</span></div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    logger.info(<span class="stringliteral">&quot;use EvtGen as primary decayer&quot;</span>)</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;  withEvtGen     = args.withEvtGen</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;  charm  = args.charm</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;  beauty = args.beauty</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;  <span class="keywordflow">if</span> charm <span class="keywordflow">and</span> beauty:</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    logger.warn(<span class="stringliteral">&quot;charm and beauty decays are set! Beauty gets priority&quot;</span>)</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    charm = <span class="keyword">False</span></div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;  charmInputFile = args.charmInputFile</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;  nStart = <a class="code" href="namespaceadd__noise__to__field.html#a4aa6f75233f1922a97b2d4c15285c18e">int</a>(args.nStart)</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;  Debug  = args.debug</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;  <span class="keywordflow">if</span> args.work_dir <span class="keywordflow">is</span> <span class="keywordtype">None</span>:</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    <span class="keywordflow">if</span> charm: args.work_dir = <a class="code" href="namespacerun__MufluxfixedTarget.html#a3b5e3c25ab9c50ccf5d6a934ca84de71">get_work_dir</a>(runnr,<span class="stringliteral">&quot;charm&quot;</span>)</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    <span class="keywordflow">if</span> beauty: args.work_dir = <a class="code" href="namespacerun__MufluxfixedTarget.html#a3b5e3c25ab9c50ccf5d6a934ca84de71">get_work_dir</a>(runnr,<span class="stringliteral">&quot;beauty&quot;</span>)</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    <span class="keywordflow">else</span>: args.work_dir = <a class="code" href="namespacerun__MufluxfixedTarget.html#a3b5e3c25ab9c50ccf5d6a934ca84de71">get_work_dir</a>(runnr)</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;  work_dir = args.work_dir</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;  logger.debug(<span class="stringliteral">&quot;work_dir: %s&quot;</span> % work_dir)</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;  logger.debug(<span class="stringliteral">&quot;command line arguments: %s&quot;</span>, args)</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;  <span class="keywordflow">if</span> os.path.exists(work_dir):</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    logger.warn(<span class="stringliteral">&quot;output directory &#39;%s&#39; already exists.&quot;</span> % work_dir)</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    <span class="keywordflow">if</span> args.force:</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;      logger.warn(<span class="stringliteral">&quot;...cleaning&quot;</span>)</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;      <span class="keywordflow">for</span> root, dirs, files <span class="keywordflow">in</span> os.walk(work_dir):</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;        <span class="keywordflow">for</span> f <span class="keywordflow">in</span> files:</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;          os.unlink(os.path.join(root, f))</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;        <span class="keywordflow">for</span> d <span class="keywordflow">in</span> dirs:</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;          shutil.rmtree(os.path.join(root, d))</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;    <span class="keywordflow">else</span>:</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;      logger.warn(<span class="stringliteral">&quot;...use &#39;-f&#39; option to overwrite it&quot;</span>)</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;  <span class="keywordflow">else</span>:</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    os.makedirs(work_dir)</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;  <span class="keywordflow">return</span> args</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160; </div>
-<div class="line"><a name="l00147"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#afda84f34674162b2484689ba84f07a61">  147</a></span>&#160;args = <a class="code" href="namespacerun__MufluxfixedTarget.html#aa8c55dfb75dd485777269b1035e3316d">init</a>()</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;os.chdir(work_dir)</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;<span class="comment"># -------------------------------------------------------------------</span></div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;ROOT.gRandom.SetSeed(theSeed)  <span class="comment"># this should be propagated via ROOT to Pythia8 and Geant4VMC</span></div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;<a class="code" href="namespaceshipRoot__conf.html#a5e8544883bc78700546fa8c4c116ca7d">shipRoot_conf.configure</a>()      <span class="comment"># load basic libraries, prepare atexit for python</span></div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;<span class="comment">#this is for the muon flux geometry</span></div>
-<div class="line"><a name="l00153"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a1e52a4312d35107b6d360bf70900872e">  153</a></span>&#160;ship_geo = ConfigRegistry.loadpy(<span class="stringliteral">&quot;$FAIRSHIP/geometry/charm-geometry_config.py&quot;</span>, Setup = args.CharmdetSetup, cTarget = args.CharmTarget)</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160; </div>
-<div class="line"><a name="l00155"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#ab40deef7381855458d9f9b9a11470fb0">  155</a></span>&#160;txt = <span class="stringliteral">&#39;pythia8_Geant4_&#39;</span></div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;<span class="keywordflow">if</span> withEvtGen: txt = <span class="stringliteral">&#39;pythia8_evtgen_Geant4_&#39;</span></div>
-<div class="line"><a name="l00157"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#abaa22f2274a5496abe9fe44c545bfbe0">  157</a></span>&#160;outFile = outputDir+<span class="stringliteral">&#39;/&#39;</span>+txt+<a class="code" href="namespaceadd__noise__to__field.html#ac8c461fc99cff345995bf60fcdfefa01">str</a>(runnr)+<span class="stringliteral">&#39;_&#39;</span>+<a class="code" href="namespaceadd__noise__to__field.html#ac8c461fc99cff345995bf60fcdfefa01">str</a>(ecut)+<span class="stringliteral">&#39;.root&#39;</span></div>
-<div class="line"><a name="l00158"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a12a40b27521aecaa4e7951ab4e93c1af">  158</a></span>&#160;parFile = outputDir+<span class="stringliteral">&#39;/ship.params.&#39;</span>+txt+<a class="code" href="namespaceadd__noise__to__field.html#ac8c461fc99cff345995bf60fcdfefa01">str</a>(runnr)+<span class="stringliteral">&#39;_&#39;</span>+<a class="code" href="namespaceadd__noise__to__field.html#ac8c461fc99cff345995bf60fcdfefa01">str</a>(ecut)+<span class="stringliteral">&#39;.root&#39;</span></div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160; </div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;<span class="comment"># -----Timer--------------------------------------------------------</span></div>
-<div class="line"><a name="l00161"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#aa7077b021d2c92a092ceac3cc0d1c783">  161</a></span>&#160;timer = ROOT.TStopwatch()</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;timer.Start()</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160; </div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;<span class="comment"># -----Create simulation run----------------------------------------</span></div>
-<div class="line"><a name="l00165"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a83a847ffaa47887a009aa066a8e232c9">  165</a></span>&#160;run = ROOT.FairRunSim()</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;run.SetName(mcEngine)  <span class="comment"># Transport engine</span></div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;run.SetOutputFile(outFile)  <span class="comment"># Output file</span></div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;run.SetUserConfig(<span class="stringliteral">&quot;g4Config.C&quot;</span>) <span class="comment"># user configuration file default g4Config.C</span></div>
-<div class="line"><a name="l00169"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#afe3126739acf8a7a593404368959cae8">  169</a></span>&#160;rtdb = run.GetRuntimeDb()</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160; </div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;<span class="comment"># -----Materials----------------------------------------------</span></div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;run.SetMaterials(<span class="stringliteral">&quot;media.geo&quot;</span>)</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;<span class="comment"># -----Create geometry----------------------------------------------</span></div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;<span class="keyword">import</span> charmDet_conf <span class="keyword">as</span> shipDet_conf</div>
-<div class="line"><a name="l00175"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a9842f7625abbc6401ac57ee13151a847">  175</a></span>&#160;modules = <a class="code" href="namespaceshipDet__conf.html#aab56bdb431b4537670432778b4a10305">shipDet_conf.configure</a>(run,ship_geo)</div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160; </div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;<span class="comment"># -----Create PrimaryGenerator--------------------------------------</span></div>
-<div class="line"><a name="l00178"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#ab6aed79d48ab6b9684ad3a9474193217">  178</a></span>&#160;primGen = ROOT.FairPrimaryGenerator()</div>
-<div class="line"><a name="l00179"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a972a364af804f5d169f8a00c8021f255">  179</a></span>&#160;P8gen = ROOT.FixedTargetGenerator()</div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;<span class="keywordflow">if</span> (ship_geo.MufluxSpectrometer.muflux==<span class="keyword">True</span>):</div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160; P8gen.SetTarget(<span class="stringliteral">&quot;/TargetArea_1&quot;</span>,0.,0.) <span class="comment"># will distribute PV inside target, beam offset x=y=0.</span></div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;<span class="keywordflow">else</span>:</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160; P8gen.SetCharmTarget() <span class="comment">#looks for charm target instead of SHiP standard target</span></div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160; P8gen.SetTarget(<span class="stringliteral">&quot;volTarget_1&quot;</span>,0.,0.) <span class="comment"># will distribute PV inside target, beam offset x=y=0.</span></div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160; <span class="keywordflow">if</span> ship_geo.Box.gausbeam:</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;  primGen.SetBeam(0.,0., 0.5, 0.5) <span class="comment">#more central beam, for hits in downstream detectors</span></div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;  primGen.SmearGausVertexXY(<span class="keyword">True</span>) <span class="comment">#sigma = x</span></div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160; <span class="keywordflow">else</span>:</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;  primGen.SetBeam(0.,0., ship_geo.Box.TX-1., ship_geo.Box.TY-1.) <span class="comment">#Uniform distribution in x/y on the target (0.5 cm of margin at both sides)</span></div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;  primGen.SmearVertexXY(<span class="keyword">True</span>)</div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;P8gen.SetMom(400.*u.GeV)</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;P8gen.SetEnergyCut(ecut*u.GeV)</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;P8gen.SetDebug(Debug)</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;<span class="keywordflow">if</span> G4only: P8gen.SetG4only()</div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;<span class="keywordflow">if</span> withEvtGen: P8gen.WithEvtGen()</div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;<span class="keywordflow">if</span> boostDiMuon &gt; 1:</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160; P8gen.SetBoost(boostDiMuon) <span class="comment"># will increase BR for rare eta,omega,rho ... mesons decaying to 2 muons in Pythia8</span></div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;                            <span class="comment"># and later copied to Geant4</span></div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;P8gen.SetSeed(theSeed)</div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;<span class="comment"># for charm/beauty</span></div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;<span class="comment">#        print &#39; for experts: p pot= number of protons on target per spill to normalize on&#39;</span></div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;<span class="comment">#        print &#39;            : c chicc= ccbar over mbias cross section&#39;</span></div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;<span class="keywordflow">if</span> charm <span class="keywordflow">or</span> beauty:</div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160; P8gen.InitForCharmOrBeauty(<span class="stringliteral">&quot;root://eoslhcb.cern.ch//eos/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-76Mpot_1.root&quot;</span>,nev,npot,nStart)</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;primGen.AddGenerator(P8gen)</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;<span class="comment">#</span></div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;run.SetGenerator(primGen)</div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160; </div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;<span class="comment"># -----Initialize simulation run------------------------------------</span></div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;run.Init()</div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160; </div>
-<div class="line"><a name="l00212"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a09848ca65da6cda679a111e7ba15b078">  212</a></span>&#160;gMC = ROOT.TVirtualMC.GetMC()</div>
-<div class="line"><a name="l00213"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#ac8735b486c816c7281ea3c3b638ddd59">  213</a></span>&#160;fStack = gMC.GetStack()</div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;fStack.SetMinPoints(1)</div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;fStack.SetEnergyCut(-1.)</div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;<span class="comment">#</span></div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;<span class="keyword">import</span> AddDiMuonDecayChannelsToG4</div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;<a class="code" href="namespaceAddDiMuonDecayChannelsToG4.html#a753e4ffd6a0356653c5896ba1f5a57cd">AddDiMuonDecayChannelsToG4.Initialize</a>(P8gen.GetPythia())</div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160; </div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;<span class="comment"># boost gamma2muon conversion</span></div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;<span class="keywordflow">if</span> boostFactor &gt; 1:</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160; ROOT.gROOT.ProcessLine(<span class="stringliteral">&#39;#include &quot;Geant4/G4ProcessTable.hh&quot;&#39;</span>)</div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160; ROOT.gROOT.ProcessLine(<span class="stringliteral">&#39;#include &quot;Geant4/G4AnnihiToMuPair.hh&quot;&#39;</span>)</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160; ROOT.gROOT.ProcessLine(<span class="stringliteral">&#39;#include &quot;Geant4/G4GammaConversionToMuons.hh&quot;&#39;</span>)</div>
-<div class="line"><a name="l00225"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a9e07da9155bce2b8f38fbcfdd183f2bd">  225</a></span>&#160; gProcessTable = ROOT.G4ProcessTable.GetProcessTable()</div>
-<div class="line"><a name="l00226"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#abb0b2a7d9d0cc21ebdd2ed6bb523b9da">  226</a></span>&#160; procAnnihil = gProcessTable.FindProcess(ROOT.G4String(<span class="stringliteral">&#39;AnnihiToMuPair&#39;</span>),ROOT.G4String(<span class="stringliteral">&#39;e+&#39;</span>))</div>
-<div class="line"><a name="l00227"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a409569afbec93724f85d005f632e2fa0">  227</a></span>&#160; procGMuPair = gProcessTable.FindProcess(ROOT.G4String(<span class="stringliteral">&#39;GammaToMuPair&#39;</span>),ROOT.G4String(<span class="stringliteral">&#39;gamma&#39;</span>))</div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160; procGMuPair.SetCrossSecFactor(boostFactor)</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160; procAnnihil.SetCrossSecFactor(boostFactor)</div>
+<div class="line"><a name="l00060"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#aa8c55dfb75dd485777269b1035e3316d">   60</a></span>&#160;<span class="keyword">def </span><a class="code" href="namespacerun__MufluxfixedTarget.html#aa8c55dfb75dd485777269b1035e3316d">init</a>():</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <span class="keyword">global</span> runnr, nev, ecut, G4only, tauOnly,JpsiMainly, work_dir,Debug,withEvtGen,boostDiMuon,\</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;         boostFactor,charm,beauty,charmInputFile,nStart,storeOnlyMuons,chicc,chibb,npot, nStart</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  logger.info(<span class="stringliteral">&quot;SHiP proton-on-taget simulator (C) Thomas Ruf, 2017&quot;</span>)</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  ap = argparse.ArgumentParser(</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;      description=<span class="stringliteral">&#39;Run SHiP &quot;pot&quot; simulation&#39;</span>)</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  ap.add_argument(<span class="stringliteral">&#39;-d&#39;</span>, <span class="stringliteral">&#39;--debug&#39;</span>, action=<span class="stringliteral">&#39;store_true&#39;</span>, dest=<span class="stringliteral">&#39;debug&#39;</span>)</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  ap.add_argument(<span class="stringliteral">&#39;-f&#39;</span>, <span class="stringliteral">&#39;--force&#39;</span>, action=<span class="stringliteral">&#39;store_true&#39;</span>, help=<span class="stringliteral">&quot;force overwriting output directory&quot;</span>)</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  ap.add_argument(<span class="stringliteral">&#39;-cs&#39;</span>, <span class="stringliteral">&#39;--CharmdetSetup&#39;</span>, type=int, dest=<span class="stringliteral">&#39;CharmdetSetup&#39;</span>,help=<span class="stringliteral">&quot;setting detector setup&quot;</span>, default=0)</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  ap.add_argument(<span class="stringliteral">&#39;-ct&#39;</span>, <span class="stringliteral">&#39;--CharmTarget&#39;</span>, type=int, dest=<span class="stringliteral">&#39;CharmTarget&#39;</span>,help=<span class="stringliteral">&quot;choosing target configuration for charm exposure&quot;</span>, default=3)</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  ap.add_argument(<span class="stringliteral">&#39;-r&#39;</span>, <span class="stringliteral">&#39;--run-number&#39;</span>, type=int, dest=<span class="stringliteral">&#39;runnr&#39;</span>, default=runnr)</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  ap.add_argument(<span class="stringliteral">&#39;-e&#39;</span>, <span class="stringliteral">&#39;--ecut&#39;</span>, type=float, help=<span class="stringliteral">&quot;energy cut&quot;</span>, dest=<span class="stringliteral">&#39;ecut&#39;</span>, default=ecut)</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  ap.add_argument(<span class="stringliteral">&#39;-n&#39;</span>, <span class="stringliteral">&#39;--num-events&#39;</span>, type=int, help=<span class="stringliteral">&quot;number of events to generate&quot;</span>, dest=<span class="stringliteral">&#39;nev&#39;</span>, default=nev)</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  ap.add_argument(<span class="stringliteral">&#39;-G&#39;</span>, <span class="stringliteral">&#39;--G4only&#39;</span>, action=<span class="stringliteral">&#39;store_true&#39;</span>, dest=<span class="stringliteral">&#39;G4only&#39;</span>,     default=<span class="keyword">False</span>, help=<span class="stringliteral">&quot;use Geant4 directly, no Pythia8&quot;</span>)</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  ap.add_argument(<span class="stringliteral">&#39;-P&#39;</span>, <span class="stringliteral">&#39;--PythiaDecay&#39;</span>, action=<span class="stringliteral">&#39;store_true&#39;</span>, dest=<span class="stringliteral">&#39;pythiaDecay&#39;</span>, default=<span class="keyword">False</span>,  help=<span class="stringliteral">&quot;use Pythia8 for decays&quot;</span>)</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  ap.add_argument(<span class="stringliteral">&#39;-V&#39;</span>, <span class="stringliteral">&#39;--EvtGen&#39;</span>,      action=<span class="stringliteral">&#39;store_true&#39;</span>, dest=<span class="stringliteral">&#39;withEvtGen&#39;</span>,  default=withEvtGen,   help=<span class="stringliteral">&quot;use EvtGen for decays&quot;</span>)</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  ap.add_argument(<span class="stringliteral">&#39;-t&#39;</span>, <span class="stringliteral">&#39;--tau-only&#39;</span>,     action=<span class="stringliteral">&#39;store_true&#39;</span>, dest=<span class="stringliteral">&#39;tauOnly&#39;</span>,     default=<span class="keyword">False</span>)</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  ap.add_argument(<span class="stringliteral">&#39;-J&#39;</span>, <span class="stringliteral">&#39;--Jpsi-mainly&#39;</span>,  action=<span class="stringliteral">&#39;store_true&#39;</span>, dest=<span class="stringliteral">&#39;JpsiMainly&#39;</span>,  default=<span class="keyword">False</span>)</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  ap.add_argument(<span class="stringliteral">&#39;-b&#39;</span>, <span class="stringliteral">&#39;--boostDiMuon&#39;</span>, type=float,   dest=<span class="stringliteral">&#39;boostDiMuon&#39;</span>,  default=boostDiMuon, help=<span class="stringliteral">&quot;boost Di-muon branching ratios&quot;</span>)</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  ap.add_argument(<span class="stringliteral">&#39;-X&#39;</span>, <span class="stringliteral">&#39;--boostFactor&#39;</span>, type=float,   dest=<span class="stringliteral">&#39;boostFactor&#39;</span>,  default=boostFactor, help=<span class="stringliteral">&quot;boost Di-muon prod cross sections&quot;</span>)</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  ap.add_argument(<span class="stringliteral">&#39;-C&#39;</span>, <span class="stringliteral">&#39;--charm&#39;</span>,      action=<span class="stringliteral">&#39;store_true&#39;</span>,  dest=<span class="stringliteral">&#39;charm&#39;</span>,  default=charm, help=<span class="stringliteral">&quot;generate charm decays&quot;</span>)</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  ap.add_argument(<span class="stringliteral">&#39;-B&#39;</span>, <span class="stringliteral">&#39;--beauty&#39;</span>,     action=<span class="stringliteral">&#39;store_true&#39;</span>,  dest=<span class="stringliteral">&#39;beauty&#39;</span>, default=beauty, help=<span class="stringliteral">&quot;generate beauty decays&quot;</span>)</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  ap.add_argument(<span class="stringliteral">&#39;-M&#39;</span>, <span class="stringliteral">&#39;--storeOnlyMuons&#39;</span>,  action=<span class="stringliteral">&#39;store_true&#39;</span>,  dest=<span class="stringliteral">&#39;storeOnlyMuons&#39;</span>,  default=storeOnlyMuons, help=<span class="stringliteral">&quot;store only muons, ignore neutrinos&quot;</span>)</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="comment"># for charm production</span></div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  ap.add_argument(<span class="stringliteral">&#39;-cc&#39;</span>,<span class="stringliteral">&#39;--chicc&#39;</span>,action=<span class="stringliteral">&#39;store_true&#39;</span>,  dest=<span class="stringliteral">&#39;chicc&#39;</span>,  default=chicc, help=<span class="stringliteral">&quot;ccbar over mbias cross section&quot;</span>)</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  ap.add_argument(<span class="stringliteral">&#39;-bb&#39;</span>,<span class="stringliteral">&#39;--chibb&#39;</span>,action=<span class="stringliteral">&#39;store_true&#39;</span>,  dest=<span class="stringliteral">&#39;chibb&#39;</span>,  default=chibb, help=<span class="stringliteral">&quot;bbbar over mbias cross section&quot;</span>)</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  ap.add_argument(<span class="stringliteral">&#39;-p&#39;</span>,<span class="stringliteral">&#39;--pot&#39;</span>,action=<span class="stringliteral">&#39;store_true&#39;</span>,  dest=<span class="stringliteral">&#39;npot&#39;</span>,  default=npot, help=<span class="stringliteral">&quot;number of protons on target per spill to normalize on&quot;</span>)</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  ap.add_argument(<span class="stringliteral">&#39;-S&#39;</span>,<span class="stringliteral">&#39;--nStart&#39;</span>,action=<span class="stringliteral">&#39;store_true&#39;</span>,  dest=<span class="stringliteral">&#39;nStart&#39;</span>,  default=nStart, help=<span class="stringliteral">&quot;first event of input file to start&quot;</span>)</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  ap.add_argument(<span class="stringliteral">&#39;-I&#39;</span>, <span class="stringliteral">&#39;--InputFile&#39;</span>, type=str, dest=<span class="stringliteral">&#39;charmInputFile&#39;</span>,  default=charmInputFile, help=<span class="stringliteral">&quot;input file for charm/beauty decays&quot;</span>)</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  ap.add_argument(<span class="stringliteral">&#39;-o&#39;</span>,<span class="stringliteral">&#39;--output&#39;</span>    , type=str, help=<span class="stringliteral">&quot;output directory&quot;</span>, dest=<span class="stringliteral">&#39;work_dir&#39;</span>, default=<span class="keywordtype">None</span>)</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;  args = ap.parse_args()</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;  <span class="keywordflow">if</span> args.debug:</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;      logger.setLevel(logging.DEBUG)</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  runnr        = args.runnr</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;  nev          = args.nev</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;  ecut         = args.ecut</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;  tauOnly      = args.tauOnly</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;  JpsiMainly   = args.JpsiMainly</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;  G4only       = args.G4only</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;  boostFactor  = args.boostFactor</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;  boostDiMuon  = args.boostDiMuon</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;  storeOnlyMuons = args.storeOnlyMuons</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;  <span class="keywordflow">if</span> G4only:</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    args.charm  = <span class="keyword">False</span></div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    args.beauty = <span class="keyword">False</span></div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    args.withEvtGen = <span class="keyword">False</span></div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    args.pythiaDecay = <span class="keyword">False</span></div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;  <span class="keywordflow">elif</span> args.pythiaDecay:</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    withEvtGen = <span class="keyword">False</span></div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    args.withEvtGen = <span class="keyword">False</span></div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    logger.info(<span class="stringliteral">&quot;use Pythia8 as primary decayer&quot;</span>)</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;  <span class="keywordflow">else</span>:</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    withEvtGen = <span class="keyword">True</span></div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    logger.info(<span class="stringliteral">&quot;use EvtGen as primary decayer&quot;</span>)</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;  withEvtGen     = args.withEvtGen</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;  charm  = args.charm</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;  beauty = args.beauty</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;  <span class="keywordflow">if</span> charm <span class="keywordflow">and</span> beauty:</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    logger.warn(<span class="stringliteral">&quot;charm and beauty decays are set! Beauty gets priority&quot;</span>)</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    charm = <span class="keyword">False</span></div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;  charmInputFile = args.charmInputFile</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;  nStart = <a class="code" href="namespaceadd__noise__to__field.html#a4aa6f75233f1922a97b2d4c15285c18e">int</a>(args.nStart)</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;  Debug  = args.debug</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;  <span class="keywordflow">if</span> args.work_dir <span class="keywordflow">is</span> <span class="keywordtype">None</span>:</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    <span class="keywordflow">if</span> charm: args.work_dir = <a class="code" href="namespacerun__MufluxfixedTarget.html#a3b5e3c25ab9c50ccf5d6a934ca84de71">get_work_dir</a>(runnr,<span class="stringliteral">&quot;charm&quot;</span>)</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    <span class="keywordflow">if</span> beauty: args.work_dir = <a class="code" href="namespacerun__MufluxfixedTarget.html#a3b5e3c25ab9c50ccf5d6a934ca84de71">get_work_dir</a>(runnr,<span class="stringliteral">&quot;beauty&quot;</span>)</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    <span class="keywordflow">else</span>: args.work_dir = <a class="code" href="namespacerun__MufluxfixedTarget.html#a3b5e3c25ab9c50ccf5d6a934ca84de71">get_work_dir</a>(runnr)</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;  work_dir = args.work_dir</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;  logger.debug(<span class="stringliteral">&quot;work_dir: %s&quot;</span> % work_dir)</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;  logger.debug(<span class="stringliteral">&quot;command line arguments: %s&quot;</span>, args)</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;  <span class="keywordflow">if</span> os.path.exists(work_dir):</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    logger.warn(<span class="stringliteral">&quot;output directory &#39;%s&#39; already exists.&quot;</span> % work_dir)</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    <span class="keywordflow">if</span> args.force:</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;      logger.warn(<span class="stringliteral">&quot;...cleaning&quot;</span>)</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;      <span class="keywordflow">for</span> root, dirs, files <span class="keywordflow">in</span> os.walk(work_dir):</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;        <span class="keywordflow">for</span> f <span class="keywordflow">in</span> files:</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;          os.unlink(os.path.join(root, f))</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;        <span class="keywordflow">for</span> d <span class="keywordflow">in</span> dirs:</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;          shutil.rmtree(os.path.join(root, d))</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;    <span class="keywordflow">else</span>:</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;      logger.warn(<span class="stringliteral">&quot;...use &#39;-f&#39; option to overwrite it&quot;</span>)</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;  <span class="keywordflow">else</span>:</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    os.makedirs(work_dir)</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;  <span class="keywordflow">return</span> args</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160; </div>
+<div class="line"><a name="l00146"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#afda84f34674162b2484689ba84f07a61">  146</a></span>&#160;args = <a class="code" href="namespacerun__MufluxfixedTarget.html#aa8c55dfb75dd485777269b1035e3316d">init</a>()</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;os.chdir(work_dir)</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;<span class="comment"># -------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;ROOT.gRandom.SetSeed(theSeed)  <span class="comment"># this should be propagated via ROOT to Pythia8 and Geant4VMC</span></div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;<a class="code" href="namespaceshipRoot__conf.html#a5e8544883bc78700546fa8c4c116ca7d">shipRoot_conf.configure</a>()      <span class="comment"># load basic libraries, prepare atexit for python</span></div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;<span class="comment">#this is for the muon flux geometry</span></div>
+<div class="line"><a name="l00152"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a1e52a4312d35107b6d360bf70900872e">  152</a></span>&#160;ship_geo = ConfigRegistry.loadpy(<span class="stringliteral">&quot;$FAIRSHIP/geometry/charm-geometry_config.py&quot;</span>, Setup = args.CharmdetSetup, cTarget = args.CharmTarget)</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160; </div>
+<div class="line"><a name="l00154"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#ab40deef7381855458d9f9b9a11470fb0">  154</a></span>&#160;txt = <span class="stringliteral">&#39;pythia8_Geant4_&#39;</span></div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;<span class="keywordflow">if</span> withEvtGen: txt = <span class="stringliteral">&#39;pythia8_evtgen_Geant4_&#39;</span></div>
+<div class="line"><a name="l00156"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#abaa22f2274a5496abe9fe44c545bfbe0">  156</a></span>&#160;outFile = outputDir+<span class="stringliteral">&#39;/&#39;</span>+txt+<a class="code" href="namespaceadd__noise__to__field.html#ac8c461fc99cff345995bf60fcdfefa01">str</a>(runnr)+<span class="stringliteral">&#39;_&#39;</span>+<a class="code" href="namespaceadd__noise__to__field.html#ac8c461fc99cff345995bf60fcdfefa01">str</a>(ecut)+<span class="stringliteral">&#39;.root&#39;</span></div>
+<div class="line"><a name="l00157"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a12a40b27521aecaa4e7951ab4e93c1af">  157</a></span>&#160;parFile = outputDir+<span class="stringliteral">&#39;/ship.params.&#39;</span>+txt+<a class="code" href="namespaceadd__noise__to__field.html#ac8c461fc99cff345995bf60fcdfefa01">str</a>(runnr)+<span class="stringliteral">&#39;_&#39;</span>+<a class="code" href="namespaceadd__noise__to__field.html#ac8c461fc99cff345995bf60fcdfefa01">str</a>(ecut)+<span class="stringliteral">&#39;.root&#39;</span></div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160; </div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;<span class="comment"># -----Timer--------------------------------------------------------</span></div>
+<div class="line"><a name="l00160"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#aa7077b021d2c92a092ceac3cc0d1c783">  160</a></span>&#160;timer = ROOT.TStopwatch()</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;timer.Start()</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160; </div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;<span class="comment"># -----Create simulation run----------------------------------------</span></div>
+<div class="line"><a name="l00164"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a83a847ffaa47887a009aa066a8e232c9">  164</a></span>&#160;run = ROOT.FairRunSim()</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;run.SetName(mcEngine)  <span class="comment"># Transport engine</span></div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;run.SetOutputFile(outFile)  <span class="comment"># Output file</span></div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;run.SetUserConfig(<span class="stringliteral">&quot;g4Config.C&quot;</span>) <span class="comment"># user configuration file default g4Config.C</span></div>
+<div class="line"><a name="l00168"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#afe3126739acf8a7a593404368959cae8">  168</a></span>&#160;rtdb = run.GetRuntimeDb()</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160; </div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;<span class="comment"># -----Materials----------------------------------------------</span></div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;run.SetMaterials(<span class="stringliteral">&quot;media.geo&quot;</span>)</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;<span class="comment"># -----Create geometry----------------------------------------------</span></div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;<span class="keyword">import</span> charmDet_conf <span class="keyword">as</span> shipDet_conf</div>
+<div class="line"><a name="l00174"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a9842f7625abbc6401ac57ee13151a847">  174</a></span>&#160;modules = <a class="code" href="namespaceshipDet__conf.html#aab56bdb431b4537670432778b4a10305">shipDet_conf.configure</a>(run,ship_geo)</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160; </div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;<span class="comment"># -----Create PrimaryGenerator--------------------------------------</span></div>
+<div class="line"><a name="l00177"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#ab6aed79d48ab6b9684ad3a9474193217">  177</a></span>&#160;primGen = ROOT.FairPrimaryGenerator()</div>
+<div class="line"><a name="l00178"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a972a364af804f5d169f8a00c8021f255">  178</a></span>&#160;P8gen = ROOT.FixedTargetGenerator()</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;<span class="keywordflow">if</span> (ship_geo.MufluxSpectrometer.muflux==<span class="keyword">True</span>):</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160; P8gen.SetTarget(<span class="stringliteral">&quot;/TargetArea_1&quot;</span>,0.,0.) <span class="comment"># will distribute PV inside target, beam offset x=y=0.</span></div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;<span class="keywordflow">else</span>:</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160; P8gen.SetCharmTarget() <span class="comment">#looks for charm target instead of SHiP standard target</span></div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160; P8gen.SetTarget(<span class="stringliteral">&quot;volTarget_1&quot;</span>,0.,0.) <span class="comment"># will distribute PV inside target, beam offset x=y=0.</span></div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160; <span class="keywordflow">if</span> ship_geo.Box.gausbeam:</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;  primGen.SetBeam(0.,0., 0.5, 0.5) <span class="comment">#more central beam, for hits in downstream detectors</span></div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;  primGen.SmearGausVertexXY(<span class="keyword">True</span>) <span class="comment">#sigma = x</span></div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160; <span class="keywordflow">else</span>:</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;  primGen.SetBeam(0.,0., ship_geo.Box.TX-1., ship_geo.Box.TY-1.) <span class="comment">#Uniform distribution in x/y on the target (0.5 cm of margin at both sides)</span></div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;  primGen.SmearVertexXY(<span class="keyword">True</span>)</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;P8gen.SetMom(400.*u.GeV)</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;P8gen.SetEnergyCut(ecut*u.GeV)</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;P8gen.SetDebug(Debug)</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;<span class="keywordflow">if</span> G4only: P8gen.SetG4only()</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;<span class="keywordflow">if</span> withEvtGen: P8gen.WithEvtGen()</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;<span class="keywordflow">if</span> boostDiMuon &gt; 1:</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160; P8gen.SetBoost(boostDiMuon) <span class="comment"># will increase BR for rare eta,omega,rho ... mesons decaying to 2 muons in Pythia8</span></div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;                            <span class="comment"># and later copied to Geant4</span></div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;P8gen.SetSeed(theSeed)</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;<span class="comment"># for charm/beauty</span></div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;<span class="comment">#        print &#39; for experts: p pot= number of protons on target per spill to normalize on&#39;</span></div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;<span class="comment">#        print &#39;            : c chicc= ccbar over mbias cross section&#39;</span></div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;<span class="keywordflow">if</span> charm <span class="keywordflow">or</span> beauty:</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160; P8gen.InitForCharmOrBeauty(<span class="stringliteral">&quot;root://eoslhcb.cern.ch//eos/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-76Mpot_1.root&quot;</span>,nev,npot,nStart)</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;primGen.AddGenerator(P8gen)</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;<span class="comment">#</span></div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;run.SetGenerator(primGen)</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160; </div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;<span class="comment"># -----Initialize simulation run------------------------------------</span></div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;run.Init()</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160; </div>
+<div class="line"><a name="l00211"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a09848ca65da6cda679a111e7ba15b078">  211</a></span>&#160;gMC = ROOT.TVirtualMC.GetMC()</div>
+<div class="line"><a name="l00212"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#ac8735b486c816c7281ea3c3b638ddd59">  212</a></span>&#160;fStack = gMC.GetStack()</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;fStack.SetMinPoints(1)</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;fStack.SetEnergyCut(-1.)</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;<span class="comment">#</span></div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;<span class="keyword">import</span> AddDiMuonDecayChannelsToG4</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;<a class="code" href="namespaceAddDiMuonDecayChannelsToG4.html#a753e4ffd6a0356653c5896ba1f5a57cd">AddDiMuonDecayChannelsToG4.Initialize</a>(P8gen.GetPythia())</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160; </div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;<span class="comment"># boost gamma2muon conversion</span></div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;<span class="keywordflow">if</span> boostFactor &gt; 1:</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160; ROOT.gROOT.ProcessLine(<span class="stringliteral">&#39;#include &quot;Geant4/G4ProcessTable.hh&quot;&#39;</span>)</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160; ROOT.gROOT.ProcessLine(<span class="stringliteral">&#39;#include &quot;Geant4/G4AnnihiToMuPair.hh&quot;&#39;</span>)</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160; ROOT.gROOT.ProcessLine(<span class="stringliteral">&#39;#include &quot;Geant4/G4GammaConversionToMuons.hh&quot;&#39;</span>)</div>
+<div class="line"><a name="l00224"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a9e07da9155bce2b8f38fbcfdd183f2bd">  224</a></span>&#160; gProcessTable = ROOT.G4ProcessTable.GetProcessTable()</div>
+<div class="line"><a name="l00225"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#abb0b2a7d9d0cc21ebdd2ed6bb523b9da">  225</a></span>&#160; procAnnihil = gProcessTable.FindProcess(ROOT.G4String(<span class="stringliteral">&#39;AnnihiToMuPair&#39;</span>),ROOT.G4String(<span class="stringliteral">&#39;e+&#39;</span>))</div>
+<div class="line"><a name="l00226"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a409569afbec93724f85d005f632e2fa0">  226</a></span>&#160; procGMuPair = gProcessTable.FindProcess(ROOT.G4String(<span class="stringliteral">&#39;GammaToMuPair&#39;</span>),ROOT.G4String(<span class="stringliteral">&#39;gamma&#39;</span>))</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160; procGMuPair.SetCrossSecFactor(boostFactor)</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160; procAnnihil.SetCrossSecFactor(boostFactor)</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160; </div>
 <div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160; </div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160; </div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;<span class="comment"># -----Start run----------------------------------------------------</span></div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;run.Run(nev)</div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160; </div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;<span class="comment"># -----Finish-------------------------------------------------------</span></div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;timer.Stop()</div>
-<div class="line"><a name="l00237"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a8b7fa4b408648a6e43640ee9665eb98b">  237</a></span>&#160;rtime = timer.RealTime()</div>
-<div class="line"><a name="l00238"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a51ea520b8b213473a77d7a1cf39a5048">  238</a></span>&#160;ctime = timer.CpuTime()</div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;print(<span class="stringliteral">&#39; &#39;</span>)</div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;print(<span class="stringliteral">&quot;Macro finished succesfully.&quot;</span>)</div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;print(<span class="stringliteral">&quot;Output file is &quot;</span>,  outFile)</div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;print(<span class="stringliteral">&quot;Real time &quot;</span>,rtime, <span class="stringliteral">&quot; s, CPU time &quot;</span>,ctime,<span class="stringliteral">&quot;s&quot;</span>)</div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160; </div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;<span class="keywordflow">if</span> (ship_geo.MufluxSpectrometer.muflux==<span class="keyword">True</span>):</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;<span class="comment"># ---post processing--- remove empty events --- save histograms</span></div>
-<div class="line"><a name="l00246"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a4bb93278d5b63157afffd5746af2ebb2">  246</a></span>&#160; tmpFile = outFile+<span class="stringliteral">&quot;tmp&quot;</span></div>
-<div class="line"><a name="l00247"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#aac65789c1c6aca0e48f2452187b44caf">  247</a></span>&#160; fin   = ROOT.gROOT.GetListOfFiles()[0]</div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160; </div>
-<div class="line"><a name="l00249"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#aff4709d594d439e61e97e3c140fa6b62">  249</a></span>&#160; fHeader = fin.FileHeader</div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160; fHeader.SetRunId(runnr)</div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160; <span class="keywordflow">if</span> charm <span class="keywordflow">or</span> beauty:</div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160; <span class="comment"># normalization for charm</span></div>
-<div class="line"><a name="l00253"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a1a3cc8328081cb950fe2e31198dd7455">  253</a></span>&#160;  poteq = P8gen.GetPotForCharm()</div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;  fHeader.SetTitle(<span class="stringliteral">&quot;POT equivalent = %7.3G&quot;</span>%(poteq))</div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160; <span class="keywordflow">else</span>:</div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;  fHeader.SetTitle(<span class="stringliteral">&quot;POT = &quot;</span>+<a class="code" href="namespaceadd__noise__to__field.html#ac8c461fc99cff345995bf60fcdfefa01">str</a>(nev))</div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160; print(<span class="stringliteral">&quot;Data generated &quot;</span>, fHeader.GetTitle())</div>
-<div class="line"><a name="l00258"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a14f133feb7384ec7e888015f455d5002">  258</a></span>&#160; t     = fin.cbmsim</div>
-<div class="line"><a name="l00259"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a902f91806e3f933ed04b41d2272fdd73">  259</a></span>&#160; fout  = ROOT.TFile(tmpFile,<span class="stringliteral">&#39;recreate&#39;</span> )</div>
-<div class="line"><a name="l00260"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#ad261d5d1e8081cc1d3204b78b1c173ec">  260</a></span>&#160; sTree = t.CloneTree(0)</div>
-<div class="line"><a name="l00261"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a096a8c8a4e44d4ad7b44e330473f699e">  261</a></span>&#160; nEvents = 0</div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160; <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(t.GetEntries()):</div>
-<div class="line"><a name="l00263"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a3dc542dbed26e2e7967cdd55a568354c">  263</a></span>&#160;     rc = t.GetEvent(n)</div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;     <span class="keywordflow">if</span> (t.ScintillatorPoint.GetEntries()&gt;0):</div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;          rc = sTree.Fill()</div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;          nEvents+=1</div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;     <span class="comment">#t.Clear()</span></div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160; fout.cd()</div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160; <span class="keywordflow">for</span> x <span class="keywordflow">in</span> fin.GetList():</div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;  <span class="keywordflow">if</span> <span class="keywordflow">not</span> x.Class().GetName().find(<span class="stringliteral">&#39;TH&#39;</span>)&lt;0:</div>
-<div class="line"><a name="l00271"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a4d5e14ef2b198bccb3aeafe233c0e1a0">  271</a></span>&#160;    xcopy = x.Clone()</div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;    rc = xcopy.Write()</div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160; sTree.AutoSave()</div>
-<div class="line"><a name="l00274"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#aef6fc26ee2e22ee45dad13baf1a73f07">  274</a></span>&#160; ff   = fin.FileHeader.Clone(fout.GetName())</div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160; fout.cd()</div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160; ff.Write(<span class="stringliteral">&quot;FileHeader&quot;</span>, ROOT.TObject.kSingleKey)</div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160; sTree.Write()</div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160; fout.Close()</div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160; os.system(<span class="stringliteral">&quot;mv &quot;</span>+tmpFile+<span class="stringliteral">&quot; &quot;</span>+outFile)</div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160; </div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160; print(<span class="stringliteral">&quot;Number of events produced with activity after hadron absorber:&quot;</span>,nEvents)</div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160; </div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;<span class="keywordflow">else</span>:</div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160; print(<span class="stringliteral">&quot;No post processing done&quot;</span>)</div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160; </div>
-<div class="line"><a name="l00286"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a1bd537e369ef1343b8fc16a58aeffc5b">  286</a></span>&#160;sGeo = ROOT.gGeoManager</div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;run.CreateGeometryFile(<span class="stringliteral">&quot;%s/geofile_full.root&quot;</span> % (outputDir))</div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160; </div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;<span class="keywordflow">if</span> checkOverlap:</div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160; sGeo = ROOT.gGeoManager</div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160; sGeo.CheckOverlaps()</div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160; sGeo.PrintOverlaps()</div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160; run.CreateGeometryFile(<span class="stringliteral">&quot;%s/geofile_full.root&quot;</span> % (outputDir))</div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160; <span class="keyword">import</span> saveBasicParameters</div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160; <a class="code" href="namespacesaveBasicParameters.html#af414b03475f3233d7a3002989aff1ff4">saveBasicParameters.execute</a>(<span class="stringliteral">&quot;%s/geofile_full.root&quot;</span> % (outputDir),ship_geo)</div>
-<div class="ttc" id="anamespaceAddDiMuonDecayChannelsToG4_html_a753e4ffd6a0356653c5896ba1f5a57cd"><div class="ttname"><a href="namespaceAddDiMuonDecayChannelsToG4.html#a753e4ffd6a0356653c5896ba1f5a57cd">AddDiMuonDecayChannelsToG4.Initialize</a></div><div class="ttdeci">def Initialize(p8)</div><div class="ttdef"><b>Definition:</b> <a href="AddDiMuonDecayChannelsToG4_8py_source.html#l00007">AddDiMuonDecayChannelsToG4.py:7</a></div></div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;<span class="comment"># -----Start run----------------------------------------------------</span></div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;run.Run(nev)</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160; </div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;<span class="comment"># -----Finish-------------------------------------------------------</span></div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;timer.Stop()</div>
+<div class="line"><a name="l00236"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a8b7fa4b408648a6e43640ee9665eb98b">  236</a></span>&#160;rtime = timer.RealTime()</div>
+<div class="line"><a name="l00237"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a51ea520b8b213473a77d7a1cf39a5048">  237</a></span>&#160;ctime = timer.CpuTime()</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;print(<span class="stringliteral">&#39; &#39;</span>)</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;print(<span class="stringliteral">&quot;Macro finished succesfully.&quot;</span>)</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;print(<span class="stringliteral">&quot;Output file is &quot;</span>,  outFile)</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;print(<span class="stringliteral">&quot;Real time &quot;</span>,rtime, <span class="stringliteral">&quot; s, CPU time &quot;</span>,ctime,<span class="stringliteral">&quot;s&quot;</span>)</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160; </div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;<span class="keywordflow">if</span> (ship_geo.MufluxSpectrometer.muflux==<span class="keyword">True</span>):</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;<span class="comment"># ---post processing--- remove empty events --- save histograms</span></div>
+<div class="line"><a name="l00245"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a4bb93278d5b63157afffd5746af2ebb2">  245</a></span>&#160; tmpFile = outFile+<span class="stringliteral">&quot;tmp&quot;</span></div>
+<div class="line"><a name="l00246"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#aac65789c1c6aca0e48f2452187b44caf">  246</a></span>&#160; fin   = ROOT.gROOT.GetListOfFiles()[0]</div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160; </div>
+<div class="line"><a name="l00248"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#aff4709d594d439e61e97e3c140fa6b62">  248</a></span>&#160; fHeader = fin.FileHeader</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160; fHeader.SetRunId(runnr)</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160; <span class="keywordflow">if</span> charm <span class="keywordflow">or</span> beauty:</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160; <span class="comment"># normalization for charm</span></div>
+<div class="line"><a name="l00252"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a1a3cc8328081cb950fe2e31198dd7455">  252</a></span>&#160;  poteq = P8gen.GetPotForCharm()</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;  fHeader.SetTitle(<span class="stringliteral">&quot;POT equivalent = %7.3G&quot;</span>%(poteq))</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160; <span class="keywordflow">else</span>:</div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;  fHeader.SetTitle(<span class="stringliteral">&quot;POT = &quot;</span>+<a class="code" href="namespaceadd__noise__to__field.html#ac8c461fc99cff345995bf60fcdfefa01">str</a>(nev))</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160; print(<span class="stringliteral">&quot;Data generated &quot;</span>, fHeader.GetTitle())</div>
+<div class="line"><a name="l00257"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a14f133feb7384ec7e888015f455d5002">  257</a></span>&#160; t     = fin.cbmsim</div>
+<div class="line"><a name="l00258"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a902f91806e3f933ed04b41d2272fdd73">  258</a></span>&#160; fout  = ROOT.TFile(tmpFile,<span class="stringliteral">&#39;recreate&#39;</span> )</div>
+<div class="line"><a name="l00259"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#ad261d5d1e8081cc1d3204b78b1c173ec">  259</a></span>&#160; sTree = t.CloneTree(0)</div>
+<div class="line"><a name="l00260"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a096a8c8a4e44d4ad7b44e330473f699e">  260</a></span>&#160; nEvents = 0</div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160; <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(t.GetEntries()):</div>
+<div class="line"><a name="l00262"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a3dc542dbed26e2e7967cdd55a568354c">  262</a></span>&#160;     rc = t.GetEvent(n)</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;     <span class="keywordflow">if</span> (t.ScintillatorPoint.GetEntries()&gt;0):</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;          rc = sTree.Fill()</div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;          nEvents+=1</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;     <span class="comment">#t.Clear()</span></div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160; fout.cd()</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160; <span class="keywordflow">for</span> x <span class="keywordflow">in</span> fin.GetList():</div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;  <span class="keywordflow">if</span> <span class="keywordflow">not</span> x.Class().GetName().find(<span class="stringliteral">&#39;TH&#39;</span>)&lt;0:</div>
+<div class="line"><a name="l00270"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a4d5e14ef2b198bccb3aeafe233c0e1a0">  270</a></span>&#160;    xcopy = x.Clone()</div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;    rc = xcopy.Write()</div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160; sTree.AutoSave()</div>
+<div class="line"><a name="l00273"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#aef6fc26ee2e22ee45dad13baf1a73f07">  273</a></span>&#160; ff   = fin.FileHeader.Clone(fout.GetName())</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160; fout.cd()</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160; ff.Write(<span class="stringliteral">&quot;FileHeader&quot;</span>, ROOT.TObject.kSingleKey)</div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160; sTree.Write()</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160; fout.Close()</div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160; os.system(<span class="stringliteral">&quot;mv &quot;</span>+tmpFile+<span class="stringliteral">&quot; &quot;</span>+outFile)</div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160; </div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160; print(<span class="stringliteral">&quot;Number of events produced with activity after hadron absorber:&quot;</span>,nEvents)</div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160; </div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;<span class="keywordflow">else</span>:</div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160; print(<span class="stringliteral">&quot;No post processing done&quot;</span>)</div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160; </div>
+<div class="line"><a name="l00285"></a><span class="lineno"><a class="line" href="namespacerun__MufluxfixedTarget.html#a1bd537e369ef1343b8fc16a58aeffc5b">  285</a></span>&#160;sGeo = ROOT.gGeoManager</div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;run.CreateGeometryFile(<span class="stringliteral">&quot;%s/geofile_full.root&quot;</span> % (outputDir))</div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160; </div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;<span class="keywordflow">if</span> checkOverlap:</div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160; sGeo = ROOT.gGeoManager</div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160; sGeo.CheckOverlaps()</div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160; sGeo.PrintOverlaps()</div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160; run.CreateGeometryFile(<span class="stringliteral">&quot;%s/geofile_full.root&quot;</span> % (outputDir))</div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160; <span class="keyword">import</span> saveBasicParameters</div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160; <a class="code" href="namespacesaveBasicParameters.html#af414b03475f3233d7a3002989aff1ff4">saveBasicParameters.execute</a>(<span class="stringliteral">&quot;%s/geofile_full.root&quot;</span> % (outputDir),ship_geo)</div>
+<div class="ttc" id="anamespaceAddDiMuonDecayChannelsToG4_html_a753e4ffd6a0356653c5896ba1f5a57cd"><div class="ttname"><a href="namespaceAddDiMuonDecayChannelsToG4.html#a753e4ffd6a0356653c5896ba1f5a57cd">AddDiMuonDecayChannelsToG4.Initialize</a></div><div class="ttdeci">def Initialize(p8)</div><div class="ttdef"><b>Definition:</b> <a href="AddDiMuonDecayChannelsToG4_8py_source.html#l00006">AddDiMuonDecayChannelsToG4.py:6</a></div></div>
 <div class="ttc" id="anamespaceadd__noise__to__field_html_a4aa6f75233f1922a97b2d4c15285c18e"><div class="ttname"><a href="namespaceadd__noise__to__field.html#a4aa6f75233f1922a97b2d4c15285c18e">add_noise_to_field.int</a></div><div class="ttdeci">int</div><div class="ttdef"><b>Definition:</b> <a href="add__noise__to__field_8py_source.html#l00057">add_noise_to_field.py:57</a></div></div>
 <div class="ttc" id="anamespaceadd__noise__to__field_html_ac8c461fc99cff345995bf60fcdfefa01"><div class="ttname"><a href="namespaceadd__noise__to__field.html#ac8c461fc99cff345995bf60fcdfefa01">add_noise_to_field.str</a></div><div class="ttdeci">str</div><div class="ttdef"><b>Definition:</b> <a href="add__noise__to__field_8py_source.html#l00053">add_noise_to_field.py:53</a></div></div>
-<div class="ttc" id="anamespacerun__MufluxfixedTarget_html_a3b5e3c25ab9c50ccf5d6a934ca84de71"><div class="ttname"><a href="namespacerun__MufluxfixedTarget.html#a3b5e3c25ab9c50ccf5d6a934ca84de71">run_MufluxfixedTarget.get_work_dir</a></div><div class="ttdeci">def get_work_dir(run_number, tag=None)</div><div class="ttdef"><b>Definition:</b> <a href="run__MufluxfixedTarget_8py_source.html#l00052">run_MufluxfixedTarget.py:52</a></div></div>
-<div class="ttc" id="anamespacerun__MufluxfixedTarget_html_aa8c55dfb75dd485777269b1035e3316d"><div class="ttname"><a href="namespacerun__MufluxfixedTarget.html#aa8c55dfb75dd485777269b1035e3316d">run_MufluxfixedTarget.init</a></div><div class="ttdeci">def init()</div><div class="ttdef"><b>Definition:</b> <a href="run__MufluxfixedTarget_8py_source.html#l00061">run_MufluxfixedTarget.py:61</a></div></div>
+<div class="ttc" id="anamespacerun__MufluxfixedTarget_html_a3b5e3c25ab9c50ccf5d6a934ca84de71"><div class="ttname"><a href="namespacerun__MufluxfixedTarget.html#a3b5e3c25ab9c50ccf5d6a934ca84de71">run_MufluxfixedTarget.get_work_dir</a></div><div class="ttdeci">def get_work_dir(run_number, tag=None)</div><div class="ttdef"><b>Definition:</b> <a href="run__MufluxfixedTarget_8py_source.html#l00051">run_MufluxfixedTarget.py:51</a></div></div>
+<div class="ttc" id="anamespacerun__MufluxfixedTarget_html_aa8c55dfb75dd485777269b1035e3316d"><div class="ttname"><a href="namespacerun__MufluxfixedTarget.html#aa8c55dfb75dd485777269b1035e3316d">run_MufluxfixedTarget.init</a></div><div class="ttdeci">def init()</div><div class="ttdef"><b>Definition:</b> <a href="run__MufluxfixedTarget_8py_source.html#l00060">run_MufluxfixedTarget.py:60</a></div></div>
 <div class="ttc" id="anamespacesaveBasicParameters_html_af414b03475f3233d7a3002989aff1ff4"><div class="ttname"><a href="namespacesaveBasicParameters.html#af414b03475f3233d7a3002989aff1ff4">saveBasicParameters.execute</a></div><div class="ttdeci">def execute(f, ox, name='ShipGeo')</div><div class="ttdef"><b>Definition:</b> <a href="saveBasicParameters_8py_source.html#l00038">saveBasicParameters.py:38</a></div></div>
-<div class="ttc" id="anamespaceshipDet__conf_html_aab56bdb431b4537670432778b4a10305"><div class="ttname"><a href="namespaceshipDet__conf.html#aab56bdb431b4537670432778b4a10305">shipDet_conf.configure</a></div><div class="ttdeci">def configure(run, ship_geo)</div><div class="ttdef"><b>Definition:</b> <a href="shipDet__conf_8py_source.html#l00076">shipDet_conf.py:76</a></div></div>
-<div class="ttc" id="anamespaceshipRoot__conf_html_a5e8544883bc78700546fa8c4c116ca7d"><div class="ttname"><a href="namespaceshipRoot__conf.html#a5e8544883bc78700546fa8c4c116ca7d">shipRoot_conf.configure</a></div><div class="ttdeci">def configure(darkphoton=None)</div><div class="ttdef"><b>Definition:</b> <a href="shipRoot__conf_8py_source.html#l00067">shipRoot_conf.py:67</a></div></div>
+<div class="ttc" id="anamespaceshipDet__conf_html_aab56bdb431b4537670432778b4a10305"><div class="ttname"><a href="namespaceshipDet__conf.html#aab56bdb431b4537670432778b4a10305">shipDet_conf.configure</a></div><div class="ttdeci">def configure(run, ship_geo)</div><div class="ttdef"><b>Definition:</b> <a href="shipDet__conf_8py_source.html#l00074">shipDet_conf.py:74</a></div></div>
+<div class="ttc" id="anamespaceshipRoot__conf_html_a5e8544883bc78700546fa8c4c116ca7d"><div class="ttname"><a href="namespaceshipRoot__conf.html#a5e8544883bc78700546fa8c4c116ca7d">shipRoot_conf.configure</a></div><div class="ttdeci">def configure(darkphoton=None)</div><div class="ttdef"><b>Definition:</b> <a href="shipRoot__conf_8py_source.html#l00066">shipRoot_conf.py:66</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

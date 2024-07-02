@@ -1,5 +1,6 @@
 var NAVTREEINDEX9 =
 {
+"classEmulsionMagnet.html#ab9fdee459c54e782161ace817b621193":[12,0,63,12],
 "classEmulsionMagnet.html#abd0c9a2f9e520d0eb39475a88a86ab20":[12,0,63,13],
 "classEmulsionMagnet.html#ac47900eeb178307716d48af6d62e2c4a":[12,0,63,42],
 "classEmulsionMagnet.html#aca7dda2317b8bf4606e95d0dda3f73f3":[12,0,63,17],
@@ -248,6 +249,5 @@ var NAVTREEINDEX9 =
 "classHpt.html#a4920dc2fe8fd22a9747f9ccceeaf3a4c":[12,0,79,54],
 "classHpt.html#a4de8b4cdf91d838897de02302ba5f917":[12,0,79,34],
 "classHpt.html#a4e0fcf3883eb63356a699eb369aa2ac1":[12,0,79,11],
-"classHpt.html#a50f6b79424cb398c588df669a11b587c":[12,0,79,52],
-"classHpt.html#a548233c89d0bc33a5744027a08dd128e":[12,0,79,42]
+"classHpt.html#a50f6b79424cb398c588df669a11b587c":[12,0,79,52]
 };

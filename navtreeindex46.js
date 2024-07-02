@@ -1,5 +1,7 @@
 var NAVTREEINDEX46 =
 {
+"namespacemakeCascade.html#a124756e0668709a6d045a647d5db966e":[11,0,49,42],
+"namespacemakeCascade.html#a14cea4d78b73e5ff8a7eefb813be9886":[11,0,49,57],
 "namespacemakeCascade.html#a15662d966fe998f4f8b9b6547975083e":[11,0,49,50],
 "namespacemakeCascade.html#a16a0daa3fac118b7b1d5cdb9c1e5f87f":[11,0,49,28],
 "namespacemakeCascade.html#a17abff334f86b2f1030efc18f1bdfa9a":[11,0,49,31],
@@ -207,8 +209,8 @@ var NAVTREEINDEX46 =
 "namespacemembers_enum.html":[11,1,3],
 "namespacemembers_eval.html":[11,1,4],
 "namespacemembers_f.html":[11,1,0,6],
-"namespacemembers_func.html":[11,1,1,0],
 "namespacemembers_func.html":[11,1,1],
+"namespacemembers_func.html":[11,1,1,0],
 "namespacemembers_func_a.html":[11,1,1,1],
 "namespacemembers_func_b.html":[11,1,1,2],
 "namespacemembers_func_c.html":[11,1,1,3],
@@ -247,7 +249,5 @@ var NAVTREEINDEX46 =
 "namespacemembers_s.html":[11,1,0,19],
 "namespacemembers_t.html":[11,1,0,20],
 "namespacemembers_u.html":[11,1,0,21],
-"namespacemembers_v.html":[11,1,0,22],
-"namespacemembers_vars.html":[11,1,2],
-"namespacemembers_vars.html":[11,1,2,0]
+"namespacemembers_v.html":[11,1,0,22]
 };

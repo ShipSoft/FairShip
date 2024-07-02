@@ -85,62 +85,61 @@ $(document).ready(function(){initNavTree('makeMuonEM_8py_source.html',''); initR
 <div class="title">makeMuonEM.py</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="makeMuonEM_8py.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno"><a class="line" href="namespacemakeMuonEM.html">    1</a></span>&#160;<span class="keyword">from</span> __future__ <span class="keyword">import</span> print_function</div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="keyword">import</span> ROOT,time,os,sys</div>
-<div class="line"><a name="l00003"></a><span class="lineno"><a class="line" href="namespacemakeMuonEM.html#a0d9d140e57ebdb6f5d9e3f663f855ac2">    3</a></span>&#160;nJob   = 1</div>
-<div class="line"><a name="l00004"></a><span class="lineno"><a class="line" href="namespacemakeMuonEM.html#a622d501e573a35cf9e01929c1cdbf4da">    4</a></span>&#160;nMult  = 1000 <span class="comment"># 100000 # number of events / muon</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno"><a class="line" href="namespacemakeMuonEM.html#a0eacbe2c643b93921484c6b0ab11dee4">    5</a></span>&#160;muonIn = <span class="stringliteral">&#39;/media/Data/HNL/muVetoDIS/muDISVetoCounter.root&#39;</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">#</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keyword">from</span> array <span class="keyword">import</span> array</div>
-<div class="line"><a name="l00009"></a><span class="lineno"><a class="line" href="namespacemakeMuonEM.html#aba3172b427e51caa3a9b6d5d8da4acc0">    9</a></span>&#160;PDG = ROOT.TDatabasePDG.Instance()</div>
-<div class="line"><a name="l00010"></a><span class="lineno"><a class="line" href="namespacemakeMuonEM.html#ab67c4c8cf6cd53ad647768192d215cb6">   10</a></span>&#160;masssq = {}</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160; </div>
-<div class="line"><a name="l00012"></a><span class="lineno"><a class="line" href="namespacemakeMuonEM.html#ab589112eb4d863b76757d2fdd5d33761">   12</a></span>&#160;<span class="keyword">def </span><a class="code" href="namespacemakeMuonEM.html#ab589112eb4d863b76757d2fdd5d33761">getMasssq</a>(pid):</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;  apid = abs(<a class="code" href="namespaceadd__noise__to__field.html#a4aa6f75233f1922a97b2d4c15285c18e">int</a>(pid))</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;  <span class="keywordflow">if</span> <span class="keywordflow">not</span> apid <span class="keywordflow">in</span> masssq:</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    masssq[apid] = PDG.GetParticle(apid).Mass()**2</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;  <span class="keywordflow">return</span> masssq[apid]</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment"># prepare muon input for FairShip/Geant4 processing</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment"># incoming muon,      id:px:py:pz:x:y:z:ox:oy:oz:pythiaid:parentid:ecut:w</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment"># just duplicate muon n times, rather stupid job</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
-<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="namespacemakeMuonEM.html#a0fb48413916b98e06de1787680b67eab">   23</a></span>&#160;fout  = ROOT.TFile(<span class="stringliteral">&#39;muonEm_&#39;</span>+<a class="code" href="namespaceadd__noise__to__field.html#ac8c461fc99cff345995bf60fcdfefa01">str</a>(nJob)+<span class="stringliteral">&#39;.root&#39;</span>,<span class="stringliteral">&#39;recreate&#39;</span>)</div>
-<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="namespacemakeMuonEM.html#a8fd1a8248626227b207de3ca945212f4">   24</a></span>&#160;dTree = ROOT.TNtuple(<span class="stringliteral">&quot;pythia8-Geant4&quot;</span>,<span class="stringliteral">&quot;muons for EM studies&quot;</span>,<span class="stringliteral">&quot;id:px:py:pz:x:y:z:ox:oy:oz:pythiaid:parentid:ecut:w&quot;</span>)</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="comment"># read file with muons hitting concrete wall</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="namespacemakeMuonEM.html#aa5ad61c03c3524787a582bfe545ca6cc">   27</a></span>&#160;fin = ROOT.TFile(muonIn) <span class="comment"># id:px:py:pz:x:y:z:w</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="namespacemakeMuonEM.html#a60d6f22c97137e52694045555ca0b5e9">   28</a></span>&#160;sTree = fin.muons</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keywordflow">for</span> k <span class="keywordflow">in</span> range(sTree.GetEntries()):</div>
-<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="namespacemakeMuonEM.html#ae0722eff885fe6023ee0acafdae18b27">   31</a></span>&#160;  rc = sTree.GetEvent(k)</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  <span class="comment"># make n events / muon</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="namespacemakeMuonEM.html#a66d6058c6282460f25b0a5b6aca5fb98">   33</a></span>&#160;  px,py,pz = sTree.px,sTree.py,sTree.pz</div>
-<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="namespacemakeMuonEM.html#aed3bddf19f451fdc5e44154c54c70cf9">   34</a></span>&#160;  x,y,z    = sTree.x,sTree.y,sTree.z</div>
-<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="namespacemakeMuonEM.html#ae783a4bc5d51711c22ea64a696d3dc6e">   35</a></span>&#160;  pid,w = sTree.id,sTree.w</div>
-<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="namespacemakeMuonEM.html#a0bc15f8a4a17b2a9060c7f1fc553cda9">   36</a></span>&#160;  p = ROOT.TMath.Sqrt(px*px+py*py+pz*pz)</div>
-<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="namespacemakeMuonEM.html#a2f541edec5da16cf64dcce3ea03d80c8">   37</a></span>&#160;  E = ROOT.TMath.Sqrt(<a class="code" href="namespacemakeMuonEM.html#ab589112eb4d863b76757d2fdd5d33761">getMasssq</a>(pid)+p*p)</div>
-<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="namespacemakeMuonEM.html#a761d974ec988f616ec1020f343fe2bf9">   38</a></span>&#160;  mu = <a class="code" href="namespaceTTCluster.html#a16bc5b13d45537007e0ac7464ff5ea89">array</a>(<span class="stringliteral">&#39;d&#39;</span>,[pid,px,py,pz,E,x,y,z,w])</div>
-<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="namespacemakeMuonEM.html#ab93402e2713d9360691ffeafc3621b27">   39</a></span>&#160;  muPart = ROOT.TVectorD(9,mu)</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(nMult):</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;     dPart.Clear()</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;     iMuon.Clear()</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;     iMuon[0] = muPart</div>
-<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="namespacemakeMuonEM.html#aded4352badd9c644286b23a9600cb18f">   44</a></span>&#160;     m = <a class="code" href="namespaceTTCluster.html#a16bc5b13d45537007e0ac7464ff5ea89">array</a>(<span class="stringliteral">&#39;d&#39;</span>,[pid,px,py,pz,E])</div>
-<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="namespacemakeMuonEM.html#ade078eb3a164b74694c2f6d5e568565e">   45</a></span>&#160;     part = ROOT.TVectorD(5,m)</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="comment"># copy to branch</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="namespacemakeMuonEM.html#a04bf92186855ef0f63408756e6646729">   47</a></span>&#160;     nPart = dPart.GetEntries()</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;     dPart[nPart] = part</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;     dTree.Fill()</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;fout.cd()</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;dTree.Write()</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;print(<span class="stringliteral">&quot;created&quot;</span>,sTree.GetEntries()*nMult,<span class="stringliteral">&quot; events&quot;</span>)</div>
+<a href="makeMuonEM_8py.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno"><a class="line" href="namespacemakeMuonEM.html">    1</a></span>&#160;<span class="keyword">import</span> ROOT,time,os,sys</div>
+<div class="line"><a name="l00002"></a><span class="lineno"><a class="line" href="namespacemakeMuonEM.html#a0d9d140e57ebdb6f5d9e3f663f855ac2">    2</a></span>&#160;nJob   = 1</div>
+<div class="line"><a name="l00003"></a><span class="lineno"><a class="line" href="namespacemakeMuonEM.html#a622d501e573a35cf9e01929c1cdbf4da">    3</a></span>&#160;nMult  = 1000 <span class="comment"># 100000 # number of events / muon</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno"><a class="line" href="namespacemakeMuonEM.html#a0eacbe2c643b93921484c6b0ab11dee4">    4</a></span>&#160;muonIn = <span class="stringliteral">&#39;/media/Data/HNL/muVetoDIS/muDISVetoCounter.root&#39;</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160; </div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">#</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="keyword">from</span> array <span class="keyword">import</span> array</div>
+<div class="line"><a name="l00008"></a><span class="lineno"><a class="line" href="namespacemakeMuonEM.html#aba3172b427e51caa3a9b6d5d8da4acc0">    8</a></span>&#160;PDG = ROOT.TDatabasePDG.Instance()</div>
+<div class="line"><a name="l00009"></a><span class="lineno"><a class="line" href="namespacemakeMuonEM.html#ab67c4c8cf6cd53ad647768192d215cb6">    9</a></span>&#160;masssq = {}</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
+<div class="line"><a name="l00011"></a><span class="lineno"><a class="line" href="namespacemakeMuonEM.html#ab589112eb4d863b76757d2fdd5d33761">   11</a></span>&#160;<span class="keyword">def </span><a class="code" href="namespacemakeMuonEM.html#ab589112eb4d863b76757d2fdd5d33761">getMasssq</a>(pid):</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;  apid = abs(<a class="code" href="namespaceadd__noise__to__field.html#a4aa6f75233f1922a97b2d4c15285c18e">int</a>(pid))</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;  <span class="keywordflow">if</span> <span class="keywordflow">not</span> apid <span class="keywordflow">in</span> masssq:</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    masssq[apid] = PDG.GetParticle(apid).Mass()**2</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;  <span class="keywordflow">return</span> masssq[apid]</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment"># prepare muon input for FairShip/Geant4 processing</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment"># incoming muon,      id:px:py:pz:x:y:z:ox:oy:oz:pythiaid:parentid:ecut:w</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment"># just duplicate muon n times, rather stupid job</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
+<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="namespacemakeMuonEM.html#a0fb48413916b98e06de1787680b67eab">   22</a></span>&#160;fout  = ROOT.TFile(<span class="stringliteral">&#39;muonEm_&#39;</span>+<a class="code" href="namespaceadd__noise__to__field.html#ac8c461fc99cff345995bf60fcdfefa01">str</a>(nJob)+<span class="stringliteral">&#39;.root&#39;</span>,<span class="stringliteral">&#39;recreate&#39;</span>)</div>
+<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="namespacemakeMuonEM.html#a8fd1a8248626227b207de3ca945212f4">   23</a></span>&#160;dTree = ROOT.TNtuple(<span class="stringliteral">&quot;pythia8-Geant4&quot;</span>,<span class="stringliteral">&quot;muons for EM studies&quot;</span>,<span class="stringliteral">&quot;id:px:py:pz:x:y:z:ox:oy:oz:pythiaid:parentid:ecut:w&quot;</span>)</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="comment"># read file with muons hitting concrete wall</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno"><a class="line" href="namespacemakeMuonEM.html#aa5ad61c03c3524787a582bfe545ca6cc">   26</a></span>&#160;fin = ROOT.TFile(muonIn) <span class="comment"># id:px:py:pz:x:y:z:w</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="namespacemakeMuonEM.html#a60d6f22c97137e52694045555ca0b5e9">   27</a></span>&#160;sTree = fin.muons</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keywordflow">for</span> k <span class="keywordflow">in</span> range(sTree.GetEntries()):</div>
+<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="namespacemakeMuonEM.html#ae0722eff885fe6023ee0acafdae18b27">   30</a></span>&#160;  rc = sTree.GetEvent(k)</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;  <span class="comment"># make n events / muon</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="namespacemakeMuonEM.html#a66d6058c6282460f25b0a5b6aca5fb98">   32</a></span>&#160;  px,py,pz = sTree.px,sTree.py,sTree.pz</div>
+<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="namespacemakeMuonEM.html#aed3bddf19f451fdc5e44154c54c70cf9">   33</a></span>&#160;  x,y,z    = sTree.x,sTree.y,sTree.z</div>
+<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="namespacemakeMuonEM.html#ae783a4bc5d51711c22ea64a696d3dc6e">   34</a></span>&#160;  pid,w = sTree.id,sTree.w</div>
+<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="namespacemakeMuonEM.html#a0bc15f8a4a17b2a9060c7f1fc553cda9">   35</a></span>&#160;  p = ROOT.TMath.Sqrt(px*px+py*py+pz*pz)</div>
+<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="namespacemakeMuonEM.html#a2f541edec5da16cf64dcce3ea03d80c8">   36</a></span>&#160;  E = ROOT.TMath.Sqrt(<a class="code" href="namespacemakeMuonEM.html#ab589112eb4d863b76757d2fdd5d33761">getMasssq</a>(pid)+p*p)</div>
+<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="namespacemakeMuonEM.html#a761d974ec988f616ec1020f343fe2bf9">   37</a></span>&#160;  mu = <a class="code" href="namespaceTTCluster.html#a16bc5b13d45537007e0ac7464ff5ea89">array</a>(<span class="stringliteral">&#39;d&#39;</span>,[pid,px,py,pz,E,x,y,z,w])</div>
+<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="namespacemakeMuonEM.html#ab93402e2713d9360691ffeafc3621b27">   38</a></span>&#160;  muPart = ROOT.TVectorD(9,mu)</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(nMult):</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;     dPart.Clear()</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;     iMuon.Clear()</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;     iMuon[0] = muPart</div>
+<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="namespacemakeMuonEM.html#aded4352badd9c644286b23a9600cb18f">   43</a></span>&#160;     m = <a class="code" href="namespaceTTCluster.html#a16bc5b13d45537007e0ac7464ff5ea89">array</a>(<span class="stringliteral">&#39;d&#39;</span>,[pid,px,py,pz,E])</div>
+<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="namespacemakeMuonEM.html#ade078eb3a164b74694c2f6d5e568565e">   44</a></span>&#160;     part = ROOT.TVectorD(5,m)</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="comment"># copy to branch</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="namespacemakeMuonEM.html#a04bf92186855ef0f63408756e6646729">   46</a></span>&#160;     nPart = dPart.GetEntries()</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;     dPart[nPart] = part</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;     dTree.Fill()</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;fout.cd()</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;dTree.Write()</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;print(<span class="stringliteral">&quot;created&quot;</span>,sTree.GetEntries()*nMult,<span class="stringliteral">&quot; events&quot;</span>)</div>
 <div class="ttc" id="anamespaceTTCluster_html_a16bc5b13d45537007e0ac7464ff5ea89"><div class="ttname"><a href="namespaceTTCluster.html#a16bc5b13d45537007e0ac7464ff5ea89">TTCluster.array</a></div><div class="ttdeci">float array</div><div class="ttdef"><b>Definition:</b> <a href="TTCluster_8py_source.html#l00038">TTCluster.py:38</a></div></div>
 <div class="ttc" id="anamespaceadd__noise__to__field_html_a4aa6f75233f1922a97b2d4c15285c18e"><div class="ttname"><a href="namespaceadd__noise__to__field.html#a4aa6f75233f1922a97b2d4c15285c18e">add_noise_to_field.int</a></div><div class="ttdeci">int</div><div class="ttdef"><b>Definition:</b> <a href="add__noise__to__field_8py_source.html#l00057">add_noise_to_field.py:57</a></div></div>
 <div class="ttc" id="anamespaceadd__noise__to__field_html_ac8c461fc99cff345995bf60fcdfefa01"><div class="ttname"><a href="namespaceadd__noise__to__field.html#ac8c461fc99cff345995bf60fcdfefa01">add_noise_to_field.str</a></div><div class="ttdeci">str</div><div class="ttdef"><b>Definition:</b> <a href="add__noise__to__field_8py_source.html#l00053">add_noise_to_field.py:53</a></div></div>
-<div class="ttc" id="anamespacemakeMuonEM_html_ab589112eb4d863b76757d2fdd5d33761"><div class="ttname"><a href="namespacemakeMuonEM.html#ab589112eb4d863b76757d2fdd5d33761">makeMuonEM.getMasssq</a></div><div class="ttdeci">def getMasssq(pid)</div><div class="ttdef"><b>Definition:</b> <a href="makeMuonEM_8py_source.html#l00012">makeMuonEM.py:12</a></div></div>
+<div class="ttc" id="anamespacemakeMuonEM_html_ab589112eb4d863b76757d2fdd5d33761"><div class="ttname"><a href="namespacemakeMuonEM.html#ab589112eb4d863b76757d2fdd5d33761">makeMuonEM.getMasssq</a></div><div class="ttdeci">def getMasssq(pid)</div><div class="ttdef"><b>Definition:</b> <a href="makeMuonEM_8py_source.html#l00011">makeMuonEM.py:11</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

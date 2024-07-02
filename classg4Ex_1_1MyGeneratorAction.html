@@ -114,7 +114,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00098">98</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00097">97</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="afa57e1439117a574da81d58e44e2e886"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afa57e1439117a574da81d58e44e2e886">&#9670;&nbsp;</a></span>GeneratePrimaries()</h2>
@@ -142,45 +142,45 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00100">100</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
-<div class="fragment"><div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; <span class="keyword">def </span>GeneratePrimaries(self,anEvent):</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;   <span class="keyword">global</span> debug,nevTot</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;   t_0 = time.time()</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;   npart = 0</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;   <span class="keywordflow">while</span> npart == 0:</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    myPythia.GenerateEvent()</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    nevTot+=1</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    myTimer[<span class="stringliteral">&#39;pythia&#39;</span>]+=time.time()-t_0</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;<span class="comment"># pythia interaction happens at 0,0,0</span></div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    <span class="comment">#x = rnr.Uniform(-3.,3.)</span></div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    <span class="comment">#y = rnr.Uniform(-3.,3.)</span></div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    <span class="comment"># leave this smearing for later</span></div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    pos    = G4ThreeVector(0*cm, 0*cm, -50*m)</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    vertex = G4PrimaryVertex(pos,0.)</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;  <span class="comment"># create new primaries and set them to the vertex</span></div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    particles = myPythia.GetListOfParticles()</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    <span class="keywordflow">for</span> p <span class="keywordflow">in</span> particles:</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;       <span class="keywordflow">if</span> p.GetStatusCode()!=1 : <span class="keywordflow">continue</span></div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;       pid = p.GetPdgCode()</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;       <span class="keywordflow">if</span> tauOnly <span class="keywordflow">and</span> abs(pid) != 16: <span class="keywordflow">continue</span></div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;       <span class="keywordflow">if</span> pid <span class="keywordflow">in</span> notWanted : <span class="keywordflow">continue</span></div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;       G4particle = G4PrimaryParticle( pid )</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;       v = TLorentzVector()</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;       p.Momentum(v)</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;       <span class="keywordflow">if</span> v.E()*GeV  &lt; ecut : <span class="keywordflow">continue</span></div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;       G4particle.Set4Momentum( v.Px()*GeV,v.Py()*GeV,v.Pz()*GeV,v.E()*GeV )</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;       vertex.SetPrimary( G4particle )</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;<span class="comment"># store mother ID</span></div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;       mkey   =  p.GetMother(0)+1</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;       mother =  myPythia.GetParticle(mkey)</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;       curPid =  p.GetPdgCode()      + 10000  <span class="comment"># make it positive</span></div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;       moPid  =  mother.GetPdgCode() + 10000</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;       w      =  curPid + moPid * 100000</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;       G4particle.SetWeight(w)</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;       npart += 1</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;   <span class="keywordflow">if</span> tauOnly <span class="keywordflow">and</span> debug: myPythia.EventListing()</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;   anEvent.AddPrimaryVertex( vertex )</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;   myTimer[<span class="stringliteral">&#39;geant4_conv&#39;</span>]+=time.time()-t_0</div>
+<p class="definition">Definition at line <a class="el" href="g4Ex_8py_source.html#l00099">99</a> of file <a class="el" href="g4Ex_8py_source.html">g4Ex.py</a>.</p>
+<div class="fragment"><div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160; <span class="keyword">def </span>GeneratePrimaries(self,anEvent):</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;   <span class="keyword">global</span> debug,nevTot</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;   t_0 = time.time()</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;   npart = 0</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;   <span class="keywordflow">while</span> npart == 0:</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    myPythia.GenerateEvent()</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    nevTot+=1</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    myTimer[<span class="stringliteral">&#39;pythia&#39;</span>]+=time.time()-t_0</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="comment"># pythia interaction happens at 0,0,0</span></div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    <span class="comment">#x = rnr.Uniform(-3.,3.)</span></div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    <span class="comment">#y = rnr.Uniform(-3.,3.)</span></div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    <span class="comment"># leave this smearing for later</span></div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    pos    = G4ThreeVector(0*cm, 0*cm, -50*m)</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    vertex = G4PrimaryVertex(pos,0.)</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;  <span class="comment"># create new primaries and set them to the vertex</span></div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    particles = myPythia.GetListOfParticles()</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    <span class="keywordflow">for</span> p <span class="keywordflow">in</span> particles:</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;       <span class="keywordflow">if</span> p.GetStatusCode()!=1 : <span class="keywordflow">continue</span></div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;       pid = p.GetPdgCode()</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;       <span class="keywordflow">if</span> tauOnly <span class="keywordflow">and</span> abs(pid) != 16: <span class="keywordflow">continue</span></div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;       <span class="keywordflow">if</span> pid <span class="keywordflow">in</span> notWanted : <span class="keywordflow">continue</span></div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;       G4particle = G4PrimaryParticle( pid )</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;       v = TLorentzVector()</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;       p.Momentum(v)</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;       <span class="keywordflow">if</span> v.E()*GeV  &lt; ecut : <span class="keywordflow">continue</span></div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;       G4particle.Set4Momentum( v.Px()*GeV,v.Py()*GeV,v.Pz()*GeV,v.E()*GeV )</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;       vertex.SetPrimary( G4particle )</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;<span class="comment"># store mother ID</span></div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;       mkey   =  p.GetMother(0)+1</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;       mother =  myPythia.GetParticle(mkey)</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;       curPid =  p.GetPdgCode()      + 10000  <span class="comment"># make it positive</span></div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;       moPid  =  mother.GetPdgCode() + 10000</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;       w      =  curPid + moPid * 100000</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;       G4particle.SetWeight(w)</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;       npart += 1</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;   <span class="keywordflow">if</span> tauOnly <span class="keywordflow">and</span> debug: myPythia.EventListing()</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;   anEvent.AddPrimaryVertex( vertex )</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;   myTimer[<span class="stringliteral">&#39;geant4_conv&#39;</span>]+=time.time()-t_0</div>
 </div><!-- fragment -->
 </div>
 </div>

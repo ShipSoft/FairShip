@@ -118,7 +118,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="study__muMSC_8py_source.html#l00058">58</a> of file <a class="el" href="study__muMSC_8py_source.html">study_muMSC.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="study__muMSC_8py_source.html#l00057">57</a> of file <a class="el" href="study__muMSC_8py_source.html">study_muMSC.py</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a827891f748a4ad0f7ecc1329315107cd"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a827891f748a4ad0f7ecc1329315107cd">&#9670;&nbsp;</a></span>__init__()</h2>
@@ -136,8 +136,8 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="study__muMSC_8py_source.html#l00060">60</a> of file <a class="el" href="study__muMSC_8py_source.html">study_muMSC.py</a>.</p>
-<div class="fragment"><div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; <span class="keyword">def </span>__init__(self): ROOT.pyFairModule.__init__(self,self)</div>
+<p class="definition">Definition at line <a class="el" href="study__muMSC_8py_source.html#l00059">59</a> of file <a class="el" href="study__muMSC_8py_source.html">study_muMSC.py</a>.</p>
+<div class="fragment"><div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; <span class="keyword">def </span>__init__(self): ROOT.pyFairModule.__init__(self,self)</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -158,21 +158,21 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="study__muMSC_8py_source.html#l00061">61</a> of file <a class="el" href="study__muMSC_8py_source.html">study_muMSC.py</a>.</p>
-<div class="fragment"><div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; <span class="keyword">def </span>ConstructGeometry(self):</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    print(<span class="stringliteral">&quot;Construct Block&quot;</span>)</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    top=ROOT.gGeoManager.GetTopVolume()</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    geoLoad=ROOT.FairGeoLoader.Instance()</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    geoFace=geoLoad.getGeoInterface()</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    media=geoFace.getMedia()</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    geoBuild=geoLoad.getGeoBuilder()</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    ShipMedium=media.getMedium(material)</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    W = ROOT.gGeoManager.GetMedium(material)</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keywordflow">if</span> <span class="keywordflow">not</span> W:</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        rc = geoBuild.createMedium(ShipMedium)</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        W = ROOT.gGeoManager.GetMedium(material)</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    aBox = ROOT.gGeoManager.MakeBox(<span class="stringliteral">&quot;target&quot;</span>, W, 100.*u.cm, 100.*u.cm, thickness)</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    top.AddNode(aBox, 1, ROOT.TGeoTranslation(0, 0, 0 ))</div>
+<p class="definition">Definition at line <a class="el" href="study__muMSC_8py_source.html#l00060">60</a> of file <a class="el" href="study__muMSC_8py_source.html">study_muMSC.py</a>.</p>
+<div class="fragment"><div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; <span class="keyword">def </span>ConstructGeometry(self):</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    print(<span class="stringliteral">&quot;Construct Block&quot;</span>)</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    top=ROOT.gGeoManager.GetTopVolume()</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    geoLoad=ROOT.FairGeoLoader.Instance()</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    geoFace=geoLoad.getGeoInterface()</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    media=geoFace.getMedia()</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    geoBuild=geoLoad.getGeoBuilder()</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    ShipMedium=media.getMedium(material)</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    W = ROOT.gGeoManager.GetMedium(material)</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keywordflow">if</span> <span class="keywordflow">not</span> W:</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        rc = geoBuild.createMedium(ShipMedium)</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        W = ROOT.gGeoManager.GetMedium(material)</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    aBox = ROOT.gGeoManager.MakeBox(<span class="stringliteral">&quot;target&quot;</span>, W, 100.*u.cm, 100.*u.cm, thickness)</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    top.AddNode(aBox, 1, ROOT.TGeoTranslation(0, 0, 0 ))</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -191,10 +191,10 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="study__muMSC_8py_source.html#l00075">75</a> of file <a class="el" href="study__muMSC_8py_source.html">study_muMSC.py</a>.</p>
-<div class="fragment"><div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; <span class="keyword">def </span>InitParContainers():</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    print(<span class="stringliteral">&quot;not implemented!&quot;</span>)</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
+<p class="definition">Definition at line <a class="el" href="study__muMSC_8py_source.html#l00074">74</a> of file <a class="el" href="study__muMSC_8py_source.html">study_muMSC.py</a>.</p>
+<div class="fragment"><div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; <span class="keyword">def </span>InitParContainers():</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    print(<span class="stringliteral">&quot;not implemented!&quot;</span>)</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
 </div><!-- fragment -->
 </div>
 </div>

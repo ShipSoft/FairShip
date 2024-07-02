@@ -2810,6 +2810,7 @@ var namespaces_dup =
       [ "pyExit", "namespaceshipRoot__conf.html#a7f5e35cee75ea5f10f147c798b1694ae", null ]
     ] ],
     [ "shipStrawTracking", "namespaceshipStrawTracking.html", [
+      [ "cmp", "namespaceshipStrawTracking.html#a4ce695b1de2c14dff4a1fcd86544a833", null ],
       [ "decodeDetectorID", "namespaceshipStrawTracking.html#a169d18820e8a02b4f5c72573e58fd462", null ],
       [ "extrapolateToPlane", "namespaceshipStrawTracking.html#abea018fcfdecda8d97f591dca5f9d34a", null ],
       [ "fracMCsame", "namespaceshipStrawTracking.html#addf2abd488d8525dad80cdd640315def", null ],
@@ -3093,6 +3094,7 @@ var namespaces_dup =
       [ "type", "namespacetestbeam__unpack.html#a585548729c5a47ba9b1e064391246340", null ]
     ] ],
     [ "TrackExtrapolateTool", "namespaceTrackExtrapolateTool.html", [
+      [ "cmp", "namespaceTrackExtrapolateTool.html#ab4a32b4536ba6f317b889b2af9318f53", null ],
       [ "extrapolateToPlane", "namespaceTrackExtrapolateTool.html#a891c3ca857b65a60e55dcf293fb586e8", null ],
       [ "minNdf", "namespaceTrackExtrapolateTool.html#a88649c5e9feda4744213d5c7a41a94ad", null ],
       [ "parallelToZ", "namespaceTrackExtrapolateTool.html#a1104e7a5752dd65cba8fc8bdb76a5ce5", null ],

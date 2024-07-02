@@ -1,5 +1,6 @@
 var NAVTREEINDEX13 =
 {
+"classShipBFieldMap.html#a1b67158ae179d38d9a21c0aff8a4637a":[12,0,113,17],
 "classShipBFieldMap.html#a1ca6516488c38f8effab03e4b6ef05ab":[12,0,113,64],
 "classShipBFieldMap.html#a1d73fa4ef7f0cf2173d29ce77e40127c":[12,0,113,97],
 "classShipBFieldMap.html#a1f037b96866ce64297220a5065b24aa6":[12,0,113,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX13 =
 "classShipFieldPar.html#a794905541da64d153952c2155c901dc3":[12,0,120,17],
 "classShipFieldPar.html#a87d7f48e81bcbf3cd91cde6ba805c998":[12,0,120,6],
 "classShipFieldPar.html#a88318d0dcee5ec9fc3b3ebfaaec431b4":[12,0,120,30],
-"classShipFieldPar.html#a89fb49ba68fd1233518d5ef6138c55a6":[12,0,120,43],
-"classShipFieldPar.html#a923328f792d346bb6ffdcdd8e00167b2":[12,0,120,28]
+"classShipFieldPar.html#a89fb49ba68fd1233518d5ef6138c55a6":[12,0,120,43]
 };

@@ -96,11 +96,11 @@ Inheritance diagram for ShipGeoConfig.ConfigRegistry:</div>
 <div class="dyncontent">
 <div class="center"><img src="classShipGeoConfig_1_1ConfigRegistry__inherit__graph.png" border="0" usemap="#aShipGeoConfig_8ConfigRegistry_inherit__map" alt="Inheritance graph"/></div>
 <map name="aShipGeoConfig_8ConfigRegistry_inherit__map" id="aShipGeoConfig_8ConfigRegistry_inherit__map">
-<area shape="rect" title=" " alt="" coords="153,155,369,181"/>
-<area shape="rect" title=" " alt="" coords="5,80,129,107"/>
-<area shape="rect" href="classShipGeoConfig_1_1__SingletonDict.html" title=" " alt="" coords="153,80,368,107"/>
-<area shape="rect" title=" " alt="" coords="235,5,286,32"/>
-<area shape="rect" title=" " alt="" coords="392,80,439,107"/>
+<area shape="rect" title=" " alt="" coords="13,155,229,181"/>
+<area shape="rect" title=" " alt="" coords="5,80,52,107"/>
+<area shape="rect" title=" " alt="" coords="76,80,165,107"/>
+<area shape="rect" href="classShipGeoConfig_1_1__SingletonDict.html" title=" " alt="" coords="189,80,404,107"/>
+<area shape="rect" title=" " alt="" coords="271,5,322,32"/>
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
@@ -108,11 +108,11 @@ Collaboration diagram for ShipGeoConfig.ConfigRegistry:</div>
 <div class="dyncontent">
 <div class="center"><img src="classShipGeoConfig_1_1ConfigRegistry__coll__graph.png" border="0" usemap="#aShipGeoConfig_8ConfigRegistry_coll__map" alt="Collaboration graph"/></div>
 <map name="aShipGeoConfig_8ConfigRegistry_coll__map" id="aShipGeoConfig_8ConfigRegistry_coll__map">
-<area shape="rect" title=" " alt="" coords="153,155,369,181"/>
-<area shape="rect" title=" " alt="" coords="5,80,129,107"/>
-<area shape="rect" href="classShipGeoConfig_1_1__SingletonDict.html" title=" " alt="" coords="153,80,368,107"/>
-<area shape="rect" title=" " alt="" coords="235,5,286,32"/>
-<area shape="rect" title=" " alt="" coords="392,80,439,107"/>
+<area shape="rect" title=" " alt="" coords="13,155,229,181"/>
+<area shape="rect" title=" " alt="" coords="5,80,52,107"/>
+<area shape="rect" title=" " alt="" coords="76,80,165,107"/>
+<area shape="rect" href="classShipGeoConfig_1_1__SingletonDict.html" title=" " alt="" coords="189,80,404,107"/>
+<area shape="rect" title=" " alt="" coords="271,5,322,32"/>
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -158,7 +158,7 @@ Private Attributes</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><pre class="fragment">Singleton registry of all Configurations
 </pre> 
-<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00041">41</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00037">37</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a7b22511af8612c13e354ce50c30d95d6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7b22511af8612c13e354ce50c30d95d6">&#9670;&nbsp;</a></span>__init__()</h2>
@@ -176,10 +176,10 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00062">62</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
-<div class="fragment"><div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keyword">def </span>__init__(self):</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        self.__dict__ = self</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
+<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00058">58</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
+<div class="fragment"><div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keyword">def </span>__init__(self):</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        self.__dict__ = self</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -207,12 +207,12 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00089">89</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
-<div class="fragment"><div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <span class="keyword">def </span>clean():</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        <span class="keywordflow">for</span> k <span class="keywordflow">in</span> ConfigRegistry.keys():</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;            ConfigRegistry.delitem(k)</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
+<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00085">85</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
+<div class="fragment"><div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="keyword">def </span>clean():</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        <span class="keywordflow">for</span> k <span class="keywordflow">in</span> ConfigRegistry.keys():</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            ConfigRegistry.delitem(k)</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -240,10 +240,10 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00085">85</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
-<div class="fragment"><div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="keyword">def </span>get(name):</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        <span class="keywordflow">return</span> ConfigRegistry[name]</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
+<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00081">81</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
+<div class="fragment"><div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keyword">def </span>get(name):</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        <span class="keywordflow">return</span> ConfigRegistry[name]</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -270,10 +270,10 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00059">59</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
-<div class="fragment"><div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keyword">def </span>get_latest_config():</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        <span class="keywordflow">return</span> ConfigRegistry[ConfigRegistry.recent_config_name]</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
+<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00055">55</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
+<div class="fragment"><div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keyword">def </span>get_latest_config():</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        <span class="keywordflow">return</span> ConfigRegistry[ConfigRegistry.recent_config_name]</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -300,11 +300,11 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00080">80</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
-<div class="fragment"><div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keyword">def </span>keys():</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        registry = ConfigRegistry()</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        <span class="keywordflow">return</span> [k <span class="keywordflow">for</span> k, v <span class="keywordflow">in</span> registry.items()]</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
+<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00076">76</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
+<div class="fragment"><div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keyword">def </span>keys():</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        registry = ConfigRegistry()</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        <span class="keywordflow">return</span> [k <span class="keywordflow">for</span> k, v <span class="keywordflow">in</span> registry.items()]</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -342,12 +342,12 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00048">48</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
-<div class="fragment"><div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keyword">def </span>loadpy(filename, **kwargs):</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        <span class="keyword">with</span> open(<a class="code" href="namespaceShipGeoConfig.html#a9f55dc715bd825f9ab37b34abc8d720b">expand_env</a>(filename)) <span class="keyword">as</span> fh:</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            <span class="keywordflow">return</span> ConfigRegistry.loadpys(fh.read(), **kwargs)</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
-<div class="ttc" id="anamespaceShipGeoConfig_html_a9f55dc715bd825f9ab37b34abc8d720b"><div class="ttname"><a href="namespaceShipGeoConfig.html#a9f55dc715bd825f9ab37b34abc8d720b">ShipGeoConfig.expand_env</a></div><div class="ttdeci">def expand_env(string)</div><div class="ttdef"><b>Definition:</b> <a href="ShipGeoConfig_8py_source.html#l00010">ShipGeoConfig.py:10</a></div></div>
+<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00044">44</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
+<div class="fragment"><div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keyword">def </span>loadpy(filename, **kwargs):</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        <span class="keyword">with</span> open(<a class="code" href="namespaceShipGeoConfig.html#a9f55dc715bd825f9ab37b34abc8d720b">expand_env</a>(filename)) <span class="keyword">as</span> fh:</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;            <span class="keywordflow">return</span> ConfigRegistry.loadpys(fh.read(), **kwargs)</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
+<div class="ttc" id="anamespaceShipGeoConfig_html_a9f55dc715bd825f9ab37b34abc8d720b"><div class="ttname"><a href="namespaceShipGeoConfig.html#a9f55dc715bd825f9ab37b34abc8d720b">ShipGeoConfig.expand_env</a></div><div class="ttdeci">def expand_env(string)</div><div class="ttdef"><b>Definition:</b> <a href="ShipGeoConfig_8py_source.html#l00006">ShipGeoConfig.py:6</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -385,12 +385,12 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00053">53</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
-<div class="fragment"><div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keyword">def </span>loadpys(config_string, **kwargs):</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        string_unixlf = config_string.replace(<span class="stringliteral">&#39;\r&#39;</span>, <span class="stringliteral">&#39;&#39;</span>)</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        exec(string_unixlf, kwargs)</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        <span class="keywordflow">return</span> ConfigRegistry.get_latest_config()</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
+<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00049">49</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
+<div class="fragment"><div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keyword">def </span>loadpys(config_string, **kwargs):</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        string_unixlf = config_string.replace(<span class="stringliteral">&#39;\r&#39;</span>, <span class="stringliteral">&#39;&#39;</span>)</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        exec(string_unixlf, kwargs)</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        <span class="keywordflow">return</span> ConfigRegistry.get_latest_config()</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -428,19 +428,19 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00067">67</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
-<div class="fragment"><div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keyword">def </span>register_config(name=None, base=None):</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        registry = ConfigRegistry()</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        <span class="keywordflow">if</span> base <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>:</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;            <span class="keyword">assert</span> base <span class="keywordflow">in</span> registry, <span class="stringliteral">&quot;no base configuration (%s) found in the registry&quot;</span> % base</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;            config = registry[base].clone()</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        <span class="keywordflow">else</span>:</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            config = Config()</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        <span class="keywordflow">yield</span> config</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        <span class="keywordflow">if</span> name <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>:</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            registry[name] = config</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            ConfigRegistry.recent_config_name = name</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
+<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00063">63</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
+<div class="fragment"><div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keyword">def </span>register_config(name=None, base=None):</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        registry = ConfigRegistry()</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        <span class="keywordflow">if</span> base <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>:</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;            <span class="keyword">assert</span> base <span class="keywordflow">in</span> registry, <span class="stringliteral">&quot;no base configuration (%s) found in the registry&quot;</span> % base</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            config = registry[base].clone()</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        <span class="keywordflow">else</span>:</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            config = Config()</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        <span class="keywordflow">yield</span> config</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        <span class="keywordflow">if</span> name <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>:</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;            registry[name] = config</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            ConfigRegistry.recent_config_name = name</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -465,7 +465,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00063">63</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00059">59</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
 
 </div>
 </div>
@@ -489,7 +489,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00045">45</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00041">41</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
 
 </div>
 </div>

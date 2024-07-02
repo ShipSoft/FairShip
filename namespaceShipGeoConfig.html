@@ -124,24 +124,24 @@ Functions</h2></td></tr>
 <pre class="fragment">Expand environment variables in string:
 $HOME/bin -&gt; /home/user/bin
 </pre> 
-<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00010">10</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
-<div class="fragment"><div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="keyword">def </span><a class="code" href="namespaceShipGeoConfig.html#a9f55dc715bd825f9ab37b34abc8d720b">expand_env</a>(string):</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="stringliteral">    Expand environment variables in string:</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="stringliteral">    $HOME/bin -&gt; /home/user/bin</span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <span class="keywordflow">while</span> <span class="keyword">True</span>:</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        m = re.search(<span class="stringliteral">&quot;(\${*(\w+)}*)&quot;</span>, string)</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        <span class="keywordflow">if</span> m <span class="keywordflow">is</span> <span class="keywordtype">None</span>:</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;            <span class="keywordflow">break</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        (env_token, env_name) = m.groups()</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        <span class="keyword">assert</span> env_name <span class="keywordflow">in</span> os.environ, <span class="stringliteral">&quot;Environment variable &#39;%s&#39; is not defined&quot;</span> % env_name</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        env_value = os.environ[env_name]</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        string = string.replace(env_token, env_value)</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <span class="keywordflow">return</span> string</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
-<div class="ttc" id="anamespaceShipGeoConfig_html_a9f55dc715bd825f9ab37b34abc8d720b"><div class="ttname"><a href="namespaceShipGeoConfig.html#a9f55dc715bd825f9ab37b34abc8d720b">ShipGeoConfig.expand_env</a></div><div class="ttdeci">def expand_env(string)</div><div class="ttdef"><b>Definition:</b> <a href="ShipGeoConfig_8py_source.html#l00010">ShipGeoConfig.py:10</a></div></div>
+<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00006">6</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
+<div class="fragment"><div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keyword">def </span><a class="code" href="namespaceShipGeoConfig.html#a9f55dc715bd825f9ab37b34abc8d720b">expand_env</a>(string):</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;    <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="stringliteral">    Expand environment variables in string:</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="stringliteral">    $HOME/bin -&gt; /home/user/bin</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    <span class="keywordflow">while</span> <span class="keyword">True</span>:</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;        m = re.search(<span class="stringliteral">&quot;(\${*(\w+)}*)&quot;</span>, string)</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;        <span class="keywordflow">if</span> m <span class="keywordflow">is</span> <span class="keywordtype">None</span>:</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;            <span class="keywordflow">break</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;        (env_token, env_name) = m.groups()</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        <span class="keyword">assert</span> env_name <span class="keywordflow">in</span> os.environ, <span class="stringliteral">&quot;Environment variable &#39;%s&#39; is not defined&quot;</span> % env_name</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        env_value = os.environ[env_name]</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        string = string.replace(env_token, env_value)</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <span class="keywordflow">return</span> string</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
+<div class="ttc" id="anamespaceShipGeoConfig_html_a9f55dc715bd825f9ab37b34abc8d720b"><div class="ttname"><a href="namespaceShipGeoConfig.html#a9f55dc715bd825f9ab37b34abc8d720b">ShipGeoConfig.expand_env</a></div><div class="ttdeci">def expand_env(string)</div><div class="ttdef"><b>Definition:</b> <a href="ShipGeoConfig_8py_source.html#l00006">ShipGeoConfig.py:6</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

@@ -169,7 +169,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00553">553</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00549">549</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="ae3eedfdcfed0e49b7d02714efec1f72e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae3eedfdcfed0e49b7d02714efec1f72e">&#9670;&nbsp;</a></span>backView()</h2>
@@ -187,9 +187,9 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00620">620</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
-<div class="fragment"><div class="line"><a name="l00620"></a><span class="lineno">  620</span>&#160; <span class="keyword">def </span>backView(self):</div>
-<div class="line"><a name="l00621"></a><span class="lineno">  621</span>&#160;  self.rotateView(0.,-ROOT.TMath.Pi()/2.) <span class="comment"># rotation around y or x axis</span></div>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00616">616</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<div class="fragment"><div class="line"><a name="l00616"></a><span class="lineno">  616</span>&#160; <span class="keyword">def </span>backView(self):</div>
+<div class="line"><a name="l00617"></a><span class="lineno">  617</span>&#160;  self.rotateView(0.,-ROOT.TMath.Pi()/2.) <span class="comment"># rotation around y or x axis</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -209,9 +209,9 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00616">616</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
-<div class="fragment"><div class="line"><a name="l00616"></a><span class="lineno">  616</span>&#160; <span class="keyword">def </span>bottomView(self):</div>
-<div class="line"><a name="l00617"></a><span class="lineno">  617</span>&#160;  self.rotateView(-ROOT.TMath.Pi()/2.,0.) <span class="comment"># rotation around z axis</span></div>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00612">612</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<div class="fragment"><div class="line"><a name="l00612"></a><span class="lineno">  612</span>&#160; <span class="keyword">def </span>bottomView(self):</div>
+<div class="line"><a name="l00613"></a><span class="lineno">  613</span>&#160;  self.rotateView(-ROOT.TMath.Pi()/2.,0.) <span class="comment"># rotation around z axis</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -231,9 +231,9 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00618">618</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
-<div class="fragment"><div class="line"><a name="l00618"></a><span class="lineno">  618</span>&#160; <span class="keyword">def </span>frontView(self):</div>
-<div class="line"><a name="l00619"></a><span class="lineno">  619</span>&#160;  self.rotateView(0.,ROOT.TMath.Pi()/2.) <span class="comment"># rotation around y or x axis</span></div>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00614">614</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<div class="fragment"><div class="line"><a name="l00614"></a><span class="lineno">  614</span>&#160; <span class="keyword">def </span>frontView(self):</div>
+<div class="line"><a name="l00615"></a><span class="lineno">  615</span>&#160;  self.rotateView(0.,ROOT.TMath.Pi()/2.) <span class="comment"># rotation around y or x axis</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -253,13 +253,13 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00555">555</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
-<div class="fragment"><div class="line"><a name="l00555"></a><span class="lineno">  555</span>&#160; <span class="keyword">def </span>InitTask(self):</div>
-<div class="line"><a name="l00556"></a><span class="lineno">  556</span>&#160;   self.n = 0</div>
-<div class="line"><a name="l00557"></a><span class="lineno">  557</span>&#160;   self.first = <span class="keyword">True</span></div>
-<div class="line"><a name="l00558"></a><span class="lineno">  558</span>&#160;   <span class="keywordflow">if</span> sGeo.GetVolume(<span class="stringliteral">&#39;volTarget&#39;</span>): <a class="code" href="namespaceeventDisplay.html#a0bad9af7d9060c2b34fc470e37f2deae">DisplayNuDetector</a>()</div>
-<div class="line"><a name="l00559"></a><span class="lineno">  559</span>&#160;   <span class="keywordflow">if</span> sGeo.GetVolume(<span class="stringliteral">&#39;Ecal&#39;</span>):</div>
-<div class="ttc" id="anamespaceeventDisplay_html_a0bad9af7d9060c2b34fc470e37f2deae"><div class="ttname"><a href="namespaceeventDisplay.html#a0bad9af7d9060c2b34fc470e37f2deae">eventDisplay.DisplayNuDetector</a></div><div class="ttdeci">def DisplayNuDetector()</div><div class="ttdef"><b>Definition:</b> <a href="eventDisplay_8py_source.html#l00717">eventDisplay.py:717</a></div></div>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00551">551</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<div class="fragment"><div class="line"><a name="l00551"></a><span class="lineno">  551</span>&#160; <span class="keyword">def </span>InitTask(self):</div>
+<div class="line"><a name="l00552"></a><span class="lineno">  552</span>&#160;   self.n = 0</div>
+<div class="line"><a name="l00553"></a><span class="lineno">  553</span>&#160;   self.first = <span class="keyword">True</span></div>
+<div class="line"><a name="l00554"></a><span class="lineno">  554</span>&#160;   <span class="keywordflow">if</span> sGeo.GetVolume(<span class="stringliteral">&#39;volTarget&#39;</span>): <a class="code" href="namespaceeventDisplay.html#a0bad9af7d9060c2b34fc470e37f2deae">DisplayNuDetector</a>()</div>
+<div class="line"><a name="l00555"></a><span class="lineno">  555</span>&#160;   <span class="keywordflow">if</span> sGeo.GetVolume(<span class="stringliteral">&#39;Ecal&#39;</span>):</div>
+<div class="ttc" id="anamespaceeventDisplay_html_a0bad9af7d9060c2b34fc470e37f2deae"><div class="ttname"><a href="namespaceeventDisplay.html#a0bad9af7d9060c2b34fc470e37f2deae">eventDisplay.DisplayNuDetector</a></div><div class="ttdeci">def DisplayNuDetector()</div><div class="ttdef"><b>Definition:</b> <a href="eventDisplay_8py_source.html#l00713">eventDisplay.py:713</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -279,9 +279,9 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00622">622</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
-<div class="fragment"><div class="line"><a name="l00622"></a><span class="lineno">  622</span>&#160; <span class="keyword">def </span>leftView(self):</div>
-<div class="line"><a name="l00623"></a><span class="lineno">  623</span>&#160;  self.rotateView(0.,ROOT.TMath.Pi()) <span class="comment"># rotation around y or x axis</span></div>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00618">618</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<div class="fragment"><div class="line"><a name="l00618"></a><span class="lineno">  618</span>&#160; <span class="keyword">def </span>leftView(self):</div>
+<div class="line"><a name="l00619"></a><span class="lineno">  619</span>&#160;  self.rotateView(0.,ROOT.TMath.Pi()) <span class="comment"># rotation around y or x axis</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -311,30 +311,30 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00585">585</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
-<div class="fragment"><div class="line"><a name="l00585"></a><span class="lineno">  585</span>&#160; <span class="keyword">def </span>NextEvent(self,i=-1):</div>
-<div class="line"><a name="l00586"></a><span class="lineno">  586</span>&#160;   <span class="keywordflow">if</span> i&lt;0: self.n+=1</div>
-<div class="line"><a name="l00587"></a><span class="lineno">  587</span>&#160;   <span class="keywordflow">else</span>  : self.n=i</div>
-<div class="line"><a name="l00588"></a><span class="lineno">  588</span>&#160;   fRun.Run(self.n,self.n+1) <span class="comment"># go for first event</span></div>
-<div class="line"><a name="l00589"></a><span class="lineno">  589</span>&#160;<span class="comment"># check if tracks are made from real pattern recognition</span></div>
-<div class="line"><a name="l00590"></a><span class="lineno">  590</span>&#160;   <span class="keywordflow">if</span> sTree.GetBranch(<span class="stringliteral">&quot;FitTracks_PR&quot;</span>):    sTree.FitTracks = sTree.FitTracks_PR</div>
-<div class="line"><a name="l00591"></a><span class="lineno">  591</span>&#160;   <span class="keywordflow">if</span> sTree.GetBranch(<span class="stringliteral">&quot;fitTrack2MC_PR&quot;</span>):  sTree.fitTrack2MC = sTree.fitTrack2MC_PR</div>
-<div class="line"><a name="l00592"></a><span class="lineno">  592</span>&#160;   <span class="keywordflow">if</span> sTree.GetBranch(<span class="stringliteral">&quot;Particles_PR&quot;</span>):    sTree.Particles   = sTree.Particles_PR</div>
-<div class="line"><a name="l00593"></a><span class="lineno">  593</span>&#160;   <span class="keywordflow">if</span> hasattr(self,<span class="stringliteral">&quot;tracks&quot;</span>): self.tracks.ExecuteTask()</div>
-<div class="line"><a name="l00594"></a><span class="lineno">  594</span>&#160;   <span class="keywordflow">if</span> sTree.FindBranch(<span class="stringliteral">&quot;EcalClusters&quot;</span>):</div>
-<div class="line"><a name="l00595"></a><span class="lineno">  595</span>&#160;     <span class="keywordflow">if</span> sTree.EcalClusters.GetEntries()&gt;0:</div>
-<div class="line"><a name="l00596"></a><span class="lineno">  596</span>&#160;      self.ecalFiller.Exec(<span class="stringliteral">&#39;start&#39;</span>,sTree.EcalPointLite)</div>
-<div class="line"><a name="l00597"></a><span class="lineno">  597</span>&#160;     self.calos.ExecuteTask()</div>
-<div class="line"><a name="l00598"></a><span class="lineno">  598</span>&#160;   <span class="keywordflow">if</span> sTree.FindBranch(<span class="stringliteral">&quot;Digi_SBTHits&quot;</span>): self.veto.ExecuteTask()</div>
-<div class="line"><a name="l00599"></a><span class="lineno">  599</span>&#160;   <span class="keywordflow">if</span> ROOT.gROOT.FindObject(<span class="stringliteral">&#39;Root Canvas EnergyLoss&#39;</span>): <a class="code" href="namespaceevd__fillEnergy.html#a7d920ae615354369a884e92572f2baf8">evd_fillEnergy.execute</a>()</div>
-<div class="line"><a name="l00600"></a><span class="lineno">  600</span>&#160;   print(<span class="stringliteral">&#39;Event %i ready&#39;</span>%(self.n))</div>
-<div class="line"><a name="l00601"></a><span class="lineno">  601</span>&#160;<span class="comment"># make pointsets pickable</span></div>
-<div class="line"><a name="l00602"></a><span class="lineno">  602</span>&#160;   <span class="keywordflow">for</span> x <span class="keywordflow">in</span> mcHits:</div>
-<div class="line"><a name="l00603"></a><span class="lineno">  603</span>&#160;     p = ROOT.gEve.GetCurrentEvent().FindChild(mcHits[x].GetName())</div>
-<div class="line"><a name="l00604"></a><span class="lineno">  604</span>&#160;     <span class="keywordflow">if</span> p:</div>
-<div class="line"><a name="l00605"></a><span class="lineno">  605</span>&#160;      p.SetPickable(ROOT.kTRUE)</div>
-<div class="line"><a name="l00606"></a><span class="lineno">  606</span>&#160;      p.SetTitle(p.__repr__())</div>
-<div class="ttc" id="anamespaceevd__fillEnergy_html_a7d920ae615354369a884e92572f2baf8"><div class="ttname"><a href="namespaceevd__fillEnergy.html#a7d920ae615354369a884e92572f2baf8">evd_fillEnergy.execute</a></div><div class="ttdeci">def execute()</div><div class="ttdef"><b>Definition:</b> <a href="evd__fillEnergy_8py_source.html#l00058">evd_fillEnergy.py:58</a></div></div>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00581">581</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<div class="fragment"><div class="line"><a name="l00581"></a><span class="lineno">  581</span>&#160; <span class="keyword">def </span>NextEvent(self,i=-1):</div>
+<div class="line"><a name="l00582"></a><span class="lineno">  582</span>&#160;   <span class="keywordflow">if</span> i&lt;0: self.n+=1</div>
+<div class="line"><a name="l00583"></a><span class="lineno">  583</span>&#160;   <span class="keywordflow">else</span>  : self.n=i</div>
+<div class="line"><a name="l00584"></a><span class="lineno">  584</span>&#160;   fRun.Run(self.n,self.n+1) <span class="comment"># go for first event</span></div>
+<div class="line"><a name="l00585"></a><span class="lineno">  585</span>&#160;<span class="comment"># check if tracks are made from real pattern recognition</span></div>
+<div class="line"><a name="l00586"></a><span class="lineno">  586</span>&#160;   <span class="keywordflow">if</span> sTree.GetBranch(<span class="stringliteral">&quot;FitTracks_PR&quot;</span>):    sTree.FitTracks = sTree.FitTracks_PR</div>
+<div class="line"><a name="l00587"></a><span class="lineno">  587</span>&#160;   <span class="keywordflow">if</span> sTree.GetBranch(<span class="stringliteral">&quot;fitTrack2MC_PR&quot;</span>):  sTree.fitTrack2MC = sTree.fitTrack2MC_PR</div>
+<div class="line"><a name="l00588"></a><span class="lineno">  588</span>&#160;   <span class="keywordflow">if</span> sTree.GetBranch(<span class="stringliteral">&quot;Particles_PR&quot;</span>):    sTree.Particles   = sTree.Particles_PR</div>
+<div class="line"><a name="l00589"></a><span class="lineno">  589</span>&#160;   <span class="keywordflow">if</span> hasattr(self,<span class="stringliteral">&quot;tracks&quot;</span>): self.tracks.ExecuteTask()</div>
+<div class="line"><a name="l00590"></a><span class="lineno">  590</span>&#160;   <span class="keywordflow">if</span> sTree.FindBranch(<span class="stringliteral">&quot;EcalClusters&quot;</span>):</div>
+<div class="line"><a name="l00591"></a><span class="lineno">  591</span>&#160;     <span class="keywordflow">if</span> sTree.EcalClusters.GetEntries()&gt;0:</div>
+<div class="line"><a name="l00592"></a><span class="lineno">  592</span>&#160;      self.ecalFiller.Exec(<span class="stringliteral">&#39;start&#39;</span>,sTree.EcalPointLite)</div>
+<div class="line"><a name="l00593"></a><span class="lineno">  593</span>&#160;     self.calos.ExecuteTask()</div>
+<div class="line"><a name="l00594"></a><span class="lineno">  594</span>&#160;   <span class="keywordflow">if</span> sTree.FindBranch(<span class="stringliteral">&quot;Digi_SBTHits&quot;</span>): self.veto.ExecuteTask()</div>
+<div class="line"><a name="l00595"></a><span class="lineno">  595</span>&#160;   <span class="keywordflow">if</span> ROOT.gROOT.FindObject(<span class="stringliteral">&#39;Root Canvas EnergyLoss&#39;</span>): <a class="code" href="namespaceevd__fillEnergy.html#a7d920ae615354369a884e92572f2baf8">evd_fillEnergy.execute</a>()</div>
+<div class="line"><a name="l00596"></a><span class="lineno">  596</span>&#160;   print(<span class="stringliteral">&#39;Event %i ready&#39;</span>%(self.n))</div>
+<div class="line"><a name="l00597"></a><span class="lineno">  597</span>&#160;<span class="comment"># make pointsets pickable</span></div>
+<div class="line"><a name="l00598"></a><span class="lineno">  598</span>&#160;   <span class="keywordflow">for</span> x <span class="keywordflow">in</span> mcHits:</div>
+<div class="line"><a name="l00599"></a><span class="lineno">  599</span>&#160;     p = ROOT.gEve.GetCurrentEvent().FindChild(mcHits[x].GetName())</div>
+<div class="line"><a name="l00600"></a><span class="lineno">  600</span>&#160;     <span class="keywordflow">if</span> p:</div>
+<div class="line"><a name="l00601"></a><span class="lineno">  601</span>&#160;      p.SetPickable(ROOT.kTRUE)</div>
+<div class="line"><a name="l00602"></a><span class="lineno">  602</span>&#160;      p.SetTitle(p.__repr__())</div>
+<div class="ttc" id="anamespaceevd__fillEnergy_html_a7d920ae615354369a884e92572f2baf8"><div class="ttname"><a href="namespaceevd__fillEnergy.html#a7d920ae615354369a884e92572f2baf8">evd_fillEnergy.execute</a></div><div class="ttdeci">def execute()</div><div class="ttdef"><b>Definition:</b> <a href="evd__fillEnergy_8py_source.html#l00057">evd_fillEnergy.py:57</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -354,9 +354,9 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00624">624</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
-<div class="fragment"><div class="line"><a name="l00624"></a><span class="lineno">  624</span>&#160; <span class="keyword">def </span>rightView(self):</div>
-<div class="line"><a name="l00625"></a><span class="lineno">  625</span>&#160;  self.rotateView(0.,ROOT.TMath.Pi()) <span class="comment"># rotation around y or x axis</span></div>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00620">620</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<div class="fragment"><div class="line"><a name="l00620"></a><span class="lineno">  620</span>&#160; <span class="keyword">def </span>rightView(self):</div>
+<div class="line"><a name="l00621"></a><span class="lineno">  621</span>&#160;  self.rotateView(0.,ROOT.TMath.Pi()) <span class="comment"># rotation around y or x axis</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -392,14 +392,14 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00607">607</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
-<div class="fragment"><div class="line"><a name="l00607"></a><span class="lineno">  607</span>&#160; <span class="keyword">def </span>rotateView(self,hor=0,ver=0):</div>
-<div class="line"><a name="l00608"></a><span class="lineno">  608</span>&#160;  v   = ROOT.gEve.GetDefaultGLViewer()</div>
-<div class="line"><a name="l00609"></a><span class="lineno">  609</span>&#160;  cam  = v.CurrentCamera()</div>
-<div class="line"><a name="l00610"></a><span class="lineno">  610</span>&#160;  cam.Reset()</div>
-<div class="line"><a name="l00611"></a><span class="lineno">  611</span>&#160;  <span class="keywordflow">if</span> hor!=0 <span class="keywordflow">or</span> ver!=0:</div>
-<div class="line"><a name="l00612"></a><span class="lineno">  612</span>&#160;   cam.RotateRad(hor,ver)</div>
-<div class="line"><a name="l00613"></a><span class="lineno">  613</span>&#160;  v.DoDraw()</div>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00603">603</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<div class="fragment"><div class="line"><a name="l00603"></a><span class="lineno">  603</span>&#160; <span class="keyword">def </span>rotateView(self,hor=0,ver=0):</div>
+<div class="line"><a name="l00604"></a><span class="lineno">  604</span>&#160;  v   = ROOT.gEve.GetDefaultGLViewer()</div>
+<div class="line"><a name="l00605"></a><span class="lineno">  605</span>&#160;  cam  = v.CurrentCamera()</div>
+<div class="line"><a name="l00606"></a><span class="lineno">  606</span>&#160;  cam.Reset()</div>
+<div class="line"><a name="l00607"></a><span class="lineno">  607</span>&#160;  <span class="keywordflow">if</span> hor!=0 <span class="keywordflow">or</span> ver!=0:</div>
+<div class="line"><a name="l00608"></a><span class="lineno">  608</span>&#160;   cam.RotateRad(hor,ver)</div>
+<div class="line"><a name="l00609"></a><span class="lineno">  609</span>&#160;  v.DoDraw()</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -419,9 +419,9 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00614">614</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
-<div class="fragment"><div class="line"><a name="l00614"></a><span class="lineno">  614</span>&#160; <span class="keyword">def </span>topView(self):</div>
-<div class="line"><a name="l00615"></a><span class="lineno">  615</span>&#160;  self.rotateView(ROOT.TMath.Pi()/2.,0.) <span class="comment"># rotation around z axis</span></div>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00610">610</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<div class="fragment"><div class="line"><a name="l00610"></a><span class="lineno">  610</span>&#160; <span class="keyword">def </span>topView(self):</div>
+<div class="line"><a name="l00611"></a><span class="lineno">  611</span>&#160;  self.rotateView(ROOT.TMath.Pi()/2.,0.) <span class="comment"># rotation around z axis</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -451,21 +451,21 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00626">626</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
-<div class="fragment"><div class="line"><a name="l00626"></a><span class="lineno">  626</span>&#160; <span class="keyword">def </span>transparentMode(self,mode=&#39;on&#39;):</div>
-<div class="line"><a name="l00627"></a><span class="lineno">  627</span>&#160;   <span class="keywordflow">for</span> m <span class="keywordflow">in</span> transparentMaterials:</div>
-<div class="line"><a name="l00628"></a><span class="lineno">  628</span>&#160;     mat = ROOT.gGeoManager.GetMaterial(m)</div>
-<div class="line"><a name="l00629"></a><span class="lineno">  629</span>&#160;     <span class="keywordflow">if</span> <span class="keywordflow">not</span> mat:<span class="keywordflow">continue</span></div>
-<div class="line"><a name="l00630"></a><span class="lineno">  630</span>&#160;     <span class="keywordflow">if</span> mode.lower()==<span class="stringliteral">&#39;on&#39;</span> <span class="keywordflow">or</span> mode==1:</div>
-<div class="line"><a name="l00631"></a><span class="lineno">  631</span>&#160;       mat.SetTransparency(transparentMaterials[m])</div>
-<div class="line"><a name="l00632"></a><span class="lineno">  632</span>&#160;       self.TransparentMode = 1</div>
-<div class="line"><a name="l00633"></a><span class="lineno">  633</span>&#160;     <span class="keywordflow">else</span>:</div>
-<div class="line"><a name="l00634"></a><span class="lineno">  634</span>&#160;       mat.SetTransparency(<span class="stringliteral">&quot;\x00&quot;</span>)</div>
-<div class="line"><a name="l00635"></a><span class="lineno">  635</span>&#160;       self.TransparentMode = 0</div>
-<div class="line"><a name="l00636"></a><span class="lineno">  636</span>&#160;   sc    = gEve.GetScenes()</div>
-<div class="line"><a name="l00637"></a><span class="lineno">  637</span>&#160;   geoscene = sc.FindChild(<span class="stringliteral">&#39;Geometry scene&#39;</span>)</div>
-<div class="line"><a name="l00638"></a><span class="lineno">  638</span>&#160;   <span class="keywordflow">if</span> geoscene:   gEve.ElementChanged(geoscene,<span class="keyword">True</span>,<span class="keyword">True</span>)</div>
-<div class="line"><a name="l00639"></a><span class="lineno">  639</span>&#160;<span class="comment"># add projections DOES NOT WORK YET AS FORESEEN, under investigation. 30.11.2016</span></div>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00622">622</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<div class="fragment"><div class="line"><a name="l00622"></a><span class="lineno">  622</span>&#160; <span class="keyword">def </span>transparentMode(self,mode=&#39;on&#39;):</div>
+<div class="line"><a name="l00623"></a><span class="lineno">  623</span>&#160;   <span class="keywordflow">for</span> m <span class="keywordflow">in</span> transparentMaterials:</div>
+<div class="line"><a name="l00624"></a><span class="lineno">  624</span>&#160;     mat = ROOT.gGeoManager.GetMaterial(m)</div>
+<div class="line"><a name="l00625"></a><span class="lineno">  625</span>&#160;     <span class="keywordflow">if</span> <span class="keywordflow">not</span> mat:<span class="keywordflow">continue</span></div>
+<div class="line"><a name="l00626"></a><span class="lineno">  626</span>&#160;     <span class="keywordflow">if</span> mode.lower()==<span class="stringliteral">&#39;on&#39;</span> <span class="keywordflow">or</span> mode==1:</div>
+<div class="line"><a name="l00627"></a><span class="lineno">  627</span>&#160;       mat.SetTransparency(transparentMaterials[m])</div>
+<div class="line"><a name="l00628"></a><span class="lineno">  628</span>&#160;       self.TransparentMode = 1</div>
+<div class="line"><a name="l00629"></a><span class="lineno">  629</span>&#160;     <span class="keywordflow">else</span>:</div>
+<div class="line"><a name="l00630"></a><span class="lineno">  630</span>&#160;       mat.SetTransparency(<span class="stringliteral">&quot;\x00&quot;</span>)</div>
+<div class="line"><a name="l00631"></a><span class="lineno">  631</span>&#160;       self.TransparentMode = 0</div>
+<div class="line"><a name="l00632"></a><span class="lineno">  632</span>&#160;   sc    = gEve.GetScenes()</div>
+<div class="line"><a name="l00633"></a><span class="lineno">  633</span>&#160;   geoscene = sc.FindChild(<span class="stringliteral">&#39;Geometry scene&#39;</span>)</div>
+<div class="line"><a name="l00634"></a><span class="lineno">  634</span>&#160;   <span class="keywordflow">if</span> geoscene:   gEve.ElementChanged(geoscene,<span class="keyword">True</span>,<span class="keyword">True</span>)</div>
+<div class="line"><a name="l00635"></a><span class="lineno">  635</span>&#160;<span class="comment"># add projections DOES NOT WORK YET AS FORESEEN, under investigation. 30.11.2016</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -490,7 +490,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00571">571</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00567">567</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
 
 </div>
 </div>
@@ -514,7 +514,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00563">563</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00559">559</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
 
 </div>
 </div>
@@ -538,7 +538,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00561">561</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00557">557</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
 
 </div>
 </div>
@@ -562,7 +562,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00570">570</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00566">566</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
 
 </div>
 </div>
@@ -578,7 +578,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00557">557</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00553">553</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
 
 </div>
 </div>
@@ -602,7 +602,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00578">578</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00574">574</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
 
 </div>
 </div>
@@ -618,7 +618,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00556">556</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00552">552</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
 
 </div>
 </div>
@@ -642,7 +642,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00569">569</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00565">565</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
 
 </div>
 </div>
@@ -666,7 +666,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00583">583</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00579">579</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
 
 </div>
 </div>
@@ -690,7 +690,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00582">582</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00578">578</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
 
 </div>
 </div>
@@ -714,7 +714,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00575">575</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00571">571</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
 
 </div>
 </div>
@@ -738,7 +738,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00579">579</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00575">575</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
 
 </div>
 </div>
@@ -762,7 +762,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00580">580</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00576">576</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
 
 </div>
 </div>
@@ -786,7 +786,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00573">573</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00569">569</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
 
 </div>
 </div>

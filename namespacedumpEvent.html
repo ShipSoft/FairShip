@@ -132,18 +132,18 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="dumpEvent_8py_source.html#l00016">16</a> of file <a class="el" href="dumpEvent_8py_source.html">dumpEvent.py</a>.</p>
-<div class="fragment"><div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keyword">def </span><a class="code" href="namespacedumpEvent.html#a511e55aa84db3348657b70c923a25fff">dump</a>(i,pcut):</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; tree = ROOT.gROOT.FindObjectAny(<span class="stringliteral">&#39;cbmsim&#39;</span>)</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; tree.GetEntry(i)</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; print(<span class="stringliteral">&#39;   #         pid   px    py      pz     vx      vy       vz      mid&#39;</span>)</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; n=-1</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; <span class="keywordflow">for</span> mcp <span class="keywordflow">in</span> tree.MCTrack:</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;   n+=1</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;   <span class="keywordflow">if</span> mcp.GetP()/u.GeV &lt; pcut :  <span class="keywordflow">continue</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;   <a class="code" href="namespacedumpEvent.html#a328ee51f6bf4c5be05f6bdd99b719ddd">printMCTrack</a>(n,tree.MCTrack)</div>
-<div class="ttc" id="anamespacedumpEvent_html_a328ee51f6bf4c5be05f6bdd99b719ddd"><div class="ttname"><a href="namespacedumpEvent.html#a328ee51f6bf4c5be05f6bdd99b719ddd">dumpEvent.printMCTrack</a></div><div class="ttdeci">def printMCTrack(n, MCTrack)</div><div class="ttdef"><b>Definition:</b> <a href="dumpEvent_8py_source.html#l00011">dumpEvent.py:11</a></div></div>
-<div class="ttc" id="anamespacedumpEvent_html_a511e55aa84db3348657b70c923a25fff"><div class="ttname"><a href="namespacedumpEvent.html#a511e55aa84db3348657b70c923a25fff">dumpEvent.dump</a></div><div class="ttdeci">def dump(i, pcut)</div><div class="ttdef"><b>Definition:</b> <a href="dumpEvent_8py_source.html#l00016">dumpEvent.py:16</a></div></div>
+<p class="definition">Definition at line <a class="el" href="dumpEvent_8py_source.html#l00014">14</a> of file <a class="el" href="dumpEvent_8py_source.html">dumpEvent.py</a>.</p>
+<div class="fragment"><div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="keyword">def </span><a class="code" href="namespacedumpEvent.html#a511e55aa84db3348657b70c923a25fff">dump</a>(i,pcut):</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; tree = ROOT.gROOT.FindObjectAny(<span class="stringliteral">&#39;cbmsim&#39;</span>)</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; tree.GetEntry(i)</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; print(<span class="stringliteral">&#39;   #         pid   px    py      pz     vx      vy       vz      mid&#39;</span>)</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; n=-1</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; <span class="keywordflow">for</span> mcp <span class="keywordflow">in</span> tree.MCTrack:</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;   n+=1</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;   <span class="keywordflow">if</span> mcp.GetP()/u.GeV &lt; pcut :  <span class="keywordflow">continue</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;   <a class="code" href="namespacedumpEvent.html#a328ee51f6bf4c5be05f6bdd99b719ddd">printMCTrack</a>(n,tree.MCTrack)</div>
+<div class="ttc" id="anamespacedumpEvent_html_a328ee51f6bf4c5be05f6bdd99b719ddd"><div class="ttname"><a href="namespacedumpEvent.html#a328ee51f6bf4c5be05f6bdd99b719ddd">dumpEvent.printMCTrack</a></div><div class="ttdeci">def printMCTrack(n, MCTrack)</div><div class="ttdef"><b>Definition:</b> <a href="dumpEvent_8py_source.html#l00009">dumpEvent.py:9</a></div></div>
+<div class="ttc" id="anamespacedumpEvent_html_a511e55aa84db3348657b70c923a25fff"><div class="ttname"><a href="namespacedumpEvent.html#a511e55aa84db3348657b70c923a25fff">dumpEvent.dump</a></div><div class="ttdeci">def dump(i, pcut)</div><div class="ttdef"><b>Definition:</b> <a href="dumpEvent_8py_source.html#l00014">dumpEvent.py:14</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -163,15 +163,15 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="dumpEvent_8py_source.html#l00025">25</a> of file <a class="el" href="dumpEvent_8py_source.html">dumpEvent.py</a>.</p>
-<div class="fragment"><div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keyword">def </span><a class="code" href="namespacedumpEvent.html#a69720732afe264e7f05453246ec27a5b">dumpStraw</a>(i):</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; tree = ROOT.gROOT.FindObjectAny(<span class="stringliteral">&#39;cbmsim&#39;</span>)</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; tree.GetEntry(i)</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; <span class="keywordflow">for</span> aStraw <span class="keywordflow">in</span> tree.strawtubesPoint:</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;   trID = astraw.GetTrackID()</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;   <span class="keywordflow">if</span> <span class="keywordflow">not</span> trID &lt; 0:</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;      <a class="code" href="namespacedumpEvent.html#a328ee51f6bf4c5be05f6bdd99b719ddd">printMCTrack</a>(trID,tree.MCTrack)</div>
-<div class="ttc" id="anamespacedumpEvent_html_a69720732afe264e7f05453246ec27a5b"><div class="ttname"><a href="namespacedumpEvent.html#a69720732afe264e7f05453246ec27a5b">dumpEvent.dumpStraw</a></div><div class="ttdeci">def dumpStraw(i)</div><div class="ttdef"><b>Definition:</b> <a href="dumpEvent_8py_source.html#l00025">dumpEvent.py:25</a></div></div>
+<p class="definition">Definition at line <a class="el" href="dumpEvent_8py_source.html#l00023">23</a> of file <a class="el" href="dumpEvent_8py_source.html">dumpEvent.py</a>.</p>
+<div class="fragment"><div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keyword">def </span><a class="code" href="namespacedumpEvent.html#a69720732afe264e7f05453246ec27a5b">dumpStraw</a>(i):</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; tree = ROOT.gROOT.FindObjectAny(<span class="stringliteral">&#39;cbmsim&#39;</span>)</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; tree.GetEntry(i)</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; <span class="keywordflow">for</span> aStraw <span class="keywordflow">in</span> tree.strawtubesPoint:</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;   trID = astraw.GetTrackID()</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;   <span class="keywordflow">if</span> <span class="keywordflow">not</span> trID &lt; 0:</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;      <a class="code" href="namespacedumpEvent.html#a328ee51f6bf4c5be05f6bdd99b719ddd">printMCTrack</a>(trID,tree.MCTrack)</div>
+<div class="ttc" id="anamespacedumpEvent_html_a69720732afe264e7f05453246ec27a5b"><div class="ttname"><a href="namespacedumpEvent.html#a69720732afe264e7f05453246ec27a5b">dumpEvent.dumpStraw</a></div><div class="ttdeci">def dumpStraw(i)</div><div class="ttdef"><b>Definition:</b> <a href="dumpEvent_8py_source.html#l00023">dumpEvent.py:23</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -201,12 +201,12 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="dumpEvent_8py_source.html#l00011">11</a> of file <a class="el" href="dumpEvent_8py_source.html">dumpEvent.py</a>.</p>
-<div class="fragment"><div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keyword">def </span><a class="code" href="namespacedumpEvent.html#a328ee51f6bf4c5be05f6bdd99b719ddd">printMCTrack</a>(n,MCTrack):</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;   mcp = MCTrack[n]</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;   print(<span class="stringliteral">&#39; %6i %7i %6.3F %6.3F %7.3F %7.3F %7.3F %7.3F %6i &#39;</span>%(n,mcp.GetPdgCode(),mcp.GetPx()/u.GeV,mcp.GetPy()/u.GeV,mcp.GetPz()/u.GeV, \</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;                      mcp.GetStartX()/u.m,mcp.GetStartY()/u.m,mcp.GetStartZ()/u.m,mcp.GetMotherId()   ))</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
+<p class="definition">Definition at line <a class="el" href="dumpEvent_8py_source.html#l00009">9</a> of file <a class="el" href="dumpEvent_8py_source.html">dumpEvent.py</a>.</p>
+<div class="fragment"><div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keyword">def </span><a class="code" href="namespacedumpEvent.html#a328ee51f6bf4c5be05f6bdd99b719ddd">printMCTrack</a>(n,MCTrack):</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;   mcp = MCTrack[n]</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;   print(<span class="stringliteral">&#39; %6i %7i %6.3F %6.3F %7.3F %7.3F %7.3F %7.3F %6i &#39;</span>%(n,mcp.GetPdgCode(),mcp.GetPx()/u.GeV,mcp.GetPy()/u.GeV,mcp.GetPz()/u.GeV, \</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;                      mcp.GetStartX()/u.m,mcp.GetStartY()/u.m,mcp.GetStartZ()/u.m,mcp.GetMotherId()   ))</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -223,7 +223,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="dumpEvent_8py_source.html#l00009">9</a> of file <a class="el" href="dumpEvent_8py_source.html">dumpEvent.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dumpEvent_8py_source.html#l00007">7</a> of file <a class="el" href="dumpEvent_8py_source.html">dumpEvent.py</a>.</p>
 
 </div>
 </div>
@@ -239,7 +239,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="dumpEvent_8py_source.html#l00008">8</a> of file <a class="el" href="dumpEvent_8py_source.html">dumpEvent.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dumpEvent_8py_source.html#l00006">6</a> of file <a class="el" href="dumpEvent_8py_source.html">dumpEvent.py</a>.</p>
 
 </div>
 </div>

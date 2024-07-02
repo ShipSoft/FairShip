@@ -1,5 +1,6 @@
 var NAVTREEINDEX15 =
 {
+"classShipStack.html#a1e50638e079c16db3e5e17d7f4e09d6d":[12,0,131,39],
 "classShipStack.html#a31f780fb9cd0c3508162440b0310c49f":[12,0,131,10],
 "classShipStack.html#a47762812868262cc2c5548636cfef55b":[12,0,131,32],
 "classShipStack.html#a5443df34aab88873b64681c8b7941794":[12,0,131,21],
@@ -248,6 +249,5 @@ var NAVTREEINDEX15 =
 "classTargetPoint.html#a844afca1901cb6ed900bcaee90dcd59c":[12,0,147,4],
 "classTargetPoint.html#a8a8f34b2ec16c3ce6db5c448533c6f39":[12,0,147,7],
 "classTargetPoint.html#aae6de4220c96345c1d9502c8e7fd73ca":[12,0,147,5],
-"classTargetPoint.html#acb394359de85dfcf3890ef2762e60d67":[12,0,147,1],
-"classTargetTracker.html":[12,0,148]
+"classTargetPoint.html#acb394359de85dfcf3890ef2762e60d67":[12,0,147,1]
 };
