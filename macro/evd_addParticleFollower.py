@@ -1,4 +1,3 @@
-from __future__ import print_function
 import ROOT,evd_fillEnergy
 gEve=ROOT.gEve
 import eveGlobal

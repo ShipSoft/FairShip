@@ -1,4 +1,3 @@
-from __future__ import print_function
 import ROOT,sys
 from rootpyPickler import Unpickler
 badBoys={}

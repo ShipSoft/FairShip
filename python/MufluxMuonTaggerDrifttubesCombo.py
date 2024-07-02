@@ -1,4 +1,3 @@
-from __future__ import print_function
 __author__ = 'Mikhail Hushchyn'
 
 import numpy as np

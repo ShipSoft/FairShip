@@ -1,5 +1,3 @@
-from __future__ import print_function
-from __future__ import division
 import ROOT, os, sys, time
 from subprocess import call
 

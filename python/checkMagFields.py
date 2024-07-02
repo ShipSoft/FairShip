@@ -1,4 +1,3 @@
-from __future__ import division
 import ROOT,sys
 import rootUtils as ut
 import shipunit as u

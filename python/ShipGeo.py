@@ -1,4 +1,3 @@
-from __future__ import print_function
 import shipunit as u
 import ROOT
 fDesign = 2

@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-from __future__ import print_function
 momentum = 1
 import ROOT,os,sys,time
 import shipunit as u

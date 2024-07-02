@@ -44,26 +44,17 @@ The following additional notes apply:
   the ROOT file open. Pass use_proxy=0 to disable this behavior.
 
 """
-from __future__ import absolute_import
-from __future__ import print_function
 
-from past.builtins import basestring
 import sys
-if sys.version_info[0] < 3:
-    from cStringIO import StringIO
-else:
-    from io import StringIO
+from io import StringIO
 
 # need subclassing ability in 2.x
 import pickle
 
 import ROOT
 
-string_types = basestring,
-if sys.version_info[0] < 3:
-    integer_types = (int, long)
-else:
-    integer_types = (int,)
+string_types = str,
+integer_types = (int,)
 
 __all__ = [
     'dump',
@@ -154,11 +145,7 @@ class Pickler(pickle.Pickler):
         self.__keys = file.GetListOfKeys()
         self.__io = IO_Wrapper()
         self.__pmap = {}
-        if sys.version_info[0] < 3:
-            # 2.X old-style classobj
-            pickle.Pickler.__init__(self, self.__io, proto)
-        else:
-            super(Pickler, self).__init__(self.__io, proto)
+        super(Pickler, self).__init__(self.__io, proto)
 
     def dump(self, obj, key=None):
         """Write a pickled representation of obj to the open TFile."""
@@ -166,10 +153,7 @@ class Pickler(pickle.Pickler):
             key = '_pickle'
         if 1>0:
             self.__file.cd()
-            if sys.version_info[0] < 3:
-                pickle.Pickler.dump(self, obj)
-            else:
-                super(Pickler, self).dump(obj)
+            super(Pickler, self).dump(obj)
             s = ROOT.TObjString(self.__io.getvalue())
             self.__io.reopen()
             s.Write(key)
@@ -229,10 +213,7 @@ class Unpickler(pickle.Unpickler):
         self.__n = 0
         self.__serial = '{0:d}-'.format(xserial).encode('utf-8')
         xdict[self.__serial] = root_file
-        if sys.version_info[0] < 3:
-            pickle.Unpickler.__init__(self, self.__io)
-        else:
-            super(Unpickler, self).__init__(self.__io)
+        super(Unpickler, self).__init__(self.__io)
 
         if use_hash:
             htab = {}
@@ -280,10 +261,7 @@ class Unpickler(pickle.Unpickler):
             self.__n += 1
             s = self.__file.Get(key + ';{0:d}'.format(self.__n))
             self.__io.setvalue(s.GetName())
-            if sys.version_info[0] < 3:
-                obj = pickle.Unpickler.load(self)
-            else:
-                obj = super(Unpickler, self).load()
+            obj = super(Unpickler, self).load()
             self.__io.reopen()
         finally:
             if _compat_hooks:
@@ -307,7 +285,7 @@ class Unpickler(pickle.Unpickler):
                 ## `copy_reg` and `__builtin__` comes from PY2,
                 ## for some reason that I don't understand, they are now
                 ## in the files we try to unpickle
-                if sys.version_info[0] >2:
+                if sys.version_info[0] > 2:
                     if module == 'copy_reg': module = 'copyreg'
                     if module == '__builtin__': module = 'builtins'
                 __import__(module)
@@ -331,9 +309,6 @@ class Unpickler(pickle.Unpickler):
 
             setattr(mod, name, Dummy)
             return Dummy
-
-    # Python 2.x
-    find_global = find_class
 
 
 def compat_hooks(hooks):

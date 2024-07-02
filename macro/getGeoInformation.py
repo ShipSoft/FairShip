@@ -3,7 +3,6 @@
 #WARNING: printing the entire geometry takes a lot of time
 #24-02-2015 comments to EvH
 
-from __future__ import print_function, division
 from builtins import range
 import operator, sys
 from argparse import ArgumentParser

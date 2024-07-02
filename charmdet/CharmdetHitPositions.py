@@ -1,6 +1,3 @@
-from __future__ import print_function, division
-from future import standard_library
-standard_library.install_aliases()
 from builtins import range
 import ROOT,os
 #ROOT.gROOT.ProcessLine('typedef std::unordered_map<int, std::unordered_map<int, std::unordered_map<int, std::vector<MufluxSpectrometerHit*>>>> nestedList;')

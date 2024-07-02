@@ -1,8 +1,5 @@
-from __future__ import print_function
-from __future__ import division
 # Mikhail Hushchyn, mikhail.hushchyn@cern.ch
 
-from past.builtins import cmp
 from builtins import range
 import ROOT
 import numpy
@@ -24,8 +21,8 @@ import global_variables
 def get_n_hits(hits):
     return len(hits)
 
-
-
+def cmp(a, b):
+    return (a > b) - (a < b)
 
 def run_track_pattern_recognition(input_file, geo_file, output_file, method):
     """

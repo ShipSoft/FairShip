@@ -1,5 +1,3 @@
-from __future__ import print_function
-from __future__ import division
 import ROOT,time,os,sys,random,getopt,copy
 from array import array
 import rootUtils as ut

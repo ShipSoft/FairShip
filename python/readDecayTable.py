@@ -10,8 +10,6 @@
 #
 # ==================================================================
 """
-from __future__ import division
-from __future__ import print_function
 import ROOT, os, csv
 from hnl import PDGname
 from darkphoton import *

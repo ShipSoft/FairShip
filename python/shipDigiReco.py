@@ -1,5 +1,3 @@
-from __future__ import print_function
-from __future__ import division
 import os,ROOT,shipVertex,shipDet_conf
 import global_variables
 if global_variables.realPR == "Prev":

@@ -1,5 +1,3 @@
-from __future__ import print_function
-from __future__ import division
 # simple vertex reconstruction with errors
 import ROOT,sys,os
 import global_variables
