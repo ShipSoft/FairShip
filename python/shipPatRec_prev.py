@@ -3,7 +3,6 @@
 #configuration, histograms etc done in shipPatRec_config
 #for documentation, see CERN-SHiP-NOTE-2015-002, https://cds.cern.ch/record/2005715/files/main.pdf
 #17-04-2015 comments to EvH
-from __future__ import print_function
 from builtins import range
 import ROOT, os
 import global_variables

@@ -1,4 +1,3 @@
-from __future__ import print_function
 # Global scope variables
 from ROOT import *
 from ROOT import Double

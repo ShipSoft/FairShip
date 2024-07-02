@@ -1,8 +1,4 @@
 #!/usr/bin/env python -i
-from __future__ import print_function
-from __future__ import division
-from future import standard_library
-standard_library.install_aliases()
 import ROOT,sys,os,tkinter,atexit
 ROOT.gROOT.ProcessLine('#include "FairEventHeader.h"')
 # only helps if class version in FairEventHeader.h is increased

@@ -1,5 +1,4 @@
 # utility to simulate response of the veto systems
-from __future__ import division
 import ROOT
 import shipunit as u
 from array import array

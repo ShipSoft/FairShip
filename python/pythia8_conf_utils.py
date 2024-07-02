@@ -1,9 +1,6 @@
-from __future__ import print_function
-from __future__ import division
 import os
 import sys
 import re
-import six
 import numpy as np
 import scipy.interpolate
 import ROOT
@@ -115,7 +112,7 @@ def make_interpolators(filepath, kind='linear'):
     """
     histogram_data = parse_histograms(filepath)
     histograms = {}
-    for (hist_string, (masses, br)) in six.iteritems(histogram_data):
+    for (hist_string, (masses, br)) in histogram_data.items():
         histograms[hist_string] = scipy.interpolate.interp1d(
             masses, br, kind=kind, bounds_error=False, fill_value=0, assume_sorted=True)
     return histograms

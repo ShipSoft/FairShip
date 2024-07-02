@@ -1,4 +1,3 @@
-from __future__ import print_function
 from array import array
 
 # get dimensions by running getGeoInformation on the geofile

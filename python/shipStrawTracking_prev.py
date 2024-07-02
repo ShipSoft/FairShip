@@ -3,7 +3,6 @@
 #for documentation, see CERN-SHiP-NOTE-2015-002, https://cds.cern.ch/record/2005715/files/main.pdf
 #17-04-2015 comments to EvH
 
-from __future__ import print_function
 import global_variables
 import shipPatRec_prev
 import ROOT,os,sys

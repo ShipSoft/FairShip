@@ -1,5 +1,3 @@
-from __future__ import division
-from __future__ import print_function
 import ROOT, os, sys
 import shipunit as u
 import readDecayTable

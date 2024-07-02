@@ -1,4 +1,3 @@
-from __future__ import print_function
 import os, subprocess,ROOT,time,getpass,multiprocessing
 import rootUtils as ut
 ncores = min(multiprocessing.cpu_count(),4)

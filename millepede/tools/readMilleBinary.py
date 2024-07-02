@@ -42,7 +42,6 @@
 #
 # Tested with SL4, SL5, SL6
 
-from __future__ import print_function
 import array, sys
 
 # ############### read millepede binary file #################

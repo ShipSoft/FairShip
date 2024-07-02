@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-from __future__ import print_function
 import ROOT,os,sys,time,shipRoot_conf
 import shipunit as u
 from ShipGeoConfig import ConfigRegistry

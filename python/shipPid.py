@@ -1,5 +1,3 @@
-from __future__ import print_function
-from __future__ import division
 # pid deffiner
 import ROOT, sys
 import shipunit as u

@@ -1,4 +1,3 @@
-from __future__ import print_function
 debug = False
 withNtuple     = True
 muonNuclear    = True

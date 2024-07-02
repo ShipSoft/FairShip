@@ -1,4 +1,3 @@
-from __future__ import print_function
 # analyze muon background /media/Data/HNL/PythiaGeant4Production/pythia8_Geant4_total.root
 import os,ROOT
 import multiprocessing as mp
