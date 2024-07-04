@@ -78,13 +78,13 @@ TGeoNode* vetoHit::GetNode()
 
    path+=ShapeType;
    path+=blockNr;
-   if(ShapeType<3){
-        if(Zlayer<10)path+="0";
-        path+=Zlayer;
-   }
-   else {
-        path+="00";
-   }
+   //if(ShapeType<3){
+   if(Zlayer<10)path+="0";
+   path+=Zlayer;
+   //}
+   //else {
+        //path+="00";
+   //}
    path+=number;
    path+="0_";
    path+=fDetectorID;
