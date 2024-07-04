@@ -27,6 +27,8 @@ it in future.
 
 ### Changed
 
+* Update getGeoInformation command line interface
+
 ### Removed
 
 * Remove obsolete files related to old ways of installing or testing FairShip
