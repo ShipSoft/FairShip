@@ -2,9 +2,9 @@ var getGeoInformation_8py =
 [
     [ "local2Global", "getGeoInformation_8py.html#ae7aa87e910ac451693651843925376fb", null ],
     [ "print_info", "getGeoInformation_8py.html#a66039e4bc097a35a84822199556dd28d", null ],
+    [ "action", "getGeoInformation_8py.html#a2629131c1c210dd0f7d7d50adcffac46", null ],
     [ "currentlevel", "getGeoInformation_8py.html#a1e654d88e6f4ab453a88d5e353825a6b", null ],
     [ "default", "getGeoInformation_8py.html#a12458b07dcd98d51aa7dff847eb23d34", null ],
-    [ "dest", "getGeoInformation_8py.html#a66f27cb0587991e8c01b218247d6565e", null ],
     [ "fGeo", "getGeoInformation_8py.html#a461c48d201fa5b00a9204ee6fa6786ed", null ],
     [ "fgeom", "getGeoInformation_8py.html#abb70257ba94da19d64ae63fb0cf09d89", null ],
     [ "fname", "getGeoInformation_8py.html#afbac20e31f074b8d2fff6a7304ef097d", null ],

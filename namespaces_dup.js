@@ -1087,9 +1087,9 @@ var namespaces_dup =
     [ "getGeoInformation", "namespacegetGeoInformation.html", [
       [ "local2Global", "namespacegetGeoInformation.html#ae7aa87e910ac451693651843925376fb", null ],
       [ "print_info", "namespacegetGeoInformation.html#a66039e4bc097a35a84822199556dd28d", null ],
+      [ "action", "namespacegetGeoInformation.html#a2629131c1c210dd0f7d7d50adcffac46", null ],
       [ "currentlevel", "namespacegetGeoInformation.html#a1e654d88e6f4ab453a88d5e353825a6b", null ],
       [ "default", "namespacegetGeoInformation.html#a12458b07dcd98d51aa7dff847eb23d34", null ],
-      [ "dest", "namespacegetGeoInformation.html#a66f27cb0587991e8c01b218247d6565e", null ],
       [ "fGeo", "namespacegetGeoInformation.html#a461c48d201fa5b00a9204ee6fa6786ed", null ],
       [ "fgeom", "namespacegetGeoInformation.html#abb70257ba94da19d64ae63fb0cf09d89", null ],
       [ "fname", "namespacegetGeoInformation.html#afbac20e31f074b8d2fff6a7304ef097d", null ],
