@@ -974,4 +974,4 @@ with ConfigRegistry.register_config("basic") as c:
     c.UpstreamTagger.X_Strip = 229 * u.cm  - UBT_x_crop
     c.UpstreamTagger.X_Strip64 = 1.534 * u.cm
     c.UpstreamTagger.Y_Strip64 = 111 * u.cm
-    c.UpstreamTagger.Z_Position = c.Chamber1.z - c.chambers.Tub1length
+    c.UpstreamTagger.Z_Position = c.Chamber1.z - c.chambers.Tub1length - 10.5 *u.cm#1.3503*u.cm
