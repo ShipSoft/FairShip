@@ -1,4 +1,3 @@
-from __future__ import print_function
 # result_1Bn_ecut_5.root  		1E9 with Ecut > 5 GeV
 # result_0.1Bn_ecut_0.5.root         	1E8 with Ecut > 0.5 GeV
 Yandex   = False  # False

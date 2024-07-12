@@ -34,7 +34,6 @@ private:
    ShipPixelHit(const ShipPixelHit &other);
    ShipPixelHit operator=(const ShipPixelHit &other);
 
-   int32_t detID;
    uint16_t tot;
 
    ClassDef(ShipPixelHit, 3);

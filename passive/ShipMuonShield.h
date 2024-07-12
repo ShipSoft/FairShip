@@ -37,7 +37,7 @@ class ShipMuonShield : public FairModule
 
   void SetSupports(Bool_t supports) {
     fSupport = supports;
-    LOG(WARNING) <<"Setting supports to %s. This will not have any effect if called after the geometry has been constructed.", fSupport ? "true" : "false";
+    LOG(WARNING) <<"Setting supports to "<< (fSupport ? "true" : "false") << ". This will not have any effect if called after the geometry has been constructed.";
   }
 
  protected:

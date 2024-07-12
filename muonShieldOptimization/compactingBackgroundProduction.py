@@ -1,4 +1,3 @@
-from __future__ import print_function
 import os,ROOT,sys,subprocess,pickle,time,datetime
 import rootUtils as ut
 

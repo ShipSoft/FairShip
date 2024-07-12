@@ -1,4 +1,3 @@
-from __future__ import print_function
 import os,ROOT
 import rootUtils as ut
 path =  '/eos/experiment/ship/data/Mbias/background-prod-2018/'

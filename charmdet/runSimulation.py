@@ -1,4 +1,3 @@
-from __future__ import print_function
 import os,subprocess,ROOT,time,multiprocessing,socket
 ncpus = multiprocessing.cpu_count() - 2
 interactive = not socket.gethostname().find('ubuntu')<0

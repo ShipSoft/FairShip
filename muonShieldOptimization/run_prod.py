@@ -1,4 +1,3 @@
-from __future__ import print_function
 import os,time,ROOT
 def makeProd(prefix,DY,y=False,phiRandom=False,X=None):
   ncpu = 9

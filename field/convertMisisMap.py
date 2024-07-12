@@ -6,7 +6,6 @@
 # by data lines x y z Bx By Bz, where the co-ordinates are assumed to
 # be in ascending z, y and x, in that order. Need distances in cm
 
-from __future__ import print_function
 import ROOT
 
 # Struct for the ROOT file TTree data: coord range and field info

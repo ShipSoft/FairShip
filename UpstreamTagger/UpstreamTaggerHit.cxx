@@ -66,10 +66,10 @@ std::vector<double>  UpstreamTaggerHit::GetTime(Double_t x){
      Dist(x, lpos, lneg);
      Double_t dt = T_resol;
      Double_t t  =  ( (t_1-lneg/v_drift) + (t_2-lpos/v_drift) )/2;
-     std::vector<double> m;
-     m.push_back(t);
-     m.push_back(dt);
-     return m;
+     std::vector<double> retVal;
+     retVal.push_back(t);
+     retVal.push_back(dt);
+     return retVal;
 }
 // ---- return mean time information
 std::vector<double>  UpstreamTaggerHit::GetTime(){
@@ -80,17 +80,17 @@ std::vector<double>  UpstreamTaggerHit::GetTime(){
      else
        t0 =  (t_1+t_2)/2. - 55.5/v_drift;// strip length = 111 cm in y
      Double_t dt =  T_resol;
-     std::vector<double> m;
-     m.push_back(t0);
-     m.push_back(dt);
-     return m;
+     std::vector<double> retVal;
+     retVal.push_back(t0);
+     retVal.push_back(dt);
+     return retVal;
 }
 
 std::vector<double> UpstreamTaggerHit::GetMeasurements(){
- std::vector<double> m;
- m.push_back( t_1);
- m.push_back( t_2);
- return m;
+ std::vector<double> retVal;
+ retVal.push_back( t_1);
+ retVal.push_back( t_2);
+ return retVal;
 }
 
 // distance to edges

@@ -10,7 +10,6 @@
 # cmScale (default = 1.0) to convert the text file distances into cm.
 # For example, if the input data uses mm for lengths, cmScale = 0.1.
 
-from __future__ import print_function
 import ROOT
 
 # Struct for the ROOT file TTree data: coord range and field binning

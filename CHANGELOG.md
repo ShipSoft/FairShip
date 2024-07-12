@@ -23,9 +23,13 @@ it in future.
 ### Fixed
 
 * Remove trailing whitespace and fix line endings
+* Fix compilation warnings due to deprecations #469
 
 ### Changed
+
+* Update getGeoInformation command line interface
 
 ### Removed
 
 * Remove obsolete files related to old ways of installing or testing FairShip
+* Remove uses of future and past modules #473

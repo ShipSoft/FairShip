@@ -5,7 +5,6 @@
 # Also add to the file info about the binning, offsets etc..
 # Input file distances are in m; convert them to centimetres
 
-from __future__ import print_function
 import ROOT
 
 # Struct for the ROOT file TTree data: coord range and field info

@@ -1,5 +1,3 @@
-from __future__ import print_function
-from __future__ import division
 # example for accessing smeared hits and fitted tracks
 import os
 import sys

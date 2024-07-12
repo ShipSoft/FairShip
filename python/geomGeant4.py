@@ -1,5 +1,3 @@
-from __future__ import print_function
-from __future__ import division
 import shipunit as u
 from array import array
 import hepunit as G4Unit

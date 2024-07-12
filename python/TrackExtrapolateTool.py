@@ -1,8 +1,8 @@
-from __future__ import print_function
-from __future__ import division
-from past.builtins import cmp
 import ROOT
 import shipunit as u
+
+def cmp(a, b):
+    return (a > b) - (a < b)
 
 minNdf = 20
 parallelToZ = ROOT.TVector3(0., 0., 1.)

@@ -1,6 +1,4 @@
 #!/usr/bin/env python
-from __future__ import print_function
-from __future__ import division
 import os
 import sys
 import ROOT
@@ -241,7 +239,6 @@ else: tag = simEngine+"-"+mcEngine
 if charmonly: tag = simEngine+"CharmOnly-"+mcEngine
 if options.eventDisplay: tag = tag+'_D'
 if options.dv > 4 : tag = 'conical.'+tag
-elif dy: tag = str(options.dy)+'.'+tag
 if not os.path.exists(options.outputDir):
   os.makedirs(options.outputDir)
 outFile = "%s/ship.%s.root" % (options.outputDir, tag)
@@ -544,7 +541,7 @@ elif options.deepCopy:
 if options.eventDisplay:
  # Set cuts for storing the trajectories, can only be done after initialization of run (?!)
   trajFilter = ROOT.FairTrajFilter.Instance()
-  trajFilter.SetStepSizeCut(1*u.mm);
+  trajFilter.SetStepSizeCut(1*u.mm)
   trajFilter.SetVertexCut(-20*u.m, -20*u.m,ship_geo.target.z0-1*u.m, 20*u.m, 20*u.m, 200.*u.m)
   trajFilter.SetMomentumCutP(0.1*u.GeV)
   trajFilter.SetEnergyCut(0., 400.*u.GeV)
