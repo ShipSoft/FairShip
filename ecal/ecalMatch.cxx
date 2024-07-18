@@ -1,3 +1,4 @@
+#include "FairRootManager.h"
 #include "ecalMatch.h"
 
 #include "ecalCellMC.h"
