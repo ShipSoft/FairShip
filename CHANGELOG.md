@@ -49,3 +49,4 @@ it in future.
 * Remove Geant3 dependency
 * Remove unimplemented event display functions (see #497)
 * Disable SND by default
+* Housekeeping: Don't use CMake commands no longer provided by FairRoot 19
