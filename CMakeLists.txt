@@ -108,10 +108,6 @@ IF(NOT UNIX)
   MESSAGE(FATAL_ERROR "You're not on an UNIX system. The project was up to now only tested on UNIX systems, so we break here. If you want to go on please edit the CMakeLists.txt in the source directory.")
 ENDIF(NOT UNIX)
 
-# Check if the external packages are installed into a separate install
-# directory
-CHECK_EXTERNAL_PACKAGE_INSTALL_DIR()
-
 # Set the build type. Possibilities are None, Debug, Release,
 # RelWithDebInfo and MinSizeRel
 #SET(CMAKE_BUILD_TYPE Debug)
@@ -203,8 +199,6 @@ Else()
   )
   SET(CMAKE_SHARED_LIBRARY_SUFFIX .so)
 EndIf()
-
-Generate_Version_Info()
 
 SET(CBMLIBDIR ${CMAKE_BINARY_DIR}/lib)
 SET(LD_LIBRARY_PATH  ${CBMLIBDIR} ${LD_LIBRARY_PATH})
