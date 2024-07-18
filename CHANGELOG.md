@@ -40,6 +40,7 @@ it in future.
 * Housekeeping: Use same clang-format and clang-tidy config as FairRoot
 * Decay Vessel configuration now imported from a yaml file
 * Geometry of Decay Vessel updated to new design
+* Housekeeping: Bump minimum CMake version to 3.12
 
 ### Removed
 
