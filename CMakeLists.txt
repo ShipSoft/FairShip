@@ -117,7 +117,10 @@ ENDIF(NOT UNIX)
 # For example the framework can run without GEANT4, but ROOT is
 # mandatory
 
-find_package(ROOT 6.10.06 REQUIRED)
+find_package(FairCMakeModules 1.0 REQUIRED)
+include(FairFindPackage2)
+find_package2(PUBLIC ROOT 6.26.14 REQUIRED)
+include(ROOTMacros)
 find_package2(PUBLIC Pythia8 REQUIRED)
 find_package2(PUBLIC EvtGen REQUIRED)
 # (GENERATORS REQUIRED)
@@ -127,14 +130,7 @@ find_package2(PUBLIC GEANT4VMC)
 find_package2(PUBLIC HEPMC)
 find_package2(PUBLIC FairRoot REQUIRED)
 find_package2(PUBLIC FairLogger REQUIRED)
-
-if(ROOT_FOUND_VERSION GREATER 62599)
-  find_package2(PUBLIC VMC REQUIRED)
-  set(VMCLIB VMCLibrary)
-else()
-  set(VMCLIB ROOT::VMC)
-endif()
-
+find_package2(PUBLIC VMC REQUIRED)
 
 IF(DEFINED ${BOOST_ROOT})
   Set(Boost_NO_SYSTEM_PATHS TRUE)

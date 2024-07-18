@@ -41,6 +41,8 @@ it in future.
 * Decay Vessel configuration now imported from a yaml file
 * Geometry of Decay Vessel updated to new design
 * Housekeeping: Bump minimum CMake version to 3.12
+* Housekeeping: Use FairRoot's `find_package2` to find ROOT and VMC
+* Housekeeping: Bump minimum ROOT version to 6.26
 
 ### Removed
 
