@@ -26,6 +26,8 @@ it in future.
 
 ### Fixed
 
+* Fix missing includes in ecalMatch and ecalReco
+
 ### Changed
 
 * shipStrawTracking: Move to argparse
