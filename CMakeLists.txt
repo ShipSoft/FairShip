@@ -6,7 +6,7 @@
 # and ShipRoot.
 
 # Check if cmake has the required version
-CMAKE_MINIMUM_REQUIRED(VERSION 3.9.4 FATAL_ERROR)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.12.0 FATAL_ERROR)
 
 foreach(p
   CMP0028 # double colon for imported and alias targets
