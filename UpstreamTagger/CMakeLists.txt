@@ -5,6 +5,7 @@
 set(INCLUDE_DIRECTORIES
 ${CMAKE_SOURCE_DIR}/shipdata
 ${CMAKE_SOURCE_DIR}/UpstreamTagger
+${genfit2_INCDIR}
 )
 
 include_directories( ${INCLUDE_DIRECTORIES}  ${VMC_INCLUDE_DIRS}  ${FAIRROOT_INCLUDE_DIR} ${FairLogger_INCDIR} ${FMT_INCLUDE_DIR}
@@ -13,6 +14,7 @@ include_directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
 
 set(LINK_DIRECTORIES
 ${ROOT_LIBRARY_DIR}
+${genfit2_LIBDIR}
 ${FAIRROOT_LIBRARY_DIR}
 )
 
@@ -28,7 +30,8 @@ Set(HEADERS )
 Set(LINKDEF UpstreamTaggerLinkDef.h)
 Set(LIBRARY_NAME UpstreamTagger)
 Set(DEPENDENCIES
-  Base ShipData
+	FairRoot::Base
+	ShipData
 )
 
 GENERATE_LIBRARY()

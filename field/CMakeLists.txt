@@ -42,6 +42,7 @@ set(LINKDEF FieldLinkDef.h)
 Set(LIBRARY_NAME ShipField)
 Set(DEPENDENCIES
     Base
+    ${VMCLIB}
 )
 
 GENERATE_LIBRARY()

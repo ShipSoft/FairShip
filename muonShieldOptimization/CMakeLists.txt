@@ -32,6 +32,12 @@ simpleTarget.cxx
 Set(HEADERS )
 Set(LINKDEF muonShieldBackgroundLinkDef.h)
 Set(LIBRARY_NAME ShipMuonShieldBackground)
-Set(DEPENDENCIES Base GeoBase ParBase Geom Core)
+Set(DEPENDENCIES 
+	FairRoot::Base
+	FairRoot::GeoBase
+	FairRoot::ParBase
+	ROOT::Geom
+	ROOT::Core
+)
 
 GENERATE_LIBRARY()
