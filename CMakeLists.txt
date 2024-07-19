@@ -128,6 +128,7 @@ find_package2(PUBLIC GEANT4)
 find_package2(PUBLIC GEANT4DATA)
 find_package2(PUBLIC GEANT4VMC)
 find_package2(PUBLIC HEPMC)
+find_package2(PUBLIC fmt)
 find_package2(PUBLIC FairRoot REQUIRED)
 find_package2(PUBLIC FairLogger REQUIRED)
 find_package2(PUBLIC VMC REQUIRED)
@@ -144,20 +145,7 @@ IF(DEFINED $ENV{GSL_ROOT})
       set(GSL_DIR $ENV{GSL_ROOT})
 ENDIF(DEFINED $ENV{GSL_ROOT})
 
-  Message("-- Looking for Boost ...")
-  # If an older version of boost is found both of the variables below are
-  # cached and in a second cmake run, a good boost version is found even
-  # if the version is to old.
-  # To overcome this problem both variables are cleared before checking
-  # for boost.
-  Unset(Boost_INCLUDE_DIR CACHE)
-  Unset(Boost_LIBRARY_DIRS CACHE)
-  find_package(Boost 1.41)
-  If (Boost_FOUND)
-    Set(Boost_Avail 1)
-  Else (Boost_FOUND)
-    Set(Boost_Avail 0)
-  EndIf (Boost_FOUND)
+find_package(Boost 1.70 REQUIRED)
 
 # set a variable which should be used in all CMakeLists.txt
 # Defines all basic include directories from fairbase
