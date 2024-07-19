@@ -52,3 +52,4 @@ it in future.
 * Remove unimplemented event display functions (see #497)
 * Disable SND by default
 * Housekeeping: Don't use CMake commands no longer provided by FairRoot 19
+* Housekeeping: Remove old CMake for ROOT 5
