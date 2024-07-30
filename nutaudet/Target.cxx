@@ -319,7 +319,7 @@ void Target::ConstructGeometry()
   // In both fDesign=0 & fDesign=1 the emulsion target is inserted within a magnet
   if(fDesign!=2 && fDesign!=4)
     {
-      TGeoVolume *MagnetVol;
+      TGeoVolume *MagnetVol = nullptr;
 
       //magnetic field in target
       TGeoUniformMagField *magField2 = new TGeoUniformMagField();
@@ -339,9 +339,6 @@ void Target::ConstructGeometry()
 	  magField2->SetFieldValue(fField,0,0.);
 	  MagnetVol=gGeoManager->GetVolume("NudetMagnet");
 	}
-    else{
-    MagnetVol = NULL; //initialize to nothing, fixing -Wmaybe-uninitialized warnings
-    }
 
       //Definition of the target box containing emulsion bricks + CES + target trackers (TT)
       if (fDesign != 3 && fDesign != 4) volTarget->SetField(magField2);
@@ -379,30 +376,25 @@ void Target::ConstructGeometry()
   volBrick->SetLineColor(kCyan);
   volBrick->SetTransparency(1);
 
-  TGeoBBox *Lead, *Tungsten; //need to separate the two cases
-  TGeoVolume *volLead, *volTungsten;
+  TGeoBBox *Absorber; //need to separate the two cases
+  TGeoVolume *volAbsorber;
 
   if (fDesign < 4){
-   Lead = new TGeoBBox("Pb", EmulsionX/2, EmulsionY/2, LeadThickness/2);
-   volLead = new TGeoVolume("Lead",Lead,lead);
-   volLead->SetTransparency(1);
-   volLead->SetLineColor(kGray);
-   //volLead->SetField(magField2);
-   volTungsten = NULL; //fixes -Wmaybe-uninitialized warning
+   Absorber = new TGeoBBox("Pb", EmulsionX/2, EmulsionY/2, LeadThickness/2);
+   volAbsorber = new TGeoVolume("Lead",Absorber,lead);
   }
   else{
-   Tungsten = new TGeoBBox("W", EmulsionX/2, EmulsionY/2, LeadThickness/2);
-   volTungsten = new TGeoVolume("Tungsten",Tungsten,tungsten);
-   volTungsten->SetTransparency(1);
-   volTungsten->SetLineColor(kGray);
-
-   volLead = NULL; //fixes -Wmaybe-uninitialized warning
+   Absorber = new TGeoBBox("W", EmulsionX/2, EmulsionY/2, LeadThickness/2);
+   volAbsorber = new TGeoVolume("Tungsten",Absorber,tungsten);
   }
+
+  volAbsorber->SetTransparency(1);
+  volAbsorber->SetLineColor(kGray);
 
   for(Int_t n=0; n<NPlates; n++)
     {
       //decide to use lead or tungsten, according to fDesign
-      volBrick->AddNode(fDesign < 4 ? volLead: volTungsten, n, new TGeoTranslation(0,0,-BrickZ/2+BrickPackageZ/2+ EmPlateWidth + LeadThickness/2 + n*AllPlateWidth));
+      volBrick->AddNode(volAbsorber, n, new TGeoTranslation(0,0,-BrickZ/2+BrickPackageZ/2+ EmPlateWidth + LeadThickness/2 + n*AllPlateWidth));
     }
   if (fsingleemulsionfilm){  //simplified configuration, unique sensitive layer for the whole emulsion plate
    TGeoBBox *EmulsionFilm = new TGeoBBox("EmulsionFilm", EmulsionX/2, EmulsionY/2, EmPlateWidth/2);
@@ -641,7 +633,8 @@ Bool_t  Target::ProcessHits(FairVolume* vol)
 
     Int_t motherV[MaxL];
 //   Bool_t EmTop = 0, EmBot = 0, EmCESTop = 0, EmCESBot = 0;
-    Bool_t EmBrick = 0, EmTop;
+    Bool_t EmBrick = false;
+    Bool_t EmTop;
     Int_t NPlate =0;
     const char *name;
 
@@ -695,9 +688,9 @@ Bool_t  Target::ProcessHits(FairVolume* vol)
 	//cout << i << "   " << motherV[i] << "    name = " << mumname << endl;
       }
 
-    Bool_t BrickorCES = 0;   //Brick = 1 / CES = 0;
+    Bool_t BrickorCES = false;   //Brick = 1 / CES = 0;
     if(EmBrick==1)
-      BrickorCES = 1;
+      BrickorCES = true;
 
 
     detID = (NWall+1) *1E7 + (NRow+1) * 1E6 + (NColumn+1)*1E4 + BrickorCES *1E3 + (NPlate+1)*1E1 + EmTop*1 ;
