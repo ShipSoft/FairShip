@@ -315,8 +315,6 @@ void NuTauMudet::ConstructGeometry()
   TGeoUniformMagField *retFieldU    = new TGeoUniformMagField(0.,0.,-fField); //magnetic field up return yoke
   TGeoUniformMagField *retFieldL   = new TGeoUniformMagField(0.,0.,fField); //magnetic field low return yoke
 
-  Double_t d = 0;
-
   if(fDesign<3)
     {
       TGeoVolumeAssembly *volMudetBox = new TGeoVolumeAssembly("volNuTauMudet");
@@ -500,8 +498,7 @@ void NuTauMudet::ConstructGeometry()
       tTauNuDet->AddNode(Pillar1Vol,4, new TGeoTranslation(fXtot/2-fPillarX/2,-fYtot/2-fPillarY/2,fZcenter+fZArm/2+fGapMiddle/2-fPillarZ/2));
     }
   if(fDesign==3)
-    {
-      Double_t supportasymmetry = fUpSuppY - fLowSuppY; //upper and lower support have different dimensions, so the mother box must be large enough to contain both
+    {      
       Int_t nr = 1E4;
 
       TGeoVolumeAssembly *volMudetBox = new TGeoVolumeAssembly("volTauNuMudet");
@@ -511,8 +508,7 @@ void NuTauMudet::ConstructGeometry()
       TGeoVolume *volIron = new TGeoVolume("volIron",IronLayer,Iron);
       volIron->SetLineColor(kGray);
 
-      TGeoBBox *IronLayer1 = new TGeoBBox("Iron",fXFe/2, fYFe/2, fZFethin/2);
-      TGeoVolume *volIron1 = new TGeoVolume("volIron1",IronLayer1,Iron);
+      TGeoBBox *IronLayer1 = new TGeoBBox("Iron",fXFe/2, fYFe/2, fZFethin/2);      
       //***********************ADDING EXTERNAL DETAILS TO THE MUON FILTER
 
       //********UPPER COVER***********
@@ -788,6 +784,7 @@ void NuTauMudet::ConstructGeometry()
       TGeoBBox *MagRegion = new TGeoBBox("MagRegion", fInMagX/2., fInMagY/2., fMagZ/2.+0.5);
       TGeoBBox *Coil = new TGeoBBox("Coil", fCoilW/2., fCoilH/2., fMagZ/2.+0.5);
 
+      CoilContainer->SetName("CoilContainer");
       // Translations
       TGeoTranslation *CoilUpPos = new TGeoTranslation("CoilUpPos", 0, (fInMagY+fCoilH)/2.-0.001, 0);
       TGeoTranslation *CoilDownPos = new TGeoTranslation("CoilDownPos", 0, -(fInMagY+fCoilH)/2.+0.001, 0);

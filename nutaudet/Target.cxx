@@ -272,19 +272,9 @@ void Target::SetHpTParam(Int_t n, Double_t dd, Double_t DZ) //need to know about
 void Target::ConstructGeometry()
 {
   // cout << "Design = " << fDesign << endl;
-  TGeoVolume *top=gGeoManager->GetTopVolume();
 
   InitMedium("air");
   TGeoMedium *air =gGeoManager->GetMedium("air");
-
-  InitMedium("iron");
-  TGeoMedium *Fe =gGeoManager->GetMedium("iron");
-
-  InitMedium("CoilAluminium");
-  TGeoMedium *Al  = gGeoManager->GetMedium("CoilAluminium");
-
-  InitMedium("CoilCopper");
-  TGeoMedium *Cu  = gGeoManager->GetMedium("CoilCopper");
 
   InitMedium("PlasticBase");
   TGeoMedium *PBase =gGeoManager->GetMedium("PlasticBase");
@@ -312,9 +302,6 @@ void Target::ConstructGeometry()
 
   InitMedium("tungsten");
   TGeoMedium *tungsten = gGeoManager->GetMedium("tungsten");
-
-  InitMedium("rohacell");
-  TGeoMedium *rohacell = gGeoManager->GetMedium("rohacell");
 
   InitMedium("Concrete");
   TGeoMedium *Conc =gGeoManager->GetMedium("Concrete");
@@ -352,6 +339,9 @@ void Target::ConstructGeometry()
 	  magField2->SetFieldValue(fField,0,0.);
 	  MagnetVol=gGeoManager->GetVolume("NudetMagnet");
 	}
+    else{
+    MagnetVol = NULL; //initialize to nothing, fixing -Wmaybe-uninitialized warnings
+    }
 
       //Definition of the target box containing emulsion bricks + CES + target trackers (TT)
       if (fDesign != 3 && fDesign != 4) volTarget->SetField(magField2);
@@ -398,12 +388,15 @@ void Target::ConstructGeometry()
    volLead->SetTransparency(1);
    volLead->SetLineColor(kGray);
    //volLead->SetField(magField2);
+   volTungsten = NULL; //fixes -Wmaybe-uninitialized warning
   }
   else{
    Tungsten = new TGeoBBox("W", EmulsionX/2, EmulsionY/2, LeadThickness/2);
    volTungsten = new TGeoVolume("Tungsten",Tungsten,tungsten);
    volTungsten->SetTransparency(1);
    volTungsten->SetLineColor(kGray);
+
+   volLead = NULL; //fixes -Wmaybe-uninitialized warning
   }
 
   for(Int_t n=0; n<NPlates; n++)
@@ -542,7 +535,6 @@ void Target::ConstructGeometry()
       //Columns
 
       Double_t d_cl_z = - ZDimension/2 + TTrackerZ;
-      Double_t d_tt = -ZDimension/2 + TTrackerZ/2;
 
       for(int l = 0; l < fNWall; l++)
 	{
@@ -590,7 +582,6 @@ void Target::ConstructGeometry()
        //Columns
 
       Double_t d_cl_z = - ZDimension/2 + TTrackerZ;
-      Double_t d_tt = -ZDimension/2 + TTrackerZ/2;
 
       for(int l = 0; l < fNWall; l++)
 	{
@@ -650,7 +641,7 @@ Bool_t  Target::ProcessHits(FairVolume* vol)
 
     Int_t motherV[MaxL];
 //   Bool_t EmTop = 0, EmBot = 0, EmCESTop = 0, EmCESBot = 0;
-    Bool_t EmBrick = 0, EmCES = 0, EmTop;
+    Bool_t EmBrick = 0, EmTop;
     Int_t NPlate =0;
     const char *name;
 
@@ -671,13 +662,11 @@ Bool_t  Target::ProcessHits(FairVolume* vol)
       }
     if(strcmp(name, "EmulsionCES") == 0)
       {
-	EmCES=1;
 	NPlate = detID;
         EmTop=1;
       }
     if(strcmp(name, "Emulsion2CES") == 0)
       {
-	EmCES=1;
 	NPlate = detID;
         EmTop=0;
       }
@@ -710,8 +699,6 @@ Bool_t  Target::ProcessHits(FairVolume* vol)
     if(EmBrick==1)
       BrickorCES = 1;
 
-    Double_t zEnd = 0, zStart =0;
-
 
     detID = (NWall+1) *1E7 + (NRow+1) * 1E6 + (NColumn+1)*1E4 + BrickorCES *1E3 + (NPlate+1)*1E1 + EmTop*1 ;
 
@@ -721,10 +708,7 @@ Bool_t  Target::ProcessHits(FairVolume* vol)
     if (fELoss == 0. ) { return kFALSE; }
     TParticle* p=gMC->GetStack()->GetCurrentTrack();
     //Int_t MotherID =gMC->GetStack()->GetCurrentParentTrackNumber();
-    Int_t fMotherID =p->GetFirstMother();
-    Int_t pdgCode = p->GetPdgCode();
-
-    //	cout << "ID = "<< fTrackID << "   pdg = " << pdgCode << ";   M = " << fMotherID << "    Npl = " << NPlate<<";  NCol = " << NColumn << ";  NRow = " << NRow << "; NWall = " << NWall<< "  P = " << fMom.Px() << ", "<< fMom.Py() << ", " << fMom.Pz() << endl;
+    Int_t pdgCode = p->GetPdgCode();    
 
     TLorentzVector Pos;
     gMC->TrackPosition(Pos);
@@ -748,7 +732,7 @@ Bool_t  Target::ProcessHits(FairVolume* vol)
 
 void Target::DecodeBrickID(Int_t detID, Int_t &NWall, Int_t &NRow, Int_t &NColumn, Int_t &NPlate, Bool_t &EmCES, Bool_t &EmBrick, Bool_t &EmTop)
 {
-  Bool_t BrickorCES = 0, TopBot = 0;
+  Bool_t BrickorCES = 0;
 
   NWall = detID/1E7;
   NRow = (detID - NWall*1E7)/1E6;
