@@ -157,7 +157,6 @@ Int_t EmulsionMagnet::InitMedium(const char* name)
 
 void EmulsionMagnet::ConstructGeometry()
 {
-  TGeoVolume *top=gGeoManager->GetTopVolume();
 
   InitMedium("air");
   TGeoMedium *air =gGeoManager->GetMedium("air");
@@ -182,7 +181,6 @@ void EmulsionMagnet::ConstructGeometry()
   if(fDesign==0)//OLD, TP
     {
       TGeoUniformMagField *magField1 = new TGeoUniformMagField(0.,-fField,0.); //magnetic field in Magnet pillars
-      TGeoUniformMagField *magField2 = new TGeoUniformMagField(0.,fField,0.); //magnetic field in target
 
       TGeoVolumeAssembly *MagnetVol = new TGeoVolumeAssembly("Goliath");
       tTauNuDet->AddNode(MagnetVol,1,new TGeoTranslation(0,0,fCenterZ));
@@ -392,13 +390,13 @@ void EmulsionMagnet::ConstructGeometry()
   if(fDesign==1) //NEW with magnet
     {
       TGeoUniformMagField *magField1 = new TGeoUniformMagField(-fField,0.,0.); //magnetic field in Magnet pillars
-      TGeoUniformMagField *magField2 = new TGeoUniformMagField(fField,0.,0.); //magnetic field in target
 
       TGeoVolumeAssembly *MagnetVol = new TGeoVolumeAssembly("Davide");
       tTauNuDet->AddNode(MagnetVol,1,new TGeoTranslation(0,0,fCenterZ));
 
       //The -0.01*mm is only for drawing reasons
       TGeoBBox *LateralBox = new TGeoBBox("LB",fBaseZ/2,fBaseY/2,(fBaseX-0.01*mm)/2);
+      LateralBox->SetName("LB");
       TGeoTube *CoilBox = new TGeoTube("C",0,fCoilR,fCoilH1/2);
 
       TGeoCompositeShape *LateralSurf = new TGeoCompositeShape("LS","LB-C");
@@ -413,8 +411,6 @@ void EmulsionMagnet::ConstructGeometry()
       //r1->RotateY(90);
       //r1->RotateY(90);
       r1->RegisterYourself();
-      TGeoTranslation *t1r = new TGeoTranslation(-fMagnetX/2+fBaseX/2,0,0);
-      TGeoTranslation *t1l = new TGeoTranslation(fMagnetX/2-fBaseX/2,0,0);
 
       TGeoCombiTrans *trans1r = new TGeoCombiTrans(-fMagnetX/2+fBaseX/2,0,0,r1);
       TGeoCombiTrans *trans1l = new TGeoCombiTrans(fMagnetX/2-fBaseX/2,0,0,r1);
@@ -493,6 +489,7 @@ void EmulsionMagnet::ConstructGeometry()
       comb->SetName("comb");
       comb->RegisterYourself();
       TGeoCompositeShape *cut = new TGeoCompositeShape("CUT", "L-T:comb");
+      cut->SetName("CUT");
 
 
       TGeoTranslation* transcuttop = new TGeoTranslation("transcuttop",0, fCutHeight/2 + SemiLateralBoxHeight/2 ,0); //top and bottom refer to their geometrical positions
@@ -515,23 +512,27 @@ void EmulsionMagnet::ConstructGeometry()
       combleft->RegisterYourself();
       TGeoCompositeShape *cutleft;
       cutleft = new TGeoCompositeShape("CUTLEFT", "L-T:combleft");
+      cutleft->SetName("CUTLEFT");
       TGeoCompositeShape *cuttopleft = new TGeoCompositeShape("CUTTOPLEFT", "CUTLEFT - (S:transcuttop) - (S:transcutbottom)"); //triangular cut in the left lateral wall
       TGeoVolume *volcuttopleft = new TGeoVolume("volcuttopleft", cuttopleft, Fe);
       volcuttopleft->SetLineColor(kRed);
 
       //composite coil
-      TGeoBBox *OutcoilBox = new TGeoBBox("OC", fCoilX/2, fCoilH1/2,fMagnetZ/2-fCoilH1/2);
       TGeoBBox *IncoilBox = new TGeoBBox("IC", fCoilX/2,fCoilH2/2,(fMagnetZ-fCoilH1)/2);
 
       //circular arcs (first two options are radii, not half radii!)
       Double_t OuterRadius = fCoilY + fCoilThickness;
 
       TGeoTubeSeg *Coillateraltuberightdown = new TGeoTubeSeg("Coillateraltuberightdown",fCoilThickness,OuterRadius, fCoilX/2,90,180);
+      Coillateraltuberightdown->SetName("Coillateraltuberightdown");
       TGeoTubeSeg *Coillateraltuberighttup = new TGeoTubeSeg("Coillateraltuberightup",fCoilThickness,OuterRadius, fCoilX/2,0,90);
+      Coillateraltuberighttup->SetName("Coillateraltuberighttup");
       TGeoTubeSeg *Coillateraltubeleftup = new TGeoTubeSeg("Coillateraltubeleftup",fCoilThickness,OuterRadius, fCoilX/2,270,360);
+      Coillateraltubeleftup->SetName("Coillateraltubeleftup");
       TGeoTubeSeg *Coillateraltubeleftdown = new TGeoTubeSeg("Coillateraltubeleftdown",fCoilThickness,OuterRadius, fCoilX/2,180,270);
-
+      Coillateraltubeleftdown->SetName("Coillateraltubeleftdown");
       TGeoBBox *Coillateralcenter = new TGeoBBox("Coillateralcenter",fCoilX/2., (fCoilH2-2*fCoilThickness)/2, fCoilY/2.);
+      Coillateralcenter->SetName("Coillateralcenter");
 
       TGeoRotation rottube("rottube",90,90,0);
       //transformations to combine them
