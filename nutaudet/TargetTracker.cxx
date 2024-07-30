@@ -171,8 +171,6 @@ void TargetTracker::SetDesign(Int_t Design)
 
 void TargetTracker::ConstructGeometry()
 {
-  InitMedium("TTmedium");
-  TGeoMedium *TTmedium = gGeoManager->GetMedium("TTmedium");
 
   InitMedium("vacuum");
   TGeoMedium *vacuum = gGeoManager->GetMedium("vacuum");
