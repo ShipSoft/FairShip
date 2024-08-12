@@ -28,6 +28,7 @@ it in future.
 ### Changed
 
 * Update getGeoInformation command line interface
+* Update SST geometry constants #483
 
 ### Removed
 
