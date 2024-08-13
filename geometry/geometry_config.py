@@ -171,25 +171,23 @@ with ConfigRegistry.register_config("basic") as c:
      c.strawtubes.FrameLateralWidth  = 1.*u.cm
      c.strawtubes.DeltazFrame        = 10.*u.cm
     elif strawDesign==10:  # 10 - baseline for 2018
-     c.strawtubes.InnerStrawDiameter = 1.975*u.cm
-     c.strawtubes.StrawPitch         = 3.60*u.cm
-     c.strawtubes.DeltazLayer        = 2.1*u.cm
-     c.strawtubes.DeltazPlane        = 4.2*u.cm
-     c.strawtubes.YLayerOffset = 1.9*u.cm
-     c.strawtubes.YPlaneOffset = 1.3*u.cm
-     c.strawtubes.FrameMaterial      = "steel"
+     c.strawtubes.InnerStrawDiameter = 1.9928 * u.cm
+     c.strawtubes.StrawPitch = 2. * u.cm
+     c.strawtubes.DeltazLayer = 1.732 * u.cm
+     c.strawtubes.YLayerOffset = 1. * u.cm
+     c.strawtubes.FrameMaterial = "steel"
      c.strawtubes.FrameLateralWidth = 0.25 * u.m
-     c.strawtubes.DeltazFrame        = 2.5*u.cm
+     c.strawtubes.DeltazFrame = 2.5 * u.cm
 
-    c.strawtubes.WallThickness      = 0.0039*u.cm
-    c.strawtubes.OuterStrawDiameter = (c.strawtubes.InnerStrawDiameter + 2*c.strawtubes.WallThickness)
+    c.strawtubes.WallThickness = 0.0036 * u.cm
+    c.strawtubes.OuterStrawDiameter = (c.strawtubes.InnerStrawDiameter + 2 * c.strawtubes.WallThickness)
 
-    c.strawtubes.StrawsPerLayer     = int(c.Yheight/c.strawtubes.StrawPitch)
-    c.strawtubes.ViewAngle          = 5
-    c.strawtubes.WireThickness      = 0.003*u.cm
-    c.strawtubes.DeltazView         = 10.*u.cm
+    c.strawtubes.StrawsPerLayer = int(c.Yheight/c.strawtubes.StrawPitch)
+    c.strawtubes.ViewAngle = 4.57
+    c.strawtubes.WireThickness = 0.003 * u.cm
+    c.strawtubes.DeltazView = 5. * u.cm
     c.strawtubes.VacBox_x = 240. * u.cm
-    c.strawtubes.VacBox_y = 600.*u.cm * c.Yheight / (10.*u.m)
+    c.strawtubes.VacBox_y = 600. * u.cm * c.Yheight / (10. * u.m)
 
     c.Bfield = AttrDict(z=c.z)
     c.Bfield.max = 0 # 1.4361*u.kilogauss  # was 1.15 in EOI
