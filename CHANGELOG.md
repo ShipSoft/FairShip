@@ -35,3 +35,4 @@ it in future.
 
 * Remove obsolete files related to old ways of installing or testing FairShip
 * Remove uses of future and past modules #473
+* Remove Geant3 dependency
