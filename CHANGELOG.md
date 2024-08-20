@@ -28,6 +28,8 @@ it in future.
 
 * Fix missing includes in ecalMatch and ecalReco
 * Fix compilation warnings due to unused or uninitiliazed variables #481
+* Octant symmetry was incorrect for B_z when using field maps (reported and
+  fixed by M. Ferro-Luzzi)
 
 ### Changed
 
