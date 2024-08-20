@@ -127,6 +127,7 @@ void ShipBFieldMap::Field(const Double_t* position, Double_t* B)
     // 4. x < 0, y < 0: Bx = Bx
 
     Float_t BxSign(1.0);
+    Float_t BzSign = 1;
 
     if (isSymmetric_) {
 
@@ -139,7 +140,9 @@ void ShipBFieldMap::Field(const Double_t* position, Double_t* B)
       }
 
       if (y < 0.0) {
-	y = -y; BxSign *= -1.0;
+          y = -y;
+          BxSign *= -1.0;
+          BzSign = -1.0;
       }
 
     }
@@ -193,7 +196,7 @@ void ShipBFieldMap::Field(const Double_t* position, Double_t* B)
     // and scale with the appropriate multiplication factor (default = 1.0)
     B[0] = this->BInterCalc(ShipBFieldMap::xAxis)*scale_*BxSign;
     B[1] = this->BInterCalc(ShipBFieldMap::yAxis)*scale_;
-    B[2] = this->BInterCalc(ShipBFieldMap::zAxis)*scale_;
+    B[2] = this->BInterCalc(ShipBFieldMap::zAxis) * scale_ * BzSign;
 
 }
 

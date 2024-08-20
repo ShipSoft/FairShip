@@ -16,7 +16,8 @@ it in future.
 
 ### Fixed
 
-* Use ConstructedAt instead of remove pythonization for TClonesArray 
+* Use ConstructedAt instead of remove pythonization for TClonesArray
+* Octant symmetry was incorrect for B_z when using field maps (reported and fixed by M. Ferro-Luzzi)
 
 ### Changed
 
