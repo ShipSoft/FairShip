@@ -41,6 +41,7 @@ class MuDISGenerator : public FairGenerator
   Double_t startZ,endZ;
   TClonesArray* iMuon ;
   TClonesArray* dPart ;
+  TClonesArray* dPartSoft ;
   FairLogger*  fLogger; //!   don't make it persistent, magic ROOT command
   TFile* fInputFile;
   TTree* fTree;
