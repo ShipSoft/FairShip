@@ -1,9 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: latin-1 -*-
-import ROOT, os
+import ROOT
+import os
 import shipunit as u
 from ShipGeoConfig import AttrDict, ConfigRegistry
 from array import array
+import yaml
 
 detectorList = []
 
@@ -87,6 +89,38 @@ def posEcal(z, efile):
     EcalZSize, sz = makeEcalGeoFile(z, efile)
     ecal = ROOT.ecal("Ecal", ROOT.kTRUE, sz)
     return ecal, EcalZSize
+
+
+def configure_veto(yaml_file):
+    with open(yaml_file, "r") as file:
+        config = yaml.safe_load(file)
+
+    veto_geo = AttrDict(config)
+
+    Veto = ROOT.veto()
+    Veto.SetVesselDimensions(
+        veto_geo.xstartInner,
+        veto_geo.xendInner,
+        veto_geo.ystartInner,
+        veto_geo.yendInner,
+        veto_geo.z0,
+    )
+    Veto.SetLiquidVeto(1)
+    Veto.SetPlasticVeto(1)
+
+    Veto.SetVesselStructure(
+        veto_geo.innerSupport,
+        veto_geo.sensitiveThickness,
+        veto_geo.outerSupport,
+        veto_geo.innerSupportMed,
+        veto_geo.lidThickness,
+        veto_geo.sensitiveMed,
+        veto_geo.outerSupportMed,
+        veto_geo.decayMed,
+        veto_geo.rib,
+    )
+
+    detectorList.append(Veto)
 
 
 def configure(run, ship_geo):
@@ -265,61 +299,12 @@ def configure(run, ship_geo):
         magnet = ROOT.ShipMagnet("Magnet", "SHiP Magnet", ship_geo.Bfield.z)
     detectorList.append(magnet)
 
-    Veto = ROOT.veto("Veto", ROOT.kTRUE)  # vacuum tank
-    Veto.SetLiquidVeto(1)  # liquid scintillator
-    Veto.SetPlasticVeto(1)  # plastic scintillator
+    fairship = ROOT.gSystem.Getenv("FAIRSHIP")
 
-    Veto.SetZpositions(
-        ship_geo.vetoStation.z,
-        ship_geo.TrackStation1.z,
-        ship_geo.TrackStation2.z,
-        ship_geo.TrackStation3.z,
-        ship_geo.TrackStation4.z,
-        ship_geo.tankDesign,
-    )
-    Veto.SetTubZpositions(
-        ship_geo.Chamber1.z,
-        ship_geo.Chamber2.z,
-        ship_geo.Chamber3.z,
-        ship_geo.Chamber4.z,
-        ship_geo.Chamber5.z,
-        ship_geo.Chamber6.z,
-    )
-    Veto.SetTublengths(
-        ship_geo.chambers.Tub1length,
-        ship_geo.chambers.Tub2length,
-        ship_geo.chambers.Tub3length,
-        ship_geo.chambers.Tub6length,
-    )
-    Veto.SetB(ship_geo.Yheight / 2.0)
-    Veto.SetFloorHeight(ship_geo.cave.floorHeightTankA, ship_geo.cave.floorHeightTankB)
-    if ship_geo.tankDesign > 4:
-        dzX = ship_geo.zFocusX + ship_geo.target.z0
-        x1 = (
-            ship_geo.xMax
-            / (ship_geo.Chamber1.z - ship_geo.chambers.Tub1length - dzX)
-            * (ship_geo.TrackStation4.z - dzX)
-        )
-        dzY = ship_geo.zFocusY + ship_geo.target.z0
-        y1 = (
-            ship_geo.Yheight
-            / (ship_geo.Chamber1.z - ship_geo.chambers.Tub1length - dzY)
-            * (ship_geo.TrackStation4.z - dzY)
-        )
-        Veto.SetXYstart(x1, dzX, y1, dzY)
-        Veto.SetVesselStructure(
-            ship_geo.Veto.innerSupport,
-            ship_geo.Veto.sensitiveThickness,
-            ship_geo.Veto.outerSupport,
-            ship_geo.Veto.innerSupportMed,
-            ship_geo.Veto.lidThickness,
-            ship_geo.Veto.sensitiveMed,
-            ship_geo.Veto.outerSupportMed,
-            ship_geo.Veto.decayMed,
-            ship_geo.Veto.rib,
-        )
+    configure_veto(
+        fairship + "/geometry/veto_config.yaml"
+    )  # put conditions for the design
 
-    detectorList.append(Veto)
     if hasattr(ship_geo, "tauMudet"):  # don't support old designs
         if ship_geo.muShieldDesign >= 7 and hasattr(ship_geo.tauMudet, "Xtot"):
             taumuondetector = ROOT.NuTauMudet(
