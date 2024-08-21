@@ -78,13 +78,13 @@ TGeoNode* vetoHit::GetNode()
     else if (ShapeType == 2)
         path += "LiScY_";
     else if (ShapeType == 3)
-        path += "LiSc_L1_";
+        path += "LiSc_S3_";
     else if (ShapeType == 4)
-        path += "LiSc_R1_";
+        path += "LiSc_S4_";
     else if (ShapeType == 5)
-        path += "LiSc_L2_";
+        path += "LiSc_S5_";
     else if (ShapeType == 6)
-        path += "LiSc_R2_";
+        path += "LiSc_S6_";
 
     path += ShapeType;
     path += blockNr;

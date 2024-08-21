@@ -1,5 +1,5 @@
-#ifndef VETO_H
-#define VETO_H
+#ifndef VETO_VETO_H_
+#define VETO_VETO_H_
 
 #include "FairDetector.h"
 #include "TGeoVolume.h"
@@ -20,9 +20,7 @@ class veto : public FairDetector
      *       Active: kTRUE for active detectors (ProcessHits() will be called)
      *               kFALSE for inactive detectors
      */
-    veto(const char* Name, Bool_t Active);
 
-    /**      default constructor    */
     veto();
 
     /**       destructor     */
@@ -47,26 +45,18 @@ class veto : public FairDetector
 
     void SetFastMuon() { fFastMuon = true; }       // kill all tracks except of muons
     void SetFollowMuon() { fFollowMuon = true; }   // make muon shield active to follow muons
+    void SetVesselDimensions(Float_t x1, Float_t x2, Float_t y1, Float_t y2, Float_t vesselstart)
+    {
+        VetoStartInnerX = x1;
+        VetoEndInnerX = x2;
+        VetoStartInnerY = y1;
+        VetoEndInnerY = y2;
+        zStartDecayVol = vesselstart;
+    }
 
     /**      Create the detector geometry        */
     void ConstructGeometry();
 
-    void SetZpositions(Float_t z0, Float_t z1, Float_t z2, Float_t z3, Float_t z4, Int_t c);
-    void SetTubZpositions(Float_t z1, Float_t z2, Float_t z3, Float_t z4, Float_t z5, Float_t z6);
-    void SetTublengths(Float_t l1, Float_t l2, Float_t l3, Float_t l6);
-    void SetB(Float_t b) { fBtube = b; }
-    void SetFloorHeight(Float_t a, Float_t b)
-    {
-        floorHeightA = a;
-        floorHeightB = b;
-    }
-    void SetXYstart(Float_t b, Float_t fx, Float_t c, Float_t fy)
-    {
-        fXstart = b;
-        zFocusX = fx;
-        fYstart = c;
-        zFocusY = fy;
-    }
     void SetVesselStructure(Float_t a,
                             Float_t b,
                             Float_t c,
@@ -141,11 +131,12 @@ class veto : public FairDetector
     Float_t fT2z;          //!  z-position of tracking station 2
     Float_t fT3z;          //!  z-position of tracking station 3
     Float_t fT4z;          //!  z-position of tracking station 4
-    Int_t fDesign;         //!  1: cylindrical with basic tracking chambers,
-                           //   2: conical with basic tracking chambers, but no trscking chamber at entrance
-                     //   3: cylindrical, no tracking chambers defined but sensitive walls, strawchambers separated
-                     //   4: design used for TP, smaller upstream part in x
-                     //   5: optimized design, changed to trapezoidal shape
+    // Int_t          fDesign;            //!  1: cylindrical with basic tracking chambers,
+    //    2: conical with basic tracking chambers, but no trscking chamber at entrance
+    //    3: cylindrical, no tracking chambers defined but sensitive walls, strawchambers separated
+    //    4: design used for TP, smaller upstream part in x
+    //    5: optimized design, changed to trapezoidal shape
+    // design version 1) Helium Balloon, 2) DV+wSBT to be added.
     Bool_t fFastMuon, fFollowMuon;
     Float_t fTub1z;
     Float_t fTub2z;
@@ -158,13 +149,11 @@ class veto : public FairDetector
     Float_t fTub3length;
     Float_t fTub6length;
     Float_t f_InnerSupportThickness;
-    Float_t f_PhiRibsThickness;
     Float_t f_OuterSupportThickness;
     Float_t f_LidThickness;
     Float_t f_VetoThickness;
     Float_t f_RibThickness;
     Float_t fBtube;
-    Float_t ws;
     TString vetoMed_name;          //! medium of veto counter, liquid or plastic scintillator
     TString supportMedIn_name;     //! medium of support structure, iron, balloon
     TString supportMedOut_name;    //! medium of support structure, aluminium, balloon
@@ -182,6 +171,7 @@ class veto : public FairDetector
     Float_t VetoStartInnerY;
     Float_t VetoEndInnerX;
     Float_t VetoEndInnerY;
+    Float_t zStartDecayVol;
 
     Int_t fUseSupport;
     Int_t fPlasticVeto;
@@ -201,16 +191,17 @@ class veto : public FairDetector
                              Int_t color,
                              TGeoMedium* material,
                              Bool_t sens);
-    TGeoVolume* GeoTrapezoidNew(TString xname,
-                                Double_t thick,
-                                Double_t wz,
-                                Double_t wX_start,
-                                Double_t wX_end,
-                                Double_t wY_start,
-                                Double_t wY_end,
-                                Int_t color,
-                                TGeoMedium* material,
-                                Bool_t sens);
+    TGeoVolume* GeoTrapezoidHollow(TString xname,
+                                   Double_t thick,
+                                   Double_t wz,
+                                   Double_t wX_start,
+                                   Double_t wX_end,
+                                   Double_t wY_start,
+                                   Double_t wY_end,
+                                   Int_t color,
+                                   TGeoMedium* material,
+                                   Bool_t sens);
+
     void AddBlock(TGeoVolumeAssembly* tInnerWall,
                   TGeoVolumeAssembly* tDecayVacuum,
                   TGeoVolumeAssembly* tOuterWall,
@@ -242,6 +233,8 @@ class veto : public FairDetector
                                      Bool_t sens);
     int makeId(double z, double x, double y);
     int liscId(TString ShapeTypeName, int blockNr, int Zlayer, int number, int position);
+    double wx(double z);
+    double wy(double z);
 
     TGeoVolume* GeoSideObj(TString xname,
                            double dz,
@@ -257,7 +250,8 @@ class veto : public FairDetector
     TGeoVolume* GeoCornerLiSc1(TString xname,
                                double dz,
                                bool isClockwise,
-                               double a,
+                               double a1,
+                               double a2,
                                double b1,
                                double b2,
                                double dA,
@@ -268,7 +262,8 @@ class veto : public FairDetector
     TGeoVolume* GeoCornerLiSc2(TString xname,
                                double dz,
                                bool isClockwise,
-                               double a,
+                               double a1,
+                               double a2,
                                double b1,
                                double b2,
                                double dA,
@@ -277,34 +272,10 @@ class veto : public FairDetector
                                TGeoMedium* material,
                                Bool_t sens);
 
-    TGeoVolume* MakeSegments(Double_t dz,
-                             Double_t dx_start,
-                             Double_t dy,
-                             Double_t slopex,
-                             Double_t slopey,
-                             Double_t floorHeight);
-    TGeoVolume* MakeMagnetSegment(Int_t seg);
+    TGeoVolume* MakeSegments();
     TGeoVolume* MakeLidSegments(Int_t seg, Double_t dx, Double_t dy);
 
-    Int_t fDeltaCpy;                      // Delta in copy number for solid plastic veto
-    std::map<Int_t, TVector3> fCenters;   //! Map of copy number to center of tiles
-
-    // Return copy number for solid plastic scitillator veto
-    inline Int_t GetCopyNumber(Int_t iz, Int_t iplank, Int_t region)
-    {
-        return (iz * 1000 + iplank) * 10 + region + fDeltaCpy;
-    }
-
-    // Add center of volume and its dx, dy and dz (currently dummy) to a map for futher export
-    void InnerAddToMap(Int_t ncpy,
-                       Double_t x,
-                       Double_t y,
-                       Double_t z,
-                       Double_t dx = -1111,
-                       Double_t dy = -1111,
-                       Double_t dz = -1111);
-
-    ClassDef(veto, 9)
+    ClassDef(veto, 1)
 };
 
-#endif   // VETO_H
+#endif   // VETO_VETO_H_

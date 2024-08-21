@@ -1,5 +1,5 @@
-#ifndef vetoHitOnTrack_H
-#define vetoHitOnTrack_H 1
+#ifndef VETO_VETOHITONTRACK_H_
+#define VETO_VETOHITONTRACK_H_ 1
 
 #include "Rtypes.h"     // for Double_t, Int_t, Double32_t, etc
 #include "TObject.h"    //
@@ -56,4 +56,4 @@ class vetoHitOnTrack : public TObject
     ClassDef(vetoHitOnTrack, 1);
 };
 
-#endif
+#endif   // VETO_VETOHITONTRACK_H_

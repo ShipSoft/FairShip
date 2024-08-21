@@ -1,5 +1,5 @@
-#ifndef VETOPOINT_H
-#define VETOPOINT_H 1
+#ifndef VETO_VETOPOINT_H_
+#define VETO_VETOPOINT_H_ 1
 
 #include "FairMCPoint.h"
 #include "TObject.h"
@@ -54,4 +54,4 @@ class vetoPoint : public FairMCPoint
     ClassDef(vetoPoint, 3)
 };
 
-#endif
+#endif   // VETO_VETOPOINT_H_

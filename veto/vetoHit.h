@@ -1,5 +1,5 @@
-#ifndef vetoHIT_H
-#define vetoHIT_H 1
+#ifndef VETO_VETOHIT_H_
+#define VETO_VETOHIT_H_ 1
 #include "FairVolume.h"
 #include "ShipHit.h"
 #include "TGeoPhysicalNode.h"
@@ -52,4 +52,4 @@ class vetoHit : public ShipHit
     ClassDef(vetoHit, 1);
 };
 
-#endif
+#endif   // VETO_VETOHIT_H_
