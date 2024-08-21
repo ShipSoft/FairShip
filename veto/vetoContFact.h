@@ -1,5 +1,5 @@
-#ifndef VETOCONTFACT_H
-#define VETOCONTFACT_H
+#ifndef VETO_VETOCONTFACT_H_
+#define VETO_VETOCONTFACT_H_
 
 #include "FairContFact.h"
 
@@ -17,4 +17,4 @@ class vetoContFact : public FairContFact
     ClassDef(vetoContFact, 0)   // Factory for all veto parameter containers
 };
 
-#endif
+#endif   // VETO_VETOCONTFACT_H_
