@@ -242,7 +242,7 @@ void strawtubes::SetStrawsPerLayer(Int_t strawsperlayer)
      fStraws_per_layer = strawsperlayer;                         //! number of straws in one layer
 }
 
-void strawtubes::SetStereoAngle(Int_t stereoangle)
+void strawtubes::SetStereoAngle(Double_t stereoangle)
 {
      fView_angle = stereoangle;                                  //! Stereo angle of planes in a view
      fcosphi=cos(TMath::Pi()*fView_angle/180.);
@@ -478,7 +478,7 @@ void strawtubes::ConstructGeometry()
 
       TGeoTranslation t5p;
 
-      for (Int_t pnb=0; pnb<2; pnb++) {
+      for (Int_t pnb=0; pnb<1; pnb++) {
 	 //plane loop
          TString nmplane_veto = nmveto+"_plane_"; nmplane_veto += pnb;
 	 //width of the planes: z distance between layers + outer straw diameter
@@ -620,7 +620,7 @@ void strawtubes::ConstructGeometry()
 	    vac_12->AddNode(viewframe_12, statnb*10000000+vnb*1000000,h5);
 	    viewframe_12->SetLineColor(kRed);
 
-	    for (Int_t pnb=0; pnb<2; pnb++) {
+	    for (Int_t pnb=0; pnb<1; pnb++) {
 	      //plane loop
 	      TString nmplane_12 = nmview_12+"_plane_";
 	      nmplane_12 += pnb;
@@ -717,7 +717,7 @@ void strawtubes::ConstructGeometry()
 	    vac->AddNode(viewframe, statnb*10000000+vnb*1000000,h5);
 	    viewframe->SetLineColor(kRed);
 
-	    for (Int_t pnb=0; pnb<2; pnb++) {
+	    for (Int_t pnb=0; pnb<1; pnb++) {
 	      //plane loop
 	      TString nmplane = nmview+"_plane_";
 	      nmplane += pnb;
