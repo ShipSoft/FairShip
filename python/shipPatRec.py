@@ -800,7 +800,7 @@ def hits_split(smeared_hits):
         ahit = smeared_hits[i_hit]
 
         detID = ahit['detID']
-        statnb, vnb, pnb, lnb, snb = decodeDetectorID(detID)
+        statnb, vnb, lnb, snb = decodeDetectorID(detID)
         is_y12 = ((statnb == 1) + (statnb == 2)) * ((vnb == 0) + (vnb == 3))
         is_stereo12 = ((statnb == 1) + (statnb == 2)) * ((vnb == 1) + (vnb == 2))
         is_y34 = ((statnb == 3) + (statnb == 4)) * ((vnb == 0) + (vnb == 3))
@@ -932,8 +932,6 @@ def decodeDetectorID(detID):
         Station numbers.
     vnb : int or array-like
         View numbers.
-    pnb : int or array-like
-        Plane numbers.
     lnb : int or array-like
         Layer numbers.
     snb : int or array-like
@@ -942,11 +940,10 @@ def decodeDetectorID(detID):
 
     statnb = detID // 10000000
     vnb = (detID - statnb * 10000000) // 1000000
-    pnb = (detID - statnb * 10000000 - vnb * 1000000) // 100000
-    lnb = (detID - statnb * 10000000 - vnb * 1000000 - pnb * 100000) // 10000
-    snb = detID - statnb * 10000000 - vnb * 1000000 - pnb * 100000 - lnb * 10000 - 2000
+    lnb = (detID - statnb * 10000000 - vnb * 1000000) // 10000
+    snb = detID - statnb * 10000000 - vnb * 1000000 - lnb * 10000 - 2000
 
-    return statnb, vnb, pnb, lnb, snb
+    return statnb, vnb, lnb, snb
 
 
 
