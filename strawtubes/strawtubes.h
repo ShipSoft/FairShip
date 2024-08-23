@@ -50,9 +50,8 @@ class strawtubes: public FairDetector
     void SetStrawLength(Double_t strawlength);
     void SetInnerStrawDiameter(Double_t innerstrawdiameter);
     void SetOuterStrawDiameter(Double_t outerstrawdiameter);
-    void SetStrawPitch(Double_t strawpitch,Double_t layer_offset, Double_t plane_offset);
+    void SetStrawPitch(Double_t strawpitch,Double_t layer_offset);
     void SetDeltazLayer(Double_t deltazlayer);
-    void SetDeltazPlane(Double_t deltazplane);
     void SetStrawsPerLayer(Int_t strawsperlayer);
     void SetStereoAngle(Double_t stereoangle);
     void SetWireThickness(Double_t wirethickness);
@@ -65,7 +64,7 @@ class strawtubes: public FairDetector
     void SetVacBox_y(Double_t vacbox_y);
     void SetTr12YDim(Double_t tr12ydim);
     void SetTr34YDim(Double_t tr34ydim);
-    void StrawDecode(Int_t detID,int &statnb,int &vnb,int &pnb,int &lnb, int &snb);
+    void StrawDecode(Int_t detID,int &statnb,int &vnb,int &lnb, int &snb);
     void StrawEndPoints(Int_t detID, TVector3 &top, TVector3 &bot);
     void StrawEndPointsOriginal(Int_t detID, TVector3 &top, TVector3 &bot);
 // for the digitizing step
@@ -123,9 +122,7 @@ class strawtubes: public FairDetector
     Double_t     fOuter_Straw_diameter;   //!  Outer Straw diameter
     Double_t     fStraw_pitch;            //!  Distance (x) between straws in one layer
     Double_t     fDeltaz_layer12;         //!  Distance (z) between layer 1&2
-    Double_t     fDeltaz_plane12;         //!  Distance (z) between plane 1&2
     Double_t     fOffset_layer12;         //!  Offset (x) between straws of layer2&1
-    Double_t     fOffset_plane12;         //!  Offset (x) between straws of plane1&2
     Int_t        fStraws_per_layer;       //!  Number of straws in one layer
     Double_t     fView_angle;             //!  Stereo angle of layers in a view
     Double_t     fcosphi;
