@@ -47,8 +47,7 @@ void strawtubesHit::StrawEndPoints(TVector3 &vbot, TVector3 &vtop)
 {
     Int_t statnb = fDetectorID/10000000;
     Int_t vnb =  (fDetectorID - statnb*10000000)/1000000;
-    Int_t pnb =  (fDetectorID- statnb*10000000 - vnb*1000000)/100000;
-    Int_t lnb =  (fDetectorID - statnb*10000000 - vnb*1000000 - pnb*100000)/10000;
+    Int_t lnb =  (fDetectorID - statnb*10000000 - vnb*1000000)/10000;
     TString stat = "Tr";stat+=+statnb;stat+="_";stat+=statnb;
     if (statnb==5){stat="Veto_5";}
     TString view;
@@ -72,14 +71,13 @@ void strawtubesHit::StrawEndPoints(TVector3 &vbot, TVector3 &vtop)
     TString prefix = "Tr";
     if (statnb==5){prefix="Veto";}
     else{prefix+=statnb;}
-    prefix+=view;prefix+="_plane_";prefix+=pnb;prefix+="_";
-    TString plane = prefix;plane+=statnb;plane+=vnb;plane+=+pnb;plane+="00000";
-    TString layer = prefix+"layer_";layer+=lnb;layer+="_";layer+=statnb;layer+=vnb;layer+=pnb;layer+=lnb;layer+="0000";
+    prefix+=view;prefix+="_";
+    TString layer = prefix+"layer_";layer+=lnb;layer+="_";layer+=statnb;layer+=vnb;layer+=lnb;layer+="0000";
     TString wire = "wire_";
     if (statnb==5){wire+="veto_";}
     wire+=(fDetectorID+1000);
     if (statnb<3){wire = "wire_12_";wire+=(fDetectorID+1000);}
-    TString path = "/";path+=stat;path+="/";path+=plane;path+="/";path+=layer;path+="/";path+=wire;
+    TString path = "/";path+=stat;path+="/";path+=layer;path+="/";path+=wire;
     Bool_t rc = nav->cd(path);
     if (not rc){
       cout << "strawtubes::StrawDecode, TgeoNavigator failed "<<path<<endl;
