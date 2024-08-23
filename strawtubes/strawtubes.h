@@ -52,7 +52,7 @@ class strawtubes: public FairDetector
     void SetDeltazLayer(Double_t deltazlayer);
     void SetDeltazPlane(Double_t deltazplane);
     void SetStrawsPerLayer(Int_t strawsperlayer);
-    void SetStereoAngle(Int_t stereoangle);
+    void SetStereoAngle(Double_t stereoangle);
     void SetWireThickness(Double_t wirethickness);
     void SetDeltazFrame(Double_t deltazframe);
     void SetFrameLateralWidth(Double_t framelateralwidth);
