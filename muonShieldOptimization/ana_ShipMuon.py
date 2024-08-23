@@ -446,16 +446,15 @@ def makeProd():
    os.chdir('../'+prefix+str(i+1))
 
 def strawEncoding(detid):
- # statnb*10000000+vnb*1000000+pnb*100000+lnb*10000+1000+snb
- # vnb=view number; pnb=plane number; lnb=layer number; snb=straw number
+ # statnb*1000000+vnb*100000+lnb*10000+1000+snb
+ # vnb=view number; lnb=layer number; snb=straw number
  # statnb = station number. 1,2,3,4 tracking stations, 5 veto station
  vnb = ROOT.Long()
- pnb = ROOT.Long()
  lnb = ROOT.Long()
  snb = ROOT.Long()
  statnb = ROOT.Long()
- modules['Strawtubes'].StrawDecode(detid,statnb,vnb,pnb,lnb,snb)
- return [statnb,vnb,pnb,lnb,snb]
+ modules['Strawtubes'].StrawDecode(detid,statnb,vnb,lnb,snb)
+ return [statnb,vnb,lnb,snb]
 
 def detMap():
   sGeo = ROOT.gGeoManager
@@ -658,7 +657,7 @@ def executeOneFile(fn,output=None,pid=None):
      detID = ahit.GetDetectorID()
      if ahit.GetName() == 'strawtubesPoint':
       tmp = strawEncoding(detID)
-      # detName = str(tmp[0]*10000000+tmp[1]*1000000+tmp[2]*100000+tmp[3]*10000)
+      # detName = str(tmp[0]*1000000+tmp[1]*100000+tmp[2]*10000)
       detName = "strawstation_"+str(tmp[0])
       x = ahit.GetX()
       y = ahit.GetY()
