@@ -174,7 +174,9 @@ with ConfigRegistry.register_config("basic") as c:
      c.strawtubes.InnerStrawDiameter = 1.9928 * u.cm
      c.strawtubes.StrawPitch = 2. * u.cm
      c.strawtubes.DeltazLayer = 1.732 * u.cm
+     c.strawtubes.DeltazPlane = 0 * u.cm   
      c.strawtubes.YLayerOffset = 1. * u.cm
+     c.strawtubes.YPlaneOffset = 0 * u.cm   
      c.strawtubes.FrameMaterial = "steel"
      c.strawtubes.FrameLateralWidth = 0.25 * u.m
      c.strawtubes.DeltazFrame = 2.5 * u.cm
