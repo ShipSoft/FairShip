@@ -2,6 +2,8 @@
 // 7/10/2015
 // E. van Herwijnen eric.van.herwijnen@cern.ch
 // Also contains (for the moment) the veto station
+//
+// 23/08/2024 updated by W.-C. Marty Lee
 
 #include "strawtubes.h"
 #include "strawtubesPoint.h"
