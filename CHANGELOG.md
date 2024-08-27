@@ -24,6 +24,7 @@ it in future.
 
 * Remove trailing whitespace and fix line endings
 * Fix compilation warnings due to deprecations #469
+* Fix issue with SST parameters #489
 
 ### Changed
 
