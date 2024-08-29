@@ -12,11 +12,20 @@ class vetoPoint;
 class FairVolume;
 class TClonesArray;
 
+/**
+ * @class Veto
+ * @brief Class representing the Veto detector.
+ *
+ * The Veto class simulates the geometry and behavior of the veto detector 
+ * within the FairShip framework. It includes methods for initializing 
+ * the detector geometry, processing hits, and handling input parameters.
+ */
+
 class veto : public FairDetector
 {
 
   public:
-    /**      Name :  Detector Name
+    /**      Name :  Veto
      *       Active: kTRUE for active detectors (ProcessHits() will be called)
      *               kFALSE for inactive detectors
      */
@@ -119,62 +128,63 @@ class veto : public FairDetector
     /** Track information to be stored until the track leaves the
     active volume.
     */
-    Int_t fTrackID;        //!  track index
-    Int_t fVolumeID;       //!  volume id
-    TLorentzVector fPos;   //!  position at entrance
-    TLorentzVector fMom;   //!  momentum at entrance
-    Float_t fTime;         //!  time
-    Float_t fLength;       //!  length
-    Float_t fELoss;        //!  energy loss
-    Float_t fT0z;          //!  z-position of veto station
-    Float_t fT1z;          //!  z-position of tracking station 1
-    Float_t fT2z;          //!  z-position of tracking station 2
-    Float_t fT3z;          //!  z-position of tracking station 3
-    Float_t fT4z;          //!  z-position of tracking station 4
-    // Int_t          fDesign;            //!  1: cylindrical with basic tracking chambers,
-    //    2: conical with basic tracking chambers, but no trscking chamber at entrance
-    //    3: cylindrical, no tracking chambers defined but sensitive walls, strawchambers separated
-    //    4: design used for TP, smaller upstream part in x
-    //    5: optimized design, changed to trapezoidal shape
-    // design version 1) Helium Balloon, 2) DV+wSBT to be added.
+    //!  track index
+    Int_t fTrackID;        
+    //!  volume id
+    Int_t fVolumeID;       
+    //!  position at entrance
+    TLorentzVector fPos;   
+    //!  momentum at entrance
+    TLorentzVector fMom;   
+    //!  time
+    Float_t fTime;         
+    //!  length
+    Float_t fLength;       
+    //!  energy loss
+    Float_t fELoss;        
+
     Bool_t fFastMuon, fFollowMuon;
-    Float_t fTub1z;
-    Float_t fTub2z;
-    Float_t fTub3z;
-    Float_t fTub4z;
-    Float_t fTub5z;
-    Float_t fTub6z;
-    Float_t fTub1length;
-    Float_t fTub2length;
-    Float_t fTub3length;
-    Float_t fTub6length;
+    
     Float_t f_InnerSupportThickness;
     Float_t f_OuterSupportThickness;
+    
+    //! Thickness of the entrance/exit lid of the Decay Volume
     Float_t f_LidThickness;
+    //! Thickness of the liquid scintillator along z(Default = 20cm).
     Float_t f_VetoThickness;
     Float_t f_RibThickness;
-    Float_t fBtube;
-    TString vetoMed_name;          //! medium of veto counter, liquid or plastic scintillator
-    TString supportMedIn_name;     //! medium of support structure, iron, balloon
-    TString supportMedOut_name;    //! medium of support structure, aluminium, balloon
-    TString decayVolumeMed_name;   //! medium of decay volume, vacuum/air/helium
-    TGeoMedium* vetoMed;           //!
-    TGeoMedium* supportMedIn;      //!
-    TGeoMedium* supportMedOut;     //!
-    TGeoMedium* decayVolumeMed;    //!
+    
+    //! medium of veto counter, liquid or plastic scintillator
+    TString vetoMed_name;          
+    //! medium of internal support structure(Default = Aluminum).
+    TString supportMedIn_name;     
+    //! medium of external support structure(Default = Aluminum).
+    TString supportMedOut_name;    
+    //! medium of decay volume(Default= helium).
+    TString decayVolumeMed_name;   
+    
 
-    Float_t fXstart, fYstart;             // horizontal/vertical width at start of tank
-    Float_t zFocusX, zFocusY;             // focus points for conical design
-    Float_t floorHeightA, floorHeightB;   // height of floor
+    TGeoMedium* vetoMed;           
+    TGeoMedium* supportMedIn;      
+    TGeoMedium* supportMedOut;     
+    TGeoMedium* decayVolumeMed;    
 
+    //! Width of the Vessel along X at the start
     Float_t VetoStartInnerX;
+    //! Length of the Vessel along Y at the start
     Float_t VetoStartInnerY;
+    //! Width of the Vessel along X at the end
     Float_t VetoEndInnerX;
+    //! Length of the Vessel along Y at the end
     Float_t VetoEndInnerY;
+
+    //! z Position of the Decay Volume start in the global coordinate system
     Float_t zStartDecayVol;
 
     Int_t fUseSupport;
+    //! Flag option for Plastic Scintillator (Default=False).
     Int_t fPlasticVeto;
+    //! Flag option for Liquid Scintillator (Default=True).
     Int_t fLiquidVeto;
     /** container for data points */
     TClonesArray* fvetoPointCollection;
@@ -182,6 +192,9 @@ class veto : public FairDetector
     veto(const veto&);
     veto& operator=(const veto&);
     Int_t InitMedium(const char* name);
+    /** Adds a solid Trapezoid of thickness (along z) wz with start cross-section dimensions of wX_start * wY_start 
+     * and end cross-section dimensions of wX_end *wY_end
+     */
     TGeoVolume* GeoTrapezoid(TString xname,
                              Double_t wz,
                              Double_t wX_start,
@@ -191,6 +204,11 @@ class veto : public FairDetector
                              Int_t color,
                              TGeoMedium* material,
                              Bool_t sens);
+    
+    /** Adds a Hollow Trapezoid of thickness (along z) wz with start cross-section dimensions of wX_start * wY_start 
+     * and end cross-section dimensions of wX_end *wY_end. The trapezoid is hollowed out to have a thickness of "thick" cm.
+     */
+    
     TGeoVolume* GeoTrapezoidHollow(TString xname,
                                    Double_t thick,
                                    Double_t wz,
@@ -202,6 +220,9 @@ class veto : public FairDetector
                                    TGeoMedium* material,
                                    Bool_t sens);
 
+    /** Adds a custom block of OuterWall+InnerWall+LiSc+Support ribs for a given distance along z.
+     * Ensures consistency in implementation throught the z.
+     */
     void AddBlock(TGeoVolumeAssembly* tInnerWall,
                   TGeoVolumeAssembly* tDecayVacuum,
                   TGeoVolumeAssembly* tOuterWall,
@@ -220,7 +241,8 @@ class veto : public FairDetector
                   double liscThick1,
                   double liscThick2,
                   double ribThick);
-
+    /**Definition of a Corner Rib Support Structure. 
+     */
     TGeoVolumeAssembly* GeoCornerRib(TString xname,
                                      double ribThick,
                                      double lt1,
@@ -231,11 +253,19 @@ class veto : public FairDetector
                                      Int_t color,
                                      TGeoMedium* material,
                                      Bool_t sens);
+    
+    /**Definition of ID for the support structure.
+     */
     int makeId(double z, double x, double y);
+    /**Detector ID implementation for the SBT
+     */
     int liscId(TString ShapeTypeName, int blockNr, int Zlayer, int number, int position);
+    //! slope along the width (x)
     double wx(double z);
+    //! slope along the length (y)
     double wy(double z);
-
+    /**Definition of a Rib Support Structure. 
+     */
     TGeoVolume* GeoSideObj(TString xname,
                            double dz,
                            double a1,
@@ -247,6 +277,8 @@ class veto : public FairDetector
                            Int_t color,
                            TGeoMedium* material,
                            Bool_t sens);
+    /**Definition of a LiSc cell (Type 1)
+     */
     TGeoVolume* GeoCornerLiSc1(TString xname,
                                double dz,
                                bool isClockwise,
@@ -259,6 +291,8 @@ class veto : public FairDetector
                                Int_t color,
                                TGeoMedium* material,
                                Bool_t sens);
+    /**Definition of a LiSc cell (Type 2)
+     */
     TGeoVolume* GeoCornerLiSc2(TString xname,
                                double dz,
                                bool isClockwise,
@@ -273,6 +307,8 @@ class veto : public FairDetector
                                Bool_t sens);
 
     TGeoVolume* MakeSegments();
+    /**Definition of LidSegments for the Decay Vessel (outdated)
+     */
     TGeoVolume* MakeLidSegments(Int_t seg, Double_t dx, Double_t dy);
 
     ClassDef(veto, 1)
