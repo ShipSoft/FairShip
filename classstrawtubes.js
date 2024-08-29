@@ -30,7 +30,7 @@ var classstrawtubes =
     [ "SetInnerStrawDiameter", "classstrawtubes.html#a487080969cb4f6762a9f12030efe664e", null ],
     [ "SetOuterStrawDiameter", "classstrawtubes.html#abccffb3ad4b2cddebeafe77f4af1e6b3", null ],
     [ "SetSpecialPhysicsCuts", "classstrawtubes.html#a27098b457bbe01dc9a93e7782496e736", null ],
-    [ "SetStereoAngle", "classstrawtubes.html#a710b2bbed710bad5d1157417adcfe28d", null ],
+    [ "SetStereoAngle", "classstrawtubes.html#abca679372a5d43d836e7ba55a8efa81e", null ],
     [ "SetStrawLength", "classstrawtubes.html#a81779e8086d0cbdbb247ca0f0b6d0281", null ],
     [ "SetStrawLength12", "classstrawtubes.html#aadf5c019dcb9643dca3a1a0dc2476c7b", null ],
     [ "SetStrawLengthVeto", "classstrawtubes.html#a6d43be6a3a4b33c40e1baf5497f493ff", null ],

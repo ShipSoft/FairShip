@@ -146,8 +146,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a071d95b99ff6ca93c9f20ad33e4843bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a66b460c8889c431dbc161708dc356636"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstrawtubes.html#a66b460c8889c431dbc161708dc356636">SetStrawsPerLayer</a> (Int_t strawsperlayer)</td></tr>
 <tr class="separator:a66b460c8889c431dbc161708dc356636"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a710b2bbed710bad5d1157417adcfe28d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstrawtubes.html#a710b2bbed710bad5d1157417adcfe28d">SetStereoAngle</a> (Int_t stereoangle)</td></tr>
-<tr class="separator:a710b2bbed710bad5d1157417adcfe28d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abca679372a5d43d836e7ba55a8efa81e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstrawtubes.html#abca679372a5d43d836e7ba55a8efa81e">SetStereoAngle</a> (Double_t stereoangle)</td></tr>
+<tr class="separator:abca679372a5d43d836e7ba55a8efa81e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abffe3638032074980d267544f339530d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstrawtubes.html#abffe3638032074980d267544f339530d">SetWireThickness</a> (Double_t wirethickness)</td></tr>
 <tr class="separator:abffe3638032074980d267544f339530d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad86bff695ece8d3022c7955749fc9409"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstrawtubes.html#ad86bff695ece8d3022c7955749fc9409">SetDeltazFrame</a> (Double_t deltazframe)</td></tr>
@@ -808,7 +808,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><a name="l00478"></a><span class="lineno">  478</span>&#160; </div>
 <div class="line"><a name="l00479"></a><span class="lineno">  479</span>&#160;      TGeoTranslation t5p;</div>
 <div class="line"><a name="l00480"></a><span class="lineno">  480</span>&#160; </div>
-<div class="line"><a name="l00481"></a><span class="lineno">  481</span>&#160;      <span class="keywordflow">for</span> (Int_t pnb=0; pnb&lt;2; pnb++) {</div>
+<div class="line"><a name="l00481"></a><span class="lineno">  481</span>&#160;      <span class="keywordflow">for</span> (Int_t pnb=0; pnb&lt;1; pnb++) {</div>
 <div class="line"><a name="l00482"></a><span class="lineno">  482</span>&#160;     <span class="comment">//plane loop</span></div>
 <div class="line"><a name="l00483"></a><span class="lineno">  483</span>&#160;         TString nmplane_veto = nmveto+<span class="stringliteral">&quot;_plane_&quot;</span>; nmplane_veto += pnb;</div>
 <div class="line"><a name="l00484"></a><span class="lineno">  484</span>&#160;     <span class="comment">//width of the planes: z distance between layers + outer straw diameter</span></div>
@@ -950,7 +950,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><a name="l00620"></a><span class="lineno">  620</span>&#160;        vac_12-&gt;AddNode(viewframe_12, statnb*10000000+vnb*1000000,h5);</div>
 <div class="line"><a name="l00621"></a><span class="lineno">  621</span>&#160;        viewframe_12-&gt;SetLineColor(kRed);</div>
 <div class="line"><a name="l00622"></a><span class="lineno">  622</span>&#160; </div>
-<div class="line"><a name="l00623"></a><span class="lineno">  623</span>&#160;        <span class="keywordflow">for</span> (Int_t pnb=0; pnb&lt;2; pnb++) {</div>
+<div class="line"><a name="l00623"></a><span class="lineno">  623</span>&#160;        <span class="keywordflow">for</span> (Int_t pnb=0; pnb&lt;1; pnb++) {</div>
 <div class="line"><a name="l00624"></a><span class="lineno">  624</span>&#160;          <span class="comment">//plane loop</span></div>
 <div class="line"><a name="l00625"></a><span class="lineno">  625</span>&#160;          TString nmplane_12 = nmview_12+<span class="stringliteral">&quot;_plane_&quot;</span>;</div>
 <div class="line"><a name="l00626"></a><span class="lineno">  626</span>&#160;          nmplane_12 += pnb;</div>
@@ -1047,7 +1047,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><a name="l00717"></a><span class="lineno">  717</span>&#160;        vac-&gt;AddNode(viewframe, statnb*10000000+vnb*1000000,h5);</div>
 <div class="line"><a name="l00718"></a><span class="lineno">  718</span>&#160;        viewframe-&gt;SetLineColor(kRed);</div>
 <div class="line"><a name="l00719"></a><span class="lineno">  719</span>&#160; </div>
-<div class="line"><a name="l00720"></a><span class="lineno">  720</span>&#160;        <span class="keywordflow">for</span> (Int_t pnb=0; pnb&lt;2; pnb++) {</div>
+<div class="line"><a name="l00720"></a><span class="lineno">  720</span>&#160;        <span class="keywordflow">for</span> (Int_t pnb=0; pnb&lt;1; pnb++) {</div>
 <div class="line"><a name="l00721"></a><span class="lineno">  721</span>&#160;          <span class="comment">//plane loop</span></div>
 <div class="line"><a name="l00722"></a><span class="lineno">  722</span>&#160;          TString nmplane = nmview+<span class="stringliteral">&quot;_plane_&quot;</span>;</div>
 <div class="line"><a name="l00723"></a><span class="lineno">  723</span>&#160;          nmplane += pnb;</div>
@@ -1861,8 +1861,8 @@ Private Attributes</h2></td></tr>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="a710b2bbed710bad5d1157417adcfe28d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a710b2bbed710bad5d1157417adcfe28d">&#9670;&nbsp;</a></span>SetStereoAngle()</h2>
+<a id="abca679372a5d43d836e7ba55a8efa81e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abca679372a5d43d836e7ba55a8efa81e">&#9670;&nbsp;</a></span>SetStereoAngle()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1870,7 +1870,7 @@ Private Attributes</h2></td></tr>
         <tr>
           <td class="memname">void strawtubes::SetStereoAngle </td>
           <td>(</td>
-          <td class="paramtype">Int_t&#160;</td>
+          <td class="paramtype">Double_t&#160;</td>
           <td class="paramname"><em>stereoangle</em></td><td>)</td>
           <td></td>
         </tr>
@@ -2194,7 +2194,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;     <a class="code" href="classstrawtubes.html#ae72e5586018649c58247fa110bcf0f66">fStraws_per_layer_veto</a>= (Int_t) (2.*<a class="code" href="classstrawtubes.html#a56f0f1ce4b201e065e507c5f0f39c212">fvetoydim</a>/<a class="code" href="classstrawtubes.html#a9dfb8b9823db27496834a3418b4fbfe9">fStraw_pitch</a>);</div>
 <div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;     <span class="comment">//std::cout&lt;&lt;&quot;fStraws_per_layer_veto &quot;&lt;&lt;fStraws_per_layer_veto&lt;&lt;&quot; fvetoydim &quot;&lt;&lt; fvetoydim&lt;&lt;std::endl;</span></div>
 <div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;}</div>
-<div class="ttc" id="anamespacegeometry__config_html_ab831d528d78936c68e21416df8581965"><div class="ttname"><a href="namespacegeometry__config.html#ab831d528d78936c68e21416df8581965">geometry_config.vetoydim</a></div><div class="ttdeci">vetoydim</div><div class="ttdef"><b>Definition:</b> <a href="geometry__config_8py_source.html#l00470">geometry_config.py:470</a></div></div>
+<div class="ttc" id="anamespacegeometry__config_html_ab831d528d78936c68e21416df8581965"><div class="ttname"><a href="namespacegeometry__config.html#ab831d528d78936c68e21416df8581965">geometry_config.vetoydim</a></div><div class="ttdeci">vetoydim</div><div class="ttdef"><b>Definition:</b> <a href="geometry__config_8py_source.html#l00472">geometry_config.py:472</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
