@@ -1,6 +1,13 @@
-// Decay Vessel(helium) + SBT
+
 // 09/07/2024
 // SBT software contact: anupama.reghunath@cern.ch
+/**
+ * @file veto.cxx
+ * @brief Implementation of the Veto detector class.
+ *
+ * This file contains the definitions for the Veto class used in the 
+ * FairShip Software. The class is responsible for simulating the Decay Vessel(helium) + integrated SBT geometry and interactions.
+ */
 
 #include "veto.h"
 
@@ -44,6 +51,12 @@ Double_t cm = 1;          // cm
 Double_t m = 100 * cm;    //  m
 Double_t mm = 0.1 * cm;   //  mm
 
+/**
+ * @brief Constructor for the Veto class.
+ * 
+ * Initializes the veto detector with the given parameters.
+ *
+ */
 veto::veto()
     : FairDetector("Veto", kTRUE, kVETO)
     , fTrackID(-1)
@@ -62,6 +75,11 @@ veto::veto()
     fLiquidVeto = 1;
 }
 
+/**
+ * @brief Destructor for the Veto class.
+ * 
+ * Cleans up any resources used by the Veto detector.
+ */
 veto::~veto()
 {
     if (fvetoPointCollection) {
@@ -946,7 +964,19 @@ Int_t veto::InitMedium(const char* name)
 }
 
 // -------------------------------------------------------------------------
-
+/**
+ * @brief Processes a hit in the veto detector.
+ *
+ * This method is called whenever a hit is registered in the veto detector.
+ * It processes the hit information and records the relevant data.
+ *
+ * @param x X-coordinate of the hit.
+ * @param y Y-coordinate of the hit.
+ * @param z Z-coordinate of the hit.
+ * @param time Time of the hit.
+ * @param energy Energy deposited by the hit.
+ * @return True if the hit was processed successfully, false otherwise.
+ */
 Bool_t veto::ProcessHits(FairVolume* vol)
 {
     /** This method is called from the MC stepping */
@@ -1038,6 +1068,13 @@ void veto::Reset()
 {
     fvetoPointCollection->Clear();
 }
+
+/**
+ * @brief Constructs the detector geometry.
+ * 
+ * This function is responsible for setting up the geometry of the DecayVolume+SBT detector.
+ * It is called during the detector's construction phase.
+ */
 
 void veto::ConstructGeometry()
 {
