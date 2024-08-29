@@ -1,6 +1,4 @@
 #!/usr/bin/env python
-from __future__ import print_function
-from __future__ import division
 import os
 import sys
 import ROOT
@@ -32,7 +30,7 @@ MCTracksWithHitsOnly   = False  # copy particles which produced a hit and their 
 MCTracksWithEnergyCutOnly = True # copy particles above a certain kin energy cut
 MCTracksWithHitsOrEnergyCut = False # or of above, factor 2 file size increase compared to MCTracksWithEnergyCutOnly
 
-charmonly    = False  # option to be set with -A to enable only charm decays, charm x-sec measurement  
+charmonly    = False  # option to be set with -A to enable only charm decays, charm x-sec measurement
 HNL          = True
 
 inputFile    = "/eos/experiment/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-978Bpot.root"
@@ -71,8 +69,7 @@ globalDesigns = {
 }
 default = '2023'
 
-inactivateMuonProcesses = False   # provisionally for making studies of various muon background sources
-inactivateMuonNuclearProcess = False #Only True for muonDIS
+inactivateMuonProcesses = False         # provisionally for making studies of various muon background sources
 
 parser = ArgumentParser()
 group = parser.add_mutually_exclusive_group()
@@ -152,6 +149,7 @@ parser.add_argument(
     const="vacuums",
     default="helium"
 )
+
 parser.add_argument("--SND", dest="SND", help="Activate SND.", action='store_true')
 parser.add_argument("--noSND", dest="SND", help="Deactivate SND. NOOP, as it currently defaults to off.", action='store_false')
 
@@ -172,7 +170,7 @@ if options.A != 'c':
      if options.A =='b': inputFile = "/eos/experiment/ship/data/Beauty/Cascade-run0-19-parp16-MSTP82-1-MSEL5-5338Bpot.root"
      if options.A.lower() == 'charmonly':
            charmonly = True
-           HNL = False 
+           HNL = False
      if options.A not in ['b','c','bc','meson','pbrem','qcd']: inclusive = True
 if options.MM:
      motherMode=options.MM
@@ -199,11 +197,11 @@ if options.testFlag:
 
 
 #sanity check
-if (HNL and options.RPVSUSY) or (HNL and options.DarkPhoton) or (options.DarkPhoton and options.RPVSUSY): 
+if (HNL and options.RPVSUSY) or (HNL and options.DarkPhoton) or (options.DarkPhoton and options.RPVSUSY):
  print("cannot have HNL and SUSY or DP at the same time, abort")
  sys.exit(2)
 
-if (simEngine == "Genie" or simEngine == "nuRadiography") and defaultInputFile: 
+if (simEngine == "Genie" or simEngine == "nuRadiography") and defaultInputFile:
   inputFile = "/eos/experiment/ship/data/GenieEvents/genie-nu_mu.root"
 if simEngine == "muonDIS" and defaultInputFile:
   print('input file required if simEngine = muonDIS')
@@ -245,12 +243,11 @@ else: tag = simEngine+"-"+mcEngine
 if charmonly: tag = simEngine+"CharmOnly-"+mcEngine
 if options.eventDisplay: tag = tag+'_D'
 if options.dv > 4 : tag = 'conical.'+tag
-elif dy: tag = str(options.dy)+'.'+tag 
 if not os.path.exists(options.outputDir):
   os.makedirs(options.outputDir)
 outFile = f"{options.outputDir}/ship.{tag}.root"
 
-# rm older files !!! 
+# rm older files !!!
 for x in os.listdir(options.outputDir):
   if not x.find(tag)<0: os.system(f"rm {options.outputDir}/{x}" )
 # Parameter file name
@@ -267,18 +264,17 @@ timer.Start()
 run = ROOT.FairRunSim()
 run.SetName(mcEngine)  # Transport engine
 run.SetSink(ROOT.FairRootFileSink(outFile))  # Output file
-run.SetUserConfig("g4Config.C") # user configuration file default g4Config.C 
-rtdb = run.GetRuntimeDb() 
+run.SetUserConfig("g4Config.C") # user configuration file default g4Config.C
+rtdb = run.GetRuntimeDb()
 # -----Create geometry----------------------------------------------
 # import shipMuShield_only as shipDet_conf # special use case for an attempt to convert active shielding geometry for use with FLUKA
 # import shipTarget_only as shipDet_conf
 import shipDet_conf
-
 modules = shipDet_conf.configure(run,ship_geo)
 # -----Create PrimaryGenerator--------------------------------------
 primGen = ROOT.FairPrimaryGenerator()
 if simEngine == "Pythia8":
- primGen.SetTarget(ship_geo.target.z0, 0.) 
+ primGen.SetTarget(ship_geo.target.z0, 0.)
 # -----Pythia8--------------------------------------
  if HNL or options.RPVSUSY:
   P8gen = ROOT.HNLPythia8Generator()
@@ -301,7 +297,7 @@ if simEngine == "Pythia8":
    pythia8_conf.configurerpvsusy(P8gen,options.theMass,[theCouplings[0],theCouplings[1]],
                                 theCouplings[2],options.RPVSUSYbench,inclusive,options.deepCopy)
   P8gen.SetParameters("ProcessLevel:all = off")
-  if inputFile: 
+  if inputFile:
    ut.checkFileExists(inputFile)
 # read from external file
    P8gen.UseExternalFile(inputFile, options.firstEvent)
@@ -314,7 +310,7 @@ if simEngine == "Pythia8":
   import pythia8darkphoton_conf
   passDPconf = pythia8darkphoton_conf.configure(P8gen,options.theMass,options.theDPepsilon,inclusive, motherMode, options.deepCopy)
   if (passDPconf!=1): sys.exit()
- if HNL or options.RPVSUSY or options.DarkPhoton: 
+ if HNL or options.RPVSUSY or options.DarkPhoton:
   P8gen.SetSmearBeam(1*u.cm) # finite beam size
   P8gen.SetLmin((ship_geo.Chamber1.z - ship_geo.chambers.Tub1length) - ship_geo.target.z0 )
   P8gen.SetLmax(ship_geo.TrackStation1.z - ship_geo.target.z0 )
@@ -322,7 +318,7 @@ if simEngine == "Pythia8":
   primGen.SetTarget(0., 0.) #vertex is set in pythia8Generator
   ut.checkFileExists(inputFile)
   if ship_geo.Box.gausbeam:
-   primGen.SetBeam(0.,0., 0.5, 0.5) #more central beam, for hits in downstream detectors    
+   primGen.SetBeam(0.,0., 0.5, 0.5) #more central beam, for hits in downstream detectors
    primGen.SmearGausVertexXY(True) #sigma = x
   else:
    primGen.SetBeam(0.,0., ship_geo.Box.TX-1., ship_geo.Box.TY-1.) #Uniform distribution in x/y on the target (0.5 cm of margin at both sides)
@@ -344,7 +340,7 @@ if simEngine == "FixedTarget":
  primGen.AddGenerator(P8gen)
 if simEngine == "Pythia6":
 # set muon interaction close to decay volume
- primGen.SetTarget(ship_geo.target.z0+ship_geo.muShield.length, 0.) 
+ primGen.SetTarget(ship_geo.target.z0+ship_geo.muShield.length, 0.)
 # -----Pythia6-------------------------
  test = ROOT.TPythia6() # don't know any other way of forcing to load lib
  P6gen = ROOT.tPythia6Generator()
@@ -367,7 +363,7 @@ if simEngine == "EvtCalc":
     )
 
 # -----Particle Gun-----------------------
-if simEngine == "PG": 
+if simEngine == "PG":
   myPgun = ROOT.FairBoxGenerator(options.pID,1)
   myPgun.SetPRange(options.Estart,options.Eend)
   myPgun.SetPhiRange(0, 360) # // Azimuth angle range [degree]
@@ -377,9 +373,8 @@ if simEngine == "PG":
 # -----muon DIS Background------------------------
 if simEngine == "muonDIS":
  ut.checkFileExists(inputFile)
- primGen.SetTarget(0., 0.) 
+ primGen.SetTarget(0., 0.)
  DISgen = ROOT.MuDISGenerator()
- 
  # from nu_tau detector to tracking station 2
  # mu_start, mu_end =  ship_geo.tauMudet.zMudetC,ship_geo.TrackStation2.z
  #
@@ -390,8 +385,6 @@ if simEngine == "muonDIS":
  DISgen.Init(inputFile,options.firstEvent)
  primGen.AddGenerator(DISgen)
  options.nEvents = min(options.nEvents,DISgen.GetNevents())
- inactivateMuonProcesses = False 
- inactivateMuonNuclearProcess = True #avoid double counting
  print('Generate ',options.nEvents,' with DIS input', ' first event',options.firstEvent)
 # -----neutrino interactions from nuage------------------------
 if simEngine == "Nuage":
@@ -410,7 +403,7 @@ if simEngine == "Nuage":
  nZcells = ntt -1
  startx = -ship_geo.NuTauTarget.xdim/2. + nXcells*ship_geo.NuTauTarget.BrX
  endx = -ship_geo.NuTauTarget.xdim/2. + (nXcells+1)*ship_geo.NuTauTarget.BrX
- starty = -ship_geo.NuTauTarget.ydim/2. + nYcells*ship_geo.NuTauTarget.BrY 
+ starty = -ship_geo.NuTauTarget.ydim/2. + nYcells*ship_geo.NuTauTarget.BrY
  endy = - ship_geo.NuTauTarget.ydim/2. + (nYcells+1)*ship_geo.NuTauTarget.BrY
  startz = ship_geo.EmuMagnet.zC - ship_geo.NuTauTarget.zdim/2. + ntt *ship_geo.NuTauTT.TTZ + nZcells * ship_geo.NuTauTarget.CellW
  endz = ship_geo.EmuMagnet.zC - ship_geo.NuTauTarget.zdim/2. + ntt *ship_geo.NuTauTT.TTZ + nZcells * ship_geo.NuTauTarget.CellW + ship_geo.NuTauTarget.BrZ
@@ -428,7 +421,7 @@ if simEngine == "Genie":
  ut.checkFileExists(inputFile)
  primGen.SetTarget(0., 0.) # do not interfere with GenieGenerator
  Geniegen = ROOT.GenieGenerator()
- Geniegen.Init(inputFile,options.firstEvent) 
+ Geniegen.Init(inputFile,options.firstEvent)
  Geniegen.SetPositions(ship_geo.target.z0, ship_geo.tauMudet.zMudetC-5*u.m, ship_geo.TrackStation2.z)
  primGen.AddGenerator(Geniegen)
  options.nEvents = min(options.nEvents,Geniegen.GetNevents())
@@ -438,7 +431,7 @@ if simEngine == "nuRadiography":
  ut.checkFileExists(inputFile)
  primGen.SetTarget(0., 0.) # do not interfere with GenieGenerator
  Geniegen = ROOT.GenieGenerator()
- Geniegen.Init(inputFile,options.firstEvent) 
+ Geniegen.Init(inputFile,options.firstEvent)
  # Geniegen.SetPositions(ship_geo.target.z0, ship_geo.target.z0, ship_geo.MuonStation3.z)
  Geniegen.SetPositions(ship_geo.target.z0, ship_geo.tauMudet.zMudetC, ship_geo.MuonStation3.z)
  Geniegen.NuOnly()
@@ -449,7 +442,7 @@ if simEngine == "nuRadiography":
  pdg.AddParticle('W','Ion', 1.71350e+02, True, 0., 74, 'XXX', 1000741840)
 #
  run.SetPythiaDecayer('DecayConfigPy8.C')
- # this requires writing a C macro, would have been easier to do directly in python! 
+ # this requires writing a C macro, would have been easier to do directly in python!
  # for i in [431,421,411,-431,-421,-411]:
  # ROOT.gMC.SetUserDecay(i) # Force the decay to be done w/external decayer
 if simEngine == "Ntuple":
@@ -463,10 +456,10 @@ if simEngine == "Ntuple":
  print('Process ',options.nEvents,' from input file')
 #
 if simEngine == "MuonBack":
-# reading muon tracks from previous Pythia8/Geant4 simulation with charm replaced by cascade production 
+# reading muon tracks from previous Pythia8/Geant4 simulation with charm replaced by cascade production
  fileType = ut.checkFileExists(inputFile)
  if fileType == 'tree':
- # 2018 background production 
+ # 2018 background production
   primGen.SetTarget(ship_geo.target.z0+70.845*u.m,0.)
  else:
   primGen.SetTarget(ship_geo.target.z0+50*u.m,0.)
@@ -486,20 +479,20 @@ if simEngine == "MuonBack":
  options.nEvents = min(options.nEvents,MuonBackgen.GetNevents())
  MCTracksWithHitsOnly = True # otherwise, output file becomes too big
  print('Process ',options.nEvents,' from input file, with Phi random=',options.phiRandom, ' with MCTracksWithHitsOnly',MCTracksWithHitsOnly)
- if options.followMuon :  
+ if options.followMuon :
     options.fastMuon = True
     modules['Veto'].SetFollowMuon()
  if options.fastMuon :    modules['Veto'].SetFastMuon()
 
  # optional, boost gamma2muon conversion
- # ROOT.kShipMuonsCrossSectionFactor = 100. 
+ # ROOT.kShipMuonsCrossSectionFactor = 100.
 #
 if simEngine == "Cosmics":
  primGen.SetTarget(0., 0.)
  Cosmicsgen = ROOT.CosmicsGenerator()
  import CMBG_conf
  CMBG_conf.configure(Cosmicsgen, ship_geo)
- if not Cosmicsgen.Init(Opt_high): 
+ if not Cosmicsgen.Init(Opt_high):
       print("initialization of cosmic background generator failed ",Opt_high)
       sys.exit(0)
  Cosmicsgen.n_EVENTS = options.nEvents
@@ -525,17 +518,17 @@ if MCTracksWithHitsOnly:
 elif MCTracksWithEnergyCutOnly:
  fStack.SetMinPoints(-1)
  fStack.SetEnergyCut(100.*u.MeV)
-elif MCTracksWithHitsOrEnergyCut: 
+elif MCTracksWithHitsOrEnergyCut:
  fStack.SetMinPoints(1)
  fStack.SetEnergyCut(100.*u.MeV)
-elif options.deepCopy: 
+elif options.deepCopy:
  fStack.SetMinPoints(0)
  fStack.SetEnergyCut(0.*u.MeV)
 
 if options.eventDisplay:
  # Set cuts for storing the trajectories, can only be done after initialization of run (?!)
   trajFilter = ROOT.FairTrajFilter.Instance()
-  trajFilter.SetStepSizeCut(1*u.mm);  
+  trajFilter.SetStepSizeCut(1*u.mm)
   trajFilter.SetVertexCut(-20*u.m, -20*u.m,ship_geo.target.z0-1*u.m, 20*u.m, 20*u.m, 200.*u.m)
   trajFilter.SetMomentumCutP(0.1*u.GeV)
   trajFilter.SetEnergyCut(0., 400.*u.GeV)
@@ -561,7 +554,7 @@ if options.debug == 1:
 #fieldMaker.plotField(1, ROOT.TVector3(-9000.0, 6000.0, 50.0), ROOT.TVector3(-300.0, 300.0, 6.0), 'Bzx.png')
 #fieldMaker.plotField(2, ROOT.TVector3(-9000.0, 6000.0, 50.0), ROOT.TVector3(-400.0, 400.0, 6.0), 'Bzy.png')
 
-if inactivateMuonProcesses :
+if inactivateMuonProcesses:
  ROOT.gROOT.ProcessLine('#include "Geant4/G4ProcessTable.hh"')
  mygMC = ROOT.TGeant4.GetMC()
  mygMC.ProcessGeantCommand("/process/inactivate muPairProd")
@@ -573,10 +566,11 @@ if inactivateMuonProcesses :
  gProcessTable = ROOT.G4ProcessTable.GetProcessTable()
  procmu = gProcessTable.FindProcess(ROOT.G4String('muIoni'),ROOT.G4String('mu+'))
  procmu.SetVerboseLevel(2)
-if inactivateMuonNuclearProcess:
-  ROOT.gROOT.ProcessLine('#include "Geant4/G4ProcessTable.hh"')
-  mygMC = ROOT.TGeant4.GetMC()
-  mygMC.ProcessGeantCommand("/process/inactivate muonNuclear")
+
+if simEngine == "muonDIS":
+    ROOT.gROOT.ProcessLine('#include "Geant4/G4ProcessTable.hh"')
+    mygMC = ROOT.TGeant4.GetMC()
+    mygMC.ProcessGeantCommand("/process/inactivate muonNuclear")
 # -----Start run----------------------------------------------------
 run.Run(options.nEvents)
 # -----Runtime database---------------------------------------------
@@ -600,7 +594,7 @@ if options.debug == 2:
  fGeo.CheckOverlaps(0.1)  # 1 micron takes 5minutes
  fGeo.PrintOverlaps()
  # check subsystems in more detail
- for x in fGeo.GetTopNode().GetNodes(): 
+ for x in fGeo.GetTopNode().GetNodes():
    x.CheckOverlaps(0.0001)
    fGeo.PrintOverlaps()
 # -----Finish-------------------------------------------------------
@@ -611,11 +605,11 @@ print(' ')
 print("Macro finished successfully.")
 if "P8gen" in globals() :
     if (HNL): print("number of retries, events without HNL ",P8gen.nrOfRetries())
-    elif (options.DarkPhoton): 
+    elif (options.DarkPhoton):
         print("number of retries, events without Dark Photons ",P8gen.nrOfRetries())
         print("total number of dark photons (including multiple meson decays per single collision) ",P8gen.nrOfDP())
 
-print("Output file is ",  outFile) 
+print("Output file is ",  outFile)
 print("Parameter file is ",parFile)
 print("Real time ",rtime, " s, CPU time ",ctime,"s")
 
@@ -637,11 +631,11 @@ if simEngine == "MuonBack":
  nEvents = 0
  pointContainers = []
  for x in sTree.GetListOfBranches():
-   name = x.GetName() 
+   name = x.GetName()
    if not name.find('Point')<0: pointContainers.append('sTree.'+name+'.GetEntries()') # makes use of convention that all sensitive detectors fill XXXPoint containers
  for n in range(t.GetEntries()):
      rc = t.GetEvent(n)
-     empty = True 
+     empty = True
      for x in pointContainers:
         if eval(x)>0: empty = False
      if not empty:
