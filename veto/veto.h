@@ -16,8 +16,8 @@ class TClonesArray;
  * @class Veto
  * @brief Class representing the Veto detector.
  *
- * The Veto class simulates the geometry and behavior of the veto detector 
- * within the FairShip framework. It includes methods for initializing 
+ * The Veto class simulates the geometry and behavior of the veto detector
+ * within the FairShip framework. It includes methods for initializing
  * the detector geometry, processing hits, and handling input parameters.
  */
 
@@ -129,45 +129,44 @@ class veto : public FairDetector
     active volume.
     */
     //!  track index
-    Int_t fTrackID;        
+    Int_t fTrackID;
     //!  volume id
-    Int_t fVolumeID;       
+    Int_t fVolumeID;
     //!  position at entrance
-    TLorentzVector fPos;   
+    TLorentzVector fPos;
     //!  momentum at entrance
-    TLorentzVector fMom;   
+    TLorentzVector fMom;
     //!  time
-    Float_t fTime;         
+    Float_t fTime;
     //!  length
-    Float_t fLength;       
+    Float_t fLength;
     //!  energy loss
-    Float_t fELoss;        
+    Float_t fELoss;
 
     Bool_t fFastMuon, fFollowMuon;
-    
+
     Float_t f_InnerSupportThickness;
     Float_t f_OuterSupportThickness;
-    
+
     //! Thickness of the entrance/exit lid of the Decay Volume
     Float_t f_LidThickness;
     //! Thickness of the liquid scintillator along z(Default = 20cm).
     Float_t f_VetoThickness;
     Float_t f_RibThickness;
-    
-    //! medium of veto counter, liquid or plastic scintillator
-    TString vetoMed_name;          
-    //! medium of internal support structure(Default = Aluminum).
-    TString supportMedIn_name;     
-    //! medium of external support structure(Default = Aluminum).
-    TString supportMedOut_name;    
-    //! medium of decay volume(Default= helium).
-    TString decayVolumeMed_name;   
-    
 
-    TGeoMedium* vetoMed;           
-    TGeoMedium* supportMedIn;      
-    TGeoMedium* supportMedOut;     
-    TGeoMedium* decayVolumeMed;    
+    //! medium of veto counter, liquid or plastic scintillator
+    TString vetoMed_name;
+    //! medium of internal support structure(Default = Aluminum).
+    TString supportMedIn_name;
+    //! medium of external support structure(Default = Aluminum).
+    TString supportMedOut_name;
+    //! medium of decay volume(Default= helium).
+    TString decayVolumeMed_name;
+
+    TGeoMedium* vetoMed;
+    TGeoMedium* supportMedIn;
+    TGeoMedium* supportMedOut;
+    TGeoMedium* decayVolumeMed;
 
     //! Width of the Vessel along X at the start
     Float_t VetoStartInnerX;
@@ -192,7 +191,7 @@ class veto : public FairDetector
     veto(const veto&);
     veto& operator=(const veto&);
     Int_t InitMedium(const char* name);
-    /** Adds a solid Trapezoid of thickness (along z) wz with start cross-section dimensions of wX_start * wY_start 
+    /** Adds a solid Trapezoid of thickness (along z) wz with start cross-section dimensions of wX_start * wY_start
      * and end cross-section dimensions of wX_end *wY_end
      */
     TGeoVolume* GeoTrapezoid(TString xname,
@@ -204,11 +203,12 @@ class veto : public FairDetector
                              Int_t color,
                              TGeoMedium* material,
                              Bool_t sens);
-    
-    /** Adds a Hollow Trapezoid of thickness (along z) wz with start cross-section dimensions of wX_start * wY_start 
-     * and end cross-section dimensions of wX_end *wY_end. The trapezoid is hollowed out to have a thickness of "thick" cm.
+
+    /** Adds a Hollow Trapezoid of thickness (along z) wz with start cross-section dimensions of wX_start * wY_start
+     * and end cross-section dimensions of wX_end *wY_end. The trapezoid is hollowed out to have a thickness of "thick"
+     * cm.
      */
-    
+
     TGeoVolume* GeoTrapezoidHollow(TString xname,
                                    Double_t thick,
                                    Double_t wz,
@@ -241,7 +241,7 @@ class veto : public FairDetector
                   double liscThick1,
                   double liscThick2,
                   double ribThick);
-    /**Definition of a Corner Rib Support Structure. 
+    /**Definition of a Corner Rib Support Structure.
      */
     TGeoVolumeAssembly* GeoCornerRib(TString xname,
                                      double ribThick,
@@ -253,7 +253,7 @@ class veto : public FairDetector
                                      Int_t color,
                                      TGeoMedium* material,
                                      Bool_t sens);
-    
+
     /**Definition of ID for the support structure.
      */
     int makeId(double z, double x, double y);
@@ -264,7 +264,7 @@ class veto : public FairDetector
     double wx(double z);
     //! slope along the length (y)
     double wy(double z);
-    /**Definition of a Rib Support Structure. 
+    /**Definition of a Rib Support Structure.
      */
     TGeoVolume* GeoSideObj(TString xname,
                            double dz,
