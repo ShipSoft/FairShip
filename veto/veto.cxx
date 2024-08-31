@@ -5,8 +5,9 @@
  * @file veto.cxx
  * @brief Implementation of the Veto detector class.
  *
- * This file contains the definitions for the Veto class used in the 
- * FairShip Software. The class is responsible for simulating the Decay Vessel(helium) + integrated SBT geometry and interactions.
+ * This file contains the definitions for the Veto class used in the
+ * FairShip Software. The class is responsible for simulating the Decay Vessel(helium) + integrated SBT geometry and
+ * interactions.
  */
 
 #include "veto.h"
@@ -53,7 +54,7 @@ Double_t mm = 0.1 * cm;   //  mm
 
 /**
  * @brief Constructor for the Veto class.
- * 
+ *
  * Initializes the veto detector with the given parameters.
  *
  */
@@ -77,7 +78,7 @@ veto::veto()
 
 /**
  * @brief Destructor for the Veto class.
- * 
+ *
  * Cleans up any resources used by the Veto detector.
  */
 veto::~veto()
@@ -1071,7 +1072,7 @@ void veto::Reset()
 
 /**
  * @brief Constructs the detector geometry.
- * 
+ *
  * This function is responsible for setting up the geometry of the DecayVolume+SBT detector.
  * It is called during the detector's construction phase.
  */
