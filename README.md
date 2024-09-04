@@ -58,9 +58,9 @@ On `lxplus` this is the recommended way to use `FairShip`. CVMFS can also be set
     ```bash
     ls /cvmfs/ship.cern.ch
     ```
-3. Source the `setUp.sh` script from the CVMFS release you want to use.
+3. Source the `setUp.sh` script from the CVMFS release you want to use (replace `$SHIP_RELEASE` with the release you want to use):
     ```bash
-    source /cvmfs/ship.cern.ch/24.06/setUp.sh
+    source /cvmfs/ship.cern.ch/$SHIP_RELEASE/setUp.sh
     ```
     Info about different releases can be found in a [dedicated repository](https://github.com/ShipSoft/cvmfs_release).
     Please report issues with particular releases or the setup script there.
@@ -110,10 +110,10 @@ Commands are similar to the previous case, but without access to CVMFS you need 
     ```
 ## Run instructions
 
-Set up the bulk of the environment from CVMFS.
+Set up the bulk of the environment from CVMFS (see the [dedicated repository](https://github.com/ShipSoft/cvmfs_release) for information about the available releases):
 
 ```bash
-source /cvmfs/ship.cern.ch/24.05.1/setUp.sh
+source /cvmfs/ship.cern.ch/$SHIP_RELEASE/setUp.sh
 ```
 
 Load your local FairShip environment.
