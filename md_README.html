@@ -123,7 +123,7 @@ Build Instructions using CVMFS</h1>
 <ol type="1">
 <li>Download the FairShip software ```bash git clone <a href="https://github.com/ShipSoft/FairShip.git">https://github.com/ShipSoft/FairShip.git</a> ```</li>
 <li>Make sure you can access the SHiP CVMFS Repository ```bash ls /cvmfs/ship.cern.ch ``<code></code></li>
-<li><code>Source the</code>setUp.sh&lt;tt&gt;script from the CVMFS release you want to use. ``bash source /cvmfs/ship.cern.ch/24.06/setUp.sh ``` Info about different releases can be found in a <a href="https://github.com/ShipSoft/cvmfs_release">dedicated repository</a>. Please report issues with particular releases or the setup script there.</li>
+<li><code>Source the</code>setUp.sh&lt;tt&gt;script from the CVMFS release you want to use (replace$SHIP_RELEASE<code>with the release you want to use): </code>``bash source /cvmfs/ship.cern.ch/$SHIP_RELEASE/setUp.sh ``` Info about different releases can be found in a <a href="https://github.com/ShipSoft/cvmfs_release">dedicated repository</a>. Please report issues with particular releases or the setup script there.</li>
 <li>Build the software using aliBuild ```bash aliBuild build FairShip &ndash;always-prefer-system &ndash;config-dir $SHIPDIST &ndash;defaults release ``<code> If you are not building</code>master`, you will need to select the appropriate default (see <a href="#branches">Branches</a>).</li>
 </ol>
 <p>If you exit your shell session and you want to go back working on it, make sure to re-execute the third step.</p>
@@ -149,8 +149,8 @@ Local build, without access to CVMFS</h1>
 </ol>
 <h1><a class="anchor" id="autotoc_md32"></a>
 Run instructions</h1>
-<p>Set up the bulk of the environment from CVMFS.</p>
-<div class="fragment"><div class="line">source /cvmfs/ship.cern.ch/24.05.1/setUp.sh</div>
+<p>Set up the bulk of the environment from CVMFS (see the <a href="https://github.com/ShipSoft/cvmfs_release">dedicated repository</a> for information about the available releases):</p>
+<div class="fragment"><div class="line">source /cvmfs/ship.cern.ch/$SHIP_RELEASE/setUp.sh</div>
 </div><!-- fragment --><p>Load your local FairShip environment.</p>
 <div class="fragment"><div class="line">alienv enter (--shellrc) FairShip/latest</div>
 </div><!-- fragment --><p>Now you can for example simulate some events, run reconstruction and analysis:</p>
