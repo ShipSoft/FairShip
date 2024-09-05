@@ -19,6 +19,7 @@ it in future.
 * Add CHANGELOG.md
 * Add `.git-blame-ignore-revs` to allow automatic reformatting etc. without polluting git blame
 * Automatically built documentation using Doxygen
+* Add CODEOWNERS file to automatically trigger reviews by the relevant experts
 
 ### Fixed
 
