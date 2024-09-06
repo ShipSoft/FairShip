@@ -59,10 +59,14 @@ if "SC_mag" not in globals():
     SC_mag = False
 if "scName" not in globals():
     scName = None
-if "decayVolumeMed" not in globals():
-    decayVolumeMed = "vacuums"
+if "DecayVolumeMedium" not in globals():
+    DecayVolumeMedium = "vacuums"
+    
 
 with ConfigRegistry.register_config("basic") as c:
+
+    c.DecayVolumeMedium = DecayVolumeMedium
+
     c.SC_mag = SC_mag
     c.scName = scName
     # global muShieldDesign, targetOpt, strawDesign, Yheight
@@ -122,26 +126,7 @@ with ConfigRegistry.register_config("basic") as c:
      c.Chamber5 = AttrDict(z=zset)
      zset=z4+30.*u.cm+windowBulge/2.
      c.Chamber6 = AttrDict(z=zset)
-     c.Veto = AttrDict(z=0*u.cm)
-     c.Veto.innerSupport = 3.*u.cm
-     c.Veto.innerSupportMed = "steel"
-     if tankDesign > 5:
-      c.Veto.outerSupport = 5.*u.mm
-      c.Veto.outerSupportMed = "steel"
-      c.Veto.lidThickness = 16.*u.mm
-     else:
-      c.Veto.outerSupport = 8.*u.mm
-      c.Veto.outerSupportMed = "Aluminum"
-      c.Veto.lidThickness = 80.*u.mm
-     c.Veto.sensitiveThickness = 0.2 * u.m
-     c.Veto.sensitiveMed = "Scintillator"
-     c.Veto.decayMed = decayVolumeMed
-     c.Veto.rib = 1.5 * u.cm
-     c.Veto.ribMed = "steel"
-     # horizontal width at start and focus point, for conical/rectangular size
-     # envelope (46,1.2) or (46,0.9) end at T4: (100.,2.5)  London slides, https://indico.cern.ch/event/508465/contributions/2166894/
-     c.zFocusX = +10*u.m # Decision taken 15/12/2016, Physics and Detector meeting
-     c.zFocusY = -5*u.m # for the moment, identical to X
+     
      c.xMax = 2 * u.m  # max horizontal width at T4
      #
      c.TrackStation4 = AttrDict(z=z4)
@@ -211,7 +196,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.TimeDet.DZ = (c.TimeDet.dzBarRow + c.TimeDet.dzBarCol + c.TimeDet.zBar) / 2
     c.TimeDet.DX = 225 * u.cm
     c.TimeDet.DY = 325 * u.cm
-    c.TimeDet.z = c.Chamber6.z + c.chambers.Tub6length + c.Veto.lidThickness + c.TimeDet.DZ + 1*u.cm # safety margin
+    c.TimeDet.z = c.Chamber6.z + c.chambers.Tub6length + c.TimeDet.DZ + 1*u.cm # safety margin
 
     if CaloDesign==0:
      c.HcalOption = 1

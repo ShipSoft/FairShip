@@ -1,8 +1,8 @@
 #include "vetoPoint.h"
 
+#include "FairLogger.h"   // for FairLogger, etc
+
 #include <iostream>
-using std::cout;
-using std::endl;
 
 // -----   Default constructor   -------------------------------------------
 vetoPoint::vetoPoint()
@@ -33,12 +33,13 @@ vetoPoint::~vetoPoint() {}
 // -------------------------------------------------------------------------
 
 // -----   Public method Print   -------------------------------------------
+
 void vetoPoint::Print() const
 {
-    cout << "-I- vetoPoint: veto point for track " << fTrackID << " in detector " << fDetectorID << endl;
-    cout << "    Position (" << fX << ", " << fY << ", " << fZ << ") cm" << endl;
-    cout << "    Momentum (" << fPx << ", " << fPy << ", " << fPz << ") GeV" << endl;
-    cout << "    Time " << fTime << " ns,  Length " << fLength << " cm,  Energy loss " << fELoss * 1.0e06 << " keV"
-         << endl;
+    LOG(INFO) << " vetoPoint: veto point for track " << fTrackID << " in detector " << fDetectorID;
+    LOG(INFO) << "    Position (" << fX << ", " << fY << ", " << fZ << ") cm";
+    LOG(INFO) << "    Momentum (" << fPx << ", " << fPy << ", " << fPz << ") GeV";
+    LOG(INFO) << "    Time " << fTime << " ns,  Length " << fLength << " cm,  Energy loss " << fELoss * 1.0e06
+              << " keV";
 }
 // -------------------------------------------------------------------------

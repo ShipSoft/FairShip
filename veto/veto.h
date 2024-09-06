@@ -307,10 +307,7 @@ class veto : public FairDetector
                                Bool_t sens);
 
     TGeoVolume* MakeSegments();
-    /**Definition of LidSegments for the Decay Vessel (outdated)
-     */
-    TGeoVolume* MakeLidSegments(Int_t seg, Double_t dx, Double_t dy);
-
+    
     ClassDef(veto, 1)
 };
 

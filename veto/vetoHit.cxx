@@ -1,21 +1,21 @@
 #include "vetoHit.h"
 
+#include "FairLogger.h"   // for FairLogger, etc
 #include "FairRun.h"
 #include "FairRunSim.h"
 #include "TGeoArb8.h"
 #include "TGeoManager.h"
+#include "TGeoPhysicalNode.h"
 #include "TMath.h"
 #include "TRandom1.h"
 #include "TRandom3.h"
 #include "TVector3.h"
 #include "veto.h"
+#include "vetoPoint.h"
 
 #include <iostream>
 #include <math.h>
-using std::cout;
-using std::endl;
 
-Double_t speedOfLight = TMath::C() * 100. / 1000000000.0;   // from m/sec to cm/ns
 // -----   Default constructor   -------------------------------------------
 vetoHit::vetoHit()
     : ShipHit()
@@ -68,10 +68,12 @@ TGeoNode* vetoHit::GetNode()
     TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
     TString path = "cave/DecayVolume_1/T2_1/VetoLiSc_0/";
     // id = ShapeType*100000 + blockNr*10000 + Zlayer*100 + number*10 + position;
+
     Int_t ShapeType = fDetectorID / 100000;
-    Int_t blockNr = (fDetectorID - ShapeType * 100000) / 10000;
-    Int_t Zlayer = (fDetectorID - ShapeType * 100000 - blockNr * 10000) / 100;
-    Int_t number = (fDetectorID - ShapeType * 100000 - blockNr * 10000 - Zlayer * 100) / 10;
+    Int_t blockNr = (fDetectorID % 100000) / 10000;
+    Int_t Zlayer = (fDetectorID % 10000) / 100;
+    Int_t number = (fDetectorID % 100) / 10;
+    // Int_t position    = (fDetectorID % 10);
 
     if (ShapeType == 1)
         path += "LiScX_";
@@ -103,8 +105,8 @@ TGeoNode* vetoHit::GetNode()
 // -----   Public method Print   -------------------------------------------
 void vetoHit::Print(Int_t detID) const
 {
-    cout << "-I- vetoHit: veto hit " << " in detector " << fDetectorID << endl;
-    cout << "  ADC " << fdigi << " ns" << endl;
+    LOG(INFO) << "vetoHit: veto hit " << " in detector " << fDetectorID;
+    LOG(INFO) << "  ADC " << fdigi << " ns";
 }
 
 // -------------------------------------------------------------------------

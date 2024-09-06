@@ -1,15 +1,15 @@
-# Configuration of Decay Vessel for FairShip 
+# Configuration of Decay Vessel for FairShip ( Naples Design)
 
 
 z: 0.0
-innerSupport: 0.8 # cm
+innerSupport: 2 # cm
 innerSupportMed: "Aluminum"
-outerSupport: 0.8 # cm
+outerSupport: 2 # cm
 outerSupportMed: "Aluminum"
 lidThickness: 0.0  # cm
 sensitiveThickness: 20  # cm
 sensitiveMed: "Scintillator"
-decayMed: "helium"
+decayMed: "vacuums" 
 rib: 1.5  # cm
 ribMed: "Aluminum"
 xstartInner : 100.0 # cm

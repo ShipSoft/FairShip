@@ -1,11 +1,9 @@
 #ifndef VETO_VETOHIT_H_
 #define VETO_VETOHIT_H_ 1
-#include "FairVolume.h"
 #include "ShipHit.h"
-#include "TGeoPhysicalNode.h"
-#include "TGeoShape.h"
-#include "TObject.h"
-#include "vetoPoint.h"
+
+class vetoPoint;
+class TGeoNode;
 
 class vetoHit : public ShipHit
 {

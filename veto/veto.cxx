@@ -45,8 +45,6 @@
 #include <iostream>
 #include <math.h>
 #include <vector>
-using std::cout;
-using std::endl;
 
 Double_t cm = 1;          // cm
 Double_t m = 100 * cm;    //  m
@@ -92,8 +90,6 @@ veto::~veto()
 void veto::Initialize()
 {
     FairDetector::Initialize();
-    //  FairRuntimeDb* rtdb= FairRun::Instance()->GetRuntimeDb();
-    //  vetoGeoPar* par=(vetoGeoPar*)(rtdb->getContainer("vetoGeoPar"));
 }
 
 TGeoVolume* veto::GeoTrapezoid(TString xname,
@@ -918,31 +914,6 @@ TGeoVolume* veto::MakeSegments()
     return tTankVol;
 }
 
-TGeoVolume* veto::MakeLidSegments(Int_t seg, Double_t dx, Double_t dy)
-{
-    // dz is the half-length, dx1 half-width x at start, dx2 half-width at end
-    TString nm;
-    nm = "T";
-    nm += seg;
-    nm += "Lid";
-    TGeoVolumeAssembly* tDecayVol = new TGeoVolumeAssembly(nm);
-    // Assume ~1 m between ribs, calculate number of ribs
-    Double_t cell_thickness_z = 0.8 * m;   // with Napoli design: 0.8 m
-    Int_t nribs = 2 + dx * 2. / cell_thickness_z;
-    Double_t ribspacing = (dx * 2. - nribs * f_InnerSupportThickness) / (nribs - 1) + f_InnerSupportThickness;
-
-    Double_t hwidth = 15. * cm;            // half-width of a H-bar
-    Double_t ribwidth = f_VetoThickness;   //( but should become it owns indepent dimension )
-
-    // place lid
-    TGeoVolume* T1Lid =
-        gGeoManager->MakeBox("T1Lidbox", supportMedOut, dx + f_InnerSupportThickness / 2, dy, f_LidThickness / 2.);
-    T1Lid->SetLineColor(18);
-    tDecayVol->AddNode(T1Lid, 1, new TGeoTranslation(0, 0, 0));
-
-    return tDecayVol;
-}
-
 // -----   Private method InitMedium
 Int_t veto::InitMedium(const char* name)
 {
@@ -1002,7 +973,6 @@ Bool_t veto::ProcessHits(FairVolume* vol)
 
         Int_t veto_uniqueId;
         gMC->CurrentVolID(veto_uniqueId);
-
         TParticle* p = gMC->GetStack()->GetCurrentTrack();
         Int_t pdgCode = p->GetPdgCode();
         TLorentzVector pos;
@@ -1096,8 +1066,8 @@ void veto::ConstructGeometry()
 
     TGeoVolume* tDecayVol = new TGeoVolumeAssembly("DecayVolume");
 
-    TGeoVolume* seg2 = MakeSegments();
-    tDecayVol->AddNode(seg2, 1, new TGeoTranslation(0, 0, 0));
+    TGeoVolume* seg = MakeSegments();
+    tDecayVol->AddNode(seg, 1, new TGeoTranslation(0, 0, 0));
     top->AddNode(tDecayVol, 1, new TGeoTranslation(0, 0, zStartDecayVol));   //));
 
     // only for fastMuon simulation, otherwise output becomes too big
@@ -1115,7 +1085,7 @@ void veto::ConstructGeometry()
             if (strstr(classname, Vol)) {
                 if (strstr(volumename, Cavern) || strstr(volumename, Ain) || strstr(volumename, Aout)) {
                     AddSensitiveVolume(gGeoManager->GetVolume(volumename));
-                    cout << "veto: made sensitive for following muons: " << volumename << endl;
+                    LOG(INFO) << "veto: made sensitive for following muons: " << volumename;
                 }
             }
             volumeiterator++;
