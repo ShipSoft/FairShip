@@ -2,15 +2,14 @@
 #define vetoHIT_H 1
 #include "FairVolume.h"
 #include "ShipHit.h"
-#include "vetoPoint.h"
-#include "TObject.h"
-#include "TGeoShape.h"
 #include "TGeoPhysicalNode.h"
+#include "TGeoShape.h"
+#include "TObject.h"
+#include "vetoPoint.h"
 
 class vetoHit : public ShipHit
 {
   public:
-
     /** Default constructor **/
     vetoHit();
 
@@ -30,18 +29,19 @@ class vetoHit : public ShipHit
     TVector3 GetXYZ();
     TGeoNode* GetNode();
     /** Modifier **/
-    void SetEloss(Double_t val){fdigi=val;}
-    void SetTDC(Double_t val){ft=val;}
+    void SetEloss(Double_t val) { fdigi = val; }
+    void SetTDC(Double_t val) { ft = val; }
 
     /** Output to screen **/
 
     virtual void Print(Int_t detID) const;
-    Float_t GetADC() const {return fdigi;}
-    Float_t GetTDC() const {return ft;}
-    Double_t GetEloss() {return fdigi;}
-    void setInvalid() {flag = false;}
-    void setIsValid() {flag = true;}
-    bool isValid() const {return flag;}
+    Float_t GetADC() const { return fdigi; }
+    Float_t GetTDC() const { return ft; }
+    Double_t GetEloss() { return fdigi; }
+    void setInvalid() { flag = false; }
+    void setIsValid() { flag = true; }
+    bool isValid() const { return flag; }
+
   private:
     Double_t ft;
     vetoHit(const vetoHit& point);
@@ -49,8 +49,7 @@ class vetoHit : public ShipHit
 
     Float_t flag;   ///< flag
 
-    ClassDef(vetoHit,1);
-
+    ClassDef(vetoHit, 1);
 };
 
 #endif

@@ -9,11 +9,12 @@ class vetoContFact : public FairContFact
 {
   private:
     void setAllContainers();
+
   public:
     vetoContFact();
     ~vetoContFact() {}
     FairParSet* createContainer(FairContainer*);
-    ClassDef( vetoContFact,0) // Factory for all veto parameter containers
+    ClassDef(vetoContFact, 0)   // Factory for all veto parameter containers
 };
 
 #endif
