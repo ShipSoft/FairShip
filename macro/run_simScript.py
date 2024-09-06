@@ -219,7 +219,7 @@ if options.charm == 0: ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geom
                                                 muShieldDesign = options.ds, nuTauTargetDesign=options.nud, CaloDesign=options.caloDesign, \
                                                 strawDesign=options.strawDesign, muShieldGeo=options.geofile,
                                                 muShieldStepGeo=options.muShieldStepGeo, muShieldWithCobaltMagnet=options.muShieldWithCobaltMagnet,
-                                                SC_mag=options.SC_mag, scName=options.scName, decayVolumeMed=options.helium)
+                                                SC_mag=options.SC_mag, scName=options.scName, DecayVolumeMedium =options.helium)
 else:
  ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/charm-geometry_config.py", Setup = options.CharmdetSetup, cTarget = options.CharmTarget)
  if options.CharmdetSetup == 0: print("Setup for muon flux measurement has been set")

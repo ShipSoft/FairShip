@@ -125,6 +125,8 @@ def configure_veto(yaml_file):
 
 def configure(run, ship_geo):
     # ---- for backward compatibility ----
+    if not hasattr(ship_geo, "DecayVolumeMedium"):
+        ship_geo.DecayVolumeMedium == "vacuums"
     if not hasattr(ship_geo, "tankDesign"):
         ship_geo.tankDesign = 5
     if not hasattr(ship_geo, "muShieldGeo"):
@@ -301,9 +303,14 @@ def configure(run, ship_geo):
 
     fairship = ROOT.gSystem.Getenv("FAIRSHIP")
 
-    configure_veto(
-        fairship + "/geometry/veto_config.yaml"
-    )  # put conditions for the design
+    if ship_geo.DecayVolumeMedium == "helium":
+        configure_veto(
+            fairship + "/geometry/veto_config_helium.yaml"
+        )  # put conditions for the design
+    if ship_geo.DecayVolumeMedium == "vacuums":
+        configure_veto(
+            fairship + "/geometry/veto_config_vacuums.yaml"
+        )  # put conditions for the design
 
     if hasattr(ship_geo, "tauMudet"):  # don't support old designs
         if ship_geo.muShieldDesign >= 7 and hasattr(ship_geo.tauMudet, "Xtot"):
