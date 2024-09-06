@@ -70,7 +70,6 @@ veto::veto()
     , fFollowMuon(kFALSE)
 {
     fUseSupport = 1;
-    fPlasticVeto = 0;   // no longer supported
     fLiquidVeto = 1;
 }
 
@@ -331,7 +330,7 @@ TGeoVolume* veto::GeoCornerLiSc2(TString xname,
 
     TGeoVolume* T = new TGeoVolume(xname, T1, material);
     T->SetLineColor(color);
-    // and make the volumes sensitive..
+    // and make the volumes sensitive.
     if (sens) {
         AddSensitiveVolume(T);
     }
