@@ -36,7 +36,7 @@ vetoPoint::~vetoPoint() {}
 
 void vetoPoint::Print() const
 {
-    LOG(INFO) << " vetoPoint: veto point for track " << fTrackID << " in detector " << fDetectorID;
+    LOG(INFO) << "    vetoPoint: veto point for track " << fTrackID << " in detector " << fDetectorID;
     LOG(INFO) << "    Position (" << fX << ", " << fY << ", " << fZ << ") cm";
     LOG(INFO) << "    Momentum (" << fPx << ", " << fPy << ", " << fPz << ") GeV";
     LOG(INFO) << "    Time " << fTime << " ns,  Length " << fLength << " cm,  Energy loss " << fELoss * 1.0e06

@@ -118,9 +118,6 @@ class veto : public FairDetector
     inline void SetUseSupport(Int_t use = 1) { fUseSupport = use; }
     inline Int_t GetUseSupport() const { return fUseSupport; }
 
-    inline void SetPlasticVeto(Int_t plastic = 1) { fPlasticVeto = plastic; }
-    inline Int_t GetPlasticVeto() const { return fPlasticVeto; }
-
     inline void SetLiquidVeto(Int_t liquid = 1) { fLiquidVeto = liquid; }
     inline Int_t GetLiquidVeto() const { return fLiquidVeto; }
 
@@ -181,8 +178,6 @@ class veto : public FairDetector
     Float_t zStartDecayVol;
 
     Int_t fUseSupport;
-    //! Flag option for Plastic Scintillator (Default=False).
-    Int_t fPlasticVeto;
     //! Flag option for Liquid Scintillator (Default=True).
     Int_t fLiquidVeto;
     /** container for data points */
@@ -307,7 +302,7 @@ class veto : public FairDetector
                                Bool_t sens);
 
     TGeoVolume* MakeSegments();
-    
+
     ClassDef(veto, 1)
 };
 

@@ -105,8 +105,8 @@ def configure_veto(yaml_file):
         veto_geo.yendInner,
         veto_geo.z0,
     )
+
     Veto.SetLiquidVeto(1)
-    Veto.SetPlasticVeto(1)
 
     Veto.SetVesselStructure(
         veto_geo.innerSupport,
