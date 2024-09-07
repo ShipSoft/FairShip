@@ -12,11 +12,12 @@
 #include "TGeoEltu.h"
 #include "TVectorD.h"
 #include "TGeoCompositeShape.h"
+#include "FairLogger.h"   // for FairLogger, etc
 
-using std::cout;
-using std::endl;
+
 
 const Double_t c_light = 29.9792458;//speed of light in cm/ns
+const Double_t muon_mass = 0.10565999895334244;  //muon mass in GeV
 
 // MuDIS momentum GeV
 // Vertex in SI units, assume this means m
@@ -56,16 +57,7 @@ Bool_t MuDISGenerator::Init(const char* fileName, const int firstEvent) {
         return kFALSE;
     }
 
-    // Print all branches of the TTree
-    //fTree->Print();
-
-    // Print out available branches
-    //TObjArray* branches = fTree->GetListOfBranches();
-    //for (Int_t i = 0; i < branches->GetEntries(); i++) {
-        //TBranch* branch = (TBranch*)branches->At(i);
-        //cout << "Branch name: " << branch->GetName() << ", Class name: " << branch->GetClassName() << endl;
-    //}
-
+    
     fNevents = fTree->GetEntries();
     fn = firstEvent;
 
@@ -74,7 +66,7 @@ Bool_t MuDISGenerator::Init(const char* fileName, const int firstEvent) {
     fTree->SetBranchAddress("DISParticles", &dPart);
     fTree->SetBranchAddress("SoftParticles", &dPartSoft); // Soft interaction particles
 
-    cout << "MuDISGenerator: Initialization successful." << endl;
+    LOG(INFO) << "MuDISGenerator: Initialization successful.";
     return kTRUE;
 }
 
@@ -243,14 +235,14 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg)
     fTree->GetEntry(fn%fNevents);
     fn++;
     if (fn%10==0) {
-      cout << "Info MuDISGenerator: MuDIS event-nr "<< fn << endl;
+      LOG(INFO) << "Info MuDISGenerator: MuDIS event-nr "<< fn;
     }
     
 
     int nf = dPart->GetEntries();
     int ns = dPartSoft->GetEntries(); 
-    //cout << "*********************************************************" << endl;
-    //cout << "muon DIS Generator debug " << iMuon->GetEntries()<< " "<< iMuon->AddrAt(0) << " nf "<< nf << " fn=" << fn <<endl; 
+    //LOG(DEBUG) << "*********************************************************" ;
+    //LOG(DEBUG) << "muon DIS Generator debug " << iMuon->GetEntries()<< " "<< iMuon->AddrAt(0) << " nf "<< nf << " fn=" << fn; 
 
     //some start/end positions in z (f.i. emulsion to Tracker 1)
     Double_t start[3]={0.,0.,startZ};
@@ -258,7 +250,7 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg)
 
 // incoming muon  array('d',[pid,px,py,pz,E,x,y,z,w,t])
     TVectorD* mu = dynamic_cast<TVectorD*>(iMuon->AddrAt(0));
-    //cout << "muon DIS Generator in muon " << int(mu[0][0])<< endl; 
+    //LOG(DEBUG) << "muon DIS Generator in muon " << int(mu[0][0]); 
     Double_t x = mu[0][5]*100.; // come in m -> cm
     Double_t y = mu[0][6]*100.; // come in m -> cm
     Double_t z = mu[0][7]*100.; // come in m -> cm
@@ -273,11 +265,11 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg)
     start[1]=y-(z-start[2])*tymu;
     end[0]=x-(z-end[2])*txmu;
     end[1]=y-(z-end[2])*tymu;
-    //cout << "MuDIS: mu xyz position " << x << ", " << y << ", " << z << endl;
-    //cout << "MuDIS: mu pxyz position " << mu[0][1] << ", " << mu[0][2] << ", " << mu[0][3] << endl;
-    //cout << "MuDIS: mu weight " << w << endl;
-    //cout << "MuDIS: start position " << start[0] << ", " << start[1] << ", " << start[2] << endl;
-    //cout << "MuDIS: end position " << end[0] << ", " << end[1] << ", " << end[2] << endl;
+    //LOG(INFO) << "MuDIS: mu xyz position " << x << ", " << y << ", " << z;
+    //LOG(INFO) << "MuDIS: mu pxyz position " << mu[0][1] << ", " << mu[0][2] << ", " << mu[0][3];
+    //LOG(INFO) << "MuDIS: mu weight " << w;
+    //LOG(INFO) << "MuDIS: start position " << start[0] << ", " << start[1] << ", " << start[2];
+    //LOG(INFO) << "MuDIS: end position " << end[0] << ", " << end[1] << ", " << end[2];
     Double_t bparam;
     Double_t mparam[8];
     bparam=MeanMaterialBudget(start, end, mparam);
@@ -287,8 +279,8 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg)
     Double_t ymu;
     Double_t zmu;
     Int_t count=0;
-    //cout << "Info MuDISGenerator Start prob2int while loop, bparam= " << bparam << ", " << bparam*1.e8 <<endl;
-    //cout << "Info MuDISGenerator What was maximum density, mparam[7]= " << mparam[7] << ", " << mparam[7]*1.e8 <<endl;
+    //LOG(INFO) << "Info MuDISGenerator Start prob2int while loop, bparam= " << bparam << ", " << bparam*1.e8 ;
+    //LOG(INFO) << "Info MuDISGenerator What was maximum density, mparam[7]= " << mparam[7] << ", " << mparam[7]*1.e8;
     
 
     while (prob2int<gRandom->Uniform(0.,1.)) {
@@ -299,36 +291,34 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg)
       TGeoNode *node = gGeoManager->FindNode(xmu,ymu,zmu);
       TGeoMaterial *mat = 0;
       if (node && !gGeoManager->IsOutside()) mat = node->GetVolume()->GetMaterial();
-      //cout << "Info MuDISGenerator: mat " <<  count << ", " << mat->GetName() << ", " << mat->GetDensity() << endl;
+      //LOG(DEBUG) << "Info MuDISGenerator: mat " <<  count << ", " << mat->GetName() << ", " << mat->GetDensity();
       //density relative to Prob largest density along this trajectory, i.e. use rho(Pt)
       prob2int= mat->GetDensity()/mparam[7];
-      if (prob2int>1.) cout << "***WARNING*** MuDISGenerator: prob2int > Maximum density????" << prob2int << " maxrho:" << mparam[7] << " material: " <<  mat->GetName() << endl;
+      if (prob2int>1.) LOG(WARNING) << "***WARNING*** MuDISGenerator: prob2int > Maximum density????" << prob2int << " maxrho:" << mparam[7] << " material: " <<  mat->GetName();
       count+=1;
     }
-    //cout << "Info MuDISGenerator: prob2int " << prob2int << ", " << count << endl;
+    
+    //LOG(DEBUG) << "Info MuDISGenerator: prob2int " << prob2int << ", " << count;
+    //LOG(DEBUG) << "MuDIS: put position " << xmu << ", " << ymu << ", " << zmu ;
 
-    //cout << "MuDIS: put position " << xmu << ", " << ymu << ", " << zmu << endl;
-
-    double total_mom = TMath::Sqrt(TMath::Power(mu[0][1], 2) +
+    Double_t total_mom = TMath::Sqrt(TMath::Power(mu[0][1], 2) +
                                   TMath::Power(mu[0][2], 2) +
                                   TMath::Power(mu[0][3], 2));    //in GeV
 
-    double distance = TMath::Sqrt(TMath::Power(x - xmu, 2) +
+    Double_t distance = TMath::Sqrt(TMath::Power(x - xmu, 2) +
                                   TMath::Power(y - ymu, 2) +
                                   TMath::Power(z - zmu, 2));    // in cm
 
-    
-    double mass = 0.10565999895334244;  //muon mass in GeV
-    double v    = c_light*total_mom/TMath::Sqrt(TMath::Power(total_mom,2)+
-                                                TMath::Power(mass,2));
-    double t_rmu=distance/v;
+    Double_t v    = c_light*total_mom/TMath::Sqrt(TMath::Power(total_mom,2)+
+                                                TMath::Power(muon_mass,2));
+    Double_t t_rmu=distance/v;
 
     // Adjust time based on the relative positions
     if (zmu < z) {
         t_rmu = -t_rmu;
     }
 
-    double t_DIS=(t_muon+t_rmu)/1e9; //time taken in seconds to reach [xmu,ymu,zmu]
+    Double_t t_DIS=(t_muon+t_rmu)/1e9; //time taken in seconds to reach [xmu,ymu,zmu]
     
     cpg->AddTrack(int(mu[0][0]),mu[0][1],mu[0][2],mu[0][3],xmu,ymu,zmu,-1,false,mu[0][4],t_DIS,w);//set time of the track start as t_muon from the input file
 
@@ -338,13 +328,11 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg)
     for(int i=0; i<nf; i++)
     	{
          TVectorD* Part = dynamic_cast<TVectorD*>(dPart->AddrAt(i));
-         //cout << "muon DIS Generator out part " << int(Part[0][0]) << endl; 
-         //cout << "muon DIS Generator out part mom " << Part[0][1]<<" " << Part[0][2] <<" " << Part[0][3] << " " << Part[0][4] << endl; 
-         //cout << "muon DIS Generator out part pos " << mu[0][5]<<" " << mu[0][6] <<" " << mu[0][7] << endl; 
-         //cout << "muon DIS Generator out part w " << mu[0][8] << endl; 
-         cpg->AddTrack(int(Part[0][0]),Part[0][1],Part[0][2],Part[0][3],xmu,ymu,zmu,0,true,Part[0][4],t_DIS,w); //it takes times in seconds.
-         //cout << "muon DIS part added "<<endl;
-       }
+         //LOG(DEBUG)<< "muon DIS Generator out part " << int(Part[0][0]); 
+         //LOG(DEBUG) << "muon DIS Generator out part mom " << Part[0][1]<<" " << Part[0][2] <<" " << Part[0][3] << " " << Part[0][4]; 
+         //LOG(DEBUG) << "muon DIS Generator out part pos " << mu[0][5]<<" " << mu[0][6] <<" " << mu[0][7]; 
+         //LOG(DEBUG) << "muon DIS Generator out part w " << mu[0][8] ; 
+         cpg->AddTrack(int(Part[0][0]),Part[0][1],Part[0][2],Part[0][3],xmu,ymu,zmu,0,true,Part[0][4],t_DIS,w);        }
     
     //Soft interaction tracks
     
@@ -354,7 +342,7 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg)
         if ( SoftPart[0][7] > zmu ) { //if the softinteractions are after the DIS point, don't save the soft interaction.
           continue;
         }
-        double t_soft=SoftPart[0][8]/1e9;
+        Double_t t_soft=SoftPart[0][8]/1e9;//time in seconds
         cpg->AddTrack(int(SoftPart[0][0]), SoftPart[0][1], SoftPart[0][2], SoftPart[0][3], SoftPart[0][5], SoftPart[0][6], SoftPart[0][7], 0, true, SoftPart[0][4], t_soft, w);
 
     }
