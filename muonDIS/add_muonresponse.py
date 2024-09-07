@@ -6,9 +6,12 @@ import logging
 import os
 
 import ROOT as r
+<<<<<<< HEAD
 from tabulate import tabulate
 
 logging.basicConfig(level=logging.DEBUG)
+=======
+>>>>>>> 7747b728 (Added MuonDIS directory for updated scripts)
 
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument(
@@ -24,6 +27,7 @@ parser.add_argument(
     help="Muon file used for DIS production (muonDis_<>.root)",
 )
 args = parser.parse_args()
+<<<<<<< HEAD
 headers = [
     "Event",
     "Muon vetoPoints Available",
@@ -97,10 +101,62 @@ def modify_file(inputfile, muonfile):
 
     temp_filename = inputfile.replace(".root", ".tmp")
     temp_file = r.TFile.Open(temp_filename, "recreate")
+=======
+
+
+def read_file():
+    """Inspecting the produced file for successfully added muon veto points."""
+    inputFile = r.TFile.Open(args.inputfile, "READ")
+    input_tree = inputFile.cbmsim
+    input_tree.GetEntry(0)
+
+    muons = False
+    for hit in input_tree.vetoPoint:
+        if hit.GetTrackID() == 0:
+            muons = True
+    inputFile.Close()
+
+    if muons:
+        print("File is already updated with incoming muon info. Nothing to do.")
+        return False
+    else:
+        print(
+            "Incoming muon's vetopoint info missing in file, proceeding with modification"
+        )
+        return True
+
+
+def modify_file():
+    """Modify the input file with muon info."""
+    if args.inputfile[0:4] == "/eos":
+        args.inputfile = os.environ["EOSSHIP"] + args.inputfile
+
+    logging.warning(f"{args.inputfile} opened for modification")
+
+    inputFile = r.TFile.Open(args.inputfile, "UPDATE")
+    try:
+        input_tree = inputFile.cbmsim
+    except Exception as e:
+        print(f"Error: {e}")
+        inputFile.Close()
+        exit(1)
+
+    # Open the external file with additional vetoPoints
+    muonFile = r.TFile.Open(args.muonfile, "READ")
+    try:
+        muon_tree = muonFile.DIS
+    except Exception as e:
+        print(f"Error: {e}")
+        muonFile.Close()
+        exit(1)
+
+    inputFile.cd()
+>>>>>>> 7747b728 (Added MuonDIS directory for updated scripts)
     output_tree = input_tree.CloneTree(
         0
     )  # Clone the structure of the existing tree, but do not copy the entries
 
+<<<<<<< HEAD
     combined_vetoPoint = r.TClonesArray("vetoPoint")
 
     output_tree.SetBranchAddress("vetoPoint", combined_vetoPoint)
@@ -161,3 +217,50 @@ if not muons_found:
 else:
     print("File is already updated with incoming muon info. Nothing to do.")
     muons_found = inspect_file(args.inputfile, args.muonfile, print_table=True)
+=======
+    # Access the vetoPoint branch in the original and external trees
+    originalVetoPoints = r.TClonesArray("vetoPoint")
+    muonVetoPoints = r.TClonesArray("vetoPoint")
+    combinedVetoPoints = r.TClonesArray("vetoPoint")
+
+    input_tree.SetBranchAddress("vetoPoint", originalVetoPoints)
+    muon_tree.SetBranchAddress("muon_vetoPoints", muonVetoPoints)
+    output_tree.SetBranchAddress("vetoPoint", combinedVetoPoints)
+
+    for input_event, muon_event in zip(input_tree, muon_tree):
+        interaction_point = r.TVector3()
+        input_event.MCTrack[0].GetStartVertex(interaction_point)
+
+        combinedVetoPoints.Clear()
+
+        index = 0
+
+        for hit in originalVetoPoints:
+            if combinedVetoPoints.GetSize() == index:
+                combinedVetoPoints.Expand(index + 1)
+            combinedVetoPoints[index] = hit
+            index += 1
+
+        for hit in muonVetoPoints:
+            if hit.GetZ() < interaction_point.Z():
+                if combinedVetoPoints.GetSize() == index:
+                    combinedVetoPoints.Expand(index + 1)
+                combinedVetoPoints[index] = hit
+                index += 1
+
+        output_tree.Fill()
+
+    # Write the updated tree back to the same file
+    inputFile.cd()
+    output_tree.Write("cbmsim", r.TObject.kOverwrite)
+    inputFile.Close()
+    muonFile.Close()
+
+    print(f"File updated with incoming muon info as {args.inputfile}")
+
+
+add_muons = read_file()
+
+if add_muons:
+    modify_file()
+>>>>>>> 7747b728 (Added MuonDIS directory for updated scripts)

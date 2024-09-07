@@ -1,13 +1,21 @@
 #!/usr/bin/env python
+<<<<<<< HEAD
 """Script to generate DIS events for muons in Pythia6, and save them to a ROOT file (along with the original muon's soft interactions)."""
 
 import argparse
 import logging
 import os
+=======
+"""Script to generate DIS events for muons in Pythia6, and sve to a ROOT file (along with the original muon's soft interactions)."""
+
+import argparse
+import logging
+>>>>>>> 7747b728 (Added MuonDIS directory for updated scripts)
 import time
 from array import array
 
 import ROOT as r
+<<<<<<< HEAD
 from tabulate import tabulate
 
 logging.basicConfig(level=logging.INFO)
@@ -47,6 +55,11 @@ parser.add_argument(
 args = parser.parse_args()
 n_events = args.n_events
 first_mu_event = args.first_mu_event
+=======
+
+logging.basicConfig(level=logging.INFO)
+PDG = r.TDatabasePDG.Instance()
+>>>>>>> 7747b728 (Added MuonDIS directory for updated scripts)
 
 
 def rotate(px, py, pz, theta, phi):
@@ -63,6 +76,7 @@ def rotate(px, py, pz, theta, phi):
     return rotated_momentum.X(), rotated_momentum.Y(), rotated_momentum.Z()
 
 
+<<<<<<< HEAD
 def update_file(filename, final_xsec):
     """Update the DIS cross section of the muon to the converged value from Pythia."""
     file = r.TFile.Open(filename, "read")
@@ -125,6 +139,31 @@ def inspect_file(filename):
 def makeMuonDIS():
     """Generate DIS events."""
     final_xsec = {}
+=======
+def makeMuonDIS():
+    """Generate DIS events."""
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("-f", "--inputFile", help="Input file to use", required=True)
+    parser.add_argument(
+        "-nJob", "--nJob", type=int, help="Process ID, gives muon index", required=True
+    )
+    parser.add_argument(
+        "-nPerJobs",
+        "--nPerJobs",
+        type=int,
+        help="The number of muons per file",
+        required=True,
+    )
+    parser.add_argument(
+        "-nDISPerMuon",
+        "--nDIS",
+        type=int,
+        help="Number of DIS per muon to generate",
+        required=True,
+    )
+
+    args = parser.parse_args()
+>>>>>>> 7747b728 (Added MuonDIS directory for updated scripts)
 
     logging.info(f"Opening input file: {args.inputFile}")
     muonFile = r.TFile.Open(args.inputFile, "read")
@@ -132,6 +171,7 @@ def makeMuonDIS():
     try:
         muon_tree = muonFile.MuonAndSoftInteractions
     except Exception as e:
+<<<<<<< HEAD
         logging.error(e)
         muonFile.Close()
         exit(1)
@@ -142,6 +182,20 @@ def makeMuonDIS():
     logging.info("Creating output file: muonDis.root")
 
     outputFile = r.TFile.Open("muonDis.root", "recreate")
+=======
+        print(f"Error: {e}")
+        muonFile.Close()
+        exit(1)
+
+    nPerJob = args.nPerJobs  # number of muons handled by the python script
+    nStart = args.nPerJobs * args.nJob
+    logging.debug(f"Total entries in the tree: {muon_tree.GetEntries()}")
+    nEnd = min(muon_tree.GetEntries(), nStart + nPerJob)
+
+    logging.info(f"Creating output file: muonDis_{args.nJob}.root")
+
+    outputFile = r.TFile.Open(f"muonDis_{args.nJob}.root", "recreate")
+>>>>>>> 7747b728 (Added MuonDIS directory for updated scripts)
     output_tree = r.TTree("DIS", "muon DIS")
 
     iMuon = r.TClonesArray("TVectorD")
@@ -168,6 +222,7 @@ def makeMuonDIS():
     mutype = {-13: "gamma/mu+", 13: "gamma/mu-"}
 
     myPythia.SetMSTU(11, 11)
+<<<<<<< HEAD
     logging.info(
         f"Processing muon events from {first_mu_event} to {last_mu_event - 1}..."
     )
@@ -178,6 +233,13 @@ def makeMuonDIS():
         DIS_table = []  # debug
         cross_sections = []
 
+=======
+    logging.info(f"Processing events from {nStart} to {nEnd-1}...")
+
+    nMade = 0
+
+    for k in range(nStart, nEnd):
+>>>>>>> 7747b728 (Added MuonDIS directory for updated scripts)
         muon_tree.GetEvent(k)
 
         imuondata = muon_tree.imuondata
@@ -191,7 +253,10 @@ def makeMuonDIS():
         z = imuondata[6]
         w = imuondata[7]
         time_muon = imuondata[8]
+<<<<<<< HEAD
         nmuons = imuondata[9]  # number of muons in the original MuBack event
+=======
+>>>>>>> 7747b728 (Added MuonDIS directory for updated scripts)
 
         p = r.TMath.Sqrt(px**2 + py**2 + pz**2)
         mass = PDG.GetParticle(abs(int(pid))).Mass()
@@ -200,6 +265,7 @@ def makeMuonDIS():
         theta = r.TMath.ACos(pz / p)
         phi = r.TMath.ATan2(py, px)
 
+<<<<<<< HEAD
         isProton = 1
         xsec = 0
 
@@ -223,6 +289,17 @@ def makeMuonDIS():
             ],
         )
         muPart = r.TVectorD(14, mu)
+=======
+        logging.debug(
+            f"\n\tMuon index:{k} \n\tPID = {pid}, weight = {w} \n\tpx = {px}, py = {py}, pz = {pz}, E = {E},\n\tx = {x}, y = {y}, z = {z}\n"
+        )
+
+        isProton = 1
+        xsec = 0
+
+        mu = array("d", [pid, px, py, pz, E, x, y, z, w, isProton, xsec, time_muon])
+        muPart = r.TVectorD(12, mu)
+>>>>>>> 7747b728 (Added MuonDIS directory for updated scripts)
         myPythia.Initialize("FIXT", mutype[pid], "p+", p)  # target = "p+"
         myPythia.Pylist(1)
 
@@ -230,7 +307,11 @@ def makeMuonDIS():
             if a == args.nDIS // 2:
                 myPythia.Initialize("FIXT", mutype[pid], "n0", p)  # target = "n0"
                 isProton = 0
+<<<<<<< HEAD
                 # logging.debug("Switching to neutron interaction")
+=======
+                logging.debug("Switching to neutron interaction")
+>>>>>>> 7747b728 (Added MuonDIS directory for updated scripts)
 
             dPartDIS.Clear()
             iMuon.Clear()
@@ -238,10 +319,19 @@ def makeMuonDIS():
             iMuon[0] = muPart
             myPythia.GenerateEvent()
             myPythia.Pyedit(1)
+<<<<<<< HEAD
 
             for itrk in range(1, myPythia.GetN() + 1):
                 xsec = myPythia.GetPARI(1)
 
+=======
+            logging.debug(
+                f"DIS Event {a} generated, number of particles: {myPythia.GetN()}"
+            )
+
+            for itrk in range(1, myPythia.GetN() + 1):
+                xsec = myPythia.GetPARI(1)
+>>>>>>> 7747b728 (Added MuonDIS directory for updated scripts)
                 muPart[10] = xsec
                 did = myPythia.GetK(itrk, 2)
                 dpx, dpy, dpz = rotate(
@@ -261,8 +351,14 @@ def makeMuonDIS():
                     dPartDIS.Expand(nPart + 10)
                 # dPartDIS.ConstructedAt(nPart).Use(part) #to be adapted later
                 dPartDIS[nPart] = part
+<<<<<<< HEAD
 
             cross_sections.append(xsec)
+=======
+                if itrk == 1:
+                    with open(f"sigmadata_{args.nJob}.txt", "a") as fcross:
+                        fcross.write(f"{xsec}\n")
+>>>>>>> 7747b728 (Added MuonDIS directory for updated scripts)
 
             dPartSoft.Clear()
 
@@ -301,6 +397,7 @@ def makeMuonDIS():
                 index += 1
 
             output_tree.Fill()
+<<<<<<< HEAD
             DIS_table.append(
                 [
                     a,
@@ -318,6 +415,11 @@ def makeMuonDIS():
         logging.debug(
             f"\nMuon index:{k} \n\tPID = {pid}, weight = {w}, converged_cross_section= {final_xsec[k]}\n\tpx = {px}, py = {py}, pz = {pz}, E = {E},\n\tx = {x}, y = {y}, z = {z}\n\n\tDIS Events Summary\n{tabulate(DIS_table, headers=headers, tablefmt='grid')}"
         )
+=======
+
+        nMade += 1
+
+>>>>>>> 7747b728 (Added MuonDIS directory for updated scripts)
         if nMade % 10 == 0:
             logging.info(f"Muons processed: {nMade}")
 
@@ -325,14 +427,22 @@ def makeMuonDIS():
     output_tree.Write()
     myPythia.SetMSTU(11, 6)
     logging.info(
+<<<<<<< HEAD
         f"DIS generated for muons (index {first_mu_event} - {last_mu_event - 1}) , output saved in muonDis.root, nDISPerMuon = {args.nDIS}"
     )
     outputFile.Close()
     muonFile.Close()
 
     update_file("muonDis.root", final_xsec)
+=======
+        f"DIS generated for muons (index {nStart} - {nEnd-1}) , output saved in muonDis_{args.nJob}.root, nDISPerMuon = {args.nDIS}"
+    )
+>>>>>>> 7747b728 (Added MuonDIS directory for updated scripts)
 
 
 if __name__ == "__main__":
     makeMuonDIS()
+<<<<<<< HEAD
     inspect_file("muonDis.root")
+=======
+>>>>>>> 7747b728 (Added MuonDIS directory for updated scripts)

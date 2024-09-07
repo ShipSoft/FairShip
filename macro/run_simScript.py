@@ -69,8 +69,6 @@ globalDesigns = {
 }
 default = '2023'
 
-inactivateMuonProcesses = False         # provisionally for making studies of various muon background sources
-
 parser = ArgumentParser()
 group = parser.add_mutually_exclusive_group()
 parser.add_argument("--evtcalc", help="Use EventCalc", action="store_true")
@@ -560,23 +558,6 @@ if options.debug == 1:
 #fieldMaker.plotField(1, ROOT.TVector3(-9000.0, 6000.0, 50.0), ROOT.TVector3(-300.0, 300.0, 6.0), 'Bzx.png')
 #fieldMaker.plotField(2, ROOT.TVector3(-9000.0, 6000.0, 50.0), ROOT.TVector3(-400.0, 400.0, 6.0), 'Bzy.png')
 
-if inactivateMuonProcesses:
- ROOT.gROOT.ProcessLine('#include "Geant4/G4ProcessTable.hh"')
- mygMC = ROOT.TGeant4.GetMC()
- mygMC.ProcessGeantCommand("/process/inactivate muPairProd")
- mygMC.ProcessGeantCommand("/process/inactivate muBrems")
- mygMC.ProcessGeantCommand("/process/inactivate muIoni")
- mygMC.ProcessGeantCommand("/process/inactivate muonNuclear")
- mygMC.ProcessGeantCommand("/particle/select mu+")
- mygMC.ProcessGeantCommand("/particle/process/dump")
- gProcessTable = ROOT.G4ProcessTable.GetProcessTable()
- procmu = gProcessTable.FindProcess(ROOT.G4String('muIoni'),ROOT.G4String('mu+'))
- procmu.SetVerboseLevel(2)
-
-if simEngine == "muonDIS":
-    ROOT.gROOT.ProcessLine('#include "Geant4/G4ProcessTable.hh"')
-    mygMC = ROOT.TGeant4.GetMC()
-    mygMC.ProcessGeantCommand("/process/inactivate muonNuclear")
 # -----Start run----------------------------------------------------
 run.Run(options.nEvents)
 # -----Runtime database---------------------------------------------
