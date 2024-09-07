@@ -49,6 +49,10 @@ class MuDISGenerator : public FairGenerator
   int fNevents;
   int fn;
   bool fFirst;
+
+  const Double_t c_light = 29.9792458;//speed of light in cm/ns
+  const Double_t muon_mass = 0.10565999895334244;  //muon mass in GeV
+  
   ClassDef(MuDISGenerator,1);
 };
 #endif /* !PNDMuGENERATOR_H */
