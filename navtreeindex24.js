@@ -1,5 +1,6 @@
 var NAVTREEINDEX24 =
 {
+"classshipVertex_1_1Task.html#a45f7a32ea5e1ad1b8c4e02130dfb7042":[12,0,20,0,16],
 "classshipVertex_1_1Task.html#a48d187d13d4cb29622188a83429e0432":[12,0,20,0,12],
 "classshipVertex_1_1Task.html#a4f1b14fe67cab5c3c664b3ad116a5c6b":[12,0,20,0,10],
 "classshipVertex_1_1Task.html#a5d42d79fcc4adca8ce45513a32c16f99":[12,0,20,0,9],
@@ -248,6 +249,5 @@ var NAVTREEINDEX24 =
 "classsplitcalHit.html#abe304d56f02bea395e3adfcd5c56bc03":[12,0,140,30],
 "classsplitcalHit.html#ac82a3dd9456afd583bfcd665f789eb7c":[12,0,140,8],
 "classsplitcalHit.html#ac9f22b41e463e376f44a1e5aeb9767dc":[12,0,140,16],
-"classsplitcalHit.html#ad0779012f3d0c5e77ab439b6d2ac5c10":[12,0,140,43],
-"classsplitcalHit.html#ad2eccfbaf0f939a59cbca3233f624cfb":[12,0,140,23]
+"classsplitcalHit.html#ad0779012f3d0c5e77ab439b6d2ac5c10":[12,0,140,43]
 };

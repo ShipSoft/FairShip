@@ -47,7 +47,7 @@ var searchData=
   ['add_5fparticles_150',['add_particles',['../namespacepythia8__conf__utils.html#a360e1819533bcfdd8e337c98df19a9d6',1,'pythia8_conf_utils']]],
   ['add_5ftau_5fchannel_151',['add_tau_channel',['../namespacepythia8__conf__utils.html#a35c83a11f5ef4bb2e6396dcc1547b450',1,'pythia8_conf_utils']]],
   ['addallhistograms_152',['addAllHistograms',['../namespacecompactingBackgroundProduction.html#abe9ddc306e97f44a166a1536ad2b829a',1,'compactingBackgroundProduction']]],
-  ['addblock_153',['AddBlock',['../classveto.html#ab362a8a3c4be9f92387e6dafd06b5c5c',1,'veto']]],
+  ['addblock_153',['AddBlock',['../classveto.html#a8933d77df311eb11a42831beaf55be70',1,'veto']]],
   ['addbox_154',['AddBox',['../classGenieGenerator.html#abb3327135face79d630176d066548e4a',1,'GenieGenerator::AddBox()'],['../classNuageGenerator.html#a6a06480a1778077ebf9bf2b9bc92e001',1,'NuageGenerator::AddBox()']]],
   ['addchannelstopythia_155',['AddChannelsToPythia',['../classrpvsusy_1_1RPVSUSYbranchings.html#a804efde28f19a668823141ea77211d69',1,'rpvsusy::RPVSUSYbranchings']]],
   ['addclusterindex_156',['AddClusterIndex',['../classsplitcalHit.html#a9be8f4f0b3eca549277920c0a34c667c',1,'splitcalHit']]],

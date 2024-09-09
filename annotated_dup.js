@@ -274,6 +274,7 @@ var annotated_dup =
     [ "UpstreamTaggerHit", "classUpstreamTaggerHit.html", "classUpstreamTaggerHit" ],
     [ "UpstreamTaggerPoint", "classUpstreamTaggerPoint.html", "classUpstreamTaggerPoint" ],
     [ "veto", "classveto.html", "classveto" ],
+    [ "Veto", "classVeto.html", null ],
     [ "vetoContFact", "classvetoContFact.html", "classvetoContFact" ],
     [ "vetoHit", "classvetoHit.html", "classvetoHit" ],
     [ "vetoHitOnTrack", "classvetoHitOnTrack.html", "classvetoHitOnTrack" ],

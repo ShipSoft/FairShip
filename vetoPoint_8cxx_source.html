@@ -87,48 +87,52 @@ $(document).ready(function(){initNavTree('vetoPoint_8cxx_source.html',''); initR
 <div class="contents">
 <a href="vetoPoint_8cxx.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="vetoPoint_8h.html">vetoPoint.h</a>&quot;</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keyword">using</span> std::cout;</div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="keyword">using</span> std::endl;</div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &quot;FairLogger.h&quot;</span>   <span class="comment">// for FairLogger, etc</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160; </div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">// -----   Default constructor   -------------------------------------------</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno"><a class="line" href="classvetoPoint.html#aead4d18523559cd3e9cd89454f10572d">    9</a></span>&#160;<a class="code" href="classvetoPoint.html#aead4d18523559cd3e9cd89454f10572d">vetoPoint::vetoPoint</a>()</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;  : FairMCPoint()</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;{</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;}</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment">// -------------------------------------------------------------------------</span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment">// -----   Standard constructor   ------------------------------------------</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno"><a class="line" href="classvetoPoint.html#a51fb946eb0e7a376c7f5badb1af1bf40">   16</a></span>&#160;<a class="code" href="classvetoPoint.html#aead4d18523559cd3e9cd89454f10572d">vetoPoint::vetoPoint</a>(Int_t trackID, Int_t detID,</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;                                   TVector3 <a class="code" href="namespacerun__simPgun.html#ac57e22275cd6a7bdb768a9d30320595e">pos</a>, TVector3 <a class="code" href="namespacerun__simPgun.html#a6e3b169e244bda1369fd9edbcd52ea01">mom</a>,</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;                                   Double_t tof, Double_t <a class="code" href="namespacecharm-geometry__config.html#a6ccac261591ffdaca3ebe2296286994f">length</a>,</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;                                   Double_t eLoss, Int_t pdgcode,TVector3 Lpos, TVector3 Lmom)</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;  : FairMCPoint(trackID, detID, <a class="code" href="namespacerun__simPgun.html#ac57e22275cd6a7bdb768a9d30320595e">pos</a>, <a class="code" href="namespacerun__simPgun.html#a6e3b169e244bda1369fd9edbcd52ea01">mom</a>, tof, <a class="code" href="namespacecharm-geometry__config.html#a6ccac261591ffdaca3ebe2296286994f">length</a>, eLoss), fPdgCode(pdgcode),fLpos(Lpos),fLmom(Lmom)</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;{</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;}</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">// -------------------------------------------------------------------------</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="comment">// -----   Destructor   ----------------------------------------------------</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno"><a class="line" href="classvetoPoint.html#a4abdca1559abee7eee8ad7449b7bb427">   26</a></span>&#160;<a class="code" href="classvetoPoint.html#a4abdca1559abee7eee8ad7449b7bb427">vetoPoint::~vetoPoint</a>() { }</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="comment">// -------------------------------------------------------------------------</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="comment">// -----   Public method Print   -------------------------------------------</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="classvetoPoint.html#ac4c21c458a2e847665588fad13d6a18f">   30</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classvetoPoint.html#ac4c21c458a2e847665588fad13d6a18f">vetoPoint::Print</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  cout &lt;&lt; <span class="stringliteral">&quot;-I- vetoPoint: veto point for track &quot;</span> &lt;&lt; fTrackID</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;       &lt;&lt; <span class="stringliteral">&quot; in detector &quot;</span> &lt;&lt; fDetectorID &lt;&lt; endl;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  cout &lt;&lt; <span class="stringliteral">&quot;    Position (&quot;</span> &lt;&lt; fX &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; fY &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; fZ</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;       &lt;&lt; <span class="stringliteral">&quot;) cm&quot;</span> &lt;&lt; endl;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  cout &lt;&lt; <span class="stringliteral">&quot;    Momentum (&quot;</span> &lt;&lt; fPx &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; fPy &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; fPz</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;       &lt;&lt; <span class="stringliteral">&quot;) GeV&quot;</span> &lt;&lt; endl;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  cout &lt;&lt; <span class="stringliteral">&quot;    Time &quot;</span> &lt;&lt; fTime &lt;&lt; <span class="stringliteral">&quot; ns,  Length &quot;</span> &lt;&lt; fLength</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;       &lt;&lt; <span class="stringliteral">&quot; cm,  Energy loss &quot;</span> &lt;&lt; fELoss*1.0e06 &lt;&lt; <span class="stringliteral">&quot; keV&quot;</span> &lt;&lt; endl;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;}</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="comment">// -------------------------------------------------------------------------</span></div>
-<div class="ttc" id="aclassvetoPoint_html_a4abdca1559abee7eee8ad7449b7bb427"><div class="ttname"><a href="classvetoPoint.html#a4abdca1559abee7eee8ad7449b7bb427">vetoPoint::~vetoPoint</a></div><div class="ttdeci">virtual ~vetoPoint()</div><div class="ttdef"><b>Definition:</b> <a href="vetoPoint_8cxx_source.html#l00026">vetoPoint.cxx:26</a></div></div>
-<div class="ttc" id="aclassvetoPoint_html_ac4c21c458a2e847665588fad13d6a18f"><div class="ttname"><a href="classvetoPoint.html#ac4c21c458a2e847665588fad13d6a18f">vetoPoint::Print</a></div><div class="ttdeci">virtual void Print() const</div><div class="ttdef"><b>Definition:</b> <a href="vetoPoint_8cxx_source.html#l00030">vetoPoint.cxx:30</a></div></div>
-<div class="ttc" id="aclassvetoPoint_html_aead4d18523559cd3e9cd89454f10572d"><div class="ttname"><a href="classvetoPoint.html#aead4d18523559cd3e9cd89454f10572d">vetoPoint::vetoPoint</a></div><div class="ttdeci">vetoPoint()</div><div class="ttdef"><b>Definition:</b> <a href="vetoPoint_8cxx_source.html#l00009">vetoPoint.cxx:9</a></div></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// -----   Default constructor   -------------------------------------------</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno"><a class="line" href="classvetoPoint.html#aead4d18523559cd3e9cd89454f10572d">    8</a></span>&#160;<a class="code" href="classvetoPoint.html#aead4d18523559cd3e9cd89454f10572d">vetoPoint::vetoPoint</a>()</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    : FairMCPoint()</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;{}</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment">// -------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment">// -----   Standard constructor   ------------------------------------------</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="classvetoPoint.html#a51fb946eb0e7a376c7f5badb1af1bf40">   14</a></span>&#160;<a class="code" href="classvetoPoint.html#aead4d18523559cd3e9cd89454f10572d">vetoPoint::vetoPoint</a>(Int_t trackID,</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;                     Int_t detID,</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;                     TVector3 <a class="code" href="namespacerun__simPgun.html#ac57e22275cd6a7bdb768a9d30320595e">pos</a>,</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;                     TVector3 <a class="code" href="namespacerun__simPgun.html#a6e3b169e244bda1369fd9edbcd52ea01">mom</a>,</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;                     Double_t tof,</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;                     Double_t <a class="code" href="namespacecharm-geometry__config.html#a6ccac261591ffdaca3ebe2296286994f">length</a>,</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;                     Double_t eLoss,</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;                     Int_t pdgcode,</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;                     TVector3 Lpos,</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;                     TVector3 Lmom)</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    : FairMCPoint(trackID, detID, <a class="code" href="namespacerun__simPgun.html#ac57e22275cd6a7bdb768a9d30320595e">pos</a>, <a class="code" href="namespacerun__simPgun.html#a6e3b169e244bda1369fd9edbcd52ea01">mom</a>, tof, <a class="code" href="namespacecharm-geometry__config.html#a6ccac261591ffdaca3ebe2296286994f">length</a>, eLoss)</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    , fPdgCode(pdgcode)</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    , fLpos(Lpos)</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    , fLmom(Lmom)</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;{}</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="comment">// -------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="comment">// -----   Destructor   ----------------------------------------------------</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="classvetoPoint.html#a4abdca1559abee7eee8ad7449b7bb427">   32</a></span>&#160;<a class="code" href="classvetoPoint.html#a4abdca1559abee7eee8ad7449b7bb427">vetoPoint::~vetoPoint</a>() {}</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment">// -------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="comment">// -----   Public method Print   -------------------------------------------</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
+<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="classvetoPoint.html#ac4c21c458a2e847665588fad13d6a18f">   37</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classvetoPoint.html#ac4c21c458a2e847665588fad13d6a18f">vetoPoint::Print</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    LOG(INFO) &lt;&lt; <span class="stringliteral">&quot;    vetoPoint: veto point for track &quot;</span> &lt;&lt; fTrackID &lt;&lt; <span class="stringliteral">&quot; in detector &quot;</span> &lt;&lt; fDetectorID;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    LOG(INFO) &lt;&lt; <span class="stringliteral">&quot;    Position (&quot;</span> &lt;&lt; fX &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; fY &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; fZ &lt;&lt; <span class="stringliteral">&quot;) cm&quot;</span>;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    LOG(INFO) &lt;&lt; <span class="stringliteral">&quot;    Momentum (&quot;</span> &lt;&lt; fPx &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; fPy &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; fPz &lt;&lt; <span class="stringliteral">&quot;) GeV&quot;</span>;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    LOG(INFO) &lt;&lt; <span class="stringliteral">&quot;    Time &quot;</span> &lt;&lt; fTime &lt;&lt; <span class="stringliteral">&quot; ns,  Length &quot;</span> &lt;&lt; fLength &lt;&lt; <span class="stringliteral">&quot; cm,  Energy loss &quot;</span> &lt;&lt; fELoss * 1.0e06</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;              &lt;&lt; <span class="stringliteral">&quot; keV&quot;</span>;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;}</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="comment">// -------------------------------------------------------------------------</span></div>
+<div class="ttc" id="aclassvetoPoint_html_a4abdca1559abee7eee8ad7449b7bb427"><div class="ttname"><a href="classvetoPoint.html#a4abdca1559abee7eee8ad7449b7bb427">vetoPoint::~vetoPoint</a></div><div class="ttdeci">virtual ~vetoPoint()</div><div class="ttdef"><b>Definition:</b> <a href="vetoPoint_8cxx_source.html#l00032">vetoPoint.cxx:32</a></div></div>
+<div class="ttc" id="aclassvetoPoint_html_ac4c21c458a2e847665588fad13d6a18f"><div class="ttname"><a href="classvetoPoint.html#ac4c21c458a2e847665588fad13d6a18f">vetoPoint::Print</a></div><div class="ttdeci">virtual void Print() const</div><div class="ttdef"><b>Definition:</b> <a href="vetoPoint_8cxx_source.html#l00037">vetoPoint.cxx:37</a></div></div>
+<div class="ttc" id="aclassvetoPoint_html_aead4d18523559cd3e9cd89454f10572d"><div class="ttname"><a href="classvetoPoint.html#aead4d18523559cd3e9cd89454f10572d">vetoPoint::vetoPoint</a></div><div class="ttdeci">vetoPoint()</div><div class="ttdef"><b>Definition:</b> <a href="vetoPoint_8cxx_source.html#l00008">vetoPoint.cxx:8</a></div></div>
 <div class="ttc" id="anamespacecharm-geometry__config_html_a6ccac261591ffdaca3ebe2296286994f"><div class="ttname"><a href="namespacecharm-geometry__config.html#a6ccac261591ffdaca3ebe2296286994f">charm-geometry_config.length</a></div><div class="ttdeci">length</div><div class="ttdef"><b>Definition:</b> <a href="charm-geometry__config_8py_source.html#l00112">charm-geometry_config.py:112</a></div></div>
 <div class="ttc" id="anamespacerun__simPgun_html_a6e3b169e244bda1369fd9edbcd52ea01"><div class="ttname"><a href="namespacerun__simPgun.html#a6e3b169e244bda1369fd9edbcd52ea01">run_simPgun.mom</a></div><div class="ttdeci">mom</div><div class="ttdef"><b>Definition:</b> <a href="run__simPgun_8py_source.html#l00083">run_simPgun.py:83</a></div></div>
 <div class="ttc" id="anamespacerun__simPgun_html_ac57e22275cd6a7bdb768a9d30320595e"><div class="ttname"><a href="namespacerun__simPgun.html#ac57e22275cd6a7bdb768a9d30320595e">run_simPgun.pos</a></div><div class="ttdeci">pos</div><div class="ttdef"><b>Definition:</b> <a href="run__simPgun_8py_source.html#l00084">run_simPgun.py:84</a></div></div>

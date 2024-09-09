@@ -82,180 +82,119 @@ $(document).ready(function(){initNavTree('veto_8cxx.html',''); initResizable(); 
 
 <div class="header">
   <div class="summary">
-<a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">veto.cxx File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Implementation of the <a class="el" href="classVeto.html" title="Class representing the Veto detector.">Veto</a> detector class.  
+<a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="veto_8h_source.html">veto.h</a>&quot;</code><br />
-<code>#include &lt;math.h&gt;</code><br />
-<code>#include &quot;<a class="el" href="vetoPoint_8h_source.html">vetoPoint.h</a>&quot;</code><br />
-<code>#include &quot;FairLogger.h&quot;</code><br />
-<code>#include &quot;FairVolume.h&quot;</code><br />
-<code>#include &quot;FairGeoVolume.h&quot;</code><br />
-<code>#include &quot;FairGeoNode.h&quot;</code><br />
-<code>#include &quot;FairRootManager.h&quot;</code><br />
-<code>#include &quot;FairGeoLoader.h&quot;</code><br />
-<code>#include &quot;FairGeoInterface.h&quot;</code><br />
-<code>#include &quot;FairGeoMedia.h&quot;</code><br />
 <code>#include &quot;FairGeoBuilder.h&quot;</code><br />
+<code>#include &quot;FairGeoInterface.h&quot;</code><br />
+<code>#include &quot;FairGeoLoader.h&quot;</code><br />
+<code>#include &quot;FairGeoMedia.h&quot;</code><br />
+<code>#include &quot;FairGeoNode.h&quot;</code><br />
+<code>#include &quot;FairGeoVolume.h&quot;</code><br />
+<code>#include &quot;FairLogger.h&quot;</code><br />
+<code>#include &quot;FairRootManager.h&quot;</code><br />
 <code>#include &quot;FairRun.h&quot;</code><br />
 <code>#include &quot;FairRuntimeDb.h&quot;</code><br />
+<code>#include &quot;FairVolume.h&quot;</code><br />
 <code>#include &quot;<a class="el" href="ShipDetectorList_8h_source.html">ShipDetectorList.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="ShipStack_8h_source.html">ShipStack.h</a>&quot;</code><br />
 <code>#include &quot;TClonesArray.h&quot;</code><br />
-<code>#include &quot;TVirtualMC.h&quot;</code><br />
-<code>#include &quot;TGeoManager.h&quot;</code><br />
+<code>#include &quot;TGeoArb8.h&quot;</code><br />
 <code>#include &quot;TGeoBBox.h&quot;</code><br />
-<code>#include &quot;TGeoEltu.h&quot;</code><br />
-<code>#include &quot;TGeoSphere.h&quot;</code><br />
 <code>#include &quot;TGeoBoolNode.h&quot;</code><br />
 <code>#include &quot;TGeoCompositeShape.h&quot;</code><br />
-<code>#include &quot;TGeoShapeAssembly.h&quot;</code><br />
-<code>#include &quot;TGeoTube.h&quot;</code><br />
-<code>#include &quot;TGeoArb8.h&quot;</code><br />
 <code>#include &quot;TGeoCone.h&quot;</code><br />
+<code>#include &quot;TGeoEltu.h&quot;</code><br />
+<code>#include &quot;TGeoManager.h&quot;</code><br />
 <code>#include &quot;TGeoMaterial.h&quot;</code><br />
-<code>#include &quot;TParticle.h&quot;</code><br />
+<code>#include &quot;TGeoShapeAssembly.h&quot;</code><br />
+<code>#include &quot;TGeoSphere.h&quot;</code><br />
+<code>#include &quot;TGeoTube.h&quot;</code><br />
 <code>#include &quot;TMath.h&quot;</code><br />
+<code>#include &quot;TParticle.h&quot;</code><br />
+<code>#include &quot;TVirtualMC.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="vetoPoint_8h_source.html">vetoPoint.h</a>&quot;</code><br />
 <code>#include &lt;iostream&gt;</code><br />
+<code>#include &lt;math.h&gt;</code><br />
 <code>#include &lt;vector&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for veto.cxx:</div>
 <div class="dyncontent">
 <div class="center"><img src="veto_8cxx__incl.png" border="0" usemap="#aveto_2veto_8cxx" alt=""/></div>
 <map name="aveto_2veto_8cxx" id="aveto_2veto_8cxx">
-<area shape="rect" title=" " alt="" coords="2823,5,2933,32"/>
-<area shape="rect" href="veto_8h.html" title=" " alt="" coords="607,80,669,107"/>
-<area shape="rect" title=" " alt="" coords="1129,80,1197,107"/>
-<area shape="rect" href="vetoPoint_8h.html" title=" " alt="" coords="183,80,279,107"/>
-<area shape="rect" title=" " alt="" coords="1221,80,1321,107"/>
-<area shape="rect" title=" " alt="" coords="1346,80,1453,107"/>
-<area shape="rect" title=" " alt="" coords="1477,80,1609,107"/>
-<area shape="rect" title=" " alt="" coords="1634,80,1751,107"/>
-<area shape="rect" title=" " alt="" coords="1775,80,1917,107"/>
-<area shape="rect" title=" " alt="" coords="1941,80,2068,107"/>
-<area shape="rect" title=" " alt="" coords="2093,80,2234,107"/>
-<area shape="rect" title=" " alt="" coords="2258,80,2381,107"/>
-<area shape="rect" title=" " alt="" coords="2405,80,2533,107"/>
-<area shape="rect" title=" " alt="" coords="2557,80,2639,107"/>
-<area shape="rect" title=" " alt="" coords="2663,80,2794,107"/>
-<area shape="rect" href="ShipDetectorList_8h.html" title=" " alt="" coords="870,155,1011,181"/>
-<area shape="rect" href="ShipStack_8h.html" title=" " alt="" coords="1006,80,1105,107"/>
-<area shape="rect" title=" " alt="" coords="2819,80,2937,107"/>
-<area shape="rect" title=" " alt="" coords="2962,80,3069,107"/>
-<area shape="rect" title=" " alt="" coords="3093,80,3217,107"/>
-<area shape="rect" title=" " alt="" coords="3241,80,3344,107"/>
-<area shape="rect" title=" " alt="" coords="3369,80,3462,107"/>
-<area shape="rect" title=" " alt="" coords="3487,80,3600,107"/>
-<area shape="rect" title=" " alt="" coords="3625,80,3755,107"/>
-<area shape="rect" title=" " alt="" coords="3779,80,3958,107"/>
-<area shape="rect" title=" " alt="" coords="3982,80,4153,107"/>
-<area shape="rect" title=" " alt="" coords="4177,80,4275,107"/>
-<area shape="rect" title=" " alt="" coords="4299,80,4398,107"/>
-<area shape="rect" title=" " alt="" coords="4422,80,4523,107"/>
-<area shape="rect" title=" " alt="" coords="4547,80,4670,107"/>
-<area shape="rect" title=" " alt="" coords="4694,80,4785,107"/>
-<area shape="rect" title=" " alt="" coords="4809,80,4883,107"/>
-<area shape="rect" title=" " alt="" coords="4907,80,4987,107"/>
-<area shape="rect" title=" " alt="" coords="5012,80,5075,107"/>
-<area shape="rect" title=" " alt="" coords="363,155,475,181"/>
-<area shape="rect" title=" " alt="" coords="249,155,339,181"/>
-<area shape="rect" title=" " alt="" coords="499,155,630,181"/>
-<area shape="rect" title=" " alt="" coords="654,155,771,181"/>
-<area shape="rect" title=" " alt="" coords="795,155,846,181"/>
-<area shape="rect" title=" " alt="" coords="113,155,224,181"/>
-<area shape="rect" title=" " alt="" coords="5,155,89,181"/>
-<area shape="rect" title=" " alt="" coords="1120,155,1263,181"/>
-<area shape="rect" title=" " alt="" coords="1287,155,1365,181"/>
-<area shape="rect" title=" " alt="" coords="1389,155,1503,181"/>
-<area shape="rect" title=" " alt="" coords="1527,155,1584,181"/>
-<area shape="rect" title=" " alt="" coords="1036,155,1096,181"/>
+<area shape="rect" title="Implementation of the Veto detector class." alt="" coords="2865,5,2975,32"/>
+<area shape="rect" href="veto_8h.html" title=" " alt="" coords="385,80,447,107"/>
+<area shape="rect" title=" " alt="" coords="1129,80,1257,107"/>
+<area shape="rect" title=" " alt="" coords="1281,80,1423,107"/>
+<area shape="rect" title=" " alt="" coords="1447,80,1574,107"/>
+<area shape="rect" title=" " alt="" coords="1599,80,1721,107"/>
+<area shape="rect" title=" " alt="" coords="1745,80,1863,107"/>
+<area shape="rect" title=" " alt="" coords="1887,80,2019,107"/>
+<area shape="rect" title=" " alt="" coords="2043,80,2143,107"/>
+<area shape="rect" title=" " alt="" coords="2167,80,2310,107"/>
+<area shape="rect" title=" " alt="" coords="2335,80,2417,107"/>
+<area shape="rect" title=" " alt="" coords="2441,80,2572,107"/>
+<area shape="rect" title=" " alt="" coords="2596,80,2703,107"/>
+<area shape="rect" href="ShipDetectorList_8h.html" title=" " alt="" coords="871,155,1012,181"/>
+<area shape="rect" href="ShipStack_8h.html" title=" " alt="" coords="1007,80,1105,107"/>
+<area shape="rect" title=" " alt="" coords="2727,80,2846,107"/>
+<area shape="rect" title=" " alt="" coords="2871,80,2969,107"/>
+<area shape="rect" title=" " alt="" coords="2994,80,3097,107"/>
+<area shape="rect" title=" " alt="" coords="3121,80,3252,107"/>
+<area shape="rect" title=" " alt="" coords="3276,80,3455,107"/>
+<area shape="rect" title=" " alt="" coords="3479,80,3580,107"/>
+<area shape="rect" title=" " alt="" coords="3604,80,3697,107"/>
+<area shape="rect" title=" " alt="" coords="3722,80,3846,107"/>
+<area shape="rect" title=" " alt="" coords="3871,80,3993,107"/>
+<area shape="rect" title=" " alt="" coords="4017,80,4188,107"/>
+<area shape="rect" title=" " alt="" coords="4213,80,4326,107"/>
+<area shape="rect" title=" " alt="" coords="4351,80,4449,107"/>
+<area shape="rect" title=" " alt="" coords="4473,80,4548,107"/>
+<area shape="rect" title=" " alt="" coords="4572,80,4663,107"/>
+<area shape="rect" title=" " alt="" coords="4687,80,4793,107"/>
+<area shape="rect" href="vetoPoint_8h.html" title=" " alt="" coords="681,80,777,107"/>
+<area shape="rect" title=" " alt="" coords="4817,80,4897,107"/>
+<area shape="rect" title=" " alt="" coords="4922,80,4990,107"/>
+<area shape="rect" title=" " alt="" coords="5014,80,5077,107"/>
+<area shape="rect" title=" " alt="" coords="5,155,117,181"/>
+<area shape="rect" title=" " alt="" coords="141,155,259,181"/>
+<area shape="rect" title=" " alt="" coords="283,155,413,181"/>
+<area shape="rect" title=" " alt="" coords="437,155,528,181"/>
+<area shape="rect" title=" " alt="" coords="552,155,603,181"/>
+<area shape="rect" title=" " alt="" coords="1121,155,1263,181"/>
+<area shape="rect" title=" " alt="" coords="1287,155,1366,181"/>
+<area shape="rect" title=" " alt="" coords="1390,155,1503,181"/>
+<area shape="rect" title=" " alt="" coords="1527,155,1585,181"/>
+<area shape="rect" title=" " alt="" coords="1037,155,1097,181"/>
+<area shape="rect" title=" " alt="" coords="735,155,846,181"/>
+<area shape="rect" title=" " alt="" coords="627,155,711,181"/>
 </map>
 </div>
 </div>
 <p><a href="veto_8cxx_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:a5b1233cca667d3f0ff5556d76aaa3fae"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="veto_8cxx.html#a5b1233cca667d3f0ff5556d76aaa3fae">wx</a> (double z)</td></tr>
-<tr class="separator:a5b1233cca667d3f0ff5556d76aaa3fae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6ebe401400c1e4973098eb641648187a"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="veto_8cxx.html#a6ebe401400c1e4973098eb641648187a">wy</a> (double z)</td></tr>
-<tr class="separator:a6ebe401400c1e4973098eb641648187a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
 <tr class="memitem:a36fc4b47251281f99efceaa80c7877f0"><td class="memItemLeft" align="right" valign="top">Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="veto_8cxx.html#a36fc4b47251281f99efceaa80c7877f0">cm</a> = 1</td></tr>
+<tr class="memdesc:a36fc4b47251281f99efceaa80c7877f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">for FairLogger, MESSAGE_ORIGIN  <a href="veto_8cxx.html#a36fc4b47251281f99efceaa80c7877f0">More...</a><br /></td></tr>
 <tr class="separator:a36fc4b47251281f99efceaa80c7877f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a42d42dd2c682d42f11de58e34c89f895"><td class="memItemLeft" align="right" valign="top">Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="veto_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a> = 100*<a class="el" href="veto_8cxx.html#a36fc4b47251281f99efceaa80c7877f0">cm</a></td></tr>
+<tr class="memitem:a42d42dd2c682d42f11de58e34c89f895"><td class="memItemLeft" align="right" valign="top">Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="veto_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a> = 100 * <a class="el" href="veto_8cxx.html#a36fc4b47251281f99efceaa80c7877f0">cm</a></td></tr>
 <tr class="separator:a42d42dd2c682d42f11de58e34c89f895"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab05e85c22fe0c2c6ed701c357bbf1512"><td class="memItemLeft" align="right" valign="top">Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="veto_8cxx.html#ab05e85c22fe0c2c6ed701c357bbf1512">mm</a> = 0.1*<a class="el" href="veto_8cxx.html#a36fc4b47251281f99efceaa80c7877f0">cm</a></td></tr>
+<tr class="memitem:ab05e85c22fe0c2c6ed701c357bbf1512"><td class="memItemLeft" align="right" valign="top">Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="veto_8cxx.html#ab05e85c22fe0c2c6ed701c357bbf1512">mm</a> = 0.1 * <a class="el" href="veto_8cxx.html#a36fc4b47251281f99efceaa80c7877f0">cm</a></td></tr>
 <tr class="separator:ab05e85c22fe0c2c6ed701c357bbf1512"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Function Documentation</h2>
-<a id="a5b1233cca667d3f0ff5556d76aaa3fae"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5b1233cca667d3f0ff5556d76aaa3fae">&#9670;&nbsp;</a></span>wx()</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Implementation of the <a class="el" href="classVeto.html" title="Class representing the Veto detector.">Veto</a> detector class. </p>
+<p>This file contains the definitions for the <a class="el" href="classVeto.html" title="Class representing the Veto detector.">Veto</a> class used in the FairShip Software. The class is responsible for simulating the Decay Vessel(helium) + integrated SBT geometry and interactions. </p>
 
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">double wx </td>
-          <td>(</td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>z</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="veto_8cxx_source.html#l00189">189</a> of file <a class="el" href="veto_8cxx_source.html">veto.cxx</a>.</p>
-<div class="fragment"><div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;                   {</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160; </div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;  <span class="keywordtype">double</span> wx1 = 920 * <a class="code" href="veto_8cxx.html#ab05e85c22fe0c2c6ed701c357bbf1512">mm</a>;</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;  <span class="keywordtype">double</span> wx2 = 4120 * <a class="code" href="veto_8cxx.html#ab05e85c22fe0c2c6ed701c357bbf1512">mm</a>;</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;  <span class="keywordtype">double</span> z1 = 0 * <a class="code" href="veto_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;  <span class="keywordtype">double</span> z2 = 50 * <a class="code" href="veto_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160; </div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;  <span class="keywordflow">return</span> (wx1 + (<a class="code" href="namespacecharm-geometry__config.html#ab2e80a101e23d81f6afc4b1fd8e76761">z</a> - z1) * (wx2 - wx1) / (z2 - z1));</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;}</div>
-<div class="ttc" id="anamespacecharm-geometry__config_html_ab2e80a101e23d81f6afc4b1fd8e76761"><div class="ttname"><a href="namespacecharm-geometry__config.html#ab2e80a101e23d81f6afc4b1fd8e76761">charm-geometry_config.z</a></div><div class="ttdeci">z</div><div class="ttdef"><b>Definition:</b> <a href="charm-geometry__config_8py_source.html#l00007">charm-geometry_config.py:7</a></div></div>
-<div class="ttc" id="aveto_8cxx_html_a42d42dd2c682d42f11de58e34c89f895"><div class="ttname"><a href="veto_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a></div><div class="ttdeci">Double_t m</div><div class="ttdef"><b>Definition:</b> <a href="veto_8cxx_source.html#l00042">veto.cxx:42</a></div></div>
-<div class="ttc" id="aveto_8cxx_html_ab05e85c22fe0c2c6ed701c357bbf1512"><div class="ttname"><a href="veto_8cxx.html#ab05e85c22fe0c2c6ed701c357bbf1512">mm</a></div><div class="ttdeci">Double_t mm</div><div class="ttdef"><b>Definition:</b> <a href="veto_8cxx_source.html#l00043">veto.cxx:43</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a id="a6ebe401400c1e4973098eb641648187a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6ebe401400c1e4973098eb641648187a">&#9670;&nbsp;</a></span>wy()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">double wy </td>
-          <td>(</td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>z</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="veto_8cxx_source.html#l00199">199</a> of file <a class="el" href="veto_8cxx_source.html">veto.cxx</a>.</p>
-<div class="fragment"><div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;                   {</div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160; </div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;  <span class="keywordtype">double</span> wy1 = 2620 * <a class="code" href="veto_8cxx.html#ab05e85c22fe0c2c6ed701c357bbf1512">mm</a>;</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;  <span class="keywordtype">double</span> wy2 = 6120 * <a class="code" href="veto_8cxx.html#ab05e85c22fe0c2c6ed701c357bbf1512">mm</a>;</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;  <span class="keywordtype">double</span> z1 = 0 * <a class="code" href="veto_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;  <span class="keywordtype">double</span> z2 = 50 * <a class="code" href="veto_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160; </div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;  <span class="keywordflow">return</span>  (wy1 + (<a class="code" href="namespacecharm-geometry__config.html#ab2e80a101e23d81f6afc4b1fd8e76761">z</a> - z1) * (wy2 - wy1) / (z2 - z1));</div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;}</div>
-</div><!-- fragment -->
-</div>
-</div>
-<h2 class="groupheader">Variable Documentation</h2>
+<p class="definition">Definition in file <a class="el" href="veto_8cxx_source.html">veto.cxx</a>.</p>
+</div><h2 class="groupheader">Variable Documentation</h2>
 <a id="a36fc4b47251281f99efceaa80c7877f0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a36fc4b47251281f99efceaa80c7877f0">&#9670;&nbsp;</a></span>cm</h2>
 
@@ -268,7 +207,9 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="veto_8cxx_source.html#l00041">41</a> of file <a class="el" href="veto_8cxx_source.html">veto.cxx</a>.</p>
+<p>for FairLogger, MESSAGE_ORIGIN </p>
+
+<p class="definition">Definition at line <a class="el" href="veto_8cxx_source.html#l00049">49</a> of file <a class="el" href="veto_8cxx_source.html">veto.cxx</a>.</p>
 
 </div>
 </div>
@@ -279,12 +220,12 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">Double_t m = 100*<a class="el" href="veto_8cxx.html#a36fc4b47251281f99efceaa80c7877f0">cm</a></td>
+          <td class="memname">Double_t m = 100 * <a class="el" href="veto_8cxx.html#a36fc4b47251281f99efceaa80c7877f0">cm</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="veto_8cxx_source.html#l00042">42</a> of file <a class="el" href="veto_8cxx_source.html">veto.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="veto_8cxx_source.html#l00050">50</a> of file <a class="el" href="veto_8cxx_source.html">veto.cxx</a>.</p>
 
 </div>
 </div>
@@ -295,12 +236,12 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">Double_t mm = 0.1*<a class="el" href="veto_8cxx.html#a36fc4b47251281f99efceaa80c7877f0">cm</a></td>
+          <td class="memname">Double_t mm = 0.1 * <a class="el" href="veto_8cxx.html#a36fc4b47251281f99efceaa80c7877f0">cm</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="veto_8cxx_source.html#l00043">43</a> of file <a class="el" href="veto_8cxx_source.html">veto.cxx</a>.</p>
+<p class="definition">Definition at line <a class="el" href="veto_8cxx_source.html#l00051">51</a> of file <a class="el" href="veto_8cxx_source.html">veto.cxx</a>.</p>
 
 </div>
 </div>

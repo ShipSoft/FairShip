@@ -156,7 +156,7 @@ Friends</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>copied from <a class="el" href="ShipHit_8h.html">shipdata/ShipHit.h</a> </p>
 
-<p class="definition">Definition at line <a class="el" href="vetoHitOnTrack_8h_source.html#l00017">17</a> of file <a class="el" href="vetoHitOnTrack_8h_source.html">vetoHitOnTrack.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vetoHitOnTrack_8h_source.html#l00016">16</a> of file <a class="el" href="vetoHitOnTrack_8h_source.html">vetoHitOnTrack.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a0269377ae88221e8ed503b22301034f1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0269377ae88221e8ed503b22301034f1">&#9670;&nbsp;</a></span>vetoHitOnTrack() <span class="overload">[1/2]</span></h2>
@@ -174,14 +174,13 @@ Friends</h2></td></tr>
 </div><div class="memdoc">
 <p>Default constructor </p>
 
-<p class="definition">Definition at line <a class="el" href="vetoHitOnTrack_8cxx_source.html#l00005">5</a> of file <a class="el" href="vetoHitOnTrack_8cxx_source.html">vetoHitOnTrack.cxx</a>.</p>
-<div class="fragment"><div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;  : TObject(),</div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;    <a class="code" href="classvetoHitOnTrack.html#a907d5e8db4a2750e8da70c658c52f0cb">fDist</a>(-1),</div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;    <a class="code" href="classvetoHitOnTrack.html#a3b03298903aa65aee33289746b255873">fHitID</a>(-1)</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;{</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;}</div>
-<div class="ttc" id="aclassvetoHitOnTrack_html_a3b03298903aa65aee33289746b255873"><div class="ttname"><a href="classvetoHitOnTrack.html#a3b03298903aa65aee33289746b255873">vetoHitOnTrack::fHitID</a></div><div class="ttdeci">Int_t fHitID</div><div class="ttdoc">hit ID</div><div class="ttdef"><b>Definition:</b> <a href="vetoHitOnTrack_8h_source.html#l00058">vetoHitOnTrack.h:58</a></div></div>
-<div class="ttc" id="aclassvetoHitOnTrack_html_a907d5e8db4a2750e8da70c658c52f0cb"><div class="ttname"><a href="classvetoHitOnTrack.html#a907d5e8db4a2750e8da70c658c52f0cb">vetoHitOnTrack::fDist</a></div><div class="ttdeci">Float_t fDist</div><div class="ttdoc">distance to closest veto hit</div><div class="ttdef"><b>Definition:</b> <a href="vetoHitOnTrack_8h_source.html#l00057">vetoHitOnTrack.h:57</a></div></div>
+<p class="definition">Definition at line <a class="el" href="vetoHitOnTrack_8cxx_source.html#l00004">4</a> of file <a class="el" href="vetoHitOnTrack_8cxx_source.html">vetoHitOnTrack.cxx</a>.</p>
+<div class="fragment"><div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;    : TObject()</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;    , <a class="code" href="classvetoHitOnTrack.html#a907d5e8db4a2750e8da70c658c52f0cb">fDist</a>(-1)</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;    , <a class="code" href="classvetoHitOnTrack.html#a3b03298903aa65aee33289746b255873">fHitID</a>(-1)</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;{}</div>
+<div class="ttc" id="aclassvetoHitOnTrack_html_a3b03298903aa65aee33289746b255873"><div class="ttname"><a href="classvetoHitOnTrack.html#a3b03298903aa65aee33289746b255873">vetoHitOnTrack::fHitID</a></div><div class="ttdeci">Int_t fHitID</div><div class="ttdoc">hit ID</div><div class="ttdef"><b>Definition:</b> <a href="vetoHitOnTrack_8h_source.html#l00054">vetoHitOnTrack.h:54</a></div></div>
+<div class="ttc" id="aclassvetoHitOnTrack_html_a907d5e8db4a2750e8da70c658c52f0cb"><div class="ttname"><a href="classvetoHitOnTrack.html#a907d5e8db4a2750e8da70c658c52f0cb">vetoHitOnTrack::fDist</a></div><div class="ttdeci">Float_t fDist</div><div class="ttdoc">distance to closest veto hit</div><div class="ttdef"><b>Definition:</b> <a href="vetoHitOnTrack_8h_source.html#l00053">vetoHitOnTrack.h:53</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -212,12 +211,11 @@ Friends</h2></td></tr>
 </div><div class="memdoc">
 <p>Constructor with hit parameters </p>
 
-<p class="definition">Definition at line <a class="el" href="vetoHitOnTrack_8cxx_source.html#l00016">16</a> of file <a class="el" href="vetoHitOnTrack_8cxx_source.html">vetoHitOnTrack.cxx</a>.</p>
-<div class="fragment"><div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;  :TObject(),</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;   <a class="code" href="classvetoHitOnTrack.html#a907d5e8db4a2750e8da70c658c52f0cb">fDist</a>        (dist),</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;   <a class="code" href="classvetoHitOnTrack.html#a3b03298903aa65aee33289746b255873">fHitID</a>  (hitID)</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;{</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;}</div>
+<p class="definition">Definition at line <a class="el" href="vetoHitOnTrack_8cxx_source.html#l00012">12</a> of file <a class="el" href="vetoHitOnTrack_8cxx_source.html">vetoHitOnTrack.cxx</a>.</p>
+<div class="fragment"><div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    : TObject()</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    , <a class="code" href="classvetoHitOnTrack.html#a907d5e8db4a2750e8da70c658c52f0cb">fDist</a>(dist)</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    , <a class="code" href="classvetoHitOnTrack.html#a3b03298903aa65aee33289746b255873">fHitID</a>(hitID)</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;{}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -245,8 +243,8 @@ Friends</h2></td></tr>
 </div><div class="memdoc">
 <p>Destructor </p>
 
-<p class="definition">Definition at line <a class="el" href="vetoHitOnTrack_8cxx_source.html#l00027">27</a> of file <a class="el" href="vetoHitOnTrack_8cxx_source.html">vetoHitOnTrack.cxx</a>.</p>
-<div class="fragment"><div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;{ }</div>
+<p class="definition">Definition at line <a class="el" href="vetoHitOnTrack_8cxx_source.html#l00021">21</a> of file <a class="el" href="vetoHitOnTrack_8cxx_source.html">vetoHitOnTrack.cxx</a>.</p>
+<div class="fragment"><div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;{}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -311,8 +309,8 @@ Friends</h2></td></tr>
 </div><div class="memdoc">
 <p>Accessors </p>
 
-<p class="definition">Definition at line <a class="el" href="vetoHitOnTrack_8h_source.html#l00034">34</a> of file <a class="el" href="vetoHitOnTrack_8h_source.html">vetoHitOnTrack.h</a>.</p>
-<div class="fragment"><div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;{ <span class="keywordflow">return</span> <a class="code" href="classvetoHitOnTrack.html#a907d5e8db4a2750e8da70c658c52f0cb">fDist</a>;      };</div>
+<p class="definition">Definition at line <a class="el" href="vetoHitOnTrack_8h_source.html#l00030">30</a> of file <a class="el" href="vetoHitOnTrack_8h_source.html">vetoHitOnTrack.h</a>.</p>
+<div class="fragment"><div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;{ <span class="keywordflow">return</span> <a class="code" href="classvetoHitOnTrack.html#a907d5e8db4a2750e8da70c658c52f0cb">fDist</a>; };</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -339,8 +337,8 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vetoHitOnTrack_8h_source.html#l00035">35</a> of file <a class="el" href="vetoHitOnTrack_8h_source.html">vetoHitOnTrack.h</a>.</p>
-<div class="fragment"><div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;{ <span class="keywordflow">return</span> <a class="code" href="classvetoHitOnTrack.html#a3b03298903aa65aee33289746b255873">fHitID</a>;  };</div>
+<p class="definition">Definition at line <a class="el" href="vetoHitOnTrack_8h_source.html#l00031">31</a> of file <a class="el" href="vetoHitOnTrack_8h_source.html">vetoHitOnTrack.h</a>.</p>
+<div class="fragment"><div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;{ <span class="keywordflow">return</span> <a class="code" href="classvetoHitOnTrack.html#a3b03298903aa65aee33289746b255873">fHitID</a>; };</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -368,8 +366,8 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vetoHitOnTrack_8h_source.html#l00042">42</a> of file <a class="el" href="vetoHitOnTrack_8h_source.html">vetoHitOnTrack.h</a>.</p>
-<div class="fragment"><div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;{;}</div>
+<p class="definition">Definition at line <a class="el" href="vetoHitOnTrack_8h_source.html#l00038">38</a> of file <a class="el" href="vetoHitOnTrack_8h_source.html">vetoHitOnTrack.h</a>.</p>
+<div class="fragment"><div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;{ ; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -409,12 +407,12 @@ template&lt;class Archive &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vetoHitOnTrack_8h_source.html#l00045">45</a> of file <a class="el" href="vetoHitOnTrack_8h_source.html">vetoHitOnTrack.h</a>.</p>
-<div class="fragment"><div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    {</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        ar&amp; boost::serialization::base_object&lt;TObject&gt;(*<span class="keyword">this</span>);</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        ar&amp; <a class="code" href="classvetoHitOnTrack.html#a3b03298903aa65aee33289746b255873">fHitID</a>;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        ar&amp; <a class="code" href="classvetoHitOnTrack.html#a907d5e8db4a2750e8da70c658c52f0cb">fDist</a>;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    }</div>
+<p class="definition">Definition at line <a class="el" href="vetoHitOnTrack_8h_source.html#l00041">41</a> of file <a class="el" href="vetoHitOnTrack_8h_source.html">vetoHitOnTrack.h</a>.</p>
+<div class="fragment"><div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    {</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        ar&amp; boost::serialization::base_object&lt;TObject&gt;(*<span class="keyword">this</span>);</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        ar &amp; <a class="code" href="classvetoHitOnTrack.html#a3b03298903aa65aee33289746b255873">fHitID</a>;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        ar &amp; <a class="code" href="classvetoHitOnTrack.html#a907d5e8db4a2750e8da70c658c52f0cb">fDist</a>;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -443,8 +441,8 @@ template&lt;class Archive &gt; </div>
 </div><div class="memdoc">
 <p>Modifiers </p>
 
-<p class="definition">Definition at line <a class="el" href="vetoHitOnTrack_8h_source.html#l00038">38</a> of file <a class="el" href="vetoHitOnTrack_8h_source.html">vetoHitOnTrack.h</a>.</p>
-<div class="fragment"><div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;{ <a class="code" href="classvetoHitOnTrack.html#a907d5e8db4a2750e8da70c658c52f0cb">fDist</a> = d; }</div>
+<p class="definition">Definition at line <a class="el" href="vetoHitOnTrack_8h_source.html#l00034">34</a> of file <a class="el" href="vetoHitOnTrack_8h_source.html">vetoHitOnTrack.h</a>.</p>
+<div class="fragment"><div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;{ <a class="code" href="classvetoHitOnTrack.html#a907d5e8db4a2750e8da70c658c52f0cb">fDist</a> = d; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -472,8 +470,8 @@ template&lt;class Archive &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vetoHitOnTrack_8h_source.html#l00039">39</a> of file <a class="el" href="vetoHitOnTrack_8h_source.html">vetoHitOnTrack.h</a>.</p>
-<div class="fragment"><div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;{ <a class="code" href="classvetoHitOnTrack.html#a3b03298903aa65aee33289746b255873">fHitID</a> = hitID; }</div>
+<p class="definition">Definition at line <a class="el" href="vetoHitOnTrack_8h_source.html#l00035">35</a> of file <a class="el" href="vetoHitOnTrack_8h_source.html">vetoHitOnTrack.h</a>.</p>
+<div class="fragment"><div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;{ <a class="code" href="classvetoHitOnTrack.html#a3b03298903aa65aee33289746b255873">fHitID</a> = hitID; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -498,7 +496,7 @@ template&lt;class Archive &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vetoHitOnTrack_8h_source.html#l00054">54</a> of file <a class="el" href="vetoHitOnTrack_8h_source.html">vetoHitOnTrack.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vetoHitOnTrack_8h_source.html#l00050">50</a> of file <a class="el" href="vetoHitOnTrack_8h_source.html">vetoHitOnTrack.h</a>.</p>
 
 </div>
 </div>
@@ -525,7 +523,7 @@ template&lt;class Archive &gt; </div>
 
 <p>distance to closest veto hit </p>
 
-<p class="definition">Definition at line <a class="el" href="vetoHitOnTrack_8h_source.html#l00057">57</a> of file <a class="el" href="vetoHitOnTrack_8h_source.html">vetoHitOnTrack.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vetoHitOnTrack_8h_source.html#l00053">53</a> of file <a class="el" href="vetoHitOnTrack_8h_source.html">vetoHitOnTrack.h</a>.</p>
 
 </div>
 </div>
@@ -551,7 +549,7 @@ template&lt;class Archive &gt; </div>
 
 <p>hit ID </p>
 
-<p class="definition">Definition at line <a class="el" href="vetoHitOnTrack_8h_source.html#l00058">58</a> of file <a class="el" href="vetoHitOnTrack_8h_source.html">vetoHitOnTrack.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vetoHitOnTrack_8h_source.html#l00054">54</a> of file <a class="el" href="vetoHitOnTrack_8h_source.html">vetoHitOnTrack.h</a>.</p>
 
 </div>
 </div>

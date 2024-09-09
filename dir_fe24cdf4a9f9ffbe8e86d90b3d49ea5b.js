@@ -8,7 +8,7 @@ var dir_fe24cdf4a9f9ffbe8e86d90b3d49ea5b =
     [ "vetoContFact.h", "vetoContFact_8h.html", [
       [ "vetoContFact", "classvetoContFact.html", "classvetoContFact" ]
     ] ],
-    [ "vetoHit.cxx", "vetoHit_8cxx.html", "vetoHit_8cxx" ],
+    [ "vetoHit.cxx", "vetoHit_8cxx.html", null ],
     [ "vetoHit.h", "vetoHit_8h.html", [
       [ "vetoHit", "classvetoHit.html", "classvetoHit" ]
     ] ],
