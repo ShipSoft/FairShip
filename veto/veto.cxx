@@ -1055,6 +1055,7 @@ void veto::ConstructGeometry()
     InitMedium("Aluminum");
     InitMedium("helium");
     InitMedium("Scintillator");
+    InitMedium("steel");
 
     gGeoManager->SetNsegments(100);
 
