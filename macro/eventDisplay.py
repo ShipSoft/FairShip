@@ -327,8 +327,11 @@ class DrawTracks(ROOT.FairTask):
         self.z_end = 500.0
         if dv:
             ns = dv.GetNodes()
-            T1Lid = ns.FindObject("T1Lid_1").GetMatrix()
-            self.z_start = T1Lid.GetTranslation()[2]
+            try:
+                T1Lid = ns.FindObject("T1Lid_1").GetMatrix()
+                self.z_start = T1Lid.GetTranslation()[2]
+            except AttributeError:
+                self.z_start = 0
         else:
             self.z_start = 0
         muonDet = top.GetNode("MuonDetector_1")
