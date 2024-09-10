@@ -559,7 +559,6 @@ class DrawTracks(ROOT.FairTask):
             mom = fMom
             pid = fstate.getPDG()
             zs = self.z_start
-            before = True
             for i in range(self.niter):
                 rc, newpos, newmom = TrackExtrapolateTool.extrapolateToPlane(fT, zs)
                 if rc:
@@ -657,10 +656,9 @@ class IO:
         self.geoscene = ROOT.gEve.GetScenes().FindChild("Geometry scene")
         for v in top.GetNodes():
             x = v.GetName()
-            cmd = 'toggle("' + x + '")'
             a = tkinter.IntVar()
-            assemb = "Assembly" in v.GetVolume().__str__()
-            if v.IsVisible() or (assemb and v.IsVisDaughters()):
+            assembly = "Assembly" in v.GetVolume().__str__()
+            if v.IsVisible() or (assembly and v.IsVisDaughters()):
                 a.set(1)
             else:
                 a.set(0)
@@ -668,7 +666,7 @@ class IO:
                 self.master, text=x.replace("_1", ""), compound=tkinter.LEFT, variable=a
             )
             self.lbut[x].var = a
-            self.lbut[x]["command"] = lambda j=x: self.toggle(j)
+            self.lbut[x]["command"] = lambda: self.toggle(x)
             self.lbut[x].pack(side=tkinter.BOTTOM)
         self.fram1.pack()
         # add ship actions to eve display
@@ -759,15 +757,15 @@ class IO:
 
     def toggle(self, x):
         v = top.GetNode(x)
-        assemb = "Assembly" in v.GetVolume().__str__()
-        if v.IsVisible() > 0 or assemb and v.IsVisDaughters() > 0:
+        assembly = "Assembly" in v.GetVolume().__str__()
+        if v.IsVisible() > 0 or assembly and v.IsVisDaughters() > 0:
             print("switch off ", x)
             v.SetVisibility(0)
             v.SetVisDaughters(0)
             self.lbut[x].var.set(0)
         else:
             print("switch on ", x)
-            if assemb:
+            if assembly:
                 v.SetVisDaughters(1)
             else:
                 v.SetVisibility(1)
@@ -776,8 +774,8 @@ class IO:
         for v in top.GetNodes():
             x = v.GetName()
             if x in self.lbut:
-                assemb = "Assembly" in v.GetVolume().__str__()
-                if v.IsVisible() > 0 or assemb and v.IsVisDaughters() > 0:
+                assembly = "Assembly" in v.GetVolume().__str__()
+                if v.IsVisible() > 0 or assembly and v.IsVisDaughters() > 0:
                     self.lbut[x].var.set(1)
                 else:
                     self.lbut[x].var.set(0)
@@ -1303,7 +1301,7 @@ if options.InputFile[0:4] == "/eos":
     options.InputFile = ROOT.gSystem.Getenv("EOSSHIP") + options.InputFile
 inFile = ROOT.FairFileSource(options.InputFile)
 fRun.SetSource(inFile)
-if options.OutputFile == None:
+if options.OutputFile is None:
     options.OutputFile = ROOT.TMemFile("event_display_output", "recreate")
 fRun.SetSink(ROOT.FairRootFileSink(options.OutputFile))
 
@@ -1357,7 +1355,7 @@ if hasattr(ShipGeo, "MuonTagger"):
     mcHits["MuonTaggerPoints"] = ROOT.FairMCPointDraw(
         "MuonTaggerPoint", ROOT.kGreen, ROOT.kFullCircle
     )
-    if ShipGeo.MufluxSpectrometer.muflux == False:
+    if not ShipGeo.MufluxSpectrometer.muflux:
         mcHits["BoxPoints"] = ROOT.FairMCPointDraw(
             "BoxPoint", ROOT.kBlue, ROOT.kFullDiamond
         )
