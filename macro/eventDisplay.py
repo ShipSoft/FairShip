@@ -494,16 +494,6 @@ class IO():
         bnx.SetToolTipText('click for next event')
         bnx.SetCommand('TPython::ExecScript("'+os.environ['FAIRSHIP']+'/macro/evd_nextEvent.py")')
         guiFrame.AddFrame(bnx, ROOT.TGLayoutHints(ROOT.kLHintsExpandX))
-        bzt = ROOT.TGTextButton(guiFrame, "synch zoom top->side")
-        bzt.SetWidth(150)
-        bzt.SetToolTipText('synchronize zoom top with side')
-        bzt.SetCommand('TPython::ExecScript("'+os.environ['FAIRSHIP']+'/macro/evd_synchZoomt.py")')
-        guiFrame.AddFrame(bzt, ROOT.TGLayoutHints(ROOT.kLHintsExpandX))
-        bzs = ROOT.TGTextButton(guiFrame, "synch zoom side->top")
-        bzs.SetWidth(150)
-        bzs.SetToolTipText('synchronize zoom side with top')
-        bzs.SetCommand('TPython::ExecScript("'+os.environ['FAIRSHIP']+'/macro/evd_synchZooms.py")')
-        guiFrame.AddFrame(bzs, ROOT.TGLayoutHints(ROOT.kLHintsExpandX))
 #
         cf.MapSubwindows()
         cf.Layout()
@@ -730,7 +720,7 @@ def ecalYellow():
  if hcal :
    hcal.GetVolume().SetLineColor(ROOT.kOrange+3)
  if ecal or hcal: gEve.ElementChanged(geoscene,True,True)
-def switchOf(tag):
+def switchOff(tag):
  sc    = gEve.GetScenes()
  geoscene = sc.FindChild('Geometry scene')
  for v in top.GetNodes():
@@ -761,15 +751,15 @@ def hidePlasticScintillator():
     v.SetVisDaughters(0)
   gEve.ElementChanged(geoscene,True,True)
 
-# switch of drawing of rock
-def switchOfRock():
+# switch off drawing of rock
+def switchOffRock():
  sc    = gEve.GetScenes()
  geoscene = sc.FindChild('Geometry scene')
  for x in [ 'rockD', 'rockS']:
   v = sGeo.FindVolumeFast(x)
   v.SetVisibility(0)
  gEve.ElementChanged(geoscene,True,True)
-def switchOfAll(exc):
+def switchOffAll(exc):
  sc    = gEve.GetScenes()
  geoscene = sc.FindChild('Geometry scene')
  for v in top.GetNodes():
@@ -1077,7 +1067,7 @@ br = gEve.GetBrowser()
 br.HideBottomTab() # make more space for graphics
 br.SetWindowName('SHiP Eve Window')
 
-#switchOf('RockD')
+#switchOff('RockD')
 if sGeo.FindVolumeFast('T2LiSc'): hidePlasticScintillator()
 rulers = Rulers()
 SHiPDisplay = EventLoop()

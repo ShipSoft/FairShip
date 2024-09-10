@@ -33,6 +33,7 @@ it in future.
 
 * Update getGeoInformation command line interface
 * Update SST geometry constants #483
+* Housekeeping: Use same clang-format and clang-tidy config as FairRoot
 * Decay Vessel configuration now imported from a yaml file
 * Geometry of Decay Vessel updated to new design
 
@@ -41,4 +42,4 @@ it in future.
 * Remove obsolete files related to old ways of installing or testing FairShip
 * Remove uses of future and past modules #473
 * Remove Geant3 dependency
-
+* Remove unimplemented event display functions (see #497)
