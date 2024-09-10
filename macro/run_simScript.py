@@ -125,7 +125,7 @@ parser.add_argument("--strawDesign", dest="strawDesign", help="simplistic tracke
 parser.add_argument("--Muflux",  dest="muflux",  help="Muflux fixed target setup", required=False, action="store_true")
 parser.add_argument("--charm", dest="charm",  help="!=0 create charm detector instead of SHiP", required=False, default=0)
 parser.add_argument("--CharmdetSetup", dest="CharmdetSetup",  help="1 charm cross section setup, 0 muon flux setup", required=False, default=0, type=int)
-parser.add_argument("--CharmTarget",   dest="CharmTarget",  help="six different configurations used in July 2018 exposure for charm", required=False, default=3, type=int)
+parser.add_argument("--CharmTarget",   dest="CharmTarget",  help="six different configurations used in July 2018 exposure for charm", default=3, type=int, choices=[1, 2, 3, 4, 5, 6, 16])
 parser.add_argument("-F",        dest="deepCopy",  help="default = False: copy only stable particles to stack, except for HNL events", required=False, action="store_true")
 parser.add_argument("-t", "--test", dest="testFlag",  help="quick test", required=False,action="store_true")
 parser.add_argument("--dry-run", dest="dryrun",  help="stop after initialize", required=False,action="store_true")
@@ -143,6 +143,8 @@ parser.add_argument(
      const="helium",
      default="vacuums"
 )
+parser.add_argument("--SND", dest="SND", help="Activate SND.", action='store_true')
+parser.add_argument("--noSND", dest="SND", help="Deactivate SND. NOOP, as it currently defaults to off.", action='store_false')
 
 options = parser.parse_args()
 
@@ -215,19 +217,29 @@ shipRoot_conf.configure(0)     # load basic libraries, prepare atexit for python
 # - muShieldDesign = 7  # 7 = short design+magnetized hadron absorber
 # - targetOpt      = 5  # 0=solid   >0 sliced, 5: 5 pieces of tungsten, 4 H20 slits, 17: Mo + W +H2O (default)
 #   nuTauTargetDesign = 0 # 0 = TP, 1 = NEW with magnet, 2 = NEW without magnet, 3 = 2018 design
-if options.charm == 0: ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = options.dy, tankDesign = options.dv, \
-                                                muShieldDesign = options.ds, nuTauTargetDesign=options.nud, CaloDesign=options.caloDesign, \
-                                                strawDesign=options.strawDesign, muShieldGeo=options.geofile,
-                                                muShieldStepGeo=options.muShieldStepGeo, muShieldWithCobaltMagnet=options.muShieldWithCobaltMagnet,
-                                                SC_mag=options.SC_mag, scName=options.scName, DecayVolumeMedium =options.helium)
+if not options.charm:
+     ship_geo = ConfigRegistry.loadpy(
+          "$FAIRSHIP/geometry/geometry_config.py",
+          Yheight=options.dy,
+          tankDesign=options.dv,
+          muShieldDesign=options.ds,
+          nuTauTargetDesign=options.nud,
+          CaloDesign=options.caloDesign,
+          strawDesign=options.strawDesign,
+          muShieldGeo=options.geofile,
+          muShieldStepGeo=options.muShieldStepGeo,
+          muShieldWithCobaltMagnet=options.muShieldWithCobaltMagnet,
+          SC_mag=options.SC_mag,
+          scName=options.scName,
+          DecayVolumeMedium=options.helium,
+          SND=options.SND,
+     )
 else:
- ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/charm-geometry_config.py", Setup = options.CharmdetSetup, cTarget = options.CharmTarget)
- if options.CharmdetSetup == 0: print("Setup for muon flux measurement has been set")
- else:
-  print("Setup for charm cross section measurement has been set")
-  if (((options.CharmTarget > 6) or (options.CharmTarget < 0)) and (options.CharmTarget != 16)): #check if proper option for emulsion target has been set
-   print("ERROR: unavailable option for CharmTarget. Currently implemented options: 1,2,3,4,5,6,16")
-   1/0
+     ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/charm-geometry_config.py", Setup = options.CharmdetSetup, cTarget = options.CharmTarget)
+     if not options.CharmdetSetup:
+          print("Setup for muon flux measurement has been set")
+     else:
+          print("Setup for charm cross section measurement has been set")
 # switch off magnetic field to measure muon flux
 #ship_geo.muShield.Field = 0.
 #ship_geo.EmuMagnet.B = 0.

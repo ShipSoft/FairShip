@@ -146,6 +146,8 @@ def configure(run, ship_geo):
         ship_geo.NuTauTT.design = 0
     if not hasattr(ship_geo, "EcalOption"):
         ship_geo.EcalOption = 1
+    if not hasattr(ship_geo, "SND"):
+        ship_geo.SND = True
     latestShipGeo = ConfigRegistry.loadpy(
         "$FAIRSHIP/geometry/geometry_config.py",
         Yheight=ship_geo.Yheight / u.m,
@@ -312,7 +314,7 @@ def configure(run, ship_geo):
             fairship + "/geometry/veto_config_vacuums.yaml"
         )  # put conditions for the design
 
-    if hasattr(ship_geo, "tauMudet"):  # don't support old designs
+    if hasattr(ship_geo, "tauMudet") and ship_geo.SND:  # don't support old designs
         if ship_geo.muShieldDesign >= 7 and hasattr(ship_geo.tauMudet, "Xtot"):
             taumuondetector = ROOT.NuTauMudet(
                 "NuTauMudet", ship_geo.tauMudet.zMudetC, ROOT.kTRUE

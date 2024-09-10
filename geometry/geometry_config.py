@@ -61,11 +61,13 @@ if "scName" not in globals():
     scName = None
 if "DecayVolumeMedium" not in globals():
     DecayVolumeMedium = "vacuums"
-    
+if "SND" not in globals():
+    SND = True
 
 with ConfigRegistry.register_config("basic") as c:
 
     c.DecayVolumeMedium = DecayVolumeMedium
+    c.SND = SND
 
     c.SC_mag = SC_mag
     c.scName = scName
