@@ -28,6 +28,7 @@ it in future.
 * Fix compilation warnings due to deprecations #469
 * Fix issue with SST parameters #489
 * Cleaned up Veto Implementation
+* Fix crash of event display when no entrance lid present
 
 ### Changed
 
