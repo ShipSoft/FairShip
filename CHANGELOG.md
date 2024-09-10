@@ -21,6 +21,7 @@ it in future.
 * Automatically built documentation using Doxygen
 * Add CODEOWNERS file to automatically trigger reviews by the relevant experts
 * Add different configuration files for vacuum /helium for the Decay Vessel
+* Add option to enable/disable SND
 
 ### Fixed
 
@@ -44,3 +45,4 @@ it in future.
 * Remove uses of future and past modules #473
 * Remove Geant3 dependency
 * Remove unimplemented event display functions (see #497)
+* Disable SND by default
