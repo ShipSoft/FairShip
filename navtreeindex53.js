@@ -1,5 +1,10 @@
 var NAVTREEINDEX53 =
 {
+"option_page.html#cmd-withmult":[0,1,1,48],
+"option_page.html#cmd-wolfe":[0,1,1,49],
+"option_page.html#opt-C":[0,1,0,5],
+"option_page.html#opt-c":[0,1,0,4],
+"option_page.html#opt-f":[0,1,0,3],
 "option_page.html#opt-s":[0,1,0,2],
 "option_page.html#opt-t1":[0,1,0,0],
 "option_page.html#opt-t2":[0,1,0,1],
@@ -244,10 +249,5 @@ var NAVTREEINDEX53 =
 "rootpyPickler_8py.html#a0f8c91a0848212cd180c525ebef97476":[13,0,15,30,14],
 "rootpyPickler_8py.html#a10d2c5c6d0cc02c37a8cf1fe3a114957":[13,0,15,30,5],
 "rootpyPickler_8py.html#a1424245cf6556309cd62b43751b3c5b9":[13,0,15,30,13],
-"rootpyPickler_8py.html#a1fea7434ab1633a1a46070bc42996377":[13,0,15,30,9],
-"rootpyPickler_8py.html#a2424d9ca2fa9ad1f186804ed7f80ce9f":[13,0,15,30,10],
-"rootpyPickler_8py.html#a3f3cf171ab92267e7271105edcf4a551":[13,0,15,30,4],
-"rootpyPickler_8py.html#a4a2ee768e293c5b380837c2cb3d7198e":[13,0,15,30,7],
-"rootpyPickler_8py.html#a512bac7671f8f0f8505329eae04e5e4d":[13,0,15,30,8],
-"rootpyPickler_8py.html#ab44efd2a60d46ea21e61cf19916ef022":[13,0,15,30,11]
+"rootpyPickler_8py.html#a1fea7434ab1633a1a46070bc42996377":[13,0,15,30,9]
 };

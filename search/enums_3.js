@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['magicframetime_12909',['MagicFrameTime',['../ShipOnlineDataFormat_8h.html#a587089994f39b3bfbcf79a065a1c893e',1,'ShipOnlineDataFormat.h']]]
+  ['magicframetime_12905',['MagicFrameTime',['../ShipOnlineDataFormat_8h.html#a587089994f39b3bfbcf79a065a1c893e',1,'ShipOnlineDataFormat.h']]]
 ];

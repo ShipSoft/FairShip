@@ -1,5 +1,10 @@
 var NAVTREEINDEX52 =
 {
+"namespaceshipunit.html#ac1eb0ac16acd09765cb014002d0c5429":[11,0,118,68],
+"namespaceshipunit.html#ac211f6ed31189548f84eec5e3099bd94":[11,0,118,72],
+"namespaceshipunit.html#ac23a4cdae941a90b2ebb581e3ec9d43f":[11,0,118,95],
+"namespaceshipunit.html#ac7ebe677ab8ccb243a6065ae5939b286":[11,0,118,64],
+"namespaceshipunit.html#ac8f98c0a8daa50ebafcd4fc1860b2eaf":[11,0,118,59],
 "namespaceshipunit.html#ac9efbf7642273282fe94ef0322ce96fc":[11,0,118,103],
 "namespaceshipunit.html#acbf64e48979ad5ea4b14b34222c05dd7":[11,0,118,23],
 "namespaceshipunit.html#ace0d8ca8ff406d88cff338f3050b7027":[11,0,118,35],
@@ -244,10 +249,5 @@ var NAVTREEINDEX52 =
 "option_page.html#cmd-subito":[0,1,1,44],
 "option_page.html#cmd-threads":[0,1,1,45],
 "option_page.html#cmd-weightedcons":[0,1,1,46],
-"option_page.html#cmd-withelim":[0,1,1,47],
-"option_page.html#cmd-withmult":[0,1,1,48],
-"option_page.html#cmd-wolfe":[0,1,1,49],
-"option_page.html#opt-C":[0,1,0,5],
-"option_page.html#opt-c":[0,1,0,4],
-"option_page.html#opt-f":[0,1,0,3]
+"option_page.html#cmd-withelim":[0,1,1,47]
 };
