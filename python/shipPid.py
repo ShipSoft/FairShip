@@ -26,8 +26,6 @@ class Task:
   top  = fGeo.GetTopVolume()
   dv = top.GetNode('DecayVolume_1')
   ns = dv.GetNodes()
-  T1Lid = ns.FindObject("T1Lid_1").GetMatrix()
-  self.z_start = T1Lid.GetTranslation()[2]
   self.zpositions = {}
   self.parallelToZ = ROOT.TVector3(0., 0., 1.)
   hadron = top.GetNode("Hcal_1")
