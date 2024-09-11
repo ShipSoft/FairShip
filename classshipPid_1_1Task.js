@@ -67,6 +67,5 @@ var classshipPid_1_1Task =
     [ "sTree", "classshipPid_1_1Task.html#a317411161cb78067cf656bc380bc8429", null ],
     [ "threshold_pad_energy", "classshipPid_1_1Task.html#a70974be6d9c5a1091fb47d5ef8f641ef", null ],
     [ "vol_ecal", "classshipPid_1_1Task.html#a0e0665464fa01be8bee29b93a66ec4bc", null ],
-    [ "z_start", "classshipPid_1_1Task.html#aa55df1514708f24ac4c7e95fc17df4c5", null ],
     [ "zpositions", "classshipPid_1_1Task.html#ae979bfe0d3b714a8b30b41bde231d5d9", null ]
 ];
