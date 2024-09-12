@@ -474,7 +474,6 @@ class DrawTracks(ROOT.FairTask):
                 "muonPoint",
                 "EcalPoint",
                 "HcalPoint",
-                "preshowerPoint",
                 "strawtubesPoint",
                 "ShipRpcPoint",
                 "TargetPoint",
@@ -1410,12 +1409,6 @@ else:
     mcHits["TargetPoints"] = ROOT.FairMCPointDraw(
         "TargetPoint", ROOT.kRed, ROOT.kFullSquare
     )
-
-    if hasattr(ShipGeo, "preshowerOption"):
-        if ShipGeo.preshowerOption > 0:
-            mcHits["preshowerPoints"] = ROOT.FairMCPointDraw(
-                "preshowerPoint", ROOT.kYellow, ROOT.kFullCircle
-            )
 
 for x in mcHits:
     fMan.AddTask(mcHits[x])

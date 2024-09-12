@@ -9,7 +9,6 @@ from ShipGeoConfig import AttrDict, ConfigRegistry
 
 # targetOpt      = 5  # 0=solid   >0 sliced, 5: 5 pieces of tungsten, 4 air slits, 17: molybdenum tungsten interleaved with H20
 # strawOpt       = 0  # 0=simplistic tracking stations defined in veto.cxx  1=detailed strawtube design 4=sophisticated straw tube design, horizontal wires (default) 10=2cm straw diameter for 2018 layout
-# preshowerOption = 0 # 1=simple preShower detector for conceptual studies, moves calo and muon stations
 # tankDesign = 5 #  4=TP elliptical tank design, 5 = optimized conical rectangular design, 6=5 without segment-1
 shield_db = {
     'combi': [ 70.  , 170.  , 208.  , 207.  , 281.  , 172.82, 212.54, 168.64,
@@ -203,47 +202,20 @@ with ConfigRegistry.register_config("basic") as c:
     if CaloDesign==0:
      c.HcalOption = 1
      c.EcalOption = 1
-     c.preshowerOption = 0
      c.splitCal = 0
     elif CaloDesign==3:
      c.HcalOption = 2
      c.EcalOption = 1
-     c.preshowerOption = 0
      c.splitCal = 0
-    elif CaloDesign==1:
-     c.HcalOption = 1
-     c.EcalOption = 1
-     c.preshowerOption = 1
     elif CaloDesign==2:
      c.HcalOption = -1
      c.EcalOption = 2
-     c.preshowerOption = 0
     else:
      print("CaloDesign option wrong -> ",CaloDesign)
      1/0
 
-    presShowerDeltaZ = 0.
-    if c.preshowerOption >0:
-     PreshowerStart = c.TimeDet.z + c.TimeDet.DZ + 5*u.cm + presShowerDeltaZ
-     c.PreshowerFilter0  = AttrDict(z= PreshowerStart )
-     c.PreshowerStation0 = AttrDict(z= c.PreshowerFilter0.z + 10*u.cm )
-
-     c.Preshower = AttrDict(z=0)
-     c.Preshower.XMax    =  240.*u.cm
-     c.Preshower.YMax    =  600.*u.cm * c.Yheight / (10.*u.m)
-     c.Preshower.ActiveThickness = 0.5*u.cm
-     c.Preshower.FilterThickness0 = 1.4*u.cm
-
-     PreshowerLeverArm=1*u.m
-
-     c.PreshowerFilter1  = AttrDict(z= c.PreshowerStation0.z +PreshowerLeverArm )
-     c.PreshowerStation1 = AttrDict(z= c.PreshowerFilter1.z + 10*u.cm )
-     c.Preshower.FilterThickness1 = 2.*u.cm
-
-     presShowerDeltaZ = PreshowerLeverArm + 2*10*u.cm + 2*2.*u.cm
-
     c.SplitCal = AttrDict(z=0)
-    c.SplitCal.ZStart = c.TimeDet.z + c.TimeDet.DZ + 5*u.cm + presShowerDeltaZ
+    c.SplitCal.ZStart = c.TimeDet.z + c.TimeDet.DZ + 5*u.cm
     c.SplitCal.XMax = 480.*u.cm/2. #290.*u.cm  #half length
     c.SplitCal.YMax = 720. * u.cm / 2. #510.*u.cm * c.Yheight / (10.*u.m)   #half length
     c.SplitCal.Empty = 0*u.cm
@@ -273,7 +245,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.SplitCal.StripHalfLength = 150*u.cm # c.SplitCal.YMax/c.SplitCal.NModulesInY
     c.SplitCal.SplitCalThickness=(c.SplitCal.FilterECALThickness_first-c.SplitCal.FilterECALThickness)+(c.SplitCal.FilterECALThickness+c.SplitCal.ActiveECALThickness)*c.SplitCal.nECALSamplings+c.SplitCal.BigGap
 
-    c.ecal  =  AttrDict(z = c.TimeDet.z + c.TimeDet.DZ  + 5*u.cm + presShowerDeltaZ)  #
+    c.ecal  =  AttrDict(z = c.TimeDet.z + c.TimeDet.DZ  + 5*u.cm)  #
     c.ecal.File = EcalGeoFile
     hcalThickness = 232*u.cm
     if  c.HcalOption == 2: hcalThickness = 110*u.cm  # to have same interaction length as before
