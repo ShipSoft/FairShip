@@ -126,7 +126,7 @@ def configure_veto(yaml_file):
 def configure(run, ship_geo):
     # ---- for backward compatibility ----
     if not hasattr(ship_geo, "DecayVolumeMedium"):
-        ship_geo.DecayVolumeMedium == "vacuums"
+        ship_geo.DecayVolumeMedium = "vacuums"
     if not hasattr(ship_geo, "tankDesign"):
         ship_geo.tankDesign = 5
     if not hasattr(ship_geo, "muShieldGeo"):
