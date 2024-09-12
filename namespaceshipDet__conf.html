@@ -140,7 +140,7 @@ Variables</h2></td></tr>
 <div class="fragment"><div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;<span class="keyword">def </span><a class="code" href="namespaceshipDet__conf.html#aab56bdb431b4537670432778b4a10305">configure</a>(run, ship_geo):</div>
 <div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    <span class="comment"># ---- for backward compatibility ----</span></div>
 <div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    <span class="keywordflow">if</span> <span class="keywordflow">not</span> hasattr(ship_geo, <span class="stringliteral">&quot;DecayVolumeMedium&quot;</span>):</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;        ship_geo.DecayVolumeMedium == <span class="stringliteral">&quot;vacuums&quot;</span></div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;        ship_geo.DecayVolumeMedium = <span class="stringliteral">&quot;vacuums&quot;</span></div>
 <div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    <span class="keywordflow">if</span> <span class="keywordflow">not</span> hasattr(ship_geo, <span class="stringliteral">&quot;tankDesign&quot;</span>):</div>
 <div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;        ship_geo.tankDesign = 5</div>
 <div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    <span class="keywordflow">if</span> <span class="keywordflow">not</span> hasattr(ship_geo, <span class="stringliteral">&quot;muShieldGeo&quot;</span>):</div>
