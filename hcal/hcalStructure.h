@@ -124,7 +124,7 @@ inline Float_t hcalStructure::GetY2() const
 
 inline Bool_t hcalStructure::AddEnergy(Float_t x, Float_t y, Float_t energy, Float_t energy2)
 {
-  /** Add preshower or calorimeter energy to a module with coordinate (x,y) **/
+  /** Add calorimeter energy to a module with coordinate (x,y) **/
   hcalModule* mdl=GetModule(x,y);
   if (mdl)
   {

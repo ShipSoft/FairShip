@@ -225,7 +225,6 @@ add_subdirectory (muon)
 add_subdirectory (shipgen)
 add_subdirectory (field)
 add_subdirectory (genfit)
-add_subdirectory (preshower)
 add_subdirectory (pid)
 add_subdirectory (muonShieldOptimization)
 # add_subdirectory (online)  is not anymore compatible with FairRoot

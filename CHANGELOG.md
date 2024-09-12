@@ -88,3 +88,4 @@ cross-section measurement code, and obsolete detector configurations.
 * Housekeeping: Don't use CMake commands no longer provided by FairRoot 19
 * Housekeeping: Remove old CMake for ROOT 5
 * Remove old, outdated tracking script
+* Remove preshower and CaloDesign 1 (TP+Preshower)

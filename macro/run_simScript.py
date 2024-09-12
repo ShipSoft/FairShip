@@ -119,8 +119,11 @@ parser.add_argument("--muShieldDesign", dest="ds",  help="7=short magnet design,
                                             ,10=with field map for hadron absorber", required=False, choices=range(7,11), default=globalDesigns[default]['ds'], type=int)
 parser.add_argument("--nuTauTargetDesign", dest="nud"\
   ,help="0=TP, 1=new magnet option for short muon shield, 2= no magnet surrounding neutrino detector, 3= emulsion spectrometer and muon filter as in CDS, 4= not magnetized target and muon spectrometer for ECN3",required=False, default=globalDesigns[default]['nud'], type=int)
-parser.add_argument("--caloDesign", dest="caloDesign",   help="0=ECAL/HCAL TP  1=ECAL/HCAL TP + preshower 2=splitCal  3=ECAL/ passive HCAL"\
-                                            ,required=False, default=globalDesigns[default]['caloDesign'], type=int)
+parser.add_argument("--caloDesign",
+                    help="0=ECAL/HCAL TP 2=splitCal  3=ECAL/ passive HCAL",
+                    default=globalDesigns[default]['caloDesign'],
+                    type=int,
+                    choices=[0,2,3])
 parser.add_argument("--strawDesign", dest="strawDesign", help="simplistic tracker design,  4=sophisticated straw tube design, horizontal wires (default), 10=2cm straw"
                                             ,required=False, default=globalDesigns[default]['strawDesign'], type=int)
 parser.add_argument("--Muflux",  dest="muflux",  help="Muflux fixed target setup", required=False, action="store_true")
