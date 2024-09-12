@@ -44,6 +44,7 @@ it in future.
 * Housekeeping: Use FairRoot's `find_package2` to find ROOT, VMC, fmt
 * Housekeeping: Bump minimum ROOT version to 6.26
 * Housekeeping: Use find_package to find BOOST
+* Housekeeping: Set FairLogger dep instead of manual includes
 
 ### Removed
 

@@ -18,7 +18,7 @@ ${EVTGEN_INCLUDE_DIR}
 ${EVTGEN_INCLUDE_DIR}/..
 )
 
-include_directories(${INCLUDE_DIRECTORIES} ${VMC_INCLUDE_DIRS} ${FAIRROOT_INCLUDE_DIR} ${FairLogger_INCDIR} ${FMT_INCLUDE_DIR})
+include_directories(${INCLUDE_DIRECTORIES} ${VMC_INCLUDE_DIRS} ${FAIRROOT_INCLUDE_DIR})
 include_directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
 
 set(LINK_DIRECTORIES
@@ -50,6 +50,6 @@ ALPACAGenerator.cxx
 set(LINKDEF GenLinkDef.h)
 set(LIBRARY_NAME ShipGen)
 
-set(DEPENDENCIES Base ShipData EvtGen EvtGenExternal)
+set(DEPENDENCIES Base ShipData EvtGen EvtGenExternal FairLogger::FairLogger)
 
 GENERATE_LIBRARY()

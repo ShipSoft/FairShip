@@ -161,7 +161,6 @@ SetBasicVariables()
 Set(SYSTEM_INCLUDE_DIRECTORIES
   ${SYSTEM_INCLUDE_DIRECTORIES}
   ${BASE_INCLUDE_DIRECTORIES}
-  ${FAIRLOGGER_INCLUDE_DIR}
 )
 
 # Set the library version in the main CMakeLists.txt

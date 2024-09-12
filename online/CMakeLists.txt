@@ -10,7 +10,7 @@ Set(SYSTEM_INCLUDE_DIRECTORIES
     ${SYSTEM_INCLUDE_DIRECTORIES}
 )
 
-include_directories(${INCLUDE_DIRECTORIES}   ${FAIRROOT_INCLUDE_DIR} ${FairLogger_INCDIR} ${FMT_INCLUDE_DIR})
+include_directories(${INCLUDE_DIRECTORIES} ${FAIRROOT_INCLUDE_DIR})
 include_directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
 
 
@@ -38,7 +38,8 @@ Set(LINKDEF OnlineLinkDef.h)
 Set(LIBRARY_NAME Online)
 
 Set(DEPENDENCIES
-    Base # MbsAPI
+    Base
+    FairLogger::FairLogger
 )
 
 GENERATE_LIBRARY()
