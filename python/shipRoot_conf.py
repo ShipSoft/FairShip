@@ -5,9 +5,8 @@ import os
 from pythia8_conf_utils import addHNLtoROOT
 from pythia8darkphoton_conf import addDPtoROOT
 
-# Try to check if config has been executed...
-if os.environ.get('FAIRSHIP_ROOT', '') == '' and os.environ.get('Linux_Flavour_', '') == '':
-   print("Do first: source config.[c]sh")
+if os.environ.get('FAIRSHIP_ROOT', '') == '':
+   print("FairShip environment not found, quitting.")
    quit()
 
 # When on Darwin load all needed shared libs as DYLD_LIBRARY_PATH is not
