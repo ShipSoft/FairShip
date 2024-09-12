@@ -25,7 +25,7 @@ def collect_hits(lsOfGlobals, checked_muons):
   hitlist = {}
   hitlist[fPos.Z()] = [fPos.X(), fPos.Y(), fT.GetP()]
 # loop over all sensitive volumes to find hits
-  for P in ["vetoPoint", "muonPoint", "EcalPoint", "HcalPoint", "preshowerPoint",
+  for P in ["vetoPoint", "muonPoint", "EcalPoint", "HcalPoint",
             "strawtubesPoint", "ShipRpcPoint", "TargetPoint"]:
     if not sTree.GetBranch(P):
       continue
