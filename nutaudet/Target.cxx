@@ -375,18 +375,11 @@ void Target::ConstructGeometry()
   TGeoVolume *volBrick = new TGeoVolume("Brick",Brick,air);
   volBrick->SetLineColor(kCyan);
   volBrick->SetTransparency(1);
-
-  TGeoBBox *Absorber; //need to separate the two cases
-  TGeoVolume *volAbsorber;
-
-  if (fDesign < 4){
-   Absorber = new TGeoBBox("Pb", EmulsionX/2, EmulsionY/2, LeadThickness/2);
-   volAbsorber = new TGeoVolume("Lead",Absorber,lead);
-  }
-  else{
-   Absorber = new TGeoBBox("W", EmulsionX/2, EmulsionY/2, LeadThickness/2);
-   volAbsorber = new TGeoVolume("Tungsten",Absorber,tungsten);
-  }
+  //need to separate the two cases, now with a ternary operator
+  TGeoBBox *Absorber = (fDesign < 4) ? 
+    new TGeoBBox("Pb", EmulsionX/2, EmulsionY/2, LeadThickness/2) : new TGeoBBox("W", EmulsionX/2, EmulsionY/2, LeadThickness/2);
+  TGeoVolume *volAbsorber = (fDesign < 4) ?
+    new TGeoVolume("Lead",Absorber,lead) : new TGeoVolume("Tungsten",Absorber,tungsten);
 
   volAbsorber->SetTransparency(1);
   volAbsorber->SetLineColor(kGray);
@@ -634,7 +627,7 @@ Bool_t  Target::ProcessHits(FairVolume* vol)
     Int_t motherV[MaxL];
 //   Bool_t EmTop = 0, EmBot = 0, EmCESTop = 0, EmCESBot = 0;
     Bool_t EmBrick = false;
-    Bool_t EmTop;
+    Bool_t EmTop = false;
     Int_t NPlate =0;
     const char *name;
 
@@ -688,9 +681,7 @@ Bool_t  Target::ProcessHits(FairVolume* vol)
 	//cout << i << "   " << motherV[i] << "    name = " << mumname << endl;
       }
 
-    Bool_t BrickorCES = false;   //Brick = 1 / CES = 0;
-    if(EmBrick==1)
-      BrickorCES = true;
+    Bool_t BrickorCES = EmBrick == 1;
 
 
     detID = (NWall+1) *1E7 + (NRow+1) * 1E6 + (NColumn+1)*1E4 + BrickorCES *1E3 + (NPlate+1)*1E1 + EmTop*1 ;
