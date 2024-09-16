@@ -780,7 +780,7 @@ void NuTauMudet::ConstructGeometry()
 
 
       // Shapes creation
-      [[maybe_unused]] 	TGeoBBox *CoilContainer = new TGeoBBox("CoilContainer", fOutMagX/2., fOutMagY/2., fMagZ/2.);
+      [[maybe_unused]] auto *CoilContainer = new TGeoBBox("CoilContainer", fOutMagX/2., fOutMagY/2., fMagZ/2.);
       TGeoBBox *MagRegion = new TGeoBBox("MagRegion", fInMagX/2., fInMagY/2., fMagZ/2.+0.5);
       TGeoBBox *Coil = new TGeoBBox("Coil", fCoilW/2., fCoilH/2., fMagZ/2.+0.5);
 
