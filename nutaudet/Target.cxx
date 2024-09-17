@@ -715,7 +715,7 @@ Bool_t  Target::ProcessHits(FairVolume* vol)
 
 void Target::DecodeBrickID(Int_t detID, Int_t &NWall, Int_t &NRow, Int_t &NColumn, Int_t &NPlate, Bool_t &EmCES, Bool_t &EmBrick, Bool_t &EmTop)
 {
-  Bool_t BrickorCES = 0;
+  Bool_t BrickorCES = false;
 
   NWall = detID/1E7;
   NRow = (detID - NWall*1E7)/1E6;
