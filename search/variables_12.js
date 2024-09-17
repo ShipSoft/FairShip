@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['r_12025',['R',['../namespacemakeCascade.html#a578d35e800b9f4a15a0c00d693a8de44',1,'makeCascade.R()'],['../namespaceg4Ex.html#a3587e1dfd04c06e9bec82a15ce2f69db',1,'g4Ex.R()'],['../namespaceg4Ex__args.html#a906e84b06341f0498e127ec59ee515e3',1,'g4Ex_args.R()'],['../namespaceg4Ex__gap.html#a8898f0a5d331af4cb5c494ce818081f7',1,'g4Ex_gap.R()'],['../namespacemakeMuonDIS.html#a167283eebd6aab628dc0adeb258817fb',1,'makeMuonDIS.R()']]],
-  ['r_12026',['r',['../namespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring.html#aede22303843a29a0e309f77331129bf9',1,'conditionsDatabase::demo::drifttubeMonitoring']]],
+  ['r_12025',['r',['../namespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring.html#aede22303843a29a0e309f77331129bf9',1,'conditionsDatabase::demo::drifttubeMonitoring']]],
+  ['r_12026',['R',['../namespacemakeCascade.html#a578d35e800b9f4a15a0c00d693a8de44',1,'makeCascade.R()'],['../namespaceg4Ex.html#a3587e1dfd04c06e9bec82a15ce2f69db',1,'g4Ex.R()'],['../namespaceg4Ex__args.html#a906e84b06341f0498e127ec59ee515e3',1,'g4Ex_args.R()'],['../namespaceg4Ex__gap.html#a8898f0a5d331af4cb5c494ce818081f7',1,'g4Ex_gap.R()'],['../namespacemakeMuonDIS.html#a167283eebd6aab628dc0adeb258817fb',1,'makeMuonDIS.R()']]],
   ['r1_12027',['r1',['../namespaceana__ShipMuon.html#aaebf25eb0ed22ac1e88c3566b5f95945',1,'ana_ShipMuon']]],
   ['r2_12028',['r2',['../namespaceana__ShipMuon.html#a9659d4d32a1cb6cfd4a31d22e63b3a06',1,'ana_ShipMuon']]],
   ['r_5fscale_12029',['r_scale',['../namespaceshipPatRec.html#aa601776ac34cd1fd3d2473441566ee86',1,'shipPatRec']]],
