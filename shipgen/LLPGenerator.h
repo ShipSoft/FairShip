@@ -23,6 +23,12 @@ class LLPGenerator : public FairGenerator
   virtual Bool_t Init(const char*, int); //!
   virtual Bool_t Init(const char*); //!
   Int_t GetNevents();
+
+  void SetPositions(Double_t zTa=-5814.25, Double_t zDV=0.){
+    ztarget      = zTa; // units cm (midpoint)
+    zDecayVolume = zDV; // units cm (midpoint)
+  }
+
  private:
 
  protected:
