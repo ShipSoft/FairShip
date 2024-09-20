@@ -32,10 +32,9 @@ class LLPGenerator : public FairGenerator
  private:
 
  protected:
-  Int_t id, Nmeas, volid[500], procid[500], parentid;
-  Float_t Ezero,tof;
-  Double_t w;
-  Float_t px[500], py[500], pz[500], vx[500], vy[500], vz[500];
+  Int_t parentid, n_2ry;
+  Double_t px, py, pz, vx, vy, vz, energy, weight;
+  Double_t px_2ry[500], py_2ry[500], pz_2ry[500], energy_2ry[500], pdg_2ry[500];
   TFile* fInputFile;
   TTree* fTree;
   FairLogger*  fLogger; //!   don't make it persistent, magic ROOT command

@@ -92,7 +92,7 @@ Bool_t LLPGenerator::ReadEvent(FairPrimaryGenerator* cpg)
   if (fn==fNevents)  fLogger->Warning(MESSAGE_ORIGIN, "End of input file. Rewind.");
 
   fTree->GetEntry(fn);
-    fn++;
+  fn++;
   if (fn %100==0)  cout << "Info LLPGenerator: event nr "<< fn << endl;
   int nPart = n_2ry->GetEntries();
 
