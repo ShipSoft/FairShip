@@ -1,5 +1,5 @@
-#ifndef LLPGENERATOR_H
-#define LLPGENERATOR_H 1
+#ifndef EVTCALCGENERATOR_H
+#define EVTCALCGENERATOR_H 1
 
 #include "TROOT.h"
 #include "FairGenerator.h"
@@ -8,21 +8,25 @@
 
 class FairPrimaryGenerator;
 
-class LLPGenerator : public FairGenerator
+class EvtCalcGenerator : public FairGenerator
 {
  public:
 
   /** default constructor **/
-  LLPGenerator();
+  EvtCalcGenerator();
 
   /** destructor **/
-  virtual ~LLPGenerator();
+  virtual ~EvtCalcGenerator();
 
   /** public method ReadEvent **/
   Bool_t ReadEvent(FairPrimaryGenerator*);
   virtual Bool_t Init(const char*, int); //!
   virtual Bool_t Init(const char*); //!
-  Int_t GetNevents();
+
+  Int_t GetNevents()
+  {
+    return fNevents;
+  }
 
   void SetPositions(Double_t zTa=-5814.25, Double_t zDV=0.){
     ztarget      = zTa; // units cm (midpoint)
@@ -40,7 +44,7 @@ class LLPGenerator : public FairGenerator
   FairLogger*  fLogger; //!   don't make it persistent, magic ROOT command
   int fNevents;
   int fn;
-  ClassDef(LLPGenerator,1);
+  ClassDef(EvtCalcGenerator,1);
 };
 
-#endif /* !LLPGENERATOR_H */
+#endif /* !EVTCALCGENERATOR_H */

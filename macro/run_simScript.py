@@ -4,6 +4,7 @@ import sys
 import ROOT
 ROOT.gSystem.Load('libEGPythia8')
 import makeALPACAEvents
+import convertEvtCalc
 
 import shipunit as u
 import shipRoot_conf
@@ -75,6 +76,7 @@ inactivateMuonProcesses = False   # provisionally for making studies of various 
 
 parser = ArgumentParser()
 group = parser.add_mutually_exclusive_group()
+parser.add_argument("--EvtCalc", dest="evtcalc", help="Use EventCalc", required=False, action="store_true")
 parser.add_argument("--Pythia6", dest="pythia6", help="Use Pythia6", required=False, action="store_true")
 parser.add_argument("--Pythia8", dest="pythia8", help="Use Pythia8", required=False, action="store_true")
 parser.add_argument("--PG",      dest="pg",      help="Use Particle Gun", required=False, action="store_true")
@@ -148,6 +150,7 @@ parser.add_argument("--noSND", dest="SND", help="Deactivate SND. NOOP, as it cur
 
 options = parser.parse_args()
 
+if options.evtcalc:  simEngine = "EvtCalc"
 if options.pythia6:  simEngine = "Pythia6"
 if options.pythia8:  simEngine = "Pythia8"
 if options.pg:       simEngine = "PG"
@@ -380,6 +383,22 @@ if simEngine == "Pythia6":
  P6gen.SetMom(50.*u.GeV)
  P6gen.SetTarget("gamma/mu+","n0") # default "gamma/mu-","p+"
  primGen.AddGenerator(P6gen)
+
+# -----EvtCalc--------------------------------------
+if simEngine == "EvtCalc":
+ print(f'Opening input file for conversion: {inputFile}')
+ ut.checkFileExists(inputFile)		# inputFile is a EvtCalc .dat file
+ primGen.SetTarget(0., 0.)
+ inputROOTFile = (convertEvtCalc.convertFile(inputFile))
+ print(f'Opening input file for EvtCalc generator: {inputROOTFile}')
+ ut.checkFileExists(inputROOTFile)
+ EvtCalcGen = ROOT.EvtCalcGenerator()
+ EvtCalcGen.Init(inputROOTFile, options.firstEvent) 
+ EvtCalcGen.SetPositions(zTa=ship_geo.target.z, zDV=ship_geo.decayVolume.z)
+ primGen.AddGenerator(EvtCalcGen)
+ options.nEvents = min(options.nEvents, EvtCalcGen.GetNevents())
+ print(f'Generate {options.nEvents} with EvtCalc input. First event: {options.firstEvent}')
+
 # -----Particle Gun-----------------------
 if simEngine == "PG":
   myPgun = ROOT.FairBoxGenerator(options.pID,1)

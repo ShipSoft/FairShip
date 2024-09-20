@@ -2,7 +2,7 @@
 #include "TROOT.h"
 #include "TFile.h"
 #include "FairPrimaryGenerator.h"
-#include "LLPGenerator.h"
+#include "EvtCalcGenerator.h"
 #include "TDatabasePDG.h"
 #include "TMath.h"
 #include "TGeoVolume.h"
@@ -17,28 +17,28 @@ using std::endl;
 // read events from ntuples produced
 
 // -----   Default constructor   -------------------------------------------
-LLPGenerator::LLPGenerator() {}
+EvtCalcGenerator::EvtCalcGenerator() {}
 // -------------------------------------------------------------------------
 // -----   Default constructor   -------------------------------------------
-Bool_t LLPGenerator::Init(const char* fileName) {
+Bool_t EvtCalcGenerator::Init(const char* fileName) {
   return Init(fileName, 0);
 }
 // -----   Default constructor   -------------------------------------------
-Bool_t LLPGenerator::Init(const char* fileName, const int firstEvent) {
+Bool_t EvtCalcGenerator::Init(const char* fileName, const int firstEvent) {
   
-  cout << "Info LLPGenerator: Opening input file " << fileName << endl;
+  cout << "Info EvtCalcGenerator: Opening input file " << fileName << endl;
   fLogger = FairLogger::GetLogger();
 	if (0 == strncmp("/eos", fileName,4)){
 		TString tmp = gSystem->Getenv("EOSSHIP");
 		tmp+=fileName;
 		fInputFile  = TFile::Open(tmp); 
-		fLogger->Info(MESSAGE_ORIGIN,"Info LLPGenerator: Opening input file on eos %s",tmp.Data());
+		fLogger->Info(MESSAGE_ORIGIN,"Info EvtCalcGenerator: Opening input file on eos %s",tmp.Data());
 	}else{
 		fInputFile = new TFile(fileName);
-		fLogger->Info(MESSAGE_ORIGIN,"Info LLPGenerator: Opening input file %s",fileName);}
+		fLogger->Info(MESSAGE_ORIGIN,"Info EvtCalcGenerator: Opening input file %s",fileName);}
 	
 	if (fInputFile->IsZombie() or !fInputFile){
-     		fLogger->Fatal(MESSAGE_ORIGIN, "Info LLPGenerator: Error opening input file");
+     		fLogger->Fatal(MESSAGE_ORIGIN, "Info EvtCalcGenerator: Error opening input file");
 	return kFALSE;}
   
   fTree = (TTree *)fInputFile->Get("ntuple");
@@ -69,7 +69,7 @@ Bool_t LLPGenerator::Init(const char* fileName, const int firstEvent) {
 
 
 // -----   Destructor   ----------------------------------------------------
-LLPGenerator::~LLPGenerator()
+EvtCalcGenerator::~EvtCalcGenerator()
 {
  // cout << "destroy Ntuple" << endl;
  fInputFile->Close();
@@ -79,7 +79,7 @@ LLPGenerator::~LLPGenerator()
 // -------------------------------------------------------------------------
 
 // -----   Passing the event   ---------------------------------------------
-Bool_t LLPGenerator::ReadEvent(FairPrimaryGenerator* cpg)
+Bool_t EvtCalcGenerator::ReadEvent(FairPrimaryGenerator* cpg)
 {
 
   //Vertex coordinates in the SHiP reference frame, expressed in [cm]
@@ -93,7 +93,7 @@ Bool_t LLPGenerator::ReadEvent(FairPrimaryGenerator* cpg)
 
   fTree->GetEntry(fn);
   fn++;
-  if (fn %100==0)  cout << "Info LLPGenerator: event nr "<< fn << endl;
+  if (fn %100==0)  cout << "Info EvtCalcGenerator: event nr "<< fn << endl;
   int nPart = n_2ry->GetEntries();
 
   Double_t c   = 2.99792458e+6;
@@ -117,7 +117,7 @@ Bool_t LLPGenerator::ReadEvent(FairPrimaryGenerator* cpg)
 }
 
 // -------------------------------------------------------------------------
-Int_t LLPGenerator::GetNevents()
+Int_t EvtCalcGenerator::GetNevents()
 {
  return fNevents;
 }
