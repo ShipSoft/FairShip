@@ -122,7 +122,7 @@ Bool_t EvtCalcGenerator::ReadEvent(FairPrimaryGenerator* cpg)
   cout << "vz "<< vz << endl;  
   
 // Mother LLP
-  // Bool_t wanttracking=false;
+  Bool_t wanttracking=false;
   pdg_llp = 9900015;
   cpg->AddTrack((Int_t)pdg_llp, px_llp, py_llp, pz_llp, vx_transf, vy_transf, vz_transf, -1., 
                 wanttracking, e_llp, tof, decay_prob);
