@@ -27,19 +27,18 @@ Bool_t EvtCalcGenerator::Init(const char* fileName) {
 Bool_t EvtCalcGenerator::Init(const char* fileName, const int firstEvent) {
   
   cout << "Info EvtCalcGenerator: Opening input file " << fileName << endl;
-  fLogger = FairLogger::GetLogger();
-	if (0 == strncmp("/eos", fileName,4)){
-		TString tmp = gSystem->Getenv("EOSSHIP");
-		tmp+=fileName;
-		fInputFile  = TFile::Open(tmp);
+  if (0 == strncmp("/eos",fileName,4) ) {
+    TString tmp = gSystem->Getenv("EOSSHIP");
+    tmp+=fileName;
+    fInputFile  = TFile::Open(tmp);
     LOGF(info, "Info EvtCalcGenerator: Opening input file on eos %s",tmp.Data());
-	}else{
-		fInputFile = new TFile(fileName);
-    LOGF(info, "Info EvtCalcGenerator: Opening input file %s",fileName)
-	
-	if (fInputFile->IsZombie() or !fInputFile){
-     		LOG(FATAL) << "Info EvtCalcGenerator: Error opening input file";
-	return kFALSE;}
+  }else{
+    fInputFile  = new TFile(fileName);
+    LOGF(info, "Info EvtCalcGenerator: Opening input file %s", fileName);
+  }
+  if (fInputFile->IsZombie() or !fInputFile) {
+      LOG(FATAL) << "Info EvtCalcGenerator: Error opening input file";
+      return kFALSE; }
   
   fTree = (TTree *)fInputFile->Get("LLP_tree");
   fNevents = fTree->GetEntries();

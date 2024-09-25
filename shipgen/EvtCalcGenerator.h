@@ -42,7 +42,7 @@ class EvtCalcGenerator : public FairGenerator
   Double_t px_prod1, py_prod1, pz_prod1, e_prod1;
   Double_t px_prod2, py_prod2, pz_prod2, e_prod2;
   Double_t px_prod3, py_prod3, pz_prod3, e_prod3;
-  Double_t ztarget, zDecayVolume = zDV;
+  Double_t ztarget, zDecayVolume;
   TFile* fInputFile;
   TTree* fTree;
   FairLogger*  fLogger; //!   don't make it persistent, magic ROOT command
