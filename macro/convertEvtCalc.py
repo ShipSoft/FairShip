@@ -107,4 +107,5 @@ def convert_file(infile, outfile):
         tree.Write()
         root_file.Close()
         print(f"- convertEvtCalc - ROOT file '{outfile}' created successfully.")
-        return
+        return outfile
+ 

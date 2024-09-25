@@ -31,14 +31,14 @@ Bool_t EvtCalcGenerator::Init(const char* fileName, const int firstEvent) {
 	if (0 == strncmp("/eos", fileName,4)){
 		TString tmp = gSystem->Getenv("EOSSHIP");
 		tmp+=fileName;
-		fInputFile  = TFile::Open(tmp); 
-		fLogger->Info(MESSAGE_ORIGIN,"Info EvtCalcGenerator: Opening input file on eos %s",tmp.Data());
+		fInputFile  = TFile::Open(tmp);
+    LOGF(info, "Info EvtCalcGenerator: Opening input file on eos %s",tmp.Data());
 	}else{
 		fInputFile = new TFile(fileName);
-		fLogger->Info(MESSAGE_ORIGIN,"Info EvtCalcGenerator: Opening input file %s",fileName);}
+    LOGF(info, "Info EvtCalcGenerator: Opening input file %s",fileName)
 	
 	if (fInputFile->IsZombie() or !fInputFile){
-     		fLogger->Fatal(MESSAGE_ORIGIN, "Info EvtCalcGenerator: Error opening input file");
+     		LOG(FATAL) << "Info EvtCalcGenerator: Error opening input file";
 	return kFALSE;}
   
   fTree = (TTree *)fInputFile->Get("LLP_tree");
@@ -99,7 +99,7 @@ Bool_t EvtCalcGenerator::ReadEvent(FairPrimaryGenerator* cpg)
   Double_t vy_transf = vy * space_unit_conv; // units cm
 	Double_t vz_transf = (vz + coord_shift) * space_unit_conv; // units cm
 
-  if (fn==fNevents)  fLogger->Warning(MESSAGE_ORIGIN, "End of input file. Rewind.");
+  if (fn==fNevents){ LOG(WARNING) << "End of input file. Rewind."; }
 
   fTree->GetEntry(fn);
   fn++;
@@ -123,15 +123,9 @@ Bool_t EvtCalcGenerator::ReadEvent(FairPrimaryGenerator* cpg)
   cpg->AddTrack(pdg_prod2, px_prod2, py_prod2, pz_prod2, 
                   vx_transf, vy_transf, vz_transf, 1., 
                   wanttracking, e_prod2, tof, decay_prob);
-  if pdg_prod3!=-999:
+  if(pdg_prod3!=-999){
     cpg->AddTrack(pdg_prod3, px_prod3, py_prod3, pz_prod3, 
                     vx_transf, vy_transf, vz_transf, 2., 
-                    wanttracking, e_prod3, tof, decay_prob);
+                    wanttracking, e_prod3, tof, decay_prob);}
   return kTRUE;
-}
-
-// -------------------------------------------------------------------------
-Int_t EvtCalcGenerator::GetNevents()
-{
- return fNevents;
 }
