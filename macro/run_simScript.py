@@ -387,9 +387,10 @@ if simEngine == "Pythia6":
 # -----EvtCalc--------------------------------------
 if simEngine == "EvtCalc":
  print(f'Opening input file for conversion: {inputFile}')
+ outFile = inputFile.split('.dat')[0]+".root"
  ut.checkFileExists(inputFile)		# inputFile is a EvtCalc .dat file
  primGen.SetTarget(0., 0.)
- inputROOTFile = (convertEvtCalc.convertFile(inputFile))
+ inputROOTFile = (convertEvtCalc.convertFile(infile=inputFile, outfile=outFile))
  print(f'Opening input file for EvtCalc generator: {inputROOTFile}')
  ut.checkFileExists(inputROOTFile)
  EvtCalcGen = ROOT.EvtCalcGenerator()
