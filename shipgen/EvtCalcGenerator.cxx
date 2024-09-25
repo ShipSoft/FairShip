@@ -123,20 +123,21 @@ Bool_t EvtCalcGenerator::ReadEvent(FairPrimaryGenerator* cpg)
   
 // Mother LLP
   // Bool_t wanttracking=false;
-  // cpg->AddTrack(pdg_lpp, px_llp, py_llp, pz_llp, vx_transf, vy_transf, vz_transf, -1., 
-  //               wanttracking, e_llp, tof, decay_prob);
+  pdg_llp = 9900015;
+  cpg->AddTrack((Int_t)pdg_llp, px_llp, py_llp, pz_llp, vx_transf, vy_transf, vz_transf, -1., 
+                wanttracking, e_llp, tof, decay_prob);
 
 // Secondaries	
-  // wanttracking=true;
-  // cpg->AddTrack(pdg_prod1, px_prod1, py_prod1, pz_prod1, 
-  //                 vx_transf, vy_transf, vz_transf, 0., 
-  //                 wanttracking, e_prod1, tof, decay_prob);
-  // cpg->AddTrack(pdg_prod2, px_prod2, py_prod2, pz_prod2, 
-  //                 vx_transf, vy_transf, vz_transf, 1., 
-  //                 wanttracking, e_prod2, tof, decay_prob);
-  // if(pdg_prod3!=-999){
-  //   cpg->AddTrack(pdg_prod3, px_prod3, py_prod3, pz_prod3, 
-  //                   vx_transf, vy_transf, vz_transf, 2., 
-  //                   wanttracking, e_prod3, tof, decay_prob);}
+  wanttracking=true;
+  cpg->AddTrack((Int_t)pdg_prod1, px_prod1, py_prod1, pz_prod1, 
+                  vx_transf, vy_transf, vz_transf, 0., 
+                  wanttracking, e_prod1, tof, decay_prob);
+  cpg->AddTrack((Int_t)pdg_prod2, px_prod2, py_prod2, pz_prod2, 
+                  vx_transf, vy_transf, vz_transf, 1., 
+                  wanttracking, e_prod2, tof, decay_prob);
+  if(pdg_prod3!=-999){
+    cpg->AddTrack((Int_t)pdg_prod3, px_prod3, py_prod3, pz_prod3, 
+                    vx_transf, vy_transf, vz_transf, 2., 
+                    wanttracking, e_prod3, tof, decay_prob);}
   return kTRUE;
 }
