@@ -41,28 +41,38 @@ Bool_t EvtCalcGenerator::Init(const char* fileName, const int firstEvent) {
      		fLogger->Fatal(MESSAGE_ORIGIN, "Info EvtCalcGenerator: Error opening input file");
 	return kFALSE;}
   
-  fTree = (TTree *)fInputFile->Get("ntuple");
+  fTree = (TTree *)fInputFile->Get("LLP_tree");
   fNevents = fTree->GetEntries();
   fn = firstEvent;
-  // if (fTree->FindBranch("parentid") ){ fTree->SetBranchAddress("parentid",&parentid);}    // parent id
-  
-  fTree->SetBranchAddress("parentid",&parentid)
-  fTree->SetBranchAddress("px", &px);   // incoming LLP spatial momentum
-  fTree->SetBranchAddress("py", &py);
-  fTree->SetBranchAddress("pz", &pz);
-  fTree->SetBranchAddress("energy", &energy);
-  fTree->SetBranchAddress("weight",&weight); // event weight
-  fTree->SetBranchAddress("E_2ry",&E_2ry);	 // energy 2ry
-  fTree->SetBranchAddress("vx",&vx);         // vertex position
-  fTree->SetBranchAddress("vy",&vy);
-  fTree->SetBranchAddress("vz",&vz);
-  fTree->SetBranchAddress("px_2ry",&px_2ry); // spatial momentum 2ry
-	fTree->SetBranchAddress("py_2ry",&py_2ry);
-	fTree->SetBranchAddress("pz_2ry",&pz_2ry);
-  fTree->SetBranchAddress("energy_2ry",&energy_2ry);
-  fTree->SetBranchAddress("pdg_2ry",&pdg_2ry);	// pdg code 2ry
-	fTree->SetBranchAddress("n_2ry",&n_2ry);	    // nr 2ry
-  
+
+  fTree->SetBranchAddress("px_llp", &px_llp);
+  fTree->SetBranchAddress("py_llp", &py_llp);
+  fTree->SetBranchAddress("pz_llp", &pz_llp);
+  fTree->SetBranchAddress("e_llp", &e_llp);
+  fTree->SetBranchAddress("pdg_lpp", &pdg_lpp);
+  fTree->SetBranchAddress("decay_prob", &decay_prob);
+  fTree->SetBranchAddress("vx", &vx);
+  fTree->SetBranchAddress("vy", &vy);
+  fTree->SetBranchAddress("vz", &vz);
+
+  fTree->SetBranchAddress("px_prod1", &px_prod1);
+  fTree->SetBranchAddress("py_prod1", &py_prod1);
+  fTree->SetBranchAddress("pz_prod1", &pz_prod1);
+  fTree->SetBranchAddress("e_prod1", &e_prod1);
+  fTree->SetBranchAddress("pdg_prod1", &pdg_prod1);
+
+  fTree->SetBranchAddress("px_prod2", &px_prod2);
+  fTree->SetBranchAddress("py_prod2", &py_prod2);
+  fTree->SetBranchAddress("pz_prod2", &pz_prod2);
+  fTree->SetBranchAddress("e_prod2", &e_prod2);
+  fTree->SetBranchAddress("pdg_prod2", &pdg_prod2);
+
+  fTree->SetBranchAddress("px_prod3", &px_prod3);
+  fTree->SetBranchAddress("py_prod3", &py_prod3);
+  fTree->SetBranchAddress("pz_prod3", &pz_prod3);
+  fTree->SetBranchAddress("e_prod3", &e_prod3);
+  fTree->SetBranchAddress("pdg_prod3", &pdg_prod3);
+
   return kTRUE;
 }
 // -------------------------------------------------------------------------
@@ -94,25 +104,29 @@ Bool_t EvtCalcGenerator::ReadEvent(FairPrimaryGenerator* cpg)
   fTree->GetEntry(fn);
   fn++;
   if (fn %100==0)  cout << "Info EvtCalcGenerator: event nr "<< fn << endl;
-  int nPart = n_2ry->GetEntries();
 
   Double_t c   = 2.99792458e+6;
 	Double_t tof = TMath::Sqrt(vx_transf*vx_transf + vy_transf*vy_transf 
-                             + vz_transf*vz_transf)/c;
+                            + vz_transf*vz_transf)/c;
 
 // Mother LLP
   Bool_t wanttracking=false;
-  cpg->AddTrack(parentid, px, py, pz, vx_transf, vy_transf, vz_transf, -1., 
-                wanttracking, energy, tof, weight);
+  cpg->AddTrack(pdg_lpp, px_llp, py_llp, pz_llp, vx_transf, vy_transf, vz_transf, -1., 
+                wanttracking, e_llp, tof, decay_prob);
 
 // Secondaries	
   wanttracking=true;
-  for(int ipart=0; ipart<nPart; ++ipart){
-    if (fileName && *fileName){im+=1;};
-		cpg->AddTrack(pdg_2ry[ipart], px_2ry[ipart], py_2ry[ipart], pz_2ry[ipart], 
-                  vx_transf, vy_transf, vz_transf, ipart, wanttracking, energy_2ry[i], 
-                  tof, weight);
-	}
+  
+  cpg->AddTrack(pdg_prod1, px_prod1, py_prod1, pz_prod1, 
+                  vx_transf, vy_transf, vz_transf, 0., 
+                  wanttracking, e_prod1, tof, decay_prob);
+  cpg->AddTrack(pdg_prod2, px_prod2, py_prod2, pz_prod2, 
+                  vx_transf, vy_transf, vz_transf, 1., 
+                  wanttracking, e_prod2, tof, decay_prob);
+  if pdg_prod3!=-999:
+    cpg->AddTrack(pdg_prod3, px_prod3, py_prod3, pz_prod3, 
+                    vx_transf, vy_transf, vz_transf, 2., 
+                    wanttracking, e_prod3, tof, decay_prob);
   return kTRUE;
 }
 
