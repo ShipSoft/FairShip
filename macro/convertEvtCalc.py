@@ -32,9 +32,9 @@ def parse_file(infile):
                     current_block = []
                     header       = line.strip()
                     process_type = header.split(';')[0].split('=')[1]
-                    print(f'Process type: {process_type}')
+                    # print(f'Process type: {process_type}')
                     sampled_points = int(header.split(';')[1].split('=')[1][:-1])
-                    print(f'Sampled points: {sampled_points}')
+                    # print(f'Sampled points: {sampled_points}')
                     parsed_data.append((process_type, sampled_points, variables))
             else:
                 current_block.append(line.strip())
@@ -75,7 +75,7 @@ def convert_file(infile, outfile):
     outfile (str): Name of the output ROOT file.
     """
 
-    vars_names  = ['px_llp', 'py_llp', 'pz_llp', 'e_llp', 'mass_llp', 'pdg_lpp', 'decay_prob', 'vx', 'vy', 'vz']
+    vars_names  = ['px_llp', 'py_llp', 'pz_llp', 'e_llp', 'mass_llp', 'pdg_llp', 'decay_prob', 'vx', 'vy', 'vz']
     vars_names += ['px_prod1', 'py_prod1', 'pz_prod1', 'e_prod1', 'mass_prod1', 'pdg_prod1', 'charge_prod1', 'stability_prod1']
     vars_names += ['px_prod2', 'py_prod2', 'pz_prod2', 'e_prod2', 'mass_prod2', 'pdg_prod2', 'charge_prod2', 'stability_prod2']
     vars_names += ['px_prod3', 'py_prod3', 'pz_prod3', 'e_prod3', 'mass_prod3', 'pdg_prod3', 'charge_prod3', 'stability_prod3']
