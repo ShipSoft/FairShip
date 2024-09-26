@@ -133,11 +133,11 @@ Bool_t EvtCalcGenerator::ReadEvent(FairPrimaryGenerator* cpg)
                   vx_transf, vy_transf, vz_transf, 0., 
                   wanttracking, e_prod1, tof, decay_prob);
   cpg->AddTrack((Int_t)pdg_prod2, px_prod2, py_prod2, pz_prod2, 
-                  vx_transf, vy_transf, vz_transf, 1., 
+                  vx_transf, vy_transf, vz_transf, 0., 
                   wanttracking, e_prod2, tof, decay_prob);
   if(pdg_prod3!=-999){
     cpg->AddTrack((Int_t)pdg_prod3, px_prod3, py_prod3, pz_prod3, 
-                    vx_transf, vy_transf, vz_transf, 2., 
+                    vx_transf, vy_transf, vz_transf, 0., 
                     wanttracking, e_prod3, tof, decay_prob);}
   return kTRUE;
 }
