@@ -101,7 +101,7 @@ Bool_t EvtCalcGenerator::ReadEvent(FairPrimaryGenerator* cpg)
   
 // Mother LLP
   Bool_t wanttracking=false;
-  pdg_llp = 9900015;
+  pdg_llp = 0.; // Geantino, placeholder
   cpg->AddTrack((Int_t)pdg_llp, px_llp, py_llp, pz_llp, vx_transf, vy_transf, vz_transf, -1., 
                 wanttracking, e_llp, tof, decay_prob);
 
