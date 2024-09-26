@@ -93,10 +93,10 @@ Bool_t EvtCalcGenerator::ReadEvent(FairPrimaryGenerator* cpg)
   Double_t coord_shift     = (zDecayVolume - ztarget)/space_unit_conv; // units m
   Double_t vx_transf = vx * space_unit_conv; // units cm
   Double_t vy_transf = vy * space_unit_conv; // units cm
-	Double_t vz_transf = (vz - coord_shift) * space_unit_conv; // units cm
+  Double_t vz_transf = (vz - coord_shift) * space_unit_conv; // units cm
 
-  Double_t c   = 2.99792458e+6;
-	Double_t tof = TMath::Sqrt(vx_transf*vx_transf + vy_transf*vy_transf 
+  Double_t c = 2.99792458e+10; // speed of light [cm/s]
+  Double_t tof = TMath::Sqrt(vx_transf*vx_transf + vy_transf*vy_transf 
                             + vz_transf*vz_transf)/c;
   
 // Mother LLP
