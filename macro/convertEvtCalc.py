@@ -1,4 +1,4 @@
-import sys
+import sys, os
 
 import numpy as np
 import ROOT as r
@@ -66,7 +66,7 @@ def check_consistency_infile(nvars, ncols):
     return
 
 
-def convert_file(infile, outfile):
+def convert_file(infile, outdir):
     """
     Creates a ROOT file with a TTree containing the variables from the parsed input text file.
 
@@ -80,7 +80,13 @@ def convert_file(infile, outfile):
     vars_names += ['px_prod2', 'py_prod2', 'pz_prod2', 'e_prod2', 'mass_prod2', 'pdg_prod2', 'charge_prod2', 'stability_prod2']
     vars_names += ['px_prod3', 'py_prod3', 'pz_prod3', 'e_prod3', 'mass_prod3', 'pdg_prod3', 'charge_prod3', 'stability_prod3']
     
+    fname   = infile.split('/')[-1]
+    command = f'cp {infile} {outdir}/{fname}'
+    os.system(command)
+
+    infile      = f'{outdir}/{fname}'
     parsed_data = parse_file(infile)
+    outfile     = infile.split('.dat')[0]+'.root'
 
     try:
         check_consistency_infile(nvars=len(vars_names), ncols=len(parsed_data[0][2]))
