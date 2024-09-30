@@ -118,7 +118,7 @@ Private Attributes</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="CosmicsGenerator_8h_source.html#l00020">20</a> of file <a class="el" href="CosmicsGenerator_8h_source.html">CosmicsGenerator.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="CosmicsGenerator_8h_source.html#l00019">19</a> of file <a class="el" href="CosmicsGenerator_8h_source.html">CosmicsGenerator.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a392890680f6128c2ec0a854847845358"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a392890680f6128c2ec0a854847845358">&#9670;&nbsp;</a></span>Co3Rng()</h2>
@@ -143,16 +143,16 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="CosmicsGenerator_8h_source.html#l00022">22</a> of file <a class="el" href="CosmicsGenerator_8h_source.html">CosmicsGenerator.h</a>.</p>
-<div class="fragment"><div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;                {</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;            <a class="code" href="classCo3Rng.html#a541c87d453d6c814306faff157d5cfc2">rng</a> = <span class="keyword">new</span> TRandom3(gRandom-&gt;GetSeed());</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;            <a class="code" href="classCo3Rng.html#a45d30cdf242865401fe0511109b86e4f">fTheta</a> = <span class="keyword">new</span> TF1(<span class="stringliteral">&quot;f2&quot;</span>,<span class="stringliteral">&quot;cos(x)*cos(x)&quot;</span>,0,TMath::Pi()/2);</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;            <a class="code" href="classCo3Rng.html#a45d30cdf242865401fe0511109b86e4f">fTheta</a>-&gt;SetNpx(10);</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;            <a class="code" href="classCo3Rng.html#a4b5c5e8366ed58a801888305b46926db">fSpectrumH</a> = <span class="keyword">new</span> TF1(<span class="stringliteral">&quot;f4&quot;</span>,<span class="stringliteral">&quot;1400*TMath::Power(x,-2.7)*(1/(1+x/115)+0.054/(1+x/850))&quot;</span>,100,1000); <span class="comment">// momentum above 100GeV</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        };</div>
-<div class="ttc" id="aclassCo3Rng_html_a45d30cdf242865401fe0511109b86e4f"><div class="ttname"><a href="classCo3Rng.html#a45d30cdf242865401fe0511109b86e4f">Co3Rng::fTheta</a></div><div class="ttdeci">TF1 * fTheta</div><div class="ttdef"><b>Definition:</b> <a href="CosmicsGenerator_8h_source.html#l00031">CosmicsGenerator.h:31</a></div></div>
-<div class="ttc" id="aclassCo3Rng_html_a4b5c5e8366ed58a801888305b46926db"><div class="ttname"><a href="classCo3Rng.html#a4b5c5e8366ed58a801888305b46926db">Co3Rng::fSpectrumH</a></div><div class="ttdeci">TF1 * fSpectrumH</div><div class="ttdef"><b>Definition:</b> <a href="CosmicsGenerator_8h_source.html#l00030">CosmicsGenerator.h:29</a></div></div>
-<div class="ttc" id="aclassCo3Rng_html_a541c87d453d6c814306faff157d5cfc2"><div class="ttname"><a href="classCo3Rng.html#a541c87d453d6c814306faff157d5cfc2">Co3Rng::rng</a></div><div class="ttdeci">TRandom3 * rng</div><div class="ttdef"><b>Definition:</b> <a href="CosmicsGenerator_8h_source.html#l00034">CosmicsGenerator.h:34</a></div></div>
+<p class="definition">Definition at line <a class="el" href="CosmicsGenerator_8h_source.html#l00021">21</a> of file <a class="el" href="CosmicsGenerator_8h_source.html">CosmicsGenerator.h</a>.</p>
+<div class="fragment"><div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;                {</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;            <a class="code" href="classCo3Rng.html#a541c87d453d6c814306faff157d5cfc2">rng</a> = <span class="keyword">new</span> TRandom3(gRandom-&gt;GetSeed());</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;            <a class="code" href="classCo3Rng.html#a45d30cdf242865401fe0511109b86e4f">fTheta</a> = <span class="keyword">new</span> TF1(<span class="stringliteral">&quot;f2&quot;</span>,<span class="stringliteral">&quot;cos(x)*cos(x)&quot;</span>,0,TMath::Pi()/2);</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;            <a class="code" href="classCo3Rng.html#a45d30cdf242865401fe0511109b86e4f">fTheta</a>-&gt;SetNpx(10);</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;            <a class="code" href="classCo3Rng.html#a4b5c5e8366ed58a801888305b46926db">fSpectrumH</a> = <span class="keyword">new</span> TF1(<span class="stringliteral">&quot;f4&quot;</span>,<span class="stringliteral">&quot;1400*TMath::Power(x,-2.7)*(1/(1+x/115)+0.054/(1+x/850))&quot;</span>,100,1000); <span class="comment">// momentum above 100GeV</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        };</div>
+<div class="ttc" id="aclassCo3Rng_html_a45d30cdf242865401fe0511109b86e4f"><div class="ttname"><a href="classCo3Rng.html#a45d30cdf242865401fe0511109b86e4f">Co3Rng::fTheta</a></div><div class="ttdeci">TF1 * fTheta</div><div class="ttdef"><b>Definition:</b> <a href="CosmicsGenerator_8h_source.html#l00030">CosmicsGenerator.h:30</a></div></div>
+<div class="ttc" id="aclassCo3Rng_html_a4b5c5e8366ed58a801888305b46926db"><div class="ttname"><a href="classCo3Rng.html#a4b5c5e8366ed58a801888305b46926db">Co3Rng::fSpectrumH</a></div><div class="ttdeci">TF1 * fSpectrumH</div><div class="ttdef"><b>Definition:</b> <a href="CosmicsGenerator_8h_source.html#l00029">CosmicsGenerator.h:28</a></div></div>
+<div class="ttc" id="aclassCo3Rng_html_a541c87d453d6c814306faff157d5cfc2"><div class="ttname"><a href="classCo3Rng.html#a541c87d453d6c814306faff157d5cfc2">Co3Rng::rng</a></div><div class="ttdeci">TRandom3 * rng</div><div class="ttdef"><b>Definition:</b> <a href="CosmicsGenerator_8h_source.html#l00033">CosmicsGenerator.h:33</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -179,8 +179,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="CosmicsGenerator_8h_source.html#l00028">28</a> of file <a class="el" href="CosmicsGenerator_8h_source.html">CosmicsGenerator.h</a>.</p>
-<div class="fragment"><div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;{<span class="keyword">delete</span> <a class="code" href="classCo3Rng.html#a541c87d453d6c814306faff157d5cfc2">rng</a>; <span class="keyword">delete</span> <a class="code" href="classCo3Rng.html#a45d30cdf242865401fe0511109b86e4f">fTheta</a>; <span class="keyword">delete</span> <a class="code" href="classCo3Rng.html#a4b5c5e8366ed58a801888305b46926db">fSpectrumH</a>;};</div>
+<p class="definition">Definition at line <a class="el" href="CosmicsGenerator_8h_source.html#l00027">27</a> of file <a class="el" href="CosmicsGenerator_8h_source.html">CosmicsGenerator.h</a>.</p>
+<div class="fragment"><div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;{<span class="keyword">delete</span> <a class="code" href="classCo3Rng.html#a541c87d453d6c814306faff157d5cfc2">rng</a>; <span class="keyword">delete</span> <a class="code" href="classCo3Rng.html#a45d30cdf242865401fe0511109b86e4f">fTheta</a>; <span class="keyword">delete</span> <a class="code" href="classCo3Rng.html#a4b5c5e8366ed58a801888305b46926db">fSpectrumH</a>;};</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -289,8 +289,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="CosmicsGenerator_8h_source.html#l00029">29</a> of file <a class="el" href="CosmicsGenerator_8h_source.html">CosmicsGenerator.h</a>.</p>
-<div class="fragment"><div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;{<span class="keywordflow">return</span> <a class="code" href="classCo3Rng.html#a541c87d453d6c814306faff157d5cfc2">rng</a>-&gt;Uniform(min,<a class="code" href="namespacegeometry__config.html#a669b957607386750ed2077d789c9434e">max</a>);};</div>
+<p class="definition">Definition at line <a class="el" href="CosmicsGenerator_8h_source.html#l00028">28</a> of file <a class="el" href="CosmicsGenerator_8h_source.html">CosmicsGenerator.h</a>.</p>
+<div class="fragment"><div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;{<span class="keywordflow">return</span> <a class="code" href="classCo3Rng.html#a541c87d453d6c814306faff157d5cfc2">rng</a>-&gt;Uniform(min,<a class="code" href="namespacegeometry__config.html#a669b957607386750ed2077d789c9434e">max</a>);};</div>
 <div class="ttc" id="anamespacegeometry__config_html_a669b957607386750ed2077d789c9434e"><div class="ttname"><a href="namespacegeometry__config.html#a669b957607386750ed2077d789c9434e">geometry_config.max</a></div><div class="ttdeci">max</div><div class="ttdef"><b>Definition:</b> <a href="geometry__config_8py_source.html#l00182">geometry_config.py:182</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -308,7 +308,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="CosmicsGenerator_8h_source.html#l00030">30</a> of file <a class="el" href="CosmicsGenerator_8h_source.html">CosmicsGenerator.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="CosmicsGenerator_8h_source.html#l00029">29</a> of file <a class="el" href="CosmicsGenerator_8h_source.html">CosmicsGenerator.h</a>.</p>
 
 </div>
 </div>
@@ -324,7 +324,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="CosmicsGenerator_8h_source.html#l00031">31</a> of file <a class="el" href="CosmicsGenerator_8h_source.html">CosmicsGenerator.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="CosmicsGenerator_8h_source.html#l00030">30</a> of file <a class="el" href="CosmicsGenerator_8h_source.html">CosmicsGenerator.h</a>.</p>
 
 </div>
 </div>
@@ -348,7 +348,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="CosmicsGenerator_8h_source.html#l00034">34</a> of file <a class="el" href="CosmicsGenerator_8h_source.html">CosmicsGenerator.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="CosmicsGenerator_8h_source.html#l00033">33</a> of file <a class="el" href="CosmicsGenerator_8h_source.html">CosmicsGenerator.h</a>.</p>
 
 </div>
 </div>
