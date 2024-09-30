@@ -14,7 +14,6 @@
 #include "TMath.h"
 #include "TH1.h"
 
-using namespace std;
 class FairPrimaryGenerator;
 
 class Co3Rng{
@@ -40,12 +39,14 @@ class CosmicsGenerator : public FairGenerator{
 	CosmicsGenerator(){};
 	virtual ~CosmicsGenerator(){
 		delete fRandomEngine;
-		cout<<nInside<<" events have been generated."<<endl;
-		cout<<"There is a total of "<<nInside<<"/"<<nTest<<" muons that passed close enough to the detector."<<endl;
-		cout<<"Including the given weight this corresponds to ";
-		cout<<weighttest/FluxIntegral/xdist/zdist*10000<<" spills (1 spill = "<<xdist*zdist*FluxIntegral/10000;
-		cout<<" real cosmic muons = "<<n_EVENTS<<" simulated events)."<<endl;
-	};
+                std::cout << nInside << " events have been generated." << std::endl;
+                std::cout << "There is a total of " << nInside << "/" << nTest
+                          << " muons that passed close enough to the detector." << std::endl;
+                std::cout << "Including the given weight this corresponds to ";
+                std::cout << weighttest / FluxIntegral / xdist / zdist * 10000
+                          << " spills (1 spill = " << xdist * zdist * FluxIntegral / 10000;
+                std::cout << " real cosmic muons = " << n_EVENTS << " simulated events)." << std::endl;
+        };
 
 	/** public method ReadEvent **/
 	Bool_t ReadEvent(FairPrimaryGenerator*);  //!
