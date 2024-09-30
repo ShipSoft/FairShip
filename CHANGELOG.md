@@ -30,6 +30,7 @@ it in future.
 * Fix issue with SST parameters #489
 * Cleaned up Veto Implementation
 * Fix crash of event display, PID when no entrance lid present
+* Close ShipReco.py output file
 
 ### Changed
 
