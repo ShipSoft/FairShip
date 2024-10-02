@@ -31,6 +31,7 @@ it in future.
 * Cleaned up Veto Implementation
 * Fix crash of event display, PID when no entrance lid present
 * Close ShipReco.py output file
+* Remove unused (silently ignored!) argument for MuDISGenerator::SetPositions
 
 ### Changed
 
