@@ -28,9 +28,10 @@ class MuDISGenerator : public FairGenerator
   virtual Bool_t Init(const char*); //!
   Int_t GetNevents();
 
-  void SetPositions(Double_t zTa, Double_t zS=-3400., Double_t zE=2650.){
-    startZ      = zS;
-    endZ        = zE;
+  void SetPositions(Double_t z_start, Double_t z_end)
+  {
+      startZ = z_start;
+      endZ = z_end;
   }
 
  private:
