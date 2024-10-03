@@ -29,7 +29,6 @@ if sys.platform == 'darwin':
    ROOT.gSystem.Load('libhcal')
    ROOT.gSystem.Load('libmuon')
    ROOT.gSystem.Load('libpid')
-   ROOT.gSystem.Load('libpreshower')
    ROOT.gSystem.Load('libgenfit')
    ROOT.gSystem.Load("libPythia6")
    ROOT.gSystem.Load("libpythia8")

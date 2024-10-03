@@ -18,7 +18,7 @@
 using namespace std;
 
 
-ecalCell* ecalStructure::GetCell(Int_t volId, Int_t& ten, Bool_t& isPS)
+ecalCell* ecalStructure::GetCell(Int_t volId, Int_t& ten)
 {
   UInt_t i;
   static Int_t volidmax = 0;
@@ -45,7 +45,6 @@ ecalCell* ecalStructure::GetCell(Int_t volId, Int_t& ten, Bool_t& isPS)
     if (lisPS) fHash[volId]->isPsTen+=1;
   }
   ten=fHash[volId]->isPsTen/2;
-  isPS=fHash[volId]->isPsTen%2;
   return fHash[volId]->cell;
 }
 
