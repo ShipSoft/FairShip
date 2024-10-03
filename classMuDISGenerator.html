@@ -127,8 +127,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ac83bb0ab4d089d85221d8e75978e9757"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0ce1232934fc28d9259d5255e0c34f57"><td class="memItemLeft" align="right" valign="top">Int_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMuDISGenerator.html#a0ce1232934fc28d9259d5255e0c34f57">GetNevents</a> ()</td></tr>
 <tr class="separator:a0ce1232934fc28d9259d5255e0c34f57"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab69e782d12c131065ae055fc88009b76"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMuDISGenerator.html#ab69e782d12c131065ae055fc88009b76">SetPositions</a> (Double_t zTa, Double_t zS=-3400., Double_t zE=2650.)</td></tr>
-<tr class="separator:ab69e782d12c131065ae055fc88009b76"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae0adf0b9bdf68dbc0ec65b853d586bc4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMuDISGenerator.html#ae0adf0b9bdf68dbc0ec65b853d586bc4">SetPositions</a> (Double_t z_start, Double_t z_end)</td></tr>
+<tr class="separator:ae0adf0b9bdf68dbc0ec65b853d586bc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -219,7 +219,7 @@ Private Member Functions</h2></td></tr>
 <div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160; <a class="code" href="classMuDISGenerator.html#a92fa592ef709cd36ff6843f911ce7df6">fInputFile</a>-&gt;Delete();</div>
 <div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160; <span class="keyword">delete</span> <a class="code" href="classMuDISGenerator.html#a92fa592ef709cd36ff6843f911ce7df6">fInputFile</a>;</div>
 <div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;}</div>
-<div class="ttc" id="aclassMuDISGenerator_html_a92fa592ef709cd36ff6843f911ce7df6"><div class="ttname"><a href="classMuDISGenerator.html#a92fa592ef709cd36ff6843f911ce7df6">MuDISGenerator::fInputFile</a></div><div class="ttdeci">TFile * fInputFile</div><div class="ttdoc">don't make it persistent, magic ROOT command</div><div class="ttdef"><b>Definition:</b> <a href="MuDISGenerator_8h_source.html#l00045">MuDISGenerator.h:45</a></div></div>
+<div class="ttc" id="aclassMuDISGenerator_html_a92fa592ef709cd36ff6843f911ce7df6"><div class="ttname"><a href="classMuDISGenerator.html#a92fa592ef709cd36ff6843f911ce7df6">MuDISGenerator::fInputFile</a></div><div class="ttdeci">TFile * fInputFile</div><div class="ttdoc">don't make it persistent, magic ROOT command</div><div class="ttdef"><b>Definition:</b> <a href="MuDISGenerator_8h_source.html#l00046">MuDISGenerator.h:46</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -279,7 +279,7 @@ Private Member Functions</h2></td></tr>
 <div class="fragment"><div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;{</div>
 <div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160; <span class="keywordflow">return</span> <a class="code" href="classMuDISGenerator.html#a1884e25a973fb2b12c6b69525a142130">fNevents</a>;</div>
 <div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;}</div>
-<div class="ttc" id="aclassMuDISGenerator_html_a1884e25a973fb2b12c6b69525a142130"><div class="ttname"><a href="classMuDISGenerator.html#a1884e25a973fb2b12c6b69525a142130">MuDISGenerator::fNevents</a></div><div class="ttdeci">int fNevents</div><div class="ttdef"><b>Definition:</b> <a href="MuDISGenerator_8h_source.html#l00047">MuDISGenerator.h:47</a></div></div>
+<div class="ttc" id="aclassMuDISGenerator_html_a1884e25a973fb2b12c6b69525a142130"><div class="ttname"><a href="classMuDISGenerator.html#a1884e25a973fb2b12c6b69525a142130">MuDISGenerator::fNevents</a></div><div class="ttdeci">int fNevents</div><div class="ttdef"><b>Definition:</b> <a href="MuDISGenerator_8h_source.html#l00048">MuDISGenerator.h:48</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -374,10 +374,10 @@ Private Member Functions</h2></td></tr>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  <span class="comment">// cout &lt;&lt; &quot;muon DIS Generator number of events &quot;&lt;&lt; fNevents &lt;&lt; endl;</span></div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  <span class="keywordflow">return</span> kTRUE;</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;}</div>
-<div class="ttc" id="aclassMuDISGenerator_html_a35b38465414dcef5825c2f404c392ca4"><div class="ttname"><a href="classMuDISGenerator.html#a35b38465414dcef5825c2f404c392ca4">MuDISGenerator::fTree</a></div><div class="ttdeci">TTree * fTree</div><div class="ttdef"><b>Definition:</b> <a href="MuDISGenerator_8h_source.html#l00046">MuDISGenerator.h:46</a></div></div>
-<div class="ttc" id="aclassMuDISGenerator_html_a690c34be5fb561c231192afb15d2c513"><div class="ttname"><a href="classMuDISGenerator.html#a690c34be5fb561c231192afb15d2c513">MuDISGenerator::fn</a></div><div class="ttdeci">int fn</div><div class="ttdef"><b>Definition:</b> <a href="MuDISGenerator_8h_source.html#l00048">MuDISGenerator.h:48</a></div></div>
-<div class="ttc" id="aclassMuDISGenerator_html_ac3ed57fb1dc35b1f018cdb2e1e2d0324"><div class="ttname"><a href="classMuDISGenerator.html#ac3ed57fb1dc35b1f018cdb2e1e2d0324">MuDISGenerator::iMuon</a></div><div class="ttdeci">TClonesArray * iMuon</div><div class="ttdef"><b>Definition:</b> <a href="MuDISGenerator_8h_source.html#l00042">MuDISGenerator.h:42</a></div></div>
-<div class="ttc" id="aclassMuDISGenerator_html_af1bfb064f0e597bcce6f3202829b5d37"><div class="ttname"><a href="classMuDISGenerator.html#af1bfb064f0e597bcce6f3202829b5d37">MuDISGenerator::dPart</a></div><div class="ttdeci">TClonesArray * dPart</div><div class="ttdef"><b>Definition:</b> <a href="MuDISGenerator_8h_source.html#l00043">MuDISGenerator.h:43</a></div></div>
+<div class="ttc" id="aclassMuDISGenerator_html_a35b38465414dcef5825c2f404c392ca4"><div class="ttname"><a href="classMuDISGenerator.html#a35b38465414dcef5825c2f404c392ca4">MuDISGenerator::fTree</a></div><div class="ttdeci">TTree * fTree</div><div class="ttdef"><b>Definition:</b> <a href="MuDISGenerator_8h_source.html#l00047">MuDISGenerator.h:47</a></div></div>
+<div class="ttc" id="aclassMuDISGenerator_html_a690c34be5fb561c231192afb15d2c513"><div class="ttname"><a href="classMuDISGenerator.html#a690c34be5fb561c231192afb15d2c513">MuDISGenerator::fn</a></div><div class="ttdeci">int fn</div><div class="ttdef"><b>Definition:</b> <a href="MuDISGenerator_8h_source.html#l00049">MuDISGenerator.h:49</a></div></div>
+<div class="ttc" id="aclassMuDISGenerator_html_ac3ed57fb1dc35b1f018cdb2e1e2d0324"><div class="ttname"><a href="classMuDISGenerator.html#ac3ed57fb1dc35b1f018cdb2e1e2d0324">MuDISGenerator::iMuon</a></div><div class="ttdeci">TClonesArray * iMuon</div><div class="ttdef"><b>Definition:</b> <a href="MuDISGenerator_8h_source.html#l00043">MuDISGenerator.h:43</a></div></div>
+<div class="ttc" id="aclassMuDISGenerator_html_af1bfb064f0e597bcce6f3202829b5d37"><div class="ttname"><a href="classMuDISGenerator.html#af1bfb064f0e597bcce6f3202829b5d37">MuDISGenerator::dPart</a></div><div class="ttdeci">TClonesArray * dPart</div><div class="ttdef"><b>Definition:</b> <a href="MuDISGenerator_8h_source.html#l00044">MuDISGenerator.h:44</a></div></div>
 <div class="ttc" id="anamespaceMufluxReco_html_a25bf3c01fa91e183c42bbee53cbf4123"><div class="ttname"><a href="namespaceMufluxReco.html#a25bf3c01fa91e183c42bbee53cbf4123">MufluxReco.firstEvent</a></div><div class="ttdeci">int firstEvent</div><div class="ttdef"><b>Definition:</b> <a href="MufluxReco_8py_source.html#l00011">MufluxReco.py:11</a></div></div>
 <div class="ttc" id="anamespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring_html_a983c4ccffa135d77a12bed4ff546e7c4"><div class="ttname"><a href="namespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring.html#a983c4ccffa135d77a12bed4ff546e7c4">conditionsDatabase.demo.drifttubeMonitoring.tmp</a></div><div class="ttdeci">tmp</div><div class="ttdef"><b>Definition:</b> <a href="drifttubeMonitoring_8py_source.html#l00087">drifttubeMonitoring.py:87</a></div></div>
 <div class="ttc" id="anamespacerun__fixedTarget_html_a6feefc87aa4cb38aec3a08a614b84433"><div class="ttname"><a href="namespacerun__fixedTarget.html#a6feefc87aa4cb38aec3a08a614b84433">run_fixedTarget.info</a></div><div class="ttdeci">string info</div><div class="ttdef"><b>Definition:</b> <a href="run__fixedTarget_8py_source.html#l00271">run_fixedTarget.py:271</a></div></div>
@@ -683,9 +683,9 @@ Private Member Functions</h2></td></tr>
 <div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;       }</div>
 <div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;  <span class="keywordflow">return</span> kTRUE;</div>
 <div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;}</div>
-<div class="ttc" id="aclassMuDISGenerator_html_a265ad29dfc07e699d171b204b5480eef"><div class="ttname"><a href="classMuDISGenerator.html#a265ad29dfc07e699d171b204b5480eef">MuDISGenerator::startZ</a></div><div class="ttdeci">Double_t startZ</div><div class="ttdef"><b>Definition:</b> <a href="MuDISGenerator_8h_source.html#l00041">MuDISGenerator.h:41</a></div></div>
+<div class="ttc" id="aclassMuDISGenerator_html_a265ad29dfc07e699d171b204b5480eef"><div class="ttname"><a href="classMuDISGenerator.html#a265ad29dfc07e699d171b204b5480eef">MuDISGenerator::startZ</a></div><div class="ttdeci">Double_t startZ</div><div class="ttdef"><b>Definition:</b> <a href="MuDISGenerator_8h_source.html#l00042">MuDISGenerator.h:42</a></div></div>
 <div class="ttc" id="aclassMuDISGenerator_html_a4bd7aacc60282f41dfe472f767940eca"><div class="ttname"><a href="classMuDISGenerator.html#a4bd7aacc60282f41dfe472f767940eca">MuDISGenerator::MeanMaterialBudget</a></div><div class="ttdeci">Double_t MeanMaterialBudget(const Double_t *start, const Double_t *end, Double_t *mparam)</div><div class="ttdef"><b>Definition:</b> <a href="MuDISGenerator_8cxx_source.html#l00056">MuDISGenerator.cxx:56</a></div></div>
-<div class="ttc" id="aclassMuDISGenerator_html_aebd4e2db02a83054f90440088fd8d9a7"><div class="ttname"><a href="classMuDISGenerator.html#aebd4e2db02a83054f90440088fd8d9a7">MuDISGenerator::endZ</a></div><div class="ttdeci">Double_t endZ</div><div class="ttdef"><b>Definition:</b> <a href="MuDISGenerator_8h_source.html#l00041">MuDISGenerator.h:41</a></div></div>
+<div class="ttc" id="aclassMuDISGenerator_html_aebd4e2db02a83054f90440088fd8d9a7"><div class="ttname"><a href="classMuDISGenerator.html#aebd4e2db02a83054f90440088fd8d9a7">MuDISGenerator::endZ</a></div><div class="ttdeci">Double_t endZ</div><div class="ttdef"><b>Definition:</b> <a href="MuDISGenerator_8h_source.html#l00042">MuDISGenerator.h:42</a></div></div>
 <div class="ttc" id="anamespacecharm-geometry__config_html_ab2e80a101e23d81f6afc4b1fd8e76761"><div class="ttname"><a href="namespacecharm-geometry__config.html#ab2e80a101e23d81f6afc4b1fd8e76761">charm-geometry_config.z</a></div><div class="ttdeci">z</div><div class="ttdef"><b>Definition:</b> <a href="charm-geometry__config_8py_source.html#l00007">charm-geometry_config.py:7</a></div></div>
 <div class="ttc" id="anamespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring_html_a50f41b0cafa1d4c18cfd054725736ce4"><div class="ttname"><a href="namespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring.html#a50f41b0cafa1d4c18cfd054725736ce4">conditionsDatabase.demo.drifttubeMonitoring.node</a></div><div class="ttdeci">node</div><div class="ttdef"><b>Definition:</b> <a href="drifttubeMonitoring_8py_source.html#l01048">drifttubeMonitoring.py:1048</a></div></div>
 <div class="ttc" id="anamespacegeometry__config_html_a1286b5c01494c311eb3a950d1ac8857c"><div class="ttname"><a href="namespacegeometry__config.html#a1286b5c01494c311eb3a950d1ac8857c">geometry_config.x</a></div><div class="ttdeci">x</div><div class="ttdef"><b>Definition:</b> <a href="geometry__config_8py_source.html#l00184">geometry_config.py:184</a></div></div>
@@ -695,8 +695,8 @@ Private Member Functions</h2></td></tr>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="ab69e782d12c131065ae055fc88009b76"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab69e782d12c131065ae055fc88009b76">&#9670;&nbsp;</a></span>SetPositions()</h2>
+<a id="ae0adf0b9bdf68dbc0ec65b853d586bc4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae0adf0b9bdf68dbc0ec65b853d586bc4">&#9670;&nbsp;</a></span>SetPositions()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -708,19 +708,13 @@ Private Member Functions</h2></td></tr>
           <td class="memname">void MuDISGenerator::SetPositions </td>
           <td>(</td>
           <td class="paramtype">Double_t&#160;</td>
-          <td class="paramname"><em>zTa</em>, </td>
+          <td class="paramname"><em>z_start</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">Double_t&#160;</td>
-          <td class="paramname"><em>zS</em> = <code>-3400.</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Double_t&#160;</td>
-          <td class="paramname"><em>zE</em> = <code>2650.</code>&#160;</td>
+          <td class="paramname"><em>z_end</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -736,10 +730,10 @@ Private Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="MuDISGenerator_8h_source.html#l00031">31</a> of file <a class="el" href="MuDISGenerator_8h_source.html">MuDISGenerator.h</a>.</p>
-<div class="fragment"><div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;                                                                        {</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <a class="code" href="classMuDISGenerator.html#a265ad29dfc07e699d171b204b5480eef">startZ</a>      = zS;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <a class="code" href="classMuDISGenerator.html#aebd4e2db02a83054f90440088fd8d9a7">endZ</a>        = zE;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  }</div>
+<div class="fragment"><div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  {</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;      <a class="code" href="classMuDISGenerator.html#a265ad29dfc07e699d171b204b5480eef">startZ</a> = z_start;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;      <a class="code" href="classMuDISGenerator.html#aebd4e2db02a83054f90440088fd8d9a7">endZ</a> = z_end;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -764,7 +758,7 @@ Private Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="MuDISGenerator_8h_source.html#l00043">43</a> of file <a class="el" href="MuDISGenerator_8h_source.html">MuDISGenerator.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="MuDISGenerator_8h_source.html#l00044">44</a> of file <a class="el" href="MuDISGenerator_8h_source.html">MuDISGenerator.h</a>.</p>
 
 </div>
 </div>
@@ -788,7 +782,7 @@ Private Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="MuDISGenerator_8h_source.html#l00041">41</a> of file <a class="el" href="MuDISGenerator_8h_source.html">MuDISGenerator.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="MuDISGenerator_8h_source.html#l00042">42</a> of file <a class="el" href="MuDISGenerator_8h_source.html">MuDISGenerator.h</a>.</p>
 
 </div>
 </div>
@@ -812,7 +806,7 @@ Private Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="MuDISGenerator_8h_source.html#l00049">49</a> of file <a class="el" href="MuDISGenerator_8h_source.html">MuDISGenerator.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="MuDISGenerator_8h_source.html#l00050">50</a> of file <a class="el" href="MuDISGenerator_8h_source.html">MuDISGenerator.h</a>.</p>
 
 </div>
 </div>
@@ -838,7 +832,7 @@ Private Member Functions</h2></td></tr>
 
 <p>don't make it persistent, magic ROOT command </p>
 
-<p class="definition">Definition at line <a class="el" href="MuDISGenerator_8h_source.html#l00045">45</a> of file <a class="el" href="MuDISGenerator_8h_source.html">MuDISGenerator.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="MuDISGenerator_8h_source.html#l00046">46</a> of file <a class="el" href="MuDISGenerator_8h_source.html">MuDISGenerator.h</a>.</p>
 
 </div>
 </div>
@@ -862,7 +856,7 @@ Private Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="MuDISGenerator_8h_source.html#l00044">44</a> of file <a class="el" href="MuDISGenerator_8h_source.html">MuDISGenerator.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="MuDISGenerator_8h_source.html#l00045">45</a> of file <a class="el" href="MuDISGenerator_8h_source.html">MuDISGenerator.h</a>.</p>
 
 </div>
 </div>
@@ -886,7 +880,7 @@ Private Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="MuDISGenerator_8h_source.html#l00048">48</a> of file <a class="el" href="MuDISGenerator_8h_source.html">MuDISGenerator.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="MuDISGenerator_8h_source.html#l00049">49</a> of file <a class="el" href="MuDISGenerator_8h_source.html">MuDISGenerator.h</a>.</p>
 
 </div>
 </div>
@@ -910,7 +904,7 @@ Private Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="MuDISGenerator_8h_source.html#l00047">47</a> of file <a class="el" href="MuDISGenerator_8h_source.html">MuDISGenerator.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="MuDISGenerator_8h_source.html#l00048">48</a> of file <a class="el" href="MuDISGenerator_8h_source.html">MuDISGenerator.h</a>.</p>
 
 </div>
 </div>
@@ -934,7 +928,7 @@ Private Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="MuDISGenerator_8h_source.html#l00046">46</a> of file <a class="el" href="MuDISGenerator_8h_source.html">MuDISGenerator.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="MuDISGenerator_8h_source.html#l00047">47</a> of file <a class="el" href="MuDISGenerator_8h_source.html">MuDISGenerator.h</a>.</p>
 
 </div>
 </div>
@@ -958,7 +952,7 @@ Private Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="MuDISGenerator_8h_source.html#l00042">42</a> of file <a class="el" href="MuDISGenerator_8h_source.html">MuDISGenerator.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="MuDISGenerator_8h_source.html#l00043">43</a> of file <a class="el" href="MuDISGenerator_8h_source.html">MuDISGenerator.h</a>.</p>
 
 </div>
 </div>
@@ -982,7 +976,7 @@ Private Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="MuDISGenerator_8h_source.html#l00041">41</a> of file <a class="el" href="MuDISGenerator_8h_source.html">MuDISGenerator.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="MuDISGenerator_8h_source.html#l00042">42</a> of file <a class="el" href="MuDISGenerator_8h_source.html">MuDISGenerator.h</a>.</p>
 
 </div>
 </div>

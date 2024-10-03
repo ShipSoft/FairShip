@@ -8,7 +8,7 @@ var classMuDISGenerator =
     [ "Init", "classMuDISGenerator.html#acff8290c0d478cf8998a4dd9344387d8", null ],
     [ "MeanMaterialBudget", "classMuDISGenerator.html#a4bd7aacc60282f41dfe472f767940eca", null ],
     [ "ReadEvent", "classMuDISGenerator.html#a1ef04fa43d64060f2386e6a65b380ad2", null ],
-    [ "SetPositions", "classMuDISGenerator.html#ab69e782d12c131065ae055fc88009b76", null ],
+    [ "SetPositions", "classMuDISGenerator.html#ae0adf0b9bdf68dbc0ec65b853d586bc4", null ],
     [ "dPart", "classMuDISGenerator.html#af1bfb064f0e597bcce6f3202829b5d37", null ],
     [ "endZ", "classMuDISGenerator.html#aebd4e2db02a83054f90440088fd8d9a7", null ],
     [ "fFirst", "classMuDISGenerator.html#ad40fc4c44152721d8b6613ae011d34de", null ],

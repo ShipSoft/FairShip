@@ -490,7 +490,7 @@ $(document).ready(function(){initNavTree('run__simScript_8py_source.html',''); i
 <div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160; <span class="comment"># in front of UVT up to tracking station 1</span></div>
 <div class="line"><a name="l00404"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#abcf3f03662d4796a1af150de86d59f43">  404</a></span>&#160; mu_start, mu_end = ship_geo.Chamber1.z-ship_geo.chambers.Tub1length-10.*u.cm,ship_geo.TrackStation1.z</div>
 <div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160; print(<span class="stringliteral">&#39;MuDIS position info input=&#39;</span>,mu_start, mu_end)</div>
-<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160; DISgen.SetPositions(ship_geo.target.z0, mu_start, mu_end)</div>
+<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160; DISgen.SetPositions(mu_start, mu_end)</div>
 <div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160; DISgen.Init(inputFile,options.firstEvent)</div>
 <div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160; primGen.AddGenerator(DISgen)</div>
 <div class="line"><a name="l00409"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#ac224f2a2d08b71115bf77bb3b3f3dea3">  409</a></span>&#160; options.nEvents = min(options.nEvents,DISgen.GetNevents())</div>
