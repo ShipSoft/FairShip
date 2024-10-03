@@ -1,5 +1,10 @@
 var NAVTREEINDEX37 =
 {
+"namespaceMufluxPatRec.html#a62fd58a32ca32210bb3b40eacad75ddb":[11,0,74,4],
+"namespaceMufluxPatRec.html#a6c186848107feea00b492866700295bc":[11,0,74,12],
+"namespaceMufluxPatRec.html#a6fc9c5aee464cea5f0fed1db313fd3b5":[11,0,74,1],
+"namespaceMufluxPatRec.html#a87abfc5a12b9604eca76c1c023b7bf23":[11,0,74,3],
+"namespaceMufluxPatRec.html#a89299853b0651c499f40528670a39df6":[11,0,74,2],
 "namespaceMufluxPatRec.html#aa14f6c560b37c1b6c57f33c5ecca48b1":[11,0,74,10],
 "namespaceMufluxPatRec.html#aa4a8681a31694640347586570ce8be46":[11,0,74,13],
 "namespaceMufluxPatRec.html#ab2d53699444a81dce7e77b63c61e40fe":[11,0,74,5],
@@ -244,10 +249,5 @@ var NAVTREEINDEX37 =
 "namespaceTTCluster.html#a5e3795a2eaaa0da90e1e74cec56c97a5":[11,0,129,73],
 "namespaceTTCluster.html#a629a4444240f0d3cae8096fd10409dbb":[11,0,129,87],
 "namespaceTTCluster.html#a6490c89779befb9111648eb18b07daeb":[11,0,129,3],
-"namespaceTTCluster.html#a65472a05de0b21cb4f6d667745454235":[11,0,129,24],
-"namespaceTTCluster.html#a6bccfadd2cbeb3f27659a4ac0b63891b":[11,0,129,65],
-"namespaceTTCluster.html#a6f668bc89ae2f3000f4d97625057837a":[11,0,129,51],
-"namespaceTTCluster.html#a71d82a532b85a2ffe0ccbbf769e58538":[11,0,129,32],
-"namespaceTTCluster.html#a7936732eaf30688647f63e1293187d16":[11,0,129,31],
-"namespaceTTCluster.html#a79775c50701d4970dfd21d08aad40265":[11,0,129,78]
+"namespaceTTCluster.html#a65472a05de0b21cb4f6d667745454235":[11,0,129,24]
 };

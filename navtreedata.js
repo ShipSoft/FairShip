@@ -32,6 +32,12 @@ var NAVTREE =
         [ "Fixed", "md_CHANGELOG.html#autotoc_md3", null ],
         [ "Changed", "md_CHANGELOG.html#autotoc_md4", null ],
         [ "Removed", "md_CHANGELOG.html#autotoc_md5", null ]
+      ] ],
+      [ "24.10 - Freiburg", "md_CHANGELOG.html#autotoc_md6", [
+        [ "Added", "md_CHANGELOG.html#autotoc_md7", null ],
+        [ "Fixed", "md_CHANGELOG.html#autotoc_md8", null ],
+        [ "Changed", "md_CHANGELOG.html#autotoc_md9", null ],
+        [ "Removed", "md_CHANGELOG.html#autotoc_md10", null ]
       ] ]
     ] ],
     [ "README", "md_conditionsDatabase_databases_mongodb_models_README.html", null ],
@@ -39,34 +45,34 @@ var NAVTREE =
     [ "README", "md_conditionsDatabase_databases_README.html", null ],
     [ "README", "md_conditionsDatabase_demo_README.html", null ],
     [ "conditionsDB package", "md_conditionsDatabase_README.html", [
-      [ "Introduction", "md_conditionsDatabase_README.html#autotoc_md11", [
-        [ "Supported storage back-ends", "md_conditionsDatabase_README.html#autotoc_md12", null ]
+      [ "Introduction", "md_conditionsDatabase_README.html#autotoc_md16", [
+        [ "Supported storage back-ends", "md_conditionsDatabase_README.html#autotoc_md17", null ]
       ] ],
-      [ "Package structure", "md_conditionsDatabase_README.html#autotoc_md13", null ],
-      [ "Package dependencies", "md_conditionsDatabase_README.html#autotoc_md14", [
-        [ "Python", "md_conditionsDatabase_README.html#autotoc_md15", null ],
-        [ "Storage back-ends", "md_conditionsDatabase_README.html#autotoc_md16", null ],
-        [ "aliBuild integration", "md_conditionsDatabase_README.html#autotoc_md17", null ]
+      [ "Package structure", "md_conditionsDatabase_README.html#autotoc_md18", null ],
+      [ "Package dependencies", "md_conditionsDatabase_README.html#autotoc_md19", [
+        [ "Python", "md_conditionsDatabase_README.html#autotoc_md20", null ],
+        [ "Storage back-ends", "md_conditionsDatabase_README.html#autotoc_md21", null ],
+        [ "aliBuild integration", "md_conditionsDatabase_README.html#autotoc_md22", null ]
       ] ],
-      [ "Documentation generation", "md_conditionsDatabase_README.html#autotoc_md18", null ],
-      [ "Supported Python version", "md_conditionsDatabase_README.html#autotoc_md19", null ]
+      [ "Documentation generation", "md_conditionsDatabase_README.html#autotoc_md23", null ],
+      [ "Supported Python version", "md_conditionsDatabase_README.html#autotoc_md24", null ]
     ] ],
     [ "README", "md_conditionsDatabase_tests_README.html", [
-      [ "Directory structure", "md_conditionsDatabase_tests_README.html#autotoc_md21", null ]
+      [ "Directory structure", "md_conditionsDatabase_tests_README.html#autotoc_md26", null ]
     ] ],
     [ "Unit Test", "md_conditionsDatabase_tests_test_mongodb_README.html", null ],
     [ "README", "md_field_README.html", null ],
     [ "FairShip", "md_README.html", [
-      [ "Introduction", "md_README.html#autotoc_md28", [
-        [ "Branches", "md_README.html#autotoc_md29", null ]
+      [ "Introduction", "md_README.html#autotoc_md33", [
+        [ "Branches", "md_README.html#autotoc_md34", null ]
       ] ],
-      [ "Build Instructions using CVMFS", "md_README.html#autotoc_md30", null ],
-      [ "Local build, without access to CVMFS", "md_README.html#autotoc_md31", null ],
-      [ "Run instructions", "md_README.html#autotoc_md32", null ],
-      [ "Docker instructions", "md_README.html#autotoc_md33", null ],
-      [ "Troubleshooting information", "md_README.html#autotoc_md34", null ],
-      [ "Documentation", "md_README.html#autotoc_md35", null ],
-      [ "Contributing code", "md_README.html#autotoc_md36", null ]
+      [ "Build Instructions using CVMFS", "md_README.html#autotoc_md35", null ],
+      [ "Local build, without access to CVMFS", "md_README.html#autotoc_md36", null ],
+      [ "Run instructions", "md_README.html#autotoc_md37", null ],
+      [ "Docker instructions", "md_README.html#autotoc_md38", null ],
+      [ "Troubleshooting information", "md_README.html#autotoc_md39", null ],
+      [ "Documentation", "md_README.html#autotoc_md40", null ],
+      [ "Contributing code", "md_README.html#autotoc_md41", null ]
     ] ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
@@ -144,30 +150,30 @@ var NAVTREEINDEX =
 "geometry__config_8py.html#ae949308a33fbd7f7096e0223cba1e10b",
 "hepunit_8py.html#a7b175a4b054a7377d450ffd98587da9f",
 "makeDecay_8py.html#a8cfe9e861329fa8de60a03e354af437e",
-"mpbits_8f90.html#ac6629aea8d521ce7ee77d482c19ac192",
-"mpmod_8f90.html#ad215c8375287930fd388c1e204140fbb",
-"namespaceMufluxPatRec.html#aa14f6c560b37c1b6c57f33c5ecca48b1",
-"namespaceTTCluster.html#a7d187c50e4d2bf1210a2931733d3da6a",
-"namespacecharm-geometry__config.html#a59a739481c467d312078f1cfd715c633",
-"namespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring.html#a006780f41095e8f94dd9399d78ba8924",
-"namespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring.html#acd03f2d0aa34d45ae796016d18926886",
-"namespaceeventDisplay.html#a19c17c7cc197bc1d35c2b8c087e9426f",
-"namespaceg4Ex__gap__mergeFiles.html#a837f1e4d78049ceaaa8445095c8de6f5",
-"namespacegeometry__config.html#a8f25738d26d681f23d947eeaa3008eeb",
-"namespacehepunit.html#a2343bad128ec7df0a249a12c94fa5d0e",
-"namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9",
-"namespaceminresqlpmodule.html",
-"namespacempmod.html#acf9a63b8c8fdedd6243ae33a00d8ba2a",
-"namespacerunCharmHadProd.html",
-"namespacerun__reco.html#a943f1fa1b0950c6710ef7ce67180e510",
-"namespaceshipPatRec__prev.html#a1328b5ab34a3b75537c8b6bdf5cb6dd5",
-"namespacestudy__GammaConv.html#a9f1e7a36fb26b74b912450315ae6935d",
-"pede_8f90.html#ae0971beb43bf6994f05975fe8638e926",
-"runPythia8_8py.html#a1135a48d19eb061057b3c6ae189948d8",
-"run__simPgun_8py.html#a04e80d5fa6f52b10185bf15a9e3840e8",
-"shipPatRec__prev_8py.html#ab4ef0649c22a676b68557a8c55285080",
-"structDataFrame.html#a3f173916bab039f4adb7f9f6dd9defef",
-"test__mongodbadapter_8py.html#ace66b8fb4bd7c446cbecf838073ac108"
+"mpbits_8f90.html#a8ee45ed456a58bf46d0b55ac62d04c0e",
+"mpmod_8f90.html#acc78106d0f44a814ec8e7779001f28d6",
+"namespaceMufluxPatRec.html#a62fd58a32ca32210bb3b40eacad75ddb",
+"namespaceTTCluster.html#a6bccfadd2cbeb3f27659a4ac0b63891b",
+"namespacecharm-geometry__config.html#a55a911e4df28f70e0e9b4934a56eb3ab",
+"namespaceconditionsDatabase_1_1databases_1_1mongodb_1_1mongodbadapter.html#a2ada962ec6a6f0e089ec6dd03d96e571",
+"namespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring.html#ac960c78e43bbb29ef9a22f64faeb6b83",
+"namespaceeveGlobal.html#af384e4f875e85dd37b0398e54a393298",
+"namespaceg4Ex__gap__mergeFiles.html#a2bd0162f169ff3e31dba248ae0ea4ea3",
+"namespacegeometry__config.html#a8aa4182e12a2746d01d4a85e5d322445",
+"namespacehepunit.html#a1fbf96a628066d4949b01a2f07102da3",
+"namespacemakeDecay.html#a8718f33cd01d5a873aede1561940be4b",
+"namespaceminresqlpdatamodule.html#ab8efc81097a4de8d933c8a04d4621bd5",
+"namespacempmod.html#ac573f05a09f12bb6c00492f1d7374d9e",
+"namespacerpvsusy.html#a8b5544128495c9d33bee37ddf3210f10",
+"namespacerun__reco.html#a7801d15f7e6e3934001ab869f8530c97",
+"namespaceshipPatRec__prev.html#a05a13cfeb6d5e2c4fd3bca6bef68e2a9",
+"namespacestudy__GammaConv.html#a7d2b59793ee6eff6f659d6e60b00a70a",
+"pede_8f90.html#ad7828f3b25225915586ac1d5a1a98206",
+"runMufluxDigi_8py.html#af981d560783dde1f9354375d6967e11e",
+"run__simEcal_8py.html#affc0d74c43bec52eb87b6ef419741da9",
+"shipPatRec__prev_8py.html#a99a5bdb37b011216720d77f47e7d9282",
+"structChannelId.html",
+"test__mongodbadapter_8py.html#aa9a96ba0e0df1d0f5137ba95be3ace00"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

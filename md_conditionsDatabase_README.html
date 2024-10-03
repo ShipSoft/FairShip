@@ -85,16 +85,16 @@ $(document).ready(function(){initNavTree('md_conditionsDatabase_README.html','')
 <div class="title">conditionsDB package </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h1><a class="anchor" id="autotoc_md11"></a>
+<div class="textblock"><h1><a class="anchor" id="autotoc_md16"></a>
 Introduction</h1>
 <p>This package provides functionality to communicate with a conditions database (CDB) storage back-end. It provides a generic API that facilitates storage and retrieval of conditions data from any supported storage back-end.</p>
-<h2><a class="anchor" id="autotoc_md12"></a>
+<h2><a class="anchor" id="autotoc_md17"></a>
 Supported storage back-ends</h2>
 <p>Currently, the following storage back-ends are supported:</p>
 <ul>
 <li>MongoDB</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md13"></a>
+<h1><a class="anchor" id="autotoc_md18"></a>
 Package structure</h1>
 <ul>
 <li>[<b>databases/</b>] Contains storage back-end adapters. More information about these adapters can be found in the readme inside this directory.</li>
@@ -109,28 +109,28 @@ Package structure</h1>
 <li>[<b>start_mongodb_locally.sh</b>] Shell script that starts a local MongoDB server (if installed). See further documentation inside the script.</li>
 <li>[<b>User manual.pdf</b>] User manual describing database set up procedures and main API use-cases.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md14"></a>
+<h1><a class="anchor" id="autotoc_md19"></a>
 Package dependencies</h1>
-<h2><a class="anchor" id="autotoc_md15"></a>
+<h2><a class="anchor" id="autotoc_md20"></a>
 Python</h2>
 <p>The required Python dependencies for this package are listed in the <code><a class="el" href="requirements_8txt.html">requirements.txt</a></code> file. This file can be used by PIP to automatically install these dependencies. Run <code>pip install -r <a class="el" href="requirements_8txt.html">requirements.txt</a></code> from the current directory to install all dependencies.</p>
 <p>Make sure to update the <code><a class="el" href="requirements_8txt.html">requirements.txt</a></code> file whenever there are new dependencies (e.g. when a new storage back-end adapter is implemented).</p>
-<h2><a class="anchor" id="autotoc_md16"></a>
+<h2><a class="anchor" id="autotoc_md21"></a>
 Storage back-ends</h2>
 <p>Storage back-ends actually store the conditions data. A storage back-end can consist of a full-fledged database management system (like MongoDB) or consist of a simple text file. The corresponding back-end adapter will take care of all the necessary translations and operations between the CDB API and the storage back-end. In order to use a specific storage back-end this back-end must be available to the system (i.e. FairSHiP). For every supported storage back-end the required dependencies are listed below.</p>
 <ul>
 <li>[<b>MongoDB</b>] A MongoDB server, either installed locally or available via the network. See the User Manual for more info on how to set up a MongoDB server.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md17"></a>
+<h2><a class="anchor" id="autotoc_md22"></a>
 aliBuild integration</h2>
 <p>Most of the FairSHiP users rely on the automatic building tool aliBuild (<a href="http://alisw.github.io/alibuild/">http://alisw.github.io/alibuild/</a>). This tool uses build recipies to install all dependencies on the target machine, in correct order. These build recipies are located in a special repository: <a href="https://github.com/ShipSoft/shipdist">https://github.com/ShipSoft/shipdist</a>. The dependencies for the CDB API are Python modules. In order for aliBuild to install these modules, we updated the relevant build recipe: <code>python_modules.sh</code>. The added Python dependencies are the same as the ones defined in <code><a class="el" href="requirements_8txt.html">requirements.txt</a></code>.</p>
-<h1><a class="anchor" id="autotoc_md18"></a>
+<h1><a class="anchor" id="autotoc_md23"></a>
 Documentation generation</h1>
 <p>For the generation of an API reference manual we use the documentation generator Doxygen. Configuration for Doxygen can be found in the <code>Doxyfile</code>. In order to (re)generate the documentation, you should first install Doxygen. Then inside the package's root folder ("conditionsDatabase") you will be able to find the Doxyfile, which is currently configured for the project. The commands that you should run are the following:</p>
 <p>doxygen Doxyfile &mdash;&gt; produces the latex and html files for the reference manual.</p>
 <p>cd docs/latex &mdash;&gt; Inside this folder there is a makefile, which will produce the pdf.</p>
 <p>make pdf &mdash;&gt; Produces the pdf. The name of the file will be "refman.pdf".</p>
-<h1><a class="anchor" id="autotoc_md19"></a>
+<h1><a class="anchor" id="autotoc_md24"></a>
 Supported Python version</h1>
 <p>This package is developed to work with Python 2. However, wherever possible we tried to use constructs that are compatible with both Python 2 and 3. Also, whenever relevant we documented the code with updates that can be applied when porting to Python 3. </p>
 </div></div><!-- contents -->

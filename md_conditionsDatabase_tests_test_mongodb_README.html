@@ -87,16 +87,16 @@ $(document).ready(function(){initNavTree('md_conditionsDatabase_tests_test_mongo
 <div class="contents">
 <div class="textblock"><p>This directory contains unit tests for the MongoDB adapter. We use PyTest for our unit test. Every time you want to execute the unit test, you have to run <code><a class="el" href="generate__test__db_8py.html">generate_test_db.py</a></code> first to generate a test database and insert dummy data inside. For checking the test coverage, we use PyTest-Cov.</p>
 <p>In these unit tests, we rely heavily on the <code>get_detector()</code> function. Therefore, the unit test execution must be stopped whenever <code><a class="el" href="namespaceconditionsDatabase_1_1tests_1_1test__mongodb_1_1test__mongodbadapter.html#aebaf45e433e923305b4d3831ed817d8e">test_get_detector()</a></code> has any fails.</p>
-<h3><a class="anchor" id="autotoc_md23"></a>
+<h3><a class="anchor" id="autotoc_md28"></a>
 How to generate test database</h3>
 <p>Go to the FairSHiP root folder and execute: </p><div class="fragment"><div class="line">python -m conditionsDatabase.tests.test_mongodb.generate_test_db</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md24"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md29"></a>
 How to execute PyTest</h3>
 <p>We order the test case functions based on their priority. We set <code><a class="el" href="namespaceconditionsDatabase_1_1tests_1_1test__mongodb_1_1test__mongodbadapter.html#aebaf45e433e923305b4d3831ed817d8e">test_get_detector()</a></code> as the first function to make sure <code>get_detector()</code> works fine before executing the other test functions. We also use <code>--maxfail=1</code> to shun any false information when there is a fail in <code><a class="el" href="namespaceconditionsDatabase_1_1tests_1_1test__mongodb_1_1test__mongodbadapter.html#aebaf45e433e923305b4d3831ed817d8e">test_get_detector()</a></code>.</p>
 <p>To execute our Unit Test, go to <code>/conditionsDatabase/tests/test_mongodb/</code> and execute: </p><div class="fragment"><div class="line">py.test --maxfail=1</div>
 </div><!-- fragment --><p> You can also check the status of every unit by executing: </p><div class="fragment"><div class="line">py.test --maxfail=1 --verbose</div>
 </div><!-- fragment --><p>Alternatively, if you don't want to abort the tests after a failing test you can omit the <code>--maxfail=1</code> argument. I.e. execute: </p><div class="fragment"><div class="line">py.test</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md25"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md30"></a>
 How to see test coverage</h3>
 <p>Go to <code>/conditionsDatabase/tests/test_mongodb/</code> and execute: </p><div class="fragment"><div class="line">pytest --cov=../../databases/mongodb --cov-report term-missing --cov-report html</div>
 </div><!-- fragment --><p> Then, open <code>/conditionsDatabase/tests/test_mongodb/htmlcov/index.html</code>. </p>
