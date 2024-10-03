@@ -121,6 +121,11 @@ Changed</h2>
 <li>Housekeeping: Use same clang-format and clang-tidy config as FairRoot</li>
 <li>Decay Vessel configuration now imported from a yaml file</li>
 <li>Geometry of Decay Vessel updated to new design</li>
+<li>Housekeeping: Bump minimum CMake version to 3.12</li>
+<li>Housekeeping: Use FairRoot's <code>find_package2</code> to find ROOT, VMC, fmt</li>
+<li>Housekeeping: Bump minimum ROOT version to 6.26</li>
+<li>Housekeeping: Use find_package to find BOOST</li>
+<li>Housekeeping: Set FairLogger dep instead of manual includes</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md5"></a>
 Removed</h2>
@@ -129,7 +134,9 @@ Removed</h2>
 <li>Remove uses of future and past modules #473</li>
 <li>Remove Geant3 dependency</li>
 <li>Remove unimplemented event display functions (see #497)</li>
-<li>Disable SND by default </li>
+<li>Disable SND by default</li>
+<li>Housekeeping: Don't use CMake commands no longer provided by FairRoot 19</li>
+<li>Housekeeping: Remove old CMake for ROOT 5 </li>
 </ul>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
