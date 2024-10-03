@@ -14,10 +14,26 @@ it in future.
 
 ### Added
 
+### Fixed
+
+### Changed
+
+### Removed
+
+## 24.10 - Freiburg
+
+Tag release to prepare for breaking changes. Last release to include charm
+cross-section measurement code, and obsolete detector configurations.
+
+### Added
+
 * Add option for helium-filled decay volume
-* Add pre-commit config: This will be phased in to improve code quality and spot issues as early as possible. Status visible in README and CI enabled for new pull requests.
+* Add pre-commit config: This will be phased in to improve code quality and
+  spot issues as early as possible. Status visible in README and CI enabled for
+  new pull requests.
 * Add CHANGELOG.md
-* Add `.git-blame-ignore-revs` to allow automatic reformatting etc. without polluting git blame
+* Add `.git-blame-ignore-revs` to allow automatic reformatting etc. without
+  polluting git blame
 * Automatically built documentation using Doxygen
 * Add CODEOWNERS file to automatically trigger reviews by the relevant experts
 * Add different configuration files for vacuum /helium for the Decay Vessel
