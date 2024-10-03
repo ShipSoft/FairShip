@@ -55,3 +55,4 @@ it in future.
 * Disable SND by default
 * Housekeeping: Don't use CMake commands no longer provided by FairRoot 19
 * Housekeeping: Remove old CMake for ROOT 5
+* Remove old, outdated tracking script
