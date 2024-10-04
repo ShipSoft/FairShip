@@ -35,6 +35,8 @@ it in future.
 ### Removed
 
 * Remove obsolete renaming scripts
+* Remove online, please see charmdet and muflux branches for respective versions
+* Remove charmdet, please see charmdet branch for latest version
 
 ## 24.10 - Freiburg
 

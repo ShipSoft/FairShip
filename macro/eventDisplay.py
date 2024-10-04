@@ -57,11 +57,6 @@ transparentMaterials = {
     "Bakelite": 70,
     "RPCgas": 70,
     "TTmedium": 70,
-    #                        charm detector
-    "CoilAluminium": 70,
-    "molybdenum": 80,
-    "PlasticBase": 70,
-    "tantalum": 70,
 }
 #
 
@@ -1350,24 +1345,7 @@ else:
             ecalGeoFile = ShipGeo.ecal.File
 
 mcHits = {}
-if hasattr(ShipGeo, "MuonTagger"):
-    mcHits["MufluxSpectrometerPoints"] = ROOT.FairMCPointDraw(
-        "MufluxSpectrometerPoint", ROOT.kRed, ROOT.kFullSquare
-    )
-    mcHits["MuonTaggerPoints"] = ROOT.FairMCPointDraw(
-        "MuonTaggerPoint", ROOT.kGreen, ROOT.kFullCircle
-    )
-    if not ShipGeo.MufluxSpectrometer.muflux:
-        mcHits["BoxPoints"] = ROOT.FairMCPointDraw(
-            "BoxPoint", ROOT.kBlue, ROOT.kFullDiamond
-        )
-        mcHits["PixelModulesPoints"] = ROOT.FairMCPointDraw(
-            "PixelModulesPoint", ROOT.kRed, ROOT.kFullCircle
-        )
-        mcHits["SciFiPoints"] = ROOT.FairMCPointDraw(
-            "SciFiPoint", ROOT.kGreen, ROOT.kFullSquare
-        )
-elif hasattr(ShipGeo, "MuFilter"):
+if hasattr(ShipGeo, "MuFilter"):
     mcHits["ScifiPoints"] = ROOT.FairMCPointDraw(
         "ScifiPoint", ROOT.kRed, ROOT.kFullDiamond
     )
