@@ -1066,3 +1066,4 @@ class ShipDigiReco:
   ut.writeHists(global_variables.h,"recohists.root")
   if global_variables.realPR:
     shipPatRec.finalize()
+  self.fn.Close()

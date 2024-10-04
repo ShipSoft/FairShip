@@ -10,14 +10,12 @@ ${ROOT_INCLUDE_DIR}
 ${VMC_INCLUDE_DIRS}
 )
 
-include_directories( ${INCLUDE_DIRECTORIES} ${FAIRROOT_INCLUDE_DIR} ${FairLogger_INCDIR} ${FMT_INCLUDE_DIR}
-)
+include_directories(${INCLUDE_DIRECTORIES} ${FAIRROOT_INCLUDE_DIR})
 include_directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
 
 set(LINK_DIRECTORIES
 ${ROOT_LIBRARY_DIR}
 ${FAIRROOT_LIBRARY_DIR}
-
 )
 
 link_directories( ${LINK_DIRECTORIES})
@@ -38,6 +36,6 @@ TTPoint.cxx
 Set(HEADERS )
 Set(LINKDEF nutaudetLinkDef.h)
 Set(LIBRARY_NAME nutaudet)
-Set(DEPENDENCIES Base ShipData GeoBase ParBase Geom Core)
+set(DEPENDENCIES Base ShipData GeoBase ParBase Geom Core FairLogger::FairLogger)
 
 GENERATE_LIBRARY()

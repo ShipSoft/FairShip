@@ -8,8 +8,7 @@ ${CMAKE_SOURCE_DIR}/muon
 ${VMC_INCLUDE_DIRS}
 )
 
-include_directories( ${INCLUDE_DIRECTORIES} ${FAIRROOT_INCLUDE_DIR} ${FairLogger_INCDIR} ${FMT_INCLUDE_DIR}
-)
+include_directories(${INCLUDE_DIRECTORIES} ${FAIRROOT_INCLUDE_DIR})
 include_directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
 
 set(LINK_DIRECTORIES
@@ -30,7 +29,7 @@ muonHit.cxx
 Set(LINKDEF muonLinkDef.h)
 Set(LIBRARY_NAME muon)
 Set(DEPENDENCIES
-    Base ShipData
+    Base ShipData FairLogger::FairLogger
 )
 
 GENERATE_LIBRARY()

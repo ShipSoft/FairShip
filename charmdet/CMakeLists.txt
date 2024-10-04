@@ -13,8 +13,7 @@ ${CMAKE_SOURCE_DIR}/millepede
 ${ROOT_INCLUDE_DIR}
 )
 
-include_directories( ${INCLUDE_DIRECTORIES} ${VMC_INCLUDE_DIRS} ${FAIRROOT_INCLUDE_DIR} ${FairLogger_INCDIR} ${FMT_INCLUDE_DIR}
-)
+include_directories(${INCLUDE_DIRECTORIES} ${VMC_INCLUDE_DIRS} ${FAIRROOT_INCLUDE_DIR})
 include_directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
 
 set(LINK_DIRECTORIES
@@ -56,6 +55,6 @@ MillepedeCaller.cxx
 Set(HEADERS )
 Set(LINKDEF BoxLinkDef.h)
 Set(LIBRARY_NAME charmdet)
-Set(DEPENDENCIES Base ShipData GeoBase ParBase Geom Core genfit millepede)
+set(DEPENDENCIES Base ShipData GeoBase ParBase Geom Core genfit millepede FairLogger::FairLogger)
 
 GENERATE_LIBRARY()

@@ -7,8 +7,7 @@ ${CMAKE_SOURCE_DIR}/shipdata
 ${CMAKE_SOURCE_DIR}/splitcal
 )
 
-include_directories( ${INCLUDE_DIRECTORIES} ${VMC_INCLUDE_DIRS} ${FAIRROOT_INCLUDE_DIR} ${FairLogger_INCDIR} ${FMT_INCLUDE_DIR}
-)
+include_directories(${INCLUDE_DIRECTORIES} ${VMC_INCLUDE_DIRS} ${FAIRROOT_INCLUDE_DIR})
 include_directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
 
 set(LINK_DIRECTORIES
@@ -30,7 +29,7 @@ splitcalCluster.cxx
 Set(LINKDEF splitcalLinkDef.h)
 Set(LIBRARY_NAME splitcal)
 Set(DEPENDENCIES
-    Base ShipData
+    Base ShipData FairLogger::FairLogger
 )
 
 GENERATE_LIBRARY()

@@ -423,7 +423,7 @@ if simEngine == "muonDIS":
  # in front of UVT up to tracking station 1
  mu_start, mu_end = ship_geo.Chamber1.z-ship_geo.chambers.Tub1length-10.*u.cm,ship_geo.TrackStation1.z
  print('MuDIS position info input=',mu_start, mu_end)
- DISgen.SetPositions(ship_geo.target.z0, mu_start, mu_end)
+ DISgen.SetPositions(mu_start, mu_end)
  DISgen.Init(inputFile,options.firstEvent)
  primGen.AddGenerator(DISgen)
  options.nEvents = min(options.nEvents,DISgen.GetNevents())

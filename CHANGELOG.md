@@ -14,10 +14,26 @@ it in future.
 
 ### Added
 
+### Fixed
+
+### Changed
+
+### Removed
+
+## 24.10 - Freiburg
+
+Tag release to prepare for breaking changes. Last release to include charm
+cross-section measurement code, and obsolete detector configurations.
+
+### Added
+
 * Add option for helium-filled decay volume
-* Add pre-commit config: This will be phased in to improve code quality and spot issues as early as possible. Status visible in README and CI enabled for new pull requests.
+* Add pre-commit config: This will be phased in to improve code quality and
+  spot issues as early as possible. Status visible in README and CI enabled for
+  new pull requests.
 * Add CHANGELOG.md
-* Add `.git-blame-ignore-revs` to allow automatic reformatting etc. without polluting git blame
+* Add `.git-blame-ignore-revs` to allow automatic reformatting etc. without
+  polluting git blame
 * Automatically built documentation using Doxygen
 * Add CODEOWNERS file to automatically trigger reviews by the relevant experts
 * Add different configuration files for vacuum /helium for the Decay Vessel
@@ -30,6 +46,8 @@ it in future.
 * Fix issue with SST parameters #489
 * Cleaned up Veto Implementation
 * Fix crash of event display, PID when no entrance lid present
+* Close ShipReco.py output file
+* Remove unused (silently ignored!) argument for MuDISGenerator::SetPositions
 
 ### Changed
 
@@ -38,6 +56,11 @@ it in future.
 * Housekeeping: Use same clang-format and clang-tidy config as FairRoot
 * Decay Vessel configuration now imported from a yaml file
 * Geometry of Decay Vessel updated to new design
+* Housekeeping: Bump minimum CMake version to 3.12
+* Housekeeping: Use FairRoot's `find_package2` to find ROOT, VMC, fmt
+* Housekeeping: Bump minimum ROOT version to 6.26
+* Housekeeping: Use find_package to find BOOST
+* Housekeeping: Set FairLogger dep instead of manual includes
 
 ### Removed
 
@@ -46,3 +69,6 @@ it in future.
 * Remove Geant3 dependency
 * Remove unimplemented event display functions (see #497)
 * Disable SND by default
+* Housekeeping: Don't use CMake commands no longer provided by FairRoot 19
+* Housekeeping: Remove old CMake for ROOT 5
+* Remove old, outdated tracking script

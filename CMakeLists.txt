@@ -6,7 +6,7 @@
 # and ShipRoot.
 
 # Check if cmake has the required version
-CMAKE_MINIMUM_REQUIRED(VERSION 3.9.4 FATAL_ERROR)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.12.0 FATAL_ERROR)
 
 foreach(p
   CMP0028 # double colon for imported and alias targets
@@ -108,10 +108,6 @@ IF(NOT UNIX)
   MESSAGE(FATAL_ERROR "You're not on an UNIX system. The project was up to now only tested on UNIX systems, so we break here. If you want to go on please edit the CMakeLists.txt in the source directory.")
 ENDIF(NOT UNIX)
 
-# Check if the external packages are installed into a separate install
-# directory
-CHECK_EXTERNAL_PACKAGE_INSTALL_DIR()
-
 # Set the build type. Possibilities are None, Debug, Release,
 # RelWithDebInfo and MinSizeRel
 #SET(CMAKE_BUILD_TYPE Debug)
@@ -121,7 +117,10 @@ CHECK_EXTERNAL_PACKAGE_INSTALL_DIR()
 # For example the framework can run without GEANT4, but ROOT is
 # mandatory
 
-find_package(ROOT 6.10.06 REQUIRED)
+find_package(FairCMakeModules 1.0 REQUIRED)
+include(FairFindPackage2)
+find_package2(PUBLIC ROOT 6.26.14 REQUIRED)
+include(ROOTMacros)
 find_package2(PUBLIC Pythia8 REQUIRED)
 find_package2(PUBLIC EvtGen REQUIRED)
 # (GENERATORS REQUIRED)
@@ -129,16 +128,10 @@ find_package2(PUBLIC GEANT4)
 find_package2(PUBLIC GEANT4DATA)
 find_package2(PUBLIC GEANT4VMC)
 find_package2(PUBLIC HEPMC)
+find_package2(PUBLIC fmt)
 find_package2(PUBLIC FairRoot REQUIRED)
 find_package2(PUBLIC FairLogger REQUIRED)
-
-if(ROOT_FOUND_VERSION GREATER 62599)
-  find_package2(PUBLIC VMC REQUIRED)
-  set(VMCLIB VMCLibrary)
-else()
-  set(VMCLIB ROOT::VMC)
-endif()
-
+find_package2(PUBLIC VMC REQUIRED)
 
 IF(DEFINED ${BOOST_ROOT})
   Set(Boost_NO_SYSTEM_PATHS TRUE)
@@ -152,20 +145,7 @@ IF(DEFINED $ENV{GSL_ROOT})
       set(GSL_DIR $ENV{GSL_ROOT})
 ENDIF(DEFINED $ENV{GSL_ROOT})
 
-  Message("-- Looking for Boost ...")
-  # If an older version of boost is found both of the variables below are
-  # cached and in a second cmake run, a good boost version is found even
-  # if the version is to old.
-  # To overcome this problem both variables are cleared before checking
-  # for boost.
-  Unset(Boost_INCLUDE_DIR CACHE)
-  Unset(Boost_LIBRARY_DIRS CACHE)
-  find_package(Boost 1.41)
-  If (Boost_FOUND)
-    Set(Boost_Avail 1)
-  Else (Boost_FOUND)
-    Set(Boost_Avail 0)
-  EndIf (Boost_FOUND)
+find_package(Boost 1.70 REQUIRED)
 
 # set a variable which should be used in all CMakeLists.txt
 # Defines all basic include directories from fairbase
@@ -181,7 +161,6 @@ SetBasicVariables()
 Set(SYSTEM_INCLUDE_DIRECTORIES
   ${SYSTEM_INCLUDE_DIRECTORIES}
   ${BASE_INCLUDE_DIRECTORIES}
-  ${FAIRLOGGER_INCLUDE_DIR}
 )
 
 # Set the library version in the main CMakeLists.txt
@@ -190,21 +169,11 @@ SET(FAIRROOT_MINOR_VERSION 0)
 SET(FAIRROOT_PATCH_VERSION 0)
 SET(FAIRROOT_VERSION "${FAIRROOT_MAJOR_VERSION}.${FAIRROOT_MINOR_VERSION}.${FAIRROOT_PATCH_VERSION}")
 
-If(ROOT_FOUND_VERSION LESS 59999)
-  SET(FAIRROOT_LIBRARY_PROPERTIES ${FAIRROOT_LIBRARY_PROPERTIES}
-      VERSION "${FAIRROOT_VERSION}"
-      SOVERSION "${FAIRROOT_MAJOR_VERSION}"
-      SUFFIX ".so"
-  )
-Else()
-  SET(FAIRROOT_LIBRARY_PROPERTIES ${FAIRROOT_LIBRARY_PROPERTIES}
-      VERSION "${FAIRROOT_VERSION}"
-      SOVERSION "${FAIRROOT_MAJOR_VERSION}"
-  )
-  SET(CMAKE_SHARED_LIBRARY_SUFFIX .so)
-EndIf()
-
-Generate_Version_Info()
+set(FAIRROOT_LIBRARY_PROPERTIES ${FAIRROOT_LIBRARY_PROPERTIES}
+	VERSION "${FAIRROOT_VERSION}"
+	SOVERSION "${FAIRROOT_MAJOR_VERSION}"
+)
+set(CMAKE_SHARED_LIBRARY_SUFFIX .so)
 
 SET(CBMLIBDIR ${CMAKE_BINARY_DIR}/lib)
 SET(LD_LIBRARY_PATH  ${CBMLIBDIR} ${LD_LIBRARY_PATH})
