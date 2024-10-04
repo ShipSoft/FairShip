@@ -80,8 +80,8 @@ parser.add_argument("--Pythia6", dest="pythia6", help="Use Pythia6", required=Fa
 parser.add_argument("--Pythia8", dest="pythia8", help="Use Pythia8", required=False, action="store_true")
 parser.add_argument("--PG",      dest="pg",      help="Use Particle Gun", required=False, action="store_true")
 parser.add_argument("--pID",     dest="pID",     help="id of particle used by the gun (default=22)", required=False, default=22, type=int)
-parser.add_argument("--Estart",  dest="Estart",  help="start of energy range of particle gun for muflux detector (default=10 GeV)", required=False, default=10, type=float)
-parser.add_argument("--Eend",    dest="Eend",    help="end of energy range of particle gun for muflux detector (default=10 GeV)", required=False, default=10, type=float)
+parser.add_argument("--Estart", help="start of energy range of particle gun (default=10 GeV)", default=10, type=float)
+parser.add_argument("--Eend", help="end of energy range of particle gun (default=10 GeV)", default=10, type=float)
 parser.add_argument("-A",        dest="A",       help="b: signal from b, c: from c (default), bc: from Bc, or inclusive", required=False, default='c')
 parser.add_argument("--Genie",   dest="genie",   help="Genie for reading and processing neutrino interactions", required=False, action="store_true")
 parser.add_argument("--NuRadio", dest="nuradio", help="misuse GenieGenerator for neutrino radiography and geometry timing test", required=False, action="store_true")
@@ -123,10 +123,6 @@ parser.add_argument("--caloDesign", dest="caloDesign",   help="0=ECAL/HCAL TP  1
                                             ,required=False, default=globalDesigns[default]['caloDesign'], type=int)
 parser.add_argument("--strawDesign", dest="strawDesign", help="simplistic tracker design,  4=sophisticated straw tube design, horizontal wires (default), 10=2cm straw"
                                             ,required=False, default=globalDesigns[default]['strawDesign'], type=int)
-parser.add_argument("--Muflux",  dest="muflux",  help="Muflux fixed target setup", required=False, action="store_true")
-parser.add_argument("--charm", dest="charm",  help="!=0 create charm detector instead of SHiP", required=False, default=0)
-parser.add_argument("--CharmdetSetup", dest="CharmdetSetup",  help="1 charm cross section setup, 0 muon flux setup", required=False, default=0, type=int)
-parser.add_argument("--CharmTarget",   dest="CharmTarget",  help="six different configurations used in July 2018 exposure for charm", default=3, type=int, choices=[1, 2, 3, 4, 5, 6, 16])
 parser.add_argument("-F",        dest="deepCopy",  help="default = False: copy only stable particles to stack, except for HNL events", required=False, action="store_true")
 parser.add_argument("-t", "--test", dest="testFlag",  help="quick test", required=False,action="store_true")
 parser.add_argument("--dry-run", dest="dryrun",  help="stop after initialize", required=False,action="store_true")
@@ -160,9 +156,6 @@ if options.ALPACA:   simEngine = "ALPACA"
 if options.muonback: simEngine = "MuonBack"
 if options.nuage:    simEngine = "Nuage"
 if options.mudis:    simEngine = "muonDIS"
-if options.muflux:
-     simEngine = "FixedTarget"
-     HNL = False
 if options.A != 'c':
      inclusive = options.A
      if options.A =='b': inputFile = "/eos/experiment/ship/data/Beauty/Cascade-run0-19-parp16-MSTP82-1-MSEL5-5338Bpot.root"
@@ -219,33 +212,22 @@ shipRoot_conf.configure(0)     # load basic libraries, prepare atexit for python
 # - muShieldDesign = 7  # 7 = short design+magnetized hadron absorber
 # - targetOpt      = 5  # 0=solid   >0 sliced, 5: 5 pieces of tungsten, 4 H20 slits, 17: Mo + W +H2O (default)
 #   nuTauTargetDesign = 0 # 0 = TP, 1 = NEW with magnet, 2 = NEW without magnet, 3 = 2018 design
-if not options.charm:
-     ship_geo = ConfigRegistry.loadpy(
-          "$FAIRSHIP/geometry/geometry_config.py",
-          Yheight=options.dy,
-          tankDesign=options.dv,
-          muShieldDesign=options.ds,
-          nuTauTargetDesign=options.nud,
-          CaloDesign=options.caloDesign,
-          strawDesign=options.strawDesign,
-          muShieldGeo=options.geofile,
-          muShieldStepGeo=options.muShieldStepGeo,
-          muShieldWithCobaltMagnet=options.muShieldWithCobaltMagnet,
-          SC_mag=options.SC_mag,
-          scName=options.scName,
-          DecayVolumeMedium=options.helium,
-          SND=options.SND,
-     )
-else:
-     ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/charm-geometry_config.py", Setup = options.CharmdetSetup, cTarget = options.CharmTarget)
-     if not options.CharmdetSetup:
-          print("Setup for muon flux measurement has been set")
-     else:
-          print("Setup for charm cross section measurement has been set")
-# switch off magnetic field to measure muon flux
-#ship_geo.muShield.Field = 0.
-#ship_geo.EmuMagnet.B = 0.
-#ship_geo.tauMudet.B = 0.
+ship_geo = ConfigRegistry.loadpy(
+     "$FAIRSHIP/geometry/geometry_config.py",
+     Yheight=options.dy,
+     tankDesign=options.dv,
+     muShieldDesign=options.ds,
+     nuTauTargetDesign=options.nud,
+     CaloDesign=options.caloDesign,
+     strawDesign=options.strawDesign,
+     muShieldGeo=options.geofile,
+     muShieldStepGeo=options.muShieldStepGeo,
+     muShieldWithCobaltMagnet=options.muShieldWithCobaltMagnet,
+     SC_mag=options.SC_mag,
+     scName=options.scName,
+     DecayVolumeMedium=options.helium,
+     SND=options.SND,
+)
 
 # Output file name, add dy to be able to setup geometry with ambiguities.
 if simEngine == "PG": tag = simEngine + "_"+str(options.pID)+"-"+mcEngine
@@ -279,8 +261,7 @@ rtdb = run.GetRuntimeDb()
 # -----Create geometry----------------------------------------------
 # import shipMuShield_only as shipDet_conf # special use case for an attempt to convert active shielding geometry for use with FLUKA
 # import shipTarget_only as shipDet_conf
-if options.charm!=0: import charmDet_conf as shipDet_conf
-else:        import shipDet_conf
+import shipDet_conf
 
 modules = shipDet_conf.configure(run,ship_geo)
 # -----Create PrimaryGenerator--------------------------------------
@@ -337,11 +318,7 @@ if simEngine == "Pythia8":
    primGen.SmearVertexXY(True)
   P8gen = ROOT.Pythia8Generator()
   P8gen.UseExternalFile(inputFile, options.firstEvent)
-  if ship_geo.MufluxSpectrometer.muflux == False :
-     P8gen.SetTarget("volTarget_1",0.,0.) # will distribute PV inside target, beam offset x=y=0.
-  else:
-     print("ERROR: charmonly option should not be used for the muonflux measurement")
-     1/0
+  P8gen.SetTarget("volTarget_1",0.,0.) # will distribute PV inside target, beam offset x=y=0.
 # pion on proton 500GeV
 # P8gen.SetMom(500.*u.GeV)
 # P8gen.SetId(-211)
@@ -403,11 +380,7 @@ if simEngine == "PG":
   myPgun.SetPRange(options.Estart,options.Eend)
   myPgun.SetPhiRange(0, 360) # // Azimuth angle range [degree]
   myPgun.SetXYZ(0.*u.cm, 0.*u.cm, 0.*u.cm)
-  if options.charm!=0:
-     myPgun.SetThetaRange(0,6) # // Pdefault for muon flux
-     primGen.SetTarget(ship_geo.target.z0,0.)
-  else:
-     myPgun.SetThetaRange(0,0) # // Polar angle in lab system range [degree]
+  myPgun.SetThetaRange(0,0) # // Polar angle in lab system range [degree]
   primGen.AddGenerator(myPgun)
 # -----muon DIS Background------------------------
 if simEngine == "muonDIS":
@@ -507,8 +480,8 @@ if simEngine == "MuonBack":
  MuonBackgen = ROOT.MuonBackGenerator()
  # MuonBackgen.FollowAllParticles() # will follow all particles after hadron absorber, not only muons
  MuonBackgen.Init(inputFile,options.firstEvent,options.phiRandom)
- if options.charm == 0: MuonBackgen.SetSmearBeam(5 * u.cm) # radius of ring, thickness 8mm
- elif DownScaleDiMuon:
+ MuonBackgen.SetSmearBeam(5 * u.cm) # radius of ring, thickness 8mm
+ if DownScaleDiMuon:
     if inputFile[0:4] == "/eos": test = os.environ["EOSSHIP"]+inputFile
     else: test = inputFile
     testf = ROOT.TFile.Open(test)
@@ -584,9 +557,8 @@ import geomGeant4
 # Define extra VMC B fields not already set by the geometry definitions, e.g. a global field,
 # any field maps, or defining if any volumes feel only the local or local+global field.
 # For now, just keep the fields already defined by the C++ code, i.e comment out the fieldMaker
-if options.charm == 0:   # charm and muflux testbeam not yet updated for using the new bfield interface
- if hasattr(ship_geo.Bfield,"fieldMap"):
-  fieldMaker = geomGeant4.addVMCFields(ship_geo, '', True)
+if hasattr(ship_geo.Bfield,"fieldMap"):
+      fieldMaker = geomGeant4.addVMCFields(ship_geo, '', True)
 
 # Print VMC fields and associated geometry objects
 if options.debug == 1:
