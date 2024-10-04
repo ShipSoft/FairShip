@@ -31,6 +31,9 @@ FairRoot. The dependencies of FairShip are tracked and installed using
   <dd>Main development branch.
       All python code is <b>required to be python 3</b>. Python 2 is no longer supported.
       Requires aliBuild default <code>release</code>.</dd>
+  <dt><code>charmdet</code></dt>
+  <dd>Branch for the charm cross-section measurement.
+      Kept as reference for potential future studies.</dd>
   <dt><code>SHiP-2018</code></dt>
   <dd>Frozen branch for the CDS, kept for backward compatibility.
       Python 2 only.
