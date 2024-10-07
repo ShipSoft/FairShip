@@ -42,6 +42,8 @@ it in future.
 * Remove charmdet, please see charmdet branch for latest version
 * Remove preshower and CaloDesign 1 (TP+Preshower)
 * Remove bundled genfit
+* Remove conditions DB, will almost certainly look different, copy in git
+  history for reference
 
 ## 24.10 - Freiburg
 

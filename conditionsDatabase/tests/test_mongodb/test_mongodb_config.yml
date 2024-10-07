@@ -1,7 +1,0 @@
-db_type: mongo
-mongo:
-  db_name: test_conditionsDB
-  host: localhost
-  password: ""
-  port: 27017
-  user: ""
