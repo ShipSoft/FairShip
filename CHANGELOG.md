@@ -22,6 +22,8 @@ it in future.
 
 ### Removed
 
+* Remove obsolete renaming scripts
+
 ## 24.10 - Freiburg
 
 Tag release to prepare for breaking changes. Last release to include charm
