@@ -18,6 +18,8 @@ it in future.
 
 ### Changed
 
+* shipStrawTracking: Move to argparse
+
 ### Removed
 
 ## 24.10 - Freiburg
