@@ -1,11 +1,9 @@
-# Mikhail Hushchyn, mikhail.hushchyn@cern.ch
+"""Script to run and test tracking in the straw tubes"""
 
-from builtins import range
 import ROOT
 import numpy
 
-import getopt
-import sys
+from argparse import ArgumentParser
 
 # For ShipGeo
 from ShipGeoConfig import ConfigRegistry
@@ -1018,52 +1016,13 @@ def init_book_hist():
 ################################################################################################################################
 
 
-#if __name__ == "__main__":
+if __name__ == "__main__":
 
-input_file = None
-geo_file = None
-output_file = 'hists.root'
-method = 'Baseline'
+    parser = ArgumentParser(description=__doc__)
+    parser.add_argument("-f", "--input", help="Input file", required=True)
+    parser.add_argument("-g", "--geo", help="Geometry file", required=True)
+    parser.add_argument("-o", "--output", help="Output file", default='hists.root')
+    parser.add_argument("-m", "--method", help="Track pattern recognition method", choices=["Baseline", "FH", "AR", "R"], default="Baseline")
+    options = parser.parse_args()
 
-
-argv = sys.argv[1:]
-
-msg = '''Runs ship track pattern recognition.\n\
-    Usage:\n\
-      python RunPR.py [options] \n\
-    Example: \n\
-      python RunPR.py -f "ship.conical.Pythia8-TGeant4.root" -g "geofile_full.conical.Pythia8-TGeant4.root"
-    Options:
-      -f  --input                   : Input file path
-      -g  --geo                     : Path to geo file
-      -o  --output                  : Output .root file path. Default is hists.root
-      -m  --method                  : Name of a track pattern recognition method: 'Baseline', 'FH', 'AR', 'R'
-                                    : Default is 'Baseline'
-      -h  --help                    : Shows this help
-      '''
-
-try:
-    opts, args = getopt.getopt(argv, "hm:f:g:o:",
-                                   ["help", "method=", "input=", "geo=", "output="])
-except getopt.GetoptError:
-    print("Wrong options were used. Please, read the following help:\n")
-    print(msg)
-    sys.exit(2)
-if len(argv) == 0:
-    print(msg)
-    sys.exit(2)
-for opt, arg in opts:
-    if opt in ('-h', "--help"):
-        print(msg)
-        sys.exit()
-    elif opt in ("-m", "--method"):
-        method = arg
-    elif opt in ("-f", "--input"):
-        input_file = arg
-    elif opt in ("-g", "--geo"):
-        geo_file = arg
-    elif opt in ("-o", "--output"):
-        output_file = arg
-
-
-metrics = run_track_pattern_recognition(input_file, geo_file, output_file, method)
+    metrics = run_track_pattern_recognition(options.input, options.geo, options.output, options.method)
