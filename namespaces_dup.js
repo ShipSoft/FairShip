@@ -2772,15 +2772,13 @@ var namespaces_dup =
       [ "init_book_hist", "namespaceshipStrawTracking.html#a755b1879baec48fb9a08034e9484496e", null ],
       [ "run_track_pattern_recognition", "namespaceshipStrawTracking.html#a56e9ac4997c4362aa6d7da386b6c99f9", null ],
       [ "save_hists", "namespaceshipStrawTracking.html#abea578257ad09114de7f8bb7db671812", null ],
-      [ "args", "namespaceshipStrawTracking.html#a914746efce61ba50efc63c5b0c22c2e9", null ],
-      [ "argv", "namespaceshipStrawTracking.html#a267b882360958dc1c87b4ecb6d06ce18", null ],
-      [ "geo_file", "namespaceshipStrawTracking.html#a35228b80cb6b8ace9665a5d4e05d424f", null ],
-      [ "input_file", "namespaceshipStrawTracking.html#a9c3568adf96df74be59c0174ed84f0be", null ],
-      [ "method", "namespaceshipStrawTracking.html#ac166b59762ef97e2d8004c75e2001fda", null ],
+      [ "choices", "namespaceshipStrawTracking.html#a348735a590af3f354f03a440fd23573b", null ],
+      [ "default", "namespaceshipStrawTracking.html#a11c0a12bc12c6f289a0eb2ccb0c01a53", null ],
+      [ "help", "namespaceshipStrawTracking.html#abc9eca6c9f512fcddfc991f29bac4b87", null ],
       [ "metrics", "namespaceshipStrawTracking.html#a1280afb3753c321a0e60405c802d191a", null ],
-      [ "msg", "namespaceshipStrawTracking.html#aa947dec246ce1005b82bca29d7c4dffb", null ],
-      [ "opts", "namespaceshipStrawTracking.html#a03e3f8cffae772aca9d1eb4b5bc0c43e", null ],
-      [ "output_file", "namespaceshipStrawTracking.html#a8c87e98ca3286d7cdcca20bafe70800f", null ]
+      [ "options", "namespaceshipStrawTracking.html#a227a906d2ad0b9acf995e73827e33015", null ],
+      [ "parser", "namespaceshipStrawTracking.html#a6f1c8ab4a8627d83bd87a950231721c6", null ],
+      [ "required", "namespaceshipStrawTracking.html#a33f41ada450d677435ffd880e7462d3a", null ]
     ] ],
     [ "ShipStyle", "namespaceShipStyle.html", [
       [ "lhcbstyleSetup", "namespaceShipStyle.html#a3e8032a494a04e778cbc8ea080fe6337", null ],
