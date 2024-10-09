@@ -48,6 +48,7 @@ cross-section measurement code, and obsolete detector configurations.
 * Fix crash of event display, PID when no entrance lid present
 * Close ShipReco.py output file
 * Remove unused (silently ignored!) argument for MuDISGenerator::SetPositions
+* Octant symmetry was incorrect for B_z when using field maps (reported and fixed by M. Ferro-Luzzi)
 
 ### Changed
 
