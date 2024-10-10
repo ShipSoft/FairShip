@@ -6,6 +6,7 @@ set(INCLUDE_DIRECTORIES
 #put here all directories where header files are located
 ${CMAKE_SOURCE_DIR}/shipdata
 ${CMAKE_SOURCE_DIR}/ecal
+${genfit2_INCDIR}
 )
 
 include_directories(${INCLUDE_DIRECTORIES} ${VMC_INCLUDE_DIRS} ${FAIRROOT_INCLUDE_DIR})
@@ -14,7 +15,7 @@ include_directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
 set(LINK_DIRECTORIES
 ${ROOT_LIBRARY_DIR}
 ${FAIRROOT_LIBRARY_DIR}
-
+${genfit2_LIBDIR}
 )
 
 link_directories( ${LINK_DIRECTORIES})
