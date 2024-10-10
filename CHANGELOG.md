@@ -31,7 +31,7 @@ it in future.
 ### Changed
 
 * shipStrawTracking: Move to argparse
-* CMake: Require external genfit2
+* CMake: Use external genfit2
 
 ### Removed
 
