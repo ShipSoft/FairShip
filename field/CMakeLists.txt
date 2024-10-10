@@ -44,6 +44,7 @@ Set(DEPENDENCIES
     Base
     FairLogger::FairLogger
     genfit2
+    ${VMCLIB}
 )
 
 GENERATE_LIBRARY()

@@ -29,7 +29,9 @@ Set(HEADERS )
 Set(LINKDEF UpstreamTaggerLinkDef.h)
 Set(LIBRARY_NAME UpstreamTagger)
 Set(DEPENDENCIES
-  Base ShipData FairLogger::FairLogger
+	FairRoot::Base
+	ShipData
+        FairLogger::FairLogger
 )
 
 GENERATE_LIBRARY()

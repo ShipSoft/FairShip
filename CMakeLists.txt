@@ -6,7 +6,7 @@
 # and ShipRoot.
 
 # Check if cmake has the required version
-CMAKE_MINIMUM_REQUIRED(VERSION 3.12.0 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.12.0 FATAL_ERROR)
 
 foreach(p
   CMP0028 # double colon for imported and alias targets
@@ -21,22 +21,22 @@ endforeach()
 # after check of cmake version since this is a new feature
 project(ShipRoot)
 
-FIND_PATH(FAIRBASE NAMES FairRun.h  PATHS
+find_path(FAIRBASE NAMES FairRun.h  PATHS
   ${CMAKE_SOURCE_DIR}/base/steer
   ${FAIRBASE}
   NO_DEFAULT_PATH
 )
 
-If (FAIRBASE)
-  Message(STATUS "Found FAIRBASE")
-  SET(FAIRBASE ${FAIRBASE})
-Else (FAIRBASE)
-  Message(STATUS "NOT Found FAIRBASE")
-  IF(NOT DEFINED ENV{FAIRROOTPATH})
-     MESSAGE(FATAL_ERROR "You did not define the environment variable FAIRROOTPATH which is needed to find FairRoot. Please set this variable and execute cmake again.")
-  ENDIF(NOT DEFINED ENV{FAIRROOTPATH})
-  SET(FAIRROOTPATH $ENV{FAIRROOTPATH})
-EndIf (FAIRBASE)
+if(FAIRBASE)
+  message(STATUS "Found FAIRBASE")
+  set(FAIRBASE ${FAIRBASE})
+else()
+  message(STATUS "NOT Found FAIRBASE")
+  if(NOT DEFINED ENV{FAIRROOTPATH})
+    message(FATAL_ERROR "You did not define the environment variable FAIRROOTPATH which is needed to find FairRoot. Please set this variable and execute cmake again.")
+  endif()
+  set(FAIRROOTPATH $ENV{FAIRROOTPATH})
+endif()
 
 # where to look first for cmake modules, before ${CMAKE_ROOT}/Modules/
 # is checked
@@ -44,11 +44,11 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
 set(CMAKE_MODULE_PATH "${FAIRROOTPATH}/share/fairbase/cmake/modules"  ${CMAKE_MODULE_PATH})
 set(CMAKE_MODULE_PATH "${FAIRROOTPATH}/share/fairbase/cmake/modules_old"  ${CMAKE_MODULE_PATH})
 
-IF(FAIRROOTPATH)
-  Set(CheckSrcDir "${FAIRROOTPATH}/share/fairbase/cmake/checks")
-ELSE(FAIRROOTPATH)
-  Set(CheckSrcDir "${CMAKE_SOURCE_DIR}/cmake/checks")
-ENDIF(FAIRROOTPATH)
+if(FAIRROOTPATH)
+  set(CheckSrcDir "${FAIRROOTPATH}/share/fairbase/cmake/checks")
+else()
+  set(CheckSrcDir "${CMAKE_SOURCE_DIR}/cmake/checks")
+endif()
 
 # Load some basic macros which are needed later on
 include(FairMacros)
@@ -58,30 +58,30 @@ include(CheckCompiler)
 
 #Check the compiler and set the compile and link flags
 # change from DEBUG to RELEASE, don't want to waste CPU time
-If(NOT CMAKE_BUILD_TYPE)
-  Message("Set BuildType RELEASE")
+if(NOT CMAKE_BUILD_TYPE)
+  message("Set BuildType RELEASE")
   set(CMAKE_BUILD_TYPE Release)
-EndIf(NOT CMAKE_BUILD_TYPE)
-Check_Compiler()
+endif()
+check_compiler()
 
 set(LIBRARY_OUTPUT_PATH "${CMAKE_BINARY_DIR}/lib")
 set(EXECUTABLE_OUTPUT_PATH "${CMAKE_BINARY_DIR}/bin")
 set(INCLUDE_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/include")
-Set(VMCWORKDIR ${ShipRoot_SOURCE_DIR})
-Option(USE_PATH_INFO "Information from PATH and LD_LIBRARY_PATH are
+set(VMCWORKDIR ${ShipRoot_SOURCE_DIR})
+option(USE_PATH_INFO "Information from PATH and LD_LIBRARY_PATH are
 used." OFF)
 
-Set(LD_LIBRARY_PATH $ENV{LD_LIBRARY_PATH})
-If(USE_PATH_INFO)
-  Set(PATH "$PATH")
-  If (APPLE)
-    Set(LD_LIBRARY_PATH $ENV{DYLD_LIBRARY_PATH})
-  Else (APPLE)
-    Set(LD_LIBRARY_PATH $ENV{LD_LIBRARY_PATH})
-  EndIf (APPLE)
-Else(USE_PATH_INFO)
-  STRING(REGEX MATCHALL "[^:]+" PATH $ENV{PATH})
-EndIf(USE_PATH_INFO)
+set(LD_LIBRARY_PATH $ENV{LD_LIBRARY_PATH})
+if(USE_PATH_INFO)
+  set(PATH "$PATH")
+  if(APPLE)
+    set(LD_LIBRARY_PATH $ENV{DYLD_LIBRARY_PATH})
+  else()
+    set(LD_LIBRARY_PATH $ENV{LD_LIBRARY_PATH})
+  endif()
+else()
+  string(REGEX MATCHALL "[^:]+" PATH $ENV{PATH})
+endif()
 
 #--------------------- set rpath options -------------
 # When building, use the RPATH
@@ -100,13 +100,13 @@ endif()
 
 # Check if the user wants to build the project in the source
 # directory
-CHECK_OUT_OF_SOURCE_BUILD()
+check_out_of_source_build()
 
 # Check if we are on an UNIX system. If not stop with an error
 # message
-IF(NOT UNIX)
-  MESSAGE(FATAL_ERROR "You're not on an UNIX system. The project was up to now only tested on UNIX systems, so we break here. If you want to go on please edit the CMakeLists.txt in the source directory.")
-ENDIF(NOT UNIX)
+if(NOT UNIX)
+  message(FATAL_ERROR "You're not on an UNIX system. The project was up to now only tested on UNIX systems, so we break here. If you want to go on please edit the CMakeLists.txt in the source directory.")
+endif(NOT UNIX)
 
 # Set the build type. Possibilities are None, Debug, Release,
 # RelWithDebInfo and MinSizeRel
@@ -134,24 +134,24 @@ find_package2(PUBLIC FairLogger REQUIRED)
 find_package2(PUBLIC VMC REQUIRED)
 find_package(genfit2 REQUIRED)
 
-IF(DEFINED ${BOOST_ROOT})
-  Set(Boost_NO_SYSTEM_PATHS TRUE)
-  Set(Boost_NO_BOOST_CMAKE TRUE)
-ENDIF(DEFINED ${BOOST_ROOT})
+if(DEFINED ${BOOST_ROOT})
+  set(Boost_NO_SYSTEM_PATHS TRUE)
+  set(Boost_NO_BOOST_CMAKE TRUE)
+endif(DEFINED ${BOOST_ROOT})
 #  set(Boost_DEBUG TRUE)
-IF(DEFINED ${BOOST_ROOT})
+if(DEFINED ${BOOST_ROOT})
       set(BOOST_ROOT $ENV{BOOST_ROOT})
-ENDIF(DEFINED ${BOOST_ROOT})
-IF(DEFINED $ENV{GSL_ROOT})
+endif(DEFINED ${BOOST_ROOT})
+if(DEFINED $ENV{GSL_ROOT})
       set(GSL_DIR $ENV{GSL_ROOT})
-ENDIF(DEFINED $ENV{GSL_ROOT})
+endif(DEFINED $ENV{GSL_ROOT})
 
 find_package(Boost 1.70 REQUIRED)
 
 # set a variable which should be used in all CMakeLists.txt
 # Defines all basic include directories from fairbase
-  Message("-- Setting basic variables ...")
-SetBasicVariables()
+message("-- Setting basic variables ...")
+setbasicvariables()
 
 # Add the FairRoot include directories to the list of libraries which are
 # external to the Ship project. For include directories in this list the
@@ -159,16 +159,16 @@ SetBasicVariables()
 # interested about warnings from the own project. SYSTEM_INCLUDE_DIRECTORIES
 # is defined in FairMacros.cmake. In the moment the defined directories are
 # the root and boost include directories.
-Set(SYSTEM_INCLUDE_DIRECTORIES
+set(SYSTEM_INCLUDE_DIRECTORIES
   ${SYSTEM_INCLUDE_DIRECTORIES}
   ${BASE_INCLUDE_DIRECTORIES}
 )
 
 # Set the library version in the main CMakeLists.txt
-SET(FAIRROOT_MAJOR_VERSION 0)
-SET(FAIRROOT_MINOR_VERSION 0)
-SET(FAIRROOT_PATCH_VERSION 0)
-SET(FAIRROOT_VERSION "${FAIRROOT_MAJOR_VERSION}.${FAIRROOT_MINOR_VERSION}.${FAIRROOT_PATCH_VERSION}")
+set(FAIRROOT_MAJOR_VERSION 0)
+set(FAIRROOT_MINOR_VERSION 0)
+set(FAIRROOT_PATCH_VERSION 0)
+set(FAIRROOT_VERSION "${FAIRROOT_MAJOR_VERSION}.${FAIRROOT_MINOR_VERSION}.${FAIRROOT_PATCH_VERSION}")
 
 set(FAIRROOT_LIBRARY_PROPERTIES ${FAIRROOT_LIBRARY_PROPERTIES}
 	VERSION "${FAIRROOT_VERSION}"
@@ -176,75 +176,39 @@ set(FAIRROOT_LIBRARY_PROPERTIES ${FAIRROOT_LIBRARY_PROPERTIES}
 )
 set(CMAKE_SHARED_LIBRARY_SUFFIX .so)
 
-SET(CBMLIBDIR ${CMAKE_BINARY_DIR}/lib)
-SET(LD_LIBRARY_PATH  ${CBMLIBDIR} ${LD_LIBRARY_PATH})
-
-#IF(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-#  SET(CMAKE_INSTALL_PREFIX "./install" CACHE PATH "FOO install prefix" FORCE)
-#  Message("Set default install path ...")
-#ENDIF(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+set(CBMLIBDIR ${CMAKE_BINARY_DIR}/lib)
+set(LD_LIBRARY_PATH  ${CBMLIBDIR} ${LD_LIBRARY_PATH})
 
 install(DIRECTORY geometry DESTINATION pnd_install
           PATTERN ".svn" EXCLUDE
           )
 
-Message("-- Set check directory to FairRoot...")
-Set(CheckSrcDir "${FAIRROOTPATH}/share/fairbase/cmake/checks")
+message("-- Set check directory to FairRoot...")
+set(CheckSrcDir "${FAIRROOTPATH}/share/fairbase/cmake/checks")
 # Set(CheckSrcDir "${CMAKE_SOURCE_DIR}/cmake/checks")
 
-# --------------- add targets for code style and submission checks -------------
-find_package(Git)
-find_package(ClangTools)
-if ("$ENV{CMAKE_EXPORT_COMPILE_COMMANDS}" STREQUAL "1" OR CLANG_TIDY_FOUND)
-  # Generate a Clang compile_commands.json "compilation database" file for use
-  # with various development tools, such as Vim's YouCompleteMe plugin.
-  # See http://clang.llvm.org/docs/JSONCompilationDatabase.html
-  set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
-endif()
-include(CppStyleGuideChecks)
+# Generate a Clang compile_commands.json "compilation database" file for use
+# with various development tools, such as Vim's YouCompleteMe plugin.
+# See http://clang.llvm.org/docs/JSONCompilationDatabase.html
+set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 
 # Recurse into the given subdirectories. This does not actually
 # cause another cmake executable to run. The same process will walk through
 # the project's entire directory structure.
-
-IF(NOT FairRoot_FOUND)
-Message("--- FairRoot not found ...")
-ENDIF (NOT FairRoot_FOUND)
-
-add_subdirectory (shipdata)
-add_subdirectory (passive)
-add_subdirectory (nutaudet)
-add_subdirectory (ecal)
-add_subdirectory (splitcal)
-add_subdirectory (hcal)
-add_subdirectory (veto)
-add_subdirectory (TimeDet)
-add_subdirectory (UpstreamTagger)
-add_subdirectory (strawtubes)
-add_subdirectory (muon)
-add_subdirectory (shipgen)
-add_subdirectory (field)
-add_subdirectory (pid)
-add_subdirectory (muonShieldOptimization)
-add_subdirectory (millepede)
-
-FIND_PATH(TEvePath NAMES TEveEventManager.h PATHS
-  ${SIMPATH}/tools/root/include
-  ${SIMPATH}/include/root
-  $ENV{ROOTSYS}/include/root
-  NO_DEFAULT_PATH
-)
-
-If(TEvePath)
-#find_package(OpenGL)
-#If (OPENGL_FOUND AND OPENGL_GLU_FOUND)
-  Message("Found TEve, so the eventdisplay will be compiled.")
-
- IF(NOT FAIRROOT_FOUND)
-  add_subdirectory (eventdisplay)
- ENDIF(NOT FAIRROOT_FOUND)
-
-EndIf(TEvePath)
+add_subdirectory(shipdata)
+add_subdirectory(passive)
+add_subdirectory(nutaudet)
+add_subdirectory(ecal)
+add_subdirectory(splitcal)
+add_subdirectory(hcal)
+add_subdirectory(veto)
+add_subdirectory(TimeDet)
+add_subdirectory(UpstreamTagger)
+add_subdirectory(strawtubes)
+add_subdirectory(muon)
+add_subdirectory(shipgen)
+add_subdirectory(field)
+add_subdirectory(pid)
 
 add_custom_target(  # make relative links to folders
     geometry.link ALL

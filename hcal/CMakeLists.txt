@@ -30,7 +30,6 @@ hcalModule.cxx
 hcalModuleMC.cxx
 hcalStructure.cxx
 hcalStructureFiller.cxx
-hcalAnalysisSimple.cxx
 )
 
 Set(LINKDEF hcalLinkDef.h)

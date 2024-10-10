@@ -31,6 +31,6 @@ TrackInfo.cxx
 Set(HEADERS )
 Set(LINKDEF MCStackLinkDef.h)
 Set(LIBRARY_NAME ShipData)
-set(DEPENDENCIES Base EG Physics Core genfit2 FairLogger::FairLogger)
+Set(DEPENDENCIES FairRoot::Base ROOT::EG ROOT::Physics ROOT::Core genfit2 FairLogger::FairLogger)
 
 GENERATE_LIBRARY()
