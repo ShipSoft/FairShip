@@ -4,8 +4,7 @@
 
 set(INCLUDE_DIRECTORIES
 ${CMAKE_SOURCE_DIR}/shipdata
-${CMAKE_SOURCE_DIR}/genfit/core/include
-${CMAKE_SOURCE_DIR}/genfit/fitters/include
+${genfit2_INCDIR}
 ${VMC_INCLUDE_DIRS}
 )
 
@@ -16,7 +15,7 @@ set(LINK_DIRECTORIES
 ${ROOT_LIBRARY_DIR}
 ${FAIRROOT_LIBRARY_DIR}
 ${CMAKE_SOURCE_DIR}/shipdata
-
+${genfit2_LIBDIR}
 )
 
 link_directories( ${LINK_DIRECTORIES})
@@ -32,6 +31,6 @@ TrackInfo.cxx
 Set(HEADERS )
 Set(LINKDEF MCStackLinkDef.h)
 Set(LIBRARY_NAME ShipData)
-set(DEPENDENCIES Base EG Physics Core genfit FairLogger::FairLogger)
+set(DEPENDENCIES Base EG Physics Core genfit2 FairLogger::FairLogger)
 
 GENERATE_LIBRARY()
