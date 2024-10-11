@@ -27,7 +27,7 @@ Bool_t EvtCalcGenerator::Init(const char* fileName, const int firstEvent) {
   fInputFile = TFile::Open(fileName, "read");
   LOGF(info, "Info EvtCalcGenerator: Opening input file %s", fileName);
   
-  fTree = (TTree *)fInputFile->Get("LLP_tree");
+  fTree = fInputFile->Get("LLP_tree");
   fNevents = fTree->GetEntries();
   fn = firstEvent;
 
