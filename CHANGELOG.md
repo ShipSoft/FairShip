@@ -19,8 +19,11 @@ it in future.
 ### Changed
 
 * shipStrawTracking: Move to argparse
+* CMake: Require external genfit2
 
 ### Removed
+
+* Remove bundled genfit
 
 ## 24.10 - Freiburg
 
