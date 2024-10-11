@@ -1,4 +1,6 @@
+"""Convert files from EventCalc to ROOT format."""
 import sys, os
+from argparse import ArgumentParser
 
 import numpy as np
 import ROOT as r
@@ -72,7 +74,8 @@ def convert_file(infile, outdir):
 
     Parameters:
     infile (str): Path to the input text file.
-    outfile (str): Name of the output ROOT file.
+    outdir (str): Name of the output directory, the filename will be the same
+                  as inputfile with the .dat replaced with .root.
     """
 
     vars_names  = ['px_llp', 'py_llp', 'pz_llp', 'e_llp', 'mass_llp', 'pdg_llp', 'decay_prob', 'vx', 'vy', 'vz']
@@ -81,7 +84,7 @@ def convert_file(infile, outdir):
     vars_names += ['px_prod3', 'py_prod3', 'pz_prod3', 'e_prod3', 'mass_prod3', 'pdg_prod3', 'charge_prod3', 'stability_prod3']
     
     fname   = infile.split('/')[-1]
-    command = f'cp {infile} {outdir}/{fname}'
+    command = f'cp {infile} {outdir}/{fname}'  # TODO This might break if the outdir does not exist
     os.system(command)
 
     infile      = f'{outdir}/{fname}'
@@ -95,7 +98,7 @@ def convert_file(infile, outdir):
         sys.exit(1)
 
     if parsed_data:
-        root_file = r.TFile(outfile, "RECREATE")
+        root_file = r.TFile.Open(outfile, "RECREATE")
         
         tree = r.TTree("LLP_tree", "LLP_tree")
         
@@ -117,4 +120,31 @@ def convert_file(infile, outdir):
         root_file.Close()
         print(f"- convertEvtCalc - ROOT file '{outfile}' created successfully.")
         return outfile
- 
+
+
+def main():
+    """Convert files from EventCalc to ROOT format."""
+    parser = ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "-f",
+        "--inputfile",
+        help="""Simulation results to use as input."""
+        """Supports retrieving file from EOS via the XRootD protocol.""",
+        required=True,
+    )
+    parser.add_argument(
+        "-o",
+        "--outputdir",
+        help="""Output directory, must exist.""",
+        default="."
+    )
+    args = parser.parse_args()
+    print(f'Opening input file for conversion: {args.inputfile}')
+    if not os.path.isfile(args.inputfile):
+        raise FileNotFoundError("EvtCalc: input .dat file does not exist")
+    outputfile = convert_file(infile=args.inputfile, outdir=args.outputdir)
+    print(f"{args.inputfile} successfully converted to {outputfile}.")
+
+
+if __name__ == "__main__":
+    main()
