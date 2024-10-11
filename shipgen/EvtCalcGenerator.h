@@ -36,7 +36,7 @@ class EvtCalcGenerator : public FairGenerator
  private:
 
  protected:
-  Double_t pdg_llp, pdg_prod1, pdg_prod2, pdg_prod3;
+  Int_t pdg_llp, pdg_prod1, pdg_prod2, pdg_prod3;
   Double_t px_llp, py_llp, pz_llp, e_llp;
   Double_t vx, vy, vz, decay_prob;
   Double_t px_prod1, py_prod1, pz_prod1, e_prod1;

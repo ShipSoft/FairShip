@@ -102,7 +102,10 @@ def convert_file(infile, outdir):
         branch = {}
         for var in vars_names:
             branch[var] = np.zeros(1, dtype=float)
-            tree.Branch(var, branch[var], f"{var}/D")
+            if 'pdg_' inbranch[var]:
+                tree.Branch(var, branch[var], f"{var}/I")
+            else:
+                tree.Branch(var, branch[var], f"{var}/D")
 
         for pt, sp, vars in parsed_data:
             for row in zip(*vars):
