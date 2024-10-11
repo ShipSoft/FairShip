@@ -76,7 +76,7 @@ inactivateMuonProcesses = False   # provisionally for making studies of various 
 
 parser = ArgumentParser()
 group = parser.add_mutually_exclusive_group()
-parser.add_argument("--EvtCalc", dest="evtcalc", help="Use EventCalc", required=False, action="store_true")
+parser.add_argument("--evtcalc", help="Use EventCalc", action="store_true")
 parser.add_argument("--Pythia6", dest="pythia6", help="Use Pythia6", required=False, action="store_true")
 parser.add_argument("--Pythia8", dest="pythia8", help="Use Pythia8", required=False, action="store_true")
 parser.add_argument("--PG",      dest="pg",      help="Use Particle Gun", required=False, action="store_true")
