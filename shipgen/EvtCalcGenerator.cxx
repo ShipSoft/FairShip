@@ -17,10 +17,10 @@ Bool_t EvtCalcGenerator::Init(const char* fileName) {
 // -----   Default constructor   -------------------------------------------
 Bool_t EvtCalcGenerator::Init(const char* fileName, const int firstEvent) {
   
-  fInputFile = TFile::Open(fileName, "read");
+  fInputFile = std::make_unique<TFile>(TFile::Open(fileName, "read"));
   LOGF(info, "Info EvtCalcGenerator: Opening input file %s", fileName);
   
-  fTree = dynamic_cast<TTree *>(fInputFile->Get("LLP_tree"));
+  fTree = std::unique_ptr<TTree>(dynamic_cast<TTree *>(fInputFile->Get("LLP_tree")));
   fNevents = fTree->GetEntries();
   fn = firstEvent;
 
@@ -60,8 +60,6 @@ Bool_t EvtCalcGenerator::Init(const char* fileName, const int firstEvent) {
 // -----   Destructor   ----------------------------------------------------
 EvtCalcGenerator::~EvtCalcGenerator()
 {
- fInputFile->Close();
- fInputFile->Delete();
 }
 // -------------------------------------------------------------------------
 

@@ -4,6 +4,7 @@
 #include "FairGenerator.h"
 #include "TTree.h"                      // for TTree
 #include "FairLogger.h"                 // for FairLogger, MESSAGE_ORIGIN
+#include <memory>
 
 class FairPrimaryGenerator;
 
@@ -42,8 +43,8 @@ class EvtCalcGenerator : public FairGenerator
   Double_t px_prod2, py_prod2, pz_prod2, e_prod2;
   Double_t px_prod3, py_prod3, pz_prod3, e_prod3;
   Double_t ztarget, zDecayVolume;
-  TFile* fInputFile;
-  TTree* fTree;
+  std::unique_ptr<TFile> fInputFile; 
+  std::unique_ptr<TTree> fTree; 
   int fNevents;
   int fn;
   ClassDef(EvtCalcGenerator,1);
