@@ -31,12 +31,14 @@ it in future.
 ### Changed
 
 * shipStrawTracking: Move to argparse
+* CMake: Require external genfit2
 
 ### Removed
 
 * Remove obsolete renaming scripts
 * Remove online, please see charmdet and muflux branches for respective versions
 * Remove charmdet, please see charmdet branch for latest version
+* Remove bundled genfit
 
 ## 24.10 - Freiburg
 
