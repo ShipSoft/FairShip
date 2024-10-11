@@ -4,7 +4,6 @@ import sys
 import ROOT
 ROOT.gSystem.Load('libEGPythia8')
 import makeALPACAEvents
-import convertEvtCalc
 
 import shipunit as u
 import shipRoot_conf
@@ -386,15 +385,10 @@ if simEngine == "Pythia6":
 
 # -----EvtCalc--------------------------------------
 if simEngine == "EvtCalc":
- print(f'Opening input file for conversion: {inputFile}')
- if not os.path.isfile(inputFile): raise FileNotFoundError("EvtCalc: input .dat file does not exist")
  primGen.SetTarget(0., 0.)
- inputROOTFile = (convertEvtCalc.convert_file(infile=inputFile, outdir=options.outputDir))
- print('Input root file: ', inputROOTFile)
  print(f'Opening input file for EvtCalc generator: {inputROOTFile}')
- ut.checkFileExists(inputROOTFile)
  EvtCalcGen = ROOT.EvtCalcGenerator()
- EvtCalcGen.Init(inputROOTFile, options.firstEvent) 
+ EvtCalcGen.Init(inputFile, options.firstEvent)
  EvtCalcGen.SetPositions(zTa=ship_geo.target.z, zDV=ship_geo.decayVolume.z)
  primGen.AddGenerator(EvtCalcGen)
  options.nEvents = min(options.nEvents, EvtCalcGen.GetNevents())
