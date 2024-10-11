@@ -1,7 +1,6 @@
 #ifndef EVTCALCGENERATOR_H
 #define EVTCALCGENERATOR_H 1
 
-#include "TROOT.h"
 #include "FairGenerator.h"
 #include "TTree.h"                      // for TTree
 #include "FairLogger.h"                 // for FairLogger, MESSAGE_ORIGIN

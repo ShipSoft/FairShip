@@ -1,16 +1,9 @@
 #include <math.h>
-#include "TROOT.h"
 #include "TFile.h"
 #include "FairPrimaryGenerator.h"
 #include "EvtCalcGenerator.h"
 #include "TDatabasePDG.h"
 #include "TMath.h"
-#include "TGeoVolume.h"
-#include "TGeoNode.h"
-#include "TGeoManager.h"
-#include "TGeoEltu.h"
-#include "TVectorD.h"
-#include "TGeoCompositeShape.h"
 
 // read events from ntuples produced
 
