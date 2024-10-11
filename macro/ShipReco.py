@@ -77,6 +77,10 @@ if not options.geoFile:
  options.geoFile = tmp.replace('_rec','')
 
 fgeo = ROOT.TFile.Open(options.geoFile)
+ROOT.gSystem.Load("libgenfit2")
+ROOT.gInterpreter.Declare('#include "TGeoMaterialInterface.h"')
+ROOT.gInterpreter.Declare('#include "FieldManager.h"')
+ROOT.gInterpreter.Declare('#include "MaterialEffects.h"')
 geoMat =  ROOT.genfit.TGeoMaterialInterface()  # if only called in ShipDigiReco -> crash, reason unknown
 
 from ShipGeoConfig import ConfigRegistry
