@@ -75,7 +75,11 @@ EvtCalcGenerator::~EvtCalcGenerator()
 // -----   Passing the event   ---------------------------------------------
 Bool_t EvtCalcGenerator::ReadEvent(FairPrimaryGenerator* cpg)
 {
-  if (fn==fNevents){ LOG(WARNING) << "End of input file. Rewind."; }
+  if (fn==fNevents){ 
+    LOG(WARNING) << "End of input file. Rewind.";
+    fn = 0;
+  }
+
   fTree->GetEntry(fn);
   fn++;
   if (fn %100==0)  LOGF(info, "Info EvtCalcGenerator: event nr %s", fn);
