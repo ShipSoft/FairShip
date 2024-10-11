@@ -102,7 +102,7 @@ def convert_file(infile, outdir):
         branch = {}
         for var in vars_names:
             branch[var] = np.zeros(1, dtype=float)
-            if 'pdg_' inbranch[var]:
+            if 'pdg_' in branch[var]:
                 tree.Branch(var, branch[var], f"{var}/I")
             else:
                 tree.Branch(var, branch[var], f"{var}/D")
