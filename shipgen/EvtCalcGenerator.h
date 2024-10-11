@@ -28,7 +28,7 @@ class EvtCalcGenerator : public FairGenerator
     return fNevents;
   }
 
-  void SetPositions(Double_t zTa=-5814.25, Double_t zDV=0.){
+  void SetPositions(Double_t zTa, Double_t zDV){
     ztarget      = zTa; // units cm (midpoint)
     zDecayVolume = zDV; // units cm (midpoint)
   }
@@ -45,7 +45,6 @@ class EvtCalcGenerator : public FairGenerator
   Double_t ztarget, zDecayVolume;
   TFile* fInputFile;
   TTree* fTree;
-  FairLogger*  fLogger; //!   don't make it persistent, magic ROOT command
   int fNevents;
   int fn;
   ClassDef(EvtCalcGenerator,1);

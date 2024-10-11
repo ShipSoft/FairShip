@@ -12,8 +12,6 @@
 #include "TVectorD.h"
 #include "TGeoCompositeShape.h"
 
-using std::cout;
-using std::endl;
 // read events from ntuples produced
 
 // -----   Default constructor   -------------------------------------------
@@ -26,12 +24,8 @@ Bool_t EvtCalcGenerator::Init(const char* fileName) {
 // -----   Default constructor   -------------------------------------------
 Bool_t EvtCalcGenerator::Init(const char* fileName, const int firstEvent) {
   
-  cout << "Info EvtCalcGenerator: Opening input file " << fileName << endl;
   fInputFile = TFile::Open(fileName, "read");
   LOGF(info, "Info EvtCalcGenerator: Opening input file %s", fileName);
-  if (fInputFile->IsZombie() or !fInputFile) {
-      LOG(FATAL) << "Info EvtCalcGenerator: Error opening input file";
-      return kFALSE; }
   
   fTree = (TTree *)fInputFile->Get("LLP_tree");
   fNevents = fTree->GetEntries();
@@ -73,7 +67,6 @@ Bool_t EvtCalcGenerator::Init(const char* fileName, const int firstEvent) {
 // -----   Destructor   ----------------------------------------------------
 EvtCalcGenerator::~EvtCalcGenerator()
 {
- // cout << "destroy Ntuple" << endl;
  fInputFile->Close();
  fInputFile->Delete();
  delete fInputFile;
@@ -86,7 +79,7 @@ Bool_t EvtCalcGenerator::ReadEvent(FairPrimaryGenerator* cpg)
   if (fn==fNevents){ LOG(WARNING) << "End of input file. Rewind."; }
   fTree->GetEntry(fn);
   fn++;
-  if (fn %100==0)  cout << "Info EvtCalcGenerator: event nr "<< fn << endl;
+  if (fn %100==0)  LOGF(info, "Info EvtCalcGenerator: event nr %s", fn);
 
   //Vertex coordinates in the SHiP reference frame, expressed in [cm]
   Double_t space_unit_conv = 100.;            // m to cm 
