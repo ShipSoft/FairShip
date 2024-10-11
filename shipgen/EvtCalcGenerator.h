@@ -2,7 +2,8 @@
 #define EVTCALCGENERATOR_H 1
 
 #include "FairGenerator.h"
-#include "TTree.h"                      // for TTree
+#include "TFile.h"
+#include "TTree.h"
 #include "FairLogger.h"                 // for FairLogger, MESSAGE_ORIGIN
 #include <memory>
 

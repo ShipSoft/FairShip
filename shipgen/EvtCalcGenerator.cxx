@@ -4,6 +4,9 @@
 #include "EvtCalcGenerator.h"
 #include "TDatabasePDG.h"
 #include "TMath.h"
+#include "ShipUnit.h"
+
+using namespace ShipUnit;
 
 // read events from ntuples produced
 
@@ -17,7 +20,7 @@ Bool_t EvtCalcGenerator::Init(const char* fileName) {
 // -----   Default constructor   -------------------------------------------
 Bool_t EvtCalcGenerator::Init(const char* fileName, const int firstEvent) {
   
-  fInputFile = std::make_unique<TFile>(TFile::Open(fileName, "read"));
+  fInputFile = std::unique_ptr<TFile>(TFile::Open(fileName, "read"));
   LOGF(info, "Info EvtCalcGenerator: Opening input file %s", fileName);
   
   fTree = std::unique_ptr<TTree>(dynamic_cast<TTree *>(fInputFile->Get("LLP_tree")));
