@@ -69,7 +69,6 @@ EvtCalcGenerator::~EvtCalcGenerator()
 {
  fInputFile->Close();
  fInputFile->Delete();
- delete fInputFile;
 }
 // -------------------------------------------------------------------------
 
