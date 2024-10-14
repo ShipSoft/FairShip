@@ -183,3 +183,4 @@ An [automatic class reference](https://shipsoft.github.io/FairShip/) is built us
 * Any and all contributions are welcome!
 * Contributions via pull requests are preferred, but if you require help with git, don't hesitate to write reach out to us.
 * Please split your work into small commits with self-contained changes to make them easy to review and check.
+* To help us consistently improve the quality of our code, please try to follow the [C++](https://github.com/ShipSoft/FairShip/wiki/CPP-guidelines) and [Python](https://github.com/ShipSoft/FairShip/wiki/Python-guidelines) guidelines.
