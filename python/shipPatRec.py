@@ -938,10 +938,10 @@ def decodeDetectorID(detID):
         Straw tube numbers.
     """
 
-    statnb = detID // 10000000
-    vnb = (detID - statnb * 10000000) // 1000000
-    lnb = (detID - statnb * 10000000 - vnb * 1000000) // 10000
-    snb = detID - statnb * 10000000 - vnb * 1000000 - lnb * 10000 - 2000
+    statnb = detID // 1000000
+    vnb = (detID - statnb * 1000000) // 100000
+    lnb = (detID - statnb * 1000000 - vnb * 100000) // 10000
+    snb = detID - statnb * 1000000 - vnb * 100000 - lnb * 10000 - 2000
 
     return statnb, vnb, lnb, snb
 

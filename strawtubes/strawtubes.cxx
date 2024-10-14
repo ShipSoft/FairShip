@@ -3,7 +3,8 @@
 // E. van Herwijnen eric.van.herwijnen@cern.ch
 // Also contains (for the moment) the veto station
 //
-// 23/08/2024 updated by W.-C. Marty Lee
+// The compact straw geometry
+// updated by W.-C. Marty Lee 23.08.2024
 
 #include "strawtubes.h"
 #include "strawtubesPoint.h"
@@ -467,7 +468,7 @@ void strawtubes::ConstructGeometry()
       r5.SetAngles(angle,0,0);
       TGeoCombiTrans c5(t5, r5);
       TGeoHMatrix *h5 = new TGeoHMatrix(c5);
-      vetovac->AddNode(viewframe_veto, statnb*10000000+vnb*1000000,h5);
+      vetovac->AddNode(viewframe_veto, statnb*1000000+vnb*100000,h5);
       viewframe_veto->SetLineColor(kRed);
 
       TGeoTranslation t5p;
@@ -478,11 +479,11 @@ void strawtubes::ConstructGeometry()
         TGeoVolume *layerbox_veto = new TGeoVolume(nmlayer_veto, layer_veto, med);
 	//the layerbox sits in the viewframe
 	//hence z translate the layer wrt the view
-	vetovac->AddNode(layerbox_veto, statnb*10000000+vnb*1000000+lnb*10000,new TGeoTranslation(0,0,(lnb-1./2.)*fDeltaz_layer12));
+	vetovac->AddNode(layerbox_veto, statnb*1000000+vnb*100000+lnb*10000,new TGeoTranslation(0,0,(lnb-1./2.)*fDeltaz_layer12));
 	//layer loop
 	TGeoRotation r6v;
 	TGeoTranslation t6v;
-        Int_t nr = statnb*10000000+vnb*1000000+lnb*10000;
+        Int_t nr = statnb*1000000+vnb*100000+lnb*10000;
         for (Int_t snb=1; snb<fStraws_per_layer_veto; snb++) {
           //straw loop
 	  t6v.SetTranslation(0,fvetoydim-fStraw_pitch*snb+lnb*fOffset_layer12,0);
@@ -595,7 +596,7 @@ void strawtubes::ConstructGeometry()
             TGeoCombiTrans c5(t5, r5);
             TGeoHMatrix *h5 = new TGeoHMatrix(c5);
 
-	    vac_12->AddNode(viewframe_12, statnb*10000000+vnb*1000000,h5);
+	    vac_12->AddNode(viewframe_12, statnb*1000000+vnb*100000,h5);
 	    viewframe_12->SetLineColor(kRed);
 
             for (Int_t lnb=0; lnb<2; lnb++) {
@@ -605,7 +606,7 @@ void strawtubes::ConstructGeometry()
 	      TString nmlayer_12 = nmview_12+"_layer_"; nmlayer_12 += lnb;
 	      TGeoBBox *layer_12 = new TGeoBBox("layer box_12", fStraw_length_12+eps/4, ftr12ydim+eps/4, layerwidth/2.+eps/4);
 	      TGeoVolume *layerbox_12 = new TGeoVolume(nmlayer_12, layer_12, med);
-	      vac_12->AddNode(layerbox_12, statnb*10000000+vnb*1000000+lnb*10000,new TGeoTranslation(0,0,(lnb-1./2.)*fDeltaz_layer12));
+	      vac_12->AddNode(layerbox_12, statnb*1000000+vnb*100000+lnb*10000,new TGeoTranslation(0,0,(lnb-1./2.)*fDeltaz_layer12));
 
               //layer loop
 	      TGeoRotation r6s;
@@ -616,9 +617,9 @@ void strawtubes::ConstructGeometry()
                 r6s.SetAngles(90,90,0);
 	        TGeoCombiTrans c6s(t6s, r6s);
                 TGeoHMatrix *h6s = new TGeoHMatrix(c6s);
-	        layerbox_12->AddNode(straw_12,statnb*10000000+vnb*1000000+lnb*10000+1000+snb,h6s);
-	        layerbox_12->AddNode(gas_12,statnb*10000000+vnb*1000000+lnb*10000+2000+snb,h6s);
-                layerbox_12->AddNode(wire_12,statnb*10000000+vnb*1000000+lnb*10000+3000+snb,h6s);
+	        layerbox_12->AddNode(straw_12,statnb*1000000+vnb*100000+lnb*10000+1000+snb,h6s);
+	        layerbox_12->AddNode(gas_12,statnb*1000000+vnb*100000+lnb*10000+2000+snb,h6s);
+                layerbox_12->AddNode(wire_12,statnb*1000000+vnb*100000+lnb*10000+3000+snb,h6s);
 
                 //end of straw loop
               }
@@ -674,7 +675,7 @@ void strawtubes::ConstructGeometry()
             TGeoCombiTrans c5(t5, r5);
             TGeoHMatrix *h5 = new TGeoHMatrix(c5);
 
-	    vac->AddNode(viewframe, statnb*10000000+vnb*1000000,h5);
+	    vac->AddNode(viewframe, statnb*1000000+vnb*100000,h5);
 	    viewframe->SetLineColor(kRed);
 
             for (Int_t lnb=0; lnb<2; lnb++) {
@@ -684,7 +685,7 @@ void strawtubes::ConstructGeometry()
 	      TString nmlayer = nmview+"_layer_"; nmlayer += lnb;
 	      TGeoBBox *layer = new TGeoBBox("layer box", fStraw_length+eps/4, ftr34ydim+eps/4, layerwidth/2.+eps/4);
 	      TGeoVolume *layerbox = new TGeoVolume(nmlayer, layer, med);
-	      vac->AddNode(layerbox, statnb*10000000+vnb*1000000+lnb*10000,new TGeoTranslation(0,0,(lnb-1./2.)*fDeltaz_layer12));
+	      vac->AddNode(layerbox, statnb*1000000+vnb*100000+lnb*10000,new TGeoTranslation(0,0,(lnb-1./2.)*fDeltaz_layer12));
 
               //layer loop
 	      TGeoRotation r6s;
@@ -695,9 +696,9 @@ void strawtubes::ConstructGeometry()
                 r6s.SetAngles(90,90,0);
 	        TGeoCombiTrans c6s(t6s, r6s);
                 TGeoHMatrix *h6s = new TGeoHMatrix(c6s);
-	        layerbox->AddNode(straw,statnb*10000000+vnb*1000000+lnb*10000+1000+snb,h6s);
-	        layerbox->AddNode(gas,statnb*10000000+vnb*1000000+lnb*10000+2000+snb,h6s);
-                layerbox->AddNode(wire,statnb*10000000+vnb*1000000+lnb*10000+3000+snb,h6s);
+	        layerbox->AddNode(straw,statnb*1000000+vnb*100000+lnb*10000+1000+snb,h6s);
+	        layerbox->AddNode(gas,statnb*1000000+vnb*100000+lnb*10000+2000+snb,h6s);
+                layerbox->AddNode(wire,statnb*1000000+vnb*100000+lnb*10000+3000+snb,h6s);
 
                 //end of straw loop
               }
@@ -717,19 +718,19 @@ void strawtubes::ConstructGeometry()
 // -----   returns station layer ... numbers -----------------------------------
 void strawtubes::StrawDecode(Int_t detID,int &statnb,int &vnb,int &lnb, int &snb)
 {
-  statnb = detID/10000000;
-  vnb =  (detID - statnb*10000000)/1000000;
-  lnb =  (detID - statnb*10000000 - vnb*1000000)/10000;
-  snb =   detID - statnb*10000000 - vnb*1000000 - lnb*10000 - 2000;
+  statnb = detID/1000000;
+  vnb =  (detID - statnb*1000000)/100000;
+  lnb =  (detID - statnb*1000000 - vnb*100000)/10000;
+  snb =   detID - statnb*1000000 - vnb*100000 - lnb*10000 - 2000;
 }
 // -----   Public method StrawEndPoints    -------------------------------------------
 // -----   returns top(left) and bottom(right) coordinate of straw -----------------------------------
 void strawtubes::StrawEndPoints(Int_t fDetectorID, TVector3 &vbot, TVector3 &vtop)
 // method to get end points from TGeoNavigator
 {
-    Int_t statnb = fDetectorID/10000000;
-    Int_t vnb =  (fDetectorID - statnb*10000000)/1000000;
-    Int_t lnb =  (fDetectorID - statnb*10000000 - vnb*1000000)/10000;
+    Int_t statnb = fDetectorID/1000000;
+    Int_t vnb =  (fDetectorID - statnb*1000000)/100000;
+    Int_t lnb =  (fDetectorID - statnb*1000000 - vnb*100000)/10000;
     TString stat = "Tr";stat+=+statnb;stat+="_";stat+=statnb;
     if (statnb==5){stat="Veto_5";}
     TString view;

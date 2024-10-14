@@ -45,9 +45,9 @@ strawtubesHit::strawtubesHit(strawtubesPoint* p, Double_t t0)
 }
 void strawtubesHit::StrawEndPoints(TVector3 &vbot, TVector3 &vtop)
 {
-    Int_t statnb = fDetectorID/10000000;
-    Int_t vnb =  (fDetectorID - statnb*10000000)/1000000;
-    Int_t lnb =  (fDetectorID - statnb*10000000 - vnb*1000000)/10000;
+    Int_t statnb = fDetectorID/1000000;
+    Int_t vnb =  (fDetectorID - statnb*1000000)/100000;
+    Int_t lnb =  (fDetectorID - statnb*1000000 - vnb*100000)/10000;
     TString stat = "Tr";stat+=+statnb;stat+="_";stat+=statnb;
     if (statnb==5){stat="Veto_5";}
     TString view;
