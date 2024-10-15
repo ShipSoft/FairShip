@@ -85,8 +85,10 @@ def convert_file(infile, outdir):
     
     fname   = infile.split('/')[-1]
     command = f'cp {infile} {outdir}/{fname}'  # TODO This might break if the outdir does not exist
-    os.system(command)
-
+    
+    if os.path.isfile(f'{outdir}/{fname}'):  print(f'Warning: The file {outdir}/{fname} already exists.')
+    else:  os.system(command)
+    
     infile      = f'{outdir}/{fname}'
     parsed_data = parse_file(infile)
     outfile     = infile.split('.dat')[0]+'.root'
@@ -102,18 +104,22 @@ def convert_file(infile, outdir):
         
         tree = r.TTree("LLP_tree", "LLP_tree")
         
-        branch = {}
+        branch_i = {}
+        branch_f = {}
         for var in vars_names:
-            branch[var] = np.zeros(1, dtype=float)
-            if 'pdg_' in branch[var]:
-                tree.Branch(var, branch[var], f"{var}/I")
+            if 'pdg_' in var:
+                branch_i[var] = np.zeros(1, dtype=int)
+                tree.Branch(var, branch_i[var], f"{var}/I")
             else:
-                tree.Branch(var, branch[var], f"{var}/D")
+                branch_f[var] = np.zeros(1, dtype=float)
+                tree.Branch(var, branch_f[var], f"{var}/D")
 
         for pt, sp, vars in parsed_data:
             for row in zip(*vars):
                 for i, value in enumerate(row):
-                    if i<len(vars_names):  branch[vars_names[i]][0] = value
+                    if i<len(vars_names):
+                      if 'pdg_' in vars_names[i]: branch_i[vars_names[i]][0] = value
+                      else:  branch_f[vars_names[i]][0] = value
                 tree.Fill()
         
         tree.Write()
