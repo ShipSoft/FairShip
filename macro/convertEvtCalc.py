@@ -1,5 +1,7 @@
 """Convert files from EventCalc to ROOT format."""
-import sys, os
+
+import sys
+import os
 from argparse import ArgumentParser
 
 import numpy as np
@@ -18,24 +20,24 @@ def parse_file(infile):
     """
 
     try:
-        with open(infile, 'r') as file:
+        with open(infile, "r") as file:
             lines = file.readlines()
 
-        parsed_data    = []
-        current_block  = []
-        process_type   = None
+        parsed_data = []
+        current_block = []
+        process_type = None
         sampled_points = None
 
         for line in lines:
-            if line.startswith('#<'):
+            if line.startswith("#<"):
                 if current_block:
                     data = np.loadtxt(current_block)
                     variables = [data[:, i] for i in range(data.shape[1])]
                     current_block = []
-                    header       = line.strip()
-                    process_type = header.split(';')[0].split('=')[1]
+                    header = line.strip()
+                    process_type = header.split(";")[0].split("=")[1]
                     # print(f'Process type: {process_type}')
-                    sampled_points = int(header.split(';')[1].split('=')[1][:-1])
+                    sampled_points = int(header.split(";")[1].split("=")[1][:-1])
                     # print(f'Sampled points: {sampled_points}')
                     parsed_data.append((process_type, sampled_points, variables))
             else:
@@ -47,7 +49,7 @@ def parse_file(infile):
             parsed_data.append((process_type, sampled_points, variables))
 
         return parsed_data
-    
+
     except FileNotFoundError:
         print(f"- convertEvtCalc - Error: The file {infile} was not found.")
         return None, None, None
@@ -55,15 +57,16 @@ def parse_file(infile):
         print(f"- convertEvtCalc - An error occurred: {e}")
         return None, None, None
 
+
 def check_consistency_infile(nvars, ncols):
     """
-        Check the consistency between number of columns in the input file (ncols) and variables (nvars).
+    Check the consistency between number of columns in the input file (ncols) and variables (nvars).
 
-        Parameters:
-        nvars, ncols (int or float): The value to be checked. Must be equal.
+    Parameters:
+    nvars, ncols (int or float): The value to be checked. Must be equal.
 
     """
-    if nvars!=ncols:
+    if nvars != ncols:
         raise ValueError("Nr of variables does not match input file.")
     return
 
@@ -78,20 +81,60 @@ def convert_file(infile, outdir):
                   as inputfile with the .dat replaced with .root.
     """
 
-    vars_names  = ['px_llp', 'py_llp', 'pz_llp', 'e_llp', 'mass_llp', 'pdg_llp', 'decay_prob', 'vx', 'vy', 'vz']
-    vars_names += ['px_prod1', 'py_prod1', 'pz_prod1', 'e_prod1', 'mass_prod1', 'pdg_prod1', 'charge_prod1', 'stability_prod1']
-    vars_names += ['px_prod2', 'py_prod2', 'pz_prod2', 'e_prod2', 'mass_prod2', 'pdg_prod2', 'charge_prod2', 'stability_prod2']
-    vars_names += ['px_prod3', 'py_prod3', 'pz_prod3', 'e_prod3', 'mass_prod3', 'pdg_prod3', 'charge_prod3', 'stability_prod3']
-    
-    fname   = infile.split('/')[-1]
-    command = f'cp {infile} {outdir}/{fname}'
-    
-    if os.path.isfile(f'{outdir}/{fname}'):  print(f'Warning: The file {outdir}/{fname} already exists.')
-    else:  os.system(command)
-    
-    infile      = f'{outdir}/{fname}'
+    vars_names = [
+        "px_llp",
+        "py_llp",
+        "pz_llp",
+        "e_llp",
+        "mass_llp",
+        "pdg_llp",
+        "decay_prob",
+        "vx",
+        "vy",
+        "vz",
+    ]
+    vars_names += [
+        "px_prod1",
+        "py_prod1",
+        "pz_prod1",
+        "e_prod1",
+        "mass_prod1",
+        "pdg_prod1",
+        "charge_prod1",
+        "stability_prod1",
+    ]
+    vars_names += [
+        "px_prod2",
+        "py_prod2",
+        "pz_prod2",
+        "e_prod2",
+        "mass_prod2",
+        "pdg_prod2",
+        "charge_prod2",
+        "stability_prod2",
+    ]
+    vars_names += [
+        "px_prod3",
+        "py_prod3",
+        "pz_prod3",
+        "e_prod3",
+        "mass_prod3",
+        "pdg_prod3",
+        "charge_prod3",
+        "stability_prod3",
+    ]
+
+    fname = infile.split("/")[-1]
+    command = f"cp {infile} {outdir}/{fname}"
+
+    if os.path.isfile(f"{outdir}/{fname}"):
+        print(f"Warning: The file {outdir}/{fname} already exists.")
+    else:
+        os.system(command)
+
+    infile = f"{outdir}/{fname}"
     parsed_data = parse_file(infile)
-    outfile     = infile.split('.dat')[0]+'.root'
+    outfile = infile.split(".dat")[0] + ".root"
 
     try:
         check_consistency_infile(nvars=len(vars_names), ncols=len(parsed_data[0][2]))
@@ -101,13 +144,13 @@ def convert_file(infile, outdir):
 
     if parsed_data:
         root_file = r.TFile.Open(outfile, "RECREATE")
-        
+
         tree = r.TTree("LLP_tree", "LLP_tree")
-        
+
         branch_i = {}
         branch_f = {}
         for var in vars_names:
-            if 'pdg_' in var:
+            if "pdg_" in var:
                 branch_i[var] = np.zeros(1, dtype=int)
                 tree.Branch(var, branch_i[var], f"{var}/I")
             else:
@@ -117,11 +160,13 @@ def convert_file(infile, outdir):
         for pt, sp, vars in parsed_data:
             for row in zip(*vars):
                 for i, value in enumerate(row):
-                    if i<len(vars_names):
-                      if 'pdg_' in vars_names[i]: branch_i[vars_names[i]][0] = value
-                      else:  branch_f[vars_names[i]][0] = value
+                    if i < len(vars_names):
+                        if "pdg_" in vars_names[i]:
+                            branch_i[vars_names[i]][0] = value
+                        else:
+                            branch_f[vars_names[i]][0] = value
                 tree.Fill()
-        
+
         tree.Write()
         root_file.Close()
         print(f"- convertEvtCalc - ROOT file '{outfile}' created successfully.")
@@ -139,18 +184,17 @@ def main():
         required=True,
     )
     parser.add_argument(
-        "-o",
-        "--outputdir",
-        help="""Output directory, must exist.""",
-        default="."
+        "-o", "--outputdir", help="""Output directory, must exist.""", default="."
     )
     args = parser.parse_args()
-    print(f'Opening input file for conversion: {args.inputfile}')
+    print(f"Opening input file for conversion: {args.inputfile}")
     if not os.path.isfile(args.inputfile):
         raise FileNotFoundError("EvtCalc: input .dat file does not exist")
     if not os.path.isdir(args.outputdir):
-        print(f'Warning: The specified directory {args.outputdir} does not exist. Creating it now.')
-        command = f'mkdir {args.outputdir}'
+        print(
+            f"Warning: The specified directory {args.outputdir} does not exist. Creating it now."
+        )
+        command = f"mkdir {args.outputdir}"
         os.system(command)
     outputfile = convert_file(infile=args.inputfile, outdir=args.outputdir)
     print(f"{args.inputfile} successfully converted to {outputfile}.")
