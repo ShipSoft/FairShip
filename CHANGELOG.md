@@ -11,12 +11,20 @@ Until April 2024 (inclusive) no changelog was kept. We might try to reconstruct
 it in future.
 
 ## Unreleased
+**EventCalc LLP event generator**
+This modification introduces a vanilla implementation of the EventCalc decay event sampler in FairShip for inclusive final states. For further details, consult the dedicated presentation at the 30th SHiP CM [here](https://indico.cern.ch/event/1448055/contributions/6142341/attachments/2939894/5165450/SHiP_collaboration_meeting_talk_MFerrillo.pdf).
 
 ### Added
+* `FairShip/macro/convertEvtCalc.py` : to convert the EventCalc output sampled kinematics (.dat) as input to the simulation script (.root). 
+_Remark_: This will eventually become unnecessary when perfoming the necessary enhancements within the EventCalc tool itself.
+* `FairShip/shipgen/EvtCalcGenerator(.cxx/.h)`: the event generator
 
 ### Fixed
 
 ### Changed
+* `FairShip/macro/run_simScript.py`: the simulation script
+* `FairShip/shipgen/CMakeLists.txt`
+* `FairShip/shipgen/GenLinkDef.h`
 
 ### Removed
 
