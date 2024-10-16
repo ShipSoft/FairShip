@@ -84,7 +84,7 @@ def convert_file(infile, outdir):
     vars_names += ['px_prod3', 'py_prod3', 'pz_prod3', 'e_prod3', 'mass_prod3', 'pdg_prod3', 'charge_prod3', 'stability_prod3']
     
     fname   = infile.split('/')[-1]
-    command = f'cp {infile} {outdir}/{fname}'  # TODO This might break if the outdir does not exist
+    command = f'cp {infile} {outdir}/{fname}'
     
     if os.path.isfile(f'{outdir}/{fname}'):  print(f'Warning: The file {outdir}/{fname} already exists.')
     else:  os.system(command)
@@ -148,6 +148,10 @@ def main():
     print(f'Opening input file for conversion: {args.inputfile}')
     if not os.path.isfile(args.inputfile):
         raise FileNotFoundError("EvtCalc: input .dat file does not exist")
+    if not os.path.isdir(args.outputdir):
+        print(f'Warning: The specified directory {args.outputdir} does not exist. Creating it now.')
+        command = f'mkdir {args.outputdir}'
+        os.system(command)
     outputfile = convert_file(infile=args.inputfile, outdir=args.outputdir)
     print(f"{args.inputfile} successfully converted to {outputfile}.")
 
