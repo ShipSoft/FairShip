@@ -385,15 +385,17 @@ if simEngine == "Pythia6":
 
 # -----EvtCalc--------------------------------------
 if simEngine == "EvtCalc":
- primGen.SetTarget(0., 0.)
- print(f'Opening input file for EvtCalc generator: {inputFile}')
- ut.checkFileExists(inputFile)
- EvtCalcGen = ROOT.EvtCalcGenerator()
- EvtCalcGen.Init(inputFile, options.firstEvent)
- EvtCalcGen.SetPositions(zTa=ship_geo.target.z, zDV=ship_geo.decayVolume.z)
- primGen.AddGenerator(EvtCalcGen)
- options.nEvents = min(options.nEvents, EvtCalcGen.GetNevents())
- print(f'Generate {options.nEvents} with EvtCalc input. First event: {options.firstEvent}')
+    primGen.SetTarget(0.0, 0.0)
+    print(f"Opening input file for EvtCalc generator: {inputFile}")
+    ut.checkFileExists(inputFile)
+    EvtCalcGen = ROOT.EvtCalcGenerator()
+    EvtCalcGen.Init(inputFile, options.firstEvent)
+    EvtCalcGen.SetPositions(zTa=ship_geo.target.z, zDV=ship_geo.decayVolume.z)
+    primGen.AddGenerator(EvtCalcGen)
+    options.nEvents = min(options.nEvents, EvtCalcGen.GetNevents())
+    print(
+        f"Generate {options.nEvents} with EvtCalc input. First event: {options.firstEvent}"
+    )
 
 # -----Particle Gun-----------------------
 if simEngine == "PG":
