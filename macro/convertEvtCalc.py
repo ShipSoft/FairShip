@@ -10,7 +10,7 @@ import ROOT as r
 
 def parse_file(infile):
     """
-    Parses the given text file and extracts process type, sample points, and variables.
+    Parse the given text file and extracts process type, sample points, and variables.
 
     Parameters:
     infile (str): Path to the input text file.
@@ -18,7 +18,6 @@ def parse_file(infile):
     Returns:
     tuple: A tuple containing process type (str), sample points (int), and a list of numpy arrays for each variable.
     """
-
     try:
         with open(infile, "r") as file:
             lines = file.readlines()
@@ -73,14 +72,13 @@ def check_consistency_infile(nvars, ncols):
 
 def convert_file(infile, outdir):
     """
-    Creates a ROOT file with a TTree containing the variables from the parsed input text file.
+    Create a ROOT file with a TTree containing the variables from the parsed input text file.
 
     Parameters:
     infile (str): Path to the input text file.
     outdir (str): Name of the output directory, the filename will be the same
                   as inputfile with the .dat replaced with .root.
     """
-
     vars_names = [
         "px_llp",
         "py_llp",
