@@ -386,7 +386,7 @@ if simEngine == "Pythia6":
 # -----EvtCalc--------------------------------------
 if simEngine == "EvtCalc":
  primGen.SetTarget(0., 0.)
- print(f'Opening input file for EvtCalc generator: {inputROOTFile}')
+ print(f'Opening input file for EvtCalc generator: {inputFile}')
  EvtCalcGen = ROOT.EvtCalcGenerator()
  EvtCalcGen.Init(inputFile, options.firstEvent)
  EvtCalcGen.SetPositions(zTa=ship_geo.target.z, zDV=ship_geo.decayVolume.z)
