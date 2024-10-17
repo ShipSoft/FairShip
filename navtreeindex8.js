@@ -1,5 +1,9 @@
 var NAVTREEINDEX8 =
 {
+"charm-geometry__config_8py.html#ae24ab3f8bf251b032a13b01cc7201758":[13,0,4,0,13],
+"charm-geometry__config_8py.html#ae255f0e71a39128f624085e9de2fcbd9":[13,0,4,0,281],
+"charm-geometry__config_8py.html#ae42a97bd0a1083a44d6d2c7a73f882d2":[13,0,4,0,95],
+"charm-geometry__config_8py.html#ae4a630772fa331437d728e1f7d08afc9":[13,0,4,0,54],
 "charm-geometry__config_8py.html#ae5fd66044e72697f2d4c4545481ad1aa":[13,0,4,0,276],
 "charm-geometry__config_8py.html#ae684fc165f1a65cb3d003e6966308d9e":[13,0,4,0,154],
 "charm-geometry__config_8py.html#ae68b6f818553a592d2d927441d3bf136":[13,0,4,0,226],
@@ -245,9 +249,5 @@ var NAVTREEINDEX8 =
 "classEmulsionMagnet.html#a9885e711117795554e2d66913bcb9c48":[12,0,63,21],
 "classEmulsionMagnet.html#a995a1f50e6ae65b68d36d1c0221236b3":[12,0,63,41],
 "classEmulsionMagnet.html#aa592a92555e65e7205ead0b39e9e5b38":[12,0,63,23],
-"classEmulsionMagnet.html#aa825174f7aac52bb801c5c20f34fc594":[12,0,63,39],
-"classEmulsionMagnet.html#aabe4295a172de5379f8821383e8ca294":[12,0,63,6],
-"classEmulsionMagnet.html#aabf8435721eba0ea2e44e7d341e74281":[12,0,63,43],
-"classEmulsionMagnet.html#aaea484fa64e8dcbd4c1b28a222446a20":[12,0,63,8],
-"classEmulsionMagnet.html#aafc00862ccc1b15a4fc62a92aba2faab":[12,0,63,3]
+"classEmulsionMagnet.html#aa825174f7aac52bb801c5c20f34fc594":[12,0,63,39]
 };

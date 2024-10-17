@@ -21,6 +21,7 @@ var run__simScript_8py =
     [ "endy", "run__simScript_8py.html#af606174d5cb681887227a2c7acfd89b5", null ],
     [ "endZ", "run__simScript_8py.html#a7499e285536fffea73e7f1dfadf1d0c4", null ],
     [ "endz", "run__simScript_8py.html#a548dadf828bc9f21ea649c0f5fe34389", null ],
+    [ "EvtCalcGen", "run__simScript_8py.html#a985c7f9cdec3fe87f40f8e765625a822", null ],
     [ "exclude", "run__simScript_8py.html#abcf5040fef2f5816464371dd3982d3a8", null ],
     [ "False", "run__simScript_8py.html#a81915dadc7f63f1abbc8a63cdccb979c", null ],
     [ "fastMuon", "run__simScript_8py.html#af0d4ea6c5c1d66bad312d085d2391291", null ],
@@ -112,5 +113,8 @@ var run__simScript_8py =
     [ "tmpFile", "run__simScript_8py.html#a7c05882cec82b46001434bfe2d783db5", null ],
     [ "trajFilter", "run__simScript_8py.html#abb91726f585a0ba37957110e3883be6a", null ],
     [ "type", "run__simScript_8py.html#adfb7a695088d9373dc7c795b7d8abb52", null ],
-    [ "xxx", "run__simScript_8py.html#a9d10d404b59fdd39360b3969370967b1", null ]
+    [ "xxx", "run__simScript_8py.html#a9d10d404b59fdd39360b3969370967b1", null ],
+    [ "z", "run__simScript_8py.html#a90c25390918b8dd5a6f17d8efa00c9ed", null ],
+    [ "zDV", "run__simScript_8py.html#aa52a3b35fc9639050ea8dcf392b88abe", null ],
+    [ "zTa", "run__simScript_8py.html#afce74e2bd8c0a67df6486c301366a253", null ]
 ];

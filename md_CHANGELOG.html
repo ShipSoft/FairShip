@@ -92,6 +92,10 @@ $(document).ready(function(){initNavTree('md_CHANGELOG.html',''); initResizable(
 Unreleased</h1>
 <h2><a class="anchor" id="autotoc_md2"></a>
 Added</h2>
+<ul>
+<li><b>EventCalc LLP event generator</b> This modification introduces a first implementation of the EventCalc decay event sampler in FairShip for inclusive final states. For further details, consult the dedicated presentation at the 30th SHiP CM <a href="https://indico.cern.ch/event/1448055/contributions/6142341/attachments/2939894/5165450/SHiP_collaboration_meeting_talk_MFerrillo.pdf">here</a>. See also #528.</li>
+<li>Add a conversion script <code><a class="el" href="convertEvtCalc_8py.html">FairShip/macro/convertEvtCalc.py</a></code> to convert the EventCalc output sampled kinematics (.dat) as input to the simulation script (.root). <em>Remark</em>: This will eventually become unnecessary when this conversion is implemented within the EventCalc tool itself.</li>
+</ul>
 <h2><a class="anchor" id="autotoc_md3"></a>
 Fixed</h2>
 <h2><a class="anchor" id="autotoc_md4"></a>

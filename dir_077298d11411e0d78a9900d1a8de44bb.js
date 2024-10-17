@@ -13,6 +13,10 @@ var dir_077298d11411e0d78a9900d1a8de44bb =
     [ "DPPythia8Generator.h", "DPPythia8Generator_8h.html", [
       [ "DPPythia8Generator", "classDPPythia8Generator.html", "classDPPythia8Generator" ]
     ] ],
+    [ "EvtCalcGenerator.cxx", "EvtCalcGenerator_8cxx.html", null ],
+    [ "EvtCalcGenerator.h", "EvtCalcGenerator_8h.html", [
+      [ "EvtCalcGenerator", "classEvtCalcGenerator.html", "classEvtCalcGenerator" ]
+    ] ],
     [ "FixedTargetGenerator.cxx", "FixedTargetGenerator_8cxx.html", "FixedTargetGenerator_8cxx" ],
     [ "FixedTargetGenerator.h", "FixedTargetGenerator_8h.html", [
       [ "FixedTargetGenerator", "classFixedTargetGenerator.html", "classFixedTargetGenerator" ]

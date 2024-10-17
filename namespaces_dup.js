@@ -455,6 +455,12 @@ var namespaces_dup =
     [ "configGenieGenerator", "namespaceconfigGenieGenerator.html", [
       [ "config", "namespaceconfigGenieGenerator.html#abd74c83652aaaf7f5eccac116226781b", null ]
     ] ],
+    [ "convertEvtCalc", "namespaceconvertEvtCalc.html", [
+      [ "check_consistency_infile", "namespaceconvertEvtCalc.html#ad5da54e6b55e348770718b85abbf1421", null ],
+      [ "convert_file", "namespaceconvertEvtCalc.html#adb45835e6ed597b8f1233c51cc5b183a", null ],
+      [ "main", "namespaceconvertEvtCalc.html#a3f3b758ad2e869f1f141d381be361a08", null ],
+      [ "parse_file", "namespaceconvertEvtCalc.html#a8adcb38a9642ca6b61d99cf03357fcec", null ]
+    ] ],
     [ "convertMap", "namespaceconvertMap.html", [
       [ "createRootMap", "namespaceconvertMap.html#a3629b0b12a361b7418f89ab399ad15c5", null ],
       [ "findRanges", "namespaceconvertMap.html#ab073e12cb86c6c3a149af158a13eb2e2", null ],
@@ -2328,6 +2334,7 @@ var namespaces_dup =
       [ "endy", "namespacerun__simScript.html#af606174d5cb681887227a2c7acfd89b5", null ],
       [ "endZ", "namespacerun__simScript.html#a7499e285536fffea73e7f1dfadf1d0c4", null ],
       [ "endz", "namespacerun__simScript.html#a548dadf828bc9f21ea649c0f5fe34389", null ],
+      [ "EvtCalcGen", "namespacerun__simScript.html#a985c7f9cdec3fe87f40f8e765625a822", null ],
       [ "exclude", "namespacerun__simScript.html#abcf5040fef2f5816464371dd3982d3a8", null ],
       [ "False", "namespacerun__simScript.html#a81915dadc7f63f1abbc8a63cdccb979c", null ],
       [ "fastMuon", "namespacerun__simScript.html#af0d4ea6c5c1d66bad312d085d2391291", null ],
@@ -2419,7 +2426,10 @@ var namespaces_dup =
       [ "tmpFile", "namespacerun__simScript.html#a7c05882cec82b46001434bfe2d783db5", null ],
       [ "trajFilter", "namespacerun__simScript.html#abb91726f585a0ba37957110e3883be6a", null ],
       [ "type", "namespacerun__simScript.html#adfb7a695088d9373dc7c795b7d8abb52", null ],
-      [ "xxx", "namespacerun__simScript.html#a9d10d404b59fdd39360b3969370967b1", null ]
+      [ "xxx", "namespacerun__simScript.html#a9d10d404b59fdd39360b3969370967b1", null ],
+      [ "z", "namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed", null ],
+      [ "zDV", "namespacerun__simScript.html#aa52a3b35fc9639050ea8dcf392b88abe", null ],
+      [ "zTa", "namespacerun__simScript.html#afce74e2bd8c0a67df6486c301366a253", null ]
     ] ],
     [ "runCharmHadProd", "namespacerunCharmHadProd.html", [
       [ "compactifyCascade", "namespacerunCharmHadProd.html#a56d728106cc33b61eb09f1172c776f2f", null ],

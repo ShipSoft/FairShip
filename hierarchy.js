@@ -71,6 +71,7 @@ var hierarchy =
       [ "ALPACAGenerator", "classALPACAGenerator.html", null ],
       [ "CosmicsGenerator", "classCosmicsGenerator.html", null ],
       [ "DPPythia8Generator", "classDPPythia8Generator.html", null ],
+      [ "EvtCalcGenerator", "classEvtCalcGenerator.html", null ],
       [ "FixedTargetGenerator", "classFixedTargetGenerator.html", null ],
       [ "GenieGenerator", "classGenieGenerator.html", null ],
       [ "HNLPythia8Generator", "classHNLPythia8Generator.html", null ],

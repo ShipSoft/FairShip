@@ -178,6 +178,7 @@ var annotated_dup =
     [ "ecalStructure", "classecalStructure.html", "classecalStructure" ],
     [ "ecalStructureFiller", "classecalStructureFiller.html", "classecalStructureFiller" ],
     [ "EmulsionMagnet", "classEmulsionMagnet.html", "classEmulsionMagnet" ],
+    [ "EvtCalcGenerator", "classEvtCalcGenerator.html", "classEvtCalcGenerator" ],
     [ "exitHadronAbsorber", "classexitHadronAbsorber.html", "classexitHadronAbsorber" ],
     [ "FixedTargetGenerator", "classFixedTargetGenerator.html", "classFixedTargetGenerator" ],
     [ "GenieGenerator", "classGenieGenerator.html", "classGenieGenerator" ],
