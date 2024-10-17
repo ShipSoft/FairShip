@@ -14,6 +14,16 @@ it in future.
 
 ### Added
 
+* **EventCalc LLP event generator**
+  This modification introduces a first implementation of the EventCalc decay
+  event sampler in FairShip for inclusive final states. For further details,
+  consult the dedicated presentation at the 30th SHiP CM
+  [here](https://indico.cern.ch/event/1448055/contributions/6142341/attachments/2939894/5165450/SHiP_collaboration_meeting_talk_MFerrillo.pdf). See also #528.
+* Add a conversion script `FairShip/macro/convertEvtCalc.py` to convert the
+  EventCalc output sampled kinematics (.dat) as input to the simulation script
+  (.root). _Remark_: This will eventually become unnecessary when this
+  conversion is implemented within the EventCalc tool itself.
+
 ### Fixed
 
 ### Changed

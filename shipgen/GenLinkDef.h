@@ -16,4 +16,5 @@
 #pragma link C++ class  NuageGenerator+;
 #pragma link C++ class  FixedTargetGenerator+;
 #pragma link C++ class  ALPACAGenerator+;
+#pragma link C++ class  EvtCalcGenerator+;
 #endif

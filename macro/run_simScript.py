@@ -75,6 +75,7 @@ inactivateMuonProcesses = False   # provisionally for making studies of various 
 
 parser = ArgumentParser()
 group = parser.add_mutually_exclusive_group()
+parser.add_argument("--evtcalc", help="Use EventCalc", action="store_true")
 parser.add_argument("--Pythia6", dest="pythia6", help="Use Pythia6", required=False, action="store_true")
 parser.add_argument("--Pythia8", dest="pythia8", help="Use Pythia8", required=False, action="store_true")
 parser.add_argument("--PG",      dest="pg",      help="Use Particle Gun", required=False, action="store_true")
@@ -148,6 +149,7 @@ parser.add_argument("--noSND", dest="SND", help="Deactivate SND. NOOP, as it cur
 
 options = parser.parse_args()
 
+if options.evtcalc:  simEngine = "EvtCalc"
 if options.pythia6:  simEngine = "Pythia6"
 if options.pythia8:  simEngine = "Pythia8"
 if options.pg:       simEngine = "PG"
@@ -380,6 +382,21 @@ if simEngine == "Pythia6":
  P6gen.SetMom(50.*u.GeV)
  P6gen.SetTarget("gamma/mu+","n0") # default "gamma/mu-","p+"
  primGen.AddGenerator(P6gen)
+
+# -----EvtCalc--------------------------------------
+if simEngine == "EvtCalc":
+    primGen.SetTarget(0.0, 0.0)
+    print(f"Opening input file for EvtCalc generator: {inputFile}")
+    ut.checkFileExists(inputFile)
+    EvtCalcGen = ROOT.EvtCalcGenerator()
+    EvtCalcGen.Init(inputFile, options.firstEvent)
+    EvtCalcGen.SetPositions(zTa=ship_geo.target.z, zDV=ship_geo.decayVolume.z)
+    primGen.AddGenerator(EvtCalcGen)
+    options.nEvents = min(options.nEvents, EvtCalcGen.GetNevents())
+    print(
+        f"Generate {options.nEvents} with EvtCalc input. First event: {options.firstEvent}"
+    )
+
 # -----Particle Gun-----------------------
 if simEngine == "PG":
   myPgun = ROOT.FairBoxGenerator(options.pID,1)
