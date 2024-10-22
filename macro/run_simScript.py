@@ -72,6 +72,7 @@ globalDesigns = {
 default = '2023'
 
 inactivateMuonProcesses = False   # provisionally for making studies of various muon background sources
+inactivateMuonNuclearProcess = False #Only True for muonDIS
 
 parser = ArgumentParser()
 group = parser.add_mutually_exclusive_group()
@@ -144,6 +145,7 @@ parser.add_argument(
      const="helium",
      default="vacuums"
 )
+
 parser.add_argument("--SND", dest="SND", help="Activate SND.", action='store_true')
 parser.add_argument("--noSND", dest="SND", help="Deactivate SND. NOOP, as it currently defaults to off.", action='store_false')
 
@@ -237,6 +239,7 @@ if not options.charm:
           SND=options.SND,
      )
 else:
+
      ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/charm-geometry_config.py", Setup = options.CharmdetSetup, cTarget = options.CharmTarget)
      if not options.CharmdetSetup:
           print("Setup for muon flux measurement has been set")
@@ -424,7 +427,8 @@ if simEngine == "muonDIS":
  DISgen.Init(inputFile,options.firstEvent)
  primGen.AddGenerator(DISgen)
  options.nEvents = min(options.nEvents,DISgen.GetNevents())
- inactivateMuonProcesses = True # avoid unwanted hadronic events of "incoming" muon flying backward
+ inactivateMuonProcesses = False 
+ inactivateMuonNuclearProcess = True #avoid double counting during DIS
  print('Generate ',options.nEvents,' with DIS input', ' first event',options.firstEvent)
 # -----neutrino interactions from nuage------------------------
 if simEngine == "Nuage":
@@ -609,6 +613,10 @@ if inactivateMuonProcesses :
  gProcessTable = ROOT.G4ProcessTable.GetProcessTable()
  procmu = gProcessTable.FindProcess(ROOT.G4String('muIoni'),ROOT.G4String('mu+'))
  procmu.SetVerboseLevel(2)
+if inactivateMuonNuclearProcess:
+  ROOT.gROOT.ProcessLine('#include "Geant4/G4ProcessTable.hh"')
+  mygMC = ROOT.TGeant4.GetMC()
+  mygMC.ProcessGeantCommand("/process/inactivate muonNuclear")
 # -----Start run----------------------------------------------------
 run.Run(options.nEvents)
 # -----Runtime database---------------------------------------------
