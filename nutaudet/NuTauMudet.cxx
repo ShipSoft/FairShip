@@ -507,8 +507,10 @@ void NuTauMudet::ConstructGeometry()
       TGeoBBox *IronLayer = new TGeoBBox("Iron",fXFe/2, fYFe/2, fZFe/2);
       TGeoVolume *volIron = new TGeoVolume("volIron",IronLayer,Iron);
       volIron->SetLineColor(kGray);
+      IronLayer->SetName("MUDETIRON");
 
       auto* IronLayer1 = new TGeoBBox("Iron",fXFe/2, fYFe/2, fZFethin/2);
+      IronLayer1->SetName("MUDETIRON1");
       //***********************ADDING EXTERNAL DETAILS TO THE MUON FILTER
 
       //********UPPER COVER***********
@@ -547,8 +549,6 @@ void NuTauMudet::ConstructGeometry()
       volMudetBox->AddNode(volMuDetCross, 2, new TGeoTranslation(+fXFe/2.+fLatSuppX+fXLateral-fXCross/2., 0., -fZtot/2 + fZCross/2)); // left
 
       //***********************ADDING CUTS AT MID-LATERAL IN WALLS
-      IronLayer->SetName("MUDETIRON");
-      IronLayer1->SetName("MUDETIRON1");
 
       Double_t delta = 0.1; //to avoid border effects in the cuts (cut is not visualized in viewer, I do not know if it can affect simulation)
       TGeoTrd2  * Model= new TGeoTrd2("Model",fCutHeight/2,0, (fZFe+delta)/2,(fZFe+delta)/2,(fCutLength+delta)/2); //length and height are not x and y here, because it will be rotated!
