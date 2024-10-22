@@ -377,8 +377,7 @@ void Target::ConstructGeometry()
   volBrick->SetTransparency(1);
   //need to separate the two cases, now with a ternary operator
   auto *Absorber = new TGeoBBox("Absorber", EmulsionX/2, EmulsionY/2, LeadThickness/2);
-  auto *volAbsorber = (fDesign < 4) ?
-    new TGeoVolume("volAbsorber",Absorber,lead) : new TGeoVolume("volAbsorber",Absorber,tungsten);
+  auto *volAbsorber = new TGeoVolume("volAbsorber", Absorber, (fDesign < 4) ? lead : tungsten);
 
   volAbsorber->SetTransparency(1);
   volAbsorber->SetLineColor(kGray);
