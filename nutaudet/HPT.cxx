@@ -234,9 +234,9 @@ void Hpt::ConstructGeometry()
         TGeoVolume *volMagRegion=gGeoManager->GetVolume("volMagRegion");
         TGeoVolume *volTarget =gGeoManager->GetVolume("volTarget");        
 
-        Double_t DZMagnetizedRegion = ((TGeoBBox*) volMagRegion->GetShape())->GetDZ() *2;
+        Double_t DZMagnetizedRegion = static_cast<TGeoBBox*> (volMagRegion->GetShape())->GetDZ() *2;
 
-        Double_t DZTarget = ((TGeoBBox*) volTarget->GetShape())->GetDZ() *2;
+        Double_t DZTarget = static_cast<TGeoBBox*> (volTarget->GetShape())->GetDZ() *2;
 
         //HPT is DownStreamTracker
         TGeoBBox *DT = new TGeoBBox("DT", DimX/2, DimY/2, DimZ/2);
