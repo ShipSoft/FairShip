@@ -1,7 +1,0 @@
-db_type: mongo
-mongo:
-  db_name: conditionsDB
-  host: localhost
-  password: ""
-  port: 27017
-  user: ""

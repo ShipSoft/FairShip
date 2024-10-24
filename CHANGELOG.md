@@ -35,6 +35,8 @@ it in future.
 ### Removed
 
 * Remove obsolete renaming scripts
+* Remove conditions DB, will almost certainly look different, copy in git
+  history for reference
 
 ## 24.10 - Freiburg
 
