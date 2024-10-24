@@ -473,14 +473,14 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>This method is an example of how to add your own point of type <a class="el" href="classmuonPoint.html">muonPoint</a> to the clones array </p>
 
-<p class="definition">Definition at line <a class="el" href="TargetTracker_8cxx_source.html#l00348">348</a> of file <a class="el" href="TargetTracker_8cxx_source.html">TargetTracker.cxx</a>.</p>
-<div class="fragment"><div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;{</div>
-<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;    TClonesArray&amp; clref = *<a class="code" href="classTargetTracker.html#a1418cbaef2f603fb1704437b7630e7ee">fTTPointCollection</a>;</div>
-<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;    Int_t size = clref.GetEntriesFast();</div>
-<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;    <span class="comment">//cout &lt;&lt; &quot;brick hit called&quot;&lt;&lt; pos.z()&lt;&lt;endl;</span></div>
-<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">new</span>(clref[size]) <a class="code" href="classTTPoint.html">TTPoint</a>(trackID,detID, <a class="code" href="namespacerun__simPgun.html#ac57e22275cd6a7bdb768a9d30320595e">pos</a>, <a class="code" href="namespacerun__simPgun.html#a6e3b169e244bda1369fd9edbcd52ea01">mom</a>,</div>
-<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;                    time, <a class="code" href="namespacecharm-geometry__config.html#a6ccac261591ffdaca3ebe2296286994f">length</a>, eLoss, pdgCode);</div>
-<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;}</div>
+<p class="definition">Definition at line <a class="el" href="TargetTracker_8cxx_source.html#l00346">346</a> of file <a class="el" href="TargetTracker_8cxx_source.html">TargetTracker.cxx</a>.</p>
+<div class="fragment"><div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;{</div>
+<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;    TClonesArray&amp; clref = *<a class="code" href="classTargetTracker.html#a1418cbaef2f603fb1704437b7630e7ee">fTTPointCollection</a>;</div>
+<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;    Int_t size = clref.GetEntriesFast();</div>
+<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;    <span class="comment">//cout &lt;&lt; &quot;brick hit called&quot;&lt;&lt; pos.z()&lt;&lt;endl;</span></div>
+<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">new</span>(clref[size]) <a class="code" href="classTTPoint.html">TTPoint</a>(trackID,detID, <a class="code" href="namespacerun__simPgun.html#ac57e22275cd6a7bdb768a9d30320595e">pos</a>, <a class="code" href="namespacerun__simPgun.html#a6e3b169e244bda1369fd9edbcd52ea01">mom</a>,</div>
+<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;                    time, <a class="code" href="namespacecharm-geometry__config.html#a6ccac261591ffdaca3ebe2296286994f">length</a>, eLoss, pdgCode);</div>
+<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;}</div>
 <div class="ttc" id="aclassTTPoint_html"><div class="ttname"><a href="classTTPoint.html">TTPoint</a></div><div class="ttdef"><b>Definition:</b> <a href="TTPoint_8h_source.html#l00010">TTPoint.h:11</a></div></div>
 <div class="ttc" id="anamespacecharm-geometry__config_html_a6ccac261591ffdaca3ebe2296286994f"><div class="ttname"><a href="namespacecharm-geometry__config.html#a6ccac261591ffdaca3ebe2296286994f">charm-geometry_config.length</a></div><div class="ttdeci">length</div><div class="ttdef"><b>Definition:</b> <a href="charm-geometry__config_8py_source.html#l00112">charm-geometry_config.py:112</a></div></div>
 <div class="ttc" id="anamespacerun__simPgun_html_a6e3b169e244bda1369fd9edbcd52ea01"><div class="ttname"><a href="namespacerun__simPgun.html#a6e3b169e244bda1369fd9edbcd52ea01">run_simPgun.mom</a></div><div class="ttdeci">mom</div><div class="ttdef"><b>Definition:</b> <a href="run__simPgun_8py_source.html#l00083">run_simPgun.py:83</a></div></div>
@@ -589,87 +589,85 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="TargetTracker_8cxx_source.html#l00172">172</a> of file <a class="el" href="TargetTracker_8cxx_source.html">TargetTracker.cxx</a>.</p>
 <div class="fragment"><div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;{</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;  <a class="code" href="classTargetTracker.html#a7bde2cd76b734c91a30d08df100fac6c">InitMedium</a>(<span class="stringliteral">&quot;TTmedium&quot;</span>);</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;  TGeoMedium *TTmedium = gGeoManager-&gt;GetMedium(<span class="stringliteral">&quot;TTmedium&quot;</span>);</div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160; </div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;  <a class="code" href="classTargetTracker.html#a7bde2cd76b734c91a30d08df100fac6c">InitMedium</a>(<span class="stringliteral">&quot;vacuum&quot;</span>);</div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;  TGeoMedium *vacuum = gGeoManager-&gt;GetMedium(<span class="stringliteral">&quot;vacuum&quot;</span>);</div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160; </div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;  <a class="code" href="classTargetTracker.html#a7bde2cd76b734c91a30d08df100fac6c">InitMedium</a>(<span class="stringliteral">&quot;CarbonComposite&quot;</span>);</div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;  TGeoMedium *CarbonComposite = gGeoManager-&gt;GetMedium(<span class="stringliteral">&quot;CarbonComposite&quot;</span>);</div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160; </div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;  <a class="code" href="classTargetTracker.html#a7bde2cd76b734c91a30d08df100fac6c">InitMedium</a>(<span class="stringliteral">&quot;SciFiMat&quot;</span>);</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;  TGeoMedium *SciFiMat = gGeoManager-&gt;GetMedium(<span class="stringliteral">&quot;SciFiMat&quot;</span>);</div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160; </div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;  <a class="code" href="classTargetTracker.html#a7bde2cd76b734c91a30d08df100fac6c">InitMedium</a>(<span class="stringliteral">&quot;Airex&quot;</span>);</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;  TGeoMedium *Airex = gGeoManager-&gt;GetMedium(<span class="stringliteral">&quot;Airex&quot;</span>);</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160; </div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;  <span class="comment">//Target Tracker</span></div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;  TGeoVolume *volTarget = gGeoManager-&gt;GetVolume(<span class="stringliteral">&quot;volTarget&quot;</span>);</div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160; </div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;  TGeoBBox* TT_box = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;TT_box&quot;</span>, <a class="code" href="classTargetTracker.html#a48fde000e0fce71225dabcfe02cbe77d">TTrackerX</a> / 2, <a class="code" href="classTargetTracker.html#a72cf6b433a91f4265777f5188c32c78a">TTrackerY</a> / 2, <a class="code" href="classTargetTracker.html#ab40db0ddcdbdb9adb223cf16a5eef3ac">TTrackerZ</a> / 2);</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;  TGeoVolume* TT_volume = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;TT&quot;</span>, TT_box, vacuum);</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;  TT_volume-&gt;SetLineColor(kBlue - 1);</div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;  <span class="comment">//TT_volume-&gt;SetTransparency(1);</span></div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;  TT_volume-&gt;SetVisibility(1);</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;  TT_volume-&gt;SetVisDaughters(1);</div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160; </div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;  <span class="comment">//Support Carbon Composite</span></div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;  TGeoBBox* TT_support_box = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;TT_support_box&quot;</span>, <a class="code" href="classTargetTracker.html#a48fde000e0fce71225dabcfe02cbe77d">TTrackerX</a> / 2, <a class="code" href="classTargetTracker.html#a72cf6b433a91f4265777f5188c32c78a">TTrackerY</a> / 2, <a class="code" href="classTargetTracker.html#a42ab1011aad3bbb2168974d07b1eafbb">support_z</a> / 2);</div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;  TGeoVolume* TT_support_volume = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;TT_support&quot;</span>, TT_support_box, CarbonComposite);</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;  TT_support_volume-&gt;SetLineColor(kGray - 2);</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;  TT_support_volume-&gt;SetVisibility(1);</div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160; </div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;  <span class="comment">//Honeycomb Airex (or Nomex)</span></div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;  TGeoBBox* TT_honeycomb_box = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;TT_honeycomb_box&quot;</span>, <a class="code" href="classTargetTracker.html#a48fde000e0fce71225dabcfe02cbe77d">TTrackerX</a> / 2, <a class="code" href="classTargetTracker.html#a72cf6b433a91f4265777f5188c32c78a">TTrackerY</a> / 2, <a class="code" href="classTargetTracker.html#ab74d178aa34284794e312a26121c6f4a">honeycomb_z</a> / 2);</div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;  TGeoVolume* TT_honeycomb_volume = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;TT_honeycomb&quot;</span>, TT_honeycomb_box, Airex);</div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;  TT_honeycomb_volume-&gt;SetLineColor(kYellow);</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;  TT_honeycomb_volume-&gt;SetVisibility(1);</div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160; </div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;    <span class="comment">//SciFi planes</span></div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;  TGeoBBox* TT_scifi_plane_hor_box = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;TT_scifi_plane_hor_box&quot;</span>, <a class="code" href="classTargetTracker.html#a48fde000e0fce71225dabcfe02cbe77d">TTrackerX</a> / 2, <a class="code" href="classTargetTracker.html#a72cf6b433a91f4265777f5188c32c78a">TTrackerY</a> / 2, <a class="code" href="classTargetTracker.html#a4f48c845daed59950dae4aecef7a6d99">scifimat_z</a> / 2);</div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;  TGeoVolume* TT_scifi_plane_hor_volume = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;TT_scifi_plane_hor&quot;</span>, TT_scifi_plane_hor_box, SciFiMat);</div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;  TT_scifi_plane_hor_volume-&gt;SetVisibility(1);</div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160; </div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;  TGeoBBox* TT_scifi_plane_vert_box = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;TT_scifi_plane_vert_box&quot;</span>, <a class="code" href="classTargetTracker.html#a48fde000e0fce71225dabcfe02cbe77d">TTrackerX</a> / 2, <a class="code" href="classTargetTracker.html#a72cf6b433a91f4265777f5188c32c78a">TTrackerY</a> / 2, <a class="code" href="classTargetTracker.html#a4f48c845daed59950dae4aecef7a6d99">scifimat_z</a> / 2);</div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;  TGeoVolume* TT_scifi_plane_vert_volume = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;TT_scifi_plane_vert&quot;</span>, TT_scifi_plane_vert_box, SciFiMat);</div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;  TT_scifi_plane_vert_volume-&gt;SetVisibility(1);</div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160; </div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;  <span class="comment">//SciFi mats for X and Y</span></div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;  TGeoBBox* TT_scifimat_hor_box = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;TT_scifimat_hor_box&quot;</span>, <a class="code" href="classTargetTracker.html#af1b5a66c41452d1db2dd2ec74835d9b4">scifimat_hor</a> / 2, <a class="code" href="classTargetTracker.html#a512b75ce4c628999d04a108edabc2671">scifimat_width</a> / 2, <a class="code" href="classTargetTracker.html#a4f48c845daed59950dae4aecef7a6d99">scifimat_z</a> / 2);</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;  TGeoVolume* TT_scifimat_hor_volume = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;TT_scifimat_hor&quot;</span>, TT_scifimat_hor_box, SciFiMat);</div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;  TT_scifimat_hor_volume-&gt;SetLineColor(kCyan-9);</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160; </div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;  TGeoBBox* TT_scifimat_vert_box = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;TT_scifimat_vert_box&quot;</span>, <a class="code" href="classTargetTracker.html#a512b75ce4c628999d04a108edabc2671">scifimat_width</a> / 2, <a class="code" href="classTargetTracker.html#a8797d0786b93bd3662d0a460487bc00a">scifimat_vert</a> / 2, <a class="code" href="classTargetTracker.html#a4f48c845daed59950dae4aecef7a6d99">scifimat_z</a> / 2);</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;  TGeoVolume* TT_scifimat_vert_volume = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;TT_scifimat_vert&quot;</span>, TT_scifimat_vert_box, SciFiMat);</div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;  TT_scifimat_vert_volume-&gt;SetLineColor(kGreen-7);</div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160; </div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;  <span class="comment">//Add SciFi mat as sensitive unit</span></div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;  AddSensitiveVolume(TT_scifimat_hor_volume);</div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;  AddSensitiveVolume(TT_scifimat_vert_volume);</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160; </div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;  <span class="comment">//Creating physical volumes and multiply</span></div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> <a class="code" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> = 0; <a class="code" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; <a class="code" href="classTargetTracker.html#a4b1f189be15fc79d2c94866b8aceed40">n_hor_planes</a>; <a class="code" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>++){</div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;    TT_scifi_plane_hor_volume-&gt;AddNode(TT_scifimat_hor_volume, <a class="code" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>+1, <span class="keyword">new</span> TGeoTranslation(0, (-(<a class="code" href="classTargetTracker.html#a4b1f189be15fc79d2c94866b8aceed40">n_hor_planes</a>-1)/2.0 + <a class="code" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>)*<a class="code" href="classTargetTracker.html#a512b75ce4c628999d04a108edabc2671">scifimat_width</a>, 0));</div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;  }</div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> <a class="code" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> = 0; <a class="code" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; <a class="code" href="classTargetTracker.html#ae5d14bfca6fbb7914b13db53fe324ff3">n_vert_planes</a>; <a class="code" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>++){</div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;    TT_scifi_plane_vert_volume-&gt;AddNode(TT_scifimat_vert_volume, 100+<a class="code" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>+1, <span class="keyword">new</span> TGeoTranslation((-(<a class="code" href="classTargetTracker.html#ae5d14bfca6fbb7914b13db53fe324ff3">n_vert_planes</a>-1)/2.0 + <a class="code" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>)*<a class="code" href="classTargetTracker.html#a512b75ce4c628999d04a108edabc2671">scifimat_width</a>, 0, 0));</div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;  }</div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160; </div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;  TT_volume-&gt;AddNode(TT_support_volume,          0, <span class="keyword">new</span> TGeoTranslation(0, 0, -<a class="code" href="classTargetTracker.html#ab40db0ddcdbdb9adb223cf16a5eef3ac">TTrackerZ</a>/2 + <a class="code" href="classTargetTracker.html#a42ab1011aad3bbb2168974d07b1eafbb">support_z</a>/2));</div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;  TT_volume-&gt;AddNode(TT_scifi_plane_hor_volume,  0, <span class="keyword">new</span> TGeoTranslation(0, 0, -<a class="code" href="classTargetTracker.html#ab40db0ddcdbdb9adb223cf16a5eef3ac">TTrackerZ</a>/2 + <a class="code" href="classTargetTracker.html#a42ab1011aad3bbb2168974d07b1eafbb">support_z</a> + <a class="code" href="classTargetTracker.html#a4f48c845daed59950dae4aecef7a6d99">scifimat_z</a>/2));</div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;  TT_volume-&gt;AddNode(TT_scifi_plane_vert_volume, 0, <span class="keyword">new</span> TGeoTranslation(0, 0, -<a class="code" href="classTargetTracker.html#ab40db0ddcdbdb9adb223cf16a5eef3ac">TTrackerZ</a>/2 + <a class="code" href="classTargetTracker.html#a42ab1011aad3bbb2168974d07b1eafbb">support_z</a> + <a class="code" href="classTargetTracker.html#a4f48c845daed59950dae4aecef7a6d99">scifimat_z</a> + <a class="code" href="classTargetTracker.html#a4f48c845daed59950dae4aecef7a6d99">scifimat_z</a>/2));</div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;  TT_volume-&gt;AddNode(TT_honeycomb_volume,        0, <span class="keyword">new</span> TGeoTranslation(0, 0, -<a class="code" href="classTargetTracker.html#ab40db0ddcdbdb9adb223cf16a5eef3ac">TTrackerZ</a>/2 + <a class="code" href="classTargetTracker.html#a42ab1011aad3bbb2168974d07b1eafbb">support_z</a> + 2*<a class="code" href="classTargetTracker.html#a4f48c845daed59950dae4aecef7a6d99">scifimat_z</a> + <a class="code" href="classTargetTracker.html#ab74d178aa34284794e312a26121c6f4a">honeycomb_z</a>/2));</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;  TT_volume-&gt;AddNode(TT_support_volume,          1, <span class="keyword">new</span> TGeoTranslation(0, 0, -<a class="code" href="classTargetTracker.html#ab40db0ddcdbdb9adb223cf16a5eef3ac">TTrackerZ</a>/2 + <a class="code" href="classTargetTracker.html#a42ab1011aad3bbb2168974d07b1eafbb">support_z</a> + 2*<a class="code" href="classTargetTracker.html#a4f48c845daed59950dae4aecef7a6d99">scifimat_z</a> + <a class="code" href="classTargetTracker.html#ab74d178aa34284794e312a26121c6f4a">honeycomb_z</a> + <a class="code" href="classTargetTracker.html#a42ab1011aad3bbb2168974d07b1eafbb">support_z</a>/2));</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160; </div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;  <a class="code" href="classTargetTracker.html#a7bde2cd76b734c91a30d08df100fac6c">InitMedium</a>(<span class="stringliteral">&quot;vacuum&quot;</span>);</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;  TGeoMedium *vacuum = gGeoManager-&gt;GetMedium(<span class="stringliteral">&quot;vacuum&quot;</span>);</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160; </div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;  <a class="code" href="classTargetTracker.html#a7bde2cd76b734c91a30d08df100fac6c">InitMedium</a>(<span class="stringliteral">&quot;CarbonComposite&quot;</span>);</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;  TGeoMedium *CarbonComposite = gGeoManager-&gt;GetMedium(<span class="stringliteral">&quot;CarbonComposite&quot;</span>);</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160; </div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;  <a class="code" href="classTargetTracker.html#a7bde2cd76b734c91a30d08df100fac6c">InitMedium</a>(<span class="stringliteral">&quot;SciFiMat&quot;</span>);</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;  TGeoMedium *SciFiMat = gGeoManager-&gt;GetMedium(<span class="stringliteral">&quot;SciFiMat&quot;</span>);</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160; </div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;  <a class="code" href="classTargetTracker.html#a7bde2cd76b734c91a30d08df100fac6c">InitMedium</a>(<span class="stringliteral">&quot;Airex&quot;</span>);</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;  TGeoMedium *Airex = gGeoManager-&gt;GetMedium(<span class="stringliteral">&quot;Airex&quot;</span>);</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160; </div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;  <span class="comment">//Target Tracker</span></div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;  TGeoVolume *volTarget = gGeoManager-&gt;GetVolume(<span class="stringliteral">&quot;volTarget&quot;</span>);</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160; </div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;  TGeoBBox* TT_box = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;TT_box&quot;</span>, <a class="code" href="classTargetTracker.html#a48fde000e0fce71225dabcfe02cbe77d">TTrackerX</a> / 2, <a class="code" href="classTargetTracker.html#a72cf6b433a91f4265777f5188c32c78a">TTrackerY</a> / 2, <a class="code" href="classTargetTracker.html#ab40db0ddcdbdb9adb223cf16a5eef3ac">TTrackerZ</a> / 2);</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;  TGeoVolume* TT_volume = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;TT&quot;</span>, TT_box, vacuum);</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;  TT_volume-&gt;SetLineColor(kBlue - 1);</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;  <span class="comment">//TT_volume-&gt;SetTransparency(1);</span></div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;  TT_volume-&gt;SetVisibility(1);</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;  TT_volume-&gt;SetVisDaughters(1);</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160; </div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;  <span class="comment">//Support Carbon Composite</span></div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;  TGeoBBox* TT_support_box = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;TT_support_box&quot;</span>, <a class="code" href="classTargetTracker.html#a48fde000e0fce71225dabcfe02cbe77d">TTrackerX</a> / 2, <a class="code" href="classTargetTracker.html#a72cf6b433a91f4265777f5188c32c78a">TTrackerY</a> / 2, <a class="code" href="classTargetTracker.html#a42ab1011aad3bbb2168974d07b1eafbb">support_z</a> / 2);</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;  TGeoVolume* TT_support_volume = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;TT_support&quot;</span>, TT_support_box, CarbonComposite);</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;  TT_support_volume-&gt;SetLineColor(kGray - 2);</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;  TT_support_volume-&gt;SetVisibility(1);</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160; </div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;  <span class="comment">//Honeycomb Airex (or Nomex)</span></div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;  TGeoBBox* TT_honeycomb_box = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;TT_honeycomb_box&quot;</span>, <a class="code" href="classTargetTracker.html#a48fde000e0fce71225dabcfe02cbe77d">TTrackerX</a> / 2, <a class="code" href="classTargetTracker.html#a72cf6b433a91f4265777f5188c32c78a">TTrackerY</a> / 2, <a class="code" href="classTargetTracker.html#ab74d178aa34284794e312a26121c6f4a">honeycomb_z</a> / 2);</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;  TGeoVolume* TT_honeycomb_volume = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;TT_honeycomb&quot;</span>, TT_honeycomb_box, Airex);</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;  TT_honeycomb_volume-&gt;SetLineColor(kYellow);</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;  TT_honeycomb_volume-&gt;SetVisibility(1);</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160; </div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;    <span class="comment">//SciFi planes</span></div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;  TGeoBBox* TT_scifi_plane_hor_box = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;TT_scifi_plane_hor_box&quot;</span>, <a class="code" href="classTargetTracker.html#a48fde000e0fce71225dabcfe02cbe77d">TTrackerX</a> / 2, <a class="code" href="classTargetTracker.html#a72cf6b433a91f4265777f5188c32c78a">TTrackerY</a> / 2, <a class="code" href="classTargetTracker.html#a4f48c845daed59950dae4aecef7a6d99">scifimat_z</a> / 2);</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;  TGeoVolume* TT_scifi_plane_hor_volume = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;TT_scifi_plane_hor&quot;</span>, TT_scifi_plane_hor_box, SciFiMat);</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;  TT_scifi_plane_hor_volume-&gt;SetVisibility(1);</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160; </div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;  TGeoBBox* TT_scifi_plane_vert_box = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;TT_scifi_plane_vert_box&quot;</span>, <a class="code" href="classTargetTracker.html#a48fde000e0fce71225dabcfe02cbe77d">TTrackerX</a> / 2, <a class="code" href="classTargetTracker.html#a72cf6b433a91f4265777f5188c32c78a">TTrackerY</a> / 2, <a class="code" href="classTargetTracker.html#a4f48c845daed59950dae4aecef7a6d99">scifimat_z</a> / 2);</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;  TGeoVolume* TT_scifi_plane_vert_volume = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;TT_scifi_plane_vert&quot;</span>, TT_scifi_plane_vert_box, SciFiMat);</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;  TT_scifi_plane_vert_volume-&gt;SetVisibility(1);</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160; </div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;  <span class="comment">//SciFi mats for X and Y</span></div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;  TGeoBBox* TT_scifimat_hor_box = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;TT_scifimat_hor_box&quot;</span>, <a class="code" href="classTargetTracker.html#af1b5a66c41452d1db2dd2ec74835d9b4">scifimat_hor</a> / 2, <a class="code" href="classTargetTracker.html#a512b75ce4c628999d04a108edabc2671">scifimat_width</a> / 2, <a class="code" href="classTargetTracker.html#a4f48c845daed59950dae4aecef7a6d99">scifimat_z</a> / 2);</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;  TGeoVolume* TT_scifimat_hor_volume = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;TT_scifimat_hor&quot;</span>, TT_scifimat_hor_box, SciFiMat);</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;  TT_scifimat_hor_volume-&gt;SetLineColor(kCyan-9);</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160; </div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;  TGeoBBox* TT_scifimat_vert_box = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;TT_scifimat_vert_box&quot;</span>, <a class="code" href="classTargetTracker.html#a512b75ce4c628999d04a108edabc2671">scifimat_width</a> / 2, <a class="code" href="classTargetTracker.html#a8797d0786b93bd3662d0a460487bc00a">scifimat_vert</a> / 2, <a class="code" href="classTargetTracker.html#a4f48c845daed59950dae4aecef7a6d99">scifimat_z</a> / 2);</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;  TGeoVolume* TT_scifimat_vert_volume = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;TT_scifimat_vert&quot;</span>, TT_scifimat_vert_box, SciFiMat);</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;  TT_scifimat_vert_volume-&gt;SetLineColor(kGreen-7);</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160; </div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;  <span class="comment">//Add SciFi mat as sensitive unit</span></div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;  AddSensitiveVolume(TT_scifimat_hor_volume);</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;  AddSensitiveVolume(TT_scifimat_vert_volume);</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160; </div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;  <span class="comment">//Creating physical volumes and multiply</span></div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> <a class="code" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> = 0; <a class="code" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; <a class="code" href="classTargetTracker.html#a4b1f189be15fc79d2c94866b8aceed40">n_hor_planes</a>; <a class="code" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>++){</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;    TT_scifi_plane_hor_volume-&gt;AddNode(TT_scifimat_hor_volume, <a class="code" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>+1, <span class="keyword">new</span> TGeoTranslation(0, (-(<a class="code" href="classTargetTracker.html#a4b1f189be15fc79d2c94866b8aceed40">n_hor_planes</a>-1)/2.0 + <a class="code" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>)*<a class="code" href="classTargetTracker.html#a512b75ce4c628999d04a108edabc2671">scifimat_width</a>, 0));</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;  }</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> <a class="code" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> = 0; <a class="code" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; <a class="code" href="classTargetTracker.html#ae5d14bfca6fbb7914b13db53fe324ff3">n_vert_planes</a>; <a class="code" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>++){</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;    TT_scifi_plane_vert_volume-&gt;AddNode(TT_scifimat_vert_volume, 100+<a class="code" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>+1, <span class="keyword">new</span> TGeoTranslation((-(<a class="code" href="classTargetTracker.html#ae5d14bfca6fbb7914b13db53fe324ff3">n_vert_planes</a>-1)/2.0 + <a class="code" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>)*<a class="code" href="classTargetTracker.html#a512b75ce4c628999d04a108edabc2671">scifimat_width</a>, 0, 0));</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;  }</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160; </div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;  TT_volume-&gt;AddNode(TT_support_volume,          0, <span class="keyword">new</span> TGeoTranslation(0, 0, -<a class="code" href="classTargetTracker.html#ab40db0ddcdbdb9adb223cf16a5eef3ac">TTrackerZ</a>/2 + <a class="code" href="classTargetTracker.html#a42ab1011aad3bbb2168974d07b1eafbb">support_z</a>/2));</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;  TT_volume-&gt;AddNode(TT_scifi_plane_hor_volume,  0, <span class="keyword">new</span> TGeoTranslation(0, 0, -<a class="code" href="classTargetTracker.html#ab40db0ddcdbdb9adb223cf16a5eef3ac">TTrackerZ</a>/2 + <a class="code" href="classTargetTracker.html#a42ab1011aad3bbb2168974d07b1eafbb">support_z</a> + <a class="code" href="classTargetTracker.html#a4f48c845daed59950dae4aecef7a6d99">scifimat_z</a>/2));</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;  TT_volume-&gt;AddNode(TT_scifi_plane_vert_volume, 0, <span class="keyword">new</span> TGeoTranslation(0, 0, -<a class="code" href="classTargetTracker.html#ab40db0ddcdbdb9adb223cf16a5eef3ac">TTrackerZ</a>/2 + <a class="code" href="classTargetTracker.html#a42ab1011aad3bbb2168974d07b1eafbb">support_z</a> + <a class="code" href="classTargetTracker.html#a4f48c845daed59950dae4aecef7a6d99">scifimat_z</a> + <a class="code" href="classTargetTracker.html#a4f48c845daed59950dae4aecef7a6d99">scifimat_z</a>/2));</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;  TT_volume-&gt;AddNode(TT_honeycomb_volume,        0, <span class="keyword">new</span> TGeoTranslation(0, 0, -<a class="code" href="classTargetTracker.html#ab40db0ddcdbdb9adb223cf16a5eef3ac">TTrackerZ</a>/2 + <a class="code" href="classTargetTracker.html#a42ab1011aad3bbb2168974d07b1eafbb">support_z</a> + 2*<a class="code" href="classTargetTracker.html#a4f48c845daed59950dae4aecef7a6d99">scifimat_z</a> + <a class="code" href="classTargetTracker.html#ab74d178aa34284794e312a26121c6f4a">honeycomb_z</a>/2));</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;  TT_volume-&gt;AddNode(TT_support_volume,          1, <span class="keyword">new</span> TGeoTranslation(0, 0, -<a class="code" href="classTargetTracker.html#ab40db0ddcdbdb9adb223cf16a5eef3ac">TTrackerZ</a>/2 + <a class="code" href="classTargetTracker.html#a42ab1011aad3bbb2168974d07b1eafbb">support_z</a> + 2*<a class="code" href="classTargetTracker.html#a4f48c845daed59950dae4aecef7a6d99">scifimat_z</a> + <a class="code" href="classTargetTracker.html#ab74d178aa34284794e312a26121c6f4a">honeycomb_z</a> + <a class="code" href="classTargetTracker.html#a42ab1011aad3bbb2168974d07b1eafbb">support_z</a>/2));</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160; </div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;  Double_t first_tt_position = -<a class="code" href="classTargetTracker.html#a35fd674cb4d201518f74439d2afa20df">ZDimension</a> / 2 + <a class="code" href="classTargetTracker.html#ab40db0ddcdbdb9adb223cf16a5eef3ac">TTrackerZ</a> / 2;</div>
 <div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160; </div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;  Double_t first_tt_position = -<a class="code" href="classTargetTracker.html#a35fd674cb4d201518f74439d2afa20df">ZDimension</a> / 2 + <a class="code" href="classTargetTracker.html#ab40db0ddcdbdb9adb223cf16a5eef3ac">TTrackerZ</a> / 2;</div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160; </div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;  <span class="comment">//fNTT - number of TT walls</span></div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> <a class="code" href="namespaceana__ShipMuon.html#a2306147015cd10d8f6cb0f970e723e4e">l</a> = 0; <a class="code" href="namespaceana__ShipMuon.html#a2306147015cd10d8f6cb0f970e723e4e">l</a> &lt; <a class="code" href="classTargetTracker.html#a5e2f51fa3a7a9ca28903f1231e17597e">fNTT</a>; ++<a class="code" href="namespaceana__ShipMuon.html#a2306147015cd10d8f6cb0f970e723e4e">l</a>){</div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;    volTarget-&gt;AddNode(TT_volume, 1000*(<a class="code" href="namespaceana__ShipMuon.html#a2306147015cd10d8f6cb0f970e723e4e">l</a>+1), <span class="keyword">new</span> TGeoTranslation(0, 0, first_tt_position + <a class="code" href="namespaceana__ShipMuon.html#a2306147015cd10d8f6cb0f970e723e4e">l</a> * (<a class="code" href="classTargetTracker.html#ab40db0ddcdbdb9adb223cf16a5eef3ac">TTrackerZ</a> + <a class="code" href="classTargetTracker.html#aadd3f35ee4725d41690a660687b83f6f">CellWidth</a>)));</div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;  }</div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160; </div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;}</div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;  <span class="comment">//fNTT - number of TT walls</span></div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> <a class="code" href="namespaceana__ShipMuon.html#a2306147015cd10d8f6cb0f970e723e4e">l</a> = 0; <a class="code" href="namespaceana__ShipMuon.html#a2306147015cd10d8f6cb0f970e723e4e">l</a> &lt; <a class="code" href="classTargetTracker.html#a5e2f51fa3a7a9ca28903f1231e17597e">fNTT</a>; ++<a class="code" href="namespaceana__ShipMuon.html#a2306147015cd10d8f6cb0f970e723e4e">l</a>){</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;    volTarget-&gt;AddNode(TT_volume, 1000*(<a class="code" href="namespaceana__ShipMuon.html#a2306147015cd10d8f6cb0f970e723e4e">l</a>+1), <span class="keyword">new</span> TGeoTranslation(0, 0, first_tt_position + <a class="code" href="namespaceana__ShipMuon.html#a2306147015cd10d8f6cb0f970e723e4e">l</a> * (<a class="code" href="classTargetTracker.html#ab40db0ddcdbdb9adb223cf16a5eef3ac">TTrackerZ</a> + <a class="code" href="classTargetTracker.html#aadd3f35ee4725d41690a660687b83f6f">CellWidth</a>)));</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;  }</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160; </div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;}</div>
 <div class="ttc" id="aclassTargetTracker_html_a35fd674cb4d201518f74439d2afa20df"><div class="ttname"><a href="classTargetTracker.html#a35fd674cb4d201518f74439d2afa20df">TargetTracker::ZDimension</a></div><div class="ttdeci">Double_t ZDimension</div><div class="ttdef"><b>Definition:</b> <a href="TargetTracker_8h_source.html#l00125">TargetTracker.h:125</a></div></div>
 <div class="ttc" id="aclassTargetTracker_html_a42ab1011aad3bbb2168974d07b1eafbb"><div class="ttname"><a href="classTargetTracker.html#a42ab1011aad3bbb2168974d07b1eafbb">TargetTracker::support_z</a></div><div class="ttdeci">Double_t support_z</div><div class="ttdef"><b>Definition:</b> <a href="TargetTracker_8h_source.html#l00119">TargetTracker.h:119</a></div></div>
 <div class="ttc" id="aclassTargetTracker_html_a4b1f189be15fc79d2c94866b8aceed40"><div class="ttname"><a href="classTargetTracker.html#a4b1f189be15fc79d2c94866b8aceed40">TargetTracker::n_hor_planes</a></div><div class="ttdeci">Int_t n_hor_planes</div><div class="ttdef"><b>Definition:</b> <a href="TargetTracker_8h_source.html#l00121">TargetTracker.h:121</a></div></div>
@@ -771,16 +769,16 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TargetTracker_8cxx_source.html#l00305">305</a> of file <a class="el" href="TargetTracker_8cxx_source.html">TargetTracker.cxx</a>.</p>
-<div class="fragment"><div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;{</div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;  NTT = detID/1000;</div>
-<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;  <span class="keywordtype">int</span> idir = (detID - NTT*1000)/100;</div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160; </div>
-<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;  <span class="keywordflow">if</span> (idir == 1) ishor = kFALSE;</div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (idir == 0) ishor = kTRUE;</div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160; </div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;  nplane = (detID - NTT*1000 - idir*100);</div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;}</div>
+<p class="definition">Definition at line <a class="el" href="TargetTracker_8cxx_source.html#l00303">303</a> of file <a class="el" href="TargetTracker_8cxx_source.html">TargetTracker.cxx</a>.</p>
+<div class="fragment"><div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;{</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;  NTT = detID/1000;</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;  <span class="keywordtype">int</span> idir = (detID - NTT*1000)/100;</div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160; </div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;  <span class="keywordflow">if</span> (idir == 1) ishor = kFALSE;</div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (idir == 0) ishor = kTRUE;</div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160; </div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;  nplane = (detID - NTT*1000 - idir*100);</div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -807,10 +805,10 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TargetTracker_8cxx_source.html#l00317">317</a> of file <a class="el" href="TargetTracker_8cxx_source.html">TargetTracker.cxx</a>.</p>
-<div class="fragment"><div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;{</div>
-<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;    <a class="code" href="classTargetTracker.html#a1418cbaef2f603fb1704437b7630e7ee">fTTPointCollection</a>-&gt;Clear();</div>
-<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;}</div>
+<p class="definition">Definition at line <a class="el" href="TargetTracker_8cxx_source.html#l00315">315</a> of file <a class="el" href="TargetTracker_8cxx_source.html">TargetTracker.cxx</a>.</p>
+<div class="fragment"><div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;{</div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;    <a class="code" href="classTargetTracker.html#a1418cbaef2f603fb1704437b7630e7ee">fTTPointCollection</a>-&gt;Clear();</div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -895,11 +893,11 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Gets the produced collections </p>
 
-<p class="definition">Definition at line <a class="el" href="TargetTracker_8cxx_source.html#l00336">336</a> of file <a class="el" href="TargetTracker_8cxx_source.html">TargetTracker.cxx</a>.</p>
-<div class="fragment"><div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;{</div>
-<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;    <span class="keywordflow">if</span> (iColl == 0) { <span class="keywordflow">return</span> <a class="code" href="classTargetTracker.html#a1418cbaef2f603fb1704437b7630e7ee">fTTPointCollection</a>; }</div>
-<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;    <span class="keywordflow">else</span> { <span class="keywordflow">return</span> NULL; }</div>
-<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;}</div>
+<p class="definition">Definition at line <a class="el" href="TargetTracker_8cxx_source.html#l00334">334</a> of file <a class="el" href="TargetTracker_8cxx_source.html">TargetTracker.cxx</a>.</p>
+<div class="fragment"><div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;{</div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;    <span class="keywordflow">if</span> (iColl == 0) { <span class="keywordflow">return</span> <a class="code" href="classTargetTracker.html#a1418cbaef2f603fb1704437b7630e7ee">fTTPointCollection</a>; }</div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;    <span class="keywordflow">else</span> { <span class="keywordflow">return</span> NULL; }</div>
+<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1082,53 +1080,53 @@ Private Attributes</h2></td></tr>
 <p>this method is called for each step during simulation (see FairMCApplication::Stepping()) </p>
 <p>This method is called from the MC stepping</p>
 
-<p class="definition">Definition at line <a class="el" href="TargetTracker_8cxx_source.html#l00257">257</a> of file <a class="el" href="TargetTracker_8cxx_source.html">TargetTracker.cxx</a>.</p>
-<div class="fragment"><div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;{</div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;  <span class="comment">//Set parameters at entrance of volume. Reset ELoss.</span></div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;  <span class="keywordflow">if</span> ( <a class="code" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;IsTrackEntering() ) {</div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;    <a class="code" href="classTargetTracker.html#afd174318951d346614cf0e6b22f3e859">fELoss</a>  = 0.;</div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;    <a class="code" href="classTargetTracker.html#aa8c5dcce48baf9948ab89a7debbbc9a7">fTime</a>   = <a class="code" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;TrackTime() * 1.0e09;</div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;    <a class="code" href="classTargetTracker.html#aa2afe326eae366d210147f5cdce1c4db">fLength</a> = <a class="code" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;TrackLength();</div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;    <a class="code" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;TrackPosition(<a class="code" href="classTargetTracker.html#ac2b99325c0850dde01cfde02e192741c">fPos</a>);</div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;    <a class="code" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;TrackMomentum(<a class="code" href="classTargetTracker.html#a1eed77b3ce14a25532c36d7393adcec6">fMom</a>);</div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;  }</div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;  <span class="comment">// Sum energy loss for all steps in the active volume</span></div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;  <a class="code" href="classTargetTracker.html#afd174318951d346614cf0e6b22f3e859">fELoss</a> += <a class="code" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;Edep();</div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160; </div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;  <span class="comment">// Create muonPoint at exit of active volume</span></div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;IsTrackExiting()     ||</div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;      <a class="code" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;IsTrackStop()        ||</div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;      <a class="code" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;IsTrackDisappeared() ){</div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="classTargetTracker.html#afd174318951d346614cf0e6b22f3e859">fELoss</a> == 0. ) { <span class="keywordflow">return</span> kFALSE; }</div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;    TParticle* <a class="code" href="namespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring.html#a03923acd0da372eec842c9a6e48161e4">p</a>=<a class="code" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;GetStack()-&gt;GetCurrentTrack();</div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;    Int_t pdgCode = <a class="code" href="namespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring.html#a03923acd0da372eec842c9a6e48161e4">p</a>-&gt;GetPdgCode();</div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;    <a class="code" href="classTargetTracker.html#ab7d663a32da9fac5b0a6174a16af2271">fTrackID</a>  = <a class="code" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;GetStack()-&gt;GetCurrentTrackNumber();</div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160; </div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;    <a class="code" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;CurrentVolID(<a class="code" href="classTargetTracker.html#a86afa822fb9373e8359e5701ffbcfaba">fVolumeID</a>);</div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;    Int_t detID = <a class="code" href="classTargetTracker.html#a86afa822fb9373e8359e5701ffbcfaba">fVolumeID</a>;</div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;    Int_t TTstationID;</div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;    <a class="code" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;CurrentVolOffID(2, TTstationID);</div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;    <a class="code" href="classTargetTracker.html#a86afa822fb9373e8359e5701ffbcfaba">fVolumeID</a> = TTstationID + detID;</div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160; </div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;    TLorentzVector Pos;</div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;    <a class="code" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;TrackPosition(Pos);</div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;    Double_t xmean = (<a class="code" href="classTargetTracker.html#ac2b99325c0850dde01cfde02e192741c">fPos</a>.X()+Pos.X())/2. ;</div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;    Double_t ymean = (<a class="code" href="classTargetTracker.html#ac2b99325c0850dde01cfde02e192741c">fPos</a>.Y()+Pos.Y())/2. ;</div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;    Double_t zmean = (<a class="code" href="classTargetTracker.html#ac2b99325c0850dde01cfde02e192741c">fPos</a>.Z()+Pos.Z())/2. ;</div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160; </div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;    <a class="code" href="classTargetTracker.html#a8011000196ebfa6d416c5abca878cdaa">AddHit</a>(<a class="code" href="classTargetTracker.html#ab7d663a32da9fac5b0a6174a16af2271">fTrackID</a>, <a class="code" href="classTargetTracker.html#a86afa822fb9373e8359e5701ffbcfaba">fVolumeID</a>, TVector3(xmean, ymean,  zmean),</div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;           TVector3(<a class="code" href="classTargetTracker.html#a1eed77b3ce14a25532c36d7393adcec6">fMom</a>.Px(), <a class="code" href="classTargetTracker.html#a1eed77b3ce14a25532c36d7393adcec6">fMom</a>.Py(), <a class="code" href="classTargetTracker.html#a1eed77b3ce14a25532c36d7393adcec6">fMom</a>.Pz()),</div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;           <a class="code" href="classTargetTracker.html#aa8c5dcce48baf9948ab89a7debbbc9a7">fTime</a>, <a class="code" href="classTargetTracker.html#aa2afe326eae366d210147f5cdce1c4db">fLength</a>, <a class="code" href="classTargetTracker.html#afd174318951d346614cf0e6b22f3e859">fELoss</a>, pdgCode);</div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160; </div>
-<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;    <span class="comment">// Increment number of muon det points in TParticle</span></div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;    <a class="code" href="classShipStack.html">ShipStack</a>* <a class="code" href="namespacemakeCascade.html#a15662d966fe998f4f8b9b6547975083e">stack</a> = (<a class="code" href="classShipStack.html">ShipStack</a>*) <a class="code" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;GetStack();</div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;    <a class="code" href="namespacemakeCascade.html#a15662d966fe998f4f8b9b6547975083e">stack</a>-&gt;AddPoint(<a class="code" href="ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a302708f27685969aea17b84ebf1dc7b5">ktauTT</a>);</div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;  }</div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160; </div>
-<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;  <span class="keywordflow">return</span> kTRUE;</div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;}</div>
+<p class="definition">Definition at line <a class="el" href="TargetTracker_8cxx_source.html#l00255">255</a> of file <a class="el" href="TargetTracker_8cxx_source.html">TargetTracker.cxx</a>.</p>
+<div class="fragment"><div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;{</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;  <span class="comment">//Set parameters at entrance of volume. Reset ELoss.</span></div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;  <span class="keywordflow">if</span> ( <a class="code" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;IsTrackEntering() ) {</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;    <a class="code" href="classTargetTracker.html#afd174318951d346614cf0e6b22f3e859">fELoss</a>  = 0.;</div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;    <a class="code" href="classTargetTracker.html#aa8c5dcce48baf9948ab89a7debbbc9a7">fTime</a>   = <a class="code" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;TrackTime() * 1.0e09;</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;    <a class="code" href="classTargetTracker.html#aa2afe326eae366d210147f5cdce1c4db">fLength</a> = <a class="code" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;TrackLength();</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;    <a class="code" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;TrackPosition(<a class="code" href="classTargetTracker.html#ac2b99325c0850dde01cfde02e192741c">fPos</a>);</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;    <a class="code" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;TrackMomentum(<a class="code" href="classTargetTracker.html#a1eed77b3ce14a25532c36d7393adcec6">fMom</a>);</div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;  }</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;  <span class="comment">// Sum energy loss for all steps in the active volume</span></div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;  <a class="code" href="classTargetTracker.html#afd174318951d346614cf0e6b22f3e859">fELoss</a> += <a class="code" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;Edep();</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160; </div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;  <span class="comment">// Create muonPoint at exit of active volume</span></div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;  <span class="keywordflow">if</span> (<a class="code" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;IsTrackExiting()     ||</div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;      <a class="code" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;IsTrackStop()        ||</div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;      <a class="code" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;IsTrackDisappeared() ){</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="classTargetTracker.html#afd174318951d346614cf0e6b22f3e859">fELoss</a> == 0. ) { <span class="keywordflow">return</span> kFALSE; }</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;    TParticle* <a class="code" href="namespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring.html#a03923acd0da372eec842c9a6e48161e4">p</a>=<a class="code" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;GetStack()-&gt;GetCurrentTrack();</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;    Int_t pdgCode = <a class="code" href="namespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring.html#a03923acd0da372eec842c9a6e48161e4">p</a>-&gt;GetPdgCode();</div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;    <a class="code" href="classTargetTracker.html#ab7d663a32da9fac5b0a6174a16af2271">fTrackID</a>  = <a class="code" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;GetStack()-&gt;GetCurrentTrackNumber();</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160; </div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;    <a class="code" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;CurrentVolID(<a class="code" href="classTargetTracker.html#a86afa822fb9373e8359e5701ffbcfaba">fVolumeID</a>);</div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;    Int_t detID = <a class="code" href="classTargetTracker.html#a86afa822fb9373e8359e5701ffbcfaba">fVolumeID</a>;</div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;    Int_t TTstationID;</div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;    <a class="code" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;CurrentVolOffID(2, TTstationID);</div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;    <a class="code" href="classTargetTracker.html#a86afa822fb9373e8359e5701ffbcfaba">fVolumeID</a> = TTstationID + detID;</div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160; </div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;    TLorentzVector Pos;</div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;    <a class="code" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;TrackPosition(Pos);</div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;    Double_t xmean = (<a class="code" href="classTargetTracker.html#ac2b99325c0850dde01cfde02e192741c">fPos</a>.X()+Pos.X())/2. ;</div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;    Double_t ymean = (<a class="code" href="classTargetTracker.html#ac2b99325c0850dde01cfde02e192741c">fPos</a>.Y()+Pos.Y())/2. ;</div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;    Double_t zmean = (<a class="code" href="classTargetTracker.html#ac2b99325c0850dde01cfde02e192741c">fPos</a>.Z()+Pos.Z())/2. ;</div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160; </div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;    <a class="code" href="classTargetTracker.html#a8011000196ebfa6d416c5abca878cdaa">AddHit</a>(<a class="code" href="classTargetTracker.html#ab7d663a32da9fac5b0a6174a16af2271">fTrackID</a>, <a class="code" href="classTargetTracker.html#a86afa822fb9373e8359e5701ffbcfaba">fVolumeID</a>, TVector3(xmean, ymean,  zmean),</div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;           TVector3(<a class="code" href="classTargetTracker.html#a1eed77b3ce14a25532c36d7393adcec6">fMom</a>.Px(), <a class="code" href="classTargetTracker.html#a1eed77b3ce14a25532c36d7393adcec6">fMom</a>.Py(), <a class="code" href="classTargetTracker.html#a1eed77b3ce14a25532c36d7393adcec6">fMom</a>.Pz()),</div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;           <a class="code" href="classTargetTracker.html#aa8c5dcce48baf9948ab89a7debbbc9a7">fTime</a>, <a class="code" href="classTargetTracker.html#aa2afe326eae366d210147f5cdce1c4db">fLength</a>, <a class="code" href="classTargetTracker.html#afd174318951d346614cf0e6b22f3e859">fELoss</a>, pdgCode);</div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160; </div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;    <span class="comment">// Increment number of muon det points in TParticle</span></div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;    <a class="code" href="classShipStack.html">ShipStack</a>* <a class="code" href="namespacemakeCascade.html#a15662d966fe998f4f8b9b6547975083e">stack</a> = (<a class="code" href="classShipStack.html">ShipStack</a>*) <a class="code" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;GetStack();</div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;    <a class="code" href="namespacemakeCascade.html#a15662d966fe998f4f8b9b6547975083e">stack</a>-&gt;AddPoint(<a class="code" href="ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a302708f27685969aea17b84ebf1dc7b5">ktauTT</a>);</div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;  }</div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160; </div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;  <span class="keywordflow">return</span> kTRUE;</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;}</div>
 <div class="ttc" id="aclassShipStack_html"><div class="ttname"><a href="classShipStack.html">ShipStack</a></div><div class="ttdef"><b>Definition:</b> <a href="ShipStack_8h_source.html#l00046">ShipStack.h:47</a></div></div>
-<div class="ttc" id="aclassTargetTracker_html_a8011000196ebfa6d416c5abca878cdaa"><div class="ttname"><a href="classTargetTracker.html#a8011000196ebfa6d416c5abca878cdaa">TargetTracker::AddHit</a></div><div class="ttdeci">TTPoint * AddHit(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom, Double_t time, Double_t length, Double_t eLoss, Int_t pdgCode)</div><div class="ttdef"><b>Definition:</b> <a href="TargetTracker_8cxx_source.html#l00348">TargetTracker.cxx:348</a></div></div>
+<div class="ttc" id="aclassTargetTracker_html_a8011000196ebfa6d416c5abca878cdaa"><div class="ttname"><a href="classTargetTracker.html#a8011000196ebfa6d416c5abca878cdaa">TargetTracker::AddHit</a></div><div class="ttdeci">TTPoint * AddHit(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom, Double_t time, Double_t length, Double_t eLoss, Int_t pdgCode)</div><div class="ttdef"><b>Definition:</b> <a href="TargetTracker_8cxx_source.html#l00346">TargetTracker.cxx:346</a></div></div>
 <div class="ttc" id="anamespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring_html_a03923acd0da372eec842c9a6e48161e4"><div class="ttname"><a href="namespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring.html#a03923acd0da372eec842c9a6e48161e4">conditionsDatabase.demo.drifttubeMonitoring.p</a></div><div class="ttdeci">string p</div><div class="ttdef"><b>Definition:</b> <a href="drifttubeMonitoring_8py_source.html#l00289">drifttubeMonitoring.py:289</a></div></div>
 <div class="ttc" id="anamespacemakeCascade_html_a15662d966fe998f4f8b9b6547975083e"><div class="ttname"><a href="namespacemakeCascade.html#a15662d966fe998f4f8b9b6547975083e">makeCascade.stack</a></div><div class="ttdeci">int stack</div><div class="ttdef"><b>Definition:</b> <a href="makeCascade_8py_source.html#l00273">makeCascade.py:273</a></div></div>
 <div class="ttc" id="anamespacerun__simScript_html_a671e51e119017a06d69c162c6e24b051"><div class="ttname"><a href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">run_simScript.gMC</a></div><div class="ttdeci">gMC</div><div class="ttdef"><b>Definition:</b> <a href="run__simScript_8py_source.html#l00555">run_simScript.py:555</a></div></div>
@@ -1161,12 +1159,12 @@ Private Attributes</h2></td></tr>
  </p>
 <p>This will create a branch in the output tree called <a class="el" href="classTargetPoint.html">TargetPoint</a>, setting the last parameter to kFALSE means: this collection will not be written to the file, it will exist only during the simulation.</p>
 
-<p class="definition">Definition at line <a class="el" href="TargetTracker_8cxx_source.html#l00323">323</a> of file <a class="el" href="TargetTracker_8cxx_source.html">TargetTracker.cxx</a>.</p>
-<div class="fragment"><div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;{</div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160; </div>
-<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;    FairRootManager::Instance()-&gt;Register(<span class="stringliteral">&quot;TTPoint&quot;</span>, <span class="stringliteral">&quot;TargetTracker&quot;</span>,</div>
-<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;                                          <a class="code" href="classTargetTracker.html#a1418cbaef2f603fb1704437b7630e7ee">fTTPointCollection</a>, kTRUE);</div>
-<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;}</div>
+<p class="definition">Definition at line <a class="el" href="TargetTracker_8cxx_source.html#l00321">321</a> of file <a class="el" href="TargetTracker_8cxx_source.html">TargetTracker.cxx</a>.</p>
+<div class="fragment"><div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;{</div>
+<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160; </div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;    FairRootManager::Instance()-&gt;Register(<span class="stringliteral">&quot;TTPoint&quot;</span>, <span class="stringliteral">&quot;TargetTracker&quot;</span>,</div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;                                          <a class="code" href="classTargetTracker.html#a1418cbaef2f603fb1704437b7630e7ee">fTTPointCollection</a>, kTRUE);</div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1195,10 +1193,10 @@ Private Attributes</h2></td></tr>
 <p>has to be called after each event to reset the containers <br  />
  </p>
 
-<p class="definition">Definition at line <a class="el" href="TargetTracker_8cxx_source.html#l00342">342</a> of file <a class="el" href="TargetTracker_8cxx_source.html">TargetTracker.cxx</a>.</p>
-<div class="fragment"><div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;{</div>
-<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;    <a class="code" href="classTargetTracker.html#a1418cbaef2f603fb1704437b7630e7ee">fTTPointCollection</a>-&gt;Clear();</div>
-<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;}</div>
+<p class="definition">Definition at line <a class="el" href="TargetTracker_8cxx_source.html#l00340">340</a> of file <a class="el" href="TargetTracker_8cxx_source.html">TargetTracker.cxx</a>.</p>
+<div class="fragment"><div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;{</div>
+<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;    <a class="code" href="classTargetTracker.html#a1418cbaef2f603fb1704437b7630e7ee">fTTPointCollection</a>-&gt;Clear();</div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;}</div>
 </div><!-- fragment -->
 </div>
 </div>
