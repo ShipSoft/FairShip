@@ -213,7 +213,6 @@ ENDIF (NOT FairRoot_FOUND)
 add_subdirectory (shipdata)
 add_subdirectory (passive)
 add_subdirectory (nutaudet)
-add_subdirectory (charmdet)
 add_subdirectory (ecal)
 add_subdirectory (splitcal)
 add_subdirectory (hcal)
@@ -227,7 +226,6 @@ add_subdirectory (field)
 add_subdirectory (genfit)
 add_subdirectory (pid)
 add_subdirectory (muonShieldOptimization)
-# add_subdirectory (online)  is not anymore compatible with FairRoot
 add_subdirectory (millepede)
 
 FIND_PATH(TEvePath NAMES TEveEventManager.h PATHS

@@ -21,7 +21,6 @@ if sys.platform == 'darwin':
    # Load FairShip libraries
    ROOT.gSystem.Load('libShipPassive')
    ROOT.gSystem.Load('libShipField')
-   ROOT.gSystem.Load('libcharmdet')
    ROOT.gSystem.Load('libveto')
    ROOT.gSystem.Load('libnutaudet')
    ROOT.gSystem.Load('libstrawtubes')

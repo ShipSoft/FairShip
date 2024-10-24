@@ -28,7 +28,6 @@ FixedTargetGenerator::FixedTargetGenerator()
   fMom        = 400;  // proton
   fLogger = FairLogger::GetLogger();
   targetName = "";
-  fcharmtarget = false;
   xOff=0; yOff=0;
   tauOnly = false;
   JpsiMainly = false;
@@ -222,7 +221,6 @@ Bool_t FixedTargetGenerator::Init()
   }
   if (targetName!=""){
    fMaterialInvestigator = new GenieGenerator();
-   if (!fcharmtarget){
    TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
    nav->cd(targetName);
    TGeoNode* target = nav->GetCurrentNode();
@@ -249,13 +247,6 @@ Bool_t FixedTargetGenerator::Init()
    end[0]=xOff;
    end[1]=yOff;
    end[2]=endZ;
-   }
-   else{  //charm geometry uses a different target
-   TGeoVolume* top = gGeoManager->GetTopVolume();
-   TGeoNode* target = top->FindNode(targetName);
-   if (!target){
-       LOG(ERROR) << "target not found, " << targetName.Data() << ", program will crash";
-   }
    Double_t z_middle = target->GetMatrix()->GetTranslation()[2];
    TGeoBBox* sha = (TGeoBBox*)target->GetVolume()->GetShape();
    startZ =  z_middle - sha->GetDZ();
