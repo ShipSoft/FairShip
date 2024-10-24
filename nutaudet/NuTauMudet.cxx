@@ -504,13 +504,11 @@ void NuTauMudet::ConstructGeometry()
       TGeoVolumeAssembly *volMudetBox = new TGeoVolumeAssembly("volTauNuMudet");
       tTauNuDet->AddNode(volMudetBox, 1, new TGeoTranslation(0,0,fZcenter));
 
-      TGeoBBox *IronLayer = new TGeoBBox("Iron",fXFe/2, fYFe/2, fZFe/2);
+      TGeoBBox *IronLayer = new TGeoBBox("MUDETIRON",fXFe/2, fYFe/2, fZFe/2);
       TGeoVolume *volIron = new TGeoVolume("volIron",IronLayer,Iron);
       volIron->SetLineColor(kGray);
-      IronLayer->SetName("MUDETIRON");
 
-      auto* IronLayer1 = new TGeoBBox("Iron",fXFe/2, fYFe/2, fZFethin/2);
-      IronLayer1->SetName("MUDETIRON1");
+      auto* IronLayer1 = new TGeoBBox("MUDETIRON1",fXFe/2, fYFe/2, fZFethin/2);
       //***********************ADDING EXTERNAL DETAILS TO THE MUON FILTER
 
       //********UPPER COVER***********
