@@ -34,7 +34,6 @@ var hierarchy =
       [ "ecalContFact", "classecalContFact.html", null ],
       [ "hcalContFact", "classhcalContFact.html", null ],
       [ "muonContFact", "classmuonContFact.html", null ],
-      [ "preshowerContFact", "classpreshowerContFact.html", null ],
       [ "splitcalContFact", "classsplitcalContFact.html", null ],
       [ "strawtubesContFact", "classstrawtubesContFact.html", null ],
       [ "vetoContFact", "classvetoContFact.html", null ]
@@ -53,7 +52,6 @@ var hierarchy =
       [ "exitHadronAbsorber", "classexitHadronAbsorber.html", null ],
       [ "hcal", "classhcal.html", null ],
       [ "muon", "classmuon.html", null ],
-      [ "preshower", "classpreshower.html", null ],
       [ "simpleTarget", "classsimpleTarget.html", null ],
       [ "splitcal", "classsplitcal.html", null ],
       [ "strawtubes", "classstrawtubes.html", null ],
@@ -99,7 +97,6 @@ var hierarchy =
       [ "ecalPoint", "classecalPoint.html", null ],
       [ "hcalPoint", "classhcalPoint.html", null ],
       [ "muonPoint", "classmuonPoint.html", null ],
-      [ "preshowerPoint", "classpreshowerPoint.html", null ],
       [ "splitcalPoint", "classsplitcalPoint.html", null ],
       [ "strawtubesPoint", "classstrawtubesPoint.html", null ],
       [ "vetoPoint", "classvetoPoint.html", null ]

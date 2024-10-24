@@ -837,169 +837,153 @@ $(document).ready(function(){initNavTree('shipDet__conf_8py_source.html',''); in
 <div class="line"><a name="l00750"></a><span class="lineno">  750</span>&#160;        detectorList.append(Strawtubes)</div>
 <div class="line"><a name="l00751"></a><span class="lineno">  751</span>&#160; </div>
 <div class="line"><a name="l00752"></a><span class="lineno">  752</span>&#160;    <span class="keywordflow">if</span> ship_geo.EcalOption == 1:  <span class="comment"># shashlik design TP</span></div>
-<div class="line"><a name="l00753"></a><span class="lineno">  753</span>&#160;        <span class="keywordflow">if</span> ship_geo.preshowerOption &gt; 0:</div>
-<div class="line"><a name="l00754"></a><span class="lineno">  754</span>&#160;            Preshower = ROOT.preshower(<span class="stringliteral">&quot;Preshower&quot;</span>, ROOT.kTRUE)</div>
-<div class="line"><a name="l00755"></a><span class="lineno">  755</span>&#160;            Preshower.SetZStationPosition2(</div>
-<div class="line"><a name="l00756"></a><span class="lineno">  756</span>&#160;                ship_geo.PreshowerStation0.z, ship_geo.PreshowerStation1.z</div>
-<div class="line"><a name="l00757"></a><span class="lineno">  757</span>&#160;            )</div>
-<div class="line"><a name="l00758"></a><span class="lineno">  758</span>&#160;            Preshower.SetZFilterPosition2(</div>
-<div class="line"><a name="l00759"></a><span class="lineno">  759</span>&#160;                ship_geo.PreshowerFilter0.z, ship_geo.PreshowerFilter1.z</div>
-<div class="line"><a name="l00760"></a><span class="lineno">  760</span>&#160;            )</div>
-<div class="line"><a name="l00761"></a><span class="lineno">  761</span>&#160;            Preshower.SetXMax(ship_geo.Preshower.XMax)</div>
-<div class="line"><a name="l00762"></a><span class="lineno">  762</span>&#160;            Preshower.SetYMax(ship_geo.Preshower.YMax)</div>
-<div class="line"><a name="l00763"></a><span class="lineno">  763</span>&#160;            Preshower.SetActiveThickness(ship_geo.Preshower.ActiveThickness)</div>
-<div class="line"><a name="l00764"></a><span class="lineno">  764</span>&#160;            Preshower.SetFilterThickness2(</div>
-<div class="line"><a name="l00765"></a><span class="lineno">  765</span>&#160;                ship_geo.Preshower.FilterThickness0, ship_geo.Preshower.FilterThickness1</div>
-<div class="line"><a name="l00766"></a><span class="lineno">  766</span>&#160;            )</div>
-<div class="line"><a name="l00767"></a><span class="lineno">  767</span>&#160;            detectorList.append(Preshower)</div>
-<div class="line"><a name="l00768"></a><span class="lineno">  768</span>&#160; </div>
-<div class="line"><a name="l00769"></a><span class="lineno">  769</span>&#160;        ecal, EcalZSize = <a class="code" href="namespaceshipDet__conf.html#aa68dfac1fe0667b84632b8b0bfe08569">posEcal</a>(ship_geo.ecal.z, ship_geo.ecal.File)</div>
-<div class="line"><a name="l00770"></a><span class="lineno">  770</span>&#160;        detectorList.append(ecal)</div>
-<div class="line"><a name="l00771"></a><span class="lineno">  771</span>&#160; </div>
-<div class="line"><a name="l00772"></a><span class="lineno">  772</span>&#160;    <span class="keywordflow">if</span> ship_geo.EcalOption == 2:  <span class="comment"># splitCal with pointing information</span></div>
-<div class="line"><a name="l00773"></a><span class="lineno">  773</span>&#160;        SplitCal = ROOT.splitcal(<span class="stringliteral">&quot;SplitCal&quot;</span>, ROOT.kTRUE)</div>
-<div class="line"><a name="l00774"></a><span class="lineno">  774</span>&#160;        x = ship_geo.SplitCal</div>
-<div class="line"><a name="l00775"></a><span class="lineno">  775</span>&#160;        SplitCal.SetThickness(</div>
-<div class="line"><a name="l00776"></a><span class="lineno">  776</span>&#160;            x.ActiveECALThickness,</div>
-<div class="line"><a name="l00777"></a><span class="lineno">  777</span>&#160;            x.ActiveHCALThickness,</div>
-<div class="line"><a name="l00778"></a><span class="lineno">  778</span>&#160;            x.FilterECALThickness,</div>
-<div class="line"><a name="l00779"></a><span class="lineno">  779</span>&#160;            x.FilterECALThickness_first,</div>
-<div class="line"><a name="l00780"></a><span class="lineno">  780</span>&#160;            x.FilterHCALThickness,</div>
-<div class="line"><a name="l00781"></a><span class="lineno">  781</span>&#160;            x.ActiveECAL_gas_Thickness,</div>
-<div class="line"><a name="l00782"></a><span class="lineno">  782</span>&#160;        )</div>
-<div class="line"><a name="l00783"></a><span class="lineno">  783</span>&#160;        SplitCal.SetMaterial(</div>
-<div class="line"><a name="l00784"></a><span class="lineno">  784</span>&#160;            x.ActiveECALMaterial,</div>
-<div class="line"><a name="l00785"></a><span class="lineno">  785</span>&#160;            x.ActiveHCALMaterial,</div>
-<div class="line"><a name="l00786"></a><span class="lineno">  786</span>&#160;            x.FilterECALMaterial,</div>
-<div class="line"><a name="l00787"></a><span class="lineno">  787</span>&#160;            x.FilterHCALMaterial,</div>
-<div class="line"><a name="l00788"></a><span class="lineno">  788</span>&#160;        )</div>
-<div class="line"><a name="l00789"></a><span class="lineno">  789</span>&#160;        SplitCal.SetNSamplings(x.nECALSamplings, x.nHCALSamplings, x.ActiveHCAL)</div>
-<div class="line"><a name="l00790"></a><span class="lineno">  790</span>&#160;        SplitCal.SetZStart(x.ZStart)</div>
-<div class="line"><a name="l00791"></a><span class="lineno">  791</span>&#160;        SplitCal.SetXMax(x.XMax)</div>
-<div class="line"><a name="l00792"></a><span class="lineno">  792</span>&#160;        SplitCal.SetYMax(x.YMax)</div>
-<div class="line"><a name="l00793"></a><span class="lineno">  793</span>&#160;        SplitCal.SetEmpty(</div>
-<div class="line"><a name="l00794"></a><span class="lineno">  794</span>&#160;            x.Empty,</div>
-<div class="line"><a name="l00795"></a><span class="lineno">  795</span>&#160;            x.BigGap,</div>
-<div class="line"><a name="l00796"></a><span class="lineno">  796</span>&#160;            x.ActiveECAL_gas_gap,</div>
-<div class="line"><a name="l00797"></a><span class="lineno">  797</span>&#160;            x.first_precision_layer,</div>
-<div class="line"><a name="l00798"></a><span class="lineno">  798</span>&#160;            x.second_precision_layer,</div>
-<div class="line"><a name="l00799"></a><span class="lineno">  799</span>&#160;            x.third_precision_layer,</div>
-<div class="line"><a name="l00800"></a><span class="lineno">  800</span>&#160;            x.num_precision_layers,</div>
-<div class="line"><a name="l00801"></a><span class="lineno">  801</span>&#160;        )</div>
-<div class="line"><a name="l00802"></a><span class="lineno">  802</span>&#160;        SplitCal.SetNModules(x.NModulesInX, x.NModulesInY)</div>
-<div class="line"><a name="l00803"></a><span class="lineno">  803</span>&#160;        SplitCal.SetNStrips(x.NStripsPerModule)</div>
-<div class="line"><a name="l00804"></a><span class="lineno">  804</span>&#160;        SplitCal.SetStripSize(x.StripHalfWidth, x.StripHalfLength)</div>
-<div class="line"><a name="l00805"></a><span class="lineno">  805</span>&#160;        detectorList.append(SplitCal)</div>
-<div class="line"><a name="l00806"></a><span class="lineno">  806</span>&#160; </div>
-<div class="line"><a name="l00807"></a><span class="lineno">  807</span>&#160;    <span class="keywordflow">if</span> <span class="keywordflow">not</span> ship_geo.HcalOption &lt; 0:</div>
-<div class="line"><a name="l00808"></a><span class="lineno">  808</span>&#160;        hcal, HcalZSize = <a class="code" href="namespaceshipDet__conf.html#a155ee925d57587d437e2dff8f37c76c1">posHcal</a>(</div>
-<div class="line"><a name="l00809"></a><span class="lineno">  809</span>&#160;            ship_geo.hcal.z, ship_geo.hcal.File, ship_geo.HcalOption</div>
-<div class="line"><a name="l00810"></a><span class="lineno">  810</span>&#160;        )</div>
-<div class="line"><a name="l00811"></a><span class="lineno">  811</span>&#160;        <span class="keywordflow">if</span> (</div>
-<div class="line"><a name="l00812"></a><span class="lineno">  812</span>&#160;            ship_geo.HcalOption != 2</div>
-<div class="line"><a name="l00813"></a><span class="lineno">  813</span>&#160;            <span class="keywordflow">and</span> abs(ship_geo.hcal.hcalSpace - HcalZSize) &gt; 10 * u.cm</div>
-<div class="line"><a name="l00814"></a><span class="lineno">  814</span>&#160;        ):</div>
-<div class="line"><a name="l00815"></a><span class="lineno">  815</span>&#160;            print(<span class="stringliteral">&quot;mismatch between hcalsize in geo file and python configuration&quot;</span>)</div>
-<div class="line"><a name="l00816"></a><span class="lineno">  816</span>&#160;            print(</div>
-<div class="line"><a name="l00817"></a><span class="lineno">  817</span>&#160;                ship_geo.hcal.hcalSpace - HcalZSize, ship_geo.hcal.hcalSpace, HcalZSize</div>
-<div class="line"><a name="l00818"></a><span class="lineno">  818</span>&#160;            )</div>
-<div class="line"><a name="l00819"></a><span class="lineno">  819</span>&#160;        detectorList.append(hcal)</div>
-<div class="line"><a name="l00820"></a><span class="lineno">  820</span>&#160;    Muon = ROOT.muon(<span class="stringliteral">&quot;Muon&quot;</span>, ROOT.kTRUE)</div>
-<div class="line"><a name="l00821"></a><span class="lineno">  821</span>&#160;    Muon.SetZStationPositions(</div>
-<div class="line"><a name="l00822"></a><span class="lineno">  822</span>&#160;        ship_geo.MuonStation0.z,</div>
-<div class="line"><a name="l00823"></a><span class="lineno">  823</span>&#160;        ship_geo.MuonStation1.z,</div>
-<div class="line"><a name="l00824"></a><span class="lineno">  824</span>&#160;        ship_geo.MuonStation2.z,</div>
-<div class="line"><a name="l00825"></a><span class="lineno">  825</span>&#160;        ship_geo.MuonStation3.z,</div>
-<div class="line"><a name="l00826"></a><span class="lineno">  826</span>&#160;    )</div>
-<div class="line"><a name="l00827"></a><span class="lineno">  827</span>&#160;    Muon.SetZFilterPositions(</div>
-<div class="line"><a name="l00828"></a><span class="lineno">  828</span>&#160;        ship_geo.MuonFilter0.z, ship_geo.MuonFilter1.z, ship_geo.MuonFilter2.z</div>
-<div class="line"><a name="l00829"></a><span class="lineno">  829</span>&#160;    )</div>
-<div class="line"><a name="l00830"></a><span class="lineno">  830</span>&#160;    Muon.SetXMax(ship_geo.Muon.XMax)</div>
-<div class="line"><a name="l00831"></a><span class="lineno">  831</span>&#160;    Muon.SetYMax(ship_geo.Muon.YMax)</div>
-<div class="line"><a name="l00832"></a><span class="lineno">  832</span>&#160;    Muon.SetActiveThickness(ship_geo.Muon.ActiveThickness)</div>
-<div class="line"><a name="l00833"></a><span class="lineno">  833</span>&#160;    Muon.SetFilterThickness(ship_geo.Muon.FilterThickness)</div>
-<div class="line"><a name="l00834"></a><span class="lineno">  834</span>&#160;    detectorList.append(Muon)</div>
-<div class="line"><a name="l00835"></a><span class="lineno">  835</span>&#160; </div>
-<div class="line"><a name="l00836"></a><span class="lineno">  836</span>&#160;    upstreamTagger = ROOT.UpstreamTagger(<span class="stringliteral">&quot;UpstreamTagger&quot;</span>, ROOT.kTRUE)</div>
-<div class="line"><a name="l00837"></a><span class="lineno">  837</span>&#160;    upstreamTagger.SetZposition(ship_geo.UpstreamTagger.Z_Position)</div>
-<div class="line"><a name="l00838"></a><span class="lineno">  838</span>&#160;    upstreamTagger.SetSizeX_Glass(ship_geo.UpstreamTagger.X_Glass)</div>
-<div class="line"><a name="l00839"></a><span class="lineno">  839</span>&#160;    upstreamTagger.SetSizeY_Glass(ship_geo.UpstreamTagger.Y_Glass)</div>
-<div class="line"><a name="l00840"></a><span class="lineno">  840</span>&#160;    upstreamTagger.SetSizeZ_Glass(ship_geo.UpstreamTagger.Z_Glass)</div>
-<div class="line"><a name="l00841"></a><span class="lineno">  841</span>&#160;    upstreamTagger.SetSizeX_Glass_Border(ship_geo.UpstreamTagger.X_Glass_Border)</div>
-<div class="line"><a name="l00842"></a><span class="lineno">  842</span>&#160;    upstreamTagger.SetSizeY_Glass_Border(ship_geo.UpstreamTagger.Y_Glass_Border)</div>
-<div class="line"><a name="l00843"></a><span class="lineno">  843</span>&#160;    upstreamTagger.SetSizeZ_Glass_Border(ship_geo.UpstreamTagger.Z_Glass_Border)</div>
-<div class="line"><a name="l00844"></a><span class="lineno">  844</span>&#160;    upstreamTagger.SetSizeX_PMMA(ship_geo.UpstreamTagger.X_PMMA)</div>
-<div class="line"><a name="l00845"></a><span class="lineno">  845</span>&#160;    upstreamTagger.SetSizeY_PMMA(ship_geo.UpstreamTagger.Y_PMMA)</div>
-<div class="line"><a name="l00846"></a><span class="lineno">  846</span>&#160;    upstreamTagger.SetSizeZ_PMMA(ship_geo.UpstreamTagger.Z_PMMA)</div>
-<div class="line"><a name="l00847"></a><span class="lineno">  847</span>&#160;    upstreamTagger.SetSizeDX_PMMA(ship_geo.UpstreamTagger.DX_PMMA)</div>
-<div class="line"><a name="l00848"></a><span class="lineno">  848</span>&#160;    upstreamTagger.SetSizeDY_PMMA(ship_geo.UpstreamTagger.DY_PMMA)</div>
-<div class="line"><a name="l00849"></a><span class="lineno">  849</span>&#160;    upstreamTagger.SetSizeDZ_PMMA(ship_geo.UpstreamTagger.DZ_PMMA)</div>
-<div class="line"><a name="l00850"></a><span class="lineno">  850</span>&#160;    upstreamTagger.SetSizeX_FreonSF6(ship_geo.UpstreamTagger.X_FreonSF6)</div>
-<div class="line"><a name="l00851"></a><span class="lineno">  851</span>&#160;    upstreamTagger.SetSizeY_FreonSF6(ship_geo.UpstreamTagger.Y_FreonSF6)</div>
-<div class="line"><a name="l00852"></a><span class="lineno">  852</span>&#160;    upstreamTagger.SetSizeZ_FreonSF6(ship_geo.UpstreamTagger.Z_FreonSF6)</div>
-<div class="line"><a name="l00853"></a><span class="lineno">  853</span>&#160;    upstreamTagger.SetSizeX_FreonSF6_2(ship_geo.UpstreamTagger.X_FreonSF6_2)</div>
-<div class="line"><a name="l00854"></a><span class="lineno">  854</span>&#160;    upstreamTagger.SetSizeY_FreonSF6_2(ship_geo.UpstreamTagger.Y_FreonSF6_2)</div>
-<div class="line"><a name="l00855"></a><span class="lineno">  855</span>&#160;    upstreamTagger.SetSizeZ_FreonSF6_2(ship_geo.UpstreamTagger.Z_FreonSF6_2)</div>
-<div class="line"><a name="l00856"></a><span class="lineno">  856</span>&#160;    upstreamTagger.SetSizeX_FR4(ship_geo.UpstreamTagger.X_FR4)</div>
-<div class="line"><a name="l00857"></a><span class="lineno">  857</span>&#160;    upstreamTagger.SetSizeY_FR4(ship_geo.UpstreamTagger.Y_FR4)</div>
-<div class="line"><a name="l00858"></a><span class="lineno">  858</span>&#160;    upstreamTagger.SetSizeZ_FR4(ship_geo.UpstreamTagger.Z_FR4)</div>
-<div class="line"><a name="l00859"></a><span class="lineno">  859</span>&#160;    upstreamTagger.SetSizeX_Al(ship_geo.UpstreamTagger.X_Aluminium)</div>
-<div class="line"><a name="l00860"></a><span class="lineno">  860</span>&#160;    upstreamTagger.SetSizeY_Al(ship_geo.UpstreamTagger.Y_Aluminium)</div>
-<div class="line"><a name="l00861"></a><span class="lineno">  861</span>&#160;    upstreamTagger.SetSizeZ_Al(ship_geo.UpstreamTagger.Z_Aluminium)</div>
-<div class="line"><a name="l00862"></a><span class="lineno">  862</span>&#160;    upstreamTagger.SetSizeDX_Al(ship_geo.UpstreamTagger.DX_Aluminium)</div>
-<div class="line"><a name="l00863"></a><span class="lineno">  863</span>&#160;    upstreamTagger.SetSizeDY_Al(ship_geo.UpstreamTagger.DY_Aluminium)</div>
-<div class="line"><a name="l00864"></a><span class="lineno">  864</span>&#160;    upstreamTagger.SetSizeDZ_Al(ship_geo.UpstreamTagger.DZ_Aluminium)</div>
-<div class="line"><a name="l00865"></a><span class="lineno">  865</span>&#160;    upstreamTagger.SetSizeX_Air(ship_geo.UpstreamTagger.X_Air)</div>
-<div class="line"><a name="l00866"></a><span class="lineno">  866</span>&#160;    upstreamTagger.SetSizeY_Air(ship_geo.UpstreamTagger.Y_Air)</div>
-<div class="line"><a name="l00867"></a><span class="lineno">  867</span>&#160;    upstreamTagger.SetSizeZ_Air(ship_geo.UpstreamTagger.Z_Air)</div>
-<div class="line"><a name="l00868"></a><span class="lineno">  868</span>&#160;    upstreamTagger.SetSizeX_Strip(ship_geo.UpstreamTagger.X_Strip)</div>
-<div class="line"><a name="l00869"></a><span class="lineno">  869</span>&#160;    upstreamTagger.SetSizeY_Strip(ship_geo.UpstreamTagger.Y_Strip)</div>
-<div class="line"><a name="l00870"></a><span class="lineno">  870</span>&#160;    upstreamTagger.SetSizeX_Strip64(ship_geo.UpstreamTagger.X_Strip64)</div>
-<div class="line"><a name="l00871"></a><span class="lineno">  871</span>&#160;    upstreamTagger.SetSizeY_Strip64(ship_geo.UpstreamTagger.Y_Strip64)</div>
-<div class="line"><a name="l00872"></a><span class="lineno">  872</span>&#160;    upstreamTagger.SetSizeZ_Strip(ship_geo.UpstreamTagger.Z_Strip)</div>
-<div class="line"><a name="l00873"></a><span class="lineno">  873</span>&#160;    detectorList.append(upstreamTagger)</div>
-<div class="line"><a name="l00874"></a><span class="lineno">  874</span>&#160; </div>
-<div class="line"><a name="l00875"></a><span class="lineno">  875</span>&#160;    timeDet = ROOT.TimeDet(<span class="stringliteral">&quot;TimeDet&quot;</span>, ROOT.kTRUE)</div>
-<div class="line"><a name="l00876"></a><span class="lineno">  876</span>&#160;    timeDet.SetZposition(ship_geo.TimeDet.z)</div>
-<div class="line"><a name="l00877"></a><span class="lineno">  877</span>&#160;    timeDet.SetBarZspacing(ship_geo.TimeDet.dzBarRow, ship_geo.TimeDet.dzBarCol)</div>
-<div class="line"><a name="l00878"></a><span class="lineno">  878</span>&#160;    timeDet.SetBarZ(ship_geo.TimeDet.zBar)</div>
-<div class="line"><a name="l00879"></a><span class="lineno">  879</span>&#160;    timeDet.SetSizeX(2 * ship_geo.TimeDet.DX)</div>
-<div class="line"><a name="l00880"></a><span class="lineno">  880</span>&#160;    timeDet.SetSizeY(2 * ship_geo.TimeDet.DY)</div>
-<div class="line"><a name="l00881"></a><span class="lineno">  881</span>&#160;    detectorList.append(timeDet)</div>
-<div class="line"><a name="l00882"></a><span class="lineno">  882</span>&#160; </div>
-<div class="line"><a name="l00883"></a><span class="lineno">  883</span>&#160;    <span class="comment"># -----   Magnetic field   -------------------------------------------</span></div>
-<div class="line"><a name="l00884"></a><span class="lineno">  884</span>&#160;    <span class="keywordflow">if</span> <span class="keywordflow">not</span> hasattr(ship_geo.Bfield, <span class="stringliteral">&quot;fieldMap&quot;</span>):</div>
-<div class="line"><a name="l00885"></a><span class="lineno">  885</span>&#160;        <span class="keywordflow">if</span> ship_geo.strawDesign == 4 <span class="keywordflow">or</span> ship_geo.strawDesign == 10:</div>
-<div class="line"><a name="l00886"></a><span class="lineno">  886</span>&#160;            fMagField = ROOT.ShipBellField(</div>
-<div class="line"><a name="l00887"></a><span class="lineno">  887</span>&#160;                <span class="stringliteral">&quot;wilfried&quot;</span>,</div>
-<div class="line"><a name="l00888"></a><span class="lineno">  888</span>&#160;                ship_geo.Bfield.max,</div>
-<div class="line"><a name="l00889"></a><span class="lineno">  889</span>&#160;                ship_geo.Bfield.z,</div>
-<div class="line"><a name="l00890"></a><span class="lineno">  890</span>&#160;                2,</div>
-<div class="line"><a name="l00891"></a><span class="lineno">  891</span>&#160;                ship_geo.Yheight / 2.0 * u.m,</div>
-<div class="line"><a name="l00892"></a><span class="lineno">  892</span>&#160;            )</div>
-<div class="line"><a name="l00893"></a><span class="lineno">  893</span>&#160;        <span class="keywordflow">else</span>:</div>
-<div class="line"><a name="l00894"></a><span class="lineno">  894</span>&#160;            fMagField = ROOT.ShipBellField(</div>
-<div class="line"><a name="l00895"></a><span class="lineno">  895</span>&#160;                <span class="stringliteral">&quot;wilfried&quot;</span>,</div>
-<div class="line"><a name="l00896"></a><span class="lineno">  896</span>&#160;                ship_geo.Bfield.max,</div>
-<div class="line"><a name="l00897"></a><span class="lineno">  897</span>&#160;                ship_geo.Bfield.z,</div>
-<div class="line"><a name="l00898"></a><span class="lineno">  898</span>&#160;                1,</div>
-<div class="line"><a name="l00899"></a><span class="lineno">  899</span>&#160;                ship_geo.Yheight / 2.0 * u.m,</div>
-<div class="line"><a name="l00900"></a><span class="lineno">  900</span>&#160;            )</div>
-<div class="line"><a name="l00901"></a><span class="lineno">  901</span>&#160;        run.SetField(fMagField)</div>
-<div class="line"><a name="l00902"></a><span class="lineno">  902</span>&#160;    <span class="comment">#</span></div>
-<div class="line"><a name="l00903"></a><span class="lineno">  903</span>&#160;    exclusionList = []</div>
-<div class="line"><a name="l00904"></a><span class="lineno">  904</span>&#160;    <span class="comment"># exclusionList = [&quot;Muon&quot;,&quot;Ecal&quot;,&quot;Hcal&quot;,&quot;Strawtubes&quot;,&quot;TargetTrackers&quot;,&quot;NuTauTarget&quot;,&quot;HighPrecisionTrackers&quot;,\</span></div>
-<div class="line"><a name="l00905"></a><span class="lineno">  905</span>&#160;    <span class="comment">#                 &quot;Veto&quot;,&quot;Magnet&quot;,&quot;MuonShield&quot;,&quot;TargetStation&quot;,&quot;NuTauMudet&quot;,&quot;EmuMagnet&quot;, &quot;TimeDet&quot;, &quot;UpstreamTagger&quot;]</span></div>
-<div class="line"><a name="l00906"></a><span class="lineno">  906</span>&#160; </div>
-<div class="line"><a name="l00907"></a><span class="lineno">  907</span>&#160;    <span class="keywordflow">for</span> x <span class="keywordflow">in</span> detectorList:</div>
-<div class="line"><a name="l00908"></a><span class="lineno">  908</span>&#160;        <span class="keywordflow">if</span> x.GetName() <span class="keywordflow">in</span> exclusionList:</div>
-<div class="line"><a name="l00909"></a><span class="lineno">  909</span>&#160;            <span class="keywordflow">continue</span></div>
-<div class="line"><a name="l00910"></a><span class="lineno">  910</span>&#160;        run.AddModule(x)</div>
-<div class="line"><a name="l00911"></a><span class="lineno">  911</span>&#160;    <span class="comment"># return list of detector elements</span></div>
-<div class="line"><a name="l00912"></a><span class="lineno">  912</span>&#160;    detElements = {}</div>
-<div class="line"><a name="l00913"></a><span class="lineno">  913</span>&#160;    <span class="keywordflow">for</span> x <span class="keywordflow">in</span> run.GetListOfModules():</div>
-<div class="line"><a name="l00914"></a><span class="lineno">  914</span>&#160;        detElements[x.GetName()] = x</div>
-<div class="line"><a name="l00915"></a><span class="lineno">  915</span>&#160;    <span class="keywordflow">return</span> detElements</div>
+<div class="line"><a name="l00753"></a><span class="lineno">  753</span>&#160;        ecal, EcalZSize = <a class="code" href="namespaceshipDet__conf.html#aa68dfac1fe0667b84632b8b0bfe08569">posEcal</a>(ship_geo.ecal.z, ship_geo.ecal.File)</div>
+<div class="line"><a name="l00754"></a><span class="lineno">  754</span>&#160;        detectorList.append(ecal)</div>
+<div class="line"><a name="l00755"></a><span class="lineno">  755</span>&#160; </div>
+<div class="line"><a name="l00756"></a><span class="lineno">  756</span>&#160;    <span class="keywordflow">if</span> ship_geo.EcalOption == 2:  <span class="comment"># splitCal with pointing information</span></div>
+<div class="line"><a name="l00757"></a><span class="lineno">  757</span>&#160;        SplitCal = ROOT.splitcal(<span class="stringliteral">&quot;SplitCal&quot;</span>, ROOT.kTRUE)</div>
+<div class="line"><a name="l00758"></a><span class="lineno">  758</span>&#160;        x = ship_geo.SplitCal</div>
+<div class="line"><a name="l00759"></a><span class="lineno">  759</span>&#160;        SplitCal.SetThickness(</div>
+<div class="line"><a name="l00760"></a><span class="lineno">  760</span>&#160;            x.ActiveECALThickness,</div>
+<div class="line"><a name="l00761"></a><span class="lineno">  761</span>&#160;            x.ActiveHCALThickness,</div>
+<div class="line"><a name="l00762"></a><span class="lineno">  762</span>&#160;            x.FilterECALThickness,</div>
+<div class="line"><a name="l00763"></a><span class="lineno">  763</span>&#160;            x.FilterECALThickness_first,</div>
+<div class="line"><a name="l00764"></a><span class="lineno">  764</span>&#160;            x.FilterHCALThickness,</div>
+<div class="line"><a name="l00765"></a><span class="lineno">  765</span>&#160;            x.ActiveECAL_gas_Thickness,</div>
+<div class="line"><a name="l00766"></a><span class="lineno">  766</span>&#160;        )</div>
+<div class="line"><a name="l00767"></a><span class="lineno">  767</span>&#160;        SplitCal.SetMaterial(</div>
+<div class="line"><a name="l00768"></a><span class="lineno">  768</span>&#160;            x.ActiveECALMaterial,</div>
+<div class="line"><a name="l00769"></a><span class="lineno">  769</span>&#160;            x.ActiveHCALMaterial,</div>
+<div class="line"><a name="l00770"></a><span class="lineno">  770</span>&#160;            x.FilterECALMaterial,</div>
+<div class="line"><a name="l00771"></a><span class="lineno">  771</span>&#160;            x.FilterHCALMaterial,</div>
+<div class="line"><a name="l00772"></a><span class="lineno">  772</span>&#160;        )</div>
+<div class="line"><a name="l00773"></a><span class="lineno">  773</span>&#160;        SplitCal.SetNSamplings(x.nECALSamplings, x.nHCALSamplings, x.ActiveHCAL)</div>
+<div class="line"><a name="l00774"></a><span class="lineno">  774</span>&#160;        SplitCal.SetZStart(x.ZStart)</div>
+<div class="line"><a name="l00775"></a><span class="lineno">  775</span>&#160;        SplitCal.SetXMax(x.XMax)</div>
+<div class="line"><a name="l00776"></a><span class="lineno">  776</span>&#160;        SplitCal.SetYMax(x.YMax)</div>
+<div class="line"><a name="l00777"></a><span class="lineno">  777</span>&#160;        SplitCal.SetEmpty(</div>
+<div class="line"><a name="l00778"></a><span class="lineno">  778</span>&#160;            x.Empty,</div>
+<div class="line"><a name="l00779"></a><span class="lineno">  779</span>&#160;            x.BigGap,</div>
+<div class="line"><a name="l00780"></a><span class="lineno">  780</span>&#160;            x.ActiveECAL_gas_gap,</div>
+<div class="line"><a name="l00781"></a><span class="lineno">  781</span>&#160;            x.first_precision_layer,</div>
+<div class="line"><a name="l00782"></a><span class="lineno">  782</span>&#160;            x.second_precision_layer,</div>
+<div class="line"><a name="l00783"></a><span class="lineno">  783</span>&#160;            x.third_precision_layer,</div>
+<div class="line"><a name="l00784"></a><span class="lineno">  784</span>&#160;            x.num_precision_layers,</div>
+<div class="line"><a name="l00785"></a><span class="lineno">  785</span>&#160;        )</div>
+<div class="line"><a name="l00786"></a><span class="lineno">  786</span>&#160;        SplitCal.SetNModules(x.NModulesInX, x.NModulesInY)</div>
+<div class="line"><a name="l00787"></a><span class="lineno">  787</span>&#160;        SplitCal.SetNStrips(x.NStripsPerModule)</div>
+<div class="line"><a name="l00788"></a><span class="lineno">  788</span>&#160;        SplitCal.SetStripSize(x.StripHalfWidth, x.StripHalfLength)</div>
+<div class="line"><a name="l00789"></a><span class="lineno">  789</span>&#160;        detectorList.append(SplitCal)</div>
+<div class="line"><a name="l00790"></a><span class="lineno">  790</span>&#160; </div>
+<div class="line"><a name="l00791"></a><span class="lineno">  791</span>&#160;    <span class="keywordflow">if</span> <span class="keywordflow">not</span> ship_geo.HcalOption &lt; 0:</div>
+<div class="line"><a name="l00792"></a><span class="lineno">  792</span>&#160;        hcal, HcalZSize = <a class="code" href="namespaceshipDet__conf.html#a155ee925d57587d437e2dff8f37c76c1">posHcal</a>(</div>
+<div class="line"><a name="l00793"></a><span class="lineno">  793</span>&#160;            ship_geo.hcal.z, ship_geo.hcal.File, ship_geo.HcalOption</div>
+<div class="line"><a name="l00794"></a><span class="lineno">  794</span>&#160;        )</div>
+<div class="line"><a name="l00795"></a><span class="lineno">  795</span>&#160;        <span class="keywordflow">if</span> (</div>
+<div class="line"><a name="l00796"></a><span class="lineno">  796</span>&#160;            ship_geo.HcalOption != 2</div>
+<div class="line"><a name="l00797"></a><span class="lineno">  797</span>&#160;            <span class="keywordflow">and</span> abs(ship_geo.hcal.hcalSpace - HcalZSize) &gt; 10 * u.cm</div>
+<div class="line"><a name="l00798"></a><span class="lineno">  798</span>&#160;        ):</div>
+<div class="line"><a name="l00799"></a><span class="lineno">  799</span>&#160;            print(<span class="stringliteral">&quot;mismatch between hcalsize in geo file and python configuration&quot;</span>)</div>
+<div class="line"><a name="l00800"></a><span class="lineno">  800</span>&#160;            print(</div>
+<div class="line"><a name="l00801"></a><span class="lineno">  801</span>&#160;                ship_geo.hcal.hcalSpace - HcalZSize, ship_geo.hcal.hcalSpace, HcalZSize</div>
+<div class="line"><a name="l00802"></a><span class="lineno">  802</span>&#160;            )</div>
+<div class="line"><a name="l00803"></a><span class="lineno">  803</span>&#160;        detectorList.append(hcal)</div>
+<div class="line"><a name="l00804"></a><span class="lineno">  804</span>&#160;    Muon = ROOT.muon(<span class="stringliteral">&quot;Muon&quot;</span>, ROOT.kTRUE)</div>
+<div class="line"><a name="l00805"></a><span class="lineno">  805</span>&#160;    Muon.SetZStationPositions(</div>
+<div class="line"><a name="l00806"></a><span class="lineno">  806</span>&#160;        ship_geo.MuonStation0.z,</div>
+<div class="line"><a name="l00807"></a><span class="lineno">  807</span>&#160;        ship_geo.MuonStation1.z,</div>
+<div class="line"><a name="l00808"></a><span class="lineno">  808</span>&#160;        ship_geo.MuonStation2.z,</div>
+<div class="line"><a name="l00809"></a><span class="lineno">  809</span>&#160;        ship_geo.MuonStation3.z,</div>
+<div class="line"><a name="l00810"></a><span class="lineno">  810</span>&#160;    )</div>
+<div class="line"><a name="l00811"></a><span class="lineno">  811</span>&#160;    Muon.SetZFilterPositions(</div>
+<div class="line"><a name="l00812"></a><span class="lineno">  812</span>&#160;        ship_geo.MuonFilter0.z, ship_geo.MuonFilter1.z, ship_geo.MuonFilter2.z</div>
+<div class="line"><a name="l00813"></a><span class="lineno">  813</span>&#160;    )</div>
+<div class="line"><a name="l00814"></a><span class="lineno">  814</span>&#160;    Muon.SetXMax(ship_geo.Muon.XMax)</div>
+<div class="line"><a name="l00815"></a><span class="lineno">  815</span>&#160;    Muon.SetYMax(ship_geo.Muon.YMax)</div>
+<div class="line"><a name="l00816"></a><span class="lineno">  816</span>&#160;    Muon.SetActiveThickness(ship_geo.Muon.ActiveThickness)</div>
+<div class="line"><a name="l00817"></a><span class="lineno">  817</span>&#160;    Muon.SetFilterThickness(ship_geo.Muon.FilterThickness)</div>
+<div class="line"><a name="l00818"></a><span class="lineno">  818</span>&#160;    detectorList.append(Muon)</div>
+<div class="line"><a name="l00819"></a><span class="lineno">  819</span>&#160; </div>
+<div class="line"><a name="l00820"></a><span class="lineno">  820</span>&#160;    upstreamTagger = ROOT.UpstreamTagger(<span class="stringliteral">&quot;UpstreamTagger&quot;</span>, ROOT.kTRUE)</div>
+<div class="line"><a name="l00821"></a><span class="lineno">  821</span>&#160;    upstreamTagger.SetZposition(ship_geo.UpstreamTagger.Z_Position)</div>
+<div class="line"><a name="l00822"></a><span class="lineno">  822</span>&#160;    upstreamTagger.SetSizeX_Glass(ship_geo.UpstreamTagger.X_Glass)</div>
+<div class="line"><a name="l00823"></a><span class="lineno">  823</span>&#160;    upstreamTagger.SetSizeY_Glass(ship_geo.UpstreamTagger.Y_Glass)</div>
+<div class="line"><a name="l00824"></a><span class="lineno">  824</span>&#160;    upstreamTagger.SetSizeZ_Glass(ship_geo.UpstreamTagger.Z_Glass)</div>
+<div class="line"><a name="l00825"></a><span class="lineno">  825</span>&#160;    upstreamTagger.SetSizeX_Glass_Border(ship_geo.UpstreamTagger.X_Glass_Border)</div>
+<div class="line"><a name="l00826"></a><span class="lineno">  826</span>&#160;    upstreamTagger.SetSizeY_Glass_Border(ship_geo.UpstreamTagger.Y_Glass_Border)</div>
+<div class="line"><a name="l00827"></a><span class="lineno">  827</span>&#160;    upstreamTagger.SetSizeZ_Glass_Border(ship_geo.UpstreamTagger.Z_Glass_Border)</div>
+<div class="line"><a name="l00828"></a><span class="lineno">  828</span>&#160;    upstreamTagger.SetSizeX_PMMA(ship_geo.UpstreamTagger.X_PMMA)</div>
+<div class="line"><a name="l00829"></a><span class="lineno">  829</span>&#160;    upstreamTagger.SetSizeY_PMMA(ship_geo.UpstreamTagger.Y_PMMA)</div>
+<div class="line"><a name="l00830"></a><span class="lineno">  830</span>&#160;    upstreamTagger.SetSizeZ_PMMA(ship_geo.UpstreamTagger.Z_PMMA)</div>
+<div class="line"><a name="l00831"></a><span class="lineno">  831</span>&#160;    upstreamTagger.SetSizeDX_PMMA(ship_geo.UpstreamTagger.DX_PMMA)</div>
+<div class="line"><a name="l00832"></a><span class="lineno">  832</span>&#160;    upstreamTagger.SetSizeDY_PMMA(ship_geo.UpstreamTagger.DY_PMMA)</div>
+<div class="line"><a name="l00833"></a><span class="lineno">  833</span>&#160;    upstreamTagger.SetSizeDZ_PMMA(ship_geo.UpstreamTagger.DZ_PMMA)</div>
+<div class="line"><a name="l00834"></a><span class="lineno">  834</span>&#160;    upstreamTagger.SetSizeX_FreonSF6(ship_geo.UpstreamTagger.X_FreonSF6)</div>
+<div class="line"><a name="l00835"></a><span class="lineno">  835</span>&#160;    upstreamTagger.SetSizeY_FreonSF6(ship_geo.UpstreamTagger.Y_FreonSF6)</div>
+<div class="line"><a name="l00836"></a><span class="lineno">  836</span>&#160;    upstreamTagger.SetSizeZ_FreonSF6(ship_geo.UpstreamTagger.Z_FreonSF6)</div>
+<div class="line"><a name="l00837"></a><span class="lineno">  837</span>&#160;    upstreamTagger.SetSizeX_FreonSF6_2(ship_geo.UpstreamTagger.X_FreonSF6_2)</div>
+<div class="line"><a name="l00838"></a><span class="lineno">  838</span>&#160;    upstreamTagger.SetSizeY_FreonSF6_2(ship_geo.UpstreamTagger.Y_FreonSF6_2)</div>
+<div class="line"><a name="l00839"></a><span class="lineno">  839</span>&#160;    upstreamTagger.SetSizeZ_FreonSF6_2(ship_geo.UpstreamTagger.Z_FreonSF6_2)</div>
+<div class="line"><a name="l00840"></a><span class="lineno">  840</span>&#160;    upstreamTagger.SetSizeX_FR4(ship_geo.UpstreamTagger.X_FR4)</div>
+<div class="line"><a name="l00841"></a><span class="lineno">  841</span>&#160;    upstreamTagger.SetSizeY_FR4(ship_geo.UpstreamTagger.Y_FR4)</div>
+<div class="line"><a name="l00842"></a><span class="lineno">  842</span>&#160;    upstreamTagger.SetSizeZ_FR4(ship_geo.UpstreamTagger.Z_FR4)</div>
+<div class="line"><a name="l00843"></a><span class="lineno">  843</span>&#160;    upstreamTagger.SetSizeX_Al(ship_geo.UpstreamTagger.X_Aluminium)</div>
+<div class="line"><a name="l00844"></a><span class="lineno">  844</span>&#160;    upstreamTagger.SetSizeY_Al(ship_geo.UpstreamTagger.Y_Aluminium)</div>
+<div class="line"><a name="l00845"></a><span class="lineno">  845</span>&#160;    upstreamTagger.SetSizeZ_Al(ship_geo.UpstreamTagger.Z_Aluminium)</div>
+<div class="line"><a name="l00846"></a><span class="lineno">  846</span>&#160;    upstreamTagger.SetSizeDX_Al(ship_geo.UpstreamTagger.DX_Aluminium)</div>
+<div class="line"><a name="l00847"></a><span class="lineno">  847</span>&#160;    upstreamTagger.SetSizeDY_Al(ship_geo.UpstreamTagger.DY_Aluminium)</div>
+<div class="line"><a name="l00848"></a><span class="lineno">  848</span>&#160;    upstreamTagger.SetSizeDZ_Al(ship_geo.UpstreamTagger.DZ_Aluminium)</div>
+<div class="line"><a name="l00849"></a><span class="lineno">  849</span>&#160;    upstreamTagger.SetSizeX_Air(ship_geo.UpstreamTagger.X_Air)</div>
+<div class="line"><a name="l00850"></a><span class="lineno">  850</span>&#160;    upstreamTagger.SetSizeY_Air(ship_geo.UpstreamTagger.Y_Air)</div>
+<div class="line"><a name="l00851"></a><span class="lineno">  851</span>&#160;    upstreamTagger.SetSizeZ_Air(ship_geo.UpstreamTagger.Z_Air)</div>
+<div class="line"><a name="l00852"></a><span class="lineno">  852</span>&#160;    upstreamTagger.SetSizeX_Strip(ship_geo.UpstreamTagger.X_Strip)</div>
+<div class="line"><a name="l00853"></a><span class="lineno">  853</span>&#160;    upstreamTagger.SetSizeY_Strip(ship_geo.UpstreamTagger.Y_Strip)</div>
+<div class="line"><a name="l00854"></a><span class="lineno">  854</span>&#160;    upstreamTagger.SetSizeX_Strip64(ship_geo.UpstreamTagger.X_Strip64)</div>
+<div class="line"><a name="l00855"></a><span class="lineno">  855</span>&#160;    upstreamTagger.SetSizeY_Strip64(ship_geo.UpstreamTagger.Y_Strip64)</div>
+<div class="line"><a name="l00856"></a><span class="lineno">  856</span>&#160;    upstreamTagger.SetSizeZ_Strip(ship_geo.UpstreamTagger.Z_Strip)</div>
+<div class="line"><a name="l00857"></a><span class="lineno">  857</span>&#160;    detectorList.append(upstreamTagger)</div>
+<div class="line"><a name="l00858"></a><span class="lineno">  858</span>&#160; </div>
+<div class="line"><a name="l00859"></a><span class="lineno">  859</span>&#160;    timeDet = ROOT.TimeDet(<span class="stringliteral">&quot;TimeDet&quot;</span>, ROOT.kTRUE)</div>
+<div class="line"><a name="l00860"></a><span class="lineno">  860</span>&#160;    timeDet.SetZposition(ship_geo.TimeDet.z)</div>
+<div class="line"><a name="l00861"></a><span class="lineno">  861</span>&#160;    timeDet.SetBarZspacing(ship_geo.TimeDet.dzBarRow, ship_geo.TimeDet.dzBarCol)</div>
+<div class="line"><a name="l00862"></a><span class="lineno">  862</span>&#160;    timeDet.SetBarZ(ship_geo.TimeDet.zBar)</div>
+<div class="line"><a name="l00863"></a><span class="lineno">  863</span>&#160;    timeDet.SetSizeX(2 * ship_geo.TimeDet.DX)</div>
+<div class="line"><a name="l00864"></a><span class="lineno">  864</span>&#160;    timeDet.SetSizeY(2 * ship_geo.TimeDet.DY)</div>
+<div class="line"><a name="l00865"></a><span class="lineno">  865</span>&#160;    detectorList.append(timeDet)</div>
+<div class="line"><a name="l00866"></a><span class="lineno">  866</span>&#160; </div>
+<div class="line"><a name="l00867"></a><span class="lineno">  867</span>&#160;    <span class="comment"># -----   Magnetic field   -------------------------------------------</span></div>
+<div class="line"><a name="l00868"></a><span class="lineno">  868</span>&#160;    <span class="keywordflow">if</span> <span class="keywordflow">not</span> hasattr(ship_geo.Bfield, <span class="stringliteral">&quot;fieldMap&quot;</span>):</div>
+<div class="line"><a name="l00869"></a><span class="lineno">  869</span>&#160;        <span class="keywordflow">if</span> ship_geo.strawDesign == 4 <span class="keywordflow">or</span> ship_geo.strawDesign == 10:</div>
+<div class="line"><a name="l00870"></a><span class="lineno">  870</span>&#160;            fMagField = ROOT.ShipBellField(</div>
+<div class="line"><a name="l00871"></a><span class="lineno">  871</span>&#160;                <span class="stringliteral">&quot;wilfried&quot;</span>,</div>
+<div class="line"><a name="l00872"></a><span class="lineno">  872</span>&#160;                ship_geo.Bfield.max,</div>
+<div class="line"><a name="l00873"></a><span class="lineno">  873</span>&#160;                ship_geo.Bfield.z,</div>
+<div class="line"><a name="l00874"></a><span class="lineno">  874</span>&#160;                2,</div>
+<div class="line"><a name="l00875"></a><span class="lineno">  875</span>&#160;                ship_geo.Yheight / 2.0 * u.m,</div>
+<div class="line"><a name="l00876"></a><span class="lineno">  876</span>&#160;            )</div>
+<div class="line"><a name="l00877"></a><span class="lineno">  877</span>&#160;        <span class="keywordflow">else</span>:</div>
+<div class="line"><a name="l00878"></a><span class="lineno">  878</span>&#160;            fMagField = ROOT.ShipBellField(</div>
+<div class="line"><a name="l00879"></a><span class="lineno">  879</span>&#160;                <span class="stringliteral">&quot;wilfried&quot;</span>,</div>
+<div class="line"><a name="l00880"></a><span class="lineno">  880</span>&#160;                ship_geo.Bfield.max,</div>
+<div class="line"><a name="l00881"></a><span class="lineno">  881</span>&#160;                ship_geo.Bfield.z,</div>
+<div class="line"><a name="l00882"></a><span class="lineno">  882</span>&#160;                1,</div>
+<div class="line"><a name="l00883"></a><span class="lineno">  883</span>&#160;                ship_geo.Yheight / 2.0 * u.m,</div>
+<div class="line"><a name="l00884"></a><span class="lineno">  884</span>&#160;            )</div>
+<div class="line"><a name="l00885"></a><span class="lineno">  885</span>&#160;        run.SetField(fMagField)</div>
+<div class="line"><a name="l00886"></a><span class="lineno">  886</span>&#160;    <span class="comment">#</span></div>
+<div class="line"><a name="l00887"></a><span class="lineno">  887</span>&#160;    exclusionList = []</div>
+<div class="line"><a name="l00888"></a><span class="lineno">  888</span>&#160;    <span class="comment"># exclusionList = [&quot;Muon&quot;,&quot;Ecal&quot;,&quot;Hcal&quot;,&quot;Strawtubes&quot;,&quot;TargetTrackers&quot;,&quot;NuTauTarget&quot;,&quot;HighPrecisionTrackers&quot;,\</span></div>
+<div class="line"><a name="l00889"></a><span class="lineno">  889</span>&#160;    <span class="comment">#                 &quot;Veto&quot;,&quot;Magnet&quot;,&quot;MuonShield&quot;,&quot;TargetStation&quot;,&quot;NuTauMudet&quot;,&quot;EmuMagnet&quot;, &quot;TimeDet&quot;, &quot;UpstreamTagger&quot;]</span></div>
+<div class="line"><a name="l00890"></a><span class="lineno">  890</span>&#160; </div>
+<div class="line"><a name="l00891"></a><span class="lineno">  891</span>&#160;    <span class="keywordflow">for</span> x <span class="keywordflow">in</span> detectorList:</div>
+<div class="line"><a name="l00892"></a><span class="lineno">  892</span>&#160;        <span class="keywordflow">if</span> x.GetName() <span class="keywordflow">in</span> exclusionList:</div>
+<div class="line"><a name="l00893"></a><span class="lineno">  893</span>&#160;            <span class="keywordflow">continue</span></div>
+<div class="line"><a name="l00894"></a><span class="lineno">  894</span>&#160;        run.AddModule(x)</div>
+<div class="line"><a name="l00895"></a><span class="lineno">  895</span>&#160;    <span class="comment"># return list of detector elements</span></div>
+<div class="line"><a name="l00896"></a><span class="lineno">  896</span>&#160;    detElements = {}</div>
+<div class="line"><a name="l00897"></a><span class="lineno">  897</span>&#160;    <span class="keywordflow">for</span> x <span class="keywordflow">in</span> run.GetListOfModules():</div>
+<div class="line"><a name="l00898"></a><span class="lineno">  898</span>&#160;        detElements[x.GetName()] = x</div>
+<div class="line"><a name="l00899"></a><span class="lineno">  899</span>&#160;    <span class="keywordflow">return</span> detElements</div>
 <div class="ttc" id="aclassShipGeoConfig_1_1AttrDict_html"><div class="ttname"><a href="classShipGeoConfig_1_1AttrDict.html">ShipGeoConfig.AttrDict</a></div><div class="ttdef"><b>Definition:</b> <a href="ShipGeoConfig_8py_source.html#l00090">ShipGeoConfig.py:90</a></div></div>
 <div class="ttc" id="anamespaceTTCluster_html_a16bc5b13d45537007e0ac7464ff5ea89"><div class="ttname"><a href="namespaceTTCluster.html#a16bc5b13d45537007e0ac7464ff5ea89">TTCluster.array</a></div><div class="ttdeci">float array</div><div class="ttdef"><b>Definition:</b> <a href="TTCluster_8py_source.html#l00038">TTCluster.py:38</a></div></div>
 <div class="ttc" id="anamespaceadd__noise__to__field_html_a0b17b62adeb5054f131bb6a46b054b48"><div class="ttname"><a href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">add_noise_to_field.float</a></div><div class="ttdeci">float</div><div class="ttdef"><b>Definition:</b> <a href="add__noise__to__field_8py_source.html#l00056">add_noise_to_field.py:56</a></div></div>
