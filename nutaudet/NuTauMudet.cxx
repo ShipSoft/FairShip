@@ -315,8 +315,6 @@ void NuTauMudet::ConstructGeometry()
   TGeoUniformMagField *retFieldU    = new TGeoUniformMagField(0.,0.,-fField); //magnetic field up return yoke
   TGeoUniformMagField *retFieldL   = new TGeoUniformMagField(0.,0.,fField); //magnetic field low return yoke
 
-  Double_t d = 0;
-
   if(fDesign<3)
     {
       TGeoVolumeAssembly *volMudetBox = new TGeoVolumeAssembly("volNuTauMudet");
@@ -500,19 +498,17 @@ void NuTauMudet::ConstructGeometry()
       tTauNuDet->AddNode(Pillar1Vol,4, new TGeoTranslation(fXtot/2-fPillarX/2,-fYtot/2-fPillarY/2,fZcenter+fZArm/2+fGapMiddle/2-fPillarZ/2));
     }
   if(fDesign==3)
-    {
-      Double_t supportasymmetry = fUpSuppY - fLowSuppY; //upper and lower support have different dimensions, so the mother box must be large enough to contain both
+    {      
       Int_t nr = 1E4;
 
       TGeoVolumeAssembly *volMudetBox = new TGeoVolumeAssembly("volTauNuMudet");
       tTauNuDet->AddNode(volMudetBox, 1, new TGeoTranslation(0,0,fZcenter));
 
-      TGeoBBox *IronLayer = new TGeoBBox("Iron",fXFe/2, fYFe/2, fZFe/2);
+      TGeoBBox *IronLayer = new TGeoBBox("MUDETIRON",fXFe/2, fYFe/2, fZFe/2);
       TGeoVolume *volIron = new TGeoVolume("volIron",IronLayer,Iron);
       volIron->SetLineColor(kGray);
 
-      TGeoBBox *IronLayer1 = new TGeoBBox("Iron",fXFe/2, fYFe/2, fZFethin/2);
-      TGeoVolume *volIron1 = new TGeoVolume("volIron1",IronLayer1,Iron);
+      auto* IronLayer1 = new TGeoBBox("MUDETIRON1",fXFe/2, fYFe/2, fZFethin/2);
       //***********************ADDING EXTERNAL DETAILS TO THE MUON FILTER
 
       //********UPPER COVER***********
@@ -551,8 +547,6 @@ void NuTauMudet::ConstructGeometry()
       volMudetBox->AddNode(volMuDetCross, 2, new TGeoTranslation(+fXFe/2.+fLatSuppX+fXLateral-fXCross/2., 0., -fZtot/2 + fZCross/2)); // left
 
       //***********************ADDING CUTS AT MID-LATERAL IN WALLS
-      IronLayer->SetName("MUDETIRON");
-      IronLayer1->SetName("MUDETIRON1");
 
       Double_t delta = 0.1; //to avoid border effects in the cuts (cut is not visualized in viewer, I do not know if it can affect simulation)
       TGeoTrd2  * Model= new TGeoTrd2("Model",fCutHeight/2,0, (fZFe+delta)/2,(fZFe+delta)/2,(fCutLength+delta)/2); //length and height are not x and y here, because it will be rotated!
@@ -784,7 +778,7 @@ void NuTauMudet::ConstructGeometry()
 
 
       // Shapes creation
-      TGeoBBox *CoilContainer = new TGeoBBox("CoilContainer", fOutMagX/2., fOutMagY/2., fMagZ/2.);
+      [[maybe_unused]] auto *CoilContainer = new TGeoBBox("CoilContainer", fOutMagX/2., fOutMagY/2., fMagZ/2.);
       TGeoBBox *MagRegion = new TGeoBBox("MagRegion", fInMagX/2., fInMagY/2., fMagZ/2.+0.5);
       TGeoBBox *Coil = new TGeoBBox("Coil", fCoilW/2., fCoilH/2., fMagZ/2.+0.5);
 

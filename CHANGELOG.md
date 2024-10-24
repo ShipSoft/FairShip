@@ -59,6 +59,7 @@ cross-section measurement code, and obsolete detector configurations.
 
 * Remove trailing whitespace and fix line endings
 * Fix compilation warnings due to deprecations #469
+* Fix compilation warnings due to unused or uninitiliazed variables #481
 * Fix issue with SST parameters #489
 * Cleaned up Veto Implementation
 * Fix crash of event display, PID when no entrance lid present

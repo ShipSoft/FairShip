@@ -232,14 +232,11 @@ void Hpt::ConstructGeometry()
     if (fDesign == 3){
         //Trackers that in design 3 follow the target --------------------------------------------------------------------------------------
         TGeoVolume *volMagRegion=gGeoManager->GetVolume("volMagRegion");
-        TGeoVolume *volTarget =gGeoManager->GetVolume("volTarget");
-        TGeoVolume *tTauNuDet = gGeoManager->GetVolume("tTauNuDet");
+        TGeoVolume *volTarget =gGeoManager->GetVolume("volTarget");        
 
-        Double_t DZMagnetizedRegion = ((TGeoBBox*) volMagRegion->GetShape())->GetDZ() *2;
-        Double_t DYMagnetizedRegion = ((TGeoBBox*) volMagRegion->GetShape())->GetDY() *2;
-        Double_t DXMagnetizedRegion = ((TGeoBBox*) volMagRegion->GetShape())->GetDX() *2;
+        Double_t DZMagnetizedRegion = static_cast<TGeoBBox*> (volMagRegion->GetShape())->GetDZ() *2;
 
-        Double_t DZTarget = ((TGeoBBox*) volTarget->GetShape())->GetDZ() *2;
+        Double_t DZTarget = static_cast<TGeoBBox*> (volTarget->GetShape())->GetDZ() *2;
 
         //HPT is DownStreamTracker
         TGeoBBox *DT = new TGeoBBox("DT", DimX/2, DimY/2, DimZ/2);
