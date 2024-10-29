@@ -522,8 +522,10 @@ def extrapolateToPlane(fT,z):
             state  = ROOT.genfit.StateOnPlane(rep)
             pos,mom = fstate.getPos(),fstate.getMom()
             rep.setPosMom(state,pos,mom)
+            detPlane = ROOT.genfit.DetPlane(NewPosition, parallelToZ)
+            detPlanePtr = ROOT.genfit.SharedPlanePtr(detPlane)
             try:
-                rep.extrapolateToPlane(state, NewPosition, parallelToZ )
+                rep.extrapolateToPlane(state, detPlanePtr)
                 pos,mom = state.getPos(),state.getMom()
                 rc = True
             except:
