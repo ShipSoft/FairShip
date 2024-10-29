@@ -931,11 +931,15 @@ class ShipDigiReco:
 #check
     atrack = entry[1]
     theTrack = entry[0]
-    if not theTrack.checkConsistency():
-     print('Problem with track before fit, not consistent',atrack,theTrack)
-     continue
+    try:
+      theTrack.checkConsistency()
+    except ROOT.genfit.Exception as e:
+      print('Problem with track before fit, not consistent',atrack,theTrack)
+      print(e.what())
+      ut.reportError(e)
 # do the fit
-    try:  self.fitter.processTrack(theTrack) # processTrackWithRep(theTrack,rep,True)
+    try:
+      self.fitter.processTrack(theTrack) # processTrackWithRep(theTrack,rep,True)
     except:
       if global_variables.debug:
         print("genfit failed to fit track")
@@ -943,12 +947,14 @@ class ShipDigiReco:
       ut.reportError(error)
       continue
 #check
-    if not theTrack.checkConsistency():
-     if global_variables.debug:
-       print('Problem with track after fit, not consistent', atrack, theTrack)
-     error = "Problem with track after fit, not consistent"
-     ut.reportError(error)
-     continue
+    try:
+      theTrack.checkConsistency()
+    except ROOT.genfit.Exception as e:
+      if global_variables.debug:
+        print('Problem with track after fit, not consistent', atrack, theTrack)
+        print(e.what())
+      error = "Problem with track after fit, not consistent"
+      ut.reportError(error)
     try:
       fittedState = theTrack.getFittedState()
       fittedMom = fittedState.getMomMag()
@@ -956,9 +962,14 @@ class ShipDigiReco:
       error = "Problem with fittedstate"
       ut.reportError(error)
       continue
-    fitStatus   = theTrack.getFitStatus()
+    fitStatus = theTrack.getFitStatus()
+    try:
+      fitStatus.isFitConverged()
+    except ROOT.genfit.Exception as e:
+      error = "Fit not converged"
+      ut.reportError(error)
     nmeas = fitStatus.getNdf()
-    chi2        = fitStatus.getChi2()/nmeas
+    chi2 = fitStatus.getChi2() / nmeas
     global_variables.h['chi2'].Fill(chi2)
 # make track persistent
     nTrack   = self.fGenFitArray.GetEntries()

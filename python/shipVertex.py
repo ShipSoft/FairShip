@@ -156,16 +156,16 @@ class Task:
      #print "*********************************** vertex fit precise   ******************************************** "
 
      detPlane = ROOT.genfit.DetPlane(ROOT.TVector3(0,0,HNLPos[2]),ROOT.TVector3(1,0,0),ROOT.TVector3(0,1,0))
-     plane = ROOT.genfit.RKTrackRep().makePlane(ROOT.TVector3(0,0,HNLPos[2]),ROOT.TVector3(1,0,0),ROOT.TVector3(0,1,0))
+     detPlanePtr = ROOT.genfit.SharedPlanePtr(detPlane)
      st1  = fittedTracks[t1].getFittedState()
      st2  = fittedTracks[t2].getFittedState()
      try:
-      st1.extrapolateToPlane(plane)
+      st1.extrapolateToPlane(detPlanePtr)
      except:
       ut.reportError("shipVertex.TwoTrackVertex: extrapolation did not work")
       continue
      try:
-      st2.extrapolateToPlane(plane)
+      st2.extrapolateToPlane(detPlanePtr)
      except:
       ut.reportError("shipVertex.TwoTrackVertex: extrapolation did not work")
       continue

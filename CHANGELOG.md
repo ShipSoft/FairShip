@@ -32,6 +32,7 @@ it in future.
 
 * shipStrawTracking: Move to argparse
 * CMake: Use external genfit2
+* shipStrawTracking, shipDigiReco, shipVertex: Make compatible with current genfit
 
 ### Removed
 
