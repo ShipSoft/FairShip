@@ -312,7 +312,7 @@ Public Attributes</h2></td></tr>
 <div class="fragment"><div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;{</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    Int_t NIronSlabs = 12;</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    TGeoVolume *<a class="code" href="namespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring.html#ad2f75d8ae8cd0e24f5478929b5ebf22d">top</a>=gGeoManager-&gt;GetTopVolume();</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    TGeoVolume *<a class="code" href="namespaceeventDisplay.html#adedb83676a54edf1159c60c4e308ea97">top</a>=gGeoManager-&gt;GetTopVolume();</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    TGeoMedium *Fe  = gGeoManager-&gt;GetMedium(<span class="stringliteral">&quot;iron&quot;</span>);</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    Double_t d = 0;</div>
@@ -325,7 +325,7 @@ Public Attributes</h2></td></tr>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keywordflow">for</span>(Int_t <a class="code" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> = 0; <a class="code" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>&lt; NIronSlabs; <a class="code" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>++)</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    {</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        d = zLastSlab - <a class="code" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>*(<a class="code" href="classShipTAUMagneticSpectrometer.html#afdd2b8b67493453614ed096984ffcfee">IronLenght</a>+<a class="code" href="classShipTAUMagneticSpectrometer.html#a6362c913eb26c37d97d3617b26376669">AirLenght</a>);</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <a class="code" href="namespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring.html#ad2f75d8ae8cd0e24f5478929b5ebf22d">top</a>-&gt;AddNode(volLayer,<a class="code" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>,<span class="keyword">new</span> TGeoTranslation(0, 0, d));</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <a class="code" href="namespaceeventDisplay.html#adedb83676a54edf1159c60c4e308ea97">top</a>-&gt;AddNode(volLayer,<a class="code" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>,<span class="keyword">new</span> TGeoTranslation(0, 0, d));</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    }</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    volLayer-&gt;SetField(magField);</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
@@ -341,7 +341,7 @@ Public Attributes</h2></td></tr>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keywordflow">for</span>(Int_t <a class="code" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> = 0; <a class="code" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>&lt; NIronSlabs; <a class="code" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>++)</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    {</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        Double_t d2 = <a class="code" href="namespacerunPythia8.html#adce18c0ee0c83717f9f76bb70903c598">d1</a>-<a class="code" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>*(<a class="code" href="classShipTAUMagneticSpectrometer.html#afdd2b8b67493453614ed096984ffcfee">IronLenght</a>+<a class="code" href="classShipTAUMagneticSpectrometer.html#a6362c913eb26c37d97d3617b26376669">AirLenght</a>);</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        <a class="code" href="namespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring.html#ad2f75d8ae8cd0e24f5478929b5ebf22d">top</a>-&gt;AddNode(volLayer2,<a class="code" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>,<span class="keyword">new</span> TGeoTranslation(0, 0, d2));</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        <a class="code" href="namespaceeventDisplay.html#adedb83676a54edf1159c60c4e308ea97">top</a>-&gt;AddNode(volLayer2,<a class="code" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>,<span class="keyword">new</span> TGeoTranslation(0, 0, d2));</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    }</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    volLayer2-&gt;SetField(RetField);</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
@@ -350,7 +350,7 @@ Public Attributes</h2></td></tr>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;}</div>
 <div class="ttc" id="anamespaceShipAna_html_aa4bf87f4d17f9d38b1d8f4d009bb54b3"><div class="ttname"><a href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">ShipAna.i</a></div><div class="ttdeci">int i</div><div class="ttdef"><b>Definition:</b> <a href="ShipAna_8py_source.html#l00086">ShipAna.py:86</a></div></div>
-<div class="ttc" id="anamespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring_html_ad2f75d8ae8cd0e24f5478929b5ebf22d"><div class="ttname"><a href="namespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring.html#ad2f75d8ae8cd0e24f5478929b5ebf22d">conditionsDatabase.demo.drifttubeMonitoring.top</a></div><div class="ttdeci">top</div><div class="ttdef"><b>Definition:</b> <a href="drifttubeMonitoring_8py_source.html#l00144">drifttubeMonitoring.py:144</a></div></div>
+<div class="ttc" id="anamespaceeventDisplay_html_adedb83676a54edf1159c60c4e308ea97"><div class="ttname"><a href="namespaceeventDisplay.html#adedb83676a54edf1159c60c4e308ea97">eventDisplay.top</a></div><div class="ttdeci">top</div><div class="ttdef"><b>Definition:</b> <a href="eventDisplay_8py_source.html#l01408">eventDisplay.py:1408</a></div></div>
 <div class="ttc" id="anamespacerunPythia8_html_adce18c0ee0c83717f9f76bb70903c598"><div class="ttname"><a href="namespacerunPythia8.html#adce18c0ee0c83717f9f76bb70903c598">runPythia8.d1</a></div><div class="ttdeci">dictionary d1</div><div class="ttdef"><b>Definition:</b> <a href="runPythia8_8py_source.html#l00111">runPythia8.py:111</a></div></div>
 </div><!-- fragment -->
 </div>

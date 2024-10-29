@@ -10,15 +10,11 @@ var hierarchy =
     [ "std::binary_function", null, [
       [ "ecalClusterSortProcess", "structecalClusterSortProcess.html", null ]
     ] ],
-    [ "ChannelId", "structChannelId.html", null ],
-    [ "DriftTubes::ChannelId", "structDriftTubes_1_1ChannelId.html", null ],
     [ "hnl.CKMmatrix", "classhnl_1_1CKMmatrix.html", null ],
     [ "Co3Rng", "classCo3Rng.html", null ],
     [ "hnl.constants", "classhnl_1_1constants.html", null ],
     [ "rpvsusy.constants", "classrpvsusy_1_1constants.html", null ],
     [ "darkphoton.DarkPhoton", "classdarkphoton_1_1DarkPhoton.html", null ],
-    [ "DataFrame", "structDataFrame.html", null ],
-    [ "DataFrameHeader", "structDataFrameHeader.html", null ],
     [ "dict", null, [
       [ "ShipGeoConfig.AttrDict", "classShipGeoConfig_1_1AttrDict.html", [
         [ "ShipGeoConfig.Config", "classShipGeoConfig_1_1Config.html", null ]
@@ -113,9 +109,6 @@ var hierarchy =
       [ "ShipTargetStation", "classShipTargetStation.html", null ],
       [ "pyFairModule", "classpyFairModule.html", null ]
     ] ],
-    [ "FairOnlineSource", null, [
-      [ "ShipTdcSource", "classShipTdcSource.html", null ]
-    ] ],
     [ "FairParGenericSet", null, [
       [ "ShipFieldPar", "classShipFieldPar.html", null ]
     ] ],
@@ -140,16 +133,6 @@ var hierarchy =
       [ "eventDisplay.DrawVetoDigi", "classeventDisplay_1_1DrawVetoDigi.html", null ],
       [ "eventDisplay.EventLoop", "classeventDisplay_1_1EventLoop.html", null ],
       [ "eventDisplay.Rulers", "classeventDisplay_1_1Rulers.html", null ]
-    ] ],
-    [ "FairUnpack", null, [
-      [ "ShipUnpack", "classShipUnpack.html", [
-        [ "DriftTubeUnpack", "classDriftTubeUnpack.html", null ],
-        [ "DummyUnpack", "classDummyUnpack.html", null ],
-        [ "PixelUnpack", "classPixelUnpack.html", null ],
-        [ "RPCUnpack", "classRPCUnpack.html", null ],
-        [ "ScalerUnpack", "classScalerUnpack.html", null ],
-        [ "SciFiUnpack", "classSciFiUnpack.html", null ]
-      ] ]
     ] ],
     [ "ShipFieldMaker::fieldInfo", "structShipFieldMaker_1_1fieldInfo.html", null ],
     [ "G4UserEventAction", null, [
@@ -183,7 +166,6 @@ var hierarchy =
       [ "g4Ex_args.MyGeneratorAction", "classg4Ex__args_1_1MyGeneratorAction.html", null ],
       [ "g4Ex_gap.MyGeneratorAction", "classg4Ex__gap_1_1MyGeneratorAction.html", null ]
     ] ],
-    [ "HitData", "structHitData.html", null ],
     [ "hnl.HNLbranchings", "classhnl_1_1HNLbranchings.html", [
       [ "hnl.HNL", "classhnl_1_1HNL.html", null ]
     ] ],
@@ -209,8 +191,6 @@ var hierarchy =
       [ "study_muMSC.Block", "classstudy__muMSC_1_1Block.html", null ],
       [ "study_thinTarget.Block", "classstudy__thinTarget_1_1Block.html", null ]
     ] ],
-    [ "RawDataHit", "structRawDataHit.html", null ],
-    [ "RawHit", "structRawHit.html", null ],
     [ "regression", "structregression.html", null ],
     [ "Pythia8::RndmEngine", null, [
       [ "PyTr1Rng", "classPyTr1Rng.html", null ],
@@ -220,8 +200,6 @@ var hierarchy =
     [ "rpvsusy.RPVSUSYbranchings", "classrpvsusy_1_1RPVSUSYbranchings.html", [
       [ "rpvsusy.RPVSUSY", "classrpvsusy_1_1RPVSUSY.html", null ]
     ] ],
-    [ "ScalarFrame", "structScalarFrame.html", null ],
-    [ "SciFiDataFrame", "structSciFiDataFrame.html", null ],
     [ "shipDigiReco.ShipDigiReco", "classshipDigiReco_1_1ShipDigiReco.html", null ],
     [ "ShipGeo.ShipGeo", "classShipGeo_1_1ShipGeo.html", null ],
     [ "shipPid.Task", "classshipPid_1_1Task.html", null ],

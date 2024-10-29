@@ -20,7 +20,6 @@ var dir_72a79d73443babb282d0800e65628bdf =
     [ "pyFairModule.h", "pyFairModule_8h.html", "pyFairModule_8h" ],
     [ "radio.py", "radio_8py.html", "radio_8py" ],
     [ "run_fixedTarget.py", "run__fixedTarget_8py.html", "run__fixedTarget_8py" ],
-    [ "run_MufluxfixedTarget.py", "run__MufluxfixedTarget_8py.html", "run__MufluxfixedTarget_8py" ],
     [ "run_prod.py", "run__prod_8py.html", "run__prod_8py" ],
     [ "run_reco.py", "run__reco_8py.html", "run__reco_8py" ],
     [ "runCharmHadProd.py", "runCharmHadProd_8py.html", "runCharmHadProd_8py" ],

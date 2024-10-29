@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['eos_12892',['EoS',['../ShipOnlineDataFormat_8h.html#a587089994f39b3bfbcf79a065a1c893ea9dc6541e903dc119121f1e8dd5f20442',1,'ShipOnlineDataFormat.h']]]
+  ['mybuffersize_11685',['myBufferSize',['../classMille.html#a58c69ad901fae1cee220618ec27c99a6a1a8de6b2990503a7805d0dd14f4df929',1,'Mille']]],
+  ['mymaxlabel_11686',['myMaxLabel',['../classMille.html#aa4d7ab7e2d13c1bcaef04319f6964511a676e78045ad80e0f8b9c0893cfd3b245',1,'Mille']]]
 ];

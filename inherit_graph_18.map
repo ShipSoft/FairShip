@@ -1,8 +1,6 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" title=" " alt="" coords="5,107,120,133"/>
-<area shape="rect" id="node2" href="$classeventDisplay_1_1DrawEcalCluster.html" title=" " alt="" coords="168,5,385,32"/>
-<area shape="rect" id="node3" href="$classeventDisplay_1_1DrawTracks.html" title=" " alt="" coords="184,56,369,83"/>
-<area shape="rect" id="node4" href="$classeventDisplay_1_1DrawVetoDigi.html" title=" " alt="" coords="177,107,376,133"/>
-<area shape="rect" id="node5" href="$classeventDisplay_1_1EventLoop.html" title=" " alt="" coords="187,157,366,184"/>
-<area shape="rect" id="node6" href="$classeventDisplay_1_1Rulers.html" title=" " alt="" coords="201,208,352,235"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,56,141,83"/>
+<area shape="rect" id="node2" href="$classg4Ex_1_1MyRunAction.html" title=" " alt="" coords="207,5,351,32"/>
+<area shape="rect" id="node3" href="$classg4Ex__args_1_1MyRunAction.html" title=" " alt="" coords="189,56,368,83"/>
+<area shape="rect" id="node4" href="$classg4Ex__gap_1_1MyRunAction.html" title=" " alt="" coords="191,107,366,133"/>
 </map>

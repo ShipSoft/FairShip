@@ -330,12 +330,11 @@ Static Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="shipVertex_8py_source.html#l00071">71</a> of file <a class="el" href="shipVertex_8py_source.html">shipVertex.py</a>.</p>
-<div class="fragment"><div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; <span class="keyword">def </span><a class="code" href="namespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring.html#a6a7797ea2036c84117f7fc447ddfff85">fcn</a>(self,npar, gin, f, par, iflag):</div>
+<div class="fragment"><div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; <span class="keyword">def </span>fcn(self,npar, gin, f, par, iflag):</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  res = self.residuals(self.y_data,par,self.z0)</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  f = self.chi2(res,self.Vy)</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  <span class="keywordflow">return</span></div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
-<div class="ttc" id="anamespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring_html_a6a7797ea2036c84117f7fc447ddfff85"><div class="ttname"><a href="namespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring.html#a6a7797ea2036c84117f7fc447ddfff85">conditionsDatabase.demo.drifttubeMonitoring.fcn</a></div><div class="ttdeci">def fcn(npar, gin, f, par, iflag)</div><div class="ttdef"><b>Definition:</b> <a href="drifttubeMonitoring_8py_source.html#l07368">drifttubeMonitoring.py:7368</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -378,7 +377,7 @@ Static Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="shipVertex_8py_source.html#l00058">58</a> of file <a class="el" href="shipVertex_8py_source.html">shipVertex.py</a>.</p>
-<div class="fragment"><div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; <span class="keyword">def </span><a class="code" href="namespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring.html#a3337d51ab47cbec42a610c53380fcda8">residuals</a>(self,y_data,a,z0):</div>
+<div class="fragment"><div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; <span class="keyword">def </span>residuals(self,y_data,a,z0):</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  res = np.zeros(10)</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  res[0] = abs(y_data[0]) - a[5]</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  res[1] = y_data[1] - a[3]</div>
@@ -391,7 +390,6 @@ Static Public Attributes</h2></td></tr>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  res[8] = y_data[8] - a[0] - a[6]*(a[2] - z0)</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  res[9] = y_data[9] - a[1] - a[7]*(a[2] - z0)</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  <span class="keywordflow">return</span> res</div>
-<div class="ttc" id="anamespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring_html_a3337d51ab47cbec42a610c53380fcda8"><div class="ttname"><a href="namespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring.html#a3337d51ab47cbec42a610c53380fcda8">conditionsDatabase.demo.drifttubeMonitoring.residuals</a></div><div class="ttdeci">list residuals</div><div class="ttdef"><b>Definition:</b> <a href="drifttubeMonitoring_8py_source.html#l00163">drifttubeMonitoring.py:163</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

@@ -533,10 +533,10 @@ Private Attributes</h2></td></tr>
 <div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;  Int_t size = clref.GetEntriesFast();</div>
 <div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;  <span class="comment">// cout &lt;&lt; &quot;veto hit called &quot;&lt;&lt; pos.z()&lt;&lt;endl;</span></div>
 <div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;  <span class="keywordflow">return</span> <span class="keyword">new</span>(clref[size]) <a class="code" href="classTimeDetPoint.html">TimeDetPoint</a>(trackID, detID, <a class="code" href="namespacerun__simPgun.html#ac57e22275cd6a7bdb768a9d30320595e">pos</a>, <a class="code" href="namespacerun__simPgun.html#a6e3b169e244bda1369fd9edbcd52ea01">mom</a>,</div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;                 time, <a class="code" href="namespacecharm-geometry__config.html#a6ccac261591ffdaca3ebe2296286994f">length</a>, eLoss, pdgCode,Lpos,Lmom);</div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;                 time, <a class="code" href="namespacegeometry__config.html#ae1e97f9ac5a42ab12f793064e3c3f7a2">length</a>, eLoss, pdgCode,Lpos,Lmom);</div>
 <div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;}</div>
 <div class="ttc" id="aclassTimeDetPoint_html"><div class="ttname"><a href="classTimeDetPoint.html">TimeDetPoint</a></div><div class="ttdef"><b>Definition:</b> <a href="TimeDetPoint_8h_source.html#l00011">TimeDetPoint.h:12</a></div></div>
-<div class="ttc" id="anamespacecharm-geometry__config_html_a6ccac261591ffdaca3ebe2296286994f"><div class="ttname"><a href="namespacecharm-geometry__config.html#a6ccac261591ffdaca3ebe2296286994f">charm-geometry_config.length</a></div><div class="ttdeci">length</div><div class="ttdef"><b>Definition:</b> <a href="charm-geometry__config_8py_source.html#l00112">charm-geometry_config.py:112</a></div></div>
+<div class="ttc" id="anamespacegeometry__config_html_ae1e97f9ac5a42ab12f793064e3c3f7a2"><div class="ttname"><a href="namespacegeometry__config.html#ae1e97f9ac5a42ab12f793064e3c3f7a2">geometry_config.length</a></div><div class="ttdeci">length</div><div class="ttdef"><b>Definition:</b> <a href="geometry__config_8py_source.html#l00280">geometry_config.py:280</a></div></div>
 <div class="ttc" id="anamespacerun__simPgun_html_a6e3b169e244bda1369fd9edbcd52ea01"><div class="ttname"><a href="namespacerun__simPgun.html#a6e3b169e244bda1369fd9edbcd52ea01">run_simPgun.mom</a></div><div class="ttdeci">mom</div><div class="ttdef"><b>Definition:</b> <a href="run__simPgun_8py_source.html#l00083">run_simPgun.py:83</a></div></div>
 <div class="ttc" id="anamespacerun__simPgun_html_ac57e22275cd6a7bdb768a9d30320595e"><div class="ttname"><a href="namespacerun__simPgun.html#ac57e22275cd6a7bdb768a9d30320595e">run_simPgun.pos</a></div><div class="ttdeci">pos</div><div class="ttdef"><b>Definition:</b> <a href="run__simPgun_8py_source.html#l00084">run_simPgun.py:84</a></div></div>
 </div><!-- fragment -->
@@ -616,7 +616,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="TimeDet_8cxx_source.html#l00244">244</a> of file <a class="el" href="TimeDet_8cxx_source.html">TimeDet.cxx</a>.</p>
 <div class="fragment"><div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;{</div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;  TGeoVolume *<a class="code" href="namespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring.html#ad2f75d8ae8cd0e24f5478929b5ebf22d">top</a> = gGeoManager-&gt;GetTopVolume();</div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;  TGeoVolume *<a class="code" href="namespaceeventDisplay.html#adedb83676a54edf1159c60c4e308ea97">top</a> = gGeoManager-&gt;GetTopVolume();</div>
 <div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160; </div>
 <div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;  <a class="code" href="classTimeDet.html#a5eba38e6dd2d949a4f7dcfdf402fc02c">InitMedium</a>(<span class="stringliteral">&quot;polyvinyltoluene&quot;</span>);</div>
 <div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;  TGeoMedium *Scint =gGeoManager-&gt;GetMedium(<span class="stringliteral">&quot;polyvinyltoluene&quot;</span>);</div>
@@ -643,7 +643,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;    <span class="comment">// printf(&quot;%3i  %3i %2i   %8.3f %8.3f %8.3f\n&quot;,ib, irow,icol, xbar,ybar,zbar);</span></div>
 <div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;  }</div>
 <div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160; </div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;  <a class="code" href="namespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring.html#ad2f75d8ae8cd0e24f5478929b5ebf22d">top</a>-&gt;AddNode(<a class="code" href="classTimeDet.html#a00a8b400ee8ef97133e2de41af4fcc73">fDetector</a>, 1, <span class="keyword">new</span> TGeoTranslation(0,0,<a class="code" href="classTimeDet.html#a6ec9772fdf8f3c12eed78e48ba64c4e3">fzPos</a>));</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;  <a class="code" href="namespaceeventDisplay.html#adedb83676a54edf1159c60c4e308ea97">top</a>-&gt;AddNode(<a class="code" href="classTimeDet.html#a00a8b400ee8ef97133e2de41af4fcc73">fDetector</a>, 1, <span class="keyword">new</span> TGeoTranslation(0,0,<a class="code" href="classTimeDet.html#a6ec9772fdf8f3c12eed78e48ba64c4e3">fzPos</a>));</div>
 <div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160; </div>
 <div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160; </div>
 <div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;  <span class="keywordflow">return</span>;</div>
@@ -653,7 +653,7 @@ Private Attributes</h2></td></tr>
 <div class="ttc" id="aclassTimeDet_html_a5eba38e6dd2d949a4f7dcfdf402fc02c"><div class="ttname"><a href="classTimeDet.html#a5eba38e6dd2d949a4f7dcfdf402fc02c">TimeDet::InitMedium</a></div><div class="ttdeci">Int_t InitMedium(const char *name)</div><div class="ttdef"><b>Definition:</b> <a href="TimeDet_8cxx_source.html#l00122">TimeDet.cxx:122</a></div></div>
 <div class="ttc" id="aclassTimeDet_html_abef730f3f10809e953b551ce5df7a9a0"><div class="ttname"><a href="classTimeDet.html#abef730f3f10809e953b551ce5df7a9a0">TimeDet::GetZBar</a></div><div class="ttdeci">double GetZBar(int ir, int ic) const</div><div class="ttdef"><b>Definition:</b> <a href="TimeDet_8cxx_source.html#l00320">TimeDet.cxx:320</a></div></div>
 <div class="ttc" id="aclassTimeDet_html_affcd8cbcaca2c4d7dccdca8cae05a487"><div class="ttname"><a href="classTimeDet.html#affcd8cbcaca2c4d7dccdca8cae05a487">TimeDet::GetYRow</a></div><div class="ttdeci">double GetYRow(int ir) const</div><div class="ttdef"><b>Definition:</b> <a href="TimeDet_8cxx_source.html#l00312">TimeDet.cxx:312</a></div></div>
-<div class="ttc" id="anamespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring_html_ad2f75d8ae8cd0e24f5478929b5ebf22d"><div class="ttname"><a href="namespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring.html#ad2f75d8ae8cd0e24f5478929b5ebf22d">conditionsDatabase.demo.drifttubeMonitoring.top</a></div><div class="ttdeci">top</div><div class="ttdef"><b>Definition:</b> <a href="drifttubeMonitoring_8py_source.html#l00144">drifttubeMonitoring.py:144</a></div></div>
+<div class="ttc" id="anamespaceeventDisplay_html_adedb83676a54edf1159c60c4e308ea97"><div class="ttname"><a href="namespaceeventDisplay.html#adedb83676a54edf1159c60c4e308ea97">eventDisplay.top</a></div><div class="ttdeci">top</div><div class="ttdef"><b>Definition:</b> <a href="eventDisplay_8py_source.html#l01408">eventDisplay.py:1408</a></div></div>
 <div class="ttc" id="anamespacemakeCascade_html_ae5fa4d514b6dfcbdbb9fee90dfc39061"><div class="ttname"><a href="namespacemakeCascade.html#ae5fa4d514b6dfcbdbb9fee90dfc39061">makeCascade.ib</a></div><div class="ttdeci">dictionary ib</div><div class="ttdef"><b>Definition:</b> <a href="makeCascade_8py_source.html#l00292">makeCascade.py:292</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -898,10 +898,10 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="TimeDet_8cxx_source.html#l00320">320</a> of file <a class="el" href="TimeDet_8cxx_source.html">TimeDet.cxx</a>.</p>
 <div class="fragment"><div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;{</div>
-<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;  <span class="keywordtype">double</span> <a class="code" href="namespacecharm-geometry__config.html#ab2e80a101e23d81f6afc4b1fd8e76761">z</a> = (ir%2) * <a class="code" href="classTimeDet.html#a43d488eaca507c1ec2948b5e1833029c">fdzBarRow</a> + (ic%2) * <a class="code" href="classTimeDet.html#abac4b43478433fb22a3d343e9cec5bd5">fdzBarCol</a>;</div>
-<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="namespacecharm-geometry__config.html#ab2e80a101e23d81f6afc4b1fd8e76761">z</a>;</div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;  <span class="keywordtype">double</span> <a class="code" href="namespacegeometry__config.html#a4487257c46b838ef1172b356289460c4">z</a> = (ir%2) * <a class="code" href="classTimeDet.html#a43d488eaca507c1ec2948b5e1833029c">fdzBarRow</a> + (ic%2) * <a class="code" href="classTimeDet.html#abac4b43478433fb22a3d343e9cec5bd5">fdzBarCol</a>;</div>
+<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="namespacegeometry__config.html#a4487257c46b838ef1172b356289460c4">z</a>;</div>
 <div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;}</div>
-<div class="ttc" id="anamespacecharm-geometry__config_html_ab2e80a101e23d81f6afc4b1fd8e76761"><div class="ttname"><a href="namespacecharm-geometry__config.html#ab2e80a101e23d81f6afc4b1fd8e76761">charm-geometry_config.z</a></div><div class="ttdeci">z</div><div class="ttdef"><b>Definition:</b> <a href="charm-geometry__config_8py_source.html#l00007">charm-geometry_config.py:7</a></div></div>
+<div class="ttc" id="anamespacegeometry__config_html_a4487257c46b838ef1172b356289460c4"><div class="ttname"><a href="namespacegeometry__config.html#a4487257c46b838ef1172b356289460c4">geometry_config.z</a></div><div class="ttdeci">z</div><div class="ttdef"><b>Definition:</b> <a href="geometry__config_8py_source.html#l00089">geometry_config.py:89</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1126,8 +1126,8 @@ Private Attributes</h2></td></tr>
 <div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;      <span class="keywordflow">if</span> (vcpy==5) uniqueId+=4; <span class="comment">//Copy of half</span></div>
 <div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;    }</div>
 <div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160; </div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;    TParticle* <a class="code" href="namespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring.html#a03923acd0da372eec842c9a6e48161e4">p</a> = <a class="code" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;GetStack()-&gt;GetCurrentTrack();</div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;    Int_t pdgCode = <a class="code" href="namespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring.html#a03923acd0da372eec842c9a6e48161e4">p</a>-&gt;GetPdgCode();</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;    TParticle* <a class="code" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a> = <a class="code" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;GetStack()-&gt;GetCurrentTrack();</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;    Int_t pdgCode = <a class="code" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetPdgCode();</div>
 <div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;    TLorentzVector Pos;</div>
 <div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;    <a class="code" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;TrackPosition(Pos);</div>
 <div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;    TLorentzVector Mom;</div>
@@ -1152,9 +1152,9 @@ Private Attributes</h2></td></tr>
 <div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;}</div>
 <div class="ttc" id="aclassShipStack_html"><div class="ttname"><a href="classShipStack.html">ShipStack</a></div><div class="ttdef"><b>Definition:</b> <a href="ShipStack_8h_source.html#l00046">ShipStack.h:47</a></div></div>
 <div class="ttc" id="aclassTimeDet_html_a54d12069d3d3112458e9b74431b3f731"><div class="ttname"><a href="classTimeDet.html#a54d12069d3d3112458e9b74431b3f731">TimeDet::AddHit</a></div><div class="ttdeci">TimeDetPoint * AddHit(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom, Double_t time, Double_t length, Double_t eLoss, Int_t pdgCode, TVector3 Lpos, TVector3 Lmom)</div><div class="ttdef"><b>Definition:</b> <a href="TimeDet_8cxx_source.html#l00283">TimeDet.cxx:283</a></div></div>
-<div class="ttc" id="anamespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring_html_a03923acd0da372eec842c9a6e48161e4"><div class="ttname"><a href="namespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring.html#a03923acd0da372eec842c9a6e48161e4">conditionsDatabase.demo.drifttubeMonitoring.p</a></div><div class="ttdeci">string p</div><div class="ttdef"><b>Definition:</b> <a href="drifttubeMonitoring_8py_source.html#l00289">drifttubeMonitoring.py:289</a></div></div>
 <div class="ttc" id="anamespacemakeCascade_html_a15662d966fe998f4f8b9b6547975083e"><div class="ttname"><a href="namespacemakeCascade.html#a15662d966fe998f4f8b9b6547975083e">makeCascade.stack</a></div><div class="ttdeci">int stack</div><div class="ttdef"><b>Definition:</b> <a href="makeCascade_8py_source.html#l00273">makeCascade.py:273</a></div></div>
-<div class="ttc" id="anamespacerun__simScript_html_a671e51e119017a06d69c162c6e24b051"><div class="ttname"><a href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">run_simScript.gMC</a></div><div class="ttdeci">gMC</div><div class="ttdef"><b>Definition:</b> <a href="run__simScript_8py_source.html#l00558">run_simScript.py:558</a></div></div>
+<div class="ttc" id="anamespacemakeDecay_html_a9c90b95001a4909a6c5383da1b3066d9"><div class="ttname"><a href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">makeDecay.p</a></div><div class="ttdeci">p</div><div class="ttdef"><b>Definition:</b> <a href="makeDecay_8py_source.html#l00067">makeDecay.py:67</a></div></div>
+<div class="ttc" id="anamespacerun__simScript_html_a671e51e119017a06d69c162c6e24b051"><div class="ttname"><a href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">run_simScript.gMC</a></div><div class="ttdeci">gMC</div><div class="ttdef"><b>Definition:</b> <a href="run__simScript_8py_source.html#l00531">run_simScript.py:531</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1379,7 +1379,7 @@ Private Attributes</h2></td></tr>
 <p>Sets detector position along z </p>
 
 <p class="definition">Definition at line <a class="el" href="TimeDet_8h_source.html#l00049">49</a> of file <a class="el" href="TimeDet_8h_source.html">TimeDet.h</a>.</p>
-<div class="fragment"><div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;{<a class="code" href="classTimeDet.html#a6ec9772fdf8f3c12eed78e48ba64c4e3">fzPos</a> = <a class="code" href="namespacecharm-geometry__config.html#ab2e80a101e23d81f6afc4b1fd8e76761">z</a>;}</div>
+<div class="fragment"><div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;{<a class="code" href="classTimeDet.html#a6ec9772fdf8f3c12eed78e48ba64c4e3">fzPos</a> = <a class="code" href="namespacegeometry__config.html#a4487257c46b838ef1172b356289460c4">z</a>;}</div>
 </div><!-- fragment -->
 </div>
 </div>

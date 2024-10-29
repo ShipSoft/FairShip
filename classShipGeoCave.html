@@ -311,7 +311,7 @@ Protected Attributes</h2></td></tr>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <span class="keywordtype">char</span> buf[maxbuf];</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  FairGeoNode* volu=0;</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  FairGeoMedium* medium;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  Bool_t <a class="code" href="namespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring.html#aa8c33fdf1a9b1e2dfdd08b46c6aecddd">rc</a>=kTRUE;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  Bool_t <a class="code" href="namespacemakeDecay.html#a8ae49156f9341ca95732cc2c31159dda">rc</a>=kTRUE;</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  <span class="keywordflow">do</span> {</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <a class="code" href="namespacemakeDecay.html#af633ec1966e205de31b9486f1f90dfff">fin</a>.getline(buf,maxbuf);</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keywordflow">if</span> (buf[0]!=<span class="charliteral">&#39;\0&#39;</span> &amp;&amp; buf[0]!=<span class="charliteral">&#39;/&#39;</span> &amp;&amp; !<a class="code" href="namespacemakeDecay.html#af633ec1966e205de31b9486f1f90dfff">fin</a>.eof()) {</div>
@@ -321,10 +321,10 @@ Protected Attributes</h2></td></tr>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        volu-&gt;setVolumeType(kFairGeoTopNode);</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        volu-&gt;setActive();</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        <a class="code" href="namespacemakeDecay.html#af633ec1966e205de31b9486f1f90dfff">fin</a>.getline(buf,maxbuf);</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        TString <a class="code" href="namespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring.html#ab606fe7ed19bf2ea186be60cb25e8b16">shape</a>(buf);</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        FairGeoBasicShape* sh=pShapes-&gt;selectShape(<a class="code" href="namespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring.html#ab606fe7ed19bf2ea186be60cb25e8b16">shape</a>);</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        TString shape(buf);</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        FairGeoBasicShape* sh=pShapes-&gt;selectShape(shape);</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        <span class="keywordflow">if</span> (sh) { volu-&gt;setShape(sh); }</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        <span class="keywordflow">else</span> { <a class="code" href="namespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring.html#aa8c33fdf1a9b1e2dfdd08b46c6aecddd">rc</a>=kFALSE; }</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        <span class="keywordflow">else</span> { <a class="code" href="namespacemakeDecay.html#a8ae49156f9341ca95732cc2c31159dda">rc</a>=kFALSE; }</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        <a class="code" href="namespacemakeDecay.html#af633ec1966e205de31b9486f1f90dfff">fin</a>.getline(buf,maxbuf);</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        medium=media-&gt;getMedium(buf);</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        <span class="keywordflow">if</span> (!medium) {</div>
@@ -332,25 +332,24 @@ Protected Attributes</h2></td></tr>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;          media-&gt;addMedium(medium);</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        }</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        volu-&gt;setMedium(medium);</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        Int_t <a class="code" href="namespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring.html#a0300c9226cb21058a0167e6076c29b1d">n</a>=0;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <span class="keywordflow">if</span> (sh) { <a class="code" href="namespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring.html#a0300c9226cb21058a0167e6076c29b1d">n</a>=sh-&gt;readPoints(&amp;<a class="code" href="namespacemakeDecay.html#af633ec1966e205de31b9486f1f90dfff">fin</a>,volu); }</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="namespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring.html#a0300c9226cb21058a0167e6076c29b1d">n</a>&lt;=0) { <a class="code" href="namespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring.html#aa8c33fdf1a9b1e2dfdd08b46c6aecddd">rc</a>=kFALSE; }</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;      } <span class="keywordflow">else</span> { <a class="code" href="namespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring.html#aa8c33fdf1a9b1e2dfdd08b46c6aecddd">rc</a>=kFALSE; }</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        Int_t <a class="code" href="namespacegeometry__config.html#a99f3338967d32a8359ac122e774ab3e9">n</a>=0;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <span class="keywordflow">if</span> (sh) { <a class="code" href="namespacegeometry__config.html#a99f3338967d32a8359ac122e774ab3e9">n</a>=sh-&gt;readPoints(&amp;<a class="code" href="namespacemakeDecay.html#af633ec1966e205de31b9486f1f90dfff">fin</a>,volu); }</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="namespacegeometry__config.html#a99f3338967d32a8359ac122e774ab3e9">n</a>&lt;=0) { <a class="code" href="namespacemakeDecay.html#a8ae49156f9341ca95732cc2c31159dda">rc</a>=kFALSE; }</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;      } <span class="keywordflow">else</span> { <a class="code" href="namespacemakeDecay.html#a8ae49156f9341ca95732cc2c31159dda">rc</a>=kFALSE; }</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    }</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  } <span class="keywordflow">while</span> (<a class="code" href="namespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring.html#aa8c33fdf1a9b1e2dfdd08b46c6aecddd">rc</a> &amp;&amp; !volu &amp;&amp; !<a class="code" href="namespacemakeDecay.html#af633ec1966e205de31b9486f1f90dfff">fin</a>.eof());</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <span class="keywordflow">if</span> (volu &amp;&amp; <a class="code" href="namespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring.html#aa8c33fdf1a9b1e2dfdd08b46c6aecddd">rc</a>) {</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  } <span class="keywordflow">while</span> (<a class="code" href="namespacemakeDecay.html#a8ae49156f9341ca95732cc2c31159dda">rc</a> &amp;&amp; !volu &amp;&amp; !<a class="code" href="namespacemakeDecay.html#af633ec1966e205de31b9486f1f90dfff">fin</a>.eof());</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <span class="keywordflow">if</span> (volu &amp;&amp; <a class="code" href="namespacemakeDecay.html#a8ae49156f9341ca95732cc2c31159dda">rc</a>) {</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    volumes-&gt;Add(volu);</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    masterNodes-&gt;Add(<span class="keyword">new</span> FairGeoNode(*volu));</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  } <span class="keywordflow">else</span> {</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keyword">delete</span> volu;</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    volu=0;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <a class="code" href="namespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring.html#aa8c33fdf1a9b1e2dfdd08b46c6aecddd">rc</a>=kFALSE;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <a class="code" href="namespacemakeDecay.html#a8ae49156f9341ca95732cc2c31159dda">rc</a>=kFALSE;</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  }</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="namespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring.html#aa8c33fdf1a9b1e2dfdd08b46c6aecddd">rc</a>;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="namespacemakeDecay.html#a8ae49156f9341ca95732cc2c31159dda">rc</a>;</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;}</div>
-<div class="ttc" id="anamespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring_html_a0300c9226cb21058a0167e6076c29b1d"><div class="ttname"><a href="namespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring.html#a0300c9226cb21058a0167e6076c29b1d">conditionsDatabase.demo.drifttubeMonitoring.n</a></div><div class="ttdeci">int n</div><div class="ttdef"><b>Definition:</b> <a href="drifttubeMonitoring_8py_source.html#l00253">drifttubeMonitoring.py:253</a></div></div>
-<div class="ttc" id="anamespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring_html_aa8c33fdf1a9b1e2dfdd08b46c6aecddd"><div class="ttname"><a href="namespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring.html#aa8c33fdf1a9b1e2dfdd08b46c6aecddd">conditionsDatabase.demo.drifttubeMonitoring.rc</a></div><div class="ttdeci">dictionary rc</div><div class="ttdef"><b>Definition:</b> <a href="drifttubeMonitoring_8py_source.html#l00226">drifttubeMonitoring.py:226</a></div></div>
-<div class="ttc" id="anamespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring_html_ab606fe7ed19bf2ea186be60cb25e8b16"><div class="ttname"><a href="namespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring.html#ab606fe7ed19bf2ea186be60cb25e8b16">conditionsDatabase.demo.drifttubeMonitoring.shape</a></div><div class="ttdeci">shape</div><div class="ttdef"><b>Definition:</b> <a href="drifttubeMonitoring_8py_source.html#l01036">drifttubeMonitoring.py:1036</a></div></div>
+<div class="ttc" id="anamespacegeometry__config_html_a99f3338967d32a8359ac122e774ab3e9"><div class="ttname"><a href="namespacegeometry__config.html#a99f3338967d32a8359ac122e774ab3e9">geometry_config.n</a></div><div class="ttdeci">n</div><div class="ttdef"><b>Definition:</b> <a href="geometry__config_8py_source.html#l00743">geometry_config.py:743</a></div></div>
+<div class="ttc" id="anamespacemakeDecay_html_a8ae49156f9341ca95732cc2c31159dda"><div class="ttname"><a href="namespacemakeDecay.html#a8ae49156f9341ca95732cc2c31159dda">makeDecay.rc</a></div><div class="ttdeci">rc</div><div class="ttdef"><b>Definition:</b> <a href="makeDecay_8py_source.html#l00102">makeDecay.py:102</a></div></div>
 <div class="ttc" id="anamespacemakeDecay_html_af633ec1966e205de31b9486f1f90dfff"><div class="ttname"><a href="namespacemakeDecay.html#af633ec1966e205de31b9486f1f90dfff">makeDecay.fin</a></div><div class="ttdeci">fin</div><div class="ttdef"><b>Definition:</b> <a href="makeDecay_8py_source.html#l00039">makeDecay.py:39</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -385,7 +384,7 @@ Protected Attributes</h2></td></tr>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    }</div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;  }</div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;}</div>
-<div class="ttc" id="anamespacerun__simScript_html_a220cc43c43bf49500c5fdd5a4e9b8e44"><div class="ttname"><a href="namespacerun__simScript.html#a220cc43c43bf49500c5fdd5a4e9b8e44">run_simScript.fout</a></div><div class="ttdeci">fout</div><div class="ttdef"><b>Definition:</b> <a href="run__simScript_8py_source.html#l00668">run_simScript.py:668</a></div></div>
+<div class="ttc" id="anamespacerun__simScript_html_a220cc43c43bf49500c5fdd5a4e9b8e44"><div class="ttname"><a href="namespacerun__simScript.html#a220cc43c43bf49500c5fdd5a4e9b8e44">run_simScript.fout</a></div><div class="ttdeci">fout</div><div class="ttdef"><b>Definition:</b> <a href="run__simScript_8py_source.html#l00640">run_simScript.py:640</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

@@ -1,27 +1,4 @@
 var searchData=
 [
-  ['kbox1_12895',['kBox1',['../ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680ac719833827d431f14ca4ace326c62076',1,'ShipDetectorList.h']]],
-  ['kdonebit_12896',['kDoneBit',['../ShipStack_8h.html#a99fb83031ce9923c84392b4e92f956b5a12781c855b259e1c96ca6cc950606ffb',1,'ShipStack.h']]],
-  ['kecal_12897',['kecal',['../ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680aea305633b330b30cb1743acc5d49addf',1,'ShipDetectorList.h']]],
-  ['kendoflist_12898',['kEndOfList',['../ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a614063d893e517df9b074827fa7206ca',1,'ShipDetectorList.h']]],
-  ['khcal_12899',['khcal',['../ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680ae935125f7213296d27a1d1f8ac651277',1,'ShipDetectorList.h']]],
-  ['kmufluxspectrometer_12900',['kMufluxSpectrometer',['../ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680af444c1ef7340bbda4dbb5e409bc0fc65',1,'ShipDetectorList.h']]],
-  ['kmuon_12901',['kMuon',['../ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680ad41d6187de68eaadf3d275fd40f869c6',1,'ShipDetectorList.h']]],
-  ['kmuontagger_12902',['kMuonTagger',['../ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a62cf4a744fec236a91e51893814a99df',1,'ShipDetectorList.h']]],
-  ['kpixelmodules_12903',['kPixelModules',['../ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a57c6121976b83844b6fbb594f25bc7ba',1,'ShipDetectorList.h']]],
-  ['kpreshower_12904',['kPreshower',['../ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a3391e9454e836493df7619c0690d3940',1,'ShipDetectorList.h']]],
-  ['kscifi_12905',['kSciFi',['../ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680ab07911a8c48f7d5ce44b746b52c8f860',1,'ShipDetectorList.h']]],
-  ['kscintillator_12906',['kScintillator',['../ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680afb2318f4f8c62b767590c303a87e93cc',1,'ShipDetectorList.h']]],
-  ['kshipmuonscrosssectionfactor_12907',['kShipMuonsCrossSectionFactor',['../ShipGlobals_8h.html#a789630bf230604bdad6e9ad1c2af7815aa7374565cbd2ba71b77b37a0fede2b9e',1,'ShipGlobals.h']]],
-  ['kspectrometer_12908',['kSpectrometer',['../ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a0e8f13788e4cd85703b6ca549927edbc',1,'ShipDetectorList.h']]],
-  ['ksplitcal_12909',['kSplitCal',['../ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a26e20c276903443a560e83114ac30bb7',1,'ShipDetectorList.h']]],
-  ['kstraw_12910',['kStraw',['../ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a95d4e15538db337d7d209dd9f84127fd',1,'ShipDetectorList.h']]],
-  ['ktauhpt_12911',['ktauHpt',['../ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a61497344932b214083d15169b4f06e26',1,'ShipDetectorList.h']]],
-  ['ktaurpc_12912',['ktauRpc',['../ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680aaec86bfba5dfd7dc4b46c5a4948071a7',1,'ShipDetectorList.h']]],
-  ['ktautarget_12913',['ktauTarget',['../ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680ac9a2f8c5f1c65083318ee7b19099c018',1,'ShipDetectorList.h']]],
-  ['ktautt_12914',['ktauTT',['../ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a302708f27685969aea17b84ebf1dc7b5',1,'ShipDetectorList.h']]],
-  ['ktimedet_12915',['kTimeDet',['../ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680afd52b7ba84b4518f53baf1a0ef357d87',1,'ShipDetectorList.h']]],
-  ['ktrstation_12916',['kTRSTATION',['../ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a3a5f17af29cf4a80d9e20f448c7fc96d',1,'ShipDetectorList.h']]],
-  ['kupstreamtagger_12917',['kUpstreamTagger',['../ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a2f144cb97461008fcd3693cc5555461f',1,'ShipDetectorList.h']]],
-  ['kveto_12918',['kVETO',['../ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680aa289a1b27d8c77391b88e9a794da84c2',1,'ShipDetectorList.h']]]
+  ['yaxis_11689',['yAxis',['../classShipBFieldMap.html#a861764baf5e15176bc69c9942c2a9c65a2a92b59da7fcc9aa9e15dcd556326087',1,'ShipBFieldMap']]]
 ];

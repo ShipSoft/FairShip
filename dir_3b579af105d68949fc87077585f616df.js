@@ -18,14 +18,11 @@ var dir_3b579af105d68949fc87077585f616df =
     [ "makeDecay.py", "makeDecay_8py.html", "makeDecay_8py" ],
     [ "makeGenieEvents.py", "makeGenieEvents_8py.html", "makeGenieEvents_8py" ],
     [ "mergeMbias.py", "mergeMbias_8py.html", "mergeMbias_8py" ],
-    [ "MufluxReco.py", "MufluxReco_8py.html", "MufluxReco_8py" ],
     [ "run_anaEcal.py", "run__anaEcal_8py.html", "run__anaEcal_8py" ],
     [ "run_simEcal.py", "run__simEcal_8py.html", "run__simEcal_8py" ],
     [ "run_simPgun.py", "run__simPgun_8py.html", "run__simPgun_8py" ],
     [ "run_simScript.py", "run__simScript_8py.html", "run__simScript_8py" ],
-    [ "runMufluxDigi.py", "runMufluxDigi_8py.html", "runMufluxDigi_8py" ],
     [ "runPythia8.py", "runPythia8_8py.html", "runPythia8_8py" ],
     [ "ShipAna.py", "ShipAna_8py.html", "ShipAna_8py" ],
-    [ "ShipReco.py", "ShipReco_8py.html", "ShipReco_8py" ],
-    [ "testbeam_unpack.py", "testbeam__unpack_8py.html", "testbeam__unpack_8py" ]
+    [ "ShipReco.py", "ShipReco_8py.html", "ShipReco_8py" ]
 ];

@@ -2,7 +2,6 @@ var dir_7837fde3ab9c1fb2fc5be7b717af8d79 =
 [
     [ "AddDiMuonDecayChannelsToG4.py", "AddDiMuonDecayChannelsToG4_8py.html", "AddDiMuonDecayChannelsToG4_8py" ],
     [ "basiclibs.py", "basiclibs_8py.html", null ],
-    [ "charmDet_conf.py", "charmDet__conf_8py.html", "charmDet__conf_8py" ],
     [ "checkMagFields.py", "checkMagFields_8py.html", "checkMagFields_8py" ],
     [ "CMBG_conf.py", "CMBG__conf_8py.html", "CMBG__conf_8py" ],
     [ "configGenieGenerator.py", "configGenieGenerator_8py.html", "configGenieGenerator_8py" ],

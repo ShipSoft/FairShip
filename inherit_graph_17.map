@@ -1,13 +1,6 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" title=" " alt="" coords="5,233,99,260"/>
-<area shape="rect" id="node2" href="$classEmulsionMagnet.html" title=" " alt="" coords="193,5,324,32"/>
-<area shape="rect" id="node3" href="$classMufluxTargetStation.html" title=" " alt="" coords="183,56,335,83"/>
-<area shape="rect" id="node4" href="$classShipCave.html" title=" " alt="" coords="217,107,300,133"/>
-<area shape="rect" id="node5" href="$classShipChamber.html" title=" " alt="" coords="204,157,313,184"/>
-<area shape="rect" id="node6" href="$classShipGoliath.html" title=" " alt="" coords="210,208,307,235"/>
-<area shape="rect" id="node7" href="$classShipMagnet.html" title=" " alt="" coords="209,259,308,285"/>
-<area shape="rect" id="node8" href="$classShipMuonShield.html" title=" " alt="" coords="195,309,322,336"/>
-<area shape="rect" id="node9" href="$classShipTAUMagneticSpectrometer.html" title=" " alt="" coords="147,360,371,387"/>
-<area shape="rect" id="node10" href="$classShipTargetStation.html" title=" " alt="" coords="191,411,327,437"/>
-<area shape="rect" id="node11" href="$classpyFairModule.html" title=" " alt="" coords="204,461,313,488"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,56,241,83"/>
+<area shape="rect" id="node2" href="$classg4Ex_1_1MyGeneratorAction.html" title=" " alt="" coords="307,5,491,32"/>
+<area shape="rect" id="node3" href="$classg4Ex__args_1_1MyGeneratorAction.html" title=" " alt="" coords="289,56,508,83"/>
+<area shape="rect" id="node4" href="$classg4Ex__gap_1_1MyGeneratorAction.html" title=" " alt="" coords="291,107,506,133"/>
 </map>

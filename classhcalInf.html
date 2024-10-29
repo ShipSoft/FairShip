@@ -651,8 +651,8 @@ the HCAL geometry container
 <div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;  TObjString* <a class="code" href="namespaceextractNeutrinosAndUpdateWeight.html#a47804d77c17d9de386802c99c350d7a8">key</a>;</div>
 <div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;  TIterator* iter=<a class="code" href="classhcalInf.html#a1aafd2e013cb7e755cf46ad6c014abde">fHcalStr</a>.MakeIterator();</div>
 <div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160; </div>
-<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;  Int_t <a class="code" href="namespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring.html#a7aedb05c47f1d0f9024ce8edc4bb9497">modules</a>=0;</div>
-<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;  Int_t <a class="code" href="namespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring.html#a2ff7a13a5c5a64fb2a94b350b9eaba9d">channels</a>=0;</div>
+<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;  Int_t <a class="code" href="namespaceinspectGeant4Geo.html#a7b5821cffd485ff8a225c9f2df441372">modules</a>=0;</div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;  Int_t channels=0;</div>
 <div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;  Int_t <a class="code" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>;</div>
 <div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;  Int_t j;</div>
 <div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;  Int_t <a class="code" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>[10];</div>
@@ -669,12 +669,12 @@ the HCAL geometry container
 <div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;      stri[0]=st[<a class="code" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>];</div>
 <div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;      j=atoi(stri);</div>
 <div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;      <a class="code" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>[j]++;</div>
-<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;      <span class="keywordflow">if</span> (j) <a class="code" href="namespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring.html#a7aedb05c47f1d0f9024ce8edc4bb9497">modules</a>++;</div>
-<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;      <a class="code" href="namespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring.html#a2ff7a13a5c5a64fb2a94b350b9eaba9d">channels</a>+=j*j;</div>
+<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;      <span class="keywordflow">if</span> (j) <a class="code" href="namespaceinspectGeant4Geo.html#a7b5821cffd485ff8a225c9f2df441372">modules</a>++;</div>
+<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;      channels+=j*j;</div>
 <div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;    }</div>
 <div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;  }</div>
-<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;  cout &lt;&lt; <span class="stringliteral">&quot;Total modules:  &quot;</span> &lt;&lt; <a class="code" href="namespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring.html#a7aedb05c47f1d0f9024ce8edc4bb9497">modules</a> &lt;&lt; endl;</div>
-<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;  cout &lt;&lt; <span class="stringliteral">&quot;Total channels: &quot;</span> &lt;&lt; <a class="code" href="namespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring.html#a2ff7a13a5c5a64fb2a94b350b9eaba9d">channels</a> &lt;&lt; endl;</div>
+<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;  cout &lt;&lt; <span class="stringliteral">&quot;Total modules:  &quot;</span> &lt;&lt; <a class="code" href="namespaceinspectGeant4Geo.html#a7b5821cffd485ff8a225c9f2df441372">modules</a> &lt;&lt; endl;</div>
+<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;  cout &lt;&lt; <span class="stringliteral">&quot;Total channels: &quot;</span> &lt;&lt; channels &lt;&lt; endl;</div>
 <div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;  <span class="keywordflow">for</span>(<a class="code" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>=1;<a class="code" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>&lt;10;<a class="code" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>++)</div>
 <div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;  {</div>
 <div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>[<a class="code" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>]==0) <span class="keywordflow">continue</span>;</div>
@@ -683,8 +683,7 @@ the HCAL geometry container
 <div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160; </div>
 <div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;}</div>
 <div class="ttc" id="aShipBellField_8cxx_html_a42d42dd2c682d42f11de58e34c89f895"><div class="ttname"><a href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a></div><div class="ttdeci">Double_t m</div><div class="ttdef"><b>Definition:</b> <a href="ShipBellField_8cxx_source.html#l00020">ShipBellField.cxx:20</a></div></div>
-<div class="ttc" id="anamespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring_html_a2ff7a13a5c5a64fb2a94b350b9eaba9d"><div class="ttname"><a href="namespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring.html#a2ff7a13a5c5a64fb2a94b350b9eaba9d">conditionsDatabase.demo.drifttubeMonitoring.channels</a></div><div class="ttdeci">dictionary channels</div><div class="ttdef"><b>Definition:</b> <a href="drifttubeMonitoring_8py_source.html#l00987">drifttubeMonitoring.py:987</a></div></div>
-<div class="ttc" id="anamespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring_html_a7aedb05c47f1d0f9024ce8edc4bb9497"><div class="ttname"><a href="namespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring.html#a7aedb05c47f1d0f9024ce8edc4bb9497">conditionsDatabase.demo.drifttubeMonitoring.modules</a></div><div class="ttdeci">modules</div><div class="ttdef"><b>Definition:</b> <a href="drifttubeMonitoring_8py_source.html#l00139">drifttubeMonitoring.py:139</a></div></div>
+<div class="ttc" id="anamespaceinspectGeant4Geo_html_a7b5821cffd485ff8a225c9f2df441372"><div class="ttname"><a href="namespaceinspectGeant4Geo.html#a7b5821cffd485ff8a225c9f2df441372">inspectGeant4Geo.modules</a></div><div class="ttdeci">modules</div><div class="ttdef"><b>Definition:</b> <a href="inspectGeant4Geo_8py_source.html#l00017">inspectGeant4Geo.py:17</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

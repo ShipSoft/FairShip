@@ -289,7 +289,7 @@ Public Attributes</h2></td></tr>
 <div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        <span class="comment"># for the digitizing and reconstruction step</span></div>
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;        self.v_drift       = global_variables.modules[<span class="stringliteral">&quot;MufluxSpectrometer&quot;</span>].TubeVdrift()</div>
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;        self.sigma_spatial = global_variables.modules[<span class="stringliteral">&quot;MufluxSpectrometer&quot;</span>].TubeSigmaSpatial()</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        self.viewangle     = global_variables.modules[<span class="stringliteral">&quot;MufluxSpectrometer&quot;</span>].<a class="code" href="namespacecharm-geometry__config.html#a1b15ff1b7ad7e6a7c13280d5fb29b76f">ViewAngle</a>()</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        self.viewangle     = global_variables.modules[<span class="stringliteral">&quot;MufluxSpectrometer&quot;</span>].<a class="code" href="namespacegeometry__config.html#a24a3473216f073df246d47bb6ebc31b4">ViewAngle</a>()</div>
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160; </div>
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;        <span class="comment"># access ShipTree</span></div>
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;        self.sTree.GetEvent(0)</div>
@@ -298,9 +298,9 @@ Public Attributes</h2></td></tr>
 <div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;        self.gMan  = ROOT.gGeoManager</div>
 <div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;        self.bfield = ROOT.genfit.FairShipFields()</div>
 <div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;        self.fM = ROOT.genfit.FieldManager.getInstance()</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;        self.fM.<a class="code" href="namespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring.html#af3167ff4adb276fd479676dcfb59d52f">init</a>(self.bfield)</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;        self.fM.<a class="code" href="namespaceg4Ex__args.html#a2c056203f074d46e2071bb0f0d02aa96">init</a>(self.bfield)</div>
 <div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160; </div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;        ROOT.genfit.MaterialEffects.getInstance().<a class="code" href="namespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring.html#af3167ff4adb276fd479676dcfb59d52f">init</a>(self.geoMat)</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;        ROOT.genfit.MaterialEffects.getInstance().<a class="code" href="namespaceg4Ex__args.html#a2c056203f074d46e2071bb0f0d02aa96">init</a>(self.geoMat)</div>
 <div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160; </div>
 <div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;        <span class="comment"># init fitter, to be done before importing shipPatRec</span></div>
 <div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;        self.fitter      = ROOT.genfit.DAF()</div>
@@ -315,8 +315,8 @@ Public Attributes</h2></td></tr>
 <div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;            <span class="keywordflow">else</span>:</div>
 <div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;                os.mkdir(output_dir)</div>
 <div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160; </div>
-<div class="ttc" id="anamespacecharm-geometry__config_html_a1b15ff1b7ad7e6a7c13280d5fb29b76f"><div class="ttname"><a href="namespacecharm-geometry__config.html#a1b15ff1b7ad7e6a7c13280d5fb29b76f">charm-geometry_config.ViewAngle</a></div><div class="ttdeci">ViewAngle</div><div class="ttdef"><b>Definition:</b> <a href="charm-geometry__config_8py_source.html#l00220">charm-geometry_config.py:220</a></div></div>
-<div class="ttc" id="anamespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring_html_af3167ff4adb276fd479676dcfb59d52f"><div class="ttname"><a href="namespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring.html#af3167ff4adb276fd479676dcfb59d52f">conditionsDatabase.demo.drifttubeMonitoring.init</a></div><div class="ttdeci">def init(database='muflux_RTrelations.pkl', remake=False, withReco=False)</div><div class="ttdef"><b>Definition:</b> <a href="drifttubeMonitoring_8py_source.html#l05378">drifttubeMonitoring.py:5378</a></div></div>
+<div class="ttc" id="anamespaceg4Ex__args_html_a2c056203f074d46e2071bb0f0d02aa96"><div class="ttname"><a href="namespaceg4Ex__args.html#a2c056203f074d46e2071bb0f0d02aa96">g4Ex_args.init</a></div><div class="ttdeci">def init()</div><div class="ttdef"><b>Definition:</b> <a href="g4Ex__args_8py_source.html#l00035">g4Ex_args.py:35</a></div></div>
+<div class="ttc" id="anamespacegeometry__config_html_a24a3473216f073df246d47bb6ebc31b4"><div class="ttname"><a href="namespacegeometry__config.html#a24a3473216f073df246d47bb6ebc31b4">geometry_config.ViewAngle</a></div><div class="ttdeci">ViewAngle</div><div class="ttdef"><b>Definition:</b> <a href="geometry__config_8py_source.html#l00174">geometry_config.py:174</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -449,7 +449,7 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="MufluxDigiReco_8py_source.html#l00397">397</a> of file <a class="el" href="MufluxDigiReco_8py_source.html">MufluxDigiReco.py</a>.</p>
-<div class="fragment"><div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;    <span class="keyword">def </span><a class="code" href="namespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring.html#a8d7fddd12fef550e6e20b4a2b0522b43">correctAlignment</a>(self, hit):</div>
+<div class="fragment"><div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;    <span class="keyword">def </span>correctAlignment(self, hit):</div>
 <div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;        <span class="comment"># Taken from charmdet/drifttubeMonitoring.py</span></div>
 <div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;        sqrt2 = ROOT.TMath.Sqrt(2.)</div>
 <div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;        cos30 = ROOT.TMath.Cos(30./180.*ROOT.TMath.Pi())</div>
@@ -482,7 +482,6 @@ Public Attributes</h2></td></tr>
 <div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;        <span class="keywordflow">return</span> vbot,vtop</div>
 <div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160; </div>
 <div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160; </div>
-<div class="ttc" id="anamespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring_html_a8d7fddd12fef550e6e20b4a2b0522b43"><div class="ttname"><a href="namespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring.html#a8d7fddd12fef550e6e20b4a2b0522b43">conditionsDatabase.demo.drifttubeMonitoring.correctAlignment</a></div><div class="ttdeci">def correctAlignment(hit)</div><div class="ttdef"><b>Definition:</b> <a href="drifttubeMonitoring_8py_source.html#l04546">drifttubeMonitoring.py:4546</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -756,7 +755,7 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="MufluxDigiReco_8py_source.html#l01178">1178</a> of file <a class="el" href="MufluxDigiReco_8py_source.html">MufluxDigiReco.py</a>.</p>
-<div class="fragment"><div class="line"><a name="l01178"></a><span class="lineno"> 1178</span>&#160;    <span class="keyword">def </span><a class="code" href="namespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring.html#aad60959553eee43f4237eb884f71247e">findTracks</a>(self):</div>
+<div class="fragment"><div class="line"><a name="l01178"></a><span class="lineno"> 1178</span>&#160;    <span class="keyword">def </span>findTracks(self):</div>
 <div class="line"><a name="l01179"></a><span class="lineno"> 1179</span>&#160; </div>
 <div class="line"><a name="l01180"></a><span class="lineno"> 1180</span>&#160;        hitPosLists    = {}</div>
 <div class="line"><a name="l01181"></a><span class="lineno"> 1181</span>&#160;        hitPosLists_noT4    = {}</div>
@@ -1346,7 +1345,7 @@ Public Attributes</h2></td></tr>
 <div class="line"><a name="l01765"></a><span class="lineno"> 1765</span>&#160;                fittedMom = fittedState.getMomMag()</div>
 <div class="line"><a name="l01766"></a><span class="lineno"> 1766</span>&#160;                h[<span class="stringliteral">&#39;p-fittedtracks&#39;</span>].Fill(fittedMom)</div>
 <div class="line"><a name="l01767"></a><span class="lineno"> 1767</span>&#160;                h[<span class="stringliteral">&#39;1/p-fittedtracks&#39;</span>].Fill(1./fittedMom)</div>
-<div class="line"><a name="l01768"></a><span class="lineno"> 1768</span>&#160;                Px,Py,Pz = fittedState.getMom().<a class="code" href="namespacegeometry__config.html#a1286b5c01494c311eb3a950d1ac8857c">x</a>(),fittedState.getMom().<a class="code" href="namespacegeometry__config.html#aa7c54d6eeebcc821b55222c6926f6740">y</a>(),fittedState.getMom().<a class="code" href="namespacecharm-geometry__config.html#ab2e80a101e23d81f6afc4b1fd8e76761">z</a>()</div>
+<div class="line"><a name="l01768"></a><span class="lineno"> 1768</span>&#160;                Px,Py,Pz = fittedState.getMom().<a class="code" href="namespacegeometry__config.html#a1286b5c01494c311eb3a950d1ac8857c">x</a>(),fittedState.getMom().<a class="code" href="namespacegeometry__config.html#aa7c54d6eeebcc821b55222c6926f6740">y</a>(),fittedState.getMom().<a class="code" href="namespacegeometry__config.html#a4487257c46b838ef1172b356289460c4">z</a>()</div>
 <div class="line"><a name="l01769"></a><span class="lineno"> 1769</span>&#160;                P = fittedMom</div>
 <div class="line"><a name="l01770"></a><span class="lineno"> 1770</span>&#160;                Pt = ROOT.TMath.Sqrt(Px*Px+Py*Py)</div>
 <div class="line"><a name="l01771"></a><span class="lineno"> 1771</span>&#160;                h[<span class="stringliteral">&#39;p/pt&#39;</span>].Fill(P,Pt)</div>
@@ -1444,7 +1443,7 @@ Public Attributes</h2></td></tr>
 <div class="line"><a name="l01863"></a><span class="lineno"> 1863</span>&#160;                fittedMom = fittedState.getMomMag()</div>
 <div class="line"><a name="l01864"></a><span class="lineno"> 1864</span>&#160;                h[<span class="stringliteral">&#39;p-fittedtracks-noT4&#39;</span>].Fill(fittedMom)</div>
 <div class="line"><a name="l01865"></a><span class="lineno"> 1865</span>&#160;                h[<span class="stringliteral">&#39;1/p-fittedtracks-noT4&#39;</span>].Fill(1./fittedMom)</div>
-<div class="line"><a name="l01866"></a><span class="lineno"> 1866</span>&#160;                Px,Py,Pz = fittedState.getMom().<a class="code" href="namespacegeometry__config.html#a1286b5c01494c311eb3a950d1ac8857c">x</a>(),fittedState.getMom().<a class="code" href="namespacegeometry__config.html#aa7c54d6eeebcc821b55222c6926f6740">y</a>(),fittedState.getMom().<a class="code" href="namespacecharm-geometry__config.html#ab2e80a101e23d81f6afc4b1fd8e76761">z</a>()</div>
+<div class="line"><a name="l01866"></a><span class="lineno"> 1866</span>&#160;                Px,Py,Pz = fittedState.getMom().<a class="code" href="namespacegeometry__config.html#a1286b5c01494c311eb3a950d1ac8857c">x</a>(),fittedState.getMom().<a class="code" href="namespacegeometry__config.html#aa7c54d6eeebcc821b55222c6926f6740">y</a>(),fittedState.getMom().<a class="code" href="namespacegeometry__config.html#a4487257c46b838ef1172b356289460c4">z</a>()</div>
 <div class="line"><a name="l01867"></a><span class="lineno"> 1867</span>&#160;                P = fittedMom</div>
 <div class="line"><a name="l01868"></a><span class="lineno"> 1868</span>&#160;                Pt = ROOT.TMath.Sqrt(Px*Px+Py*Py)</div>
 <div class="line"><a name="l01869"></a><span class="lineno"> 1869</span>&#160;                h[<span class="stringliteral">&#39;p/pt_noT4&#39;</span>].Fill(P,Pt)</div>
@@ -1526,7 +1525,7 @@ Public Attributes</h2></td></tr>
 <div class="line"><a name="l01945"></a><span class="lineno"> 1945</span>&#160;                fittedMom = fittedState.getMomMag()</div>
 <div class="line"><a name="l01946"></a><span class="lineno"> 1946</span>&#160;                h[<span class="stringliteral">&#39;p-fittedtracks-all&#39;</span>].Fill(fittedMom)</div>
 <div class="line"><a name="l01947"></a><span class="lineno"> 1947</span>&#160;                h[<span class="stringliteral">&#39;1/p-fittedtracks-all&#39;</span>].Fill(1./fittedMom)</div>
-<div class="line"><a name="l01948"></a><span class="lineno"> 1948</span>&#160;                Px,Py,Pz = fittedState.getMom().<a class="code" href="namespacegeometry__config.html#a1286b5c01494c311eb3a950d1ac8857c">x</a>(),fittedState.getMom().<a class="code" href="namespacegeometry__config.html#aa7c54d6eeebcc821b55222c6926f6740">y</a>(),fittedState.getMom().<a class="code" href="namespacecharm-geometry__config.html#ab2e80a101e23d81f6afc4b1fd8e76761">z</a>()</div>
+<div class="line"><a name="l01948"></a><span class="lineno"> 1948</span>&#160;                Px,Py,Pz = fittedState.getMom().<a class="code" href="namespacegeometry__config.html#a1286b5c01494c311eb3a950d1ac8857c">x</a>(),fittedState.getMom().<a class="code" href="namespacegeometry__config.html#aa7c54d6eeebcc821b55222c6926f6740">y</a>(),fittedState.getMom().<a class="code" href="namespacegeometry__config.html#a4487257c46b838ef1172b356289460c4">z</a>()</div>
 <div class="line"><a name="l01949"></a><span class="lineno"> 1949</span>&#160;                P = fittedMom</div>
 <div class="line"><a name="l01950"></a><span class="lineno"> 1950</span>&#160;                Pt = ROOT.TMath.Sqrt(Px*Px+Py*Py)</div>
 <div class="line"><a name="l01951"></a><span class="lineno"> 1951</span>&#160;                h[<span class="stringliteral">&#39;p/pt_all&#39;</span>].Fill(P,Pt)</div>
@@ -1589,9 +1588,8 @@ Public Attributes</h2></td></tr>
 <div class="line"><a name="l02008"></a><span class="lineno"> 2008</span>&#160; </div>
 <div class="ttc" id="anamespaceMufluxPatRec_html_a89299853b0651c499f40528670a39df6"><div class="ttname"><a href="namespaceMufluxPatRec.html#a89299853b0651c499f40528670a39df6">MufluxPatRec.execute</a></div><div class="ttdeci">def execute(SmearedHits, TaggerHits, withNTaggerHits, withDist2Wire, debug=0)</div><div class="ttdef"><b>Definition:</b> <a href="MufluxPatRec_8py_source.html#l00014">MufluxPatRec.py:14</a></div></div>
 <div class="ttc" id="anamespaceadd__noise__to__field_html_ac8c461fc99cff345995bf60fcdfefa01"><div class="ttname"><a href="namespaceadd__noise__to__field.html#ac8c461fc99cff345995bf60fcdfefa01">add_noise_to_field.str</a></div><div class="ttdeci">str</div><div class="ttdef"><b>Definition:</b> <a href="add__noise__to__field_8py_source.html#l00053">add_noise_to_field.py:53</a></div></div>
-<div class="ttc" id="anamespacecharm-geometry__config_html_ab2e80a101e23d81f6afc4b1fd8e76761"><div class="ttname"><a href="namespacecharm-geometry__config.html#ab2e80a101e23d81f6afc4b1fd8e76761">charm-geometry_config.z</a></div><div class="ttdeci">z</div><div class="ttdef"><b>Definition:</b> <a href="charm-geometry__config_8py_source.html#l00007">charm-geometry_config.py:7</a></div></div>
-<div class="ttc" id="anamespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring_html_aad60959553eee43f4237eb884f71247e"><div class="ttname"><a href="namespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring.html#aad60959553eee43f4237eb884f71247e">conditionsDatabase.demo.drifttubeMonitoring.findTracks</a></div><div class="ttdeci">def findTracks(PR=1, linearTrackModel=False, withCloneKiller=True)</div><div class="ttdef"><b>Definition:</b> <a href="drifttubeMonitoring_8py_source.html#l02435">drifttubeMonitoring.py:2435</a></div></div>
 <div class="ttc" id="anamespacegeometry__config_html_a1286b5c01494c311eb3a950d1ac8857c"><div class="ttname"><a href="namespacegeometry__config.html#a1286b5c01494c311eb3a950d1ac8857c">geometry_config.x</a></div><div class="ttdeci">x</div><div class="ttdef"><b>Definition:</b> <a href="geometry__config_8py_source.html#l00183">geometry_config.py:183</a></div></div>
+<div class="ttc" id="anamespacegeometry__config_html_a4487257c46b838ef1172b356289460c4"><div class="ttname"><a href="namespacegeometry__config.html#a4487257c46b838ef1172b356289460c4">geometry_config.z</a></div><div class="ttdeci">z</div><div class="ttdef"><b>Definition:</b> <a href="geometry__config_8py_source.html#l00089">geometry_config.py:89</a></div></div>
 <div class="ttc" id="anamespacegeometry__config_html_aa7c54d6eeebcc821b55222c6926f6740"><div class="ttname"><a href="namespacegeometry__config.html#aa7c54d6eeebcc821b55222c6926f6740">geometry_config.y</a></div><div class="ttdeci">y</div><div class="ttdef"><b>Definition:</b> <a href="geometry__config_8py_source.html#l00182">geometry_config.py:182</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -2465,7 +2463,7 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="MufluxDigiReco_8py_source.html#l00430">430</a> of file <a class="el" href="MufluxDigiReco_8py_source.html">MufluxDigiReco.py</a>.</p>
-<div class="fragment"><div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;    <span class="keyword">def </span><a class="code" href="namespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring.html#a0ed348bae34636f52e800e364c0e2a61">RT</a>(self, s,t,function=&#39;parabola&#39;):</div>
+<div class="fragment"><div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;    <span class="keyword">def </span>RT(self, s,t,function=&#39;parabola&#39;):</div>
 <div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;        <span class="comment"># Taken from charmdet/drifttubeMonitoring.py</span></div>
 <div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;        <span class="comment"># rt relation, drift time to distance, drift time?</span></div>
 <div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;        tMinAndTmax = {1:[587,1860],2:[587,1860],3:[610,2300],4:[610,2100]}</div>
@@ -2484,7 +2482,6 @@ Public Attributes</h2></td></tr>
 <div class="line"><a name="l00446"></a><span class="lineno">  446</span>&#160;        <span class="keywordflow">return</span> r</div>
 <div class="line"><a name="l00447"></a><span class="lineno">  447</span>&#160; </div>
 <div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160; </div>
-<div class="ttc" id="anamespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring_html_a0ed348bae34636f52e800e364c0e2a61"><div class="ttname"><a href="namespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring.html#a0ed348bae34636f52e800e364c0e2a61">conditionsDatabase.demo.drifttubeMonitoring.RT</a></div><div class="ttdeci">def RT(hit, t)</div><div class="ttdef"><b>Definition:</b> <a href="drifttubeMonitoring_8py_source.html#l01467">drifttubeMonitoring.py:1467</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -2620,7 +2617,7 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="MufluxDigiReco_8py_source.html#l00382">382</a> of file <a class="el" href="MufluxDigiReco_8py_source.html">MufluxDigiReco.py</a>.</p>
-<div class="fragment"><div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;    <span class="keyword">def </span><a class="code" href="namespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring.html#a749b05f5421ff386cbd9c17bacabfff1">stationInfo</a>(self, hit):</div>
+<div class="fragment"><div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;    <span class="keyword">def </span>stationInfo(self, hit):</div>
 <div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;        <span class="comment"># Taken from charmdet/drifttubeMonitoring.py</span></div>
 <div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;        detid = hit.GetDetectorID()</div>
 <div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;        statnb = detid/10000000;</div>
@@ -2635,7 +2632,6 @@ Public Attributes</h2></td></tr>
 <div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;            pnb = 0</div>
 <div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;        <span class="keywordflow">return</span> statnb,vnb,pnb,lnb,view</div>
 <div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160; </div>
-<div class="ttc" id="anamespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring_html_a749b05f5421ff386cbd9c17bacabfff1"><div class="ttname"><a href="namespaceconditionsDatabase_1_1demo_1_1drifttubeMonitoring.html#a749b05f5421ff386cbd9c17bacabfff1">conditionsDatabase.demo.drifttubeMonitoring.stationInfo</a></div><div class="ttdeci">def stationInfo(hit)</div><div class="ttdef"><b>Definition:</b> <a href="drifttubeMonitoring_8py_source.html#l00974">drifttubeMonitoring.py:974</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
