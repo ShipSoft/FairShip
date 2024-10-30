@@ -62,6 +62,9 @@ var annotated_dup =
       [ "MyTrackingActionD", "classg4Ex__gap_1_1MyTrackingActionD.html", "classg4Ex__gap_1_1MyTrackingActionD" ],
       [ "ScoreSD", "classg4Ex__gap_1_1ScoreSD.html", "classg4Ex__gap_1_1ScoreSD" ]
     ] ],
+    [ "genfit", "namespacegenfit.html", [
+      [ "FairShipFields", "classgenfit_1_1FairShipFields.html", "classgenfit_1_1FairShipFields" ]
+    ] ],
     [ "hnl", "namespacehnl.html", [
       [ "CKMmatrix", "classhnl_1_1CKMmatrix.html", "classhnl_1_1CKMmatrix" ],
       [ "constants", "classhnl_1_1constants.html", "classhnl_1_1constants" ],

@@ -341,6 +341,7 @@ var namespaces_dup =
       [ "Yandex2", "namespaceg4Ex__gap__mergeFiles.html#a0ffd288e214d2f529b00ea65801167b6", null ],
       [ "Yandex3", "namespaceg4Ex__gap__mergeFiles.html#a9ce168a6d589cb926251658d1563f8bc", null ]
     ] ],
+    [ "genfit", "namespacegenfit.html", "namespacegenfit" ],
     [ "genie_interface", "namespacegenie__interface.html", [
       [ "add_hists", "namespacegenie__interface.html#aad9a16c741181262991d14e409980b25", null ],
       [ "generate_genie_events", "namespacegenie__interface.html#a521b444801e6c29a1e6d695190793345", null ],

@@ -6,6 +6,9 @@ var hierarchy =
         [ "conditionsDatabase.databases.mongodb.mongodbadapter.MongoToCDBAPIAdapter", "classconditionsDatabase_1_1databases_1_1mongodb_1_1mongodbadapter_1_1MongoToCDBAPIAdapter.html", null ]
       ] ]
     ] ],
+    [ "AbsBField", null, [
+      [ "genfit::FairShipFields", "classgenfit_1_1FairShipFields.html", null ]
+    ] ],
     [ "conditionsDatabase.factory.APIFactory", "classconditionsDatabase_1_1factory_1_1APIFactory.html", null ],
     [ "std::binary_function", null, [
       [ "ecalClusterSortProcess", "structecalClusterSortProcess.html", null ]

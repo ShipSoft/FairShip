@@ -5,6 +5,10 @@ var dir_b53ddcf3c2f78522bad11056100467d8 =
     [ "convertMisisMap.py", "convertMisisMap_8py.html", "convertMisisMap_8py" ],
     [ "convertNoisyMap.py", "convertNoisyMap_8py.html", "convertNoisyMap_8py" ],
     [ "convertRALMap.py", "convertRALMap_8py.html", "convertRALMap_8py" ],
+    [ "FairShipFields.cxx", "FairShipFields_8cxx.html", null ],
+    [ "FairShipFields.h", "FairShipFields_8h.html", [
+      [ "FairShipFields", "classgenfit_1_1FairShipFields.html", "classgenfit_1_1FairShipFields" ]
+    ] ],
     [ "FieldLinkDef.h", "FieldLinkDef_8h.html", null ],
     [ "ShipBellField.cxx", "ShipBellField_8cxx.html", "ShipBellField_8cxx" ],
     [ "ShipBellField.h", "ShipBellField_8h.html", [

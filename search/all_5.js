@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['e_1051',['E',['../namespacemakeMuonDIS.html#ad916c51f2653b60d746cf521ef14f685',1,'makeMuonDIS.E()'],['../classshipPid_1_1Task.html#ae521e6e65cd74820fe54028c068516c9',1,'shipPid.Task.E()']]],
+  ['e_1051',['E',['../namespacemakeMuonDIS.html#ad916c51f2653b60d746cf521ef14f685',1,'makeMuonDIS']]],
   ['e_1052',['e',['../classALPACAGenerator.html#a4bba8c309e01ee0b2f59e22f0c567dee',1,'ALPACAGenerator']]],
-  ['e_1053',['E',['../namespacemakeMuonEM.html#a2f541edec5da16cf64dcce3ea03d80c8',1,'makeMuonEM']]],
+  ['e_1053',['E',['../classshipPid_1_1Task.html#ae521e6e65cd74820fe54028c068516c9',1,'shipPid.Task.E()'],['../namespacemakeMuonEM.html#a2f541edec5da16cf64dcce3ea03d80c8',1,'makeMuonEM.E()']]],
   ['e1_1054',['E1',['../classshipPid_1_1Task.html#a25c9ac21590d98b6690df5328d683d96',1,'shipPid::Task']]],
   ['e2_1055',['E2',['../classshipPid_1_1Task.html#a6684166e5726563c17f90c764caf63a9',1,'shipPid::Task']]],
   ['e3_1056',['E3',['../classshipPid_1_1Task.html#a5e9c3d0f07551bc4874ec73a2c6de6bb',1,'shipPid::Task']]],
@@ -114,9 +114,9 @@ var searchData=
   ['ecalstructurefiller_2ecxx_1162',['ecalStructureFiller.cxx',['../ecalStructureFiller_8cxx.html',1,'']]],
   ['ecalstructurefiller_2eh_1163',['ecalStructureFiller.h',['../ecalStructureFiller_8h.html',1,'']]],
   ['ecalyellow_1164',['ecalYellow',['../namespaceeventDisplay.html#ac83df124860cf2ea8d94878190dc8727',1,'eventDisplay']]],
-  ['ecut_1165',['ecut',['../namespaceg4Ex__gap.html#ab348a980c71ab88838d00f8f53af299e',1,'g4Ex_gap.ecut()'],['../namespaceg4Ex__gap__mergeFiles.html#a53a3777c891011718f9229d7dfb31265',1,'g4Ex_gap_mergeFiles.ecut()'],['../namespaceg4Ex__args.html#a4bea28e3e8ddd4b04e5e992379420a3d',1,'g4Ex_args.ecut()'],['../namespaceg4Ex.html#ac55aabfec83292e3d2ce5de01b534413',1,'g4Ex.ecut()'],['../namespacecompactingBackgroundProduction.html#abd3aefadd070c5046184935cae55dfd5',1,'compactingBackgroundProduction.ecut()'],['../namespacestudy__thinTarget.html#af22b0230911110381a9456faaa67d77b',1,'study_thinTarget.ecut()'],['../namespacesubmitPyG4prod.html#a3e317041531742ae22e425dbccad6fd2',1,'submitPyG4prod.ecut()'],['../namespacestudy__muMSC.html#ae0e2151c318c7666057adb54d84926f0',1,'study_muMSC.ecut()']]],
+  ['ecut_1165',['ecut',['../namespaceg4Ex__gap.html#ab348a980c71ab88838d00f8f53af299e',1,'g4Ex_gap.ecut()'],['../namespaceg4Ex__gap__mergeFiles.html#a53a3777c891011718f9229d7dfb31265',1,'g4Ex_gap_mergeFiles.ecut()'],['../namespaceg4Ex__args.html#a4bea28e3e8ddd4b04e5e992379420a3d',1,'g4Ex_args.ecut()'],['../namespaceg4Ex.html#ac55aabfec83292e3d2ce5de01b534413',1,'g4Ex.ecut()'],['../namespacecompactingBackgroundProduction.html#abd3aefadd070c5046184935cae55dfd5',1,'compactingBackgroundProduction.ecut()'],['../namespacestudy__thinTarget.html#af22b0230911110381a9456faaa67d77b',1,'study_thinTarget.ecut()'],['../namespacesubmitPyG4prod.html#a3e317041531742ae22e425dbccad6fd2',1,'submitPyG4prod.ecut()'],['../namespacestudy__muMSC.html#ae0e2151c318c7666057adb54d84926f0',1,'study_muMSC.ecut()'],['../classMuonBackGenerator.html#a69b3ae0f15d91b15e14655080d17db39',1,'MuonBackGenerator::ecut()']]],
   ['ecut_1166',['ECut',['../classecalMaximumLocator.html#a5a1495a563b12df500761f078933a188',1,'ecalMaximumLocator']]],
-  ['ecut_1167',['ecut',['../classMuonBackGenerator.html#a69b3ae0f15d91b15e14655080d17db39',1,'MuonBackGenerator::ecut()'],['../namespacestudy__muEloss.html#a2fc2d258db8b36fd0d00fd0bf696f01b',1,'study_muEloss.ecut()'],['../namespacestudy__GammaConv.html#a147a7866f4638ffd619406fd06f8cdfb',1,'study_GammaConv.ecut()'],['../namespacerun__fixedTarget.html#af44a615972c5dd4e6c5b18db469e8e40',1,'run_fixedTarget.ecut()']]],
+  ['ecut_1167',['ecut',['../namespacestudy__muEloss.html#a2fc2d258db8b36fd0d00fd0bf696f01b',1,'study_muEloss.ecut()'],['../namespacestudy__GammaConv.html#a147a7866f4638ffd619406fd06f8cdfb',1,'study_GammaConv.ecut()'],['../namespacerun__fixedTarget.html#af44a615972c5dd4e6c5b18db469e8e40',1,'run_fixedTarget.ecut()']]],
   ['edep_1168',['Edep',['../classTTCluster_1_1TTCluster.html#af2722933ea5e5fb1fb9f5531fe44fd11',1,'TTCluster::TTCluster']]],
   ['edep_5fto_5fly_1169',['edep_to_ly',['../namespaceTTCluster.html#a476e0ec4254b639967a6b178819552f3',1,'TTCluster']]],
   ['edge_1170',['edge',['../namespaceTTCluster.html#a11917e2032e7b0c74f2609ff260d980d',1,'TTCluster']]],

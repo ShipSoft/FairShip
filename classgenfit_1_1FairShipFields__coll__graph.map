@@ -1,0 +1,6 @@
+<map id="genfit::FairShipFields" name="genfit::FairShipFields">
+<area shape="rect" id="node1" title="Field for SHiP." alt="" coords="13,171,169,197"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,81,92,108"/>
+<area shape="rect" id="node3" href="$classShipCompField.html" title="Class that defines a magnetic field composed from many fields." alt="" coords="116,81,235,108"/>
+<area shape="rect" id="node4" title=" " alt="" coords="109,5,241,32"/>
+</map>
