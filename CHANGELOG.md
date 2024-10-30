@@ -27,6 +27,7 @@ it in future.
 ### Fixed
 
 * Fix missing includes in ecalMatch and ecalReco
+* Fix compilation warnings due to unused or uninitiliazed variables #481
 
 ### Changed
 
@@ -39,6 +40,7 @@ it in future.
 * Remove obsolete renaming scripts
 * Remove online, please see charmdet and muflux branches for respective versions
 * Remove charmdet, please see charmdet branch for latest version
+* Remove preshower and CaloDesign 1 (TP+Preshower)
 * Remove bundled genfit
 
 ## 24.10 - Freiburg
@@ -64,7 +66,6 @@ cross-section measurement code, and obsolete detector configurations.
 
 * Remove trailing whitespace and fix line endings
 * Fix compilation warnings due to deprecations #469
-* Fix compilation warnings due to unused or uninitiliazed variables #481
 * Fix issue with SST parameters #489
 * Cleaned up Veto Implementation
 * Fix crash of event display, PID when no entrance lid present
@@ -94,4 +95,3 @@ cross-section measurement code, and obsolete detector configurations.
 * Housekeeping: Don't use CMake commands no longer provided by FairRoot 19
 * Housekeeping: Remove old CMake for ROOT 5
 * Remove old, outdated tracking script
-* Remove preshower and CaloDesign 1 (TP+Preshower)
