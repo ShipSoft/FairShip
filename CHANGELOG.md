@@ -14,6 +14,19 @@ it in future.
 
 ### Added
 
+### Fixed
+
+### Changed
+
+### Removed
+
+## 24.11
+
+Release after first round of breaking changes. Requires CVMFS release ≥ 24.10.
+Tagged for launch of background simulations.
+
+### Added
+
 * **EventCalc LLP event generator**
   This modification introduces a first implementation of the EventCalc decay
   event sampler in FairShip for inclusive final states. For further details,
