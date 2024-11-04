@@ -1,6 +1,5 @@
 var files_dup =
 [
-    [ "conditionsDatabase", "dir_770bfa4223d4b493c128cdd3c0a418a1.html", "dir_770bfa4223d4b493c128cdd3c0a418a1" ],
     [ "doxygen", "dir_4e8d938e9ddb5a617c200d5739d1f41a.html", null ],
     [ "ecal", "dir_c45501c79ddec90b6b1f8a3c2e9efabb.html", "dir_c45501c79ddec90b6b1f8a3c2e9efabb" ],
     [ "field", "dir_b53ddcf3c2f78522bad11056100467d8.html", "dir_b53ddcf3c2f78522bad11056100467d8" ],

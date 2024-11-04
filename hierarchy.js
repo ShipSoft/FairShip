@@ -1,15 +1,9 @@
 var hierarchy =
 [
     [ "__ecalCellWrapper", "struct____ecalCellWrapper.html", null ],
-    [ "_ABC", null, [
-      [ "conditionsDatabase.interface.APIInterface", "classconditionsDatabase_1_1interface_1_1APIInterface.html", [
-        [ "conditionsDatabase.databases.mongodb.mongodbadapter.MongoToCDBAPIAdapter", "classconditionsDatabase_1_1databases_1_1mongodb_1_1mongodbadapter_1_1MongoToCDBAPIAdapter.html", null ]
-      ] ]
-    ] ],
     [ "AbsBField", null, [
       [ "genfit::FairShipFields", "classgenfit_1_1FairShipFields.html", null ]
     ] ],
-    [ "conditionsDatabase.factory.APIFactory", "classconditionsDatabase_1_1factory_1_1APIFactory.html", null ],
     [ "std::binary_function", null, [
       [ "ecalClusterSortProcess", "structecalClusterSortProcess.html", null ]
     ] ],
@@ -269,12 +263,5 @@ var hierarchy =
     [ "pickle.Unpickler", null, [
       [ "rootpyPickler.Unpickler", "classrootpyPickler_1_1Unpickler.html", null ]
     ] ],
-    [ "Veto", "classVeto.html", null ],
-    [ "Document", null, [
-      [ "conditionsDatabase.databases.mongodb.models.detectorWrapper.DetectorWrapper", "classconditionsDatabase_1_1databases_1_1mongodb_1_1models_1_1detectorWrapper_1_1DetectorWrapper.html", null ]
-    ] ],
-    [ "EmbeddedDocument", null, [
-      [ "conditionsDatabase.databases.mongodb.models.condition.Condition", "classconditionsDatabase_1_1databases_1_1mongodb_1_1models_1_1condition_1_1Condition.html", null ],
-      [ "conditionsDatabase.databases.mongodb.models.detector.Detector", "classconditionsDatabase_1_1databases_1_1mongodb_1_1models_1_1detector_1_1Detector.html", null ]
-    ] ]
+    [ "Veto", "classVeto.html", null ]
 ];

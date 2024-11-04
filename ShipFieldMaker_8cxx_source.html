@@ -1253,7 +1253,7 @@ $(document).ready(function(){initNavTree('ShipFieldMaker_8cxx_source.html',''); 
 <div class="line"><a name="l01177"></a><span class="lineno"><a class="line" href="classShipFieldMaker.html#a17a6b35bad80d92efa102b9427f615e0"> 1177</a></span>&#160;Bool_t <a class="code" href="classShipFieldMaker.html#a17a6b35bad80d92efa102b9427f615e0">ShipFieldMaker::gotField</a>(<span class="keyword">const</span> TString&amp; <a class="code" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a>)<span class="keyword"> const</span></div>
 <div class="line"><a name="l01178"></a><span class="lineno"> 1178</span>&#160;<span class="keyword"></span>{</div>
 <div class="line"><a name="l01179"></a><span class="lineno"> 1179</span>&#160; </div>
-<div class="line"><a name="l01180"></a><span class="lineno"> 1180</span>&#160;    Bool_t <a class="code" href="namespaceconditionsDatabase_1_1demo_1_1example__api__usage.html#a1a5ffa42c18ce4cef9676cbffef6705c">result</a>(kFALSE);</div>
+<div class="line"><a name="l01180"></a><span class="lineno"> 1180</span>&#160;    Bool_t result(kFALSE);</div>
 <div class="line"><a name="l01181"></a><span class="lineno"> 1181</span>&#160; </div>
 <div class="line"><a name="l01182"></a><span class="lineno"> 1182</span>&#160;    <span class="comment">// Iterate over the internal map and see if we have a match</span></div>
 <div class="line"><a name="l01183"></a><span class="lineno"> 1183</span>&#160;    SFMap::const_iterator iter;</div>
@@ -1264,13 +1264,13 @@ $(document).ready(function(){initNavTree('ShipFieldMaker_8cxx_source.html',''); 
 <div class="line"><a name="l01188"></a><span class="lineno"> 1188</span>&#160; </div>
 <div class="line"><a name="l01189"></a><span class="lineno"> 1189</span>&#160;    <span class="comment">// Check that we have the key already stored and the pointer is not null</span></div>
 <div class="line"><a name="l01190"></a><span class="lineno"> 1190</span>&#160;    <span class="keywordflow">if</span> (!<a class="code" href="namespaceextractNeutrinosAndUpdateWeight.html#a47804d77c17d9de386802c99c350d7a8">key</a>.CompareTo(<a class="code" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a>, TString::kExact) &amp;&amp; theField) {</div>
-<div class="line"><a name="l01191"></a><span class="lineno"> 1191</span>&#160;        <a class="code" href="namespaceconditionsDatabase_1_1demo_1_1example__api__usage.html#a1a5ffa42c18ce4cef9676cbffef6705c">result</a> = kTRUE;</div>
+<div class="line"><a name="l01191"></a><span class="lineno"> 1191</span>&#160;        result = kTRUE;</div>
 <div class="line"><a name="l01192"></a><span class="lineno"> 1192</span>&#160;        <span class="keywordflow">break</span>;</div>
 <div class="line"><a name="l01193"></a><span class="lineno"> 1193</span>&#160;    }</div>
 <div class="line"><a name="l01194"></a><span class="lineno"> 1194</span>&#160; </div>
 <div class="line"><a name="l01195"></a><span class="lineno"> 1195</span>&#160;    }</div>
 <div class="line"><a name="l01196"></a><span class="lineno"> 1196</span>&#160; </div>
-<div class="line"><a name="l01197"></a><span class="lineno"> 1197</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="namespaceconditionsDatabase_1_1demo_1_1example__api__usage.html#a1a5ffa42c18ce4cef9676cbffef6705c">result</a>;</div>
+<div class="line"><a name="l01197"></a><span class="lineno"> 1197</span>&#160;    <span class="keywordflow">return</span> result;</div>
 <div class="line"><a name="l01198"></a><span class="lineno"> 1198</span>&#160; </div>
 <div class="line"><a name="l01199"></a><span class="lineno"> 1199</span>&#160;}</div>
 <div class="line"><a name="l01200"></a><span class="lineno"> 1200</span>&#160; </div>
@@ -1500,7 +1500,7 @@ $(document).ready(function(){initNavTree('ShipFieldMaker_8cxx_source.html',''); 
 <div class="line"><a name="l01424"></a><span class="lineno"> 1424</span>&#160;                               std::string&amp; splitter)<span class="keyword"> const </span>{</div>
 <div class="line"><a name="l01425"></a><span class="lineno"> 1425</span>&#160; </div>
 <div class="line"><a name="l01426"></a><span class="lineno"> 1426</span>&#160;    <span class="comment">// Code from STLplus</span></div>
-<div class="line"><a name="l01427"></a><span class="lineno"> 1427</span>&#160;    <a class="code" href="classShipFieldMaker.html#a6704172970d0c5a787ca4dc5a44aaf13">stringVect</a> <a class="code" href="namespaceconditionsDatabase_1_1demo_1_1example__api__usage.html#a1a5ffa42c18ce4cef9676cbffef6705c">result</a>;</div>
+<div class="line"><a name="l01427"></a><span class="lineno"> 1427</span>&#160;    <a class="code" href="classShipFieldMaker.html#a6704172970d0c5a787ca4dc5a44aaf13">stringVect</a> result;</div>
 <div class="line"><a name="l01428"></a><span class="lineno"> 1428</span>&#160; </div>
 <div class="line"><a name="l01429"></a><span class="lineno"> 1429</span>&#160;    <span class="keywordflow">if</span> (!theString.empty() &amp;&amp; !splitter.empty()) {</div>
 <div class="line"><a name="l01430"></a><span class="lineno"> 1430</span>&#160; </div>
@@ -1510,17 +1510,17 @@ $(document).ready(function(){initNavTree('ShipFieldMaker_8cxx_source.html',''); 
 <div class="line"><a name="l01434"></a><span class="lineno"> 1434</span>&#160; </div>
 <div class="line"><a name="l01435"></a><span class="lineno"> 1435</span>&#160;        <span class="keywordflow">if</span> (found != std::string::npos) {</div>
 <div class="line"><a name="l01436"></a><span class="lineno"> 1436</span>&#160;        std::string tmpString = theString.substr(<a class="code" href="namespacegeometry__config.html#a096864e8788dec1116bcc1ee523df8d1">offset</a>, found-<a class="code" href="namespacegeometry__config.html#a096864e8788dec1116bcc1ee523df8d1">offset</a>);</div>
-<div class="line"><a name="l01437"></a><span class="lineno"> 1437</span>&#160;        <span class="keywordflow">if</span> (tmpString.size() &gt; 0) {<a class="code" href="namespaceconditionsDatabase_1_1demo_1_1example__api__usage.html#a1a5ffa42c18ce4cef9676cbffef6705c">result</a>.push_back(tmpString);}</div>
+<div class="line"><a name="l01437"></a><span class="lineno"> 1437</span>&#160;        <span class="keywordflow">if</span> (tmpString.size() &gt; 0) {result.push_back(tmpString);}</div>
 <div class="line"><a name="l01438"></a><span class="lineno"> 1438</span>&#160;        <a class="code" href="namespacegeometry__config.html#a096864e8788dec1116bcc1ee523df8d1">offset</a> = found + splitter.size();</div>
 <div class="line"><a name="l01439"></a><span class="lineno"> 1439</span>&#160;        } <span class="keywordflow">else</span> {</div>
 <div class="line"><a name="l01440"></a><span class="lineno"> 1440</span>&#160;        std::string tmpString = theString.substr(<a class="code" href="namespacegeometry__config.html#a096864e8788dec1116bcc1ee523df8d1">offset</a>, theString.size()-<a class="code" href="namespacegeometry__config.html#a096864e8788dec1116bcc1ee523df8d1">offset</a>);</div>
-<div class="line"><a name="l01441"></a><span class="lineno"> 1441</span>&#160;        <span class="keywordflow">if</span> (tmpString.size() &gt; 0) {<a class="code" href="namespaceconditionsDatabase_1_1demo_1_1example__api__usage.html#a1a5ffa42c18ce4cef9676cbffef6705c">result</a>.push_back(tmpString);}</div>
+<div class="line"><a name="l01441"></a><span class="lineno"> 1441</span>&#160;        <span class="keywordflow">if</span> (tmpString.size() &gt; 0) {result.push_back(tmpString);}</div>
 <div class="line"><a name="l01442"></a><span class="lineno"> 1442</span>&#160;        <span class="keywordflow">break</span>;</div>
 <div class="line"><a name="l01443"></a><span class="lineno"> 1443</span>&#160;        }</div>
 <div class="line"><a name="l01444"></a><span class="lineno"> 1444</span>&#160;    }</div>
 <div class="line"><a name="l01445"></a><span class="lineno"> 1445</span>&#160;    }</div>
 <div class="line"><a name="l01446"></a><span class="lineno"> 1446</span>&#160; </div>
-<div class="line"><a name="l01447"></a><span class="lineno"> 1447</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="namespaceconditionsDatabase_1_1demo_1_1example__api__usage.html#a1a5ffa42c18ce4cef9676cbffef6705c">result</a>;</div>
+<div class="line"><a name="l01447"></a><span class="lineno"> 1447</span>&#160;    <span class="keywordflow">return</span> result;</div>
 <div class="line"><a name="l01448"></a><span class="lineno"> 1448</span>&#160; </div>
 <div class="line"><a name="l01449"></a><span class="lineno"> 1449</span>&#160;}</div>
 <div class="ttc" id="aShipBFieldMap_8h_html"><div class="ttname"><a href="ShipBFieldMap_8h.html">ShipBFieldMap.h</a></div></div>
@@ -1581,7 +1581,6 @@ $(document).ready(function(){initNavTree('ShipFieldMaker_8cxx_source.html',''); 
 <div class="ttc" id="anamespaceShipAna_html_aa4bf87f4d17f9d38b1d8f4d009bb54b3"><div class="ttname"><a href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">ShipAna.i</a></div><div class="ttdeci">int i</div><div class="ttdef"><b>Definition:</b> <a href="ShipAna_8py_source.html#l00086">ShipAna.py:86</a></div></div>
 <div class="ttc" id="anamespaceadd__noise__to__field_html_a96cf5cc2cc008d7422009cb2ad93cb51"><div class="ttname"><a href="namespaceadd__noise__to__field.html#a96cf5cc2cc008d7422009cb2ad93cb51">add_noise_to_field.step</a></div><div class="ttdeci">step</div><div class="ttdef"><b>Definition:</b> <a href="add__noise__to__field_8py_source.html#l00069">add_noise_to_field.py:69</a></div></div>
 <div class="ttc" id="anamespaceadd__noise__to__field_html_aa1214d0959ccc6208cc336ba72961a17"><div class="ttname"><a href="namespaceadd__noise__to__field.html#aa1214d0959ccc6208cc336ba72961a17">add_noise_to_field.type</a></div><div class="ttdeci">type</div><div class="ttdef"><b>Definition:</b> <a href="add__noise__to__field_8py_source.html#l00053">add_noise_to_field.py:53</a></div></div>
-<div class="ttc" id="anamespaceconditionsDatabase_1_1demo_1_1example__api__usage_html_a1a5ffa42c18ce4cef9676cbffef6705c"><div class="ttname"><a href="namespaceconditionsDatabase_1_1demo_1_1example__api__usage.html#a1a5ffa42c18ce4cef9676cbffef6705c">conditionsDatabase.demo.example_api_usage.result</a></div><div class="ttdeci">result</div><div class="ttdef"><b>Definition:</b> <a href="example__api__usage_8py_source.html#l00024">example_api_usage.py:24</a></div></div>
 <div class="ttc" id="anamespaceeventDisplay_html_ac3640904efec4904e652932a0c7da2e5"><div class="ttname"><a href="namespaceeventDisplay.html#ac3640904efec4904e652932a0c7da2e5">eventDisplay.verbose</a></div><div class="ttdeci">int verbose</div><div class="ttdef"><b>Definition:</b> <a href="eventDisplay_8py_source.html#l01320">eventDisplay.py:1320</a></div></div>
 <div class="ttc" id="anamespaceextractNeutrinosAndUpdateWeight_html_a47804d77c17d9de386802c99c350d7a8"><div class="ttname"><a href="namespaceextractNeutrinosAndUpdateWeight.html#a47804d77c17d9de386802c99c350d7a8">extractNeutrinosAndUpdateWeight.key</a></div><div class="ttdeci">int key</div><div class="ttdef"><b>Definition:</b> <a href="extractNeutrinosAndUpdateWeight_8py_source.html#l00038">extractNeutrinosAndUpdateWeight.py:38</a></div></div>
 <div class="ttc" id="anamespacegeometry__config_html_a01eaa149d3b9651ecb01f9390e028d18"><div class="ttname"><a href="namespacegeometry__config.html#a01eaa149d3b9651ecb01f9390e028d18">geometry_config.scale</a></div><div class="ttdeci">int scale</div><div class="ttdef"><b>Definition:</b> <a href="geometry__config_8py_source.html#l00450">geometry_config.py:450</a></div></div>

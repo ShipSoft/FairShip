@@ -1,31 +1,5 @@
 var annotated_dup =
 [
-    [ "conditionsDatabase", "namespaceconditionsDatabase.html", [
-      [ "databases", "namespaceconditionsDatabase_1_1databases.html", [
-        [ "mongodb", "namespaceconditionsDatabase_1_1databases_1_1mongodb.html", [
-          [ "models", "namespaceconditionsDatabase_1_1databases_1_1mongodb_1_1models.html", [
-            [ "condition", "namespaceconditionsDatabase_1_1databases_1_1mongodb_1_1models_1_1condition.html", [
-              [ "Condition", "classconditionsDatabase_1_1databases_1_1mongodb_1_1models_1_1condition_1_1Condition.html", null ]
-            ] ],
-            [ "detector", "namespaceconditionsDatabase_1_1databases_1_1mongodb_1_1models_1_1detector.html", [
-              [ "Detector", "classconditionsDatabase_1_1databases_1_1mongodb_1_1models_1_1detector_1_1Detector.html", null ]
-            ] ],
-            [ "detectorWrapper", "namespaceconditionsDatabase_1_1databases_1_1mongodb_1_1models_1_1detectorWrapper.html", [
-              [ "DetectorWrapper", "classconditionsDatabase_1_1databases_1_1mongodb_1_1models_1_1detectorWrapper_1_1DetectorWrapper.html", null ]
-            ] ]
-          ] ],
-          [ "mongodbadapter", "namespaceconditionsDatabase_1_1databases_1_1mongodb_1_1mongodbadapter.html", [
-            [ "MongoToCDBAPIAdapter", "classconditionsDatabase_1_1databases_1_1mongodb_1_1mongodbadapter_1_1MongoToCDBAPIAdapter.html", "classconditionsDatabase_1_1databases_1_1mongodb_1_1mongodbadapter_1_1MongoToCDBAPIAdapter" ]
-          ] ]
-        ] ]
-      ] ],
-      [ "factory", "namespaceconditionsDatabase_1_1factory.html", [
-        [ "APIFactory", "classconditionsDatabase_1_1factory_1_1APIFactory.html", "classconditionsDatabase_1_1factory_1_1APIFactory" ]
-      ] ],
-      [ "interface", "namespaceconditionsDatabase_1_1interface.html", [
-        [ "APIInterface", "classconditionsDatabase_1_1interface_1_1APIInterface.html", "classconditionsDatabase_1_1interface_1_1APIInterface" ]
-      ] ]
-    ] ],
     [ "darkphoton", "namespacedarkphoton.html", [
       [ "DarkPhoton", "classdarkphoton_1_1DarkPhoton.html", "classdarkphoton_1_1DarkPhoton" ]
     ] ],

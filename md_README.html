@@ -103,10 +103,10 @@ $(document).ready(function(){initNavTree('md_README.html',''); initResizable(); 
 </ul>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md33"></a>
+<h1><a class="anchor" id="autotoc_md13"></a>
 Introduction</h1>
 <p>FairShip is the software framework for the SHiP experiment which is based on FairRoot. The dependencies of FairShip are tracked and installed using <a href="https://alisw.github.io/alibuild/">alibuild</a>.</p>
-<h2><a class="anchor" id="autotoc_md34"></a>
+<h2><a class="anchor" id="autotoc_md14"></a>
 Branches</h2>
 <dl>
 <dt><code>master</code> </dt>
@@ -119,7 +119,7 @@ Branches</h2>
 <dd>Branch for the muon flux analysis. Python 2 only. Requires aliBuild default <code>fairship-2018</code>. </dd>
 </dl>
 <p>All packages are managed in Git and GitHub. Please read <a href="https://github.com/ShipSoft/FairShip/wiki/Git-Tutorial-for-SHiP">the Git tutorial for SHiP</a> first, even if you already know Git, as it explains how development is done on GitHub.</p>
-<h1><a class="anchor" id="autotoc_md35"></a>
+<h1><a class="anchor" id="autotoc_md15"></a>
 Build Instructions using CVMFS</h1>
 <p>On <code>lxplus</code> this is the recommended way to use <code>FairShip</code>. CVMFS can also be setup on your own machine (please see the <a href="https://cvmfs.readthedocs.io/en/stable/cpt-quickstart.html">CVMFS documentation</a>)</p>
 <ol type="1">
@@ -135,7 +135,7 @@ Build Instructions using CVMFS</h1>
 </ol>
 <p>However, this won't work if you are using HTCondor. In such case you can do:</p>
 <div class="fragment"><div class="line">eval $(alienv load FairShip/latest --no-refresh)</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md36"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md16"></a>
 Local build, without access to CVMFS</h1>
 <p>Commands are similar to the previous case, but without access to CVMFS you need to build the required packages.</p>
 <ol type="1">
@@ -149,7 +149,7 @@ Local build, without access to CVMFS</h1>
 <li>Build the software using aliBuild: ```bash aliBuild build FairShip &ndash;config-dir $SHIPDIST &ndash;defaults release ``<code> NB: Depending on the platform you might have to pass the</code>&ndash;always-prefer-system<code>or</code>&ndash;force-unknown-architecture<code>flags to aliBuild. For debugging,</code>aliDoctor` is very useful!</li>
 <li>Load the environment ```bash alienv enter FairShip/latest ``` </li>
 </ol>
-<h1><a class="anchor" id="autotoc_md37"></a>
+<h1><a class="anchor" id="autotoc_md17"></a>
 Run instructions</h1>
 <p>Set up the bulk of the environment from CVMFS (see the <a href="https://github.com/ShipSoft/cvmfs_release">dedicated repository</a> for information about the available releases):</p>
 <div class="fragment"><div class="line">source /cvmfs/ship.cern.ch/$SHIP_RELEASE/setUp.sh</div>
@@ -169,7 +169,7 @@ Run instructions</h1>
 <div class="fragment"><div class="line">python -i $FAIRSHIP/macro/eventDisplay.py -f ship.conical.Pythia8-TGeant4_rec.root -g geofile_full.conical.Pythia8-TGeant4.root</div>
 <div class="line">// use SHiP Event Display GUI</div>
 <div class="line">Use quit() or Ctrl-D (i.e. EOF) to exit</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md38"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md18"></a>
 Docker instructions</h1>
 <p>Docker is <b>not</b> the recommended way to run <code>FairShip</code> locally. It is ideal for reproducing reproducible, stateless environments for debugging, HTCondor and cluster use, or when a strict separation between <code>FairShip</code> and the host is desirable.</p>
 <ol type="1">
@@ -177,13 +177,13 @@ Docker instructions</h1>
 <li><code>Run the</code>FairShip<code>docker image: </code>``bash docker run -i -t &ndash;rm fairship /bin/bash ```</li>
 <li>Advanced docker run options: ```bash docker run -i -t &ndash;rm \ -e DISPLAY=unix$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix \ -v /local_workdir:/image_workdir \ fairship /bin/bash ``<code> The option</code>-e DISPLAY=unix$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix<code>forwards graphics from the docker to your local system (similar to</code>ssh -X<code>). The option</code>-v /local_workdir:/image_workdir<code>mounts</code>/local_workdir<code>on the local system as</code>/image_workdir` within docker.</li>
 </ol>
-<h1><a class="anchor" id="autotoc_md39"></a>
+<h1><a class="anchor" id="autotoc_md19"></a>
 Troubleshooting information</h1>
 <p>Please see the wiki for <a href="https://github.com/ShipSoft/FairShip/wiki/FAQ-and-common-issues#faq">FAQ</a>s and <a href="https://github.com/ShipSoft/FairShip/wiki/FAQ-and-common-issues#common-issues">common issues</a>.</p>
-<h1><a class="anchor" id="autotoc_md40"></a>
+<h1><a class="anchor" id="autotoc_md20"></a>
 Documentation</h1>
 <p>An <a href="https://shipsoft.github.io/FairShip/">automatic class reference</a> is built using Doxygen from comments in the C++ code. Improving the comments will improve this documentation.</p>
-<h1><a class="anchor" id="autotoc_md41"></a>
+<h1><a class="anchor" id="autotoc_md21"></a>
 Contributing code</h1>
 <ul>
 <li>Any and all contributions are welcome!</li>

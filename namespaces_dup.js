@@ -1,9 +1,6 @@
 var namespaces_dup =
 [
     [ "add_noise_to_field", "namespaceadd__noise__to__field.html", [
-      [ "How to generate test database", "md_conditionsDatabase_tests_test_mongodb_README.html#autotoc_md28", null ],
-      [ "How to execute PyTest", "md_conditionsDatabase_tests_test_mongodb_README.html#autotoc_md29", null ],
-      [ "How to see test coverage", "md_conditionsDatabase_tests_test_mongodb_README.html#autotoc_md30", null ],
       [ "generate_file", "namespaceadd__noise__to__field.html#a88123a80b894e196e4137bcf8ff27914", null ],
       [ "plot_my_hist", "namespaceadd__noise__to__field.html#a67bb87cd9855f198868d06c890a90825", null ],
       [ "action", "namespaceadd__noise__to__field.html#ab9f26e8d25a833305a6398ce27105747", null ],
@@ -148,7 +145,6 @@ var namespaces_dup =
       [ "runMax", "namespacecompactingBackgroundProduction.html#a08970bcc75606f5d25c558e0e4c709f8", null ],
       [ "runMin", "namespacecompactingBackgroundProduction.html#aa6082a7261161978eab69db8ac1cecf7", null ]
     ] ],
-    [ "conditionsDatabase", "namespaceconditionsDatabase.html", "namespaceconditionsDatabase" ],
     [ "config_tester", "namespaceconfig__tester.html", [
       [ "main", "namespaceconfig__tester.html#af5a46659222e4491887910ac4b002416", null ],
       [ "parse_arguments", "namespaceconfig__tester.html#a49f0f355ce5513336b4eab611e69441e", null ],
