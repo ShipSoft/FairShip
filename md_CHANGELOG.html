@@ -92,24 +92,35 @@ $(document).ready(function(){initNavTree('md_CHANGELOG.html',''); initResizable(
 Unreleased</h1>
 <h2><a class="anchor" id="autotoc_md2"></a>
 Added</h2>
+<h2><a class="anchor" id="autotoc_md3"></a>
+Fixed</h2>
+<h2><a class="anchor" id="autotoc_md4"></a>
+Changed</h2>
+<h2><a class="anchor" id="autotoc_md5"></a>
+Removed</h2>
+<h1><a class="anchor" id="autotoc_md6"></a>
+24.11</h1>
+<p>Release after first round of breaking changes. Requires CVMFS release ≥ 24.10. Tagged for launch of background simulations.</p>
+<h2><a class="anchor" id="autotoc_md7"></a>
+Added</h2>
 <ul>
 <li><b>EventCalc LLP event generator</b> This modification introduces a first implementation of the EventCalc decay event sampler in FairShip for inclusive final states. For further details, consult the dedicated presentation at the 30th SHiP CM <a href="https://indico.cern.ch/event/1448055/contributions/6142341/attachments/2939894/5165450/SHiP_collaboration_meeting_talk_MFerrillo.pdf">here</a>. See also #528.</li>
 <li>Add a conversion script <code><a class="el" href="convertEvtCalc_8py.html">FairShip/macro/convertEvtCalc.py</a></code> to convert the EventCalc output sampled kinematics (.dat) as input to the simulation script (.root). <em>Remark</em>: This will eventually become unnecessary when this conversion is implemented within the EventCalc tool itself.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md3"></a>
+<h2><a class="anchor" id="autotoc_md8"></a>
 Fixed</h2>
 <ul>
 <li>Fix missing includes in <a class="el" href="classecalMatch.html">ecalMatch</a> and <a class="el" href="classecalReco.html">ecalReco</a></li>
 <li>Fix compilation warnings due to unused or uninitiliazed variables #481</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md4"></a>
+<h2><a class="anchor" id="autotoc_md9"></a>
 Changed</h2>
 <ul>
 <li><a class="el" href="namespaceshipStrawTracking.html">shipStrawTracking</a>: Move to argparse</li>
 <li>CMake: Use external genfit2</li>
 <li><a class="el" href="namespaceshipStrawTracking.html">shipStrawTracking</a>, <a class="el" href="namespaceshipDigiReco.html">shipDigiReco</a>, <a class="el" href="namespaceshipVertex.html">shipVertex</a>: Make compatible with current genfit</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md5"></a>
+<h2><a class="anchor" id="autotoc_md10"></a>
 Removed</h2>
 <ul>
 <li>Remove obsolete renaming scripts</li>
@@ -119,10 +130,10 @@ Removed</h2>
 <li>Remove bundled genfit</li>
 <li>Remove conditions DB, will almost certainly look different, copy in git history for reference</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md6"></a>
+<h1><a class="anchor" id="autotoc_md11"></a>
 24.10 - Freiburg</h1>
 <p>Tag release to prepare for breaking changes. Last release to include charm cross-section measurement code, and obsolete detector configurations.</p>
-<h2><a class="anchor" id="autotoc_md7"></a>
+<h2><a class="anchor" id="autotoc_md12"></a>
 Added</h2>
 <ul>
 <li>Add option for helium-filled decay volume</li>
@@ -134,7 +145,7 @@ Added</h2>
 <li>Add different configuration files for vacuum /helium for the Decay Vessel</li>
 <li>Add option to enable/disable SND</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md8"></a>
+<h2><a class="anchor" id="autotoc_md13"></a>
 Fixed</h2>
 <ul>
 <li>Remove trailing whitespace and fix line endings</li>
@@ -145,7 +156,7 @@ Fixed</h2>
 <li>Close <a class="el" href="ShipReco_8py.html">ShipReco.py</a> output file</li>
 <li>Remove unused (silently ignored!) argument for <a class="el" href="classMuDISGenerator.html#ae0adf0b9bdf68dbc0ec65b853d586bc4">MuDISGenerator::SetPositions</a></li>
 </ul>
-<h2><a class="anchor" id="autotoc_md9"></a>
+<h2><a class="anchor" id="autotoc_md14"></a>
 Changed</h2>
 <ul>
 <li>Update <a class="el" href="namespacegetGeoInformation.html">getGeoInformation</a> command line interface</li>
@@ -159,7 +170,7 @@ Changed</h2>
 <li>Housekeeping: Use find_package to find BOOST</li>
 <li>Housekeeping: Set FairLogger dep instead of manual includes</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md10"></a>
+<h2><a class="anchor" id="autotoc_md15"></a>
 Removed</h2>
 <ul>
 <li>Remove obsolete files related to old ways of installing or testing FairShip</li>

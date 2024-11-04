@@ -1,5 +1,10 @@
 var NAVTREEINDEX50 =
 {
+"vetoHitOnTrack_8cxx.html":[6,0,20,6],
+"vetoHitOnTrack_8cxx_source.html":[6,0,20,6],
+"vetoHitOnTrack_8h.html":[6,0,20,7],
+"vetoHitOnTrack_8h_source.html":[6,0,20,7],
+"vetoHit_8cxx.html":[6,0,20,4],
 "vetoHit_8cxx_source.html":[6,0,20,4],
 "vetoHit_8h.html":[6,0,20,5],
 "vetoHit_8h_source.html":[6,0,20,5],

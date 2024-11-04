@@ -33,25 +33,31 @@ var NAVTREE =
         [ "Changed", "md_CHANGELOG.html#autotoc_md4", null ],
         [ "Removed", "md_CHANGELOG.html#autotoc_md5", null ]
       ] ],
-      [ "24.10 - Freiburg", "md_CHANGELOG.html#autotoc_md6", [
+      [ "24.11", "md_CHANGELOG.html#autotoc_md6", [
         [ "Added", "md_CHANGELOG.html#autotoc_md7", null ],
         [ "Fixed", "md_CHANGELOG.html#autotoc_md8", null ],
         [ "Changed", "md_CHANGELOG.html#autotoc_md9", null ],
         [ "Removed", "md_CHANGELOG.html#autotoc_md10", null ]
+      ] ],
+      [ "24.10 - Freiburg", "md_CHANGELOG.html#autotoc_md11", [
+        [ "Added", "md_CHANGELOG.html#autotoc_md12", null ],
+        [ "Fixed", "md_CHANGELOG.html#autotoc_md13", null ],
+        [ "Changed", "md_CHANGELOG.html#autotoc_md14", null ],
+        [ "Removed", "md_CHANGELOG.html#autotoc_md15", null ]
       ] ]
     ] ],
     [ "README", "md_field_README.html", null ],
     [ "FairShip", "md_README.html", [
-      [ "Introduction", "md_README.html#autotoc_md13", [
-        [ "Branches", "md_README.html#autotoc_md14", null ]
+      [ "Introduction", "md_README.html#autotoc_md18", [
+        [ "Branches", "md_README.html#autotoc_md19", null ]
       ] ],
-      [ "Build Instructions using CVMFS", "md_README.html#autotoc_md15", null ],
-      [ "Local build, without access to CVMFS", "md_README.html#autotoc_md16", null ],
-      [ "Run instructions", "md_README.html#autotoc_md17", null ],
-      [ "Docker instructions", "md_README.html#autotoc_md18", null ],
-      [ "Troubleshooting information", "md_README.html#autotoc_md19", null ],
-      [ "Documentation", "md_README.html#autotoc_md20", null ],
-      [ "Contributing code", "md_README.html#autotoc_md21", null ]
+      [ "Build Instructions using CVMFS", "md_README.html#autotoc_md20", null ],
+      [ "Local build, without access to CVMFS", "md_README.html#autotoc_md21", null ],
+      [ "Run instructions", "md_README.html#autotoc_md22", null ],
+      [ "Docker instructions", "md_README.html#autotoc_md23", null ],
+      [ "Troubleshooting information", "md_README.html#autotoc_md24", null ],
+      [ "Documentation", "md_README.html#autotoc_md25", null ],
+      [ "Contributing code", "md_README.html#autotoc_md26", null ]
     ] ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
@@ -123,26 +129,26 @@ var NAVTREEINDEX =
 "geometry__config_8py.html#ad76a26c02d07e48fb1487ed3fff7066e",
 "hepunit_8py.html#a47dd4cc19b232340d877c9017e1655ed",
 "makeCascade_8py.html#af663e1436c48b75c94e9414ec94bad99",
-"mpbits_8f90.html#ab3ce01c37ac727a87b02ccd7d352aa97",
-"mpmod_8f90.html#acfd3a7e698690995206c13b2437a93ad",
-"namespaceShieldUtils.html",
-"namespaceTTCluster.html#af71223538c3f91a5f2d51fff8d3da4c6",
-"namespaceeventDisplay.html#a03c547b4464c9c1e6b71675fd6e7ed48",
-"namespaceg4Ex__gap__mergeFiles.html#a5e4259893a6f16a5215fa7268e62ca3e",
-"namespacegeometry__config.html#a8fcef67ca584c6ce0cc5ea26e8f4af3c",
-"namespacehepunit.html#a37a654186e9ea4df60f5e21641ba77a3",
-"namespacemakeDecay.html#ad982d83e907e8531920183500c345a9d",
-"namespacempbits.html#a456806b8abad6591c95cb43cf45991f5",
-"namespacempmod.html#ad3f204db26a5f1baf0ac5c48f1ffcf60",
-"namespacerunCharmHadProd.html#a70ddd2e52b606bc1c378163a94c2fd37",
-"namespacerun__simScript.html#a28072c55e0f926a8d61cca7df5f9f9aa",
-"namespaceshipunit.html#a12e5f6293e3eb7457e0e8ae0e2cd1f0c",
-"namespacestudy__thinTarget.html#a6997471a5eff05086318992b9deda546",
-"radio_8py.html#aaba2c30e22cbd7e66dd5ca45122fb87c",
-"run__prod_8py.html#adc34028fe4b95a0dac1dbb21559b256a",
-"shipPatRec_8py.html#aa1502e6b609ecdbc4cc4799ef561e059",
-"shipunit_8py_source.html",
-"vetoHit_8cxx_source.html"
+"mpbits_8f90.html#a76f1a5c5e332b0acd9a036edf977c4fe",
+"mpmod_8f90.html#ac70f5bd0f41b2449e7aba58fe1be094e",
+"namespaceMufluxPatRec.html#adfbad69dbf16a5cae949cd9beff39f3e",
+"namespaceTTCluster.html#af0758d94f4130a909c5b9f98a236d15d",
+"namespaceevd__transparentMode.html",
+"namespaceg4Ex__gap__mergeFiles.html#a1a8008619302ef6abbbd3e32edb5cabc",
+"namespacegeometry__config.html#a8daf9800723e8c5e2f03feb744e06a53",
+"namespacehepunit.html#a29fcd0aaa9072d62d55b02039e7f1f8a",
+"namespacemakeDecay.html#aca7567b2e4113ef4a009953543cb27f9",
+"namespacempbits.html#a00d494db0b1c256d51aa7dc03fb3414a",
+"namespacempmod.html#ad21dcfeb0abe011282d736f16516c81e",
+"namespacerunCharmHadProd.html#a253202e18f8304da9f0df00bc26a7dfa",
+"namespacerun__simScript.html#a2083b32e124ebe00d7ef44712e5bacea",
+"namespaceshipunit.html#a020b78cceabc2e8d54655a64de9f231d",
+"namespacestudy__thinTarget.html#a32297dc133cd2f024927c6e1e1eef1ba",
+"radio_8py.html#a28c894dea59a38f01b6fefc7deb3668d",
+"run__fixedTarget_8py.html#afda4c96d05cd62a7414e3f74ec86261d",
+"shipPatRec_8py.html#a6a97ee06907e716f4f532a515a65cdf0",
+"shipunit_8py.html#af5284bfaca6bab13de2597726e9f016a",
+"vetoHitOnTrack_8cxx.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
