@@ -969,8 +969,9 @@ class ShipDigiReco:
       error = "Fit not converged"
       ut.reportError(error)
     nmeas = fitStatus.getNdf()
-    chi2 = fitStatus.getChi2() / nmeas
-    global_variables.h['chi2'].Fill(chi2)
+    if nmeas > 0:
+      chi2 = fitStatus.getChi2() / nmeas
+      global_variables.h['chi2'].Fill(chi2)
 # make track persistent
     nTrack   = self.fGenFitArray.GetEntries()
     if not global_variables.debug:
