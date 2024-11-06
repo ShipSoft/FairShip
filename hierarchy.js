@@ -96,7 +96,6 @@ var hierarchy =
     ] ],
     [ "FairModule", null, [
       [ "EmulsionMagnet", "classEmulsionMagnet.html", null ],
-      [ "MufluxTargetStation", "classMufluxTargetStation.html", null ],
       [ "ShipCave", "classShipCave.html", null ],
       [ "ShipChamber", "classShipChamber.html", null ],
       [ "ShipGoliath", "classShipGoliath.html", null ],
@@ -175,8 +174,6 @@ var hierarchy =
     [ "Mille", "classMille.html", null ],
     [ "mpdalc::mpalloc", "interfacempdalc_1_1mpalloc.html", null ],
     [ "mpdalc::mpdealloc", "interfacempdalc_1_1mpdealloc.html", null ],
-    [ "MufluxDigi.MufluxDigi", "classMufluxDigi_1_1MufluxDigi.html", null ],
-    [ "MufluxDigiReco.MufluxDigiReco", "classMufluxDigiReco_1_1MufluxDigiReco.html", null ],
     [ "object", null, [
       [ "method_logger.MethodLogger", "classmethod__logger_1_1MethodLogger.html", null ]
     ] ],

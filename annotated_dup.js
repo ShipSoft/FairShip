@@ -55,12 +55,6 @@ var annotated_dup =
     [ "mpdef", "namespacempdef.html", [
       [ "listitem", "structmpdef_1_1listitem.html", "structmpdef_1_1listitem" ]
     ] ],
-    [ "MufluxDigi", "namespaceMufluxDigi.html", [
-      [ "MufluxDigi", "classMufluxDigi_1_1MufluxDigi.html", "classMufluxDigi_1_1MufluxDigi" ]
-    ] ],
-    [ "MufluxDigiReco", "namespaceMufluxDigiReco.html", [
-      [ "MufluxDigiReco", "classMufluxDigiReco_1_1MufluxDigiReco.html", "classMufluxDigiReco_1_1MufluxDigiReco" ]
-    ] ],
     [ "rootpyPickler", "namespacerootpyPickler.html", [
       [ "IO_Wrapper", "classrootpyPickler_1_1IO__Wrapper.html", "classrootpyPickler_1_1IO__Wrapper" ],
       [ "ROOT_Proxy", "classrootpyPickler_1_1ROOT__Proxy.html", "classrootpyPickler_1_1ROOT__Proxy" ],
@@ -167,7 +161,6 @@ var annotated_dup =
     [ "MagneticSpectrometer", "classMagneticSpectrometer.html", "classMagneticSpectrometer" ],
     [ "Mille", "classMille.html", "classMille" ],
     [ "MuDISGenerator", "classMuDISGenerator.html", "classMuDISGenerator" ],
-    [ "MufluxTargetStation", "classMufluxTargetStation.html", "classMufluxTargetStation" ],
     [ "muon", "classmuon.html", "classmuon" ],
     [ "MuonBackGenerator", "classMuonBackGenerator.html", "classMuonBackGenerator" ],
     [ "muonContFact", "classmuonContFact.html", "classmuonContFact" ],

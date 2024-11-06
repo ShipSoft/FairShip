@@ -1568,45 +1568,6 @@ var namespaces_dup =
       [ "test", "namespacemuDIS__mergeFiles.html#afc8f25cc95fe3b72acd0aa648e97f227", null ],
       [ "h", "namespacemuDIS__mergeFiles.html#a3d2065b5434e9823f79eef723f972b74", null ]
     ] ],
-    [ "MufluxDigi", "namespaceMufluxDigi.html", "namespaceMufluxDigi" ],
-    [ "MufluxDigiReco", "namespaceMufluxDigiReco.html", "namespaceMufluxDigiReco" ],
-    [ "MufluxMuonTaggerDrifttubesCombo", "namespaceMufluxMuonTaggerDrifttubesCombo.html", [
-      [ "execute", "namespaceMufluxMuonTaggerDrifttubesCombo.html#ae6d3690fc6b11b2c0822c9cdf6478364", null ],
-      [ "finalize", "namespaceMufluxMuonTaggerDrifttubesCombo.html#a22b43f63ac3dca2eda0b085ff69af228", null ],
-      [ "initialize", "namespaceMufluxMuonTaggerDrifttubesCombo.html#ac811767bc179ba359830cae86031df48", null ],
-      [ "linear_fit_in_zx_plane", "namespaceMufluxMuonTaggerDrifttubesCombo.html#a6f3a3d4186efade825ed265ba70e012a", null ],
-      [ "__author__", "namespaceMufluxMuonTaggerDrifttubesCombo.html#a07966e912027156e84eeae2ef63255b5", null ]
-    ] ],
-    [ "MufluxMuonTaggerPatRec", "namespaceMufluxMuonTaggerPatRec.html", [
-      [ "combine_tracks", "namespaceMufluxMuonTaggerPatRec.html#a43083b055c4387745441909f4ce33a0a", null ],
-      [ "execute", "namespaceMufluxMuonTaggerPatRec.html#a63db7e00f8d6237ea4cf81e1d338cf8b", null ],
-      [ "finalize", "namespaceMufluxMuonTaggerPatRec.html#a9037486782fdcadc4c212096e880dbf4", null ],
-      [ "hit_in_window", "namespaceMufluxMuonTaggerPatRec.html#a7add9c9de79cf64b4935661951eadd41", null ],
-      [ "initialize", "namespaceMufluxMuonTaggerPatRec.html#a75f4506be4763ed8f952afa874fda134", null ],
-      [ "pat_rec_plane", "namespaceMufluxMuonTaggerPatRec.html#ae187627fb051f02bc385315697cd175e", null ],
-      [ "reduce_clones", "namespaceMufluxMuonTaggerPatRec.html#a4947b16f5a979473428d4c245946bb49", null ],
-      [ "sort_hits", "namespaceMufluxMuonTaggerPatRec.html#a92f01a62c5ab9de73a2ee568e5199b57", null ],
-      [ "split_hits", "namespaceMufluxMuonTaggerPatRec.html#a9b28ae3977f4c9f9b8852aec0de8913b", null ],
-      [ "__author__", "namespaceMufluxMuonTaggerPatRec.html#aa4ee959a9821d7c1b18908e0e70df530", null ]
-    ] ],
-    [ "MufluxPatRec", "namespaceMufluxPatRec.html", [
-      [ "combine_tracks_before_and_after_the_magnet", "namespaceMufluxPatRec.html#a4e3804999341dd8cf30b44d1ee8c1c3e", null ],
-      [ "decodeDetectorID", "namespaceMufluxPatRec.html#a6fc9c5aee464cea5f0fed1db313fd3b5", null ],
-      [ "execute", "namespaceMufluxPatRec.html#a89299853b0651c499f40528670a39df6", null ],
-      [ "finalize", "namespaceMufluxPatRec.html#a87abfc5a12b9604eca76c1c023b7bf23", null ],
-      [ "get_zy_projection", "namespaceMufluxPatRec.html#a62fd58a32ca32210bb3b40eacad75ddb", null ],
-      [ "hit_in_bin", "namespaceMufluxPatRec.html#ab2d53699444a81dce7e77b63c61e40fe", null ],
-      [ "hit_in_window", "namespaceMufluxPatRec.html#a57ec7ddd6c7f892256a84b7128a41fb2", null ],
-      [ "hits_split", "namespaceMufluxPatRec.html#a231f00c6e0d980d947a4d2f1b440b8ed", null ],
-      [ "initialize", "namespaceMufluxPatRec.html#ab8c0ab3b88e01b553ee218e7d56310f2", null ],
-      [ "pat_rec_y_views", "namespaceMufluxPatRec.html#a02230fb04014b6c21ed695e1be8ad91f", null ],
-      [ "pet_rec_stereo_views", "namespaceMufluxPatRec.html#aa14f6c560b37c1b6c57f33c5ecca48b1", null ],
-      [ "reduce_clones", "namespaceMufluxPatRec.html#ab3947254d3c0bc95fc23d1109a5e2a60", null ],
-      [ "sort_hits", "namespaceMufluxPatRec.html#a6c186848107feea00b492866700295bc", null ],
-      [ "__author__", "namespaceMufluxPatRec.html#aa4a8681a31694640347586570ce8be46", null ],
-      [ "ReconstructibleMCTracks", "namespaceMufluxPatRec.html#a23856c97acae1e3286d54eb373b8a9b9", null ],
-      [ "theTracks", "namespaceMufluxPatRec.html#adfbad69dbf16a5cae949cd9beff39f3e", null ]
-    ] ],
     [ "pi0Reco", "namespacepi0Reco.html", [
       [ "findPi0", "namespacepi0Reco.html#aac923c77c6e24564f5fca914711740ac", null ],
       [ "L", "namespacepi0Reco.html#accfbca4f48275ff70691579da4d2b1f9", null ],

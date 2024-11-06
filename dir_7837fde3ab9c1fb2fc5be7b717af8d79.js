@@ -19,11 +19,6 @@ var dir_7837fde3ab9c1fb2fc5be7b717af8d79 =
     [ "method_logger.py", "method__logger_8py.html", [
       [ "MethodLogger", "classmethod__logger_1_1MethodLogger.html", "classmethod__logger_1_1MethodLogger" ]
     ] ],
-    [ "MufluxDigi.py", "MufluxDigi_8py.html", "MufluxDigi_8py" ],
-    [ "MufluxDigiReco.py", "MufluxDigiReco_8py.html", "MufluxDigiReco_8py" ],
-    [ "MufluxMuonTaggerDrifttubesCombo.py", "MufluxMuonTaggerDrifttubesCombo_8py.html", "MufluxMuonTaggerDrifttubesCombo_8py" ],
-    [ "MufluxMuonTaggerPatRec.py", "MufluxMuonTaggerPatRec_8py.html", "MufluxMuonTaggerPatRec_8py" ],
-    [ "MufluxPatRec.py", "MufluxPatRec_8py.html", "MufluxPatRec_8py" ],
     [ "pi0Reco.py", "pi0Reco_8py.html", "pi0Reco_8py" ],
     [ "proton_bremsstrahlung.py", "proton__bremsstrahlung_8py.html", "proton__bremsstrahlung_8py" ],
     [ "pythia8_conf.py", "pythia8__conf_8py.html", "pythia8__conf_8py" ],
