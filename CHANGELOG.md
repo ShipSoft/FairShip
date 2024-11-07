@@ -20,6 +20,8 @@ it in future.
 
 ### Removed
 
+* Remove Millepede
+
 ## 24.11
 
 Release after first round of breaking changes. Requires CVMFS release ≥ 24.10.
