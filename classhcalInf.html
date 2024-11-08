@@ -368,7 +368,7 @@ the HCAL geometry container
 <div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;{</div>
 <div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;  std::ifstream file(filename);</div>
 <div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;  Int_t linenum;</div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;  Double_t <a class="code" href="namespacereadMilleBinary.html#aa5029fee38de108bb42ce94c75edcf2f">val</a>;</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;  Double_t val;</div>
 <div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;  <span class="keywordtype">string</span> buffer;</div>
 <div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;  <span class="keywordtype">string</span> message;</div>
 <div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;  <span class="keywordtype">string</span> variable;</div>
@@ -454,7 +454,6 @@ the HCAL geometry container
 <div class="ttc" id="aclasshcalInf_html_a65802fe9196d8cfa0b60812c676196f8"><div class="ttname"><a href="classhcalInf.html#a65802fe9196d8cfa0b60812c676196f8">hcalInf::fN1Layers</a></div><div class="ttdeci">Int_t fN1Layers</div><div class="ttdef"><b>Definition:</b> <a href="hcalInf_8h_source.html#l00114">hcalInf.h:114</a></div></div>
 <div class="ttc" id="aclasshcalInf_html_a788dbd10869649224c8e670a06675331"><div class="ttname"><a href="classhcalInf.html#a788dbd10869649224c8e670a06675331">hcalInf::AddVariable</a></div><div class="ttdeci">void AddVariable(const char *key, const char *value)</div><div class="ttdef"><b>Definition:</b> <a href="hcalInf_8cxx_source.html#l00128">hcalInf.cxx:128</a></div></div>
 <div class="ttc" id="anamespaceadd__noise__to__field_html_ac8c461fc99cff345995bf60fcdfefa01"><div class="ttname"><a href="namespaceadd__noise__to__field.html#ac8c461fc99cff345995bf60fcdfefa01">add_noise_to_field.str</a></div><div class="ttdeci">str</div><div class="ttdef"><b>Definition:</b> <a href="add__noise__to__field_8py_source.html#l00053">add_noise_to_field.py:53</a></div></div>
-<div class="ttc" id="anamespacereadMilleBinary_html_aa5029fee38de108bb42ce94c75edcf2f"><div class="ttname"><a href="namespacereadMilleBinary.html#aa5029fee38de108bb42ce94c75edcf2f">readMilleBinary.val</a></div><div class="ttdeci">list val</div><div class="ttdef"><b>Definition:</b> <a href="readMilleBinary_8py_source.html#l00155">readMilleBinary.py:155</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1286,12 +1285,12 @@ the HCAL geometry container
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;  TObjString* value=(TObjString*)<a class="code" href="classhcalInf.html#aa4a4fc876e296ec946a5029865bc383f">fVariables</a>-&gt;GetValue(<a class="code" href="namespaceextractNeutrinosAndUpdateWeight.html#a47804d77c17d9de386802c99c350d7a8">key</a>);</div>
 <div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;  <span class="keywordflow">if</span> (value==NULL)</div>
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    <span class="keywordflow">return</span> -1111;</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;  Double_t <a class="code" href="namespacereadMilleBinary.html#aa5029fee38de108bb42ce94c75edcf2f">val</a>;</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;  Double_t val;</div>
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;  <span class="keywordtype">char</span>* err=NULL;</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;  <a class="code" href="namespacereadMilleBinary.html#aa5029fee38de108bb42ce94c75edcf2f">val</a>=strtod(value-&gt;GetString(),&amp;err);</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;  val=strtod(value-&gt;GetString(),&amp;err);</div>
 <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;  <span class="keywordflow">if</span> (err[0]!=<span class="charliteral">&#39;\0&#39;</span>)</div>
 <div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    <span class="keywordflow">return</span> -1111;</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="namespacereadMilleBinary.html#aa5029fee38de108bb42ce94c75edcf2f">val</a>;</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;  <span class="keywordflow">return</span> val;</div>
 <div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;}</div>
 </div><!-- fragment -->
 </div>
@@ -1321,9 +1320,9 @@ the HCAL geometry container
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    cerr &lt;&lt; <span class="stringliteral">&quot;Can&#39;t find variable named \&quot;&quot;</span> &lt;&lt; <a class="code" href="namespaceextractNeutrinosAndUpdateWeight.html#a47804d77c17d9de386802c99c350d7a8">key</a> &lt;&lt; <span class="stringliteral">&quot;\&quot;&quot;</span>;</div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    Fatal(<span class="stringliteral">&quot;GetVariableStrict&quot;</span>,<span class="stringliteral">&quot;Exiting...&quot;</span>);</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  }</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  Double_t <a class="code" href="namespacereadMilleBinary.html#aa5029fee38de108bb42ce94c75edcf2f">val</a>;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  Double_t val;</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;  <span class="keywordtype">char</span>* err=NULL;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;  <a class="code" href="namespacereadMilleBinary.html#aa5029fee38de108bb42ce94c75edcf2f">val</a>=strtod(value-&gt;GetString(),&amp;err);</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;  val=strtod(value-&gt;GetString(),&amp;err);</div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  <span class="keywordflow">if</span> (err[0]!=<span class="charliteral">&#39;\0&#39;</span>)</div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  {</div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    cerr &lt;&lt; <span class="stringliteral">&quot;Can&#39;t convert variable named \&quot;&quot;</span> &lt;&lt; <a class="code" href="namespaceextractNeutrinosAndUpdateWeight.html#a47804d77c17d9de386802c99c350d7a8">key</a> ;</div>
@@ -1331,7 +1330,7 @@ the HCAL geometry container
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    cerr &lt;&lt; value-&gt;GetString() &lt;&lt; <span class="stringliteral">&quot;\&quot;.&quot;</span> &lt;&lt; endl;</div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    Fatal(<span class="stringliteral">&quot;GetVariableStrict&quot;</span>,<span class="stringliteral">&quot;Exiting...&quot;</span>);</div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;  }</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;  <span class="keywordflow">return</span> <a class="code" href="namespacereadMilleBinary.html#aa5029fee38de108bb42ce94c75edcf2f">val</a>;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;  <span class="keywordflow">return</span> val;</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;}</div>
 </div><!-- fragment -->
 </div>

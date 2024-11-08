@@ -893,7 +893,7 @@ Protected Attributes</h2></td></tr>
 <div class="line"><a name="l01001"></a><span class="lineno"> 1001</span>&#160;    <span class="keywordflow">if</span> (nM==8 || !<a class="code" href="classShipMuonShield.html#ad61b851142301d3be5c5e430c0e627f4">fSupport</a>) <span class="keywordflow">continue</span>;</div>
 <div class="line"><a name="l01002"></a><span class="lineno"> 1002</span>&#160;    Double_t dymax = <a class="code" href="namespacegeometry__config.html#a669b957607386750ed2077d789c9434e">std::max</a>(dYIn[nM] + dXIn[nM], dYOut[nM] + dXOut[nM]);</div>
 <div class="line"><a name="l01003"></a><span class="lineno"> 1003</span>&#160;    Double_t dymin = std::min(dYIn[nM] + dXIn[nM], dYOut[nM] + dXOut[nM]);</div>
-<div class="line"><a name="l01004"></a><span class="lineno"> 1004</span>&#160;    Double_t <a class="code" href="namespacemptest1.html#a5ff2d6a129c043b3889c192d2b70a291">slope</a> =</div>
+<div class="line"><a name="l01004"></a><span class="lineno"> 1004</span>&#160;    Double_t slope =</div>
 <div class="line"><a name="l01005"></a><span class="lineno"> 1005</span>&#160;        (dYIn[nM] + dXIn[nM] - dYOut[nM] - dXOut[nM]) / (2 * dZf[nM]);</div>
 <div class="line"><a name="l01006"></a><span class="lineno"> 1006</span>&#160;    Double_t w1 = 2 * dXIn[nM] + <a class="code" href="namespacegeometry__config.html#a669b957607386750ed2077d789c9434e">std::max</a>(20., gapIn[nM]);</div>
 <div class="line"><a name="l01007"></a><span class="lineno"> 1007</span>&#160;    Double_t w2 = 2 * dXOut[nM] + <a class="code" href="namespacegeometry__config.html#a669b957607386750ed2077d789c9434e">std::max</a>(20., gapOut[nM]);</div>
@@ -906,14 +906,14 @@ Protected Attributes</h2></td></tr>
 <div class="line"><a name="l01014"></a><span class="lineno"> 1014</span>&#160;        +w1, -h1,</div>
 <div class="line"><a name="l01015"></a><span class="lineno"> 1015</span>&#160;        +w1, +h1,</div>
 <div class="line"><a name="l01016"></a><span class="lineno"> 1016</span>&#160;        -w1, +h1,</div>
-<div class="line"><a name="l01017"></a><span class="lineno"> 1017</span>&#160;        -w1, -h1 + <a class="code" href="namespacemptest1.html#a5ff2d6a129c043b3889c192d2b70a291">slope</a> * 2. * <a class="code" href="namespacegeometry__config.html#ae1e97f9ac5a42ab12f793064e3c3f7a2">length</a>,</div>
-<div class="line"><a name="l01018"></a><span class="lineno"> 1018</span>&#160;        +w1, -h1 + <a class="code" href="namespacemptest1.html#a5ff2d6a129c043b3889c192d2b70a291">slope</a> * 2. * <a class="code" href="namespacegeometry__config.html#ae1e97f9ac5a42ab12f793064e3c3f7a2">length</a>,</div>
+<div class="line"><a name="l01017"></a><span class="lineno"> 1017</span>&#160;        -w1, -h1 + slope * 2. * <a class="code" href="namespacegeometry__config.html#ae1e97f9ac5a42ab12f793064e3c3f7a2">length</a>,</div>
+<div class="line"><a name="l01018"></a><span class="lineno"> 1018</span>&#160;        +w1, -h1 + slope * 2. * <a class="code" href="namespacegeometry__config.html#ae1e97f9ac5a42ab12f793064e3c3f7a2">length</a>,</div>
 <div class="line"><a name="l01019"></a><span class="lineno"> 1019</span>&#160;        +w1, +h1,</div>
 <div class="line"><a name="l01020"></a><span class="lineno"> 1020</span>&#160;        -w1, +h1,</div>
 <div class="line"><a name="l01021"></a><span class="lineno"> 1021</span>&#160;    };</div>
 <div class="line"><a name="l01022"></a><span class="lineno"> 1022</span>&#160;    std::array&lt;Double_t, 16&gt; verticesOut = {</div>
-<div class="line"><a name="l01023"></a><span class="lineno"> 1023</span>&#160;        -w2, -h2 - <a class="code" href="namespacemptest1.html#a5ff2d6a129c043b3889c192d2b70a291">slope</a> * 2. * <a class="code" href="namespacegeometry__config.html#ae1e97f9ac5a42ab12f793064e3c3f7a2">length</a>,</div>
-<div class="line"><a name="l01024"></a><span class="lineno"> 1024</span>&#160;        +w2, -h2 - <a class="code" href="namespacemptest1.html#a5ff2d6a129c043b3889c192d2b70a291">slope</a> * 2. * <a class="code" href="namespacegeometry__config.html#ae1e97f9ac5a42ab12f793064e3c3f7a2">length</a>,</div>
+<div class="line"><a name="l01023"></a><span class="lineno"> 1023</span>&#160;        -w2, -h2 - slope * 2. * <a class="code" href="namespacegeometry__config.html#ae1e97f9ac5a42ab12f793064e3c3f7a2">length</a>,</div>
+<div class="line"><a name="l01024"></a><span class="lineno"> 1024</span>&#160;        +w2, -h2 - slope * 2. * <a class="code" href="namespacegeometry__config.html#ae1e97f9ac5a42ab12f793064e3c3f7a2">length</a>,</div>
 <div class="line"><a name="l01025"></a><span class="lineno"> 1025</span>&#160;        +w2, +h2,</div>
 <div class="line"><a name="l01026"></a><span class="lineno"> 1026</span>&#160;        -w2, +h2,</div>
 <div class="line"><a name="l01027"></a><span class="lineno"> 1027</span>&#160;        -w2, -h2,</div>
@@ -958,7 +958,6 @@ Protected Attributes</h2></td></tr>
 <div class="ttc" id="anamespaceeventDisplay_html_adedb83676a54edf1159c60c4e308ea97"><div class="ttname"><a href="namespaceeventDisplay.html#adedb83676a54edf1159c60c4e308ea97">eventDisplay.top</a></div><div class="ttdeci">top</div><div class="ttdef"><b>Definition:</b> <a href="eventDisplay_8py_source.html#l01408">eventDisplay.py:1408</a></div></div>
 <div class="ttc" id="anamespacegeometry__config_html_a669b957607386750ed2077d789c9434e"><div class="ttname"><a href="namespacegeometry__config.html#a669b957607386750ed2077d789c9434e">geometry_config.max</a></div><div class="ttdeci">max</div><div class="ttdef"><b>Definition:</b> <a href="geometry__config_8py_source.html#l00181">geometry_config.py:181</a></div></div>
 <div class="ttc" id="anamespacegeometry__config_html_ae1e97f9ac5a42ab12f793064e3c3f7a2"><div class="ttname"><a href="namespacegeometry__config.html#ae1e97f9ac5a42ab12f793064e3c3f7a2">geometry_config.length</a></div><div class="ttdeci">length</div><div class="ttdef"><b>Definition:</b> <a href="geometry__config_8py_source.html#l00280">geometry_config.py:280</a></div></div>
-<div class="ttc" id="anamespacemptest1_html_a5ff2d6a129c043b3889c192d2b70a291"><div class="ttname"><a href="namespacemptest1.html#a5ff2d6a129c043b3889c192d2b70a291">mptest1::slope</a></div><div class="ttdeci">real(mps) slope</div><div class="ttdoc">track slope</div><div class="ttdef"><b>Definition:</b> <a href="mptest1_8f90_source.html#l00056">mptest1.f90:56</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

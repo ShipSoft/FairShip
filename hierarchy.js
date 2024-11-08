@@ -167,13 +167,9 @@ var hierarchy =
     ] ],
     [ "eventDisplay.IO", "classeventDisplay_1_1IO.html", null ],
     [ "rootpyPickler.IO_Wrapper", "classrootpyPickler_1_1IO__Wrapper.html", null ],
-    [ "mpdef::listitem", "structmpdef_1_1listitem.html", null ],
     [ "metaclass", null, [
       [ "ShipGeoConfig.ConfigRegistry", "classShipGeoConfig_1_1ConfigRegistry.html", null ]
     ] ],
-    [ "Mille", "classMille.html", null ],
-    [ "mpdalc::mpalloc", "interfacempdalc_1_1mpalloc.html", null ],
-    [ "mpdalc::mpdealloc", "interfacempdalc_1_1mpdealloc.html", null ],
     [ "object", null, [
       [ "method_logger.MethodLogger", "classmethod__logger_1_1MethodLogger.html", null ]
     ] ],

@@ -881,11 +881,11 @@ Private Attributes</h2></td></tr>
 <div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;<span class="comment">    fLogger-&gt;Fatal(MESSAGE_ORIGIN, &quot;ShipStack:: Not a primary track! %i &quot;,iPrim);</span></div>
 <div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;<span class="comment">    Fatal(&quot;ShipStack::PopPrimaryForTracking&quot;, &quot;Not a primary track&quot;);</span></div>
 <div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;<span class="comment">  }*/</span></div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;  <span class="keywordflow">if</span>(!<a class="code" href="namespacemakeMuonDIS.html#af53ab65dcde57682f1b0355504e714c7">part</a>-&gt;TestBit(<a class="code" href="ShipStack_8h.html#a99fb83031ce9923c84392b4e92f956b5a12781c855b259e1c96ca6cc950606ffb">kDoneBit</a>)) <span class="keywordflow">return</span> NULL;</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;  <span class="keywordflow">if</span>(!<a class="code" href="namespacemakeMuonDIS.html#af53ab65dcde57682f1b0355504e714c7">part</a>-&gt;TestBit(<a class="code" href="ShipStack_8h.html#a06fc87d81c62e9abb8790b6e5713c55ba12781c855b259e1c96ca6cc950606ffb">kDoneBit</a>)) <span class="keywordflow">return</span> NULL;</div>
 <div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;  <span class="keywordflow">else</span> <span class="keywordflow">return</span> <a class="code" href="namespacemakeMuonDIS.html#af53ab65dcde57682f1b0355504e714c7">part</a>;</div>
 <div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160; </div>
 <div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;}</div>
-<div class="ttc" id="aShipStack_8h_html_a99fb83031ce9923c84392b4e92f956b5a12781c855b259e1c96ca6cc950606ffb"><div class="ttname"><a href="ShipStack_8h.html#a99fb83031ce9923c84392b4e92f956b5a12781c855b259e1c96ca6cc950606ffb">kDoneBit</a></div><div class="ttdeci">@ kDoneBit</div><div class="ttdef"><b>Definition:</b> <a href="ShipStack_8h_source.html#l00044">ShipStack.h:44</a></div></div>
+<div class="ttc" id="aShipStack_8h_html_a06fc87d81c62e9abb8790b6e5713c55ba12781c855b259e1c96ca6cc950606ffb"><div class="ttname"><a href="ShipStack_8h.html#a06fc87d81c62e9abb8790b6e5713c55ba12781c855b259e1c96ca6cc950606ffb">kDoneBit</a></div><div class="ttdeci">@ kDoneBit</div><div class="ttdef"><b>Definition:</b> <a href="ShipStack_8h_source.html#l00044">ShipStack.h:44</a></div></div>
 <div class="ttc" id="anamespacemakeMuonDIS_html_af53ab65dcde57682f1b0355504e714c7"><div class="ttname"><a href="namespacemakeMuonDIS.html#af53ab65dcde57682f1b0355504e714c7">makeMuonDIS.part</a></div><div class="ttdeci">part</div><div class="ttdef"><b>Definition:</b> <a href="makeMuonDIS_8py_source.html#l00098">makeMuonDIS.py:98</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -1276,7 +1276,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160; </div>
 <div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;  <span class="comment">// --&gt; Push particle on the stack if toBeDone is set</span></div>
 <div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;  <span class="keywordflow">if</span> (toBeDone == 1) {</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;      particle-&gt;SetBit(<a class="code" href="ShipStack_8h.html#a99fb83031ce9923c84392b4e92f956b5a12781c855b259e1c96ca6cc950606ffb">kDoneBit</a>);</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;      particle-&gt;SetBit(<a class="code" href="ShipStack_8h.html#a06fc87d81c62e9abb8790b6e5713c55ba12781c855b259e1c96ca6cc950606ffb">kDoneBit</a>);</div>
 <div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;      <a class="code" href="classShipStack.html#ae5e8e4e126509a118d38a1a2ac46aeea">fStack</a>.push(particle);</div>
 <div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;  }</div>
 <div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160; </div>

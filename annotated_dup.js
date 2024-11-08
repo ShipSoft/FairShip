@@ -48,13 +48,6 @@ var annotated_dup =
     [ "method_logger", "namespacemethod__logger.html", [
       [ "MethodLogger", "classmethod__logger_1_1MethodLogger.html", "classmethod__logger_1_1MethodLogger" ]
     ] ],
-    [ "mpdalc", "namespacempdalc.html", [
-      [ "mpalloc", "interfacempdalc_1_1mpalloc.html", "interfacempdalc_1_1mpalloc" ],
-      [ "mpdealloc", "interfacempdalc_1_1mpdealloc.html", "interfacempdalc_1_1mpdealloc" ]
-    ] ],
-    [ "mpdef", "namespacempdef.html", [
-      [ "listitem", "structmpdef_1_1listitem.html", "structmpdef_1_1listitem" ]
-    ] ],
     [ "rootpyPickler", "namespacerootpyPickler.html", [
       [ "IO_Wrapper", "classrootpyPickler_1_1IO__Wrapper.html", "classrootpyPickler_1_1IO__Wrapper" ],
       [ "ROOT_Proxy", "classrootpyPickler_1_1ROOT__Proxy.html", "classrootpyPickler_1_1ROOT__Proxy" ],
@@ -159,7 +152,6 @@ var annotated_dup =
     [ "Hpt", "classHpt.html", "classHpt" ],
     [ "HptPoint", "classHptPoint.html", "classHptPoint" ],
     [ "MagneticSpectrometer", "classMagneticSpectrometer.html", "classMagneticSpectrometer" ],
-    [ "Mille", "classMille.html", "classMille" ],
     [ "MuDISGenerator", "classMuDISGenerator.html", "classMuDISGenerator" ],
     [ "muon", "classmuon.html", "classmuon" ],
     [ "MuonBackGenerator", "classMuonBackGenerator.html", "classMuonBackGenerator" ],

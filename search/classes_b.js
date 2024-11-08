@@ -1,20 +1,7 @@
 var searchData=
 [
-  ['magneticspectrometer_6053',['MagneticSpectrometer',['../classMagneticSpectrometer.html',1,'']]],
-  ['methodlogger_6054',['MethodLogger',['../classmethod__logger_1_1MethodLogger.html',1,'method_logger']]],
-  ['mille_6055',['Mille',['../classMille.html',1,'']]],
-  ['mpalloc_6056',['mpalloc',['../interfacempdalc_1_1mpalloc.html',1,'mpdalc']]],
-  ['mpdealloc_6057',['mpdealloc',['../interfacempdalc_1_1mpdealloc.html',1,'mpdalc']]],
-  ['mudisgenerator_6058',['MuDISGenerator',['../classMuDISGenerator.html',1,'']]],
-  ['muon_6059',['muon',['../classmuon.html',1,'']]],
-  ['muonbackgenerator_6060',['MuonBackGenerator',['../classMuonBackGenerator.html',1,'']]],
-  ['muoncontfact_6061',['muonContFact',['../classmuonContFact.html',1,'']]],
-  ['muonhit_6062',['muonHit',['../classmuonHit.html',1,'']]],
-  ['muonpoint_6063',['muonPoint',['../classmuonPoint.html',1,'']]],
-  ['myeventaction_6064',['MyEventAction',['../classg4Ex_1_1MyEventAction.html',1,'g4Ex.MyEventAction'],['../classg4Ex__args_1_1MyEventAction.html',1,'g4Ex_args.MyEventAction'],['../classg4Ex__gap_1_1MyEventAction.html',1,'g4Ex_gap.MyEventAction']]],
-  ['mygeneratoraction_6065',['MyGeneratorAction',['../classg4Ex_1_1MyGeneratorAction.html',1,'g4Ex.MyGeneratorAction'],['../classg4Ex__args_1_1MyGeneratorAction.html',1,'g4Ex_args.MyGeneratorAction'],['../classg4Ex__gap_1_1MyGeneratorAction.html',1,'g4Ex_gap.MyGeneratorAction']]],
-  ['myrunaction_6066',['MyRunAction',['../classg4Ex_1_1MyRunAction.html',1,'g4Ex.MyRunAction'],['../classg4Ex__args_1_1MyRunAction.html',1,'g4Ex_args.MyRunAction'],['../classg4Ex__gap_1_1MyRunAction.html',1,'g4Ex_gap.MyRunAction']]],
-  ['mysteppingaction_6067',['MySteppingAction',['../classg4Ex_1_1MySteppingAction.html',1,'g4Ex.MySteppingAction'],['../classg4Ex__args_1_1MySteppingAction.html',1,'g4Ex_args.MySteppingAction'],['../classg4Ex__gap_1_1MySteppingAction.html',1,'g4Ex_gap.MySteppingAction']]],
-  ['mytrackingaction_6068',['MyTrackingAction',['../classg4Ex_1_1MyTrackingAction.html',1,'g4Ex.MyTrackingAction'],['../classg4Ex__args_1_1MyTrackingAction.html',1,'g4Ex_args.MyTrackingAction'],['../classg4Ex__gap_1_1MyTrackingAction.html',1,'g4Ex_gap.MyTrackingAction']]],
-  ['mytrackingactiond_6069',['MyTrackingActionD',['../classg4Ex__gap_1_1MyTrackingActionD.html',1,'g4Ex_gap']]]
+  ['ntuplegenerator_4627',['NtupleGenerator',['../classNtupleGenerator.html',1,'']]],
+  ['nuagegenerator_4628',['NuageGenerator',['../classNuageGenerator.html',1,'']]],
+  ['nutaudetcontfact_4629',['NutaudetContFact',['../classNutaudetContFact.html',1,'']]],
+  ['nutaumudet_4630',['NuTauMudet',['../classNuTauMudet.html',1,'']]]
 ];
