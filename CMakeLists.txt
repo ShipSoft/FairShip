@@ -226,7 +226,6 @@ add_subdirectory (shipgen)
 add_subdirectory (field)
 add_subdirectory (pid)
 add_subdirectory (muonShieldOptimization)
-add_subdirectory (millepede)
 
 FIND_PATH(TEvePath NAMES TEveEventManager.h PATHS
   ${SIMPATH}/tools/root/include
