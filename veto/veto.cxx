@@ -1063,7 +1063,7 @@ void veto::ConstructGeometry()
     supportMedIn = gGeoManager->GetMedium(supportMedIn_name);       //! medium of support structure, iron, balloon
     supportMedOut = gGeoManager->GetMedium(supportMedOut_name);     //! medium of support structure, aluminium, balloon
     decayVolumeMed = gGeoManager->GetMedium(decayVolumeMed_name);   // decay volume, air/helium/vacuum
-
+    LOG(INFO) << "veto: Decay Volume medium set as: " <<  decayVolumeMed_name;
     TGeoVolume* tDecayVol = new TGeoVolumeAssembly("DecayVolume");
 
     TGeoVolume* seg = MakeSegments();
