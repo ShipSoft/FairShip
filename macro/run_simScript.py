@@ -134,7 +134,7 @@ parser.add_argument("--noSC", dest="SC_mag", help="Deactivate SC muon shield. Co
 parser.add_argument("--scName", help="The name of the SC shield in the database", default="sc_v6")
 parser.add_argument("--MesonMother",   dest="MM",  help="Choose DP production meson source", required=False,  default=True)
 parser.add_argument("--debug",  help="1: print weights and field 2: make overlap check", required=False, default=0, type=int, choices=range(0,3))
-parser.add_argument("--vacuums",help="Replace Decay Volume medium from helium to vacuum (vessel structure changes)",action="store_const",const="vacuums",default="helium")
+parser.add_argument("--vacuums",dest="decayVolMed",help="Replace Decay Volume medium from helium to vacuum (vessel structure changes)",action="store_const",const="vacuums",default="helium")
 parser.add_argument("--SND", dest="SND", help="Activate SND.", action='store_true')
 parser.add_argument("--noSND", dest="SND", help="Deactivate SND. NOOP, as it currently defaults to off.", action='store_false')
 
@@ -219,7 +219,7 @@ ship_geo = ConfigRegistry.loadpy(
      muShieldWithCobaltMagnet=options.muShieldWithCobaltMagnet,
      SC_mag=options.SC_mag,
      scName=options.scName,
-     DecayVolumeMedium=options.vacuums,
+     DecayVolumeMedium=options.decayVolMed,
      SND=options.SND,
 )
 
