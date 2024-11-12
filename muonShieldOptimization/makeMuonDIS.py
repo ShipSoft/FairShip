@@ -85,7 +85,7 @@ for k in range(nStart,nEnd):
   for n in range(nMult):
      dPart.Clear()
      iMuon.Clear()
-     iMuon[0] = muPart
+     iMuon.ConstructedAt(0).Use(muPart)
      myPythia.GenerateEvent()
 # remove all unnecessary stuff
      myPythia.Pyedit(2)
@@ -99,7 +99,7 @@ for k in range(nStart,nEnd):
 # copy to branch
       nPart = dPart.GetEntries()
       if dPart.GetSize() == nPart: dPart.Expand(nPart+10)
-      dPart[nPart] = part
+      dPart.ConstructedAt(nPart).Use(part)
      nMade+=1
      if nMade%10000==0: print('made so far ',nMade)
      dTree.Fill()

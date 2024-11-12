@@ -16,11 +16,14 @@ it in future.
 
 ### Fixed
 
+* Use ConstructedAt instead of remove pythonization for TClonesArray 
+
 ### Changed
 
 ### Removed
 
 * Remove Millepede
+* Remove outdated example shipEvent_ex.py
 
 ## 24.11
 
