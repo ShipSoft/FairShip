@@ -172,7 +172,7 @@ $(document).ready(function(){initNavTree('makeMuonDIS_8py_source.html',''); init
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(nMult):</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;     dPart.Clear()</div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;     iMuon.Clear()</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;     iMuon[0] = muPart</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;     iMuon.ConstructedAt(0).Use(muPart)</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;     myPythia.GenerateEvent()</div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="comment"># remove all unnecessary stuff</span></div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;     myPythia.Pyedit(2)</div>
@@ -186,7 +186,7 @@ $(document).ready(function(){initNavTree('makeMuonDIS_8py_source.html',''); init
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="comment"># copy to branch</span></div>
 <div class="line"><a name="l00100"></a><span class="lineno"><a class="line" href="namespacemakeMuonDIS.html#a26aa2d2f4969d3eeb816781e0da12ee0">  100</a></span>&#160;      nPart = dPart.GetEntries()</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;      <span class="keywordflow">if</span> dPart.GetSize() == nPart: dPart.Expand(nPart+10)</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;      dPart[nPart] = part</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;      dPart.ConstructedAt(nPart).Use(part)</div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;     nMade+=1</div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;     <span class="keywordflow">if</span> nMade%10000==0: print(<span class="stringliteral">&#39;made so far &#39;</span>,nMade)</div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;     dTree.Fill()</div>

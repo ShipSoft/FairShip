@@ -106,9 +106,9 @@ $(document).ready(function(){initNavTree('hcalLightMap_8cxx_source.html',''); in
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
 <div class="line"><a name="l00021"></a><span class="lineno"><a class="line" href="classhcalLightMap.html#a6882f05481b8c330f727804585bc457c">   21</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classhcalLightMap.html#a6882f05481b8c330f727804585bc457c">hcalLightMap::Init</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* filename)</div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;{</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;  TString <a class="code" href="namespaceshipEvent__ex.html#acc9767dd5e17543f04e596e5c80c6583">fn</a>=filename;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;  gSystem-&gt;ExpandPathName(<a class="code" href="namespaceshipEvent__ex.html#acc9767dd5e17543f04e596e5c80c6583">fn</a>);</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;  ifstream <a class="code" href="namespacegeometry__config.html#af88f912ac51714bfe8ebac6f0e952930">f</a>(<a class="code" href="namespaceshipEvent__ex.html#acc9767dd5e17543f04e596e5c80c6583">fn</a>);</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;  TString fn=filename;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;  gSystem-&gt;ExpandPathName(fn);</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;  ifstream <a class="code" href="namespacegeometry__config.html#af88f912ac51714bfe8ebac6f0e952930">f</a>(fn);</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;  list&lt;Double_t&gt; lst;</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;  <span class="keywordtype">string</span> buf;</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;  <span class="keywordtype">string</span> token;</div>
@@ -249,7 +249,6 @@ $(document).ready(function(){initNavTree('hcalLightMap_8cxx_source.html',''); in
 <div class="ttc" id="anamespacegeometry__config_html_af88f912ac51714bfe8ebac6f0e952930"><div class="ttname"><a href="namespacegeometry__config.html#af88f912ac51714bfe8ebac6f0e952930">geometry_config.f</a></div><div class="ttdeci">f</div><div class="ttdef"><b>Definition:</b> <a href="geometry__config_8py_source.html#l00321">geometry_config.py:321</a></div></div>
 <div class="ttc" id="anamespacegetGeoInformation_html_afbac20e31f074b8d2fff6a7304ef097d"><div class="ttname"><a href="namespacegetGeoInformation.html#afbac20e31f074b8d2fff6a7304ef097d">getGeoInformation.fname</a></div><div class="ttdeci">fname</div><div class="ttdef"><b>Definition:</b> <a href="getGeoInformation_8py_source.html#l00100">getGeoInformation.py:100</a></div></div>
 <div class="ttc" id="anamespacemakeDecay_html_a9c90b95001a4909a6c5383da1b3066d9"><div class="ttname"><a href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">makeDecay.p</a></div><div class="ttdeci">p</div><div class="ttdef"><b>Definition:</b> <a href="makeDecay_8py_source.html#l00067">makeDecay.py:67</a></div></div>
-<div class="ttc" id="anamespaceshipEvent__ex_html_acc9767dd5e17543f04e596e5c80c6583"><div class="ttname"><a href="namespaceshipEvent__ex.html#acc9767dd5e17543f04e596e5c80c6583">shipEvent_ex.fn</a></div><div class="ttdeci">string fn</div><div class="ttdef"><b>Definition:</b> <a href="shipEvent__ex_8py_source.html#l00005">shipEvent_ex.py:5</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

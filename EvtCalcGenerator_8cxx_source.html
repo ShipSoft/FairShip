@@ -117,7 +117,7 @@ $(document).ready(function(){initNavTree('EvtCalcGenerator_8cxx_source.html','')
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    fTree = std::unique_ptr&lt;TTree&gt;(<span class="keyword">dynamic_cast&lt;</span>TTree*<span class="keyword">&gt;</span>(fInputFile-&gt;Get(<span class="stringliteral">&quot;LLP_tree&quot;</span>)));</div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    fNevents = fTree-&gt;GetEntries();</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <a class="code" href="namespaceshipEvent__ex.html#acc9767dd5e17543f04e596e5c80c6583">fn</a> = firstEvent;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    fn = firstEvent;</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="keywordflow">if</span> (fTree-&gt;FindBranch(<span class="stringliteral">&quot;px_llp&quot;</span>)) {</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        fTree-&gt;SetBranchAddress(<span class="stringliteral">&quot;px_llp&quot;</span>, &amp;px_llp);</div>
@@ -206,15 +206,15 @@ $(document).ready(function(){initNavTree('EvtCalcGenerator_8cxx_source.html','')
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;<span class="comment">// -----   Passing the event   ---------------------------------------------</span></div>
 <div class="line"><a name="l00120"></a><span class="lineno"><a class="line" href="classEvtCalcGenerator.html#a7328bf608e03b7711d8adc3691c26d2e">  120</a></span>&#160;Bool_t <a class="code" href="classEvtCalcGenerator.html#a7328bf608e03b7711d8adc3691c26d2e">EvtCalcGenerator::ReadEvent</a>(FairPrimaryGenerator* cpg)</div>
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;{</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="namespaceshipEvent__ex.html#acc9767dd5e17543f04e596e5c80c6583">fn</a> == fNevents) {</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    <span class="keywordflow">if</span> (fn == fNevents) {</div>
 <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        LOG(WARNING) &lt;&lt; <span class="stringliteral">&quot;End of input file. Rewind.&quot;</span>;</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;        <a class="code" href="namespaceshipEvent__ex.html#acc9767dd5e17543f04e596e5c80c6583">fn</a> = 0;</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;        fn = 0;</div>
 <div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    }</div>
 <div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160; </div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    fTree-&gt;GetEntry(<a class="code" href="namespaceshipEvent__ex.html#acc9767dd5e17543f04e596e5c80c6583">fn</a>);</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    <a class="code" href="namespaceshipEvent__ex.html#acc9767dd5e17543f04e596e5c80c6583">fn</a>++;</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="namespaceshipEvent__ex.html#acc9767dd5e17543f04e596e5c80c6583">fn</a> % 100 == 0)</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;        LOGF(<a class="code" href="namespacerun__fixedTarget.html#a6feefc87aa4cb38aec3a08a614b84433">info</a>, <span class="stringliteral">&quot;Info EvtCalcGenerator: event nr %s&quot;</span>, <a class="code" href="namespaceshipEvent__ex.html#acc9767dd5e17543f04e596e5c80c6583">fn</a>);</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    fTree-&gt;GetEntry(fn);</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    fn++;</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    <span class="keywordflow">if</span> (fn % 100 == 0)</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;        LOGF(<a class="code" href="namespacerun__fixedTarget.html#a6feefc87aa4cb38aec3a08a614b84433">info</a>, <span class="stringliteral">&quot;Info EvtCalcGenerator: event nr %s&quot;</span>, fn);</div>
 <div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160; </div>
 <div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    <span class="comment">// Vertex coordinates in the SHiP reference frame, expressed in [cm]</span></div>
 <div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    Double_t space_unit_conv = 100.;                                     <span class="comment">// m to cm</span></div>
@@ -284,7 +284,6 @@ $(document).ready(function(){initNavTree('EvtCalcGenerator_8cxx_source.html','')
 <div class="ttc" id="anamespaceana__ShipMuon_html_ad9573029fe80fdfb7ea06c6fd7758821"><div class="ttname"><a href="namespaceana__ShipMuon.html#ad9573029fe80fdfb7ea06c6fd7758821">ana_ShipMuon.ztarget</a></div><div class="ttdeci">int ztarget</div><div class="ttdef"><b>Definition:</b> <a href="ana__ShipMuon_8py_source.html#l00396">ana_ShipMuon.py:396</a></div></div>
 <div class="ttc" id="anamespacehnl_html_adb7ba50b8941bf3badea16f97cb665d5"><div class="ttname"><a href="namespacehnl.html#adb7ba50b8941bf3badea16f97cb665d5">hnl.c</a></div><div class="ttdeci">c</div><div class="ttdef"><b>Definition:</b> <a href="hnl_8py_source.html#l00098">hnl.py:98</a></div></div>
 <div class="ttc" id="anamespacerun__fixedTarget_html_a6feefc87aa4cb38aec3a08a614b84433"><div class="ttname"><a href="namespacerun__fixedTarget.html#a6feefc87aa4cb38aec3a08a614b84433">run_fixedTarget.info</a></div><div class="ttdeci">string info</div><div class="ttdef"><b>Definition:</b> <a href="run__fixedTarget_8py_source.html#l00271">run_fixedTarget.py:271</a></div></div>
-<div class="ttc" id="anamespaceshipEvent__ex_html_acc9767dd5e17543f04e596e5c80c6583"><div class="ttname"><a href="namespaceshipEvent__ex.html#acc9767dd5e17543f04e596e5c80c6583">shipEvent_ex.fn</a></div><div class="ttdeci">string fn</div><div class="ttdef"><b>Definition:</b> <a href="shipEvent__ex_8py_source.html#l00005">shipEvent_ex.py:5</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

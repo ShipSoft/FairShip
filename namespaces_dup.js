@@ -1771,18 +1771,6 @@ var namespaces_dup =
       [ "detectorList", "namespaceshipDet__conf.html#a0507a6f94174d43157cb96b2984eb98d", null ]
     ] ],
     [ "shipDigiReco", "namespaceshipDigiReco.html", "namespaceshipDigiReco" ],
-    [ "shipEvent_ex", "namespaceshipEvent__ex.html", [
-      [ "exMCHits", "namespaceshipEvent__ex.html#aa67e98a1d2987f0d07fd7a9ea922c699", null ],
-      [ "exMCTracks", "namespaceshipEvent__ex.html#aedc7d740388e348447e4abc0f55e2ea7", null ],
-      [ "f", "namespaceshipEvent__ex.html#a0bdd15f0d23645eda8348d2315fd823d", null ],
-      [ "fn", "namespaceshipEvent__ex.html#acc9767dd5e17543f04e596e5c80c6583", null ],
-      [ "h", "namespaceshipEvent__ex.html#a97cc4f24a7dfde4a2f64adf4fe7dda70", null ],
-      [ "MCTracks", "namespaceshipEvent__ex.html#a90430708a2f5a5d9b92d042f5c018ed4", null ],
-      [ "nEvents", "namespaceshipEvent__ex.html#a713bd100b8af4a0e09c1fd35f9582bff", null ],
-      [ "sFol", "namespaceshipEvent__ex.html#a8a3d239acd048bd4b492ca9cc6cac09c", null ],
-      [ "sTree", "namespaceshipEvent__ex.html#a83f04c80036aae6cec0c291b7afab72b", null ],
-      [ "TrackingHits", "namespaceshipEvent__ex.html#a01c40689729ddea2c0049d13e6e44237", null ]
-    ] ],
     [ "ShipGeo", "namespaceShipGeo.html", "namespaceShipGeo" ],
     [ "ShipGeoConfig", "namespaceShipGeoConfig.html", "namespaceShipGeoConfig" ],
     [ "shipMuShield_only", "namespaceshipMuShield__only.html", [
