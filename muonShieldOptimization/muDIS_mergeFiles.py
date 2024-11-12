@@ -16,11 +16,11 @@ def merge():
    sTree.GetEvent(n)
    dPart.Clear()
    iMuon.Clear()
-   iMuon[0] = sTree.InMuon[0]
+   iMuon.ConstructedAt(0).Use(sTree.InMuon[0])
    for part in sTree.Particles:
       nPart = dPart.GetEntries()
       if dPart.GetSize() == nPart: dPart.Expand(nPart+10)
-      dPart[nPart] = part
+      dPart.ConstructedAt(nPart).Use(part)
    dPartBranch.Fill()
    iMuonBranch.Fill()
    nTree.Fill()
