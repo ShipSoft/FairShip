@@ -24,6 +24,7 @@ it in future.
 
 * Remove Millepede
 * Remove outdated example shipEvent_ex.py
+* Remove ALPACA generator
 
 ## 24.11
 
