@@ -15,7 +15,6 @@ var dir_7837fde3ab9c1fb2fc5be7b717af8d79 =
     [ "hepunit.py", "hepunit_8py.html", "hepunit_8py" ],
     [ "hnl.py", "hnl_8py.html", "hnl_8py" ],
     [ "logger.py", "logger_8py.html", "logger_8py" ],
-    [ "makeALPACAEvents.py", "makeALPACAEvents_8py.html", "makeALPACAEvents_8py" ],
     [ "method_logger.py", "method__logger_8py.html", [
       [ "MethodLogger", "classmethod__logger_1_1MethodLogger.html", "classmethod__logger_1_1MethodLogger" ]
     ] ],

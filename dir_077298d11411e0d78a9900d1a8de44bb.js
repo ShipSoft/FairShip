@@ -1,9 +1,5 @@
 var dir_077298d11411e0d78a9900d1a8de44bb =
 [
-    [ "ALPACAGenerator.cxx", "ALPACAGenerator_8cxx.html", "ALPACAGenerator_8cxx" ],
-    [ "ALPACAGenerator.h", "ALPACAGenerator_8h.html", [
-      [ "ALPACAGenerator", "classALPACAGenerator.html", "classALPACAGenerator" ]
-    ] ],
     [ "CosmicsGenerator.cxx", "CosmicsGenerator_8cxx.html", null ],
     [ "CosmicsGenerator.h", "CosmicsGenerator_8h.html", [
       [ "Co3Rng", "classCo3Rng.html", "classCo3Rng" ],

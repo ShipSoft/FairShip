@@ -59,7 +59,6 @@ var hierarchy =
       [ "ShipFieldCreator", "classShipFieldCreator.html", null ]
     ] ],
     [ "FairGenerator", null, [
-      [ "ALPACAGenerator", "classALPACAGenerator.html", null ],
       [ "CosmicsGenerator", "classCosmicsGenerator.html", null ],
       [ "DPPythia8Generator", "classDPPythia8Generator.html", null ],
       [ "EvtCalcGenerator", "classEvtCalcGenerator.html", null ],
