@@ -46,7 +46,6 @@ MuonBackGenerator.cxx
 CosmicsGenerator.cxx
 MuDISGenerator.cxx
 FixedTargetGenerator.cxx
-ALPACAGenerator.cxx
 EvtCalcGenerator.cxx
 )
 
