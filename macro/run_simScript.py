@@ -148,7 +148,7 @@ parser.add_argument(
     help="Set Decay Volume medium to vacuum(vessel structure changes)",
     action="store_const",
     const="vacuums",
-    default="helium",
+    default="helium"
 )
 parser.add_argument("--SND", dest="SND", help="Activate SND.", action='store_true')
 parser.add_argument("--noSND", dest="SND", help="Deactivate SND. NOOP, as it currently defaults to off.", action='store_false')
