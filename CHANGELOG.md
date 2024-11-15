@@ -20,6 +20,8 @@ it in future.
 
 ### Changed
 
+* Set Decay Volume Medium as helium (previously vacuums),can be explicitly switched to vacuum with --vacuums.
+
 ### Removed
 
 * Remove Millepede
