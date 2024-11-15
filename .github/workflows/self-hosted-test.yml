@@ -1,0 +1,16 @@
+on:
+  push:
+    branches:
+      - 'self-hosted-test'
+
+jobs:
+  testing:
+    runs-on: self-hosted
+    container:
+      image: gitlab-registry.cern.ch/linuxsupport/alma9-base
+    steps:
+      - name: Check hostname
+        run: 'hostname'
+
+      - name: Check cvmfs access
+        run: 'ls /cvmfs/sft.cern.ch'
