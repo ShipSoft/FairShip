@@ -10,9 +10,9 @@ jobs:
     container:
       image: gitlab-registry.cern.ch/linuxsupport/alma9-base
       volumes:
-        - /cvmfs:/cvmfs
+        - /cvmfs/sft.cern.ch/:/cvmfs/sft.cern.ch/
     steps:
       - name: Just echo something
         run: echo "Hola amigo"
       - name: Check cvmfs access
-        run: ls /cvmfs/sft.cern.ch
+        run: ls -l /cvmfs/sft.cern.ch/
