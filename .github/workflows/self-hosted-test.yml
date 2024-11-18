@@ -2,17 +2,26 @@ on:
   push:
     branches:
       - 'self-hosted-test'
+
 jobs:
   testing:
     strategy:
       fail-fast: false
+
     runs-on: self-hosted
+
     container:
       image: gitlab-registry.cern.ch/linuxsupport/alma9-base
       volumes:
         - /cvmfs/sft.cern.ch/:/cvmfs/sft.cern.ch/
+        - /cvmfs/ship.cern.ch/:/cvmfs/ship.cern.ch/
+
     steps:
-      - name: Just echo something
-        run: echo "Hola amigo"
-      - name: Check cvmfs access
-        run: ls -l /cvmfs/sft.cern.ch/
+      - name: Checkout
+        uses: actions/checkout@v4
+        
+      - name: Source environment setup
+        run: source /cvmfs/ship.cern.ch/24.10/setUp.sh
+
+      - name: Build software
+        run: aliBuild build FairShip --always-prefer-system --config-dir $SHIPDIST --defaults release
