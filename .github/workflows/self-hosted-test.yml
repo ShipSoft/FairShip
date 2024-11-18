@@ -11,7 +11,7 @@ jobs:
     runs-on: self-hosted
 
     container:
-      image: gitlab-registry.cern.ch/linuxsupport/alma9-base
+      image: registry.cern.ch/ship/gha-runner
       volumes:
         - /cvmfs/sft.cern.ch/:/cvmfs/sft.cern.ch/
         - /cvmfs/ship.cern.ch/:/cvmfs/ship.cern.ch/
