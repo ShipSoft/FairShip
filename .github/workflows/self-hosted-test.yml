@@ -28,12 +28,11 @@ jobs:
       - name: Load env and test
         run: |
           source /cvmfs/ship.cern.ch/24.10/setUp.sh
-          # alienv enter FairShip/latest
           eval `alienv load FairShip/latest`
           echo "FAIRSHIP env is set to" $FAIRSHIP
 
-      # - name: Run sim
-      #   run: |
-      #     source /cvmfs/ship.cern.ch/24.10/setUp.sh
-      #     alienv enter FairShip/latest
-      #     python $FAIRSHIP/macro/run_simScript.py
+      - name: Run sim
+        run: |
+          source /cvmfs/ship.cern.ch/24.10/setUp.sh
+          eval `alienv load FairShip/latest`
+          python $FAIRSHIP/macro/run_simScript.py
