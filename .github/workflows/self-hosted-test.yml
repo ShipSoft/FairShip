@@ -20,8 +20,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         
-      - name: Source environment setup
-        run: source /cvmfs/ship.cern.ch/24.10/setUp.sh
-
-      - name: Build software
-        run: aliBuild build FairShip --always-prefer-system --config-dir $SHIPDIST --defaults release
+      - name: Source environment and build
+        run: |
+          source /cvmfs/ship.cern.ch/24.10/setUp.sh
+          aliBuild build FairShip --always-prefer-system --config-dir $SHIPDIST --defaults release
