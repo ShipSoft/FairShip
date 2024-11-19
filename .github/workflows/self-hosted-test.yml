@@ -5,9 +5,6 @@ on:
 
 jobs:
   testing:
-    # strategy:
-    #   fail-fast: false
-
     runs-on: self-hosted
 
     container:
@@ -24,14 +21,32 @@ jobs:
           source /cvmfs/ship.cern.ch/24.10/setUp.sh
           aliBuild build FairShip --always-prefer-system --config-dir $SHIPDIST --defaults release --jobs 4
 
-      - name: Load env and test
-        run: |
-          source /cvmfs/ship.cern.ch/24.10/setUp.sh
-          eval `alienv load FairShip/latest`
-          echo "FAIRSHIP env is set to" $FAIRSHIP
-
-      - name: Run sim
+      - name: Run Sim
         run: |
           source /cvmfs/ship.cern.ch/24.10/setUp.sh
           eval `alienv load FairShip/latest`
           python $FAIRSHIP/macro/run_simScript.py --test
+
+      - name: Run Reco
+        run: |
+          source /cvmfs/ship.cern.ch/24.10/setUp.sh
+          eval `alienv load FairShip/latest`
+          python $FAIRSHIP/macro/ShipReco.py -f ship.conical.Pythia8-TGeant4.root -g geofile_full.conical.Pythia8-TGeant4.root
+
+      - name: Run Ana
+        run: |
+          source /cvmfs/ship.cern.ch/24.10/setUp.sh
+          eval `alienv load FairShip/latest`
+          python -i $FAIRSHIP/macro/ShipAna.py -f ship.conical.Pythia8-TGeant4_rec.root -g geofile_full.conical.Pythia8-TGeant4.root
+
+      - name: List files
+        run: |
+          pwd
+          ls -lrth
+        
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: root-files
+          path: |
+            *.root
