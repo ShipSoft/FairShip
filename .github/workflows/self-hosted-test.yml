@@ -13,14 +13,24 @@ jobs:
     container:
       image: registry.cern.ch/ship/gha-runner:latest
       volumes:
-        #- /cvmfs/sft.cern.ch/:/cvmfs/sft.cern.ch/
         - /cvmfs/ship.cern.ch/:/cvmfs/ship.cern.ch/
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         
-      - name: Source environment and build
+      - name: Source and Build
         run: |
           source /cvmfs/ship.cern.ch/24.10/setUp.sh
-          aliBuild build FairShip --always-prefer-system --config-dir $SHIPDIST --defaults release
+          aliBuild build FairShip --always-prefer-system --config-dir $SHIPDIST --defaults release --jobs 4
+
+      - name: Load env
+        run: |
+          source /cvmfs/ship.cern.ch/24.10/setUp.sh
+          alienv enter FairShip/latest
+
+      - name: Run sim
+        run: |
+          source /cvmfs/ship.cern.ch/24.10/setUp.sh
+          alienv enter FairShip/latest
+          python $FAIRSHIP/macro/run_simScript.py
