@@ -11,9 +11,9 @@ jobs:
     runs-on: self-hosted
 
     container:
-      image: registry.cern.ch/ship/gha-runner
+      image: registry.cern.ch/ship/gha-runner:latest
       volumes:
-        - /cvmfs/sft.cern.ch/:/cvmfs/sft.cern.ch/
+        #- /cvmfs/sft.cern.ch/:/cvmfs/sft.cern.ch/
         - /cvmfs/ship.cern.ch/:/cvmfs/ship.cern.ch/
 
     steps:
