@@ -5,15 +5,16 @@ on:
 
 jobs:
   testing:
-    strategy:
-      fail-fast: false
+    # strategy:
+    #   fail-fast: false
 
     runs-on: self-hosted
 
     container:
       image: registry.cern.ch/ship/gha-runner:latest
       volumes:
-        - /cvmfs/ship.cern.ch/:/cvmfs/ship.cern.ch/
+        - /cvmfs/ship.cern.ch:/cvmfs/ship.cern.ch
+        - /eos/experiment/ship:/eos/experiment/ship
 
     steps:
       - name: Checkout
