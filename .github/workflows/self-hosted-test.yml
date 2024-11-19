@@ -29,7 +29,7 @@ jobs:
         run: |
           source /cvmfs/ship.cern.ch/24.10/setUp.sh
           # alienv enter FairShip/latest
-          eval `alienv load FairShip/latest --no-refresh`
+          eval `alienv load FairShip/latest`
           echo "FAIRSHIP env is set to" $FAIRSHIP
 
       # - name: Run sim
