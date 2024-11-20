@@ -94,7 +94,7 @@ def makeMuonDIS():
     mutype = {-13: "gamma/mu+", 13: "gamma/mu-"}
 
     myPythia.SetMSTU(11, 11)
-    logging.info(f"Processing events from {nStart} to {nEnd}...")
+    logging.info(f"Processing events from {nStart} to {nEnd-1}...")
 
     nMade = 0
 
@@ -121,7 +121,7 @@ def makeMuonDIS():
         phi = r.TMath.ATan2(py, px)
 
         logging.debug(
-            f"Muon: PID={pid}, px={px}, py={py}, pz={pz}, E={E}, x={x}, y={y}, z={z}, w={w}"
+            f"\n\tMuon index:{k} \n\tPID = {pid}, weight = {w} \n\tpx = {px}, py = {py}, pz = {pz}, E = {E},\n\tx = {x}, y = {y}, z = {z}\n"
         )
 
         isProton = 1
@@ -136,7 +136,7 @@ def makeMuonDIS():
             if a == args.nDIS // 2:
                 myPythia.Initialize("FIXT", mutype[pid], "n0", p)  # target = "n0"
                 isProton = 0
-                logging.info("Switching to neutron interaction")
+                logging.debug("Switching to neutron interaction")
 
             dPartDIS.Clear()
             iMuon.Clear()
@@ -144,7 +144,9 @@ def makeMuonDIS():
             iMuon[0] = muPart
             myPythia.GenerateEvent()
             myPythia.Pyedit(1)
-            logging.info(f"Event {a} generated, number of particles: {myPythia.GetN()}")
+            logging.debug(
+                f"DIS Event {a} generated, number of particles: {myPythia.GetN()}"
+            )
 
             for itrk in range(1, myPythia.GetN() + 1):
                 xsec = myPythia.GetPARI(1)
@@ -218,7 +220,7 @@ def makeMuonDIS():
     output_tree.Write()
     myPythia.SetMSTU(11, 6)
     logging.info(
-        f"Created DIS for  saved in muonDis_{args.nJob}.root, muon event index from {nStart} - {nEnd} , nDISPerMuon {args.nDIS}"
+        f"DIS generated for muons (index {nStart} - {nEnd-1}) , output saved in muonDis_{args.nJob}.root, nDISPerMuon = {args.nDIS}"
     )
 
 
