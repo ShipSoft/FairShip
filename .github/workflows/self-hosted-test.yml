@@ -6,9 +6,6 @@ on:
 jobs:
   testing:
     runs-on: self-hosted
-    # defaults:
-    #   run:
-    #     working-directory: /
 
     container:
       image: registry.cern.ch/ship/gha-runner:latest
@@ -16,27 +13,33 @@ jobs:
         - /cvmfs/ship.cern.ch:/cvmfs/ship.cern.ch
         
     steps:
-      - name: PWD
-        run: pwd
+      - name: pwd
+        run: |
+          pwd
+          ls
+
+      - name: explore
+        run: |
+          ls ../
+      
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          path: FairShip
         
       - name: Source and Build
         run: |
-          pwd
           source /cvmfs/ship.cern.ch/24.10/setUp.sh
           aliBuild build FairShip --always-prefer-system --config-dir $SHIPDIST --defaults release --jobs 4
 
       - name: Run Sim
         run: |
-          pwd
           source /cvmfs/ship.cern.ch/24.10/setUp.sh
           eval `alienv load FairShip/latest`
           python $FAIRSHIP/macro/run_simScript.py --test
 
       - name: Run Reco
         run: |
-          pwd
           source /cvmfs/ship.cern.ch/24.10/setUp.sh
           eval `alienv load FairShip/latest`
           python $FAIRSHIP/macro/ShipReco.py -f ship.conical.Pythia8-TGeant4.root -g geofile_full.conical.Pythia8-TGeant4.root
@@ -44,14 +47,12 @@ jobs:
 
       - name: Run Ana
         run: |
-          pwd
           source /cvmfs/ship.cern.ch/24.10/setUp.sh
           eval `alienv load FairShip/latest`
           python -i $FAIRSHIP/macro/ShipAna.py -f ship.conical.Pythia8-TGeant4_rec.root -g geofile_full.conical.Pythia8-TGeant4.root
 
       - name: List files
         run: |
-          pwd
           ls -lrth
         
       - name: Archive production artifacts
