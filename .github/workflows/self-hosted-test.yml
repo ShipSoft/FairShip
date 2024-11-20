@@ -13,20 +13,10 @@ jobs:
         - /cvmfs/ship.cern.ch:/cvmfs/ship.cern.ch
         
     steps:
-      - name: pwd
-        run: |
-          echo ${{ github.workspace	}}
-          pwd
-          ls
-
-      - name: explore
-        run: |
-          ls ../
-      
-      # - name: Checkout
-      #   uses: actions/checkout@v4
-      #   with:
-      #     path: FairShip
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          path: FairShip
         
       - name: Source and Build
         run: |
