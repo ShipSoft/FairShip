@@ -35,15 +35,7 @@ Bool_t MuDISGenerator::Init(const char* fileName, const int firstEvent)
     dPart = 0;
     dPartSoft = 0;
 
-    if (0 == strncmp("/eos", fileName, 4)) {
-        TString tmp = gSystem->Getenv("EOSSHIP");
-        tmp += fileName;
-        fInputFile = TFile::Open(tmp, "read");
-        LOGF(info, "Open external file on eos: %s", tmp.Data());
-    } else {
-        fInputFile = TFile::Open(fileName, "read");
-    }
-
+    fInputFile = TFile::Open(fileName, "read");
     fTree = dynamic_cast<TTree*>(fInputFile->Get("DIS"));
     if (!fTree) {
         LOG(FATAL) << "Error: Tree 'DIS' not found in file";
@@ -103,10 +95,6 @@ Double_t MuDISGenerator::MeanMaterialBudget(const Double_t* start, const Double_
     for (Int_t i = 0; i < 6; i++)
         bparam[i] = 0;
 
-    if (!gGeoManager) {
-        // AliFatalClass("No TGeo\n");
-        return 0.;
-    }
     //
     Double_t length;
     Double_t dir[3];
@@ -124,8 +112,7 @@ Double_t MuDISGenerator::MeanMaterialBudget(const Double_t* start, const Double_
     TGeoNode* currentnode = 0;
     TGeoNode* startnode = gGeoManager->InitTrack(start, dir);
     if (!startnode) {
-        // AliErrorClass(Form("start point out of geometry: x %f, y %f, z %f",
-        //      start[0],start[1],start[2]));
+        LOG(ERROR) << "Start point out of geometry: x " << start[0] << ", y " << start[1] << ", z " << start[2];
         return 0.0;
     }
     TGeoMaterial* material = startnode->GetVolume()->GetMedium()->GetMaterial();
@@ -258,11 +245,13 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg)
     // incoming muon  array('d',[pid,px,py,pz,E,x,y,z,w,t])
     TVectorD* mu = dynamic_cast<TVectorD*>(iMuon->AddrAt(0));
     LOG(DEBUG) << "muon DIS Generator in muon " << int(mu[0][0]);
-    Double_t x = mu[0][5] * 100.;   // come in m -> cm
-    Double_t y = mu[0][6] * 100.;   // come in m -> cm
-    Double_t z = mu[0][7] * 100.;   // come in m -> cm
-    Double_t w = mu[0][8];
-    Double_t t_muon = mu[0][11];   // in ns
+    Double_t x = mu[0][5] * 100.;                // come in m -> cm
+    Double_t y = mu[0][6] * 100.;                // come in m -> cm
+    Double_t z = mu[0][7] * 100.;                // come in m -> cm
+    Double_t w = mu[0][8];                       // weight of the original muon ( normalised to a spill)
+    Double_t cross_sec = mu[0][10];              // in mbarns
+    Double_t t_muon = mu[0][11];                 // in ns
+    Double_t DIS_multiplicity = 1 / mu[0][12];   // 1/nDIS
 
     // calculate start/end positions along this muon, and amout of material in between
 
@@ -274,9 +263,11 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg)
     end[1] = y - (z - end[2]) * tymu;
     LOG(DEBUG) << "MuDIS: mu xyz position " << x << ", " << y << ", " << z;
     LOG(DEBUG) << "MuDIS: mu pxyz position " << mu[0][1] << ", " << mu[0][2] << ", " << mu[0][3];
-    LOG(DEBUG) << "MuDIS: mu weight " << w;
+    LOG(DEBUG) << "MuDIS: mu weight*DISmultiplicity  " << w;
+    LOG(DEBUG) << "MuDIS: mu DIS cross section " << cross_sec;
     LOG(DEBUG) << "MuDIS: start position " << start[0] << ", " << start[1] << ", " << start[2];
     LOG(DEBUG) << "MuDIS: end position " << end[0] << ", " << end[1] << ", " << end[2];
+
     Double_t bparam;
     Double_t mparam[8];
     bparam = MeanMaterialBudget(start, end, mparam);
@@ -339,12 +330,12 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg)
                   -1,
                   false,   // tracking disabled
                   mu[0][4],
-                  t_DIS,   // shift time of the incoming muon track wrt t_muon from the input file.
-                  w);      // weight associated with a spill.
+                  t_DIS,                   // shift time of the incoming muon track wrt t_muon from the input file.
+                  w * DIS_multiplicity);   // muon weight associated with a spill* DISmultiplicity
 
     // outgoing DIS particles, [did,dpx,dpy,dpz,E], put density along trajectory as weight, g/cm^2
 
-    w = mparam[0] * mparam[4];   // modify weight, by multiplying with average densiy * track length
+    w = mparam[0] * mparam[4];   // modify weight, by multiplying with average density * track length
 
     for (auto&& particle : *dPart) {
         TVectorD* Part = dynamic_cast<TVectorD*>(particle);
@@ -353,8 +344,24 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg)
                    << (*Part)[4];
         LOG(DEBUG) << "muon DIS Generator out part pos " << xmu << " " << ymu << "" << zmu;
         LOG(DEBUG) << "muon DIS Generator out part w " << w;
-        cpg->AddTrack(
-            int((*Part)[0]), (*Part)[1], (*Part)[2], (*Part)[3], xmu, ymu, zmu, 0, true, (*Part)[4], t_DIS, w);
+
+        if (int(mu[0][0]) == int((*Part)[0])) {
+            cpg->AddTrack(int((*Part)[0]),
+                          (*Part)[1],
+                          (*Part)[2],
+                          (*Part)[3],
+                          xmu,
+                          ymu,
+                          zmu,
+                          0,
+                          true,
+                          (*Part)[4],
+                          t_DIS,
+                          cross_sec);
+        } else {
+            cpg->AddTrack(
+                int((*Part)[0]), (*Part)[1], (*Part)[2], (*Part)[3], xmu, ymu, zmu, 0, true, (*Part)[4], t_DIS, w);
+        }
     }
 
     // Soft interaction tracks
