@@ -3,7 +3,6 @@
 
 import argparse
 import logging
-import os
 
 import ROOT as r
 <<<<<<< HEAD
@@ -104,17 +103,17 @@ def modify_file(inputfile, muonfile):
 =======
 
 
-def read_file():
+def inspect_file(inputfile):
     """Inspecting the produced file for successfully added muon veto points."""
-    inputFile = r.TFile.Open(args.inputfile, "READ")
-    input_tree = inputFile.cbmsim
+    input_file = r.TFile.Open(inputfile, "READ")
+    input_tree = input_file.cbmsim
     input_tree.GetEntry(0)
 
     muons = False
     for hit in input_tree.vetoPoint:
         if hit.GetTrackID() == 0:
             muons = True
-    inputFile.Close()
+    input_file.Close()
 
     if muons:
         print("File is already updated with incoming muon info. Nothing to do.")
@@ -126,32 +125,33 @@ def read_file():
         return True
 
 
-def modify_file():
-    """Modify the input file with muon info."""
-    if args.inputfile[0:4] == "/eos":
-        args.inputfile = os.environ["EOSSHIP"] + args.inputfile
+def modify_file(inputfile, muonfile):
+    """Add information from original muon to input simulation file."""
+    logging.warning(f"{inputfile} will be opened for modification")
 
-    logging.warning(f"{args.inputfile} opened for modification")
-
-    inputFile = r.TFile.Open(args.inputfile, "UPDATE")
+    input_file = r.TFile.Open(inputfile, "UPDATE")
     try:
-        input_tree = inputFile.cbmsim
+        input_tree = input_file.cbmsim
     except Exception as e:
         print(f"Error: {e}")
-        inputFile.Close()
+        input_file.Close()
         exit(1)
 
     # Open the external file with additional vetoPoints
-    muonFile = r.TFile.Open(args.muonfile, "READ")
+    muon_file = r.TFile.Open(muonfile, "READ")
     try:
-        muon_tree = muonFile.DIS
+        muon_tree = muon_file.DIS
     except Exception as e:
         print(f"Error: {e}")
-        muonFile.Close()
+        muon_file.Close()
         exit(1)
 
+<<<<<<< HEAD
     inputFile.cd()
 >>>>>>> 7747b728 (Added MuonDIS directory for updated scripts)
+=======
+    input_file.cd()
+>>>>>>> e494e97a (Avoid listdir for non-directory case)
     output_tree = input_tree.CloneTree(
         0
     )  # Clone the structure of the existing tree, but do not copy the entries
@@ -219,48 +219,52 @@ else:
     muons_found = inspect_file(args.inputfile, args.muonfile, print_table=True)
 =======
     # Access the vetoPoint branch in the original and external trees
-    originalVetoPoints = r.TClonesArray("vetoPoint")
-    muonVetoPoints = r.TClonesArray("vetoPoint")
-    combinedVetoPoints = r.TClonesArray("vetoPoint")
+    original_vetoPoint = r.TClonesArray("vetoPoint")
+    muon_vetoPoint = r.TClonesArray("vetoPoint")
+    combined_vetoPoint = r.TClonesArray("vetoPoint")
 
-    input_tree.SetBranchAddress("vetoPoint", originalVetoPoints)
-    muon_tree.SetBranchAddress("muon_vetoPoints", muonVetoPoints)
-    output_tree.SetBranchAddress("vetoPoint", combinedVetoPoints)
+    input_tree.SetBranchAddress("vetoPoint", original_vetoPoint)
+    muon_tree.SetBranchAddress("muon_vetoPoints", muon_vetoPoint)
+    output_tree.SetBranchAddress("vetoPoint", combined_vetoPoint)
 
     for input_event, muon_event in zip(input_tree, muon_tree):
         interaction_point = r.TVector3()
         input_event.MCTrack[0].GetStartVertex(interaction_point)
 
-        combinedVetoPoints.Clear()
+        combined_vetoPoint.Clear()
 
         index = 0
 
-        for hit in originalVetoPoints:
-            if combinedVetoPoints.GetSize() == index:
-                combinedVetoPoints.Expand(index + 1)
-            combinedVetoPoints[index] = hit
+        for hit in original_vetoPoint:
+            if combined_vetoPoint.GetSize() == index:
+                combined_vetoPoint.Expand(index + 1)
+            combined_vetoPoint[index] = hit  # pending fix to support ROOT 6.32+
             index += 1
 
-        for hit in muonVetoPoints:
+        for hit in muon_vetoPoint:
             if hit.GetZ() < interaction_point.Z():
-                if combinedVetoPoints.GetSize() == index:
-                    combinedVetoPoints.Expand(index + 1)
-                combinedVetoPoints[index] = hit
+                if combined_vetoPoint.GetSize() == index:
+                    combined_vetoPoint.Expand(index + 1)
+                combined_vetoPoint[index] = hit  # pending fix to support ROOT 6.32+
                 index += 1
 
         output_tree.Fill()
 
     # Write the updated tree back to the same file
-    inputFile.cd()
+    input_file.cd()
     output_tree.Write("cbmsim", r.TObject.kOverwrite)
-    inputFile.Close()
-    muonFile.Close()
+    input_file.Close()
+    muon_file.Close()
 
-    print(f"File updated with incoming muon info as {args.inputfile}")
+    print(f"File updated with incoming muon info as {inputfile}")
 
 
-add_muons = read_file()
+add_muons = inspect_file(args.inputfile)
 
 if add_muons:
+<<<<<<< HEAD
     modify_file()
 >>>>>>> 7747b728 (Added MuonDIS directory for updated scripts)
+=======
+    modify_file(args.inputfile, args.muonfile)
+>>>>>>> e494e97a (Avoid listdir for non-directory case)
