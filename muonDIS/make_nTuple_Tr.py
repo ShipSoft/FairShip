@@ -67,6 +67,8 @@ fsel = open(selectedmuons, "w")
 logging.basicConfig(level=logging.INFO)
 
 for inputFolder in os.listdir(path):
+    if not os.path.isdir(os.path.join(path, inputFolder)):
+        continue
     for subFolder in os.listdir(os.path.join(path, inputFolder)):
         if not os.path.isdir(os.path.join(path, inputFolder, subFolder)):
             continue
