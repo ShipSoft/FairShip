@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""Script to generate DIS events for muons in Pythia6, and sve to a ROOT file (along with the original muon's soft interactions)."""
+"""Script to generate DIS events for muons in Pythia6, and save them to a ROOT file (along with the original muon's soft interactions)."""
 
 import argparse
 import logging
@@ -10,6 +10,39 @@ import ROOT as r
 
 logging.basicConfig(level=logging.INFO)
 PDG = r.TDatabasePDG.Instance()
+
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument("-f", "--inputFile", help="Input file to use", required=True)
+parser.add_argument(
+    "-i",
+    "--firstEvent",
+    dest="first_mu_event",
+    help="First event of muon file to use",
+    required=False,
+    default=0,
+    type=int,
+)
+parser.add_argument(
+    "-n",
+    "--nEvents",
+    dest="n_events",
+    help="Number of muons to generate DIS for",
+    required=False,
+    default=10,
+    type=int,
+)
+parser.add_argument(
+    "-nDISPerMuon",
+    "--nDIS",
+    help="Number of DIS per muon to generate",
+    required=False,
+    default=1000,
+    type=int,
+)
+
+args = parser.parse_args()
+n_events = args.n_events
+first_mu_event = args.first_mu_event
 
 
 def rotate(px, py, pz, theta, phi):
@@ -26,29 +59,32 @@ def rotate(px, py, pz, theta, phi):
     return rotated_momentum.X(), rotated_momentum.Y(), rotated_momentum.Z()
 
 
+def update_file(filename, final_xsec):
+    """Update the DIS cross section of the muon to the converged value from Pythia."""
+    file = r.TFile.Open(filename, "update")
+
+    original_tree = file.DIS
+    updated_tree = original_tree.CloneTree(0)
+
+    iMuon = r.TClonesArray("TVectorD")
+    updated_tree.Branch("InMuon", iMuon, 32000, -1)
+
+    for i, event in enumerate(original_tree):
+        in_muon = event.InMuon
+        mu = in_muon[0]
+        mu[10] = final_xsec[int(first_mu_event + i / args.nDIS)]
+        iMuon[0] = mu
+        updated_tree.Fill()
+
+    file.cd()
+    updated_tree.Write("DIS", r.TObject.kOverwrite)
+    file.Close()
+    logging.info("Muon DIS successfully updated.")
+
+
 def makeMuonDIS():
     """Generate DIS events."""
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("-f", "--inputFile", help="Input file to use", required=True)
-    parser.add_argument(
-        "-nJob", "--nJob", type=int, help="Process ID, gives muon index", required=True
-    )
-    parser.add_argument(
-        "-nPerJobs",
-        "--nPerJobs",
-        type=int,
-        help="The number of muons per file",
-        required=True,
-    )
-    parser.add_argument(
-        "-nDISPerMuon",
-        "--nDIS",
-        type=int,
-        help="Number of DIS per muon to generate",
-        required=True,
-    )
-
-    args = parser.parse_args()
+    final_xsec = {}
 
     logging.info(f"Opening input file: {args.inputFile}")
     muonFile = r.TFile.Open(args.inputFile, "read")
@@ -56,18 +92,16 @@ def makeMuonDIS():
     try:
         muon_tree = muonFile.MuonAndSoftInteractions
     except Exception as e:
-        print(f"Error: {e}")
+        logging.error(e)
         muonFile.Close()
         exit(1)
 
-    nPerJob = args.nPerJobs  # number of muons handled by the python script
-    nStart = args.nPerJobs * args.nJob
     logging.debug(f"Total entries in the tree: {muon_tree.GetEntries()}")
-    nEnd = min(muon_tree.GetEntries(), nStart + nPerJob)
+    last_mu_event = min(muon_tree.GetEntries(), first_mu_event + n_events)
 
-    logging.info(f"Creating output file: muonDis_{args.nJob}.root")
+    logging.info("Creating output file: muonDis.root")
 
-    outputFile = r.TFile.Open(f"muonDis_{args.nJob}.root", "recreate")
+    outputFile = r.TFile.Open("muonDis.root", "recreate")
     output_tree = r.TTree("DIS", "muon DIS")
 
     iMuon = r.TClonesArray("TVectorD")
@@ -94,11 +128,15 @@ def makeMuonDIS():
     mutype = {-13: "gamma/mu+", 13: "gamma/mu-"}
 
     myPythia.SetMSTU(11, 11)
-    logging.info(f"Processing events from {nStart} to {nEnd-1}...")
+    logging.info(
+        f"Processing muon events from {first_mu_event} to {last_mu_event-1}..."
+    )
 
     nMade = 0
 
-    for k in range(nStart, nEnd):
+    for k in range(first_mu_event, last_mu_event):
+        cross_sections = []
+
         muon_tree.GetEvent(k)
 
         imuondata = muon_tree.imuondata
@@ -123,12 +161,13 @@ def makeMuonDIS():
         logging.debug(
             f"\n\tMuon index:{k} \n\tPID = {pid}, weight = {w} \n\tpx = {px}, py = {py}, pz = {pz}, E = {E},\n\tx = {x}, y = {y}, z = {z}\n"
         )
-
         isProton = 1
         xsec = 0
 
-        mu = array("d", [pid, px, py, pz, E, x, y, z, w, isProton, xsec, time_muon])
-        muPart = r.TVectorD(12, mu)
+        mu = array(
+            "d", [pid, px, py, pz, E, x, y, z, w, isProton, xsec, time_muon, args.nDIS]
+        )
+        muPart = r.TVectorD(13, mu)
         myPythia.Initialize("FIXT", mutype[pid], "p+", p)  # target = "p+"
         myPythia.Pylist(1)
 
@@ -150,6 +189,7 @@ def makeMuonDIS():
 
             for itrk in range(1, myPythia.GetN() + 1):
                 xsec = myPythia.GetPARI(1)
+
                 muPart[10] = xsec
                 did = myPythia.GetK(itrk, 2)
                 dpx, dpy, dpz = rotate(
@@ -169,9 +209,11 @@ def makeMuonDIS():
                     dPartDIS.Expand(nPart + 10)
                 # dPartDIS.ConstructedAt(nPart).Use(part) #to be adapted later
                 dPartDIS[nPart] = part
+
                 if itrk == 1:
-                    with open(f"sigmadata_{args.nJob}.txt", "a") as fcross:
-                        fcross.write(f"{xsec}\n")
+                    logging.debug(f"cross section of event is {xsec}")
+
+            cross_sections.append(xsec)
 
             dPartSoft.Clear()
 
@@ -211,6 +253,8 @@ def makeMuonDIS():
 
             output_tree.Fill()
 
+        final_xsec[k] = xsec
+
         nMade += 1
 
         if nMade % 10 == 0:
@@ -220,8 +264,12 @@ def makeMuonDIS():
     output_tree.Write()
     myPythia.SetMSTU(11, 6)
     logging.info(
-        f"DIS generated for muons (index {nStart} - {nEnd-1}) , output saved in muonDis_{args.nJob}.root, nDISPerMuon = {args.nDIS}"
+        f"DIS generated for muons (index {first_mu_event} - {last_mu_event-1}) , output saved in muonDis.root, nDISPerMuon = {args.nDIS}"
     )
+    outputFile.Close()
+    muonFile.Close()
+
+    update_file("muonDis.root", final_xsec)
 
 
 if __name__ == "__main__":

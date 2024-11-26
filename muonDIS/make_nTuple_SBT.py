@@ -10,9 +10,12 @@ import shipunit as u
 
 # Argument parser setup
 parser = argparse.ArgumentParser(description=__doc__)
-parser.add_argument("-test", dest="testing_code", help="Run Test", action="store_true")
+parser.add_argument("--test", dest="testing_code", help="Run Test", action="store_true")
 parser.add_argument(
-    "-p", dest="path", help="path to muon background files", required=False
+    "-p",
+    "--path",
+    help="path to muon background files",
+    default="/eos/experiment/ship/simulation/bkg/MuonBack_2024helium/8070735",
 )
 parser.add_argument(
     "-o",
@@ -41,10 +44,7 @@ if args.testing_code:
 else:
     selectedmuons = "SelectedMuonsSBT.txt"
 
-if args.path:
-    path = args.path
-else:
-    path = "/eos/experiment/ship/simulation/bkg/MuonBack_2024helium/sc_v6_10_spills"
+path = args.path
 
 fsel = open(selectedmuons, "w")
 
@@ -65,97 +65,97 @@ output_tree.Branch("muon_vetoPoints", muon_vetoPoints)
 logging.basicConfig(level=logging.INFO)
 
 for inputFolder in os.listdir(path):
-    for subFolder in os.listdir(os.path.join(path, inputFolder)):
-        if not os.path.isdir(os.path.join(path, inputFolder, subFolder)):
-            continue
+    if not os.path.isdir(os.path.join(path, inputFolder)):
+        continue
 
-        if args.testing_code and ev >= 100000:
-            break
+    if args.testing_code and ev >= 100000:
+        break
 
-        logging.info(f"Processing folder: {inputFolder}/{subFolder}")
+    logging.info(f"Processing folder: {inputFolder}")
+
+    f = None
+    try:
         f = r.TFile.Open(
-            os.path.join(
-                path, inputFolder, subFolder, "ship.conical.MuonBack-TGeant4.root"
-            ),
+            os.path.join(path, inputFolder, "ship.conical.MuonBack-TGeant4.root"),
             "read",
         )
+        tree = f.cbmsim
+    except Exception as e:
+        print(f"Error :{e}")
 
-        try:
-            tree = f.cbmsim
-        except Exception as e:
-            print(f"Error :{e}")
+        if f:
             f.Close()
-            continue
+        continue
 
-        for event in tree:
-            ev += 1
-            numHitsPermuon = 0
+    for event in tree:
+        ev += 1
+        numHitsPermuon = 0
 
-            # saving soft tracks
-            track_array.Clear()
+        # saving soft tracks
+        track_array.Clear()
 
-            muon_id = None
-            for itrk in range(event.MCTrack.GetEntries()):
-                # loops through MCTracks to find the incoming Muon's track id.
-                if abs(event.MCTrack[itrk].GetPdgCode()) == 13:
-                    muon_id = itrk
-                    break
+        muon_id = None
+        for itrk in range(event.MCTrack.GetEntries()):
+            # loops through MCTracks to find the incoming Muon's track id.
+            if abs(event.MCTrack[itrk].GetPdgCode()) == 13:
+                muon_id = itrk
+                break
 
-            for track in event.MCTrack:
-                if track.GetMotherId() == muon_id and (
-                    not track.GetProcName().Data() == "Muon nuclear interaction"
-                ):
-                    track_array.Add(track)
+        for track in event.MCTrack:
+            if track.GetMotherId() == muon_id and (
+                not track.GetProcName().Data() == "Muon nuclear interaction"
+            ):
+                track_array.Add(track)
 
-            index = 0
-            muon_vetoPoints.Clear()
+        index = 0
+        muon_vetoPoints.Clear()
 
-            # saving the incoming muon's veto response
-            for hit in event.vetoPoint:
-                detID = hit.GetDetectorID()
-                pid = hit.PdgCode()
-                if 1000 < detID < 999999 and abs(pid) == 13:
-                    if muon_vetoPoints.GetSize() == index:
-                        muon_vetoPoints.Expand(index + 1)
-                    muon_vetoPoints[index] = hit
-                    index += 1
+        # saving the incoming muon's veto response
+        for hit in event.vetoPoint:
+            detID = hit.GetDetectorID()
+            pid = hit.PdgCode()
+            if 1000 < detID < 999999 and abs(pid) == 13:
+                if muon_vetoPoints.GetSize() == index:
+                    muon_vetoPoints.Expand(index + 1)
+                muon_vetoPoints[index] = hit
+                index += 1
 
-            for hit in event.vetoPoint:
-                detID = hit.GetDetectorID()
-                pid = hit.PdgCode()
-                trackID = hit.GetTrackID()
+        for hit in event.vetoPoint:
+            detID = hit.GetDetectorID()
+            pid = hit.PdgCode()
+            trackID = hit.GetTrackID()
 
-                if abs(pid) == 13:
-                    numHitsPermuon += 1
-                    if ev not in processed_events:
-                        processed_events.add(ev)
-                        P = r.TMath.Sqrt(
-                            hit.GetPx() ** 2 + hit.GetPy() ** 2 + hit.GetPz() ** 2
+            if abs(pid) == 13:
+                numHitsPermuon += 1
+                if ev not in processed_events:
+                    processed_events.add(ev)
+                    P = r.TMath.Sqrt(
+                        hit.GetPx() ** 2 + hit.GetPy() ** 2 + hit.GetPz() ** 2
+                    )
+                    weight = event.MCTrack[trackID].GetWeight()
+                    hPmuon.Fill(P, weight)
+
+                    if P > 3 / u.GeV:
+                        imuondata[0] = float(pid)
+                        imuondata[1] = float(hit.GetPx() / u.GeV)
+                        imuondata[2] = float(hit.GetPy() / u.GeV)
+                        imuondata[3] = float(hit.GetPz() / u.GeV)
+                        imuondata[4] = float(hit.GetX() / u.m)
+                        imuondata[5] = float(hit.GetY() / u.m)
+                        imuondata[6] = float(hit.GetZ() / u.m)
+                        imuondata[7] = float(weight)
+                        imuondata[8] = float(hit.GetTime())
+
+                        output_tree.Fill()
+
+                        fsel.write(
+                            f"{pid} {hit.GetPx() / u.GeV} {hit.GetPy() / u.GeV} {hit.GetPz() / u.GeV} {hit.GetX() / u.m} {hit.GetY() / u.m} {hit.GetZ() / u.m} {weight}\n"
                         )
-                        weight = event.MCTrack[trackID].GetWeight()
-                        hPmuon.Fill(P, weight)
 
-                        if P > 3 / u.GeV:
-                            imuondata[0] = float(pid)
-                            imuondata[1] = float(hit.GetPx() / u.GeV)
-                            imuondata[2] = float(hit.GetPy() / u.GeV)
-                            imuondata[3] = float(hit.GetPz() / u.GeV)
-                            imuondata[4] = float(hit.GetX() / u.m)
-                            imuondata[5] = float(hit.GetY() / u.m)
-                            imuondata[6] = float(hit.GetZ() / u.m)
-                            imuondata[7] = float(weight)
-                            imuondata[8] = float(hit.GetTime())
+        if numHitsPermuon != 0:
+            hnumSegPermmuon.Fill(numHitsPermuon)
 
-                            output_tree.Fill()
-
-                            fsel.write(
-                                f"{pid} {hit.GetPx() / u.GeV} {hit.GetPy() / u.GeV} {hit.GetPz() / u.GeV} {hit.GetX() / u.m} {hit.GetY() / u.m} {hit.GetZ() / u.m} {weight}\n"
-                            )
-
-            if numHitsPermuon != 0:
-                hnumSegPermmuon.Fill(numHitsPermuon)
-
-        f.Close()
+    f.Close()
 
 
 output_file.cd()
