@@ -65,6 +65,8 @@ output_tree.Branch("muon_vetoPoints", muon_vetoPoints)
 logging.basicConfig(level=logging.INFO)
 
 for inputFolder in os.listdir(path):
+    if not os.path.isdir(os.path.join(path, inputFolder)):
+        continue
     for subFolder in os.listdir(os.path.join(path, inputFolder)):
         if not os.path.isdir(os.path.join(path, inputFolder, subFolder)):
             continue
