@@ -21,10 +21,8 @@ parser.add_argument(
     default="muonsProduction_wsoft_Tr.root",
     help="custom outputfile name",
 )
-parser.add_argument(
-    "-p", dest="path", help="path to muon background files", required=False
-)
-parser.add_argument("-test", dest="testing_code", help="Run Test", action="store_true")
+parser.add_argument("-p", "--path", help="path to muon background files")
+parser.add_argument("--test", dest="testing_code", help="Run Test", action="store_true")
 args = parser.parse_args()
 
 # Variables

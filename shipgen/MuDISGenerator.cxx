@@ -35,15 +35,7 @@ Bool_t MuDISGenerator::Init(const char* fileName, const int firstEvent)
     dPart = 0;
     dPartSoft = 0;
 
-    if (0 == strncmp("/eos", fileName, 4)) {
-        TString tmp = gSystem->Getenv("EOSSHIP");
-        tmp += fileName;
-        fInputFile = TFile::Open(tmp, "read");
-        LOGF(info, "Open external file on eos: %s", tmp.Data());
-    } else {
-        fInputFile = TFile::Open(fileName, "read");
-    }
-
+    fInputFile = TFile::Open(fileName, "read");
     fTree = dynamic_cast<TTree*>(fInputFile->Get("DIS"));
     if (!fTree) {
         LOG(FATAL) << "Error: Tree 'DIS' not found in file";
@@ -103,10 +95,6 @@ Double_t MuDISGenerator::MeanMaterialBudget(const Double_t* start, const Double_
     for (Int_t i = 0; i < 6; i++)
         bparam[i] = 0;
 
-    if (!gGeoManager) {
-        // AliFatalClass("No TGeo\n");
-        return 0.;
-    }
     //
     Double_t length;
     Double_t dir[3];
@@ -124,8 +112,7 @@ Double_t MuDISGenerator::MeanMaterialBudget(const Double_t* start, const Double_
     TGeoNode* currentnode = 0;
     TGeoNode* startnode = gGeoManager->InitTrack(start, dir);
     if (!startnode) {
-        // AliErrorClass(Form("start point out of geometry: x %f, y %f, z %f",
-        //      start[0],start[1],start[2]));
+        LOG(ERROR) << "Start point out of geometry: x " << start[0] << ", y " << start[1] << ", z " << start[2];
         return 0.0;
     }
     TGeoMaterial* material = startnode->GetVolume()->GetMedium()->GetMaterial();

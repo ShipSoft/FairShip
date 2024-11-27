@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""Script to generate DIS events for muons in Pythia6, and sve to a ROOT file (along with the original muon's soft interactions)."""
+"""Script to generate DIS events for muons in Pythia6, and save them to a ROOT file (along with the original muon's soft interactions)."""
 
 import argparse
 import logging
@@ -56,7 +56,7 @@ def makeMuonDIS():
     try:
         muon_tree = muonFile.MuonAndSoftInteractions
     except Exception as e:
-        print(f"Error: {e}")
+        logging.error(e)
         muonFile.Close()
         exit(1)
 
