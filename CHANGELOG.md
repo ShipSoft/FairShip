@@ -18,6 +18,7 @@ it in future.
 
 * Use ConstructedAt instead of remove pythonization for TClonesArray
 * Octant symmetry was incorrect for B_z when using field maps (reported and fixed by M. Ferro-Luzzi)
+* Tof calculation corrected in GenieGenerator.cxx, wrong units previously used.
 
 ### Changed
 

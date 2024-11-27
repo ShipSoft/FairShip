@@ -548,7 +548,7 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg)
     //cout << "Info GenieGenerator: prob2int " << prob2int << ", " << count << endl;
 
     Double_t zrelative=z-ztarget;
-    Double_t tof=TMath::Sqrt(x*x+y*y+zrelative*zrelative)/2.99792458e+6;
+    Double_t tof=TMath::Sqrt(x*x+y*y+zrelative*zrelative)/2.99792458e+10;
     cpg->AddTrack(neu,pout[0],pout[1],pout[2],x,y,z,-1,false,TMath::Sqrt(pout[0]*pout[0]+pout[1]*pout[1]+pout[2]*pout[2]),tof,mparam[0]*mparam[4]);
     if (not fNuOnly){
       // second, outgoing lepton
