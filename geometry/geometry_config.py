@@ -59,9 +59,9 @@ if "SC_mag" not in globals():
 if "shieldName" not in globals():
     shieldName = None
 if "DecayVolumeMedium" not in globals():
-    DecayVolumeMedium = "vacuums"
+    DecayVolumeMedium = "helium"
 if "SND" not in globals():
-    SND = True
+    SND = False
 
 with ConfigRegistry.register_config("basic") as c:
 
