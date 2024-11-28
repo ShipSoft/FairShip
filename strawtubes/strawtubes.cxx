@@ -2,6 +2,9 @@
 // 7/10/2015
 // E. van Herwijnen eric.van.herwijnen@cern.ch
 // Also contains (for the moment) the veto station
+//
+// The compact straw geometry
+// updated by W.-C. Marty Lee 23.08.2024
 
 #include "strawtubes.h"
 #include "strawtubesPoint.h"
@@ -220,21 +223,15 @@ void strawtubes::SetOuterStrawDiameter(Double_t outerstrawdiameter)
 }
 
 
-void strawtubes::SetStrawPitch(Double_t strawpitch,Double_t layer_offset, Double_t plane_offset)
+void strawtubes::SetStrawPitch(Double_t strawpitch, Double_t layer_offset)
 {
      fStraw_pitch = strawpitch;                                 //!  Distance (x) between straws in one layer
      fOffset_layer12 = layer_offset;
-     fOffset_plane12 = plane_offset;
 }
 
 void strawtubes::SetDeltazLayer(Double_t deltazlayer)
 {
      fDeltaz_layer12 = deltazlayer;                              //! Distance (z) between layer 1&2
-}
-
-void strawtubes::SetDeltazPlane(Double_t deltazplane)
-{
-     fDeltaz_plane12 = deltazplane;                              //! Distance (z) between plane 1&2
 }
 
 void strawtubes::SetStrawsPerLayer(Int_t strawsperlayer)
@@ -244,7 +241,7 @@ void strawtubes::SetStrawsPerLayer(Int_t strawsperlayer)
 
 void strawtubes::SetStereoAngle(Double_t stereoangle)
 {
-     fView_angle = stereoangle;                                  //! Stereo angle of planes in a view
+     fView_angle = stereoangle;                                  //! Stereo angle of layers in a view
      fcosphi=cos(TMath::Pi()*fView_angle/180.);
      fsinphi=sin(TMath::Pi()*fView_angle/180.);
 }
@@ -351,8 +348,6 @@ void strawtubes::ConstructGeometry()
     Double_t framewidth = 40.;
     //width of view
     Double_t viewwidth = fDeltaz_view-eps;
-    //width of plane
-    Double_t planewidth = fOuter_Straw_diameter+fDeltaz_layer12-eps;
     //width of layer
     Double_t layerwidth = fOuter_Straw_diameter;
 
@@ -443,7 +438,7 @@ void strawtubes::ConstructGeometry()
     //vetovac->SetTransparency(80);
 
     //Veto station
-    //vnb=view number; pnb=plane number; lnb=layer number; snb=straw number
+    //vnb=view number; lnb=layer number; snb=straw number
     TString nmveto = "Veto";
     TStationz=fT0z;
     for (Int_t vnb=0; vnb<2; vnb++) {
@@ -473,57 +468,41 @@ void strawtubes::ConstructGeometry()
       r5.SetAngles(angle,0,0);
       TGeoCombiTrans c5(t5, r5);
       TGeoHMatrix *h5 = new TGeoHMatrix(c5);
-      vetovac->AddNode(viewframe_veto, statnb*10000000+vnb*1000000,h5);
+      vetovac->AddNode(viewframe_veto, statnb*1000000+vnb*100000,h5);
       viewframe_veto->SetLineColor(kRed);
 
       TGeoTranslation t5p;
 
-      for (Int_t pnb=0; pnb<1; pnb++) {
-	 //plane loop
-         TString nmplane_veto = nmveto+"_plane_"; nmplane_veto += pnb;
-	 //width of the planes: z distance between layers + outer straw diameter
-	 TGeoBBox *plane_veto = new TGeoBBox("plane box", fStraw_length_veto+eps/2., fvetoydim+eps/2., planewidth/2.+3.*eps/2.);
-         TGeoVolume *planebox_veto = new TGeoVolume(nmplane_veto, plane_veto, med);
-	 //the planebox sits in the viewframe
-	 //hence z translate the plane wrt to the view
+      for (Int_t lnb=0; lnb<2; lnb++) {
+        TString nmlayer_veto = nmveto+"_layer_"; nmlayer_veto += lnb;
+	layer_veto = new TGeoBBox("layer box_veto", fStraw_length_veto+eps/4., fvetoydim+eps/4., layerwidth/2.+eps/4.);
+        TGeoVolume *layerbox_veto = new TGeoVolume(nmlayer_veto, layer_veto, med);
+	//the layerbox sits in the viewframe
+	//hence z translate the layer wrt the view
+	vetovac->AddNode(layerbox_veto, statnb*1000000+vnb*100000+lnb*10000,new TGeoTranslation(0,0,(lnb-1./2.)*fDeltaz_layer12));
+	//layer loop
+	TGeoRotation r6v;
+	TGeoTranslation t6v;
+        Int_t nr = statnb*1000000+vnb*100000+lnb*10000;
+        for (Int_t snb=1; snb<fStraws_per_layer_veto; snb++) {
+          //straw loop
+	  t6v.SetTranslation(0,fvetoydim-fStraw_pitch*snb+lnb*fOffset_layer12,0);
+	  r6v.SetAngles(90,90,0);
+	  TGeoCombiTrans c6v(t6v, r6v);
+          TGeoHMatrix *h6v = new TGeoHMatrix(c6v);
 
-	 t5.SetTranslation(0, 0,(vnb-1./2.)*fDeltaz_view+(pnb-1./2.)*fDeltaz_plane12);
-	 TGeoCombiTrans d5(t5, r5);
-	 TGeoHMatrix *j5 = new TGeoHMatrix(d5);
-	 vetovac->AddNode(planebox_veto, statnb*10000000+vnb*1000000+pnb*100000,j5);
-
-         for (Int_t lnb=0; lnb<2; lnb++) {
-           TString nmlayer_veto = nmplane_veto+"_layer_"; nmlayer_veto += lnb;
-	   //width of the layer: (plane width-2eps)/2
-	   layer_veto = new TGeoBBox("layer box_veto", fStraw_length_veto+eps/4., fvetoydim+eps/4., layerwidth/2.+eps/4.);
-           TGeoVolume *layerbox_veto = new TGeoVolume(nmlayer_veto, layer_veto, med);
-	   //z translate the layerbox wrt the plane box (which is already rotated)
-	   planebox_veto->AddNode(layerbox_veto, statnb*10000000+vnb*1000000+pnb*100000+lnb*10000,new TGeoTranslation(0,0,(lnb-1./2.)*fDeltaz_layer12));
-	   //layer loop
-	   TGeoRotation r6v;
-	   TGeoTranslation t6v;
-           Int_t nr = statnb*10000000+vnb*1000000+pnb*100000+lnb*10000;
-             for (Int_t snb=1; snb<fStraws_per_layer_veto; snb++) {
-               //straw loop
-	       t6v.SetTranslation(0,fvetoydim-fStraw_pitch*snb-fOffset_plane12*pnb+lnb*fOffset_layer12,0);
-	       r6v.SetAngles(90,90,0);
-	       TGeoCombiTrans c6v(t6v, r6v);
-               TGeoHMatrix *h6v = new TGeoHMatrix(c6v);
-
-	       layerbox_veto->AddNode(straw_veto,nr+1000+snb,h6v);
-	       layerbox_veto->AddNode(gas_veto,  nr+2000+snb,h6v);
-               layerbox_veto->AddNode(wire_veto, nr+3000+snb,h6v);
-	     //end of straw loop
-           }
-	   //end of layer loop
+	  layerbox_veto->AddNode(straw_veto,nr+1000+snb,h6v);
+	  layerbox_veto->AddNode(gas_veto,  nr+2000+snb,h6v);
+          layerbox_veto->AddNode(wire_veto, nr+3000+snb,h6v);
+	  //end of straw loop
         }
-        //end of plane loop
+	//end of layer loop
       }
       //end of view loop
      } }
      // end of veto station loop
     //Tracking stations
-    //statnb=station number; vnb=view number; pnb=plane number; lnb=layer number; snb=straw number
+    //statnb=station number; vnb=view number; lnb=layer number; snb=straw number
 
     //New scalable endpoints of vacuum boxes which cover rotated view frames
 
@@ -617,52 +596,34 @@ void strawtubes::ConstructGeometry()
             TGeoCombiTrans c5(t5, r5);
             TGeoHMatrix *h5 = new TGeoHMatrix(c5);
 
-	    vac_12->AddNode(viewframe_12, statnb*10000000+vnb*1000000,h5);
+	    vac_12->AddNode(viewframe_12, statnb*1000000+vnb*100000,h5);
 	    viewframe_12->SetLineColor(kRed);
 
-	    for (Int_t pnb=0; pnb<1; pnb++) {
-	      //plane loop
-	      TString nmplane_12 = nmview_12+"_plane_";
-	      nmplane_12 += pnb;
-	      TGeoBBox *plane_12 = new TGeoBBox("plane box_12", fStraw_length_12+eps/2, ftr12ydim+eps/2, planewidth/2.+3.*eps/2);
- 	      TGeoVolume *planebox_12 = new TGeoVolume(nmplane_12, plane_12, med);
+            for (Int_t lnb=0; lnb<2; lnb++) {
 
-	      //the planebox sits in the viewframe
-	      //hence z translate the plane wrt to the view
-	      TGeoTranslation t3;
-	      t3.SetTranslation(0, 0,(vnb-3./2.)*(fDeltaz_view)+(pnb-1./2.)*fDeltaz_plane12);
-	      TGeoCombiTrans d3(t3, r5);
-	      TGeoHMatrix *j3 = new TGeoHMatrix(d3);
-	      vac_12->AddNode(planebox_12, statnb*10000000+vnb*1000000+pnb*100000,j3);
+	      //the layerbox sits in the viewframe
+	      //hence z translate the layer wrt the view
+	      TString nmlayer_12 = nmview_12+"_layer_"; nmlayer_12 += lnb;
+	      TGeoBBox *layer_12 = new TGeoBBox("layer box_12", fStraw_length_12+eps/4, ftr12ydim+eps/4, layerwidth/2.+eps/4);
+	      TGeoVolume *layerbox_12 = new TGeoVolume(nmlayer_12, layer_12, med);
+	      vac_12->AddNode(layerbox_12, statnb*1000000+vnb*100000+lnb*10000,new TGeoTranslation(0,0,(lnb-1./2.)*fDeltaz_layer12));
 
-              for (Int_t lnb=0; lnb<2; lnb++) {
+              //layer loop
+	      TGeoRotation r6s;
+	      TGeoTranslation t6s;
+              for (Int_t snb=1; snb<fStraws_per_layer_tr12; snb++) {
+                //straw loop
+	        t6s.SetTranslation(0,ftr12ydim-fStraw_pitch*snb+lnb*fOffset_layer12,0);
+                r6s.SetAngles(90,90,0);
+	        TGeoCombiTrans c6s(t6s, r6s);
+                TGeoHMatrix *h6s = new TGeoHMatrix(c6s);
+	        layerbox_12->AddNode(straw_12,statnb*1000000+vnb*100000+lnb*10000+1000+snb,h6s);
+	        layerbox_12->AddNode(gas_12,statnb*1000000+vnb*100000+lnb*10000+2000+snb,h6s);
+                layerbox_12->AddNode(wire_12,statnb*1000000+vnb*100000+lnb*10000+3000+snb,h6s);
 
-	         //width of the layer: (plane width-2*eps)/2
-
-	         //z translate the layerbox wrt the plane box (which is already rotated)
-		 TString nmlayer_12 = nmplane_12+"_layer_"; nmlayer_12 += lnb;
-		 TGeoBBox *layer_12 = new TGeoBBox("layer box_12", fStraw_length_12+eps/4, ftr12ydim+eps/4, layerwidth/2.+eps/4);
-		 TGeoVolume *layerbox_12 = new TGeoVolume(nmlayer_12, layer_12, med);
-	         planebox_12->AddNode(layerbox_12, statnb*10000000+vnb*1000000+pnb*100000+lnb*10000,new TGeoTranslation(0,0,(lnb-1./2.)*fDeltaz_layer12));
-
-                 //layer loop
-	         TGeoRotation r6s;
-	         TGeoTranslation t6s;
-                 for (Int_t snb=1; snb<fStraws_per_layer_tr12; snb++) {
-                   //straw loop
-	           t6s.SetTranslation(0,ftr12ydim-fStraw_pitch*snb-fOffset_plane12*pnb+lnb*fOffset_layer12,0);
-                   r6s.SetAngles(90,90,0);
-	           TGeoCombiTrans c6s(t6s, r6s);
-                   TGeoHMatrix *h6s = new TGeoHMatrix(c6s);
-	           layerbox_12->AddNode(straw_12,statnb*10000000+vnb*1000000+pnb*100000+lnb*10000+1000+snb,h6s);
-	           layerbox_12->AddNode(gas_12,statnb*10000000+vnb*1000000+pnb*100000+lnb*10000+2000+snb,h6s);
-                   layerbox_12->AddNode(wire_12,statnb*10000000+vnb*1000000+pnb*100000+lnb*10000+3000+snb,h6s);
-
-                 //end of straw loop
-                 }
-              //end of layer loop
+                //end of straw loop
               }
-	    //end of plane loop
+              //end of layer loop
             }
           //end of view loop
           }
@@ -714,52 +675,34 @@ void strawtubes::ConstructGeometry()
             TGeoCombiTrans c5(t5, r5);
             TGeoHMatrix *h5 = new TGeoHMatrix(c5);
 
-	    vac->AddNode(viewframe, statnb*10000000+vnb*1000000,h5);
+	    vac->AddNode(viewframe, statnb*1000000+vnb*100000,h5);
 	    viewframe->SetLineColor(kRed);
 
-	    for (Int_t pnb=0; pnb<1; pnb++) {
-	      //plane loop
-	      TString nmplane = nmview+"_plane_";
-	      nmplane += pnb;
-	      TGeoBBox *plane = new TGeoBBox("plane box", fStraw_length+eps/2, ftr34ydim+eps/2, planewidth/2.+3.*eps/2);
- 	      TGeoVolume *planebox = new TGeoVolume(nmplane, plane, med);
+            for (Int_t lnb=0; lnb<2; lnb++) {
 
-	      //the planebox sits in the viewframe
-	      //hence z translate the plane wrt to the view
-	      TGeoTranslation t3;
-	      t3.SetTranslation(0, 0,(vnb-3./2.)*(fDeltaz_view)+(pnb-1./2.)*fDeltaz_plane12);
-	      TGeoCombiTrans d3(t3, r5);
-	      TGeoHMatrix *j3 = new TGeoHMatrix(d3);
-	      vac->AddNode(planebox, statnb*10000000+vnb*1000000+pnb*100000,j3);
+	      //the layerbox sits in the viewframe
+              //hence z translate the layer wrt the view
+	      TString nmlayer = nmview+"_layer_"; nmlayer += lnb;
+	      TGeoBBox *layer = new TGeoBBox("layer box", fStraw_length+eps/4, ftr34ydim+eps/4, layerwidth/2.+eps/4);
+	      TGeoVolume *layerbox = new TGeoVolume(nmlayer, layer, med);
+	      vac->AddNode(layerbox, statnb*1000000+vnb*100000+lnb*10000,new TGeoTranslation(0,0,(lnb-1./2.)*fDeltaz_layer12));
 
-              for (Int_t lnb=0; lnb<2; lnb++) {
+              //layer loop
+	      TGeoRotation r6s;
+	      TGeoTranslation t6s;
+              for (Int_t snb=1; snb<fStraws_per_layer_tr34; snb++) {
+                //straw loop
+	        t6s.SetTranslation(0,ftr34ydim-fStraw_pitch*snb+lnb*fOffset_layer12,0);
+                r6s.SetAngles(90,90,0);
+	        TGeoCombiTrans c6s(t6s, r6s);
+                TGeoHMatrix *h6s = new TGeoHMatrix(c6s);
+	        layerbox->AddNode(straw,statnb*1000000+vnb*100000+lnb*10000+1000+snb,h6s);
+	        layerbox->AddNode(gas,statnb*1000000+vnb*100000+lnb*10000+2000+snb,h6s);
+                layerbox->AddNode(wire,statnb*1000000+vnb*100000+lnb*10000+3000+snb,h6s);
 
-	         //width of the layer: (plane width-2*eps)/2
-
-	         //z translate the layerbox wrt the plane box (which is already rotated)
-		 TString nmlayer = nmplane+"_layer_"; nmlayer += lnb;
-		 TGeoBBox *layer = new TGeoBBox("layer box", fStraw_length+eps/4, ftr34ydim+eps/4, layerwidth/2.+eps/4);
-		 TGeoVolume *layerbox = new TGeoVolume(nmlayer, layer, med);
-	         planebox->AddNode(layerbox, statnb*10000000+vnb*1000000+pnb*100000+lnb*10000,new TGeoTranslation(0,0,(lnb-1./2.)*fDeltaz_layer12));
-
-                 //layer loop
-	         TGeoRotation r6s;
-	         TGeoTranslation t6s;
-                 for (Int_t snb=1; snb<fStraws_per_layer_tr34; snb++) {
-                   //straw loop
-	           t6s.SetTranslation(0,ftr34ydim-fStraw_pitch*snb-fOffset_plane12*pnb+lnb*fOffset_layer12,0);
-                   r6s.SetAngles(90,90,0);
-	           TGeoCombiTrans c6s(t6s, r6s);
-                   TGeoHMatrix *h6s = new TGeoHMatrix(c6s);
-	           layerbox->AddNode(straw,statnb*10000000+vnb*1000000+pnb*100000+lnb*10000+1000+snb,h6s);
-	           layerbox->AddNode(gas,statnb*10000000+vnb*1000000+pnb*100000+lnb*10000+2000+snb,h6s);
-                   layerbox->AddNode(wire,statnb*10000000+vnb*1000000+pnb*100000+lnb*10000+3000+snb,h6s);
-
-                 //end of straw loop
-                 }
-              //end of layer loop
+                //end of straw loop
               }
-	    //end of plane loop
+              //end of layer loop
             }
           //end of view loop
           }
@@ -773,23 +716,21 @@ void strawtubes::ConstructGeometry()
 }
 // -----   Public method StrawDecode    -------------------------------------------
 // -----   returns station layer ... numbers -----------------------------------
-void strawtubes::StrawDecode(Int_t detID,int &statnb,int &vnb,int &pnb,int &lnb, int &snb)
+void strawtubes::StrawDecode(Int_t detID,int &statnb,int &vnb,int &lnb, int &snb)
 {
-  statnb = detID/10000000;
-  vnb =  (detID - statnb*10000000)/1000000;
-  pnb =  (detID - statnb*10000000 - vnb*1000000)/100000;
-  lnb =  (detID - statnb*10000000 - vnb*1000000 - pnb*100000)/10000;
-  snb =   detID - statnb*10000000 - vnb*1000000 - pnb*100000 - lnb*10000 - 2000;
+  statnb = detID/1000000;
+  vnb =  (detID - statnb*1000000)/100000;
+  lnb =  (detID - statnb*1000000 - vnb*100000)/10000;
+  snb =   detID - statnb*1000000 - vnb*100000 - lnb*10000 - 2000;
 }
 // -----   Public method StrawEndPoints    -------------------------------------------
 // -----   returns top(left) and bottom(right) coordinate of straw -----------------------------------
 void strawtubes::StrawEndPoints(Int_t fDetectorID, TVector3 &vbot, TVector3 &vtop)
 // method to get end points from TGeoNavigator
 {
-    Int_t statnb = fDetectorID/10000000;
-    Int_t vnb =  (fDetectorID - statnb*10000000)/1000000;
-    Int_t pnb =  (fDetectorID- statnb*10000000 - vnb*1000000)/100000;
-    Int_t lnb =  (fDetectorID - statnb*10000000 - vnb*1000000 - pnb*100000)/10000;
+    Int_t statnb = fDetectorID/1000000;
+    Int_t vnb =  (fDetectorID - statnb*1000000)/100000;
+    Int_t lnb =  (fDetectorID - statnb*1000000 - vnb*100000)/10000;
     TString stat = "Tr";stat+=+statnb;stat+="_";stat+=statnb;
     if (statnb==5){stat="Veto_5";}
     TString view;
@@ -813,14 +754,13 @@ void strawtubes::StrawEndPoints(Int_t fDetectorID, TVector3 &vbot, TVector3 &vto
     TString prefix = "Tr";
     if (statnb==5){prefix="Veto";}
     else{prefix+=statnb;}
-    prefix+=view;prefix+="_plane_";prefix+=pnb;prefix+="_";
-    TString plane = prefix;plane+=statnb;plane+=vnb;plane+=+pnb;plane+="00000";
-    TString layer = prefix+"layer_";layer+=lnb;layer+="_";layer+=statnb;layer+=vnb;layer+=pnb;layer+=lnb;layer+="0000";
+    prefix+=view;prefix+="_";
+    TString layer = prefix+"layer_";layer+=lnb;layer+="_";layer+=statnb;layer+=vnb;layer+=lnb;layer+="0000";
     TString wire = "wire_";
     if (statnb==5){wire+="veto_";}
     wire+=(fDetectorID+1000);
     if (statnb<3){wire = "wire_12_";wire+=(fDetectorID+1000);}
-    TString path = "/";path+=stat;path+="/";path+=plane;path+="/";path+=layer;path+="/";path+=wire;
+    TString path = "/";path+=stat;path+="/";path+=layer;path+="/";path+=wire;
     Bool_t rc = nav->cd(path);
     if (not rc){
       cout << "strawtubes::StrawDecode, TgeoNavigator failed "<<path<<endl;
@@ -839,8 +779,8 @@ void strawtubes::StrawEndPointsOriginal(Int_t detID, TVector3 &bot, TVector3 &to
 // method to get end points by emulating the geometry
 {
   Double_t sinangle,cosangle;
-  Int_t statnb,vnb,pnb,lnb,snb;
-  StrawDecode(detID,statnb,vnb,pnb,lnb,snb);
+  Int_t statnb,vnb,lnb,snb;
+  StrawDecode(detID,statnb,vnb,lnb,snb);
   switch (vnb) {
      case 0:
        sinangle=0.;
@@ -863,7 +803,7 @@ void strawtubes::StrawEndPointsOriginal(Int_t detID, TVector3 &bot, TVector3 &to
        cosangle=1.;
    }
 
-  //cout << "DetID" << detID << " statnb "<<statnb<<" vnb " << vnb << " pnb " << pnb <<" lnb "<< lnb << " snb " << snb << endl;
+  //cout << "DetID" << detID << " statnb "<<statnb<<" vnb " << vnb <<" lnb "<< lnb << " snb " << snb << endl;
   // from ConstructGeometry above
   Double_t yDim = (fStraws_per_layer+1) * fStraw_pitch /2. ;
   Double_t ypos = 0.;
@@ -872,19 +812,19 @@ void strawtubes::StrawEndPointsOriginal(Int_t detID, TVector3 &bot, TVector3 &to
   Double_t xbot = 0.;
   Double_t ybot = 0.;
   if ((statnb==1)|| (statnb==2)) {
-     ypos =  ftr12ydim-fStraw_pitch*snb-fOffset_plane12*pnb+lnb*fOffset_layer12;
+     ypos =  ftr12ydim-fStraw_pitch*snb+lnb*fOffset_layer12;
      xtop = -fStraw_length_12*cosangle - ypos*sinangle;
      ytop = -fStraw_length_12*sinangle + ypos*cosangle;
      xbot =  fStraw_length_12*cosangle - ypos*sinangle;
      ybot =  fStraw_length_12*sinangle + ypos*cosangle;}
   if ((statnb==3)|| (statnb==4)) {
-     ypos =  ftr34ydim-fStraw_pitch*snb-fOffset_plane12*pnb+lnb*fOffset_layer12;
+     ypos =  ftr34ydim-fStraw_pitch*snb+lnb*fOffset_layer12;
      xtop = -fStraw_length*cosangle - ypos*sinangle;
      ytop = -fStraw_length*sinangle + ypos*cosangle;
      xbot =  fStraw_length*cosangle - ypos*sinangle;
      ybot =  fStraw_length*sinangle + ypos*cosangle; }
    if (statnb==5) {
-     ypos =  fvetoydim-fStraw_pitch*snb-fOffset_plane12*pnb+lnb*fOffset_layer12;
+     ypos =  fvetoydim-fStraw_pitch*snb+lnb*fOffset_layer12;
      xtop = -fStraw_length_veto*cosangle - ypos*sinangle;
      ytop = -fStraw_length_veto*sinangle + ypos*cosangle;
      xbot =  fStraw_length_veto*cosangle - ypos*sinangle;
@@ -912,14 +852,14 @@ void strawtubes::StrawEndPointsOriginal(Int_t detID, TVector3 &bot, TVector3 &to
    }
   Double_t zpos;
   if (statnb < 5){
-    zpos = TStationz+(vnb-3./2.)*fDeltaz_view+(pnb-1./2.)*fDeltaz_plane12+(lnb-1./2.)*fDeltaz_layer12;
+    zpos = TStationz+(vnb-3./2.)*fDeltaz_view+(lnb-1./2.)*fDeltaz_layer12;
   }else{
-    zpos = TStationz+(vnb-1./2.)*fDeltaz_view+(pnb-1./2.)*fDeltaz_plane12+(lnb-1./2.)*fDeltaz_layer12;
+    zpos = TStationz+(vnb-1./2.)*fDeltaz_view+(lnb-1./2.)*fDeltaz_layer12;
   }
   top = TVector3(xtop,ytop,zpos);
   bot = TVector3(xbot,ybot,zpos);
   //cout << "dets="<< xtop << " "<< xbot << " "<<  ytop << " "<< ybot<< " "<< ypos<< " "<< fStraw_length<< " "<<detID<<endl;
-  //cout << "top/bot="<< snb << " "<< vnb << " "<<  pnb << " "<< lnb << " "<< ypos<< " "<< fOffset_layer12<< " "<<fOffset_plane12<<endl;
+  //cout << "top/bot="<< snb << " "<< vnb << " "<< lnb << " "<< ypos<< " "<< fOffset_layer12 <<endl;
 }
 strawtubesPoint* strawtubes::AddHit(Int_t trackID, Int_t detID,
                                       TVector3 pos, TVector3 mom,

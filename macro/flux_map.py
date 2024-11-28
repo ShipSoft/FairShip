@@ -143,7 +143,7 @@ def main():
                 pid = hit.PdgCode()
                 assert pid not in [12, -12, 14, -14, 16, -16]
                 detector_ID = hit.GetDetectorID()
-                station = detector_ID // 10000000
+                station = detector_ID // 1000000
                 h['T{}_all'.format(station)].Fill(x, y, weight)
                 if abs(pid) == 13:
                     muon = True
