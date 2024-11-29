@@ -7,6 +7,7 @@ import shipunit as u
 import yaml
 from rootpyPickler import Unpickler
 from ShipGeoConfig import AttrDict
+from tabulate import tabulate
 
 
 class selection_check:
@@ -63,7 +64,7 @@ class selection_check:
                 (candidate_pos.X() - hit.GetX()) ** 2
                 + (candidate_pos.Y() - hit.GetY()) ** 2
                 + (candidate_pos.Z() - hit.GetZ()) ** 2
-            )  # distance to the vertex #in cm
+            )  # distance to the vertex in cm
 
             d_mom = self.tree.MCTrack[hit.GetTrackID()].GetP() / u.GeV
             mass = self.tree.MCTrack[hit.GetTrackID()].GetMass()
@@ -138,7 +139,7 @@ class selection_check:
 
         return min_distance if min_distance < 100 * u.m else 0
 
-    def dist_to_entrance_vessel(self, candidate):
+    def dist_to_vesselentrance(self, candidate):
         """Calculate the distance of the candidate decay vertex to the entrance of the decay vessel."""
         candidate_pos = ROOT.TVector3()
         candidate.GetVertex(candidate_pos)
@@ -146,31 +147,27 @@ class selection_check:
 
     def nDOF(self, candidate):
         """Return the number of degrees of freedom (nDOF) for the particle's daughter tracks."""
-        flag = True
         nmeas = []
         t1, t2 = candidate.GetDaughter(0), candidate.GetDaughter(1)
-        ndf_cut = 25  # cut on nDOF
+
         for tr in [t1, t2]:
             fit_status = self.tree.FitTracks[tr].getFitStatus()
             nmeas.append(
                 int(round(fit_status.getNdf()))
             )  # nmeas.append(fit_status.getNdf())
-            if nmeas[-1] <= ndf_cut:
-                flag = False  # dof<=25=False
-        return nmeas, flag
+
+        return np.array(nmeas)
 
     def daughtermomentum(self, candidate):
         """Return the momentum(Mag) of the particle's daughter tracks."""
-        flag = True
         daughter_mom = []
         t1, t2 = candidate.GetDaughter(0), candidate.GetDaughter(1)
         for trD in [t1, t2]:
             x = self.tree.FitTracks[trD]
             xx = x.getFittedState()
             daughter_mom.append((xx.getMom().Mag()))
-            if daughter_mom[-1] < 1 * u.GeV:
-                flag = False
-        return daughter_mom, flag
+
+        return np.array(daughter_mom)
 
     def invariant_mass(self, candidate):
         """Invariant mass of the candidate."""
@@ -203,39 +200,120 @@ class selection_check:
     def chi2nDOF(self, candidate):
         """Return the reduced chi^2 of the particle's daughter tracks."""
         t1, t2 = candidate.GetDaughter(0), candidate.GetDaughter(1)
-        # cut on chi2nDOF
-        flag = True
-        chi2ndf_cut = 5
+
         chi2ndf = []
         for tr in [t1, t2]:
             fit_status = self.tree.FitTracks[tr].getFitStatus()
             chi2ndf.append(fit_status.getChi2() / fit_status.getNdf())
-            if chi2ndf[-1] >= chi2ndf_cut:
-                flag = False
-        return chi2ndf, flag
 
-    def preselection_cut(self, candidate, IP_cut=250):
+        return np.array(chi2ndf)
+
+    def preselection_cut(self, candidate, IP_cut=250, show_table=True):
         """Umbrella method to apply the pre-selection cuts on the candidate."""
-        if len(self.tree.Particles) != 1:
-            return False
-        if self.dist_to_innerwall(candidate) <= 5 * u.cm:
-            return False
-        if not (self.is_in_fiducial(candidate)):
-            return False
-        if self.dist_to_entrance_vessel(candidate) < 100 * u.cm:
-            return False
-        if self.impact_parameter(candidate) > IP_cut:
-            return False
-        nmeas, flag = self.nDOF(candidate)
-        if not (flag):
-            return False
-        chi2ndf, flag = self.chi2nDOF(candidate)
-        if not (flag):
-            return False
-        d_mom, flag = self.daughtermomentum(candidate)
-        if not (flag):
-            return False
-        if self.DOCA(candidate) >= 1 * u.cm:
-            return False
+        flag = True
 
-        return True
+        if len(self.tree.Particles) != 1:
+            flag = False
+        if not (self.is_in_fiducial(candidate)):
+            flag = False
+        if self.dist_to_innerwall(candidate) <= 5 * u.cm:
+            flag = False
+        if self.dist_to_vesselentrance(candidate) <= 100 * u.cm:
+            flag = False
+        if self.impact_parameter(candidate) >= IP_cut * u.cm:
+            flag = False
+        if self.DOCA(candidate) >= 1 * u.cm:
+            flag = False
+        if np.any(self.nDOF(candidate) <= 25 * u.cm):
+            flag = False
+        if np.any(self.chi2nDOF(candidate) >= 5 * u.cm):
+            flag = False
+        if np.any(self.daughtermomentum(candidate) <= 1 * u.GeV):
+            flag = False
+
+        if show_table:
+            table = [
+                [
+                    "Number of candidates in event",
+                    len(self.tree.Particles),
+                    "==1",
+                    len(self.tree.Particles) == 1,
+                ],
+                [
+                    "Time @ decay vertex (ns)",
+                    self.define_candidate_time(candidate),
+                    "",
+                    "",
+                ],
+                [
+                    "Impact Parameter (cm)",
+                    self.impact_parameter(candidate),
+                    f"IP < {IP_cut*u.cm} cm",
+                    self.impact_parameter(candidate) < IP_cut * u.cm,
+                ],
+                [
+                    "DOCA (cm)",
+                    self.DOCA(candidate),
+                    "DOCA < 1 cm",
+                    self.DOCA(candidate) < 1 * u.cm,
+                ],
+                [
+                    "Is within Fiducial Volume?",
+                    self.is_in_fiducial(candidate),
+                    "True",
+                    self.is_in_fiducial(candidate),
+                ],
+                [
+                    "Dist2InnerWall (cm)",
+                    self.dist_to_innerwall(candidate),
+                    "> 5 cm",
+                    self.dist_to_innerwall(candidate) > 5 * u.cm,
+                ],
+                [
+                    "Dist2VesselEntrance (cm)",
+                    self.dist_to_vesselentrance(candidate),
+                    "> 100 cm",
+                    self.dist_to_vesselentrance(candidate) > 100 * u.cm,
+                ],
+                ["Invariant Mass (GeV)", self.invariant_mass(candidate), "", ""],
+                [
+                    "Daughter Momentum [d1, d2] (GeV)",
+                    self.daughtermomentum(candidate),
+                    "> 1 GeV",
+                    np.all(self.daughtermomentum(candidate) > 1 * u.GeV),
+                ],
+                [
+                    "Degrees of Freedom [d1, d2]",
+                    self.nDOF(candidate),
+                    "> 25",
+                    np.all(self.nDOF(candidate) > 25),
+                ],
+                [
+                    "Reduced Chi^2 [d1, d2]",
+                    self.chi2nDOF(candidate),
+                    "< 5",
+                    np.all(self.chi2nDOF(candidate) < 5),
+                ],
+                ["\033[1mPre-selection passed:\033[0m", "", "", flag],
+            ]
+
+            for row in table:
+                row[3] = (
+                    f"\033[1;32m{row[3]}\033[0m"
+                    if row[3]
+                    else f"\033[1;31m{row[3]}\033[0m"
+                )  # Green for True, Red for False
+
+            print(
+                tabulate(
+                    table,
+                    headers=[
+                        "Parameter",
+                        "Value",
+                        "Pre-selection cut",
+                        "Pre-selection Check",
+                    ],
+                    tablefmt="grid",
+                )
+            )
+        return flag

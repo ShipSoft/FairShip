@@ -1,41 +1,106 @@
 #!/usr/bin/env python
 """Example script for usage of the analysis_toolkit for signal selection ."""
 
+from argparse import ArgumentParser
+
 import analysis_toolkit
 import ROOT
+import rootUtils as ut
 
-geo_file = "geofile_full.conical.Pythia8-TGeant4.root"
-input_file = "ship.conical.Pythia8-TGeant4_rec.root"
+parser = ArgumentParser(description=__doc__)
+parser.add_argument("--path", help="Path to simulation file", default="./")
+options = parser.parse_args()
 
-f = ROOT.TFile.Open(input_file)
+
+geo_file = options.path + "/geofile_full.conical.Pythia8-TGeant4.root"
+input_file = options.path + "/ship.conical.Pythia8-TGeant4_rec.root"
+
+f = ROOT.TFile.Open(input_file, "read")
 tree = f.cbmsim
 
 selection = analysis_toolkit.selection_check(geo_file)
 
-for event_nr, event in enumerate(tree):
-    if event_nr > 200:
-        break
+hist_dict = {}
 
+ut.bookHist(hist_dict, "event_weight", " Event weight;      ; ", 100, 100, 100)
+ut.bookHist(
+    hist_dict,
+    "candidate_time",
+    " candidate time @ decay vertex; ns     ; ",
+    200,
+    100,
+    100,
+)
+ut.bookHist(hist_dict, "impact_parameter", "Impact Parameter;cm;", 200, 100, 100)
+ut.bookHist(hist_dict, "dist_to_innerwall", "Distance to Innerwall;cm;", 200, 100, 100)
+ut.bookHist(
+    hist_dict,
+    "dist_to_vesselentrance",
+    "Distance to Decay Vessel Entrance;cm;",
+    200,
+    100,
+    100,
+)
+ut.bookHist(hist_dict, "inv_mass", "Invariant mass ;GeV;", 200, 100, 100)
+ut.bookHist(hist_dict, "DOCA", "Distance of Closest Approach ;cm;", 200, 100, 100)
+ut.bookHist(
+    hist_dict,
+    "len_Particles",
+    " len(tree.Particles) ;Number of candidates per event;",
+    200,
+    100,
+    100,
+)
+ut.bookHist(
+    hist_dict,
+    "d_mom",
+    "momentum of Daughters ;d1 (GeV);d2 (GeV)",
+    200,
+    100,
+    100,
+    200,
+    100,
+    100,
+)
+ut.bookHist(hist_dict, "nDOF", "nDOF ;d1;d2", 200, 100, 100, 200, 100, 100)
+ut.bookHist(hist_dict, "chi2nDOF", "chi2nDOF ;d1;d2", 200, 100, 100, 200, 100, 100)
+
+
+for event_nr, event in enumerate(tree):
     selection.access_event(event)
 
     if len(event.Particles) == 0:
         continue
 
-    for candidate_id_in_event, signal in enumerate(tree.Particles):
-        print(f"Event:{event_nr} Candidate_index: {candidate_id_in_event}")
+    event_weight = event.MCTrack[2].GetWeight()
 
-        print(f"\t vertex time: {selection.define_candidate_time(signal)} ns")
-        print(f"\t Impact Parameter: {selection.impact_parameter(signal)} cm")
-        print(f"\t is within Fiducial volume: {selection.is_in_fiducial(signal)}")
-        print(f"\t\tDist2InnerWall: {selection.dist_to_innerwall(signal)} cm")
-        print(f"\t\tDist2EntranceLid: {selection.dist_to_entrance_vessel(signal)} cm")
-        print(f"\t Daughter momentum>1 GeV: {selection.daughtermomentum(signal)} GeV")
-        print(f"\t Invariant mass: {selection.invariant_mass(signal)} GeV")
-        print(f"\t Degrees of Freedom ([d1,d2],Cut(>25)): {selection.nDOF(signal)}")
-        print(f"\t Reduced Chi^2  ([d1,d2],Cut(<5): {selection.chi2nDOF(signal)}")
-        print(f"\t DOCA: {selection.DOCA(signal)} cm")
+    hist_dict["event_weight"].Fill(event_weight)
 
-        print(
-            f"\t Preselection Cut passed:{selection.preselection_cut(signal,IP_cut=250)}"
+    for candidate_id_in_event, signal in enumerate(event.Particles):
+        hist_dict["candidate_time"].Fill(selection.define_candidate_time(signal))
+        hist_dict["impact_parameter"].Fill(selection.impact_parameter(signal))
+        hist_dict["dist_to_innerwall"].Fill(selection.dist_to_innerwall(signal))
+        hist_dict["dist_to_vesselentrance"].Fill(
+            selection.dist_to_vesselentrance(signal)
         )
-        print("------------------------------------------------------------")
+        hist_dict["DOCA"].Fill(selection.DOCA(signal))
+        hist_dict["inv_mass"].Fill(selection.invariant_mass(signal))
+        hist_dict["len_Particles"].Fill(len(tree.Particles))
+        hist_dict["d_mom"].Fill(*selection.daughtermomentum(signal))
+        hist_dict["nDOF"].Fill(*selection.nDOF(signal))
+        hist_dict["chi2nDOF"].Fill(*selection.chi2nDOF(signal))
+
+        IP_cut = 250
+        preselection_flag = selection.preselection_cut(
+            signal, IP_cut=IP_cut, show_table=True
+        )
+
+        if preselection_flag:
+            print(
+                f"Event:{event_nr} Candidate_index: {candidate_id_in_event} <--passes the pre-selection\n\n"
+            )
+        else:
+            print(f"Event:{event_nr} Candidate_index: {candidate_id_in_event} \n\n")
+
+
+ut.writeHists(hist_dict, "preselectionparameters.root")
