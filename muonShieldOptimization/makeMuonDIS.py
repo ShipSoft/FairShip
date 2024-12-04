@@ -80,12 +80,12 @@ for k in range(nStart,nEnd):
   ctheta,stheta = ROOT.TMath.Cos(theta),ROOT.TMath.Sin(theta)
   cphi,sphi     = ROOT.TMath.Cos(phi),ROOT.TMath.Sin(phi)
   mu = array('d',[pid,px,py,pz,E,x,y,z,w])
-  muPart = ROOT.TVectorD(9,mu)
   myPythia.Initialize('FIXT',mutype[pid],'p+',p)
   for n in range(nMult):
      dPart.Clear()
      iMuon.Clear()
      tca_vec = iMuon.ConstructedAt(0)
+     muPart = ROOT.TVectorD(9, mu)
      tca_vec.ResizeTo(muPart)
      ROOT.std.swap(tca_vec, muPart)
      myPythia.GenerateEvent()
