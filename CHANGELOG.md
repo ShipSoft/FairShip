@@ -16,7 +16,7 @@ it in future.
 
 ### Fixed
 
-* Use ConstructedAt instead of remove pythonization for TClonesArray
+* Use ConstructedAt + std::swap to replace removed pythonization for TCA
 * Octant symmetry was incorrect for B_z when using field maps (reported and fixed by M. Ferro-Luzzi)
 * Tof calculation corrected in GenieGenerator.cxx, wrong units previously used.
 

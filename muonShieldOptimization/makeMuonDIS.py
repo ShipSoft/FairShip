@@ -80,12 +80,14 @@ for k in range(nStart,nEnd):
   ctheta,stheta = ROOT.TMath.Cos(theta),ROOT.TMath.Sin(theta)
   cphi,sphi     = ROOT.TMath.Cos(phi),ROOT.TMath.Sin(phi)
   mu = array('d',[pid,px,py,pz,E,x,y,z,w])
-  muPart = ROOT.TVectorD(9,mu)
   myPythia.Initialize('FIXT',mutype[pid],'p+',p)
   for n in range(nMult):
      dPart.Clear()
      iMuon.Clear()
-     iMuon.ConstructedAt(0).Use(muPart)
+     tca_vec = iMuon.ConstructedAt(0)
+     muPart = ROOT.TVectorD(9, mu)
+     tca_vec.ResizeTo(muPart)
+     ROOT.std.swap(tca_vec, muPart)
      myPythia.GenerateEvent()
 # remove all unnecessary stuff
      myPythia.Pyedit(2)
@@ -99,7 +101,9 @@ for k in range(nStart,nEnd):
 # copy to branch
       nPart = dPart.GetEntries()
       if dPart.GetSize() == nPart: dPart.Expand(nPart+10)
-      dPart.ConstructedAt(nPart).Use(part)
+      tca_vec = dPart.ConstructedAt(nPart)
+      tca_vec.ResizeTo(part)
+      ROOT.std.swap(tca_vec, part)
      nMade+=1
      if nMade%10000==0: print('made so far ',nMade)
      dTree.Fill()
