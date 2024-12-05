@@ -15,6 +15,9 @@
 
 using std::cout;
 using std::endl;
+using std::max;
+using std::min;
+
 // read events from ntuples produced with MuDIS
 // http://MuDIS.hepforge.org/manuals/MuDIS_PhysicsAndUserManual_20130615.pdf
 // MuDIS momentum GeV
@@ -241,6 +244,25 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg)
     start[1]=y-(z-start[2])*tymu;
     end[0]=x-(z-end[2])*txmu;
     end[1]=y-(z-end[2])*tymu;
+
+    // skip the event if the muon trajectory doesn't intersect the pre-set x-y range
+    // these steps save a lot of computing time!
+    // first, look for overlaps in the x or y axes - if none, continue
+
+    if (max(start[1], startY) > min(end[1], endY)) {return kTRUE;}
+    Double_t max_of_start = max(start[0], startX);
+    Double_t min_of_end = min(end[0], endX);
+    if (max_of_start > min_of_end) {return kTRUE;}
+    // then find the z range of the x-axis overlap
+    Double_t z_at_max=z-(x-max_of_start)/(txmu+1e-20);
+    Double_t z_at_min=z-(x-min_of_end)/(txmu+1e-20);
+    // finally check if for the latter z range there is also an overlap in the y axis - if none, continue
+    Double_t y_at_max=y-(z-z_at_max)*tymu;
+    Double_t y_at_min=y-(z-z_at_min)*tymu;
+    if (max( min(y_at_max, y_at_min), startY) > min( max(y_at_max, y_at_min), endY)) {
+       return kTRUE;
+    }
+    
     //cout << "MuDIS: mu xyz position " << x << ", " << y << ", " << z << endl;
     //cout << "MuDIS: mu pxyz position " << mu[0][1] << ", " << mu[0][2] << ", " << mu[0][3] << endl;
     //cout << "MuDIS: mu weight " << w << endl;
@@ -261,6 +283,14 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg)
       zmu=gRandom->Uniform(start[2],end[2]);
       xmu=x-(z-zmu)*txmu;
       ymu=y-(z-zmu)*tymu;
+
+      // check if the selected interaction position is inside the pre-set x-y range
+      //if not retry! This will force the generator to simulate interactions in our selected range!!!
+      if (xmu<startX || xmu>endX || ymu<startY || ymu>endY){
+         prob2int=0.;
+         continue;
+      }
+      
       //get local material at this point
       TGeoNode *node = gGeoManager->FindNode(xmu,ymu,zmu);
       TGeoMaterial *mat = 0;
