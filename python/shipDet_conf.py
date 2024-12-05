@@ -702,7 +702,7 @@ def configure(run, ship_geo):
             ship_geo.strawtubes.FrameLateralWidth = 1.0 * u.cm
             ship_geo.strawtubes.FrameMaterial = "aluminium"
 
-        Strawtubes = ROOT.strawtubes("Strawtubes", ROOT.kTRUE)
+        Strawtubes = ROOT.strawtubes(ship_geo.DecayVolumeMedium)
         Strawtubes.SetZpositions(
             ship_geo.vetoStation.z,
             ship_geo.TrackStation1.z,
