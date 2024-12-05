@@ -37,15 +37,29 @@ using std::cout;
 using std::endl;
 
 strawtubes::strawtubes()
-  : FairDetector("strawtubes", kTRUE, kStraw),
-    fTrackID(-1),
-    fVolumeID(-1),
-    fPos(),
-    fMom(),
-    fTime(-1.),
-    fLength(-1.),
-    fELoss(-1),
-    fstrawtubesPointCollection(new TClonesArray("strawtubesPoint"))
+    : FairDetector("Strawtubes", kTRUE, kStraw)
+    , fTrackID(-1)
+    , fVolumeID(-1)
+    , fPos()
+    , fMom()
+    , fTime(-1.)
+    , fLength(-1.)
+    , fELoss(-1)
+    , fMedium("air")
+    , fstrawtubesPointCollection(new TClonesArray("strawtubesPoint"))
+{}
+
+strawtubes::strawtubes(std::string medium)
+    : FairDetector("Strawtubes", kTRUE, kStraw)
+    , fTrackID(-1)
+    , fVolumeID(-1)
+    , fPos()
+    , fMom()
+    , fTime(-1.)
+    , fLength(-1.)
+    , fELoss(-1)
+    , fMedium(medium)
+    , fstrawtubesPointCollection(new TClonesArray("strawtubesPoint"))
 {
 }
 
@@ -337,8 +351,8 @@ void strawtubes::ConstructGeometry()
     TGeoMedium *tungsten          = gGeoManager->GetMedium("tungsten");
     InitMedium(fFrame_material);
     TGeoMedium *FrameMatPtr       = gGeoManager->GetMedium(fFrame_material);
-    InitMedium("vacuum");
-    TGeoMedium *med          = gGeoManager->GetMedium("vacuum");
+    InitMedium(fMedium.c_str());
+    TGeoMedium* med = gGeoManager->GetMedium(fMedium.c_str());
 
     gGeoManager->SetVisLevel(4);
     gGeoManager->SetTopVisible();

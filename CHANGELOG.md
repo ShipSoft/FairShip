@@ -23,6 +23,7 @@ it in future.
 ### Changed
 
 * Set Decay Volume Medium as helium (previously vacuums),can be explicitly switched to vacuum with --vacuums.
+* Medium of SST boxes will be the same as DecayVolumeMedium (previously, always vacuum)
 
 ### Removed
 

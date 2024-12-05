@@ -21,6 +21,8 @@ class strawtubes: public FairDetector
     */
     strawtubes(const char* Name, Bool_t Active);
 
+    strawtubes(std::string medium);
+
     /**      default constructor    */
     strawtubes();
 
@@ -147,9 +149,10 @@ class strawtubes: public FairDetector
     Int_t        fStraws_per_layer_tr34;  //!  Number of straws in one tr34 layer
     Double_t     v_drift;                 //! drift velocity
     Double_t     sigma_spatial;           //! spatial resolution
+    std::string fMedium;                  //! vacuum box medium
     /** container for data points */
 
-    TClonesArray*  fstrawtubesPointCollection;
+    TClonesArray* fstrawtubesPointCollection;
 
     strawtubes(const strawtubes&);
     strawtubes& operator=(const strawtubes&);
