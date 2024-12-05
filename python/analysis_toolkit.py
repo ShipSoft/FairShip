@@ -13,9 +13,8 @@ from tabulate import tabulate
 class selection_check:
     """Class to perform various selection checks on the candidate."""
 
-    def __init__(self, g):
+    def __init__(self, geo_file):
         """Initialize the selection_check class with geometry and configuration."""
-        geo_file = ROOT.TFile.Open(g, "read")
         self.geometry_manager = geo_file.FAIRGeom
         unpickler = Unpickler(geo_file)
         self.ship_geo = unpickler.load("ShipGeo")
@@ -208,8 +207,12 @@ class selection_check:
 
         return np.array(chi2ndf)
 
-    def preselection_cut(self, candidate, IP_cut=250, show_table=True):
-        """Umbrella method to apply the pre-selection cuts on the candidate."""
+    def preselection_cut(self, candidate, IP_cut=250, show_table=False):
+        """
+        Umbrella method to apply the pre-selection cuts on the candidate.
+
+        show_table=True tabulates the pre-selection parameters.
+        """
         flag = True
 
         if len(self.tree.Particles) != 1:
