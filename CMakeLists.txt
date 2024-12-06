@@ -227,24 +227,6 @@ add_subdirectory (field)
 add_subdirectory (pid)
 add_subdirectory (muonShieldOptimization)
 
-FIND_PATH(TEvePath NAMES TEveEventManager.h PATHS
-  ${SIMPATH}/tools/root/include
-  ${SIMPATH}/include/root
-  $ENV{ROOTSYS}/include/root
-  NO_DEFAULT_PATH
-)
-
-If(TEvePath)
-#find_package(OpenGL)
-#If (OPENGL_FOUND AND OPENGL_GLU_FOUND)
-  Message("Found TEve, so the eventdisplay will be compiled.")
-
- IF(NOT FAIRROOT_FOUND)
-  add_subdirectory (eventdisplay)
- ENDIF(NOT FAIRROOT_FOUND)
-
-EndIf(TEvePath)
-
 add_custom_target(  # make relative links to folders
     geometry.link ALL
     COMMAND [ -e geometry ] || python -c \"import os.path as p, os\; os.symlink(p.join(p.relpath('${CMAKE_SOURCE_DIR}', '${CMAKE_BINARY_DIR}') , 'geometry') , 'geometry') \"
