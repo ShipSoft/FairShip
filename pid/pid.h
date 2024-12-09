@@ -1,42 +1,40 @@
 #ifndef PID_H
 #define PID_H
 
-#include "TObject.h"
-#include "TArrayI.h"
 #include "TArrayD.h"
+#include "TArrayI.h"
+#include "TObject.h"
 
 class pid : public TObject
 {
 
   public:
-
     /**      default constructor    */
     pid();
 
-    Int_t     TrackID()        const {return fTrackID;        }
-    Int_t     ElectronID()     const {return fElectronID;     }
-    Int_t     HadronID()       const {return fHadronID;       }
-    Int_t     MuonID()         const {return fMuonID;         }
-    Int_t     TrackPID()       const {return fTrackPID;       }
+    Int_t TrackID() const { return fTrackID; }
+    Int_t ElectronID() const { return fElectronID; }
+    Int_t HadronID() const { return fHadronID; }
+    Int_t MuonID() const { return fMuonID; }
+    Int_t TrackPID() const { return fTrackPID; }
 
     /**       destructor     */
     virtual ~pid();
 
-    void SetTrackID(Int_t b)             { fTrackID=b;       }
-    void SetElectronID(Int_t b)          { fElectronID=b;    }
-    void SetHadronID(Int_t b)            { fHadronID=b;      }
-    void SetMuonID(Int_t b)              { fMuonID=b;        }
-    void SetTrackPID(Int_t b)            { fTrackPID=b;      }
+    void SetTrackID(Int_t b) { fTrackID = b; }
+    void SetElectronID(Int_t b) { fElectronID = b; }
+    void SetHadronID(Int_t b) { fHadronID = b; }
+    void SetMuonID(Int_t b) { fMuonID = b; }
+    void SetTrackPID(Int_t b) { fTrackPID = b; }
 
   private:
-
     /** Information to be stored  */
 
-    Int_t        fTrackID;             //  track index
-    Int_t        fElectronID;          //  electron id
-    Int_t        fHadronID;            //  hadron id
-    Int_t        fMuonID;              //  muon id
-    Int_t        fTrackPID;            //  track pid
+    Int_t fTrackID;      //  track index
+    Int_t fElectronID;   //  electron id
+    Int_t fHadronID;     //  hadron id
+    Int_t fMuonID;       //  muon id
+    Int_t fTrackPID;     //  track pid
 
     // new version of pid code
     // fTrackPID =  1 -> it is an electron
@@ -59,7 +57,7 @@ class pid : public TObject
 
     /** container for data points */
 
-    ClassDef(pid,2)
+    ClassDef(pid, 2)
 };
 
-#endif //PID_H
+#endif   // PID_H

@@ -1,20 +1,22 @@
 #!/usr/bin/env python -i
-import ROOT
+import atexit
 import os
 import tkinter
-import atexit
+
+import ROOT
 
 ROOT.gROOT.ProcessLine('#include "FairEventHeader.h"')
 # only helps if class version in FairEventHeader.h is increased
 
 from argparse import ArgumentParser
-from ShipGeoConfig import ConfigRegistry
-from rootpyPickler import Unpickler
 from array import array
+
+import shipDet_conf
+import shipRoot_conf
 import shipunit as u
 from decorators import *
-import shipRoot_conf
-import shipDet_conf
+from rootpyPickler import Unpickler
+from ShipGeoConfig import ConfigRegistry
 
 shipRoot_conf.configure()
 

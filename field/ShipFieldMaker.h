@@ -17,12 +17,11 @@
 #define ShipFieldMaker_H
 
 #include "ShipCompField.h"
-
+#include "TG4VUserPostDetConstruction.h"
 #include "TString.h"
-#include "TVirtualMagField.h"
 #include "TVector2.h"
 #include "TVector3.h"
-#include "TG4VUserPostDetConstruction.h"
+#include "TVirtualMagField.h"
 
 #include <map>
 #include <string>
@@ -35,8 +34,7 @@ class TGeoVolume;
 class ShipFieldMaker : public TG4VUserPostDetConstruction
 {
 
- public:
-
+  public:
     //! Constructor
     ShipFieldMaker(Bool_t verbose = kFALSE);
 
@@ -50,22 +48,27 @@ class ShipFieldMaker : public TG4VUserPostDetConstruction
     typedef std::vector<std::string> stringVect;
 
     //! Structure to hold volume name, field name and field scaling factor
-    struct fieldInfo {
+    struct fieldInfo
+    {
 
-	//! The name of the volume
-	TString volName_;
-	//! The name of the field
-	TString fieldName_;
-	//! The field scaling factor
-	Double_t scale_;
+        //! The name of the volume
+        TString volName_;
+        //! The name of the field
+        TString fieldName_;
+        //! The field scaling factor
+        Double_t scale_;
 
-	//! Default constructor
-        fieldInfo() : volName_(""), fieldName_(""), scale_(1.0) {};
+        //! Default constructor
+        fieldInfo()
+            : volName_("")
+            , fieldName_("")
+            , scale_(1.0) {};
 
-	//! Constructor
-        fieldInfo(const TString& volName, const TString& fieldName, Double_t scale = 1.0) :
-	          volName_(volName), fieldName_(fieldName), scale_(scale) {};
-
+        //! Constructor
+        fieldInfo(const TString& volName, const TString& fieldName, Double_t scale = 1.0)
+            : volName_(volName)
+            , fieldName_(fieldName)
+            , scale_(scale) {};
     };
 
     //! Set-up all local and regional fields and assign them to volumes
@@ -92,8 +95,11 @@ class ShipFieldMaker : public TG4VUserPostDetConstruction
       \param [in] zRange The z range as a TVector2(zMin, zMax)
       \param [in] BVector The vector of B field components (Bx, By, Bz) in Tesla
     */
-    void defineConstant(const TString& name, const TVector2& xRange, const TVector2& yRange,
-			const TVector2& zRange, const TVector3& BVector);
+    void defineConstant(const TString& name,
+                        const TVector2& xRange,
+                        const TVector2& yRange,
+                        const TVector2& zRange,
+                        const TVector3& BVector);
 
     //! Define a Bell field
     /*!
@@ -106,9 +112,14 @@ class ShipFieldMaker : public TG4VUserPostDetConstruction
       \param [in] z Optional target start z global position (cm)
       \param [in] L Optional target region length (cm)
     */
-    void defineBell(const TString& name, Double_t BPeak, Double_t zMiddle,
-		    Int_t orient = 1, Double_t tubeR = 500.0,
-		    Double_t xy = 0.0, Double_t z = 0.0, Double_t L = 0.0);
+    void defineBell(const TString& name,
+                    Double_t BPeak,
+                    Double_t zMiddle,
+                    Int_t orient = 1,
+                    Double_t tubeR = 500.0,
+                    Double_t xy = 0.0,
+                    Double_t z = 0.0,
+                    Double_t L = 0.0);
 
     // ! Define a field map
     /*!
@@ -118,10 +129,11 @@ class ShipFieldMaker : public TG4VUserPostDetConstruction
       \param [in] localAngles The TVector3(phi, theta, psi) Euler rotation applied to all map coords
       \param [in] useSymmetry Boolean to specify if the map has quadrant symmetry (default = false)
     */
-    void defineFieldMap(const TString& name, const TString& mapFileName,
-			const TVector3& localCentre = TVector3(0.0, 0.0, 0.0),
-			const TVector3& localAngles = TVector3(0.0, 0.0, 0.0),
-			Bool_t useSymmetry = kFALSE);
+    void defineFieldMap(const TString& name,
+                        const TString& mapFileName,
+                        const TVector3& localCentre = TVector3(0.0, 0.0, 0.0),
+                        const TVector3& localAngles = TVector3(0.0, 0.0, 0.0),
+                        Bool_t useSymmetry = kFALSE);
 
     //! Define a copy of a field map with a coordinate translation and optional rotation
     /*!
@@ -130,9 +142,10 @@ class ShipFieldMaker : public TG4VUserPostDetConstruction
       \param [in] translation The TVector3(x,y,z) coordinate translation
       \param [in] eulerAngles The TVector3(phi, theta, psi) Euler angle rotation
     */
-    void defineFieldMapCopy(const TString& name, const TString& mapNameToCopy,
-			    const TVector3& translation,
-			    const TVector3& eulerAngles = TVector3(0.0, 0.0, 0.0));
+    void defineFieldMapCopy(const TString& name,
+                            const TString& mapNameToCopy,
+                            const TVector3& translation,
+                            const TVector3& eulerAngles = TVector3(0.0, 0.0, 0.0));
 
     //! Define a composite field from up to four fields
     /*!
@@ -142,9 +155,11 @@ class ShipFieldMaker : public TG4VUserPostDetConstruction
       \param [in] field3Name The name of the third field (optional)
       \param [in] field4Name The name of the fourth field (optional)
     */
-    void defineComposite(const TString& name, const TString& field1Name,
-			 const TString& field2Name, const TString& field3Name = "",
-			 const TString& field4Name = "");
+    void defineComposite(const TString& name,
+                         const TString& field1Name,
+                         const TString& field2Name,
+                         const TString& field3Name = "",
+                         const TString& field4Name = "");
 
     //! Define a composite field from a vector of field names
     /*!
@@ -160,8 +175,10 @@ class ShipFieldMaker : public TG4VUserPostDetConstruction
       \param [in] field3Name The name of the third field (optional)
       \param [in] field4Name The name of the fourth field (optional)
     */
-    void defineGlobalField(const TString& field1Name, const TString& field2Name = "",
-			   const TString& field3Name = "", const TString& field4Name = "");
+    void defineGlobalField(const TString& field1Name,
+                           const TString& field2Name = "",
+                           const TString& field3Name = "",
+                           const TString& field4Name = "");
 
     //! Define the Global field using a vector of field names
     /*!
@@ -175,8 +192,7 @@ class ShipFieldMaker : public TG4VUserPostDetConstruction
       \param [in] fieldName The name of the field for the volume
       \param [in] scale Optional scale factor for field maps (default = 1.0)
     */
-    void defineRegionField(const TString& volName, const TString& fieldName,
-			   Double_t scale = 1.0);
+    void defineRegionField(const TString& volName, const TString& fieldName, Double_t scale = 1.0);
 
     //! Define a localised field and volume pairing
     /*!
@@ -184,21 +200,19 @@ class ShipFieldMaker : public TG4VUserPostDetConstruction
       \param [in] fieldName The name of the local field for the volume
       \param [in] scale Optional scale factor for field maps (default = 1.0)
     */
-    void defineLocalField(const TString& volName, const TString& fieldName,
-			  Double_t scale = 1.0);
-
+    void defineLocalField(const TString& volName, const TString& fieldName, Double_t scale = 1.0);
 
     //! Get the global magnetic field
     /*!
       \returns the global magnetic field pointer
     */
-    ShipCompField* getGlobalField() const {return globalField_;}
+    ShipCompField* getGlobalField() const { return globalField_; }
 
     //! Get the map storing volume names and their associated local magnetic fields
     /*!
       \returns the map of volume names and their corresponding magnetic field pointers
     */
-    SFMap getAllFields() const {return theFields_;}
+    SFMap getAllFields() const { return theFields_; }
 
     //! Get the magnetic field for the given volume
     /*!
@@ -252,35 +266,37 @@ class ShipFieldMaker : public TG4VUserPostDetConstruction
       \param [in] yAxis Three vector specifying the min, max and bin width of the y axis
       \param [in] plotFile The name of the output file containing the plot of the magnetic field
     */
-    void plotField(Int_t type, const TVector3& xAxis, const TVector3& yAxis,
-		   const std::string& plotFile) const;
+    void plotField(Int_t type, const TVector3& xAxis, const TVector3& yAxis, const std::string& plotFile) const;
 
-    void generateFieldMap(TString fileName, const float step=2.5, const float xRange=179, const float yRange=317, const float zRange=1515.5, const float zShift=-4996);
+    void generateFieldMap(TString fileName,
+                          const float step = 2.5,
+                          const float xRange = 179,
+                          const float yRange = 317,
+                          const float zRange = 1515.5,
+                          const float zShift = -4996);
     //! Generate fieldMap csv file in the given region
 
     //! ClassDef for ROOT
-    ClassDef(ShipFieldMaker,1);
+    ClassDef(ShipFieldMaker, 1);
 
-
- protected:
-
+  protected:
     //! Structure to hold transformation information
-    struct transformInfo {
+    struct transformInfo
+    {
 
-	//! The x translation displacement
-	Double_t x0_;
-	//! The y translation displacement
-	Double_t y0_;
-	//! The z translation displacement
-	Double_t z0_;
+        //! The x translation displacement
+        Double_t x0_;
+        //! The y translation displacement
+        Double_t y0_;
+        //! The z translation displacement
+        Double_t z0_;
 
-	//! The first Euler rotation angle (about Z axis)
-	Double_t phi_;
-	//! The second Euler rotation angle (about new X' axis)
-	Double_t theta_;
-	//! The third Euler rotation angle (about new Z' axis)
-	Double_t psi_;
-
+        //! The first Euler rotation angle (about Z axis)
+        Double_t phi_;
+        //! The second Euler rotation angle (about new X' axis)
+        Double_t theta_;
+        //! The third Euler rotation angle (about new Z' axis)
+        Double_t psi_;
     };
 
     //! Define a uniform field based on information from the inputLine
@@ -314,13 +330,13 @@ class ShipFieldMaker : public TG4VUserPostDetConstruction
     */
     void defineFieldMapCopy(const stringVect& inputLine);
 
-     //! Define a composite field based on information from the inputLine
+    //! Define a composite field based on information from the inputLine
     /*!
       \param [in] inputLine The space separated input line
     */
     void defineComposite(const stringVect& inputLine);
 
-   //! Define the global field based on information from the inputLine
+    //! Define the global field based on information from the inputLine
     /*!
       \param [in] inputLine The space separated input line
     */
@@ -334,7 +350,6 @@ class ShipFieldMaker : public TG4VUserPostDetConstruction
 
     // ! Setup all of the regional fields. Called by Construct()
     void setAllRegionFields();
-
 
     //! Define a local field only based on information from the inputLine
     /*!
@@ -353,7 +368,6 @@ class ShipFieldMaker : public TG4VUserPostDetConstruction
     // ! Setup all of the local fields. Called by Construct()
     void setAllLocalFields();
 
-
     //! Get the transformation matrix for the volume position and orientation
     /*!
       \param [in] volName The name of the volume
@@ -368,8 +382,7 @@ class ShipFieldMaker : public TG4VUserPostDetConstruction
     */
     void findNode(TGeoVolume* aVolume, const TString& volName);
 
- private:
-
+  private:
     //! The global magnetic field
     ShipCompField* globalField_;
 
@@ -401,7 +414,6 @@ class ShipFieldMaker : public TG4VUserPostDetConstruction
       \returns a vector of the delimiter-separated strings
     */
     stringVect splitString(std::string& theString, std::string& splitter) const;
-
 };
 
 #endif

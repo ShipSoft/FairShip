@@ -1,5 +1,7 @@
 #!/usr/bin/env python
-import os,sys
+import os
+import sys
+
 f=open('config.sh')
 l=f.readlines()
 f.close()

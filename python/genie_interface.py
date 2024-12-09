@@ -1,5 +1,9 @@
-import ROOT, os, sys, time
+import os
+import sys
+import time
 from subprocess import call
+
+import ROOT
 
 
 def get_1D_flux_name(nupdg):

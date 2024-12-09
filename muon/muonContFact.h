@@ -9,11 +9,12 @@ class muonContFact : public FairContFact
 {
   private:
     void setAllContainers();
+
   public:
     muonContFact();
     ~muonContFact() {}
     FairParSet* createContainer(FairContainer*);
-    ClassDef( muonContFact,0) // Factory for all muon parameter containers
+    ClassDef(muonContFact, 0)   // Factory for all muon parameter containers
 };
 
 #endif

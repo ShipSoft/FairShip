@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: latin-1 -*-
-import ROOT
 import os
-import shipunit as u
-from ShipGeoConfig import AttrDict, ConfigRegistry
 from array import array
+
+import ROOT
+import shipunit as u
 import yaml
+from ShipGeoConfig import AttrDict, ConfigRegistry
 
 detectorList = []
 
@@ -701,7 +702,9 @@ def configure(run, ship_geo):
             ship_geo.strawtubes.DeltazFrame = 10.0 * u.cm
             ship_geo.strawtubes.FrameLateralWidth = 1.0 * u.cm
             ship_geo.strawtubes.FrameMaterial = "aluminium"
-        ship_geo.strawtubes.medium = "vacuums" if ship_geo.DecayVolumeMedium == "vaccums" else "air"
+        ship_geo.strawtubes.medium = (
+            "vacuums" if ship_geo.DecayVolumeMedium == "vaccums" else "air"
+        )
 
         Strawtubes = ROOT.strawtubes(ship_geo.strawtubes.medium)
         Strawtubes.SetZpositions(

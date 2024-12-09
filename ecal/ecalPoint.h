@@ -1,23 +1,18 @@
 #ifndef ECALPOINT_H
 #define ECALPOINT_H 1
 
-
 #include "FairMCPoint.h"
-
+#include "TClonesArray.h"
 #include "TObject.h"
 #include "TVector3.h"
 
-#include "TClonesArray.h"
-
 class ecalPoint : public FairMCPoint
 {
-  friend class ecal;
+    friend class ecal;
 
   public:
-
     /** Default constructor **/
     ecalPoint();
-
 
     /** Constructor with arguments
      *@param trackID  Index of MCTrack
@@ -28,8 +23,14 @@ class ecalPoint : public FairMCPoint
      *@param length   Track length since creation [cm]
      *@param eLoss    Energy deposit [GeV]
      **/
-    ecalPoint(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom,
-                     Double_t tof, Double_t length, Double_t eLoss, Int_t pdgcode=0);
+    ecalPoint(Int_t trackID,
+              Int_t detID,
+              TVector3 pos,
+              TVector3 mom,
+              Double_t tof,
+              Double_t length,
+              Double_t eLoss,
+              Int_t pdgcode = 0);
 
     /** Constructor with arguments for lite points
      *@param trackID  Index of MCTrack
@@ -37,12 +38,19 @@ class ecalPoint : public FairMCPoint
      *@param tof      Time since event start [ns]
      *@param eLoss    Energy deposit [GeV]
      **/
-    ecalPoint(Int_t trackID, Int_t detID, Double32_t tof, Double32_t eloss, UInt_t EventId=0)
-	: FairMCPoint(trackID, detID, TVector3(-1111, -1111, -1111), TVector3(-1111, -1111, -1111), tof, -1111, eloss, EventId), fPdgCode(0)
-      {};
+    ecalPoint(Int_t trackID, Int_t detID, Double32_t tof, Double32_t eloss, UInt_t EventId = 0)
+        : FairMCPoint(trackID,
+                      detID,
+                      TVector3(-1111, -1111, -1111),
+                      TVector3(-1111, -1111, -1111),
+                      tof,
+                      -1111,
+                      eloss,
+                      EventId)
+        , fPdgCode(0) {};
 
-    Int_t GetPdgCode() const {return fPdgCode;}
-    Int_t PdgCode() const {return fPdgCode;}
+    Int_t GetPdgCode() const { return fPdgCode; }
+    Int_t PdgCode() const { return fPdgCode; }
 
     /** Destructor **/
     virtual ~ecalPoint();
@@ -57,8 +65,7 @@ class ecalPoint : public FairMCPoint
 
     Int_t fPdgCode;
 
-    ClassDef(ecalPoint,1)
-
+    ClassDef(ecalPoint, 1)
 };
 
 #endif

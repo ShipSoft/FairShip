@@ -1,9 +1,7 @@
 #ifndef TARGETPOINT_H
 #define TARGETPOINT_H 1
 
-
 #include "FairMCPoint.h"
-
 #include "TObject.h"
 #include "TVector3.h"
 
@@ -11,10 +9,8 @@ class TargetPoint : public FairMCPoint
 {
 
   public:
-
     /** Default constructor **/
     TargetPoint();
-
 
     /** Constructor with arguments
      *@param trackID  Index of MCTrack
@@ -28,11 +24,17 @@ class TargetPoint : public FairMCPoint
 
     /*TargetPoint(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom,
                      Double_t tof, Double_t length, Double_t eLoss, Int_t pdgCode,
-		Bool_t emTop, Bool_t emBot,Bool_t emCESTop, Bool_t emCESBot, Bool_t tt,
-		Int_t nPlate, Int_t nColumn, Int_t nRow, Int_t nWall);*/
+                Bool_t emTop, Bool_t emBot,Bool_t emCESTop, Bool_t emCESBot, Bool_t tt,
+                Int_t nPlate, Int_t nColumn, Int_t nRow, Int_t nWall);*/
 
-    TargetPoint(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom,
-		Double_t tof, Double_t length, Double_t eLoss, Int_t pdgCode);
+    TargetPoint(Int_t trackID,
+                Int_t detID,
+                TVector3 pos,
+                TVector3 mom,
+                Double_t tof,
+                Double_t length,
+                Double_t eLoss,
+                Int_t pdgCode);
 
     /** Destructor **/
     virtual ~TargetPoint();
@@ -40,22 +42,17 @@ class TargetPoint : public FairMCPoint
     /** Output to screen **/
     virtual void Print(const Option_t* opt) const;
 
-
-    Int_t PdgCode() const {return fPdgCode;}
-
+    Int_t PdgCode() const { return fPdgCode; }
 
   private:
-
-
     Int_t fPdgCode;
-
 
     /** Copy constructor **/
 
     TargetPoint(const TargetPoint& point);
     TargetPoint operator=(const TargetPoint& point);
 
-    ClassDef(TargetPoint,2)
+    ClassDef(TargetPoint, 2)
 };
 
 #endif

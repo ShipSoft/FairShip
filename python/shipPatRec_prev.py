@@ -3,22 +3,21 @@
 #configuration, histograms etc done in shipPatRec_config
 #for documentation, see CERN-SHiP-NOTE-2015-002, https://cds.cern.ch/record/2005715/files/main.pdf
 #17-04-2015 comments to EvH
-from builtins import range
-import ROOT, os
-import global_variables
-from global_variables import ShipGeo
-import shipunit  as u
-import math
 import copy
-from collections import OrderedDict
-from ROOT import TVector3
-from ROOT import gStyle
-from ROOT import TGraph
-from ROOT import TMultiGraph
+import math
+import operator
+import os
+import sys
 from array import array
-import operator, sys
+from builtins import range
+from collections import OrderedDict
 
+import global_variables
+import ROOT
 import rootUtils as ut
+import shipunit as u
+from global_variables import ShipGeo
+from ROOT import TGraph, TMultiGraph, TVector3, gStyle
 
 reconstructiblehorizontalidsfound12=0
 reconstructiblestereoidsfound12=0
