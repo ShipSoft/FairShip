@@ -1,5 +1,7 @@
 var NAVTREEINDEX25 =
 {
+"makeCascade_8py.html#abe2ac1ea6f108cc248cb30301ed79642":[6,0,5,14,47],
+"makeCascade_8py.html#ac348ab0e5d95802be181708385eb5153":[6,0,5,14,22],
 "makeCascade_8py.html#acbaaaba031642946a967ef1917aaa6d4":[6,0,5,14,45],
 "makeCascade_8py.html#acccdb74717d1b2690aaf26de395228c8":[6,0,5,14,38],
 "makeCascade_8py.html#ad0f6a3b8532e500126555cfab8db87e6":[6,0,5,14,33],
@@ -247,7 +249,5 @@ var NAVTREEINDEX25 =
 "muon_8cxx.html":[6,0,6,0],
 "muon_8cxx_source.html":[6,0,6,0],
 "muon_8h.html":[6,0,6,1],
-"muon_8h_source.html":[6,0,6,1],
-"namespaceAddDiMuonDecayChannelsToG4.html":[4,0,1],
-"namespaceAddDiMuonDecayChannelsToG4.html#a753e4ffd6a0356653c5896ba1f5a57cd":[4,0,1,0]
+"muon_8h_source.html":[6,0,6,1]
 };

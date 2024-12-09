@@ -1,5 +1,7 @@
 var NAVTREEINDEX40 =
 {
+"study__muEloss_8py.html":[6,0,7,24],
+"study__muEloss_8py.html#a0485ee8dfcfe78debc2ddf2702d6e066":[6,0,7,24,17],
 "study__muEloss_8py.html#a1369c82588c76bbecd67a082ab49d696":[6,0,7,24,14],
 "study__muEloss_8py.html#a1cf3022eb1eeff3dd1ca4f1395ca09c3":[6,0,7,24,1],
 "study__muEloss_8py.html#a202a5f314e1dc309484322b6dc573692":[6,0,7,24,8],
