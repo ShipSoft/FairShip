@@ -19,13 +19,13 @@ jobs:
       image: registry.cern.ch/ship/gha-runner:latest
       volumes:
         - /cvmfs/ship.cern.ch:/cvmfs/ship.cern.ch
-        
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           path: FairShip
-        
+
       - name: Source and Build
         run: |
           source /cvmfs/ship.cern.ch/24.10/setUp.sh

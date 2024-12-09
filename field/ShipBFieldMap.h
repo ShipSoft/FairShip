@@ -16,8 +16,7 @@
 class ShipBFieldMap : public TVirtualMagField
 {
 
- public:
-
+  public:
     //! Constructor
     /*!
       \param [in] label A descriptive name/title/label for this field
@@ -31,10 +30,16 @@ class ShipBFieldMap : public TVirtualMagField
       \param [in] scale The field magnitude scaling factor (default = 1.0)
       \param [in] isSymmetric Boolean to specify if we have quadrant symmetry (default = false)
     */
-    ShipBFieldMap(const std::string& label, const std::string& mapFileName,
-		  Float_t xOffset = 0.0, Float_t yOffset = 0.0, Float_t zOffset = 0.0,
-		  Float_t phi = 0.0, Float_t theta = 0.0, Float_t psi = 0.0,
-		  Float_t scale = 1.0, Bool_t isSymmetric = kFALSE);
+    ShipBFieldMap(const std::string& label,
+                  const std::string& mapFileName,
+                  Float_t xOffset = 0.0,
+                  Float_t yOffset = 0.0,
+                  Float_t zOffset = 0.0,
+                  Float_t phi = 0.0,
+                  Float_t theta = 0.0,
+                  Float_t psi = 0.0,
+                  Float_t scale = 1.0,
+                  Bool_t isSymmetric = kFALSE);
 
     //! Copy constructor with a new global transformation. Use this if you want
     //! to reuse the same field map information elsewhere in the geometry
@@ -50,10 +55,15 @@ class ShipBFieldMap : public TVirtualMagField
       \param [in] newScale The field magnitude scaling factor (default = 1.0)
      \returns a copy of the field map object "rhs", keeping the same fieldMap pointer
     */
-    ShipBFieldMap(const std::string& newName, const ShipBFieldMap& rhs,
-		  Float_t newXOffset, Float_t newYOffset, Float_t newZOffset,
-		  Float_t newPhi = 0.0, Float_t newTheta = 0.0, Float_t newPsi = 0.0,
-		  Float_t newScale = 1.0);
+    ShipBFieldMap(const std::string& newName,
+                  const ShipBFieldMap& rhs,
+                  Float_t newXOffset,
+                  Float_t newYOffset,
+                  Float_t newZOffset,
+                  Float_t newPhi = 0.0,
+                  Float_t newTheta = 0.0,
+                  Float_t newPsi = 0.0,
+                  Float_t newScale = 1.0);
 
     //! Destructor
     virtual ~ShipBFieldMap();
@@ -66,227 +76,223 @@ class ShipBFieldMap : public TVirtualMagField
     virtual void Field(const Double_t* position, Double_t* B);
 
     //! Typedef for a vector containing a vector of floats
-    typedef std::vector< std::vector<Float_t> > floatArray;
+    typedef std::vector<std::vector<Float_t>> floatArray;
 
     //! Retrieve the field map
     /*!
       \returns the field map
     */
-    floatArray* getFieldMap() const {return fieldMap_;}
+    floatArray* getFieldMap() const { return fieldMap_; }
 
     //! Set the x global co-ordinate shift
     /*!
       \param [in] xValue The value of the x global co-ordinate shift (cm)
     */
-    void SetXOffset(Float_t xValue) {xOffset_ = xValue;}
+    void SetXOffset(Float_t xValue) { xOffset_ = xValue; }
 
     //! Set the y global co-ordinate shift
     /*!
       \param [in] yValue The value of the y global co-ordinate shift (cm)
     */
-    void SetYOffset(Float_t yValue) {yOffset_ = yValue;}
+    void SetYOffset(Float_t yValue) { yOffset_ = yValue; }
 
     //! Set the z global co-ordinate shift
     /*!
       \param [in] zValue The value of the z global co-ordinate shift (cm)
     */
-    void SetZOffset(Float_t zValue) {zOffset_ = zValue;}
+    void SetZOffset(Float_t zValue) { zOffset_ = zValue; }
 
     //! Set the first Euler rotation angle phi about the z axis
     /*!
       \param [in] phi The first Euler rotation angle about the z axis (degrees)
     */
-    void SetPhi(Float_t phi) {phi_ = phi;}
+    void SetPhi(Float_t phi) { phi_ = phi; }
 
     //! Set the second Euler rotation angle theta about the new x axis
     /*!
       \param [in] theta The second Euler rotation angle about the new x axis (degrees)
     */
-    void SetTheta(Float_t theta) {theta_ = theta;}
+    void SetTheta(Float_t theta) { theta_ = theta; }
 
     //! Set the third Euler rotation angle psi about the new z axis
     /*!
       \param [in] psi The third Euler rotation angle about the new z axis (degrees)
     */
-    void SetPsi(Float_t psi) {psi_ = psi;}
+    void SetPsi(Float_t psi) { psi_ = psi; }
 
     //! Set the field magnitude scaling factor
     /*!
       \param [in] scale The scaling factor for the field magnitude
     */
-    void SetScale(Float_t scale) {scale_ = scale;}
+    void SetScale(Float_t scale) { scale_ = scale; }
 
     //! Set the boolean to specify if we have quadrant symmetry
     /*!
       \param [in] isSymmetric Boolean to specify if we have quadrant symmetry
     */
-    void UseSymmetry(Bool_t flag) {isSymmetric_ = flag;}
-
+    void UseSymmetry(Bool_t flag) { isSymmetric_ = flag; }
 
     //! Get the name of the map file
     /*!
       \returns the name of the map file as an STL string
     */
-    std::string GetMapFileName() const {return mapFileName_;}
+    std::string GetMapFileName() const { return mapFileName_; }
 
     //! Get the number of bins along x
     /*!
       \returns the number of bins along x
     */
-    Int_t GetNx() const {return Nx_;}
+    Int_t GetNx() const { return Nx_; }
 
     //! Get the number of bins along y
     /*!
       \returns the number of bins along y
     */
-    Int_t GetNy() const {return Ny_;}
+    Int_t GetNy() const { return Ny_; }
 
     //! Get the number of bins along z
     /*!
       \returns the number of bins along z
     */
-    Int_t GetNz() const {return Nz_;}
+    Int_t GetNz() const { return Nz_; }
 
     //! Get the total numer of bins
     /*!
       \returns the total number of bins
     */
-    Int_t GetNBins() const {return N_;}
+    Int_t GetNBins() const { return N_; }
 
     //! Get the minimum value of x for the map
     /*!
       \returns the minimum x co-ordinate (cm)
     */
-    Float_t GetXMin() const {return xMin_;}
+    Float_t GetXMin() const { return xMin_; }
 
     //! Get the maximum value of x for the map
     /*!
       \returns the maximum x co-ordinate (cm)
     */
-    Float_t GetXMax() const {return xMax_;}
+    Float_t GetXMax() const { return xMax_; }
 
     //! Get the bin width along x for the map
     /*!
       \returns the bin width along x (cm)
     */
-    Float_t GetdX() const {return dx_;}
+    Float_t GetdX() const { return dx_; }
 
-     //! Get the x co-ordinate range for the map
+    //! Get the x co-ordinate range for the map
     /*!
       \returns the x co-ordinate range (cm)
     */
-    Float_t GetXRange() const {return xRange_;}
+    Float_t GetXRange() const { return xRange_; }
 
-   //! Get the minimum value of y for the map
+    //! Get the minimum value of y for the map
     /*!
       \returns the minimum y co-ordinate (cm)
     */
-    Float_t GetYMin() const {return yMin_;}
+    Float_t GetYMin() const { return yMin_; }
 
     //! Get the maximum value of y for the map
     /*!
       \returns the maximum y co-ordinate (cm)
     */
-    Float_t GetYMax() const {return yMax_;}
+    Float_t GetYMax() const { return yMax_; }
 
     //! Get the bin width along y for the map
     /*!
       \returns the bin width along y (cm)
     */
-    Float_t GetdY() const {return dy_;}
+    Float_t GetdY() const { return dy_; }
 
-     //! Get the y co-ordinate range for the map
+    //! Get the y co-ordinate range for the map
     /*!
       \returns the y co-ordinate range (cm)
     */
-    Float_t GetYRange() const {return yRange_;}
+    Float_t GetYRange() const { return yRange_; }
 
     //! Get the minimum value of z for the map
     /*!
       \returns the minimum z co-ordinate (cm)
     */
-    Float_t GetZMin() const {return zMin_;}
+    Float_t GetZMin() const { return zMin_; }
 
     //! Get the maximum value of z for the map
     /*!
       \returns the maximum z co-ordinate (cm)
     */
-    Float_t GetZMax() const {return zMax_;}
+    Float_t GetZMax() const { return zMax_; }
 
     //! Get the bin width along z for the map
     /*!
       \returns the bin width along z (cm)
     */
-    Float_t GetdZ() const {return dz_;}
+    Float_t GetdZ() const { return dz_; }
 
-     //! Get the z co-ordinate range for the map
+    //! Get the z co-ordinate range for the map
     /*!
       \returns the z co-ordinate range (cm)
     */
-    Float_t GetZRange() const {return zRange_;}
+    Float_t GetZRange() const { return zRange_; }
 
     //! Get the x offset co-ordinate of the map for global positioning
     /*!
       \returns the map's x offset co-ordinate for global positioning (cm)
     */
-    Float_t GetXOffset() const {return xOffset_;}
+    Float_t GetXOffset() const { return xOffset_; }
 
     //! Get the y offset co-ordinate of the map for global positioning
     /*!
       \returns the map's y offset co-ordinate for global positioning (cm)
     */
-    Float_t GetYOffset() const {return yOffset_;}
+    Float_t GetYOffset() const { return yOffset_; }
 
     //! Get the z offset co-ordinate of the map for global positioning
     /*!
       \returns the map's z offset co-ordinate for global positioning (cm)
     */
-    Float_t GetZOffset() const {return zOffset_;}
+    Float_t GetZOffset() const { return zOffset_; }
 
     //! Get the first Euler rotation angle about the z axis for global positioning
     /*!
       \returns the map's first Euler rotation angle about the z axis (degrees)
     */
-    Float_t GetPhi() const {return phi_;}
+    Float_t GetPhi() const { return phi_; }
 
     //! Get the second Euler rotation angle about the new x axis for global positioning
     /*!
       \returns the map's second Euler rotation angle about the new x axis (degrees)
     */
-    Float_t GetTheta() const {return theta_;}
+    Float_t GetTheta() const { return theta_; }
 
     //! Get the third Euler rotation angle about the new z axis for global positioning
     /*!
       \returns the map's third Euler rotation angle about the new z axis (degrees)
     */
-    Float_t GetPsi() const {return psi_;}
+    Float_t GetPsi() const { return psi_; }
 
     //! Get the field magnitude scaling factor
     /*!
       \returns the scaling factor for the field magnitude
     */
-    Float_t GetScale() const {return scale_;}
+    Float_t GetScale() const { return scale_; }
 
     //! Get the boolean flag to specify if we have quadrant symmetry
     /*!
       \returns the boolean specifying if we have quadrant symmetry
     */
-    Bool_t HasSymmetry() const {return isSymmetric_;}
+    Bool_t HasSymmetry() const { return isSymmetric_; }
 
     //! Get the boolean flag to specify if we are a "copy"
     /*!
       \returns the boolean copy flag status
     */
-    Bool_t IsACopy() const {return isCopy_;}
+    Bool_t IsACopy() const { return isCopy_; }
 
     //! ClassDef for ROOT
-    ClassDef(ShipBFieldMap,1);
+    ClassDef(ShipBFieldMap, 1);
 
-
- protected:
-
- private:
-
+  protected:
+  private:
     //! Copy constructor not implemented
     ShipBFieldMap(const ShipBFieldMap& rhs);
 
@@ -294,7 +300,12 @@ class ShipBFieldMap : public TVirtualMagField
     ShipBFieldMap& operator=(const ShipBFieldMap& rhs);
 
     //! Enumeration to specify the co-ordinate type
-    enum CoordAxis {xAxis = 0, yAxis, zAxis};
+    enum CoordAxis
+    {
+        xAxis = 0,
+        yAxis,
+        zAxis
+    };
 
     //! Initialisation
     void initialise();
@@ -480,7 +491,6 @@ class ShipBFieldMap : public TVirtualMagField
 
     //! Complimentary fractional bin distance along z
     Float_t zFrac1_;
-
 };
 
 #endif

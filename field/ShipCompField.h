@@ -11,11 +11,10 @@
 #include <string>
 #include <vector>
 
-class ShipCompField: public TVirtualMagField
+class ShipCompField : public TVirtualMagField
 {
 
- public:
-
+  public:
     //! Main constructor
     /*!
       \param [in] label A descriptive name/title/lable for the composite field
@@ -29,8 +28,7 @@ class ShipCompField: public TVirtualMagField
       \param [in] firstField The first magnetic field pointer for the composite
       \param [in] secondField The second magnetic field pointer for the composite
     */
-    ShipCompField(const std::string& label, TVirtualMagField* firstField,
-		  TVirtualMagField* secondField);
+    ShipCompField(const std::string& label, TVirtualMagField* firstField, TVirtualMagField* secondField);
 
     //! More general constructor
     /*!
@@ -53,28 +51,25 @@ class ShipCompField: public TVirtualMagField
     /*!
       \returns the number of fields used in the composite
     */
-    size_t nComposite() const {return theFields_.size();}
+    size_t nComposite() const { return theFields_.size(); }
 
     //! Get the vector of fields
     /*!
       \returns the vector of fields
     */
-    std::vector<TVirtualMagField*> getCompFields() const {return theFields_;}
+    std::vector<TVirtualMagField*> getCompFields() const { return theFields_; }
 
     //! ClassDef for ROOT
-    ClassDef(ShipCompField,1);
+    ClassDef(ShipCompField, 1);
 
- protected:
-
- private:
-
+  protected:
+  private:
     //! Private copy and assignment operators.
     ShipCompField(const ShipCompField&);
     ShipCompField& operator=(const ShipCompField&);
 
     //! The vector of the various magnetic field pointers comprising the composite
     std::vector<TVirtualMagField*> theFields_;
-
 };
 
 #endif

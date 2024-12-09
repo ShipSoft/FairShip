@@ -1,7 +1,7 @@
 """Convert files from EventCalc to ROOT format."""
 
-import sys
 import os
+import sys
 from argparse import ArgumentParser
 
 import numpy as np

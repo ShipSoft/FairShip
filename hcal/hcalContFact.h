@@ -9,11 +9,12 @@ class hcalContFact : public FairContFact
 {
   private:
     void setAllContainers();
+
   public:
     hcalContFact();
     ~hcalContFact() {}
     FairParSet* createContainer(FairContainer*);
-    ClassDef( hcalContFact,0) // Factory for all hcal parameter containers
+    ClassDef(hcalContFact, 0)   // Factory for all hcal parameter containers
 };
 
 #endif

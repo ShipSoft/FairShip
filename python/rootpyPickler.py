@@ -45,21 +45,20 @@ The following additional notes apply:
 
 """
 
+# need subclassing ability in 2.x
+import pickle
 import sys
 from io import StringIO
 
-# need subclassing ability in 2.x
-import pickle
-
 import ROOT
 
-string_types = str,
+string_types = (str,)
 integer_types = (int,)
 
 __all__ = [
-    'dump',
-    'load',
-    'compat_hooks',
+    "dump",
+    "load",
+    "compat_hooks",
 ]
 
 
@@ -80,11 +79,11 @@ So, when we save the pickle data, make the mappings:
 
 
 def _protect(s):
-    return s.replace(b'\377', b'\377\376').replace(b'\000', b'\377\001')
+    return s.replace(b"\377", b"\377\376").replace(b"\000", b"\377\001")
 
 
 def _restore(s):
-    return s.replace(b'\377\001', b'\000').replace(b'\377\376', b'\377')
+    return s.replace(b"\377\001", b"\000").replace(b"\377\376", b"\377")
 
 
 class IO_Wrapper:
@@ -92,19 +91,19 @@ class IO_Wrapper:
         return self.reopen()
 
     def write(self, s):
-        return self.__s.write(_protect(s).decode('utf-8'))
+        return self.__s.write(_protect(s).decode("utf-8"))
 
     def read(self, i):
-        return self.__s.read(i).encode('utf-8')
+        return self.__s.read(i).encode("utf-8")
 
     def readline(self):
-        return self.__s.readline().encode('utf-8')
+        return self.__s.readline().encode("utf-8")
 
     def getvalue(self):
         return self.__s.getvalue()
 
     def setvalue(self, s):
-        self.__s = StringIO(_restore(s.encode('utf-8')).decode('utf-8'))
+        self.__s = StringIO(_restore(s.encode("utf-8")).decode("utf-8"))
         return
 
     def reopen(self):
@@ -121,15 +120,15 @@ class ROOT_Proxy:
     def __getattr__(self, a):
         if self.__o is None:
             self.__o = self.__f.Get(self.__pid)
-            if self.__o.__class__.__module__ != 'ROOT':
-                self.__o.__class__.__module__ = 'ROOT'
+            if self.__o.__class__.__module__ != "ROOT":
+                self.__o.__class__.__module__ = "ROOT"
         return getattr(self.__o, a)
 
     def __obj(self):
         if self.__o is None:
             self.__o = self.__f.Get(self.__pid)
-            if self.__o.__class__.__module__ != 'ROOT':
-                self.__o.__class__.__module__ = 'ROOT'
+            if self.__o.__class__.__module__ != "ROOT":
+                self.__o.__class__.__module__ = "ROOT"
         return self.__o
 
 
@@ -150,8 +149,8 @@ class Pickler(pickle.Pickler):
     def dump(self, obj, key=None):
         """Write a pickled representation of obj to the open TFile."""
         if key is None:
-            key = '_pickle'
-        if 1>0:
+            key = "_pickle"
+        if 1 > 0:
             self.__file.cd()
             super(Pickler, self).dump(obj)
             s = ROOT.TObjString(self.__io.getvalue())
@@ -165,7 +164,7 @@ class Pickler(pickle.Pickler):
         self.__pickle.memo.clear()
 
     def persistent_id(self, obj):
-        if hasattr(obj, '_ROOT_Proxy__obj'):
+        if hasattr(obj, "_ROOT_Proxy__obj"):
             obj = obj._ROOT_Proxy__obj()
         if isinstance(obj, ROOT.TObject):
             """
@@ -194,9 +193,9 @@ class Pickler(pickle.Pickler):
             obj.Write()
             if key:
                 key = self.__file.GetKey(nm)
-                pid = '{0};{1:d}'.format(nm, key.GetCycle())
+                pid = "{0};{1:d}".format(nm, key.GetCycle())
             else:
-                pid = nm + ';1'
+                pid = nm + ";1"
             return pid
 
 
@@ -211,7 +210,7 @@ class Unpickler(pickle.Unpickler):
         self.__file = root_file
         self.__io = IO_Wrapper()
         self.__n = 0
-        self.__serial = '{0:d}-'.format(xserial).encode('utf-8')
+        self.__serial = "{0:d}-".format(xserial).encode("utf-8")
         xdict[self.__serial] = root_file
         super(Unpickler, self).__init__(self.__io)
 
@@ -230,36 +229,37 @@ class Unpickler(pickle.Unpickler):
 
             def xget(nm0):
                 nm = nm0
-                ipos = nm.find(';')
+                ipos = nm.find(";")
                 if ipos >= 0:
-                    cy = nm[ipos+1]
-                    if cy == '*':
+                    cy = nm[ipos + 1]
+                    if cy == "*":
                         cy = 10000
                     else:
                         cy = int(cy)
-                    nm = nm[:ipos - 1]
+                    nm = nm[: ipos - 1]
                 else:
                     cy = 9999
                 ret = htab.get((nm, cy), None)
                 if not ret:
-                    print(("warning didn't find {0} {1} {2}",nm, cy, len(htab) ))
+                    print(("warning didn't find {0} {1} {2}", nm, cy, len(htab)))
                     return oget(nm0)
-                #ctx = ROOT.TDirectory.TContext(file)
+                # ctx = ROOT.TDirectory.TContext(file)
                 ret = ret.ReadObj()
-                #del ctx
+                # del ctx
                 return ret
+
             root_file.Get = xget
 
     def load(self, key=None):
         """Read a pickled object representation from the open file."""
         if key is None:
-            key = '_pickle'
+            key = "_pickle"
         obj = None
         if _compat_hooks:
             save = _compat_hooks[0]()
         try:
             self.__n += 1
-            s = self.__file.Get(key + ';{0:d}'.format(self.__n))
+            s = self.__file.Get(key + ";{0:d}".format(self.__n))
             self.__io.setvalue(s.GetName())
             obj = super(Unpickler, self).load()
             self.__io.reopen()
@@ -270,10 +270,10 @@ class Unpickler(pickle.Unpickler):
 
     def persistent_load(self, pid):
         if self.__use_proxy:
-            obj = ROOT_Proxy(self.__file, pid.decode('utf-8'))
+            obj = ROOT_Proxy(self.__file, pid.decode("utf-8"))
         else:
             obj = self.__file.Get(pid)
-        #log.debug("load {0} {1}".format(pid, obj))
+        # log.debug("load {0} {1}".format(pid, obj))
         xdict[self.__serial + pid] = obj
         return obj
 
@@ -286,12 +286,14 @@ class Unpickler(pickle.Unpickler):
                 ## for some reason that I don't understand, they are now
                 ## in the files we try to unpickle
                 if sys.version_info[0] > 2:
-                    if module == 'copy_reg': module = 'copyreg'
-                    if module == '__builtin__': module = 'builtins'
+                    if module == "copy_reg":
+                        module = "copyreg"
+                    if module == "__builtin__":
+                        module = "builtins"
                 __import__(module)
                 mod = sys.modules[module]
             except ImportError:
-                #log.info("Making dummy module {0}".format(module))
+                # log.info("Making dummy module {0}".format(module))
 
                 class DummyModule:
                     pass
@@ -301,7 +303,7 @@ class Unpickler(pickle.Unpickler):
             klass = getattr(mod, name)
             return klass
         except AttributeError:
-            #log.info("Making dummy class {0}.{1}".format(module, name))
+            # log.info("Making dummy class {0}.{1}".format(module, name))
             mod = sys.modules[module]
 
             class Dummy(object):
@@ -329,7 +331,7 @@ def dump(obj, root_file, proto=0, key=None):
     existing ROOT file.
     """
     if isinstance(root_file, string_types):
-        root_file = ROOT.TFile.Open(root_file, 'recreate')
+        root_file = ROOT.TFile.Open(root_file, "recreate")
         own_file = True
     else:
         own_file = False

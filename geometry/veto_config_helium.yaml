@@ -17,4 +17,3 @@ ystartInner : 270.0 # cm
 xendInner : 400.0 # cm        #FocusLineX at z= target.z0 + 16.8m
 yendInner : 600.0 # cm        #FocusLineY at z= target.z0 - 7.4m
 z0: -2478.0 # cm   Decay Vessel Start
-

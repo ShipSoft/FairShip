@@ -2,7 +2,6 @@
 #define ECALANALYSISMATERIAL_H
 
 #include "FairTask.h"
-
 #include "TString.h"
 
 #include <list>
@@ -10,52 +9,52 @@
 class TTree;
 class TClonesArray;
 
-
 class ecalAnalysisMaterial : public FairTask
 {
-public:
-  ecalAnalysisMaterial(const char* name, const Int_t iVerbose=0);
-public:
-  /** Default constructor **/
-  ecalAnalysisMaterial();
+  public:
+    ecalAnalysisMaterial(const char* name, const Int_t iVerbose = 0);
 
-  /** Initing routine **/
-  virtual InitStatus Init();
+  public:
+    /** Default constructor **/
+    ecalAnalysisMaterial();
 
-  /** Loop procedure **/
-  virtual void Exec(Option_t* option);
+    /** Initing routine **/
+    virtual InitStatus Init();
 
-  /** Finishing routine **/
-  virtual void Finish();
+    /** Loop procedure **/
+    virtual void Exec(Option_t* option);
 
-  /** Destructor **/
-  virtual ~ecalAnalysisMaterial() {};
-private:
-  /** Initialize a tree **/
-  void InitTree();
-  /** Out tree **/
-  TTree* fTree;			//!
+    /** Finishing routine **/
+    virtual void Finish();
 
-  /** Event number **/
-  Int_t fEvent;
-  /** Information particle **/
-  Double_t fX;
-  Double_t fY;
-  Double_t fZ;
-  Double_t fX0;
-  Double_t fX0z[400];
-  Double_t fIntL;
+    /** Destructor **/
+    virtual ~ecalAnalysisMaterial() {};
 
+  private:
+    /** Initialize a tree **/
+    void InitTree();
+    /** Out tree **/
+    TTree* fTree;   //!
 
-  /** MC tracks array **/
-  TClonesArray* fMC;		//!
-  /** Array of radlen points**/
-  TClonesArray* fRadLen;	//!
+    /** Event number **/
+    Int_t fEvent;
+    /** Information particle **/
+    Double_t fX;
+    Double_t fY;
+    Double_t fZ;
+    Double_t fX0;
+    Double_t fX0z[400];
+    Double_t fIntL;
 
-  ecalAnalysisMaterial(const ecalAnalysisMaterial&);
-  ecalAnalysisMaterial& operator=(const ecalAnalysisMaterial&);
+    /** MC tracks array **/
+    TClonesArray* fMC;   //!
+    /** Array of radlen points**/
+    TClonesArray* fRadLen;   //!
 
-  ClassDef(ecalAnalysisMaterial,1)
+    ecalAnalysisMaterial(const ecalAnalysisMaterial&);
+    ecalAnalysisMaterial& operator=(const ecalAnalysisMaterial&);
+
+    ClassDef(ecalAnalysisMaterial, 1)
 };
 
 #endif
