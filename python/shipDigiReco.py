@@ -815,6 +815,7 @@ class ShipDigiReco:
 
  def findTracks(self):
   hitPosLists    = {}
+  hit_detector_ids = {}
   stationCrossed = {}
   fittedtrackids=[]
   listOfIndices  = {}
@@ -852,6 +853,8 @@ class ShipDigiReco:
           hitPosLists[trID] = ROOT.std.vector('TVectorD')()
           listOfIndices[trID] = []
           stationCrossed[trID]  = {}
+          hit_detector_ids[trID] = ROOT.std.vector('int')()
+        hit_detector_ids[trID].push_back(detID)
         m = array('d',[sm['xtop'],sm['ytop'],sm['z'],sm['xbot'],sm['ybot'],sm['z'],sm['dist']])
         hitPosLists[trID].push_back(ROOT.TVectorD(7,m))
         listOfIndices[trID].append(sm['digiHit'])
@@ -867,6 +870,8 @@ class ShipDigiReco:
       hitPosLists[trID]     = ROOT.std.vector('TVectorD')()
       listOfIndices[trID] = []
       stationCrossed[trID]  = {}
+      hit_detector_ids[trID] = ROOT.std.vector('int')()
+    hit_detector_ids[trID].push_back(detID)
     m = array('d',[sm['xtop'],sm['ytop'],sm['z'],sm['xbot'],sm['ybot'],sm['z'],sm['dist']])
     hitPosLists[trID].push_back(ROOT.TVectorD(7,m))
     listOfIndices[trID].append(sm['digiHit'])
@@ -888,6 +893,7 @@ class ShipDigiReco:
     if not self.PDG.GetParticle(pdg): continue # unknown particle
     # pdg = 13
     meas = hitPosLists[atrack]
+    detIDs = hit_detector_ids[atrack]
     nM = meas.size()
     if nM < 25 : continue                          # not enough hits to make a good trackfit
     if len(stationCrossed[atrack]) < 3 : continue  # not enough stations crossed to make a good trackfit
@@ -916,14 +922,22 @@ class ShipDigiReco:
     theTrack = ROOT.genfit.Track(rep, seedState, seedCov)
     hitCov = ROOT.TMatrixDSym(7)
     hitCov[6][6] = resolution*resolution
-    for m in meas:
+    hitID = 0
+    for m, detID in zip(meas, detIDs):
       tp = ROOT.genfit.TrackPoint(theTrack) # note how the point is told which track it belongs to
-      measurement = ROOT.genfit.WireMeasurement(m,hitCov,1,6,tp) # the measurement is told which trackpoint it belongs to
+      measurement = ROOT.genfit.WireMeasurement(
+        m,
+        hitCov,
+        detID,
+        hitID,
+        tp
+      ) # the measurement is told which trackpoint it belongs to
       # print measurement.getMaxDistance()
       measurement.setMaxDistance(global_variables.ShipGeo.strawtubes.InnerStrawDiameter / 2.)
       # measurement.setLeftRightResolution(-1)
       tp.addRawMeasurement(measurement) # package measurement in the TrackPoint
       theTrack.insertPoint(tp)  # add point to Track
+      hitID += 1
    # print "debug meas",atrack,nM,stationCrossed[atrack],self.sTree.MCTrack[atrack],pdg
     trackCandidates.append([theTrack,atrack])
 
