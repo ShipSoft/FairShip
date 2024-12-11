@@ -59,7 +59,7 @@ if "SC_mag" not in globals():
 if "scName" not in globals():
     scName = None
 if "DecayVolumeMedium" not in globals():
-    DecayVolumeMedium = "helium"
+    raise ValueError("DecayVolumeMedium is not defined, possibly old (incompatible) geometry!")
 if "SND" not in globals():
     SND = False
 
