@@ -121,14 +121,14 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="muDIS__mergeFiles_8py_source.html#l00030">30</a> of file <a class="el" href="muDIS__mergeFiles_8py_source.html">muDIS_mergeFiles.py</a>.</p>
-<div class="fragment"><div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">def </span><a class="code" href="namespacemuDIS__mergeFiles.html#a63967066d3e034b33c3e8dc1b5e380c5">hadd</a>():</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; cmd = <span class="stringliteral">&#39;hadd -f muonDIS.root &#39;</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(0,12):</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  cmd+= <span class="stringliteral">&quot; muonDis_&quot;</span>+<a class="code" href="namespaceadd__noise__to__field.html#ac8c461fc99cff345995bf60fcdfefa01">str</a>(i)+<span class="stringliteral">&quot;.root &quot;</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; os.system(cmd)</div>
+<p class="definition">Definition at line <a class="el" href="muDIS__mergeFiles_8py_source.html#l00034">34</a> of file <a class="el" href="muDIS__mergeFiles_8py_source.html">muDIS_mergeFiles.py</a>.</p>
+<div class="fragment"><div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">def </span><a class="code" href="namespacemuDIS__mergeFiles.html#a63967066d3e034b33c3e8dc1b5e380c5">hadd</a>():</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; cmd = <span class="stringliteral">&#39;hadd -f muonDIS.root &#39;</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(0,12):</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  cmd+= <span class="stringliteral">&quot; muonDis_&quot;</span>+<a class="code" href="namespaceadd__noise__to__field.html#ac8c461fc99cff345995bf60fcdfefa01">str</a>(i)+<span class="stringliteral">&quot;.root &quot;</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; os.system(cmd)</div>
 <div class="ttc" id="anamespaceadd__noise__to__field_html_ac8c461fc99cff345995bf60fcdfefa01"><div class="ttname"><a href="namespaceadd__noise__to__field.html#ac8c461fc99cff345995bf60fcdfefa01">add_noise_to_field.str</a></div><div class="ttdeci">str</div><div class="ttdef"><b>Definition:</b> <a href="add__noise__to__field_8py_source.html#l00053">add_noise_to_field.py:53</a></div></div>
-<div class="ttc" id="anamespacemuDIS__mergeFiles_html_a63967066d3e034b33c3e8dc1b5e380c5"><div class="ttname"><a href="namespacemuDIS__mergeFiles.html#a63967066d3e034b33c3e8dc1b5e380c5">muDIS_mergeFiles.hadd</a></div><div class="ttdeci">def hadd()</div><div class="ttdef"><b>Definition:</b> <a href="muDIS__mergeFiles_8py_source.html#l00030">muDIS_mergeFiles.py:30</a></div></div>
+<div class="ttc" id="anamespacemuDIS__mergeFiles_html_a63967066d3e034b33c3e8dc1b5e380c5"><div class="ttname"><a href="namespacemuDIS__mergeFiles.html#a63967066d3e034b33c3e8dc1b5e380c5">muDIS_mergeFiles.hadd</a></div><div class="ttdeci">def hadd()</div><div class="ttdef"><b>Definition:</b> <a href="muDIS__mergeFiles_8py_source.html#l00034">muDIS_mergeFiles.py:34</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -148,20 +148,20 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="muDIS__mergeFiles_8py_source.html#l00035">35</a> of file <a class="el" href="muDIS__mergeFiles_8py_source.html">muDIS_mergeFiles.py</a>.</p>
-<div class="fragment"><div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">def </span><a class="code" href="namespacemuDIS__mergeFiles.html#af9ccfdacab1c1cc884674db341627b35">makePlots</a>(sTree):</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; ut.bookHist(h,<span class="stringliteral">&#39;muP&#39;</span>,<span class="stringliteral">&#39;muon mom&#39;</span>,100,0.,400.)</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; ut.bookHist(h,<span class="stringliteral">&#39;nOut&#39;</span>,<span class="stringliteral">&#39;outgoing part&#39;</span>,100,-0.5,99.5)</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; ut.bookHist(h,<span class="stringliteral">&#39;pos&#39;</span>,<span class="stringliteral">&#39;position&#39;</span>,100,-25.,100.,100,-12.,12.,100,-13.,13.)</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(sTree.GetEntries()):</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;   rc = sTree.GetEvent(n)</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;   inMu = sTree.InMuon[0]</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;   w = inMu[8]</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;   P = ROOT.TMath.Sqrt(inMu[1]**2+inMu[2]**2+inMu[3]**2)</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;   rc = h[<span class="stringliteral">&#39;muP&#39;</span>].Fill(P,w)</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;   rc = h[<span class="stringliteral">&#39;nOut&#39;</span>].Fill(sTree.Particles.GetEntries() )</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;   rc = h[<span class="stringliteral">&#39;pos&#39;</span>].Fill(inMu[7],inMu[5],inMu[6] )</div>
-<div class="ttc" id="anamespacemuDIS__mergeFiles_html_af9ccfdacab1c1cc884674db341627b35"><div class="ttname"><a href="namespacemuDIS__mergeFiles.html#af9ccfdacab1c1cc884674db341627b35">muDIS_mergeFiles.makePlots</a></div><div class="ttdeci">def makePlots(sTree)</div><div class="ttdef"><b>Definition:</b> <a href="muDIS__mergeFiles_8py_source.html#l00035">muDIS_mergeFiles.py:35</a></div></div>
+<p class="definition">Definition at line <a class="el" href="muDIS__mergeFiles_8py_source.html#l00039">39</a> of file <a class="el" href="muDIS__mergeFiles_8py_source.html">muDIS_mergeFiles.py</a>.</p>
+<div class="fragment"><div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="keyword">def </span><a class="code" href="namespacemuDIS__mergeFiles.html#af9ccfdacab1c1cc884674db341627b35">makePlots</a>(sTree):</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; ut.bookHist(h,<span class="stringliteral">&#39;muP&#39;</span>,<span class="stringliteral">&#39;muon mom&#39;</span>,100,0.,400.)</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; ut.bookHist(h,<span class="stringliteral">&#39;nOut&#39;</span>,<span class="stringliteral">&#39;outgoing part&#39;</span>,100,-0.5,99.5)</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; ut.bookHist(h,<span class="stringliteral">&#39;pos&#39;</span>,<span class="stringliteral">&#39;position&#39;</span>,100,-25.,100.,100,-12.,12.,100,-13.,13.)</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(sTree.GetEntries()):</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;   rc = sTree.GetEvent(n)</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;   inMu = sTree.InMuon[0]</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;   w = inMu[8]</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;   P = ROOT.TMath.Sqrt(inMu[1]**2+inMu[2]**2+inMu[3]**2)</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;   rc = h[<span class="stringliteral">&#39;muP&#39;</span>].Fill(P,w)</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;   rc = h[<span class="stringliteral">&#39;nOut&#39;</span>].Fill(sTree.Particles.GetEntries() )</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;   rc = h[<span class="stringliteral">&#39;pos&#39;</span>].Fill(inMu[7],inMu[5],inMu[6] )</div>
+<div class="ttc" id="anamespacemuDIS__mergeFiles_html_af9ccfdacab1c1cc884674db341627b35"><div class="ttname"><a href="namespacemuDIS__mergeFiles.html#af9ccfdacab1c1cc884674db341627b35">muDIS_mergeFiles.makePlots</a></div><div class="ttdeci">def makePlots(sTree)</div><div class="ttdef"><b>Definition:</b> <a href="muDIS__mergeFiles_8py_source.html#l00039">muDIS_mergeFiles.py:39</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -196,17 +196,21 @@ Variables</h2></td></tr>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;   sTree.GetEvent(n)</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;   dPart.Clear()</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;   iMuon.Clear()</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;   iMuon.ConstructedAt(0).Use(sTree.InMuon[0])</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;   <span class="keywordflow">for</span> part <span class="keywordflow">in</span> sTree.Particles:</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;      nPart = dPart.GetEntries()</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;      <span class="keywordflow">if</span> dPart.GetSize() == nPart: dPart.Expand(nPart+10)</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;      dPart.ConstructedAt(nPart).Use(part)</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;   dPartBranch.Fill()</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;   iMuonBranch.Fill()</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;   nTree.Fill()</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; fm.cd()</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; nTree.Write()</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; fm.Close()</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;   tca_vec = iMuon.ConstructedAt(0)</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;   tca_vec.ResizeTo(sTree.InMuon[0])</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;   ROOT.std.swap(tca_vec, sTree.InMuon[0])</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;   <span class="keywordflow">for</span> part <span class="keywordflow">in</span> sTree.Particles:</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;      nPart = dPart.GetEntries()</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;      <span class="keywordflow">if</span> dPart.GetSize() == nPart: dPart.Expand(nPart+10)</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;      tca_vec = dPart.ConstructedAt(nPart)</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;      tca_vec.ResizeTo(part)</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;      ROOT.std.swap(tca_vec, part)</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;   dPartBranch.Fill()</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;   iMuonBranch.Fill()</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;   nTree.Fill()</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; fm.cd()</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; nTree.Write()</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; fm.Close()</div>
 <div class="ttc" id="anamespacemuDIS__mergeFiles_html_a67bdaca6934f47a8bf067b75682b4bda"><div class="ttname"><a href="namespacemuDIS__mergeFiles.html#a67bdaca6934f47a8bf067b75682b4bda">muDIS_mergeFiles.merge</a></div><div class="ttdeci">def merge()</div><div class="ttdef"><b>Definition:</b> <a href="muDIS__mergeFiles_8py_source.html#l00004">muDIS_mergeFiles.py:4</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -227,12 +231,12 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="muDIS__mergeFiles_8py_source.html#l00047">47</a> of file <a class="el" href="muDIS__mergeFiles_8py_source.html">muDIS_mergeFiles.py</a>.</p>
-<div class="fragment"><div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="keyword">def </span><a class="code" href="namespacemuDIS__mergeFiles.html#afc8f25cc95fe3b72acd0aa648e97f227">test</a>(fn = &quot;test.root&quot;):</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; fm    = ROOT.TFile(fn)</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; sTree = fm.DIS</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; <a class="code" href="namespacemuDIS__mergeFiles.html#af9ccfdacab1c1cc884674db341627b35">makePlots</a>(sTree)</div>
-<div class="ttc" id="anamespacemuDIS__mergeFiles_html_afc8f25cc95fe3b72acd0aa648e97f227"><div class="ttname"><a href="namespacemuDIS__mergeFiles.html#afc8f25cc95fe3b72acd0aa648e97f227">muDIS_mergeFiles.test</a></div><div class="ttdeci">def test(fn=&quot;test.root&quot;)</div><div class="ttdef"><b>Definition:</b> <a href="muDIS__mergeFiles_8py_source.html#l00047">muDIS_mergeFiles.py:47</a></div></div>
+<p class="definition">Definition at line <a class="el" href="muDIS__mergeFiles_8py_source.html#l00051">51</a> of file <a class="el" href="muDIS__mergeFiles_8py_source.html">muDIS_mergeFiles.py</a>.</p>
+<div class="fragment"><div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keyword">def </span><a class="code" href="namespacemuDIS__mergeFiles.html#afc8f25cc95fe3b72acd0aa648e97f227">test</a>(fn = &quot;test.root&quot;):</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; fm    = ROOT.TFile(fn)</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; sTree = fm.DIS</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; <a class="code" href="namespacemuDIS__mergeFiles.html#af9ccfdacab1c1cc884674db341627b35">makePlots</a>(sTree)</div>
+<div class="ttc" id="anamespacemuDIS__mergeFiles_html_afc8f25cc95fe3b72acd0aa648e97f227"><div class="ttname"><a href="namespacemuDIS__mergeFiles.html#afc8f25cc95fe3b72acd0aa648e97f227">muDIS_mergeFiles.test</a></div><div class="ttdeci">def test(fn=&quot;test.root&quot;)</div><div class="ttdef"><b>Definition:</b> <a href="muDIS__mergeFiles_8py_source.html#l00051">muDIS_mergeFiles.py:51</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

@@ -1,5 +1,7 @@
 var NAVTREEINDEX36 =
 {
+"namespacestudy__muEloss.html#a2640cf13658492ff905990b45f608dcc":[4,0,95,9],
+"namespacestudy__muEloss.html#a2f2ed071db250f5d96a5d823a36a1d84":[4,0,95,13],
 "namespacestudy__muEloss.html#a2fc2d258db8b36fd0d00fd0bf696f01b":[4,0,95,6],
 "namespacestudy__muEloss.html#a3034ada3d6c2ad948b51608ccd21aaae":[4,0,95,10],
 "namespacestudy__muEloss.html#a30550dee0a8c8621ee4b730573e795d0":[4,0,95,3],
@@ -247,7 +249,5 @@ var NAVTREEINDEX36 =
 "rpvsusy_8py.html#a235c294533ecd1721f522cef50dd03bd":[6,0,11,25,3],
 "rpvsusy_8py.html#a44c7a5741fc60c1f8033a2e735536256":[6,0,11,25,5],
 "rpvsusy_8py.html#a8b5544128495c9d33bee37ddf3210f10":[6,0,11,25,9],
-"rpvsusy_8py.html#aa8baf816b466f878c9d2ebf8120f4375":[6,0,11,25,4],
-"rpvsusy_8py.html#ac884dc3219ae13b9dda6c048615e929d":[6,0,11,25,8],
-"rpvsusy_8py.html#ae6a5adf29932e433783535ab9c446df5":[6,0,11,25,7]
+"rpvsusy_8py.html#aa8baf816b466f878c9d2ebf8120f4375":[6,0,11,25,4]
 };

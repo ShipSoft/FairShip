@@ -1,5 +1,7 @@
 var NAVTREEINDEX35 =
 {
+"namespaceshipPatRec__prev.html#a7510073992bd6e9a3ebee8e336005409":[4,0,83,33],
+"namespaceshipPatRec__prev.html#a76db778a9b9eaedad10a15966833a882":[4,0,83,27],
 "namespaceshipPatRec__prev.html#a787b8adf9a37bc1f54f388c75c7cf572":[4,0,83,34],
 "namespaceshipPatRec__prev.html#a7b9955ac5bce2797ea9ebfd6ee4327b3":[4,0,83,30],
 "namespaceshipPatRec__prev.html#a7e4daa2ede6a32b2c90f6dbd2caf588b":[4,0,83,21],
@@ -247,7 +249,5 @@ var NAVTREEINDEX35 =
 "namespacestudy__muEloss.html#a0485ee8dfcfe78debc2ddf2702d6e066":[4,0,95,17],
 "namespacestudy__muEloss.html#a1369c82588c76bbecd67a082ab49d696":[4,0,95,14],
 "namespacestudy__muEloss.html#a1cf3022eb1eeff3dd1ca4f1395ca09c3":[4,0,95,1],
-"namespacestudy__muEloss.html#a202a5f314e1dc309484322b6dc573692":[4,0,95,8],
-"namespacestudy__muEloss.html#a2640cf13658492ff905990b45f608dcc":[4,0,95,9],
-"namespacestudy__muEloss.html#a2f2ed071db250f5d96a5d823a36a1d84":[4,0,95,13]
+"namespacestudy__muEloss.html#a202a5f314e1dc309484322b6dc573692":[4,0,95,8]
 };
