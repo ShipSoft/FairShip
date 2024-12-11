@@ -22,7 +22,7 @@ geo_file = ROOT.TFile.Open(
 selection = analysis_toolkit.selection_check(geo_file)
 
 
-def Main_function():
+def main():
     """Sample function to analyse the pre-selection parameters."""
     hist_dict = {}
 
@@ -109,4 +109,5 @@ def Main_function():
     ut.writeHists(hist_dict, "preselectionparameters.root")
 
 
-Main_function()
+if __name__ == "__main__":
+    main()
