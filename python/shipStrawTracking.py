@@ -397,7 +397,6 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method):
             thetrack = sTree.FitTracks[i_track]
 
             fitStatus   = thetrack.getFitStatus()
-            thetrack.prune("CFL") # http://sourceforge.net/p/genfit/code/HEAD/tree/trunk/core/include/Track.h#l280
 
             nmeas = fitStatus.getNdf()
             pval = fitStatus.getPVal()
