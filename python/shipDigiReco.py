@@ -988,8 +988,6 @@ class ShipDigiReco:
       global_variables.h['chi2'].Fill(chi2)
 # make track persistent
     nTrack   = self.fGenFitArray.GetEntries()
-    if not global_variables.debug:
-      theTrack.prune("CFL")  # http://sourceforge.net/p/genfit/code/HEAD/tree/trunk/core/include/Track.h#l280
     self.fGenFitArray[nTrack] = theTrack
     # self.fitTrack2MC.push_back(atrack)
     if global_variables.debug:

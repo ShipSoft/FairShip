@@ -25,6 +25,7 @@ it in future.
 
 * Set Decay Volume Medium as helium (previously vacuums),can be explicitly switched to vacuum with --vacuums.
 * Medium of SST boxes will be the same as DecayVolumeMedium (previously, always vacuum)
+* Don't prune tracks (before we were using the CFL option to Track::prune, see https://github.com/GenFit/GenFit/blob/e81adeb07c8643301a1d9f7ae25048557cc72dff/core/include/Track.h#L298)
 
 ### Removed
 

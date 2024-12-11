@@ -1355,7 +1355,6 @@ def TrackFit(hitPosList,theTrack,charge,pinv):
 
 
    fitStatus   = theTrack.getFitStatus()
-   theTrack.prune("CFL")  #  http://sourceforge.net/p/genfit/code/HEAD/tree/trunk/core/include/Track.h#l280
 
    nmeas = fitStatus.getNdf()
    pval = fitStatus.getPVal()
