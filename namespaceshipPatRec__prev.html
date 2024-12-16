@@ -286,73 +286,73 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPatRec__prev_8py_source.html#l01619">1619</a> of file <a class="el" href="shipPatRec__prev_8py_source.html">shipPatRec_prev.py</a>.</p>
-<div class="fragment"><div class="line"><a name="l01619"></a><span class="lineno"> 1619</span>&#160;<span class="keyword">def </span><a class="code" href="namespaceshipPatRec__prev.html#a3257194499761be25dd044d961f057aa">debugevent</a>(stereo,y2,y3,ymin2,yother,z2,z3,zmin2,zother,foundtrackids):</div>
-<div class="line"><a name="l01620"></a><span class="lineno"> 1620</span>&#160;     c = ROOT.TCanvas(<span class="stringliteral">&quot;c&quot;</span>,<span class="stringliteral">&quot;c&quot;</span>,600, 400)</div>
-<div class="line"><a name="l01621"></a><span class="lineno"> 1621</span>&#160;     <span class="keywordflow">if</span> stereo==<span class="keyword">False</span>:</div>
-<div class="line"><a name="l01622"></a><span class="lineno"> 1622</span>&#160;        coord=<span class="stringliteral">&quot;y&quot;</span></div>
-<div class="line"><a name="l01623"></a><span class="lineno"> 1623</span>&#160;     <span class="keywordflow">else</span>:</div>
-<div class="line"><a name="l01624"></a><span class="lineno"> 1624</span>&#160;        coord=<span class="stringliteral">&quot;projected x&quot;</span></div>
-<div class="line"><a name="l01625"></a><span class="lineno"> 1625</span>&#160;     mg=ROOT.TMultiGraph(coord+<span class="stringliteral">&quot;-hit coord vs z&quot;</span>,coord+<span class="stringliteral">&quot;-hit coord vs z; evtnb=&quot;</span>+<a class="code" href="namespaceadd__noise__to__field.html#ac8c461fc99cff345995bf60fcdfefa01">str</a>(iEvent))</div>
-<div class="line"><a name="l01626"></a><span class="lineno"> 1626</span>&#160;     y3vector=ROOT.TVector(len(y3))</div>
-<div class="line"><a name="l01627"></a><span class="lineno"> 1627</span>&#160;     z3vector=ROOT.TVector(len(z3))</div>
-<div class="line"><a name="l01628"></a><span class="lineno"> 1628</span>&#160;     <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(len(z3)):</div>
-<div class="line"><a name="l01629"></a><span class="lineno"> 1629</span>&#160;        y3vector[i]=y3[i]</div>
-<div class="line"><a name="l01630"></a><span class="lineno"> 1630</span>&#160;        z3vector[i]=z3[i]</div>
-<div class="line"><a name="l01631"></a><span class="lineno"> 1631</span>&#160;     y2vector=ROOT.TVector(len(y2))</div>
-<div class="line"><a name="l01632"></a><span class="lineno"> 1632</span>&#160;     z2vector=ROOT.TVector(len(z2))</div>
-<div class="line"><a name="l01633"></a><span class="lineno"> 1633</span>&#160;     <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(len(z2)):</div>
-<div class="line"><a name="l01634"></a><span class="lineno"> 1634</span>&#160;        y2vector[i]=y2[i]</div>
-<div class="line"><a name="l01635"></a><span class="lineno"> 1635</span>&#160;        z2vector[i]=z2[i]</div>
-<div class="line"><a name="l01636"></a><span class="lineno"> 1636</span>&#160;     ymin2vector=ROOT.TVector(len(ymin2))</div>
-<div class="line"><a name="l01637"></a><span class="lineno"> 1637</span>&#160;     zmin2vector=ROOT.TVector(len(zmin2))</div>
-<div class="line"><a name="l01638"></a><span class="lineno"> 1638</span>&#160;     <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(len(zmin2)):</div>
-<div class="line"><a name="l01639"></a><span class="lineno"> 1639</span>&#160;        ymin2vector[i]=ymin2[i]</div>
-<div class="line"><a name="l01640"></a><span class="lineno"> 1640</span>&#160;        zmin2vector[i]=zmin2[i]</div>
-<div class="line"><a name="l01641"></a><span class="lineno"> 1641</span>&#160;     yothervector=ROOT.TVector(len(yother))</div>
-<div class="line"><a name="l01642"></a><span class="lineno"> 1642</span>&#160;     zothervector=ROOT.TVector(len(zother))</div>
-<div class="line"><a name="l01643"></a><span class="lineno"> 1643</span>&#160;     <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(len(zother)):</div>
-<div class="line"><a name="l01644"></a><span class="lineno"> 1644</span>&#160;        yothervector[i]=yother[i]</div>
-<div class="line"><a name="l01645"></a><span class="lineno"> 1645</span>&#160;        zothervector[i]=zother[i]</div>
-<div class="line"><a name="l01646"></a><span class="lineno"> 1646</span>&#160;     <span class="keywordflow">if</span> len(z3)&gt;0:</div>
-<div class="line"><a name="l01647"></a><span class="lineno"> 1647</span>&#160;        g3=ROOT.TGraph(z3vector,y3vector)</div>
-<div class="line"><a name="l01648"></a><span class="lineno"> 1648</span>&#160;        g3.SetName(<span class="stringliteral">&quot;g3&quot;</span>)</div>
-<div class="line"><a name="l01649"></a><span class="lineno"> 1649</span>&#160;        g3.SetTitle(<span class="stringliteral">&quot;TrackID=3&quot;</span>)</div>
-<div class="line"><a name="l01650"></a><span class="lineno"> 1650</span>&#160;        g3.SetMarkerStyle(3)</div>
-<div class="line"><a name="l01651"></a><span class="lineno"> 1651</span>&#160;        g3.SetDrawOption(<span class="stringliteral">&quot;AP&quot;</span>)</div>
-<div class="line"><a name="l01652"></a><span class="lineno"> 1652</span>&#160;        g3.SetFillStyle(0)</div>
-<div class="line"><a name="l01653"></a><span class="lineno"> 1653</span>&#160;        mg.Add(g3)</div>
-<div class="line"><a name="l01654"></a><span class="lineno"> 1654</span>&#160;     <span class="keywordflow">if</span> len(z2)&gt;0:</div>
-<div class="line"><a name="l01655"></a><span class="lineno"> 1655</span>&#160;        g2=ROOT.TGraph(z2vector,y2vector)</div>
-<div class="line"><a name="l01656"></a><span class="lineno"> 1656</span>&#160;        g2.SetName(<span class="stringliteral">&quot;g2&quot;</span>)</div>
-<div class="line"><a name="l01657"></a><span class="lineno"> 1657</span>&#160;        g2.SetTitle(<span class="stringliteral">&quot;TrackID=2&quot;</span>)</div>
-<div class="line"><a name="l01658"></a><span class="lineno"> 1658</span>&#160;        g2.SetMarkerStyle(2)</div>
-<div class="line"><a name="l01659"></a><span class="lineno"> 1659</span>&#160;        g2.SetDrawOption(<span class="stringliteral">&quot;AP&quot;</span>)</div>
-<div class="line"><a name="l01660"></a><span class="lineno"> 1660</span>&#160;        g2.SetFillStyle(0)</div>
-<div class="line"><a name="l01661"></a><span class="lineno"> 1661</span>&#160;        mg.Add(g2)</div>
-<div class="line"><a name="l01662"></a><span class="lineno"> 1662</span>&#160;     <span class="keywordflow">if</span> len(zmin2)&gt;0:</div>
-<div class="line"><a name="l01663"></a><span class="lineno"> 1663</span>&#160;        gmin2=ROOT.TGraph(zmin2vector,ymin2vector)</div>
-<div class="line"><a name="l01664"></a><span class="lineno"> 1664</span>&#160;        gmin2.SetName(<span class="stringliteral">&quot;gmin2&quot;</span>)</div>
-<div class="line"><a name="l01665"></a><span class="lineno"> 1665</span>&#160;        gmin2.SetMarkerStyle(4)</div>
-<div class="line"><a name="l01666"></a><span class="lineno"> 1666</span>&#160;        gmin2.SetTitle(<span class="stringliteral">&quot;TrackID=-2&quot;</span>)</div>
-<div class="line"><a name="l01667"></a><span class="lineno"> 1667</span>&#160;        gmin2.SetDrawOption(<span class="stringliteral">&quot;AP&quot;</span>)</div>
-<div class="line"><a name="l01668"></a><span class="lineno"> 1668</span>&#160;        gmin2.SetFillStyle(0)</div>
-<div class="line"><a name="l01669"></a><span class="lineno"> 1669</span>&#160;        mg.Add(gmin2)</div>
-<div class="line"><a name="l01670"></a><span class="lineno"> 1670</span>&#160;     <span class="keywordflow">if</span> len(zother) &gt; 0:</div>
-<div class="line"><a name="l01671"></a><span class="lineno"> 1671</span>&#160;        gother=ROOT.TGraph(zothervector,yothervector)</div>
-<div class="line"><a name="l01672"></a><span class="lineno"> 1672</span>&#160;    gother.SetName(<span class="stringliteral">&quot;gother&quot;</span>)</div>
-<div class="line"><a name="l01673"></a><span class="lineno"> 1673</span>&#160;        gother.SetMarkerStyle(5)</div>
-<div class="line"><a name="l01674"></a><span class="lineno"> 1674</span>&#160;        gother.SetDrawOption(<span class="stringliteral">&quot;AP&quot;</span>)</div>
-<div class="line"><a name="l01675"></a><span class="lineno"> 1675</span>&#160;    gother.SetTitle(<span class="stringliteral">&quot;TrackID=Other&quot;</span>)</div>
-<div class="line"><a name="l01676"></a><span class="lineno"> 1676</span>&#160;    gother.SetFillStyle(0)</div>
-<div class="line"><a name="l01677"></a><span class="lineno"> 1677</span>&#160;    mg.Add(gother)</div>
-<div class="line"><a name="l01678"></a><span class="lineno"> 1678</span>&#160;     mg.Draw(<span class="stringliteral">&quot;A P&quot;</span>)</div>
-<div class="line"><a name="l01679"></a><span class="lineno"> 1679</span>&#160;     c.BuildLegend(0.6,0.3,0.99,0.5,<span class="stringliteral">&quot;Recble TrackIDs=&quot;</span>+<a class="code" href="namespaceadd__noise__to__field.html#ac8c461fc99cff345995bf60fcdfefa01">str</a>(ReconstructibleMCTracks)+<span class="stringliteral">&quot;Found TrackIDs:&quot;</span>+<a class="code" href="namespaceadd__noise__to__field.html#ac8c461fc99cff345995bf60fcdfefa01">str</a>(foundtrackids))</div>
-<div class="line"><a name="l01680"></a><span class="lineno"> 1680</span>&#160;     c.Write()</div>
-<div class="line"><a name="l01681"></a><span class="lineno"> 1681</span>&#160;     <span class="keywordflow">return</span></div>
-<div class="line"><a name="l01682"></a><span class="lineno"> 1682</span>&#160; </div>
+<p class="definition">Definition at line <a class="el" href="shipPatRec__prev_8py_source.html#l01618">1618</a> of file <a class="el" href="shipPatRec__prev_8py_source.html">shipPatRec_prev.py</a>.</p>
+<div class="fragment"><div class="line"><a name="l01618"></a><span class="lineno"> 1618</span>&#160;<span class="keyword">def </span><a class="code" href="namespaceshipPatRec__prev.html#a3257194499761be25dd044d961f057aa">debugevent</a>(stereo,y2,y3,ymin2,yother,z2,z3,zmin2,zother,foundtrackids):</div>
+<div class="line"><a name="l01619"></a><span class="lineno"> 1619</span>&#160;     c = ROOT.TCanvas(<span class="stringliteral">&quot;c&quot;</span>,<span class="stringliteral">&quot;c&quot;</span>,600, 400)</div>
+<div class="line"><a name="l01620"></a><span class="lineno"> 1620</span>&#160;     <span class="keywordflow">if</span> stereo==<span class="keyword">False</span>:</div>
+<div class="line"><a name="l01621"></a><span class="lineno"> 1621</span>&#160;        coord=<span class="stringliteral">&quot;y&quot;</span></div>
+<div class="line"><a name="l01622"></a><span class="lineno"> 1622</span>&#160;     <span class="keywordflow">else</span>:</div>
+<div class="line"><a name="l01623"></a><span class="lineno"> 1623</span>&#160;        coord=<span class="stringliteral">&quot;projected x&quot;</span></div>
+<div class="line"><a name="l01624"></a><span class="lineno"> 1624</span>&#160;     mg=ROOT.TMultiGraph(coord+<span class="stringliteral">&quot;-hit coord vs z&quot;</span>,coord+<span class="stringliteral">&quot;-hit coord vs z; evtnb=&quot;</span>+<a class="code" href="namespaceadd__noise__to__field.html#ac8c461fc99cff345995bf60fcdfefa01">str</a>(iEvent))</div>
+<div class="line"><a name="l01625"></a><span class="lineno"> 1625</span>&#160;     y3vector=ROOT.TVector(len(y3))</div>
+<div class="line"><a name="l01626"></a><span class="lineno"> 1626</span>&#160;     z3vector=ROOT.TVector(len(z3))</div>
+<div class="line"><a name="l01627"></a><span class="lineno"> 1627</span>&#160;     <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(len(z3)):</div>
+<div class="line"><a name="l01628"></a><span class="lineno"> 1628</span>&#160;        y3vector[i]=y3[i]</div>
+<div class="line"><a name="l01629"></a><span class="lineno"> 1629</span>&#160;        z3vector[i]=z3[i]</div>
+<div class="line"><a name="l01630"></a><span class="lineno"> 1630</span>&#160;     y2vector=ROOT.TVector(len(y2))</div>
+<div class="line"><a name="l01631"></a><span class="lineno"> 1631</span>&#160;     z2vector=ROOT.TVector(len(z2))</div>
+<div class="line"><a name="l01632"></a><span class="lineno"> 1632</span>&#160;     <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(len(z2)):</div>
+<div class="line"><a name="l01633"></a><span class="lineno"> 1633</span>&#160;        y2vector[i]=y2[i]</div>
+<div class="line"><a name="l01634"></a><span class="lineno"> 1634</span>&#160;        z2vector[i]=z2[i]</div>
+<div class="line"><a name="l01635"></a><span class="lineno"> 1635</span>&#160;     ymin2vector=ROOT.TVector(len(ymin2))</div>
+<div class="line"><a name="l01636"></a><span class="lineno"> 1636</span>&#160;     zmin2vector=ROOT.TVector(len(zmin2))</div>
+<div class="line"><a name="l01637"></a><span class="lineno"> 1637</span>&#160;     <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(len(zmin2)):</div>
+<div class="line"><a name="l01638"></a><span class="lineno"> 1638</span>&#160;        ymin2vector[i]=ymin2[i]</div>
+<div class="line"><a name="l01639"></a><span class="lineno"> 1639</span>&#160;        zmin2vector[i]=zmin2[i]</div>
+<div class="line"><a name="l01640"></a><span class="lineno"> 1640</span>&#160;     yothervector=ROOT.TVector(len(yother))</div>
+<div class="line"><a name="l01641"></a><span class="lineno"> 1641</span>&#160;     zothervector=ROOT.TVector(len(zother))</div>
+<div class="line"><a name="l01642"></a><span class="lineno"> 1642</span>&#160;     <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(len(zother)):</div>
+<div class="line"><a name="l01643"></a><span class="lineno"> 1643</span>&#160;        yothervector[i]=yother[i]</div>
+<div class="line"><a name="l01644"></a><span class="lineno"> 1644</span>&#160;        zothervector[i]=zother[i]</div>
+<div class="line"><a name="l01645"></a><span class="lineno"> 1645</span>&#160;     <span class="keywordflow">if</span> len(z3)&gt;0:</div>
+<div class="line"><a name="l01646"></a><span class="lineno"> 1646</span>&#160;        g3=ROOT.TGraph(z3vector,y3vector)</div>
+<div class="line"><a name="l01647"></a><span class="lineno"> 1647</span>&#160;        g3.SetName(<span class="stringliteral">&quot;g3&quot;</span>)</div>
+<div class="line"><a name="l01648"></a><span class="lineno"> 1648</span>&#160;        g3.SetTitle(<span class="stringliteral">&quot;TrackID=3&quot;</span>)</div>
+<div class="line"><a name="l01649"></a><span class="lineno"> 1649</span>&#160;        g3.SetMarkerStyle(3)</div>
+<div class="line"><a name="l01650"></a><span class="lineno"> 1650</span>&#160;        g3.SetDrawOption(<span class="stringliteral">&quot;AP&quot;</span>)</div>
+<div class="line"><a name="l01651"></a><span class="lineno"> 1651</span>&#160;        g3.SetFillStyle(0)</div>
+<div class="line"><a name="l01652"></a><span class="lineno"> 1652</span>&#160;        mg.Add(g3)</div>
+<div class="line"><a name="l01653"></a><span class="lineno"> 1653</span>&#160;     <span class="keywordflow">if</span> len(z2)&gt;0:</div>
+<div class="line"><a name="l01654"></a><span class="lineno"> 1654</span>&#160;        g2=ROOT.TGraph(z2vector,y2vector)</div>
+<div class="line"><a name="l01655"></a><span class="lineno"> 1655</span>&#160;        g2.SetName(<span class="stringliteral">&quot;g2&quot;</span>)</div>
+<div class="line"><a name="l01656"></a><span class="lineno"> 1656</span>&#160;        g2.SetTitle(<span class="stringliteral">&quot;TrackID=2&quot;</span>)</div>
+<div class="line"><a name="l01657"></a><span class="lineno"> 1657</span>&#160;        g2.SetMarkerStyle(2)</div>
+<div class="line"><a name="l01658"></a><span class="lineno"> 1658</span>&#160;        g2.SetDrawOption(<span class="stringliteral">&quot;AP&quot;</span>)</div>
+<div class="line"><a name="l01659"></a><span class="lineno"> 1659</span>&#160;        g2.SetFillStyle(0)</div>
+<div class="line"><a name="l01660"></a><span class="lineno"> 1660</span>&#160;        mg.Add(g2)</div>
+<div class="line"><a name="l01661"></a><span class="lineno"> 1661</span>&#160;     <span class="keywordflow">if</span> len(zmin2)&gt;0:</div>
+<div class="line"><a name="l01662"></a><span class="lineno"> 1662</span>&#160;        gmin2=ROOT.TGraph(zmin2vector,ymin2vector)</div>
+<div class="line"><a name="l01663"></a><span class="lineno"> 1663</span>&#160;        gmin2.SetName(<span class="stringliteral">&quot;gmin2&quot;</span>)</div>
+<div class="line"><a name="l01664"></a><span class="lineno"> 1664</span>&#160;        gmin2.SetMarkerStyle(4)</div>
+<div class="line"><a name="l01665"></a><span class="lineno"> 1665</span>&#160;        gmin2.SetTitle(<span class="stringliteral">&quot;TrackID=-2&quot;</span>)</div>
+<div class="line"><a name="l01666"></a><span class="lineno"> 1666</span>&#160;        gmin2.SetDrawOption(<span class="stringliteral">&quot;AP&quot;</span>)</div>
+<div class="line"><a name="l01667"></a><span class="lineno"> 1667</span>&#160;        gmin2.SetFillStyle(0)</div>
+<div class="line"><a name="l01668"></a><span class="lineno"> 1668</span>&#160;        mg.Add(gmin2)</div>
+<div class="line"><a name="l01669"></a><span class="lineno"> 1669</span>&#160;     <span class="keywordflow">if</span> len(zother) &gt; 0:</div>
+<div class="line"><a name="l01670"></a><span class="lineno"> 1670</span>&#160;        gother=ROOT.TGraph(zothervector,yothervector)</div>
+<div class="line"><a name="l01671"></a><span class="lineno"> 1671</span>&#160;    gother.SetName(<span class="stringliteral">&quot;gother&quot;</span>)</div>
+<div class="line"><a name="l01672"></a><span class="lineno"> 1672</span>&#160;        gother.SetMarkerStyle(5)</div>
+<div class="line"><a name="l01673"></a><span class="lineno"> 1673</span>&#160;        gother.SetDrawOption(<span class="stringliteral">&quot;AP&quot;</span>)</div>
+<div class="line"><a name="l01674"></a><span class="lineno"> 1674</span>&#160;    gother.SetTitle(<span class="stringliteral">&quot;TrackID=Other&quot;</span>)</div>
+<div class="line"><a name="l01675"></a><span class="lineno"> 1675</span>&#160;    gother.SetFillStyle(0)</div>
+<div class="line"><a name="l01676"></a><span class="lineno"> 1676</span>&#160;    mg.Add(gother)</div>
+<div class="line"><a name="l01677"></a><span class="lineno"> 1677</span>&#160;     mg.Draw(<span class="stringliteral">&quot;A P&quot;</span>)</div>
+<div class="line"><a name="l01678"></a><span class="lineno"> 1678</span>&#160;     c.BuildLegend(0.6,0.3,0.99,0.5,<span class="stringliteral">&quot;Recble TrackIDs=&quot;</span>+<a class="code" href="namespaceadd__noise__to__field.html#ac8c461fc99cff345995bf60fcdfefa01">str</a>(ReconstructibleMCTracks)+<span class="stringliteral">&quot;Found TrackIDs:&quot;</span>+<a class="code" href="namespaceadd__noise__to__field.html#ac8c461fc99cff345995bf60fcdfefa01">str</a>(foundtrackids))</div>
+<div class="line"><a name="l01679"></a><span class="lineno"> 1679</span>&#160;     c.Write()</div>
+<div class="line"><a name="l01680"></a><span class="lineno"> 1680</span>&#160;     <span class="keywordflow">return</span></div>
+<div class="line"><a name="l01681"></a><span class="lineno"> 1681</span>&#160; </div>
 <div class="ttc" id="anamespaceadd__noise__to__field_html_ac8c461fc99cff345995bf60fcdfefa01"><div class="ttname"><a href="namespaceadd__noise__to__field.html#ac8c461fc99cff345995bf60fcdfefa01">add_noise_to_field.str</a></div><div class="ttdeci">str</div><div class="ttdef"><b>Definition:</b> <a href="add__noise__to__field_8py_source.html#l00053">add_noise_to_field.py:53</a></div></div>
-<div class="ttc" id="anamespaceshipPatRec__prev_html_a3257194499761be25dd044d961f057aa"><div class="ttname"><a href="namespaceshipPatRec__prev.html#a3257194499761be25dd044d961f057aa">shipPatRec_prev.debugevent</a></div><div class="ttdeci">def debugevent(stereo, y2, y3, ymin2, yother, z2, z3, zmin2, zother, foundtrackids)</div><div class="ttdef"><b>Definition:</b> <a href="shipPatRec__prev_8py_source.html#l01619">shipPatRec_prev.py:1619</a></div></div>
+<div class="ttc" id="anamespaceshipPatRec__prev_html_a3257194499761be25dd044d961f057aa"><div class="ttname"><a href="namespaceshipPatRec__prev.html#a3257194499761be25dd044d961f057aa">shipPatRec_prev.debugevent</a></div><div class="ttdeci">def debugevent(stereo, y2, y3, ymin2, yother, z2, z3, zmin2, zother, foundtrackids)</div><div class="ttdef"><b>Definition:</b> <a href="shipPatRec__prev_8py_source.html#l01618">shipPatRec_prev.py:1618</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -454,14 +454,14 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPatRec__prev_8py_source.html#l01601">1601</a> of file <a class="el" href="shipPatRec__prev_8py_source.html">shipPatRec_prev.py</a>.</p>
-<div class="fragment"><div class="line"><a name="l01601"></a><span class="lineno"> 1601</span>&#160;<span class="keyword">def </span><a class="code" href="namespaceshipPatRec__prev.html#aae1cd604027f872550ca84991b755b6e">dist2line</a>(tan,cst,points):</div>
-<div class="line"><a name="l01602"></a><span class="lineno"> 1602</span>&#160;  <span class="comment">#points = (x,y)</span></div>
-<div class="line"><a name="l01603"></a><span class="lineno"> 1603</span>&#160;  <span class="comment">#tan, cst are the tangens &amp; constant of the fitted track</span></div>
-<div class="line"><a name="l01604"></a><span class="lineno"> 1604</span>&#160;  dist = tan*points[0][0] + cst - points[1]</div>
-<div class="line"><a name="l01605"></a><span class="lineno"> 1605</span>&#160;  <span class="keywordflow">return</span> dist</div>
-<div class="line"><a name="l01606"></a><span class="lineno"> 1606</span>&#160; </div>
-<div class="ttc" id="anamespaceshipPatRec__prev_html_aae1cd604027f872550ca84991b755b6e"><div class="ttname"><a href="namespaceshipPatRec__prev.html#aae1cd604027f872550ca84991b755b6e">shipPatRec_prev.dist2line</a></div><div class="ttdeci">def dist2line(tan, cst, points)</div><div class="ttdef"><b>Definition:</b> <a href="shipPatRec__prev_8py_source.html#l01601">shipPatRec_prev.py:1601</a></div></div>
+<p class="definition">Definition at line <a class="el" href="shipPatRec__prev_8py_source.html#l01600">1600</a> of file <a class="el" href="shipPatRec__prev_8py_source.html">shipPatRec_prev.py</a>.</p>
+<div class="fragment"><div class="line"><a name="l01600"></a><span class="lineno"> 1600</span>&#160;<span class="keyword">def </span><a class="code" href="namespaceshipPatRec__prev.html#aae1cd604027f872550ca84991b755b6e">dist2line</a>(tan,cst,points):</div>
+<div class="line"><a name="l01601"></a><span class="lineno"> 1601</span>&#160;  <span class="comment">#points = (x,y)</span></div>
+<div class="line"><a name="l01602"></a><span class="lineno"> 1602</span>&#160;  <span class="comment">#tan, cst are the tangens &amp; constant of the fitted track</span></div>
+<div class="line"><a name="l01603"></a><span class="lineno"> 1603</span>&#160;  dist = tan*points[0][0] + cst - points[1]</div>
+<div class="line"><a name="l01604"></a><span class="lineno"> 1604</span>&#160;  <span class="keywordflow">return</span> dist</div>
+<div class="line"><a name="l01605"></a><span class="lineno"> 1605</span>&#160; </div>
+<div class="ttc" id="anamespaceshipPatRec__prev_html_aae1cd604027f872550ca84991b755b6e"><div class="ttname"><a href="namespaceshipPatRec__prev.html#aae1cd604027f872550ca84991b755b6e">shipPatRec_prev.dist2line</a></div><div class="ttdeci">def dist2line(tan, cst, points)</div><div class="ttdef"><b>Definition:</b> <a href="shipPatRec__prev_8py_source.html#l01600">shipPatRec_prev.py:1600</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -509,16 +509,16 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPatRec__prev_8py_source.html#l01471">1471</a> of file <a class="el" href="shipPatRec__prev_8py_source.html">shipPatRec_prev.py</a>.</p>
-<div class="fragment"><div class="line"><a name="l01471"></a><span class="lineno"> 1471</span>&#160;<span class="keyword">def </span><a class="code" href="namespaceshipPatRec__prev.html#a4792babfb5dd5eba60a5883092f8cff8">dorot</a>(x,y,xc,yc,alpha):</div>
-<div class="line"><a name="l01472"></a><span class="lineno"> 1472</span>&#160;    <span class="comment">#rotate x,y around xc,yc over angle alpha</span></div>
-<div class="line"><a name="l01473"></a><span class="lineno"> 1473</span>&#160;    ca=cos(alpha)</div>
-<div class="line"><a name="l01474"></a><span class="lineno"> 1474</span>&#160;    sa=sin(alpha)</div>
-<div class="line"><a name="l01475"></a><span class="lineno"> 1475</span>&#160;    xout=ca*(x-xc)-sa*(y-yc)+xc</div>
-<div class="line"><a name="l01476"></a><span class="lineno"> 1476</span>&#160;    yout=sa*(x-xc)+ca*(y-yc)+yc</div>
-<div class="line"><a name="l01477"></a><span class="lineno"> 1477</span>&#160;    <span class="keywordflow">return</span> xout,yout</div>
-<div class="line"><a name="l01478"></a><span class="lineno"> 1478</span>&#160; </div>
-<div class="ttc" id="anamespaceshipPatRec__prev_html_a4792babfb5dd5eba60a5883092f8cff8"><div class="ttname"><a href="namespaceshipPatRec__prev.html#a4792babfb5dd5eba60a5883092f8cff8">shipPatRec_prev.dorot</a></div><div class="ttdeci">def dorot(x, y, xc, yc, alpha)</div><div class="ttdef"><b>Definition:</b> <a href="shipPatRec__prev_8py_source.html#l01471">shipPatRec_prev.py:1471</a></div></div>
+<p class="definition">Definition at line <a class="el" href="shipPatRec__prev_8py_source.html#l01470">1470</a> of file <a class="el" href="shipPatRec__prev_8py_source.html">shipPatRec_prev.py</a>.</p>
+<div class="fragment"><div class="line"><a name="l01470"></a><span class="lineno"> 1470</span>&#160;<span class="keyword">def </span><a class="code" href="namespaceshipPatRec__prev.html#a4792babfb5dd5eba60a5883092f8cff8">dorot</a>(x,y,xc,yc,alpha):</div>
+<div class="line"><a name="l01471"></a><span class="lineno"> 1471</span>&#160;    <span class="comment">#rotate x,y around xc,yc over angle alpha</span></div>
+<div class="line"><a name="l01472"></a><span class="lineno"> 1472</span>&#160;    ca=cos(alpha)</div>
+<div class="line"><a name="l01473"></a><span class="lineno"> 1473</span>&#160;    sa=sin(alpha)</div>
+<div class="line"><a name="l01474"></a><span class="lineno"> 1474</span>&#160;    xout=ca*(x-xc)-sa*(y-yc)+xc</div>
+<div class="line"><a name="l01475"></a><span class="lineno"> 1475</span>&#160;    yout=sa*(x-xc)+ca*(y-yc)+yc</div>
+<div class="line"><a name="l01476"></a><span class="lineno"> 1476</span>&#160;    <span class="keywordflow">return</span> xout,yout</div>
+<div class="line"><a name="l01477"></a><span class="lineno"> 1477</span>&#160; </div>
+<div class="ttc" id="anamespaceshipPatRec__prev_html_a4792babfb5dd5eba60a5883092f8cff8"><div class="ttname"><a href="namespaceshipPatRec__prev.html#a4792babfb5dd5eba60a5883092f8cff8">shipPatRec_prev.dorot</a></div><div class="ttdeci">def dorot(x, y, xc, yc, alpha)</div><div class="ttdef"><b>Definition:</b> <a href="shipPatRec__prev_8py_source.html#l01470">shipPatRec_prev.py:1470</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -554,261 +554,261 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPatRec__prev_8py_source.html#l01683">1683</a> of file <a class="el" href="shipPatRec__prev_8py_source.html">shipPatRec_prev.py</a>.</p>
-<div class="fragment"><div class="line"><a name="l01683"></a><span class="lineno"> 1683</span>&#160;<span class="keyword">def </span><a class="code" href="namespaceshipPatRec__prev.html#affee9a325f58bd2893b53f3ea6b112be">execute</a>(SmearedHits,sTree,ReconstructibleMCTracks):</div>
-<div class="line"><a name="l01684"></a><span class="lineno"> 1684</span>&#160; <span class="keyword">global</span> totalaftermatching,morethan500,falsepositive,falsenegative,totalafterpatrec</div>
-<div class="line"><a name="l01685"></a><span class="lineno"> 1685</span>&#160; <span class="keyword">global</span> reconstructibleevents,morethan100tracks,theTracks</div>
-<div class="line"><a name="l01686"></a><span class="lineno"> 1686</span>&#160; </div>
-<div class="line"><a name="l01687"></a><span class="lineno"> 1687</span>&#160; fittedtrackids=[]</div>
-<div class="line"><a name="l01688"></a><span class="lineno"> 1688</span>&#160; reconstructibles12=0</div>
-<div class="line"><a name="l01689"></a><span class="lineno"> 1689</span>&#160; reconstructibles34=0</div>
-<div class="line"><a name="l01690"></a><span class="lineno"> 1690</span>&#160; theTracks=[]</div>
-<div class="line"><a name="l01691"></a><span class="lineno"> 1691</span>&#160; </div>
-<div class="line"><a name="l01692"></a><span class="lineno"> 1692</span>&#160; <span class="keywordflow">if</span> global_variables.debug:</div>
-<div class="line"><a name="l01693"></a><span class="lineno"> 1693</span>&#160;   print(<span class="stringliteral">&quot;************* PatRect START **************&quot;</span>)</div>
-<div class="line"><a name="l01694"></a><span class="lineno"> 1694</span>&#160; </div>
-<div class="line"><a name="l01695"></a><span class="lineno"> 1695</span>&#160; nShits=sTree.strawtubesPoint.GetEntriesFast()</div>
-<div class="line"><a name="l01696"></a><span class="lineno"> 1696</span>&#160; nMCTracks = sTree.MCTrack.GetEntriesFast()</div>
-<div class="line"><a name="l01697"></a><span class="lineno"> 1697</span>&#160; </div>
-<div class="line"><a name="l01698"></a><span class="lineno"> 1698</span>&#160; <span class="comment">#if nMCTracks &lt; 100:</span></div>
-<div class="line"><a name="l01699"></a><span class="lineno"> 1699</span>&#160; <span class="keywordflow">if</span> nShits &lt; 500:</div>
-<div class="line"><a name="l01700"></a><span class="lineno"> 1700</span>&#160; </div>
-<div class="line"><a name="l01701"></a><span class="lineno"> 1701</span>&#160;     StrawRaw,StrawRawLink=<a class="code" href="namespaceshipPatRec__prev.html#acb4b3d791784790e34488f05d239490c">Digitization</a>(sTree,SmearedHits)</div>
-<div class="line"><a name="l01702"></a><span class="lineno"> 1702</span>&#160;     reconstructibleevents+=1</div>
-<div class="line"><a name="l01703"></a><span class="lineno"> 1703</span>&#160;     nr12tracks,tracks12,hitids12,xtan12,xcst12,stereotan12,stereocst12,px12,py12,pz12,fraction12,trackid12=<a class="code" href="namespaceshipPatRec__prev.html#a6227efd168df8cdd82e22f62e1fd5ceb">PatRec</a>(<span class="keyword">True</span>,zlayer,zlayerv2,StrawRaw,StrawRawLink,ReconstructibleMCTracks)</div>
-<div class="line"><a name="l01704"></a><span class="lineno"> 1704</span>&#160;     tracksfound=[]</div>
-<div class="line"><a name="l01705"></a><span class="lineno"> 1705</span>&#160;     <span class="keywordflow">if</span> monitor==<span class="keyword">True</span>:</div>
-<div class="line"><a name="l01706"></a><span class="lineno"> 1706</span>&#160;       <span class="keywordflow">for</span> item <span class="keywordflow">in</span> ReconstructibleMCTracks:</div>
-<div class="line"><a name="l01707"></a><span class="lineno"> 1707</span>&#160;     <span class="keywordflow">for</span> value <span class="keywordflow">in</span> trackid12.values():</div>
-<div class="line"><a name="l01708"></a><span class="lineno"> 1708</span>&#160;        <span class="keywordflow">if</span> item == value <span class="keywordflow">and</span> item <span class="keywordflow">not</span> <span class="keywordflow">in</span> tracksfound:</div>
-<div class="line"><a name="l01709"></a><span class="lineno"> 1709</span>&#160;            reconstructibles12+=1</div>
-<div class="line"><a name="l01710"></a><span class="lineno"> 1710</span>&#160;        tracksfound.append(item)</div>
-<div class="line"><a name="l01711"></a><span class="lineno"> 1711</span>&#160; </div>
-<div class="line"><a name="l01712"></a><span class="lineno"> 1712</span>&#160;       <span class="keywordflow">if</span> global_variables.debug:</div>
-<div class="line"><a name="l01713"></a><span class="lineno"> 1713</span>&#160;     print(</div>
-<div class="line"><a name="l01714"></a><span class="lineno"> 1714</span>&#160;         <span class="stringliteral">&quot;tracksfound&quot;</span>, tracksfound,</div>
-<div class="line"><a name="l01715"></a><span class="lineno"> 1715</span>&#160;         <span class="stringliteral">&quot;reconstructibles12&quot;</span>, reconstructibles12,</div>
-<div class="line"><a name="l01716"></a><span class="lineno"> 1716</span>&#160;         <span class="stringliteral">&quot;ReconstructibleMCTracks&quot;</span>, ReconstructibleMCTracks</div>
-<div class="line"><a name="l01717"></a><span class="lineno"> 1717</span>&#160;         )</div>
-<div class="line"><a name="l01718"></a><span class="lineno"> 1718</span>&#160;       <span class="keywordflow">if</span> len(tracksfound)==0 <span class="keywordflow">and</span> len(ReconstructibleMCTracks)&gt;0:</div>
-<div class="line"><a name="l01719"></a><span class="lineno"> 1719</span>&#160;         <span class="keywordflow">if</span> global_variables.debug:</div>
-<div class="line"><a name="l01720"></a><span class="lineno"> 1720</span>&#160;       print(<span class="stringliteral">&quot;No tracks found in event after stations 1&amp;2. Rejecting event.&quot;</span>)</div>
-<div class="line"><a name="l01721"></a><span class="lineno"> 1721</span>&#160;         <span class="keywordflow">return</span></div>
-<div class="line"><a name="l01722"></a><span class="lineno"> 1722</span>&#160; </div>
-<div class="line"><a name="l01723"></a><span class="lineno"> 1723</span>&#160;     nr34tracks,tracks34,hitids34,xtan34,xcst34,stereotan34,stereocst34,px34,py34,pz34,fraction34,trackid34=<a class="code" href="namespaceshipPatRec__prev.html#a6227efd168df8cdd82e22f62e1fd5ceb">PatRec</a>(<span class="keyword">False</span>,z34layer,z34layerv2,StrawRaw,StrawRawLink,ReconstructibleMCTracks)</div>
-<div class="line"><a name="l01724"></a><span class="lineno"> 1724</span>&#160; </div>
-<div class="line"><a name="l01725"></a><span class="lineno"> 1725</span>&#160;     tracksfound=[]</div>
-<div class="line"><a name="l01726"></a><span class="lineno"> 1726</span>&#160;     <span class="keywordflow">if</span> monitor==<span class="keyword">True</span>:</div>
-<div class="line"><a name="l01727"></a><span class="lineno"> 1727</span>&#160;      <span class="keywordflow">for</span> item <span class="keywordflow">in</span> ReconstructibleMCTracks:</div>
-<div class="line"><a name="l01728"></a><span class="lineno"> 1728</span>&#160;    <span class="keywordflow">for</span> value <span class="keywordflow">in</span> trackid34.values():</div>
-<div class="line"><a name="l01729"></a><span class="lineno"> 1729</span>&#160;        <span class="keywordflow">if</span> item == value <span class="keywordflow">and</span> item <span class="keywordflow">not</span> <span class="keywordflow">in</span> tracksfound:</div>
-<div class="line"><a name="l01730"></a><span class="lineno"> 1730</span>&#160;            reconstructibles34+=1</div>
-<div class="line"><a name="l01731"></a><span class="lineno"> 1731</span>&#160;        tracksfound.append(item)</div>
-<div class="line"><a name="l01732"></a><span class="lineno"> 1732</span>&#160;      <span class="keywordflow">if</span> len(tracksfound)==0 <span class="keywordflow">and</span> len(ReconstructibleMCTracks)&gt;0:</div>
-<div class="line"><a name="l01733"></a><span class="lineno"> 1733</span>&#160;        <span class="keywordflow">if</span> global_variables.debug:</div>
-<div class="line"><a name="l01734"></a><span class="lineno"> 1734</span>&#160;      print(<span class="stringliteral">&quot;No tracks found in event after stations 3&amp;4. Rejecting event.&quot;</span>)</div>
-<div class="line"><a name="l01735"></a><span class="lineno"> 1735</span>&#160;        <span class="keywordflow">return</span></div>
-<div class="line"><a name="l01736"></a><span class="lineno"> 1736</span>&#160;      MatchedReconstructibleMCTracks=len(ReconstructibleMCTracks)*[0]</div>
+<p class="definition">Definition at line <a class="el" href="shipPatRec__prev_8py_source.html#l01682">1682</a> of file <a class="el" href="shipPatRec__prev_8py_source.html">shipPatRec_prev.py</a>.</p>
+<div class="fragment"><div class="line"><a name="l01682"></a><span class="lineno"> 1682</span>&#160;<span class="keyword">def </span><a class="code" href="namespaceshipPatRec__prev.html#affee9a325f58bd2893b53f3ea6b112be">execute</a>(SmearedHits,sTree,ReconstructibleMCTracks):</div>
+<div class="line"><a name="l01683"></a><span class="lineno"> 1683</span>&#160; <span class="keyword">global</span> totalaftermatching,morethan500,falsepositive,falsenegative,totalafterpatrec</div>
+<div class="line"><a name="l01684"></a><span class="lineno"> 1684</span>&#160; <span class="keyword">global</span> reconstructibleevents,morethan100tracks,theTracks</div>
+<div class="line"><a name="l01685"></a><span class="lineno"> 1685</span>&#160; </div>
+<div class="line"><a name="l01686"></a><span class="lineno"> 1686</span>&#160; fittedtrackids=[]</div>
+<div class="line"><a name="l01687"></a><span class="lineno"> 1687</span>&#160; reconstructibles12=0</div>
+<div class="line"><a name="l01688"></a><span class="lineno"> 1688</span>&#160; reconstructibles34=0</div>
+<div class="line"><a name="l01689"></a><span class="lineno"> 1689</span>&#160; theTracks=[]</div>
+<div class="line"><a name="l01690"></a><span class="lineno"> 1690</span>&#160; </div>
+<div class="line"><a name="l01691"></a><span class="lineno"> 1691</span>&#160; <span class="keywordflow">if</span> global_variables.debug:</div>
+<div class="line"><a name="l01692"></a><span class="lineno"> 1692</span>&#160;   print(<span class="stringliteral">&quot;************* PatRect START **************&quot;</span>)</div>
+<div class="line"><a name="l01693"></a><span class="lineno"> 1693</span>&#160; </div>
+<div class="line"><a name="l01694"></a><span class="lineno"> 1694</span>&#160; nShits=sTree.strawtubesPoint.GetEntriesFast()</div>
+<div class="line"><a name="l01695"></a><span class="lineno"> 1695</span>&#160; nMCTracks = sTree.MCTrack.GetEntriesFast()</div>
+<div class="line"><a name="l01696"></a><span class="lineno"> 1696</span>&#160; </div>
+<div class="line"><a name="l01697"></a><span class="lineno"> 1697</span>&#160; <span class="comment">#if nMCTracks &lt; 100:</span></div>
+<div class="line"><a name="l01698"></a><span class="lineno"> 1698</span>&#160; <span class="keywordflow">if</span> nShits &lt; 500:</div>
+<div class="line"><a name="l01699"></a><span class="lineno"> 1699</span>&#160; </div>
+<div class="line"><a name="l01700"></a><span class="lineno"> 1700</span>&#160;     StrawRaw,StrawRawLink=<a class="code" href="namespaceshipPatRec__prev.html#acb4b3d791784790e34488f05d239490c">Digitization</a>(sTree,SmearedHits)</div>
+<div class="line"><a name="l01701"></a><span class="lineno"> 1701</span>&#160;     reconstructibleevents+=1</div>
+<div class="line"><a name="l01702"></a><span class="lineno"> 1702</span>&#160;     nr12tracks,tracks12,hitids12,xtan12,xcst12,stereotan12,stereocst12,px12,py12,pz12,fraction12,trackid12=<a class="code" href="namespaceshipPatRec__prev.html#a6227efd168df8cdd82e22f62e1fd5ceb">PatRec</a>(<span class="keyword">True</span>,zlayer,zlayerv2,StrawRaw,StrawRawLink,ReconstructibleMCTracks)</div>
+<div class="line"><a name="l01703"></a><span class="lineno"> 1703</span>&#160;     tracksfound=[]</div>
+<div class="line"><a name="l01704"></a><span class="lineno"> 1704</span>&#160;     <span class="keywordflow">if</span> monitor==<span class="keyword">True</span>:</div>
+<div class="line"><a name="l01705"></a><span class="lineno"> 1705</span>&#160;       <span class="keywordflow">for</span> item <span class="keywordflow">in</span> ReconstructibleMCTracks:</div>
+<div class="line"><a name="l01706"></a><span class="lineno"> 1706</span>&#160;     <span class="keywordflow">for</span> value <span class="keywordflow">in</span> trackid12.values():</div>
+<div class="line"><a name="l01707"></a><span class="lineno"> 1707</span>&#160;        <span class="keywordflow">if</span> item == value <span class="keywordflow">and</span> item <span class="keywordflow">not</span> <span class="keywordflow">in</span> tracksfound:</div>
+<div class="line"><a name="l01708"></a><span class="lineno"> 1708</span>&#160;            reconstructibles12+=1</div>
+<div class="line"><a name="l01709"></a><span class="lineno"> 1709</span>&#160;        tracksfound.append(item)</div>
+<div class="line"><a name="l01710"></a><span class="lineno"> 1710</span>&#160; </div>
+<div class="line"><a name="l01711"></a><span class="lineno"> 1711</span>&#160;       <span class="keywordflow">if</span> global_variables.debug:</div>
+<div class="line"><a name="l01712"></a><span class="lineno"> 1712</span>&#160;     print(</div>
+<div class="line"><a name="l01713"></a><span class="lineno"> 1713</span>&#160;         <span class="stringliteral">&quot;tracksfound&quot;</span>, tracksfound,</div>
+<div class="line"><a name="l01714"></a><span class="lineno"> 1714</span>&#160;         <span class="stringliteral">&quot;reconstructibles12&quot;</span>, reconstructibles12,</div>
+<div class="line"><a name="l01715"></a><span class="lineno"> 1715</span>&#160;         <span class="stringliteral">&quot;ReconstructibleMCTracks&quot;</span>, ReconstructibleMCTracks</div>
+<div class="line"><a name="l01716"></a><span class="lineno"> 1716</span>&#160;         )</div>
+<div class="line"><a name="l01717"></a><span class="lineno"> 1717</span>&#160;       <span class="keywordflow">if</span> len(tracksfound)==0 <span class="keywordflow">and</span> len(ReconstructibleMCTracks)&gt;0:</div>
+<div class="line"><a name="l01718"></a><span class="lineno"> 1718</span>&#160;         <span class="keywordflow">if</span> global_variables.debug:</div>
+<div class="line"><a name="l01719"></a><span class="lineno"> 1719</span>&#160;       print(<span class="stringliteral">&quot;No tracks found in event after stations 1&amp;2. Rejecting event.&quot;</span>)</div>
+<div class="line"><a name="l01720"></a><span class="lineno"> 1720</span>&#160;         <span class="keywordflow">return</span></div>
+<div class="line"><a name="l01721"></a><span class="lineno"> 1721</span>&#160; </div>
+<div class="line"><a name="l01722"></a><span class="lineno"> 1722</span>&#160;     nr34tracks,tracks34,hitids34,xtan34,xcst34,stereotan34,stereocst34,px34,py34,pz34,fraction34,trackid34=<a class="code" href="namespaceshipPatRec__prev.html#a6227efd168df8cdd82e22f62e1fd5ceb">PatRec</a>(<span class="keyword">False</span>,z34layer,z34layerv2,StrawRaw,StrawRawLink,ReconstructibleMCTracks)</div>
+<div class="line"><a name="l01723"></a><span class="lineno"> 1723</span>&#160; </div>
+<div class="line"><a name="l01724"></a><span class="lineno"> 1724</span>&#160;     tracksfound=[]</div>
+<div class="line"><a name="l01725"></a><span class="lineno"> 1725</span>&#160;     <span class="keywordflow">if</span> monitor==<span class="keyword">True</span>:</div>
+<div class="line"><a name="l01726"></a><span class="lineno"> 1726</span>&#160;      <span class="keywordflow">for</span> item <span class="keywordflow">in</span> ReconstructibleMCTracks:</div>
+<div class="line"><a name="l01727"></a><span class="lineno"> 1727</span>&#160;    <span class="keywordflow">for</span> value <span class="keywordflow">in</span> trackid34.values():</div>
+<div class="line"><a name="l01728"></a><span class="lineno"> 1728</span>&#160;        <span class="keywordflow">if</span> item == value <span class="keywordflow">and</span> item <span class="keywordflow">not</span> <span class="keywordflow">in</span> tracksfound:</div>
+<div class="line"><a name="l01729"></a><span class="lineno"> 1729</span>&#160;            reconstructibles34+=1</div>
+<div class="line"><a name="l01730"></a><span class="lineno"> 1730</span>&#160;        tracksfound.append(item)</div>
+<div class="line"><a name="l01731"></a><span class="lineno"> 1731</span>&#160;      <span class="keywordflow">if</span> len(tracksfound)==0 <span class="keywordflow">and</span> len(ReconstructibleMCTracks)&gt;0:</div>
+<div class="line"><a name="l01732"></a><span class="lineno"> 1732</span>&#160;        <span class="keywordflow">if</span> global_variables.debug:</div>
+<div class="line"><a name="l01733"></a><span class="lineno"> 1733</span>&#160;      print(<span class="stringliteral">&quot;No tracks found in event after stations 3&amp;4. Rejecting event.&quot;</span>)</div>
+<div class="line"><a name="l01734"></a><span class="lineno"> 1734</span>&#160;        <span class="keywordflow">return</span></div>
+<div class="line"><a name="l01735"></a><span class="lineno"> 1735</span>&#160;      MatchedReconstructibleMCTracks=len(ReconstructibleMCTracks)*[0]</div>
+<div class="line"><a name="l01736"></a><span class="lineno"> 1736</span>&#160; </div>
 <div class="line"><a name="l01737"></a><span class="lineno"> 1737</span>&#160; </div>
-<div class="line"><a name="l01738"></a><span class="lineno"> 1738</span>&#160; </div>
-<div class="line"><a name="l01739"></a><span class="lineno"> 1739</span>&#160;     <span class="keywordflow">if</span> global_variables.debug:</div>
-<div class="line"><a name="l01740"></a><span class="lineno"> 1740</span>&#160;      <span class="keywordflow">if</span> (nr12tracks&gt;0) :</div>
-<div class="line"><a name="l01741"></a><span class="lineno"> 1741</span>&#160;       print(nr12tracks,<span class="stringliteral">&quot;tracks12  &quot;</span>,tracks12)</div>
-<div class="line"><a name="l01742"></a><span class="lineno"> 1742</span>&#160;       print(<span class="stringliteral">&quot;hitids12  &quot;</span>,hitids12)</div>
-<div class="line"><a name="l01743"></a><span class="lineno"> 1743</span>&#160;       print(<span class="stringliteral">&quot;xtan  &quot;</span>,xtan12,<span class="stringliteral">&quot;xcst&quot;</span>,xcst12)</div>
-<div class="line"><a name="l01744"></a><span class="lineno"> 1744</span>&#160;       print(<span class="stringliteral">&quot;stereotan  &quot;</span>,stereotan12,<span class="stringliteral">&quot;stereocst  &quot;</span>,stereocst12)</div>
-<div class="line"><a name="l01745"></a><span class="lineno"> 1745</span>&#160;       print(<span class="stringliteral">&quot;fraction12&quot;</span>,fraction12,<span class="stringliteral">&quot;trackid12&quot;</span>,trackid12)</div>
-<div class="line"><a name="l01746"></a><span class="lineno"> 1746</span>&#160;      <span class="keywordflow">else</span> :</div>
-<div class="line"><a name="l01747"></a><span class="lineno"> 1747</span>&#160;       print(<span class="stringliteral">&quot;No tracks found in stations 1&amp;2.&quot;</span>)</div>
-<div class="line"><a name="l01748"></a><span class="lineno"> 1748</span>&#160; </div>
-<div class="line"><a name="l01749"></a><span class="lineno"> 1749</span>&#160;      <span class="keywordflow">if</span> (nr34tracks&gt;0) :</div>
-<div class="line"><a name="l01750"></a><span class="lineno"> 1750</span>&#160;       print(nr34tracks,<span class="stringliteral">&quot;tracks34  &quot;</span>,tracks34)</div>
-<div class="line"><a name="l01751"></a><span class="lineno"> 1751</span>&#160;       print(<span class="stringliteral">&quot;hitids34  &quot;</span>,hitids34)</div>
-<div class="line"><a name="l01752"></a><span class="lineno"> 1752</span>&#160;       print(<span class="stringliteral">&quot;xtan34 &quot;</span>,xtan34,<span class="stringliteral">&quot;xcst34 &quot;</span>,xcst34)</div>
-<div class="line"><a name="l01753"></a><span class="lineno"> 1753</span>&#160;       print(<span class="stringliteral">&quot;stereotan34  &quot;</span>,stereotan34,<span class="stringliteral">&quot;stereocst34  &quot;</span>,stereocst34)</div>
-<div class="line"><a name="l01754"></a><span class="lineno"> 1754</span>&#160;       print(<span class="stringliteral">&quot;px34&quot;</span>,px34)</div>
-<div class="line"><a name="l01755"></a><span class="lineno"> 1755</span>&#160;      <span class="keywordflow">else</span> :</div>
-<div class="line"><a name="l01756"></a><span class="lineno"> 1756</span>&#160;       print(<span class="stringliteral">&quot;No tracks found in stations 3&amp;4.&quot;</span>)</div>
-<div class="line"><a name="l01757"></a><span class="lineno"> 1757</span>&#160; </div>
-<div class="line"><a name="l01758"></a><span class="lineno"> 1758</span>&#160;     <span class="keywordflow">if</span> monitor==<span class="keyword">False</span>: totalafterpatrec+=1</div>
-<div class="line"><a name="l01759"></a><span class="lineno"> 1759</span>&#160; </div>
-<div class="line"><a name="l01760"></a><span class="lineno"> 1760</span>&#160;     zmagnet=ShipGeo.Bfield.z</div>
-<div class="line"><a name="l01761"></a><span class="lineno"> 1761</span>&#160;     tracksfound=[]</div>
-<div class="line"><a name="l01762"></a><span class="lineno"> 1762</span>&#160;     matches=0</div>
-<div class="line"><a name="l01763"></a><span class="lineno"> 1763</span>&#160; </div>
-<div class="line"><a name="l01764"></a><span class="lineno"> 1764</span>&#160;     <span class="keywordflow">for</span> item <span class="keywordflow">in</span> xtan12:</div>
-<div class="line"><a name="l01765"></a><span class="lineno"> 1765</span>&#160;      z1=0.</div>
-<div class="line"><a name="l01766"></a><span class="lineno"> 1766</span>&#160;      tgy1=xtan12[item]</div>
-<div class="line"><a name="l01767"></a><span class="lineno"> 1767</span>&#160;      tgx1=stereotan12[item]</div>
-<div class="line"><a name="l01768"></a><span class="lineno"> 1768</span>&#160;      y1=xcst12[item]</div>
-<div class="line"><a name="l01769"></a><span class="lineno"> 1769</span>&#160;      x1=stereocst12[item]</div>
-<div class="line"><a name="l01770"></a><span class="lineno"> 1770</span>&#160;      t1=[x1,y1,z1,tgx1,tgy1]</div>
-<div class="line"><a name="l01771"></a><span class="lineno"> 1771</span>&#160;      <span class="keywordflow">for</span> ids <span class="keywordflow">in</span> hitids12[item]:</div>
-<div class="line"><a name="l01772"></a><span class="lineno"> 1772</span>&#160;         <span class="comment">#cheated</span></div>
-<div class="line"><a name="l01773"></a><span class="lineno"> 1773</span>&#160;         <span class="keywordflow">if</span> ids != 999 :</div>
-<div class="line"><a name="l01774"></a><span class="lineno"> 1774</span>&#160;            <span class="comment">#loop until we get the particle of this track</span></div>
-<div class="line"><a name="l01775"></a><span class="lineno"> 1775</span>&#160;        particle12   = PDG.GetParticle(StrawRawLink[ids][0].PdgCode())</div>
-<div class="line"><a name="l01776"></a><span class="lineno"> 1776</span>&#160;        <span class="keywordflow">try</span>:</div>
-<div class="line"><a name="l01777"></a><span class="lineno"> 1777</span>&#160;           charge12=particle12.Charge()/3.</div>
-<div class="line"><a name="l01778"></a><span class="lineno"> 1778</span>&#160;           <span class="keywordflow">break</span></div>
-<div class="line"><a name="l01779"></a><span class="lineno"> 1779</span>&#160;        <span class="keywordflow">except</span>:</div>
-<div class="line"><a name="l01780"></a><span class="lineno"> 1780</span>&#160;           <span class="keywordflow">continue</span></div>
-<div class="line"><a name="l01781"></a><span class="lineno"> 1781</span>&#160; </div>
-<div class="line"><a name="l01782"></a><span class="lineno"> 1782</span>&#160;      falsenegativethistrack=0</div>
-<div class="line"><a name="l01783"></a><span class="lineno"> 1783</span>&#160;      falsepositivethistrack=0</div>
-<div class="line"><a name="l01784"></a><span class="lineno"> 1784</span>&#160;      <span class="keywordflow">for</span> item1 <span class="keywordflow">in</span> xtan34:</div>
-<div class="line"><a name="l01785"></a><span class="lineno"> 1785</span>&#160;         <span class="keywordflow">if</span> monitor==<span class="keyword">True</span>:  totalafterpatrec+=1</div>
-<div class="line"><a name="l01786"></a><span class="lineno"> 1786</span>&#160;         <span class="keywordflow">for</span> k,v <span class="keywordflow">in</span> enumerate(ReconstructibleMCTracks):</div>
-<div class="line"><a name="l01787"></a><span class="lineno"> 1787</span>&#160;        <span class="keywordflow">if</span> v <span class="keywordflow">not</span> <span class="keywordflow">in</span> tracksfound:</div>
-<div class="line"><a name="l01788"></a><span class="lineno"> 1788</span>&#160;          tracksfound.append(v)</div>
-<div class="line"><a name="l01789"></a><span class="lineno"> 1789</span>&#160;         rawlinkindex=0</div>
-<div class="line"><a name="l01790"></a><span class="lineno"> 1790</span>&#160;         <span class="keywordflow">for</span> ids <span class="keywordflow">in</span> hitids34[item1]:</div>
-<div class="line"><a name="l01791"></a><span class="lineno"> 1791</span>&#160;            <span class="keywordflow">if</span> ids != 999 :</div>
-<div class="line"><a name="l01792"></a><span class="lineno"> 1792</span>&#160;           particle34   = PDG.GetParticle(StrawRawLink[ids][0].PdgCode())</div>
-<div class="line"><a name="l01793"></a><span class="lineno"> 1793</span>&#160;           <span class="keywordflow">try</span>:</div>
-<div class="line"><a name="l01794"></a><span class="lineno"> 1794</span>&#160;             charge34=particle34.Charge()/3.</div>
-<div class="line"><a name="l01795"></a><span class="lineno"> 1795</span>&#160;             <span class="keywordflow">break</span></div>
-<div class="line"><a name="l01796"></a><span class="lineno"> 1796</span>&#160;           <span class="keywordflow">except</span>:</div>
-<div class="line"><a name="l01797"></a><span class="lineno"> 1797</span>&#160;             <span class="keywordflow">continue</span></div>
-<div class="line"><a name="l01798"></a><span class="lineno"> 1798</span>&#160;         z2=0.</div>
-<div class="line"><a name="l01799"></a><span class="lineno"> 1799</span>&#160;         tgx2=stereotan34[item1]</div>
-<div class="line"><a name="l01800"></a><span class="lineno"> 1800</span>&#160;         tgy2=xtan34[item1]</div>
-<div class="line"><a name="l01801"></a><span class="lineno"> 1801</span>&#160;         y2=xcst34[item1]</div>
-<div class="line"><a name="l01802"></a><span class="lineno"> 1802</span>&#160;         x2=stereocst34[item1]</div>
-<div class="line"><a name="l01803"></a><span class="lineno"> 1803</span>&#160;         t2=[x2,y2,z2,tgx2,tgy2]</div>
-<div class="line"><a name="l01804"></a><span class="lineno"> 1804</span>&#160; </div>
-<div class="line"><a name="l01805"></a><span class="lineno"> 1805</span>&#160;         dx,dy,alpha,pinv=<a class="code" href="namespaceshipPatRec__prev.html#ad8e4a71724d57a4e73e8d0ba9368e1c8">match_tracks</a>(t1,t2,zmagnet,-0.75)</div>
-<div class="line"><a name="l01806"></a><span class="lineno"> 1806</span>&#160;         p2x=px34[item1]</div>
-<div class="line"><a name="l01807"></a><span class="lineno"> 1807</span>&#160;         p2y=py34[item1]</div>
-<div class="line"><a name="l01808"></a><span class="lineno"> 1808</span>&#160;         p2z=pz34[item1]</div>
-<div class="line"><a name="l01809"></a><span class="lineno"> 1809</span>&#160;         p2true=1./math.sqrt(p2x**2+p2y**2+p2z**2)</div>
-<div class="line"><a name="l01810"></a><span class="lineno"> 1810</span>&#160;         <span class="keywordflow">if</span> global_variables.debug:</div>
-<div class="line"><a name="l01811"></a><span class="lineno"> 1811</span>&#160;       print(</div>
-<div class="line"><a name="l01812"></a><span class="lineno"> 1812</span>&#160;           <span class="stringliteral">&quot;Matching 1&amp;2 track&quot;</span>, item,</div>
-<div class="line"><a name="l01813"></a><span class="lineno"> 1813</span>&#160;           <span class="stringliteral">&quot;with 3&amp;4 track&quot;</span>, item1,</div>
-<div class="line"><a name="l01814"></a><span class="lineno"> 1814</span>&#160;           <span class="stringliteral">&quot;dx&quot;</span>, dx, <span class="stringliteral">&quot;dy&quot;</span>, dy, <span class="stringliteral">&quot;alpha&quot;</span>, alpha, <span class="stringliteral">&quot;pinv&quot;</span>, pinv, <span class="stringliteral">&quot;1/p2true&quot;</span>, p2true</div>
-<div class="line"><a name="l01815"></a><span class="lineno"> 1815</span>&#160;           )</div>
-<div class="line"><a name="l01816"></a><span class="lineno"> 1816</span>&#160;         rc=h[<span class="stringliteral">&#39;dx-matchedtracks&#39;</span>].Fill(dx)</div>
-<div class="line"><a name="l01817"></a><span class="lineno"> 1817</span>&#160;         rc=h[<span class="stringliteral">&#39;dy-matchedtracks&#39;</span>].Fill(dy)</div>
-<div class="line"><a name="l01818"></a><span class="lineno"> 1818</span>&#160;         <span class="keywordflow">if</span> ((abs(dx)&lt;20) &amp; (abs(dy)&lt;2)) :</div>
-<div class="line"><a name="l01819"></a><span class="lineno"> 1819</span>&#160;            <span class="comment">#match found between track nr item in stations 12 &amp; item1 in stations 34</span></div>
-<div class="line"><a name="l01820"></a><span class="lineno"> 1820</span>&#160;        <span class="comment">#get charge from deflection and check if it corresponds to the MC truth</span></div>
-<div class="line"><a name="l01821"></a><span class="lineno"> 1821</span>&#160;        <span class="comment">#field is horizontal (x) hence deflection in y</span></div>
-<div class="line"><a name="l01822"></a><span class="lineno"> 1822</span>&#160;        tantheta=(tgy1-tgy2)/(1+tgy1*tgy2)</div>
-<div class="line"><a name="l01823"></a><span class="lineno"> 1823</span>&#160;        <span class="keywordflow">if</span> tantheta&gt;0 :</div>
-<div class="line"><a name="l01824"></a><span class="lineno"> 1824</span>&#160;           charge=<span class="stringliteral">&quot;-1&quot;</span></div>
-<div class="line"><a name="l01825"></a><span class="lineno"> 1825</span>&#160;           <span class="keywordflow">if</span> charge34&gt;0:</div>
-<div class="line"><a name="l01826"></a><span class="lineno"> 1826</span>&#160;             falsenegative+=1</div>
-<div class="line"><a name="l01827"></a><span class="lineno"> 1827</span>&#160;             falsenegativethistrack=1</div>
-<div class="line"><a name="l01828"></a><span class="lineno"> 1828</span>&#160;        <span class="keywordflow">else</span>:</div>
-<div class="line"><a name="l01829"></a><span class="lineno"> 1829</span>&#160;           charge=<span class="stringliteral">&quot;1&quot;</span></div>
-<div class="line"><a name="l01830"></a><span class="lineno"> 1830</span>&#160;           <span class="keywordflow">if</span> charge34&lt;0:</div>
-<div class="line"><a name="l01831"></a><span class="lineno"> 1831</span>&#160;              falsepositive+=1</div>
-<div class="line"><a name="l01832"></a><span class="lineno"> 1832</span>&#160;              falsepositivethistrack=1</div>
-<div class="line"><a name="l01833"></a><span class="lineno"> 1833</span>&#160; </div>
-<div class="line"><a name="l01834"></a><span class="lineno"> 1834</span>&#160;            <span class="comment">#reject track (and event) if it doesn&#39;t correspond to MC truth</span></div>
-<div class="line"><a name="l01835"></a><span class="lineno"> 1835</span>&#160;        <span class="keywordflow">if</span> monitor==<span class="keyword">True</span>:</div>
-<div class="line"><a name="l01836"></a><span class="lineno"> 1836</span>&#160;          <span class="keywordflow">if</span> (falsepositivethistrack==0 &amp; falsenegativethistrack==0):</div>
-<div class="line"><a name="l01837"></a><span class="lineno"> 1837</span>&#160;            totalaftermatching+=1</div>
-<div class="line"><a name="l01838"></a><span class="lineno"> 1838</span>&#160;          <span class="keywordflow">else</span>:</div>
-<div class="line"><a name="l01839"></a><span class="lineno"> 1839</span>&#160;            <span class="keywordflow">if</span> global_variables.debug:</div>
-<div class="line"><a name="l01840"></a><span class="lineno"> 1840</span>&#160;          print(<span class="stringliteral">&quot;Charge from track deflection doesn&#39;t match MC truth. Rejecting it.&quot;</span>)</div>
-<div class="line"><a name="l01841"></a><span class="lineno"> 1841</span>&#160;            <span class="keywordflow">break</span></div>
-<div class="line"><a name="l01842"></a><span class="lineno"> 1842</span>&#160;        <span class="keywordflow">else</span>:</div>
-<div class="line"><a name="l01843"></a><span class="lineno"> 1843</span>&#160;          <span class="keywordflow">if</span> matches==0:</div>
-<div class="line"><a name="l01844"></a><span class="lineno"> 1844</span>&#160;            matches==1</div>
-<div class="line"><a name="l01845"></a><span class="lineno"> 1845</span>&#160;            totalaftermatching+=1</div>
-<div class="line"><a name="l01846"></a><span class="lineno"> 1846</span>&#160; </div>
-<div class="line"><a name="l01847"></a><span class="lineno"> 1847</span>&#160;        <span class="keywordflow">if</span> global_variables.debug:</div>
-<div class="line"><a name="l01848"></a><span class="lineno"> 1848</span>&#160;           print(<span class="stringliteral">&quot;******* MATCH FOUND stations 12 track id&quot;</span>,trackid12[item],<span class="stringliteral">&quot;(fraction&quot;</span>,fraction12[item]*100,<span class="stringliteral">&quot;%) and stations 34 track id&quot;</span>,trackid34[item1],<span class="stringliteral">&quot;(fraction&quot;</span>,fraction34[item1]*100,<span class="stringliteral">&quot;%)&quot;</span>)</div>
-<div class="line"><a name="l01849"></a><span class="lineno"> 1849</span>&#160;           print(<span class="stringliteral">&quot;******* Reconstructible tracks ids&quot;</span>,ReconstructibleMCTracks)</div>
-<div class="line"><a name="l01850"></a><span class="lineno"> 1850</span>&#160; </div>
-<div class="line"><a name="l01851"></a><span class="lineno"> 1851</span>&#160;        rc=h[<span class="stringliteral">&#39;matchedtrackefficiency&#39;</span>].Fill(fraction12[item],fraction34[item1])</div>
-<div class="line"><a name="l01852"></a><span class="lineno"> 1852</span>&#160;        <span class="keywordflow">for</span> k,v <span class="keywordflow">in</span> enumerate(ReconstructibleMCTracks):</div>
-<div class="line"><a name="l01853"></a><span class="lineno"> 1853</span>&#160;          <span class="keywordflow">if</span> global_variables.debug:</div>
-<div class="line"><a name="l01854"></a><span class="lineno"> 1854</span>&#160;        print(<span class="stringliteral">&quot;MatchedReconstructibleMCTracks&quot;</span>, MatchedReconstructibleMCTracks, <span class="stringliteral">&quot;k&quot;</span>, k, <span class="stringliteral">&quot;v&quot;</span>, v)</div>
-<div class="line"><a name="l01855"></a><span class="lineno"> 1855</span>&#160;          <span class="keywordflow">if</span> v <span class="keywordflow">not</span> <span class="keywordflow">in</span> MatchedReconstructibleMCTracks:</div>
-<div class="line"><a name="l01856"></a><span class="lineno"> 1856</span>&#160;            <span class="keywordflow">if</span> global_variables.debug:</div>
-<div class="line"><a name="l01857"></a><span class="lineno"> 1857</span>&#160;          print(<span class="stringliteral">&quot;ReconstructibleMCTracks&quot;</span>, ReconstructibleMCTracks, <span class="stringliteral">&quot;trackid34[item1]&quot;</span>, trackid34[item1])</div>
-<div class="line"><a name="l01858"></a><span class="lineno"> 1858</span>&#160;            <span class="keywordflow">if</span> v==trackid34[item1]: MatchedReconstructibleMCTracks[k]=v</div>
-<div class="line"><a name="l01859"></a><span class="lineno"> 1859</span>&#160;        p2true=p2true*<a class="code" href="namespaceadd__noise__to__field.html#a4aa6f75233f1922a97b2d4c15285c18e">int</a>(charge)</div>
-<div class="line"><a name="l01860"></a><span class="lineno"> 1860</span>&#160;        rc=h[<span class="stringliteral">&#39;pinvvstruepinv&#39;</span>].Fill(p2true,pinv)</div>
-<div class="line"><a name="l01861"></a><span class="lineno"> 1861</span>&#160;        <span class="keywordflow">if</span> math.fabs(pinv) &gt; 0.0 : rc=h[<span class="stringliteral">&#39;ptrue-p/ptrue&#39;</span>].Fill((pinv-p2true)/pinv)</div>
-<div class="line"><a name="l01862"></a><span class="lineno"> 1862</span>&#160; </div>
-<div class="line"><a name="l01863"></a><span class="lineno"> 1863</span>&#160;        <span class="keywordflow">if</span> cheated==<span class="keyword">False</span>:</div>
-<div class="line"><a name="l01864"></a><span class="lineno"> 1864</span>&#160;           hitPosList=[]</div>
-<div class="line"><a name="l01865"></a><span class="lineno"> 1865</span>&#160;               <span class="keywordflow">for</span> ids <span class="keywordflow">in</span> range(0,len(hitids12[item])):</div>
-<div class="line"><a name="l01866"></a><span class="lineno"> 1866</span>&#160;             <span class="comment">#print &quot;hitids12[&quot;,item,&quot;][&quot;,ids,&quot;]&quot;,hitids12[item][ids]</span></div>
-<div class="line"><a name="l01867"></a><span class="lineno"> 1867</span>&#160;                 <span class="keywordflow">if</span> hitids12[item][ids]!=999 :</div>
-<div class="line"><a name="l01868"></a><span class="lineno"> 1868</span>&#160;                    m=[]</div>
-<div class="line"><a name="l01869"></a><span class="lineno"> 1869</span>&#160;                <span class="keywordflow">if</span> ids <span class="keywordflow">in</span> range(0,32):</div>
-<div class="line"><a name="l01870"></a><span class="lineno"> 1870</span>&#160;                  <span class="keywordflow">for</span> z <span class="keywordflow">in</span> range(0,7):</div>
-<div class="line"><a name="l01871"></a><span class="lineno"> 1871</span>&#160;                   m.append(StrawRaw[hitids12[item][ids]][z])</div>
-<div class="line"><a name="l01872"></a><span class="lineno"> 1872</span>&#160;                hitPosList.append(m)</div>
-<div class="line"><a name="l01873"></a><span class="lineno"> 1873</span>&#160;               <span class="keywordflow">for</span> ids <span class="keywordflow">in</span> range(0,len(hitids34[item1])):</div>
-<div class="line"><a name="l01874"></a><span class="lineno"> 1874</span>&#160;                 <span class="keywordflow">if</span> hitids34[item1][ids]!=999 :</div>
-<div class="line"><a name="l01875"></a><span class="lineno"> 1875</span>&#160;                m=[]</div>
-<div class="line"><a name="l01876"></a><span class="lineno"> 1876</span>&#160;                <span class="keywordflow">if</span> ids <span class="keywordflow">in</span> range(0,32):</div>
-<div class="line"><a name="l01877"></a><span class="lineno"> 1877</span>&#160;                  <span class="keywordflow">for</span> z <span class="keywordflow">in</span> range(0,7):</div>
-<div class="line"><a name="l01878"></a><span class="lineno"> 1878</span>&#160;                    m.append(StrawRaw[hitids34[item1][ids]][z])</div>
-<div class="line"><a name="l01879"></a><span class="lineno"> 1879</span>&#160;                hitPosList.append(m)</div>
-<div class="line"><a name="l01880"></a><span class="lineno"> 1880</span>&#160;               nM = len(hitPosList)</div>
-<div class="line"><a name="l01881"></a><span class="lineno"> 1881</span>&#160;               <span class="keywordflow">if</span> nM&lt;25:</div>
-<div class="line"><a name="l01882"></a><span class="lineno"> 1882</span>&#160;                 <span class="keywordflow">if</span> global_variables.debug:</div>
-<div class="line"><a name="l01883"></a><span class="lineno"> 1883</span>&#160;           print(<span class="stringliteral">&quot;Only&quot;</span>, nM, <span class="stringliteral">&quot;hits on this track. Insufficient for fitting.&quot;</span>)</div>
-<div class="line"><a name="l01884"></a><span class="lineno"> 1884</span>&#160;                 <span class="keywordflow">return</span></div>
-<div class="line"><a name="l01885"></a><span class="lineno"> 1885</span>&#160;           <span class="comment">#all particles are assumed to be muons</span></div>
-<div class="line"><a name="l01886"></a><span class="lineno"> 1886</span>&#160;               <span class="keywordflow">if</span> <a class="code" href="namespaceadd__noise__to__field.html#a4aa6f75233f1922a97b2d4c15285c18e">int</a>(charge)&lt;0:</div>
-<div class="line"><a name="l01887"></a><span class="lineno"> 1887</span>&#160;                 pdg=13</div>
-<div class="line"><a name="l01888"></a><span class="lineno"> 1888</span>&#160;               <span class="keywordflow">else</span>:</div>
-<div class="line"><a name="l01889"></a><span class="lineno"> 1889</span>&#160;                 pdg=-13</div>
-<div class="line"><a name="l01890"></a><span class="lineno"> 1890</span>&#160;               rep = ROOT.genfit.RKTrackRep(pdg)</div>
-<div class="line"><a name="l01891"></a><span class="lineno"> 1891</span>&#160;               posM = ROOT.TVector3(0, 0, 0)</div>
-<div class="line"><a name="l01892"></a><span class="lineno"> 1892</span>&#160;               <span class="comment">#would be the correct way but due to uncertainties on small angles the sqrt is often negative</span></div>
-<div class="line"><a name="l01893"></a><span class="lineno"> 1893</span>&#160;               <span class="keywordflow">if</span> math.fabs(pinv) &gt; 0.0 : momM = ROOT.TVector3(0,0,<a class="code" href="namespaceadd__noise__to__field.html#a4aa6f75233f1922a97b2d4c15285c18e">int</a>(charge)/pinv)</div>
-<div class="line"><a name="l01894"></a><span class="lineno"> 1894</span>&#160;               <span class="keywordflow">else</span>: momM = ROOT.TVector3(0,0,999)</div>
-<div class="line"><a name="l01895"></a><span class="lineno"> 1895</span>&#160;               covM = ROOT.TMatrixDSym(6)</div>
-<div class="line"><a name="l01896"></a><span class="lineno"> 1896</span>&#160;               resolution = ShipGeo.strawtubes.sigma_spatial</div>
-<div class="line"><a name="l01897"></a><span class="lineno"> 1897</span>&#160;               <span class="keywordflow">for</span>  i <span class="keywordflow">in</span> range(3):   covM[i][i] = resolution*resolution</div>
-<div class="line"><a name="l01898"></a><span class="lineno"> 1898</span>&#160;               covM[0][0]=resolution*resolution*100.</div>
-<div class="line"><a name="l01899"></a><span class="lineno"> 1899</span>&#160;               <span class="keywordflow">for</span>  i <span class="keywordflow">in</span> range(3,6): covM[i][i] = ROOT.TMath.Power(resolution / nM / ROOT.TMath.Sqrt(3), 2)</div>
-<div class="line"><a name="l01900"></a><span class="lineno"> 1900</span>&#160;               <span class="comment"># smeared start state</span></div>
-<div class="line"><a name="l01901"></a><span class="lineno"> 1901</span>&#160;               stateSmeared = ROOT.genfit.MeasuredStateOnPlane(rep)</div>
-<div class="line"><a name="l01902"></a><span class="lineno"> 1902</span>&#160;               rep.setPosMomCov(stateSmeared, posM, momM, covM)</div>
-<div class="line"><a name="l01903"></a><span class="lineno"> 1903</span>&#160;               <span class="comment"># create track</span></div>
-<div class="line"><a name="l01904"></a><span class="lineno"> 1904</span>&#160;               seedState = ROOT.TVectorD(6)</div>
-<div class="line"><a name="l01905"></a><span class="lineno"> 1905</span>&#160;               seedCov   = ROOT.TMatrixDSym(6)</div>
-<div class="line"><a name="l01906"></a><span class="lineno"> 1906</span>&#160;               rep.get6DStateCov(stateSmeared, seedState, seedCov)</div>
-<div class="line"><a name="l01907"></a><span class="lineno"> 1907</span>&#160;               theTrack=ROOT.genfit.Track(rep, seedState, seedCov)</div>
-<div class="line"><a name="l01908"></a><span class="lineno"> 1908</span>&#160;           <a class="code" href="namespaceshipPatRec__prev.html#a253a7ddf5de885d0cd958eb2b17e1a22">TrackFit</a>(hitPosList,theTrack,charge,pinv)</div>
-<div class="line"><a name="l01909"></a><span class="lineno"> 1909</span>&#160;               fittedtrackids.append(trackid34[item1])</div>
-<div class="line"><a name="l01910"></a><span class="lineno"> 1910</span>&#160;         <span class="keywordflow">else</span> :</div>
-<div class="line"><a name="l01911"></a><span class="lineno"> 1911</span>&#160;        <span class="keywordflow">if</span> global_variables.debug:</div>
-<div class="line"><a name="l01912"></a><span class="lineno"> 1912</span>&#160;          print(</div>
-<div class="line"><a name="l01913"></a><span class="lineno"> 1913</span>&#160;          <span class="stringliteral">&quot;******* MATCH NOT FOUND stations 12 track id&quot;</span>, trackid12[item],</div>
-<div class="line"><a name="l01914"></a><span class="lineno"> 1914</span>&#160;          <span class="stringliteral">&quot;(fraction&quot;</span>, fraction12[item]*100, <span class="stringliteral">&quot;%) and stations 34 track id&quot;</span>, trackid34[item1],</div>
-<div class="line"><a name="l01915"></a><span class="lineno"> 1915</span>&#160;          <span class="stringliteral">&quot;(fraction&quot;</span>, fraction34[item1]*100, <span class="stringliteral">&quot;%)&quot;</span></div>
-<div class="line"><a name="l01916"></a><span class="lineno"> 1916</span>&#160;          )</div>
-<div class="line"><a name="l01917"></a><span class="lineno"> 1917</span>&#160;            <span class="keywordflow">if</span> trackid12[item]==trackid34[item1] :</div>
-<div class="line"><a name="l01918"></a><span class="lineno"> 1918</span>&#160;           <span class="keywordflow">if</span> global_variables.debug:</div>
-<div class="line"><a name="l01919"></a><span class="lineno"> 1919</span>&#160;         print(<span class="stringliteral">&quot;trackids the same, but not matched.&quot;</span>)</div>
-<div class="line"><a name="l01920"></a><span class="lineno"> 1920</span>&#160; </div>
-<div class="line"><a name="l01921"></a><span class="lineno"> 1921</span>&#160; <span class="keywordflow">else</span>:</div>
-<div class="line"><a name="l01922"></a><span class="lineno"> 1922</span>&#160;      <span class="comment">#remove events with &gt;500 hits</span></div>
-<div class="line"><a name="l01923"></a><span class="lineno"> 1923</span>&#160;      morethan500+=1</div>
-<div class="line"><a name="l01924"></a><span class="lineno"> 1924</span>&#160;      <span class="keywordflow">return</span></div>
-<div class="line"><a name="l01925"></a><span class="lineno"> 1925</span>&#160; </div>
-<div class="line"><a name="l01926"></a><span class="lineno"> 1926</span>&#160; <span class="comment">#else:</span></div>
-<div class="line"><a name="l01927"></a><span class="lineno"> 1927</span>&#160;    <span class="comment">#morethan100tracks+=1</span></div>
-<div class="line"><a name="l01928"></a><span class="lineno"> 1928</span>&#160;    <span class="comment">#return</span></div>
-<div class="line"><a name="l01929"></a><span class="lineno"> 1929</span>&#160; <span class="keywordflow">return</span> fittedtrackids</div>
+<div class="line"><a name="l01738"></a><span class="lineno"> 1738</span>&#160;     <span class="keywordflow">if</span> global_variables.debug:</div>
+<div class="line"><a name="l01739"></a><span class="lineno"> 1739</span>&#160;      <span class="keywordflow">if</span> (nr12tracks&gt;0) :</div>
+<div class="line"><a name="l01740"></a><span class="lineno"> 1740</span>&#160;       print(nr12tracks,<span class="stringliteral">&quot;tracks12  &quot;</span>,tracks12)</div>
+<div class="line"><a name="l01741"></a><span class="lineno"> 1741</span>&#160;       print(<span class="stringliteral">&quot;hitids12  &quot;</span>,hitids12)</div>
+<div class="line"><a name="l01742"></a><span class="lineno"> 1742</span>&#160;       print(<span class="stringliteral">&quot;xtan  &quot;</span>,xtan12,<span class="stringliteral">&quot;xcst&quot;</span>,xcst12)</div>
+<div class="line"><a name="l01743"></a><span class="lineno"> 1743</span>&#160;       print(<span class="stringliteral">&quot;stereotan  &quot;</span>,stereotan12,<span class="stringliteral">&quot;stereocst  &quot;</span>,stereocst12)</div>
+<div class="line"><a name="l01744"></a><span class="lineno"> 1744</span>&#160;       print(<span class="stringliteral">&quot;fraction12&quot;</span>,fraction12,<span class="stringliteral">&quot;trackid12&quot;</span>,trackid12)</div>
+<div class="line"><a name="l01745"></a><span class="lineno"> 1745</span>&#160;      <span class="keywordflow">else</span> :</div>
+<div class="line"><a name="l01746"></a><span class="lineno"> 1746</span>&#160;       print(<span class="stringliteral">&quot;No tracks found in stations 1&amp;2.&quot;</span>)</div>
+<div class="line"><a name="l01747"></a><span class="lineno"> 1747</span>&#160; </div>
+<div class="line"><a name="l01748"></a><span class="lineno"> 1748</span>&#160;      <span class="keywordflow">if</span> (nr34tracks&gt;0) :</div>
+<div class="line"><a name="l01749"></a><span class="lineno"> 1749</span>&#160;       print(nr34tracks,<span class="stringliteral">&quot;tracks34  &quot;</span>,tracks34)</div>
+<div class="line"><a name="l01750"></a><span class="lineno"> 1750</span>&#160;       print(<span class="stringliteral">&quot;hitids34  &quot;</span>,hitids34)</div>
+<div class="line"><a name="l01751"></a><span class="lineno"> 1751</span>&#160;       print(<span class="stringliteral">&quot;xtan34 &quot;</span>,xtan34,<span class="stringliteral">&quot;xcst34 &quot;</span>,xcst34)</div>
+<div class="line"><a name="l01752"></a><span class="lineno"> 1752</span>&#160;       print(<span class="stringliteral">&quot;stereotan34  &quot;</span>,stereotan34,<span class="stringliteral">&quot;stereocst34  &quot;</span>,stereocst34)</div>
+<div class="line"><a name="l01753"></a><span class="lineno"> 1753</span>&#160;       print(<span class="stringliteral">&quot;px34&quot;</span>,px34)</div>
+<div class="line"><a name="l01754"></a><span class="lineno"> 1754</span>&#160;      <span class="keywordflow">else</span> :</div>
+<div class="line"><a name="l01755"></a><span class="lineno"> 1755</span>&#160;       print(<span class="stringliteral">&quot;No tracks found in stations 3&amp;4.&quot;</span>)</div>
+<div class="line"><a name="l01756"></a><span class="lineno"> 1756</span>&#160; </div>
+<div class="line"><a name="l01757"></a><span class="lineno"> 1757</span>&#160;     <span class="keywordflow">if</span> monitor==<span class="keyword">False</span>: totalafterpatrec+=1</div>
+<div class="line"><a name="l01758"></a><span class="lineno"> 1758</span>&#160; </div>
+<div class="line"><a name="l01759"></a><span class="lineno"> 1759</span>&#160;     zmagnet=ShipGeo.Bfield.z</div>
+<div class="line"><a name="l01760"></a><span class="lineno"> 1760</span>&#160;     tracksfound=[]</div>
+<div class="line"><a name="l01761"></a><span class="lineno"> 1761</span>&#160;     matches=0</div>
+<div class="line"><a name="l01762"></a><span class="lineno"> 1762</span>&#160; </div>
+<div class="line"><a name="l01763"></a><span class="lineno"> 1763</span>&#160;     <span class="keywordflow">for</span> item <span class="keywordflow">in</span> xtan12:</div>
+<div class="line"><a name="l01764"></a><span class="lineno"> 1764</span>&#160;      z1=0.</div>
+<div class="line"><a name="l01765"></a><span class="lineno"> 1765</span>&#160;      tgy1=xtan12[item]</div>
+<div class="line"><a name="l01766"></a><span class="lineno"> 1766</span>&#160;      tgx1=stereotan12[item]</div>
+<div class="line"><a name="l01767"></a><span class="lineno"> 1767</span>&#160;      y1=xcst12[item]</div>
+<div class="line"><a name="l01768"></a><span class="lineno"> 1768</span>&#160;      x1=stereocst12[item]</div>
+<div class="line"><a name="l01769"></a><span class="lineno"> 1769</span>&#160;      t1=[x1,y1,z1,tgx1,tgy1]</div>
+<div class="line"><a name="l01770"></a><span class="lineno"> 1770</span>&#160;      <span class="keywordflow">for</span> ids <span class="keywordflow">in</span> hitids12[item]:</div>
+<div class="line"><a name="l01771"></a><span class="lineno"> 1771</span>&#160;         <span class="comment">#cheated</span></div>
+<div class="line"><a name="l01772"></a><span class="lineno"> 1772</span>&#160;         <span class="keywordflow">if</span> ids != 999 :</div>
+<div class="line"><a name="l01773"></a><span class="lineno"> 1773</span>&#160;            <span class="comment">#loop until we get the particle of this track</span></div>
+<div class="line"><a name="l01774"></a><span class="lineno"> 1774</span>&#160;        particle12   = PDG.GetParticle(StrawRawLink[ids][0].PdgCode())</div>
+<div class="line"><a name="l01775"></a><span class="lineno"> 1775</span>&#160;        <span class="keywordflow">try</span>:</div>
+<div class="line"><a name="l01776"></a><span class="lineno"> 1776</span>&#160;           charge12=particle12.Charge()/3.</div>
+<div class="line"><a name="l01777"></a><span class="lineno"> 1777</span>&#160;           <span class="keywordflow">break</span></div>
+<div class="line"><a name="l01778"></a><span class="lineno"> 1778</span>&#160;        <span class="keywordflow">except</span>:</div>
+<div class="line"><a name="l01779"></a><span class="lineno"> 1779</span>&#160;           <span class="keywordflow">continue</span></div>
+<div class="line"><a name="l01780"></a><span class="lineno"> 1780</span>&#160; </div>
+<div class="line"><a name="l01781"></a><span class="lineno"> 1781</span>&#160;      falsenegativethistrack=0</div>
+<div class="line"><a name="l01782"></a><span class="lineno"> 1782</span>&#160;      falsepositivethistrack=0</div>
+<div class="line"><a name="l01783"></a><span class="lineno"> 1783</span>&#160;      <span class="keywordflow">for</span> item1 <span class="keywordflow">in</span> xtan34:</div>
+<div class="line"><a name="l01784"></a><span class="lineno"> 1784</span>&#160;         <span class="keywordflow">if</span> monitor==<span class="keyword">True</span>:  totalafterpatrec+=1</div>
+<div class="line"><a name="l01785"></a><span class="lineno"> 1785</span>&#160;         <span class="keywordflow">for</span> k,v <span class="keywordflow">in</span> enumerate(ReconstructibleMCTracks):</div>
+<div class="line"><a name="l01786"></a><span class="lineno"> 1786</span>&#160;        <span class="keywordflow">if</span> v <span class="keywordflow">not</span> <span class="keywordflow">in</span> tracksfound:</div>
+<div class="line"><a name="l01787"></a><span class="lineno"> 1787</span>&#160;          tracksfound.append(v)</div>
+<div class="line"><a name="l01788"></a><span class="lineno"> 1788</span>&#160;         rawlinkindex=0</div>
+<div class="line"><a name="l01789"></a><span class="lineno"> 1789</span>&#160;         <span class="keywordflow">for</span> ids <span class="keywordflow">in</span> hitids34[item1]:</div>
+<div class="line"><a name="l01790"></a><span class="lineno"> 1790</span>&#160;            <span class="keywordflow">if</span> ids != 999 :</div>
+<div class="line"><a name="l01791"></a><span class="lineno"> 1791</span>&#160;           particle34   = PDG.GetParticle(StrawRawLink[ids][0].PdgCode())</div>
+<div class="line"><a name="l01792"></a><span class="lineno"> 1792</span>&#160;           <span class="keywordflow">try</span>:</div>
+<div class="line"><a name="l01793"></a><span class="lineno"> 1793</span>&#160;             charge34=particle34.Charge()/3.</div>
+<div class="line"><a name="l01794"></a><span class="lineno"> 1794</span>&#160;             <span class="keywordflow">break</span></div>
+<div class="line"><a name="l01795"></a><span class="lineno"> 1795</span>&#160;           <span class="keywordflow">except</span>:</div>
+<div class="line"><a name="l01796"></a><span class="lineno"> 1796</span>&#160;             <span class="keywordflow">continue</span></div>
+<div class="line"><a name="l01797"></a><span class="lineno"> 1797</span>&#160;         z2=0.</div>
+<div class="line"><a name="l01798"></a><span class="lineno"> 1798</span>&#160;         tgx2=stereotan34[item1]</div>
+<div class="line"><a name="l01799"></a><span class="lineno"> 1799</span>&#160;         tgy2=xtan34[item1]</div>
+<div class="line"><a name="l01800"></a><span class="lineno"> 1800</span>&#160;         y2=xcst34[item1]</div>
+<div class="line"><a name="l01801"></a><span class="lineno"> 1801</span>&#160;         x2=stereocst34[item1]</div>
+<div class="line"><a name="l01802"></a><span class="lineno"> 1802</span>&#160;         t2=[x2,y2,z2,tgx2,tgy2]</div>
+<div class="line"><a name="l01803"></a><span class="lineno"> 1803</span>&#160; </div>
+<div class="line"><a name="l01804"></a><span class="lineno"> 1804</span>&#160;         dx,dy,alpha,pinv=<a class="code" href="namespaceshipPatRec__prev.html#ad8e4a71724d57a4e73e8d0ba9368e1c8">match_tracks</a>(t1,t2,zmagnet,-0.75)</div>
+<div class="line"><a name="l01805"></a><span class="lineno"> 1805</span>&#160;         p2x=px34[item1]</div>
+<div class="line"><a name="l01806"></a><span class="lineno"> 1806</span>&#160;         p2y=py34[item1]</div>
+<div class="line"><a name="l01807"></a><span class="lineno"> 1807</span>&#160;         p2z=pz34[item1]</div>
+<div class="line"><a name="l01808"></a><span class="lineno"> 1808</span>&#160;         p2true=1./math.sqrt(p2x**2+p2y**2+p2z**2)</div>
+<div class="line"><a name="l01809"></a><span class="lineno"> 1809</span>&#160;         <span class="keywordflow">if</span> global_variables.debug:</div>
+<div class="line"><a name="l01810"></a><span class="lineno"> 1810</span>&#160;       print(</div>
+<div class="line"><a name="l01811"></a><span class="lineno"> 1811</span>&#160;           <span class="stringliteral">&quot;Matching 1&amp;2 track&quot;</span>, item,</div>
+<div class="line"><a name="l01812"></a><span class="lineno"> 1812</span>&#160;           <span class="stringliteral">&quot;with 3&amp;4 track&quot;</span>, item1,</div>
+<div class="line"><a name="l01813"></a><span class="lineno"> 1813</span>&#160;           <span class="stringliteral">&quot;dx&quot;</span>, dx, <span class="stringliteral">&quot;dy&quot;</span>, dy, <span class="stringliteral">&quot;alpha&quot;</span>, alpha, <span class="stringliteral">&quot;pinv&quot;</span>, pinv, <span class="stringliteral">&quot;1/p2true&quot;</span>, p2true</div>
+<div class="line"><a name="l01814"></a><span class="lineno"> 1814</span>&#160;           )</div>
+<div class="line"><a name="l01815"></a><span class="lineno"> 1815</span>&#160;         rc=h[<span class="stringliteral">&#39;dx-matchedtracks&#39;</span>].Fill(dx)</div>
+<div class="line"><a name="l01816"></a><span class="lineno"> 1816</span>&#160;         rc=h[<span class="stringliteral">&#39;dy-matchedtracks&#39;</span>].Fill(dy)</div>
+<div class="line"><a name="l01817"></a><span class="lineno"> 1817</span>&#160;         <span class="keywordflow">if</span> ((abs(dx)&lt;20) &amp; (abs(dy)&lt;2)) :</div>
+<div class="line"><a name="l01818"></a><span class="lineno"> 1818</span>&#160;            <span class="comment">#match found between track nr item in stations 12 &amp; item1 in stations 34</span></div>
+<div class="line"><a name="l01819"></a><span class="lineno"> 1819</span>&#160;        <span class="comment">#get charge from deflection and check if it corresponds to the MC truth</span></div>
+<div class="line"><a name="l01820"></a><span class="lineno"> 1820</span>&#160;        <span class="comment">#field is horizontal (x) hence deflection in y</span></div>
+<div class="line"><a name="l01821"></a><span class="lineno"> 1821</span>&#160;        tantheta=(tgy1-tgy2)/(1+tgy1*tgy2)</div>
+<div class="line"><a name="l01822"></a><span class="lineno"> 1822</span>&#160;        <span class="keywordflow">if</span> tantheta&gt;0 :</div>
+<div class="line"><a name="l01823"></a><span class="lineno"> 1823</span>&#160;           charge=<span class="stringliteral">&quot;-1&quot;</span></div>
+<div class="line"><a name="l01824"></a><span class="lineno"> 1824</span>&#160;           <span class="keywordflow">if</span> charge34&gt;0:</div>
+<div class="line"><a name="l01825"></a><span class="lineno"> 1825</span>&#160;             falsenegative+=1</div>
+<div class="line"><a name="l01826"></a><span class="lineno"> 1826</span>&#160;             falsenegativethistrack=1</div>
+<div class="line"><a name="l01827"></a><span class="lineno"> 1827</span>&#160;        <span class="keywordflow">else</span>:</div>
+<div class="line"><a name="l01828"></a><span class="lineno"> 1828</span>&#160;           charge=<span class="stringliteral">&quot;1&quot;</span></div>
+<div class="line"><a name="l01829"></a><span class="lineno"> 1829</span>&#160;           <span class="keywordflow">if</span> charge34&lt;0:</div>
+<div class="line"><a name="l01830"></a><span class="lineno"> 1830</span>&#160;              falsepositive+=1</div>
+<div class="line"><a name="l01831"></a><span class="lineno"> 1831</span>&#160;              falsepositivethistrack=1</div>
+<div class="line"><a name="l01832"></a><span class="lineno"> 1832</span>&#160; </div>
+<div class="line"><a name="l01833"></a><span class="lineno"> 1833</span>&#160;            <span class="comment">#reject track (and event) if it doesn&#39;t correspond to MC truth</span></div>
+<div class="line"><a name="l01834"></a><span class="lineno"> 1834</span>&#160;        <span class="keywordflow">if</span> monitor==<span class="keyword">True</span>:</div>
+<div class="line"><a name="l01835"></a><span class="lineno"> 1835</span>&#160;          <span class="keywordflow">if</span> (falsepositivethistrack==0 &amp; falsenegativethistrack==0):</div>
+<div class="line"><a name="l01836"></a><span class="lineno"> 1836</span>&#160;            totalaftermatching+=1</div>
+<div class="line"><a name="l01837"></a><span class="lineno"> 1837</span>&#160;          <span class="keywordflow">else</span>:</div>
+<div class="line"><a name="l01838"></a><span class="lineno"> 1838</span>&#160;            <span class="keywordflow">if</span> global_variables.debug:</div>
+<div class="line"><a name="l01839"></a><span class="lineno"> 1839</span>&#160;          print(<span class="stringliteral">&quot;Charge from track deflection doesn&#39;t match MC truth. Rejecting it.&quot;</span>)</div>
+<div class="line"><a name="l01840"></a><span class="lineno"> 1840</span>&#160;            <span class="keywordflow">break</span></div>
+<div class="line"><a name="l01841"></a><span class="lineno"> 1841</span>&#160;        <span class="keywordflow">else</span>:</div>
+<div class="line"><a name="l01842"></a><span class="lineno"> 1842</span>&#160;          <span class="keywordflow">if</span> matches==0:</div>
+<div class="line"><a name="l01843"></a><span class="lineno"> 1843</span>&#160;            matches==1</div>
+<div class="line"><a name="l01844"></a><span class="lineno"> 1844</span>&#160;            totalaftermatching+=1</div>
+<div class="line"><a name="l01845"></a><span class="lineno"> 1845</span>&#160; </div>
+<div class="line"><a name="l01846"></a><span class="lineno"> 1846</span>&#160;        <span class="keywordflow">if</span> global_variables.debug:</div>
+<div class="line"><a name="l01847"></a><span class="lineno"> 1847</span>&#160;           print(<span class="stringliteral">&quot;******* MATCH FOUND stations 12 track id&quot;</span>,trackid12[item],<span class="stringliteral">&quot;(fraction&quot;</span>,fraction12[item]*100,<span class="stringliteral">&quot;%) and stations 34 track id&quot;</span>,trackid34[item1],<span class="stringliteral">&quot;(fraction&quot;</span>,fraction34[item1]*100,<span class="stringliteral">&quot;%)&quot;</span>)</div>
+<div class="line"><a name="l01848"></a><span class="lineno"> 1848</span>&#160;           print(<span class="stringliteral">&quot;******* Reconstructible tracks ids&quot;</span>,ReconstructibleMCTracks)</div>
+<div class="line"><a name="l01849"></a><span class="lineno"> 1849</span>&#160; </div>
+<div class="line"><a name="l01850"></a><span class="lineno"> 1850</span>&#160;        rc=h[<span class="stringliteral">&#39;matchedtrackefficiency&#39;</span>].Fill(fraction12[item],fraction34[item1])</div>
+<div class="line"><a name="l01851"></a><span class="lineno"> 1851</span>&#160;        <span class="keywordflow">for</span> k,v <span class="keywordflow">in</span> enumerate(ReconstructibleMCTracks):</div>
+<div class="line"><a name="l01852"></a><span class="lineno"> 1852</span>&#160;          <span class="keywordflow">if</span> global_variables.debug:</div>
+<div class="line"><a name="l01853"></a><span class="lineno"> 1853</span>&#160;        print(<span class="stringliteral">&quot;MatchedReconstructibleMCTracks&quot;</span>, MatchedReconstructibleMCTracks, <span class="stringliteral">&quot;k&quot;</span>, k, <span class="stringliteral">&quot;v&quot;</span>, v)</div>
+<div class="line"><a name="l01854"></a><span class="lineno"> 1854</span>&#160;          <span class="keywordflow">if</span> v <span class="keywordflow">not</span> <span class="keywordflow">in</span> MatchedReconstructibleMCTracks:</div>
+<div class="line"><a name="l01855"></a><span class="lineno"> 1855</span>&#160;            <span class="keywordflow">if</span> global_variables.debug:</div>
+<div class="line"><a name="l01856"></a><span class="lineno"> 1856</span>&#160;          print(<span class="stringliteral">&quot;ReconstructibleMCTracks&quot;</span>, ReconstructibleMCTracks, <span class="stringliteral">&quot;trackid34[item1]&quot;</span>, trackid34[item1])</div>
+<div class="line"><a name="l01857"></a><span class="lineno"> 1857</span>&#160;            <span class="keywordflow">if</span> v==trackid34[item1]: MatchedReconstructibleMCTracks[k]=v</div>
+<div class="line"><a name="l01858"></a><span class="lineno"> 1858</span>&#160;        p2true=p2true*<a class="code" href="namespaceadd__noise__to__field.html#a4aa6f75233f1922a97b2d4c15285c18e">int</a>(charge)</div>
+<div class="line"><a name="l01859"></a><span class="lineno"> 1859</span>&#160;        rc=h[<span class="stringliteral">&#39;pinvvstruepinv&#39;</span>].Fill(p2true,pinv)</div>
+<div class="line"><a name="l01860"></a><span class="lineno"> 1860</span>&#160;        <span class="keywordflow">if</span> math.fabs(pinv) &gt; 0.0 : rc=h[<span class="stringliteral">&#39;ptrue-p/ptrue&#39;</span>].Fill((pinv-p2true)/pinv)</div>
+<div class="line"><a name="l01861"></a><span class="lineno"> 1861</span>&#160; </div>
+<div class="line"><a name="l01862"></a><span class="lineno"> 1862</span>&#160;        <span class="keywordflow">if</span> cheated==<span class="keyword">False</span>:</div>
+<div class="line"><a name="l01863"></a><span class="lineno"> 1863</span>&#160;           hitPosList=[]</div>
+<div class="line"><a name="l01864"></a><span class="lineno"> 1864</span>&#160;               <span class="keywordflow">for</span> ids <span class="keywordflow">in</span> range(0,len(hitids12[item])):</div>
+<div class="line"><a name="l01865"></a><span class="lineno"> 1865</span>&#160;             <span class="comment">#print &quot;hitids12[&quot;,item,&quot;][&quot;,ids,&quot;]&quot;,hitids12[item][ids]</span></div>
+<div class="line"><a name="l01866"></a><span class="lineno"> 1866</span>&#160;                 <span class="keywordflow">if</span> hitids12[item][ids]!=999 :</div>
+<div class="line"><a name="l01867"></a><span class="lineno"> 1867</span>&#160;                    m=[]</div>
+<div class="line"><a name="l01868"></a><span class="lineno"> 1868</span>&#160;                <span class="keywordflow">if</span> ids <span class="keywordflow">in</span> range(0,32):</div>
+<div class="line"><a name="l01869"></a><span class="lineno"> 1869</span>&#160;                  <span class="keywordflow">for</span> z <span class="keywordflow">in</span> range(0,7):</div>
+<div class="line"><a name="l01870"></a><span class="lineno"> 1870</span>&#160;                   m.append(StrawRaw[hitids12[item][ids]][z])</div>
+<div class="line"><a name="l01871"></a><span class="lineno"> 1871</span>&#160;                hitPosList.append(m)</div>
+<div class="line"><a name="l01872"></a><span class="lineno"> 1872</span>&#160;               <span class="keywordflow">for</span> ids <span class="keywordflow">in</span> range(0,len(hitids34[item1])):</div>
+<div class="line"><a name="l01873"></a><span class="lineno"> 1873</span>&#160;                 <span class="keywordflow">if</span> hitids34[item1][ids]!=999 :</div>
+<div class="line"><a name="l01874"></a><span class="lineno"> 1874</span>&#160;                m=[]</div>
+<div class="line"><a name="l01875"></a><span class="lineno"> 1875</span>&#160;                <span class="keywordflow">if</span> ids <span class="keywordflow">in</span> range(0,32):</div>
+<div class="line"><a name="l01876"></a><span class="lineno"> 1876</span>&#160;                  <span class="keywordflow">for</span> z <span class="keywordflow">in</span> range(0,7):</div>
+<div class="line"><a name="l01877"></a><span class="lineno"> 1877</span>&#160;                    m.append(StrawRaw[hitids34[item1][ids]][z])</div>
+<div class="line"><a name="l01878"></a><span class="lineno"> 1878</span>&#160;                hitPosList.append(m)</div>
+<div class="line"><a name="l01879"></a><span class="lineno"> 1879</span>&#160;               nM = len(hitPosList)</div>
+<div class="line"><a name="l01880"></a><span class="lineno"> 1880</span>&#160;               <span class="keywordflow">if</span> nM&lt;25:</div>
+<div class="line"><a name="l01881"></a><span class="lineno"> 1881</span>&#160;                 <span class="keywordflow">if</span> global_variables.debug:</div>
+<div class="line"><a name="l01882"></a><span class="lineno"> 1882</span>&#160;           print(<span class="stringliteral">&quot;Only&quot;</span>, nM, <span class="stringliteral">&quot;hits on this track. Insufficient for fitting.&quot;</span>)</div>
+<div class="line"><a name="l01883"></a><span class="lineno"> 1883</span>&#160;                 <span class="keywordflow">return</span></div>
+<div class="line"><a name="l01884"></a><span class="lineno"> 1884</span>&#160;           <span class="comment">#all particles are assumed to be muons</span></div>
+<div class="line"><a name="l01885"></a><span class="lineno"> 1885</span>&#160;               <span class="keywordflow">if</span> <a class="code" href="namespaceadd__noise__to__field.html#a4aa6f75233f1922a97b2d4c15285c18e">int</a>(charge)&lt;0:</div>
+<div class="line"><a name="l01886"></a><span class="lineno"> 1886</span>&#160;                 pdg=13</div>
+<div class="line"><a name="l01887"></a><span class="lineno"> 1887</span>&#160;               <span class="keywordflow">else</span>:</div>
+<div class="line"><a name="l01888"></a><span class="lineno"> 1888</span>&#160;                 pdg=-13</div>
+<div class="line"><a name="l01889"></a><span class="lineno"> 1889</span>&#160;               rep = ROOT.genfit.RKTrackRep(pdg)</div>
+<div class="line"><a name="l01890"></a><span class="lineno"> 1890</span>&#160;               posM = ROOT.TVector3(0, 0, 0)</div>
+<div class="line"><a name="l01891"></a><span class="lineno"> 1891</span>&#160;               <span class="comment">#would be the correct way but due to uncertainties on small angles the sqrt is often negative</span></div>
+<div class="line"><a name="l01892"></a><span class="lineno"> 1892</span>&#160;               <span class="keywordflow">if</span> math.fabs(pinv) &gt; 0.0 : momM = ROOT.TVector3(0,0,<a class="code" href="namespaceadd__noise__to__field.html#a4aa6f75233f1922a97b2d4c15285c18e">int</a>(charge)/pinv)</div>
+<div class="line"><a name="l01893"></a><span class="lineno"> 1893</span>&#160;               <span class="keywordflow">else</span>: momM = ROOT.TVector3(0,0,999)</div>
+<div class="line"><a name="l01894"></a><span class="lineno"> 1894</span>&#160;               covM = ROOT.TMatrixDSym(6)</div>
+<div class="line"><a name="l01895"></a><span class="lineno"> 1895</span>&#160;               resolution = ShipGeo.strawtubes.sigma_spatial</div>
+<div class="line"><a name="l01896"></a><span class="lineno"> 1896</span>&#160;               <span class="keywordflow">for</span>  i <span class="keywordflow">in</span> range(3):   covM[i][i] = resolution*resolution</div>
+<div class="line"><a name="l01897"></a><span class="lineno"> 1897</span>&#160;               covM[0][0]=resolution*resolution*100.</div>
+<div class="line"><a name="l01898"></a><span class="lineno"> 1898</span>&#160;               <span class="keywordflow">for</span>  i <span class="keywordflow">in</span> range(3,6): covM[i][i] = ROOT.TMath.Power(resolution / nM / ROOT.TMath.Sqrt(3), 2)</div>
+<div class="line"><a name="l01899"></a><span class="lineno"> 1899</span>&#160;               <span class="comment"># smeared start state</span></div>
+<div class="line"><a name="l01900"></a><span class="lineno"> 1900</span>&#160;               stateSmeared = ROOT.genfit.MeasuredStateOnPlane(rep)</div>
+<div class="line"><a name="l01901"></a><span class="lineno"> 1901</span>&#160;               rep.setPosMomCov(stateSmeared, posM, momM, covM)</div>
+<div class="line"><a name="l01902"></a><span class="lineno"> 1902</span>&#160;               <span class="comment"># create track</span></div>
+<div class="line"><a name="l01903"></a><span class="lineno"> 1903</span>&#160;               seedState = ROOT.TVectorD(6)</div>
+<div class="line"><a name="l01904"></a><span class="lineno"> 1904</span>&#160;               seedCov   = ROOT.TMatrixDSym(6)</div>
+<div class="line"><a name="l01905"></a><span class="lineno"> 1905</span>&#160;               rep.get6DStateCov(stateSmeared, seedState, seedCov)</div>
+<div class="line"><a name="l01906"></a><span class="lineno"> 1906</span>&#160;               theTrack=ROOT.genfit.Track(rep, seedState, seedCov)</div>
+<div class="line"><a name="l01907"></a><span class="lineno"> 1907</span>&#160;           <a class="code" href="namespaceshipPatRec__prev.html#a253a7ddf5de885d0cd958eb2b17e1a22">TrackFit</a>(hitPosList,theTrack,charge,pinv)</div>
+<div class="line"><a name="l01908"></a><span class="lineno"> 1908</span>&#160;               fittedtrackids.append(trackid34[item1])</div>
+<div class="line"><a name="l01909"></a><span class="lineno"> 1909</span>&#160;         <span class="keywordflow">else</span> :</div>
+<div class="line"><a name="l01910"></a><span class="lineno"> 1910</span>&#160;        <span class="keywordflow">if</span> global_variables.debug:</div>
+<div class="line"><a name="l01911"></a><span class="lineno"> 1911</span>&#160;          print(</div>
+<div class="line"><a name="l01912"></a><span class="lineno"> 1912</span>&#160;          <span class="stringliteral">&quot;******* MATCH NOT FOUND stations 12 track id&quot;</span>, trackid12[item],</div>
+<div class="line"><a name="l01913"></a><span class="lineno"> 1913</span>&#160;          <span class="stringliteral">&quot;(fraction&quot;</span>, fraction12[item]*100, <span class="stringliteral">&quot;%) and stations 34 track id&quot;</span>, trackid34[item1],</div>
+<div class="line"><a name="l01914"></a><span class="lineno"> 1914</span>&#160;          <span class="stringliteral">&quot;(fraction&quot;</span>, fraction34[item1]*100, <span class="stringliteral">&quot;%)&quot;</span></div>
+<div class="line"><a name="l01915"></a><span class="lineno"> 1915</span>&#160;          )</div>
+<div class="line"><a name="l01916"></a><span class="lineno"> 1916</span>&#160;            <span class="keywordflow">if</span> trackid12[item]==trackid34[item1] :</div>
+<div class="line"><a name="l01917"></a><span class="lineno"> 1917</span>&#160;           <span class="keywordflow">if</span> global_variables.debug:</div>
+<div class="line"><a name="l01918"></a><span class="lineno"> 1918</span>&#160;         print(<span class="stringliteral">&quot;trackids the same, but not matched.&quot;</span>)</div>
+<div class="line"><a name="l01919"></a><span class="lineno"> 1919</span>&#160; </div>
+<div class="line"><a name="l01920"></a><span class="lineno"> 1920</span>&#160; <span class="keywordflow">else</span>:</div>
+<div class="line"><a name="l01921"></a><span class="lineno"> 1921</span>&#160;      <span class="comment">#remove events with &gt;500 hits</span></div>
+<div class="line"><a name="l01922"></a><span class="lineno"> 1922</span>&#160;      morethan500+=1</div>
+<div class="line"><a name="l01923"></a><span class="lineno"> 1923</span>&#160;      <span class="keywordflow">return</span></div>
+<div class="line"><a name="l01924"></a><span class="lineno"> 1924</span>&#160; </div>
+<div class="line"><a name="l01925"></a><span class="lineno"> 1925</span>&#160; <span class="comment">#else:</span></div>
+<div class="line"><a name="l01926"></a><span class="lineno"> 1926</span>&#160;    <span class="comment">#morethan100tracks+=1</span></div>
+<div class="line"><a name="l01927"></a><span class="lineno"> 1927</span>&#160;    <span class="comment">#return</span></div>
+<div class="line"><a name="l01928"></a><span class="lineno"> 1928</span>&#160; <span class="keywordflow">return</span> fittedtrackids</div>
+<div class="line"><a name="l01929"></a><span class="lineno"> 1929</span>&#160; </div>
 <div class="line"><a name="l01930"></a><span class="lineno"> 1930</span>&#160; </div>
-<div class="line"><a name="l01931"></a><span class="lineno"> 1931</span>&#160; </div>
 <div class="ttc" id="anamespaceadd__noise__to__field_html_a4aa6f75233f1922a97b2d4c15285c18e"><div class="ttname"><a href="namespaceadd__noise__to__field.html#a4aa6f75233f1922a97b2d4c15285c18e">add_noise_to_field.int</a></div><div class="ttdeci">int</div><div class="ttdef"><b>Definition:</b> <a href="add__noise__to__field_8py_source.html#l00057">add_noise_to_field.py:57</a></div></div>
 <div class="ttc" id="anamespaceshipPatRec__prev_html_a253a7ddf5de885d0cd958eb2b17e1a22"><div class="ttname"><a href="namespaceshipPatRec__prev.html#a253a7ddf5de885d0cd958eb2b17e1a22">shipPatRec_prev.TrackFit</a></div><div class="ttdeci">def TrackFit(hitPosList, theTrack, charge, pinv)</div><div class="ttdef"><b>Definition:</b> <a href="shipPatRec__prev_8py_source.html#l01324">shipPatRec_prev.py:1324</a></div></div>
 <div class="ttc" id="anamespaceshipPatRec__prev_html_a6227efd168df8cdd82e22f62e1fd5ceb"><div class="ttname"><a href="namespaceshipPatRec__prev.html#a6227efd168df8cdd82e22f62e1fd5ceb">shipPatRec_prev.PatRec</a></div><div class="ttdeci">def PatRec(firsttwo, zlayer, zlayerv2, StrawRaw, StrawRawLink, ReconstructibleMCTracks)</div><div class="ttdef"><b>Definition:</b> <a href="shipPatRec__prev_8py_source.html#l00693">shipPatRec_prev.py:693</a></div></div>
-<div class="ttc" id="anamespaceshipPatRec__prev_html_ad8e4a71724d57a4e73e8d0ba9368e1c8"><div class="ttname"><a href="namespaceshipPatRec__prev.html#ad8e4a71724d57a4e73e8d0ba9368e1c8">shipPatRec_prev.match_tracks</a></div><div class="ttdeci">def match_tracks(t1, t2, zmagnet, Bdl)</div><div class="ttdef"><b>Definition:</b> <a href="shipPatRec__prev_8py_source.html#l01578">shipPatRec_prev.py:1578</a></div></div>
-<div class="ttc" id="anamespaceshipPatRec__prev_html_affee9a325f58bd2893b53f3ea6b112be"><div class="ttname"><a href="namespaceshipPatRec__prev.html#affee9a325f58bd2893b53f3ea6b112be">shipPatRec_prev.execute</a></div><div class="ttdeci">def execute(SmearedHits, sTree, ReconstructibleMCTracks)</div><div class="ttdef"><b>Definition:</b> <a href="shipPatRec__prev_8py_source.html#l01683">shipPatRec_prev.py:1683</a></div></div>
+<div class="ttc" id="anamespaceshipPatRec__prev_html_ad8e4a71724d57a4e73e8d0ba9368e1c8"><div class="ttname"><a href="namespaceshipPatRec__prev.html#ad8e4a71724d57a4e73e8d0ba9368e1c8">shipPatRec_prev.match_tracks</a></div><div class="ttdeci">def match_tracks(t1, t2, zmagnet, Bdl)</div><div class="ttdef"><b>Definition:</b> <a href="shipPatRec__prev_8py_source.html#l01577">shipPatRec_prev.py:1577</a></div></div>
+<div class="ttc" id="anamespaceshipPatRec__prev_html_affee9a325f58bd2893b53f3ea6b112be"><div class="ttname"><a href="namespaceshipPatRec__prev.html#affee9a325f58bd2893b53f3ea6b112be">shipPatRec_prev.execute</a></div><div class="ttdeci">def execute(SmearedHits, sTree, ReconstructibleMCTracks)</div><div class="ttdef"><b>Definition:</b> <a href="shipPatRec__prev_8py_source.html#l01682">shipPatRec_prev.py:1682</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -827,11 +827,11 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPatRec__prev_8py_source.html#l01932">1932</a> of file <a class="el" href="shipPatRec__prev_8py_source.html">shipPatRec_prev.py</a>.</p>
-<div class="fragment"><div class="line"><a name="l01932"></a><span class="lineno"> 1932</span>&#160;<span class="keyword">def </span><a class="code" href="namespaceshipPatRec__prev.html#abb98a26b65beeef5012507cc3f9f51ec">finalize</a>():</div>
-<div class="line"><a name="l01933"></a><span class="lineno"> 1933</span>&#160;   <span class="keywordflow">if</span> global_variables.debug:</div>
-<div class="line"><a name="l01934"></a><span class="lineno"> 1934</span>&#160;     ut.writeHists(h,<span class="stringliteral">&quot;recohists_patrec.root&quot;</span>)</div>
-<div class="ttc" id="anamespaceshipPatRec__prev_html_abb98a26b65beeef5012507cc3f9f51ec"><div class="ttname"><a href="namespaceshipPatRec__prev.html#abb98a26b65beeef5012507cc3f9f51ec">shipPatRec_prev.finalize</a></div><div class="ttdeci">def finalize()</div><div class="ttdef"><b>Definition:</b> <a href="shipPatRec__prev_8py_source.html#l01932">shipPatRec_prev.py:1932</a></div></div>
+<p class="definition">Definition at line <a class="el" href="shipPatRec__prev_8py_source.html#l01931">1931</a> of file <a class="el" href="shipPatRec__prev_8py_source.html">shipPatRec_prev.py</a>.</p>
+<div class="fragment"><div class="line"><a name="l01931"></a><span class="lineno"> 1931</span>&#160;<span class="keyword">def </span><a class="code" href="namespaceshipPatRec__prev.html#abb98a26b65beeef5012507cc3f9f51ec">finalize</a>():</div>
+<div class="line"><a name="l01932"></a><span class="lineno"> 1932</span>&#160;   <span class="keywordflow">if</span> global_variables.debug:</div>
+<div class="line"><a name="l01933"></a><span class="lineno"> 1933</span>&#160;     ut.writeHists(h,<span class="stringliteral">&quot;recohists_patrec.root&quot;</span>)</div>
+<div class="ttc" id="anamespaceshipPatRec__prev_html_abb98a26b65beeef5012507cc3f9f51ec"><div class="ttname"><a href="namespaceshipPatRec__prev.html#abb98a26b65beeef5012507cc3f9f51ec">shipPatRec_prev.finalize</a></div><div class="ttdeci">def finalize()</div><div class="ttdef"><b>Definition:</b> <a href="shipPatRec__prev_8py_source.html#l01931">shipPatRec_prev.py:1931</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -873,55 +873,55 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPatRec__prev_8py_source.html#l01502">1502</a> of file <a class="el" href="shipPatRec__prev_8py_source.html">shipPatRec_prev.py</a>.</p>
-<div class="fragment"><div class="line"><a name="l01502"></a><span class="lineno"> 1502</span>&#160;<span class="keyword">def </span><a class="code" href="namespaceshipPatRec__prev.html#a28416ba4fd3a2201a908a91b68406b30">fitline</a>(indices,xhits,zhits,resolution):</div>
-<div class="line"><a name="l01503"></a><span class="lineno"> 1503</span>&#160;   <span class="comment">#fit linear function (y=fitt*x+fitc) to list of hits,</span></div>
-<div class="line"><a name="l01504"></a><span class="lineno"> 1504</span>&#160;   <span class="comment">#&quot;x&quot; is the z-coordinate, &quot;y&quot; is the cSoordinate in tracking plane perp to z</span></div>
-<div class="line"><a name="l01505"></a><span class="lineno"> 1505</span>&#160;   <span class="comment">#use equal weights for the time being, and outlier removal (yet)?</span></div>
-<div class="line"><a name="l01506"></a><span class="lineno"> 1506</span>&#160; </div>
-<div class="line"><a name="l01507"></a><span class="lineno"> 1507</span>&#160;   n=0</div>
-<div class="line"><a name="l01508"></a><span class="lineno"> 1508</span>&#160;   sumx=0.</div>
-<div class="line"><a name="l01509"></a><span class="lineno"> 1509</span>&#160;   sumx2=0</div>
-<div class="line"><a name="l01510"></a><span class="lineno"> 1510</span>&#160;   sumxy=0.</div>
-<div class="line"><a name="l01511"></a><span class="lineno"> 1511</span>&#160;   sumy=0.</div>
-<div class="line"><a name="l01512"></a><span class="lineno"> 1512</span>&#160;   sumweight=0.</div>
-<div class="line"><a name="l01513"></a><span class="lineno"> 1513</span>&#160;   sumweightx=0.</div>
-<div class="line"><a name="l01514"></a><span class="lineno"> 1514</span>&#160;   sumweighty=0.</div>
-<div class="line"><a name="l01515"></a><span class="lineno"> 1515</span>&#160;   Dw=0.</div>
-<div class="line"><a name="l01516"></a><span class="lineno"> 1516</span>&#160;   term=0.</div>
-<div class="line"><a name="l01517"></a><span class="lineno"> 1517</span>&#160;   <span class="keywordflow">for</span> ipl <span class="keywordflow">in</span> range(1,len(indices)):</div>
-<div class="line"><a name="l01518"></a><span class="lineno"> 1518</span>&#160;      indx= indices[ipl]</div>
-<div class="line"><a name="l01519"></a><span class="lineno"> 1519</span>&#160;      <span class="keywordflow">if</span> indx&gt;-1:</div>
-<div class="line"><a name="l01520"></a><span class="lineno"> 1520</span>&#160;         <span class="comment">#n+=1</span></div>
-<div class="line"><a name="l01521"></a><span class="lineno"> 1521</span>&#160;     <span class="comment">#weigh points accordint to their distance to the wire</span></div>
-<div class="line"><a name="l01522"></a><span class="lineno"> 1522</span>&#160;     weight=1/math.sqrt(xhits[ipl][3][indx]**2+resolution**2)</div>
-<div class="line"><a name="l01523"></a><span class="lineno"> 1523</span>&#160;     x=zhits[ipl][0]</div>
-<div class="line"><a name="l01524"></a><span class="lineno"> 1524</span>&#160;     y=xhits[ipl][0][indx]</div>
-<div class="line"><a name="l01525"></a><span class="lineno"> 1525</span>&#160;     sumweight+=weight</div>
-<div class="line"><a name="l01526"></a><span class="lineno"> 1526</span>&#160;     sumweightx+=weight*x</div>
-<div class="line"><a name="l01527"></a><span class="lineno"> 1527</span>&#160;     sumweighty+=weight*y</div>
-<div class="line"><a name="l01528"></a><span class="lineno"> 1528</span>&#160;   xmean=sumweightx/sumweight</div>
-<div class="line"><a name="l01529"></a><span class="lineno"> 1529</span>&#160;   ymean=sumweighty/sumweight</div>
-<div class="line"><a name="l01530"></a><span class="lineno"> 1530</span>&#160;   <span class="keywordflow">for</span> ipl <span class="keywordflow">in</span> range(1,len(indices)):</div>
-<div class="line"><a name="l01531"></a><span class="lineno"> 1531</span>&#160;      indx= indices[ipl]</div>
-<div class="line"><a name="l01532"></a><span class="lineno"> 1532</span>&#160;      <span class="keywordflow">if</span> indx&gt;-1:</div>
-<div class="line"><a name="l01533"></a><span class="lineno"> 1533</span>&#160;         n+=1</div>
-<div class="line"><a name="l01534"></a><span class="lineno"> 1534</span>&#160;     weight=1/math.sqrt(xhits[ipl][3][indx]**2+resolution**2)</div>
-<div class="line"><a name="l01535"></a><span class="lineno"> 1535</span>&#160;     x=zhits[ipl][0]</div>
-<div class="line"><a name="l01536"></a><span class="lineno"> 1536</span>&#160;     y=xhits[ipl][0][indx]</div>
-<div class="line"><a name="l01537"></a><span class="lineno"> 1537</span>&#160;     Dw+=weight*(x-xmean)**2</div>
-<div class="line"><a name="l01538"></a><span class="lineno"> 1538</span>&#160;     term+=weight*(x-xmean)*y</div>
-<div class="line"><a name="l01539"></a><span class="lineno"> 1539</span>&#160;         sumx+=zhits[ipl][0]</div>
-<div class="line"><a name="l01540"></a><span class="lineno"> 1540</span>&#160;         sumx2+=zhits[ipl][0]**2</div>
-<div class="line"><a name="l01541"></a><span class="lineno"> 1541</span>&#160;         sumxy+=xhits[ipl][0][indx]*zhits[ipl][0]</div>
-<div class="line"><a name="l01542"></a><span class="lineno"> 1542</span>&#160;         sumy+=xhits[ipl][0][indx]</div>
-<div class="line"><a name="l01543"></a><span class="lineno"> 1543</span>&#160;   fitt=(1/Dw)*term</div>
-<div class="line"><a name="l01544"></a><span class="lineno"> 1544</span>&#160;   fitc=ymean-fitt*xmean</div>
-<div class="line"><a name="l01545"></a><span class="lineno"> 1545</span>&#160;   unweightedfitt=(sumxy-sumx*sumy/n)/(sumx2-sumx**2/n)</div>
-<div class="line"><a name="l01546"></a><span class="lineno"> 1546</span>&#160;   unweightedfitc=(sumy-fitt*sumx)/n</div>
-<div class="line"><a name="l01547"></a><span class="lineno"> 1547</span>&#160;   <span class="keywordflow">return</span> fitt,fitc</div>
-<div class="line"><a name="l01548"></a><span class="lineno"> 1548</span>&#160; </div>
-<div class="ttc" id="anamespaceshipPatRec__prev_html_a28416ba4fd3a2201a908a91b68406b30"><div class="ttname"><a href="namespaceshipPatRec__prev.html#a28416ba4fd3a2201a908a91b68406b30">shipPatRec_prev.fitline</a></div><div class="ttdeci">def fitline(indices, xhits, zhits, resolution)</div><div class="ttdef"><b>Definition:</b> <a href="shipPatRec__prev_8py_source.html#l01502">shipPatRec_prev.py:1502</a></div></div>
+<p class="definition">Definition at line <a class="el" href="shipPatRec__prev_8py_source.html#l01501">1501</a> of file <a class="el" href="shipPatRec__prev_8py_source.html">shipPatRec_prev.py</a>.</p>
+<div class="fragment"><div class="line"><a name="l01501"></a><span class="lineno"> 1501</span>&#160;<span class="keyword">def </span><a class="code" href="namespaceshipPatRec__prev.html#a28416ba4fd3a2201a908a91b68406b30">fitline</a>(indices,xhits,zhits,resolution):</div>
+<div class="line"><a name="l01502"></a><span class="lineno"> 1502</span>&#160;   <span class="comment">#fit linear function (y=fitt*x+fitc) to list of hits,</span></div>
+<div class="line"><a name="l01503"></a><span class="lineno"> 1503</span>&#160;   <span class="comment">#&quot;x&quot; is the z-coordinate, &quot;y&quot; is the cSoordinate in tracking plane perp to z</span></div>
+<div class="line"><a name="l01504"></a><span class="lineno"> 1504</span>&#160;   <span class="comment">#use equal weights for the time being, and outlier removal (yet)?</span></div>
+<div class="line"><a name="l01505"></a><span class="lineno"> 1505</span>&#160; </div>
+<div class="line"><a name="l01506"></a><span class="lineno"> 1506</span>&#160;   n=0</div>
+<div class="line"><a name="l01507"></a><span class="lineno"> 1507</span>&#160;   sumx=0.</div>
+<div class="line"><a name="l01508"></a><span class="lineno"> 1508</span>&#160;   sumx2=0</div>
+<div class="line"><a name="l01509"></a><span class="lineno"> 1509</span>&#160;   sumxy=0.</div>
+<div class="line"><a name="l01510"></a><span class="lineno"> 1510</span>&#160;   sumy=0.</div>
+<div class="line"><a name="l01511"></a><span class="lineno"> 1511</span>&#160;   sumweight=0.</div>
+<div class="line"><a name="l01512"></a><span class="lineno"> 1512</span>&#160;   sumweightx=0.</div>
+<div class="line"><a name="l01513"></a><span class="lineno"> 1513</span>&#160;   sumweighty=0.</div>
+<div class="line"><a name="l01514"></a><span class="lineno"> 1514</span>&#160;   Dw=0.</div>
+<div class="line"><a name="l01515"></a><span class="lineno"> 1515</span>&#160;   term=0.</div>
+<div class="line"><a name="l01516"></a><span class="lineno"> 1516</span>&#160;   <span class="keywordflow">for</span> ipl <span class="keywordflow">in</span> range(1,len(indices)):</div>
+<div class="line"><a name="l01517"></a><span class="lineno"> 1517</span>&#160;      indx= indices[ipl]</div>
+<div class="line"><a name="l01518"></a><span class="lineno"> 1518</span>&#160;      <span class="keywordflow">if</span> indx&gt;-1:</div>
+<div class="line"><a name="l01519"></a><span class="lineno"> 1519</span>&#160;         <span class="comment">#n+=1</span></div>
+<div class="line"><a name="l01520"></a><span class="lineno"> 1520</span>&#160;     <span class="comment">#weigh points accordint to their distance to the wire</span></div>
+<div class="line"><a name="l01521"></a><span class="lineno"> 1521</span>&#160;     weight=1/math.sqrt(xhits[ipl][3][indx]**2+resolution**2)</div>
+<div class="line"><a name="l01522"></a><span class="lineno"> 1522</span>&#160;     x=zhits[ipl][0]</div>
+<div class="line"><a name="l01523"></a><span class="lineno"> 1523</span>&#160;     y=xhits[ipl][0][indx]</div>
+<div class="line"><a name="l01524"></a><span class="lineno"> 1524</span>&#160;     sumweight+=weight</div>
+<div class="line"><a name="l01525"></a><span class="lineno"> 1525</span>&#160;     sumweightx+=weight*x</div>
+<div class="line"><a name="l01526"></a><span class="lineno"> 1526</span>&#160;     sumweighty+=weight*y</div>
+<div class="line"><a name="l01527"></a><span class="lineno"> 1527</span>&#160;   xmean=sumweightx/sumweight</div>
+<div class="line"><a name="l01528"></a><span class="lineno"> 1528</span>&#160;   ymean=sumweighty/sumweight</div>
+<div class="line"><a name="l01529"></a><span class="lineno"> 1529</span>&#160;   <span class="keywordflow">for</span> ipl <span class="keywordflow">in</span> range(1,len(indices)):</div>
+<div class="line"><a name="l01530"></a><span class="lineno"> 1530</span>&#160;      indx= indices[ipl]</div>
+<div class="line"><a name="l01531"></a><span class="lineno"> 1531</span>&#160;      <span class="keywordflow">if</span> indx&gt;-1:</div>
+<div class="line"><a name="l01532"></a><span class="lineno"> 1532</span>&#160;         n+=1</div>
+<div class="line"><a name="l01533"></a><span class="lineno"> 1533</span>&#160;     weight=1/math.sqrt(xhits[ipl][3][indx]**2+resolution**2)</div>
+<div class="line"><a name="l01534"></a><span class="lineno"> 1534</span>&#160;     x=zhits[ipl][0]</div>
+<div class="line"><a name="l01535"></a><span class="lineno"> 1535</span>&#160;     y=xhits[ipl][0][indx]</div>
+<div class="line"><a name="l01536"></a><span class="lineno"> 1536</span>&#160;     Dw+=weight*(x-xmean)**2</div>
+<div class="line"><a name="l01537"></a><span class="lineno"> 1537</span>&#160;     term+=weight*(x-xmean)*y</div>
+<div class="line"><a name="l01538"></a><span class="lineno"> 1538</span>&#160;         sumx+=zhits[ipl][0]</div>
+<div class="line"><a name="l01539"></a><span class="lineno"> 1539</span>&#160;         sumx2+=zhits[ipl][0]**2</div>
+<div class="line"><a name="l01540"></a><span class="lineno"> 1540</span>&#160;         sumxy+=xhits[ipl][0][indx]*zhits[ipl][0]</div>
+<div class="line"><a name="l01541"></a><span class="lineno"> 1541</span>&#160;         sumy+=xhits[ipl][0][indx]</div>
+<div class="line"><a name="l01542"></a><span class="lineno"> 1542</span>&#160;   fitt=(1/Dw)*term</div>
+<div class="line"><a name="l01543"></a><span class="lineno"> 1543</span>&#160;   fitc=ymean-fitt*xmean</div>
+<div class="line"><a name="l01544"></a><span class="lineno"> 1544</span>&#160;   unweightedfitt=(sumxy-sumx*sumy/n)/(sumx2-sumx**2/n)</div>
+<div class="line"><a name="l01545"></a><span class="lineno"> 1545</span>&#160;   unweightedfitc=(sumy-fitt*sumx)/n</div>
+<div class="line"><a name="l01546"></a><span class="lineno"> 1546</span>&#160;   <span class="keywordflow">return</span> fitt,fitc</div>
+<div class="line"><a name="l01547"></a><span class="lineno"> 1547</span>&#160; </div>
+<div class="ttc" id="anamespaceshipPatRec__prev_html_a28416ba4fd3a2201a908a91b68406b30"><div class="ttname"><a href="namespaceshipPatRec__prev.html#a28416ba4fd3a2201a908a91b68406b30">shipPatRec_prev.fitline</a></div><div class="ttdeci">def fitline(indices, xhits, zhits, resolution)</div><div class="ttdef"><b>Definition:</b> <a href="shipPatRec__prev_8py_source.html#l01501">shipPatRec_prev.py:1501</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -941,30 +941,30 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPatRec__prev_8py_source.html#l01557">1557</a> of file <a class="el" href="shipPatRec__prev_8py_source.html">shipPatRec_prev.py</a>.</p>
-<div class="fragment"><div class="line"><a name="l01557"></a><span class="lineno"> 1557</span>&#160;<span class="keyword">def </span><a class="code" href="namespaceshipPatRec__prev.html#aa7263c4e341f02101c3a3db56bd50067">fracMCsame</a>(trackids):</div>
-<div class="line"><a name="l01558"></a><span class="lineno"> 1558</span>&#160;<span class="comment"># determine largest fraction of hits which have benn generated by the same # MC true track</span></div>
-<div class="line"><a name="l01559"></a><span class="lineno"> 1559</span>&#160;<span class="comment">#hits: list of pointers to true MC TrackingHits</span></div>
-<div class="line"><a name="l01560"></a><span class="lineno"> 1560</span>&#160;<span class="comment">#return: fraction of hits from same track, and its track-ID</span></div>
-<div class="line"><a name="l01561"></a><span class="lineno"> 1561</span>&#160;    track={}</div>
-<div class="line"><a name="l01562"></a><span class="lineno"> 1562</span>&#160;    nh=len(trackids)</div>
-<div class="line"><a name="l01563"></a><span class="lineno"> 1563</span>&#160;    <span class="keywordflow">for</span> tid <span class="keywordflow">in</span> trackids:</div>
-<div class="line"><a name="l01564"></a><span class="lineno"> 1564</span>&#160;       <span class="keywordflow">if</span> tid==999:</div>
-<div class="line"><a name="l01565"></a><span class="lineno"> 1565</span>&#160;         nh-=1</div>
-<div class="line"><a name="l01566"></a><span class="lineno"> 1566</span>&#160;         <span class="keywordflow">continue</span></div>
-<div class="line"><a name="l01567"></a><span class="lineno"> 1567</span>&#160;       <span class="keywordflow">if</span> tid <span class="keywordflow">in</span> track:</div>
-<div class="line"><a name="l01568"></a><span class="lineno"> 1568</span>&#160;          track[tid]+=1</div>
-<div class="line"><a name="l01569"></a><span class="lineno"> 1569</span>&#160;       <span class="keywordflow">else</span>:</div>
-<div class="line"><a name="l01570"></a><span class="lineno"> 1570</span>&#160;        track[tid]=1</div>
-<div class="line"><a name="l01571"></a><span class="lineno"> 1571</span>&#160;    <span class="comment">#now get track with largest number of hits</span></div>
-<div class="line"><a name="l01572"></a><span class="lineno"> 1572</span>&#160;    tmax=<a class="code" href="namespacegeometry__config.html#a669b957607386750ed2077d789c9434e">max</a>(track, key=track.get)</div>
-<div class="line"><a name="l01573"></a><span class="lineno"> 1573</span>&#160; </div>
-<div class="line"><a name="l01574"></a><span class="lineno"> 1574</span>&#160;    frac=0.</div>
-<div class="line"><a name="l01575"></a><span class="lineno"> 1575</span>&#160;    <span class="keywordflow">if</span> nh&gt;0: frac=<a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(track[tmax])/<a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(nh)</div>
-<div class="line"><a name="l01576"></a><span class="lineno"> 1576</span>&#160;    <span class="keywordflow">return</span> frac,tmax</div>
-<div class="line"><a name="l01577"></a><span class="lineno"> 1577</span>&#160; </div>
+<p class="definition">Definition at line <a class="el" href="shipPatRec__prev_8py_source.html#l01556">1556</a> of file <a class="el" href="shipPatRec__prev_8py_source.html">shipPatRec_prev.py</a>.</p>
+<div class="fragment"><div class="line"><a name="l01556"></a><span class="lineno"> 1556</span>&#160;<span class="keyword">def </span><a class="code" href="namespaceshipPatRec__prev.html#aa7263c4e341f02101c3a3db56bd50067">fracMCsame</a>(trackids):</div>
+<div class="line"><a name="l01557"></a><span class="lineno"> 1557</span>&#160;<span class="comment"># determine largest fraction of hits which have benn generated by the same # MC true track</span></div>
+<div class="line"><a name="l01558"></a><span class="lineno"> 1558</span>&#160;<span class="comment">#hits: list of pointers to true MC TrackingHits</span></div>
+<div class="line"><a name="l01559"></a><span class="lineno"> 1559</span>&#160;<span class="comment">#return: fraction of hits from same track, and its track-ID</span></div>
+<div class="line"><a name="l01560"></a><span class="lineno"> 1560</span>&#160;    track={}</div>
+<div class="line"><a name="l01561"></a><span class="lineno"> 1561</span>&#160;    nh=len(trackids)</div>
+<div class="line"><a name="l01562"></a><span class="lineno"> 1562</span>&#160;    <span class="keywordflow">for</span> tid <span class="keywordflow">in</span> trackids:</div>
+<div class="line"><a name="l01563"></a><span class="lineno"> 1563</span>&#160;       <span class="keywordflow">if</span> tid==999:</div>
+<div class="line"><a name="l01564"></a><span class="lineno"> 1564</span>&#160;         nh-=1</div>
+<div class="line"><a name="l01565"></a><span class="lineno"> 1565</span>&#160;         <span class="keywordflow">continue</span></div>
+<div class="line"><a name="l01566"></a><span class="lineno"> 1566</span>&#160;       <span class="keywordflow">if</span> tid <span class="keywordflow">in</span> track:</div>
+<div class="line"><a name="l01567"></a><span class="lineno"> 1567</span>&#160;          track[tid]+=1</div>
+<div class="line"><a name="l01568"></a><span class="lineno"> 1568</span>&#160;       <span class="keywordflow">else</span>:</div>
+<div class="line"><a name="l01569"></a><span class="lineno"> 1569</span>&#160;        track[tid]=1</div>
+<div class="line"><a name="l01570"></a><span class="lineno"> 1570</span>&#160;    <span class="comment">#now get track with largest number of hits</span></div>
+<div class="line"><a name="l01571"></a><span class="lineno"> 1571</span>&#160;    tmax=<a class="code" href="namespacegeometry__config.html#a669b957607386750ed2077d789c9434e">max</a>(track, key=track.get)</div>
+<div class="line"><a name="l01572"></a><span class="lineno"> 1572</span>&#160; </div>
+<div class="line"><a name="l01573"></a><span class="lineno"> 1573</span>&#160;    frac=0.</div>
+<div class="line"><a name="l01574"></a><span class="lineno"> 1574</span>&#160;    <span class="keywordflow">if</span> nh&gt;0: frac=<a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(track[tmax])/<a class="code" href="namespaceadd__noise__to__field.html#a0b17b62adeb5054f131bb6a46b054b48">float</a>(nh)</div>
+<div class="line"><a name="l01575"></a><span class="lineno"> 1575</span>&#160;    <span class="keywordflow">return</span> frac,tmax</div>
+<div class="line"><a name="l01576"></a><span class="lineno"> 1576</span>&#160; </div>
 <div class="ttc" id="anamespacegeometry__config_html_a669b957607386750ed2077d789c9434e"><div class="ttname"><a href="namespacegeometry__config.html#a669b957607386750ed2077d789c9434e">geometry_config.max</a></div><div class="ttdeci">max</div><div class="ttdef"><b>Definition:</b> <a href="geometry__config_8py_source.html#l00181">geometry_config.py:181</a></div></div>
-<div class="ttc" id="anamespaceshipPatRec__prev_html_aa7263c4e341f02101c3a3db56bd50067"><div class="ttname"><a href="namespaceshipPatRec__prev.html#aa7263c4e341f02101c3a3db56bd50067">shipPatRec_prev.fracMCsame</a></div><div class="ttdeci">def fracMCsame(trackids)</div><div class="ttdef"><b>Definition:</b> <a href="shipPatRec__prev_8py_source.html#l01557">shipPatRec_prev.py:1557</a></div></div>
+<div class="ttc" id="anamespaceshipPatRec__prev_html_aa7263c4e341f02101c3a3db56bd50067"><div class="ttname"><a href="namespaceshipPatRec__prev.html#aa7263c4e341f02101c3a3db56bd50067">shipPatRec_prev.fracMCsame</a></div><div class="ttdeci">def fracMCsame(trackids)</div><div class="ttdef"><b>Definition:</b> <a href="shipPatRec__prev_8py_source.html#l01556">shipPatRec_prev.py:1556</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1302,20 +1302,20 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPatRec__prev_8py_source.html#l01607">1607</a> of file <a class="el" href="shipPatRec__prev_8py_source.html">shipPatRec_prev.py</a>.</p>
-<div class="fragment"><div class="line"><a name="l01607"></a><span class="lineno"> 1607</span>&#160;<span class="keyword">def </span><a class="code" href="namespaceshipPatRec__prev.html#a994acd52fb79a39d0307544ba618c67c">hit2wire</a>(ahit,bot,top,no_amb=None):</div>
-<div class="line"><a name="l01608"></a><span class="lineno"> 1608</span>&#160;     detID = ahit.GetDetectorID()</div>
-<div class="line"><a name="l01609"></a><span class="lineno"> 1609</span>&#160;     ex = ahit.GetX()</div>
-<div class="line"><a name="l01610"></a><span class="lineno"> 1610</span>&#160;     ey = ahit.GetY()</div>
-<div class="line"><a name="l01611"></a><span class="lineno"> 1611</span>&#160;     ez = ahit.GetZ()</div>
-<div class="line"><a name="l01612"></a><span class="lineno"> 1612</span>&#160;   <span class="comment">#distance to wire, and smear it.</span></div>
-<div class="line"><a name="l01613"></a><span class="lineno"> 1613</span>&#160;     dw  = ahit.dist2Wire()</div>
-<div class="line"><a name="l01614"></a><span class="lineno"> 1614</span>&#160;     smear = dw</div>
-<div class="line"><a name="l01615"></a><span class="lineno"> 1615</span>&#160;     <span class="keywordflow">if</span> <span class="keywordflow">not</span> no_amb: smear = ROOT.fabs(random.Gaus(dw,ShipGeo.strawtubes.sigma_spatial))</div>
-<div class="line"><a name="l01616"></a><span class="lineno"> 1616</span>&#160;     smearedHit = {<span class="stringliteral">&#39;mcHit&#39;</span>:ahit,<span class="stringliteral">&#39;xtop&#39;</span>:top.x(),<span class="stringliteral">&#39;ytop&#39;</span>:top.y(),<span class="stringliteral">&#39;z&#39;</span>:top.z(),<span class="stringliteral">&#39;xbot&#39;</span>:bot.x(),<span class="stringliteral">&#39;ybot&#39;</span>:bot.y(),<span class="stringliteral">&#39;z&#39;</span>:bot.z(),<span class="stringliteral">&#39;dist&#39;</span>:smear}</div>
-<div class="line"><a name="l01617"></a><span class="lineno"> 1617</span>&#160;     <span class="keywordflow">return</span> smearedHit</div>
-<div class="line"><a name="l01618"></a><span class="lineno"> 1618</span>&#160; </div>
-<div class="ttc" id="anamespaceshipPatRec__prev_html_a994acd52fb79a39d0307544ba618c67c"><div class="ttname"><a href="namespaceshipPatRec__prev.html#a994acd52fb79a39d0307544ba618c67c">shipPatRec_prev.hit2wire</a></div><div class="ttdeci">def hit2wire(ahit, bot, top, no_amb=None)</div><div class="ttdef"><b>Definition:</b> <a href="shipPatRec__prev_8py_source.html#l01607">shipPatRec_prev.py:1607</a></div></div>
+<p class="definition">Definition at line <a class="el" href="shipPatRec__prev_8py_source.html#l01606">1606</a> of file <a class="el" href="shipPatRec__prev_8py_source.html">shipPatRec_prev.py</a>.</p>
+<div class="fragment"><div class="line"><a name="l01606"></a><span class="lineno"> 1606</span>&#160;<span class="keyword">def </span><a class="code" href="namespaceshipPatRec__prev.html#a994acd52fb79a39d0307544ba618c67c">hit2wire</a>(ahit,bot,top,no_amb=None):</div>
+<div class="line"><a name="l01607"></a><span class="lineno"> 1607</span>&#160;     detID = ahit.GetDetectorID()</div>
+<div class="line"><a name="l01608"></a><span class="lineno"> 1608</span>&#160;     ex = ahit.GetX()</div>
+<div class="line"><a name="l01609"></a><span class="lineno"> 1609</span>&#160;     ey = ahit.GetY()</div>
+<div class="line"><a name="l01610"></a><span class="lineno"> 1610</span>&#160;     ez = ahit.GetZ()</div>
+<div class="line"><a name="l01611"></a><span class="lineno"> 1611</span>&#160;   <span class="comment">#distance to wire, and smear it.</span></div>
+<div class="line"><a name="l01612"></a><span class="lineno"> 1612</span>&#160;     dw  = ahit.dist2Wire()</div>
+<div class="line"><a name="l01613"></a><span class="lineno"> 1613</span>&#160;     smear = dw</div>
+<div class="line"><a name="l01614"></a><span class="lineno"> 1614</span>&#160;     <span class="keywordflow">if</span> <span class="keywordflow">not</span> no_amb: smear = ROOT.fabs(random.Gaus(dw,ShipGeo.strawtubes.sigma_spatial))</div>
+<div class="line"><a name="l01615"></a><span class="lineno"> 1615</span>&#160;     smearedHit = {<span class="stringliteral">&#39;mcHit&#39;</span>:ahit,<span class="stringliteral">&#39;xtop&#39;</span>:top.x(),<span class="stringliteral">&#39;ytop&#39;</span>:top.y(),<span class="stringliteral">&#39;z&#39;</span>:top.z(),<span class="stringliteral">&#39;xbot&#39;</span>:bot.x(),<span class="stringliteral">&#39;ybot&#39;</span>:bot.y(),<span class="stringliteral">&#39;z&#39;</span>:bot.z(),<span class="stringliteral">&#39;dist&#39;</span>:smear}</div>
+<div class="line"><a name="l01616"></a><span class="lineno"> 1616</span>&#160;     <span class="keywordflow">return</span> smearedHit</div>
+<div class="line"><a name="l01617"></a><span class="lineno"> 1617</span>&#160; </div>
+<div class="ttc" id="anamespaceshipPatRec__prev_html_a994acd52fb79a39d0307544ba618c67c"><div class="ttname"><a href="namespaceshipPatRec__prev.html#a994acd52fb79a39d0307544ba618c67c">shipPatRec_prev.hit2wire</a></div><div class="ttdeci">def hit2wire(ahit, bot, top, no_amb=None)</div><div class="ttdef"><b>Definition:</b> <a href="shipPatRec__prev_8py_source.html#l01606">shipPatRec_prev.py:1606</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1481,16 +1481,16 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPatRec__prev_8py_source.html#l01549">1549</a> of file <a class="el" href="shipPatRec__prev_8py_source.html">shipPatRec_prev.py</a>.</p>
-<div class="fragment"><div class="line"><a name="l01549"></a><span class="lineno"> 1549</span>&#160;<span class="keyword">def </span><a class="code" href="namespaceshipPatRec__prev.html#aa7d4ef170583a5339c9a0fbb967b0c29">IP</a>(s, t, b):</div>
-<div class="line"><a name="l01550"></a><span class="lineno"> 1550</span>&#160;     <span class="comment">#some vector manipulations to get impact point of t-b to s</span></div>
-<div class="line"><a name="l01551"></a><span class="lineno"> 1551</span>&#160;     dir=ROOT.TVector3(t-b)</div>
-<div class="line"><a name="l01552"></a><span class="lineno"> 1552</span>&#160;     udir = ROOT.TVector3(dir.Unit())</div>
-<div class="line"><a name="l01553"></a><span class="lineno"> 1553</span>&#160;     sep = ROOT.TVector3(t-s)</div>
-<div class="line"><a name="l01554"></a><span class="lineno"> 1554</span>&#160;     ip = ROOT.TVector3(udir.Cross(sep.Cross(udir) ))</div>
-<div class="line"><a name="l01555"></a><span class="lineno"> 1555</span>&#160;     <span class="keywordflow">return</span> ip.Mag()</div>
-<div class="line"><a name="l01556"></a><span class="lineno"> 1556</span>&#160; </div>
-<div class="ttc" id="anamespaceshipPatRec__prev_html_aa7d4ef170583a5339c9a0fbb967b0c29"><div class="ttname"><a href="namespaceshipPatRec__prev.html#aa7d4ef170583a5339c9a0fbb967b0c29">shipPatRec_prev.IP</a></div><div class="ttdeci">def IP(s, t, b)</div><div class="ttdef"><b>Definition:</b> <a href="shipPatRec__prev_8py_source.html#l01549">shipPatRec_prev.py:1549</a></div></div>
+<p class="definition">Definition at line <a class="el" href="shipPatRec__prev_8py_source.html#l01548">1548</a> of file <a class="el" href="shipPatRec__prev_8py_source.html">shipPatRec_prev.py</a>.</p>
+<div class="fragment"><div class="line"><a name="l01548"></a><span class="lineno"> 1548</span>&#160;<span class="keyword">def </span><a class="code" href="namespaceshipPatRec__prev.html#aa7d4ef170583a5339c9a0fbb967b0c29">IP</a>(s, t, b):</div>
+<div class="line"><a name="l01549"></a><span class="lineno"> 1549</span>&#160;     <span class="comment">#some vector manipulations to get impact point of t-b to s</span></div>
+<div class="line"><a name="l01550"></a><span class="lineno"> 1550</span>&#160;     dir=ROOT.TVector3(t-b)</div>
+<div class="line"><a name="l01551"></a><span class="lineno"> 1551</span>&#160;     udir = ROOT.TVector3(dir.Unit())</div>
+<div class="line"><a name="l01552"></a><span class="lineno"> 1552</span>&#160;     sep = ROOT.TVector3(t-s)</div>
+<div class="line"><a name="l01553"></a><span class="lineno"> 1553</span>&#160;     ip = ROOT.TVector3(udir.Cross(sep.Cross(udir) ))</div>
+<div class="line"><a name="l01554"></a><span class="lineno"> 1554</span>&#160;     <span class="keywordflow">return</span> ip.Mag()</div>
+<div class="line"><a name="l01555"></a><span class="lineno"> 1555</span>&#160; </div>
+<div class="ttc" id="anamespaceshipPatRec__prev_html_aa7d4ef170583a5339c9a0fbb967b0c29"><div class="ttname"><a href="namespaceshipPatRec__prev.html#aa7d4ef170583a5339c9a0fbb967b0c29">shipPatRec_prev.IP</a></div><div class="ttdeci">def IP(s, t, b)</div><div class="ttdef"><b>Definition:</b> <a href="shipPatRec__prev_8py_source.html#l01548">shipPatRec_prev.py:1548</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1532,31 +1532,31 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPatRec__prev_8py_source.html#l01479">1479</a> of file <a class="el" href="shipPatRec__prev_8py_source.html">shipPatRec_prev.py</a>.</p>
-<div class="fragment"><div class="line"><a name="l01479"></a><span class="lineno"> 1479</span>&#160;<span class="keyword">def </span><a class="code" href="namespaceshipPatRec__prev.html#a99a5bdb37b011216720d77f47e7d9282">line2plane</a>(fitt,fitc,uvview,zuv):</div>
-<div class="line"><a name="l01480"></a><span class="lineno"> 1480</span>&#160;  <span class="comment">#intersect horizontal plane, defined by tangent, constant in yz plane, with</span></div>
-<div class="line"><a name="l01481"></a><span class="lineno"> 1481</span>&#160;  <span class="comment">#stereo hits given in uvview,zuv with top/bottom hits of &quot;straw&quot;</span></div>
-<div class="line"><a name="l01482"></a><span class="lineno"> 1482</span>&#160;  xb=uvview[0]</div>
-<div class="line"><a name="l01483"></a><span class="lineno"> 1483</span>&#160;  yb=uvview[1]</div>
-<div class="line"><a name="l01484"></a><span class="lineno"> 1484</span>&#160;  xt=uvview[2]</div>
-<div class="line"><a name="l01485"></a><span class="lineno"> 1485</span>&#160;  yt=uvview[3]</div>
-<div class="line"><a name="l01486"></a><span class="lineno"> 1486</span>&#160;  x=[]</div>
-<div class="line"><a name="l01487"></a><span class="lineno"> 1487</span>&#160;  items=[]</div>
-<div class="line"><a name="l01488"></a><span class="lineno"> 1488</span>&#160;  term=fitc+zuv*fitt</div>
-<div class="line"><a name="l01489"></a><span class="lineno"> 1489</span>&#160;  <span class="comment">#loop over all hits in this view</span></div>
-<div class="line"><a name="l01490"></a><span class="lineno"> 1490</span>&#160;  <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(len(yb)):</div>
-<div class="line"><a name="l01491"></a><span class="lineno"> 1491</span>&#160;    <span class="comment">#f2=(term-yb[i])/(yt[i]-yb[i])</span></div>
-<div class="line"><a name="l01492"></a><span class="lineno"> 1492</span>&#160;    <span class="comment">#xint=xb[i]+f2*(xt[i]-xb[i])</span></div>
-<div class="line"><a name="l01493"></a><span class="lineno"> 1493</span>&#160;    f2=(term-yb[i])/(yb[i]-yt[i])</div>
-<div class="line"><a name="l01494"></a><span class="lineno"> 1494</span>&#160;    xint=xb[i]+f2*(xb[i]-xt[i])</div>
-<div class="line"><a name="l01495"></a><span class="lineno"> 1495</span>&#160;    c=uvview[4][i]</div>
-<div class="line"><a name="l01496"></a><span class="lineno"> 1496</span>&#160;    <span class="comment">#do they cross inside sensitive volume defined by top/bottom of straw?</span></div>
-<div class="line"><a name="l01497"></a><span class="lineno"> 1497</span>&#160;    <span class="keywordflow">if</span> xint&lt;<a class="code" href="namespacegeometry__config.html#a669b957607386750ed2077d789c9434e">max</a>(xt[i],xb[i]) <span class="keywordflow">and</span> xint&gt;min(xb[i],xt[i]):</div>
-<div class="line"><a name="l01498"></a><span class="lineno"> 1498</span>&#160;      x.append(xint)</div>
-<div class="line"><a name="l01499"></a><span class="lineno"> 1499</span>&#160;      items.append(c)</div>
-<div class="line"><a name="l01500"></a><span class="lineno"> 1500</span>&#160;  <span class="keywordflow">return</span> x,items</div>
-<div class="line"><a name="l01501"></a><span class="lineno"> 1501</span>&#160; </div>
-<div class="ttc" id="anamespaceshipPatRec__prev_html_a99a5bdb37b011216720d77f47e7d9282"><div class="ttname"><a href="namespaceshipPatRec__prev.html#a99a5bdb37b011216720d77f47e7d9282">shipPatRec_prev.line2plane</a></div><div class="ttdeci">def line2plane(fitt, fitc, uvview, zuv)</div><div class="ttdef"><b>Definition:</b> <a href="shipPatRec__prev_8py_source.html#l01479">shipPatRec_prev.py:1479</a></div></div>
+<p class="definition">Definition at line <a class="el" href="shipPatRec__prev_8py_source.html#l01478">1478</a> of file <a class="el" href="shipPatRec__prev_8py_source.html">shipPatRec_prev.py</a>.</p>
+<div class="fragment"><div class="line"><a name="l01478"></a><span class="lineno"> 1478</span>&#160;<span class="keyword">def </span><a class="code" href="namespaceshipPatRec__prev.html#a99a5bdb37b011216720d77f47e7d9282">line2plane</a>(fitt,fitc,uvview,zuv):</div>
+<div class="line"><a name="l01479"></a><span class="lineno"> 1479</span>&#160;  <span class="comment">#intersect horizontal plane, defined by tangent, constant in yz plane, with</span></div>
+<div class="line"><a name="l01480"></a><span class="lineno"> 1480</span>&#160;  <span class="comment">#stereo hits given in uvview,zuv with top/bottom hits of &quot;straw&quot;</span></div>
+<div class="line"><a name="l01481"></a><span class="lineno"> 1481</span>&#160;  xb=uvview[0]</div>
+<div class="line"><a name="l01482"></a><span class="lineno"> 1482</span>&#160;  yb=uvview[1]</div>
+<div class="line"><a name="l01483"></a><span class="lineno"> 1483</span>&#160;  xt=uvview[2]</div>
+<div class="line"><a name="l01484"></a><span class="lineno"> 1484</span>&#160;  yt=uvview[3]</div>
+<div class="line"><a name="l01485"></a><span class="lineno"> 1485</span>&#160;  x=[]</div>
+<div class="line"><a name="l01486"></a><span class="lineno"> 1486</span>&#160;  items=[]</div>
+<div class="line"><a name="l01487"></a><span class="lineno"> 1487</span>&#160;  term=fitc+zuv*fitt</div>
+<div class="line"><a name="l01488"></a><span class="lineno"> 1488</span>&#160;  <span class="comment">#loop over all hits in this view</span></div>
+<div class="line"><a name="l01489"></a><span class="lineno"> 1489</span>&#160;  <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(len(yb)):</div>
+<div class="line"><a name="l01490"></a><span class="lineno"> 1490</span>&#160;    <span class="comment">#f2=(term-yb[i])/(yt[i]-yb[i])</span></div>
+<div class="line"><a name="l01491"></a><span class="lineno"> 1491</span>&#160;    <span class="comment">#xint=xb[i]+f2*(xt[i]-xb[i])</span></div>
+<div class="line"><a name="l01492"></a><span class="lineno"> 1492</span>&#160;    f2=(term-yb[i])/(yb[i]-yt[i])</div>
+<div class="line"><a name="l01493"></a><span class="lineno"> 1493</span>&#160;    xint=xb[i]+f2*(xb[i]-xt[i])</div>
+<div class="line"><a name="l01494"></a><span class="lineno"> 1494</span>&#160;    c=uvview[4][i]</div>
+<div class="line"><a name="l01495"></a><span class="lineno"> 1495</span>&#160;    <span class="comment">#do they cross inside sensitive volume defined by top/bottom of straw?</span></div>
+<div class="line"><a name="l01496"></a><span class="lineno"> 1496</span>&#160;    <span class="keywordflow">if</span> xint&lt;<a class="code" href="namespacegeometry__config.html#a669b957607386750ed2077d789c9434e">max</a>(xt[i],xb[i]) <span class="keywordflow">and</span> xint&gt;min(xb[i],xt[i]):</div>
+<div class="line"><a name="l01497"></a><span class="lineno"> 1497</span>&#160;      x.append(xint)</div>
+<div class="line"><a name="l01498"></a><span class="lineno"> 1498</span>&#160;      items.append(c)</div>
+<div class="line"><a name="l01499"></a><span class="lineno"> 1499</span>&#160;  <span class="keywordflow">return</span> x,items</div>
+<div class="line"><a name="l01500"></a><span class="lineno"> 1500</span>&#160; </div>
+<div class="ttc" id="anamespaceshipPatRec__prev_html_a99a5bdb37b011216720d77f47e7d9282"><div class="ttname"><a href="namespaceshipPatRec__prev.html#a99a5bdb37b011216720d77f47e7d9282">shipPatRec_prev.line2plane</a></div><div class="ttdeci">def line2plane(fitt, fitc, uvview, zuv)</div><div class="ttdef"><b>Definition:</b> <a href="shipPatRec__prev_8py_source.html#l01478">shipPatRec_prev.py:1478</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1598,30 +1598,30 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPatRec__prev_8py_source.html#l01578">1578</a> of file <a class="el" href="shipPatRec__prev_8py_source.html">shipPatRec_prev.py</a>.</p>
-<div class="fragment"><div class="line"><a name="l01578"></a><span class="lineno"> 1578</span>&#160;<span class="keyword">def </span><a class="code" href="namespaceshipPatRec__prev.html#ad8e4a71724d57a4e73e8d0ba9368e1c8">match_tracks</a>(t1,t2,zmagnet,Bdl):</div>
-<div class="line"><a name="l01579"></a><span class="lineno"> 1579</span>&#160;<span class="comment"># match tracks before to after magnet</span></div>
-<div class="line"><a name="l01580"></a><span class="lineno"> 1580</span>&#160;<span class="comment"># t1,t2: x,y,z,tgx,tgy of two input tracks</span></div>
-<div class="line"><a name="l01581"></a><span class="lineno"> 1581</span>&#160;<span class="comment"># zmagnet: middle of the magnet</span></div>
-<div class="line"><a name="l01582"></a><span class="lineno"> 1582</span>&#160;<span class="comment"># BdL: Bdl in Tm</span></div>
-<div class="line"><a name="l01583"></a><span class="lineno"> 1583</span>&#160;<span class="comment"># returns:</span></div>
-<div class="line"><a name="l01584"></a><span class="lineno"> 1584</span>&#160;<span class="comment">#     dx,dy: distance between tracks at zmagnet</span></div>
-<div class="line"><a name="l01585"></a><span class="lineno"> 1585</span>&#160;<span class="comment">#     1./pmom:  innverse momentum*q estimated</span></div>
-<div class="line"><a name="l01586"></a><span class="lineno"> 1586</span>&#160; </div>
-<div class="line"><a name="l01587"></a><span class="lineno"> 1587</span>&#160;<span class="comment">#linear extrapoaltion to centre of the magnet</span></div>
-<div class="line"><a name="l01588"></a><span class="lineno"> 1588</span>&#160;   dz1=zmagnet-t1[2]</div>
-<div class="line"><a name="l01589"></a><span class="lineno"> 1589</span>&#160;   x1m=t1[0]+dz1*t1[3]</div>
-<div class="line"><a name="l01590"></a><span class="lineno"> 1590</span>&#160;   y1m=t1[1]+dz1*t1[4]</div>
-<div class="line"><a name="l01591"></a><span class="lineno"> 1591</span>&#160;   dz2=zmagnet-t2[2]</div>
-<div class="line"><a name="l01592"></a><span class="lineno"> 1592</span>&#160;   x2m=t2[0]+dz2*t2[3]</div>
-<div class="line"><a name="l01593"></a><span class="lineno"> 1593</span>&#160;   y2m=t2[1]+dz2*t2[4]</div>
-<div class="line"><a name="l01594"></a><span class="lineno"> 1594</span>&#160;   dx=x1m-x2m</div>
-<div class="line"><a name="l01595"></a><span class="lineno"> 1595</span>&#160;   dy=y1m-y2m</div>
-<div class="line"><a name="l01596"></a><span class="lineno"> 1596</span>&#160; </div>
-<div class="line"><a name="l01597"></a><span class="lineno"> 1597</span>&#160;   alpha=math.atan(t1[4])-math.atan(t2[4])</div>
-<div class="line"><a name="l01598"></a><span class="lineno"> 1598</span>&#160;   pinv=math.sin(alpha)/(Bdl*0.3)</div>
-<div class="line"><a name="l01599"></a><span class="lineno"> 1599</span>&#160;   <span class="keywordflow">return</span> dx,dy,alpha,pinv</div>
-<div class="line"><a name="l01600"></a><span class="lineno"> 1600</span>&#160; </div>
+<p class="definition">Definition at line <a class="el" href="shipPatRec__prev_8py_source.html#l01577">1577</a> of file <a class="el" href="shipPatRec__prev_8py_source.html">shipPatRec_prev.py</a>.</p>
+<div class="fragment"><div class="line"><a name="l01577"></a><span class="lineno"> 1577</span>&#160;<span class="keyword">def </span><a class="code" href="namespaceshipPatRec__prev.html#ad8e4a71724d57a4e73e8d0ba9368e1c8">match_tracks</a>(t1,t2,zmagnet,Bdl):</div>
+<div class="line"><a name="l01578"></a><span class="lineno"> 1578</span>&#160;<span class="comment"># match tracks before to after magnet</span></div>
+<div class="line"><a name="l01579"></a><span class="lineno"> 1579</span>&#160;<span class="comment"># t1,t2: x,y,z,tgx,tgy of two input tracks</span></div>
+<div class="line"><a name="l01580"></a><span class="lineno"> 1580</span>&#160;<span class="comment"># zmagnet: middle of the magnet</span></div>
+<div class="line"><a name="l01581"></a><span class="lineno"> 1581</span>&#160;<span class="comment"># BdL: Bdl in Tm</span></div>
+<div class="line"><a name="l01582"></a><span class="lineno"> 1582</span>&#160;<span class="comment"># returns:</span></div>
+<div class="line"><a name="l01583"></a><span class="lineno"> 1583</span>&#160;<span class="comment">#     dx,dy: distance between tracks at zmagnet</span></div>
+<div class="line"><a name="l01584"></a><span class="lineno"> 1584</span>&#160;<span class="comment">#     1./pmom:  innverse momentum*q estimated</span></div>
+<div class="line"><a name="l01585"></a><span class="lineno"> 1585</span>&#160; </div>
+<div class="line"><a name="l01586"></a><span class="lineno"> 1586</span>&#160;<span class="comment">#linear extrapoaltion to centre of the magnet</span></div>
+<div class="line"><a name="l01587"></a><span class="lineno"> 1587</span>&#160;   dz1=zmagnet-t1[2]</div>
+<div class="line"><a name="l01588"></a><span class="lineno"> 1588</span>&#160;   x1m=t1[0]+dz1*t1[3]</div>
+<div class="line"><a name="l01589"></a><span class="lineno"> 1589</span>&#160;   y1m=t1[1]+dz1*t1[4]</div>
+<div class="line"><a name="l01590"></a><span class="lineno"> 1590</span>&#160;   dz2=zmagnet-t2[2]</div>
+<div class="line"><a name="l01591"></a><span class="lineno"> 1591</span>&#160;   x2m=t2[0]+dz2*t2[3]</div>
+<div class="line"><a name="l01592"></a><span class="lineno"> 1592</span>&#160;   y2m=t2[1]+dz2*t2[4]</div>
+<div class="line"><a name="l01593"></a><span class="lineno"> 1593</span>&#160;   dx=x1m-x2m</div>
+<div class="line"><a name="l01594"></a><span class="lineno"> 1594</span>&#160;   dy=y1m-y2m</div>
+<div class="line"><a name="l01595"></a><span class="lineno"> 1595</span>&#160; </div>
+<div class="line"><a name="l01596"></a><span class="lineno"> 1596</span>&#160;   alpha=math.atan(t1[4])-math.atan(t2[4])</div>
+<div class="line"><a name="l01597"></a><span class="lineno"> 1597</span>&#160;   pinv=math.sin(alpha)/(Bdl*0.3)</div>
+<div class="line"><a name="l01598"></a><span class="lineno"> 1598</span>&#160;   <span class="keywordflow">return</span> dx,dy,alpha,pinv</div>
+<div class="line"><a name="l01599"></a><span class="lineno"> 1599</span>&#160; </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -2307,7 +2307,7 @@ Variables</h2></td></tr>
 <div class="line"><a name="l01321"></a><span class="lineno"> 1321</span>&#160;  <span class="comment">#now Kalman fit, collect &quot;all hits&quot; around fitted track, outlier removal etc..</span></div>
 <div class="line"><a name="l01322"></a><span class="lineno"> 1322</span>&#160;  <span class="keywordflow">return</span> ntracks,tracks,hitids,ytan,ycst,stereotan,stereocst,horpx,horpy,horpz,fraction,trackid</div>
 <div class="line"><a name="l01323"></a><span class="lineno"> 1323</span>&#160; </div>
-<div class="ttc" id="anamespaceshipPatRec__prev_html_ae4a4d65bbc2f2474c9d22b5ca0e8fe6d"><div class="ttname"><a href="namespaceshipPatRec__prev.html#ae4a4d65bbc2f2474c9d22b5ca0e8fe6d">shipPatRec_prev.ptrack</a></div><div class="ttdeci">def ptrack(zlayer, ptrackhits, nrwant, window)</div><div class="ttdef"><b>Definition:</b> <a href="shipPatRec__prev_8py_source.html#l01388">shipPatRec_prev.py:1388</a></div></div>
+<div class="ttc" id="anamespaceshipPatRec__prev_html_ae4a4d65bbc2f2474c9d22b5ca0e8fe6d"><div class="ttname"><a href="namespaceshipPatRec__prev.html#ae4a4d65bbc2f2474c9d22b5ca0e8fe6d">shipPatRec_prev.ptrack</a></div><div class="ttdeci">def ptrack(zlayer, ptrackhits, nrwant, window)</div><div class="ttdef"><b>Definition:</b> <a href="shipPatRec__prev_8py_source.html#l01387">shipPatRec_prev.py:1387</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -2349,90 +2349,90 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPatRec__prev_8py_source.html#l01388">1388</a> of file <a class="el" href="shipPatRec__prev_8py_source.html">shipPatRec_prev.py</a>.</p>
-<div class="fragment"><div class="line"><a name="l01388"></a><span class="lineno"> 1388</span>&#160;<span class="keyword">def </span><a class="code" href="namespaceshipPatRec__prev.html#ae4a4d65bbc2f2474c9d22b5ca0e8fe6d">ptrack</a>(zlayer,ptrackhits,nrwant,window):</div>
-<div class="line"><a name="l01389"></a><span class="lineno"> 1389</span>&#160; </div>
-<div class="line"><a name="l01390"></a><span class="lineno"> 1390</span>&#160;<span class="comment"># basic pattern recognition in one view</span></div>
-<div class="line"><a name="l01391"></a><span class="lineno"> 1391</span>&#160;<span class="comment"># zlayer= dictionary with z-position of planes: zlayer[iplane][0]==z-position (list of length 1 :-).</span></div>
-<div class="line"><a name="l01392"></a><span class="lineno"> 1392</span>&#160;<span class="comment"># ptrackhits is dictionary with hits in a projection:  ptrackhits[plane number][0]=list-of-hits</span></div>
-<div class="line"><a name="l01393"></a><span class="lineno"> 1393</span>&#160;<span class="comment"># ndrop= nr of hits that can be missing in this projection</span></div>
-<div class="line"><a name="l01394"></a><span class="lineno"> 1394</span>&#160;<span class="comment"># nrwant= min nr of hits on a track in this projection</span></div>
-<div class="line"><a name="l01395"></a><span class="lineno"> 1395</span>&#160;<span class="comment"># window: is the size of the search window</span></div>
-<div class="line"><a name="l01396"></a><span class="lineno"> 1396</span>&#160; </div>
-<div class="line"><a name="l01397"></a><span class="lineno"> 1397</span>&#160;<span class="comment"># get first and last plane number (needs to be consecutive, and also contains empty planes</span></div>
-<div class="line"><a name="l01398"></a><span class="lineno"> 1398</span>&#160;<span class="comment"># should be included in the list!</span></div>
-<div class="line"><a name="l01399"></a><span class="lineno"> 1399</span>&#160; planes=list(zlayer.keys())</div>
-<div class="line"><a name="l01400"></a><span class="lineno"> 1400</span>&#160; planes.sort()</div>
-<div class="line"><a name="l01401"></a><span class="lineno"> 1401</span>&#160; i_1=planes[0]</div>
-<div class="line"><a name="l01402"></a><span class="lineno"> 1402</span>&#160; i_2=planes[len(planes)-1]</div>
-<div class="line"><a name="l01403"></a><span class="lineno"> 1403</span>&#160; ndrop=len(planes)-nrwant</div>
-<div class="line"><a name="l01404"></a><span class="lineno"> 1404</span>&#160; <span class="comment">#print &#39;ptrack input: planes=&#39;,i_1,i_2,ndrop,window,&quot;   ptrackhits &quot;,ptrackhits</span></div>
-<div class="line"><a name="l01405"></a><span class="lineno"> 1405</span>&#160; </div>
-<div class="line"><a name="l01406"></a><span class="lineno"> 1406</span>&#160; nrtracks=0</div>
-<div class="line"><a name="l01407"></a><span class="lineno"> 1407</span>&#160; tracks={}</div>
-<div class="line"><a name="l01408"></a><span class="lineno"> 1408</span>&#160; </div>
-<div class="line"><a name="l01409"></a><span class="lineno"> 1409</span>&#160; <span class="comment">#loop over maxnr hits, to max-ndrop</span></div>
-<div class="line"><a name="l01410"></a><span class="lineno"> 1410</span>&#160; <span class="keywordflow">for</span> nhitw <span class="keywordflow">in</span> range(i_2-i_1+1,i_2-i_1-ndrop,-1):</div>
-<div class="line"><a name="l01411"></a><span class="lineno"> 1411</span>&#160;  <span class="comment"># nhitw: wanted number of hits when looking for a track</span></div>
-<div class="line"><a name="l01412"></a><span class="lineno"> 1412</span>&#160;  <span class="keywordflow">for</span> idrop <span class="keywordflow">in</span> range(ndrop):</div>
-<div class="line"><a name="l01413"></a><span class="lineno"> 1413</span>&#160;    <span class="comment">#only start if wanted nr hits &lt;= the nr of planes</span></div>
-<div class="line"><a name="l01414"></a><span class="lineno"> 1414</span>&#160;    nrhitmax=i_2-i_1-idrop+1</div>
-<div class="line"><a name="l01415"></a><span class="lineno"> 1415</span>&#160;    <span class="keywordflow">if</span> nhitw&lt;=nrhitmax:</div>
-<div class="line"><a name="l01416"></a><span class="lineno"> 1416</span>&#160;     <span class="keywordflow">for</span> k <span class="keywordflow">in</span> range(idrop+1):</div>
-<div class="line"><a name="l01417"></a><span class="lineno"> 1417</span>&#160;        <span class="comment">#calculate the id of the first and last plane for this try.</span></div>
-<div class="line"><a name="l01418"></a><span class="lineno"> 1418</span>&#160;        ifirst=i_1+k</div>
-<div class="line"><a name="l01419"></a><span class="lineno"> 1419</span>&#160;        ilast=i_2-(idrop-k)</div>
-<div class="line"><a name="l01420"></a><span class="lineno"> 1420</span>&#160;        <span class="comment">#now loop over hits in first/last planes, and construct line</span></div>
-<div class="line"><a name="l01421"></a><span class="lineno"> 1421</span>&#160;        dz=zlayer[ilast][0]-zlayer[ifirst][0]</div>
-<div class="line"><a name="l01422"></a><span class="lineno"> 1422</span>&#160;        <span class="comment">#hits in first plane</span></div>
-<div class="line"><a name="l01423"></a><span class="lineno"> 1423</span>&#160;        <span class="keywordflow">for</span> ifr <span class="keywordflow">in</span> range(len(ptrackhits[ifirst][0])):</div>
-<div class="line"><a name="l01424"></a><span class="lineno"> 1424</span>&#160;      <span class="comment">#for ifr in range(len(ptrackhits[ifirst][0])):</span></div>
-<div class="line"><a name="l01425"></a><span class="lineno"> 1425</span>&#160;          <span class="comment">#has this hit been used already for a track: skip</span></div>
-<div class="line"><a name="l01426"></a><span class="lineno"> 1426</span>&#160;      <span class="keywordflow">if</span>  ptrackhits[ifirst][1][ifr]==0:</div>
-<div class="line"><a name="l01427"></a><span class="lineno"> 1427</span>&#160;           xfirst= ptrackhits[ifirst][0][ifr]</div>
-<div class="line"><a name="l01428"></a><span class="lineno"> 1428</span>&#160;       <span class="comment">#hits in last plane</span></div>
-<div class="line"><a name="l01429"></a><span class="lineno"> 1429</span>&#160;           <span class="keywordflow">for</span> il <span class="keywordflow">in</span> range(len(ptrackhits[ilast][0])):</div>
-<div class="line"><a name="l01430"></a><span class="lineno"> 1430</span>&#160;            <span class="comment">#has this hit been used already for a track: skip</span></div>
-<div class="line"><a name="l01431"></a><span class="lineno"> 1431</span>&#160;            <span class="keywordflow">if</span>  ptrackhits[ilast][1][il]==0:</div>
-<div class="line"><a name="l01432"></a><span class="lineno"> 1432</span>&#160;             xlast= ptrackhits[ilast][0][il]</div>
-<div class="line"><a name="l01433"></a><span class="lineno"> 1433</span>&#160;             nrhitsfound=2</div>
-<div class="line"><a name="l01434"></a><span class="lineno"> 1434</span>&#160;             tancand=(xlast-xfirst)/dz</div>
-<div class="line"><a name="l01435"></a><span class="lineno"> 1435</span>&#160;             <span class="comment">#fill temporary hit list for track-candidate with -1</span></div>
-<div class="line"><a name="l01436"></a><span class="lineno"> 1436</span>&#160;             trcand=(i_2-i_1+2)*[-1]</div>
-<div class="line"><a name="l01437"></a><span class="lineno"> 1437</span>&#160;             <span class="comment">#loop over in between planes</span></div>
-<div class="line"><a name="l01438"></a><span class="lineno"> 1438</span>&#160;             <span class="keywordflow">for</span> inbetween <span class="keywordflow">in</span> range(ifirst+1,ilast):</div>
-<div class="line"><a name="l01439"></a><span class="lineno"> 1439</span>&#160;              <span class="comment">#can wanted number of hits be satisfied?</span></div>
-<div class="line"><a name="l01440"></a><span class="lineno"> 1440</span>&#160;              <span class="keywordflow">if</span> nrhitsfound+ilast-inbetween&gt;=nhitw:</div>
-<div class="line"><a name="l01441"></a><span class="lineno"> 1441</span>&#160;               <span class="comment">#calculate candidate hit</span></div>
-<div class="line"><a name="l01442"></a><span class="lineno"> 1442</span>&#160;               xwinlow=xfirst+tancand*(zlayer[inbetween][0]-zlayer[ifirst][0])-window</div>
-<div class="line"><a name="l01443"></a><span class="lineno"> 1443</span>&#160;               <span class="keywordflow">for</span> im <span class="keywordflow">in</span> range(len(ptrackhits[inbetween][0])):</div>
-<div class="line"><a name="l01444"></a><span class="lineno"> 1444</span>&#160;                <span class="comment">#has this hit been used?</span></div>
-<div class="line"><a name="l01445"></a><span class="lineno"> 1445</span>&#160;                <span class="keywordflow">if</span>  ptrackhits[inbetween][1][im]==0:</div>
-<div class="line"><a name="l01446"></a><span class="lineno"> 1446</span>&#160;                 xin= ptrackhits[inbetween][0][im]</div>
-<div class="line"><a name="l01447"></a><span class="lineno"> 1447</span>&#160;                 <span class="comment">#hit belwo window, try next one</span></div>
-<div class="line"><a name="l01448"></a><span class="lineno"> 1448</span>&#160;                 <span class="keywordflow">if</span> xin&gt;xwinlow:</div>
-<div class="line"><a name="l01449"></a><span class="lineno"> 1449</span>&#160;                  <span class="comment">#if hit larger than upper edge of window: goto next plane</span></div>
-<div class="line"><a name="l01450"></a><span class="lineno"> 1450</span>&#160;                  <span class="keywordflow">if</span> xin&gt;xwinlow+2*window:</div>
-<div class="line"><a name="l01451"></a><span class="lineno"> 1451</span>&#160;             <span class="keywordflow">break</span></div>
-<div class="line"><a name="l01452"></a><span class="lineno"> 1452</span>&#160;                  <span class="comment">#hit found, do administation</span></div>
-<div class="line"><a name="l01453"></a><span class="lineno"> 1453</span>&#160;                  <span class="keywordflow">if</span> trcand[inbetween]==-1:</div>
-<div class="line"><a name="l01454"></a><span class="lineno"> 1454</span>&#160;            nrhitsfound+=1</div>
-<div class="line"><a name="l01455"></a><span class="lineno"> 1455</span>&#160;                  trcand[inbetween]=im</div>
-<div class="line"><a name="l01456"></a><span class="lineno"> 1456</span>&#160;             <span class="comment">#looped over in between planes, collected enough hits?</span></div>
-<div class="line"><a name="l01457"></a><span class="lineno"> 1457</span>&#160;             <span class="keywordflow">if</span> nrhitsfound==nhitw:</div>
-<div class="line"><a name="l01458"></a><span class="lineno"> 1458</span>&#160;               <span class="comment">#mark used hits</span></div>
-<div class="line"><a name="l01459"></a><span class="lineno"> 1459</span>&#160;               trcand[ifirst]=ifr</div>
-<div class="line"><a name="l01460"></a><span class="lineno"> 1460</span>&#160;               trcand[ilast]=il</div>
-<div class="line"><a name="l01461"></a><span class="lineno"> 1461</span>&#160;               <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(ifirst,ilast+1):</div>
-<div class="line"><a name="l01462"></a><span class="lineno"> 1462</span>&#160;                  <span class="keywordflow">if</span> trcand[i]&gt;=0:</div>
-<div class="line"><a name="l01463"></a><span class="lineno"> 1463</span>&#160;             ptrackhits[i][1][trcand[i]]=1</div>
-<div class="line"><a name="l01464"></a><span class="lineno"> 1464</span>&#160;               <span class="comment">#store the track</span></div>
-<div class="line"><a name="l01465"></a><span class="lineno"> 1465</span>&#160;               nrtracks+=1</div>
-<div class="line"><a name="l01466"></a><span class="lineno"> 1466</span>&#160;           <span class="comment">#print &quot;ptrack nrtracks&quot;,nrtracks</span></div>
-<div class="line"><a name="l01467"></a><span class="lineno"> 1467</span>&#160;               tracks[nrtracks]=trcand</div>
-<div class="line"><a name="l01468"></a><span class="lineno"> 1468</span>&#160; <span class="comment">#print &quot;ptrack: tracks&quot;,tracks</span></div>
-<div class="line"><a name="l01469"></a><span class="lineno"> 1469</span>&#160; <span class="keywordflow">return</span> nrtracks,tracks</div>
-<div class="line"><a name="l01470"></a><span class="lineno"> 1470</span>&#160; </div>
+<p class="definition">Definition at line <a class="el" href="shipPatRec__prev_8py_source.html#l01387">1387</a> of file <a class="el" href="shipPatRec__prev_8py_source.html">shipPatRec_prev.py</a>.</p>
+<div class="fragment"><div class="line"><a name="l01387"></a><span class="lineno"> 1387</span>&#160;<span class="keyword">def </span><a class="code" href="namespaceshipPatRec__prev.html#ae4a4d65bbc2f2474c9d22b5ca0e8fe6d">ptrack</a>(zlayer,ptrackhits,nrwant,window):</div>
+<div class="line"><a name="l01388"></a><span class="lineno"> 1388</span>&#160; </div>
+<div class="line"><a name="l01389"></a><span class="lineno"> 1389</span>&#160;<span class="comment"># basic pattern recognition in one view</span></div>
+<div class="line"><a name="l01390"></a><span class="lineno"> 1390</span>&#160;<span class="comment"># zlayer= dictionary with z-position of planes: zlayer[iplane][0]==z-position (list of length 1 :-).</span></div>
+<div class="line"><a name="l01391"></a><span class="lineno"> 1391</span>&#160;<span class="comment"># ptrackhits is dictionary with hits in a projection:  ptrackhits[plane number][0]=list-of-hits</span></div>
+<div class="line"><a name="l01392"></a><span class="lineno"> 1392</span>&#160;<span class="comment"># ndrop= nr of hits that can be missing in this projection</span></div>
+<div class="line"><a name="l01393"></a><span class="lineno"> 1393</span>&#160;<span class="comment"># nrwant= min nr of hits on a track in this projection</span></div>
+<div class="line"><a name="l01394"></a><span class="lineno"> 1394</span>&#160;<span class="comment"># window: is the size of the search window</span></div>
+<div class="line"><a name="l01395"></a><span class="lineno"> 1395</span>&#160; </div>
+<div class="line"><a name="l01396"></a><span class="lineno"> 1396</span>&#160;<span class="comment"># get first and last plane number (needs to be consecutive, and also contains empty planes</span></div>
+<div class="line"><a name="l01397"></a><span class="lineno"> 1397</span>&#160;<span class="comment"># should be included in the list!</span></div>
+<div class="line"><a name="l01398"></a><span class="lineno"> 1398</span>&#160; planes=list(zlayer.keys())</div>
+<div class="line"><a name="l01399"></a><span class="lineno"> 1399</span>&#160; planes.sort()</div>
+<div class="line"><a name="l01400"></a><span class="lineno"> 1400</span>&#160; i_1=planes[0]</div>
+<div class="line"><a name="l01401"></a><span class="lineno"> 1401</span>&#160; i_2=planes[len(planes)-1]</div>
+<div class="line"><a name="l01402"></a><span class="lineno"> 1402</span>&#160; ndrop=len(planes)-nrwant</div>
+<div class="line"><a name="l01403"></a><span class="lineno"> 1403</span>&#160; <span class="comment">#print &#39;ptrack input: planes=&#39;,i_1,i_2,ndrop,window,&quot;   ptrackhits &quot;,ptrackhits</span></div>
+<div class="line"><a name="l01404"></a><span class="lineno"> 1404</span>&#160; </div>
+<div class="line"><a name="l01405"></a><span class="lineno"> 1405</span>&#160; nrtracks=0</div>
+<div class="line"><a name="l01406"></a><span class="lineno"> 1406</span>&#160; tracks={}</div>
+<div class="line"><a name="l01407"></a><span class="lineno"> 1407</span>&#160; </div>
+<div class="line"><a name="l01408"></a><span class="lineno"> 1408</span>&#160; <span class="comment">#loop over maxnr hits, to max-ndrop</span></div>
+<div class="line"><a name="l01409"></a><span class="lineno"> 1409</span>&#160; <span class="keywordflow">for</span> nhitw <span class="keywordflow">in</span> range(i_2-i_1+1,i_2-i_1-ndrop,-1):</div>
+<div class="line"><a name="l01410"></a><span class="lineno"> 1410</span>&#160;  <span class="comment"># nhitw: wanted number of hits when looking for a track</span></div>
+<div class="line"><a name="l01411"></a><span class="lineno"> 1411</span>&#160;  <span class="keywordflow">for</span> idrop <span class="keywordflow">in</span> range(ndrop):</div>
+<div class="line"><a name="l01412"></a><span class="lineno"> 1412</span>&#160;    <span class="comment">#only start if wanted nr hits &lt;= the nr of planes</span></div>
+<div class="line"><a name="l01413"></a><span class="lineno"> 1413</span>&#160;    nrhitmax=i_2-i_1-idrop+1</div>
+<div class="line"><a name="l01414"></a><span class="lineno"> 1414</span>&#160;    <span class="keywordflow">if</span> nhitw&lt;=nrhitmax:</div>
+<div class="line"><a name="l01415"></a><span class="lineno"> 1415</span>&#160;     <span class="keywordflow">for</span> k <span class="keywordflow">in</span> range(idrop+1):</div>
+<div class="line"><a name="l01416"></a><span class="lineno"> 1416</span>&#160;        <span class="comment">#calculate the id of the first and last plane for this try.</span></div>
+<div class="line"><a name="l01417"></a><span class="lineno"> 1417</span>&#160;        ifirst=i_1+k</div>
+<div class="line"><a name="l01418"></a><span class="lineno"> 1418</span>&#160;        ilast=i_2-(idrop-k)</div>
+<div class="line"><a name="l01419"></a><span class="lineno"> 1419</span>&#160;        <span class="comment">#now loop over hits in first/last planes, and construct line</span></div>
+<div class="line"><a name="l01420"></a><span class="lineno"> 1420</span>&#160;        dz=zlayer[ilast][0]-zlayer[ifirst][0]</div>
+<div class="line"><a name="l01421"></a><span class="lineno"> 1421</span>&#160;        <span class="comment">#hits in first plane</span></div>
+<div class="line"><a name="l01422"></a><span class="lineno"> 1422</span>&#160;        <span class="keywordflow">for</span> ifr <span class="keywordflow">in</span> range(len(ptrackhits[ifirst][0])):</div>
+<div class="line"><a name="l01423"></a><span class="lineno"> 1423</span>&#160;      <span class="comment">#for ifr in range(len(ptrackhits[ifirst][0])):</span></div>
+<div class="line"><a name="l01424"></a><span class="lineno"> 1424</span>&#160;          <span class="comment">#has this hit been used already for a track: skip</span></div>
+<div class="line"><a name="l01425"></a><span class="lineno"> 1425</span>&#160;      <span class="keywordflow">if</span>  ptrackhits[ifirst][1][ifr]==0:</div>
+<div class="line"><a name="l01426"></a><span class="lineno"> 1426</span>&#160;           xfirst= ptrackhits[ifirst][0][ifr]</div>
+<div class="line"><a name="l01427"></a><span class="lineno"> 1427</span>&#160;       <span class="comment">#hits in last plane</span></div>
+<div class="line"><a name="l01428"></a><span class="lineno"> 1428</span>&#160;           <span class="keywordflow">for</span> il <span class="keywordflow">in</span> range(len(ptrackhits[ilast][0])):</div>
+<div class="line"><a name="l01429"></a><span class="lineno"> 1429</span>&#160;            <span class="comment">#has this hit been used already for a track: skip</span></div>
+<div class="line"><a name="l01430"></a><span class="lineno"> 1430</span>&#160;            <span class="keywordflow">if</span>  ptrackhits[ilast][1][il]==0:</div>
+<div class="line"><a name="l01431"></a><span class="lineno"> 1431</span>&#160;             xlast= ptrackhits[ilast][0][il]</div>
+<div class="line"><a name="l01432"></a><span class="lineno"> 1432</span>&#160;             nrhitsfound=2</div>
+<div class="line"><a name="l01433"></a><span class="lineno"> 1433</span>&#160;             tancand=(xlast-xfirst)/dz</div>
+<div class="line"><a name="l01434"></a><span class="lineno"> 1434</span>&#160;             <span class="comment">#fill temporary hit list for track-candidate with -1</span></div>
+<div class="line"><a name="l01435"></a><span class="lineno"> 1435</span>&#160;             trcand=(i_2-i_1+2)*[-1]</div>
+<div class="line"><a name="l01436"></a><span class="lineno"> 1436</span>&#160;             <span class="comment">#loop over in between planes</span></div>
+<div class="line"><a name="l01437"></a><span class="lineno"> 1437</span>&#160;             <span class="keywordflow">for</span> inbetween <span class="keywordflow">in</span> range(ifirst+1,ilast):</div>
+<div class="line"><a name="l01438"></a><span class="lineno"> 1438</span>&#160;              <span class="comment">#can wanted number of hits be satisfied?</span></div>
+<div class="line"><a name="l01439"></a><span class="lineno"> 1439</span>&#160;              <span class="keywordflow">if</span> nrhitsfound+ilast-inbetween&gt;=nhitw:</div>
+<div class="line"><a name="l01440"></a><span class="lineno"> 1440</span>&#160;               <span class="comment">#calculate candidate hit</span></div>
+<div class="line"><a name="l01441"></a><span class="lineno"> 1441</span>&#160;               xwinlow=xfirst+tancand*(zlayer[inbetween][0]-zlayer[ifirst][0])-window</div>
+<div class="line"><a name="l01442"></a><span class="lineno"> 1442</span>&#160;               <span class="keywordflow">for</span> im <span class="keywordflow">in</span> range(len(ptrackhits[inbetween][0])):</div>
+<div class="line"><a name="l01443"></a><span class="lineno"> 1443</span>&#160;                <span class="comment">#has this hit been used?</span></div>
+<div class="line"><a name="l01444"></a><span class="lineno"> 1444</span>&#160;                <span class="keywordflow">if</span>  ptrackhits[inbetween][1][im]==0:</div>
+<div class="line"><a name="l01445"></a><span class="lineno"> 1445</span>&#160;                 xin= ptrackhits[inbetween][0][im]</div>
+<div class="line"><a name="l01446"></a><span class="lineno"> 1446</span>&#160;                 <span class="comment">#hit belwo window, try next one</span></div>
+<div class="line"><a name="l01447"></a><span class="lineno"> 1447</span>&#160;                 <span class="keywordflow">if</span> xin&gt;xwinlow:</div>
+<div class="line"><a name="l01448"></a><span class="lineno"> 1448</span>&#160;                  <span class="comment">#if hit larger than upper edge of window: goto next plane</span></div>
+<div class="line"><a name="l01449"></a><span class="lineno"> 1449</span>&#160;                  <span class="keywordflow">if</span> xin&gt;xwinlow+2*window:</div>
+<div class="line"><a name="l01450"></a><span class="lineno"> 1450</span>&#160;             <span class="keywordflow">break</span></div>
+<div class="line"><a name="l01451"></a><span class="lineno"> 1451</span>&#160;                  <span class="comment">#hit found, do administation</span></div>
+<div class="line"><a name="l01452"></a><span class="lineno"> 1452</span>&#160;                  <span class="keywordflow">if</span> trcand[inbetween]==-1:</div>
+<div class="line"><a name="l01453"></a><span class="lineno"> 1453</span>&#160;            nrhitsfound+=1</div>
+<div class="line"><a name="l01454"></a><span class="lineno"> 1454</span>&#160;                  trcand[inbetween]=im</div>
+<div class="line"><a name="l01455"></a><span class="lineno"> 1455</span>&#160;             <span class="comment">#looped over in between planes, collected enough hits?</span></div>
+<div class="line"><a name="l01456"></a><span class="lineno"> 1456</span>&#160;             <span class="keywordflow">if</span> nrhitsfound==nhitw:</div>
+<div class="line"><a name="l01457"></a><span class="lineno"> 1457</span>&#160;               <span class="comment">#mark used hits</span></div>
+<div class="line"><a name="l01458"></a><span class="lineno"> 1458</span>&#160;               trcand[ifirst]=ifr</div>
+<div class="line"><a name="l01459"></a><span class="lineno"> 1459</span>&#160;               trcand[ilast]=il</div>
+<div class="line"><a name="l01460"></a><span class="lineno"> 1460</span>&#160;               <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(ifirst,ilast+1):</div>
+<div class="line"><a name="l01461"></a><span class="lineno"> 1461</span>&#160;                  <span class="keywordflow">if</span> trcand[i]&gt;=0:</div>
+<div class="line"><a name="l01462"></a><span class="lineno"> 1462</span>&#160;             ptrackhits[i][1][trcand[i]]=1</div>
+<div class="line"><a name="l01463"></a><span class="lineno"> 1463</span>&#160;               <span class="comment">#store the track</span></div>
+<div class="line"><a name="l01464"></a><span class="lineno"> 1464</span>&#160;               nrtracks+=1</div>
+<div class="line"><a name="l01465"></a><span class="lineno"> 1465</span>&#160;           <span class="comment">#print &quot;ptrack nrtracks&quot;,nrtracks</span></div>
+<div class="line"><a name="l01466"></a><span class="lineno"> 1466</span>&#160;               tracks[nrtracks]=trcand</div>
+<div class="line"><a name="l01467"></a><span class="lineno"> 1467</span>&#160; <span class="comment">#print &quot;ptrack: tracks&quot;,tracks</span></div>
+<div class="line"><a name="l01468"></a><span class="lineno"> 1468</span>&#160; <span class="keywordflow">return</span> nrtracks,tracks</div>
+<div class="line"><a name="l01469"></a><span class="lineno"> 1469</span>&#160; </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -2724,36 +2724,35 @@ Variables</h2></td></tr>
 <div class="line"><a name="l01355"></a><span class="lineno"> 1355</span>&#160; </div>
 <div class="line"><a name="l01356"></a><span class="lineno"> 1356</span>&#160; </div>
 <div class="line"><a name="l01357"></a><span class="lineno"> 1357</span>&#160;   fitStatus   = theTrack.getFitStatus()</div>
-<div class="line"><a name="l01358"></a><span class="lineno"> 1358</span>&#160;   theTrack.prune(<span class="stringliteral">&quot;CFL&quot;</span>)  <span class="comment">#  http://sourceforge.net/p/genfit/code/HEAD/tree/trunk/core/include/Track.h#l280</span></div>
-<div class="line"><a name="l01359"></a><span class="lineno"> 1359</span>&#160; </div>
-<div class="line"><a name="l01360"></a><span class="lineno"> 1360</span>&#160;   nmeas = fitStatus.getNdf()</div>
-<div class="line"><a name="l01361"></a><span class="lineno"> 1361</span>&#160;   pval = fitStatus.getPVal()</div>
-<div class="line"><a name="l01362"></a><span class="lineno"> 1362</span>&#160; </div>
-<div class="line"><a name="l01363"></a><span class="lineno"> 1363</span>&#160;   <span class="comment">#pval close to 0 indicates a bad fit</span></div>
-<div class="line"><a name="l01364"></a><span class="lineno"> 1364</span>&#160;   chi2        = fitStatus.getChi2()/nmeas</div>
-<div class="line"><a name="l01365"></a><span class="lineno"> 1365</span>&#160; </div>
-<div class="line"><a name="l01366"></a><span class="lineno"> 1366</span>&#160;   rc=h[<span class="stringliteral">&#39;chi2fittedtracks&#39;</span>].Fill(chi2)</div>
-<div class="line"><a name="l01367"></a><span class="lineno"> 1367</span>&#160;   rc=h[<span class="stringliteral">&#39;pvalfittedtracks&#39;</span>].Fill(pval)</div>
+<div class="line"><a name="l01358"></a><span class="lineno"> 1358</span>&#160; </div>
+<div class="line"><a name="l01359"></a><span class="lineno"> 1359</span>&#160;   nmeas = fitStatus.getNdf()</div>
+<div class="line"><a name="l01360"></a><span class="lineno"> 1360</span>&#160;   pval = fitStatus.getPVal()</div>
+<div class="line"><a name="l01361"></a><span class="lineno"> 1361</span>&#160; </div>
+<div class="line"><a name="l01362"></a><span class="lineno"> 1362</span>&#160;   <span class="comment">#pval close to 0 indicates a bad fit</span></div>
+<div class="line"><a name="l01363"></a><span class="lineno"> 1363</span>&#160;   chi2        = fitStatus.getChi2()/nmeas</div>
+<div class="line"><a name="l01364"></a><span class="lineno"> 1364</span>&#160; </div>
+<div class="line"><a name="l01365"></a><span class="lineno"> 1365</span>&#160;   rc=h[<span class="stringliteral">&#39;chi2fittedtracks&#39;</span>].Fill(chi2)</div>
+<div class="line"><a name="l01366"></a><span class="lineno"> 1366</span>&#160;   rc=h[<span class="stringliteral">&#39;pvalfittedtracks&#39;</span>].Fill(pval)</div>
+<div class="line"><a name="l01367"></a><span class="lineno"> 1367</span>&#160; </div>
 <div class="line"><a name="l01368"></a><span class="lineno"> 1368</span>&#160; </div>
-<div class="line"><a name="l01369"></a><span class="lineno"> 1369</span>&#160; </div>
-<div class="line"><a name="l01370"></a><span class="lineno"> 1370</span>&#160;   fittedState = theTrack.getFittedState()</div>
-<div class="line"><a name="l01371"></a><span class="lineno"> 1371</span>&#160;   fittedMom = fittedState.getMomMag()</div>
-<div class="line"><a name="l01372"></a><span class="lineno"> 1372</span>&#160;   fittedMom = fittedMom*<a class="code" href="namespaceadd__noise__to__field.html#a4aa6f75233f1922a97b2d4c15285c18e">int</a>(charge)</div>
-<div class="line"><a name="l01373"></a><span class="lineno"> 1373</span>&#160; </div>
-<div class="line"><a name="l01374"></a><span class="lineno"> 1374</span>&#160;   <span class="keywordflow">if</span> math.fabs(pinv) &gt; 0.0 : rc=h[<span class="stringliteral">&#39;pvspfitted&#39;</span>].Fill(1./pinv,fittedMom)</div>
-<div class="line"><a name="l01375"></a><span class="lineno"> 1375</span>&#160;   fittedtrackDir = fittedState.getDir()</div>
-<div class="line"><a name="l01376"></a><span class="lineno"> 1376</span>&#160;   fittedx=math.degrees(math.acos(fittedtrackDir[0]))</div>
-<div class="line"><a name="l01377"></a><span class="lineno"> 1377</span>&#160;   fittedy=math.degrees(math.acos(fittedtrackDir[1]))</div>
-<div class="line"><a name="l01378"></a><span class="lineno"> 1378</span>&#160;   fittedz=math.degrees(math.acos(fittedtrackDir[2]))</div>
-<div class="line"><a name="l01379"></a><span class="lineno"> 1379</span>&#160;   fittedmass = fittedState.getMass()</div>
-<div class="line"><a name="l01380"></a><span class="lineno"> 1380</span>&#160;   rc=h[<span class="stringliteral">&#39;momentumfittedtracks&#39;</span>].Fill(fittedMom)</div>
-<div class="line"><a name="l01381"></a><span class="lineno"> 1381</span>&#160;   rc=h[<span class="stringliteral">&#39;xdirectionfittedtracks&#39;</span>].Fill(fittedx)</div>
-<div class="line"><a name="l01382"></a><span class="lineno"> 1382</span>&#160;   rc=h[<span class="stringliteral">&#39;ydirectionfittedtracks&#39;</span>].Fill(fittedy)</div>
-<div class="line"><a name="l01383"></a><span class="lineno"> 1383</span>&#160;   rc=h[<span class="stringliteral">&#39;zdirectionfittedtracks&#39;</span>].Fill(fittedz)</div>
-<div class="line"><a name="l01384"></a><span class="lineno"> 1384</span>&#160;   rc=h[<span class="stringliteral">&#39;massfittedtracks&#39;</span>].Fill(fittedmass)</div>
-<div class="line"><a name="l01385"></a><span class="lineno"> 1385</span>&#160; </div>
-<div class="line"><a name="l01386"></a><span class="lineno"> 1386</span>&#160;   <span class="keywordflow">return</span></div>
-<div class="line"><a name="l01387"></a><span class="lineno"> 1387</span>&#160; </div>
+<div class="line"><a name="l01369"></a><span class="lineno"> 1369</span>&#160;   fittedState = theTrack.getFittedState()</div>
+<div class="line"><a name="l01370"></a><span class="lineno"> 1370</span>&#160;   fittedMom = fittedState.getMomMag()</div>
+<div class="line"><a name="l01371"></a><span class="lineno"> 1371</span>&#160;   fittedMom = fittedMom*<a class="code" href="namespaceadd__noise__to__field.html#a4aa6f75233f1922a97b2d4c15285c18e">int</a>(charge)</div>
+<div class="line"><a name="l01372"></a><span class="lineno"> 1372</span>&#160; </div>
+<div class="line"><a name="l01373"></a><span class="lineno"> 1373</span>&#160;   <span class="keywordflow">if</span> math.fabs(pinv) &gt; 0.0 : rc=h[<span class="stringliteral">&#39;pvspfitted&#39;</span>].Fill(1./pinv,fittedMom)</div>
+<div class="line"><a name="l01374"></a><span class="lineno"> 1374</span>&#160;   fittedtrackDir = fittedState.getDir()</div>
+<div class="line"><a name="l01375"></a><span class="lineno"> 1375</span>&#160;   fittedx=math.degrees(math.acos(fittedtrackDir[0]))</div>
+<div class="line"><a name="l01376"></a><span class="lineno"> 1376</span>&#160;   fittedy=math.degrees(math.acos(fittedtrackDir[1]))</div>
+<div class="line"><a name="l01377"></a><span class="lineno"> 1377</span>&#160;   fittedz=math.degrees(math.acos(fittedtrackDir[2]))</div>
+<div class="line"><a name="l01378"></a><span class="lineno"> 1378</span>&#160;   fittedmass = fittedState.getMass()</div>
+<div class="line"><a name="l01379"></a><span class="lineno"> 1379</span>&#160;   rc=h[<span class="stringliteral">&#39;momentumfittedtracks&#39;</span>].Fill(fittedMom)</div>
+<div class="line"><a name="l01380"></a><span class="lineno"> 1380</span>&#160;   rc=h[<span class="stringliteral">&#39;xdirectionfittedtracks&#39;</span>].Fill(fittedx)</div>
+<div class="line"><a name="l01381"></a><span class="lineno"> 1381</span>&#160;   rc=h[<span class="stringliteral">&#39;ydirectionfittedtracks&#39;</span>].Fill(fittedy)</div>
+<div class="line"><a name="l01382"></a><span class="lineno"> 1382</span>&#160;   rc=h[<span class="stringliteral">&#39;zdirectionfittedtracks&#39;</span>].Fill(fittedz)</div>
+<div class="line"><a name="l01383"></a><span class="lineno"> 1383</span>&#160;   rc=h[<span class="stringliteral">&#39;massfittedtracks&#39;</span>].Fill(fittedmass)</div>
+<div class="line"><a name="l01384"></a><span class="lineno"> 1384</span>&#160; </div>
+<div class="line"><a name="l01385"></a><span class="lineno"> 1385</span>&#160;   <span class="keywordflow">return</span></div>
+<div class="line"><a name="l01386"></a><span class="lineno"> 1386</span>&#160; </div>
 </div><!-- fragment -->
 </div>
 </div>
