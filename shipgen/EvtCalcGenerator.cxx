@@ -11,8 +11,6 @@
 
 using namespace ShipUnit;
 
-// read events from ntuples produced
-
 // -----   Default constructor   -------------------------------------------
 EvtCalcGenerator::EvtCalcGenerator() {}
 // -------------------------------------------------------------------------
@@ -32,91 +30,64 @@ Bool_t EvtCalcGenerator::Init(const char* fileName, const int firstEvent)
     fNevents = fTree->GetEntries();
     fn = firstEvent;
 
-    if (fTree->FindBranch("px_llp")) {
-        fTree->SetBranchAddress("px_llp", &px_llp);
-    }
-    if (fTree->FindBranch("py_llp")) {
-        fTree->SetBranchAddress("py_llp", &py_llp);
-    }
-    if (fTree->FindBranch("pz_llp")) {
-        fTree->SetBranchAddress("pz_llp", &pz_llp);
-    }
-    if (fTree->FindBranch("e_llp")) {
-        fTree->SetBranchAddress("e_llp", &e_llp);
-    }
-    if (fTree->FindBranch("pdg_llp")) {
-        fTree->SetBranchAddress("pdg_llp", &pdg_llp);
-    }
-    if (fTree->FindBranch("decay_prob")) {
-        fTree->SetBranchAddress("decay_prob", &decay_prob);
-    }
-    if (fTree->FindBranch("vx")) {
-        fTree->SetBranchAddress("vx", &vx);
-    }
-    if (fTree->FindBranch("vy")) {
-        fTree->SetBranchAddress("vy", &vy);
-    }
-    if (fTree->FindBranch("vz")) {
-        fTree->SetBranchAddress("vz", &vz);
-    }
+    auto *branches = fTree->GetListOfBranches();
+    nBranches = branches->GetEntries();
+    branchVars.resize(nBranches);
 
-    if (fTree->FindBranch("px_prod1")) {
-        fTree->SetBranchAddress("px_prod1", &px_prod1);
-    }
-    if (fTree->FindBranch("py_prod1")) {
-        fTree->SetBranchAddress("py_prod1", &py_prod1);
-    }
-    if (fTree->FindBranch("pz_prod1")) {
-        fTree->SetBranchAddress("pz_prod1", &pz_prod1);
-    }
-    if (fTree->FindBranch("e_prod1")) {
-        fTree->SetBranchAddress("e_prod1", &e_prod1);
-    }
-    if (fTree->FindBranch("pdg_prod1")) {
-        fTree->SetBranchAddress("pdg_prod1", &pdg_prod1);
-    }
-
-    if (fTree->FindBranch("px_prod2")) {
-        fTree->SetBranchAddress("px_prod2", &px_prod2);
-    }
-    if (fTree->FindBranch("py_prod2")) {
-        fTree->SetBranchAddress("py_prod2", &py_prod2);
-    }
-    if (fTree->FindBranch("pz_prod2")) {
-        fTree->SetBranchAddress("pz_prod2", &pz_prod2);
-    }
-    if (fTree->FindBranch("e_prod2")) {
-        fTree->SetBranchAddress("e_prod2", &e_prod2);
-    }
-    if (fTree->FindBranch("pdg_prod2")) {
-        fTree->SetBranchAddress("pdg_prod2", &pdg_prod2);
-    }
-
-    if (fTree->FindBranch("px_prod3")) {
-        fTree->SetBranchAddress("px_prod3", &px_prod3);
-    }
-    if (fTree->FindBranch("py_prod3")) {
-        fTree->SetBranchAddress("py_prod3", &py_prod3);
-    }
-    if (fTree->FindBranch("pz_prod3")) {
-        fTree->SetBranchAddress("pz_prod3", &pz_prod3);
-    }
-    if (fTree->FindBranch("e_prod3")) {
-        fTree->SetBranchAddress("e_prod3", &e_prod3);
-    }
-    if (fTree->FindBranch("pdg_prod3")) {
-        fTree->SetBranchAddress("pdg_prod3", &pdg_prod3);
+    for (int i = 0; i < nBranches; ++i) {
+        auto *branch = dynamic_cast<TBranch *>(branches->At(i));
+        if (fTree->FindBranch(branch->GetName())) {
+            fTree->SetBranchAddress(branch->GetName(), &branchVars[i]);
+        }
     }
 
     return kTRUE;
 }
-// -------------------------------------------------------------------------
-
 // -----   Destructor   ----------------------------------------------------
 EvtCalcGenerator::~EvtCalcGenerator() {}
-// -------------------------------------------------------------------------
 
-// -----   Passing the event   ---------------------------------------------
+// -- Generalized branch access --------------------------------------------
+Double_t EvtCalcGenerator::GetBranchValue(const std::unique_ptr<TTree>& tree, int index) const {
+    if (index < branchVars.size()) {
+        return branchVars[index];
+    } else {
+        throw std::out_of_range("Branch index out of range");
+    }
+}
+// -- Generalized daughter variable access ---------------------------------
+Double_t EvtCalcGenerator::GetDaughterValue(const std::unique_ptr<TTree>& tree, int dauID, int offset) const {
+    int baseIndex = 10 + (dauID * 6);
+    return GetBranchValue(tree, baseIndex + offset);
+}
+
+// -- Wrapper functions ----------------------------------------------------
+// -------------------------------------------------------------------------
+Double_t EvtCalcGenerator::GetNdaughters(const std::unique_ptr<TTree>& tree) const {
+    return GetBranchValue(tree, nBranches-1);
+}
+
+// -- LLP properties ------------------------------------------------------
+Double_t EvtCalcGenerator::GetMotherPx(const std::unique_ptr<TTree>& tree) const { return GetBranchValue(tree, static_cast<int>(BranchIndices::MotherPx)); }
+Double_t EvtCalcGenerator::GetMotherPy(const std::unique_ptr<TTree>& tree) const { return GetBranchValue(tree, static_cast<int>(BranchIndices::MotherPy)); }
+Double_t EvtCalcGenerator::GetMotherPz(const std::unique_ptr<TTree>& tree) const { return GetBranchValue(tree, static_cast<int>(BranchIndices::MotherPz)); }
+Double_t EvtCalcGenerator::GetMotherE(const std::unique_ptr<TTree>& tree) const  { return GetBranchValue(tree, static_cast<int>(BranchIndices::MotherE)); }
+
+// -- Vertex properties ---------------------------------------------------
+Double_t EvtCalcGenerator::GetVx(const std::unique_ptr<TTree>& tree) const { return GetBranchValue(tree, static_cast<int>(BranchIndices::Vx)); }
+Double_t EvtCalcGenerator::GetVy(const std::unique_ptr<TTree>& tree) const { return GetBranchValue(tree, static_cast<int>(BranchIndices::Vy)); }
+Double_t EvtCalcGenerator::GetVz(const std::unique_ptr<TTree>& tree) const { return GetBranchValue(tree, static_cast<int>(BranchIndices::Vz)); }
+
+// -- Decay probability ---------------------------------------------------
+Double_t EvtCalcGenerator::GetDecayProb(const std::unique_ptr<TTree>& tree) const { return GetBranchValue(tree, static_cast<int>(BranchIndices::DecayProb)); }
+
+// -- Daughter properties ------------------------------------------------
+Double_t EvtCalcGenerator::GetDauPx(const std::unique_ptr<TTree>& tree, int dauID) const { return GetDaughterValue(tree, dauID, 0); }
+Double_t EvtCalcGenerator::GetDauPy(const std::unique_ptr<TTree>& tree, int dauID) const { return GetDaughterValue(tree, dauID, 1); }
+Double_t EvtCalcGenerator::GetDauPz(const std::unique_ptr<TTree>& tree, int dauID) const { return GetDaughterValue(tree, dauID, 2); }
+Double_t EvtCalcGenerator::GetDauE(const std::unique_ptr<TTree>& tree, int dauID) const  { return GetDaughterValue(tree, dauID, 3); }
+Double_t EvtCalcGenerator::GetDauPDG(const std::unique_ptr<TTree>& tree, int dauID) const  { return GetDaughterValue(tree, dauID, 5); }
+
+// -----   Passing the event   -------------------------------------------
 Bool_t EvtCalcGenerator::ReadEvent(FairPrimaryGenerator* cpg)
 {
     if (fn == fNevents) {
@@ -129,61 +100,49 @@ Bool_t EvtCalcGenerator::ReadEvent(FairPrimaryGenerator* cpg)
     if (fn % 100 == 0)
         LOGF(info, "Info EvtCalcGenerator: event nr %s", fn);
 
+    Ndau = GetNdaughters(fTree);
     // Vertex coordinates in the SHiP reference frame, expressed in [cm]
     Double_t space_unit_conv = 100.;                                     // m to cm
     Double_t coord_shift = (zDecayVolume - ztarget) / space_unit_conv;   // units m
-    Double_t vx_transf = vx * space_unit_conv;                           // units cm
-    Double_t vy_transf = vy * space_unit_conv;                           // units cm
-    Double_t vz_transf = (vz - coord_shift) * space_unit_conv;           // units cm
+    Double_t vx_transf = GetVx(fTree) * space_unit_conv;                           // units cm
+    Double_t vy_transf = GetVy(fTree) * space_unit_conv;                           // units cm
+    Double_t vz_transf = (GetVz(fTree) - coord_shift) * space_unit_conv;           // units cm
 
     Double_t c = 2.99792458e+10;   // speed of light [cm/s]
     Double_t tof = TMath::Sqrt(vx_transf * vx_transf + vy_transf * vy_transf + vz_transf * vz_transf) / c;
+    Double_t decay_prob = GetDecayProb(fTree);
+    Double_t pdg_dau    = 0;
 
     // Mother LLP
     Bool_t wanttracking = false;
-    pdg_llp = 999;   // Geantino, placeholder
+    Double_t pdg_llp = 999;   // Geantino, placeholder
+    
     cpg->AddTrack(
-        pdg_llp, px_llp, py_llp, pz_llp, vx_transf, vy_transf, vz_transf, -1., wanttracking, e_llp, tof, decay_prob);
+        pdg_llp, GetMotherPx(fTree), GetMotherPy(fTree), GetMotherPz(fTree), 
+        vx_transf, vy_transf, vz_transf, -1., wanttracking, 
+        GetMotherE(fTree), tof, decay_prob);
+
+    wanttracking = true;
 
     // Secondaries
-    wanttracking = true;
-    cpg->AddTrack(pdg_prod1,
-                  px_prod1,
-                  py_prod1,
-                  pz_prod1,
-                  vx_transf,
-                  vy_transf,
-                  vz_transf,
-                  0.,
-                  wanttracking,
-                  e_prod1,
-                  tof,
-                  decay_prob);
-    cpg->AddTrack(pdg_prod2,
-                  px_prod2,
-                  py_prod2,
-                  pz_prod2,
-                  vx_transf,
-                  vy_transf,
-                  vz_transf,
-                  0.,
-                  wanttracking,
-                  e_prod2,
-                  tof,
-                  decay_prob);
-    if (pdg_prod3 != -999) {
-        cpg->AddTrack(pdg_prod3,
-                      px_prod3,
-                      py_prod3,
-                      pz_prod3,
-                      vx_transf,
-                      vy_transf,
-                      vz_transf,
-                      0.,
-                      wanttracking,
-                      e_prod3,
-                      tof,
-                      decay_prob);
+    for (int iPart = 0; iPart < Ndau; ++iPart) {
+        pdg_dau = GetDauPDG(fTree, iPart);
+        if ( pdg_dau != -999) {
+            cpg->AddTrack(pdg_dau,
+                    GetDauPx(fTree, iPart),
+                    GetDauPy(fTree, iPart),
+                    GetDauPz(fTree, iPart),
+                    vx_transf,
+                    vy_transf,
+                    vz_transf,
+                    0.,
+                    wanttracking,
+                    GetDauE(fTree, iPart),
+                    tof,
+                    decay_prob);
+        }
     }
+
     return kTRUE;
 }
+
