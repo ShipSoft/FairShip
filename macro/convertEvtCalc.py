@@ -21,6 +21,7 @@ def parse_file(infile):
     try:
         with open(infile, "r") as file:
             lines = file.readlines()
+            lines = lines[2:]
 
         parsed_data = []
         current_block = []
@@ -46,7 +47,7 @@ def parse_file(infile):
             data = np.loadtxt(current_block)
             variables = [data[:, i] for i in range(data.shape[1])]
             parsed_data.append((process_type, sampled_points, variables))
-
+        
         return parsed_data
 
     except FileNotFoundError:
@@ -89,39 +90,16 @@ def convert_file(infile, outdir):
         "decay_prob",
         "vx",
         "vy",
-        "vz",
+        "vz"
     ]
-    vars_names += [
-        "px_prod1",
-        "py_prod1",
-        "pz_prod1",
-        "e_prod1",
-        "mass_prod1",
-        "pdg_prod1",
-        "charge_prod1",
-        "stability_prod1",
+    daughter_vars = [
+        "px_prod", 
+        "py_prod", 
+        "pz_prod", 
+        "e_prod", 
+        "mass_prod", 
+        "pdg_prod"
     ]
-    vars_names += [
-        "px_prod2",
-        "py_prod2",
-        "pz_prod2",
-        "e_prod2",
-        "mass_prod2",
-        "pdg_prod2",
-        "charge_prod2",
-        "stability_prod2",
-    ]
-    vars_names += [
-        "px_prod3",
-        "py_prod3",
-        "pz_prod3",
-        "e_prod3",
-        "mass_prod3",
-        "pdg_prod3",
-        "charge_prod3",
-        "stability_prod3",
-    ]
-
     fname = infile.split("/")[-1]
     command = f"cp {infile} {outdir}/{fname}"
 
@@ -130,39 +108,47 @@ def convert_file(infile, outdir):
     else:
         os.system(command)
 
-    infile = f"{outdir}/{fname}"
+    infile  = f"{outdir}/{fname}"
     parsed_data = parse_file(infile)
     outfile = infile.split(".dat")[0] + ".root"
+    ncols   = len(parsed_data[0][2])
+    nvardau = 6 # qualifiers for each daughter
+    remaining_vars = ncols - len(vars_names)
+    
+    if (remaining_vars % nvardau)!=0:
+        raise ValueError(f"- convertEvtCalc - Error: number of daughters is not exact.")
+        sys.exit(1)
+
+    ndau    = remaining_vars // nvardau
+    print(f"- convertEvtCalc - Max multiplicity of daughters: {ndau}")
+
+    vars_names.extend(
+        f"{var}{i}" for i in range(1, ndau + 1) for var in daughter_vars
+    )
 
     try:
-        check_consistency_infile(nvars=len(vars_names), ncols=len(parsed_data[0][2]))
+        check_consistency_infile(nvars=len(vars_names), ncols=ncols)
     except ValueError as e:
         print(f"- convertEvtCalc - Error: {e}")
         sys.exit(1)
 
+    vars_names += ["ndau"]
+
     if parsed_data:
         root_file = r.TFile.Open(outfile, "RECREATE")
-
         tree = r.TTree("LLP_tree", "LLP_tree")
 
-        branch_i = {}
         branch_f = {}
         for var in vars_names:
-            if "pdg_" in var:
-                branch_i[var] = np.zeros(1, dtype=int)
-                tree.Branch(var, branch_i[var], f"{var}/I")
-            else:
-                branch_f[var] = np.zeros(1, dtype=float)
-                tree.Branch(var, branch_f[var], f"{var}/D")
+            branch_f[var]    = np.zeros(1, dtype=float)
+            tree.Branch(var, branch_f[var], f"{var}/D")
 
         for pt, sp, vars in parsed_data:
             for row in zip(*vars):
                 for i, value in enumerate(row):
-                    if i < len(vars_names):
-                        if "pdg_" in vars_names[i]:
-                            branch_i[vars_names[i]][0] = value
-                        else:
-                            branch_f[vars_names[i]][0] = value
+                    if i < len(vars_names)-1:
+                        branch_f[vars_names[i]][0] = value
+                branch_f["ndau"][0] = ndau/1.
                 tree.Fill()
 
         tree.Write()
@@ -200,3 +186,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
