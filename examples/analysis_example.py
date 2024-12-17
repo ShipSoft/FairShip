@@ -3,9 +3,9 @@
 
 from argparse import ArgumentParser
 
-import analysis_toolkit
 import ROOT
 import rootUtils as ut
+from experimental import analysis_toolkit
 
 parser = ArgumentParser(description=__doc__)
 parser.add_argument("--path", help="Path to simulation file", default="./")

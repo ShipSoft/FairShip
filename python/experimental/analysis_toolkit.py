@@ -30,7 +30,6 @@ class selection_check:
             with open(fairship + "/geometry/veto_config_vacuums.yaml", "r") as file:
                 config = yaml.safe_load(file)
                 self.veto_geo = AttrDict(config)
-                self.veto_geo.z0
 
     def access_event(self, tree):
         """Access event data."""
@@ -227,9 +226,9 @@ class selection_check:
             flag = False
         if self.DOCA(candidate) >= 1 * u.cm:
             flag = False
-        if np.any(self.nDOF(candidate) <= 25 * u.cm):
+        if np.any(self.nDOF(candidate) <= 25):
             flag = False
-        if np.any(self.chi2nDOF(candidate) >= 5 * u.cm):
+        if np.any(self.chi2nDOF(candidate) >= 5):
             flag = False
         if np.any(self.daughtermomentum(candidate) <= 1 * u.GeV):
             flag = False
