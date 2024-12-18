@@ -139,7 +139,7 @@ def convert_file(infile, outdir):
 
         branch_f = {}
         for var in vars_names:
-            branch_f[var = np.zeros(1, dtype=float)
+            branch_f[var] = np.zeros(1, dtype=float)
             tree.Branch(var, branch_f[var], f"{var}/D")
 
         for pt, sp, vars in parsed_data:
