@@ -47,7 +47,7 @@ def parse_file(infile):
             data = np.loadtxt(current_block)
             variables = [data[:, i] for i in range(data.shape[1])]
             parsed_data.append((process_type, sampled_points, variables))
-        
+
         return parsed_data
 
     except FileNotFoundError:
@@ -90,7 +90,7 @@ def convert_file(infile, outdir):
         "decay_prob",
         "vx",
         "vy",
-        "vz"
+        "vz",
     ]
     daughter_vars = [
         "px_prod", 
@@ -98,7 +98,7 @@ def convert_file(infile, outdir):
         "pz_prod", 
         "e_prod", 
         "mass_prod", 
-        "pdg_prod"
+        "pdg_prod",
     ]
     fname = infile.split("/")[-1]
     command = f"cp {infile} {outdir}/{fname}"
@@ -108,16 +108,15 @@ def convert_file(infile, outdir):
     else:
         os.system(command)
 
-    infile  = f"{outdir}/{fname}"
+    infile = f"{outdir}/{fname}"
     parsed_data = parse_file(infile)
     outfile = infile.split(".dat")[0] + ".root"
     ncols   = len(parsed_data[0][2])
-    nvardau = 6 # qualifiers for each daughter
+    nvardau = 6 #qualifiers for each daughter
     remaining_vars = ncols - len(vars_names)
     
     if (remaining_vars % nvardau)!=0:
         raise ValueError(f"- convertEvtCalc - Error: number of daughters is not exact.")
-        sys.exit(1)
 
     ndau    = remaining_vars // nvardau
     print(f"- convertEvtCalc - Max multiplicity of daughters: {ndau}")
@@ -140,7 +139,7 @@ def convert_file(infile, outdir):
 
         branch_f = {}
         for var in vars_names:
-            branch_f[var]    = np.zeros(1, dtype=float)
+            branch_f[var = np.zeros(1, dtype=float)
             tree.Branch(var, branch_f[var], f"{var}/D")
 
         for pt, sp, vars in parsed_data:
