@@ -1,29 +1,5 @@
 var searchData=
 [
-  ['magneticspectrometer_2ecxx_4905',['MagneticSpectrometer.cxx',['../MagneticSpectrometer_8cxx.html',1,'']]],
-  ['magneticspectrometer_2eh_4906',['MagneticSpectrometer.h',['../MagneticSpectrometer_8h.html',1,'']]],
-  ['mainspectrometerfield_2etxt_4907',['MainSpectrometerField.txt',['../MainSpectrometerField_8txt.html',1,'']]],
-  ['makecascade_2epy_4908',['makeCascade.py',['../makeCascade_8py.html',1,'']]],
-  ['makedecay_2epy_4909',['makeDecay.py',['../makeDecay_8py.html',1,'']]],
-  ['makegenieevents_2epy_4910',['makeGenieEvents.py',['../makeGenieEvents_8py.html',1,'']]],
-  ['makemuondis_2epy_4911',['makeMuonDIS.py',['../makeMuonDIS_8py.html',1,'']]],
-  ['makemuonem_2epy_4912',['makeMuonEM.py',['../makeMuonEM_8py.html',1,'']]],
-  ['mcstacklinkdef_2eh_4913',['MCStackLinkDef.h',['../MCStackLinkDef_8h.html',1,'']]],
-  ['mergembias_2epy_4914',['mergeMbias.py',['../mergeMbias_8py.html',1,'']]],
-  ['method_5flogger_2epy_4915',['method_logger.py',['../method__logger_8py.html',1,'']]],
-  ['mudis_5fmergefiles_2epy_4916',['muDIS_mergeFiles.py',['../muDIS__mergeFiles_8py.html',1,'']]],
-  ['mudisgenerator_2ecxx_4917',['MuDISGenerator.cxx',['../MuDISGenerator_8cxx.html',1,'']]],
-  ['mudisgenerator_2eh_4918',['MuDISGenerator.h',['../MuDISGenerator_8h.html',1,'']]],
-  ['muon_2ecxx_4919',['muon.cxx',['../muon_8cxx.html',1,'']]],
-  ['muon_2eh_4920',['muon.h',['../muon_8h.html',1,'']]],
-  ['muonbackgenerator_2ecxx_4921',['MuonBackGenerator.cxx',['../MuonBackGenerator_8cxx.html',1,'']]],
-  ['muonbackgenerator_2eh_4922',['MuonBackGenerator.h',['../MuonBackGenerator_8h.html',1,'']]],
-  ['muoncontfact_2ecxx_4923',['muonContFact.cxx',['../muonContFact_8cxx.html',1,'']]],
-  ['muoncontfact_2eh_4924',['muonContFact.h',['../muonContFact_8h.html',1,'']]],
-  ['muonhit_2ecxx_4925',['muonHit.cxx',['../muonHit_8cxx.html',1,'']]],
-  ['muonhit_2eh_4926',['muonHit.h',['../muonHit_8h.html',1,'']]],
-  ['muonlinkdef_2eh_4927',['muonLinkDef.h',['../muonLinkDef_8h.html',1,'']]],
-  ['muonpoint_2ecxx_4928',['muonPoint.cxx',['../muonPoint_8cxx.html',1,'']]],
-  ['muonpoint_2eh_4929',['muonPoint.h',['../muonPoint_8h.html',1,'']]],
-  ['muonshieldbackgroundlinkdef_2eh_4930',['muonShieldBackgroundLinkDef.h',['../muonShieldBackgroundLinkDef_8h.html',1,'']]]
+  ['logger_2ehxx_4936',['logger.hxx',['../logger_8hxx.html',1,'']]],
+  ['logger_2epy_4937',['logger.py',['../logger_8py.html',1,'']]]
 ];

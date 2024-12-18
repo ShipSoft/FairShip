@@ -11,6 +11,11 @@ var annotated_dup =
       [ "EventLoop", "classeventDisplay_1_1EventLoop.html", "classeventDisplay_1_1EventLoop" ],
       [ "Rulers", "classeventDisplay_1_1Rulers.html", "classeventDisplay_1_1Rulers" ]
     ] ],
+    [ "experimental", "namespaceexperimental.html", [
+      [ "analysis_toolkit", "namespaceexperimental_1_1analysis__toolkit.html", [
+        [ "selection_check", "classexperimental_1_1analysis__toolkit_1_1selection__check.html", "classexperimental_1_1analysis__toolkit_1_1selection__check" ]
+      ] ]
+    ] ],
     [ "g4Ex", "namespaceg4Ex.html", [
       [ "MyGeneratorAction", "classg4Ex_1_1MyGeneratorAction.html", "classg4Ex_1_1MyGeneratorAction" ],
       [ "MyRunAction", "classg4Ex_1_1MyRunAction.html", "classg4Ex_1_1MyRunAction" ],

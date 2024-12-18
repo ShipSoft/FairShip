@@ -189,6 +189,7 @@ var hierarchy =
     [ "rpvsusy.RPVSUSYbranchings", "classrpvsusy_1_1RPVSUSYbranchings.html", [
       [ "rpvsusy.RPVSUSY", "classrpvsusy_1_1RPVSUSY.html", null ]
     ] ],
+    [ "experimental.analysis_toolkit.selection_check", "classexperimental_1_1analysis__toolkit_1_1selection__check.html", null ],
     [ "shipDigiReco.ShipDigiReco", "classshipDigiReco_1_1ShipDigiReco.html", null ],
     [ "ShipGeo.ShipGeo", "classShipGeo_1_1ShipGeo.html", null ],
     [ "shipPid.Task", "classshipPid_1_1Task.html", null ],
