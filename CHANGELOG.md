@@ -14,6 +14,9 @@ it in future.
 
 ### Added
 
+* New analysis toolkit prototype added as part of the 'experimental' package.
+* Simple analysis example script now available in 'examples/'
+
 ### Fixed
 
 * Use ConstructedAt instead of remove pythonization for TClonesArray
