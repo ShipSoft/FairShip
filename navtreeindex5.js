@@ -1,13 +1,5 @@
 var NAVTREEINDEX5 =
 {
-"classMagneticSpectrometer.html#aaf782330bd6f48ecada5c65ac11a7113":[5,0,71,5],
-"classMagneticSpectrometer.html#aafb5da836cb31d54fee64bba5f7a4257":[5,0,71,64],
-"classMagneticSpectrometer.html#ab50b6b7a75409d1bb507df683bcd5cd8":[5,0,71,56],
-"classMagneticSpectrometer.html#ab592a686fe7d12f6cf52d7ed8c996abc":[5,0,71,28],
-"classMagneticSpectrometer.html#ab867435a585716097e647498a7adbe38":[5,0,71,23],
-"classMagneticSpectrometer.html#abc415c6e518edfbb3b2dbe73c8a666fa":[5,0,71,39],
-"classMagneticSpectrometer.html#ac15983b692cac131f5b3c0e96d49b58d":[5,0,71,68],
-"classMagneticSpectrometer.html#ac27335cb2109522b0fe275f161c69545":[5,0,71,77],
 "classMagneticSpectrometer.html#ac5f88b23e25db565cee8554a6afcb773":[5,0,71,82],
 "classMagneticSpectrometer.html#ac63ec1138af156cb98f23fd1075eadb6":[5,0,71,52],
 "classMagneticSpectrometer.html#ac6c90493959333e3f371d04796a8a878":[5,0,71,60],
@@ -249,5 +241,13 @@ var NAVTREEINDEX5 =
 "classNuageGenerator.html#a0ccb7dcdf314df92e5d468caa0733996":[5,0,79,89],
 "classNuageGenerator.html#a0d0bc07826066ebdbc18535d1e653217":[5,0,79,62],
 "classNuageGenerator.html#a12075bd827970e3e2923c80e978837f7":[5,0,79,34],
-"classNuageGenerator.html#a1215c30bca4844f11c8bd742b1c729b5":[5,0,79,79]
+"classNuageGenerator.html#a1215c30bca4844f11c8bd742b1c729b5":[5,0,79,79],
+"classNuageGenerator.html#a173e1b80731442457b22dbcbe16f9afb":[5,0,79,65],
+"classNuageGenerator.html#a17c21147343a6c95005e0703bf6b6e68":[5,0,79,7],
+"classNuageGenerator.html#a1856923b5228abdcd04925608eef22c6":[5,0,79,67],
+"classNuageGenerator.html#a1cf46e2c19bfd0c49fb0504d405ca359":[5,0,79,60],
+"classNuageGenerator.html#a24fec4913f8d827c5b925ecfd5eda262":[5,0,79,36],
+"classNuageGenerator.html#a26f057ec2fb6c336f330e43b00486b38":[5,0,79,37],
+"classNuageGenerator.html#a294302be8b3ab942dc273119ea33c938":[5,0,79,78],
+"classNuageGenerator.html#a29f3a2e06b37931afdad4b682fbd4fb0":[5,0,79,20]
 };
