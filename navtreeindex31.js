@@ -1,5 +1,9 @@
 var NAVTREEINDEX31 =
 {
+"namespacegetInteractionAndRadiationLength.html":[4,0,40],
+"namespacegetInteractionAndRadiationLength.html#a0bb5e2e407c672fbaca98f5615812e5b":[4,0,40,0],
+"namespacegetInteractionAndRadiationLength.html#aa0e9918aaad753c9ae2ef7d1cf39dc05":[4,0,40,1],
+"namespacegetInteractionAndRadiationLength.html#acb156e7c2455b7437dfa7ceb797dc4b8":[4,0,40,2],
 "namespaceglobal__variables.html":[4,0,41],
 "namespacegoliath2root.html":[4,0,42],
 "namespacegoliath2root.html#a08201171c49eed8adcb907dad9c5f9ed":[4,0,42,0],
@@ -245,9 +249,5 @@ var NAVTREEINDEX31 =
 "namespacemakeDecay.html#a3b9cdf91d399faa26acb5473feb280d0":[4,0,48,10],
 "namespacemakeDecay.html#a50d7faef8c270f2081b8b26e2dcf3abc":[4,0,48,3],
 "namespacemakeDecay.html#a522dc5811162059c19d2c67a581f9cef":[4,0,48,16],
-"namespacemakeDecay.html#a536e24d12e5d11a1d2fe5d909140b1e4":[4,0,48,5],
-"namespacemakeDecay.html#a5f2262963dbaa87ac97e6bfeb898020f":[4,0,48,33],
-"namespacemakeDecay.html#a65aea31e5d35b9671f40a2432dcfded2":[4,0,48,17],
-"namespacemakeDecay.html#a6ca9ee1ac5dd881b42ce74249e60c74b":[4,0,48,25],
-"namespacemakeDecay.html#a6fe8eaf948b1566b26ae99e59d1f9f16":[4,0,48,1]
+"namespacemakeDecay.html#a536e24d12e5d11a1d2fe5d909140b1e4":[4,0,48,5]
 };

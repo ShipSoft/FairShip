@@ -1,5 +1,9 @@
 var NAVTREEINDEX12 =
 {
+"classecalCluster.html#afe829d121baac9fc34ea99c42a7f4ffd":[5,0,32,13],
+"classecalClusterCalibration.html":[5,0,33],
+"classecalClusterCalibration.html#a224603fdd7e8d9ff625f6d9684032fa1":[5,0,33,12],
+"classecalClusterCalibration.html#a25a29b4dc31c93f7b412b123299f6d4c":[5,0,33,1],
 "classecalClusterCalibration.html#a55ecb56debc5c57706e5bcdbd8f01c28":[5,0,33,10],
 "classecalClusterCalibration.html#a5a5157f3bd91261c645363ecfa0ce6f8":[5,0,33,17],
 "classecalClusterCalibration.html#a6d71bfda324e0cc48403c269886195bd":[5,0,33,13],
@@ -245,9 +249,5 @@ var NAVTREEINDEX12 =
 "classecalMaximum.html#a54462c9791297f638520c102ff28f0e9":[5,0,43,7],
 "classecalMaximum.html#a5cd306ac4ee6ade5e99793121f15cd69":[5,0,43,0],
 "classecalMaximum.html#a66bd7d8c936ea0b13ca82bcf6aa84fb2":[5,0,43,21],
-"classecalMaximum.html#a71564a95466af5b5bfedbc01a22777ca":[5,0,43,6],
-"classecalMaximum.html#a7e96258287a7a25ceab53c4414f21a00":[5,0,43,18],
-"classecalMaximum.html#aa21fbf22ae7ef767c0b1db22c761c246":[5,0,43,15],
-"classecalMaximum.html#ab792c68775379921feb729d203b19de2":[5,0,43,5],
-"classecalMaximum.html#acf3ae929a5773aea8b37daf3eaaa52fe":[5,0,43,13]
+"classecalMaximum.html#a71564a95466af5b5bfedbc01a22777ca":[5,0,43,6]
 };

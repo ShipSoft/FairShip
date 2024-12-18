@@ -1,5 +1,9 @@
 var NAVTREEINDEX8 =
 {
+"classShipGoliathField.html#a599d1d75f5c6cd7e818dcf22e3a8860e":[5,0,100,17],
+"classShipGoliathField.html#a6146cb5fdaecaee42cea9040fe6d804b":[5,0,100,5],
+"classShipGoliathField.html#a65300b96e1f6b6a9053e1bdd9ffaa9c8":[5,0,100,1],
+"classShipGoliathField.html#a6f70ff96c6bb7905a2b60f1bef27c992":[5,0,100,12],
 "classShipGoliathField.html#a76635f13187f7f9a5a166f09fb4d0fb0":[5,0,100,7],
 "classShipGoliathField.html#a7b2508893fb8b4a51db267c3d73c3b2b":[5,0,100,10],
 "classShipGoliathField.html#a7b50cb95222ef4b366acaaf879ff5248":[5,0,100,22],
@@ -245,9 +249,5 @@ var NAVTREEINDEX8 =
 "classTTCluster_1_1TTCluster.html":[5,0,22,0],
 "classTTCluster_1_1TTCluster.html#a024d7880cbff9d99d161a946e6a5d457":[5,0,22,0,15],
 "classTTCluster_1_1TTCluster.html#a0e93d60593a8c812f49e3f9c9bd3a16d":[5,0,22,0,1],
-"classTTCluster_1_1TTCluster.html#a1d9ca0a205ce4f7cdec05ff120cb182d":[5,0,22,0,19],
-"classTTCluster_1_1TTCluster.html#a2d7c77e4a48214884522737796e9c651":[5,0,22,0,11],
-"classTTCluster_1_1TTCluster.html#a358ad769998f6fb63f96f69b20ed0d7c":[5,0,22,0,13],
-"classTTCluster_1_1TTCluster.html#a4948ff676618f20d7c506da9d7bf9111":[5,0,22,0,17],
-"classTTCluster_1_1TTCluster.html#a4ea7960ff74ee5cbf72093a4fa70ebca":[5,0,22,0,24]
+"classTTCluster_1_1TTCluster.html#a1d9ca0a205ce4f7cdec05ff120cb182d":[5,0,22,0,19]
 };

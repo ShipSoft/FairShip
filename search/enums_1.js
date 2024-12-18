@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['detectorid_9146',['DetectorId',['../ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680',1,'ShipDetectorList.h']]]
+  ['coordaxis_9142',['CoordAxis',['../classShipBFieldMap.html#a861764baf5e15176bc69c9942c2a9c65',1,'ShipBFieldMap']]]
 ];

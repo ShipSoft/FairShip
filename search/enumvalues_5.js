@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['zaxis_9177',['zAxis',['../classShipBFieldMap.html#a861764baf5e15176bc69c9942c2a9c65a8723e07c5d5678d97a2107bae653579b',1,'ShipBFieldMap']]]
+  ['xaxis_9180',['xAxis',['../classShipBFieldMap.html#a861764baf5e15176bc69c9942c2a9c65ad5cd59e6ead2d6f825344e8cbf5bc68e',1,'ShipBFieldMap']]]
 ];

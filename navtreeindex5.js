@@ -1,5 +1,9 @@
 var NAVTREEINDEX5 =
 {
+"classMagneticSpectrometer.html#ab867435a585716097e647498a7adbe38":[5,0,71,23],
+"classMagneticSpectrometer.html#abc415c6e518edfbb3b2dbe73c8a666fa":[5,0,71,39],
+"classMagneticSpectrometer.html#ac15983b692cac131f5b3c0e96d49b58d":[5,0,71,68],
+"classMagneticSpectrometer.html#ac27335cb2109522b0fe275f161c69545":[5,0,71,77],
 "classMagneticSpectrometer.html#ac5f88b23e25db565cee8554a6afcb773":[5,0,71,82],
 "classMagneticSpectrometer.html#ac63ec1138af156cb98f23fd1075eadb6":[5,0,71,52],
 "classMagneticSpectrometer.html#ac6c90493959333e3f371d04796a8a878":[5,0,71,60],
@@ -245,9 +249,5 @@ var NAVTREEINDEX5 =
 "classNuageGenerator.html#a173e1b80731442457b22dbcbe16f9afb":[5,0,79,65],
 "classNuageGenerator.html#a17c21147343a6c95005e0703bf6b6e68":[5,0,79,7],
 "classNuageGenerator.html#a1856923b5228abdcd04925608eef22c6":[5,0,79,67],
-"classNuageGenerator.html#a1cf46e2c19bfd0c49fb0504d405ca359":[5,0,79,60],
-"classNuageGenerator.html#a24fec4913f8d827c5b925ecfd5eda262":[5,0,79,36],
-"classNuageGenerator.html#a26f057ec2fb6c336f330e43b00486b38":[5,0,79,37],
-"classNuageGenerator.html#a294302be8b3ab942dc273119ea33c938":[5,0,79,78],
-"classNuageGenerator.html#a29f3a2e06b37931afdad4b682fbd4fb0":[5,0,79,20]
+"classNuageGenerator.html#a1cf46e2c19bfd0c49fb0504d405ca359":[5,0,79,60]
 };
