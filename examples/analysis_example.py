@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""Example script for usage of the analysis_toolkit for signal selection ."""
+"""Example script for usage of the analysis_toolkit for signal selection."""
 
 from argparse import ArgumentParser
 
@@ -7,52 +7,50 @@ import ROOT
 import rootUtils as ut
 from experimental import analysis_toolkit
 
-parser = ArgumentParser(description=__doc__)
-parser.add_argument("--path", help="Path to simulation file", default="./")
-options = parser.parse_args()
-
-
-f = ROOT.TFile.Open(options.path + "/ship.conical.Pythia8-TGeant4_rec.root", "read")
-tree = f.cbmsim
-
-geo_file = ROOT.TFile.Open(
-    options.path + "/geofile_full.conical.Pythia8-TGeant4.root", "read"
-)
-
-selection = analysis_toolkit.selection_check(geo_file)
-
 
 def main():
     """Sample function to analyse the pre-selection parameters."""
+    parser = ArgumentParser(description=__doc__)
+    parser.add_argument("--path", help="Path to simulation file", default="./")
+    options = parser.parse_args()
+
+    f = ROOT.TFile.Open(options.path + "/ship.conical.Pythia8-TGeant4_rec.root", "read")
+    tree = f.cbmsim
+
+    geo_file = ROOT.TFile.Open(
+        options.path + "/geofile_full.conical.Pythia8-TGeant4.root", "read"
+    )
+
+    selection = analysis_toolkit.selection_check(geo_file)
     hist_dict = {}
 
-    ut.bookHist(hist_dict, "event_weight", " Event weight;      ; ", 100, 100, 100)
+    ut.bookHist(hist_dict, "event_weight", "Event weight", 100, 100, 100)
     ut.bookHist(
         hist_dict,
         "candidate_time",
-        " candidate time @ decay vertex; ns     ; ",
+        "candidate time @ decay vertex; ns",
         200,
         100,
         100,
     )
-    ut.bookHist(hist_dict, "impact_parameter", "Impact Parameter;cm;", 200, 100, 100)
+    ut.bookHist(hist_dict, "impact_parameter", "Impact parameter; cm", 200, 100, 100)
     ut.bookHist(
-        hist_dict, "dist_to_innerwall", "Distance to Innerwall;cm;", 200, 100, 100
+        hist_dict, "dist_to_innerwall", "Distance to inner wall; cm", 200, 100, 100
     )
     ut.bookHist(
         hist_dict,
         "dist_to_vesselentrance",
-        "Distance to Decay Vessel Entrance;cm;",
+        "Distance to Decay Vessel Entrance; cm",
         200,
         100,
         100,
     )
-    ut.bookHist(hist_dict, "inv_mass", "Invariant mass ;GeV;", 200, 100, 100)
-    ut.bookHist(hist_dict, "DOCA", "Distance of Closest Approach ;cm;", 200, 100, 100)
+    ut.bookHist(hist_dict, "inv_mass", "Invariant mass; GeV", 200, 100, 100)
+    ut.bookHist(hist_dict, "DOCA", "Distance of closest approach; cm", 200, 100, 100)
     ut.bookHist(
         hist_dict,
         "len_Particles",
-        " len(tree.Particles) ;Number of candidates per event;",
+        "len(tree.Particles); Number of candidates per event",
         200,
         100,
         100,
@@ -60,7 +58,7 @@ def main():
     ut.bookHist(
         hist_dict,
         "d_mom",
-        "momentum of Daughters ;d1 (GeV);d2 (GeV)",
+        "momentum of daughters; d1 (GeV); d2 (GeV)",
         200,
         100,
         100,
@@ -68,8 +66,8 @@ def main():
         100,
         100,
     )
-    ut.bookHist(hist_dict, "nDOF", "nDOF ;d1;d2", 200, 100, 100, 200, 100, 100)
-    ut.bookHist(hist_dict, "chi2nDOF", "chi2nDOF ;d1;d2", 200, 100, 100, 200, 100, 100)
+    ut.bookHist(hist_dict, "nDOF", "nDOF; d1; d2", 200, 100, 100, 200, 100, 100)
+    ut.bookHist(hist_dict, "chi2nDOF", "chi2nDOF; d1; d2", 200, 100, 100, 200, 100, 100)
 
     for event_nr, event in enumerate(tree):
         selection.access_event(event)
