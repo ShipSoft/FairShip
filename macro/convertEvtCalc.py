@@ -112,7 +112,7 @@ def convert_file(infile, outdir):
     parsed_data = parse_file(infile)
     outfile = infile.split(".dat")[0] + ".root"
     ncols   = len(parsed_data[0][2])
-    nvardau = 6 #qualifiers for each daughter
+    nvardau = 6  # qualifiers for each daughter
     remaining_vars = ncols - len(vars_names)
     
     if (remaining_vars % nvardau)!=0:
