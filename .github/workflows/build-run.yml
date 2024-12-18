@@ -19,13 +19,13 @@ jobs:
       image: registry.cern.ch/ship/gha-runner:latest
       volumes:
         - /cvmfs/ship.cern.ch:/cvmfs/ship.cern.ch
-        
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           path: FairShip
-        
+
       - name: Source and Build
         run: |
           source /cvmfs/ship.cern.ch/24.10/setUp.sh
@@ -42,13 +42,19 @@ jobs:
           source /cvmfs/ship.cern.ch/24.10/setUp.sh
           eval `alienv load FairShip/latest`
           python $FAIRSHIP/macro/ShipReco.py -f ship.conical.Pythia8-TGeant4.root -g geofile_full.conical.Pythia8-TGeant4.root
-        continue-on-error: true # workaround to ignore segfaul on exit
+        continue-on-error: true # workaround to ignore segfault on exit
 
       - name: Run Ana
         run: |
           source /cvmfs/ship.cern.ch/24.10/setUp.sh
           eval `alienv load FairShip/latest`
-          python -i $FAIRSHIP/macro/ShipAna.py -f ship.conical.Pythia8-TGeant4_rec.root -g geofile_full.conical.Pythia8-TGeant4.root
+          python $FAIRSHIP/macro/ShipAna.py -f ship.conical.Pythia8-TGeant4_rec.root -g geofile_full.conical.Pythia8-TGeant4.root
+
+      - name: Run examples
+        run: |
+          source /cvmfs/ship.cern.ch/24.10/setUp.sh
+          eval `alienv load FairShip/latest`
+          python $FAIRSHIP/examples/analysis_example.py
 
       - name: Upload .root artifacts
         uses: actions/upload-artifact@v4
