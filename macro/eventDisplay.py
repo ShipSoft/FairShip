@@ -1319,8 +1319,8 @@ fMan.SetPriOnly(False)  # display everything
 # ----------------------Tracks and points -------------------------------------
 verbose = 0  # 3 lot of output
 if withGeo:
-    Track = ROOT.FairMCTracks("Monte-Carlo Tracks", verbose)
-    GTrack = ROOT.FairMCTracks("GeoTracks", verbose)
+    Track = ROOT.FairMCTracksDraw("Monte-Carlo Tracks")
+    GTrack = ROOT.FairGeoTracksDraw("GeoTracks")
     fMan.AddTask(GTrack)
     fMan.AddTask(Track)
 
