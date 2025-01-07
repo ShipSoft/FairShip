@@ -23,6 +23,7 @@ it in future.
 * Octant symmetry was incorrect for B_z when using field maps (reported and fixed by M. Ferro-Luzzi)
 * Tof calculation corrected in GenieGenerator.cxx, wrong units previously used.
 * Genfit measurements now give the correct detector ID
+* Fix TEvePointSetPrintOut
 
 ### Changed
 
