@@ -24,6 +24,7 @@ it in future.
 * Tof calculation corrected in GenieGenerator.cxx, wrong units previously used.
 * Genfit measurements now give the correct detector ID
 * Fix TEvePointSetPrintOut
+* Event Display: Fix drawing of MC and Geo tracks
 
 ### Changed
 
