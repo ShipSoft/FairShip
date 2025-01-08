@@ -1,6 +1,10 @@
 <map id="hcalStructure" name="hcalStructure">
-<area shape="rect" id="node1" title=" " alt="" coords="25,171,133,197"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,81,83,108"/>
-<area shape="rect" id="node3" href="$classhcalInf.html" title=" " alt="" coords="107,81,173,108"/>
-<area shape="rect" id="node4" title=" " alt="" coords="104,5,176,32"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="25,168,133,193"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,80,83,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="56,117,76,166,71,168,51,119"/>
+<area shape="rect" id="Node000003" href="$classhcalInf.html" title=" " alt="" coords="107,80,173,105"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="126,118,89,169,85,166,121,115"/>
+<area shape="poly" id="edge4_Node000003_Node000003" title=" " alt="" coords="189,84,200,93,191,101,174,102,173,97,189,96,195,93,186,89"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="104,5,176,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="143,45,143,80,137,80,137,45"/>
 </map>

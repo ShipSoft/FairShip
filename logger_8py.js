@@ -1,5 +1,5 @@
 var logger_8py =
 [
-    [ "_add_wrappers", "logger_8py.html#a415f8541e99d9bae30efd8b0daafcc2c", null ],
-    [ "_make_wrapper", "logger_8py.html#a1af74ca7ca2dabc671b4e0e0a8702e5f", null ]
+    [ "_add_wrappers", "logger_8py.html#a0aeef8538d69a0c5b00592bf0cba4d99", null ],
+    [ "_make_wrapper", "logger_8py.html#aa12d989a54051a882135fc0636fb8023", null ]
 ];

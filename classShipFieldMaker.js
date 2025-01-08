@@ -33,7 +33,7 @@ var classShipFieldMaker =
     [ "generateFieldMap", "classShipFieldMaker.html#af4163c17204229a088a6c5ae3345f3fe", null ],
     [ "getAllFields", "classShipFieldMaker.html#accaa26ec666c64a954749a452268730d", null ],
     [ "getField", "classShipFieldMaker.html#a536ddce150f887c5434c788216bf00cd", null ],
-    [ "getGlobalField", "classShipFieldMaker.html#a83d9dfa8ec297bd257b128edad3f69f5", null ],
+    [ "getGlobalField", "classShipFieldMaker.html#a8bd0f00112bc43a1aa82ad03264ae740", null ],
     [ "getTransformation", "classShipFieldMaker.html#a6e7d9c110249730e4a725e374c321aee", null ],
     [ "getVolumeField", "classShipFieldMaker.html#a899a97b15a3d1fd31046b37894ff2ea2", null ],
     [ "gotField", "classShipFieldMaker.html#a17a6b35bad80d92efa102b9427f615e0", null ],

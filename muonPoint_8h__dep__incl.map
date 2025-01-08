@@ -1,7 +1,12 @@
 <map id="muon/muonPoint.h" name="muon/muonPoint.h">
-<area shape="rect" id="node1" title=" " alt="" coords="148,5,293,32"/>
-<area shape="rect" id="node2" href="$muon_8cxx.html" title=" " alt="" coords="5,80,132,107"/>
-<area shape="rect" id="node3" href="$muonHit_8cxx.html" title=" " alt="" coords="147,155,294,181"/>
-<area shape="rect" id="node4" href="$muonHit_8h.html" title=" " alt="" coords="207,80,338,107"/>
-<area shape="rect" id="node5" href="$muonPoint_8cxx.html" title=" " alt="" coords="362,80,522,107"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="148,5,293,31"/>
+<area shape="rect" id="Node000002" href="$muon_8cxx.html" title=" " alt="" coords="5,79,132,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="185,39,95,81,92,76,183,34"/>
+<area shape="rect" id="Node000003" href="$muonHit_8cxx.html" title=" " alt="" coords="147,152,294,177"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="210,44,199,72,198,104,206,129,217,151,212,153,201,131,193,104,194,71,205,42"/>
+<area shape="rect" id="Node000004" href="$muonHit_8h.html" title=" " alt="" coords="207,79,338,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="239,40,266,77,262,80,235,43"/>
+<area shape="rect" id="Node000005" href="$muonPoint_8cxx.html" title=" " alt="" coords="362,79,522,104"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="270,32,407,76,405,81,268,37"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="258,117,231,153,227,150,254,114"/>
 </map>

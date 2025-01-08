@@ -1,5 +1,7 @@
 <map id="ShipBFieldMap" name="ShipBFieldMap">
-<area shape="rect" id="node1" title="Class that defines a (3d) magnetic field map (distances in cm, fields in tesla)" alt="" coords="72,95,191,121"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,5,137,32"/>
-<area shape="rect" id="node3" title=" " alt="" coords="162,5,221,32"/>
+<area shape="rect" id="Node000001" title="Class that defines a (3d) magnetic field map (distances in cm, fields in tesla)" alt="" coords="72,93,191,119"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,5,137,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="90,41,125,91,121,94,85,44"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="162,5,221,31"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="177,44,142,94,138,91,173,41"/>
 </map>

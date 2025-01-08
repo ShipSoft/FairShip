@@ -21,7 +21,7 @@ var classecalDrawer =
     [ "GetP", "classecalDrawer.html#ac02446c1be0f0b4f36ad89771d40f3de", null ],
     [ "Init", "classecalDrawer.html#af4777e8d6bab818022a54cf2fc7afa21", null ],
     [ "InitPython", "classecalDrawer.html#a3a632b8817d72f6667aa7d48d9ec7257", null ],
-    [ "operator=", "classecalDrawer.html#aab66668052f4987c9e03447803cde94d", null ],
+    [ "operator=", "classecalDrawer.html#a5556589d3de73cbaa8fad39dd793682e", null ],
     [ "PutPixel", "classecalDrawer.html#a412fcb58bd6fd7be86985c23d555020c", null ],
     [ "PutPixel", "classecalDrawer.html#a00c37be7abb705cb481ca95ba5cf65b5", null ],
     [ "SetCellSize", "classecalDrawer.html#a39175d4f462e7840710214adb1ee3b04", null ],

@@ -33,7 +33,7 @@ var classhcalInf =
     [ "GetYSize", "classhcalInf.html#aac46db3f2578b84e1e330ea27516e6a6", null ],
     [ "GetZPos", "classhcalInf.html#af459b38a114c255ad75fb149b15d6010", null ],
     [ "InitVariables", "classhcalInf.html#a03acd3c5f74a87da08bac9a80be131f6", null ],
-    [ "operator=", "classhcalInf.html#adbdce636b88c92a0deb963de45ce6e42", null ],
+    [ "operator=", "classhcalInf.html#a5ea4b118554bdd662c5207bb45fd2bf2", null ],
     [ "fAbsorber", "classhcalInf.html#a6a6d49d5b5683edd5a733e018d934af9", null ],
     [ "fCellSize", "classhcalInf.html#aec6f45ab1214215b8fb82178e5f69d8f", null ],
     [ "fECut", "classhcalInf.html#aa9506ed67e3c189534c7ef1bb1129f76", null ],

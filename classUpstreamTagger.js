@@ -14,7 +14,7 @@ var classUpstreamTagger =
     [ "GetCollection", "classUpstreamTagger.html#afdc6668181b86ba5d7f99c80122e2d80", null ],
     [ "Initialize", "classUpstreamTagger.html#a9202c4716464cc9bea3b874c88a48ec9", null ],
     [ "InitMedium", "classUpstreamTagger.html#a8f833edb777fb1fa26f063ced8ef999b", null ],
-    [ "operator=", "classUpstreamTagger.html#a61d41fbc6547314b49a30b8c86db9e42", null ],
+    [ "operator=", "classUpstreamTagger.html#a5ddd087dd1e85e4f1cbb75896660b2e8", null ],
     [ "PostTrack", "classUpstreamTagger.html#a38d2b7f5cfe4189f45a157e1edf53b28", null ],
     [ "PreTrack", "classUpstreamTagger.html#acb019d991f4272cc86967e99f5302e91", null ],
     [ "ProcessHits", "classUpstreamTagger.html#a48eac8f58fc38385412d20a6ccf623a2", null ],

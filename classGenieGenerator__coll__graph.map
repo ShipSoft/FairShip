@@ -1,6 +1,9 @@
 <map id="GenieGenerator" name="GenieGenerator">
-<area shape="rect" id="node1" title=" " alt="" coords="105,109,230,136"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,5,116,32"/>
-<area shape="rect" id="node3" title=" " alt="" coords="141,5,194,32"/>
-<area shape="rect" id="node4" title=" " alt="" coords="234,5,293,32"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="105,108,230,133"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,5,116,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="85,38,157,106,153,110,81,42"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="141,5,194,31"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="170,45,170,108,165,108,165,45"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="234,5,293,31"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="259,45,250,66,236,86,219,100,200,110,197,106,216,95,232,82,245,63,254,43"/>
 </map>

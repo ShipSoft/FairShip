@@ -1,8 +1,13 @@
 <map id="TimeDet/TimeDetPoint.cxx" name="TimeDet/TimeDetPoint.cxx">
-<area shape="rect" id="node1" title=" " alt="" coords="145,5,344,32"/>
-<area shape="rect" id="node2" href="$TimeDetPoint_8h.html" title=" " alt="" coords="121,80,243,107"/>
-<area shape="rect" id="node6" title=" " alt="" coords="267,80,347,107"/>
-<area shape="rect" id="node3" title=" " alt="" coords="5,155,116,181"/>
-<area shape="rect" id="node4" title=" " alt="" coords="140,155,224,181"/>
-<area shape="rect" id="node5" title=" " alt="" coords="249,155,339,181"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="145,5,344,31"/>
+<area shape="rect" id="Node000002" href="$TimeDetPoint_8h.html" title=" " alt="" coords="121,79,243,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="236,33,203,70,199,66,232,29"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="267,79,347,104"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="257,29,290,66,286,70,253,33"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,152,116,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="164,106,93,147,91,143,161,102"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="140,152,224,177"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="185,104,185,138,179,138,179,104"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="249,152,339,177"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="201,102,265,142,262,147,199,106"/>
 </map>

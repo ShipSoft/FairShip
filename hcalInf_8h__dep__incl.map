@@ -1,10 +1,20 @@
 <map id="hcal/hcalInf.h" name="hcal/hcalInf.h">
-<area shape="rect" id="node1" title=" " alt="" coords="235,5,343,32"/>
-<area shape="rect" id="node2" href="$hcal_8h.html" title=" " alt="" coords="82,155,174,181"/>
-<area shape="rect" id="node5" href="$hcalInf_8cxx.html" title=" " alt="" coords="148,80,271,107"/>
-<area shape="rect" id="node6" href="$hcalStructure_8h.html" title=" " alt="" coords="295,80,446,107"/>
-<area shape="rect" id="node8" href="$hcalStructureFiller_8cxx.html" title=" " alt="" coords="489,155,687,181"/>
-<area shape="rect" id="node3" href="$hcal_8cxx.html" title=" " alt="" coords="5,229,112,256"/>
-<area shape="rect" id="node4" href="$hcalStructure_8cxx.html" title=" " alt="" coords="137,229,303,256"/>
-<area shape="rect" id="node7" href="$hcalAnalysisSimple_8cxx.html" title=" " alt="" coords="258,155,465,181"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="235,5,343,31"/>
+<area shape="rect" id="Node000002" href="$hcal_8h.html" title=" " alt="" coords="82,152,174,177"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="223,31,176,49,155,63,138,80,130,97,126,117,128,151,123,152,121,116,125,96,134,77,152,59,174,44,221,26"/>
+<area shape="rect" id="Node000005" href="$hcalInf_8cxx.html" title=" " alt="" coords="148,79,271,104"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="268,42,224,80,221,76,265,38"/>
+<area shape="rect" id="Node000006" href="$hcalStructure_8h.html" title=" " alt="" coords="295,79,446,104"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="314,38,359,76,356,80,311,42"/>
+<area shape="rect" id="Node000008" href="$hcalStructureFiller_8cxx.html" title=" " alt="" coords="489,152,687,177"/>
+<area shape="poly" id="edge10_Node000001_Node000008" title=" " alt="" coords="344,32,401,51,460,76,525,115,575,150,572,154,522,119,457,81,399,56,343,37"/>
+<area shape="rect" id="Node000003" href="$hcal_8cxx.html" title=" " alt="" coords="5,225,112,251"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="109,189,72,227,68,223,105,185"/>
+<area shape="rect" id="Node000004" href="$hcalStructure_8cxx.html" title=" " alt="" coords="137,225,303,251"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="155,183,207,223,203,227,152,188"/>
+<area shape="poly" id="edge6_Node000006_Node000002" title=" " alt="" coords="320,110,168,154,167,149,318,105"/>
+<area shape="poly" id="edge8_Node000006_Node000004" title=" " alt="" coords="313,111,278,129,247,154,236,171,229,190,223,225,218,224,224,189,232,169,243,150,275,124,311,106"/>
+<area shape="rect" id="Node000007" href="$hcalAnalysisSimple_8cxx.html" title=" " alt="" coords="258,152,465,177"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="370,118,365,152,360,152,365,117"/>
+<area shape="poly" id="edge9_Node000006_Node000008" title=" " alt="" coords="419,106,554,149,552,154,418,111"/>
 </map>

@@ -1,6 +1,9 @@
 <map id="ShipGoliathField" name="ShipGoliathField">
-<area shape="rect" id="node1" title=" " alt="" coords="71,124,199,151"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,5,81,32"/>
-<area shape="rect" id="node3" title=" " alt="" coords="106,5,165,32"/>
-<area shape="rect" id="node4" title=" " alt="" coords="189,5,242,32"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="69,123,197,148"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,5,81,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="63,40,126,121,122,124,58,43"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="106,5,159,31"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="135,44,135,123,130,123,130,44"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="195,5,254,31"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="223,45,214,73,197,100,182,114,164,125,161,120,178,110,193,97,209,71,218,43"/>
 </map>

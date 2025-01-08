@@ -15,7 +15,7 @@ var classsplitcal =
     [ "GetCollection", "classsplitcal.html#a374e2598b345addb2156a87943d7196b", null ],
     [ "Initialize", "classsplitcal.html#aa6e0a4e4971c1e4fb86d756bc0981759", null ],
     [ "InitMedium", "classsplitcal.html#abe9f63a8c4838a38bdcdbe00b3a3eb07", null ],
-    [ "operator=", "classsplitcal.html#a7fe7045d3258a8492d5d03196855a3ac", null ],
+    [ "operator=", "classsplitcal.html#a4a4433176fa41bf8b8391a90ed774c46", null ],
     [ "PostTrack", "classsplitcal.html#a23eb014a140a2d46d001bf5ff77949fc", null ],
     [ "PreTrack", "classsplitcal.html#a9d133c07987d3a167ddea05390960525", null ],
     [ "ProcessHits", "classsplitcal.html#ab22b93c09bbf38498268560b04fd49ad", null ],

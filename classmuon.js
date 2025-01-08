@@ -15,7 +15,7 @@ var classmuon =
     [ "GetCollection", "classmuon.html#a7342fe3ffec2ac5c6d89aa6c826a8fa2", null ],
     [ "Initialize", "classmuon.html#a936336f1edb26681a404f842802ca5ab", null ],
     [ "InitMedium", "classmuon.html#a304453e21e843c7785531858c8d7d221", null ],
-    [ "operator=", "classmuon.html#a9e55a3768922789236e5170dc9380627", null ],
+    [ "operator=", "classmuon.html#a0ac209feaec2d5a53a04fa6c074ceb5d", null ],
     [ "PostTrack", "classmuon.html#a72827dec90de7126f69158d596136383", null ],
     [ "PreTrack", "classmuon.html#a7b3f08da619808dd7938b546b8ce0b6e", null ],
     [ "ProcessHits", "classmuon.html#ab9861dc464fbe3b2c88b96c824eb9f70", null ],

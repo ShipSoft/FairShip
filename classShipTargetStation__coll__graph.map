@@ -1,4 +1,6 @@
 <map id="ShipTargetStation" name="ShipTargetStation">
-<area shape="rect" id="node1" title=" " alt="" coords="5,81,141,108"/>
-<area shape="rect" id="node2" title=" " alt="" coords="27,5,120,32"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,80,141,105"/>
+<area shape="poly" id="edge2_Node000001_Node000001" title=" " alt="" coords="156,85,168,93,160,100,142,102,141,97,158,95,163,93,154,90"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="27,5,120,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="76,45,76,80,71,80,71,45"/>
 </map>

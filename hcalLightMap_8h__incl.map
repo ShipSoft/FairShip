@@ -1,4 +1,5 @@
 <map id="hcal/hcalLightMap.h" name="hcal/hcalLightMap.h">
-<area shape="rect" id="node1" title=" " alt="" coords="5,5,157,32"/>
-<area shape="rect" id="node2" title=" " alt="" coords="37,80,126,107"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,157,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="37,79,126,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="84,31,84,65,79,65,79,31"/>
 </map>

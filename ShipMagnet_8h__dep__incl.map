@@ -1,4 +1,5 @@
 <map id="passive/ShipMagnet.h" name="passive/ShipMagnet.h">
-<area shape="rect" id="node1" title=" " alt="" coords="13,5,178,32"/>
-<area shape="rect" id="node2" href="$ShipMagnet_8cxx.html" title=" " alt="" coords="5,80,185,107"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="13,5,178,31"/>
+<area shape="rect" id="Node000002" href="$ShipMagnet_8cxx.html" title=" " alt="" coords="5,79,185,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="98,44,98,79,93,79,93,44"/>
 </map>

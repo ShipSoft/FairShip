@@ -23,7 +23,7 @@ var classsplitcalCluster =
     [ "GetSlopeZX", "classsplitcalCluster.html#a56b01ad7690370b2a3bb434d31de6d62", null ],
     [ "GetSlopeZY", "classsplitcalCluster.html#a89c06e5764065e56ea050c115924f93f", null ],
     [ "GetStartPoint", "classsplitcalCluster.html#a0b31594df018cbf1a72db8e79265060c", null ],
-    [ "GetVectorOfHits", "classsplitcalCluster.html#ac7a15519f0c6a4d9483b1f6ec2878cc6", null ],
+    [ "GetVectorOfHits", "classsplitcalCluster.html#ac0c9517418e50c9158c9283e243ceb21", null ],
     [ "LinearRegression", "classsplitcalCluster.html#afa5b955621b768291b701b401604e1ab", null ],
     [ "operator=", "classsplitcalCluster.html#a75b8178331971e5e4b5900d0e6508567", null ],
     [ "Print", "classsplitcalCluster.html#a8abd48d84fe3c418e6bae20ce3f665c8", null ],

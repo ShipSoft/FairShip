@@ -1,7 +1,7 @@
 var ShipStyle_8py =
 [
-    [ "lhcbstyleSetup", "ShipStyle_8py.html#a3e8032a494a04e778cbc8ea080fe6337", null ],
-    [ "printLHCb", "ShipStyle_8py.html#a231fa73a995a536e3298ce5cc9073ebd", null ],
+    [ "lhcbstyleSetup", "ShipStyle_8py.html#a2071b36d03cd8b7629e66b64ef7b1c07", null ],
+    [ "printLHCb", "ShipStyle_8py.html#a3e9998af8e04c3cc0a3f2cf457f847ec", null ],
     [ "black", "ShipStyle_8py.html#aacdcb00481481f9510f8196adc13da43", null ],
     [ "blue", "ShipStyle_8py.html#a90e8ee15a057ed865466cbfdf471ca84", null ],
     [ "cyan", "ShipStyle_8py.html#adc603c7968bedf3723679914b710a283", null ],

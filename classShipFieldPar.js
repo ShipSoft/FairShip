@@ -24,7 +24,7 @@ var classShipFieldPar =
     [ "GetZmax", "classShipFieldPar.html#a1c9ce6eb38155d2267d7100b110ae6f0", null ],
     [ "GetZmin", "classShipFieldPar.html#afc0fd869ca08cf0911515f2388d52f5a", null ],
     [ "MapName", "classShipFieldPar.html#ae08ea2e90572d1d6086f5e5514b99b41", null ],
-    [ "operator=", "classShipFieldPar.html#ad5834930569a4f4d42399f4a785ff6c6", null ],
+    [ "operator=", "classShipFieldPar.html#a8120dffb782c87a8aad584508e4753c1", null ],
     [ "putParams", "classShipFieldPar.html#a6884101d047f2974535a4088af75e33c", null ],
     [ "SetParameters", "classShipFieldPar.html#ac62e9de8b015adf47b1776cf6ce8970c", null ],
     [ "fBtube", "classShipFieldPar.html#aa5b0859e9ef85800a0ddc4f6bacfcaab", null ],

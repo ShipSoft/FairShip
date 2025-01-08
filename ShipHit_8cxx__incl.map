@@ -1,9 +1,15 @@
 <map id="shipdata/ShipHit.cxx" name="shipdata/ShipHit.cxx">
-<area shape="rect" id="node1" title=" " alt="" coords="184,5,340,32"/>
-<area shape="rect" id="node2" href="$ShipHit_8h.html" title=" " alt="" coords="221,80,303,107"/>
-<area shape="rect" id="node3" title=" " alt="" coords="5,162,89,189"/>
-<area shape="rect" id="node4" title=" " alt="" coords="113,162,192,189"/>
-<area shape="rect" id="node5" title=" " alt="" coords="217,162,307,189"/>
-<area shape="rect" id="node6" title=" " alt="" coords="332,155,475,196"/>
-<area shape="rect" id="node7" title=" " alt="" coords="499,155,641,196"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="184,5,340,31"/>
+<area shape="rect" id="Node000002" href="$ShipHit_8h.html" title=" " alt="" coords="221,79,303,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="265,31,265,65,259,65,259,31"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,159,89,185"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="232,107,92,157,90,152,230,102"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="113,159,192,185"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="247,106,182,153,179,149,244,102"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="217,159,307,185"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="265,104,265,145,259,145,259,104"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="332,152,475,192"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="284,102,359,143,356,148,282,107"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="499,152,641,192"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="304,100,486,147,484,152,302,106"/>
 </map>

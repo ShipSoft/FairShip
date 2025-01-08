@@ -1,48 +1,26 @@
 var dir_5fd0c88261ea54d06a04fb3ec84fa31a =
 [
     [ "EmulsionMagnet.cxx", "EmulsionMagnet_8cxx.html", null ],
-    [ "EmulsionMagnet.h", "EmulsionMagnet_8h.html", [
-      [ "EmulsionMagnet", "classEmulsionMagnet.html", "classEmulsionMagnet" ]
-    ] ],
+    [ "EmulsionMagnet.h", "EmulsionMagnet_8h.html", "EmulsionMagnet_8h" ],
     [ "HPT.cxx", "HPT_8cxx.html", null ],
-    [ "HPT.h", "HPT_8h.html", [
-      [ "Hpt", "classHpt.html", "classHpt" ]
-    ] ],
+    [ "HPT.h", "HPT_8h.html", "HPT_8h" ],
     [ "HptPoint.cxx", "HptPoint_8cxx.html", null ],
-    [ "HptPoint.h", "HptPoint_8h.html", [
-      [ "HptPoint", "classHptPoint.html", "classHptPoint" ]
-    ] ],
+    [ "HptPoint.h", "HptPoint_8h.html", "HptPoint_8h" ],
     [ "MagneticSpectrometer.cxx", "MagneticSpectrometer_8cxx.html", null ],
-    [ "MagneticSpectrometer.h", "MagneticSpectrometer_8h.html", [
-      [ "MagneticSpectrometer", "classMagneticSpectrometer.html", "classMagneticSpectrometer" ]
-    ] ],
+    [ "MagneticSpectrometer.h", "MagneticSpectrometer_8h.html", "MagneticSpectrometer_8h" ],
     [ "NutaudetContFact.cxx", "NutaudetContFact_8cxx.html", null ],
-    [ "NutaudetContFact.h", "NutaudetContFact_8h.html", [
-      [ "NutaudetContFact", "classNutaudetContFact.html", "classNutaudetContFact" ]
-    ] ],
+    [ "NutaudetContFact.h", "NutaudetContFact_8h.html", "NutaudetContFact_8h" ],
     [ "nutaudetLinkDef.h", "nutaudetLinkDef_8h.html", null ],
     [ "NuTauMudet.cxx", "NuTauMudet_8cxx.html", null ],
-    [ "NuTauMudet.h", "NuTauMudet_8h.html", [
-      [ "NuTauMudet", "classNuTauMudet.html", "classNuTauMudet" ]
-    ] ],
+    [ "NuTauMudet.h", "NuTauMudet_8h.html", "NuTauMudet_8h" ],
     [ "ShipRpcPoint.cxx", "ShipRpcPoint_8cxx.html", null ],
-    [ "ShipRpcPoint.h", "ShipRpcPoint_8h.html", [
-      [ "ShipRpcPoint", "classShipRpcPoint.html", "classShipRpcPoint" ]
-    ] ],
+    [ "ShipRpcPoint.h", "ShipRpcPoint_8h.html", "ShipRpcPoint_8h" ],
     [ "Target.cxx", "Target_8cxx.html", null ],
-    [ "Target.h", "Target_8h.html", [
-      [ "Target", "classTarget.html", "classTarget" ]
-    ] ],
+    [ "Target.h", "Target_8h.html", "Target_8h" ],
     [ "TargetPoint.cxx", "TargetPoint_8cxx.html", null ],
-    [ "TargetPoint.h", "TargetPoint_8h.html", [
-      [ "TargetPoint", "classTargetPoint.html", "classTargetPoint" ]
-    ] ],
+    [ "TargetPoint.h", "TargetPoint_8h.html", "TargetPoint_8h" ],
     [ "TargetTracker.cxx", "TargetTracker_8cxx.html", null ],
-    [ "TargetTracker.h", "TargetTracker_8h.html", [
-      [ "TargetTracker", "classTargetTracker.html", "classTargetTracker" ]
-    ] ],
+    [ "TargetTracker.h", "TargetTracker_8h.html", "TargetTracker_8h" ],
     [ "TTPoint.cxx", "TTPoint_8cxx.html", null ],
-    [ "TTPoint.h", "TTPoint_8h.html", [
-      [ "TTPoint", "classTTPoint.html", "classTTPoint" ]
-    ] ]
+    [ "TTPoint.h", "TTPoint_8h.html", "TTPoint_8h" ]
 ];

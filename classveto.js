@@ -26,7 +26,7 @@ var classveto =
     [ "liscId", "classveto.html#a1a513f94fe82e3bb6ae33cd4690c5d1d", null ],
     [ "makeId", "classveto.html#a3033d6c4b427718a1a072fe08b13a709", null ],
     [ "MakeSegments", "classveto.html#a5ff94ab044d1f2921698684d6072ca19", null ],
-    [ "operator=", "classveto.html#a219c777c99da85f0f049cea1772b6a1c", null ],
+    [ "operator=", "classveto.html#aae108cbe53746255872a1c7e83540e1a", null ],
     [ "PostTrack", "classveto.html#a16298dd6e3defb5f8c3318b403b58d59", null ],
     [ "PreTrack", "classveto.html#a9cd585f655e41fdcc1ff48532314e5e2", null ],
     [ "ProcessHits", "classveto.html#a1bb33e33c0316c04d9b4c3ec70e2c3f5", null ],

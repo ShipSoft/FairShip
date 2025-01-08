@@ -3,7 +3,7 @@ var classHNLPythia8Generator =
     [ "HNLPythia8Generator", "classHNLPythia8Generator.html#aaea0a3e2bf81106eaf2c2b06c45f7c7a", null ],
     [ "~HNLPythia8Generator", "classHNLPythia8Generator.html#a159fb77f0c3480cee04b466df2a0df74", null ],
     [ "ClassDef", "classHNLPythia8Generator.html#a00c2968af5c0aa6ec33b4a18ad064c20", null ],
-    [ "getPythiaInstance", "classHNLPythia8Generator.html#ad09689e719744ab5e7289668f7df3881", null ],
+    [ "getPythiaInstance", "classHNLPythia8Generator.html#ab9f77d69b880a5447d645d6b74196c3d", null ],
     [ "Init", "classHNLPythia8Generator.html#a5f94d75d0566f5720cd5fac4c34a18ae", null ],
     [ "List", "classHNLPythia8Generator.html#a2156924efe22e41bda7fc3a39d922856", null ],
     [ "nrOfRetries", "classHNLPythia8Generator.html#a8a7f6fa2e231fc507b03d8673f6fccaa", null ],

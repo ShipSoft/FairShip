@@ -1,15 +1,31 @@
 <map id="shipgen/FixedTargetGenerator.h" name="shipgen/FixedTargetGenerator.h">
-<area shape="rect" id="node1" title=" " alt="" coords="241,5,467,32"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,155,84,181"/>
-<area shape="rect" id="node3" title=" " alt="" coords="108,155,229,181"/>
-<area shape="rect" id="node4" title=" " alt="" coords="551,80,679,107"/>
-<area shape="rect" id="node5" title=" " alt="" coords="253,155,353,181"/>
-<area shape="rect" id="node6" title=" " alt="" coords="378,155,447,181"/>
-<area shape="rect" id="node7" title=" " alt="" coords="703,80,789,107"/>
-<area shape="rect" id="node8" href="$GenieGenerator_8h.html" title=" " alt="" coords="391,80,527,107"/>
-<area shape="rect" id="node9" title=" " alt="" coords="759,155,818,181"/>
-<area shape="rect" id="node10" title=" " alt="" coords="843,155,903,181"/>
-<area shape="rect" id="node11" title=" " alt="" coords="472,155,532,181"/>
-<area shape="rect" id="node12" title=" " alt="" coords="557,155,647,181"/>
-<area shape="rect" id="node13" title=" " alt="" coords="672,155,735,181"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="241,5,467,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,152,84,177"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="330,33,82,149,80,144,328,28"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="108,152,229,177"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="340,33,196,145,193,141,337,29"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="551,79,679,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="397,28,560,72,559,78,395,33"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="253,152,353,177"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="352,32,314,140,309,138,347,30"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="378,152,447,177"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="359,30,368,64,382,103,400,139,396,141,377,105,363,65,354,32"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="703,79,789,104"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="423,28,690,76,689,81,422,33"/>
+<area shape="rect" id="Node000008" href="$GenieGenerator_8h.html" title=" " alt="" coords="391,79,527,104"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="372,28,432,69,430,73,369,33"/>
+<area shape="poly" id="edge8_Node000008_Node000002" title=" " alt="" coords="391,105,98,154,97,149,391,100"/>
+<area shape="poly" id="edge9_Node000008_Node000003" title=" " alt="" coords="413,107,229,151,228,146,412,101"/>
+<area shape="poly" id="edge15_Node000008_Node000005" title=" " alt="" coords="435,106,342,149,340,144,433,102"/>
+<area shape="poly" id="edge10_Node000008_Node000006" title=" " alt="" coords="454,106,430,142,426,139,449,103"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="759,152,818,177"/>
+<area shape="poly" id="edge11_Node000008_Node000009" title=" " alt="" coords="521,101,746,149,745,154,520,107"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="843,152,903,177"/>
+<area shape="poly" id="edge12_Node000008_Node000010" title=" " alt="" coords="528,100,683,124,830,149,829,155,682,129,527,105"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="472,152,532,177"/>
+<area shape="poly" id="edge13_Node000008_Node000011" title=" " alt="" coords="469,103,490,139,486,142,464,106"/>
+<area shape="rect" id="Node000012" title=" " alt="" coords="557,152,647,177"/>
+<area shape="poly" id="edge14_Node000008_Node000012" title=" " alt="" coords="483,102,568,143,565,148,481,106"/>
+<area shape="rect" id="Node000013" title=" " alt="" coords="672,152,735,177"/>
+<area shape="poly" id="edge16_Node000008_Node000013" title=" " alt="" coords="499,101,659,148,658,153,498,107"/>
 </map>

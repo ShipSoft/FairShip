@@ -1,6 +1,6 @@
 var classhnl_1_1CKMmatrix =
 [
-    [ "__init__", "classhnl_1_1CKMmatrix.html#a77d8c2175fd38ae35caad93b25dfb286", null ],
+    [ "__init__", "classhnl_1_1CKMmatrix.html#a05a7bc8307d7fe34e9ac90c1a800e165", null ],
     [ "Vcb", "classhnl_1_1CKMmatrix.html#a1a6b5b54eb6d777b56b7faffefac12d7", null ],
     [ "Vcd", "classhnl_1_1CKMmatrix.html#ad4f2b26039563785f6ffd8198ad7caa1", null ],
     [ "Vcs", "classhnl_1_1CKMmatrix.html#a924eb72749fd0270983c39f15b5bf1d0", null ],

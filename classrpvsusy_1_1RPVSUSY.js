@@ -1,6 +1,6 @@
 var classrpvsusy_1_1RPVSUSY =
 [
-    [ "__init__", "classrpvsusy_1_1RPVSUSY.html#a949ddf7bd5454f8138c96a36431dc59b", null ],
-    [ "computeNLifetime", "classrpvsusy_1_1RPVSUSY.html#a2e9cd4ff07ad66e5fe4089bdca777385", null ],
+    [ "__init__", "classrpvsusy_1_1RPVSUSY.html#ac386b1690642a9eb9acce952a69df266", null ],
+    [ "computeNLifetime", "classrpvsusy_1_1RPVSUSY.html#a62dc6b0736e70e227165067437705926", null ],
     [ "NLifetime", "classrpvsusy_1_1RPVSUSY.html#a7eaae33bf5f25bae18c065e831897b1a", null ]
 ];

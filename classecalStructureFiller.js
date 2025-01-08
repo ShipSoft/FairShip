@@ -14,7 +14,7 @@ var classecalStructureFiller =
     [ "Init", "classecalStructureFiller.html#a2d9486e269967fc6c95286555cd7b428", null ],
     [ "InitPython", "classecalStructureFiller.html#a81e4ac69bdc00a745900b84fcc509470", null ],
     [ "LoopForMCPoints", "classecalStructureFiller.html#a9a792113db1d300da9630295aed439f6", null ],
-    [ "operator=", "classecalStructureFiller.html#a73d51a90cd8bde61627afdf73305882c", null ],
+    [ "operator=", "classecalStructureFiller.html#a4f56d5c3b68149335046c12e9cc73347", null ],
     [ "SetParContainers", "classecalStructureFiller.html#ac62625f52cdb2d24a9c600d2c44a2052", null ],
     [ "SetUseMCPoints", "classecalStructureFiller.html#af090dfebeddf3ef0b55dde2a68136804", null ],
     [ "StoreTrackInformation", "classecalStructureFiller.html#a9c8388cbb913f21af713afb73b5f4ed3", null ],

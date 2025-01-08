@@ -1,6 +1,9 @@
 <map id="ecal/ecalReconstructed.h" name="ecal/ecalReconstructed.h">
-<area shape="rect" id="node1" title=" " alt="" coords="153,5,338,32"/>
-<area shape="rect" id="node2" href="$ecalMatch_8cxx.html" title=" " alt="" coords="5,80,152,107"/>
-<area shape="rect" id="node3" href="$ecalReco_8cxx.html" title=" " alt="" coords="176,80,315,107"/>
-<area shape="rect" id="node4" href="$ecalReconstructed_8cxx.html" title=" " alt="" coords="339,80,539,107"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="153,5,338,31"/>
+<area shape="rect" id="Node000002" href="$ecalMatch_8cxx.html" title=" " alt="" coords="5,79,152,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="207,38,107,81,105,76,205,34"/>
+<area shape="rect" id="Node000003" href="$ecalReco_8cxx.html" title=" " alt="" coords="176,79,315,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="248,44,248,79,243,79,243,44"/>
+<area shape="rect" id="Node000004" href="$ecalReconstructed_8cxx.html" title=" " alt="" coords="339,79,539,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="290,33,408,76,406,81,288,38"/>
 </map>

@@ -1,10 +1,17 @@
 <map id="shipdata/ShipStack.h" name="shipdata/ShipStack.h">
-<area shape="rect" id="node1" title=" " alt="" coords="419,5,577,32"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,80,148,107"/>
-<area shape="rect" id="node3" href="$ShipDetectorList_8h.html" title=" " alt="" coords="173,80,314,107"/>
-<area shape="rect" id="node4" title=" " alt="" coords="339,80,417,107"/>
-<area shape="rect" id="node5" title=" " alt="" coords="441,80,555,107"/>
-<area shape="rect" id="node6" title=" " alt="" coords="579,80,630,107"/>
-<area shape="rect" id="node7" title=" " alt="" coords="655,80,712,107"/>
-<area shape="rect" id="node8" title=" " alt="" coords="736,80,796,107"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="419,5,577,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,79,148,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="431,33,158,79,157,74,430,28"/>
+<area shape="rect" id="Node000003" href="$ShipDetectorList_8h.html" title=" " alt="" coords="173,79,314,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="458,33,298,78,297,72,456,28"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="339,79,417,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="480,33,411,74,408,69,477,28"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="441,79,555,104"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="501,31,501,65,495,65,495,31"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="579,79,630,104"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="517,28,577,69,574,73,514,33"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="655,79,712,104"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="529,28,643,72,641,77,527,33"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="736,79,796,104"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="543,28,723,76,722,81,541,33"/>
 </map>

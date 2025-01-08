@@ -1,11 +1,11 @@
 var classTTCluster_1_1TTCluster =
 [
-    [ "__init__", "classTTCluster_1_1TTCluster.html#a802539f30c42a1e6e965593106be33e0", null ],
-    [ "ClusterGen", "classTTCluster_1_1TTCluster.html#a0e93d60593a8c812f49e3f9c9bd3a16d", null ],
-    [ "GetXYZ", "classTTCluster_1_1TTCluster.html#ad5aa1a586041a736b7d3b9e22fc2557c", null ],
-    [ "SetLYRange", "classTTCluster_1_1TTCluster.html#a75ae4a428ad83e36ea20320258f8c21f", null ],
-    [ "SetSipmIsReversed", "classTTCluster_1_1TTCluster.html#ae9bbbcf164d52418c058be1cc531280e", null ],
-    [ "SetSipmPosition", "classTTCluster_1_1TTCluster.html#adcab2848885feb47046d0e0725fa79e6", null ],
+    [ "__init__", "classTTCluster_1_1TTCluster.html#aea8758a65b9336c4660b400ad92d2e11", null ],
+    [ "ClusterGen", "classTTCluster_1_1TTCluster.html#a9446c4de674bb36bec3bc5843c4479d2", null ],
+    [ "GetXYZ", "classTTCluster_1_1TTCluster.html#aa9ca748b882aa179c59f1f09a7c5d8b9", null ],
+    [ "SetLYRange", "classTTCluster_1_1TTCluster.html#ab984636bf7e68953e5ce25622272f29f", null ],
+    [ "SetSipmIsReversed", "classTTCluster_1_1TTCluster.html#ab90cd50a439ce1fea9ea427a678b5c7b", null ],
+    [ "SetSipmPosition", "classTTCluster_1_1TTCluster.html#af93fddb926f7bd40445aef475e3144ef", null ],
     [ "cluster", "classTTCluster_1_1TTCluster.html#af0445c157a76ae5b85d69ef8f704a1b7", null ],
     [ "delta", "classTTCluster_1_1TTCluster.html#afdcedfc3f5f8189cad035ddb22467984", null ],
     [ "DetID", "classTTCluster_1_1TTCluster.html#ab0e406162e1073cf3d32507069588ca5", null ],

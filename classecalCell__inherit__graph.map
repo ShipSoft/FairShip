@@ -1,6 +1,9 @@
 <map id="ecalCell" name="ecalCell">
-<area shape="rect" id="node1" title=" " alt="" coords="75,80,150,107"/>
-<area shape="rect" id="node3" href="$classecalCellMC.html" title=" " alt="" coords="5,155,100,181"/>
-<area shape="rect" id="node4" href="$classecalModule.html" title=" " alt="" coords="124,155,221,181"/>
-<area shape="rect" id="node2" title=" " alt="" coords="77,5,149,32"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="75,79,150,104"/>
+<area shape="rect" id="Node000003" href="$classecalCellMC.html" title=" " alt="" coords="5,152,100,177"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="96,116,64,154,60,150,92,113"/>
+<area shape="rect" id="Node000004" href="$classecalModule.html" title=" " alt="" coords="124,152,221,177"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="133,113,165,150,161,154,129,116"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="77,5,149,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="115,44,115,79,110,79,110,44"/>
 </map>

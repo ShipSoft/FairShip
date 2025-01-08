@@ -1,9 +1,18 @@
 <map id="ecalClusterFinder" name="ecalClusterFinder">
-<area shape="rect" id="node1" title=" " alt="" coords="138,260,273,287"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,81,80,108"/>
-<area shape="rect" id="node5" href="$classecalClusterCalibration.html" title=" " alt="" coords="42,171,209,197"/>
-<area shape="rect" id="node3" href="$classecalInf.html" title=" " alt="" coords="345,81,412,108"/>
-<area shape="rect" id="node6" href="$classecalStructure.html" title=" " alt="" coords="233,171,341,197"/>
-<area shape="rect" id="node4" title=" " alt="" coords="343,5,415,32"/>
-<area shape="rect" id="node7" title=" " alt="" coords="233,81,311,108"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="138,256,273,281"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,80,80,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="34,119,24,156,25,175,32,192,53,215,79,233,109,246,138,255,137,260,107,251,77,238,49,219,27,195,20,176,19,155,28,117"/>
+<area shape="rect" id="Node000007" href="$classecalClusterCalibration.html" title=" " alt="" coords="42,168,209,193"/>
+<area shape="poly" id="edge8_Node000007_Node000002" title=" " alt="" coords="65,114,116,166,112,169,61,117"/>
+<area shape="rect" id="Node000003" href="$classecalStructure.html" title=" " alt="" coords="233,168,341,193"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="268,205,219,257,215,254,264,202"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="233,80,311,105"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="279,118,287,167,282,168,274,119"/>
+<area shape="rect" id="Node000005" href="$classecalInf.html" title=" " alt="" coords="345,80,412,105"/>
+<area shape="poly" id="edge9_Node000001_Node000005" title=" " alt="" coords="381,120,374,157,367,177,355,195,332,217,304,235,250,258,247,254,302,230,329,213,351,192,362,175,369,156,376,119"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="342,114,319,131,304,150,294,169,289,167,300,147,315,127,339,110"/>
+<area shape="poly" id="edge6_Node000005_Node000005" title=" " alt="" coords="427,84,439,93,430,101,412,102,412,97,428,96,433,93,425,89"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="343,5,415,31"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="381,45,381,80,376,80,376,45"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="147,202,173,230,196,254,192,258,169,234,143,206"/>
 </map>

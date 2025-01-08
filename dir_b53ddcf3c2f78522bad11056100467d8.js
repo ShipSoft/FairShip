@@ -6,40 +6,22 @@ var dir_b53ddcf3c2f78522bad11056100467d8 =
     [ "convertNoisyMap.py", "convertNoisyMap_8py.html", "convertNoisyMap_8py" ],
     [ "convertRALMap.py", "convertRALMap_8py.html", "convertRALMap_8py" ],
     [ "FairShipFields.cxx", "FairShipFields_8cxx.html", null ],
-    [ "FairShipFields.h", "FairShipFields_8h.html", [
-      [ "FairShipFields", "classgenfit_1_1FairShipFields.html", "classgenfit_1_1FairShipFields" ]
-    ] ],
+    [ "FairShipFields.h", "FairShipFields_8h.html", "FairShipFields_8h" ],
     [ "FieldLinkDef.h", "FieldLinkDef_8h.html", null ],
     [ "ShipBellField.cxx", "ShipBellField_8cxx.html", "ShipBellField_8cxx" ],
-    [ "ShipBellField.h", "ShipBellField_8h.html", [
-      [ "ShipBellField", "classShipBellField.html", "classShipBellField" ]
-    ] ],
+    [ "ShipBellField.h", "ShipBellField_8h.html", "ShipBellField_8h" ],
     [ "ShipBFieldMap.cxx", "ShipBFieldMap_8cxx.html", null ],
-    [ "ShipBFieldMap.h", "ShipBFieldMap_8h.html", [
-      [ "ShipBFieldMap", "classShipBFieldMap.html", "classShipBFieldMap" ]
-    ] ],
+    [ "ShipBFieldMap.h", "ShipBFieldMap_8h.html", "ShipBFieldMap_8h" ],
     [ "ShipCompField.cxx", "ShipCompField_8cxx.html", null ],
-    [ "ShipCompField.h", "ShipCompField_8h.html", [
-      [ "ShipCompField", "classShipCompField.html", "classShipCompField" ]
-    ] ],
+    [ "ShipCompField.h", "ShipCompField_8h.html", "ShipCompField_8h" ],
     [ "ShipConstField.cxx", "ShipConstField_8cxx.html", null ],
-    [ "ShipConstField.h", "ShipConstField_8h.html", [
-      [ "ShipConstField", "classShipConstField.html", "classShipConstField" ]
-    ] ],
+    [ "ShipConstField.h", "ShipConstField_8h.html", "ShipConstField_8h" ],
     [ "ShipFieldCreator.cxx", "ShipFieldCreator_8cxx.html", null ],
-    [ "ShipFieldCreator.h", "ShipFieldCreator_8h.html", [
-      [ "ShipFieldCreator", "classShipFieldCreator.html", "classShipFieldCreator" ]
-    ] ],
+    [ "ShipFieldCreator.h", "ShipFieldCreator_8h.html", "ShipFieldCreator_8h" ],
     [ "ShipFieldMaker.cxx", "ShipFieldMaker_8cxx.html", null ],
-    [ "ShipFieldMaker.h", "ShipFieldMaker_8h.html", [
-      [ "ShipFieldMaker", "classShipFieldMaker.html", "classShipFieldMaker" ],
-      [ "fieldInfo", "structShipFieldMaker_1_1fieldInfo.html", "structShipFieldMaker_1_1fieldInfo" ],
-      [ "transformInfo", "structShipFieldMaker_1_1transformInfo.html", "structShipFieldMaker_1_1transformInfo" ]
-    ] ],
+    [ "ShipFieldMaker.h", "ShipFieldMaker_8h.html", "ShipFieldMaker_8h" ],
     [ "ShipFieldPar.cxx", "ShipFieldPar_8cxx.html", "ShipFieldPar_8cxx" ],
     [ "ShipFieldPar.h", "ShipFieldPar_8h.html", "ShipFieldPar_8h" ],
     [ "ShipGoliathField.cxx", "ShipGoliathField_8cxx.html", null ],
-    [ "ShipGoliathField.h", "ShipGoliathField_8h.html", [
-      [ "ShipGoliathField", "classShipGoliathField.html", "classShipGoliathField" ]
-    ] ]
+    [ "ShipGoliathField.h", "ShipGoliathField_8h.html", "ShipGoliathField_8h" ]
 ];

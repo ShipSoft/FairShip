@@ -17,7 +17,7 @@ var classTargetTracker =
     [ "GetCollection", "classTargetTracker.html#a83ade362106d160e32ae5f410f7cf97a", null ],
     [ "Initialize", "classTargetTracker.html#aa7c7cc2db34c9aad6593ef10cdaad1aa", null ],
     [ "InitMedium", "classTargetTracker.html#a7bde2cd76b734c91a30d08df100fac6c", null ],
-    [ "operator=", "classTargetTracker.html#a7bff7a85fd4a89e5b9240144dd9bc964", null ],
+    [ "operator=", "classTargetTracker.html#a56a02e4fb785503a6050a82d71c893da", null ],
     [ "PostTrack", "classTargetTracker.html#aa93d190a4b6f43633f33c3d8287a3d34", null ],
     [ "PreTrack", "classTargetTracker.html#aa678b2b35a993fad588fb8ded8652629", null ],
     [ "ProcessHits", "classTargetTracker.html#a280a82cf417e2c713e2ae4b8e9b37904", null ],

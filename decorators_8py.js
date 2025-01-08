@@ -1,17 +1,19 @@
 var decorators_8py =
 [
-    [ "Dump", "decorators_8py.html#a3c7af73e472ea77e011ed0d4520bbbab", null ],
-    [ "ecalClusterPrintOut", "decorators_8py.html#a4b26142ef5f8607846f202a7a1fe66f4", null ],
-    [ "ecalReconstructedPrintOut", "decorators_8py.html#a4ec5de8c6e34a0196f58cb8a3e0a478f", null ],
-    [ "FitTrackPrintOut", "decorators_8py.html#a1c005072cceafcc35ef6aefb889d65c6", null ],
-    [ "MCPointPrintOut", "decorators_8py.html#ab50f007ecb21b5b1a7797371c666d96f", null ],
-    [ "MCTrackPrintOut", "decorators_8py.html#a6cd1e4332b5b0341a9f3c6bf9a5b1400", null ],
-    [ "muonHitPrintOut", "decorators_8py.html#ab4dc5bfc5e54819e68ffc2eeeece839f", null ],
-    [ "ShipParticlePrintOut", "decorators_8py.html#ada811ba1d907ed9a50b15700a9b1205c", null ],
-    [ "TEvePointSetPrintOut", "decorators_8py.html#a696160ec95d0626c0add3c0a16847cd0", null ],
-    [ "TimeDetHitPrintOut", "decorators_8py.html#aec939e7c1ef7ee7ede8223f6c54d2b9a", null ],
-    [ "TLorentzVectorPrintOut", "decorators_8py.html#ae4f2ec3421cec42c530ae16778ca06e2", null ],
-    [ "TParticlePrintOut", "decorators_8py.html#a6e76f4e59106853b68a8c6a4b2c644f8", null ],
-    [ "TVector3PrintOut", "decorators_8py.html#a6d26516d9a6460c4783b10e6b01aa8d9", null ],
-    [ "vetoHitPrintOut", "decorators_8py.html#aace8cb442f91cbb24c7a0633a81b854b", null ]
+    [ "Dump", "decorators_8py.html#a9aa498add33b8b9799504fffee2a48c6", null ],
+    [ "ecalClusterPrintOut", "decorators_8py.html#a631b4b158408c126035dfb24561c8598", null ],
+    [ "ecalReconstructedPrintOut", "decorators_8py.html#a68e993abb3bb0be8282441f6ac0a1f4b", null ],
+    [ "FitTrackPrintOut", "decorators_8py.html#ad60443c6f7c9480c370f7bf319b11b07", null ],
+    [ "MCPointPrintOut", "decorators_8py.html#a1639e2afcc016284ccd45c276539c2ba", null ],
+    [ "MCTrackPrintOut", "decorators_8py.html#a2ec1e32203e1b964c50333fe4ac80774", null ],
+    [ "muonHitPrintOut", "decorators_8py.html#a93ba609965ce91eca0009e73b2cae94a", null ],
+    [ "ShipParticlePrintOut", "decorators_8py.html#aa3f84a39dd53816eddb7e035be380d26", null ],
+    [ "TEvePointSetPrintOut", "decorators_8py.html#a39ea9b0935df86db925f26d35f7e1dab", null ],
+    [ "TimeDetHitPrintOut", "decorators_8py.html#ac67f665b749ba7095f3c3acfff538a30", null ],
+    [ "TLorentzVectorPrintOut", "decorators_8py.html#a8c9da18a683720769447fdfc909a0898", null ],
+    [ "TParticlePrintOut", "decorators_8py.html#a17440fee74d9cf72f2cb1ef4f61120b3", null ],
+    [ "TVector3PrintOut", "decorators_8py.html#ad3fec341698beffbd24e061a4e2ddb2a", null ],
+    [ "vetoHitPrintOut", "decorators_8py.html#a6c1a37b734417ff5bee5576c16a361bf", null ],
+    [ "__repr__", "decorators_8py.html#a6ee47065a81ed3bd12cd798284605f36", null ],
+    [ "Dump", "decorators_8py.html#ab1d023ac32c0a742814957a7e4c21a42", null ]
 ];

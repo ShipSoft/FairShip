@@ -16,7 +16,7 @@ var classstrawtubes =
     [ "GetCollection", "classstrawtubes.html#a714c3516adba936fa3e1cabce735bce7", null ],
     [ "Initialize", "classstrawtubes.html#a570ab41a26196a080bb5c10ce47b4462", null ],
     [ "InitMedium", "classstrawtubes.html#a7d7144f63ba9faaed99fc942690e0c27", null ],
-    [ "operator=", "classstrawtubes.html#a3a7f832fa954e09bc61b4c77b68c696b", null ],
+    [ "operator=", "classstrawtubes.html#a77a3799cb3cffd3d0d2c03d56190319c", null ],
     [ "PostTrack", "classstrawtubes.html#a99116a12b5e2df73e7e05bea1dadc6e3", null ],
     [ "PreTrack", "classstrawtubes.html#aafc2fe3022ca5ada943bcbb9b1f0eef8", null ],
     [ "ProcessHits", "classstrawtubes.html#ae1e11177c147f8affe898f70a0e8a344", null ],

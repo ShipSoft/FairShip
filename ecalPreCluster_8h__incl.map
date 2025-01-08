@@ -1,9 +1,17 @@
 <map id="ecal/ecalPreCluster.h" name="ecal/ecalPreCluster.h">
-<area shape="rect" id="node1" title=" " alt="" coords="91,5,249,32"/>
-<area shape="rect" id="node2" href="$ecalCell_8h.html" title=" " alt="" coords="208,80,295,107"/>
-<area shape="rect" id="node4" title=" " alt="" coords="151,155,194,181"/>
-<area shape="rect" id="node7" href="$ecalMaximum_8h.html" title=" " alt="" coords="5,80,132,107"/>
-<area shape="rect" id="node3" title=" " alt="" coords="36,155,120,181"/>
-<area shape="rect" id="node5" title=" " alt="" coords="223,155,274,181"/>
-<area shape="rect" id="node6" title=" " alt="" coords="298,155,383,181"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="91,5,249,31"/>
+<area shape="rect" id="Node000002" href="$ecalCell_8h.html" title=" " alt="" coords="208,79,295,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="185,29,230,68,226,72,181,33"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="151,152,194,177"/>
+<area shape="poly" id="edge8_Node000001_Node000004" title=" " alt="" coords="173,31,175,138,170,138,168,31"/>
+<area shape="rect" id="Node000007" href="$ecalMaximum_8h.html" title=" " alt="" coords="5,79,132,104"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="155,33,98,73,95,68,152,28"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="36,152,120,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="224,106,120,149,118,144,222,102"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="240,106,197,145,194,141,237,102"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="223,152,274,177"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="254,104,252,139,247,138,248,104"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="298,152,383,177"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="267,102,317,141,314,145,264,106"/>
+<area shape="poly" id="edge7_Node000007_Node000003" title=" " alt="" coords="73,104,77,138,72,139,68,105"/>
 </map>

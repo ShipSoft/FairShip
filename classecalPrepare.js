@@ -13,7 +13,7 @@ var classecalPrepare =
     [ "Init", "classecalPrepare.html#a9b938518b9ee459ba91dc8d6b1e11ffa", null ],
     [ "InitPython", "classecalPrepare.html#af17dd490b7f636deb4eae70c31010bbd", null ],
     [ "LoadChannelMap", "classecalPrepare.html#a37b307135620bb780f11142c1b87c895", null ],
-    [ "operator=", "classecalPrepare.html#a10bc5aa99b9ab8def5a5544303073add", null ],
+    [ "operator=", "classecalPrepare.html#a9330d75943f7d02710987ca7fac19cba", null ],
     [ "SetADCChannel", "classecalPrepare.html#a1ccc66e268790ec7d051ec00eb897283", null ],
     [ "SetADCMax", "classecalPrepare.html#a01c0e309149ea27d20dd77322f0b8588", null ],
     [ "SetChannelMap", "classecalPrepare.html#ae5f2bd5e28709be57ca04ee0a7ccce92", null ],

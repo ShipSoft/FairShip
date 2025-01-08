@@ -1,9 +1,8 @@
 var searchData=
 [
-  ['veto_4680',['veto',['../classveto.html',1,'']]],
-  ['veto_4681',['Veto',['../classVeto.html',1,'']]],
-  ['vetocontfact_4682',['vetoContFact',['../classvetoContFact.html',1,'']]],
-  ['vetohit_4683',['vetoHit',['../classvetoHit.html',1,'']]],
-  ['vetohitontrack_4684',['vetoHitOnTrack',['../classvetoHitOnTrack.html',1,'']]],
-  ['vetopoint_4685',['vetoPoint',['../classvetoPoint.html',1,'']]]
+  ['veto_0',['veto',['../classveto.html',1,'veto'],['../classVeto.html',1,'Veto']]],
+  ['vetocontfact_1',['vetoContFact',['../classvetoContFact.html',1,'']]],
+  ['vetohit_2',['vetoHit',['../classvetoHit.html',1,'']]],
+  ['vetohitontrack_3',['vetoHitOnTrack',['../classvetoHitOnTrack.html',1,'']]],
+  ['vetopoint_4',['vetoPoint',['../classvetoPoint.html',1,'']]]
 ];

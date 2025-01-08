@@ -25,7 +25,7 @@ var classhcal =
     [ "Initialize", "classhcal.html#ad43920203997e0315007fa7d4fcb4453", null ],
     [ "InitMedia", "classhcal.html#a5daf7658d2871bf7a3be26a4cf813090", null ],
     [ "InitMedium", "classhcal.html#acaae55d2a7e2ba86b11cf416a499fcb1", null ],
-    [ "operator=", "classhcal.html#ae147e7310ba260a7c0458698dd17e25d", null ],
+    [ "operator=", "classhcal.html#a8373ab5ade2c6e6d9a2333096a37fd7e", null ],
     [ "Print", "classhcal.html#a7ddd61dd15fca041f0605b7891960a7e", null ],
     [ "ProcessHits", "classhcal.html#a76efc2e1894d117f44b26489676ae41e", null ],
     [ "Register", "classhcal.html#a3321f46ce0a5e00cf77ee464c6e8e4d7", null ],

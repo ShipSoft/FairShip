@@ -1,6 +1,9 @@
 <map id="simpleTarget" name="simpleTarget">
-<area shape="rect" id="node1" title=" " alt="" coords="104,109,211,136"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,5,107,32"/>
-<area shape="rect" id="node3" title=" " alt="" coords="131,5,184,32"/>
-<area shape="rect" id="node4" title=" " alt="" coords="209,5,327,32"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="137,108,244,133"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,5,107,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="84,37,177,106,174,110,81,41"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="131,5,250,31"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="193,45,193,108,188,108,188,45"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="275,5,328,31"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="284,43,240,86,209,110,206,106,237,82,280,39"/>
 </map>

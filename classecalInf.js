@@ -32,7 +32,7 @@ var classecalInf =
     [ "GetYSize", "classecalInf.html#a09bd77fc667998bda52d9444099a5988", null ],
     [ "GetZPos", "classecalInf.html#a2bcc0b03ad2cfb2082fe572966e4b173", null ],
     [ "InitVariables", "classecalInf.html#ad288e55374c342c88d5c2219ba8a77d7", null ],
-    [ "operator=", "classecalInf.html#a96c9ce0693b389885b69e68e8b54699a", null ],
+    [ "operator=", "classecalInf.html#a80d175861555778b70d04d029e160b50", null ],
     [ "fCellSize", "classecalInf.html#aa4a9bb583a49b873eacc4b635349951d", null ],
     [ "fEcalSize", "classecalInf.html#a6d30251b8d04cc8df43b51a4ebaefe9a", null ],
     [ "fEcalStr", "classecalInf.html#a82c78b561767c4d00dac514d4e5e1adc", null ],

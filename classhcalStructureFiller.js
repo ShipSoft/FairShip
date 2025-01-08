@@ -13,7 +13,7 @@ var classhcalStructureFiller =
     [ "GetUseSummableHits", "classhcalStructureFiller.html#a16f3e76134b47c1f3bed669b7bd5e39d", null ],
     [ "Init", "classhcalStructureFiller.html#afa264b7e1c257bb33b57c617ac5c2a98", null ],
     [ "LoopForMCPoints", "classhcalStructureFiller.html#ad23801fb4ea9c9df40716ffe5a77e53a", null ],
-    [ "operator=", "classhcalStructureFiller.html#ab4b82894aad3b73a0b68b0f9a63bd152", null ],
+    [ "operator=", "classhcalStructureFiller.html#a69f62c31bf308c88b6c379be6dba98da", null ],
     [ "SetParContainers", "classhcalStructureFiller.html#a6a478c18042bcf56833a006d1142e31e", null ],
     [ "SetUseMCPoints", "classhcalStructureFiller.html#ab5abc8f84c3ad217d0675c0210abe79d", null ],
     [ "StoreTrackInformation", "classhcalStructureFiller.html#a23bf8927f867f713a3661f46266743f2", null ],

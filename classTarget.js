@@ -18,7 +18,7 @@ var classTarget =
     [ "InitMedium", "classTarget.html#aae006f9a82fe35d763ae7a0b77e92158", null ],
     [ "MakeNuTargetPassive", "classTarget.html#af223e5af386b7b0f8fa52728c97025fa", null ],
     [ "MergeTopBot", "classTarget.html#a23231afd9a01a549f4c3a35bb2f5cb3d", null ],
-    [ "operator=", "classTarget.html#ac3a8eb155099d73219bff522dd4d3502", null ],
+    [ "operator=", "classTarget.html#a508e71ab2f92bac30f85f5c4cf92787e", null ],
     [ "PostTrack", "classTarget.html#a726a81dadd5989598e32333c1ec34d25", null ],
     [ "PreTrack", "classTarget.html#a95100d132f330791f661c6e2ef1f738e", null ],
     [ "ProcessHits", "classTarget.html#a1f7ee80e1734ae0a81cad65b05904c5d", null ],

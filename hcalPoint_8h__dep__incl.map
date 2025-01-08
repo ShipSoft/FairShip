@@ -1,9 +1,16 @@
 <map id="hcal/hcalPoint.h" name="hcal/hcalPoint.h">
-<area shape="rect" id="node1" title=" " alt="" coords="253,5,379,32"/>
-<area shape="rect" id="node2" href="$hcal_8cxx.html" title=" " alt="" coords="5,155,112,181"/>
-<area shape="rect" id="node3" href="$hcal_8h.html" title=" " alt="" coords="97,80,189,107"/>
-<area shape="rect" id="node5" href="$hcalAnalysisSimple_8cxx.html" title=" " alt="" coords="213,80,419,107"/>
-<area shape="rect" id="node6" href="$hcalPoint_8cxx.html" title=" " alt="" coords="443,80,583,107"/>
-<area shape="rect" id="node7" href="$hcalStructureFiller_8cxx.html" title=" " alt="" coords="608,80,805,107"/>
-<area shape="rect" id="node4" href="$hcalStructure_8cxx.html" title=" " alt="" coords="137,155,303,181"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="253,5,379,31"/>
+<area shape="rect" id="Node000002" href="$hcal_8cxx.html" title=" " alt="" coords="5,152,112,177"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="240,23,201,29,160,39,121,56,87,81,75,97,67,116,62,152,56,151,62,115,70,94,83,77,118,51,158,34,200,24,239,18"/>
+<area shape="rect" id="Node000003" href="$hcal_8h.html" title=" " alt="" coords="97,79,189,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="277,38,172,81,170,76,275,33"/>
+<area shape="rect" id="Node000005" href="$hcalAnalysisSimple_8cxx.html" title=" " alt="" coords="213,79,419,104"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="319,44,319,79,313,79,313,44"/>
+<area shape="rect" id="Node000006" href="$hcalPoint_8cxx.html" title=" " alt="" coords="443,79,583,104"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="361,33,482,76,480,81,360,38"/>
+<area shape="rect" id="Node000007" href="$hcalStructureFiller_8cxx.html" title=" " alt="" coords="608,79,805,104"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="392,30,644,76,643,81,392,36"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="120,115,74,154,71,150,117,111"/>
+<area shape="rect" id="Node000004" href="$hcalStructure_8cxx.html" title=" " alt="" coords="137,152,303,177"/>
+<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="167,111,209,150,206,154,163,115"/>
 </map>

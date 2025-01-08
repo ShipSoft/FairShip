@@ -1,59 +1,30 @@
 var dir_077298d11411e0d78a9900d1a8de44bb =
 [
     [ "CosmicsGenerator.cxx", "CosmicsGenerator_8cxx.html", null ],
-    [ "CosmicsGenerator.h", "CosmicsGenerator_8h.html", [
-      [ "Co3Rng", "classCo3Rng.html", "classCo3Rng" ],
-      [ "CosmicsGenerator", "classCosmicsGenerator.html", "classCosmicsGenerator" ]
-    ] ],
+    [ "CosmicsGenerator.h", "CosmicsGenerator_8h.html", "CosmicsGenerator_8h" ],
     [ "DPPythia8Generator.cxx", "DPPythia8Generator_8cxx.html", "DPPythia8Generator_8cxx" ],
-    [ "DPPythia8Generator.h", "DPPythia8Generator_8h.html", [
-      [ "DPPythia8Generator", "classDPPythia8Generator.html", "classDPPythia8Generator" ]
-    ] ],
+    [ "DPPythia8Generator.h", "DPPythia8Generator_8h.html", "DPPythia8Generator_8h" ],
     [ "EvtCalcGenerator.cxx", "EvtCalcGenerator_8cxx.html", null ],
-    [ "EvtCalcGenerator.h", "EvtCalcGenerator_8h.html", [
-      [ "EvtCalcGenerator", "classEvtCalcGenerator.html", "classEvtCalcGenerator" ]
-    ] ],
+    [ "EvtCalcGenerator.h", "EvtCalcGenerator_8h.html", "EvtCalcGenerator_8h" ],
     [ "FixedTargetGenerator.cxx", "FixedTargetGenerator_8cxx.html", "FixedTargetGenerator_8cxx" ],
-    [ "FixedTargetGenerator.h", "FixedTargetGenerator_8h.html", [
-      [ "FixedTargetGenerator", "classFixedTargetGenerator.html", "classFixedTargetGenerator" ]
-    ] ],
+    [ "FixedTargetGenerator.h", "FixedTargetGenerator_8h.html", "FixedTargetGenerator_8h" ],
     [ "GenieGenerator.cxx", "GenieGenerator_8cxx.html", null ],
-    [ "GenieGenerator.h", "GenieGenerator_8h.html", [
-      [ "GenieGenerator", "classGenieGenerator.html", "classGenieGenerator" ]
-    ] ],
+    [ "GenieGenerator.h", "GenieGenerator_8h.html", "GenieGenerator_8h" ],
     [ "GenLinkDef.h", "GenLinkDef_8h.html", null ],
     [ "HNLPythia8Generator.cxx", "HNLPythia8Generator_8cxx.html", "HNLPythia8Generator_8cxx" ],
-    [ "HNLPythia8Generator.h", "HNLPythia8Generator_8h.html", [
-      [ "PyTr1Rng", "classPyTr1Rng.html", "classPyTr1Rng" ],
-      [ "PyTr3Rng", "classPyTr3Rng.html", "classPyTr3Rng" ],
-      [ "HNLPythia8Generator", "classHNLPythia8Generator.html", "classHNLPythia8Generator" ]
-    ] ],
+    [ "HNLPythia8Generator.h", "HNLPythia8Generator_8h.html", "HNLPythia8Generator_8h" ],
     [ "MuDISGenerator.cxx", "MuDISGenerator_8cxx.html", null ],
-    [ "MuDISGenerator.h", "MuDISGenerator_8h.html", [
-      [ "MuDISGenerator", "classMuDISGenerator.html", "classMuDISGenerator" ]
-    ] ],
+    [ "MuDISGenerator.h", "MuDISGenerator_8h.html", "MuDISGenerator_8h" ],
     [ "MuonBackGenerator.cxx", "MuonBackGenerator_8cxx.html", null ],
-    [ "MuonBackGenerator.h", "MuonBackGenerator_8h.html", [
-      [ "MuonBackGenerator", "classMuonBackGenerator.html", "classMuonBackGenerator" ]
-    ] ],
+    [ "MuonBackGenerator.h", "MuonBackGenerator_8h.html", "MuonBackGenerator_8h" ],
     [ "NtupleGenerator.cxx", "NtupleGenerator_8cxx.html", null ],
-    [ "NtupleGenerator.h", "NtupleGenerator_8h.html", [
-      [ "NtupleGenerator", "classNtupleGenerator.html", "classNtupleGenerator" ]
-    ] ],
+    [ "NtupleGenerator.h", "NtupleGenerator_8h.html", "NtupleGenerator_8h" ],
     [ "NuageGenerator.cxx", "NuageGenerator_8cxx.html", null ],
-    [ "NuageGenerator.h", "NuageGenerator_8h.html", [
-      [ "NuageGenerator", "classNuageGenerator.html", "classNuageGenerator" ]
-    ] ],
+    [ "NuageGenerator.h", "NuageGenerator_8h.html", "NuageGenerator_8h" ],
     [ "Pythia6Generator.cxx", "Pythia6Generator_8cxx.html", null ],
-    [ "Pythia6Generator.h", "Pythia6Generator_8h.html", [
-      [ "Pythia6Generator", "classPythia6Generator.html", "classPythia6Generator" ]
-    ] ],
+    [ "Pythia6Generator.h", "Pythia6Generator_8h.html", "Pythia6Generator_8h" ],
     [ "Pythia8Generator.cxx", "Pythia8Generator_8cxx.html", "Pythia8Generator_8cxx" ],
-    [ "Pythia8Generator.h", "Pythia8Generator_8h.html", [
-      [ "Pythia8Generator", "classPythia8Generator.html", "classPythia8Generator" ]
-    ] ],
+    [ "Pythia8Generator.h", "Pythia8Generator_8h.html", "Pythia8Generator_8h" ],
     [ "tPythia6Generator.cxx", "tPythia6Generator_8cxx.html", null ],
-    [ "tPythia6Generator.h", "tPythia6Generator_8h.html", [
-      [ "tPythia6Generator", "classtPythia6Generator.html", "classtPythia6Generator" ]
-    ] ]
+    [ "tPythia6Generator.h", "tPythia6Generator_8h.html", "tPythia6Generator_8h" ]
 ];

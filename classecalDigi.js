@@ -14,7 +14,7 @@ var classecalDigi =
     [ "Init", "classecalDigi.html#a73e6b464413408f32a99da8aaeab6c9a", null ],
     [ "InitPython", "classecalDigi.html#a881ad865efcc6036e49c692629815480", null ],
     [ "LoadChannelMap", "classecalDigi.html#aea9136d86cec4a10aea19898f8f8856c", null ],
-    [ "operator=", "classecalDigi.html#a46c276457ff55e81767d4151cdaebbe5", null ],
+    [ "operator=", "classecalDigi.html#a21d1852c821a496c4d91adac0cd07a27", null ],
     [ "SetADCChannel", "classecalDigi.html#a330562aeb023c496404f027e80269225", null ],
     [ "SetADCMax", "classecalDigi.html#abc5ae09c3bd0cc83a4c17d094613b55d", null ],
     [ "SetADCNoise", "classecalDigi.html#abd639c72c47bd8d98a4d98da3f361139", null ],

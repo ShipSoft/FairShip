@@ -18,7 +18,7 @@ var classHpt =
     [ "GetNumberofTargets", "classHpt.html#a2f9fa34c199c0ad7c37360eae12962c8", null ],
     [ "Initialize", "classHpt.html#a017b53454a27a1680d25f16693a9ab40", null ],
     [ "InitMedium", "classHpt.html#a3b3efada00055e86a005e4128d02aa27", null ],
-    [ "operator=", "classHpt.html#a7429378fb13b05d416d3a464c93ce309", null ],
+    [ "operator=", "classHpt.html#a09d595c49a3d233dd08dc1a88a254158", null ],
     [ "PostTrack", "classHpt.html#aeb13310a5ede31a8bd2849e2f318fe30", null ],
     [ "PreTrack", "classHpt.html#a800c1e5f5c47331b5234a6fa4c9a6932", null ],
     [ "ProcessHits", "classHpt.html#aea4cdaa8ff04eefe77a414cdf2aa1f77", null ],

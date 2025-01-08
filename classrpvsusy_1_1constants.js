@@ -1,6 +1,6 @@
 var classrpvsusy_1_1constants =
 [
-    [ "__init__", "classrpvsusy_1_1constants.html#aecc0d47561a5e76b52dfd0b68c6943d5", null ],
+    [ "__init__", "classrpvsusy_1_1constants.html#a7f226210c5bed27d43001dc1b2aa3edd", null ],
     [ "decayConstant", "classrpvsusy_1_1constants.html#afb4252b23e64de6408de9b8641e7df35", null ],
     [ "GF", "classrpvsusy_1_1constants.html#acd18aad11e00b6fd0391a5ec277307a5", null ],
     [ "GST2", "classrpvsusy_1_1constants.html#ae426ac36378adc5f15e3b8b447706b80", null ],

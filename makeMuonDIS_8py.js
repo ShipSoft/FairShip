@@ -1,7 +1,7 @@
 var makeMuonDIS_8py =
 [
-    [ "getMasssq", "makeMuonDIS_8py.html#ad31461bc98e6a276fb3cba7e0e56ea63", null ],
-    [ "rotate", "makeMuonDIS_8py.html#a7f6ba08a95beb7f0e233c7cc840c7f53", null ],
+    [ "getMasssq", "makeMuonDIS_8py.html#a5b73a925f026797a1ba5831465adf836", null ],
+    [ "rotate", "makeMuonDIS_8py.html#af0213094112fd3e2860ab1df5a483647", null ],
     [ "cphi", "makeMuonDIS_8py.html#abccbe528fd31ded20bdaafacc4cf4d29", null ],
     [ "ctheta", "makeMuonDIS_8py.html#aa60f44b75eb6fe77584e456f57fd0112", null ],
     [ "did", "makeMuonDIS_8py.html#aa93bf6b670014cbf46f36570d3e8f4f7", null ],
@@ -18,11 +18,11 @@ var makeMuonDIS_8py =
     [ "iMuonBranch", "makeMuonDIS_8py.html#aaf9d151a1322a5eaf28ed02037cb6a28", null ],
     [ "kc", "makeMuonDIS_8py.html#a97a1dc6075489da0ebf469de625d5ac9", null ],
     [ "m", "makeMuonDIS_8py.html#aa99a2f52abfa189d36df4219394a2336", null ],
-    [ "masssq", "makeMuonDIS_8py.html#aea03e176ca77c739d4294c1ea8a4009a", null ],
+    [ "masssq", "makeMuonDIS_8py.html#aad6074c92021b815fcb6991e9e346baa", null ],
     [ "mu", "makeMuonDIS_8py.html#af212263aad9635616793018f82687444", null ],
     [ "muonIn", "makeMuonDIS_8py.html#afb6140d0fecbb3e64e2fa63ce42990c3", null ],
     [ "muPart", "makeMuonDIS_8py.html#a5617f749af576f63d0a7e52d9b085189", null ],
-    [ "mutype", "makeMuonDIS_8py.html#a16db02aaa9304108c4806bede18f350e", null ],
+    [ "mutype", "makeMuonDIS_8py.html#a9b07519f354a7634f0da0ed8f56d5bb0", null ],
     [ "myPythia", "makeMuonDIS_8py.html#a0b59935c502dda77201f6c39411212ca", null ],
     [ "nEnd", "makeMuonDIS_8py.html#afdd862bd43cbb957137891fe57df54ff", null ],
     [ "nJob", "makeMuonDIS_8py.html#a6d7cbd5b2224f4f5916ce0796e451edc", null ],

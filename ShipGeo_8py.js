@@ -1,7 +1,7 @@
 var ShipGeo_8py =
 [
-    [ "ShipGeo", "classShipGeo_1_1ShipGeo.html", "classShipGeo_1_1ShipGeo" ],
-    [ "zPositions", "ShipGeo_8py.html#ac4a1df4dcdd1c23b332ee6c7ca427b1f", null ],
+    [ "ShipGeo.ShipGeo", "classShipGeo_1_1ShipGeo.html", "classShipGeo_1_1ShipGeo" ],
+    [ "zPositions", "ShipGeo_8py.html#ae75662612a3144ba341029ad08499e4f", null ],
     [ "Bfield", "ShipGeo_8py.html#a29678f9752710cbda1e31fbf5f86b27c", null ],
     [ "decayVolume", "ShipGeo_8py.html#ac17787d035eb717acfe7fdcd20d6c45a", null ],
     [ "dZ1", "ShipGeo_8py.html#a5d54932e7d5e60dee36b56470ae84a55", null ],

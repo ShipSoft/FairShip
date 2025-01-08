@@ -1,6 +1,9 @@
 <map id="hcal/hcalModuleMC.h" name="hcal/hcalModuleMC.h">
-<area shape="rect" id="node1" title=" " alt="" coords="209,5,370,32"/>
-<area shape="rect" id="node2" href="$hcalModuleMC_8cxx.html" title=" " alt="" coords="5,80,181,107"/>
-<area shape="rect" id="node3" href="$hcalStructure_8cxx.html" title=" " alt="" coords="206,80,373,107"/>
-<area shape="rect" id="node4" href="$hcalStructureFiller_8cxx.html" title=" " alt="" coords="397,80,595,107"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="209,5,370,31"/>
+<area shape="rect" id="Node000002" href="$hcalModuleMC_8cxx.html" title=" " alt="" coords="5,79,181,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="246,38,126,81,124,76,244,33"/>
+<area shape="rect" id="Node000003" href="$hcalStructure_8cxx.html" title=" " alt="" coords="206,79,373,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="292,44,292,79,287,79,287,44"/>
+<area shape="rect" id="Node000004" href="$hcalStructureFiller_8cxx.html" title=" " alt="" coords="397,79,595,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="336,33,463,76,462,81,335,38"/>
 </map>

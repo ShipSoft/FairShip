@@ -1,8 +1,15 @@
 <map id="hcalStructureFiller" name="hcalStructureFiller">
-<area shape="rect" id="node1" title=" " alt="" coords="89,260,229,287"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,171,80,197"/>
-<area shape="rect" id="node3" href="$classhcalStructure.html" title=" " alt="" coords="105,171,213,197"/>
-<area shape="rect" id="node4" title=" " alt="" coords="103,81,180,108"/>
-<area shape="rect" id="node5" href="$classhcalInf.html" title=" " alt="" coords="216,81,283,108"/>
-<area shape="rect" id="node6" title=" " alt="" coords="213,5,285,32"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="89,256,229,281"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,168,80,193"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="71,199,144,254,141,258,68,204"/>
+<area shape="rect" id="Node000003" href="$classhcalStructure.html" title=" " alt="" coords="105,168,213,193"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="161,207,161,255,156,255,156,207"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="103,80,180,105"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="149,118,159,167,154,168,144,119"/>
+<area shape="rect" id="Node000005" href="$classhcalInf.html" title=" " alt="" coords="216,80,283,105"/>
+<area shape="poly" id="edge7_Node000001_Node000005" title=" " alt="" coords="250,120,243,156,228,195,201,230,174,257,170,254,197,227,223,192,238,155,245,119"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="211,114,189,131,175,150,165,169,161,167,170,147,185,127,208,110"/>
+<area shape="poly" id="edge6_Node000005_Node000005" title=" " alt="" coords="298,84,309,93,301,101,283,102,283,97,299,96,304,93,295,89"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="213,5,285,31"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="252,45,252,80,247,80,247,45"/>
 </map>

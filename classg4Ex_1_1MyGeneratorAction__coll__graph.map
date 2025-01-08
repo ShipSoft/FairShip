@@ -1,4 +1,5 @@
 <map id="g4Ex.MyGeneratorAction" name="g4Ex.MyGeneratorAction">
-<area shape="rect" id="node1" title=" " alt="" coords="31,80,215,107"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,5,241,32"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="31,79,215,104"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,5,241,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="126,44,126,79,121,79,121,44"/>
 </map>

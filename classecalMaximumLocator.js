@@ -10,7 +10,7 @@ var classecalMaximumLocator =
     [ "Finish", "classecalMaximumLocator.html#a81dd963c0d391e7214f752632830708b", null ],
     [ "Init", "classecalMaximumLocator.html#a64ba1768b81fac8588d3939072f15045", null ],
     [ "InitPython", "classecalMaximumLocator.html#ae7286e546d8c7f5656c04b260ed02998", null ],
-    [ "operator=", "classecalMaximumLocator.html#a46cca451b44e84119e565b85d4a1270f", null ],
+    [ "operator=", "classecalMaximumLocator.html#a7b8c96f9cb7b0fd6d84dfb7298fc7695", null ],
     [ "SetECut", "classecalMaximumLocator.html#a24ca3ac59c8c1d65adf35c7bb76a209e", null ],
     [ "fECut", "classecalMaximumLocator.html#abf04c85d8fd01b0dca24746c31e57fe5", null ],
     [ "fEvent", "classecalMaximumLocator.html#ac251e1c356973509e2aeeba2b29f205e", null ],

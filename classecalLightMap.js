@@ -9,7 +9,7 @@ var classecalLightMap =
     [ "GetNum", "classecalLightMap.html#a2d437aed2bd337ff41e6bf696f20884a", null ],
     [ "Init", "classecalLightMap.html#a3b821ce102739e1a057ef2dbbb6504d2", null ],
     [ "Normalize", "classecalLightMap.html#a0f5b80a914f0b1ab28af081766f6cb56", null ],
-    [ "operator=", "classecalLightMap.html#ab1a3766eb87efb42b30615abee3daccd", null ],
+    [ "operator=", "classecalLightMap.html#a22b0642f85f5e4dd52b3222cd51e7453", null ],
     [ "fData", "classecalLightMap.html#a7f4df5cd77494ada282f50cc30f98e21", null ],
     [ "fS", "classecalLightMap.html#a2fd85141cb48d0daffed795ab10106a0", null ],
     [ "fSize", "classecalLightMap.html#a2964a2f379893b5ed29bce37265d4f07", null ],

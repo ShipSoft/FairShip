@@ -1,9 +1,16 @@
 <map id="ecal/ecalCell.cxx" name="ecal/ecalCell.cxx">
-<area shape="rect" id="node1" title=" " alt="" coords="227,5,359,32"/>
-<area shape="rect" id="node2" href="$ecalCell_8h.html" title=" " alt="" coords="163,80,249,107"/>
-<area shape="rect" id="node6" title=" " alt="" coords="255,155,341,181"/>
-<area shape="rect" id="node7" title=" " alt="" coords="330,80,410,107"/>
-<area shape="rect" id="node3" title=" " alt="" coords="5,155,89,181"/>
-<area shape="rect" id="node4" title=" " alt="" coords="114,155,157,181"/>
-<area shape="rect" id="node5" title=" " alt="" coords="181,155,231,181"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="227,5,359,31"/>
+<area shape="rect" id="Node000002" href="$ecalCell_8h.html" title=" " alt="" coords="163,79,249,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="280,33,232,72,229,68,277,29"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="255,152,341,177"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="296,31,300,138,294,138,290,31"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="330,79,410,104"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="307,29,349,67,345,71,303,33"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,152,89,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="182,106,87,149,85,144,179,102"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="114,152,157,177"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="196,106,158,144,154,140,192,102"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="181,152,231,177"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="209,104,209,138,203,138,203,104"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="222,102,274,141,271,146,219,106"/>
 </map>

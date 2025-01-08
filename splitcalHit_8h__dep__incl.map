@@ -1,6 +1,9 @@
 <map id="splitcal/splitcalHit.h" name="splitcal/splitcalHit.h">
-<area shape="rect" id="node1" title=" " alt="" coords="123,5,274,32"/>
-<area shape="rect" id="node2" href="$splitcalCluster_8h.html" title=" " alt="" coords="13,80,190,107"/>
-<area shape="rect" id="node4" href="$splitcalHit_8cxx.html" title=" " alt="" coords="214,80,381,107"/>
-<area shape="rect" id="node3" href="$splitcalCluster_8cxx.html" title=" " alt="" coords="5,155,197,181"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="123,5,274,31"/>
+<area shape="rect" id="Node000002" href="$splitcalCluster_8h.html" title=" " alt="" coords="13,79,190,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="173,41,119,81,116,76,170,37"/>
+<area shape="rect" id="Node000004" href="$splitcalHit_8cxx.html" title=" " alt="" coords="214,79,381,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="227,36,283,76,280,81,224,41"/>
+<area shape="rect" id="Node000003" href="$splitcalCluster_8cxx.html" title=" " alt="" coords="5,152,197,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="104,118,104,152,99,152,99,118"/>
 </map>

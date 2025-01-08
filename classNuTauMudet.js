@@ -16,7 +16,7 @@ var classNuTauMudet =
     [ "GetCollection", "classNuTauMudet.html#ad4ed6875c2b1156fa2819521a0f5e7ee", null ],
     [ "Initialize", "classNuTauMudet.html#a371d8b00f4898b9fa37a79fdf57cd920", null ],
     [ "InitMedium", "classNuTauMudet.html#a45d50ac4793281735bd4dc0c03146b95", null ],
-    [ "operator=", "classNuTauMudet.html#a7cbc4da2cb0c8424e0187c12b717a9e3", null ],
+    [ "operator=", "classNuTauMudet.html#a09549b5a932bc72c101d22735b552cf6", null ],
     [ "PostTrack", "classNuTauMudet.html#aadf30f66647c43e80c6f3caa170d51db", null ],
     [ "PreTrack", "classNuTauMudet.html#a4edb967cb707c2d7ca7930f865f1c345", null ],
     [ "ProcessHits", "classNuTauMudet.html#a831b80e3beb8754b8ca95f9cbb65bae5", null ],

@@ -13,7 +13,7 @@ var classecalClusterFinder =
     [ "InitPython", "classecalClusterFinder.html#a0d0574289b979990d09732531bd74ff4", null ],
     [ "MinClusterE", "classecalClusterFinder.html#a173dc8a1eeb72ba3baece622736d1793", null ],
     [ "MinMaxE", "classecalClusterFinder.html#abbf59254cd42fc7140649c4df1ee21aa", null ],
-    [ "operator=", "classecalClusterFinder.html#a3cdd1af448ad5cc808bb88c7c748d25e", null ],
+    [ "operator=", "classecalClusterFinder.html#a8fc3c25c17f06902fb4dd197ff1d3e35", null ],
     [ "SetMinClusterE", "classecalClusterFinder.html#ae79c93615e1ed20efcd9c94dbf01fbf6", null ],
     [ "SetMinMaxE", "classecalClusterFinder.html#ab31f097015d042219c77708427a4b874", null ],
     [ "fCalib", "classecalClusterFinder.html#a83c27afab941d7b6c777dd86ec112d74", null ],

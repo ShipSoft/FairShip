@@ -1,10 +1,17 @@
 <map id="ShipHit" name="ShipHit">
-<area shape="rect" id="node1" title=" " alt="" coords="357,80,426,107"/>
-<area shape="rect" id="node3" href="$classTimeDetHit.html" title=" " alt="" coords="5,155,103,181"/>
-<area shape="rect" id="node4" href="$classUpstreamTaggerHit.html" title=" " alt="" coords="127,155,275,181"/>
-<area shape="rect" id="node5" href="$classmuonHit.html" title=" " alt="" coords="299,155,377,181"/>
-<area shape="rect" id="node6" href="$classsplitcalHit.html" title=" " alt="" coords="402,155,490,181"/>
-<area shape="rect" id="node7" href="$classstrawtubesHit.html" title=" " alt="" coords="515,155,628,181"/>
-<area shape="rect" id="node8" href="$classvetoHit.html" title=" " alt="" coords="652,155,723,181"/>
-<area shape="rect" id="node2" title=" " alt="" coords="355,5,427,32"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="357,79,426,104"/>
+<area shape="rect" id="Node000003" href="$classTimeDetHit.html" title=" " alt="" coords="5,152,103,177"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="344,105,103,156,102,151,343,100"/>
+<area shape="rect" id="Node000004" href="$classUpstreamTaggerHit.html" title=" " alt="" coords="127,152,275,177"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="349,111,233,154,231,149,347,106"/>
+<area shape="rect" id="Node000005" href="$classmuonHit.html" title=" " alt="" coords="299,152,377,177"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="377,117,349,153,345,150,372,113"/>
+<area shape="rect" id="Node000006" href="$classsplitcalHit.html" title=" " alt="" coords="402,152,490,177"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="411,113,439,150,435,154,407,117"/>
+<area shape="rect" id="Node000007" href="$classstrawtubesHit.html" title=" " alt="" coords="515,152,628,177"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="434,106,543,149,541,154,432,111"/>
+<area shape="rect" id="Node000008" href="$classvetoHit.html" title=" " alt="" coords="652,152,723,177"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="440,101,641,149,652,152,651,157,640,155,439,107"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="355,5,427,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="394,44,394,79,389,79,389,44"/>
 </map>

@@ -1,8 +1,14 @@
 <map id="ecalDigi" name="ecalDigi">
-<area shape="rect" id="node1" title=" " alt="" coords="27,260,101,287"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,171,80,197"/>
-<area shape="rect" id="node3" href="$classecalStructure.html" title=" " alt="" coords="105,171,213,197"/>
-<area shape="rect" id="node4" title=" " alt="" coords="85,81,163,108"/>
-<area shape="rect" id="node5" href="$classecalInf.html" title=" " alt="" coords="187,81,253,108"/>
-<area shape="rect" id="node6" title=" " alt="" coords="184,5,256,32"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="27,256,101,281"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,168,80,193"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="51,206,64,255,58,256,46,207"/>
+<area shape="rect" id="Node000003" href="$classecalStructure.html" title=" " alt="" coords="105,168,213,193"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="137,205,79,257,75,253,134,201"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="85,80,163,105"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="136,117,156,166,151,168,131,119"/>
+<area shape="rect" id="Node000005" href="$classecalInf.html" title=" " alt="" coords="187,80,253,105"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="206,118,169,169,165,166,201,115"/>
+<area shape="poly" id="edge6_Node000005_Node000005" title=" " alt="" coords="269,84,280,93,271,101,254,102,253,97,269,96,275,93,266,89"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="184,5,256,31"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="223,45,223,80,217,80,217,45"/>
 </map>

@@ -1,6 +1,9 @@
 <map id="ecal/ecalClusterCalibration.h" name="ecal/ecalClusterCalibration.h">
-<area shape="rect" id="node1" title=" " alt="" coords="245,5,454,32"/>
-<area shape="rect" id="node2" href="$ecalClusterCalibration_8cxx.html" title=" " alt="" coords="5,80,229,107"/>
-<area shape="rect" id="node3" href="$ecalClusterFinder_8cxx.html" title=" " alt="" coords="253,80,445,107"/>
-<area shape="rect" id="node4" href="$ecalReco_8cxx.html" title=" " alt="" coords="469,80,608,107"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="245,5,454,31"/>
+<area shape="rect" id="Node000002" href="$ecalClusterCalibration_8cxx.html" title=" " alt="" coords="5,79,229,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="300,37,156,81,154,76,298,32"/>
+<area shape="rect" id="Node000003" href="$ecalClusterFinder_8cxx.html" title=" " alt="" coords="253,79,445,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="352,44,352,79,347,79,347,44"/>
+<area shape="rect" id="Node000004" href="$ecalReco_8cxx.html" title=" " alt="" coords="469,79,608,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="393,33,509,76,507,81,392,38"/>
 </map>

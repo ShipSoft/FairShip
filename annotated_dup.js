@@ -4,11 +4,11 @@ var annotated_dup =
       [ "DarkPhoton", "classdarkphoton_1_1DarkPhoton.html", "classdarkphoton_1_1DarkPhoton" ]
     ] ],
     [ "eventDisplay", "namespaceeventDisplay.html", [
-      [ "DrawVetoDigi", "classeventDisplay_1_1DrawVetoDigi.html", "classeventDisplay_1_1DrawVetoDigi" ],
       [ "DrawEcalCluster", "classeventDisplay_1_1DrawEcalCluster.html", "classeventDisplay_1_1DrawEcalCluster" ],
       [ "DrawTracks", "classeventDisplay_1_1DrawTracks.html", "classeventDisplay_1_1DrawTracks" ],
-      [ "IO", "classeventDisplay_1_1IO.html", "classeventDisplay_1_1IO" ],
+      [ "DrawVetoDigi", "classeventDisplay_1_1DrawVetoDigi.html", "classeventDisplay_1_1DrawVetoDigi" ],
       [ "EventLoop", "classeventDisplay_1_1EventLoop.html", "classeventDisplay_1_1EventLoop" ],
+      [ "IO", "classeventDisplay_1_1IO.html", "classeventDisplay_1_1IO" ],
       [ "Rulers", "classeventDisplay_1_1Rulers.html", "classeventDisplay_1_1Rulers" ]
     ] ],
     [ "experimental", "namespaceexperimental.html", [
@@ -17,25 +17,25 @@ var annotated_dup =
       ] ]
     ] ],
     [ "g4Ex", "namespaceg4Ex.html", [
+      [ "MyEventAction", "classg4Ex_1_1MyEventAction.html", "classg4Ex_1_1MyEventAction" ],
       [ "MyGeneratorAction", "classg4Ex_1_1MyGeneratorAction.html", "classg4Ex_1_1MyGeneratorAction" ],
       [ "MyRunAction", "classg4Ex_1_1MyRunAction.html", "classg4Ex_1_1MyRunAction" ],
-      [ "MyEventAction", "classg4Ex_1_1MyEventAction.html", "classg4Ex_1_1MyEventAction" ],
       [ "MySteppingAction", "classg4Ex_1_1MySteppingAction.html", "classg4Ex_1_1MySteppingAction" ],
       [ "MyTrackingAction", "classg4Ex_1_1MyTrackingAction.html", "classg4Ex_1_1MyTrackingAction" ],
       [ "ScoreSD", "classg4Ex_1_1ScoreSD.html", "classg4Ex_1_1ScoreSD" ]
     ] ],
     [ "g4Ex_args", "namespaceg4Ex__args.html", [
+      [ "MyEventAction", "classg4Ex__args_1_1MyEventAction.html", "classg4Ex__args_1_1MyEventAction" ],
       [ "MyGeneratorAction", "classg4Ex__args_1_1MyGeneratorAction.html", "classg4Ex__args_1_1MyGeneratorAction" ],
       [ "MyRunAction", "classg4Ex__args_1_1MyRunAction.html", "classg4Ex__args_1_1MyRunAction" ],
-      [ "MyEventAction", "classg4Ex__args_1_1MyEventAction.html", "classg4Ex__args_1_1MyEventAction" ],
       [ "MySteppingAction", "classg4Ex__args_1_1MySteppingAction.html", "classg4Ex__args_1_1MySteppingAction" ],
       [ "MyTrackingAction", "classg4Ex__args_1_1MyTrackingAction.html", "classg4Ex__args_1_1MyTrackingAction" ],
       [ "ScoreSD", "classg4Ex__args_1_1ScoreSD.html", "classg4Ex__args_1_1ScoreSD" ]
     ] ],
     [ "g4Ex_gap", "namespaceg4Ex__gap.html", [
+      [ "MyEventAction", "classg4Ex__gap_1_1MyEventAction.html", "classg4Ex__gap_1_1MyEventAction" ],
       [ "MyGeneratorAction", "classg4Ex__gap_1_1MyGeneratorAction.html", "classg4Ex__gap_1_1MyGeneratorAction" ],
       [ "MyRunAction", "classg4Ex__gap_1_1MyRunAction.html", "classg4Ex__gap_1_1MyRunAction" ],
-      [ "MyEventAction", "classg4Ex__gap_1_1MyEventAction.html", "classg4Ex__gap_1_1MyEventAction" ],
       [ "MySteppingAction", "classg4Ex__gap_1_1MySteppingAction.html", "classg4Ex__gap_1_1MySteppingAction" ],
       [ "MyTrackingAction", "classg4Ex__gap_1_1MyTrackingAction.html", "classg4Ex__gap_1_1MyTrackingAction" ],
       [ "MyTrackingActionD", "classg4Ex__gap_1_1MyTrackingActionD.html", "classg4Ex__gap_1_1MyTrackingActionD" ],
@@ -47,16 +47,16 @@ var annotated_dup =
     [ "hnl", "namespacehnl.html", [
       [ "CKMmatrix", "classhnl_1_1CKMmatrix.html", "classhnl_1_1CKMmatrix" ],
       [ "constants", "classhnl_1_1constants.html", "classhnl_1_1constants" ],
-      [ "HNLbranchings", "classhnl_1_1HNLbranchings.html", "classhnl_1_1HNLbranchings" ],
-      [ "HNL", "classhnl_1_1HNL.html", "classhnl_1_1HNL" ]
+      [ "HNL", "classhnl_1_1HNL.html", "classhnl_1_1HNL" ],
+      [ "HNLbranchings", "classhnl_1_1HNLbranchings.html", "classhnl_1_1HNLbranchings" ]
     ] ],
     [ "method_logger", "namespacemethod__logger.html", [
       [ "MethodLogger", "classmethod__logger_1_1MethodLogger.html", "classmethod__logger_1_1MethodLogger" ]
     ] ],
     [ "rootpyPickler", "namespacerootpyPickler.html", [
       [ "IO_Wrapper", "classrootpyPickler_1_1IO__Wrapper.html", "classrootpyPickler_1_1IO__Wrapper" ],
-      [ "ROOT_Proxy", "classrootpyPickler_1_1ROOT__Proxy.html", "classrootpyPickler_1_1ROOT__Proxy" ],
       [ "Pickler", "classrootpyPickler_1_1Pickler.html", "classrootpyPickler_1_1Pickler" ],
+      [ "ROOT_Proxy", "classrootpyPickler_1_1ROOT__Proxy.html", "classrootpyPickler_1_1ROOT__Proxy" ],
       [ "Unpickler", "classrootpyPickler_1_1Unpickler.html", "classrootpyPickler_1_1Unpickler" ]
     ] ],
     [ "rootUtils", "namespacerootUtils.html", [
@@ -64,8 +64,8 @@ var annotated_dup =
     ] ],
     [ "rpvsusy", "namespacerpvsusy.html", [
       [ "constants", "classrpvsusy_1_1constants.html", "classrpvsusy_1_1constants" ],
-      [ "RPVSUSYbranchings", "classrpvsusy_1_1RPVSUSYbranchings.html", "classrpvsusy_1_1RPVSUSYbranchings" ],
-      [ "RPVSUSY", "classrpvsusy_1_1RPVSUSY.html", "classrpvsusy_1_1RPVSUSY" ]
+      [ "RPVSUSY", "classrpvsusy_1_1RPVSUSY.html", "classrpvsusy_1_1RPVSUSY" ],
+      [ "RPVSUSYbranchings", "classrpvsusy_1_1RPVSUSYbranchings.html", "classrpvsusy_1_1RPVSUSYbranchings" ]
     ] ],
     [ "shipDigiReco", "namespaceshipDigiReco.html", [
       [ "ShipDigiReco", "classshipDigiReco_1_1ShipDigiReco.html", "classshipDigiReco_1_1ShipDigiReco" ]
@@ -75,9 +75,9 @@ var annotated_dup =
     ] ],
     [ "ShipGeoConfig", "namespaceShipGeoConfig.html", [
       [ "_SingletonDict", "classShipGeoConfig_1_1__SingletonDict.html", "classShipGeoConfig_1_1__SingletonDict" ],
-      [ "ConfigRegistry", "classShipGeoConfig_1_1ConfigRegistry.html", "classShipGeoConfig_1_1ConfigRegistry" ],
       [ "AttrDict", "classShipGeoConfig_1_1AttrDict.html", "classShipGeoConfig_1_1AttrDict" ],
-      [ "Config", "classShipGeoConfig_1_1Config.html", "classShipGeoConfig_1_1Config" ]
+      [ "Config", "classShipGeoConfig_1_1Config.html", "classShipGeoConfig_1_1Config" ],
+      [ "ConfigRegistry", "classShipGeoConfig_1_1ConfigRegistry.html", "classShipGeoConfig_1_1ConfigRegistry" ]
     ] ],
     [ "shipPid", "namespaceshipPid.html", [
       [ "Task", "classshipPid_1_1Task.html", "classshipPid_1_1Task" ]
@@ -98,11 +98,11 @@ var annotated_dup =
       [ "Block", "classstudy__thinTarget_1_1Block.html", "classstudy__thinTarget_1_1Block" ]
     ] ],
     [ "test_shipGeoConfig", "namespacetest__shipGeoConfig.html", [
-      [ "TestSingleConfig", "classtest__shipGeoConfig_1_1TestSingleConfig.html", "classtest__shipGeoConfig_1_1TestSingleConfig" ],
       [ "TestInheritance", "classtest__shipGeoConfig_1_1TestInheritance.html", "classtest__shipGeoConfig_1_1TestInheritance" ],
-      [ "TestStringSingleConfig", "classtest__shipGeoConfig_1_1TestStringSingleConfig.html", "classtest__shipGeoConfig_1_1TestStringSingleConfig" ],
+      [ "TestSingleConfig", "classtest__shipGeoConfig_1_1TestSingleConfig.html", "classtest__shipGeoConfig_1_1TestSingleConfig" ],
       [ "TestStringConditionalConfig", "classtest__shipGeoConfig_1_1TestStringConditionalConfig.html", "classtest__shipGeoConfig_1_1TestStringConditionalConfig" ],
-      [ "TestStringNewLine", "classtest__shipGeoConfig_1_1TestStringNewLine.html", "classtest__shipGeoConfig_1_1TestStringNewLine" ]
+      [ "TestStringNewLine", "classtest__shipGeoConfig_1_1TestStringNewLine.html", "classtest__shipGeoConfig_1_1TestStringNewLine" ],
+      [ "TestStringSingleConfig", "classtest__shipGeoConfig_1_1TestStringSingleConfig.html", "classtest__shipGeoConfig_1_1TestStringSingleConfig" ]
     ] ],
     [ "TTCluster", "namespaceTTCluster.html", [
       [ "TTCluster", "classTTCluster_1_1TTCluster.html", "classTTCluster_1_1TTCluster" ]

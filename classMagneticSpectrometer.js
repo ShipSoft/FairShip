@@ -16,7 +16,7 @@ var classMagneticSpectrometer =
     [ "GetCollection", "classMagneticSpectrometer.html#a5e4876157658941f7365305cb02816a1", null ],
     [ "Initialize", "classMagneticSpectrometer.html#a4ec82d683552fb80db2906cd4639e771", null ],
     [ "InitMedium", "classMagneticSpectrometer.html#a418bd7f6efacf510e2eccd17a08bfb42", null ],
-    [ "operator=", "classMagneticSpectrometer.html#a152d60c00ec3fcabf51338df2c4a19b9", null ],
+    [ "operator=", "classMagneticSpectrometer.html#a104158f8f18b49a683cae085ca363114", null ],
     [ "PostTrack", "classMagneticSpectrometer.html#a2d7754fcb4ba80fe074fe016a68dc29f", null ],
     [ "PreTrack", "classMagneticSpectrometer.html#a2cfb7a2da6a3e37a9ba72f3b2f49ea07", null ],
     [ "ProcessHits", "classMagneticSpectrometer.html#a5b940ad2e6c1f31501ba2fe84f243665", null ],

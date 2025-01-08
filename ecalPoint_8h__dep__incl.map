@@ -1,10 +1,18 @@
 <map id="ecal/ecalPoint.h" name="ecal/ecalPoint.h">
-<area shape="rect" id="node1" title=" " alt="" coords="355,5,480,32"/>
-<area shape="rect" id="node2" href="$ecal_8cxx.html" title=" " alt="" coords="5,155,112,181"/>
-<area shape="rect" id="node3" href="$ecal_8h.html" title=" " alt="" coords="97,80,189,107"/>
-<area shape="rect" id="node5" href="$ecalAnalysisSimple_8cxx.html" title=" " alt="" coords="213,80,419,107"/>
-<area shape="rect" id="node6" href="$ecalDrawer_8cxx.html" title=" " alt="" coords="443,80,597,107"/>
-<area shape="rect" id="node7" href="$ecalPoint_8cxx.html" title=" " alt="" coords="621,80,761,107"/>
-<area shape="rect" id="node8" href="$ecalStructureFiller_8cxx.html" title=" " alt="" coords="785,80,983,107"/>
-<area shape="rect" id="node4" href="$ecalStructure_8cxx.html" title=" " alt="" coords="137,155,303,181"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="355,5,480,31"/>
+<area shape="rect" id="Node000002" href="$ecal_8cxx.html" title=" " alt="" coords="5,152,112,177"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="341,27,270,33,195,44,130,60,105,70,87,81,75,97,67,116,61,152,56,151,62,114,70,94,84,77,102,65,128,55,194,39,270,28,341,21"/>
+<area shape="rect" id="Node000003" href="$ecal_8h.html" title=" " alt="" coords="97,79,189,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="361,37,188,81,186,76,359,32"/>
+<area shape="rect" id="Node000005" href="$ecalAnalysisSimple_8cxx.html" title=" " alt="" coords="213,79,419,104"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="391,41,334,81,331,76,388,36"/>
+<area shape="rect" id="Node000006" href="$ecalDrawer_8cxx.html" title=" " alt="" coords="443,79,597,104"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="447,36,505,76,502,81,444,41"/>
+<area shape="rect" id="Node000007" href="$ecalPoint_8cxx.html" title=" " alt="" coords="621,79,761,104"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="475,32,647,76,646,81,474,37"/>
+<area shape="rect" id="Node000008" href="$ecalStructureFiller_8cxx.html" title=" " alt="" coords="785,79,983,104"/>
+<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="494,28,809,76,809,81,493,34"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="120,115,74,154,71,150,117,111"/>
+<area shape="rect" id="Node000004" href="$ecalStructure_8cxx.html" title=" " alt="" coords="137,152,303,177"/>
+<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="167,111,209,150,206,154,163,115"/>
 </map>

@@ -5,7 +5,7 @@ var classDPPythia8Generator =
     [ "ClassDef", "classDPPythia8Generator.html#aa4030d536b4a0c5e93b0849670cff60c", null ],
     [ "GetDPId", "classDPPythia8Generator.html#ad6164ba6a9f656989e2bae0121d7300b", null ],
     [ "GetMom", "classDPPythia8Generator.html#a704acb88857d5fc89fbc4f1cd3a8300a", null ],
-    [ "getPythiaInstance", "classDPPythia8Generator.html#ae91c0cff04cf1f784377a4776b9336a0", null ],
+    [ "getPythiaInstance", "classDPPythia8Generator.html#aa1c7f5d8c5355e16a5b74e162f471275", null ],
     [ "Init", "classDPPythia8Generator.html#ab2db53275b4ef33582596879be392098", null ],
     [ "IsPbrem", "classDPPythia8Generator.html#a952b6cdbc59cc8c2edc7433614298038", null ],
     [ "List", "classDPPythia8Generator.html#aaf5583d052a6739dc78e1a76dce564bb", null ],

@@ -1,9 +1,16 @@
 <map id="ecal" name="ecal">
-<area shape="rect" id="node1" title=" " alt="" coords="245,185,294,212"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,81,107,108"/>
-<area shape="rect" id="node3" href="$classecalLightMap.html" title=" " alt="" coords="131,81,240,108"/>
-<area shape="rect" id="node4" title=" " alt="" coords="147,5,224,32"/>
-<area shape="rect" id="node5" title=" " alt="" coords="265,81,383,108"/>
-<area shape="rect" id="node6" href="$classecalInf.html" title=" " alt="" coords="408,81,475,108"/>
-<area shape="rect" id="node7" title=" " alt="" coords="405,5,477,32"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="265,183,314,208"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,80,107,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="96,108,208,156,265,181,263,186,206,161,94,113"/>
+<area shape="rect" id="Node000003" href="$classecalInf.html" title=" " alt="" coords="131,80,197,105"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="190,112,277,181,273,185,187,116"/>
+<area shape="poly" id="edge4_Node000003_Node000003" title=" " alt="" coords="213,84,224,93,215,101,198,102,197,97,213,96,219,93,210,89"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="128,5,200,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="167,45,167,80,161,80,161,45"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="273,80,391,105"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="324,119,297,184,292,182,319,117"/>
+<area shape="rect" id="Node000006" href="$classecalLightMap.html" title=" " alt="" coords="416,80,525,105"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="443,115,365,161,315,185,313,181,363,156,440,111"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="432,5,509,31"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="473,45,473,80,468,80,468,45"/>
 </map>

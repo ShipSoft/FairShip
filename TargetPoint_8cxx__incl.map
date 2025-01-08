@@ -1,8 +1,13 @@
 <map id="nutaudet/TargetPoint.cxx" name="nutaudet/TargetPoint.cxx">
-<area shape="rect" id="node1" title=" " alt="" coords="149,5,333,32"/>
-<area shape="rect" id="node2" href="$TargetPoint_8h.html" title=" " alt="" coords="129,80,235,107"/>
-<area shape="rect" id="node6" title=" " alt="" coords="259,80,339,107"/>
-<area shape="rect" id="node3" title=" " alt="" coords="5,155,116,181"/>
-<area shape="rect" id="node4" title=" " alt="" coords="140,155,224,181"/>
-<area shape="rect" id="node5" title=" " alt="" coords="249,155,339,181"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="149,5,333,31"/>
+<area shape="rect" id="Node000002" href="$TargetPoint_8h.html" title=" " alt="" coords="129,79,235,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="233,33,202,70,198,67,229,29"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="259,79,339,104"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="252,29,283,67,279,70,248,33"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,152,116,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="164,106,93,147,91,143,161,102"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="140,152,224,177"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="185,104,185,138,179,138,179,104"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="249,152,339,177"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="201,102,265,142,262,147,199,106"/>
 </map>

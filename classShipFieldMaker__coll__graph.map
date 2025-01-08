@@ -1,6 +1,9 @@
 <map id="ShipFieldMaker" name="ShipFieldMaker">
-<area shape="rect" id="node1" title="Creates various magnetic fields and assigns them to geometry regions." alt="" coords="113,171,235,197"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,81,225,108"/>
-<area shape="rect" id="node3" href="$classShipCompField.html" title="Class that defines a magnetic field composed from many fields." alt="" coords="249,81,368,108"/>
-<area shape="rect" id="node4" title=" " alt="" coords="243,5,375,32"/>
+<area shape="rect" id="Node000001" title="Creates various magnetic fields and assigns them to geometry regions." alt="" coords="113,168,235,193"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,80,225,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="133,115,168,166,164,169,129,118"/>
+<area shape="rect" id="Node000003" href="$classShipCompField.html" title="Class that defines a magnetic field composed from many fields." alt="" coords="249,80,368,105"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="280,115,194,170,191,165,277,111"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="243,5,375,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="311,45,311,80,306,80,306,45"/>
 </map>

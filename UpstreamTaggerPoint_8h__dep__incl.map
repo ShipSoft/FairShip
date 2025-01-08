@@ -1,7 +1,13 @@
 <map id="UpstreamTagger/UpstreamTaggerPoint.h" name="UpstreamTagger/UpstreamTaggerPoint.h">
-<area shape="rect" id="node1" title=" " alt="" coords="176,5,416,47"/>
-<area shape="rect" id="node2" href="$UpstreamTagger_8cxx.html" title=" " alt="" coords="5,191,272,218"/>
-<area shape="rect" id="node3" href="$UpstreamTaggerHit_8h.html" title=" " alt="" coords="176,95,416,136"/>
-<area shape="rect" id="node5" href="$UpstreamTaggerPoint_8cxx.html" title=" " alt="" coords="440,95,680,136"/>
-<area shape="rect" id="node4" href="$UpstreamTaggerHit_8cxx.html" title=" " alt="" coords="296,184,536,225"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="176,5,416,45"/>
+<area shape="rect" id="Node000002" href="$UpstreamTagger_8cxx.html" title=" " alt="" coords="5,189,272,214"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="222,53,192,71,166,95,153,118,145,144,141,189,136,188,140,143,148,116,162,92,188,67,220,49"/>
+<area shape="rect" id="Node000003" href="$UpstreamTaggerHit_8h.html" title=" " alt="" coords="176,93,416,133"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="290,59,291,93,286,93,285,59"/>
+<area shape="rect" id="Node000005" href="$UpstreamTaggerPoint_8cxx.html" title=" " alt="" coords="440,93,680,133"/>
+<area shape="poly" id="edge6_Node000001_Node000005" title=" " alt="" coords="368,47,503,91,501,96,366,52"/>
+<area shape="poly" id="edge5_Node000003_Node000001" title=" " alt="" coords="302,80,301,46,306,46,307,80"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="251,142,161,191,158,186,248,137"/>
+<area shape="rect" id="Node000004" href="$UpstreamTaggerHit_8cxx.html" title=" " alt="" coords="296,181,536,221"/>
+<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="336,139,391,179,388,183,332,144"/>
 </map>

@@ -1,7 +1,11 @@
 <map id="veto/vetoContFact.cxx" name="veto/vetoContFact.cxx">
-<area shape="rect" id="node1" title=" " alt="" coords="129,5,296,32"/>
-<area shape="rect" id="node2" href="$vetoContFact_8h.html" title=" " alt="" coords="5,80,124,107"/>
-<area shape="rect" id="node4" title=" " alt="" coords="147,80,278,107"/>
-<area shape="rect" id="node5" title=" " alt="" coords="302,80,382,107"/>
-<area shape="rect" id="node3" title=" " alt="" coords="8,155,121,181"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="129,5,296,31"/>
+<area shape="rect" id="Node000002" href="$vetoContFact_8h.html" title=" " alt="" coords="5,79,124,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="190,33,102,75,100,70,188,28"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="147,79,278,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="215,31,215,65,210,65,210,31"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="302,79,382,104"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="235,28,310,69,307,74,232,33"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="8,152,121,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="67,104,67,138,62,138,62,104"/>
 </map>
