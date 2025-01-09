@@ -361,10 +361,11 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">   69</span> <span class="keywordflow">if</span> P.GetN()==0: txt = <span class="stringliteral">&#39;&lt;ROOT.TEvePointSet object&gt;&#39;</span></div>
 <div class="line"><span class="lineno">   70</span> <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(P.GetN()):</div>
 <div class="line"><span class="lineno">   71</span>  rc = P.GetPoint(n,x,y,z)</div>
-<div class="line"><span class="lineno">   72</span>  txt += <span class="stringliteral">&#39;%6i %7.1F,%7.1F,%9.1F x,y,z cm\n&#39;</span>%(n,x,y,z)</div>
-<div class="line"><span class="lineno">   73</span> <span class="keywordflow">return</span> txt</div>
-<div class="line"><span class="lineno">   74</span> </div>
+<div class="line"><span class="lineno">   72</span>  txt += f<span class="stringliteral">&#39;{n:6d} {x.value:7.1f}, {y.value:7.1f}, {z.value:9.1f} x, y, z cm\n&#39;</span></div>
+<div class="line"><span class="lineno">   73</span> </div>
+<div class="line"><span class="lineno">   74</span> <span class="keywordflow">return</span> txt</div>
 <div class="line"><span class="lineno">   75</span> </div>
+<div class="line"><span class="lineno">   76</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -507,7 +508,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="decorators_8py_source.html#l00076">76</a> of file <a class="el" href="decorators_8py_source.html">decorators.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="decorators_8py_source.html#l00077">77</a> of file <a class="el" href="decorators_8py_source.html">decorators.py</a>.</p>
 
 </div>
 </div>
@@ -523,7 +524,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="decorators_8py_source.html#l00079">79</a> of file <a class="el" href="decorators_8py_source.html">decorators.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="decorators_8py_source.html#l00080">80</a> of file <a class="el" href="decorators_8py_source.html">decorators.py</a>.</p>
 
 </div>
 </div>
