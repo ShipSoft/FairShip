@@ -7,9 +7,11 @@ import time
 from array import array
 
 import ROOT as r
+from tabulate import tabulate
 
 logging.basicConfig(level=logging.INFO)
 PDG = r.TDatabasePDG.Instance()
+PDG.AddParticle("C12", "Carbon-12", 12.0, True, 0, 6.0, "nucleus", 1000060120)
 
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument("-f", "--inputFile", help="Input file to use", required=True)
@@ -79,7 +81,18 @@ def update_file(filename, final_xsec):
     file.cd()
     updated_tree.Write("DIS", r.TObject.kOverwrite)
     file.Close()
-    logging.info("Muon DIS successfully updated.")
+    logging.info("Muon DIS events successfully updated with converged cross sections.")
+
+
+headers = [
+    "DIS_index",
+    "Fix_Target",
+    "nParticles in event",
+    "nSoftTracks_iMuon",
+    "nSBThits_iMuon",
+    "cross_sec",
+]
+Fixtarget = {1: "p+", 0: "n0"}
 
 
 def makeMuonDIS():
@@ -135,6 +148,7 @@ def makeMuonDIS():
     nMade = 0
 
     for k in range(first_mu_event, last_mu_event):
+        DIS_table = []  # debug
         cross_sections = []
 
         muon_tree.GetEvent(k)
@@ -150,6 +164,7 @@ def makeMuonDIS():
         z = imuondata[6]
         w = imuondata[7]
         time_muon = imuondata[8]
+        nmuons = imuondata[9]  # number of muons in the original MuBack event
 
         p = r.TMath.Sqrt(px**2 + py**2 + pz**2)
         mass = PDG.GetParticle(abs(int(pid))).Mass()
@@ -158,16 +173,29 @@ def makeMuonDIS():
         theta = r.TMath.ACos(pz / p)
         phi = r.TMath.ATan2(py, px)
 
-        logging.debug(
-            f"\n\tMuon index:{k} \n\tPID = {pid}, weight = {w} \n\tpx = {px}, py = {py}, pz = {pz}, E = {E},\n\tx = {x}, y = {y}, z = {z}\n"
-        )
         isProton = 1
         xsec = 0
 
         mu = array(
-            "d", [pid, px, py, pz, E, x, y, z, w, isProton, xsec, time_muon, args.nDIS]
+            "d",
+            [
+                pid,
+                px,
+                py,
+                pz,
+                E,
+                x,
+                y,
+                z,
+                w,
+                isProton,
+                xsec,
+                time_muon,
+                args.nDIS,
+                nmuons,
+            ],
         )
-        muPart = r.TVectorD(13, mu)
+        muPart = r.TVectorD(14, mu)
         myPythia.Initialize("FIXT", mutype[pid], "p+", p)  # target = "p+"
         myPythia.Pylist(1)
 
@@ -175,7 +203,7 @@ def makeMuonDIS():
             if a == args.nDIS // 2:
                 myPythia.Initialize("FIXT", mutype[pid], "n0", p)  # target = "n0"
                 isProton = 0
-                logging.debug("Switching to neutron interaction")
+                # logging.debug("Switching to neutron interaction")
 
             dPartDIS.Clear()
             iMuon.Clear()
@@ -183,9 +211,6 @@ def makeMuonDIS():
             iMuon[0] = muPart
             myPythia.GenerateEvent()
             myPythia.Pyedit(1)
-            logging.debug(
-                f"DIS Event {a} generated, number of particles: {myPythia.GetN()}"
-            )
 
             for itrk in range(1, myPythia.GetN() + 1):
                 xsec = myPythia.GetPARI(1)
@@ -209,9 +234,6 @@ def makeMuonDIS():
                     dPartDIS.Expand(nPart + 10)
                 # dPartDIS.ConstructedAt(nPart).Use(part) #to be adapted later
                 dPartDIS[nPart] = part
-
-                if itrk == 1:
-                    logging.debug(f"cross section of event is {xsec}")
 
             cross_sections.append(xsec)
 
@@ -252,11 +274,23 @@ def makeMuonDIS():
                 index += 1
 
             output_tree.Fill()
+            DIS_table.append(
+                [
+                    a,
+                    Fixtarget[isProton],
+                    myPythia.GetN(),
+                    len(dPartSoft),
+                    len(muon_vetoPoints),
+                    xsec,
+                ]
+            )
 
         final_xsec[k] = xsec
 
         nMade += 1
-
+        logging.debug(
+            f"\nMuon index:{k} \n\tPID = {pid}, weight = {w}, converged_cross_section= {final_xsec[k]}\n\tpx = {px}, py = {py}, pz = {pz}, E = {E},\n\tx = {x}, y = {y}, z = {z}\n\n\tDIS Events Summary\n{tabulate(DIS_table, headers=headers, tablefmt='grid')}"
+        )
         if nMade % 10 == 0:
             logging.info(f"Muons processed: {nMade}")
 

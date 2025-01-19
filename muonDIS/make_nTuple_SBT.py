@@ -2,41 +2,38 @@
 """Script to collect muons hitting the SBT (including soft interaction products) to a ROOT file."""
 
 import argparse
+import csv
 import logging
 import os
 
 import ROOT as r
 import shipunit as u
+from tabulate import tabulate
 
-# Argument parser setup
+pdg = r.TDatabasePDG.Instance()
+
+
+logging.basicConfig(level=logging.INFO)
+
+
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument("--test", dest="testing_code", help="Run Test", action="store_true")
-parser.add_argument(
-    "-p",
-    "--path",
-    help="path to muon background files",
-    default="/eos/experiment/ship/simulation/bkg/MuonBack_2024helium/8070735",
-)
 parser.add_argument(
     "-o",
     "--outputfile",
     default="muonsProduction_wsoft_SBT.root",
     help="custom outputfile name",
 )
+parser.add_argument(
+    "-p",
+    "--path",
+    help="path to muon background files",
+    default="/eos/experiment/ship/simulation/bkg/MuonBack_2024helium/8070735",
+)
 args = parser.parse_args()
 
-# Histogram setup
-hnumSegPermmuon = r.TH1I(
-    "hnumSegPermmuon", "Numbers of fired segments per muon", 200, 0.0, 200
-)
-hPmuon = r.TH1F("hPmuon", "The momentum of the muons hitting the SBT", 400, 0.0, 400)
-
-# Initialize variables
-ev = 0
-processed_events = set()
-
 if args.testing_code:
-    print(
+    logging.info(
         "test code, output file name overwritten as: muonsProduction_wsoft_SBT_test.root"
     )
     args.outputfile = "muonsProduction_wsoft_SBT_test.root"
@@ -45,15 +42,19 @@ else:
     selectedmuons = "SelectedMuonsSBT.txt"
 
 path = args.path
+logging.info(f"Path to MuonBackground : {path}")
 
 fsel = open(selectedmuons, "w")
+csvwriter = csv.writer(fsel)
 
 output_file = r.TFile.Open(args.outputfile, "recreate")
 output_tree = r.TTree(
     "MuonAndSoftInteractions", "Muon information and soft interaction tracks"
 )
 
-imuondata = r.TVectorD(9)  # 9 values: pid, px, py, pz, x, y, z, weight,time_of_hit
+imuondata = r.TVectorD(
+    10
+)  # 10 values: pid, px, py, pz, x, y, z, weight,time_of_hit,nmuons_in_event
 output_tree.Branch("imuondata", imuondata)
 
 track_array = r.TObjArray()
@@ -62,13 +63,160 @@ output_tree.Branch("tracks", track_array)
 muon_vetoPoints = r.TClonesArray("vetoPoint")
 output_tree.Branch("muon_vetoPoints", muon_vetoPoints)
 
-logging.basicConfig(level=logging.INFO)
+
+h = {}
+h["PvPt_muon"] = r.TH2F(
+    "PvPt_muon",
+    "The momentum of the muons hitting the SBT(unweighted);P(GeV/c);Pt(GeV/c)",
+    200,
+    0.0,
+    400,
+    40,
+    0.0,
+    20,
+)
+h["n_muon"] = r.TH2I(
+    "n_muon",
+    "Number of muons hitting the SBT per Event;number of mu- per event (unweighted) bin width =1;number of mu+ per event (unweighted) bin width=1",
+    6,
+    0.0,
+    6,
+    6,
+    0.0,
+    6,
+)
+h["n_softtracks"] = r.TH1I(
+    "n_softtracks", "Number of soft tracks per muon;;(unweighted)", 200, 0, 2000
+)
+h["n_sbthits"] = r.TH1I(
+    "n_sbthits", "Number of SBT hits per muon;n_sbthits(unweighted);", 900, 0, 900
+)
+
+
+def printMCTrack(n, MCTrack):
+    """Print MCTrack truth."""
+    mcp = MCTrack[n]
+
+    RED = "\033[91m"  # ANSI code Red
+    RESET = "\033[0m"  # ANSI code Reset to default
+
+    try:
+        particle_name = pdg.GetParticle(mcp.GetPdgCode()).GetName()
+
+        if particle_name == "mu+" or particle_name == "mu-":
+            particle_name = (
+                f"{RED}{particle_name}{RESET}       "  # Highlight muons in red
+            )
+
+        print(
+            " %6s %-10s %10i %6.3F %6.3F %7.3F %7.3F %7.3F %7.3F %6s %10.3F %28s"
+            % (
+                n,
+                particle_name,
+                mcp.GetPdgCode(),
+                mcp.GetPx() / u.GeV,
+                mcp.GetPy() / u.GeV,
+                mcp.GetPz() / u.GeV,
+                mcp.GetStartX() / u.m,
+                mcp.GetStartY() / u.m,
+                mcp.GetStartZ() / u.m,
+                mcp.GetMotherId(),
+                mcp.GetWeight(),
+                mcp.GetProcName().Data(),
+            )
+        )
+    except Exception:
+        print(
+            " %6s %-10s %10i %6.3F %6.3F %7.3F %7.3F %7.3F %7.3F %6s %10.3F %28s"
+            % (
+                n,
+                "----",
+                mcp.GetPdgCode(),
+                mcp.GetPx() / u.GeV,
+                mcp.GetPy() / u.GeV,
+                mcp.GetPz() / u.GeV,
+                mcp.GetStartX() / u.m,
+                mcp.GetStartY() / u.m,
+                mcp.GetStartZ() / u.m,
+                mcp.GetMotherId(),
+                mcp.GetWeight(),
+                mcp.GetProcName().Data(),
+            )
+        )
+
+
+def dump(event, pcut=0, print_whole_event=True):
+    """Dump the whole event."""
+    if print_whole_event:
+        print(
+            "\n %6s %-10s %10s %6s %6s %7s %7s %7s %7s %6s %10s %18s"
+            % (
+                "#",
+                "particle",
+                "pid",
+                "px",
+                "py",
+                "pz",
+                "vx",
+                "vy",
+                "vz",
+                "mid",
+                "w",
+                "Process",
+            )
+        )
+        print(
+            " %6s %10s %10s %6s %6s %7s %7s %7s %7s %6s %10s %18s\n "
+            % (
+                " ",
+                "--------",
+                "---",
+                "--",
+                "--",
+                "--",
+                "--",
+                "--",
+                "--",
+                "---",
+                "---",
+                "-------",
+            )
+        )
+    n = -1
+    for mcp in event.MCTrack:
+        n += 1
+        if mcp.GetP() / u.GeV < pcut:
+            continue
+        if print_whole_event:
+            printMCTrack(n, event.MCTrack)
+
+    return
+
+
+global_event_nr = 0
+processed_events = {}
+P_threshold = 3
+
+headers = [
+    f"nMuons in event>{P_threshold}GeV",
+    "Muon PID",
+    "Momentum[GeV/c]",
+    "x[m]",
+    "y[m]",
+    "z[m]",
+    "t_muon [ns]",
+    "nSoft Tracks",
+    "nSBT Hits",
+    "Weight_muon",
+]
+
+csvwriter.writerow(headers)
 
 for inputFolder in os.listdir(path):
     if not os.path.isdir(os.path.join(path, inputFolder)):
         continue
 
-    if args.testing_code and ev >= 100000:
+    if args.testing_code and global_event_nr >= 100000:
         break
 
     logging.info(f"Processing folder: {inputFolder}")
@@ -81,61 +229,90 @@ for inputFolder in os.listdir(path):
         )
         tree = f.cbmsim
     except Exception as e:
-        print(f"Error :{e}")
+        logging.debug(f"Error :{e}")
 
         if f:
             f.Close()
         continue
 
-    for event in tree:
-        ev += 1
-        numHitsPermuon = 0
+    for eventNr, event in enumerate(tree):
+        global_event_nr += 1
 
-        # saving soft tracks
-        track_array.Clear()
+        muon_table = []
 
-        muon_id = None
-        for itrk in range(event.MCTrack.GetEntries()):
-            # loops through MCTracks to find the incoming Muon's track id.
-            if abs(event.MCTrack[itrk].GetPdgCode()) == 13:
-                muon_id = itrk
-                break
+        nmu = {"mu+": 0, "mu-": 0}
 
-        for track in event.MCTrack:
-            if track.GetMotherId() == muon_id and (
-                not track.GetProcName().Data() == "Muon nuclear interaction"
-            ):
-                track_array.Add(track)
-
-        index = 0
-        muon_vetoPoints.Clear()
-
-        # saving the incoming muon's veto response
+        muon_ids = []
+        muon_hits = {}
+        # Collect track IDs of muons which hit the SBT
         for hit in event.vetoPoint:
             detID = hit.GetDetectorID()
             pid = hit.PdgCode()
-            if 1000 < detID < 999999 and abs(pid) == 13:
-                if muon_vetoPoints.GetSize() == index:
-                    muon_vetoPoints.Expand(index + 1)
-                muon_vetoPoints[index] = hit
-                index += 1
+            track_id = hit.GetTrackID()
+            P = r.TMath.Sqrt(hit.GetPx() ** 2 + hit.GetPy() ** 2 + hit.GetPz() ** 2)
 
-        for hit in event.vetoPoint:
-            detID = hit.GetDetectorID()
-            pid = hit.PdgCode()
-            trackID = hit.GetTrackID()
+            if 1000 < detID < 999999 and abs(pid) == 13 and P > P_threshold / u.GeV:
+                particle_name = pdg.GetParticle(hit.PdgCode()).GetName()
+                if track_id not in muon_ids:
+                    muon_ids.append(track_id)
+                    muon_hits[track_id] = 0
+                    nmu[particle_name] += 1
+                muon_hits[track_id] += 1
 
-            if abs(pid) == 13:
-                numHitsPermuon += 1
-                if ev not in processed_events:
-                    processed_events.add(ev)
-                    P = r.TMath.Sqrt(
-                        hit.GetPx() ** 2 + hit.GetPy() ** 2 + hit.GetPz() ** 2
-                    )
-                    weight = event.MCTrack[trackID].GetWeight()
-                    hPmuon.Fill(P, weight)
+        if not len(muon_ids):
+            continue
 
-                    if P > 3 / u.GeV:
+        logging.debug(f"\n\nEVENT ID:{global_event_nr}")
+        logging.debug(
+            f"Muon Track Available:{muon_hits.keys()}\n Number of SBT hits within:{muon_hits}"
+        )
+
+        for muon_ in muon_ids:
+            imuondata.Zero()
+
+            # saving soft tracks
+            track_array.Clear()
+
+            for track in event.MCTrack:
+                if track.GetMotherId() == muon_ and (
+                    not track.GetProcName().Data() == "Muon nuclear interaction"
+                ):
+                    track_array.Add(track)
+
+            # saving the muon info
+            index = 0
+
+            muon_vetoPoints.Clear()
+
+            for hit in event.vetoPoint:
+                detID = hit.GetDetectorID()
+                pid = hit.PdgCode()
+                track_id = hit.GetTrackID()
+
+                P = r.TMath.Sqrt(hit.GetPx() ** 2 + hit.GetPy() ** 2 + hit.GetPz() ** 2)
+                Pt = r.TMath.Sqrt(hit.GetPx() ** 2 + hit.GetPy() ** 2)
+
+                if (
+                    1000 < detID < 999999
+                    and track_id == muon_
+                    and P > P_threshold / u.GeV
+                ):
+                    if global_event_nr not in processed_events:
+                        processed_events[global_event_nr] = []
+
+                    if muon_vetoPoints.GetSize() == index:
+                        muon_vetoPoints.Expand(index + 1)
+                    muon_vetoPoints[index] = hit
+
+                    index += 1
+
+                    weight = event.MCTrack[track_id].GetWeight()
+
+                    if (
+                        track_id not in processed_events[global_event_nr]
+                    ):  # only save the info of first SBT hit
+                        processed_events[global_event_nr].append(track_id)
+
                         imuondata[0] = float(pid)
                         imuondata[1] = float(hit.GetPx() / u.GeV)
                         imuondata[2] = float(hit.GetPy() / u.GeV)
@@ -145,32 +322,59 @@ for inputFolder in os.listdir(path):
                         imuondata[6] = float(hit.GetZ() / u.m)
                         imuondata[7] = float(weight)
                         imuondata[8] = float(hit.GetTime())
-
-                        output_tree.Fill()
-
-                        fsel.write(
-                            f"{pid} {hit.GetPx() / u.GeV} {hit.GetPy() / u.GeV} {hit.GetPz() / u.GeV} {hit.GetX() / u.m} {hit.GetY() / u.m} {hit.GetZ() / u.m} {weight}\n"
+                        imuondata[9] = len(muon_ids)
+                        muon_table.append(
+                            [
+                                track_id,
+                                len(muon_ids),
+                                imuondata[0],
+                                P,
+                                imuondata[4],
+                                imuondata[5],
+                                imuondata[6],
+                                imuondata[8],
+                                len(track_array),
+                                len(muon_vetoPoints),
+                                imuondata[7],
+                            ]
                         )
 
-        if numHitsPermuon != 0:
-            hnumSegPermmuon.Fill(numHitsPermuon)
+                        h["PvPt_muon"].Fill(P, Pt)
+                        h["n_softtracks"].Fill(len(track_array))
+
+                    muon_table[-1][-2] = len(muon_vetoPoints)
+
+            h["n_sbthits"].Fill(len(muon_vetoPoints))
+
+            output_tree.Fill()
+
+        h["n_muon"].Fill(nmu["mu-"], nmu["mu+"])
+        csvwriter.writerows(row[1:] for row in muon_table)
+        # dump(event)
+        logging.debug(
+            f"Muon Summary:\n{tabulate(muon_table, headers=headers, tablefmt='grid')}\n\n"
+        )
 
     f.Close()
 
 
+total_muons = sum(len(values) for values in processed_events.values())
+print(f"nMuons saved: {total_muons}, File: {args.outputfile}")
+
 output_file.cd()
 output_tree.Write()
-hnumSegPermmuon.Write()
-hPmuon.Write()
+for histname in h:
+    h[histname].Write()
 output_file.Close()
 fsel.close()
 
 print(
-    "------------------------------------------------------file saved, reading",
+    "------------------------------------------------------file saved, inspecting",
     args.outputfile,
-    " now----------------------------------------------------------------",
+    "now----------------------------------------------------------------",
 )
 
+event_data = []
 with r.TFile.Open(args.outputfile, "read") as file:
     try:
         tree = file.MuonAndSoftInteractions
@@ -190,13 +394,18 @@ with r.TFile.Open(args.outputfile, "read") as file:
         x = imuondata[4]
         y = imuondata[5]
         z = imuondata[6]
+
         weight = imuondata[7]
         time_hit = imuondata[8]
+        nmuons = imuondata[9]
+
         num_tracks = len(event.tracks)
         num_muonhits = len(event.muon_vetoPoints)
 
-        print(
-            f"Muon PID: {pid},  x: {x}, y: {y}, z: {z}, t_muon: {time_hit}, "
-            f"Number of soft tracks in this event: {num_tracks}, "
-            f"Number of SBT hits from the muon: {num_muonhits}"
+        P = r.TMath.Sqrt(px**2 + py**2 + pz**2)
+
+        event_data.append(
+            [nmuons, pid, P, x, y, z, time_hit, num_tracks, num_muonhits, weight]
         )
+
+print(tabulate(event_data, headers=headers, tablefmt="grid"))
