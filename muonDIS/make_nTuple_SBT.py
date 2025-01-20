@@ -92,7 +92,7 @@ h["n_softtracks"] = r.TH1I(
     "n_softtracks", "Number of soft tracks per muon;;(unweighted)", 200, 0, 2000
 )
 h["n_sbthits"] = r.TH1I(
-    "n_sbthits", "Number of SBT hits per muon;(unweighted);", 50, 0, 50
+    "n_sbthits", "Number of SBT hits per muon;n_sbthits(unweighted);", 900, 0, 900
 )
 
 
@@ -356,7 +356,7 @@ for inputFolder in os.listdir(path):
 
             output_tree.Fill()
 
-            csvwriter.writerows(row[1:] for row in muon_table)
+        csvwriter.writerows(row[1:] for row in muon_table)
         # dump(event)
         logging.debug(
             f"Muon Summary:\n{tabulate(muon_table, headers=headers, tablefmt='grid')}\n\n"
