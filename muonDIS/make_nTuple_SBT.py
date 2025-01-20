@@ -12,27 +12,25 @@ from tabulate import tabulate
 
 pdg = r.TDatabasePDG.Instance()
 
+
+logging.basicConfig(level=logging.INFO)
+
+
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument("--test", dest="testing_code", help="Run Test", action="store_true")
-parser.add_argument(
-    "-p",
-    "--path",
-    help="path to muon background files",
-    default="/eos/experiment/ship/simulation/bkg/MuonBack_2024helium/8070735",
-)
 parser.add_argument(
     "-o",
     "--outputfile",
     default="muonsProduction_wsoft_SBT.root",
     help="custom outputfile name",
 )
+parser.add_argument(
+    "-p",
+    "--path",
+    help="path to muon background files",
+    default="/eos/experiment/ship/simulation/bkg/MuonBack_2024helium/8070735",
+)
 args = parser.parse_args()
-
-logging.basicConfig(level=logging.INFO)
-
-# Initialize variables
-global_event_nr = 0
-processed_events = {}
 
 if args.testing_code:
     logging.info(
@@ -45,7 +43,6 @@ else:
 
 path = args.path
 logging.info(f"Path to MuonBackground : {path}")
-
 
 fsel = open(selectedmuons, "w")
 csvwriter = csv.writer(fsel)
@@ -66,8 +63,8 @@ output_tree.Branch("tracks", track_array)
 muon_vetoPoints = r.TClonesArray("vetoPoint")
 output_tree.Branch("muon_vetoPoints", muon_vetoPoints)
 
-h = {}
 
+h = {}
 h["PvPt_muon"] = r.TH2F(
     "PvPt_muon",
     "The momentum of the muons hitting the SBT(unweighted);P(GeV/c);Pt(GeV/c)",
@@ -94,23 +91,6 @@ h["n_softtracks"] = r.TH1I(
 h["n_sbthits"] = r.TH1I(
     "n_sbthits", "Number of SBT hits per muon;n_sbthits(unweighted);", 900, 0, 900
 )
-
-
-P_threshold = 3
-
-headers = [
-    f"nMuons in event>{P_threshold}GeV",
-    "Muon PID",
-    "Momentum[GeV]",
-    "x[cm]",
-    "y[cm]",
-    "z[cm]",
-    "t_muon [ns]",
-    "nSoft Tracks",
-    "nSBT Hits",
-    "Weight_muon",
-]
-csvwriter.writerow(headers)
 
 
 def printMCTrack(n, MCTrack):
@@ -165,7 +145,7 @@ def printMCTrack(n, MCTrack):
         )
 
 
-def dump(event, pcut, print_whole_event=True):
+def dump(event, pcut=0, print_whole_event=True):
     """Dump the whole event."""
     if print_whole_event:
         print(
@@ -213,6 +193,25 @@ def dump(event, pcut, print_whole_event=True):
     return
 
 
+global_event_nr = 0
+processed_events = {}
+P_threshold = 3
+
+headers = [
+    f"nMuons in event>{P_threshold}GeV",
+    "Muon PID",
+    "Momentum[GeV/c]",
+    "x[m]",
+    "y[m]",
+    "z[m]",
+    "t_muon [ns]",
+    "nSoft Tracks",
+    "nSBT Hits",
+    "Weight_muon",
+]
+
+csvwriter.writerow(headers)
+
 for inputFolder in os.listdir(path):
     if not os.path.isdir(os.path.join(path, inputFolder)):
         continue
@@ -239,7 +238,6 @@ for inputFolder in os.listdir(path):
     for eventNr, event in enumerate(tree):
         global_event_nr += 1
 
-        # debug
         muon_table = []
 
         nmu = {"mu+": 0, "mu-": 0}
@@ -255,7 +253,6 @@ for inputFolder in os.listdir(path):
 
             if 1000 < detID < 999999 and abs(pid) == 13 and P > P_threshold / u.GeV:
                 particle_name = pdg.GetParticle(hit.PdgCode()).GetName()
-
                 if track_id not in muon_ids:
                     muon_ids.append(track_id)
                     muon_hits[track_id] = 0
@@ -282,7 +279,7 @@ for inputFolder in os.listdir(path):
                 ):
                     track_array.Add(track)
 
-            # saving the incoming muon info
+            # saving the muon info
             index = 0
 
             muon_vetoPoints.Clear()
@@ -293,10 +290,10 @@ for inputFolder in os.listdir(path):
                 track_id = hit.GetTrackID()
 
                 P = r.TMath.Sqrt(hit.GetPx() ** 2 + hit.GetPy() ** 2 + hit.GetPz() ** 2)
+                Pt = r.TMath.Sqrt(hit.GetPx() ** 2 + hit.GetPy() ** 2)
 
                 if (
                     1000 < detID < 999999
-                    and abs(pid) == 13
                     and track_id == muon_
                     and P > P_threshold / u.GeV
                 ):
@@ -309,10 +306,6 @@ for inputFolder in os.listdir(path):
 
                     index += 1
 
-                    P = r.TMath.Sqrt(
-                        hit.GetPx() ** 2 + hit.GetPy() ** 2 + hit.GetPz() ** 2
-                    )
-                    Pt = P = r.TMath.Sqrt(hit.GetPx() ** 2 + hit.GetPy() ** 2)
                     weight = event.MCTrack[track_id].GetWeight()
 
                     if (
@@ -352,10 +345,10 @@ for inputFolder in os.listdir(path):
                     muon_table[-1][-2] = len(muon_vetoPoints)
 
             h["n_sbthits"].Fill(len(muon_vetoPoints))
-            h["n_muon"].Fill(nmu["mu-"], nmu["mu+"])
 
             output_tree.Fill()
 
+        h["n_muon"].Fill(nmu["mu-"], nmu["mu+"])
         csvwriter.writerows(row[1:] for row in muon_table)
         # dump(event)
         logging.debug(
