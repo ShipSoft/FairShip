@@ -375,6 +375,9 @@ if simEngine == "muonDIS":
  ut.checkFileExists(inputFile)
  primGen.SetTarget(0., 0.)
  DISgen = ROOT.MuDISGenerator()
+ #  add Carbon to PDG
+ pdg = ROOT.TDatabasePDG.Instance()
+ pdg.AddParticle("C", "Carbon_Nucleus", 12.0, True, 0, 6.0, "nucleus", 1000060120)
  # from nu_tau detector to tracking station 2
  # mu_start, mu_end =  ship_geo.tauMudet.zMudetC,ship_geo.TrackStation2.z
  #
