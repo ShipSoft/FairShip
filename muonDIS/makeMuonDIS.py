@@ -11,6 +11,7 @@ from tabulate import tabulate
 
 logging.basicConfig(level=logging.INFO)
 PDG = r.TDatabasePDG.Instance()
+PDG.AddParticle("C12", "Carbon-12", 12.0, True, 0, 6.0, "nucleus", 1000060120)
 
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument("-f", "--inputFile", help="Input file to use", required=True)
