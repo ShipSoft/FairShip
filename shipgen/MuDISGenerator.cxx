@@ -334,7 +334,7 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg)
     // outgoing DIS particles, [did,dpx,dpy,dpz,E], put density along trajectory as weight, g/cm^2
 
     w = mparam[0] * mparam[4];   // modify weight, by multiplying with average density * track length
-
+    int index = 0;
     for (auto&& particle : *dPart) {
         TVectorD* Part = dynamic_cast<TVectorD*>(particle);
         LOG(DEBUG) << "muon DIS Generator out part " << int((*Part)[0]);
@@ -343,7 +343,7 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg)
         LOG(DEBUG) << "muon DIS Generator out part pos " << xmu << " " << ymu << "" << zmu;
         LOG(DEBUG) << "muon DIS Generator out part w " << w;
 
-        if (int(mu[0][0]) == int((*Part)[0])) {
+        if (index == 0) {
             cpg->AddTrack(int((*Part)[0]),
                           (*Part)[1],
                           (*Part)[2],
@@ -355,11 +355,12 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg)
                           true,
                           (*Part)[4],
                           t_DIS,
-                          cross_sec);
+                          cross_sec);   // save DIS cross section in MCTrack[1]
         } else {
             cpg->AddTrack(
                 int((*Part)[0]), (*Part)[1], (*Part)[2], (*Part)[3], xmu, ymu, zmu, 0, true, (*Part)[4], t_DIS, w);
         }
+        index += 1;
     }
 
     // Soft interaction tracks
