@@ -534,8 +534,8 @@ Int_t ShipMuonShield::Initialize(std::vector<TString> &magnetName,
     dXIn[1] = 0.5 * m;
     dXOut[1] = 0.5 * m;
     gapIn[1] = 0.02 * m;
-    dYIn[1] = 1.3 * m;
-    dYOut[1] = 1.3 * m;
+    dYIn[1] = 1.19 * m;
+    dYOut[1] = 1.19 * m;
     gapOut[1] = 0.02 * m;
 
     for (Int_t i = 2; i < nMagnets - 1; ++i) {
@@ -838,6 +838,8 @@ void ShipMuonShield::ConstructGeometry()
 
       // Create TCC8 tunnel around muon shield
       Double_t TCC8_length =  170 * m;
+      // Add small stair step at the beginning of ECN3
+      Double_t stair_step_length = 0.82 * m;
       Double_t ECN3_length =  100 * m;
       Double_t TCC8_trench_length = 12 * m;
       Double_t zgap = 10 * cm;
@@ -845,14 +847,17 @@ void ShipMuonShield::ConstructGeometry()
       Double_t absorber_half_length = (dZf[0] + dZf[1]) + zgap / 2.;
       Double_t z_transition = zEndOfAbsorb + 2 * absorber_half_length + absorber_offset + 14 * cm + TCC8_trench_length;
       auto *rock = new TGeoBBox("rock", 20 * m, 20 * m, TCC8_length / 2. + ECN3_length / 2. + 5 * m);
-      auto *muon_shield_cavern = new TGeoBBox("muon_shield_cavern", 5 * m, 3.75 * m, TCC8_length / 2.);
-      auto *TCC8_shift = new TGeoTranslation("TCC8_shift", 2.3 * m, 1.75 * m, - TCC8_length / 2.);
+      auto *muon_shield_cavern = new TGeoBBox("muon_shield_cavern", 4.995 * m, 3.75 * m, TCC8_length / 2.);
+      auto *TCC8_shift = new TGeoTranslation("TCC8_shift", 1.435 * m, 2.05 * m, - TCC8_length / 2.);
       TCC8_shift->RegisterYourself();
 
       // Create ECN3 cavern around vessel
       auto *experiment_rock = new TGeoBBox("experiment_rock", 20 * m, 20 * m, ECN3_length / 2.);
-      auto *experiment_cavern = new TGeoBBox("experiment_cavern", 8 * m, 7.5 * m, ECN3_length / 2.);
-      auto *ECN3_shift = new TGeoTranslation("ECN3_shift", 3.5 * m, 4 * m, ECN3_length / 2.);
+      auto *stair_step = new TGeoBBox("stair_step", 7.995 * m, 5.6 * m , stair_step_length / 2.);
+      auto *stair_step_shift = new TGeoTranslation("stair_step_shift", 3.435 * m, 3.04 * m , stair_step_length / 2.);
+      stair_step_shift->RegisterYourself();
+      auto *experiment_cavern = new TGeoBBox("experiment_cavern", 7.995 * m, 6 * m, ECN3_length / 2. - stair_step_length / 2.);
+      auto *ECN3_shift = new TGeoTranslation("ECN3_shift", 3.435 * m, 2.64 * m, ECN3_length / 2. + stair_step_length);
       ECN3_shift->RegisterYourself();
 
       auto *yoke_pit = new TGeoBBox("yoke_pit", 3.5 * m, 4.3 * m + 1 * cm, 2.5 * m);
@@ -860,7 +865,7 @@ void ShipMuonShield::ConstructGeometry()
       yoke_pit_shift->RegisterYourself();
 
       auto *target_pit = new TGeoBBox("target_pit", 2 * m, 0.5 * m, 2 * m);
-      auto *target_pit_shift = new TGeoTranslation("target_pit_shift", 0 * m, -2.5 * m, zEndOfAbsorb - 2 * m - z_transition);
+      auto *target_pit_shift = new TGeoTranslation("target_pit_shift", 0 * m, -2.2 * m, zEndOfAbsorb - 2 * m - z_transition);
       target_pit_shift->RegisterYourself();
 
         float mField = 1.6 * tesla;
@@ -890,7 +895,10 @@ void ShipMuonShield::ConstructGeometry()
       mag2->RegisterYourself();
       mag_trans.push_back(mag2);
 
-      auto abs = new TGeoBBox("absorber", 3.95 * m, 3.4 * m, absorber_half_length);
+      auto abs = new TGeoBBox("absorber",  4.995 * m -0.001*m, 3.75 * m -0.001*m, absorber_half_length - 0.001);
+      auto *absorber_shift = new TGeoTranslation("absorber_shift", 1.435 * m, 2.05 * m, 0);
+      absorber_shift->RegisterYourself();
+
       const std::vector<TString> absorber_magnets =
          (fDesign == 7) ? std::vector<TString>{"MagnAbsorb1", "MagnAbsorb2"} : std::vector<TString>{"MagnAbsorb2"};
       const std::vector<TString> magnet_components = fDesign == 7 ? std::vector<TString>{
@@ -914,38 +922,19 @@ void ShipMuonShield::ConstructGeometry()
 	}
       }
       TGeoCompositeShape *absorberShape = new TGeoCompositeShape(
-	  "Absorber", "absorber" + absorber_magnet_components); // cutting out
+	  "Absorber", "absorber:absorber_shift" + absorber_magnet_components); // cutting out
 								// magnet parts
 								// from absorber
       TGeoVolume *absorber = new TGeoVolume("AbsorberVol", absorberShape, iron);
       absorber->SetLineColor(42); // brown / light red
       tShield->AddNode(absorber, 1, new TGeoTranslation(0, 0, zEndOfAbsorb + absorber_half_length + absorber_offset));
 
-      if (fDesign > 7) {
-         auto coatBox = new TGeoBBox("coat", 10 * m - 1 * mm, 10 * m - 1 * mm, absorber_half_length);
-         auto coatShape = new TGeoCompositeShape("CoatShape", "coat-absorber");
-         auto coat = new TGeoVolume("CoatVol", coatShape, concrete);
-         auto *coat_shift = new TGeoTranslation("coat_shift", 0, 0, zEndOfAbsorb + absorber_half_length + absorber_offset);
-         coat_shift->RegisterYourself();
-         auto *coat_shift_transition = new TGeoTranslation("coat_shift_transition", 0, 0, zEndOfAbsorb - z_transition + absorber_half_length + absorber_offset);
-         coat_shift_transition->RegisterYourself();
-         tShield->AddNode(coat, 1, coat_shift);
-         TGeoVolume *coatWall = gGeoManager->MakeBox("CoatWall",concrete, 10 * m - 1 * mm, 10 * m - 1 * mm, 7 * cm - 1 * mm);
-         auto *coatWall_shift = new TGeoTranslation("coatWall_shift", 0, 0, zEndOfAbsorb + 2 * absorber_half_length + absorber_offset + 7 * cm);
-         coatWall_shift->RegisterYourself();
-         auto *coatWall_shift_transition = new TGeoTranslation("coatWall_shift_transition", 0, 0, zEndOfAbsorb - z_transition + 2 * absorber_half_length + absorber_offset + 7 * cm);
-         coatWall_shift_transition->RegisterYourself();
-         coatWall->SetLineColor(kRed);
-         tShield->AddNode(coatWall, 1, coatWall_shift);
-      }
-
       auto *compRock = new TGeoCompositeShape("compRock",
                                               "rock - muon_shield_cavern:TCC8_shift"
                                               "- experiment_cavern:ECN3_shift"
+                                              "- stair_step:stair_step_shift"
                                               "- yoke_pit:yoke_pit_shift"
                                               "- target_pit:target_pit_shift"
-                                              "- coat:coat_shift_transition"
-                                              "- CoatWall:coatWall_shift_transition"
       );
       auto *Cavern = new TGeoVolume("Cavern", compRock, concrete);
       Cavern->SetLineColor(11);  // grey
