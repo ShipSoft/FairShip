@@ -68,6 +68,8 @@ def configure(darkphoton=None):
    pdg.AddParticle('Pomeron','Pomeron',   0., False, 0., 0., 'Pomeron', 990)
    pdg.AddParticle('p_diffr+','p_diffr+', 0., False, 0., 0., 'XXX', 9902210)
    pdg.AddParticle('n_diffr0','n_diffr0', 0., False, 0., 0., 'XXX', 9902110)
+   pdg.AddParticle("C12", "Carbon-12", 12.0, True, 0, 6.0, "nucleus", 1000060120)
+   pdg.AddParticle("C13", "Carbon-13", 13.003355, True, 0, 6.0, "nucleus", 1000060130)
    pdg.AddParticle('J/psi[3PJ(8)]'    ,'J/psi[3PJ(8)]'    ,3.29692,False,0.,      0.,'Meson', 9942003)
    pdg.AddParticle('J/psi[1S0(8)]'    ,'J/psi[1S0(8)]'    ,3.29692,False,0.,      0.,'Meson', 9941003)
    pdg.AddParticle('f0(980)'          ,'f0(980)'          ,1.0,    False,0.0,     0.,'Meson', 9010221)
@@ -81,6 +83,7 @@ def configure(darkphoton=None):
    pdg.AddParticle('chi_1c[3S1(8)]'    ,'chi_1c[3S1(8)]'  ,3.71066,False,0.0,     0, 'Meson', 9940023)
    pdg.AddParticle('chi_2c[3S1(8)]'    ,'chi_2c[3S1(8)]'  ,3.75620,False,0.0,     0, 'Meson', 9940005)
    pdg.AddParticle('Upsilon[3S1(8)]'   ,'Upsilon[3S1(8)]' ,9.66030,False,0.0,     0, 'Meson', 9950003)
+   
    atexit.register(pyExit)
    if darkphoton==0: return # will be added by pythia8_conf
    if (darkphoton):
