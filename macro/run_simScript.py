@@ -373,11 +373,6 @@ if simEngine == "muonDIS":
  ut.checkFileExists(inputFile)
  primGen.SetTarget(0., 0.)
  DISgen = ROOT.MuDISGenerator()
- #  add Carbon to PDG
- pdg = ROOT.TDatabasePDG.Instance()
- pdg.AddParticle("C12", "Carbon-12", 12.0, True, 0, 6.0, "nucleus", 1000060120)
- pdg.AddParticle("C13", "Carbon-13", 13.003355, True, 0, 6.0, "nucleus", 1000060130)
-
  # from nu_tau detector to tracking station 2
  # mu_start, mu_end =  ship_geo.tauMudet.zMudetC,ship_geo.TrackStation2.z
  #
@@ -515,15 +510,17 @@ if options.dryrun: # Early stop after setting up Pythia 8
  sys.exit(0)
 gMC = ROOT.TVirtualMC.GetMC()
 fStack = gMC.GetStack()
+EnergyCut = 10.*u.MeV if options.mudis else 100.*u.MeV
+
 if MCTracksWithHitsOnly:
  fStack.SetMinPoints(1)
  fStack.SetEnergyCut(-100.*u.MeV)
 elif MCTracksWithEnergyCutOnly:
  fStack.SetMinPoints(-1)
- fStack.SetEnergyCut(100.*u.MeV)
+ fStack.SetEnergyCut(EnergyCut)
 elif MCTracksWithHitsOrEnergyCut:
  fStack.SetMinPoints(1)
- fStack.SetEnergyCut(100.*u.MeV)
+ fStack.SetEnergyCut(EnergyCut)
 elif options.deepCopy:
  fStack.SetMinPoints(0)
  fStack.SetEnergyCut(0.*u.MeV)
