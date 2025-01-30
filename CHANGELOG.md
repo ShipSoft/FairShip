@@ -14,6 +14,18 @@ it in future.
 
 ### Added
 
+### Fixed
+
+### Added
+
+### Changed
+
+### Removed
+
+## 25.01
+
+### Added
+
 * New analysis toolkit prototype added as part of the 'experimental' package.
 * Simple analysis example script now available in 'examples/'
 
@@ -27,10 +39,10 @@ it in future.
 * Event Display: Fix drawing of MC and Geo tracks
 
 ### Changed
-* Changed the dimension of the cave (ref. https://indico.cern.ch/event/1507466/contributions/6345273/attachments/3003438/5293503/Quick%20Update%20on%20FAIRSHIP%20geometry-1.pdf): 
-	1) Updated dimensions of TCC8 and ECN3. 
+* Changed the dimension of the cave (ref. https://indico.cern.ch/event/1507466/contributions/6345273/attachments/3003438/5293503/Quick%20Update%20on%20FAIRSHIP%20geometry-1.pdf):
+	1) Updated dimensions of TCC8 and ECN3.
 	2) Added a step in ECN3.
-	3) Removed the coat of the absorber. 
+	3) Removed the coat of the absorber.
 	4) Modified the dimensions of the HA and absorber.
 
 * Set Decay Volume Medium as helium (previously vacuums),can be explicitly switched to vacuum with --vacuums.
