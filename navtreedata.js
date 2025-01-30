@@ -30,34 +30,41 @@ var NAVTREE =
       [ "Unreleased", "md_CHANGELOG.html#autotoc_md1", [
         [ "Added", "md_CHANGELOG.html#autotoc_md2", null ],
         [ "Fixed", "md_CHANGELOG.html#autotoc_md3", null ],
-        [ "Changed", "md_CHANGELOG.html#autotoc_md4", null ],
-        [ "Removed", "md_CHANGELOG.html#autotoc_md5", null ]
+        [ "Added", "md_CHANGELOG.html#autotoc_md4", null ],
+        [ "Changed", "md_CHANGELOG.html#autotoc_md5", null ],
+        [ "Removed", "md_CHANGELOG.html#autotoc_md6", null ]
       ] ],
-      [ "24.11", "md_CHANGELOG.html#autotoc_md6", [
-        [ "Added", "md_CHANGELOG.html#autotoc_md7", null ],
-        [ "Fixed", "md_CHANGELOG.html#autotoc_md8", null ],
-        [ "Changed", "md_CHANGELOG.html#autotoc_md9", null ],
-        [ "Removed", "md_CHANGELOG.html#autotoc_md10", null ]
+      [ "25.01", "md_CHANGELOG.html#autotoc_md7", [
+        [ "Added", "md_CHANGELOG.html#autotoc_md8", null ],
+        [ "Fixed", "md_CHANGELOG.html#autotoc_md9", null ],
+        [ "Changed", "md_CHANGELOG.html#autotoc_md10", null ],
+        [ "Removed", "md_CHANGELOG.html#autotoc_md11", null ]
       ] ],
-      [ "24.10 - Freiburg", "md_CHANGELOG.html#autotoc_md11", [
-        [ "Added", "md_CHANGELOG.html#autotoc_md12", null ],
-        [ "Fixed", "md_CHANGELOG.html#autotoc_md13", null ],
-        [ "Changed", "md_CHANGELOG.html#autotoc_md14", null ],
-        [ "Removed", "md_CHANGELOG.html#autotoc_md15", null ]
+      [ "24.11", "md_CHANGELOG.html#autotoc_md12", [
+        [ "Added", "md_CHANGELOG.html#autotoc_md13", null ],
+        [ "Fixed", "md_CHANGELOG.html#autotoc_md14", null ],
+        [ "Changed", "md_CHANGELOG.html#autotoc_md15", null ],
+        [ "Removed", "md_CHANGELOG.html#autotoc_md16", null ]
+      ] ],
+      [ "24.10 - Freiburg", "md_CHANGELOG.html#autotoc_md17", [
+        [ "Added", "md_CHANGELOG.html#autotoc_md18", null ],
+        [ "Fixed", "md_CHANGELOG.html#autotoc_md19", null ],
+        [ "Changed", "md_CHANGELOG.html#autotoc_md20", null ],
+        [ "Removed", "md_CHANGELOG.html#autotoc_md21", null ]
       ] ]
     ] ],
     [ "README", "md_field_2README.html", null ],
     [ "FairShip", "md_README.html", [
-      [ "Introduction", "md_README.html#autotoc_md18", [
-        [ "Branches", "md_README.html#autotoc_md19", null ]
+      [ "Introduction", "md_README.html#autotoc_md24", [
+        [ "Branches", "md_README.html#autotoc_md25", null ]
       ] ],
-      [ "Build Instructions using CVMFS", "md_README.html#autotoc_md20", null ],
-      [ "Local build, without access to CVMFS", "md_README.html#autotoc_md21", null ],
-      [ "Run instructions", "md_README.html#autotoc_md22", null ],
-      [ "Docker instructions", "md_README.html#autotoc_md23", null ],
-      [ "Troubleshooting information", "md_README.html#autotoc_md24", null ],
-      [ "Documentation", "md_README.html#autotoc_md25", null ],
-      [ "Contributing code", "md_README.html#autotoc_md26", null ]
+      [ "Build Instructions using CVMFS", "md_README.html#autotoc_md26", null ],
+      [ "Local build, without access to CVMFS", "md_README.html#autotoc_md27", null ],
+      [ "Run instructions", "md_README.html#autotoc_md28", null ],
+      [ "Docker instructions", "md_README.html#autotoc_md29", null ],
+      [ "Troubleshooting information", "md_README.html#autotoc_md30", null ],
+      [ "Documentation", "md_README.html#autotoc_md31", null ],
+      [ "Contributing code", "md_README.html#autotoc_md32", null ]
     ] ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
@@ -127,21 +134,21 @@ var NAVTREEINDEX =
 "geometry__config_8py.html#a9674e9d0d28254eaa9e10660c347c8e1",
 "hcalPoint_8h_source.html",
 "makeCascade_8py.html#ae18a255943d047ca49a340e9d067c9f2",
-"namespaceShipAna.html",
-"namespaceTTCluster.html#afda31970368729a026012c4087e1e869",
-"namespaceevd__transparentMode.html#afeac3b4d7cb3334678bf667700bc0b20",
-"namespaceg4Ex__gap__mergeFiles.html#a158c90325fb2abd766b0509fe4185ffc",
-"namespacegeometry__config.html#a896c343b4ab0d3e4ae03cee54b11f5d7",
-"namespacehepunit.html#a2327fa65e1e751ce7e30843cfebf6375",
-"namespacemakeGenieEvents.html#a51ee08e532e9a864c9dc5b6aefd234ac",
-"namespacepythia8__conf__utils.html#a1ee4f20b1f6d13bd38b5ace3040e1425",
-"namespacerun__reco.html#a8553d576110e35b60e61c44b803d35a1",
-"namespaceshipPatRec__prev.html#a76db778a9b9eaedad10a15966833a882",
-"namespacestudy__muEloss.html#a39d770324b06d8dea73e880faa29b3e1",
-"rpvsusy_8py.html#a8b5544128495c9d33bee37ddf3210f10",
-"run__simScript_8py.html#a04716d6c09866d36dcb7fe7631f825b9",
-"shipunit_8py.html",
-"study__GammaConv_8py.html#ae9f62388c418118cb93b9514b1cf9c0d"
+"namespacePythiaList.html",
+"namespaceTTCluster.html#af32b305974fe2a5fbca92770573f1866",
+"namespaceevd__fillEnergy.html#a1bd74d2e8d7a46372a0695dadf589e38",
+"namespaceg4Ex__gap.html#af49a257623e7bced85070c3540031c66",
+"namespacegeometry__config.html#a848035a5caaa1eea10544d1443b5bf71",
+"namespacehepunit.html#a1b81a64bd9560e6035698ead3ff1453c",
+"namespacemakeDecay.html#afd0dfe5f4af30df1a2df036995dcfea3",
+"namespacepythia8__conf.html#ac024ed5419c98ac0c0035f86e490471b",
+"namespacerun__reco.html#a643466c527aa2d6265fc9b100d36e080",
+"namespaceshipPatRec__prev.html#a5262fa50e84f21f950d6b26eea267cc4",
+"namespacestudy__GammaConv.html#afc85c748ac6d5eca2175c005a7b66d32",
+"rootpyPickler_8py.html#aec9f077aa17669ddfedbfee4a177545d",
+"run__simPgun_8py.html#af639ba454486551f5c739e30d7831caa",
+"shipTarget__only_8py.html#a22e24aa41de7d3b88c238d43f4393faa",
+"study__GammaConv_8py.html#ad6d92779a6dbcb89ea8862d0185a8982"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
