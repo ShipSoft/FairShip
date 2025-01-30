@@ -17,6 +17,9 @@ it in future.
 ### Fixed
 
 ### Changed
+* Changed the dimension of the cave: 1) Uptated dimensions of TCC8 and ECN3. 
+  2) Added a Step in ECN3. 3) Removed the coat of the absorber. 
+  4) Modified the dimension of the HA and absorber.
 
 ### Removed
 
