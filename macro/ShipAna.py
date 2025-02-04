@@ -28,17 +28,10 @@ parser.add_argument("-g", "--geoFile",   dest="geoFile",   help="ROOT geofile", 
 parser.add_argument("--Debug",           dest="Debug", help="Switch on debugging", required=False, action="store_true")
 options = parser.parse_args()
 
-eosship = ROOT.gSystem.Getenv("EOSSHIP")
 if not options.inputFile.find(',')<0 :
   sTree = ROOT.TChain("cbmsim")
   for x in options.inputFile.split(','):
-   if x[0:4] == "/eos":
-    sTree.AddFile(eosship+x)
-   else: sTree.AddFile(x)
-elif options.inputFile[0:4] == "/eos":
-  eospath = eosship+options.inputFile
-  f = ROOT.TFile.Open(eospath)
-  sTree = f.cbmsim
+    sTree.AddFile(x)
 else:
   f = ROOT.TFile(options.inputFile)
   sTree = f.cbmsim
@@ -46,9 +39,6 @@ else:
 # try to figure out which ecal geo to load
 if not options.geoFile:
  options.geoFile = options.inputFile.replace('ship.','geofile_full.').replace('_rec.','.')
-if options.geoFile[0:4] == "/eos":
-  eospath = eosship+options.geoFile
-  fgeo = ROOT.TFile.Open(eospath)
 else:
   fgeo = ROOT.TFile(options.geoFile)
 
@@ -878,7 +868,7 @@ for n in range(options.nEvents):
 makePlots()
 # output histograms
 hfile = options.inputFile.split(',')[0].replace('_rec','_ana')
-if hfile[0:4] == "/eos" or not options.inputFile.find(',')<0:
+if "/eos" in hfile or not options.inputFile.find(',')<0:
 # do not write to eos, write to local directory
   tmp = hfile.split('/')
   hfile = tmp[len(tmp)-1]

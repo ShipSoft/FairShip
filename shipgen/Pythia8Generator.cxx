@@ -36,51 +36,43 @@ Bool_t Pythia8Generator::Init()
   if (fUseRandom1) fRandomEngine = new PyTr1Rng();
   if (fUseRandom3) fRandomEngine = new PyTr3Rng();
   if (fextFile && *fextFile) {
-    if (0 == strncmp("/eos",fextFile,4) ) {
-     TString tmp = gSystem->Getenv("EOSSHIP");
-     tmp+=fextFile;
-     fInputFile  = TFile::Open(tmp);
-     LOGF(info, "Open external file with charm or beauty hadrons on eos: %s", tmp.Data());
-     if (!fInputFile) {
-      LOG(FATAL) << "Error opening input file. You may have forgotten to provide a krb5 token. Try kinit username@lxplus.cern.ch";
-      return kFALSE; }
-    }else{
-      LOGF(info, "Open external file with charm or beauty hadrons: %s", fextFile);
-      fInputFile  = new TFile(fextFile);
+      fInputFile = TFile::Open(fextFile);
+      LOG(info) << "Open external file with charm or beauty hadrons: " << fextFile;
       if (!fInputFile) {
-       LOG(FATAL) << "Error opening input file";
-     return kFALSE; }
-    }
-    if (fInputFile->IsZombie()) {
-     LOG(FATAL) << "File is corrupted";
-     return kFALSE; }
-     fTree = (TTree *)fInputFile->Get("pythia6");
-     fNevents = fTree->GetEntries();
-     fn = firstEvent;
-     fTree->SetBranchAddress("id",&hid);                // particle id
-     fTree->SetBranchAddress("px",&hpx);   // momentum
-     fTree->SetBranchAddress("py",&hpy);
-     fTree->SetBranchAddress("pz",&hpz);
-     fTree->SetBranchAddress("E",&hE);
-     fTree->SetBranchAddress("M",&hM);
-     fTree->SetBranchAddress("mid",&mid);   // mother
-     fTree->SetBranchAddress("mpx",&mpx);   // momentum
-     fTree->SetBranchAddress("mpy",&mpy);
-     fTree->SetBranchAddress("mpz",&mpz);
-     fTree->SetBranchAddress("mE",&mE);
-     if (fTree->GetBranch("k")){
-      fTree->SetBranchAddress("k",&ck);
-      if (fTree->GetBranch("a0")){
-       for(Int_t i=0; i<16; i++){
-        TString na = "a";na+=i;
-        fTree->SetBranchAddress(na,&(ancestors[i]));
-        TString ns = "s";ns+=i;
-        fTree->SetBranchAddress(ns,&(subprocCodes[i]));
-       }
+          LOG(FATAL) << "Error opening input file.";
+          return kFALSE;
       }
-     }else{
-      ck[0]=1;subprocCodes[0]=88;ancestors[0]=2212;
-     }
+      fTree = fInputFile->Get<TTree>("pythia6");
+      fNevents = fTree->GetEntries();
+      fn = firstEvent;
+      fTree->SetBranchAddress("id", &hid);   // particle id
+      fTree->SetBranchAddress("px", &hpx);   // momentum
+      fTree->SetBranchAddress("py", &hpy);
+      fTree->SetBranchAddress("pz", &hpz);
+      fTree->SetBranchAddress("E", &hE);
+      fTree->SetBranchAddress("M", &hM);
+      fTree->SetBranchAddress("mid", &mid);   // mother
+      fTree->SetBranchAddress("mpx", &mpx);   // momentum
+      fTree->SetBranchAddress("mpy", &mpy);
+      fTree->SetBranchAddress("mpz", &mpz);
+      fTree->SetBranchAddress("mE", &mE);
+      if (fTree->GetBranch("k")) {
+          fTree->SetBranchAddress("k", &ck);
+          if (fTree->GetBranch("a0")) {
+              for (Int_t i = 0; i < 16; i++) {
+                  TString na = "a";
+                  na += i;
+                  fTree->SetBranchAddress(na, &(ancestors[i]));
+                  TString ns = "s";
+                  ns += i;
+                  fTree->SetBranchAddress(ns, &(subprocCodes[i]));
+              }
+          }
+      } else {
+          ck[0] = 1;
+          subprocCodes[0] = 88;
+          ancestors[0] = 2212;
+      }
      fPythia->readString("ProcessLevel:all = off");
 // find all long lived particles in pythia
      Int_t n = 1;

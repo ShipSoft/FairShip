@@ -34,23 +34,16 @@ Bool_t MuDISGenerator::Init(const char* fileName, const int firstEvent) {
 
   iMuon = 0;
   dPart = 0;
-  if (0 == strncmp("/eos",fileName,4) ) {
-    TString tmp = gSystem->Getenv("EOSSHIP");
-    tmp+=fileName;
-    fInputFile  = TFile::Open(tmp);
-    LOGF(info, "Open external file on eos: %s", tmp.Data());
-  }else{
-    fInputFile  = new TFile(fileName);
+  fInputFile = TFile::Open(fileName);
+  if (!fInputFile) {
+      LOG(FATAL) << "Error opening input file";
+      return kFALSE;
   }
-  if (fInputFile->IsZombie() or !fInputFile) {
-     LOG(FATAL) << "Error opening input file";
-     return kFALSE; }
-  fTree = (TTree *)fInputFile->Get("DIS");
+  fTree = fInputFile->Get<TTree>("DIS");
   fNevents = fTree->GetEntries();
   fn = firstEvent;
   fTree->SetBranchAddress("InMuon",&iMuon);    // incoming muon
-  fTree->SetBranchAddress("Particles",&dPart);
-  // cout << "muon DIS Generator number of events "<< fNevents << endl;
+  fTree->SetBranchAddress("Particles", &dPart);
   return kTRUE;
 }
 Double_t MuDISGenerator::MeanMaterialBudget(const Double_t *start, const Double_t *end, Double_t *mparam)
@@ -87,8 +80,7 @@ Double_t MuDISGenerator::MeanMaterialBudget(const Double_t *start, const Double_
   for (Int_t i=0;i<6;i++) bparam[i]=0;
 
   if (!gGeoManager) {
-    //AliFatalClass("No TGeo\n");
-    return 0.;
+      return 0.;
   }
   //
   Double_t length;
