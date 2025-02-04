@@ -1290,12 +1290,8 @@ from basiclibs import *
 # -----   Reconstruction run   -------------------------------------------
 fRun = ROOT.FairRunAna()
 if options.geoFile:
-    if options.geoFile[0:4] == "/eos":
-        options.geoFile = ROOT.gSystem.Getenv("EOSSHIP") + options.geoFile
     fRun.SetGeomFile(options.geoFile)
 
-if options.InputFile[0:4] == "/eos":
-    options.InputFile = ROOT.gSystem.Getenv("EOSSHIP") + options.InputFile
 inFile = ROOT.FairFileSource(options.InputFile)
 fRun.SetSource(inFile)
 if options.OutputFile is None:

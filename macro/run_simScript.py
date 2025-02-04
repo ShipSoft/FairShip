@@ -473,9 +473,7 @@ if simEngine == "MuonBack":
  MuonBackgen.Init(inputFile,options.firstEvent,options.phiRandom)
  MuonBackgen.SetSmearBeam(5 * u.cm) # radius of ring, thickness 8mm
  if DownScaleDiMuon:
-    if inputFile[0:4] == "/eos": test = os.environ["EOSSHIP"]+inputFile
-    else: test = inputFile
-    testf = ROOT.TFile.Open(test)
+    testf = ROOT.TFile.Open(inputFile)
     if not testf.FileHeader.GetTitle().find('diMu100.0')<0:
         MuonBackgen.SetDownScaleDiMuon()   # avoid interference with boosted channels
         print("MuonBackgenerator: set downscale for dimuon on")

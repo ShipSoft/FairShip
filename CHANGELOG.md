@@ -22,6 +22,8 @@ it in future.
 
 ### Changed
 
+* Don't special case EOS paths (fix #566)
+
 ### Removed
 
 ## 25.01
