@@ -86,7 +86,7 @@ Bool_t MuonBackGenerator::checkDiMuon(Int_t muIndex){
         strncmp("Positron annihilation" ,pName.Data(),21)==0 ||
         strncmp("Lepton pair production",pName.Data(),22)==0){
            check = true;}
-   Int_t Pcode = TMath::Abs( (dynamic_cast<ShipMCTrack*>(MCTrack->At(mu->GetMotherId()))->GetPdgCode());
+   Int_t Pcode = TMath::Abs( (dynamic_cast<ShipMCTrack*>(MCTrack->At(mu->GetMotherId()))->GetPdgCode()));
    if (Pcode==221 || Pcode==223 || Pcode==333 || Pcode==113 || Pcode == 331){
            check = true;}
    return check;
@@ -136,7 +136,7 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
             }
             // reject muon if comes from boosted channel
 
-            while (auto it = moList.begin(), it != moList.end()) {
+            for (auto it = moList.begin(); it != moList.end(); it++) {
                 if (gRandom->Uniform(0., 1.) > 0.99) {
                     std::vector<int> list = it->second;
                     for (Int_t i = 0; i < list.size(); i++) {
@@ -145,7 +145,6 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
                         muList.insert({muIndex, i});
                     }
                 }
-                it++;
             }
             if (!found) {
                 LOGF(warn, "No muon found %i", fn - 1);
