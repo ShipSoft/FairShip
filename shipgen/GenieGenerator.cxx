@@ -30,19 +30,13 @@ Bool_t GenieGenerator::Init(const char* fileName) {
 // -----   Default constructor   -------------------------------------------
 Bool_t GenieGenerator::Init(const char* fileName, const int firstEvent) {
   fNuOnly = false;
-  if (0 == strncmp("/eos",fileName,4) ) {
-   TString tmp = gSystem->Getenv("EOSSHIP");
-   tmp+=fileName;
-   fInputFile  = TFile::Open(tmp);
-   LOGF(info, "Opening input file on eos %s", tmp.Data());
-  }else{
-   fInputFile  = new TFile(fileName);
-   LOGF(info, "Opening input file %s", fileName);
+  fInputFile = TFile::Open(fileName);
+  LOG(INFO) << "Opening input file " << fileName;
+  if (!fInputFile) {
+      LOG(FATAL) << "Error opening input file.";
+      return kFALSE;
   }
-  if (fInputFile->IsZombie() or !fInputFile) {
-     LOG(FATAL) << "Error opening input file";
-     return kFALSE; }
-  fTree = (TTree *)fInputFile->Get("gst");
+  fTree = dynamic_cast<TTree*>(fInputFile->Get("gst"));
   fNevents = fTree->GetEntries();
   fn = firstEvent;
   fTree->SetBranchAddress("Ev",&Ev);    // incoming neutrino energy
