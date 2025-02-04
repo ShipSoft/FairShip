@@ -12,7 +12,11 @@ if len(sys.argv)>4: nPerJob = int(sys.argv[4])
 #
 from array import array
 PDG = ROOT.TDatabasePDG.Instance()
-myPythia = ROOT.TPythia6()
+try:
+   myPythia = ROOT.TPythia6()
+except: #library not part of ROOT from 6.32 onward, need to load it externally
+   ROOT.gSystem.Load("libtpythia6.so")
+   myPythia = ROOT.TPythia6()
 myPythia.SetMSEL(2)       # msel 2 includes diffractive parts
 myPythia.SetPARP(2,2)     # To get below 10 GeV, you have to change PARP(2)
 for kf in [211,321,130,310,3112,3122,3222,3312,3322,3334]:

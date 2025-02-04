@@ -345,7 +345,11 @@ if simEngine == "Pythia6":
 # set muon interaction close to decay volume
  primGen.SetTarget(ship_geo.target.z0+ship_geo.muShield.length, 0.)
 # -----Pythia6-------------------------
- test = ROOT.TPythia6() # don't know any other way of forcing to load lib
+ try:
+   test = ROOT.TPythia6() # don't know any other way of forcing to load lib
+ except: #library not part of ROOT from 6.32 onward, need to load it externally
+   ROOT.gSystem.Load("libtpythia6.so")
+   test = ROOT.TPythia6()
  P6gen = ROOT.tPythia6Generator()
  P6gen.SetMom(50.*u.GeV)
  P6gen.SetTarget("gamma/mu+","n0") # default "gamma/mu-","p+"

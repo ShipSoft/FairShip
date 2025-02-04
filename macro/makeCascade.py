@@ -74,7 +74,11 @@ else:
    sys.exit('ERROR on input, exit')
 
 PDG = ROOT.TDatabasePDG.Instance()
-myPythia = ROOT.TPythia6()
+try:
+   myPythia = ROOT.TPythia6()
+except: #library not part of ROOT from 6.32 onward, need to load it externally
+   ROOT.gSystem.Load("libtpythia6.so")
+   myPythia = ROOT.TPythia6()
 tp = ROOT.tPythia6Generator()
 
 # Pythia6 can only accept names below in pyinit, hence reset PDG table:
