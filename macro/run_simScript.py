@@ -510,7 +510,7 @@ if options.dryrun: # Early stop after setting up Pythia 8
  sys.exit(0)
 gMC = ROOT.TVirtualMC.GetMC()
 fStack = gMC.GetStack()
-EnergyCut = 10.*u.MeV if options.mudis else 100.*u.MeV
+EnergyCut = 10. * u.MeV if options.mudis else 100. * u.MeV
 
 if MCTracksWithHitsOnly:
  fStack.SetMinPoints(1)
