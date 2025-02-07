@@ -56,8 +56,8 @@ if "muShieldWithCobaltMagnet" not in globals():
     muShieldWithCobaltMagnet = 0
 if "SC_mag" not in globals():
     SC_mag = False
-if "scName" not in globals():
-    scName = None
+if "shieldName" not in globals():
+    shieldName = None
 if "DecayVolumeMedium" not in globals():
     DecayVolumeMedium = "vacuums"
 if "SND" not in globals():
@@ -69,7 +69,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.SND = SND
 
     c.SC_mag = SC_mag
-    c.scName = scName
+    c.shieldName = shieldName
     # global muShieldDesign, targetOpt, strawDesign, Yheight
     c.Yheight = Yheight*u.m
     # decision by the SP
@@ -315,16 +315,19 @@ with ConfigRegistry.register_config("basic") as c:
         c.muShield.half_Y_max = 317 * u.cm
     elif muShieldDesign == 8:
         if not SC_mag:
-            assert muShieldGeo
-            c.muShieldGeo = muShieldGeo
-            print("Load geo")
-            f = r.TFile.Open(muShieldGeo)
-            params = r.TVectorD()
-            params.Read('params')
-            f.Close()
+            # assert muShieldGeo
+            # c.muShieldGeo = muShieldGeo
+            # print("Load geo")
+            # f = r.TFile.Open(muShieldGeo)
+            # params = r.TVectorD()
+            # params.Read('params')
+            # f.Close()
+            assert shieldName
+            params = shield_db[shieldName]
+            c.muShield.params = params
         else:
-            assert scName
-            params = shield_db[scName]
+            assert shieldName
+            params = shield_db[shieldName]
             c.muShield.params = params
         c.muShield.dZ1 = 0.35*u.m + zGap
         c.muShield.dZ2 = 2.26*u.m + zGap

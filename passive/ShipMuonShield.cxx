@@ -63,7 +63,7 @@ ShipMuonShield::ShipMuonShield(TString geofile,
 }
 
 ShipMuonShield::ShipMuonShield(TVectorT<Double_t> in_params,
-Double_t floor, const Int_t withCoMagnet, const Bool_t StepGeo, const Bool_t WithConstAbsorberField, const Bool_t WithConstShieldField)
+Double_t floor, const Int_t withCoMagnet, const Bool_t StepGeo, const Bool_t WithConstAbsorberField, const Bool_t WithConstShieldField,  const Bool_t SC_key)
   : FairModule("MuonShield", "ShipMuonShield")
 {
   for(int i = 0; i < 56; i++){
@@ -75,7 +75,7 @@ Double_t floor, const Int_t withCoMagnet, const Bool_t StepGeo, const Bool_t Wit
   fWithCoMagnet = withCoMagnet;
   Double_t LE = 7 * m;
   fDesign = 8;
-  fSC_mag = true;
+  fSC_mag = SC_key;
   fField = 1.7;
   dZ0 = 1 * m;
   dZ1 = 0.4 * m;
@@ -513,15 +513,7 @@ Int_t ShipMuonShield::Initialize(std::vector<TString> &magnetName,
     };
 
     std::vector<Double_t> params;
-    if (!fSC_mag)
-    {
-      TVectorT<Double_t> paramsR;
-      auto f = TFile::Open(fGeofile, "read");
-      paramsR.Read("params");
-      for (int i = 0; i < 56; i++){params.push_back(paramsR[i]);}
-    }else{
-      params = shield_params;
-    }
+    params = shield_params;
 
     const int offset = 7;
 
@@ -968,13 +960,11 @@ void ShipMuonShield::ConstructGeometry()
   if ((dZf[nM] < 1e-5 || nM == 4 ) && fSC_mag) {
         continue;
       }
-  Double_t ironField_s_SC = fField * fieldScale[nM] * tesla;
-  Bool_t SC_key = false;
-  if(nM == 3 && fSC_mag){
-    Double_t SC_FIELD = 5.1;
-    ironField_s_SC = SC_FIELD * fieldScale[nM] * tesla;
-    SC_key = true;
-  }
+      Double_t ironField_s_SC = fField * fieldScale[nM] * tesla;
+      if (nM == 3 && fSC_mag) {
+          Double_t SC_FIELD = 5.1;
+          ironField_s_SC = SC_FIELD * fieldScale[nM] * tesla;
+      }
   // END
   Double_t ironField_s = fField * fieldScale[nM] * tesla;
   TGeoUniformMagField *magFieldIron_s = new TGeoUniformMagField(0.,ironField_s_SC,0.);
@@ -982,10 +972,11 @@ void ShipMuonShield::ConstructGeometry()
   TGeoUniformMagField *ConRField_s    = new TGeoUniformMagField(-ironField_s,0.,0.);
   TGeoUniformMagField *ConLField_s    = new TGeoUniformMagField(ironField_s,0.,0.);
   TGeoUniformMagField *fields_s[4] = {magFieldIron_s,RetField_s,ConRField_s,ConLField_s};
-	CreateMagnet(magnetName[nM], iron, tShield, fields_s, fieldDirection[nM],
-		     dXIn[nM], dYIn[nM], dXOut[nM], dYOut[nM], dZf[nM],
-		     midGapIn[nM], midGapOut[nM], HmainSideMagIn[nM],
-		     HmainSideMagOut[nM], gapIn[nM], gapOut[nM], Z[nM], nM==8, fStepGeo, SC_key);
+  CreateMagnet(magnetName[nM], iron, tShield, fields_s, fieldDirection[nM],
+          dXIn[nM], dYIn[nM], dXOut[nM], dYOut[nM], dZf[nM],
+          midGapIn[nM], midGapOut[nM], HmainSideMagIn[nM],
+          HmainSideMagOut[nM], gapIn[nM], gapOut[nM], Z[nM], nM==8, fStepGeo, nM == 3 && fSC_mag);
+
 
 	if (nM==8 || !fSupport) continue;
 	Double_t dymax = std::max(dYIn[nM] + dXIn[nM], dYOut[nM] + dXOut[nM]);
