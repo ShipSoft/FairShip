@@ -314,21 +314,9 @@ with ConfigRegistry.register_config("basic") as c:
         c.muShield.half_X_max = 179 * u.cm
         c.muShield.half_Y_max = 317 * u.cm
     elif muShieldDesign == 8:
-        if not SC_mag:
-            # assert muShieldGeo
-            # c.muShieldGeo = muShieldGeo
-            # print("Load geo")
-            # f = r.TFile.Open(muShieldGeo)
-            # params = r.TVectorD()
-            # params.Read('params')
-            # f.Close()
-            assert shieldName
-            params = shield_db[shieldName]
-            c.muShield.params = params
-        else:
-            assert shieldName
-            params = shield_db[shieldName]
-            c.muShield.params = params
+        assert shieldName
+        params = shield_db[shieldName]
+        c.muShield.params = params
         c.muShield.dZ1 = 0.35*u.m + zGap
         c.muShield.dZ2 = 2.26*u.m + zGap
         c.muShield.dZ3 = params[2]

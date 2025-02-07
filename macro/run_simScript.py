@@ -201,9 +201,9 @@ if (HNL and options.RPVSUSY) or (HNL and options.DarkPhoton) or (options.DarkPho
  print("cannot have HNL and SUSY or DP at the same time, abort")
  sys.exit(2)
 
-# if (simEngine == "Genie" or simEngine == "nuRadiography") and defaultInputFile:
-#   inputFile = "/eos/experiment/ship/data/GenieEvents/genie-nu_mu.root"
-            # "/eos/experiment/ship/data/GenieEvents/genie-nu_mu_bar.root"
+if (simEngine == "Genie" or simEngine == "nuRadiography") and defaultInputFile:
+  inputFile = "/eos/experiment/ship/data/GenieEvents/genie-nu_mu.root"
+            "/eos/experiment/ship/data/GenieEvents/genie-nu_mu_bar.root"
 if simEngine == "muonDIS" and defaultInputFile:
   print('input file required if simEngine = muonDIS')
   print(" for example -f  /eos/experiment/ship/data/muonDIS/muonDis_1.root")
