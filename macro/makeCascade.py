@@ -287,7 +287,8 @@ for iev in range(nevgen):
          if stack[nstack][0]==idhist[i]:
             idpn=0
 #   decide on p or n target in Mo
-            if random.random>fracp: idpn=1
+            if random.random() > fracp:
+                    idpn = 1
             idw=i*10+idpn*4+4
             ib=h[str(idw)].FindBin(ptot,0.,0.)
             prbsig=h[str(idw)].GetBinContent(ib)
