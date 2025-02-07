@@ -6,7 +6,7 @@ from ROOT import gSystem
 #gSystem.Load("libGeomPainter.so")
 #gSystem.Load("libVMC.so")
 #gSystem.Load("libEG.so")
-gSystem.Load("libEGPythia6.so")
+#gSystem.Load("libEGPythia6.so")
 gSystem.Load("libPythia6.so")
 #gSystem.Load("libPhysics.so")
 #gSystem.Load("libNet.so")
