@@ -857,7 +857,7 @@ void ShipMuonShield::ConstructGeometry()
       auto *stair_step_shift = new TGeoTranslation("stair_step_shift", 3.435 * m, 3.04 * m , stair_step_length / 2.);
       stair_step_shift->RegisterYourself();
       auto *experiment_cavern = new TGeoBBox("experiment_cavern", 7.995 * m, 6 * m, ECN3_length / 2. - stair_step_length / 2.);
-      auto *ECN3_shift = new TGeoTranslation("ECN3_shift", 3.435 * m, 2.64 * m, ECN3_length / 2. + stair_step_length);
+      auto *ECN3_shift = new TGeoTranslation("ECN3_shift", 3.435 * m, 2.64 * m, ECN3_length / 2. + stair_step_length / 2.);
       ECN3_shift->RegisterYourself();
 
       auto *yoke_pit = new TGeoBBox("yoke_pit", 3.5 * m, 4.3 * m + 1 * cm, 2.5 * m);
