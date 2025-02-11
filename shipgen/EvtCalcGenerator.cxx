@@ -145,4 +145,3 @@ Bool_t EvtCalcGenerator::ReadEvent(FairPrimaryGenerator* cpg)
 
     return kTRUE;
 }
-

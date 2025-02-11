@@ -165,5 +165,3 @@ class DarkPhoton:
         increase = brh*visible_frac
         #print increase
         return n*(1. + increase)
-
-

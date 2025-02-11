@@ -16,6 +16,8 @@ it in future.
 
 ### Fixed
 
+* chore: Fix file endings
+
 ### Added
 
 ### Changed
