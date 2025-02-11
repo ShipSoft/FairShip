@@ -70,8 +70,6 @@ globalDesigns = {
 }
 default = '2023'
 
-inactivateMuonProcesses = False   # provisionally for making studies of various muon background sources
-
 parser = ArgumentParser()
 group = parser.add_mutually_exclusive_group()
 parser.add_argument("--evtcalc", help="Use EventCalc", action="store_true")
@@ -150,6 +148,7 @@ parser.add_argument(
     const="vacuums",
     default="helium"
 )
+
 parser.add_argument("--SND", dest="SND", help="Activate SND.", action='store_true')
 parser.add_argument("--noSND", dest="SND", help="Deactivate SND. NOOP, as it currently defaults to off.", action='store_false')
 
@@ -271,7 +270,6 @@ rtdb = run.GetRuntimeDb()
 # import shipMuShield_only as shipDet_conf # special use case for an attempt to convert active shielding geometry for use with FLUKA
 # import shipTarget_only as shipDet_conf
 import shipDet_conf
-
 modules = shipDet_conf.configure(run,ship_geo)
 # -----Create PrimaryGenerator--------------------------------------
 primGen = ROOT.FairPrimaryGenerator()
@@ -332,7 +330,6 @@ if simEngine == "Pythia8":
 # P8gen.SetMom(500.*u.GeV)
 # P8gen.SetId(-211)
  primGen.AddGenerator(P8gen)
-
 if simEngine == "FixedTarget":
  P8gen = ROOT.FixedTargetGenerator()
  P8gen.SetTarget("volTarget_1",0.,0.)
@@ -388,7 +385,6 @@ if simEngine == "muonDIS":
  DISgen.Init(inputFile,options.firstEvent)
  primGen.AddGenerator(DISgen)
  options.nEvents = min(options.nEvents,DISgen.GetNevents())
- inactivateMuonProcesses = True # avoid unwanted hadronic events of "incoming" muon flying backward
  print('Generate ',options.nEvents,' with DIS input', ' first event',options.firstEvent)
 # -----neutrino interactions from nuage------------------------
 if simEngine == "Nuage":
@@ -518,15 +514,17 @@ if options.dryrun: # Early stop after setting up Pythia 8
  sys.exit(0)
 gMC = ROOT.TVirtualMC.GetMC()
 fStack = gMC.GetStack()
+EnergyCut = 10. * u.MeV if options.mudis else 100. * u.MeV
+
 if MCTracksWithHitsOnly:
  fStack.SetMinPoints(1)
  fStack.SetEnergyCut(-100.*u.MeV)
 elif MCTracksWithEnergyCutOnly:
  fStack.SetMinPoints(-1)
- fStack.SetEnergyCut(100.*u.MeV)
+ fStack.SetEnergyCut(EnergyCut)
 elif MCTracksWithHitsOrEnergyCut:
  fStack.SetMinPoints(1)
- fStack.SetEnergyCut(100.*u.MeV)
+ fStack.SetEnergyCut(EnergyCut)
 elif options.deepCopy:
  fStack.SetMinPoints(0)
  fStack.SetEnergyCut(0.*u.MeV)
@@ -560,18 +558,6 @@ if options.debug == 1:
 #fieldMaker.plotField(1, ROOT.TVector3(-9000.0, 6000.0, 50.0), ROOT.TVector3(-300.0, 300.0, 6.0), 'Bzx.png')
 #fieldMaker.plotField(2, ROOT.TVector3(-9000.0, 6000.0, 50.0), ROOT.TVector3(-400.0, 400.0, 6.0), 'Bzy.png')
 
-if inactivateMuonProcesses :
- ROOT.gROOT.ProcessLine('#include "Geant4/G4ProcessTable.hh"')
- mygMC = ROOT.TGeant4.GetMC()
- mygMC.ProcessGeantCommand("/process/inactivate muPairProd")
- mygMC.ProcessGeantCommand("/process/inactivate muBrems")
- mygMC.ProcessGeantCommand("/process/inactivate muIoni")
- mygMC.ProcessGeantCommand("/process/inactivate muonNuclear")
- mygMC.ProcessGeantCommand("/particle/select mu+")
- mygMC.ProcessGeantCommand("/particle/process/dump")
- gProcessTable = ROOT.G4ProcessTable.GetProcessTable()
- procmu = gProcessTable.FindProcess(ROOT.G4String('muIoni'),ROOT.G4String('mu+'))
- procmu.SetVerboseLevel(2)
 # -----Start run----------------------------------------------------
 run.Run(options.nEvents)
 # -----Runtime database---------------------------------------------
