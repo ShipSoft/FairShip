@@ -26,12 +26,13 @@ jobs:
         with:
           path: FairShip
 
-      - uses: actions-ecosystem/action-get-latest-tag@v1
-        id: get-latest-tag
+      #- uses: actions-ecosystem/action-get-latest-tag@v1
+      #  id: get-latest-tag
 
+          # echo ${{ steps.get-latest-tag.outputs.tag }}
       - name: Source and Build
         run: |
-          echo ${{ steps.get-latest-tag.outputs.tag }}
+          echo "Tag name from github.ref_name: ${{  github.ref_name }}"
           source /cvmfs/ship.cern.ch/24.10/setUp.sh
           aliBuild build FairShip --always-prefer-system --config-dir $SHIPDIST --defaults release --jobs 4 --debug
 
