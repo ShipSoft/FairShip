@@ -37,6 +37,14 @@ jobs:
           eval `alienv load FairShip/latest`
           python $FAIRSHIP/macro/run_simScript.py --test
 
+      - name: Overlap check
+        run: |
+          source /cvmfs/ship.cern.ch/24.10/setUp.sh
+          eval `alienv load FairShip/latest`
+          python $FAIRSHIP/macro/run_simScript.py --test -n 0 --debug 2 > log
+          grep ovlp log && exit 1
+
+
       - name: Run Reco
         run: |
           source /cvmfs/ship.cern.ch/24.10/setUp.sh
