@@ -127,7 +127,7 @@ with ConfigRegistry.register_config("basic") as c:
      c.Chamber5 = AttrDict(z=zset)
      zset=z4+30.*u.cm+windowBulge/2.
      c.Chamber6 = AttrDict(z=zset)
-     
+
      c.xMax = 2 * u.m  # max horizontal width at T4
      #
      c.TrackStation4 = AttrDict(z=z4)
@@ -160,9 +160,9 @@ with ConfigRegistry.register_config("basic") as c:
      c.strawtubes.InnerStrawDiameter = 1.9928 * u.cm
      c.strawtubes.StrawPitch = 2. * u.cm
      c.strawtubes.DeltazLayer = 1.732 * u.cm
-     c.strawtubes.DeltazPlane = 0 * u.cm   
+     c.strawtubes.DeltazPlane = 0 * u.cm
      c.strawtubes.YLayerOffset = 1. * u.cm
-     c.strawtubes.YPlaneOffset = 0 * u.cm   
+     c.strawtubes.YPlaneOffset = 0 * u.cm
      c.strawtubes.FrameMaterial = "steel"
      c.strawtubes.FrameLateralWidth = 0.25 * u.m
      c.strawtubes.DeltazFrame = 2.5 * u.cm

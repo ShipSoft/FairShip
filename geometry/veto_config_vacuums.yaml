@@ -9,7 +9,7 @@ outerSupportMed: "steel"
 lidThickness: 0.0  # cm
 sensitiveThickness: 20  # cm
 sensitiveMed: "Scintillator"
-decayMed: "vacuums" 
+decayMed: "vacuums"
 rib: 1.5  # cm
 ribMed: "steel"
 xstartInner : 100.0 # cm

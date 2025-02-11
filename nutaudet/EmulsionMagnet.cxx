@@ -519,7 +519,7 @@ void EmulsionMagnet::ConstructGeometry()
       //circular arcs (first two options are radii, not half radii!)
       Double_t OuterRadius = fCoilY + fCoilThickness;
 
-      [[maybe_unused]] auto *Coillateraltuberightdown = new TGeoTubeSeg("Coillateraltuberightdown",fCoilThickness,OuterRadius, fCoilX/2,90,180);      
+      [[maybe_unused]] auto *Coillateraltuberightdown = new TGeoTubeSeg("Coillateraltuberightdown",fCoilThickness,OuterRadius, fCoilX/2,90,180);
       [[maybe_unused]] auto *Coillateraltuberighttup = new TGeoTubeSeg("Coillateraltuberightup",fCoilThickness,OuterRadius, fCoilX/2,0,90);
       [[maybe_unused]] auto *Coillateraltubeleftup = new TGeoTubeSeg("Coillateraltubeleftup",fCoilThickness,OuterRadius, fCoilX/2,270,360);
       [[maybe_unused]] auto *Coillateraltubeleftdown = new TGeoTubeSeg("Coillateraltubeleftdown",fCoilThickness,OuterRadius, fCoilX/2,180,270);

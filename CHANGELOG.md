@@ -17,8 +17,7 @@ it in future.
 ### Fixed
 
 * chore: Fix file endings
-
-### Added
+* chore: trim trailing whitespace
 
 ### Changed
 

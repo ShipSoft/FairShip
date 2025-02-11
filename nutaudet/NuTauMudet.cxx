@@ -498,7 +498,7 @@ void NuTauMudet::ConstructGeometry()
       tTauNuDet->AddNode(Pillar1Vol,4, new TGeoTranslation(fXtot/2-fPillarX/2,-fYtot/2-fPillarY/2,fZcenter+fZArm/2+fGapMiddle/2-fPillarZ/2));
     }
   if(fDesign==3)
-    {      
+    {
       Int_t nr = 1E4;
 
       TGeoVolumeAssembly *volMudetBox = new TGeoVolumeAssembly("volTauNuMudet");

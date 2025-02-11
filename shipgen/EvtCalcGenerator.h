@@ -29,7 +29,7 @@ class EvtCalcGenerator : public FairGenerator
         ztarget = zTa;        // units cm (midpoint)
         zDecayVolume = zDV;   // units cm (midpoint)
     }
-    
+
     // Wrapper function declarations
     Double_t GetNdaughters(const std::unique_ptr<TTree>&) const;
     Double_t GetMotherPx(const std::unique_ptr<TTree>&) const;
@@ -45,7 +45,7 @@ class EvtCalcGenerator : public FairGenerator
     Double_t GetDauPz(const std::unique_ptr<TTree>&, int) const;
     Double_t GetDauE(const std::unique_ptr<TTree>&, int) const;
     Double_t GetDauPDG(const std::unique_ptr<TTree>&, int) const;
-    
+
   private:
   protected:
       // Generalized branch access

@@ -93,11 +93,11 @@ def convert_file(infile, outdir):
         "vz",
     ]
     daughter_vars = [
-        "px_prod", 
-        "py_prod", 
-        "pz_prod", 
-        "e_prod", 
-        "mass_prod", 
+        "px_prod",
+        "py_prod",
+        "pz_prod",
+        "e_prod",
+        "mass_prod",
         "pdg_prod",
     ]
     fname = infile.split("/")[-1]
@@ -114,7 +114,7 @@ def convert_file(infile, outdir):
     ncols   = len(parsed_data[0][2])
     nvardau = 6  # qualifiers for each daughter
     remaining_vars = ncols - len(vars_names)
-    
+
     if (remaining_vars % nvardau)!=0:
         raise ValueError(f"- convertEvtCalc - Error: number of daughters is not exact.")
 

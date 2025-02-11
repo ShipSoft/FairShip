@@ -690,7 +690,7 @@ Bool_t  Target::ProcessHits(FairVolume* vol)
     if (fELoss == 0. ) { return kFALSE; }
     TParticle* p=gMC->GetStack()->GetCurrentTrack();
     //Int_t MotherID =gMC->GetStack()->GetCurrentParentTrackNumber();
-    Int_t pdgCode = p->GetPdgCode();    
+    Int_t pdgCode = p->GetPdgCode();
 
     TLorentzVector Pos;
     gMC->TrackPosition(Pos);
