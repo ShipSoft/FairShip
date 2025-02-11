@@ -43,5 +43,3 @@ def execute(f,ox,name='ShipGeo'):
     pkl = Pickler(fg)
     pkl.dump(o,name)
     if type(f)==type("s"): fg.Close()
-
-

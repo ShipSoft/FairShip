@@ -78,4 +78,3 @@ class EvtCalcGenerator : public FairGenerator
 };
 
 #endif   // SHIPGEN_EVTCALCGENERATOR_H_
-

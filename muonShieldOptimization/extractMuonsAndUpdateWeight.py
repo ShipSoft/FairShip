@@ -261,4 +261,3 @@ def testRatio(fname):
         charm+=1
         break
  print("charm found",charm," ratio ",charm/float(Nall))
-
