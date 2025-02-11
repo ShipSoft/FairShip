@@ -136,7 +136,7 @@ parser.add_argument("--MesonMother",   dest="MM",  help="Choose DP production me
 parser.add_argument("--debug",  help="1: print weights and field 2: make overlap check", required=False, default=0, type=int, choices=range(0,3))
 parser.add_argument(
     "--helium",
-    dest="decayVolMed", 
+    dest="decayVolMed",
     help="Set Decay Volume medium to helium. NOOP, as default is helium",
     action="store_const",
     const="helium",

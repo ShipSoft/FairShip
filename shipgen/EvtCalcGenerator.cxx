@@ -116,10 +116,10 @@ Bool_t EvtCalcGenerator::ReadEvent(FairPrimaryGenerator* cpg)
     // Mother LLP
     Bool_t wanttracking = false;
     Double_t pdg_llp = 999;   // Geantino, placeholder
-    
+
     cpg->AddTrack(
-        pdg_llp, GetMotherPx(fTree), GetMotherPy(fTree), GetMotherPz(fTree), 
-        vx_transf, vy_transf, vz_transf, -1., wanttracking, 
+        pdg_llp, GetMotherPx(fTree), GetMotherPy(fTree), GetMotherPz(fTree),
+        vx_transf, vy_transf, vz_transf, -1., wanttracking,
         GetMotherE(fTree), tof, decay_prob);
 
     wanttracking = true;

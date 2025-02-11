@@ -232,7 +232,7 @@ void Hpt::ConstructGeometry()
     if (fDesign == 3){
         //Trackers that in design 3 follow the target --------------------------------------------------------------------------------------
         TGeoVolume *volMagRegion=gGeoManager->GetVolume("volMagRegion");
-        TGeoVolume *volTarget =gGeoManager->GetVolume("volTarget");        
+        TGeoVolume *volTarget =gGeoManager->GetVolume("volTarget");
 
         Double_t DZMagnetizedRegion = static_cast<TGeoBBox*> (volMagRegion->GetShape())->GetDZ() *2;
 

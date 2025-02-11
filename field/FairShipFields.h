@@ -1,4 +1,4 @@
-/* 
+/*
 generic interface to B fields of FairShip
 */
 
@@ -21,7 +21,7 @@ class FairShipFields : public AbsBField {
   /** Default constructor **/
   FairShipFields();
 
-  //! set field if not gMC present 
+  //! set field if not gMC present
   inline void setField(ShipCompField* gField)  { gField_ = gField; }
 
   //! return value at position

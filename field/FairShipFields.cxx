@@ -1,4 +1,4 @@
-/* 
+/*
 generic interface to B fields of FairShip
 assumes that magnetic fields for tracking are global fields, not matched to a volume.
 */
@@ -16,7 +16,7 @@ namespace genfit {
 
 
 TVector3 FairShipFields::get(const TVector3& pos) const {
-  Double_t bx,by,bz; 
+  Double_t bx,by,bz;
   get(pos.X(),pos.Y(),pos.Z(),bx,by,bz);
   TVector3 field_(bx,by,bz);
   return field_;
