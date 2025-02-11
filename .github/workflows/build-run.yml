@@ -28,7 +28,6 @@ jobs:
 
       - uses: actions-ecosystem/action-get-latest-tag@v1
         id: get-latest-tag
-        if: ${{ steps.release-label.outputs.level != null }}
 
       - name: Source and Build
         run: |
@@ -36,18 +35,18 @@ jobs:
           source /cvmfs/ship.cern.ch/24.10/setUp.sh
           aliBuild build FairShip --always-prefer-system --config-dir $SHIPDIST --defaults release --jobs 4 --debug
 
+      - name: Run Sim
+        run: |
+          source /cvmfs/ship.cern.ch/24.10/setUp.sh
+          eval `alienv load FairShip/latest`
+          python $FAIRSHIP/macro/run_simScript.py --test
+
       - name: Overlap check
         run: |
           source /cvmfs/ship.cern.ch/24.10/setUp.sh
           eval `alienv load FairShip/latest`
           python $FAIRSHIP/macro/run_simScript.py --test -n 0 --debug 2 > log
           grep ovlp log && exit 1
-
-      - name: Run Sim
-        run: |
-          source /cvmfs/ship.cern.ch/24.10/setUp.sh
-          eval `alienv load FairShip/latest`
-          python $FAIRSHIP/macro/run_simScript.py --test
 
       - name: Run Reco
         run: |
