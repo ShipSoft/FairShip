@@ -757,7 +757,7 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  857</span>      <span class="keyword">auto</span> *stair_step_shift = <span class="keyword">new</span> TGeoTranslation(<span class="stringliteral">&quot;stair_step_shift&quot;</span>, 3.435 * m, 3.04 * m , stair_step_length / 2.);</div>
 <div class="line"><span class="lineno">  858</span>      stair_step_shift-&gt;RegisterYourself();</div>
 <div class="line"><span class="lineno">  859</span>      <span class="keyword">auto</span> *experiment_cavern = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;experiment_cavern&quot;</span>, 7.995 * m, 6 * m, ECN3_length / 2. - stair_step_length / 2.);</div>
-<div class="line"><span class="lineno">  860</span>      <span class="keyword">auto</span> *ECN3_shift = <span class="keyword">new</span> TGeoTranslation(<span class="stringliteral">&quot;ECN3_shift&quot;</span>, 3.435 * m, 2.64 * m, ECN3_length / 2. + stair_step_length);</div>
+<div class="line"><span class="lineno">  860</span>      <span class="keyword">auto</span> *ECN3_shift = <span class="keyword">new</span> TGeoTranslation(<span class="stringliteral">&quot;ECN3_shift&quot;</span>, 3.435 * m, 2.64 * m, ECN3_length / 2. + stair_step_length / 2.);</div>
 <div class="line"><span class="lineno">  861</span>      ECN3_shift-&gt;RegisterYourself();</div>
 <div class="line"><span class="lineno">  862</span> </div>
 <div class="line"><span class="lineno">  863</span>      <span class="keyword">auto</span> *yoke_pit = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;yoke_pit&quot;</span>, 3.5 * m, 4.3 * m + 1 * cm, 2.5 * m);</div>
