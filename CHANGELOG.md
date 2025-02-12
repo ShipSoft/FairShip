@@ -14,6 +14,8 @@ it in future.
 
 ### Added
 
+* Add (optional) MgB2 field map
+
 ### Fixed
 
 * chore: Fix file endings
@@ -21,6 +23,9 @@ it in future.
 * Fix mismatch dimension cavern ECN3 TCC8
 
 ### Changed
+
+* Use git-lfs to track ROOT files
+* Allow specifying spectrometer field map
 
 ### Removed
 
