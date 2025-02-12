@@ -23,6 +23,7 @@ it in future.
 ### Changed
 
 * Use git-lfs to track ROOT files
+* Allow specifying spectrometer field map
 
 ### Removed
 
