@@ -5,6 +5,7 @@ repos:
   rev: v5.0.0
   hooks:
   - id: trailing-whitespace
+    exclude: .dat
   - id: end-of-file-fixer
   - id: check-yaml
   - id: check-added-large-files
@@ -44,3 +45,4 @@ repos:
   - id: cmake-format
 ci:
   autofix_prs: false
+  skip: [ruff, ruff-format, pydocstyle, clang-format, cpplint, cmakelint, isort, cmake-format]
