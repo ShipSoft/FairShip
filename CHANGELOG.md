@@ -28,6 +28,7 @@ it in future.
 * Setting up the Muon shield geometry by ROOT files is completely replaced with the temporary solution of dict in the `geometry/geometry_config.py`.
 * Set up of the shield name is now done using the `--shieldName` flag instead of `--scName`.
 * Allow using standalone TPythia for use with ROOT 6.32+
+* Use git-lfs to track ROOT files
 
 ### Removed
 
