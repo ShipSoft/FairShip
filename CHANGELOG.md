@@ -24,6 +24,7 @@ it in future.
 ### Changed
 
 * Don't special case EOS paths (fix #566)
+* Setting up the Muon shield geometry by ROOT files is completely replaced with the temporary solution of dict in the ```geometry/geometry_config.py```. Set up the shield name is now done by --shieldName key instead of --scName.
 
 ### Removed
 
