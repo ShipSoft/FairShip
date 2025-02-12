@@ -47,6 +47,7 @@ it in future.
 * Get rid of straw diameter dependency in scale factor
 * Assume all tracks are muons during track fit (avoid using MC truth)
 * Change of UBT geometry, remove implementation of RPC and setting a new scoring plane of 4×6 m
+* Allow specifying spectrometer field map
 
 ### Removed
 
