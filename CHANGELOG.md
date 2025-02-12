@@ -25,6 +25,7 @@ it in future.
 
 * Don't special case EOS paths (fix #566)
 * Use git-lfs to track ROOT files
+* Allow specifying spectrometer field map
 
 ### Removed
 
