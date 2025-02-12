@@ -1,2 +1,0 @@
-FieldMap Map files/MainSpectrometerField.root 0.0 0.0 3068.0
-Global Map

@@ -29,6 +29,7 @@ it in future.
 * Set up of the shield name is now done using the `--shieldName` flag instead of `--scName`.
 * Allow using standalone TPythia for use with ROOT 6.32+
 * Use git-lfs to track ROOT files
+* Allow specifying spectrometer field map
 
 ### Removed
 
