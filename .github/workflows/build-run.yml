@@ -33,7 +33,15 @@ jobs:
 
       - name: Get tag version
         id: vars
-        run: cd FairShip && echo "TAG=$(git describe --abbrev=0 --tags)" >> $GITHUB_ENV
+        run: |
+          pwd
+          ls
+          git describe --abbrev=0 --tags
+          cd FairShip
+          pwd
+          ls
+          git describe --abbrev=0 --tags
+          echo "TAG=$(git describe --abbrev=0 --tags)" >> $GITHUB_ENV
 
       - name: Source and Build
         run: |
