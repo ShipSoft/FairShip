@@ -124,6 +124,7 @@ parser.add_argument("--noSC", dest="SC_mag", help="Deactivate SC muon shield. Co
 parser.add_argument("--shieldName", help="The name of the SC shield in the database. SC default: sc_v6, Warm default: combi", default="sc_v6")
 parser.add_argument("--MesonMother",   dest="MM",  help="Choose DP production meson source: pi0, eta, omega, eta1, eta11", required=False,  default='pi0')
 parser.add_argument("--debug",  help="1: print weights and field 2: make overlap check", required=False, default=0, type=int, choices=range(0,3))
+parser.add_argument("--field_map", default=None, help="Specify spectrometer field map.")
 parser.add_argument(
     "--helium",
     dest="decayVolMed",
@@ -539,7 +540,9 @@ import geomGeant4
 # any field maps, or defining if any volumes feel only the local or local+global field.
 # For now, just keep the fields already defined by the C++ code, i.e comment out the fieldMaker
 if hasattr(ship_geo.Bfield,"fieldMap"):
-      fieldMaker = geomGeant4.addVMCFields(ship_geo, '', True)
+     if options.field_map:
+          ship_geo.Bfield.fieldMap = options.field_map
+     fieldMaker = geomGeant4.addVMCFields(ship_geo, verbose=True)
 
 # Print VMC fields and associated geometry objects
 if options.debug == 1:

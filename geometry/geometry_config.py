@@ -177,7 +177,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.Bfield.max = 0 # 1.4361*u.kilogauss  # was 1.15 in EOI
     c.Bfield.y   = c.Yheight
     c.Bfield.x   = 2.4 * u.m
-    c.Bfield.fieldMap = "field/MainSpectrometerField.txt"
+    c.Bfield.fieldMap = "files/MainSpectrometerField.root"
     if c.magnetDesign>3:                          # MISIS design
       c.Bfield.YokeWidth = 0.8 * u.m  # full width       200.*cm
       c.Bfield.YokeDepth = 1.4 * u.m  # half length      200 *cm;
