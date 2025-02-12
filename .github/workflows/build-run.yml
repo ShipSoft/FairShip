@@ -42,8 +42,7 @@ jobs:
           source /cvmfs/ship.cern.ch/24.10/setUp.sh
           eval `alienv load FairShip/latest`
           python $FAIRSHIP/macro/run_simScript.py --test -n 0 --debug 2 > log
-          grep ovlp log && exit 1
-
+          ! grep ovlp log
 
       - name: Run Reco
         run: |
