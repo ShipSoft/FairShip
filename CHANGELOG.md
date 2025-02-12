@@ -20,6 +20,7 @@ it in future.
   The DIS interactions are now time-shifted to be consistent with the original incoming muon. Additionally, tracks from soft interactions of the original muon along with the muon's veto response are preserved (in muonDis.root) and included up to the DIS interaction point. To be noted that the muon veto points are manually added using add_muonresponse.py, which modifies the simulation file. This replaces the old method of "backward-travelling muon" to generate the incoming muon's veto response. All MuonDIS simulation scripts have been updated and consolidated within FairShip/muonDIS, ensuring consistency for new productions.
 * Added a custom CrossSection branch to the simulation file to save the DIS cross sections from muonDIS.
 * Added event_inspector class to experimental analysis_toolkit to streamline usage of helper functions; Added dump_event() as a start.
+* Add (optional) MgB2 field map
 
 ### Fixed
 
