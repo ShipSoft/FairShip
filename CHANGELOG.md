@@ -23,6 +23,7 @@ it in future.
 ### Changed
 
 * Don't special case EOS paths (fix #566)
+* Use git-lfs to track ROOT files
 
 ### Removed
 
