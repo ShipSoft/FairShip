@@ -18,9 +18,10 @@ it in future.
 
 * chore: Fix file endings
 * chore: trim trailing whitespace
-* Fix mismatch dimension cavern ECN3 TCC8
 
 ### Changed
+
+* Revert premature geometry update (#592, #609)
 
 ### Removed
 
