@@ -14,6 +14,8 @@ it in future.
 
 ### Added
 
+* Add (optional) MgB2 field map
+
 ### Fixed
 
 * chore: Fix file endings
