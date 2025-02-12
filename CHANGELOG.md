@@ -22,6 +22,8 @@ it in future.
 
 ### Changed
 
+* Use git-lfs to track ROOT files
+
 ### Removed
 
 ## 25.01
