@@ -1,6 +1,5 @@
 var NAVTREEINDEX29 =
 {
-"namespacePythiaList.html":[4,0,59],
 "namespacePythiaList.html#a13f7f67ea0b996cb7ac40f53ffbf1bff":[4,0,59,2],
 "namespacePythiaList.html#a405f77fe1f708bdae18e23a84469b962":[4,0,59,1],
 "namespacePythiaList.html#a9c4dcba5de0e5687d6d032e471c97779":[4,0,59,0],
@@ -249,5 +248,6 @@ var NAVTREEINDEX29 =
 "namespaceTTCluster.html#af0758d94f4130a909c5b9f98a236d15d":[4,0,102,22],
 "namespaceTTCluster.html#af0adfcf3af75877f09b122405862c6a3":[4,0,102,69],
 "namespaceTTCluster.html#af24499186e7c0a3bcccf54a7df1112d5":[4,0,102,5],
-"namespaceTTCluster.html#af2e1f779c4e037dfc81bce045d4dbc87":[4,0,102,8]
+"namespaceTTCluster.html#af2e1f779c4e037dfc81bce045d4dbc87":[4,0,102,8],
+"namespaceTTCluster.html#af32b305974fe2a5fbca92770573f1866":[4,0,102,75]
 };

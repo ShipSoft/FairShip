@@ -1,6 +1,5 @@
 var NAVTREEINDEX32 =
 {
-"namespaceg4Ex__gap.html#af49a257623e7bced85070c3540031c66":[4,0,33,18],
 "namespaceg4Ex__gap.html#af5bd0ccb81fb06fb5e45ffd26c46326e":[4,0,33,46],
 "namespaceg4Ex__gap__mergeFiles.html":[4,0,34],
 "namespaceg4Ex__gap__mergeFiles.html#a04b74595d43532a050e84552abc4c5ed":[4,0,34,0],
@@ -249,5 +248,6 @@ var NAVTREEINDEX32 =
 "namespacegeometry__config.html#a81a080489ab8f0d1ee3dcb6e6d563571":[4,0,37,96],
 "namespacegeometry__config.html#a81eeb056fc26484ef644da876205e48c":[4,0,37,126],
 "namespacegeometry__config.html#a82d129fa4e9a4a821f32a99df5c3f6c1":[4,0,37,377],
-"namespacegeometry__config.html#a83e713ffdee383687181c42d76184fd6":[4,0,37,175]
+"namespacegeometry__config.html#a83e713ffdee383687181c42d76184fd6":[4,0,37,175],
+"namespacegeometry__config.html#a848035a5caaa1eea10544d1443b5bf71":[4,0,37,60]
 };

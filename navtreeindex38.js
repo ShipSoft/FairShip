@@ -1,6 +1,5 @@
 var NAVTREEINDEX38 =
 {
-"namespaceshipPatRec__prev.html#a5262fa50e84f21f950d6b26eea267cc4":[4,0,84,9],
 "namespaceshipPatRec__prev.html#a54ffd9ea9dcc12b6d0d9a3239b044775":[4,0,84,0],
 "namespaceshipPatRec__prev.html#a5682b3796c2290b1be85ffdfe5d4d22c":[4,0,84,21],
 "namespaceshipPatRec__prev.html#a646fa3c1131b871b2bb5a890ecbc5cee":[4,0,84,44],
@@ -249,5 +248,6 @@ var NAVTREEINDEX38 =
 "namespacestudy__GammaConv.html#ae5ea996dca81cea56362bb1e3000a3da":[4,0,95,11],
 "namespacestudy__GammaConv.html#ae7dc52662551ed7788ac46668220e4f5":[4,0,95,1],
 "namespacestudy__GammaConv.html#ae9f62388c418118cb93b9514b1cf9c0d":[4,0,95,10],
-"namespacestudy__GammaConv.html#aebd70fbb6d12627cfa23a813ccf33cc9":[4,0,95,4]
+"namespacestudy__GammaConv.html#aebd70fbb6d12627cfa23a813ccf33cc9":[4,0,95,4],
+"namespacestudy__GammaConv.html#afc85c748ac6d5eca2175c005a7b66d32":[4,0,95,12]
 };

@@ -197,11 +197,11 @@ $(document).ready(function(){initNavTree('convertEvtCalc_8py_source.html',''); i
 <div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>        <span class="stringliteral">&quot;vz&quot;</span>,</div>
 <div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    ]</div>
 <div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    daughter_vars = [</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>        <span class="stringliteral">&quot;px_prod&quot;</span>, </div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>        <span class="stringliteral">&quot;py_prod&quot;</span>, </div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>        <span class="stringliteral">&quot;pz_prod&quot;</span>, </div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>        <span class="stringliteral">&quot;e_prod&quot;</span>, </div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>        <span class="stringliteral">&quot;mass_prod&quot;</span>, </div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>        <span class="stringliteral">&quot;px_prod&quot;</span>,</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>        <span class="stringliteral">&quot;py_prod&quot;</span>,</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>        <span class="stringliteral">&quot;pz_prod&quot;</span>,</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>        <span class="stringliteral">&quot;e_prod&quot;</span>,</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>        <span class="stringliteral">&quot;mass_prod&quot;</span>,</div>
 <div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>        <span class="stringliteral">&quot;pdg_prod&quot;</span>,</div>
 <div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    ]</div>
 <div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    fname = infile.split(<span class="stringliteral">&quot;/&quot;</span>)[-1]</div>
@@ -218,7 +218,7 @@ $(document).ready(function(){initNavTree('convertEvtCalc_8py_source.html',''); i
 <div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>    ncols   = len(parsed_data[0][2])</div>
 <div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>    nvardau = 6  <span class="comment"># qualifiers for each daughter</span></div>
 <div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>    remaining_vars = ncols - len(vars_names)</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>    </div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span> </div>
 <div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    <span class="keywordflow">if</span> (remaining_vars % nvardau)!=0:</div>
 <div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>        <span class="keywordflow">raise</span> ValueError(f<span class="stringliteral">&quot;- convertEvtCalc - Error: number of daughters is not exact.&quot;</span>)</div>
 <div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span> </div>

@@ -1,6 +1,5 @@
 var NAVTREEINDEX39 =
 {
-"namespacestudy__GammaConv.html#afc85c748ac6d5eca2175c005a7b66d32":[4,0,95,12],
 "namespacestudy__GammaConv.html#aff680131360b4875e5bc81afd58165de":[4,0,95,26],
 "namespacestudy__muEloss.html":[4,0,96],
 "namespacestudy__muEloss.html#a0485ee8dfcfe78debc2ddf2702d6e066":[4,0,96,17],
@@ -249,5 +248,6 @@ var NAVTREEINDEX39 =
 "rootpyPickler_8py.html#a618d62255f3e4040cf414045275d9a43":[6,0,12,24,5],
 "rootpyPickler_8py.html#a84ea481ba4e8cf6455fabccc346dffae":[6,0,12,24,7],
 "rootpyPickler_8py.html#ab44efd2a60d46ea21e61cf19916ef022":[6,0,12,24,11],
-"rootpyPickler_8py.html#ae429cfd7de5349512a04544726926582":[6,0,12,24,12]
+"rootpyPickler_8py.html#ae429cfd7de5349512a04544726926582":[6,0,12,24,12],
+"rootpyPickler_8py.html#aec9f077aa17669ddfedbfee4a177545d":[6,0,12,24,4]
 };

@@ -209,11 +209,11 @@ outdir (str): Name of the output directory, the filename will be the same
 <div class="line"><span class="lineno">   93</span>        <span class="stringliteral">&quot;vz&quot;</span>,</div>
 <div class="line"><span class="lineno">   94</span>    ]</div>
 <div class="line"><span class="lineno">   95</span>    daughter_vars = [</div>
-<div class="line"><span class="lineno">   96</span>        <span class="stringliteral">&quot;px_prod&quot;</span>, </div>
-<div class="line"><span class="lineno">   97</span>        <span class="stringliteral">&quot;py_prod&quot;</span>, </div>
-<div class="line"><span class="lineno">   98</span>        <span class="stringliteral">&quot;pz_prod&quot;</span>, </div>
-<div class="line"><span class="lineno">   99</span>        <span class="stringliteral">&quot;e_prod&quot;</span>, </div>
-<div class="line"><span class="lineno">  100</span>        <span class="stringliteral">&quot;mass_prod&quot;</span>, </div>
+<div class="line"><span class="lineno">   96</span>        <span class="stringliteral">&quot;px_prod&quot;</span>,</div>
+<div class="line"><span class="lineno">   97</span>        <span class="stringliteral">&quot;py_prod&quot;</span>,</div>
+<div class="line"><span class="lineno">   98</span>        <span class="stringliteral">&quot;pz_prod&quot;</span>,</div>
+<div class="line"><span class="lineno">   99</span>        <span class="stringliteral">&quot;e_prod&quot;</span>,</div>
+<div class="line"><span class="lineno">  100</span>        <span class="stringliteral">&quot;mass_prod&quot;</span>,</div>
 <div class="line"><span class="lineno">  101</span>        <span class="stringliteral">&quot;pdg_prod&quot;</span>,</div>
 <div class="line"><span class="lineno">  102</span>    ]</div>
 <div class="line"><span class="lineno">  103</span>    fname = infile.split(<span class="stringliteral">&quot;/&quot;</span>)[-1]</div>
@@ -230,7 +230,7 @@ outdir (str): Name of the output directory, the filename will be the same
 <div class="line"><span class="lineno">  114</span>    ncols   = len(parsed_data[0][2])</div>
 <div class="line"><span class="lineno">  115</span>    nvardau = 6  <span class="comment"># qualifiers for each daughter</span></div>
 <div class="line"><span class="lineno">  116</span>    remaining_vars = ncols - len(vars_names)</div>
-<div class="line"><span class="lineno">  117</span>    </div>
+<div class="line"><span class="lineno">  117</span> </div>
 <div class="line"><span class="lineno">  118</span>    <span class="keywordflow">if</span> (remaining_vars % nvardau)!=0:</div>
 <div class="line"><span class="lineno">  119</span>        <span class="keywordflow">raise</span> ValueError(f<span class="stringliteral">&quot;- convertEvtCalc - Error: number of daughters is not exact.&quot;</span>)</div>
 <div class="line"><span class="lineno">  120</span> </div>

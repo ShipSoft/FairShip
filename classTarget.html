@@ -1607,7 +1607,7 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  690</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classTarget.html#ad199f971618140a8b114f054abdbd9cc">fELoss</a> == 0. ) { <span class="keywordflow">return</span> kFALSE; }</div>
 <div class="line"><span class="lineno">  691</span>    TParticle* <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>=<a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;GetStack()-&gt;GetCurrentTrack();</div>
 <div class="line"><span class="lineno">  692</span>    <span class="comment">//Int_t MotherID =gMC-&gt;GetStack()-&gt;GetCurrentParentTrackNumber();</span></div>
-<div class="line"><span class="lineno">  693</span>    Int_t pdgCode = <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetPdgCode();    </div>
+<div class="line"><span class="lineno">  693</span>    Int_t pdgCode = <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetPdgCode();</div>
 <div class="line"><span class="lineno">  694</span> </div>
 <div class="line"><span class="lineno">  695</span>    TLorentzVector Pos;</div>
 <div class="line"><span class="lineno">  696</span>    <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;TrackPosition(Pos);</div>

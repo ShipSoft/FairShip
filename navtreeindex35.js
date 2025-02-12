@@ -1,6 +1,5 @@
 var NAVTREEINDEX35 =
 {
-"namespacemakeDecay.html#afd0dfe5f4af30df1a2df036995dcfea3":[4,0,47,29],
 "namespacemakeDecay.html#afdee173103d608b5c98240c05154f34d":[4,0,47,34],
 "namespacemakeGenieEvents.html":[4,0,48],
 "namespacemakeGenieEvents.html#a0be9a4c1162c4858addc13686ca8b68f":[4,0,48,1],
@@ -101,8 +100,8 @@ var NAVTREEINDEX35 =
 "namespacemakeMuonEM.html#ae783a4bc5d51711c22ea64a696d3dc6e":[4,0,50,16],
 "namespacemakeMuonEM.html#aeb83f81c7745bdb5ee3f999f65da0bb2":[4,0,50,18],
 "namespacemakeMuonEM.html#aed3bddf19f451fdc5e44154c54c70cf9":[4,0,50,23],
-"namespacemembers.html":[4,1,0],
 "namespacemembers.html":[4,1,0,0],
+"namespacemembers.html":[4,1,0],
 "namespacemembers_a.html":[4,1,0,1],
 "namespacemembers_b.html":[4,1,0,2],
 "namespacemembers_c.html":[4,1,0,3],
@@ -150,8 +149,8 @@ var NAVTREEINDEX35 =
 "namespacemembers_t.html":[4,1,0,20],
 "namespacemembers_u.html":[4,1,0,21],
 "namespacemembers_v.html":[4,1,0,22],
-"namespacemembers_vars.html":[4,1,2,0],
 "namespacemembers_vars.html":[4,1,2],
+"namespacemembers_vars.html":[4,1,2,0],
 "namespacemembers_vars_a.html":[4,1,2,1],
 "namespacemembers_vars_b.html":[4,1,2,2],
 "namespacemembers_vars_c.html":[4,1,2,3],
@@ -249,5 +248,6 @@ var NAVTREEINDEX35 =
 "namespaceproton__bremsstrahlung.html#aea9544b9811cdcd633c3dabc8eeef64a":[4,0,55,21],
 "namespacepythia8__conf.html":[4,0,56],
 "namespacepythia8__conf.html#a3721e6b50652c3d4e23a219fa6627ecc":[4,0,56,0],
-"namespacepythia8__conf.html#ab07a0d848feb83df22d2d5b6e85fb374":[4,0,56,2]
+"namespacepythia8__conf.html#ab07a0d848feb83df22d2d5b6e85fb374":[4,0,56,2],
+"namespacepythia8__conf.html#ac024ed5419c98ac0c0035f86e490471b":[4,0,56,3]
 };

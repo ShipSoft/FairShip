@@ -97,7 +97,7 @@ $(document).ready(function(){initNavTree('FairShipFields_8cxx_source.html',''); 
   <div class="headertitle"><div class="title">FairShipFields.cxx</div></div>
 </div><!--header-->
 <div class="contents">
-<a href="FairShipFields_8cxx.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">/* </span></div>
+<a href="FairShipFields_8cxx.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">/*</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">generic interface to B fields of FairShip</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">assumes that magnetic fields for tracking are global fields, not matched to a volume.</span></div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">*/</span></div>
@@ -119,7 +119,7 @@ $(document).ready(function(){initNavTree('FairShipFields_8cxx_source.html',''); 
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
 <div class="foldopen" id="foldopen00018" data-start="{" data-end="}">
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="classgenfit_1_1FairShipFields.html#a6952f3a14dcbfae9437cff7fbbdfcd64">   18</a></span>TVector3 <a class="code hl_function" href="classgenfit_1_1FairShipFields.html#a6952f3a14dcbfae9437cff7fbbdfcd64">FairShipFields::get</a>(<span class="keyword">const</span> TVector3&amp; pos)<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>  Double_t bx,by,bz; </div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>  Double_t bx,by,bz;</div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>  <a class="code hl_function" href="classgenfit_1_1FairShipFields.html#a6952f3a14dcbfae9437cff7fbbdfcd64">get</a>(pos.X(),pos.Y(),pos.Z(),bx,by,bz);</div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>  TVector3 field_(bx,by,bz);</div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>  <span class="keywordflow">return</span> field_;</div>
