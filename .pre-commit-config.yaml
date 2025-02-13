@@ -38,6 +38,7 @@ repos:
   rev: 6.0.0
   hooks:
     - id: isort
+      args: [--profile=black]
       name: isort (python)
 - repo: https://github.com/cheshirekow/cmake-format-precommit
   rev: v0.6.13
