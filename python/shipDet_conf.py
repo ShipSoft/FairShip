@@ -156,7 +156,7 @@ def configure(run, ship_geo):
         nuTauTargetDesign=ship_geo.nuTauTargetDesign,
         muShieldGeo=ship_geo.muShieldGeo,
         SC_mag=ship_geo.SC_mag,
-        scName=ship_geo.scName,
+        shieldName=ship_geo.shieldName,
     )
     # -----Create media-------------------------------------------------
     run.SetMaterials("media.geo")  # Materials
@@ -229,27 +229,18 @@ def configure(run, ship_geo):
             ship_geo.muShield.WithConstField,
         )
     elif ship_geo.muShieldDesign == 8:
-        if not ship_geo.SC_mag:
-            MuonShield = ROOT.ShipMuonShield(
-                ship_geo.muShieldGeo,
-                ship_geo.cave.floorHeightMuonShield,
-                ship_geo.muShieldWithCobaltMagnet,
-                ship_geo.muShieldStepGeo,
-                ship_geo.hadronAbsorber.WithConstField,
-                ship_geo.muShield.WithConstField,
-            )
-        else:
-            in_params = ROOT.TVectorD(
-                len(ship_geo.muShield.params), array("d", ship_geo.muShield.params)
-            )
-            MuonShield = ROOT.ShipMuonShield(
-                in_params,
-                ship_geo.cave.floorHeightMuonShield,
-                ship_geo.muShieldWithCobaltMagnet,
-                ship_geo.muShieldStepGeo,
-                ship_geo.hadronAbsorber.WithConstField,
-                ship_geo.muShield.WithConstField,
-            )
+        in_params = ROOT.TVectorD(
+            len(ship_geo.muShield.params), array("d", ship_geo.muShield.params)
+        )
+        MuonShield = ROOT.ShipMuonShield(
+            in_params,
+            ship_geo.cave.floorHeightMuonShield,
+            ship_geo.muShieldWithCobaltMagnet,
+            ship_geo.muShieldStepGeo,
+            ship_geo.hadronAbsorber.WithConstField,
+            ship_geo.muShield.WithConstField,
+            ship_geo.SC_mag
+        )
     detectorList.append(MuonShield)
 
     if not hasattr(ship_geo, "magnetDesign"):
@@ -884,7 +875,7 @@ def configure(run, ship_geo):
                 ship_geo.Yheight / 2.0 * u.m,
             )
         run.SetField(fMagField)
-    #
+
     exclusionList = []
     # exclusionList = ["Muon","Ecal","Hcal","Strawtubes","TargetTrackers","NuTauTarget","HighPrecisionTrackers",\
     #                 "Veto","Magnet","MuonShield","TargetStation","NuTauMudet","EmuMagnet", "TimeDet", "UpstreamTagger"]
