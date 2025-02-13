@@ -116,7 +116,7 @@ def convert_file(infile, outdir):
     remaining_vars = ncols - len(vars_names)
 
     if (remaining_vars % nvardau)!=0:
-        raise ValueError(f"- convertEvtCalc - Error: number of daughters is not exact.")
+        raise ValueError("- convertEvtCalc - Error: number of daughters is not exact.")
 
     ndau    = remaining_vars // nvardau
     print(f"- convertEvtCalc - Max multiplicity of daughters: {ndau}")

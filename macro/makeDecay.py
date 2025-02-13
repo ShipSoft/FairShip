@@ -1,6 +1,11 @@
 #Use Pythia8 to decay the signals (Charm/Beauty) as produced by makeCascade.
 #Output is an ntuple with muon/neutrinos
-import ROOT,time,os,sys,random,getopt
+import ROOT
+import time
+import os
+import sys
+import random
+import getopt
 import rootUtils as ut
 ROOT.gROOT.LoadMacro("$VMCWORKDIR/gconfig/basiclibs.C")
 ROOT.basiclibs()

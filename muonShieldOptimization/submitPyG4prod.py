@@ -1,4 +1,5 @@
-import os,time
+import os
+import time
 path = '../'
 if not os.uname()[1].find('Ubuntu')<0: path = os.environ['HNL']
 os.system('cp '+path+'/g4Ex.py  g4Ex_thisProduction.py ')

@@ -1,5 +1,8 @@
 #!/usr/bin/env python
-import ROOT,os,sys,time
+import ROOT
+import os
+import sys
+import time
 from subprocess import call
 import shipunit as u
 import shipRoot_conf
@@ -82,7 +85,7 @@ def makeEvents(nevents = 100):
  run = 11
  for p in pDict:
   if p<0: print("scale number of "+sDict[p]+" events with %5.2F"%(1./nuOverNubar[abs(p)]))
-  if not sDict[p] in os.listdir('.'): call('mkdir '+sDict[p],shell = True)
+  if sDict[p] not in os.listdir('.'): call('mkdir '+sDict[p],shell = True)
   os.chdir('./'+sDict[p])
   # stop at 350 GeV, otherwise strange warning about "Lower energy neutrinos have a higher probability of
   # interacting than those at higher energy. pmaxLow(E=386.715)=2.157e-13 and  pmaxHigh(E=388.044)=2.15623e-13"

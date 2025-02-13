@@ -585,7 +585,7 @@ with ConfigRegistry.register_config("basic") as c:
 
         #c.tauMudet.zMudetC = -c.decayVolume.length/2. - c.tauMudet.Ztot/2
         #c.tauMudet.zMudetC = c.Chamber1.z -c.chambers.Tub1length - c.tauMudet.Ztot/2 -31*u.cm;
-        c.tauMudet.zMudetC = c.Chamber1.z -c.chambers.Tub1length - c.tauMudet.Ztot/2 -31*u.cm;
+        c.tauMudet.zMudetC = c.Chamber1.z -c.chambers.Tub1length - c.tauMudet.Ztot/2 -31*u.cm
         #lateral cuts
         c.tauMudet.CutHeight = 78.548 * u.cm
         c.tauMudet.CutLength = (c.tauMudet.CutHeight / 2) / (r.TMath.Tan(r.TMath.DegToRad() * 55))

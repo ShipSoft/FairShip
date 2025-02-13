@@ -1,4 +1,5 @@
-import ROOT,os
+import ROOT
+import os
 import rootUtils as ut
 h={}
 def merge():

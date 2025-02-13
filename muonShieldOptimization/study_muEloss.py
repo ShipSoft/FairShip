@@ -1,5 +1,9 @@
 #!/usr/bin/env python
-import ROOT,os,sys,time,shipRoot_conf
+import ROOT
+import os
+import sys
+import time
+import shipRoot_conf
 ROOT.gROOT.ProcessLine('#include "FairModule.h"')
 time.sleep(20)
 

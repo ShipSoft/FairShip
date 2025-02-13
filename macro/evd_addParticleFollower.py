@@ -1,4 +1,5 @@
-import ROOT,evd_fillEnergy
+import ROOT
+import evd_fillEnergy
 gEve=ROOT.gEve
 import eveGlobal
 def execute():

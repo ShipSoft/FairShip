@@ -25,7 +25,7 @@ ROOT.gROOT.ProcessLine(
    float zMin;\
    float zMax;\
    float dz;\
-};");
+};")
 
 # The field map is assumed to obey the following co-ordinate bin ordering:
 # z is increased first, y is increased 2nd, x is increased last.
@@ -40,7 +40,7 @@ ROOT.gROOT.ProcessLine(
    float Bx;\
    float By;\
    float Bz;\
-};");
+};")
 
 
 def run(inFileName = 'FieldTest.txt', rootFileName = 'BFieldTest.root',

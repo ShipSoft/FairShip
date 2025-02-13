@@ -1,4 +1,9 @@
-import os, subprocess,ROOT,time,getpass,multiprocessing
+import os
+import subprocess
+import ROOT
+import time
+import getpass
+import multiprocessing
 import rootUtils as ut
 ncores = min(multiprocessing.cpu_count(),4)
 user   = getpass.getuser()

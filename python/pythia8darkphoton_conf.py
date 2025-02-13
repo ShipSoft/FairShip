@@ -1,4 +1,6 @@
-import ROOT, os, sys
+import ROOT
+import os
+import sys
 import shipunit as u
 import readDecayTable
 import darkphoton

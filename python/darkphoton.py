@@ -55,7 +55,7 @@ class DarkPhoton:
     def interpolatePDGtable(self):
         """ Find the best value for R for the given center-of-mass energy """
         fun = r.Math.Interpolator(self.dataEcm.size(),r.Math.Interpolation.kLINEAR)
-        fun.SetData(self.dataEcm,self.dataR);
+        fun.SetData(self.dataEcm,self.dataR)
         return fun
 
     def Ree_interp(self,s): # s in GeV
@@ -98,7 +98,7 @@ class DarkPhoton:
         gmumu=self.leptonicDecayWidth('mu-')
         tdw=gmumu*self.Ree_interp(self.mDarkPhoton)
         #print 'Hadronic decay width is %.3e'%(tdw)
-        return tdw;
+        return tdw
 
     def hadronicBranchingRatio(self):
         return self.hadronicDecayWidth() / self.totalDecayWidth()

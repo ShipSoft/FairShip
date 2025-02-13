@@ -1,5 +1,6 @@
 # analyze muon background /media/Data/HNL/PythiaGeant4Production/pythia8_Geant4_total.root
-import os,ROOT
+import os
+import ROOT
 import multiprocessing as mp
 from rootpyPickler import Unpickler
 ROOT.gInterpreter.ProcessLine('typedef double Double32_t')
@@ -403,7 +404,7 @@ if path != '': testdir = path
 if withChain>0:
  for prefix in prefixes:
   for i in range(1,10):
-   if not prefix+str(i) in os.listdir(testdir): continue
+   if prefix+str(i) not in os.listdir(testdir): continue
    q1 = inputFile1 in os.listdir(path+prefix+str(i))
    q2 = inputFile2 in os.listdir(path+prefix+str(i))
    recFile1 = inputFile1.replace('.root','_rec.root')
@@ -415,7 +416,7 @@ if withChain>0:
    else: continue
    fname = path+prefix+str(i)+'/'+inputFile
    recFile = inputFile.replace('.root','_rec.root')
-   if not recFile in os.listdir(path+prefix+str(i)):
+   if recFile not in os.listdir(path+prefix+str(i)):
      fchain.append(fname)
      continue
    fname = path+prefix+str(i)+'/'+recFile
@@ -673,7 +674,7 @@ def executeOneFile(fn,output=None,pid=None):
      else:
       if detID not in logVols:
          detName = c.GetName().replace('Points','')
-         if not detName in histlistAll.values(): print(detID,detName,c.GetName())
+         if detName not in histlistAll.values(): print(detID,detName,c.GetName())
       else: detName = logVols[detID]
       x = ahit.GetX()
       y = ahit.GetY()
@@ -1067,7 +1068,7 @@ def printAndCopy(prefix=None):
   if not prefix: prefix = (h['tc'].GetName()).replace('.root','')
   for x in ['ResultsI','ResultsII','ResultsImu','ResultsImuV0','ResultsIII','ResultsIV','ResultsV']:
    h[x].Update()
-  if not prefix in os.listdir('.'): os.mkdir(prefix)
+  if prefix not in os.listdir('.'): os.mkdir(prefix)
   os.chdir(prefix)
   h['ResultsI'].Print(prefix+'Back_occ.png')
   h['ResultsII'].Print(prefix+'Back_depE.png')
@@ -1173,7 +1174,7 @@ def pers():
       lp = rpath.split('/')
       prefix = xdisk
       for i in range(len(lp)):
-         if not lp[i] in os.listdir(prefix): os.system('mkdir '+prefix+'/'+lp[i])
+         if lp[i] not in os.listdir(prefix): os.system('mkdir '+prefix+'/'+lp[i])
          prefix = prefix+'/'+lp[i]
       os.system('cp '+tn+ ' '+xdisk+rpath)
 

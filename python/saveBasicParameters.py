@@ -2,7 +2,9 @@
 from rootpyPickler import Pickler
 from ShipGeoConfig import AttrDict
 from ShipGeoConfig import ConfigRegistry
-import ROOT,os,subprocess
+import ROOT
+import os
+import subprocess
 def retrieveGitTags(o):
     # record some basic information about version of software:
     if "FAIRSHIP_HASH" in os.environ:

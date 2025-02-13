@@ -105,7 +105,8 @@ os.chdir(work_dir)
 # ==================================================================
 #                         ROOT IMPORT                               #
 # ==================================================================
-import ROOT,time
+import ROOT
+import time
 # ==================================================================
 #                         GEANT4 IMPORT                             #
 # ==================================================================
@@ -572,7 +573,6 @@ for x in myTimer:
 
 logger.info("output directory: %s" % work_dir)
 # save arguments and GIT tags
-import saveBasicParameters
 saveBasicParameters.execute(f,args,'SHiP-Params')
 
 if local:

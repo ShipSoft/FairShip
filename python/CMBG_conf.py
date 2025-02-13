@@ -1,4 +1,5 @@
-import ROOT, os
+import ROOT
+import os
 import shipunit as u
 
 def configure(CMBG, ship_geo):
@@ -17,5 +18,5 @@ def configure(CMBG, ship_geo):
     CMBG.zBox = 3650 # box length [cm]
     CMBG.z0 = zmiddle # relative coordinate system [cm] (Z_muonstation + (Z_veto - 2 * Z_Tub1))/2,... Z_veto <0 ! ->z0 = 716, sets the middle of the production area
     #setup
-    CMBG.n_EVENTS = 400000; # #simulated events per "spill"
+    CMBG.n_EVENTS = 400000 # #simulated events per "spill"
     CMBG.minE = 1.0 #low energy limit for the Low-energy simulation [GeV]

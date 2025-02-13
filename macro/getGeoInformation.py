@@ -6,7 +6,8 @@
 import operator
 from argparse import ArgumentParser
 from array import array
-import os,ROOT
+import os
+import ROOT
 
 def local2Global(n):
     Info={}

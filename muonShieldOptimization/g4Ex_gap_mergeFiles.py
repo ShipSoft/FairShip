@@ -8,7 +8,8 @@ JPsi     = False # True
 MoTarget = False
 Tau      = False
 
-import ROOT,os
+import ROOT
+import os
 from array import array
 from ROOT import TDatabasePDG,TMath,gDirectory
 from rootUtils import *
@@ -66,7 +67,7 @@ if Tau:
   for run in jobs[job]:
    for i in range(10):
     path = job+run+str(i)+'/'
-    if not 'log'+run+str(i) in os.listdir(path): continue
+    if 'log'+run+str(i) not in os.listdir(path): continue
     fl = open(path+'log'+run+str(i))
     for l in fl.readlines():
      k = l.find(tag)

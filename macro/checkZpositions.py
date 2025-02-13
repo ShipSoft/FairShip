@@ -1,4 +1,5 @@
-import ROOT,sys
+import ROOT
+import sys
 from rootpyPickler import Unpickler
 badBoys={}
 f1,f2 = sys.argv[1], sys.argv[2]

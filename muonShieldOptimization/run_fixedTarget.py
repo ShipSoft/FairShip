@@ -1,5 +1,9 @@
 #!/usr/bin/env python
-import ROOT,os,sys,time,shipRoot_conf
+import ROOT
+import os
+import sys
+import time
+import shipRoot_conf
 import shipunit as u
 from ShipGeoConfig import ConfigRegistry
 

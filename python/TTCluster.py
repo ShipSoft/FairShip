@@ -211,7 +211,7 @@ def cm_to_channel(locpos, sipm_map=sipm_map, gaps_map=gaps_map, pitch=pitch, cha
 	if reverse is True:
 		for left, right, ch_range in sipm_map:
 			if left <= locpos <= right:
-				if not ch_range is False:
+				if ch_range is not False:
 					ch_start = ch_range[0]
 					return ch_max_num - ((locpos-left) / pitch + ch_start)
 				else:
@@ -219,7 +219,7 @@ def cm_to_channel(locpos, sipm_map=sipm_map, gaps_map=gaps_map, pitch=pitch, cha
 	elif reverse is False:
 		for left, right, ch_range in sipm_map:
 			if left <= locpos <= right:
-				if not ch_range is False:
+				if ch_range is not False:
 					ch_start = ch_range[0]
 					return (locpos-left) / pitch + ch_start
 				else:
@@ -234,13 +234,13 @@ def channel_to_cm(channelpos, sipm_map=sipm_map, reverse=False, pitch=pitch):
 
 	if reverse is True:
 		for left, _, ch_range in sipm_map:
-			if not ch_range is False:
+			if ch_range is not False:
 				ch_start, ch_end = ch_range
 				if ch_start <= channelpos <= ch_end:
 					return -(left + (channelpos - ch_start) * pitch)
 	if reverse is False:
 		for left, _, ch_range in sipm_map:
-			if not ch_range is False:
+			if ch_range is not False:
 				ch_start, ch_end = ch_range
 				if ch_start <= channelpos <= ch_end:
 					return left + (channelpos - ch_start) * pitch
