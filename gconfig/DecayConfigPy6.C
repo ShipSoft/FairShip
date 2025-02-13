@@ -5,9 +5,6 @@ void DecayConfig() {
 	// specific types of decays defined below.
 
 	// Access the external decayer singleton and initialize it
-	if (TString(gSystem->DynamicPathName("libtpythia6.so", kTRUE)) != TString("")){
-		gSystem->Load("libtpythia6.so");
-	} //load external library for TPythia6, not included in ROOT after 6.32
 	TPythia6Decayer* decayer = TPythia6Decayer::Instance();
 	// The following just tells pythia6 to not decay particles only to
 	// certain channels.
