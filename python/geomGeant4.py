@@ -19,9 +19,9 @@ def check4OrphanVolumes(fGeo):
  gIndex = {}
  for v in fGeo.GetListOfVolumes():
    name = v.GetName()
-   if not name in listOfVolumes:
+   if name not in listOfVolumes:
      orphan.append(name)
-   if not name in gIndex: gIndex[name]=[]
+   if name not in gIndex: gIndex[name]=[]
    gIndex[name].append(v.GetNumber())
  print("list of orphan volumes:",orphan)
  vSame = {}

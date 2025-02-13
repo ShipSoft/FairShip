@@ -1,6 +1,7 @@
 #---Enable Tab completion-----------------------------------------
 try:
-  import rlcompleter, readline
+  import rlcompleter
+  import readline
   readline.parse_and_bind( 'tab: complete' )
   readline.parse_and_bind( 'set show-all-if-ambiguous On' )
 except:
@@ -8,7 +9,8 @@ except:
 
 
 from ROOT import TFile,gROOT,TH3D,TH2D,TH1D,TCanvas,TProfile,gSystem
-import os,sys
+import os
+import sys
 
 def readHists(h,fname,wanted=[]):
   if fname[0:4] == "/eos":
@@ -21,7 +23,7 @@ def readHists(h,fname,wanted=[]):
     try:     hname = int(name)
     except:  hname = name
     if len(wanted)>0:
-        if not hname in wanted: continue
+        if hname not in wanted: continue
     obj = akey.ReadObj()
     cln = obj.Class().GetName()
     if not cln.find('TCanv')<0:

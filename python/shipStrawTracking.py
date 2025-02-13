@@ -71,7 +71,6 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method):
 
     ############################################# Load SHiP modules ####################################################
 
-    import shipDet_conf
     run = ROOT.FairRunSim()
     run.SetName("TGeant4")  # Transport engine
     run.SetOutputFile("dummy")  # Output file
@@ -836,8 +835,6 @@ def getPtruthFirst(sTree, mcPartKey):
 #################################################################################################################################
 #################################################################################################################################
 
-import ROOT
-import numpy
 import rootUtils as ut
 import math
 

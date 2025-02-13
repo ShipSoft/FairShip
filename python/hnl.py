@@ -27,7 +27,8 @@
 # ==================================================================
 """
 import math
-import ROOT, os
+import ROOT
+import os
 import shipunit as u
 
 # Load PDG database

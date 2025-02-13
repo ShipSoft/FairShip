@@ -2,7 +2,8 @@ mcEngine  = "TGeant4"
 simEngine = "Pgun"
 nEvents = 5
 
-import ROOT,os
+import ROOT
+import os
 ROOT.gROOT.LoadMacro("$VMCWORKDIR/gconfig/basiclibs.C")
 ROOT.basiclibs()
 
@@ -73,7 +74,7 @@ run.AddModule(Muon)
     # Constant Field
 fMagField = ROOT.ShipConstField()
 fMagField.SetField(0., 2. ,0. ) # values are in kG
-fMagField.SetFieldRegion(-160, 160,-160, 160, 1940, 125); # values are in cm  (xmin,xmax,ymin,ymax,zmin,zmax)
+fMagField.SetFieldRegion(-160, 160,-160, 160, 1940, 125) # values are in cm  (xmin,xmax,ymin,ymax,zmin,zmax)
 run.SetField(fMagField)
 
 # -----Create PrimaryGenerator--------------------------------------

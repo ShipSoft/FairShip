@@ -1,4 +1,6 @@
-import os,time,ROOT
+import os
+import time
+import ROOT
 def makeProd(prefix,DY,y=False,phiRandom=False,X=None):
   ncpu = 9
   shipsoft = os.environ['SHIPSOFT'].replace('/dev','')

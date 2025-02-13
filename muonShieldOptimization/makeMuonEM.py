@@ -1,4 +1,7 @@
-import ROOT,time,os,sys
+import ROOT
+import time
+import os
+import sys
 nJob   = 1
 nMult  = 1000 # 100000 # number of events / muon
 muonIn = '/media/Data/HNL/muVetoDIS/muDISVetoCounter.root'
@@ -10,7 +13,7 @@ masssq = {}
 
 def getMasssq(pid):
   apid = abs(int(pid))
-  if not apid in masssq:
+  if apid not in masssq:
     masssq[apid] = PDG.GetParticle(apid).Mass()**2
   return masssq[apid]
 
