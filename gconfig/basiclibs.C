@@ -12,7 +12,7 @@ void basiclibs()
   gSystem->Load("libGeomPainter");
   gSystem->Load("libVMC");
   gSystem->Load("libEG");
-  //gSystem->Load("libEGPythia6");
+  gSystem->Load("libEGPythia6");
   gSystem->Load("libPythia6");
   gSystem->Load("libPhysics");
   gSystem->Load("libNet");
@@ -20,6 +20,6 @@ void basiclibs()
   gSystem->Load("libMinuit");
   gSystem->Load("libMathMore");
   gSystem->Load("libpythia8");
-  //gSystem->Load("libgenfit.so");
+  gSystem->Load("libgenfit.so");
   gSystem->Load("libLHAPDF.so");
 }
