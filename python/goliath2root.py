@@ -3,7 +3,9 @@
 # EvH 11/4/2018
 
 
-import ROOT,os,sys
+import ROOT
+import os
+import sys
 import rootUtils as ut
 import shipunit as u
 import shipRoot_conf

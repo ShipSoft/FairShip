@@ -1,5 +1,7 @@
 # simple vertex reconstruction with errors
-import ROOT,sys,os
+import ROOT
+import sys
+import os
 import global_variables
 import shipunit as u
 import rootUtils as ut

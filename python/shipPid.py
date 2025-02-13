@@ -1,5 +1,6 @@
 # pid deffiner
-import ROOT, sys
+import ROOT
+import sys
 import shipunit as u
 import rootUtils as ut
 import math as m

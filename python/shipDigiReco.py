@@ -1,4 +1,7 @@
-import os,ROOT,shipVertex,shipDet_conf
+import os
+import ROOT
+import shipVertex
+import shipDet_conf
 import global_variables
 if global_variables.realPR == "Prev":
   import shipPatRec_prev as shipPatRec # The previous version of the pattern recognition
@@ -108,7 +111,7 @@ class ShipDigiReco:
 # Creates. exports and fills calorimeter structure
    dflag = 10 if global_variables.debug else 0
    ecalGeo = global_variables.ecalGeoFile + 'z' + str(global_variables.ShipGeo.ecal.z) + ".geo"
-   if not ecalGeo in os.listdir(os.environ["FAIRSHIP"]+"/geometry"):
+   if ecalGeo not in os.listdir(os.environ["FAIRSHIP"]+"/geometry"):
      shipDet_conf.makeEcalGeoFile(global_variables.ShipGeo.ecal.z, global_variables.ShipGeo.ecal.File)
    ecalFiller=ROOT.ecalStructureFiller("ecalFiller", dflag,ecalGeo)
    ecalFiller.SetUseMCPoints(ROOT.kTRUE)
@@ -979,7 +982,7 @@ class ShipDigiReco:
     fitStatus = theTrack.getFitStatus()
     try:
       fitStatus.isFitConverged()
-    except ROOT.genfit.Exception as e:
+    except ROOT.genfit.Exception:
       error = "Fit not converged"
       ut.reportError(error)
     nmeas = fitStatus.getNdf()

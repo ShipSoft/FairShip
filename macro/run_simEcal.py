@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 momentum = 1
-import ROOT,os,sys,time
+import ROOT
+import os
+import sys
+import time
 import shipunit as u
 import shipRoot_conf
 import ShipGeoConfig
@@ -52,7 +55,7 @@ import shipDet_conf
 shipDet_conf.configure(run)
 # -----Create PrimaryGenerator--------------------------------------
 primGen=ROOT.FairPrimaryGenerator()
-boxGen=ROOT.FairBoxGenerator(22,1);
+boxGen=ROOT.FairBoxGenerator(22,1)
 boxGen.SetPRange(momentum, momentum)
 boxGen.SetPhiRange(0,0)
 boxGen.SetThetaRange(0,0)
