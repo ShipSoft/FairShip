@@ -1,4 +1,8 @@
 import ROOT,time,os,sys
+
+ROOT.gROOT.LoadMacro("$VMCWORKDIR/gconfig/basiclibs.C")
+ROOT.basiclibs()
+
 nJob   = 2
 nMult  = 10 # number of events / muon
 muonIn = '$SHIPSOFT/data/muConcrete.root'

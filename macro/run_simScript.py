@@ -2,6 +2,7 @@
 import os
 import sys
 import ROOT
+ROOT.gSystem.Load('libEGPythia6')
 ROOT.gSystem.Load('libEGPythia8')
 
 import shipunit as u
