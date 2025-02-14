@@ -1,4 +1,4 @@
-"""
+r"""
 # ==================================================================
 #   Python module
 #
@@ -147,7 +147,7 @@ class RPVSUSYbranchings():
     Lifetime and total and partial decay widths of an RPV neutralino
     """
     def __init__(self, mass, couplings, sfmass, benchmark,debug=False):
-        """
+        r"""
         Initialize with mass and couplings of the RPV neutralino
 
         Inputs:
@@ -311,7 +311,7 @@ class RPVSUSYbranchings():
         Returns the total SUSYRPV neutralino decay width
         """
         declist    = self.decays[self.bench]
-        hadlist    = [re.search('->\ (.+?)\ ',dec).group(1) for dec in declist]
+        hadlist = [re.search(r'->\ (.+?)\ ', dec).group(1) for dec in declist]
         leplist    = [dlist[1].strip() for dlist in [re.findall(r"\ \w+",dec) for dec in declist]]
         print(leplist,hadlist)
         totalwidth = sum([self.Width_H_L(hadlist[i],leplist[i]) for i in range(0,len(hadlist))])
@@ -322,7 +322,7 @@ class RPVSUSYbranchings():
         Returns the total SUSYRPV neutralino production width
         """
         declist    = self.prods[self.bench]
-        hadlist    = [re.search('(.+?)\ ->',dec).group(1) for dec in declist]
+        hadlist = [re.search(r'(.+?)\ ->', dec).group(1) for dec in declist]
         leplist    = [dlist[1].strip() for dlist in [re.findall(r"\ \w+",dec) for dec in declist]]
         totalwidth = sum([self.Width_N_L(hadlist[i],leplist[i]) for i in range(0,len(hadlist))])
         return totalwidth
@@ -335,7 +335,7 @@ class RPVSUSYbranchings():
         Inputs:
         - decayString is a string describing the decay, in the form 'N -> stuff1 ... stuffN'
         """
-        had        = re.search('->\ (.+?)\ ',decayString).group(1)
+        had = re.search(r'->\ (.+?)\ ', decayString).group(1)
         decaysplit = decayString.split(' ')
         for split in decaysplit:
             if split.find('mu')>-1 or split.find('e')>-1 or split.find('tau')>-1:
@@ -377,7 +377,7 @@ class RPVSUSYbranchings():
         Inputs:
         - decayString is a string describing the decay, in the form 'H -> N ... stuffN'
         """
-        had    = re.search('(.+?)\ ->',decayString).group(1)
+        had = re.search(r'(.+?)\ ->', decayString).group(1)
         decaysplit = decayString.split(' ')
         for split in decaysplit:
             if split.find('mu')>-1 or split.find('e')>-1 or split.find('tau')>-1:
@@ -413,7 +413,7 @@ class RPVSUSY(RPVSUSYbranchings):
     SUSY RPV neutralino  physics according to the nuMSM
     """
     def __init__(self, mass, couplings, sfmass, benchmark, debug=False):
-        """
+        r"""
         Initialize with mass and couplings of the HNL
 
         Inputs:

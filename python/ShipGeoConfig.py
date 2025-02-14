@@ -9,7 +9,7 @@ def expand_env(string):
     $HOME/bin -> /home/user/bin
     """
     while True:
-        m = re.search("(\${*(\w+)}*)", string)
+        m = re.search(r"(\${*(\w+)}*)", string)
         if m is None:
             break
         (env_token, env_name) = m.groups()
