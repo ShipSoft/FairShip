@@ -39,6 +39,10 @@ repos:
   rev: 1.4.3
   hooks:
   - id: cmakelint
+- repo: https://github.com/codespell-project/codespell
+  rev: "v2.3.0"
+  hooks:
+    - id: codespell
 - repo: https://github.com/pycqa/isort
   rev: 6.0.1
   hooks:
@@ -56,4 +60,4 @@ repos:
     args: [--py39-plus]
 ci:
   autofix_prs: false
-  skip: [ruff, ruff-format, pydocstyle, clang-format, cpplint, cmakelint, isort, cmake-format, pyupgrade]
+  skip: [ruff, ruff-format, pydocstyle, clang-format, cpplint, cmakelint, isort, cmake-format, pyupgrade, codespell]
