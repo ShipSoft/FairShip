@@ -760,14 +760,14 @@ class ShipDigiReco:
   key = -1
   SmearedHits = []
   v_drift = global_variables.modules["Strawtubes"].StrawVdrift()
-  global_variables.modules["Strawtubes"].StrawEndPoints(10002001, start, stop)
+  global_variables.modules["Strawtubes"].StrawEndPoints(1002001, start, stop)
   z1 = stop.z()
   for aDigi in self.digiStraw:
     key+=1
     if not aDigi.isValid(): continue
     detID = aDigi.GetDetectorID()
 # don't use hits from straw veto
-    station = int(detID//10000000)
+    station = int(detID//1000000)
     if station > 4 : continue
     global_variables.modules["Strawtubes"].StrawEndPoints(detID, start, stop)
     delt1 = (start[2]-z1)/u.speedOfLight
@@ -785,14 +785,14 @@ class ShipDigiReco:
   SmearedHits = []
   key = -1
   v_drift = global_variables.modules["Strawtubes"].StrawVdrift()
-  global_variables.modules["Strawtubes"].StrawEndPoints(10002001, start, stop)
+  global_variables.modules["Strawtubes"].StrawEndPoints(1002001, start, stop)
   z1 = stop.z()
   for aDigi in self.digiStraw:
      key+=1
      if not aDigi.isValid(): continue
      detID = aDigi.GetDetectorID()
 # don't use hits from straw veto
-     station = int(detID//10000000)
+     station = int(detID//1000000)
      if station > 4 : continue
      global_variables.modules["Strawtubes"].StrawEndPoints(detID, start, stop)
    #distance to wire
@@ -846,7 +846,7 @@ class ShipDigiReco:
       atrack_smeared_hits = list(atrack_y12) + list(atrack_stereo12) + list(atrack_y34) + list(atrack_stereo34)
       for sm in atrack_smeared_hits:
         detID = sm['detID']
-        station = int(detID//10000000)
+        station = int(detID//1000000)
         trID = i_track
         # Collect hits for track fit
         if trID not in hitPosLists:
@@ -864,7 +864,7 @@ class ShipDigiReco:
   else: # do fake pattern recognition
    for sm in self.SmearedHits:
     detID = self.digiStraw[sm['digiHit']].GetDetectorID()
-    station = int(detID//10000000)
+    station = int(detID//1000000)
     trID = self.sTree.strawtubesPoint[sm['digiHit']].GetTrackID()
     if trID not in hitPosLists:
       hitPosLists[trID]     = ROOT.std.vector('TVectorD')()
