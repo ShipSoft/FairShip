@@ -389,7 +389,7 @@ $(document).ready(function(){initNavTree('eventDisplay_8py_source.html',''); ini
 <div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>                )</div>
 <div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>                <span class="keywordflow">if</span> mccell.GetEnergy() / u.MeV &lt; 4.0:</div>
 <div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>                    <span class="keywordflow">continue</span></div>
-<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>                    <span class="comment"># ADC noise simulated Guassian with \sigma=1 MeV</span></div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>                    <span class="comment"># ADC noise simulated Gaussian with \sigma=1 MeV</span></div>
 <div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>                DClus = ROOT.TEveBox()</div>
 <div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>                DClus.SetName(<span class="stringliteral">&quot;EcalCluster_&quot;</span> + str(cl) + <span class="stringliteral">&quot;_&quot;</span> + str(i))</div>
 <div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>                DClus.SetPickable(ROOT.kTRUE)</div>
@@ -1477,7 +1477,7 @@ $(document).ready(function(){initNavTree('eventDisplay_8py_source.html',''); ini
 <div class="line"><a id="l01261" name="l01261"></a><span class="lineno"> 1261</span>            t.MCEventHeader.GetRunID(),</div>
 <div class="line"><a id="l01262" name="l01262"></a><span class="lineno"> 1262</span>            t.MCEventHeader.GetZ(),</div>
 <div class="line"><a id="l01263" name="l01263"></a><span class="lineno"> 1263</span>        )</div>
-<div class="line"><a id="l01264" name="l01264"></a><span class="lineno"> 1264</span>    <span class="comment"># geometrie</span></div>
+<div class="line"><a id="l01264" name="l01264"></a><span class="lineno"> 1264</span>    <span class="comment"># Load geometry</span></div>
 <div class="line"><a id="l01265" name="l01265"></a><span class="lineno"> 1265</span>    sGeo = ROOT.gGeoManager</div>
 <div class="line"><a id="l01266" name="l01266"></a><span class="lineno"> 1266</span>    cave = sGeo.GetTopVolume()</div>
 <div class="line"><a id="l01267" name="l01267"></a><span class="lineno"> 1267</span>    cave.Draw(<span class="stringliteral">&quot;ogl&quot;</span>)</div>

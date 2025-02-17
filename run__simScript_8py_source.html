@@ -416,7 +416,7 @@ $(document).ready(function(){initNavTree('run__simScript_8py_source.html',''); i
 <div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>  P8gen.SetLmin((ship_geo.Chamber1.z - ship_geo.chambers.Tub1length) - ship_geo.target.z0 )</div>
 <div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>  P8gen.SetLmax(ship_geo.TrackStation1.z - ship_geo.target.z0 )</div>
 <div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span> <span class="keywordflow">if</span> charmonly:</div>
-<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>  primGen.SetTarget(0., 0.) <span class="comment">#vertex is setted in pythia8Generator</span></div>
+<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>  primGen.SetTarget(0., 0.) <span class="comment">#vertex is set in pythia8Generator</span></div>
 <div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>  ut.checkFileExists(inputFile)</div>
 <div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span>  <span class="keywordflow">if</span> ship_geo.Box.gausbeam:</div>
 <div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>   primGen.SetBeam(0.,0., 0.5, 0.5) <span class="comment">#more central beam, for hits in downstream detectors</span></div>
@@ -700,7 +700,7 @@ $(document).ready(function(){initNavTree('run__simScript_8py_source.html',''); i
 <div class="line"><a id="l00601" name="l00601"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#a5520650ce6e7f5390077967ab50a362f">  601</a></span>rtime = timer.RealTime()</div>
 <div class="line"><a id="l00602" name="l00602"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#a558a49c862c7066d134596e3047c3cf5">  602</a></span>ctime = timer.CpuTime()</div>
 <div class="line"><a id="l00603" name="l00603"></a><span class="lineno">  603</span>print(<span class="stringliteral">&#39; &#39;</span>)</div>
-<div class="line"><a id="l00604" name="l00604"></a><span class="lineno">  604</span>print(<span class="stringliteral">&quot;Macro finished succesfully.&quot;</span>)</div>
+<div class="line"><a id="l00604" name="l00604"></a><span class="lineno">  604</span>print(<span class="stringliteral">&quot;Macro finished successfully.&quot;</span>)</div>
 <div class="line"><a id="l00605" name="l00605"></a><span class="lineno">  605</span><span class="keywordflow">if</span> <span class="stringliteral">&quot;P8gen&quot;</span> <span class="keywordflow">in</span> globals() :</div>
 <div class="line"><a id="l00606" name="l00606"></a><span class="lineno">  606</span>    <span class="keywordflow">if</span> (HNL): print(<span class="stringliteral">&quot;number of retries, events without HNL &quot;</span>,P8gen.nrOfRetries())</div>
 <div class="line"><a id="l00607" name="l00607"></a><span class="lineno">  607</span>    <span class="keywordflow">elif</span> (options.DarkPhoton):</div>
