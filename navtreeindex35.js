@@ -1,13 +1,5 @@
 var NAVTREEINDEX35 =
 {
-"namespacemakeDecay.html#afdee173103d608b5c98240c05154f34d":[4,0,47,34],
-"namespacemakeGenieEvents.html":[4,0,48],
-"namespacemakeGenieEvents.html#a0be9a4c1162c4858addc13686ca8b68f":[4,0,48,1],
-"namespacemakeGenieEvents.html#a13bca7b601cdb51ea01bf6e89e53a433":[4,0,48,0],
-"namespacemakeGenieEvents.html#a268365a8c9d624818cd82d9ed3bbe7a4":[4,0,48,10],
-"namespacemakeGenieEvents.html#a51ee08e532e9a864c9dc5b6aefd234ac":[4,0,48,4],
-"namespacemakeGenieEvents.html#a55616f7ba64e5a882f87dde2fe82881b":[4,0,48,14],
-"namespacemakeGenieEvents.html#a628fe9931f64c0ccbdd82040fc36f1cd":[4,0,48,8],
 "namespacemakeGenieEvents.html#a6497b241ab7e816e30df850dc4c27edd":[4,0,48,6],
 "namespacemakeGenieEvents.html#a66b96bd7cc1706473e5a39a29e8f5c39":[4,0,48,3],
 "namespacemakeGenieEvents.html#a6e85e1d199d5847ee0db3cfc249c493c":[4,0,48,9],
@@ -108,8 +100,8 @@ var NAVTREEINDEX35 =
 "namespacemembers_d.html":[4,1,0,4],
 "namespacemembers_e.html":[4,1,0,5],
 "namespacemembers_f.html":[4,1,0,6],
-"namespacemembers_func.html":[4,1,1,0],
 "namespacemembers_func.html":[4,1,1],
+"namespacemembers_func.html":[4,1,1,0],
 "namespacemembers_func_a.html":[4,1,1,1],
 "namespacemembers_func_b.html":[4,1,1,2],
 "namespacemembers_func_c.html":[4,1,1,3],
@@ -249,5 +241,13 @@ var NAVTREEINDEX35 =
 "namespacepythia8__conf.html":[4,0,56],
 "namespacepythia8__conf.html#a3721e6b50652c3d4e23a219fa6627ecc":[4,0,56,0],
 "namespacepythia8__conf.html#ab07a0d848feb83df22d2d5b6e85fb374":[4,0,56,2],
-"namespacepythia8__conf.html#ac024ed5419c98ac0c0035f86e490471b":[4,0,56,3]
+"namespacepythia8__conf.html#ac024ed5419c98ac0c0035f86e490471b":[4,0,56,3],
+"namespacepythia8__conf.html#afb2e623d52589f186d49f773cdb940cc":[4,0,56,1],
+"namespacepythia8__conf__utils.html":[4,0,57],
+"namespacepythia8__conf__utils.html#a003a7b7b33c31525a1c34eaa06ce1883":[4,0,57,5],
+"namespacepythia8__conf__utils.html#a077efc9290c3db6c744aead97d1b9d4f":[4,0,57,2],
+"namespacepythia8__conf__utils.html#a18647567e794922d6dc59894ce9fe695":[4,0,57,14],
+"namespacepythia8__conf__utils.html#a1ee4f20b1f6d13bd38b5ace3040e1425":[4,0,57,8],
+"namespacepythia8__conf__utils.html#a210d391c1e3b8da15b95dc1ae1d9f039":[4,0,57,1],
+"namespacepythia8__conf__utils.html#a27a631c6dab5a7bf24107cd9cae1af9d":[4,0,57,4]
 };

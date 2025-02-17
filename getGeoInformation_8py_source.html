@@ -201,22 +201,20 @@ $(document).ready(function(){initNavTree('getGeoInformation_8py_source.html','')
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span> </div>
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno"><a class="line" href="namespacegetGeoInformation.html#a85e0ef303b1302a7daaee4aa0909ef5d">   99</a></span>options = parser.parse_args()</div>
 <div class="line"><a id="l00100" name="l00100"></a><span class="lineno"><a class="line" href="namespacegetGeoInformation.html#afbac20e31f074b8d2fff6a7304ef097d">  100</a></span>fname = options.geometry</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span><span class="keywordflow">if</span> fname.startswith(<span class="stringliteral">&#39;/eos/&#39;</span>):</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    fname = os.environ[<span class="stringliteral">&#39;EOSSHIP&#39;</span>] + fname</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno"><a class="line" href="namespacegetGeoInformation.html#abb70257ba94da19d64ae63fb0cf09d89">  103</a></span>fgeom = ROOT.TFile.Open(fname)</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno"><a class="line" href="namespacegetGeoInformation.html#a461c48d201fa5b00a9204ee6fa6786ed">  104</a></span>fGeo = fgeom.FAIRGeom</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno"><a class="line" href="namespacegetGeoInformation.html#a817429de989e54975b015c0d9396b452">  105</a></span>top = fGeo.GetTopVolume()</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span> </div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span> </div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span><span class="keywordflow">if</span> options.moreInfo:</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> <span class="keywordflow">print</span> (<span class="stringliteral">&quot;   Detector element             z(midpoint)     halflength       volume-start volume-end   dx&quot;</span>\</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>        <span class="stringliteral">&quot;                x-start       x-end       dy                y-start       y-end         material          weight  capacity&quot;</span>)</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span><span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span> <span class="keywordflow">print</span> (<span class="stringliteral">&quot;   Detector element             z(midpoint)     halflength       volume-start volume-end   dx&quot;</span>\</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>        <span class="stringliteral">&quot;                x-start       x-end       dy                y-start       y-end         material&quot;</span>)</div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span> </div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno"><a class="line" href="namespacegetGeoInformation.html#a1e654d88e6f4ab453a88d5e353825a6b">  115</a></span>currentlevel = 0</div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span><a class="code hl_function" href="namespacegetGeoInformation.html#a94f229a9cbc9abdb99a3df488b8554d4">print_info</a>(<span class="stringliteral">&quot;&quot;</span>, top, int(options.level), currentlevel)</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno"><a class="line" href="namespacegetGeoInformation.html#abb70257ba94da19d64ae63fb0cf09d89">  101</a></span>fgeom = ROOT.TFile.Open(fname)</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno"><a class="line" href="namespacegetGeoInformation.html#a461c48d201fa5b00a9204ee6fa6786ed">  102</a></span>fGeo = fgeom.FAIRGeom</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno"><a class="line" href="namespacegetGeoInformation.html#a817429de989e54975b015c0d9396b452">  103</a></span>top = fGeo.GetTopVolume()</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span> </div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span><span class="keywordflow">if</span> options.moreInfo:</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span> <span class="keywordflow">print</span> (<span class="stringliteral">&quot;   Detector element             z(midpoint)     halflength       volume-start volume-end   dx&quot;</span>\</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>        <span class="stringliteral">&quot;                x-start       x-end       dy                y-start       y-end         material          weight  capacity&quot;</span>)</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span><span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> <span class="keywordflow">print</span> (<span class="stringliteral">&quot;   Detector element             z(midpoint)     halflength       volume-start volume-end   dx&quot;</span>\</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>        <span class="stringliteral">&quot;                x-start       x-end       dy                y-start       y-end         material&quot;</span>)</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span> </div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno"><a class="line" href="namespacegetGeoInformation.html#a1e654d88e6f4ab453a88d5e353825a6b">  113</a></span>currentlevel = 0</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span><a class="code hl_function" href="namespacegetGeoInformation.html#a94f229a9cbc9abdb99a3df488b8554d4">print_info</a>(<span class="stringliteral">&quot;&quot;</span>, top, int(options.level), currentlevel)</div>
 <div class="ttc" id="anamespacegetGeoInformation_html_a448cb3b3e4a85101cc5feed35c977556"><div class="ttname"><a href="namespacegetGeoInformation.html#a448cb3b3e4a85101cc5feed35c977556">getGeoInformation.local2Global</a></div><div class="ttdeci">local2Global(n)</div><div class="ttdef"><b>Definition</b> <a href="getGeoInformation_8py_source.html#l00011">getGeoInformation.py:11</a></div></div>
 <div class="ttc" id="anamespacegetGeoInformation_html_a94f229a9cbc9abdb99a3df488b8554d4"><div class="ttname"><a href="namespacegetGeoInformation.html#a94f229a9cbc9abdb99a3df488b8554d4">getGeoInformation.print_info</a></div><div class="ttdeci">print_info(path, node, level, currentlevel, print_sub_det_info=False)</div><div class="ttdef"><b>Definition</b> <a href="getGeoInformation_8py_source.html#l00053">getGeoInformation.py:53</a></div></div>
 </div><!-- fragment --></div><!-- contents -->

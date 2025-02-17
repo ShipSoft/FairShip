@@ -41,8 +41,6 @@ var ShipAna_8py =
     [ "ecalReco", "ShipAna_8py.html#a8f00be5629373de462b8a283f845c3d0", null ],
     [ "ecalReconstructed", "ShipAna_8py.html#a130deaf2a7ec0495213c8f6c7aeab252", null ],
     [ "ecalStructure", "ShipAna_8py.html#abe7e8b4cf020a65f9fbfde661d0ddfcd", null ],
-    [ "eospath", "ShipAna_8py.html#a78b7705ec681f59a9bbbd736aff90125", null ],
-    [ "eosship", "ShipAna_8py.html#a5dbcab8dbacb8f4bf19c632eec4dc579", null ],
     [ "f", "ShipAna_8py.html#a5fe42ce719ea428b2332fb77324aea4f", null ],
     [ "False", "ShipAna_8py.html#a9ef6cd917c9c0bb683c75ff15ad0f264", null ],
     [ "fgeo", "ShipAna_8py.html#ae62d76624077fca7cbb652f6c89d4aa3", null ],
