@@ -40,13 +40,6 @@ jobs:
           eval `alienv load FairShip/latest`
           python $FAIRSHIP/macro/run_simScript.py --test
 
-      - name: Overlap check
-        run: |
-          source /cvmfs/ship.cern.ch/$version/setUp.sh
-          eval `alienv load FairShip/latest`
-          python $FAIRSHIP/macro/run_simScript.py --test -n 0 --debug 2 > log
-          ! grep ovlp log
-
       - name: Run Reco
         run: |
           source /cvmfs/ship.cern.ch/$version/setUp.sh
@@ -65,6 +58,13 @@ jobs:
           source /cvmfs/ship.cern.ch/$version/setUp.sh
           eval `alienv load FairShip/latest`
           python $FAIRSHIP/examples/analysis_example.py
+
+      - name: Overlap check
+        run: |
+          source /cvmfs/ship.cern.ch/$version/setUp.sh
+          eval `alienv load FairShip/latest`
+          python $FAIRSHIP/macro/run_simScript.py --test -n 0 --debug 2 | tee log
+          ! grep ovlp log
 
       - name: Upload .root artifacts
         uses: actions/upload-artifact@v4
