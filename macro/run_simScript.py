@@ -317,7 +317,7 @@ if simEngine == "Pythia8":
   P8gen.SetLmin((ship_geo.Chamber1.z - ship_geo.chambers.Tub1length) - ship_geo.target.z0 )
   P8gen.SetLmax(ship_geo.TrackStation1.z - ship_geo.target.z0 )
  if charmonly:
-  primGen.SetTarget(0., 0.) #vertex is setted in pythia8Generator
+  primGen.SetTarget(0., 0.) #vertex is set in pythia8Generator
   ut.checkFileExists(inputFile)
   if ship_geo.Box.gausbeam:
    primGen.SetBeam(0.,0., 0.5, 0.5) #more central beam, for hits in downstream detectors
@@ -601,7 +601,7 @@ timer.Stop()
 rtime = timer.RealTime()
 ctime = timer.CpuTime()
 print(' ')
-print("Macro finished succesfully.")
+print("Macro finished successfully.")
 if "P8gen" in globals() :
     if (HNL): print("number of retries, events without HNL ",P8gen.nrOfRetries())
     elif (options.DarkPhoton):

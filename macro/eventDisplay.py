@@ -266,7 +266,7 @@ class DrawEcalCluster(ROOT.FairTask):
                 )
                 if mccell.GetEnergy() / u.MeV < 4.0:
                     continue
-                    # ADC noise simulated Guassian with \sigma=1 MeV
+                    # ADC noise simulated Gaussian with \sigma=1 MeV
                 DClus = ROOT.TEveBox()
                 DClus.SetName("EcalCluster_" + str(cl) + "_" + str(i))
                 DClus.SetPickable(ROOT.kTRUE)
@@ -1261,7 +1261,7 @@ def mydebug():
             t.MCEventHeader.GetRunID(),
             t.MCEventHeader.GetZ(),
         )
-    # geometrie
+    # Load geometry
     sGeo = ROOT.gGeoManager
     cave = sGeo.GetTopVolume()
     cave.Draw("ogl")

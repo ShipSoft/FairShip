@@ -226,7 +226,7 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg)
     Double_t y = mu[0][6]*100.; // come in m -> cm
     Double_t z = mu[0][7]*100.; // come in m -> cm
     Double_t w = mu[0][8];
-// calculate start/end positions along this muon, and amout of material in between
+// calculate start/end positions along this muon, and amount of material in between
     Double_t txmu=mu[0][1]/mu[0][3];
     Double_t tymu=mu[0][2]/mu[0][3];
     start[0]=x-(z-start[2])*txmu;
