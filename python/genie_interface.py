@@ -1,4 +1,7 @@
-import ROOT, os, sys, time
+import ROOT
+import os
+import sys
+import time
 from subprocess import call
 
 

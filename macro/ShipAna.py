@@ -193,9 +193,9 @@ def dist2InnerWall(X,Y,Z):
  # return distance to inner wall perpendicular to z-axis, if outside decayVolume return 0.
   node = sGeo.FindNode(X,Y,Z)
   if ShipGeo.tankDesign < 5:
-     if not 'cave' in node.GetName(): return dist  # TP
+     if 'cave' not in node.GetName(): return dist  # TP
   else:
-     if not 'DecayVacuum' in node.GetName(): return dist
+     if 'DecayVacuum' not in node.GetName(): return dist
   start = array('d',[X,Y,Z])
   nsteps = 8
   dalpha = 2*ROOT.TMath.Pi()/nsteps
@@ -809,7 +809,7 @@ calReco = False
 sTree.GetEvent(0)
 if ecal:
  ecalGeo = ecalGeoFile+'z'+str(ShipGeo.ecal.z)+".geo"
- if not ecalGeo in os.listdir(os.environ["FAIRSHIP"]+"/geometry"): shipDet_conf.makeEcalGeoFile(ShipGeo.ecal.z,ShipGeo.ecal.File)
+ if ecalGeo not in os.listdir(os.environ["FAIRSHIP"]+"/geometry"): shipDet_conf.makeEcalGeoFile(ShipGeo.ecal.z,ShipGeo.ecal.File)
  ecalFiller = ROOT.ecalStructureFiller("ecalFiller", 0,ecalGeo)
  ecalFiller.SetUseMCPoints(ROOT.kTRUE)
  ecalFiller.StoreTrackInformation()

@@ -1,4 +1,6 @@
-import ROOT,os,random
+import ROOT
+import os
+import random
 import shipunit as u
 import rootUtils as ut
 from ShipGeoConfig import ConfigRegistry

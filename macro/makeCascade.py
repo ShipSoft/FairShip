@@ -1,4 +1,10 @@
-import ROOT,time,os,sys,random,getopt,copy
+import ROOT
+import time
+import os
+import sys
+import random
+import getopt
+import copy
 from array import array
 import rootUtils as ut
 ROOT.gROOT.LoadMacro("$VMCWORKDIR/gconfig/basiclibs.C")

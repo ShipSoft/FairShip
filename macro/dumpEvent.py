@@ -1,5 +1,7 @@
 # example for dumping an MC event
-import ROOT,os,sys
+import ROOT
+import os
+import sys
 import rootUtils as ut
 import shipunit as u
 import ShipGeoConfig
