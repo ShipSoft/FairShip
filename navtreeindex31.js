@@ -1,7 +1,5 @@
 var NAVTREEINDEX31 =
 {
-"namespaceeveGlobal.html":[4,0,25],
-"namespaceeveGlobal.html#af384e4f875e85dd37b0398e54a393298":[4,0,25,0],
 "namespaceeventDisplay.html":[4,0,26],
 "namespaceeventDisplay.html#a00384f30935b639a80646e062e75b453":[4,0,26,22],
 "namespaceeventDisplay.html#a02fed437ae0ec8491e5909e9e72a61d9":[4,0,26,32],
@@ -249,5 +247,7 @@ var NAVTREEINDEX31 =
 "namespaceg4Ex__gap__mergeFiles.html#a0ffd288e214d2f529b00ea65801167b6":[4,0,34,27],
 "namespaceg4Ex__gap__mergeFiles.html#a158c90325fb2abd766b0509fe4185ffc":[4,0,34,2],
 "namespaceg4Ex__gap__mergeFiles.html#a17163553c78ce5cf82e52b199e45c06b":[4,0,34,21],
-"namespaceg4Ex__gap__mergeFiles.html#a196fb8f6a4ff597dc8d4c5d23673e253":[4,0,34,17]
+"namespaceg4Ex__gap__mergeFiles.html#a196fb8f6a4ff597dc8d4c5d23673e253":[4,0,34,17],
+"namespaceg4Ex__gap__mergeFiles.html#a200741f599f0bb0893f52498a9617a0a":[4,0,34,16],
+"namespaceg4Ex__gap__mergeFiles.html#a2ac25789017dd56603137f3da74453fb":[4,0,34,10]
 };

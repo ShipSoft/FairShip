@@ -1,6 +1,5 @@
 var NAVTREEINDEX8 =
 {
-"classShipGoliath.html":[5,0,99],
 "classShipGoliath.html#a16a73f55d95ac90375782683a6ac2362":[5,0,99,2],
 "classShipGoliath.html#a43ecd801816f7439bad47e209f7b3d70":[5,0,99,3],
 "classShipGoliath.html#a457a19c4cae621a62f4389ac16f65f40":[5,0,99,5],
@@ -249,5 +248,6 @@ var NAVTREEINDEX8 =
 "classShipTAUMagneticSpectrometer.html#a8df67f8bc0a23c15e29f2e21f47550af":[5,0,110,4],
 "classShipTAUMagneticSpectrometer.html#a98ab005807dcce5f989e5aa01b4b1c85":[5,0,110,3],
 "classShipTAUMagneticSpectrometer.html#aa034db1318c65af7e7267bdccb1a4ca8":[5,0,110,1],
-"classShipTAUMagneticSpectrometer.html#aa467ecbbcc6edde152b8483e39611b30":[5,0,110,10]
+"classShipTAUMagneticSpectrometer.html#aa467ecbbcc6edde152b8483e39611b30":[5,0,110,10],
+"classShipTAUMagneticSpectrometer.html#ac506d476916c75ea7ef7fdadee216ed7":[5,0,110,6]
 };

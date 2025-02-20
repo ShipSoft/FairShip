@@ -1,7 +1,5 @@
 var NAVTREEINDEX36 =
 {
-"namespacepythia8__conf__utils.html#a296d6528082699a77e557fae82850349":[4,0,57,6],
-"namespacepythia8__conf__utils.html#a36ee113cd9530928574f0514630b8ff4":[4,0,57,13],
 "namespacepythia8__conf__utils.html#a554e3de622d16f15c53d8010f1085f4d":[4,0,57,17],
 "namespacepythia8__conf__utils.html#a5e95b7f87fea4478df870f18f6457554":[4,0,57,0],
 "namespacepythia8__conf__utils.html#a643f6af0e4181400db5d9eec768fbfcf":[4,0,57,12],
@@ -249,5 +247,7 @@ var NAVTREEINDEX36 =
 "namespacerun__reco.html#a7e74d79c29b7ed5cbb9ac5c9787a66dc":[4,0,68,21],
 "namespacerun__reco.html#a8553d576110e35b60e61c44b803d35a1":[4,0,68,16],
 "namespacerun__reco.html#a9dabb00cd6b80021cf8ee4b76b1cab04":[4,0,68,19],
-"namespacerun__reco.html#aa2d053442cc575863e21b3cb0d599b84":[4,0,68,14]
+"namespacerun__reco.html#aa2d053442cc575863e21b3cb0d599b84":[4,0,68,14],
+"namespacerun__reco.html#ab11bee5e2fac20519bd1e0888eaa6790":[4,0,68,15],
+"namespacerun__reco.html#ab7bd132b6defae6b97e7ca99c9aa6270":[4,0,68,5]
 };

@@ -1,7 +1,5 @@
 var NAVTREEINDEX32 =
 {
-"namespaceg4Ex__gap__mergeFiles.html#a200741f599f0bb0893f52498a9617a0a":[4,0,34,16],
-"namespaceg4Ex__gap__mergeFiles.html#a2ac25789017dd56603137f3da74453fb":[4,0,34,10],
 "namespaceg4Ex__gap__mergeFiles.html#a2bd0162f169ff3e31dba248ae0ea4ea3":[4,0,34,14],
 "namespaceg4Ex__gap__mergeFiles.html#a38872d62a0c9857719cd41adda923f49":[4,0,34,6],
 "namespaceg4Ex__gap__mergeFiles.html#a39c9cf110da148cb9e1e9328c07ad079":[4,0,34,20],
@@ -249,5 +247,7 @@ var NAVTREEINDEX32 =
 "namespacegeometry__config.html#a883b84599e46b2e590b2f62a7a6b1b2b":[4,0,37,165],
 "namespacegeometry__config.html#a896c343b4ab0d3e4ae03cee54b11f5d7":[4,0,37,90],
 "namespacegeometry__config.html#a896fc6cf1b873e9a2fe35dd8de52cced":[4,0,37,17],
-"namespacegeometry__config.html#a897e017b948da04888e4a7af85e616de":[4,0,37,112]
+"namespacegeometry__config.html#a897e017b948da04888e4a7af85e616de":[4,0,37,112],
+"namespacegeometry__config.html#a8aa4182e12a2746d01d4a85e5d322445":[4,0,37,299],
+"namespacegeometry__config.html#a8d0f7938a0cf8ffedf725404d2130d53":[4,0,37,343]
 };

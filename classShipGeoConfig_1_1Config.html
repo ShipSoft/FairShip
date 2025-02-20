@@ -139,7 +139,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00110">110</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00098">98</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a8a67ef72de4239b31612fdb8e2a11f8a" name="a8a67ef72de4239b31612fdb8e2a11f8a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8a67ef72de4239b31612fdb8e2a11f8a">&#9670;&#160;</a></span>__init__()</h2>
@@ -175,10 +175,10 @@ Public Member Functions</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classShipGeoConfig_1_1AttrDict.html#a2ec2b049b04f452674ee3e923e93216d">ShipGeoConfig.AttrDict</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00111">111</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  111</span>    <span class="keyword">def </span>__init__(self, *args, **kwargs):</div>
-<div class="line"><span class="lineno">  112</span>        super(Config, self).__init__(*args, **kwargs)</div>
-<div class="line"><span class="lineno">  113</span> </div>
+<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00099">99</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   99</span>    <span class="keyword">def </span>__init__(self, *args, **kwargs):</div>
+<div class="line"><span class="lineno">  100</span>        super(Config, self).__init__(*args, **kwargs)</div>
+<div class="line"><span class="lineno">  101</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -199,9 +199,15 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00141">141</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  141</span>    <span class="keyword">def </span>__str__(self):</div>
-<div class="line"><span class="lineno">  142</span>        <span class="keywordflow">return</span> <span class="stringliteral">&quot;ShipGeoConfig:\n  &quot;</span> + <span class="stringliteral">&quot;\n  &quot;</span>.join([<span class="stringliteral">&quot;%s: %s&quot;</span> % (k, self[k].__str__()) <span class="keywordflow">for</span> k <span class="keywordflow">in</span> sorted(self.keys()) <span class="keywordflow">if</span> <span class="keywordflow">not</span> k.startswith(<span class="stringliteral">&quot;_&quot;</span>)])</div>
+<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00129">129</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  129</span>    <span class="keyword">def </span>__str__(self):</div>
+<div class="line"><span class="lineno">  130</span>        <span class="keywordflow">return</span> <span class="stringliteral">&quot;ShipGeoConfig:\n  &quot;</span> + <span class="stringliteral">&quot;\n  &quot;</span>.join(</div>
+<div class="line"><span class="lineno">  131</span>            [</div>
+<div class="line"><span class="lineno">  132</span>                <span class="stringliteral">&quot;%s: %s&quot;</span> % (k, self[k].__str__())</div>
+<div class="line"><span class="lineno">  133</span>                <span class="keywordflow">for</span> k <span class="keywordflow">in</span> sorted(self.keys())</div>
+<div class="line"><span class="lineno">  134</span>                <span class="keywordflow">if</span> <span class="keywordflow">not</span> k.startswith(<span class="stringliteral">&quot;_&quot;</span>)</div>
+<div class="line"><span class="lineno">  135</span>            ]</div>
+<div class="line"><span class="lineno">  136</span>        )</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -223,16 +229,16 @@ Public Member Functions</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classShipGeoConfig_1_1AttrDict.html#a94d6d80e626306f42db8ff1f2326dc46">ShipGeoConfig.AttrDict</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00120">120</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  120</span>    <span class="keyword">def </span>clone(self):</div>
-<div class="line"><span class="lineno">  121</span>        result = Config()</div>
-<div class="line"><span class="lineno">  122</span>        <span class="keywordflow">for</span> k, v <span class="keywordflow">in</span> self.items():</div>
-<div class="line"><span class="lineno">  123</span>            <span class="keywordflow">if</span> isinstance(v, AttrDict):</div>
-<div class="line"><span class="lineno">  124</span>                result[k] = v.clone()</div>
-<div class="line"><span class="lineno">  125</span>            <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  126</span>                result[k] = v</div>
-<div class="line"><span class="lineno">  127</span>        <span class="keywordflow">return</span> result</div>
-<div class="line"><span class="lineno">  128</span> </div>
+<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00108">108</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  108</span>    <span class="keyword">def </span>clone(self):</div>
+<div class="line"><span class="lineno">  109</span>        result = Config()</div>
+<div class="line"><span class="lineno">  110</span>        <span class="keywordflow">for</span> k, v <span class="keywordflow">in</span> self.items():</div>
+<div class="line"><span class="lineno">  111</span>            <span class="keywordflow">if</span> isinstance(v, AttrDict):</div>
+<div class="line"><span class="lineno">  112</span>                result[k] = v.clone()</div>
+<div class="line"><span class="lineno">  113</span>            <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  114</span>                result[k] = v</div>
+<div class="line"><span class="lineno">  115</span>        <span class="keywordflow">return</span> result</div>
+<div class="line"><span class="lineno">  116</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -262,11 +268,11 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00137">137</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  137</span>    <span class="keyword">def </span>dump(self, filename):</div>
-<div class="line"><span class="lineno">  138</span>        <span class="keyword">with</span> open(expand_env(filename), <span class="stringliteral">&quot;w&quot;</span>) <span class="keyword">as</span> fh:</div>
-<div class="line"><span class="lineno">  139</span>            <span class="keywordflow">return</span> fh.write(self.dumps())</div>
-<div class="line"><span class="lineno">  140</span> </div>
+<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00125">125</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  125</span>    <span class="keyword">def </span>dump(self, filename):</div>
+<div class="line"><span class="lineno">  126</span>        <span class="keyword">with</span> open(os.path.expandvars(filename), <span class="stringliteral">&quot;w&quot;</span>) <span class="keyword">as</span> fh:</div>
+<div class="line"><span class="lineno">  127</span>            <span class="keywordflow">return</span> fh.write(self.dumps())</div>
+<div class="line"><span class="lineno">  128</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -286,10 +292,10 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00129">129</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  129</span>    <span class="keyword">def </span>dumps(self):</div>
-<div class="line"><span class="lineno">  130</span>        <span class="keywordflow">return</span> pickle.dumps(self)</div>
-<div class="line"><span class="lineno">  131</span> </div>
+<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00117">117</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  117</span>    <span class="keyword">def </span>dumps(self):</div>
+<div class="line"><span class="lineno">  118</span>        <span class="keywordflow">return</span> pickle.dumps(self)</div>
+<div class="line"><span class="lineno">  119</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -319,12 +325,12 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00132">132</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  132</span>    <span class="keyword">def </span>load(self, filename):</div>
-<div class="line"><span class="lineno">  133</span>        <span class="keyword">with</span> open(expand_env(filename)) <span class="keyword">as</span> fh:</div>
-<div class="line"><span class="lineno">  134</span>            self.loads(fh.read())</div>
-<div class="line"><span class="lineno">  135</span>        <span class="keywordflow">return</span> self</div>
-<div class="line"><span class="lineno">  136</span> </div>
+<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00120">120</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  120</span>    <span class="keyword">def </span>load(self, filename):</div>
+<div class="line"><span class="lineno">  121</span>        <span class="keyword">with</span> open(os.path.expandvars(filename)) <span class="keyword">as</span> fh:</div>
+<div class="line"><span class="lineno">  122</span>            self.loads(fh.read())</div>
+<div class="line"><span class="lineno">  123</span>        <span class="keywordflow">return</span> self</div>
+<div class="line"><span class="lineno">  124</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -354,13 +360,13 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00114">114</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  114</span>    <span class="keyword">def </span>loads(self, buff):</div>
-<div class="line"><span class="lineno">  115</span>        rv = pickle.loads(buff)</div>
-<div class="line"><span class="lineno">  116</span>        self.clear()</div>
-<div class="line"><span class="lineno">  117</span>        self.update(rv)</div>
-<div class="line"><span class="lineno">  118</span>        <span class="keywordflow">return</span> self</div>
-<div class="line"><span class="lineno">  119</span> </div>
+<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00102">102</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  102</span>    <span class="keyword">def </span>loads(self, buff):</div>
+<div class="line"><span class="lineno">  103</span>        rv = pickle.loads(buff)</div>
+<div class="line"><span class="lineno">  104</span>        self.clear()</div>
+<div class="line"><span class="lineno">  105</span>        self.update(rv)</div>
+<div class="line"><span class="lineno">  106</span>        <span class="keywordflow">return</span> self</div>
+<div class="line"><span class="lineno">  107</span> </div>
 </div><!-- fragment -->
 </div>
 </div>

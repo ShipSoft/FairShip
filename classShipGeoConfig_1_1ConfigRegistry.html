@@ -179,7 +179,7 @@ Additional Inherited Members</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><pre class="fragment">Singleton registry of all Configurations
 </pre> 
-<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00037">37</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00021">21</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a6a865904ce08f37067603bac3c405ec6" name="a6a865904ce08f37067603bac3c405ec6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6a865904ce08f37067603bac3c405ec6">&#9670;&#160;</a></span>__init__()</h2>
@@ -197,10 +197,10 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00058">58</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   58</span>    <span class="keyword">def </span>__init__(self):</div>
-<div class="line"><span class="lineno">   59</span>        self.__dict__ = self</div>
-<div class="line"><span class="lineno">   60</span> </div>
+<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00043">43</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   43</span>    <span class="keyword">def </span>__init__(self):</div>
+<div class="line"><span class="lineno">   44</span>        self.__dict__ = self</div>
+<div class="line"><span class="lineno">   45</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -228,12 +228,12 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00085">85</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   85</span>    <span class="keyword">def </span>clean():</div>
-<div class="line"><span class="lineno">   86</span>        <span class="keywordflow">for</span> k <span class="keywordflow">in</span> ConfigRegistry.keys():</div>
-<div class="line"><span class="lineno">   87</span>            ConfigRegistry.delitem(k)</div>
-<div class="line"><span class="lineno">   88</span> </div>
-<div class="line"><span class="lineno">   89</span> </div>
+<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00072">72</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   72</span>    <span class="keyword">def </span>clean():</div>
+<div class="line"><span class="lineno">   73</span>        <span class="keywordflow">for</span> k <span class="keywordflow">in</span> ConfigRegistry.keys():</div>
+<div class="line"><span class="lineno">   74</span>            ConfigRegistry.delitem(k)</div>
+<div class="line"><span class="lineno">   75</span> </div>
+<div class="line"><span class="lineno">   76</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -261,10 +261,10 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00081">81</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   81</span>    <span class="keyword">def </span>get(name):</div>
-<div class="line"><span class="lineno">   82</span>        <span class="keywordflow">return</span> ConfigRegistry[name]</div>
-<div class="line"><span class="lineno">   83</span> </div>
+<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00068">68</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   68</span>    <span class="keyword">def </span>get(name):</div>
+<div class="line"><span class="lineno">   69</span>        <span class="keywordflow">return</span> ConfigRegistry[name]</div>
+<div class="line"><span class="lineno">   70</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -291,10 +291,10 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00055">55</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   55</span>    <span class="keyword">def </span>get_latest_config():</div>
-<div class="line"><span class="lineno">   56</span>        <span class="keywordflow">return</span> ConfigRegistry[ConfigRegistry.recent_config_name]</div>
-<div class="line"><span class="lineno">   57</span> </div>
+<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00040">40</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   40</span>    <span class="keyword">def </span>get_latest_config():</div>
+<div class="line"><span class="lineno">   41</span>        <span class="keywordflow">return</span> ConfigRegistry[ConfigRegistry.recent_config_name]</div>
+<div class="line"><span class="lineno">   42</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -321,11 +321,11 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00076">76</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   76</span>    <span class="keyword">def </span>keys():</div>
-<div class="line"><span class="lineno">   77</span>        registry = ConfigRegistry()</div>
-<div class="line"><span class="lineno">   78</span>        <span class="keywordflow">return</span> [k <span class="keywordflow">for</span> k, v <span class="keywordflow">in</span> registry.items()]</div>
-<div class="line"><span class="lineno">   79</span> </div>
+<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00063">63</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   63</span>    <span class="keyword">def </span>keys():</div>
+<div class="line"><span class="lineno">   64</span>        registry = ConfigRegistry()</div>
+<div class="line"><span class="lineno">   65</span>        <span class="keywordflow">return</span> [k <span class="keywordflow">for</span> k, v <span class="keywordflow">in</span> registry.items()]</div>
+<div class="line"><span class="lineno">   66</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -363,11 +363,11 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00044">44</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   44</span>    <span class="keyword">def </span>loadpy(filename, **kwargs):</div>
-<div class="line"><span class="lineno">   45</span>        <span class="keyword">with</span> open(expand_env(filename)) <span class="keyword">as</span> fh:</div>
-<div class="line"><span class="lineno">   46</span>            <span class="keywordflow">return</span> ConfigRegistry.loadpys(fh.read(), **kwargs)</div>
-<div class="line"><span class="lineno">   47</span> </div>
+<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00029">29</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   29</span>    <span class="keyword">def </span>loadpy(filename, **kwargs):</div>
+<div class="line"><span class="lineno">   30</span>        <span class="keyword">with</span> open(os.path.expandvars(filename)) <span class="keyword">as</span> fh:</div>
+<div class="line"><span class="lineno">   31</span>            <span class="keywordflow">return</span> ConfigRegistry.loadpys(fh.read(), **kwargs)</div>
+<div class="line"><span class="lineno">   32</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -405,12 +405,12 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00049">49</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   49</span>    <span class="keyword">def </span>loadpys(config_string, **kwargs):</div>
-<div class="line"><span class="lineno">   50</span>        string_unixlf = config_string.replace(<span class="stringliteral">&#39;\r&#39;</span>, <span class="stringliteral">&#39;&#39;</span>)</div>
-<div class="line"><span class="lineno">   51</span>        exec(string_unixlf, kwargs)</div>
-<div class="line"><span class="lineno">   52</span>        <span class="keywordflow">return</span> ConfigRegistry.get_latest_config()</div>
-<div class="line"><span class="lineno">   53</span> </div>
+<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00034">34</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   34</span>    <span class="keyword">def </span>loadpys(config_string, **kwargs):</div>
+<div class="line"><span class="lineno">   35</span>        string_unixlf = config_string.replace(<span class="stringliteral">&quot;\r&quot;</span>, <span class="stringliteral">&quot;&quot;</span>)</div>
+<div class="line"><span class="lineno">   36</span>        exec(string_unixlf, kwargs)</div>
+<div class="line"><span class="lineno">   37</span>        <span class="keywordflow">return</span> ConfigRegistry.get_latest_config()</div>
+<div class="line"><span class="lineno">   38</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -448,19 +448,21 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00063">63</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   63</span>    <span class="keyword">def </span>register_config(name=None, base=None):</div>
-<div class="line"><span class="lineno">   64</span>        registry = ConfigRegistry()</div>
-<div class="line"><span class="lineno">   65</span>        <span class="keywordflow">if</span> base <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>:</div>
-<div class="line"><span class="lineno">   66</span>            <span class="keyword">assert</span> base <span class="keywordflow">in</span> registry, <span class="stringliteral">&quot;no base configuration (%s) found in the registry&quot;</span> % base</div>
-<div class="line"><span class="lineno">   67</span>            config = registry[base].clone()</div>
-<div class="line"><span class="lineno">   68</span>        <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">   69</span>            config = Config()</div>
-<div class="line"><span class="lineno">   70</span>        <span class="keywordflow">yield</span> config</div>
-<div class="line"><span class="lineno">   71</span>        <span class="keywordflow">if</span> name <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>:</div>
-<div class="line"><span class="lineno">   72</span>            registry[name] = config</div>
-<div class="line"><span class="lineno">   73</span>            ConfigRegistry.recent_config_name = name</div>
-<div class="line"><span class="lineno">   74</span> </div>
+<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00048">48</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   48</span>    <span class="keyword">def </span>register_config(name=None, base=None):</div>
+<div class="line"><span class="lineno">   49</span>        registry = ConfigRegistry()</div>
+<div class="line"><span class="lineno">   50</span>        <span class="keywordflow">if</span> base <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>:</div>
+<div class="line"><span class="lineno">   51</span>            <span class="keyword">assert</span> base <span class="keywordflow">in</span> registry, (</div>
+<div class="line"><span class="lineno">   52</span>                <span class="stringliteral">&quot;no base configuration (%s) found in the registry&quot;</span> % base</div>
+<div class="line"><span class="lineno">   53</span>            )</div>
+<div class="line"><span class="lineno">   54</span>            config = registry[base].clone()</div>
+<div class="line"><span class="lineno">   55</span>        <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">   56</span>            config = Config()</div>
+<div class="line"><span class="lineno">   57</span>        <span class="keywordflow">yield</span> config</div>
+<div class="line"><span class="lineno">   58</span>        <span class="keywordflow">if</span> name <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>:</div>
+<div class="line"><span class="lineno">   59</span>            registry[name] = config</div>
+<div class="line"><span class="lineno">   60</span>            ConfigRegistry.recent_config_name = name</div>
+<div class="line"><span class="lineno">   61</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -485,7 +487,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00059">59</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00044">44</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
 
 </div>
 </div>
@@ -509,7 +511,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00041">41</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00026">26</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
 
 </div>
 </div>

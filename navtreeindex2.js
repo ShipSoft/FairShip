@@ -1,6 +1,5 @@
 var NAVTREEINDEX2 =
 {
-"TTCluster_8py.html#afe8ad14998dac73582a03975bc1ea533":[6,0,12,45,35],
 "TTCluster_8py.html#afec92313e98c222790502daa9cd823dd":[6,0,12,45,61],
 "TTCluster_8py.html#aff987cb9c8aa68b4e6a5c61224e06c36":[6,0,12,45,63],
 "TTCluster_8py_source.html":[6,0,12,45],
@@ -249,5 +248,6 @@ var NAVTREEINDEX2 =
 "classDPPythia8Generator.html#a2fbc6c8ec533bd12f6c37f08574e5343":[5,0,26,40],
 "classDPPythia8Generator.html#a31ea29b3c84e6554163ae50efcbba2fa":[5,0,26,28],
 "classDPPythia8Generator.html#a35a088b1d4361725a8754893213034f6":[5,0,26,56],
-"classDPPythia8Generator.html#a3964d8dc7e41f0612c1c573af108acd5":[5,0,26,61]
+"classDPPythia8Generator.html#a3964d8dc7e41f0612c1c573af108acd5":[5,0,26,61],
+"classDPPythia8Generator.html#a454c2841047f041f11a4e9f4d6e2ab2a":[5,0,26,50]
 };

@@ -1,7 +1,5 @@
 var NAVTREEINDEX35 =
 {
-"namespacemakeGenieEvents.html#a6497b241ab7e816e30df850dc4c27edd":[4,0,48,6],
-"namespacemakeGenieEvents.html#a66b96bd7cc1706473e5a39a29e8f5c39":[4,0,48,3],
 "namespacemakeGenieEvents.html#a6e85e1d199d5847ee0db3cfc249c493c":[4,0,48,9],
 "namespacemakeGenieEvents.html#a86deaeb240c94bdf968bc5d3c6b54efe":[4,0,48,16],
 "namespacemakeGenieEvents.html#abe887af676229349c0ed84016d093761":[4,0,48,12],
@@ -141,8 +139,8 @@ var NAVTREEINDEX35 =
 "namespacemembers_t.html":[4,1,0,20],
 "namespacemembers_u.html":[4,1,0,21],
 "namespacemembers_v.html":[4,1,0,22],
-"namespacemembers_vars.html":[4,1,2],
 "namespacemembers_vars.html":[4,1,2,0],
+"namespacemembers_vars.html":[4,1,2],
 "namespacemembers_vars_a.html":[4,1,2,1],
 "namespacemembers_vars_b.html":[4,1,2,2],
 "namespacemembers_vars_c.html":[4,1,2,3],
@@ -249,5 +247,7 @@ var NAVTREEINDEX35 =
 "namespacepythia8__conf__utils.html#a18647567e794922d6dc59894ce9fe695":[4,0,57,14],
 "namespacepythia8__conf__utils.html#a1ee4f20b1f6d13bd38b5ace3040e1425":[4,0,57,8],
 "namespacepythia8__conf__utils.html#a210d391c1e3b8da15b95dc1ae1d9f039":[4,0,57,1],
-"namespacepythia8__conf__utils.html#a27a631c6dab5a7bf24107cd9cae1af9d":[4,0,57,4]
+"namespacepythia8__conf__utils.html#a27a631c6dab5a7bf24107cd9cae1af9d":[4,0,57,4],
+"namespacepythia8__conf__utils.html#a296d6528082699a77e557fae82850349":[4,0,57,6],
+"namespacepythia8__conf__utils.html#a36ee113cd9530928574f0514630b8ff4":[4,0,57,13]
 };

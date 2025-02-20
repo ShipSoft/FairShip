@@ -90,8 +90,7 @@ $(document).ready(function(){initNavTree('namespaceShipGeoConfig.html',''); init
 
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#nested-classes">Classes</a>  </div>
   <div class="headertitle"><div class="title">ShipGeoConfig Namespace Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -106,51 +105,7 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classShipGeoConfig_1_1ConfigRegistry.html">ConfigRegistry</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:a25b9e1b7c17804d899f0b283d6c2b474" id="r_a25b9e1b7c17804d899f0b283d6c2b474"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceShipGeoConfig.html#a25b9e1b7c17804d899f0b283d6c2b474">expand_env</a> (string)</td></tr>
-<tr class="separator:a25b9e1b7c17804d899f0b283d6c2b474"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Function Documentation</h2>
-<a id="a25b9e1b7c17804d899f0b283d6c2b474" name="a25b9e1b7c17804d899f0b283d6c2b474"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a25b9e1b7c17804d899f0b283d6c2b474">&#9670;&#160;</a></span>expand_env()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">ShipGeoConfig.expand_env </td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>string</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<pre class="fragment">Expand environment variables in string:
-$HOME/bin -&gt; /home/user/bin
-</pre> 
-<p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00006">6</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">    6</span><span class="keyword">def </span>expand_env(string):</div>
-<div class="line"><span class="lineno">    7</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">    8</span><span class="stringliteral">    Expand environment variables in string:</span></div>
-<div class="line"><span class="lineno">    9</span><span class="stringliteral">    $HOME/bin -&gt; /home/user/bin</span></div>
-<div class="line"><span class="lineno">   10</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   11</span>    <span class="keywordflow">while</span> <span class="keyword">True</span>:</div>
-<div class="line"><span class="lineno">   12</span>        m = re.search(<span class="stringliteral">r&quot;(\${*(\w+)}*)&quot;</span>, string)</div>
-<div class="line"><span class="lineno">   13</span>        <span class="keywordflow">if</span> m <span class="keywordflow">is</span> <span class="keywordtype">None</span>:</div>
-<div class="line"><span class="lineno">   14</span>            <span class="keywordflow">break</span></div>
-<div class="line"><span class="lineno">   15</span>        (env_token, env_name) = m.groups()</div>
-<div class="line"><span class="lineno">   16</span>        <span class="keyword">assert</span> env_name <span class="keywordflow">in</span> os.environ, <span class="stringliteral">&quot;Environment variable &#39;%s&#39; is not defined&quot;</span> % env_name</div>
-<div class="line"><span class="lineno">   17</span>        env_value = os.environ[env_name]</div>
-<div class="line"><span class="lineno">   18</span>        string = string.replace(env_token, env_value)</div>
-<div class="line"><span class="lineno">   19</span>    <span class="keywordflow">return</span> string</div>
-<div class="line"><span class="lineno">   20</span> </div>
-<div class="line"><span class="lineno">   21</span> </div>
-</div><!-- fragment -->
-</div>
-</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
