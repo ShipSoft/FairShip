@@ -194,7 +194,7 @@ class Pickler(pickle.Pickler):
             obj.Write()
             if key:
                 key = self.__file.GetKey(nm)
-                pid = '{};{:d}'.format(nm, key.GetCycle())
+                pid = f'{nm};{key.GetCycle():d}'
             else:
                 pid = nm + ';1'
             return pid
@@ -211,7 +211,7 @@ class Unpickler(pickle.Unpickler):
         self.__file = root_file
         self.__io = IO_Wrapper()
         self.__n = 0
-        self.__serial = '{:d}-'.format(xserial).encode('utf-8')
+        self.__serial = f'{xserial:d}-'.encode('utf-8')
         xdict[self.__serial] = root_file
         super().__init__(self.__io)
 
@@ -259,7 +259,7 @@ class Unpickler(pickle.Unpickler):
             save = _compat_hooks[0]()
         try:
             self.__n += 1
-            s = self.__file.Get(key + ';{:d}'.format(self.__n))
+            s = self.__file.Get(key + f';{self.__n:d}')
             self.__io.setvalue(s.GetName())
             obj = super().load()
             self.__io.reopen()

@@ -244,13 +244,13 @@ if options.eventDisplay: tag = tag+'_D'
 if options.dv > 4 : tag = 'conical.'+tag
 if not os.path.exists(options.outputDir):
   os.makedirs(options.outputDir)
-outFile = "{}/ship.{}.root".format(options.outputDir, tag)
+outFile = f"{options.outputDir}/ship.{tag}.root"
 
 # rm older files !!!
 for x in os.listdir(options.outputDir):
-  if not x.find(tag)<0: os.system("rm {}/{}".format(options.outputDir, x) )
+  if not x.find(tag)<0: os.system(f"rm {options.outputDir}/{x}" )
 # Parameter file name
-parFile="{}/ship.params.{}.root".format(options.outputDir, tag)
+parFile=f"{options.outputDir}/ship.params.{tag}.root"
 
 # In general, the following parts need not be touched
 # ========================================================================
@@ -579,10 +579,10 @@ rtdb.saveOutput()
 rtdb.printParamContexts()
 getattr(rtdb,"print")()
 # ------------------------------------------------------------------------
-run.CreateGeometryFile("{}/geofile_full.{}.root".format(options.outputDir, tag))
+run.CreateGeometryFile(f"{options.outputDir}/geofile_full.{tag}.root")
 # save ShipGeo dictionary in geofile
 import saveBasicParameters
-saveBasicParameters.execute("{}/geofile_full.{}.root".format(options.outputDir, tag),ship_geo)
+saveBasicParameters.execute(f"{options.outputDir}/geofile_full.{tag}.root",ship_geo)
 
 # checking for overlaps
 if options.debug == 2:

@@ -49,7 +49,7 @@ def run(inFileName  = 'test07_10cm_grid.table',
 
 def createTextMap(inFileName, outFileName):
 
-    print('Creating text map {} from {}'.format(outFileName, inFileName))
+    print(f'Creating text map {outFileName} from {inFileName}')
 
     tmpFileName = 'tmpFile.txt'
 
@@ -107,7 +107,7 @@ def createTextMap(inFileName, outFileName):
 
             # Write out the new line. Just print out the B field components, since we
             # can infer x,y,z co-ords from the ordering
-            newLine = '{} {} {}\n'.format(BxWord, ByWord, BzWord)
+            newLine = f'{BxWord} {ByWord} {BzWord}\n'
             #newLine = '{0:.0f} {1:.0f} {2:.0f} {3:.3e} {4:.3e} {5:.3e}\n'.format(x,y,z,Bx,By,Bz)
             tmpFile.write(newLine)
 
@@ -146,8 +146,8 @@ def createTextMap(inFileName, outFileName):
                 dz = z - zOld
                 gotdz = 1
 
-    print('dx = {}, dy = {}, dz = {}'.format(dx,dy,dz))
-    print('x = {} to {}, y = {} to {}, z = {} to {}'.format(xMin, xMax, yMin, yMax, zMin, zMax))
+    print(f'dx = {dx}, dy = {dy}, dz = {dz}')
+    print(f'x = {xMin} to {xMax}, y = {yMin} to {yMax}, z = {zMin} to {zMax}')
 
     tmpFile.close()
     inFile.close()
@@ -183,7 +183,7 @@ def formatNumber(x):
 
     # Let the general precision be 0.01 mT. Anything below this
     # is set to zero.
-    xWord = '{:.5f}'.format(x)
+    xWord = f'{x:.5f}'
 
     if abs(x) < 1e-5:
 
@@ -194,7 +194,7 @@ def formatNumber(x):
 
 def createRootMap(inFileName, outFileName):
 
-    print('Create ROOT map {} from {}'.format(outFileName, inFileName))
+    print(f'Create ROOT map {outFileName} from {inFileName}')
 
     # Define ROOT file and its TTree
     theFile = ROOT.TFile.Open(outFileName, 'recreate')
@@ -258,7 +258,7 @@ def createRootMap(inFileName, outFileName):
                 Nz = int(((rStruct.zMax - rStruct.zMin)/rStruct.dz) + 1.0)
                 Nzy = Nz*Ny
 
-                print('Nx = {}, Ny = {}, Nz = {}'.format(Nx, Ny, Nz))
+                print(f'Nx = {Nx}, Ny = {Ny}, Nz = {Nz}')
 
                 rangeTree.Fill()
 

@@ -14,7 +14,7 @@ def configurerpvsusy(P8gen, mass, couplings, sfermionmass, benchmark, inclusive,
         pythia_log=open('pythia8_conf.txt','w')
         P8gen = MethodLogger(P8gen, sink=pythia_log)
     h = make_interpolators(
-        os.path.expandvars("$FAIRSHIP/shipgen/branchingratiosrpvsusybench{}.dat".format(benchmark)))
+        os.path.expandvars(f"$FAIRSHIP/shipgen/branchingratiosrpvsusybench{benchmark}.dat"))
     P8gen.UseRandom3()
     P8gen.SetMom(400)  # beam momentum in GeV
     if deepCopy: P8gen.UseDeepCopy()
@@ -32,7 +32,7 @@ def configurerpvsusy(P8gen, mass, couplings, sfermionmass, benchmark, inclusive,
         rpvsusy_instance = rpvsusy.RPVSUSY(mass, couplings, sfermionmass, benchmark, debug=True)
         ctau = rpvsusy_instance.computeNLifetime(system="FairShip") * u.c_light * u.cm
         print("RPVSUSY ctau ",ctau)
-        P8gen.SetParameters("9900015:new = N2 N2 2 0 0 {:.12} 0.0 0.0 0.0 {:.12}  0   1   0   1   0".format(mass, ctau/u.mm))
+        P8gen.SetParameters(f"9900015:new = N2 N2 2 0 0 {mass:.12} 0.0 0.0 0.0 {ctau/u.mm:.12}  0   1   0   1   0")
         P8gen.SetParameters("9900015:isResonance = false")
         P8gen.SetParameters("Next:numberCount    =  0")
         # Configuring decay modes...
@@ -62,7 +62,7 @@ def configurerpvsusy(P8gen, mass, couplings, sfermionmass, benchmark, inclusive,
                                 .format(getbr_rpvsusy(h,'ds_mu',mass,couplings[1])/maxsumBR))
             sumBR+=float(getbr_rpvsusy(h,'ds_mu',mass,couplings[1])/maxsumBR)
         if sumBR<1. and sumBR>0.:
-            P8gen.SetParameters("431:addChannel      1   {:.12}    0       22      -11".format(1.-sumBR))
+            P8gen.SetParameters(f"431:addChannel      1   {1.-sumBR:.12}    0       22      -11")
 
         #overwrite D+ decays
         P8gen.SetParameters("411:new  D+ D-    1   3   0    1.86962"\
@@ -73,7 +73,7 @@ def configurerpvsusy(P8gen, mass, couplings, sfermionmass, benchmark, inclusive,
                                 .format(getbr_rpvsusy(h,'d_mu',mass,couplings[1])/maxsumBR))
             sumBR+=float(getbr_rpvsusy(h,'d_mu',mass,couplings[1])/maxsumBR)
         if sumBR<1. and sumBR>0.:
-            P8gen.SetParameters("411:addChannel      1   {:.12}    0       22      -11".format(1.-sumBR))
+            P8gen.SetParameters(f"411:addChannel      1   {1.-sumBR:.12}    0       22      -11")
 
         P8gen.List(9900015)
 
@@ -82,7 +82,7 @@ def configurerpvsusy(P8gen, mass, couplings, sfermionmass, benchmark, inclusive,
         # add RPVSUSY
         rpvsusy_instance = rpvsusy.RPVSUSY(mass, couplings, sfermionmass, benchmark, debug=True)
         ctau = rpvsusy_instance.computeNLifetime(system="FairShip") * u.c_light * u.cm
-        P8gen.SetParameters("9900015:new = N2 N2 2 0 0 {:.12} 0.0 0.0 0.0 {:.12}  0   1   0   1   0".format(mass, ctau/u.mm))
+        P8gen.SetParameters(f"9900015:new = N2 N2 2 0 0 {mass:.12} 0.0 0.0 0.0 {ctau/u.mm:.12}  0   1   0   1   0")
         P8gen.SetParameters("9900015:isResonance = false")
         # Configuring decay modes...
         rpvsusy_instance.AddChannelsToPythia(P8gen)
@@ -271,8 +271,8 @@ def add_hnl(P8gen, mass, decay_couplings):
     "Adds the HNL to Pythia and ROOT"
     hnl_instance = hnl.HNL(mass, decay_couplings, debug=True)
     ctau = hnl_instance.computeNLifetime(system="FairShip") * u.c_light * u.cm
-    print("HNL ctau {}".format(ctau))
-    P8gen.SetParameters("9900015:new = N2 N2 2 0 0 {:.12} 0.0 0.0 0.0 {:.12}  0   1   0   1   0".format(mass, ctau/u.mm))
+    print(f"HNL ctau {ctau}")
+    P8gen.SetParameters(f"9900015:new = N2 N2 2 0 0 {mass:.12} 0.0 0.0 0.0 {ctau/u.mm:.12}  0   1   0   1   0")
     P8gen.SetParameters("9900015:isResonance = false")
     # Configuring decay modes...
     readDecayTable.addHNLdecayChannels(P8gen, hnl_instance, conffile=os.path.expandvars('$FAIRSHIP/python/DecaySelection.conf'), verbose=False)

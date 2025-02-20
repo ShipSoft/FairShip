@@ -201,9 +201,9 @@ def printVMCFields():
 
         field =  v.GetField()
         if field:
-         print('Vol is {}, field is {}'.format(v.GetName(), field))
+         print(f'Vol is {v.GetName()}, field is {field}')
         else:
-         print('Vol is {}'.format(v.GetName()))
+         print(f'Vol is {v.GetName()}')
 
         if field:
             # Get the field value assuming the global co-ordinate origin.

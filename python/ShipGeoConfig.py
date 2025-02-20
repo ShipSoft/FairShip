@@ -129,7 +129,7 @@ class Config(AttrDict):
     def __str__(self):
         return "ShipGeoConfig:\n  " + "\n  ".join(
             [
-                "{}: {}".format(k, self[k].__str__())
+                f"{k}: {self[k].__str__()}"
                 for k in sorted(self.keys())
                 if not k.startswith("_")
             ]

@@ -52,8 +52,8 @@ def get_work_dir(run_number,tag=None):
   import socket
   host = socket.gethostname()
   job_base_name = os.path.splitext(os.path.basename(os.sys.argv[0]))[0]
-  if tag:  out_dir = "{host}_{base}_{runnr}_{comment}".format(host=host, base=job_base_name, runnr=run_number, comment=tag)
-  else:    out_dir = "{host}_{base}_{runnr}".format(host=host, base=job_base_name, runnr=run_number)
+  if tag:  out_dir = f"{host}_{job_base_name}_{run_number}_{tag}"
+  else:    out_dir = f"{host}_{job_base_name}_{run_number}"
   return out_dir
 
 

@@ -152,15 +152,15 @@ def configure(P8gen, mass, epsilon, inclusive, motherMode, deepCopy=False, debug
     P8gen.List(P8gen.GetDPId())
     if inclusive=="qcd":
         dpid = P8gen.GetDPId()
-        P8gen.SetParameters("{}:m0 = {:.12}".format(dpid, mass))
+        P8gen.SetParameters(f"{dpid}:m0 = {mass:.12}")
         #P8gen.SetParameters(str(P8gen.GetDPId())+":mWidth = "+str(u.mm/ctau))
-        P8gen.SetParameters("{}:mWidth = {:.12}".format(dpid, u.hbarc/ctau))
-        P8gen.SetParameters("{}:mMin = 0.001".format(dpid))
-        P8gen.SetParameters("{}:tau0 = {:.12}".format(dpid, ctau/u.mm))
+        P8gen.SetParameters(f"{dpid}:mWidth = {u.hbarc/ctau:.12}")
+        P8gen.SetParameters(f"{dpid}:mMin = 0.001")
+        P8gen.SetParameters(f"{dpid}:tau0 = {ctau/u.mm:.12}")
         #P8gen.SetParameters("ParticleData:modeBreitWigner = 0")
         #P8gen.SetParameters(str(P8gen.GetDPId())+":isResonance = false")
         #P8gen.SetParameters(str(P8gen.GetDPId())+":all = A A 3 0 0 "+str(mass)+" 0.0 0.0 0.0 "+str(ctau/u.mm)+"  0   1   0   1   0")
-        P8gen.SetParameters("{}:onMode = off".format(dpid))
+        P8gen.SetParameters(f"{dpid}:onMode = off")
     else:
         P8gen.SetParameters("{}:new = A A 3 0 0 {:.12} 0.0 0.0 0.0 {:.12}  0   1   0   1   0"\
                             .format(P8gen.GetDPId(), mass, ctau/u.mm))
@@ -175,7 +175,7 @@ def configure(P8gen, mass, epsilon, inclusive, motherMode, deepCopy=False, debug
     # Configuring decay modes...
     readDecayTable.addDarkPhotondecayChannels(P8gen, mass, DP_instance, conffile=os.path.expandvars('$FAIRSHIP/python/darkphotonDecaySelection.conf'), verbose=True)
     # Finish DP setup...
-    P8gen.SetParameters("{}:mayDecay = on".format(P8gen.GetDPId()))
+    P8gen.SetParameters(f"{P8gen.GetDPId()}:mayDecay = on")
     #P8gen.SetDPId(P8gen.GetDPId())
     # also add to PDG
     gamma = u.hbarc / float(ctau) #197.3269631e-16 / float(ctau) # hbar*c = 197 MeV*fm = 197e-16 GeV*cm
