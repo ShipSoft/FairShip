@@ -36,10 +36,10 @@ def retrieveGitTags(o):
         o.FairRoot = AttrDict(master=x)
     return o
 def execute(f,ox,name='ShipGeo'):
-    if type(ox) == type(''): ox = ConfigRegistry.register_config("basic")
+    if type(ox) == str: ox = ConfigRegistry.register_config("basic")
     o = retrieveGitTags(ox)
-    if type(f)==type("s"): fg = ROOT.TFile.Open(f,'update')
+    if type(f)==str: fg = ROOT.TFile.Open(f,'update')
     else:                  fg = f
     pkl = Pickler(fg)
     pkl.dump(o,name)
-    if type(f)==type("s"): fg.Close()
+    if type(f)==str: fg.Close()

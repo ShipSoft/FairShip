@@ -201,9 +201,9 @@ def printVMCFields():
 
         field =  v.GetField()
         if field:
-         print('Vol is {0}, field is {1}'.format(v.GetName(), field))
+         print('Vol is {}, field is {}'.format(v.GetName(), field))
         else:
-         print('Vol is {0}'.format(v.GetName()))
+         print('Vol is {}'.format(v.GetName()))
 
         if field:
             # Get the field value assuming the global co-ordinate origin.
@@ -211,7 +211,7 @@ def printVMCFields():
             centre = array('d',[0.0, 0.0, 0.0])
             B = array('d',[0.0, 0.0, 0.0])
             field.Field(centre, B)
-            print('Volume {0} has B = ({1}, {2}, {3}) T'.format(v.GetName(), B[0]/u.tesla,
+            print('Volume {} has B = ({}, {}, {}) T'.format(v.GetName(), B[0]/u.tesla,
                                                                 B[1]/u.tesla, B[2]/u.tesla))
 
 def getRunManager():

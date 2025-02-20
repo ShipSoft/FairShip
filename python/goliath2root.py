@@ -16,7 +16,7 @@ ut.bookHist(h,'Bx','Bx',60,-113.86,126.14,21,-44.09,79.81,102,-253.77,256.27)
 ut.bookHist(h,'By','By',60,-113.86,126.14,21,-44.09,79.81,102,-253.77,256.27)
 ut.bookHist(h,'Bz','Bz',60,-113.86,126.14,21,-44.09,79.81,102,-253.77,256.27)
 ut.bookHist(h,'Byvsz','By vs z for x=1.4,y=1.6',102,-253.77,256.27)
-f=open('ExtGoliathFieldMap.txt','r')
+f=open('ExtGoliathFieldMap.txt')
 
 i=0
 for line in f:

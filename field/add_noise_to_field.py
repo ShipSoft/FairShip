@@ -16,7 +16,7 @@ def plot_my_hist(datum):
 
 def generate_file(input_fileName, output, xSpace=73, ySpace=128, zSpace=1214, step=2.5, args=None):
     # (min, max, max/stepSize + 1)  in case of Z: (0, nSteps*2.5 - 2.5, nSteps)
-    field = pd.read_csv(input_fileName, skiprows=1, sep ='\s+', names=['x', 'y', 'z', 'bx', 'by', 'bz'])
+    field = pd.read_csv(input_fileName, skiprows=1, sep =r'\s+', names=['x', 'y', 'z', 'bx', 'by', 'bz'])
 
     field_mask = field.copy()
     field_mask[['bx', 'by', 'bz']] = field_mask[['bx', 'by', 'bz']] != 0

@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: latin-1 -*-
 import ROOT
 import os
 import shipunit as u
@@ -92,7 +91,7 @@ def posEcal(z, efile):
 
 
 def configure_veto(yaml_file):
-    with open(yaml_file, "r") as file:
+    with open(yaml_file) as file:
         config = yaml.safe_load(file)
 
     veto_geo = AttrDict(config)

@@ -29,7 +29,7 @@ class DarkPhoton:
         ecm=r.vector('double')()
         ratio=r.vector('double')()
         """ecm,ratio = [],[]"""
-        with open(os.path.expandvars('$FAIRSHIP/input/rpp2012-hadronicrpp_page1001.dat'),'r') as f:
+        with open(os.path.expandvars('$FAIRSHIP/input/rpp2012-hadronicrpp_page1001.dat')) as f:
             for line in f:
                 line = line.split()
                 try:

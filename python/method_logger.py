@@ -1,9 +1,7 @@
-# -*- coding: utf-8 -*-
-
 from functools import wraps
 import sys
 
-class MethodLogger(object):
+class MethodLogger:
     """
     This class wraps a instance of an arbitrary class, intercepts all its
     method calls and logs them to a file (default: `sys.stdout`).
@@ -36,7 +34,7 @@ class MethodLogger(object):
             args_str = ', '.join(repr(arg) for arg in args)
             kwargs_str = ', '.join(str(k) + '=' + repr(v) for (k,v) in kwargs.items())
             all_args_str = args_str + (', ' if len(kwargs_str) > 0 else '') + kwargs_str
-            print('{0}({1})'.format(qualified_name, all_args_str), file=self._sink)
+            print('{}({})'.format(qualified_name, all_args_str), file=self._sink)
             return met.__call__(*args, **kwargs)
         return _logger
 
