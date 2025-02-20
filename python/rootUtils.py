@@ -36,7 +36,7 @@ def readHists(h,fname,wanted=[]):
     h[hname].SetDirectory(gROOT)
     if cln == 'TH2D' or cln == 'TH2F':
          for p in [ '_projx','_projy']:
-           if type(hname) == type('s'): projname = hname+p
+           if type(hname) == str: projname = hname+p
            else: projname = str(hname)+p
            if p.find('x')>-1: h[projname] = h[hname].ProjectionX()
            else             : h[projname] = h[hname].ProjectionY()

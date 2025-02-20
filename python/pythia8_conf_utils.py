@@ -67,7 +67,7 @@ def parse_histograms(filepath):
     as a pair ([masses...], [branching ratios...]), where the mass is expressed
     in GeV.
     """
-    with open(filepath, 'r') as f:
+    with open(filepath) as f:
         lines = f.readlines()
     # Define regular expressions matching (sub-)headers and data lines
     th1f_exp      = re.compile(r'^TH1F\|.+')
@@ -82,12 +82,12 @@ def parse_histograms(filepath):
         # Parse header
         mh = header_exp.match(lines[offset])
         if mh is None or len(mh.groups()) != 2:
-            raise ValueError("Malformed header encountered: {0}".format(lines[offset]))
+            raise ValueError("Malformed header encountered: {}".format(lines[offset]))
         decay_code = mh.group(1)
         # Parse sub-header (min/max mass and number of points)
         ms = subheader_exp.match(lines[offset+1])
         if ms is None or len(ms.groups()) != 3:
-            raise ValueError("Malformed sub-header encountered: {0}".format(lines[offset+1]))
+            raise ValueError("Malformed sub-header encountered: {}".format(lines[offset+1]))
         npoints  = int(ms.group(1))
         min_mass = float(ms.group(2))
         max_mass = float(ms.group(3))
@@ -97,7 +97,7 @@ def parse_histograms(filepath):
         for line in lines[offset+2:offset+npoints+1]:
             md = data_exp.match(line)
             if md is None or len(md.groups()) != 2:
-                raise ValueError("Malformed data row encountered: {0}".format(line))
+                raise ValueError("Malformed data row encountered: {}".format(line))
             idx = int(md.group(1))
             br  = float(md.group(2))
             branching_ratios[idx] = br
@@ -143,7 +143,7 @@ def add_particles(P8gen, particles, data):
         particle = next((p for p in data['particles']
                          if particle_id in [p['id'], p['name']]), None)
         if particle is None:
-            raise ValueError("Could not find particle ID {0} in file {1}"
+            raise ValueError("Could not find particle ID {} in file {}"
                              .format(particle, datafile))
         # Add the particle
         P8gen.SetParameters(particle['cmd'])
@@ -159,7 +159,7 @@ def add_channel(P8gen, ch, histograms, mass, couplings, scale_factor):
         else: # Leptonic decay
             P8gen.SetParameters('{}:addChannel      1  {:.17}    0       9900015      {}'.format(ch['id'], br*scale_factor, ch['idlepton']))
     else: # Wrong decay
-        raise ValueError("Missing key 'idlepton' in channel {0}".format(ch))
+        raise ValueError("Missing key 'idlepton' in channel {}".format(ch))
 
 def add_tau_channel(P8gen, ch, histograms, mass, couplings, scale_factor):
     "Add to PYTHIA a tau decay channel to HNL."
@@ -172,7 +172,7 @@ def add_tau_channel(P8gen, ch, histograms, mass, couplings, scale_factor):
         else: # 2-body semileptonic decay
             P8gen.SetParameters('{}:addChannel      1  {:.16}    1521       9900015      {}'.format(ch['id'], br*scale_factor, ch['idhadron']))
     else:
-        raise ValueError("Missing key 'idhadron' in channel {0}".format(ch))
+        raise ValueError("Missing key 'idhadron' in channel {}".format(ch))
 
 def fill_missing_channels(P8gen, max_total_br, decay_chains, epsilon=1e-6):
     """
@@ -253,14 +253,14 @@ def get_top_level_particles(decay_chains):
     """
     Returns the set of particles which are at the top of a decay chain.
     """
-    return set(top for (top, branching_ratios) in decay_chains)
+    return {top for (top, branching_ratios) in decay_chains}
 
 def exit_if_zero_br(max_total_br, selection, mass, particle='HNL'):
     if max_total_br <= 0:
-        print("No phase space for {0} from {1} at this mass: {2}. Quitting."
+        print("No phase space for {} from {} at this mass: {}. Quitting."
               .format(particle, selection, mass))
         sys.exit()
 
 def print_scale_factor(scaling_factor):
     "Prints the scale factor used to make event generation more efficient."
-    print("One simulated event per {0:.4g} meson decays".format(scaling_factor))
+    print("One simulated event per {:.4g} meson decays".format(scaling_factor))

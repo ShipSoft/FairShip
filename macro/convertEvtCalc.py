@@ -19,7 +19,7 @@ def parse_file(infile):
     tuple: A tuple containing process type (str), sample points (int), and a list of numpy arrays for each variable.
     """
     try:
-        with open(infile, "r") as file:
+        with open(infile) as file:
             lines = file.readlines()
             lines = lines[2:]
 

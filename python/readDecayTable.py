@@ -26,7 +26,7 @@ def PDGcode(particle):
 
 
 def load(conffile = os.path.expandvars('$FAIRSHIP/python/DecaySelection.conf'), verbose=True):
-    f = open(conffile,'r')
+    f = open(conffile)
     reader = csv.reader(f, delimiter=':')
     configuredDecays = {}
     for row in reader:

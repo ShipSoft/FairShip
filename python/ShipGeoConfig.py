@@ -8,7 +8,7 @@ class _SingletonDict(type):
 
     def __call__(cls, *args, **kwargs):
         if cls not in cls._instances:
-            cls._instances[cls] = super(_SingletonDict, cls).__call__(*args, **kwargs)
+            cls._instances[cls] = super().__call__(*args, **kwargs)
         return cls._instances[cls]
 
     def __getitem__(cls, key):
@@ -82,7 +82,7 @@ class AttrDict(dict):
     """
 
     def __init__(self, *args, **kwargs):
-        super(AttrDict, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.__dict__ = self
 
     def clone(self):
@@ -97,7 +97,7 @@ class AttrDict(dict):
 
 class Config(AttrDict):
     def __init__(self, *args, **kwargs):
-        super(Config, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def loads(self, buff):
         rv = pickle.loads(buff)
@@ -129,7 +129,7 @@ class Config(AttrDict):
     def __str__(self):
         return "ShipGeoConfig:\n  " + "\n  ".join(
             [
-                "%s: %s" % (k, self[k].__str__())
+                "{}: {}".format(k, self[k].__str__())
                 for k in sorted(self.keys())
                 if not k.startswith("_")
             ]

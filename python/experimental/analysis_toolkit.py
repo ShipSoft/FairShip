@@ -22,12 +22,12 @@ class selection_check:
         fairship = ROOT.gSystem.Getenv("FAIRSHIP")
 
         if self.ship_geo.DecayVolumeMedium == "helium":
-            with open(fairship + "/geometry/veto_config_helium.yaml", "r") as file:
+            with open(fairship + "/geometry/veto_config_helium.yaml") as file:
                 config = yaml.safe_load(file)
                 self.veto_geo = AttrDict(config)
                 self.veto_geo.z0
         if self.ship_geo.DecayVolumeMedium == "vacuums":
-            with open(fairship + "/geometry/veto_config_vacuums.yaml", "r") as file:
+            with open(fairship + "/geometry/veto_config_vacuums.yaml") as file:
                 config = yaml.safe_load(file)
                 self.veto_geo = AttrDict(config)
 
@@ -163,7 +163,7 @@ class selection_check:
         for trD in [t1, t2]:
             x = self.tree.FitTracks[trD]
             xx = x.getFittedState()
-            daughter_mom.append((xx.getMom().Mag()))
+            daughter_mom.append(xx.getMom().Mag())
 
         return np.array(daughter_mom)
 

@@ -145,7 +145,7 @@ class Pickler(pickle.Pickler):
         self.__keys = file.GetListOfKeys()
         self.__io = IO_Wrapper()
         self.__pmap = {}
-        super(Pickler, self).__init__(self.__io, proto)
+        super().__init__(self.__io, proto)
 
     def dump(self, obj, key=None):
         """Write a pickled representation of obj to the open TFile."""
@@ -153,7 +153,7 @@ class Pickler(pickle.Pickler):
             key = '_pickle'
         if 1>0:
             self.__file.cd()
-            super(Pickler, self).dump(obj)
+            super().dump(obj)
             s = ROOT.TObjString(self.__io.getvalue())
             self.__io.reopen()
             s.Write(key)
@@ -194,7 +194,7 @@ class Pickler(pickle.Pickler):
             obj.Write()
             if key:
                 key = self.__file.GetKey(nm)
-                pid = '{0};{1:d}'.format(nm, key.GetCycle())
+                pid = '{};{:d}'.format(nm, key.GetCycle())
             else:
                 pid = nm + ';1'
             return pid
@@ -211,9 +211,9 @@ class Unpickler(pickle.Unpickler):
         self.__file = root_file
         self.__io = IO_Wrapper()
         self.__n = 0
-        self.__serial = '{0:d}-'.format(xserial).encode('utf-8')
+        self.__serial = '{:d}-'.format(xserial).encode('utf-8')
         xdict[self.__serial] = root_file
-        super(Unpickler, self).__init__(self.__io)
+        super().__init__(self.__io)
 
         if use_hash:
             htab = {}
@@ -259,9 +259,9 @@ class Unpickler(pickle.Unpickler):
             save = _compat_hooks[0]()
         try:
             self.__n += 1
-            s = self.__file.Get(key + ';{0:d}'.format(self.__n))
+            s = self.__file.Get(key + ';{:d}'.format(self.__n))
             self.__io.setvalue(s.GetName())
-            obj = super(Unpickler, self).load()
+            obj = super().load()
             self.__io.reopen()
         finally:
             if _compat_hooks:
@@ -304,7 +304,7 @@ class Unpickler(pickle.Unpickler):
             #log.info("Making dummy class {0}.{1}".format(module, name))
             mod = sys.modules[module]
 
-            class Dummy(object):
+            class Dummy:
                 pass
 
             setattr(mod, name, Dummy)
