@@ -26,6 +26,8 @@ it in future.
 
 ### Removed
 
+* fix: Remove unused, unrunnable shipPatRec_prev.py
+
 ## 25.01
 
 ### Added
