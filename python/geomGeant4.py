@@ -132,7 +132,7 @@ def printWeightsandFields(onlyWithField = True,exclude=[]):
    print('total magnet mass',nM/1000.,'t')
    return
 
-def addVMCFields(shipGeo, controlFile = '', verbose = False, withVirtualMC = True):
+def addVMCFields(shipGeo, controlFile = '', verbose = False, withVirtualMC = True, *, field_map):
     '''
     Define VMC B fields, e.g. global field, field maps, local or local+global fields
     '''
@@ -148,7 +148,7 @@ def addVMCFields(shipGeo, controlFile = '', verbose = False, withVirtualMC = Tru
     # Set the main spectrometer field map as a global field
     if hasattr(shipGeo, 'Bfield'):
       fieldsList = []
-      fieldMaker.defineFieldMap('MainSpecMap', 'files/MainSpectrometerField.root',
+      fieldMaker.defineFieldMap('MainSpecMap', field_map,
                                 ROOT.TVector3(0.0, 0.0, shipGeo.Bfield.z))
       fieldsList.append('MainSpecMap')
 

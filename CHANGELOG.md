@@ -14,6 +14,8 @@ it in future.
 
 ### Added
 
+* Add (optional) MgB2 field map
+
 ### Fixed
 
 * chore: Fix file endings
@@ -24,6 +26,8 @@ it in future.
 ### Changed
 
 * Don't special case EOS paths (fix #566)
+* Use git-lfs to track ROOT files
+* Allow specifying spectrometer field map
 
 ### Removed
 
