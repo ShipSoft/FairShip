@@ -45,7 +45,7 @@ def run(inFileName  = 'BFieldTest.txt',
 
 def createRootMap(inFileName, rootFileName):
 
-    print('Create ROOT map {} from {}'.format(rootFileName, inFileName))
+    print(f'Create ROOT map {rootFileName} from {inFileName}')
 
     # Define ROOT file and its TTree
     theFile = ROOT.TFile.Open(rootFileName, 'recreate')
@@ -113,7 +113,7 @@ def createRootMap(inFileName, rootFileName):
                 # Grid Output Min: xMin yMin zMin Max: xMax yMax zMax Grid Size: dx dy dz
                 # These co-ordinate limits are in mm, but the actual data lines use m
 
-                print('sLine = {}'.format(sLine))
+                print(f'sLine = {sLine}')
                 # For each value, convert from mm to cm
                 rStruct.xMin = float(sLine[3])*mm2cm
                 rStruct.xMax = float(sLine[7])*mm2cm
@@ -130,14 +130,14 @@ def createRootMap(inFileName, rootFileName):
                 Nz = int(((rStruct.zMax - rStruct.zMin)/rStruct.dz) + 1.0)
                 Nzy = Nz*Ny
 
-                print('Nx = {}, Ny = {}, Nz = {}'.format(Nx, Ny, Nz))
+                print(f'Nx = {Nx}, Ny = {Ny}, Nz = {Nz}')
 
                 # Centre the field map on the local origin (cm)
                 x0 = 0.5*(rStruct.xMin + rStruct.xMax)
                 y0 = 0.5*(rStruct.yMin + rStruct.yMax)
                 z0 = 0.5*(rStruct.zMin + rStruct.zMax)
 
-                print('Centering field map using co-ordinate shift {} {} {} cm'.format(x0, y0, z0))
+                print(f'Centering field map using co-ordinate shift {x0} {y0} {z0} cm')
 
                 # Center co-ordinate range limits (cm)
                 rStruct.xMin = rStruct.xMin - x0

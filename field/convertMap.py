@@ -54,7 +54,7 @@ def createRootMap(inFileName, rootFileName, cmScale, storeCoords):
     print('Create map {} from {} using cmScale = {}'.format(rootFileName,
                                                                  inFileName, cmScale))
     if storeCoords is True:
-        print('We will also store the x,y,z field coordinates in {}'.format(rootFileName))
+        print(f'We will also store the x,y,z field coordinates in {rootFileName}')
 
     rangeInfo = findRanges(inFileName, cmScale)
 
@@ -96,7 +96,7 @@ def createRootMap(inFileName, rootFileName, cmScale, storeCoords):
     #y0 = 0.0
     #z0 = 0.0
 
-    print('Centering field map using co-ordinate shift {} {} {} cm'.format(x0, y0, z0))
+    print(f'Centering field map using co-ordinate shift {x0} {y0} {z0} cm')
 
     # Center co-ordinate range limits (cm)
     rStruct.xMin = rStruct.xMin - x0
@@ -108,9 +108,9 @@ def createRootMap(inFileName, rootFileName, cmScale, storeCoords):
     rStruct.zMin = rStruct.zMin - z0
     rStruct.zMax = rStruct.zMax - z0
 
-    print('x range = {} to {}'.format(rStruct.xMin, rStruct.xMax))
-    print('y range = {} to {}'.format(rStruct.yMin, rStruct.yMax))
-    print('z range = {} to {}'.format(rStruct.zMin, rStruct.zMax))
+    print(f'x range = {rStruct.xMin} to {rStruct.xMax}')
+    print(f'y range = {rStruct.yMin} to {rStruct.yMax}')
+    print(f'z range = {rStruct.zMin} to {rStruct.zMax}')
 
     # Fill info into range tree
     rangeTree.Fill()

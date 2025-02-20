@@ -193,7 +193,7 @@ def compactify(charm):
    badFiles = []
    for x in allDirs:
      for k in range(20):
-       sr = "{:0>2}".format(k)
+       sr = f"{k:0>2}"
        if not x.find(nr+sr)<0:
          if not x.find('log')<0: continue
          fn = 'pythia8_Geant4_'+nr+sr+'_'+ecut+'.root'

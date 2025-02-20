@@ -32,7 +32,7 @@ def main(arguments):
     ConfigRegistry.loadpy(arguments.config_file, **arguments.params)
     # ConfigRegistry.loadpy(arguments.config_file, muShieldDesign=2, targetOpt=5)
     for k, v in ConfigRegistry().items():
-        print("{}: {}".format(k, v))
+        print(f"{k}: {v}")
 
 if __name__ == '__main__':
     main(parse_arguments())

@@ -57,7 +57,7 @@ repos:
   rev: v3.19.1
   hooks:
   - id: pyupgrade
-    args: [--py3-plus]
+    args: [--py36-plus]
 ci:
   autofix_prs: false
   skip: [ruff, ruff-format, pydocstyle, clang-format, cpplint, cmakelint, isort, cmake-format, pyupgrade, codespell]
