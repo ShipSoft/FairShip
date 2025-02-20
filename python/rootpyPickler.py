@@ -211,7 +211,7 @@ class Unpickler(pickle.Unpickler):
         self.__file = root_file
         self.__io = IO_Wrapper()
         self.__n = 0
-        self.__serial = f'{xserial:d}-'.encode('utf-8')
+        self.__serial = f'{xserial:d}-'.encode()
         xdict[self.__serial] = root_file
         super().__init__(self.__io)
 
