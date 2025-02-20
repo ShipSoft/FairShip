@@ -201,19 +201,18 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">Initialize with mass and couplings of the RPV neutralino
+<pre class="fragment">    Initialize with mass and couplings of the RPV neutralino
 
-Inputs:
-mass (GeV)
-which benchmark scenario (1,2,3,4,5)
-couplings (list of [\lambda production, \lambda decay])
-sfermion mass to normalise the couplings by (GeV)
-</pre> 
+    Inputs:
+    mass (GeV)
+    which benchmark scenario (1,2,3,4,5)
+    couplings (list of [\lambda production, \lambda decay])
+    sfermion mass to normalise the couplings by (GeV)</pre> 
 <p>Reimplemented in <a class="el" href="classrpvsusy_1_1RPVSUSY.html#ac386b1690642a9eb9acce952a69df266">rpvsusy.RPVSUSY</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="rpvsusy_8py_source.html#l00149">149</a> of file <a class="el" href="rpvsusy_8py_source.html">rpvsusy.py</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  149</span>    <span class="keyword">def </span>__init__(self, mass, couplings, sfmass, benchmark,debug=False):</div>
-<div class="line"><span class="lineno">  150</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  150</span>        <span class="stringliteral">r&quot;&quot;&quot;</span></div>
 <div class="line"><span class="lineno">  151</span><span class="stringliteral">        Initialize with mass and couplings of the RPV neutralino</span></div>
 <div class="line"><span class="lineno">  152</span><span class="stringliteral"></span> </div>
 <div class="line"><span class="lineno">  153</span><span class="stringliteral">        Inputs:</span></div>
@@ -358,7 +357,7 @@ Inputs:
 <div class="line"><span class="lineno">  335</span><span class="stringliteral">        Inputs:</span></div>
 <div class="line"><span class="lineno">  336</span><span class="stringliteral">        - decayString is a string describing the decay, in the form &#39;N -&gt; stuff1 ... stuffN&#39;</span></div>
 <div class="line"><span class="lineno">  337</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  338</span>        had        = re.search(<span class="stringliteral">&#39;-&gt;\ (.+?)\ &#39;</span>,decayString).group(1)</div>
+<div class="line"><span class="lineno">  338</span>        had = re.search(<span class="stringliteral">r&#39;-&gt;\ (.+?)\ &#39;</span>, decayString).group(1)</div>
 <div class="line"><span class="lineno">  339</span>        decaysplit = decayString.split(<span class="stringliteral">&#39; &#39;</span>)</div>
 <div class="line"><span class="lineno">  340</span>        <span class="keywordflow">for</span> split <span class="keywordflow">in</span> decaysplit:</div>
 <div class="line"><span class="lineno">  341</span>            <span class="keywordflow">if</span> split.find(<span class="stringliteral">&#39;mu&#39;</span>)&gt;-1 <span class="keywordflow">or</span> split.find(<span class="stringliteral">&#39;e&#39;</span>)&gt;-1 <span class="keywordflow">or</span> split.find(<span class="stringliteral">&#39;tau&#39;</span>)&gt;-1:</div>
@@ -434,7 +433,7 @@ Inputs:
 <div class="line"><span class="lineno">  377</span><span class="stringliteral">        Inputs:</span></div>
 <div class="line"><span class="lineno">  378</span><span class="stringliteral">        - decayString is a string describing the decay, in the form &#39;H -&gt; N ... stuffN&#39;</span></div>
 <div class="line"><span class="lineno">  379</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  380</span>        had    = re.search(<span class="stringliteral">&#39;(.+?)\ -&gt;&#39;</span>,decayString).group(1)</div>
+<div class="line"><span class="lineno">  380</span>        had = re.search(<span class="stringliteral">r&#39;(.+?)\ -&gt;&#39;</span>, decayString).group(1)</div>
 <div class="line"><span class="lineno">  381</span>        decaysplit = decayString.split(<span class="stringliteral">&#39; &#39;</span>)</div>
 <div class="line"><span class="lineno">  382</span>        <span class="keywordflow">for</span> split <span class="keywordflow">in</span> decaysplit:</div>
 <div class="line"><span class="lineno">  383</span>            <span class="keywordflow">if</span> split.find(<span class="stringliteral">&#39;mu&#39;</span>)&gt;-1 <span class="keywordflow">or</span> split.find(<span class="stringliteral">&#39;e&#39;</span>)&gt;-1 <span class="keywordflow">or</span> split.find(<span class="stringliteral">&#39;tau&#39;</span>)&gt;-1:</div>
@@ -537,7 +536,7 @@ Inputs:
 <div class="line"><span class="lineno">  311</span><span class="stringliteral">        Returns the total SUSYRPV neutralino decay width</span></div>
 <div class="line"><span class="lineno">  312</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
 <div class="line"><span class="lineno">  313</span>        declist    = self.decays[self.bench]</div>
-<div class="line"><span class="lineno">  314</span>        hadlist    = [re.search(<span class="stringliteral">&#39;-&gt;\ (.+?)\ &#39;</span>,dec).group(1) <span class="keywordflow">for</span> dec <span class="keywordflow">in</span> declist]</div>
+<div class="line"><span class="lineno">  314</span>        hadlist = [re.search(<span class="stringliteral">r&#39;-&gt;\ (.+?)\ &#39;</span>, dec).group(1) <span class="keywordflow">for</span> dec <span class="keywordflow">in</span> declist]</div>
 <div class="line"><span class="lineno">  315</span>        leplist    = [dlist[1].strip() <span class="keywordflow">for</span> dlist <span class="keywordflow">in</span> [re.findall(<span class="stringliteral">r&quot;\ \w+&quot;</span>,dec) <span class="keywordflow">for</span> dec <span class="keywordflow">in</span> declist]]</div>
 <div class="line"><span class="lineno">  316</span>        print(leplist,hadlist)</div>
 <div class="line"><span class="lineno">  317</span>        totalwidth = sum([self.Width_H_L(hadlist[i],leplist[i]) <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(0,len(hadlist))])</div>
@@ -569,7 +568,7 @@ Inputs:
 <div class="line"><span class="lineno">  322</span><span class="stringliteral">        Returns the total SUSYRPV neutralino production width</span></div>
 <div class="line"><span class="lineno">  323</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
 <div class="line"><span class="lineno">  324</span>        declist    = self.prods[self.bench]</div>
-<div class="line"><span class="lineno">  325</span>        hadlist    = [re.search(<span class="stringliteral">&#39;(.+?)\ -&gt;&#39;</span>,dec).group(1) <span class="keywordflow">for</span> dec <span class="keywordflow">in</span> declist]</div>
+<div class="line"><span class="lineno">  325</span>        hadlist = [re.search(<span class="stringliteral">r&#39;(.+?)\ -&gt;&#39;</span>, dec).group(1) <span class="keywordflow">for</span> dec <span class="keywordflow">in</span> declist]</div>
 <div class="line"><span class="lineno">  326</span>        leplist    = [dlist[1].strip() <span class="keywordflow">for</span> dlist <span class="keywordflow">in</span> [re.findall(<span class="stringliteral">r&quot;\ \w+&quot;</span>,dec) <span class="keywordflow">for</span> dec <span class="keywordflow">in</span> declist]]</div>
 <div class="line"><span class="lineno">  327</span>        totalwidth = sum([self.Width_N_L(hadlist[i],leplist[i]) <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(0,len(hadlist))])</div>
 <div class="line"><span class="lineno">  328</span>        <span class="keywordflow">return</span> totalwidth</div>
