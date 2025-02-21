@@ -16,6 +16,8 @@ it in future.
 
 ### Fixed
 
+* Compatibility with ROOT 6.32, including an external TPythia6 package (not supported anymore by ROOT).
+
 ### Added
 
 ### Changed
