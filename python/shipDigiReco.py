@@ -1,8 +1,6 @@
 import os,ROOT,shipVertex,shipDet_conf
 import global_variables
-if global_variables.realPR == "Prev":
-  import shipPatRec_prev as shipPatRec # The previous version of the pattern recognition
-else: import shipPatRec
+import shipPatRec
 import shipunit as u
 import rootUtils as ut
 from array import array
