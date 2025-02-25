@@ -1,7 +1,5 @@
 var NAVTREEINDEX34 =
 {
-"namespacehepunit.html#a30ccce59774b9e0a2e9600ff0ae4bfc0":[4,0,42,61],
-"namespacehepunit.html#a31cd028e22a69a1f59e4766bbdac2457":[4,0,42,18],
 "namespacehepunit.html#a334aed32a35c697ce9005c637e2b6b1e":[4,0,42,67],
 "namespacehepunit.html#a37a654186e9ea4df60f5e21641ba77a3":[4,0,42,26],
 "namespacehepunit.html#a3cc2a50f8af1d756546a14bb601f0c1f":[4,0,42,52],
@@ -249,5 +247,7 @@ var NAVTREEINDEX34 =
 "namespacemakeGenieEvents.html#a55616f7ba64e5a882f87dde2fe82881b":[4,0,48,14],
 "namespacemakeGenieEvents.html#a628fe9931f64c0ccbdd82040fc36f1cd":[4,0,48,8],
 "namespacemakeGenieEvents.html#a6497b241ab7e816e30df850dc4c27edd":[4,0,48,6],
-"namespacemakeGenieEvents.html#a66b96bd7cc1706473e5a39a29e8f5c39":[4,0,48,3]
+"namespacemakeGenieEvents.html#a66b96bd7cc1706473e5a39a29e8f5c39":[4,0,48,3],
+"namespacemakeGenieEvents.html#a6e85e1d199d5847ee0db3cfc249c493c":[4,0,48,9],
+"namespacemakeGenieEvents.html#a86deaeb240c94bdf968bc5d3c6b54efe":[4,0,48,16]
 };

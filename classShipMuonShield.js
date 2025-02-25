@@ -2,7 +2,7 @@ var classShipMuonShield =
 [
     [ "ShipMuonShield", "classShipMuonShield.html#afe28609294a5911d7a99caf9e787af63", null ],
     [ "ShipMuonShield", "classShipMuonShield.html#a124573917e0d816d0557e57412d311c0", null ],
-    [ "ShipMuonShield", "classShipMuonShield.html#a87d6cb6b9ddc7795a7dbc00ba574f770", null ],
+    [ "ShipMuonShield", "classShipMuonShield.html#a66b9f2eff754af0dff51e49ebfdf1f90", null ],
     [ "ShipMuonShield", "classShipMuonShield.html#a21c4058626af3ba4afb7100f8d1e4023", null ],
     [ "~ShipMuonShield", "classShipMuonShield.html#a14c09abf8f8f662a955ecd22a02dae21", null ],
     [ "ClassDef", "classShipMuonShield.html#ae1294cde7a395ed44475486d2c2c564a", null ],

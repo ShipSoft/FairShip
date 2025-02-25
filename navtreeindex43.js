@@ -1,7 +1,5 @@
 var NAVTREEINDEX43 =
 {
-"tPythia6Generator_8h_source.html":[6,0,14,26],
-"test__shipGeoConfig_8py.html":[6,0,12,43],
 "test__shipGeoConfig_8py_source.html":[6,0,12,43],
 "vetoContFact_8cxx.html":[6,0,20,2],
 "vetoContFact_8cxx_source.html":[6,0,20,2],
