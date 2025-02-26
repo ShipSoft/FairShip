@@ -2,7 +2,6 @@
 import os
 import sys
 import ROOT
-ROOT.gSystem.Load('libEGPythia8')
 
 import shipunit as u
 import shipRoot_conf
