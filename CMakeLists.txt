@@ -155,7 +155,7 @@ SetBasicVariables()
 
 # Add the FairRoot include directories to the list of libraries which are
 # external to the Ship project. For include directories in this list the
-# compiler will not generate any warnings. This is usefull since one is only
+# compiler will not generate any warnings. This is useful since one is only
 # interested about warnings from the own project. SYSTEM_INCLUDE_DIRECTORIES
 # is defined in FairMacros.cmake. In the moment the defined directories are
 # the root and boost include directories.
