@@ -61,7 +61,7 @@ if "scName" not in globals():
 if "DecayVolumeMedium" not in globals():
     raise ValueError("DecayVolumeMedium is not defined, possibly old (incompatible) geometry!")
 if "SND" not in globals():
-    SND = False
+    SND = True
 
 with ConfigRegistry.register_config("basic") as c:
 
