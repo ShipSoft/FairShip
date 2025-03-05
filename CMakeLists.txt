@@ -199,11 +199,6 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 # Recurse into the given subdirectories. This does not actually
 # cause another cmake executable to run. The same process will walk through
 # the project's entire directory structure.
-
-IF(NOT FairRoot_FOUND)
-Message("--- FairRoot not found ...")
-ENDIF (NOT FairRoot_FOUND)
-
 add_subdirectory (shipdata)
 add_subdirectory (passive)
 add_subdirectory (nutaudet)
