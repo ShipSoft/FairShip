@@ -74,7 +74,9 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method):
     import shipDet_conf
     run = ROOT.FairRunSim()
     run.SetName("TGeant4")  # Transport engine
-    run.SetOutputFile("dummy")  # Output file
+    # Create dummy output file as the  input file is updated directly and
+    # histograms are written to output file (hists.root by default)
+    run.SetSink(ROOT.FairRootFileSink(ROOT.TMemFile('output', 'recreate')))
     run.SetUserConfig("g4Config_basic.C") # geant4 transport not used, only needed for the mag field
     rtdb = run.GetRuntimeDb()
 
