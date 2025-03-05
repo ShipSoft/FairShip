@@ -191,16 +191,10 @@ Message("-- Set check directory to FairRoot...")
 Set(CheckSrcDir "${FAIRROOTPATH}/share/fairbase/cmake/checks")
 # Set(CheckSrcDir "${CMAKE_SOURCE_DIR}/cmake/checks")
 
-# --------------- add targets for code style and submission checks -------------
-find_package(Git)
-find_package(ClangTools)
-if ("$ENV{CMAKE_EXPORT_COMPILE_COMMANDS}" STREQUAL "1" OR CLANG_TIDY_FOUND)
-  # Generate a Clang compile_commands.json "compilation database" file for use
-  # with various development tools, such as Vim's YouCompleteMe plugin.
-  # See http://clang.llvm.org/docs/JSONCompilationDatabase.html
-  set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
-endif()
-include(CppStyleGuideChecks)
+# Generate a Clang compile_commands.json "compilation database" file for use
+# with various development tools, such as Vim's YouCompleteMe plugin.
+# See http://clang.llvm.org/docs/JSONCompilationDatabase.html
+set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 
 # Recurse into the given subdirectories. This does not actually
 # cause another cmake executable to run. The same process will walk through
