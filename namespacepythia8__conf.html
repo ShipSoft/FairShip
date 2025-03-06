@@ -144,8 +144,8 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  271</span>    <span class="stringliteral">&quot;Adds the HNL to Pythia and ROOT&quot;</span></div>
 <div class="line"><span class="lineno">  272</span>    hnl_instance = <a class="code hl_class" href="classhnl_1_1HNL.html">hnl.HNL</a>(mass, decay_couplings, debug=<span class="keyword">True</span>)</div>
 <div class="line"><span class="lineno">  273</span>    ctau = hnl_instance.computeNLifetime(system=<span class="stringliteral">&quot;FairShip&quot;</span>) * u.c_light * u.cm</div>
-<div class="line"><span class="lineno">  274</span>    print(<span class="stringliteral">&quot;HNL ctau {}&quot;</span>.format(ctau))</div>
-<div class="line"><span class="lineno">  275</span>    P8gen.SetParameters(<span class="stringliteral">&quot;9900015:new = N2 N2 2 0 0 {:.12} 0.0 0.0 0.0 {:.12}  0   1   0   1   0&quot;</span>.format(mass, ctau/u.mm))</div>
+<div class="line"><span class="lineno">  274</span>    print(f<span class="stringliteral">&quot;HNL ctau {ctau}&quot;</span>)</div>
+<div class="line"><span class="lineno">  275</span>    P8gen.SetParameters(f<span class="stringliteral">&quot;9900015:new = N2 N2 2 0 0 {mass:.12} 0.0 0.0 0.0 {ctau/u.mm:.12}  0   1   0   1   0&quot;</span>)</div>
 <div class="line"><span class="lineno">  276</span>    P8gen.SetParameters(<span class="stringliteral">&quot;9900015:isResonance = false&quot;</span>)</div>
 <div class="line"><span class="lineno">  277</span>    <span class="comment"># Configuring decay modes...</span></div>
 <div class="line"><span class="lineno">  278</span>    <a class="code hl_function" href="namespacereadDecayTable.html#a4721a62b18b4ce1042a1eb39bdb711da">readDecayTable.addHNLdecayChannels</a>(P8gen, hnl_instance, conffile=os.path.expandvars(<span class="stringliteral">&#39;$FAIRSHIP/python/DecaySelection.conf&#39;</span>), verbose=<span class="keyword">False</span>)</div>
@@ -246,7 +246,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  154</span>    <span class="comment"># ==========================</span></div>
 <div class="line"><span class="lineno">  155</span> </div>
 <div class="line"><span class="lineno">  156</span>    datafile = fairship_root + <span class="stringliteral">&#39;/python/hnl_production.yaml&#39;</span></div>
-<div class="line"><span class="lineno">  157</span>    <span class="keyword">with</span> open(datafile, <span class="stringliteral">&#39;rU&#39;</span>) <span class="keyword">as</span> f:</div>
+<div class="line"><span class="lineno">  157</span>    <span class="keyword">with</span> open(datafile) <span class="keyword">as</span> f:</div>
 <div class="line"><span class="lineno">  158</span>        data = yaml.load(f, Loader=yaml.FullLoader)</div>
 <div class="line"><span class="lineno">  159</span>    all_channels  = data[<span class="stringliteral">&#39;channels&#39;</span>]</div>
 <div class="line"><span class="lineno">  160</span> </div>
@@ -431,7 +431,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   14</span>        pythia_log=open(<span class="stringliteral">&#39;pythia8_conf.txt&#39;</span>,<span class="stringliteral">&#39;w&#39;</span>)</div>
 <div class="line"><span class="lineno">   15</span>        P8gen = MethodLogger(P8gen, sink=pythia_log)</div>
 <div class="line"><span class="lineno">   16</span>    h = make_interpolators(</div>
-<div class="line"><span class="lineno">   17</span>        os.path.expandvars(<span class="stringliteral">&quot;$FAIRSHIP/shipgen/branchingratiosrpvsusybench{}.dat&quot;</span>.format(benchmark)))</div>
+<div class="line"><span class="lineno">   17</span>        os.path.expandvars(f<span class="stringliteral">&quot;$FAIRSHIP/shipgen/branchingratiosrpvsusybench{benchmark}.dat&quot;</span>))</div>
 <div class="line"><span class="lineno">   18</span>    P8gen.UseRandom3()</div>
 <div class="line"><span class="lineno">   19</span>    P8gen.SetMom(400)  <span class="comment"># beam momentum in GeV</span></div>
 <div class="line"><span class="lineno">   20</span>    <span class="keywordflow">if</span> deepCopy: P8gen.UseDeepCopy()</div>
@@ -449,7 +449,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   32</span>        rpvsusy_instance = <a class="code hl_class" href="classrpvsusy_1_1RPVSUSY.html">rpvsusy.RPVSUSY</a>(mass, couplings, sfermionmass, benchmark, debug=<span class="keyword">True</span>)</div>
 <div class="line"><span class="lineno">   33</span>        ctau = rpvsusy_instance.computeNLifetime(system=<span class="stringliteral">&quot;FairShip&quot;</span>) * u.c_light * u.cm</div>
 <div class="line"><span class="lineno">   34</span>        print(<span class="stringliteral">&quot;RPVSUSY ctau &quot;</span>,ctau)</div>
-<div class="line"><span class="lineno">   35</span>        P8gen.SetParameters(<span class="stringliteral">&quot;9900015:new = N2 N2 2 0 0 {:.12} 0.0 0.0 0.0 {:.12}  0   1   0   1   0&quot;</span>.format(mass, ctau/u.mm))</div>
+<div class="line"><span class="lineno">   35</span>        P8gen.SetParameters(f<span class="stringliteral">&quot;9900015:new = N2 N2 2 0 0 {mass:.12} 0.0 0.0 0.0 {ctau/u.mm:.12}  0   1   0   1   0&quot;</span>)</div>
 <div class="line"><span class="lineno">   36</span>        P8gen.SetParameters(<span class="stringliteral">&quot;9900015:isResonance = false&quot;</span>)</div>
 <div class="line"><span class="lineno">   37</span>        P8gen.SetParameters(<span class="stringliteral">&quot;Next:numberCount    =  0&quot;</span>)</div>
 <div class="line"><span class="lineno">   38</span>        <span class="comment"># Configuring decay modes...</span></div>
@@ -479,7 +479,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   62</span>                                .format(getbr_rpvsusy(h,<span class="stringliteral">&#39;ds_mu&#39;</span>,mass,couplings[1])/maxsumBR))</div>
 <div class="line"><span class="lineno">   63</span>            sumBR+=float(getbr_rpvsusy(h,<span class="stringliteral">&#39;ds_mu&#39;</span>,mass,couplings[1])/maxsumBR)</div>
 <div class="line"><span class="lineno">   64</span>        <span class="keywordflow">if</span> sumBR&lt;1. <span class="keywordflow">and</span> sumBR&gt;0.:</div>
-<div class="line"><span class="lineno">   65</span>            P8gen.SetParameters(<span class="stringliteral">&quot;431:addChannel      1   {:.12}    0       22      -11&quot;</span>.format(1.-sumBR))</div>
+<div class="line"><span class="lineno">   65</span>            P8gen.SetParameters(f<span class="stringliteral">&quot;431:addChannel      1   {1.-sumBR:.12}    0       22      -11&quot;</span>)</div>
 <div class="line"><span class="lineno">   66</span> </div>
 <div class="line"><span class="lineno">   67</span>        <span class="comment">#overwrite D+ decays</span></div>
 <div class="line"><span class="lineno">   68</span>        P8gen.SetParameters(<span class="stringliteral">&quot;411:new  D+ D-    1   3   0    1.86962&quot;</span>\</div>
@@ -490,7 +490,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   73</span>                                .format(getbr_rpvsusy(h,<span class="stringliteral">&#39;d_mu&#39;</span>,mass,couplings[1])/maxsumBR))</div>
 <div class="line"><span class="lineno">   74</span>            sumBR+=float(getbr_rpvsusy(h,<span class="stringliteral">&#39;d_mu&#39;</span>,mass,couplings[1])/maxsumBR)</div>
 <div class="line"><span class="lineno">   75</span>        <span class="keywordflow">if</span> sumBR&lt;1. <span class="keywordflow">and</span> sumBR&gt;0.:</div>
-<div class="line"><span class="lineno">   76</span>            P8gen.SetParameters(<span class="stringliteral">&quot;411:addChannel      1   {:.12}    0       22      -11&quot;</span>.format(1.-sumBR))</div>
+<div class="line"><span class="lineno">   76</span>            P8gen.SetParameters(f<span class="stringliteral">&quot;411:addChannel      1   {1.-sumBR:.12}    0       22      -11&quot;</span>)</div>
 <div class="line"><span class="lineno">   77</span> </div>
 <div class="line"><span class="lineno">   78</span>        P8gen.List(9900015)</div>
 <div class="line"><span class="lineno">   79</span> </div>
@@ -499,7 +499,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   82</span>        <span class="comment"># add RPVSUSY</span></div>
 <div class="line"><span class="lineno">   83</span>        rpvsusy_instance = <a class="code hl_class" href="classrpvsusy_1_1RPVSUSY.html">rpvsusy.RPVSUSY</a>(mass, couplings, sfermionmass, benchmark, debug=<span class="keyword">True</span>)</div>
 <div class="line"><span class="lineno">   84</span>        ctau = rpvsusy_instance.computeNLifetime(system=<span class="stringliteral">&quot;FairShip&quot;</span>) * u.c_light * u.cm</div>
-<div class="line"><span class="lineno">   85</span>        P8gen.SetParameters(<span class="stringliteral">&quot;9900015:new = N2 N2 2 0 0 {:.12} 0.0 0.0 0.0 {:.12}  0   1   0   1   0&quot;</span>.format(mass, ctau/u.mm))</div>
+<div class="line"><span class="lineno">   85</span>        P8gen.SetParameters(f<span class="stringliteral">&quot;9900015:new = N2 N2 2 0 0 {mass:.12} 0.0 0.0 0.0 {ctau/u.mm:.12}  0   1   0   1   0&quot;</span>)</div>
 <div class="line"><span class="lineno">   86</span>        P8gen.SetParameters(<span class="stringliteral">&quot;9900015:isResonance = false&quot;</span>)</div>
 <div class="line"><span class="lineno">   87</span>        <span class="comment"># Configuring decay modes...</span></div>
 <div class="line"><span class="lineno">   88</span>        rpvsusy_instance.AddChannelsToPythia(P8gen)</div>

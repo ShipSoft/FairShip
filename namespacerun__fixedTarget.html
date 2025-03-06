@@ -278,8 +278,8 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">   52</span>  <span class="keyword">import</span> socket</div>
 <div class="line"><span class="lineno">   53</span>  host = socket.gethostname()</div>
 <div class="line"><span class="lineno">   54</span>  job_base_name = os.path.splitext(os.path.basename(os.sys.argv[0]))[0]</div>
-<div class="line"><span class="lineno">   55</span>  <span class="keywordflow">if</span> tag:  out_dir = <span class="stringliteral">&quot;{host}_{base}_{runnr}_{comment}&quot;</span>.format(host=host, base=job_base_name, runnr=run_number, comment=tag)</div>
-<div class="line"><span class="lineno">   56</span>  <span class="keywordflow">else</span>:    out_dir = <span class="stringliteral">&quot;{host}_{base}_{runnr}&quot;</span>.format(host=host, base=job_base_name, runnr=run_number)</div>
+<div class="line"><span class="lineno">   55</span>  <span class="keywordflow">if</span> tag:  out_dir = f<span class="stringliteral">&quot;{host}_{job_base_name}_{run_number}_{tag}&quot;</span></div>
+<div class="line"><span class="lineno">   56</span>  <span class="keywordflow">else</span>:    out_dir = f<span class="stringliteral">&quot;{host}_{job_base_name}_{run_number}&quot;</span></div>
 <div class="line"><span class="lineno">   57</span>  <span class="keywordflow">return</span> out_dir</div>
 <div class="line"><span class="lineno">   58</span> </div>
 <div class="line"><span class="lineno">   59</span> </div>

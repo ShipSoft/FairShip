@@ -356,7 +356,7 @@ tuple: A tuple containing process type (str), sample points (int), and a list of
 <div class="line"><span class="lineno">   19</span><span class="stringliteral">    tuple: A tuple containing process type (str), sample points (int), and a list of numpy arrays for each variable.</span></div>
 <div class="line"><span class="lineno">   20</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
 <div class="line"><span class="lineno">   21</span>    <span class="keywordflow">try</span>:</div>
-<div class="line"><span class="lineno">   22</span>        <span class="keyword">with</span> open(infile, <span class="stringliteral">&quot;r&quot;</span>) <span class="keyword">as</span> file:</div>
+<div class="line"><span class="lineno">   22</span>        <span class="keyword">with</span> open(infile) <span class="keyword">as</span> file:</div>
 <div class="line"><span class="lineno">   23</span>            lines = file.readlines()</div>
 <div class="line"><span class="lineno">   24</span>            lines = lines[2:]</div>
 <div class="line"><span class="lineno">   25</span> </div>

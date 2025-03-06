@@ -128,7 +128,7 @@ $(document).ready(function(){initNavTree('readDecayTable_8py_source.html',''); i
 </div>
 <div class="foldopen" id="foldopen00028" data-start="" data-end="">
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="namespacereadDecayTable.html#ac4a8e46ded48ed5673f85263f802f5c0">   28</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacereadDecayTable.html#ac4a8e46ded48ed5673f85263f802f5c0">load</a>(conffile = os.path.expandvars(<span class="stringliteral">&#39;$FAIRSHIP/python/DecaySelection.conf&#39;</span>), verbose=<span class="keyword">True</span>):</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    f = open(conffile,<span class="stringliteral">&#39;r&#39;</span>)</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    f = open(conffile)</div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    reader = csv.reader(f, delimiter=<span class="stringliteral">&#39;:&#39;</span>)</div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    configuredDecays = {}</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    <span class="keywordflow">for</span> row <span class="keywordflow">in</span> reader:</div>
@@ -172,10 +172,10 @@ $(document).ready(function(){initNavTree('readDecayTable_8py_source.html',''); i
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>            <span class="comment"># Take care of Majorana modes</span></div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>            BR = BR/2.</div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>            codes = <span class="stringliteral">&#39; &#39;</span>.join([str(code) <span class="keywordflow">for</span> code <span class="keywordflow">in</span> childrenCodes])</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>            P8Gen.SetParameters(<span class="stringliteral">&#39;9900015:addChannel =  1 {:.12} 0 {}&#39;</span>.format(BR, codes))</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>            P8Gen.SetParameters(f<span class="stringliteral">&#39;9900015:addChannel =  1 {BR:.12} 0 {codes}&#39;</span>)</div>
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>            <span class="comment"># Charge conjugate modes</span></div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>            codes = <span class="stringliteral">&#39; &#39;</span>.join([(str(-1*code) <span class="keywordflow">if</span> pdg.GetParticle(-code)!=<span class="keywordtype">None</span> <span class="keywordflow">else</span> str(code)) <span class="keywordflow">for</span> code <span class="keywordflow">in</span> childrenCodes])</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>            P8Gen.SetParameters(<span class="stringliteral">&#39;9900015:addChannel =  1 {:.12} 0 {}&#39;</span>.format(BR, codes))</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>            P8Gen.SetParameters(f<span class="stringliteral">&#39;9900015:addChannel =  1 {BR:.12} 0 {codes}&#39;</span>)</div>
 <div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>            <span class="comment"># print &quot;debug readdecay table&quot;,particles,children,BR</span></div>
 <div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
 </div>

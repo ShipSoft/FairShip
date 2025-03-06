@@ -148,7 +148,7 @@ $(document).ready(function(){initNavTree('g4Ex__gap_8py_source.html',''); initRe
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  <span class="keyword">import</span> socket</div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  host = socket.gethostname()</div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  job_base_name = os.path.splitext(os.path.basename(os.sys.argv[0]))[0]</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  out_dir = <span class="stringliteral">&quot;{host}_{base}_{runnr}&quot;</span>.format(host=host, base=job_base_name, runnr=run_number)</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  out_dir = f<span class="stringliteral">&quot;{host}_{job_base_name}_{run_number}&quot;</span></div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <span class="keywordflow">return</span> out_dir</div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>

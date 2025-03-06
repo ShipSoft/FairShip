@@ -284,7 +284,7 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">   28</span>  <span class="keyword">import</span> socket</div>
 <div class="line"><span class="lineno">   29</span>  host = socket.gethostname()</div>
 <div class="line"><span class="lineno">   30</span>  job_base_name = os.path.splitext(os.path.basename(os.sys.argv[0]))[0]</div>
-<div class="line"><span class="lineno">   31</span>  out_dir = <span class="stringliteral">&quot;{host}_{base}_{runnr}&quot;</span>.format(host=host, base=job_base_name, runnr=run_number)</div>
+<div class="line"><span class="lineno">   31</span>  out_dir = f<span class="stringliteral">&quot;{host}_{job_base_name}_{run_number}&quot;</span></div>
 <div class="line"><span class="lineno">   32</span>  <span class="keywordflow">return</span> out_dir</div>
 <div class="line"><span class="lineno">   33</span> </div>
 <div class="line"><span class="lineno">   34</span> </div>

@@ -196,9 +196,9 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  211</span>        self.__file = root_file</div>
 <div class="line"><span class="lineno">  212</span>        self.__io = IO_Wrapper()</div>
 <div class="line"><span class="lineno">  213</span>        self.__n = 0</div>
-<div class="line"><span class="lineno">  214</span>        self.__serial = <span class="stringliteral">&#39;{0:d}-&#39;</span>.format(xserial).encode(<span class="stringliteral">&#39;utf-8&#39;</span>)</div>
+<div class="line"><span class="lineno">  214</span>        self.__serial = f<span class="stringliteral">&#39;{xserial:d}-&#39;</span>.encode()</div>
 <div class="line"><span class="lineno">  215</span>        xdict[self.__serial] = root_file</div>
-<div class="line"><span class="lineno">  216</span>        super(Unpickler, self).__init__(self.__io)</div>
+<div class="line"><span class="lineno">  216</span>        super().__init__(self.__io)</div>
 <div class="line"><span class="lineno">  217</span> </div>
 <div class="line"><span class="lineno">  218</span>        <span class="keywordflow">if</span> use_hash:</div>
 <div class="line"><span class="lineno">  219</span>            htab = {}</div>
@@ -295,7 +295,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  304</span>            <span class="comment">#log.info(&quot;Making dummy class {0}.{1}&quot;.format(module, name))</span></div>
 <div class="line"><span class="lineno">  305</span>            mod = sys.modules[module]</div>
 <div class="line"><span class="lineno">  306</span> </div>
-<div class="line"><span class="lineno">  307</span>            <span class="keyword">class </span>Dummy(object):</div>
+<div class="line"><span class="lineno">  307</span>            <span class="keyword">class </span>Dummy:</div>
 <div class="line"><span class="lineno">  308</span>                <span class="keywordflow">pass</span></div>
 <div class="line"><span class="lineno">  309</span> </div>
 <div class="line"><span class="lineno">  310</span>            setattr(mod, name, Dummy)</div>
@@ -341,9 +341,9 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  259</span>            save = _compat_hooks[0]()</div>
 <div class="line"><span class="lineno">  260</span>        <span class="keywordflow">try</span>:</div>
 <div class="line"><span class="lineno">  261</span>            self.__n += 1</div>
-<div class="line"><span class="lineno">  262</span>            s = self.__file.Get(key + <span class="stringliteral">&#39;;{0:d}&#39;</span>.format(self.__n))</div>
+<div class="line"><span class="lineno">  262</span>            s = self.__file.Get(key + f<span class="stringliteral">&#39;;{self.__n:d}&#39;</span>)</div>
 <div class="line"><span class="lineno">  263</span>            self.__io.setvalue(s.GetName())</div>
-<div class="line"><span class="lineno">  264</span>            obj = super(Unpickler, self).load()</div>
+<div class="line"><span class="lineno">  264</span>            obj = super().load()</div>
 <div class="line"><span class="lineno">  265</span>            self.__io.reopen()</div>
 <div class="line"><span class="lineno">  266</span>        <span class="keywordflow">finally</span>:</div>
 <div class="line"><span class="lineno">  267</span>            <span class="keywordflow">if</span> _compat_hooks:</div>

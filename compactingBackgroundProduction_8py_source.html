@@ -303,7 +303,7 @@ $(document).ready(function(){initNavTree('compactingBackgroundProduction_8py_sou
 <div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>   badFiles = []</div>
 <div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>   <span class="keywordflow">for</span> x <span class="keywordflow">in</span> allDirs:</div>
 <div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>     <span class="keywordflow">for</span> k <span class="keywordflow">in</span> range(20):</div>
-<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>       sr = <span class="stringliteral">&quot;{0:0&gt;2}&quot;</span>.format(k)</div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>       sr = f<span class="stringliteral">&quot;{k:0&gt;2}&quot;</span></div>
 <div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>       <span class="keywordflow">if</span> <span class="keywordflow">not</span> x.find(nr+sr)&lt;0:</div>
 <div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>         <span class="keywordflow">if</span> <span class="keywordflow">not</span> x.find(<span class="stringliteral">&#39;log&#39;</span>)&lt;0: <span class="keywordflow">continue</span></div>
 <div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>         fn = <span class="stringliteral">&#39;pythia8_Geant4_&#39;</span>+nr+sr+<span class="stringliteral">&#39;_&#39;</span>+ecut+<span class="stringliteral">&#39;.root&#39;</span></div>

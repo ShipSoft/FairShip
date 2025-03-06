@@ -132,7 +132,7 @@ Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="convertMisisMap_8py_source.html#l00046">46</a> of file <a class="el" href="convertMisisMap_8py_source.html">convertMisisMap.py</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   46</span><span class="keyword">def </span>createRootMap(inFileName, rootFileName):</div>
 <div class="line"><span class="lineno">   47</span> </div>
-<div class="line"><span class="lineno">   48</span>    print(<span class="stringliteral">&#39;Create ROOT map {0} from {1}&#39;</span>.format(rootFileName, inFileName))</div>
+<div class="line"><span class="lineno">   48</span>    print(f<span class="stringliteral">&#39;Create ROOT map {rootFileName} from {inFileName}&#39;</span>)</div>
 <div class="line"><span class="lineno">   49</span> </div>
 <div class="line"><span class="lineno">   50</span>    <span class="comment"># Define ROOT file and its TTree</span></div>
 <div class="line"><span class="lineno">   51</span>    theFile = ROOT.TFile.Open(rootFileName, <span class="stringliteral">&#39;recreate&#39;</span>)</div>
@@ -183,7 +183,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   96</span>    y0 = 0.0</div>
 <div class="line"><span class="lineno">   97</span>    z0 = 0.0</div>
 <div class="line"><span class="lineno">   98</span> </div>
-<div class="line"><span class="lineno">   99</span>    <span class="keyword">with</span> open(inFileName, <span class="stringliteral">&#39;r&#39;</span>) <span class="keyword">as</span> f:</div>
+<div class="line"><span class="lineno">   99</span>    <span class="keyword">with</span> open(inFileName) <span class="keyword">as</span> f:</div>
 <div class="line"><span class="lineno">  100</span> </div>
 <div class="line"><span class="lineno">  101</span>        <span class="keywordflow">for</span> line <span class="keywordflow">in</span> f:</div>
 <div class="line"><span class="lineno">  102</span>            iLine += 1</div>
@@ -200,7 +200,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  113</span>                <span class="comment"># Grid Output Min: xMin yMin zMin Max: xMax yMax zMax Grid Size: dx dy dz</span></div>
 <div class="line"><span class="lineno">  114</span>                <span class="comment"># These co-ordinate limits are in mm, but the actual data lines use m</span></div>
 <div class="line"><span class="lineno">  115</span> </div>
-<div class="line"><span class="lineno">  116</span>                print(<span class="stringliteral">&#39;sLine = {0}&#39;</span>.format(sLine))</div>
+<div class="line"><span class="lineno">  116</span>                print(f<span class="stringliteral">&#39;sLine = {sLine}&#39;</span>)</div>
 <div class="line"><span class="lineno">  117</span>                <span class="comment"># For each value, convert from mm to cm</span></div>
 <div class="line"><span class="lineno">  118</span>                rStruct.xMin = float(sLine[3])*mm2cm</div>
 <div class="line"><span class="lineno">  119</span>                rStruct.xMax = float(sLine[7])*mm2cm</div>
@@ -217,14 +217,14 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  130</span>                Nz = int(((rStruct.zMax - rStruct.zMin)/rStruct.dz) + 1.0)</div>
 <div class="line"><span class="lineno">  131</span>                Nzy = Nz*Ny</div>
 <div class="line"><span class="lineno">  132</span> </div>
-<div class="line"><span class="lineno">  133</span>                print(<span class="stringliteral">&#39;Nx = {0}, Ny = {1}, Nz = {2}&#39;</span>.format(Nx, Ny, Nz))</div>
+<div class="line"><span class="lineno">  133</span>                print(f<span class="stringliteral">&#39;Nx = {Nx}, Ny = {Ny}, Nz = {Nz}&#39;</span>)</div>
 <div class="line"><span class="lineno">  134</span> </div>
 <div class="line"><span class="lineno">  135</span>                <span class="comment"># Centre the field map on the local origin (cm)</span></div>
 <div class="line"><span class="lineno">  136</span>                x0 = 0.5*(rStruct.xMin + rStruct.xMax)</div>
 <div class="line"><span class="lineno">  137</span>                y0 = 0.5*(rStruct.yMin + rStruct.yMax)</div>
 <div class="line"><span class="lineno">  138</span>                z0 = 0.5*(rStruct.zMin + rStruct.zMax)</div>
 <div class="line"><span class="lineno">  139</span> </div>
-<div class="line"><span class="lineno">  140</span>                print(<span class="stringliteral">&#39;Centering field map using co-ordinate shift {0} {1} {2} cm&#39;</span>.format(x0, y0, z0))</div>
+<div class="line"><span class="lineno">  140</span>                print(f<span class="stringliteral">&#39;Centering field map using co-ordinate shift {x0} {y0} {z0} cm&#39;</span>)</div>
 <div class="line"><span class="lineno">  141</span> </div>
 <div class="line"><span class="lineno">  142</span>                <span class="comment"># Center co-ordinate range limits (cm)</span></div>
 <div class="line"><span class="lineno">  143</span>                rStruct.xMin = rStruct.xMin - x0</div>

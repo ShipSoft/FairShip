@@ -177,12 +177,12 @@ Public Attributes</h2></td></tr>
 <div class="line"><span class="lineno">   22</span>        fairship = ROOT.gSystem.Getenv(<span class="stringliteral">&quot;FAIRSHIP&quot;</span>)</div>
 <div class="line"><span class="lineno">   23</span> </div>
 <div class="line"><span class="lineno">   24</span>        <span class="keywordflow">if</span> self.ship_geo.DecayVolumeMedium == <span class="stringliteral">&quot;helium&quot;</span>:</div>
-<div class="line"><span class="lineno">   25</span>            <span class="keyword">with</span> open(fairship + <span class="stringliteral">&quot;/geometry/veto_config_helium.yaml&quot;</span>, <span class="stringliteral">&quot;r&quot;</span>) <span class="keyword">as</span> file:</div>
+<div class="line"><span class="lineno">   25</span>            <span class="keyword">with</span> open(fairship + <span class="stringliteral">&quot;/geometry/veto_config_helium.yaml&quot;</span>) <span class="keyword">as</span> file:</div>
 <div class="line"><span class="lineno">   26</span>                config = yaml.safe_load(file)</div>
 <div class="line"><span class="lineno">   27</span>                self.veto_geo = AttrDict(config)</div>
 <div class="line"><span class="lineno">   28</span>                self.veto_geo.z0</div>
 <div class="line"><span class="lineno">   29</span>        <span class="keywordflow">if</span> self.ship_geo.DecayVolumeMedium == <span class="stringliteral">&quot;vacuums&quot;</span>:</div>
-<div class="line"><span class="lineno">   30</span>            <span class="keyword">with</span> open(fairship + <span class="stringliteral">&quot;/geometry/veto_config_vacuums.yaml&quot;</span>, <span class="stringliteral">&quot;r&quot;</span>) <span class="keyword">as</span> file:</div>
+<div class="line"><span class="lineno">   30</span>            <span class="keyword">with</span> open(fairship + <span class="stringliteral">&quot;/geometry/veto_config_vacuums.yaml&quot;</span>) <span class="keyword">as</span> file:</div>
 <div class="line"><span class="lineno">   31</span>                config = yaml.safe_load(file)</div>
 <div class="line"><span class="lineno">   32</span>                self.veto_geo = AttrDict(config)</div>
 <div class="line"><span class="lineno">   33</span> </div>
@@ -299,7 +299,7 @@ Public Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  163</span>        <span class="keywordflow">for</span> trD <span class="keywordflow">in</span> [t1, t2]:</div>
 <div class="line"><span class="lineno">  164</span>            x = self.tree.FitTracks[trD]</div>
 <div class="line"><span class="lineno">  165</span>            xx = x.getFittedState()</div>
-<div class="line"><span class="lineno">  166</span>            daughter_mom.append((xx.getMom().Mag()))</div>
+<div class="line"><span class="lineno">  166</span>            daughter_mom.append(xx.getMom().Mag())</div>
 <div class="line"><span class="lineno">  167</span> </div>
 <div class="line"><span class="lineno">  168</span>        <span class="keywordflow">return</span> np.array(daughter_mom)</div>
 <div class="line"><span class="lineno">  169</span> </div>

@@ -136,7 +136,7 @@ Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="convertRALMap_8py_source.html#l00195">195</a> of file <a class="el" href="convertRALMap_8py_source.html">convertRALMap.py</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  195</span><span class="keyword">def </span>createRootMap(inFileName, outFileName):</div>
 <div class="line"><span class="lineno">  196</span> </div>
-<div class="line"><span class="lineno">  197</span>    print(<span class="stringliteral">&#39;Create ROOT map {0} from {1}&#39;</span>.format(outFileName, inFileName))</div>
+<div class="line"><span class="lineno">  197</span>    print(f<span class="stringliteral">&#39;Create ROOT map {outFileName} from {inFileName}&#39;</span>)</div>
 <div class="line"><span class="lineno">  198</span> </div>
 <div class="line"><span class="lineno">  199</span>    <span class="comment"># Define ROOT file and its TTree</span></div>
 <div class="line"><span class="lineno">  200</span>    theFile = ROOT.TFile.Open(outFileName, <span class="stringliteral">&#39;recreate&#39;</span>)</div>
@@ -177,7 +177,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  235</span>    Nz = 0</div>
 <div class="line"><span class="lineno">  236</span>    Nzy = 0</div>
 <div class="line"><span class="lineno">  237</span> </div>
-<div class="line"><span class="lineno">  238</span>    <span class="keyword">with</span> open(inFileName, <span class="stringliteral">&#39;r&#39;</span>) <span class="keyword">as</span> f:</div>
+<div class="line"><span class="lineno">  238</span>    <span class="keyword">with</span> open(inFileName) <span class="keyword">as</span> f:</div>
 <div class="line"><span class="lineno">  239</span> </div>
 <div class="line"><span class="lineno">  240</span>        <span class="keywordflow">for</span> line <span class="keywordflow">in</span> f:</div>
 <div class="line"><span class="lineno">  241</span>            iLine += 1</div>
@@ -200,7 +200,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  258</span>                Nz = int(((rStruct.zMax - rStruct.zMin)/rStruct.dz) + 1.0)</div>
 <div class="line"><span class="lineno">  259</span>                Nzy = Nz*Ny</div>
 <div class="line"><span class="lineno">  260</span> </div>
-<div class="line"><span class="lineno">  261</span>                print(<span class="stringliteral">&#39;Nx = {0}, Ny = {1}, Nz = {2}&#39;</span>.format(Nx, Ny, Nz))</div>
+<div class="line"><span class="lineno">  261</span>                print(f<span class="stringliteral">&#39;Nx = {Nx}, Ny = {Ny}, Nz = {Nz}&#39;</span>)</div>
 <div class="line"><span class="lineno">  262</span> </div>
 <div class="line"><span class="lineno">  263</span>                rangeTree.Fill()</div>
 <div class="line"><span class="lineno">  264</span> </div>
@@ -261,11 +261,11 @@ Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="convertRALMap_8py_source.html#l00050">50</a> of file <a class="el" href="convertRALMap_8py_source.html">convertRALMap.py</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   50</span><span class="keyword">def </span>createTextMap(inFileName, outFileName):</div>
 <div class="line"><span class="lineno">   51</span> </div>
-<div class="line"><span class="lineno">   52</span>    print(<span class="stringliteral">&#39;Creating text map {0} from {1}&#39;</span>.format(outFileName, inFileName))</div>
+<div class="line"><span class="lineno">   52</span>    print(f<span class="stringliteral">&#39;Creating text map {outFileName} from {inFileName}&#39;</span>)</div>
 <div class="line"><span class="lineno">   53</span> </div>
 <div class="line"><span class="lineno">   54</span>    tmpFileName = <span class="stringliteral">&#39;tmpFile.txt&#39;</span></div>
 <div class="line"><span class="lineno">   55</span> </div>
-<div class="line"><span class="lineno">   56</span>    inFile = open(inFileName, <span class="stringliteral">&#39;r&#39;</span>)</div>
+<div class="line"><span class="lineno">   56</span>    inFile = open(inFileName)</div>
 <div class="line"><span class="lineno">   57</span>    tmpFile = open(tmpFileName, <span class="stringliteral">&#39;w&#39;</span>)</div>
 <div class="line"><span class="lineno">   58</span> </div>
 <div class="line"><span class="lineno">   59</span>    iLine = 0</div>
@@ -319,7 +319,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  107</span> </div>
 <div class="line"><span class="lineno">  108</span>            <span class="comment"># Write out the new line. Just print out the B field components, since we</span></div>
 <div class="line"><span class="lineno">  109</span>            <span class="comment"># can infer x,y,z co-ords from the ordering</span></div>
-<div class="line"><span class="lineno">  110</span>            newLine = <span class="stringliteral">&#39;{0} {1} {2}\n&#39;</span>.format(BxWord, ByWord, BzWord)</div>
+<div class="line"><span class="lineno">  110</span>            newLine = f<span class="stringliteral">&#39;{BxWord} {ByWord} {BzWord}\n&#39;</span></div>
 <div class="line"><span class="lineno">  111</span>            <span class="comment">#newLine = &#39;{0:.0f} {1:.0f} {2:.0f} {3:.3e} {4:.3e} {5:.3e}\n&#39;.format(x,y,z,Bx,By,Bz)</span></div>
 <div class="line"><span class="lineno">  112</span>            tmpFile.write(newLine)</div>
 <div class="line"><span class="lineno">  113</span> </div>
@@ -358,18 +358,18 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  146</span>                dz = z - zOld</div>
 <div class="line"><span class="lineno">  147</span>                gotdz = 1</div>
 <div class="line"><span class="lineno">  148</span> </div>
-<div class="line"><span class="lineno">  149</span>    print(<span class="stringliteral">&#39;dx = {0}, dy = {1}, dz = {2}&#39;</span>.format(dx,dy,dz))</div>
-<div class="line"><span class="lineno">  150</span>    print(<span class="stringliteral">&#39;x = {0} to {1}, y = {2} to {3}, z = {4} to {5}&#39;</span>.format(xMin, xMax, yMin, yMax, zMin, zMax))</div>
+<div class="line"><span class="lineno">  149</span>    print(f<span class="stringliteral">&#39;dx = {dx}, dy = {dy}, dz = {dz}&#39;</span>)</div>
+<div class="line"><span class="lineno">  150</span>    print(f<span class="stringliteral">&#39;x = {xMin} to {xMax}, y = {yMin} to {yMax}, z = {zMin} to {zMax}&#39;</span>)</div>
 <div class="line"><span class="lineno">  151</span> </div>
 <div class="line"><span class="lineno">  152</span>    tmpFile.close()</div>
 <div class="line"><span class="lineno">  153</span>    inFile.close()</div>
 <div class="line"><span class="lineno">  154</span> </div>
 <div class="line"><span class="lineno">  155</span>    <span class="comment"># Write out the map containing the co-ordinate ranges and offsets etc</span></div>
-<div class="line"><span class="lineno">  156</span>    tmpFile2 = open(tmpFileName, <span class="stringliteral">&#39;r&#39;</span>)</div>
+<div class="line"><span class="lineno">  156</span>    tmpFile2 = open(tmpFileName)</div>
 <div class="line"><span class="lineno">  157</span>    outFile = open(outFileName, <span class="stringliteral">&#39;w&#39;</span>)</div>
 <div class="line"><span class="lineno">  158</span> </div>
-<div class="line"><span class="lineno">  159</span>    outLine = <span class="stringliteral">&#39;CLimits {0:.0f} {1:.0f} {2:.0f} {3:.0f} {4:.0f} {5:.0f} &#39;</span> \</div>
-<div class="line"><span class="lineno">  160</span>        <span class="stringliteral">&#39;{6:.0f} {7:.0f} {8:.0f}\n&#39;</span>.format(xMin, xMax, dx, yMin, yMax, dy, zMin, zMax, dz)</div>
+<div class="line"><span class="lineno">  159</span>    outLine = <span class="stringliteral">&#39;CLimits {:.0f} {:.0f} {:.0f} {:.0f} {:.0f} {:.0f} &#39;</span> \</div>
+<div class="line"><span class="lineno">  160</span>        <span class="stringliteral">&#39;{:.0f} {:.0f} {:.0f}\n&#39;</span>.format(xMin, xMax, dx, yMin, yMax, dy, zMin, zMax, dz)</div>
 <div class="line"><span class="lineno">  161</span>    outFile.write(outLine)</div>
 <div class="line"><span class="lineno">  162</span> </div>
 <div class="line"><span class="lineno">  163</span>    <span class="comment">#outLine = &#39;Offsets {0:.0f} {1:.0f} {2:.0f}\n&#39;.format(ox, oy, oz)</span></div>
@@ -415,7 +415,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  183</span> </div>
 <div class="line"><span class="lineno">  184</span>    <span class="comment"># Let the general precision be 0.01 mT. Anything below this</span></div>
 <div class="line"><span class="lineno">  185</span>    <span class="comment"># is set to zero.</span></div>
-<div class="line"><span class="lineno">  186</span>    xWord = <span class="stringliteral">&#39;{0:.5f}&#39;</span>.format(x)</div>
+<div class="line"><span class="lineno">  186</span>    xWord = f<span class="stringliteral">&#39;{x:.5f}&#39;</span></div>
 <div class="line"><span class="lineno">  187</span> </div>
 <div class="line"><span class="lineno">  188</span>    <span class="keywordflow">if</span> abs(x) &lt; 1e-5:</div>
 <div class="line"><span class="lineno">  189</span> </div>

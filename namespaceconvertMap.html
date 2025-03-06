@@ -146,10 +146,10 @@ Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="convertMap_8py_source.html#l00052">52</a> of file <a class="el" href="convertMap_8py_source.html">convertMap.py</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   52</span><span class="keyword">def </span>createRootMap(inFileName, rootFileName, cmScale, storeCoords):</div>
 <div class="line"><span class="lineno">   53</span> </div>
-<div class="line"><span class="lineno">   54</span>    print(<span class="stringliteral">&#39;Create map {0} from {1} using cmScale = {2}&#39;</span>.format(rootFileName,</div>
+<div class="line"><span class="lineno">   54</span>    print(<span class="stringliteral">&#39;Create map {} from {} using cmScale = {}&#39;</span>.format(rootFileName,</div>
 <div class="line"><span class="lineno">   55</span>                                                                 inFileName, cmScale))</div>
 <div class="line"><span class="lineno">   56</span>    <span class="keywordflow">if</span> storeCoords <span class="keywordflow">is</span> <span class="keyword">True</span>:</div>
-<div class="line"><span class="lineno">   57</span>        print(<span class="stringliteral">&#39;We will also store the x,y,z field coordinates in {0}&#39;</span>.format(rootFileName))</div>
+<div class="line"><span class="lineno">   57</span>        print(f<span class="stringliteral">&#39;We will also store the x,y,z field coordinates in {rootFileName}&#39;</span>)</div>
 <div class="line"><span class="lineno">   58</span> </div>
 <div class="line"><span class="lineno">   59</span>    rangeInfo = findRanges(inFileName, cmScale)</div>
 <div class="line"><span class="lineno">   60</span> </div>
@@ -191,7 +191,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   96</span>    <span class="comment">#y0 = 0.0</span></div>
 <div class="line"><span class="lineno">   97</span>    <span class="comment">#z0 = 0.0</span></div>
 <div class="line"><span class="lineno">   98</span> </div>
-<div class="line"><span class="lineno">   99</span>    print(<span class="stringliteral">&#39;Centering field map using co-ordinate shift {0} {1} {2} cm&#39;</span>.format(x0, y0, z0))</div>
+<div class="line"><span class="lineno">   99</span>    print(f<span class="stringliteral">&#39;Centering field map using co-ordinate shift {x0} {y0} {z0} cm&#39;</span>)</div>
 <div class="line"><span class="lineno">  100</span> </div>
 <div class="line"><span class="lineno">  101</span>    <span class="comment"># Center co-ordinate range limits (cm)</span></div>
 <div class="line"><span class="lineno">  102</span>    rStruct.xMin = rStruct.xMin - x0</div>
@@ -203,9 +203,9 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  108</span>    rStruct.zMin = rStruct.zMin - z0</div>
 <div class="line"><span class="lineno">  109</span>    rStruct.zMax = rStruct.zMax - z0</div>
 <div class="line"><span class="lineno">  110</span> </div>
-<div class="line"><span class="lineno">  111</span>    print(<span class="stringliteral">&#39;x range = {0} to {1}&#39;</span>.format(rStruct.xMin, rStruct.xMax))</div>
-<div class="line"><span class="lineno">  112</span>    print(<span class="stringliteral">&#39;y range = {0} to {1}&#39;</span>.format(rStruct.yMin, rStruct.yMax))</div>
-<div class="line"><span class="lineno">  113</span>    print(<span class="stringliteral">&#39;z range = {0} to {1}&#39;</span>.format(rStruct.zMin, rStruct.zMax))</div>
+<div class="line"><span class="lineno">  111</span>    print(f<span class="stringliteral">&#39;x range = {rStruct.xMin} to {rStruct.xMax}&#39;</span>)</div>
+<div class="line"><span class="lineno">  112</span>    print(f<span class="stringliteral">&#39;y range = {rStruct.yMin} to {rStruct.yMax}&#39;</span>)</div>
+<div class="line"><span class="lineno">  113</span>    print(f<span class="stringliteral">&#39;z range = {rStruct.zMin} to {rStruct.zMax}&#39;</span>)</div>
 <div class="line"><span class="lineno">  114</span> </div>
 <div class="line"><span class="lineno">  115</span>    <span class="comment"># Fill info into range tree</span></div>
 <div class="line"><span class="lineno">  116</span>    rangeTree.Fill()</div>
@@ -229,7 +229,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  134</span>    dataTree.Branch(<span class="stringliteral">&#39;Bz&#39;</span>, ROOT.AddressOf(dStruct, <span class="stringliteral">&#39;Bz&#39;</span>), <span class="stringliteral">&#39;Bz/F&#39;</span>)</div>
 <div class="line"><span class="lineno">  135</span> </div>
 <div class="line"><span class="lineno">  136</span>    <span class="comment"># Reopen the file and store the information in the ROOT file</span></div>
-<div class="line"><span class="lineno">  137</span>    <span class="keyword">with</span> open(inFileName, <span class="stringliteral">&#39;r&#39;</span>) <span class="keyword">as</span> f:</div>
+<div class="line"><span class="lineno">  137</span>    <span class="keyword">with</span> open(inFileName) <span class="keyword">as</span> f:</div>
 <div class="line"><span class="lineno">  138</span> </div>
 <div class="line"><span class="lineno">  139</span>        <span class="comment"># Read each line</span></div>
 <div class="line"><span class="lineno">  140</span>        <span class="keywordflow">for</span> line <span class="keywordflow">in</span> f:</div>
@@ -299,7 +299,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  174</span>    yArray = []</div>
 <div class="line"><span class="lineno">  175</span>    zArray = []</div>
 <div class="line"><span class="lineno">  176</span> </div>
-<div class="line"><span class="lineno">  177</span>    <span class="keyword">with</span> open(inFileName, <span class="stringliteral">&#39;r&#39;</span>) <span class="keyword">as</span> f:</div>
+<div class="line"><span class="lineno">  177</span>    <span class="keyword">with</span> open(inFileName) <span class="keyword">as</span> f:</div>
 <div class="line"><span class="lineno">  178</span> </div>
 <div class="line"><span class="lineno">  179</span>        <span class="comment"># Read each line</span></div>
 <div class="line"><span class="lineno">  180</span>        <span class="keywordflow">for</span> line <span class="keywordflow">in</span> f:</div>

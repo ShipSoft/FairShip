@@ -192,7 +192,7 @@ ROOT objects.
 <div class="line"><span class="lineno">  145</span>        self.__keys = file.GetListOfKeys()</div>
 <div class="line"><span class="lineno">  146</span>        self.__io = IO_Wrapper()</div>
 <div class="line"><span class="lineno">  147</span>        self.__pmap = {}</div>
-<div class="line"><span class="lineno">  148</span>        super(Pickler, self).__init__(self.__io, proto)</div>
+<div class="line"><span class="lineno">  148</span>        super().__init__(self.__io, proto)</div>
 <div class="line"><span class="lineno">  149</span> </div>
 </div><!-- fragment -->
 </div>
@@ -261,7 +261,7 @@ ROOT objects.
 <div class="line"><span class="lineno">  153</span>            key = <span class="stringliteral">&#39;_pickle&#39;</span></div>
 <div class="line"><span class="lineno">  154</span>        <span class="keywordflow">if</span> 1&gt;0:</div>
 <div class="line"><span class="lineno">  155</span>            self.__file.cd()</div>
-<div class="line"><span class="lineno">  156</span>            super(Pickler, self).dump(obj)</div>
+<div class="line"><span class="lineno">  156</span>            super().dump(obj)</div>
 <div class="line"><span class="lineno">  157</span>            s = ROOT.TObjString(self.__io.getvalue())</div>
 <div class="line"><span class="lineno">  158</span>            self.__io.reopen()</div>
 <div class="line"><span class="lineno">  159</span>            s.Write(key)</div>
@@ -328,7 +328,7 @@ ROOT objects.
 <div class="line"><span class="lineno">  194</span>            obj.Write()</div>
 <div class="line"><span class="lineno">  195</span>            <span class="keywordflow">if</span> key:</div>
 <div class="line"><span class="lineno">  196</span>                key = self.__file.GetKey(nm)</div>
-<div class="line"><span class="lineno">  197</span>                pid = <span class="stringliteral">&#39;{0};{1:d}&#39;</span>.format(nm, key.GetCycle())</div>
+<div class="line"><span class="lineno">  197</span>                pid = f<span class="stringliteral">&#39;{nm};{key.GetCycle():d}&#39;</span></div>
 <div class="line"><span class="lineno">  198</span>            <span class="keywordflow">else</span>:</div>
 <div class="line"><span class="lineno">  199</span>                pid = nm + <span class="stringliteral">&#39;;1&#39;</span></div>
 <div class="line"><span class="lineno">  200</span>            <span class="keywordflow">return</span> pid</div>

@@ -96,26 +96,6 @@ $(document).ready(function(){initNavTree('classmethod__logger_1_1MethodLogger.ht
   <div class="headertitle"><div class="title">method_logger.MethodLogger Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="dynheader">
-Inheritance diagram for method_logger.MethodLogger:</div>
-<div class="dyncontent">
-<div class="center"><img src="classmethod__logger_1_1MethodLogger__inherit__graph.png" border="0" usemap="#amethod__logger_8MethodLogger_inherit__map" alt="Inheritance graph"/></div>
-<map name="amethod__logger_8MethodLogger_inherit__map" id="amethod__logger_8MethodLogger_inherit__map">
-<area shape="rect" title=" " alt="" coords="5,79,221,104"/>
-<area shape="rect" title=" " alt="" coords="82,5,145,31"/>
-<area shape="poly" title=" " alt="" coords="116,44,116,79,111,79,111,44"/>
-</map>
-<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
-<div class="dynheader">
-Collaboration diagram for method_logger.MethodLogger:</div>
-<div class="dyncontent">
-<div class="center"><img src="classmethod__logger_1_1MethodLogger__coll__graph.png" border="0" usemap="#amethod__logger_8MethodLogger_coll__map" alt="Collaboration graph"/></div>
-<map name="amethod__logger_8MethodLogger_coll__map" id="amethod__logger_8MethodLogger_coll__map">
-<area shape="rect" title=" " alt="" coords="5,79,221,104"/>
-<area shape="rect" title=" " alt="" coords="82,5,145,31"/>
-<area shape="poly" title=" " alt="" coords="116,44,116,79,111,79,111,44"/>
-</map>
-<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -155,7 +135,7 @@ method calls and logs them to a file (default: `sys.stdout`).
 "TestClass.func(3, y=8, foo='bar')\\n"
 &gt;&gt;&gt; sink.close()
 </pre> 
-<p class="definition">Definition at line <a class="el" href="method__logger_8py_source.html#l00006">6</a> of file <a class="el" href="method__logger_8py_source.html">method_logger.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="method__logger_8py_source.html#l00004">4</a> of file <a class="el" href="method__logger_8py_source.html">method_logger.py</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a42c356ecd13cc3e31856bea377a190ef" name="a42c356ecd13cc3e31856bea377a190ef"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a42c356ecd13cc3e31856bea377a190ef">&#9670;&#160;</a></span>__init__()</h2>
@@ -189,12 +169,12 @@ method calls and logs them to a file (default: `sys.stdout`).
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="method__logger_8py_source.html#l00027">27</a> of file <a class="el" href="method__logger_8py_source.html">method_logger.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   27</span>    <span class="keyword">def </span>__init__(self, wrapped_instance, sink=sys.stdout):</div>
-<div class="line"><span class="lineno">   28</span>        self._class = wrapped_instance</div>
-<div class="line"><span class="lineno">   29</span>        self._sink = sink</div>
-<div class="line"><span class="lineno">   30</span>        self._prefix = type(wrapped_instance).__name__ + <span class="stringliteral">&#39;.&#39;</span></div>
-<div class="line"><span class="lineno">   31</span> </div>
+<p class="definition">Definition at line <a class="el" href="method__logger_8py_source.html#l00025">25</a> of file <a class="el" href="method__logger_8py_source.html">method_logger.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   25</span>    <span class="keyword">def </span>__init__(self, wrapped_instance, sink=sys.stdout):</div>
+<div class="line"><span class="lineno">   26</span>        self._class = wrapped_instance</div>
+<div class="line"><span class="lineno">   27</span>        self._sink = sink</div>
+<div class="line"><span class="lineno">   28</span>        self._prefix = type(wrapped_instance).__name__ + <span class="stringliteral">&#39;.&#39;</span></div>
+<div class="line"><span class="lineno">   29</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -225,9 +205,9 @@ method calls and logs them to a file (default: `sys.stdout`).
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="method__logger_8py_source.html#l00043">43</a> of file <a class="el" href="method__logger_8py_source.html">method_logger.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   43</span>    <span class="keyword">def </span>__getattr__(self, attr):</div>
-<div class="line"><span class="lineno">   44</span>        <span class="keywordflow">return</span> self.method_logger(getattr(self._class, attr))</div>
+<p class="definition">Definition at line <a class="el" href="method__logger_8py_source.html#l00041">41</a> of file <a class="el" href="method__logger_8py_source.html">method_logger.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   41</span>    <span class="keyword">def </span>__getattr__(self, attr):</div>
+<div class="line"><span class="lineno">   42</span>        <span class="keywordflow">return</span> self.method_logger(getattr(self._class, attr))</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -257,18 +237,18 @@ method calls and logs them to a file (default: `sys.stdout`).
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="method__logger_8py_source.html#l00032">32</a> of file <a class="el" href="method__logger_8py_source.html">method_logger.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   32</span>    <span class="keyword">def </span><a class="code hl_namespace" href="namespacemethod__logger.html">method_logger</a>(self, met):</div>
-<div class="line"><span class="lineno">   33</span>        qualified_name = self._prefix + str(met.__name__)</div>
-<div class="line"><span class="lineno">   34</span>        <span class="preprocessor">@wraps(met)</span></div>
-<div class="line"><span class="lineno">   35</span>        <span class="keyword">def </span>_logger(*args, **kwargs):</div>
-<div class="line"><span class="lineno">   36</span>            args_str = <span class="stringliteral">&#39;, &#39;</span>.join(repr(arg) <span class="keywordflow">for</span> arg <span class="keywordflow">in</span> args)</div>
-<div class="line"><span class="lineno">   37</span>            kwargs_str = <span class="stringliteral">&#39;, &#39;</span>.join(str(k) + <span class="stringliteral">&#39;=&#39;</span> + repr(v) <span class="keywordflow">for</span> (k,v) <span class="keywordflow">in</span> kwargs.items())</div>
-<div class="line"><span class="lineno">   38</span>            all_args_str = args_str + (<span class="stringliteral">&#39;, &#39;</span> <span class="keywordflow">if</span> len(kwargs_str) &gt; 0 <span class="keywordflow">else</span> <span class="stringliteral">&#39;&#39;</span>) + kwargs_str</div>
-<div class="line"><span class="lineno">   39</span>            print(<span class="stringliteral">&#39;{0}({1})&#39;</span>.format(qualified_name, all_args_str), file=self._sink)</div>
-<div class="line"><span class="lineno">   40</span>            <span class="keywordflow">return</span> met.__call__(*args, **kwargs)</div>
-<div class="line"><span class="lineno">   41</span>        <span class="keywordflow">return</span> _logger</div>
-<div class="line"><span class="lineno">   42</span> </div>
+<p class="definition">Definition at line <a class="el" href="method__logger_8py_source.html#l00030">30</a> of file <a class="el" href="method__logger_8py_source.html">method_logger.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   30</span>    <span class="keyword">def </span><a class="code hl_namespace" href="namespacemethod__logger.html">method_logger</a>(self, met):</div>
+<div class="line"><span class="lineno">   31</span>        qualified_name = self._prefix + str(met.__name__)</div>
+<div class="line"><span class="lineno">   32</span>        <span class="preprocessor">@wraps(met)</span></div>
+<div class="line"><span class="lineno">   33</span>        <span class="keyword">def </span>_logger(*args, **kwargs):</div>
+<div class="line"><span class="lineno">   34</span>            args_str = <span class="stringliteral">&#39;, &#39;</span>.join(repr(arg) <span class="keywordflow">for</span> arg <span class="keywordflow">in</span> args)</div>
+<div class="line"><span class="lineno">   35</span>            kwargs_str = <span class="stringliteral">&#39;, &#39;</span>.join(str(k) + <span class="stringliteral">&#39;=&#39;</span> + repr(v) <span class="keywordflow">for</span> (k,v) <span class="keywordflow">in</span> kwargs.items())</div>
+<div class="line"><span class="lineno">   36</span>            all_args_str = args_str + (<span class="stringliteral">&#39;, &#39;</span> <span class="keywordflow">if</span> len(kwargs_str) &gt; 0 <span class="keywordflow">else</span> <span class="stringliteral">&#39;&#39;</span>) + kwargs_str</div>
+<div class="line"><span class="lineno">   37</span>            print(f<span class="stringliteral">&#39;{qualified_name}({all_args_str})&#39;</span>, file=self._sink)</div>
+<div class="line"><span class="lineno">   38</span>            <span class="keywordflow">return</span> met.__call__(*args, **kwargs)</div>
+<div class="line"><span class="lineno">   39</span>        <span class="keywordflow">return</span> _logger</div>
+<div class="line"><span class="lineno">   40</span> </div>
 <div class="ttc" id="anamespacemethod__logger_html"><div class="ttname"><a href="namespacemethod__logger.html">method_logger</a></div><div class="ttdef"><b>Definition</b> <a href="method__logger_8py_source.html#l00001">method_logger.py:1</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -294,7 +274,7 @@ method calls and logs them to a file (default: `sys.stdout`).
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="method__logger_8py_source.html#l00028">28</a> of file <a class="el" href="method__logger_8py_source.html">method_logger.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="method__logger_8py_source.html#l00026">26</a> of file <a class="el" href="method__logger_8py_source.html">method_logger.py</a>.</p>
 
 </div>
 </div>
@@ -318,7 +298,7 @@ method calls and logs them to a file (default: `sys.stdout`).
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="method__logger_8py_source.html#l00030">30</a> of file <a class="el" href="method__logger_8py_source.html">method_logger.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="method__logger_8py_source.html#l00028">28</a> of file <a class="el" href="method__logger_8py_source.html">method_logger.py</a>.</p>
 
 </div>
 </div>
@@ -342,7 +322,7 @@ method calls and logs them to a file (default: `sys.stdout`).
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="method__logger_8py_source.html#l00029">29</a> of file <a class="el" href="method__logger_8py_source.html">method_logger.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="method__logger_8py_source.html#l00027">27</a> of file <a class="el" href="method__logger_8py_source.html">method_logger.py</a>.</p>
 
 </div>
 </div>

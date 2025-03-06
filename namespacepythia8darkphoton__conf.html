@@ -289,15 +289,15 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">  152</span>    P8gen.List(P8gen.GetDPId())</div>
 <div class="line"><span class="lineno">  153</span>    <span class="keywordflow">if</span> inclusive==<span class="stringliteral">&quot;qcd&quot;</span>:</div>
 <div class="line"><span class="lineno">  154</span>        dpid = P8gen.GetDPId()</div>
-<div class="line"><span class="lineno">  155</span>        P8gen.SetParameters(<span class="stringliteral">&quot;{}:m0 = {:.12}&quot;</span>.format(dpid, mass))</div>
+<div class="line"><span class="lineno">  155</span>        P8gen.SetParameters(f<span class="stringliteral">&quot;{dpid}:m0 = {mass:.12}&quot;</span>)</div>
 <div class="line"><span class="lineno">  156</span>        <span class="comment">#P8gen.SetParameters(str(P8gen.GetDPId())+&quot;:mWidth = &quot;+str(u.mm/ctau))</span></div>
-<div class="line"><span class="lineno">  157</span>        P8gen.SetParameters(<span class="stringliteral">&quot;{}:mWidth = {:.12}&quot;</span>.format(dpid, u.hbarc/ctau))</div>
-<div class="line"><span class="lineno">  158</span>        P8gen.SetParameters(<span class="stringliteral">&quot;{}:mMin = 0.001&quot;</span>.format(dpid))</div>
-<div class="line"><span class="lineno">  159</span>        P8gen.SetParameters(<span class="stringliteral">&quot;{}:tau0 = {:.12}&quot;</span>.format(dpid, ctau/u.mm))</div>
+<div class="line"><span class="lineno">  157</span>        P8gen.SetParameters(f<span class="stringliteral">&quot;{dpid}:mWidth = {u.hbarc/ctau:.12}&quot;</span>)</div>
+<div class="line"><span class="lineno">  158</span>        P8gen.SetParameters(f<span class="stringliteral">&quot;{dpid}:mMin = 0.001&quot;</span>)</div>
+<div class="line"><span class="lineno">  159</span>        P8gen.SetParameters(f<span class="stringliteral">&quot;{dpid}:tau0 = {ctau/u.mm:.12}&quot;</span>)</div>
 <div class="line"><span class="lineno">  160</span>        <span class="comment">#P8gen.SetParameters(&quot;ParticleData:modeBreitWigner = 0&quot;)</span></div>
 <div class="line"><span class="lineno">  161</span>        <span class="comment">#P8gen.SetParameters(str(P8gen.GetDPId())+&quot;:isResonance = false&quot;)</span></div>
 <div class="line"><span class="lineno">  162</span>        <span class="comment">#P8gen.SetParameters(str(P8gen.GetDPId())+&quot;:all = A A 3 0 0 &quot;+str(mass)+&quot; 0.0 0.0 0.0 &quot;+str(ctau/u.mm)+&quot;  0   1   0   1   0&quot;)</span></div>
-<div class="line"><span class="lineno">  163</span>        P8gen.SetParameters(<span class="stringliteral">&quot;{}:onMode = off&quot;</span>.format(dpid))</div>
+<div class="line"><span class="lineno">  163</span>        P8gen.SetParameters(f<span class="stringliteral">&quot;{dpid}:onMode = off&quot;</span>)</div>
 <div class="line"><span class="lineno">  164</span>    <span class="keywordflow">else</span>:</div>
 <div class="line"><span class="lineno">  165</span>        P8gen.SetParameters(<span class="stringliteral">&quot;{}:new = A A 3 0 0 {:.12} 0.0 0.0 0.0 {:.12}  0   1   0   1   0&quot;</span>\</div>
 <div class="line"><span class="lineno">  166</span>                            .format(P8gen.GetDPId(), mass, ctau/u.mm))</div>
@@ -309,7 +309,7 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">  175</span>    <span class="comment"># Configuring decay modes...</span></div>
 <div class="line"><span class="lineno">  176</span>    <a class="code hl_function" href="namespacereadDecayTable.html#ae95acfc20a47f042956034d1e4380d53">readDecayTable.addDarkPhotondecayChannels</a>(P8gen, mass, DP_instance, conffile=os.path.expandvars(<span class="stringliteral">&#39;$FAIRSHIP/python/darkphotonDecaySelection.conf&#39;</span>), verbose=<span class="keyword">True</span>)</div>
 <div class="line"><span class="lineno">  177</span>    <span class="comment"># Finish DP setup...</span></div>
-<div class="line"><span class="lineno">  178</span>    P8gen.SetParameters(<span class="stringliteral">&quot;{}:mayDecay = on&quot;</span>.format(P8gen.GetDPId()))</div>
+<div class="line"><span class="lineno">  178</span>    P8gen.SetParameters(f<span class="stringliteral">&quot;{P8gen.GetDPId()}:mayDecay = on&quot;</span>)</div>
 <div class="line"><span class="lineno">  179</span>    <span class="comment">#P8gen.SetDPId(P8gen.GetDPId())</span></div>
 <div class="line"><span class="lineno">  180</span>    <span class="comment"># also add to PDG</span></div>
 <div class="line"><span class="lineno">  181</span>    gamma = u.hbarc / float(ctau) <span class="comment">#197.3269631e-16 / float(ctau) # hbar*c = 197 MeV*fm = 197e-16 GeV*cm</span></div>

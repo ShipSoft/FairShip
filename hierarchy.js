@@ -169,9 +169,7 @@ var hierarchy =
     [ "metaclass", null, [
       [ "ShipGeoConfig.ConfigRegistry", "classShipGeoConfig_1_1ConfigRegistry.html", null ]
     ] ],
-    [ "object", null, [
-      [ "method_logger.MethodLogger", "classmethod__logger_1_1MethodLogger.html", null ]
-    ] ],
+    [ "method_logger.MethodLogger", "classmethod__logger_1_1MethodLogger.html", null ],
     [ "pickle.Pickler", null, [
       [ "rootpyPickler.Pickler", "classrootpyPickler_1_1Pickler.html", null ]
     ] ],

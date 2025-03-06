@@ -416,9 +416,9 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  201</span> </div>
 <div class="line"><span class="lineno">  202</span>        field =  v.GetField()</div>
 <div class="line"><span class="lineno">  203</span>        <span class="keywordflow">if</span> field:</div>
-<div class="line"><span class="lineno">  204</span>         print(<span class="stringliteral">&#39;Vol is {0}, field is {1}&#39;</span>.format(v.GetName(), field))</div>
+<div class="line"><span class="lineno">  204</span>         print(f<span class="stringliteral">&#39;Vol is {v.GetName()}, field is {field}&#39;</span>)</div>
 <div class="line"><span class="lineno">  205</span>        <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  206</span>         print(<span class="stringliteral">&#39;Vol is {0}&#39;</span>.format(v.GetName()))</div>
+<div class="line"><span class="lineno">  206</span>         print(f<span class="stringliteral">&#39;Vol is {v.GetName()}&#39;</span>)</div>
 <div class="line"><span class="lineno">  207</span> </div>
 <div class="line"><span class="lineno">  208</span>        <span class="keywordflow">if</span> field:</div>
 <div class="line"><span class="lineno">  209</span>            <span class="comment"># Get the field value assuming the global co-ordinate origin.</span></div>
@@ -426,7 +426,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  211</span>            centre = array(<span class="stringliteral">&#39;d&#39;</span>,[0.0, 0.0, 0.0])</div>
 <div class="line"><span class="lineno">  212</span>            B = array(<span class="stringliteral">&#39;d&#39;</span>,[0.0, 0.0, 0.0])</div>
 <div class="line"><span class="lineno">  213</span>            field.Field(centre, B)</div>
-<div class="line"><span class="lineno">  214</span>            print(<span class="stringliteral">&#39;Volume {0} has B = ({1}, {2}, {3}) T&#39;</span>.format(v.GetName(), B[0]/u.tesla,</div>
+<div class="line"><span class="lineno">  214</span>            print(<span class="stringliteral">&#39;Volume {} has B = ({}, {}, {}) T&#39;</span>.format(v.GetName(), B[0]/u.tesla,</div>
 <div class="line"><span class="lineno">  215</span>                                                                B[1]/u.tesla, B[2]/u.tesla))</div>
 <div class="line"><span class="lineno">  216</span> </div>
 </div><!-- fragment -->

@@ -177,7 +177,7 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="ShipGeoConfig_8py_source.html#l00099">99</a> of file <a class="el" href="ShipGeoConfig_8py_source.html">ShipGeoConfig.py</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   99</span>    <span class="keyword">def </span>__init__(self, *args, **kwargs):</div>
-<div class="line"><span class="lineno">  100</span>        super(Config, self).__init__(*args, **kwargs)</div>
+<div class="line"><span class="lineno">  100</span>        super().__init__(*args, **kwargs)</div>
 <div class="line"><span class="lineno">  101</span> </div>
 </div><!-- fragment -->
 </div>
@@ -203,7 +203,7 @@ Public Member Functions</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">  129</span>    <span class="keyword">def </span>__str__(self):</div>
 <div class="line"><span class="lineno">  130</span>        <span class="keywordflow">return</span> <span class="stringliteral">&quot;ShipGeoConfig:\n  &quot;</span> + <span class="stringliteral">&quot;\n  &quot;</span>.join(</div>
 <div class="line"><span class="lineno">  131</span>            [</div>
-<div class="line"><span class="lineno">  132</span>                <span class="stringliteral">&quot;%s: %s&quot;</span> % (k, self[k].__str__())</div>
+<div class="line"><span class="lineno">  132</span>                f<span class="stringliteral">&quot;{k}: {self[k].__str__()}&quot;</span></div>
 <div class="line"><span class="lineno">  133</span>                <span class="keywordflow">for</span> k <span class="keywordflow">in</span> sorted(self.keys())</div>
 <div class="line"><span class="lineno">  134</span>                <span class="keywordflow">if</span> <span class="keywordflow">not</span> k.startswith(<span class="stringliteral">&quot;_&quot;</span>)</div>
 <div class="line"><span class="lineno">  135</span>            ]</div>

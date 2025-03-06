@@ -127,34 +127,34 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipMuShield__only_8py_source.html#l00006">6</a> of file <a class="el" href="shipMuShield__only_8py_source.html">shipMuShield_only.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">    6</span><span class="keyword">def </span>configure(run,ship_geo):</div>
-<div class="line"><span class="lineno">    7</span><span class="comment"># -----Create media-------------------------------------------------</span></div>
-<div class="line"><span class="lineno">    8</span> run.SetMaterials(<span class="stringliteral">&quot;media.geo&quot;</span>)  <span class="comment"># Materials</span></div>
-<div class="line"><span class="lineno">    9</span><span class="comment"># ------------------------------------------------------------------------</span></div>
-<div class="line"><span class="lineno">   10</span> </div>
-<div class="line"><span class="lineno">   11</span><span class="comment"># -----Create geometry----------------------------------------------</span></div>
-<div class="line"><span class="lineno">   12</span> cave= ROOT.ShipCave(<span class="stringliteral">&quot;CAVE&quot;</span>)</div>
-<div class="line"><span class="lineno">   13</span> cave.SetGeometryFileName(<span class="stringliteral">&quot;cave.geo&quot;</span>)</div>
-<div class="line"><span class="lineno">   14</span> run.AddModule(cave)</div>
-<div class="line"><span class="lineno">   15</span> </div>
-<div class="line"><span class="lineno">   16</span> <span class="keywordflow">if</span> ship_geo.muShieldDesign==1:</div>
-<div class="line"><span class="lineno">   17</span>  MuonShield = ROOT.ShipMuonShield(<span class="stringliteral">&quot;MuonShield&quot;</span>,ship_geo.muShieldDesign,<span class="stringliteral">&quot;ShipMuonShield&quot;</span>,ship_geo.muShield.z,ship_geo.muShield.dZ0,ship_geo.muShield.length,\</div>
-<div class="line"><span class="lineno">   18</span>                                   ship_geo.muShield.LE)</div>
-<div class="line"><span class="lineno">   19</span> <span class="keywordflow">elif</span> ship_geo.muShieldDesign==2:</div>
-<div class="line"><span class="lineno">   20</span>  MuonShield = ROOT.ShipMuonShield(<span class="stringliteral">&quot;MuonShield&quot;</span>,ship_geo.muShieldDesign,<span class="stringliteral">&quot;ShipMuonShield&quot;</span>,ship_geo.muShield.z,ship_geo.muShield.dZ0,ship_geo.muShield.dZ1,\</div>
-<div class="line"><span class="lineno">   21</span>               ship_geo.muShield.dZ2,ship_geo.muShield.dZ3,ship_geo.muShield.dZ4,ship_geo.muShield.dZ5,ship_geo.muShield.dZ6,ship_geo.muShield.LE)</div>
-<div class="line"><span class="lineno">   22</span> <span class="keywordflow">elif</span> ship_geo.muShieldDesign==3 <span class="keywordflow">or</span> ship_geo.muShieldDesign==4 <span class="keywordflow">or</span> ship_geo.muShieldDesign==5 :</div>
-<div class="line"><span class="lineno">   23</span>  MuonShield = ROOT.ShipMuonShield(<span class="stringliteral">&quot;MuonShield&quot;</span>,ship_geo.muShieldDesign,<span class="stringliteral">&quot;ShipMuonShield&quot;</span>,ship_geo.muShield.z,ship_geo.muShield.dZ0,ship_geo.muShield.dZ1,\</div>
-<div class="line"><span class="lineno">   24</span>               ship_geo.muShield.dZ2,ship_geo.muShield.dZ3,ship_geo.muShield.dZ4,ship_geo.muShield.dZ5,ship_geo.muShield.dZ6,\</div>
-<div class="line"><span class="lineno">   25</span>               ship_geo.muShield.dZ7,ship_geo.muShield.dZ8,ship_geo.muShield.dXgap,ship_geo.muShield.LE,ship_geo.Yheight*4./10.)</div>
-<div class="line"><span class="lineno">   26</span> </div>
-<div class="line"><span class="lineno">   27</span> run.AddModule(MuonShield)</div>
-<div class="line"><span class="lineno">   28</span> </div>
-<div class="line"><span class="lineno">   29</span><span class="comment"># return list of detector elements</span></div>
-<div class="line"><span class="lineno">   30</span> detElements = {}</div>
-<div class="line"><span class="lineno">   31</span> <span class="keywordflow">for</span> x <span class="keywordflow">in</span> run.GetListOfModules(): detElements[x.GetName()]=x</div>
-<div class="line"><span class="lineno">   32</span> <span class="keywordflow">return</span> detElements</div>
+<p class="definition">Definition at line <a class="el" href="shipMuShield__only_8py_source.html#l00005">5</a> of file <a class="el" href="shipMuShield__only_8py_source.html">shipMuShield_only.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">    5</span><span class="keyword">def </span>configure(run,ship_geo):</div>
+<div class="line"><span class="lineno">    6</span><span class="comment"># -----Create media-------------------------------------------------</span></div>
+<div class="line"><span class="lineno">    7</span> run.SetMaterials(<span class="stringliteral">&quot;media.geo&quot;</span>)  <span class="comment"># Materials</span></div>
+<div class="line"><span class="lineno">    8</span><span class="comment"># ------------------------------------------------------------------------</span></div>
+<div class="line"><span class="lineno">    9</span> </div>
+<div class="line"><span class="lineno">   10</span><span class="comment"># -----Create geometry----------------------------------------------</span></div>
+<div class="line"><span class="lineno">   11</span> cave= ROOT.ShipCave(<span class="stringliteral">&quot;CAVE&quot;</span>)</div>
+<div class="line"><span class="lineno">   12</span> cave.SetGeometryFileName(<span class="stringliteral">&quot;cave.geo&quot;</span>)</div>
+<div class="line"><span class="lineno">   13</span> run.AddModule(cave)</div>
+<div class="line"><span class="lineno">   14</span> </div>
+<div class="line"><span class="lineno">   15</span> <span class="keywordflow">if</span> ship_geo.muShieldDesign==1:</div>
+<div class="line"><span class="lineno">   16</span>  MuonShield = ROOT.ShipMuonShield(<span class="stringliteral">&quot;MuonShield&quot;</span>,ship_geo.muShieldDesign,<span class="stringliteral">&quot;ShipMuonShield&quot;</span>,ship_geo.muShield.z,ship_geo.muShield.dZ0,ship_geo.muShield.length,\</div>
+<div class="line"><span class="lineno">   17</span>                                   ship_geo.muShield.LE)</div>
+<div class="line"><span class="lineno">   18</span> <span class="keywordflow">elif</span> ship_geo.muShieldDesign==2:</div>
+<div class="line"><span class="lineno">   19</span>  MuonShield = ROOT.ShipMuonShield(<span class="stringliteral">&quot;MuonShield&quot;</span>,ship_geo.muShieldDesign,<span class="stringliteral">&quot;ShipMuonShield&quot;</span>,ship_geo.muShield.z,ship_geo.muShield.dZ0,ship_geo.muShield.dZ1,\</div>
+<div class="line"><span class="lineno">   20</span>               ship_geo.muShield.dZ2,ship_geo.muShield.dZ3,ship_geo.muShield.dZ4,ship_geo.muShield.dZ5,ship_geo.muShield.dZ6,ship_geo.muShield.LE)</div>
+<div class="line"><span class="lineno">   21</span> <span class="keywordflow">elif</span> ship_geo.muShieldDesign==3 <span class="keywordflow">or</span> ship_geo.muShieldDesign==4 <span class="keywordflow">or</span> ship_geo.muShieldDesign==5 :</div>
+<div class="line"><span class="lineno">   22</span>  MuonShield = ROOT.ShipMuonShield(<span class="stringliteral">&quot;MuonShield&quot;</span>,ship_geo.muShieldDesign,<span class="stringliteral">&quot;ShipMuonShield&quot;</span>,ship_geo.muShield.z,ship_geo.muShield.dZ0,ship_geo.muShield.dZ1,\</div>
+<div class="line"><span class="lineno">   23</span>               ship_geo.muShield.dZ2,ship_geo.muShield.dZ3,ship_geo.muShield.dZ4,ship_geo.muShield.dZ5,ship_geo.muShield.dZ6,\</div>
+<div class="line"><span class="lineno">   24</span>               ship_geo.muShield.dZ7,ship_geo.muShield.dZ8,ship_geo.muShield.dXgap,ship_geo.muShield.LE,ship_geo.Yheight*4./10.)</div>
+<div class="line"><span class="lineno">   25</span> </div>
+<div class="line"><span class="lineno">   26</span> run.AddModule(MuonShield)</div>
+<div class="line"><span class="lineno">   27</span> </div>
+<div class="line"><span class="lineno">   28</span><span class="comment"># return list of detector elements</span></div>
+<div class="line"><span class="lineno">   29</span> detElements = {}</div>
+<div class="line"><span class="lineno">   30</span> <span class="keywordflow">for</span> x <span class="keywordflow">in</span> run.GetListOfModules(): detElements[x.GetName()]=x</div>
+<div class="line"><span class="lineno">   31</span> <span class="keywordflow">return</span> detElements</div>
 </div><!-- fragment -->
 </div>
 </div>
