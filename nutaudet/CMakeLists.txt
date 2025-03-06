@@ -36,7 +36,7 @@ TTPoint.cxx
 )
 
 Set(HEADERS )
-Set(LINKDEF nutaudetLinkDef.h)
+Set(LINKDEF LinkDef.h)
 Set(LIBRARY_NAME nutaudet)
 set(DEPENDENCIES Base ShipData GeoBase ParBase Geom Core FairLogger::FairLogger)
 

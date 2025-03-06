@@ -26,7 +26,7 @@ UpstreamTaggerHit.cxx
 )
 
 Set(HEADERS )
-Set(LINKDEF UpstreamTaggerLinkDef.h)
+Set(LINKDEF LinkDef.h)
 Set(LIBRARY_NAME UpstreamTagger)
 Set(DEPENDENCIES
   Base ShipData FairLogger::FairLogger

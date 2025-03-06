@@ -47,7 +47,7 @@ ecalReco.cxx
 ecalMatch.cxx
 )
 
-Set(LINKDEF ecalLinkDef.h)
+Set(LINKDEF LinkDef.h)
 Set(LIBRARY_NAME ecal)
 Set(DEPENDENCIES
     Base ShipData FairLogger::FairLogger
