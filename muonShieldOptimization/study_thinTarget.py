@@ -105,7 +105,7 @@ import rootUtils as ut
 f=ROOT.TFile('TLV.root')
 pdg = ROOT.TDatabasePDG.Instance()
 h={}
-sTree = f.cbmsim
+sTree = f["cbmsim"]
 ut.bookHist(h,'Ekin','Ekin of particles in sens plane',400000,0.,400)
 ut.bookHist(h,'EkinLow','Ekin of particles in sens plane',1000,0.,0.001)
 for n in range(sTree.GetEntries()):

@@ -99,7 +99,7 @@ parser.add_argument("-X", "--moreInfo", help="Print weight and capacity", action
 options = parser.parse_args()
 fname = options.geometry
 fgeom = ROOT.TFile.Open(fname)
-fGeo = fgeom.FAIRGeom
+fGeo = fgeom["FAIRGeom"]
 top = fGeo.GetTopVolume()
 
 

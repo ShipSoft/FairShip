@@ -65,7 +65,7 @@ def PoT(f):
      xSecboost+=float(txt[i+1:].split(' ')[0])
  diMuboost=diMuboost/float(ncycles)
  xSecboost=xSecboost/float(ncycles)
- print("POT = ",nTot," number of events:",f.cbmsim.GetEntries(),' diMuboost=',diMuboost,' XsecBoost=',xSecboost)
+ print("POT = " ,nTot, " number of events:", f["cbmsim"].GetEntries(), ' diMuboost=', diMuboost, ' XsecBoost=', xSecboost)
  return nTot,diMuboost,xSecboost
 
 def TotStat():
@@ -80,7 +80,7 @@ def TotStat():
 def processFile(fin,noCharm=True):
     f   = ROOT.TFile.Open(os.environ['EOSSHIP']+path+fin)
     nPot,diMuboost,xSecboost  = PoT(f)
-    sTree = f.cbmsim
+    sTree = f["cbmsim"]
     outFile = fin.replace(".root","_mu.root")
     fmu = ROOT.TFile(outFile,"recreate")
     newTree = sTree.CloneTree(0)
@@ -182,7 +182,7 @@ def mergeMbiasAndCharm(flavour="charm"):
  Nall = 0
  for x in allFiles:
   f=ROOT.TFile.Open(pp+allFiles[x])
-  nEntries[x]=f.cbmsim.GetEntries()
+  nEntries[x]=f["cbmsim"].GetEntries()
   Nall += nEntries[x]
  nCharm = 0
  nDone  = 0
@@ -196,7 +196,7 @@ def mergeMbiasAndCharm(flavour="charm"):
   os.system('hadd -f tmp.root '+ allFiles[flavour] + ' '+ allFiles[k] )
   os.system('rm '+allFiles[k])
   f = ROOT.TFile('tmp.root')
-  sTree = f.cbmsim
+  sTree = f["cbmsim"]
   sTree.LoadBaskets(30000000000)
   if flavour=="charm":
    outFile = tmp.replace('cXX','withCharm'+k)
@@ -250,7 +250,7 @@ def mergeMbiasAndCharm(flavour="charm"):
 
 def testRatio(fname):
  f=ROOT.TFile.Open(os.environ['EOSSHIP']+path+fname)
- sTree = f.cbmsim
+ sTree = f["cbmsim"]
  Nall = sTree.GetEntries()
  charm = 0
  for n in range(Nall):

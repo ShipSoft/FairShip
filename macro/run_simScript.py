@@ -620,7 +620,7 @@ if simEngine == "MuonBack":
     nm = ff.GetName().split('/')
     if nm[len(nm)-1] == check: fin = ff
  if not fin: fin   = ROOT.TFile.Open(outFile)
- t     = fin.cbmsim
+ t = fin["cbmsim"]
  fout  = ROOT.TFile(tmpFile,'recreate')
  fSink = ROOT.FairRootFileSink(fout)
 

@@ -128,7 +128,7 @@ f=ROOT.gROOT.GetListOfFiles()[0]
 h={}
 ut.bookHist(h,'muons','muon mult',10,-0.5,9.5)
 ut.bookHist(h,'electrons','e mult',10,-0.5,9.5)
-sTree = f.cbmsim
+sTree = f["cbmsim"]
 for n in range(sTree.GetEntries()):
  rc = sTree.GetEvent(n)
  nMu = 0

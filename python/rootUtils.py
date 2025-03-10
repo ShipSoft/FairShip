@@ -142,7 +142,7 @@ def container_sizes(sTree,perEvent=False):
 
 def stripOffBranches(fout):
     f = TFile(fout)
-    sTree = f.cbmsim
+    sTree = f["cbmsim"]
     nEvents = sTree.GetEntries()
     strip = False
     oldTargetClass = False
@@ -174,7 +174,7 @@ def stripOffBranches(fout):
     recf.Close()
     # should do some sanity checks before deleting old file
     f = TFile(sFile)
-    sTree = f.cbmsim
+    sTree = f["cbmsim"]
     if nEvents == sTree.GetEntries(): print("looks ok, could be deleted",os.path.abspath('.'))
     else:  print("stripping failed, keep old file",os.path.abspath('.'))
     # os.system('mv '+sFile +' '+fout)
