@@ -47,7 +47,7 @@ for idnu in range(12,17,2):
 def processFile(fin,noCharm=True):
     f   = ROOT.TFile.Open(os.environ['EOSSHIP']+path+fin)
     print("opened file ",fin)
-    sTree = f.cbmsim
+    sTree = f["cbmsim"]
     for n in range(sTree.GetEntries()):
       sTree.GetEntry(n)
       for v in sTree.vetoPoint:

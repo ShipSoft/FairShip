@@ -293,7 +293,7 @@ if nt:
  tnt.Write()
  tf.Close()
 
-t     = fin.cbmsim
+t = fin["cbmsim"]
 fout  = ROOT.TFile(tmpFile,'recreate' )
 sTree = t.CloneTree(0)
 nEvents = 0

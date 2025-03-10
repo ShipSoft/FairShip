@@ -330,7 +330,7 @@ if prefixes[0]!='': testdir = path+prefixes[0]+'1'
 for f in os.listdir(testdir):
   if not f.find("geofile_full")<0:
      fgeo = ROOT.TFile(testdir+'/'+f)
-     sGeo = fgeo.FAIRGeom
+     sGeo = fgeo["FAIRGeom"]
      inputFile = f.replace("geofile_full","ship")
      break
 # try to extract from input file name
@@ -623,7 +623,7 @@ def BigEventLoop():
 
 def executeOneFile(fn,output=None,pid=None):
   f     = ROOT.TFile.Open(fn)
-  sTree = f.cbmsim
+  sTree = f["cbmsim"]
   nEvents = sTree.GetEntries()
   if sTree.GetBranch("GeoTracks"): sTree.SetBranchStatus("GeoTracks",0)
   sTree.GetEntry(0)
@@ -814,7 +814,7 @@ def AnaEventLoop():
   if not f.FindObjectAny('cbmsim'):
    print('skip file ',f.GetName())
    continue
-  sTree = f.cbmsim
+  sTree = f["cbmsim"]
   sTree.GetEvent(0)
   if sTree.GetBranch("GeoTracks"): sTree.SetBranchStatus("GeoTracks",0)
   nEvents = sTree.GetEntries()
@@ -852,7 +852,7 @@ def muDISntuple(fn):
   fout = ROOT.TFile('muDISVetoCounter.root','recreate')
   h['ntuple'] = ROOT.TNtuple("muons","muon flux VetoCounter","id:px:py:pz:x:y:z:w")
   f = ROOT.TFile(fn)
-  sTree = f.cbmsim
+  sTree = f["cbmsim"]
   nEvents = sTree.GetEntries()
   for n in range(nEvents):
    sTree.GetEntry(n)
@@ -889,7 +889,7 @@ def analyzeConcrete():
   if not f.FindObjectAny('cbmsim'):
    print('skip file ',f.GetName())
    continue
-  sTree = f.cbmsim
+  sTree = f["cbmsim"]
   nEvents = sTree.GetEntries()
   ROOT.gROOT.cd()
   for n in range(nEvents):
@@ -946,7 +946,7 @@ def rareEventEmulsion(fname = 'rareEmulsion.txt'):
   if not f.FindObjectAny('cbmsim'):
    print('skip file ',f.GetName())
    continue
-  sTree = f.cbmsim
+  sTree = f["cbmsim"]
   sTree.GetEvent(0)
   if sTree.GetBranch("GeoTracks"): sTree.SetBranchStatus("GeoTracks",0)
   nEvents = sTree.GetEntries()
@@ -982,7 +982,7 @@ def extractRareEvents(single = None):
   if not f.FindObjectAny('cbmsim'):
    print('skip file ',f.GetName())
    continue
-  sTree = f.cbmsim
+  sTree = f["cbmsim"]
   nEvents = sTree.GetEntries()
   raref = ROOT.TFile(fn.replace(".root","_rare.root"),"recreate")
   newTree = sTree.CloneTree(0)
@@ -1017,7 +1017,7 @@ def extractMuCloseByEvents(single = None):
   if not f.FindObjectAny('cbmsim'):
    print('skip file ',f.GetName())
    continue
-  sTree = f.cbmsim
+  sTree = f["cbmsim"]
   nEvents = sTree.GetEntries()
   raref = ROOT.TFile(fn.replace(".root","_clby.root"),"recreate")
   newTree = sTree.CloneTree(0)
@@ -1097,7 +1097,7 @@ def debugGeoTracks():
      print(i,n,gt.GetFirstPoint()[2],gt.GetLastPoint()[2],gt.GetParticle().GetPdgCode(),gt.GetParticle().P())
      n+=1
 def eventsWithStrawPoints(i):
- sTree = fchain[i].cbmsim
+ sTree = fchain[i]["cbmsim"]
  mom = ROOT.TVector3()
  for i in range(sTree.GetEntries()):
    sTree.GetEntry(i)
@@ -1112,7 +1112,7 @@ def eventsWithStrawPoints(i):
      mom.Print()
      print('-----------------------')
 def eventsWithEntryPoints(i):
- sTree = fchain[i].cbmsim
+ sTree = fchain[i]["cbmsim"]
  mom = ROOT.TVector3()
  for i in range(sTree.GetEntries()):
    sTree.GetEntry(i)
