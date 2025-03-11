@@ -106,7 +106,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.tankDesign = tankDesign
     c.magnetDesign = magnet_design
 # cave parameters
-    c.cave = AttrDict(z=0*u.cm)
+    c.cave = AttrDict()
     c.cave.floorHeightMuonShield = 5*u.m
     c.cave.floorHeightTankA = 4.2*u.m
     if strawDesign == 10:
@@ -116,11 +116,65 @@ with ConfigRegistry.register_config("basic") as c:
     #neutrino detector
     c.nuTauTargetDesign=nuTauTargetDesign
 
-    c.chambers = AttrDict(z=0*u.cm)
+    with open(c.target_yaml) as file:
+        config = yaml.safe_load(file)
+        c.target = AttrDict(config['target'])
+
+    target_length = (c.target.Nplates - 1) * c.target.sl
+    for width, n in zip(c.target.L, c.target.N):
+        target_length += width * n
+    c.target.length = target_length
+    # interaction point, start of target
+
+    c.target.z0 = 0  # Origin of SHiP coordinate system
+    c.target.z = c.target.z0 + c.target.length / 2.
+
+    c.chambers = AttrDict()
     magnetIncrease    = 100.*u.cm
+    c.muShield = AttrDict()
+    c.muShield.Field = 1.7 # in units of Tesla expected by ShipMuonShield
+    c.muShield.LE = 7 * u.m     # - 0.5 m air - Goliath: 4.5 m - 0.5 m air - nu-tau mu-det: 3 m - 0.5 m air. finally 10m asked by Giovanni
+    c.muShield.dZ0 = 1 * u.m
+
+
+    # zGap to compensate automatic shortening of magnets
+    zGap = 0.05 * u.m  # halflengh of gap
+
+
+    params = shield_db[shieldName]['params']
+    c.muShield.params = params
+    c.muShield.dZ1 = params[0]
+    c.muShield.dZ2 = params[1]
+    c.muShield.dZ3 = params[2]
+    c.muShield.dZ4 = params[3]
+    c.muShield.dZ5 = params[4]
+    c.muShield.dZ6 = params[5]
+    c.muShield.dZ7 = params[6]
+    c.muShield.dXgap = 0. *u.m
+
+
+    c.muShield.length = 2 * (
+            c.muShield.dZ1 + c.muShield.dZ2 +
+            c.muShield.dZ3 + c.muShield.dZ4 +
+            c.muShield.dZ5 + c.muShield.dZ6 +
+            c.muShield.dZ7
+    ) + c.muShield.LE
+
+    c.hadronAbsorber = AttrDict()
+    c.hadronAbsorber.length = 0 * u.m  # magnetized, counted inside muonshield
+    c.hadronAbsorber.z = c.target.z + c.hadronAbsorber.length / 2. + c.target.length / 2.
+    c.muShield.z = c.hadronAbsorber.z + c.muShield.length / 2. + c.hadronAbsorber.length / 2.
+
+    c.decayVolume = AttrDict()
+
+    # target absorber muon shield setup, decayVolume.length = nominal EOI length, only kept to define z=0
+    c.decayVolume.length = 50 * u.m
+
     # make z coordinates for the decay volume and tracking stations relative to T4z
     # eventually, the only parameter which needs to be changed when the active shielding lenght changes.
-    c.z = 31.450 * u.m  # Relative position of spectrometer magnet to decay vessel centre
+    c.z = 89.57 * u.m  # absolute position of spectrometer magnet
+    c.decayVolume.z = c.z - 31.450 * u.m  # Relative position of decay vessel centre to spectrometer magnet
+    c.decayVolume.z0 = c.decayVolume.z - c.decayVolume.length / 2.
     if strawDesign != 4 and strawDesign != 10:
      print("this design ",strawDesign," is not supported, use strawDesign = 4 or 10")
      1/0
@@ -133,19 +187,7 @@ with ConfigRegistry.register_config("basic") as c:
      c.chambers.Tub6length = 0.1*u.m+windowBulge/2.
      c.chambers.Rmin = 245.*u.cm
      c.chambers.Rmax = 250.*u.cm
-     # positions and lenghts of vacuum tube segments
-     zset = -4666. * u.cm - magnetIncrease - extraVesselLength
-     c.Chamber1 = AttrDict(z=zset)
-     zset = -2628. * u.cm - magnetIncrease - extraVesselLength / 2.
-     c.Chamber2 = AttrDict(z=zset)
-     zset = -740. * u.cm - magnetIncrease
-     c.Chamber3 = AttrDict(z=zset)
-     zset = -420. * u.cm - magnetIncrease / 2.
-     c.Chamber4 = AttrDict(z=zset)
-     zset = -100. * u.cm
-     c.Chamber5 = AttrDict(z=zset)
-     zset = 30. * u.cm + windowBulge / 2.
-     c.Chamber6 = AttrDict(z=zset)
+
 
      c.xMax = 2 * u.m  # max horizontal width at T4
      TrGap = 2 * u.m  # Distance between Tr1/2 and Tr3/4
@@ -160,7 +202,11 @@ with ConfigRegistry.register_config("basic") as c:
      z1 = c.z - TrMagGap - TrGap
      c.TrackStation1 = AttrDict(z=z1)
 
-    c.strawtubes = AttrDict(z=0*u.cm)
+     # positions and lenghts of vacuum tube segments (for backward compatibility)
+     c.Chamber1 = AttrDict(z=z4 - 4666. * u.cm - magnetIncrease - extraVesselLength)
+     c.Chamber6 = AttrDict(z=z4 + 30. * u.cm + windowBulge / 2.)
+
+    c.strawtubes = AttrDict()
     if strawDesign == 4:
      c.strawtubes.InnerStrawDiameter = 0.975 * u.cm
      c.strawtubes.StrawPitch = 1.76 * u.cm
@@ -188,7 +234,8 @@ with ConfigRegistry.register_config("basic") as c:
     c.strawtubes.VacBox_x = 240. * u.cm
     c.strawtubes.VacBox_y = 600. * u.cm * c.Yheight / (10. * u.m)
 
-    c.Bfield = AttrDict(z=c.z)
+    c.Bfield = AttrDict()
+    c.Bfield.z = c.z
     c.Bfield.max = 0 # 1.4361*u.kilogauss  # was 1.15 in EOI
     c.Bfield.y   = c.Yheight
     c.Bfield.x   = 2.4 * u.m
@@ -201,14 +248,14 @@ with ConfigRegistry.register_config("basic") as c:
       c.Bfield.y = 3.5 * u.m
 
 # TimeDet
-    c.TimeDet = AttrDict(z=0)
+    c.TimeDet = AttrDict()
     c.TimeDet.dzBarRow = 1.2 * u.cm
     c.TimeDet.dzBarCol = 2.4 * u.cm
     c.TimeDet.zBar = 1 * u.cm
     c.TimeDet.DZ = (c.TimeDet.dzBarRow + c.TimeDet.dzBarCol + c.TimeDet.zBar) / 2
     c.TimeDet.DX = 225 * u.cm
     c.TimeDet.DY = 325 * u.cm
-    c.TimeDet.z = 37.800 * u.m - c.TimeDet.dzBarRow * 3 / 2  # Relative position of first layer of timing detector to decay vessel centre
+    c.TimeDet.z = 37.800 * u.m - c.TimeDet.dzBarRow * 3 / 2 + c.decayVolume.z # Relative position of first layer of timing detector to decay vessel centre
 
     if CaloDesign==0:
      c.HcalOption = 1
@@ -225,8 +272,8 @@ with ConfigRegistry.register_config("basic") as c:
      print("CaloDesign option wrong -> ",CaloDesign)
      1/0
 
-    c.SplitCal = AttrDict(z=0)
-    c.SplitCal.ZStart = 38.450 * u.m  # Relative start z of split cal to decay vessel centre
+    c.SplitCal = AttrDict()
+    c.SplitCal.ZStart = 38.450 * u.m + c.decayVolume.z # Relative start z of split cal to decay vessel centre
     c.SplitCal.XMax = 4 * u.m / 2  # half length
     c.SplitCal.YMax = 6 * u.m / 2  # half length
     c.SplitCal.Empty = 0*u.cm
@@ -256,13 +303,13 @@ with ConfigRegistry.register_config("basic") as c:
     c.SplitCal.StripHalfLength = c.SplitCal.YMax / c.SplitCal.NModulesInY
     c.SplitCal.SplitCalThickness=(c.SplitCal.FilterECALThickness_first-c.SplitCal.FilterECALThickness)+(c.SplitCal.FilterECALThickness+c.SplitCal.ActiveECALThickness)*c.SplitCal.nECALSamplings+c.SplitCal.BigGap
 
-    zecal = 38.450 * u.m  # Relative start z of ECAL to decay vessel centre
+    zecal = 38.450 * u.m + c.decayVolume.z # Relative start z of ECAL to decay vessel centre
     c.ecal = AttrDict(z=zecal)
     c.ecal.File = EcalGeoFile
     hcalThickness = 232*u.cm
     if  c.HcalOption == 2: hcalThickness = 110*u.cm  # to have same interaction length as before
     if not c.HcalOption < 0:
-     zhcal = 40.850 * u.m  # Relative position of HCAL to decay vessel centre
+     zhcal = 40.850 * u.m + c.decayVolume.z # Relative position of HCAL to decay vessel centre
      c.hcal = AttrDict(z=zhcal)
      c.hcal.hcalSpace = hcalThickness + 5.5*u.cm
      c.hcal.File  =  HcalGeoFile
@@ -281,67 +328,16 @@ with ConfigRegistry.register_config("basic") as c:
     c.MuonFilter1 = AttrDict(z=c.MuonStation0.z+150.*u.cm)
     c.MuonFilter2 = AttrDict(z=c.MuonStation0.z+250.*u.cm)
 
-    c.Muon = AttrDict(z=0)
+    c.Muon = AttrDict()
     c.Muon.XMax = 250. * u.cm
     c.Muon.YMax = 325. * u.cm
 
     c.Muon.ActiveThickness = 0.5*u.cm
     c.Muon.FilterThickness = 30.*u.cm
 
-    # target absorber muon shield setup, decayVolume.length = nominal EOI length, only kept to define z=0
-    c.decayVolume            =  AttrDict(z=0*u.cm)
-    c.decayVolume.length     =   50*u.m
-
-    c.muShield       =  AttrDict(z=0*u.cm)
-    c.muShield.Field = 1.7 # in units of Tesla expected by ShipMuonShield
-    c.muShield.LE = 7 * u.m     # - 0.5 m air - Goliath: 4.5 m - 0.5 m air - nu-tau mu-det: 3 m - 0.5 m air. finally 10m asked by Giovanni
-    c.muShield.dZ0 = 1 * u.m
-
-
-    # zGap to compensate automatic shortening of magnets
-    zGap = 0.05 * u.m  # halflengh of gap
-
-
-    params = shield_db[shieldName]['params']
-    c.muShield.params = params
-    c.muShield.dZ1 = params[0]
-    c.muShield.dZ2 = params[1]
-    c.muShield.dZ3 = params[2]
-    c.muShield.dZ4 = params[3]
-    c.muShield.dZ5 = params[4]
-    c.muShield.dZ6 = params[5]
-    c.muShield.dZ7 = params[6]
-    c.muShield.dXgap = 0. *u.m
-
-
-    c.muShield.length = 2 * (
-            c.muShield.dZ1 + c.muShield.dZ2 +
-            c.muShield.dZ3 + c.muShield.dZ4 +
-            c.muShield.dZ5 + c.muShield.dZ6 +
-            c.muShield.dZ7
-    ) + c.muShield.LE
-    c.muShield.z = -(c.decayVolume.length + c.muShield.length) / 2.
-
-    c.hadronAbsorber              =  AttrDict(z=0*u.cm)
-    c.hadronAbsorber.length =     0*u.m # magnetized, counted inside muonshield
-    c.hadronAbsorber.z     =  c.muShield.z - c.muShield.length/2. - c.hadronAbsorber.length/2.
-
     c.hadronAbsorber.WithConstField = shield_db[shieldName]['WithConstField'] # TO BE CHECKED: NOT SURE IT IS NEEDED
     c.muShield.WithConstField = shield_db[shieldName]['WithConstField']
 
-    with open(c.target_yaml) as file:
-        config = yaml.safe_load(file)
-        c.target = AttrDict(config['target'])
-
-    target_length = (c.target.Nplates - 1) * c.target.sl
-    for width, n in zip(c.target.L, c.target.N):
-        target_length += width * n
-    c.target.length = target_length
-    # interaction point, start of target
-
-    # FIXME: Redundant after change to new coordinate system
-    c.target.z = c.hadronAbsorber.z - c.hadronAbsorber.length / 2. - c.target.length / 2.
-    c.target.z0 = c.target.z - c.target.length / 2.
 
 # for the digitizing step
     c.strawtubes.v_drift = 1./(30*u.ns/u.mm) # for baseline NA62 5mm radius straws)
@@ -352,14 +348,14 @@ with ConfigRegistry.register_config("basic") as c:
 
 
     #CAMM - For Nu tau detector, keep only these parameters which are used by others...
-    c.tauMudet = AttrDict(z=0*u.cm)
+    c.tauMudet = AttrDict()
     c.tauMudet.Ztot = 3 * u.m #space allocated to Muon spectrometer
     c.tauMudet.zMudetC = c.muShield.z + c.muShield.length / 2. - c.tauMudet.Ztot / 2. - 70 * u.cm
 
 
     #Upstream Tagger
     UBT_x_crop = 113.4 * u.cm
-    c.UpstreamTagger = AttrDict(z=0)
+    c.UpstreamTagger = AttrDict()
     c.UpstreamTagger.Z_Glass = 0.2 * u.cm
     c.UpstreamTagger.Y_Glass = 105 * u.cm
     c.UpstreamTagger.X_Glass = 223. * u.cm  - UBT_x_crop
@@ -395,4 +391,4 @@ with ConfigRegistry.register_config("basic") as c:
     c.UpstreamTagger.X_Strip = 229 * u.cm  - UBT_x_crop
     c.UpstreamTagger.X_Strip64 = 1.534 * u.cm
     c.UpstreamTagger.Y_Strip64 = 111 * u.cm
-    c.UpstreamTagger.Z_Position = -25.400 * u.m  # Relative position of UBT to decay vessel centre
+    c.UpstreamTagger.Z_Position = -25.400 * u.m + c.decayVolume.z # Relative position of UBT to decay vessel centre

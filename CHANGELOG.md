@@ -77,6 +77,7 @@ it in future.
 * MS design have B field as parameter
 * Changed the parametrization of the field in `ShipMuonShield.cxx`
 * Make the warm muon shield with new hadron absorber the default option
+* feat(geometry): Change coordinate system to z_0 := start of target
 
 ### Removed
 
