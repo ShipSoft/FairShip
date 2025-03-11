@@ -27,9 +27,12 @@ ShipMuonShield::ShipMuonShield() : FairModule("ShipMuonShield", "") {}
 
 ShipMuonShield::ShipMuonShield(TString geofile,
                                Double_t floor,
-                               const Int_t withCoMagnet, const Bool_t StepGeo,
-                               const Bool_t WithConstAbsorberField, const Bool_t WithConstShieldField)
-  : FairModule("MuonShield", "ShipMuonShield")
+                               Double_t z0,
+                               Int_t withCoMagnet,
+                               Bool_t StepGeo,
+                               Bool_t WithConstAbsorberField,
+                               Bool_t WithConstShieldField)
+    : FairModule("MuonShield", "ShipMuonShield")
 {
   fWithConstAbsorberField = WithConstAbsorberField;
   fWithConstShieldField = WithConstShieldField;
@@ -57,14 +60,17 @@ ShipMuonShield::ShipMuonShield(TString geofile,
   fFloor = floor;
   fSupport = false;
 
-  Double_t Z = -25 * m - fMuonShieldLength / 2.;
-
-  zEndOfAbsorb = Z + - fMuonShieldLength / 2.;
+  zEndOfAbsorb = z0;
 }
 
 ShipMuonShield::ShipMuonShield(TVectorT<Double_t> in_params,
-Double_t floor, const Int_t withCoMagnet, const Bool_t StepGeo, const Bool_t WithConstAbsorberField, const Bool_t WithConstShieldField,  const Bool_t SC_key)
-  : FairModule("MuonShield", "ShipMuonShield")
+                               Double_t floor,
+                               Int_t withCoMagnet,
+                               Bool_t StepGeo,
+                               Bool_t WithConstAbsorberField,
+                               Bool_t WithConstShieldField,
+                               Bool_t SC_key)
+    : FairModule("MuonShield", "ShipMuonShield")
 {
   for(int i = 0; i < 56; i++){
       shield_params.push_back(in_params[i]);
@@ -91,9 +97,7 @@ Double_t floor, const Int_t withCoMagnet, const Bool_t StepGeo, const Bool_t Wit
   fFloor = floor;
   fSupport = false;
 
-  Double_t Z = -25 * m - fMuonShieldLength / 2.;
-
-  zEndOfAbsorb = Z + - fMuonShieldLength / 2.;
+  zEndOfAbsorb = z0;
 }
 
 ShipMuonShield::ShipMuonShield(const char* name, const Int_t Design, const char* Title,
