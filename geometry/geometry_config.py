@@ -303,7 +303,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.strawtubes.VacBox_y = 600. * u.cm * c.Yheight / (10. * u.m)
 
     c.Bfield = AttrDict()
-    c.BField.z = c.TrackStation2.z + 0.5 * (c.TrackStation3.z - c.TrackStation2.z)
+    c.Bfield.z = c.TrackStation2.z + 0.5 * (c.TrackStation3.z - c.TrackStation2.z)
     c.Bfield.max = 0 # 1.4361*u.kilogauss  # was 1.15 in EOI
     c.Bfield.y   = c.Yheight
     c.Bfield.x   = 2.4 * u.m
