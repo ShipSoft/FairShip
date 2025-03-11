@@ -8,25 +8,25 @@ using std::cout;
 using std::cerr;
 using std::endl;
 
-const int kMaxLen = 2048;        
+const int kMaxLen = 2048;
 
 // ------   Constructor   --------------------------------------------------
 ShipFieldPar::ShipFieldPar(const char* name, const char* title,
-			 const char* context) 
+			 const char* context)
   : FairParGenericSet(name, title, context),
     fType(-1),
-    fXmin(0.), 
+    fXmin(0.),
     fXmax(0.),
-    fYmin(0.), 
+    fYmin(0.),
     fYmax(0.),
-    fZmin(0.), 
+    fZmin(0.),
     fZmax(0.),
-    fBx(0.), 
-    fBy(0.),  
+    fBx(0.),
+    fBy(0.),
     fBz(0.),
     fMapName(""),
-    fPosX(0.), 
-    fPosY(0.), 
+    fPosX(0.),
+    fPosY(0.),
     fPosZ(0.),
     fScale(0.),
     fPeak(0.),
@@ -36,21 +36,21 @@ ShipFieldPar::ShipFieldPar(const char* name, const char* title,
 }
 // -------------------------------------------------------------------------
 
-ShipFieldPar::ShipFieldPar() 
+ShipFieldPar::ShipFieldPar()
   : FairParGenericSet(),
     fType(-1),
-    fXmin(0.), 
+    fXmin(0.),
     fXmax(0.),
-    fYmin(0.), 
+    fYmin(0.),
     fYmax(0.),
-    fZmin(0.), 
+    fZmin(0.),
     fZmax(0.),
-    fBx(0.), 
-    fBy(0.),  
+    fBx(0.),
+    fBy(0.),
     fBz(0.),
     fMapName(""),
-    fPosX(0.), 
-    fPosY(0.), 
+    fPosX(0.),
+    fPosY(0.),
     fPosZ(0.),
     fScale(0.),
     fPeak(0.),
@@ -117,12 +117,12 @@ Bool_t ShipFieldPar::getParams(FairParamList* list) {
     if ( ! list->fill("Field Bx", &fBx) ) return kFALSE;
     if ( ! list->fill("Field By", &fBy) ) return kFALSE;
     if ( ! list->fill("Field Bz", &fBz) ) return kFALSE;
-      
+
   }  else if (fType >=1 && fType <= kMaxFieldMapType) {
-      
+
       if ( ! list->fill("Field Peak", &fPeak) ) return kFALSE;
       if ( ! list->fill("Field Middle", &fMiddle) ) return kFALSE;
-      
+
   }  else if (fType >=2 && fType <= kMaxFieldMapType) {    // field map
     Text_t mapName[80];
     if ( ! list->fill("Field map name", mapName, 80) ) return kFALSE;
@@ -149,7 +149,7 @@ void ShipFieldPar::SetParameters(FairField* field) {
   }
 
   fType = field->GetType();
- 
+
   if ( fType == 0 ) {                                 // constant field
     ShipConstField* fieldConst = (ShipConstField*) field;
     fBx = fieldConst->GetBx();
@@ -171,16 +171,8 @@ void ShipFieldPar::SetParameters(FairField* field) {
     fMapName = "";
     fPosX = fPosY = fPosZ = fScale = 0.;
   }
-  
+
   return;
 
 }
 // -------------------------------------------------------------------------
-
-
-    
-    
-    
-
-ClassImp(ShipFieldPar)
-

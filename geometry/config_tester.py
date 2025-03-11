@@ -14,7 +14,7 @@ def parse_arguments():
     ap = argparse.ArgumentParser(
         description='test configuration file')
     ap.add_argument('-d', '--debug', action='store_true')
-    ap.add_argument('-p', '--params', type=json.loads, 
+    ap.add_argument('-p', '--params', type=json.loads,
                     help="""config parameters in json form '{"a": 1, "b": 2}' """, default=None)
 
     ap.add_argument('config_file', help='config file to test')
@@ -31,8 +31,8 @@ def main(arguments):
         logger.info("paramters: %s" % arguments.params)
     ConfigRegistry.loadpy(arguments.config_file, **arguments.params)
     # ConfigRegistry.loadpy(arguments.config_file, muShieldDesign=2, targetOpt=5)
-    for k, v in ConfigRegistry().iteritems():
-        print "%s: %s" % (k, v)
+    for k, v in ConfigRegistry().items():
+        print(f"{k}: {v}")
 
 if __name__ == '__main__':
     main(parse_arguments())

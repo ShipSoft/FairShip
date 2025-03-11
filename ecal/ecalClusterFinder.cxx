@@ -37,7 +37,7 @@ InitStatus ecalClusterFinder::Init()
     return kFATAL;
   }
   fStr=(ecalStructure*)io->GetObject("EcalStructure");
-  if (!fStr) 
+  if (!fStr)
   {
     Fatal("Init()", "Can't find calorimeter structure in the system.");
     return kFATAL;
@@ -105,7 +105,7 @@ void ecalClusterFinder::FormPreClusters()
   Double_t e;
   Double_t ecls;
   ecalPreCluster* precluster;
- 
+
 
   for(;i<nm;i++)
   {
@@ -157,7 +157,7 @@ void ecalClusterFinder::FormClusters()
   Int_t Maximums=0;
   Int_t max;
   Int_t type;
-  
+
   if (fVerbose>9)
   {
     Info("FormClusters", "Total %d preclusters found.", (Int_t)fPreClusters.size());
@@ -228,7 +228,7 @@ ecalClusterFinder::ecalClusterFinder(const char* name, const Int_t verbose)
     fInf(NULL),
     fPreClusters(),
     fMinClusterE(0.03),
-    fMinMaxE(0.015)   
+    fMinMaxE(0.015)
 {
   ;
 }
@@ -244,9 +244,7 @@ ecalClusterFinder::ecalClusterFinder()
     fInf(NULL),
     fPreClusters(),
     fMinClusterE(0.03),
-    fMinMaxE(0.015)   
+    fMinMaxE(0.015)
 {
   ;
 }
-
-ClassImp(ecalClusterFinder)

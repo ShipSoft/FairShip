@@ -4,9 +4,9 @@ Bool_t isLibrary(const char* libName)
 {
   if (TString(gSystem->DynamicPathName(libName, kTRUE)) != TString(""))
     return kTRUE;
-  else  
+  else
     return kFALSE;
-}    
+}
 
 void g3libs()
 {

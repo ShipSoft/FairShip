@@ -21,7 +21,7 @@
 
 #include <list>
 
-class hcalPoint; 
+class hcalPoint;
 class FairVolume;
 class TGeoTranslation;
 class hcalLightMap;
@@ -41,7 +41,7 @@ public:
    *@param name    detetcor name
    *@param active  sensitivity flag
    **/
-  hcal(const char* name, Bool_t active, 
+  hcal(const char* name, Bool_t active,
 	  const char* fileGeo="hcal.geo");
 
 
@@ -76,10 +76,10 @@ public:
 
   virtual void Initialize();
 
-  /** Accessor to the hit collection **/                       
+  /** Accessor to the hit collection **/
   virtual TClonesArray* GetCollection(Int_t iColl) const;
   virtual void SetSpecialPhysicsCuts();
-  
+
   /** Get cell coordinates according
    ** to parameter container **/
   static Bool_t GetCellCoord(Int_t fVolumeID, Float_t &x, Float_t &y, Int_t& section);
@@ -112,26 +112,26 @@ private:
   /** Track information to be stored until the track leaves the
       active volume. **/
   /**  track index **/
-  Int_t          fTrackID;           	//!  
+  Int_t          fTrackID;           	//!
   /** volume id **/
-  Int_t          fVolumeID;          	//!  
+  Int_t          fVolumeID;          	//!
   /** position **/
-  TLorentzVector fPos;               	//!  
+  TLorentzVector fPos;               	//!
   /** momentum **/
-  TLorentzVector fMom;               	//!  
+  TLorentzVector fMom;               	//!
   /** time **/
   Double32_t     fTime;              	//!
   /** length **/
   Double32_t     fLength;            	//!
   /** energy loss **/
   Double32_t     fELoss;             	//!
-  /** **/ 
+  /** **/
   Int_t          fPosIndex;          	//!
 
-  /** MC point collection on HCAL wall **/ 
-  TClonesArray*  fHcalCollection;	//! 
-  /** MC point collection inside HCAL **/ 
-  TClonesArray*  fLiteCollection;	//! 
+  /** MC point collection on HCAL wall **/
+  TClonesArray*  fHcalCollection;	//!
+  /** MC point collection inside HCAL **/
+  TClonesArray*  fLiteCollection;	//!
   /** HCAL geometry parameters **/
   /** x,y,z size of outer HCAL box [cm] **/
   Float_t fHcalSize[3];			//!
@@ -211,8 +211,8 @@ private:
   /** Construct a tile **/
   void ConstructTileSimple(Int_t material);
   TGeoVolume* fModule;			//! Calorimeter Modules
-  TGeoVolume* fScTile;			//! Pb tiles 
-  TGeoVolume* fTileEdging;		//! Edging of scintillator tiles 
+  TGeoVolume* fScTile;			//! Pb tiles
+  TGeoVolume* fTileEdging;		//! Edging of scintillator tiles
   TGeoVolume* fPbTile;			//! Scintillator tiles
   TGeoVolume* fTvTile;			//! Tyvek sheets
   TGeoVolume* fHoleVol[3];				//! Hole volume

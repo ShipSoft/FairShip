@@ -15,7 +15,7 @@ Global Wilfried
 # Example if using a field map:
 # FieldMap Map files/MuonFilterBFieldMap1.root 0.0 0.0 0.0
 # Global Map Wilfried
-# Assign the fields to volumes. Use "Local" to ignore global field 
+# Assign the fields to volumes. Use "Local" to ignore global field
 # for the specific volume or "Region" for local & global field
 # Active muon shield
 Local MagnAbsorb1_MiddleMagL B1_yPos

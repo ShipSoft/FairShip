@@ -57,5 +57,4 @@ private:
   ClassDef(hcalAnalysisSimple,1)
 };
 
-#endif 
-
+#endif

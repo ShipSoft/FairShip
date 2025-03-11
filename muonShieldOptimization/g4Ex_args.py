@@ -13,8 +13,8 @@ myTimer   = {'total':0,'pythia':0,'geant4_conv':0}
 tauOnly   = False
 work_dir  = "./"
 ecut      = 10  # GeV   with 1 : ~1sec / event, with 2: 0.4sec / event, 10: 0.13sec
-               # pythia = geant4 conversion = 0.4/100 
-# should divide number of events over different ecut values. 
+               # pythia = geant4 conversion = 0.4/100
+# should divide number of events over different ecut values.
 import os
 import shutil
 import argparse
@@ -28,7 +28,7 @@ def get_work_dir(run_number):
   import socket
   host = socket.gethostname()
   job_base_name = os.path.splitext(os.path.basename(os.sys.argv[0]))[0]
-  out_dir = "{host}_{base}_{runnr}".format(host=host, base=job_base_name, runnr=run_number)
+  out_dir = f"{host}_{job_base_name}_{run_number}"
   return out_dir
 
 
@@ -95,7 +95,7 @@ ROOT.gSystem.Load("libEGPythia8")
 myPythia = ROOT.TPythia8()
 rnr      = ROOT.TRandom()
 # Configure    myPythia.listAll()
-#              myPythia.list(431) 
+#              myPythia.list(431)
 
 myPythia.ReadString("SoftQCD:inelastic = on")
 myPythia.ReadString("SoftQCD:singleDiffractive = on")
@@ -118,16 +118,16 @@ myPythia.ReadString("Random:seed = "+str(R))
 myPythia.Initialize(2212, 2212, 400., 0.)  # required to hack TPythia8 in root !
 # W = 74 protons and 184-74= 110 neutrons
 
-if tauOnly:  myPythia.plist(431) 
+if tauOnly:  myPythia.plist(431)
 
-# Open an output file 
+# Open an output file
 h = {}
 if withNtuple:
  f  = ROOT.TFile.Open('pythia8_Geant4_'+str(runnr)+'_'+str(ecut)+'.root', 'RECREATE')
  h['ntuple'] = ROOT.TNtuple("pythia8-Geant4","muon/nu flux","id:px:py:pz:x:y:z:pythiaid:parentid")
 
 leptons   = [12,13,14,15,16]  # nu_e, mu, nu_mu, tau, nu_tau
-pionkaons = [211,321] 
+pionkaons = [211,321]
 rest      = [130,310,3122]
 allPart   = []
 allPart.extend(leptons)
@@ -156,11 +156,11 @@ class MyGeneratorAction(G4VUserPrimaryGeneratorAction):
    t_0 = time.time()
    npart = 0
    while npart == 0:
-    myPythia.GenerateEvent()      
+    myPythia.GenerateEvent()
     nevTot+=1
     myTimer['pythia']+=time.time()-t_0
 # pythia interaction happens at 0,0,0
-    #x = rnr.Uniform(-3.,3.) 
+    #x = rnr.Uniform(-3.,3.)
     #y = rnr.Uniform(-3.,3.)
     # leave this smearing for later
     pos    = G4ThreeVector(0*cm, 0*cm, -50*m)
@@ -171,7 +171,7 @@ class MyGeneratorAction(G4VUserPrimaryGeneratorAction):
        if p.GetStatusCode()!=1 : continue
        pid = p.GetPdgCode()
        if tauOnly and abs(pid) != 16: continue
-       if pid in notWanted : continue 
+       if pid in notWanted : continue
        G4particle = G4PrimaryParticle( pid )
        v = TLorentzVector()
        p.Momentum(v)
@@ -179,7 +179,7 @@ class MyGeneratorAction(G4VUserPrimaryGeneratorAction):
        G4particle.Set4Momentum( v.Px()*GeV,v.Py()*GeV,v.Pz()*GeV,v.E()*GeV )
        vertex.SetPrimary( G4particle )
 # store mother ID
-       mkey   =  p.GetMother(0)+1  
+       mkey   =  p.GetMother(0)+1
        mother =  myPythia.GetParticle(mkey)
        curPid =  p.GetPdgCode()      + 10000  # make it positive
        moPid  =  mother.GetPdgCode() + 10000
@@ -194,30 +194,30 @@ class MyRunAction(G4UserRunAction):
 
   def EndOfRunAction(self, run):
     global debug,nevTot
-    print "*** End of Run"
-    print "- Run summary : (id= %d, #events= %d)" \
-          % (run.GetRunID(), nevTot)
+    print("*** End of Run")
+    print("- Run summary : (id= %d, #events= %d)" \
+          % (run.GetRunID(), nevTot))
     h['ntuple'].Fill(-1., float(nevTot) )
     h['ntuple'].Write()
-    print 'lepton masses used'
+    print('lepton masses used')
     for l in leptons:
           G4particle = G4PrimaryParticle( l )
           G4def      = G4particle.GetParticleDefinition()
-          print l, G4def.GetParticleName(),  G4particle.GetMass()
+          print(l, G4def.GetParticleName(),  G4particle.GetMass())
 
 # ------------------------------------------------------------------
 class MyEventAction(G4UserEventAction):
   "My Event Action"
   def EndOfEventAction(self, event):
     global myEventnr
-    myEventnr += 1 
+    myEventnr += 1
     # self.myPrintout(event)
   def myPrintout(self, event):
     prim = event.GetPrimaryVertex()
-    print 'vertex ',prim.GetX0()/m,prim.GetY0()/m,prim.GetZ0()/m 
+    print('vertex ',prim.GetX0()/m,prim.GetY0()/m,prim.GetZ0()/m)
     for k in range( prim.GetNumberOfParticle() ):
-      p = prim.GetPrimary(k) 
-      print 'event',p.GetPDGcode(),p.GetPx()/GeV,p.GetPy()/GeV,p.GetPz()/GeV
+      p = prim.GetPrimary(k)
+      print('event',p.GetPDGcode(),p.GetPx()/GeV,p.GetPy()/GeV,p.GetPz()/GeV)
 # ------------------------------------------------------------------
 class MySteppingAction(G4UserSteppingAction):
   "My Stepping Action"
@@ -228,22 +228,22 @@ class MySteppingAction(G4UserSteppingAction):
 # ------------------------------------------------------------------
 class MyTrackingAction(G4UserTrackingAction):
  def PostUserTrackingAction(self,atrack):
-    pass  
+    pass
  def PreUserTrackingAction(self,atrack):
    # self.myPrintout(atrack)
-   if atrack.GetTotalEnergy()/GeV < ecut : 
-      G4TrackingManager().SetStoreTrajectory(False) 
+   if atrack.GetTotalEnergy()/GeV < ecut :
+      G4TrackingManager().SetStoreTrajectory(False)
       atrack.SetTrackStatus(atrack.GetTrackStatus().fStopAndKill)
    part         = atrack.GetDynamicParticle()
    pid          = part.GetPDGcode()
    if pid in notWanted:
-      G4TrackingManager().SetStoreTrajectory(False) 
+      G4TrackingManager().SetStoreTrajectory(False)
       atrack.SetTrackStatus(atrack.GetTrackStatus().fStopAndKill)
 
  def myPrintout(self, atrack):
    part         = atrack.GetDynamicParticle()
    pid          = part.GetPDGcode()
-   print 'TA',pid,atrack.GetTotalEnergy()/GeV,ecut*GeV 
+   print('TA',pid,atrack.GetTotalEnergy()/GeV,ecut*GeV)
 
 # ------------------------------------------------------------------
 class ScoreSD(G4VSensitiveDetector):
@@ -257,7 +257,7 @@ class ScoreSD(G4VSensitiveDetector):
     track        = step.GetTrack()
     part         = track.GetDynamicParticle()
     pid          = part.GetPDGcode()
-    if abs(pid) in leptons : 
+    if abs(pid) in leptons :
       mom = track.GetMomentum()
       pos = track.GetPosition()
 #
@@ -271,8 +271,8 @@ class ScoreSD(G4VSensitiveDetector):
       #myPythia.EventListing()
 
 def ConstructGeom():
-  print "* Constructing geometry..."
-  world_r = 100.*m 
+  print("* Constructing geometry...")
+  world_r = 100.*m
   # reset world material
   vac = G4Material.GetMaterial("G4_Galactic")
   g4py.ezgeom.SetWorldMaterial(vac)
@@ -300,7 +300,7 @@ def ConstructGeom():
   # a hadron absorber is placed
   absorber = G4EzVolume("Absorber")
 # iron alloys saturate at 1.6-2.2T
-  #                             inner radius outer radius length    
+  #                             inner radius outer radius length
   absorber.CreateTubeVolume(iron, 0.,         100.*cm,     150.*cm)
   absorberPhys = absorber.PlaceIt(G4ThreeVector(0.,0.,-50*m+2*25.*cm+150.*cm),1,snoopy)
   absorber.SetColor(G4Color(0.898,0.902,0.91,1.0))
@@ -310,7 +310,7 @@ def ConstructGeom():
   absorberlog = absorberPhys.GetLogicalVolume()
   absorberlog.SetVisAttributes(xx)
 # scoring plane
-  scorez = -50.*m+2*25.*cm+2*150.*cm+1*mm   
+  scorez = -50.*m+2*25.*cm+2*150.*cm+1*mm
   score  = G4EzVolume("Score")
   score.CreateTubeVolume(vac, 0.,          50.*m,     1.*mm)
   scorePhys = score.PlaceIt(G4ThreeVector(0.,0.,scorez),1,snoopy)
@@ -335,13 +335,13 @@ gRunManager.SetUserAction(myGE)
 #
 myTA= MyTrackingAction()
 gRunManager.SetUserAction(myTA)
-#  
+#
 
 ConstructGeom()
 
 myRA= MyRunAction()
 gRunManager.SetUserAction(myRA)
-  
+
 myEA= MyEventAction()
 gRunManager.SetUserAction(myEA)
 
@@ -349,13 +349,13 @@ gRunManager.SetUserAction(myEA)
 gRunManager.Initialize()
 # scoring should be set after geometry construction
 sens = ScoreSD('Score')
-scoreLog.SetSensitiveDetector(sens)  
+scoreLog.SetSensitiveDetector(sens)
 
 t0 = time.time()
 gRunManager.BeamOn(nev)
 t1 = time.time()
-print 'Time used',t1-t0, ' seconds' 
-for x in myTimer: 
-  print x,myTimer[x]
+print('Time used',t1-t0, ' seconds')
+for x in myTimer:
+  print(x,myTimer[x])
 
 logger.info("output directory: %s" % work_dir)

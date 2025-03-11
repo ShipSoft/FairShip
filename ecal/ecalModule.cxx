@@ -15,19 +15,19 @@ using std::list;
 using std::vector;
 
 //-----------------------------------------------------------------------------
-ecalModule::ecalModule(char type, Int_t cellnumber, Float_t x1, Float_t y1, Float_t x2, Float_t y2, Int_t mc, Float_t energy) 
-  : ecalCell(cellnumber, x1,y1,x2,y2, type, energy), 
-    fDx(x2-x1), 
+ecalModule::ecalModule(char type, Int_t cellnumber, Float_t x1, Float_t y1, Float_t x2, Float_t y2, Int_t mc, Float_t energy)
+  : ecalCell(cellnumber, x1,y1,x2,y2, type, energy),
+    fDx(x2-x1),
     fDy(y2-y1),
     fCells()
 {
   if (GetType()<1) return;
-	
+
   Int_t i;
   Int_t j;
   Int_t mt;
   Int_t num;
-	
+
   mt=type;
   fCells.resize(mt*mt,NULL);
 
@@ -37,7 +37,7 @@ ecalModule::ecalModule(char type, Int_t cellnumber, Float_t x1, Float_t y1, Floa
     for(i=0;i<mt;i++)
       for(j=0;j<mt;j++)
         fCells[i*mt+j]=new ecalCell((num*10+i+1)*10+j+1, x1+j*fDx/mt, y1+i*fDy/mt, x1+(j+1)*fDx/mt, y1+(i+1)*fDy/mt, type);
-  else 
+  else
     for(i=0;i<mt;i++)
       for(j=0;j<mt;j++)
         fCells[i*mt+j]=new ecalCellMC((num*10+i+1)*10+j+1, x1+j*fDx/mt, y1+i*fDy/mt, x1+(j+1)*fDx/mt, y1+(i+1)*fDy/mt, type);
@@ -70,7 +70,7 @@ void ecalModule::AddEnergy(Float_t x, Float_t y, Float_t energy)
 }
 
 //-----------------------------------------------------------------------------
-list<ecalCell*> ecalModule::GetCellsX(Float_t x) const 
+list<ecalCell*> ecalModule::GetCellsX(Float_t x) const
 {
   list<ecalCell*> tmp;
   vector<ecalCell*>::const_iterator p;

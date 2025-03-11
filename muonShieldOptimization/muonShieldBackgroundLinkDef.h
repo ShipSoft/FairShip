@@ -10,4 +10,3 @@
 #pragma link C++ class  pyFairModule+;
 #pragma link C++ class  simpleTarget+;
 #endif
-

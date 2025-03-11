@@ -1,8 +1,6 @@
-from __future__ import print_function
 import os
 import sys
 import re
-import six
 import numpy as np
 import scipy.interpolate
 import ROOT
@@ -10,7 +8,7 @@ import shipunit as u
 
 def addHNLtoROOT(pid=9900015 ,m = 1.0, g=3.654203020370371E-21):
     pdg = ROOT.TDatabasePDG.Instance()
-    pdg.AddParticle('N2','HNL', m, False, g, 0., 'N2', pid) 
+    pdg.AddParticle('N2','HNL', m, False, g, 0., 'N2', pid)
 
 def getbr_rpvsusy(h,histoname,mass,coupling):
     if histoname in h:
@@ -21,11 +19,11 @@ def getbr_rpvsusy(h,histoname,mass,coupling):
     return br
 
 def getmaxsumbrrpvsusy(h,histograms,mass,couplings):
-    #0 MeV< mass < 3.200 GeV 
+    #0 MeV< mass < 3.200 GeV
     maxsumbr=0.0
     sumbrs={}
-    for histoname in histograms: 
-       item = histoname.split('_') 
+    for histoname in histograms:
+       item = histoname.split('_')
        lepton = item[len(item)-1]
        meson = item[0]
        coupling=couplings[1]
@@ -33,14 +31,14 @@ def getmaxsumbrrpvsusy(h,histograms,mass,couplings):
            sumbrs[meson]+=getbr_rpvsusy(h,histoname,mass,coupling)
        except:
            sumbrs[meson]=getbr_rpvsusy(h,histoname,mass,coupling)
-    print(sumbrs.values())
+    print(list(sumbrs.values()))
     maxsumbr=max(sumbrs.values())
     return maxsumbr
 
 def gettotalbrrpvsusy(h,histograms,mass,couplings):
-    totalbr=0.0 
-    for histoname in histograms: 
-       item = histoname.split('_') 
+    totalbr=0.0
+    for histoname in histograms:
+       item = histoname.split('_')
        coupling=couplings[1]
        totalbr+=getbr_rpvsusy(h,histoname,mass,coupling)
     return totalbr
@@ -57,9 +55,9 @@ def make_particles_stable(P8gen, above_lifetime):
         n = p8.particleData.nextId(n)
         p = p8.particleData.particleDataEntryPtr(n)
         if p.tau0() > above_lifetime:
-            command = str(n)+":mayDecay = false"
+            command = f"{n}:mayDecay = false"
             p8.readString(command)
-            print("Pythia8 configuration: Made {} stable for Pythia, should decay in Geant4".format(p.name()))
+            print(f"Pythia8 configuration: Made {p.name()} stable for Pythia, should decay in Geant4")
 
 def parse_histograms(filepath):
     """
@@ -69,7 +67,7 @@ def parse_histograms(filepath):
     as a pair ([masses...], [branching ratios...]), where the mass is expressed
     in GeV.
     """
-    with open(filepath, 'r') as f:
+    with open(filepath) as f:
         lines = f.readlines()
     # Define regular expressions matching (sub-)headers and data lines
     th1f_exp      = re.compile(r'^TH1F\|.+')
@@ -84,12 +82,12 @@ def parse_histograms(filepath):
         # Parse header
         mh = header_exp.match(lines[offset])
         if mh is None or len(mh.groups()) != 2:
-            raise ValueError("Malformed header encountered: {0}".format(lines[offset]))
+            raise ValueError(f"Malformed header encountered: {lines[offset]}")
         decay_code = mh.group(1)
         # Parse sub-header (min/max mass and number of points)
         ms = subheader_exp.match(lines[offset+1])
         if ms is None or len(ms.groups()) != 3:
-            raise ValueError("Malformed sub-header encountered: {0}".format(lines[offset+1]))
+            raise ValueError(f"Malformed sub-header encountered: {lines[offset+1]}")
         npoints  = int(ms.group(1))
         min_mass = float(ms.group(2))
         max_mass = float(ms.group(3))
@@ -99,7 +97,7 @@ def parse_histograms(filepath):
         for line in lines[offset+2:offset+npoints+1]:
             md = data_exp.match(line)
             if md is None or len(md.groups()) != 2:
-                raise ValueError("Malformed data row encountered: {0}".format(line))
+                raise ValueError(f"Malformed data row encountered: {line}")
             idx = int(md.group(1))
             br  = float(md.group(2))
             branching_ratios[idx] = br
@@ -114,7 +112,7 @@ def make_interpolators(filepath, kind='linear'):
     """
     histogram_data = parse_histograms(filepath)
     histograms = {}
-    for (hist_string, (masses, br)) in six.iteritems(histogram_data):
+    for (hist_string, (masses, br)) in histogram_data.items():
         histograms[hist_string] = scipy.interpolate.interp1d(
             masses, br, kind=kind, bounds_error=False, fill_value=0, assume_sorted=True)
     return histograms
@@ -145,7 +143,7 @@ def add_particles(P8gen, particles, data):
         particle = next((p for p in data['particles']
                          if particle_id in [p['id'], p['name']]), None)
         if particle is None:
-            raise ValueError("Could not find particle ID {0} in file {1}"
+            raise ValueError("Could not find particle ID {} in file {}"
                              .format(particle, datafile))
         # Add the particle
         P8gen.SetParameters(particle['cmd'])
@@ -157,11 +155,11 @@ def add_channel(P8gen, ch, histograms, mass, couplings, scale_factor):
         if br <= 0: # Ignore kinematically closed channels
             return
         if 'idhadron' in ch: # Semileptonic decay
-            P8gen.SetParameters(str(ch['id'])+":addChannel      1  "+str(br*scale_factor)+"   22      "+str(ch['idlepton'])+"       9900015   "+str(ch['idhadron']))
+            P8gen.SetParameters('{}:addChannel      1  {:.17}   22      {}       9900015   {}'.format(ch['id'], br*scale_factor, ch['idlepton'], ch['idhadron']))
         else: # Leptonic decay
-            P8gen.SetParameters(str(ch['id'])+":addChannel      1  "+str(br*scale_factor)+"    0       9900015      "+str(ch['idlepton']))
+            P8gen.SetParameters('{}:addChannel      1  {:.17}    0       9900015      {}'.format(ch['id'], br*scale_factor, ch['idlepton']))
     else: # Wrong decay
-        raise ValueError("Missing key 'idlepton' in channel {0}".format(ch))
+        raise ValueError(f"Missing key 'idlepton' in channel {ch}")
 
 def add_tau_channel(P8gen, ch, histograms, mass, couplings, scale_factor):
     "Add to PYTHIA a tau decay channel to HNL."
@@ -170,11 +168,11 @@ def add_tau_channel(P8gen, ch, histograms, mass, couplings, scale_factor):
         if br <= 0: # Ignore kinematically closed channels
             return
         if 'idlepton' in ch: # 3-body leptonic decay
-            P8gen.SetParameters(str(ch['id'])+":addChannel      1  "+str(br*scale_factor)+"    1531       9900015      "+str(ch['idlepton'])+" "+str(ch['idhadron']))
+            P8gen.SetParameters('{}:addChannel      1  {:.16}    1531       9900015      {} {}'.format(ch['id'], br*scale_factor, ch['idlepton'], ch['idhadron']))
         else: # 2-body semileptonic decay
-            P8gen.SetParameters(str(ch['id'])+":addChannel      1  "+str(br*scale_factor)+"    1521       9900015      "+str(ch['idhadron']))
+            P8gen.SetParameters('{}:addChannel      1  {:.16}    1521       9900015      {}'.format(ch['id'], br*scale_factor, ch['idhadron']))
     else:
-        raise ValueError("Missing key 'idhadron' in channel {0}".format(ch))
+        raise ValueError(f"Missing key 'idhadron' in channel {ch}")
 
 def fill_missing_channels(P8gen, max_total_br, decay_chains, epsilon=1e-6):
     """
@@ -215,11 +213,11 @@ def add_dummy_channel(P8gen, particle, remainder):
     pdg = P8gen.getPythiaInstance().particleData
     charge = pdg.charge(particle)
     if charge > 0:
-        P8gen.SetParameters(str(particle)+":addChannel      1   "+str(remainder)+"    0       22      -11")
+        P8gen.SetParameters(f'{particle}:addChannel      1   {remainder:.16}    0       22      -11')
     elif charge < 0:
-        P8gen.SetParameters(str(particle)+":addChannel      1   "+str(remainder)+"    0       22       11")
+        P8gen.SetParameters(f'{particle}:addChannel      1   {remainder:.16}    0       22       11')
     else:
-        P8gen.SetParameters(str(particle)+":addChannel      1   "+str(remainder)+"    0       22      22")
+        P8gen.SetParameters(f'{particle}:addChannel      1   {remainder:.16}    0       22      22')
 
 def compute_max_total_br(decay_chains):
     """
@@ -255,14 +253,14 @@ def get_top_level_particles(decay_chains):
     """
     Returns the set of particles which are at the top of a decay chain.
     """
-    return set(top for (top, branching_ratios) in decay_chains)
+    return {top for (top, branching_ratios) in decay_chains}
 
 def exit_if_zero_br(max_total_br, selection, mass, particle='HNL'):
     if max_total_br <= 0:
-        print("No phase space for {0} from {1} at this mass: {2}. Quitting."
+        print("No phase space for {} from {} at this mass: {}. Quitting."
               .format(particle, selection, mass))
         sys.exit()
 
 def print_scale_factor(scaling_factor):
     "Prints the scale factor used to make event generation more efficient."
-    print("One simulated event per {0:.4g} meson decays".format(scaling_factor))
+    print(f"One simulated event per {scaling_factor:.4g} meson decays")

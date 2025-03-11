@@ -16,8 +16,8 @@
 using namespace std;
 
 // -----   Default constructor   -------------------------------------------
-ecalStructureFiller::ecalStructureFiller() 
-  : FairTask(), 
+ecalStructureFiller::ecalStructureFiller()
+  : FairTask(),
     fStr(NULL),
     fInf(NULL),
     fListECALpts(NULL),
@@ -31,7 +31,7 @@ ecalStructureFiller::ecalStructureFiller()
 // -------------------------------------------------------------------------
 
 // -----   Standard constructor   -------------------------------------------
-ecalStructureFiller::ecalStructureFiller(const char *name, const Int_t iVerbose, const char* fileGeo) 
+ecalStructureFiller::ecalStructureFiller(const char *name, const Int_t iVerbose, const char* fileGeo)
   : FairTask(name,iVerbose),
     fStr(NULL),
     fInf(ecalInf::GetInstance(fileGeo)),
@@ -70,14 +70,14 @@ InitStatus ecalStructureFiller::Init()
 //    return kFATAL;
   }
   //ECAL MC points
-  if (fUseMCPoints) 
+  if (fUseMCPoints)
     fListECALpts = (TClonesArray*)fManager->GetObject("EcalPointLite");
 
   //fInf->CheckVariables();
   fStr=new ecalStructure(fInf);
   if (fStoreTrackInfo) fStr->SetUseMC(1);
   fStr->Construct();
-  
+
   fManager->Register("EcalStructure", "ECAL", fStr, kFALSE);
   return kSUCCESS;
 }
@@ -104,7 +104,6 @@ void ecalStructureFiller::LoopForMCPoints()
   ecalCell* cell;
   Int_t ten;
   UInt_t n;
-  Bool_t isPS;
 
   n=fListECALpts->GetEntriesFast();
   if (fVerbose>0)
@@ -116,23 +115,17 @@ void ecalStructureFiller::LoopForMCPoints()
   for(UInt_t j=0; j<n; j++)
   {
     pt=(ecalPoint*)fListECALpts->At(j);
-    cell=fStr->GetCell(pt->GetDetectorID(), ten, isPS);
+    cell=fStr->GetCell(pt->GetDetectorID(), ten);
     if (ten==0) {
-      if (isPS)
-        ; // cell->AddPSEnergy(pt->GetEnergyLoss()); preshower removed
-      else
-        cell->AddEnergy(pt->GetEnergyLoss());
+	cell->AddEnergy(pt->GetEnergyLoss());
     }
   }
   if (fStoreTrackInfo)
   for(UInt_t j=0; j<n; j++)
   {
     pt=(ecalPoint*)fListECALpts->At(j);
-    ecalCellMC* cellmc=(ecalCellMC*)fStr->GetCell(pt->GetDetectorID(), ten, isPS);
+    ecalCellMC* cellmc=(ecalCellMC*)fStr->GetCell(pt->GetDetectorID(), ten);
     if (ten==0) {
-      if (isPS)
-        ; // cell->AddTrackPSEnergy(pt->GetTrackID(),pt->GetEnergyLoss()); //preshower removed
-      else
         cellmc->AddTrackEnergy(pt->GetTrackID(),pt->GetEnergyLoss(), pt->GetTime());
     }
   }
@@ -161,6 +154,3 @@ void ecalStructureFiller::Finish()
   ;
 }
 // -------------------------------------------------------------------------
-
-
-ClassImp(ecalStructureFiller)

@@ -1,7 +1,7 @@
 /** Quality check file for calorimeter reconstruction.
  ** A try to develop a tool for comparison different reconstruction
  ** procedures.
- ** Idea: Select clean MC photons (e.g. without daughter particles) 
+ ** Idea: Select clean MC photons (e.g. without daughter particles)
  ** and find closest reconstructed photon. **/
 
 #ifndef ECALDRAWER_H
@@ -178,5 +178,3 @@ inline void HSLToRGB(Float_t h, Float_t s, Float_t l, Float_t& R, Float_t& G, Fl
   B=Hue_2_RGB(v1, v2, h-(1.0/3));
 }
 #endif
-
-

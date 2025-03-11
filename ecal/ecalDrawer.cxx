@@ -197,7 +197,7 @@ void ecalDrawer::DrawLine(Double_t x, Double_t y, const char* color, Int_t track
   for(i=0;i<n;i++)
   {
     pt=(ecalPoint*)fPoints->At(i);
-    if (pt->GetTrackID()==track) break; 
+    if (pt->GetTrackID()==track) break;
   }
   if (i==n) return;
   DrawLine(x, y, pt->GetX(), pt->GetY(), color);
@@ -458,7 +458,7 @@ void ecalDrawer::DrawCells()
     Float_t l=(*p)->fG; l=TMath::Sqrt(l);
     Float_t a=0;
     Float_t b=((*p)->fG-(*p)->fB)/((*p)->fG+(*p)->fB);
-    if ((*p)->fB==0) { b=0; } 
+    if ((*p)->fB==0) { b=0; }
     else
     {
       if (b<-0.7) b=-0.7;
@@ -657,5 +657,3 @@ ecalDrawer::ecalDrawer()
     fR(0.)
 {
 }
-
-ClassImp(ecalDrawer);

@@ -56,4 +56,3 @@ void ecalCell::Create5x5Cluster()
         f5x5Cluster.push_back(*p2);
   }
 }
- 

@@ -14,7 +14,7 @@
 using namespace std;
 
 /** --- Default constructor --------------------------------------------------- **/
-ecalPrepare::ecalPrepare() 
+ecalPrepare::ecalPrepare()
   : FairTask(),
     fPedestal(80),
     fADCMax(16384),
@@ -70,12 +70,12 @@ InitStatus ecalPrepare::Init()
   }
 
   fStr=(ecalStructure*)manager->GetObject("EcalStructure");
-  if (!fStr) 
+  if (!fStr)
   {
     Fatal("Init()", "Can't find calorimeter structure in the system.");
     return kFATAL;
   }
-  
+
   return kSUCCESS;
 }
 
@@ -84,7 +84,7 @@ void ecalPrepare::InitPython(ecalStructure* structure)
   fStr=structure;
 }
 
-/** --- Executed task --------------------------------------------------------- **/ 
+/** --- Executed task --------------------------------------------------------- **/
 void ecalPrepare::Exec(Option_t* option)
 {
   ecalCell* cell;
@@ -114,7 +114,7 @@ void ecalPrepare::Exec(Option_t* option)
   }
 }
 
-/** --- Finish task ----------------------------------------------------------- **/ 
+/** --- Finish task ----------------------------------------------------------- **/
 void ecalPrepare::Finish()
 {
   ;
@@ -124,5 +124,3 @@ ecalPrepare::~ecalPrepare()
 {
   ;
 }
-
-ClassImp(ecalPrepare)

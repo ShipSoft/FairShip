@@ -24,7 +24,7 @@ ShipParticle::ShipParticle(Int_t pdg,  Int_t status,
        fCovP(TMatrixDSym(4)),
        fCovV(TMatrixDSym(3))
  {
- doca = 0.;   
+ doca = 0.;
  }
 
 ShipParticle::ShipParticle(Int_t pdg,  Int_t status,
@@ -35,7 +35,7 @@ ShipParticle::ShipParticle(Int_t pdg,  Int_t status,
        fCovP(TMatrixDSym(4)),
        fCovV(TMatrixDSym(3))
  {
- doca = 0.;   
+ doca = 0.;
  }
 
 // -----   Destructor   ----------------------------------------------------
@@ -52,24 +52,24 @@ void ShipParticle::SetCovP(Double_t* covElements)
    fCovP(0,1) = covElements[1];
    fCovP(0,2) = covElements[2];
    fCovP(0,3) = covElements[3];
-   
+
    fCovP(1,0) = covElements[1];
    fCovP(1,1) = covElements[4];
    fCovP(1,2) = covElements[5];
    fCovP(1,3) = covElements[6];
-   
+
    fCovP(2,0) = covElements[2];
    fCovP(2,1) = covElements[5];
    fCovP(2,2) = covElements[7];
    fCovP(2,3) = covElements[8];
-   
-   
+
+
    fCovP(3,0) = covElements[3];
    fCovP(3,1) = covElements[6];
    fCovP(3,2) = covElements[8];
    fCovP(3,3) = covElements[9];
-   
-   
+
+
 }
 // -----   Public method Set/GetCovV   -----------------------------------------
 void ShipParticle::SetCovV(Double_t* covElements)
@@ -99,4 +99,3 @@ Double_t ShipParticle::GetMass()
  GetMomentum(momentum);
  return momentum.M();
 }
-ClassImp(ShipParticle)

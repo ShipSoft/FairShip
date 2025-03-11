@@ -82,7 +82,7 @@ Bool_t  simpleTarget::ProcessHits(FairVolume* vol)
        new (clref[0]) vetoPoint(0, 0, TVector3(0, 0,  0), TVector3(0, 0,  0),
          0, 0, fTotalEloss, 0,TVector3(0, 0,  0), TVector3(0, 0,  0));
        return kTRUE;}
-    
+
     fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
 
     Int_t veto_uniqueId;
@@ -177,5 +177,3 @@ void simpleTarget::Reset()
 {
   fsimpleTargetPointCollection->Clear();
 }
-
-ClassImp(simpleTarget)

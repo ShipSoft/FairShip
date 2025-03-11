@@ -12,19 +12,19 @@
 class ecalPreCluster
 {
 public:
-  ecalPreCluster(const std::list<ecalCell*> cells, ecalCell* max, Double_t energy=-1111.0) 
-    : fCells(cells), fMaximum(max), fEnergy(energy), fMax(NULL), fMark(0) 
+  ecalPreCluster(const std::list<ecalCell*> cells, ecalCell* max, Double_t energy=-1111.0)
+    : fCells(cells), fMaximum(max), fEnergy(energy), fMax(NULL), fMark(0)
   {
   }
 
-  ecalPreCluster(const std::list<ecalCell*> cells, ecalMaximum* max, Double_t energy=-1111.0) 
-    : fCells(cells), fMaximum(max->Cell()), fEnergy(energy), fMax(max), fMark(0) 
+  ecalPreCluster(const std::list<ecalCell*> cells, ecalMaximum* max, Double_t energy=-1111.0)
+    : fCells(cells), fMaximum(max->Cell()), fEnergy(energy), fMax(max), fMark(0)
   {
 //    std::cout << "list: " << fEnergy << std::endl;
   }
 
   ecalPreCluster(ecalCell** cells, Int_t size, ecalCell* max, Double_t energy=-1111.0)
-    : fCells(), fMaximum(max), fEnergy(energy), fMax(NULL), fMark(0) 
+    : fCells(), fMaximum(max), fEnergy(energy), fMax(NULL), fMark(0)
   {
     fCells.clear();
     for(Int_t i=0;i<size;i++)
@@ -32,7 +32,7 @@ public:
   }
 
   ecalPreCluster(ecalCell** cells, Int_t size, ecalMaximum* max, Double_t energy=-1111.0)
-    : fCells(), fMaximum(max->Cell()), fEnergy(energy), fMax(max), fMark(0) 
+    : fCells(), fMaximum(max->Cell()), fEnergy(energy), fMax(max), fMark(0)
   {
     fCells.clear();
     for(Int_t i=0;i<size;i++)

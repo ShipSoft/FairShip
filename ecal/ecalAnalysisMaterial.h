@@ -58,5 +58,4 @@ private:
   ClassDef(ecalAnalysisMaterial,1)
 };
 
-#endif 
-
+#endif

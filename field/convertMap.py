@@ -1,13 +1,13 @@
 #!/bin/python
 
-# Python script to convert a B field map from an ascii text file into 
-# a ROOT file for FairShip. The field map needs to use a regular 
+# Python script to convert a B field map from an ascii text file into
+# a ROOT file for FairShip. The field map needs to use a regular
 # x,y,z binning structure where the co-ordinates are assumed to
 # be in ascending z, y and x, in that order. Each data line needs to
 # contain the values "x y z Bx By Bz", with the field components in Tesla.
 # Comment lines in the datafile starting with the hash symbol # are ignored.
-# Distances for FairShip need to be in cm, so we use a scaling factor 
-# cmScale (default = 1.0) to convert the text file distances into cm. 
+# Distances for FairShip need to be in cm, so we use a scaling factor
+# cmScale (default = 1.0) to convert the text file distances into cm.
 # For example, if the input data uses mm for lengths, cmScale = 0.1.
 
 import ROOT
@@ -29,7 +29,7 @@ ROOT.gROOT.ProcessLine(
 
 # The field map is assumed to obey the following co-ordinate bin ordering:
 # z is increased first, y is increased 2nd, x is increased last.
-# For the coordinate bin (iX, iY, iZ), the field bin = (iX*Ny + iY)*Nz + iZ, 
+# For the coordinate bin (iX, iY, iZ), the field bin = (iX*Ny + iY)*Nz + iZ,
 # where Ny and Nz are the number of y and z bins
 
 ROOT.gROOT.ProcessLine(
@@ -43,7 +43,7 @@ ROOT.gROOT.ProcessLine(
 };");
 
 
-def run(inFileName = 'FieldTest.txt', rootFileName = 'BFieldTest.root', 
+def run(inFileName = 'FieldTest.txt', rootFileName = 'BFieldTest.root',
         cmScale = 1.0, storeCoords = False):
 
     createRootMap(inFileName, rootFileName, cmScale, storeCoords)
@@ -51,10 +51,10 @@ def run(inFileName = 'FieldTest.txt', rootFileName = 'BFieldTest.root',
 
 def createRootMap(inFileName, rootFileName, cmScale, storeCoords):
 
-    print 'Create map {0} from {1} using cmScale = {2}'.format(rootFileName, 
-                                                                 inFileName, cmScale)
+    print('Create map {} from {} using cmScale = {}'.format(rootFileName,
+                                                                 inFileName, cmScale))
     if storeCoords is True:
-        print 'We will also store the x,y,z field coordinates in {0}'.format(rootFileName)
+        print(f'We will also store the x,y,z field coordinates in {rootFileName}')
 
     rangeInfo = findRanges(inFileName, cmScale)
 
@@ -85,7 +85,7 @@ def createRootMap(inFileName, rootFileName, cmScale, storeCoords):
     rStruct.zMin = rangeInfo['zMin']
     rStruct.zMax = rangeInfo['zMax']
     rStruct.dz = rangeInfo['dz']
-    
+
     # Centre the field map on the local origin (cm)
     x0 = 0.5*(rStruct.xMin + rStruct.xMax)
     y0 = 0.5*(rStruct.yMin + rStruct.yMax)
@@ -96,22 +96,22 @@ def createRootMap(inFileName, rootFileName, cmScale, storeCoords):
     #y0 = 0.0
     #z0 = 0.0
 
-    print 'Centering field map using co-ordinate shift {0} {1} {2} cm'.format(x0, y0, z0)
-    
+    print(f'Centering field map using co-ordinate shift {x0} {y0} {z0} cm')
+
     # Center co-ordinate range limits (cm)
     rStruct.xMin = rStruct.xMin - x0
     rStruct.xMax = rStruct.xMax - x0
-    
+
     rStruct.yMin = rStruct.yMin - y0
     rStruct.yMax = rStruct.yMax - y0
-    
+
     rStruct.zMin = rStruct.zMin - z0
     rStruct.zMax = rStruct.zMax - z0
 
-    print 'x range = {0} to {1}'.format(rStruct.xMin, rStruct.xMax)
-    print 'y range = {0} to {1}'.format(rStruct.yMin, rStruct.yMax)
-    print 'z range = {0} to {1}'.format(rStruct.zMin, rStruct.zMax)
-    
+    print(f'x range = {rStruct.xMin} to {rStruct.xMax}')
+    print(f'y range = {rStruct.yMin} to {rStruct.yMax}')
+    print(f'z range = {rStruct.zMin} to {rStruct.zMax}')
+
     # Fill info into range tree
     rangeTree.Fill()
 
@@ -121,7 +121,7 @@ def createRootMap(inFileName, rootFileName, cmScale, storeCoords):
 
     # Field components with (x,y,z) coordinate binning ordered such that
     # z, then y, then x is increased. For the coordinate bin (iX, iY, iZ),
-    # the field bin = (iX*Ny + iY)*Nz + iZ, where Ny and Nz are the number 
+    # the field bin = (iX*Ny + iY)*Nz + iZ, where Ny and Nz are the number
     # of y and z bins
     dStruct = ROOT.dataStruct()
     if storeCoords is True:
@@ -132,9 +132,9 @@ def createRootMap(inFileName, rootFileName, cmScale, storeCoords):
     dataTree.Branch('Bx', ROOT.AddressOf(dStruct, 'Bx'), 'Bx/F')
     dataTree.Branch('By', ROOT.AddressOf(dStruct, 'By'), 'By/F')
     dataTree.Branch('Bz', ROOT.AddressOf(dStruct, 'Bz'), 'Bz/F')
-                
+
     # Reopen the file and store the information in the ROOT file
-    with open(inFileName, 'r') as f:
+    with open(inFileName) as f:
 
         # Read each line
         for line in f:
@@ -156,7 +156,7 @@ def createRootMap(inFileName, rootFileName, cmScale, storeCoords):
                 dStruct.Bz = float(sLine[5])
 
                 dataTree.Fill()
-                
+
 
     theFile.cd()
     rangeTree.Write()
@@ -167,14 +167,14 @@ def createRootMap(inFileName, rootFileName, cmScale, storeCoords):
 def findRanges(inFileName, cmScale):
 
     # First read the data file to find the binning and coordinate ranges.
-    # Store the unique (ordered) x, y and z values so we can then find the 
+    # Store the unique (ordered) x, y and z values so we can then find the
     # bin widths, min/max limits and central offset
-    
+
     xArray = []
     yArray = []
     zArray = []
 
-    with open(inFileName, 'r') as f:
+    with open(inFileName) as f:
 
         # Read each line
         for line in f:

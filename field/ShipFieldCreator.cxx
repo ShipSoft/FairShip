@@ -34,7 +34,7 @@ void ShipFieldCreator::SetParm()
 }
 
 FairField* ShipFieldCreator::createFairField()
-{ 
+{
   FairField *fMagneticField=0;
 
   if ( ! fFieldPar ) {
@@ -55,6 +55,3 @@ FairField* ShipFieldCreator::createFairField()
   }
   return fMagneticField;
 }
-
-
-ClassImp(ShipFieldCreator)

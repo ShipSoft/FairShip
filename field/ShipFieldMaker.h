@@ -58,7 +58,7 @@ class ShipFieldMaker : public TG4VUserPostDetConstruction
 	TString fieldName_;
 	//! The field scaling factor
 	Double_t scale_;
-	
+
 	//! Default constructor
         fieldInfo() : volName_(""), fieldName_(""), scale_(1.0) {};
 
@@ -100,7 +100,7 @@ class ShipFieldMaker : public TG4VUserPostDetConstruction
       \param [in] name The name of the field
       \param [in] BPeak The peak B field magnitude (Tesla)
       \param [in] zMiddle The middle z global position of the magnet (cm)
-      \param [in] orient Orientation flag: 1 => Bx = 0 (default), 0 => By = 0  
+      \param [in] orient Orientation flag: 1 => Bx = 0 (default), 0 => By = 0
       \param [in] tubeR The largest inner radius of the tube ellipse (cm); default = 500 cm
       \param [in] xy Optional target xy radius region (cm)
       \param [in] z Optional target start z global position (cm)
@@ -117,7 +117,7 @@ class ShipFieldMaker : public TG4VUserPostDetConstruction
       \param [in] localCentre The TVector3(x,y,z) offset shift applied to all field map coordinates
       \param [in] localAngles The TVector3(phi, theta, psi) Euler rotation applied to all map coords
       \param [in] useSymmetry Boolean to specify if the map has quadrant symmetry (default = false)
-    */   
+    */
     void defineFieldMap(const TString& name, const TString& mapFileName,
 			const TVector3& localCentre = TVector3(0.0, 0.0, 0.0),
 			const TVector3& localAngles = TVector3(0.0, 0.0, 0.0),
@@ -255,10 +255,13 @@ class ShipFieldMaker : public TG4VUserPostDetConstruction
     void plotField(Int_t type, const TVector3& xAxis, const TVector3& yAxis,
 		   const std::string& plotFile) const;
 
+    void generateFieldMap(TString fileName, const float step=2.5, const float xRange=179, const float yRange=317, const float zRange=1515.5, const float zShift=-4996);
+    //! Generate fieldMap csv file in the given region
+
     //! ClassDef for ROOT
     ClassDef(ShipFieldMaker,1);
 
- 
+
  protected:
 
     //! Structure to hold transformation information
@@ -402,4 +405,3 @@ class ShipFieldMaker : public TG4VUserPostDetConstruction
 };
 
 #endif
-

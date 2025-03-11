@@ -1,0 +1,19 @@
+#Vacuum Configuration of Decay Vessel for FairShip ( Naples Design)
+
+
+z: 0.0
+innerSupport: 2 # cm
+innerSupportMed: "steel"
+outerSupport: 2 # cm
+outerSupportMed: "steel"
+lidThickness: 0.0  # cm
+sensitiveThickness: 20  # cm
+sensitiveMed: "Scintillator"
+decayMed: "vacuums"
+rib: 1.5  # cm
+ribMed: "steel"
+xstartInner : 100.0 # cm
+ystartInner : 270.0 # cm
+xendInner : 400.0 # cm        #FocusLineX at z= target.z0 + 16.8m
+yendInner : 600.0 # cm        #FocusLineY at z= target.z0 - 7.4m
+z0: -2478.0 # cm   Decay Vessel Start

@@ -7,7 +7,7 @@
 #include "TF1.h"                        // for TF1
 #include "TH1.h"                        // for TH1
 #include "TH2.h"                        // for TH2
-#include "TVector3.h"                        
+#include "TVector3.h"
 #include "FairLogger.h"                 // for FairLogger, MESSAGE_ORIGIN
 #include "vector"
 
@@ -16,32 +16,32 @@ class FairPrimaryGenerator;
 class GenieGenerator : public FairGenerator
 {
  public:
-  
+
   /** default constructor **/
   GenieGenerator();
-  
+
   /** destructor **/
   virtual ~GenieGenerator();
-  
+
   /** public method ReadEvent **/
-  Bool_t OldReadEvent(FairPrimaryGenerator*);  
-  Bool_t ReadEvent(FairPrimaryGenerator*);  
+  Bool_t OldReadEvent(FairPrimaryGenerator*);
+  Bool_t ReadEvent(FairPrimaryGenerator*);
   virtual Bool_t Init(const char*, int); //!
   virtual Bool_t Init(const char*); //!
   Int_t GetNevents();
   void NuOnly(){fNuOnly = true;}
-  void SetPositions(Double_t zTa, Double_t zS=-3400., Double_t zE=2650.){ 
+  void SetPositions(Double_t zTa, Double_t zS=-3400., Double_t zE=2650.){
     ztarget     = zTa;
     startZ      = zS;
-    endZ        = zE; 
+    endZ        = zE;
   }
   void AddBox(TVector3 dVec, TVector3 box);
   Double_t MeanMaterialBudget(const Double_t *start, const Double_t *end, Double_t *mparam);
  private:
-  std::vector<double> Rotate(Double_t x, Double_t y, Double_t z, Double_t px, Double_t py, Double_t pz); 
+  std::vector<double> Rotate(Double_t x, Double_t y, Double_t z, Double_t px, Double_t py, Double_t pz);
 
  private:
-  
+
  protected:
   Double_t Yvessel,Xvessel,Lvessel,ztarget,startZ,endZ;
   Double_t Ev,pxv,pyv,pzv, El,pxl, pyl, pzl,vtxx,vtxy,vtxz,vtxt;

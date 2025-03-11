@@ -1,3 +1,4 @@
+#include "FairRootManager.h"
 #include "ecalReco.h"
 
 #include "ecalCell.h"
@@ -48,7 +49,7 @@ void ecalReco::Exec(Option_t* option)
     if (cls->Maxs()==1)
     {
       ReconstructXY(fStr->GetHitCell(cls->PeakNum(0)), x, y);
-      reco=new ((*fReconstucted)[fN++]) ecalReconstructed(cls->Energy(), cls->PreCalibrated(), x, y, cls->PeakNum(0), i); 
+      reco=new ((*fReconstucted)[fN++]) ecalReconstructed(cls->Energy(), cls->PreCalibrated(), x, y, cls->PeakNum(0), i);
       cls->SetStatus(1);
       continue;
     }
@@ -59,7 +60,7 @@ void ecalReco::Exec(Option_t* option)
     for(j=0;j<n;j++)
     {
       maxs[j]=fStr->GetHitCell(cls->PeakNum(j));
-      e3[j]=maxs[j]->GetEnergy(); 
+      e3[j]=maxs[j]->GetEnergy();
       lists[j].clear();
       maxs[j]->GetNeighborsList(cells);
       for(p=cells.begin();p!=cells.end();++p)
@@ -88,7 +89,7 @@ void ecalReco::Exec(Option_t* option)
       }
       if (p!=cells.end()) break;
     }
-    if (j!=n) 
+    if (j!=n)
     {
       cls->SetStatus(-1);
       fRejected++; fRejectedP+=cls->Maxs();
@@ -112,7 +113,7 @@ void ecalReco::Exec(Option_t* option)
 	}
 	rawE+=(*p)->GetEnergy()*ourE/allE;
       }
-      reco=new ((*fReconstucted)[fN++]) ecalReconstructed(rawE, fCalib->Calibrate(maxs[j]->GetType(), rawE), x, y, cls->PeakNum(j), i); 
+      reco=new ((*fReconstucted)[fN++]) ecalReconstructed(rawE, fCalib->Calibrate(maxs[j]->GetType(), rawE), x, y, cls->PeakNum(j), i);
     }
     cls->SetStatus(1);
 */
@@ -145,7 +146,7 @@ void ecalReco::TryReconstruct(ecalCluster* cls, Int_t clsnum)
   for(i=0;i<n;i++)
   {
     maxs[i]=fStr->GetHitCell(cls->PeakNum(i));
-    e3[i]=maxs[i]->GetEnergy(); 
+    e3[i]=maxs[i]->GetEnergy();
     lists[i].clear();
     isgood[i]=1;
     maxs[i]->GetNeighborsList(cells);
@@ -195,7 +196,7 @@ void ecalReco::TryReconstruct(ecalCluster* cls, Int_t clsnum)
       }
       rawE+=(*p)->GetEnergy()*ourE/allE;
     }
-    reco=new ((*fReconstucted)[fN++]) ecalReconstructed(rawE, fCalib->Calibrate(maxs[i]->GetType(), rawE), x, y, cls->PeakNum(i), clsnum); 
+    reco=new ((*fReconstucted)[fN++]) ecalReconstructed(rawE, fCalib->Calibrate(maxs[i]->GetType(), rawE), x, y, cls->PeakNum(i), clsnum);
   }
   cls->SetStatus(1);
   if (rejected>0)
@@ -266,7 +267,7 @@ InitStatus ecalReco::Init()
     return kFATAL;
   }
   fStr=(ecalStructure*)io->GetObject("EcalStructure");
-  if (!fStr) 
+  if (!fStr)
   {
     Fatal("Init()", "Can't find calorimeter structure in the system.");
     return kFATAL;
@@ -278,7 +279,7 @@ InitStatus ecalReco::Init()
     return kFATAL;
   }
   fClusters=(TClonesArray*)io->GetObject("EcalClusters");
-  if (!fClusters) 
+  if (!fClusters)
   {
     Fatal("Init()", "Can't find calorimeter clusters in the system.");
     return kFATAL;
@@ -297,9 +298,7 @@ TClonesArray* ecalReco::InitPython(TClonesArray* clusters, ecalStructure* str, e
   fCalib=calib;
   fClusters=clusters;
   fReconstucted=new TClonesArray("ecalReconstructed", 2000);
-  
+
   fEv=0;
   return fReconstucted;
 }
-
-ClassImp(ecalReco)

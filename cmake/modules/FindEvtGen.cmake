@@ -1,8 +1,8 @@
  ################################################################################
  #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
  #                                                                              #
- #              This software is distributed under the terms of the             # 
- #         GNU Lesser General Public Licence version 3 (LGPL) version 3,        #  
+ #              This software is distributed under the terms of the             #
+ #         GNU Lesser General Public Licence version 3 (LGPL) version 3,        #
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
 # - Try to find EvtGen instalation
@@ -43,4 +43,3 @@ else (EVTGEN_FOUND)
     message(FATAL_ERROR "Looking for EVTGEN... - Not found")
   endif (EVTGEN_FOUND_REQUIRED)
 endif (EVTGEN_FOUND)
-

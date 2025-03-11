@@ -23,18 +23,18 @@ public:
  ecalInf() : TObject(), fVariables(NULL), fEcalStr(), fXPos(0.), fYPos(0.),
     fZPos(0.), fNLayers(0), fXSize(0), fYSize(0), fModuleSize(0.), fLead(0.),
     fScin(0.), fTyveec(0.), fThicknessLayer(0.), fCellSize(0.), fEcalSize(),
-    fECut(0.), fHCut(0.), fSemiX(0.0), fSemiY(0.0), fFastMC(-1), 
-    fSuccess(-1), fFileName("") 
+    fECut(0.), fHCut(0.), fSemiX(0.0), fSemiY(0.0), fFastMC(-1),
+    fSuccess(-1), fFileName("")
     {};
 
   static ecalInf* GetInstance(const char* filename);
   /** Getters **/
-  inline Double_t GetXPos() const {return fXPos;} 
-  inline Double_t GetYPos() const {return fYPos;} 
+  inline Double_t GetXPos() const {return fXPos;}
+  inline Double_t GetYPos() const {return fYPos;}
   inline Double_t GetZPos() const {return fZPos;}
-	
+
   inline Double_t GetModuleSize() const {return fModuleSize;}
-  
+
   inline Int_t    GetNLayers() const {return fNLayers;}
   inline Double_t GetLead()    const {return fLead;}
   inline Double_t GetScin()    const {return fScin;}
@@ -58,16 +58,16 @@ public:
   char GetType(Int_t x, Int_t y) const; //returns type of (X,Y) supercell
   inline Int_t GetFastMC() const {return fFastMC;}
   void DumpContainer() const;
-  
+
   void FreeInstance();
 
   /** key must be lower case. For example, if have in
-   ** geo file AaaA=90, then you should call 
+   ** geo file AaaA=90, then you should call
    ** GetVariableStrict("aaaa").
    ** If variable not found, will return -1111 **/
   Double_t GetVariable(const char* key);
   /** key must be lower case. For example, if have in
-   ** geo file AaaA=90, then you should call 
+   ** geo file AaaA=90, then you should call
    ** GetVariableStrict("aaaa").
    ** If variable not found, will generate Fatal **/
   Double_t GetVariableStrict(const char* key);
@@ -80,14 +80,14 @@ public:
 protected:
 
   /** Text file constructor **/
-  ecalInf(const char* filename);	
+  ecalInf(const char* filename);
   void CalculateHoleSize();
   virtual ~ecalInf();
 
   static ecalInf* fInf;
   static Int_t fRefCount;
 
-  
+
 private:
   /** Init all other variables from fVariables
    ** and fEcalStr**/

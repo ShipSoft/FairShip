@@ -11,7 +11,7 @@
 using namespace std;
 
 /** --- Default constructor --------------------------------------------------- **/
-ecalClusterCalibration::ecalClusterCalibration() 
+ecalClusterCalibration::ecalClusterCalibration()
   : FairTask("EcalClusterCalibration", 0)
 {
   Int_t i;
@@ -63,17 +63,17 @@ InitStatus ecalClusterCalibration::Init()
   }
 
   manager->Register(GetName(), "ECAL", this, kFALSE);
-  
+
   return kSUCCESS;
 }
 
-/** --- Executed task --------------------------------------------------------- **/ 
+/** --- Executed task --------------------------------------------------------- **/
 void ecalClusterCalibration::Exec(Option_t* option)
 {
   ;
 }
 
-/** --- Finish task ----------------------------------------------------------- **/ 
+/** --- Finish task ----------------------------------------------------------- **/
 void ecalClusterCalibration::Finish()
 {
   ;
@@ -83,5 +83,3 @@ ecalClusterCalibration::~ecalClusterCalibration()
 {
   ;
 }
-
-ClassImp(ecalClusterCalibration)

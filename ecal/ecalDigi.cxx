@@ -15,7 +15,7 @@
 using namespace std;
 
 /** --- Default constructor --------------------------------------------------- **/
-ecalDigi::ecalDigi() 
+ecalDigi::ecalDigi()
   : FairTask(),
     fPedestal(80),
     fADCMax(16384),
@@ -73,12 +73,12 @@ InitStatus ecalDigi::Init()
   }
 
   fStr=(ecalStructure*)manager->GetObject("EcalStructure");
-  if (!fStr) 
+  if (!fStr)
   {
     Fatal("Init()", "Can't find calorimeter structure in the system.");
     return kFATAL;
   }
-  
+
   return kSUCCESS;
 }
 
@@ -87,7 +87,7 @@ void ecalDigi::InitPython(ecalStructure* structure)
   fStr=structure;
 }
 
-/** --- Executed task --------------------------------------------------------- **/ 
+/** --- Executed task --------------------------------------------------------- **/
 void ecalDigi::Exec(Option_t* option)
 {
   ecalCell* cell;
@@ -118,7 +118,7 @@ void ecalDigi::Exec(Option_t* option)
   }
 }
 
-/** --- Finish task ----------------------------------------------------------- **/ 
+/** --- Finish task ----------------------------------------------------------- **/
 void ecalDigi::Finish()
 {
   ;
@@ -128,5 +128,3 @@ ecalDigi::~ecalDigi()
 {
   ;
 }
-
-ClassImp(ecalDigi)

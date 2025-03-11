@@ -1,12 +1,12 @@
 # By //Dr.Sys 2016.05.31
 # Hcal with 924 modules readout from both sides (1848 channels).
 # Module size is 24x24 cm
-# length about 2 m (8.5 \lambda). 
+# length about 2 m (8.5 \lambda).
 XPos=0		#Position of Hcal center	[cm]
 YPos=0		#Position of Hcal center	[cm]
 ZPos=4500	#Position of Hcal center	[cm]
-NLayers=66	#Total number of layers		
-N1Layers=18	#Number of layers in first section		
+NLayers=66	#Total number of layers
+N1Layers=18	#Number of layers in first section
 ModuleSize=24.0	#Module size			[cm]
 Absorber=1.5	#Absorber thickness in layer	[cm]
 AbsorberMaterial=ECALSteel #Material of absorber. See media.geo
@@ -16,8 +16,8 @@ HoleRadius=.075 #Radius of hole in the calorimeter		[cm]
 FiberRadius=.06 #Radius of fiber				[cm]
 Steel=0.01	#Thickness of steel tapes			[cm]
 TileEdging=0.01	#Thickness of white coating near tiles edges 	[cm]
-XSemiAxis=315	#X semiaxis of keeping volume	[cm]
-YSemiAxis=630	#Y semiaxis of keeping volume	[cm]
+XSemiAxis=259	#X semiaxis of keeping volume	[cm]
+YSemiAxis=331	#Y semiaxis of keeping volume	[cm]
 CF=1		#Is there clear fiber in cell type 1
 NH=12		#Number of holes for cell type 1
 LightMap=none	#Light collection
@@ -28,7 +28,7 @@ HCut=300e-6	#Geant cuts CUTNEU CUTHAD CUTMUO DCUTM PPCUTM [GeV]
 FastMC=0	#0 for full MC (with showers in HCAL), 1 for fast MC (only hits at sensitive plane before HCAL)
 structure
 #Zero for no module here.
-#         1         2   
+#         1         2
 #1234567890123456789012
 1111111111111111111111 # 0
 1111111111111111111111 # 1

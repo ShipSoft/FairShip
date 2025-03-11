@@ -6,7 +6,7 @@ def run():
  fGeo = ROOT.gGeoManager
  run = sys.modules['__main__'].run
  if hasattr(sys.modules['__main__'],'h'): h =  sys.modules['__main__'].h
- else: h={} 
+ else: h={}
  grid = 120,100,1500
  xmin,ymin,zmin = -4*u.m,-5*u.m,-100*u.m
  xmax,ymax,zmax = 4*u.m,5*u.m,50*u.m
@@ -29,27 +29,26 @@ def run():
     x,y,z = xmin + ix*dx,ymin + iy*dy,zmin + iz*dz
     n = fGeo.FindNode(x,y,z)
     f = n.GetVolume().GetField()
-    if f: 
-      if f.GetFieldValue()[0]<0:  rc=h['Bx-'].Fill(z,x,y,-f.GetFieldValue()[0]/u.tesla)     
-      if f.GetFieldValue()[0]>0:  rc=h['Bx+'].Fill(z,x,y,f.GetFieldValue()[0]/u.tesla)     
-      if f.GetFieldValue()[1]<0:  rc=h['By-'].Fill(z,x,y,-f.GetFieldValue()[1]/u.tesla)     
-      if f.GetFieldValue()[1]>0:  rc=h['By+'].Fill(z,x,y,f.GetFieldValue()[1]/u.tesla)     
-      if f.GetFieldValue()[2]<0:  rc=h['Bz-'].Fill(z,x,y,-f.GetFieldValue()[2]/u.tesla)   
-      if f.GetFieldValue()[2]>0:  rc=h['Bz+'].Fill(z,x,y,f.GetFieldValue()[2]/u.tesla)   
+    if f:
+      if f.GetFieldValue()[0]<0:  rc=h['Bx-'].Fill(z,x,y,-f.GetFieldValue()[0]/u.tesla)
+      if f.GetFieldValue()[0]>0:  rc=h['Bx+'].Fill(z,x,y,f.GetFieldValue()[0]/u.tesla)
+      if f.GetFieldValue()[1]<0:  rc=h['By-'].Fill(z,x,y,-f.GetFieldValue()[1]/u.tesla)
+      if f.GetFieldValue()[1]>0:  rc=h['By+'].Fill(z,x,y,f.GetFieldValue()[1]/u.tesla)
+      if f.GetFieldValue()[2]<0:  rc=h['Bz-'].Fill(z,x,y,-f.GetFieldValue()[2]/u.tesla)
+      if f.GetFieldValue()[2]>0:  rc=h['Bz+'].Fill(z,x,y,f.GetFieldValue()[2]/u.tesla)
     f = run.GetField()
-    if f.GetBx(x,y,z)<0: rc=h['Bx-'].Fill(z,x,y,-f.GetBx(x,y,z)/u.tesla) 
-    if f.GetBx(x,y,z)>0: rc=h['Bx+'].Fill(z,x,y,f.GetBx(x,y,z)/u.tesla) 
+    if f.GetBx(x,y,z)<0: rc=h['Bx-'].Fill(z,x,y,-f.GetBx(x,y,z)/u.tesla)
+    if f.GetBx(x,y,z)>0: rc=h['Bx+'].Fill(z,x,y,f.GetBx(x,y,z)/u.tesla)
     if f.GetBy(x,y,z)<0: rc=h['By-'].Fill(z,x,y,-f.GetBy(x,y,z)/u.tesla)
-    if f.GetBy(x,y,z)>0: rc=h['By+'].Fill(z,x,y,f.GetBy(x,y,z)/u.tesla) 
- hkeys = h.keys()
- for x in hkeys:
+    if f.GetBy(x,y,z)>0: rc=h['By+'].Fill(z,x,y,f.GetBy(x,y,z)/u.tesla)
+ for x in h.keys():
   hi = h[x]
   if hi.ClassName()=='TH3F':
    h[x+'_xz']=h[x].Project3D('xy')
    h[x+'_xz'].SetTitle(hi.GetTitle()+' top view')
-   h[x+'_yz']=h[x].Project3D('xz')  
+   h[x+'_yz']=h[x].Project3D('xz')
    h[x+'_yz'].SetTitle(hi.GetTitle()+' side view')
- for x in h: 
+ for x in h:
   h[x].SetStats(0)
   h[x].SetMarkerSize(3)
  txt = {'y':[' Up',' Down'],'x':[' Right',' Left']}

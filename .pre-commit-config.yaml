@@ -1,0 +1,65 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+repos:
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v5.0.0
+  hooks:
+  - id: trailing-whitespace
+    exclude: .dat
+  - id: end-of-file-fixer
+  - id: check-yaml
+  - id: check-toml
+  - id: check-added-large-files
+  - id: check-ast
+  - id: check-merge-conflict
+  - id: check-vcs-permalinks
+  - id: check-executables-have-shebangs
+  - id: mixed-line-ending
+- repo: https://github.com/astral-sh/ruff-pre-commit
+  rev: v0.9.10
+  hooks:
+  - id: ruff
+    types_or: [python, pyi, jupyter]
+    args: [--fix, --show-fixes]
+  - id: ruff-format
+- repo: https://github.com/PyCQA/pydocstyle.git
+  rev: 6.3.0
+  hooks:
+  - id: pydocstyle
+- repo: https://github.com/pre-commit/mirrors-clang-format
+  rev: v19.1.7
+  hooks:
+  - id: clang-format
+    types_or: [c++, c, cuda]
+    exclude: LinkDef.h
+- repo: https://github.com/cpplint/cpplint
+  rev: 2.0.0
+  hooks:
+  - id: cpplint
+    exclude: LinkDef.h
+- repo: https://github.com/cmake-lint/cmake-lint
+  rev: 1.4.3
+  hooks:
+  - id: cmakelint
+- repo: https://github.com/codespell-project/codespell
+  rev: "v2.4.1"
+  hooks:
+    - id: codespell
+- repo: https://github.com/pycqa/isort
+  rev: 6.0.1
+  hooks:
+    - id: isort
+      args: [--profile=black]
+      name: isort (python)
+- repo: https://github.com/cheshirekow/cmake-format-precommit
+  rev: v0.6.13
+  hooks:
+  - id: cmake-format
+- repo: https://github.com/asottile/pyupgrade
+  rev: v3.19.1
+  hooks:
+  - id: pyupgrade
+    args: [--py39-plus]
+ci:
+  autofix_prs: false
+  skip: [ruff, ruff-format, pydocstyle, clang-format, cpplint, cmakelint, isort, cmake-format, codespell]

@@ -5,7 +5,7 @@ Yandex2   = False # summer 2015 production, 10B, Ecut>10GeV, Mo/W/ target
 Yandex3   = True  # spring 2016 production, 10B, Ecut>10GeV, Mo/W/ target, record start of track
 afterHadronAbsorber = False
 JPsi     = False # True
-MoTarget = False 
+MoTarget = False
 Tau      = False
 
 import ROOT,os
@@ -15,7 +15,7 @@ from rootUtils import *
 pdg  = TDatabasePDG()
 mu   = pdg.GetParticle(13)
 Mmu  = mu.Mass()
-Mmu2 = Mmu * Mmu 
+Mmu2 = Mmu * Mmu
 
 if Yandex:
  stats =  {5.:[1E9,1E9],0.5:[1E8]}
@@ -30,7 +30,7 @@ if Yandex3:
  files  = {10.:['/media/truf/Elements/Data/HNL/ShipSoft/data/Yandex-April2016_10.05B.root']}
  fnew  = 'pythia8_Geant4_total_Yandex3.root'
 if JPsi:
- BR = 0.05961 
+ BR = 0.05961
  stats =  {10.:[]}
  files  = {10.:[]}
  jobs = {'b6276c506a_g4Ex_gap_':['53','54','55','56'],'b602f257b0_g4Ex_gap_':['52']}
@@ -50,9 +50,9 @@ if JPsi:
     files[10.].append(path+'pythia8_Geant4_'+run+str(i)+'_10.0.root')
     stats[10.].append(nevts/BR)
     ntot += nevts/BR
-    print run+str(i),' --> nevts = ',nevts
+    print(run+str(i),' --> nevts = ',nevts)
  fnew  = 'pythia8_Geant4_total_Jpsi.root'
- print'total statistics ',ntot/1.E9,' *1E9'
+ print('total statistics ',ntot/1.E9,' *1E9')
 #
 if Tau:
  BR = 0.0554
@@ -76,9 +76,9 @@ if Tau:
     files[0.].append(path+'pythia8_Geant4_'+run+str(i)+'_0.0.root')
     stats[0.].append(nevts/BR)
     ntot += nevts/BR
-    print run+str(i),' --> nevts = ',nevts
+    print(run+str(i),' --> nevts = ',nevts)
  fnew  = 'pythia8_Geant4_total_tauOnly_MoTarget_E0.root'
- print'total statistics ',ntot/1.E9,' *1E9'
+ print('total statistics ',ntot/1.E9,' *1E9')
 #
 if MoTarget:
  stats =  {}
@@ -104,21 +104,21 @@ if MoTarget:
     for r in os.listdir(path):
       if r.find('.root')<0: continue
       ecut = float(r.split('.root')[0].split('_')[3])
-      if not stats.has_key(ecut):
+      if ecut not in stats:
        stats[ecut] = []
-       files[ecut] = []      
+       files[ecut] = []
     files[ecut].append(path+r)
     stats[ecut].append(nevts)
     ntot += nevts
-    print run+str(i),' --> nevts = ',nevts
+    print(run+str(i),' --> nevts = ',nevts)
  fnew  = 'pythia8_Geant4_total_MoTarget.root'
- print'total statistics ',ntot/1.E9,' *1E9'
+ print('total statistics ',ntot/1.E9,' *1E9')
 
 ntot = {}
 for ecut in stats:
- ntot[ecut] = 0 
+ ntot[ecut] = 0
  for s in stats[ecut]: ntot[ecut]+=s
-print ntot
+print(ntot)
 
 h={}
 def makeFinalNtuples(norm=5.E13,opt=''):
@@ -130,24 +130,24 @@ def makeFinalNtuples(norm=5.E13,opt=''):
    for i in range(len(stats[ecut])):
     h[fn] = ROOT.TFile(files[ecut][i])
     t = h[fn].FindObjectAny("pythia8-Geant4")
-    fn+=1 
-    if first: 
+    fn+=1
+    if first:
      first = False
      for l in t.GetListOfLeaves(): tuples += l.GetName()+':'
      tuples+='w:ecut'
      fxx = fnew.replace('.root',opt+'.root')
      if opt!='': fxx = fxx.replace('_total','')
      h['N']      = ROOT.TFile(fxx, 'RECREATE')
-     print 'new file created',fxx
-     if afterHadronAbsorber:  
+     print('new file created',fxx)
+     if afterHadronAbsorber:
       h['ntuple'] = ROOT.TNtuple("pythia8-Geant4","flux after 3m hadron absorber",tuples)
-     else:  
+     else:
       h['ntuple'] = ROOT.TNtuple("pythia8-Geant4","flux after 3m hadron absorber, position&momentum before",tuples)
     gROOT.cd()
-    t.SetEventList(0) 
+    t.SetEventList(0)
     t.Draw(">>temp",cuts[opt])
     temp = gROOT.FindObjectAny('temp')
-    t.SetEventList(temp) 
+    t.SetEventList(temp)
     nev    = temp.GetN()
     for iev in range(nev) :
      rc = t.GetEntry(temp.GetEntry(iev))
@@ -158,7 +158,7 @@ def makeFinalNtuples(norm=5.E13,opt=''):
      # get kinetic energy "id:px:py:pz:x:y:z:ox:oy:oz:pythiaid:parentid"
      # since 2016         "id:px:py:pz:x:y:z:opx:opy:opz:ox:oy:oz:pythiaid:parentid"
      Psq = vlist[1]**2+vlist[2]**2+vlist[3]**2
-     if abs(vlist[0])==13: Ekin = ROOT.TMath.Sqrt(Mmu2+Psq)-Mmu  
+     if abs(vlist[0])==13: Ekin = ROOT.TMath.Sqrt(Mmu2+Psq)-Mmu
      else: Ekin = ROOT.TMath.Sqrt(Psq)
      if Yandex:
       if Ekin < ecut : continue
@@ -190,9 +190,9 @@ def interactionRegion():
  ut.bookHist(h,'originzr','r vs z',100,-50.5,-49.,100,0.,0.5)
  ut.bookHist(h,'originxy','x vs y',100,-0.5,0.5,100,-0.5,0.5)
  ROOT.gROOT.cd()
- sTree.Draw('z>>originz') 
- sTree.Draw('1000*sqrt(x*x+y*y):z>>originzr') 
- sTree.Draw('1000*x:1000*y>>originxy') 
+ sTree.Draw('z>>originz')
+ sTree.Draw('1000*sqrt(x*x+y*y):z>>originzr')
+ sTree.Draw('1000*x:1000*y>>originxy')
 
 
 makeFinalNtuples(norm=5.E13,opt='')

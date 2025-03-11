@@ -68,7 +68,7 @@ Bool_t  exitHadronAbsorber::ProcessHits(FairVolume* vol)
     TParticle* p  = gMC->GetStack()->GetCurrentTrack();
     Int_t pdgCode = p->GetPdgCode();
     gMC->TrackMomentum(fMom);
-    if (!(fOnlyMuons && TMath::Abs(pdgCode)!=13)){ 
+    if (!(fOnlyMuons && TMath::Abs(pdgCode)!=13)){
      fTime   = gMC->TrackTime() * 1.0e09;
      fLength = gMC->TrackLength();
      gMC->TrackPosition(fPos);
@@ -94,7 +94,7 @@ void exitHadronAbsorber::Initialize()
   // add also leptons, and photon
   // add pi0 111 eta 221 eta' 331  omega 223 for DM production
   TDatabasePDG* PDG = TDatabasePDG::Instance();
-  for(Int_t idnu=11; idnu<23; idnu+=1){
+  for(Int_t idnu=11; idnu<26; idnu+=1){
   // nu or anti-nu
    for (Int_t idadd=-1; idadd<3; idadd+=2){
     Int_t idw=idnu;
@@ -103,6 +103,9 @@ void exitHadronAbsorber::Initialize()
     if (idnu==20){idw=221;}
     if (idnu==21){idw=223;}
     if (idnu==22){idw=331;}
+    if (idnu==23){idw=211;}
+    if (idnu==24){idw=321;}
+    if (idnu==25){idw=2212;}
     Int_t idhnu=10000+idw;
     if (idadd==-1){
      if (idnu>17){continue;}
@@ -142,9 +145,10 @@ void exitHadronAbsorber::PreTrack(){
     TParticle* p  = gMC->GetStack()->GetCurrentTrack();
     Int_t pdgCode = p->GetPdgCode();
 // record statistics for neutrinos, electrons and photons
-// add pi0 111 eta 221 eta' 331  omega 223 
+// add pi0 111 eta 221 eta' 331  omega 223
     Int_t idabs = TMath::Abs(pdgCode);
-    if (idabs<18 || idabs==22 || idabs==111 || idabs==221 || idabs==223 || idabs==331 ){
+    if (idabs<18 || idabs==22 || idabs==111 || idabs==221 || idabs==223 || idabs==331
+                 || idabs==211  || idabs==321   || idabs==2212 ){
          Double_t wspill = p->GetWeight();
          Int_t idhnu=idabs+10000;
          if (pdgCode<0){ idhnu+=10000;}
@@ -259,5 +263,3 @@ void exitHadronAbsorber::Reset()
 {
   fexitHadronAbsorberPointCollection->Clear();
 }
-
-ClassImp(exitHadronAbsorber)

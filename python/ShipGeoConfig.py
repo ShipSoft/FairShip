@@ -1,23 +1,6 @@
 import os
-import re
-import cPickle
+import pickle
 from contextlib import contextmanager
-
-
-def expand_env(string):
-    """
-    Expand environment variables in string:
-    $HOME/bin -> /home/user/bin
-    """
-    while True:
-        m = re.search("(\${*(\w+)}*)", string)
-        if m is None:
-            break
-        (env_token, env_name) = m.groups()
-        assert env_name in os.environ, "Environment variable '%s' is not defined" % env_name
-        env_value = os.environ[env_name]
-        string = string.replace(env_token, env_value)
-    return string
 
 
 class _SingletonDict(type):
@@ -25,31 +8,31 @@ class _SingletonDict(type):
 
     def __call__(cls, *args, **kwargs):
         if cls not in cls._instances:
-            cls._instances[cls] = super(_SingletonDict, cls).__call__(*args, **kwargs)
+            cls._instances[cls] = super().__call__(*args, **kwargs)
         return cls._instances[cls]
 
     def __getitem__(cls, key):
         return cls._instances[cls][key]
 
     def delitem(cls, key):
-        del(cls._instances[cls][key])
+        del cls._instances[cls][key]
 
 
-class ConfigRegistry(dict):
+class ConfigRegistry(dict, metaclass=_SingletonDict):
     """
     Singleton registry of all Configurations
     """
-    __metaclass__ = _SingletonDict
+
     recent_config_name = None
 
     @staticmethod
     def loadpy(filename, **kwargs):
-        with open(expand_env(filename)) as fh:
+        with open(os.path.expandvars(filename)) as fh:
             return ConfigRegistry.loadpys(fh.read(), **kwargs)
 
     @staticmethod
     def loadpys(config_string, **kwargs):
-        string_unixlf = config_string.replace('\r', '')
+        string_unixlf = config_string.replace("\r", "")
         exec(string_unixlf, kwargs)
         return ConfigRegistry.get_latest_config()
 
@@ -65,7 +48,9 @@ class ConfigRegistry(dict):
     def register_config(name=None, base=None):
         registry = ConfigRegistry()
         if base is not None:
-            assert base in registry, "no base configuration (%s) found in the registry" % base
+            assert base in registry, (
+                "no base configuration (%s) found in the registry" % base
+            )
             config = registry[base].clone()
         else:
             config = Config()
@@ -77,7 +62,7 @@ class ConfigRegistry(dict):
     @staticmethod
     def keys():
         registry = ConfigRegistry()
-        return [k for k, v in registry.iteritems()] 
+        return [k for k, v in registry.items()]
 
     @staticmethod
     def get(name):
@@ -90,18 +75,19 @@ class ConfigRegistry(dict):
 
 
 class AttrDict(dict):
-    """ 
+    """
     dict class that can address its keys as fields, e.g.
     d['key'] = 1
     assert d.key == 1
     """
+
     def __init__(self, *args, **kwargs):
-        super(AttrDict, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.__dict__ = self
 
     def clone(self):
         result = AttrDict()
-        for k, v in self.iteritems():
+        for k, v in self.items():
             if isinstance(v, AttrDict):
                 result[k] = v.clone()
             else:
@@ -111,17 +97,17 @@ class AttrDict(dict):
 
 class Config(AttrDict):
     def __init__(self, *args, **kwargs):
-        super(Config, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def loads(self, buff):
-        rv = cPickle.loads(buff)
+        rv = pickle.loads(buff)
         self.clear()
         self.update(rv)
         return self
 
     def clone(self):
         result = Config()
-        for k, v in self.iteritems():
+        for k, v in self.items():
             if isinstance(v, AttrDict):
                 result[k] = v.clone()
             else:
@@ -129,16 +115,22 @@ class Config(AttrDict):
         return result
 
     def dumps(self):
-        return cPickle.dumps(self)
+        return pickle.dumps(self)
 
     def load(self, filename):
-        with open(expand_env(filename)) as fh:
+        with open(os.path.expandvars(filename)) as fh:
             self.loads(fh.read())
         return self
 
     def dump(self, filename):
-        with open(expand_env(filename), "w") as fh:
+        with open(os.path.expandvars(filename), "w") as fh:
             return fh.write(self.dumps())
 
     def __str__(self):
-        return "ShipGeoConfig:\n  " + "\n  ".join(["%s: %s" % (k, self[k].__str__()) for k in sorted(self.keys()) if not k.startswith("_")])
+        return "ShipGeoConfig:\n  " + "\n  ".join(
+            [
+                f"{k}: {self[k].__str__()}"
+                for k in sorted(self.keys())
+                if not k.startswith("_")
+            ]
+        )

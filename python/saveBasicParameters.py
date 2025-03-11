@@ -15,11 +15,11 @@ def retrieveGitTags(o):
         x = subprocess.check_output(['more',tmp]).replace('\n','')
         o.FairShip = AttrDict(origin=x)
         tmp = os.environ['FAIRSHIP']+'/.git/refs/heads/master'
-      if os.path.isfile(tmp): 
+      if os.path.isfile(tmp):
         x = subprocess.check_output(['more',tmp]).replace('\n','')
         o.FairShip = AttrDict(local=x)
         tmp = os.environ['SIMPATH']+'/../FairSoft/.git/refs/heads/master'
-      if os.path.isfile(tmp): 
+      if os.path.isfile(tmp):
         x = subprocess.check_output(['more',tmp]).replace('\n','')
         o.FairSoft = AttrDict(master=x)
         tmp = os.environ['SIMPATH']+'/../FairSoft/.git/refs/heads/dev'
@@ -34,14 +34,12 @@ def retrieveGitTags(o):
       if os.path.isfile(tmp):
         x = subprocess.check_output(['more',tmp]).replace('\n','')
         o.FairRoot = AttrDict(master=x)
-    return o 
+    return o
 def execute(f,ox,name='ShipGeo'):
-    if type(ox) == type(''): ox = ConfigRegistry.register_config("basic")
+    if type(ox) == str: ox = ConfigRegistry.register_config("basic")
     o = retrieveGitTags(ox)
-    if type(f)==type("s"): fg = ROOT.TFile.Open(f,'update')
-    else:                  fg = f 
+    if type(f)==str: fg = ROOT.TFile.Open(f,'update')
+    else:                  fg = f
     pkl = Pickler(fg)
-    pkl.dump(o,name)    
-    if type(f)==type("s"): fg.Close()
-
-  
+    pkl.dump(o,name)
+    if type(f)==str: fg.Close()

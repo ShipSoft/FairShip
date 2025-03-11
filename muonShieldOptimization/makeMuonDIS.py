@@ -1,4 +1,8 @@
 import ROOT,time,os,sys
+
+ROOT.gROOT.LoadMacro("$VMCWORKDIR/gconfig/basiclibs.C")
+ROOT.basiclibs()
+
 nJob   = 2
 nMult  = 10 # number of events / muon
 muonIn = '$SHIPSOFT/data/muConcrete.root'
@@ -16,7 +20,7 @@ myPythia = ROOT.TPythia6()
 myPythia.SetMSEL(2)       # msel 2 includes diffractive parts
 myPythia.SetPARP(2,2)     # To get below 10 GeV, you have to change PARP(2)
 for kf in [211,321,130,310,3112,3122,3222,3312,3322,3334]:
-   kc = myPythia.Pycomp(kf) 
+   kc = myPythia.Pycomp(kf)
    myPythia.SetMDCY(kc,1,0)
 
 masssq = {}
@@ -36,9 +40,9 @@ mutype = {-13:'gamma/mu+',13:'gamma/mu-'}
 # outgoing particles, id:px:py:pz
 fout  = ROOT.TFile('muonDis_'+str(nJob)+'.root','recreate')
 dTree = ROOT.TTree('DIS','muon DIS')
-iMuon       = ROOT.TClonesArray("TVectorD") 
+iMuon       = ROOT.TClonesArray("TVectorD")
 iMuonBranch = dTree.Branch("InMuon",iMuon,32000,-1)
-dPart       = ROOT.TClonesArray("TVectorD") 
+dPart       = ROOT.TClonesArray("TVectorD")
 dPartBranch = dTree.Branch("Particles",dPart,32000,-1)
 
 # read file with muons hitting concrete wall
@@ -58,34 +62,36 @@ nTOT = sTree.GetEntries()
 
 nStart = nPerJob*nJob
 nEnd   = min(nTOT,nStart + nPerJob)
-if muonIn.find('Concrete')<0: 
+if muonIn.find('Concrete')<0:
  nStart = 0
  nEnd   = nTOT
 
 # stop pythia printout during loop
 myPythia.SetMSTU(11, 11)
-print "start production ",nStart,nEnd
+print("start production ",nStart,nEnd)
 nMade = 0
-for k in range(nStart,nEnd): 
+for k in range(nStart,nEnd):
   rc = sTree.GetEvent(k)
   # make n events / muon
   px,py,pz = sTree.px,sTree.py,sTree.pz
   x,y,z    = sTree.x,sTree.y,sTree.z
-  pid,w = sTree.id,sTree.w 
+  pid,w = sTree.id,sTree.w
   p = ROOT.TMath.Sqrt(px*px+py*py+pz*pz)
   E = ROOT.TMath.Sqrt(getMasssq(pid)+p*p)
   # px=p*sin(theta)cos(phi),py=p*sin(theta)sin(phi),pz=p*cos(theta)
   theta = ROOT.TMath.ACos(pz/p)
-  phi   = ROOT.TMath.ATan2(py,px) 
+  phi   = ROOT.TMath.ATan2(py,px)
   ctheta,stheta = ROOT.TMath.Cos(theta),ROOT.TMath.Sin(theta)
   cphi,sphi     = ROOT.TMath.Cos(phi),ROOT.TMath.Sin(phi)
   mu = array('d',[pid,px,py,pz,E,x,y,z,w])
-  muPart = ROOT.TVectorD(9,mu)
   myPythia.Initialize('FIXT',mutype[pid],'p+',p)
   for n in range(nMult):
      dPart.Clear()
      iMuon.Clear()
-     iMuon[0] = muPart
+     tca_vec = iMuon.ConstructedAt(0)
+     muPart = ROOT.TVectorD(9, mu)
+     tca_vec.ResizeTo(muPart)
+     ROOT.std.swap(tca_vec, muPart)
      myPythia.GenerateEvent()
 # remove all unnecessary stuff
      myPythia.Pyedit(2)
@@ -99,11 +105,13 @@ for k in range(nStart,nEnd):
 # copy to branch
       nPart = dPart.GetEntries()
       if dPart.GetSize() == nPart: dPart.Expand(nPart+10)
-      dPart[nPart] = part
+      tca_vec = dPart.ConstructedAt(nPart)
+      tca_vec.ResizeTo(part)
+      ROOT.std.swap(tca_vec, part)
      nMade+=1
-     if nMade%10000==0: print 'made so far ',nMade
+     if nMade%10000==0: print('made so far ',nMade)
      dTree.Fill()
-fout.cd()  
+fout.cd()
 dTree.Write()
 myPythia.SetMSTU(11, 6)
-print "created nJob ",nJob,':',nStart,' - ',nEnd," events"
+print("created nJob ",nJob,':',nStart,' - ',nEnd," events")

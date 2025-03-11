@@ -2,13 +2,13 @@ import os,time,ROOT
 def makeProd(prefix,DY,y=False,phiRandom=False,X=None):
   ncpu = 9
   shipsoft = os.environ['SHIPSOFT'].replace('/dev','')
-  if not y:       
+  if not y:
     f = shipsoft+'/data/pythia8_Geant4_onlyMuons.root'
     cmd  = "python $FAIRSHIP/macro/run_simScript.py --MuonBack -f " + f + " -Y "+str(float(DY)) # --display"
-  elif y=='Jpsi': 
+  elif y=='Jpsi':
     f = shipsoft+'/data/pythia8_Geant4_Jpsi_onlyMuons.root'
     cmd  = "python $FAIRSHIP/macro/run_simScript.py --MuonBack -f " + f + " -Y "+str(float(DY)) # --display"
-  else:       
+  else:
     f = shipsoft+'/data/pythia8_Geant4_Yandex_onlyMuons.root'
     cmd  = "python $FAIRSHIP/macro/run_simScript.py --MuonBack -f " + f + " -Y "+str(float(DY)) # --display"
   if phiRandom:  cmd = cmd +' --phiRandom'
@@ -25,16 +25,16 @@ def makeProd(prefix,DY,y=False,phiRandom=False,X=None):
   for i in range(1,ncpu+1):
    if i==ncpu: n3 = ntot - (i-1)*n3
    if X:
-    if X==i: 
+    if X==i:
      os.system('cp $FAIRSHIP/macro/run_simScript.py .')
      os.system(cmd+" -n "+str(n3)+" -i "+str(ns) + " > log &")
    else:
     os.system('cp $FAIRSHIP/macro/run_simScript.py .')
     os.system(cmd+" -n "+str(n3)+" -i "+str(ns) + " > log &")
     time.sleep(5)
-   #print " -n "+str(n3)+" -i "+str(ns) 
+   #print " -n "+str(n3)+" -i "+str(ns)
    ns += n3
-   if i==ncpu: 
+   if i==ncpu:
       os.chdir('../')
       break
    os.chdir('../'+prefix+str(i+1))
@@ -88,79 +88,79 @@ def makeProd(prefix,DY,y=False,phiRandom=False,X=None):
 #
 # 630-639 10m height, change RPC width 4.5->3.6m
 # 640-649  6m height, change RPC width 4.5->3.6m
-#makeProd("muon59",6,False)  #  
-#makeProd("muon60",6,True)    #  
-#makeProd("muon61",10,False)    # 
-#makeProd("muon62",10,True)     #  
+#makeProd("muon59",6,False)  #
+#makeProd("muon60",6,True)    #
+#makeProd("muon61",10,False)    #
+#makeProd("muon62",10,True)     #
 
-# makeProd("muon63",10,False)     #  
-# makeProd("muon64",10,True)     #  
-# makeProd("muon65",6,False)     #  
-# makeProd("muon66",6,True)     #  
+# makeProd("muon63",10,False)     #
+# makeProd("muon64",10,True)     #
+# makeProd("muon65",6,False)     #
+# makeProd("muon66",6,True)     #
 
-# run more statistics, 61, 62 
+# run more statistics, 61, 62
 #makeProd("muon611",10,False,True)
-#makeProd("muon621",10,True,True)   
-#makeProd("muon612",10,False,True) 
-#makeProd("muon622",10,True,True)  
+#makeProd("muon621",10,True,True)
+#makeProd("muon612",10,False,True)
+#makeProd("muon622",10,True,True)
 #makeProd("muon613",10,False,True)
-#makeProd("muon623",10,True,True) 
+#makeProd("muon623",10,True,True)
 #makeProd("muon614",10,False,True)
-#makeProd("muon624",10,True,True) 
+#makeProd("muon624",10,True,True)
 #makeProd("muon615",10,False,True)
-#makeProd("muon625",10,True,True) 
+#makeProd("muon625",10,True,True)
 #makeProd("muon616",10,False,True)
-#makeProd("muon626",10,True,True) 
+#makeProd("muon626",10,True,True)
 #makeProd("muon617",10,False,True)
-#makeProd("muon627",10,True,True) 
+#makeProd("muon627",10,True,True)
 #makeProd("muon618",10,False,True)
-#makeProd("muon628",10,True,True) 
+#makeProd("muon628",10,True,True)
 #makeProd("muon619",10,False,True)
-#makeProd("muon629",10,True,True) 
+#makeProd("muon629",10,True,True)
 #makeProd("muon700",10,False,False) # switch off field of active shielding    # prefix,DY,y=False,phiRandom=False,X=None
 #makeProd("muon710",10,False,False) # start production with beam smeared on r=3cm disk
-#makeProd("muon720",10,True,False)   
+#makeProd("muon720",10,True,False)
 #makeProd("muon711",10,False,True) # start production with beam smeared on r=3cm disk
-#makeProd("muon721",10,True,True)   
+#makeProd("muon721",10,True,True)
 #makeProd("muon712",10,False,True) # start production with beam smeared on r=3cm disk
-#makeProd("muon722",10,True,True)   
+#makeProd("muon722",10,True,True)
 #makeProd("muon713",10,False,True) # start production with beam smeared on r=3cm disk
-#makeProd("muon723",10,True,True)   
+#makeProd("muon723",10,True,True)
 #makeProd("muon714",10,False,True) # start production with beam smeared on r=3cm disk
-#makeProd("muon724",10,True,True)   
+#makeProd("muon724",10,True,True)
 #makeProd("muon715",10,False,True) # start production with beam smeared on r=3cm disk
-#makeProd("muon725",10,True,True)   
+#makeProd("muon725",10,True,True)
 #makeProd("muon716",10,False,True) # start production with beam smeared on r=3cm disk
-#makeProd("muon726",10,True,True)   
+#makeProd("muon726",10,True,True)
 #makeProd("muon717",10,False,True) # start production with beam smeared on r=3cm disk
 #makeProd("muon777",10,False,True) # in case the other one does not work 717
 #makeProd("muon727",10,True,True)  # ?
 #makeProd("muon718",10,False,True) # start production with beam smeared on r=3cm disk
-#makeProd("muon728",10,True,True)   
+#makeProd("muon728",10,True,True)
 #makeProd("muon719",10,False,True) # start production with beam smeared on r=3cm disk
 #makeProd("muon729",10,True,True)     #
 #makeProd("muon730",10,'Jpsi',False)  # made with E50
 #makeProd("muon731",10,'Jpsi',True)   # made with E50
-#makeProd("muon732",10,'Jpsi',True)   # made with E50 
+#makeProd("muon732",10,'Jpsi',True)   # made with E50
 #makeProd("muon733",10,'Jpsi',True)   # back to pencil beam
 #makeProd("muon630",10,False,True) # test with new muonShield code, 3cm smearing
 #makeProd("muon631",10,False,True) # run with concrete wall enabled as sensitive
 #makeProd("muon632",10,False,True) # run with concrete wall enabled as sensitive, active shielding polarity fixed
                                    # but wrong geometry
 #makeProd("muon810",10,False,False) # start production with latest geometry
-#makeProd("muon820",10,True,False)   
-#makeProd("muon811",10,False,True) # 
-#makeProd("muon821",10,True,True)   
+#makeProd("muon820",10,True,False)
+#makeProd("muon811",10,False,True) #
+#makeProd("muon821",10,True,True)
 ##makeProd("muon812",10,False,True) # --< 831  copied back, done 16.3.2015
-#makeProd("muon822",10,True,True)   
-#makeProd("muon821",10,True,True)   
-#makeProd("muon822",10,True,True)   
+#makeProd("muon822",10,True,True)
+#makeProd("muon821",10,True,True)
+#makeProd("muon822",10,True,True)
 #
-#makeProd("muon813",10,False,True) # 
-#makeProd("muon823",10,True,True)   
+#makeProd("muon813",10,False,True) #
+#makeProd("muon823",10,True,True)
 
-#makeProd("muon814",10,False,True) # 
-#makeProd("muon824",10,True,True)   
+#makeProd("muon814",10,False,True) #
+#makeProd("muon824",10,True,True)
 #makeProd("muon815",10,False,True)
 #makeProd("muon825",10,True,True)
 #makeProd("muon816",10,False,True)
@@ -221,7 +221,7 @@ def copy2EOS():
    for i in range(1,10):
    # requires full path
     cmd = eos+' cp -r '+os.path.abspath('.')+'/'+prefix+str(i)+'/ /eos/experiment/ship/data/muonBackground/'+prefix+str(i)+'/'
-    print cmd
+    print(cmd)
     os.system(cmd)
 def copyFromEOS():
  import os
@@ -233,5 +233,5 @@ def copyFromEOS():
    for i in range(1,10):
    # requires full path
     cmd = eos+' cp -r  /eos/experiment/ship/data/muonBackground/'+prefix+str(i)+'/ ' +os.path.abspath('.')+'/'+prefix+str(i)+'/'
-    print cmd
+    print(cmd)
     os.system(cmd)

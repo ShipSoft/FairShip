@@ -31,6 +31,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <string>
 #include <cstdlib>
 
 ShipFieldMaker::ShipFieldMaker(Bool_t verbose) :
@@ -89,18 +90,18 @@ void ShipFieldMaker::readInputFile(const std::string& inputFile)
 
     // Loop while the input file is readable
     while (getData.good()) {
-	
+
 	if (getData.peek() == '\n') {
-	    
+
 	    // Finish reading line
 	    char c;
 	    getData.get(c);
-	    
+
 	    // Stop while loop if we have reached the end of the file
 	    if (getData.eof()) {break;}
 
 	} else if (getData.peek() == '#') {
-	    
+
 	    // Skip comment line
 	    getData.ignore(1000, '\n');
 	    getData.putback('\n');
@@ -116,7 +117,7 @@ void ShipFieldMaker::readInputFile(const std::string& inputFile)
 
 	    // Stop while loop if we have reached the end of the file
 	    if (getData.eof()) {break;}
-	    
+
 	    // Split up the line according to white spaces
 	    std::vector<std::string> lineVect = this->splitString(line, whiteSpace);
 
@@ -152,7 +153,7 @@ void ShipFieldMaker::readInputFile(const std::string& inputFile)
 
 		    // Define the symmetric field map
 		    this->defineFieldMap(lineVect, kTRUE);
-  
+
 		} else if (!keyWord.CompareTo("copymap")) {
 
 		    // Copy (& translate) the field map
@@ -268,7 +269,7 @@ void ShipFieldMaker::defineConstant(const stringVect& inputLine)
 	Double_t Bx = std::atof(inputLine[8].c_str());
 	Double_t By = std::atof(inputLine[9].c_str());
 	Double_t Bz = std::atof(inputLine[10].c_str());
-	
+
 	const TVector2 xRange(xMin, xMax);
 	const TVector2 yRange(yMin, yMax);
 	const TVector2 zRange(zMin, zMax);
@@ -354,12 +355,12 @@ void ShipFieldMaker::defineBell(const stringVect& inputLine)
 
 }
 
-void ShipFieldMaker::defineBell(const TString& name, Double_t BPeak, Double_t zMiddle, 
-				Int_t orient, Double_t tubeR, Double_t xy, Double_t z, Double_t L) 
+void ShipFieldMaker::defineBell(const TString& name, Double_t BPeak, Double_t zMiddle,
+				Int_t orient, Double_t tubeR, Double_t xy, Double_t z, Double_t L)
 {
-    
+
     if (!this->gotField(name)) {
-	
+
 	ShipBellField* theField = new ShipBellField(name.Data(), BPeak*Tesla_, zMiddle, orient, tubeR);
 
 	// Set additional parameters if we have a non-zero target length
@@ -368,7 +369,7 @@ void ShipFieldMaker::defineBell(const TString& name, Double_t BPeak, Double_t zM
 	}
 
 	theFields_[name] = theField;
-	
+
     } else {
 
 	if (verbose_) {
@@ -391,7 +392,7 @@ void ShipFieldMaker::defineFieldMap(const stringVect& inputLine, Bool_t useSymme
 
 	const TString name(inputLine[1].c_str());
 	const TString mapFileName(inputLine[2].c_str());
-	
+
 	Double_t x0(0.0), y0(0.0), z0(0.0);
 	Double_t phi(0.0), theta(0.0), psi(0.0);
 
@@ -420,7 +421,7 @@ void ShipFieldMaker::defineFieldMap(const stringVect& inputLine, Bool_t useSymme
     }
 }
 
-void ShipFieldMaker::defineFieldMap(const TString& name, const TString& mapFileName, 
+void ShipFieldMaker::defineFieldMap(const TString& name, const TString& mapFileName,
 				    const TVector3& localCentre, const TVector3& localAngles,
 				    Bool_t useSymmetry)
 {
@@ -451,7 +452,7 @@ void ShipFieldMaker::defineFieldMap(const TString& name, const TString& mapFileN
 
 	Float_t scale(1.0);
 
-	ShipBFieldMap* mapField = new ShipBFieldMap(name.Data(), fullFileName, x0, y0, z0, 
+	ShipBFieldMap* mapField = new ShipBFieldMap(name.Data(), fullFileName, x0, y0, z0,
 						    phi, theta, psi, scale, useSymmetry);
 	theFields_[name] = mapField;
 
@@ -459,7 +460,7 @@ void ShipFieldMaker::defineFieldMap(const TString& name, const TString& mapFileN
 
 	if (verbose_) {
 	    std::cout<<"We already have a field map with the name "
-		     <<name.Data()<<std::endl;	    
+		     <<name.Data()<<std::endl;
 	}
 
     }
@@ -479,7 +480,7 @@ void ShipFieldMaker::defineFieldMapCopy(const stringVect& inputLine)
     if (nWords == 6 || nWords == 9) {
 
 	const TString name(inputLine[1].c_str());
-	    
+
 	// We want to try to copy and transpose an already existing field map
 	const TString mapNameToCopy(inputLine[2].c_str());
 
@@ -510,17 +511,17 @@ void ShipFieldMaker::defineFieldMapCopy(const stringVect& inputLine)
 }
 
 void ShipFieldMaker::defineFieldMapCopy(const TString& name, const TString& mapNameToCopy,
-					const TVector3& translation, const TVector3& eulerAngles) 
+					const TVector3& translation, const TVector3& eulerAngles)
 {
 
     // Check if the field is already in the map
     if (!this->gotField(name)) {
 
-	ShipBFieldMap* fieldToCopy = 
+	ShipBFieldMap* fieldToCopy =
 	    dynamic_cast<ShipBFieldMap*>(this->getField(mapNameToCopy));
 
 	if (fieldToCopy) {
-		
+
 	    if (verbose_) {
 		std::cout<<"Creating map field copy "<<name.Data()
 			 <<" based on "<<mapNameToCopy.Data()<<std::endl;
@@ -535,13 +536,13 @@ void ShipFieldMaker::defineFieldMapCopy(const TString& name, const TString& mapN
 	    Float_t phi = eulerAngles.X();
 	    Float_t theta = eulerAngles.Y();
 	    Float_t psi = eulerAngles.Z();
-	    
+
 	    Float_t scale(1.0);
 
 	    ShipBFieldMap* copiedMap = new ShipBFieldMap(name.Data(), *fieldToCopy,
 							 x0, y0, z0, phi, theta, psi, scale);
-	    theFields_[name] = copiedMap;		    
-		
+	    theFields_[name] = copiedMap;
+
 	}
 
     } else {
@@ -612,7 +613,7 @@ void ShipFieldMaker::defineComposite(const TString& name, std::vector<TString> f
 
 	// Loop over the list of fields and add them to the composite
 	std::vector<TVirtualMagField*> vectFields;
-	
+
 	std::vector<TString>::iterator iter;
 	for (iter = fieldNames.begin(); iter != fieldNames.end(); ++iter) {
 
@@ -669,7 +670,7 @@ void ShipFieldMaker::defineGlobalField(const stringVect& inputLine)
 
 }
 
-void ShipFieldMaker::defineGlobalField(const TString& field1Name, const TString& field2Name, 
+void ShipFieldMaker::defineGlobalField(const TString& field1Name, const TString& field2Name,
 				       const TString& field3Name, const TString& field4Name)
 {
 
@@ -709,7 +710,7 @@ void ShipFieldMaker::defineGlobalField(std::vector<TString> fieldNames)
 
 	TString aName = *iter;
 	TVirtualMagField* aField = this->getField(aName);
-	
+
 	if (aField) {
 	    if (verbose_) {std::cout<<"Adding field "<<aName<<" to Global"<<std::endl;}
 	    vectFields.push_back(aField);
@@ -741,7 +742,7 @@ void ShipFieldMaker::defineRegionField(const stringVect& inputLine)
     // Region VolName FieldName [FieldMapScaleFactor]
 
     if (nWords == 3 || nWords == 4) {
-	
+
 	TString volName(inputLine[1].c_str());
 	TString fieldName(inputLine[2].c_str());
 
@@ -790,7 +791,7 @@ void ShipFieldMaker::setAllRegionFields()
 	TGeoVolume* theVol(0);
 	if (gGeoManager) {theVol = gGeoManager->FindVolumeFast(volName.Data());}
 
-	if (theVol) {	    
+	if (theVol) {
 
 	    // Find the local field
 	    TVirtualMagField* localField = this->getField(fieldName);
@@ -871,7 +872,7 @@ void ShipFieldMaker::defineLocalField(const stringVect& inputLine)
     // Local VolName FieldName [FieldMapScaleFactor]
 
     if (nWords == 3 || nWords == 4) {
-	
+
 	TString volName(inputLine[1].c_str());
 	TString fieldName(inputLine[2].c_str());
 
@@ -897,7 +898,7 @@ void ShipFieldMaker::defineLocalField(const TString& volName, const TString& fie
 		 <<volName.Data()<<" and field "<<fieldName.Data()
 		 <<" with scale = "<<scale<<std::endl;
     }
-    
+
     fieldInfo theInfo(volName, fieldName,scale);
     localInfo_.push_back(theInfo);
 
@@ -918,11 +919,11 @@ void ShipFieldMaker::setAllLocalFields()
 
 	TGeoVolume* theVol(0);
 	if (gGeoManager) {theVol = gGeoManager->FindVolumeFast(volName.Data());}
- 
-	if (theVol) {	    
+
+	if (theVol) {
 
 	    TVirtualMagField* localField = this->getField(fieldName);
-	    
+
 	    if (localField) {
 
 		this->checkLocalFieldMap(localField, volName, scale);
@@ -947,7 +948,7 @@ void ShipFieldMaker::setAllLocalFields()
 
 }
 
-void ShipFieldMaker::checkLocalFieldMap(TVirtualMagField*& localField, const TString& volName, 
+void ShipFieldMaker::checkLocalFieldMap(TVirtualMagField*& localField, const TString& volName,
 					Double_t scale) {
 
     // We assume that local field maps are stored using co-ordinates centred
@@ -970,7 +971,7 @@ void ShipFieldMaker::checkLocalFieldMap(TVirtualMagField*& localField, const TSt
 
 	// Check if we already have the local map to avoid duplication
 	ShipBFieldMap* localMap = dynamic_cast<ShipBFieldMap*>(this->getField(localName));
-	
+
 	if (!localMap && volName.Length() > 0) {
 
 	    // Get the volume and its associate global transformation
@@ -978,7 +979,7 @@ void ShipFieldMaker::checkLocalFieldMap(TVirtualMagField*& localField, const TSt
 
 	    transformInfo theInfo;
 	    this->getTransformation(volName1, theInfo);
-	    
+
 	    // The original field map may have defined its own translation and rotation.
 	    // Apply this before the volume global transformation
 	    Double_t origX0 = mapField->GetXOffset();
@@ -999,7 +1000,7 @@ void ShipFieldMaker::checkLocalFieldMap(TVirtualMagField*& localField, const TSt
 
 	    TGeoTranslation newTrans("newTrans", theInfo.x0_, theInfo.y0_, theInfo.z0_);
 	    TGeoRotation newRot("newRot", theInfo.phi_, theInfo.theta_, theInfo.psi_);
-	    
+
 	    TGeoCombiTrans newComb(newTrans, newRot);
 
 	    if (verbose_) {
@@ -1020,7 +1021,7 @@ void ShipFieldMaker::checkLocalFieldMap(TVirtualMagField*& localField, const TSt
 	    theInfo.x0_ = newTransArray[0];
 	    theInfo.y0_ = newTransArray[1];
 	    theInfo.z0_ = newTransArray[2];
-	    
+
 	    const TGeoRotation* fullRot = newComb.GetRotation();
 	    if (fullRot) {
 		fullRot->GetAngles(theInfo.phi_, theInfo.theta_, theInfo.psi_);
@@ -1038,17 +1039,17 @@ void ShipFieldMaker::checkLocalFieldMap(TVirtualMagField*& localField, const TSt
 			 <<" and symmetry = "<<mapField->HasSymmetry()<<std::endl;
 	    }
 
-	    localMap = new ShipBFieldMap(localName.Data(), *mapField, 
+	    localMap = new ShipBFieldMap(localName.Data(), *mapField,
 					 theInfo.x0_, theInfo.y0_, theInfo.z0_,
 					 theInfo.phi_, theInfo.theta_, theInfo.psi_, scale);
 	    // Keep track that we have created this field pointer
 	    theFields_[localName] = localMap;
 
 	}
-	
+
 	// Set the localField pointer to use the (new or already existing) localMap pointer
 	localField = localMap;
-	
+
     }
 
 }
@@ -1093,7 +1094,7 @@ void ShipFieldMaker::getTransformation(const TString& volName, transformInfo& th
 	if (theMatrix->IsCombi()) {
 
 	    TGeoCombiTrans* theCombi = dynamic_cast<TGeoCombiTrans*>(theMatrix);
-	    if (theCombi) {		
+	    if (theCombi) {
 		TGeoRotation* combRotn = theCombi->GetRotation();
 		if (combRotn) {
 		    combRotn->GetAngles(theInfo.phi_, theInfo.theta_, theInfo.psi_);
@@ -1178,10 +1179,10 @@ Bool_t ShipFieldMaker::gotField(const TString& name) const
 
     Bool_t result(kFALSE);
 
-    // Iterate over the internal map and see if we have a match 
+    // Iterate over the internal map and see if we have a match
     SFMap::const_iterator iter;
     for (iter = theFields_.begin(); iter != theFields_.end(); ++iter) {
-   
+
 	TString key = iter->first;
 	TVirtualMagField* theField = iter->second;
 
@@ -1199,13 +1200,13 @@ Bool_t ShipFieldMaker::gotField(const TString& name) const
 
 TVirtualMagField* ShipFieldMaker::getField(const TString& name) const
 {
-  
+
     TVirtualMagField* theField(0);
 
-    // Iterate over the internal map and see if we have a match 
+    // Iterate over the internal map and see if we have a match
     SFMap::const_iterator iter;
     for (iter = theFields_.begin(); iter != theFields_.end(); ++iter) {
-   
+
 	TString key = iter->first;
 	TVirtualMagField* BField = iter->second;
 
@@ -1223,19 +1224,19 @@ TVirtualMagField* ShipFieldMaker::getField(const TString& name) const
 
 void ShipFieldMaker::plotXYField(const TVector3& xAxis, const TVector3& yAxis,
 				 const std::string& plotFile) const
-{    
+{
     this->plotField(0, xAxis, yAxis, plotFile);
 }
 
 void ShipFieldMaker::plotZXField(const TVector3& zAxis, const TVector3& xAxis,
 				 const std::string& plotFile) const
-{    
+{
     this->plotField(1, zAxis, xAxis, plotFile);
 }
 
 void ShipFieldMaker::plotZYField(const TVector3& zAxis, const TVector3& yAxis,
 				 const std::string& plotFile) const
-{    
+{
     this->plotField(2, zAxis, yAxis, plotFile);
 }
 
@@ -1250,7 +1251,7 @@ void ShipFieldMaker::plotField(Int_t type, const TVector3& xAxis, const TVector3
     Double_t dx   = xAxis(2);
     Int_t Nx(0);
     if (dx > 0.0) {Nx = static_cast<Int_t>(((xMax - xMin)/dx) + 0.5);}
-    
+
     Double_t yMin = yAxis(0);
     Double_t yMax = yAxis(1);
     Double_t dy   = yAxis(2);
@@ -1258,22 +1259,30 @@ void ShipFieldMaker::plotField(Int_t type, const TVector3& xAxis, const TVector3
     if (dy > 0.0) {Ny = static_cast<Int_t>(((yMax - yMin)/dy) + 0.5);}
 
     // Create a 2d histogram
-    TH2D theHist("theHist", "", Nx, xMin, xMax, Ny, yMin, yMax);
-    theHist.SetDirectory(0);
-    if (type == 0) {
-	// x-y
-	theHist.SetXTitle("x (cm)"); 
-	theHist.SetYTitle("y (cm)");
-    } else if (type == 1) {
-	// z-x
-	theHist.SetXTitle("z (cm)"); 
-	theHist.SetYTitle("x (cm)");
-    } else if (type == 2) {
-	// z-y
-	theHist.SetXTitle("z (cm)"); 
-	theHist.SetYTitle("y (cm)");
-    }
+    const int nhistograms = 4; //x,y,z,and magnitude
+    const int ncoordinates = 3; //x,y,z
 
+    TH2D theHist[nhistograms];
+    std::string titles[nhistograms] = {"Bx (T)","By (T)","Bz (T)","B (T)"};
+    for (int icomponent = 0; icomponent< nhistograms; icomponent++){
+      theHist[icomponent] = TH2D(Form("theHist[%i]",icomponent), titles[icomponent].data(), Nx, xMin, xMax, Ny, yMin, yMax);
+      theHist[icomponent].SetDirectory(0);
+      if (type == 0) {
+	// x-y
+	theHist[icomponent].SetXTitle("x (cm)");
+	theHist[icomponent].SetYTitle("y (cm)");
+     }
+      else if (type == 1) {
+	// z-x
+	theHist[icomponent].SetXTitle("z (cm)");
+	theHist[icomponent].SetYTitle("x (cm)");
+      }
+      else if (type == 2) {
+	// z-y
+	theHist[icomponent].SetXTitle("z (cm)");
+	theHist[icomponent].SetYTitle("y (cm)");
+      }
+    }
     // Get list of volumes (to check for local fields)
     TObjArray* theVolumes = gGeoManager->GetListOfVolumes();
     Int_t nVol(0);
@@ -1290,13 +1299,13 @@ void ShipFieldMaker::plotField(Int_t type, const TVector3& xAxis, const TVector3
 	    Double_t y = dy*iy + yMin;
 
 	    // Initialise the B field array to zero
-	    Double_t B[3] = {0.0, 0.0, 0.0};
+	    Double_t B[ncoordinates] = {0.0, 0.0, 0.0};
 
 	    // Initialise the position array to zero
-	    Double_t position[3] = {0.0, 0.0, 0.0};
+	    Double_t position[ncoordinates] = {0.0, 0.0, 0.0};
 	    if (type == 0) {
 		// x-y
-		position[0] = x, position[1] = y;
+  	        position[0] = x, position[1] = y;
 	    } else if (type == 1) {
 		// z-x
 		position[0] = y, position[2] = x;
@@ -1310,9 +1319,9 @@ void ShipFieldMaker::plotField(Int_t type, const TVector3& xAxis, const TVector3
 
 	    // Find the geoemtry node (volume path)
 	    TGeoNode* theNode = gGeoManager->FindNode(position[0], position[1], position[2]);
-	    
+
 	    if (theNode) {
-		
+
 		// Get the volume
 		TGeoVolume* theVol = theNode->GetVolume();
 
@@ -1337,10 +1346,13 @@ void ShipFieldMaker::plotField(Int_t type, const TVector3& xAxis, const TVector3
 	    if (inside == kFALSE && globalField_) {
 		globalField_->Field(position, B);
 	    }
-		    
+
 	    // Divide by the Tesla_ factor, since we want to plot Tesla_ not kGauss (VMC/FairRoot units)
+	    for (int icomponent = 0; icomponent<ncoordinates; icomponent++){
+	      theHist[icomponent].Fill(x,y, B[icomponent]/Tesla_);
+	    }
 	    Double_t BMag = sqrt(B[0]*B[0] + B[1]*B[1] + B[2]*B[2])/Tesla_;
-	    theHist.Fill(x, y, BMag);
+	    theHist[3].Fill(x, y, BMag);
 
 	} // "y" axis
 
@@ -1356,8 +1368,11 @@ void ShipFieldMaker::plotField(Int_t type, const TVector3& xAxis, const TVector3
     gStyle->SetPalette(kBird);
     theCanvas.UseCurrentStyle();
 
-    theCanvas.cd();
-    theHist.Draw("colz");
+    theCanvas.Divide(2,2);
+	for (int icomponent = 0; icomponent < nhistograms; icomponent++){
+		theCanvas.cd(icomponent+1);
+		theHist[icomponent].Draw("colz");
+	}
     theCanvas.Print(plotFile.c_str());
 
     // Reset the batch boolean
@@ -1365,7 +1380,47 @@ void ShipFieldMaker::plotField(Int_t type, const TVector3& xAxis, const TVector3
 
 }
 
-ShipFieldMaker::stringVect ShipFieldMaker::splitString(std::string& theString, 
+void ShipFieldMaker::generateFieldMap(TString fileName, const float step, const float xRange, const float yRange, const float zRange, const float zShift){
+        std::ofstream myfile;
+        myfile.open (fileName);
+        int xSteps = ceil(xRange/step) + 1;   //field map has X range from 0 to xMax
+        int ySteps = ceil(yRange/step) + 1;   //from 0 up to yMax
+        int zSteps = ceil(zRange*2./step) + 1;//from -zMax up to zMax
+        Double_t position[3] = {0.0, 0.0, 0.0};
+        myfile<<xSteps<<"    "<<ySteps<<"    "<<zSteps<<"    "<<step<<"    "<<xRange<<"    "<<yRange<<"    "<<zRange<<std::endl;
+        for (int i =0 ; i < xSteps; i++){
+                for (int k=0;  k<ySteps;k++){
+                        for (int m=0; m<zSteps; m++){
+                                Double_t B[3] = {0.0, 0.0, 0.0};
+                                Double_t x = step*i;
+                                Double_t y = step * k;
+                                Double_t z = m * step - zRange + zShift;
+                                position[0] = x;
+                                position[1] = y;
+                                position[2] = z;
+                                Bool_t inside(kFALSE);
+                                TGeoNode* theNode = gGeoManager->FindNode(position[0], position[1], position[2]);
+                                if (theNode) {
+                                        TGeoVolume* theVol = theNode->GetVolume();
+                                        if (theVol) {
+                                                TVirtualMagField* theField = dynamic_cast<TVirtualMagField*>(theVol->GetField());
+                                                if (theField) {
+                                                    theField->Field(position, B);
+                                                    inside = kTRUE;
+                                                }
+                                        }
+                                }
+                                if (inside == kFALSE && globalField_) {
+                                        globalField_->Field(position, B);
+                                }
+                                myfile<<x<<"    "<<y<<"    "<<z<<"    "<<B[0]/Tesla_<<"    "<<B[1]/Tesla_<<"    "<<B[2]/Tesla_<<std::endl;
+                        }
+                }
+        }
+        myfile.close();
+}
+
+ShipFieldMaker::stringVect ShipFieldMaker::splitString(std::string& theString,
 						       std::string& splitter) const {
 
     // Code from STLplus
@@ -1388,7 +1443,7 @@ ShipFieldMaker::stringVect ShipFieldMaker::splitString(std::string& theString,
 	    }
 	}
     }
-    
+
     return result;
 
 }

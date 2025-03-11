@@ -321,14 +321,14 @@ void strawtubes::ConstructGeometry()
     //Veto station
     //vnb=view number; pnb=plane number; lnb=layer number; snb=straw number
 
-    TString nmveto = "Veto"; 	
+    TString nmveto = "Veto";
     TStationz=fT0z;
     for (Int_t vnb=0; vnb<2; vnb++) {
       //view loop
       TString nmview;
       Double_t angle;
-      TGeoRotation r5;	
-      TGeoTranslation t5; 			
+      TGeoRotation r5;
+      TGeoTranslation t5;
       switch (vnb) {
 	   case 0:
 	      angle=0.;
@@ -341,22 +341,22 @@ void strawtubes::ConstructGeometry()
 	   default:
 	      angle=0.;
 	      nmview = nmveto+"_x";
-      }	
+      }
 
       TGeoVolume *viewframe = new TGeoVolume(nmview, detcomp1, Al);
       //z-translate the viewframe from station z pos
       t5.SetTranslation(0, 0,(vnb-1./2.)*(fDeltaz_view));
-      //rotate the frame box by angle degrees around the z axis (0 if it isn't a stereo view)	
+      //rotate the frame box by angle degrees around the z axis (0 if it isn't a stereo view)
       r5.SetAngles(angle,0,0);
       TGeoCombiTrans c5(t5, r5);
-      TGeoHMatrix *h5 = new TGeoHMatrix(c5);	
+      TGeoHMatrix *h5 = new TGeoHMatrix(c5);
       vetovac->AddNode(viewframe, 4*10000000+vnb*1000000,h5);
       //viewframe->SetVisibility(kTRUE);
       //viewframe->VisibleDaughters(kTRUE);
       viewframe->SetLineColor(kRed);
 
       TGeoTranslation t5p;
-	 	
+
       for (Int_t pnb=0; pnb<2; pnb++) {
 	 //plane loop
          TString nmplane = nmview+"_plane_"; nmplane += pnb;
@@ -369,30 +369,30 @@ void strawtubes::ConstructGeometry()
 	 planebox->SetVisibility(kFALSE);
          //planebox->VisibleDaughters(kTRUE);
 
-    /*     TGeoRotation r5l;	
-	 TGeoTranslation t5l; 	
+    /*     TGeoRotation r5l;
+	 TGeoTranslation t5l;
          for (Int_t lnb=0; lnb<2; lnb++) {
            TString nmlayer = nmplane+"_layer_"; nmlayer += lnb;
 	   //width of the layer: (plane width-2eps)/2
 	   TGeoBBox *layer = new TGeoBBox("layer box", fStraw_length-2*eps, fStraw_length-2*eps, layerwidth/2.);
            TGeoVolume *layerbox = new TGeoVolume(nmlayer, layer, med);
-	   //z translate the layerbox wrt the plane box (which is already rotated)	          	
-	   planebox->AddNode(layerbox, 4*10000000+vnb*1000000+pnb*100000+lnb*10000,new TGeoTranslation(0,0,(lnb-1./2.)*fDeltaz_layer12)); 	  	
+	   //z translate the layerbox wrt the plane box (which is already rotated)
+	   planebox->AddNode(layerbox, 4*10000000+vnb*1000000+pnb*100000+lnb*10000,new TGeoTranslation(0,0,(lnb-1./2.)*fDeltaz_layer12));
 	   //layerbox->SetVisibility(kFALSE);
-           //layerbox->VisibleDaughters(kTRUE);	
+           //layerbox->VisibleDaughters(kTRUE);
 	   //std::cout <<nmlayer<<"veto zpos "<<TStationz-(1./2.-vnb)*(fDeltaz_view)+(pnb-1./2.)*fDeltaz_plane12+(lnb-1./2.)*fDeltaz_layer12<<std::endl;
 	   //layer loop
-	   TGeoRotation r5s;	
+	   TGeoRotation r5s;
 	   TGeoTranslation t5s;
            for (Int_t snb=0; snb<fStraws_per_layer; snb++) {
              //straw loop
-	     t5s.SetTranslation(fStraw_length-fStraw_pitch*snb-8*eps+fOffset_plane12*pnb+lnb*fOffset_layer12, 0,0); 	
+	     t5s.SetTranslation(fStraw_length-fStraw_pitch*snb-8*eps+fOffset_plane12*pnb+lnb*fOffset_layer12, 0,0);
 	     //straws are tubes defined along the z-axis, so need to rotate them first by 90 degrees around the x-axis to get them vertical
 	     //then x translate the straws according to their plane, layer and number
 	     r5s.SetAngles(0,90,0);
 	     TGeoCombiTrans c5s(t5s, r5s);
              TGeoHMatrix *h5s = new TGeoHMatrix(c5s);
-	
+
              // Volume: straw
              rmin = fInner_Straw_diameter/2.;
              rmax = fOuter_Straw_diameter/2.;
@@ -431,7 +431,7 @@ void strawtubes::ConstructGeometry()
            }
 	   //end of layer loop
         }*/
-        //end of plane loop	 	
+        //end of plane loop
       }
       //end of view loop
      }
@@ -443,7 +443,7 @@ void strawtubes::ConstructGeometry()
 
     for (Int_t statnb=0;statnb<4;statnb++) {
        // tracking station loop
-       TString nmstation = "Tr"; nmstation += statnb;	
+       TString nmstation = "Tr"; nmstation += statnb;
 
        switch (statnb) {
 	   case 0:
@@ -465,15 +465,15 @@ void strawtubes::ConstructGeometry()
        TGeoVolume *vac = new TGeoVolume(nmstation, vacbox, med);
        //vac->SetVisibility(kFALSE);
        //vac->VisibleDaughters(kTRUE);
-       top->AddNode(vac, 5, new TGeoTranslation(0, 0, TStationz));	
+       top->AddNode(vac, 5, new TGeoTranslation(0, 0, TStationz));
 
        for (Int_t vnb=0; vnb<4; vnb++) {
         //view loop
         TString nmview;
         Double_t angle;
-        TGeoRotation r5;	
-	TGeoTranslation t5; 	
-		
+        TGeoRotation r5;
+	TGeoTranslation t5;
+
         switch (vnb) {
 	   case 0:
 	      angle=0.;
@@ -494,15 +494,15 @@ void strawtubes::ConstructGeometry()
 	   default:
 	      angle=0.;
 	      nmview = nmstation+"_x1";
-         }	
+         }
 
          TGeoVolume *viewframe = new TGeoVolume(nmview, detcomp1, Al);
 	 //z-translate the viewframe from station z pos
 	 t5.SetTranslation(0, 0,(vnb-3./2.)*(fDeltaz_view));
-	 //rotate the frame box by angle degrees around the z axis (0 if it isn't a stereo view)	
+	 //rotate the frame box by angle degrees around the z axis (0 if it isn't a stereo view)
          r5.SetAngles(angle,0,0);
          TGeoCombiTrans c5(t5, r5);
-         TGeoHMatrix *h5 = new TGeoHMatrix(c5);	
+         TGeoHMatrix *h5 = new TGeoHMatrix(c5);
 	 vac->AddNode(viewframe, statnb*10000000+vnb*1000000,h5);
 	 //viewframe->SetVisibility(kTRUE);
 	 //viewframe->VisibleDaughters(kTRUE);
@@ -517,7 +517,7 @@ void strawtubes::ConstructGeometry()
                straw->SetLineColor(4);
 	       //straw->SetVisibility(kTRUE);
                AddSensitiveVolume(straw);
- 	
+
                // Volume: gas
                rmin = fWire_thickness+eps;
                rmax = fInner_Straw_diameter/2.-eps;
@@ -533,7 +533,7 @@ void strawtubes::ConstructGeometry()
  	       TGeoVolume *wire = new TGeoVolume("_wire_",wire_tube, tungsten);
                wire->SetLineColor(6);
 	       //wire->SetVisibility(kTRUE);
-	 	
+
         for (Int_t pnb=0; pnb<2; pnb++) {
 	   //plane loop
            TString nmplane = nmview+"_plane_"; nmplane += pnb;
@@ -545,31 +545,31 @@ void strawtubes::ConstructGeometry()
 	   viewframe->AddNode(planebox, statnb*10000000+vnb*1000000+pnb*100000,new TGeoTranslation(0, 0,(pnb-1./2.)*fDeltaz_plane12));
 	   //planebox->SetVisibility(kFALSE);
            //planebox->VisibleDaughters(kTRUE);
-           TGeoRotation r5l;	
-	   TGeoTranslation t5l; 	
+           TGeoRotation r5l;
+	   TGeoTranslation t5l;
            for (Int_t lnb=0; lnb<2; lnb++) {
              TString nmlayer = nmplane+"_layer_"; nmlayer += lnb;
 	     //width of the layer: (plane width-2eps)/2
 	     TGeoBBox *layer = new TGeoBBox("layer box", fStraw_length-2*eps, fStraw_length-2*eps, layerwidth/2.);
              TGeoVolume *layerbox = new TGeoVolume(nmlayer, layer, med);
 	     //z translate the layerbox wrt the plane box (which is already rotated)
-	     planebox->AddNode(layerbox, statnb*10000000+vnb*1000000+pnb*100000+lnb*10000,new TGeoTranslation(0,0,(lnb-1./2.)*fDeltaz_layer12)); 	  	
+	     planebox->AddNode(layerbox, statnb*10000000+vnb*1000000+pnb*100000+lnb*10000,new TGeoTranslation(0,0,(lnb-1./2.)*fDeltaz_layer12));
 	     //layerbox->SetVisibility(kTRUE);
 	     //layerbox->VisibleDaughters(kTRUE);
-	     //std::cout <<nmlayer<<" zpos "<<TStationz-(1./2.-vnb)*(fDeltaz_view)+(pnb-1./2.)*fDeltaz_plane12+(lnb-1./2.)*fDeltaz_layer12<<std::endl;		
-	
+	     //std::cout <<nmlayer<<" zpos "<<TStationz-(1./2.-vnb)*(fDeltaz_view)+(pnb-1./2.)*fDeltaz_plane12+(lnb-1./2.)*fDeltaz_layer12<<std::endl;
+
              //layer loop
-	     TGeoRotation r6s;	
+	     TGeoRotation r6s;
 	     TGeoTranslation t6s;
              for (Int_t snb=0; snb<fStraws_per_layer; snb++) {
                //straw loop
-	       t6s.SetTranslation(fStraw_length-fStraw_pitch*snb-8*eps+fOffset_plane12*pnb+lnb*fOffset_layer12, 0,0); 	
+	       t6s.SetTranslation(fStraw_length-fStraw_pitch*snb-8*eps+fOffset_plane12*pnb+lnb*fOffset_layer12, 0,0);
 	       //straws are tubes defined along the z-axis, so need to rotate them first by 90 degrees around the x-axis to get them vertical
 	       //then x translate the straws according to their plane, layer and number
                r6s.SetAngles(0,90,0);
 	       TGeoCombiTrans c6s(t6s, r6s);
                TGeoHMatrix *h6s = new TGeoHMatrix(c6s);
-	
+
 
 	       layerbox->AddNode(straw,statnb*10000000+vnb*1000000+pnb*100000+lnb*10000+1000+snb,h6s);
 	       layerbox->AddNode(gas,statnb*10000000+vnb*1000000+pnb*100000+lnb*10000+2000+snb,h6s);
@@ -580,7 +580,7 @@ void strawtubes::ConstructGeometry()
              }
 	  //end of layer loop
           }
-	 //end of plane loop		
+	 //end of plane loop
          }
 	//end of view loop
         }
@@ -600,5 +600,3 @@ strawtubesPoint* strawtubes::AddHit(Int_t trackID, Int_t detID,
   return new(clref[size]) strawtubesPoint(trackID, detID, pos, mom,
          time, length, eLoss);
 }
-
-ClassImp(strawtubes)

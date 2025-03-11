@@ -37,7 +37,7 @@ ShipMagnet::ShipMagnet(const char* name, const char* Title, Double_t z, Int_t c,
   : FairModule(name ,Title)
 {
  fDesign = c;
- fSpecMagz = z; 
+ fSpecMagz = z;
  fDy = dy;
  fDx = dx;
  floorheight = fl;
@@ -45,9 +45,9 @@ ShipMagnet::ShipMagnet(const char* name, const char* Title, Double_t z, Int_t c,
  YokeDepth = YD;
  CoilThick = CT;
 }
- 
-// -----   Private method InitMedium 
-Int_t ShipMagnet::InitMedium(const char* name) 
+
+// -----   Private method InitMedium
+Int_t ShipMagnet::InitMedium(const char* name)
 {
    static FairGeoLoader *geoLoad=FairGeoLoader::Instance();
    static FairGeoInterface *geoFace=geoLoad->getGeoInterface();
@@ -99,9 +99,9 @@ TGeoVolume* ShipMagnet::MagnetSupport(Double_t hwidth,Double_t hheight,Double_t 
 
        TGeoCompositeShape *TS = new TGeoCompositeShape("TS",\
         "ms-FL1-FL2-FL3-FL4-FL5-FL6-SL1:r-SL2:r-SL3:r-SL4:r-SL5:r-SL6:r");
-       
-       TGeoVolume *T = new TGeoVolume("TSUP", TS, material); 
-       T->SetLineColor(colour);      
+
+       TGeoVolume *T = new TGeoVolume("TSUP", TS, material);
+       T->SetLineColor(colour);
        return T;
 }
 void ShipMagnet::ConstructGeometry()
@@ -115,25 +115,25 @@ void ShipMagnet::ConstructGeometry()
     TGeoVolumeAssembly *tMagnet = new TGeoVolumeAssembly("SHiPMagnet");
     top->AddNode(tMagnet, 1, new TGeoTranslation(0, 0, 0));
 
-    Double_t cm  = 1;       
-    Double_t m   = 100*cm;  
+    Double_t cm  = 1;
+    Double_t m   = 100*cm;
     if (fDesign==1){
     // magnet yoke
      TGeoBBox *magyoke1 = new TGeoBBox("magyoke1", 350, 350, 125);
      TGeoBBox *magyoke2 = new TGeoBBox("magyoke2", 250, 250, 126);
-    
+
      TGeoCompositeShape *magyokec = new TGeoCompositeShape("magyokec", "magyoke1-magyoke2");
      TGeoVolume *magyoke = new TGeoVolume("magyoke", magyokec, Fe);
      magyoke->SetLineColor(kBlue);
     //magyoke->SetTransparency(50);
      tMagnet->AddNode(magyoke, 1, new TGeoTranslation(0, 0, 1940));
-    
+
     // magnet
      TGeoTubeSeg *magnet1a = new TGeoTubeSeg("magnet1a", 250, 300, 35, 45, 135);
      TGeoTubeSeg *magnet1b = new TGeoTubeSeg("magnet1b", 250, 300, 35, 45, 135);
      TGeoTubeSeg *magnet1c = new TGeoTubeSeg("magnet1c", 250, 270, 125, 45, 60);
      TGeoTubeSeg *magnet1d = new TGeoTubeSeg("magnet1d", 250, 270, 125, 120, 135);
-    
+
     // magnet composite shape matrices
      TGeoTranslation *m1 = new TGeoTranslation(0, 0, 160);
      m1->SetName("m1");
@@ -141,12 +141,12 @@ void ShipMagnet::ConstructGeometry()
      TGeoTranslation *m2 = new TGeoTranslation(0, 0, -160);
      m2->SetName("m2");
      m2->RegisterYourself();
-    
+
      TGeoCompositeShape *magcomp1 = new TGeoCompositeShape("magcomp1", "magnet1a:m1+magnet1b:m2+magnet1c+magnet1d");
      TGeoVolume *magnet1 = new TGeoVolume("magnet1", magcomp1, Fe);
      magnet1->SetLineColor(kYellow);
      tMagnet->AddNode(magnet1, 1, new TGeoTranslation(0, 0, fSpecMagz));  // was 1940
-    
+
      TGeoRotation m3;
      m3.SetAngles(180, 0, 0);
      TGeoTranslation m4(0, 0, fSpecMagz);   // was 1940
@@ -154,14 +154,14 @@ void ShipMagnet::ConstructGeometry()
      TGeoHMatrix *m6 = new TGeoHMatrix(m5);
      tMagnet->AddNode(magnet1, 2, m6);
     }
-    else if(fDesign==2 || fDesign==3) {  // fDesign==2 TP version, fDesign==3, rectangular version 
-    Double_t Yokel = 1.25*m; 
+    else if(fDesign==2 || fDesign==3) {  // fDesign==2 TP version, fDesign==3, rectangular version
+    Double_t Yokel = 1.25*m;
     Double_t magnetIncrease = 100.*cm;
     // magnet yoke
     Double_t bradius = fDy/2.;
     TGeoBBox *magyoke1 = new TGeoBBox("magyoke1", fDx+0.7*m, bradius+1.2*m, Yokel);
     TGeoBBox *magyoke2 = new TGeoBBox("magyoke2", fDx-0.3*m, bradius+0.2*m, Yokel+0.01*cm);
-    
+
     TGeoCompositeShape *magyokec = new TGeoCompositeShape("magyokec", "magyoke1-magyoke2");
     TGeoVolume *magyoke = new TGeoVolume("magyoke", magyokec, Fe);
     magyoke->SetLineColor(kBlue);
@@ -186,20 +186,20 @@ void ShipMagnet::ConstructGeometry()
     }
     TGeoVolume *MCoil = new TGeoVolume("MCoil", MCoilc, Al);
     MCoil->SetLineColor(kYellow);
-   
+
     tMagnet->AddNode(MCoil, 1, new TGeoTranslation(0, 0, fSpecMagz));
 
     }else if(fDesign==4) {  // rectangular a la MISIS, full opening for vessel
      //define dimensions
      Double_t xaperture=fDx;  //half apertures
-     Double_t yaperture=fDy;  
+     Double_t yaperture=fDy;
      //built the yoke
      TGeoBBox *magyoke1 = new TGeoBBox("magyoke1", xaperture+YokeWidth,yaperture+YokeWidth,YokeDepth);
-     TGeoBBox *magyoke2 = new TGeoBBox("magyoke2", xaperture,yaperture,YokeDepth+1.);    
+     TGeoBBox *magyoke2 = new TGeoBBox("magyoke2", xaperture,yaperture,YokeDepth+1.);
      TGeoCompositeShape *magyokec = new TGeoCompositeShape("magyokec", "magyoke1-magyoke2");
      //and a epsilon larger yoke to subtract while making the coils
      TGeoBBox *my1 = new TGeoBBox("my1", xaperture+YokeWidth,yaperture+YokeWidth,YokeDepth+0.1*cm);
-     TGeoBBox *my2 = new TGeoBBox("my2", xaperture-0.1*cm,yaperture-0.1*cm,YokeDepth+1.);    
+     TGeoBBox *my2 = new TGeoBBox("my2", xaperture-0.1*cm,yaperture-0.1*cm,YokeDepth+1.);
      TGeoCompositeShape *myc = new TGeoCompositeShape("myc", "my1-my2");
      TGeoVolume *magyoke = new TGeoVolume("magyoke", magyokec, Fe);
      magyoke->SetLineColor(kBlue);
@@ -212,9 +212,9 @@ void ShipMagnet::ConstructGeometry()
      TGeoCompositeShape *CTop2 = new TGeoCompositeShape("CTop2", "CTop:t2-myc");
      TGeoVolume *MCoil1 = new TGeoVolume("MCoil1", CTop1, Al);
      TGeoVolume *MCoil2 = new TGeoVolume("MCoil2", CTop2, Al);
-     MCoil1->SetLineColor(kYellow);   
+     MCoil1->SetLineColor(kYellow);
      tMagnet->AddNode(MCoil1, 1, new TGeoTranslation(0, 0, fSpecMagz));
-     MCoil2->SetLineColor(kYellow);   
+     MCoil2->SetLineColor(kYellow);
      tMagnet->AddNode(MCoil2, 1, new TGeoTranslation(0, 0, fSpecMagz));
      //coils bottom
      TGeoTubeSeg *CBot = new TGeoTubeSeg("CBot",1.*cm,YokeWidth,YokeDepth+CoilThick+1.*cm,180.,360.);
@@ -224,37 +224,19 @@ void ShipMagnet::ConstructGeometry()
      TGeoCompositeShape *CBot2 = new TGeoCompositeShape("CBot2", "CBot:b2-myc");
      TGeoVolume *MCoil3 = new TGeoVolume("MCoil3", CBot1, Al);
      TGeoVolume *MCoil4 = new TGeoVolume("MCoil4", CBot2, Al);
-     MCoil3->SetLineColor(kYellow);   
+     MCoil3->SetLineColor(kYellow);
      tMagnet->AddNode(MCoil3, 1, new TGeoTranslation(0, 0, fSpecMagz));
-     MCoil4->SetLineColor(kYellow);   
+     MCoil4->SetLineColor(kYellow);
      tMagnet->AddNode(MCoil4, 1, new TGeoTranslation(0, 0, fSpecMagz));
      //add vertical coils
      TGeoBBox *CVert = new TGeoBBox("CVert",YokeWidth/2.,yaperture-CoilThick,CoilThick/2.);
      TGeoVolume *CV = new TGeoVolume("CV", CVert, Al);
-     CV->SetLineColor(kYellow);   
+     CV->SetLineColor(kYellow);
      tMagnet->AddNode(CV, 1, new TGeoTranslation(xaperture+YokeWidth/2., 0, fSpecMagz-YokeDepth-CoilThick/2.));
      tMagnet->AddNode(CV, 2, new TGeoTranslation(-xaperture-YokeWidth/2., 0, fSpecMagz-YokeDepth-CoilThick/2.));
      tMagnet->AddNode(CV, 3, new TGeoTranslation(xaperture+YokeWidth/2., 0, fSpecMagz+YokeDepth+CoilThick/2.));
      tMagnet->AddNode(CV, 4, new TGeoTranslation(-xaperture-YokeWidth/2., 0, fSpecMagz+YokeDepth+CoilThick/2.));
-     
+
 
     }
 }
-
-
-
-ClassImp(ShipMagnet)
-
-
-
-
-
-
-
-
-
-
-
-
-
-

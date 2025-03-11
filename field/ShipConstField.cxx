@@ -17,9 +17,9 @@ using std::setw;
 
 
 // -----   Default constructor   -------------------------------------------
-ShipConstField::ShipConstField() 
+ShipConstField::ShipConstField()
   : FairField(),
-    fXmin(0.),   
+    fXmin(0.),
     fXmax(0.),
     fYmin(0.),
     fYmax(0.),
@@ -36,13 +36,13 @@ ShipConstField::ShipConstField()
 
 
 // -----   Standard constructor   ------------------------------------------
-ShipConstField::ShipConstField(const char* name, Double_t xMin, 
-			     Double_t xMax, Double_t yMin, 
+ShipConstField::ShipConstField(const char* name, Double_t xMin,
+			     Double_t xMax, Double_t yMin,
 			     Double_t yMax, Double_t zMin,
-			     Double_t zMax, Double_t bX, 
-			     Double_t bY, Double_t bZ) 
+			     Double_t zMax, Double_t bX,
+			     Double_t bY, Double_t bZ)
   : FairField(name),
-    fXmin(xMin),   
+    fXmin(xMin),
     fXmax(xMax),
     fYmin(yMin),
     fYmax(yMax),
@@ -61,7 +61,7 @@ ShipConstField::ShipConstField(const char* name, Double_t xMin,
 // --------   Constructor from CbmFieldPar   -------------------------------
 ShipConstField::ShipConstField(ShipFieldPar* fieldPar)
   : FairField(),
-    fXmin(0.),   
+    fXmin(0.),
     fXmax(0.),
     fYmin(0.),
     fYmax(0.),
@@ -100,8 +100,8 @@ ShipConstField::~ShipConstField() { }
 
 
 // -----   Set field region   ----------------------------------------------
-void ShipConstField::SetFieldRegion(Double_t xMin, Double_t xMax, 
-				   Double_t yMin, Double_t yMax, 
+void ShipConstField::SetFieldRegion(Double_t xMin, Double_t xMax,
+				   Double_t yMin, Double_t yMax,
 				   Double_t zMin, Double_t zMax) {
   fXmin = xMin;
   fXmax = xMax;
@@ -165,9 +165,9 @@ void ShipConstField::Print() {
   cout << "----  Field type    : constant" << endl;
   cout << "----" << endl;
   cout << "----  Field regions : " << endl;
-  cout << "----        x = " << setw(4) << fXmin << " to " << setw(4) 
+  cout << "----        x = " << setw(4) << fXmin << " to " << setw(4)
        << fXmax << " cm" << endl;
-  cout << "----        y = " << setw(4) << fYmin << " to " << setw(4) 
+  cout << "----        y = " << setw(4) << fYmin << " to " << setw(4)
        << fYmax << " cm" << endl;
   cout << "----        z = " << setw(4) << fZmin << " to " << setw(4)
        << fZmax << " cm" << endl;
@@ -177,7 +177,3 @@ void ShipConstField::Print() {
   cout << "======================================================" << endl;
 }
 // -------------------------------------------------------------------------
-
-
-
-ClassImp(ShipConstField)

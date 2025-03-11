@@ -40,6 +40,3 @@ TrackInfo::TrackInfo(const TrackInfo& ti)
 // -----   Destructor   ----------------------------------------------------
 TrackInfo::~TrackInfo() { }
 // -------------------------------------------------------------------------
-
-
-ClassImp(TrackInfo)

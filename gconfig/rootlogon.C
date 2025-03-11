@@ -2,7 +2,7 @@ rootlogon()
 {
   gROOT->LoadMacro("$VMCWORKDIR/gconfig/basiclibs.C");
   basiclibs();
-  
+
   // Load this example libraries
         gSystem->Load("libFairTools");
   	gSystem->Load("libGeoBase");

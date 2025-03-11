@@ -1,12 +1,12 @@
 # By //Dr.Sys 2014.11.14
 # Hcal with 756 modules readout from both sides (1512 channels).
 # Module size is 24x24 cm
-# length about 2 m (8.5 \lambda). 
+# length about 2 m (8.5 \lambda).
 XPos=0		#Position of Hcal center	[cm]
 YPos=0		#Position of Hcal center	[cm]
 ZPos=4500	#Position of Hcal center	[cm]
-NLayers=66	#Total number of layers		
-N1Layers=18	#Number of layers in first section		
+NLayers=66	#Total number of layers
+N1Layers=18	#Number of layers in first section
 ModuleSize=24.0	#Module size			[cm]
 Absorber=1.5	#Absorber thickness in layer	[cm]
 AbsorberMaterial=ECALSteel #Material of absorber. See media.geo
@@ -28,7 +28,7 @@ HCut=300e-6	#Geant cuts CUTNEU CUTHAD CUTMUO DCUTM PPCUTM [GeV]
 FastMC=0	#0 for full MC (with showers in HCAL), 1 for fast MC (only hits at sensitive plane before HCAL)
 structure
 #Zero for no module here.
-#         1         2   
+#         1         2
 #1234567890123456789012
 0000000111111110000000 # 0
 0000001111111111000000 # 1

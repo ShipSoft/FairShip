@@ -68,7 +68,7 @@ class ShipCompField: public TVirtualMagField
 
  private:
 
-    //! Private copy and assignment operators. 
+    //! Private copy and assignment operators.
     ShipCompField(const ShipCompField&);
     ShipCompField& operator=(const ShipCompField&);
 
@@ -78,4 +78,3 @@ class ShipCompField: public TVirtualMagField
 };
 
 #endif
-

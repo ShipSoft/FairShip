@@ -56,5 +56,4 @@ private:
   ClassDef(ecalAnalysisSimple,1)
 };
 
-#endif 
-
+#endif

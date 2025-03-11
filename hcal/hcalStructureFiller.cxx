@@ -16,8 +16,8 @@
 using namespace std;
 
 // -----   Default constructor   -------------------------------------------
-hcalStructureFiller::hcalStructureFiller() 
-  : FairTask(), 
+hcalStructureFiller::hcalStructureFiller()
+  : FairTask(),
     fStr(NULL),
     fInf(NULL),
     fListHCALpts(NULL),
@@ -31,7 +31,7 @@ hcalStructureFiller::hcalStructureFiller()
 // -------------------------------------------------------------------------
 
 // -----   Standard constructor   -------------------------------------------
-hcalStructureFiller::hcalStructureFiller(const char *name, const Int_t iVerbose, const char* fileGeo) 
+hcalStructureFiller::hcalStructureFiller(const char *name, const Int_t iVerbose, const char* fileGeo)
   : FairTask(name,iVerbose),
     fStr(NULL),
     fInf(hcalInf::GetInstance(fileGeo)),
@@ -70,14 +70,14 @@ InitStatus hcalStructureFiller::Init()
 //    return kFATAL;
   }
   //HCAL MC points
-  if (fUseMCPoints) 
+  if (fUseMCPoints)
     fListHCALpts = (TClonesArray*)fManager->GetObject("HcalPointLite");
 
   //fInf->CheckVariables();
   fStr=new hcalStructure(fInf);
   if (fStoreTrackInfo) fStr->SetUseMC(1);
   fStr->Construct();
-  
+
   fManager->Register("HcalStructure", "HCAL", fStr, kFALSE);
   return kSUCCESS;
 }
@@ -142,6 +142,3 @@ void hcalStructureFiller::Finish()
   ;
 }
 // -------------------------------------------------------------------------
-
-
-ClassImp(hcalStructureFiller)

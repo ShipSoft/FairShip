@@ -26,8 +26,8 @@
 #include "TGeoTube.h"
 #include "TGeoMaterial.h"
 #include "TGeoMedium.h"
-#include "TMath.h" 
-#include "TParticle.h" 
+#include "TMath.h"
+#include "TParticle.h"
 #include "TVector3.h"
 
 #include <iostream>
@@ -47,15 +47,15 @@ TimeDet::TimeDet()
     fELoss(-1),
     //
     fzPos(0),
-    fxSize(500),
-    fySize(1000),
+    fxSize(450),
+    fySize(650),
     fxBar(168),
     fyBar(6),
     fzBar(1),
     fdzBarCol(2.4),
     fdzBarRow(1.2),
     fNCol(3),
-    fNRow(182),
+    fNRow(148),
     fxCenter(0),
     fyCenter(0),
     //
@@ -81,15 +81,15 @@ TimeDet::TimeDet(const char* name, Bool_t active)
     fELoss(-1),
     //
     fzPos(0),
-    fxSize(500),
-    fySize(1000),
+    fxSize(450),
+    fySize(650),
     fxBar(168),
     fyBar(6),
     fzBar(1),
     fdzBarCol(2.4),
     fdzBarRow(1.2),
     fNCol(3),
-    fNRow(182),
+    fNRow(148),
     fxCenter(0),
     fyCenter(0),
     //
@@ -121,7 +121,7 @@ TimeDet::~TimeDet()
 
 Int_t TimeDet::InitMedium(const char* name)
 {
-  
+
    static FairGeoLoader *geoLoad=FairGeoLoader::Instance();
    static FairGeoInterface *geoFace=geoLoad->getGeoInterface();
    static FairGeoMedia *media=geoFace->getMedia();
@@ -139,7 +139,7 @@ Int_t TimeDet::InitMedium(const char* name)
      return ShipMedium->getMediumIndex();
 
    return geoBuild->createMedium(ShipMedium);
-  
+
   return 0;
 }
 
@@ -198,7 +198,7 @@ Bool_t  TimeDet::ProcessHits(FairVolume* vol)
     ShipStack* stack = (ShipStack*) gMC->GetStack();
     stack->AddPoint(kTimeDet);
   }
-  
+
   return kTRUE;
 }
 
@@ -244,10 +244,10 @@ void TimeDet::Reset()
 void TimeDet::ConstructGeometry()
 {
   TGeoVolume *top = gGeoManager->GetTopVolume();
-  
+
   InitMedium("polyvinyltoluene");
   TGeoMedium *Scint =gGeoManager->GetMedium("polyvinyltoluene");
-  
+
   ///////////////////////////////////////////////////////
 
   fDetector = new TGeoVolumeAssembly("Timing Detector");
@@ -267,8 +267,8 @@ void TimeDet::ConstructGeometry()
     zbar = GetZBar(irow,icol);
 
     fDetector->AddNode(plate, ib, new TGeoTranslation( xbar,ybar,zbar) );
-    
-    //printf("%3i  %3i %2i   %8.3f %8.3f %8.3f\n",ib, irow,icol, xbar,ybar,zbar);
+
+    // printf("%3i  %3i %2i   %8.3f %8.3f %8.3f\n",ib, irow,icol, xbar,ybar,zbar);
   }
 
   top->AddNode(fDetector, 1, new TGeoTranslation(0,0,fzPos));
@@ -322,6 +322,3 @@ double TimeDet::GetZBar(int ir,int ic) const
   double z = (ir%2) * fdzBarRow + (ic%2) * fdzBarCol;
   return z;
 }
-
-
-ClassImp(TimeDet)

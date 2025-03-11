@@ -1,0 +1,75 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - master
+  push:
+    branches:
+      - master
+    tags:
+      - v*
+  workflow_dispatch:
+
+jobs:
+  build-run:
+    runs-on: self-hosted
+
+    container:
+      image: registry.cern.ch/ship/gha-runner:latest
+      volumes:
+        - /cvmfs/ship.cern.ch:/cvmfs/ship.cern.ch
+
+    env:
+      version: 25.01
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          path: FairShip
+          lfs: true
+
+      - name: Source and Build
+        run: |
+          source /cvmfs/ship.cern.ch/$version/setUp.sh
+          aliBuild build FairShip --always-prefer-system --config-dir $SHIPDIST --defaults release --jobs 4 --debug
+
+      - name: Run Sim
+        run: |
+          source /cvmfs/ship.cern.ch/$version/setUp.sh
+          eval `alienv load FairShip/latest`
+          python $FAIRSHIP/macro/run_simScript.py --test
+
+      - name: Run Reco
+        run: |
+          source /cvmfs/ship.cern.ch/$version/setUp.sh
+          eval `alienv load FairShip/latest`
+          python $FAIRSHIP/macro/ShipReco.py -f ship.conical.Pythia8-TGeant4.root -g geofile_full.conical.Pythia8-TGeant4.root
+        continue-on-error: true # workaround to ignore segfault on exit
+
+      - name: Run Ana
+        run: |
+          source /cvmfs/ship.cern.ch/$version/setUp.sh
+          eval `alienv load FairShip/latest`
+          python $FAIRSHIP/macro/ShipAna.py -f ship.conical.Pythia8-TGeant4_rec.root -g geofile_full.conical.Pythia8-TGeant4.root
+
+      - name: Run examples
+        run: |
+          source /cvmfs/ship.cern.ch/$version/setUp.sh
+          eval `alienv load FairShip/latest`
+          python $FAIRSHIP/examples/analysis_example.py
+
+      - name: Overlap check
+        run: |
+          source /cvmfs/ship.cern.ch/$version/setUp.sh
+          eval `alienv load FairShip/latest`
+          python $FAIRSHIP/macro/run_simScript.py --test -n 0 --debug 2 | tee log
+          ! grep ovlp log
+
+      - name: Upload .root artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: root-files
+          path: |
+            *.root

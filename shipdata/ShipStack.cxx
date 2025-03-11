@@ -44,8 +44,7 @@ ShipStack::ShipStack(Int_t size)
     fStoreSecondaries(kTRUE),
     fMinPoints(1),
     fEnergyCut(0.),
-    fStoreMothers(kTRUE),
-    fLogger(FairLogger::GetLogger())
+    fStoreMothers(kTRUE)
 {
 }
 
@@ -104,22 +103,22 @@ void ShipStack::PushTrack(Int_t toBeDone, Int_t parentId, Int_t pdgCode,
   Int_t daughter1Id = -1;
   Int_t daughter2Id = -1;
   TParticle* particle =
-    new(partArray[fNParticles++]) TParticle(pdgCode, trackId, parentId,nPoints, 
+    new(partArray[fNParticles++]) TParticle(pdgCode, trackId, parentId,nPoints,
         daughter1Id, daughter2Id, px, py, pz, e, vx, vy, vz, time);
-// from root, how does this fit ? misuse of status and mother2 ??? status is used for trackID definetely 
-// TParticle(Int_t pdg, Int_t status, Int_t mother1, Int_t mother2, 
+// from root, how does this fit ? misuse of status and mother2 ??? status is used for trackID definetely
+// TParticle(Int_t pdg, Int_t status, Int_t mother1, Int_t mother2,
 //   Int_t daughter1, Int_t daughter2, Double_t px, Double_t py, Double_t pz, Double_t etot, Double_t vx, Double_t vy, Double_t vz, Double_t time)
   particle->SetPolarisation(polx, poly, polz);
   particle->SetWeight(weight);
   particle->SetUniqueID(proc);
 // TR August 2014, still trying to understand the logic of FairRoot, due to misuse of secondparentID, all is a big mess
-  if (parentId < 0){ 
+  if (parentId < 0){
      particle->SetFirstMother(secondparentID);
      particle->SetLastMother(secondparentID);
   }
-  else {            
-      particle->SetFirstMother(parentId);  
-      particle->SetLastMother(parentId);  
+  else {
+      particle->SetFirstMother(parentId);
+      particle->SetLastMother(parentId);
   }
   // --> Increment counter
   if (parentId < 0) { fNPrimaries++; }
@@ -176,8 +175,7 @@ TParticle* ShipStack::PopPrimaryForTracking(Int_t iPrim)
 
   // Test for index
   if (iPrim < 0 || iPrim >= fNPrimaries) {
-    fLogger->Fatal(MESSAGE_ORIGIN, "ShipStack: Primary index out of range! %i ", iPrim );
-    Fatal("ShipStack::PopPrimaryForTracking", "Index out of range");
+    LOGF(fatal, "ShipStack: Primary index out of range! %i ", iPrim);
   }
 
   // Return the iPrim-th TParticle from the fParticle array. This should be
@@ -201,8 +199,7 @@ TParticle* ShipStack::GetCurrentTrack() const
 {
   TParticle* currentPart = GetParticle(fCurrentTrack);
   if ( ! currentPart) {
-    fLogger->Warning(MESSAGE_ORIGIN,"ShipStack: Current track not found in stack!");
-    Warning("ShipStack::GetCurrentTrack", "Track not found in stack");
+    LOG(warn) << "ShipStack: Current track not found in stack!";
   }
   return currentPart;
 }
@@ -227,7 +224,7 @@ void ShipStack::AddParticle(TParticle* oldPart)
 void ShipStack::FillTrackArray()
 {
 
-  fLogger->Debug(MESSAGE_ORIGIN, "ShipStack: Filling MCTrack array...");
+  LOG(DEBUG) << "ShipStack: Filling MCTrack array...";
 
   // --> Reset index map and number of output tracks
   fIndexMap.clear();
@@ -241,9 +238,7 @@ void ShipStack::FillTrackArray()
 
     fStoreIter = fStoreMap.find(iPart);
     if (fStoreIter == fStoreMap.end() ) {
-      fLogger->Fatal(MESSAGE_ORIGIN, "ShipStack: Particle %i not found in storage map! ", iPart);
-      Fatal("ShipStack::FillTrackArray",
-            "Particle not found in storage map.");
+      LOGF(fatal, "ShipStack: Particle %i not found in storage map! ", iPart);
     }
     Bool_t store = (*fStoreIter).second;
 
@@ -276,7 +271,7 @@ void ShipStack::FillTrackArray()
 void ShipStack::UpdateTrackIndex(TRefArray* detList)
 {
 
-  fLogger->Debug(MESSAGE_ORIGIN, "ShipStack: Updating track indizes...");
+  LOG(DEBUG) << "ShipStack: Updating track indizes...";
   Int_t nColl = 0;
 
   // First update mother ID in MCTracks
@@ -285,8 +280,7 @@ void ShipStack::UpdateTrackIndex(TRefArray* detList)
     Int_t iMotherOld = track->GetMotherId();
     fIndexIter = fIndexMap.find(iMotherOld);
     if (fIndexIter == fIndexMap.end()) {
-      fLogger->Fatal(MESSAGE_ORIGIN, "ShipStack: Particle index %i not found in dex map! ", iMotherOld);
-      Fatal("ShipStack::UpdateTrackIndex", "Particle index not found in map");
+      LOGF(fatal, "ShipStack: Particle index %i not found in dex map! ", iMotherOld);
     }
     track->SetMotherId( (*fIndexIter).second );
   }
@@ -318,8 +312,7 @@ void ShipStack::UpdateTrackIndex(TRefArray* detList)
 
         fIndexIter = fIndexMap.find(iTrack);
         if (fIndexIter == fIndexMap.end()) {
-          fLogger->Fatal(MESSAGE_ORIGIN, "ShipStack: Particle index %i not found in index map! ", iTrack);
-          Fatal("ShipStack::UpdateTrackIndex", "Particle index not found in map");
+          LOGF(fatal, "ShipStack: Particle index %i not found in index map! ", iTrack);
         }
         point->SetTrackID((*fIndexIter).second);
         point->SetLink(FairLink("MCTrack", (*fIndexIter).second));
@@ -327,7 +320,7 @@ void ShipStack::UpdateTrackIndex(TRefArray* detList)
 
     }   // Collections of this detector
   }     // List of active detectors
-  fLogger->Debug(MESSAGE_ORIGIN, "...stack and  %i collections updated.", nColl);
+  LOGF(debug, "...stack and  %i collections updated.", nColl);
 }
 // -------------------------------------------------------------------------
 
@@ -418,8 +411,7 @@ Int_t ShipStack::GetCurrentParentTrackNumber() const
 TParticle* ShipStack::GetParticle(Int_t trackID) const
 {
   if (trackID < 0 || trackID >= fNParticles) {
-    fLogger->Info(MESSAGE_ORIGIN, "ShipStack: Particle index %i out of range. Max=%i",trackID,fNParticles);
-    Fatal("ShipStack::GetParticle", "Index out of range ");
+    LOGF(fatal, "ShipStack: Particle index %i out of range. Max=%i", trackID, fNParticles);
   }
   return (TParticle*)fParticles->At(trackID);
 }
@@ -470,8 +462,8 @@ void ShipStack::SelectTracks()
     }
     // --> Set storage flag
     fStoreMap[i] = store;
-// special case for Ship generators, want to keep all original particles with their mother daughter relationship 
-// independent if tracked or not. apply a dirty trick and use second mother to identify original generator particles. 
+// special case for Ship generators, want to keep all original particles with their mother daughter relationship
+// independent if tracked or not. apply a dirty trick and use second mother to identify original generator particles.
 // doesn't work, always true: Int_t iMother2 = GetParticle(i)->GetMother(1); maybe should set Mother2 to -1 in the generator
 // if (iMother == iMother2) {fStoreMap[i] = kTRUE;}
   }
@@ -493,7 +485,3 @@ void ShipStack::SelectTracks()
 
 }
 // -------------------------------------------------------------------------
-
-
-
-ClassImp(ShipStack)

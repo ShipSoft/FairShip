@@ -30,20 +30,13 @@ Bool_t GenieGenerator::Init(const char* fileName) {
 // -----   Default constructor   -------------------------------------------
 Bool_t GenieGenerator::Init(const char* fileName, const int firstEvent) {
   fNuOnly = false;
-  fLogger = FairLogger::GetLogger();
-  if (0 == strncmp("/eos",fileName,4) ) {
-   TString tmp = gSystem->Getenv("EOSSHIP");
-   tmp+=fileName;
-   fInputFile  = TFile::Open(tmp); 
-   fLogger->Info(MESSAGE_ORIGIN,"Opening input file on eos %s",tmp.Data());
-  }else{
-   fInputFile  = new TFile(fileName);
-   fLogger->Info(MESSAGE_ORIGIN,"Opening input file %s",fileName);
+  fInputFile = TFile::Open(fileName);
+  LOG(INFO) << "Opening input file " << fileName;
+  if (!fInputFile) {
+      LOG(FATAL) << "Error opening input file.";
+      return kFALSE;
   }
-  if (fInputFile->IsZombie() or !fInputFile) {
-     fLogger->Fatal(MESSAGE_ORIGIN, "Error opening input file");
-     return kFALSE; }
-  fTree = (TTree *)fInputFile->Get("gst");
+  fTree = dynamic_cast<TTree*>(fInputFile->Get("gst"));
   fNevents = fTree->GetEntries();
   fn = firstEvent;
   fTree->SetBranchAddress("Ev",&Ev);    // incoming neutrino energy
@@ -62,7 +55,7 @@ Bool_t GenieGenerator::Init(const char* fileName, const int firstEvent) {
   fTree->SetBranchAddress("pyl",&pyl);
   fTree->SetBranchAddress("pzl",&pzl);
   fTree->SetBranchAddress("Ef",&Ef);   // outgoing hadronic momenta
-  fTree->SetBranchAddress("pxf",&pxf);    
+  fTree->SetBranchAddress("pxf",&pxf);
   fTree->SetBranchAddress("pyf",&pyf);
   fTree->SetBranchAddress("pzf",&pzf);
   fTree->SetBranchAddress("nf",&nf);     // nr of outgoing hadrons
@@ -315,7 +308,7 @@ Bool_t GenieGenerator::OldReadEvent(FairPrimaryGenerator* cpg)
      }
      fFirst = kFALSE;
     }
-    if (fn==fNevents) {fLogger->Warning(MESSAGE_ORIGIN, "End of input file. Rewind.");}
+    if (fn==fNevents) {LOG(WARNING) << "End of input file. Rewind.";}
     fTree->GetEntry(fn%fNevents);
     fn++;
     if (fn%1000==0) {
@@ -453,7 +446,7 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg)
       fFirst = kFALSE;
     }
 
-    if (fn==fNevents) {fLogger->Warning(MESSAGE_ORIGIN, "End of input file. Rewind.");}
+    if (fn==fNevents) {LOG(WARNING) << "End of input file. Rewind.";}
     fTree->GetEntry(fn%fNevents);
     fn++;
     if (fn%100==0) {
@@ -549,7 +542,7 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg)
     //cout << "Info GenieGenerator: prob2int " << prob2int << ", " << count << endl;
 
     Double_t zrelative=z-ztarget;
-    Double_t tof=TMath::Sqrt(x*x+y*y+zrelative*zrelative)/2.99792458e+6;
+    Double_t tof = TMath::Sqrt(x * x + y * y + zrelative * zrelative) / 2.99792458e+10;   // speed of light in cm/s
     cpg->AddTrack(neu,pout[0],pout[1],pout[2],x,y,z,-1,false,TMath::Sqrt(pout[0]*pout[0]+pout[1]*pout[1]+pout[2]*pout[2]),tof,mparam[0]*mparam[4]);
     if (not fNuOnly){
       // second, outgoing lepton
@@ -574,6 +567,3 @@ Int_t GenieGenerator::GetNevents()
 {
  return fNevents;
 }
-
-
-ClassImp(GenieGenerator)

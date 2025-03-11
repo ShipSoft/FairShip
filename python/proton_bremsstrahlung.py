@@ -11,6 +11,24 @@ mProton = 0.938272081 # GeV/c - PDG2016
 protonEnergy = 400. # GeV/c
 protonMomentum = math.sqrt(protonEnergy*protonEnergy - mProton*mProton)
 
+#VDM FORM FACTOR
+def rhoFormFactor(m):
+     """ From https://arxiv.org/abs/0910.5589 """
+     #constants from the code from Inar: https://github.com/pgdeniverville/BdNMC/blob/master/src/Proton_Brem_Distribution.cpp
+     f1ra = 0.6165340033101271
+     f1rb = 0.22320420111672623
+     f1rc = -0.33973820442685326
+     f1wa = 1.0117544786579074
+     f1wb = -0.8816565944110686
+     f1wc = 0.3699021157531611
+     f1prho = f1ra*0.77**2/(0.77**2-m**2-0.77*0.15j)
+     f1prhop = f1rb*1.25**2/(1.25**2-m**2-1.25*0.3j)
+     f1prhopp = f1rc*1.45**2/(1.45**2-m**2-1.45*0.5j)
+     f1pomega = f1wa*0.77**2/(0.77**2-m**2-0.77*0.0085j)
+     f1pomegap = f1wb*1.25**2/(1.25**2-m**2-1.25*0.3j)
+     f1pomegapp = f1wc*1.45**2/(1.45**2-m**2-1.45*0.5j)
+     return abs(f1prho+f1prhop+f1prhopp+f1pomega+f1pomegap+f1pomegapp)
+
 # useful functions
 def energy(p,m):
     """ Compute energy from momentum and mass """
@@ -54,7 +72,7 @@ def wba(p, theta, mDarkPhoton, epsilon):
     mA2 = mDarkPhoton*mDarkPhoton
 
     p1 = (1. + oneMinusZSquare) / zeta(p,theta)
-    p2 = ( 2. * zeta(p,theta) * (1.-zeta(p,theta)) * ( (2.*mp2 + mA2)/ H(p,theta,mDarkPhoton) 
+    p2 = ( 2. * zeta(p,theta) * (1.-zeta(p,theta)) * ( (2.*mp2 + mA2)/ H(p,theta,mDarkPhoton)
             - pow(zeta(p,theta),2.)*2.*mp2*mp2/h2 ) )
     #p3 = 2.*zeta(p,theta)*(1.-zeta(p,theta))*(zeta(p,theta)+oneMinusZSquare)*mp2*mA2/h2
     p3 = 2.*zeta(p,theta)*(1.-zeta(p,theta))*(1+oneMinusZSquare)*mp2*mA2/h2
@@ -71,7 +89,7 @@ def sigma(s): # s in GeV^2 ---> sigma in mb
     a5 = 0.545
     a6 = 0.458
     a7 = 42.53
-    p1 = a2*pow(math.log(s/a3),2.) 
+    p1 = a2*pow(math.log(s/a3),2.)
     p2 = a4*pow((1./s),a5)
     p3 = a7*pow((1./s),a6)
     return a1 + p1 - p2 + p3
@@ -181,5 +199,3 @@ def hProdPDF(mDarkPhoton, epsilon, norm, binsp, binstheta, tmin = -0.5 * math.pi
     del angles
     del momenta
     return hPDF
-
-

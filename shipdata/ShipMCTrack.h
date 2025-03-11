@@ -20,7 +20,7 @@
 #include "TMath.h"                      // for Sqrt
 #include "TVector3.h"                   // for TVector3
 #include "TMCProcess.h"                   // enum with process ids
-
+#include "TString.h"
 class TParticle;
 
 class ShipMCTrack : public TObject
@@ -128,7 +128,7 @@ class ShipMCTrack : public TObject
     Int_t fNPoints;
 
 
-    ClassDef(ShipMCTrack,7);
+    ClassDef(ShipMCTrack,8);
 
 };
 

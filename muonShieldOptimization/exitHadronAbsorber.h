@@ -7,6 +7,7 @@
 #include "TGeoVolume.h"
 #include "vetoPoint.h"
 #include "TNtuple.h"
+#include "TFile.h"
 #include <map>
 
 class FairVolume;
@@ -87,7 +88,7 @@ class exitHadronAbsorber: public FairDetector
     Double_t     fLength;            //!  length
     Double_t     fzPos;              //!  zPos, optional
     Bool_t withNtuple;               //! special option for Dark Photon physics studies
-    TNtuple* fNtuple;               //!  
+    TNtuple* fNtuple;               //!
     Float_t EMax;  //! max energy to transport
     Bool_t fOnlyMuons;  //! flag if only muons should be stored
     Bool_t fSkipNeutrinos;  //! flag if neutrinos should be ignored

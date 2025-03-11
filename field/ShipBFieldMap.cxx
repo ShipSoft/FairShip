@@ -21,7 +21,7 @@ ShipBFieldMap::ShipBFieldMap(const std::string& label,
 			     Float_t theta,
 			     Float_t psi,
 			     Float_t scale,
-			     Bool_t isSymmetric) : 
+			     Bool_t isSymmetric) :
     TVirtualMagField(label.c_str()),
     fieldMap_(new floatArray()),
     mapFileName_(mapFileName),
@@ -84,7 +84,7 @@ ShipBFieldMap::ShipBFieldMap(const std::string& newName, const ShipBFieldMap& rh
     zMax_(rhs.zMax_),
     dz_(rhs.dz_),
     zRange_(rhs.zRange_),
-    xOffset_(newXOffset), 
+    xOffset_(newXOffset),
     yOffset_(newYOffset),
     zOffset_(newZOffset),
     phi_(newPhi),
@@ -127,18 +127,22 @@ void ShipBFieldMap::Field(const Double_t* position, Double_t* B)
     // 4. x < 0, y < 0: Bx = Bx
 
     Float_t BxSign(1.0);
+    Float_t BzSign = 1;
+
     if (isSymmetric_) {
 
       // The field map co-ordinates only contain x > 0 and y > 0, i.e. we
-      // are using x-y quadrant symmetry. If the local x or y coordinates 
-      // are negative we need to change their sign and keep track of the 
+      // are using x-y quadrant symmetry. If the local x or y coordinates
+      // are negative we need to change their sign and keep track of the
       // adjusted sign of Bx which we use as a multiplication factor at the end
       if (x < 0.0) {
 	x = -x; BxSign *= -1.0;
       }
 
       if (y < 0.0) {
-	y = -y; BxSign *= -1.0;
+          y = -y;
+          BxSign *= -1.0;
+          BzSign = -1.0;
       }
 
     }
@@ -192,15 +196,15 @@ void ShipBFieldMap::Field(const Double_t* position, Double_t* B)
     // and scale with the appropriate multiplication factor (default = 1.0)
     B[0] = this->BInterCalc(ShipBFieldMap::xAxis)*scale_*BxSign;
     B[1] = this->BInterCalc(ShipBFieldMap::yAxis)*scale_;
-    B[2] = this->BInterCalc(ShipBFieldMap::zAxis)*scale_;
+    B[2] = this->BInterCalc(ShipBFieldMap::zAxis) * scale_ * BzSign;
 
 }
 
 void ShipBFieldMap::initialise()
 {
-    
+
     if (initialised_ == kFALSE) {
-	
+
 	if (isCopy_ == kFALSE) {this->readMapFile();}
 
 	// Set the global co-ordinate translation and rotation info
@@ -251,7 +255,7 @@ void ShipBFieldMap::readRootFile() {
 	std::cout<<"ShipBFieldMap: could not find the file "<<mapFileName_<<std::endl;
 	return;
     }
-    
+
     // Coordinate ranges
     TTree* rTree = dynamic_cast<TTree*>(theFile->Get("Range"));
     if (!rTree) {
@@ -277,7 +281,7 @@ void ShipBFieldMap::readRootFile() {
     // Make sure we don't have a copy
     if (isCopy_ == kFALSE) {
 
-	// The data is expected to contain Bx,By,Bz data values 
+	// The data is expected to contain Bx,By,Bz data values
 	// in ascending z,y,x co-ordinate order
 
 	TTree* dTree = dynamic_cast<TTree*>(theFile->Get("Data"));
@@ -334,8 +338,8 @@ void ShipBFieldMap::readTextFile() {
 
     std::string tmpString("");
 
-    getData >> tmpString >> xMin_ >> xMax_ >> dx_ 
-	    >> yMin_ >> yMax_ >> dy_ >> zMin_ >> zMax_ >> dz_;    
+    getData >> tmpString >> xMin_ >> xMax_ >> dx_
+	    >> yMin_ >> yMax_ >> dy_ >> zMin_ >> zMax_ >> dz_;
 
     this->setLimits();
 
@@ -344,18 +348,18 @@ void ShipBFieldMap::readTextFile() {
 
 	// Read the field map and store the magnetic field components
 
-	// Second line can be ignored since they are 
+	// Second line can be ignored since they are
 	// just labels for the data columns for readability
 	getData >> tmpString >> tmpString >> tmpString;
-	
-	// The remaining lines contain Bx,By,Bz data values 
+
+	// The remaining lines contain Bx,By,Bz data values
 	// in ascending z,y,x co-ord order
 	fieldMap_->reserve(N_);
 
 	Float_t Bx(0.0), By(0.0), Bz(0.0);
 
 	for (Int_t i = 0; i < N_; i++) {
-	    
+
 	    getData >> Bx >> By >> Bz;
 
 	    // B field values are in Tesla. This means these values are multiplied
@@ -368,7 +372,7 @@ void ShipBFieldMap::readTextFile() {
 	    std::vector<Float_t> BVector(3);
 	    BVector[0] = Bx; BVector[1] = By; BVector[2] = Bz;
 	    fieldMap_->push_back(BVector);
-	    
+
 	}
 
     }
@@ -384,7 +388,7 @@ Bool_t ShipBFieldMap::insideRange(Float_t x, Float_t y, Float_t z)
 
     if (x >= xMin_ && x <= xMax_ && y >= yMin_ &&
 	y <= yMax_ && z >= zMin_ && z <= zMax_) {inside = kTRUE;}
-	
+
     return inside;
 
 }
@@ -485,7 +489,7 @@ Int_t ShipBFieldMap::getMapBin(Int_t iX, Int_t iY, Int_t iZ)
 Float_t ShipBFieldMap::BInterCalc(CoordAxis theAxis)
 {
 
-    // Find the magnetic field component along theAxis using trilinear 
+    // Find the magnetic field component along theAxis using trilinear
     // interpolation based on the current position and neighbouring bins
     Float_t result(0.0);
 

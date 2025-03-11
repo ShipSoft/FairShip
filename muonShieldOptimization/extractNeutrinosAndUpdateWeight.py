@@ -2,7 +2,7 @@ import os,ROOT
 import rootUtils as ut
 path =  '/eos/experiment/ship/data/Mbias/background-prod-2018/'
 
-# should fill hisograms with neutrinos, for mbias, exclude neutrinos from charm 
+# should fill hisograms with neutrinos, for mbias, exclude neutrinos from charm
 # update weight based on process/decay and PoT
 
 charmExtern = [4332,4232,4132,4232,4122,431,411,421,15]
@@ -46,7 +46,7 @@ for idnu in range(12,17,2):
 
 def processFile(fin,noCharm=True):
     f   = ROOT.TFile.Open(os.environ['EOSSHIP']+path+fin)
-    print "opened file ",fin
+    print("opened file ",fin)
     sTree = f.cbmsim
     for n in range(sTree.GetEntries()):
       sTree.GetEntry(n)
@@ -70,15 +70,15 @@ def processFile(fin,noCharm=True):
 
 def run():
  tmp = "pythia8_Geant4_10.0_cXX.root"
- global weight 
- weight = weightMbias 
+ global weight
+ weight = weightMbias
  for run in range(0,67000,1000):
    rc = processFile(tmp.replace('XX',str(run)))
  ut.writeHists(h,'pythia8_Geant4_10.0_c0-67000_nu.root')
 
 def run1GeV():
  tmp = "pythia8_Geant4_1.0_cXX.root"
- global weight 
+ global weight
  weight = weightMbias1GeV
  for run in range(0,19000,1000):
    rc = processFile(tmp.replace('XX',str(run)))
@@ -110,11 +110,11 @@ def run4beauty():
  if rc == 0:
      fmu = fname.replace('.root',"_mu.root")
      rc = os.system("xrdcp "+fmu+" $EOSSHIP/eos/experiment/ship/data/Mbias/background-prod-2018/"+fmu)
-     if rc != 0: 
-      print "copy to EOS failed, stop",fmu
+     if rc != 0:
+      print("copy to EOS failed, stop",fmu)
      else:
       rc = os.system("rm "+fmu)
- 
+
 def finalResult():
  h10={}
  ut.readHists(h10,'pythia8_Geant4_10.0_c0-67000_nu.root')

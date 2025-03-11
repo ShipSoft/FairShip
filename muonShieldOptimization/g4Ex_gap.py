@@ -30,9 +30,9 @@ fullTungsten = False
 
 work_dir  = "./"
 ecut      = 0.5 # GeV   with 1 : ~1sec / event, with 2: 0.4sec / event, 10: 0.13sec
-                 # pythia = geant4 conversion = 0.4/100 
-allPart   = True 
-qedlist   = [22,11,-11,12,-12,14,14,2212,2112,13,-13]  
+                 # pythia = geant4 conversion = 0.4/100
+allPart   = True
+qedlist   = [22,11,-11,12,-12,14,14,2212,2112,13,-13]
 rangeCut  = False
 trackHistory = {}
 #----------------------------- Yandex production ------------------------------
@@ -48,7 +48,7 @@ def get_work_dir(run_number):
   import socket
   host = socket.gethostname()
   job_base_name = os.path.splitext(os.path.basename(os.sys.argv[0]))[0]
-  out_dir = "{host}_{base}_{runnr}".format(host=host, base=job_base_name, runnr=run_number)
+  out_dir = f"{host}_{job_base_name}_{run_number}"
   return out_dir
 
 
@@ -149,19 +149,19 @@ myPythia.ReadString("Random:seed = "+str(R))
 # Initialize proton (400GeV) on proton at rest
 myPythia.Initialize(2212,2212,400.,0.) # required to hack TPythia8 in root !
 # W = 74 protons and 184-74= 110 neutrons
-if tauOnly:  myPythia.Plist(431) 
+if tauOnly:  myPythia.Plist(431)
 
 # if there is no energy cut, there are no particles to apply it to.
 if ecut == 0: qedlist = []
 # ecut applied to all particles
 if allPart: qedlist = []
 
-# Open an output file 
+# Open an output file
 h = {}
 if withNtuple:
  f  = ROOT.TFile.Open('pythia8_Geant4_'+str(runnr)+'_'+str(ecut)+'.root', 'RECREATE')
  h['ntuple'] = ROOT.TNtuple("pythia8-Geant4","muon/nu flux","id:px:py:pz:x:y:z:opx:opy:opz:ox:oy:oz:pythiaid:parentid")
- 
+
 # ==================================================================
 #                         Geant4 PART                              #
 # ==================================================================
@@ -171,7 +171,7 @@ if withNtuple:
 rand_engine = Ranlux64Engine()
 HepRandom.setTheEngine(rand_engine)
 HepRandom.setTheSeed(runnr)
-world_r   = 200.*m 
+world_r   = 200.*m
 
 # ==================================================================
 # user actions in python
@@ -208,11 +208,11 @@ class MyGeneratorAction(G4VUserPrimaryGeneratorAction):
    npart += 1
   else:
    while npart == 0:
-    myPythia.GenerateEvent()   
+    myPythia.GenerateEvent()
     nevTot+=1
     myTimer['pythia']+=time.time()-t_0
 # pythia interaction happens at 0,0,0
-    #x = rnr.Uniform(-3.,3.) 
+    #x = rnr.Uniform(-3.,3.)
     #y = rnr.Uniform(-3.,3.)
     # leave this smearing for later
   # create new primaries and set them to the vertex
@@ -225,15 +225,15 @@ class MyGeneratorAction(G4VUserPrimaryGeneratorAction):
     for p in particles:
        if p.GetStatusCode()!=1 : continue
        pid = p.GetPdgCode()
-       mkey   =  p.GetMother(0)+1  
+       mkey   =  p.GetMother(0)+1
        mother =  myPythia.GetParticle(mkey)
        if JpsiMainly and abs(pid) != 13  : continue
        if tauOnly    and abs(pid) != 16 : continue
        if JpsiMainly and mother.GetPdgCode() != 443 : continue
-       if tauOnly  : 
-         mmkey   =  mother.GetMother(0)+1  
+       if tauOnly  :
+         mmkey   =  mother.GetMother(0)+1
          mmother =  myPythia.GetParticle(mmkey)
-         if abs(mother.GetPdgCode()) != 431 and abs(mmother.GetPdgCode()) != 431 : 
+         if abs(mother.GetPdgCode()) != 431 and abs(mmother.GetPdgCode()) != 431 :
           myPythia.EventListing()
           continue
        qed = pid in qedlist  # use cut only for photons, leptons/neutrinos, protons and neutrons
@@ -251,35 +251,35 @@ class MyGeneratorAction(G4VUserPrimaryGeneratorAction):
        npart += 1
    # if debug: myPythia.EventListing()
   anEvent.AddPrimaryVertex( vertex )
-  if debug and not particleGun: print 'new event at ',ztarget.z/m
+  if debug and not particleGun: print('new event at ',ztarget.z/m)
   myTimer['geant4_conv']+=time.time()-t_0
 class MyRunAction(G4UserRunAction):
   "My Run Action"
 
   def EndOfRunAction(self, run):
     global debug,nevTot
-    print "*** End of Run"
-    print "- Run summary : (id= %d, #events= %d)" \
-          % (run.GetRunID(), nevTot)
+    print("*** End of Run")
+    print("- Run summary : (id= %d, #events= %d)" \
+          % (run.GetRunID(), nevTot))
     h['ntuple'].Write()
-    print 'ecut applied to',allPart,qedlist,' range cut for e,gamma:',rangeCut
+    print('ecut applied to',allPart,qedlist,' range cut for e,gamma:',rangeCut)
 # ------------------------------------------------------------------
 class MyEventAction(G4UserEventAction):
   "My Event Action"
   def EndOfEventAction(self, event):
     global myEventnr
-    if debug and not particleGun: print 'end of event',myEventnr
-    myEventnr += 1 
+    if debug and not particleGun: print('end of event',myEventnr)
+    myEventnr += 1
     # self.myPrintout(event)
   def StartOfEventAction(self, event):
     global trackHistory
     trackHistory={}
   def myPrintout(self, event):
     prim = event.GetPrimaryVertex()
-    print 'vertex ',prim.GetX0()/m,prim.GetY0()/m,prim.GetZ0()/m 
+    print('vertex ',prim.GetX0()/m,prim.GetY0()/m,prim.GetZ0()/m)
     for k in range( prim.GetNumberOfParticle() ):
-      p = prim.GetPrimary(k) 
-      print 'event',p.GetPDGcode(),p.GetPx()/GeV,p.GetPy()/GeV,p.GetPz()/GeV
+      p = prim.GetPrimary(k)
+      print('event',p.GetPDGcode(),p.GetPx()/GeV,p.GetPy()/GeV,p.GetPz()/GeV)
 # ------------------------------------------------------------------
 class MySteppingAction(G4UserSteppingAction):
   "My Stepping Action"
@@ -289,19 +289,19 @@ class MySteppingAction(G4UserSteppingAction):
     touch        = preStepPoint.GetTouchableHandle()
     volName      = touch.GetVolume().GetName().__format__('')
     pos    = preStepPoint.GetPosition()
-    print 'stepping name, z pos  dedx (MeV): ',volName,pos.z/m,step.GetTotalEnergyDeposit()/MeV
+    print('stepping name, z pos  dedx (MeV): ',volName,pos.z/m,step.GetTotalEnergyDeposit()/MeV)
 # ------------------------------------------------------------------
 class MyTrackingAction(G4UserTrackingAction):
  def PostUserTrackingAction(self,atrack):
-    pass  
+    pass
  def PreUserTrackingAction(self,atrack):
 # need to be careful with energy cut, anti-protons and anti-neutrons can always produce pions and kaons
    part         = atrack.GetDynamicParticle()
    pid          = part.GetPDGcode()
    muCut = JpsiMainly and abs(pid)!=13
    qed          = pid in qedlist  # use cut only for photons, electrons, protons and neutrons
-   if (atrack.GetKineticEnergy()/GeV < ecut and (qed or allPart) ) or muCut : 
-      G4TrackingManager().SetStoreTrajectory(False) 
+   if (atrack.GetKineticEnergy()/GeV < ecut and (qed or allPart) ) or muCut :
+      G4TrackingManager().SetStoreTrajectory(False)
       atrack.SetTrackStatus(atrack.GetTrackStatus().fStopAndKill)
 
 # ------------------------------------------------------------------
@@ -322,7 +322,7 @@ class MyTrackingActionD(G4UserTrackingAction):
       h['ntuple'].Fill(float(pid), float(mom.x/GeV),float(mom.y/GeV),float(mom.z/GeV),\
                    float(pos.x/m),float(pos.y/m),float(pos.z/m),\
                    float(vx.x/m),float(vx.y/m),float(vx.z/m),pythiaid,parentid)
-       
+
  def PreUserTrackingAction(self,atrack):
    global trackHistory
 # need to be careful with energy cut, anti-protons and neutrons can always produce pions and kaons
@@ -332,32 +332,32 @@ class MyTrackingActionD(G4UserTrackingAction):
    moid = atrack.GetParentID()
    trackHistory[atrack.GetTrackID()]=[pid,moid]
    tmoid = str(moid)
-   if trackHistory.has_key(moid): 
+   if moid in trackHistory:
          mo = pdg.GetParticle(trackHistory[moid][0])
          if mo : tmoid = mo.GetName()
    tid = str(pid)
    if pdg.GetParticle(pid): tid = pdg.GetParticle(pid).GetName()
    mom = atrack.GetMomentum()
    p = ROOT.TMath.Sqrt(mom.x*mom.x+mom.y*mom.y+mom.z*mom.z)
-   if debug and abs(pid)==13: print 'track',atrack.GetTrackID(),tid,tmoid,moid,atrack.GetKineticEnergy()/MeV,p/MeV
+   if debug and abs(pid)==13: print('track',atrack.GetTrackID(),tid,tmoid,moid,atrack.GetKineticEnergy()/MeV,p/MeV)
    if pid==12:
-      if trackHistory.has_key(moid): 
+      if moid in trackHistory:
         gmoid = trackHistory[moid][1]
-        if trackHistory.has_key(gmoid):
+        if gmoid in trackHistory:
           tgmoid = str(gmoid)
           mo = pdg.GetParticle(trackHistory[gmoid][0])
           if mo : tgmoid = mo.GetName()
-          print '   <--',gmoid,tgmoid
+          print('   <--',gmoid,tgmoid)
           gmoid = trackHistory[gmoid][1]
-          if trackHistory.has_key(gmoid):
+          if gmoid in trackHistory:
            tgmoid = str(gmoid)
            mo = pdg.GetParticle(trackHistory[gmoid][0])
            if mo : tgmoid = mo.GetName()
-           print '      <--',gmoid,tgmoid
+           print('      <--',gmoid,tgmoid)
 
    qed          = pid in qedlist  # use cut only for photons, electrons, protons and neutrons
-   if atrack.GetKineticEnergy()/GeV < ecut and (qed or allPart): 
-      G4TrackingManager().SetStoreTrajectory(False) 
+   if atrack.GetKineticEnergy()/GeV < ecut and (qed or allPart):
+      G4TrackingManager().SetStoreTrajectory(False)
       atrack.SetTrackStatus(atrack.GetTrackStatus().fStopAndKill)
 
  def myPrintout(self, atrack):
@@ -366,8 +366,8 @@ class MyTrackingActionD(G4UserTrackingAction):
    vx  = atrack.GetVertexPosition()
    pos = atrack.GetPosition()
    mom = atrack.GetMomentum()
-   print 'TA',pid,atrack.GetTotalEnergy()/GeV,ecut*GeV 
-   print 'start tracking',atrack.GetDynamicParticle().GetPDGcode(),atrack.GetKineticEnergy()/GeV,vx.z/m,pos.z/m,mom.z/GeV
+   print('TA',pid,atrack.GetTotalEnergy()/GeV,ecut*GeV)
+   print('start tracking',atrack.GetDynamicParticle().GetPDGcode(),atrack.GetKineticEnergy()/GeV,vx.z/m,pos.z/m,mom.z/GeV)
 
 # ------------------------------------------------------------------
 class ScoreSD(G4VSensitiveDetector):
@@ -382,7 +382,7 @@ class ScoreSD(G4VSensitiveDetector):
     part         = track.GetDynamicParticle()
     pid          = part.GetPDGcode()
     vx           = track.GetVertexPosition()
-    pvx          = track.GetVertexMomentumDirection()  
+    pvx          = track.GetVertexMomentumDirection()
     ekinvx       = track.GetVertexKineticEnergy()
     M            = part.GetMass()
     Pvx          = ROOT.TMath.Sqrt( ekinvx*(ekinvx+2*M) )
@@ -398,14 +398,14 @@ class ScoreSD(G4VSensitiveDetector):
                    float(pos.x/m),float(pos.y/m),float(pos.z/m),\
                    float(Pvx*pvx.x/GeV),float(Pvx*pvx.y/GeV),float(Pvx*pvx.z/GeV),\
                    float(vx.x/m),float(vx.y/m),float(vx.z/m),pythiaid,parentid)
-    if debug: 
-        print 'xxx',pid, float(mom.x/GeV),float(mom.y/GeV),float(mom.z/GeV),\
+    if debug:
+        print('xxx',pid, float(mom.x/GeV),float(mom.y/GeV),float(mom.z/GeV),\
                    float(pos.x/m),float(pos.y/m),float(pos.z/m),\
                    float(Pvx*pvx.x/GeV),float(Pvx*pvx.y/GeV),float(Pvx*pvx.z/GeV),\
-                   float(vx.x/m),float(vx.y/m),float(vx.z/m),pythiaid,parentid
+                   float(vx.x/m),float(vx.y/m),float(vx.z/m),pythiaid,parentid)
 
 def ConstructGeom():
-  print "* Constructing geometry..."
+  print("* Constructing geometry...")
   # reset world material
   vac = G4Material.GetMaterial("G4_Galactic")
   g4py.ezgeom.SetWorldMaterial(vac)
@@ -428,7 +428,7 @@ def ConstructGeom():
   elementMo  = G4Element("Molybdenum","Mo",42.,   95.94*g/mole)
   molybdenum = G4Material("molybdenum", 10.22*g/cm3, 1)
   molybdenum.AddElement(elementMo, 1.00)
-# 
+#
   if fullTungsten:
    target   = G4EzVolume("Target")
    slit     = G4EzVolume("Slit")
@@ -438,12 +438,12 @@ def ConstructGeom():
    target.CreateTubeVolume(tungsten, 0., 25.*cm,targetDZ)
    target.SetColor(G4Color(0.0,0.5,0.5,1.0))
    target.SetVisibility(True)
-# additional 5 interaction lengths 
+# additional 5 interaction lengths
   #targetOpt = G4EzVolume("TargetOpt")
   #targetOpt.CreateTubeVolume(tungsten, 0., 25.*cm,     25.*cm)
   #targetOpt.SetColor(G4Color(0.0,0.5,0.5,1.0))
   #targetOpt.SetVisibility(True)
-   slit.CreateTubeVolume(water, 0., 25.*cm, slitDZ) 
+   slit.CreateTubeVolume(water, 0., 25.*cm, slitDZ)
    slit.SetVisibility(False)
    targetPhys = []
    slitPhys = []
@@ -466,14 +466,14 @@ def ConstructGeom():
    spaceTopBot = 10.*cm
    spaceSide   = 5.*cm
    slit     = G4EzVolume("Slit")
-   slit.CreateBoxVolume(water, diameter,diameter,slitDZ) 
+   slit.CreateBoxVolume(water, diameter,diameter,slitDZ)
    slit.SetVisibility(False)
    targetPhys = []
    targetVol  = []
    slitPhys   = []
    targetL = 0*cm
    z0Pos   = -50.*m
-   #          material,length  
+   #          material,length
    layout = {1:[molybdenum,8.*cm],\
              2:[molybdenum,2.5*cm],3:[molybdenum,2.5*cm],4:[molybdenum,2.5*cm],5:[molybdenum,2.5*cm],\
              6:[molybdenum,2.5*cm],7:[molybdenum,2.5*cm],8:[molybdenum,2.5*cm],\
@@ -481,7 +481,7 @@ def ConstructGeom():
             11:[molybdenum,6.5*cm],\
             12:[molybdenum,8.0*cm],13:[molybdenum,8.0*cm],\
             14:[tungsten,5.*cm],15:[tungsten,8.*cm],16:[tungsten,10.*cm],17:[tungsten,35.*cm] }
-   for i in range(1,18): 
+   for i in range(1,18):
      targetVol.append(G4EzVolume("Target_Layer_"+str(i)))
      targetVol[i-1].CreateBoxVolume(layout[i][0], diameter,diameter,layout[i][1])
      if layout[i][0]==tungsten:     targetVol[i-1].SetColor(G4Color(0.0,0.5,0.5,1.0))
@@ -507,7 +507,7 @@ def ConstructGeom():
   # a hadron absorber is placed
   absorberL = 2*150.*cm
   absorber = G4EzVolume("Absorber")
-  #                             inner radius outer radius length    
+  #                             inner radius outer radius length
   absorber.CreateTubeVolume(iron, 0.,         400.*cm,     absorberL/2.)
   absorberPhys = absorber.PlaceIt(G4ThreeVector(0.,0.,z0Pos+targetL+absorberL/2.+5.*cm),1,snoopy)
   absorber.SetColor(G4Color(0.898,0.902,0.91,1.0))
@@ -517,7 +517,7 @@ def ConstructGeom():
   absorberlog = absorberPhys.GetLogicalVolume()
   absorberlog.SetVisAttributes(xx)
 # scoring plane
-  afterHadronZ = z0Pos+targetL+absorberL+5.1*cm  
+  afterHadronZ = z0Pos+targetL+absorberL+5.1*cm
   scorez = afterHadronZ
   score  = G4EzVolume("Score")
   score.CreateTubeVolume(vac, 0.,          20.*m,     1.*mm)
@@ -540,12 +540,12 @@ gRunManager.SetUserAction(myGE)
 if debug: myTA= MyTrackingActionD()
 else:     myTA= MyTrackingAction()
 gRunManager.SetUserAction(myTA)
-#  
+#
 
 ConstructGeom()
 myRA= MyRunAction()
 gRunManager.SetUserAction(myRA)
-  
+
 myEA= MyEventAction()
 gRunManager.SetUserAction(myEA)
 
@@ -556,7 +556,7 @@ if withStepping :    gRunManager.SetUserAction(mySA)
 gRunManager.Initialize()
 # scoring should be set after geometry construction
 sens = ScoreSD('Score')
-scoreLog.SetSensitiveDetector(sens)  
+scoreLog.SetSensitiveDetector(sens)
 
 if local and not particleGun:
  gApplyUICommand('/vis/drawVolume')
@@ -566,9 +566,9 @@ if local and not particleGun:
 t0 = time.time()
 gRunManager.BeamOn(nev)
 t1 = time.time()
-print 'Time used',t1-t0, ' seconds' 
-for x in myTimer: 
-  print x,myTimer[x]
+print('Time used',t1-t0, ' seconds')
+for x in myTimer:
+  print(x,myTimer[x])
 
 logger.info("output directory: %s" % work_dir)
 # save arguments and GIT tags
@@ -578,7 +578,7 @@ saveBasicParameters.execute(f,args,'SHiP-Params')
 if local:
  wrld = snoopyPhys.GetMotherLogical()
  parser = G4GDMLParser()
- geofile = work_dir+'/g4Geom.gdml' 
+ geofile = work_dir+'/g4Geom.gdml'
  if os.path.isfile(geofile): os.system('rm '+geofile)
  parser.Write('g4Geom.gdml',wrld)
  ROOT.TGeoManager()
@@ -587,4 +587,3 @@ if local:
  ROOT.gGeoManager.CheckOverlaps()
  ROOT.gGeoManager.PrintOverlaps()
  geomgr.GetTopVolume().Draw('ogl')
-

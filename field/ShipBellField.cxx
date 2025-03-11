@@ -22,7 +22,7 @@ Double_t mm  = 0.1*cm;  //  mm
 
 
 // -----   Default constructor   -------------------------------------------
-ShipBellField::ShipBellField() 
+ShipBellField::ShipBellField()
   : FairField(),
     fPeak(0.),
     fMiddle(0.),
@@ -94,7 +94,7 @@ Double_t ShipBellField::GetBx(Double_t x, Double_t y, Double_t z) {
    //old Bell field from Wilfried Flegel
    //Double_t bx= fPeak/(1.+pow(fabs(zlocal)/2.1,6.));
    //new field based on simulation of Davide Tommasini (22/1/2015)
-    
+
     Double_t bx=0.;
     //field in box 20 cm larger than inner tube.
     if ( (fabs(x)<2.7*m) && (fabs(y)<fBtube+0.2*m))  {
@@ -153,9 +153,3 @@ void ShipBellField::Print() {
   cout << "======================================================" << endl;
 }
 // -------------------------------------------------------------------------
-
-
-
-ClassImp(ShipBellField)
-
-

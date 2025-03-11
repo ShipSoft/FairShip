@@ -18,7 +18,7 @@
 using namespace std;
 
 
-ecalCell* ecalStructure::GetCell(Int_t volId, Int_t& ten, Bool_t& isPS)
+ecalCell* ecalStructure::GetCell(Int_t volId, Int_t& ten)
 {
   UInt_t i;
   static Int_t volidmax = 0;
@@ -45,7 +45,6 @@ ecalCell* ecalStructure::GetCell(Int_t volId, Int_t& ten, Bool_t& isPS)
     if (lisPS) fHash[volId]->isPsTen+=1;
   }
   ten=fHash[volId]->isPsTen/2;
-  isPS=fHash[volId]->isPsTen%2;
   return fHash[volId]->cell;
 }
 
@@ -69,7 +68,7 @@ ecalModule* ecalStructure::CreateModule(char type, Int_t number, Float_t x1, Flo
 //-----------------------------------------------------------------------------
 
 ecalStructure::ecalStructure(ecalInf* ecalinf)
-  : TNamed("ecalStructure", "Calorimeter structure"), 
+  : TNamed("ecalStructure", "Calorimeter structure"),
     fUseMC(0),
     fX1(0.),
     fY1(0.),
@@ -102,7 +101,7 @@ void ecalStructure::Construct()
   char type;
 
   fStructure.resize(fEcalInf->GetXSize()*fEcalInf->GetYSize(), NULL);
-	
+
   dx=fEcalInf->GetModuleSize();
   dy=fEcalInf->GetModuleSize();
   //Creating ECAL Matrix
@@ -125,54 +124,54 @@ void ecalStructure::Construct()
   list<ecalCell*> neib;
   vector<ecalCell*> cl;
   vector<ecalCell*>::const_iterator pcl;
-  
+
   Int_t num;
   //We want neighbors for ecalModules be ecalModules
   for(i=0;i<fEcalInf->GetXSize();i++)
     for(j=0;j<fEcalInf->GetYSize();j++)
       if (fStructure[GetNum(i,j)]) {
 	neib.clear();
-	
+
 	num=GetNumber(i-1,j);
 	if (-1!=num) {
 	  neib.push_back(fStructure[num]);
 	}
-			
+
 	num=GetNumber(i-1,j+1);
 	if (-1!=num) {
 	  neib.push_back(fStructure[num]);
 	}
-	
+
 	num=GetNumber(i,j+1);
 	if (-1!=num) {
 	  neib.push_back(fStructure[num]);
 	}
-	
+
 	num=GetNumber(i+1,j+1);
 	if (-1!=num) {
 	  neib.push_back(fStructure[num]);
 	}
-	
+
 	num=GetNumber(i+1,j);
 	if (-1!=num) {
 	  neib.push_back(fStructure[num]);
 	}
-			
+
 	num=GetNumber(i+1,j-1);
 	if (-1!=num) {
 	  neib.push_back(fStructure[num]);
 	}
-	
+
 	num=GetNumber(i,j-1);
 	if (-1!=num) {
 	  neib.push_back(fStructure[num]);
 	}
-	
+
 	num=GetNumber(i-1,j-1);
 	if (-1!=num) {
 	  neib.push_back(fStructure[num]);
 	}
-	
+
 	num=GetNumber(i,j);
 	fStructure[num]->SetNeighborsList(neib);
 	cl=fStructure[num]->GetCells();
@@ -186,7 +185,7 @@ void ecalStructure::Construct()
 void _add_not_null(ecalModule* mod, list<ecalModule*>& lst)
 {
   if (mod)
-    if (find(lst.begin(),lst.end(),mod)==lst.end())	
+    if (find(lst.begin(),lst.end(),mod)==lst.end())
       lst.push_back(mod);
 }
 
@@ -203,7 +202,7 @@ void _add_not_null(list<ecalCell*> from, list<ecalCell*>& where)
 //-----------------------------------------------------------------------------
 void _add_not_null(ecalCell* cell, list<ecalCell*>& lst)
 {
-  if (find(lst.begin(),lst.end(),cell)==lst.end())	
+  if (find(lst.begin(),lst.end(),cell)==lst.end())
     lst.push_back(cell);
 }
 
@@ -228,7 +227,7 @@ void ecalStructure::CreateNLists(ecalCell* cell)
   Float_t dd=1e-6;
   list<ecalCell*> neib;
   list<ecalCell*> tl;
-  list<ecalModule*> tml; 
+  list<ecalModule*> tml;
   list<ecalModule*>::const_iterator ptml;
   list<ecalCell*>::const_iterator ptl;
   Int_t i;
@@ -248,10 +247,9 @@ void ecalStructure::CreateNLists(ecalCell* cell)
   if (tml.empty()) {
     cerr << "Error during creating neighbors lists." << endl;
     cerr << "Can't' find any modules neighbors to cell." << endl;
-    cerr << "Cell: CenterX=" << x << ", CenterY=" << y << "." << endl; 
+    cerr << "Cell: CenterX=" << x << ", CenterY=" << y << "." << endl;
     return;
   }
-  tl.empty();
   for(ptml=tml.begin();ptml!=tml.end();++ptml) {
     _add_not_null((*ptml)->GetCellsY(y-dy-d),tl);
     _add_not_null((*ptml)->GetCellsY(y+dy+d),tl);
@@ -261,7 +259,7 @@ void ecalStructure::CreateNLists(ecalCell* cell)
   if (tl.empty()) {
     cerr << "Error during creating neighbors lists." << endl;
     cerr << "Can't' find any cells neighbors to cell." << endl;
-    cerr << "Cell: CenterX=" << x << ", CenterY=" << y << "." << endl; 
+    cerr << "Cell: CenterX=" << x << ", CenterY=" << y << "." << endl;
     return;
   }
   for(ptl=tl.begin();ptl!=tl.end();++ptl) {
@@ -303,7 +301,7 @@ void ecalStructure::CreateNLists(ecalCell* cell)
 	_add_not_null((*ptl),neib);
       }
     }
-    
+
   }
   cell->SetNeighborsList(neib);
 }
@@ -330,12 +328,12 @@ void ecalStructure::GetHitXY(const Int_t hitId, Float_t& x, Float_t& y) const
   /** Hit Id -> (x,y) **/
 
   // Some translation from x*100+y  to y*sizex+x coding...
- 
+
   Int_t mnum=hitId/100;
   Int_t cellx = mnum/100;
   Int_t celly = mnum%100;
   mnum = GetNum(cellx, celly);
-  
+
   // end translation
 
   ecalModule* module=fStructure[mnum];
@@ -356,14 +354,14 @@ void ecalStructure::GetHitXY(const Int_t hitId, Float_t& x, Float_t& y) const
 ecalCell* ecalStructure::GetHitCell(const Int_t hitId) const
 {
   /** Hit Id -> Cell **/
- 
+
   // Some translation from x*100+y  to y*sizex+x coding...
- 
+
   Int_t mnum=hitId/100;
   Int_t cellx = mnum/100;
   Int_t celly = mnum%100;
   mnum = GetNum(cellx, celly);
-  
+
   // end translation
 
   ecalModule* module=fStructure[mnum];
@@ -372,7 +370,7 @@ ecalCell* ecalStructure::GetHitCell(const Int_t hitId) const
   Int_t cx=cellnum%10-1;
   Int_t cy=cellnum/10-1;
 
-  if (module==NULL||cx<0||cy<0||cx>=module->GetType()||cy>=module->GetType()) 
+  if (module==NULL||cx<0||cy<0||cx>=module->GetType()||cy>=module->GetType())
     return NULL;
 //  cout << hitId << " --- " << module->At(cx,cy)->GetCellNumber() << endl;
   return module->At(cx,cy);
@@ -386,14 +384,14 @@ void ecalStructure::GetGlobalCellXY(const Int_t hitId, Int_t& x, Int_t& y) const
 
   Int_t modulenum = hitId/100;
   Int_t cellx = modulenum/100;
-  Int_t celly = modulenum%100; 
+  Int_t celly = modulenum%100;
 
   Int_t innernum =  hitId%100;
   Int_t iny = innernum/10;
   Int_t inx = innernum%10;
   Int_t msize = fEcalInf->GetType(cellx,celly);
 
-   
+
   x = (cellx-1)* msize + inx;
   y = (celly-1)* msize + iny;
 
@@ -403,7 +401,7 @@ Int_t ecalStructure::GetType(const Int_t hitId) const
 {
   Int_t modulenum = hitId/100;
   Int_t cellx = modulenum/100;
-  Int_t celly = modulenum%100; 
+  Int_t celly = modulenum%100;
 
   Int_t msize = fEcalInf->GetType(cellx,celly);
   return msize;

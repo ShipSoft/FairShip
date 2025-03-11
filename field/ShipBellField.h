@@ -27,13 +27,13 @@ class ShipFieldPar;
 class ShipBellField : public FairField
 {
 
- public:    
+ public:
 
   /** Default constructor **/
   ShipBellField();
 
 
-  /** Standard constructor 
+  /** Standard constructor
    ** @param name   Object name
    ** @param Bpeak       peak field..
    ** @param Zmiddle     middle of the magnet (global coordinates)
@@ -49,8 +49,8 @@ class ShipBellField : public FairField
   /** Destructor **/
   virtual ~ShipBellField();
 
- 
-  /** Get components of field at a given point 
+
+  /** Get components of field at a given point
    ** @param x,y,z   Point coordinates [cm]
    **/
   virtual Double_t GetBx(Double_t x, Double_t y, Double_t z);
@@ -74,7 +74,7 @@ class ShipBellField : public FairField
   Double_t targetXY;
   Double_t targetZ0;
   Double_t targetL;
-  
+
   ClassDef(ShipBellField, 2);
 
 };

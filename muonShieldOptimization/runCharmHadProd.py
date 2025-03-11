@@ -7,7 +7,7 @@ if msel == "4":
  nev   = 2000000  # 0.1s / event
  path  = "/afs/cern.ch/project/lbcern/vol1/truf/charm/"
 else:
- nev   = 1000000 
+ nev   = 1000000
  path  = "/afs/cern.ch/project/lbcern/vol1/truf/beauty/"
 
 # path = "/home/truf/charm/"
@@ -17,7 +17,7 @@ else:
 # story about weights, run_fixedTarget puts into file header: pot = nrpotspill / wspill
 # with wspill = nrpotspill*chicc/nrcpot*nEvents/nev -> pot =  nev * nrcpot / (chicc * nEvents)
 # nEvents nr of events in input file, number of events requested for job, ratio should be 1
-# pot =  nrcpot / chicc 
+# pot =  nrcpot / chicc
 # nrcpot=((TH1F*)fin->Get("2"))->GetBinContent(1)/2.;  // pot are counted double, i.e. for each signal, i.e. pot/2.
 
 def makeHadrons(run):
@@ -26,7 +26,7 @@ def makeHadrons(run):
   os.system('mkdir run'+str(run))
   os.chdir('run'+str(run))
   cmd = "python $FAIRSHIP/macro/makeCascade.py -m "+msel+" -n " + str(nev) + " -t  Cascade-run"+str(run)+"-parp16-MSTP82-1-MSEL"+msel+".root"
-  # if not run in runList: 
+  # if not run in runList:
   os.system(cmd+ " >log"+str(run)+" &")
   os.chdir('../')
   run+=1
@@ -65,7 +65,7 @@ def makeBackgroundX(runList,cycle=0):
 
 def merge(run,cycle=0):
  fname = "pythia8_Geant4_XX_10.0.root"
- cmd = " " 
+ cmd = " "
  for n in range(ncpus):
   for x in os.listdir(path+'/run'+str(run+n)):
    orun = run+cycle*1000
@@ -76,18 +76,18 @@ def merge(run,cycle=0):
  if msel == "4": outFile = fname.replace('XX', 'charm_'+str(orun)+'-'+str(orun+ncpus-1) )
  else:           outFile = fname.replace('XX', 'beauty_'+str(orun)+'-'+str(orun+ncpus-1) )
  rc = os.system("hadd -O "+outFile + " " +cmd)
- if rc != 0: 
-    print "hadd failed, stop",outFile 
+ if rc != 0:
+    print("hadd failed, stop",outFile)
  else:
    rc = os.system("xrdcp "+outFile+" $EOSSHIP/eos/experiment/ship/data/Mbias/background-prod-2018/"+outFile)
-   if rc != 0: 
-    print "copy to EOS failed, stop",outFile 
+   if rc != 0:
+    print("copy to EOS failed, stop",outFile)
    else:
     rc = os.system("rm "+outFile)
 
 def mergeAll():
  cmd = "hadd pythia8_Geant4_charm_153.3B_10.0_mu.root "
- tmp = "/eos/experiment/ship/data/Mbias/background-prod-2018/pythia8_Geant4_charm_XX_10.0_mu.root" 
+ tmp = "/eos/experiment/ship/data/Mbias/background-prod-2018/pythia8_Geant4_charm_XX_10.0_mu.root"
  for x in ["0-19","20-39","40-59","60-79","80-99",\
            "1000-1019","1020-1039","1040-1059","1060-1079","1080-1099",\
            "2000-2019","2020-2039","2040-2059","2060-2079","2080-2099"]:
@@ -106,18 +106,18 @@ def compactifyCascade(run):
    for l in f.readlines():
     if not l.find('Macro finished succesfully')<0: success = True
    if not success:
-     print "job not finished properly",fName
-     continue  
+     print("job not finished properly",fName)
+     continue
    cmd += fName +" "
    f.close()
    Ntot+= NperJob
  if cmd.find('root')<0:
-  print 'no file found, exit'
+  print('no file found, exit')
  else:
   stat = str( int(Ntot/1E6))+'Mpot'
   outFile = "Cascade-run"+str(run)+"-"+str(run+ncpus-1)+"-parp16-MSTP82-1-MSEL"+msel+"-"+stat+".root"
   rc = os.system("hadd -O "+outFile + " " +cmd)
-  f = ROOT.TFile(outFile) 
+  f = ROOT.TFile(outFile)
   Npot = f.Get("2").GetBinContent(1)/2./chicc
   f.Close()
   stat = str( int(Npot/1E9))+'Bpot'
@@ -125,8 +125,8 @@ def compactifyCascade(run):
   outFile = "Cascade-run"+str(run)+"-"+str(run+ncpus-1)+"-parp16-MSTP82-1-MSEL"+msel+"-"+stat+".root"
   os.system("mv "+oldOutFile+" "+outFile)
   rc = os.system("xrdcp "+outFile+" $EOSSHIP/eos/experiment/ship/data/Mbias/background-prod-2018/"+outFile)
-  if rc != 0: 
-    print "copy to EOS failed, stop",outFile 
+  if rc != 0:
+    print("copy to EOS failed, stop",outFile)
   else:
     rc = os.system("rm "+outFile)
 
@@ -142,22 +142,20 @@ def statistics():
   f=ROOT.TFile.Open(path+fn)
   nPot += f.Get("2").GetBinContent(1)/2.
   nhadrons += f.Get('pythia6').GetEntries()
- print "total nr of hadrons:",nhadrons,nPot/chicc/1.E9,'Billion'
+ print("total nr of hadrons:",nhadrons,nPot/chicc/1.E9,'Billion')
 
 def potFromFileHeader():
  pot = 0
  for x in f.GetListOfKeys():
   if x.GetName()=='FileHeader':
    pot += float(x.GetTitle().split(' ')[3])
- print "PoT = ",pot
+ print("PoT = ",pot)
 
 x=ROOT.TRandom3()
 x.SetSeed(0)
 
 run = int(sys.argv[1])
 
-print "following functions exist"
-print " - makeHadrons(run): will run makeCascade"
-print " - makeBackground(run): will run fixedTarget generator"
-
-
+print("following functions exist")
+print(" - makeHadrons(run): will run makeCascade")
+print(" - makeBackground(run): will run fixedTarget generator")

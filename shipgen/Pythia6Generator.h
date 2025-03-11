@@ -3,7 +3,7 @@
 // -----          Created 08/08/08  by S. Spataro                      -----
 // -------------------------------------------------------------------------
 
-/**  Pythia6Generator.h 
+/**  Pythia6Generator.h
  *@author S.Spataro  <spataro@to.infn.it>
  *
  The Pythia6Generator reads a Pythia6 input file. The file must contain
@@ -35,12 +35,12 @@
          3     -2212         0         0         0         0  0.00000000E+00  0.00000000E+00  0.14000000E+02  0.14031406E+02  0.93827000E+00  0.00000000E+00  0.00000000E+00  0.00000000E+00  0.00000000E+00
          3      2212         0         0         0         0  0.00000000E+00  0.00000000E+00 -0.13444107E-16  0.93827000E+00  0.93827000E+00  0.00000000E+00  0.00000000E+00  0.00000000E+00  0.00000000E+00
 
-  
+
 ...
  [stop]
- 
+
  where the first row has the number of event and the number of particles, and below "N" is the line
- number of the event, 
+ number of the event,
 
  Derived from FairGenerator.
 **/
@@ -57,16 +57,16 @@ class FairPrimaryGenerator;
 
 
 
-class Pythia6Generator : public FairGenerator  
+class Pythia6Generator : public FairGenerator
 {
 
- public: 
+ public:
 
   /** Default constructor without arguments should not be used. **/
   Pythia6Generator();
 
 
-  /** Standard constructor. 
+  /** Standard constructor.
    ** @param fileName The input file name
    **/
   Pythia6Generator(const char* fileName);
@@ -75,7 +75,7 @@ class Pythia6Generator : public FairGenerator
   /** Destructor. **/
   virtual ~Pythia6Generator();
 
-	
+
   /** Reads on event from the input file and pushes the tracks onto
    ** the stack. Abstract method in base class.
    ** @param primGen  pointer to the CbmrimaryGenerator
@@ -91,13 +91,13 @@ class Pythia6Generator : public FairGenerator
   FILE *fInputFile;                   //! File
   Int_t fVerbose;                     //! Verbose Level
 
-  /** Private method CloseInput. Just for convenience. Closes the 
+  /** Private method CloseInput. Just for convenience. Closes the
    ** input file properly. Called from destructor and from ReadEvent. **/
   void CloseInput();
-	
-	
+
+
   /** PDG data base */
-  
+
 //  TDatabasePDG *fPDG; //!
 
   ClassDef(Pythia6Generator,1);

@@ -93,6 +93,3 @@ Int_t NtupleGenerator::GetNevents()
 {
  return fNevents;
 }
-
-
-ClassImp(NtupleGenerator)

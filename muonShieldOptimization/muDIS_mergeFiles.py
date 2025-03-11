@@ -8,19 +8,23 @@ def merge():
   sTree.AddFile(fn)
  fm    = ROOT.TFile("test.root","recreate")
  nTree = ROOT.TTree('DIS','muon DIS')
- iMuon       = ROOT.TClonesArray("TVectorD") 
+ iMuon       = ROOT.TClonesArray("TVectorD")
  iMuonBranch = nTree.Branch("InMuon",iMuon,32000,-1)
- dPart       = ROOT.TClonesArray("TVectorD") 
+ dPart       = ROOT.TClonesArray("TVectorD")
  dPartBranch = nTree.Branch("Particles",dPart,32000,-1)
  for n in range(sTree.GetEntries()):
    sTree.GetEvent(n)
    dPart.Clear()
    iMuon.Clear()
-   iMuon[0] = sTree.InMuon[0]
+   tca_vec = iMuon.ConstructedAt(0)
+   tca_vec.ResizeTo(sTree.InMuon[0])
+   ROOT.std.swap(tca_vec, sTree.InMuon[0])
    for part in sTree.Particles:
       nPart = dPart.GetEntries()
       if dPart.GetSize() == nPart: dPart.Expand(nPart+10)
-      dPart[nPart] = part
+      tca_vec = dPart.ConstructedAt(nPart)
+      tca_vec.ResizeTo(part)
+      ROOT.std.swap(tca_vec, part)
    dPartBranch.Fill()
    iMuonBranch.Fill()
    nTree.Fill()
@@ -48,5 +52,3 @@ def test(fn = "test.root"):
  fm    = ROOT.TFile(fn)
  sTree = fm.DIS
  makePlots(sTree)
-
-

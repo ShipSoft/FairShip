@@ -33,7 +33,7 @@ muonHit::muonHit()
 }
 // -----   Standard constructor   ------------------------------------------
 muonHit::muonHit(Int_t detID, Float_t digi, Bool_t isV)
-  : ShipHit(detID,digi) 
+  : ShipHit(detID,digi)
 {
   //
   SetDigi(digi);
@@ -45,13 +45,13 @@ muonHit::muonHit(muonPoint* p, Double_t t0)
 {
 //
   TVector3 truePosition = TVector3( p->GetX(), p->GetY(),p->GetZ());
-  fdigi = t0 + p->GetTime(); // + drift time,  propagation inside tile + tdc    
+  fdigi = t0 + p->GetTime(); // + drift time,  propagation inside tile + tdc
   SetDetectorID(DetIDfromXYZ(truePosition));
   SetDigi(SetMuonTimeRes(fdigi));
 }
 // ----
 Int_t muonHit::DetIDfromXYZ(TVector3 p)
-{  
+{
     // needs some code to produce a unique detector ID
 //
 //                    tiles numbering example with present tile dimensions (X=10,Y=20cm):
@@ -76,7 +76,7 @@ Int_t muonHit::DetIDfromXYZ(TVector3 p)
   }
     nStat = -1;
     for(Int_t i=0; i<muStZpos.size(); i++) {
-     if (abs(p.Z() - muStZpos[i]) <= muStzMax[i]) { 
+     if (abs(p.Z() - muStZpos[i]) <= muStzMax[i]) {
        nStat = i;
        break;
      }
@@ -107,7 +107,7 @@ TVector3 muonHit::XYZfromDetID(Int_t dID)
   }
     nStat = -1;
     for(Int_t i=0; i<=muStZpos.size(); i++) {
-      if (dID < 10000*i) { 
+      if (dID < 10000*i) {
         nStat = i;
         break;
       }
@@ -151,10 +151,10 @@ void muonHit::stInit()
         TGeoVolume* volu = node->GetVolume();
         muShape = node->GetVolume()->GetShape();
         muonBox = (TGeoBBox*) muShape;
-        muStxMax.push_back(muonBox->GetDX()); muStyMax.push_back(muonBox->GetDY()); 
+        muStxMax.push_back(muonBox->GetDX()); muStyMax.push_back(muonBox->GetDY());
         muStzMax.push_back(muonBox->GetDZ());
         nav->LocalToMaster(loc,global); muStZpos.push_back(global[2]);
-        tileXn.push_back(2*muStxMax.at(muStNs)/tileXdim); 
+        tileXn.push_back(2*muStxMax.at(muStNs)/tileXdim);
         tileYn.push_back(2*muStyMax.at(muStNs)/tileYdim);
 	muStNs++; // muon stations increment
       }
@@ -177,10 +177,6 @@ void muonHit::Print() const {
 //
 void muonHit::setValidity(Bool_t isV){hisV = isV;}
 // -----   Destructor   ----------------------------------------------------
-muonHit::~muonHit() { 
+muonHit::~muonHit() {
 }
 // -------------------------------------------------------------------------
-
-
-ClassImp(muonHit)
-

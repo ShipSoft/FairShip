@@ -76,8 +76,8 @@ void splitcal::Initialize()
 //  FairRuntimeDb* rtdb= FairRun::Instance()->GetRuntimeDb();
 //  splitcalGeoPar* par=(splitcalGeoPar*)(rtdb->getContainer("splitcalGeoPar"));
 }
-// -----   Private method InitMedium 
-Int_t splitcal::InitMedium(const char* name) 
+// -----   Private method InitMedium
+Int_t splitcal::InitMedium(const char* name)
 {
    static FairGeoLoader *geoLoad=FairGeoLoader::Instance();
    static FairGeoInterface *geoFace=geoLoad->getGeoInterface();
@@ -128,7 +128,7 @@ Bool_t  splitcal::ProcessHits(FairVolume* vol)
     //if (fVolumeID == detID) {
     //  return kTRUE; }
     fVolumeID = detID;
-    //    cout << " "<<fVolumeID << endl;  
+    //    cout << " "<<fVolumeID << endl;
     if (fELoss == 0. ) { return kFALSE; }
     TParticle* p=gMC->GetStack()->GetCurrentTrack();
     Int_t pdgCode = p->GetPdgCode();
@@ -188,14 +188,14 @@ void splitcal::SetZStart(Double_t ZStart)
 void splitcal::SetEmpty(Double_t Empty, Double_t BigGap, Double_t ActiveECAL_gas_gap, Double_t first_precision_layer,Double_t second_precision_layer, Double_t third_precision_layer, Double_t num_precision_layers)
 {
   fEmpty=Empty;
-  fBigGap=BigGap;  
+  fBigGap=BigGap;
   fActiveECAL_gas_gap= ActiveECAL_gas_gap;
-  ffirst_precision_layer=first_precision_layer;  
-  fsecond_precision_layer=second_precision_layer; 
+  ffirst_precision_layer=first_precision_layer;
+  fsecond_precision_layer=second_precision_layer;
   fthird_precision_layer=third_precision_layer;
-  fnum_precision_layers=num_precision_layers; 
+  fnum_precision_layers=num_precision_layers;
 
- 
+
 }
 
 void splitcal::SetThickness(Double_t ActiveECALThickness, Double_t ActiveHCALThickness, Double_t FilterECALThickness,Double_t FilterECALThickness_first,  Double_t FilterHCALThickness,  Double_t ActiveECAL_gas_Thickness)
@@ -256,7 +256,7 @@ void splitcal::ConstructGeometry()
   /** If you are using the standard ASCII input for the geometry
       just copy this and use it for your detector, otherwise you can
       implement here you own way of constructing the geometry. */
-    
+
     TGeoVolume *top=gGeoManager->GetTopVolume();
     TGeoVolume *tSplitCal = new TGeoVolumeAssembly("SplitCalDetector");
 
@@ -265,30 +265,30 @@ void splitcal::ConstructGeometry()
     InitMedium("Scintillator");
     InitMedium("argon");
     InitMedium("GEMmixture");
-    
+
     TGeoMedium *A2 =gGeoManager->GetMedium("iron");
     TGeoMedium *A3 =gGeoManager->GetMedium("lead");
-    TGeoMedium *A4 =gGeoManager->GetMedium("GEMmixture");    
+    TGeoMedium *A4 =gGeoManager->GetMedium("GEMmixture");
     TGeoMedium *A1 =gGeoManager->GetMedium("Scintillator");
 
 
 
     Double_t zStartSplitCal = fZStart;
-    
+
     TGeoVolume *newECALfilter_first; //first layer can have different thickeness
     TGeoVolume *newECALfilter;
     TGeoVolume *newECALdet_gas;
-    TGeoVolume *stripGivingX;     
-    TGeoVolume *stripGivingY;     
+    TGeoVolume *stripGivingX;
+    TGeoVolume *stripGivingY;
 
     TGeoVolume *newHCALfilter[100];
-    TGeoVolume *newHCALdet[100];     
+    TGeoVolume *newHCALdet[100];
     const char* char_labelHCALfilter[100];
-    TString labelHCALfilter; 
+    TString labelHCALfilter;
     const char* char_labelHCALdet[100];
     TString labelHCALdet;
 
-     
+
     Double_t z_splitcal=0;
     Int_t i_nlayECAL_gas;
 
@@ -297,8 +297,8 @@ void splitcal::ConstructGeometry()
     newECALfilter_first = gGeoManager->MakeBox("ECALfilter_first", A3, fXMax, fYMax, fFilterECALThickness_first/2);
     newECALfilter_first->SetLineColor(kGray);
     newECALfilter = gGeoManager->MakeBox("ECALfilter", A3, fXMax, fYMax, fFilterECALThickness/2);
-    newECALfilter->SetLineColor(kGray);   
-	
+    newECALfilter->SetLineColor(kGray);
+
     stripGivingX = gGeoManager->MakeBox("stripGivingX", A1, fStripHalfWidth, fStripHalfLength, fActiveECALThickness/2);
     stripGivingX->SetVisibility(kTRUE);
     AddSensitiveVolume(stripGivingX);
@@ -309,8 +309,8 @@ void splitcal::ConstructGeometry()
     AddSensitiveVolume(stripGivingY);
     stripGivingY->SetLineColor(kGreen);
 
-    // logical volume for the high precision sensitive layers 
-    newECALdet_gas = gGeoManager->MakeBox("ECALdet_gas", A4, fXMax, fYMax, fActiveECAL_gas_Thickness/2);    
+    // logical volume for the high precision sensitive layers
+    newECALdet_gas = gGeoManager->MakeBox("ECALdet_gas", A4, fXMax, fYMax, fActiveECAL_gas_Thickness/2);
     AddSensitiveVolume(newECALdet_gas);
     newECALdet_gas->SetLineColor(kRed);
 
@@ -323,46 +323,46 @@ void splitcal::ConstructGeometry()
       if (i_nlayECAL==0){
 	z_splitcal+=fFilterECALThickness_first/2;
         tSplitCal->AddNode(newECALfilter_first, i_nlayECAL*1e5, new TGeoTranslation(0, 0, z_splitcal));
-	z_splitcal+=fFilterECALThickness_first/2;  
+	z_splitcal+=fFilterECALThickness_first/2;
       } else {
 	z_splitcal+=fFilterECALThickness/2;
-	tSplitCal->AddNode(newECALfilter, i_nlayECAL*1e5, new TGeoTranslation(0, 0, z_splitcal)); 
-	z_splitcal+=fFilterECALThickness/2;  	
+	tSplitCal->AddNode(newECALfilter, i_nlayECAL*1e5, new TGeoTranslation(0, 0, z_splitcal));
+	z_splitcal+=fFilterECALThickness/2;
       }
       // std::cout<< "--- i_nlayECAL*1e5 = "<< i_nlayECAL*1e5 << std::endl;
-      
+
       if(i_nlayECAL==0) z_splitcal+=fEmpty; // space after first layer? set to 0 in the config file? for whar is it for?
       if(i_nlayECAL==7) z_splitcal+=fBigGap;
 
       // position high precision sensitive layers
       i_nlayECAL_gas=-1000;
       if(i_nlayECAL==ffirst_precision_layer or i_nlayECAL==fsecond_precision_layer or i_nlayECAL==fthird_precision_layer){
-	z_splitcal+=fActiveECAL_gas_Thickness/2;    
+	z_splitcal+=fActiveECAL_gas_Thickness/2;
 	if(i_nlayECAL==ffirst_precision_layer) i_nlayECAL_gas=0;
 	else if(i_nlayECAL==fsecond_precision_layer ){
 	  if(fnum_precision_layers==2) i_nlayECAL_gas=3;
-	  else i_nlayECAL_gas=1; 
-	} 
+	  else i_nlayECAL_gas=1;
+	}
 	else if(i_nlayECAL==fthird_precision_layer){
 	  if(fnum_precision_layers==2) i_nlayECAL_gas=4;
-	  else i_nlayECAL_gas=2;	 
+	  else i_nlayECAL_gas=2;
 	}
 
 	tSplitCal->AddNode(newECALdet_gas, 1e8+(i_nlayECAL+1)*1e5 , new TGeoTranslation(0, 0, z_splitcal));
 	z_splitcal+=fActiveECAL_gas_Thickness/2;
 	if(fnum_precision_layers==2){
 	  z_splitcal+=fActiveECAL_gas_gap;
-	  z_splitcal+=fActiveECAL_gas_Thickness/2;      
+	  z_splitcal+=fActiveECAL_gas_Thickness/2;
 	  if(i_nlayECAL==ffirst_precision_layer) i_nlayECAL_gas=1;
 	  if(i_nlayECAL==fsecond_precision_layer) i_nlayECAL_gas=3;
-	  tSplitCal->AddNode(newECALdet_gas, 1e8+(i_nlayECAL+1)*1e5 , new TGeoTranslation(0, 0, z_splitcal)); 
+	  tSplitCal->AddNode(newECALdet_gas, 1e8+(i_nlayECAL+1)*1e5 , new TGeoTranslation(0, 0, z_splitcal));
 	  z_splitcal+=fActiveECAL_gas_Thickness/2;
 	}
 	// std::cout<< "--- index high precision layer = "<< 1e8+(i_nlayECAL+1)*1e5 << std::endl;
       }
-      else{ 
+      else{
 	// position sensitive layers
-	z_splitcal+=fActiveECALThickness/2;      
+	z_splitcal+=fActiveECALThickness/2;
 	if (i_nlayECAL%2==0) {
 	  //strips giving x information
 	  for (int mx=0; mx<fNModulesInX; mx++){
@@ -374,7 +374,7 @@ void splitcal::ConstructGeometry()
 		tSplitCal->AddNode(stripGivingX, index, new TGeoTranslation(xCoordinate, yCoordinate, z_splitcal));
 		// std::cout<< "--- index = "<< index << std::endl;
 	      }//end loop on strips
-	    }//end loop on modules in y   
+	    }//end loop on modules in y
 	  }//end loop on modules in x
 	}//end layer stripped in X
 	else {
@@ -383,20 +383,20 @@ void splitcal::ConstructGeometry()
 	    for(int my=0; my<fNModulesInY; my++){
 	      for(int j=0;j<fNStripsPerModule;j++){
 		int index = (i_nlayECAL+1)*1e5 + (mx+1)*1e4 + (my+1)*1e3 + j+1 ;
-                double xCoordinate = -fXMax + (mx+0.5) * fStripHalfLength * 2; // the times 2 is to get the total length from the half-length       
-                double yCoordinate = -fYMax + (fNStripsPerModule*my+ j+0.5) * fStripHalfWidth * 2; // the times 2 is to get the total width from the half-width      
+                double xCoordinate = -fXMax + (mx+0.5) * fStripHalfLength * 2; // the times 2 is to get the total length from the half-length
+                double yCoordinate = -fYMax + (fNStripsPerModule*my+ j+0.5) * fStripHalfWidth * 2; // the times 2 is to get the total width from the half-width
                 tSplitCal->AddNode(stripGivingY, index, new TGeoTranslation(xCoordinate, yCoordinate, z_splitcal));
 		// std::cout<< "--- index = "<< index << std::endl;
 	      }//end loop on strips
-	    }//end loop on modules in y      
-	  }//end loop on modules in x                  
+	    }//end loop on modules in y
+	  }//end loop on modules in x
 	}//end layer stripped in Y
 
-	z_splitcal+=fActiveECALThickness/2;     
+	z_splitcal+=fActiveECALThickness/2;
       }// end loop on sensitive scintillator layers
 
     } //end loop in ecal layers
- 
+
     for (Int_t i_nlayHCAL=0; i_nlayHCAL<1; i_nlayHCAL++){
       labelHCALfilter="HCALfilter_";
       labelHCALfilter+=i_nlayHCAL;
@@ -417,22 +417,22 @@ void splitcal::ConstructGeometry()
     for (Int_t i_nlayHCAL=0; i_nlayHCAL<fnHCALSamplings; i_nlayHCAL++){
       z_splitcal+=fFilterHCALThickness/2;
       tSplitCal->AddNode(newHCALfilter[i_nlayHCAL], 1, new TGeoTranslation(0, 0, z_splitcal));
-      z_splitcal+=fFilterHCALThickness/2;      
+      z_splitcal+=fFilterHCALThickness/2;
       // z_splitcal+=fEmpty;
-      z_splitcal+=fActiveHCALThickness/2;      
+      z_splitcal+=fActiveHCALThickness/2;
       if(fActiveHCAL) tSplitCal->AddNode(newHCALdet[i_nlayHCAL], 1, new TGeoTranslation(0, 0, z_splitcal));
-      z_splitcal+=fActiveHCALThickness/2;      
+      z_splitcal+=fActiveHCALThickness/2;
       // z_splitcal+=fEmpty;
 
 
     }
-    
+
 
 
     //finish assembly and position
     TGeoShapeAssembly* asmb = dynamic_cast<TGeoShapeAssembly*>(tSplitCal->GetShape());
     Double_t totLength = asmb->GetDZ();
-    top->AddNode(tSplitCal, 1, new TGeoTranslation(0, 0,zStartSplitCal+totLength));  
+    top->AddNode(tSplitCal, 1, new TGeoTranslation(0, 0,zStartSplitCal+totLength));
 
 
 
@@ -443,7 +443,7 @@ void splitcal::ConstructGeometry()
     //    c1->cd();
 
     //    TView3D* tview = (TView3D*) TView::CreateView();
-    //    tview->SetRange(-fXMax*1.2, -fYMax*1.2, 2500, fXMax*1.2, fYMax*1.2, 3800);                                                             
+    //    tview->SetRange(-fXMax*1.2, -fYMax*1.2, 2500, fXMax*1.2, fYMax*1.2, 3800);
     //    tview->RotateView(0, 90, c1);
 
     //    tSplitCal->Draw("ogle");
@@ -464,5 +464,3 @@ splitcalPoint* splitcal::AddHit(Int_t trackID, Int_t detID,
   return new(clref[size]) splitcalPoint(trackID, detID, pos, mom,
          time, length, eLoss, pdgCode);
 }
-
-ClassImp(splitcal)

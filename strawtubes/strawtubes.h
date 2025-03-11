@@ -21,6 +21,8 @@ class strawtubes: public FairDetector
     */
     strawtubes(const char* Name, Bool_t Active);
 
+    strawtubes(std::string medium);
+
     /**      default constructor    */
     strawtubes();
 
@@ -44,7 +46,7 @@ class strawtubes: public FairDetector
     /**      has to be called after each event to reset the containers      */
     virtual void   Reset();
 
-    void SetZpositions(Double_t z0, Double_t z1, Double_t z2, Double_t z3, Double_t z4);   
+    void SetZpositions(Double_t z0, Double_t z1, Double_t z2, Double_t z3, Double_t z4);
     void SetStrawLength(Double_t strawlength);
     void SetInnerStrawDiameter(Double_t innerstrawdiameter);
     void SetOuterStrawDiameter(Double_t outerstrawdiameter);
@@ -52,19 +54,19 @@ class strawtubes: public FairDetector
     void SetDeltazLayer(Double_t deltazlayer);
     void SetDeltazPlane(Double_t deltazplane);
     void SetStrawsPerLayer(Int_t strawsperlayer);
-    void SetStereoAngle(Int_t stereoangle);
+    void SetStereoAngle(Double_t stereoangle);
     void SetWireThickness(Double_t wirethickness);
     void SetDeltazFrame(Double_t deltazframe);
     void SetFrameLateralWidth(Double_t framelateralwidth);
     void SetFrameMaterial(TString framematerial);
     void SetDeltazView(Double_t deltazview);
     void SetStrawLength12(Double_t strawlength12);
-    void SetStrawLengthVeto(Double_t strawlengthveto); 
+    void SetStrawLengthVeto(Double_t strawlengthveto);
     void SetVacBox_x(Double_t vacbox_x);
     void SetVacBox_y(Double_t vacbox_y);
     void SetVetoYDim(Double_t vetoydim);
-    void SetTr12YDim(Double_t tr12ydim); 
-    void SetTr34YDim(Double_t tr34ydim);      
+    void SetTr12YDim(Double_t tr12ydim);
+    void SetTr34YDim(Double_t tr34ydim);
     void StrawDecode(Int_t detID,int &statnb,int &vnb,int &pnb,int &lnb, int &snb);
     void StrawEndPoints(Int_t detID, TVector3 &top, TVector3 &bot);
     void StrawEndPointsOriginal(Int_t detID, TVector3 &top, TVector3 &bot);
@@ -100,7 +102,7 @@ class strawtubes: public FairDetector
     virtual void   PostTrack() {;}
     virtual void   PreTrack() {;}
     virtual void   BeginEvent() {;}
-   
+
   private:
 
     /** Track information to be stored until the track leaves the
@@ -120,7 +122,7 @@ class strawtubes: public FairDetector
     Double_t     fT4z;                    //!  z-position of tracking station 4
     Double_t     fStraw_length;           //!  Length (y) of a straw
     Double_t     fStraw_length_12;        //!  strawlength for tracking station 1 & 2
-    Double_t     fStraw_length_veto;      //!  strawlength for veto station 
+    Double_t     fStraw_length_veto;      //!  strawlength for veto station
     Double_t     fInner_Straw_diameter;   //!  Inner Straw diameter
     Double_t     fOuter_Straw_diameter;   //!  Outer Straw diameter
     Double_t     fStraw_pitch;            //!  Distance (x) between straws in one layer
@@ -145,11 +147,12 @@ class strawtubes: public FairDetector
     Int_t        fStraws_per_layer_veto;  //!  Number of straws in one veto layer
     Int_t        fStraws_per_layer_tr12;  //!  Number of straws in one tr12 layer
     Int_t        fStraws_per_layer_tr34;  //!  Number of straws in one tr34 layer
-    Double_t     v_drift;                 //! drift velocity  
-    Double_t     sigma_spatial;           //! spatial resolution 
+    Double_t     v_drift;                 //! drift velocity
+    Double_t     sigma_spatial;           //! spatial resolution
+    std::string fMedium;                  //! vacuum box medium
     /** container for data points */
 
-    TClonesArray*  fstrawtubesPointCollection;
+    TClonesArray* fstrawtubesPointCollection;
 
     strawtubes(const strawtubes&);
     strawtubes& operator=(const strawtubes&);

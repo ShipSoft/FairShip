@@ -40,6 +40,3 @@ void splitcalPoint::Print() const
        << " cm,  Energy loss " << fELoss*1.0e06 << " keV" << endl;
 }
 // -------------------------------------------------------------------------
-
-ClassImp(splitcalPoint)
-

@@ -16,12 +16,12 @@ class strawtubesHit : public ShipHit
 
     /** Constructor with arguments
      *@param detID    Detector ID
-     *@param digi      digitized/measured TDC 
-     *@param flag      True/False, false if there is another hit with smaller tdc 
+     *@param digi      digitized/measured TDC
+     *@param flag      True/False, false if there is another hit with smaller tdc
      **/
     strawtubesHit(Int_t detID, Float_t tdc);
     strawtubesHit(strawtubesPoint* p, Double_t t0);
-    void StrawEndPoints(TVector3 &vbot, TVector3 &vtop);  
+    void StrawEndPoints(TVector3 &vbot, TVector3 &vtop);
 /** Destructor **/
     virtual ~strawtubesHit();
 
@@ -39,7 +39,7 @@ class strawtubesHit : public ShipHit
     Float_t flag;   ///< flag
 
     ClassDef(strawtubesHit,3);
-    
+
 
 };
 

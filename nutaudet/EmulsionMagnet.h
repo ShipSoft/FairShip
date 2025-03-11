@@ -1,6 +1,6 @@
 //
 //  EmulsionMagnet.h
-//  
+//
 // Created by A. Buonaura on 12/09/16
 
 #ifndef EmulsionMagnet_H
@@ -28,16 +28,16 @@ class EmulsionMagnet : public FairModule
   void SetCoilParameters(Double_t radius, Double_t height1, Double_t height2, Double_t Distance);
   void SetCoilParameters(Double_t X, Double_t Y, Double_t height1, Double_t height2, Double_t Thickness);
   void SetDesign(Int_t Design);
-  void SetMagneticField(Double_t B); 
-  
+  void SetMagneticField(Double_t B);
+
   void SetPillarDimensions(Double_t X, Double_t Y, Double_t Z);
-  void SetCutDimensions(Double_t CutLength, Double_t CutHeight); 
+  void SetCutDimensions(Double_t CutLength, Double_t CutHeight);
 
   void SetConstantField(Bool_t EmuMagnetConstField);
 
   void ConstructGeometry();
   Int_t InitMedium(const char* name);
- 
+
   ClassDef(EmulsionMagnet,5);
 
  protected:
@@ -57,8 +57,8 @@ class EmulsionMagnet : public FairModule
   Double_t fCoilR;
   Double_t fCoilX;
   Double_t fCoilY;
-  Double_t fCoilH1; //thickness of the upper (left) coil  
-  Double_t fCoilH2; //thickness of the loweer (right) coil  
+  Double_t fCoilH1; //thickness of the upper (left) coil
+  Double_t fCoilH2; //thickness of the loweer (right) coil
   Double_t fCoilDist;
   Double_t fCoilThickness;//Thickness in Z config. fDesign==3
   Double_t fGapUpstream;
@@ -67,7 +67,7 @@ class EmulsionMagnet : public FairModule
   Int_t fDesign; //0= TP_config, 1=new_config, 2=no magnet
   Double_t fPillarX;
   Double_t fPillarY;
-  Double_t fPillarZ;  
+  Double_t fPillarZ;
   Bool_t fConstField;
 };
 

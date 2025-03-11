@@ -46,8 +46,8 @@ splitcalHit::splitcalHit(splitcalPoint* p, Double_t t0)
   double pointE =  p->GetEnergyLoss();
   int detID =  p->GetDetectorID();
 
-  //fdigi = t0 + t; 
-  fdigi = t0 ;  
+  //fdigi = t0 + t;
+  fdigi = t0 ;
   // SetDigi(SetTimeRes(fdigi));
   SetDetectorID(detID);
 
@@ -63,7 +63,7 @@ splitcalHit::splitcalHit(splitcalPoint* p, Double_t t0)
 
   SetIDs(isPrec, nL, nMx, nMy, nS);
 
-  TGeoNode* strip = caloVolume->GetNode(stripName.c_str()); 
+  TGeoNode* strip = caloVolume->GetNode(stripName.c_str());
 
   const Double_t* stripCoordinatesLocal = strip->GetMatrix()->GetTranslation();
   Double_t stripCoordinatesMaster[3] = {0.,0.,0.};
@@ -73,22 +73,22 @@ splitcalHit::splitcalHit(splitcalPoint* p, Double_t t0)
   double xHalfLength = box->GetDX();
   double yHalfLength = box->GetDY();
   double zHalfLength = box->GetDZ();
-  
+
   TGeoNode* passiveLayer = caloVolume->GetNode("ECALfilter_200000"); // they are all the same
   TGeoBBox* boxPassive = (TGeoBBox*)passiveLayer->GetVolume()->GetShape();
   double zPassiveHalfLength = box->GetDZ();
 
   // std::cout<< "----------------------"<<std::endl;
-  // std::cout<< "-- pointX = " << pointX << std::endl; 
-  // std::cout<< "-- pointY = " << pointY << std::endl; 
-  // std::cout<< "-- pointZ = " << pointZ << std::endl; 
+  // std::cout<< "-- pointX = " << pointX << std::endl;
+  // std::cout<< "-- pointY = " << pointY << std::endl;
+  // std::cout<< "-- pointZ = " << pointZ << std::endl;
   // std::cout<< "-- detID = " << detID << std::endl;
   // std::cout<< "-- stripName = " << stripName << std::endl;
   // std::cout<< "-- isPrec = " << isPrec << std::endl;
   // std::cout<< "-- nL = " << nL << std::endl;
   // std::cout<< "-- nMx = " << nMx << std::endl;
   // std::cout<< "-- nMy = " << nMy << std::endl;
-  // std::cout<< "-- nS = " << nS << std::endl;    
+  // std::cout<< "-- nS = " << nS << std::endl;
   // std::cout<< "-- stripCoordinatesLocal[0] = " << stripCoordinatesLocal[0] << std::endl;
   // std::cout<< "-- stripCoordinatesLocal[1] = " << stripCoordinatesLocal[1] << std::endl;
   // std::cout<< "-- stripCoordinatesLocal[2] = " << stripCoordinatesLocal[2] << std::endl;
@@ -103,19 +103,19 @@ splitcalHit::splitcalHit(splitcalPoint* p, Double_t t0)
   if (isPrec==1) SetXYZ(pointX,pointY,stripCoordinatesMaster[2]);
   else  SetXYZ(stripCoordinatesMaster[0], stripCoordinatesMaster[1], stripCoordinatesMaster[2]);
   SetXYZErrors(xHalfLength,yHalfLength,2*(zHalfLength+zPassiveHalfLength));
-  
+
 
 }
 
 
 
-std::string splitcalHit::GetPaddedString(int& id){ 
+std::string splitcalHit::GetPaddedString(int& id){
 
-  //zero padded string 
-  int totalLength = 9; 
+  //zero padded string
+  int totalLength = 9;
   std::string stringID = std::to_string(id);
   std::string encodedID = std::string(totalLength - stringID.length(), '0') + stringID;
- 
+
  return encodedID;
 
 }
@@ -133,7 +133,7 @@ std::string splitcalHit::GetDetectorElementName(int& id){
     SetIsX(true);
     SetIsY(true);
   } else if (nL%2==0) {
-    name = "stripGivingY_"; 
+    name = "stripGivingY_";
     SetIsX(false);
     SetIsY(true);
   } else {
@@ -158,10 +158,10 @@ void splitcalHit::Decoder(std::string& encodedID, int& isPrecision, int& nLayer,
   subtring = encodedID.substr(1,3);
   nLayer = atoi(subtring.c_str());
 
-  subtring = encodedID.substr(4,1); 
+  subtring = encodedID.substr(4,1);
   nModuleX = atoi(subtring.c_str());
 
-  subtring = encodedID.substr(5,1); 
+  subtring = encodedID.substr(5,1);
   nModuleY = atoi(subtring.c_str());
 
   subtring = encodedID.substr(6,3);
@@ -183,10 +183,10 @@ double splitcalHit::GetEnergyWeightForIndex(int index){
   for(size_t i=0; i<_vecClusterIndices.size(); i++) {
     if (_vecClusterIndices.at(i) == index) {
       iw = i;
-      break; 
+      break;
     }
   }
-  return _vecEnergyWeights.at(iw); 
+  return _vecEnergyWeights.at(iw);
 }
 
 
@@ -212,19 +212,16 @@ void splitcalHit::Print() const
   //  cout << "  TDC " << fdigi << " ns" << endl;
   // std::cout<< "-I- splitcalHit: " <<std::endl;
   std::cout<< "------- " <<std::endl;
-  std::cout<< "    (x,y,z) = " 
+  std::cout<< "    (x,y,z) = "
 	   << _x << " +- " << _xError << " ,  "
 	   << _y << " +- " << _yError << " ,  "
-	   << _z << " +- " << _zError <<std::endl;  
-  std::cout<< "    isP, nL, nMx, nMy, nS = " 
-	   << _isPrecisionLayer << " , "  
-	   << _nLayer << " , "  
-	   << _nModuleX << " , " 
-	   << _nModuleY << " , " 
+	   << _z << " +- " << _zError <<std::endl;
+  std::cout<< "    isP, nL, nMx, nMy, nS = "
+	   << _isPrecisionLayer << " , "
+	   << _nLayer << " , "
+	   << _nModuleX << " , "
+	   << _nModuleY << " , "
 	   << _nStrip << std::endl;
    std::cout<< "------- " <<std::endl;
 }
 // -------------------------------------------------------------------------
-
-ClassImp(splitcalHit)
-

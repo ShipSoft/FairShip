@@ -33,13 +33,13 @@ public:
   /** Destructor **/
   virtual ~hcalStructureFiller();
 
-  /** Initialization of the task **/  
+  /** Initialization of the task **/
   virtual InitStatus Init();
 
-  /** Executed task **/ 
+  /** Executed task **/
   virtual void Exec(Option_t* option);
 
-  /** Finish task **/ 
+  /** Finish task **/
   virtual void Finish();
 
   /** Set data source for hit producer.

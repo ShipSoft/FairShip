@@ -20,4 +20,3 @@ class ShipChamber : public FairModule
 };
 
 #endif //Chamber_H
-

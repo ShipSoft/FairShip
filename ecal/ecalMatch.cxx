@@ -1,3 +1,4 @@
+#include "FairRootManager.h"
 #include "ecalMatch.h"
 
 #include "ecalCellMC.h"
@@ -118,15 +119,15 @@ void ecalMatch::Exec(Option_t* option,TClonesArray* reconstructed,TClonesArray* 
 
 /** Standard constructor **/
 ecalMatch::ecalMatch(const char* name, const Int_t verbose)
-  : FairTask(name, verbose), fEv(0), fN(0), fRejected(0), fUse3x3(0), 
-    fReconstucted(NULL), fMCTracks(NULL), fStr(NULL) 
+  : FairTask(name, verbose), fEv(0), fN(0), fRejected(0), fUse3x3(0),
+    fReconstucted(NULL), fMCTracks(NULL), fStr(NULL)
 {
   ;
 }
 
 /** Only to comply with frame work. **/
 ecalMatch::ecalMatch()
-  : FairTask(), fEv(0), fN(0), fRejected(0), fUse3x3(0), 
+  : FairTask(), fEv(0), fN(0), fRejected(0), fUse3x3(0),
     fReconstucted(NULL), fMCTracks(NULL), fStr(NULL)
 {
   ;
@@ -153,7 +154,7 @@ InitStatus ecalMatch::Init()
     return kFATAL;
   }
   fStr=(ecalStructure*)io->GetObject("EcalStructure");
-  if (!fStr) 
+  if (!fStr)
   {
     Fatal("Init()", "Can't find calorimeter structure in the system.");
     return kFATAL;
@@ -180,8 +181,6 @@ void ecalMatch::InitPython(ecalStructure* str, TClonesArray* reconstructed, TClo
   fStr=str;
   fReconstucted=reconstructed;
   fMCTracks=mctracks;
-  
+
   fEv=0;
 }
-
-ClassImp(ecalMatch)

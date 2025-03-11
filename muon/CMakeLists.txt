@@ -5,15 +5,18 @@
 set(INCLUDE_DIRECTORIES
 ${CMAKE_SOURCE_DIR}/shipdata
 ${CMAKE_SOURCE_DIR}/muon
+${genfit2_INCDIR}
+${VMC_INCLUDE_DIRS}
 )
 
-include_directories( ${INCLUDE_DIRECTORIES})
+include_directories(${INCLUDE_DIRECTORIES} ${FAIRROOT_INCLUDE_DIR})
 include_directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
 
 set(LINK_DIRECTORIES
 ${ROOT_LIBRARY_DIR}
+${genfit2_LIBDIR}
 ${FAIRROOT_LIBRARY_DIR}
-) 
+)
 
 link_directories( ${LINK_DIRECTORIES})
 
@@ -28,7 +31,7 @@ muonHit.cxx
 Set(LINKDEF muonLinkDef.h)
 Set(LIBRARY_NAME muon)
 Set(DEPENDENCIES
-    Base ShipData
+    Base ShipData FairLogger::FairLogger
 )
 
 GENERATE_LIBRARY()

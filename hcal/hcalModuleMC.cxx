@@ -1,7 +1,7 @@
 /**  hcalModuleMC.cxx
  *@author Mikhail Prokudin
  **
- ** HCAL module. This implementation carries an MC information 
+ ** HCAL module. This implementation carries an MC information
  **/
 
 #include "hcalModuleMC.h"
@@ -54,6 +54,3 @@ Float_t hcalModuleMC::GetTrackClusterEnergy(Int_t num)
     energy+=((hcalModuleMC*)(*p))->GetTrackEnergy(num);
   return energy;
 }
-
-ClassImp(hcalModuleMC)
-

@@ -21,7 +21,6 @@ class FairParSet;
 
 using namespace std;
 
-ClassImp(NutaudetContFact)
 
 //static NutaudetContFact gNutaudetContFact;
 
@@ -62,4 +61,3 @@ FairParSet* NutaudetContFact::createContainer(FairContainer* c)
 */
    return 0;
 }
-

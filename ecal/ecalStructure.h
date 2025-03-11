@@ -29,13 +29,13 @@ public:
   Int_t GetUseMC() const {return fUseMC;}
   void Construct();
   Int_t GetNumber(Int_t x, Int_t y) const;
-  
-  Bool_t AddEnergy(Float_t x, Float_t y, Float_t energy, Bool_t isPS=kFALSE);
-  Float_t GetEnergy(Float_t x, Float_t y, Bool_t isPS=kFALSE) const;
+
+  Bool_t AddEnergy(Float_t x, Float_t y, Float_t energy);
+  Float_t GetEnergy(Float_t x, Float_t y) const;
   ecalCell* GetCell(Float_t x, Float_t y) const;
   ecalModule* GetModule(Float_t x, Float_t y) const;
   Int_t GetModuleNumber(Float_t x, Float_t y) const;
-  
+
   Float_t GetX1() const {return fX1;};
   Float_t GetY1() const {return fY1;};
   Float_t GetX2() const;
@@ -46,28 +46,28 @@ public:
   //Create neighbors lists
   void CreateNLists(ecalCell* cell);
   void ResetModules();
-  
+
   ecalModule* CreateModule(char type, Int_t number, Float_t x1, Float_t y1, Float_t x2, Float_t y2);
   //Some usefull procedures for hit processing
-  
+
   //Converts (x,y) to hit Id
   Int_t GetHitId(Float_t x, Float_t y) const;
   //Hit Id -> (x,y)
   void GetHitXY(const Int_t hitId, Float_t& x, Float_t& y) const;
 
-  // HitId -> in global cell coordinate 
+  // HitId -> in global cell coordinate
   void GetGlobalCellXY(const Int_t hitId, Int_t& x, Int_t& y) const;
 
   // HitId -> cell type
   Int_t GetType(const Int_t hitId) const;
 
-  ecalCell* GetCell(Int_t fVolId, Int_t& ten, Bool_t& isPS);
+  ecalCell* GetCell(Int_t fVolId, Int_t& ten);
   //Hit It -> Cell
   ecalCell* GetHitCell(const Int_t hitId) const;
 
 private:
   Int_t GetNum(Int_t x, Int_t y) const;
-  
+
 private:
   /** Creates fCells lists **/
   void Serialize();
@@ -104,7 +104,7 @@ inline ecalModule* ecalStructure::GetModule(Float_t x, Float_t y) const
 {
   /** get ECAL module by known module center coordinate (x,y) **/
   Int_t num=GetModuleNumber(x,y);
-  if (-1==num) return NULL; else return fStructure[num]; 
+  if (-1==num) return NULL; else return fStructure[num];
 }
 
 inline Int_t  ecalStructure::GetModuleNumber(Float_t x, Float_t y) const
@@ -145,30 +145,25 @@ inline Float_t ecalStructure::GetY2() const
          fEcalInf->GetModuleSize()*fEcalInf->GetYSize()/2.0;
 }
 
-inline Bool_t ecalStructure::AddEnergy(Float_t x, Float_t y, Float_t energy, Bool_t isPS)
+inline Bool_t ecalStructure::AddEnergy(Float_t x, Float_t y, Float_t energy)
 {
-  /** Add preshower or calorimeter energy to a cell with coordinate (x,y) **/
+  /** Add calorimeter energy to a cell with coordinate (x,y) **/
   ecalCell* cell=GetCell(x,y);
   if (cell)
   {
-    if (isPS) ; // cell->AddPSEnergy(energy); Preshower removed
-    else
-      cell->AddEnergy(energy);
+	  cell->AddEnergy(energy);
   }
   else
     return kFALSE;
   return kTRUE;
 }
 
-inline Float_t ecalStructure::GetEnergy(Float_t x, Float_t y, Bool_t isPS) const
+inline Float_t ecalStructure::GetEnergy(Float_t x, Float_t y) const
 {
   ecalCell* cell=GetCell(x,y);
   if (cell)
   {
-    if (isPS)
-      return 0; //  return cell->GetPSEnergy(); Preshower removed
-    else
-      return cell->GetEnergy();
+	  return cell->GetEnergy();
   }
   return -1111;
 }

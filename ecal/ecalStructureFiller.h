@@ -33,15 +33,15 @@ public:
   /** Destructor **/
   virtual ~ecalStructureFiller();
 
-  /** Initialization of the task **/  
+  /** Initialization of the task **/
   virtual InitStatus Init();
 
   ecalStructure* InitPython(TClonesArray* litePoints);
 
-  /** Executed task **/ 
+  /** Executed task **/
   virtual void Exec(Option_t* option,TClonesArray* litePoints);
 
-  /** Finish task **/ 
+  /** Finish task **/
   virtual void Finish();
 
   /** Set data source for hit producer.

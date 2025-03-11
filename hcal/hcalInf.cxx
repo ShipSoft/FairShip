@@ -137,33 +137,33 @@ void hcalInf::AddVariable(const char* key, const char* value)
 }
 //=============================================================================
 hcalInf::hcalInf(const char* filename)
-  : TObject(), 
-    fVariables(new TMap(200)), 
-    fHcalStr(), 
-    fXPos(0.), 
+  : TObject(),
+    fVariables(new TMap(200)),
+    fHcalStr(),
+    fXPos(0.),
     fYPos(0.),
-    fZPos(0.), 
-    fNLayers(0), 
-    fN1Layers(0), 
-    fXSize(0), 
-    fYSize(0), 
-    fModuleSize(0.), 
-    fAbsorber(0.), 
-    fScin(0.), 
-    fTyveec(0.), 
+    fZPos(0.),
+    fNLayers(0),
+    fN1Layers(0),
+    fXSize(0),
+    fYSize(0),
+    fModuleSize(0.),
+    fAbsorber(0.),
+    fScin(0.),
+    fTyveec(0.),
     fThicknessLayer(0.),
-    fCellSize(0.), 
-    fHcalSize(), 
-    fECut(0.), 
-    fHCut(0.), 
+    fCellSize(0.),
+    fHcalSize(),
+    fECut(0.),
+    fHCut(0.),
     fSemiX(0.),
     fSemiY(0.),
     fFastMC(-1),
-    fSuccess(1), 
-    fFileName(filename) 
+    fSuccess(1),
+    fFileName(filename)
 {
   /**
-   ** Constructor reads and parses the ascii file, and fill 
+   ** Constructor reads and parses the ascii file, and fill
    ** the HCAL geometry container
    **
   FairRunAna* ana = FairRunAna::Instance();
@@ -223,9 +223,9 @@ hcalInf::hcalInf(const char* filename)
               fSuccess=0;
 	      file.close();
 	      return;
-	      
+
 	    }
-	  
+
 	  str=new TObjString(message.c_str());
 	  fHcalStr.Add(str);
 	}
@@ -408,4 +408,3 @@ void hcalInf::DumpContainer() const
   }
 
 }
-

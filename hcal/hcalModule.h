@@ -16,7 +16,7 @@
 class hcalModule : public TObject
 {
 public:
-  hcalModule(Int_t modulenumber, Float_t x1=0, Float_t y1=0, Float_t x2=0, Float_t y2=0) 
+  hcalModule(Int_t modulenumber, Float_t x1=0, Float_t y1=0, Float_t x2=0, Float_t y2=0)
     : TObject(), fNumber(modulenumber), fX1(x1), fY1(y1), fX2(x2),
     fY2(y2), fEnergy(0), fEnergy2(0), fADC(-1111), fNeighbors()
   {};
@@ -37,10 +37,10 @@ public:
   inline Short_t GetADC() const {return fADC;}
 
   inline Int_t   GetNumber() const {return fNumber;}
-	
+
   inline Float_t GetEnergy()  const {return fEnergy;}
   inline Float_t GetEnergy2() const {return fEnergy2;}
-	
+
   inline void GetNeighborsList(std::list<hcalModule*> &neib) const
   {
     neib=fNeighbors;
@@ -63,7 +63,7 @@ public:
   inline void SetCoord(Float_t x1, Float_t y1, Float_t x2, Float_t y2)
     { fX1=x1; fY1=y1; fX2=x2; fY2=y2; }
   /** returns number of neighbors in list with module **/
-  Int_t CountNeighbors(const std::list<hcalModule*>& lst) const; 
+  Int_t CountNeighbors(const std::list<hcalModule*>& lst) const;
 private:
   /**  module number **/
   Int_t fNumber;
@@ -88,7 +88,7 @@ private:
 
   ClassDef(hcalModule,1);
 };
-  
+
 inline void hcalModule::ResetEnergyFast()
 {
   fEnergy=0.0;

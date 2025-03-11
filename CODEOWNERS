@@ -1,0 +1,14 @@
+* @ShipSoft/core-developers
+
+# By default, the software contact for a given subsystem will own the code of
+# that system.
+
+veto/* @anupama-reghunath  # Anupama Reghunath (HU Berlin)
+
+nutaudet/* @antonioiuliano2  # Antonio Iuliano (INFN Napoli)
+
+ecal/* @matclim  # Matei Climescu (JGU Mainz)
+hcal/* @matclim
+splitcal/* @matclim
+
+strawtubes/* @wcmartylee  # Wei-Chieh Marty Lee (U Hamburg)

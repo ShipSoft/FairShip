@@ -6,28 +6,28 @@ from array import array
 class Task:
  "initialize and give response of the veto systems"
  def __init__(self,t):
-  self.UVTefficiency = 0.999 # Upstream Veto tagger: 99.9% efficiency picked up from TP
   self.SBTefficiency = 0.99  # Surrounding Background tagger: 99% efficiency picked up from TP
   self.SVTefficiency = 0.995 # Straw Veto tagger: guestimate, including dead channels
+  self.UBTefficiency = 0.9  # Upstream background tagger
   self.random = ROOT.TRandom()
   ROOT.gRandom.SetSeed(13)
   self.detList  = self.detMap()
   self.sTree = t
 
  def detMap(self):
-  fGeo = ROOT.gGeoManager  
+  fGeo = ROOT.gGeoManager
   detList = {}
   for v in fGeo.GetListOfVolumes():
    nm = v.GetName()
    i  = fGeo.FindVolumeFast(nm).GetNumber()
    detList[i] = nm
-  return detList 
+  return detList
 
  def SBT_plastic_decision(self,mcParticle=None):
     SBT_decision(self,mcParticle,detector='plastic')
  def SBT_liquid_decision(self,mcParticle=None):
     SBT_decision(self,mcParticle,detector='liquid')
- 
+
  def SBT_decision(self,mcParticle=None,detector='liquid'):
   # if mcParticle >0, only count hits with this particle
   # if mcParticle <0, do not count hits with this particle
@@ -35,42 +35,27 @@ class Task:
   index = -1
   fdetector = detector=='liquid'
   for aDigi in self.sTree.Digi_SBTHits:
-     index+=1 
+     index+=1
      detID    = aDigi.GetDetectorID()
      if fdetector and detID > 999999:continue
-     if not fdetector and not detID > 999999:continue 
+     if not fdetector and not detID > 999999:continue
      if mcParticle:
         found = False
-        for mcP in self.sTree.digiSBT2MC[index]: 
+        for mcP in self.sTree.digiSBT2MC[index]:
          if mcParticle>0 and mcParticle != mcP : found=True
          if mcParticle<0 and abs(mcParticle) == mcP : found=True
         if found: continue
      position = aDigi.GetXYZ()
      ELoss    = aDigi.GetEloss()
      if aDigi.isValid(): hitSegments += 1 #threshold of 45 MeV per segment
-  w = (1-self.SBTefficiency)**hitSegments  
+  w = (1-self.SBTefficiency)**hitSegments
   veto = self.random.Rndm() > w
   #print 'SBT :',hitSegments
   return veto, w, hitSegments
- def UVT_decision(self,mcParticle=None):
-  nHits = 0
-  for ahit in self.sTree.vetoPoint:
-     detID   = ahit.GetDetectorID()
-     if detID>100000: continue  # this is a LiSc detector
-     if mcParticle: 
-        if mcParticle>0 and mcParticle != ahit.GetTrackID() : continue
-        if mcParticle<0 and abs(mcParticle) == ahit.GetTrackID() : continue
-     detName = self.detList[detID]
-     if not detName == "VetoTimeDet": continue
-     nHits+=1
-  w = (1-self.UVTefficiency)**nHits
-  veto = self.random.Rndm() > w
-  #print 'UVT :',nHits
-  return veto, w,nHits
  def SVT_decision(self,mcParticle=None):
   nHits = 0
   for ahit in self.sTree.strawtubesPoint:
-     if mcParticle: 
+     if mcParticle:
         if mcParticle>0 and mcParticle != ahit.GetTrackID() : continue
         if mcParticle<0 and abs(mcParticle) == ahit.GetTrackID() : continue
      detID   = ahit.GetDetectorID()
@@ -84,7 +69,7 @@ class Task:
   nHits = 0
   mom = ROOT.TVector3()
   for ahit in self.sTree.ShipRpcPoint:
-   if mcParticle: 
+   if mcParticle:
         if mcParticle>0 and mcParticle != ahit.GetTrackID() : continue
         if mcParticle<0 and abs(mcParticle) == ahit.GetTrackID() : continue
    ahit.Momentum(mom)
@@ -94,12 +79,29 @@ class Task:
   if veto: w = 0.
   #print 'RPC :',nHits
   return veto,w,nHits
+
+ def UBT_decision(self, mcParticle=None):
+  nHits = 0
+  mom = ROOT.TVector3()
+  for ahit in self.sTree.UpstreamTaggerPoint:
+     if mcParticle:
+        if mcParticle > 0 and mcParticle != ahit.GetTrackID():
+         continue
+        if mcParticle < 0 and abs(mcParticle) == ahit.GetTrackID():
+         continue
+     ahit.Momentum(mom)
+     if mom.Mag() > 0.1:
+      nHits+=1
+  w = (1 - self.UBTefficiency) ** nHits
+  veto = self.random.Rndm() > w
+  return veto, w, nHits
+
  def Track_decision(self,mcParticle=None):
   nMultCon = 0
   k = -1
   for aTrack in self.sTree.FitTracks:
-     k+=1 
-     if mcParticle: 
+     k+=1
+     if mcParticle:
         if mcParticle>0 and mcParticle != ahit.GetTrackID() : continue
         if mcParticle<0 and abs(mcParticle) == ahit.GetTrackID() : continue
      fstatus =  aTrack.getFitStatus()
@@ -124,9 +126,14 @@ class Task:
   nav.SetCurrentPoint(aPoint.x(),aPoint.y(),aPoint.z())
   cNode = 'outside'
   aNode = nav.FindNode()
-  if aNode: cNode = aNode.GetName()
-  if cNode != 'T2decayVol_0' and cNode != 'T1decayVol_0': 
-   distmin = 0. 
+  if aNode:
+   cNode = aNode.GetName()
+  if cNode not in ('DecayVacuum_block4_0',
+                   'DecayVacuum_block5_0',
+                   'DecayVacuum_block3_0',
+                   'DecayVacuum_block2_0',
+                   'DecayVacuum_block1_0'):
+   distmin = 0.
   else:
    for n in range(nSteps):
    # set direction
@@ -139,7 +146,7 @@ class Task:
     x,y  = nav.GetCurrentPoint()[0],nav.GetCurrentPoint()[1]
     if cNode != nav.GetCurrentNode().GetName():
      dist = ROOT.TMath.Sqrt( (aPoint.x()-x)**2 + (aPoint.y()-y)**2)
-     if dist < distmin : distmin = dist  
+     if dist < distmin : distmin = dist
     phi+=delPhi
 # distance to Tr1_x1
    nav.cd("/Tr1_1")
@@ -147,8 +154,8 @@ class Task:
    origin = array('d',[0,0,shape.GetDZ()])
    master = array('d',[0,0,0])
    nav.LocalToMaster(origin,master)
-   dist = master[2] - aPoint.z()  
-   if dist < distmin : distmin = dist  
+   dist = master[2] - aPoint.z()
+   if dist < distmin : distmin = dist
 # distance to straw veto:
    nav.cd("/Veto_5")
    shape = nav.GetCurrentNode().GetVolume().GetShape()
@@ -165,4 +172,4 @@ class Task:
 # or for plastic veto,w = veto.SBT_decision(detector='plastic')
 # if veto: continue # reject event
 # or
-# continue using weight w 
+# continue using weight w

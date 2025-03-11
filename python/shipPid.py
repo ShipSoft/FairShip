@@ -11,14 +11,14 @@ class Task:
  "initialize"
 
  def __init__(self,main):
-  print "****************************************"
-  print "*** You are using PID version 18.1.0 ***"
-  print "****************************************"
+  print("****************************************")
+  print("*** You are using PID version 18.1.0 ***")
+  print("****************************************")
   self.sTree = main.sTree
   self.fpidArray  = ROOT.TClonesArray("pid")
   if not self.sTree.GetBranch("pid"):
     self.pID   = self.sTree.Branch("Pid",  self.fpidArray,32000,-1)
-  else: 
+  else:
     self.pID = self.sTree.pid
   self.reps,self.states,self.newPosDir = {},{},{}
   self.PDG = ROOT.TDatabasePDG.Instance()
@@ -26,15 +26,13 @@ class Task:
   top  = fGeo.GetTopVolume()
   dv = top.GetNode('DecayVolume_1')
   ns = dv.GetNodes()
-  T1Lid = ns.FindObject("T1Lid_1").GetMatrix()
-  self.z_start = T1Lid.GetTranslation()[2]
   self.zpositions = {}
   self.parallelToZ = ROOT.TVector3(0., 0., 1.)
   hadron = top.GetNode("Hcal_1")
   hvol = hadron.GetVolume()
   self.zpositions['hcal'] = hadron.GetMatrix().GetTranslation()[2]
   ecal = top.GetNode("Ecal_1")
-  evol = ecal.GetVolume()   
+  evol = ecal.GetVolume()
   self.zpositions['ecal'] = ecal.GetMatrix().GetTranslation()[2]
   x = sys.modules['__main__']
   ShipGeo = x.ShipGeo
@@ -51,7 +49,7 @@ class Task:
   self.ry=500
   self.muly_acceptance = 50.0
   self.ncells_x=m.floor((2*self.dimensions_x)/self.pad_size_x)
-  self.ncells_y=m.floor((2*self.dimensions_y)/self.pad_size_y) 
+  self.ncells_y=m.floor((2*self.dimensions_y)/self.pad_size_y)
   self.threshold_pad_energy = 0.2
   self.Ecal_dx = 15 #cm
   self.Ecal_dy = 15 #cm
@@ -84,7 +82,7 @@ class Task:
   self.pID.Fill()
 
  def HcalHits(self):
- ## hcalPoint hits ##  
+ ## hcalPoint hits ##
   self.hcal1 = []
   self.hcal2 = []
   self.new_hcal2 = []
@@ -155,7 +153,7 @@ class Task:
   for i in range(len(self.list1)):
    E, E1, E2, E3, EE, E_tot=0,0,0,0,0,0
    x,y, E, mull = self.list1[i][0], self.list1[i][1], self.list1[i][2], self.list1[i][3]
-   for j in range(len(self.list1)):   
+   for j in range(len(self.list1)):
      xx, yy, EE, mulll = self.list1[j][0], self.list1[j][1], self.list1[j][2], self.list1[j][3]
      if x == xx and y == yy and mull == mulll: E_tot+=EE
      j+=1
@@ -186,7 +184,7 @@ class Task:
     self.P=0.
     i+=1
     fst = fT.getFitStatus()
-    if not fst.isFitConverged() or fst.getNdf() < self.cutNdf: 
+    if not fst.isFitConverged() or fst.getNdf() < self.cutNdf:
       pidObject=ROOT.pid()
       pidObject.SetTrackID(i)
       pidObject.SetTrackPID(-3)
@@ -217,7 +215,7 @@ class Task:
     if self.El==True and self.vol_ecal==False:
       pidObject.SetTrackPID(1)
 #      print '==== Is Electron'
-    if (self.pid10==True or self.pid20==True or self.pid21==True or self.pid30==True or self.pid_mu==True) and self.El==False and self.vol_mu1==False: 
+    if (self.pid10==True or self.pid20==True or self.pid21==True or self.pid30==True or self.pid_mu==True) and self.El==False and self.vol_mu1==False:
       pidObject.SetTrackPID(3)
       self.Hl=False
  #     print '**** Is Muon'
@@ -313,10 +311,10 @@ class Task:
      if not self.P>5 and (self.pid10==False and self.pid20==False and self.pid21==False and self.pid30==False):
        chmu1=m.fabs((22.67-self.E_tot_h1)/22.67)
        chmu2=m.fabs((55.75-self.E_tot_h2)/55.75)
-       if (chmu1<0.5 and chmu2<0.5): 
+       if (chmu1<0.5 and chmu2<0.5):
          self.pid_mu=True
      check_vol_mu1=(m.pow(self.extrap_X_mu1,2)/m.pow(self.rx,2))+(m.pow(self.extrap_Y_mu1,2)/m.pow(self.ry,2))
-     if check_vol_mu1>1: 
+     if check_vol_mu1>1:
        self.vol_mu1=True
 
  def elec_ID(self):
@@ -335,7 +333,7 @@ class Task:
          self.El=True
      if self.pid10==False and self.pid20==False and self.pid21==False and self.pid30==False and self.El==False and self.pid_mu==False: self.Hl=True
      check_vol_ecal=(m.pow(self.extrap_X_ecal,2)/m.pow(self.rx,2))+(m.pow(self.extrap_Y_ecal,2)/m.pow(self.ry,2))
-     if check_vol_ecal>1: 
+     if check_vol_ecal>1:
        self.vol_ecal=True
 
  def hcal_ID(self):
@@ -358,5 +356,5 @@ class Task:
         E_totale+=E
       self.E_tot = self.E_tot_h1+self.E_tot_h2
       check_vol_hcal=(m.pow(self.extrap_X_hcal,2)/m.pow(self.rx,2))+(m.pow(self.extrap_Y_hcal,2)/m.pow(self.ry,2))
-      if check_vol_hcal>1: 
+      if check_vol_hcal>1:
         self.vol_hcal=True

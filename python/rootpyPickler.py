@@ -2,7 +2,7 @@
 # distributed under the terms of the GNU General Public License
 # Original author: Scott Snyder scott.snyder(a)cern.ch, 2004.
 
-# copied and modified by T.Ruf for the standalone use in FAIRSHIP 
+# copied and modified by T.Ruf for the standalone use in FAIRSHIP
 """Pickle python data into a ROOT file, preserving references to ROOT objects.
 
 This module allows pickling python objects into a ROOT file. The python
@@ -44,21 +44,17 @@ The following additional notes apply:
   the ROOT file open. Pass use_proxy=0 to disable this behavior.
 
 """
-from __future__ import absolute_import
 
 import sys
-if sys.version_info[0] < 3:
-    from cStringIO import StringIO
-else:
-    from io import StringIO
+from io import StringIO
 
 # need subclassing ability in 2.x
 import pickle
 
 import ROOT
 
-string_types = basestring,
-integer_types = (int, long)
+string_types = str,
+integer_types = (int,)
 
 __all__ = [
     'dump',
@@ -149,11 +145,7 @@ class Pickler(pickle.Pickler):
         self.__keys = file.GetListOfKeys()
         self.__io = IO_Wrapper()
         self.__pmap = {}
-        if sys.version_info[0] < 3:
-            # 2.X old-style classobj
-            pickle.Pickler.__init__(self, self.__io, proto)
-        else:
-            super(Pickler, self).__init__(self.__io, proto)
+        super().__init__(self.__io, proto)
 
     def dump(self, obj, key=None):
         """Write a pickled representation of obj to the open TFile."""
@@ -161,10 +153,7 @@ class Pickler(pickle.Pickler):
             key = '_pickle'
         if 1>0:
             self.__file.cd()
-            if sys.version_info[0] < 3:
-                pickle.Pickler.dump(self, obj)
-            else:
-                super(Pickler, self).dump(obj)
+            super().dump(obj)
             s = ROOT.TObjString(self.__io.getvalue())
             self.__io.reopen()
             s.Write(key)
@@ -205,7 +194,7 @@ class Pickler(pickle.Pickler):
             obj.Write()
             if key:
                 key = self.__file.GetKey(nm)
-                pid = '{0};{1:d}'.format(nm, key.GetCycle())
+                pid = f'{nm};{key.GetCycle():d}'
             else:
                 pid = nm + ';1'
             return pid
@@ -222,12 +211,9 @@ class Unpickler(pickle.Unpickler):
         self.__file = root_file
         self.__io = IO_Wrapper()
         self.__n = 0
-        self.__serial = '{0:d}-'.format(xserial).encode('utf-8')
+        self.__serial = f'{xserial:d}-'.encode()
         xdict[self.__serial] = root_file
-        if sys.version_info[0] < 3:
-            pickle.Unpickler.__init__(self, self.__io)
-        else:
-            super(Unpickler, self).__init__(self.__io)
+        super().__init__(self.__io)
 
         if use_hash:
             htab = {}
@@ -256,7 +242,7 @@ class Unpickler(pickle.Unpickler):
                     cy = 9999
                 ret = htab.get((nm, cy), None)
                 if not ret:
-                    print("warning didn't find {0} {1} {2}",nm, cy, len(htab) )
+                    print(("warning didn't find {0} {1} {2}",nm, cy, len(htab) ))
                     return oget(nm0)
                 #ctx = ROOT.TDirectory.TContext(file)
                 ret = ret.ReadObj()
@@ -273,12 +259,9 @@ class Unpickler(pickle.Unpickler):
             save = _compat_hooks[0]()
         try:
             self.__n += 1
-            s = self.__file.Get(key + ';{0:d}'.format(self.__n))
+            s = self.__file.Get(key + f';{self.__n:d}')
             self.__io.setvalue(s.GetName())
-            if sys.version_info[0] < 3:
-                obj = pickle.Unpickler.load(self)
-            else:
-                obj = super(Unpickler, self).load()
+            obj = super().load()
             self.__io.reopen()
         finally:
             if _compat_hooks:
@@ -297,6 +280,14 @@ class Unpickler(pickle.Unpickler):
     def find_class(self, module, name):
         try:
             try:
+                ## Employ very nasty hack to get around error during
+                ## unpicklying of files.
+                ## `copy_reg` and `__builtin__` comes from PY2,
+                ## for some reason that I don't understand, they are now
+                ## in the files we try to unpickle
+                if sys.version_info[0] > 2:
+                    if module == 'copy_reg': module = 'copyreg'
+                    if module == '__builtin__': module = 'builtins'
                 __import__(module)
                 mod = sys.modules[module]
             except ImportError:
@@ -313,14 +304,11 @@ class Unpickler(pickle.Unpickler):
             #log.info("Making dummy class {0}.{1}".format(module, name))
             mod = sys.modules[module]
 
-            class Dummy(object):
+            class Dummy:
                 pass
 
             setattr(mod, name, Dummy)
             return Dummy
-
-    # Python 2.x
-    find_global = find_class
 
 
 def compat_hooks(hooks):

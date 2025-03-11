@@ -25,12 +25,12 @@ public:
   Int_t GetUseMC() const {return fUseMC;}
   void Construct();
   Int_t GetNumber(Int_t x, Int_t y) const;
-  
+
   Bool_t AddEnergy(Float_t x, Float_t y, Float_t energy, Float_t energy2);
   Float_t GetEnergy(Float_t x, Float_t y, Int_t section=0) const;
   hcalModule* GetModule(Float_t x, Float_t y) const;
   Int_t GetModuleNumber(Float_t x, Float_t y) const;
-  
+
   Float_t GetX1() const {return fX1;};
   Float_t GetY1() const {return fY1;};
   Float_t GetX2() const;
@@ -39,10 +39,10 @@ public:
   inline void GetStructure(std::vector<hcalModule*>& stru) const {stru=fStructure;}
   inline void GetModules(std::list<hcalModule*>& mdls) const {mdls=fModules;}
   void ResetModules();
-  
+
   hcalModule* CreateModule(char type, Int_t number, Float_t x1, Float_t y1, Float_t x2, Float_t y2);
   //Some usefull procedures for hit processing
-  
+
   //Converts (x,y) to hit Id
   Int_t GetHitId(Float_t x, Float_t y) const;
   //Hit Id -> (x,y)
@@ -54,7 +54,7 @@ public:
 
 private:
   Int_t GetNum(Int_t x, Int_t y) const;
-  
+
 private:
   /** Creates modules lists **/
   void Serialize();
@@ -83,7 +83,7 @@ inline hcalModule* hcalStructure::GetModule(Float_t x, Float_t y) const
 {
   /** get ECAL module by known module center coordinate (x,y) **/
   Int_t num=GetModuleNumber(x,y);
-  if (-1==num) return NULL; else return fStructure[num]; 
+  if (-1==num) return NULL; else return fStructure[num];
 }
 
 inline Int_t  hcalStructure::GetModuleNumber(Float_t x, Float_t y) const
@@ -124,7 +124,7 @@ inline Float_t hcalStructure::GetY2() const
 
 inline Bool_t hcalStructure::AddEnergy(Float_t x, Float_t y, Float_t energy, Float_t energy2)
 {
-  /** Add preshower or calorimeter energy to a module with coordinate (x,y) **/
+  /** Add calorimeter energy to a module with coordinate (x,y) **/
   hcalModule* mdl=GetModule(x,y);
   if (mdl)
   {

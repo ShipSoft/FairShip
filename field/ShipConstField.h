@@ -26,13 +26,13 @@ class ShipFieldPar;
 class ShipConstField : public FairField
 {
 
- public:    
+ public:
 
   /** Default constructor **/
   ShipConstField();
 
 
-  /** Standard constructor 
+  /** Standard constructor
    ** @param name   Object name
    ** @param xMin,xMax   x region of field (global coordinates)
    ** @param yMin,yMax   y region of field (global coordinates)
@@ -57,7 +57,7 @@ class ShipConstField : public FairField
    ** @param yMin,yMax   y region of field (global coordinates)
    ** @param zMin,zMax   z region of field (global coordinates)
    **/
-  void SetFieldRegion(Double_t xMin, Double_t xMax, Double_t yMin, 
+  void SetFieldRegion(Double_t xMin, Double_t xMax, Double_t yMin,
 		      Double_t yMax, Double_t zMin, Double_t zMax);
 
 
@@ -65,9 +65,9 @@ class ShipConstField : public FairField
    ** @param bX,bY,bZ    Field values [kG]
    **/
   void SetField(Double_t bX, Double_t bY, Double_t bZ);
-  
 
-  /** Get components of field at a given point 
+
+  /** Get components of field at a given point
    ** @param x,y,z   Point coordinates [cm]
    **/
   virtual Double_t GetBx(Double_t x, Double_t y, Double_t z);
@@ -97,13 +97,13 @@ class ShipConstField : public FairField
  private:
 
   /** Limits of the field region **/
-  Double_t fXmin;   
+  Double_t fXmin;
   Double_t fXmax;
   Double_t fYmin;
   Double_t fYmax;
   Double_t fZmin;
   Double_t fZmax;
-  
+
   /** Field components inside the field region **/
   Double_t fBx;
   Double_t fBy;

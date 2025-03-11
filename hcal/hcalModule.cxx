@@ -37,4 +37,3 @@ void hcalModule::GetClusterEnergy(Float_t& EcalEnergy)
     EcalEnergy+=(*p)->GetEnergy();
   }
 }
-

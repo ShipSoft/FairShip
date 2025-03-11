@@ -73,8 +73,8 @@ void muon::Initialize()
 //  FairRuntimeDb* rtdb= FairRun::Instance()->GetRuntimeDb();
 //  muonGeoPar* par=(muonGeoPar*)(rtdb->getContainer("muonGeoPar"));
 }
-// -----   Private method InitMedium 
-Int_t muon::InitMedium(const char* name) 
+// -----   Private method InitMedium
+Int_t muon::InitMedium(const char* name)
 {
    static FairGeoLoader *geoLoad=FairGeoLoader::Instance();
    static FairGeoInterface *geoFace=geoLoad->getGeoInterface();
@@ -202,27 +202,27 @@ void muon::ConstructGeometry()
   /** If you are using the standard ASCII input for the geometry
       just copy this and use it for your detector, otherwise you can
       implement here you own way of constructing the geometry. */
-    
+
     TGeoVolume *top=gGeoManager->GetTopVolume();
     TGeoVolume *tMuon = new TGeoVolumeAssembly("MuonDetector");
 
     InitMedium("iron");
     InitMedium("Scintillator");
-    
+
     TGeoMedium *Al =gGeoManager->GetMedium("Scintillator");
     TGeoMedium *A2 =gGeoManager->GetMedium("iron");
-    
+
 //    TGeoBBox *detbox1 = new TGeoBBox("detbox1", 250, 250, 10);
 //    TGeoBBox *detbox2 = new TGeoBBox("detbox2", 245, 245, 10);
-    
-//    TGeoCompositeShape *detcomp1 = new TGeoCompositeShape("detcomp1", "detbox1-detbox2");    
+
+//    TGeoCompositeShape *detcomp1 = new TGeoCompositeShape("detcomp1", "detbox1-detbox2");
 
 //    TGeoVolume *detmu1 = new TGeoVolume("MuX", detcomp1, Al);
     TGeoVolume *muondet0 = gGeoManager->MakeBox("muondet0", Al, fXMax, fYMax, fActiveThickness);
     TGeoVolume *muondet1 = gGeoManager->MakeBox("muondet1", Al, fXMax, fYMax, fActiveThickness);
-    TGeoVolume *muondet2 = gGeoManager->MakeBox("muondet2", Al, fXMax, fYMax, fActiveThickness); 
-    TGeoVolume *muondet3 = gGeoManager->MakeBox("muondet3", Al, fXMax, fYMax, fActiveThickness); 
-    
+    TGeoVolume *muondet2 = gGeoManager->MakeBox("muondet2", Al, fXMax, fYMax, fActiveThickness);
+    TGeoVolume *muondet3 = gGeoManager->MakeBox("muondet3", Al, fXMax, fYMax, fActiveThickness);
+
     TGeoVolume *muonfilter = gGeoManager->MakeBox("muonfilter", A2, fXMax, fYMax, fFilterThickness);
 // 10cm iron to shield against backsplash from cavern
     TGeoVolume *muonshield = gGeoManager->MakeBox("muonshield", A2, fXMax, fYMax, 5.);
@@ -262,5 +262,3 @@ muonPoint* muon::AddHit(Int_t trackID, Int_t detID,
   return new(clref[size]) muonPoint(trackID, detID, pos, mom,
          time, length, eLoss, pdgCode);
 }
-
-ClassImp(muon)

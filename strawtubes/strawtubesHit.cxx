@@ -54,11 +54,11 @@ void strawtubesHit::StrawEndPoints(TVector3 &vbot, TVector3 &vtop)
     TString view;
     switch (vnb) {
 	      case 0:
-	        view = "_x1";   
-                if (statnb==5){view = "_x";}   	      	 
+	        view = "_x1";
+                if (statnb==5){view = "_x";}
 	        break;
-	      case 1:  
-	      	view = "_u";     
+	      case 1:
+	      	view = "_u";
 	        break;
 	      case 2:
 	        view = "_v";
@@ -82,9 +82,9 @@ void strawtubesHit::StrawEndPoints(TVector3 &vbot, TVector3 &vtop)
     TString path = "/";path+=stat;path+="/";path+=plane;path+="/";path+=layer;path+="/";path+=wire;
     Bool_t rc = nav->cd(path);
     if (not rc){
-      cout << "strawtubes::StrawDecode, TgeoNavigator failed "<<path<<endl; 
+      cout << "strawtubes::StrawDecode, TgeoNavigator failed "<<path<<endl;
       return;
-    }  
+    }
     TGeoNode* W = nav->GetCurrentNode();
     TGeoTube* S = dynamic_cast<TGeoTube*>(W->GetVolume()->GetShape());
     Double_t top[3] = {0,0,S->GetDZ()};
@@ -108,6 +108,3 @@ void strawtubesHit::Print() const
   cout << "  TDC " << fdigi << " ns" << endl;
 }
 // -------------------------------------------------------------------------
-
-ClassImp(strawtubesHit)
-

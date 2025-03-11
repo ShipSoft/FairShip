@@ -7,14 +7,12 @@ path =  '/eos/experiment/ship/data/Mbias/background-prod-2018/'
 muSources = {'eta':221,'omega':223,'phi':333,'rho0':113,'eta_prime':331}
 charmExtern = [4332,4232,4132,4232,4122,431,411,421]
 
-muSourcesIDs = muSources.values()
-
 # for 10GeV Yandex Production 65.041 Billion PoT, weight = 768.75 for 5E13 pot
 weightMbias = 768.75
 
 # for 10GeV charm Production 102.2 Billion PoT equivalent, weight = 489.24
 # added another cycle
-weightCharm = 489.24 * 2./3. 
+weightCharm = 489.24 * 2./3.
 
 # for 10GeV charm Production 5336 Billion PoT equivalent, weight = 9.37
 weightBeauty = 9.37
@@ -37,7 +35,7 @@ def muonUpdateWeight(sTree,diMuboost,xSecboost,noCharm=True):
    elif not pName.find('Positron annihilation')<0:
      t.MultiplyWeight(1./xSecboost)
    elif not pName.find('Primary particle')<0 or not pName.find('Decay')<0:
-     if moID in muSourcesIDs:
+     if moID in muSources.values():
        t.MultiplyWeight(1./diMuboost)
  return nMu
 
@@ -65,19 +63,19 @@ def PoT(f):
      xSecboost+=1.
    else:
      xSecboost+=float(txt[i+1:].split(' ')[0])
- diMuboost=diMuboost/float(ncycles) 
- xSecboost=xSecboost/float(ncycles) 
- print "POT = ",nTot," number of events:",f.cbmsim.GetEntries(),' diMuboost=',diMuboost,' XsecBoost=',xSecboost
+ diMuboost=diMuboost/float(ncycles)
+ xSecboost=xSecboost/float(ncycles)
+ print("POT = ",nTot," number of events:",f.cbmsim.GetEntries(),' diMuboost=',diMuboost,' XsecBoost=',xSecboost)
  return nTot,diMuboost,xSecboost
 
 def TotStat():
  lfiles = os.listdir(path)
  ntot = 0
- for fn in lfiles: 
+ for fn in lfiles:
   f=ROOT.TFile(path+fn)
   nPot,diMuboost,xSecboost = PoT(f)
   ntot += nPot
- print "Total statistics so far",ntot/1.E9," billion" 
+ print("Total statistics so far",ntot/1.E9," billion")
 
 def processFile(fin,noCharm=True):
     f   = ROOT.TFile.Open(os.environ['EOSSHIP']+path+fin)
@@ -104,15 +102,15 @@ def processFile(fin,noCharm=True):
 
 def run():
  tmp = "pythia8_Geant4_10.0_cXX.root"
- global weight 
- weight = weightMbias 
+ global weight
+ weight = weightMbias
  for run in range(0,67000,1000):
    rc = processFile(tmp.replace('XX',str(run)))
    if rc == 0:
      fmu = tmp.replace('XX',str(run)+"_mu")
      rc = os.system("xrdcp "+fmu+" $EOSSHIP/eos/experiment/ship/data/Mbias/background-prod-2018/"+fmu)
-     if rc != 0: 
-      print "copy to EOS failed, stop",fmu
+     if rc != 0:
+      print("copy to EOS failed, stop",fmu)
      else:
       rc = os.system("rm "+fmu)
 
@@ -129,8 +127,8 @@ def run4Charm():
    if rc == 0:
      fmu = fname.replace('.root',"_mu.root")
      rc = os.system("xrdcp "+fmu+" $EOSSHIP/eos/experiment/ship/data/Mbias/background-prod-2018/"+fmu)
-     if rc != 0: 
-      print "copy to EOS failed, stop",fmu
+     if rc != 0:
+      print("copy to EOS failed, stop",fmu)
      else:
       rc = os.system("rm "+fmu)
 
@@ -142,8 +140,8 @@ def run4beauty():
  if rc == 0:
      fmu = fname.replace('.root',"_mu.root")
      rc = os.system("xrdcp "+fmu+" $EOSSHIP/eos/experiment/ship/data/Mbias/background-prod-2018/"+fmu)
-     if rc != 0: 
-      print "copy to EOS failed, stop",fmu
+     if rc != 0:
+      print("copy to EOS failed, stop",fmu)
      else:
       rc = os.system("rm "+fmu)
 
@@ -172,10 +170,10 @@ def mergeMbiasAndCharm(flavour="charm"):
  pp = os.environ['EOSSHIP']+path
  Rndm=ROOT.TRandom3()
  Rndm.SetSeed(0)
- if flavour=="charm": 
+ if flavour=="charm":
    allFiles = {'charm':"pythia8_Geant4_charm_102.2B_10.0_mu.root"}
    tmp = "pythia8_Geant4_10.0_cXX_mu.root"
- else:                
+ else:
    allFiles = {'beauty':"pythia8_Geant4_beauty_5336B_10.0_mu.root"}
    tmp = "pythia8_Geant4_10.0_withCharmXX_mu.root"
  for run in range(0,67000,1000):
@@ -189,7 +187,7 @@ def mergeMbiasAndCharm(flavour="charm"):
  nCharm = 0
  nDone  = 0
  frac = nEntries[flavour]/float(Nall)
- print "debug",frac
+ print("debug",frac)
  os.system('xrdcp '+pp +allFiles[flavour] +' '+allFiles[flavour])
  for k in allFiles:
   if k==flavour: continue
@@ -200,7 +198,7 @@ def mergeMbiasAndCharm(flavour="charm"):
   f = ROOT.TFile('tmp.root')
   sTree = f.cbmsim
   sTree.LoadBaskets(30000000000)
-  if flavour=="charm": 
+  if flavour=="charm":
    outFile = tmp.replace('cXX','withCharm'+k)
   else:
    outFile = tmp.replace('XX','andBeauty'+k)
@@ -222,22 +220,22 @@ def mergeMbiasAndCharm(flavour="charm"):
      myList.append( nCharm )
      nCharm+=1
     else: copyEvent = False
-  # chain.SetEntryList(randomList) 
+  # chain.SetEntryList(randomList)
   # nev = randomList.GetN()
   nev = len(myList)
-  print "start:",outFile,nev
+  print("start:",outFile,nev)
   for iev in range(nev) :
      rc =sTree.GetEntry(myList[iev])
      rc = newTree.Fill()
      if (iev)%100000==0:
        timer.Stop()
-       print "status:",timer.RealTime(),k,iev
+       print("status:",timer.RealTime(),k,iev)
        timer.Start()
   newTree.AutoSave()
-  print "finished one file",outFile,nMbias,nCharm
-  if flavour=="charm": 
+  print("finished one file",outFile,nMbias,nCharm)
+  if flavour=="charm":
    ff = f.FileHeader.Clone('With Charm Merged Muon Background File')
-  else: 
+  else:
    ff = f.FileHeader.Clone('With Charm and Beauty Merged Muon Background File')
   txt = ff.GetTitle()
   fmu.cd()
@@ -245,8 +243,8 @@ def mergeMbiasAndCharm(flavour="charm"):
   fmu.Close()
   f.Close()
   rc = os.system("xrdcp "+outFile+" $EOSSHIP/eos/experiment/ship/data/Mbias/background-prod-2018/"+outFile)
-  if rc != 0: 
-      print "copy to EOS failed",outFile
+  if rc != 0:
+      print("copy to EOS failed",outFile)
   else:
       rc = os.system("rm "+outFile)
 
@@ -262,9 +260,4 @@ def testRatio(fname):
     if pdgID in charmExtern:
         charm+=1
         break
- print "charm found",charm," ratio ",charm/float(Nall)
- 
-
-
-
-
+ print("charm found",charm," ratio ",charm/float(Nall))

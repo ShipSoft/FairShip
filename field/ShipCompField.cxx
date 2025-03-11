@@ -8,7 +8,7 @@
 #include <iostream>
 
 ShipCompField::ShipCompField(const std::string& label,
-			     TVirtualMagField* firstField) : 
+			     TVirtualMagField* firstField) :
     TVirtualMagField(label.c_str()),
     theFields_()
 {
@@ -17,7 +17,7 @@ ShipCompField::ShipCompField(const std::string& label,
 
 ShipCompField::ShipCompField(const std::string& label,
 			     TVirtualMagField* firstField,
-			     TVirtualMagField* secondField) : 
+			     TVirtualMagField* secondField) :
     TVirtualMagField(label.c_str()),
     theFields_()
 {
@@ -57,7 +57,7 @@ void ShipCompField::Field(const Double_t* position, Double_t* B)
 	    // Find the magnetic field components for this part
 	    Double_t BVect[3] = {0.0, 0.0, 0.0};
 	    theField->Field(position, BVect);
-	    
+
 	    // Simple linear superposition of the B field components
 	    B[0] += BVect[0];
 	    B[1] += BVect[1];

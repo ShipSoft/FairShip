@@ -9,12 +9,12 @@
 using namespace std;
 
 ecalMaximum::ecalMaximum(ecalCell* cell, Double_t z)
-  : TObject(), 
-    fCell(cell), 
-    fCX(0.), 
-    fCY(0.), 
-    fX(0.), 
-    fY(0.), 
+  : TObject(),
+    fCell(cell),
+    fCX(0.),
+    fCY(0.),
+    fX(0.),
+    fY(0.),
     fMark(0),
     fTheta(0)
 {
@@ -38,5 +38,3 @@ ecalMaximum::ecalMaximum(ecalCell* cell, Double_t z)
   }
   fX/=me; fY/=me;
 }
-
-ClassImp(ecalMaximum)

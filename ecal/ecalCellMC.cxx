@@ -1,7 +1,7 @@
 /**  ecalCellMC.cxx
  *@author Mikhail Prokudin
  **
- ** ECAL cell structure, a part of ECAL module. This implementation carries an MC information 
+ ** ECAL cell structure, a part of ECAL module. This implementation carries an MC information
  **/
 
 #include "ecalCellMC.h"
@@ -55,7 +55,7 @@ Float_t ecalCellMC::GetTrackClusterEnergy(Int_t num)
   return energy;
 }
 
-// Don't use slow methods except in emergency!!! 
+// Don't use slow methods except in emergency!!!
 //-----------------------------------------------------------------------------
 void ecalCellMC::GetTrackEnergySlow(Int_t n, Int_t& trackid, Double_t& energy_dep)
 {
@@ -66,7 +66,7 @@ void ecalCellMC::GetTrackEnergySlow(Int_t n, Int_t& trackid, Double_t& energy_de
   trackid=p->first; energy_dep=p->second;
 }
 
-// Don't use slow methods except in emergency!!! 
+// Don't use slow methods except in emergency!!!
 //-----------------------------------------------------------------------------
 void ecalCellMC::GetTrackTimeSlow(Int_t n, Int_t& trackid, Float_t& time)
 {
@@ -76,6 +76,3 @@ void ecalCellMC::GetTrackTimeSlow(Int_t n, Int_t& trackid, Float_t& time)
   for(i=0;i<n;i++) (++p);
   trackid=p->first; time=p->second;
 }
-
-ClassImp(ecalCellMC)
-

@@ -5,6 +5,7 @@
 set(INCLUDE_DIRECTORIES
 ${CMAKE_SOURCE_DIR}/shipdata
 ${CMAKE_SOURCE_DIR}/pid
+${genfit2_INCDIR}
 )
 
 include_directories( ${INCLUDE_DIRECTORIES})
@@ -13,7 +14,8 @@ include_directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
 set(LINK_DIRECTORIES
 ${ROOT_LIBRARY_DIR}
 ${FAIRROOT_LIBRARY_DIR}
-) 
+${genfit2_LIBDIR}
+)
 
 link_directories( ${LINK_DIRECTORIES})
 

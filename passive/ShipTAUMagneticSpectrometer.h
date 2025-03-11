@@ -18,8 +18,8 @@ class ShipTAUMagneticSpectrometer : public FairModule
     void ConstructGeometry();
     void Initialize();
     ClassDef(ShipTAUMagneticSpectrometer,1)
-    
-    
+
+
 protected:
     Double_t zLastSlab; //z distance of the center of the last Fe slab of the second spectrometer in cm from the center of the vacuum tube
     Double_t IronLenght;
@@ -34,4 +34,3 @@ protected:
 
 
 #endif //TAUMAGNETICSPECTROMETER_H
-

@@ -17,7 +17,7 @@ Tracklet::Tracklet(Int_t fl, std::vector<unsigned int>  aT)
 {
  flag = fl;
  aTracklet = aT;
- 
+
 }
 
 // -----   Destructor   ----------------------------------------------------
@@ -35,8 +35,5 @@ Int_t Tracklet::link2MCTrack(TClonesArray* strawPoints, Float_t min=0.6)
     if (MC[trackID]>min){break;}
  }
  return trackID;
- 
+
 }
-
-ClassImp(Tracklet)
-

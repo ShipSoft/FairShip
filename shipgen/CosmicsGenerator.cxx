@@ -144,5 +144,3 @@ Bool_t CosmicsGenerator::ReadEvent(FairPrimaryGenerator* cpg){
 	return kTRUE;
 }
 // ---------------------------------------------------------------------
-
-ClassImp(CosmicsGenerator)

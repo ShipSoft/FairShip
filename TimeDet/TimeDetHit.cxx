@@ -77,7 +77,7 @@ std::vector<double>  TimeDetHit::GetTime(){
 // -----   resolution function-------------------
 Double_t TimeDetHit::Resol(Double_t x)
 {
-  return par[0]*TMath::Exp( (x-par[2])/par[1] )+par[3]; 
+  return par[0]*TMath::Exp( (x-par[2])/par[1] )+par[3];
 }
 
 std::vector<double> TimeDetHit::GetMeasurements(){
@@ -133,17 +133,15 @@ TGeoNode* TimeDetHit::GetNode()
    TString path = "/Timing Detector_1/TimeDet_";path+=fDetectorID;
    Bool_t rc = nav->cd(path);
    return nav->GetCurrentNode();
-} 
+}
 
 
 // -----   Public method Print   -----------------------
 void TimeDetHit::Print() const
-{ 
+{
   cout << "-I- TimeDetHit: TimeDet hit " << " in detector " << fDetectorID << endl;
   cout << "  TDC left " << t_1 << " ns   TDC right " << t_2 << " ns" << endl;
 }
 
 
 // -----------------------------------------------------
-ClassImp(TimeDetHit)
-

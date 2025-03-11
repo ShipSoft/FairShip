@@ -72,69 +72,69 @@ MagneticSpectrometer::MagneticSpectrometer(const char* name, const Double_t Zcen
 }
 
 void MagneticSpectrometer::SetDesign(Int_t Design)
-{  
+{
   fDesign = Design;
   cout <<" Mag Spectro Design "<< fDesign<<endl;
 }
 
 void MagneticSpectrometer::SetTotDimensions(Double_t X, Double_t Y, Double_t Z)
-{  
+{
   fXtot = X;
   fYtot = Y;
   fZtot = Z;
 }
 
 void MagneticSpectrometer::SetFeDimensions(Double_t X, Double_t Y, Double_t Z)
-{  
+{
   fXFe = X;
   fYFe = Y;
   fZFe = Z;
 }
 
 void MagneticSpectrometer::SetRpcDimensions(Double_t X, Double_t Y, Double_t Z)
-{  
+{
   fXRpc = X;
   fYRpc = Y;
   fZRpc = Z;
 }
 
 void MagneticSpectrometer::SetRpcGasDimensions(Double_t X, Double_t Y, Double_t Z)
-{  
+{
   fXGas = X;
   fYGas = Y;
   fZGas = Z;
 }
 
 void MagneticSpectrometer::SetRpcPETDimensions(Double_t X, Double_t Y, Double_t Z)
-{  
+{
   fXPet = X;
   fYPet = Y;
   fZPet = Z;
 }
 
 void MagneticSpectrometer::SetRpcElectrodeDimensions(Double_t X, Double_t Y, Double_t Z)
-{  
+{
   fXEle = X;
   fYEle = Y;
   fZEle = Z;
 }
 
 void MagneticSpectrometer::SetRpcStripDimensions(Double_t X, Double_t Y, Double_t Z)
-{  
+{
   fXStrip = X;
   fYStrip = Y;
   fZStrip = Z;
 }
 
 void MagneticSpectrometer::SetReturnYokeDimensions(Double_t X, Double_t Y, Double_t Z)
-{  
+{
   fXRyoke = X;
   fYRyoke = Y;
   fZRyoke = Z;
 }
 
 void MagneticSpectrometer::SetSmallerYokeDimensions(Double_t X, Double_t Y, Double_t Z)
-{  
+{
   fXRyoke_s = X;
   fYRyoke_s = Y;
   fZRyoke_s = Z;
@@ -200,7 +200,7 @@ void MagneticSpectrometer::Initialize()
   FairDetector::Initialize();
 }
 
-// -----   Private method InitMedium 
+// -----   Private method InitMedium
 Int_t MagneticSpectrometer::InitMedium(const char* name)
 {
   static FairGeoLoader *geoLoad=FairGeoLoader::Instance();
@@ -229,28 +229,28 @@ void MagneticSpectrometer::ConstructGeometry()
 
   InitMedium("RPCgas");
   TGeoMedium *RPCmat =gGeoManager->GetMedium("RPCgas");
-   
+
   InitMedium("vacuum");
   TGeoMedium *vacuum =gGeoManager->GetMedium("vacuum");
-    
+
   InitMedium("Bakelite");
-  TGeoMedium *bakelite =gGeoManager->GetMedium("Bakelite");  
+  TGeoMedium *bakelite =gGeoManager->GetMedium("Bakelite");
 
   InitMedium("iron");
   TGeoMedium *Iron =gGeoManager->GetMedium("iron");
 
   InitMedium("steel");
   TGeoMedium *Steel =gGeoManager->GetMedium("steel");
-    
+
   InitMedium("copper");
   TGeoMedium *Cu =gGeoManager->GetMedium("copper");
-    
+
   InitMedium("Concrete");
   TGeoMedium *Conc =gGeoManager->GetMedium("Concrete");
-    
+
   TGeoUniformMagField *retFieldU    = new TGeoUniformMagField(0.,0.,-fField); //magnetic field up return yoke
   TGeoUniformMagField *retFieldL   = new TGeoUniformMagField(0.,0.,fField); //magnetic field low return yoke
-    
+
   Double_t d = 0;
 
   if(fDesign!=3)
@@ -258,25 +258,25 @@ void MagneticSpectrometer::ConstructGeometry()
       TGeoBBox *MSBox = new TGeoBBox("MagneticSpectrometerBox", fXRyoke/2, fYtot/2, fZtot/2);
       TGeoVolume *volMSBox = new TGeoVolume("volMagneticSpectrometer", MSBox, vacuum);
       tTauNuDet->AddNode(volMSBox, 1, new TGeoTranslation(0,10*cm,fZcenter));
-  
-      
+
+
       TGeoBBox *UpYokeBox = new TGeoBBox("UpYokeBox", fXRyoke/2, fYRyoke/2, fZRyoke/2);
       TGeoVolume *volUpYoke = new TGeoVolume("volUpYoke",UpYokeBox,vacuum);
       volMSBox->AddNode(volUpYoke,1,new TGeoTranslation(0,fYtot/2 - fYRyoke/2,0));
       volUpYoke->SetField(retFieldU);
-    
-    
+
+
       TGeoBBox *FeYoke = new TGeoBBox("FeYoke",fXtot/2, fYRyoke/2, fZArm/2);
       TGeoVolume *volFeYoke = new TGeoVolume("volFeYoke",FeYoke,Iron);
       volFeYoke->SetLineColor(kGray+1);
-  
+
       TGeoBBox *FeYoke1 = new TGeoBBox("FeYoke1",fXtot/2, fYRyoke_s/2, fZRyoke_s/2);
       TGeoVolume *volFeYoke1 = new TGeoVolume("volFeYoke1",FeYoke1,Iron);
       volFeYoke1->SetLineColor(kGray+1);
-    
+
       TGeoBBox *CoilContainer = new TGeoBBox("CoilContainer",fXtot/2, fCoilH/2, 40*cm);
       TGeoVolume *volCoilContainer = new TGeoVolume("volCoilContainer",CoilContainer,vacuum);
-    
+
       TGeoBBox *Coil = new TGeoBBox("Coil",fXtot/2, fCoilH/2, fCoilW/2);
       TGeoVolume *volCoil = new TGeoVolume("volCoil",Coil,Cu);
       volCoil->SetLineColor(kOrange -5);
@@ -284,7 +284,7 @@ void MagneticSpectrometer::ConstructGeometry()
 	{
 	  volCoilContainer->AddNode(volCoil, i, new TGeoTranslation(0,0, -40*cm + fCoilW/2 + i*(fCoilGap + fCoilW)));
 	}
-    
+
       //vertical coils
       TGeoBBox *CoilV = new TGeoBBox("CoilV",fCoilH/2, fYRyoke/2 , fCoilW/2);
       TGeoVolume *volCoilV = new TGeoVolume("volCoilV",CoilV,Cu);
@@ -299,18 +299,18 @@ void MagneticSpectrometer::ConstructGeometry()
 	}
 
       //cout <<"fZArm: " << fZArm<< endl;
-    
+
       volUpYoke->AddNode(volFeYoke,1, new TGeoTranslation(0,0,- (fZArm + fGapMiddle)/2));
       volUpYoke->AddNode(volFeYoke,2, new TGeoTranslation(0,0,(fZArm + fGapMiddle)/2));
       volUpYoke->AddNode(volFeYoke1,1,new TGeoTranslation(0,0,0));
       volUpYoke->AddNode(volCoilContainer,1,new TGeoTranslation(0,fYRyoke/2 - fCoilH/2,0)); //up
       volUpYoke->AddNode(volCoilContainer,2,new TGeoTranslation(0,-fYRyoke/2 + fCoilH/2,0)); //low
-    
+
       TGeoBBox *LowYokeBox = new TGeoBBox("LowYokeBox", fXRyoke/2, fYRyoke/2, fZRyoke/2);
       TGeoVolume *volLowYoke = new TGeoVolume("volLowYoke",LowYokeBox,vacuum);
       volMSBox->AddNode(volLowYoke,1,new TGeoTranslation(0,-fYtot/2 + fYRyoke/2,0));
       volLowYoke->SetField(retFieldL);
-   
+
       //vertical coils
       for(int i = 0; i < fNCoil; i++)
 	{
@@ -320,7 +320,7 @@ void MagneticSpectrometer::ConstructGeometry()
 	{
 	  volLowYoke->AddNode(volCoilV, i, new TGeoTranslation(-fXRyoke/2 + fCoilH/2,0, -40*cm + fCoilW/2 + i*(fCoilGap + fCoilW)));
 	}
-    
+
       volLowYoke->AddNode(volFeYoke,3, new TGeoTranslation(0,0,- (fZArm + fGapMiddle)/2));
       volLowYoke->AddNode(volFeYoke,4, new TGeoTranslation(0,0,(fZArm + fGapMiddle)/2));
       volLowYoke->AddNode(volFeYoke1,1,new TGeoTranslation(0,0,0));
@@ -333,7 +333,7 @@ void MagneticSpectrometer::ConstructGeometry()
       TGeoUniformMagField *magField1 = new TGeoUniformMagField(0.,-fField,0.); //magnetic field arm1
       volArm1->SetField(magField1);
       volMSBox ->AddNode(volArm1,ArmNumber,new TGeoTranslation(0,0,-(fGapMiddle+fZArm)/2));
-    
+
       Int_t nr =  ArmNumber*1E4;
 
       TGeoBBox *IronLayer = new TGeoBBox("Iron",fXFe/2, fYFe/2, fZFe/2);
@@ -344,10 +344,10 @@ void MagneticSpectrometer::ConstructGeometry()
 	{
 	  volArm1->AddNode(volIron,nr + 100 + i, new TGeoTranslation(0, 0, -fZArm/2+i*(fZFe +fZRpc) +fZFe/2));
 	}
-    
+
       TGeoBBox *RpcContainer = new TGeoBBox("RpcContainer", fXRpc/2, fYRpc/2, fZRpc/2);
       TGeoVolume *volRpcContainer = new TGeoVolume("volRpcContainer",RpcContainer,vacuum);
-  
+
       TGeoBBox *Strip = new TGeoBBox("Strip",fXStrip/2, fYStrip/2, fZStrip/2);
       TGeoVolume *volStrip = new TGeoVolume("volStrip",Strip,Cu);
       volStrip->SetLineColor(kRed);
@@ -367,14 +367,14 @@ void MagneticSpectrometer::ConstructGeometry()
       TGeoVolume *volRpc = new TGeoVolume("volRpc",RpcGas,RPCmat);
       volRpc->SetLineColor(kCyan);
       volRpcContainer->AddNode(volRpc,1,new TGeoTranslation(0,0,0));
-   
+
       AddSensitiveVolume(volRpc);
-    
+
       for(Int_t i = 0; i < fNRpc; i++)
 	{
 	  volArm1->AddNode(volRpcContainer,nr + i,new TGeoTranslation(0, -fYFe/2 + fYRpc/2, -fZArm/2+(i+1)*fZFe + i*fZRpc +fZRpc/2));
 	}
-    
+
       ArmNumber = 2;
       nr =  ArmNumber*1E4;
 
@@ -386,10 +386,10 @@ void MagneticSpectrometer::ConstructGeometry()
             TGeoVolume *volIron2 = new TGeoVolume("volIron2",IronLayer,Iron);
 
      //different volumes for second arm
-      
+
       TGeoVolume *volRpcContainer2 = new TGeoVolume("volRpcContainer2",RpcContainer,vacuum);
       TGeoVolume *volStrip2 = new TGeoVolume("volStrip2",Strip,Cu);
-      
+
       volStrip2->SetLineColor(kRed);
       volRpcContainer2->AddNode(volStrip2,1,new TGeoTranslation (0,0,-3.25*mm));
       volRpcContainer2->AddNode(volStrip2,2,new TGeoTranslation (0,0,3.25*mm));
@@ -403,22 +403,22 @@ void MagneticSpectrometer::ConstructGeometry()
       volElectrode2->SetLineColor(kGreen);
       volRpcContainer2->AddNode(volElectrode2,1,new TGeoTranslation(0,0,-2*mm));
       volRpcContainer2->AddNode(volElectrode2,2,new TGeoTranslation(0,0, 2*mm));
-   
+
       TGeoVolume *volRpc2 = new TGeoVolume("volRpc2",RpcGas,RPCmat);
       volRpc2->SetLineColor(kCyan);
       volRpcContainer2->AddNode(volRpc2,1,new TGeoTranslation(0,0,0));
       AddSensitiveVolume(volRpc2);
-   
+
       for(Int_t i = 0; i < fNFe; i++)
 	{
 	  volArm2->AddNode(volIron2,nr + 100 + i,new TGeoTranslation(0, 0, -fZArm/2+i*(fZFe +fZRpc) +fZFe/2));
 	}
-    
+
       for(Int_t i = 0; i < fNRpc; i++)
 	{
 	  volArm2->AddNode(volRpcContainer2, nr + i,new TGeoTranslation(0, -fYFe/2 + fYRpc/2, -fZArm/2+(i+1)*fZFe + i*fZRpc +fZRpc/2));
 	}
-    
+
       //10 cm of Concrete on which the whole Magnetic Spectrometer volume (HPT included) will be placed
       TGeoBBox *Base = new TGeoBBox("Base", fXtot/2, 10*cm/2, fZtot/2);
       TGeoVolume *volBase = new TGeoVolume("volBase",Base,Conc);
@@ -439,7 +439,7 @@ void MagneticSpectrometer::ConstructGeometry()
   if(fDesign==3)
     {
       Int_t nr = 1E4;
-      
+
       TGeoBBox *MSBox = new TGeoBBox("MagneticSpectrometerBox", fXtot/2, fYtot/2, fZtot/2);
       TGeoVolume *volMSBox = new TGeoVolume("volMagneticSpectrometer", MSBox, vacuum);
       tTauNuDet->AddNode(volMSBox, 1, new TGeoTranslation(0,0,fZcenter));
@@ -455,7 +455,7 @@ void MagneticSpectrometer::ConstructGeometry()
 
        TGeoBBox *RpcContainer = new TGeoBBox("RpcContainer", fXRpc/2, fYRpc/2, fZRpc/2);
       TGeoVolume *volRpcContainer = new TGeoVolume("volRpcContainer",RpcContainer,vacuum);
-  
+
       TGeoBBox *Strip = new TGeoBBox("Strip",fXStrip/2, fYStrip/2, fZStrip/2);
       TGeoVolume *volStrip = new TGeoVolume("volStrip",Strip,Cu);
       volStrip->SetLineColor(kRed);
@@ -475,14 +475,14 @@ void MagneticSpectrometer::ConstructGeometry()
       TGeoVolume *volRpc = new TGeoVolume("volRpc",RpcGas,RPCmat);
       volRpc->SetLineColor(kCyan);
       volRpcContainer->AddNode(volRpc,1,new TGeoTranslation(0,0,0));
-   
+
       AddSensitiveVolume(volRpc);
-    
+
       for(Int_t i = 0; i < fNRpc; i++)
 	{
 	  volMSBox->AddNode(volRpcContainer,nr + i,new TGeoTranslation(0, 0, -fZtot/2+(i+1)*fZFe + i*fZRpc +fZRpc/2));
 	}
-      
+
       TGeoBBox *Pillar1Box = new TGeoBBox(fPillarX/2,fPillarY/2, fPillarZ/2);
       TGeoVolume *Pillar1Vol = new TGeoVolume("Pillar1Vol",Pillar1Box,Steel);
       Pillar1Vol->SetLineColor(kGreen+3);
@@ -509,7 +509,7 @@ Bool_t  MagneticSpectrometer::ProcessHits(FairVolume* vol)
   }
   // Sum energy loss for all steps in the active volume
   fELoss += gMC->Edep();
-    
+
   // Create muonPoint at exit of active volume
   if ( gMC->IsTrackExiting()    ||
        gMC->IsTrackStop()       ||
@@ -539,19 +539,19 @@ Bool_t  MagneticSpectrometer::ProcessHits(FairVolume* vol)
     //cout<<endl;
     fVolumeID = detID;
 
-    TLorentzVector Pos; 
-    gMC->TrackPosition(Pos); 
-    Double_t xmean = (fPos.X()+Pos.X())/2. ;      
-    Double_t ymean = (fPos.Y()+Pos.Y())/2. ;      
-    Double_t zmean = (fPos.Z()+Pos.Z())/2. ;     
-     
+    TLorentzVector Pos;
+    gMC->TrackPosition(Pos);
+    Double_t xmean = (fPos.X()+Pos.X())/2. ;
+    Double_t ymean = (fPos.Y()+Pos.Y())/2. ;
+    Double_t zmean = (fPos.Z()+Pos.Z())/2. ;
+
     AddHit(fTrackID, fVolumeID, TVector3(xmean, ymean,  zmean), TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength,fELoss, pdgCode);
-        
+
     // Increment number of muon det points in TParticle
     ShipStack* stack = (ShipStack*) gMC->GetStack();
     stack->AddPoint(ktauRpc);
   }
-    
+
   return kTRUE;
 }
 
@@ -563,13 +563,13 @@ void MagneticSpectrometer::EndOfEvent()
 
 void MagneticSpectrometer::Register()
 {
-    
+
   /** This will create a branch in the output tree called
       ShipRpcPoint, setting the last parameter to kFALSE means:
       this collection will not be written to the file, it will exist
       only during the simulation.
   */
-    
+
   FairRootManager::Instance()->Register("ShipRpcPoint", "MagneticSpectrometer",
 					fShipRpcPointCollection, kTRUE);
 }
@@ -606,6 +606,3 @@ ShipRpcPoint* MagneticSpectrometer::AddHit(Int_t trackID, Int_t detID,
   //    return new(clref[size]) ShipRpcPoint(trackID, detID, pos, mom,time, length, eLoss, pdgCode,NArm, NRpc, NHpt);
   return new(clref[size]) ShipRpcPoint(trackID, detID, pos, mom,time, length, eLoss, pdgCode);
 }
-
-
-ClassImp(MagneticSpectrometer)

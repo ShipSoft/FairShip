@@ -115,5 +115,3 @@ void ecalMaximumLocator::Exec(const Option_t* opt)
   if (fVerbose>9)
     Info("Exec", "%d maximums found", n);
 }
-
-ClassImp(ecalMaximumLocator)

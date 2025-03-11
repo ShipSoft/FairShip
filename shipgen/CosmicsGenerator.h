@@ -14,7 +14,6 @@
 #include "TMath.h"
 #include "TH1.h"
 
-using namespace std;
 class FairPrimaryGenerator;
 
 class Co3Rng{
@@ -27,7 +26,7 @@ class Co3Rng{
 		};
 	   virtual ~Co3Rng() {delete rng; delete fTheta; delete fSpectrumH;};
 	   double Uniform(Float_t min, Float_t max){return rng->Uniform(min,max);};
-	   TF1 *fSpectrumH; 
+	   TF1 *fSpectrumH;
 	   TF1 *fTheta;
 	   double fSpectrumL(double theta, double minE, Bool_t generateP); // momentum below 100GeV
 	private:
@@ -37,32 +36,34 @@ class Co3Rng{
 class CosmicsGenerator : public FairGenerator{
  public:
   	/** constructor,destructor **/
-	CosmicsGenerator(){};  
+	CosmicsGenerator(){};
 	virtual ~CosmicsGenerator(){
-		delete fRandomEngine; 
-		cout<<nInside<<" events have been generated."<<endl;
-		cout<<"There is a total of "<<nInside<<"/"<<nTest<<" muons that passed close enough to the detector."<<endl;
-		cout<<"Including the given weight this corresponds to ";
-		cout<<weighttest/FluxIntegral/xdist/zdist*10000<<" spills (1 spill = "<<xdist*zdist*FluxIntegral/10000;
-		cout<<" real cosmic muons = "<<n_EVENTS<<" simulated events)."<<endl;
-	};
-  
+		delete fRandomEngine;
+                std::cout << nInside << " events have been generated." << std::endl;
+                std::cout << "There is a total of " << nInside << "/" << nTest
+                          << " muons that passed close enough to the detector." << std::endl;
+                std::cout << "Including the given weight this corresponds to ";
+                std::cout << weighttest / FluxIntegral / xdist / zdist * 10000
+                          << " spills (1 spill = " << xdist * zdist * FluxIntegral / 10000;
+                std::cout << " real cosmic muons = " << n_EVENTS << " simulated events)." << std::endl;
+        };
+
 	/** public method ReadEvent **/
 	Bool_t ReadEvent(FairPrimaryGenerator*);  //!
 	//  virtual Bool_t Init(); //!
 	virtual Bool_t Init(Bool_t largeMom); //!
-	
+
 	double z0, yBox,xBox,zBox,xdist, zdist, minE;
 	int n_EVENTS;
-  
+
  private:
 	Co3Rng *fRandomEngine;//!
-  
+
  protected:
 	double P,px,py,pz,x,y,z,weighttest, weight, mass, FluxIntegral, theta;
 	int PID,nInside,nTest;//!
 	Bool_t high;
-	
+
 	void GenerateDynamics();
 	Bool_t DetectorBox();
 	ClassDef(CosmicsGenerator,4);

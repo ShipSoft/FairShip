@@ -101,13 +101,13 @@ class TimeDet: public FairDetector
     Double_t fxBar;  //! length of the bar
     Double_t fyBar;  //! width of the bar
     Double_t fzBar;  //! depth of the bar
-    
+
     Double_t fdzBarCol; //! z-distance between columns
     Double_t fdzBarRow; //! z-distance between rows
-    
+
     Int_t fNCol;    //! Number of columns
     Int_t fNRow;    //! Number of rows
-    
+
     Double_t fxCenter; //! x-position of the detector center
     Double_t fyCenter; //! y-position of the detector center
 

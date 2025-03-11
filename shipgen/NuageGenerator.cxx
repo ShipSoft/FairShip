@@ -51,11 +51,10 @@ Bool_t NuageGenerator::Init(const char* fileName, const int firstEvent) {
   cout<<"**************************************"<<endl;
   cout<<endl;
   fNuOnly = false;
-  fLogger = FairLogger::GetLogger();
-  fLogger->Info(MESSAGE_ORIGIN,"Opening input file %s",fileName);
+  LOGF(info, "Opening input file %s", fileName);
   fInputFile  = new TFile(fileName);
   if (fInputFile->IsZombie()) {
-    fLogger->Fatal(MESSAGE_ORIGIN, "Error opening the Signal file");
+    LOG(FATAL) << "Error opening the Signal file";
   }
   fTree = (TTree *)fInputFile->Get("tree");
   fNevents = fTree->GetEntries();
@@ -335,7 +334,7 @@ Bool_t NuageGenerator::ReadEvent(FairPrimaryGenerator* cpg)
 
   if (fn==fNevents)
     {
-      fLogger->Warning(MESSAGE_ORIGIN, "End of input file. Rewind.");
+      LOG(WARNING) << "End of input file. Rewind.";
     }
   fTree->GetEntry(fn%fNevents);
   fn++;
@@ -598,6 +597,3 @@ Int_t NuageGenerator::GetNevents()
 {
   return fNevents;
 }
-
-
-ClassImp(NuageGenerator)

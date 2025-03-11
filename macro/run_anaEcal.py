@@ -1,11 +1,11 @@
-#!/usr/bin/env python 
-import ROOT,os,sys,getopt,time
+#!/usr/bin/env python
+import ROOT,os,sys,time
 import shipunit as u
 import shipRoot_conf
 import ShipGeoConfig
 
 
-inFile ="geant.root"  
+inFile ="geant.root"
 outFile="ana.root"
 # Parameter file name
 parFile="params.root"
@@ -44,15 +44,15 @@ rtdb.printParamContexts()
 run.Init()
 run.Run(0,nEvents)
 # ------------------------------------------------------------------------
-#run.CreateGeometryFile("geofile_full."+tag+".root")  
+#run.CreateGeometryFile("geofile_full."+tag+".root")
 # -----Finish-------------------------------------------------------
 timer.Stop()
 rtime = timer.RealTime()
 ctime = timer.CpuTime()
-print ' ' 
-print "Macro finished succesfully." 
-print "Output file is ",  outFile 
-print "Parameter file is ",parFile
-print "Real time ",rtime, " s, CPU time ",ctime,"s"
+print(' ')
+print("Macro finished succesfully.")
+print("Output file is ",  outFile)
+print("Parameter file is ",parFile)
+print("Real time ",rtime, " s, CPU time ",ctime,"s")
 
 # ------------------------------------------------------------------------

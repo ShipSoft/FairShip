@@ -19,31 +19,30 @@
 #include "HNLPythia8Generator.h"
 
 class FairPrimaryGenerator;
-using namespace Pythia8;
 
 class DPPythia8Generator : public FairGenerator
 {
  public:
-  
+
   /** default constructor **/
   DPPythia8Generator();
-  
+
   /** destructor **/
   virtual ~DPPythia8Generator();
-  
+
   /** public method ReadEvent **/
   Bool_t ReadEvent(FairPrimaryGenerator*);
   void SetParameters(char*);
   void Print(){fPythia->settings.listAll(); };  //!
   void List(int id){fPythia->particleData.list(id);}; //!
-  
+
   //void SetDecayToHadrons(){
   //std::cout << " INFO: Adding decay to hadrons." << std::endl;
-  //fHadDecay = true; 
+  //fHadDecay = true;
   //};
 
   virtual Bool_t Init(); //!
-  
+
   void SetMom(Double_t mom) { fMom = mom; };
   Double_t GetMom() { return fMom; };
   void SetId(Double_t id) { fId  = id; };
@@ -73,13 +72,13 @@ class DPPythia8Generator : public FairGenerator
   void UseDeepCopy(){ fDeepCopy   = kTRUE; };
   Int_t nrOfRetries(){ return fnRetries; };
   Int_t nrOfDP(){ return fnDPtot; };
-  Pythia* getPythiaInstance(){return fPythia;};
-  Pythia* fPythia;             //!
-  //Pythia* fPythiaHadDecay;             //!
+  Pythia8::Pythia* getPythiaInstance(){return fPythia;};
+  Pythia8::Pythia* fPythia;             //!
+  //Pythia8::Pythia* fPythiaHadDecay;             //!
  private:
-  
-  RndmEngine* fRandomEngine;  //!
-  
+
+ Pythia8::RndmEngine* fRandomEngine;  //!
+
  protected:
 
   //Bool_t fHadDecay;    //select hadronic decay
@@ -94,20 +93,20 @@ class DPPythia8Generator : public FairGenerator
   Double_t fDPminM;    //Minimum mass, in GeV, for the DP produced in ffbar to DP QCD production.
   Double_t fLmin;      // m minimum  decay position z
   Double_t fLmax;      // m maximum decay position z
-  Int_t fnRetries;     // number of events without any DP 
+  Int_t fnRetries;     // number of events without any DP
   Int_t fnDPtot;       // total number of DP from multiple mesons in single collision
-  Double_t fctau;      // dark photon lifetime 
+  Double_t fctau;      // dark photon lifetime
   Double_t fFDs;       // correction for Pythia6 to match measured Ds production
   Double_t fsmearBeam; // finite beam size
   const char* fextFile; // read charm and beauty hadrons from external file, decay with Pythia
   TFile* fInputFile;   //! pointer to a file
-  TTree* fTree;        //! 
+  TTree* fTree;        //!
   Int_t  fNevents,fn,firstEvent,fShipEventNr;
   Float_t hpx[1], hpy[1], hpz[1], hE[1],hM[1],mpx[1], mpy[1], mpz[1], mE[1],hid[1], mid[1];
   Bool_t fDeepCopy;    // not used
   FairLogger*  fLogger; //!   don't make it persistent, magic ROOT command
 
-  ClassDef(DPPythia8Generator,1);
+  ClassDef(DPPythia8Generator,2);
 };
 
 #endif /* !PNDH8GENERATOR_H */

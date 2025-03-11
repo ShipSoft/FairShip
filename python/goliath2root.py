@@ -10,13 +10,13 @@ import shipRoot_conf
 
 h={}
 # new limits x: -1118.6, 1241.4 (59); y: -411.40, 768.60 (20); z: -2512.7, 2537.3 (101)
-# 
+#
 
 ut.bookHist(h,'Bx','Bx',60,-113.86,126.14,21,-44.09,79.81,102,-253.77,256.27)
 ut.bookHist(h,'By','By',60,-113.86,126.14,21,-44.09,79.81,102,-253.77,256.27)
-ut.bookHist(h,'Bz','Bz',60,-113.86,126.14,21,-44.09,79.81,102,-253.77,256.27) 
-ut.bookHist(h,'Byvsz','By vs z for x=1.4,y=1.6',102,-253.77,256.27) 
-f=open('ExtGoliathFieldMap.txt','r')
+ut.bookHist(h,'Bz','Bz',60,-113.86,126.14,21,-44.09,79.81,102,-253.77,256.27)
+ut.bookHist(h,'Byvsz','By vs z for x=1.4,y=1.6',102,-253.77,256.27)
+f=open('ExtGoliathFieldMap.txt')
 
 i=0
 for line in f:
@@ -27,14 +27,14 @@ for line in f:
   y=float(y)/10.
   z=float(z)/10.
   Bx = Bx
-  By = By  
-  Bz = Bz  
+  By = By
+  Bz = Bz
 
   rc=h['Bx'].Fill(float(x),float(y),float(z),float(Bx))
-  rc=h['By'].Fill(float(x),float(y),float(z),float(By)) 
-  rc=h['Bz'].Fill(float(x),float(y),float(z),float(Bz)) 
-  
+  rc=h['By'].Fill(float(x),float(y),float(z),float(By))
+  rc=h['Bz'].Fill(float(x),float(y),float(z),float(Bz))
+
   if (round(x,2)==0.14) and (round(y,2)==0.16):
-     rc=h['Byvsz'].Fill(float(z),float(By)) 
-  
+     rc=h['Byvsz'].Fill(float(z),float(By))
+
 ut.writeHists(h,"GoliathFieldMap.root")

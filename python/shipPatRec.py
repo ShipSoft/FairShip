@@ -1,12 +1,13 @@
 __author__ = 'Mikhail Hushchyn'
 
 import numpy as np
+import global_variables
 
 # Globals
 ReconstructibleMCTracks = []
 theTracks = []
 
-r_scale = ShipGeo.strawtubes.InnerStrawDiameter / 1.975
+r_scale = global_variables.ShipGeo.strawtubes.InnerStrawDiameter / 1.975
 
 def initialize(fgeo):
     pass
@@ -68,7 +69,7 @@ def template_matching_pattern_recognition(SmearedHits, ShipGeo):
     recognized_tracks = {}
 
     if len(SmearedHits) > 500:
-        print "Too large hits in the event!"
+        print("Too large hits in the event!")
         return recognized_tracks
 
     min_hits = 3
@@ -204,7 +205,7 @@ def fast_hough_transform_pattern_recognition(SmearedHits, ShipGeo):
     recognized_tracks = {}
 
     if len(SmearedHits) > 500:
-        print "Too large hits in the event!"
+        print("Too large hits in the event!")
         return recognized_tracks
 
     min_hits = 3
@@ -465,7 +466,7 @@ def artificial_retina_pattern_recognition(SmearedHits, ShipGeo):
     recognized_tracks = {}
 
     if len(SmearedHits) > 500:
-        print "Too large hits in the event!"
+        print("Too large hits in the event!")
         return recognized_tracks
 
     min_hits = 3
@@ -981,12 +982,12 @@ def hit_in_window(x, y, k_bin, b_bin, window_width=1.):
 
 
 def get_zy_projection(z, xtop, ytop, xbot, ybot, k_y, b_y):
-    
+
     x = k_y * z + b_y
     k = (ytop - ybot) / (xtop - xbot + 10**-6)
     b = ytop - k * xtop
     y = k * x + b
-    
+
     return y
 
 

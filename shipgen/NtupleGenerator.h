@@ -11,20 +11,20 @@ class FairPrimaryGenerator;
 class NtupleGenerator : public FairGenerator
 {
  public:
-  
+
   /** default constructor **/
   NtupleGenerator();
-  
+
   /** destructor **/
   virtual ~NtupleGenerator();
-  
+
   /** public method ReadEvent **/
-  Bool_t ReadEvent(FairPrimaryGenerator*);  
+  Bool_t ReadEvent(FairPrimaryGenerator*);
   virtual Bool_t Init(const char*, int); //!
   virtual Bool_t Init(const char*); //!
   Int_t GetNevents();
  private:
-  
+
  protected:
   Int_t id,Nmeas,volid[500],procid[500],parentid;
   Float_t Ezero,tof;

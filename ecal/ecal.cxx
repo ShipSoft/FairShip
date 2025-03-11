@@ -2,7 +2,7 @@
  *@author Mikhail Prokudin
  **
  ** Defines the active detector ECAL with geometry coded here.
- ** Layers, holes, fibers,steel tapes implemented 
+ ** Layers, holes, fibers,steel tapes implemented
  **/
 
 #include "ecal.h"
@@ -43,7 +43,7 @@ using namespace std;
 #define kN kNumberOfECALSensitiveVolumes
 
 // -----   Default constructor   -------------------------------------------
-ecal::ecal() 
+ecal::ecal()
   : FairDetector("ECAL", kTRUE, kecal),
     fInf(NULL),
     fDebug(NULL),
@@ -215,7 +215,7 @@ ecal::ecal(const char* name, Bool_t active, const char* fileGeo)
 
   fXSize=fInf->GetXSize();
   fYSize=fInf->GetYSize();
-  
+
   fPosIndex=0;
   fDebug="";
 
@@ -230,7 +230,7 @@ ecal::ecal(const char* name, Bool_t active, const char* fileGeo)
   fDX=fInf->GetVariableStrict("xpos");
   fDY=fInf->GetVariableStrict("ypos");
 
-  fInf->AddVariable("ecalversion", "1"); 
+  fInf->AddVariable("ecalversion", "1");
   for(i=kN-1;i>-1;i--)
     fVolArr[i]=-1111;
 
@@ -302,7 +302,7 @@ void ecal::Initialize()
 ecal::~ecal()
 {
   if (fEcalCollection) {
-    fEcalCollection->Delete(); 
+    fEcalCollection->Delete();
     delete fEcalCollection;
     fEcalCollection=NULL;
   }
@@ -401,7 +401,7 @@ Bool_t  ecal::ProcessHits(FairVolume* vol)
       FillWallPoint();
       //cout <<"fill wallpoint "<<vol->getVolumeId()<<" "<<fStructureId<<" "<<fELoss*1e10<<endl;
       ((ShipStack*)gMC->GetStack())->AddPoint(kecal, fTrackID);
-  
+
       ResetParameters();
 
       return kTRUE;
@@ -455,12 +455,12 @@ Bool_t  ecal::ProcessHits(FairVolume* vol)
        return kTRUE;
       cout << "neg id "<<mx<<" "<<my<<" "<<cell<<" "<<gMC->CurrentVolName()<<" "<<gMC->CurrentVolOffName(1)<<" "<<gMC->CurrentVolOffName(2)<<" "<<fELoss<<" "<<fELoss*1e10<<endl;
     }
-/*   
+/*
     Float_t rx; Float_t ry; Int_t ten;
     GetCellCoordInf(id, rx, ry, ten); rx--; ry--;
     type=fInf->GetType(mx, my);
     Float_t d=fInf->GetVariableStrict("modulesize")/type;
-    if (x>rx-0.001&&x<rx+d+0.001&&y>ry-0.001&&y<ry+d+0.001) 
+    if (x>rx-0.001&&x<rx+d+0.001&&y>ry-0.001&&y<ry+d+0.001)
     {
 //      cout << "+++ ";
       ;
@@ -469,7 +469,7 @@ Bool_t  ecal::ProcessHits(FairVolume* vol)
     {
       cout << mx << ", " << my << ", " << cell << endl;
       cout << "--- ";
-      cout << "(" << x << ", " << y << ") : (" << rx << ", " << ry << ")" << endl; 
+      cout << "(" << x << ", " << y << ") : (" << rx << ", " << ry << ")" << endl;
     }
 */
     fVolumeID=id;
@@ -498,14 +498,14 @@ Bool_t  ecal::ProcessHits(FairVolume* vol)
 //    for(i=0;i<8;i++)
 //    {
 //      Int_t t;
-//      
+//
 //      gMC->CurrentVolOffID(i, t);
 //      cout << i << ": " << gMC->CurrentVolOffName(i) << " " << t << "; ";
 //   }
 //    cout << endl;
   }
   ((ShipStack*)gMC->GetStack())->AddPoint(kecal, fTrackID);
-  
+
   ResetParameters();
 
   return kTRUE;
@@ -519,7 +519,7 @@ Int_t ecal::GetVolType(Int_t volnum)
 	for(i=kN-1;i>-1;i--) {
 	  if (fVolArr[i]==volnum) break;
 	}
-        
+
 	return i;
 }
 
@@ -544,7 +544,7 @@ void ecal::FillWallPoint()
   {
     TParticle* part=((ShipStack*)gMC->GetStack())->GetParticle(fTrackID);
     AddHit(fTrackID, fVolumeID, TVector3(fPos.X(),  fPos.Y(),  fPos.Z()),
-	   TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength, 
+	   TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength,
 	   fELoss, part->GetPdgCode());
   }
   fTrackID=gMC->GetStack()->GetCurrentTrackNumber();
@@ -566,7 +566,7 @@ Bool_t ecal::FillLitePoint(Int_t volnum)
   /** Fill MC points inside the ECAL for non-zero deposited energy **/
 
   //Search for input track
-  
+
   static Float_t zmin=fZEcal-0.0001;
   static Float_t zmax=fZEcal+fEcalSize[2];
   static Float_t xecal=fEcalSize[0]/2;
@@ -590,13 +590,13 @@ Bool_t ecal::FillLitePoint(Int_t volnum)
 #endif
   ecalPoint* oldHit;
   ecalPoint* newHit;
-  
+
   if ((oldHit=FindHit(fVolumeID,fTrackID))!=NULL)
     ChangeHit(oldHit);
   else
     // Create ecalPoint for scintillator volumes
     newHit = AddLiteHit(fTrackID, fVolumeID, fTime, fELoss);
-      
+
 
   return kTRUE;
 }
@@ -632,7 +632,7 @@ void ecal::Reset()
 // -------------------------------------------------------------------------
 
 // -----   Public method Print   -------------------------------------------
-void ecal::Print() const 
+void ecal::Print() const
 {
   Int_t nHits = fEcalCollection->GetEntriesFast();
   Int_t nLiteHits;
@@ -657,7 +657,7 @@ void ecal::Print() const
 
 // -----   Public method CopyClones   --------------------------------------
 void ecal::CopyClones(TClonesArray* cl1, TClonesArray* cl2, Int_t offset)
-{   
+{
   Int_t nEntries = cl1->GetEntriesFast();
   Int_t i;
   Int_t index;
@@ -747,7 +747,7 @@ void ecal::ConstructGeometry()
           ConstructModuleSimple(i);
     }
   }
- 
+
   TGeoVolume* vol=new TGeoVolumeAssembly("EcalStructure");
 //To suppress warring
   vol->SetMedium(gGeoManager->GetMedium("SensVacuum"));
@@ -755,7 +755,7 @@ void ecal::ConstructGeometry()
   {
 //    cout << i << "	" << flush;
     volume=ConstructRaw(i);
-    if (volume==NULL) 
+    if (volume==NULL)
     {
 //      cout << endl;
       continue;
@@ -825,19 +825,19 @@ void ecal::BeginEvent()
 
 // -------------------------------------------------------------------------
 
-// -----   Private method AddHit   -----------------------------------------    
-ecalPoint* ecal::AddHit(Int_t trackID, Int_t detID, TVector3 pos,         
-			      TVector3 mom, Double_t time, Double_t length,       
+// -----   Private method AddHit   -----------------------------------------
+ecalPoint* ecal::AddHit(Int_t trackID, Int_t detID, TVector3 pos,
+			      TVector3 mom, Double_t time, Double_t length,
 			      Double_t eLoss, Int_t pdgcode)
 {
   TClonesArray& clref = *fEcalCollection;
   Int_t size = clref.GetEntriesFast();
   return new(clref[size]) ecalPoint(trackID, detID, pos, mom,
                                       time, length, eLoss, pdgcode);
-}                                                                               
+}
 // -------------------------------------------------------------------------
 
-// -----   Private method AddHit   -----------------------------------------    
+// -----   Private method AddHit   -----------------------------------------
 ecalPoint* ecal::AddLiteHit(Int_t trackID, Int_t detID, Double32_t time, Double32_t eLoss)
 {
   TClonesArray& clref = *fLiteCollection;
@@ -846,7 +846,7 @@ ecalPoint* ecal::AddLiteHit(Int_t trackID, Int_t detID, Double32_t time, Double3
 }
 // -------------------------------------------------------------------------
 
-// -----   Private method ConstructModule ----------------------------------    
+// -----   Private method ConstructModule ----------------------------------
 void ecal::ConstructModule(Int_t type)
 {
   if (fModules[type]!=NULL) return;
@@ -901,7 +901,7 @@ void ecal::ConstructModule(Int_t type)
 }
 // -------------------------------------------------------------------------
 
-// -----   Private method ConstructModuleSimple-----------------------------    
+// -----   Private method ConstructModuleSimple-----------------------------
 void ecal::ConstructModuleSimple(Int_t type)
 {
   if (fModules[type]!=NULL) return;
@@ -937,7 +937,7 @@ void ecal::ConstructModuleSimple(Int_t type)
 }
 // -------------------------------------------------------------------------
 
-// -----   Private method ConstructCell ------------------------------------    
+// -----   Private method ConstructCell ------------------------------------
 void ecal::ConstructCell(Int_t type)
 {
   if (fCells[type]!=NULL) return;
@@ -971,7 +971,7 @@ void ecal::ConstructCell(Int_t type)
 }
 // -------------------------------------------------------------------------
 
-// -----   Private method ConstructCellSimple ------------------------------    
+// -----   Private method ConstructCellSimple ------------------------------
 void ecal::ConstructCellSimple(Int_t type)
 {
   if (fCells[type]!=NULL) return;
@@ -1005,7 +1005,7 @@ void ecal::ConstructCellSimple(Int_t type)
 }
 // -------------------------------------------------------------------------
 
-// -----   Private method InitMedium ---------------------------------------    
+// -----   Private method InitMedium ---------------------------------------
 Int_t ecal::InitMedium(const char* name)
 {
   static FairGeoLoader *geoLoad=FairGeoLoader::Instance();
@@ -1028,7 +1028,7 @@ Int_t ecal::InitMedium(const char* name)
 }
 // -------------------------------------------------------------------------
 
-// -----   Private method InitMedia ----------------------------------------    
+// -----   Private method InitMedia ----------------------------------------
 void ecal::InitMedia()
 {
   Info("InitMedia", "Initializing media.");
@@ -1044,7 +1044,7 @@ void ecal::InitMedia()
 }
 // -------------------------------------------------------------------------
 
-// -----   Private method ConstructTile ------------------------------------    
+// -----   Private method ConstructTile ------------------------------------
 void ecal::ConstructTile(Int_t type, Int_t material)
 {
   switch (material)
@@ -1094,7 +1094,7 @@ void ecal::ConstructTile(Int_t type, Int_t material)
       fHoleVol[material]=new TGeoVolume(nm1.Data(), holetube,  gGeoManager->GetMedium("ECALAir"));
     }
     hole=fHoleVol[material];
-    // Fibers in holes 
+    // Fibers in holes
     if (fFiberRad>0)
     {
       if (fFiberVol[material]==NULL)
@@ -1174,7 +1174,7 @@ void ecal::ConstructTile(Int_t type, Int_t material)
   {
     AddSensitiveVolume(tilev);
     edging=new TGeoBBox(fXCell[type]/2.0+fEdging, fYCell[type]/2.0+fEdging, thickness);
-     
+
     edgingv=new TGeoVolume(nm+"_edging", edging, gGeoManager->GetMedium("ECALTileEdging"));
     edgingv->AddNode(tilev, 1);
     fScTiles[cMaxModuleType-1]=tilev;
@@ -1191,7 +1191,7 @@ void ecal::ConstructTile(Int_t type, Int_t material)
 }
 // -------------------------------------------------------------------------
 
-// -----   Private method ConstructTileSimple ------------------------------    
+// -----   Private method ConstructTileSimple ------------------------------
 void ecal::ConstructTileSimple(Int_t type, Int_t material)
 {
   switch (material)
@@ -1319,4 +1319,3 @@ Bool_t ecal::GetCellCoordForPy(Int_t fVolID, TVector3 &all)
   all=TVector3(x,y,inf->GetZPos());
   return kTRUE;
 }
-

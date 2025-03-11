@@ -26,14 +26,14 @@ class Tracklet: public TObject
     Tracklet();
     /** Constructor with arguments **/
     Tracklet(Int_t f, std::vector<unsigned int>  aT);
- 
+
 /** Destructor **/
     virtual ~Tracklet();
 
     std::vector<unsigned int>* getList(){return &aTracklet;}
-    Int_t getType(){return flag;}    
+    Int_t getType(){return flag;}
     void setType(Int_t f){flag=f;}
-    Int_t link2MCTrack(TClonesArray* strawPoints, Float_t min);   // give back MCTrack ID with max matched strawtubesHits 
+    Int_t link2MCTrack(TClonesArray* strawPoints, Float_t min);   // give back MCTrack ID with max matched strawtubesHits
     /*** Output to screen */
     virtual void Print(const Option_t* opt ="") const {;}
 

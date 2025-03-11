@@ -59,7 +59,7 @@ class splitcal: public FairDetector
     void SetNStrips(Int_t nStrips);
 
     void SetStripSize(Double_t stripHalfWidth, Double_t stripHalfLength);
- 
+
     void SetXMax(Double_t xMax);
 
     void SetYMax(Double_t yMax);
@@ -112,12 +112,12 @@ class splitcal: public FairDetector
     Int_t fnECALSamplings, fnHCALSamplings;
     Double_t fActiveHCAL;
     Double_t fZStart;
-    Double_t fEmpty,fBigGap; 
+    Double_t fEmpty,fBigGap;
     Double_t fXMax;
     Double_t fYMax;
     Double_t ffirst_precision_layer, fsecond_precision_layer, fthird_precision_layer, fnum_precision_layers;
     Int_t fNModulesInX, fNModulesInY;
-    Int_t fNStripsPerModule; 
+    Int_t fNStripsPerModule;
     Double_t fStripHalfWidth, fStripHalfLength;
 
     /** container for data points */

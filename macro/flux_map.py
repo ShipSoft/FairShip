@@ -1,11 +1,10 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 import argparse
 import numpy as np
 import ROOT as r
-# Fix https://root-forum.cern.ch/t/pyroot-hijacks-help/15207 :
-r.PyConfig.IgnoreCommandLineOptions = True
 import shipunit as u
 import rootUtils as ut
+import logger as log
 
 
 def main():
@@ -29,64 +28,64 @@ def main():
 
     # Define histograms
     for nplane in range(0, 23):
-        ut.bookHist(h, 'NuTauMu_all_{}'.format(nplane),
+        ut.bookHist(h, f'NuTauMu_all_{nplane}',
                     'Rpc_{};x[cm];y[cm]'.format(
                         nplane), 100, -300, +300, 100, -300,
                     300)
-        ut.bookHist(h, 'NuTauMu_mu_{}'.format(nplane),
+        ut.bookHist(h, f'NuTauMu_mu_{nplane}',
                     'Rpc_{};x[cm];y[cm]'.format(
                         nplane), 100, -300, +300, 100, -300,
                     300)
     for suffix, title in [('mu', '#mu#pm hits'), ('all', 'All hits')]:
-        ut.bookHist(h, 'muon_tiles_{}'.format(suffix),
-                    '{};x[cm];y[cm]'.format(title), 200, -1000, +1000, 90,
+        ut.bookHist(h, f'muon_tiles_{suffix}',
+                    f'{title};x[cm];y[cm]', 200, -1000, +1000, 90,
                     -900, 900)
-        ut.bookHist(h, 'muon_bars_x_{}'.format(suffix),
-                    '{};x[cm];y[cm]'.format(title), 2, -300, +300, 240, -600,
+        ut.bookHist(h, f'muon_bars_x_{suffix}',
+                    f'{title};x[cm];y[cm]', 2, -300, +300, 240, -600,
                     600)
-        ut.bookHist(h, 'muon_bars_y_{}'.format(suffix),
-                    '{};x[cm];y[cm]'.format(title), 120, -300, +300, 4, -600,
+        ut.bookHist(h, f'muon_bars_y_{suffix}',
+                    f'{title};x[cm];y[cm]', 120, -300, +300, 4, -600,
                     600)
-        ut.bookHist(h, 'timing_{}'.format(suffix),
-                    '{};x[cm];y[cm]'.format(title), 3, -252, +252, 167, -501,
+        ut.bookHist(h, f'timing_{suffix}',
+                    f'{title};x[cm];y[cm]', 3, -252, +252, 167, -501,
                     501)
-        ut.bookHist(h, 'TargetTracker_{}'.format(suffix),
-                    '{};x[cm];y[cm]'.format(title), 120, -60, 60, 120, -60,
+        ut.bookHist(h, f'TargetTracker_{suffix}',
+                    f'{title};x[cm];y[cm]', 120, -60, 60, 120, -60,
                     60)
-        ut.bookHist(h, 'TargetTracker_yvsz_{}'.format(suffix),
+        ut.bookHist(h, f'TargetTracker_yvsz_{suffix}',
                     '{};z[cm];y[cm]'.format(
                         title), 400, -3300, -2900, 120, -60,
                     60)
-        ut.bookHist(h, 'TargetTracker_xvsz_{}'.format(suffix),
+        ut.bookHist(h, f'TargetTracker_xvsz_{suffix}',
                     '{};z[cm];x[cm]'.format(
                         title), 400, -3300, -2900, 120, -60,
                     60)
-        ut.bookHist(h, 'NuTauMu_{}'.format(suffix),
-                    '{};x[cm];y[cm]'.format(title), 100, -300, +300, 100, -300,
+        ut.bookHist(h, f'NuTauMu_{suffix}',
+                    f'{title};x[cm];y[cm]', 100, -300, +300, 100, -300,
                     300)
-        ut.bookHist(h, 'NuTauMu_yvsz_{}'.format(suffix),
+        ut.bookHist(h, f'NuTauMu_yvsz_{suffix}',
                     '{};z[cm];y[cm]'.format(
                         title), 200, -2680, -2480, 600, -300,
                     300)
-        ut.bookHist(h, 'NuTauMu_xvsz_{}'.format(suffix),
+        ut.bookHist(h, f'NuTauMu_xvsz_{suffix}',
                     '{};z[cm];x[cm]'.format(
                         title), 200, -2680, -2480, 600, -300,
                     300)
-        ut.bookHist(h, 'ECAL_TP_{}'.format(suffix),
-                    '{};x[cm];y[cm]'.format(title), 167, -501, +501, 334,
+        ut.bookHist(h, f'ECAL_TP_{suffix}',
+                    f'{title};x[cm];y[cm]', 167, -501, +501, 334,
                     -1002, 1002)
-        ut.bookHist(h, 'ECAL_Alt_{}'.format(suffix),
-                    '{};x[cm];y[cm]'.format(title), 50, -500, +500, 100, -1000,
+        ut.bookHist(h, f'ECAL_Alt_{suffix}',
+                    f'{title};x[cm];y[cm]', 50, -500, +500, 100, -1000,
                     1000)
-        ut.bookHist(h, 'SBT_Liquid_{}'.format(suffix),
-                    '{};z[cm];#phi'.format(title), 100, -3000, +3000, 100,
+        ut.bookHist(h, f'SBT_Liquid_{suffix}',
+                    f'{title};z[cm];#phi', 100, -3000, +3000, 100,
                     -r.TMath.Pi(), r.TMath.Pi())
-        ut.bookHist(h, 'SBT_Plastic_{}'.format(suffix),
-                    '{};z[cm];#phi'.format(title), 100, -3000, +3000, 100,
+        ut.bookHist(h, f'SBT_Plastic_{suffix}',
+                    f'{title};z[cm];#phi', 100, -3000, +3000, 100,
                     -r.TMath.Pi(), r.TMath.Pi())
         for station in range(1, 5):
-            ut.bookHist(h, 'T{}_{}'.format(station, suffix),
-                        '{};x[cm];y[cm]'.format(title), 10, -250, +250, 20,
+            ut.bookHist(h, f'T{station}_{suffix}',
+                        f'{title};x[cm];y[cm]', 10, -250, +250, 20,
                         -500, 500)
 
     ut.bookHist(h, 'NuTauMu_mu_p', '#mu#pm;p[GeV];', 100, 0, maxp)
@@ -101,10 +100,10 @@ def main():
                 100, 0, maxp, 100, 0, maxpt)
 
     for suffix in ['', '_original']:
-        ut.bookHist(h, 'mu_p{}'.format(suffix), '#mu#pm;p[GeV];', 100, 0, maxp)
-        ut.bookHist(h, 'mu_pt{}'.format(suffix), '#mu#pm;p_t[GeV];', 100, 0,
+        ut.bookHist(h, f'mu_p{suffix}', '#mu#pm;p[GeV];', 100, 0, maxp)
+        ut.bookHist(h, f'mu_pt{suffix}', '#mu#pm;p_t[GeV];', 100, 0,
                     maxpt)
-        ut.bookHist(h, 'mu_ppt{}'.format(suffix), '#mu#pm;p[GeV];p_t[GeV];',
+        ut.bookHist(h, f'mu_ppt{suffix}', '#mu#pm;p[GeV];p_t[GeV];',
                     100, 0, maxp, 100, 0, maxpt)
     ut.bookHist(h, 'ECAL_TP_e', 'e#pm with E#geq 250 MeV;x[cm];y[cm]', 167,
                 -501, +501, 334, -1002, 1002)
@@ -119,11 +118,11 @@ def main():
     ch = r.TChain('cbmsim')
     ch.Add(args.inputfile)
     n = ch.GetEntries()
-    print n
+    log.info(n)
     i = 0
     for event in ch:
         if i % 10000 == 0:
-            print '{}/{}'.format(i, n)
+            log.info(f'{i}/{n}')
         i += 1
         muon = False
         for hit in event.strawtubesPoint:
@@ -144,12 +143,12 @@ def main():
                 pid = hit.PdgCode()
                 assert pid not in [12, -12, 14, -14, 16, -16]
                 detector_ID = hit.GetDetectorID()
-                station = detector_ID / 10000000
-                h['T{}_all'.format(station)].Fill(x, y, weight)
+                station = detector_ID // 10000000
+                h[f'T{station}_all'].Fill(x, y, weight)
                 if abs(pid) == 13:
                     muon = True
                     muonid = trid
-                    h['T{}_mu'.format(station)].Fill(x, y, weight)
+                    h[f'T{station}_mu'].Fill(x, y, weight)
                     h['mu_p'].Fill(P, weight)
                     h['mu_pt'].Fill(pt, weight)
                     h['mu_ppt'].Fill(P, pt, weight)
@@ -243,7 +242,7 @@ def main():
                 assert pid not in [12, -12, 14, -14, 16, -16]
                 h['NuTauMu_all'].Fill(x, y, weight)
                 if nplane >= 0:
-                    h['NuTauMu_all_{}'.format(nplane)].Fill(x, y, weight)
+                    h[f'NuTauMu_all_{nplane}'].Fill(x, y, weight)
                 h['NuTauMu_xvsz_all'].Fill(z, x, weight)
                 h['NuTauMu_yvsz_all'].Fill(z, y, weight)
                 if detID == 10000:
@@ -259,7 +258,7 @@ def main():
                     h['NuTauMu_mu'].Fill(x, y, weight)
                     if nplane >= 0:
                         # fill the histogram corresponding to nplane
-                        h['NuTauMu_mu_{}'.format(nplane)].Fill(x, y, weight)
+                        h[f'NuTauMu_mu_{nplane}'].Fill(x, y, weight)
                     if detID == 10000:
                         h['NuTauMu_mu_p'].Fill(P, weight)
                         h['NuTauMu_mu_pt'].Fill(pt, weight)
@@ -358,7 +357,7 @@ def main():
                         h['mu_ppt'].Fill(P, pt, weight)
                         h['SBT_Plastic_mu'].Fill(z, phi, weight)
                     continue
-                print 'Unidentified vetoPoint.'
+                log.warn('Unidentified vetoPoint.')
         if muon:
             original_muon = event.MCTrack[muonid]
             weight = original_muon.GetWeight()
@@ -368,7 +367,7 @@ def main():
                                       original_muon.GetPt(), weight)
             # NOTE: muons are counted several times if they create several hits
             #       But the original muon is only counted once.
-    print 'Event loop done'
+    log.info('Event loop done')
     for key in h:
         classname = h[key].Class().GetName()
         if 'TH' in classname or 'TP' in classname:

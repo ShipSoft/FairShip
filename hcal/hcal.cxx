@@ -2,7 +2,7 @@
  *@author Mikhail Prokudin
  **
  ** Defines the active detector ECAL with geometry coded here.
- ** Layers, holes, fibers,steel tapes implemented 
+ ** Layers, holes, fibers,steel tapes implemented
  **/
 
 #include "hcal.h"
@@ -42,7 +42,7 @@ using namespace std;
 #define kN kNumberOfHCALSensitiveVolumes
 
 // -----   Default constructor   -------------------------------------------
-hcal::hcal() 
+hcal::hcal()
   : FairDetector("HCAL", kTRUE, khcal),
     fInf(NULL),
     fDebug(NULL),
@@ -168,7 +168,7 @@ hcal::hcal(const char* name, Bool_t active, const char* fileGeo)
     fHolePos(),
     fModules(0),
     fRawNumber(),
-    fStructureId(0)  
+    fStructureId(0)
 {
   /** hcal constructor:
    ** reads geometry parameters from the ascii file <fileGeo>,
@@ -201,7 +201,7 @@ hcal::hcal(const char* name, Bool_t active, const char* fileGeo)
 
   fXSize=fInf->GetXSize();
   fYSize=fInf->GetYSize();
-  
+
   fPosIndex=0;
   fDebug="";
 
@@ -273,7 +273,7 @@ void hcal::Initialize()
 hcal::~hcal()
 {
   if (fHcalCollection) {
-    fHcalCollection->Delete(); 
+    fHcalCollection->Delete();
     delete fHcalCollection;
     fHcalCollection=NULL;
   }
@@ -362,7 +362,7 @@ Bool_t  hcal::ProcessHits(FairVolume* vol)
     if (gMC->IsTrackEntering()) {
       FillWallPoint();
       ((ShipStack*)gMC->GetStack())->AddPoint(khcal, fTrackID);
-  
+
       ResetParameters();
 
       return kTRUE;
@@ -413,12 +413,12 @@ Bool_t  hcal::ProcessHits(FairVolume* vol)
     Int_t id=(my*100+mx)*10;
     if (layer>fNLayers1) id++;
 //    cout << mx << "(" << x << "), " << my << "(" << y << "), layer="<< layer << endl;
-/*   
+/*
     Float_t rx; Float_t ry; Int_t ten;
     GetCellCoordInf(id, rx, ry, ten); rx--; ry--;
     type=fInf->GetType(mx, my);
     Float_t d=fInf->GetVariableStrict("modulesize")/type;
-    if (x>rx-0.001&&x<rx+d+0.001&&y>ry-0.001&&y<ry+d+0.001) 
+    if (x>rx-0.001&&x<rx+d+0.001&&y>ry-0.001&&y<ry+d+0.001)
     {
 //      cout << "+++ ";
       ;
@@ -427,7 +427,7 @@ Bool_t  hcal::ProcessHits(FairVolume* vol)
     {
       cout << mx << ", " << my << ", " << cell << endl;
       cout << "--- ";
-      cout << "(" << x << ", " << y << ") : (" << rx << ", " << ry << ")" << endl; 
+      cout << "(" << x << ", " << y << ") : (" << rx << ", " << ry << ")" << endl;
     }
 */
     fVolumeID=id;
@@ -454,14 +454,14 @@ Bool_t  hcal::ProcessHits(FairVolume* vol)
 //    for(i=0;i<8;i++)
 //    {
 //      Int_t t;
-//      
+//
 //      gMC->CurrentVolOffID(i, t);
 //      cout << i << ": " << gMC->CurrentVolOffName(i) << " " << t << "; ";
 //   }
 //    cout << endl;
   }
   ((ShipStack*)gMC->GetStack())->AddPoint(khcal, fTrackID);
-  
+
   ResetParameters();
 
   return kTRUE;
@@ -475,7 +475,7 @@ Int_t hcal::GetVolType(Int_t volnum)
 	for(i=kN-1;i>-1;i--) {
 	  if (fVolArr[i]==volnum) break;
 	}
-        
+
 	return i;
 }
 
@@ -500,7 +500,7 @@ void hcal::FillWallPoint()
   {
     TParticle* part=((ShipStack*)gMC->GetStack())->GetParticle(fTrackID);
     AddHit(fTrackID, fVolumeID, TVector3(fPos.X(),  fPos.Y(),  fPos.Z()),
-	   TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength, 
+	   TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength,
 	   fELoss, part->GetPdgCode());
   }
   fTrackID=gMC->GetStack()->GetCurrentTrackNumber();
@@ -522,7 +522,7 @@ Bool_t hcal::FillLitePoint(Int_t volnum)
   /** Fill MC points inside the ECAL for non-zero deposited energy **/
 
   //Search for input track
-  
+
   static Float_t zmin=fZHcal-0.0001;
   static Float_t zmax=fZHcal+fHcalSize[2];
   static Float_t xhcal=fHcalSize[0]/2;
@@ -546,13 +546,13 @@ Bool_t hcal::FillLitePoint(Int_t volnum)
 #endif
   hcalPoint* oldHit;
   hcalPoint* newHit;
-  
+
   if ((oldHit=FindHit(fVolumeID,fTrackID))!=NULL)
     ChangeHit(oldHit);
   else
     // Create hcalPoint for scintillator volumes
     newHit = AddLiteHit(fTrackID, fVolumeID, fTime, fELoss);
-      
+
 
   return kTRUE;
 }
@@ -588,7 +588,7 @@ void hcal::Reset()
 // -------------------------------------------------------------------------
 
 // -----   Public method Print   -------------------------------------------
-void hcal::Print() const 
+void hcal::Print() const
 {
   Int_t nHits = fHcalCollection->GetEntriesFast();
   Int_t nLiteHits;
@@ -613,7 +613,7 @@ void hcal::Print() const
 
 // -----   Public method CopyClones   --------------------------------------
 void hcal::CopyClones(TClonesArray* cl1, TClonesArray* cl2, Int_t offset)
-{   
+{
   Int_t nEntries = cl1->GetEntriesFast();
   Int_t i;
   Int_t index;
@@ -719,7 +719,7 @@ void hcal::ConstructGeometry()
     for(i=0;i<fYSize;i++)
     {
       volume=ConstructRaw(i);
-      if (volume==NULL) 
+      if (volume==NULL)
       {
         continue;
       }
@@ -787,19 +787,19 @@ void hcal::BeginEvent()
 
 // -------------------------------------------------------------------------
 
-// -----   Private method AddHit   -----------------------------------------    
-hcalPoint* hcal::AddHit(Int_t trackID, Int_t detID, TVector3 pos,         
-			      TVector3 mom, Double_t time, Double_t length,       
+// -----   Private method AddHit   -----------------------------------------
+hcalPoint* hcal::AddHit(Int_t trackID, Int_t detID, TVector3 pos,
+			      TVector3 mom, Double_t time, Double_t length,
 			      Double_t eLoss, Int_t pdgcode)
 {
   TClonesArray& clref = *fHcalCollection;
   Int_t size = clref.GetEntriesFast();
   return new(clref[size]) hcalPoint(trackID, detID, pos, mom,
                                       time, length, eLoss, pdgcode);
-}                                                                               
+}
 // -------------------------------------------------------------------------
 
-// -----   Private method AddHit   -----------------------------------------    
+// -----   Private method AddHit   -----------------------------------------
 hcalPoint* hcal::AddLiteHit(Int_t trackID, Int_t detID, Double32_t time, Double32_t eLoss)
 {
   TClonesArray& clref = *fLiteCollection;
@@ -808,7 +808,7 @@ hcalPoint* hcal::AddLiteHit(Int_t trackID, Int_t detID, Double32_t time, Double3
 }
 // -------------------------------------------------------------------------
 
-// -----   Private method ConstructModule ----------------------------------    
+// -----   Private method ConstructModule ----------------------------------
 void hcal::ConstructModule()
 {
   if (fModule!=NULL) return;
@@ -873,7 +873,7 @@ void hcal::ConstructModule()
 }
 // -------------------------------------------------------------------------
 
-// -----   Private method ConstructModuleSimple-----------------------------    
+// -----   Private method ConstructModuleSimple-----------------------------
 void hcal::ConstructModuleSimple()
 {
   if (fModule!=NULL) return;
@@ -911,13 +911,13 @@ void hcal::ConstructModuleSimple()
       gGeoManager->Node(tyvek.Data(), 2*i+2, nm.Data(), 0.0, 0.0, -thickness*fNLayers/2.0+fThicknessScin+i*thickness+0.5*fThicknessTyvk, 0, kTRUE, buf, 0);
     }
   }
-  
+
   fModuleLength=moduleth;
   fModule=modulev;
 }
 // -------------------------------------------------------------------------
 
-// -----   Private method InitMedium ---------------------------------------    
+// -----   Private method InitMedium ---------------------------------------
 Int_t hcal::InitMedium(const char* name)
 {
   static FairGeoLoader *geoLoad=FairGeoLoader::Instance();
@@ -940,7 +940,7 @@ Int_t hcal::InitMedium(const char* name)
 }
 // -------------------------------------------------------------------------
 
-// -----   Private method InitMedia ----------------------------------------    
+// -----   Private method InitMedia ----------------------------------------
 void hcal::InitMedia()
 {
   Info("InitMedia", "Initializing media.");
@@ -956,7 +956,7 @@ void hcal::InitMedia()
 }
 // -------------------------------------------------------------------------
 
-// -----   Private method ConstructTile ------------------------------------    
+// -----   Private method ConstructTile ------------------------------------
 void hcal::ConstructTile(Int_t material)
 {
   switch (material)
@@ -1006,7 +1006,7 @@ void hcal::ConstructTile(Int_t material)
       fHoleVol[material]=new TGeoVolume(nm1.Data(), holetube,  gGeoManager->GetMedium("ECALAir"));
     }
     hole=fHoleVol[material];
-    // Fibers in holes 
+    // Fibers in holes
     if (fFiberRad>0)
     {
       if (fFiberVol[material]==NULL)
@@ -1085,7 +1085,7 @@ void hcal::ConstructTile(Int_t material)
   {
     AddSensitiveVolume(tilev);
     edging=new TGeoBBox(fXCell/2.0+fEdging, fYCell/2.0+fEdging, thickness);
-     
+
     edgingv=new TGeoVolume(nm+"_edging", edging, gGeoManager->GetMedium("ECALTileEdging"));
     edgingv->AddNode(tilev, 1);
     fScTile=tilev;
@@ -1102,7 +1102,7 @@ void hcal::ConstructTile(Int_t material)
 }
 // -------------------------------------------------------------------------
 
-// -----   Private method ConstructTileSimple ------------------------------    
+// -----   Private method ConstructTileSimple ------------------------------
 void hcal::ConstructTileSimple(Int_t material)
 {
   switch (material)
@@ -1204,5 +1204,3 @@ Bool_t hcal::GetCellCoord(Int_t fVolID, Float_t &x, Float_t &y, Int_t& section)
 {
   return GetCellCoordInf(fVolID, x, y, section);
 }
-
-

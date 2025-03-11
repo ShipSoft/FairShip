@@ -26,12 +26,12 @@ dTree = ROOT.TNtuple("pythia8-Geant4","muons for EM studies","id:px:py:pz:x:y:z:
 fin = ROOT.TFile(muonIn) # id:px:py:pz:x:y:z:w
 sTree = fin.muons
 
-for k in range(sTree.GetEntries()): 
+for k in range(sTree.GetEntries()):
   rc = sTree.GetEvent(k)
   # make n events / muon
   px,py,pz = sTree.px,sTree.py,sTree.pz
   x,y,z    = sTree.x,sTree.y,sTree.z
-  pid,w = sTree.id,sTree.w 
+  pid,w = sTree.id,sTree.w
   p = ROOT.TMath.Sqrt(px*px+py*py+pz*pz)
   E = ROOT.TMath.Sqrt(getMasssq(pid)+p*p)
   mu = array('d',[pid,px,py,pz,E,x,y,z,w])
@@ -46,6 +46,6 @@ for k in range(sTree.GetEntries()):
      nPart = dPart.GetEntries()
      dPart[nPart] = part
      dTree.Fill()
-fout.cd()  
+fout.cd()
 dTree.Write()
-print "created",sTree.GetEntries()*nMult," events"
+print("created",sTree.GetEntries()*nMult," events")

@@ -7,6 +7,8 @@ ${CMAKE_SOURCE_DIR}/shipgen
 ${CMAKE_SOURCE_DIR}/generators
 ${CMAKE_SOURCE_DIR}/shipdata
 ${CMAKE_SOURCE_DIR}/veto
+${genfit2_INCDIR}
+${TPYTHIA6_INCLUDE_DIR}
 )
 
 set(SYSTEM_INCLUDE_DIRECTORIES
@@ -16,10 +18,9 @@ ${PYTHIA8_INCLUDE_DIR}/..
 ${HEPMC_INCLUDE_DIR}
 ${EVTGEN_INCLUDE_DIR}
 ${EVTGEN_INCLUDE_DIR}/..
-${SIMPATH}/include
 )
 
-include_directories(${INCLUDE_DIRECTORIES})
+include_directories(${INCLUDE_DIRECTORIES} ${VMC_INCLUDE_DIRS} ${FAIRROOT_INCLUDE_DIR})
 include_directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
 
 set(LINK_DIRECTORIES
@@ -27,6 +28,7 @@ ${ROOT_LIBRARY_DIR}
 ${FAIRROOT_LIBRARY_DIR}
 ${PYTHIA8_LIBRARY_DIR}
 ${EVTGEN_LIBRARY_DIR}
+${genfit2_LIBDIR}
 ${SIMPATH}/lib
 )
 
@@ -45,11 +47,12 @@ MuonBackGenerator.cxx
 CosmicsGenerator.cxx
 MuDISGenerator.cxx
 FixedTargetGenerator.cxx
+EvtCalcGenerator.cxx
 )
 
 set(LINKDEF GenLinkDef.h)
 set(LIBRARY_NAME ShipGen)
 
-set(DEPENDENCIES Base ShipData EvtGen EvtGenExternal)
+set(DEPENDENCIES Base ShipData EvtGen EvtGenExternal FairLogger::FairLogger)
 
 GENERATE_LIBRARY()

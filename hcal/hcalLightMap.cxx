@@ -10,7 +10,7 @@
 
 using namespace std;
 
-hcalLightMap::hcalLightMap(const char* fname, const char* title) 
+hcalLightMap::hcalLightMap(const char* fname, const char* title)
   : TNamed(fname, title),
     fSSide(-1111.), fS(-1111), fSize(0), fData(NULL)
 {
@@ -144,5 +144,3 @@ void hcalLightMap::Normalize()
     if (fData[i]>0)
       fData[i]/=v;
 }
-
-ClassImp(hcalLightMap)
