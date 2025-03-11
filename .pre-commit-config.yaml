@@ -8,6 +8,7 @@ repos:
     exclude: .dat
   - id: end-of-file-fixer
   - id: check-yaml
+  - id: check-toml
   - id: check-added-large-files
   - id: check-ast
   - id: check-merge-conflict
