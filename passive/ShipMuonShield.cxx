@@ -27,7 +27,7 @@ ShipMuonShield::~ShipMuonShield() {}
 ShipMuonShield::ShipMuonShield() : FairModule("ShipMuonShield", "") {}
 
 ShipMuonShield::ShipMuonShield(std::vector<double> in_params,
-Double_t floor, const Bool_t WithConstShieldField,  const Bool_t SC_key)
+Double_t floor, Double_t z, const Bool_t WithConstShieldField,  const Bool_t SC_key)
   : FairModule("MuonShield", "ShipMuonShield")
 {
   for(size_t i = 0; i < in_params.size(); i++){
@@ -49,9 +49,7 @@ Double_t floor, const Bool_t WithConstShieldField,  const Bool_t SC_key)
 
   fFloor = floor;
 
-  Double_t Z = -25 * m - fMuonShieldLength / 2.;
-
-  zEndOfAbsorb = Z + - fMuonShieldLength / 2.;
+  zEndOfAbsorb = z - fMuonShieldLength / 2.;
 }
 
 // -----   Private method InitMedium
@@ -362,7 +360,7 @@ void ShipMuonShield::ConstructGeometry()
       Double_t zgap = 10 * cm;
       Double_t absorber_offset = zgap;
       Double_t absorber_half_length = (dZf[0]);
-      Double_t z_transition = zEndOfAbsorb + 2 * absorber_half_length + absorber_offset + 14 * cm + TCC8_trench_length;
+      Double_t z_transition = zEndOfAbsorb + 2 * absorber_half_length + absorber_offset + 248 * cm + TCC8_trench_length;
       auto *rock = new TGeoBBox("rock", 20 * m, 20 * m, TCC8_length / 2. + ECN3_length / 2. + 5 * m);
       auto *muon_shield_cavern = new TGeoBBox("muon_shield_cavern", 4.995 * m, 3.75 * m, TCC8_length / 2.);
       auto *TCC8_shift = new TGeoTranslation("TCC8_shift", 1.435 * m, 2.05 * m, - TCC8_length / 2.);
@@ -378,7 +376,7 @@ void ShipMuonShield::ConstructGeometry()
       ECN3_shift->RegisterYourself();
 
       auto *yoke_pit = new TGeoBBox("yoke_pit", 3.5 * m, 4.3 * m + 1 * cm, 2.5 * m);
-      auto *yoke_pit_shift = new TGeoTranslation("yoke_pit_shift", 0 * m, 0 * m, 31 * m - z_transition);
+      auto* yoke_pit_shift = new TGeoTranslation("yoke_pit_shift", 0 * m, 0 * m, 89.57 * m - z_transition);
       yoke_pit_shift->RegisterYourself();
 
       auto *target_pit = new TGeoBBox("target_pit", 2 * m, 0.5 * m, 2 * m);
