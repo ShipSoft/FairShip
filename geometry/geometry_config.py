@@ -106,7 +106,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.tankDesign = tankDesign
     c.magnetDesign = magnet_design
 # cave parameters
-    c.cave = AttrDict()
+    c.cave = AttrDict(z=0*u.cm)
     c.cave.floorHeightMuonShield = 5*u.m
     c.cave.floorHeightTankA = 4.2*u.m
     if strawDesign == 10:
@@ -192,13 +192,9 @@ with ConfigRegistry.register_config("basic") as c:
      zset = -4666. * u.cm - magnetIncrease - extraVesselLength
      c.Chamber1 = AttrDict(z=zset)
      zset = -2628. * u.cm - magnetIncrease - extraVesselLength / 2.
-     c.Chamber2 = AttrDict(z=zset)
      zset = -740. * u.cm - magnetIncrease
-     c.Chamber3 = AttrDict(z=zset)
      zset = -420. * u.cm - magnetIncrease / 2.
-     c.Chamber4 = AttrDict(z=zset)
      zset = -100. * u.cm
-     c.Chamber5 = AttrDict(z=zset)
      zset = 30. * u.cm + windowBulge / 2.
      c.Chamber6 = AttrDict(z=zset)
 
