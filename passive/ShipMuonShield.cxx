@@ -65,6 +65,7 @@ ShipMuonShield::ShipMuonShield(TString geofile,
 
 ShipMuonShield::ShipMuonShield(TVectorT<Double_t> in_params,
                                Double_t floor,
+                               Double_t z0,
                                Int_t withCoMagnet,
                                Bool_t StepGeo,
                                Bool_t WithConstAbsorberField,
