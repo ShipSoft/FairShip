@@ -94,9 +94,7 @@ with ConfigRegistry.register_config("basic") as c:
 
     # global targetOpt, strawDesign, Yheight
     c.Yheight = Yheight*u.m
-    # decision by the SP
-    totalLength       = 60 * u.m
-    extraVesselLength = totalLength - 50*u.m
+    extraVesselLength = 10 * u.m
     windowBulge = 1*u.m
     if tankDesign > 5: windowBulge = 25*u.cm
 #
@@ -127,7 +125,6 @@ with ConfigRegistry.register_config("basic") as c:
      print("this design ",strawDesign," is not supported, use strawDesign = 4 or 10")
      1/0
     else:
-     c.chambers.Length = totalLength
      c.chambers.Tub1length = 2.5 * u.m
      c.chambers.Tub2length = 17.68*u.m+extraVesselLength/2.
      c.chambers.Tub3length = 0.8*u.m
