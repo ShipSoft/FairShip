@@ -98,7 +98,7 @@ with ConfigRegistry.register_config("basic") as c:
     magnetIncrease    = 100.*u.cm
     # make z coordinates for the decay volume and tracking stations relative to T4z
     # eventually, the only parameter which needs to be changed when the active shielding length changes.
-    z4=2438.*u.cm+magnetIncrease+extraVesselLength
+    z4= c.decayVolume.z + 2438. * u.cm + magnetIncrease + extraVesselLength
     if strawDesign != 4 and strawDesign != 10:
      print("this design ",strawDesign," is not supported, use strawDesign = 4 or 10")
      1/0
