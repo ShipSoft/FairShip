@@ -115,13 +115,9 @@ with ConfigRegistry.register_config("basic") as c:
      zset=z4-4666.*u.cm-magnetIncrease-extraVesselLength
      c.Chamber1 = AttrDict(z=zset)
      zset=z4-2628.*u.cm-magnetIncrease-extraVesselLength/2.
-     c.Chamber2 = AttrDict(z=zset)
      zset=z4-740.*u.cm-magnetIncrease
-     c.Chamber3 = AttrDict(z=zset)
      zset=z4-420.*u.cm-magnetIncrease/2.
-     c.Chamber4 = AttrDict(z=zset)
      zset=z4-100.*u.cm
-     c.Chamber5 = AttrDict(z=zset)
      zset=z4+30.*u.cm+windowBulge/2.
      c.Chamber6 = AttrDict(z=zset)
 
