@@ -122,7 +122,7 @@ with ConfigRegistry.register_config("basic") as c:
     magnetIncrease    = 100.*u.cm
     # make z coordinates for the decay volume and tracking stations relative to T4z
     # eventually, the only parameter which needs to be changed when the active shielding lenght changes.
-    c.z = 31.450 * u.m  # Relative position of spectrometer magnet to decay vessel centre
+    c.z = 31.450 * u.m + c.decayVolume.z # Relative position of spectrometer magnet to decay vessel centre
     if strawDesign != 4 and strawDesign != 10:
      print("this design ",strawDesign," is not supported, use strawDesign = 4 or 10")
      1/0
@@ -215,7 +215,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.TimeDet.DZ = (c.TimeDet.dzBarRow + c.TimeDet.dzBarCol + c.TimeDet.zBar) / 2
     c.TimeDet.DX = 225 * u.cm
     c.TimeDet.DY = 325 * u.cm
-    c.TimeDet.z = 37.800 * u.m - c.TimeDet.dzBarRow * 3 / 2  # Relative position of first layer of timing detector to decay vessel centre
+    c.TimeDet.z = 37.800 * u.m - c.TimeDet.dzBarRow * 3 / 2 + c.decayVolume.z # Relative position of first layer of timing detector to decay vessel centre
 
     if CaloDesign==0:
      c.HcalOption = 1
@@ -233,7 +233,7 @@ with ConfigRegistry.register_config("basic") as c:
      1/0
 
     c.SplitCal = AttrDict(z=0)
-    c.SplitCal.ZStart = 38.450 * u.m  # Relative start z of split cal to decay vessel centre
+    c.SplitCal.ZStart = 38.450 * u.m + c.decayVolume.z # Relative start z of split cal to decay vessel centre
     c.SplitCal.XMax = 4 * u.m / 2  # half length
     c.SplitCal.YMax = 6 * u.m / 2  # half length
     c.SplitCal.Empty = 0*u.cm
@@ -263,13 +263,13 @@ with ConfigRegistry.register_config("basic") as c:
     c.SplitCal.StripHalfLength = c.SplitCal.YMax / c.SplitCal.NModulesInY
     c.SplitCal.SplitCalThickness=(c.SplitCal.FilterECALThickness_first-c.SplitCal.FilterECALThickness)+(c.SplitCal.FilterECALThickness+c.SplitCal.ActiveECALThickness)*c.SplitCal.nECALSamplings+c.SplitCal.BigGap
 
-    zecal = 38.450 * u.m  # Relative start z of ECAL to decay vessel centre
+    zecal = 38.450 * u.m + c.decayVolume.z # Relative start z of ECAL to decay vessel centre
     c.ecal = AttrDict(z=zecal)
     c.ecal.File = EcalGeoFile
     hcalThickness = 232*u.cm
     if  c.HcalOption == 2: hcalThickness = 110*u.cm  # to have same interaction length as before
     if not c.HcalOption < 0:
-     zhcal = 40.850 * u.m  # Relative position of HCAL to decay vessel centre
+     zhcal = 40.850 * u.m + c.decayVolume.z # Relative position of HCAL to decay vessel centre
      c.hcal = AttrDict(z=zhcal)
      c.hcal.hcalSpace = hcalThickness + 5.5*u.cm
      c.hcal.File  =  HcalGeoFile
@@ -327,11 +327,12 @@ with ConfigRegistry.register_config("basic") as c:
             c.muShield.dZ5 + c.muShield.dZ6 +
             c.muShield.dZ7
     ) + c.muShield.LE
-    c.muShield.z = -(c.decayVolume.length + c.muShield.length) / 2.
+    c.decayVolume.z = c.muShield.z + c.decayVolume.length / 2. + c.muShield.length / 2.
+    c.decayVolume.z0 = c.decayVolume.z - c.decayVolume.length / 2.
 
     c.hadronAbsorber              =  AttrDict(z=0*u.cm)
     c.hadronAbsorber.length =     0*u.m # magnetized, counted inside muonshield
-    c.hadronAbsorber.z     =  c.muShield.z - c.muShield.length/2. - c.hadronAbsorber.length/2.
+    c.muShield.z = c.hadronAbsorber.z + c.muShield.length / 2. + c.hadronAbsorber.length / 2.
 
     c.hadronAbsorber.WithConstField = shield_db[shieldName]['WithConstField'] # TO BE CHECKED: NOT SURE IT IS NEEDED
     c.muShield.WithConstField = shield_db[shieldName]['WithConstField']
@@ -346,9 +347,9 @@ with ConfigRegistry.register_config("basic") as c:
     c.target.length = target_length
     # interaction point, start of target
 
-    # FIXME: Redundant after change to new coordinate system
-    c.target.z = c.hadronAbsorber.z - c.hadronAbsorber.length / 2. - c.target.length / 2.
-    c.target.z0 = c.target.z - c.target.length / 2.
+    c.target.z0 = 0  # Origin of SHiP coordinate system
+    c.target.z = c.target.z0 + c.target.length / 2.
+    c.hadronAbsorber.z = c.target.z + c.hadronAbsorber.length / 2. + c.target.length / 2.
 
 # for the digitizing step
     c.strawtubes.v_drift = 1./(30*u.ns/u.mm) # for baseline NA62 5mm radius straws)
@@ -402,4 +403,4 @@ with ConfigRegistry.register_config("basic") as c:
     c.UpstreamTagger.X_Strip = 229 * u.cm  - UBT_x_crop
     c.UpstreamTagger.X_Strip64 = 1.534 * u.cm
     c.UpstreamTagger.Y_Strip64 = 111 * u.cm
-    c.UpstreamTagger.Z_Position = -25.400 * u.m  # Relative position of UBT to decay vessel centre
+    c.UpstreamTagger.Z_Position = -25.400 * u.m + c.decayVolume.z # Relative position of UBT to decay vessel centre
