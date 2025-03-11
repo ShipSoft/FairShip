@@ -350,11 +350,12 @@ with ConfigRegistry.register_config("basic") as c:
             c.muShield.dZ5 + c.muShield.dZ6 +
             c.muShield.dZ7 + c.muShield.dZ8
     ) + c.muShield.LE
-    c.muShield.z = -(c.decayVolume.length + c.muShield.length) / 2.
+    c.decayVolume.z = c.muShield.z + c.decayVolume.length / 2. + c.muShield.length / 2.
+    c.decayVolume.z0 =  c.decayVolume.z - c.decayVolume.length / 2.
 
     c.hadronAbsorber              =  AttrDict(z=0*u.cm)
     c.hadronAbsorber.length =     0*u.m # magnetized, counted inside muonshield
-    c.hadronAbsorber.z     =  c.muShield.z - c.muShield.length/2. - c.hadronAbsorber.length/2.
+    c.muShield.z = c.hadronAbsorber.z + c.muShield.length / 2. + c.hadronAbsorber.length / 2.
 
     c.hadronAbsorber.WithConstField = True
     c.muShield.WithConstField = True
@@ -406,8 +407,9 @@ with ConfigRegistry.register_config("basic") as c:
      c.target.xy  = 30.*u.cm   # full length in x and y
      c.target.length = 17*c.target.sl + c.target.L1 + 7*c.target.L2 + 3*c.target.L9 + c.target.L11 + 3*c.target.L12 + c.target.L16 + c.target.L17 + c.target.L18
     # interaction point, start of target
-    c.target.z   =  c.hadronAbsorber.z - c.hadronAbsorber.length/2. - c.target.length/2.
-    c.target.z0  =  c.target.z - c.target.length/2.
+    c.target.z0 = 0  # Origin of SHiP coordinate system
+    c.target.z = c.target.z0 + c.target.length/2.
+    c.hadronAbsorber.z = c.target.z + c.hadronAbsorber.length / 2. + c.target.length / 2.
 
 # for the digitizing step
     c.strawtubes.v_drift = 1./(30*u.ns/u.mm) # for baseline NA62 5mm radius straws)
