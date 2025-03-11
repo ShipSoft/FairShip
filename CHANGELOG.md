@@ -21,6 +21,7 @@ it in future.
 * Fix mismatch dimension cavern ECN3 TCC8
 * fix: use standard library to expand env
 * fix: autoload Pythia8 instead of manually loading in run_simScript.py
+* fix(geometry): fix typo vaccums → vacuums for strawtubes medium
 
 ### Changed
 
