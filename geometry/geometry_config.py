@@ -224,6 +224,10 @@ with ConfigRegistry.register_config("basic") as c:
     c.muShield.z = c.hadronAbsorber.z + c.muShield.length / 2. + c.hadronAbsorber.length / 2.
 
     c.decayVolume = AttrDict()
+
+    # target absorber muon shield setup, decayVolume.length = nominal EOI length, only kept to define z=0
+    c.decayVolume.length = 50 * u.m
+
     c.decayVolume.z = c.muShield.z + c.decayVolume.length / 2. + c.muShield.length / 2.
     c.decayVolume.z0 =  c.decayVolume.z - c.decayVolume.length / 2.
     # Define z4 relative to decay volume centre, the define rest of HSD relative to z4
@@ -396,10 +400,6 @@ with ConfigRegistry.register_config("basic") as c:
 
     c.Muon.ActiveThickness = 0.5*u.cm
     c.Muon.FilterThickness = 30.*u.cm
-
-    # target absorber muon shield setup, decayVolume.length = nominal EOI length, only kept to define z=0
-    c.decayVolume.length     =   50*u.m
-
 
     c.hadronAbsorber.WithConstField = True
     c.muShield.WithConstField = True
