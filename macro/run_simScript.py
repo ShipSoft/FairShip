@@ -650,6 +650,35 @@ if simEngine == "MuonBack":
  rc1 = os.system("rm  "+outFile)
  rc2 = os.system("mv "+tmpFile+" "+outFile)
  fin.SetWritable(False) # bpyass flush error
+
+if simEngine == "muonDIS":
+
+  fin = ROOT.TFile.Open(outFile, "UPDATE")
+  t = fin.cbmsim  
+
+  cross_sec = ROOT.std.vector('float')()  
+  Bcross_sec = t.Branch("CrossSection", cross_sec) 
+
+  fInputFile = ROOT.TFile.Open(inputFile, "READ")
+  muonDIStree = fInputFile.Get("DIS")
+
+  iMuon = ROOT.TClonesArray("TVectorD")
+  muonDIStree.SetBranchAddress("InMuon", iMuon)
+
+  for n in range(t.GetEntries()):
+    t.GetEntry(n)
+    muonDIStree.GetEntry(n)
+
+    mu = iMuon.At(0)
+    cross_sec.clear()
+    cross_sec.push_back(mu[10])
+
+    Bcross_sec.Fill()
+  fin.cd()
+  t.Write("", ROOT.TObject.kOverwrite)  
+  fin.Close()
+  print("Successfully added DISCrossSection to the output file:", outFile)
+
 # ------------------------------------------------------------------------
 import checkMagFields
 def visualizeMagFields():
