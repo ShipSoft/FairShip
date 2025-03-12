@@ -14,6 +14,8 @@ it in future.
 
 ### Added
 
+* feat(python): Add experimental script to compare histograms
+
 ### Fixed
 
 * chore: Fix file endings
