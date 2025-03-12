@@ -8,7 +8,7 @@ import shipRoot_conf
 import rootUtils as ut
 from ShipGeoConfig import ConfigRegistry
 from argparse import ArgumentParser
-
+from array import array
 DownScaleDiMuon = False
 
 # Default HNL parameters
@@ -652,33 +652,34 @@ if simEngine == "MuonBack":
  fin.SetWritable(False) # bpyass flush error
 
 if simEngine == "muonDIS":
+    f_outputfile = ROOT.TFile.Open(outFile, "UPDATE")
+    output_tree = f_outputfile.cbmsim
 
-  fin = ROOT.TFile.Open(outFile, "UPDATE")
-  t = fin.cbmsim
+    cross_section = array("f", [0.0])
+    cross_section_leaf = output_tree.Branch(
+        "CrossSection", cross_section, "CrossSection/F"
+    )
 
-  cross_sec = ROOT.std.vector('float')()
-  Bcross_sec = t.Branch("CrossSection", cross_sec)
+    f_muonfile = ROOT.TFile.Open(inputFile, "READ")
+    muondis_tree = f_muonfile.Get("DIS")
 
-  fInputFile = ROOT.TFile.Open(inputFile, "READ")
-  muonDIStree = fInputFile.Get("DIS")
+    iMuon = ROOT.TClonesArray("TVectorD")
+    muondis_tree.SetBranchAddress("InMuon", iMuon)
 
-  iMuon = ROOT.TClonesArray("TVectorD")
-  muonDIStree.SetBranchAddress("InMuon", iMuon)
+    for n in range(output_tree.GetEntries()):
+        output_tree.GetEntry(n)
+        muondis_tree.GetEntry(n)
 
-  for n in range(t.GetEntries()):
-    t.GetEntry(n)
-    muonDIStree.GetEntry(n)
+        mu = iMuon.At(0)
 
-    mu = iMuon.At(0)
-    cross_sec.clear()
-    cross_sec.push_back(mu[10])
+        cross_section[0] = mu[10]
+        cross_section_leaf.Fill()
+    f_outputfile.cd()
+    output_tree.Write("", ROOT.TObject.kOverwrite)
+    f_outputfile.Close()
+    print("Successfully added DISCrossSection to the output file:", outFile)
 
-    Bcross_sec.Fill()
-  fin.cd()
-  t.Write("", ROOT.TObject.kOverwrite)
-  fin.Close()
-  print("Successfully added DISCrossSection to the output file:", outFile)
-
+# ------------------------------------------------------------------------
 # ------------------------------------------------------------------------
 import checkMagFields
 def visualizeMagFields():
