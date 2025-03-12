@@ -8,6 +8,7 @@ var searchData=
   ['eventdisplay_5',['eventDisplay',['../namespaceeventDisplay.html',1,'']]],
   ['experimental_6',['experimental',['../namespaceexperimental.html',1,'']]],
   ['experimental_3a_3aanalysis_5ftoolkit_7',['analysis_toolkit',['../namespaceexperimental_1_1analysis__toolkit.html',1,'experimental']]],
-  ['extractmuonsandupdateweight_8',['extractMuonsAndUpdateWeight',['../namespaceextractMuonsAndUpdateWeight.html',1,'']]],
-  ['extractneutrinosandupdateweight_9',['extractNeutrinosAndUpdateWeight',['../namespaceextractNeutrinosAndUpdateWeight.html',1,'']]]
+  ['experimental_3a_3acompare_5fhistograms_8',['compare_histograms',['../namespaceexperimental_1_1compare__histograms.html',1,'experimental']]],
+  ['extractmuonsandupdateweight_9',['extractMuonsAndUpdateWeight',['../namespaceextractMuonsAndUpdateWeight.html',1,'']]],
+  ['extractneutrinosandupdateweight_10',['extractNeutrinosAndUpdateWeight',['../namespaceextractNeutrinosAndUpdateWeight.html',1,'']]]
 ];
