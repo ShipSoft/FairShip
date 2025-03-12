@@ -654,10 +654,10 @@ if simEngine == "MuonBack":
 if simEngine == "muonDIS":
 
   fin = ROOT.TFile.Open(outFile, "UPDATE")
-  t = fin.cbmsim  
+  t = fin.cbmsim
 
-  cross_sec = ROOT.std.vector('float')()  
-  Bcross_sec = t.Branch("CrossSection", cross_sec) 
+  cross_sec = ROOT.std.vector('float')()
+  Bcross_sec = t.Branch("CrossSection", cross_sec)
 
   fInputFile = ROOT.TFile.Open(inputFile, "READ")
   muonDIStree = fInputFile.Get("DIS")
@@ -675,7 +675,7 @@ if simEngine == "muonDIS":
 
     Bcross_sec.Fill()
   fin.cd()
-  t.Write("", ROOT.TObject.kOverwrite)  
+  t.Write("", ROOT.TObject.kOverwrite)
   fin.Close()
   print("Successfully added DISCrossSection to the output file:", outFile)
 
