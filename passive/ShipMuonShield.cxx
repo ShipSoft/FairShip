@@ -27,7 +27,7 @@ ShipMuonShield::ShipMuonShield() : FairModule("ShipMuonShield", "") {}
 
 ShipMuonShield::ShipMuonShield(TString geofile,
                                Double_t floor,
-                               Double_t z0,
+                               Double_t z,
                                Int_t withCoMagnet,
                                Bool_t StepGeo,
                                Bool_t WithConstAbsorberField,
@@ -60,12 +60,12 @@ ShipMuonShield::ShipMuonShield(TString geofile,
   fFloor = floor;
   fSupport = false;
 
-  zEndOfAbsorb = z0;
+  zEndOfAbsorb = z - fMuonShieldLength / 2.;
 }
 
 ShipMuonShield::ShipMuonShield(TVectorT<Double_t> in_params,
                                Double_t floor,
-                               Double_t z0,
+                               Double_t z,
                                Int_t withCoMagnet,
                                Bool_t StepGeo,
                                Bool_t WithConstAbsorberField,
@@ -98,7 +98,7 @@ ShipMuonShield::ShipMuonShield(TVectorT<Double_t> in_params,
   fFloor = floor;
   fSupport = false;
 
-  zEndOfAbsorb = z0;
+  zEndOfAbsorb = z - fMuonShieldLength / 2.;
 }
 
 ShipMuonShield::ShipMuonShield(const char* name, const Int_t Design, const char* Title,
@@ -858,7 +858,8 @@ void ShipMuonShield::ConstructGeometry()
       ECN3_shift->RegisterYourself();
 
       auto *yoke_pit = new TGeoBBox("yoke_pit", 3.5 * m, 4.3 * m + 1 * cm, 2.5 * m);
-      auto *yoke_pit_shift = new TGeoTranslation("yoke_pit_shift", 0 * m, 0 * m, 31 * m - z_transition);
+      auto* yoke_pit_shift =
+          new TGeoTranslation("yoke_pit_shift", 0 * m, 0 * m, fMuonShieldLength + 31 * m - z_transition);
       yoke_pit_shift->RegisterYourself();
 
       auto *target_pit = new TGeoBBox("target_pit", 2 * m, 0.5 * m, 2 * m);
