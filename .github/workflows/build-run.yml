@@ -23,6 +23,10 @@ jobs:
     env:
       version: 25.01
 
+    strategy:
+      matrix:
+        vessel_option: [vacuums, helium]
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -39,7 +43,7 @@ jobs:
         run: |
           source /cvmfs/ship.cern.ch/$version/setUp.sh
           eval `alienv load FairShip/latest`
-          python $FAIRSHIP/macro/run_simScript.py --test
+          python $FAIRSHIP/macro/run_simScript.py --test --${{ matrix.vessel_option }}
 
       - name: Run Reco
         run: |
@@ -64,12 +68,12 @@ jobs:
         run: |
           source /cvmfs/ship.cern.ch/$version/setUp.sh
           eval `alienv load FairShip/latest`
-          python $FAIRSHIP/macro/run_simScript.py --test -n 0 --debug 2 | tee log
+          python $FAIRSHIP/macro/run_simScript.py --test -n 0 --debug 2 --${{ matrix.vessel_option }}| tee log
           ! grep ovlp log
 
       - name: Upload .root artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: root-files
+          name: root-files-${{ matrix.vessel_option }}
           path: |
             *.root
