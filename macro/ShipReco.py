@@ -92,7 +92,7 @@ if withHists:
  ut.bookHist(h,'distu','distance to wire',100,0.,5.)
  ut.bookHist(h,'distv','distance to wire',100,0.,5.)
  ut.bookHist(h,'disty','distance to wire',100,0.,5.)
- ut.bookHist(h,'nmeas','nr measuerements',100,0.,50.)
+ ut.bookHist(h, 'nmeas', 'nr measurments', 100, 0., 50.)
  ut.bookHist(h,'chi2','Chi2/DOF',100,0.,20.)
 
 import shipDet_conf

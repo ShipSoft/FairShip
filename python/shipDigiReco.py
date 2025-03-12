@@ -981,6 +981,7 @@ class ShipDigiReco:
       error = "Fit not converged"
       ut.reportError(error)
     nmeas = fitStatus.getNdf()
+    global_variables.h['nmeas'].Fill(nmeas)
     if nmeas > 0:
       chi2 = fitStatus.getChi2() / nmeas
       global_variables.h['chi2'].Fill(chi2)
