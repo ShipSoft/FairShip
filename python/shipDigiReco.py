@@ -65,7 +65,7 @@ class ShipDigiReco:
   self.fTrackletsArray = ROOT.TClonesArray("Tracklet")
   self.Tracklets   = self.sTree.Branch("Tracklets",  self.fTrackletsArray,32000,-1)
 #
-  self.digiStraw    = ROOT.TClonesArray("strawtubesHit")
+  self.digiStraw = ROOT.std.vector("strawtubesHit")()
   self.digiStrawBranch   = self.sTree.Branch("Digi_StrawtubesHits",self.digiStraw,32000,-1)
   self.digiSBT    = ROOT.TClonesArray("vetoHit")
   self.digiSBTBranch=self.sTree.Branch("Digi_SBTHits",self.digiSBT,32000,-1)
@@ -220,7 +220,7 @@ class ShipDigiReco:
    self.digitizeSBT()
    self.digiSBTBranch.Fill()
    self.mcLinkSBT.Fill()
-   self.digiStraw.Delete()
+   self.digiStraw.clear()
    self.digitizeStrawTubes()
    self.digiStrawBranch.Fill()
    self.digiTimeDet.Delete()
@@ -729,8 +729,7 @@ class ShipDigiReco:
    hitsPerDetId = {}
    for aMCPoint in self.sTree.strawtubesPoint:
      aHit = ROOT.strawtubesHit(aMCPoint,self.sTree.t0)
-     if self.digiStraw.GetSize() == index: self.digiStraw.Expand(index+1000)
-     self.digiStraw[index]=aHit
+     self.digiStraw.push_back(aHit)
      if aHit.isValid():
       detID = aHit.GetDetectorID()
       if detID in hitsPerDetId:
