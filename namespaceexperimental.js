@@ -1,6 +1,9 @@
 var namespaceexperimental =
 [
     [ "analysis_toolkit", "namespaceexperimental_1_1analysis__toolkit.html", "namespaceexperimental_1_1analysis__toolkit" ],
+    [ "check_overlaps", "namespaceexperimental_1_1check__overlaps.html", [
+      [ "main", "namespaceexperimental_1_1check__overlaps.html#a1348fa9c4da3c54034661274823b380f", null ]
+    ] ],
     [ "compare_histograms", "namespaceexperimental_1_1compare__histograms.html", [
       [ "compare_histograms", "namespaceexperimental_1_1compare__histograms.html#a3b917802d991eb03dd0e4b41fda9b16d", null ],
       [ "main", "namespaceexperimental_1_1compare__histograms.html#a144d3fb2ba95b485e443d7b3ce52ab99", null ],

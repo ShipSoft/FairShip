@@ -1,5 +1,10 @@
 var NAVTREEINDEX35 =
 {
+"namespacemakeDecay.html#ae0f852e2d4a4c101cdd77eb2a675bb60":[4,0,47,42],
+"namespacemakeDecay.html#ae12e7ac24f8d7ac07035cdaa544c73e0":[4,0,47,3],
+"namespacemakeDecay.html#ae5a856c0860587c503dfd928d8708053":[4,0,47,40],
+"namespacemakeDecay.html#aebd1b561b67e3d8f8c27553c69912b02":[4,0,47,10],
+"namespacemakeDecay.html#aede5d6c4a1f744e6ee850721bf9ac488":[4,0,47,32],
 "namespacemakeDecay.html#aefac4964265230bbb01ddf1516c1b866":[4,0,47,22],
 "namespacemakeDecay.html#af2ae695d6b5c41d36a10e81b9a0f12f9":[4,0,47,24],
 "namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39":[4,0,47,19],
@@ -107,8 +112,8 @@ var NAVTREEINDEX35 =
 "namespacemakeMuonEM.html#ae783a4bc5d51711c22ea64a696d3dc6e":[4,0,50,16],
 "namespacemakeMuonEM.html#aeb83f81c7745bdb5ee3f999f65da0bb2":[4,0,50,18],
 "namespacemakeMuonEM.html#aed3bddf19f451fdc5e44154c54c70cf9":[4,0,50,23],
-"namespacemembers.html":[4,1,0],
 "namespacemembers.html":[4,1,0,0],
+"namespacemembers.html":[4,1,0],
 "namespacemembers_a.html":[4,1,0,1],
 "namespacemembers_b.html":[4,1,0,2],
 "namespacemembers_c.html":[4,1,0,3],
@@ -156,8 +161,8 @@ var NAVTREEINDEX35 =
 "namespacemembers_t.html":[4,1,0,20],
 "namespacemembers_u.html":[4,1,0,21],
 "namespacemembers_v.html":[4,1,0,22],
-"namespacemembers_vars.html":[4,1,2,0],
 "namespacemembers_vars.html":[4,1,2],
+"namespacemembers_vars.html":[4,1,2,0],
 "namespacemembers_vars_a.html":[4,1,2,1],
 "namespacemembers_vars_b.html":[4,1,2,2],
 "namespacemembers_vars_c.html":[4,1,2,3],
@@ -244,10 +249,5 @@ var NAVTREEINDEX35 =
 "namespaceproton__bremsstrahlung.html#a6d26ae53f2d9569530430a1b66b1a085":[4,0,55,17],
 "namespaceproton__bremsstrahlung.html#a6e9b9b7b5a56d5acd10c07c2436299bb":[4,0,55,16],
 "namespaceproton__bremsstrahlung.html#a7a9c0c61414b735f42f7c7117a92ed28":[4,0,55,1],
-"namespaceproton__bremsstrahlung.html#a8317f12f6cfbdda00f7c16e7f1bef570":[4,0,55,2],
-"namespaceproton__bremsstrahlung.html#a98393a97ecd39a4cce33e138fcc07584":[4,0,55,3],
-"namespaceproton__bremsstrahlung.html#aad8a33cd3d889bef7f25142f8489dbd4":[4,0,55,6],
-"namespaceproton__bremsstrahlung.html#ab60c4f9c4c1c795b40709d9f41ae0a77":[4,0,55,9],
-"namespaceproton__bremsstrahlung.html#abcb3a72611c1a17d989c096c777046dc":[4,0,55,12],
-"namespaceproton__bremsstrahlung.html#ac3747a46ab38964a9676801aa3ca0cc9":[4,0,55,0]
+"namespaceproton__bremsstrahlung.html#a8317f12f6cfbdda00f7c16e7f1bef570":[4,0,55,2]
 };

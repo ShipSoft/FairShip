@@ -1,5 +1,10 @@
 var NAVTREEINDEX36 =
 {
+"namespaceproton__bremsstrahlung.html#a98393a97ecd39a4cce33e138fcc07584":[4,0,55,3],
+"namespaceproton__bremsstrahlung.html#aad8a33cd3d889bef7f25142f8489dbd4":[4,0,55,6],
+"namespaceproton__bremsstrahlung.html#ab60c4f9c4c1c795b40709d9f41ae0a77":[4,0,55,9],
+"namespaceproton__bremsstrahlung.html#abcb3a72611c1a17d989c096c777046dc":[4,0,55,12],
+"namespaceproton__bremsstrahlung.html#ac3747a46ab38964a9676801aa3ca0cc9":[4,0,55,0],
 "namespaceproton__bremsstrahlung.html#ac8d68997530cee631a8f823867dd96ce":[4,0,55,19],
 "namespaceproton__bremsstrahlung.html#ae3b95b849d91a62e6d5819f662a86f2b":[4,0,55,20],
 "namespaceproton__bremsstrahlung.html#aea9544b9811cdcd633c3dabc8eeef64a":[4,0,55,21],
@@ -244,10 +249,5 @@ var NAVTREEINDEX36 =
 "namespacerun__fixedTarget.html#afca348e9bddce3413e30fd40de1ee0cd":[4,0,66,16],
 "namespacerun__fixedTarget.html#afda4c96d05cd62a7414e3f74ec86261d":[4,0,66,5],
 "namespacerun__prod.html":[4,0,67],
-"namespacerun__prod.html#a6c000f747a21da2c39df0901296bb770":[4,0,67,2],
-"namespacerun__prod.html#a867181640c31be32e54ce2deab3f398b":[4,0,67,1],
-"namespacerun__prod.html#aea31277f205a82a4bc16ed43f8479b2c":[4,0,67,0],
-"namespacerun__reco.html":[4,0,68],
-"namespacerun__reco.html#a006fd0bc278889d0f639c7efd723348f":[4,0,68,20],
-"namespacerun__reco.html#a088900932dc88aa02c54b314bb00cd72":[4,0,68,13]
+"namespacerun__prod.html#a6c000f747a21da2c39df0901296bb770":[4,0,67,2]
 };

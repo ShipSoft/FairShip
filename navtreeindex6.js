@@ -1,5 +1,8 @@
 var NAVTREEINDEX6 =
 {
+"classNuageGenerator.html#a1856923b5228abdcd04925608eef22c6":[5,0,79,67],
+"classNuageGenerator.html#a1cf46e2c19bfd0c49fb0504d405ca359":[5,0,79,60],
+"classNuageGenerator.html#a24fec4913f8d827c5b925ecfd5eda262":[5,0,79,36],
 "classNuageGenerator.html#a26f057ec2fb6c336f330e43b00486b38":[5,0,79,37],
 "classNuageGenerator.html#a294302be8b3ab942dc273119ea33c938":[5,0,79,78],
 "classNuageGenerator.html#a29f3a2e06b37931afdad4b682fbd4fb0":[5,0,79,20],
@@ -246,8 +249,5 @@ var NAVTREEINDEX6 =
 "classShipBFieldMap.html#acaa4364171c8cb1d35240f9055b7ff87":[5,0,90,43],
 "classShipBFieldMap.html#acd435784c2383b158c5ba576a8b6065c":[5,0,90,13],
 "classShipBFieldMap.html#ad244c2f350e52fc7cbeddaf1ddd66f2c":[5,0,90,80],
-"classShipBFieldMap.html#ad67b10f1fa4750c3310cddb5368cf5db":[5,0,90,54],
-"classShipBFieldMap.html#ad77b9af6b70c51d794b47732149dca92":[5,0,90,42],
-"classShipBFieldMap.html#ad7dd58847eb0bff1eea11ede5e0eea81":[5,0,90,27],
-"classShipBFieldMap.html#ad89fd4e71cf67011e40940c6293a2ffe":[5,0,90,15]
+"classShipBFieldMap.html#ad67b10f1fa4750c3310cddb5368cf5db":[5,0,90,54]
 };
