@@ -379,8 +379,8 @@ void ShipMuonShield::ConstructGeometry()
       ECN3_shift->RegisterYourself();
 
       auto *yoke_pit = new TGeoBBox("yoke_pit", 3.5 * m, 4.3 * m + 1 * cm, 2.5 * m);
-      auto* yoke_pit_shift = new TGeoTranslation(
-          "yoke_pit_shift", 0 * m, 0 * m, 8957 * cm - 444 * cm - zEndOfAbsorb + absorber_half_length * 2);
+      auto* yoke_pit_shift =
+          new TGeoTranslation("yoke_pit_shift", 0 * m, 0 * m, 65 * m);  // transition to centre of spectrometer magnet, layout version 2025-0.1, 17.02.2025
       yoke_pit_shift->RegisterYourself();
 
       auto *target_pit = new TGeoBBox("target_pit", 2 * m, 0.5 * m, 2 * m);
