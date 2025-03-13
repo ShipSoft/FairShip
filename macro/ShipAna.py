@@ -121,9 +121,7 @@ ut.bookHist(h,'extrapTimeDetY','extrapolation to TimeDet Y',100,-10.,10.)
 ut.bookHist(h,'oa','cos opening angle',100,0.999,1.)
 # potential Veto detectors
 ut.bookHist(h,'nrtracks','nr of tracks in signal selected',10,-0.5,9.5)
-ut.bookHist(h,'nrSVT','nr of hits in SVT',10,-0.5,9.5)
 ut.bookHist(h,'nrSBT','nr of hits in SBT',100,-0.5,99.5)
-ut.bookHist(h,'nrRPC','nr of hits in RPC',100,-0.5,99.5)
 
 import TrackExtrapolateTool
 
@@ -503,19 +501,13 @@ def makePlots():
    cv = h['trpulls'].cd(3)
    h['pullPOverPz_proj']=h['pullPOverPz'].ProjectionY()
    h['pullPOverPz_proj'].Draw()
-   ut.bookCanvas(h,key='vetodecisions',title='Veto Detectors',nx=1600,ny=600,cx=4,cy=1)
+   ut.bookCanvas(h,key='vetodecisions',title='Veto Detectors',nx=1600,ny=600,cx=2,cy=1)
    cv = h['vetodecisions'].cd(1)
    cv.SetLogy(1)
    h['nrtracks'].Draw()
    cv = h['vetodecisions'].cd(2)
    cv.SetLogy(1)
-   h['nrSVT'].Draw()
-   cv = h['vetodecisions'].cd(3)
-   cv.SetLogy(1)
    h['nrSBT'].Draw()
-   cv = h['vetodecisions'].cd(4)
-   cv.SetLogy(1)
-   h['nrRPC'].Draw()
 #
    print('finished making plots')
 # calculate z front face of ecal, needed later
@@ -718,13 +710,10 @@ def myEventLoop(n):
     h['HNLw'].Fill(mass,wg)
 #
     vetoDets['SBT'] = veto.SBT_decision()
-    vetoDets['SVT'] = veto.SVT_decision()
-    vetoDets['RPC'] = veto.RPC_decision()
+    vetoDets['UBT'] = veto.UBT_decision()
     vetoDets['TRA'] = veto.Track_decision()
     h['nrtracks'].Fill(vetoDets['TRA'][2])
-    h['nrSVT'].Fill(vetoDets['SVT'][2])
     h['nrSBT'].Fill(vetoDets['SBT'][2])
-    h['nrRPC'].Fill(vetoDets['RPC'][2])
 #   HNL true
     mctrack = sTree.MCTrack[sTree.fitTrack2MC[t1]]
     h['Vzresol'].Fill( (mctrack.GetStartZ()-HNLPos.Z())/u.cm )
