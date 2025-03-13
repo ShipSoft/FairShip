@@ -48,17 +48,6 @@ class ShipDigiReco:
     os.system('cp '+rawFile +' '+fout)
     self.fn = ROOT.TFile(fout,'update')
     self.sTree     = self.fn.cbmsim
-#  check that all containers are present, otherwise create dummy version
-  self.dummyContainers={}
-  branch_class = {"vetoPoint":"vetoPoint","ShipRpcPoint":"ShipRpcPoint","TargetPoint":"TargetPoint",\
-                  "strawtubesPoint":"strawtubesPoint","EcalPointLite":"ecalPoint",\
-                  "TimeDetPoint":"TimeDetPoint","muonPoint":"muonPoint","UpstreamTaggerPoint":"UpstreamTaggerPoint"}
-  for x in branch_class:
-    if not self.sTree.GetBranch(x):
-     self.dummyContainers[x+"_array"] = ROOT.TClonesArray(branch_class[x])
-     self.dummyContainers[x] = self.sTree.Branch(x,self.dummyContainers[x+"_array"],32000,-1)
-     setattr(self.sTree,x,self.dummyContainers[x+"_array"])
-     self.dummyContainers[x].Fill()
 #
   if self.sTree.GetBranch("GeoTracks"): self.sTree.SetBranchStatus("GeoTracks",0)
 # prepare for output

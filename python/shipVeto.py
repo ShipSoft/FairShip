@@ -7,7 +7,6 @@ class Task:
  "initialize and give response of the veto systems"
  def __init__(self,t):
   self.SBTefficiency = 0.99  # Surrounding Background tagger: 99% efficiency picked up from TP
-  self.SVTefficiency = 0.995 # Straw Veto tagger: guestimate, including dead channels
   self.UBTefficiency = 0.9  # Upstream background tagger
   self.random = ROOT.TRandom()
   ROOT.gRandom.SetSeed(13)
@@ -52,33 +51,6 @@ class Task:
   veto = self.random.Rndm() > w
   #print 'SBT :',hitSegments
   return veto, w, hitSegments
- def SVT_decision(self,mcParticle=None):
-  nHits = 0
-  for ahit in self.sTree.strawtubesPoint:
-     if mcParticle:
-        if mcParticle>0 and mcParticle != ahit.GetTrackID() : continue
-        if mcParticle<0 and abs(mcParticle) == ahit.GetTrackID() : continue
-     detID   = ahit.GetDetectorID()
-     if detID<50000000: continue  # StrawVeto station = 5
-     nHits+=1
-  w = (1-self.SVTefficiency)**nHits
-  veto = self.random.Rndm() > w
-  # print 'SVT :',nHits
-  return veto,w,nHits
- def RPC_decision(self,mcParticle=None):
-  nHits = 0
-  mom = ROOT.TVector3()
-  for ahit in self.sTree.ShipRpcPoint:
-   if mcParticle:
-        if mcParticle>0 and mcParticle != ahit.GetTrackID() : continue
-        if mcParticle<0 and abs(mcParticle) == ahit.GetTrackID() : continue
-   ahit.Momentum(mom)
-   if mom.Mag() > 0.1: nHits+=1
-  w = 1
-  veto = nHits > 0 # 10  change to >0 since neutrino background ntuple not possible otherwise
-  if veto: w = 0.
-  #print 'RPC :',nHits
-  return veto,w,nHits
 
  def UBT_decision(self, mcParticle=None):
   nHits = 0
