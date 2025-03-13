@@ -15,6 +15,7 @@ it in future.
 ### Added
 
 * feat(python): Add experimental script to compare histograms
+* feat(python): Add experimental script to check overlaps quickly
 
 ### Fixed
 
@@ -23,7 +24,7 @@ it in future.
 * Fix mismatch dimension cavern ECN3 TCC8
 * fix: use standard library to expand env
 * fix: autoload Pythia8 instead of manually loading in run_simScript.py
-* fix(geometry): fix typo vaccums → vacuums for strawtubes medium
+* fix(geometry): fix typo of "vacuums" for strawtubes medium
 
 ### Changed
 
