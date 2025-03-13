@@ -8,7 +8,7 @@ import shipRoot_conf
 import rootUtils as ut
 from ShipGeoConfig import ConfigRegistry
 from argparse import ArgumentParser
-
+from array import array
 DownScaleDiMuon = False
 
 # Default HNL parameters
@@ -664,6 +664,36 @@ if simEngine == "MuonBack":
  rc1 = os.system("rm  "+outFile)
  rc2 = os.system("mv "+tmpFile+" "+outFile)
  fin.SetWritable(False) # bpyass flush error
+
+if simEngine == "muonDIS":
+    f_outputfile = ROOT.TFile.Open(outFile, "UPDATE")
+    output_tree = f_outputfile.cbmsim
+
+    cross_section = array("f", [0.0])
+    cross_section_leaf = output_tree.Branch(
+        "CrossSection", cross_section, "CrossSection/F"
+    )
+
+    f_muonfile = ROOT.TFile.Open(inputFile, "READ")
+    muondis_tree = f_muonfile.Get("DIS")
+
+    iMuon = ROOT.TClonesArray("TVectorD")
+    muondis_tree.SetBranchAddress("InMuon", iMuon)
+
+    for n in range(output_tree.GetEntries()):
+        output_tree.GetEntry(n)
+        muondis_tree.GetEntry(n)
+
+        mu = iMuon.At(0)
+
+        cross_section[0] = mu[10]
+        cross_section_leaf.Fill()
+    f_outputfile.cd()
+    output_tree.Write("", ROOT.TObject.kOverwrite)
+    f_outputfile.Close()
+    print("Successfully added DISCrossSection to the output file:", outFile)
+
+# ------------------------------------------------------------------------
 # ------------------------------------------------------------------------
 import checkMagFields
 def visualizeMagFields():
