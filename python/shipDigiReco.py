@@ -737,7 +737,7 @@ class ShipDigiReco:
             detector_id = hit.GetDetectorID()
             if detector_id in earliest_per_det_id:
                earliest = earliest_per_det_id[detector_id]
-               if self.digiStraw([earliest]).GetTDC() > hit.GetTDC():
+               if self.digiStraw[earliest].GetTDC() > hit.GetTDC():
                    # second hit with smaller tdc
                    self.digiStraw[earliest].setInvalid()
                    earliest_per_det_id[detector_id] = index
