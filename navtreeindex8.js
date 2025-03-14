@@ -1,7 +1,7 @@
 var NAVTREEINDEX8 =
 {
-"classShipGeo_1_1ShipGeo.html#a4ef8fe99f1538432e4817db7c02f0270":[4,0,80,0,0],
 "classShipGeo_1_1ShipGeo.html#a4ef8fe99f1538432e4817db7c02f0270":[5,0,13,0,0],
+"classShipGeo_1_1ShipGeo.html#a4ef8fe99f1538432e4817db7c02f0270":[4,0,80,0,0],
 "classShipGoliath.html":[5,0,99],
 "classShipGoliath.html#a16a73f55d95ac90375782683a6ac2362":[5,0,99,2],
 "classShipGoliath.html#a43ecd801816f7439bad47e209f7b3d70":[5,0,99,3],

@@ -268,17 +268,17 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00271">271</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  271</span><span class="keyword">def </span>access2SmearedHits():</div>
-<div class="line"><span class="lineno">  272</span> key = 0</div>
-<div class="line"><span class="lineno">  273</span> <span class="keywordflow">for</span> ahit <span class="keywordflow">in</span> ev.SmearedHits.GetObject():</div>
-<div class="line"><span class="lineno">  274</span>   print(ahit[0],ahit[1],ahit[2],ahit[3],ahit[4],ahit[5],ahit[6])</div>
-<div class="line"><span class="lineno">  275</span>   <span class="comment"># follow link to true MCHit</span></div>
-<div class="line"><span class="lineno">  276</span>   mchit   = TrackingHits[key]</div>
-<div class="line"><span class="lineno">  277</span>   mctrack =  MCTracks[mchit.GetTrackID()]</div>
-<div class="line"><span class="lineno">  278</span>   print(mchit.GetZ(),mctrack.GetP(),mctrack.GetPdgCode())</div>
-<div class="line"><span class="lineno">  279</span>   key+=1</div>
-<div class="line"><span class="lineno">  280</span> </div>
+<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00269">269</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  269</span><span class="keyword">def </span>access2SmearedHits():</div>
+<div class="line"><span class="lineno">  270</span> key = 0</div>
+<div class="line"><span class="lineno">  271</span> <span class="keywordflow">for</span> ahit <span class="keywordflow">in</span> ev.SmearedHits.GetObject():</div>
+<div class="line"><span class="lineno">  272</span>   print(ahit[0],ahit[1],ahit[2],ahit[3],ahit[4],ahit[5],ahit[6])</div>
+<div class="line"><span class="lineno">  273</span>   <span class="comment"># follow link to true MCHit</span></div>
+<div class="line"><span class="lineno">  274</span>   mchit   = TrackingHits[key]</div>
+<div class="line"><span class="lineno">  275</span>   mctrack =  MCTracks[mchit.GetTrackID()]</div>
+<div class="line"><span class="lineno">  276</span>   print(mchit.GetZ(),mctrack.GetP(),mctrack.GetPdgCode())</div>
+<div class="line"><span class="lineno">  277</span>   key+=1</div>
+<div class="line"><span class="lineno">  278</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -314,16 +314,16 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00253">253</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  253</span><span class="keyword">def </span>checkFiducialVolume(sTree,tkey,dy):</div>
-<div class="line"><span class="lineno">  254</span><span class="comment"># extrapolate track to middle of magnet and check if in decay volume</span></div>
-<div class="line"><span class="lineno">  255</span>   inside = <span class="keyword">True</span></div>
-<div class="line"><span class="lineno">  256</span>   <span class="keywordflow">if</span> <span class="keywordflow">not</span> fiducialCut: <span class="keywordflow">return</span> <span class="keyword">True</span></div>
-<div class="line"><span class="lineno">  257</span>   fT = sTree.FitTracks[tkey]</div>
-<div class="line"><span class="lineno">  258</span>   rc,pos,mom = <a class="code hl_function" href="namespaceTrackExtrapolateTool.html#ae08f6dc2e8c443fbbea48bc074134f1a">TrackExtrapolateTool.extrapolateToPlane</a>(fT,ShipGeo.Bfield.z)</div>
-<div class="line"><span class="lineno">  259</span>   <span class="keywordflow">if</span> <span class="keywordflow">not</span> rc: <span class="keywordflow">return</span> <span class="keyword">False</span></div>
-<div class="line"><span class="lineno">  260</span>   <span class="keywordflow">if</span> <span class="keywordflow">not</span> dist2InnerWall(pos.X(),pos.Y(),pos.Z())&gt;0: <span class="keywordflow">return</span> <span class="keyword">False</span></div>
-<div class="line"><span class="lineno">  261</span>   <span class="keywordflow">return</span> inside</div>
+<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00251">251</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  251</span><span class="keyword">def </span>checkFiducialVolume(sTree,tkey,dy):</div>
+<div class="line"><span class="lineno">  252</span><span class="comment"># extrapolate track to middle of magnet and check if in decay volume</span></div>
+<div class="line"><span class="lineno">  253</span>   inside = <span class="keyword">True</span></div>
+<div class="line"><span class="lineno">  254</span>   <span class="keywordflow">if</span> <span class="keywordflow">not</span> fiducialCut: <span class="keywordflow">return</span> <span class="keyword">True</span></div>
+<div class="line"><span class="lineno">  255</span>   fT = sTree.FitTracks[tkey]</div>
+<div class="line"><span class="lineno">  256</span>   rc,pos,mom = <a class="code hl_function" href="namespaceTrackExtrapolateTool.html#ae08f6dc2e8c443fbbea48bc074134f1a">TrackExtrapolateTool.extrapolateToPlane</a>(fT,ShipGeo.Bfield.z)</div>
+<div class="line"><span class="lineno">  257</span>   <span class="keywordflow">if</span> <span class="keywordflow">not</span> rc: <span class="keywordflow">return</span> <span class="keyword">False</span></div>
+<div class="line"><span class="lineno">  258</span>   <span class="keywordflow">if</span> <span class="keywordflow">not</span> dist2InnerWall(pos.X(),pos.Y(),pos.Z())&gt;0: <span class="keywordflow">return</span> <span class="keyword">False</span></div>
+<div class="line"><span class="lineno">  259</span>   <span class="keywordflow">return</span> inside</div>
 <div class="ttc" id="anamespaceTrackExtrapolateTool_html_ae08f6dc2e8c443fbbea48bc074134f1a"><div class="ttname"><a href="namespaceTrackExtrapolateTool.html#ae08f6dc2e8c443fbbea48bc074134f1a">TrackExtrapolateTool.extrapolateToPlane</a></div><div class="ttdeci">extrapolateToPlane(fT, z)</div><div class="ttdef"><b>Definition</b> <a href="TrackExtrapolateTool_8py_source.html#l00015">TrackExtrapolateTool.py:15</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -344,28 +344,28 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00232">232</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  232</span><span class="keyword">def </span>checkHNLorigin(sTree):</div>
-<div class="line"><span class="lineno">  233</span> flag = <span class="keyword">True</span></div>
-<div class="line"><span class="lineno">  234</span> <span class="keywordflow">if</span> <span class="keywordflow">not</span> fiducialCut: <span class="keywordflow">return</span> flag</div>
-<div class="line"><span class="lineno">  235</span> flag = <span class="keyword">False</span></div>
-<div class="line"><span class="lineno">  236</span><span class="comment"># only makes sense for signal == HNL</span></div>
-<div class="line"><span class="lineno">  237</span> hnlkey = -1</div>
-<div class="line"><span class="lineno">  238</span> <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(sTree.MCTrack.GetEntries()):</div>
-<div class="line"><span class="lineno">  239</span>   mo = sTree.MCTrack[n].GetMotherId()</div>
-<div class="line"><span class="lineno">  240</span>   <span class="keywordflow">if</span> mo &lt;0: <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  241</span>   <span class="keywordflow">if</span> abs(sTree.MCTrack[mo].GetPdgCode()) == 9900015:</div>
-<div class="line"><span class="lineno">  242</span>       hnlkey = n</div>
-<div class="line"><span class="lineno">  243</span>       <span class="keywordflow">break</span></div>
-<div class="line"><span class="lineno">  244</span> <span class="keywordflow">if</span> hnlkey&lt;0 :</div>
-<div class="line"><span class="lineno">  245</span>  ut.reportError(<span class="stringliteral">&quot;ShipAna: checkHNLorigin, no HNL found&quot;</span>)</div>
-<div class="line"><span class="lineno">  246</span> <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  247</span>  <span class="comment"># MCTrack after HNL should be first daughter</span></div>
-<div class="line"><span class="lineno">  248</span>  theHNLVx = sTree.MCTrack[hnlkey]</div>
-<div class="line"><span class="lineno">  249</span>  X,Y,Z =  theHNLVx.GetStartX(),theHNLVx.GetStartY(),theHNLVx.GetStartZ()</div>
-<div class="line"><span class="lineno">  250</span>  <span class="keywordflow">if</span> isInFiducial(X,Y,Z): flag = <span class="keyword">True</span></div>
-<div class="line"><span class="lineno">  251</span> <span class="keywordflow">return</span> flag</div>
-<div class="line"><span class="lineno">  252</span> </div>
+<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00230">230</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  230</span><span class="keyword">def </span>checkHNLorigin(sTree):</div>
+<div class="line"><span class="lineno">  231</span> flag = <span class="keyword">True</span></div>
+<div class="line"><span class="lineno">  232</span> <span class="keywordflow">if</span> <span class="keywordflow">not</span> fiducialCut: <span class="keywordflow">return</span> flag</div>
+<div class="line"><span class="lineno">  233</span> flag = <span class="keyword">False</span></div>
+<div class="line"><span class="lineno">  234</span><span class="comment"># only makes sense for signal == HNL</span></div>
+<div class="line"><span class="lineno">  235</span> hnlkey = -1</div>
+<div class="line"><span class="lineno">  236</span> <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(sTree.MCTrack.GetEntries()):</div>
+<div class="line"><span class="lineno">  237</span>   mo = sTree.MCTrack[n].GetMotherId()</div>
+<div class="line"><span class="lineno">  238</span>   <span class="keywordflow">if</span> mo &lt;0: <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  239</span>   <span class="keywordflow">if</span> abs(sTree.MCTrack[mo].GetPdgCode()) == 9900015:</div>
+<div class="line"><span class="lineno">  240</span>       hnlkey = n</div>
+<div class="line"><span class="lineno">  241</span>       <span class="keywordflow">break</span></div>
+<div class="line"><span class="lineno">  242</span> <span class="keywordflow">if</span> hnlkey&lt;0 :</div>
+<div class="line"><span class="lineno">  243</span>  ut.reportError(<span class="stringliteral">&quot;ShipAna: checkHNLorigin, no HNL found&quot;</span>)</div>
+<div class="line"><span class="lineno">  244</span> <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  245</span>  <span class="comment"># MCTrack after HNL should be first daughter</span></div>
+<div class="line"><span class="lineno">  246</span>  theHNLVx = sTree.MCTrack[hnlkey]</div>
+<div class="line"><span class="lineno">  247</span>  X,Y,Z =  theHNLVx.GetStartX(),theHNLVx.GetStartY(),theHNLVx.GetStartZ()</div>
+<div class="line"><span class="lineno">  248</span>  <span class="keywordflow">if</span> isInFiducial(X,Y,Z): flag = <span class="keyword">True</span></div>
+<div class="line"><span class="lineno">  249</span> <span class="keywordflow">return</span> flag</div>
+<div class="line"><span class="lineno">  250</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -401,30 +401,30 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00191">191</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  191</span><span class="keyword">def </span>dist2InnerWall(X,Y,Z):</div>
-<div class="line"><span class="lineno">  192</span>  dist = 0</div>
-<div class="line"><span class="lineno">  193</span> <span class="comment"># return distance to inner wall perpendicular to z-axis, if outside decayVolume return 0.</span></div>
-<div class="line"><span class="lineno">  194</span>  node = sGeo.FindNode(X,Y,Z)</div>
-<div class="line"><span class="lineno">  195</span>  <span class="keywordflow">if</span> ShipGeo.tankDesign &lt; 5:</div>
-<div class="line"><span class="lineno">  196</span>     <span class="keywordflow">if</span> <span class="keywordflow">not</span> <span class="stringliteral">&#39;cave&#39;</span> <span class="keywordflow">in</span> node.GetName(): <span class="keywordflow">return</span> dist  <span class="comment"># TP</span></div>
-<div class="line"><span class="lineno">  197</span>  <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  198</span>     <span class="keywordflow">if</span> <span class="keywordflow">not</span> <span class="stringliteral">&#39;DecayVacuum&#39;</span> <span class="keywordflow">in</span> node.GetName(): <span class="keywordflow">return</span> dist</div>
-<div class="line"><span class="lineno">  199</span>  start = array(<span class="stringliteral">&#39;d&#39;</span>,[X,Y,Z])</div>
-<div class="line"><span class="lineno">  200</span>  nsteps = 8</div>
-<div class="line"><span class="lineno">  201</span>  dalpha = 2*ROOT.TMath.Pi()/nsteps</div>
-<div class="line"><span class="lineno">  202</span>  rsq = X**2+Y**2</div>
-<div class="line"><span class="lineno">  203</span>  minDistance = 100 *u.m</div>
-<div class="line"><span class="lineno">  204</span>  <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(nsteps):</div>
-<div class="line"><span class="lineno">  205</span>    alpha = n * dalpha</div>
-<div class="line"><span class="lineno">  206</span>    sdir  = array(<span class="stringliteral">&#39;d&#39;</span>,[ROOT.TMath.Sin(alpha),ROOT.TMath.Cos(alpha),0.])</div>
-<div class="line"><span class="lineno">  207</span>    node = sGeo.InitTrack(start, sdir)</div>
-<div class="line"><span class="lineno">  208</span>    nxt = sGeo.FindNextBoundary()</div>
-<div class="line"><span class="lineno">  209</span>    <span class="keywordflow">if</span> ShipGeo.tankDesign &lt; 5 <span class="keywordflow">and</span> nxt.GetName().find(<span class="stringliteral">&#39;I&#39;</span>)&lt;0: <span class="keywordflow">return</span> 0</div>
-<div class="line"><span class="lineno">  210</span>    distance = sGeo.GetStep()</div>
-<div class="line"><span class="lineno">  211</span>    <span class="keywordflow">if</span> distance &lt; minDistance  : minDistance = distance</div>
-<div class="line"><span class="lineno">  212</span>  <span class="keywordflow">return</span> minDistance</div>
-<div class="line"><span class="lineno">  213</span> </div>
+<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00189">189</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  189</span><span class="keyword">def </span>dist2InnerWall(X,Y,Z):</div>
+<div class="line"><span class="lineno">  190</span>  dist = 0</div>
+<div class="line"><span class="lineno">  191</span> <span class="comment"># return distance to inner wall perpendicular to z-axis, if outside decayVolume return 0.</span></div>
+<div class="line"><span class="lineno">  192</span>  node = sGeo.FindNode(X,Y,Z)</div>
+<div class="line"><span class="lineno">  193</span>  <span class="keywordflow">if</span> ShipGeo.tankDesign &lt; 5:</div>
+<div class="line"><span class="lineno">  194</span>     <span class="keywordflow">if</span> <span class="keywordflow">not</span> <span class="stringliteral">&#39;cave&#39;</span> <span class="keywordflow">in</span> node.GetName(): <span class="keywordflow">return</span> dist  <span class="comment"># TP</span></div>
+<div class="line"><span class="lineno">  195</span>  <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  196</span>     <span class="keywordflow">if</span> <span class="keywordflow">not</span> <span class="stringliteral">&#39;DecayVacuum&#39;</span> <span class="keywordflow">in</span> node.GetName(): <span class="keywordflow">return</span> dist</div>
+<div class="line"><span class="lineno">  197</span>  start = array(<span class="stringliteral">&#39;d&#39;</span>,[X,Y,Z])</div>
+<div class="line"><span class="lineno">  198</span>  nsteps = 8</div>
+<div class="line"><span class="lineno">  199</span>  dalpha = 2*ROOT.TMath.Pi()/nsteps</div>
+<div class="line"><span class="lineno">  200</span>  rsq = X**2+Y**2</div>
+<div class="line"><span class="lineno">  201</span>  minDistance = 100 *u.m</div>
+<div class="line"><span class="lineno">  202</span>  <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(nsteps):</div>
+<div class="line"><span class="lineno">  203</span>    alpha = n * dalpha</div>
+<div class="line"><span class="lineno">  204</span>    sdir  = array(<span class="stringliteral">&#39;d&#39;</span>,[ROOT.TMath.Sin(alpha),ROOT.TMath.Cos(alpha),0.])</div>
+<div class="line"><span class="lineno">  205</span>    node = sGeo.InitTrack(start, sdir)</div>
+<div class="line"><span class="lineno">  206</span>    nxt = sGeo.FindNextBoundary()</div>
+<div class="line"><span class="lineno">  207</span>    <span class="keywordflow">if</span> ShipGeo.tankDesign &lt; 5 <span class="keywordflow">and</span> nxt.GetName().find(<span class="stringliteral">&#39;I&#39;</span>)&lt;0: <span class="keywordflow">return</span> 0</div>
+<div class="line"><span class="lineno">  208</span>    distance = sGeo.GetStep()</div>
+<div class="line"><span class="lineno">  209</span>    <span class="keywordflow">if</span> distance &lt; minDistance  : minDistance = distance</div>
+<div class="line"><span class="lineno">  210</span>  <span class="keywordflow">return</span> minDistance</div>
+<div class="line"><span class="lineno">  211</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -444,28 +444,28 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00385">385</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  385</span><span class="keyword">def </span>ecalCluster2MC(aClus):</div>
-<div class="line"><span class="lineno">  386</span> <span class="comment"># return MC track most contributing, and its fraction of energy</span></div>
-<div class="line"><span class="lineno">  387</span>  trackid    = ctypes.c_int()</div>
-<div class="line"><span class="lineno">  388</span>  energy_dep = ctypes.c_double()</div>
-<div class="line"><span class="lineno">  389</span>  mcLink = {}</div>
-<div class="line"><span class="lineno">  390</span>  <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range( aClus.Size() ):</div>
-<div class="line"><span class="lineno">  391</span>    mccell = <a class="code hl_function" href="classecalStructure.html#ac855bf7c93f3622af20ffde3f19a5948">ecalStructure.GetHitCell</a>(aClus.CellNum(i))  <span class="comment"># Get i&#39;th cell of the cluster.</span></div>
-<div class="line"><span class="lineno">  392</span>    <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range( mccell.TrackEnergySize()):</div>
-<div class="line"><span class="lineno">  393</span>      mccell.GetTrackEnergySlow(n, trackid, energy_dep)</div>
-<div class="line"><span class="lineno">  394</span>      <span class="keywordflow">if</span> <span class="keywordflow">not</span> abs(trackid.value)&lt;sTree.MCTrack.GetEntries(): tid = -1</div>
-<div class="line"><span class="lineno">  395</span>      <span class="keywordflow">else</span>: tid = trackid.value</div>
-<div class="line"><span class="lineno">  396</span>      <span class="keywordflow">if</span> tid <span class="keywordflow">not</span> <span class="keywordflow">in</span> mcLink: mcLink[tid]=0</div>
-<div class="line"><span class="lineno">  397</span>      mcLink[tid]+=energy_dep.value</div>
-<div class="line"><span class="lineno">  398</span><span class="comment"># find trackid most contributing</span></div>
-<div class="line"><span class="lineno">  399</span>  eMax,mMax = 0,-1</div>
-<div class="line"><span class="lineno">  400</span>  <span class="keywordflow">for</span> m <span class="keywordflow">in</span> mcLink:</div>
-<div class="line"><span class="lineno">  401</span>     <span class="keywordflow">if</span> mcLink[m]&gt;eMax:</div>
-<div class="line"><span class="lineno">  402</span>        eMax = mcLink[m]</div>
-<div class="line"><span class="lineno">  403</span>        mMax = m</div>
-<div class="line"><span class="lineno">  404</span>  <span class="keywordflow">return</span> mMax,eMax/aClus.Energy()</div>
-<div class="line"><span class="lineno">  405</span> </div>
+<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00383">383</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  383</span><span class="keyword">def </span>ecalCluster2MC(aClus):</div>
+<div class="line"><span class="lineno">  384</span> <span class="comment"># return MC track most contributing, and its fraction of energy</span></div>
+<div class="line"><span class="lineno">  385</span>  trackid    = ctypes.c_int()</div>
+<div class="line"><span class="lineno">  386</span>  energy_dep = ctypes.c_double()</div>
+<div class="line"><span class="lineno">  387</span>  mcLink = {}</div>
+<div class="line"><span class="lineno">  388</span>  <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range( aClus.Size() ):</div>
+<div class="line"><span class="lineno">  389</span>    mccell = <a class="code hl_function" href="classecalStructure.html#ac855bf7c93f3622af20ffde3f19a5948">ecalStructure.GetHitCell</a>(aClus.CellNum(i))  <span class="comment"># Get i&#39;th cell of the cluster.</span></div>
+<div class="line"><span class="lineno">  390</span>    <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range( mccell.TrackEnergySize()):</div>
+<div class="line"><span class="lineno">  391</span>      mccell.GetTrackEnergySlow(n, trackid, energy_dep)</div>
+<div class="line"><span class="lineno">  392</span>      <span class="keywordflow">if</span> <span class="keywordflow">not</span> abs(trackid.value)&lt;sTree.MCTrack.GetEntries(): tid = -1</div>
+<div class="line"><span class="lineno">  393</span>      <span class="keywordflow">else</span>: tid = trackid.value</div>
+<div class="line"><span class="lineno">  394</span>      <span class="keywordflow">if</span> tid <span class="keywordflow">not</span> <span class="keywordflow">in</span> mcLink: mcLink[tid]=0</div>
+<div class="line"><span class="lineno">  395</span>      mcLink[tid]+=energy_dep.value</div>
+<div class="line"><span class="lineno">  396</span><span class="comment"># find trackid most contributing</span></div>
+<div class="line"><span class="lineno">  397</span>  eMax,mMax = 0,-1</div>
+<div class="line"><span class="lineno">  398</span>  <span class="keywordflow">for</span> m <span class="keywordflow">in</span> mcLink:</div>
+<div class="line"><span class="lineno">  399</span>     <span class="keywordflow">if</span> mcLink[m]&gt;eMax:</div>
+<div class="line"><span class="lineno">  400</span>        eMax = mcLink[m]</div>
+<div class="line"><span class="lineno">  401</span>        mMax = m</div>
+<div class="line"><span class="lineno">  402</span>  <span class="keywordflow">return</span> mMax,eMax/aClus.Energy()</div>
+<div class="line"><span class="lineno">  403</span> </div>
 <div class="ttc" id="aclassecalStructure_html_ac855bf7c93f3622af20ffde3f19a5948"><div class="ttname"><a href="classecalStructure.html#ac855bf7c93f3622af20ffde3f19a5948">ecalStructure::GetHitCell</a></div><div class="ttdeci">ecalCell * GetHitCell(const Int_t hitId) const</div><div class="ttdef"><b>Definition</b> <a href="ecalStructure_8cxx_source.html#l00354">ecalStructure.cxx:354</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -502,28 +502,28 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00350">350</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  350</span><span class="keyword">def </span>fitSingleGauss(x,ba=None,be=None):</div>
-<div class="line"><span class="lineno">  351</span>    name    = <span class="stringliteral">&#39;myGauss_&#39;</span>+x</div>
-<div class="line"><span class="lineno">  352</span>    myGauss = h[x].GetListOfFunctions().FindObject(name)</div>
-<div class="line"><span class="lineno">  353</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> myGauss:</div>
-<div class="line"><span class="lineno">  354</span>       <span class="keywordflow">if</span> <span class="keywordflow">not</span> ba : ba = h[x].GetBinCenter(1)</div>
-<div class="line"><span class="lineno">  355</span>       <span class="keywordflow">if</span> <span class="keywordflow">not</span> be : be = h[x].GetBinCenter(h[x].GetNbinsX())</div>
-<div class="line"><span class="lineno">  356</span>       bw    = h[x].GetBinWidth(1)</div>
-<div class="line"><span class="lineno">  357</span>       mean  = h[x].GetMean()</div>
-<div class="line"><span class="lineno">  358</span>       sigma = h[x].GetRMS()</div>
-<div class="line"><span class="lineno">  359</span>       norm  = h[x].GetEntries()*0.3</div>
-<div class="line"><span class="lineno">  360</span>       myGauss = ROOT.TF1(name,<span class="stringliteral">&#39;[0]*&#39;</span>+str(bw)+<span class="stringliteral">&#39;/([2]*sqrt(2*pi))*exp(-0.5*((x-[1])/[2])**2)+[3]&#39;</span>,4)</div>
-<div class="line"><span class="lineno">  361</span>       myGauss.SetParameter(0,norm)</div>
-<div class="line"><span class="lineno">  362</span>       myGauss.SetParameter(1,mean)</div>
-<div class="line"><span class="lineno">  363</span>       myGauss.SetParameter(2,sigma)</div>
-<div class="line"><span class="lineno">  364</span>       myGauss.SetParameter(3,1.)</div>
-<div class="line"><span class="lineno">  365</span>       myGauss.SetParName(0,<span class="stringliteral">&#39;Signal&#39;</span>)</div>
-<div class="line"><span class="lineno">  366</span>       myGauss.SetParName(1,<span class="stringliteral">&#39;Mean&#39;</span>)</div>
-<div class="line"><span class="lineno">  367</span>       myGauss.SetParName(2,<span class="stringliteral">&#39;Sigma&#39;</span>)</div>
-<div class="line"><span class="lineno">  368</span>       myGauss.SetParName(3,<span class="stringliteral">&#39;bckgr&#39;</span>)</div>
-<div class="line"><span class="lineno">  369</span>    h[x].Fit(myGauss,<span class="stringliteral">&#39;&#39;</span>,<span class="stringliteral">&#39;&#39;</span>,ba,be)</div>
-<div class="line"><span class="lineno">  370</span> </div>
+<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00348">348</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  348</span><span class="keyword">def </span>fitSingleGauss(x,ba=None,be=None):</div>
+<div class="line"><span class="lineno">  349</span>    name    = <span class="stringliteral">&#39;myGauss_&#39;</span>+x</div>
+<div class="line"><span class="lineno">  350</span>    myGauss = h[x].GetListOfFunctions().FindObject(name)</div>
+<div class="line"><span class="lineno">  351</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> myGauss:</div>
+<div class="line"><span class="lineno">  352</span>       <span class="keywordflow">if</span> <span class="keywordflow">not</span> ba : ba = h[x].GetBinCenter(1)</div>
+<div class="line"><span class="lineno">  353</span>       <span class="keywordflow">if</span> <span class="keywordflow">not</span> be : be = h[x].GetBinCenter(h[x].GetNbinsX())</div>
+<div class="line"><span class="lineno">  354</span>       bw    = h[x].GetBinWidth(1)</div>
+<div class="line"><span class="lineno">  355</span>       mean  = h[x].GetMean()</div>
+<div class="line"><span class="lineno">  356</span>       sigma = h[x].GetRMS()</div>
+<div class="line"><span class="lineno">  357</span>       norm  = h[x].GetEntries()*0.3</div>
+<div class="line"><span class="lineno">  358</span>       myGauss = ROOT.TF1(name,<span class="stringliteral">&#39;[0]*&#39;</span>+str(bw)+<span class="stringliteral">&#39;/([2]*sqrt(2*pi))*exp(-0.5*((x-[1])/[2])**2)+[3]&#39;</span>,4)</div>
+<div class="line"><span class="lineno">  359</span>       myGauss.SetParameter(0,norm)</div>
+<div class="line"><span class="lineno">  360</span>       myGauss.SetParameter(1,mean)</div>
+<div class="line"><span class="lineno">  361</span>       myGauss.SetParameter(2,sigma)</div>
+<div class="line"><span class="lineno">  362</span>       myGauss.SetParameter(3,1.)</div>
+<div class="line"><span class="lineno">  363</span>       myGauss.SetParName(0,<span class="stringliteral">&#39;Signal&#39;</span>)</div>
+<div class="line"><span class="lineno">  364</span>       myGauss.SetParName(1,<span class="stringliteral">&#39;Mean&#39;</span>)</div>
+<div class="line"><span class="lineno">  365</span>       myGauss.SetParName(2,<span class="stringliteral">&#39;Sigma&#39;</span>)</div>
+<div class="line"><span class="lineno">  366</span>       myGauss.SetParName(3,<span class="stringliteral">&#39;bckgr&#39;</span>)</div>
+<div class="line"><span class="lineno">  367</span>    h[x].Fit(myGauss,<span class="stringliteral">&#39;&#39;</span>,<span class="stringliteral">&#39;&#39;</span>,ba,be)</div>
+<div class="line"><span class="lineno">  368</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -553,16 +553,16 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00262">262</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  262</span><span class="keyword">def </span>getPtruthFirst(sTree,mcPartKey):</div>
-<div class="line"><span class="lineno">  263</span>   Ptruth,Ptruthx,Ptruthy,Ptruthz = -1.,-1.,-1.,-1.</div>
-<div class="line"><span class="lineno">  264</span>   <span class="keywordflow">for</span> ahit <span class="keywordflow">in</span> sTree.strawtubesPoint:</div>
-<div class="line"><span class="lineno">  265</span>     <span class="keywordflow">if</span> ahit.GetTrackID() == mcPartKey:</div>
-<div class="line"><span class="lineno">  266</span>        Ptruthx,Ptruthy,Ptruthz = ahit.GetPx(),ahit.GetPy(),ahit.GetPz()</div>
-<div class="line"><span class="lineno">  267</span>        Ptruth  = ROOT.TMath.Sqrt(Ptruthx**2+Ptruthy**2+Ptruthz**2)</div>
-<div class="line"><span class="lineno">  268</span>        <span class="keywordflow">break</span></div>
-<div class="line"><span class="lineno">  269</span>   <span class="keywordflow">return</span> Ptruth,Ptruthx,Ptruthy,Ptruthz</div>
-<div class="line"><span class="lineno">  270</span> </div>
+<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00260">260</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  260</span><span class="keyword">def </span>getPtruthFirst(sTree,mcPartKey):</div>
+<div class="line"><span class="lineno">  261</span>   Ptruth,Ptruthx,Ptruthy,Ptruthz = -1.,-1.,-1.,-1.</div>
+<div class="line"><span class="lineno">  262</span>   <span class="keywordflow">for</span> ahit <span class="keywordflow">in</span> sTree.strawtubesPoint:</div>
+<div class="line"><span class="lineno">  263</span>     <span class="keywordflow">if</span> ahit.GetTrackID() == mcPartKey:</div>
+<div class="line"><span class="lineno">  264</span>        Ptruthx,Ptruthy,Ptruthz = ahit.GetPx(),ahit.GetPy(),ahit.GetPz()</div>
+<div class="line"><span class="lineno">  265</span>        Ptruth  = ROOT.TMath.Sqrt(Ptruthx**2+Ptruthy**2+Ptruthz**2)</div>
+<div class="line"><span class="lineno">  266</span>        <span class="keywordflow">break</span></div>
+<div class="line"><span class="lineno">  267</span>   <span class="keywordflow">return</span> Ptruth,Ptruthx,Ptruthy,Ptruthz</div>
+<div class="line"><span class="lineno">  268</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -581,43 +581,43 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00771">771</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  771</span><span class="keyword">def </span>HNLKinematics():</div>
-<div class="line"><span class="lineno">  772</span> HNLorigin={}</div>
-<div class="line"><span class="lineno">  773</span> ut.bookHist(h,<span class="stringliteral">&#39;HNLmomNoW&#39;</span>,<span class="stringliteral">&#39;momentum unweighted&#39;</span>,100,0.,300.)</div>
-<div class="line"><span class="lineno">  774</span> ut.bookHist(h,<span class="stringliteral">&#39;HNLmom&#39;</span>,<span class="stringliteral">&#39;momentum&#39;</span>,100,0.,300.)</div>
-<div class="line"><span class="lineno">  775</span> ut.bookHist(h,<span class="stringliteral">&#39;HNLPtNoW&#39;</span>,<span class="stringliteral">&#39;Pt unweighted&#39;</span>,100,0.,10.)</div>
-<div class="line"><span class="lineno">  776</span> ut.bookHist(h,<span class="stringliteral">&#39;HNLPt&#39;</span>,<span class="stringliteral">&#39;Pt&#39;</span>,100,0.,10.)</div>
-<div class="line"><span class="lineno">  777</span> ut.bookHist(h,<span class="stringliteral">&#39;HNLmom_recTracks&#39;</span>,<span class="stringliteral">&#39;momentum&#39;</span>,100,0.,300.)</div>
-<div class="line"><span class="lineno">  778</span> ut.bookHist(h,<span class="stringliteral">&#39;HNLmomNoW_recTracks&#39;</span>,<span class="stringliteral">&#39;momentum unweighted&#39;</span>,100,0.,300.)</div>
-<div class="line"><span class="lineno">  779</span> <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(sTree.GetEntries()):</div>
-<div class="line"><span class="lineno">  780</span>  rc = sTree.GetEntry(n)</div>
-<div class="line"><span class="lineno">  781</span>  <span class="keywordflow">for</span> hnlkey <span class="keywordflow">in</span> [1,2]:</div>
-<div class="line"><span class="lineno">  782</span>   <span class="keywordflow">if</span> abs(sTree.MCTrack[hnlkey].GetPdgCode()) == 9900015:</div>
-<div class="line"><span class="lineno">  783</span>    theHNL = sTree.MCTrack[hnlkey]</div>
-<div class="line"><span class="lineno">  784</span>    wg = theHNL.GetWeight()</div>
-<div class="line"><span class="lineno">  785</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> wg&gt;0.: wg=1.</div>
-<div class="line"><span class="lineno">  786</span>    idMother = abs(sTree.MCTrack[hnlkey-1].GetPdgCode())</div>
-<div class="line"><span class="lineno">  787</span>    <span class="keywordflow">if</span> idMother <span class="keywordflow">not</span> <span class="keywordflow">in</span> HNLorigin: HNLorigin[idMother]=0</div>
-<div class="line"><span class="lineno">  788</span>    HNLorigin[idMother]+=wg</div>
-<div class="line"><span class="lineno">  789</span>    P = theHNL.GetP()</div>
-<div class="line"><span class="lineno">  790</span>    Pt = theHNL.GetPt()</div>
-<div class="line"><span class="lineno">  791</span>    h[<span class="stringliteral">&#39;HNLmom&#39;</span>].Fill(P,wg)</div>
-<div class="line"><span class="lineno">  792</span>    h[<span class="stringliteral">&#39;HNLmomNoW&#39;</span>].Fill(P)</div>
-<div class="line"><span class="lineno">  793</span>    h[<span class="stringliteral">&#39;HNLPt&#39;</span>].Fill(Pt,wg)</div>
-<div class="line"><span class="lineno">  794</span>    h[<span class="stringliteral">&#39;HNLPtNoW&#39;</span>].Fill(Pt)</div>
-<div class="line"><span class="lineno">  795</span>    <span class="keywordflow">for</span> HNL <span class="keywordflow">in</span> sTree.Particles:</div>
-<div class="line"><span class="lineno">  796</span>     t1,t2 = HNL.GetDaughter(0),HNL.GetDaughter(1)</div>
-<div class="line"><span class="lineno">  797</span>     <span class="keywordflow">for</span> tr <span class="keywordflow">in</span> [t1,t2]:</div>
-<div class="line"><span class="lineno">  798</span>      xx  = sTree.FitTracks[tr].getFittedState()</div>
-<div class="line"><span class="lineno">  799</span>      Prec = xx.getMom().Mag()</div>
-<div class="line"><span class="lineno">  800</span>      h[<span class="stringliteral">&#39;HNLmom_recTracks&#39;</span>].Fill(Prec,wg)</div>
-<div class="line"><span class="lineno">  801</span>      h[<span class="stringliteral">&#39;HNLmomNoW_recTracks&#39;</span>].Fill(Prec)</div>
-<div class="line"><span class="lineno">  802</span> theSum = 0</div>
-<div class="line"><span class="lineno">  803</span> <span class="keywordflow">for</span> x <span class="keywordflow">in</span> HNLorigin: theSum+=HNLorigin[x]</div>
-<div class="line"><span class="lineno">  804</span> <span class="keywordflow">for</span> x <span class="keywordflow">in</span> HNLorigin: print(<span class="stringliteral">&quot;%4i : %5.4F relative fraction: %5.4F &quot;</span>%(x,HNLorigin[x],HNLorigin[x]/theSum))</div>
-<div class="line"><span class="lineno">  805</span><span class="comment">#</span></div>
-<div class="line"><span class="lineno">  806</span><span class="comment"># initialize ecalStructure</span></div>
+<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00760">760</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  760</span><span class="keyword">def </span>HNLKinematics():</div>
+<div class="line"><span class="lineno">  761</span> HNLorigin={}</div>
+<div class="line"><span class="lineno">  762</span> ut.bookHist(h,<span class="stringliteral">&#39;HNLmomNoW&#39;</span>,<span class="stringliteral">&#39;momentum unweighted&#39;</span>,100,0.,300.)</div>
+<div class="line"><span class="lineno">  763</span> ut.bookHist(h,<span class="stringliteral">&#39;HNLmom&#39;</span>,<span class="stringliteral">&#39;momentum&#39;</span>,100,0.,300.)</div>
+<div class="line"><span class="lineno">  764</span> ut.bookHist(h,<span class="stringliteral">&#39;HNLPtNoW&#39;</span>,<span class="stringliteral">&#39;Pt unweighted&#39;</span>,100,0.,10.)</div>
+<div class="line"><span class="lineno">  765</span> ut.bookHist(h,<span class="stringliteral">&#39;HNLPt&#39;</span>,<span class="stringliteral">&#39;Pt&#39;</span>,100,0.,10.)</div>
+<div class="line"><span class="lineno">  766</span> ut.bookHist(h,<span class="stringliteral">&#39;HNLmom_recTracks&#39;</span>,<span class="stringliteral">&#39;momentum&#39;</span>,100,0.,300.)</div>
+<div class="line"><span class="lineno">  767</span> ut.bookHist(h,<span class="stringliteral">&#39;HNLmomNoW_recTracks&#39;</span>,<span class="stringliteral">&#39;momentum unweighted&#39;</span>,100,0.,300.)</div>
+<div class="line"><span class="lineno">  768</span> <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(sTree.GetEntries()):</div>
+<div class="line"><span class="lineno">  769</span>  rc = sTree.GetEntry(n)</div>
+<div class="line"><span class="lineno">  770</span>  <span class="keywordflow">for</span> hnlkey <span class="keywordflow">in</span> [1,2]:</div>
+<div class="line"><span class="lineno">  771</span>   <span class="keywordflow">if</span> abs(sTree.MCTrack[hnlkey].GetPdgCode()) == 9900015:</div>
+<div class="line"><span class="lineno">  772</span>    theHNL = sTree.MCTrack[hnlkey]</div>
+<div class="line"><span class="lineno">  773</span>    wg = theHNL.GetWeight()</div>
+<div class="line"><span class="lineno">  774</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> wg&gt;0.: wg=1.</div>
+<div class="line"><span class="lineno">  775</span>    idMother = abs(sTree.MCTrack[hnlkey-1].GetPdgCode())</div>
+<div class="line"><span class="lineno">  776</span>    <span class="keywordflow">if</span> idMother <span class="keywordflow">not</span> <span class="keywordflow">in</span> HNLorigin: HNLorigin[idMother]=0</div>
+<div class="line"><span class="lineno">  777</span>    HNLorigin[idMother]+=wg</div>
+<div class="line"><span class="lineno">  778</span>    P = theHNL.GetP()</div>
+<div class="line"><span class="lineno">  779</span>    Pt = theHNL.GetPt()</div>
+<div class="line"><span class="lineno">  780</span>    h[<span class="stringliteral">&#39;HNLmom&#39;</span>].Fill(P,wg)</div>
+<div class="line"><span class="lineno">  781</span>    h[<span class="stringliteral">&#39;HNLmomNoW&#39;</span>].Fill(P)</div>
+<div class="line"><span class="lineno">  782</span>    h[<span class="stringliteral">&#39;HNLPt&#39;</span>].Fill(Pt,wg)</div>
+<div class="line"><span class="lineno">  783</span>    h[<span class="stringliteral">&#39;HNLPtNoW&#39;</span>].Fill(Pt)</div>
+<div class="line"><span class="lineno">  784</span>    <span class="keywordflow">for</span> HNL <span class="keywordflow">in</span> sTree.Particles:</div>
+<div class="line"><span class="lineno">  785</span>     t1,t2 = HNL.GetDaughter(0),HNL.GetDaughter(1)</div>
+<div class="line"><span class="lineno">  786</span>     <span class="keywordflow">for</span> tr <span class="keywordflow">in</span> [t1,t2]:</div>
+<div class="line"><span class="lineno">  787</span>      xx  = sTree.FitTracks[tr].getFittedState()</div>
+<div class="line"><span class="lineno">  788</span>      Prec = xx.getMom().Mag()</div>
+<div class="line"><span class="lineno">  789</span>      h[<span class="stringliteral">&#39;HNLmom_recTracks&#39;</span>].Fill(Prec,wg)</div>
+<div class="line"><span class="lineno">  790</span>      h[<span class="stringliteral">&#39;HNLmomNoW_recTracks&#39;</span>].Fill(Prec)</div>
+<div class="line"><span class="lineno">  791</span> theSum = 0</div>
+<div class="line"><span class="lineno">  792</span> <span class="keywordflow">for</span> x <span class="keywordflow">in</span> HNLorigin: theSum+=HNLorigin[x]</div>
+<div class="line"><span class="lineno">  793</span> <span class="keywordflow">for</span> x <span class="keywordflow">in</span> HNLorigin: print(<span class="stringliteral">&quot;%4i : %5.4F relative fraction: %5.4F &quot;</span>%(x,HNLorigin[x],HNLorigin[x]/theSum))</div>
+<div class="line"><span class="lineno">  794</span><span class="comment">#</span></div>
+<div class="line"><span class="lineno">  795</span><span class="comment"># initialize ecalStructure</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -653,17 +653,17 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00222">222</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  222</span><span class="keyword">def </span>ImpactParameter(point,tPos,tMom):</div>
-<div class="line"><span class="lineno">  223</span>  t = 0</div>
-<div class="line"><span class="lineno">  224</span>  <span class="keywordflow">if</span> hasattr(tMom,<span class="stringliteral">&#39;P&#39;</span>): P = tMom.P()</div>
-<div class="line"><span class="lineno">  225</span>  <span class="keywordflow">else</span>:                 P = tMom.Mag()</div>
-<div class="line"><span class="lineno">  226</span>  <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(3):   t += tMom(i)/P*(point(i)-tPos(i))</div>
-<div class="line"><span class="lineno">  227</span>  dist = 0</div>
-<div class="line"><span class="lineno">  228</span>  <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(3):   dist += (point(i)-tPos(i)-t*tMom(i)/P)**2</div>
-<div class="line"><span class="lineno">  229</span>  dist = ROOT.TMath.Sqrt(dist)</div>
-<div class="line"><span class="lineno">  230</span>  <span class="keywordflow">return</span> dist</div>
-<div class="line"><span class="lineno">  231</span><span class="comment">#</span></div>
+<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00220">220</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  220</span><span class="keyword">def </span>ImpactParameter(point,tPos,tMom):</div>
+<div class="line"><span class="lineno">  221</span>  t = 0</div>
+<div class="line"><span class="lineno">  222</span>  <span class="keywordflow">if</span> hasattr(tMom,<span class="stringliteral">&#39;P&#39;</span>): P = tMom.P()</div>
+<div class="line"><span class="lineno">  223</span>  <span class="keywordflow">else</span>:                 P = tMom.Mag()</div>
+<div class="line"><span class="lineno">  224</span>  <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(3):   t += tMom(i)/P*(point(i)-tPos(i))</div>
+<div class="line"><span class="lineno">  225</span>  dist = 0</div>
+<div class="line"><span class="lineno">  226</span>  <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(3):   dist += (point(i)-tPos(i)-t*tMom(i)/P)**2</div>
+<div class="line"><span class="lineno">  227</span>  dist = ROOT.TMath.Sqrt(dist)</div>
+<div class="line"><span class="lineno">  228</span>  <span class="keywordflow">return</span> dist</div>
+<div class="line"><span class="lineno">  229</span><span class="comment">#</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -699,15 +699,15 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00214">214</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  214</span><span class="keyword">def </span>isInFiducial(X,Y,Z):</div>
-<div class="line"><span class="lineno">  215</span>   <span class="keywordflow">if</span> <span class="keywordflow">not</span> fiducialCut: <span class="keywordflow">return</span> <span class="keyword">True</span></div>
-<div class="line"><span class="lineno">  216</span>   <span class="keywordflow">if</span> Z &gt; ShipGeo.TrackStation1.z : <span class="keywordflow">return</span> <span class="keyword">False</span></div>
-<div class="line"><span class="lineno">  217</span>   <span class="keywordflow">if</span> Z &lt; ShipGeo.vetoStation.z+100.*u.cm : <span class="keywordflow">return</span> <span class="keyword">False</span></div>
-<div class="line"><span class="lineno">  218</span>   <span class="comment"># typical x,y Vx resolution for exclusive HNL decays 0.3cm,0.15cm (gaussian width)</span></div>
-<div class="line"><span class="lineno">  219</span>   <span class="keywordflow">if</span> dist2InnerWall(X,Y,Z)&lt;5*u.cm: <span class="keywordflow">return</span> <span class="keyword">False</span></div>
-<div class="line"><span class="lineno">  220</span>   <span class="keywordflow">return</span> <span class="keyword">True</span></div>
-<div class="line"><span class="lineno">  221</span><span class="comment">#</span></div>
+<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00212">212</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  212</span><span class="keyword">def </span>isInFiducial(X,Y,Z):</div>
+<div class="line"><span class="lineno">  213</span>   <span class="keywordflow">if</span> <span class="keywordflow">not</span> fiducialCut: <span class="keywordflow">return</span> <span class="keyword">True</span></div>
+<div class="line"><span class="lineno">  214</span>   <span class="keywordflow">if</span> Z &gt; ShipGeo.TrackStation1.z : <span class="keywordflow">return</span> <span class="keyword">False</span></div>
+<div class="line"><span class="lineno">  215</span>   <span class="keywordflow">if</span> Z &lt; ShipGeo.vetoStation.z+100.*u.cm : <span class="keywordflow">return</span> <span class="keyword">False</span></div>
+<div class="line"><span class="lineno">  216</span>   <span class="comment"># typical x,y Vx resolution for exclusive HNL decays 0.3cm,0.15cm (gaussian width)</span></div>
+<div class="line"><span class="lineno">  217</span>   <span class="keywordflow">if</span> dist2InnerWall(X,Y,Z)&lt;5*u.cm: <span class="keywordflow">return</span> <span class="keyword">False</span></div>
+<div class="line"><span class="lineno">  218</span>   <span class="keywordflow">return</span> <span class="keyword">True</span></div>
+<div class="line"><span class="lineno">  219</span><span class="comment">#</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -726,123 +726,117 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00406">406</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  406</span><span class="keyword">def </span>makePlots():</div>
-<div class="line"><span class="lineno">  407</span>   ut.bookCanvas(h,key=<span class="stringliteral">&#39;ecalanalysis&#39;</span>,title=<span class="stringliteral">&#39;cluster map&#39;</span>,nx=800,ny=600,cx=1,cy=1)</div>
-<div class="line"><span class="lineno">  408</span>   cv = h[<span class="stringliteral">&#39;ecalanalysis&#39;</span>].cd(1)</div>
-<div class="line"><span class="lineno">  409</span>   h[<span class="stringliteral">&#39;ecalClusters&#39;</span>].Draw(<span class="stringliteral">&#39;colz&#39;</span>)</div>
-<div class="line"><span class="lineno">  410</span>   ut.bookCanvas(h,key=<span class="stringliteral">&#39;ecalCluster2Track&#39;</span>,title=<span class="stringliteral">&#39;Ecal cluster distances to track impact&#39;</span>,nx=1600,ny=800,cx=4,cy=2)</div>
-<div class="line"><span class="lineno">  411</span>   <span class="keywordflow">if</span> <span class="stringliteral">&quot;ecalReconstructed_dist_mu+&quot;</span> <span class="keywordflow">in</span> h:</div>
-<div class="line"><span class="lineno">  412</span>    cv = h[<span class="stringliteral">&#39;ecalCluster2Track&#39;</span>].cd(1)</div>
-<div class="line"><span class="lineno">  413</span>    h[<span class="stringliteral">&#39;ecalReconstructed_distx_mu+&#39;</span>].Draw()</div>
-<div class="line"><span class="lineno">  414</span>    cv = h[<span class="stringliteral">&#39;ecalCluster2Track&#39;</span>].cd(2)</div>
-<div class="line"><span class="lineno">  415</span>    h[<span class="stringliteral">&#39;ecalReconstructed_disty_mu+&#39;</span>].Draw()</div>
-<div class="line"><span class="lineno">  416</span>   <span class="keywordflow">if</span> <span class="stringliteral">&quot;ecalReconstructed_dist_pi+&quot;</span> <span class="keywordflow">in</span> h:</div>
-<div class="line"><span class="lineno">  417</span>    cv = h[<span class="stringliteral">&#39;ecalCluster2Track&#39;</span>].cd(3)</div>
-<div class="line"><span class="lineno">  418</span>    h[<span class="stringliteral">&#39;ecalReconstructed_distx_pi+&#39;</span>].Draw()</div>
-<div class="line"><span class="lineno">  419</span>    cv = h[<span class="stringliteral">&#39;ecalCluster2Track&#39;</span>].cd(4)</div>
-<div class="line"><span class="lineno">  420</span>    h[<span class="stringliteral">&#39;ecalReconstructed_disty_pi+&#39;</span>].Draw()</div>
-<div class="line"><span class="lineno">  421</span>   <span class="keywordflow">if</span> <span class="stringliteral">&quot;ecalReconstructed_dist_mu-&quot;</span> <span class="keywordflow">in</span> h:</div>
-<div class="line"><span class="lineno">  422</span>    cv = h[<span class="stringliteral">&#39;ecalCluster2Track&#39;</span>].cd(5)</div>
-<div class="line"><span class="lineno">  423</span>    h[<span class="stringliteral">&#39;ecalReconstructed_distx_mu-&#39;</span>].Draw()</div>
-<div class="line"><span class="lineno">  424</span>    cv = h[<span class="stringliteral">&#39;ecalCluster2Track&#39;</span>].cd(6)</div>
-<div class="line"><span class="lineno">  425</span>    h[<span class="stringliteral">&#39;ecalReconstructed_disty_mu-&#39;</span>].Draw()</div>
-<div class="line"><span class="lineno">  426</span>   <span class="keywordflow">if</span> <span class="stringliteral">&quot;ecalReconstructed_dist_pi-&quot;</span> <span class="keywordflow">in</span> h:</div>
-<div class="line"><span class="lineno">  427</span>    cv = h[<span class="stringliteral">&#39;ecalCluster2Track&#39;</span>].cd(7)</div>
-<div class="line"><span class="lineno">  428</span>    h[<span class="stringliteral">&#39;ecalReconstructed_distx_pi-&#39;</span>].Draw()</div>
-<div class="line"><span class="lineno">  429</span>    cv = h[<span class="stringliteral">&#39;ecalCluster2Track&#39;</span>].cd(8)</div>
-<div class="line"><span class="lineno">  430</span>    h[<span class="stringliteral">&#39;ecalReconstructed_disty_pi-&#39;</span>].Draw()</div>
-<div class="line"><span class="lineno">  431</span> </div>
-<div class="line"><span class="lineno">  432</span>   ut.bookCanvas(h,key=<span class="stringliteral">&#39;strawanalysis&#39;</span>,title=<span class="stringliteral">&#39;Distance to wire and mean nr of hits&#39;</span>,nx=1200,ny=600,cx=3,cy=1)</div>
-<div class="line"><span class="lineno">  433</span>   cv = h[<span class="stringliteral">&#39;strawanalysis&#39;</span>].cd(1)</div>
-<div class="line"><span class="lineno">  434</span>   h[<span class="stringliteral">&#39;disty&#39;</span>].Draw()</div>
-<div class="line"><span class="lineno">  435</span>   h[<span class="stringliteral">&#39;distu&#39;</span>].Draw(<span class="stringliteral">&#39;same&#39;</span>)</div>
-<div class="line"><span class="lineno">  436</span>   h[<span class="stringliteral">&#39;distv&#39;</span>].Draw(<span class="stringliteral">&#39;same&#39;</span>)</div>
-<div class="line"><span class="lineno">  437</span>   cv = h[<span class="stringliteral">&#39;strawanalysis&#39;</span>].cd(2)</div>
-<div class="line"><span class="lineno">  438</span>   h[<span class="stringliteral">&#39;meanhits&#39;</span>].Draw()</div>
-<div class="line"><span class="lineno">  439</span>   cv = h[<span class="stringliteral">&#39;strawanalysis&#39;</span>].cd(3)</div>
-<div class="line"><span class="lineno">  440</span>   h[<span class="stringliteral">&#39;meas2&#39;</span>].Draw()</div>
-<div class="line"><span class="lineno">  441</span>   ut.bookCanvas(h,key=<span class="stringliteral">&#39;fitresults&#39;</span>,title=<span class="stringliteral">&#39;Fit Results&#39;</span>,nx=1600,ny=1200,cx=2,cy=2)</div>
-<div class="line"><span class="lineno">  442</span>   cv = h[<span class="stringliteral">&#39;fitresults&#39;</span>].cd(1)</div>
-<div class="line"><span class="lineno">  443</span>   h[<span class="stringliteral">&#39;delPOverPz&#39;</span>].Draw(<span class="stringliteral">&#39;box&#39;</span>)</div>
-<div class="line"><span class="lineno">  444</span>   cv = h[<span class="stringliteral">&#39;fitresults&#39;</span>].cd(2)</div>
-<div class="line"><span class="lineno">  445</span>   cv.SetLogy(1)</div>
-<div class="line"><span class="lineno">  446</span>   h[<span class="stringliteral">&#39;prob&#39;</span>].Draw()</div>
-<div class="line"><span class="lineno">  447</span>   cv = h[<span class="stringliteral">&#39;fitresults&#39;</span>].cd(3)</div>
-<div class="line"><span class="lineno">  448</span>   h[<span class="stringliteral">&#39;delPOverPz_proj&#39;</span>] = h[<span class="stringliteral">&#39;delPOverPz&#39;</span>].ProjectionY()</div>
-<div class="line"><span class="lineno">  449</span>   ROOT.gStyle.SetOptFit(11111)</div>
-<div class="line"><span class="lineno">  450</span>   h[<span class="stringliteral">&#39;delPOverPz_proj&#39;</span>].Draw()</div>
-<div class="line"><span class="lineno">  451</span>   h[<span class="stringliteral">&#39;delPOverPz_proj&#39;</span>].Fit(<span class="stringliteral">&#39;gaus&#39;</span>)</div>
-<div class="line"><span class="lineno">  452</span>   cv = h[<span class="stringliteral">&#39;fitresults&#39;</span>].cd(4)</div>
-<div class="line"><span class="lineno">  453</span>   h[<span class="stringliteral">&#39;delPOverP2z_proj&#39;</span>] = h[<span class="stringliteral">&#39;delPOverP2z&#39;</span>].ProjectionY()</div>
-<div class="line"><span class="lineno">  454</span>   h[<span class="stringliteral">&#39;delPOverP2z_proj&#39;</span>].Draw()</div>
-<div class="line"><span class="lineno">  455</span>   fitSingleGauss(<span class="stringliteral">&#39;delPOverP2z_proj&#39;</span>)</div>
-<div class="line"><span class="lineno">  456</span>   h[<span class="stringliteral">&#39;fitresults&#39;</span>].Print(<span class="stringliteral">&#39;fitresults.gif&#39;</span>)</div>
-<div class="line"><span class="lineno">  457</span>   <span class="keywordflow">for</span> x <span class="keywordflow">in</span> [<span class="stringliteral">&#39;&#39;</span>,<span class="stringliteral">&#39;_pi0&#39;</span>]:</div>
-<div class="line"><span class="lineno">  458</span>    ut.bookCanvas(h,key=<span class="stringliteral">&#39;fitresults2&#39;</span>+x,title=<span class="stringliteral">&#39;Fit Results &#39;</span>+x,nx=1600,ny=1200,cx=2,cy=2)</div>
-<div class="line"><span class="lineno">  459</span>    cv = h[<span class="stringliteral">&#39;fitresults2&#39;</span>+x].cd(1)</div>
-<div class="line"><span class="lineno">  460</span>    <span class="keywordflow">if</span> x==<span class="stringliteral">&#39;&#39;</span>:</div>
-<div class="line"><span class="lineno">  461</span>     h[<span class="stringliteral">&#39;Doca&#39;</span>].SetXTitle(<span class="stringliteral">&#39;closest distance between 2 tracks   [cm]&#39;</span>)</div>
-<div class="line"><span class="lineno">  462</span>     h[<span class="stringliteral">&#39;Doca&#39;</span>].SetYTitle(<span class="stringliteral">&#39;N/1mm&#39;</span>)</div>
-<div class="line"><span class="lineno">  463</span>     h[<span class="stringliteral">&#39;Doca&#39;</span>].Draw()</div>
-<div class="line"><span class="lineno">  464</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  465</span>     h[<span class="stringliteral">&#39;pi0Mass&#39;</span>].SetXTitle(<span class="stringliteral">&#39;#gamma #gamma invariant mass   [GeV/c^{2}]&#39;</span>)</div>
-<div class="line"><span class="lineno">  466</span>     h[<span class="stringliteral">&#39;pi0Mass&#39;</span>].SetYTitle(<span class="stringliteral">&#39;N/&#39;</span>+str(int(h[<span class="stringliteral">&#39;pi0Mass&#39;</span>].GetBinWidth(1)*1000))+<span class="stringliteral">&#39;MeV&#39;</span>)</div>
-<div class="line"><span class="lineno">  467</span>     h[<span class="stringliteral">&#39;pi0Mass&#39;</span>].Draw()</div>
-<div class="line"><span class="lineno">  468</span>     fitResult = h[<span class="stringliteral">&#39;pi0Mass&#39;</span>].Fit(<span class="stringliteral">&#39;gaus&#39;</span>,<span class="stringliteral">&#39;S&#39;</span>,<span class="stringliteral">&#39;&#39;</span>,0.08,0.19)</div>
-<div class="line"><span class="lineno">  469</span>    cv = h[<span class="stringliteral">&#39;fitresults2&#39;</span>+x].cd(2)</div>
-<div class="line"><span class="lineno">  470</span>    h[<span class="stringliteral">&#39;IP0&#39;</span>+x].SetXTitle(<span class="stringliteral">&#39;impact parameter to p-target   [cm]&#39;</span>)</div>
-<div class="line"><span class="lineno">  471</span>    h[<span class="stringliteral">&#39;IP0&#39;</span>+x].SetYTitle(<span class="stringliteral">&#39;N/1cm&#39;</span>)</div>
-<div class="line"><span class="lineno">  472</span>    h[<span class="stringliteral">&#39;IP0&#39;</span>+x].Draw()</div>
-<div class="line"><span class="lineno">  473</span>    cv = h[<span class="stringliteral">&#39;fitresults2&#39;</span>+x].cd(3)</div>
-<div class="line"><span class="lineno">  474</span>    h[<span class="stringliteral">&#39;HNL&#39;</span>+x].SetXTitle(<span class="stringliteral">&#39;inv. mass  [GeV/c^{2}]&#39;</span>)</div>
-<div class="line"><span class="lineno">  475</span>    h[<span class="stringliteral">&#39;HNL&#39;</span>+x].SetYTitle(<span class="stringliteral">&#39;N/4MeV/c2&#39;</span>)</div>
-<div class="line"><span class="lineno">  476</span>    h[<span class="stringliteral">&#39;HNL&#39;</span>+x].Draw()</div>
-<div class="line"><span class="lineno">  477</span>    fitSingleGauss(<span class="stringliteral">&#39;HNL&#39;</span>+x,0.9,1.1)</div>
-<div class="line"><span class="lineno">  478</span>    cv = h[<span class="stringliteral">&#39;fitresults2&#39;</span>+x].cd(4)</div>
-<div class="line"><span class="lineno">  479</span>    h[<span class="stringliteral">&#39;IP0/mass&#39;</span>+x].SetXTitle(<span class="stringliteral">&#39;inv. mass  [GeV/c^{2}]&#39;</span>)</div>
-<div class="line"><span class="lineno">  480</span>    h[<span class="stringliteral">&#39;IP0/mass&#39;</span>+x].SetYTitle(<span class="stringliteral">&#39;IP [cm]&#39;</span>)</div>
-<div class="line"><span class="lineno">  481</span>    h[<span class="stringliteral">&#39;IP0/mass&#39;</span>+x].Draw(<span class="stringliteral">&#39;colz&#39;</span>)</div>
-<div class="line"><span class="lineno">  482</span>    h[<span class="stringliteral">&#39;fitresults2&#39;</span>+x].Print(<span class="stringliteral">&#39;fitresults2&#39;</span>+x+<span class="stringliteral">&#39;.gif&#39;</span>)</div>
-<div class="line"><span class="lineno">  483</span>   ut.bookCanvas(h,key=<span class="stringliteral">&#39;vxpulls&#39;</span>,title=<span class="stringliteral">&#39;Vertex resol and pulls&#39;</span>,nx=1600,ny=1200,cx=3,cy=2)</div>
-<div class="line"><span class="lineno">  484</span>   cv = h[<span class="stringliteral">&#39;vxpulls&#39;</span>].cd(4)</div>
-<div class="line"><span class="lineno">  485</span>   h[<span class="stringliteral">&#39;Vxpull&#39;</span>].Draw()</div>
-<div class="line"><span class="lineno">  486</span>   cv = h[<span class="stringliteral">&#39;vxpulls&#39;</span>].cd(5)</div>
-<div class="line"><span class="lineno">  487</span>   h[<span class="stringliteral">&#39;Vypull&#39;</span>].Draw()</div>
-<div class="line"><span class="lineno">  488</span>   cv = h[<span class="stringliteral">&#39;vxpulls&#39;</span>].cd(6)</div>
-<div class="line"><span class="lineno">  489</span>   h[<span class="stringliteral">&#39;Vzpull&#39;</span>].Draw()</div>
-<div class="line"><span class="lineno">  490</span>   cv = h[<span class="stringliteral">&#39;vxpulls&#39;</span>].cd(1)</div>
-<div class="line"><span class="lineno">  491</span>   h[<span class="stringliteral">&#39;Vxresol&#39;</span>].Draw()</div>
-<div class="line"><span class="lineno">  492</span>   cv = h[<span class="stringliteral">&#39;vxpulls&#39;</span>].cd(2)</div>
-<div class="line"><span class="lineno">  493</span>   h[<span class="stringliteral">&#39;Vyresol&#39;</span>].Draw()</div>
-<div class="line"><span class="lineno">  494</span>   cv = h[<span class="stringliteral">&#39;vxpulls&#39;</span>].cd(3)</div>
-<div class="line"><span class="lineno">  495</span>   h[<span class="stringliteral">&#39;Vzresol&#39;</span>].Draw()</div>
-<div class="line"><span class="lineno">  496</span>   ut.bookCanvas(h,key=<span class="stringliteral">&#39;trpulls&#39;</span>,title=<span class="stringliteral">&#39;momentum pulls&#39;</span>,nx=1600,ny=600,cx=3,cy=1)</div>
-<div class="line"><span class="lineno">  497</span>   cv = h[<span class="stringliteral">&#39;trpulls&#39;</span>].cd(1)</div>
-<div class="line"><span class="lineno">  498</span>   h[<span class="stringliteral">&#39;pullPOverPx_proj&#39;</span>]=h[<span class="stringliteral">&#39;pullPOverPx&#39;</span>].ProjectionY()</div>
-<div class="line"><span class="lineno">  499</span>   h[<span class="stringliteral">&#39;pullPOverPx_proj&#39;</span>].Draw()</div>
-<div class="line"><span class="lineno">  500</span>   cv = h[<span class="stringliteral">&#39;trpulls&#39;</span>].cd(2)</div>
-<div class="line"><span class="lineno">  501</span>   h[<span class="stringliteral">&#39;pullPOverPy_proj&#39;</span>]=h[<span class="stringliteral">&#39;pullPOverPy&#39;</span>].ProjectionY()</div>
-<div class="line"><span class="lineno">  502</span>   h[<span class="stringliteral">&#39;pullPOverPy_proj&#39;</span>].Draw()</div>
-<div class="line"><span class="lineno">  503</span>   cv = h[<span class="stringliteral">&#39;trpulls&#39;</span>].cd(3)</div>
-<div class="line"><span class="lineno">  504</span>   h[<span class="stringliteral">&#39;pullPOverPz_proj&#39;</span>]=h[<span class="stringliteral">&#39;pullPOverPz&#39;</span>].ProjectionY()</div>
-<div class="line"><span class="lineno">  505</span>   h[<span class="stringliteral">&#39;pullPOverPz_proj&#39;</span>].Draw()</div>
-<div class="line"><span class="lineno">  506</span>   ut.bookCanvas(h,key=<span class="stringliteral">&#39;vetodecisions&#39;</span>,title=<span class="stringliteral">&#39;Veto Detectors&#39;</span>,nx=1600,ny=600,cx=4,cy=1)</div>
-<div class="line"><span class="lineno">  507</span>   cv = h[<span class="stringliteral">&#39;vetodecisions&#39;</span>].cd(1)</div>
-<div class="line"><span class="lineno">  508</span>   cv.SetLogy(1)</div>
-<div class="line"><span class="lineno">  509</span>   h[<span class="stringliteral">&#39;nrtracks&#39;</span>].Draw()</div>
-<div class="line"><span class="lineno">  510</span>   cv = h[<span class="stringliteral">&#39;vetodecisions&#39;</span>].cd(2)</div>
-<div class="line"><span class="lineno">  511</span>   cv.SetLogy(1)</div>
-<div class="line"><span class="lineno">  512</span>   h[<span class="stringliteral">&#39;nrSVT&#39;</span>].Draw()</div>
-<div class="line"><span class="lineno">  513</span>   cv = h[<span class="stringliteral">&#39;vetodecisions&#39;</span>].cd(3)</div>
-<div class="line"><span class="lineno">  514</span>   cv.SetLogy(1)</div>
-<div class="line"><span class="lineno">  515</span>   h[<span class="stringliteral">&#39;nrSBT&#39;</span>].Draw()</div>
-<div class="line"><span class="lineno">  516</span>   cv = h[<span class="stringliteral">&#39;vetodecisions&#39;</span>].cd(4)</div>
-<div class="line"><span class="lineno">  517</span>   cv.SetLogy(1)</div>
-<div class="line"><span class="lineno">  518</span>   h[<span class="stringliteral">&#39;nrRPC&#39;</span>].Draw()</div>
-<div class="line"><span class="lineno">  519</span><span class="comment">#</span></div>
-<div class="line"><span class="lineno">  520</span>   print(<span class="stringliteral">&#39;finished making plots&#39;</span>)</div>
-<div class="line"><span class="lineno">  521</span><span class="comment"># calculate z front face of ecal, needed later</span></div>
+<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00404">404</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  404</span><span class="keyword">def </span>makePlots():</div>
+<div class="line"><span class="lineno">  405</span>   ut.bookCanvas(h,key=<span class="stringliteral">&#39;ecalanalysis&#39;</span>,title=<span class="stringliteral">&#39;cluster map&#39;</span>,nx=800,ny=600,cx=1,cy=1)</div>
+<div class="line"><span class="lineno">  406</span>   cv = h[<span class="stringliteral">&#39;ecalanalysis&#39;</span>].cd(1)</div>
+<div class="line"><span class="lineno">  407</span>   h[<span class="stringliteral">&#39;ecalClusters&#39;</span>].Draw(<span class="stringliteral">&#39;colz&#39;</span>)</div>
+<div class="line"><span class="lineno">  408</span>   ut.bookCanvas(h,key=<span class="stringliteral">&#39;ecalCluster2Track&#39;</span>,title=<span class="stringliteral">&#39;Ecal cluster distances to track impact&#39;</span>,nx=1600,ny=800,cx=4,cy=2)</div>
+<div class="line"><span class="lineno">  409</span>   <span class="keywordflow">if</span> <span class="stringliteral">&quot;ecalReconstructed_dist_mu+&quot;</span> <span class="keywordflow">in</span> h:</div>
+<div class="line"><span class="lineno">  410</span>    cv = h[<span class="stringliteral">&#39;ecalCluster2Track&#39;</span>].cd(1)</div>
+<div class="line"><span class="lineno">  411</span>    h[<span class="stringliteral">&#39;ecalReconstructed_distx_mu+&#39;</span>].Draw()</div>
+<div class="line"><span class="lineno">  412</span>    cv = h[<span class="stringliteral">&#39;ecalCluster2Track&#39;</span>].cd(2)</div>
+<div class="line"><span class="lineno">  413</span>    h[<span class="stringliteral">&#39;ecalReconstructed_disty_mu+&#39;</span>].Draw()</div>
+<div class="line"><span class="lineno">  414</span>   <span class="keywordflow">if</span> <span class="stringliteral">&quot;ecalReconstructed_dist_pi+&quot;</span> <span class="keywordflow">in</span> h:</div>
+<div class="line"><span class="lineno">  415</span>    cv = h[<span class="stringliteral">&#39;ecalCluster2Track&#39;</span>].cd(3)</div>
+<div class="line"><span class="lineno">  416</span>    h[<span class="stringliteral">&#39;ecalReconstructed_distx_pi+&#39;</span>].Draw()</div>
+<div class="line"><span class="lineno">  417</span>    cv = h[<span class="stringliteral">&#39;ecalCluster2Track&#39;</span>].cd(4)</div>
+<div class="line"><span class="lineno">  418</span>    h[<span class="stringliteral">&#39;ecalReconstructed_disty_pi+&#39;</span>].Draw()</div>
+<div class="line"><span class="lineno">  419</span>   <span class="keywordflow">if</span> <span class="stringliteral">&quot;ecalReconstructed_dist_mu-&quot;</span> <span class="keywordflow">in</span> h:</div>
+<div class="line"><span class="lineno">  420</span>    cv = h[<span class="stringliteral">&#39;ecalCluster2Track&#39;</span>].cd(5)</div>
+<div class="line"><span class="lineno">  421</span>    h[<span class="stringliteral">&#39;ecalReconstructed_distx_mu-&#39;</span>].Draw()</div>
+<div class="line"><span class="lineno">  422</span>    cv = h[<span class="stringliteral">&#39;ecalCluster2Track&#39;</span>].cd(6)</div>
+<div class="line"><span class="lineno">  423</span>    h[<span class="stringliteral">&#39;ecalReconstructed_disty_mu-&#39;</span>].Draw()</div>
+<div class="line"><span class="lineno">  424</span>   <span class="keywordflow">if</span> <span class="stringliteral">&quot;ecalReconstructed_dist_pi-&quot;</span> <span class="keywordflow">in</span> h:</div>
+<div class="line"><span class="lineno">  425</span>    cv = h[<span class="stringliteral">&#39;ecalCluster2Track&#39;</span>].cd(7)</div>
+<div class="line"><span class="lineno">  426</span>    h[<span class="stringliteral">&#39;ecalReconstructed_distx_pi-&#39;</span>].Draw()</div>
+<div class="line"><span class="lineno">  427</span>    cv = h[<span class="stringliteral">&#39;ecalCluster2Track&#39;</span>].cd(8)</div>
+<div class="line"><span class="lineno">  428</span>    h[<span class="stringliteral">&#39;ecalReconstructed_disty_pi-&#39;</span>].Draw()</div>
+<div class="line"><span class="lineno">  429</span> </div>
+<div class="line"><span class="lineno">  430</span>   ut.bookCanvas(h,key=<span class="stringliteral">&#39;strawanalysis&#39;</span>,title=<span class="stringliteral">&#39;Distance to wire and mean nr of hits&#39;</span>,nx=1200,ny=600,cx=3,cy=1)</div>
+<div class="line"><span class="lineno">  431</span>   cv = h[<span class="stringliteral">&#39;strawanalysis&#39;</span>].cd(1)</div>
+<div class="line"><span class="lineno">  432</span>   h[<span class="stringliteral">&#39;disty&#39;</span>].Draw()</div>
+<div class="line"><span class="lineno">  433</span>   h[<span class="stringliteral">&#39;distu&#39;</span>].Draw(<span class="stringliteral">&#39;same&#39;</span>)</div>
+<div class="line"><span class="lineno">  434</span>   h[<span class="stringliteral">&#39;distv&#39;</span>].Draw(<span class="stringliteral">&#39;same&#39;</span>)</div>
+<div class="line"><span class="lineno">  435</span>   cv = h[<span class="stringliteral">&#39;strawanalysis&#39;</span>].cd(2)</div>
+<div class="line"><span class="lineno">  436</span>   h[<span class="stringliteral">&#39;meanhits&#39;</span>].Draw()</div>
+<div class="line"><span class="lineno">  437</span>   cv = h[<span class="stringliteral">&#39;strawanalysis&#39;</span>].cd(3)</div>
+<div class="line"><span class="lineno">  438</span>   h[<span class="stringliteral">&#39;meas2&#39;</span>].Draw()</div>
+<div class="line"><span class="lineno">  439</span>   ut.bookCanvas(h,key=<span class="stringliteral">&#39;fitresults&#39;</span>,title=<span class="stringliteral">&#39;Fit Results&#39;</span>,nx=1600,ny=1200,cx=2,cy=2)</div>
+<div class="line"><span class="lineno">  440</span>   cv = h[<span class="stringliteral">&#39;fitresults&#39;</span>].cd(1)</div>
+<div class="line"><span class="lineno">  441</span>   h[<span class="stringliteral">&#39;delPOverPz&#39;</span>].Draw(<span class="stringliteral">&#39;box&#39;</span>)</div>
+<div class="line"><span class="lineno">  442</span>   cv = h[<span class="stringliteral">&#39;fitresults&#39;</span>].cd(2)</div>
+<div class="line"><span class="lineno">  443</span>   cv.SetLogy(1)</div>
+<div class="line"><span class="lineno">  444</span>   h[<span class="stringliteral">&#39;prob&#39;</span>].Draw()</div>
+<div class="line"><span class="lineno">  445</span>   cv = h[<span class="stringliteral">&#39;fitresults&#39;</span>].cd(3)</div>
+<div class="line"><span class="lineno">  446</span>   h[<span class="stringliteral">&#39;delPOverPz_proj&#39;</span>] = h[<span class="stringliteral">&#39;delPOverPz&#39;</span>].ProjectionY()</div>
+<div class="line"><span class="lineno">  447</span>   ROOT.gStyle.SetOptFit(11111)</div>
+<div class="line"><span class="lineno">  448</span>   h[<span class="stringliteral">&#39;delPOverPz_proj&#39;</span>].Draw()</div>
+<div class="line"><span class="lineno">  449</span>   h[<span class="stringliteral">&#39;delPOverPz_proj&#39;</span>].Fit(<span class="stringliteral">&#39;gaus&#39;</span>)</div>
+<div class="line"><span class="lineno">  450</span>   cv = h[<span class="stringliteral">&#39;fitresults&#39;</span>].cd(4)</div>
+<div class="line"><span class="lineno">  451</span>   h[<span class="stringliteral">&#39;delPOverP2z_proj&#39;</span>] = h[<span class="stringliteral">&#39;delPOverP2z&#39;</span>].ProjectionY()</div>
+<div class="line"><span class="lineno">  452</span>   h[<span class="stringliteral">&#39;delPOverP2z_proj&#39;</span>].Draw()</div>
+<div class="line"><span class="lineno">  453</span>   fitSingleGauss(<span class="stringliteral">&#39;delPOverP2z_proj&#39;</span>)</div>
+<div class="line"><span class="lineno">  454</span>   h[<span class="stringliteral">&#39;fitresults&#39;</span>].Print(<span class="stringliteral">&#39;fitresults.gif&#39;</span>)</div>
+<div class="line"><span class="lineno">  455</span>   <span class="keywordflow">for</span> x <span class="keywordflow">in</span> [<span class="stringliteral">&#39;&#39;</span>,<span class="stringliteral">&#39;_pi0&#39;</span>]:</div>
+<div class="line"><span class="lineno">  456</span>    ut.bookCanvas(h,key=<span class="stringliteral">&#39;fitresults2&#39;</span>+x,title=<span class="stringliteral">&#39;Fit Results &#39;</span>+x,nx=1600,ny=1200,cx=2,cy=2)</div>
+<div class="line"><span class="lineno">  457</span>    cv = h[<span class="stringliteral">&#39;fitresults2&#39;</span>+x].cd(1)</div>
+<div class="line"><span class="lineno">  458</span>    <span class="keywordflow">if</span> x==<span class="stringliteral">&#39;&#39;</span>:</div>
+<div class="line"><span class="lineno">  459</span>     h[<span class="stringliteral">&#39;Doca&#39;</span>].SetXTitle(<span class="stringliteral">&#39;closest distance between 2 tracks   [cm]&#39;</span>)</div>
+<div class="line"><span class="lineno">  460</span>     h[<span class="stringliteral">&#39;Doca&#39;</span>].SetYTitle(<span class="stringliteral">&#39;N/1mm&#39;</span>)</div>
+<div class="line"><span class="lineno">  461</span>     h[<span class="stringliteral">&#39;Doca&#39;</span>].Draw()</div>
+<div class="line"><span class="lineno">  462</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  463</span>     h[<span class="stringliteral">&#39;pi0Mass&#39;</span>].SetXTitle(<span class="stringliteral">&#39;#gamma #gamma invariant mass   [GeV/c^{2}]&#39;</span>)</div>
+<div class="line"><span class="lineno">  464</span>     h[<span class="stringliteral">&#39;pi0Mass&#39;</span>].SetYTitle(<span class="stringliteral">&#39;N/&#39;</span>+str(int(h[<span class="stringliteral">&#39;pi0Mass&#39;</span>].GetBinWidth(1)*1000))+<span class="stringliteral">&#39;MeV&#39;</span>)</div>
+<div class="line"><span class="lineno">  465</span>     h[<span class="stringliteral">&#39;pi0Mass&#39;</span>].Draw()</div>
+<div class="line"><span class="lineno">  466</span>     fitResult = h[<span class="stringliteral">&#39;pi0Mass&#39;</span>].Fit(<span class="stringliteral">&#39;gaus&#39;</span>,<span class="stringliteral">&#39;S&#39;</span>,<span class="stringliteral">&#39;&#39;</span>,0.08,0.19)</div>
+<div class="line"><span class="lineno">  467</span>    cv = h[<span class="stringliteral">&#39;fitresults2&#39;</span>+x].cd(2)</div>
+<div class="line"><span class="lineno">  468</span>    h[<span class="stringliteral">&#39;IP0&#39;</span>+x].SetXTitle(<span class="stringliteral">&#39;impact parameter to p-target   [cm]&#39;</span>)</div>
+<div class="line"><span class="lineno">  469</span>    h[<span class="stringliteral">&#39;IP0&#39;</span>+x].SetYTitle(<span class="stringliteral">&#39;N/1cm&#39;</span>)</div>
+<div class="line"><span class="lineno">  470</span>    h[<span class="stringliteral">&#39;IP0&#39;</span>+x].Draw()</div>
+<div class="line"><span class="lineno">  471</span>    cv = h[<span class="stringliteral">&#39;fitresults2&#39;</span>+x].cd(3)</div>
+<div class="line"><span class="lineno">  472</span>    h[<span class="stringliteral">&#39;HNL&#39;</span>+x].SetXTitle(<span class="stringliteral">&#39;inv. mass  [GeV/c^{2}]&#39;</span>)</div>
+<div class="line"><span class="lineno">  473</span>    h[<span class="stringliteral">&#39;HNL&#39;</span>+x].SetYTitle(<span class="stringliteral">&#39;N/4MeV/c2&#39;</span>)</div>
+<div class="line"><span class="lineno">  474</span>    h[<span class="stringliteral">&#39;HNL&#39;</span>+x].Draw()</div>
+<div class="line"><span class="lineno">  475</span>    fitSingleGauss(<span class="stringliteral">&#39;HNL&#39;</span>+x,0.9,1.1)</div>
+<div class="line"><span class="lineno">  476</span>    cv = h[<span class="stringliteral">&#39;fitresults2&#39;</span>+x].cd(4)</div>
+<div class="line"><span class="lineno">  477</span>    h[<span class="stringliteral">&#39;IP0/mass&#39;</span>+x].SetXTitle(<span class="stringliteral">&#39;inv. mass  [GeV/c^{2}]&#39;</span>)</div>
+<div class="line"><span class="lineno">  478</span>    h[<span class="stringliteral">&#39;IP0/mass&#39;</span>+x].SetYTitle(<span class="stringliteral">&#39;IP [cm]&#39;</span>)</div>
+<div class="line"><span class="lineno">  479</span>    h[<span class="stringliteral">&#39;IP0/mass&#39;</span>+x].Draw(<span class="stringliteral">&#39;colz&#39;</span>)</div>
+<div class="line"><span class="lineno">  480</span>    h[<span class="stringliteral">&#39;fitresults2&#39;</span>+x].Print(<span class="stringliteral">&#39;fitresults2&#39;</span>+x+<span class="stringliteral">&#39;.gif&#39;</span>)</div>
+<div class="line"><span class="lineno">  481</span>   ut.bookCanvas(h,key=<span class="stringliteral">&#39;vxpulls&#39;</span>,title=<span class="stringliteral">&#39;Vertex resol and pulls&#39;</span>,nx=1600,ny=1200,cx=3,cy=2)</div>
+<div class="line"><span class="lineno">  482</span>   cv = h[<span class="stringliteral">&#39;vxpulls&#39;</span>].cd(4)</div>
+<div class="line"><span class="lineno">  483</span>   h[<span class="stringliteral">&#39;Vxpull&#39;</span>].Draw()</div>
+<div class="line"><span class="lineno">  484</span>   cv = h[<span class="stringliteral">&#39;vxpulls&#39;</span>].cd(5)</div>
+<div class="line"><span class="lineno">  485</span>   h[<span class="stringliteral">&#39;Vypull&#39;</span>].Draw()</div>
+<div class="line"><span class="lineno">  486</span>   cv = h[<span class="stringliteral">&#39;vxpulls&#39;</span>].cd(6)</div>
+<div class="line"><span class="lineno">  487</span>   h[<span class="stringliteral">&#39;Vzpull&#39;</span>].Draw()</div>
+<div class="line"><span class="lineno">  488</span>   cv = h[<span class="stringliteral">&#39;vxpulls&#39;</span>].cd(1)</div>
+<div class="line"><span class="lineno">  489</span>   h[<span class="stringliteral">&#39;Vxresol&#39;</span>].Draw()</div>
+<div class="line"><span class="lineno">  490</span>   cv = h[<span class="stringliteral">&#39;vxpulls&#39;</span>].cd(2)</div>
+<div class="line"><span class="lineno">  491</span>   h[<span class="stringliteral">&#39;Vyresol&#39;</span>].Draw()</div>
+<div class="line"><span class="lineno">  492</span>   cv = h[<span class="stringliteral">&#39;vxpulls&#39;</span>].cd(3)</div>
+<div class="line"><span class="lineno">  493</span>   h[<span class="stringliteral">&#39;Vzresol&#39;</span>].Draw()</div>
+<div class="line"><span class="lineno">  494</span>   ut.bookCanvas(h,key=<span class="stringliteral">&#39;trpulls&#39;</span>,title=<span class="stringliteral">&#39;momentum pulls&#39;</span>,nx=1600,ny=600,cx=3,cy=1)</div>
+<div class="line"><span class="lineno">  495</span>   cv = h[<span class="stringliteral">&#39;trpulls&#39;</span>].cd(1)</div>
+<div class="line"><span class="lineno">  496</span>   h[<span class="stringliteral">&#39;pullPOverPx_proj&#39;</span>]=h[<span class="stringliteral">&#39;pullPOverPx&#39;</span>].ProjectionY()</div>
+<div class="line"><span class="lineno">  497</span>   h[<span class="stringliteral">&#39;pullPOverPx_proj&#39;</span>].Draw()</div>
+<div class="line"><span class="lineno">  498</span>   cv = h[<span class="stringliteral">&#39;trpulls&#39;</span>].cd(2)</div>
+<div class="line"><span class="lineno">  499</span>   h[<span class="stringliteral">&#39;pullPOverPy_proj&#39;</span>]=h[<span class="stringliteral">&#39;pullPOverPy&#39;</span>].ProjectionY()</div>
+<div class="line"><span class="lineno">  500</span>   h[<span class="stringliteral">&#39;pullPOverPy_proj&#39;</span>].Draw()</div>
+<div class="line"><span class="lineno">  501</span>   cv = h[<span class="stringliteral">&#39;trpulls&#39;</span>].cd(3)</div>
+<div class="line"><span class="lineno">  502</span>   h[<span class="stringliteral">&#39;pullPOverPz_proj&#39;</span>]=h[<span class="stringliteral">&#39;pullPOverPz&#39;</span>].ProjectionY()</div>
+<div class="line"><span class="lineno">  503</span>   h[<span class="stringliteral">&#39;pullPOverPz_proj&#39;</span>].Draw()</div>
+<div class="line"><span class="lineno">  504</span>   ut.bookCanvas(h,key=<span class="stringliteral">&#39;vetodecisions&#39;</span>,title=<span class="stringliteral">&#39;Veto Detectors&#39;</span>,nx=1600,ny=600,cx=2,cy=1)</div>
+<div class="line"><span class="lineno">  505</span>   cv = h[<span class="stringliteral">&#39;vetodecisions&#39;</span>].cd(1)</div>
+<div class="line"><span class="lineno">  506</span>   cv.SetLogy(1)</div>
+<div class="line"><span class="lineno">  507</span>   h[<span class="stringliteral">&#39;nrtracks&#39;</span>].Draw()</div>
+<div class="line"><span class="lineno">  508</span>   cv = h[<span class="stringliteral">&#39;vetodecisions&#39;</span>].cd(2)</div>
+<div class="line"><span class="lineno">  509</span>   cv.SetLogy(1)</div>
+<div class="line"><span class="lineno">  510</span>   h[<span class="stringliteral">&#39;nrSBT&#39;</span>].Draw()</div>
+<div class="line"><span class="lineno">  511</span><span class="comment">#</span></div>
+<div class="line"><span class="lineno">  512</span>   print(<span class="stringliteral">&#39;finished making plots&#39;</span>)</div>
+<div class="line"><span class="lineno">  513</span><span class="comment"># calculate z front face of ecal, needed later</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -862,21 +856,21 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00371">371</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  371</span><span class="keyword">def </span>match2HNL(p):</div>
-<div class="line"><span class="lineno">  372</span>    matched = <span class="keyword">False</span></div>
-<div class="line"><span class="lineno">  373</span>    hnlKey  = []</div>
-<div class="line"><span class="lineno">  374</span>    <span class="keywordflow">for</span> t <span class="keywordflow">in</span> [p.GetDaughter(0),p.GetDaughter(1)]:</div>
-<div class="line"><span class="lineno">  375</span>      mcp = sTree.fitTrack2MC[t]</div>
-<div class="line"><span class="lineno">  376</span>      <span class="keywordflow">while</span> mcp &gt; -0.5:</div>
-<div class="line"><span class="lineno">  377</span>        mo = sTree.MCTrack[mcp]</div>
-<div class="line"><span class="lineno">  378</span>        <span class="keywordflow">if</span> abs(mo.GetPdgCode()) == 9900015:</div>
-<div class="line"><span class="lineno">  379</span>           hnlKey.append(mcp)</div>
-<div class="line"><span class="lineno">  380</span>           <span class="keywordflow">break</span></div>
-<div class="line"><span class="lineno">  381</span>        mcp = mo.GetMotherId()</div>
-<div class="line"><span class="lineno">  382</span>    <span class="keywordflow">if</span> len(hnlKey) == 2:</div>
-<div class="line"><span class="lineno">  383</span>       <span class="keywordflow">if</span> hnlKey[0]==hnlKey[1]: matched = <span class="keyword">True</span></div>
-<div class="line"><span class="lineno">  384</span>    <span class="keywordflow">return</span> matched</div>
+<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00369">369</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  369</span><span class="keyword">def </span>match2HNL(p):</div>
+<div class="line"><span class="lineno">  370</span>    matched = <span class="keyword">False</span></div>
+<div class="line"><span class="lineno">  371</span>    hnlKey  = []</div>
+<div class="line"><span class="lineno">  372</span>    <span class="keywordflow">for</span> t <span class="keywordflow">in</span> [p.GetDaughter(0),p.GetDaughter(1)]:</div>
+<div class="line"><span class="lineno">  373</span>      mcp = sTree.fitTrack2MC[t]</div>
+<div class="line"><span class="lineno">  374</span>      <span class="keywordflow">while</span> mcp &gt; -0.5:</div>
+<div class="line"><span class="lineno">  375</span>        mo = sTree.MCTrack[mcp]</div>
+<div class="line"><span class="lineno">  376</span>        <span class="keywordflow">if</span> abs(mo.GetPdgCode()) == 9900015:</div>
+<div class="line"><span class="lineno">  377</span>           hnlKey.append(mcp)</div>
+<div class="line"><span class="lineno">  378</span>           <span class="keywordflow">break</span></div>
+<div class="line"><span class="lineno">  379</span>        mcp = mo.GetMotherId()</div>
+<div class="line"><span class="lineno">  380</span>    <span class="keywordflow">if</span> len(hnlKey) == 2:</div>
+<div class="line"><span class="lineno">  381</span>       <span class="keywordflow">if</span> hnlKey[0]==hnlKey[1]: matched = <span class="keyword">True</span></div>
+<div class="line"><span class="lineno">  382</span>    <span class="keywordflow">return</span> matched</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -896,246 +890,243 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00532">532</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  532</span><span class="keyword">def </span>myEventLoop(n):</div>
-<div class="line"><span class="lineno">  533</span>  <span class="keyword">global</span> ecalReconstructed</div>
-<div class="line"><span class="lineno">  534</span>  rc = sTree.GetEntry(n)</div>
-<div class="line"><span class="lineno">  535</span><span class="comment"># check if tracks are made from real pattern recognition</span></div>
-<div class="line"><span class="lineno">  536</span>  measCut = measCutFK</div>
-<div class="line"><span class="lineno">  537</span>  <span class="keywordflow">if</span> sTree.GetBranch(<span class="stringliteral">&quot;FitTracks_PR&quot;</span>):</div>
-<div class="line"><span class="lineno">  538</span>    sTree.FitTracks = sTree.FitTracks_PR</div>
-<div class="line"><span class="lineno">  539</span>    measCut = measCutPR</div>
-<div class="line"><span class="lineno">  540</span>  <span class="keywordflow">if</span> sTree.GetBranch(<span class="stringliteral">&quot;fitTrack2MC_PR&quot;</span>):  sTree.fitTrack2MC = sTree.fitTrack2MC_PR</div>
-<div class="line"><span class="lineno">  541</span>  <span class="keywordflow">if</span> sTree.GetBranch(<span class="stringliteral">&quot;Particles_PR&quot;</span>):    sTree.Particles   = sTree.Particles_PR</div>
-<div class="line"><span class="lineno">  542</span>  <span class="keywordflow">if</span> <span class="keywordflow">not</span> checkHNLorigin(sTree): <span class="keywordflow">return</span></div>
-<div class="line"><span class="lineno">  543</span>  <span class="keywordflow">if</span> <span class="keywordflow">not</span> sTree.MCTrack.GetEntries()&gt;1: wg = 1.</div>
-<div class="line"><span class="lineno">  544</span>  <span class="keywordflow">else</span>:   wg = sTree.MCTrack[1].GetWeight()</div>
-<div class="line"><span class="lineno">  545</span>  <span class="keywordflow">if</span> <span class="keywordflow">not</span> wg&gt;0.: wg=1.</div>
-<div class="line"><span class="lineno">  546</span> </div>
-<div class="line"><span class="lineno">  547</span><span class="comment"># make some ecal cluster analysis if exist</span></div>
-<div class="line"><span class="lineno">  548</span>  <span class="keywordflow">if</span> hasattr(sTree,<span class="stringliteral">&quot;EcalClusters&quot;</span>):</div>
-<div class="line"><span class="lineno">  549</span>   <span class="keywordflow">if</span> calReco:  ecalReconstructed.Delete()</div>
-<div class="line"><span class="lineno">  550</span>   <span class="keywordflow">else</span>:        ecalReconstructed = sTree.EcalReconstructed</div>
-<div class="line"><span class="lineno">  551</span>   <span class="keywordflow">for</span> x <span class="keywordflow">in</span> caloTasks:</div>
-<div class="line"><span class="lineno">  552</span>    <span class="keywordflow">if</span> x.GetName() == <span class="stringliteral">&#39;ecalFiller&#39;</span>: x.Exec(<span class="stringliteral">&#39;start&#39;</span>,sTree.EcalPointLite)</div>
-<div class="line"><span class="lineno">  553</span>    <span class="keywordflow">elif</span> x.GetName() == <span class="stringliteral">&#39;ecalMatch&#39;</span>:  x.Exec(<span class="stringliteral">&#39;start&#39;</span>,ecalReconstructed,sTree.MCTrack)</div>
-<div class="line"><span class="lineno">  554</span>    <span class="keywordflow">else</span> : x.Exec(<span class="stringliteral">&#39;start&#39;</span>)</div>
-<div class="line"><span class="lineno">  555</span>   <span class="keywordflow">for</span> aClus <span class="keywordflow">in</span> ecalReconstructed:</div>
-<div class="line"><span class="lineno">  556</span>    mMax = aClus.MCTrack()</div>
-<div class="line"><span class="lineno">  557</span>    <span class="keywordflow">if</span> mMax &lt;0 <span class="keywordflow">or</span> mMax &gt; sTree.MCTrack.GetEntries():</div>
-<div class="line"><span class="lineno">  558</span>     aP = <span class="keywordtype">None</span> <span class="comment"># this should never happen, otherwise the ECAL MC matching has a bug</span></div>
-<div class="line"><span class="lineno">  559</span>    <span class="keywordflow">else</span>: aP = sTree.MCTrack[mMax]</div>
-<div class="line"><span class="lineno">  560</span>    <span class="keywordflow">if</span> aP:</div>
-<div class="line"><span class="lineno">  561</span>      tmp = PDG.GetParticle(aP.GetPdgCode())</div>
-<div class="line"><span class="lineno">  562</span>      <span class="keywordflow">if</span> tmp: pName = <span class="stringliteral">&#39;ecalReconstructed_&#39;</span>+tmp.GetName()</div>
-<div class="line"><span class="lineno">  563</span>      <span class="keywordflow">else</span>: pName = <span class="stringliteral">&#39;ecalReconstructed_&#39;</span>+str(aP.GetPdgCode())</div>
-<div class="line"><span class="lineno">  564</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  565</span>      pName = <span class="stringliteral">&#39;ecalReconstructed_unknown&#39;</span></div>
-<div class="line"><span class="lineno">  566</span>    <span class="keywordflow">if</span> pName <span class="keywordflow">not</span> <span class="keywordflow">in</span> h:</div>
-<div class="line"><span class="lineno">  567</span>      ut.bookHist(h,pName,<span class="stringliteral">&#39;x/y and energy for &#39;</span>+pName.split(<span class="stringliteral">&#39;_&#39;</span>)[1],50,-3.,3.,50,-6.,6.)</div>
-<div class="line"><span class="lineno">  568</span>    rc = h[pName].Fill(aClus.X()/u.m,aClus.Y()/u.m,aClus.RecoE()/u.GeV)</div>
-<div class="line"><span class="lineno">  569</span><span class="comment"># look at distance to tracks</span></div>
-<div class="line"><span class="lineno">  570</span>    <span class="keywordflow">for</span> fT <span class="keywordflow">in</span> sTree.FitTracks:</div>
-<div class="line"><span class="lineno">  571</span>     rc,pos,mom = <a class="code hl_function" href="namespaceTrackExtrapolateTool.html#ae08f6dc2e8c443fbbea48bc074134f1a">TrackExtrapolateTool.extrapolateToPlane</a>(fT,z_ecal)</div>
-<div class="line"><span class="lineno">  572</span>     <span class="keywordflow">if</span> rc:</div>
-<div class="line"><span class="lineno">  573</span>      pdgcode = fT.getFittedState().getPDG()</div>
-<div class="line"><span class="lineno">  574</span>      tmp = PDG.GetParticle(pdgcode)</div>
-<div class="line"><span class="lineno">  575</span>      <span class="keywordflow">if</span> tmp: tName = <span class="stringliteral">&#39;ecalReconstructed_dist_&#39;</span>+tmp.GetName()</div>
-<div class="line"><span class="lineno">  576</span>      <span class="keywordflow">else</span>: tName = <span class="stringliteral">&#39;ecalReconstructed_dist_&#39;</span>+str(aP.GetPdgCode())</div>
-<div class="line"><span class="lineno">  577</span>      <span class="keywordflow">if</span> tName <span class="keywordflow">not</span> <span class="keywordflow">in</span> h:</div>
-<div class="line"><span class="lineno">  578</span>       p = tName.split(<span class="stringliteral">&#39;dist_&#39;</span>)[1]</div>
-<div class="line"><span class="lineno">  579</span>       ut.bookHist(h,tName,<span class="stringliteral">&#39;Ecal cluster distance t0 &#39;</span>+p,100,0.,100.*u.cm)</div>
-<div class="line"><span class="lineno">  580</span>       ut.bookHist(h,tName.replace(<span class="stringliteral">&#39;dist&#39;</span>,<span class="stringliteral">&#39;distx&#39;</span>),<span class="stringliteral">&#39;Ecal cluster distance to &#39;</span>+p+<span class="stringliteral">&#39; in X &#39;</span>,100,-50.*u.cm,50.*u.cm)</div>
-<div class="line"><span class="lineno">  581</span>       ut.bookHist(h,tName.replace(<span class="stringliteral">&#39;dist&#39;</span>,<span class="stringliteral">&#39;disty&#39;</span>),<span class="stringliteral">&#39;Ecal cluster distance to &#39;</span>+p+<span class="stringliteral">&#39; in Y &#39;</span>,100,-50.*u.cm,50.*u.cm)</div>
-<div class="line"><span class="lineno">  582</span>      dist = ROOT.TMath.Sqrt( (aClus.X()-pos.X())**2+(aClus.Y()-pos.Y())**2 )</div>
-<div class="line"><span class="lineno">  583</span>      rc = h[tName].Fill(dist)</div>
-<div class="line"><span class="lineno">  584</span>      rc = h[tName.replace(<span class="stringliteral">&#39;dist&#39;</span>,<span class="stringliteral">&#39;distx&#39;</span>)].Fill( aClus.X()-pos.X() )</div>
-<div class="line"><span class="lineno">  585</span>      rc = h[tName.replace(<span class="stringliteral">&#39;dist&#39;</span>,<span class="stringliteral">&#39;disty&#39;</span>)].Fill( aClus.Y()-pos.Y() )</div>
-<div class="line"><span class="lineno">  586</span><span class="comment"># compare with old method</span></div>
-<div class="line"><span class="lineno">  587</span>   <span class="keywordflow">for</span> aClus <span class="keywordflow">in</span> sTree.EcalClusters:</div>
-<div class="line"><span class="lineno">  588</span>     rc = h[<span class="stringliteral">&#39;ecalClusters&#39;</span>].Fill(aClus.X()/u.m,aClus.Y()/u.m,aClus.Energy()/u.GeV)</div>
-<div class="line"><span class="lineno">  589</span>     mMax,frac = ecalCluster2MC(aClus)</div>
-<div class="line"><span class="lineno">  590</span><span class="comment"># return MC track most contributing, and its fraction of energy</span></div>
-<div class="line"><span class="lineno">  591</span>     <span class="keywordflow">if</span> mMax&gt;0:</div>
-<div class="line"><span class="lineno">  592</span>      aP = sTree.MCTrack[mMax]</div>
-<div class="line"><span class="lineno">  593</span>      tmp = PDG.GetParticle(aP.GetPdgCode())</div>
-<div class="line"><span class="lineno">  594</span>      <span class="keywordflow">if</span> tmp: pName = <span class="stringliteral">&#39;ecalClusters_&#39;</span>+tmp.GetName()</div>
-<div class="line"><span class="lineno">  595</span>      <span class="keywordflow">else</span>: pName = <span class="stringliteral">&#39;ecalClusters_&#39;</span>+str(aP.GetPdgCode())</div>
-<div class="line"><span class="lineno">  596</span>     <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  597</span>      pName = <span class="stringliteral">&#39;ecalClusters_unknown&#39;</span></div>
-<div class="line"><span class="lineno">  598</span>     <span class="keywordflow">if</span> pName <span class="keywordflow">not</span> <span class="keywordflow">in</span> h: ut.bookHist(h,pName,<span class="stringliteral">&#39;x/y and energy for &#39;</span>+pName.split(<span class="stringliteral">&#39;_&#39;</span>)[1],50,-3.,3.,50,-6.,6.)</div>
-<div class="line"><span class="lineno">  599</span>     rc = h[pName].Fill(aClus.X()/u.m,aClus.Y()/u.m,aClus.Energy()/u.GeV)</div>
-<div class="line"><span class="lineno">  600</span> </div>
-<div class="line"><span class="lineno">  601</span><span class="comment"># make some straw hit analysis</span></div>
-<div class="line"><span class="lineno">  602</span>  hitlist = {}</div>
-<div class="line"><span class="lineno">  603</span>  <span class="keywordflow">for</span> ahit <span class="keywordflow">in</span> sTree.strawtubesPoint:</div>
-<div class="line"><span class="lineno">  604</span>     detID = ahit.GetDetectorID()</div>
-<div class="line"><span class="lineno">  605</span>     top = ROOT.TVector3()</div>
-<div class="line"><span class="lineno">  606</span>     bot = ROOT.TVector3()</div>
-<div class="line"><span class="lineno">  607</span>     modules[<span class="stringliteral">&quot;Strawtubes&quot;</span>].StrawEndPoints(detID,bot,top)</div>
-<div class="line"><span class="lineno">  608</span>     dw  = ahit.dist2Wire()</div>
-<div class="line"><span class="lineno">  609</span>     <span class="keywordflow">if</span> detID &lt; 50000000 :</div>
-<div class="line"><span class="lineno">  610</span>      <span class="keywordflow">if</span> abs(top.y())==abs(bot.y()): h[<span class="stringliteral">&#39;disty&#39;</span>].Fill(dw)</div>
-<div class="line"><span class="lineno">  611</span>      <span class="keywordflow">if</span> abs(top.y())&gt;abs(bot.y()): h[<span class="stringliteral">&#39;distu&#39;</span>].Fill(dw)</div>
-<div class="line"><span class="lineno">  612</span>      <span class="keywordflow">if</span> abs(top.y())&lt;abs(bot.y()): h[<span class="stringliteral">&#39;distv&#39;</span>].Fill(dw)</div>
-<div class="line"><span class="lineno">  613</span><span class="comment">#</span></div>
-<div class="line"><span class="lineno">  614</span>     trID = ahit.GetTrackID()</div>
-<div class="line"><span class="lineno">  615</span>     <span class="keywordflow">if</span> <span class="keywordflow">not</span> trID &lt; 0 :</div>
-<div class="line"><span class="lineno">  616</span>      <span class="keywordflow">if</span> trID <span class="keywordflow">in</span> hitlist:  hitlist[trID]+=1</div>
-<div class="line"><span class="lineno">  617</span>      <span class="keywordflow">else</span>:  hitlist[trID]=1</div>
-<div class="line"><span class="lineno">  618</span>  <span class="keywordflow">for</span> tr <span class="keywordflow">in</span> hitlist:  h[<span class="stringliteral">&#39;meanhits&#39;</span>].Fill(hitlist[tr])</div>
-<div class="line"><span class="lineno">  619</span>  key = -1</div>
-<div class="line"><span class="lineno">  620</span>  fittedTracks = {}</div>
-<div class="line"><span class="lineno">  621</span>  <span class="keywordflow">for</span> atrack <span class="keywordflow">in</span> sTree.FitTracks:</div>
-<div class="line"><span class="lineno">  622</span>   key+=1</div>
-<div class="line"><span class="lineno">  623</span><span class="comment"># kill tracks outside fiducial volume</span></div>
-<div class="line"><span class="lineno">  624</span>   <span class="keywordflow">if</span> <span class="keywordflow">not</span> checkFiducialVolume(sTree,key,dy): <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  625</span>   fitStatus   = atrack.getFitStatus()</div>
-<div class="line"><span class="lineno">  626</span>   nmeas = fitStatus.getNdf()</div>
-<div class="line"><span class="lineno">  627</span>   h[<span class="stringliteral">&#39;meas&#39;</span>].Fill(nmeas)</div>
-<div class="line"><span class="lineno">  628</span>   <span class="keywordflow">if</span> <span class="keywordflow">not</span> fitStatus.isFitConverged() : <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  629</span>   h[<span class="stringliteral">&#39;meas2&#39;</span>].Fill(nmeas)</div>
-<div class="line"><span class="lineno">  630</span>   <span class="keywordflow">if</span> nmeas &lt; measCut: <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  631</span>   fittedTracks[key] = atrack</div>
-<div class="line"><span class="lineno">  632</span><span class="comment"># needs different study why fit has not converged, continue with fitted tracks</span></div>
-<div class="line"><span class="lineno">  633</span>   rchi2 = fitStatus.getChi2()</div>
-<div class="line"><span class="lineno">  634</span>   prob = ROOT.TMath.Prob(rchi2,int(nmeas))</div>
-<div class="line"><span class="lineno">  635</span>   h[<span class="stringliteral">&#39;prob&#39;</span>].Fill(prob)</div>
-<div class="line"><span class="lineno">  636</span>   chi2 = rchi2/nmeas</div>
-<div class="line"><span class="lineno">  637</span>   fittedState = atrack.getFittedState()</div>
-<div class="line"><span class="lineno">  638</span>   h[<span class="stringliteral">&#39;chi2&#39;</span>].Fill(chi2,wg)</div>
-<div class="line"><span class="lineno">  639</span>   h[<span class="stringliteral">&#39;measVSchi2&#39;</span>].Fill(atrack.getNumPoints(),chi2)</div>
-<div class="line"><span class="lineno">  640</span>   P = fittedState.getMomMag()</div>
-<div class="line"><span class="lineno">  641</span>   Px,Py,Pz = fittedState.getMom().x(),fittedState.getMom().y(),fittedState.getMom().z()</div>
-<div class="line"><span class="lineno">  642</span>   cov = fittedState.get6DCov()</div>
-<div class="line"><span class="lineno">  643</span>   <span class="keywordflow">if</span> len(sTree.fitTrack2MC)-1&lt;key: <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  644</span>   mcPartKey = sTree.fitTrack2MC[key]</div>
-<div class="line"><span class="lineno">  645</span>   mcPart    = sTree.MCTrack[mcPartKey]</div>
-<div class="line"><span class="lineno">  646</span>   <span class="keywordflow">if</span> <span class="keywordflow">not</span> mcPart : <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  647</span>   Ptruth_start     = mcPart.GetP()</div>
-<div class="line"><span class="lineno">  648</span>   Ptruthz_start    = mcPart.GetPz()</div>
-<div class="line"><span class="lineno">  649</span>   <span class="comment"># get p truth from first strawpoint</span></div>
-<div class="line"><span class="lineno">  650</span>   Ptruth,Ptruthx,Ptruthy,Ptruthz = getPtruthFirst(sTree,mcPartKey)</div>
-<div class="line"><span class="lineno">  651</span>   delPOverP = (Ptruth - P)/Ptruth</div>
-<div class="line"><span class="lineno">  652</span>   h[<span class="stringliteral">&#39;delPOverP&#39;</span>].Fill(Ptruth,delPOverP)</div>
-<div class="line"><span class="lineno">  653</span>   delPOverPz = (1./Ptruthz - 1./Pz) * Ptruthz</div>
-<div class="line"><span class="lineno">  654</span>   h[<span class="stringliteral">&#39;pullPOverPx&#39;</span>].Fill( Ptruth,(Ptruthx-Px)/ROOT.TMath.Sqrt(cov[3][3]) )</div>
-<div class="line"><span class="lineno">  655</span>   h[<span class="stringliteral">&#39;pullPOverPy&#39;</span>].Fill( Ptruth,(Ptruthy-Py)/ROOT.TMath.Sqrt(cov[4][4]) )</div>
-<div class="line"><span class="lineno">  656</span>   h[<span class="stringliteral">&#39;pullPOverPz&#39;</span>].Fill( Ptruth,(Ptruthz-Pz)/ROOT.TMath.Sqrt(cov[5][5]) )</div>
-<div class="line"><span class="lineno">  657</span>   h[<span class="stringliteral">&#39;delPOverPz&#39;</span>].Fill(Ptruthz,delPOverPz)</div>
-<div class="line"><span class="lineno">  658</span>   <span class="keywordflow">if</span> chi2&gt;chi2CutOff: <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  659</span>   h[<span class="stringliteral">&#39;delPOverP2&#39;</span>].Fill(Ptruth,delPOverP)</div>
-<div class="line"><span class="lineno">  660</span>   h[<span class="stringliteral">&#39;delPOverP2z&#39;</span>].Fill(Ptruth,delPOverPz)</div>
-<div class="line"><span class="lineno">  661</span><span class="comment"># try measure impact parameter</span></div>
-<div class="line"><span class="lineno">  662</span>   trackDir = fittedState.getDir()</div>
-<div class="line"><span class="lineno">  663</span>   trackPos = fittedState.getPos()</div>
-<div class="line"><span class="lineno">  664</span>   vx = ROOT.TVector3()</div>
-<div class="line"><span class="lineno">  665</span>   mcPart.GetStartVertex(vx)</div>
-<div class="line"><span class="lineno">  666</span>   t = 0</div>
-<div class="line"><span class="lineno">  667</span>   <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(3):   t += trackDir(i)*(vx(i)-trackPos(i))</div>
-<div class="line"><span class="lineno">  668</span>   dist = 0</div>
-<div class="line"><span class="lineno">  669</span>   <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(3):   dist += (vx(i)-trackPos(i)-t*trackDir(i))**2</div>
-<div class="line"><span class="lineno">  670</span>   dist = ROOT.TMath.Sqrt(dist)</div>
-<div class="line"><span class="lineno">  671</span>   h[<span class="stringliteral">&#39;IP&#39;</span>].Fill(dist)</div>
-<div class="line"><span class="lineno">  672</span><span class="comment"># ---</span></div>
-<div class="line"><span class="lineno">  673</span><span class="comment"># loop over particles, 2-track combinations</span></div>
-<div class="line"><span class="lineno">  674</span>  <span class="keywordflow">for</span> HNL <span class="keywordflow">in</span> sTree.Particles:</div>
-<div class="line"><span class="lineno">  675</span>    t1,t2 = HNL.GetDaughter(0),HNL.GetDaughter(1)</div>
-<div class="line"><span class="lineno">  676</span><span class="comment"># kill tracks outside fiducial volume, if enabled</span></div>
-<div class="line"><span class="lineno">  677</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> checkFiducialVolume(sTree,t1,dy) <span class="keywordflow">or</span> <span class="keywordflow">not</span> checkFiducialVolume(sTree,t2,dy) : <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  678</span>    checkMeasurements = <span class="keyword">True</span></div>
-<div class="line"><span class="lineno">  679</span><span class="comment"># cut on nDOF</span></div>
-<div class="line"><span class="lineno">  680</span>    <span class="keywordflow">for</span> tr <span class="keywordflow">in</span> [t1,t2]:</div>
-<div class="line"><span class="lineno">  681</span>      fitStatus  = sTree.FitTracks[tr].getFitStatus()</div>
-<div class="line"><span class="lineno">  682</span>      nmeas = fitStatus.getNdf()</div>
-<div class="line"><span class="lineno">  683</span>      <span class="keywordflow">if</span> nmeas &lt; measCut: checkMeasurements = <span class="keyword">False</span></div>
-<div class="line"><span class="lineno">  684</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> checkMeasurements: <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  685</span><span class="comment"># check mc matching</span></div>
-<div class="line"><span class="lineno">  686</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> match2HNL(HNL): <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  687</span>    HNLPos = ROOT.TLorentzVector()</div>
-<div class="line"><span class="lineno">  688</span>    HNL.ProductionVertex(HNLPos)</div>
-<div class="line"><span class="lineno">  689</span>    HNLMom = ROOT.TLorentzVector()</div>
-<div class="line"><span class="lineno">  690</span>    HNL.Momentum(HNLMom)</div>
-<div class="line"><span class="lineno">  691</span>    doca  =  HNL.GetDoca()</div>
-<div class="line"><span class="lineno">  692</span><span class="comment"># redo doca calculation</span></div>
-<div class="line"><span class="lineno">  693</span>     <span class="comment"># xv,yv,zv,doca,HNLMom  = RedoVertexing(t1,t2)</span></div>
-<div class="line"><span class="lineno">  694</span>     <span class="comment"># if HNLMom == -1: continue</span></div>
-<div class="line"><span class="lineno">  695</span> <span class="comment"># check if decay inside decay volume</span></div>
-<div class="line"><span class="lineno">  696</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> isInFiducial(HNLPos.X(),HNLPos.Y(),HNLPos.Z()): <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  697</span>    h[<span class="stringliteral">&#39;Doca&#39;</span>].Fill(doca)</div>
-<div class="line"><span class="lineno">  698</span>    <span class="keywordflow">if</span>  doca &gt; docaCut : <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  699</span>    tr = ROOT.TVector3(0,0,ShipGeo.target.z0)</div>
-<div class="line"><span class="lineno">  700</span> </div>
-<div class="line"><span class="lineno">  701</span><span class="comment"># look for pi0</span></div>
-<div class="line"><span class="lineno">  702</span>    <span class="keywordflow">for</span> pi0 <span class="keywordflow">in</span> <a class="code hl_function" href="namespacepi0Reco.html#a41aed8de575ef23f1b6aaab756e90029">pi0Reco.findPi0</a>(sTree,HNLPos):</div>
-<div class="line"><span class="lineno">  703</span>       rc = h[<span class="stringliteral">&#39;pi0Mass&#39;</span>].Fill(pi0.M())</div>
-<div class="line"><span class="lineno">  704</span>       <span class="keywordflow">if</span> abs(pi0.M()-0.135)&gt;0.02: <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  705</span><span class="comment"># could also be used for eta, by changing cut</span></div>
-<div class="line"><span class="lineno">  706</span>       HNLwithPi0 =  HNLMom + pi0</div>
-<div class="line"><span class="lineno">  707</span>       dist = ImpactParameter(tr,HNLPos,HNLwithPi0)</div>
-<div class="line"><span class="lineno">  708</span>       mass = HNLwithPi0.M()</div>
-<div class="line"><span class="lineno">  709</span>       h[<span class="stringliteral">&#39;IP0_pi0&#39;</span>].Fill(dist)</div>
-<div class="line"><span class="lineno">  710</span>       h[<span class="stringliteral">&#39;IP0/mass_pi0&#39;</span>].Fill(mass,dist)</div>
-<div class="line"><span class="lineno">  711</span>       h[<span class="stringliteral">&#39;HNL_pi0&#39;</span>].Fill(mass)</div>
-<div class="line"><span class="lineno">  712</span> </div>
-<div class="line"><span class="lineno">  713</span>    dist = ImpactParameter(tr,HNLPos,HNLMom)</div>
-<div class="line"><span class="lineno">  714</span>    mass = HNLMom.M()</div>
-<div class="line"><span class="lineno">  715</span>    h[<span class="stringliteral">&#39;IP0&#39;</span>].Fill(dist)</div>
-<div class="line"><span class="lineno">  716</span>    h[<span class="stringliteral">&#39;IP0/mass&#39;</span>].Fill(mass,dist)</div>
-<div class="line"><span class="lineno">  717</span>    h[<span class="stringliteral">&#39;HNL&#39;</span>].Fill(mass)</div>
-<div class="line"><span class="lineno">  718</span>    h[<span class="stringliteral">&#39;HNLw&#39;</span>].Fill(mass,wg)</div>
-<div class="line"><span class="lineno">  719</span><span class="comment">#</span></div>
-<div class="line"><span class="lineno">  720</span>    vetoDets[<span class="stringliteral">&#39;SBT&#39;</span>] = veto.SBT_decision()</div>
-<div class="line"><span class="lineno">  721</span>    vetoDets[<span class="stringliteral">&#39;SVT&#39;</span>] = veto.SVT_decision()</div>
-<div class="line"><span class="lineno">  722</span>    vetoDets[<span class="stringliteral">&#39;RPC&#39;</span>] = veto.RPC_decision()</div>
-<div class="line"><span class="lineno">  723</span>    vetoDets[<span class="stringliteral">&#39;TRA&#39;</span>] = veto.Track_decision()</div>
-<div class="line"><span class="lineno">  724</span>    h[<span class="stringliteral">&#39;nrtracks&#39;</span>].Fill(vetoDets[<span class="stringliteral">&#39;TRA&#39;</span>][2])</div>
-<div class="line"><span class="lineno">  725</span>    h[<span class="stringliteral">&#39;nrSVT&#39;</span>].Fill(vetoDets[<span class="stringliteral">&#39;SVT&#39;</span>][2])</div>
-<div class="line"><span class="lineno">  726</span>    h[<span class="stringliteral">&#39;nrSBT&#39;</span>].Fill(vetoDets[<span class="stringliteral">&#39;SBT&#39;</span>][2])</div>
-<div class="line"><span class="lineno">  727</span>    h[<span class="stringliteral">&#39;nrRPC&#39;</span>].Fill(vetoDets[<span class="stringliteral">&#39;RPC&#39;</span>][2])</div>
-<div class="line"><span class="lineno">  728</span><span class="comment">#   HNL true</span></div>
-<div class="line"><span class="lineno">  729</span>    mctrack = sTree.MCTrack[sTree.fitTrack2MC[t1]]</div>
-<div class="line"><span class="lineno">  730</span>    h[<span class="stringliteral">&#39;Vzresol&#39;</span>].Fill( (mctrack.GetStartZ()-HNLPos.Z())/u.cm )</div>
-<div class="line"><span class="lineno">  731</span>    h[<span class="stringliteral">&#39;Vxresol&#39;</span>].Fill( (mctrack.GetStartX()-HNLPos.X())/u.cm )</div>
-<div class="line"><span class="lineno">  732</span>    h[<span class="stringliteral">&#39;Vyresol&#39;</span>].Fill( (mctrack.GetStartY()-HNLPos.Y())/u.cm )</div>
-<div class="line"><span class="lineno">  733</span>    PosDir,newPosDir,CovMat,scalFac = {},{},{},{}</div>
-<div class="line"><span class="lineno">  734</span><span class="comment"># opening angle at vertex</span></div>
-<div class="line"><span class="lineno">  735</span>    newPos = ROOT.TVector3(HNLPos.X(),HNLPos.Y(),HNLPos.Z())</div>
-<div class="line"><span class="lineno">  736</span>    st1,st2 = sTree.FitTracks[t1].getFittedState(),sTree.FitTracks[t2].getFittedState()</div>
-<div class="line"><span class="lineno">  737</span>    PosDir[t1] = {<span class="stringliteral">&#39;position&#39;</span>:st1.getPos(),<span class="stringliteral">&#39;direction&#39;</span>:st1.getDir(),<span class="stringliteral">&#39;momentum&#39;</span>:st1.getMom()}</div>
-<div class="line"><span class="lineno">  738</span>    PosDir[t2] = {<span class="stringliteral">&#39;position&#39;</span>:st2.getPos(),<span class="stringliteral">&#39;direction&#39;</span>:st2.getDir(),<span class="stringliteral">&#39;momentum&#39;</span>:st2.getMom()}</div>
-<div class="line"><span class="lineno">  739</span>    CovMat[t1] = st1.get6DCov()</div>
-<div class="line"><span class="lineno">  740</span>    CovMat[t2] = st2.get6DCov()</div>
-<div class="line"><span class="lineno">  741</span>    rep1,rep2 = ROOT.genfit.RKTrackRep(st1.getPDG()),ROOT.genfit.RKTrackRep(st2.getPDG())</div>
-<div class="line"><span class="lineno">  742</span>    state1,state2 = ROOT.genfit.StateOnPlane(rep1),ROOT.genfit.StateOnPlane(rep2)</div>
-<div class="line"><span class="lineno">  743</span>    rep1.setPosMom(state1,st1.getPos(),st1.getMom())</div>
-<div class="line"><span class="lineno">  744</span>    rep2.setPosMom(state2,st2.getPos(),st2.getMom())</div>
-<div class="line"><span class="lineno">  745</span>    <span class="keywordflow">try</span>:</div>
-<div class="line"><span class="lineno">  746</span>     rep1.extrapolateToPoint(state1, newPos, <span class="keyword">False</span>)</div>
-<div class="line"><span class="lineno">  747</span>     rep2.extrapolateToPoint(state2, newPos, <span class="keyword">False</span>)</div>
-<div class="line"><span class="lineno">  748</span>     mom1,mom2 = rep1.getMom(state1),rep2.getMom(state2)</div>
-<div class="line"><span class="lineno">  749</span>    <span class="keywordflow">except</span>:</div>
-<div class="line"><span class="lineno">  750</span>     mom1,mom2 = st1.getMom(),st2.getMom()</div>
-<div class="line"><span class="lineno">  751</span>    newPosDir[t1] = {<span class="stringliteral">&#39;position&#39;</span>:rep1.getPos(state1),<span class="stringliteral">&#39;direction&#39;</span>:rep1.getDir(state1),<span class="stringliteral">&#39;momentum&#39;</span>:mom1}</div>
-<div class="line"><span class="lineno">  752</span>    newPosDir[t2] = {<span class="stringliteral">&#39;position&#39;</span>:rep2.getPos(state2),<span class="stringliteral">&#39;direction&#39;</span>:rep2.getDir(state2),<span class="stringliteral">&#39;momentum&#39;</span>:mom2}</div>
-<div class="line"><span class="lineno">  753</span>    oa = mom1.Dot(mom2)/(mom1.Mag()*mom2.Mag())</div>
-<div class="line"><span class="lineno">  754</span>    h[<span class="stringliteral">&#39;oa&#39;</span>].Fill(oa)</div>
-<div class="line"><span class="lineno">  755</span><span class="comment">#</span></div>
-<div class="line"><span class="lineno">  756</span>    covX = HNL.GetCovV()</div>
-<div class="line"><span class="lineno">  757</span>    dist = HNL.GetDoca()</div>
-<div class="line"><span class="lineno">  758</span>    h[<span class="stringliteral">&#39;Vzpull&#39;</span>].Fill( (mctrack.GetStartZ()-HNLPos.Z())/ROOT.TMath.Sqrt(covX[2][2]) )</div>
-<div class="line"><span class="lineno">  759</span>    h[<span class="stringliteral">&#39;Vxpull&#39;</span>].Fill( (mctrack.GetStartX()-HNLPos.X())/ROOT.TMath.Sqrt(covX[0][0]) )</div>
-<div class="line"><span class="lineno">  760</span>    h[<span class="stringliteral">&#39;Vypull&#39;</span>].Fill( (mctrack.GetStartY()-HNLPos.Y())/ROOT.TMath.Sqrt(covX[1][1]) )</div>
-<div class="line"><span class="lineno">  761</span> </div>
-<div class="line"><span class="lineno">  762</span><span class="comment"># check extrapolation to TimeDet if exists</span></div>
-<div class="line"><span class="lineno">  763</span>  <span class="keywordflow">if</span> hasattr(ShipGeo,<span class="stringliteral">&quot;TimeDet&quot;</span>):</div>
-<div class="line"><span class="lineno">  764</span>   <span class="keywordflow">for</span> fT <span class="keywordflow">in</span> sTree.FitTracks:</div>
-<div class="line"><span class="lineno">  765</span>     rc,pos,mom = <a class="code hl_function" href="namespaceTrackExtrapolateTool.html#ae08f6dc2e8c443fbbea48bc074134f1a">TrackExtrapolateTool.extrapolateToPlane</a>(fT,ShipGeo.TimeDet.z)</div>
-<div class="line"><span class="lineno">  766</span>     <span class="keywordflow">if</span> rc:</div>
-<div class="line"><span class="lineno">  767</span>      <span class="keywordflow">for</span> aPoint <span class="keywordflow">in</span> sTree.TimeDetPoint:</div>
-<div class="line"><span class="lineno">  768</span>       h[<span class="stringliteral">&#39;extrapTimeDetX&#39;</span>].Fill(pos.X()-aPoint.GetX())</div>
-<div class="line"><span class="lineno">  769</span>       h[<span class="stringliteral">&#39;extrapTimeDetY&#39;</span>].Fill(pos.Y()-aPoint.GetY())</div>
-<div class="line"><span class="lineno">  770</span><span class="comment">#</span></div>
+<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00524">524</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  524</span><span class="keyword">def </span>myEventLoop(n):</div>
+<div class="line"><span class="lineno">  525</span>  <span class="keyword">global</span> ecalReconstructed</div>
+<div class="line"><span class="lineno">  526</span>  rc = sTree.GetEntry(n)</div>
+<div class="line"><span class="lineno">  527</span><span class="comment"># check if tracks are made from real pattern recognition</span></div>
+<div class="line"><span class="lineno">  528</span>  measCut = measCutFK</div>
+<div class="line"><span class="lineno">  529</span>  <span class="keywordflow">if</span> sTree.GetBranch(<span class="stringliteral">&quot;FitTracks_PR&quot;</span>):</div>
+<div class="line"><span class="lineno">  530</span>    sTree.FitTracks = sTree.FitTracks_PR</div>
+<div class="line"><span class="lineno">  531</span>    measCut = measCutPR</div>
+<div class="line"><span class="lineno">  532</span>  <span class="keywordflow">if</span> sTree.GetBranch(<span class="stringliteral">&quot;fitTrack2MC_PR&quot;</span>):  sTree.fitTrack2MC = sTree.fitTrack2MC_PR</div>
+<div class="line"><span class="lineno">  533</span>  <span class="keywordflow">if</span> sTree.GetBranch(<span class="stringliteral">&quot;Particles_PR&quot;</span>):    sTree.Particles   = sTree.Particles_PR</div>
+<div class="line"><span class="lineno">  534</span>  <span class="keywordflow">if</span> <span class="keywordflow">not</span> checkHNLorigin(sTree): <span class="keywordflow">return</span></div>
+<div class="line"><span class="lineno">  535</span>  <span class="keywordflow">if</span> <span class="keywordflow">not</span> sTree.MCTrack.GetEntries()&gt;1: wg = 1.</div>
+<div class="line"><span class="lineno">  536</span>  <span class="keywordflow">else</span>:   wg = sTree.MCTrack[1].GetWeight()</div>
+<div class="line"><span class="lineno">  537</span>  <span class="keywordflow">if</span> <span class="keywordflow">not</span> wg&gt;0.: wg=1.</div>
+<div class="line"><span class="lineno">  538</span> </div>
+<div class="line"><span class="lineno">  539</span><span class="comment"># make some ecal cluster analysis if exist</span></div>
+<div class="line"><span class="lineno">  540</span>  <span class="keywordflow">if</span> hasattr(sTree,<span class="stringliteral">&quot;EcalClusters&quot;</span>):</div>
+<div class="line"><span class="lineno">  541</span>   <span class="keywordflow">if</span> calReco:  ecalReconstructed.Delete()</div>
+<div class="line"><span class="lineno">  542</span>   <span class="keywordflow">else</span>:        ecalReconstructed = sTree.EcalReconstructed</div>
+<div class="line"><span class="lineno">  543</span>   <span class="keywordflow">for</span> x <span class="keywordflow">in</span> caloTasks:</div>
+<div class="line"><span class="lineno">  544</span>    <span class="keywordflow">if</span> x.GetName() == <span class="stringliteral">&#39;ecalFiller&#39;</span>: x.Exec(<span class="stringliteral">&#39;start&#39;</span>,sTree.EcalPointLite)</div>
+<div class="line"><span class="lineno">  545</span>    <span class="keywordflow">elif</span> x.GetName() == <span class="stringliteral">&#39;ecalMatch&#39;</span>:  x.Exec(<span class="stringliteral">&#39;start&#39;</span>,ecalReconstructed,sTree.MCTrack)</div>
+<div class="line"><span class="lineno">  546</span>    <span class="keywordflow">else</span> : x.Exec(<span class="stringliteral">&#39;start&#39;</span>)</div>
+<div class="line"><span class="lineno">  547</span>   <span class="keywordflow">for</span> aClus <span class="keywordflow">in</span> ecalReconstructed:</div>
+<div class="line"><span class="lineno">  548</span>    mMax = aClus.MCTrack()</div>
+<div class="line"><span class="lineno">  549</span>    <span class="keywordflow">if</span> mMax &lt;0 <span class="keywordflow">or</span> mMax &gt; sTree.MCTrack.GetEntries():</div>
+<div class="line"><span class="lineno">  550</span>     aP = <span class="keywordtype">None</span> <span class="comment"># this should never happen, otherwise the ECAL MC matching has a bug</span></div>
+<div class="line"><span class="lineno">  551</span>    <span class="keywordflow">else</span>: aP = sTree.MCTrack[mMax]</div>
+<div class="line"><span class="lineno">  552</span>    <span class="keywordflow">if</span> aP:</div>
+<div class="line"><span class="lineno">  553</span>      tmp = PDG.GetParticle(aP.GetPdgCode())</div>
+<div class="line"><span class="lineno">  554</span>      <span class="keywordflow">if</span> tmp: pName = <span class="stringliteral">&#39;ecalReconstructed_&#39;</span>+tmp.GetName()</div>
+<div class="line"><span class="lineno">  555</span>      <span class="keywordflow">else</span>: pName = <span class="stringliteral">&#39;ecalReconstructed_&#39;</span>+str(aP.GetPdgCode())</div>
+<div class="line"><span class="lineno">  556</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  557</span>      pName = <span class="stringliteral">&#39;ecalReconstructed_unknown&#39;</span></div>
+<div class="line"><span class="lineno">  558</span>    <span class="keywordflow">if</span> pName <span class="keywordflow">not</span> <span class="keywordflow">in</span> h:</div>
+<div class="line"><span class="lineno">  559</span>      ut.bookHist(h,pName,<span class="stringliteral">&#39;x/y and energy for &#39;</span>+pName.split(<span class="stringliteral">&#39;_&#39;</span>)[1],50,-3.,3.,50,-6.,6.)</div>
+<div class="line"><span class="lineno">  560</span>    rc = h[pName].Fill(aClus.X()/u.m,aClus.Y()/u.m,aClus.RecoE()/u.GeV)</div>
+<div class="line"><span class="lineno">  561</span><span class="comment"># look at distance to tracks</span></div>
+<div class="line"><span class="lineno">  562</span>    <span class="keywordflow">for</span> fT <span class="keywordflow">in</span> sTree.FitTracks:</div>
+<div class="line"><span class="lineno">  563</span>     rc,pos,mom = <a class="code hl_function" href="namespaceTrackExtrapolateTool.html#ae08f6dc2e8c443fbbea48bc074134f1a">TrackExtrapolateTool.extrapolateToPlane</a>(fT,z_ecal)</div>
+<div class="line"><span class="lineno">  564</span>     <span class="keywordflow">if</span> rc:</div>
+<div class="line"><span class="lineno">  565</span>      pdgcode = fT.getFittedState().getPDG()</div>
+<div class="line"><span class="lineno">  566</span>      tmp = PDG.GetParticle(pdgcode)</div>
+<div class="line"><span class="lineno">  567</span>      <span class="keywordflow">if</span> tmp: tName = <span class="stringliteral">&#39;ecalReconstructed_dist_&#39;</span>+tmp.GetName()</div>
+<div class="line"><span class="lineno">  568</span>      <span class="keywordflow">else</span>: tName = <span class="stringliteral">&#39;ecalReconstructed_dist_&#39;</span>+str(aP.GetPdgCode())</div>
+<div class="line"><span class="lineno">  569</span>      <span class="keywordflow">if</span> tName <span class="keywordflow">not</span> <span class="keywordflow">in</span> h:</div>
+<div class="line"><span class="lineno">  570</span>       p = tName.split(<span class="stringliteral">&#39;dist_&#39;</span>)[1]</div>
+<div class="line"><span class="lineno">  571</span>       ut.bookHist(h,tName,<span class="stringliteral">&#39;Ecal cluster distance t0 &#39;</span>+p,100,0.,100.*u.cm)</div>
+<div class="line"><span class="lineno">  572</span>       ut.bookHist(h,tName.replace(<span class="stringliteral">&#39;dist&#39;</span>,<span class="stringliteral">&#39;distx&#39;</span>),<span class="stringliteral">&#39;Ecal cluster distance to &#39;</span>+p+<span class="stringliteral">&#39; in X &#39;</span>,100,-50.*u.cm,50.*u.cm)</div>
+<div class="line"><span class="lineno">  573</span>       ut.bookHist(h,tName.replace(<span class="stringliteral">&#39;dist&#39;</span>,<span class="stringliteral">&#39;disty&#39;</span>),<span class="stringliteral">&#39;Ecal cluster distance to &#39;</span>+p+<span class="stringliteral">&#39; in Y &#39;</span>,100,-50.*u.cm,50.*u.cm)</div>
+<div class="line"><span class="lineno">  574</span>      dist = ROOT.TMath.Sqrt( (aClus.X()-pos.X())**2+(aClus.Y()-pos.Y())**2 )</div>
+<div class="line"><span class="lineno">  575</span>      rc = h[tName].Fill(dist)</div>
+<div class="line"><span class="lineno">  576</span>      rc = h[tName.replace(<span class="stringliteral">&#39;dist&#39;</span>,<span class="stringliteral">&#39;distx&#39;</span>)].Fill( aClus.X()-pos.X() )</div>
+<div class="line"><span class="lineno">  577</span>      rc = h[tName.replace(<span class="stringliteral">&#39;dist&#39;</span>,<span class="stringliteral">&#39;disty&#39;</span>)].Fill( aClus.Y()-pos.Y() )</div>
+<div class="line"><span class="lineno">  578</span><span class="comment"># compare with old method</span></div>
+<div class="line"><span class="lineno">  579</span>   <span class="keywordflow">for</span> aClus <span class="keywordflow">in</span> sTree.EcalClusters:</div>
+<div class="line"><span class="lineno">  580</span>     rc = h[<span class="stringliteral">&#39;ecalClusters&#39;</span>].Fill(aClus.X()/u.m,aClus.Y()/u.m,aClus.Energy()/u.GeV)</div>
+<div class="line"><span class="lineno">  581</span>     mMax,frac = ecalCluster2MC(aClus)</div>
+<div class="line"><span class="lineno">  582</span><span class="comment"># return MC track most contributing, and its fraction of energy</span></div>
+<div class="line"><span class="lineno">  583</span>     <span class="keywordflow">if</span> mMax&gt;0:</div>
+<div class="line"><span class="lineno">  584</span>      aP = sTree.MCTrack[mMax]</div>
+<div class="line"><span class="lineno">  585</span>      tmp = PDG.GetParticle(aP.GetPdgCode())</div>
+<div class="line"><span class="lineno">  586</span>      <span class="keywordflow">if</span> tmp: pName = <span class="stringliteral">&#39;ecalClusters_&#39;</span>+tmp.GetName()</div>
+<div class="line"><span class="lineno">  587</span>      <span class="keywordflow">else</span>: pName = <span class="stringliteral">&#39;ecalClusters_&#39;</span>+str(aP.GetPdgCode())</div>
+<div class="line"><span class="lineno">  588</span>     <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  589</span>      pName = <span class="stringliteral">&#39;ecalClusters_unknown&#39;</span></div>
+<div class="line"><span class="lineno">  590</span>     <span class="keywordflow">if</span> pName <span class="keywordflow">not</span> <span class="keywordflow">in</span> h: ut.bookHist(h,pName,<span class="stringliteral">&#39;x/y and energy for &#39;</span>+pName.split(<span class="stringliteral">&#39;_&#39;</span>)[1],50,-3.,3.,50,-6.,6.)</div>
+<div class="line"><span class="lineno">  591</span>     rc = h[pName].Fill(aClus.X()/u.m,aClus.Y()/u.m,aClus.Energy()/u.GeV)</div>
+<div class="line"><span class="lineno">  592</span> </div>
+<div class="line"><span class="lineno">  593</span><span class="comment"># make some straw hit analysis</span></div>
+<div class="line"><span class="lineno">  594</span>  hitlist = {}</div>
+<div class="line"><span class="lineno">  595</span>  <span class="keywordflow">for</span> ahit <span class="keywordflow">in</span> sTree.strawtubesPoint:</div>
+<div class="line"><span class="lineno">  596</span>     detID = ahit.GetDetectorID()</div>
+<div class="line"><span class="lineno">  597</span>     top = ROOT.TVector3()</div>
+<div class="line"><span class="lineno">  598</span>     bot = ROOT.TVector3()</div>
+<div class="line"><span class="lineno">  599</span>     modules[<span class="stringliteral">&quot;Strawtubes&quot;</span>].StrawEndPoints(detID,bot,top)</div>
+<div class="line"><span class="lineno">  600</span>     dw  = ahit.dist2Wire()</div>
+<div class="line"><span class="lineno">  601</span>     <span class="keywordflow">if</span> detID &lt; 50000000 :</div>
+<div class="line"><span class="lineno">  602</span>      <span class="keywordflow">if</span> abs(top.y())==abs(bot.y()): h[<span class="stringliteral">&#39;disty&#39;</span>].Fill(dw)</div>
+<div class="line"><span class="lineno">  603</span>      <span class="keywordflow">if</span> abs(top.y())&gt;abs(bot.y()): h[<span class="stringliteral">&#39;distu&#39;</span>].Fill(dw)</div>
+<div class="line"><span class="lineno">  604</span>      <span class="keywordflow">if</span> abs(top.y())&lt;abs(bot.y()): h[<span class="stringliteral">&#39;distv&#39;</span>].Fill(dw)</div>
+<div class="line"><span class="lineno">  605</span><span class="comment">#</span></div>
+<div class="line"><span class="lineno">  606</span>     trID = ahit.GetTrackID()</div>
+<div class="line"><span class="lineno">  607</span>     <span class="keywordflow">if</span> <span class="keywordflow">not</span> trID &lt; 0 :</div>
+<div class="line"><span class="lineno">  608</span>      <span class="keywordflow">if</span> trID <span class="keywordflow">in</span> hitlist:  hitlist[trID]+=1</div>
+<div class="line"><span class="lineno">  609</span>      <span class="keywordflow">else</span>:  hitlist[trID]=1</div>
+<div class="line"><span class="lineno">  610</span>  <span class="keywordflow">for</span> tr <span class="keywordflow">in</span> hitlist:  h[<span class="stringliteral">&#39;meanhits&#39;</span>].Fill(hitlist[tr])</div>
+<div class="line"><span class="lineno">  611</span>  key = -1</div>
+<div class="line"><span class="lineno">  612</span>  fittedTracks = {}</div>
+<div class="line"><span class="lineno">  613</span>  <span class="keywordflow">for</span> atrack <span class="keywordflow">in</span> sTree.FitTracks:</div>
+<div class="line"><span class="lineno">  614</span>   key+=1</div>
+<div class="line"><span class="lineno">  615</span><span class="comment"># kill tracks outside fiducial volume</span></div>
+<div class="line"><span class="lineno">  616</span>   <span class="keywordflow">if</span> <span class="keywordflow">not</span> checkFiducialVolume(sTree,key,dy): <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  617</span>   fitStatus   = atrack.getFitStatus()</div>
+<div class="line"><span class="lineno">  618</span>   nmeas = fitStatus.getNdf()</div>
+<div class="line"><span class="lineno">  619</span>   h[<span class="stringliteral">&#39;meas&#39;</span>].Fill(nmeas)</div>
+<div class="line"><span class="lineno">  620</span>   <span class="keywordflow">if</span> <span class="keywordflow">not</span> fitStatus.isFitConverged() : <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  621</span>   h[<span class="stringliteral">&#39;meas2&#39;</span>].Fill(nmeas)</div>
+<div class="line"><span class="lineno">  622</span>   <span class="keywordflow">if</span> nmeas &lt; measCut: <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  623</span>   fittedTracks[key] = atrack</div>
+<div class="line"><span class="lineno">  624</span><span class="comment"># needs different study why fit has not converged, continue with fitted tracks</span></div>
+<div class="line"><span class="lineno">  625</span>   rchi2 = fitStatus.getChi2()</div>
+<div class="line"><span class="lineno">  626</span>   prob = ROOT.TMath.Prob(rchi2,int(nmeas))</div>
+<div class="line"><span class="lineno">  627</span>   h[<span class="stringliteral">&#39;prob&#39;</span>].Fill(prob)</div>
+<div class="line"><span class="lineno">  628</span>   chi2 = rchi2/nmeas</div>
+<div class="line"><span class="lineno">  629</span>   fittedState = atrack.getFittedState()</div>
+<div class="line"><span class="lineno">  630</span>   h[<span class="stringliteral">&#39;chi2&#39;</span>].Fill(chi2,wg)</div>
+<div class="line"><span class="lineno">  631</span>   h[<span class="stringliteral">&#39;measVSchi2&#39;</span>].Fill(atrack.getNumPoints(),chi2)</div>
+<div class="line"><span class="lineno">  632</span>   P = fittedState.getMomMag()</div>
+<div class="line"><span class="lineno">  633</span>   Px,Py,Pz = fittedState.getMom().x(),fittedState.getMom().y(),fittedState.getMom().z()</div>
+<div class="line"><span class="lineno">  634</span>   cov = fittedState.get6DCov()</div>
+<div class="line"><span class="lineno">  635</span>   <span class="keywordflow">if</span> len(sTree.fitTrack2MC)-1&lt;key: <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  636</span>   mcPartKey = sTree.fitTrack2MC[key]</div>
+<div class="line"><span class="lineno">  637</span>   mcPart    = sTree.MCTrack[mcPartKey]</div>
+<div class="line"><span class="lineno">  638</span>   <span class="keywordflow">if</span> <span class="keywordflow">not</span> mcPart : <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  639</span>   Ptruth_start     = mcPart.GetP()</div>
+<div class="line"><span class="lineno">  640</span>   Ptruthz_start    = mcPart.GetPz()</div>
+<div class="line"><span class="lineno">  641</span>   <span class="comment"># get p truth from first strawpoint</span></div>
+<div class="line"><span class="lineno">  642</span>   Ptruth,Ptruthx,Ptruthy,Ptruthz = getPtruthFirst(sTree,mcPartKey)</div>
+<div class="line"><span class="lineno">  643</span>   delPOverP = (Ptruth - P)/Ptruth</div>
+<div class="line"><span class="lineno">  644</span>   h[<span class="stringliteral">&#39;delPOverP&#39;</span>].Fill(Ptruth,delPOverP)</div>
+<div class="line"><span class="lineno">  645</span>   delPOverPz = (1./Ptruthz - 1./Pz) * Ptruthz</div>
+<div class="line"><span class="lineno">  646</span>   h[<span class="stringliteral">&#39;pullPOverPx&#39;</span>].Fill( Ptruth,(Ptruthx-Px)/ROOT.TMath.Sqrt(cov[3][3]) )</div>
+<div class="line"><span class="lineno">  647</span>   h[<span class="stringliteral">&#39;pullPOverPy&#39;</span>].Fill( Ptruth,(Ptruthy-Py)/ROOT.TMath.Sqrt(cov[4][4]) )</div>
+<div class="line"><span class="lineno">  648</span>   h[<span class="stringliteral">&#39;pullPOverPz&#39;</span>].Fill( Ptruth,(Ptruthz-Pz)/ROOT.TMath.Sqrt(cov[5][5]) )</div>
+<div class="line"><span class="lineno">  649</span>   h[<span class="stringliteral">&#39;delPOverPz&#39;</span>].Fill(Ptruthz,delPOverPz)</div>
+<div class="line"><span class="lineno">  650</span>   <span class="keywordflow">if</span> chi2&gt;chi2CutOff: <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  651</span>   h[<span class="stringliteral">&#39;delPOverP2&#39;</span>].Fill(Ptruth,delPOverP)</div>
+<div class="line"><span class="lineno">  652</span>   h[<span class="stringliteral">&#39;delPOverP2z&#39;</span>].Fill(Ptruth,delPOverPz)</div>
+<div class="line"><span class="lineno">  653</span><span class="comment"># try measure impact parameter</span></div>
+<div class="line"><span class="lineno">  654</span>   trackDir = fittedState.getDir()</div>
+<div class="line"><span class="lineno">  655</span>   trackPos = fittedState.getPos()</div>
+<div class="line"><span class="lineno">  656</span>   vx = ROOT.TVector3()</div>
+<div class="line"><span class="lineno">  657</span>   mcPart.GetStartVertex(vx)</div>
+<div class="line"><span class="lineno">  658</span>   t = 0</div>
+<div class="line"><span class="lineno">  659</span>   <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(3):   t += trackDir(i)*(vx(i)-trackPos(i))</div>
+<div class="line"><span class="lineno">  660</span>   dist = 0</div>
+<div class="line"><span class="lineno">  661</span>   <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(3):   dist += (vx(i)-trackPos(i)-t*trackDir(i))**2</div>
+<div class="line"><span class="lineno">  662</span>   dist = ROOT.TMath.Sqrt(dist)</div>
+<div class="line"><span class="lineno">  663</span>   h[<span class="stringliteral">&#39;IP&#39;</span>].Fill(dist)</div>
+<div class="line"><span class="lineno">  664</span><span class="comment"># ---</span></div>
+<div class="line"><span class="lineno">  665</span><span class="comment"># loop over particles, 2-track combinations</span></div>
+<div class="line"><span class="lineno">  666</span>  <span class="keywordflow">for</span> HNL <span class="keywordflow">in</span> sTree.Particles:</div>
+<div class="line"><span class="lineno">  667</span>    t1,t2 = HNL.GetDaughter(0),HNL.GetDaughter(1)</div>
+<div class="line"><span class="lineno">  668</span><span class="comment"># kill tracks outside fiducial volume, if enabled</span></div>
+<div class="line"><span class="lineno">  669</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> checkFiducialVolume(sTree,t1,dy) <span class="keywordflow">or</span> <span class="keywordflow">not</span> checkFiducialVolume(sTree,t2,dy) : <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  670</span>    checkMeasurements = <span class="keyword">True</span></div>
+<div class="line"><span class="lineno">  671</span><span class="comment"># cut on nDOF</span></div>
+<div class="line"><span class="lineno">  672</span>    <span class="keywordflow">for</span> tr <span class="keywordflow">in</span> [t1,t2]:</div>
+<div class="line"><span class="lineno">  673</span>      fitStatus  = sTree.FitTracks[tr].getFitStatus()</div>
+<div class="line"><span class="lineno">  674</span>      nmeas = fitStatus.getNdf()</div>
+<div class="line"><span class="lineno">  675</span>      <span class="keywordflow">if</span> nmeas &lt; measCut: checkMeasurements = <span class="keyword">False</span></div>
+<div class="line"><span class="lineno">  676</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> checkMeasurements: <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  677</span><span class="comment"># check mc matching</span></div>
+<div class="line"><span class="lineno">  678</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> match2HNL(HNL): <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  679</span>    HNLPos = ROOT.TLorentzVector()</div>
+<div class="line"><span class="lineno">  680</span>    HNL.ProductionVertex(HNLPos)</div>
+<div class="line"><span class="lineno">  681</span>    HNLMom = ROOT.TLorentzVector()</div>
+<div class="line"><span class="lineno">  682</span>    HNL.Momentum(HNLMom)</div>
+<div class="line"><span class="lineno">  683</span>    doca  =  HNL.GetDoca()</div>
+<div class="line"><span class="lineno">  684</span><span class="comment"># redo doca calculation</span></div>
+<div class="line"><span class="lineno">  685</span>     <span class="comment"># xv,yv,zv,doca,HNLMom  = RedoVertexing(t1,t2)</span></div>
+<div class="line"><span class="lineno">  686</span>     <span class="comment"># if HNLMom == -1: continue</span></div>
+<div class="line"><span class="lineno">  687</span> <span class="comment"># check if decay inside decay volume</span></div>
+<div class="line"><span class="lineno">  688</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> isInFiducial(HNLPos.X(),HNLPos.Y(),HNLPos.Z()): <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  689</span>    h[<span class="stringliteral">&#39;Doca&#39;</span>].Fill(doca)</div>
+<div class="line"><span class="lineno">  690</span>    <span class="keywordflow">if</span>  doca &gt; docaCut : <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  691</span>    tr = ROOT.TVector3(0,0,ShipGeo.target.z0)</div>
+<div class="line"><span class="lineno">  692</span> </div>
+<div class="line"><span class="lineno">  693</span><span class="comment"># look for pi0</span></div>
+<div class="line"><span class="lineno">  694</span>    <span class="keywordflow">for</span> pi0 <span class="keywordflow">in</span> <a class="code hl_function" href="namespacepi0Reco.html#a41aed8de575ef23f1b6aaab756e90029">pi0Reco.findPi0</a>(sTree,HNLPos):</div>
+<div class="line"><span class="lineno">  695</span>       rc = h[<span class="stringliteral">&#39;pi0Mass&#39;</span>].Fill(pi0.M())</div>
+<div class="line"><span class="lineno">  696</span>       <span class="keywordflow">if</span> abs(pi0.M()-0.135)&gt;0.02: <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  697</span><span class="comment"># could also be used for eta, by changing cut</span></div>
+<div class="line"><span class="lineno">  698</span>       HNLwithPi0 =  HNLMom + pi0</div>
+<div class="line"><span class="lineno">  699</span>       dist = ImpactParameter(tr,HNLPos,HNLwithPi0)</div>
+<div class="line"><span class="lineno">  700</span>       mass = HNLwithPi0.M()</div>
+<div class="line"><span class="lineno">  701</span>       h[<span class="stringliteral">&#39;IP0_pi0&#39;</span>].Fill(dist)</div>
+<div class="line"><span class="lineno">  702</span>       h[<span class="stringliteral">&#39;IP0/mass_pi0&#39;</span>].Fill(mass,dist)</div>
+<div class="line"><span class="lineno">  703</span>       h[<span class="stringliteral">&#39;HNL_pi0&#39;</span>].Fill(mass)</div>
+<div class="line"><span class="lineno">  704</span> </div>
+<div class="line"><span class="lineno">  705</span>    dist = ImpactParameter(tr,HNLPos,HNLMom)</div>
+<div class="line"><span class="lineno">  706</span>    mass = HNLMom.M()</div>
+<div class="line"><span class="lineno">  707</span>    h[<span class="stringliteral">&#39;IP0&#39;</span>].Fill(dist)</div>
+<div class="line"><span class="lineno">  708</span>    h[<span class="stringliteral">&#39;IP0/mass&#39;</span>].Fill(mass,dist)</div>
+<div class="line"><span class="lineno">  709</span>    h[<span class="stringliteral">&#39;HNL&#39;</span>].Fill(mass)</div>
+<div class="line"><span class="lineno">  710</span>    h[<span class="stringliteral">&#39;HNLw&#39;</span>].Fill(mass,wg)</div>
+<div class="line"><span class="lineno">  711</span><span class="comment">#</span></div>
+<div class="line"><span class="lineno">  712</span>    vetoDets[<span class="stringliteral">&#39;SBT&#39;</span>] = veto.SBT_decision()</div>
+<div class="line"><span class="lineno">  713</span>    vetoDets[<span class="stringliteral">&#39;UBT&#39;</span>] = veto.UBT_decision()</div>
+<div class="line"><span class="lineno">  714</span>    vetoDets[<span class="stringliteral">&#39;TRA&#39;</span>] = veto.Track_decision()</div>
+<div class="line"><span class="lineno">  715</span>    h[<span class="stringliteral">&#39;nrtracks&#39;</span>].Fill(vetoDets[<span class="stringliteral">&#39;TRA&#39;</span>][2])</div>
+<div class="line"><span class="lineno">  716</span>    h[<span class="stringliteral">&#39;nrSBT&#39;</span>].Fill(vetoDets[<span class="stringliteral">&#39;SBT&#39;</span>][2])</div>
+<div class="line"><span class="lineno">  717</span><span class="comment">#   HNL true</span></div>
+<div class="line"><span class="lineno">  718</span>    mctrack = sTree.MCTrack[sTree.fitTrack2MC[t1]]</div>
+<div class="line"><span class="lineno">  719</span>    h[<span class="stringliteral">&#39;Vzresol&#39;</span>].Fill( (mctrack.GetStartZ()-HNLPos.Z())/u.cm )</div>
+<div class="line"><span class="lineno">  720</span>    h[<span class="stringliteral">&#39;Vxresol&#39;</span>].Fill( (mctrack.GetStartX()-HNLPos.X())/u.cm )</div>
+<div class="line"><span class="lineno">  721</span>    h[<span class="stringliteral">&#39;Vyresol&#39;</span>].Fill( (mctrack.GetStartY()-HNLPos.Y())/u.cm )</div>
+<div class="line"><span class="lineno">  722</span>    PosDir,newPosDir,CovMat,scalFac = {},{},{},{}</div>
+<div class="line"><span class="lineno">  723</span><span class="comment"># opening angle at vertex</span></div>
+<div class="line"><span class="lineno">  724</span>    newPos = ROOT.TVector3(HNLPos.X(),HNLPos.Y(),HNLPos.Z())</div>
+<div class="line"><span class="lineno">  725</span>    st1,st2 = sTree.FitTracks[t1].getFittedState(),sTree.FitTracks[t2].getFittedState()</div>
+<div class="line"><span class="lineno">  726</span>    PosDir[t1] = {<span class="stringliteral">&#39;position&#39;</span>:st1.getPos(),<span class="stringliteral">&#39;direction&#39;</span>:st1.getDir(),<span class="stringliteral">&#39;momentum&#39;</span>:st1.getMom()}</div>
+<div class="line"><span class="lineno">  727</span>    PosDir[t2] = {<span class="stringliteral">&#39;position&#39;</span>:st2.getPos(),<span class="stringliteral">&#39;direction&#39;</span>:st2.getDir(),<span class="stringliteral">&#39;momentum&#39;</span>:st2.getMom()}</div>
+<div class="line"><span class="lineno">  728</span>    CovMat[t1] = st1.get6DCov()</div>
+<div class="line"><span class="lineno">  729</span>    CovMat[t2] = st2.get6DCov()</div>
+<div class="line"><span class="lineno">  730</span>    rep1,rep2 = ROOT.genfit.RKTrackRep(st1.getPDG()),ROOT.genfit.RKTrackRep(st2.getPDG())</div>
+<div class="line"><span class="lineno">  731</span>    state1,state2 = ROOT.genfit.StateOnPlane(rep1),ROOT.genfit.StateOnPlane(rep2)</div>
+<div class="line"><span class="lineno">  732</span>    rep1.setPosMom(state1,st1.getPos(),st1.getMom())</div>
+<div class="line"><span class="lineno">  733</span>    rep2.setPosMom(state2,st2.getPos(),st2.getMom())</div>
+<div class="line"><span class="lineno">  734</span>    <span class="keywordflow">try</span>:</div>
+<div class="line"><span class="lineno">  735</span>     rep1.extrapolateToPoint(state1, newPos, <span class="keyword">False</span>)</div>
+<div class="line"><span class="lineno">  736</span>     rep2.extrapolateToPoint(state2, newPos, <span class="keyword">False</span>)</div>
+<div class="line"><span class="lineno">  737</span>     mom1,mom2 = rep1.getMom(state1),rep2.getMom(state2)</div>
+<div class="line"><span class="lineno">  738</span>    <span class="keywordflow">except</span>:</div>
+<div class="line"><span class="lineno">  739</span>     mom1,mom2 = st1.getMom(),st2.getMom()</div>
+<div class="line"><span class="lineno">  740</span>    newPosDir[t1] = {<span class="stringliteral">&#39;position&#39;</span>:rep1.getPos(state1),<span class="stringliteral">&#39;direction&#39;</span>:rep1.getDir(state1),<span class="stringliteral">&#39;momentum&#39;</span>:mom1}</div>
+<div class="line"><span class="lineno">  741</span>    newPosDir[t2] = {<span class="stringliteral">&#39;position&#39;</span>:rep2.getPos(state2),<span class="stringliteral">&#39;direction&#39;</span>:rep2.getDir(state2),<span class="stringliteral">&#39;momentum&#39;</span>:mom2}</div>
+<div class="line"><span class="lineno">  742</span>    oa = mom1.Dot(mom2)/(mom1.Mag()*mom2.Mag())</div>
+<div class="line"><span class="lineno">  743</span>    h[<span class="stringliteral">&#39;oa&#39;</span>].Fill(oa)</div>
+<div class="line"><span class="lineno">  744</span><span class="comment">#</span></div>
+<div class="line"><span class="lineno">  745</span>    covX = HNL.GetCovV()</div>
+<div class="line"><span class="lineno">  746</span>    dist = HNL.GetDoca()</div>
+<div class="line"><span class="lineno">  747</span>    h[<span class="stringliteral">&#39;Vzpull&#39;</span>].Fill( (mctrack.GetStartZ()-HNLPos.Z())/ROOT.TMath.Sqrt(covX[2][2]) )</div>
+<div class="line"><span class="lineno">  748</span>    h[<span class="stringliteral">&#39;Vxpull&#39;</span>].Fill( (mctrack.GetStartX()-HNLPos.X())/ROOT.TMath.Sqrt(covX[0][0]) )</div>
+<div class="line"><span class="lineno">  749</span>    h[<span class="stringliteral">&#39;Vypull&#39;</span>].Fill( (mctrack.GetStartY()-HNLPos.Y())/ROOT.TMath.Sqrt(covX[1][1]) )</div>
+<div class="line"><span class="lineno">  750</span> </div>
+<div class="line"><span class="lineno">  751</span><span class="comment"># check extrapolation to TimeDet if exists</span></div>
+<div class="line"><span class="lineno">  752</span>  <span class="keywordflow">if</span> hasattr(ShipGeo,<span class="stringliteral">&quot;TimeDet&quot;</span>):</div>
+<div class="line"><span class="lineno">  753</span>   <span class="keywordflow">for</span> fT <span class="keywordflow">in</span> sTree.FitTracks:</div>
+<div class="line"><span class="lineno">  754</span>     rc,pos,mom = <a class="code hl_function" href="namespaceTrackExtrapolateTool.html#ae08f6dc2e8c443fbbea48bc074134f1a">TrackExtrapolateTool.extrapolateToPlane</a>(fT,ShipGeo.TimeDet.z)</div>
+<div class="line"><span class="lineno">  755</span>     <span class="keywordflow">if</span> rc:</div>
+<div class="line"><span class="lineno">  756</span>      <span class="keywordflow">for</span> aPoint <span class="keywordflow">in</span> sTree.TimeDetPoint:</div>
+<div class="line"><span class="lineno">  757</span>       h[<span class="stringliteral">&#39;extrapTimeDetX&#39;</span>].Fill(pos.X()-aPoint.GetX())</div>
+<div class="line"><span class="lineno">  758</span>       h[<span class="stringliteral">&#39;extrapTimeDetY&#39;</span>].Fill(pos.Y()-aPoint.GetY())</div>
+<div class="line"><span class="lineno">  759</span><span class="comment">#</span></div>
 <div class="ttc" id="anamespacepi0Reco_html_a41aed8de575ef23f1b6aaab756e90029"><div class="ttname"><a href="namespacepi0Reco.html#a41aed8de575ef23f1b6aaab756e90029">pi0Reco.findPi0</a></div><div class="ttdeci">findPi0(sTree, secVertex)</div><div class="ttdef"><b>Definition</b> <a href="pi0Reco_8py_source.html#l00012">pi0Reco.py:12</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -1172,28 +1163,28 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00281">281</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  281</span><span class="keyword">def </span>myVertex(t1,t2,PosDir):</div>
-<div class="line"><span class="lineno">  282</span> <span class="comment"># closest distance between two tracks</span></div>
-<div class="line"><span class="lineno">  283</span>    <span class="comment"># d = |pq . u x v|/|u x v|</span></div>
-<div class="line"><span class="lineno">  284</span>   a = ROOT.TVector3(PosDir[t1][0](0) ,PosDir[t1][0](1), PosDir[t1][0](2))</div>
-<div class="line"><span class="lineno">  285</span>   u = ROOT.TVector3(PosDir[t1][1](0),PosDir[t1][1](1),PosDir[t1][1](2))</div>
-<div class="line"><span class="lineno">  286</span>   c = ROOT.TVector3(PosDir[t2][0](0) ,PosDir[t2][0](1), PosDir[t2][0](2))</div>
-<div class="line"><span class="lineno">  287</span>   v = ROOT.TVector3(PosDir[t2][1](0),PosDir[t2][1](1),PosDir[t2][1](2))</div>
-<div class="line"><span class="lineno">  288</span>   pq = a-c</div>
-<div class="line"><span class="lineno">  289</span>   uCrossv = u.Cross(v)</div>
-<div class="line"><span class="lineno">  290</span>   dist  = pq.Dot(uCrossv)/(uCrossv.Mag()+1E-8)</div>
-<div class="line"><span class="lineno">  291</span>   <span class="comment"># u.a - u.c + s*|u|**2 - u.v*t    = 0</span></div>
-<div class="line"><span class="lineno">  292</span>   <span class="comment"># v.a - v.c + s*v.u    - t*|v|**2 = 0</span></div>
-<div class="line"><span class="lineno">  293</span>   E = u.Dot(a) - u.Dot(c)</div>
-<div class="line"><span class="lineno">  294</span>   F = v.Dot(a) - v.Dot(c)</div>
-<div class="line"><span class="lineno">  295</span>   A,B = u.Mag2(), -u.Dot(v)</div>
-<div class="line"><span class="lineno">  296</span>   C,D = u.Dot(v), -v.Mag2()</div>
-<div class="line"><span class="lineno">  297</span>   t = -(C*E-A*F)/(B*C-A*D)</div>
-<div class="line"><span class="lineno">  298</span>   X = c.x()+v.x()*t</div>
-<div class="line"><span class="lineno">  299</span>   Y = c.y()+v.y()*t</div>
-<div class="line"><span class="lineno">  300</span>   Z = c.z()+v.z()*t</div>
-<div class="line"><span class="lineno">  301</span>   <span class="keywordflow">return</span> X,Y,Z,abs(dist)</div>
+<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00279">279</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  279</span><span class="keyword">def </span>myVertex(t1,t2,PosDir):</div>
+<div class="line"><span class="lineno">  280</span> <span class="comment"># closest distance between two tracks</span></div>
+<div class="line"><span class="lineno">  281</span>    <span class="comment"># d = |pq . u x v|/|u x v|</span></div>
+<div class="line"><span class="lineno">  282</span>   a = ROOT.TVector3(PosDir[t1][0](0) ,PosDir[t1][0](1), PosDir[t1][0](2))</div>
+<div class="line"><span class="lineno">  283</span>   u = ROOT.TVector3(PosDir[t1][1](0),PosDir[t1][1](1),PosDir[t1][1](2))</div>
+<div class="line"><span class="lineno">  284</span>   c = ROOT.TVector3(PosDir[t2][0](0) ,PosDir[t2][0](1), PosDir[t2][0](2))</div>
+<div class="line"><span class="lineno">  285</span>   v = ROOT.TVector3(PosDir[t2][1](0),PosDir[t2][1](1),PosDir[t2][1](2))</div>
+<div class="line"><span class="lineno">  286</span>   pq = a-c</div>
+<div class="line"><span class="lineno">  287</span>   uCrossv = u.Cross(v)</div>
+<div class="line"><span class="lineno">  288</span>   dist  = pq.Dot(uCrossv)/(uCrossv.Mag()+1E-8)</div>
+<div class="line"><span class="lineno">  289</span>   <span class="comment"># u.a - u.c + s*|u|**2 - u.v*t    = 0</span></div>
+<div class="line"><span class="lineno">  290</span>   <span class="comment"># v.a - v.c + s*v.u    - t*|v|**2 = 0</span></div>
+<div class="line"><span class="lineno">  291</span>   E = u.Dot(a) - u.Dot(c)</div>
+<div class="line"><span class="lineno">  292</span>   F = v.Dot(a) - v.Dot(c)</div>
+<div class="line"><span class="lineno">  293</span>   A,B = u.Mag2(), -u.Dot(v)</div>
+<div class="line"><span class="lineno">  294</span>   C,D = u.Dot(v), -v.Mag2()</div>
+<div class="line"><span class="lineno">  295</span>   t = -(C*E-A*F)/(B*C-A*D)</div>
+<div class="line"><span class="lineno">  296</span>   X = c.x()+v.x()*t</div>
+<div class="line"><span class="lineno">  297</span>   Y = c.y()+v.y()*t</div>
+<div class="line"><span class="lineno">  298</span>   Z = c.z()+v.z()*t</div>
+<div class="line"><span class="lineno">  299</span>   <span class="keywordflow">return</span> X,Y,Z,abs(dist)</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1223,55 +1214,55 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00302">302</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  302</span><span class="keyword">def  </span>RedoVertexing(t1,t2):</div>
-<div class="line"><span class="lineno">  303</span>     PosDir = {}</div>
-<div class="line"><span class="lineno">  304</span>     <span class="keywordflow">for</span> tr <span class="keywordflow">in</span> [t1,t2]:</div>
-<div class="line"><span class="lineno">  305</span>      xx  = sTree.FitTracks[tr].getFittedState()</div>
-<div class="line"><span class="lineno">  306</span>      PosDir[tr] = [xx.getPos(),xx.getDir()]</div>
-<div class="line"><span class="lineno">  307</span>     xv,yv,zv,doca = myVertex(t1,t2,PosDir)</div>
-<div class="line"><span class="lineno">  308</span><span class="comment"># as we have learned, need iterative procedure</span></div>
-<div class="line"><span class="lineno">  309</span>     dz = 99999.</div>
-<div class="line"><span class="lineno">  310</span>     reps,states,newPosDir = {},{},{}</div>
-<div class="line"><span class="lineno">  311</span>     parallelToZ = ROOT.TVector3(0., 0., 1.)</div>
-<div class="line"><span class="lineno">  312</span>     rc = <span class="keyword">True</span></div>
-<div class="line"><span class="lineno">  313</span>     step = 0</div>
-<div class="line"><span class="lineno">  314</span>     <span class="keywordflow">while</span> dz &gt; 0.1:</div>
-<div class="line"><span class="lineno">  315</span>      zBefore = zv</div>
-<div class="line"><span class="lineno">  316</span>      newPos = ROOT.TVector3(xv,yv,zv)</div>
-<div class="line"><span class="lineno">  317</span>     <span class="comment"># make a new rep for track 1,2</span></div>
-<div class="line"><span class="lineno">  318</span>      <span class="keywordflow">for</span> tr <span class="keywordflow">in</span> [t1,t2]:</div>
-<div class="line"><span class="lineno">  319</span>       xx = sTree.FitTracks[tr].getFittedState()</div>
-<div class="line"><span class="lineno">  320</span>       reps[tr]   = ROOT.genfit.RKTrackRep(xx.getPDG())</div>
-<div class="line"><span class="lineno">  321</span>       states[tr] = ROOT.genfit.StateOnPlane(reps[tr])</div>
-<div class="line"><span class="lineno">  322</span>       reps[tr].setPosMom(states[tr],xx.getPos(),xx.getMom())</div>
-<div class="line"><span class="lineno">  323</span>       <span class="keywordflow">try</span>:</div>
-<div class="line"><span class="lineno">  324</span>        reps[tr].extrapolateToPoint(states[tr], newPos, <span class="keyword">False</span>)</div>
-<div class="line"><span class="lineno">  325</span>       <span class="keywordflow">except</span>:</div>
-<div class="line"><span class="lineno">  326</span>        print(<span class="stringliteral">&#39;SHiPAna: extrapolation did not worked&#39;</span>)</div>
-<div class="line"><span class="lineno">  327</span>        rc = <span class="keyword">False</span></div>
-<div class="line"><span class="lineno">  328</span>        <span class="keywordflow">break</span></div>
-<div class="line"><span class="lineno">  329</span>       newPosDir[tr] = [reps[tr].getPos(states[tr]),reps[tr].getDir(states[tr])]</div>
-<div class="line"><span class="lineno">  330</span>      <span class="keywordflow">if</span> <span class="keywordflow">not</span> rc: <span class="keywordflow">break</span></div>
-<div class="line"><span class="lineno">  331</span>      xv,yv,zv,doca = myVertex(t1,t2,newPosDir)</div>
-<div class="line"><span class="lineno">  332</span>      dz = abs(zBefore-zv)</div>
-<div class="line"><span class="lineno">  333</span>      step+=1</div>
-<div class="line"><span class="lineno">  334</span>      <span class="keywordflow">if</span> step &gt; 10:</div>
-<div class="line"><span class="lineno">  335</span>         print(<span class="stringliteral">&#39;abort iteration, too many steps, pos=&#39;</span>,xv,yv,zv,<span class="stringliteral">&#39; doca=&#39;</span>,doca,<span class="stringliteral">&#39;z before and dz&#39;</span>,zBefore,dz)</div>
-<div class="line"><span class="lineno">  336</span>         rc = <span class="keyword">False</span></div>
-<div class="line"><span class="lineno">  337</span>         <span class="keywordflow">break</span></div>
-<div class="line"><span class="lineno">  338</span>     <span class="keywordflow">if</span> <span class="keywordflow">not</span> rc: <span class="keywordflow">return</span> xv,yv,zv,doca,-1 <span class="comment"># extrapolation failed, makes no sense to continue</span></div>
-<div class="line"><span class="lineno">  339</span>     LV={}</div>
-<div class="line"><span class="lineno">  340</span>     <span class="keywordflow">for</span> tr <span class="keywordflow">in</span> [t1,t2]:</div>
-<div class="line"><span class="lineno">  341</span>      mom = reps[tr].getMom(states[tr])</div>
-<div class="line"><span class="lineno">  342</span>      pid = abs(states[tr].getPDG())</div>
-<div class="line"><span class="lineno">  343</span>      <span class="keywordflow">if</span> pid == 2212: pid = 211</div>
-<div class="line"><span class="lineno">  344</span>      mass = PDG.GetParticle(pid).Mass()</div>
-<div class="line"><span class="lineno">  345</span>      E = ROOT.TMath.Sqrt( mass*mass + mom.Mag2() )</div>
-<div class="line"><span class="lineno">  346</span>      LV[tr] = ROOT.TLorentzVector()</div>
-<div class="line"><span class="lineno">  347</span>      LV[tr].SetPxPyPzE(mom.x(),mom.y(),mom.z(),E)</div>
-<div class="line"><span class="lineno">  348</span>     HNLMom = LV[t1]+LV[t2]</div>
-<div class="line"><span class="lineno">  349</span>     <span class="keywordflow">return</span> xv,yv,zv,doca,HNLMom</div>
+<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00300">300</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  300</span><span class="keyword">def  </span>RedoVertexing(t1,t2):</div>
+<div class="line"><span class="lineno">  301</span>     PosDir = {}</div>
+<div class="line"><span class="lineno">  302</span>     <span class="keywordflow">for</span> tr <span class="keywordflow">in</span> [t1,t2]:</div>
+<div class="line"><span class="lineno">  303</span>      xx  = sTree.FitTracks[tr].getFittedState()</div>
+<div class="line"><span class="lineno">  304</span>      PosDir[tr] = [xx.getPos(),xx.getDir()]</div>
+<div class="line"><span class="lineno">  305</span>     xv,yv,zv,doca = myVertex(t1,t2,PosDir)</div>
+<div class="line"><span class="lineno">  306</span><span class="comment"># as we have learned, need iterative procedure</span></div>
+<div class="line"><span class="lineno">  307</span>     dz = 99999.</div>
+<div class="line"><span class="lineno">  308</span>     reps,states,newPosDir = {},{},{}</div>
+<div class="line"><span class="lineno">  309</span>     parallelToZ = ROOT.TVector3(0., 0., 1.)</div>
+<div class="line"><span class="lineno">  310</span>     rc = <span class="keyword">True</span></div>
+<div class="line"><span class="lineno">  311</span>     step = 0</div>
+<div class="line"><span class="lineno">  312</span>     <span class="keywordflow">while</span> dz &gt; 0.1:</div>
+<div class="line"><span class="lineno">  313</span>      zBefore = zv</div>
+<div class="line"><span class="lineno">  314</span>      newPos = ROOT.TVector3(xv,yv,zv)</div>
+<div class="line"><span class="lineno">  315</span>     <span class="comment"># make a new rep for track 1,2</span></div>
+<div class="line"><span class="lineno">  316</span>      <span class="keywordflow">for</span> tr <span class="keywordflow">in</span> [t1,t2]:</div>
+<div class="line"><span class="lineno">  317</span>       xx = sTree.FitTracks[tr].getFittedState()</div>
+<div class="line"><span class="lineno">  318</span>       reps[tr]   = ROOT.genfit.RKTrackRep(xx.getPDG())</div>
+<div class="line"><span class="lineno">  319</span>       states[tr] = ROOT.genfit.StateOnPlane(reps[tr])</div>
+<div class="line"><span class="lineno">  320</span>       reps[tr].setPosMom(states[tr],xx.getPos(),xx.getMom())</div>
+<div class="line"><span class="lineno">  321</span>       <span class="keywordflow">try</span>:</div>
+<div class="line"><span class="lineno">  322</span>        reps[tr].extrapolateToPoint(states[tr], newPos, <span class="keyword">False</span>)</div>
+<div class="line"><span class="lineno">  323</span>       <span class="keywordflow">except</span>:</div>
+<div class="line"><span class="lineno">  324</span>        print(<span class="stringliteral">&#39;SHiPAna: extrapolation did not worked&#39;</span>)</div>
+<div class="line"><span class="lineno">  325</span>        rc = <span class="keyword">False</span></div>
+<div class="line"><span class="lineno">  326</span>        <span class="keywordflow">break</span></div>
+<div class="line"><span class="lineno">  327</span>       newPosDir[tr] = [reps[tr].getPos(states[tr]),reps[tr].getDir(states[tr])]</div>
+<div class="line"><span class="lineno">  328</span>      <span class="keywordflow">if</span> <span class="keywordflow">not</span> rc: <span class="keywordflow">break</span></div>
+<div class="line"><span class="lineno">  329</span>      xv,yv,zv,doca = myVertex(t1,t2,newPosDir)</div>
+<div class="line"><span class="lineno">  330</span>      dz = abs(zBefore-zv)</div>
+<div class="line"><span class="lineno">  331</span>      step+=1</div>
+<div class="line"><span class="lineno">  332</span>      <span class="keywordflow">if</span> step &gt; 10:</div>
+<div class="line"><span class="lineno">  333</span>         print(<span class="stringliteral">&#39;abort iteration, too many steps, pos=&#39;</span>,xv,yv,zv,<span class="stringliteral">&#39; doca=&#39;</span>,doca,<span class="stringliteral">&#39;z before and dz&#39;</span>,zBefore,dz)</div>
+<div class="line"><span class="lineno">  334</span>         rc = <span class="keyword">False</span></div>
+<div class="line"><span class="lineno">  335</span>         <span class="keywordflow">break</span></div>
+<div class="line"><span class="lineno">  336</span>     <span class="keywordflow">if</span> <span class="keywordflow">not</span> rc: <span class="keywordflow">return</span> xv,yv,zv,doca,-1 <span class="comment"># extrapolation failed, makes no sense to continue</span></div>
+<div class="line"><span class="lineno">  337</span>     LV={}</div>
+<div class="line"><span class="lineno">  338</span>     <span class="keywordflow">for</span> tr <span class="keywordflow">in</span> [t1,t2]:</div>
+<div class="line"><span class="lineno">  339</span>      mom = reps[tr].getMom(states[tr])</div>
+<div class="line"><span class="lineno">  340</span>      pid = abs(states[tr].getPDG())</div>
+<div class="line"><span class="lineno">  341</span>      <span class="keywordflow">if</span> pid == 2212: pid = 211</div>
+<div class="line"><span class="lineno">  342</span>      mass = PDG.GetParticle(pid).Mass()</div>
+<div class="line"><span class="lineno">  343</span>      E = ROOT.TMath.Sqrt( mass*mass + mom.Mag2() )</div>
+<div class="line"><span class="lineno">  344</span>      LV[tr] = ROOT.TLorentzVector()</div>
+<div class="line"><span class="lineno">  345</span>      LV[tr].SetPxPyPzE(mom.x(),mom.y(),mom.z(),E)</div>
+<div class="line"><span class="lineno">  346</span>     HNLMom = LV[t1]+LV[t2]</div>
+<div class="line"><span class="lineno">  347</span>     <span class="keywordflow">return</span> xv,yv,zv,doca,HNLMom</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1319,67 +1310,67 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00130">130</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  130</span><span class="keyword">def </span>VertexError(t1,t2,PosDir,CovMat,scalFac):</div>
-<div class="line"><span class="lineno">  131</span><span class="comment"># with improved Vx x,y resolution</span></div>
-<div class="line"><span class="lineno">  132</span>   a,u = PosDir[t1][<span class="stringliteral">&#39;position&#39;</span>],PosDir[t1][<span class="stringliteral">&#39;direction&#39;</span>]</div>
-<div class="line"><span class="lineno">  133</span>   c,v = PosDir[t2][<span class="stringliteral">&#39;position&#39;</span>],PosDir[t2][<span class="stringliteral">&#39;direction&#39;</span>]</div>
-<div class="line"><span class="lineno">  134</span>   Vsq = v.Dot(v)</div>
-<div class="line"><span class="lineno">  135</span>   Usq = u.Dot(u)</div>
-<div class="line"><span class="lineno">  136</span>   UV  = u.Dot(v)</div>
-<div class="line"><span class="lineno">  137</span>   ca  = c-a</div>
-<div class="line"><span class="lineno">  138</span>   denom = Usq*Vsq-UV**2</div>
-<div class="line"><span class="lineno">  139</span>   tmp2 = Vsq*u-UV*v</div>
-<div class="line"><span class="lineno">  140</span>   Va = ca.Dot(tmp2)/denom</div>
-<div class="line"><span class="lineno">  141</span>   tmp2 = UV*u-Usq*v</div>
-<div class="line"><span class="lineno">  142</span>   Vb = ca.Dot(tmp2)/denom</div>
-<div class="line"><span class="lineno">  143</span>   X = (a+c+Va*u+Vb*v) * 0.5</div>
-<div class="line"><span class="lineno">  144</span>   l1 = a - X + u*Va  <span class="comment"># l2 = c - X + v*Vb</span></div>
-<div class="line"><span class="lineno">  145</span>   dist = 2. * ROOT.TMath.Sqrt( l1.Dot(l1) )</div>
-<div class="line"><span class="lineno">  146</span>   T = ROOT.TMatrixD(3,12)</div>
-<div class="line"><span class="lineno">  147</span>   <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(3):</div>
-<div class="line"><span class="lineno">  148</span>     <span class="keywordflow">for</span> k <span class="keywordflow">in</span> range(4):</div>
-<div class="line"><span class="lineno">  149</span>       <span class="keywordflow">for</span> j <span class="keywordflow">in</span> range(3):</div>
-<div class="line"><span class="lineno">  150</span>        KD = 0</div>
-<div class="line"><span class="lineno">  151</span>        <span class="keywordflow">if</span> i==j: KD = 1</div>
-<div class="line"><span class="lineno">  152</span>        <span class="keywordflow">if</span> k==0 <span class="keywordflow">or</span> k==2:</div>
-<div class="line"><span class="lineno">  153</span>       <span class="comment"># cova and covc</span></div>
-<div class="line"><span class="lineno">  154</span>         temp  = ( u[j]*Vsq - v[j]*UV )*u[i] + (u[j]*UV-v[j]*Usq)*v[i]</div>
-<div class="line"><span class="lineno">  155</span>         sign = -1</div>
-<div class="line"><span class="lineno">  156</span>         <span class="keywordflow">if</span> k==2 : sign = +1</div>
-<div class="line"><span class="lineno">  157</span>         T[i][3*k+j] = 0.5*( KD + sign*temp/denom )</div>
-<div class="line"><span class="lineno">  158</span>        <span class="keywordflow">elif</span> k==1:</div>
-<div class="line"><span class="lineno">  159</span>       <span class="comment"># covu</span></div>
-<div class="line"><span class="lineno">  160</span>         aNAZ = denom*( ca[j]*Vsq-v.Dot(ca)*v[j] )</div>
-<div class="line"><span class="lineno">  161</span>         aZAN = ( ca.Dot(u)*Vsq-ca.Dot(v)*UV )*2*( u[j]*Vsq-v[j]*UV )</div>
-<div class="line"><span class="lineno">  162</span>         bNAZ = denom*( ca[j]*UV+(u.Dot(ca)*v[j]) - 2*ca.Dot(v)*u[j] )</div>
-<div class="line"><span class="lineno">  163</span>         bZAN = ( ca.Dot(u)*UV-ca.Dot(v)*Usq )*2*( u[j]*Vsq-v[j]*UV )</div>
-<div class="line"><span class="lineno">  164</span>         T[i][3*k+j] = 0.5*( Va*KD + u[i]/denom**2*(aNAZ-aZAN) + v[i]/denom**2*(bNAZ-bZAN) )</div>
-<div class="line"><span class="lineno">  165</span>        <span class="keywordflow">elif</span> k==3:</div>
-<div class="line"><span class="lineno">  166</span>       <span class="comment"># covv</span></div>
-<div class="line"><span class="lineno">  167</span>         aNAZ = denom*( 2*ca.Dot(u)*v[j] - ca.Dot(v)*u[j] - ca[j]*UV )</div>
-<div class="line"><span class="lineno">  168</span>         aZAN = ( ca.Dot(u)*Vsq-ca.Dot(v)*UV )*2*( v[j]*Usq-u[j]*UV )</div>
-<div class="line"><span class="lineno">  169</span>         bNAZ = denom*( ca.Dot(u)*u[j]-ca[j]*Usq )</div>
-<div class="line"><span class="lineno">  170</span>         bZAN = ( ca.Dot(u)*UV-ca.Dot(v)*Usq )*2*( v[j]*Usq-u[j]*UV )</div>
-<div class="line"><span class="lineno">  171</span>         T[i][3*k+j] = 0.5*(Vb*KD + u[i]/denom**2*(aNAZ-aZAN) + v[i]/denom**2*(bNAZ-bZAN) )</div>
-<div class="line"><span class="lineno">  172</span>   transT = ROOT.TMatrixD(12,3)</div>
-<div class="line"><span class="lineno">  173</span>   transT.Transpose(T)</div>
-<div class="line"><span class="lineno">  174</span>   CovTracks = ROOT.TMatrixD(12,12)</div>
-<div class="line"><span class="lineno">  175</span>   tlist = [t1,t2]</div>
-<div class="line"><span class="lineno">  176</span>   <span class="keywordflow">for</span> k <span class="keywordflow">in</span> range(2):</div>
-<div class="line"><span class="lineno">  177</span>     <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(6):</div>
-<div class="line"><span class="lineno">  178</span>       <span class="keywordflow">for</span> j <span class="keywordflow">in</span> range(6):</div>
-<div class="line"><span class="lineno">  179</span>        xfac = 1.</div>
-<div class="line"><span class="lineno">  180</span>        <span class="keywordflow">if</span> i&gt;2: xfac = scalFac[tlist[k]]</div>
-<div class="line"><span class="lineno">  181</span>        <span class="keywordflow">if</span> j&gt;2: xfac = xfac * scalFac[tlist[k]]</div>
-<div class="line"><span class="lineno">  182</span>        CovTracks[i+k*6][j+k*6] = CovMat[tlist[k]][i][j] * xfac</div>
-<div class="line"><span class="lineno">  183</span>        <span class="comment"># if i==5 or j==5 :  CovMat[tlist[k]][i][j] = 0 # ignore error on z-direction</span></div>
-<div class="line"><span class="lineno">  184</span>   tmp   = ROOT.TMatrixD(3,12)</div>
-<div class="line"><span class="lineno">  185</span>   tmp.Mult(T,CovTracks)</div>
-<div class="line"><span class="lineno">  186</span>   covX  = ROOT.TMatrixD(3,3)</div>
-<div class="line"><span class="lineno">  187</span>   covX.Mult(tmp,transT)</div>
-<div class="line"><span class="lineno">  188</span>   <span class="keywordflow">return</span> X,covX,dist</div>
-<div class="line"><span class="lineno">  189</span> </div>
+<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00128">128</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  128</span><span class="keyword">def </span>VertexError(t1,t2,PosDir,CovMat,scalFac):</div>
+<div class="line"><span class="lineno">  129</span><span class="comment"># with improved Vx x,y resolution</span></div>
+<div class="line"><span class="lineno">  130</span>   a,u = PosDir[t1][<span class="stringliteral">&#39;position&#39;</span>],PosDir[t1][<span class="stringliteral">&#39;direction&#39;</span>]</div>
+<div class="line"><span class="lineno">  131</span>   c,v = PosDir[t2][<span class="stringliteral">&#39;position&#39;</span>],PosDir[t2][<span class="stringliteral">&#39;direction&#39;</span>]</div>
+<div class="line"><span class="lineno">  132</span>   Vsq = v.Dot(v)</div>
+<div class="line"><span class="lineno">  133</span>   Usq = u.Dot(u)</div>
+<div class="line"><span class="lineno">  134</span>   UV  = u.Dot(v)</div>
+<div class="line"><span class="lineno">  135</span>   ca  = c-a</div>
+<div class="line"><span class="lineno">  136</span>   denom = Usq*Vsq-UV**2</div>
+<div class="line"><span class="lineno">  137</span>   tmp2 = Vsq*u-UV*v</div>
+<div class="line"><span class="lineno">  138</span>   Va = ca.Dot(tmp2)/denom</div>
+<div class="line"><span class="lineno">  139</span>   tmp2 = UV*u-Usq*v</div>
+<div class="line"><span class="lineno">  140</span>   Vb = ca.Dot(tmp2)/denom</div>
+<div class="line"><span class="lineno">  141</span>   X = (a+c+Va*u+Vb*v) * 0.5</div>
+<div class="line"><span class="lineno">  142</span>   l1 = a - X + u*Va  <span class="comment"># l2 = c - X + v*Vb</span></div>
+<div class="line"><span class="lineno">  143</span>   dist = 2. * ROOT.TMath.Sqrt( l1.Dot(l1) )</div>
+<div class="line"><span class="lineno">  144</span>   T = ROOT.TMatrixD(3,12)</div>
+<div class="line"><span class="lineno">  145</span>   <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(3):</div>
+<div class="line"><span class="lineno">  146</span>     <span class="keywordflow">for</span> k <span class="keywordflow">in</span> range(4):</div>
+<div class="line"><span class="lineno">  147</span>       <span class="keywordflow">for</span> j <span class="keywordflow">in</span> range(3):</div>
+<div class="line"><span class="lineno">  148</span>        KD = 0</div>
+<div class="line"><span class="lineno">  149</span>        <span class="keywordflow">if</span> i==j: KD = 1</div>
+<div class="line"><span class="lineno">  150</span>        <span class="keywordflow">if</span> k==0 <span class="keywordflow">or</span> k==2:</div>
+<div class="line"><span class="lineno">  151</span>       <span class="comment"># cova and covc</span></div>
+<div class="line"><span class="lineno">  152</span>         temp  = ( u[j]*Vsq - v[j]*UV )*u[i] + (u[j]*UV-v[j]*Usq)*v[i]</div>
+<div class="line"><span class="lineno">  153</span>         sign = -1</div>
+<div class="line"><span class="lineno">  154</span>         <span class="keywordflow">if</span> k==2 : sign = +1</div>
+<div class="line"><span class="lineno">  155</span>         T[i][3*k+j] = 0.5*( KD + sign*temp/denom )</div>
+<div class="line"><span class="lineno">  156</span>        <span class="keywordflow">elif</span> k==1:</div>
+<div class="line"><span class="lineno">  157</span>       <span class="comment"># covu</span></div>
+<div class="line"><span class="lineno">  158</span>         aNAZ = denom*( ca[j]*Vsq-v.Dot(ca)*v[j] )</div>
+<div class="line"><span class="lineno">  159</span>         aZAN = ( ca.Dot(u)*Vsq-ca.Dot(v)*UV )*2*( u[j]*Vsq-v[j]*UV )</div>
+<div class="line"><span class="lineno">  160</span>         bNAZ = denom*( ca[j]*UV+(u.Dot(ca)*v[j]) - 2*ca.Dot(v)*u[j] )</div>
+<div class="line"><span class="lineno">  161</span>         bZAN = ( ca.Dot(u)*UV-ca.Dot(v)*Usq )*2*( u[j]*Vsq-v[j]*UV )</div>
+<div class="line"><span class="lineno">  162</span>         T[i][3*k+j] = 0.5*( Va*KD + u[i]/denom**2*(aNAZ-aZAN) + v[i]/denom**2*(bNAZ-bZAN) )</div>
+<div class="line"><span class="lineno">  163</span>        <span class="keywordflow">elif</span> k==3:</div>
+<div class="line"><span class="lineno">  164</span>       <span class="comment"># covv</span></div>
+<div class="line"><span class="lineno">  165</span>         aNAZ = denom*( 2*ca.Dot(u)*v[j] - ca.Dot(v)*u[j] - ca[j]*UV )</div>
+<div class="line"><span class="lineno">  166</span>         aZAN = ( ca.Dot(u)*Vsq-ca.Dot(v)*UV )*2*( v[j]*Usq-u[j]*UV )</div>
+<div class="line"><span class="lineno">  167</span>         bNAZ = denom*( ca.Dot(u)*u[j]-ca[j]*Usq )</div>
+<div class="line"><span class="lineno">  168</span>         bZAN = ( ca.Dot(u)*UV-ca.Dot(v)*Usq )*2*( v[j]*Usq-u[j]*UV )</div>
+<div class="line"><span class="lineno">  169</span>         T[i][3*k+j] = 0.5*(Vb*KD + u[i]/denom**2*(aNAZ-aZAN) + v[i]/denom**2*(bNAZ-bZAN) )</div>
+<div class="line"><span class="lineno">  170</span>   transT = ROOT.TMatrixD(12,3)</div>
+<div class="line"><span class="lineno">  171</span>   transT.Transpose(T)</div>
+<div class="line"><span class="lineno">  172</span>   CovTracks = ROOT.TMatrixD(12,12)</div>
+<div class="line"><span class="lineno">  173</span>   tlist = [t1,t2]</div>
+<div class="line"><span class="lineno">  174</span>   <span class="keywordflow">for</span> k <span class="keywordflow">in</span> range(2):</div>
+<div class="line"><span class="lineno">  175</span>     <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(6):</div>
+<div class="line"><span class="lineno">  176</span>       <span class="keywordflow">for</span> j <span class="keywordflow">in</span> range(6):</div>
+<div class="line"><span class="lineno">  177</span>        xfac = 1.</div>
+<div class="line"><span class="lineno">  178</span>        <span class="keywordflow">if</span> i&gt;2: xfac = scalFac[tlist[k]]</div>
+<div class="line"><span class="lineno">  179</span>        <span class="keywordflow">if</span> j&gt;2: xfac = xfac * scalFac[tlist[k]]</div>
+<div class="line"><span class="lineno">  180</span>        CovTracks[i+k*6][j+k*6] = CovMat[tlist[k]][i][j] * xfac</div>
+<div class="line"><span class="lineno">  181</span>        <span class="comment"># if i==5 or j==5 :  CovMat[tlist[k]][i][j] = 0 # ignore error on z-direction</span></div>
+<div class="line"><span class="lineno">  182</span>   tmp   = ROOT.TMatrixD(3,12)</div>
+<div class="line"><span class="lineno">  183</span>   tmp.Mult(T,CovTracks)</div>
+<div class="line"><span class="lineno">  184</span>   covX  = ROOT.TMatrixD(3,3)</div>
+<div class="line"><span class="lineno">  185</span>   covX.Mult(tmp,transT)</div>
+<div class="line"><span class="lineno">  186</span>   <span class="keywordflow">return</span> X,covX,dist</div>
+<div class="line"><span class="lineno">  187</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1428,7 +1419,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00807">807</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00796">796</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
 
 </div>
 </div>
@@ -1444,7 +1435,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00808">808</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00797">797</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
 
 </div>
 </div>
@@ -1540,7 +1531,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00523">523</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00515">515</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
 
 </div>
 </div>
@@ -1556,7 +1547,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00856">856</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00845">845</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
 
 </div>
 </div>
@@ -1572,7 +1563,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00847">847</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00836">836</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
 
 </div>
 </div>
@@ -1588,7 +1579,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00844">844</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00833">833</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
 
 </div>
 </div>
@@ -1604,7 +1595,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00840">840</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00829">829</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
 
 </div>
 </div>
@@ -1620,7 +1611,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00837">837</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00826">826</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
 
 </div>
 </div>
@@ -1636,7 +1627,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00835">835</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00824">824</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
 
 </div>
 </div>
@@ -1652,7 +1643,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00827">827</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00816">816</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
 
 </div>
 </div>
@@ -1668,7 +1659,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00813">813</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00802">802</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
 
 </div>
 </div>
@@ -1684,7 +1675,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00811">811</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00800">800</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
 
 </div>
 </div>
@@ -1716,7 +1707,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00854">854</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00843">843</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
 
 </div>
 </div>
@@ -1732,7 +1723,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00828">828</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00817">817</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
 
 </div>
 </div>
@@ -1748,7 +1739,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00851">851</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00840">840</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
 
 </div>
 </div>
@@ -1764,7 +1755,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00821">821</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00810">810</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
 
 </div>
 </div>
@@ -1780,7 +1771,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00816">816</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00805">805</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
 
 </div>
 </div>
@@ -1956,7 +1947,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00870">870</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00859">859</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
 
 </div>
 </div>
@@ -2052,7 +2043,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00860">860</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00849">849</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
 
 </div>
 </div>
@@ -2212,7 +2203,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00873">873</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00862">862</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
 
 </div>
 </div>
@@ -2228,7 +2219,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00522">522</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00514">514</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
 
 </div>
 </div>
@@ -2324,7 +2315,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00526">526</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ShipAna_8py_source.html#l00518">518</a> of file <a class="el" href="ShipAna_8py_source.html">ShipAna.py</a>.</p>
 
 </div>
 </div>

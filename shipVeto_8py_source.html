@@ -108,212 +108,177 @@ $(document).ready(function(){initNavTree('shipVeto_8py_source.html',''); initRes
 <div class="foldopen" id="foldopen00008" data-start="" data-end="">
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno"><a class="line" href="classshipVeto_1_1Task.html#a73e955f9c218f2773c2b092770af7e80">    8</a></span> <span class="keyword">def </span><a class="code hl_function" href="classshipVeto_1_1Task.html#a73e955f9c218f2773c2b092770af7e80">__init__</a>(self,t):</div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno"><a class="line" href="classshipVeto_1_1Task.html#a64e78dbd37d875f9dcfecde20d5f429e">    9</a></span>  self.<a class="code hl_variable" href="classshipVeto_1_1Task.html#a64e78dbd37d875f9dcfecde20d5f429e">SBTefficiency</a> = 0.99  <span class="comment"># Surrounding Background tagger: 99% efficiency picked up from TP</span></div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="classshipVeto_1_1Task.html#a2c8a112656daf3cba0d6a60fe4c814f7">   10</a></span>  self.<a class="code hl_variable" href="classshipVeto_1_1Task.html#a2c8a112656daf3cba0d6a60fe4c814f7">SVTefficiency</a> = 0.995 <span class="comment"># Straw Veto tagger: guestimate, including dead channels</span></div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno"><a class="line" href="classshipVeto_1_1Task.html#ad741138cfcbe4374dc07d6936bb25150">   11</a></span>  self.<a class="code hl_variable" href="classshipVeto_1_1Task.html#ad741138cfcbe4374dc07d6936bb25150">UBTefficiency</a> = 0.9  <span class="comment"># Upstream background tagger</span></div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="classshipVeto_1_1Task.html#ab282628010706cf008f561f62dfad380">   12</a></span>  self.<a class="code hl_variable" href="classshipVeto_1_1Task.html#ab282628010706cf008f561f62dfad380">random</a> = ROOT.TRandom()</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>  ROOT.gRandom.SetSeed(13)</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno"><a class="line" href="classshipVeto_1_1Task.html#a8ff222f2929866fb82f50f9b9784d8aa">   14</a></span>  self.<a class="code hl_variable" href="classshipVeto_1_1Task.html#a8ff222f2929866fb82f50f9b9784d8aa">detList</a>  = self.<a class="code hl_function" href="classshipVeto_1_1Task.html#a617bed70aaa667e931fec4562703cbe8">detMap</a>()</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno"><a class="line" href="classshipVeto_1_1Task.html#a2e8c76484b1d81b502d97b46d4e3e245">   15</a></span>  self.<a class="code hl_variable" href="classshipVeto_1_1Task.html#a2e8c76484b1d81b502d97b46d4e3e245">sTree</a> = t</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="classshipVeto_1_1Task.html#ad741138cfcbe4374dc07d6936bb25150">   10</a></span>  self.<a class="code hl_variable" href="classshipVeto_1_1Task.html#ad741138cfcbe4374dc07d6936bb25150">UBTefficiency</a> = 0.9  <span class="comment"># Upstream background tagger</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno"><a class="line" href="classshipVeto_1_1Task.html#ab282628010706cf008f561f62dfad380">   11</a></span>  self.<a class="code hl_variable" href="classshipVeto_1_1Task.html#ab282628010706cf008f561f62dfad380">random</a> = ROOT.TRandom()</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>  ROOT.gRandom.SetSeed(13)</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno"><a class="line" href="classshipVeto_1_1Task.html#a8ff222f2929866fb82f50f9b9784d8aa">   13</a></span>  self.<a class="code hl_variable" href="classshipVeto_1_1Task.html#a8ff222f2929866fb82f50f9b9784d8aa">detList</a>  = self.<a class="code hl_function" href="classshipVeto_1_1Task.html#a617bed70aaa667e931fec4562703cbe8">detMap</a>()</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno"><a class="line" href="classshipVeto_1_1Task.html#a2e8c76484b1d81b502d97b46d4e3e245">   14</a></span>  self.<a class="code hl_variable" href="classshipVeto_1_1Task.html#a2e8c76484b1d81b502d97b46d4e3e245">sTree</a> = t</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
 </div>
-<div class="foldopen" id="foldopen00017" data-start="" data-end="">
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno"><a class="line" href="classshipVeto_1_1Task.html#a617bed70aaa667e931fec4562703cbe8">   17</a></span> <span class="keyword">def </span><a class="code hl_function" href="classshipVeto_1_1Task.html#a617bed70aaa667e931fec4562703cbe8">detMap</a>(self):</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>  fGeo = ROOT.gGeoManager</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>  detList = {}</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>  <span class="keywordflow">for</span> v <span class="keywordflow">in</span> fGeo.GetListOfVolumes():</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>   nm = v.GetName()</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>   i  = fGeo.FindVolumeFast(nm).GetNumber()</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>   detList[i] = nm</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>  <span class="keywordflow">return</span> detList</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
+<div class="foldopen" id="foldopen00016" data-start="" data-end="">
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno"><a class="line" href="classshipVeto_1_1Task.html#a617bed70aaa667e931fec4562703cbe8">   16</a></span> <span class="keyword">def </span><a class="code hl_function" href="classshipVeto_1_1Task.html#a617bed70aaa667e931fec4562703cbe8">detMap</a>(self):</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>  fGeo = ROOT.gGeoManager</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>  detList = {}</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>  <span class="keywordflow">for</span> v <span class="keywordflow">in</span> fGeo.GetListOfVolumes():</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>   nm = v.GetName()</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>   i  = fGeo.FindVolumeFast(nm).GetNumber()</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>   detList[i] = nm</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>  <span class="keywordflow">return</span> detList</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
 </div>
-<div class="foldopen" id="foldopen00026" data-start="" data-end="">
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="classshipVeto_1_1Task.html#a77102d069fb0700525379c8b567592c5">   26</a></span> <span class="keyword">def </span><a class="code hl_function" href="classshipVeto_1_1Task.html#a77102d069fb0700525379c8b567592c5">SBT_plastic_decision</a>(self,mcParticle=None):</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    <a class="code hl_function" href="classshipVeto_1_1Task.html#a333f2a41cb5efe21f2e8602ad430d7be">SBT_decision</a>(self,mcParticle,detector=<span class="stringliteral">&#39;plastic&#39;</span>)</div>
+<div class="foldopen" id="foldopen00025" data-start="" data-end="">
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="classshipVeto_1_1Task.html#a77102d069fb0700525379c8b567592c5">   25</a></span> <span class="keyword">def </span><a class="code hl_function" href="classshipVeto_1_1Task.html#a77102d069fb0700525379c8b567592c5">SBT_plastic_decision</a>(self,mcParticle=None):</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    <a class="code hl_function" href="classshipVeto_1_1Task.html#a333f2a41cb5efe21f2e8602ad430d7be">SBT_decision</a>(self,mcParticle,detector=<span class="stringliteral">&#39;plastic&#39;</span>)</div>
 </div>
-<div class="foldopen" id="foldopen00028" data-start="" data-end="">
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="classshipVeto_1_1Task.html#ac3b4a6c3cf699bcdac413cb9c3da5fd0">   28</a></span> <span class="keyword">def </span><a class="code hl_function" href="classshipVeto_1_1Task.html#ac3b4a6c3cf699bcdac413cb9c3da5fd0">SBT_liquid_decision</a>(self,mcParticle=None):</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    <a class="code hl_function" href="classshipVeto_1_1Task.html#a333f2a41cb5efe21f2e8602ad430d7be">SBT_decision</a>(self,mcParticle,detector=<span class="stringliteral">&#39;liquid&#39;</span>)</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
+<div class="foldopen" id="foldopen00027" data-start="" data-end="">
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="classshipVeto_1_1Task.html#ac3b4a6c3cf699bcdac413cb9c3da5fd0">   27</a></span> <span class="keyword">def </span><a class="code hl_function" href="classshipVeto_1_1Task.html#ac3b4a6c3cf699bcdac413cb9c3da5fd0">SBT_liquid_decision</a>(self,mcParticle=None):</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    <a class="code hl_function" href="classshipVeto_1_1Task.html#a333f2a41cb5efe21f2e8602ad430d7be">SBT_decision</a>(self,mcParticle,detector=<span class="stringliteral">&#39;liquid&#39;</span>)</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
 </div>
-<div class="foldopen" id="foldopen00031" data-start="" data-end="">
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="classshipVeto_1_1Task.html#a333f2a41cb5efe21f2e8602ad430d7be">   31</a></span> <span class="keyword">def </span><a class="code hl_function" href="classshipVeto_1_1Task.html#a333f2a41cb5efe21f2e8602ad430d7be">SBT_decision</a>(self,mcParticle=None,detector=&#39;liquid&#39;):</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  <span class="comment"># if mcParticle &gt;0, only count hits with this particle</span></div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  <span class="comment"># if mcParticle &lt;0, do not count hits with this particle</span></div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  hitSegments = 0</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  index = -1</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  fdetector = detector==<span class="stringliteral">&#39;liquid&#39;</span></div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  <span class="keywordflow">for</span> aDigi <span class="keywordflow">in</span> self.<a class="code hl_variable" href="classshipVeto_1_1Task.html#a2e8c76484b1d81b502d97b46d4e3e245">sTree</a>.Digi_SBTHits:</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>     index+=1</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>     detID    = aDigi.GetDetectorID()</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>     <span class="keywordflow">if</span> fdetector <span class="keywordflow">and</span> detID &gt; 999999:<span class="keywordflow">continue</span></div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>     <span class="keywordflow">if</span> <span class="keywordflow">not</span> fdetector <span class="keywordflow">and</span> <span class="keywordflow">not</span> detID &gt; 999999:<span class="keywordflow">continue</span></div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>     <span class="keywordflow">if</span> mcParticle:</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>        found = <span class="keyword">False</span></div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>        <span class="keywordflow">for</span> mcP <span class="keywordflow">in</span> self.<a class="code hl_variable" href="classshipVeto_1_1Task.html#a2e8c76484b1d81b502d97b46d4e3e245">sTree</a>.digiSBT2MC[index]:</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>         <span class="keywordflow">if</span> mcParticle&gt;0 <span class="keywordflow">and</span> mcParticle != mcP : found=<span class="keyword">True</span></div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>         <span class="keywordflow">if</span> mcParticle&lt;0 <span class="keywordflow">and</span> abs(mcParticle) == mcP : found=<span class="keyword">True</span></div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>        <span class="keywordflow">if</span> found: <span class="keywordflow">continue</span></div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>     position = aDigi.GetXYZ()</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>     ELoss    = aDigi.GetEloss()</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>     <span class="keywordflow">if</span> aDigi.isValid(): hitSegments += 1 <span class="comment">#threshold of 45 MeV per segment</span></div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  w = (1-self.<a class="code hl_variable" href="classshipVeto_1_1Task.html#a64e78dbd37d875f9dcfecde20d5f429e">SBTefficiency</a>)**hitSegments</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  veto = self.<a class="code hl_variable" href="classshipVeto_1_1Task.html#ab282628010706cf008f561f62dfad380">random</a>.Rndm() &gt; w</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  <span class="comment">#print &#39;SBT :&#39;,hitSegments</span></div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  <span class="keywordflow">return</span> veto, w, hitSegments</div>
+<div class="foldopen" id="foldopen00030" data-start="" data-end="">
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="classshipVeto_1_1Task.html#a333f2a41cb5efe21f2e8602ad430d7be">   30</a></span> <span class="keyword">def </span><a class="code hl_function" href="classshipVeto_1_1Task.html#a333f2a41cb5efe21f2e8602ad430d7be">SBT_decision</a>(self,mcParticle=None,detector=&#39;liquid&#39;):</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  <span class="comment"># if mcParticle &gt;0, only count hits with this particle</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  <span class="comment"># if mcParticle &lt;0, do not count hits with this particle</span></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  hitSegments = 0</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  index = -1</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  fdetector = detector==<span class="stringliteral">&#39;liquid&#39;</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  <span class="keywordflow">for</span> aDigi <span class="keywordflow">in</span> self.<a class="code hl_variable" href="classshipVeto_1_1Task.html#a2e8c76484b1d81b502d97b46d4e3e245">sTree</a>.Digi_SBTHits:</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>     index+=1</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>     detID    = aDigi.GetDetectorID()</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>     <span class="keywordflow">if</span> fdetector <span class="keywordflow">and</span> detID &gt; 999999:<span class="keywordflow">continue</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>     <span class="keywordflow">if</span> <span class="keywordflow">not</span> fdetector <span class="keywordflow">and</span> <span class="keywordflow">not</span> detID &gt; 999999:<span class="keywordflow">continue</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>     <span class="keywordflow">if</span> mcParticle:</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>        found = <span class="keyword">False</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>        <span class="keywordflow">for</span> mcP <span class="keywordflow">in</span> self.<a class="code hl_variable" href="classshipVeto_1_1Task.html#a2e8c76484b1d81b502d97b46d4e3e245">sTree</a>.digiSBT2MC[index]:</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>         <span class="keywordflow">if</span> mcParticle&gt;0 <span class="keywordflow">and</span> mcParticle != mcP : found=<span class="keyword">True</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>         <span class="keywordflow">if</span> mcParticle&lt;0 <span class="keywordflow">and</span> abs(mcParticle) == mcP : found=<span class="keyword">True</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>        <span class="keywordflow">if</span> found: <span class="keywordflow">continue</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>     position = aDigi.GetXYZ()</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>     ELoss    = aDigi.GetEloss()</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>     <span class="keywordflow">if</span> aDigi.isValid(): hitSegments += 1 <span class="comment">#threshold of 45 MeV per segment</span></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  w = (1-self.<a class="code hl_variable" href="classshipVeto_1_1Task.html#a64e78dbd37d875f9dcfecde20d5f429e">SBTefficiency</a>)**hitSegments</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  veto = self.<a class="code hl_variable" href="classshipVeto_1_1Task.html#ab282628010706cf008f561f62dfad380">random</a>.Rndm() &gt; w</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <span class="comment">#print &#39;SBT :&#39;,hitSegments</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  <span class="keywordflow">return</span> veto, w, hitSegments</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
 </div>
 <div class="foldopen" id="foldopen00055" data-start="" data-end="">
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="classshipVeto_1_1Task.html#ab08ec4ad525755a7f59d1c10c75bae86">   55</a></span> <span class="keyword">def </span><a class="code hl_function" href="classshipVeto_1_1Task.html#ab08ec4ad525755a7f59d1c10c75bae86">SVT_decision</a>(self,mcParticle=None):</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="classshipVeto_1_1Task.html#aa43990053bef47b678019c735bfe0910">   55</a></span> <span class="keyword">def </span><a class="code hl_function" href="classshipVeto_1_1Task.html#aa43990053bef47b678019c735bfe0910">UBT_decision</a>(self, mcParticle=None):</div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  nHits = 0</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  <span class="keywordflow">for</span> ahit <span class="keywordflow">in</span> self.<a class="code hl_variable" href="classshipVeto_1_1Task.html#a2e8c76484b1d81b502d97b46d4e3e245">sTree</a>.strawtubesPoint:</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>     <span class="keywordflow">if</span> mcParticle:</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>        <span class="keywordflow">if</span> mcParticle&gt;0 <span class="keywordflow">and</span> mcParticle != ahit.GetTrackID() : <span class="keywordflow">continue</span></div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>        <span class="keywordflow">if</span> mcParticle&lt;0 <span class="keywordflow">and</span> abs(mcParticle) == ahit.GetTrackID() : <span class="keywordflow">continue</span></div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>     detID   = ahit.GetDetectorID()</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>     <span class="keywordflow">if</span> detID&lt;50000000: <span class="keywordflow">continue</span>  <span class="comment"># StrawVeto station = 5</span></div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>     nHits+=1</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  w = (1-self.<a class="code hl_variable" href="classshipVeto_1_1Task.html#a2c8a112656daf3cba0d6a60fe4c814f7">SVTefficiency</a>)**nHits</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  veto = self.<a class="code hl_variable" href="classshipVeto_1_1Task.html#ab282628010706cf008f561f62dfad380">random</a>.Rndm() &gt; w</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  <span class="comment"># print &#39;SVT :&#39;,nHits</span></div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  <span class="keywordflow">return</span> veto,w,nHits</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  mom = ROOT.TVector3()</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  <span class="keywordflow">for</span> ahit <span class="keywordflow">in</span> self.<a class="code hl_variable" href="classshipVeto_1_1Task.html#a2e8c76484b1d81b502d97b46d4e3e245">sTree</a>.UpstreamTaggerPoint:</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>     <span class="keywordflow">if</span> mcParticle:</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>        <span class="keywordflow">if</span> mcParticle &gt; 0 <span class="keywordflow">and</span> mcParticle != ahit.GetTrackID():</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>         <span class="keywordflow">continue</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>        <span class="keywordflow">if</span> mcParticle &lt; 0 <span class="keywordflow">and</span> abs(mcParticle) == ahit.GetTrackID():</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>         <span class="keywordflow">continue</span></div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>     ahit.Momentum(mom)</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>     <span class="keywordflow">if</span> mom.Mag() &gt; 0.1:</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>      nHits+=1</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  w = (1 - self.<a class="code hl_variable" href="classshipVeto_1_1Task.html#ad741138cfcbe4374dc07d6936bb25150">UBTefficiency</a>) ** nHits</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  veto = self.<a class="code hl_variable" href="classshipVeto_1_1Task.html#ab282628010706cf008f561f62dfad380">random</a>.Rndm() &gt; w</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  <span class="keywordflow">return</span> veto, w, nHits</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
 </div>
-<div class="foldopen" id="foldopen00068" data-start="" data-end="">
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno"><a class="line" href="classshipVeto_1_1Task.html#a5fc1eb2195ee519dc2d501d7a6335029">   68</a></span> <span class="keyword">def </span><a class="code hl_function" href="classshipVeto_1_1Task.html#a5fc1eb2195ee519dc2d501d7a6335029">RPC_decision</a>(self,mcParticle=None):</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  nHits = 0</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  mom = ROOT.TVector3()</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  <span class="keywordflow">for</span> ahit <span class="keywordflow">in</span> self.<a class="code hl_variable" href="classshipVeto_1_1Task.html#a2e8c76484b1d81b502d97b46d4e3e245">sTree</a>.ShipRpcPoint:</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>   <span class="keywordflow">if</span> mcParticle:</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>        <span class="keywordflow">if</span> mcParticle&gt;0 <span class="keywordflow">and</span> mcParticle != ahit.GetTrackID() : <span class="keywordflow">continue</span></div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>        <span class="keywordflow">if</span> mcParticle&lt;0 <span class="keywordflow">and</span> abs(mcParticle) == ahit.GetTrackID() : <span class="keywordflow">continue</span></div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>   ahit.Momentum(mom)</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>   <span class="keywordflow">if</span> mom.Mag() &gt; 0.1: nHits+=1</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  w = 1</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>  veto = nHits &gt; 0 <span class="comment"># 10  change to &gt;0 since neutrino background ntuple not possible otherwise</span></div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  <span class="keywordflow">if</span> veto: w = 0.</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  <span class="comment">#print &#39;RPC :&#39;,nHits</span></div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  <span class="keywordflow">return</span> veto,w,nHits</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
+<div class="foldopen" id="foldopen00071" data-start="" data-end="">
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno"><a class="line" href="classshipVeto_1_1Task.html#a0cba3e40c3effd5b345ed69ec6bc4d12">   71</a></span> <span class="keyword">def </span><a class="code hl_function" href="classshipVeto_1_1Task.html#a0cba3e40c3effd5b345ed69ec6bc4d12">Track_decision</a>(self,mcParticle=None):</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  nMultCon = 0</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  k = -1</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  <span class="keywordflow">for</span> aTrack <span class="keywordflow">in</span> self.<a class="code hl_variable" href="classshipVeto_1_1Task.html#a2e8c76484b1d81b502d97b46d4e3e245">sTree</a>.FitTracks:</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>     k+=1</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>     <span class="keywordflow">if</span> mcParticle:</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>        <span class="keywordflow">if</span> mcParticle&gt;0 <span class="keywordflow">and</span> mcParticle != ahit.GetTrackID() : <span class="keywordflow">continue</span></div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>        <span class="keywordflow">if</span> mcParticle&lt;0 <span class="keywordflow">and</span> abs(mcParticle) == ahit.GetTrackID() : <span class="keywordflow">continue</span></div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>     fstatus =  aTrack.getFitStatus()</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>     <span class="keywordflow">if</span> <span class="keywordflow">not</span> fstatus.isFitConverged() : <span class="keywordflow">continue</span></div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>     <span class="keywordflow">if</span> fstatus.getNdf() &lt; 25: <span class="keywordflow">continue</span></div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>     nMultCon+=1</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  w = 1</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>  veto = nMultCon &gt; 2</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>  <span class="keywordflow">if</span> veto: w = 0.</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>  <span class="keywordflow">return</span> veto,w,nMultCon</div>
 </div>
-<div class="foldopen" id="foldopen00083" data-start="" data-end="">
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno"><a class="line" href="classshipVeto_1_1Task.html#aa43990053bef47b678019c735bfe0910">   83</a></span> <span class="keyword">def </span><a class="code hl_function" href="classshipVeto_1_1Task.html#aa43990053bef47b678019c735bfe0910">UBT_decision</a>(self, mcParticle=None):</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>  nHits = 0</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>  mom = ROOT.TVector3()</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>  <span class="keywordflow">for</span> ahit <span class="keywordflow">in</span> self.<a class="code hl_variable" href="classshipVeto_1_1Task.html#a2e8c76484b1d81b502d97b46d4e3e245">sTree</a>.UpstreamTaggerPoint:</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>     <span class="keywordflow">if</span> mcParticle:</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>        <span class="keywordflow">if</span> mcParticle &gt; 0 <span class="keywordflow">and</span> mcParticle != ahit.GetTrackID():</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>         <span class="keywordflow">continue</span></div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>        <span class="keywordflow">if</span> mcParticle &lt; 0 <span class="keywordflow">and</span> abs(mcParticle) == ahit.GetTrackID():</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>         <span class="keywordflow">continue</span></div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>     ahit.Momentum(mom)</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>     <span class="keywordflow">if</span> mom.Mag() &gt; 0.1:</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>      nHits+=1</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>  w = (1 - self.<a class="code hl_variable" href="classshipVeto_1_1Task.html#ad741138cfcbe4374dc07d6936bb25150">UBTefficiency</a>) ** nHits</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>  veto = self.<a class="code hl_variable" href="classshipVeto_1_1Task.html#ab282628010706cf008f561f62dfad380">random</a>.Rndm() &gt; w</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>  <span class="keywordflow">return</span> veto, w, nHits</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span> </div>
+<div class="foldopen" id="foldopen00087" data-start="" data-end="">
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno"><a class="line" href="classshipVeto_1_1Task.html#a27a8c5f0f3e3fcc646cf2112f7f5d886">   87</a></span> <span class="keyword">def </span><a class="code hl_function" href="classshipVeto_1_1Task.html#a27a8c5f0f3e3fcc646cf2112f7f5d886">fiducialCheckSignal</a>(self,n):</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  hnl = self.<a class="code hl_variable" href="classshipVeto_1_1Task.html#a2e8c76484b1d81b502d97b46d4e3e245">sTree</a>.Particles[n]</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>  aPoint = ROOT.TVector3(hnl.Vx(),hnl.Vy(),hnl.Vz())</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>  distmin = self.<a class="code hl_function" href="classshipVeto_1_1Task.html#aa0b765d77a80580bf5d001c39cee3dc8">fiducialCheck</a>(aPoint)</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  <span class="keywordflow">return</span> distmin</div>
 </div>
-<div class="foldopen" id="foldopen00099" data-start="" data-end="">
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno"><a class="line" href="classshipVeto_1_1Task.html#a0cba3e40c3effd5b345ed69ec6bc4d12">   99</a></span> <span class="keyword">def </span><a class="code hl_function" href="classshipVeto_1_1Task.html#a0cba3e40c3effd5b345ed69ec6bc4d12">Track_decision</a>(self,mcParticle=None):</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>  nMultCon = 0</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>  k = -1</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>  <span class="keywordflow">for</span> aTrack <span class="keywordflow">in</span> self.<a class="code hl_variable" href="classshipVeto_1_1Task.html#a2e8c76484b1d81b502d97b46d4e3e245">sTree</a>.FitTracks:</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>     k+=1</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>     <span class="keywordflow">if</span> mcParticle:</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>        <span class="keywordflow">if</span> mcParticle&gt;0 <span class="keywordflow">and</span> mcParticle != ahit.GetTrackID() : <span class="keywordflow">continue</span></div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>        <span class="keywordflow">if</span> mcParticle&lt;0 <span class="keywordflow">and</span> abs(mcParticle) == ahit.GetTrackID() : <span class="keywordflow">continue</span></div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>     fstatus =  aTrack.getFitStatus()</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>     <span class="keywordflow">if</span> <span class="keywordflow">not</span> fstatus.isFitConverged() : <span class="keywordflow">continue</span></div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>     <span class="keywordflow">if</span> fstatus.getNdf() &lt; 25: <span class="keywordflow">continue</span></div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>     nMultCon+=1</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>  w = 1</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>  veto = nMultCon &gt; 2</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>  <span class="keywordflow">if</span> veto: w = 0.</div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>  <span class="keywordflow">return</span> veto,w,nMultCon</div>
-</div>
-<div class="foldopen" id="foldopen00115" data-start="" data-end="">
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno"><a class="line" href="classshipVeto_1_1Task.html#a27a8c5f0f3e3fcc646cf2112f7f5d886">  115</a></span> <span class="keyword">def </span><a class="code hl_function" href="classshipVeto_1_1Task.html#a27a8c5f0f3e3fcc646cf2112f7f5d886">fiducialCheckSignal</a>(self,n):</div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>  hnl = self.<a class="code hl_variable" href="classshipVeto_1_1Task.html#a2e8c76484b1d81b502d97b46d4e3e245">sTree</a>.Particles[n]</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>  aPoint = ROOT.TVector3(hnl.Vx(),hnl.Vy(),hnl.Vz())</div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>  distmin = self.<a class="code hl_function" href="classshipVeto_1_1Task.html#aa0b765d77a80580bf5d001c39cee3dc8">fiducialCheck</a>(aPoint)</div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>  <span class="keywordflow">return</span> distmin</div>
-</div>
-<div class="foldopen" id="foldopen00120" data-start="" data-end="">
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno"><a class="line" href="classshipVeto_1_1Task.html#aa0b765d77a80580bf5d001c39cee3dc8">  120</a></span> <span class="keyword">def </span><a class="code hl_function" href="classshipVeto_1_1Task.html#aa0b765d77a80580bf5d001c39cee3dc8">fiducialCheck</a>(self,aPoint):</div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>  nav = ROOT.gGeoManager.GetCurrentNavigator()</div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>  phi = 0.</div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>  nSteps = 36</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>  delPhi = 2.*ROOT.TMath.Pi()/nSteps</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>  distmin = 1E10</div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>  nav.SetCurrentPoint(aPoint.x(),aPoint.y(),aPoint.z())</div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>  cNode = <span class="stringliteral">&#39;outside&#39;</span></div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>  aNode = nav.FindNode()</div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>  <span class="keywordflow">if</span> aNode:</div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>   cNode = aNode.GetName()</div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>  <span class="keywordflow">if</span> cNode <span class="keywordflow">not</span> <span class="keywordflow">in</span> (<span class="stringliteral">&#39;DecayVacuum_block4_0&#39;</span>,</div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>                   <span class="stringliteral">&#39;DecayVacuum_block5_0&#39;</span>,</div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>                   <span class="stringliteral">&#39;DecayVacuum_block3_0&#39;</span>,</div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>                   <span class="stringliteral">&#39;DecayVacuum_block2_0&#39;</span>,</div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>                   <span class="stringliteral">&#39;DecayVacuum_block1_0&#39;</span>):</div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>   distmin = 0.</div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>  <span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>   <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(nSteps):</div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>   <span class="comment"># set direction</span></div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>    xDir = ROOT.TMath.Sin(phi)</div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>    yDir = ROOT.TMath.Cos(phi)</div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>    nav.SetCurrentPoint(aPoint.x(),aPoint.y(),aPoint.z())</div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>    cNode = nav.FindNode().GetName()</div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>    nav.SetCurrentDirection(xDir,yDir,0.)</div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>    rc = nav.FindNextBoundaryAndStep()</div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>    x,y  = nav.GetCurrentPoint()[0],nav.GetCurrentPoint()[1]</div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>    <span class="keywordflow">if</span> cNode != nav.GetCurrentNode().GetName():</div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>     dist = ROOT.TMath.Sqrt( (aPoint.x()-x)**2 + (aPoint.y()-y)**2)</div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>     <span class="keywordflow">if</span> dist &lt; distmin : distmin = dist</div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>    phi+=delPhi</div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span><span class="comment"># distance to Tr1_x1</span></div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>   nav.cd(<span class="stringliteral">&quot;/Tr1_1&quot;</span>)</div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>   shape = nav.GetCurrentNode().GetVolume().GetShape()</div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>   origin = array(<span class="stringliteral">&#39;d&#39;</span>,[0,0,shape.GetDZ()])</div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>   master = array(<span class="stringliteral">&#39;d&#39;</span>,[0,0,0])</div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>   nav.LocalToMaster(origin,master)</div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>   dist = master[2] - aPoint.z()</div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>   <span class="keywordflow">if</span> dist &lt; distmin : distmin = dist</div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span><span class="comment"># distance to straw veto:</span></div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>   nav.cd(<span class="stringliteral">&quot;/Veto_5&quot;</span>)</div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>   shape = nav.GetCurrentNode().GetVolume().GetShape()</div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>   origin = array(<span class="stringliteral">&#39;d&#39;</span>,[0,0,shape.GetDZ()])</div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>   master = array(<span class="stringliteral">&#39;d&#39;</span>,[0,0,0])</div>
-<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>   nav.LocalToMaster(origin,master)</div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>   dist = aPoint.z() - master[2]</div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>  <span class="keywordflow">return</span> distmin</div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span> </div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span><span class="comment">#usage</span></div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span><span class="comment"># import shipVeto</span></div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span><span class="comment"># veto = shipVeto.Task(sTree)</span></div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span><span class="comment"># veto,w = veto.SBT_decision()</span></div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span><span class="comment"># or for plastic veto,w = veto.SBT_decision(detector=&#39;plastic&#39;)</span></div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span><span class="comment"># if veto: continue # reject event</span></div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span><span class="comment"># or</span></div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span><span class="comment"># continue using weight w</span></div>
+<div class="foldopen" id="foldopen00092" data-start="" data-end="">
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno"><a class="line" href="classshipVeto_1_1Task.html#aa0b765d77a80580bf5d001c39cee3dc8">   92</a></span> <span class="keyword">def </span><a class="code hl_function" href="classshipVeto_1_1Task.html#aa0b765d77a80580bf5d001c39cee3dc8">fiducialCheck</a>(self,aPoint):</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  nav = ROOT.gGeoManager.GetCurrentNavigator()</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>  phi = 0.</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>  nSteps = 36</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>  delPhi = 2.*ROOT.TMath.Pi()/nSteps</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>  distmin = 1E10</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>  nav.SetCurrentPoint(aPoint.x(),aPoint.y(),aPoint.z())</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>  cNode = <span class="stringliteral">&#39;outside&#39;</span></div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>  aNode = nav.FindNode()</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>  <span class="keywordflow">if</span> aNode:</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>   cNode = aNode.GetName()</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>  <span class="keywordflow">if</span> cNode <span class="keywordflow">not</span> <span class="keywordflow">in</span> (<span class="stringliteral">&#39;DecayVacuum_block4_0&#39;</span>,</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>                   <span class="stringliteral">&#39;DecayVacuum_block5_0&#39;</span>,</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>                   <span class="stringliteral">&#39;DecayVacuum_block3_0&#39;</span>,</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>                   <span class="stringliteral">&#39;DecayVacuum_block2_0&#39;</span>,</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>                   <span class="stringliteral">&#39;DecayVacuum_block1_0&#39;</span>):</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>   distmin = 0.</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>  <span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>   <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(nSteps):</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>   <span class="comment"># set direction</span></div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    xDir = ROOT.TMath.Sin(phi)</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    yDir = ROOT.TMath.Cos(phi)</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>    nav.SetCurrentPoint(aPoint.x(),aPoint.y(),aPoint.z())</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>    cNode = nav.FindNode().GetName()</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>    nav.SetCurrentDirection(xDir,yDir,0.)</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>    rc = nav.FindNextBoundaryAndStep()</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    x,y  = nav.GetCurrentPoint()[0],nav.GetCurrentPoint()[1]</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>    <span class="keywordflow">if</span> cNode != nav.GetCurrentNode().GetName():</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>     dist = ROOT.TMath.Sqrt( (aPoint.x()-x)**2 + (aPoint.y()-y)**2)</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>     <span class="keywordflow">if</span> dist &lt; distmin : distmin = dist</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>    phi+=delPhi</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span><span class="comment"># distance to Tr1_x1</span></div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>   nav.cd(<span class="stringliteral">&quot;/Tr1_1&quot;</span>)</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>   shape = nav.GetCurrentNode().GetVolume().GetShape()</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>   origin = array(<span class="stringliteral">&#39;d&#39;</span>,[0,0,shape.GetDZ()])</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>   master = array(<span class="stringliteral">&#39;d&#39;</span>,[0,0,0])</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>   nav.LocalToMaster(origin,master)</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>   dist = master[2] - aPoint.z()</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>   <span class="keywordflow">if</span> dist &lt; distmin : distmin = dist</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span><span class="comment"># distance to straw veto:</span></div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>   nav.cd(<span class="stringliteral">&quot;/Veto_5&quot;</span>)</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>   shape = nav.GetCurrentNode().GetVolume().GetShape()</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>   origin = array(<span class="stringliteral">&#39;d&#39;</span>,[0,0,shape.GetDZ()])</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>   master = array(<span class="stringliteral">&#39;d&#39;</span>,[0,0,0])</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>   nav.LocalToMaster(origin,master)</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>   dist = aPoint.z() - master[2]</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>  <span class="keywordflow">return</span> distmin</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span> </div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span><span class="comment">#usage</span></div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span><span class="comment"># import shipVeto</span></div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span><span class="comment"># veto = shipVeto.Task(sTree)</span></div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span><span class="comment"># veto,w = veto.SBT_decision()</span></div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span><span class="comment"># or for plastic veto,w = veto.SBT_decision(detector=&#39;plastic&#39;)</span></div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span><span class="comment"># if veto: continue # reject event</span></div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span><span class="comment"># or</span></div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span><span class="comment"># continue using weight w</span></div>
 </div>
 </div>
 <div class="ttc" id="aclassshipVeto_1_1Task_html"><div class="ttname"><a href="classshipVeto_1_1Task.html">shipVeto.Task</a></div><div class="ttdef"><b>Definition</b> <a href="shipVeto_8py_source.html#l00006">shipVeto.py:6</a></div></div>
-<div class="ttc" id="aclassshipVeto_1_1Task_html_a0cba3e40c3effd5b345ed69ec6bc4d12"><div class="ttname"><a href="classshipVeto_1_1Task.html#a0cba3e40c3effd5b345ed69ec6bc4d12">shipVeto.Task.Track_decision</a></div><div class="ttdeci">Track_decision(self, mcParticle=None)</div><div class="ttdef"><b>Definition</b> <a href="shipVeto_8py_source.html#l00099">shipVeto.py:99</a></div></div>
-<div class="ttc" id="aclassshipVeto_1_1Task_html_a27a8c5f0f3e3fcc646cf2112f7f5d886"><div class="ttname"><a href="classshipVeto_1_1Task.html#a27a8c5f0f3e3fcc646cf2112f7f5d886">shipVeto.Task.fiducialCheckSignal</a></div><div class="ttdeci">fiducialCheckSignal(self, n)</div><div class="ttdef"><b>Definition</b> <a href="shipVeto_8py_source.html#l00115">shipVeto.py:115</a></div></div>
-<div class="ttc" id="aclassshipVeto_1_1Task_html_a2c8a112656daf3cba0d6a60fe4c814f7"><div class="ttname"><a href="classshipVeto_1_1Task.html#a2c8a112656daf3cba0d6a60fe4c814f7">shipVeto.Task.SVTefficiency</a></div><div class="ttdeci">SVTefficiency</div><div class="ttdef"><b>Definition</b> <a href="shipVeto_8py_source.html#l00010">shipVeto.py:10</a></div></div>
-<div class="ttc" id="aclassshipVeto_1_1Task_html_a2e8c76484b1d81b502d97b46d4e3e245"><div class="ttname"><a href="classshipVeto_1_1Task.html#a2e8c76484b1d81b502d97b46d4e3e245">shipVeto.Task.sTree</a></div><div class="ttdeci">sTree</div><div class="ttdef"><b>Definition</b> <a href="shipVeto_8py_source.html#l00015">shipVeto.py:15</a></div></div>
-<div class="ttc" id="aclassshipVeto_1_1Task_html_a333f2a41cb5efe21f2e8602ad430d7be"><div class="ttname"><a href="classshipVeto_1_1Task.html#a333f2a41cb5efe21f2e8602ad430d7be">shipVeto.Task.SBT_decision</a></div><div class="ttdeci">SBT_decision(self, mcParticle=None, detector='liquid')</div><div class="ttdef"><b>Definition</b> <a href="shipVeto_8py_source.html#l00031">shipVeto.py:31</a></div></div>
-<div class="ttc" id="aclassshipVeto_1_1Task_html_a5fc1eb2195ee519dc2d501d7a6335029"><div class="ttname"><a href="classshipVeto_1_1Task.html#a5fc1eb2195ee519dc2d501d7a6335029">shipVeto.Task.RPC_decision</a></div><div class="ttdeci">RPC_decision(self, mcParticle=None)</div><div class="ttdef"><b>Definition</b> <a href="shipVeto_8py_source.html#l00068">shipVeto.py:68</a></div></div>
-<div class="ttc" id="aclassshipVeto_1_1Task_html_a617bed70aaa667e931fec4562703cbe8"><div class="ttname"><a href="classshipVeto_1_1Task.html#a617bed70aaa667e931fec4562703cbe8">shipVeto.Task.detMap</a></div><div class="ttdeci">detMap(self)</div><div class="ttdef"><b>Definition</b> <a href="shipVeto_8py_source.html#l00017">shipVeto.py:17</a></div></div>
+<div class="ttc" id="aclassshipVeto_1_1Task_html_a0cba3e40c3effd5b345ed69ec6bc4d12"><div class="ttname"><a href="classshipVeto_1_1Task.html#a0cba3e40c3effd5b345ed69ec6bc4d12">shipVeto.Task.Track_decision</a></div><div class="ttdeci">Track_decision(self, mcParticle=None)</div><div class="ttdef"><b>Definition</b> <a href="shipVeto_8py_source.html#l00071">shipVeto.py:71</a></div></div>
+<div class="ttc" id="aclassshipVeto_1_1Task_html_a27a8c5f0f3e3fcc646cf2112f7f5d886"><div class="ttname"><a href="classshipVeto_1_1Task.html#a27a8c5f0f3e3fcc646cf2112f7f5d886">shipVeto.Task.fiducialCheckSignal</a></div><div class="ttdeci">fiducialCheckSignal(self, n)</div><div class="ttdef"><b>Definition</b> <a href="shipVeto_8py_source.html#l00087">shipVeto.py:87</a></div></div>
+<div class="ttc" id="aclassshipVeto_1_1Task_html_a2e8c76484b1d81b502d97b46d4e3e245"><div class="ttname"><a href="classshipVeto_1_1Task.html#a2e8c76484b1d81b502d97b46d4e3e245">shipVeto.Task.sTree</a></div><div class="ttdeci">sTree</div><div class="ttdef"><b>Definition</b> <a href="shipVeto_8py_source.html#l00014">shipVeto.py:14</a></div></div>
+<div class="ttc" id="aclassshipVeto_1_1Task_html_a333f2a41cb5efe21f2e8602ad430d7be"><div class="ttname"><a href="classshipVeto_1_1Task.html#a333f2a41cb5efe21f2e8602ad430d7be">shipVeto.Task.SBT_decision</a></div><div class="ttdeci">SBT_decision(self, mcParticle=None, detector='liquid')</div><div class="ttdef"><b>Definition</b> <a href="shipVeto_8py_source.html#l00030">shipVeto.py:30</a></div></div>
+<div class="ttc" id="aclassshipVeto_1_1Task_html_a617bed70aaa667e931fec4562703cbe8"><div class="ttname"><a href="classshipVeto_1_1Task.html#a617bed70aaa667e931fec4562703cbe8">shipVeto.Task.detMap</a></div><div class="ttdeci">detMap(self)</div><div class="ttdef"><b>Definition</b> <a href="shipVeto_8py_source.html#l00016">shipVeto.py:16</a></div></div>
 <div class="ttc" id="aclassshipVeto_1_1Task_html_a64e78dbd37d875f9dcfecde20d5f429e"><div class="ttname"><a href="classshipVeto_1_1Task.html#a64e78dbd37d875f9dcfecde20d5f429e">shipVeto.Task.SBTefficiency</a></div><div class="ttdeci">SBTefficiency</div><div class="ttdef"><b>Definition</b> <a href="shipVeto_8py_source.html#l00009">shipVeto.py:9</a></div></div>
 <div class="ttc" id="aclassshipVeto_1_1Task_html_a73e955f9c218f2773c2b092770af7e80"><div class="ttname"><a href="classshipVeto_1_1Task.html#a73e955f9c218f2773c2b092770af7e80">shipVeto.Task.__init__</a></div><div class="ttdeci">__init__(self, t)</div><div class="ttdef"><b>Definition</b> <a href="shipVeto_8py_source.html#l00008">shipVeto.py:8</a></div></div>
-<div class="ttc" id="aclassshipVeto_1_1Task_html_a77102d069fb0700525379c8b567592c5"><div class="ttname"><a href="classshipVeto_1_1Task.html#a77102d069fb0700525379c8b567592c5">shipVeto.Task.SBT_plastic_decision</a></div><div class="ttdeci">SBT_plastic_decision(self, mcParticle=None)</div><div class="ttdef"><b>Definition</b> <a href="shipVeto_8py_source.html#l00026">shipVeto.py:26</a></div></div>
-<div class="ttc" id="aclassshipVeto_1_1Task_html_a8ff222f2929866fb82f50f9b9784d8aa"><div class="ttname"><a href="classshipVeto_1_1Task.html#a8ff222f2929866fb82f50f9b9784d8aa">shipVeto.Task.detList</a></div><div class="ttdeci">detList</div><div class="ttdef"><b>Definition</b> <a href="shipVeto_8py_source.html#l00014">shipVeto.py:14</a></div></div>
-<div class="ttc" id="aclassshipVeto_1_1Task_html_aa0b765d77a80580bf5d001c39cee3dc8"><div class="ttname"><a href="classshipVeto_1_1Task.html#aa0b765d77a80580bf5d001c39cee3dc8">shipVeto.Task.fiducialCheck</a></div><div class="ttdeci">fiducialCheck(self, aPoint)</div><div class="ttdef"><b>Definition</b> <a href="shipVeto_8py_source.html#l00120">shipVeto.py:120</a></div></div>
-<div class="ttc" id="aclassshipVeto_1_1Task_html_aa43990053bef47b678019c735bfe0910"><div class="ttname"><a href="classshipVeto_1_1Task.html#aa43990053bef47b678019c735bfe0910">shipVeto.Task.UBT_decision</a></div><div class="ttdeci">UBT_decision(self, mcParticle=None)</div><div class="ttdef"><b>Definition</b> <a href="shipVeto_8py_source.html#l00083">shipVeto.py:83</a></div></div>
-<div class="ttc" id="aclassshipVeto_1_1Task_html_ab08ec4ad525755a7f59d1c10c75bae86"><div class="ttname"><a href="classshipVeto_1_1Task.html#ab08ec4ad525755a7f59d1c10c75bae86">shipVeto.Task.SVT_decision</a></div><div class="ttdeci">SVT_decision(self, mcParticle=None)</div><div class="ttdef"><b>Definition</b> <a href="shipVeto_8py_source.html#l00055">shipVeto.py:55</a></div></div>
-<div class="ttc" id="aclassshipVeto_1_1Task_html_ab282628010706cf008f561f62dfad380"><div class="ttname"><a href="classshipVeto_1_1Task.html#ab282628010706cf008f561f62dfad380">shipVeto.Task.random</a></div><div class="ttdeci">random</div><div class="ttdef"><b>Definition</b> <a href="shipVeto_8py_source.html#l00012">shipVeto.py:12</a></div></div>
-<div class="ttc" id="aclassshipVeto_1_1Task_html_ac3b4a6c3cf699bcdac413cb9c3da5fd0"><div class="ttname"><a href="classshipVeto_1_1Task.html#ac3b4a6c3cf699bcdac413cb9c3da5fd0">shipVeto.Task.SBT_liquid_decision</a></div><div class="ttdeci">SBT_liquid_decision(self, mcParticle=None)</div><div class="ttdef"><b>Definition</b> <a href="shipVeto_8py_source.html#l00028">shipVeto.py:28</a></div></div>
-<div class="ttc" id="aclassshipVeto_1_1Task_html_ad741138cfcbe4374dc07d6936bb25150"><div class="ttname"><a href="classshipVeto_1_1Task.html#ad741138cfcbe4374dc07d6936bb25150">shipVeto.Task.UBTefficiency</a></div><div class="ttdeci">UBTefficiency</div><div class="ttdef"><b>Definition</b> <a href="shipVeto_8py_source.html#l00011">shipVeto.py:11</a></div></div>
+<div class="ttc" id="aclassshipVeto_1_1Task_html_a77102d069fb0700525379c8b567592c5"><div class="ttname"><a href="classshipVeto_1_1Task.html#a77102d069fb0700525379c8b567592c5">shipVeto.Task.SBT_plastic_decision</a></div><div class="ttdeci">SBT_plastic_decision(self, mcParticle=None)</div><div class="ttdef"><b>Definition</b> <a href="shipVeto_8py_source.html#l00025">shipVeto.py:25</a></div></div>
+<div class="ttc" id="aclassshipVeto_1_1Task_html_a8ff222f2929866fb82f50f9b9784d8aa"><div class="ttname"><a href="classshipVeto_1_1Task.html#a8ff222f2929866fb82f50f9b9784d8aa">shipVeto.Task.detList</a></div><div class="ttdeci">detList</div><div class="ttdef"><b>Definition</b> <a href="shipVeto_8py_source.html#l00013">shipVeto.py:13</a></div></div>
+<div class="ttc" id="aclassshipVeto_1_1Task_html_aa0b765d77a80580bf5d001c39cee3dc8"><div class="ttname"><a href="classshipVeto_1_1Task.html#aa0b765d77a80580bf5d001c39cee3dc8">shipVeto.Task.fiducialCheck</a></div><div class="ttdeci">fiducialCheck(self, aPoint)</div><div class="ttdef"><b>Definition</b> <a href="shipVeto_8py_source.html#l00092">shipVeto.py:92</a></div></div>
+<div class="ttc" id="aclassshipVeto_1_1Task_html_aa43990053bef47b678019c735bfe0910"><div class="ttname"><a href="classshipVeto_1_1Task.html#aa43990053bef47b678019c735bfe0910">shipVeto.Task.UBT_decision</a></div><div class="ttdeci">UBT_decision(self, mcParticle=None)</div><div class="ttdef"><b>Definition</b> <a href="shipVeto_8py_source.html#l00055">shipVeto.py:55</a></div></div>
+<div class="ttc" id="aclassshipVeto_1_1Task_html_ab282628010706cf008f561f62dfad380"><div class="ttname"><a href="classshipVeto_1_1Task.html#ab282628010706cf008f561f62dfad380">shipVeto.Task.random</a></div><div class="ttdeci">random</div><div class="ttdef"><b>Definition</b> <a href="shipVeto_8py_source.html#l00011">shipVeto.py:11</a></div></div>
+<div class="ttc" id="aclassshipVeto_1_1Task_html_ac3b4a6c3cf699bcdac413cb9c3da5fd0"><div class="ttname"><a href="classshipVeto_1_1Task.html#ac3b4a6c3cf699bcdac413cb9c3da5fd0">shipVeto.Task.SBT_liquid_decision</a></div><div class="ttdeci">SBT_liquid_decision(self, mcParticle=None)</div><div class="ttdef"><b>Definition</b> <a href="shipVeto_8py_source.html#l00027">shipVeto.py:27</a></div></div>
+<div class="ttc" id="aclassshipVeto_1_1Task_html_ad741138cfcbe4374dc07d6936bb25150"><div class="ttname"><a href="classshipVeto_1_1Task.html#ad741138cfcbe4374dc07d6936bb25150">shipVeto.Task.UBTefficiency</a></div><div class="ttdeci">UBTefficiency</div><div class="ttdef"><b>Definition</b> <a href="shipVeto_8py_source.html#l00010">shipVeto.py:10</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
