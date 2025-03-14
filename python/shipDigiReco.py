@@ -221,7 +221,7 @@ class ShipDigiReco:
    self.digiSBTBranch.Fill()
    self.mcLinkSBT.Fill()
    self.digiStraw.clear()
-   self.digitizeStrawTubes()
+   self.digitize_straw_tubes()
    self.digiStrawBranch.Fill()
    self.digiTimeDet.Delete()
    self.digitizeTimeDet()
@@ -723,21 +723,28 @@ class ShipDigiReco:
            v.push_back(x)
        self.digiSBT2MC.push_back(v)
        index=index+1
- def digitizeStrawTubes(self):
- # digitize FairSHiP MC hits
-   index = 0
-   hitsPerDetId = {}
-   for aMCPoint in self.sTree.strawtubesPoint:
-     aHit = ROOT.strawtubesHit(aMCPoint,self.sTree.t0)
-     self.digiStraw.push_back(aHit)
-     if aHit.isValid():
-      detID = aHit.GetDetectorID()
-      if detID in hitsPerDetId:
-       if self.digiStraw[hitsPerDetId[detID]].GetTDC() > aHit.GetTDC():
- # second hit with smaller tdc
-        self.digiStraw[hitsPerDetId[detID]].setInvalid()
-        hitsPerDetId[detID] = index
-     index+=1
+
+ def digitize_straw_tubes(self):
+    """Digitise strawtube MC hits.
+
+    The earliest hit per straw will be marked valid, all later ones invalid.
+    """
+    earliest_per_det_id = {}
+    for index, point in enumerate(self.sTree.strawtubesPoint):
+        hit = ROOT.strawtubesHit(point , self.sTree.t0)
+        self.digiStraw.push_back(hit)
+        if hit.isValid():
+            detector_id = hit.GetDetectorID()
+            if detector_id in earliest_per_det_id:
+               earliest = earliest_per_det_id[detector_id]
+               if self.digiStraw[earliest].GetTDC() > hit.GetTDC():
+                   # second hit with smaller tdc
+                   self.digiStraw[earliest].setInvalid()
+                   earliest_per_det_id[detector_id] = index
+               else:
+                   self.digiStraw[index].setInvalid()
+            else:
+                earliest_per_det_id[detector_id] = index
 
  def withT0Estimate(self):
  # loop over all straw tdcs and make average, correct for ToF
