@@ -19,7 +19,7 @@ theProductionCouplings = theDecayCouplings = None
 theDPmass    = 0.2*u.GeV
 
 # Alpaca
-motherMode = True
+#motherMode = True
 
 mcEngine     = "TGeant4"
 simEngine    = "Pythia8"  # "Genie" # Ntuple
@@ -131,7 +131,7 @@ parser.add_argument("--stepMuonShield", dest="muShieldStepGeo", help="activate s
 parser.add_argument("--coMuonShield", dest="muShieldWithCobaltMagnet", help="replace one of the magnets in the shield with 2.2T cobalt one, downscales other fields, works only for muShieldDesign >2", required=False, type=int, default=0)
 parser.add_argument("--noSC", dest="SC_mag", help="Deactivate SC muon shield. Configuration: 1 SC magnet (3*B_warm) + 3 warm magnets with inverted fields", action='store_false')
 parser.add_argument("--shieldName", help="The name of the SC shield in the database. SC default: sc_v6, Warm default: combi", default="sc_v6")
-parser.add_argument("--MesonMother",   dest="MM",  help="Choose DP production meson source", required=False,  default=True)
+parser.add_argument("--MesonMother",   dest="MM",  help="Choose DP production meson source: pi0, eta, omega, eta1, eta11", required=False,  default='pi0')
 parser.add_argument("--debug",  help="1: print weights and field 2: make overlap check", required=False, default=0, type=int, choices=range(0,3))
 parser.add_argument(
     "--helium",
