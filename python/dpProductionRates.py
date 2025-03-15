@@ -90,6 +90,7 @@ def mesonProdRate(mass,epsilon,mumPdg,doprint=False):
 
 #from interpolation of Pythia XS, normalised to epsilon^2
 def qcdprodRate(mass,epsilon,doprint=False):
+    xs = 0.
     if (mass > 3.):
         xs = math.exp(-5.928-0.8669*mass)
     elif (mass > 1.4):
