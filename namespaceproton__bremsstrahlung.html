@@ -514,7 +514,7 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">  187</span>            hPDF.Fill(p,theta,w)</div>
 <div class="line"><span class="lineno">  188</span>            hPDFtheta.Fill(theta,w)</div>
 <div class="line"><span class="lineno">  189</span>            hPDFp.Fill(p,w)</div>
-<div class="line"><span class="lineno">  190</span>    hPdfFilename = sys.modules[<span class="stringliteral">&#39;__main__&#39;</span>].outputDir+<span class="stringliteral">&quot;/ParaPhoton_eps%s_m%s%s.root&quot;</span>%(epsilon,mDarkPhoton,suffix)</div>
+<div class="line"><span class="lineno">  190</span>    hPdfFilename = sys.modules[<span class="stringliteral">&#39;__main__&#39;</span>].options.outputDir+<span class="stringliteral">&quot;/ParaPhoton_eps%s_m%s%s.root&quot;</span>%(epsilon,mDarkPhoton,suffix)</div>
 <div class="line"><span class="lineno">  191</span>    outfile = r.TFile(hPdfFilename,<span class="stringliteral">&quot;recreate&quot;</span>)</div>
 <div class="line"><span class="lineno">  192</span>    <span class="comment">#weight = hPDF.Integral(&quot;width&quot;)</span></div>
 <div class="line"><span class="lineno">  193</span>    <span class="comment">#print &quot;Weight = %3.3f&quot;%weight</span></div>

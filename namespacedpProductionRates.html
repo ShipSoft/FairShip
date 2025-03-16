@@ -364,21 +364,21 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="dpProductionRates_8py_source.html#l00101">101</a> of file <a class="el" href="dpProductionRates_8py_source.html">dpProductionRates.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  101</span><span class="keyword">def </span>getDPprodRate(mass,epsilon,prodMode,mumPdg,doprint=False):</div>
-<div class="line"><span class="lineno">  102</span>    <span class="keywordflow">if</span> (<span class="stringliteral">&#39;pbrem&#39;</span> <span class="keywordflow">in</span> prodMode):</div>
-<div class="line"><span class="lineno">  103</span>        print(<span class="stringliteral">&quot;VDM&quot;</span>)</div>
-<div class="line"><span class="lineno">  104</span>        <span class="keywordflow">return</span> pbremProdRateVDM(mass,epsilon,doprint)</div>
-<div class="line"><span class="lineno">  105</span>    <span class="keywordflow">elif</span> (<span class="stringliteral">&#39;pbrem1&#39;</span> <span class="keywordflow">in</span> prodMode):</div>
-<div class="line"><span class="lineno">  106</span>        print(<span class="stringliteral">&quot;Dipole&quot;</span>)</div>
-<div class="line"><span class="lineno">  107</span>        <span class="keywordflow">return</span> pbremProdRateDipole(mass,epsilon,doprint)</div>
-<div class="line"><span class="lineno">  108</span>    <span class="keywordflow">elif</span> (<span class="stringliteral">&#39;meson&#39;</span> <span class="keywordflow">in</span> prodMode):</div>
-<div class="line"><span class="lineno">  109</span>        <span class="keywordflow">return</span> mesonProdRate(mass,epsilon,mumPdg,doprint)</div>
-<div class="line"><span class="lineno">  110</span>    <span class="keywordflow">elif</span> (<span class="stringliteral">&#39;qcd&#39;</span> <span class="keywordflow">in</span> prodMode):</div>
-<div class="line"><span class="lineno">  111</span>        <span class="keywordflow">return</span> qcdprodRate(mass,epsilon,doprint)</div>
-<div class="line"><span class="lineno">  112</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  113</span>        print(<span class="stringliteral">&quot;Unknown production mode! Choose among pbrem, meson or qcd.&quot;</span>)</div>
-<div class="line"><span class="lineno">  114</span>        <span class="keywordflow">return</span> 1</div>
+<p class="definition">Definition at line <a class="el" href="dpProductionRates_8py_source.html#l00102">102</a> of file <a class="el" href="dpProductionRates_8py_source.html">dpProductionRates.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  102</span><span class="keyword">def </span>getDPprodRate(mass,epsilon,prodMode,mumPdg,doprint=False):</div>
+<div class="line"><span class="lineno">  103</span>    <span class="keywordflow">if</span> (<span class="stringliteral">&#39;pbrem&#39;</span> <span class="keywordflow">in</span> prodMode):</div>
+<div class="line"><span class="lineno">  104</span>        print(<span class="stringliteral">&quot;VDM&quot;</span>)</div>
+<div class="line"><span class="lineno">  105</span>        <span class="keywordflow">return</span> pbremProdRateVDM(mass,epsilon,doprint)</div>
+<div class="line"><span class="lineno">  106</span>    <span class="keywordflow">elif</span> (<span class="stringliteral">&#39;pbrem1&#39;</span> <span class="keywordflow">in</span> prodMode):</div>
+<div class="line"><span class="lineno">  107</span>        print(<span class="stringliteral">&quot;Dipole&quot;</span>)</div>
+<div class="line"><span class="lineno">  108</span>        <span class="keywordflow">return</span> pbremProdRateDipole(mass,epsilon,doprint)</div>
+<div class="line"><span class="lineno">  109</span>    <span class="keywordflow">elif</span> (<span class="stringliteral">&#39;meson&#39;</span> <span class="keywordflow">in</span> prodMode):</div>
+<div class="line"><span class="lineno">  110</span>        <span class="keywordflow">return</span> mesonProdRate(mass,epsilon,mumPdg,doprint)</div>
+<div class="line"><span class="lineno">  111</span>    <span class="keywordflow">elif</span> (<span class="stringliteral">&#39;qcd&#39;</span> <span class="keywordflow">in</span> prodMode):</div>
+<div class="line"><span class="lineno">  112</span>        <span class="keywordflow">return</span> qcdprodRate(mass,epsilon,doprint)</div>
+<div class="line"><span class="lineno">  113</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  114</span>        print(<span class="stringliteral">&quot;Unknown production mode! Choose among pbrem, meson or qcd.&quot;</span>)</div>
+<div class="line"><span class="lineno">  115</span>        <span class="keywordflow">return</span> 1</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -626,14 +626,15 @@ Variables</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="dpProductionRates_8py_source.html#l00092">92</a> of file <a class="el" href="dpProductionRates_8py_source.html">dpProductionRates.py</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   92</span><span class="keyword">def </span>qcdprodRate(mass,epsilon,doprint=False):</div>
-<div class="line"><span class="lineno">   93</span>    <span class="keywordflow">if</span> (mass &gt; 3.):</div>
-<div class="line"><span class="lineno">   94</span>        xs = math.exp(-5.928-0.8669*mass)</div>
-<div class="line"><span class="lineno">   95</span>    <span class="keywordflow">elif</span> (mass &gt; 1.4):</div>
-<div class="line"><span class="lineno">   96</span>        xs = math.exp(-4.1477-1.4745*mass)</div>
-<div class="line"><span class="lineno">   97</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">   98</span>        xs = 0.</div>
-<div class="line"><span class="lineno">   99</span>    <span class="keywordflow">return</span> xs*epsilon*epsilon</div>
-<div class="line"><span class="lineno">  100</span> </div>
+<div class="line"><span class="lineno">   93</span>    xs = 0.</div>
+<div class="line"><span class="lineno">   94</span>    <span class="keywordflow">if</span> (mass &gt; 3.):</div>
+<div class="line"><span class="lineno">   95</span>        xs = math.exp(-5.928-0.8669*mass)</div>
+<div class="line"><span class="lineno">   96</span>    <span class="keywordflow">elif</span> (mass &gt; 1.4):</div>
+<div class="line"><span class="lineno">   97</span>        xs = math.exp(-4.1477-1.4745*mass)</div>
+<div class="line"><span class="lineno">   98</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">   99</span>        xs = 0.</div>
+<div class="line"><span class="lineno">  100</span>    <span class="keywordflow">return</span> xs*epsilon*epsilon</div>
+<div class="line"><span class="lineno">  101</span> </div>
 </div><!-- fragment -->
 </div>
 </div>

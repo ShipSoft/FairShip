@@ -113,8 +113,6 @@ Variables</h2></td></tr>
 <tr class="separator:ada65659837a5cbc8af38e396492eb31e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:accda339f17ef6a9ca8465a8221c5dae0" id="r_accda339f17ef6a9ca8465a8221c5dae0"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__simScript.html#accda339f17ef6a9ca8465a8221c5dae0">theDPmass</a> = 0.2*u.GeV</td></tr>
 <tr class="separator:accda339f17ef6a9ca8465a8221c5dae0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa50adad008f61ff145cdacf48b1753ac" id="r_aa50adad008f61ff145cdacf48b1753ac"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__simScript.html#aa50adad008f61ff145cdacf48b1753ac">motherMode</a> = True</td></tr>
-<tr class="separator:aa50adad008f61ff145cdacf48b1753ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adf997bf70dc58bfac80bc3a482d01d5a" id="r_adf997bf70dc58bfac80bc3a482d01d5a"><td class="memItemLeft" align="right" valign="top">str&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__simScript.html#adf997bf70dc58bfac80bc3a482d01d5a">mcEngine</a> = &quot;TGeant4&quot;</td></tr>
 <tr class="separator:adf997bf70dc58bfac80bc3a482d01d5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2b275b61d212c2d29227392892697e67" id="r_a2b275b61d212c2d29227392892697e67"><td class="memItemLeft" align="right" valign="top">str&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__simScript.html#a2b275b61d212c2d29227392892697e67">simEngine</a> = &quot;Pythia8&quot;</td></tr>
@@ -167,6 +165,8 @@ Variables</h2></td></tr>
 <tr class="separator:a257eb457662d1132457cac90aea7263d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac3691e44e7ff1dc5c10ed2848e87ed50" id="r_ac3691e44e7ff1dc5c10ed2848e87ed50"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__simScript.html#ac3691e44e7ff1dc5c10ed2848e87ed50">options</a> = parser.parse_args()</td></tr>
 <tr class="separator:ac3691e44e7ff1dc5c10ed2848e87ed50"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa50adad008f61ff145cdacf48b1753ac" id="r_aa50adad008f61ff145cdacf48b1753ac"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__simScript.html#aa50adad008f61ff145cdacf48b1753ac">motherMode</a> = options.MM</td></tr>
+<tr class="separator:aa50adad008f61ff145cdacf48b1753ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aef1bc3638739548c0bc7012e16b137e4" id="r_aef1bc3638739548c0bc7012e16b137e4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__simScript.html#aef1bc3638739548c0bc7012e16b137e4">Opt_high</a> = <a class="el" href="namespacerun__simScript.html#a961362661e51487d9f3bb5a388d7175b">int</a>(options.cosmics)</td></tr>
 <tr class="separator:aef1bc3638739548c0bc7012e16b137e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a28072c55e0f926a8d61cca7df5f9f9aa" id="r_a28072c55e0f926a8d61cca7df5f9f9aa"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__simScript.html#a28072c55e0f926a8d61cca7df5f9f9aa">theMass</a></td></tr>
@@ -1096,12 +1096,12 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">run_simScript.motherMode = True</td>
+          <td class="memname">run_simScript.motherMode = options.MM</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00022">22</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00175">175</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
