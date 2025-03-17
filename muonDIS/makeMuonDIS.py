@@ -3,6 +3,7 @@
 
 import argparse
 import logging
+import os
 import time
 from array import array
 
@@ -64,24 +65,26 @@ def rotate(px, py, pz, theta, phi):
 
 def update_file(filename, final_xsec):
     """Update the DIS cross section of the muon to the converged value from Pythia."""
-    file = r.TFile.Open(filename, "update")
+    file = r.TFile.Open(filename, "read")
 
     original_tree = file.DIS
+
+    temp_filename = filename + ".tmp"
+    temp_file = r.TFile.Open(temp_filename, "recreate")
+
     updated_tree = original_tree.CloneTree(0)
 
-    iMuon = r.TClonesArray("TVectorD")
-    updated_tree.Branch("InMuon", iMuon, 32000, -1)
-
     for i, event in enumerate(original_tree):
-        in_muon = event.InMuon
-        mu = in_muon[0]
+        mu = event.InMuon[0]
         mu[10] = final_xsec[int(first_mu_event + i / args.nDIS)]
-        iMuon[0] = mu
         updated_tree.Fill()
 
-    file.cd()
     updated_tree.Write("DIS", r.TObject.kOverwrite)
+    temp_file.Close()
     file.Close()
+
+    os.remove(filename)
+    os.rename(temp_filename, filename)
     logging.info("Muon DIS events successfully updated with converged cross sections.")
 
 
@@ -94,6 +97,29 @@ headers = [
     "cross_sec",
 ]
 Fixtarget = {1: "p+", 0: "n0"}
+
+
+def inspect_file(filename):
+    """Inspect the contents of muonDis file."""
+    file = r.TFile.Open(filename, "READ")
+    tree = file.DIS
+
+    table_rows = []
+
+    for i, event in enumerate(tree):
+        muon = event.InMuon[0]
+        isProton = int(muon[9])
+        fix_target = Fixtarget.get(isProton, "unknown")
+        cross_sec = muon[10]
+
+        nParticles = event.DISParticles.GetEntries()
+        nSoftTracks = event.SoftParticles.GetEntries()
+        nSBThits = event.muon_vetoPoints.GetEntries()
+
+        table_rows.append([i, fix_target, nParticles, nSoftTracks, nSBThits, cross_sec])
+
+    file.Close()
+    logging.info("\n" + tabulate(table_rows, headers=headers, tablefmt="grid"))
 
 
 def makeMuonDIS():
@@ -143,7 +169,7 @@ def makeMuonDIS():
 
     myPythia.SetMSTU(11, 11)
     logging.info(
-        f"Processing muon events from {first_mu_event} to {last_mu_event-1}..."
+        f"Processing muon events from {first_mu_event} to {last_mu_event - 1}..."
     )
 
     nMade = 0
@@ -299,7 +325,7 @@ def makeMuonDIS():
     output_tree.Write()
     myPythia.SetMSTU(11, 6)
     logging.info(
-        f"DIS generated for muons (index {first_mu_event} - {last_mu_event-1}) , output saved in muonDis.root, nDISPerMuon = {args.nDIS}"
+        f"DIS generated for muons (index {first_mu_event} - {last_mu_event - 1}) , output saved in muonDis.root, nDISPerMuon = {args.nDIS}"
     )
     outputFile.Close()
     muonFile.Close()
@@ -309,3 +335,4 @@ def makeMuonDIS():
 
 if __name__ == "__main__":
     makeMuonDIS()
+    inspect_file("muonDis.root")
