@@ -102,6 +102,7 @@ Added</h2>
 <ul>
 <li>feat(python): Add experimental script to compare histograms</li>
 <li>feat(python): Add experimental script to check overlaps quickly</li>
+<li><b>Corrections in MuonDIS simulation</b> The DIS interactions are now time-shifted to be consistent with the original incoming muon. Additionally, tracks from soft interactions of the original muon along with the muon's veto response are preserved (in muonDis.root) and included up to the DIS interaction point. To be noted that the muon veto points are manually added using <a class="el" href="add__muonresponse_8py.html">add_muonresponse.py</a>, which modifies the simulation file. This replaces the old method of "backward-travelling muon" to generate the incoming muon's veto response. All MuonDIS simulation scripts have been updated and consolidated within FairShip/muonDIS, ensuring consistency for new productions.</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md3"></a>
 Fixed</h2>

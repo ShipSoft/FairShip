@@ -1413,9 +1413,10 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="NuTauMudet_8cxx_source.html#l00913">913</a> of file <a class="el" href="NuTauMudet_8cxx_source.html">NuTauMudet.cxx</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  914</span>{</div>
-<div class="line"><span class="lineno">  915</span>  nARM =  detID/1E4;</div>
-<div class="line"><span class="lineno">  916</span>  nRPC =  detID - nARM*1E4;</div>
+<div class="line"><span class="lineno">  915</span>  nARM =  <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a>/1E4;</div>
+<div class="line"><span class="lineno">  916</span>  nRPC =  <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a> - nARM*1E4;</div>
 <div class="line"><span class="lineno">  917</span>}</div>
+<div class="ttc" id="anamespacemake__nTuple__SBT_html_adad3143572780a2fde967f05ef62ba37"><div class="ttname"><a href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">make_nTuple_SBT.detID</a></div><div class="ttdeci">detID</div><div class="ttdef"><b>Definition</b> <a href="make__nTuple__SBT_8py_source.html#l00249">make_nTuple_SBT.py:249</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1746,7 +1747,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  848</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classNuTauMudet.html#a2cd6b24038cdc4e48e70d3de7ffd8c1c">fELoss</a> == 0. ) { <span class="keywordflow">return</span> kFALSE; }</div>
 <div class="line"><span class="lineno">  849</span>    TParticle* <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>=<a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;GetStack()-&gt;GetCurrentTrack();</div>
 <div class="line"><span class="lineno">  850</span>    Int_t pdgCode = <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetPdgCode();</div>
-<div class="line"><span class="lineno">  851</span>    Int_t detID=0;</div>
+<div class="line"><span class="lineno">  851</span>    Int_t <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a>=0;</div>
 <div class="line"><span class="lineno">  852</span>    <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;CurrentVolID(detID);</div>
 <div class="line"><span class="lineno">  853</span>    <span class="comment">//cutting this part, does not work in this new layout, since we only have simple planes</span></div>
 <div class="line"><span class="lineno">  854</span>    <span class="comment">//cout&lt;&lt;&quot;THIS HIT&quot;&lt;&lt;endl;</span></div>
@@ -1769,7 +1770,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  871</span>    <span class="comment">//detID = motherID;</span></div>
 <div class="line"><span class="lineno">  872</span>    <span class="comment">//cout&lt;&lt; &quot;detID = &quot; &lt;&lt; detID &lt;&lt; endl;</span></div>
 <div class="line"><span class="lineno">  873</span>    <span class="comment">//cout&lt;&lt;endl;</span></div>
-<div class="line"><span class="lineno">  874</span>    <a class="code hl_variable" href="classNuTauMudet.html#a54daa026775f91a4d486834e7e3f4dd4">fVolumeID</a> = detID;</div>
+<div class="line"><span class="lineno">  874</span>    <a class="code hl_variable" href="classNuTauMudet.html#a54daa026775f91a4d486834e7e3f4dd4">fVolumeID</a> = <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a>;</div>
 <div class="line"><span class="lineno">  875</span> </div>
 <div class="line"><span class="lineno">  876</span>    TLorentzVector Pos;</div>
 <div class="line"><span class="lineno">  877</span>    <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;TrackPosition(Pos);</div>
@@ -1790,7 +1791,7 @@ Private Attributes</h2></td></tr>
 <div class="ttc" id="aclassShipStack_html"><div class="ttname"><a href="classShipStack.html">ShipStack</a></div><div class="ttdef"><b>Definition</b> <a href="ShipStack_8h_source.html#l00046">ShipStack.h:47</a></div></div>
 <div class="ttc" id="anamespacemakeCascade_html_a15662d966fe998f4f8b9b6547975083e"><div class="ttname"><a href="namespacemakeCascade.html#a15662d966fe998f4f8b9b6547975083e">makeCascade.stack</a></div><div class="ttdeci">int stack</div><div class="ttdef"><b>Definition</b> <a href="makeCascade_8py_source.html#l00273">makeCascade.py:273</a></div></div>
 <div class="ttc" id="anamespacemakeDecay_html_a9c90b95001a4909a6c5383da1b3066d9"><div class="ttname"><a href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">makeDecay.p</a></div><div class="ttdeci">p</div><div class="ttdef"><b>Definition</b> <a href="makeDecay_8py_source.html#l00067">makeDecay.py:67</a></div></div>
-<div class="ttc" id="anamespacerun__simScript_html_a671e51e119017a06d69c162c6e24b051"><div class="ttname"><a href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">run_simScript.gMC</a></div><div class="ttdeci">gMC</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l00515">run_simScript.py:515</a></div></div>
+<div class="ttc" id="anamespacerun__simScript_html_a671e51e119017a06d69c162c6e24b051"><div class="ttname"><a href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">run_simScript.gMC</a></div><div class="ttdeci">gMC</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l00511">run_simScript.py:511</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

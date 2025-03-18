@@ -8,6 +8,7 @@ var files_dup =
     [ "hcal", "dir_4b5c5316e9d796e7cb1aa4ab919c8f8c.html", "dir_4b5c5316e9d796e7cb1aa4ab919c8f8c" ],
     [ "macro", "dir_3b579af105d68949fc87077585f616df.html", "dir_3b579af105d68949fc87077585f616df" ],
     [ "muon", "dir_a0777b3b4da955210ad4fd98e1658d3d.html", "dir_a0777b3b4da955210ad4fd98e1658d3d" ],
+    [ "muonDIS", "dir_8361b15a73807c2b11fd6500a4c40777.html", "dir_8361b15a73807c2b11fd6500a4c40777" ],
     [ "muonShieldOptimization", "dir_72a79d73443babb282d0800e65628bdf.html", "dir_72a79d73443babb282d0800e65628bdf" ],
     [ "nutaudet", "dir_5fd0c88261ea54d06a04fb3ec84fa31a.html", "dir_5fd0c88261ea54d06a04fb3ec84fa31a" ],
     [ "passive", "dir_3f060d1c8fe756af3597c9e2f80882ac.html", "dir_3f060d1c8fe756af3597c9e2f80882ac" ],

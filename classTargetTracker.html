@@ -777,14 +777,15 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="TargetTracker_8cxx_source.html#l00303">303</a> of file <a class="el" href="TargetTracker_8cxx_source.html">TargetTracker.cxx</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  304</span>{</div>
-<div class="line"><span class="lineno">  305</span>  NTT = detID/1000;</div>
-<div class="line"><span class="lineno">  306</span>  <span class="keywordtype">int</span> idir = (detID - NTT*1000)/100;</div>
+<div class="line"><span class="lineno">  305</span>  NTT = <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a>/1000;</div>
+<div class="line"><span class="lineno">  306</span>  <span class="keywordtype">int</span> idir = (<a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a> - NTT*1000)/100;</div>
 <div class="line"><span class="lineno">  307</span> </div>
 <div class="line"><span class="lineno">  308</span>  <span class="keywordflow">if</span> (idir == 1) ishor = kFALSE;</div>
 <div class="line"><span class="lineno">  309</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (idir == 0) ishor = kTRUE;</div>
 <div class="line"><span class="lineno">  310</span> </div>
-<div class="line"><span class="lineno">  311</span>  nplane = (detID - NTT*1000 - idir*100);</div>
+<div class="line"><span class="lineno">  311</span>  nplane = (<a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a> - NTT*1000 - idir*100);</div>
 <div class="line"><span class="lineno">  312</span>}</div>
+<div class="ttc" id="anamespacemake__nTuple__SBT_html_adad3143572780a2fde967f05ef62ba37"><div class="ttname"><a href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">make_nTuple_SBT.detID</a></div><div class="ttdeci">detID</div><div class="ttdef"><b>Definition</b> <a href="make__nTuple__SBT_8py_source.html#l00249">make_nTuple_SBT.py:249</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1108,10 +1109,10 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  276</span>    <a class="code hl_variable" href="classTargetTracker.html#ab7d663a32da9fac5b0a6174a16af2271">fTrackID</a>  = <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;GetStack()-&gt;GetCurrentTrackNumber();</div>
 <div class="line"><span class="lineno">  277</span> </div>
 <div class="line"><span class="lineno">  278</span>    <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;CurrentVolID(<a class="code hl_variable" href="classTargetTracker.html#a86afa822fb9373e8359e5701ffbcfaba">fVolumeID</a>);</div>
-<div class="line"><span class="lineno">  279</span>    Int_t detID = <a class="code hl_variable" href="classTargetTracker.html#a86afa822fb9373e8359e5701ffbcfaba">fVolumeID</a>;</div>
+<div class="line"><span class="lineno">  279</span>    Int_t <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a> = <a class="code hl_variable" href="classTargetTracker.html#a86afa822fb9373e8359e5701ffbcfaba">fVolumeID</a>;</div>
 <div class="line"><span class="lineno">  280</span>    Int_t TTstationID;</div>
 <div class="line"><span class="lineno">  281</span>    <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;CurrentVolOffID(2, TTstationID);</div>
-<div class="line"><span class="lineno">  282</span>    <a class="code hl_variable" href="classTargetTracker.html#a86afa822fb9373e8359e5701ffbcfaba">fVolumeID</a> = TTstationID + detID;</div>
+<div class="line"><span class="lineno">  282</span>    <a class="code hl_variable" href="classTargetTracker.html#a86afa822fb9373e8359e5701ffbcfaba">fVolumeID</a> = TTstationID + <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a>;</div>
 <div class="line"><span class="lineno">  283</span> </div>
 <div class="line"><span class="lineno">  284</span>    TLorentzVector Pos;</div>
 <div class="line"><span class="lineno">  285</span>    <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;TrackPosition(Pos);</div>
@@ -1134,7 +1135,7 @@ Private Attributes</h2></td></tr>
 <div class="ttc" id="aclassTargetTracker_html_a8011000196ebfa6d416c5abca878cdaa"><div class="ttname"><a href="classTargetTracker.html#a8011000196ebfa6d416c5abca878cdaa">TargetTracker::AddHit</a></div><div class="ttdeci">TTPoint * AddHit(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom, Double_t time, Double_t length, Double_t eLoss, Int_t pdgCode)</div><div class="ttdef"><b>Definition</b> <a href="TargetTracker_8cxx_source.html#l00346">TargetTracker.cxx:346</a></div></div>
 <div class="ttc" id="anamespacemakeCascade_html_a15662d966fe998f4f8b9b6547975083e"><div class="ttname"><a href="namespacemakeCascade.html#a15662d966fe998f4f8b9b6547975083e">makeCascade.stack</a></div><div class="ttdeci">int stack</div><div class="ttdef"><b>Definition</b> <a href="makeCascade_8py_source.html#l00273">makeCascade.py:273</a></div></div>
 <div class="ttc" id="anamespacemakeDecay_html_a9c90b95001a4909a6c5383da1b3066d9"><div class="ttname"><a href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">makeDecay.p</a></div><div class="ttdeci">p</div><div class="ttdef"><b>Definition</b> <a href="makeDecay_8py_source.html#l00067">makeDecay.py:67</a></div></div>
-<div class="ttc" id="anamespacerun__simScript_html_a671e51e119017a06d69c162c6e24b051"><div class="ttname"><a href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">run_simScript.gMC</a></div><div class="ttdeci">gMC</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l00515">run_simScript.py:515</a></div></div>
+<div class="ttc" id="anamespacerun__simScript_html_a671e51e119017a06d69c162c6e24b051"><div class="ttname"><a href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">run_simScript.gMC</a></div><div class="ttdeci">gMC</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l00511">run_simScript.py:511</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

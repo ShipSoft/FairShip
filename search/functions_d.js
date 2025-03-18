@@ -4,7 +4,7 @@ var searchData=
   ['na50_1',['na50',['../namespacerunPythia8.html#ad3343bde85b5ee6fa2d1bccf80b3c16f',1,'runPythia8']]],
   ['na62_2',['NA62',['../namespacestudy__muEloss.html#a5a45c9f9e8ce3baa2b2a16606ea07d6a',1,'study_muEloss']]],
   ['ncomposite_3',['nComposite',['../classShipCompField.html#a3005035d531de7934d27eb9d8df23d5e',1,'ShipCompField']]],
-  ['ndecaywidth_4',['ndecaywidth',['../classrpvsusy_1_1RPVSUSYbranchings.html#a19df3958d4a6e134b77bd25df0991c15',1,'rpvsusy.RPVSUSYbranchings.NdecayWidth()'],['../classhnl_1_1HNLbranchings.html#a16eb7b8877b111b5d25d5a770390cc8d',1,'hnl.HNLbranchings.NDecayWidth()']]],
+  ['ndecaywidth_4',['ndecaywidth',['../classhnl_1_1HNLbranchings.html#a16eb7b8877b111b5d25d5a770390cc8d',1,'hnl.HNLbranchings.NDecayWidth()'],['../classrpvsusy_1_1RPVSUSYbranchings.html#a19df3958d4a6e134b77bd25df0991c15',1,'rpvsusy.RPVSUSYbranchings.NdecayWidth()']]],
   ['ndof_5',['nDOF',['../classexperimental_1_1analysis__toolkit_1_1selection__check.html#a59129329627f6852632978e880978706',1,'experimental::analysis_toolkit::selection_check']]],
   ['nextevent_6',['nextevent',['../classeventDisplay_1_1IO.html#a33ced57d4b32fc4c6bf3a0243a30071a',1,'eventDisplay.IO.nextEvent()'],['../classeventDisplay_1_1EventLoop.html#a96e824b4ba6e1937fb7dd660240f91bd',1,'eventDisplay.EventLoop.NextEvent()']]],
   ['nextlevel_7',['nextLevel',['../namespacegeomGeant4.html#a0b3a37be8c641c12bb33aa7dabf9d8dc',1,'geomGeant4']]],

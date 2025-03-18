@@ -393,12 +393,13 @@ Protected Attributes</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="EvtCalcGenerator_8cxx_source.html#l00050">50</a> of file <a class="el" href="EvtCalcGenerator_8cxx_source.html">EvtCalcGenerator.cxx</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   50</span>                                                                                           {</div>
 <div class="line"><span class="lineno">   51</span>    <span class="keywordflow">if</span> (index &lt; <a class="code hl_variable" href="classEvtCalcGenerator.html#a69e825e4551cfb9b96f1a79329f0fcff">branchVars</a>.size()) {</div>
-<div class="line"><span class="lineno">   52</span>        <span class="keywordflow">return</span> <a class="code hl_variable" href="classEvtCalcGenerator.html#a69e825e4551cfb9b96f1a79329f0fcff">branchVars</a>[index];</div>
+<div class="line"><span class="lineno">   52</span>        <span class="keywordflow">return</span> <a class="code hl_variable" href="classEvtCalcGenerator.html#a69e825e4551cfb9b96f1a79329f0fcff">branchVars</a>[<a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a1391b7407359c40dbacead1473f5a96b">index</a>];</div>
 <div class="line"><span class="lineno">   53</span>    } <span class="keywordflow">else</span> {</div>
 <div class="line"><span class="lineno">   54</span>        <span class="keywordflow">throw</span> std::out_of_range(<span class="stringliteral">&quot;Branch index out of range&quot;</span>);</div>
 <div class="line"><span class="lineno">   55</span>    }</div>
 <div class="line"><span class="lineno">   56</span>}</div>
 <div class="ttc" id="aclassEvtCalcGenerator_html_a69e825e4551cfb9b96f1a79329f0fcff"><div class="ttname"><a href="classEvtCalcGenerator.html#a69e825e4551cfb9b96f1a79329f0fcff">EvtCalcGenerator::branchVars</a></div><div class="ttdeci">std::vector&lt; double &gt; branchVars</div><div class="ttdef"><b>Definition</b> <a href="EvtCalcGenerator_8h_source.html#l00060">EvtCalcGenerator.h:60</a></div></div>
+<div class="ttc" id="anamespacemake__nTuple__SBT_html_a1391b7407359c40dbacead1473f5a96b"><div class="ttname"><a href="namespacemake__nTuple__SBT.html#a1391b7407359c40dbacead1473f5a96b">make_nTuple_SBT.index</a></div><div class="ttdeci">int index</div><div class="ttdef"><b>Definition</b> <a href="make__nTuple__SBT_8py_source.html#l00283">make_nTuple_SBT.py:283</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -921,7 +922,7 @@ Protected Attributes</h2></td></tr>
 <div class="ttc" id="aclassEvtCalcGenerator_html_a045c84129f2b91a90cc62b53e14236d2"><div class="ttname"><a href="classEvtCalcGenerator.html#a045c84129f2b91a90cc62b53e14236d2">EvtCalcGenerator::fn</a></div><div class="ttdeci">int fn</div><div class="ttdef"><b>Definition</b> <a href="EvtCalcGenerator_8h_source.html#l00074">EvtCalcGenerator.h:74</a></div></div>
 <div class="ttc" id="aclassEvtCalcGenerator_html_a42158fc710adf68bf7654057de726de3"><div class="ttname"><a href="classEvtCalcGenerator.html#a42158fc710adf68bf7654057de726de3">EvtCalcGenerator::fTree</a></div><div class="ttdeci">std::unique_ptr&lt; TTree &gt; fTree</div><div class="ttdef"><b>Definition</b> <a href="EvtCalcGenerator_8h_source.html#l00059">EvtCalcGenerator.h:59</a></div></div>
 <div class="ttc" id="anamespaceShipAna_html_aa4bf87f4d17f9d38b1d8f4d009bb54b3"><div class="ttname"><a href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">ShipAna.i</a></div><div class="ttdeci">int i</div><div class="ttdef"><b>Definition</b> <a href="ShipAna_8py_source.html#l00076">ShipAna.py:76</a></div></div>
-<div class="ttc" id="anamespacerun__simScript_html_aab4426f598376be65d04e68a577d8ae8"><div class="ttname"><a href="namespacerun__simScript.html#aab4426f598376be65d04e68a577d8ae8">run_simScript.branches</a></div><div class="ttdeci">branches</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l00642">run_simScript.py:642</a></div></div>
+<div class="ttc" id="anamespacerun__simScript_html_aab4426f598376be65d04e68a577d8ae8"><div class="ttname"><a href="namespacerun__simScript.html#aab4426f598376be65d04e68a577d8ae8">run_simScript.branches</a></div><div class="ttdeci">branches</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l00628">run_simScript.py:628</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1059,8 +1060,8 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">   29</span>        <a class="code hl_variable" href="classEvtCalcGenerator.html#a816e91b68269f2f4da0198913703a474">ztarget</a> = <a class="code hl_variable" href="namespacerun__simScript.html#afce74e2bd8c0a67df6486c301366a253">zTa</a>;        <span class="comment">// units cm (midpoint)</span></div>
 <div class="line"><span class="lineno">   30</span>        <a class="code hl_variable" href="classEvtCalcGenerator.html#adc605667f4571c677c821a3a21c52e78">zDecayVolume</a> = <a class="code hl_variable" href="namespacerun__simScript.html#aa52a3b35fc9639050ea8dcf392b88abe">zDV</a>;   <span class="comment">// units cm (midpoint)</span></div>
 <div class="line"><span class="lineno">   31</span>    }</div>
-<div class="ttc" id="anamespacerun__simScript_html_aa52a3b35fc9639050ea8dcf392b88abe"><div class="ttname"><a href="namespacerun__simScript.html#aa52a3b35fc9639050ea8dcf392b88abe">run_simScript.zDV</a></div><div class="ttdeci">zDV</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l00359">run_simScript.py:359</a></div></div>
-<div class="ttc" id="anamespacerun__simScript_html_afce74e2bd8c0a67df6486c301366a253"><div class="ttname"><a href="namespacerun__simScript.html#afce74e2bd8c0a67df6486c301366a253">run_simScript.zTa</a></div><div class="ttdeci">zTa</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l00359">run_simScript.py:359</a></div></div>
+<div class="ttc" id="anamespacerun__simScript_html_aa52a3b35fc9639050ea8dcf392b88abe"><div class="ttname"><a href="namespacerun__simScript.html#aa52a3b35fc9639050ea8dcf392b88abe">run_simScript.zDV</a></div><div class="ttdeci">zDV</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l00356">run_simScript.py:356</a></div></div>
+<div class="ttc" id="anamespacerun__simScript_html_afce74e2bd8c0a67df6486c301366a253"><div class="ttname"><a href="namespacerun__simScript.html#afce74e2bd8c0a67df6486c301366a253">run_simScript.zTa</a></div><div class="ttdeci">zTa</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l00356">run_simScript.py:356</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

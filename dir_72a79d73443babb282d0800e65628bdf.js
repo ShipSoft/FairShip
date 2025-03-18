@@ -10,7 +10,7 @@ var dir_72a79d73443babb282d0800e65628bdf =
     [ "g4Ex_args.py", "g4Ex__args_8py.html", "g4Ex__args_8py" ],
     [ "g4Ex_gap.py", "g4Ex__gap_8py.html", "g4Ex__gap_8py" ],
     [ "g4Ex_gap_mergeFiles.py", "g4Ex__gap__mergeFiles_8py.html", "g4Ex__gap__mergeFiles_8py" ],
-    [ "makeMuonDIS.py", "makeMuonDIS_8py.html", "makeMuonDIS_8py" ],
+    [ "makeMuonDIS.py", "muonShieldOptimization_2makeMuonDIS_8py.html", "muonShieldOptimization_2makeMuonDIS_8py" ],
     [ "makeMuonEM.py", "makeMuonEM_8py.html", "makeMuonEM_8py" ],
     [ "muDIS_mergeFiles.py", "muDIS__mergeFiles_8py.html", "muDIS__mergeFiles_8py" ],
     [ "muonShieldBackgroundLinkDef.h", "muonShieldBackgroundLinkDef_8h.html", null ],

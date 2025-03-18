@@ -13,7 +13,7 @@ var dir_077298d11411e0d78a9900d1a8de44bb =
     [ "GenLinkDef.h", "GenLinkDef_8h.html", null ],
     [ "HNLPythia8Generator.cxx", "HNLPythia8Generator_8cxx.html", "HNLPythia8Generator_8cxx" ],
     [ "HNLPythia8Generator.h", "HNLPythia8Generator_8h.html", "HNLPythia8Generator_8h" ],
-    [ "MuDISGenerator.cxx", "MuDISGenerator_8cxx.html", null ],
+    [ "MuDISGenerator.cxx", "MuDISGenerator_8cxx.html", "MuDISGenerator_8cxx" ],
     [ "MuDISGenerator.h", "MuDISGenerator_8h.html", "MuDISGenerator_8h" ],
     [ "MuonBackGenerator.cxx", "MuonBackGenerator_8cxx.html", null ],
     [ "MuonBackGenerator.h", "MuonBackGenerator_8h.html", "MuonBackGenerator_8h" ],

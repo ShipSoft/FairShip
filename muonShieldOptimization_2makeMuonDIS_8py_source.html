@@ -68,7 +68,7 @@ $(document).ready(function() { init_codefold(0); });
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('makeMuonDIS_8py_source.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('muonShieldOptimization_2makeMuonDIS_8py_source.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -97,10 +97,10 @@ $(document).ready(function(){initNavTree('makeMuonDIS_8py_source.html',''); init
   <div class="headertitle"><div class="title">makeMuonDIS.py</div></div>
 </div><!--header-->
 <div class="contents">
-<a href="makeMuonDIS_8py.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno"><a class="line" href="namespacemakeMuonDIS.html">    1</a></span><span class="keyword">import</span> ROOT,time,os,sys</div>
+<a href="muonShieldOptimization_2makeMuonDIS_8py.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="keyword">import</span> ROOT,time,os,sys</div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><a class="code hl_variable" href="namespacemakeMuonDIS.html#a0baff85fde4aefea404a4f1933e8dcfb">ROOT.gROOT.LoadMacro</a>(<span class="stringliteral">&quot;$VMCWORKDIR/gconfig/basiclibs.C&quot;</span>)</div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><a class="code hl_variable" href="namespacemakeMuonDIS.html#a0baff85fde4aefea404a4f1933e8dcfb">ROOT.basiclibs</a>()</div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span>ROOT.gROOT.LoadMacro(<span class="stringliteral">&quot;$VMCWORKDIR/gconfig/basiclibs.C&quot;</span>)</div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span>ROOT.basiclibs()</div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno"><a class="line" href="namespacemakeMuonDIS.html#a6d7cbd5b2224f4f5916ce0796e451edc">    6</a></span>nJob   = 2</div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno"><a class="line" href="namespacemakeMuonDIS.html#aef3b9e78ca5de16af53a104af60517f1">    7</a></span>nMult  = 10 <span class="comment"># number of events / muon</span></div>
@@ -114,7 +114,7 @@ $(document).ready(function(){initNavTree('makeMuonDIS_8py_source.html',''); init
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment">#</span></div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="keyword">from</span> array <span class="keyword">import</span> array</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="namespacemakeMuonDIS.html#ab72b5366d55a32383d832d246548ea0f">   18</a></span>PDG = <a class="code hl_variable" href="namespacemakeMuonDIS.html#a0baff85fde4aefea404a4f1933e8dcfb">ROOT.TDatabasePDG.Instance</a>()</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>PDG = <a class="code hl_variable" href="namespacemakeMuonDIS.html#a0baff85fde4aefea404a4f1933e8dcfb">ROOT.TDatabasePDG.Instance</a>()</div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno"><a class="line" href="namespacemakeMuonDIS.html#a0b59935c502dda77201f6c39411212ca">   19</a></span>myPythia = <a class="code hl_variable" href="namespacemakeMuonDIS.html#a0baff85fde4aefea404a4f1933e8dcfb">ROOT.TPythia6</a>()</div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><a class="code hl_variable" href="namespacemakeMuonDIS.html#a0baff85fde4aefea404a4f1933e8dcfb">myPythia.SetMSEL</a>(2)       <span class="comment"># msel 2 includes diffractive parts</span></div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><a class="code hl_variable" href="namespacemakeMuonDIS.html#a0baff85fde4aefea404a4f1933e8dcfb">myPythia.SetPARP</a>(2,2)     <span class="comment"># To get below 10 GeV, you have to change PARP(2)</span></div>
@@ -151,7 +151,7 @@ $(document).ready(function(){initNavTree('makeMuonDIS_8py_source.html',''); init
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno"><a class="line" href="namespacemakeMuonDIS.html#a0ffbb942174fb3db82b4bbdd7ee684e2">   50</a></span>sTree = <a class="code hl_variable" href="namespacemakeMuonDIS.html#a0baff85fde4aefea404a4f1933e8dcfb">fin.muons</a></div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
 <div class="foldopen" id="foldopen00052" data-start="" data-end="">
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno"><a class="line" href="namespacemakeMuonDIS.html#af0213094112fd3e2860ab1df5a483647">   52</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacemakeMuonDIS.html#af0213094112fd3e2860ab1df5a483647">rotate</a>(ctheta,stheta,cphi,sphi,px,py,pz):</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno"><a class="line" href="namespacemakeMuonDIS.html#af0213094112fd3e2860ab1df5a483647">   52</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacemakeMuonDIS.html#afff35847652b9d299b9b6d8eb9b35eab">rotate</a>(ctheta,stheta,cphi,sphi,px,py,pz):</div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  <span class="comment">#rotate around y-axis</span></div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  px1=ctheta*px+stheta*pz</div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  pzr=-stheta*px+ctheta*pz</div>
@@ -200,7 +200,7 @@ $(document).ready(function(){initNavTree('makeMuonDIS_8py_source.html',''); init
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>     <a class="code hl_variable" href="namespacemakeMuonDIS.html#a0baff85fde4aefea404a4f1933e8dcfb">myPythia.Pyedit</a>(2)</div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>     <span class="keywordflow">for</span> itrk <span class="keywordflow">in</span> <a class="code hl_variable" href="namespacemakeMuonDIS.html#a0baff85fde4aefea404a4f1933e8dcfb">range</a>(1,<a class="code hl_variable" href="namespacemakeMuonDIS.html#a0baff85fde4aefea404a4f1933e8dcfb">myPythia.GetN</a>()+1):</div>
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno"><a class="line" href="namespacemakeMuonDIS.html#aa93bf6b670014cbf46f36570d3e8f4f7">   99</a></span>      did = <a class="code hl_variable" href="namespacemakeMuonDIS.html#a0baff85fde4aefea404a4f1933e8dcfb">myPythia.GetK</a>(itrk,2)</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno"><a class="line" href="namespacemakeMuonDIS.html#a9d1cb4d58edcab56ece7bdf26cf979ad">  100</a></span>      dpx,dpy,dpz = <a class="code hl_function" href="namespacemakeMuonDIS.html#af0213094112fd3e2860ab1df5a483647">rotate</a>(ctheta,stheta,cphi,sphi,<a class="code hl_variable" href="namespacemakeMuonDIS.html#a0baff85fde4aefea404a4f1933e8dcfb">myPythia.GetP</a>(itrk,1),<a class="code hl_variable" href="namespacemakeMuonDIS.html#a0baff85fde4aefea404a4f1933e8dcfb">myPythia.GetP</a>(itrk,2),<a class="code hl_variable" href="namespacemakeMuonDIS.html#a0baff85fde4aefea404a4f1933e8dcfb">myPythia.GetP</a>(itrk,3))</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno"><a class="line" href="namespacemakeMuonDIS.html#a9d1cb4d58edcab56ece7bdf26cf979ad">  100</a></span>      dpx,dpy,dpz = <a class="code hl_function" href="namespacemakeMuonDIS.html#afff35847652b9d299b9b6d8eb9b35eab">rotate</a>(ctheta,stheta,cphi,sphi,<a class="code hl_variable" href="namespacemakeMuonDIS.html#a0baff85fde4aefea404a4f1933e8dcfb">myPythia.GetP</a>(itrk,1),<a class="code hl_variable" href="namespacemakeMuonDIS.html#a0baff85fde4aefea404a4f1933e8dcfb">myPythia.GetP</a>(itrk,2),<a class="code hl_variable" href="namespacemakeMuonDIS.html#a0baff85fde4aefea404a4f1933e8dcfb">myPythia.GetP</a>(itrk,3))</div>
 <div class="line"><a id="l00101" name="l00101"></a><span class="lineno"><a class="line" href="namespacemakeMuonDIS.html#ad237466e13c8cbd676e75193f023ffee">  101</a></span>      psq =   dpx**2+dpy**2+dpz**2</div>
 <div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>      E = <a class="code hl_variable" href="namespacemakeMuonDIS.html#a0baff85fde4aefea404a4f1933e8dcfb">ROOT.TMath.Sqrt</a>(<a class="code hl_function" href="namespacemakeMuonDIS.html#a5b73a925f026797a1ba5831465adf836">getMasssq</a>(did)+psq)</div>
 <div class="line"><a id="l00103" name="l00103"></a><span class="lineno"><a class="line" href="namespacemakeMuonDIS.html#aa99a2f52abfa189d36df4219394a2336">  103</a></span>      m = array(<span class="stringliteral">&#39;d&#39;</span>,[did,dpx,dpy,dpz,E])</div>
@@ -218,15 +218,15 @@ $(document).ready(function(){initNavTree('makeMuonDIS_8py_source.html',''); init
 <div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span><a class="code hl_variable" href="namespacemakeMuonDIS.html#a0baff85fde4aefea404a4f1933e8dcfb">dTree.Write</a>()</div>
 <div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span><a class="code hl_variable" href="namespacemakeMuonDIS.html#a0baff85fde4aefea404a4f1933e8dcfb">myPythia.SetMSTU</a>(11, 6)</div>
 <div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>print(<span class="stringliteral">&quot;created nJob &quot;</span>,nJob,<span class="stringliteral">&#39;:&#39;</span>,nStart,<span class="stringliteral">&#39; - &#39;</span>,nEnd,<span class="stringliteral">&quot; events&quot;</span>)</div>
-<div class="ttc" id="anamespacemakeMuonDIS_html_a0baff85fde4aefea404a4f1933e8dcfb"><div class="ttname"><a href="namespacemakeMuonDIS.html#a0baff85fde4aefea404a4f1933e8dcfb">makeMuonDIS.px</a></div><div class="ttdeci">px</div><div class="ttdef"><b>Definition</b> <a href="makeMuonDIS_8py_source.html#l00076">makeMuonDIS.py:76</a></div></div>
-<div class="ttc" id="anamespacemakeMuonDIS_html_a5b73a925f026797a1ba5831465adf836"><div class="ttname"><a href="namespacemakeMuonDIS.html#a5b73a925f026797a1ba5831465adf836">makeMuonDIS.getMasssq</a></div><div class="ttdeci">getMasssq(pid)</div><div class="ttdef"><b>Definition</b> <a href="makeMuonDIS_8py_source.html#l00028">makeMuonDIS.py:28</a></div></div>
-<div class="ttc" id="anamespacemakeMuonDIS_html_af0213094112fd3e2860ab1df5a483647"><div class="ttname"><a href="namespacemakeMuonDIS.html#af0213094112fd3e2860ab1df5a483647">makeMuonDIS.rotate</a></div><div class="ttdeci">rotate(ctheta, stheta, cphi, sphi, px, py, pz)</div><div class="ttdef"><b>Definition</b> <a href="makeMuonDIS_8py_source.html#l00052">makeMuonDIS.py:52</a></div></div>
+<div class="ttc" id="anamespacemakeMuonDIS_html_a0baff85fde4aefea404a4f1933e8dcfb"><div class="ttname"><a href="namespacemakeMuonDIS.html#a0baff85fde4aefea404a4f1933e8dcfb">makeMuonDIS.px</a></div><div class="ttdeci">px</div><div class="ttdef"><b>Definition</b> <a href="muonShieldOptimization_2makeMuonDIS_8py_source.html#l00076">makeMuonDIS.py:76</a></div></div>
+<div class="ttc" id="anamespacemakeMuonDIS_html_a5b73a925f026797a1ba5831465adf836"><div class="ttname"><a href="namespacemakeMuonDIS.html#a5b73a925f026797a1ba5831465adf836">makeMuonDIS.getMasssq</a></div><div class="ttdeci">getMasssq(pid)</div><div class="ttdef"><b>Definition</b> <a href="muonShieldOptimization_2makeMuonDIS_8py_source.html#l00028">makeMuonDIS.py:28</a></div></div>
+<div class="ttc" id="anamespacemakeMuonDIS_html_afff35847652b9d299b9b6d8eb9b35eab"><div class="ttname"><a href="namespacemakeMuonDIS.html#afff35847652b9d299b9b6d8eb9b35eab">makeMuonDIS.rotate</a></div><div class="ttdeci">rotate(px, py, pz, theta, phi)</div><div class="ttdef"><b>Definition</b> <a href="muonDIS_2makeMuonDIS_8py_source.html#l00052">makeMuonDIS.py:52</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_72a79d73443babb282d0800e65628bdf.html">muonShieldOptimization</a></li><li class="navelem"><a class="el" href="makeMuonDIS_8py.html">makeMuonDIS.py</a></li>
+    <li class="navelem"><a class="el" href="dir_72a79d73443babb282d0800e65628bdf.html">muonShieldOptimization</a></li><li class="navelem"><a class="el" href="muonShieldOptimization_2makeMuonDIS_8py.html">makeMuonDIS.py</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

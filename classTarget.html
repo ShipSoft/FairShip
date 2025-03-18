@@ -1131,23 +1131,23 @@ Protected Attributes</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">  716</span>{</div>
 <div class="line"><span class="lineno">  717</span>  Bool_t BrickorCES = <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">  718</span> </div>
-<div class="line"><span class="lineno">  719</span>  NWall = detID/1E7;</div>
-<div class="line"><span class="lineno">  720</span>  NRow = (detID - NWall*1E7)/1E6;</div>
-<div class="line"><span class="lineno">  721</span>  NColumn = (detID - NWall*1E7 -NRow*1E6)/1E4;</div>
-<div class="line"><span class="lineno">  722</span>  Double_t b = (detID - NWall*1E7 -NRow*1E6 - NColumn*1E4)/1.E3;</div>
+<div class="line"><span class="lineno">  719</span>  NWall = <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a>/1E7;</div>
+<div class="line"><span class="lineno">  720</span>  NRow = (<a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a> - NWall*1E7)/1E6;</div>
+<div class="line"><span class="lineno">  721</span>  NColumn = (<a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a> - NWall*1E7 -NRow*1E6)/1E4;</div>
+<div class="line"><span class="lineno">  722</span>  Double_t b = (<a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a> - NWall*1E7 -NRow*1E6 - NColumn*1E4)/1.E3;</div>
 <div class="line"><span class="lineno">  723</span>  <span class="keywordflow">if</span>(b &lt; 1)</div>
 <div class="line"><span class="lineno">  724</span>    {</div>
 <div class="line"><span class="lineno">  725</span>      BrickorCES = 0;</div>
-<div class="line"><span class="lineno">  726</span>      NPlate = (detID - NWall*1E7 -NRow*1E6 - NColumn*1E4 - BrickorCES*1E3)/1E1;</div>
+<div class="line"><span class="lineno">  726</span>      NPlate = (<a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a> - NWall*1E7 -NRow*1E6 - NColumn*1E4 - BrickorCES*1E3)/1E1;</div>
 <div class="line"><span class="lineno">  727</span><span class="comment">//      NPlate = detID - NWall*1E7 -NRow*1E6 - NColumn*1E4 - BrickorCES*1E3;</span></div>
 <div class="line"><span class="lineno">  728</span>    }</div>
 <div class="line"><span class="lineno">  729</span>  <span class="keywordflow">if</span>(b &gt;= 1)</div>
 <div class="line"><span class="lineno">  730</span>    {</div>
 <div class="line"><span class="lineno">  731</span>      BrickorCES = 1;</div>
-<div class="line"><span class="lineno">  732</span>      NPlate = (detID - NWall*1E7 -NRow*1E6 - NColumn*1E4 - BrickorCES*1E3)/1E1;</div>
+<div class="line"><span class="lineno">  732</span>      NPlate = (<a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a> - NWall*1E7 -NRow*1E6 - NColumn*1E4 - BrickorCES*1E3)/1E1;</div>
 <div class="line"><span class="lineno">  733</span><span class="comment">//      NPlate = detID - NWall*1E7 -NRow*1E6 - NColumn*1E4 - BrickorCES*1E3;</span></div>
 <div class="line"><span class="lineno">  734</span>    }</div>
-<div class="line"><span class="lineno">  735</span>  EmTop = (detID - NWall*1E7 -NRow*1E6 - NColumn*1E4- BrickorCES*1E3- NPlate*1E1)/1E0;</div>
+<div class="line"><span class="lineno">  735</span>  EmTop = (<a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a> - NWall*1E7 -NRow*1E6 - NColumn*1E4- BrickorCES*1E3- NPlate*1E1)/1E0;</div>
 <div class="line"><span class="lineno">  736</span>  <span class="keywordflow">if</span>(BrickorCES == 0)</div>
 <div class="line"><span class="lineno">  737</span>    {</div>
 <div class="line"><span class="lineno">  738</span>      EmCES = 1; EmBrick =0;</div>
@@ -1162,6 +1162,7 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  747</span>  <span class="comment">// cout &lt;&lt; &quot;EmCES = &quot; &lt;&lt; EmCES &lt;&lt; &quot;;    EmBrick = &quot; &lt;&lt; EmBick &lt;&lt; endl;</span></div>
 <div class="line"><span class="lineno">  748</span>  <span class="comment">// cout &lt;&lt; endl;</span></div>
 <div class="line"><span class="lineno">  749</span>}</div>
+<div class="ttc" id="anamespacemake__nTuple__SBT_html_adad3143572780a2fde967f05ef62ba37"><div class="ttname"><a href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">make_nTuple_SBT.detID</a></div><div class="ttdeci">detID</div><div class="ttdef"><b>Definition</b> <a href="make__nTuple__SBT_8py_source.html#l00249">make_nTuple_SBT.py:249</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1529,7 +1530,7 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  612</span>    fTrackID  = <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;GetStack()-&gt;GetCurrentTrackNumber();</div>
 <div class="line"><span class="lineno">  613</span>    <span class="comment">//Int_t fTrackID  = gMC-&gt;GetStack()-&gt;GetCurrentTrackNumber();</span></div>
 <div class="line"><span class="lineno">  614</span>    <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;CurrentVolID(<a class="code hl_variable" href="classTarget.html#a15215b9d3775a15a35e9bc22aa79dd30">fVolumeID</a>);</div>
-<div class="line"><span class="lineno">  615</span>    Int_t detID = <a class="code hl_variable" href="classTarget.html#a15215b9d3775a15a35e9bc22aa79dd30">fVolumeID</a>;</div>
+<div class="line"><span class="lineno">  615</span>    Int_t <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a> = <a class="code hl_variable" href="classTarget.html#a15215b9d3775a15a35e9bc22aa79dd30">fVolumeID</a>;</div>
 <div class="line"><span class="lineno">  616</span>    <span class="comment">//gGeoManager-&gt;PrintOverlaps();</span></div>
 <div class="line"><span class="lineno">  617</span> </div>
 <div class="line"><span class="lineno">  618</span>    <span class="comment">//cout&lt;&lt; &quot;detID = &quot; &lt;&lt; detID &lt;&lt; endl;</span></div>
@@ -1552,23 +1553,23 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  635</span>    <span class="keywordflow">if</span>(strcmp(name, <span class="stringliteral">&quot;Emulsion&quot;</span>) == 0)</div>
 <div class="line"><span class="lineno">  636</span>      {</div>
 <div class="line"><span class="lineno">  637</span>    EmBrick=1;</div>
-<div class="line"><span class="lineno">  638</span>    NPlate = detID;</div>
+<div class="line"><span class="lineno">  638</span>    NPlate = <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a>;</div>
 <div class="line"><span class="lineno">  639</span>        EmTop=1;</div>
 <div class="line"><span class="lineno">  640</span>      }</div>
 <div class="line"><span class="lineno">  641</span>    <span class="keywordflow">if</span>(strcmp(name, <span class="stringliteral">&quot;Emulsion2&quot;</span>) == 0)</div>
 <div class="line"><span class="lineno">  642</span>      {</div>
 <div class="line"><span class="lineno">  643</span>    EmBrick=1;</div>
-<div class="line"><span class="lineno">  644</span>    NPlate = detID;</div>
+<div class="line"><span class="lineno">  644</span>    NPlate = <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a>;</div>
 <div class="line"><span class="lineno">  645</span>        EmTop=0;</div>
 <div class="line"><span class="lineno">  646</span>      }</div>
 <div class="line"><span class="lineno">  647</span>    <span class="keywordflow">if</span>(strcmp(name, <span class="stringliteral">&quot;EmulsionCES&quot;</span>) == 0)</div>
 <div class="line"><span class="lineno">  648</span>      {</div>
-<div class="line"><span class="lineno">  649</span>    NPlate = detID;</div>
+<div class="line"><span class="lineno">  649</span>    NPlate = <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a>;</div>
 <div class="line"><span class="lineno">  650</span>        EmTop=1;</div>
 <div class="line"><span class="lineno">  651</span>      }</div>
 <div class="line"><span class="lineno">  652</span>    <span class="keywordflow">if</span>(strcmp(name, <span class="stringliteral">&quot;Emulsion2CES&quot;</span>) == 0)</div>
 <div class="line"><span class="lineno">  653</span>      {</div>
-<div class="line"><span class="lineno">  654</span>    NPlate = detID;</div>
+<div class="line"><span class="lineno">  654</span>    NPlate = <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a>;</div>
 <div class="line"><span class="lineno">  655</span>        EmTop=0;</div>
 <div class="line"><span class="lineno">  656</span>      }</div>
 <div class="line"><span class="lineno">  657</span> </div>
@@ -1599,10 +1600,10 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  682</span>    Bool_t BrickorCES = EmBrick == 1;</div>
 <div class="line"><span class="lineno">  683</span> </div>
 <div class="line"><span class="lineno">  684</span> </div>
-<div class="line"><span class="lineno">  685</span>    detID = (NWall+1) *1E7 + (NRow+1) * 1E6 + (NColumn+1)*1E4 + BrickorCES *1E3 + (NPlate+1)*1E1 + EmTop*1 ;</div>
+<div class="line"><span class="lineno">  685</span>    <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a> = (NWall+1) *1E7 + (NRow+1) * 1E6 + (NColumn+1)*1E4 + BrickorCES *1E3 + (NPlate+1)*1E1 + EmTop*1 ;</div>
 <div class="line"><span class="lineno">  686</span> </div>
 <div class="line"><span class="lineno">  687</span> </div>
-<div class="line"><span class="lineno">  688</span>    <a class="code hl_variable" href="classTarget.html#a15215b9d3775a15a35e9bc22aa79dd30">fVolumeID</a> = detID;</div>
+<div class="line"><span class="lineno">  688</span>    <a class="code hl_variable" href="classTarget.html#a15215b9d3775a15a35e9bc22aa79dd30">fVolumeID</a> = <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a>;</div>
 <div class="line"><span class="lineno">  689</span> </div>
 <div class="line"><span class="lineno">  690</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classTarget.html#ad199f971618140a8b114f054abdbd9cc">fELoss</a> == 0. ) { <span class="keywordflow">return</span> kFALSE; }</div>
 <div class="line"><span class="lineno">  691</span>    TParticle* <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>=<a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;GetStack()-&gt;GetCurrentTrack();</div>
@@ -1632,7 +1633,7 @@ Protected Attributes</h2></td></tr>
 <div class="ttc" id="anamespacemakeCascade_html_a15662d966fe998f4f8b9b6547975083e"><div class="ttname"><a href="namespacemakeCascade.html#a15662d966fe998f4f8b9b6547975083e">makeCascade.stack</a></div><div class="ttdeci">int stack</div><div class="ttdef"><b>Definition</b> <a href="makeCascade_8py_source.html#l00273">makeCascade.py:273</a></div></div>
 <div class="ttc" id="anamespacemakeCascade_html_add259298592a80ac35262a17847aee2d"><div class="ttname"><a href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">makeCascade.name</a></div><div class="ttdeci">name</div><div class="ttdef"><b>Definition</b> <a href="makeCascade_8py_source.html#l00193">makeCascade.py:193</a></div></div>
 <div class="ttc" id="anamespacemakeDecay_html_a9c90b95001a4909a6c5383da1b3066d9"><div class="ttname"><a href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">makeDecay.p</a></div><div class="ttdeci">p</div><div class="ttdef"><b>Definition</b> <a href="makeDecay_8py_source.html#l00067">makeDecay.py:67</a></div></div>
-<div class="ttc" id="anamespacerun__simScript_html_a671e51e119017a06d69c162c6e24b051"><div class="ttname"><a href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">run_simScript.gMC</a></div><div class="ttdeci">gMC</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l00515">run_simScript.py:515</a></div></div>
+<div class="ttc" id="anamespacerun__simScript_html_a671e51e119017a06d69c162c6e24b051"><div class="ttname"><a href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">run_simScript.gMC</a></div><div class="ttdeci">gMC</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l00511">run_simScript.py:511</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

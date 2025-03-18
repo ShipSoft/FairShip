@@ -422,7 +422,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">   68</span><span class="comment">//                                                           ---------------------------</span></div>
 <div class="line"><span class="lineno">   69</span><span class="comment">// negative detID means ERROR.</span></div>
 <div class="line"><span class="lineno">   70</span><span class="comment">//</span></div>
-<div class="line"><span class="lineno">   71</span>    Int_t detID, nStat; <span class="comment">// unique detector ID, station number</span></div>
+<div class="line"><span class="lineno">   71</span>    Int_t <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a>, nStat; <span class="comment">// unique detector ID, station number</span></div>
 <div class="line"><span class="lineno">   72</span><span class="comment">//</span></div>
 <div class="line"><span class="lineno">   73</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classmuonHit.html#a2dff71af657a8b9b865b12f524ce8740">onlyOnce</a>) {</div>
 <div class="line"><span class="lineno">   74</span>    <a class="code hl_function" href="classmuonHit.html#af09f602e34bd7e3b2c2fb846fe2406fd">stInit</a>();</div>
@@ -437,19 +437,20 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">   83</span>    }</div>
 <div class="line"><span class="lineno">   84</span><span class="comment">//</span></div>
 <div class="line"><span class="lineno">   85</span>    <span class="keywordflow">if</span> (nStat != -1) {</div>
-<div class="line"><span class="lineno">   86</span>      detID=(Int_t)((<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>.X()+muStxMax[nStat])/<a class="code hl_variable" href="muonHit_8cxx.html#af3814c9f683c7fe89890d50440951bdb">tileXdim</a>)+tileXn[nStat]</div>
+<div class="line"><span class="lineno">   86</span>      <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a>=(Int_t)((<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>.X()+muStxMax[nStat])/<a class="code hl_variable" href="muonHit_8cxx.html#af3814c9f683c7fe89890d50440951bdb">tileXdim</a>)+tileXn[nStat]</div>
 <div class="line"><span class="lineno">   87</span>           *(Int_t)((<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>.Y()+muStyMax[nStat])/<a class="code hl_variable" href="muonHit_8cxx.html#adb2fd51dde6b103200cf018b3350223c">tileYdim</a>)+10000*nStat;</div>
 <div class="line"><span class="lineno">   88</span>    } <span class="keywordflow">else</span> {</div>
-<div class="line"><span class="lineno">   89</span>      detID = -1;</div>
+<div class="line"><span class="lineno">   89</span>      <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a> = -1;</div>
 <div class="line"><span class="lineno">   90</span>    }</div>
 <div class="line"><span class="lineno">   91</span><span class="comment">//</span></div>
-<div class="line"><span class="lineno">   92</span>    <span class="keywordflow">return</span> detID;</div>
+<div class="line"><span class="lineno">   92</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a>;</div>
 <div class="line"><span class="lineno">   93</span>}</div>
 <div class="ttc" id="aclassmuonHit_html_a2dff71af657a8b9b865b12f524ce8740"><div class="ttname"><a href="classmuonHit.html#a2dff71af657a8b9b865b12f524ce8740">muonHit::onlyOnce</a></div><div class="ttdeci">static bool onlyOnce</div><div class="ttdef"><b>Definition</b> <a href="muonHit_8h_source.html#l00047">muonHit.h:47</a></div></div>
 <div class="ttc" id="aclassmuonHit_html_af09f602e34bd7e3b2c2fb846fe2406fd"><div class="ttname"><a href="classmuonHit.html#af09f602e34bd7e3b2c2fb846fe2406fd">muonHit::stInit</a></div><div class="ttdeci">void stInit()</div><div class="ttdef"><b>Definition</b> <a href="muonHit_8cxx_source.html#l00133">muonHit.cxx:133</a></div></div>
 <div class="ttc" id="amuonHit_8cxx_html_adb2fd51dde6b103200cf018b3350223c"><div class="ttname"><a href="muonHit_8cxx.html#adb2fd51dde6b103200cf018b3350223c">tileYdim</a></div><div class="ttdeci">const Double_t tileYdim</div><div class="ttdef"><b>Definition</b> <a href="muonHit_8cxx_source.html#l00019">muonHit.cxx:19</a></div></div>
 <div class="ttc" id="amuonHit_8cxx_html_af3814c9f683c7fe89890d50440951bdb"><div class="ttname"><a href="muonHit_8cxx.html#af3814c9f683c7fe89890d50440951bdb">tileXdim</a></div><div class="ttdeci">const Double_t tileXdim</div><div class="ttdef"><b>Definition</b> <a href="muonHit_8cxx_source.html#l00019">muonHit.cxx:19</a></div></div>
 <div class="ttc" id="anamespaceShipAna_html_aa4bf87f4d17f9d38b1d8f4d009bb54b3"><div class="ttname"><a href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">ShipAna.i</a></div><div class="ttdeci">int i</div><div class="ttdef"><b>Definition</b> <a href="ShipAna_8py_source.html#l00076">ShipAna.py:76</a></div></div>
+<div class="ttc" id="anamespacemake__nTuple__SBT_html_adad3143572780a2fde967f05ef62ba37"><div class="ttname"><a href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">make_nTuple_SBT.detID</a></div><div class="ttdeci">detID</div><div class="ttdef"><b>Definition</b> <a href="make__nTuple__SBT_8py_source.html#l00249">make_nTuple_SBT.py:249</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

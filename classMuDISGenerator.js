@@ -10,6 +10,7 @@ var classMuDISGenerator =
     [ "ReadEvent", "classMuDISGenerator.html#a1ef04fa43d64060f2386e6a65b380ad2", null ],
     [ "SetPositions", "classMuDISGenerator.html#ae0adf0b9bdf68dbc0ec65b853d586bc4", null ],
     [ "dPart", "classMuDISGenerator.html#af1bfb064f0e597bcce6f3202829b5d37", null ],
+    [ "dPartSoft", "classMuDISGenerator.html#a40d9a237ef48fea62a09f84c5ff5cf47", null ],
     [ "endZ", "classMuDISGenerator.html#aebd4e2db02a83054f90440088fd8d9a7", null ],
     [ "fFirst", "classMuDISGenerator.html#ad40fc4c44152721d8b6613ae011d34de", null ],
     [ "fInputFile", "classMuDISGenerator.html#a92fa592ef709cd36ff6843f911ce7df6", null ],

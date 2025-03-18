@@ -1037,9 +1037,10 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="MagneticSpectrometer_8cxx_source.html#l00579">579</a> of file <a class="el" href="MagneticSpectrometer_8cxx_source.html">MagneticSpectrometer.cxx</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  580</span>{</div>
-<div class="line"><span class="lineno">  581</span>  nARM =  detID/1E4;</div>
-<div class="line"><span class="lineno">  582</span>  nRPC =  detID - nARM*1E4;</div>
+<div class="line"><span class="lineno">  581</span>  nARM =  <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a>/1E4;</div>
+<div class="line"><span class="lineno">  582</span>  nRPC =  <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a> - nARM*1E4;</div>
 <div class="line"><span class="lineno">  583</span>}</div>
+<div class="ttc" id="anamespacemake__nTuple__SBT_html_adad3143572780a2fde967f05ef62ba37"><div class="ttname"><a href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">make_nTuple_SBT.detID</a></div><div class="ttdeci">detID</div><div class="ttdef"><b>Definition</b> <a href="make__nTuple__SBT_8py_source.html#l00249">make_nTuple_SBT.py:249</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1370,7 +1371,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  519</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classMagneticSpectrometer.html#a58361656ead0100b4e8c5aa69fe3166b">fELoss</a> == 0. ) { <span class="keywordflow">return</span> kFALSE; }</div>
 <div class="line"><span class="lineno">  520</span>    TParticle* <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>=<a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;GetStack()-&gt;GetCurrentTrack();</div>
 <div class="line"><span class="lineno">  521</span>    Int_t pdgCode = <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetPdgCode();</div>
-<div class="line"><span class="lineno">  522</span>    Int_t detID=0;</div>
+<div class="line"><span class="lineno">  522</span>    Int_t <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a>=0;</div>
 <div class="line"><span class="lineno">  523</span>    <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;CurrentVolID(detID);</div>
 <div class="line"><span class="lineno">  524</span> </div>
 <div class="line"><span class="lineno">  525</span>    <span class="comment">// cout&lt;&lt; &quot;detID = &quot; &lt;&lt; detID &lt;&lt; endl;</span></div>
@@ -1385,10 +1386,10 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  534</span>    Int_t motherID = gGeoManager-&gt;GetMother(0)-&gt;GetNumber();</div>
 <div class="line"><span class="lineno">  535</span>    <span class="keyword">const</span> <span class="keywordtype">char</span> *mumname = <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;CurrentVolOffName(0);</div>
 <div class="line"><span class="lineno">  536</span>    <span class="comment">//cout&lt;&lt;mumname&lt;&lt;&quot;   &quot;&lt;&lt; motherID&lt;&lt;endl;</span></div>
-<div class="line"><span class="lineno">  537</span>    detID = motherID;</div>
+<div class="line"><span class="lineno">  537</span>    <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a> = motherID;</div>
 <div class="line"><span class="lineno">  538</span>    <span class="comment">//cout&lt;&lt; &quot;detID = &quot; &lt;&lt; detID &lt;&lt; endl;</span></div>
 <div class="line"><span class="lineno">  539</span>    <span class="comment">//cout&lt;&lt;endl;</span></div>
-<div class="line"><span class="lineno">  540</span>    <a class="code hl_variable" href="classMagneticSpectrometer.html#a63cea0fc18ed0284d0283af74ce49c81">fVolumeID</a> = detID;</div>
+<div class="line"><span class="lineno">  540</span>    <a class="code hl_variable" href="classMagneticSpectrometer.html#a63cea0fc18ed0284d0283af74ce49c81">fVolumeID</a> = <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a>;</div>
 <div class="line"><span class="lineno">  541</span> </div>
 <div class="line"><span class="lineno">  542</span>    TLorentzVector Pos;</div>
 <div class="line"><span class="lineno">  543</span>    <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;TrackPosition(Pos);</div>
@@ -1411,7 +1412,7 @@ Private Attributes</h2></td></tr>
 <div class="ttc" id="anamespacemakeCascade_html_a15662d966fe998f4f8b9b6547975083e"><div class="ttname"><a href="namespacemakeCascade.html#a15662d966fe998f4f8b9b6547975083e">makeCascade.stack</a></div><div class="ttdeci">int stack</div><div class="ttdef"><b>Definition</b> <a href="makeCascade_8py_source.html#l00273">makeCascade.py:273</a></div></div>
 <div class="ttc" id="anamespacemakeCascade_html_add259298592a80ac35262a17847aee2d"><div class="ttname"><a href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">makeCascade.name</a></div><div class="ttdeci">name</div><div class="ttdef"><b>Definition</b> <a href="makeCascade_8py_source.html#l00193">makeCascade.py:193</a></div></div>
 <div class="ttc" id="anamespacemakeDecay_html_a9c90b95001a4909a6c5383da1b3066d9"><div class="ttname"><a href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">makeDecay.p</a></div><div class="ttdeci">p</div><div class="ttdef"><b>Definition</b> <a href="makeDecay_8py_source.html#l00067">makeDecay.py:67</a></div></div>
-<div class="ttc" id="anamespacerun__simScript_html_a671e51e119017a06d69c162c6e24b051"><div class="ttname"><a href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">run_simScript.gMC</a></div><div class="ttdeci">gMC</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l00515">run_simScript.py:515</a></div></div>
+<div class="ttc" id="anamespacerun__simScript_html_a671e51e119017a06d69c162c6e24b051"><div class="ttname"><a href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">run_simScript.gMC</a></div><div class="ttdeci">gMC</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l00511">run_simScript.py:511</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
