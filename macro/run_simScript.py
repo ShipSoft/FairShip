@@ -652,31 +652,36 @@ if simEngine == "MuonBack":
  fin.SetWritable(False) # bpyass flush error
 
 if simEngine == "muonDIS":
-    f_outputfile = ROOT.TFile.Open(outFile, "UPDATE")
+    f_outputfile = ROOT.TFile.Open(outFile, "read")
     output_tree = f_outputfile.cbmsim
 
-    cross_section = array("f", [0.0])
-    cross_section_leaf = output_tree.Branch(
-        "CrossSection", cross_section, "CrossSection/F"
-    )
-
-    f_muonfile = ROOT.TFile.Open(inputFile, "READ")
+    f_muonfile = ROOT.TFile.Open(inputFile, "read")
     muondis_tree = f_muonfile.Get("DIS")
 
     iMuon = ROOT.TClonesArray("TVectorD")
     muondis_tree.SetBranchAddress("InMuon", iMuon)
 
-    for n in range(output_tree.GetEntries()):
-        output_tree.GetEntry(n)
-        muondis_tree.GetEntry(n)
+    temp_filename = outFile.replace(".root", ".tmp")
+    f_temp = ROOT.TFile.Open(temp_filename, "recreate")
 
-        mu = iMuon.At(0)
+    new_tree = output_tree.CloneTree(0)
 
+    cross_section = array("f", [0.0])
+    cross_section_leaf = new_tree.Branch(
+        "CrossSection", cross_section, "CrossSection/F"
+    )
+
+    for output_event, muondis_event in zip(output_tree, muondis_tree):
+        mu = muondis_event.InMuon[0]
         cross_section[0] = mu[10]
-        cross_section_leaf.Fill()
-    f_outputfile.cd()
-    output_tree.Write("", ROOT.TObject.kOverwrite)
+        new_tree.Fill()
+
+    new_tree.Write("", ROOT.TObject.kOverwrite)
+    f_temp.Close()
     f_outputfile.Close()
+    f_muonfile.Close()
+
+    os.replace(temp_filename, outFile)
     print("Successfully added DISCrossSection to the output file:", outFile)
 
 # ------------------------------------------------------------------------
