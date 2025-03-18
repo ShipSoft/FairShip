@@ -39,7 +39,7 @@ class MuDISGenerator : public FairGenerator
 
     Double_t MeanMaterialBudget(const Double_t* start, const Double_t* end, Double_t* mparam);
 
-protected:
+ protected:
   Double_t startZ, endZ, startX, endX, startY, endY;
   TClonesArray* iMuon ;
   TClonesArray* dPart ;
@@ -53,6 +53,5 @@ protected:
   const Double_t c_light = 29.9792458;//speed of light in cm/ns
   const Double_t muon_mass = 0.10565999895334244;  //muon mass in GeV
   ClassDef(MuDISGenerator, 2);
-
 };
 #endif   // SHIPGEN_MUDISGENERATOR_H_
