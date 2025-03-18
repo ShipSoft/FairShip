@@ -19,6 +19,9 @@
 // MuDIS momentum GeV
 // Vertex in SI units, assume this means m
 
+const Double_t c_light = 29.9792458;              // speed of light in cm/ns
+const Double_t muon_mass = 0.10565999895334244;   // muon mass in GeV
+
 // -----   Default constructor   -------------------------------------------
 MuDISGenerator::MuDISGenerator() {}
 // -------------------------------------------------------------------------
@@ -31,23 +34,23 @@ Bool_t MuDISGenerator::Init(const char* fileName, const int firstEvent)
 {
     LOGF(info, "Opening input file %s", fileName);
 
-  iMuon = 0;
-  dPart = 0;
-  dPartSoft = 0;
-  fInputFile = TFile::Open(fileName);
-  if (!fInputFile) {
-      LOG(FATAL) << "Error opening input file";
-      return kFALSE;
-  }
-  fTree = fInputFile->Get<TTree>("DIS");
-  fNevents = fTree->GetEntries();
-  fn = firstEvent;
+    iMuon = 0;
+    dPart = 0;
+    dPartSoft = 0;
+    fInputFile = TFile::Open(fileName);
+    if (!fInputFile) {
+        LOG(FATAL) << "Error opening input file";
+        return kFALSE;
+    }
+    fTree = fInputFile->Get<TTree>("DIS");
+    fNevents = fTree->GetEntries();
+    fn = firstEvent;
 
-  fTree->SetBranchAddress("InMuon", &iMuon);    // incoming muon
-  fTree->SetBranchAddress("DISParticles", &dPart);
-  fTree->SetBranchAddress("SoftParticles", &dPartSoft); // Soft interaction particles
-  LOG(INFO) << "MuDISGenerator: Initialization successful.";
-  return kTRUE;
+    fTree->SetBranchAddress("InMuon", &iMuon);   // incoming muon
+    fTree->SetBranchAddress("DISParticles", &dPart);
+    fTree->SetBranchAddress("SoftParticles", &dPartSoft);   // Soft interaction particles
+    LOG(INFO) << "MuDISGenerator: Initialization successful.";
+    return kTRUE;
 }
 
 Double_t MuDISGenerator::MeanMaterialBudget(const Double_t* start, const Double_t* end, Double_t* mparam)
@@ -91,44 +94,45 @@ Double_t MuDISGenerator::MeanMaterialBudget(const Double_t* start, const Double_
     for (Int_t i = 0; i < 6; i++)
         bparam[i] = 0;
 
-  if (!gGeoManager) {
-      return 0.;
-  }
-  //
-  Double_t length;
-  Double_t dir[3];
-  length = TMath::Sqrt((end[0]-start[0])*(end[0]-start[0])+
-                       (end[1]-start[1])*(end[1]-start[1])+
-                       (end[2]-start[2])*(end[2]-start[2]));
-  mparam[4]=length;
-  if (length<TGeoShape::Tolerance()) return 0.0;
-  Double_t invlen = 1./length;
-  dir[0] = (end[0]-start[0])*invlen;
-  dir[1] = (end[1]-start[1])*invlen;
-  dir[2] = (end[2]-start[2])*invlen;
+    if (!gGeoManager) {
+        return 0.;
+    }
+    //
+    Double_t length;
+    Double_t dir[3];
+    length = TMath::Sqrt((end[0] - start[0]) * (end[0] - start[0]) + (end[1] - start[1]) * (end[1] - start[1])
+                         + (end[2] - start[2]) * (end[2] - start[2]));
+    mparam[4] = length;
+    if (length < TGeoShape::Tolerance())
+        return 0.0;
+    Double_t invlen = 1. / length;
+    dir[0] = (end[0] - start[0]) * invlen;
+    dir[1] = (end[1] - start[1]) * invlen;
+    dir[2] = (end[2] - start[2]) * invlen;
 
-  // Initialize start point and direction
-  TGeoNode *currentnode = 0;
-  TGeoNode *startnode = gGeoManager->InitTrack(start, dir);
-  if (!startnode) {
+    // Initialize start point and direction
+    TGeoNode* currentnode = 0;
+    TGeoNode* startnode = gGeoManager->InitTrack(start, dir);
+    if (!startnode) {
         LOG(ERROR) << "Start point out of geometry: x " << start[0] << ", y " << start[1] << ", z " << start[2];
         return 0.0;
     }
-  TGeoMaterial *material = startnode->GetVolume()->GetMedium()->GetMaterial();
-  lparam[0]   = material->GetDensity();
-  if (lparam[0] > mparam[7]) mparam[7]=lparam[0];
-  lparam[1]   = material->GetRadLen();
-  lparam[2]   = material->GetA();
-  lparam[3]   = material->GetZ();
-  lparam[4]   = length;
-  lparam[5]   = lparam[3]/lparam[2];
-  if (material->IsMixture()) {
-    TGeoMixture * mixture = (TGeoMixture*)material;
-    lparam[5] =0;
-    Double_t sum =0;
-    for (Int_t iel=0;iel<mixture->GetNelements();iel++){
-      sum  += mixture->GetWmixt()[iel];
-      lparam[5]+= mixture->GetZmixt()[iel]*mixture->GetWmixt()[iel]/mixture->GetAmixt()[iel];
+    TGeoMaterial* material = startnode->GetVolume()->GetMedium()->GetMaterial();
+    lparam[0] = material->GetDensity();
+    if (lparam[0] > mparam[7])
+        mparam[7] = lparam[0];
+    lparam[1] = material->GetRadLen();
+    lparam[2] = material->GetA();
+    lparam[3] = material->GetZ();
+    lparam[4] = length;
+    lparam[5] = lparam[3] / lparam[2];
+    if (material->IsMixture()) {
+        TGeoMixture* mixture = (TGeoMixture*)material;
+        lparam[5] = 0;
+        Double_t sum = 0;
+        for (Int_t iel = 0; iel < mixture->GetNelements(); iel++) {
+            sum += mixture->GetWmixt()[iel];
+            lparam[5] += mixture->GetZmixt()[iel] * mixture->GetWmixt()[iel] / mixture->GetAmixt()[iel];
         }
         lparam[5] /= sum;
     }
@@ -251,7 +255,7 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg)
     Double_t t_muon = mu[0][11];                 // in ns
     Double_t DIS_multiplicity = 1 / mu[0][12];   // 1/nDIS
 
-    // calculate start/end positions along this muon, and amout of material in between
+    // calculate start/end positions along this muon, and amount of material in between
 
     Double_t txmu = mu[0][1] / mu[0][3];
     Double_t tymu = mu[0][2] / mu[0][3];
