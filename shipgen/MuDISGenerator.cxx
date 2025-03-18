@@ -33,7 +33,7 @@ Bool_t MuDISGenerator::Init(const char* fileName, const int firstEvent)
 
   iMuon = 0;
   dPart = 0;
-  dPartSoft = 0; 
+  dPartSoft = 0;
   fInputFile = TFile::Open(fileName);
   if (!fInputFile) {
       LOG(FATAL) << "Error opening input file";
