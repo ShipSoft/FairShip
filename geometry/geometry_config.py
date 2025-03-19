@@ -59,7 +59,7 @@ if "SC_mag" not in globals():
 if "shieldName" not in globals():
     shieldName = None
 if "SND" not in globals():
-    SND = False
+    SND = True
 
 with ConfigRegistry.register_config("basic") as c:
 
