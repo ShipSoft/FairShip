@@ -58,8 +58,6 @@ if "SC_mag" not in globals():
     SC_mag = False
 if "shieldName" not in globals():
     shieldName = None
-if "DecayVolumeMedium" not in globals():
-    raise ValueError("DecayVolumeMedium is not defined, possibly old (incompatible) geometry!")
 if "SND" not in globals():
     SND = False
 
