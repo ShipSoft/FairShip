@@ -41,6 +41,7 @@ it in future.
 ### Removed
 
 * fix: Remove unused, unrunnable shipPatRec_prev.py
+* feat(geometry): Dropped support for old geometries without DecayVolumeMedium explicitly set(pre 24.11 release case).
 
 ## 25.01
 
