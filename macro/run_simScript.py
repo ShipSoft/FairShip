@@ -660,9 +660,9 @@ if simEngine == "muonDIS":
         ROOT.TFile.Open(inputFile, "read") as f_muonfile,
         ROOT.TFile.Open(temp_filename, "recreate") as f_temp,
     ):
-        output_tree = f_outputfile.cbmsim
+        output_tree = f_outputfile.Get("cbmsim")
 
-        muondis_tree = f_muonfile.DIS
+        muondis_tree = f_muonfile.Get("DIS")
 
         new_tree = output_tree.CloneTree(0)
 
@@ -681,7 +681,6 @@ if simEngine == "muonDIS":
     os.replace(temp_filename, outFile)
     print("Successfully added DISCrossSection to the output file:", outFile)
 
-# ------------------------------------------------------------------------
 # ------------------------------------------------------------------------
 import checkMagFields
 def visualizeMagFields():
