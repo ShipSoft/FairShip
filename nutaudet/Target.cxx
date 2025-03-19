@@ -312,49 +312,29 @@ void Target::ConstructGeometry()
   Int_t NPlates = number_of_plates; //Number of doublets emulsion + Pb
   Int_t NRohacellGap = 2;
 
-  //Definition of the target box containing emulsion bricks + (CES if fDesign = 0 o 1) + target trackers (TT)
+  //Definition of the target box containing emulsion bricks + (CES if fDesign is 3) + target trackers (TT)
   TGeoBBox *TargetBox = new TGeoBBox("TargetBox",XDimension/2, YDimension/2, ZDimension/2);
   TGeoVolume *volTarget = new TGeoVolume("volTarget",TargetBox, air);
 
-  // In both fDesign=0 & fDesign=1 the emulsion target is inserted within a magnet
-  if(fDesign!=2 && fDesign!=4)
+  // In fDesign 3 the emulsion target is inserted within a magnet
+  if(fDesign==3)
     {
       TGeoVolume *MagnetVol = nullptr;
 
       //magnetic field in target
       TGeoUniformMagField *magField2 = new TGeoUniformMagField();
-
-      if(fDesign==1) //TP
-	{
-	  magField2->SetFieldValue(fField,0,0.);
-	  MagnetVol=gGeoManager->GetVolume("Davide");
-	}
-      if(fDesign==0) //NEW
-	{
-	  MagnetVol=gGeoManager->GetVolume("Goliath");
-	  magField2->SetFieldValue(0.,fField,0.);
-	}
-      if(fDesign==3)
-	{
-	  magField2->SetFieldValue(fField,0,0.);
-	  MagnetVol=gGeoManager->GetVolume("NudetMagnet");
-	}
+	    magField2->SetFieldValue(fField,0,0.);
+	    MagnetVol=gGeoManager->GetVolume("NudetMagnet");
+	  
 
       //Definition of the target box containing emulsion bricks + CES + target trackers (TT)
-      if (fDesign != 3 && fDesign != 4) volTarget->SetField(magField2);
       volTarget->SetVisibility(1);
       volTarget->SetVisDaughters(1);
-      if(fDesign==0) //TP
-	MagnetVol->AddNode(volTarget,1,new TGeoTranslation(0,-fMagnetY/2+fColumnY+fCoilH2+YDimension/2,0));
-      if(fDesign==1) //NEW
-	MagnetVol->AddNode(volTarget,1,new TGeoTranslation(0,-fMagnetY/2+fColumnY+YDimension/2,0));
-      if(fDesign==3){
-        TGeoVolume *volMagRegion=gGeoManager->GetVolume("volMagRegion");
-        Double_t ZDimMagnetizedRegion = ((TGeoBBox*) volMagRegion->GetShape())->GetDZ() * 2.; //n.d.r. DZ is the semidimension
-        for (int i = 0; i < fNTarget; i++){
-         volMagRegion->AddNode(volTarget,i+1,new TGeoTranslation(0,0, -ZDimMagnetizedRegion/2 + ZDimension/2. + i*(ZDimension + 3 * fHpTDZ + 2* fHpTDistance)));
-        }
-       }
+      TGeoVolume *volMagRegion=gGeoManager->GetVolume("volMagRegion");
+      Double_t ZDimMagnetizedRegion = ((TGeoBBox*) volMagRegion->GetShape())->GetDZ() * 2.; //n.d.r. DZ is the semidimension
+      for (int i = 0; i < fNTarget; i++){
+        volMagRegion->AddNode(volTarget,i+1,new TGeoTranslation(0,0, -ZDimMagnetizedRegion/2 + ZDimension/2. + i*(ZDimension + 3 * fHpTDZ + 2* fHpTDistance)));
+      }
     }
 
 
@@ -428,7 +408,7 @@ void Target::ConstructGeometry()
   volBrick->SetVisibility(kTRUE);
 
   //The CES is required only in the option with magnet surrounding the emulsion target
-  if(fDesign!=2 && fDesign!=4)
+  if(fDesign==3)
     {
       //CES
 
@@ -529,9 +509,9 @@ void Target::ConstructGeometry()
     }
 
 
-  //in fDesign==2 and fDesign==4 the emulsion target is not surrounded by a magnet => no magnetic field inside
+  //in fDesign 4 the emulsion target is not surrounded by a magnet => no magnetic field inside
   //In the no Magnetic field option, no CES is needed => only brick walls + TT
-  if(fDesign==2 || fDesign == 4)
+  if(fDesign == 4)
     {
       EmulsionMagnet emuMag;
 
@@ -573,21 +553,6 @@ void Target::ConstructGeometry()
 	  //6 cm is the distance between 2 columns of consecutive Target for TT placement
 	  d_cl_z += BrickZ + TTrackerZ;
 	}
-      if(fDesign==2)
-	{
-    	TGeoBBox *Base = new TGeoBBox("Base", fBaseX/2, fBaseY/2, fBaseZ/2);
-    	TGeoVolume *volBase = new TGeoVolume("volBase",Base,Conc);
-    	volBase->SetLineColor(kYellow-3);
-    	tTauNuDet->AddNode(volBase,1, new TGeoTranslation(0,-WallYDim/2 - fBaseY/2,fCenterZ));
-
-    	TGeoBBox *PillarBox = new TGeoBBox(fPillarX/2,fPillarY/2, fPillarZ/2);
-	  TGeoVolume *PillarVol = new TGeoVolume("PillarVol",PillarBox,Steel);
-	  PillarVol->SetLineColor(kGreen+3);
-	  tTauNuDet->AddNode(PillarVol,1, new TGeoTranslation(-XDimension/2+fPillarX/2,-YDimension/2-fBaseY-fPillarY/2, fCenterZ-ZDimension/2+fPillarZ/2));
-	  tTauNuDet->AddNode(PillarVol,2, new TGeoTranslation(XDimension/2-fPillarX/2,-YDimension/2-fBaseY-fPillarY/2, fCenterZ-ZDimension/2+fPillarZ/2));
-	  tTauNuDet->AddNode(PillarVol,3, new TGeoTranslation(-XDimension/2+fPillarX/2,-YDimension/2-fBaseY-fPillarY/2, fCenterZ+ZDimension/2-fPillarZ/2));
-	  tTauNuDet->AddNode(PillarVol,4, new TGeoTranslation(XDimension/2-fPillarX/2,-YDimension/2-fBaseY-fPillarY/2, fCenterZ+ZDimension/2-fPillarZ/2));
-    }
   }
 }//end construct geometry
 
