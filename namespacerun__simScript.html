@@ -313,6 +313,20 @@ Variables</h2></td></tr>
 <tr class="separator:a7761e3105d78ab195878b40089abdfa1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8e3710513bb2a7ae510a9326d0bf6de5" id="r_a8e3710513bb2a7ae510a9326d0bf6de5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__simScript.html#a8e3710513bb2a7ae510a9326d0bf6de5">rc2</a> = os.system(&quot;mv &quot;+tmpFile+&quot; &quot;+<a class="el" href="namespacerun__simScript.html#a01115297881fa794251750cdd1e96d12">outFile</a>)</td></tr>
 <tr class="separator:a8e3710513bb2a7ae510a9326d0bf6de5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa74a148076990aefe36b3d123d5d8e40" id="r_aa74a148076990aefe36b3d123d5d8e40"><td class="memItemLeft" align="right" valign="top">str&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__simScript.html#aa74a148076990aefe36b3d123d5d8e40">temp_filename</a> = outFile.replace(&quot;.root&quot;, &quot;_tmp.root&quot;)</td></tr>
+<tr class="separator:aa74a148076990aefe36b3d123d5d8e40"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13d134b8428e3abc45861c286b2e251e" id="r_a13d134b8428e3abc45861c286b2e251e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__simScript.html#a13d134b8428e3abc45861c286b2e251e">output_tree</a> = f_outputfile.Get(&quot;cbmsim&quot;)</td></tr>
+<tr class="separator:a13d134b8428e3abc45861c286b2e251e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1924664424598021966cb23da8cfc1af" id="r_a1924664424598021966cb23da8cfc1af"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__simScript.html#a1924664424598021966cb23da8cfc1af">muondis_tree</a> = f_muonfile.Get(&quot;DIS&quot;)</td></tr>
+<tr class="separator:a1924664424598021966cb23da8cfc1af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4435f2e074882181ff7ce09cef9ef113" id="r_a4435f2e074882181ff7ce09cef9ef113"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__simScript.html#a4435f2e074882181ff7ce09cef9ef113">new_tree</a> = output_tree.CloneTree(0)</td></tr>
+<tr class="separator:a4435f2e074882181ff7ce09cef9ef113"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1cfbffb329c1aafd6e1a04bbf6b9ad41" id="r_a1cfbffb329c1aafd6e1a04bbf6b9ad41"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__simScript.html#a1cfbffb329c1aafd6e1a04bbf6b9ad41">cross_section</a> = array(&quot;f&quot;, [0.0])</td></tr>
+<tr class="separator:a1cfbffb329c1aafd6e1a04bbf6b9ad41"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ecb79c114e71590f6b25ff34367d900" id="r_a3ecb79c114e71590f6b25ff34367d900"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__simScript.html#a3ecb79c114e71590f6b25ff34367d900">cross_section_leaf</a></td></tr>
+<tr class="separator:a3ecb79c114e71590f6b25ff34367d900"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaefe89450d8f306a2fdac45154ec0fb6" id="r_aaefe89450d8f306a2fdac45154ec0fb6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__simScript.html#aaefe89450d8f306a2fdac45154ec0fb6">mu</a> = muondis_event.InMuon[0]</td></tr>
+<tr class="separator:aaefe89450d8f306a2fdac45154ec0fb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="ac6390391d3c0b2c299be2757e56f72a4" name="ac6390391d3c0b2c299be2757e56f72a4"></a>
@@ -330,13 +344,13 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00657">657</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  657</span><span class="keyword">def </span>checkOverlapsWithGeant4():</div>
-<div class="line"><span class="lineno">  658</span> <span class="comment"># after /run/initialize, but prints warning messages, problems with TGeo volume</span></div>
-<div class="line"><span class="lineno">  659</span> mygMC = ROOT.TGeant4.GetMC()</div>
-<div class="line"><span class="lineno">  660</span> mygMC.ProcessGeantCommand(<span class="stringliteral">&quot;/geometry/test/recursion_start 0&quot;</span>)</div>
-<div class="line"><span class="lineno">  661</span> mygMC.ProcessGeantCommand(<span class="stringliteral">&quot;/geometry/test/recursion_depth 2&quot;</span>)</div>
-<div class="line"><span class="lineno">  662</span> mygMC.ProcessGeantCommand(<span class="stringliteral">&quot;/geometry/test/run&quot;</span>)</div>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00688">688</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  688</span><span class="keyword">def </span>checkOverlapsWithGeant4():</div>
+<div class="line"><span class="lineno">  689</span> <span class="comment"># after /run/initialize, but prints warning messages, problems with TGeo volume</span></div>
+<div class="line"><span class="lineno">  690</span> mygMC = ROOT.TGeant4.GetMC()</div>
+<div class="line"><span class="lineno">  691</span> mygMC.ProcessGeantCommand(<span class="stringliteral">&quot;/geometry/test/recursion_start 0&quot;</span>)</div>
+<div class="line"><span class="lineno">  692</span> mygMC.ProcessGeantCommand(<span class="stringliteral">&quot;/geometry/test/recursion_depth 2&quot;</span>)</div>
+<div class="line"><span class="lineno">  693</span> mygMC.ProcessGeantCommand(<span class="stringliteral">&quot;/geometry/test/run&quot;</span>)</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -355,9 +369,9 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00655">655</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  655</span><span class="keyword">def </span>visualizeMagFields():</div>
-<div class="line"><span class="lineno">  656</span> <a class="code hl_function" href="namespacecheckMagFields.html#a65e69e17f1b05eb283a8bb6d5d695249">checkMagFields.run</a>()</div>
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00686">686</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  686</span><span class="keyword">def </span>visualizeMagFields():</div>
+<div class="line"><span class="lineno">  687</span> <a class="code hl_function" href="namespacecheckMagFields.html#a65e69e17f1b05eb283a8bb6d5d695249">checkMagFields.run</a>()</div>
 <div class="ttc" id="anamespacecheckMagFields_html_a65e69e17f1b05eb283a8bb6d5d695249"><div class="ttname"><a href="namespacecheckMagFields.html#a65e69e17f1b05eb283a8bb6d5d695249">checkMagFields.run</a></div><div class="ttdeci">run()</div><div class="ttdef"><b>Definition</b> <a href="checkMagFields_8py_source.html#l00005">checkMagFields.py:5</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -472,6 +486,41 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00490">490</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+
+</div>
+</div>
+<a id="a1cfbffb329c1aafd6e1a04bbf6b9ad41" name="a1cfbffb329c1aafd6e1a04bbf6b9ad41"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1cfbffb329c1aafd6e1a04bbf6b9ad41">&#9670;&#160;</a></span>cross_section</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">run_simScript.cross_section = array(&quot;f&quot;, [0.0])</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00669">669</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+
+</div>
+</div>
+<a id="a3ecb79c114e71590f6b25ff34367d900" name="a3ecb79c114e71590f6b25ff34367d900"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3ecb79c114e71590f6b25ff34367d900">&#9670;&#160;</a></span>cross_section_leaf</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">run_simScript.cross_section_leaf</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line"><span class="lineno">    1</span>=  new_tree.Branch(</div>
+<div class="line"><span class="lineno">    2</span>            <span class="stringliteral">&quot;CrossSection&quot;</span>, cross_section, <span class="stringliteral">&quot;CrossSection/F&quot;</span></div>
+<div class="line"><span class="lineno">    3</span>        )</div>
+</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00670">670</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -1083,6 +1132,22 @@ Variables</h2></td></tr>
 
 </div>
 </div>
+<a id="aaefe89450d8f306a2fdac45154ec0fb6" name="aaefe89450d8f306a2fdac45154ec0fb6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaefe89450d8f306a2fdac45154ec0fb6">&#9670;&#160;</a></span>mu</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">run_simScript.mu = muondis_event.InMuon[0]</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00675">675</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+
+</div>
+</div>
 <a id="abcf3f03662d4796a1af150de86d59f43" name="abcf3f03662d4796a1af150de86d59f43"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abcf3f03662d4796a1af150de86d59f43">&#9670;&#160;</a></span>mu_end</h2>
 
@@ -1128,6 +1193,22 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00465">465</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+
+</div>
+</div>
+<a id="a1924664424598021966cb23da8cfc1af" name="a1924664424598021966cb23da8cfc1af"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1924664424598021966cb23da8cfc1af">&#9670;&#160;</a></span>muondis_tree</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">run_simScript.muondis_tree = f_muonfile.Get(&quot;DIS&quot;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00665">665</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -1192,6 +1273,22 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00358">358</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+
+</div>
+</div>
+<a id="a4435f2e074882181ff7ce09cef9ef113" name="a4435f2e074882181ff7ce09cef9ef113"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4435f2e074882181ff7ce09cef9ef113">&#9670;&#160;</a></span>new_tree</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">run_simScript.new_tree = output_tree.CloneTree(0)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00667">667</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -1384,6 +1481,22 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00246">246</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+
+</div>
+</div>
+<a id="a13d134b8428e3abc45861c286b2e251e" name="a13d134b8428e3abc45861c286b2e251e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a13d134b8428e3abc45861c286b2e251e">&#9670;&#160;</a></span>output_tree</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">run_simScript.output_tree = f_outputfile.Get(&quot;cbmsim&quot;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00663">663</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
@@ -1784,6 +1897,22 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00239">239</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
+
+</div>
+</div>
+<a id="aa74a148076990aefe36b3d123d5d8e40" name="aa74a148076990aefe36b3d123d5d8e40"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa74a148076990aefe36b3d123d5d8e40">&#9670;&#160;</a></span>temp_filename</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">str run_simScript.temp_filename = outFile.replace(&quot;.root&quot;, &quot;_tmp.root&quot;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="run__simScript_8py_source.html#l00656">656</a> of file <a class="el" href="run__simScript_8py_source.html">run_simScript.py</a>.</p>
 
 </div>
 </div>
