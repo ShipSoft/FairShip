@@ -38,7 +38,7 @@ ShipGoliathField.cxx
 FairShipFields.cxx
 )
 
-set(LINKDEF FieldLinkDef.h)
+set(LINKDEF LinkDef.h)
 Set(LIBRARY_NAME ShipField)
 Set(DEPENDENCIES
     Base
