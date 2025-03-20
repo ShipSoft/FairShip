@@ -911,7 +911,6 @@ def tracks_combination_using_extrapolation(recognized_tracks_12, recognized_trac
             atrack['hits_y34'] = recognized_tracks_34[i_34]['hits_y']
             atrack['hits_stereo34'] = recognized_tracks_34[i_34]['hits_stereo']
             recognized_tracks_combo.append(atrack)
-            recognized_tracks_combo.append(atrack)
 
     return recognized_tracks_combo
 
