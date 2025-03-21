@@ -194,41 +194,6 @@ void Hpt::ConstructGeometry()
     TGeoMedium *Conc =gGeoManager->GetMedium("Concrete");
 
     // cout << "zSizeMudet = " << zSizeMudet << endl;
-    if (fDesign < 3){
-    TGeoVolume *volMudetBox = gGeoManager->GetVolume("volNuTauMudet");
-    TGeoBBox *HPT = new TGeoBBox("HPT", DimX/2, DimY/2, DimZ/2);
-    TGeoVolume *volHPT = new TGeoVolume("volHPT",HPT,HPTmat);
-    volHPT->SetLineColor(kBlue-5);
-    AddSensitiveVolume(volHPT);
-
-    TGeoBBox *Cbase = new TGeoBBox("Cbase", fConcreteX/2, fConcreteY/2, fConcreteZ/2);
-    TGeoVolume *volCbase = new TGeoVolume("volCbase",Cbase,Conc);
-    volCbase->SetLineColor(kOrange-7);
-
-    //1 closer to Goliath
-    volMudetBox->AddNode(volHPT,1,new TGeoTranslation(0,0,-zSizeMudet/2 + DimZ/2));
-    volMudetBox->AddNode(volCbase,1,new TGeoTranslation(0,-DimY/2-fConcreteY/2,-zSizeMudet/2 + DimZ/2));
-
-    //2 closer to Arm1
-    //NB: 55 cm is the distance between the borders of the last 2 drift tubes
-    volMudetBox->AddNode(volHPT,2,new TGeoTranslation(0,0,-zSizeMudet/2 + 3*DimZ/2 +55*cm));
-    volMudetBox->AddNode(volCbase,2,new TGeoTranslation(0,-DimY/2-fConcreteY/2,-zSizeMudet/2 + 3*DimZ/2 +55*cm));
-
-    //Central Drift tubes // 3 closer to Arm1, 4 closer to Arm2
-    volMudetBox->AddNode(volHPT,3,new TGeoTranslation(0,0,-72*cm/2 - DimZ/2));
-
-    //NB: 72cm is the distance between the borders of the central drift tubes
-    volMudetBox->AddNode(volHPT,4,new TGeoTranslation(0,0,72*cm/2 + DimZ/2));
-
-
-    //After spectro Drift Tubes 5 closer to Arm, 6 closer to decay vessel
-    volMudetBox->AddNode(volHPT,5,new TGeoTranslation(0,0,zSizeMudet/2 - 3*DimZ/2 - 55*cm));
-    volMudetBox->AddNode(volCbase,5,new TGeoTranslation(0,-DimY/2-fConcreteY/2,zSizeMudet/2 - 3*DimZ/2 - 55*cm));
-
-    volMudetBox->AddNode(volHPT,6,new TGeoTranslation(0,0,zSizeMudet/2 - DimZ/2));
-    volMudetBox->AddNode(volCbase,6,new TGeoTranslation(0,-DimY/2-fConcreteY/2,zSizeMudet/2 - DimZ/2));
-
-    }
     if (fDesign == 3){
         //Trackers that in design 3 follow the target --------------------------------------------------------------------------------------
         TGeoVolume *volMagRegion=gGeoManager->GetVolume("volMagRegion");

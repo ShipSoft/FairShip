@@ -63,7 +63,7 @@ EmulsionMagnet::EmulsionMagnet(const char* name, const Double_t zC,const char* T
 void EmulsionMagnet::SetDesign(Int_t Design)
 {
   fDesign = Design;
-  Info("Chosen TP Design (0 no, 1 yes) "," %i", fDesign);
+  Info("Chosen Target Design"," %i", fDesign);
 }
 
 void EmulsionMagnet::SetGaps(Double_t Up, Double_t Down)
