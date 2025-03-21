@@ -524,7 +524,7 @@ with ConfigRegistry.register_config("basic") as c:
         c.tauMudet.PillarX = 40*u.cm
         c.tauMudet.PillarZ = 50*u.cm
         c.tauMudet.PillarY = 10*u.m - c.cave.floorHeightMuonShield - c.tauMudet.Ytot/2 - 0.1*u.mm
-        
+
         c.tauMudet.XGas =  c.tauMudet.XRpc
         c.tauMudet.YGas =  c.tauMudet.YRpc
         c.tauMudet.ZGas = 1*u.mm
@@ -557,7 +557,7 @@ with ConfigRegistry.register_config("basic") as c:
      c.tauMudet.ZRyoke = c.tauMudet.Ztot
      c.tauMudet.B = 1.0 * u.tesla #magnetic field is back in MuFilter!
      c.tauMudet.zMudetC = c.Chamber1.z -c.chambers.Tub1length - c.tauMudet.Ztot/2 -31*u.cm
-       
+
 
     #tau Bricks
     c.NuTauTarget = AttrDict(z=0*u.cm)

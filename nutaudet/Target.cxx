@@ -325,7 +325,7 @@ void Target::ConstructGeometry()
       TGeoUniformMagField *magField2 = new TGeoUniformMagField();
 	    magField2->SetFieldValue(fField,0,0.);
 	    MagnetVol=gGeoManager->GetVolume("NudetMagnet");
-	  
+
 
       //Definition of the target box containing emulsion bricks + CES + target trackers (TT)
       volTarget->SetVisibility(1);

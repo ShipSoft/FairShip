@@ -413,7 +413,7 @@ def configure(run, ship_geo):
                 ):  # now replaced with veto taggers
                     taumuondetector.SetRpcDimDifferences(
                     ship_geo.tauMudet.deltax, ship_geo.tauMudet.deltay
-                    )                
+                    )
 
             if (
                 ship_geo.nuTauTargetDesign == 4
