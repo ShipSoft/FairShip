@@ -9,7 +9,7 @@ if len(sys.argv) > 1:
     fname = sys.argv[1]
 
 fgeo = ROOT.TFile(fname)
-sGeo = fgeo.FAIRGeom
+sGeo = fgeo.Get("FAIRGeom")
 import shipDet_conf
 run = ROOT.FairRunSim()
 upkl = Unpickler(fgeo)

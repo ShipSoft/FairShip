@@ -113,7 +113,7 @@ import rootUtils as ut
 f=ROOT.gROOT.GetListOfFiles()[0]
 h={}
 ut.bookHist(h,'theta','scattering angle '+str(momentum)+'GeV/c;{Theta}(rad)',500,0,maxTheta)
-sTree = f.cbmsim
+sTree = f.Get("cbmsim")
 for n in range(sTree.GetEntries()):
  rc = sTree.GetEvent(n)
  for aHit in sTree.vetoPoint:

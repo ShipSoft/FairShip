@@ -29,6 +29,7 @@ it in future.
 * fix: autoload Pythia8 instead of manually loading in run_simScript.py
 * fix(geometry): fix typo of "vacuums" for strawtubes medium
 * fix(reco): Fix segmentation fault due to dummy containers (#453, #519)
+* fix: don't use TFile's deprecated attribute syntax
 
 ### Changed
 
