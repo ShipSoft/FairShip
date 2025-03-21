@@ -15,7 +15,7 @@ def main():
     options = parser.parse_args()
 
     f = ROOT.TFile.Open(options.path + "/ship.conical.Pythia8-TGeant4_rec.root", "read")
-    tree = f.cbmsim
+    tree = f.Get("cbmsim")
 
     geo_file = ROOT.TFile.Open(
         options.path + "/geofile_full.conical.Pythia8-TGeant4.root", "read"

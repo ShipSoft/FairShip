@@ -104,7 +104,7 @@ rtdb = run.GetRuntimeDb()
 # -----Create geometry----------------------------------------------
 modules = shipDet_conf.configure(run,ShipGeo)
 # run.Init()
-fgeo.FAIRGeom
+fgeo.Get("FAIRGeom")
 import geomGeant4
 
 if hasattr(ShipGeo.Bfield,"fieldMap"):

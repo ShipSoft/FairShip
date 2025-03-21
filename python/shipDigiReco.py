@@ -13,13 +13,13 @@ class ShipDigiReco:
  " convert FairSHiP MC hits / digitized hits to measurements"
  def __init__(self,fout,fgeo):
   self.fn = ROOT.TFile.Open(fout,'update')
-  self.sTree     = self.fn.cbmsim
+  self.sTree     = self.fn.Get("cbmsim")
   if self.sTree.GetBranch("FitTracks"):
     print("remove RECO branches and rerun reconstruction")
     self.fn.Close()
     # make a new file without reco branches
     f = ROOT.TFile(fout)
-    sTree = f.cbmsim
+    sTree = f.Get("cbmsim")
     if sTree.GetBranch("FitTracks"): sTree.SetBranchStatus("FitTracks",0)
     if sTree.GetBranch("goodTracks"): sTree.SetBranchStatus("goodTracks",0)
     if sTree.GetBranch("VetoHitOnTrack"): sTree.SetBranchStatus("VetoHitOnTrack",0)
@@ -47,7 +47,7 @@ class ShipDigiReco:
     recf.Close()
     os.system('cp '+rawFile +' '+fout)
     self.fn = ROOT.TFile(fout,'update')
-    self.sTree     = self.fn.cbmsim
+    self.sTree = self.fn.Get("cbmsim")
 #
   if self.sTree.GetBranch("GeoTracks"): self.sTree.SetBranchStatus("GeoTracks",0)
 # prepare for output
@@ -970,7 +970,6 @@ class ShipDigiReco:
       error = "Fit not converged"
       ut.reportError(error)
     nmeas = fitStatus.getNdf()
-    global_variables.h['nmeas'].Fill(nmeas)
     if nmeas > 0:
       chi2 = fitStatus.getChi2() / nmeas
       global_variables.h['chi2'].Fill(chi2)

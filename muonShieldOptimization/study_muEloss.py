@@ -128,7 +128,7 @@ def makePlot(f,book=True):
   ut.bookHist(h,'theta','scattering angle '+str(momentum)+'GeV/c;{Theta}(rad)',500,0,maxTheta)
   ut.bookHist(h,'eloss','rel energy loss as function of momentum GeV/c',100,0,maxTheta,10000,0.,1.)
   ut.bookHist(h,'elossRaw','energy loss as function of momentum GeV/c',100,0,maxTheta, 10000,0.,100.)
- sTree = f.cbmsim
+ sTree = f.Get("cbmsim")
  for n in range(sTree.GetEntries()):
   rc = sTree.GetEvent(n)
   Ein  = sTree.MCTrack[0].GetEnergy()

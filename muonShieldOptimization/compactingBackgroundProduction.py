@@ -251,7 +251,7 @@ def compactify(charm):
 
 def makeHistos(rfile):
  f=ROOT.TFile.Open(rfile)
- sTree = f.cbmsim
+ sTree = f.Get("cbmsim")
  nTot = 0
  for k in f.GetListOfKeys():
   if k.GetName() == 'FileHeader':

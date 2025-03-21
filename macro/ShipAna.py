@@ -34,7 +34,7 @@ if not options.inputFile.find(',')<0 :
     sTree.AddFile(x)
 else:
   f = ROOT.TFile(options.inputFile)
-  sTree = f.cbmsim
+  sTree = f.Get("cbmsim")
 
 # try to figure out which ecal geo to load
 if not options.geoFile:
@@ -64,7 +64,7 @@ if hasattr(ShipGeo.Bfield,"fieldMap"):
 else:
   print("no fieldmap given, geofile too old, not anymore support")
   exit(-1)
-sGeo   = fgeo.FAIRGeom
+sGeo = fgeo.Get("FAIRGeom")
 geoMat =  ROOT.genfit.TGeoMaterialInterface()
 ROOT.genfit.MaterialEffects.getInstance().init(geoMat)
 bfield = ROOT.genfit.FairShipFields()
