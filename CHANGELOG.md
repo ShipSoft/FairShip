@@ -44,6 +44,7 @@ it in future.
 * feat(digi): Use STL vectors for SST digitisation
 * feat(digi): Use STL vectors for SBT digitisation
 * Change max x of stereo hits to match straw length
+* Get rid of straw diameter dependency in scale factor
 
 ### Removed
 
