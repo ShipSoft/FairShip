@@ -47,7 +47,7 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method):
         print("An error with opening the ship geo file.")
         raise
 
-    sGeo = fgeo.FAIRGeom
+    sGeo = fgeo.Get("FAIRGeom")
 
     # Prepare ShipGeo dictionary
     if not fgeo.FindKey('ShipGeo'):
@@ -96,7 +96,7 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method):
     else:
       print("no fieldmap given, geofile too old, not anymore support")
       exit(-1)
-    sGeo   = fgeo.FAIRGeom
+    sGeo = fgeo.Get("FAIRGeom")
     geoMat =  ROOT.genfit.TGeoMaterialInterface()
     ROOT.genfit.MaterialEffects.getInstance().init(geoMat)
     bfield = ROOT.genfit.FairShipFields()
@@ -114,7 +114,7 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method):
         print("An error with opening the input data file.")
         raise
 
-    sTree = fn.cbmsim
+    sTree = fn.Get("cbmsim")
     sTree.Write()
 
     ############################################# Create hists #########################################################

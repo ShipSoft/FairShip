@@ -7,7 +7,7 @@ myHist2 = ROOT.TH3F('myh2','radio',500,-3000,3000,100,-300,300,100,-600,600)
 
 for x in fs:
   fl = ROOT.TFile(path+x)
-  sTree=fl.cbmsim
+  sTree = fl.Get("cbmsim")
   ROOT.gROOT.cd()
   for n in range(sTree.GetEntries()):
     rc=sTree.GetEvent(n)

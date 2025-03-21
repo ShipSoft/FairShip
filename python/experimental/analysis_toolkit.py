@@ -15,7 +15,7 @@ class selection_check:
 
     def __init__(self, geo_file):
         """Initialize the selection_check class with geometry and configuration."""
-        self.geometry_manager = geo_file.FAIRGeom
+        self.geometry_manager = geo_file.Get("FAIRGeom")
         unpickler = Unpickler(geo_file)
         self.ship_geo = unpickler.load("ShipGeo")
 
