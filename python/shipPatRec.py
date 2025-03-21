@@ -7,7 +7,7 @@ import global_variables
 ReconstructibleMCTracks = []
 theTracks = []
 
-r_scale = global_variables.ShipGeo.strawtubes.InnerStrawDiameter / 1.975
+r_scale = 1.
 max_x = global_variables.ShipGeo.strawtubes.StrawLength # == 200 * u.cm
 
 def initialize(fgeo):
