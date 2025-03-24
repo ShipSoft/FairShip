@@ -563,7 +563,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.NuTauTarget = AttrDict(z=0*u.cm)
     c.NuTauTarget.Design = nuTauTargetDesign
     if c.NuTauTarget.Design == 3: #One unique magnet, eventually more than one target volume
-	c.NuTauTarget.zC = c.EmuMagnet.zC
+        c.NuTauTarget.zC = c.EmuMagnet.zC
         #c.NuTauTarget.n_plates = 56
         c.NuTauTarget.row = 2
         c.NuTauTarget.col = 2
