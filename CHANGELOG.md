@@ -42,6 +42,7 @@ it in future.
 
 * fix: Remove unused, unrunnable shipPatRec_prev.py
 * feat(geometry): Dropped support for old geometries without DecayVolumeMedium explicitly set(pre 24.11 release case).
+* Removed old nuTauTargetDesign configurations from 0 to 2. Currently supported: 3 (2018, magnetized target) and 4 (Current, not magnetized target and spectrometer)
 
 ## 25.01
 
