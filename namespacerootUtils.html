@@ -769,7 +769,7 @@ Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="rootUtils_8py_source.html#l00143">143</a> of file <a class="el" href="rootUtils_8py_source.html">rootUtils.py</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  143</span><span class="keyword">def </span>stripOffBranches(fout):</div>
 <div class="line"><span class="lineno">  144</span>    f = TFile(fout)</div>
-<div class="line"><span class="lineno">  145</span>    sTree = f.cbmsim</div>
+<div class="line"><span class="lineno">  145</span>    sTree = f.Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
 <div class="line"><span class="lineno">  146</span>    nEvents = sTree.GetEntries()</div>
 <div class="line"><span class="lineno">  147</span>    strip = <span class="keyword">False</span></div>
 <div class="line"><span class="lineno">  148</span>    oldTargetClass = <span class="keyword">False</span></div>
@@ -801,7 +801,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  174</span>    recf.Close()</div>
 <div class="line"><span class="lineno">  175</span>    <span class="comment"># should do some sanity checks before deleting old file</span></div>
 <div class="line"><span class="lineno">  176</span>    f = TFile(sFile)</div>
-<div class="line"><span class="lineno">  177</span>    sTree = f.cbmsim</div>
+<div class="line"><span class="lineno">  177</span>    sTree = f.Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
 <div class="line"><span class="lineno">  178</span>    <span class="keywordflow">if</span> nEvents == sTree.GetEntries(): print(<span class="stringliteral">&quot;looks ok, could be deleted&quot;</span>,os.path.abspath(<span class="stringliteral">&#39;.&#39;</span>))</div>
 <div class="line"><span class="lineno">  179</span>    <span class="keywordflow">else</span>:  print(<span class="stringliteral">&quot;stripping failed, keep old file&quot;</span>,os.path.abspath(<span class="stringliteral">&#39;.&#39;</span>))</div>
 <div class="line"><span class="lineno">  180</span>    <span class="comment"># os.system(&#39;mv &#39;+sFile +&#39; &#39;+fout)</span></div>

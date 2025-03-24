@@ -182,7 +182,7 @@ Variables</h2></td></tr>
 <tr class="separator:a916dd5983d4b6d3945f22cce86c4dc35"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae5b4546b0f4f97e62e5801351d43b925" id="r_ae5b4546b0f4f97e62e5801351d43b925"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceana__ShipMuon.html#ae5b4546b0f4f97e62e5801351d43b925">fgeo</a> = ROOT.TFile(<a class="el" href="namespaceana__ShipMuon.html#ae8072df8c6711706b8db306bf61f5b8a">testdir</a>+'/'+f)</td></tr>
 <tr class="separator:ae5b4546b0f4f97e62e5801351d43b925"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4c0c13295577eadb3dce5cadf4f0e194" id="r_a4c0c13295577eadb3dce5cadf4f0e194"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceana__ShipMuon.html#a4c0c13295577eadb3dce5cadf4f0e194">sGeo</a> = fgeo.FAIRGeom</td></tr>
+<tr class="memitem:a4c0c13295577eadb3dce5cadf4f0e194" id="r_a4c0c13295577eadb3dce5cadf4f0e194"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceana__ShipMuon.html#a4c0c13295577eadb3dce5cadf4f0e194">sGeo</a> = fgeo.Get(&quot;FAIRGeom&quot;)</td></tr>
 <tr class="separator:a4c0c13295577eadb3dce5cadf4f0e194"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a52725c8bc8e77006c51ea21a7ae18639" id="r_a52725c8bc8e77006c51ea21a7ae18639"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceana__ShipMuon.html#a52725c8bc8e77006c51ea21a7ae18639">inputFile</a> = f.replace(&quot;geofile_full&quot;,&quot;ship&quot;)</td></tr>
 <tr class="separator:a52725c8bc8e77006c51ea21a7ae18639"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -294,7 +294,7 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">  814</span>  <span class="keywordflow">if</span> <span class="keywordflow">not</span> f.FindObjectAny(<span class="stringliteral">&#39;cbmsim&#39;</span>):</div>
 <div class="line"><span class="lineno">  815</span>   print(<span class="stringliteral">&#39;skip file &#39;</span>,f.GetName())</div>
 <div class="line"><span class="lineno">  816</span>   <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  817</span>  sTree = f.cbmsim</div>
+<div class="line"><span class="lineno">  817</span>  sTree = f.Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
 <div class="line"><span class="lineno">  818</span>  sTree.GetEvent(0)</div>
 <div class="line"><span class="lineno">  819</span>  <span class="keywordflow">if</span> sTree.GetBranch(<span class="stringliteral">&quot;GeoTracks&quot;</span>): sTree.SetBranchStatus(<span class="stringliteral">&quot;GeoTracks&quot;</span>,0)</div>
 <div class="line"><span class="lineno">  820</span>  nEvents = sTree.GetEntries()</div>
@@ -364,7 +364,7 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">  889</span>  <span class="keywordflow">if</span> <span class="keywordflow">not</span> f.FindObjectAny(<span class="stringliteral">&#39;cbmsim&#39;</span>):</div>
 <div class="line"><span class="lineno">  890</span>   print(<span class="stringliteral">&#39;skip file &#39;</span>,f.GetName())</div>
 <div class="line"><span class="lineno">  891</span>   <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  892</span>  sTree = f.cbmsim</div>
+<div class="line"><span class="lineno">  892</span>  sTree = f.Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
 <div class="line"><span class="lineno">  893</span>  nEvents = sTree.GetEntries()</div>
 <div class="line"><span class="lineno">  894</span>  ROOT.gROOT.cd()</div>
 <div class="line"><span class="lineno">  895</span>  <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(nEvents):</div>
@@ -694,7 +694,7 @@ Variables</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="ana__ShipMuon_8py_source.html#l01114">1114</a> of file <a class="el" href="ana__ShipMuon_8py_source.html">ana_ShipMuon.py</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno"> 1114</span><span class="keyword">def </span>eventsWithEntryPoints(i):</div>
-<div class="line"><span class="lineno"> 1115</span> sTree = fchain[i].cbmsim</div>
+<div class="line"><span class="lineno"> 1115</span> sTree = fchain[i].Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
 <div class="line"><span class="lineno"> 1116</span> mom = ROOT.TVector3()</div>
 <div class="line"><span class="lineno"> 1117</span> <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(sTree.GetEntries()):</div>
 <div class="line"><span class="lineno"> 1118</span>   sTree.GetEntry(i)</div>
@@ -727,7 +727,7 @@ Variables</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="ana__ShipMuon_8py_source.html#l01099">1099</a> of file <a class="el" href="ana__ShipMuon_8py_source.html">ana_ShipMuon.py</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno"> 1099</span><span class="keyword">def </span>eventsWithStrawPoints(i):</div>
-<div class="line"><span class="lineno"> 1100</span> sTree = fchain[i].cbmsim</div>
+<div class="line"><span class="lineno"> 1100</span> sTree = fchain[i].Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
 <div class="line"><span class="lineno"> 1101</span> mom = ROOT.TVector3()</div>
 <div class="line"><span class="lineno"> 1102</span> <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(sTree.GetEntries()):</div>
 <div class="line"><span class="lineno"> 1103</span>   sTree.GetEntry(i)</div>
@@ -779,7 +779,7 @@ Variables</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="ana__ShipMuon_8py_source.html#l00624">624</a> of file <a class="el" href="ana__ShipMuon_8py_source.html">ana_ShipMuon.py</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  624</span><span class="keyword">def </span>executeOneFile(fn,output=None,pid=None):</div>
 <div class="line"><span class="lineno">  625</span>  f     = ROOT.TFile.Open(fn)</div>
-<div class="line"><span class="lineno">  626</span>  sTree = f.cbmsim</div>
+<div class="line"><span class="lineno">  626</span>  sTree = f.Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
 <div class="line"><span class="lineno">  627</span>  nEvents = sTree.GetEntries()</div>
 <div class="line"><span class="lineno">  628</span>  <span class="keywordflow">if</span> sTree.GetBranch(<span class="stringliteral">&quot;GeoTracks&quot;</span>): sTree.SetBranchStatus(<span class="stringliteral">&quot;GeoTracks&quot;</span>,0)</div>
 <div class="line"><span class="lineno">  629</span>  sTree.GetEntry(0)</div>
@@ -922,7 +922,7 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno"> 1017</span>  <span class="keywordflow">if</span> <span class="keywordflow">not</span> f.FindObjectAny(<span class="stringliteral">&#39;cbmsim&#39;</span>):</div>
 <div class="line"><span class="lineno"> 1018</span>   print(<span class="stringliteral">&#39;skip file &#39;</span>,f.GetName())</div>
 <div class="line"><span class="lineno"> 1019</span>   <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno"> 1020</span>  sTree = f.cbmsim</div>
+<div class="line"><span class="lineno"> 1020</span>  sTree = f.Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
 <div class="line"><span class="lineno"> 1021</span>  nEvents = sTree.GetEntries()</div>
 <div class="line"><span class="lineno"> 1022</span>  raref = ROOT.TFile(fn.replace(<span class="stringliteral">&quot;.root&quot;</span>,<span class="stringliteral">&quot;_clby.root&quot;</span>),<span class="stringliteral">&quot;recreate&quot;</span>)</div>
 <div class="line"><span class="lineno"> 1023</span>  newTree = sTree.CloneTree(0)</div>
@@ -976,7 +976,7 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">  982</span>  <span class="keywordflow">if</span> <span class="keywordflow">not</span> f.FindObjectAny(<span class="stringliteral">&#39;cbmsim&#39;</span>):</div>
 <div class="line"><span class="lineno">  983</span>   print(<span class="stringliteral">&#39;skip file &#39;</span>,f.GetName())</div>
 <div class="line"><span class="lineno">  984</span>   <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  985</span>  sTree = f.cbmsim</div>
+<div class="line"><span class="lineno">  985</span>  sTree = f.Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
 <div class="line"><span class="lineno">  986</span>  nEvents = sTree.GetEntries()</div>
 <div class="line"><span class="lineno">  987</span>  raref = ROOT.TFile(fn.replace(<span class="stringliteral">&quot;.root&quot;</span>,<span class="stringliteral">&quot;_rare.root&quot;</span>),<span class="stringliteral">&quot;recreate&quot;</span>)</div>
 <div class="line"><span class="lineno">  988</span>  newTree = sTree.CloneTree(0)</div>
@@ -1317,7 +1317,7 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">  852</span>  fout = ROOT.TFile(<span class="stringliteral">&#39;muDISVetoCounter.root&#39;</span>,<span class="stringliteral">&#39;recreate&#39;</span>)</div>
 <div class="line"><span class="lineno">  853</span>  h[<span class="stringliteral">&#39;ntuple&#39;</span>] = ROOT.TNtuple(<span class="stringliteral">&quot;muons&quot;</span>,<span class="stringliteral">&quot;muon flux VetoCounter&quot;</span>,<span class="stringliteral">&quot;id:px:py:pz:x:y:z:w&quot;</span>)</div>
 <div class="line"><span class="lineno">  854</span>  f = ROOT.TFile(fn)</div>
-<div class="line"><span class="lineno">  855</span>  sTree = f.cbmsim</div>
+<div class="line"><span class="lineno">  855</span>  sTree = f.Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
 <div class="line"><span class="lineno">  856</span>  nEvents = sTree.GetEntries()</div>
 <div class="line"><span class="lineno">  857</span>  <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(nEvents):</div>
 <div class="line"><span class="lineno">  858</span>   sTree.GetEntry(n)</div>
@@ -1564,7 +1564,7 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">  946</span>  <span class="keywordflow">if</span> <span class="keywordflow">not</span> f.FindObjectAny(<span class="stringliteral">&#39;cbmsim&#39;</span>):</div>
 <div class="line"><span class="lineno">  947</span>   print(<span class="stringliteral">&#39;skip file &#39;</span>,f.GetName())</div>
 <div class="line"><span class="lineno">  948</span>   <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  949</span>  sTree = f.cbmsim</div>
+<div class="line"><span class="lineno">  949</span>  sTree = f.Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
 <div class="line"><span class="lineno">  950</span>  sTree.GetEvent(0)</div>
 <div class="line"><span class="lineno">  951</span>  <span class="keywordflow">if</span> sTree.GetBranch(<span class="stringliteral">&quot;GeoTracks&quot;</span>): sTree.SetBranchStatus(<span class="stringliteral">&quot;GeoTracks&quot;</span>,0)</div>
 <div class="line"><span class="lineno">  952</span>  nEvents = sTree.GetEntries()</div>
@@ -2403,7 +2403,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">ana_ShipMuon.sGeo = fgeo.FAIRGeom</td>
+          <td class="memname">ana_ShipMuon.sGeo = fgeo.Get(&quot;FAIRGeom&quot;)</td>
         </tr>
       </table>
 </div><div class="memdoc">

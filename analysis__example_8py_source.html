@@ -115,7 +115,7 @@ $(document).ready(function(){initNavTree('analysis__example_8py_source.html','')
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    options = parser.parse_args()</div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    f = ROOT.TFile.Open(options.path + <span class="stringliteral">&quot;/ship.conical.Pythia8-TGeant4_rec.root&quot;</span>, <span class="stringliteral">&quot;read&quot;</span>)</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    tree = f.cbmsim</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    tree = f.Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    geo_file = ROOT.TFile.Open(</div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>        options.path + <span class="stringliteral">&quot;/geofile_full.conical.Pythia8-TGeant4.root&quot;</span>, <span class="stringliteral">&quot;read&quot;</span></div>

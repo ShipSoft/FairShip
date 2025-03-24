@@ -108,7 +108,7 @@ $(document).ready(function(){initNavTree('inspectGeant4Geo_8py_source.html','');
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>    fname = sys.argv[1]</div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno"><a class="line" href="namespaceinspectGeant4Geo.html#a0efacb245b056a4f044ff50eb8ee0f00">   11</a></span>fgeo = ROOT.TFile(fname)</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="namespaceinspectGeant4Geo.html#ad3a4209be563bb7349a917104d413925">   12</a></span>sGeo = fgeo.FAIRGeom</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="namespaceinspectGeant4Geo.html#ad3a4209be563bb7349a917104d413925">   12</a></span>sGeo = fgeo.Get(<span class="stringliteral">&quot;FAIRGeom&quot;</span>)</div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="keyword">import</span> shipDet_conf</div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno"><a class="line" href="namespaceinspectGeant4Geo.html#a03bb0ea2b3838f3314e786e86914e25c">   14</a></span>run = ROOT.FairRunSim()</div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno"><a class="line" href="namespaceinspectGeant4Geo.html#ac805e20922fcef5ae243057241d11d78">   15</a></span>upkl = <a class="code hl_class" href="classrootpyPickler_1_1Unpickler.html">Unpickler</a>(fgeo)</div>

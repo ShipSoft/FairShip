@@ -516,7 +516,7 @@ Variables</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="compactingBackgroundProduction_8py_source.html#l00252">252</a> of file <a class="el" href="compactingBackgroundProduction_8py_source.html">compactingBackgroundProduction.py</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  252</span><span class="keyword">def </span>makeHistos(rfile):</div>
 <div class="line"><span class="lineno">  253</span> f=ROOT.TFile.Open(rfile)</div>
-<div class="line"><span class="lineno">  254</span> sTree = f.cbmsim</div>
+<div class="line"><span class="lineno">  254</span> sTree = f.Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
 <div class="line"><span class="lineno">  255</span> nTot = 0</div>
 <div class="line"><span class="lineno">  256</span> <span class="keywordflow">for</span> k <span class="keywordflow">in</span> f.GetListOfKeys():</div>
 <div class="line"><span class="lineno">  257</span>  <span class="keywordflow">if</span> k.GetName() == <span class="stringliteral">&#39;FileHeader&#39;</span>:</div>

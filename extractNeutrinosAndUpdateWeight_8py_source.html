@@ -147,7 +147,7 @@ $(document).ready(function(){initNavTree('extractNeutrinosAndUpdateWeight_8py_so
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno"><a class="line" href="namespaceextractNeutrinosAndUpdateWeight.html#aa15043e616f117caa4ba3991f6295008">   47</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceextractNeutrinosAndUpdateWeight.html#aa15043e616f117caa4ba3991f6295008">processFile</a>(fin,noCharm=True):</div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    f   = ROOT.TFile.Open(os.environ[<span class="stringliteral">&#39;EOSSHIP&#39;</span>]+path+fin)</div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    print(<span class="stringliteral">&quot;opened file &quot;</span>,fin)</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    sTree = f.cbmsim</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    sTree = f.Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(sTree.GetEntries()):</div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>      sTree.GetEntry(n)</div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>      <span class="keywordflow">for</span> v <span class="keywordflow">in</span> sTree.vetoPoint:</div>

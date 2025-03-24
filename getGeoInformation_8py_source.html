@@ -202,7 +202,7 @@ $(document).ready(function(){initNavTree('getGeoInformation_8py_source.html','')
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno"><a class="line" href="namespacegetGeoInformation.html#a85e0ef303b1302a7daaee4aa0909ef5d">   99</a></span>options = parser.parse_args()</div>
 <div class="line"><a id="l00100" name="l00100"></a><span class="lineno"><a class="line" href="namespacegetGeoInformation.html#afbac20e31f074b8d2fff6a7304ef097d">  100</a></span>fname = options.geometry</div>
 <div class="line"><a id="l00101" name="l00101"></a><span class="lineno"><a class="line" href="namespacegetGeoInformation.html#abb70257ba94da19d64ae63fb0cf09d89">  101</a></span>fgeom = ROOT.TFile.Open(fname)</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno"><a class="line" href="namespacegetGeoInformation.html#a461c48d201fa5b00a9204ee6fa6786ed">  102</a></span>fGeo = fgeom.FAIRGeom</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno"><a class="line" href="namespacegetGeoInformation.html#a461c48d201fa5b00a9204ee6fa6786ed">  102</a></span>fGeo = fgeom.Get(<span class="stringliteral">&quot;FAIRGeom&quot;</span>)</div>
 <div class="line"><a id="l00103" name="l00103"></a><span class="lineno"><a class="line" href="namespacegetGeoInformation.html#a817429de989e54975b015c0d9396b452">  103</a></span>top = fGeo.GetTopVolume()</div>
 <div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>
 <div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span> </div>

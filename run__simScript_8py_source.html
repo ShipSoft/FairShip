@@ -705,7 +705,7 @@ $(document).ready(function(){initNavTree('run__simScript_8py_source.html',''); i
 <div class="line"><a id="l00606" name="l00606"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#a2f7dff7f9fc3ae10d13c16ababb31879">  606</a></span>    nm = ff.GetName().split(<span class="stringliteral">&#39;/&#39;</span>)</div>
 <div class="line"><a id="l00607" name="l00607"></a><span class="lineno">  607</span>    <span class="keywordflow">if</span> nm[len(nm)-1] == check: fin = ff</div>
 <div class="line"><a id="l00608" name="l00608"></a><span class="lineno">  608</span> <span class="keywordflow">if</span> <span class="keywordflow">not</span> fin: fin   = ROOT.TFile.Open(outFile)</div>
-<div class="line"><a id="l00609" name="l00609"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#a7438ba4e0f241567d8e58065969d5ab5">  609</a></span> t     = fin.cbmsim</div>
+<div class="line"><a id="l00609" name="l00609"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#a7438ba4e0f241567d8e58065969d5ab5">  609</a></span> t = fin.Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
 <div class="line"><a id="l00610" name="l00610"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#a220cc43c43bf49500c5fdd5a4e9b8e44">  610</a></span> fout  = ROOT.TFile(tmpFile,<span class="stringliteral">&#39;recreate&#39;</span>)</div>
 <div class="line"><a id="l00611" name="l00611"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#a93ba36fd021df754186946c4f0364058">  611</a></span> fSink = ROOT.FairRootFileSink(fout)</div>
 <div class="line"><a id="l00612" name="l00612"></a><span class="lineno">  612</span> </div>

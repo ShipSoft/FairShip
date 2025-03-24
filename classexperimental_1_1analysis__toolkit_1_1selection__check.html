@@ -170,7 +170,7 @@ Public Attributes</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="analysis__toolkit_8py_source.html#l00016">16</a> of file <a class="el" href="analysis__toolkit_8py_source.html">analysis_toolkit.py</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   16</span>    <span class="keyword">def </span>__init__(self, geo_file):</div>
 <div class="line"><span class="lineno">   17</span>        <span class="stringliteral">&quot;&quot;&quot;Initialize the selection_check class with geometry and configuration.&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   18</span>        self.geometry_manager = geo_file.FAIRGeom</div>
+<div class="line"><span class="lineno">   18</span>        self.geometry_manager = geo_file.Get(<span class="stringliteral">&quot;FAIRGeom&quot;</span>)</div>
 <div class="line"><span class="lineno">   19</span>        unpickler = Unpickler(geo_file)</div>
 <div class="line"><span class="lineno">   20</span>        self.ship_geo = unpickler.load(<span class="stringliteral">&quot;ShipGeo&quot;</span>)</div>
 <div class="line"><span class="lineno">   21</span> </div>

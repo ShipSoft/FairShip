@@ -106,7 +106,7 @@ $(document).ready(function(){initNavTree('radio_8py_source.html',''); initResiza
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="keywordflow">for</span> x <span class="keywordflow">in</span> fs:</div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno"><a class="line" href="namespaceradio.html#aaba2c30e22cbd7e66dd5ca45122fb87c">    9</a></span>  fl = ROOT.TFile(path+x)</div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="namespaceradio.html#a21d612c97d4258591273bae6c081de92">   10</a></span>  sTree=fl.cbmsim</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="namespaceradio.html#a21d612c97d4258591273bae6c081de92">   10</a></span>  sTree = fl.Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>  ROOT.gROOT.cd()</div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>  <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(sTree.GetEntries()):</div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno"><a class="line" href="namespaceradio.html#a28c894dea59a38f01b6fefc7deb3668d">   13</a></span>    rc=sTree.GetEvent(n)</div>

@@ -209,7 +209,7 @@ Variables</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">   47</span><span class="keyword">def </span>processFile(fin,noCharm=True):</div>
 <div class="line"><span class="lineno">   48</span>    f   = ROOT.TFile.Open(os.environ[<span class="stringliteral">&#39;EOSSHIP&#39;</span>]+path+fin)</div>
 <div class="line"><span class="lineno">   49</span>    print(<span class="stringliteral">&quot;opened file &quot;</span>,fin)</div>
-<div class="line"><span class="lineno">   50</span>    sTree = f.cbmsim</div>
+<div class="line"><span class="lineno">   50</span>    sTree = f.Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
 <div class="line"><span class="lineno">   51</span>    <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(sTree.GetEntries()):</div>
 <div class="line"><span class="lineno">   52</span>      sTree.GetEntry(n)</div>
 <div class="line"><span class="lineno">   53</span>      <span class="keywordflow">for</span> v <span class="keywordflow">in</span> sTree.vetoPoint:</div>

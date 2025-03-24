@@ -203,7 +203,7 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">  182</span> Nall = 0</div>
 <div class="line"><span class="lineno">  183</span> <span class="keywordflow">for</span> x <span class="keywordflow">in</span> allFiles:</div>
 <div class="line"><span class="lineno">  184</span>  f=ROOT.TFile.Open(pp+allFiles[x])</div>
-<div class="line"><span class="lineno">  185</span>  nEntries[x]=f.cbmsim.GetEntries()</div>
+<div class="line"><span class="lineno">  185</span>  nEntries[x]=f.Get(<span class="stringliteral">&quot;cbmsim&quot;</span>).GetEntries()</div>
 <div class="line"><span class="lineno">  186</span>  Nall += nEntries[x]</div>
 <div class="line"><span class="lineno">  187</span> nCharm = 0</div>
 <div class="line"><span class="lineno">  188</span> nDone  = 0</div>
@@ -217,7 +217,7 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">  196</span>  os.system(<span class="stringliteral">&#39;hadd -f tmp.root &#39;</span>+ allFiles[flavour] + <span class="stringliteral">&#39; &#39;</span>+ allFiles[k] )</div>
 <div class="line"><span class="lineno">  197</span>  os.system(<span class="stringliteral">&#39;rm &#39;</span>+allFiles[k])</div>
 <div class="line"><span class="lineno">  198</span>  f = ROOT.TFile(<span class="stringliteral">&#39;tmp.root&#39;</span>)</div>
-<div class="line"><span class="lineno">  199</span>  sTree = f.cbmsim</div>
+<div class="line"><span class="lineno">  199</span>  sTree = f.Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
 <div class="line"><span class="lineno">  200</span>  sTree.LoadBaskets(30000000000)</div>
 <div class="line"><span class="lineno">  201</span>  <span class="keywordflow">if</span> flavour==<span class="stringliteral">&quot;charm&quot;</span>:</div>
 <div class="line"><span class="lineno">  202</span>   outFile = tmp.replace(<span class="stringliteral">&#39;cXX&#39;</span>,<span class="stringliteral">&#39;withCharm&#39;</span>+k)</div>
@@ -379,7 +379,7 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">   65</span>     xSecboost+=float(txt[i+1:].split(<span class="stringliteral">&#39; &#39;</span>)[0])</div>
 <div class="line"><span class="lineno">   66</span> diMuboost=diMuboost/float(ncycles)</div>
 <div class="line"><span class="lineno">   67</span> xSecboost=xSecboost/float(ncycles)</div>
-<div class="line"><span class="lineno">   68</span> print(<span class="stringliteral">&quot;POT = &quot;</span>,nTot,<span class="stringliteral">&quot; number of events:&quot;</span>,f.cbmsim.GetEntries(),<span class="stringliteral">&#39; diMuboost=&#39;</span>,diMuboost,<span class="stringliteral">&#39; XsecBoost=&#39;</span>,xSecboost)</div>
+<div class="line"><span class="lineno">   68</span> print(<span class="stringliteral">&quot;POT = &quot;</span> ,nTot, <span class="stringliteral">&quot; number of events:&quot;</span>, f.Get(<span class="stringliteral">&quot;cbmsim&quot;</span>).GetEntries(), <span class="stringliteral">&#39; diMuboost=&#39;</span>, diMuboost, <span class="stringliteral">&#39; XsecBoost=&#39;</span>, xSecboost)</div>
 <div class="line"><span class="lineno">   69</span> <span class="keywordflow">return</span> nTot,diMuboost,xSecboost</div>
 <div class="line"><span class="lineno">   70</span> </div>
 </div><!-- fragment -->
@@ -415,7 +415,7 @@ Variables</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">   80</span><span class="keyword">def </span>processFile(fin,noCharm=True):</div>
 <div class="line"><span class="lineno">   81</span>    f   = ROOT.TFile.Open(os.environ[<span class="stringliteral">&#39;EOSSHIP&#39;</span>]+path+fin)</div>
 <div class="line"><span class="lineno">   82</span>    nPot,diMuboost,xSecboost  = PoT(f)</div>
-<div class="line"><span class="lineno">   83</span>    sTree = f.cbmsim</div>
+<div class="line"><span class="lineno">   83</span>    sTree = f.Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
 <div class="line"><span class="lineno">   84</span>    outFile = fin.replace(<span class="stringliteral">&quot;.root&quot;</span>,<span class="stringliteral">&quot;_mu.root&quot;</span>)</div>
 <div class="line"><span class="lineno">   85</span>    fmu = ROOT.TFile(outFile,<span class="stringliteral">&quot;recreate&quot;</span>)</div>
 <div class="line"><span class="lineno">   86</span>    newTree = sTree.CloneTree(0)</div>
@@ -564,7 +564,7 @@ Variables</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html#l00251">251</a> of file <a class="el" href="extractMuonsAndUpdateWeight_8py_source.html">extractMuonsAndUpdateWeight.py</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  251</span><span class="keyword">def </span>testRatio(fname):</div>
 <div class="line"><span class="lineno">  252</span> f=ROOT.TFile.Open(os.environ[<span class="stringliteral">&#39;EOSSHIP&#39;</span>]+path+fname)</div>
-<div class="line"><span class="lineno">  253</span> sTree = f.cbmsim</div>
+<div class="line"><span class="lineno">  253</span> sTree = f.Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
 <div class="line"><span class="lineno">  254</span> Nall = sTree.GetEntries()</div>
 <div class="line"><span class="lineno">  255</span> charm = 0</div>
 <div class="line"><span class="lineno">  256</span> <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(Nall):</div>

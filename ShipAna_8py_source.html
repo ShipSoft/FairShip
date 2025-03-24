@@ -133,7 +133,7 @@ $(document).ready(function(){initNavTree('ShipAna_8py_source.html',''); initResi
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    sTree.AddFile(x)</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="keywordflow">else</span>:</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="namespaceShipAna.html#a5fe42ce719ea428b2332fb77324aea4f">   36</a></span>  f = ROOT.TFile(options.inputFile)</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  sTree = f.cbmsim</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  sTree = f.Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="comment"># try to figure out which ecal geo to load</span></div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="keywordflow">if</span> <span class="keywordflow">not</span> options.geoFile:</div>
@@ -163,7 +163,7 @@ $(document).ready(function(){initNavTree('ShipAna_8py_source.html',''); initResi
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="keywordflow">else</span>:</div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  print(<span class="stringliteral">&quot;no fieldmap given, geofile too old, not anymore support&quot;</span>)</div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  exit(-1)</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno"><a class="line" href="namespaceShipAna.html#a7c6176c9bd251d2e60a14b3cfd89b883">   67</a></span>sGeo   = fgeo.FAIRGeom</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno"><a class="line" href="namespaceShipAna.html#a7c6176c9bd251d2e60a14b3cfd89b883">   67</a></span>sGeo = fgeo.Get(<span class="stringliteral">&quot;FAIRGeom&quot;</span>)</div>
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno"><a class="line" href="namespaceShipAna.html#a5292f193841fd0be9f2450a1eb78d2b0">   68</a></span>geoMat =  ROOT.genfit.TGeoMaterialInterface()</div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>ROOT.genfit.MaterialEffects.getInstance().init(geoMat)</div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno"><a class="line" href="namespaceShipAna.html#a1f85359f38d72674b0a60c4e12683bfe">   70</a></span>bfield = ROOT.genfit.FairShipFields()</div>

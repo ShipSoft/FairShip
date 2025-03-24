@@ -423,7 +423,7 @@ $(document).ready(function(){initNavTree('ana__ShipMuon_8py_source.html',''); in
 <div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span><span class="keywordflow">for</span> f <span class="keywordflow">in</span> os.listdir(testdir):</div>
 <div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>  <span class="keywordflow">if</span> <span class="keywordflow">not</span> f.find(<span class="stringliteral">&quot;geofile_full&quot;</span>)&lt;0:</div>
 <div class="line"><a id="l00332" name="l00332"></a><span class="lineno"><a class="line" href="namespaceana__ShipMuon.html#ae5b4546b0f4f97e62e5801351d43b925">  332</a></span>     fgeo = ROOT.TFile(testdir+<span class="stringliteral">&#39;/&#39;</span>+f)</div>
-<div class="line"><a id="l00333" name="l00333"></a><span class="lineno"><a class="line" href="namespaceana__ShipMuon.html#a4c0c13295577eadb3dce5cadf4f0e194">  333</a></span>     sGeo = fgeo.FAIRGeom</div>
+<div class="line"><a id="l00333" name="l00333"></a><span class="lineno"><a class="line" href="namespaceana__ShipMuon.html#a4c0c13295577eadb3dce5cadf4f0e194">  333</a></span>     sGeo = fgeo.Get(<span class="stringliteral">&quot;FAIRGeom&quot;</span>)</div>
 <div class="line"><a id="l00334" name="l00334"></a><span class="lineno"><a class="line" href="namespaceana__ShipMuon.html#a52725c8bc8e77006c51ea21a7ae18639">  334</a></span>     inputFile = f.replace(<span class="stringliteral">&quot;geofile_full&quot;</span>,<span class="stringliteral">&quot;ship&quot;</span>)</div>
 <div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span>     <span class="keywordflow">break</span></div>
 <div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span><span class="comment"># try to extract from input file name</span></div>
@@ -731,7 +731,7 @@ $(document).ready(function(){initNavTree('ana__ShipMuon_8py_source.html',''); in
 <div class="foldopen" id="foldopen00624" data-start="" data-end="">
 <div class="line"><a id="l00624" name="l00624"></a><span class="lineno"><a class="line" href="namespaceana__ShipMuon.html#a43898209f393d50d98938664b2348333">  624</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceana__ShipMuon.html#a43898209f393d50d98938664b2348333">executeOneFile</a>(fn,output=None,pid=None):</div>
 <div class="line"><a id="l00625" name="l00625"></a><span class="lineno">  625</span>  f     = ROOT.TFile.Open(fn)</div>
-<div class="line"><a id="l00626" name="l00626"></a><span class="lineno">  626</span>  sTree = f.cbmsim</div>
+<div class="line"><a id="l00626" name="l00626"></a><span class="lineno">  626</span>  sTree = f.Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
 <div class="line"><a id="l00627" name="l00627"></a><span class="lineno">  627</span>  nEvents = sTree.GetEntries()</div>
 <div class="line"><a id="l00628" name="l00628"></a><span class="lineno">  628</span>  <span class="keywordflow">if</span> sTree.GetBranch(<span class="stringliteral">&quot;GeoTracks&quot;</span>): sTree.SetBranchStatus(<span class="stringliteral">&quot;GeoTracks&quot;</span>,0)</div>
 <div class="line"><a id="l00629" name="l00629"></a><span class="lineno">  629</span>  sTree.GetEntry(0)</div>
@@ -926,7 +926,7 @@ $(document).ready(function(){initNavTree('ana__ShipMuon_8py_source.html',''); in
 <div class="line"><a id="l00814" name="l00814"></a><span class="lineno">  814</span>  <span class="keywordflow">if</span> <span class="keywordflow">not</span> f.FindObjectAny(<span class="stringliteral">&#39;cbmsim&#39;</span>):</div>
 <div class="line"><a id="l00815" name="l00815"></a><span class="lineno">  815</span>   print(<span class="stringliteral">&#39;skip file &#39;</span>,f.GetName())</div>
 <div class="line"><a id="l00816" name="l00816"></a><span class="lineno">  816</span>   <span class="keywordflow">continue</span></div>
-<div class="line"><a id="l00817" name="l00817"></a><span class="lineno">  817</span>  sTree = f.cbmsim</div>
+<div class="line"><a id="l00817" name="l00817"></a><span class="lineno">  817</span>  sTree = f.Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
 <div class="line"><a id="l00818" name="l00818"></a><span class="lineno">  818</span>  sTree.GetEvent(0)</div>
 <div class="line"><a id="l00819" name="l00819"></a><span class="lineno">  819</span>  <span class="keywordflow">if</span> sTree.GetBranch(<span class="stringliteral">&quot;GeoTracks&quot;</span>): sTree.SetBranchStatus(<span class="stringliteral">&quot;GeoTracks&quot;</span>,0)</div>
 <div class="line"><a id="l00820" name="l00820"></a><span class="lineno">  820</span>  nEvents = sTree.GetEntries()</div>
@@ -966,7 +966,7 @@ $(document).ready(function(){initNavTree('ana__ShipMuon_8py_source.html',''); in
 <div class="line"><a id="l00852" name="l00852"></a><span class="lineno">  852</span>  fout = ROOT.TFile(<span class="stringliteral">&#39;muDISVetoCounter.root&#39;</span>,<span class="stringliteral">&#39;recreate&#39;</span>)</div>
 <div class="line"><a id="l00853" name="l00853"></a><span class="lineno">  853</span>  h[<span class="stringliteral">&#39;ntuple&#39;</span>] = ROOT.TNtuple(<span class="stringliteral">&quot;muons&quot;</span>,<span class="stringliteral">&quot;muon flux VetoCounter&quot;</span>,<span class="stringliteral">&quot;id:px:py:pz:x:y:z:w&quot;</span>)</div>
 <div class="line"><a id="l00854" name="l00854"></a><span class="lineno">  854</span>  f = ROOT.TFile(fn)</div>
-<div class="line"><a id="l00855" name="l00855"></a><span class="lineno">  855</span>  sTree = f.cbmsim</div>
+<div class="line"><a id="l00855" name="l00855"></a><span class="lineno">  855</span>  sTree = f.Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
 <div class="line"><a id="l00856" name="l00856"></a><span class="lineno">  856</span>  nEvents = sTree.GetEntries()</div>
 <div class="line"><a id="l00857" name="l00857"></a><span class="lineno">  857</span>  <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(nEvents):</div>
 <div class="line"><a id="l00858" name="l00858"></a><span class="lineno">  858</span>   sTree.GetEntry(n)</div>
@@ -1005,7 +1005,7 @@ $(document).ready(function(){initNavTree('ana__ShipMuon_8py_source.html',''); in
 <div class="line"><a id="l00889" name="l00889"></a><span class="lineno">  889</span>  <span class="keywordflow">if</span> <span class="keywordflow">not</span> f.FindObjectAny(<span class="stringliteral">&#39;cbmsim&#39;</span>):</div>
 <div class="line"><a id="l00890" name="l00890"></a><span class="lineno">  890</span>   print(<span class="stringliteral">&#39;skip file &#39;</span>,f.GetName())</div>
 <div class="line"><a id="l00891" name="l00891"></a><span class="lineno">  891</span>   <span class="keywordflow">continue</span></div>
-<div class="line"><a id="l00892" name="l00892"></a><span class="lineno">  892</span>  sTree = f.cbmsim</div>
+<div class="line"><a id="l00892" name="l00892"></a><span class="lineno">  892</span>  sTree = f.Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
 <div class="line"><a id="l00893" name="l00893"></a><span class="lineno">  893</span>  nEvents = sTree.GetEntries()</div>
 <div class="line"><a id="l00894" name="l00894"></a><span class="lineno">  894</span>  ROOT.gROOT.cd()</div>
 <div class="line"><a id="l00895" name="l00895"></a><span class="lineno">  895</span>  <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(nEvents):</div>
@@ -1064,7 +1064,7 @@ $(document).ready(function(){initNavTree('ana__ShipMuon_8py_source.html',''); in
 <div class="line"><a id="l00946" name="l00946"></a><span class="lineno">  946</span>  <span class="keywordflow">if</span> <span class="keywordflow">not</span> f.FindObjectAny(<span class="stringliteral">&#39;cbmsim&#39;</span>):</div>
 <div class="line"><a id="l00947" name="l00947"></a><span class="lineno">  947</span>   print(<span class="stringliteral">&#39;skip file &#39;</span>,f.GetName())</div>
 <div class="line"><a id="l00948" name="l00948"></a><span class="lineno">  948</span>   <span class="keywordflow">continue</span></div>
-<div class="line"><a id="l00949" name="l00949"></a><span class="lineno">  949</span>  sTree = f.cbmsim</div>
+<div class="line"><a id="l00949" name="l00949"></a><span class="lineno">  949</span>  sTree = f.Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
 <div class="line"><a id="l00950" name="l00950"></a><span class="lineno">  950</span>  sTree.GetEvent(0)</div>
 <div class="line"><a id="l00951" name="l00951"></a><span class="lineno">  951</span>  <span class="keywordflow">if</span> sTree.GetBranch(<span class="stringliteral">&quot;GeoTracks&quot;</span>): sTree.SetBranchStatus(<span class="stringliteral">&quot;GeoTracks&quot;</span>,0)</div>
 <div class="line"><a id="l00952" name="l00952"></a><span class="lineno">  952</span>  nEvents = sTree.GetEntries()</div>
@@ -1102,7 +1102,7 @@ $(document).ready(function(){initNavTree('ana__ShipMuon_8py_source.html',''); in
 <div class="line"><a id="l00982" name="l00982"></a><span class="lineno">  982</span>  <span class="keywordflow">if</span> <span class="keywordflow">not</span> f.FindObjectAny(<span class="stringliteral">&#39;cbmsim&#39;</span>):</div>
 <div class="line"><a id="l00983" name="l00983"></a><span class="lineno">  983</span>   print(<span class="stringliteral">&#39;skip file &#39;</span>,f.GetName())</div>
 <div class="line"><a id="l00984" name="l00984"></a><span class="lineno">  984</span>   <span class="keywordflow">continue</span></div>
-<div class="line"><a id="l00985" name="l00985"></a><span class="lineno">  985</span>  sTree = f.cbmsim</div>
+<div class="line"><a id="l00985" name="l00985"></a><span class="lineno">  985</span>  sTree = f.Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
 <div class="line"><a id="l00986" name="l00986"></a><span class="lineno">  986</span>  nEvents = sTree.GetEntries()</div>
 <div class="line"><a id="l00987" name="l00987"></a><span class="lineno">  987</span>  raref = ROOT.TFile(fn.replace(<span class="stringliteral">&quot;.root&quot;</span>,<span class="stringliteral">&quot;_rare.root&quot;</span>),<span class="stringliteral">&quot;recreate&quot;</span>)</div>
 <div class="line"><a id="l00988" name="l00988"></a><span class="lineno">  988</span>  newTree = sTree.CloneTree(0)</div>
@@ -1139,7 +1139,7 @@ $(document).ready(function(){initNavTree('ana__ShipMuon_8py_source.html',''); in
 <div class="line"><a id="l01017" name="l01017"></a><span class="lineno"> 1017</span>  <span class="keywordflow">if</span> <span class="keywordflow">not</span> f.FindObjectAny(<span class="stringliteral">&#39;cbmsim&#39;</span>):</div>
 <div class="line"><a id="l01018" name="l01018"></a><span class="lineno"> 1018</span>   print(<span class="stringliteral">&#39;skip file &#39;</span>,f.GetName())</div>
 <div class="line"><a id="l01019" name="l01019"></a><span class="lineno"> 1019</span>   <span class="keywordflow">continue</span></div>
-<div class="line"><a id="l01020" name="l01020"></a><span class="lineno"> 1020</span>  sTree = f.cbmsim</div>
+<div class="line"><a id="l01020" name="l01020"></a><span class="lineno"> 1020</span>  sTree = f.Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
 <div class="line"><a id="l01021" name="l01021"></a><span class="lineno"> 1021</span>  nEvents = sTree.GetEntries()</div>
 <div class="line"><a id="l01022" name="l01022"></a><span class="lineno"> 1022</span>  raref = ROOT.TFile(fn.replace(<span class="stringliteral">&quot;.root&quot;</span>,<span class="stringliteral">&quot;_clby.root&quot;</span>),<span class="stringliteral">&quot;recreate&quot;</span>)</div>
 <div class="line"><a id="l01023" name="l01023"></a><span class="lineno"> 1023</span>  newTree = sTree.CloneTree(0)</div>
@@ -1233,7 +1233,7 @@ $(document).ready(function(){initNavTree('ana__ShipMuon_8py_source.html',''); in
 </div>
 <div class="foldopen" id="foldopen01099" data-start="" data-end="">
 <div class="line"><a id="l01099" name="l01099"></a><span class="lineno"><a class="line" href="namespaceana__ShipMuon.html#a690095c754cbaae2670fd1b2de6f26df"> 1099</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceana__ShipMuon.html#a690095c754cbaae2670fd1b2de6f26df">eventsWithStrawPoints</a>(i):</div>
-<div class="line"><a id="l01100" name="l01100"></a><span class="lineno"> 1100</span> sTree = fchain[i].cbmsim</div>
+<div class="line"><a id="l01100" name="l01100"></a><span class="lineno"> 1100</span> sTree = fchain[i].Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
 <div class="line"><a id="l01101" name="l01101"></a><span class="lineno"> 1101</span> mom = ROOT.TVector3()</div>
 <div class="line"><a id="l01102" name="l01102"></a><span class="lineno"> 1102</span> <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(sTree.GetEntries()):</div>
 <div class="line"><a id="l01103" name="l01103"></a><span class="lineno"> 1103</span>   sTree.GetEntry(i)</div>
@@ -1250,7 +1250,7 @@ $(document).ready(function(){initNavTree('ana__ShipMuon_8py_source.html',''); in
 </div>
 <div class="foldopen" id="foldopen01114" data-start="" data-end="">
 <div class="line"><a id="l01114" name="l01114"></a><span class="lineno"><a class="line" href="namespaceana__ShipMuon.html#af1c35aa880b1acd4535e099f90fda11b"> 1114</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceana__ShipMuon.html#af1c35aa880b1acd4535e099f90fda11b">eventsWithEntryPoints</a>(i):</div>
-<div class="line"><a id="l01115" name="l01115"></a><span class="lineno"> 1115</span> sTree = fchain[i].cbmsim</div>
+<div class="line"><a id="l01115" name="l01115"></a><span class="lineno"> 1115</span> sTree = fchain[i].Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
 <div class="line"><a id="l01116" name="l01116"></a><span class="lineno"> 1116</span> mom = ROOT.TVector3()</div>
 <div class="line"><a id="l01117" name="l01117"></a><span class="lineno"> 1117</span> <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(sTree.GetEntries()):</div>
 <div class="line"><a id="l01118" name="l01118"></a><span class="lineno"> 1118</span>   sTree.GetEntry(i)</div>
