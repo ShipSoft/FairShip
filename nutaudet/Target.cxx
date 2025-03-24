@@ -509,7 +509,7 @@ void Target::ConstructGeometry()
     }
 
 
-  //in fDesign 4 the emulsion target is not surrounded by a magnet => no magnetic field inside
+  // In fDesign 4 the emulsion target is not surrounded by a magnet => no magnetic field inside
   //In the no Magnetic field option, no CES is needed => only brick walls + TT
   if(fDesign == 4)
     {
