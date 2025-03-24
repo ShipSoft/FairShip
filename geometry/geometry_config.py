@@ -430,23 +430,23 @@ with ConfigRegistry.register_config("basic") as c:
     c.EmuMagnet = AttrDict(z=0*u.cm)
     c.EmuMagnet.MagneticField = False #activates the magnetic field
     c.EmuMagnet.GapDown = 25*u.cm
-    if (nuTauTargetDesign == 3) :
+    if nuTauTargetDesign == 3:
         c.EmuMagnet.Design = nuTauTargetDesign
         c.EmuMagnet.MagneticField = True
         c.EmuMagnet.B=1.25*u.tesla
         scale=1.
-        c.EmuMagnet.WithConstField = True  #with False it will load the field map from files/nuTauDetField.root!
-        c.EmuMagnet.X = scale*2.2*u.m
-        c.EmuMagnet.Y = scale*4.0*u.m
-        c.EmuMagnet.Z = 7.2*u.m
-        c.EmuMagnet.BaseX = scale*c.EmuMagnet.X
-        c.EmuMagnet.BaseY = scale*0.7*u.m
+        c.EmuMagnet.WithConstField = True  # with False it will load the field map from files/nuTauDetField.root!
+        c.EmuMagnet.X = scale * 2.2 * u.m
+        c.EmuMagnet.Y = scale * 4.0 * u.m
+        c.EmuMagnet.Z = 7.2 * u.m
+        c.EmuMagnet.BaseX = scale * c.EmuMagnet.X
+        c.EmuMagnet.BaseY = scale * 0.7 * u.m
         c.EmuMagnet.BaseZ = scale*c.EmuMagnet.Z
         c.EmuMagnet.GapDown = 25*u.cm
         c.EmuMagnet.GapUp = 27*u.cm
         #c.EmuMagnet.ColX =scale*25*u.cm
         c.EmuMagnet.ColX = scale*60*u.cm
-        c.EmuMagnet.ColY = scale*c.EmuMagnet.Y - 2 *scale * c.EmuMagnet.BaseY #avoid overlapping between bases and columns
+        c.EmuMagnet.ColY = scale * c.EmuMagnet.Y - 2 *scale * c.EmuMagnet.BaseY  # avoid overlapping between bases and columns
         c.EmuMagnet.ColZ = scale*c.EmuMagnet.Z
         c.EmuMagnet.CutLength = scale * 45*u.cm
         c.EmuMagnet.CutHeight = scale * 144*u.cm
@@ -527,7 +527,7 @@ with ConfigRegistry.register_config("basic") as c:
 
         c.tauMudet.XGas =  c.tauMudet.XRpc
         c.tauMudet.YGas =  c.tauMudet.YRpc
-        c.tauMudet.ZGas = 1*u.mm
+        c.tauMudet.ZGas = 1 * u.mm
         c.tauMudet.XStrip =  c.tauMudet.XRpc
         c.tauMudet.YStrip =  c.tauMudet.YRpc
         c.tauMudet.ZStrip = 0.02*u.mm
@@ -679,12 +679,12 @@ with ConfigRegistry.register_config("basic") as c:
         c.NuTauTarget.CESW = 2 * c.NuTauTarget.LayerCESW + c.NuTauTarget.EPlW + c.NuTauTarget.CESPack
         c.NuTauTarget.CellW = c.NuTauTarget.BrZ + c.NuTauTarget.CESW
 
-        c.NuTauTarget.zdim = c.NuTauTarget.wall* c.NuTauTarget.CellW + c.NuTauTarget.wall*c.NuTauTT.TTZ
-        c.NuTauTarget.zC = c.EmuMagnet.zC - c.NuTauTarget.zdim/2.
-        c.tauHPT.TotalDZ = (c.EmuMagnet.Z - c.EmuMagnet.Height1) - c.NuTauTarget.zdim # MagRegion-Target
+        c.NuTauTarget.zdim = c.NuTauTarget.wall * c.NuTauTarget.CellW + c.NuTauTarget.wall * c.NuTauTT.TTZ
+        c.NuTauTarget.zC = c.EmuMagnet.zC - c.NuTauTarget.zdim / 2.
+        c.tauHPT.TotalDZ = (c.EmuMagnet.Z - c.EmuMagnet.Height1) - c.NuTauTarget.zdim  # MagRegion - Target
         c.tauHPT.distHPT = (c.tauHPT.TotalDZ - c.tauHPT.nHPT * c.tauHPT.DZ) / (c.tauHPT.nHPT - 1)
 
-    if nuTauTargetDesign == 4:  #NEW with NO magnet
+    if nuTauTargetDesign == 4:  # NEW with NO magnet
         c.NuTauTarget.RohG = 0 * u.cm
         c.NuTauTarget.LayerCESW =0 *u.cm
         c.NuTauTarget.CESPack = 0* u.cm
@@ -697,7 +697,7 @@ with ConfigRegistry.register_config("basic") as c:
 
     c.NuTauTarget.BaseX =  c.NuTauTarget.xdim + 20*u.cm
     c.NuTauTarget.BaseY = 20*u.cm
-    if nuTauTargetDesign==3:
+    if nuTauTargetDesign == 3:
      c.NuTauTarget.BaseZ = c.NuTauTarget.zdim +40*u.cm
     if nuTauTargetDesign==4:
      c.NuTauTarget.BaseZ = c.NuTauTarget.zdim +10*u.cm

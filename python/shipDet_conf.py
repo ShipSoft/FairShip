@@ -548,7 +548,7 @@ def configure(run, ship_geo):
             NuTauTarget.SetCellParam(ship_geo.NuTauTarget.CellW)
             if ship_geo.nuTauTargetDesign ==3:
                 NuTauTarget.SetMagneticField(ship_geo.EmuMagnet.B)
-            if ship_geo.nuTauTargetDesign ==4:
+            if ship_geo.nuTauTargetDesign == 4:
                 NuTauTarget.SetPillarDimension(
                     ship_geo.NuTauTarget.PillarX,
                     ship_geo.NuTauTarget.PillarY,
