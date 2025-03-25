@@ -152,3 +152,9 @@ jobs:
           eval $(alienv load FairShip/latest)
           python $FAIRSHIP/macro/run_simScript.py --test -n 0 --debug 2 --${{ matrix.vessel_option }} --${{ matrix.SND_option }} | tee log
           ! grep ovlp log
+
+      - name: Geo information
+        run: |
+          source /cvmfs/ship.cern.ch/$version/setUp.sh
+          eval $(alienv load FairShip/latest)
+          python $FAIRSHIP/macro/getGeoInformation.py --geometry geofile_full.conical.Pythia8-TGeant4.root --level 2
