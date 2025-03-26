@@ -635,6 +635,7 @@ if simEngine == "MuonBack":
  branches.Add(ROOT.TObjString('smuonPoint'))
  branches.Add(ROOT.TObjString('TimeDetPoint'))
  branches.Add(ROOT.TObjString('MCEventHeader'))
+ branches.Add(ROOT.TObjString('UpstreamTaggerPoint'))
  branches.Add(ROOT.TObjString('sGeoTracks'))
 
  sTree.AutoSave()

@@ -46,6 +46,7 @@ it in future.
 * Change max x of stereo hits to match straw length
 * Get rid of straw diameter dependency in scale factor
 * Assume all tracks are muons during track fit (avoid using MC truth)
+* Change of UBT geometry, remove implementation of RPC and setting a new scoring plane of 4×6 m
 
 ### Removed
 
