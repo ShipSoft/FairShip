@@ -196,4 +196,5 @@ jobs:
           source /cvmfs/ship.cern.ch/$version/setUp.sh
           eval $(alienv load FairShip/latest)
           mkdir test_folder
-          python $FAIRSHIP/macro/run_simScript.py --evtcalc -n 100 -o test_folder -f /cvmfs/ship.cern.ch/test_data/HNL-e_test_data.root
+          cp /cvmfs/ship.cern.ch/test_data/HNL-e_test_data.root test_folder/
+          python $FAIRSHIP/macro/run_simScript.py --evtcalc -n 100 -o test_folder -f test_folder/HNL-e_test_data.root
