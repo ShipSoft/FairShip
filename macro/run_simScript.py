@@ -480,6 +480,7 @@ if simEngine == "MuonBack":
  if options.followMuon :
     options.fastMuon = True
     modules['Veto'].SetFollowMuon()
+    modules['UpstreamTagger'].SetFollowMuon()
  if options.fastMuon :    modules['Veto'].SetFastMuon()
 
  # optional, boost gamma2muon conversion
@@ -629,16 +630,10 @@ if simEngine == "MuonBack":
  branches.SetName('BranchList')
  branches.Add(ROOT.TObjString('MCTrack'))
  branches.Add(ROOT.TObjString('vetoPoint'))
- branches.Add(ROOT.TObjString('ShipRpcPoint'))
- branches.Add(ROOT.TObjString('TargetPoint'))
- branches.Add(ROOT.TObjString('TTPoint'))
- branches.Add(ROOT.TObjString('ScoringPoint'))
- branches.Add(ROOT.TObjString('strawtubesPoint'))
- branches.Add(ROOT.TObjString('EcalPoint'))
- branches.Add(ROOT.TObjString('sEcalPointLite'))
  branches.Add(ROOT.TObjString('smuonPoint'))
  branches.Add(ROOT.TObjString('TimeDetPoint'))
  branches.Add(ROOT.TObjString('MCEventHeader'))
+ branches.Add(ROOT.TObjString('UpstreamTaggerPoint'))
  branches.Add(ROOT.TObjString('sGeoTracks'))
 
  sTree.AutoSave()
