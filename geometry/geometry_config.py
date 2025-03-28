@@ -11,14 +11,25 @@ from ShipGeoConfig import AttrDict, ConfigRegistry
 # strawOpt       = 0  # 0=simplistic tracking stations defined in veto.cxx  1=detailed strawtube design 4=sophisticated straw tube design, horizontal wires (default) 10=2cm straw diameter for 2018 layout
 # tankDesign = 5 #  4=TP elliptical tank design, 5 = optimized conical rectangular design, 6=5 without segment-1
 shield_db = {
-    'combi': [ 70.  , 170.  , 208.  , 207.  , 281.  , 172.82, 212.54, 168.64,
-    40.  ,  40.  , 150.  , 150.  ,   2.  ,   2.  ,  80.  ,  80.  ,
-    150.  , 150.  ,   2.  ,   2.  ,  72.  ,  51.  ,  29.  ,  46.  ,
-    10.  ,   7.  ,  54.  ,  38.  ,  46.  , 192.  ,  14.  ,   9.  ,
-    10.  ,  31.  ,  35.  ,  31.  ,  51.  ,  11.  ,   3.  ,  32.  ,
-    54.  ,  24.  ,   8.  ,   8.  ,  22.  ,  32.  , 209.  ,  35.  ,
-    8.  ,  13.  ,  33.  ,  77.  ,  85.  , 241.  ,   9.  ,  26.  ],
-    'sc_v6': [70,170,0,353.078,125.083,184.834,150.193,186.812,40,40,150,150,2,2,80,80,150,150,2,2,72,51,29,46,10,7,45.6888,45.6888,22.1839,22.1839,27.0063,16.2448,10,31,35,31,51,11,24.7961,48.7639,8,104.732,15.7991,16.7793,3,100,192,192,2,4.8004,3,100,8,172.729,46.8285,2]
+            "combi": [  0.0 , 231.0 , 208.0 , 207.0 , 281.0 , 172.82 , 212.54 , 168.64 ,
+                    0 ,      0 ,     0 ,      0,     0 ,     0 ,
+                    50.0 ,   50.0 , 119.0 , 119.0 ,   2.0 ,   2.0 ,
+                    72.0 ,  51.0 ,  29.0 ,  46.0 ,  10.0 ,   7.0 ,
+                    54.0 ,  38.0 ,  46.0 , 162.0 ,  14.0 ,   9.0 ,
+                    10.0 ,  31.0 ,  35.0 ,  31.0 ,  51.0 ,  11.0 ,
+                    3.0 ,  32.0 ,  54.0 ,  24.0 ,   8.0 ,   8.0 ,
+                    22.0 ,  32.0 , 209.0 ,  35.0 ,   8.0 ,  13.0 ,
+                    33.0 ,  77.0 ,  85.0 , 241.0 ,   9.0 ,  26.0 ],
+
+            "sc_v6": [  0 , 231.0 ,   0.0 , 353.1 , 125.1 , 184.8 , 150.2 , 186.8 ,
+                       0 ,      0 ,     0 ,      0,     0 ,     0 ,
+                    50.0 ,   50.0 , 119.0 , 119.0 ,   2.0 ,   2.0 ,
+                    72.0 ,   51.0 ,  29.0 ,  46.0 ,  10.0 ,   7.0 ,
+                    45.7 ,   45.7 ,  22.2 ,  22.2 ,  27.0 ,  16.3 ,
+                    10.0 ,   31.0 ,  35.0 ,  31.0 ,  51.0 ,  11.0 ,
+                    24.8 ,   48.8 ,   8.0 , 104.8 ,  15.8 ,  16.8 ,
+                     3.0 ,  100.0 , 192.0 , 192.0 ,   2.0 ,   4.8 ,
+                     3.0 ,  100.0 ,   8.0 , 172.7 ,  46.8 , 2.0 ]
 }
 if "muShieldDesign" not in globals():
     muShieldDesign = 7
@@ -52,8 +63,6 @@ if "HcalGeoFile" not in globals():
         HcalGeoFile = "hcal.geo"
 if "muShieldStepGeo" not in globals():
     muShieldStepGeo = False
-if "muShieldWithCobaltMagnet" not in globals():
-    muShieldWithCobaltMagnet = 0
 if "SC_mag" not in globals():
     SC_mag = False
 if "shieldName" not in globals():
@@ -66,8 +75,12 @@ with ConfigRegistry.register_config("basic") as c:
     c.DecayVolumeMedium = DecayVolumeMedium
     c.SND = SND
 
-    c.SC_mag = SC_mag
     c.shieldName = shieldName
+    if shieldName == "sc_v6":
+        c.SC_mag = True
+    else:
+        c.SC_mag = False
+
     # global muShieldDesign, targetOpt, strawDesign, Yheight
     c.Yheight = Yheight*u.m
     # decision by the SP
