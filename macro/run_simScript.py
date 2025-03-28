@@ -219,7 +219,7 @@ shipRoot_conf.configure(0)     # load basic libraries, prepare atexit for python
 # - targetOpt      = 5  # 0=solid   >0 sliced, 5: 5 pieces of tungsten, 4 H20 slits, 17: Mo + W +H2O (default)
 #   nuTauTargetDesign = 0 # 0 = TP, 1 = NEW with magnet, 2 = NEW without magnet, 3 = 2018 design
 ship_geo = ConfigRegistry.loadpy(
-     "$FAIRSHIP/geometry/geometry_config.py",
+     "$FAIRSHIP/geometry/geometry_config_noSND.py",
      Yheight=options.dy,
      tankDesign=options.dv,
      muShieldDesign=options.ds,
@@ -389,6 +389,8 @@ if simEngine == "Nuage":
  primGen.SetTarget(0., 0.)
  Nuagegen = ROOT.NuageGenerator()
  Nuagegen.EnableExternalDecayer(1) #with 0 external decayer is disable, 1 is enabled
+
+ #CAMM - This is broken now, need info from dedicated SND geo...
  print('Nuage position info input=',ship_geo.EmuMagnet.zC-ship_geo.NuTauTarget.zdim, ship_geo.EmuMagnet.zC+ship_geo.NuTauTarget.zdim)
  #--------------------------------
  #to Generate neutrino interactions in the whole neutrino target
@@ -413,6 +415,7 @@ if simEngine == "Nuage":
  options.nEvents = min(options.nEvents,Nuagegen.GetNevents())
  run.SetPythiaDecayer("DecayConfigNuAge.C")
  print('Generate ',options.nEvents,' with Nuage input', ' first event',options.firstEvent)
+ #-CAMM end broken part
 # -----Neutrino Background------------------------
 if simEngine == "Genie":
 # Genie
