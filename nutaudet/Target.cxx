@@ -317,21 +317,21 @@ void Target::ConstructGeometry()
   TGeoVolume *volTarget = new TGeoVolume("volTarget",TargetBox, air);
 
   // In fDesign 3 the emulsion target is inserted within a magnet
-  if(fDesign==3)
+  if(fDesign == 3)
     {
       TGeoVolume *MagnetVol = nullptr;
 
       //magnetic field in target
       TGeoUniformMagField *magField2 = new TGeoUniformMagField();
-	    magField2->SetFieldValue(fField,0,0.);
-	    MagnetVol=gGeoManager->GetVolume("NudetMagnet");
+      magField2->SetFieldValue(fField,0,0.);
+      MagnetVol=gGeoManager->GetVolume("NudetMagnet");
 
 
       //Definition of the target box containing emulsion bricks + CES + target trackers (TT)
       volTarget->SetVisibility(1);
       volTarget->SetVisDaughters(1);
       TGeoVolume *volMagRegion=gGeoManager->GetVolume("volMagRegion");
-      Double_t ZDimMagnetizedRegion = ((TGeoBBox*) volMagRegion->GetShape())->GetDZ() * 2.; //n.d.r. DZ is the semidimension
+      Double_t ZDimMagnetizedRegion = (dynamic_cast<TGeoBBox*> (volMagRegion->GetShape()))->GetDZ() * 2.; //n.d.r. DZ is the semidimension
       for (int i = 0; i < fNTarget; i++){
         volMagRegion->AddNode(volTarget,i+1,new TGeoTranslation(0,0, -ZDimMagnetizedRegion/2 + ZDimension/2. + i*(ZDimension + 3 * fHpTDZ + 2* fHpTDistance)));
       }
