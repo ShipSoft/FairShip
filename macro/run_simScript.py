@@ -210,7 +210,7 @@ ROOT.gRandom.SetSeed(options.theSeed)  # this should be propagated via ROOT to P
 shipRoot_conf.configure(0)     # load basic libraries, prepare atexit for python
 # - muShieldDesign = 7  # 7 = short design+magnetized hadron absorber
 # - targetOpt      = 5  # 0=solid   >0 sliced, 5: 5 pieces of tungsten, 4 H20 slits, 17: Mo + W +H2O (default)
-#   nuTauTargetDesign = 3 #3 = 2018 design
+#   nuTauTargetDesign = 3 #3 = 2018 design, 4 = not magnetized target + spectrometer
 ship_geo = ConfigRegistry.loadpy(
      "$FAIRSHIP/geometry/geometry_config.py",
      Yheight=options.dy,
