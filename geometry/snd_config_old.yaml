@@ -63,5 +63,3 @@ nuTauTT:
     scifimat_z: 0.145 # u.cm   # Scintillating fiber mat
     support_z: 1.355 # u.cm     # More space for support (total TTZ 5 cm)
     honeycomb_z: 2 # u.cm      # Airex (or Nomex)
-
-

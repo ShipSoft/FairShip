@@ -431,8 +431,8 @@ with ConfigRegistry.register_config("basic") as c:
     c.tauMudet = AttrDict(z=0*u.cm)
     c.tauMudet.Ztot = 3 * u.m #space allocated to Muon spectrometer
     c.tauMudet.zMudetC = c.Chamber1.z -c.chambers.Tub1length - c.tauMudet.Ztot/2 -31*u.cm
-    
-    
+
+
     #Upstream Tagger
     UBT_x_crop = 113.4 * u.cm
     c.UpstreamTagger = AttrDict(z=0)
