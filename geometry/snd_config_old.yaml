@@ -1,0 +1,65 @@
+# Configuration of SND (old version ported to yaml) for FairShip
+
+# Parameters for tau muon detector
+tauMu:
+    z: 0
+    XRpc: 80 # cm
+    YRpc: 140 # cm
+    ZRpc: 8 # cm
+    # magnetized region
+    XRyoke: 30 # cm
+    YRyoke: 25 # cm
+    CoilH: 23 # cm
+    CoilW: 80 # same as XRpc
+    GapM: 20 # cm # magnetized region length, gap between sepctrometer planes
+    B: 1.0 # tesla # magnetic field is back in MuFilter!
+
+# tau Bricks
+
+nuTarget:
+    z: 0
+    Design: 4
+    nuTargetPassive: true
+    SingleEmFilm: false
+    # space for the structure that holds the brick
+    Ydist: 0.0 # *u.cm
+    EmTh: 0.0070 # u.cm
+    PBTh: 0.0175 # u.cm
+    LeadTh: 0.1 # u.cm
+    # EPlW: 2* c.NuTauTarget.EmTh + c.NuTauTarget.PBTh
+    # AllPW: c.NuTauTarget.LeadTh + c.NuTauTarget.EPlW
+
+    row: 2
+    col: 2
+    wall: 17
+    n_plates: 59
+    EmX: 20. # u.cm
+    EmY: 20. # u.cm
+    BrPackX: 0.1 # u.cm
+    BrPackY: 0.1 # u.cm
+    BrPackZ: 2.21 # u.cm
+
+    RohG: 0 # u.cm
+    LayerCESW: 0 # u.cm
+    CESPack: 0 # u.cm
+    CESW: 0 # u.cm
+    # CellW: c.NuTauTarget.BrZ
+
+    # BaseX:  c.NuTauTarget.xdim + 20 # u.cm
+    BaseY: 20 # u.cm
+    # BaseZ: c.NuTauTarget.zdim +10 # u.cm
+
+    PillarX: 50. # cm
+    PillarZ: 50. # cm
+
+ #TargetTrackers!
+
+nuTauTT:
+    z: 0 # cm
+    design: 4
+    n_hor_planes: 4
+    n_vert_planes: 4 # now same number, walls are squared
+    scifimat_width: 13.06 # u.cm # old value 13.045
+    scifimat_z: 0.145 # u.cm   # Scintillating fiber mat
+    support_z: 1.355 # u.cm     # More space for support (total TTZ 5 cm)
+    honeycomb_z: 2 # u.cm      # Airex (or Nomex)
