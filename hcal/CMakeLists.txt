@@ -33,7 +33,7 @@ hcalStructureFiller.cxx
 hcalAnalysisSimple.cxx
 )
 
-Set(LINKDEF hcalLinkDef.h)
+Set(LINKDEF LinkDef.h)
 Set(LIBRARY_NAME hcal)
 Set(DEPENDENCIES
     Base ShipData FairLogger::FairLogger
