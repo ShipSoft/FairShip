@@ -434,30 +434,30 @@ with ConfigRegistry.register_config("basic") as c:
         c.EmuMagnet.Design = nuTauTargetDesign
         c.EmuMagnet.MagneticField = True
         c.EmuMagnet.B=1.25*u.tesla
-        scale=1.
+        scale = 1.
         c.EmuMagnet.WithConstField = True  # with False it will load the field map from files/nuTauDetField.root!
         c.EmuMagnet.X = scale * 2.2 * u.m
         c.EmuMagnet.Y = scale * 4.0 * u.m
         c.EmuMagnet.Z = 7.2 * u.m
         c.EmuMagnet.BaseX = scale * c.EmuMagnet.X
         c.EmuMagnet.BaseY = scale * 0.7 * u.m
-        c.EmuMagnet.BaseZ = scale*c.EmuMagnet.Z
-        c.EmuMagnet.GapDown = 25*u.cm
-        c.EmuMagnet.GapUp = 27*u.cm
+        c.EmuMagnet.BaseZ = scale * c.EmuMagnet.Z
+        c.EmuMagnet.GapDown = 25 * u.cm
+        c.EmuMagnet.GapUp = 27 * u.cm
         #c.EmuMagnet.ColX =scale*25*u.cm
-        c.EmuMagnet.ColX = scale*60*u.cm
-        c.EmuMagnet.ColY = scale * c.EmuMagnet.Y - 2 *scale * c.EmuMagnet.BaseY  # avoid overlapping between bases and columns
-        c.EmuMagnet.ColZ = scale*c.EmuMagnet.Z
-        c.EmuMagnet.CutLength = scale * 45*u.cm
-        c.EmuMagnet.CutHeight = scale * 144*u.cm
-        c.EmuMagnet.CoilX = c.EmuMagnet.X-2*c.EmuMagnet.ColX
-        c.EmuMagnet.CoilY = 50 *u.cm
-        c.EmuMagnet.Height1 = c.EmuMagnet.Y-2*c.EmuMagnet.BaseY
-        c.EmuMagnet.Height2 = c.EmuMagnet.Height1-2*c.EmuMagnet.CoilY
-        c.EmuMagnet.Thickness = scale*40*u.cm
-        c.EmuMagnet.PillarX = 0.5*u.m
-        c.EmuMagnet.PillarZ = 0.5*u.m
-        c.EmuMagnet.PillarY = 10*u.m - c.EmuMagnet.Y/2 - 0.1*u.mm - c.cave.floorHeightMuonShield
+        c.EmuMagnet.ColX = scale * 60*u.cm
+        c.EmuMagnet.ColY = scale * c.EmuMagnet.Y - 2 * scale * c.EmuMagnet.BaseY  # avoid overlapping between bases and columns
+        c.EmuMagnet.ColZ = scale * c.EmuMagnet.Z
+        c.EmuMagnet.CutLength = scale * 45 *u.cm
+        c.EmuMagnet.CutHeight = scale * 144 *u.cm
+        c.EmuMagnet.CoilX = c.EmuMagnet.X-2 * c.EmuMagnet.ColX
+        c.EmuMagnet.CoilY = 50 * u.cm
+        c.EmuMagnet.Height1 = c.EmuMagnet.Y - 2 * c.EmuMagnet.BaseY
+        c.EmuMagnet.Height2 = c.EmuMagnet.Height1 - 2 * c.EmuMagnet.CoilY
+        c.EmuMagnet.Thickness = scale * 40 * u.cm
+        c.EmuMagnet.PillarX = 0.5 * u.m
+        c.EmuMagnet.PillarZ = 0.5 * u.m
+        c.EmuMagnet.PillarY = 10 * u.m - c.EmuMagnet.Y/2 - 0.1 * u.mm - c.cave.floorHeightMuonShield
 
     #Parameters for tau muon detector
     c.tauMudet = AttrDict(z=0*u.cm)
@@ -525,18 +525,18 @@ with ConfigRegistry.register_config("basic") as c:
         c.tauMudet.PillarZ = 50*u.cm
         c.tauMudet.PillarY = 10*u.m - c.cave.floorHeightMuonShield - c.tauMudet.Ytot/2 - 0.1*u.mm
 
-        c.tauMudet.XGas =  c.tauMudet.XRpc
-        c.tauMudet.YGas =  c.tauMudet.YRpc
+        c.tauMudet.XGas = c.tauMudet.XRpc
+        c.tauMudet.YGas = c.tauMudet.YRpc
         c.tauMudet.ZGas = 1 * u.mm
-        c.tauMudet.XStrip =  c.tauMudet.XRpc
-        c.tauMudet.YStrip =  c.tauMudet.YRpc
-        c.tauMudet.ZStrip = 0.02*u.mm
-        c.tauMudet.XPet =  c.tauMudet.XRpc
-        c.tauMudet.YPet =  c.tauMudet.YRpc
-        c.tauMudet.ZPet = 0.1*u.mm
-        c.tauMudet.XEle =  c.tauMudet.XRpc
-        c.tauMudet.YEle =  c.tauMudet.YRpc
-        c.tauMudet.ZEle = 1*u.mm
+        c.tauMudet.XStrip = c.tauMudet.XRpc
+        c.tauMudet.YStrip = c.tauMudet.YRpc
+        c.tauMudet.ZStrip = 0.02 * u.mm
+        c.tauMudet.XPet = c.tauMudet.XRpc
+        c.tauMudet.YPet = c.tauMudet.YRpc
+        c.tauMudet.ZPet = 0.1 * u.mm
+        c.tauMudet.XEle = c.tauMudet.XRpc
+        c.tauMudet.YEle = c.tauMudet.YRpc
+        c.tauMudet.ZEle = 1 * u.mm
         c.EmuMagnet.zC = c.tauMudet.zMudetC - c.tauMudet.Ztot/2 - c.EmuMagnet.GapDown - c.EmuMagnet.Z/2
 
     if nuTauTargetDesign==4:
