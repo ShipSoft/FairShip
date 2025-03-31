@@ -60,12 +60,11 @@ var searchData=
   ['yrpc_5fouter_57',['YRpc_outer',['../namespacegeometry__config.html#a801c6333ce30356efccb2c4e8b450cd9',1,'geometry_config']]],
   ['yrpcgap_58',['YRpcGap',['../namespacegeometry__config.html#a0215750ad0281774fc516e2b2f948c04',1,'geometry_config']]],
   ['yryoke_59',['YRyoke',['../namespacegeometry__config.html#a9164d5e672549769cf1f858fb3ca37dd',1,'geometry_config']]],
-  ['yryoke_5fs_60',['YRyoke_s',['../namespacegeometry__config.html#aff329258df15d71dcd1f107eceaa302c',1,'geometry_config']]],
-  ['yspace_61',['ySpace',['../namespaceadd__noise__to__field.html#a8ad10ab502ec765188f76b5c1b807f90',1,'add_noise_to_field']]],
-  ['yspacing_62',['YSpacing',['../namespacegeometry__config.html#adcbe07659f0ed3496a9130d765b5a233',1,'geometry_config']]],
-  ['ystrip_63',['YStrip',['../namespacegeometry__config.html#a70b1985a9b01a425608ad9ad683567a9',1,'geometry_config']]],
-  ['ytot_64',['Ytot',['../namespacegeometry__config.html#ab49d105fb3b76433707f3f731f40867e',1,'geometry_config']]],
-  ['yvessel_65',['yvessel',['../classNuageGenerator.html#a8d385cdf256902453e0739f43ab5f3eb',1,'NuageGenerator::Yvessel'],['../classGenieGenerator.html#afcf19e34d58e8d82a19c9a03368f0b4a',1,'GenieGenerator::Yvessel']]],
-  ['yy_66',['yy',['../classshipPid_1_1Task.html#a29002175bfbf37220b668c1a4f1a10fe',1,'shipPid::Task']]],
-  ['yz_5fpoints_67',['yz_points',['../namespaceTTCluster.html#a629a4444240f0d3cae8096fd10409dbb',1,'TTCluster']]]
+  ['yspace_60',['ySpace',['../namespaceadd__noise__to__field.html#a8ad10ab502ec765188f76b5c1b807f90',1,'add_noise_to_field']]],
+  ['yspacing_61',['YSpacing',['../namespacegeometry__config.html#adcbe07659f0ed3496a9130d765b5a233',1,'geometry_config']]],
+  ['ystrip_62',['YStrip',['../namespacegeometry__config.html#a70b1985a9b01a425608ad9ad683567a9',1,'geometry_config']]],
+  ['ytot_63',['Ytot',['../namespacegeometry__config.html#ab49d105fb3b76433707f3f731f40867e',1,'geometry_config']]],
+  ['yvessel_64',['yvessel',['../classNuageGenerator.html#a8d385cdf256902453e0739f43ab5f3eb',1,'NuageGenerator::Yvessel'],['../classGenieGenerator.html#afcf19e34d58e8d82a19c9a03368f0b4a',1,'GenieGenerator::Yvessel']]],
+  ['yy_65',['yy',['../classshipPid_1_1Task.html#a29002175bfbf37220b668c1a4f1a10fe',1,'shipPid::Task']]],
+  ['yz_5fpoints_66',['yz_points',['../namespaceTTCluster.html#a629a4444240f0d3cae8096fd10409dbb',1,'TTCluster']]]
 ];

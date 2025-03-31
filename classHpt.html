@@ -366,9 +366,9 @@ Private Attributes</h2></td></tr>
 <div class="ttc" id="aclassHpt_html_a96ba458fc45d6f962b28e16a65871486"><div class="ttname"><a href="classHpt.html#a96ba458fc45d6f962b28e16a65871486">Hpt::DimZ</a></div><div class="ttdeci">Double_t DimZ</div><div class="ttdef"><b>Definition</b> <a href="HPT_8h_source.html#l00109">HPT.h:109</a></div></div>
 <div class="ttc" id="aclassHpt_html_aa894ced8bf359e753186b6840921eed3"><div class="ttname"><a href="classHpt.html#aa894ced8bf359e753186b6840921eed3">Hpt::fTime</a></div><div class="ttdeci">Double32_t fTime</div><div class="ttdoc">momentum at entrance</div><div class="ttdef"><b>Definition</b> <a href="HPT_8h_source.html#l00094">HPT.h:94</a></div></div>
 <div class="ttc" id="aclassHpt_html_ab7c4b33ebb7376fccb2333558209ba8a"><div class="ttname"><a href="classHpt.html#ab7c4b33ebb7376fccb2333558209ba8a">Hpt::fHptPointCollection</a></div><div class="ttdeci">TClonesArray * fHptPointCollection</div><div class="ttdoc">energy loss</div><div class="ttdef"><b>Definition</b> <a href="HPT_8h_source.html#l00099">HPT.h:99</a></div></div>
-<div class="ttc" id="anamespacegeometry__config_html_a1e6343e3d910ba5d5e3886d591ae6f21"><div class="ttname"><a href="namespacegeometry__config.html#a1e6343e3d910ba5d5e3886d591ae6f21">geometry_config.DY</a></div><div class="ttdeci">DY</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00197">geometry_config.py:197</a></div></div>
-<div class="ttc" id="anamespacegeometry__config_html_a497974e47a86565ede97bd6b328a85bc"><div class="ttname"><a href="namespacegeometry__config.html#a497974e47a86565ede97bd6b328a85bc">geometry_config.DZ</a></div><div class="ttdeci">DZ</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00195">geometry_config.py:195</a></div></div>
-<div class="ttc" id="anamespacegeometry__config_html_a8f8e3137394bd8fb26519327ce15c1e7"><div class="ttname"><a href="namespacegeometry__config.html#a8f8e3137394bd8fb26519327ce15c1e7">geometry_config.DX</a></div><div class="ttdeci">DX</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00196">geometry_config.py:196</a></div></div>
+<div class="ttc" id="anamespacegeometry__config_html_a1e6343e3d910ba5d5e3886d591ae6f21"><div class="ttname"><a href="namespacegeometry__config.html#a1e6343e3d910ba5d5e3886d591ae6f21">geometry_config.DY</a></div><div class="ttdeci">DY</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00195">geometry_config.py:195</a></div></div>
+<div class="ttc" id="anamespacegeometry__config_html_a497974e47a86565ede97bd6b328a85bc"><div class="ttname"><a href="namespacegeometry__config.html#a497974e47a86565ede97bd6b328a85bc">geometry_config.DZ</a></div><div class="ttdeci">DZ</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00193">geometry_config.py:193</a></div></div>
+<div class="ttc" id="anamespacegeometry__config_html_a8f8e3137394bd8fb26519327ce15c1e7"><div class="ttname"><a href="namespacegeometry__config.html#a8f8e3137394bd8fb26519327ce15c1e7">geometry_config.DX</a></div><div class="ttdeci">DX</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00194">geometry_config.py:194</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -526,13 +526,13 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>This method is an example of how to add your own point of type <a class="el" href="classmuonPoint.html">muonPoint</a> to the clones array </p>
 
-<p class="definition">Definition at line <a class="el" href="HPT_8cxx_source.html#l00406">406</a> of file <a class="el" href="HPT_8cxx_source.html">HPT.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  411</span>{</div>
-<div class="line"><span class="lineno">  412</span>    TClonesArray&amp; clref = *<a class="code hl_variable" href="classHpt.html#ab7c4b33ebb7376fccb2333558209ba8a">fHptPointCollection</a>;</div>
-<div class="line"><span class="lineno">  413</span>    Int_t size = clref.GetEntriesFast();</div>
-<div class="line"><span class="lineno">  414</span> </div>
-<div class="line"><span class="lineno">  415</span>    <span class="keywordflow">return</span> <span class="keyword">new</span>(clref[size]) <a class="code hl_class" href="classHptPoint.html">HptPoint</a>(trackID, detID, pos, mom,time, length, eLoss, pdgCode);</div>
-<div class="line"><span class="lineno">  416</span>}</div>
+<p class="definition">Definition at line <a class="el" href="HPT_8cxx_source.html#l00371">371</a> of file <a class="el" href="HPT_8cxx_source.html">HPT.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  376</span>{</div>
+<div class="line"><span class="lineno">  377</span>    TClonesArray&amp; clref = *<a class="code hl_variable" href="classHpt.html#ab7c4b33ebb7376fccb2333558209ba8a">fHptPointCollection</a>;</div>
+<div class="line"><span class="lineno">  378</span>    Int_t size = clref.GetEntriesFast();</div>
+<div class="line"><span class="lineno">  379</span> </div>
+<div class="line"><span class="lineno">  380</span>    <span class="keywordflow">return</span> <span class="keyword">new</span>(clref[size]) <a class="code hl_class" href="classHptPoint.html">HptPoint</a>(trackID, detID, pos, mom,time, length, eLoss, pdgCode);</div>
+<div class="line"><span class="lineno">  381</span>}</div>
 <div class="ttc" id="aclassHptPoint_html"><div class="ttname"><a href="classHptPoint.html">HptPoint</a></div><div class="ttdef"><b>Definition</b> <a href="HptPoint_8h_source.html#l00010">HptPoint.h:11</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -617,138 +617,99 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  194</span>    TGeoMedium *Conc =gGeoManager-&gt;GetMedium(<span class="stringliteral">&quot;Concrete&quot;</span>);</div>
 <div class="line"><span class="lineno">  195</span> </div>
 <div class="line"><span class="lineno">  196</span>    <span class="comment">// cout &lt;&lt; &quot;zSizeMudet = &quot; &lt;&lt; zSizeMudet &lt;&lt; endl;</span></div>
-<div class="line"><span class="lineno">  197</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classHpt.html#a46dd102699b47bf152759a53e8526eb3">fDesign</a> &lt; 3){</div>
-<div class="line"><span class="lineno">  198</span>    TGeoVolume *volMudetBox = gGeoManager-&gt;GetVolume(<span class="stringliteral">&quot;volNuTauMudet&quot;</span>);</div>
-<div class="line"><span class="lineno">  199</span>    TGeoBBox *HPT = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;HPT&quot;</span>, <a class="code hl_variable" href="classHpt.html#a4de8b4cdf91d838897de02302ba5f917">DimX</a>/2, <a class="code hl_variable" href="classHpt.html#a41d1a65b300f9907cbabb64884919033">DimY</a>/2, <a class="code hl_variable" href="classHpt.html#a96ba458fc45d6f962b28e16a65871486">DimZ</a>/2);</div>
-<div class="line"><span class="lineno">  200</span>    TGeoVolume *volHPT = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;volHPT&quot;</span>,HPT,HPTmat);</div>
-<div class="line"><span class="lineno">  201</span>    volHPT-&gt;SetLineColor(kBlue-5);</div>
-<div class="line"><span class="lineno">  202</span>    AddSensitiveVolume(volHPT);</div>
+<div class="line"><span class="lineno">  197</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classHpt.html#a46dd102699b47bf152759a53e8526eb3">fDesign</a> == 3){</div>
+<div class="line"><span class="lineno">  198</span>        <span class="comment">//Trackers that in design 3 follow the target --------------------------------------------------------------------------------------</span></div>
+<div class="line"><span class="lineno">  199</span>        TGeoVolume *volMagRegion=gGeoManager-&gt;GetVolume(<span class="stringliteral">&quot;volMagRegion&quot;</span>);</div>
+<div class="line"><span class="lineno">  200</span>        TGeoVolume *volTarget =gGeoManager-&gt;GetVolume(<span class="stringliteral">&quot;volTarget&quot;</span>);</div>
+<div class="line"><span class="lineno">  201</span> </div>
+<div class="line"><span class="lineno">  202</span>        Double_t DZMagnetizedRegion = <span class="keyword">static_cast&lt;</span>TGeoBBox*<span class="keyword">&gt;</span> (volMagRegion-&gt;GetShape())-&gt;GetDZ() *2;</div>
 <div class="line"><span class="lineno">  203</span> </div>
-<div class="line"><span class="lineno">  204</span>    TGeoBBox *Cbase = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;Cbase&quot;</span>, <a class="code hl_variable" href="classHpt.html#a4260c7c5094bbd74a76d3e3a2502e9f4">fConcreteX</a>/2, <a class="code hl_variable" href="classHpt.html#ae46eda4265c80562e1dda9b79fd0d2ba">fConcreteY</a>/2, <a class="code hl_variable" href="classHpt.html#a76dc887d4d9299e6b9f2f80fcc456453">fConcreteZ</a>/2);</div>
-<div class="line"><span class="lineno">  205</span>    TGeoVolume *volCbase = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;volCbase&quot;</span>,Cbase,Conc);</div>
-<div class="line"><span class="lineno">  206</span>    volCbase-&gt;SetLineColor(kOrange-7);</div>
-<div class="line"><span class="lineno">  207</span> </div>
-<div class="line"><span class="lineno">  208</span>    <span class="comment">//1 closer to Goliath</span></div>
-<div class="line"><span class="lineno">  209</span>    volMudetBox-&gt;AddNode(volHPT,1,<span class="keyword">new</span> TGeoTranslation(0,0,-<a class="code hl_variable" href="classHpt.html#ab18f3de67dda50272dda55c743bb0c6d">zSizeMudet</a>/2 + <a class="code hl_variable" href="classHpt.html#a96ba458fc45d6f962b28e16a65871486">DimZ</a>/2));</div>
-<div class="line"><span class="lineno">  210</span>    volMudetBox-&gt;AddNode(volCbase,1,<span class="keyword">new</span> TGeoTranslation(0,-<a class="code hl_variable" href="classHpt.html#a41d1a65b300f9907cbabb64884919033">DimY</a>/2-<a class="code hl_variable" href="classHpt.html#ae46eda4265c80562e1dda9b79fd0d2ba">fConcreteY</a>/2,-<a class="code hl_variable" href="classHpt.html#ab18f3de67dda50272dda55c743bb0c6d">zSizeMudet</a>/2 + <a class="code hl_variable" href="classHpt.html#a96ba458fc45d6f962b28e16a65871486">DimZ</a>/2));</div>
-<div class="line"><span class="lineno">  211</span> </div>
-<div class="line"><span class="lineno">  212</span>    <span class="comment">//2 closer to Arm1</span></div>
-<div class="line"><span class="lineno">  213</span>    <span class="comment">//NB: 55 cm is the distance between the borders of the last 2 drift tubes</span></div>
-<div class="line"><span class="lineno">  214</span>    volMudetBox-&gt;AddNode(volHPT,2,<span class="keyword">new</span> TGeoTranslation(0,0,-<a class="code hl_variable" href="classHpt.html#ab18f3de67dda50272dda55c743bb0c6d">zSizeMudet</a>/2 + 3*<a class="code hl_variable" href="classHpt.html#a96ba458fc45d6f962b28e16a65871486">DimZ</a>/2 +55*cm));</div>
-<div class="line"><span class="lineno">  215</span>    volMudetBox-&gt;AddNode(volCbase,2,<span class="keyword">new</span> TGeoTranslation(0,-<a class="code hl_variable" href="classHpt.html#a41d1a65b300f9907cbabb64884919033">DimY</a>/2-<a class="code hl_variable" href="classHpt.html#ae46eda4265c80562e1dda9b79fd0d2ba">fConcreteY</a>/2,-<a class="code hl_variable" href="classHpt.html#ab18f3de67dda50272dda55c743bb0c6d">zSizeMudet</a>/2 + 3*<a class="code hl_variable" href="classHpt.html#a96ba458fc45d6f962b28e16a65871486">DimZ</a>/2 +55*cm));</div>
-<div class="line"><span class="lineno">  216</span> </div>
-<div class="line"><span class="lineno">  217</span>    <span class="comment">//Central Drift tubes // 3 closer to Arm1, 4 closer to Arm2</span></div>
-<div class="line"><span class="lineno">  218</span>    volMudetBox-&gt;AddNode(volHPT,3,<span class="keyword">new</span> TGeoTranslation(0,0,-72*cm/2 - <a class="code hl_variable" href="classHpt.html#a96ba458fc45d6f962b28e16a65871486">DimZ</a>/2));</div>
-<div class="line"><span class="lineno">  219</span> </div>
-<div class="line"><span class="lineno">  220</span>    <span class="comment">//NB: 72cm is the distance between the borders of the central drift tubes</span></div>
-<div class="line"><span class="lineno">  221</span>    volMudetBox-&gt;AddNode(volHPT,4,<span class="keyword">new</span> TGeoTranslation(0,0,72*cm/2 + <a class="code hl_variable" href="classHpt.html#a96ba458fc45d6f962b28e16a65871486">DimZ</a>/2));</div>
-<div class="line"><span class="lineno">  222</span> </div>
-<div class="line"><span class="lineno">  223</span> </div>
-<div class="line"><span class="lineno">  224</span>    <span class="comment">//After spectro Drift Tubes 5 closer to Arm, 6 closer to decay vessel</span></div>
-<div class="line"><span class="lineno">  225</span>    volMudetBox-&gt;AddNode(volHPT,5,<span class="keyword">new</span> TGeoTranslation(0,0,<a class="code hl_variable" href="classHpt.html#ab18f3de67dda50272dda55c743bb0c6d">zSizeMudet</a>/2 - 3*<a class="code hl_variable" href="classHpt.html#a96ba458fc45d6f962b28e16a65871486">DimZ</a>/2 - 55*cm));</div>
-<div class="line"><span class="lineno">  226</span>    volMudetBox-&gt;AddNode(volCbase,5,<span class="keyword">new</span> TGeoTranslation(0,-<a class="code hl_variable" href="classHpt.html#a41d1a65b300f9907cbabb64884919033">DimY</a>/2-<a class="code hl_variable" href="classHpt.html#ae46eda4265c80562e1dda9b79fd0d2ba">fConcreteY</a>/2,<a class="code hl_variable" href="classHpt.html#ab18f3de67dda50272dda55c743bb0c6d">zSizeMudet</a>/2 - 3*<a class="code hl_variable" href="classHpt.html#a96ba458fc45d6f962b28e16a65871486">DimZ</a>/2 - 55*cm));</div>
-<div class="line"><span class="lineno">  227</span> </div>
-<div class="line"><span class="lineno">  228</span>    volMudetBox-&gt;AddNode(volHPT,6,<span class="keyword">new</span> TGeoTranslation(0,0,<a class="code hl_variable" href="classHpt.html#ab18f3de67dda50272dda55c743bb0c6d">zSizeMudet</a>/2 - <a class="code hl_variable" href="classHpt.html#a96ba458fc45d6f962b28e16a65871486">DimZ</a>/2));</div>
-<div class="line"><span class="lineno">  229</span>    volMudetBox-&gt;AddNode(volCbase,6,<span class="keyword">new</span> TGeoTranslation(0,-<a class="code hl_variable" href="classHpt.html#a41d1a65b300f9907cbabb64884919033">DimY</a>/2-<a class="code hl_variable" href="classHpt.html#ae46eda4265c80562e1dda9b79fd0d2ba">fConcreteY</a>/2,<a class="code hl_variable" href="classHpt.html#ab18f3de67dda50272dda55c743bb0c6d">zSizeMudet</a>/2 - <a class="code hl_variable" href="classHpt.html#a96ba458fc45d6f962b28e16a65871486">DimZ</a>/2));</div>
-<div class="line"><span class="lineno">  230</span> </div>
-<div class="line"><span class="lineno">  231</span>    }</div>
-<div class="line"><span class="lineno">  232</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classHpt.html#a46dd102699b47bf152759a53e8526eb3">fDesign</a> == 3){</div>
-<div class="line"><span class="lineno">  233</span>        <span class="comment">//Trackers that in design 3 follow the target --------------------------------------------------------------------------------------</span></div>
-<div class="line"><span class="lineno">  234</span>        TGeoVolume *volMagRegion=gGeoManager-&gt;GetVolume(<span class="stringliteral">&quot;volMagRegion&quot;</span>);</div>
-<div class="line"><span class="lineno">  235</span>        TGeoVolume *volTarget =gGeoManager-&gt;GetVolume(<span class="stringliteral">&quot;volTarget&quot;</span>);</div>
-<div class="line"><span class="lineno">  236</span> </div>
-<div class="line"><span class="lineno">  237</span>        Double_t DZMagnetizedRegion = <span class="keyword">static_cast&lt;</span>TGeoBBox*<span class="keyword">&gt;</span> (volMagRegion-&gt;GetShape())-&gt;GetDZ() *2;</div>
-<div class="line"><span class="lineno">  238</span> </div>
-<div class="line"><span class="lineno">  239</span>        Double_t DZTarget = <span class="keyword">static_cast&lt;</span>TGeoBBox*<span class="keyword">&gt;</span> (volTarget-&gt;GetShape())-&gt;GetDZ() *2;</div>
-<div class="line"><span class="lineno">  240</span> </div>
-<div class="line"><span class="lineno">  241</span>        <span class="comment">//HPT is DownStreamTracker</span></div>
-<div class="line"><span class="lineno">  242</span>        TGeoBBox *DT = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;DT&quot;</span>, <a class="code hl_variable" href="classHpt.html#a4de8b4cdf91d838897de02302ba5f917">DimX</a>/2, <a class="code hl_variable" href="classHpt.html#a41d1a65b300f9907cbabb64884919033">DimY</a>/2, <a class="code hl_variable" href="classHpt.html#a96ba458fc45d6f962b28e16a65871486">DimZ</a>/2);</div>
-<div class="line"><span class="lineno">  243</span>        TGeoVolume *volDT = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;volDT&quot;</span>,DT,HPTmat);</div>
-<div class="line"><span class="lineno">  244</span>        volDT-&gt;SetLineColor(kBlue-5);</div>
-<div class="line"><span class="lineno">  245</span> </div>
-<div class="line"><span class="lineno">  246</span>        <span class="comment">// Creating of SciFi modules in HPT</span></div>
-<div class="line"><span class="lineno">  247</span>        <a class="code hl_function" href="classHpt.html#a3b3efada00055e86a005e4128d02aa27">InitMedium</a>(<span class="stringliteral">&quot;CarbonComposite&quot;</span>);</div>
-<div class="line"><span class="lineno">  248</span>        TGeoMedium *CarbonComposite = gGeoManager-&gt;GetMedium(<span class="stringliteral">&quot;CarbonComposite&quot;</span>);</div>
-<div class="line"><span class="lineno">  249</span> </div>
-<div class="line"><span class="lineno">  250</span>        <a class="code hl_function" href="classHpt.html#a3b3efada00055e86a005e4128d02aa27">InitMedium</a>(<span class="stringliteral">&quot;SciFiMat&quot;</span>);</div>
-<div class="line"><span class="lineno">  251</span>        TGeoMedium *SciFiMat = gGeoManager-&gt;GetMedium(<span class="stringliteral">&quot;SciFiMat&quot;</span>);</div>
-<div class="line"><span class="lineno">  252</span> </div>
-<div class="line"><span class="lineno">  253</span>        <a class="code hl_function" href="classHpt.html#a3b3efada00055e86a005e4128d02aa27">InitMedium</a>(<span class="stringliteral">&quot;Airex&quot;</span>);</div>
-<div class="line"><span class="lineno">  254</span>        TGeoMedium *Airex = gGeoManager-&gt;GetMedium(<span class="stringliteral">&quot;Airex&quot;</span>);</div>
-<div class="line"><span class="lineno">  255</span> </div>
-<div class="line"><span class="lineno">  256</span>        <span class="comment">//Support Carbon Composite</span></div>
-<div class="line"><span class="lineno">  257</span>        TGeoBBox* HPT_support_box = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;HPT_support_box&quot;</span>, <a class="code hl_variable" href="classHpt.html#aa5f1190933556f5219f08fc87ba7bcf1">HPTrackerX</a> / 2, <a class="code hl_variable" href="classHpt.html#a397a0e7549231d63ffc0a58351b64e8a">HPTrackerY</a> / 2, <a class="code hl_variable" href="classHpt.html#a7aaf179b3b293c13135e8719c6d9a0d2">support_z</a> / 2);</div>
-<div class="line"><span class="lineno">  258</span>        TGeoVolume* HPT_support_volume = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;HPT_support&quot;</span>, HPT_support_box, CarbonComposite);</div>
-<div class="line"><span class="lineno">  259</span>        HPT_support_volume-&gt;SetLineColor(kGray - 2);</div>
-<div class="line"><span class="lineno">  260</span>        HPT_support_volume-&gt;SetVisibility(1);</div>
+<div class="line"><span class="lineno">  204</span>        Double_t DZTarget = <span class="keyword">static_cast&lt;</span>TGeoBBox*<span class="keyword">&gt;</span> (volTarget-&gt;GetShape())-&gt;GetDZ() *2;</div>
+<div class="line"><span class="lineno">  205</span> </div>
+<div class="line"><span class="lineno">  206</span>        <span class="comment">//HPT is DownStreamTracker</span></div>
+<div class="line"><span class="lineno">  207</span>        TGeoBBox *DT = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;DT&quot;</span>, <a class="code hl_variable" href="classHpt.html#a4de8b4cdf91d838897de02302ba5f917">DimX</a>/2, <a class="code hl_variable" href="classHpt.html#a41d1a65b300f9907cbabb64884919033">DimY</a>/2, <a class="code hl_variable" href="classHpt.html#a96ba458fc45d6f962b28e16a65871486">DimZ</a>/2);</div>
+<div class="line"><span class="lineno">  208</span>        TGeoVolume *volDT = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;volDT&quot;</span>,DT,HPTmat);</div>
+<div class="line"><span class="lineno">  209</span>        volDT-&gt;SetLineColor(kBlue-5);</div>
+<div class="line"><span class="lineno">  210</span> </div>
+<div class="line"><span class="lineno">  211</span>        <span class="comment">// Creating of SciFi modules in HPT</span></div>
+<div class="line"><span class="lineno">  212</span>        <a class="code hl_function" href="classHpt.html#a3b3efada00055e86a005e4128d02aa27">InitMedium</a>(<span class="stringliteral">&quot;CarbonComposite&quot;</span>);</div>
+<div class="line"><span class="lineno">  213</span>        TGeoMedium *CarbonComposite = gGeoManager-&gt;GetMedium(<span class="stringliteral">&quot;CarbonComposite&quot;</span>);</div>
+<div class="line"><span class="lineno">  214</span> </div>
+<div class="line"><span class="lineno">  215</span>        <a class="code hl_function" href="classHpt.html#a3b3efada00055e86a005e4128d02aa27">InitMedium</a>(<span class="stringliteral">&quot;SciFiMat&quot;</span>);</div>
+<div class="line"><span class="lineno">  216</span>        TGeoMedium *SciFiMat = gGeoManager-&gt;GetMedium(<span class="stringliteral">&quot;SciFiMat&quot;</span>);</div>
+<div class="line"><span class="lineno">  217</span> </div>
+<div class="line"><span class="lineno">  218</span>        <a class="code hl_function" href="classHpt.html#a3b3efada00055e86a005e4128d02aa27">InitMedium</a>(<span class="stringliteral">&quot;Airex&quot;</span>);</div>
+<div class="line"><span class="lineno">  219</span>        TGeoMedium *Airex = gGeoManager-&gt;GetMedium(<span class="stringliteral">&quot;Airex&quot;</span>);</div>
+<div class="line"><span class="lineno">  220</span> </div>
+<div class="line"><span class="lineno">  221</span>        <span class="comment">//Support Carbon Composite</span></div>
+<div class="line"><span class="lineno">  222</span>        TGeoBBox* HPT_support_box = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;HPT_support_box&quot;</span>, <a class="code hl_variable" href="classHpt.html#aa5f1190933556f5219f08fc87ba7bcf1">HPTrackerX</a> / 2, <a class="code hl_variable" href="classHpt.html#a397a0e7549231d63ffc0a58351b64e8a">HPTrackerY</a> / 2, <a class="code hl_variable" href="classHpt.html#a7aaf179b3b293c13135e8719c6d9a0d2">support_z</a> / 2);</div>
+<div class="line"><span class="lineno">  223</span>        TGeoVolume* HPT_support_volume = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;HPT_support&quot;</span>, HPT_support_box, CarbonComposite);</div>
+<div class="line"><span class="lineno">  224</span>        HPT_support_volume-&gt;SetLineColor(kGray - 2);</div>
+<div class="line"><span class="lineno">  225</span>        HPT_support_volume-&gt;SetVisibility(1);</div>
+<div class="line"><span class="lineno">  226</span> </div>
+<div class="line"><span class="lineno">  227</span>        <span class="comment">//Honeycomb Airex (or Nomex)</span></div>
+<div class="line"><span class="lineno">  228</span>        TGeoBBox* HPT_honeycomb_box = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;HPT_honeycomb_box&quot;</span>, <a class="code hl_variable" href="classHpt.html#aa5f1190933556f5219f08fc87ba7bcf1">HPTrackerX</a> / 2, <a class="code hl_variable" href="classHpt.html#a397a0e7549231d63ffc0a58351b64e8a">HPTrackerY</a> / 2, <a class="code hl_variable" href="classHpt.html#abc0b4be0322dc930fb521a1564b54fe6">honeycomb_z</a> / 2);</div>
+<div class="line"><span class="lineno">  229</span>        TGeoVolume* HPT_honeycomb_volume = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;HPT_honeycomb&quot;</span>, HPT_honeycomb_box, Airex);</div>
+<div class="line"><span class="lineno">  230</span>        HPT_honeycomb_volume-&gt;SetLineColor(kYellow);</div>
+<div class="line"><span class="lineno">  231</span>        HPT_honeycomb_volume-&gt;SetVisibility(1);</div>
+<div class="line"><span class="lineno">  232</span> </div>
+<div class="line"><span class="lineno">  233</span>        <span class="comment">//SciFi planes</span></div>
+<div class="line"><span class="lineno">  234</span>        TGeoBBox* HPT_scifi_plane_hor_box = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;HPT_scifi_plane_hor_box&quot;</span>, <a class="code hl_variable" href="classHpt.html#aa5f1190933556f5219f08fc87ba7bcf1">HPTrackerX</a> / 2, <a class="code hl_variable" href="classHpt.html#a397a0e7549231d63ffc0a58351b64e8a">HPTrackerY</a> / 2, <a class="code hl_variable" href="classHpt.html#a68974876575e946109f93e3b687b7a35">scifimat_z</a> / 2);</div>
+<div class="line"><span class="lineno">  235</span>        TGeoVolume* HPT_scifi_plane_hor_volume = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;HPT_scifi_plane_hor&quot;</span>, HPT_scifi_plane_hor_box, SciFiMat);</div>
+<div class="line"><span class="lineno">  236</span>        HPT_scifi_plane_hor_volume-&gt;SetVisibility(1);</div>
+<div class="line"><span class="lineno">  237</span> </div>
+<div class="line"><span class="lineno">  238</span>        TGeoBBox* HPT_scifi_plane_vert_box = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;HPT_scifi_plane_vert_box&quot;</span>, <a class="code hl_variable" href="classHpt.html#aa5f1190933556f5219f08fc87ba7bcf1">HPTrackerX</a> / 2, <a class="code hl_variable" href="classHpt.html#a397a0e7549231d63ffc0a58351b64e8a">HPTrackerY</a> / 2, <a class="code hl_variable" href="classHpt.html#a68974876575e946109f93e3b687b7a35">scifimat_z</a> / 2);</div>
+<div class="line"><span class="lineno">  239</span>        TGeoVolume* HPT_scifi_plane_vert_volume = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;HPT_scifi_plane_vert&quot;</span>, HPT_scifi_plane_vert_box, SciFiMat);</div>
+<div class="line"><span class="lineno">  240</span>        HPT_scifi_plane_vert_volume-&gt;SetVisibility(1);</div>
+<div class="line"><span class="lineno">  241</span> </div>
+<div class="line"><span class="lineno">  242</span>        <span class="comment">//SciFi mats</span></div>
+<div class="line"><span class="lineno">  243</span>        TGeoBBox* HPT_scifimat_hor_box = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;HPT_scifimat_hor_box&quot;</span>, <a class="code hl_variable" href="classHpt.html#a9421203797eea53ae0031c76e9a3e581">scifimat_hor</a> / 2, <a class="code hl_variable" href="classHpt.html#a05a86778c55b226176196f1ecc513b0a">scifimat_width</a> / 2, <a class="code hl_variable" href="classHpt.html#a68974876575e946109f93e3b687b7a35">scifimat_z</a> / 2);</div>
+<div class="line"><span class="lineno">  244</span>        TGeoVolume* HPT_scifimat_hor_volume = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;HPT_scifimat_hor&quot;</span>, HPT_scifimat_hor_box, SciFiMat);</div>
+<div class="line"><span class="lineno">  245</span>        HPT_scifimat_hor_volume-&gt;SetLineColor(kCyan);</div>
+<div class="line"><span class="lineno">  246</span> </div>
+<div class="line"><span class="lineno">  247</span>        TGeoBBox* HPT_scifimat_vert_box = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;HPT_scifimat_vert_box&quot;</span>, <a class="code hl_variable" href="classHpt.html#a05a86778c55b226176196f1ecc513b0a">scifimat_width</a> / 2, <a class="code hl_variable" href="classHpt.html#ac89a010d324fd8965167c5f4450ca727">scifimat_vert</a> / 2, <a class="code hl_variable" href="classHpt.html#a68974876575e946109f93e3b687b7a35">scifimat_z</a> / 2);</div>
+<div class="line"><span class="lineno">  248</span>        TGeoVolume* HPT_scifimat_vert_volume = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;HPT_scifimat_vert&quot;</span>, HPT_scifimat_vert_box, SciFiMat);</div>
+<div class="line"><span class="lineno">  249</span>        HPT_scifimat_vert_volume-&gt;SetLineColor(kGreen);</div>
+<div class="line"><span class="lineno">  250</span> </div>
+<div class="line"><span class="lineno">  251</span>        AddSensitiveVolume(HPT_scifimat_hor_volume);</div>
+<div class="line"><span class="lineno">  252</span>        AddSensitiveVolume(HPT_scifimat_vert_volume);</div>
+<div class="line"><span class="lineno">  253</span> </div>
+<div class="line"><span class="lineno">  254</span>        <span class="comment">// Creating physical volumes and multiply</span></div>
+<div class="line"><span class="lineno">  255</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; <a class="code hl_variable" href="classHpt.html#afd858b67defc34831a0c0e81e6b16d73">n_hor_planes</a>; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>++){</div>
+<div class="line"><span class="lineno">  256</span>            HPT_scifi_plane_hor_volume-&gt;AddNode(HPT_scifimat_hor_volume, i+1, <span class="keyword">new</span> TGeoTranslation(0, (-(<a class="code hl_variable" href="classHpt.html#afd858b67defc34831a0c0e81e6b16d73">n_hor_planes</a>-1)/2.0 + i)*<a class="code hl_variable" href="classHpt.html#a05a86778c55b226176196f1ecc513b0a">scifimat_width</a>, 0));</div>
+<div class="line"><span class="lineno">  257</span>        }</div>
+<div class="line"><span class="lineno">  258</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; <a class="code hl_variable" href="classHpt.html#a77bf87a819329024bd4626580948d4a6">n_vert_planes</a>; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>++){</div>
+<div class="line"><span class="lineno">  259</span>            HPT_scifi_plane_vert_volume-&gt;AddNode(HPT_scifimat_vert_volume, 100+i+1 , <span class="keyword">new</span> TGeoTranslation((-(<a class="code hl_variable" href="classHpt.html#a77bf87a819329024bd4626580948d4a6">n_vert_planes</a>-1)/2.0 + i)*<a class="code hl_variable" href="classHpt.html#a05a86778c55b226176196f1ecc513b0a">scifimat_width</a>, 0, 0));</div>
+<div class="line"><span class="lineno">  260</span>        }</div>
 <div class="line"><span class="lineno">  261</span> </div>
-<div class="line"><span class="lineno">  262</span>        <span class="comment">//Honeycomb Airex (or Nomex)</span></div>
-<div class="line"><span class="lineno">  263</span>        TGeoBBox* HPT_honeycomb_box = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;HPT_honeycomb_box&quot;</span>, <a class="code hl_variable" href="classHpt.html#aa5f1190933556f5219f08fc87ba7bcf1">HPTrackerX</a> / 2, <a class="code hl_variable" href="classHpt.html#a397a0e7549231d63ffc0a58351b64e8a">HPTrackerY</a> / 2, <a class="code hl_variable" href="classHpt.html#abc0b4be0322dc930fb521a1564b54fe6">honeycomb_z</a> / 2);</div>
-<div class="line"><span class="lineno">  264</span>        TGeoVolume* HPT_honeycomb_volume = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;HPT_honeycomb&quot;</span>, HPT_honeycomb_box, Airex);</div>
-<div class="line"><span class="lineno">  265</span>        HPT_honeycomb_volume-&gt;SetLineColor(kYellow);</div>
-<div class="line"><span class="lineno">  266</span>        HPT_honeycomb_volume-&gt;SetVisibility(1);</div>
-<div class="line"><span class="lineno">  267</span> </div>
-<div class="line"><span class="lineno">  268</span>        <span class="comment">//SciFi planes</span></div>
-<div class="line"><span class="lineno">  269</span>        TGeoBBox* HPT_scifi_plane_hor_box = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;HPT_scifi_plane_hor_box&quot;</span>, <a class="code hl_variable" href="classHpt.html#aa5f1190933556f5219f08fc87ba7bcf1">HPTrackerX</a> / 2, <a class="code hl_variable" href="classHpt.html#a397a0e7549231d63ffc0a58351b64e8a">HPTrackerY</a> / 2, <a class="code hl_variable" href="classHpt.html#a68974876575e946109f93e3b687b7a35">scifimat_z</a> / 2);</div>
-<div class="line"><span class="lineno">  270</span>        TGeoVolume* HPT_scifi_plane_hor_volume = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;HPT_scifi_plane_hor&quot;</span>, HPT_scifi_plane_hor_box, SciFiMat);</div>
-<div class="line"><span class="lineno">  271</span>        HPT_scifi_plane_hor_volume-&gt;SetVisibility(1);</div>
-<div class="line"><span class="lineno">  272</span> </div>
-<div class="line"><span class="lineno">  273</span>        TGeoBBox* HPT_scifi_plane_vert_box = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;HPT_scifi_plane_vert_box&quot;</span>, <a class="code hl_variable" href="classHpt.html#aa5f1190933556f5219f08fc87ba7bcf1">HPTrackerX</a> / 2, <a class="code hl_variable" href="classHpt.html#a397a0e7549231d63ffc0a58351b64e8a">HPTrackerY</a> / 2, <a class="code hl_variable" href="classHpt.html#a68974876575e946109f93e3b687b7a35">scifimat_z</a> / 2);</div>
-<div class="line"><span class="lineno">  274</span>        TGeoVolume* HPT_scifi_plane_vert_volume = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;HPT_scifi_plane_vert&quot;</span>, HPT_scifi_plane_vert_box, SciFiMat);</div>
-<div class="line"><span class="lineno">  275</span>        HPT_scifi_plane_vert_volume-&gt;SetVisibility(1);</div>
-<div class="line"><span class="lineno">  276</span> </div>
-<div class="line"><span class="lineno">  277</span>        <span class="comment">//SciFi mats</span></div>
-<div class="line"><span class="lineno">  278</span>        TGeoBBox* HPT_scifimat_hor_box = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;HPT_scifimat_hor_box&quot;</span>, <a class="code hl_variable" href="classHpt.html#a9421203797eea53ae0031c76e9a3e581">scifimat_hor</a> / 2, <a class="code hl_variable" href="classHpt.html#a05a86778c55b226176196f1ecc513b0a">scifimat_width</a> / 2, <a class="code hl_variable" href="classHpt.html#a68974876575e946109f93e3b687b7a35">scifimat_z</a> / 2);</div>
-<div class="line"><span class="lineno">  279</span>        TGeoVolume* HPT_scifimat_hor_volume = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;HPT_scifimat_hor&quot;</span>, HPT_scifimat_hor_box, SciFiMat);</div>
-<div class="line"><span class="lineno">  280</span>        HPT_scifimat_hor_volume-&gt;SetLineColor(kCyan);</div>
-<div class="line"><span class="lineno">  281</span> </div>
-<div class="line"><span class="lineno">  282</span>        TGeoBBox* HPT_scifimat_vert_box = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;HPT_scifimat_vert_box&quot;</span>, <a class="code hl_variable" href="classHpt.html#a05a86778c55b226176196f1ecc513b0a">scifimat_width</a> / 2, <a class="code hl_variable" href="classHpt.html#ac89a010d324fd8965167c5f4450ca727">scifimat_vert</a> / 2, <a class="code hl_variable" href="classHpt.html#a68974876575e946109f93e3b687b7a35">scifimat_z</a> / 2);</div>
-<div class="line"><span class="lineno">  283</span>        TGeoVolume* HPT_scifimat_vert_volume = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;HPT_scifimat_vert&quot;</span>, HPT_scifimat_vert_box, SciFiMat);</div>
-<div class="line"><span class="lineno">  284</span>        HPT_scifimat_vert_volume-&gt;SetLineColor(kGreen);</div>
-<div class="line"><span class="lineno">  285</span> </div>
-<div class="line"><span class="lineno">  286</span>        AddSensitiveVolume(HPT_scifimat_hor_volume);</div>
-<div class="line"><span class="lineno">  287</span>        AddSensitiveVolume(HPT_scifimat_vert_volume);</div>
-<div class="line"><span class="lineno">  288</span> </div>
-<div class="line"><span class="lineno">  289</span>        <span class="comment">// Creating physical volumes and multiply</span></div>
-<div class="line"><span class="lineno">  290</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; <a class="code hl_variable" href="classHpt.html#afd858b67defc34831a0c0e81e6b16d73">n_hor_planes</a>; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>++){</div>
-<div class="line"><span class="lineno">  291</span>            HPT_scifi_plane_hor_volume-&gt;AddNode(HPT_scifimat_hor_volume, i+1, <span class="keyword">new</span> TGeoTranslation(0, (-(<a class="code hl_variable" href="classHpt.html#afd858b67defc34831a0c0e81e6b16d73">n_hor_planes</a>-1)/2.0 + i)*<a class="code hl_variable" href="classHpt.html#a05a86778c55b226176196f1ecc513b0a">scifimat_width</a>, 0));</div>
-<div class="line"><span class="lineno">  292</span>        }</div>
-<div class="line"><span class="lineno">  293</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; <a class="code hl_variable" href="classHpt.html#a77bf87a819329024bd4626580948d4a6">n_vert_planes</a>; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>++){</div>
-<div class="line"><span class="lineno">  294</span>            HPT_scifi_plane_vert_volume-&gt;AddNode(HPT_scifimat_vert_volume, 100+i+1 , <span class="keyword">new</span> TGeoTranslation((-(<a class="code hl_variable" href="classHpt.html#a77bf87a819329024bd4626580948d4a6">n_vert_planes</a>-1)/2.0 + i)*<a class="code hl_variable" href="classHpt.html#a05a86778c55b226176196f1ecc513b0a">scifimat_width</a>, 0, 0));</div>
-<div class="line"><span class="lineno">  295</span>        }</div>
-<div class="line"><span class="lineno">  296</span> </div>
-<div class="line"><span class="lineno">  297</span>        volDT-&gt;AddNode(HPT_support_volume,     0, <span class="keyword">new</span> TGeoTranslation(0, 0, - <a class="code hl_variable" href="classHpt.html#a96ba458fc45d6f962b28e16a65871486">DimZ</a> / 2 + <a class="code hl_variable" href="classHpt.html#a7aaf179b3b293c13135e8719c6d9a0d2">support_z</a> / 2));</div>
-<div class="line"><span class="lineno">  298</span>        volDT-&gt;AddNode(HPT_scifi_plane_hor_volume, 0, <span class="keyword">new</span> TGeoTranslation(0, 0, - <a class="code hl_variable" href="classHpt.html#a96ba458fc45d6f962b28e16a65871486">DimZ</a> / 2 + <a class="code hl_variable" href="classHpt.html#a7aaf179b3b293c13135e8719c6d9a0d2">support_z</a> + <a class="code hl_variable" href="classHpt.html#a68974876575e946109f93e3b687b7a35">scifimat_z</a> / 2));</div>
-<div class="line"><span class="lineno">  299</span>        volDT-&gt;AddNode(HPT_scifi_plane_vert_volume, 0, <span class="keyword">new</span> TGeoTranslation(0, 0, - <a class="code hl_variable" href="classHpt.html#a96ba458fc45d6f962b28e16a65871486">DimZ</a> / 2 + <a class="code hl_variable" href="classHpt.html#a7aaf179b3b293c13135e8719c6d9a0d2">support_z</a> + <a class="code hl_variable" href="classHpt.html#a68974876575e946109f93e3b687b7a35">scifimat_z</a> + <a class="code hl_variable" href="classHpt.html#a68974876575e946109f93e3b687b7a35">scifimat_z</a> / 2));</div>
-<div class="line"><span class="lineno">  300</span>        volDT-&gt;AddNode(HPT_honeycomb_volume,   0, <span class="keyword">new</span> TGeoTranslation(0, 0, - <a class="code hl_variable" href="classHpt.html#a96ba458fc45d6f962b28e16a65871486">DimZ</a> / 2 + <a class="code hl_variable" href="classHpt.html#a7aaf179b3b293c13135e8719c6d9a0d2">support_z</a> + 2 * <a class="code hl_variable" href="classHpt.html#a68974876575e946109f93e3b687b7a35">scifimat_z</a> + <a class="code hl_variable" href="classHpt.html#abc0b4be0322dc930fb521a1564b54fe6">honeycomb_z</a> / 2));</div>
-<div class="line"><span class="lineno">  301</span>        volDT-&gt;AddNode(HPT_support_volume,     1, <span class="keyword">new</span> TGeoTranslation(0, 0, - <a class="code hl_variable" href="classHpt.html#a96ba458fc45d6f962b28e16a65871486">DimZ</a> / 2 + <a class="code hl_variable" href="classHpt.html#a7aaf179b3b293c13135e8719c6d9a0d2">support_z</a> + 2 * <a class="code hl_variable" href="classHpt.html#a68974876575e946109f93e3b687b7a35">scifimat_z</a> + <a class="code hl_variable" href="classHpt.html#abc0b4be0322dc930fb521a1564b54fe6">honeycomb_z</a> + <a class="code hl_variable" href="classHpt.html#a7aaf179b3b293c13135e8719c6d9a0d2">support_z</a> / 2));</div>
-<div class="line"><span class="lineno">  303</span> </div>
-<div class="line"><span class="lineno">  304</span>        Double_t first_DT_position = -DZMagnetizedRegion/2 + DZTarget + <a class="code hl_variable" href="classHpt.html#a96ba458fc45d6f962b28e16a65871486">DimZ</a>/2;</div>
-<div class="line"><span class="lineno">  305</span>        <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i=0;<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>&lt;<a class="code hl_variable" href="classHpt.html#aa9c789b21c8d4cd04fbd3cd132af6fc4">fnHPT</a>;<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>++){</div>
-<div class="line"><span class="lineno">  306</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; <a class="code hl_variable" href="classHpt.html#a5a0e2930d3fe42163b9c3f334b380f9e">fntarget</a>; j++){</div>
-<div class="line"><span class="lineno">  307</span>                volMagRegion-&gt;AddNode(volDT,(i+1)*1000+j*<a class="code hl_variable" href="classHpt.html#aa9c789b21c8d4cd04fbd3cd132af6fc4">fnHPT</a>,<span class="keyword">new</span> TGeoTranslation(0,0, first_DT_position + i*(<a class="code hl_variable" href="classHpt.html#a3b74a95a9f514d134a84b1385648164d">fDistance</a>+<a class="code hl_variable" href="classHpt.html#a96ba458fc45d6f962b28e16a65871486">DimZ</a>) + j*(DZTarget+ <a class="code hl_variable" href="classHpt.html#aa9c789b21c8d4cd04fbd3cd132af6fc4">fnHPT</a> * <a class="code hl_variable" href="classHpt.html#a96ba458fc45d6f962b28e16a65871486">DimZ</a> + (<a class="code hl_variable" href="classHpt.html#aa9c789b21c8d4cd04fbd3cd132af6fc4">fnHPT</a>-1)*<a class="code hl_variable" href="classHpt.html#a3b74a95a9f514d134a84b1385648164d">fDistance</a>)));</div>
-<div class="line"><span class="lineno">  308</span>            }</div>
-<div class="line"><span class="lineno">  309</span>        }</div>
-<div class="line"><span class="lineno">  310</span>    }</div>
-<div class="line"><span class="lineno">  311</span>}</div>
+<div class="line"><span class="lineno">  262</span>        volDT-&gt;AddNode(HPT_support_volume,     0, <span class="keyword">new</span> TGeoTranslation(0, 0, - <a class="code hl_variable" href="classHpt.html#a96ba458fc45d6f962b28e16a65871486">DimZ</a> / 2 + <a class="code hl_variable" href="classHpt.html#a7aaf179b3b293c13135e8719c6d9a0d2">support_z</a> / 2));</div>
+<div class="line"><span class="lineno">  263</span>        volDT-&gt;AddNode(HPT_scifi_plane_hor_volume, 0, <span class="keyword">new</span> TGeoTranslation(0, 0, - <a class="code hl_variable" href="classHpt.html#a96ba458fc45d6f962b28e16a65871486">DimZ</a> / 2 + <a class="code hl_variable" href="classHpt.html#a7aaf179b3b293c13135e8719c6d9a0d2">support_z</a> + <a class="code hl_variable" href="classHpt.html#a68974876575e946109f93e3b687b7a35">scifimat_z</a> / 2));</div>
+<div class="line"><span class="lineno">  264</span>        volDT-&gt;AddNode(HPT_scifi_plane_vert_volume, 0, <span class="keyword">new</span> TGeoTranslation(0, 0, - <a class="code hl_variable" href="classHpt.html#a96ba458fc45d6f962b28e16a65871486">DimZ</a> / 2 + <a class="code hl_variable" href="classHpt.html#a7aaf179b3b293c13135e8719c6d9a0d2">support_z</a> + <a class="code hl_variable" href="classHpt.html#a68974876575e946109f93e3b687b7a35">scifimat_z</a> + <a class="code hl_variable" href="classHpt.html#a68974876575e946109f93e3b687b7a35">scifimat_z</a> / 2));</div>
+<div class="line"><span class="lineno">  265</span>        volDT-&gt;AddNode(HPT_honeycomb_volume,   0, <span class="keyword">new</span> TGeoTranslation(0, 0, - <a class="code hl_variable" href="classHpt.html#a96ba458fc45d6f962b28e16a65871486">DimZ</a> / 2 + <a class="code hl_variable" href="classHpt.html#a7aaf179b3b293c13135e8719c6d9a0d2">support_z</a> + 2 * <a class="code hl_variable" href="classHpt.html#a68974876575e946109f93e3b687b7a35">scifimat_z</a> + <a class="code hl_variable" href="classHpt.html#abc0b4be0322dc930fb521a1564b54fe6">honeycomb_z</a> / 2));</div>
+<div class="line"><span class="lineno">  266</span>        volDT-&gt;AddNode(HPT_support_volume,     1, <span class="keyword">new</span> TGeoTranslation(0, 0, - <a class="code hl_variable" href="classHpt.html#a96ba458fc45d6f962b28e16a65871486">DimZ</a> / 2 + <a class="code hl_variable" href="classHpt.html#a7aaf179b3b293c13135e8719c6d9a0d2">support_z</a> + 2 * <a class="code hl_variable" href="classHpt.html#a68974876575e946109f93e3b687b7a35">scifimat_z</a> + <a class="code hl_variable" href="classHpt.html#abc0b4be0322dc930fb521a1564b54fe6">honeycomb_z</a> + <a class="code hl_variable" href="classHpt.html#a7aaf179b3b293c13135e8719c6d9a0d2">support_z</a> / 2));</div>
+<div class="line"><span class="lineno">  268</span> </div>
+<div class="line"><span class="lineno">  269</span>        Double_t first_DT_position = -DZMagnetizedRegion/2 + DZTarget + <a class="code hl_variable" href="classHpt.html#a96ba458fc45d6f962b28e16a65871486">DimZ</a>/2;</div>
+<div class="line"><span class="lineno">  270</span>        <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i=0;<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>&lt;<a class="code hl_variable" href="classHpt.html#aa9c789b21c8d4cd04fbd3cd132af6fc4">fnHPT</a>;<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>++){</div>
+<div class="line"><span class="lineno">  271</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; <a class="code hl_variable" href="classHpt.html#a5a0e2930d3fe42163b9c3f334b380f9e">fntarget</a>; j++){</div>
+<div class="line"><span class="lineno">  272</span>                volMagRegion-&gt;AddNode(volDT,(i+1)*1000+j*<a class="code hl_variable" href="classHpt.html#aa9c789b21c8d4cd04fbd3cd132af6fc4">fnHPT</a>,<span class="keyword">new</span> TGeoTranslation(0,0, first_DT_position + i*(<a class="code hl_variable" href="classHpt.html#a3b74a95a9f514d134a84b1385648164d">fDistance</a>+<a class="code hl_variable" href="classHpt.html#a96ba458fc45d6f962b28e16a65871486">DimZ</a>) + j*(DZTarget+ <a class="code hl_variable" href="classHpt.html#aa9c789b21c8d4cd04fbd3cd132af6fc4">fnHPT</a> * <a class="code hl_variable" href="classHpt.html#a96ba458fc45d6f962b28e16a65871486">DimZ</a> + (<a class="code hl_variable" href="classHpt.html#aa9c789b21c8d4cd04fbd3cd132af6fc4">fnHPT</a>-1)*<a class="code hl_variable" href="classHpt.html#a3b74a95a9f514d134a84b1385648164d">fDistance</a>)));</div>
+<div class="line"><span class="lineno">  273</span>            }</div>
+<div class="line"><span class="lineno">  274</span>        }</div>
+<div class="line"><span class="lineno">  275</span>    }</div>
+<div class="line"><span class="lineno">  276</span>}</div>
 <div class="ttc" id="aclassHpt_html_a05a86778c55b226176196f1ecc513b0a"><div class="ttname"><a href="classHpt.html#a05a86778c55b226176196f1ecc513b0a">Hpt::scifimat_width</a></div><div class="ttdeci">Double_t scifimat_width</div><div class="ttdef"><b>Definition</b> <a href="HPT_8h_source.html#l00124">HPT.h:124</a></div></div>
 <div class="ttc" id="aclassHpt_html_a397a0e7549231d63ffc0a58351b64e8a"><div class="ttname"><a href="classHpt.html#a397a0e7549231d63ffc0a58351b64e8a">Hpt::HPTrackerY</a></div><div class="ttdeci">Double_t HPTrackerY</div><div class="ttdef"><b>Definition</b> <a href="HPT_8h_source.html#l00121">HPT.h:121</a></div></div>
 <div class="ttc" id="aclassHpt_html_a3b3efada00055e86a005e4128d02aa27"><div class="ttname"><a href="classHpt.html#a3b3efada00055e86a005e4128d02aa27">Hpt::InitMedium</a></div><div class="ttdeci">Int_t InitMedium(const char *name)</div><div class="ttdef"><b>Definition</b> <a href="HPT_8cxx_source.html#l00144">HPT.cxx:144</a></div></div>
 <div class="ttc" id="aclassHpt_html_a3b74a95a9f514d134a84b1385648164d"><div class="ttname"><a href="classHpt.html#a3b74a95a9f514d134a84b1385648164d">Hpt::fDistance</a></div><div class="ttdeci">Double_t fDistance</div><div class="ttdef"><b>Definition</b> <a href="HPT_8h_source.html#l00117">HPT.h:117</a></div></div>
-<div class="ttc" id="aclassHpt_html_a4260c7c5094bbd74a76d3e3a2502e9f4"><div class="ttname"><a href="classHpt.html#a4260c7c5094bbd74a76d3e3a2502e9f4">Hpt::fConcreteX</a></div><div class="ttdeci">Double_t fConcreteX</div><div class="ttdef"><b>Definition</b> <a href="HPT_8h_source.html#l00111">HPT.h:111</a></div></div>
 <div class="ttc" id="aclassHpt_html_a46dd102699b47bf152759a53e8526eb3"><div class="ttname"><a href="classHpt.html#a46dd102699b47bf152759a53e8526eb3">Hpt::fDesign</a></div><div class="ttdeci">Double_t fDesign</div><div class="ttdef"><b>Definition</b> <a href="HPT_8h_source.html#l00116">HPT.h:116</a></div></div>
 <div class="ttc" id="aclassHpt_html_a5a0e2930d3fe42163b9c3f334b380f9e"><div class="ttname"><a href="classHpt.html#a5a0e2930d3fe42163b9c3f334b380f9e">Hpt::fntarget</a></div><div class="ttdeci">Int_t fntarget</div><div class="ttdef"><b>Definition</b> <a href="HPT_8h_source.html#l00136">HPT.h:136</a></div></div>
 <div class="ttc" id="aclassHpt_html_a68974876575e946109f93e3b687b7a35"><div class="ttname"><a href="classHpt.html#a68974876575e946109f93e3b687b7a35">Hpt::scifimat_z</a></div><div class="ttdeci">Double_t scifimat_z</div><div class="ttdef"><b>Definition</b> <a href="HPT_8h_source.html#l00127">HPT.h:127</a></div></div>
-<div class="ttc" id="aclassHpt_html_a76dc887d4d9299e6b9f2f80fcc456453"><div class="ttname"><a href="classHpt.html#a76dc887d4d9299e6b9f2f80fcc456453">Hpt::fConcreteZ</a></div><div class="ttdeci">Double_t fConcreteZ</div><div class="ttdef"><b>Definition</b> <a href="HPT_8h_source.html#l00113">HPT.h:113</a></div></div>
 <div class="ttc" id="aclassHpt_html_a77bf87a819329024bd4626580948d4a6"><div class="ttname"><a href="classHpt.html#a77bf87a819329024bd4626580948d4a6">Hpt::n_vert_planes</a></div><div class="ttdeci">Int_t n_vert_planes</div><div class="ttdef"><b>Definition</b> <a href="HPT_8h_source.html#l00131">HPT.h:131</a></div></div>
 <div class="ttc" id="aclassHpt_html_a7aaf179b3b293c13135e8719c6d9a0d2"><div class="ttname"><a href="classHpt.html#a7aaf179b3b293c13135e8719c6d9a0d2">Hpt::support_z</a></div><div class="ttdeci">Double_t support_z</div><div class="ttdef"><b>Definition</b> <a href="HPT_8h_source.html#l00128">HPT.h:128</a></div></div>
 <div class="ttc" id="aclassHpt_html_a9421203797eea53ae0031c76e9a3e581"><div class="ttname"><a href="classHpt.html#a9421203797eea53ae0031c76e9a3e581">Hpt::scifimat_hor</a></div><div class="ttdeci">Double_t scifimat_hor</div><div class="ttdef"><b>Definition</b> <a href="HPT_8h_source.html#l00125">HPT.h:125</a></div></div>
 <div class="ttc" id="aclassHpt_html_aa5f1190933556f5219f08fc87ba7bcf1"><div class="ttname"><a href="classHpt.html#aa5f1190933556f5219f08fc87ba7bcf1">Hpt::HPTrackerX</a></div><div class="ttdeci">Double_t HPTrackerX</div><div class="ttdef"><b>Definition</b> <a href="HPT_8h_source.html#l00120">HPT.h:120</a></div></div>
 <div class="ttc" id="aclassHpt_html_aa9c789b21c8d4cd04fbd3cd132af6fc4"><div class="ttname"><a href="classHpt.html#aa9c789b21c8d4cd04fbd3cd132af6fc4">Hpt::fnHPT</a></div><div class="ttdeci">Int_t fnHPT</div><div class="ttdef"><b>Definition</b> <a href="HPT_8h_source.html#l00118">HPT.h:118</a></div></div>
-<div class="ttc" id="aclassHpt_html_ab18f3de67dda50272dda55c743bb0c6d"><div class="ttname"><a href="classHpt.html#ab18f3de67dda50272dda55c743bb0c6d">Hpt::zSizeMudet</a></div><div class="ttdeci">Double_t zSizeMudet</div><div class="ttdef"><b>Definition</b> <a href="HPT_8h_source.html#l00110">HPT.h:110</a></div></div>
 <div class="ttc" id="aclassHpt_html_abc0b4be0322dc930fb521a1564b54fe6"><div class="ttname"><a href="classHpt.html#abc0b4be0322dc930fb521a1564b54fe6">Hpt::honeycomb_z</a></div><div class="ttdeci">Double_t honeycomb_z</div><div class="ttdef"><b>Definition</b> <a href="HPT_8h_source.html#l00129">HPT.h:129</a></div></div>
 <div class="ttc" id="aclassHpt_html_ac89a010d324fd8965167c5f4450ca727"><div class="ttname"><a href="classHpt.html#ac89a010d324fd8965167c5f4450ca727">Hpt::scifimat_vert</a></div><div class="ttdeci">Double_t scifimat_vert</div><div class="ttdef"><b>Definition</b> <a href="HPT_8h_source.html#l00126">HPT.h:126</a></div></div>
-<div class="ttc" id="aclassHpt_html_ae46eda4265c80562e1dda9b79fd0d2ba"><div class="ttname"><a href="classHpt.html#ae46eda4265c80562e1dda9b79fd0d2ba">Hpt::fConcreteY</a></div><div class="ttdeci">Double_t fConcreteY</div><div class="ttdef"><b>Definition</b> <a href="HPT_8h_source.html#l00112">HPT.h:112</a></div></div>
 <div class="ttc" id="aclassHpt_html_afd858b67defc34831a0c0e81e6b16d73"><div class="ttname"><a href="classHpt.html#afd858b67defc34831a0c0e81e6b16d73">Hpt::n_hor_planes</a></div><div class="ttdeci">Int_t n_hor_planes</div><div class="ttdef"><b>Definition</b> <a href="HPT_8h_source.html#l00130">HPT.h:130</a></div></div>
 <div class="ttc" id="anamespaceShipAna_html_aa4bf87f4d17f9d38b1d8f4d009bb54b3"><div class="ttname"><a href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">ShipAna.i</a></div><div class="ttdeci">int i</div><div class="ttdef"><b>Definition</b> <a href="ShipAna_8py_source.html#l00076">ShipAna.py:76</a></div></div>
 </div><!-- fragment -->
@@ -838,19 +799,19 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="HPT_8cxx_source.html#l00381">381</a> of file <a class="el" href="HPT_8cxx_source.html">HPT.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  382</span>{</div>
-<div class="line"><span class="lineno">  383</span>   <a class="code hl_variable" href="namespacegeometry__config.html#af69b95788121b533fa06b930f5e8bacd">nHPT</a> = <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a>/1000;</div>
-<div class="line"><span class="lineno">  384</span>   <span class="keywordtype">int</span> idir = (<a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a> - <a class="code hl_variable" href="namespacegeometry__config.html#af69b95788121b533fa06b930f5e8bacd">nHPT</a>*1000)/100;</div>
-<div class="line"><span class="lineno">  385</span> </div>
-<div class="line"><span class="lineno">  386</span>   <span class="keywordflow">if</span> (idir == 1) ishor = kFALSE;</div>
-<div class="line"><span class="lineno">  387</span>   <span class="keywordflow">else</span> <span class="keywordflow">if</span> (idir == 0) ishor = kTRUE;</div>
-<div class="line"><span class="lineno">  388</span> </div>
-<div class="line"><span class="lineno">  389</span>   nplane = (<a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a> - <a class="code hl_variable" href="namespacegeometry__config.html#af69b95788121b533fa06b930f5e8bacd">nHPT</a>*1000 - idir*100);</div>
-<div class="line"><span class="lineno">  390</span> </div>
-<div class="line"><span class="lineno">  391</span> </div>
-<div class="line"><span class="lineno">  392</span>}</div>
-<div class="ttc" id="anamespacegeometry__config_html_af69b95788121b533fa06b930f5e8bacd"><div class="ttname"><a href="namespacegeometry__config.html#af69b95788121b533fa06b930f5e8bacd">geometry_config.nHPT</a></div><div class="ttdeci">nHPT</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00785">geometry_config.py:785</a></div></div>
+<p class="definition">Definition at line <a class="el" href="HPT_8cxx_source.html#l00346">346</a> of file <a class="el" href="HPT_8cxx_source.html">HPT.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  347</span>{</div>
+<div class="line"><span class="lineno">  348</span>   <a class="code hl_variable" href="namespacegeometry__config.html#af69b95788121b533fa06b930f5e8bacd">nHPT</a> = <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a>/1000;</div>
+<div class="line"><span class="lineno">  349</span>   <span class="keywordtype">int</span> idir = (<a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a> - <a class="code hl_variable" href="namespacegeometry__config.html#af69b95788121b533fa06b930f5e8bacd">nHPT</a>*1000)/100;</div>
+<div class="line"><span class="lineno">  350</span> </div>
+<div class="line"><span class="lineno">  351</span>   <span class="keywordflow">if</span> (idir == 1) ishor = kFALSE;</div>
+<div class="line"><span class="lineno">  352</span>   <span class="keywordflow">else</span> <span class="keywordflow">if</span> (idir == 0) ishor = kTRUE;</div>
+<div class="line"><span class="lineno">  353</span> </div>
+<div class="line"><span class="lineno">  354</span>   nplane = (<a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a> - <a class="code hl_variable" href="namespacegeometry__config.html#af69b95788121b533fa06b930f5e8bacd">nHPT</a>*1000 - idir*100);</div>
+<div class="line"><span class="lineno">  355</span> </div>
+<div class="line"><span class="lineno">  356</span> </div>
+<div class="line"><span class="lineno">  357</span>}</div>
+<div class="ttc" id="anamespacegeometry__config_html_af69b95788121b533fa06b930f5e8bacd"><div class="ttname"><a href="namespacegeometry__config.html#af69b95788121b533fa06b930f5e8bacd">geometry_config.nHPT</a></div><div class="ttdeci">nHPT</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00674">geometry_config.py:674</a></div></div>
 <div class="ttc" id="anamespacemake__nTuple__SBT_html_adad3143572780a2fde967f05ef62ba37"><div class="ttname"><a href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">make_nTuple_SBT.detID</a></div><div class="ttdeci">detID</div><div class="ttdef"><b>Definition</b> <a href="make__nTuple__SBT_8py_source.html#l00249">make_nTuple_SBT.py:249</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -878,10 +839,10 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="HPT_8cxx_source.html#l00360">360</a> of file <a class="el" href="HPT_8cxx_source.html">HPT.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  361</span>{</div>
-<div class="line"><span class="lineno">  362</span>    <a class="code hl_variable" href="classHpt.html#ab7c4b33ebb7376fccb2333558209ba8a">fHptPointCollection</a>-&gt;Clear();</div>
-<div class="line"><span class="lineno">  363</span>}</div>
+<p class="definition">Definition at line <a class="el" href="HPT_8cxx_source.html#l00325">325</a> of file <a class="el" href="HPT_8cxx_source.html">HPT.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  326</span>{</div>
+<div class="line"><span class="lineno">  327</span>    <a class="code hl_variable" href="classHpt.html#ab7c4b33ebb7376fccb2333558209ba8a">fHptPointCollection</a>-&gt;Clear();</div>
+<div class="line"><span class="lineno">  328</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -966,11 +927,11 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Gets the produced collections </p>
 
-<p class="definition">Definition at line <a class="el" href="HPT_8cxx_source.html#l00394">394</a> of file <a class="el" href="HPT_8cxx_source.html">HPT.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  395</span>{</div>
-<div class="line"><span class="lineno">  396</span>    <span class="keywordflow">if</span> (iColl == 0) { <span class="keywordflow">return</span> <a class="code hl_variable" href="classHpt.html#ab7c4b33ebb7376fccb2333558209ba8a">fHptPointCollection</a>; }</div>
-<div class="line"><span class="lineno">  397</span>    <span class="keywordflow">else</span> { <span class="keywordflow">return</span> NULL; }</div>
-<div class="line"><span class="lineno">  398</span>}</div>
+<p class="definition">Definition at line <a class="el" href="HPT_8cxx_source.html#l00359">359</a> of file <a class="el" href="HPT_8cxx_source.html">HPT.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  360</span>{</div>
+<div class="line"><span class="lineno">  361</span>    <span class="keywordflow">if</span> (iColl == 0) { <span class="keywordflow">return</span> <a class="code hl_variable" href="classHpt.html#ab7c4b33ebb7376fccb2333558209ba8a">fHptPointCollection</a>; }</div>
+<div class="line"><span class="lineno">  362</span>    <span class="keywordflow">else</span> { <span class="keywordflow">return</span> NULL; }</div>
+<div class="line"><span class="lineno">  363</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1219,57 +1180,57 @@ Private Attributes</h2></td></tr>
 <p>this method is called for each step during simulation (see FairMCApplication::Stepping()) </p>
 <p>This method is called from the MC stepping</p>
 
-<p class="definition">Definition at line <a class="el" href="HPT_8cxx_source.html#l00313">313</a> of file <a class="el" href="HPT_8cxx_source.html">HPT.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  314</span>{</div>
-<div class="line"><span class="lineno">  316</span>    <span class="comment">//Set parameters at entrance of volume. Reset ELoss.</span></div>
-<div class="line"><span class="lineno">  317</span>    <span class="keywordflow">if</span> ( <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;IsTrackEntering() ) {</div>
-<div class="line"><span class="lineno">  318</span>        <a class="code hl_variable" href="classHpt.html#a548233c89d0bc33a5744027a08dd128e">fELoss</a>  = 0.;</div>
-<div class="line"><span class="lineno">  319</span>        <a class="code hl_variable" href="classHpt.html#aa894ced8bf359e753186b6840921eed3">fTime</a>   = <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;TrackTime() * 1.0e09;</div>
-<div class="line"><span class="lineno">  320</span>        <a class="code hl_variable" href="classHpt.html#a40423203a99f4f70a745bbc04a42dbeb">fLength</a> = <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;TrackLength();</div>
-<div class="line"><span class="lineno">  321</span>        <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;TrackPosition(<a class="code hl_variable" href="classHpt.html#a279ddcfb1c586e547888de07ff82cc25">fPos</a>);</div>
-<div class="line"><span class="lineno">  322</span>        <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;TrackMomentum(<a class="code hl_variable" href="classHpt.html#a59be867882531141f31d6f20f9f36ffd">fMom</a>);</div>
-<div class="line"><span class="lineno">  323</span>    }</div>
-<div class="line"><span class="lineno">  324</span>    <span class="comment">// Sum energy loss for all steps in the active volume</span></div>
-<div class="line"><span class="lineno">  325</span>    <a class="code hl_variable" href="classHpt.html#a548233c89d0bc33a5744027a08dd128e">fELoss</a> += <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;Edep();</div>
-<div class="line"><span class="lineno">  326</span> </div>
-<div class="line"><span class="lineno">  327</span>    <span class="comment">// Create muonPoint at exit of active volume</span></div>
-<div class="line"><span class="lineno">  328</span>    <span class="keywordflow">if</span> ( <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;IsTrackExiting()     ||</div>
-<div class="line"><span class="lineno">  329</span>         <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;IsTrackStop()        ||</div>
-<div class="line"><span class="lineno">  330</span>         <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;IsTrackDisappeared() ){</div>
-<div class="line"><span class="lineno">  331</span>        <span class="keywordflow">if</span> (<a class="code hl_variable" href="classHpt.html#a548233c89d0bc33a5744027a08dd128e">fELoss</a> == 0. ) { <span class="keywordflow">return</span> kFALSE; }</div>
-<div class="line"><span class="lineno">  332</span>        TParticle* <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>=<a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;GetStack()-&gt;GetCurrentTrack();</div>
-<div class="line"><span class="lineno">  333</span>        Int_t pdgCode = <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetPdgCode();</div>
-<div class="line"><span class="lineno">  334</span>        <a class="code hl_variable" href="classHpt.html#a4920dc2fe8fd22a9747f9ccceeaf3a4c">fTrackID</a>  = <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;GetStack()-&gt;GetCurrentTrackNumber();</div>
-<div class="line"><span class="lineno">  335</span> </div>
-<div class="line"><span class="lineno">  336</span>        <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;CurrentVolID(<a class="code hl_variable" href="classHpt.html#a2dc0901a74600cb03443376a1b4df56d">fVolumeID</a>);</div>
-<div class="line"><span class="lineno">  337</span>        Int_t <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a> = <a class="code hl_variable" href="classHpt.html#a2dc0901a74600cb03443376a1b4df56d">fVolumeID</a>;</div>
-<div class="line"><span class="lineno">  338</span>        Int_t TTstationID;</div>
-<div class="line"><span class="lineno">  339</span>        <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;CurrentVolOffID(2, TTstationID);</div>
-<div class="line"><span class="lineno">  340</span>        <a class="code hl_variable" href="classHpt.html#a2dc0901a74600cb03443376a1b4df56d">fVolumeID</a> = TTstationID + <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a>;</div>
-<div class="line"><span class="lineno">  341</span> </div>
-<div class="line"><span class="lineno">  342</span>        TLorentzVector Pos;</div>
-<div class="line"><span class="lineno">  343</span>        <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;TrackPosition(Pos);</div>
-<div class="line"><span class="lineno">  344</span>        Double_t xmean = (<a class="code hl_variable" href="classHpt.html#a279ddcfb1c586e547888de07ff82cc25">fPos</a>.X()+Pos.X())/2. ;</div>
-<div class="line"><span class="lineno">  345</span>        Double_t ymean = (<a class="code hl_variable" href="classHpt.html#a279ddcfb1c586e547888de07ff82cc25">fPos</a>.Y()+Pos.Y())/2. ;</div>
-<div class="line"><span class="lineno">  346</span>        Double_t zmean = (<a class="code hl_variable" href="classHpt.html#a279ddcfb1c586e547888de07ff82cc25">fPos</a>.Z()+Pos.Z())/2. ;</div>
-<div class="line"><span class="lineno">  347</span> </div>
-<div class="line"><span class="lineno">  348</span>        <a class="code hl_function" href="classHpt.html#a641f758132c33c6b7608248d13ae0dca">AddHit</a>(<a class="code hl_variable" href="classHpt.html#a4920dc2fe8fd22a9747f9ccceeaf3a4c">fTrackID</a>, <a class="code hl_variable" href="classHpt.html#a2dc0901a74600cb03443376a1b4df56d">fVolumeID</a>, TVector3(xmean, ymean,  zmean),</div>
-<div class="line"><span class="lineno">  349</span>               TVector3(<a class="code hl_variable" href="classHpt.html#a59be867882531141f31d6f20f9f36ffd">fMom</a>.Px(), <a class="code hl_variable" href="classHpt.html#a59be867882531141f31d6f20f9f36ffd">fMom</a>.Py(), <a class="code hl_variable" href="classHpt.html#a59be867882531141f31d6f20f9f36ffd">fMom</a>.Pz()),</div>
-<div class="line"><span class="lineno">  350</span>               <a class="code hl_variable" href="classHpt.html#aa894ced8bf359e753186b6840921eed3">fTime</a>, <a class="code hl_variable" href="classHpt.html#a40423203a99f4f70a745bbc04a42dbeb">fLength</a>,<a class="code hl_variable" href="classHpt.html#a548233c89d0bc33a5744027a08dd128e">fELoss</a>, pdgCode);</div>
-<div class="line"><span class="lineno">  351</span> </div>
-<div class="line"><span class="lineno">  352</span>        <span class="comment">// Increment number of muon det points in TParticle</span></div>
-<div class="line"><span class="lineno">  353</span>        <a class="code hl_class" href="classShipStack.html">ShipStack</a>* <a class="code hl_variable" href="namespacemakeCascade.html#a15662d966fe998f4f8b9b6547975083e">stack</a> = (<a class="code hl_class" href="classShipStack.html">ShipStack</a>*) <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;GetStack();</div>
-<div class="line"><span class="lineno">  354</span>        <a class="code hl_variable" href="namespacemakeCascade.html#a15662d966fe998f4f8b9b6547975083e">stack</a>-&gt;AddPoint(<a class="code hl_enumvalue" href="ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680aaec86bfba5dfd7dc4b46c5a4948071a7">ktauRpc</a>);</div>
-<div class="line"><span class="lineno">  355</span>    }</div>
-<div class="line"><span class="lineno">  356</span> </div>
-<div class="line"><span class="lineno">  357</span>    <span class="keywordflow">return</span> kTRUE;</div>
-<div class="line"><span class="lineno">  358</span>}</div>
+<p class="definition">Definition at line <a class="el" href="HPT_8cxx_source.html#l00278">278</a> of file <a class="el" href="HPT_8cxx_source.html">HPT.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  279</span>{</div>
+<div class="line"><span class="lineno">  281</span>    <span class="comment">//Set parameters at entrance of volume. Reset ELoss.</span></div>
+<div class="line"><span class="lineno">  282</span>    <span class="keywordflow">if</span> ( <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;IsTrackEntering() ) {</div>
+<div class="line"><span class="lineno">  283</span>        <a class="code hl_variable" href="classHpt.html#a548233c89d0bc33a5744027a08dd128e">fELoss</a>  = 0.;</div>
+<div class="line"><span class="lineno">  284</span>        <a class="code hl_variable" href="classHpt.html#aa894ced8bf359e753186b6840921eed3">fTime</a>   = <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;TrackTime() * 1.0e09;</div>
+<div class="line"><span class="lineno">  285</span>        <a class="code hl_variable" href="classHpt.html#a40423203a99f4f70a745bbc04a42dbeb">fLength</a> = <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;TrackLength();</div>
+<div class="line"><span class="lineno">  286</span>        <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;TrackPosition(<a class="code hl_variable" href="classHpt.html#a279ddcfb1c586e547888de07ff82cc25">fPos</a>);</div>
+<div class="line"><span class="lineno">  287</span>        <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;TrackMomentum(<a class="code hl_variable" href="classHpt.html#a59be867882531141f31d6f20f9f36ffd">fMom</a>);</div>
+<div class="line"><span class="lineno">  288</span>    }</div>
+<div class="line"><span class="lineno">  289</span>    <span class="comment">// Sum energy loss for all steps in the active volume</span></div>
+<div class="line"><span class="lineno">  290</span>    <a class="code hl_variable" href="classHpt.html#a548233c89d0bc33a5744027a08dd128e">fELoss</a> += <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;Edep();</div>
+<div class="line"><span class="lineno">  291</span> </div>
+<div class="line"><span class="lineno">  292</span>    <span class="comment">// Create muonPoint at exit of active volume</span></div>
+<div class="line"><span class="lineno">  293</span>    <span class="keywordflow">if</span> ( <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;IsTrackExiting()     ||</div>
+<div class="line"><span class="lineno">  294</span>         <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;IsTrackStop()        ||</div>
+<div class="line"><span class="lineno">  295</span>         <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;IsTrackDisappeared() ){</div>
+<div class="line"><span class="lineno">  296</span>        <span class="keywordflow">if</span> (<a class="code hl_variable" href="classHpt.html#a548233c89d0bc33a5744027a08dd128e">fELoss</a> == 0. ) { <span class="keywordflow">return</span> kFALSE; }</div>
+<div class="line"><span class="lineno">  297</span>        TParticle* <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>=<a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;GetStack()-&gt;GetCurrentTrack();</div>
+<div class="line"><span class="lineno">  298</span>        Int_t pdgCode = <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetPdgCode();</div>
+<div class="line"><span class="lineno">  299</span>        <a class="code hl_variable" href="classHpt.html#a4920dc2fe8fd22a9747f9ccceeaf3a4c">fTrackID</a>  = <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;GetStack()-&gt;GetCurrentTrackNumber();</div>
+<div class="line"><span class="lineno">  300</span> </div>
+<div class="line"><span class="lineno">  301</span>        <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;CurrentVolID(<a class="code hl_variable" href="classHpt.html#a2dc0901a74600cb03443376a1b4df56d">fVolumeID</a>);</div>
+<div class="line"><span class="lineno">  302</span>        Int_t <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a> = <a class="code hl_variable" href="classHpt.html#a2dc0901a74600cb03443376a1b4df56d">fVolumeID</a>;</div>
+<div class="line"><span class="lineno">  303</span>        Int_t TTstationID;</div>
+<div class="line"><span class="lineno">  304</span>        <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;CurrentVolOffID(2, TTstationID);</div>
+<div class="line"><span class="lineno">  305</span>        <a class="code hl_variable" href="classHpt.html#a2dc0901a74600cb03443376a1b4df56d">fVolumeID</a> = TTstationID + <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a>;</div>
+<div class="line"><span class="lineno">  306</span> </div>
+<div class="line"><span class="lineno">  307</span>        TLorentzVector Pos;</div>
+<div class="line"><span class="lineno">  308</span>        <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;TrackPosition(Pos);</div>
+<div class="line"><span class="lineno">  309</span>        Double_t xmean = (<a class="code hl_variable" href="classHpt.html#a279ddcfb1c586e547888de07ff82cc25">fPos</a>.X()+Pos.X())/2. ;</div>
+<div class="line"><span class="lineno">  310</span>        Double_t ymean = (<a class="code hl_variable" href="classHpt.html#a279ddcfb1c586e547888de07ff82cc25">fPos</a>.Y()+Pos.Y())/2. ;</div>
+<div class="line"><span class="lineno">  311</span>        Double_t zmean = (<a class="code hl_variable" href="classHpt.html#a279ddcfb1c586e547888de07ff82cc25">fPos</a>.Z()+Pos.Z())/2. ;</div>
+<div class="line"><span class="lineno">  312</span> </div>
+<div class="line"><span class="lineno">  313</span>        <a class="code hl_function" href="classHpt.html#a641f758132c33c6b7608248d13ae0dca">AddHit</a>(<a class="code hl_variable" href="classHpt.html#a4920dc2fe8fd22a9747f9ccceeaf3a4c">fTrackID</a>, <a class="code hl_variable" href="classHpt.html#a2dc0901a74600cb03443376a1b4df56d">fVolumeID</a>, TVector3(xmean, ymean,  zmean),</div>
+<div class="line"><span class="lineno">  314</span>               TVector3(<a class="code hl_variable" href="classHpt.html#a59be867882531141f31d6f20f9f36ffd">fMom</a>.Px(), <a class="code hl_variable" href="classHpt.html#a59be867882531141f31d6f20f9f36ffd">fMom</a>.Py(), <a class="code hl_variable" href="classHpt.html#a59be867882531141f31d6f20f9f36ffd">fMom</a>.Pz()),</div>
+<div class="line"><span class="lineno">  315</span>               <a class="code hl_variable" href="classHpt.html#aa894ced8bf359e753186b6840921eed3">fTime</a>, <a class="code hl_variable" href="classHpt.html#a40423203a99f4f70a745bbc04a42dbeb">fLength</a>,<a class="code hl_variable" href="classHpt.html#a548233c89d0bc33a5744027a08dd128e">fELoss</a>, pdgCode);</div>
+<div class="line"><span class="lineno">  316</span> </div>
+<div class="line"><span class="lineno">  317</span>        <span class="comment">// Increment number of muon det points in TParticle</span></div>
+<div class="line"><span class="lineno">  318</span>        <a class="code hl_class" href="classShipStack.html">ShipStack</a>* <a class="code hl_variable" href="namespacemakeCascade.html#a15662d966fe998f4f8b9b6547975083e">stack</a> = (<a class="code hl_class" href="classShipStack.html">ShipStack</a>*) <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;GetStack();</div>
+<div class="line"><span class="lineno">  319</span>        <a class="code hl_variable" href="namespacemakeCascade.html#a15662d966fe998f4f8b9b6547975083e">stack</a>-&gt;AddPoint(<a class="code hl_enumvalue" href="ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680aaec86bfba5dfd7dc4b46c5a4948071a7">ktauRpc</a>);</div>
+<div class="line"><span class="lineno">  320</span>    }</div>
+<div class="line"><span class="lineno">  321</span> </div>
+<div class="line"><span class="lineno">  322</span>    <span class="keywordflow">return</span> kTRUE;</div>
+<div class="line"><span class="lineno">  323</span>}</div>
 <div class="ttc" id="aShipDetectorList_8h_html_a1806da1a0fbae8ab81f7330906f65680aaec86bfba5dfd7dc4b46c5a4948071a7"><div class="ttname"><a href="ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680aaec86bfba5dfd7dc4b46c5a4948071a7">ktauRpc</a></div><div class="ttdeci">@ ktauRpc</div><div class="ttdef"><b>Definition</b> <a href="ShipDetectorList_8h_source.html#l00012">ShipDetectorList.h:12</a></div></div>
-<div class="ttc" id="aclassHpt_html_a641f758132c33c6b7608248d13ae0dca"><div class="ttname"><a href="classHpt.html#a641f758132c33c6b7608248d13ae0dca">Hpt::AddHit</a></div><div class="ttdeci">HptPoint * AddHit(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom, Double_t time, Double_t length, Double_t eLoss, Int_t pdgCode)</div><div class="ttdef"><b>Definition</b> <a href="HPT_8cxx_source.html#l00406">HPT.cxx:406</a></div></div>
+<div class="ttc" id="aclassHpt_html_a641f758132c33c6b7608248d13ae0dca"><div class="ttname"><a href="classHpt.html#a641f758132c33c6b7608248d13ae0dca">Hpt::AddHit</a></div><div class="ttdeci">HptPoint * AddHit(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom, Double_t time, Double_t length, Double_t eLoss, Int_t pdgCode)</div><div class="ttdef"><b>Definition</b> <a href="HPT_8cxx_source.html#l00371">HPT.cxx:371</a></div></div>
 <div class="ttc" id="aclassShipStack_html"><div class="ttname"><a href="classShipStack.html">ShipStack</a></div><div class="ttdef"><b>Definition</b> <a href="ShipStack_8h_source.html#l00046">ShipStack.h:47</a></div></div>
 <div class="ttc" id="anamespacemakeCascade_html_a15662d966fe998f4f8b9b6547975083e"><div class="ttname"><a href="namespacemakeCascade.html#a15662d966fe998f4f8b9b6547975083e">makeCascade.stack</a></div><div class="ttdeci">int stack</div><div class="ttdef"><b>Definition</b> <a href="makeCascade_8py_source.html#l00273">makeCascade.py:273</a></div></div>
 <div class="ttc" id="anamespacemakeDecay_html_a9c90b95001a4909a6c5383da1b3066d9"><div class="ttname"><a href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">makeDecay.p</a></div><div class="ttdeci">p</div><div class="ttdef"><b>Definition</b> <a href="makeDecay_8py_source.html#l00067">makeDecay.py:67</a></div></div>
-<div class="ttc" id="anamespacerun__simScript_html_a671e51e119017a06d69c162c6e24b051"><div class="ttname"><a href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">run_simScript.gMC</a></div><div class="ttdeci">gMC</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l00511">run_simScript.py:511</a></div></div>
+<div class="ttc" id="anamespacerun__simScript_html_a671e51e119017a06d69c162c6e24b051"><div class="ttname"><a href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">run_simScript.gMC</a></div><div class="ttdeci">gMC</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l00504">run_simScript.py:504</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1299,12 +1260,12 @@ Private Attributes</h2></td></tr>
  </p>
 <p>This will create a branch in the output tree called <a class="el" href="classHptPoint.html">HptPoint</a>, setting the last parameter to kFALSE means: this collection will not be written to the file, it will exist only during the simulation.</p>
 
-<p class="definition">Definition at line <a class="el" href="HPT_8cxx_source.html#l00366">366</a> of file <a class="el" href="HPT_8cxx_source.html">HPT.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  367</span>{</div>
-<div class="line"><span class="lineno">  368</span> </div>
-<div class="line"><span class="lineno">  375</span>    FairRootManager::Instance()-&gt;Register(<span class="stringliteral">&quot;HptPoint&quot;</span>, <span class="stringliteral">&quot;Hpt&quot;</span>,</div>
-<div class="line"><span class="lineno">  376</span>                                          <a class="code hl_variable" href="classHpt.html#ab7c4b33ebb7376fccb2333558209ba8a">fHptPointCollection</a>, kTRUE);</div>
-<div class="line"><span class="lineno">  377</span>}</div>
+<p class="definition">Definition at line <a class="el" href="HPT_8cxx_source.html#l00331">331</a> of file <a class="el" href="HPT_8cxx_source.html">HPT.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  332</span>{</div>
+<div class="line"><span class="lineno">  333</span> </div>
+<div class="line"><span class="lineno">  340</span>    FairRootManager::Instance()-&gt;Register(<span class="stringliteral">&quot;HptPoint&quot;</span>, <span class="stringliteral">&quot;Hpt&quot;</span>,</div>
+<div class="line"><span class="lineno">  341</span>                                          <a class="code hl_variable" href="classHpt.html#ab7c4b33ebb7376fccb2333558209ba8a">fHptPointCollection</a>, kTRUE);</div>
+<div class="line"><span class="lineno">  342</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1333,10 +1294,10 @@ Private Attributes</h2></td></tr>
 <p>has to be called after each event to reset the containers <br  />
  </p>
 
-<p class="definition">Definition at line <a class="el" href="HPT_8cxx_source.html#l00400">400</a> of file <a class="el" href="HPT_8cxx_source.html">HPT.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  401</span>{</div>
-<div class="line"><span class="lineno">  402</span>    <a class="code hl_variable" href="classHpt.html#ab7c4b33ebb7376fccb2333558209ba8a">fHptPointCollection</a>-&gt;Clear();</div>
-<div class="line"><span class="lineno">  403</span>}</div>
+<p class="definition">Definition at line <a class="el" href="HPT_8cxx_source.html#l00365">365</a> of file <a class="el" href="HPT_8cxx_source.html">HPT.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  366</span>{</div>
+<div class="line"><span class="lineno">  367</span>    <a class="code hl_variable" href="classHpt.html#ab7c4b33ebb7376fccb2333558209ba8a">fHptPointCollection</a>-&gt;Clear();</div>
+<div class="line"><span class="lineno">  368</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1378,9 +1339,12 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  108</span>  <a class="code hl_variable" href="classHpt.html#ae46eda4265c80562e1dda9b79fd0d2ba">fConcreteY</a> = <a class="code hl_variable" href="namespacegeometry__config.html#a813292572f3cf797de3cdc77f6edabb2">Y</a>;</div>
 <div class="line"><span class="lineno">  109</span>  <a class="code hl_variable" href="classHpt.html#a76dc887d4d9299e6b9f2f80fcc456453">fConcreteZ</a> = <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>;</div>
 <div class="line"><span class="lineno">  110</span>}</div>
-<div class="ttc" id="anamespacegeometry__config_html_a813292572f3cf797de3cdc77f6edabb2"><div class="ttname"><a href="namespacegeometry__config.html#a813292572f3cf797de3cdc77f6edabb2">geometry_config.Y</a></div><div class="ttdeci">Y</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00442">geometry_config.py:442</a></div></div>
-<div class="ttc" id="anamespacegeometry__config_html_a8aa4182e12a2746d01d4a85e5d322445"><div class="ttname"><a href="namespacegeometry__config.html#a8aa4182e12a2746d01d4a85e5d322445">geometry_config.X</a></div><div class="ttdeci">X</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00441">geometry_config.py:441</a></div></div>
-<div class="ttc" id="anamespacegeometry__config_html_ae949308a33fbd7f7096e0223cba1e10b"><div class="ttname"><a href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">geometry_config.Z</a></div><div class="ttdeci">Z</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00443">geometry_config.py:443</a></div></div>
+<div class="ttc" id="aclassHpt_html_a4260c7c5094bbd74a76d3e3a2502e9f4"><div class="ttname"><a href="classHpt.html#a4260c7c5094bbd74a76d3e3a2502e9f4">Hpt::fConcreteX</a></div><div class="ttdeci">Double_t fConcreteX</div><div class="ttdef"><b>Definition</b> <a href="HPT_8h_source.html#l00111">HPT.h:111</a></div></div>
+<div class="ttc" id="aclassHpt_html_a76dc887d4d9299e6b9f2f80fcc456453"><div class="ttname"><a href="classHpt.html#a76dc887d4d9299e6b9f2f80fcc456453">Hpt::fConcreteZ</a></div><div class="ttdeci">Double_t fConcreteZ</div><div class="ttdef"><b>Definition</b> <a href="HPT_8h_source.html#l00113">HPT.h:113</a></div></div>
+<div class="ttc" id="aclassHpt_html_ae46eda4265c80562e1dda9b79fd0d2ba"><div class="ttname"><a href="classHpt.html#ae46eda4265c80562e1dda9b79fd0d2ba">Hpt::fConcreteY</a></div><div class="ttdeci">Double_t fConcreteY</div><div class="ttdef"><b>Definition</b> <a href="HPT_8h_source.html#l00112">HPT.h:112</a></div></div>
+<div class="ttc" id="anamespacegeometry__config_html_a813292572f3cf797de3cdc77f6edabb2"><div class="ttname"><a href="namespacegeometry__config.html#a813292572f3cf797de3cdc77f6edabb2">geometry_config.Y</a></div><div class="ttdeci">Y</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00440">geometry_config.py:440</a></div></div>
+<div class="ttc" id="anamespacegeometry__config_html_a8aa4182e12a2746d01d4a85e5d322445"><div class="ttname"><a href="namespacegeometry__config.html#a8aa4182e12a2746d01d4a85e5d322445">geometry_config.X</a></div><div class="ttdeci">X</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00439">geometry_config.py:439</a></div></div>
+<div class="ttc" id="anamespacegeometry__config_html_ae949308a33fbd7f7096e0223cba1e10b"><div class="ttname"><a href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">geometry_config.Z</a></div><div class="ttdeci">Z</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00441">geometry_config.py:441</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1404,7 +1368,7 @@ Private Attributes</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">  123</span>{</div>
 <div class="line"><span class="lineno">  124</span>  <a class="code hl_variable" href="classHpt.html#a46dd102699b47bf152759a53e8526eb3">fDesign</a> = <a class="code hl_variable" href="namespacegeometry__config.html#a66ea53c122d7dddec92fe3fbf8b2c354">Design</a>;</div>
 <div class="line"><span class="lineno">  125</span>}</div>
-<div class="ttc" id="anamespacegeometry__config_html_a66ea53c122d7dddec92fe3fbf8b2c354"><div class="ttname"><a href="namespacegeometry__config.html#a66ea53c122d7dddec92fe3fbf8b2c354">geometry_config.Design</a></div><div class="ttdeci">Design</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00436">geometry_config.py:436</a></div></div>
+<div class="ttc" id="anamespacegeometry__config_html_a66ea53c122d7dddec92fe3fbf8b2c354"><div class="ttname"><a href="namespacegeometry__config.html#a66ea53c122d7dddec92fe3fbf8b2c354">geometry_config.Design</a></div><div class="ttdeci">Design</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00434">geometry_config.py:434</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1664,6 +1628,7 @@ Private Attributes</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">  100</span>{</div>
 <div class="line"><span class="lineno">  101</span>  <a class="code hl_variable" href="classHpt.html#ab18f3de67dda50272dda55c743bb0c6d">zSizeMudet</a> = Mudetsize;</div>
 <div class="line"><span class="lineno">  102</span>}</div>
+<div class="ttc" id="aclassHpt_html_ab18f3de67dda50272dda55c743bb0c6d"><div class="ttname"><a href="classHpt.html#ab18f3de67dda50272dda55c743bb0c6d">Hpt::zSizeMudet</a></div><div class="ttdeci">Double_t zSizeMudet</div><div class="ttdef"><b>Definition</b> <a href="HPT_8h_source.html#l00110">HPT.h:110</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
