@@ -138,6 +138,8 @@ python $FAIRSHIP/macro/ShipReco.py -f ship.conical.Pythia8-TGeant4.root -g geofi
 python -i $FAIRSHIP/macro/ShipAna.py -f ship.conical.Pythia8-TGeant4_rec.root -g geofile_full.conical.Pythia8-TGeant4.root
 >> finished making plots
 ```
+Alternatively, you can make use of the experimental `analysis_toolkit` to run a simple pre-selection check on the events. An example script can be found in `$FAIRSHIP/examples/analysis_example.py`.
+
 Simulate MC signal events with EventCalc:
 
 ```bash
