@@ -15,25 +15,32 @@ from ShipGeoConfig import AttrDict, ConfigRegistry
 # The first row is the length of the magnets
 # The other rows are the transverse dimensions of the magnets:  dXIn[i], dXOut[i] , dYIn[i], dYOut[i], gapIn[i], gapOut[i].
 shield_db = {
-            "combi": {"Hybrid_flag": False, "params": [  0.0 , 231.0 , 208.0 , 207.0 , 281.0 , 172.82 , 212.54 , 168.64 ,
-                    0 ,      0 ,     0 ,      0,     0 ,     0 ,  
-                    50.0 ,   50.0 , 119.0 , 119.0 ,   2.0 ,   2.0 ,  
-                    72.0 ,  51.0 ,  29.0 ,  46.0 ,  10.0 ,   7.0 ,  
-                    54.0 ,  38.0 ,  46.0 , 122.0 ,  14.0 ,   9.0 ,
-                    10.0 ,  31.0 ,  35.0 ,  31.0 ,  51.0 ,  11.0 ,   
-                    3.0 ,  32.0 ,  54.0 ,  24.0 ,   8.0 ,   8.0 ,  
-                    22.0 ,  32.0 , 209.0 ,  35.0 ,   8.0 ,  13.0 ,  
-                    33.0 ,  77.0 ,  85.0 , 241.0 ,   9.0 ,  26.0 ]},
-
-            "sc_v6": { "Hybrid_flag": True, "params":[  0 , 231.0 ,   0.0 , 353.1 , 125.1 , 184.8 , 150.2 , 186.8 ,
-                    0 ,      0 ,     0 ,      0,     0 ,     0 ,
-                    50.0 ,   50.0 , 119.0 , 119.0 ,   2.0 ,   2.0 ,
-                    72.0 ,   51.0 ,  29.0 ,  46.0 ,  10.0 ,   7.0 ,
-                    45.7 ,   45.7 ,  22.2 ,  22.2 ,  27.0 ,  16.3 ,
-                    10.0 ,   31.0 ,  35.0 ,  31.0 ,  51.0 ,  11.0 ,
-                    24.8 ,   48.8 ,   8.0 , 104.8 ,  15.8 ,  16.8 ,
-                    3.0 ,  100.0 , 192.0 , 192.0 ,   2.0 ,   4.8 ,
-                    3.0 ,  100.0 ,   8.0 , 172.7 ,  46.8 , 2.0 ]}
+    "warm_opt": {
+        "Hybrid_flag": False,
+        "params": [
+            231.0, 208.0, 207.0, 281.0, 172.82, 212.54, 168.64,
+            50.0, 50.0, 119.0, 119.0, 2.0, 2.0, 1.0, 1.0, 50.0, 50.0, 0.0, 0.0, 0.0,
+            72.0, 51.0, 29.0, 46.0, 10.0, 7.0,  1.0, 1.0,72.0, 51.0, 0.0, 0.0, 0.0,
+            54.0, 38.0, 46.0, 122.0, 14.0, 9.0,  1.0, 1.0,54.0, 38.0, 0.0, 0.0, 0.0,
+            10.0, 31.0, 35.0, 31.0, 51.0, 11.0, 1.0, 1.0,0.0, 31.0, 0.0, 0.0, 0.0,
+            3.0, 32.0, 54.0, 24.0, 8.0, 8.0, 3.0, 1.0, 1.0,32.0,  0.0, 0.0, 0.0,
+            22.0, 32.0, 209.0, 35.0, 8.0, 13.0, 1.0, 1.0,22.0, 32.0, 0.0, 0.0, 0.0,
+            33.0, 77.0, 85.0, 241.0, 9.0, 26.0, 1.0, 1.0,33.0, 77.0, 0.0, 0.0, 0.0,
+        ]
+    },
+    "sc_v6": {
+        "Hybrid_flag": True,
+        "params": [
+            231.0, 0.0, 353.1, 125.1, 184.8, 150.2, 186.8,
+            50.0, 50.0, 119.0, 119.0, 2.0, 2.0, 1.0, 1.0, 50.0, 50.0, 0.0, 0.0, 0.0,
+            72.0, 51.0, 29.0, 46.0, 10.0, 7.0, 1.0, 1.0, 72.0, 51.0, 0.0, 0.0, 0.0,
+            45.7, 45.7, 22.2, 22.2, 27.0, 16.3, 1.0, 1.0, 45.7, 45.7, 0.0, 0.0, 0.0,
+            10.0, 31.0, 35.0, 31.0, 51.0, 11.0, 1.0, 1.0, 10.0, 31.0, 0.0, 0.0, 0.0,
+            24.8, 48.8, 8.0, 104.8, 15.8, 16.8, 1.0, 1.0, 24.8, 48.8, 0.0, 0.0, 0.0,
+            3.0, 100.0, 192.0, 192.0, 2.0, 4.8, 1.0, 1.0, 3.0, 100.0, 0.0, 0.0, 0.0,
+            3.0, 100.0, 8.0, 172.7, 46.8, 2.0, 1.0, 1.0, 3.0, 100.0, 0.0, 0.0, 0.0,
+        ]
+    },
 }
 if "muShieldDesign" not in globals():
     muShieldDesign = 7
@@ -65,8 +72,6 @@ if "HcalGeoFile" not in globals():
         HcalGeoFile = "hcal_rect.geo"
     else:
         HcalGeoFile = "hcal.geo"
-if "muShieldStepGeo" not in globals():
-    muShieldStepGeo = False
 if "shieldName" not in globals():
     shieldName = None
 if "SND" not in globals():
@@ -295,7 +300,6 @@ with ConfigRegistry.register_config("basic") as c:
     c.muShield.LE = 7 * u.m     # - 0.5 m air - Goliath: 4.5 m - 0.5 m air - nu-tau mu-det: 3 m - 0.5 m air. finally 10m asked by Giovanni
     c.muShield.dZ0 = 1 * u.m
 
-    c.muShieldStepGeo = muShieldStepGeo
 
     # zGap to compensate automatic shortening of magnets
     zGap = 0.05 * u.m  # halflengh of gap
@@ -311,15 +315,14 @@ with ConfigRegistry.register_config("basic") as c:
     c.muShield.dZ5 = params[4]
     c.muShield.dZ6 = params[5]
     c.muShield.dZ7 = params[6]
-    c.muShield.dZ8 = params[7]
-    c.muShield.dXgap = 0.*u.m
+    c.muShield.dXgap = 0. * u.m
 
 
     c.muShield.length = 2 * (
             c.muShield.dZ1 + c.muShield.dZ2 +
             c.muShield.dZ3 + c.muShield.dZ4 +
             c.muShield.dZ5 + c.muShield.dZ6 +
-            c.muShield.dZ7 + c.muShield.dZ8
+            c.muShield.dZ7 
     ) + c.muShield.LE
     c.muShield.z = -(c.decayVolume.length + c.muShield.length) / 2.
 

@@ -196,8 +196,6 @@ def configure(run, ship_geo):
     MuonShield = ROOT.ShipMuonShield(
         in_params,
         ship_geo.cave.floorHeightMuonShield,
-        ship_geo.muShieldStepGeo,
-        ship_geo.hadronAbsorber.WithConstField,
         ship_geo.muShield.WithConstField,
         ship_geo.SC_mag
     )
@@ -266,7 +264,7 @@ def configure(run, ship_geo):
         )  # put conditions for the design
 
     if hasattr(ship_geo, "tauMudet") and ship_geo.SND:  # don't support old designs
-        if ship_geo.muShieldDesign >= 7 and hasattr(ship_geo.tauMudet, "Xtot"):
+        if hasattr(ship_geo.tauMudet, "Xtot"):
             taumuondetector = ROOT.NuTauMudet(
                 "NuTauMudet", ship_geo.tauMudet.zMudetC, ROOT.kTRUE
             )

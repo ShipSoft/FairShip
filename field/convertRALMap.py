@@ -204,15 +204,15 @@ def createRootMap(inFileName, outFileName):
 
     # Co-ordinate ranges
     rStruct = ROOT.rangeStruct()
-    rangeTree.Branch('xMin', ROOT.AddressOf(rStruct, 'xMin'), 'xMin/F')
-    rangeTree.Branch('xMax', ROOT.AddressOf(rStruct, 'xMax'), 'xMax/F')
-    rangeTree.Branch('dx', ROOT.AddressOf(rStruct, 'dx'), 'dx/F')
-    rangeTree.Branch('yMin', ROOT.AddressOf(rStruct, 'yMin'), 'yMin/F')
-    rangeTree.Branch('yMax', ROOT.AddressOf(rStruct, 'yMax'), 'yMax/F')
-    rangeTree.Branch('dy', ROOT.AddressOf(rStruct, 'dy'), 'dy/F')
-    rangeTree.Branch('zMin', ROOT.AddressOf(rStruct, 'zMin'), 'zMin/F')
-    rangeTree.Branch('zMax', ROOT.AddressOf(rStruct, 'zMax'), 'zMax/F')
-    rangeTree.Branch('dz', ROOT.AddressOf(rStruct, 'dz'), 'dz/F')
+    rangeTree.Branch('xMin', ROOT.addressof(rStruct, 'xMin'), 'xMin/F')
+    rangeTree.Branch('xMax', ROOT.addressof(rStruct, 'xMax'), 'xMax/F')
+    rangeTree.Branch('dx', ROOT.addressof(rStruct, 'dx'), 'dx/F')
+    rangeTree.Branch('yMin', ROOT.addressof(rStruct, 'yMin'), 'yMin/F')
+    rangeTree.Branch('yMax', ROOT.addressof(rStruct, 'yMax'), 'yMax/F')
+    rangeTree.Branch('dy', ROOT.addressof(rStruct, 'dy'), 'dy/F')
+    rangeTree.Branch('zMin', ROOT.addressof(rStruct, 'zMin'), 'zMin/F')
+    rangeTree.Branch('zMax', ROOT.addressof(rStruct, 'zMax'), 'zMax/F')
+    rangeTree.Branch('dz', ROOT.addressof(rStruct, 'dz'), 'dz/F')
 
     dataTree = ROOT.TTree('Data', 'Data')
     dataTree.SetDirectory(theFile)
@@ -222,9 +222,9 @@ def createRootMap(inFileName, outFileName):
     # the field bin = (iX*Ny + iY)*Nz + iZ, where Ny and Nz are the number
     # of y and z bins
     dStruct = ROOT.dataStruct()
-    dataTree.Branch('Bx', ROOT.AddressOf(dStruct, 'Bx'), 'Bx/F')
-    dataTree.Branch('By', ROOT.AddressOf(dStruct, 'By'), 'By/F')
-    dataTree.Branch('Bz', ROOT.AddressOf(dStruct, 'Bz'), 'Bz/F')
+    dataTree.Branch('Bx', ROOT.addressof(dStruct, 'Bx'), 'Bx/F')
+    dataTree.Branch('By', ROOT.addressof(dStruct, 'By'), 'By/F')
+    dataTree.Branch('Bz', ROOT.addressof(dStruct, 'Bz'), 'Bz/F')
 
     # Open text file and process the information
     iLine = 0
