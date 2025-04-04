@@ -250,7 +250,7 @@ class ShipDigiReco:
          self.digiSplitcal.Expand(index * 2)
        listOfDetID[detID] = index
        new_hit = self.digiSplitcal.ConstructedAt(index)
-       ROOT.std.swap(new_hit, hit)
+       ROOT.std.exchange(new_hit, hit)
        index+=1
      else:
        indexOfExistingHit = listOfDetID[detID]
@@ -415,7 +415,7 @@ class ShipDigiReco:
      if self.recoSplitcal.GetSize() == i:
        self.recoSplitcal.Expand(i * 2)
      new_cluster = self.recoSplitcal.ConstructedAt(index)
-     ROOT.std.swap(new_cluster, cluster)
+     ROOT.std.exchange(new_cluster, cluster)
 
    self.recoSplitcal.Compress() #remove empty slots from array
 
@@ -646,7 +646,7 @@ class ShipDigiReco:
      if self.digiTimeDet.GetSize() == index:
       self.digiTimeDet.Expand(index * 2)
      new_hit = self.digiTimeDet.ConstructedAt(index)
-     ROOT.std.swap(new_hit, hit)
+     ROOT.std.exchange(new_hit, hit)
      detID = hit.GetDetectorID()
      if hit.isValid():
       if detID in hitsPerDetId:
@@ -669,7 +669,7 @@ class ShipDigiReco:
      if self.digiUpstreamTagger.GetSize() == index:
       self.digiUpstreamTagger.Expand(index * 2)
      new_hit = self.digiUpstreamTagger.ConstructedAt(index)
-     ROOT.std.swap(new_hit, hit)
+     ROOT.std.exchange(new_hit, hit)
      detID = hit.GetDetectorID()
      if hit.isValid():
       if detID in hitsPerDetId:
@@ -693,7 +693,7 @@ class ShipDigiReco:
      if self.digiMuon.GetSize() == index:
       self.digiMuon.Expand(index * 2)
      new_hit = self.digiMuon.ConstructedAt(index)
-     ROOT.std.swap(new_hit, hit)
+     ROOT.std.exchange(new_hit, hit)
      detID = hit.GetDetectorID()
      if hit.isValid():
       if detID in hitsPerDetId:
@@ -729,7 +729,7 @@ class ShipDigiReco:
         hit.setInvalid()  # threshold for liquid scintillator, source Berlin group
        self.digiSBT[index] = hit
        new_hit = self.digiSBT.ConstructedAt(index)
-       ROOT.std.swap(new_hit, hit)
+       ROOT.std.exchange(new_hit, hit)
        v = ROOT.std.vector('int')()
        for x in listOfVetoPoints[seg]:
            v.push_back(x)
@@ -995,7 +995,7 @@ class ShipDigiReco:
 # make track persistent
     nTrack = self.fGenFitArray.GetEntries()
     new_track = self.fGenFitArray.ConstructedAt(nTrack)
-    ROOT.std.swap(new_track, theTrack)
+    ROOT.std.exchange(new_track, theTrack)
     # self.fitTrack2MC.push_back(atrack)
     if global_variables.debug:
      print('save track',theTrack,chi2,nmeas,fitStatus.isFitConverged())
@@ -1069,7 +1069,7 @@ class ShipDigiReco:
      if self.vetoHitOnTrackArray.GetSize() == index:
       self.vetoHitOnTrackArray.Expand(index * 2)
      new_hit = self.vetoHitOnTrackArray.ConstructedAt(index)
-     ROOT.std.swap(new_hit, self.findVetoHitOnTrack(track))
+     ROOT.std.exchange(new_hit, self.findVetoHitOnTrack(track))
      index+=1
    self.vetoHitOnTrackBranch.Fill()
 
