@@ -46,7 +46,7 @@ class TimeDetHit : public ShipHit
     void setIsValid() {flag = true;}
     bool isValid() const {return flag;}
     TimeDetHit(const TimeDetHit& point) = default;
-    TimeDetHit operator=(const TimeDetHit& point) = default;
+    TimeDetHit& operator=(const TimeDetHit& point) = default;
   private:
     Double_t v_drift = 15.; // cm/ns
     Double_t par[4] = { 0.0272814, 109.303, 0, 0.0539487 };
