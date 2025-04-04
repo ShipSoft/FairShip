@@ -995,7 +995,7 @@ class ShipDigiReco:
 # make track persistent
     nTrack = self.fGenFitArray.GetEntries()
     new_track = self.fGenFitArray.ConstructedAt(nTrack)
-    ROOT.std.exchange(new_track, theTrack)
+    ROOT.std.swap(new_track, theTrack)
     # self.fitTrack2MC.push_back(atrack)
     if global_variables.debug:
      print('save track',theTrack,chi2,nmeas,fitStatus.isFitConverged())
