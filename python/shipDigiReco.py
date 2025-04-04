@@ -243,17 +243,18 @@ class ShipDigiReco:
    listOfDetID = {} # the idea is to keep only one hit for each cell/strip and if more points fall in the same cell/strip just sum up the energy
    index = 0
    for aMCPoint in self.sTree.splitcalPoint:
-     aHit = ROOT.splitcalHit(aMCPoint,self.sTree.t0)
-     detID = aHit.GetDetectorID()
+     hit = ROOT.splitcalHit(aMCPoint,self.sTree.t0)
+     detID = hit.GetDetectorID()
      if detID not in listOfDetID:
        if self.digiSplitcal.GetSize() == index:
-         self.digiSplitcal.Expand(index+1000)
+         self.digiSplitcal.Expand(index * 2)
        listOfDetID[detID] = index
-       self.digiSplitcal[index]=aHit
+       new_hit = self.digiSplitcal.ConstructedAt(index)
+       ROOT.std.swap(new_hit, hit)
        index+=1
      else:
        indexOfExistingHit = listOfDetID[detID]
-       self.digiSplitcal[indexOfExistingHit].UpdateEnergy(aHit.GetEnergy())
+       self.digiSplitcal[indexOfExistingHit].UpdateEnergy(hit.GetEnergy())
    self.digiSplitcal.Compress() #remove empty slots from array
 
    ##########################
@@ -403,16 +404,18 @@ class ShipDigiReco:
      # print '------ digitizeSplitcal - cluster size = ', len(list_final_clusters[i])
 
      for j,h in enumerate(list_final_clusters[i]):
-       if j==0: aCluster = ROOT.splitcalCluster(h)
-       else: aCluster.AddHit(h)
+       if j==0:
+        cluster = ROOT.splitcalCluster(h)
+       else:
+        cluster.AddHit(h)
 
-     aCluster.SetIndex(int(i))
-     aCluster.ComputeEtaPhiE()
-     # aCluster.Print()
+     cluster.SetIndex(int(i))
+     cluster.ComputeEtaPhiE()
 
      if self.recoSplitcal.GetSize() == i:
-       self.recoSplitcal.Expand(i+1000)
-     self.recoSplitcal[i]=aCluster
+       self.recoSplitcal.Expand(i * 2)
+     new_cluster = self.recoSplitcal.ConstructedAt(index)
+     ROOT.std.swap(new_cluster, cluster)
 
    self.recoSplitcal.Compress() #remove empty slots from array
 
@@ -639,14 +642,16 @@ class ShipDigiReco:
    index = 0
    hitsPerDetId = {}
    for aMCPoint in self.sTree.TimeDetPoint:
-     aHit = ROOT.TimeDetHit(aMCPoint,self.sTree.t0)
-     if self.digiTimeDet.GetSize() == index: self.digiTimeDet.Expand(index+1000)
-     self.digiTimeDet[index]=aHit
-     detID = aHit.GetDetectorID()
-     if aHit.isValid():
+     hit = ROOT.TimeDetHit(aMCPoint,self.sTree.t0)
+     if self.digiTimeDet.GetSize() == index:
+      self.digiTimeDet.Expand(index * 2)
+     new_hit = self.digiTimeDet.ConstructedAt(index)
+     ROOT.std.swap(new_hit, hit)
+     detID = hit.GetDetectorID()
+     if hit.isValid():
       if detID in hitsPerDetId:
-       t = aHit.GetMeasurements()
-       ct = aHit.GetMeasurements()
+       t = hit.GetMeasurements()
+       ct = hit.GetMeasurements()
 # this is not really correct, only first attempt
 # case that one measurement only is earlier not taken into account
 # SetTDC(Float_t val1, Float_t val2)
@@ -660,14 +665,16 @@ class ShipDigiReco:
    index = 0
    hitsPerDetId = {}
    for aMCPoint in self.sTree.UpstreamTaggerPoint:
-     aHit = ROOT.UpstreamTaggerHit(aMCPoint, global_variables.modules["UpstreamTagger"], self.sTree.t0)
-     if self.digiUpstreamTagger.GetSize() == index: self.digiUpstreamTagger.Expand(index+1000)
-     self.digiUpstreamTagger[index]=aHit
-     detID = aHit.GetDetectorID()
-     if aHit.isValid():
+     hit = ROOT.UpstreamTaggerHit(aMCPoint, global_variables.modules["UpstreamTagger"], self.sTree.t0)
+     if self.digiUpstreamTagger.GetSize() == index:
+      self.digiUpstreamTagger.Expand(index * 2)
+     new_hit = self.digiUpstreamTagger.ConstructedAt(index)
+     ROOT.std.swap(new_hit, hit)
+     detID = hit.GetDetectorID()
+     if hit.isValid():
       if detID in hitsPerDetId:
-       t = aHit.GetMeasurements()
-       ct = aHit.GetMeasurements()
+       t = hit.GetMeasurements()
+       ct = hit.GetMeasurements()
 # this is not really correct, only first attempt
 # case that one measurement only is earlier not taken into account
 # SetTDC(Float_t val1, Float_t val2)
@@ -682,13 +689,15 @@ class ShipDigiReco:
    index = 0
    hitsPerDetId = {}
    for aMCPoint in self.sTree.muonPoint:
-     aHit = ROOT.muonHit(aMCPoint,self.sTree.t0)
-     if self.digiMuon.GetSize() == index: self.digiMuon.Expand(index+1000)
-     self.digiMuon[index]=aHit
-     detID = aHit.GetDetectorID()
-     if aHit.isValid():
+     hit = ROOT.muonHit(aMCPoint,self.sTree.t0)
+     if self.digiMuon.GetSize() == index:
+      self.digiMuon.Expand(index * 2)
+     new_hit = self.digiMuon.ConstructedAt(index)
+     ROOT.std.swap(new_hit, hit)
+     detID = hit.GetDetectorID()
+     if hit.isValid():
       if detID in hitsPerDetId:
-       if self.digiMuon[hitsPerDetId[detID]].GetDigi() > aHit.GetDigi():
+       if self.digiMuon[hitsPerDetId[detID]].GetDigi() > hit.GetDigi():
  # second hit with smaller tdc
         self.digiMuon[hitsPerDetId[detID]].setValidity(0)
         hitsPerDetId[detID] = index
@@ -712,12 +721,15 @@ class ShipDigiReco:
        tOfFlight[detID].append(aMCPoint.GetTime())
      index=0
      for seg in ElossPerDetId:
-       aHit = ROOT.vetoHit(seg,ElossPerDetId[seg])
-       aHit.SetTDC(min( tOfFlight[seg] ) + self.sTree.t0 )
+       hit = ROOT.vetoHit(seg,ElossPerDetId[seg])
+       hit.SetTDC(min( tOfFlight[seg] ) + self.sTree.t0 )
        if self.digiSBT.GetSize() == index:
-          self.digiSBT.Expand(index+1000)
-       if ElossPerDetId[seg]<0.045:    aHit.setInvalid()  # threshold for liquid scintillator, source Berlin group
-       self.digiSBT[index] = aHit
+          self.digiSBT.Expand(index * 2)
+       if ElossPerDetId[seg]<0.045:
+        hit.setInvalid()  # threshold for liquid scintillator, source Berlin group
+       self.digiSBT[index] = hit
+       new_hit = self.digiSBT.ConstructedAt(index)
+       ROOT.std.swap(new_hit, hit)
        v = ROOT.std.vector('int')()
        for x in listOfVetoPoints[seg]:
            v.push_back(x)
@@ -981,8 +993,9 @@ class ShipDigiReco:
       chi2 = fitStatus.getChi2() / nmeas
       global_variables.h['chi2'].Fill(chi2)
 # make track persistent
-    nTrack   = self.fGenFitArray.GetEntries()
-    self.fGenFitArray[nTrack] = theTrack
+    nTrack = self.fGenFitArray.GetEntries()
+    new_track = self.fGenFitArray.ConstructedAt(nTrack)
+    ROOT.std.swap(new_track, theTrack)
     # self.fitTrack2MC.push_back(atrack)
     if global_variables.debug:
      print('save track',theTrack,chi2,nmeas,fitStatus.isFitConverged())
@@ -1053,8 +1066,10 @@ class ShipDigiReco:
    index = 0
    for goodTrak in self.goodTracksVect:
      track = self.fGenFitArray[goodTrak]
-     if self.vetoHitOnTrackArray.GetSize() == index: self.vetoHitOnTrackArray.Expand(index+1000)
-     self.vetoHitOnTrackArray[index] = self.findVetoHitOnTrack(track)
+     if self.vetoHitOnTrackArray.GetSize() == index:
+      self.vetoHitOnTrackArray.Expand(index * 2)
+     new_hit = self.vetoHitOnTrackArray.ConstructedAt(index)
+     ROOT.std.swap(new_hit, self.findVetoHitOnTrack(track))
      index+=1
    self.vetoHitOnTrackBranch.Fill()
 
