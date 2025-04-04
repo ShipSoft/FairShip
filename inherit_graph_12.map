@@ -1,5 +1,9 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" title=" " alt="" coords="5,5,128,31"/>
-<area shape="rect" id="Node000001" href="$classShipFieldCreator.html" title=" " alt="" coords="176,5,305,31"/>
-<area shape="poly" id="edge59_Node000000_Node000001" title=" " alt="" coords="142,15,176,15,176,21,142,21"/>
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,55,81,80"/>
+<area shape="rect" id="Node000001" href="$classShipBellField.html" title=" " alt="" coords="140,5,247,31"/>
+<area shape="poly" id="edge56_Node000000_Node000001" title=" " alt="" coords="94,48,153,28,155,33,95,53"/>
+<area shape="rect" id="Node000002" href="$classShipConstField.html" title=" " alt="" coords="134,55,253,80"/>
+<area shape="poly" id="edge57_Node000000_Node000002" title=" " alt="" coords="95,65,134,65,134,70,95,70"/>
+<area shape="rect" id="Node000003" href="$classShipGoliathField.html" title=" " alt="" coords="129,104,257,129"/>
+<area shape="poly" id="edge58_Node000000_Node000003" title=" " alt="" coords="95,81,155,101,153,107,94,87"/>
 </map>

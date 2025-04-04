@@ -1,11 +1,9 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" title=" " alt="" coords="5,80,171,105"/>
-<area shape="rect" id="Node000001" href="$classg4Ex_1_1MyTrackingAction.html" title=" " alt="" coords="239,5,413,31"/>
-<area shape="poly" id="edge119_Node000000_Node000001" title=" " alt="" coords="130,72,218,39,260,28,262,33,219,45,131,77"/>
-<area shape="rect" id="Node000002" href="$classg4Ex__args_1_1MyTrackingAction.html" title=" " alt="" coords="222,55,430,80"/>
-<area shape="poly" id="edge120_Node000000_Node000002" title=" " alt="" coords="184,80,221,76,222,81,185,85"/>
-<area shape="rect" id="Node000003" href="$classg4Ex__gap_1_1MyTrackingAction.html" title=" " alt="" coords="224,104,428,129"/>
-<area shape="poly" id="edge121_Node000000_Node000003" title=" " alt="" coords="185,100,224,104,223,109,184,105"/>
-<area shape="rect" id="Node000004" href="$classg4Ex__gap_1_1MyTrackingActionD.html" title=" " alt="" coords="219,153,433,179"/>
-<area shape="poly" id="edge122_Node000000_Node000004" title=" " alt="" coords="134,108,219,138,267,151,265,156,218,143,132,113"/>
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,55,173,80"/>
+<area shape="rect" id="Node000001" href="$classg4Ex_1_1MySteppingAction.html" title=" " alt="" coords="239,5,415,31"/>
+<area shape="poly" id="edge116_Node000000_Node000001" title=" " alt="" coords="164,49,264,28,265,33,165,54"/>
+<area shape="rect" id="Node000002" href="$classg4Ex__args_1_1MySteppingAction.html" title=" " alt="" coords="221,55,432,80"/>
+<area shape="poly" id="edge117_Node000000_Node000002" title=" " alt="" coords="187,65,221,65,221,70,187,70"/>
+<area shape="rect" id="Node000003" href="$classg4Ex__gap_1_1MySteppingAction.html" title=" " alt="" coords="223,104,430,129"/>
+<area shape="poly" id="edge118_Node000000_Node000003" title=" " alt="" coords="165,80,265,101,264,107,164,85"/>
 </map>

@@ -1,5 +1,13 @@
 var NAVTREEINDEX36 =
 {
+"namespacemake__nTuple__SBT.html#a0224726317440005a54b453bb49a7071":[4,0,47,10],
+"namespacemake__nTuple__SBT.html#a079e72b0dde7a72daf79cc78b9e6e5de":[4,0,47,31],
+"namespacemake__nTuple__SBT.html#a0e06770e4021c17b9c4bc8f9b40aee04":[4,0,47,25],
+"namespacemake__nTuple__SBT.html#a12d037947f8f47df40ff3218d49b2734":[4,0,47,9],
+"namespacemake__nTuple__SBT.html#a1391b7407359c40dbacead1473f5a96b":[4,0,47,16],
+"namespacemake__nTuple__SBT.html#a1669fe4033902571e973de5e9649a362":[4,0,47,42],
+"namespacemake__nTuple__SBT.html#a1cdb01243d3ec2f98d1b3dda16d0a5d0":[4,0,47,8],
+"namespacemake__nTuple__SBT.html#a20bc34e7372638afea070927634df04f":[4,0,47,22],
 "namespacemake__nTuple__SBT.html#a24d7444a55c68cafe6380898cf90d711":[4,0,47,32],
 "namespacemake__nTuple__SBT.html#a30fc5b9f56d4024deea048ae9f4b19ce":[4,0,47,11],
 "namespacemake__nTuple__SBT.html#a315942c41e02aef7640aaeff0d4d6b63":[4,0,47,23],
@@ -241,13 +249,5 @@ var NAVTREEINDEX36 =
 "namespaceproton__bremsstrahlung.html#ac3747a46ab38964a9676801aa3ca0cc9":[4,0,58,0],
 "namespaceproton__bremsstrahlung.html#ac8d68997530cee631a8f823867dd96ce":[4,0,58,19],
 "namespaceproton__bremsstrahlung.html#ae3b95b849d91a62e6d5819f662a86f2b":[4,0,58,20],
-"namespaceproton__bremsstrahlung.html#aea9544b9811cdcd633c3dabc8eeef64a":[4,0,58,21],
-"namespacepythia8__conf.html":[4,0,59],
-"namespacepythia8__conf.html#a3721e6b50652c3d4e23a219fa6627ecc":[4,0,59,0],
-"namespacepythia8__conf.html#ab07a0d848feb83df22d2d5b6e85fb374":[4,0,59,2],
-"namespacepythia8__conf.html#ac024ed5419c98ac0c0035f86e490471b":[4,0,59,3],
-"namespacepythia8__conf.html#afb2e623d52589f186d49f773cdb940cc":[4,0,59,1],
-"namespacepythia8__conf__utils.html":[4,0,60],
-"namespacepythia8__conf__utils.html#a003a7b7b33c31525a1c34eaa06ce1883":[4,0,60,5],
-"namespacepythia8__conf__utils.html#a077efc9290c3db6c744aead97d1b9d4f":[4,0,60,2]
+"namespaceproton__bremsstrahlung.html#aea9544b9811cdcd633c3dabc8eeef64a":[4,0,58,21]
 };

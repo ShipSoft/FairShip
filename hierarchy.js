@@ -21,6 +21,7 @@ var hierarchy =
     ] ],
     [ "ecalDrawerItem", "classecalDrawerItem.html", null ],
     [ "ecalPreCluster", "classecalPreCluster.html", null ],
+    [ "experimental.analysis_toolkit.event_inspector", "classexperimental_1_1analysis__toolkit_1_1event__inspector.html", null ],
     [ "FairContFact", null, [
       [ "NutaudetContFact", "classNutaudetContFact.html", null ],
       [ "ShipPassiveContFact", "classShipPassiveContFact.html", null ],

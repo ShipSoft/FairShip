@@ -23,7 +23,7 @@ var searchData=
   ['ecalcl3phs_20',['ecalcl3phs',['../classshipDigiReco_1_1ShipDigiReco.html#a90bb10a2096a9877b61665bff3146a3a',1,'shipDigiReco.ShipDigiReco.ecalCl3PhS'],['../namespaceShipAna.html#a3a13b8609ae25aef684665bc8d5f2464',1,'ShipAna.ecalCl3PhS']]],
   ['ecalclustercalib_21',['ecalclustercalib',['../classshipDigiReco_1_1ShipDigiReco.html#a726259e27471100c08be7a2236766cd7',1,'shipDigiReco.ShipDigiReco.ecalClusterCalib'],['../namespaceShipAna.html#abbbdac27ae6776dd26702ff0bcb2c7a3',1,'ShipAna.ecalClusterCalib']]],
   ['ecalclusterfind_22',['ecalClusterFind',['../classshipDigiReco_1_1ShipDigiReco.html#a3de695490c7dffbd4440620c547659fa',1,'shipDigiReco::ShipDigiReco']]],
-  ['ecalclusters_23',['ecalclusters',['../classshipDigiReco_1_1ShipDigiReco.html#adc6d7a038150508e20e42d5a8ddd1b8d',1,'shipDigiReco.ShipDigiReco.ecalClusters'],['../classshipDigiReco_1_1ShipDigiReco.html#a8a424c9f5ad74700d55e06165013b3aa',1,'shipDigiReco.ShipDigiReco.EcalClusters']]],
+  ['ecalclusters_23',['ecalclusters',['../classshipDigiReco_1_1ShipDigiReco.html#a8a424c9f5ad74700d55e06165013b3aa',1,'shipDigiReco.ShipDigiReco.EcalClusters'],['../classshipDigiReco_1_1ShipDigiReco.html#adc6d7a038150508e20e42d5a8ddd1b8d',1,'shipDigiReco.ShipDigiReco.ecalClusters']]],
   ['ecaldebugdraw_24',['EcalDebugDraw',['../namespaceShipReco.html#ad9d57f506b94e22394f8d27afc9d4cf1',1,'ShipReco']]],
   ['ecaldigi_25',['ecaldigi',['../classshipDigiReco_1_1ShipDigiReco.html#abeadf6933effc82d1516712774b67246',1,'shipDigiReco.ShipDigiReco.ecalDigi'],['../namespaceShipAna.html#a19975047cb356ee78d4f7ec5fcb369ff',1,'ShipAna.ecalDigi']]],
   ['ecaldrawer_26',['ecalDrawer',['../classshipDigiReco_1_1ShipDigiReco.html#aa53d07eec5ee52744610fdbf6e06ffa5',1,'shipDigiReco::ShipDigiReco']]],
