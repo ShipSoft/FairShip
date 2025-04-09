@@ -43,6 +43,7 @@ it in future.
 * Use git-lfs to track ROOT files
 * feat(digi): Use STL vectors for SST digitisation
 * feat(digi): Use STL vectors for SBT digitisation
+* Change max x of stereo hits to match straw length
 
 ### Removed
 

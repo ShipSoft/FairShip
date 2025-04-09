@@ -8,6 +8,7 @@ ReconstructibleMCTracks = []
 theTracks = []
 
 r_scale = global_variables.ShipGeo.strawtubes.InnerStrawDiameter / 1.975
+max_x = global_variables.ShipGeo.strawtubes.StrawLength # == 200 * u.cm
 
 def initialize(fgeo):
     pass
@@ -352,7 +353,7 @@ def fast_hough_pat_rec_stereo_views(SmearedHits_stereo, recognized_tracks_y, min
                 if ahit2['digiHit'] in used_hits:
                     continue
 
-                if abs(ahit1['zx_projection']) > 300 or abs(ahit2['zx_projection']) > 300:
+                if abs(ahit1['zx_projection']) > max_x or abs(ahit2['zx_projection']) > max_x:
                     continue
 
                 k_seed = 1. * (ahit2['zx_projection'] - ahit1['zx_projection']) / (ahit2['z'] - ahit1['z'])
@@ -369,7 +370,7 @@ def fast_hough_pat_rec_stereo_views(SmearedHits_stereo, recognized_tracks_y, min
                     if ahit3['digiHit'] in used_hits:
                         continue
 
-                    if abs(ahit3['zx_projection']) > 300:
+                    if abs(ahit3['zx_projection']) > max_x:
                         continue
 
                     layer3 = ahit3['detID'] // 10000
@@ -613,7 +614,7 @@ def artificial_retina_pat_rec_stereo_views(SmearedHits_stereo, recognized_tracks
         for ahit in SmearedHits_stereo:
             if ahit['digiHit'] in used_hits:
                 continue
-            if abs(ahit['zx_projection']) > 300:
+            if abs(ahit['zx_projection']) > max_x:
                 continue
             hits_z.append(ahit['z'])
             hits_x.append(ahit['zx_projection'])
@@ -636,7 +637,7 @@ def artificial_retina_pat_rec_stereo_views(SmearedHits_stereo, recognized_tracks
             if ahit3['digiHit'] in used_hits:
                 continue
 
-            if abs(ahit3['zx_projection']) > 300:
+            if abs(ahit3['zx_projection']) > max_x:
                 continue
 
             layer3 = ahit3['detID'] // 10000
@@ -1020,7 +1021,7 @@ def pat_rec_stereo_views(SmearedHits_stereo, recognized_tracks_y, min_hits):
                 if ahit2['digiHit'] in used_hits:
                     continue
 
-                if abs(ahit1['zx_projection']) > 300 or abs(ahit2['zx_projection']) > 300:
+                if abs(ahit1['zx_projection']) > max_x or abs(ahit2['zx_projection']) > max_x:
                     continue
 
                 k_seed = 1. * (ahit2['zx_projection'] - ahit1['zx_projection']) / (ahit2['z'] - ahit1['z'])
@@ -1037,7 +1038,7 @@ def pat_rec_stereo_views(SmearedHits_stereo, recognized_tracks_y, min_hits):
                     if ahit3['digiHit'] in used_hits:
                         continue
 
-                    if abs(ahit3['zx_projection']) > 300:
+                    if abs(ahit3['zx_projection']) > max_x:
                         continue
 
                     layer3 = ahit3['detID'] // 10000
