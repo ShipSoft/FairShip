@@ -1,5 +1,6 @@
 #include "ShipMuonShield.h"
 
+#include "FairLogger.h"   /// for FairLogger, MESSAGE_ORIGIN
 #include "TGeoManager.h"
 #include "TObjArray.h"                  // for TObjArray
 #include "TString.h"                    // for TString
@@ -33,9 +34,9 @@ Double_t floor, const Bool_t WithConstShieldField,  const Bool_t SC_key)
       shield_params.push_back(in_params[i]);
   }
   fWithConstShieldField = WithConstShieldField;
-  Double_t LE = 7 * m; /// FIXME: space reserved for old SND
+  Double_t LE = 7 * m; // FIXME: space reserved for old SND
   fSC_mag = SC_key;
-  fField = 1.7 * tesla;
+  fField = 1.6;
   dZ1 = in_params[0];
   dZ2 = in_params[1];
   dZ3 = in_params[2];
@@ -275,7 +276,7 @@ Int_t ShipMuonShield::Initialize(std::vector<TString> &magnetName,
 				std::vector<Double_t> &gapIn, std::vector<Double_t> &gapOut,
 				std::vector<Double_t> &Z) {
   const Int_t nMagnets = 7;
-  std::cout << " Initialize the MS " << std::endl;
+  LOG(INFO) << " Initialize the MS " << std::endl;
   magnetName.reserve(nMagnets);
   fieldDirection.reserve(nMagnets);
   for (auto i :
@@ -301,7 +302,6 @@ FieldDirection::down, FieldDirection::down, FieldDirection::down,
   const int offset = nMagnets;
   const int nParams = 13;
 
-  std::cout << "The size of the geometrical parameters of the MS: " << params.size() << std::endl;
 
   for (Int_t i = 0; i < nMagnets; ++i) {
     dXIn[i] = params[offset + i * nParams + 0];

@@ -80,6 +80,9 @@ with ConfigRegistry.register_config("basic") as c:
     c.DecayVolumeMedium = DecayVolumeMedium
     c.SND = SND
 
+    if not shieldName:
+        raise ValueError("shieldName must not be empty!")
+
     c.shieldName = shieldName
     c.SC_mag = shield_db[shieldName]['Hybrid_flag']
 
@@ -303,7 +306,6 @@ with ConfigRegistry.register_config("basic") as c:
     zGap = 0.05 * u.m  # halflengh of gap
 
 
-    assert shieldName
     params = shield_db[shieldName]['params']
     c.muShield.params = params
     c.muShield.dZ1 = params[0]
