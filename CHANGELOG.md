@@ -32,6 +32,7 @@ it in future.
 * fix(reco): Fix segmentation fault due to dummy containers (#453, #519)
 * fix: don't use TFile's deprecated attribute syntax
 * fix(digi): Fix logic of SST digitisation (#662)
+* Fix double append of recognized stracks
 
 ### Changed
 
@@ -41,6 +42,7 @@ it in future.
 * Allow using standalone TPythia for use with ROOT 6.32+
 * Use git-lfs to track ROOT files
 * feat(digi): Use STL vectors for SST digitisation
+* Change max x of stereo hits to match straw length
 
 ### Removed
 
