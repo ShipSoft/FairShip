@@ -33,7 +33,6 @@ it in future.
 * fix(geometry): fix typo of "vacuums" for strawtubes medium
 * fix(reco): Fix segmentation fault due to dummy containers (#453, #519)
 * fix: don't use TFile's deprecated attribute syntax
-* shipDet_conf behaviour no longer depends on the muon shield version.
 * fix(digi): Fix logic of SST digitisation (#662)
 
 ### Changed
@@ -55,7 +54,7 @@ it in future.
 * MS: Removed cobalt option
 * MS: Removed stepGeo option
 * MS: Removed the flag constant field in Absorber (HS) -> fixed to 1.7 T
-* MS:  run_simScript.py: The --noSC flag is removed, whether or not a configuration is SC/hybrid depends on the config selected. Configurations are defined in the shield_db in geometry_config.py
+* MS: run_simScript.py: The --noSC flag is removed, whether or not a configuration is SC/hybrid depends on the config selected. Configurations are defined in the shield_db in geometry_config.py
 * Removed old nuTauTargetDesign configurations from 0 to 2. Currently supported: 3 (2018, magnetized target) and 4 (Current, not magnetized target and spectrometer)
 * build(field,nutaudet): remove unnecessary ROOT_INCLUDE_DIR include
 
