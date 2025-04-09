@@ -36,7 +36,7 @@ Double_t floor, const Bool_t WithConstShieldField,  const Bool_t SC_key)
   Double_t LE = 7 * m; /// FIXME: space reserved for old SND
   fSC_mag = SC_key;
   fField = 1.7 * tesla;
-  dZ1 = in_params[0]; 
+  dZ1 = in_params[0];
   dZ2 = in_params[1];
   dZ3 = in_params[2];
   dZ4 = in_params[3];
@@ -87,7 +87,7 @@ void ShipMuonShield::CreateArb8(TString arbName, TGeoMedium *medium,
 }
 
 void ShipMuonShield::CreateMagnet(TString magnetName,TGeoMedium* medium,TGeoVolume *tShield,TGeoUniformMagField *fields[4],FieldDirection fieldDirection,
-				  Double_t dX, Double_t dY, Double_t dX2, Double_t dY2, 
+				  Double_t dX, Double_t dY, Double_t dX2, Double_t dY2,
           Double_t ratio_yoke_1, Double_t ratio_yoke_2,
           Double_t dY_yoke_1, Double_t dY_yoke_2,
           Double_t dZ,
@@ -108,19 +108,19 @@ void ShipMuonShield::CreateMagnet(TString magnetName,TGeoMedium* medium,TGeoVolu
 						   // they touch each other)
 
     std::array<Double_t, 16> cornersMainL = {
-      middleGap, 
-      -(dY +dY_yoke_1)- anti_overlap, 
-      middleGap, 
+      middleGap,
+      -(dY +dY_yoke_1)- anti_overlap,
+      middleGap,
       dY + dY_yoke_1- anti_overlap,
-      dX + middleGap, 
-      dY- anti_overlap, 
+      dX + middleGap,
+      dY- anti_overlap,
       dX + middleGap,
       -(dY- anti_overlap),
       middleGap2,
-      -(dY2 + dY_yoke_2- anti_overlap), middleGap2, 
+      -(dY2 + dY_yoke_2- anti_overlap), middleGap2,
       dY2 + dY_yoke_2- anti_overlap,
-      dX2 + middleGap2, 
-      dY2- anti_overlap, 
+      dX2 + middleGap2,
+      dY2- anti_overlap,
       dX2 + middleGap2,
       -(dY2- anti_overlap)
       };
@@ -145,19 +145,19 @@ void ShipMuonShield::CreateMagnet(TString magnetName,TGeoMedium* medium,TGeoVolu
 
       std::array<Double_t, 16> cornersMainSideL = {
         dX + middleGap + gap,
-        -(dY), 
+        -(dY),
         dX + middleGap + gap,
-        dY, 
-        dX + ratio_yoke_1*dX + middleGap + gap, 
+        dY,
+        dX + ratio_yoke_1*dX + middleGap + gap,
         dY + dY_yoke_1,
-        dX + ratio_yoke_1*dX + middleGap + gap, 
-        -(dY + dY_yoke_1), 
+        dX + ratio_yoke_1*dX + middleGap + gap,
+        -(dY + dY_yoke_1),
         dX2 + middleGap2 + gap2,
-        -(dY2), 
-        dX2 + middleGap2 + gap2, 
+        -(dY2),
+        dX2 + middleGap2 + gap2,
         dY2,
-        dX2 + ratio_yoke_2*dX2 + middleGap2 + gap2, 
-        dY2 + dY_yoke_2, 
+        dX2 + ratio_yoke_2*dX2 + middleGap2 + gap2,
+        dY2 + dY_yoke_2,
         dX2 + ratio_yoke_2*dX2 + middleGap2 + gap2,
         -(dY2 + dY_yoke_2)
       };
@@ -350,7 +350,7 @@ void ShipMuonShield::ConstructGeometry()
       std::vector<TString> magnetName;
       std::vector<FieldDirection> fieldDirection;
       std::vector<Double_t> dXIn, dYIn, dXOut, dYOut, dZf, midGapIn, midGapOut, ratio_yokesIn, ratio_yokesOut, dY_yokeIn, dY_yokeOut, gapIn, gapOut, NI, Z;
-      const Int_t nMagnets = Initialize(magnetName, fieldDirection, dXIn, dYIn, dXOut, dYOut, ratio_yokesIn, ratio_yokesOut, 
+      const Int_t nMagnets = Initialize(magnetName, fieldDirection, dXIn, dYIn, dXOut, dYOut, ratio_yokesIn, ratio_yokesOut,
         dY_yokeIn, dY_yokeOut, dZf, midGapIn, midGapOut, NI, gapIn, gapOut, Z);
 
       // Create TCC8 tunnel around muon shield
@@ -461,5 +461,5 @@ void ShipMuonShield::ConstructGeometry()
       top->AddNode(Cavern, 1, new TGeoTranslation(0, 0, z_transition));
 
 
-      
+
 }

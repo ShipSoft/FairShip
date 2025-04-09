@@ -190,9 +190,9 @@ def configure(run, ship_geo):
         TargetStation.SetLayerPosMat(ship_geo.target.xy, slices_length, slices_material)
     detectorList.append(TargetStation)
 
-    
+
     in_params = list(ship_geo.muShield.params)
-    
+
     MuonShield = ROOT.ShipMuonShield(
         in_params,
         ship_geo.cave.floorHeightMuonShield,

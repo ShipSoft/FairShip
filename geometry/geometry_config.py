@@ -301,8 +301,8 @@ with ConfigRegistry.register_config("basic") as c:
 
     # zGap to compensate automatic shortening of magnets
     zGap = 0.05 * u.m  # halflengh of gap
-    
-    
+
+
     assert shieldName
     params = shield_db[shieldName]['params']
     c.muShield.params = params
@@ -320,7 +320,7 @@ with ConfigRegistry.register_config("basic") as c:
             c.muShield.dZ1 + c.muShield.dZ2 +
             c.muShield.dZ3 + c.muShield.dZ4 +
             c.muShield.dZ5 + c.muShield.dZ6 +
-            c.muShield.dZ7 
+            c.muShield.dZ7
     ) + c.muShield.LE
     c.muShield.z = -(c.decayVolume.length + c.muShield.length) / 2.
 
