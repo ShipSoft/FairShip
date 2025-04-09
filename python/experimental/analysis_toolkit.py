@@ -2,6 +2,7 @@
 """Toolkit for Analysis."""
 
 import numpy as np
+import pythia8_conf
 import ROOT
 import shipunit as u
 import yaml
@@ -250,7 +251,7 @@ class selection_check:
                 [
                     "Impact Parameter (cm)",
                     self.impact_parameter(candidate),
-                    f"IP < {IP_cut*u.cm} cm",
+                    f"IP < {IP_cut * u.cm} cm",
                     self.impact_parameter(candidate) < IP_cut * u.cm,
                 ],
                 [
@@ -319,3 +320,52 @@ class selection_check:
                 )
             )
         return flag
+
+
+class event_inspector:
+    """Class to inspect MCtruth of an Event."""
+
+    def __init__(self):
+        """Initialize ROOT PDG database."""
+        self.pdg = ROOT.TDatabasePDG.Instance()
+        pythia8_conf.addHNLtoROOT()
+
+    def dump_event(self, event, mom_threshold=0):
+        """Dump the MCtruth of the event."""
+        headers = [
+            "#",
+            "particle",
+            "pdgcode",
+            "mother_id",
+            "Momentum [Px,Py,Pz] (GeV/c)",
+            "StartVertex[x,y,z] (m)",
+            "Process",
+            "GetWeight()",
+        ]
+
+        event_table = []
+        for trackNr, track in enumerate(event.MCTrack):
+            if track.GetP() / u.GeV < mom_threshold:
+                continue
+
+            particle = self.pdg.GetParticle(track.GetPdgCode())
+            particlename = particle.GetName() if particle else "----"
+
+            event_table.append(
+                [
+                    trackNr,
+                    particlename,
+                    track.GetPdgCode(),
+                    track.GetMotherId(),
+                    f"[{track.GetPx() / u.GeV:7.3f},{track.GetPy() / u.GeV:7.3f},{track.GetPz() / u.GeV:7.3f}]",
+                    f"[{track.GetStartX() / u.m:7.3f},{track.GetStartY() / u.m:7.3f},{track.GetStartZ() / u.m:7.3f}]",
+                    track.GetProcName().Data(),
+                    track.GetWeight(),
+                ]
+            )
+
+        print(
+            tabulate(
+                event_table, headers=headers, floatfmt=".3f", tablefmt="simple_outline"
+            )
+        )

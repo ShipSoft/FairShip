@@ -16,7 +16,7 @@ repos:
   - id: check-executables-have-shebangs
   - id: mixed-line-ending
 - repo: https://github.com/astral-sh/ruff-pre-commit
-  rev: v0.11.2
+  rev: v0.11.4
   hooks:
   - id: ruff
     types_or: [python, pyi, jupyter]
@@ -33,7 +33,7 @@ repos:
     types_or: [c++, c, cuda]
     exclude: LinkDef.h
 - repo: https://github.com/cpplint/cpplint
-  rev: 2.0.0
+  rev: 2.0.1
   hooks:
   - id: cpplint
     exclude: LinkDef.h
@@ -63,3 +63,5 @@ repos:
 ci:
   autofix_prs: false
   skip: [ruff, ruff-format, pydocstyle, clang-format, cpplint, cmakelint, isort, cmake-format, codespell]
+  autoupdate_commit_msg: "chore(deps): update pre-commit hooks"
+  autofix_commit_msg: "style: pre-commit fixes"
