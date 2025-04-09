@@ -42,6 +42,7 @@ it in future.
 * Allow using standalone TPythia for use with ROOT 6.32+
 * Use git-lfs to track ROOT files
 * feat(digi): Use STL vectors for SST digitisation
+* Change max x of stereo hits to match straw length
 
 ### Removed
 
