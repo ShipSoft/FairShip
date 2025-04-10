@@ -19,6 +19,8 @@ it in future.
 * **Corrections in MuonDIS simulation**
   The DIS interactions are now time-shifted to be consistent with the original incoming muon. Additionally, tracks from soft interactions of the original muon along with the muon's veto response are preserved (in muonDis.root) and included up to the DIS interaction point. To be noted that the muon veto points are manually added using add_muonresponse.py, which modifies the simulation file. This replaces the old method of "backward-travelling muon" to generate the incoming muon's veto response. All MuonDIS simulation scripts have been updated and consolidated within FairShip/muonDIS, ensuring consistency for new productions.
 * Added a custom CrossSection branch to the simulation file to save the DIS cross sections from muonDIS.
+* Added new warm muon shield `warm_opt` in geometry_config
+* Added new parameters to muon shield to support configurations from current optimisation campaign
 * Added event_inspector class to experimental analysis_toolkit to streamline usage of helper functions; Added dump_event() as a start.
 
 ### Fixed
@@ -40,12 +42,18 @@ it in future.
 * Set up of the shield name is now done using the `--shieldName` flag instead of `--scName`.
 * Allow using standalone TPythia for use with ROOT 6.32+
 * Use git-lfs to track ROOT files
+* shipDet_conf behaviour no longer depends on the muon shield version.
 * feat(digi): Use STL vectors for SST digitisation
 
 ### Removed
 
 * fix: Remove unused, unrunnable shipPatRec_prev.py
 * feat(geometry): Dropped support for old geometries without DecayVolumeMedium explicitly set(pre 24.11 release case).
+* MS: Removed old options 7, 9, 10
+* MS: Removed cobalt option
+* MS: Removed stepGeo option
+* MS: Removed the flag constant field in Absorber (HS) -> fixed to 1.7 T
+* MS: run_simScript.py: The --noSC flag is removed, whether or not a configuration is SC/hybrid depends on the config selected. Configurations are defined in the shield_db in geometry_config.py
 * Removed old nuTauTargetDesign configurations from 0 to 2. Currently supported: 3 (2018, magnetized target) and 4 (Current, not magnetized target and spectrometer)
 * build(field,nutaudet): remove unnecessary ROOT_INCLUDE_DIR include
 
@@ -64,6 +72,7 @@ it in future.
 * Genfit measurements now give the correct detector ID
 * Fix TEvePointSetPrintOut
 * Event Display: Fix drawing of MC and Geo tracks
+* AddressOf is outdated function in ROOT, changed with addressof (in field/)
 
 ### Changed
 * Changed the dimension of the cave (ref. https://indico.cern.ch/event/1507466/contributions/6345273/attachments/3003438/5293503/Quick%20Update%20on%20FAIRSHIP%20geometry-1.pdf):
