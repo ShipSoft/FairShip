@@ -30,7 +30,7 @@ class ShipMuonShield : public FairModule
 
  protected:
 
-  Double_t  fMuonShieldLength,fField;
+  Double_t  fMuonShieldLength,fField, HA_field; // FIXME: HA_field to be removed in the next workshop meeting
   Double_t fFloor;
   Double_t  dZ0,dZ1,dZ2,dZ3,dZ4,dZ5,dZ6,dZ7,dXgap,zEndOfAbsorb;
   Int_t InitMedium(TString name);

@@ -36,7 +36,8 @@ Double_t floor, const Bool_t WithConstShieldField,  const Bool_t SC_key)
   fWithConstShieldField = WithConstShieldField;
   Double_t LE = 7 * m; // FIXME: space reserved for old SND
   fSC_mag = SC_key;
-  fField = 1.6;
+  fField = 1.7;
+  HA_field = 1.6; // FIXME: to be updated in the next workshop meeting
   dZ1 = in_params[0];
   dZ2 = in_params[1];
   dZ3 = in_params[2];
@@ -276,7 +277,7 @@ Int_t ShipMuonShield::Initialize(std::vector<TString> &magnetName,
 				std::vector<Double_t> &gapIn, std::vector<Double_t> &gapOut,
 				std::vector<Double_t> &Z) {
   const Int_t nMagnets = 7;
-  LOG(INFO) << " Initialize the MS " << std::endl;
+  LOG(INFO) << " Initialize the MS ";
   magnetName.reserve(nMagnets);
   fieldDirection.reserve(nMagnets);
   for (auto i :
@@ -392,18 +393,24 @@ void ShipMuonShield::ConstructGeometry()
         if (dZf[nM] < 1e-5){
           continue;
         }
+
+        // Initialize the field
+        Double_t ironField_s = fField * fieldScale[nM] * tesla;
+
         // SC MAGNET
         if ( nM == 4  && fSC_mag) {
               continue;
             }
-            Double_t ironField_s_SC = fField * fieldScale[nM] * tesla;
+            ironField_s = fField * fieldScale[nM] * tesla;
             if (nM == 3 && fSC_mag) {
                 Double_t SC_FIELD = 5.1;
-                ironField_s_SC = SC_FIELD * fieldScale[nM] * tesla;
+                ironField_s = SC_FIELD * fieldScale[nM] * tesla;
             }
+        if (nM == 0){
+          ironField_s = HA_field * fieldScale[nM] * tesla;
+        }
         // END
-        Double_t ironField_s = fField * fieldScale[nM] * tesla;
-        TGeoUniformMagField *magFieldIron_s = new TGeoUniformMagField(0.,ironField_s_SC,0.);
+        TGeoUniformMagField *magFieldIron_s = new TGeoUniformMagField(0.,ironField_s,0.);
         TGeoUniformMagField *RetField_s     = new TGeoUniformMagField(0.,-ironField_s,0.);
         TGeoUniformMagField *ConRField_s    = new TGeoUniformMagField(-ironField_s,0.,0.);
         TGeoUniformMagField *ConLField_s    = new TGeoUniformMagField(ironField_s,0.,0.);

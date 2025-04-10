@@ -42,7 +42,6 @@ it in future.
 * Set up of the shield name is now done using the `--shieldName` flag instead of `--scName`.
 * Allow using standalone TPythia for use with ROOT 6.32+
 * Use git-lfs to track ROOT files
-* AddressOf is outdated function in ROOT, changed with addressof (in field/)
 * shipDet_conf behaviour no longer depends on the muon shield version.
 * feat(digi): Use STL vectors for SST digitisation
 
@@ -73,6 +72,7 @@ it in future.
 * Genfit measurements now give the correct detector ID
 * Fix TEvePointSetPrintOut
 * Event Display: Fix drawing of MC and Geo tracks
+* AddressOf is outdated function in ROOT, changed with addressof (in field/)
 
 ### Changed
 * Changed the dimension of the cave (ref. https://indico.cern.ch/event/1507466/contributions/6345273/attachments/3003438/5293503/Quick%20Update%20on%20FAIRSHIP%20geometry-1.pdf):
