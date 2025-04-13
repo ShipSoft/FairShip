@@ -41,6 +41,7 @@ it in future.
 * Allow using standalone TPythia for use with ROOT 6.32+
 * Use git-lfs to track ROOT files
 * feat(digi): Use STL vectors for SST digitisation
+* feat(geometry): Change coordinate system to z_0 := start of target
 
 ### Removed
 

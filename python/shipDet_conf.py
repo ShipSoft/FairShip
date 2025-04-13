@@ -90,7 +90,7 @@ def posEcal(z, efile):
     return ecal, EcalZSize
 
 
-def configure_veto(yaml_file):
+def configure_veto(yaml_file, z0):
     with open(yaml_file) as file:
         config = yaml.safe_load(file)
 
@@ -102,7 +102,7 @@ def configure_veto(yaml_file):
         veto_geo.xendInner,
         veto_geo.ystartInner,
         veto_geo.yendInner,
-        veto_geo.z0,
+        z0,
     )
 
     Veto.SetLiquidVeto(1)
@@ -237,6 +237,7 @@ def configure(run, ship_geo):
         MuonShield = ROOT.ShipMuonShield(
             in_params,
             ship_geo.cave.floorHeightMuonShield,
+            ship_geo.muShield.z,
             ship_geo.muShieldWithCobaltMagnet,
             ship_geo.muShieldStepGeo,
             ship_geo.hadronAbsorber.WithConstField,
@@ -294,16 +295,12 @@ def configure(run, ship_geo):
         magnet = ROOT.ShipMagnet("Magnet", "SHiP Magnet", ship_geo.Bfield.z)
     detectorList.append(magnet)
 
-    fairship = ROOT.gSystem.Getenv("FAIRSHIP")
-
-    if ship_geo.DecayVolumeMedium == "helium":
-        configure_veto(
-            fairship + "/geometry/veto_config_helium.yaml"
-        )  # put conditions for the design
-    if ship_geo.DecayVolumeMedium == "vacuums":
-        configure_veto(
-            fairship + "/geometry/veto_config_vacuums.yaml"
-        )  # put conditions for the design
+    configure_veto(
+        os.path.expandvars(
+            f"$FAIRSHIP/geometry/veto_config_{ship_geo.DecayVolumeMedium}.yaml"
+        ),
+        ship_geo.decayVolume.z0,
+    )
 
     if hasattr(ship_geo, "tauMudet") and ship_geo.SND:  # don't support old designs
         if ship_geo.muShieldDesign >= 7 and hasattr(ship_geo.tauMudet, "Xtot"):
