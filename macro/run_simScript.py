@@ -43,9 +43,17 @@ globalDesigns = {
           'nud' : 4,
           'caloDesign' : 3,
           'strawDesign' : 10
-     }
+     },
+     '2025' : {
+          'dy' : 6.,
+          'dv' : 6,
+          'ds' : 8,
+          'nud' : 4,
+          'caloDesign' : 2,
+          'strawDesign' : 10
+     },
 }
-default = '2023'
+default = '2025'
 
 parser = ArgumentParser()
 group = parser.add_mutually_exclusive_group()
