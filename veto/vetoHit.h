@@ -40,11 +40,11 @@ class vetoHit : public ShipHit
     void setIsValid() { flag = true; }
     bool isValid() const { return flag; }
 
+    vetoHit(const vetoHit& point) = default;
+    vetoHit& operator=(const vetoHit& point) = default;
+
   private:
     Double_t ft;
-    vetoHit(const vetoHit& point);
-    vetoHit operator=(const vetoHit& point);
-
     Float_t flag;   ///< flag
 
     ClassDef(vetoHit, 1);

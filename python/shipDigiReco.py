@@ -65,9 +65,9 @@ class ShipDigiReco:
   self.fTrackletsArray = ROOT.TClonesArray("Tracklet")
   self.Tracklets   = self.sTree.Branch("Tracklets",  self.fTrackletsArray,32000,-1)
 #
-  self.digiStraw    = ROOT.TClonesArray("strawtubesHit")
+  self.digiStraw = ROOT.std.vector("strawtubesHit")()
   self.digiStrawBranch   = self.sTree.Branch("Digi_StrawtubesHits",self.digiStraw,32000,-1)
-  self.digiSBT    = ROOT.TClonesArray("vetoHit")
+  self.digiSBT    = ROOT.std.vector("vetoHit")()
   self.digiSBTBranch=self.sTree.Branch("Digi_SBTHits",self.digiSBT,32000,-1)
   self.vetoHitOnTrackArray    = ROOT.TClonesArray("vetoHitOnTrack")
   self.vetoHitOnTrackBranch=self.sTree.Branch("VetoHitOnTrack",self.vetoHitOnTrackArray,32000,-1)
@@ -215,13 +215,13 @@ class ShipDigiReco:
    self.header.SetRunId( self.sTree.MCEventHeader.GetRunID() )
    self.header.SetMCEntryNumber( self.sTree.MCEventHeader.GetEventID() )  # counts from 1
    self.eventHeader.Fill()
-   self.digiSBT.Delete()
+   self.digiSBT.clear()
    self.digiSBT2MC.clear()
-   self.digitizeSBT()
+   self.digitize_SBT()
    self.digiSBTBranch.Fill()
    self.mcLinkSBT.Fill()
-   self.digiStraw.Delete()
-   self.digitizeStrawTubes()
+   self.digiStraw.clear()
+   self.digitize_straw_tubes()
    self.digiStrawBranch.Fill()
    self.digiTimeDet.Delete()
    self.digitizeTimeDet()
@@ -694,7 +694,13 @@ class ShipDigiReco:
         hitsPerDetId[detID] = index
      index+=1
 
- def digitizeSBT(self):
+ def digitize_SBT(self):
+     """Digitize Surrounding Background Tagger MC hits.
+
+     TDC defined as the time of the first MC hit in the cell.
+     Eloss defined as the cumulative energy deposition of MC hits in the cell.
+
+     """
      ElossPerDetId    = {}
      tOfFlight        = {}
      listOfVetoPoints = {}
@@ -710,35 +716,37 @@ class ShipDigiReco:
        ElossPerDetId[detID] += Eloss
        listOfVetoPoints[detID].append(key)
        tOfFlight[detID].append(aMCPoint.GetTime())
-     index=0
      for seg in ElossPerDetId:
        aHit = ROOT.vetoHit(seg,ElossPerDetId[seg])
        aHit.SetTDC(min( tOfFlight[seg] ) + self.sTree.t0 )
-       if self.digiSBT.GetSize() == index:
-          self.digiSBT.Expand(index+1000)
        if ElossPerDetId[seg]<0.045:    aHit.setInvalid()  # threshold for liquid scintillator, source Berlin group
-       self.digiSBT[index] = aHit
+       self.digiSBT.push_back(aHit)
        v = ROOT.std.vector('int')()
        for x in listOfVetoPoints[seg]:
            v.push_back(x)
        self.digiSBT2MC.push_back(v)
-       index=index+1
- def digitizeStrawTubes(self):
- # digitize FairSHiP MC hits
-   index = 0
-   hitsPerDetId = {}
-   for aMCPoint in self.sTree.strawtubesPoint:
-     aHit = ROOT.strawtubesHit(aMCPoint,self.sTree.t0)
-     if self.digiStraw.GetSize() == index: self.digiStraw.Expand(index+1000)
-     self.digiStraw[index]=aHit
-     if aHit.isValid():
-      detID = aHit.GetDetectorID()
-      if detID in hitsPerDetId:
-       if self.digiStraw[hitsPerDetId[detID]].GetTDC() > aHit.GetTDC():
- # second hit with smaller tdc
-        self.digiStraw[hitsPerDetId[detID]].setInvalid()
-        hitsPerDetId[detID] = index
-     index+=1
+
+ def digitize_straw_tubes(self):
+    """Digitize strawtube MC hits.
+
+    The earliest hit per straw will be marked valid, all later ones invalid.
+    """
+    earliest_per_det_id = {}
+    for index, point in enumerate(self.sTree.strawtubesPoint):
+        hit = ROOT.strawtubesHit(point , self.sTree.t0)
+        self.digiStraw.push_back(hit)
+        if hit.isValid():
+            detector_id = hit.GetDetectorID()
+            if detector_id in earliest_per_det_id:
+               earliest = earliest_per_det_id[detector_id]
+               if self.digiStraw[earliest].GetTDC() > hit.GetTDC():
+                   # second hit with smaller tdc
+                   self.digiStraw[earliest].setInvalid()
+                   earliest_per_det_id[detector_id] = index
+               else:
+                   self.digiStraw[index].setInvalid()
+            else:
+                earliest_per_det_id[detector_id] = index
 
  def withT0Estimate(self):
  # loop over all straw tdcs and make average, correct for ToF
