@@ -1,5 +1,6 @@
 var NAVTREEINDEX40 =
 {
+"namespacestudy__muMSC.html#ab875895aaac12abebdb76811de0cbbf6":[4,0,99,35],
 "namespacestudy__muMSC.html#aba7e32141044f4814a1fb6712863e98b":[4,0,99,29],
 "namespacestudy__muMSC.html#abe69cee9db6f0efc503957ec02523ecf":[4,0,99,40],
 "namespacestudy__muMSC.html#ac693ac2e93b4441c5740026e89afe666":[4,0,99,13],
@@ -248,6 +249,5 @@ var NAVTREEINDEX40 =
 "runPythia8_8py.html#a5f965e436da25a417a7fa219d245bb87":[6,0,6,22,1],
 "runPythia8_8py.html#a71764a6a1e4c54f75eb71c7b66ce2e9f":[6,0,6,22,11],
 "runPythia8_8py.html#a73714686db2b6d0b7de90c8aa2382d88":[6,0,6,22,19],
-"runPythia8_8py.html#a77a83a37be565e8150577dd17df07964":[6,0,6,22,12],
-"runPythia8_8py.html#a7b177f9aa09174813cd3e6643d81c468":[6,0,6,22,37]
+"runPythia8_8py.html#a77a83a37be565e8150577dd17df07964":[6,0,6,22,12]
 };
