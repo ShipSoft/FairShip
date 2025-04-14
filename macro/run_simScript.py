@@ -37,21 +37,7 @@ inputFile    = "/eos/experiment/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-97
 defaultInputFile = True
 
 globalDesigns = {
-     '2018' : {
-          'dy' : 10.,
-          'dv' : 6,
-          'ds' : 9,
-          'nud' : 3,
-          'caloDesign' : 3,
-          'strawDesign' : 10
-     }, '2022' : {
-          'dy' : 8.,
-          'dv' : 6,
-          'ds' : 9,
-          'nud' : 3,
-          'caloDesign' : 3,
-          'strawDesign' : 10
-     }, '2023' : {
+     '2023' : {
           'dy' : 6.,
           'dv' : 6,
           'ds' : 8,

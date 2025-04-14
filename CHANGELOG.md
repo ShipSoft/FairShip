@@ -66,6 +66,7 @@ it in future.
 * MS: run_simScript.py: The --noSC flag is removed, whether or not a configuration is SC hybrid depends on the config selected. Configurations are defined in the shield_db in geometry_config.py
 * Removed old nuTauTargetDesign configurations from 0 to 2. Currently supported: 3 (2018, magnetized target) and 4 (Current, not magnetized target and spectrometer)
 * build(field,nutaudet): remove unnecessary ROOT_INCLUDE_DIR include
+* feat(geometry): Remove 2018, 2022 global designs
 
 ## 25.01
 
