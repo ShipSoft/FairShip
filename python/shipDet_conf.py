@@ -114,7 +114,7 @@ def configure_snd_old(yaml_file,
     snd_nuTauTT_TTZ = 2 * nuTauTT_geo.support_z + 2 * nuTauTT_geo.scifimat_z + nuTauTT_geo.honeycomb_z
 
     # nuTau target
-    snd_nuTarget_BrZ = nuTarget_geo.n_plates * nuTarget_geo.LeadTh + 2*(2* nuTarget_geo.EmTh + nuTarget_geo.PBTh) + nuTarget_geo.BrPackZ
+    snd_nuTarget_BrZ = nuTarget_geo.n_plates * nuTarget_geo.LeadTh + (nuTarget_geo.n_plates+1) * (2* nuTarget_geo.EmTh + nuTarget_geo.PBTh) + nuTarget_geo.BrPackZ
     snd_nuTarget_BrX = nuTarget_geo.BrPackX + nuTarget_geo.EmX
     snd_nuTarget_BrY = nuTarget_geo.BrPackY + nuTarget_geo.EmY
 
@@ -122,7 +122,7 @@ def configure_snd_old(yaml_file,
     snd_nuTarget_xdim = snd_nuTauTT_TTX
     snd_nuTarget_ydim = snd_nuTauTT_TTY
 
-    snd_nuTarget_zC = snd_tauMu_zMudetC - snd_tauMu_zTot/2 - 20 - snd_nuTarget_zdim/2.
+    snd_nuTarget_zC = snd_tauMu_zMudetC - snd_tauMu_zTot/2 - 20*u.cm - snd_nuTarget_zdim/2.
 
     snd_nuTarget_PillarY = 10*u.m - snd_nuTarget_ydim/2 -nuTarget_geo.BaseY- 0.1*u.mm - cave_floorHeightMuonShield
 
