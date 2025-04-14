@@ -27,6 +27,7 @@ it in future.
 * Folder ```SND``` is added for new versions of SND integrated to the Muon Shield
 * First version of ```MTC``` (```SND/MTC```) is introduced. Scint part is fully implemented, the Sci-Fi part is implemented in simplified version. Geometrical parameters of ```MTC``` are stored in ```geometry/MTC_config.yaml``` file
 * New key for ```macro/run_simScript.py``` for choosing SND options is added: ```--SND_design```
+
 ### Fixed
 
 * chore: Fix file endings
@@ -60,6 +61,7 @@ it in future.
 * Allow specifying spectrometer field map
 * Obtain tauMuDet z position from muonshield position and length, instead of chamber trackers
 * Update tracker station z positions, fix UBT, TimeDet & SplitCal position (s. integration layout EDMS 3287817 v1)
+* feat(geometry): Make SplitCal the default calorimeter
 
 ### Removed
 
