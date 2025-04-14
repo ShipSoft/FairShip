@@ -48,6 +48,7 @@ it in future.
 * feat(geometry): Dropped support for old geometries without DecayVolumeMedium explicitly set(pre 24.11 release case).
 * Removed old nuTauTargetDesign configurations from 0 to 2. Currently supported: 3 (2018, magnetized target) and 4 (Current, not magnetized target and spectrometer)
 * build(field,nutaudet): remove unnecessary ROOT_INCLUDE_DIR include
+* feat(geometry): Remove 2018, 2022 global designs
 
 ## 25.01
 
