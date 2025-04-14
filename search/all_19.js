@@ -21,7 +21,7 @@ var searchData=
   ['vetodets_18',['vetoDets',['../namespaceShipAna.html#a474780f2864445277c34ddc7ddc8828b',1,'ShipAna']]],
   ['vetoendinnerx_19',['VetoEndInnerX',['../classveto.html#a6d6cc35b0463f6f444ce45d362d33941',1,'veto']]],
   ['vetoendinnery_20',['VetoEndInnerY',['../classveto.html#a946270b903c1a1809619d422eef53040',1,'veto']]],
-  ['vetohit_21',['vetohit',['../classvetoHit.html',1,'vetoHit'],['../classvetoHit.html#a1791cec3ef66d0f4b927cc4856c0577f',1,'vetoHit::vetoHit()'],['../classvetoHit.html#a1d44d7dcf43d8f89b8d5543dda0a7a0d',1,'vetoHit::vetoHit(Int_t detID, Float_t adc)'],['../classvetoHit.html#a0c3c5fd368a23f321107d11441589af1',1,'vetoHit::vetoHit(const vetoHit &amp;point)']]],
+  ['vetohit_21',['vetohit',['../classvetoHit.html',1,'vetoHit'],['../classvetoHit.html#a1791cec3ef66d0f4b927cc4856c0577f',1,'vetoHit::vetoHit()'],['../classvetoHit.html#a1d44d7dcf43d8f89b8d5543dda0a7a0d',1,'vetoHit::vetoHit(Int_t detID, Float_t adc)'],['../classvetoHit.html#ab175a0d700526b9ca4611b4bfbd67516',1,'vetoHit::vetoHit(const vetoHit &amp;point)=default']]],
   ['vetohit_2ecxx_22',['vetoHit.cxx',['../vetoHit_8cxx.html',1,'']]],
   ['vetohit_2eh_23',['vetoHit.h',['../vetoHit_8h.html',1,'']]],
   ['vetohitontrack_24',['vetohitontrack',['../classvetoHitOnTrack.html#a58d0c62f6f45b7383fe478b435c12166',1,'vetoHitOnTrack::vetoHitOnTrack(Int_t hitID, Float_t dist)'],['../classvetoHitOnTrack.html#a0269377ae88221e8ed503b22301034f1',1,'vetoHitOnTrack::vetoHitOnTrack()'],['../classvetoHitOnTrack.html',1,'vetoHitOnTrack']]],
