@@ -884,9 +884,9 @@ class ShipDigiReco:
 #
   for atrack in hitPosLists:
     if atrack < 0: continue # these are hits not assigned to MC track because low E cut
-    pdg    = self.sTree.MCTrack[atrack].GetPdgCode()
-    if not self.PDG.GetParticle(pdg): continue # unknown particle
-    # pdg = 13
+    # pdg    = self.sTree.MCTrack[atrack].GetPdgCode()
+    # if not self.PDG.GetParticle(pdg): continue # unknown particle
+    pdg = 13 # assume all tracks are muons
     meas = hitPosLists[atrack]
     detIDs = hit_detector_ids[atrack]
     nM = meas.size()
