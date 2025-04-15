@@ -9,6 +9,8 @@
 #include "TFile.h"
 #include "TTree.h"
 
+#include "FairLogger.h"   /// for FairLogger, MESSAGE_ORIGIN
+
 #include <fstream>
 #include <iostream>
 
@@ -231,8 +233,8 @@ void ShipBFieldMap::initialise()
 void ShipBFieldMap::readMapFile()
 {
 
-    std::cout<<"ShipBFieldMap::readMapFile() creating field "<<this->GetName()
-	     <<" using file "<<mapFileName_<<std::endl;
+    LOG(INFO) << "ShipBFieldMap::readMapFile() creating field " << this->GetName()
+	     << " using file " << mapFileName_;
 
     // Check to see if we have a ROOT file
     if (mapFileName_.find(".root") != std::string::npos) {
@@ -252,15 +254,15 @@ void ShipBFieldMap::readRootFile() {
     TFile* theFile = TFile::Open(mapFileName_.c_str());
 
     if (!theFile) {
-	std::cout<<"ShipBFieldMap: could not find the file "<<mapFileName_<<std::endl;
-	return;
+	    LOG(FATAL) << "ShipBFieldMap: could not find the file " << mapFileName_;
+
     }
 
     // Coordinate ranges
     TTree* rTree = dynamic_cast<TTree*>(theFile->Get("Range"));
     if (!rTree) {
-	std::cout<<"ShipBFieldMap: could not find Range tree in "<<mapFileName_<<std::endl;
-	return;
+	    LOG(FATAL) << "ShipBFieldMap: could not find Range tree in " << mapFileName_;
+
     }
 
     rTree->SetBranchAddress("xMin", &xMin_);
@@ -286,8 +288,8 @@ void ShipBFieldMap::readRootFile() {
 
 	TTree* dTree = dynamic_cast<TTree*>(theFile->Get("Data"));
 	if (!dTree) {
-	    std::cout<<"ShipBFieldMap: could not find Data tree in "<<mapFileName_<<std::endl;
-	    return;
+	    LOG(FATAL) << "ShipBFieldMap: could not find Data tree in " << mapFileName_;
+
 	}
 
 	Float_t Bx, By, Bz;
@@ -303,7 +305,7 @@ void ShipBFieldMap::readRootFile() {
 
 	Int_t nEntries = dTree->GetEntries();
 	if (nEntries != N_) {
-	    std::cout<<"Expected "<<N_<<" field map entries but found "<<nEntries<<std::endl;
+	    LOG(FATAL) << "Expected " << N_ << " field map entries but found " << nEntries;
 	    nEntries = 0;
 	}
 
@@ -335,6 +337,10 @@ void ShipBFieldMap::readRootFile() {
 void ShipBFieldMap::readTextFile() {
 
     std::ifstream getData(mapFileName_.c_str());
+
+    if (!getData.is_open()) {
+        LOG(FATAL) << "Error: Cannot open magnetic field map file: " << mapFileName_;
+    }
 
     std::string tmpString("");
 
@@ -417,16 +423,14 @@ void ShipBFieldMap::setLimits() {
 
     N_ = Nx_*Ny_*Nz_;
 
-    std::cout<<"x limits: "<<xMin_<<", "<<xMax_<<", dx = "<<dx_<<std::endl;
-    std::cout<<"y limits: "<<yMin_<<", "<<yMax_<<", dy = "<<dy_<<std::endl;
-    std::cout<<"z limits: "<<zMin_<<", "<<zMax_<<", dz = "<<dz_<<std::endl;
+    LOG(INFO) << "x limits: " << xMin_ << ", " << xMax_ << ", dx = " << dx_;
+    LOG(INFO) << "y limits: " << yMin_ << ", " << yMax_ << ", dy = " << dy_;
+    LOG(INFO) << "z limits: " << zMin_ << ", " << zMax_ << ", dz = " << dz_;
 
-    std::cout<<"Offsets: x = "<<xOffset_<<", y = "<<yOffset_<<", z = "<<zOffset_<<std::endl;
-    std::cout<<"Angles : phi = "<<phi_<<", theta = "<<theta_<<", psi = "<<psi_<<std::endl;
+    LOG(INFO) << "Offsets: x = " << xOffset_ << ", y = " << yOffset_ << ", z = " << zOffset_;
+    LOG(INFO) << "Angles : phi = " << phi_ << ", theta = " << theta_ << ", psi = " << psi_;
 
-    std::cout<<"Total number of bins = "<<N_
-	     <<"; Nx = "<<Nx_<<", Ny = "<<Ny_<<", Nz = "<<Nz_<<std::endl;
-
+    LOG(INFO) << "Total number of bins = " << N_ << "; Nx = " << Nx_ << ", Ny = " << Ny_ << ", Nz = " << Nz_;
 }
 
 

@@ -23,6 +23,7 @@ it in future.
 * Added new parameters to muon shield to support configurations from current optimisation campaign
 * Added event_inspector class to experimental analysis_toolkit to streamline usage of helper functions; Added dump_event() as a start.
 * Add (optional) MgB2 field map
+* ShipBFieldMap: Added LOG info and fatal
 
 ### Fixed
 
