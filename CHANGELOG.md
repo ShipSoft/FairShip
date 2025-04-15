@@ -72,6 +72,7 @@ it in future.
 * Genfit measurements now give the correct detector ID
 * Fix TEvePointSetPrintOut
 * Event Display: Fix drawing of MC and Geo tracks
+* AddressOf is outdated function in ROOT, changed with addressof (in field/)
 
 ### Changed
 * Changed the dimension of the cave (ref. https://indico.cern.ch/event/1507466/contributions/6345273/attachments/3003438/5293503/Quick%20Update%20on%20FAIRSHIP%20geometry-1.pdf):
