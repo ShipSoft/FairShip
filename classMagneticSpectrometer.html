@@ -1185,7 +1185,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  344</span>    <span class="keyword">const</span> Int_t MaxL = MaxLevel;</div>
 <div class="line"><span class="lineno">  345</span>    <span class="comment">//cout &lt;&lt; &quot;MaxLevel = &quot; &lt;&lt; MaxL &lt;&lt; endl;</span></div>
 <div class="line"><span class="lineno">  346</span>    <span class="comment">//cout &lt;&lt; gMC-&gt;CurrentVolPath()&lt;&lt; endl;</span></div>
-<div class="line"><span class="lineno">  347</span>    Int_t <a class="code hl_variable" href="namespacegeometry__config.html#ac120a9732e525373b6b97424ca46c06f">NRpc</a> =0;</div>
+<div class="line"><span class="lineno">  347</span>    Int_t NRpc =0;</div>
 <div class="line"><span class="lineno">  348</span>    <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a>;</div>
 <div class="line"><span class="lineno">  349</span>    <a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a> = <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;CurrentVolName();</div>
 <div class="line"><span class="lineno">  350</span>    <span class="comment">//cout &lt;&lt; name &lt;&lt; endl;</span></div>
@@ -1214,11 +1214,10 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  373</span>}</div>
 <div class="ttc" id="aclassMagneticSpectrometer_html_a11b6fd5dd346149bee64a6f68db44bb2"><div class="ttname"><a href="classMagneticSpectrometer.html#a11b6fd5dd346149bee64a6f68db44bb2">MagneticSpectrometer::AddHit</a></div><div class="ttdeci">ShipRpcPoint * AddHit(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom, Double_t time, Double_t length, Double_t eLoss, Int_t pdgCode)</div><div class="ttdef"><b>Definition</b> <a href="MagneticSpectrometer_8cxx_source.html#l00414">MagneticSpectrometer.cxx:414</a></div></div>
 <div class="ttc" id="aclassShipStack_html"><div class="ttname"><a href="classShipStack.html">ShipStack</a></div><div class="ttdef"><b>Definition</b> <a href="ShipStack_8h_source.html#l00046">ShipStack.h:47</a></div></div>
-<div class="ttc" id="anamespacegeometry__config_html_ac120a9732e525373b6b97424ca46c06f"><div class="ttname"><a href="namespacegeometry__config.html#ac120a9732e525373b6b97424ca46c06f">geometry_config.NRpc</a></div><div class="ttdeci">NRpc</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00468">geometry_config.py:468</a></div></div>
 <div class="ttc" id="anamespacemakeCascade_html_a15662d966fe998f4f8b9b6547975083e"><div class="ttname"><a href="namespacemakeCascade.html#a15662d966fe998f4f8b9b6547975083e">makeCascade.stack</a></div><div class="ttdeci">int stack</div><div class="ttdef"><b>Definition</b> <a href="makeCascade_8py_source.html#l00273">makeCascade.py:273</a></div></div>
 <div class="ttc" id="anamespacemakeCascade_html_add259298592a80ac35262a17847aee2d"><div class="ttname"><a href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">makeCascade.name</a></div><div class="ttdeci">name</div><div class="ttdef"><b>Definition</b> <a href="makeCascade_8py_source.html#l00193">makeCascade.py:193</a></div></div>
 <div class="ttc" id="anamespacemakeDecay_html_a9c90b95001a4909a6c5383da1b3066d9"><div class="ttname"><a href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">makeDecay.p</a></div><div class="ttdeci">p</div><div class="ttdef"><b>Definition</b> <a href="makeDecay_8py_source.html#l00067">makeDecay.py:67</a></div></div>
-<div class="ttc" id="anamespacerun__simScript_html_a671e51e119017a06d69c162c6e24b051"><div class="ttname"><a href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">run_simScript.gMC</a></div><div class="ttdeci">gMC</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l00504">run_simScript.py:504</a></div></div>
+<div class="ttc" id="anamespacerun__simScript_html_a671e51e119017a06d69c162c6e24b051"><div class="ttname"><a href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">run_simScript.gMC</a></div><div class="ttdeci">gMC</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l00507">run_simScript.py:507</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1329,8 +1328,8 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="MagneticSpectrometer_8cxx_source.html#l00173">173</a> of file <a class="el" href="MagneticSpectrometer_8cxx_source.html">MagneticSpectrometer.cxx</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  174</span>{</div>
-<div class="line"><span class="lineno">  175</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#a8e19090bb8973ac52fa64fd6ec9baf2a">fCoilH</a> = <a class="code hl_variable" href="namespacegeometry__config.html#aea1053022251b05a9bafa739eba62e40">CoilH</a>;</div>
-<div class="line"><span class="lineno">  176</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#a5f2a20e08c7018f30df5a28cf2a97d8c">fCoilW</a> = <a class="code hl_variable" href="namespacegeometry__config.html#ac4e0c6b2e261bf98d7436b1795dcec35">CoilW</a>;</div>
+<div class="line"><span class="lineno">  175</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#a8e19090bb8973ac52fa64fd6ec9baf2a">fCoilH</a> = CoilH;</div>
+<div class="line"><span class="lineno">  176</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#a5f2a20e08c7018f30df5a28cf2a97d8c">fCoilW</a> = CoilW;</div>
 <div class="line"><span class="lineno">  177</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#a153e0c661d730bc3b1dc3ff7aa3f1671">fCoilGap</a> = CoilG;</div>
 <div class="line"><span class="lineno">  178</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#a6efdf99dc5f3c77b45200fe9c3386dd2">fNCoil</a> = N;</div>
 <div class="line"><span class="lineno">  179</span>}</div>
@@ -1338,8 +1337,6 @@ Private Attributes</h2></td></tr>
 <div class="ttc" id="aclassMagneticSpectrometer_html_a5f2a20e08c7018f30df5a28cf2a97d8c"><div class="ttname"><a href="classMagneticSpectrometer.html#a5f2a20e08c7018f30df5a28cf2a97d8c">MagneticSpectrometer::fCoilW</a></div><div class="ttdeci">Double_t fCoilW</div><div class="ttdef"><b>Definition</b> <a href="MagneticSpectrometer_8h_source.html#l00140">MagneticSpectrometer.h:140</a></div></div>
 <div class="ttc" id="aclassMagneticSpectrometer_html_a6efdf99dc5f3c77b45200fe9c3386dd2"><div class="ttname"><a href="classMagneticSpectrometer.html#a6efdf99dc5f3c77b45200fe9c3386dd2">MagneticSpectrometer::fNCoil</a></div><div class="ttdeci">Int_t fNCoil</div><div class="ttdef"><b>Definition</b> <a href="MagneticSpectrometer_8h_source.html#l00141">MagneticSpectrometer.h:141</a></div></div>
 <div class="ttc" id="aclassMagneticSpectrometer_html_a8e19090bb8973ac52fa64fd6ec9baf2a"><div class="ttname"><a href="classMagneticSpectrometer.html#a8e19090bb8973ac52fa64fd6ec9baf2a">MagneticSpectrometer::fCoilH</a></div><div class="ttdeci">Double_t fCoilH</div><div class="ttdef"><b>Definition</b> <a href="MagneticSpectrometer_8h_source.html#l00139">MagneticSpectrometer.h:139</a></div></div>
-<div class="ttc" id="anamespacegeometry__config_html_ac4e0c6b2e261bf98d7436b1795dcec35"><div class="ttname"><a href="namespacegeometry__config.html#ac4e0c6b2e261bf98d7436b1795dcec35">geometry_config.CoilW</a></div><div class="ttdeci">CoilW</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00550">geometry_config.py:550</a></div></div>
-<div class="ttc" id="anamespacegeometry__config_html_aea1053022251b05a9bafa739eba62e40"><div class="ttname"><a href="namespacegeometry__config.html#aea1053022251b05a9bafa739eba62e40">geometry_config.CoilH</a></div><div class="ttdeci">CoilH</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00549">geometry_config.py:549</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1361,10 +1358,9 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="MagneticSpectrometer_8cxx_source.html#l00074">74</a> of file <a class="el" href="MagneticSpectrometer_8cxx_source.html">MagneticSpectrometer.cxx</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   75</span>{</div>
-<div class="line"><span class="lineno">   76</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#adb0627c6fbc0e5496e0cfaf845875156">fDesign</a> = <a class="code hl_variable" href="namespacegeometry__config.html#a66ea53c122d7dddec92fe3fbf8b2c354">Design</a>;</div>
+<div class="line"><span class="lineno">   76</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#adb0627c6fbc0e5496e0cfaf845875156">fDesign</a> = Design;</div>
 <div class="line"><span class="lineno">   77</span>  cout &lt;&lt;<span class="stringliteral">&quot; Mag Spectro Design &quot;</span>&lt;&lt; <a class="code hl_variable" href="classMagneticSpectrometer.html#adb0627c6fbc0e5496e0cfaf845875156">fDesign</a>&lt;&lt;endl;</div>
 <div class="line"><span class="lineno">   78</span>}</div>
-<div class="ttc" id="anamespacegeometry__config_html_a66ea53c122d7dddec92fe3fbf8b2c354"><div class="ttname"><a href="namespacegeometry__config.html#a66ea53c122d7dddec92fe3fbf8b2c354">geometry_config.Design</a></div><div class="ttdeci">Design</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00434">geometry_config.py:434</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1402,13 +1398,11 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="MagneticSpectrometer_8cxx_source.html#l00087">87</a> of file <a class="el" href="MagneticSpectrometer_8cxx_source.html">MagneticSpectrometer.cxx</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   88</span>{</div>
-<div class="line"><span class="lineno">   89</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#aafb5da836cb31d54fee64bba5f7a4257">fXFe</a> = <a class="code hl_variable" href="namespacegeometry__config.html#a8aa4182e12a2746d01d4a85e5d322445">X</a>;</div>
-<div class="line"><span class="lineno">   90</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#a362ca8c392c25ab7796143986743e1d9">fYFe</a> = <a class="code hl_variable" href="namespacegeometry__config.html#a813292572f3cf797de3cdc77f6edabb2">Y</a>;</div>
-<div class="line"><span class="lineno">   91</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#a7d47ae2a8cb6803033be1eb5323777b6">fZFe</a> = <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>;</div>
+<div class="line"><span class="lineno">   89</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#aafb5da836cb31d54fee64bba5f7a4257">fXFe</a> = <a class="code hl_variable" href="namespacerunPythia8.html#ad74ad296dc1b3ef42e2efe98600c7a05">X</a>;</div>
+<div class="line"><span class="lineno">   90</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#a362ca8c392c25ab7796143986743e1d9">fYFe</a> = Y;</div>
+<div class="line"><span class="lineno">   91</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#a7d47ae2a8cb6803033be1eb5323777b6">fZFe</a> = Z;</div>
 <div class="line"><span class="lineno">   92</span>}</div>
-<div class="ttc" id="anamespacegeometry__config_html_a813292572f3cf797de3cdc77f6edabb2"><div class="ttname"><a href="namespacegeometry__config.html#a813292572f3cf797de3cdc77f6edabb2">geometry_config.Y</a></div><div class="ttdeci">Y</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00440">geometry_config.py:440</a></div></div>
-<div class="ttc" id="anamespacegeometry__config_html_a8aa4182e12a2746d01d4a85e5d322445"><div class="ttname"><a href="namespacegeometry__config.html#a8aa4182e12a2746d01d4a85e5d322445">geometry_config.X</a></div><div class="ttdeci">X</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00439">geometry_config.py:439</a></div></div>
-<div class="ttc" id="anamespacegeometry__config_html_ae949308a33fbd7f7096e0223cba1e10b"><div class="ttname"><a href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">geometry_config.Z</a></div><div class="ttdeci">Z</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00441">geometry_config.py:441</a></div></div>
+<div class="ttc" id="anamespacerunPythia8_html_ad74ad296dc1b3ef42e2efe98600c7a05"><div class="ttname"><a href="namespacerunPythia8.html#ad74ad296dc1b3ef42e2efe98600c7a05">runPythia8.X</a></div><div class="ttdeci">X</div><div class="ttdef"><b>Definition</b> <a href="runPythia8_8py_source.html#l00027">runPythia8.py:27</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1478,9 +1472,8 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="MagneticSpectrometer_8cxx_source.html#l00143">143</a> of file <a class="el" href="MagneticSpectrometer_8cxx_source.html">MagneticSpectrometer.cxx</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  144</span>{</div>
-<div class="line"><span class="lineno">  145</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#a07928c1a32a5e439d2e7b6dd7c3cbd11">fField</a> =<a class="code hl_variable" href="namespacegeometry__config.html#aa52009c79b19f5c569b183e74aa588c7">B</a>;</div>
+<div class="line"><span class="lineno">  145</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#a07928c1a32a5e439d2e7b6dd7c3cbd11">fField</a> =B;</div>
 <div class="line"><span class="lineno">  146</span>}</div>
-<div class="ttc" id="anamespacegeometry__config_html_aa52009c79b19f5c569b183e74aa588c7"><div class="ttname"><a href="namespacegeometry__config.html#aa52009c79b19f5c569b183e74aa588c7">geometry_config.B</a></div><div class="ttdeci">B</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00436">geometry_config.py:436</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1564,9 +1557,9 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="MagneticSpectrometer_8cxx_source.html#l00182">182</a> of file <a class="el" href="MagneticSpectrometer_8cxx_source.html">MagneticSpectrometer.cxx</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  183</span>{</div>
-<div class="line"><span class="lineno">  184</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#a195e14b10b723ee33fb5b89f4ff7ed8c">fPillarX</a> = <a class="code hl_variable" href="namespacegeometry__config.html#a8aa4182e12a2746d01d4a85e5d322445">X</a>;</div>
-<div class="line"><span class="lineno">  185</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#ab50b6b7a75409d1bb507df683bcd5cd8">fPillarY</a> = <a class="code hl_variable" href="namespacegeometry__config.html#a813292572f3cf797de3cdc77f6edabb2">Y</a>;</div>
-<div class="line"><span class="lineno">  186</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#a1903c25a6053ce545424abd0eaa9598e">fPillarZ</a> = <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>;</div>
+<div class="line"><span class="lineno">  184</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#a195e14b10b723ee33fb5b89f4ff7ed8c">fPillarX</a> = <a class="code hl_variable" href="namespacerunPythia8.html#ad74ad296dc1b3ef42e2efe98600c7a05">X</a>;</div>
+<div class="line"><span class="lineno">  185</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#ab50b6b7a75409d1bb507df683bcd5cd8">fPillarY</a> = Y;</div>
+<div class="line"><span class="lineno">  186</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#a1903c25a6053ce545424abd0eaa9598e">fPillarZ</a> = Z;</div>
 <div class="line"><span class="lineno">  187</span>}</div>
 </div><!-- fragment -->
 </div>
@@ -1605,9 +1598,9 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="MagneticSpectrometer_8cxx_source.html#l00129">129</a> of file <a class="el" href="MagneticSpectrometer_8cxx_source.html">MagneticSpectrometer.cxx</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  130</span>{</div>
-<div class="line"><span class="lineno">  131</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#ac15983b692cac131f5b3c0e96d49b58d">fXRyoke</a> = <a class="code hl_variable" href="namespacegeometry__config.html#a8aa4182e12a2746d01d4a85e5d322445">X</a>;</div>
-<div class="line"><span class="lineno">  132</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#ac27335cb2109522b0fe275f161c69545">fYRyoke</a> = <a class="code hl_variable" href="namespacegeometry__config.html#a813292572f3cf797de3cdc77f6edabb2">Y</a>;</div>
-<div class="line"><span class="lineno">  133</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#a51c14e35e21ffce519cde83e1284f6a4">fZRyoke</a> = <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>;</div>
+<div class="line"><span class="lineno">  131</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#ac15983b692cac131f5b3c0e96d49b58d">fXRyoke</a> = <a class="code hl_variable" href="namespacerunPythia8.html#ad74ad296dc1b3ef42e2efe98600c7a05">X</a>;</div>
+<div class="line"><span class="lineno">  132</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#ac27335cb2109522b0fe275f161c69545">fYRyoke</a> = Y;</div>
+<div class="line"><span class="lineno">  133</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#a51c14e35e21ffce519cde83e1284f6a4">fZRyoke</a> = Z;</div>
 <div class="line"><span class="lineno">  134</span>}</div>
 <div class="ttc" id="aclassMagneticSpectrometer_html_a51c14e35e21ffce519cde83e1284f6a4"><div class="ttname"><a href="classMagneticSpectrometer.html#a51c14e35e21ffce519cde83e1284f6a4">MagneticSpectrometer::fZRyoke</a></div><div class="ttdeci">Double_t fZRyoke</div><div class="ttdef"><b>Definition</b> <a href="MagneticSpectrometer_8h_source.html#l00131">MagneticSpectrometer.h:131</a></div></div>
 <div class="ttc" id="aclassMagneticSpectrometer_html_ac15983b692cac131f5b3c0e96d49b58d"><div class="ttname"><a href="classMagneticSpectrometer.html#ac15983b692cac131f5b3c0e96d49b58d">MagneticSpectrometer::fXRyoke</a></div><div class="ttdeci">Double_t fXRyoke</div><div class="ttdef"><b>Definition</b> <a href="MagneticSpectrometer_8h_source.html#l00129">MagneticSpectrometer.h:129</a></div></div>
@@ -1649,9 +1642,9 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="MagneticSpectrometer_8cxx_source.html#l00094">94</a> of file <a class="el" href="MagneticSpectrometer_8cxx_source.html">MagneticSpectrometer.cxx</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   95</span>{</div>
-<div class="line"><span class="lineno">   96</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#a257a64528613def41f003801cd31e8d6">fXRpc</a> = <a class="code hl_variable" href="namespacegeometry__config.html#a8aa4182e12a2746d01d4a85e5d322445">X</a>;</div>
-<div class="line"><span class="lineno">   97</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#a4ec369d739bf87486b082d30a9adca92">fYRpc</a> = <a class="code hl_variable" href="namespacegeometry__config.html#a813292572f3cf797de3cdc77f6edabb2">Y</a>;</div>
-<div class="line"><span class="lineno">   98</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#a6c5e825a01d89b009a674bebae375e6d">fZRpc</a> = <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>;</div>
+<div class="line"><span class="lineno">   96</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#a257a64528613def41f003801cd31e8d6">fXRpc</a> = <a class="code hl_variable" href="namespacerunPythia8.html#ad74ad296dc1b3ef42e2efe98600c7a05">X</a>;</div>
+<div class="line"><span class="lineno">   97</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#a4ec369d739bf87486b082d30a9adca92">fYRpc</a> = Y;</div>
+<div class="line"><span class="lineno">   98</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#a6c5e825a01d89b009a674bebae375e6d">fZRpc</a> = Z;</div>
 <div class="line"><span class="lineno">   99</span>}</div>
 </div><!-- fragment -->
 </div>
@@ -1690,9 +1683,9 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="MagneticSpectrometer_8cxx_source.html#l00115">115</a> of file <a class="el" href="MagneticSpectrometer_8cxx_source.html">MagneticSpectrometer.cxx</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  116</span>{</div>
-<div class="line"><span class="lineno">  117</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#a223c9d2c1d8ba722348ad5e3497c80c4">fXEle</a> = <a class="code hl_variable" href="namespacegeometry__config.html#a8aa4182e12a2746d01d4a85e5d322445">X</a>;</div>
-<div class="line"><span class="lineno">  118</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#a1afabfac2860c696c2968e83f249d201">fYEle</a> = <a class="code hl_variable" href="namespacegeometry__config.html#a813292572f3cf797de3cdc77f6edabb2">Y</a>;</div>
-<div class="line"><span class="lineno">  119</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#a68a0120e1d149717d2fb3fb8ea4f6f27">fZEle</a> = <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>;</div>
+<div class="line"><span class="lineno">  117</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#a223c9d2c1d8ba722348ad5e3497c80c4">fXEle</a> = <a class="code hl_variable" href="namespacerunPythia8.html#ad74ad296dc1b3ef42e2efe98600c7a05">X</a>;</div>
+<div class="line"><span class="lineno">  118</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#a1afabfac2860c696c2968e83f249d201">fYEle</a> = Y;</div>
+<div class="line"><span class="lineno">  119</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#a68a0120e1d149717d2fb3fb8ea4f6f27">fZEle</a> = Z;</div>
 <div class="line"><span class="lineno">  120</span>}</div>
 </div><!-- fragment -->
 </div>
@@ -1731,9 +1724,9 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="MagneticSpectrometer_8cxx_source.html#l00101">101</a> of file <a class="el" href="MagneticSpectrometer_8cxx_source.html">MagneticSpectrometer.cxx</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  102</span>{</div>
-<div class="line"><span class="lineno">  103</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#a344ac08271bba84c47508de60a37009d">fXGas</a> = <a class="code hl_variable" href="namespacegeometry__config.html#a8aa4182e12a2746d01d4a85e5d322445">X</a>;</div>
-<div class="line"><span class="lineno">  104</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#a2339a10be15b2090b5a21224f87d4d63">fYGas</a> = <a class="code hl_variable" href="namespacegeometry__config.html#a813292572f3cf797de3cdc77f6edabb2">Y</a>;</div>
-<div class="line"><span class="lineno">  105</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#afe30ed1eeeaff9bb2b02700fde5659ec">fZGas</a> = <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>;</div>
+<div class="line"><span class="lineno">  103</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#a344ac08271bba84c47508de60a37009d">fXGas</a> = <a class="code hl_variable" href="namespacerunPythia8.html#ad74ad296dc1b3ef42e2efe98600c7a05">X</a>;</div>
+<div class="line"><span class="lineno">  104</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#a2339a10be15b2090b5a21224f87d4d63">fYGas</a> = Y;</div>
+<div class="line"><span class="lineno">  105</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#afe30ed1eeeaff9bb2b02700fde5659ec">fZGas</a> = Z;</div>
 <div class="line"><span class="lineno">  106</span>}</div>
 </div><!-- fragment -->
 </div>
@@ -1772,9 +1765,9 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="MagneticSpectrometer_8cxx_source.html#l00108">108</a> of file <a class="el" href="MagneticSpectrometer_8cxx_source.html">MagneticSpectrometer.cxx</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  109</span>{</div>
-<div class="line"><span class="lineno">  110</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#aa56527e84bb1502023213b13f6970b81">fXPet</a> = <a class="code hl_variable" href="namespacegeometry__config.html#a8aa4182e12a2746d01d4a85e5d322445">X</a>;</div>
-<div class="line"><span class="lineno">  111</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#a2eb04fffdb5b8982e4c76220de60ea1e">fYPet</a> = <a class="code hl_variable" href="namespacegeometry__config.html#a813292572f3cf797de3cdc77f6edabb2">Y</a>;</div>
-<div class="line"><span class="lineno">  112</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#a1221f270d7e0816a578efd826c6a4bde">fZPet</a> = <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>;</div>
+<div class="line"><span class="lineno">  110</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#aa56527e84bb1502023213b13f6970b81">fXPet</a> = <a class="code hl_variable" href="namespacerunPythia8.html#ad74ad296dc1b3ef42e2efe98600c7a05">X</a>;</div>
+<div class="line"><span class="lineno">  111</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#a2eb04fffdb5b8982e4c76220de60ea1e">fYPet</a> = Y;</div>
+<div class="line"><span class="lineno">  112</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#a1221f270d7e0816a578efd826c6a4bde">fZPet</a> = Z;</div>
 <div class="line"><span class="lineno">  113</span>}</div>
 </div><!-- fragment -->
 </div>
@@ -1813,9 +1806,9 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="MagneticSpectrometer_8cxx_source.html#l00122">122</a> of file <a class="el" href="MagneticSpectrometer_8cxx_source.html">MagneticSpectrometer.cxx</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  123</span>{</div>
-<div class="line"><span class="lineno">  124</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#a824b23caa34f2d821e815ab1dead7547">fXStrip</a> = <a class="code hl_variable" href="namespacegeometry__config.html#a8aa4182e12a2746d01d4a85e5d322445">X</a>;</div>
-<div class="line"><span class="lineno">  125</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#afb3079391982d8a5aa2f30544c33581a">fYStrip</a> = <a class="code hl_variable" href="namespacegeometry__config.html#a813292572f3cf797de3cdc77f6edabb2">Y</a>;</div>
-<div class="line"><span class="lineno">  126</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#a13d56f4d147187c9675210be69bfd580">fZStrip</a> = <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>;</div>
+<div class="line"><span class="lineno">  124</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#a824b23caa34f2d821e815ab1dead7547">fXStrip</a> = <a class="code hl_variable" href="namespacerunPythia8.html#ad74ad296dc1b3ef42e2efe98600c7a05">X</a>;</div>
+<div class="line"><span class="lineno">  125</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#afb3079391982d8a5aa2f30544c33581a">fYStrip</a> = Y;</div>
+<div class="line"><span class="lineno">  126</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#a13d56f4d147187c9675210be69bfd580">fZStrip</a> = Z;</div>
 <div class="line"><span class="lineno">  127</span>}</div>
 </div><!-- fragment -->
 </div>
@@ -1854,9 +1847,9 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="MagneticSpectrometer_8cxx_source.html#l00136">136</a> of file <a class="el" href="MagneticSpectrometer_8cxx_source.html">MagneticSpectrometer.cxx</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  137</span>{</div>
-<div class="line"><span class="lineno">  138</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#a9f804200efb60b322113be4167273cde">fXRyoke_s</a> = <a class="code hl_variable" href="namespacegeometry__config.html#a8aa4182e12a2746d01d4a85e5d322445">X</a>;</div>
-<div class="line"><span class="lineno">  139</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#added57ea05f6f4e56e1ed7e4812093f8">fYRyoke_s</a> = <a class="code hl_variable" href="namespacegeometry__config.html#a813292572f3cf797de3cdc77f6edabb2">Y</a>;</div>
-<div class="line"><span class="lineno">  140</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#a57890daeb6d745db2497a78e5b48ca7a">fZRyoke_s</a> = <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>;</div>
+<div class="line"><span class="lineno">  138</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#a9f804200efb60b322113be4167273cde">fXRyoke_s</a> = <a class="code hl_variable" href="namespacerunPythia8.html#ad74ad296dc1b3ef42e2efe98600c7a05">X</a>;</div>
+<div class="line"><span class="lineno">  139</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#added57ea05f6f4e56e1ed7e4812093f8">fYRyoke_s</a> = Y;</div>
+<div class="line"><span class="lineno">  140</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#a57890daeb6d745db2497a78e5b48ca7a">fZRyoke_s</a> = Z;</div>
 <div class="line"><span class="lineno">  141</span>}</div>
 <div class="ttc" id="aclassMagneticSpectrometer_html_a57890daeb6d745db2497a78e5b48ca7a"><div class="ttname"><a href="classMagneticSpectrometer.html#a57890daeb6d745db2497a78e5b48ca7a">MagneticSpectrometer::fZRyoke_s</a></div><div class="ttdeci">Double_t fZRyoke_s</div><div class="ttdef"><b>Definition</b> <a href="MagneticSpectrometer_8h_source.html#l00136">MagneticSpectrometer.h:136</a></div></div>
 <div class="ttc" id="aclassMagneticSpectrometer_html_a9f804200efb60b322113be4167273cde"><div class="ttname"><a href="classMagneticSpectrometer.html#a9f804200efb60b322113be4167273cde">MagneticSpectrometer::fXRyoke_s</a></div><div class="ttdeci">Double_t fXRyoke_s</div><div class="ttdef"><b>Definition</b> <a href="MagneticSpectrometer_8h_source.html#l00134">MagneticSpectrometer.h:134</a></div></div>
@@ -1926,9 +1919,9 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="MagneticSpectrometer_8cxx_source.html#l00080">80</a> of file <a class="el" href="MagneticSpectrometer_8cxx_source.html">MagneticSpectrometer.cxx</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   81</span>{</div>
-<div class="line"><span class="lineno">   82</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#afedfeb88f40b13b01d59233bf0911086">fXtot</a> = <a class="code hl_variable" href="namespacegeometry__config.html#a8aa4182e12a2746d01d4a85e5d322445">X</a>;</div>
-<div class="line"><span class="lineno">   83</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#a099c2df7a7f3f402bf52e68274a1bda6">fYtot</a> = <a class="code hl_variable" href="namespacegeometry__config.html#a813292572f3cf797de3cdc77f6edabb2">Y</a>;</div>
-<div class="line"><span class="lineno">   84</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#aee54771098f51fb3f32be60ba2c858a1">fZtot</a> = <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>;</div>
+<div class="line"><span class="lineno">   82</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#afedfeb88f40b13b01d59233bf0911086">fXtot</a> = <a class="code hl_variable" href="namespacerunPythia8.html#ad74ad296dc1b3ef42e2efe98600c7a05">X</a>;</div>
+<div class="line"><span class="lineno">   83</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#a099c2df7a7f3f402bf52e68274a1bda6">fYtot</a> = Y;</div>
+<div class="line"><span class="lineno">   84</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#aee54771098f51fb3f32be60ba2c858a1">fZtot</a> = Z;</div>
 <div class="line"><span class="lineno">   85</span>}</div>
 </div><!-- fragment -->
 </div>
@@ -1951,7 +1944,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="MagneticSpectrometer_8cxx_source.html#l00158">158</a> of file <a class="el" href="MagneticSpectrometer_8cxx_source.html">MagneticSpectrometer.cxx</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  159</span>{</div>
-<div class="line"><span class="lineno">  160</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#ae59bf4418bee08f5677edabb75829008">fZArm</a> = <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>;</div>
+<div class="line"><span class="lineno">  160</span>  <a class="code hl_variable" href="classMagneticSpectrometer.html#ae59bf4418bee08f5677edabb75829008">fZArm</a> = Z;</div>
 <div class="line"><span class="lineno">  161</span>}</div>
 <div class="ttc" id="aclassMagneticSpectrometer_html_ae59bf4418bee08f5677edabb75829008"><div class="ttname"><a href="classMagneticSpectrometer.html#ae59bf4418bee08f5677edabb75829008">MagneticSpectrometer::fZArm</a></div><div class="ttdeci">Double_t fZArm</div><div class="ttdef"><b>Definition</b> <a href="MagneticSpectrometer_8h_source.html#l00125">MagneticSpectrometer.h:125</a></div></div>
 </div><!-- fragment -->

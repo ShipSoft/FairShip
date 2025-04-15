@@ -643,9 +643,9 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  163</span>   }</div>
 <div class="line"><span class="lineno">  164</span> </div>
 <div class="line"><span class="lineno">  165</span><span class="comment">// find all long lived particles in pythia</span></div>
-<div class="line"><span class="lineno">  166</span>   Int_t <a class="code hl_variable" href="namespacegeometry__config.html#a99f3338967d32a8359ac122e774ab3e9">n</a> = 1;</div>
+<div class="line"><span class="lineno">  166</span>   Int_t <a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a> = 1;</div>
 <div class="line"><span class="lineno">  167</span>   <span class="keywordflow">while</span>(n!=0){</div>
-<div class="line"><span class="lineno">  168</span>    <a class="code hl_variable" href="namespacegeometry__config.html#a99f3338967d32a8359ac122e774ab3e9">n</a> = fPythia-&gt;particleData.nextId(n);</div>
+<div class="line"><span class="lineno">  168</span>    <a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a> = fPythia-&gt;particleData.nextId(n);</div>
 <div class="line"><span class="lineno">  169</span>    ParticleDataEntry* <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a> = fPythia-&gt;particleData.particleDataEntryPtr(n);</div>
 <div class="line"><span class="lineno">  170</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;tau0()&gt;1){</div>
 <div class="line"><span class="lineno">  171</span>     <span class="keywordtype">string</span> particle = std::to_string(n)+<span class="stringliteral">&quot;:mayDecay = false&quot;</span>;</div>
@@ -751,10 +751,10 @@ Private Attributes</h2></td></tr>
 <div class="ttc" id="anamespaceShipAna_html_aa4bf87f4d17f9d38b1d8f4d009bb54b3"><div class="ttname"><a href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">ShipAna.i</a></div><div class="ttdeci">int i</div><div class="ttdef"><b>Definition</b> <a href="ShipAna_8py_source.html#l00076">ShipAna.py:76</a></div></div>
 <div class="ttc" id="anamespaceana__ShipMuon_html_a05e83c6aa9234009f5e43dda6be3e5f6"><div class="ttname"><a href="namespaceana__ShipMuon.html#a05e83c6aa9234009f5e43dda6be3e5f6">ana_ShipMuon.origin</a></div><div class="ttdeci">origin(sTree, it)</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l00376">ana_ShipMuon.py:376</a></div></div>
 <div class="ttc" id="anamespacegeometry__config_html_a3ee24eb799a87fd368fbce3e057f8924"><div class="ttname"><a href="namespacegeometry__config.html#a3ee24eb799a87fd368fbce3e057f8924">geometry_config.target</a></div><div class="ttdeci">target</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00358">geometry_config.py:358</a></div></div>
-<div class="ttc" id="anamespacegeometry__config_html_a99f3338967d32a8359ac122e774ab3e9"><div class="ttname"><a href="namespacegeometry__config.html#a99f3338967d32a8359ac122e774ab3e9">geometry_config.n</a></div><div class="ttdeci">n</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00628">geometry_config.py:628</a></div></div>
 <div class="ttc" id="anamespacehnl_html_adb7ba50b8941bf3badea16f97cb665d5"><div class="ttname"><a href="namespacehnl.html#adb7ba50b8941bf3badea16f97cb665d5">hnl.c</a></div><div class="ttdeci">c</div><div class="ttdef"><b>Definition</b> <a href="hnl_8py_source.html#l00098">hnl.py:98</a></div></div>
 <div class="ttc" id="anamespacemakeCascade_html_a14cea4d78b73e5ff8a7eefb813be9886"><div class="ttname"><a href="namespacemakeCascade.html#a14cea4d78b73e5ff8a7eefb813be9886">makeCascade.tmp</a></div><div class="ttdeci">tmp</div><div class="ttdef"><b>Definition</b> <a href="makeCascade_8py_source.html#l00384">makeCascade.py:384</a></div></div>
 <div class="ttc" id="anamespacemakeDecay_html_a9c90b95001a4909a6c5383da1b3066d9"><div class="ttname"><a href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">makeDecay.p</a></div><div class="ttdeci">p</div><div class="ttdef"><b>Definition</b> <a href="makeDecay_8py_source.html#l00067">makeDecay.py:67</a></div></div>
+<div class="ttc" id="anamespacemakeDecay_html_af2fe9da99a6c13f5bdd6d42663620c39"><div class="ttname"><a href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">makeDecay.n</a></div><div class="ttdeci">int n</div><div class="ttdef"><b>Definition</b> <a href="makeDecay_8py_source.html#l00064">makeDecay.py:64</a></div></div>
 <div class="ttc" id="anamespacepi0Reco_html_a1aa5dc9c03ee8cd23d0c329c69e198d2"><div class="ttname"><a href="namespacepi0Reco.html#a1aa5dc9c03ee8cd23d0c329c69e198d2">pi0Reco.V</a></div><div class="ttdeci">V</div><div class="ttdef"><b>Definition</b> <a href="pi0Reco_8py_source.html#l00007">pi0Reco.py:7</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -930,9 +930,9 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  292</span>      TGeoMaterial *mat = 0;</div>
 <div class="line"><span class="lineno">  293</span>      <span class="keywordflow">if</span> (node &amp;&amp; !gGeoManager-&gt;IsOutside()) {</div>
 <div class="line"><span class="lineno">  294</span>         mat = node-&gt;GetVolume()-&gt;GetMaterial();</div>
-<div class="line"><span class="lineno">  295</span>         Double_t <a class="code hl_variable" href="namespacegeometry__config.html#a99f3338967d32a8359ac122e774ab3e9">n</a> = mat-&gt;GetDensity()/mat-&gt;GetA();</div>
+<div class="line"><span class="lineno">  295</span>         Double_t <a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a> = mat-&gt;GetDensity()/mat-&gt;GetA();</div>
 <div class="line"><span class="lineno">  296</span>         ZoverA =  mat-&gt;GetZ() / mat-&gt;GetA();</div>
-<div class="line"><span class="lineno">  297</span>         <a class="code hl_variable" href="namespacerunPythia8.html#aa6ccf15df5382fe526735a07d97d3cd4">sigma</a> = 1./(<a class="code hl_variable" href="namespacegeometry__config.html#a99f3338967d32a8359ac122e774ab3e9">n</a>*mat-&gt;GetIntLen())/<a class="code hl_variable" href="FixedTargetGenerator_8cxx.html#a9e059fccd1865e487271645a59736440">mbarn</a>;</div>
+<div class="line"><span class="lineno">  297</span>         <a class="code hl_variable" href="namespacerunPythia8.html#aa6ccf15df5382fe526735a07d97d3cd4">sigma</a> = 1./(<a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a>*mat-&gt;GetIntLen())/<a class="code hl_variable" href="FixedTargetGenerator_8cxx.html#a9e059fccd1865e487271645a59736440">mbarn</a>;</div>
 <div class="line"><span class="lineno">  298</span>         prob2int = TMath::Exp(-interLength)*<a class="code hl_variable" href="namespacerunPythia8.html#aa6ccf15df5382fe526735a07d97d3cd4">sigma</a>/<a class="code hl_variable" href="classFixedTargetGenerator.html#aa2dba48cbd74c877b9eb466be6f5a712">maxCrossSection</a>;</div>
 <div class="line"><span class="lineno">  299</span>      }<span class="keywordflow">else</span>{</div>
 <div class="line"><span class="lineno">  300</span>         prob2int=0.;</div>
@@ -1392,7 +1392,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="FixedTargetGenerator_8h_source.html#l00051">51</a> of file <a class="el" href="FixedTargetGenerator_8h_source.html">FixedTargetGenerator.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   51</span>{<a class="code hl_variable" href="classFixedTargetGenerator.html#adbe0d15a750be256cc0dd5aa00a961cf">withNtuple</a>=kTRUE;  <a class="code hl_variable" href="classFixedTargetGenerator.html#a485930ee0f6988b83b8b24105cec8a50">fNtuple</a> = <a class="code hl_variable" href="namespacerun__simScript.html#a7438ba4e0f241567d8e58065969d5ab5">t</a> ; }</div>
-<div class="ttc" id="anamespacerun__simScript_html_a7438ba4e0f241567d8e58065969d5ab5"><div class="ttname"><a href="namespacerun__simScript.html#a7438ba4e0f241567d8e58065969d5ab5">run_simScript.t</a></div><div class="ttdeci">bool t</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l00602">run_simScript.py:602</a></div></div>
+<div class="ttc" id="anamespacerun__simScript_html_a7438ba4e0f241567d8e58065969d5ab5"><div class="ttname"><a href="namespacerun__simScript.html#a7438ba4e0f241567d8e58065969d5ab5">run_simScript.t</a></div><div class="ttdeci">bool t</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l00605">run_simScript.py:605</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

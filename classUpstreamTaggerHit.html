@@ -1006,14 +1006,14 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  251</span> </div>
 <div class="line"><span class="lineno">  252</span>   Int_t Strip = -1;</div>
 <div class="line"><span class="lineno">  253</span>   Int_t <a class="code hl_variable" href="namespaceadd__noise__to__field.html#ac8c461fc99cff345995bf60fcdfefa01">str</a> = -1;</div>
-<div class="line"><span class="lineno">  254</span>   Double_t <a class="code hl_variable" href="namespacegeometry__config.html#a8aa4182e12a2746d01d4a85e5d322445">X</a> = -1;</div>
-<div class="line"><span class="lineno">  255</span>   Double_t <a class="code hl_variable" href="namespacegeometry__config.html#a813292572f3cf797de3cdc77f6edabb2">Y</a> = -1;</div>
+<div class="line"><span class="lineno">  254</span>   Double_t <a class="code hl_variable" href="namespacerunPythia8.html#ad74ad296dc1b3ef42e2efe98600c7a05">X</a> = -1;</div>
+<div class="line"><span class="lineno">  255</span>   Double_t Y = -1;</div>
 <div class="line"><span class="lineno">  256</span> </div>
 <div class="line"><span class="lineno">  257</span>   <span class="keywordflow">if</span>(Zmodule1 != 0){</div>
 <div class="line"><span class="lineno">  258</span> </div>
-<div class="line"><span class="lineno">  259</span>     Double_t <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a> = Zmodule1 - ZHit1;</div>
-<div class="line"><span class="lineno">  260</span>     <a class="code hl_variable" href="namespacegeometry__config.html#a8aa4182e12a2746d01d4a85e5d322445">X</a> = XHit1 + (<a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>*(PxHit1/TMath::Sqrt(PxHit1*PxHit1 + PyHit1*PyHit1 + PzHit1*PzHit1)));</div>
-<div class="line"><span class="lineno">  261</span>     <a class="code hl_variable" href="namespacegeometry__config.html#a813292572f3cf797de3cdc77f6edabb2">Y</a> = YHit1 + (<a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>*(PyHit1/TMath::Sqrt(PxHit1*PxHit1 + PyHit1*PyHit1 + PzHit1*PzHit1)));</div>
+<div class="line"><span class="lineno">  259</span>     Double_t Z = Zmodule1 - ZHit1;</div>
+<div class="line"><span class="lineno">  260</span>     <a class="code hl_variable" href="namespacerunPythia8.html#ad74ad296dc1b3ef42e2efe98600c7a05">X</a> = XHit1 + (Z*(PxHit1/TMath::Sqrt(PxHit1*PxHit1 + PyHit1*PyHit1 + PzHit1*PzHit1)));</div>
+<div class="line"><span class="lineno">  261</span>     Y = YHit1 + (Z*(PyHit1/TMath::Sqrt(PxHit1*PxHit1 + PyHit1*PyHit1 + PzHit1*PzHit1)));</div>
 <div class="line"><span class="lineno">  262</span> </div>
 <div class="line"><span class="lineno">  263</span>     Double_t count_strips = -1;</div>
 <div class="line"><span class="lineno">  264</span>     Int_t <a class="code hl_variable" href="Pythia8Generator_8cxx.html#a0c71dd09868f911626085e61855e4d3a">counter</a> = 0;</div>
@@ -1023,7 +1023,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  268</span>       count_strips = Ymodule1 + <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>*(<a class="code hl_variable" href="classUpstreamTaggerHit.html#afd58c6bf039ad1279908a5af014d988f">c0</a>-&gt;<a class="code hl_variable" href="classUpstreamTagger.html#aa56933888b236a3dd1caffd9956fbbea">det_yStripPos</a>+0.15);</div>
 <div class="line"><span class="lineno">  269</span>       <a class="code hl_variable" href="Pythia8Generator_8cxx.html#a0c71dd09868f911626085e61855e4d3a">counter</a>++;</div>
 <div class="line"><span class="lineno">  270</span> </div>
-<div class="line"><span class="lineno">  271</span>       <span class="keywordflow">if</span>(Y &gt;= (count_strips - 3.25) &amp;&amp; <a class="code hl_variable" href="namespacegeometry__config.html#a813292572f3cf797de3cdc77f6edabb2">Y</a> &lt; count_strips){</div>
+<div class="line"><span class="lineno">  271</span>       <span class="keywordflow">if</span>(Y &gt;= (count_strips - 3.25) &amp;&amp; Y &lt; count_strips){</div>
 <div class="line"><span class="lineno">  272</span> </div>
 <div class="line"><span class="lineno">  273</span>     <span class="keywordflow">if</span>(Y &gt; count_strips - 0.075)</div>
 <div class="line"><span class="lineno">  274</span>       Strip = <a class="code hl_variable" href="Pythia8Generator_8cxx.html#a0c71dd09868f911626085e61855e4d3a">counter</a> + 1;</div>
@@ -1042,9 +1042,9 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  287</span> </div>
 <div class="line"><span class="lineno">  288</span>   <span class="keywordflow">if</span>(Zmodule11 != 0){</div>
 <div class="line"><span class="lineno">  289</span> </div>
-<div class="line"><span class="lineno">  290</span>     Double_t <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a> = Zmodule11 - ZHit1;</div>
-<div class="line"><span class="lineno">  291</span>     <a class="code hl_variable" href="namespacegeometry__config.html#a8aa4182e12a2746d01d4a85e5d322445">X</a> = XHit1 + (<a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>*(PxHit1/TMath::Sqrt(PxHit1*PxHit1 + PyHit1*PyHit1 + PzHit1*PzHit1)));</div>
-<div class="line"><span class="lineno">  292</span>     <a class="code hl_variable" href="namespacegeometry__config.html#a813292572f3cf797de3cdc77f6edabb2">Y</a> = YHit1 + (<a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>*(PyHit1/TMath::Sqrt(PxHit1*PxHit1 + PyHit1*PyHit1 + PzHit1*PzHit1)));</div>
+<div class="line"><span class="lineno">  290</span>     Double_t Z = Zmodule11 - ZHit1;</div>
+<div class="line"><span class="lineno">  291</span>     <a class="code hl_variable" href="namespacerunPythia8.html#ad74ad296dc1b3ef42e2efe98600c7a05">X</a> = XHit1 + (Z*(PxHit1/TMath::Sqrt(PxHit1*PxHit1 + PyHit1*PyHit1 + PzHit1*PzHit1)));</div>
+<div class="line"><span class="lineno">  292</span>     Y = YHit1 + (Z*(PyHit1/TMath::Sqrt(PxHit1*PxHit1 + PyHit1*PyHit1 + PzHit1*PzHit1)));</div>
 <div class="line"><span class="lineno">  293</span> </div>
 <div class="line"><span class="lineno">  294</span>     Double_t count_strips = -1;</div>
 <div class="line"><span class="lineno">  295</span>     Int_t <a class="code hl_variable" href="Pythia8Generator_8cxx.html#a0c71dd09868f911626085e61855e4d3a">counter</a> = 0;</div>
@@ -1054,7 +1054,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  299</span>       count_strips = Xmodule11 + <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>*(<a class="code hl_variable" href="classUpstreamTaggerHit.html#afd58c6bf039ad1279908a5af014d988f">c0</a>-&gt;<a class="code hl_variable" href="classUpstreamTagger.html#aa4e4926d38c0048f83540be580b5c5bc">det_xStripPos64</a>+0.15);</div>
 <div class="line"><span class="lineno">  300</span>       <a class="code hl_variable" href="Pythia8Generator_8cxx.html#a0c71dd09868f911626085e61855e4d3a">counter</a>++;</div>
 <div class="line"><span class="lineno">  301</span> </div>
-<div class="line"><span class="lineno">  302</span>       <span class="keywordflow">if</span>(X &gt;= (count_strips - 3.45) &amp;&amp; <a class="code hl_variable" href="namespacegeometry__config.html#a8aa4182e12a2746d01d4a85e5d322445">X</a> &lt; count_strips){</div>
+<div class="line"><span class="lineno">  302</span>       <span class="keywordflow">if</span>(X &gt;= (count_strips - 3.45) &amp;&amp; <a class="code hl_variable" href="namespacerunPythia8.html#ad74ad296dc1b3ef42e2efe98600c7a05">X</a> &lt; count_strips){</div>
 <div class="line"><span class="lineno">  303</span> </div>
 <div class="line"><span class="lineno">  304</span>     <span class="keywordflow">if</span>(X &gt; count_strips - 0.075)</div>
 <div class="line"><span class="lineno">  305</span>       Strip = <a class="code hl_variable" href="Pythia8Generator_8cxx.html#a0c71dd09868f911626085e61855e4d3a">counter</a> + 1;</div>
@@ -1077,9 +1077,9 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  322</span>   <a class="code hl_variable" href="classUpstreamTaggerHit.html#a5eb5fda5645089296066a0a87c1f61c7">Rpc_NeighbourStrip</a> = <a class="code hl_variable" href="namespaceadd__noise__to__field.html#ac8c461fc99cff345995bf60fcdfefa01">str</a>;</div>
 <div class="line"><span class="lineno">  323</span> </div>
 <div class="line"><span class="lineno">  324</span>   <span class="keywordflow">if</span>(Zmodule1 != 0)</div>
-<div class="line"><span class="lineno">  325</span>     hit_final = <a class="code hl_variable" href="namespacegeometry__config.html#a8aa4182e12a2746d01d4a85e5d322445">X</a>;</div>
+<div class="line"><span class="lineno">  325</span>     hit_final = <a class="code hl_variable" href="namespacerunPythia8.html#ad74ad296dc1b3ef42e2efe98600c7a05">X</a>;</div>
 <div class="line"><span class="lineno">  326</span>   <span class="keywordflow">if</span>(Zmodule11 != 0)</div>
-<div class="line"><span class="lineno">  327</span>     hit_final = <a class="code hl_variable" href="namespacegeometry__config.html#a813292572f3cf797de3cdc77f6edabb2">Y</a>;</div>
+<div class="line"><span class="lineno">  327</span>     hit_final = Y;</div>
 <div class="line"><span class="lineno">  328</span> </div>
 <div class="line"><span class="lineno">  329</span>   TString <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a>, path1;</div>
 <div class="line"><span class="lineno">  330</span> </div>
@@ -1114,12 +1114,10 @@ Additional Inherited Members</h2></td></tr>
 <div class="ttc" id="aclassUpstreamTagger_html_af263cdbdaff47711d2d41790b6f3e43e"><div class="ttname"><a href="classUpstreamTagger.html#af263cdbdaff47711d2d41790b6f3e43e">UpstreamTagger::zbox_fulldet</a></div><div class="ttdeci">Double_t zbox_fulldet</div><div class="ttdef"><b>Definition</b> <a href="UpstreamTagger_8h_source.html#l00170">UpstreamTagger.h:170</a></div></div>
 <div class="ttc" id="anamespaceShipAna_html_aa4bf87f4d17f9d38b1d8f4d009bb54b3"><div class="ttname"><a href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">ShipAna.i</a></div><div class="ttdeci">int i</div><div class="ttdef"><b>Definition</b> <a href="ShipAna_8py_source.html#l00076">ShipAna.py:76</a></div></div>
 <div class="ttc" id="anamespaceadd__noise__to__field_html_ac8c461fc99cff345995bf60fcdfefa01"><div class="ttname"><a href="namespaceadd__noise__to__field.html#ac8c461fc99cff345995bf60fcdfefa01">add_noise_to_field.str</a></div><div class="ttdeci">str</div><div class="ttdef"><b>Definition</b> <a href="add__noise__to__field_8py_source.html#l00053">add_noise_to_field.py:53</a></div></div>
-<div class="ttc" id="anamespacegeometry__config_html_a813292572f3cf797de3cdc77f6edabb2"><div class="ttname"><a href="namespacegeometry__config.html#a813292572f3cf797de3cdc77f6edabb2">geometry_config.Y</a></div><div class="ttdeci">Y</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00440">geometry_config.py:440</a></div></div>
-<div class="ttc" id="anamespacegeometry__config_html_a8aa4182e12a2746d01d4a85e5d322445"><div class="ttname"><a href="namespacegeometry__config.html#a8aa4182e12a2746d01d4a85e5d322445">geometry_config.X</a></div><div class="ttdeci">X</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00439">geometry_config.py:439</a></div></div>
-<div class="ttc" id="anamespacegeometry__config_html_ae949308a33fbd7f7096e0223cba1e10b"><div class="ttname"><a href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">geometry_config.Z</a></div><div class="ttdeci">Z</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00441">geometry_config.py:441</a></div></div>
 <div class="ttc" id="anamespacemakeCascade_html_a14cea4d78b73e5ff8a7eefb813be9886"><div class="ttname"><a href="namespacemakeCascade.html#a14cea4d78b73e5ff8a7eefb813be9886">makeCascade.tmp</a></div><div class="ttdeci">tmp</div><div class="ttdef"><b>Definition</b> <a href="makeCascade_8py_source.html#l00384">makeCascade.py:384</a></div></div>
 <div class="ttc" id="anamespacemakeDecay_html_a8ae49156f9341ca95732cc2c31159dda"><div class="ttname"><a href="namespacemakeDecay.html#a8ae49156f9341ca95732cc2c31159dda">makeDecay.rc</a></div><div class="ttdeci">rc</div><div class="ttdef"><b>Definition</b> <a href="makeDecay_8py_source.html#l00102">makeDecay.py:102</a></div></div>
 <div class="ttc" id="anamespacemake__nTuple__SBT_html_a5296266b8955872e3259622e903275de"><div class="ttname"><a href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">make_nTuple_SBT.path</a></div><div class="ttdeci">path</div><div class="ttdef"><b>Definition</b> <a href="make__nTuple__SBT_8py_source.html#l00044">make_nTuple_SBT.py:44</a></div></div>
+<div class="ttc" id="anamespacerunPythia8_html_ad74ad296dc1b3ef42e2efe98600c7a05"><div class="ttname"><a href="namespacerunPythia8.html#ad74ad296dc1b3ef42e2efe98600c7a05">runPythia8.X</a></div><div class="ttdeci">X</div><div class="ttdef"><b>Definition</b> <a href="runPythia8_8py_source.html#l00027">runPythia8.py:27</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1239,7 +1237,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">   71</span>     retVal.push_back(dt);</div>
 <div class="line"><span class="lineno">   72</span>     <span class="keywordflow">return</span> retVal;</div>
 <div class="line"><span class="lineno">   73</span>}</div>
-<div class="ttc" id="anamespacerun__simScript_html_a7438ba4e0f241567d8e58065969d5ab5"><div class="ttname"><a href="namespacerun__simScript.html#a7438ba4e0f241567d8e58065969d5ab5">run_simScript.t</a></div><div class="ttdeci">bool t</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l00602">run_simScript.py:602</a></div></div>
+<div class="ttc" id="anamespacerun__simScript_html_a7438ba4e0f241567d8e58065969d5ab5"><div class="ttname"><a href="namespacerun__simScript.html#a7438ba4e0f241567d8e58065969d5ab5">run_simScript.t</a></div><div class="ttdeci">bool t</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l00605">run_simScript.py:605</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

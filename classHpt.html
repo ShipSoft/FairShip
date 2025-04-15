@@ -801,17 +801,16 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="HPT_8cxx_source.html#l00346">346</a> of file <a class="el" href="HPT_8cxx_source.html">HPT.cxx</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  347</span>{</div>
-<div class="line"><span class="lineno">  348</span>   <a class="code hl_variable" href="namespacegeometry__config.html#af69b95788121b533fa06b930f5e8bacd">nHPT</a> = <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a>/1000;</div>
-<div class="line"><span class="lineno">  349</span>   <span class="keywordtype">int</span> idir = (<a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a> - <a class="code hl_variable" href="namespacegeometry__config.html#af69b95788121b533fa06b930f5e8bacd">nHPT</a>*1000)/100;</div>
+<div class="line"><span class="lineno">  348</span>   nHPT = <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a>/1000;</div>
+<div class="line"><span class="lineno">  349</span>   <span class="keywordtype">int</span> idir = (<a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a> - nHPT*1000)/100;</div>
 <div class="line"><span class="lineno">  350</span> </div>
 <div class="line"><span class="lineno">  351</span>   <span class="keywordflow">if</span> (idir == 1) ishor = kFALSE;</div>
 <div class="line"><span class="lineno">  352</span>   <span class="keywordflow">else</span> <span class="keywordflow">if</span> (idir == 0) ishor = kTRUE;</div>
 <div class="line"><span class="lineno">  353</span> </div>
-<div class="line"><span class="lineno">  354</span>   nplane = (<a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a> - <a class="code hl_variable" href="namespacegeometry__config.html#af69b95788121b533fa06b930f5e8bacd">nHPT</a>*1000 - idir*100);</div>
+<div class="line"><span class="lineno">  354</span>   nplane = (<a class="code hl_variable" href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">detID</a> - nHPT*1000 - idir*100);</div>
 <div class="line"><span class="lineno">  355</span> </div>
 <div class="line"><span class="lineno">  356</span> </div>
 <div class="line"><span class="lineno">  357</span>}</div>
-<div class="ttc" id="anamespacegeometry__config_html_af69b95788121b533fa06b930f5e8bacd"><div class="ttname"><a href="namespacegeometry__config.html#af69b95788121b533fa06b930f5e8bacd">geometry_config.nHPT</a></div><div class="ttdeci">nHPT</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00674">geometry_config.py:674</a></div></div>
 <div class="ttc" id="anamespacemake__nTuple__SBT_html_adad3143572780a2fde967f05ef62ba37"><div class="ttname"><a href="namespacemake__nTuple__SBT.html#adad3143572780a2fde967f05ef62ba37">make_nTuple_SBT.detID</a></div><div class="ttdeci">detID</div><div class="ttdef"><b>Definition</b> <a href="make__nTuple__SBT_8py_source.html#l00252">make_nTuple_SBT.py:252</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -1230,7 +1229,7 @@ Private Attributes</h2></td></tr>
 <div class="ttc" id="aclassShipStack_html"><div class="ttname"><a href="classShipStack.html">ShipStack</a></div><div class="ttdef"><b>Definition</b> <a href="ShipStack_8h_source.html#l00046">ShipStack.h:47</a></div></div>
 <div class="ttc" id="anamespacemakeCascade_html_a15662d966fe998f4f8b9b6547975083e"><div class="ttname"><a href="namespacemakeCascade.html#a15662d966fe998f4f8b9b6547975083e">makeCascade.stack</a></div><div class="ttdeci">int stack</div><div class="ttdef"><b>Definition</b> <a href="makeCascade_8py_source.html#l00273">makeCascade.py:273</a></div></div>
 <div class="ttc" id="anamespacemakeDecay_html_a9c90b95001a4909a6c5383da1b3066d9"><div class="ttname"><a href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">makeDecay.p</a></div><div class="ttdeci">p</div><div class="ttdef"><b>Definition</b> <a href="makeDecay_8py_source.html#l00067">makeDecay.py:67</a></div></div>
-<div class="ttc" id="anamespacerun__simScript_html_a671e51e119017a06d69c162c6e24b051"><div class="ttname"><a href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">run_simScript.gMC</a></div><div class="ttdeci">gMC</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l00504">run_simScript.py:504</a></div></div>
+<div class="ttc" id="anamespacerun__simScript_html_a671e51e119017a06d69c162c6e24b051"><div class="ttname"><a href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">run_simScript.gMC</a></div><div class="ttdeci">gMC</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l00507">run_simScript.py:507</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1335,16 +1334,14 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="HPT_8cxx_source.html#l00105">105</a> of file <a class="el" href="HPT_8cxx_source.html">HPT.cxx</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  106</span>{</div>
-<div class="line"><span class="lineno">  107</span>  <a class="code hl_variable" href="classHpt.html#a4260c7c5094bbd74a76d3e3a2502e9f4">fConcreteX</a> = <a class="code hl_variable" href="namespacegeometry__config.html#a8aa4182e12a2746d01d4a85e5d322445">X</a>;</div>
-<div class="line"><span class="lineno">  108</span>  <a class="code hl_variable" href="classHpt.html#ae46eda4265c80562e1dda9b79fd0d2ba">fConcreteY</a> = <a class="code hl_variable" href="namespacegeometry__config.html#a813292572f3cf797de3cdc77f6edabb2">Y</a>;</div>
-<div class="line"><span class="lineno">  109</span>  <a class="code hl_variable" href="classHpt.html#a76dc887d4d9299e6b9f2f80fcc456453">fConcreteZ</a> = <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>;</div>
+<div class="line"><span class="lineno">  107</span>  <a class="code hl_variable" href="classHpt.html#a4260c7c5094bbd74a76d3e3a2502e9f4">fConcreteX</a> = <a class="code hl_variable" href="namespacerunPythia8.html#ad74ad296dc1b3ef42e2efe98600c7a05">X</a>;</div>
+<div class="line"><span class="lineno">  108</span>  <a class="code hl_variable" href="classHpt.html#ae46eda4265c80562e1dda9b79fd0d2ba">fConcreteY</a> = Y;</div>
+<div class="line"><span class="lineno">  109</span>  <a class="code hl_variable" href="classHpt.html#a76dc887d4d9299e6b9f2f80fcc456453">fConcreteZ</a> = Z;</div>
 <div class="line"><span class="lineno">  110</span>}</div>
 <div class="ttc" id="aclassHpt_html_a4260c7c5094bbd74a76d3e3a2502e9f4"><div class="ttname"><a href="classHpt.html#a4260c7c5094bbd74a76d3e3a2502e9f4">Hpt::fConcreteX</a></div><div class="ttdeci">Double_t fConcreteX</div><div class="ttdef"><b>Definition</b> <a href="HPT_8h_source.html#l00111">HPT.h:111</a></div></div>
 <div class="ttc" id="aclassHpt_html_a76dc887d4d9299e6b9f2f80fcc456453"><div class="ttname"><a href="classHpt.html#a76dc887d4d9299e6b9f2f80fcc456453">Hpt::fConcreteZ</a></div><div class="ttdeci">Double_t fConcreteZ</div><div class="ttdef"><b>Definition</b> <a href="HPT_8h_source.html#l00113">HPT.h:113</a></div></div>
 <div class="ttc" id="aclassHpt_html_ae46eda4265c80562e1dda9b79fd0d2ba"><div class="ttname"><a href="classHpt.html#ae46eda4265c80562e1dda9b79fd0d2ba">Hpt::fConcreteY</a></div><div class="ttdeci">Double_t fConcreteY</div><div class="ttdef"><b>Definition</b> <a href="HPT_8h_source.html#l00112">HPT.h:112</a></div></div>
-<div class="ttc" id="anamespacegeometry__config_html_a813292572f3cf797de3cdc77f6edabb2"><div class="ttname"><a href="namespacegeometry__config.html#a813292572f3cf797de3cdc77f6edabb2">geometry_config.Y</a></div><div class="ttdeci">Y</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00440">geometry_config.py:440</a></div></div>
-<div class="ttc" id="anamespacegeometry__config_html_a8aa4182e12a2746d01d4a85e5d322445"><div class="ttname"><a href="namespacegeometry__config.html#a8aa4182e12a2746d01d4a85e5d322445">geometry_config.X</a></div><div class="ttdeci">X</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00439">geometry_config.py:439</a></div></div>
-<div class="ttc" id="anamespacegeometry__config_html_ae949308a33fbd7f7096e0223cba1e10b"><div class="ttname"><a href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">geometry_config.Z</a></div><div class="ttdeci">Z</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00441">geometry_config.py:441</a></div></div>
+<div class="ttc" id="anamespacerunPythia8_html_ad74ad296dc1b3ef42e2efe98600c7a05"><div class="ttname"><a href="namespacerunPythia8.html#ad74ad296dc1b3ef42e2efe98600c7a05">runPythia8.X</a></div><div class="ttdeci">X</div><div class="ttdef"><b>Definition</b> <a href="runPythia8_8py_source.html#l00027">runPythia8.py:27</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1366,9 +1363,8 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="HPT_8cxx_source.html#l00122">122</a> of file <a class="el" href="HPT_8cxx_source.html">HPT.cxx</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  123</span>{</div>
-<div class="line"><span class="lineno">  124</span>  <a class="code hl_variable" href="classHpt.html#a46dd102699b47bf152759a53e8526eb3">fDesign</a> = <a class="code hl_variable" href="namespacegeometry__config.html#a66ea53c122d7dddec92fe3fbf8b2c354">Design</a>;</div>
+<div class="line"><span class="lineno">  124</span>  <a class="code hl_variable" href="classHpt.html#a46dd102699b47bf152759a53e8526eb3">fDesign</a> = Design;</div>
 <div class="line"><span class="lineno">  125</span>}</div>
-<div class="ttc" id="anamespacegeometry__config_html_a66ea53c122d7dddec92fe3fbf8b2c354"><div class="ttname"><a href="namespacegeometry__config.html#a66ea53c122d7dddec92fe3fbf8b2c354">geometry_config.Design</a></div><div class="ttdeci">Design</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00434">geometry_config.py:434</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1413,7 +1409,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="HPT_8cxx_source.html#l00117">117</a> of file <a class="el" href="HPT_8cxx_source.html">HPT.cxx</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  118</span>{</div>
-<div class="line"><span class="lineno">  119</span> <a class="code hl_variable" href="classHpt.html#aa9c789b21c8d4cd04fbd3cd132af6fc4">fnHPT</a> = <a class="code hl_variable" href="namespacegeometry__config.html#af69b95788121b533fa06b930f5e8bacd">nHPT</a>;</div>
+<div class="line"><span class="lineno">  119</span> <a class="code hl_variable" href="classHpt.html#aa9c789b21c8d4cd04fbd3cd132af6fc4">fnHPT</a> = nHPT;</div>
 <div class="line"><span class="lineno">  120</span>}</div>
 </div><!-- fragment -->
 </div>

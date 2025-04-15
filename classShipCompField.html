@@ -455,7 +455,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">   44</span>    <span class="comment">// Loop over the fields and do a simple linear superposition</span></div>
 <div class="line"><span class="lineno">   45</span> </div>
 <div class="line"><span class="lineno">   46</span>    <span class="comment">// First initialise the field components to zero</span></div>
-<div class="line"><span class="lineno">   47</span>    <a class="code hl_variable" href="namespacegeometry__config.html#aa52009c79b19f5c569b183e74aa588c7">B</a>[0] = 0.0, <a class="code hl_variable" href="namespacegeometry__config.html#aa52009c79b19f5c569b183e74aa588c7">B</a>[1] = 0.0, <a class="code hl_variable" href="namespacegeometry__config.html#aa52009c79b19f5c569b183e74aa588c7">B</a>[2] = 0.0;</div>
+<div class="line"><span class="lineno">   47</span>    B[0] = 0.0, B[1] = 0.0, B[2] = 0.0;</div>
 <div class="line"><span class="lineno">   48</span> </div>
 <div class="line"><span class="lineno">   49</span>    std::vector&lt;TVirtualMagField*&gt;::const_iterator iter;</div>
 <div class="line"><span class="lineno">   50</span>    <span class="keywordflow">for</span> (iter = <a class="code hl_variable" href="classShipCompField.html#a68334005610ba6bfd5ae8f8a1b8956f5">theFields_</a>.begin(); iter != <a class="code hl_variable" href="classShipCompField.html#a68334005610ba6bfd5ae8f8a1b8956f5">theFields_</a>.end(); ++iter) {</div>
@@ -470,9 +470,9 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">   59</span>        theField-&gt;Field(position, BVect);</div>
 <div class="line"><span class="lineno">   60</span> </div>
 <div class="line"><span class="lineno">   61</span>        <span class="comment">// Simple linear superposition of the B field components</span></div>
-<div class="line"><span class="lineno">   62</span>        <a class="code hl_variable" href="namespacegeometry__config.html#aa52009c79b19f5c569b183e74aa588c7">B</a>[0] += BVect[0];</div>
-<div class="line"><span class="lineno">   63</span>        <a class="code hl_variable" href="namespacegeometry__config.html#aa52009c79b19f5c569b183e74aa588c7">B</a>[1] += BVect[1];</div>
-<div class="line"><span class="lineno">   64</span>        <a class="code hl_variable" href="namespacegeometry__config.html#aa52009c79b19f5c569b183e74aa588c7">B</a>[2] += BVect[2];</div>
+<div class="line"><span class="lineno">   62</span>        B[0] += BVect[0];</div>
+<div class="line"><span class="lineno">   63</span>        B[1] += BVect[1];</div>
+<div class="line"><span class="lineno">   64</span>        B[2] += BVect[2];</div>
 <div class="line"><span class="lineno">   65</span> </div>
 <div class="line"><span class="lineno">   66</span>        <span class="comment">//std::cout&lt;&lt;&quot;B = &quot;&lt;&lt;BVect[0]&lt;&lt;&quot;, &quot;&lt;&lt;BVect[1]&lt;&lt;&quot;, &quot;&lt;&lt;BVect[2]&lt;&lt;std::endl;</span></div>
 <div class="line"><span class="lineno">   67</span>        <span class="comment">//std::cout&lt;&lt;&quot;BSum = &quot;&lt;&lt;B[0]&lt;&lt;&quot;, &quot;&lt;&lt;B[1]&lt;&lt;&quot;, &quot;&lt;&lt;B[2]&lt;&lt;std::endl;</span></div>
@@ -482,7 +482,6 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">   71</span>    }</div>
 <div class="line"><span class="lineno">   72</span> </div>
 <div class="line"><span class="lineno">   73</span>}</div>
-<div class="ttc" id="anamespacegeometry__config_html_aa52009c79b19f5c569b183e74aa588c7"><div class="ttname"><a href="namespacegeometry__config.html#aa52009c79b19f5c569b183e74aa588c7">geometry_config.B</a></div><div class="ttdeci">B</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00436">geometry_config.py:436</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

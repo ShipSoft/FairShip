@@ -362,7 +362,7 @@ Protected Attributes</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="ShipMuonShield_8cxx_source.html#l00099">99</a> of file <a class="el" href="ShipMuonShield_8cxx_source.html">ShipMuonShield.cxx</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  104</span>  : FairModule(name ,Title)</div>
 <div class="line"><span class="lineno">  105</span>{</div>
-<div class="line"><span class="lineno">  106</span> <a class="code hl_variable" href="classShipMuonShield.html#a53088e674ec5b01b13addc4f95b8639b">fDesign</a> = <a class="code hl_variable" href="namespacegeometry__config.html#a66ea53c122d7dddec92fe3fbf8b2c354">Design</a>;</div>
+<div class="line"><span class="lineno">  106</span> <a class="code hl_variable" href="classShipMuonShield.html#a53088e674ec5b01b13addc4f95b8639b">fDesign</a> = Design;</div>
 <div class="line"><span class="lineno">  107</span> <a class="code hl_variable" href="classShipMuonShield.html#aaffb7c02c3a3d1b1c4a065dbf3ec3031">fField</a>  = field;</div>
 <div class="line"><span class="lineno">  108</span> <a class="code hl_variable" href="classShipMuonShield.html#a92c765f3f0e52c87e24d34520480868d">fSC_mag</a> = <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">  109</span> <a class="code hl_variable" href="classShipMuonShield.html#ae63bdf3154635cea71fdb83d125b5215">fGeofile</a> = <span class="stringliteral">&quot;&quot;</span>;</div>
@@ -387,7 +387,7 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  128</span> </div>
 <div class="line"><span class="lineno">  129</span> <a class="code hl_variable" href="classShipMuonShield.html#a2a42e73ea7b5b008f8d20216c237e0f3">fFloor</a> = floor;</div>
 <div class="line"><span class="lineno">  130</span> </div>
-<div class="line"><span class="lineno">  131</span> <a class="code hl_variable" href="classShipMuonShield.html#a5130685457b479414f00df2ce9116649">zEndOfAbsorb</a> = <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a> - <a class="code hl_variable" href="classShipMuonShield.html#a49aa014e5ef9b9382ec8895006c89a62">fMuonShieldLength</a>/2.;</div>
+<div class="line"><span class="lineno">  131</span> <a class="code hl_variable" href="classShipMuonShield.html#a5130685457b479414f00df2ce9116649">zEndOfAbsorb</a> = Z - <a class="code hl_variable" href="classShipMuonShield.html#a49aa014e5ef9b9382ec8895006c89a62">fMuonShieldLength</a>/2.;</div>
 <div class="line"><span class="lineno">  132</span> </div>
 <div class="line"><span class="lineno">  133</span> <a class="code hl_variable" href="classShipMuonShield.html#ad61b851142301d3be5c5e430c0e627f4">fSupport</a> = <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">  134</span>}</div>
@@ -411,14 +411,12 @@ Protected Attributes</h2></td></tr>
 <div class="ttc" id="aclassShipMuonShield_html_af9c74aa86fcac8c8246498dcd9da2117"><div class="ttname"><a href="classShipMuonShield.html#af9c74aa86fcac8c8246498dcd9da2117">ShipMuonShield::fWithConstAbsorberField</a></div><div class="ttdeci">Bool_t fWithConstAbsorberField</div><div class="ttdef"><b>Definition</b> <a href="ShipMuonShield_8h_source.html#l00055">ShipMuonShield.h:55</a></div></div>
 <div class="ttc" id="aclassShipMuonShield_html_afa1fdd58785194476d02251f6506179b"><div class="ttname"><a href="classShipMuonShield.html#afa1fdd58785194476d02251f6506179b">ShipMuonShield::dZ7</a></div><div class="ttdeci">Double_t dZ7</div><div class="ttdef"><b>Definition</b> <a href="ShipMuonShield_8h_source.html#l00050">ShipMuonShield.h:50</a></div></div>
 <div class="ttc" id="aclassShipMuonShield_html_afb7b692183d67dea99006da9533b3341"><div class="ttname"><a href="classShipMuonShield.html#afb7b692183d67dea99006da9533b3341">ShipMuonShield::dZ2</a></div><div class="ttdeci">Double_t dZ2</div><div class="ttdef"><b>Definition</b> <a href="ShipMuonShield_8h_source.html#l00050">ShipMuonShield.h:50</a></div></div>
-<div class="ttc" id="anamespacegeometry__config_html_a66ea53c122d7dddec92fe3fbf8b2c354"><div class="ttname"><a href="namespacegeometry__config.html#a66ea53c122d7dddec92fe3fbf8b2c354">geometry_config.Design</a></div><div class="ttdeci">Design</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00434">geometry_config.py:434</a></div></div>
 <div class="ttc" id="anamespacegeometry__config_html_a6d1b6ea70ac075117556ba50470e691e"><div class="ttname"><a href="namespacegeometry__config.html#a6d1b6ea70ac075117556ba50470e691e">geometry_config.L3</a></div><div class="ttdeci">L3</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00370">geometry_config.py:370</a></div></div>
 <div class="ttc" id="anamespacegeometry__config_html_a701116a224c625125ccae3aeada8013e"><div class="ttname"><a href="namespacegeometry__config.html#a701116a224c625125ccae3aeada8013e">geometry_config.L2</a></div><div class="ttdeci">L2</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00368">geometry_config.py:368</a></div></div>
 <div class="ttc" id="anamespacegeometry__config_html_abd35c7283395156bdeb03abec8d76f72"><div class="ttname"><a href="namespacegeometry__config.html#abd35c7283395156bdeb03abec8d76f72">geometry_config.L7</a></div><div class="ttdeci">L7</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00378">geometry_config.py:378</a></div></div>
 <div class="ttc" id="anamespacegeometry__config_html_ad435ffe14a5753dc5ebfdcbdb0460957"><div class="ttname"><a href="namespacegeometry__config.html#ad435ffe14a5753dc5ebfdcbdb0460957">geometry_config.L8</a></div><div class="ttdeci">L8</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00380">geometry_config.py:380</a></div></div>
 <div class="ttc" id="anamespacegeometry__config_html_ad948a9764b644b4b06b1d171440ccf34"><div class="ttname"><a href="namespacegeometry__config.html#ad948a9764b644b4b06b1d171440ccf34">geometry_config.L4</a></div><div class="ttdeci">L4</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00372">geometry_config.py:372</a></div></div>
 <div class="ttc" id="anamespacegeometry__config_html_adf61517938755733ff45b9a537b06b8c"><div class="ttname"><a href="namespacegeometry__config.html#adf61517938755733ff45b9a537b06b8c">geometry_config.L6</a></div><div class="ttdeci">L6</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00376">geometry_config.py:376</a></div></div>
-<div class="ttc" id="anamespacegeometry__config_html_ae949308a33fbd7f7096e0223cba1e10b"><div class="ttname"><a href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">geometry_config.Z</a></div><div class="ttdeci">Z</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00441">geometry_config.py:441</a></div></div>
 <div class="ttc" id="anamespacegeometry__config_html_af0f07dc6f71eac3ccc79d19c3932daa9"><div class="ttname"><a href="namespacegeometry__config.html#af0f07dc6f71eac3ccc79d19c3932daa9">geometry_config.L1</a></div><div class="ttdeci">L1</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00366">geometry_config.py:366</a></div></div>
 <div class="ttc" id="anamespacegeometry__config_html_affb62cb769b1af6e2612c200f839519c"><div class="ttname"><a href="namespacegeometry__config.html#affb62cb769b1af6e2612c200f839519c">geometry_config.L5</a></div><div class="ttdeci">L5</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00374">geometry_config.py:374</a></div></div>
 </div><!-- fragment -->
@@ -503,9 +501,9 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">   57</span>  <a class="code hl_variable" href="classShipMuonShield.html#a2a42e73ea7b5b008f8d20216c237e0f3">fFloor</a> = floor;</div>
 <div class="line"><span class="lineno">   58</span>  <a class="code hl_variable" href="classShipMuonShield.html#ad61b851142301d3be5c5e430c0e627f4">fSupport</a> = <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">   59</span> </div>
-<div class="line"><span class="lineno">   60</span>  Double_t <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a> = -25 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a> - <a class="code hl_variable" href="classShipMuonShield.html#a49aa014e5ef9b9382ec8895006c89a62">fMuonShieldLength</a> / 2.;</div>
+<div class="line"><span class="lineno">   60</span>  Double_t Z = -25 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a> - <a class="code hl_variable" href="classShipMuonShield.html#a49aa014e5ef9b9382ec8895006c89a62">fMuonShieldLength</a> / 2.;</div>
 <div class="line"><span class="lineno">   61</span> </div>
-<div class="line"><span class="lineno">   62</span>  <a class="code hl_variable" href="classShipMuonShield.html#a5130685457b479414f00df2ce9116649">zEndOfAbsorb</a> = <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a> + - <a class="code hl_variable" href="classShipMuonShield.html#a49aa014e5ef9b9382ec8895006c89a62">fMuonShieldLength</a> / 2.;</div>
+<div class="line"><span class="lineno">   62</span>  <a class="code hl_variable" href="classShipMuonShield.html#a5130685457b479414f00df2ce9116649">zEndOfAbsorb</a> = Z + - <a class="code hl_variable" href="classShipMuonShield.html#a49aa014e5ef9b9382ec8895006c89a62">fMuonShieldLength</a> / 2.;</div>
 <div class="line"><span class="lineno">   63</span>}</div>
 <div class="ttc" id="aShipBellField_8cxx_html_a42d42dd2c682d42f11de58e34c89f895"><div class="ttname"><a href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a></div><div class="ttdeci">Double_t m</div><div class="ttdef"><b>Definition</b> <a href="ShipBellField_8cxx_source.html#l00020">ShipBellField.cxx:20</a></div></div>
 <div class="ttc" id="aclassShipMuonShield_html_a25d8a1229a943532bbc3c02ebc7f8109"><div class="ttname"><a href="classShipMuonShield.html#a25d8a1229a943532bbc3c02ebc7f8109">ShipMuonShield::dZ0</a></div><div class="ttdeci">Double_t dZ0</div><div class="ttdef"><b>Definition</b> <a href="ShipMuonShield_8h_source.html#l00050">ShipMuonShield.h:50</a></div></div>
@@ -600,9 +598,9 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">   91</span>  <a class="code hl_variable" href="classShipMuonShield.html#a2a42e73ea7b5b008f8d20216c237e0f3">fFloor</a> = floor;</div>
 <div class="line"><span class="lineno">   92</span>  <a class="code hl_variable" href="classShipMuonShield.html#ad61b851142301d3be5c5e430c0e627f4">fSupport</a> = <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">   93</span> </div>
-<div class="line"><span class="lineno">   94</span>  Double_t <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a> = -25 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a> - <a class="code hl_variable" href="classShipMuonShield.html#a49aa014e5ef9b9382ec8895006c89a62">fMuonShieldLength</a> / 2.;</div>
+<div class="line"><span class="lineno">   94</span>  Double_t Z = -25 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a> - <a class="code hl_variable" href="classShipMuonShield.html#a49aa014e5ef9b9382ec8895006c89a62">fMuonShieldLength</a> / 2.;</div>
 <div class="line"><span class="lineno">   95</span> </div>
-<div class="line"><span class="lineno">   96</span>  <a class="code hl_variable" href="classShipMuonShield.html#a5130685457b479414f00df2ce9116649">zEndOfAbsorb</a> = <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a> + - <a class="code hl_variable" href="classShipMuonShield.html#a49aa014e5ef9b9382ec8895006c89a62">fMuonShieldLength</a> / 2.;</div>
+<div class="line"><span class="lineno">   96</span>  <a class="code hl_variable" href="classShipMuonShield.html#a5130685457b479414f00df2ce9116649">zEndOfAbsorb</a> = Z + - <a class="code hl_variable" href="classShipMuonShield.html#a49aa014e5ef9b9382ec8895006c89a62">fMuonShieldLength</a> / 2.;</div>
 <div class="line"><span class="lineno">   97</span>}</div>
 <div class="ttc" id="aclassShipMuonShield_html_aa20eee4086760aa148d9aca889ad0746"><div class="ttname"><a href="classShipMuonShield.html#aa20eee4086760aa148d9aca889ad0746">ShipMuonShield::shield_params</a></div><div class="ttdeci">std::vector&lt; Double_t &gt; shield_params</div><div class="ttdef"><b>Definition</b> <a href="ShipMuonShield_8h_source.html#l00058">ShipMuonShield.h:58</a></div></div>
 <div class="ttc" id="anamespaceShipAna_html_aa4bf87f4d17f9d38b1d8f4d009bb54b3"><div class="ttname"><a href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">ShipAna.i</a></div><div class="ttdeci">int i</div><div class="ttdef"><b>Definition</b> <a href="ShipAna_8py_source.html#l00076">ShipAna.py:76</a></div></div>
@@ -737,7 +735,7 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  823</span>      std::vector&lt;TString&gt; magnetName;</div>
 <div class="line"><span class="lineno">  824</span>      std::vector&lt;FieldDirection&gt; fieldDirection;</div>
 <div class="line"><span class="lineno">  825</span>      std::vector&lt;Double_t&gt; dXIn, dYIn, dXOut, dYOut, dZf, midGapIn, midGapOut,</div>
-<div class="line"><span class="lineno">  826</span>      HmainSideMagIn, HmainSideMagOut, gapIn, gapOut, <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>;</div>
+<div class="line"><span class="lineno">  826</span>      HmainSideMagIn, HmainSideMagOut, gapIn, gapOut, Z;</div>
 <div class="line"><span class="lineno">  827</span>      <span class="keyword">const</span> Int_t nMagnets = <a class="code hl_function" href="classShipMuonShield.html#a26bdf61aa6265d00a771caf7ef64d671">Initialize</a>(magnetName, fieldDirection, dXIn, dYIn, dXOut, dYOut, dZf,</div>
 <div class="line"><span class="lineno">  828</span>         midGapIn, midGapOut, HmainSideMagIn, HmainSideMagOut, gapIn,</div>
 <div class="line"><span class="lineno">  829</span>         gapOut, Z);</div>
@@ -1793,7 +1791,7 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  495</span>  fieldDirection.reserve(nMagnets);</div>
 <div class="line"><span class="lineno">  496</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> i :</div>
 <div class="line"><span class="lineno">  497</span>       {&amp;dXIn, &amp;dXOut, &amp;dYIn, &amp;dYOut, &amp;dZ, &amp;midGapIn, &amp;midGapOut,</div>
-<div class="line"><span class="lineno">  498</span>    &amp;HmainSideMagIn, &amp;HmainSideMagOut, &amp;gapIn, &amp;gapOut, &amp;<a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>}) {</div>
+<div class="line"><span class="lineno">  498</span>    &amp;HmainSideMagIn, &amp;HmainSideMagOut, &amp;gapIn, &amp;gapOut, &amp;Z}) {</div>
 <div class="line"><span class="lineno">  499</span>    <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>-&gt;reserve(nMagnets);</div>
 <div class="line"><span class="lineno">  500</span>  }</div>
 <div class="line"><span class="lineno">  501</span> </div>
@@ -1838,21 +1836,21 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  540</span>    }</div>
 <div class="line"><span class="lineno">  541</span> </div>
 <div class="line"><span class="lineno">  542</span>    dZ[0] = <a class="code hl_variable" href="classShipMuonShield.html#a0b5fdd40d2b50df6bb58faf95886a06d">dZ1</a> - zgap / 2;</div>
-<div class="line"><span class="lineno">  543</span>    <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>[0] = <a class="code hl_variable" href="classShipMuonShield.html#a5130685457b479414f00df2ce9116649">zEndOfAbsorb</a> + dZ[0] + zgap;</div>
+<div class="line"><span class="lineno">  543</span>    Z[0] = <a class="code hl_variable" href="classShipMuonShield.html#a5130685457b479414f00df2ce9116649">zEndOfAbsorb</a> + dZ[0] + zgap;</div>
 <div class="line"><span class="lineno">  544</span>    dZ[1] = <a class="code hl_variable" href="classShipMuonShield.html#afb7b692183d67dea99006da9533b3341">dZ2</a> - zgap / 2;</div>
-<div class="line"><span class="lineno">  545</span>    <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>[1] = <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>[0] + dZ[0] + dZ[1] + zgap;</div>
+<div class="line"><span class="lineno">  545</span>    Z[1] = Z[0] + dZ[0] + dZ[1] + zgap;</div>
 <div class="line"><span class="lineno">  546</span>    dZ[2] = <a class="code hl_variable" href="classShipMuonShield.html#af08206671c0915c768e237897d865756">dZ3</a> - zgap / 2;</div>
-<div class="line"><span class="lineno">  547</span>    <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>[2] = <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>[1] + dZ[1] + dZ[2] + 2 * zgap;</div>
+<div class="line"><span class="lineno">  547</span>    Z[2] = Z[1] + dZ[1] + dZ[2] + 2 * zgap;</div>
 <div class="line"><span class="lineno">  548</span>    dZ[3] = <a class="code hl_variable" href="classShipMuonShield.html#a5e9d1ec75ed246966ffa3d96cdc4ad76">dZ4</a> - zgap / 2;</div>
-<div class="line"><span class="lineno">  549</span>    <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>[3] = <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>[2] + dZ[2] + dZ[3] + zgap;</div>
+<div class="line"><span class="lineno">  549</span>    Z[3] = Z[2] + dZ[2] + dZ[3] + zgap;</div>
 <div class="line"><span class="lineno">  550</span>    dZ[4] = <a class="code hl_variable" href="classShipMuonShield.html#a18ecac71d417e13399b87db533a4f186">dZ5</a> - zgap / 2;</div>
-<div class="line"><span class="lineno">  551</span>    <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>[4] = <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>[3] + dZ[3] + dZ[4] + zgap;</div>
+<div class="line"><span class="lineno">  551</span>    Z[4] = Z[3] + dZ[3] + dZ[4] + zgap;</div>
 <div class="line"><span class="lineno">  552</span>    dZ[5] = <a class="code hl_variable" href="classShipMuonShield.html#a3ed89ff9d9698adeb74aee3798d673ec">dZ6</a> - zgap / 2;</div>
-<div class="line"><span class="lineno">  553</span>    <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>[5] = <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>[4] + dZ[4] + dZ[5] + zgap;</div>
+<div class="line"><span class="lineno">  553</span>    Z[5] = Z[4] + dZ[4] + dZ[5] + zgap;</div>
 <div class="line"><span class="lineno">  554</span>    dZ[6] = <a class="code hl_variable" href="classShipMuonShield.html#afa1fdd58785194476d02251f6506179b">dZ7</a> - zgap / 2;</div>
-<div class="line"><span class="lineno">  555</span>    <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>[6] = <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>[5] + dZ[5] + dZ[6] + zgap;</div>
+<div class="line"><span class="lineno">  555</span>    Z[6] = Z[5] + dZ[5] + dZ[6] + zgap;</div>
 <div class="line"><span class="lineno">  556</span>    dZ[7] = <a class="code hl_variable" href="classShipMuonShield.html#a7dfbe7e9603d20167173318d40bcad73">dZ8</a> - zgap / 2;</div>
-<div class="line"><span class="lineno">  557</span>    <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>[7] = <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>[6] + dZ[6] + dZ[7] + zgap;</div>
+<div class="line"><span class="lineno">  557</span>    Z[7] = Z[6] + dZ[6] + dZ[7] + zgap;</div>
 <div class="line"><span class="lineno">  558</span> </div>
 <div class="line"><span class="lineno">  559</span>    dXIn[8] = dXOut[7];</div>
 <div class="line"><span class="lineno">  560</span>    dYIn[8] = dYOut[7];</div>
@@ -1861,7 +1859,7 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  563</span>    gapIn[8] = gapOut[7];</div>
 <div class="line"><span class="lineno">  564</span>    gapOut[8] = gapIn[8];</div>
 <div class="line"><span class="lineno">  565</span>    dZ[8] = 0.1 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
-<div class="line"><span class="lineno">  566</span>    <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>[8] = <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>[7] + dZ[7] + dZ[8];</div>
+<div class="line"><span class="lineno">  566</span>    Z[8] = Z[7] + dZ[7] + dZ[8];</div>
 <div class="line"><span class="lineno">  567</span> </div>
 <div class="line"><span class="lineno">  568</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; nMagnets; ++<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>) {</div>
 <div class="line"><span class="lineno">  569</span>      midGapIn[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>] = 0.;</div>
@@ -1888,7 +1886,7 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  590</span>     gapIn[0] = 0.1 * <a class="code hl_variable" href="ShipBellField_8cxx.html#ab05e85c22fe0c2c6ed701c357bbf1512">mm</a>;</div>
 <div class="line"><span class="lineno">  591</span>     gapOut[0] = 0.1 * <a class="code hl_variable" href="ShipBellField_8cxx.html#ab05e85c22fe0c2c6ed701c357bbf1512">mm</a>;</div>
 <div class="line"><span class="lineno">  592</span>     dZ[0] = <a class="code hl_variable" href="classShipMuonShield.html#a0b5fdd40d2b50df6bb58faf95886a06d">dZ1</a> - zgap / 2;</div>
-<div class="line"><span class="lineno">  593</span>     <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>[0] = <a class="code hl_variable" href="classShipMuonShield.html#a5130685457b479414f00df2ce9116649">zEndOfAbsorb</a> + dZ[0] + zgap;</div>
+<div class="line"><span class="lineno">  593</span>     Z[0] = <a class="code hl_variable" href="classShipMuonShield.html#a5130685457b479414f00df2ce9116649">zEndOfAbsorb</a> + dZ[0] + zgap;</div>
 <div class="line"><span class="lineno">  594</span> </div>
 <div class="line"><span class="lineno">  595</span>     dXIn[1] = 0.5 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
 <div class="line"><span class="lineno">  596</span>     dXOut[1] = 0.5 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
@@ -1897,7 +1895,7 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  599</span>     gapIn[1] = 0.02 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
 <div class="line"><span class="lineno">  600</span>     gapOut[1] = 0.02 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
 <div class="line"><span class="lineno">  601</span>     dZ[1] = <a class="code hl_variable" href="classShipMuonShield.html#afb7b692183d67dea99006da9533b3341">dZ2</a> - zgap / 2;</div>
-<div class="line"><span class="lineno">  602</span>     <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>[1] = <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>[0] + dZ[0] + dZ[1] + zgap;</div>
+<div class="line"><span class="lineno">  602</span>     Z[1] = Z[0] + dZ[0] + dZ[1] + zgap;</div>
 <div class="line"><span class="lineno">  603</span> </div>
 <div class="line"><span class="lineno">  604</span>     dXIn[2] = 0.72 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
 <div class="line"><span class="lineno">  605</span>     dXOut[2] = 0.51 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
@@ -1906,7 +1904,7 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  608</span>     gapIn[2] = 0.10 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
 <div class="line"><span class="lineno">  609</span>     gapOut[2] = 0.07 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
 <div class="line"><span class="lineno">  610</span>     dZ[2] = <a class="code hl_variable" href="classShipMuonShield.html#af08206671c0915c768e237897d865756">dZ3</a> - zgap / 2;</div>
-<div class="line"><span class="lineno">  611</span>     <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>[2] = <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>[1] + dZ[1] + dZ[2] + 2 * zgap;</div>
+<div class="line"><span class="lineno">  611</span>     Z[2] = Z[1] + dZ[1] + dZ[2] + 2 * zgap;</div>
 <div class="line"><span class="lineno">  612</span> </div>
 <div class="line"><span class="lineno">  613</span>     dXIn[3] = 0.54 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
 <div class="line"><span class="lineno">  614</span>     dXOut[3] = 0.38 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
@@ -1915,7 +1913,7 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  617</span>     gapIn[3] = 0.14 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
 <div class="line"><span class="lineno">  618</span>     gapOut[3] = 0.09 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
 <div class="line"><span class="lineno">  619</span>     dZ[3] = <a class="code hl_variable" href="classShipMuonShield.html#a5e9d1ec75ed246966ffa3d96cdc4ad76">dZ4</a> - zgap / 2;</div>
-<div class="line"><span class="lineno">  620</span>     <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>[3] = <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>[2] + dZ[2] + dZ[3] + zgap;</div>
+<div class="line"><span class="lineno">  620</span>     Z[3] = Z[2] + dZ[2] + dZ[3] + zgap;</div>
 <div class="line"><span class="lineno">  621</span> </div>
 <div class="line"><span class="lineno">  622</span>     dXIn[4] = 0.10 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
 <div class="line"><span class="lineno">  623</span>     dXOut[4] = 0.31 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
@@ -1924,7 +1922,7 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  626</span>     gapIn[4] = 0.51 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
 <div class="line"><span class="lineno">  627</span>     gapOut[4] = 0.11 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
 <div class="line"><span class="lineno">  628</span>     dZ[4] = <a class="code hl_variable" href="classShipMuonShield.html#a18ecac71d417e13399b87db533a4f186">dZ5</a> - zgap / 2;</div>
-<div class="line"><span class="lineno">  629</span>     <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>[4] = <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>[3] + dZ[3] + dZ[4] + zgap;</div>
+<div class="line"><span class="lineno">  629</span>     Z[4] = Z[3] + dZ[3] + dZ[4] + zgap;</div>
 <div class="line"><span class="lineno">  630</span> </div>
 <div class="line"><span class="lineno">  631</span>     dXIn[5] = 0.03 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
 <div class="line"><span class="lineno">  632</span>     dXOut[5] = 0.32 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
@@ -1933,7 +1931,7 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  635</span>     gapIn[5] = 0.08 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
 <div class="line"><span class="lineno">  636</span>     gapOut[5] = 0.08 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
 <div class="line"><span class="lineno">  637</span>     dZ[5] = <a class="code hl_variable" href="classShipMuonShield.html#a3ed89ff9d9698adeb74aee3798d673ec">dZ6</a> - zgap / 2;</div>
-<div class="line"><span class="lineno">  638</span>     <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>[5] = <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>[4] + dZ[4] + dZ[5] + zgap;</div>
+<div class="line"><span class="lineno">  638</span>     Z[5] = Z[4] + dZ[4] + dZ[5] + zgap;</div>
 <div class="line"><span class="lineno">  639</span> </div>
 <div class="line"><span class="lineno">  640</span>     dXIn[6] = 0.22 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
 <div class="line"><span class="lineno">  641</span>     dXOut[6] = 0.32 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
@@ -1942,7 +1940,7 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  644</span>     gapIn[6] = 0.08 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
 <div class="line"><span class="lineno">  645</span>     gapOut[6] = 0.13 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
 <div class="line"><span class="lineno">  646</span>     dZ[6] = <a class="code hl_variable" href="classShipMuonShield.html#afa1fdd58785194476d02251f6506179b">dZ7</a> - zgap / 2;</div>
-<div class="line"><span class="lineno">  647</span>     <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>[6] = <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>[5] + dZ[5] + dZ[6] + zgap;</div>
+<div class="line"><span class="lineno">  647</span>     Z[6] = Z[5] + dZ[5] + dZ[6] + zgap;</div>
 <div class="line"><span class="lineno">  648</span> </div>
 <div class="line"><span class="lineno">  649</span>     dXIn[7] = 0.33 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
 <div class="line"><span class="lineno">  650</span>     dXOut[7] = 0.77 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
@@ -1951,7 +1949,7 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  653</span>     gapIn[7] = 0.09 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
 <div class="line"><span class="lineno">  654</span>     gapOut[7] = 0.26 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
 <div class="line"><span class="lineno">  655</span>     dZ[7] = <a class="code hl_variable" href="classShipMuonShield.html#a7dfbe7e9603d20167173318d40bcad73">dZ8</a> - zgap / 2;</div>
-<div class="line"><span class="lineno">  656</span>     <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>[7] = <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>[6] + dZ[6] + dZ[7] + zgap;</div>
+<div class="line"><span class="lineno">  656</span>     Z[7] = Z[6] + dZ[6] + dZ[7] + zgap;</div>
 <div class="line"><span class="lineno">  657</span> </div>
 <div class="line"><span class="lineno">  658</span>     dXIn[8] = dXOut[7];</div>
 <div class="line"><span class="lineno">  659</span>     dYIn[8] = dYOut[7];</div>
@@ -1960,7 +1958,7 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  662</span>     gapIn[8] = gapOut[7];</div>
 <div class="line"><span class="lineno">  663</span>     gapOut[8] = gapIn[8];</div>
 <div class="line"><span class="lineno">  664</span>     dZ[8] = 0.1 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
-<div class="line"><span class="lineno">  665</span>     <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>[8] = <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>[7] + dZ[7] + dZ[8];</div>
+<div class="line"><span class="lineno">  665</span>     Z[8] = Z[7] + dZ[7] + dZ[8];</div>
 <div class="line"><span class="lineno">  666</span> </div>
 <div class="line"><span class="lineno">  667</span>     <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; nMagnets; ++<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>) {</div>
 <div class="line"><span class="lineno">  668</span>        midGapIn[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>] = 0.;</div>
@@ -1977,43 +1975,43 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  679</span>  dXIn[0]  = 0.4*<a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;         dYIn[0] = 1.5*<a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
 <div class="line"><span class="lineno">  680</span>  dXOut[0] = 0.40*<a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;            dYOut[0]= 1.5*<a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
 <div class="line"><span class="lineno">  681</span>  gapIn[0] = 0.02 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;          gapOut[0] = 0.02 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
-<div class="line"><span class="lineno">  682</span>  dZ[0] = <a class="code hl_variable" href="classShipMuonShield.html#a0b5fdd40d2b50df6bb58faf95886a06d">dZ1</a>-zgap/2;           <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>[0] = <a class="code hl_variable" href="classShipMuonShield.html#a5130685457b479414f00df2ce9116649">zEndOfAbsorb</a> + dZ[0]+zgap;</div>
+<div class="line"><span class="lineno">  682</span>  dZ[0] = <a class="code hl_variable" href="classShipMuonShield.html#a0b5fdd40d2b50df6bb58faf95886a06d">dZ1</a>-zgap/2;           Z[0] = <a class="code hl_variable" href="classShipMuonShield.html#a5130685457b479414f00df2ce9116649">zEndOfAbsorb</a> + dZ[0]+zgap;</div>
 <div class="line"><span class="lineno">  683</span> </div>
 <div class="line"><span class="lineno">  684</span>  fieldDirection[1] = <a class="code hl_enumvalue" href="ShipMuonShield_8h.html#a7a162bd4e07daf5d23ff100f08d1cb43a46c48bec0d282018b9d167eef7711b2c">FieldDirection::up</a>;</div>
 <div class="line"><span class="lineno">  685</span>  dXIn[1]  = 0.8*<a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;         dYIn[1] = 1.5*<a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
 <div class="line"><span class="lineno">  686</span>  dXOut[1] = 0.8*<a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;         dYOut[1]= 1.5*<a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
 <div class="line"><span class="lineno">  687</span>  gapIn[1] = 0.02*<a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;            gapOut[1] = 0.02*<a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
-<div class="line"><span class="lineno">  688</span>  dZ[1] = <a class="code hl_variable" href="classShipMuonShield.html#afb7b692183d67dea99006da9533b3341">dZ2</a>-zgap/2;           <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>[1] = <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>[0] + dZ[0] + dZ[1]+zgap;</div>
+<div class="line"><span class="lineno">  688</span>  dZ[1] = <a class="code hl_variable" href="classShipMuonShield.html#afb7b692183d67dea99006da9533b3341">dZ2</a>-zgap/2;           Z[1] = Z[0] + dZ[0] + dZ[1]+zgap;</div>
 <div class="line"><span class="lineno">  689</span> </div>
 <div class="line"><span class="lineno">  690</span>  fieldDirection[2] = <a class="code hl_enumvalue" href="ShipMuonShield_8h.html#a7a162bd4e07daf5d23ff100f08d1cb43a46c48bec0d282018b9d167eef7711b2c">FieldDirection::up</a>;</div>
 <div class="line"><span class="lineno">  691</span>  dXIn[2]  = 0.87*<a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;            dYIn[2] = 0.35*<a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
 <div class="line"><span class="lineno">  692</span>  dXOut[2] = 0.65*<a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;            dYOut[2]= 1.21*<a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
 <div class="line"><span class="lineno">  693</span>  gapIn[2] = 0.11 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;          gapOut[2] = 0.065 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
-<div class="line"><span class="lineno">  694</span>  dZ[2] = <a class="code hl_variable" href="classShipMuonShield.html#af08206671c0915c768e237897d865756">dZ3</a>-zgap/2;           <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>[2] = <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>[1] + dZ[1] + dZ[2] + zgap;</div>
+<div class="line"><span class="lineno">  694</span>  dZ[2] = <a class="code hl_variable" href="classShipMuonShield.html#af08206671c0915c768e237897d865756">dZ3</a>-zgap/2;           Z[2] = Z[1] + dZ[1] + dZ[2] + zgap;</div>
 <div class="line"><span class="lineno">  695</span> </div>
 <div class="line"><span class="lineno">  696</span>  fieldDirection[3] = <a class="code hl_enumvalue" href="ShipMuonShield_8h.html#a7a162bd4e07daf5d23ff100f08d1cb43a46c48bec0d282018b9d167eef7711b2c">FieldDirection::up</a>;</div>
 <div class="line"><span class="lineno">  697</span>  dXIn[3]  = 0.65*<a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;            dYIn[3] = 1.21*<a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
 <div class="line"><span class="lineno">  698</span>  dXOut[3] = 0.43*<a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;            dYOut[3]= 2.07*<a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
 <div class="line"><span class="lineno">  699</span>  gapIn[3] = 0.065 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;         gapOut[3] = 0.02 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
-<div class="line"><span class="lineno">  700</span>  dZ[3] = <a class="code hl_variable" href="classShipMuonShield.html#a5e9d1ec75ed246966ffa3d96cdc4ad76">dZ4</a>-zgap/2;           <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>[3] = <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>[2] + dZ[2] + dZ[3]+zgap;</div>
+<div class="line"><span class="lineno">  700</span>  dZ[3] = <a class="code hl_variable" href="classShipMuonShield.html#a5e9d1ec75ed246966ffa3d96cdc4ad76">dZ4</a>-zgap/2;           Z[3] = Z[2] + dZ[2] + dZ[3]+zgap;</div>
 <div class="line"><span class="lineno">  701</span> </div>
 <div class="line"><span class="lineno">  702</span>  fieldDirection[4] = <a class="code hl_enumvalue" href="ShipMuonShield_8h.html#a7a162bd4e07daf5d23ff100f08d1cb43a46c48bec0d282018b9d167eef7711b2c">FieldDirection::up</a>;</div>
 <div class="line"><span class="lineno">  703</span>  dXIn[4]  = 0.06*<a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;            dYIn[4] = 0.32*<a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
 <div class="line"><span class="lineno">  704</span>  dXOut[4] = 0.33*<a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;            dYOut[4]= 0.13*<a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
 <div class="line"><span class="lineno">  705</span>  gapIn[4] = 0.7*<a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;         gapOut[4] = 0.11*<a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
-<div class="line"><span class="lineno">  706</span>  dZ[4] = <a class="code hl_variable" href="classShipMuonShield.html#a18ecac71d417e13399b87db533a4f186">dZ5</a>-zgap/2;           <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>[4] = <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>[3] + dZ[3] + dZ[4]+zgap;</div>
+<div class="line"><span class="lineno">  706</span>  dZ[4] = <a class="code hl_variable" href="classShipMuonShield.html#a18ecac71d417e13399b87db533a4f186">dZ5</a>-zgap/2;           Z[4] = Z[3] + dZ[3] + dZ[4]+zgap;</div>
 <div class="line"><span class="lineno">  707</span> </div>
 <div class="line"><span class="lineno">  708</span>  fieldDirection[5] = <a class="code hl_enumvalue" href="ShipMuonShield_8h.html#a7a162bd4e07daf5d23ff100f08d1cb43a74e8333ad11685ff3bdae589c8f6e34d">FieldDirection::down</a>;</div>
 <div class="line"><span class="lineno">  709</span>  dXIn[5]  = 0.05*<a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;            dYIn[5] = 1.12*<a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
 <div class="line"><span class="lineno">  710</span>  dXOut[5] =0.16*<a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;         dYOut[5]= 0.05*<a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
 <div class="line"><span class="lineno">  711</span>  gapIn[5] = 0.04*<a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;            gapOut[5] = 0.02*<a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
-<div class="line"><span class="lineno">  712</span>  dZ[5] = <a class="code hl_variable" href="classShipMuonShield.html#a3ed89ff9d9698adeb74aee3798d673ec">dZ6</a>-zgap/2;           <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>[5] = <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>[4] + dZ[4] + dZ[5]+zgap;</div>
+<div class="line"><span class="lineno">  712</span>  dZ[5] = <a class="code hl_variable" href="classShipMuonShield.html#a3ed89ff9d9698adeb74aee3798d673ec">dZ6</a>-zgap/2;           Z[5] = Z[4] + dZ[4] + dZ[5]+zgap;</div>
 <div class="line"><span class="lineno">  713</span> </div>
 <div class="line"><span class="lineno">  714</span>  fieldDirection[6] = <a class="code hl_enumvalue" href="ShipMuonShield_8h.html#a7a162bd4e07daf5d23ff100f08d1cb43a74e8333ad11685ff3bdae589c8f6e34d">FieldDirection::down</a>;</div>
 <div class="line"><span class="lineno">  715</span>  dXIn[6]  = 0.15*<a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;            dYIn[6] = 2.35*<a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
 <div class="line"><span class="lineno">  716</span>  dXOut[6] = 0.34*<a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;            dYOut[6]= 0.32*<a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
 <div class="line"><span class="lineno">  717</span>  gapIn[6] = 0.05*<a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;            gapOut[6] = 0.08*<a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
-<div class="line"><span class="lineno">  718</span>  dZ[6] = <a class="code hl_variable" href="classShipMuonShield.html#afa1fdd58785194476d02251f6506179b">dZ7</a>-zgap/2;           <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>[6] = <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>[5] + dZ[5] + dZ[6]+zgap;</div>
+<div class="line"><span class="lineno">  718</span>  dZ[6] = <a class="code hl_variable" href="classShipMuonShield.html#afa1fdd58785194476d02251f6506179b">dZ7</a>-zgap/2;           Z[6] = Z[5] + dZ[5] + dZ[6]+zgap;</div>
 <div class="line"><span class="lineno">  719</span> </div>
 <div class="line"><span class="lineno">  720</span>  Double_t clip_width = 0.1*<a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>; <span class="comment">// clip field width by this width</span></div>
 <div class="line"><span class="lineno">  721</span>  fieldDirection[7] = <a class="code hl_enumvalue" href="ShipMuonShield_8h.html#a7a162bd4e07daf5d23ff100f08d1cb43a74e8333ad11685ff3bdae589c8f6e34d">FieldDirection::down</a>;</div>
@@ -2022,13 +2020,13 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  724</span>  Double_t clip_len =</div>
 <div class="line"><span class="lineno">  725</span>       (<a class="code hl_variable" href="classShipMuonShield.html#a7dfbe7e9603d20167173318d40bcad73">dZ8</a>-zgap/2) * (1 - (dXOut[7] - dXIn[7]) / (dXOut[7] + clip_width - dXIn[7]));</div>
 <div class="line"><span class="lineno">  726</span>  gapIn[7] = 0.02*<a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;            gapOut[7] = 0.55*<a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
-<div class="line"><span class="lineno">  727</span>  dZ[7] = <a class="code hl_variable" href="classShipMuonShield.html#a7dfbe7e9603d20167173318d40bcad73">dZ8</a> - clip_len - zgap / 2;    <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>[7] = <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>[6] + dZ[6] + dZ[7] + zgap;</div>
+<div class="line"><span class="lineno">  727</span>  dZ[7] = <a class="code hl_variable" href="classShipMuonShield.html#a7dfbe7e9603d20167173318d40bcad73">dZ8</a> - clip_len - zgap / 2;    Z[7] = Z[6] + dZ[6] + dZ[7] + zgap;</div>
 <div class="line"><span class="lineno">  728</span> </div>
 <div class="line"><span class="lineno">  729</span>  fieldDirection[8] = <a class="code hl_enumvalue" href="ShipMuonShield_8h.html#a7a162bd4e07daf5d23ff100f08d1cb43a74e8333ad11685ff3bdae589c8f6e34d">FieldDirection::down</a>;</div>
 <div class="line"><span class="lineno">  730</span>  dXIn[8]  = dXOut[7];          dYIn[8] = dYOut[7];</div>
 <div class="line"><span class="lineno">  731</span>  dXOut[8] = dXOut[7];          dYOut[8]= dYOut[7];</div>
 <div class="line"><span class="lineno">  732</span>  gapIn[8] = 0.55*<a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;            gapOut[8] = 0.55*<a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
-<div class="line"><span class="lineno">  733</span>  dZ[8] = clip_len;         <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>[8] = <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>[7] + dZ[7] + dZ[8];</div>
+<div class="line"><span class="lineno">  733</span>  dZ[8] = clip_len;         Z[8] = Z[7] + dZ[7] + dZ[8];</div>
 <div class="line"><span class="lineno">  734</span> </div>
 <div class="line"><span class="lineno">  735</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; nMagnets; ++<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>) {</div>
 <div class="line"><span class="lineno">  736</span>    midGapIn[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>] = 0.;</div>
@@ -2047,7 +2045,7 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  749</span>  midGapIn[0] = 0;          midGapOut[0] = 0;</div>
 <div class="line"><span class="lineno">  750</span>  HmainSideMagIn[0] = dYIn[0];      HmainSideMagOut[0] = dYOut[0];</div>
 <div class="line"><span class="lineno">  751</span>  gapIn[0] = 20;            gapOut[0] = 20;</div>
-<div class="line"><span class="lineno">  752</span>  dZ[0] = <a class="code hl_variable" href="classShipMuonShield.html#a0b5fdd40d2b50df6bb58faf95886a06d">dZ1</a>-zgap;         <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>[0] = <a class="code hl_variable" href="classShipMuonShield.html#a5130685457b479414f00df2ce9116649">zEndOfAbsorb</a> + dZ[0]+zgap;</div>
+<div class="line"><span class="lineno">  752</span>  dZ[0] = <a class="code hl_variable" href="classShipMuonShield.html#a0b5fdd40d2b50df6bb58faf95886a06d">dZ1</a>-zgap;         Z[0] = <a class="code hl_variable" href="classShipMuonShield.html#a5130685457b479414f00df2ce9116649">zEndOfAbsorb</a> + dZ[0]+zgap;</div>
 <div class="line"><span class="lineno">  753</span> </div>
 <div class="line"><span class="lineno">  754</span>  fieldDirection[1] = <a class="code hl_enumvalue" href="ShipMuonShield_8h.html#a7a162bd4e07daf5d23ff100f08d1cb43a46c48bec0d282018b9d167eef7711b2c">FieldDirection::up</a>;</div>
 <div class="line"><span class="lineno">  755</span>  dXIn[1]  = 0.36*<a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;            dYIn[1] = 0.8158*<a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
@@ -2055,7 +2053,7 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  757</span>  midGapIn[1] = 0;          midGapOut[1] = 0;</div>
 <div class="line"><span class="lineno">  758</span>  HmainSideMagIn[1] = dYIn[1]/2;    HmainSideMagOut[1] = dYOut[1]/2;</div>
 <div class="line"><span class="lineno">  759</span>  gapIn[1] = 88;            gapOut[1] = 122;</div>
-<div class="line"><span class="lineno">  760</span>  dZ[1] = <a class="code hl_variable" href="classShipMuonShield.html#afb7b692183d67dea99006da9533b3341">dZ2</a>-zgap/2;           <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>[1] = <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>[0] + dZ[0] + dZ[1]+zgap;</div>
+<div class="line"><span class="lineno">  760</span>  dZ[1] = <a class="code hl_variable" href="classShipMuonShield.html#afb7b692183d67dea99006da9533b3341">dZ2</a>-zgap/2;           Z[1] = Z[0] + dZ[0] + dZ[1]+zgap;</div>
 <div class="line"><span class="lineno">  761</span> </div>
 <div class="line"><span class="lineno">  762</span>  fieldDirection[2] = <a class="code hl_enumvalue" href="ShipMuonShield_8h.html#a7a162bd4e07daf5d23ff100f08d1cb43a74e8333ad11685ff3bdae589c8f6e34d">FieldDirection::down</a>;</div>
 <div class="line"><span class="lineno">  763</span>  dXIn[2]  = 0.075*<a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;           dYIn[2] = 0.499*<a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
@@ -2063,7 +2061,7 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  765</span>  midGapIn[2] = 0;          midGapOut[2] = 0;</div>
 <div class="line"><span class="lineno">  766</span>  HmainSideMagIn[2] = dYIn[2]/2;    HmainSideMagOut[2] = dYOut[2]/2;</div>
 <div class="line"><span class="lineno">  767</span>  gapIn[2] = 0;             gapOut[2] = 0;</div>
-<div class="line"><span class="lineno">  768</span>  dZ[2] = <a class="code hl_variable" href="classShipMuonShield.html#af08206671c0915c768e237897d865756">dZ3</a>-zgap/2;           <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>[2] = <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>[1] + dZ[1] + dZ[2]+zgap;</div>
+<div class="line"><span class="lineno">  768</span>  dZ[2] = <a class="code hl_variable" href="classShipMuonShield.html#af08206671c0915c768e237897d865756">dZ3</a>-zgap/2;           Z[2] = Z[1] + dZ[1] + dZ[2]+zgap;</div>
 <div class="line"><span class="lineno">  769</span> </div>
 <div class="line"><span class="lineno">  770</span>  fieldDirection[3] = <a class="code hl_enumvalue" href="ShipMuonShield_8h.html#a7a162bd4e07daf5d23ff100f08d1cb43a74e8333ad11685ff3bdae589c8f6e34d">FieldDirection::down</a>;</div>
 <div class="line"><span class="lineno">  771</span>  dXIn[3]  = 0.25*<a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;            dYIn[3] = 1.10262*<a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
@@ -2071,7 +2069,7 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  773</span>  midGapIn[3] = 0;          midGapOut[3] = 0;</div>
 <div class="line"><span class="lineno">  774</span>  HmainSideMagIn[3] = dXIn[3];      HmainSideMagOut[3] = dXOut[3];</div>
 <div class="line"><span class="lineno">  775</span>  gapIn[3] = 0;             gapOut[3] = 25;</div>
-<div class="line"><span class="lineno">  776</span>  dZ[3] = <a class="code hl_variable" href="classShipMuonShield.html#a5e9d1ec75ed246966ffa3d96cdc4ad76">dZ4</a>-zgap/2;           <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>[3] = <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>[2] + dZ[2] + dZ[3]+zgap;</div>
+<div class="line"><span class="lineno">  776</span>  dZ[3] = <a class="code hl_variable" href="classShipMuonShield.html#a5e9d1ec75ed246966ffa3d96cdc4ad76">dZ4</a>-zgap/2;           Z[3] = Z[2] + dZ[2] + dZ[3]+zgap;</div>
 <div class="line"><span class="lineno">  777</span> </div>
 <div class="line"><span class="lineno">  778</span>  fieldDirection[4] = <a class="code hl_enumvalue" href="ShipMuonShield_8h.html#a7a162bd4e07daf5d23ff100f08d1cb43a74e8333ad11685ff3bdae589c8f6e34d">FieldDirection::down</a>;</div>
 <div class="line"><span class="lineno">  779</span>  dXIn[4]  = 0.3*<a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;         dYIn[4] = 1.82697*<a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
@@ -2079,7 +2077,7 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  781</span>  midGapIn[4] = 5;          midGapOut[4] = 25;</div>
 <div class="line"><span class="lineno">  782</span>  HmainSideMagIn[4] = dXIn[4];      HmainSideMagOut[4] = dXOut[4];</div>
 <div class="line"><span class="lineno">  783</span>  gapIn[4] = 20;            gapOut[4] = 20;</div>
-<div class="line"><span class="lineno">  784</span>  dZ[4] = <a class="code hl_variable" href="classShipMuonShield.html#a3ed89ff9d9698adeb74aee3798d673ec">dZ6</a>-zgap/2;           <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>[4] = <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>[3] + dZ[3] + dZ[4]+zgap;</div>
+<div class="line"><span class="lineno">  784</span>  dZ[4] = <a class="code hl_variable" href="classShipMuonShield.html#a3ed89ff9d9698adeb74aee3798d673ec">dZ6</a>-zgap/2;           Z[4] = Z[3] + dZ[3] + dZ[4]+zgap;</div>
 <div class="line"><span class="lineno">  785</span> </div>
 <div class="line"><span class="lineno">  786</span>  fieldDirection[5] = <a class="code hl_enumvalue" href="ShipMuonShield_8h.html#a7a162bd4e07daf5d23ff100f08d1cb43a74e8333ad11685ff3bdae589c8f6e34d">FieldDirection::down</a>;</div>
 <div class="line"><span class="lineno">  787</span>  dXIn[5]  = 0.4*<a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;         dYIn[5] = 2.55131*<a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
@@ -2087,7 +2085,7 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  789</span>  midGapIn[5] = 25;             midGapOut[5] = 65;</div>
 <div class="line"><span class="lineno">  790</span>  HmainSideMagIn[5] = dXIn[5];      HmainSideMagOut[5] = dXOut[5];</div>
 <div class="line"><span class="lineno">  791</span>  gapIn[5] = 20;            gapOut[5] = 20;</div>
-<div class="line"><span class="lineno">  792</span>  dZ[5] = <a class="code hl_variable" href="classShipMuonShield.html#afa1fdd58785194476d02251f6506179b">dZ7</a>-zgap/2;           <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>[5] = <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>[4] + dZ[4] + dZ[5]+zgap;</div>
+<div class="line"><span class="lineno">  792</span>  dZ[5] = <a class="code hl_variable" href="classShipMuonShield.html#afa1fdd58785194476d02251f6506179b">dZ7</a>-zgap/2;           Z[5] = Z[4] + dZ[4] + dZ[5]+zgap;</div>
 <div class="line"><span class="lineno">  793</span> </div>
 <div class="line"><span class="lineno">  794</span>  fieldDirection[6] = <a class="code hl_enumvalue" href="ShipMuonShield_8h.html#a7a162bd4e07daf5d23ff100f08d1cb43a74e8333ad11685ff3bdae589c8f6e34d">FieldDirection::down</a>;</div>
 <div class="line"><span class="lineno">  795</span>  dXIn[6]  = 0.4*<a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;         dYIn[6] = 3.27566*<a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
@@ -2095,7 +2093,7 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  797</span>  midGapIn[6] = 65;                 midGapOut[6] = 75;</div>
 <div class="line"><span class="lineno">  798</span>  HmainSideMagIn[6] = dXIn[6];      HmainSideMagOut[6] = dXOut[6];</div>
 <div class="line"><span class="lineno">  799</span>  gapIn[6] = 20;            gapOut[6] = 20;</div>
-<div class="line"><span class="lineno">  800</span>  dZ[6] = <a class="code hl_variable" href="classShipMuonShield.html#a7dfbe7e9603d20167173318d40bcad73">dZ8</a>-zgap/2;           <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>[6] = <a class="code hl_variable" href="namespacegeometry__config.html#ae949308a33fbd7f7096e0223cba1e10b">Z</a>[5] + dZ[5] + dZ[6]+zgap;</div>
+<div class="line"><span class="lineno">  800</span>  dZ[6] = <a class="code hl_variable" href="classShipMuonShield.html#a7dfbe7e9603d20167173318d40bcad73">dZ8</a>-zgap/2;           Z[6] = Z[5] + dZ[5] + dZ[6]+zgap;</div>
 <div class="line"><span class="lineno">  801</span>  }</div>
 <div class="line"><span class="lineno">  802</span>  <span class="keywordflow">return</span> nMagnets;</div>
 <div class="line"><span class="lineno">  803</span>}</div>

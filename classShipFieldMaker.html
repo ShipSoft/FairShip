@@ -573,7 +573,7 @@ John Back <a href="#" onclick="location.href='mai'+'lto:'+'J.J'+'.B'+'ack'+'@w'+
 <div class="line"><span class="lineno"> 1035</span>             &lt;&lt;<span class="stringliteral">&quot;: x0 = &quot;</span>&lt;&lt;theInfo.x0_&lt;&lt;<span class="stringliteral">&quot;, y0 = &quot;</span>&lt;&lt;theInfo.y0_</div>
 <div class="line"><span class="lineno"> 1036</span>             &lt;&lt;<span class="stringliteral">&quot;, z0 = &quot;</span>&lt;&lt;theInfo.z0_&lt;&lt;<span class="stringliteral">&quot;, phi = &quot;</span>&lt;&lt;theInfo.<a class="code hl_variable" href="classShipBFieldMap.html#adb382221b8f751522035674bbc15a340">phi_</a></div>
 <div class="line"><span class="lineno"> 1037</span>             &lt;&lt;<span class="stringliteral">&quot;, theta = &quot;</span>&lt;&lt;theInfo.theta_</div>
-<div class="line"><span class="lineno"> 1038</span>             &lt;&lt;<span class="stringliteral">&quot;, psi = &quot;</span>&lt;&lt;theInfo.psi_&lt;&lt;<span class="stringliteral">&quot;, scale = &quot;</span>&lt;&lt;<a class="code hl_variable" href="namespacegeometry__config.html#aa87d4e2e38289980fc9d280efef4a886">scale</a></div>
+<div class="line"><span class="lineno"> 1038</span>             &lt;&lt;<span class="stringliteral">&quot;, psi = &quot;</span>&lt;&lt;theInfo.psi_&lt;&lt;<span class="stringliteral">&quot;, scale = &quot;</span>&lt;&lt;scale</div>
 <div class="line"><span class="lineno"> 1039</span>             &lt;&lt;<span class="stringliteral">&quot; and symmetry = &quot;</span>&lt;&lt;mapField-&gt;<a class="code hl_function" href="classShipBFieldMap.html#a23fc5866bcd2e4009b99bc3824f5ee48">HasSymmetry</a>()&lt;&lt;std::endl;</div>
 <div class="line"><span class="lineno"> 1040</span>        }</div>
 <div class="line"><span class="lineno"> 1041</span> </div>
@@ -602,7 +602,6 @@ John Back <a href="#" onclick="location.href='mai'+'lto:'+'J.J'+'.B'+'ack'+'@w'+
 <div class="ttc" id="aclassShipBFieldMap_html_afd3eebaf079b2685fdd9479438a16a47"><div class="ttname"><a href="classShipBFieldMap.html#afd3eebaf079b2685fdd9479438a16a47">ShipBFieldMap::GetZOffset</a></div><div class="ttdeci">Float_t GetZOffset() const</div><div class="ttdoc">Get the z offset co-ordinate of the map for global positioning.</div><div class="ttdef"><b>Definition</b> <a href="ShipBFieldMap_8h_source.html#l00244">ShipBFieldMap.h:244</a></div></div>
 <div class="ttc" id="aclassShipFieldMaker_html_a536ddce150f887c5434c788216bf00cd"><div class="ttname"><a href="classShipFieldMaker.html#a536ddce150f887c5434c788216bf00cd">ShipFieldMaker::getField</a></div><div class="ttdeci">TVirtualMagField * getField(const TString &amp;name) const</div><div class="ttdoc">Get the field stored with the given name name.</div><div class="ttdef"><b>Definition</b> <a href="ShipFieldMaker_8cxx_source.html#l01201">ShipFieldMaker.cxx:1201</a></div></div>
 <div class="ttc" id="aclassShipFieldMaker_html_a6e7d9c110249730e4a725e374c321aee"><div class="ttname"><a href="classShipFieldMaker.html#a6e7d9c110249730e4a725e374c321aee">ShipFieldMaker::getTransformation</a></div><div class="ttdeci">void getTransformation(const TString &amp;volName, transformInfo &amp;theInfo)</div><div class="ttdoc">Get the transformation matrix for the volume position and orientation.</div><div class="ttdef"><b>Definition</b> <a href="ShipFieldMaker_8cxx_source.html#l01057">ShipFieldMaker.cxx:1057</a></div></div>
-<div class="ttc" id="anamespacegeometry__config_html_aa87d4e2e38289980fc9d280efef4a886"><div class="ttname"><a href="namespacegeometry__config.html#aa87d4e2e38289980fc9d280efef4a886">geometry_config.scale</a></div><div class="ttdeci">int scale</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00437">geometry_config.py:437</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1411,7 +1410,7 @@ John Back <a href="#" onclick="location.href='mai'+'lto:'+'J.J'+'.B'+'ack'+'@w'+
 <div class="line"><span class="lineno">  450</span>    Float_t <a class="code hl_variable" href="namespacemakeMuonDIS.html#a6deb68dc080ef810c34fcffdd94b6a57">theta</a> = localAngles.Y();</div>
 <div class="line"><span class="lineno">  451</span>    Float_t psi = localAngles.Z();</div>
 <div class="line"><span class="lineno">  452</span> </div>
-<div class="line"><span class="lineno">  453</span>    Float_t <a class="code hl_variable" href="namespacegeometry__config.html#aa87d4e2e38289980fc9d280efef4a886">scale</a>(1.0);</div>
+<div class="line"><span class="lineno">  453</span>    Float_t scale(1.0);</div>
 <div class="line"><span class="lineno">  454</span> </div>
 <div class="line"><span class="lineno">  455</span>    <a class="code hl_class" href="classShipBFieldMap.html">ShipBFieldMap</a>* mapField = <span class="keyword">new</span> <a class="code hl_class" href="classShipBFieldMap.html">ShipBFieldMap</a>(<a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a>.Data(), fullFileName, x0, y0, z0,</div>
 <div class="line"><span class="lineno">  456</span>                            phi, theta, psi, scale, useSymmetry);</div>
@@ -1483,7 +1482,7 @@ John Back <a href="#" onclick="location.href='mai'+'lto:'+'J.J'+'.B'+'ack'+'@w'+
 <div class="line"><span class="lineno">  488</span>    Double_t y0 = std::atof(inputLine[4].c_str());</div>
 <div class="line"><span class="lineno">  489</span>    Double_t <a class="code hl_variable" href="namespacegeometry__config.html#a144a0740a14f17fe0deedd9803917157">z0</a> = std::atof(inputLine[5].c_str());</div>
 <div class="line"><span class="lineno">  490</span> </div>
-<div class="line"><span class="lineno">  491</span>    Double_t <a class="code hl_variable" href="namespacemakeMuonDIS.html#a46fd07d81c633221657121b3f0589fb3">phi</a>(0.0), <a class="code hl_variable" href="namespacemakeMuonDIS.html#a6deb68dc080ef810c34fcffdd94b6a57">theta</a>(0.0), psi(0.0), <a class="code hl_variable" href="namespacegeometry__config.html#aa87d4e2e38289980fc9d280efef4a886">scale</a>(1.0);</div>
+<div class="line"><span class="lineno">  491</span>    Double_t <a class="code hl_variable" href="namespacemakeMuonDIS.html#a46fd07d81c633221657121b3f0589fb3">phi</a>(0.0), <a class="code hl_variable" href="namespacemakeMuonDIS.html#a6deb68dc080ef810c34fcffdd94b6a57">theta</a>(0.0), psi(0.0), scale(1.0);</div>
 <div class="line"><span class="lineno">  492</span> </div>
 <div class="line"><span class="lineno">  493</span>    <span class="keywordflow">if</span> (nWords == 9) {</div>
 <div class="line"><span class="lineno">  494</span>        <a class="code hl_variable" href="namespacemakeMuonDIS.html#a46fd07d81c633221657121b3f0589fb3">phi</a> = std::atof(inputLine[6].c_str());</div>
@@ -1583,7 +1582,7 @@ John Back <a href="#" onclick="location.href='mai'+'lto:'+'J.J'+'.B'+'ack'+'@w'+
 <div class="line"><span class="lineno">  537</span>        Float_t <a class="code hl_variable" href="namespacemakeMuonDIS.html#a6deb68dc080ef810c34fcffdd94b6a57">theta</a> = eulerAngles.Y();</div>
 <div class="line"><span class="lineno">  538</span>        Float_t psi = eulerAngles.Z();</div>
 <div class="line"><span class="lineno">  539</span> </div>
-<div class="line"><span class="lineno">  540</span>        Float_t <a class="code hl_variable" href="namespacegeometry__config.html#aa87d4e2e38289980fc9d280efef4a886">scale</a>(1.0);</div>
+<div class="line"><span class="lineno">  540</span>        Float_t scale(1.0);</div>
 <div class="line"><span class="lineno">  541</span> </div>
 <div class="line"><span class="lineno">  542</span>        <a class="code hl_class" href="classShipBFieldMap.html">ShipBFieldMap</a>* copiedMap = <span class="keyword">new</span> <a class="code hl_class" href="classShipBFieldMap.html">ShipBFieldMap</a>(<a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a>.Data(), *fieldToCopy,</div>
 <div class="line"><span class="lineno">  543</span>                             x0, y0, z0, phi, theta, psi, scale);</div>
@@ -1804,7 +1803,7 @@ John Back <a href="#" onclick="location.href='mai'+'lto:'+'J.J'+'.B'+'ack'+'@w'+
 <div class="line"><span class="lineno">  731</span>    }</div>
 <div class="line"><span class="lineno">  732</span> </div>
 <div class="line"><span class="lineno">  733</span>}</div>
-<div class="ttc" id="anamespacerun__simScript_html_a671e51e119017a06d69c162c6e24b051"><div class="ttname"><a href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">run_simScript.gMC</a></div><div class="ttdeci">gMC</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l00504">run_simScript.py:504</a></div></div>
+<div class="ttc" id="anamespacerun__simScript_html_a671e51e119017a06d69c162c6e24b051"><div class="ttname"><a href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">run_simScript.gMC</a></div><div class="ttdeci">gMC</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l00507">run_simScript.py:507</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1854,8 +1853,8 @@ John Back <a href="#" onclick="location.href='mai'+'lto:'+'J.J'+'.B'+'ack'+'@w'+
 <div class="line"><span class="lineno">  876</span>    TString volName(inputLine[1].c_str());</div>
 <div class="line"><span class="lineno">  877</span>    TString fieldName(inputLine[2].c_str());</div>
 <div class="line"><span class="lineno">  878</span> </div>
-<div class="line"><span class="lineno">  879</span>    Double_t <a class="code hl_variable" href="namespacegeometry__config.html#aa87d4e2e38289980fc9d280efef4a886">scale</a>(1.0);</div>
-<div class="line"><span class="lineno">  880</span>    <span class="keywordflow">if</span> (nWords == 4) {<a class="code hl_variable" href="namespacegeometry__config.html#aa87d4e2e38289980fc9d280efef4a886">scale</a> = std::atof(inputLine[3].c_str());}</div>
+<div class="line"><span class="lineno">  879</span>    Double_t scale(1.0);</div>
+<div class="line"><span class="lineno">  880</span>    <span class="keywordflow">if</span> (nWords == 4) {scale = std::atof(inputLine[3].c_str());}</div>
 <div class="line"><span class="lineno">  881</span> </div>
 <div class="line"><span class="lineno">  882</span>    this-&gt;<a class="code hl_function" href="classShipFieldMaker.html#a9da15b26eea1a0d7eb588e2689c87e99">defineLocalField</a>(volName, fieldName, scale);</div>
 <div class="line"><span class="lineno">  883</span> </div>
@@ -1919,7 +1918,7 @@ John Back <a href="#" onclick="location.href='mai'+'lto:'+'J.J'+'.B'+'ack'+'@w'+
 <div class="line"><span class="lineno">  896</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classShipFieldMaker.html#aa6ea6ea385a201195ce579e19175072a">verbose_</a>) {</div>
 <div class="line"><span class="lineno">  897</span>    std::cout&lt;&lt;<span class="stringliteral">&quot;ShipFieldMaker::defineLocalField for volume &quot;</span></div>
 <div class="line"><span class="lineno">  898</span>         &lt;&lt;volName.Data()&lt;&lt;<span class="stringliteral">&quot; and field &quot;</span>&lt;&lt;fieldName.Data()</div>
-<div class="line"><span class="lineno">  899</span>         &lt;&lt;<span class="stringliteral">&quot; with scale = &quot;</span>&lt;&lt;<a class="code hl_variable" href="namespacegeometry__config.html#aa87d4e2e38289980fc9d280efef4a886">scale</a>&lt;&lt;std::endl;</div>
+<div class="line"><span class="lineno">  899</span>         &lt;&lt;<span class="stringliteral">&quot; with scale = &quot;</span>&lt;&lt;scale&lt;&lt;std::endl;</div>
 <div class="line"><span class="lineno">  900</span>    }</div>
 <div class="line"><span class="lineno">  901</span> </div>
 <div class="line"><span class="lineno">  902</span>    fieldInfo theInfo(volName, fieldName,scale);</div>
@@ -1975,8 +1974,8 @@ John Back <a href="#" onclick="location.href='mai'+'lto:'+'J.J'+'.B'+'ack'+'@w'+
 <div class="line"><span class="lineno">  746</span>    TString volName(inputLine[1].c_str());</div>
 <div class="line"><span class="lineno">  747</span>    TString fieldName(inputLine[2].c_str());</div>
 <div class="line"><span class="lineno">  748</span> </div>
-<div class="line"><span class="lineno">  749</span>    Double_t <a class="code hl_variable" href="namespacegeometry__config.html#aa87d4e2e38289980fc9d280efef4a886">scale</a>(1.0);</div>
-<div class="line"><span class="lineno">  750</span>    <span class="keywordflow">if</span> (nWords == 4) {<a class="code hl_variable" href="namespacegeometry__config.html#aa87d4e2e38289980fc9d280efef4a886">scale</a> = std::atof(inputLine[3].c_str());}</div>
+<div class="line"><span class="lineno">  749</span>    Double_t scale(1.0);</div>
+<div class="line"><span class="lineno">  750</span>    <span class="keywordflow">if</span> (nWords == 4) {scale = std::atof(inputLine[3].c_str());}</div>
 <div class="line"><span class="lineno">  751</span> </div>
 <div class="line"><span class="lineno">  752</span>    this-&gt;<a class="code hl_function" href="classShipFieldMaker.html#aef31f2695b538e04b00db829f7895e57">defineRegionField</a>(volName, fieldName, scale);</div>
 <div class="line"><span class="lineno">  753</span> </div>
@@ -2040,7 +2039,7 @@ John Back <a href="#" onclick="location.href='mai'+'lto:'+'J.J'+'.B'+'ack'+'@w'+
 <div class="line"><span class="lineno">  766</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classShipFieldMaker.html#aa6ea6ea385a201195ce579e19175072a">verbose_</a>) {</div>
 <div class="line"><span class="lineno">  767</span>    std::cout&lt;&lt;<span class="stringliteral">&quot;ShipFieldMaker::defineRegionField for volume &quot;</span></div>
 <div class="line"><span class="lineno">  768</span>         &lt;&lt;volName.Data()&lt;&lt;<span class="stringliteral">&quot; and field &quot;</span>&lt;&lt;fieldName.Data()</div>
-<div class="line"><span class="lineno">  769</span>         &lt;&lt;<span class="stringliteral">&quot; with scale = &quot;</span>&lt;&lt;<a class="code hl_variable" href="namespacegeometry__config.html#aa87d4e2e38289980fc9d280efef4a886">scale</a>&lt;&lt;std::endl;</div>
+<div class="line"><span class="lineno">  769</span>         &lt;&lt;<span class="stringliteral">&quot; with scale = &quot;</span>&lt;&lt;scale&lt;&lt;std::endl;</div>
 <div class="line"><span class="lineno">  770</span>    }</div>
 <div class="line"><span class="lineno">  771</span> </div>
 <div class="line"><span class="lineno">  772</span>    fieldInfo theInfo(volName, fieldName, scale);</div>
@@ -2329,7 +2328,7 @@ John Back <a href="#" onclick="location.href='mai'+'lto:'+'J.J'+'.B'+'ack'+'@w'+
 <div class="line"><span class="lineno"> 1391</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i =0 ; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; xSteps; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>++){</div>
 <div class="line"><span class="lineno"> 1392</span>                <span class="keywordflow">for</span> (<span class="keywordtype">int</span> k=0;  <a class="code hl_variable" href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">k</a>&lt;ySteps;<a class="code hl_variable" href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">k</a>++){</div>
 <div class="line"><span class="lineno"> 1393</span>                        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> m=0; <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>&lt;zSteps; <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>++){</div>
-<div class="line"><span class="lineno"> 1394</span>                                Double_t <a class="code hl_variable" href="namespacegeometry__config.html#aa52009c79b19f5c569b183e74aa588c7">B</a>[3] = {0.0, 0.0, 0.0};</div>
+<div class="line"><span class="lineno"> 1394</span>                                Double_t B[3] = {0.0, 0.0, 0.0};</div>
 <div class="line"><span class="lineno"> 1395</span>                                Double_t <a class="code hl_variable" href="namespacegeometry__config.html#a1286b5c01494c311eb3a950d1ac8857c">x</a> = <a class="code hl_variable" href="namespaceadd__noise__to__field.html#a96cf5cc2cc008d7422009cb2ad93cb51">step</a>*<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>;</div>
 <div class="line"><span class="lineno"> 1396</span>                                Double_t <a class="code hl_variable" href="namespacegeometry__config.html#aa7c54d6eeebcc821b55222c6926f6740">y</a> = <a class="code hl_variable" href="namespaceadd__noise__to__field.html#a96cf5cc2cc008d7422009cb2ad93cb51">step</a> * <a class="code hl_variable" href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">k</a>;</div>
 <div class="line"><span class="lineno"> 1397</span>                                Double_t <a class="code hl_variable" href="namespacegeometry__config.html#a4487257c46b838ef1172b356289460c4">z</a> = <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a> * <a class="code hl_variable" href="namespaceadd__noise__to__field.html#a96cf5cc2cc008d7422009cb2ad93cb51">step</a> - zRange + zShift;</div>
@@ -2351,7 +2350,7 @@ John Back <a href="#" onclick="location.href='mai'+'lto:'+'J.J'+'.B'+'ack'+'@w'+
 <div class="line"><span class="lineno"> 1413</span>                                <span class="keywordflow">if</span> (inside == kFALSE &amp;&amp; <a class="code hl_variable" href="classShipFieldMaker.html#a5a5f81e0a3cef2743365db927769912b">globalField_</a>) {</div>
 <div class="line"><span class="lineno"> 1414</span>                                        <a class="code hl_variable" href="classShipFieldMaker.html#a5a5f81e0a3cef2743365db927769912b">globalField_</a>-&gt;<a class="code hl_function" href="classShipCompField.html#ac5af42fbec6900837d97fc74af653082">Field</a>(position, B);</div>
 <div class="line"><span class="lineno"> 1415</span>                                }</div>
-<div class="line"><span class="lineno"> 1416</span>                                myfile&lt;&lt;<a class="code hl_variable" href="namespacegeometry__config.html#a1286b5c01494c311eb3a950d1ac8857c">x</a>&lt;&lt;<span class="stringliteral">&quot;    &quot;</span>&lt;&lt;<a class="code hl_variable" href="namespacegeometry__config.html#aa7c54d6eeebcc821b55222c6926f6740">y</a>&lt;&lt;<span class="stringliteral">&quot;    &quot;</span>&lt;&lt;<a class="code hl_variable" href="namespacegeometry__config.html#a4487257c46b838ef1172b356289460c4">z</a>&lt;&lt;<span class="stringliteral">&quot;    &quot;</span>&lt;&lt;<a class="code hl_variable" href="namespacegeometry__config.html#aa52009c79b19f5c569b183e74aa588c7">B</a>[0]/<a class="code hl_variable" href="classShipFieldMaker.html#a86b97bf8ceebc3cc4f8d02eb72adf245">Tesla_</a>&lt;&lt;<span class="stringliteral">&quot;    &quot;</span>&lt;&lt;<a class="code hl_variable" href="namespacegeometry__config.html#aa52009c79b19f5c569b183e74aa588c7">B</a>[1]/<a class="code hl_variable" href="classShipFieldMaker.html#a86b97bf8ceebc3cc4f8d02eb72adf245">Tesla_</a>&lt;&lt;<span class="stringliteral">&quot;    &quot;</span>&lt;&lt;<a class="code hl_variable" href="namespacegeometry__config.html#aa52009c79b19f5c569b183e74aa588c7">B</a>[2]/<a class="code hl_variable" href="classShipFieldMaker.html#a86b97bf8ceebc3cc4f8d02eb72adf245">Tesla_</a>&lt;&lt;std::endl;</div>
+<div class="line"><span class="lineno"> 1416</span>                                myfile&lt;&lt;<a class="code hl_variable" href="namespacegeometry__config.html#a1286b5c01494c311eb3a950d1ac8857c">x</a>&lt;&lt;<span class="stringliteral">&quot;    &quot;</span>&lt;&lt;<a class="code hl_variable" href="namespacegeometry__config.html#aa7c54d6eeebcc821b55222c6926f6740">y</a>&lt;&lt;<span class="stringliteral">&quot;    &quot;</span>&lt;&lt;<a class="code hl_variable" href="namespacegeometry__config.html#a4487257c46b838ef1172b356289460c4">z</a>&lt;&lt;<span class="stringliteral">&quot;    &quot;</span>&lt;&lt;B[0]/<a class="code hl_variable" href="classShipFieldMaker.html#a86b97bf8ceebc3cc4f8d02eb72adf245">Tesla_</a>&lt;&lt;<span class="stringliteral">&quot;    &quot;</span>&lt;&lt;B[1]/<a class="code hl_variable" href="classShipFieldMaker.html#a86b97bf8ceebc3cc4f8d02eb72adf245">Tesla_</a>&lt;&lt;<span class="stringliteral">&quot;    &quot;</span>&lt;&lt;B[2]/<a class="code hl_variable" href="classShipFieldMaker.html#a86b97bf8ceebc3cc4f8d02eb72adf245">Tesla_</a>&lt;&lt;std::endl;</div>
 <div class="line"><span class="lineno"> 1417</span>                        }</div>
 <div class="line"><span class="lineno"> 1418</span>                }</div>
 <div class="line"><span class="lineno"> 1419</span>        }</div>
@@ -2361,7 +2360,6 @@ John Back <a href="#" onclick="location.href='mai'+'lto:'+'J.J'+'.B'+'ack'+'@w'+
 <div class="ttc" id="aclassShipCompField_html_ac5af42fbec6900837d97fc74af653082"><div class="ttname"><a href="classShipCompField.html#ac5af42fbec6900837d97fc74af653082">ShipCompField::Field</a></div><div class="ttdeci">virtual void Field(const Double_t *position, Double_t *B)</div><div class="ttdoc">The total magnetic field from all of the composite sources (linear superposition)</div><div class="ttdef"><b>Definition</b> <a href="ShipCompField_8cxx_source.html#l00041">ShipCompField.cxx:41</a></div></div>
 <div class="ttc" id="anamespaceadd__noise__to__field_html_a96cf5cc2cc008d7422009cb2ad93cb51"><div class="ttname"><a href="namespaceadd__noise__to__field.html#a96cf5cc2cc008d7422009cb2ad93cb51">add_noise_to_field.step</a></div><div class="ttdeci">step</div><div class="ttdef"><b>Definition</b> <a href="add__noise__to__field_8py_source.html#l00069">add_noise_to_field.py:69</a></div></div>
 <div class="ttc" id="anamespacegeometry__config_html_a1286b5c01494c311eb3a950d1ac8857c"><div class="ttname"><a href="namespacegeometry__config.html#a1286b5c01494c311eb3a950d1ac8857c">geometry_config.x</a></div><div class="ttdeci">x</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00179">geometry_config.py:179</a></div></div>
-<div class="ttc" id="anamespacegeometry__config_html_aa52009c79b19f5c569b183e74aa588c7"><div class="ttname"><a href="namespacegeometry__config.html#aa52009c79b19f5c569b183e74aa588c7">geometry_config.B</a></div><div class="ttdeci">B</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00436">geometry_config.py:436</a></div></div>
 <div class="ttc" id="anamespacegeometry__config_html_aa7c54d6eeebcc821b55222c6926f6740"><div class="ttname"><a href="namespacegeometry__config.html#aa7c54d6eeebcc821b55222c6926f6740">geometry_config.y</a></div><div class="ttdeci">y</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00178">geometry_config.py:178</a></div></div>
 <div class="ttc" id="anamespacerunPythia8_html_a4cd74a33c53eaeef70fcb6b448b9b285"><div class="ttname"><a href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">runPythia8.k</a></div><div class="ttdeci">int k</div><div class="ttdef"><b>Definition</b> <a href="runPythia8_8py_source.html#l00129">runPythia8.py:129</a></div></div>
 </div><!-- fragment -->
@@ -2786,7 +2784,7 @@ John Back <a href="#" onclick="location.href='mai'+'lto:'+'J.J'+'.B'+'ack'+'@w'+
 <div class="line"><span class="lineno"> 1299</span>        Double_t <a class="code hl_variable" href="namespacegeometry__config.html#aa7c54d6eeebcc821b55222c6926f6740">y</a> = <a class="code hl_variable" href="namespaceShipAna.html#a02a40c51d86f2bb079d5d8018e56f028">dy</a>*iy + yMin;</div>
 <div class="line"><span class="lineno"> 1300</span> </div>
 <div class="line"><span class="lineno"> 1301</span>        <span class="comment">// Initialise the B field array to zero</span></div>
-<div class="line"><span class="lineno"> 1302</span>        Double_t <a class="code hl_variable" href="namespacegeometry__config.html#aa52009c79b19f5c569b183e74aa588c7">B</a>[ncoordinates] = {0.0, 0.0, 0.0};</div>
+<div class="line"><span class="lineno"> 1302</span>        Double_t B[ncoordinates] = {0.0, 0.0, 0.0};</div>
 <div class="line"><span class="lineno"> 1303</span> </div>
 <div class="line"><span class="lineno"> 1304</span>        <span class="comment">// Initialise the position array to zero</span></div>
 <div class="line"><span class="lineno"> 1305</span>        Double_t position[ncoordinates] = {0.0, 0.0, 0.0};</div>
@@ -3202,7 +3200,7 @@ John Back <a href="#" onclick="location.href='mai'+'lto:'+'J.J'+'.B'+'ack'+'@w'+
 <div class="line"><span class="lineno">  915</span>    fieldInfo theInfo = *localIter;</div>
 <div class="line"><span class="lineno">  916</span>    <span class="keyword">const</span> TString volName = theInfo.volName_;</div>
 <div class="line"><span class="lineno">  917</span>    TString fieldName = theInfo.fieldName_;</div>
-<div class="line"><span class="lineno">  918</span>    Double_t <a class="code hl_variable" href="namespacegeometry__config.html#aa87d4e2e38289980fc9d280efef4a886">scale</a> = theInfo.scale_;</div>
+<div class="line"><span class="lineno">  918</span>    Double_t scale = theInfo.scale_;</div>
 <div class="line"><span class="lineno">  919</span> </div>
 <div class="line"><span class="lineno">  920</span>    TGeoVolume* theVol(0);</div>
 <div class="line"><span class="lineno">  921</span>    <span class="keywordflow">if</span> (gGeoManager) {theVol = gGeoManager-&gt;FindVolumeFast(volName.Data());}</div>
@@ -3272,7 +3270,7 @@ John Back <a href="#" onclick="location.href='mai'+'lto:'+'J.J'+'.B'+'ack'+'@w'+
 <div class="line"><span class="lineno">  785</span>    fieldInfo theInfo = *regionIter;</div>
 <div class="line"><span class="lineno">  786</span>    <span class="keyword">const</span> TString volName = theInfo.volName_;</div>
 <div class="line"><span class="lineno">  787</span>    TString fieldName = theInfo.fieldName_;</div>
-<div class="line"><span class="lineno">  788</span>    Double_t <a class="code hl_variable" href="namespacegeometry__config.html#aa87d4e2e38289980fc9d280efef4a886">scale</a> = theInfo.scale_;</div>
+<div class="line"><span class="lineno">  788</span>    Double_t scale = theInfo.scale_;</div>
 <div class="line"><span class="lineno">  789</span> </div>
 <div class="line"><span class="lineno">  790</span>    <span class="comment">// Find the volume</span></div>
 <div class="line"><span class="lineno">  791</span>    TGeoVolume* theVol(0);</div>

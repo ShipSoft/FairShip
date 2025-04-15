@@ -662,16 +662,16 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  103</span>  <a class="code hl_class" href="classecalPoint.html">ecalPoint</a>* <a class="code hl_variable" href="namespacemakeDecay.html#afdee173103d608b5c98240c05154f34d">pt</a>;</div>
 <div class="line"><span class="lineno">  104</span>  <a class="code hl_class" href="classecalCell.html">ecalCell</a>* cell;</div>
 <div class="line"><span class="lineno">  105</span>  Int_t ten;</div>
-<div class="line"><span class="lineno">  106</span>  UInt_t <a class="code hl_variable" href="namespacegeometry__config.html#a99f3338967d32a8359ac122e774ab3e9">n</a>;</div>
+<div class="line"><span class="lineno">  106</span>  UInt_t <a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a>;</div>
 <div class="line"><span class="lineno">  107</span> </div>
-<div class="line"><span class="lineno">  108</span>  <a class="code hl_variable" href="namespacegeometry__config.html#a99f3338967d32a8359ac122e774ab3e9">n</a>=<a class="code hl_variable" href="classecalStructureFiller.html#ac30780770894c3ee44ab90a4ec6150d0">fListECALpts</a>-&gt;GetEntriesFast();</div>
+<div class="line"><span class="lineno">  108</span>  <a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a>=<a class="code hl_variable" href="classecalStructureFiller.html#ac30780770894c3ee44ab90a4ec6150d0">fListECALpts</a>-&gt;GetEntriesFast();</div>
 <div class="line"><span class="lineno">  109</span>  <span class="keywordflow">if</span> (fVerbose&gt;0)</div>
 <div class="line"><span class="lineno">  110</span>  {</div>
 <div class="line"><span class="lineno">  111</span>    cout &lt;&lt; <span class="stringliteral">&quot;. Number of input MC points: &quot;</span>;</div>
-<div class="line"><span class="lineno">  112</span>    cout &lt;&lt; <a class="code hl_variable" href="namespacegeometry__config.html#a99f3338967d32a8359ac122e774ab3e9">n</a> &lt;&lt; flush;</div>
+<div class="line"><span class="lineno">  112</span>    cout &lt;&lt; <a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a> &lt;&lt; flush;</div>
 <div class="line"><span class="lineno">  113</span>  }</div>
 <div class="line"><span class="lineno">  114</span> </div>
-<div class="line"><span class="lineno">  115</span>  <span class="keywordflow">for</span>(UInt_t j=0; j&lt;<a class="code hl_variable" href="namespacegeometry__config.html#a99f3338967d32a8359ac122e774ab3e9">n</a>; j++)</div>
+<div class="line"><span class="lineno">  115</span>  <span class="keywordflow">for</span>(UInt_t j=0; j&lt;<a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a>; j++)</div>
 <div class="line"><span class="lineno">  116</span>  {</div>
 <div class="line"><span class="lineno">  117</span>    <a class="code hl_variable" href="namespacemakeDecay.html#afdee173103d608b5c98240c05154f34d">pt</a>=(<a class="code hl_class" href="classecalPoint.html">ecalPoint</a>*)<a class="code hl_variable" href="classecalStructureFiller.html#ac30780770894c3ee44ab90a4ec6150d0">fListECALpts</a>-&gt;At(j);</div>
 <div class="line"><span class="lineno">  118</span>    cell=<a class="code hl_variable" href="classecalStructureFiller.html#a84f49cc00bbb8f3dbf362ff446df9e2d">fStr</a>-&gt;<a class="code hl_function" href="classecalStructure.html#a4c743cea10103abedbee3aed8709fbec">GetCell</a>(<a class="code hl_variable" href="namespacemakeDecay.html#afdee173103d608b5c98240c05154f34d">pt</a>-&gt;GetDetectorID(), ten);</div>
@@ -680,7 +680,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  121</span>    }</div>
 <div class="line"><span class="lineno">  122</span>  }</div>
 <div class="line"><span class="lineno">  123</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classecalStructureFiller.html#af37fe70adf9302ffbbda1d24c7ae9be3">fStoreTrackInfo</a>)</div>
-<div class="line"><span class="lineno">  124</span>  <span class="keywordflow">for</span>(UInt_t j=0; j&lt;<a class="code hl_variable" href="namespacegeometry__config.html#a99f3338967d32a8359ac122e774ab3e9">n</a>; j++)</div>
+<div class="line"><span class="lineno">  124</span>  <span class="keywordflow">for</span>(UInt_t j=0; j&lt;<a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a>; j++)</div>
 <div class="line"><span class="lineno">  125</span>  {</div>
 <div class="line"><span class="lineno">  126</span>    <a class="code hl_variable" href="namespacemakeDecay.html#afdee173103d608b5c98240c05154f34d">pt</a>=(<a class="code hl_class" href="classecalPoint.html">ecalPoint</a>*)<a class="code hl_variable" href="classecalStructureFiller.html#ac30780770894c3ee44ab90a4ec6150d0">fListECALpts</a>-&gt;At(j);</div>
 <div class="line"><span class="lineno">  127</span>    <a class="code hl_class" href="classecalCellMC.html">ecalCellMC</a>* cellmc=(<a class="code hl_class" href="classecalCellMC.html">ecalCellMC</a>*)<a class="code hl_variable" href="classecalStructureFiller.html#a84f49cc00bbb8f3dbf362ff446df9e2d">fStr</a>-&gt;<a class="code hl_function" href="classecalStructure.html#a4c743cea10103abedbee3aed8709fbec">GetCell</a>(<a class="code hl_variable" href="namespacemakeDecay.html#afdee173103d608b5c98240c05154f34d">pt</a>-&gt;GetDetectorID(), ten);</div>
@@ -695,7 +695,7 @@ Private Attributes</h2></td></tr>
 <div class="ttc" id="aclassecalCell_html_a768714f8f275ff592c42dbf401e11250"><div class="ttname"><a href="classecalCell.html#a768714f8f275ff592c42dbf401e11250">ecalCell::AddEnergy</a></div><div class="ttdeci">void AddEnergy(Float_t energy)</div><div class="ttdef"><b>Definition</b> <a href="ecalCell_8h_source.html#l00068">ecalCell.h:68</a></div></div>
 <div class="ttc" id="aclassecalPoint_html"><div class="ttname"><a href="classecalPoint.html">ecalPoint</a></div><div class="ttdef"><b>Definition</b> <a href="ecalPoint_8h_source.html#l00012">ecalPoint.h:13</a></div></div>
 <div class="ttc" id="aclassecalStructure_html_a4c743cea10103abedbee3aed8709fbec"><div class="ttname"><a href="classecalStructure.html#a4c743cea10103abedbee3aed8709fbec">ecalStructure::GetCell</a></div><div class="ttdeci">ecalCell * GetCell(Float_t x, Float_t y) const</div><div class="ttdef"><b>Definition</b> <a href="ecalStructure_8h_source.html#l00095">ecalStructure.h:95</a></div></div>
-<div class="ttc" id="anamespacegeometry__config_html_a99f3338967d32a8359ac122e774ab3e9"><div class="ttname"><a href="namespacegeometry__config.html#a99f3338967d32a8359ac122e774ab3e9">geometry_config.n</a></div><div class="ttdeci">n</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00628">geometry_config.py:628</a></div></div>
+<div class="ttc" id="anamespacemakeDecay_html_af2fe9da99a6c13f5bdd6d42663620c39"><div class="ttname"><a href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">makeDecay.n</a></div><div class="ttdeci">int n</div><div class="ttdef"><b>Definition</b> <a href="makeDecay_8py_source.html#l00064">makeDecay.py:64</a></div></div>
 <div class="ttc" id="anamespacemakeDecay_html_afdee173103d608b5c98240c05154f34d"><div class="ttname"><a href="namespacemakeDecay.html#afdee173103d608b5c98240c05154f34d">makeDecay.pt</a></div><div class="ttdeci">pt</div><div class="ttdef"><b>Definition</b> <a href="makeDecay_8py_source.html#l00116">makeDecay.py:116</a></div></div>
 </div><!-- fragment -->
 </div>

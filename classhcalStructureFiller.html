@@ -618,17 +618,17 @@ Private Attributes</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">   88</span>{</div>
 <div class="line"><span class="lineno">   89</span>  <a class="code hl_class" href="classhcalPoint.html">hcalPoint</a>* <a class="code hl_variable" href="namespacemakeDecay.html#afdee173103d608b5c98240c05154f34d">pt</a>=NULL;</div>
 <div class="line"><span class="lineno">   90</span>  <a class="code hl_class" href="classhcalModule.html">hcalModule</a>* <span class="keyword">module</span>;</div>
-<div class="line"><span class="lineno">   91</span>  UInt_t <a class="code hl_variable" href="namespacegeometry__config.html#a99f3338967d32a8359ac122e774ab3e9">n</a>;</div>
+<div class="line"><span class="lineno">   91</span>  UInt_t <a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a>;</div>
 <div class="line"><span class="lineno">   92</span>  Int_t section;</div>
 <div class="line"><span class="lineno">   93</span> </div>
-<div class="line"><span class="lineno">   94</span>  <a class="code hl_variable" href="namespacegeometry__config.html#a99f3338967d32a8359ac122e774ab3e9">n</a>=<a class="code hl_variable" href="classhcalStructureFiller.html#a493b25c86b2a9a8d63a2d91f2ff74d0f">fListHCALpts</a>-&gt;GetEntriesFast();</div>
+<div class="line"><span class="lineno">   94</span>  <a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a>=<a class="code hl_variable" href="classhcalStructureFiller.html#a493b25c86b2a9a8d63a2d91f2ff74d0f">fListHCALpts</a>-&gt;GetEntriesFast();</div>
 <div class="line"><span class="lineno">   95</span>  <span class="keywordflow">if</span> (fVerbose&gt;0)</div>
 <div class="line"><span class="lineno">   96</span>  {</div>
 <div class="line"><span class="lineno">   97</span>    cout &lt;&lt; <span class="stringliteral">&quot;. Number of input MC points: &quot;</span>;</div>
-<div class="line"><span class="lineno">   98</span>    cout &lt;&lt; <a class="code hl_variable" href="namespacegeometry__config.html#a99f3338967d32a8359ac122e774ab3e9">n</a> &lt;&lt; flush;</div>
+<div class="line"><span class="lineno">   98</span>    cout &lt;&lt; <a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a> &lt;&lt; flush;</div>
 <div class="line"><span class="lineno">   99</span>  }</div>
 <div class="line"><span class="lineno">  100</span> </div>
-<div class="line"><span class="lineno">  101</span>  <span class="keywordflow">for</span>(UInt_t j=0; j&lt;<a class="code hl_variable" href="namespacegeometry__config.html#a99f3338967d32a8359ac122e774ab3e9">n</a>; j++)</div>
+<div class="line"><span class="lineno">  101</span>  <span class="keywordflow">for</span>(UInt_t j=0; j&lt;<a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a>; j++)</div>
 <div class="line"><span class="lineno">  102</span>  {</div>
 <div class="line"><span class="lineno">  103</span>    <a class="code hl_variable" href="namespacemakeDecay.html#afdee173103d608b5c98240c05154f34d">pt</a>=(<a class="code hl_class" href="classhcalPoint.html">hcalPoint</a>*)<a class="code hl_variable" href="classhcalStructureFiller.html#a493b25c86b2a9a8d63a2d91f2ff74d0f">fListHCALpts</a>-&gt;At(j);</div>
 <div class="line"><span class="lineno">  104</span>    <span class="keyword">module</span>=fStr-&gt;GetModule(pt-&gt;GetDetectorID(), section);</div>
@@ -639,7 +639,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  109</span>      <span class="keyword">module</span>-&gt;AddEnergy2(pt-&gt;GetEnergyLoss());</div>
 <div class="line"><span class="lineno">  110</span>  }</div>
 <div class="line"><span class="lineno">  111</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classhcalStructureFiller.html#a962b010de6c992ff8fa8c8c14d056f2e">fStoreTrackInfo</a>)</div>
-<div class="line"><span class="lineno">  112</span>  <span class="keywordflow">for</span>(UInt_t j=0; j&lt;<a class="code hl_variable" href="namespacegeometry__config.html#a99f3338967d32a8359ac122e774ab3e9">n</a>; j++)</div>
+<div class="line"><span class="lineno">  112</span>  <span class="keywordflow">for</span>(UInt_t j=0; j&lt;<a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a>; j++)</div>
 <div class="line"><span class="lineno">  113</span>  {</div>
 <div class="line"><span class="lineno">  114</span>    <a class="code hl_variable" href="namespacemakeDecay.html#afdee173103d608b5c98240c05154f34d">pt</a>=(<a class="code hl_class" href="classhcalPoint.html">hcalPoint</a>*)<a class="code hl_variable" href="classhcalStructureFiller.html#a493b25c86b2a9a8d63a2d91f2ff74d0f">fListHCALpts</a>-&gt;At(j);</div>
 <div class="line"><span class="lineno">  115</span>    <a class="code hl_class" href="classhcalModuleMC.html">hcalModuleMC</a>* modulemc=(<a class="code hl_class" href="classhcalModuleMC.html">hcalModuleMC</a>*)<a class="code hl_variable" href="classhcalStructureFiller.html#a305fe5221cbaa98257d709043456fa66">fStr</a>-&gt;<a class="code hl_function" href="classhcalStructure.html#a0a996a5bfa54ba8e8a787020e05495a0">GetModule</a>(<a class="code hl_variable" href="namespacemakeDecay.html#afdee173103d608b5c98240c05154f34d">pt</a>-&gt;GetDetectorID(), section);</div>
@@ -655,7 +655,7 @@ Private Attributes</h2></td></tr>
 <div class="ttc" id="aclasshcalModule_html"><div class="ttname"><a href="classhcalModule.html">hcalModule</a></div><div class="ttdef"><b>Definition</b> <a href="hcalModule_8h_source.html#l00016">hcalModule.h:17</a></div></div>
 <div class="ttc" id="aclasshcalPoint_html"><div class="ttname"><a href="classhcalPoint.html">hcalPoint</a></div><div class="ttdef"><b>Definition</b> <a href="hcalPoint_8h_source.html#l00012">hcalPoint.h:13</a></div></div>
 <div class="ttc" id="aclasshcalStructure_html_a0a996a5bfa54ba8e8a787020e05495a0"><div class="ttname"><a href="classhcalStructure.html#a0a996a5bfa54ba8e8a787020e05495a0">hcalStructure::GetModule</a></div><div class="ttdeci">hcalModule * GetModule(Float_t x, Float_t y) const</div><div class="ttdef"><b>Definition</b> <a href="hcalStructure_8h_source.html#l00082">hcalStructure.h:82</a></div></div>
-<div class="ttc" id="anamespacegeometry__config_html_a99f3338967d32a8359ac122e774ab3e9"><div class="ttname"><a href="namespacegeometry__config.html#a99f3338967d32a8359ac122e774ab3e9">geometry_config.n</a></div><div class="ttdeci">n</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00628">geometry_config.py:628</a></div></div>
+<div class="ttc" id="anamespacemakeDecay_html_af2fe9da99a6c13f5bdd6d42663620c39"><div class="ttname"><a href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">makeDecay.n</a></div><div class="ttdeci">int n</div><div class="ttdef"><b>Definition</b> <a href="makeDecay_8py_source.html#l00064">makeDecay.py:64</a></div></div>
 <div class="ttc" id="anamespacemakeDecay_html_afdee173103d608b5c98240c05154f34d"><div class="ttname"><a href="namespacemakeDecay.html#afdee173103d608b5c98240c05154f34d">makeDecay.pt</a></div><div class="ttdeci">pt</div><div class="ttdef"><b>Definition</b> <a href="makeDecay_8py_source.html#l00116">makeDecay.py:116</a></div></div>
 </div><!-- fragment -->
 </div>

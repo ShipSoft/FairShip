@@ -402,7 +402,7 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">   89</span>    <a class="code hl_variable" href="classTarget.html#ad199f971618140a8b114f054abdbd9cc">fELoss</a>(-1),</div>
 <div class="line"><span class="lineno">   90</span>    <a class="code hl_variable" href="classTarget.html#a3ce6757b45c7096fab088c5ac9c50129">fTargetPointCollection</a>(<span class="keyword">new</span> TClonesArray(<span class="stringliteral">&quot;TargetPoint&quot;</span>))</div>
 <div class="line"><span class="lineno">   91</span>{</div>
-<div class="line"><span class="lineno">   92</span>  <a class="code hl_variable" href="classTarget.html#a0765eab67cf5bc8c4494ead7cda06f47">Ydistance</a> = <a class="code hl_variable" href="namespacegeometry__config.html#a53d98a57a44105fd5842659f7418f0ce">Ydist</a>;</div>
+<div class="line"><span class="lineno">   92</span>  <a class="code hl_variable" href="classTarget.html#a0765eab67cf5bc8c4494ead7cda06f47">Ydistance</a> = Ydist;</div>
 <div class="line"><span class="lineno">   93</span>}</div>
 <div class="ttc" id="aShipDetectorList_8h_html_a1806da1a0fbae8ab81f7330906f65680ac9a2f8c5f1c65083318ee7b19099c018"><div class="ttname"><a href="ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680ac9a2f8c5f1c65083318ee7b19099c018">ktauTarget</a></div><div class="ttdeci">@ ktauTarget</div><div class="ttdef"><b>Definition</b> <a href="ShipDetectorList_8h_source.html#l00012">ShipDetectorList.h:12</a></div></div>
 <div class="ttc" id="aclassTarget_html_a0765eab67cf5bc8c4494ead7cda06f47"><div class="ttname"><a href="classTarget.html#a0765eab67cf5bc8c4494ead7cda06f47">Target::Ydistance</a></div><div class="ttdeci">Double_t Ydistance</div><div class="ttdef"><b>Definition</b> <a href="Target_8h_source.html#l00194">Target.h:194</a></div></div>
@@ -413,7 +413,6 @@ Protected Attributes</h2></td></tr>
 <div class="ttc" id="aclassTarget_html_ac7a91d1b3697043e644f10eae0418441"><div class="ttname"><a href="classTarget.html#ac7a91d1b3697043e644f10eae0418441">Target::fTime</a></div><div class="ttdeci">Double32_t fTime</div><div class="ttdoc">momentum at entrance</div><div class="ttdef"><b>Definition</b> <a href="Target_8h_source.html#l00136">Target.h:136</a></div></div>
 <div class="ttc" id="aclassTarget_html_ad199f971618140a8b114f054abdbd9cc"><div class="ttname"><a href="classTarget.html#ad199f971618140a8b114f054abdbd9cc">Target::fELoss</a></div><div class="ttdeci">Double32_t fELoss</div><div class="ttdoc">length</div><div class="ttdef"><b>Definition</b> <a href="Target_8h_source.html#l00138">Target.h:138</a></div></div>
 <div class="ttc" id="aclassTarget_html_add0a8c6e8c3dcb903c42ddcdab444e50"><div class="ttname"><a href="classTarget.html#add0a8c6e8c3dcb903c42ddcdab444e50">Target::fMom</a></div><div class="ttdeci">TLorentzVector fMom</div><div class="ttdoc">position at entrance</div><div class="ttdef"><b>Definition</b> <a href="Target_8h_source.html#l00135">Target.h:135</a></div></div>
-<div class="ttc" id="anamespacegeometry__config_html_a53d98a57a44105fd5842659f7418f0ce"><div class="ttname"><a href="namespacegeometry__config.html#a53d98a57a44105fd5842659f7418f0ce">geometry_config.Ydist</a></div><div class="ttdeci">Ydist</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00578">geometry_config.py:578</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -738,7 +737,7 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  362</span>  volAbsorber-&gt;SetTransparency(1);</div>
 <div class="line"><span class="lineno">  363</span>  volAbsorber-&gt;SetLineColor(kGray);</div>
 <div class="line"><span class="lineno">  364</span> </div>
-<div class="line"><span class="lineno">  365</span>  <span class="keywordflow">for</span>(Int_t n=0; <a class="code hl_variable" href="namespacegeometry__config.html#a99f3338967d32a8359ac122e774ab3e9">n</a>&lt;NPlates; <a class="code hl_variable" href="namespacegeometry__config.html#a99f3338967d32a8359ac122e774ab3e9">n</a>++)</div>
+<div class="line"><span class="lineno">  365</span>  <span class="keywordflow">for</span>(Int_t n=0; <a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a>&lt;NPlates; <a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a>++)</div>
 <div class="line"><span class="lineno">  366</span>    {</div>
 <div class="line"><span class="lineno">  367</span>      <span class="comment">//decide to use lead or tungsten, according to fDesign</span></div>
 <div class="line"><span class="lineno">  368</span>      volBrick-&gt;AddNode(volAbsorber, n, <span class="keyword">new</span> TGeoTranslation(0,0,-<a class="code hl_variable" href="classTarget.html#acb46fe7bb033e087857ba6316c45e016">BrickZ</a>/2+<a class="code hl_variable" href="classTarget.html#a510e7984b32b9bdb7d1489a18225c1e2">BrickPackageZ</a>/2+ <a class="code hl_variable" href="classTarget.html#af0074d7ab164fbfdba20c110fc256d80">EmPlateWidth</a> + <a class="code hl_variable" href="classTarget.html#a351028ad2f7233bc1a973c71cc07ebfb">LeadThickness</a>/2 + n*<a class="code hl_variable" href="classTarget.html#ab048c58ef9a027b308b057bea9452384">AllPlateWidth</a>));</div>
@@ -753,7 +752,7 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  377</span>      AddSensitiveVolume(volEmulsionFilm);</div>
 <div class="line"><span class="lineno">  378</span>    }</div>
 <div class="line"><span class="lineno">  379</span> </div>
-<div class="line"><span class="lineno">  380</span>   <span class="keywordflow">for</span>(Int_t n=0; <a class="code hl_variable" href="namespacegeometry__config.html#a99f3338967d32a8359ac122e774ab3e9">n</a>&lt;NPlates+1; <a class="code hl_variable" href="namespacegeometry__config.html#a99f3338967d32a8359ac122e774ab3e9">n</a>++)</div>
+<div class="line"><span class="lineno">  380</span>   <span class="keywordflow">for</span>(Int_t n=0; <a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a>&lt;NPlates+1; <a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a>++)</div>
 <div class="line"><span class="lineno">  381</span>    {</div>
 <div class="line"><span class="lineno">  382</span>      volBrick-&gt;AddNode(volEmulsionFilm, n, <span class="keyword">new</span> TGeoTranslation(0,0,-<a class="code hl_variable" href="classTarget.html#acb46fe7bb033e087857ba6316c45e016">BrickZ</a>/2+<a class="code hl_variable" href="classTarget.html#a510e7984b32b9bdb7d1489a18225c1e2">BrickPackageZ</a>/2+ <a class="code hl_variable" href="classTarget.html#af0074d7ab164fbfdba20c110fc256d80">EmPlateWidth</a>/2 + n*<a class="code hl_variable" href="classTarget.html#ab048c58ef9a027b308b057bea9452384">AllPlateWidth</a>));</div>
 <div class="line"><span class="lineno">  383</span>    }</div>
@@ -773,7 +772,7 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  397</span>   TGeoBBox *PlBase = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;PlBase&quot;</span>, <a class="code hl_variable" href="classTarget.html#afb1de534a204baf0bf4cd04d85a92af6">EmulsionX</a>/2, <a class="code hl_variable" href="classTarget.html#a4f413bdaa4b87fe74788e5cc3c6f4457">EmulsionY</a>/2, <a class="code hl_variable" href="classTarget.html#a35aea7bbdcd2b440a128c76c83e21e01">PlasticBaseThickness</a>/2);</div>
 <div class="line"><span class="lineno">  398</span>   TGeoVolume *volPlBase = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;PlasticBase&quot;</span>,PlBase,PBase);</div>
 <div class="line"><span class="lineno">  399</span>   volPlBase-&gt;SetLineColor(kYellow-4);</div>
-<div class="line"><span class="lineno">  400</span>   <span class="keywordflow">for</span>(Int_t n=0; <a class="code hl_variable" href="namespacegeometry__config.html#a99f3338967d32a8359ac122e774ab3e9">n</a>&lt;NPlates+1; <a class="code hl_variable" href="namespacegeometry__config.html#a99f3338967d32a8359ac122e774ab3e9">n</a>++)</div>
+<div class="line"><span class="lineno">  400</span>   <span class="keywordflow">for</span>(Int_t n=0; <a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a>&lt;NPlates+1; <a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a>++)</div>
 <div class="line"><span class="lineno">  401</span>    {</div>
 <div class="line"><span class="lineno">  402</span>      volBrick-&gt;AddNode(volEmulsionFilm2, n, <span class="keyword">new</span> TGeoTranslation(0,0,-<a class="code hl_variable" href="classTarget.html#acb46fe7bb033e087857ba6316c45e016">BrickZ</a>/2+<a class="code hl_variable" href="classTarget.html#a510e7984b32b9bdb7d1489a18225c1e2">BrickPackageZ</a>/2+ <a class="code hl_variable" href="classTarget.html#acb6109a2d29999852b9b188a172a8e6b">EmulsionThickness</a>/2 + n*<a class="code hl_variable" href="classTarget.html#ab048c58ef9a027b308b057bea9452384">AllPlateWidth</a>)); <span class="comment">//BOTTOM</span></div>
 <div class="line"><span class="lineno">  403</span>      volBrick-&gt;AddNode(volEmulsionFilm, n, <span class="keyword">new</span> TGeoTranslation(0,0,-<a class="code hl_variable" href="classTarget.html#acb46fe7bb033e087857ba6316c45e016">BrickZ</a>/2+<a class="code hl_variable" href="classTarget.html#a510e7984b32b9bdb7d1489a18225c1e2">BrickPackageZ</a>/2+3*<a class="code hl_variable" href="classTarget.html#acb6109a2d29999852b9b188a172a8e6b">EmulsionThickness</a>/2+<a class="code hl_variable" href="classTarget.html#a35aea7bbdcd2b440a128c76c83e21e01">PlasticBaseThickness</a>+n*<a class="code hl_variable" href="classTarget.html#ab048c58ef9a027b308b057bea9452384">AllPlateWidth</a>)); <span class="comment">//TOP</span></div>
@@ -799,7 +798,7 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  423</span>      volRohGap-&gt;SetTransparency(1);</div>
 <div class="line"><span class="lineno">  424</span>      volRohGap-&gt;SetLineColor(kYellow);</div>
 <div class="line"><span class="lineno">  425</span> </div>
-<div class="line"><span class="lineno">  426</span>      <span class="keywordflow">for</span>(Int_t n=0; <a class="code hl_variable" href="namespacegeometry__config.html#a99f3338967d32a8359ac122e774ab3e9">n</a>&lt;NRohacellGap; <a class="code hl_variable" href="namespacegeometry__config.html#a99f3338967d32a8359ac122e774ab3e9">n</a>++)</div>
+<div class="line"><span class="lineno">  426</span>      <span class="keywordflow">for</span>(Int_t n=0; <a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a>&lt;NRohacellGap; <a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a>++)</div>
 <div class="line"><span class="lineno">  427</span>    {</div>
 <div class="line"><span class="lineno">  428</span>      volCES-&gt;AddNode(volRohGap, n, <span class="keyword">new</span> TGeoTranslation(0,0,-<a class="code hl_variable" href="classTarget.html#a0bf703c2384143e366844d1b601f9e5c">CESWidth</a>/2 +<a class="code hl_variable" href="classTarget.html#a1708569bd40f9f510e80a4dfc2676b5d">CESPackageZ</a>/2+  <a class="code hl_variable" href="classTarget.html#af0074d7ab164fbfdba20c110fc256d80">EmPlateWidth</a> + <a class="code hl_variable" href="classTarget.html#a69e5f45e119650c770c5043a77e1e93d">RohacellGap</a>/2 + n*<a class="code hl_variable" href="classTarget.html#a4d033b5e15b669bbce7c3fca14bfc6c7">LayerCESWidth</a>)); <span class="comment">//ROHACELL</span></div>
 <div class="line"><span class="lineno">  429</span>    }</div>
@@ -812,7 +811,7 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  436</span>      AddSensitiveVolume(volEmulsionFilmCES);</div>
 <div class="line"><span class="lineno">  437</span>    }</div>
 <div class="line"><span class="lineno">  438</span> </div>
-<div class="line"><span class="lineno">  439</span>       <span class="keywordflow">for</span>(Int_t n=0; <a class="code hl_variable" href="namespacegeometry__config.html#a99f3338967d32a8359ac122e774ab3e9">n</a>&lt;NRohacellGap+1;<a class="code hl_variable" href="namespacegeometry__config.html#a99f3338967d32a8359ac122e774ab3e9">n</a>++)</div>
+<div class="line"><span class="lineno">  439</span>       <span class="keywordflow">for</span>(Int_t n=0; <a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a>&lt;NRohacellGap+1;<a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a>++)</div>
 <div class="line"><span class="lineno">  440</span>    {</div>
 <div class="line"><span class="lineno">  441</span>      volCES-&gt;AddNode(volEmulsionFilmCES,n, <span class="keyword">new</span> TGeoTranslation(0,0,-<a class="code hl_variable" href="classTarget.html#a0bf703c2384143e366844d1b601f9e5c">CESWidth</a>/2+<a class="code hl_variable" href="classTarget.html#a1708569bd40f9f510e80a4dfc2676b5d">CESPackageZ</a>/2+<a class="code hl_variable" href="classTarget.html#af0074d7ab164fbfdba20c110fc256d80">EmPlateWidth</a>/2+n*<a class="code hl_variable" href="classTarget.html#a4d033b5e15b669bbce7c3fca14bfc6c7">LayerCESWidth</a>));</div>
 <div class="line"><span class="lineno">  442</span>    }</div>
@@ -834,7 +833,7 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  458</span>       TGeoBBox *PlBaseCES = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;PlBaseCES&quot;</span>, <a class="code hl_variable" href="classTarget.html#afb1de534a204baf0bf4cd04d85a92af6">EmulsionX</a>/2, <a class="code hl_variable" href="classTarget.html#a4f413bdaa4b87fe74788e5cc3c6f4457">EmulsionY</a>/2, <a class="code hl_variable" href="classTarget.html#a35aea7bbdcd2b440a128c76c83e21e01">PlasticBaseThickness</a>/2);</div>
 <div class="line"><span class="lineno">  459</span>       TGeoVolume *volPlBaseCES = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;PlasticBaseCES&quot;</span>,PlBaseCES,PBase);</div>
 <div class="line"><span class="lineno">  460</span>       volPlBaseCES-&gt;SetLineColor(kYellow);</div>
-<div class="line"><span class="lineno">  461</span>       <span class="keywordflow">for</span>(Int_t n=0; <a class="code hl_variable" href="namespacegeometry__config.html#a99f3338967d32a8359ac122e774ab3e9">n</a>&lt;NRohacellGap+1;<a class="code hl_variable" href="namespacegeometry__config.html#a99f3338967d32a8359ac122e774ab3e9">n</a>++)</div>
+<div class="line"><span class="lineno">  461</span>       <span class="keywordflow">for</span>(Int_t n=0; <a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a>&lt;NRohacellGap+1;<a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a>++)</div>
 <div class="line"><span class="lineno">  462</span>    {</div>
 <div class="line"><span class="lineno">  463</span>      volCES-&gt;AddNode(volEmulsionFilm2CES,n, <span class="keyword">new</span> TGeoTranslation(0,0,-<a class="code hl_variable" href="classTarget.html#a0bf703c2384143e366844d1b601f9e5c">CESWidth</a>/2+<a class="code hl_variable" href="classTarget.html#a1708569bd40f9f510e80a4dfc2676b5d">CESPackageZ</a>/2+<a class="code hl_variable" href="classTarget.html#acb6109a2d29999852b9b188a172a8e6b">EmulsionThickness</a>/2+n*<a class="code hl_variable" href="classTarget.html#a4d033b5e15b669bbce7c3fca14bfc6c7">LayerCESWidth</a>)); <span class="comment">//BOTTOM</span></div>
 <div class="line"><span class="lineno">  464</span>      volCES-&gt;AddNode(volEmulsionFilmCES, n, <span class="keyword">new</span> TGeoTranslation(0,0,-<a class="code hl_variable" href="classTarget.html#a0bf703c2384143e366844d1b601f9e5c">CESWidth</a>/2+<a class="code hl_variable" href="classTarget.html#a1708569bd40f9f510e80a4dfc2676b5d">CESPackageZ</a>/2+3*<a class="code hl_variable" href="classTarget.html#acb6109a2d29999852b9b188a172a8e6b">EmulsionThickness</a>/2+<a class="code hl_variable" href="classTarget.html#a35aea7bbdcd2b440a128c76c83e21e01">PlasticBaseThickness</a>+n*<a class="code hl_variable" href="classTarget.html#a4d033b5e15b669bbce7c3fca14bfc6c7">LayerCESWidth</a>)); <span class="comment">//TOP</span></div>
@@ -970,7 +969,7 @@ Protected Attributes</h2></td></tr>
 <div class="ttc" id="aclassTarget_html_afb1de534a204baf0bf4cd04d85a92af6"><div class="ttname"><a href="classTarget.html#afb1de534a204baf0bf4cd04d85a92af6">Target::EmulsionX</a></div><div class="ttdeci">Double_t EmulsionX</div><div class="ttdef"><b>Definition</b> <a href="Target_8h_source.html#l00180">Target.h:180</a></div></div>
 <div class="ttc" id="anamespaceShipAna_html_aa4bf87f4d17f9d38b1d8f4d009bb54b3"><div class="ttname"><a href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">ShipAna.i</a></div><div class="ttdeci">int i</div><div class="ttdef"><b>Definition</b> <a href="ShipAna_8py_source.html#l00076">ShipAna.py:76</a></div></div>
 <div class="ttc" id="anamespaceana__ShipMuon_html_a368dc3d523e04b368da1981e73859f4c"><div class="ttname"><a href="namespaceana__ShipMuon.html#a368dc3d523e04b368da1981e73859f4c">ana_ShipMuon.l</a></div><div class="ttdeci">dict l</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l00493">ana_ShipMuon.py:493</a></div></div>
-<div class="ttc" id="anamespacegeometry__config_html_a99f3338967d32a8359ac122e774ab3e9"><div class="ttname"><a href="namespacegeometry__config.html#a99f3338967d32a8359ac122e774ab3e9">geometry_config.n</a></div><div class="ttdeci">n</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00628">geometry_config.py:628</a></div></div>
+<div class="ttc" id="anamespacemakeDecay_html_af2fe9da99a6c13f5bdd6d42663620c39"><div class="ttname"><a href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">makeDecay.n</a></div><div class="ttdeci">int n</div><div class="ttdef"><b>Definition</b> <a href="makeDecay_8py_source.html#l00064">makeDecay.py:64</a></div></div>
 <div class="ttc" id="anamespacerunPythia8_html_a4cd74a33c53eaeef70fcb6b448b9b285"><div class="ttname"><a href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">runPythia8.k</a></div><div class="ttdeci">int k</div><div class="ttdef"><b>Definition</b> <a href="runPythia8_8py_source.html#l00129">runPythia8.py:129</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -1360,9 +1359,8 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Target_8cxx_source.html#l00141">141</a> of file <a class="el" href="Target_8cxx_source.html">Target.cxx</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  142</span>{</div>
-<div class="line"><span class="lineno">  143</span>  <a class="code hl_variable" href="classTarget.html#ae72c4558c526e39b4242b954483bbddc">fsingleemulsionfilm</a>=<a class="code hl_variable" href="namespacegeometry__config.html#aa34208cb14b041edbfad239269f45c2b">SingleEmFilm</a>;</div>
+<div class="line"><span class="lineno">  143</span>  <a class="code hl_variable" href="classTarget.html#ae72c4558c526e39b4242b954483bbddc">fsingleemulsionfilm</a>=SingleEmFilm;</div>
 <div class="line"><span class="lineno">  144</span>}</div>
-<div class="ttc" id="anamespacegeometry__config_html_aa34208cb14b041edbfad239269f45c2b"><div class="ttname"><a href="namespacegeometry__config.html#aa34208cb14b041edbfad239269f45c2b">geometry_config.SingleEmFilm</a></div><div class="ttdeci">SingleEmFilm</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00579">geometry_config.py:579</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1589,7 +1587,7 @@ Protected Attributes</h2></td></tr>
 <div class="ttc" id="anamespacemakeCascade_html_a15662d966fe998f4f8b9b6547975083e"><div class="ttname"><a href="namespacemakeCascade.html#a15662d966fe998f4f8b9b6547975083e">makeCascade.stack</a></div><div class="ttdeci">int stack</div><div class="ttdef"><b>Definition</b> <a href="makeCascade_8py_source.html#l00273">makeCascade.py:273</a></div></div>
 <div class="ttc" id="anamespacemakeCascade_html_add259298592a80ac35262a17847aee2d"><div class="ttname"><a href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">makeCascade.name</a></div><div class="ttdeci">name</div><div class="ttdef"><b>Definition</b> <a href="makeCascade_8py_source.html#l00193">makeCascade.py:193</a></div></div>
 <div class="ttc" id="anamespacemakeDecay_html_a9c90b95001a4909a6c5383da1b3066d9"><div class="ttname"><a href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">makeDecay.p</a></div><div class="ttdeci">p</div><div class="ttdef"><b>Definition</b> <a href="makeDecay_8py_source.html#l00067">makeDecay.py:67</a></div></div>
-<div class="ttc" id="anamespacerun__simScript_html_a671e51e119017a06d69c162c6e24b051"><div class="ttname"><a href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">run_simScript.gMC</a></div><div class="ttdeci">gMC</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l00504">run_simScript.py:504</a></div></div>
+<div class="ttc" id="anamespacerun__simScript_html_a671e51e119017a06d69c162c6e24b051"><div class="ttname"><a href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">run_simScript.gMC</a></div><div class="ttdeci">gMC</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l00507">run_simScript.py:507</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1725,10 +1723,9 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Target_8cxx_source.html#l00225">225</a> of file <a class="el" href="Target_8cxx_source.html">Target.cxx</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  226</span>{</div>
-<div class="line"><span class="lineno">  227</span>  <a class="code hl_variable" href="classTarget.html#ac7d9fc261f231229a7b602f6d50eec15">fMagnetBaseY</a>=<a class="code hl_variable" href="namespacegeometry__config.html#a813292572f3cf797de3cdc77f6edabb2">Y</a>;</div>
+<div class="line"><span class="lineno">  227</span>  <a class="code hl_variable" href="classTarget.html#ac7d9fc261f231229a7b602f6d50eec15">fMagnetBaseY</a>=Y;</div>
 <div class="line"><span class="lineno">  228</span>}</div>
 <div class="ttc" id="aclassTarget_html_ac7d9fc261f231229a7b602f6d50eec15"><div class="ttname"><a href="classTarget.html#ac7d9fc261f231229a7b602f6d50eec15">Target::fMagnetBaseY</a></div><div class="ttdeci">Double_t fMagnetBaseY</div><div class="ttdef"><b>Definition</b> <a href="Target_8h_source.html#l00158">Target.h:158</a></div></div>
-<div class="ttc" id="anamespacegeometry__config_html_a813292572f3cf797de3cdc77f6edabb2"><div class="ttname"><a href="namespacegeometry__config.html#a813292572f3cf797de3cdc77f6edabb2">geometry_config.Y</a></div><div class="ttdeci">Y</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00440">geometry_config.py:440</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1790,22 +1787,16 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Target_8cxx_source.html#l00186">186</a> of file <a class="el" href="Target_8cxx_source.html">Target.cxx</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  187</span>{</div>
-<div class="line"><span class="lineno">  188</span>  <a class="code hl_variable" href="classTarget.html#a982d11ad7c3f6c3b1c0420da9b3a4875">BrickPackageX</a> = <a class="code hl_variable" href="namespacegeometry__config.html#aeabc8d45832d4fdc4c3a5ad339d59ef5">BrPackX</a>;</div>
-<div class="line"><span class="lineno">  189</span>  <a class="code hl_variable" href="classTarget.html#a0c75620f3301ea63ea0c2c4b4840bdfa">BrickPackageY</a> = <a class="code hl_variable" href="namespacegeometry__config.html#a11b5b3204786cadd885c2645d98aab10">BrPackY</a>;</div>
-<div class="line"><span class="lineno">  190</span>  <a class="code hl_variable" href="classTarget.html#a510e7984b32b9bdb7d1489a18225c1e2">BrickPackageZ</a> = <a class="code hl_variable" href="namespacegeometry__config.html#a896fc6cf1b873e9a2fe35dd8de52cced">BrPackZ</a>;</div>
-<div class="line"><span class="lineno">  191</span>  <a class="code hl_variable" href="classTarget.html#a1af9e578d3fbd2e6c1faf9fa7bb453ad">BrickX</a> = <a class="code hl_variable" href="namespacegeometry__config.html#a7e815040ccd77d7175c8bbff49f14494">BrX</a>;</div>
-<div class="line"><span class="lineno">  192</span>  <a class="code hl_variable" href="classTarget.html#a10300065b8275b5fb309f97c56797aa5">BrickY</a> = <a class="code hl_variable" href="namespacegeometry__config.html#af31665c0cc2038d4333ef3d63cab87b5">BrY</a>;</div>
-<div class="line"><span class="lineno">  193</span>  <a class="code hl_variable" href="classTarget.html#acb46fe7bb033e087857ba6316c45e016">BrickZ</a> = <a class="code hl_variable" href="namespacegeometry__config.html#ace37dab4694df936ea8f771e80f7f8ab">BrZ</a>;</div>
+<div class="line"><span class="lineno">  188</span>  <a class="code hl_variable" href="classTarget.html#a982d11ad7c3f6c3b1c0420da9b3a4875">BrickPackageX</a> = BrPackX;</div>
+<div class="line"><span class="lineno">  189</span>  <a class="code hl_variable" href="classTarget.html#a0c75620f3301ea63ea0c2c4b4840bdfa">BrickPackageY</a> = BrPackY;</div>
+<div class="line"><span class="lineno">  190</span>  <a class="code hl_variable" href="classTarget.html#a510e7984b32b9bdb7d1489a18225c1e2">BrickPackageZ</a> = BrPackZ;</div>
+<div class="line"><span class="lineno">  191</span>  <a class="code hl_variable" href="classTarget.html#a1af9e578d3fbd2e6c1faf9fa7bb453ad">BrickX</a> = BrX;</div>
+<div class="line"><span class="lineno">  192</span>  <a class="code hl_variable" href="classTarget.html#a10300065b8275b5fb309f97c56797aa5">BrickY</a> = BrY;</div>
+<div class="line"><span class="lineno">  193</span>  <a class="code hl_variable" href="classTarget.html#acb46fe7bb033e087857ba6316c45e016">BrickZ</a> = BrZ;</div>
 <div class="line"><span class="lineno">  194</span>  <a class="code hl_variable" href="classTarget.html#ab16810384e1584876b2d740bed006ac4">number_of_plates</a> = number_of_plates_;</div>
 <div class="line"><span class="lineno">  195</span>}</div>
 <div class="ttc" id="aclassTarget_html_a0c75620f3301ea63ea0c2c4b4840bdfa"><div class="ttname"><a href="classTarget.html#a0c75620f3301ea63ea0c2c4b4840bdfa">Target::BrickPackageY</a></div><div class="ttdeci">Double_t BrickPackageY</div><div class="ttdef"><b>Definition</b> <a href="Target_8h_source.html#l00190">Target.h:190</a></div></div>
 <div class="ttc" id="aclassTarget_html_a982d11ad7c3f6c3b1c0420da9b3a4875"><div class="ttname"><a href="classTarget.html#a982d11ad7c3f6c3b1c0420da9b3a4875">Target::BrickPackageX</a></div><div class="ttdeci">Double_t BrickPackageX</div><div class="ttdef"><b>Definition</b> <a href="Target_8h_source.html#l00189">Target.h:189</a></div></div>
-<div class="ttc" id="anamespacegeometry__config_html_a11b5b3204786cadd885c2645d98aab10"><div class="ttname"><a href="namespacegeometry__config.html#a11b5b3204786cadd885c2645d98aab10">geometry_config.BrPackY</a></div><div class="ttdeci">BrPackY</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00591">geometry_config.py:591</a></div></div>
-<div class="ttc" id="anamespacegeometry__config_html_a7e815040ccd77d7175c8bbff49f14494"><div class="ttname"><a href="namespacegeometry__config.html#a7e815040ccd77d7175c8bbff49f14494">geometry_config.BrX</a></div><div class="ttdeci">BrX</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00587">geometry_config.py:587</a></div></div>
-<div class="ttc" id="anamespacegeometry__config_html_a896fc6cf1b873e9a2fe35dd8de52cced"><div class="ttname"><a href="namespacegeometry__config.html#a896fc6cf1b873e9a2fe35dd8de52cced">geometry_config.BrPackZ</a></div><div class="ttdeci">BrPackZ</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00589">geometry_config.py:589</a></div></div>
-<div class="ttc" id="anamespacegeometry__config_html_ace37dab4694df936ea8f771e80f7f8ab"><div class="ttname"><a href="namespacegeometry__config.html#ace37dab4694df936ea8f771e80f7f8ab">geometry_config.BrZ</a></div><div class="ttdeci">BrZ</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00592">geometry_config.py:592</a></div></div>
-<div class="ttc" id="anamespacegeometry__config_html_aeabc8d45832d4fdc4c3a5ad339d59ef5"><div class="ttname"><a href="namespacegeometry__config.html#aeabc8d45832d4fdc4c3a5ad339d59ef5">geometry_config.BrPackX</a></div><div class="ttdeci">BrPackX</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00590">geometry_config.py:590</a></div></div>
-<div class="ttc" id="anamespacegeometry__config_html_af31665c0cc2038d4333ef3d63cab87b5"><div class="ttname"><a href="namespacegeometry__config.html#af31665c0cc2038d4333ef3d63cab87b5">geometry_config.BrY</a></div><div class="ttdeci">BrY</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00588">geometry_config.py:588</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1827,9 +1818,8 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Target_8cxx_source.html#l00205">205</a> of file <a class="el" href="Target_8cxx_source.html">Target.cxx</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  206</span>{</div>
-<div class="line"><span class="lineno">  207</span>  <a class="code hl_variable" href="classTarget.html#a4bc412b490b190bf07240bafe22f46d1">CellWidth</a> = <a class="code hl_variable" href="namespacegeometry__config.html#a6577b7a1fb79291eda88da826d942143">CellW</a>;</div>
+<div class="line"><span class="lineno">  207</span>  <a class="code hl_variable" href="classTarget.html#a4bc412b490b190bf07240bafe22f46d1">CellWidth</a> = CellW;</div>
 <div class="line"><span class="lineno">  208</span>}</div>
-<div class="ttc" id="anamespacegeometry__config_html_a6577b7a1fb79291eda88da826d942143"><div class="ttname"><a href="namespacegeometry__config.html#a6577b7a1fb79291eda88da826d942143">geometry_config.CellW</a></div><div class="ttdeci">CellW</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00680">geometry_config.py:680</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1896,15 +1886,11 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Target_8cxx_source.html#l00197">197</a> of file <a class="el" href="Target_8cxx_source.html">Target.cxx</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  198</span>{</div>
-<div class="line"><span class="lineno">  199</span>  <a class="code hl_variable" href="classTarget.html#a1708569bd40f9f510e80a4dfc2676b5d">CESPackageZ</a> = <a class="code hl_variable" href="namespacegeometry__config.html#afda419baf334482fb3197046fc5ae4ff">CESPack</a>;</div>
-<div class="line"><span class="lineno">  200</span>  <a class="code hl_variable" href="classTarget.html#a4d033b5e15b669bbce7c3fca14bfc6c7">LayerCESWidth</a> = <a class="code hl_variable" href="namespacegeometry__config.html#a5ea5f7ce087aa01faf1cc02b966fd813">LayerCESW</a>;</div>
-<div class="line"><span class="lineno">  201</span>  <a class="code hl_variable" href="classTarget.html#a69e5f45e119650c770c5043a77e1e93d">RohacellGap</a> = <a class="code hl_variable" href="namespacegeometry__config.html#a3d2a937d4ea8db93c79611f85af25753">RohG</a>;</div>
-<div class="line"><span class="lineno">  202</span>  <a class="code hl_variable" href="classTarget.html#a0bf703c2384143e366844d1b601f9e5c">CESWidth</a> = <a class="code hl_variable" href="namespacegeometry__config.html#aa4a31d47b248ceb41cc1049b57f388d0">CESW</a>;</div>
+<div class="line"><span class="lineno">  199</span>  <a class="code hl_variable" href="classTarget.html#a1708569bd40f9f510e80a4dfc2676b5d">CESPackageZ</a> = CESPack;</div>
+<div class="line"><span class="lineno">  200</span>  <a class="code hl_variable" href="classTarget.html#a4d033b5e15b669bbce7c3fca14bfc6c7">LayerCESWidth</a> = LayerCESW;</div>
+<div class="line"><span class="lineno">  201</span>  <a class="code hl_variable" href="classTarget.html#a69e5f45e119650c770c5043a77e1e93d">RohacellGap</a> = RohG;</div>
+<div class="line"><span class="lineno">  202</span>  <a class="code hl_variable" href="classTarget.html#a0bf703c2384143e366844d1b601f9e5c">CESWidth</a> = CESW;</div>
 <div class="line"><span class="lineno">  203</span>}</div>
-<div class="ttc" id="anamespacegeometry__config_html_a3d2a937d4ea8db93c79611f85af25753"><div class="ttname"><a href="namespacegeometry__config.html#a3d2a937d4ea8db93c79611f85af25753">geometry_config.RohG</a></div><div class="ttdeci">RohG</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00676">geometry_config.py:676</a></div></div>
-<div class="ttc" id="anamespacegeometry__config_html_a5ea5f7ce087aa01faf1cc02b966fd813"><div class="ttname"><a href="namespacegeometry__config.html#a5ea5f7ce087aa01faf1cc02b966fd813">geometry_config.LayerCESW</a></div><div class="ttdeci">LayerCESW</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00677">geometry_config.py:677</a></div></div>
-<div class="ttc" id="anamespacegeometry__config_html_aa4a31d47b248ceb41cc1049b57f388d0"><div class="ttname"><a href="namespacegeometry__config.html#aa4a31d47b248ceb41cc1049b57f388d0">geometry_config.CESW</a></div><div class="ttdeci">CESW</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00679">geometry_config.py:679</a></div></div>
-<div class="ttc" id="anamespacegeometry__config_html_afda419baf334482fb3197046fc5ae4ff"><div class="ttname"><a href="namespacegeometry__config.html#afda419baf334482fb3197046fc5ae4ff">geometry_config.CESPack</a></div><div class="ttdeci">CESPack</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00678">geometry_config.py:678</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1974,7 +1960,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Target_8cxx_source.html#l00220">220</a> of file <a class="el" href="Target_8cxx_source.html">Target.cxx</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  221</span>{</div>
-<div class="line"><span class="lineno">  222</span>  <a class="code hl_variable" href="classTarget.html#ac70c6841203822e0e2ae7b47c7da7f68">fColumnY</a>=<a class="code hl_variable" href="namespacegeometry__config.html#a813292572f3cf797de3cdc77f6edabb2">Y</a>;</div>
+<div class="line"><span class="lineno">  222</span>  <a class="code hl_variable" href="classTarget.html#ac70c6841203822e0e2ae7b47c7da7f68">fColumnY</a>=Y;</div>
 <div class="line"><span class="lineno">  223</span>}</div>
 <div class="ttc" id="aclassTarget_html_ac70c6841203822e0e2ae7b47c7da7f68"><div class="ttname"><a href="classTarget.html#ac70c6841203822e0e2ae7b47c7da7f68">Target::fColumnY</a></div><div class="ttdeci">Double_t fColumnY</div><div class="ttdef"><b>Definition</b> <a href="Target_8h_source.html#l00157">Target.h:157</a></div></div>
 </div><!-- fragment -->
@@ -2000,10 +1986,9 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Target_8cxx_source.html#l00130">130</a> of file <a class="el" href="Target_8cxx_source.html">Target.cxx</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  131</span>{</div>
-<div class="line"><span class="lineno">  132</span>  <a class="code hl_variable" href="classTarget.html#a272396f274c8c5f32fe732767f7f2e93">fDesign</a> = <a class="code hl_variable" href="namespacegeometry__config.html#a66ea53c122d7dddec92fe3fbf8b2c354">Design</a>;</div>
+<div class="line"><span class="lineno">  132</span>  <a class="code hl_variable" href="classTarget.html#a272396f274c8c5f32fe732767f7f2e93">fDesign</a> = Design;</div>
 <div class="line"><span class="lineno">  133</span>  Info(<span class="stringliteral">&quot;SetDetectorDesign&quot;</span>,<span class="stringliteral">&quot; to %i&quot;</span>, <a class="code hl_variable" href="classTarget.html#a272396f274c8c5f32fe732767f7f2e93">fDesign</a>);</div>
 <div class="line"><span class="lineno">  134</span>}</div>
-<div class="ttc" id="anamespacegeometry__config_html_a66ea53c122d7dddec92fe3fbf8b2c354"><div class="ttname"><a href="namespacegeometry__config.html#a66ea53c122d7dddec92fe3fbf8b2c354">geometry_config.Design</a></div><div class="ttdeci">Design</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00434">geometry_config.py:434</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -2041,13 +2026,10 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Target_8cxx_source.html#l00167">167</a> of file <a class="el" href="Target_8cxx_source.html">Target.cxx</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  168</span>{</div>
-<div class="line"><span class="lineno">  169</span>  <a class="code hl_variable" href="classTarget.html#af11b348af9e539e5fd5c6b36e1177f96">XDimension</a> = <a class="code hl_variable" href="namespacegeometry__config.html#a86f7a3618740cec2b4536f69e97d0af7">xdim</a>;</div>
-<div class="line"><span class="lineno">  170</span>  <a class="code hl_variable" href="classTarget.html#abc600f1cb78ffac7595bbf362ca151ea">YDimension</a> = <a class="code hl_variable" href="namespacegeometry__config.html#a8d0f7938a0cf8ffedf725404d2130d53">ydim</a>;</div>
-<div class="line"><span class="lineno">  171</span>  <a class="code hl_variable" href="classTarget.html#a49f92a676431fb711417abcdc45a1725">ZDimension</a> = <a class="code hl_variable" href="namespacegeometry__config.html#a00d0f9a5d2d84d50fd0c1199fcb5390f">zdim</a>;</div>
+<div class="line"><span class="lineno">  169</span>  <a class="code hl_variable" href="classTarget.html#af11b348af9e539e5fd5c6b36e1177f96">XDimension</a> = xdim;</div>
+<div class="line"><span class="lineno">  170</span>  <a class="code hl_variable" href="classTarget.html#abc600f1cb78ffac7595bbf362ca151ea">YDimension</a> = ydim;</div>
+<div class="line"><span class="lineno">  171</span>  <a class="code hl_variable" href="classTarget.html#a49f92a676431fb711417abcdc45a1725">ZDimension</a> = zdim;</div>
 <div class="line"><span class="lineno">  172</span>}</div>
-<div class="ttc" id="anamespacegeometry__config_html_a00d0f9a5d2d84d50fd0c1199fcb5390f"><div class="ttname"><a href="namespacegeometry__config.html#a00d0f9a5d2d84d50fd0c1199fcb5390f">geometry_config.zdim</a></div><div class="ttdeci">zdim</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00682">geometry_config.py:682</a></div></div>
-<div class="ttc" id="anamespacegeometry__config_html_a86f7a3618740cec2b4536f69e97d0af7"><div class="ttname"><a href="namespacegeometry__config.html#a86f7a3618740cec2b4536f69e97d0af7">geometry_config.xdim</a></div><div class="ttdeci">xdim</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00630">geometry_config.py:630</a></div></div>
-<div class="ttc" id="anamespacegeometry__config_html_a8d0f7938a0cf8ffedf725404d2130d53"><div class="ttname"><a href="namespacegeometry__config.html#a8d0f7938a0cf8ffedf725404d2130d53">geometry_config.ydim</a></div><div class="ttdeci">ydim</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00631">geometry_config.py:631</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -2109,21 +2091,14 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Target_8cxx_source.html#l00174">174</a> of file <a class="el" href="Target_8cxx_source.html">Target.cxx</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  175</span>{</div>
-<div class="line"><span class="lineno">  176</span>  <a class="code hl_variable" href="classTarget.html#acb6109a2d29999852b9b188a172a8e6b">EmulsionThickness</a> = <a class="code hl_variable" href="namespacegeometry__config.html#a1dd02f7e4c82b6ae456c0ab40a86e4f4">EmTh</a>;</div>
-<div class="line"><span class="lineno">  177</span>  <a class="code hl_variable" href="classTarget.html#afb1de534a204baf0bf4cd04d85a92af6">EmulsionX</a> = <a class="code hl_variable" href="namespacegeometry__config.html#abfb13e4a1a95059dad6ad268146ff881">EmX</a>;</div>
-<div class="line"><span class="lineno">  178</span>  <a class="code hl_variable" href="classTarget.html#a4f413bdaa4b87fe74788e5cc3c6f4457">EmulsionY</a> = <a class="code hl_variable" href="namespacegeometry__config.html#ae7d77e312dd2f66ed1d23288ac3058ca">EmY</a>;</div>
-<div class="line"><span class="lineno">  179</span>  <a class="code hl_variable" href="classTarget.html#a35aea7bbdcd2b440a128c76c83e21e01">PlasticBaseThickness</a> = <a class="code hl_variable" href="namespacegeometry__config.html#a46aef7b4ae47e5d93bdf4e9e90912fe4">PBTh</a>;</div>
-<div class="line"><span class="lineno">  180</span>  <a class="code hl_variable" href="classTarget.html#af0074d7ab164fbfdba20c110fc256d80">EmPlateWidth</a> = <a class="code hl_variable" href="namespacegeometry__config.html#afc0399824467ee59edac3dfe88e9c698">EPlW</a>;</div>
-<div class="line"><span class="lineno">  181</span>  <a class="code hl_variable" href="classTarget.html#a351028ad2f7233bc1a973c71cc07ebfb">LeadThickness</a> = <a class="code hl_variable" href="namespacegeometry__config.html#aec6c9e5da6e0e3dac0bc7c6cecfb0e09">LeadTh</a>;</div>
-<div class="line"><span class="lineno">  182</span>  <a class="code hl_variable" href="classTarget.html#ab048c58ef9a027b308b057bea9452384">AllPlateWidth</a> = <a class="code hl_variable" href="namespacegeometry__config.html#a037ff08140d429fee15c7761056a6554">AllPW</a>;</div>
+<div class="line"><span class="lineno">  176</span>  <a class="code hl_variable" href="classTarget.html#acb6109a2d29999852b9b188a172a8e6b">EmulsionThickness</a> = EmTh;</div>
+<div class="line"><span class="lineno">  177</span>  <a class="code hl_variable" href="classTarget.html#afb1de534a204baf0bf4cd04d85a92af6">EmulsionX</a> = EmX;</div>
+<div class="line"><span class="lineno">  178</span>  <a class="code hl_variable" href="classTarget.html#a4f413bdaa4b87fe74788e5cc3c6f4457">EmulsionY</a> = EmY;</div>
+<div class="line"><span class="lineno">  179</span>  <a class="code hl_variable" href="classTarget.html#a35aea7bbdcd2b440a128c76c83e21e01">PlasticBaseThickness</a> = PBTh;</div>
+<div class="line"><span class="lineno">  180</span>  <a class="code hl_variable" href="classTarget.html#af0074d7ab164fbfdba20c110fc256d80">EmPlateWidth</a> = EPlW;</div>
+<div class="line"><span class="lineno">  181</span>  <a class="code hl_variable" href="classTarget.html#a351028ad2f7233bc1a973c71cc07ebfb">LeadThickness</a> = LeadTh;</div>
+<div class="line"><span class="lineno">  182</span>  <a class="code hl_variable" href="classTarget.html#ab048c58ef9a027b308b057bea9452384">AllPlateWidth</a> = AllPW;</div>
 <div class="line"><span class="lineno">  183</span>}</div>
-<div class="ttc" id="anamespacegeometry__config_html_a037ff08140d429fee15c7761056a6554"><div class="ttname"><a href="namespacegeometry__config.html#a037ff08140d429fee15c7761056a6554">geometry_config.AllPW</a></div><div class="ttdeci">AllPW</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00586">geometry_config.py:586</a></div></div>
-<div class="ttc" id="anamespacegeometry__config_html_a1dd02f7e4c82b6ae456c0ab40a86e4f4"><div class="ttname"><a href="namespacegeometry__config.html#a1dd02f7e4c82b6ae456c0ab40a86e4f4">geometry_config.EmTh</a></div><div class="ttdeci">EmTh</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00580">geometry_config.py:580</a></div></div>
-<div class="ttc" id="anamespacegeometry__config_html_a46aef7b4ae47e5d93bdf4e9e90912fe4"><div class="ttname"><a href="namespacegeometry__config.html#a46aef7b4ae47e5d93bdf4e9e90912fe4">geometry_config.PBTh</a></div><div class="ttdeci">PBTh</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00583">geometry_config.py:583</a></div></div>
-<div class="ttc" id="anamespacegeometry__config_html_abfb13e4a1a95059dad6ad268146ff881"><div class="ttname"><a href="namespacegeometry__config.html#abfb13e4a1a95059dad6ad268146ff881">geometry_config.EmX</a></div><div class="ttdeci">EmX</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00581">geometry_config.py:581</a></div></div>
-<div class="ttc" id="anamespacegeometry__config_html_ae7d77e312dd2f66ed1d23288ac3058ca"><div class="ttname"><a href="namespacegeometry__config.html#ae7d77e312dd2f66ed1d23288ac3058ca">geometry_config.EmY</a></div><div class="ttdeci">EmY</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00582">geometry_config.py:582</a></div></div>
-<div class="ttc" id="anamespacegeometry__config_html_aec6c9e5da6e0e3dac0bc7c6cecfb0e09"><div class="ttname"><a href="namespacegeometry__config.html#aec6c9e5da6e0e3dac0bc7c6cecfb0e09">geometry_config.LeadTh</a></div><div class="ttdeci">LeadTh</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00584">geometry_config.py:584</a></div></div>
-<div class="ttc" id="anamespacegeometry__config_html_afc0399824467ee59edac3dfe88e9c698"><div class="ttname"><a href="namespacegeometry__config.html#afc0399824467ee59edac3dfe88e9c698">geometry_config.EPlW</a></div><div class="ttdeci">EPlW</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00585">geometry_config.py:585</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -2161,7 +2136,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Target_8cxx_source.html#l00265">265</a> of file <a class="el" href="Target_8cxx_source.html">Target.cxx</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  266</span>{</div>
-<div class="line"><span class="lineno">  267</span> <a class="code hl_variable" href="classTarget.html#a170d72466ae60daa6331b0fd51c70442">fnHpT</a> = <a class="code hl_variable" href="namespacegeometry__config.html#a99f3338967d32a8359ac122e774ab3e9">n</a>;</div>
+<div class="line"><span class="lineno">  267</span> <a class="code hl_variable" href="classTarget.html#a170d72466ae60daa6331b0fd51c70442">fnHpT</a> = <a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a>;</div>
 <div class="line"><span class="lineno">  268</span> <a class="code hl_variable" href="classTarget.html#a130b8baee2ff9b81b8269a19fcb0387e">fHpTDistance</a> = dd;</div>
 <div class="line"><span class="lineno">  269</span> <a class="code hl_variable" href="classTarget.html#a8969a4036cd72b8b74e59fe3ffde8283">fHpTDZ</a> = <a class="code hl_variable" href="namespacegeometry__config.html#a497974e47a86565ede97bd6b328a85bc">DZ</a>;</div>
 <div class="line"><span class="lineno">  270</span>}</div>
@@ -2206,7 +2181,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Target_8cxx_source.html#l00215">215</a> of file <a class="el" href="Target_8cxx_source.html">Target.cxx</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  216</span>{</div>
-<div class="line"><span class="lineno">  217</span>  <a class="code hl_variable" href="classTarget.html#afd431c26afab0197b25359af9c12f85e">fMagnetY</a>=<a class="code hl_variable" href="namespacegeometry__config.html#a813292572f3cf797de3cdc77f6edabb2">Y</a>;</div>
+<div class="line"><span class="lineno">  217</span>  <a class="code hl_variable" href="classTarget.html#afd431c26afab0197b25359af9c12f85e">fMagnetY</a>=Y;</div>
 <div class="line"><span class="lineno">  218</span>}</div>
 <div class="ttc" id="aclassTarget_html_afd431c26afab0197b25359af9c12f85e"><div class="ttname"><a href="classTarget.html#afd431c26afab0197b25359af9c12f85e">Target::fMagnetY</a></div><div class="ttdeci">Double_t fMagnetY</div><div class="ttdef"><b>Definition</b> <a href="Target_8h_source.html#l00156">Target.h:156</a></div></div>
 </div><!-- fragment -->
@@ -2230,9 +2205,8 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Target_8cxx_source.html#l00240">240</a> of file <a class="el" href="Target_8cxx_source.html">Target.cxx</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  241</span>{</div>
-<div class="line"><span class="lineno">  242</span>  <a class="code hl_variable" href="classTarget.html#a44f5b4878dc68e02b257864359862a53">fField</a> = <a class="code hl_variable" href="namespacegeometry__config.html#aa52009c79b19f5c569b183e74aa588c7">B</a>;</div>
+<div class="line"><span class="lineno">  242</span>  <a class="code hl_variable" href="classTarget.html#a44f5b4878dc68e02b257864359862a53">fField</a> = B;</div>
 <div class="line"><span class="lineno">  243</span>}</div>
-<div class="ttc" id="anamespacegeometry__config_html_aa52009c79b19f5c569b183e74aa588c7"><div class="ttname"><a href="namespacegeometry__config.html#aa52009c79b19f5c569b183e74aa588c7">geometry_config.B</a></div><div class="ttdeci">B</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00436">geometry_config.py:436</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -2270,13 +2244,10 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Target_8cxx_source.html#l00148">148</a> of file <a class="el" href="Target_8cxx_source.html">Target.cxx</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  149</span>{</div>
-<div class="line"><span class="lineno">  150</span>  <a class="code hl_variable" href="classTarget.html#ae54a1435cc46fc76fa4cdf391f4b4819">fNCol</a> = <a class="code hl_variable" href="namespacegeometry__config.html#a1648178b5946390f6cf4a160e8ba24bb">col</a>;</div>
-<div class="line"><span class="lineno">  151</span>  <a class="code hl_variable" href="classTarget.html#a0d490ed3b14199318773c974216a3fbc">fNRow</a> = <a class="code hl_variable" href="namespacegeometry__config.html#aa74ea5bdeb340e64bfd3e6e88573a590">row</a>;</div>
-<div class="line"><span class="lineno">  152</span>  <a class="code hl_variable" href="classTarget.html#acbc6f1d3db9ac2bbecb4030c3b2ecce5">fNWall</a> = <a class="code hl_variable" href="namespacegeometry__config.html#ab7ccfff6482b0230b0a57ac1ea72c626">wall</a>;</div>
+<div class="line"><span class="lineno">  150</span>  <a class="code hl_variable" href="classTarget.html#ae54a1435cc46fc76fa4cdf391f4b4819">fNCol</a> = col;</div>
+<div class="line"><span class="lineno">  151</span>  <a class="code hl_variable" href="classTarget.html#a0d490ed3b14199318773c974216a3fbc">fNRow</a> = row;</div>
+<div class="line"><span class="lineno">  152</span>  <a class="code hl_variable" href="classTarget.html#acbc6f1d3db9ac2bbecb4030c3b2ecce5">fNWall</a> = wall;</div>
 <div class="line"><span class="lineno">  153</span>}</div>
-<div class="ttc" id="anamespacegeometry__config_html_a1648178b5946390f6cf4a160e8ba24bb"><div class="ttname"><a href="namespacegeometry__config.html#a1648178b5946390f6cf4a160e8ba24bb">geometry_config.col</a></div><div class="ttdeci">col</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00569">geometry_config.py:569</a></div></div>
-<div class="ttc" id="anamespacegeometry__config_html_aa74ea5bdeb340e64bfd3e6e88573a590"><div class="ttname"><a href="namespacegeometry__config.html#aa74ea5bdeb340e64bfd3e6e88573a590">geometry_config.row</a></div><div class="ttdeci">row</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00568">geometry_config.py:568</a></div></div>
-<div class="ttc" id="anamespacegeometry__config_html_ab7ccfff6482b0230b0a57ac1ea72c626"><div class="ttname"><a href="namespacegeometry__config.html#ab7ccfff6482b0230b0a57ac1ea72c626">geometry_config.wall</a></div><div class="ttdeci">wall</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00570">geometry_config.py:570</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -2435,9 +2406,8 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="Target_8cxx_source.html#l00210">210</a> of file <a class="el" href="Target_8cxx_source.html">Target.cxx</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  211</span>{</div>
-<div class="line"><span class="lineno">  212</span>  <a class="code hl_variable" href="classTarget.html#aea37ce82ac5f086ca64316e59b3f6b93">TTrackerZ</a> = <a class="code hl_variable" href="namespacegeometry__config.html#a2471cfbc5c0c7acc94c9d78367eaee42">TTZ</a>;</div>
+<div class="line"><span class="lineno">  212</span>  <a class="code hl_variable" href="classTarget.html#aea37ce82ac5f086ca64316e59b3f6b93">TTrackerZ</a> = TTZ;</div>
 <div class="line"><span class="lineno">  213</span>}</div>
-<div class="ttc" id="anamespacegeometry__config_html_a2471cfbc5c0c7acc94c9d78367eaee42"><div class="ttname"><a href="namespacegeometry__config.html#a2471cfbc5c0c7acc94c9d78367eaee42">geometry_config.TTZ</a></div><div class="ttdeci">TTZ</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00627">geometry_config.py:627</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
