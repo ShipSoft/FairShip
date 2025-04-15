@@ -303,7 +303,7 @@ def configure(run, ship_geo):
         ship_geo.SND = True
 
     latestShipGeo = ConfigRegistry.loadpy(
-        "$FAIRSHIP/geometry/geometry_config_noSND.py",
+        "$FAIRSHIP/geometry/geometry_config.py",
         Yheight=ship_geo.Yheight / u.m,
         tankDesign=ship_geo.tankDesign,
         muShieldDesign=ship_geo.muShieldDesign,

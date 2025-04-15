@@ -212,7 +212,7 @@ shipRoot_conf.configure(0)     # load basic libraries, prepare atexit for python
 # - targetOpt      = 5  # 0=solid   >0 sliced, 5: 5 pieces of tungsten, 4 H20 slits, 17: Mo + W +H2O (default)
 #   nuTauTargetDesign = 3 #3 = 2018 design, 4 = not magnetized target + spectrometer
 ship_geo = ConfigRegistry.loadpy(
-     "$FAIRSHIP/geometry/geometry_config_noSND.py",
+     "$FAIRSHIP/geometry/geometry_config.py",
      Yheight=options.dy,
      tankDesign=options.dv,
      muShieldDesign=options.ds,

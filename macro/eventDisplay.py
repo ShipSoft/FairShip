@@ -1328,7 +1328,7 @@ if not fRun.GetGeoFile().FindKey("ShipGeo"):
     else:
         ecalGeoFile = "ecal_ellipse5x10m2.geo"
     ShipGeo = ConfigRegistry.loadpy(
-        "$FAIRSHIP/geometry/geometry_config_noSND.py",
+        "$FAIRSHIP/geometry/geometry_config.py",
         Yheight=float(dy),
         EcalGeoFile=ecalGeoFile,
     )
