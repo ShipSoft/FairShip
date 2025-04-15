@@ -382,6 +382,8 @@ if simEngine == "Nuage":
  primGen.SetTarget(0., 0.)
  Nuagegen = ROOT.NuageGenerator()
  Nuagegen.EnableExternalDecayer(1) #with 0 external decayer is disable, 1 is enabled
+
+ #CAMM - This is broken now, need info from dedicated SND geo...
  print('Nuage position info input=',ship_geo.EmuMagnet.zC-ship_geo.NuTauTarget.zdim, ship_geo.EmuMagnet.zC+ship_geo.NuTauTarget.zdim)
  #--------------------------------
  #to Generate neutrino interactions in the whole neutrino target
@@ -406,6 +408,7 @@ if simEngine == "Nuage":
  options.nEvents = min(options.nEvents,Nuagegen.GetNevents())
  run.SetPythiaDecayer("DecayConfigNuAge.C")
  print('Generate ',options.nEvents,' with Nuage input', ' first event',options.firstEvent)
+ #-CAMM end broken part
 # -----Neutrino Background------------------------
 if simEngine == "Genie":
 # Genie

@@ -152,12 +152,13 @@ def addVMCFields(shipGeo, controlFile = '', verbose = False, withVirtualMC = Tru
                                 ROOT.TVector3(0.0, 0.0, shipGeo.Bfield.z))
       fieldsList.append('MainSpecMap')
 
-      if shipGeo.EmuMagnet.MagneticField:
-       withConstFieldNuTauDet = False
-       if hasattr(shipGeo.EmuMagnet,'WithConstField'): withConstFieldNuTauDet = shipGeo.EmuMagnet.WithConstField
-       if not withConstFieldNuTauDet:
-        fieldMaker.defineFieldMap('NuMap','files/nuTauDetField.root', ROOT.TVector3(0.0,0.0,shipGeo.EmuMagnet.zC))
-        fieldsList.append('NuMap')
+      if hasattr(shipGeo, 'EmuMagnet'):
+       if shipGeo.EmuMagnet.MagneticField:
+        withConstFieldNuTauDet = False
+        if hasattr(shipGeo.EmuMagnet,'WithConstField'): withConstFieldNuTauDet = shipGeo.EmuMagnet.WithConstField
+        if not withConstFieldNuTauDet:
+         fieldMaker.defineFieldMap('NuMap','files/nuTauDetField.root', ROOT.TVector3(0.0,0.0,shipGeo.EmuMagnet.zC))
+         fieldsList.append('NuMap')
 
       if not shipGeo.hadronAbsorber.WithConstField:
        fieldMaker.defineFieldMap('HadronAbsorberMap','files/FieldHadronStopper_raised_20190411.root', ROOT.TVector3(0.0,0.0,shipGeo.hadronAbsorber.z))
