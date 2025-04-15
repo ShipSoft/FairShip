@@ -10,15 +10,37 @@ from ShipGeoConfig import AttrDict, ConfigRegistry
 # targetOpt      = 5  # 0=solid   >0 sliced, 5: 5 pieces of tungsten, 4 air slits, 17: molybdenum tungsten interleaved with H20
 # strawOpt       = 0  # 0=simplistic tracking stations defined in veto.cxx  1=detailed strawtube design 4=sophisticated straw tube design, horizontal wires (default) 10=2cm straw diameter for 2018 layout
 # tankDesign = 5 #  4=TP elliptical tank design, 5 = optimized conical rectangular design, 6=5 without segment-1
+
+# Here you can select the MS geometry, if the MS design is using SC magnet change the hybrid to True
+# The first row is the length of the magnets
+# The other rows are the transverse dimensions of the magnets:  dXIn[i], dXOut[i] , dYIn[i], dYOut[i], gapIn[i], gapOut[i].
 shield_db = {
-    'combi': [ 70.  , 170.  , 208.  , 207.  , 281.  , 172.82, 212.54, 168.64,
-    40.  ,  40.  , 150.  , 150.  ,   2.  ,   2.  ,  80.  ,  80.  ,
-    150.  , 150.  ,   2.  ,   2.  ,  72.  ,  51.  ,  29.  ,  46.  ,
-    10.  ,   7.  ,  54.  ,  38.  ,  46.  , 192.  ,  14.  ,   9.  ,
-    10.  ,  31.  ,  35.  ,  31.  ,  51.  ,  11.  ,   3.  ,  32.  ,
-    54.  ,  24.  ,   8.  ,   8.  ,  22.  ,  32.  , 209.  ,  35.  ,
-    8.  ,  13.  ,  33.  ,  77.  ,  85.  , 241.  ,   9.  ,  26.  ],
-    'sc_v6': [70,170,0,353.078,125.083,184.834,150.193,186.812,40,40,150,150,2,2,80,80,150,150,2,2,72,51,29,46,10,7,45.6888,45.6888,22.1839,22.1839,27.0063,16.2448,10,31,35,31,51,11,24.7961,48.7639,8,104.732,15.7991,16.7793,3,100,192,192,2,4.8004,3,100,8,172.729,46.8285,2]
+    "warm_opt": {
+        "hybrid": False,
+        "params": [
+            231.0, 208.0, 207.0, 281.0, 172.82, 212.54, 168.64,
+            50.0, 50.0, 119.0, 119.0, 2.0, 2.0, 1.0, 1.0, 50.0, 50.0, 0.0, 0.0, 0.0,
+            72.0, 51.0, 29.0, 46.0, 10.0, 7.0,  1.0, 1.0,72.0, 51.0, 0.0, 0.0, 0.0,
+            54.0, 38.0, 46.0, 122.0, 14.0, 9.0,  1.0, 1.0,54.0, 38.0, 0.0, 0.0, 0.0,
+            10.0, 31.0, 35.0, 31.0, 51.0, 11.0, 1.0, 1.0,0.0, 31.0, 0.0, 0.0, 0.0,
+            3.0, 32.0, 54.0, 24.0, 8.0, 8.0, 3.0, 1.0, 1.0,32.0,  0.0, 0.0, 0.0,
+            22.0, 32.0, 209.0, 35.0, 8.0, 13.0, 1.0, 1.0,22.0, 32.0, 0.0, 0.0, 0.0,
+            33.0, 77.0, 85.0, 241.0, 9.0, 26.0, 1.0, 1.0,33.0, 77.0, 0.0, 0.0, 0.0,
+        ]
+    },
+    "sc_v6": {
+        "hybrid": True,
+        "params": [
+            231.0, 0.0, 353.1, 125.1, 184.8, 150.2, 186.8,
+            50.0, 50.0, 119.0, 119.0, 2.0, 2.0, 1.0, 1.0, 50.0, 50.0, 0.0, 0.0, 0.0,
+            72.0, 51.0, 29.0, 46.0, 10.0, 7.0, 1.0, 1.0, 72.0, 51.0, 0.0, 0.0, 0.0,
+            45.7, 45.7, 22.2, 22.2, 27.0, 16.3, 1.0, 1.0, 45.7, 45.7, 0.0, 0.0, 0.0,
+            10.0, 31.0, 35.0, 31.0, 51.0, 11.0, 1.0, 1.0, 10.0, 31.0, 0.0, 0.0, 0.0,
+            24.8, 48.8, 8.0, 104.8, 15.8, 16.8, 1.0, 1.0, 24.8, 48.8, 0.0, 0.0, 0.0,
+            3.0, 100.0, 192.0, 192.0, 2.0, 4.8, 1.0, 1.0, 3.0, 100.0, 0.0, 0.0, 0.0,
+            3.0, 100.0, 8.0, 172.7, 46.8, 2.0, 1.0, 1.0, 3.0, 100.0, 0.0, 0.0, 0.0,
+        ]
+    }
 }
 if "muShieldDesign" not in globals():
     muShieldDesign = 7
@@ -48,12 +70,6 @@ if "HcalGeoFile" not in globals():
         HcalGeoFile = "hcal_rect.geo"
     else:
         HcalGeoFile = "hcal.geo"
-if "muShieldStepGeo" not in globals():
-    muShieldStepGeo = False
-if "muShieldWithCobaltMagnet" not in globals():
-    muShieldWithCobaltMagnet = 0
-if "SC_mag" not in globals():
-    SC_mag = False
 if "shieldName" not in globals():
     shieldName = None
 if "SND" not in globals():
@@ -64,8 +80,12 @@ with ConfigRegistry.register_config("basic") as c:
     c.DecayVolumeMedium = DecayVolumeMedium
     c.SND = SND
 
-    c.SC_mag = SC_mag
+    if not shieldName:
+        raise ValueError("shieldName must not be empty!")
+
     c.shieldName = shieldName
+    c.SC_mag = shield_db[shieldName]['hybrid']
+
     # global muShieldDesign, targetOpt, strawDesign, Yheight
     c.Yheight = Yheight*u.m
     # decision by the SP
@@ -281,70 +301,28 @@ with ConfigRegistry.register_config("basic") as c:
     c.muShield.LE = 7 * u.m     # - 0.5 m air - Goliath: 4.5 m - 0.5 m air - nu-tau mu-det: 3 m - 0.5 m air. finally 10m asked by Giovanni
     c.muShield.dZ0 = 1 * u.m
 
-    c.muShieldStepGeo = muShieldStepGeo
-    c.muShieldWithCobaltMagnet = muShieldWithCobaltMagnet
 
     # zGap to compensate automatic shortening of magnets
     zGap = 0.05 * u.m  # halflengh of gap
-    if muShieldDesign == 7:
-        c.muShield.Field = 1.8  # Tesla
-        c.muShield.dZ1 = 0.7 * u.m + zGap
-        c.muShield.dZ2 = 1.7 * u.m + zGap
-        c.muShield.dZ3 = 2.0*u.m + zGap
-        c.muShield.dZ4 = 2.0*u.m + zGap
-        c.muShield.dZ5 = 2.75*u.m + zGap
-        c.muShield.dZ6 = 2.4*u.m + zGap
-        c.muShield.dZ7 = 3.0*u.m + zGap
-        c.muShield.dZ8 = 2.35*u.m + zGap
-        c.muShield.dXgap = 0.*u.m
-    elif muShieldDesign == 9:
-        c.muShield.dZ1 = 0.35 * u.m + zGap
-        c.muShield.dZ2 = 2.26 * u.m + zGap
-        c.muShield.dZ3 = 2.08 * u.m + zGap
-        c.muShield.dZ4 = 2.07 * u.m + zGap
-        c.muShield.dZ5 = 2.81 * u.m + zGap
-        c.muShield.dZ6 = 2.48 * u.m + zGap
-        c.muShield.dZ7 = 3.05 * u.m + zGap
-        c.muShield.dZ8 = 2.42 * u.m + zGap
-        c.muShield.dXgap = 0. * u.m
-        c.muShield.half_X_max = 179 * u.cm
-        c.muShield.half_Y_max = 317 * u.cm
-    elif muShieldDesign == 8:
-        assert shieldName
-        params = shield_db[shieldName]
-        c.muShield.params = params
-        c.muShield.dZ1 = 0.35*u.m + zGap
-        c.muShield.dZ2 = 2.26*u.m + zGap
-        c.muShield.dZ3 = params[2]
-        c.muShield.dZ4 = params[3]
-        c.muShield.dZ5 = params[4]
-        c.muShield.dZ6 = params[5]
-        c.muShield.dZ7 = params[6]
-        c.muShield.dZ8 = params[7]
-        c.muShield.dXgap = 0.*u.m
 
-        offset = 7
-        c.muShield.half_X_max = 0
-        c.muShield.half_Y_max = 0
-        for index in range(2, 8):
-            f_l = params[offset + index * 6 + 1]
-            f_r = params[offset + index * 6 + 2]
-            h_l = params[offset + index * 6 + 3]
-            h_r = params[offset + index * 6 + 4]
-            g_l = params[offset + index * 6 + 5]
-            g_r = params[offset + index * 6 + 6]
-            c.muShield.half_X_max = max(c.muShield.half_X_max, 2 * f_l + g_l, 2 * f_r + g_r)
-            c.muShield.half_Y_max = max(c.muShield.half_Y_max, h_l + f_l, h_r + f_r)
-        c.muShield.half_X_max += 15 * u.cm
-        c.muShield.half_Y_max += 15 * u.cm
-    else:
-        raise NotImplementedError(f"muShieldDesign {muShieldDesign} not supported")
+
+    params = shield_db[shieldName]['params']
+    c.muShield.params = params
+    c.muShield.dZ1 = params[0]
+    c.muShield.dZ2 = params[1]
+    c.muShield.dZ3 = params[2]
+    c.muShield.dZ4 = params[3]
+    c.muShield.dZ5 = params[4]
+    c.muShield.dZ6 = params[5]
+    c.muShield.dZ7 = params[6]
+    c.muShield.dXgap = 0. *u.m
+
 
     c.muShield.length = 2 * (
             c.muShield.dZ1 + c.muShield.dZ2 +
             c.muShield.dZ3 + c.muShield.dZ4 +
             c.muShield.dZ5 + c.muShield.dZ6 +
-            c.muShield.dZ7 + c.muShield.dZ8
+            c.muShield.dZ7
     ) + c.muShield.LE
     c.muShield.z = -(c.decayVolume.length + c.muShield.length) / 2.
 

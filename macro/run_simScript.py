@@ -118,9 +118,6 @@ parser.add_argument("-F",        dest="deepCopy",  help="default = False: copy o
 parser.add_argument("-t", "--test", dest="testFlag",  help="quick test", required=False,action="store_true")
 parser.add_argument("--dry-run", dest="dryrun",  help="stop after initialize", required=False,action="store_true")
 parser.add_argument("-D", "--display", dest="eventDisplay", help="store trajectories", required=False, action="store_true")
-parser.add_argument("--stepMuonShield", dest="muShieldStepGeo", help="activate steps geometry for the muon shield", required=False, action="store_true", default=False)
-parser.add_argument("--coMuonShield", dest="muShieldWithCobaltMagnet", help="replace one of the magnets in the shield with 2.2T cobalt one, downscales other fields, works only for muShieldDesign >2", required=False, type=int, default=0)
-parser.add_argument("--noSC", dest="SC_mag", help="Deactivate SC muon shield. Configuration: 1 SC magnet (3*B_warm) + 3 warm magnets with inverted fields", action='store_false')
 parser.add_argument("--shieldName", help="The name of the SC shield in the database. SC default: sc_v6, Warm default: combi", default="sc_v6")
 parser.add_argument("--MesonMother",   dest="MM",  help="Choose DP production meson source: pi0, eta, omega, eta1, eta11", required=False,  default='pi0')
 parser.add_argument("--debug",  help="1: print weights and field 2: make overlap check", required=False, default=0, type=int, choices=range(0,3))
@@ -221,9 +218,6 @@ ship_geo = ConfigRegistry.loadpy(
      CaloDesign=options.caloDesign,
      strawDesign=options.strawDesign,
      muShieldGeo=options.geofile,
-     muShieldStepGeo=options.muShieldStepGeo,
-     muShieldWithCobaltMagnet=options.muShieldWithCobaltMagnet,
-     SC_mag=options.SC_mag,
      shieldName=options.shieldName,
      DecayVolumeMedium=options.decayVolMed,
      SND=options.SND,
