@@ -94,6 +94,7 @@ headers = [
     "nParticles in event",
     "nSoftTracks_iMuon",
     "nSBThits_iMuon",
+    "nUBThits_iMuon",
     "cross_sec",
 ]
 Fixtarget = {1: "p+", 0: "n0"}
@@ -115,8 +116,11 @@ def inspect_file(filename):
         nParticles = event.DISParticles.GetEntries()
         nSoftTracks = event.SoftParticles.GetEntries()
         nSBThits = event.muon_vetoPoints.GetEntries()
+        nUBThits = event.muon_UpstreamTaggerPoints.GetEntries()
 
-        table_rows.append([i, fix_target, nParticles, nSoftTracks, nSBThits, cross_sec])
+        table_rows.append(
+            [i, fix_target, nParticles, nSoftTracks, nSBThits, nUBThits, cross_sec]
+        )
 
     file.Close()
     logging.info("\n" + tabulate(table_rows, headers=headers, tablefmt="grid"))
@@ -155,6 +159,11 @@ def makeMuonDIS():
 
     muon_vetoPoints = r.TClonesArray("vetoPoint")
     output_tree.Branch("muon_vetoPoints", muon_vetoPoints, 32000, -1)
+
+    muon_UpstreamTaggerPoints = r.TClonesArray("UpstreamTaggerPoint")
+    output_tree.Branch(
+        "muon_UpstreamTaggerPoints", muon_UpstreamTaggerPoints, 32000, -1
+    )
 
     myPythia = r.TPythia6()
     myPythia.SetMSEL(2)
@@ -300,6 +309,16 @@ def makeMuonDIS():
                 muon_vetoPoints[index] = hit
                 index += 1
 
+            muon_UpstreamTaggerPoints.Clear()
+
+            ubt_index = 0
+            for hit in muon_tree.muon_UpstreamTaggerPoints:
+                if muon_UpstreamTaggerPoints.GetSize() == ubt_index:
+                    muon_UpstreamTaggerPoints.Expand(ubt_index + 1)
+                hit.SetTrackID(0)  # Set TrackID to match for muon ID for new simulation
+                muon_UpstreamTaggerPoints[ubt_index] = hit
+                ubt_index += 1
+
             output_tree.Fill()
             DIS_table.append(
                 [
@@ -308,6 +327,7 @@ def makeMuonDIS():
                     myPythia.GetN(),
                     len(dPartSoft),
                     len(muon_vetoPoints),
+                    len(muon_UpstreamTaggerPoints),
                     xsec,
                 ]
             )

@@ -63,6 +63,8 @@ output_tree.Branch("tracks", track_array)
 muon_vetoPoints = r.TClonesArray("vetoPoint")
 output_tree.Branch("muon_vetoPoints", muon_vetoPoints)
 
+muon_UpstreamTaggerPoints = r.TClonesArray("UpstreamTaggerPoint")
+output_tree.Branch("muon_UpstreamTaggerPoints", muon_UpstreamTaggerPoints)
 
 h = {}
 h["PvPt_muon"] = r.TH2F(
@@ -205,7 +207,8 @@ headers = [
     "z[m]",
     "t_muon [ns]",
     "nSoft Tracks",
-    "nSBT Hits",
+    "nSBT Hits(muon)",
+    "nUBT Hits(muon)",
     "Weight_muon",
 ]
 csvwriter.writerow(headers)
@@ -214,7 +217,7 @@ for inputFolder in os.listdir(path):
     if not os.path.isdir(os.path.join(path, inputFolder)):
         continue
 
-    if args.testing_code and len(events_["Tr_noSBT"]) >= 5:
+    if args.testing_code and len(events_["Tr_noSBT"]) >= 12:
         break
 
     logging.info(f"Processing folder: {inputFolder}")
@@ -279,11 +282,6 @@ for inputFolder in os.listdir(path):
                     events_["Tr_SBT"][global_event_nr].add(track_id)
                     continue
 
-                    # if muon_vetoPoints.GetSize() == index:
-                    #    muon_vetoPoints.Expand(index + 1)
-                    # muon_vetoPoints[index] = hit # this should be zero if the code is correct
-                    # index += 1
-
             if muon_ in events_["Tr_SBT"][global_event_nr]:
                 continue
 
@@ -293,6 +291,22 @@ for inputFolder in os.listdir(path):
                     not track.GetProcName().Data() == "Muon nuclear interaction"
                 ):
                     track_array.Add(track)
+
+            muon_UpstreamTaggerPoints.Clear()
+
+            ubt_index = 0
+
+            for hit in event.UpstreamTaggerPoint:
+                track_id = hit.GetTrackID()
+
+                if not (track_id == muon_):
+                    continue
+
+                if muon_UpstreamTaggerPoints.GetSize() == ubt_index:
+                    muon_UpstreamTaggerPoints.Expand(ubt_index + 1)
+                muon_UpstreamTaggerPoints[ubt_index] = hit
+
+                ubt_index += 1
 
             for hit in event.strawtubesPoint:
                 detID = hit.GetDetectorID()
@@ -353,6 +367,7 @@ for inputFolder in os.listdir(path):
                                 imuondata[8],
                                 len(track_array),
                                 len(muon_vetoPoints),
+                                len(muon_UpstreamTaggerPoints),
                                 imuondata[7],
                             ]
                         )
@@ -413,10 +428,23 @@ with r.TFile.Open(args.outputfile, "read") as file:
 
         num_tracks = len(event.tracks)
         num_muonhits = len(event.muon_vetoPoints)
+        num_ubthits = len(event.muon_UpstreamTaggerPoints)
 
         P = r.TMath.Sqrt(px**2 + py**2 + pz**2)
 
         event_data.append(
-            [nmuons, pid, P, x, y, z, time_hit, num_tracks, num_muonhits, weight]
+            [
+                nmuons,
+                pid,
+                P,
+                x,
+                y,
+                z,
+                time_hit,
+                num_tracks,
+                num_muonhits,
+                num_ubthits,
+                weight,
+            ]
         )
 print(tabulate(event_data, headers=headers, tablefmt="grid"))
