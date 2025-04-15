@@ -30,6 +30,10 @@ headers = [
     "Original VetoPoint Count",
     "Muon vetoPoints Added",
     "Combined VetoPoint Count",
+    "Muon UBTPoints Available",
+    "Original UBTPoint Count",
+    "Muon UBTPoints Added",
+    "Combined UBTPoint Count",
 ]
 
 
@@ -53,6 +57,14 @@ def inspect_file(inputfile, muonfile, print_table=False):
                 if hit.GetTrackID() == 0:
                     muons_found = True
                     muoncount += 1
+
+        muon_ubthits = len(muon_event.muon_UpstreamTaggerPoints)
+        muon_ubtcount = 0
+        if muon_ubthits:
+            for hit in input_event.UpstreamTaggerPoint:
+                if hit.GetTrackID() == 0:
+                    muon_ubtcount += 1
+
         table_data.append(
             [
                 i,
@@ -60,6 +72,10 @@ def inspect_file(inputfile, muonfile, print_table=False):
                 len(input_event.vetoPoint) - muoncount,
                 muoncount,
                 len(input_event.vetoPoint),
+                muon_ubthits,
+                len(input_event.UpstreamTaggerPoint) - muon_ubtcount,
+                muon_ubtcount,
+                len(input_event.UpstreamTaggerPoint),
             ]
         )
 
@@ -75,7 +91,7 @@ def inspect_file(inputfile, muonfile, print_table=False):
 def modify_file(inputfile, muonfile):
     """Add information from original muon to input simulation file."""
     logging.warning(
-        f"vetoPoints from the incoming muon (saved in {muonfile}) will be added to {inputfile}."
+        f"vetoPoints & UpstreamTaggerPoints from the incoming muon (saved in {muonfile}) will be added to {inputfile}."
     )
 
     input_file = r.TFile.Open(inputfile, "read")
@@ -102,8 +118,11 @@ def modify_file(inputfile, muonfile):
     )  # Clone the structure of the existing tree, but do not copy the entries
 
     combined_vetoPoint = r.TClonesArray("vetoPoint")
-
     output_tree.SetBranchAddress("vetoPoint", combined_vetoPoint)
+
+    combined_UpstreamTaggerPoint = r.TClonesArray("UpstreamTaggerPoint")
+    output_tree.SetBranchAddress("UpstreamTaggerPoint", combined_UpstreamTaggerPoint)
+
     table_data = []
 
     for i, (input_event, muon_event) in enumerate(zip(input_tree, muon_tree)):
@@ -129,6 +148,29 @@ def modify_file(inputfile, muonfile):
                 index += 1
                 muoncount += 1
 
+        combined_UpstreamTaggerPoint.Clear()
+
+        ubt_index = 0
+
+        for hit in input_event.UpstreamTaggerPoint:
+            if combined_UpstreamTaggerPoint.GetSize() == ubt_index:
+                combined_UpstreamTaggerPoint.Expand(ubt_index + 1)
+            combined_UpstreamTaggerPoint[ubt_index] = (
+                hit  # pending fix to support ROOT 6.32+
+            )
+            ubt_index += 1
+
+        muon_ubtcount = 0
+        for hit in muon_event.muon_UpstreamTaggerPoints:
+            if hit.GetZ() < interaction_point.Z():
+                if combined_UpstreamTaggerPoint.GetSize() == ubt_index:
+                    combined_UpstreamTaggerPoint.Expand(ubt_index + 1)
+                combined_UpstreamTaggerPoint[ubt_index] = (
+                    hit  # pending fix to support ROOT 6.32+
+                )
+                ubt_index += 1
+                muon_ubtcount += 1
+
         table_data.append(
             [
                 i,
@@ -136,6 +178,10 @@ def modify_file(inputfile, muonfile):
                 len(input_event.vetoPoint),
                 muoncount,
                 len(combined_vetoPoint),
+                len(muon_event.muon_UpstreamTaggerPoints),
+                len(input_event.UpstreamTaggerPoint),
+                muon_ubtcount,
+                len(combined_UpstreamTaggerPoint),
             ]
         )
         output_tree.Fill()
@@ -155,7 +201,7 @@ muons_found = inspect_file(args.inputfile, args.muonfile)
 
 if not muons_found:
     print(
-        "Incoming muon's vetopoint info missing in file, proceeding with modification"
+        "Incoming muon's vetoPoints & UpstreamTaggerPoints inf missing in file, proceeding with modification"
     )
     modify_file(args.inputfile, args.muonfile)
 else:
