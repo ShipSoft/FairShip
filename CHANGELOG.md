@@ -33,6 +33,7 @@ it in future.
 * fix: don't use TFile's deprecated attribute syntax
 * fix(digi): Fix logic of SST digitisation (#662)
 * Fix double append of recognized stracks
+* Fix GetXYZ for UBT; adapted for the single scoring plane.
 
 ### Changed
 
