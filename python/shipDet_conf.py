@@ -97,8 +97,6 @@ def configure_snd_old(yaml_file,
     with open(yaml_file) as file:
         config = yaml.safe_load(file)
 
-    #print(config)
-
     tauMu_geo = AttrDict(config['tauMu'])
     nuTarget_geo = AttrDict(config['nuTarget'])
     nuTauTT_geo = AttrDict(config['nuTauTT'])
@@ -293,10 +291,6 @@ def configure(run, ship_geo):
         ship_geo.cave.floorHeightMuonShield = 5 * u.m
         ship_geo.cave.floorHeightTankA = 4.5 * u.m
         ship_geo.cave.floorHeightTankB = 2.0 * u.m
-    #if not hasattr(ship_geo, "NuTauTT"):
-    #    ship_geo.NuTauTT = AttrDict(z=0 * u.cm)
-    #if not hasattr(ship_geo.NuTauTT, "design"):
-    #    ship_geo.NuTauTT.design = 4
     if not hasattr(ship_geo, "EcalOption"):
         ship_geo.EcalOption = 1
     if not hasattr(ship_geo, "SND"):
@@ -460,15 +454,15 @@ def configure(run, ship_geo):
 
     #For SND
     if ship_geo.SND:  # kept only one old design
+        #This parameters are taken from the top geometry_config
         #snd_zTot = 3 * u.m #space allocated to Muon spectrometer
         #snd_zMudetC=ship_geo.Chamber1.z -ship_geo.chambers.Tub1length - snd_zTot/2 -31*u.cm
-
         configure_snd_old(
             fairship + "/geometry/snd_config_old.yaml",
             ship_geo.tauMudet.Ztot,
             ship_geo.tauMudet.zMudetC,
             ship_geo.cave.floorHeightMuonShield
-        )  # put conditions for the design
+        )
 
 
     # for backward compatibility
