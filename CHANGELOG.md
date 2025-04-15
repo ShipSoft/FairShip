@@ -37,6 +37,7 @@ it in future.
 * fix: don't use TFile's deprecated attribute syntax
 * fix(digi): Fix logic of SST digitisation (#662)
 * Fix double append of recognized stracks
+* fix(ShieldUtils.py): The fieldmap offset was calibrated with the old version of MS
 
 ### Changed
 
