@@ -113,10 +113,8 @@ void UpstreamTaggerHit::Dist(Float_t x, Float_t& lpos, Float_t& lneg){
 // ----------------------------------------------
 TVector3 UpstreamTaggerHit::GetXYZ()
 {
-    Double_t hit_final;
-    Int_t mod;
     TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
-    TGeoNode* node = GetNode(hit_final, mod);
+    TGeoNode* node = GetNode();
     auto shape =  dynamic_cast<TGeoBBox*>(node->GetVolume()->GetShape());
     Double_t origin[3] = {shape->GetOrigin()[0],shape->GetOrigin()[1],shape->GetOrigin()[2]};
     Double_t master[3] = {0,0,0};
