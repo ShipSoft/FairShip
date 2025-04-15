@@ -319,29 +319,14 @@ def configure(run, ship_geo):
         cave.SetGeometryFileName("caveWithAir.geo")
     detectorList.append(cave)
 
-    if ship_geo.muShieldDesign in [
-        7,
-        8,
-        9,
-        10,
-    ]:  # magnetized hadron absorber defined in ShipMuonShield
-        TargetStation = ROOT.ShipTargetStation(
-            "TargetStation",
-            ship_geo.target.length,
-            ship_geo.target.z,
-            ship_geo.targetOpt,
-            ship_geo.target.sl,
-        )
-    else:
-        TargetStation = ROOT.ShipTargetStation(
-            "TargetStation",
-            ship_geo.target.length,
-            ship_geo.hadronAbsorber.length,
-            ship_geo.target.z,
-            ship_geo.hadronAbsorber.z,
-            ship_geo.targetOpt,
-            ship_geo.target.sl,
-        )
+    # magnetized hadron absorber defined in ShipMuonShield
+    TargetStation = ROOT.ShipTargetStation(
+        "TargetStation",
+        ship_geo.target.length,
+        ship_geo.target.z,
+        ship_geo.targetOpt,
+        ship_geo.target.sl,
+    )
 
     if ship_geo.targetOpt > 10:
         slices_length = ROOT.std.vector("float")()
@@ -352,44 +337,15 @@ def configure(run, ship_geo):
         TargetStation.SetLayerPosMat(ship_geo.target.xy, slices_length, slices_material)
     detectorList.append(TargetStation)
 
-    if ship_geo.muShieldDesign in [7, 9]:
-        MuonShield = ROOT.ShipMuonShield(
-            "MuonShield",
-            ship_geo.muShieldDesign,
-            "ShipMuonShield",
-            ship_geo.muShield.z,
-            ship_geo.muShield.dZ0,
-            ship_geo.muShield.dZ1,
-            ship_geo.muShield.dZ2,
-            ship_geo.muShield.dZ3,
-            ship_geo.muShield.dZ4,
-            ship_geo.muShield.dZ5,
-            ship_geo.muShield.dZ6,
-            ship_geo.muShield.dZ7,
-            ship_geo.muShield.dZ8,
-            ship_geo.muShield.dXgap,
-            ship_geo.muShield.LE,
-            ship_geo.Yheight * 4.0 / 10.0,
-            ship_geo.cave.floorHeightMuonShield,
-            ship_geo.muShield.Field,
-            ship_geo.muShieldWithCobaltMagnet,
-            ship_geo.muShieldStepGeo,
-            ship_geo.hadronAbsorber.WithConstField,
-            ship_geo.muShield.WithConstField,
-        )
-    elif ship_geo.muShieldDesign == 8:
-        in_params = ROOT.TVectorD(
-            len(ship_geo.muShield.params), array("d", ship_geo.muShield.params)
-        )
-        MuonShield = ROOT.ShipMuonShield(
-            in_params,
-            ship_geo.cave.floorHeightMuonShield,
-            ship_geo.muShieldWithCobaltMagnet,
-            ship_geo.muShieldStepGeo,
-            ship_geo.hadronAbsorber.WithConstField,
-            ship_geo.muShield.WithConstField,
-            ship_geo.SC_mag
-        )
+
+    in_params = list(ship_geo.muShield.params)
+
+    MuonShield = ROOT.ShipMuonShield(
+        in_params,
+        ship_geo.cave.floorHeightMuonShield,
+        ship_geo.muShield.WithConstField,
+        ship_geo.SC_mag
+    )
     detectorList.append(MuonShield)
 
     if not hasattr(ship_geo, "magnetDesign"):
