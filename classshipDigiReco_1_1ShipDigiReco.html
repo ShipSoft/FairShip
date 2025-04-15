@@ -1021,21 +1021,21 @@ The earliest hit per straw will be marked valid, all later ones invalid.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipDigiReco_8py_source.html#l01014">1014</a> of file <a class="el" href="shipDigiReco_8py_source.html">shipDigiReco.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno"> 1014</span> <span class="keyword">def </span>findGoodTracks(self):</div>
-<div class="line"><span class="lineno"> 1015</span>   self.goodTracksVect.clear()</div>
-<div class="line"><span class="lineno"> 1016</span>   nGoodTracks = 0</div>
-<div class="line"><span class="lineno"> 1017</span>   <span class="keywordflow">for</span> i,track <span class="keywordflow">in</span> enumerate(self.fGenFitArray):</div>
-<div class="line"><span class="lineno"> 1018</span>    fitStatus = track.getFitStatus()</div>
-<div class="line"><span class="lineno"> 1019</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> fitStatus.isFitConverged(): <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno"> 1020</span>    nmeas = fitStatus.getNdf()</div>
-<div class="line"><span class="lineno"> 1021</span>    chi2  = fitStatus.getChi2()/nmeas</div>
-<div class="line"><span class="lineno"> 1022</span>    <span class="keywordflow">if</span> chi2&lt;50 <span class="keywordflow">and</span> <span class="keywordflow">not</span> chi2&lt;0:</div>
-<div class="line"><span class="lineno"> 1023</span>      self.goodTracksVect.push_back(i)</div>
-<div class="line"><span class="lineno"> 1024</span>      nGoodTracks+=1</div>
-<div class="line"><span class="lineno"> 1025</span>   self.goodTracksBranch.Fill()</div>
-<div class="line"><span class="lineno"> 1026</span>   <span class="keywordflow">return</span> nGoodTracks</div>
-<div class="line"><span class="lineno"> 1027</span> </div>
+<p class="definition">Definition at line <a class="el" href="shipDigiReco_8py_source.html#l01015">1015</a> of file <a class="el" href="shipDigiReco_8py_source.html">shipDigiReco.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno"> 1015</span> <span class="keyword">def </span>findGoodTracks(self):</div>
+<div class="line"><span class="lineno"> 1016</span>   self.goodTracksVect.clear()</div>
+<div class="line"><span class="lineno"> 1017</span>   nGoodTracks = 0</div>
+<div class="line"><span class="lineno"> 1018</span>   <span class="keywordflow">for</span> i,track <span class="keywordflow">in</span> enumerate(self.fGenFitArray):</div>
+<div class="line"><span class="lineno"> 1019</span>    fitStatus = track.getFitStatus()</div>
+<div class="line"><span class="lineno"> 1020</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> fitStatus.isFitConverged(): <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno"> 1021</span>    nmeas = fitStatus.getNdf()</div>
+<div class="line"><span class="lineno"> 1022</span>    chi2  = fitStatus.getChi2()/nmeas</div>
+<div class="line"><span class="lineno"> 1023</span>    <span class="keywordflow">if</span> chi2&lt;50 <span class="keywordflow">and</span> <span class="keywordflow">not</span> chi2&lt;0:</div>
+<div class="line"><span class="lineno"> 1024</span>      self.goodTracksVect.push_back(i)</div>
+<div class="line"><span class="lineno"> 1025</span>      nGoodTracks+=1</div>
+<div class="line"><span class="lineno"> 1026</span>   self.goodTracksBranch.Fill()</div>
+<div class="line"><span class="lineno"> 1027</span>   <span class="keywordflow">return</span> nGoodTracks</div>
+<div class="line"><span class="lineno"> 1028</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1132,9 +1132,9 @@ The earliest hit per straw will be marked valid, all later ones invalid.
 <div class="line"><span class="lineno">  884</span><span class="comment">#</span></div>
 <div class="line"><span class="lineno">  885</span>  <span class="keywordflow">for</span> atrack <span class="keywordflow">in</span> hitPosLists:</div>
 <div class="line"><span class="lineno">  886</span>    <span class="keywordflow">if</span> atrack &lt; 0: <span class="keywordflow">continue</span> <span class="comment"># these are hits not assigned to MC track because low E cut</span></div>
-<div class="line"><span class="lineno">  887</span>    pdg    = self.sTree.MCTrack[atrack].GetPdgCode()</div>
-<div class="line"><span class="lineno">  888</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> self.PDG.GetParticle(pdg): <span class="keywordflow">continue</span> <span class="comment"># unknown particle</span></div>
-<div class="line"><span class="lineno">  889</span>    <span class="comment"># pdg = 13</span></div>
+<div class="line"><span class="lineno">  887</span>    <span class="comment"># pdg    = self.sTree.MCTrack[atrack].GetPdgCode()</span></div>
+<div class="line"><span class="lineno">  888</span>    <span class="comment"># if not self.PDG.GetParticle(pdg): continue # unknown particle</span></div>
+<div class="line"><span class="lineno">  889</span>    pdg = 13 <span class="comment"># assume all tracks are muons</span></div>
 <div class="line"><span class="lineno">  890</span>    meas = hitPosLists[atrack]</div>
 <div class="line"><span class="lineno">  891</span>    detIDs = hit_detector_ids[atrack]</div>
 <div class="line"><span class="lineno">  892</span>    nM = meas.size()</div>
@@ -1226,39 +1226,40 @@ The earliest hit per straw will be marked valid, all later ones invalid.
 <div class="line"><span class="lineno">  978</span>      error = <span class="stringliteral">&quot;Fit not converged&quot;</span></div>
 <div class="line"><span class="lineno">  979</span>      ut.reportError(error)</div>
 <div class="line"><span class="lineno">  980</span>    nmeas = fitStatus.getNdf()</div>
-<div class="line"><span class="lineno">  981</span>    <span class="keywordflow">if</span> nmeas &gt; 0:</div>
-<div class="line"><span class="lineno">  982</span>      chi2 = fitStatus.getChi2() / nmeas</div>
-<div class="line"><span class="lineno">  983</span>      global_variables.h[<span class="stringliteral">&#39;chi2&#39;</span>].Fill(chi2)</div>
-<div class="line"><span class="lineno">  984</span><span class="comment"># make track persistent</span></div>
-<div class="line"><span class="lineno">  985</span>    nTrack   = self.fGenFitArray.GetEntries()</div>
-<div class="line"><span class="lineno">  986</span>    self.fGenFitArray[nTrack] = theTrack</div>
-<div class="line"><span class="lineno">  987</span>    <span class="comment"># self.fitTrack2MC.push_back(atrack)</span></div>
-<div class="line"><span class="lineno">  988</span>    <span class="keywordflow">if</span> global_variables.debug:</div>
-<div class="line"><span class="lineno">  989</span>     print(<span class="stringliteral">&#39;save track&#39;</span>,theTrack,chi2,nmeas,fitStatus.isFitConverged())</div>
-<div class="line"><span class="lineno">  990</span>    <span class="comment"># Save MC link</span></div>
-<div class="line"><span class="lineno">  991</span>    track_ids = []</div>
-<div class="line"><span class="lineno">  992</span>    <span class="keywordflow">for</span> index <span class="keywordflow">in</span> listOfIndices[atrack]:</div>
-<div class="line"><span class="lineno">  993</span>      ahit = self.sTree.strawtubesPoint[index]</div>
-<div class="line"><span class="lineno">  994</span>      track_ids += [ahit.GetTrackID()]</div>
-<div class="line"><span class="lineno">  995</span>    frac, tmax = self.fracMCsame(track_ids)</div>
-<div class="line"><span class="lineno">  996</span>    self.fitTrack2MC.push_back(tmax)</div>
-<div class="line"><span class="lineno">  997</span>    <span class="comment"># Save hits indexes of the the fitted tracks</span></div>
-<div class="line"><span class="lineno">  998</span>    nTracks   = self.fTrackletsArray.GetEntries()</div>
-<div class="line"><span class="lineno">  999</span>    aTracklet  = self.fTrackletsArray.ConstructedAt(nTracks)</div>
-<div class="line"><span class="lineno"> 1000</span>    listOfHits = aTracklet.getList()</div>
-<div class="line"><span class="lineno"> 1001</span>    aTracklet.setType(1)</div>
-<div class="line"><span class="lineno"> 1002</span>    <span class="keywordflow">for</span> index <span class="keywordflow">in</span> listOfIndices[atrack]:</div>
-<div class="line"><span class="lineno"> 1003</span>      listOfHits.push_back(index)</div>
-<div class="line"><span class="lineno"> 1004</span>  self.Tracklets.Fill()</div>
-<div class="line"><span class="lineno"> 1005</span>  self.fitTracks.Fill()</div>
-<div class="line"><span class="lineno"> 1006</span>  self.mcLink.Fill()</div>
-<div class="line"><span class="lineno"> 1007</span><span class="comment"># debug</span></div>
-<div class="line"><span class="lineno"> 1008</span>  <span class="keywordflow">if</span> global_variables.debug:</div>
-<div class="line"><span class="lineno"> 1009</span>   print(<span class="stringliteral">&#39;save tracklets:&#39;</span>)</div>
-<div class="line"><span class="lineno"> 1010</span>   <span class="keywordflow">for</span> x <span class="keywordflow">in</span> self.sTree.Tracklets:</div>
-<div class="line"><span class="lineno"> 1011</span>    print(x.getType(),x.getList().size())</div>
-<div class="line"><span class="lineno"> 1012</span>  <span class="keywordflow">return</span> nTrack+1</div>
-<div class="line"><span class="lineno"> 1013</span> </div>
+<div class="line"><span class="lineno">  981</span>    global_variables.h[<span class="stringliteral">&#39;nmeas&#39;</span>].Fill(nmeas)</div>
+<div class="line"><span class="lineno">  982</span>    <span class="keywordflow">if</span> nmeas &gt; 0:</div>
+<div class="line"><span class="lineno">  983</span>      chi2 = fitStatus.getChi2() / nmeas</div>
+<div class="line"><span class="lineno">  984</span>      global_variables.h[<span class="stringliteral">&#39;chi2&#39;</span>].Fill(chi2)</div>
+<div class="line"><span class="lineno">  985</span><span class="comment"># make track persistent</span></div>
+<div class="line"><span class="lineno">  986</span>    nTrack   = self.fGenFitArray.GetEntries()</div>
+<div class="line"><span class="lineno">  987</span>    self.fGenFitArray[nTrack] = theTrack</div>
+<div class="line"><span class="lineno">  988</span>    <span class="comment"># self.fitTrack2MC.push_back(atrack)</span></div>
+<div class="line"><span class="lineno">  989</span>    <span class="keywordflow">if</span> global_variables.debug:</div>
+<div class="line"><span class="lineno">  990</span>     print(<span class="stringliteral">&#39;save track&#39;</span>,theTrack,chi2,nmeas,fitStatus.isFitConverged())</div>
+<div class="line"><span class="lineno">  991</span>    <span class="comment"># Save MC link</span></div>
+<div class="line"><span class="lineno">  992</span>    track_ids = []</div>
+<div class="line"><span class="lineno">  993</span>    <span class="keywordflow">for</span> index <span class="keywordflow">in</span> listOfIndices[atrack]:</div>
+<div class="line"><span class="lineno">  994</span>      ahit = self.sTree.strawtubesPoint[index]</div>
+<div class="line"><span class="lineno">  995</span>      track_ids += [ahit.GetTrackID()]</div>
+<div class="line"><span class="lineno">  996</span>    frac, tmax = self.fracMCsame(track_ids)</div>
+<div class="line"><span class="lineno">  997</span>    self.fitTrack2MC.push_back(tmax)</div>
+<div class="line"><span class="lineno">  998</span>    <span class="comment"># Save hits indexes of the the fitted tracks</span></div>
+<div class="line"><span class="lineno">  999</span>    nTracks   = self.fTrackletsArray.GetEntries()</div>
+<div class="line"><span class="lineno"> 1000</span>    aTracklet  = self.fTrackletsArray.ConstructedAt(nTracks)</div>
+<div class="line"><span class="lineno"> 1001</span>    listOfHits = aTracklet.getList()</div>
+<div class="line"><span class="lineno"> 1002</span>    aTracklet.setType(1)</div>
+<div class="line"><span class="lineno"> 1003</span>    <span class="keywordflow">for</span> index <span class="keywordflow">in</span> listOfIndices[atrack]:</div>
+<div class="line"><span class="lineno"> 1004</span>      listOfHits.push_back(index)</div>
+<div class="line"><span class="lineno"> 1005</span>  self.Tracklets.Fill()</div>
+<div class="line"><span class="lineno"> 1006</span>  self.fitTracks.Fill()</div>
+<div class="line"><span class="lineno"> 1007</span>  self.mcLink.Fill()</div>
+<div class="line"><span class="lineno"> 1008</span><span class="comment"># debug</span></div>
+<div class="line"><span class="lineno"> 1009</span>  <span class="keywordflow">if</span> global_variables.debug:</div>
+<div class="line"><span class="lineno"> 1010</span>   print(<span class="stringliteral">&#39;save tracklets:&#39;</span>)</div>
+<div class="line"><span class="lineno"> 1011</span>   <span class="keywordflow">for</span> x <span class="keywordflow">in</span> self.sTree.Tracklets:</div>
+<div class="line"><span class="lineno"> 1012</span>    print(x.getType(),x.getList().size())</div>
+<div class="line"><span class="lineno"> 1013</span>  <span class="keywordflow">return</span> nTrack+1</div>
+<div class="line"><span class="lineno"> 1014</span> </div>
 <div class="ttc" id="anamespaceshipPatRec_html_af0ccef68f17f3989d7870e3c793a33e1"><div class="ttname"><a href="namespaceshipPatRec.html#af0ccef68f17f3989d7870e3c793a33e1">shipPatRec.execute</a></div><div class="ttdeci">execute(smeared_hits, ship_geo, method='')</div><div class="ttdef"><b>Definition</b> <a href="shipPatRec_8py_source.html#l00017">shipPatRec.py:17</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -1289,31 +1290,31 @@ The earliest hit per straw will be marked valid, all later ones invalid.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipDigiReco_8py_source.html#l01028">1028</a> of file <a class="el" href="shipDigiReco_8py_source.html">shipDigiReco.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno"> 1028</span> <span class="keyword">def </span>findVetoHitOnTrack(self,track):</div>
-<div class="line"><span class="lineno"> 1029</span>   distMin = 99999.</div>
-<div class="line"><span class="lineno"> 1030</span>   vetoHitOnTrack = ROOT.vetoHitOnTrack()</div>
-<div class="line"><span class="lineno"> 1031</span>   xx  = track.getFittedState()</div>
-<div class="line"><span class="lineno"> 1032</span>   rep   = ROOT.genfit.RKTrackRep(xx.getPDG())</div>
-<div class="line"><span class="lineno"> 1033</span>   state = ROOT.genfit.StateOnPlane(rep)</div>
-<div class="line"><span class="lineno"> 1034</span>   rep.setPosMom(state,xx.getPos(),xx.getMom())</div>
-<div class="line"><span class="lineno"> 1035</span>   <span class="keywordflow">for</span> i,vetoHit <span class="keywordflow">in</span> enumerate(self.digiSBT):</div>
-<div class="line"><span class="lineno"> 1036</span>     vetoHitPos = <a class="code hl_function" href="classvetoHit.html#adb60f44363a7059a2c7d3f41c1cac796">vetoHit.GetXYZ</a>()</div>
-<div class="line"><span class="lineno"> 1037</span>     <span class="keywordflow">try</span>:</div>
-<div class="line"><span class="lineno"> 1038</span>      rep.extrapolateToPoint(state,vetoHitPos,<span class="keyword">False</span>)</div>
-<div class="line"><span class="lineno"> 1039</span>     <span class="keywordflow">except</span>:</div>
-<div class="line"><span class="lineno"> 1040</span>      error =  <span class="stringliteral">&quot;shipDigiReco::findVetoHitOnTrack extrapolation did not worked&quot;</span></div>
-<div class="line"><span class="lineno"> 1041</span>      ut.reportError(error)</div>
-<div class="line"><span class="lineno"> 1042</span>      <span class="keywordflow">if</span> global_variables.debug:</div>
-<div class="line"><span class="lineno"> 1043</span>        print(error)</div>
-<div class="line"><span class="lineno"> 1044</span>      <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno"> 1045</span>     dist = (rep.getPos(state) - vetoHitPos).Mag()</div>
-<div class="line"><span class="lineno"> 1046</span>     <span class="keywordflow">if</span> dist &lt; distMin:</div>
-<div class="line"><span class="lineno"> 1047</span>       distMin = dist</div>
-<div class="line"><span class="lineno"> 1048</span>       <a class="code hl_function" href="classvetoHitOnTrack.html#a3944dd2c249c64aa9da0eb4fd70d9b72">vetoHitOnTrack.SetDist</a>(distMin)</div>
-<div class="line"><span class="lineno"> 1049</span>       <a class="code hl_function" href="classvetoHitOnTrack.html#a92d33831d3c62dd579fcf5a25e6c1b70">vetoHitOnTrack.SetHitID</a>(i)</div>
-<div class="line"><span class="lineno"> 1050</span>   <span class="keywordflow">return</span> vetoHitOnTrack</div>
-<div class="line"><span class="lineno"> 1051</span> </div>
+<p class="definition">Definition at line <a class="el" href="shipDigiReco_8py_source.html#l01029">1029</a> of file <a class="el" href="shipDigiReco_8py_source.html">shipDigiReco.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno"> 1029</span> <span class="keyword">def </span>findVetoHitOnTrack(self,track):</div>
+<div class="line"><span class="lineno"> 1030</span>   distMin = 99999.</div>
+<div class="line"><span class="lineno"> 1031</span>   vetoHitOnTrack = ROOT.vetoHitOnTrack()</div>
+<div class="line"><span class="lineno"> 1032</span>   xx  = track.getFittedState()</div>
+<div class="line"><span class="lineno"> 1033</span>   rep   = ROOT.genfit.RKTrackRep(xx.getPDG())</div>
+<div class="line"><span class="lineno"> 1034</span>   state = ROOT.genfit.StateOnPlane(rep)</div>
+<div class="line"><span class="lineno"> 1035</span>   rep.setPosMom(state,xx.getPos(),xx.getMom())</div>
+<div class="line"><span class="lineno"> 1036</span>   <span class="keywordflow">for</span> i,vetoHit <span class="keywordflow">in</span> enumerate(self.digiSBT):</div>
+<div class="line"><span class="lineno"> 1037</span>     vetoHitPos = <a class="code hl_function" href="classvetoHit.html#adb60f44363a7059a2c7d3f41c1cac796">vetoHit.GetXYZ</a>()</div>
+<div class="line"><span class="lineno"> 1038</span>     <span class="keywordflow">try</span>:</div>
+<div class="line"><span class="lineno"> 1039</span>      rep.extrapolateToPoint(state,vetoHitPos,<span class="keyword">False</span>)</div>
+<div class="line"><span class="lineno"> 1040</span>     <span class="keywordflow">except</span>:</div>
+<div class="line"><span class="lineno"> 1041</span>      error =  <span class="stringliteral">&quot;shipDigiReco::findVetoHitOnTrack extrapolation did not worked&quot;</span></div>
+<div class="line"><span class="lineno"> 1042</span>      ut.reportError(error)</div>
+<div class="line"><span class="lineno"> 1043</span>      <span class="keywordflow">if</span> global_variables.debug:</div>
+<div class="line"><span class="lineno"> 1044</span>        print(error)</div>
+<div class="line"><span class="lineno"> 1045</span>      <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno"> 1046</span>     dist = (rep.getPos(state) - vetoHitPos).Mag()</div>
+<div class="line"><span class="lineno"> 1047</span>     <span class="keywordflow">if</span> dist &lt; distMin:</div>
+<div class="line"><span class="lineno"> 1048</span>       distMin = dist</div>
+<div class="line"><span class="lineno"> 1049</span>       <a class="code hl_function" href="classvetoHitOnTrack.html#a3944dd2c249c64aa9da0eb4fd70d9b72">vetoHitOnTrack.SetDist</a>(distMin)</div>
+<div class="line"><span class="lineno"> 1050</span>       <a class="code hl_function" href="classvetoHitOnTrack.html#a92d33831d3c62dd579fcf5a25e6c1b70">vetoHitOnTrack.SetHitID</a>(i)</div>
+<div class="line"><span class="lineno"> 1051</span>   <span class="keywordflow">return</span> vetoHitOnTrack</div>
+<div class="line"><span class="lineno"> 1052</span> </div>
 <div class="ttc" id="aclassvetoHitOnTrack_html_a3944dd2c249c64aa9da0eb4fd70d9b72"><div class="ttname"><a href="classvetoHitOnTrack.html#a3944dd2c249c64aa9da0eb4fd70d9b72">vetoHitOnTrack::SetDist</a></div><div class="ttdeci">void SetDist(Float_t d)</div><div class="ttdef"><b>Definition</b> <a href="vetoHitOnTrack_8h_source.html#l00034">vetoHitOnTrack.h:34</a></div></div>
 <div class="ttc" id="aclassvetoHitOnTrack_html_a92d33831d3c62dd579fcf5a25e6c1b70"><div class="ttname"><a href="classvetoHitOnTrack.html#a92d33831d3c62dd579fcf5a25e6c1b70">vetoHitOnTrack::SetHitID</a></div><div class="ttdeci">void SetHitID(Int_t hitID)</div><div class="ttdef"><b>Definition</b> <a href="vetoHitOnTrack_8h_source.html#l00035">vetoHitOnTrack.h:35</a></div></div>
 <div class="ttc" id="aclassvetoHit_html_adb60f44363a7059a2c7d3f41c1cac796"><div class="ttname"><a href="classvetoHit.html#adb60f44363a7059a2c7d3f41c1cac796">vetoHit::GetXYZ</a></div><div class="ttdeci">TVector3 GetXYZ()</div><div class="ttdef"><b>Definition</b> <a href="vetoHit_8cxx_source.html#l00039">vetoHit.cxx:39</a></div></div>
@@ -1336,16 +1337,16 @@ The earliest hit per straw will be marked valid, all later ones invalid.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipDigiReco_8py_source.html#l01080">1080</a> of file <a class="el" href="shipDigiReco_8py_source.html">shipDigiReco.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno"> 1080</span> <span class="keyword">def </span>finish(self):</div>
-<div class="line"><span class="lineno"> 1081</span>  del self.fitter</div>
-<div class="line"><span class="lineno"> 1082</span>  print(<span class="stringliteral">&#39;finished writing tree&#39;</span>)</div>
-<div class="line"><span class="lineno"> 1083</span>  self.sTree.Write()</div>
-<div class="line"><span class="lineno"> 1084</span>  ut.errorSummary()</div>
-<div class="line"><span class="lineno"> 1085</span>  ut.writeHists(global_variables.h,<span class="stringliteral">&quot;recohists.root&quot;</span>)</div>
-<div class="line"><span class="lineno"> 1086</span>  <span class="keywordflow">if</span> global_variables.realPR:</div>
-<div class="line"><span class="lineno"> 1087</span>    <a class="code hl_function" href="namespaceshipPatRec.html#a6633ea3c390789fb3d0e95937522f5ab">shipPatRec.finalize</a>()</div>
-<div class="line"><span class="lineno"> 1088</span>  self.fn.Close()</div>
+<p class="definition">Definition at line <a class="el" href="shipDigiReco_8py_source.html#l01081">1081</a> of file <a class="el" href="shipDigiReco_8py_source.html">shipDigiReco.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno"> 1081</span> <span class="keyword">def </span>finish(self):</div>
+<div class="line"><span class="lineno"> 1082</span>  del self.fitter</div>
+<div class="line"><span class="lineno"> 1083</span>  print(<span class="stringliteral">&#39;finished writing tree&#39;</span>)</div>
+<div class="line"><span class="lineno"> 1084</span>  self.sTree.Write()</div>
+<div class="line"><span class="lineno"> 1085</span>  ut.errorSummary()</div>
+<div class="line"><span class="lineno"> 1086</span>  ut.writeHists(global_variables.h,<span class="stringliteral">&quot;recohists.root&quot;</span>)</div>
+<div class="line"><span class="lineno"> 1087</span>  <span class="keywordflow">if</span> global_variables.realPR:</div>
+<div class="line"><span class="lineno"> 1088</span>    <a class="code hl_function" href="namespaceshipPatRec.html#a6633ea3c390789fb3d0e95937522f5ab">shipPatRec.finalize</a>()</div>
+<div class="line"><span class="lineno"> 1089</span>  self.fn.Close()</div>
 <div class="ttc" id="anamespaceshipPatRec_html_a6633ea3c390789fb3d0e95937522f5ab"><div class="ttname"><a href="namespaceshipPatRec.html#a6633ea3c390789fb3d0e95937522f5ab">shipPatRec.finalize</a></div><div class="ttdeci">finalize()</div><div class="ttdef"><b>Definition</b> <a href="shipPatRec_8py_source.html#l00048">shipPatRec.py:48</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -1376,25 +1377,25 @@ The earliest hit per straw will be marked valid, all later ones invalid.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipDigiReco_8py_source.html#l01062">1062</a> of file <a class="el" href="shipDigiReco_8py_source.html">shipDigiReco.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno"> 1062</span> <span class="keyword">def </span>fracMCsame(self, trackids):</div>
-<div class="line"><span class="lineno"> 1063</span>  track={}</div>
-<div class="line"><span class="lineno"> 1064</span>  nh=len(trackids)</div>
-<div class="line"><span class="lineno"> 1065</span>  <span class="keywordflow">for</span> tid <span class="keywordflow">in</span> trackids:</div>
-<div class="line"><span class="lineno"> 1066</span>    <span class="keywordflow">if</span> tid <span class="keywordflow">in</span> track:</div>
-<div class="line"><span class="lineno"> 1067</span>      track[tid] += 1</div>
-<div class="line"><span class="lineno"> 1068</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno"> 1069</span>      track[tid] = 1</div>
-<div class="line"><span class="lineno"> 1070</span>  <span class="keywordflow">if</span> track != {}:</div>
-<div class="line"><span class="lineno"> 1071</span>    tmax = max(track, key=track.get)</div>
-<div class="line"><span class="lineno"> 1072</span>  <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno"> 1073</span>    track = {-999: 0}</div>
-<div class="line"><span class="lineno"> 1074</span>    tmax = -999</div>
-<div class="line"><span class="lineno"> 1075</span>  frac=0.0</div>
-<div class="line"><span class="lineno"> 1076</span>  <span class="keywordflow">if</span> nh &gt; 0:</div>
-<div class="line"><span class="lineno"> 1077</span>    frac = float(track[tmax]) / float(nh)</div>
-<div class="line"><span class="lineno"> 1078</span>  <span class="keywordflow">return</span> frac, tmax</div>
-<div class="line"><span class="lineno"> 1079</span> </div>
+<p class="definition">Definition at line <a class="el" href="shipDigiReco_8py_source.html#l01063">1063</a> of file <a class="el" href="shipDigiReco_8py_source.html">shipDigiReco.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno"> 1063</span> <span class="keyword">def </span>fracMCsame(self, trackids):</div>
+<div class="line"><span class="lineno"> 1064</span>  track={}</div>
+<div class="line"><span class="lineno"> 1065</span>  nh=len(trackids)</div>
+<div class="line"><span class="lineno"> 1066</span>  <span class="keywordflow">for</span> tid <span class="keywordflow">in</span> trackids:</div>
+<div class="line"><span class="lineno"> 1067</span>    <span class="keywordflow">if</span> tid <span class="keywordflow">in</span> track:</div>
+<div class="line"><span class="lineno"> 1068</span>      track[tid] += 1</div>
+<div class="line"><span class="lineno"> 1069</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno"> 1070</span>      track[tid] = 1</div>
+<div class="line"><span class="lineno"> 1071</span>  <span class="keywordflow">if</span> track != {}:</div>
+<div class="line"><span class="lineno"> 1072</span>    tmax = max(track, key=track.get)</div>
+<div class="line"><span class="lineno"> 1073</span>  <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno"> 1074</span>    track = {-999: 0}</div>
+<div class="line"><span class="lineno"> 1075</span>    tmax = -999</div>
+<div class="line"><span class="lineno"> 1076</span>  frac=0.0</div>
+<div class="line"><span class="lineno"> 1077</span>  <span class="keywordflow">if</span> nh &gt; 0:</div>
+<div class="line"><span class="lineno"> 1078</span>    frac = float(track[tmax]) / float(nh)</div>
+<div class="line"><span class="lineno"> 1079</span>  <span class="keywordflow">return</span> frac, tmax</div>
+<div class="line"><span class="lineno"> 1080</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1617,17 +1618,17 @@ The earliest hit per straw will be marked valid, all later ones invalid.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipDigiReco_8py_source.html#l01052">1052</a> of file <a class="el" href="shipDigiReco_8py_source.html">shipDigiReco.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno"> 1052</span> <span class="keyword">def </span>linkVetoOnTracks(self):</div>
-<div class="line"><span class="lineno"> 1053</span>   self.vetoHitOnTrackArray.Delete()</div>
-<div class="line"><span class="lineno"> 1054</span>   index = 0</div>
-<div class="line"><span class="lineno"> 1055</span>   <span class="keywordflow">for</span> goodTrak <span class="keywordflow">in</span> self.goodTracksVect:</div>
-<div class="line"><span class="lineno"> 1056</span>     track = self.fGenFitArray[goodTrak]</div>
-<div class="line"><span class="lineno"> 1057</span>     <span class="keywordflow">if</span> self.vetoHitOnTrackArray.GetSize() == index: self.vetoHitOnTrackArray.Expand(index+1000)</div>
-<div class="line"><span class="lineno"> 1058</span>     self.vetoHitOnTrackArray[index] = self.findVetoHitOnTrack(track)</div>
-<div class="line"><span class="lineno"> 1059</span>     index+=1</div>
-<div class="line"><span class="lineno"> 1060</span>   self.vetoHitOnTrackBranch.Fill()</div>
-<div class="line"><span class="lineno"> 1061</span> </div>
+<p class="definition">Definition at line <a class="el" href="shipDigiReco_8py_source.html#l01053">1053</a> of file <a class="el" href="shipDigiReco_8py_source.html">shipDigiReco.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno"> 1053</span> <span class="keyword">def </span>linkVetoOnTracks(self):</div>
+<div class="line"><span class="lineno"> 1054</span>   self.vetoHitOnTrackArray.Delete()</div>
+<div class="line"><span class="lineno"> 1055</span>   index = 0</div>
+<div class="line"><span class="lineno"> 1056</span>   <span class="keywordflow">for</span> goodTrak <span class="keywordflow">in</span> self.goodTracksVect:</div>
+<div class="line"><span class="lineno"> 1057</span>     track = self.fGenFitArray[goodTrak]</div>
+<div class="line"><span class="lineno"> 1058</span>     <span class="keywordflow">if</span> self.vetoHitOnTrackArray.GetSize() == index: self.vetoHitOnTrackArray.Expand(index+1000)</div>
+<div class="line"><span class="lineno"> 1059</span>     self.vetoHitOnTrackArray[index] = self.findVetoHitOnTrack(track)</div>
+<div class="line"><span class="lineno"> 1060</span>     index+=1</div>
+<div class="line"><span class="lineno"> 1061</span>   self.vetoHitOnTrackBranch.Fill()</div>
+<div class="line"><span class="lineno"> 1062</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
