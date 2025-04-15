@@ -734,61 +734,62 @@ $(document).ready(function(){initNavTree('run__simScript_8py_source.html',''); i
 <div class="line"><a id="l00635" name="l00635"></a><span class="lineno">  635</span> branches.Add(ROOT.TObjString(<span class="stringliteral">&#39;smuonPoint&#39;</span>))</div>
 <div class="line"><a id="l00636" name="l00636"></a><span class="lineno">  636</span> branches.Add(ROOT.TObjString(<span class="stringliteral">&#39;TimeDetPoint&#39;</span>))</div>
 <div class="line"><a id="l00637" name="l00637"></a><span class="lineno">  637</span> branches.Add(ROOT.TObjString(<span class="stringliteral">&#39;MCEventHeader&#39;</span>))</div>
-<div class="line"><a id="l00638" name="l00638"></a><span class="lineno">  638</span> branches.Add(ROOT.TObjString(<span class="stringliteral">&#39;sGeoTracks&#39;</span>))</div>
-<div class="line"><a id="l00639" name="l00639"></a><span class="lineno">  639</span> </div>
-<div class="line"><a id="l00640" name="l00640"></a><span class="lineno">  640</span> sTree.AutoSave()</div>
-<div class="line"><a id="l00641" name="l00641"></a><span class="lineno">  641</span> fSink.WriteObject(branches, <span class="stringliteral">&quot;BranchList&quot;</span>, ROOT.TObject.kSingleKey)</div>
-<div class="line"><a id="l00642" name="l00642"></a><span class="lineno">  642</span> fSink.SetOutTree(sTree)</div>
-<div class="line"><a id="l00643" name="l00643"></a><span class="lineno">  643</span> </div>
-<div class="line"><a id="l00644" name="l00644"></a><span class="lineno">  644</span> fout.Close()</div>
-<div class="line"><a id="l00645" name="l00645"></a><span class="lineno">  645</span> print(<span class="stringliteral">&quot;removed empty events, left with:&quot;</span>, nEvents)</div>
-<div class="line"><a id="l00646" name="l00646"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#a7761e3105d78ab195878b40089abdfa1">  646</a></span> rc1 = os.system(<span class="stringliteral">&quot;rm  &quot;</span>+outFile)</div>
-<div class="line"><a id="l00647" name="l00647"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#a8e3710513bb2a7ae510a9326d0bf6de5">  647</a></span> rc2 = os.system(<span class="stringliteral">&quot;mv &quot;</span>+tmpFile+<span class="stringliteral">&quot; &quot;</span>+outFile)</div>
-<div class="line"><a id="l00648" name="l00648"></a><span class="lineno">  648</span> fin.SetWritable(<span class="keyword">False</span>) <span class="comment"># bpyass flush error</span></div>
-<div class="line"><a id="l00649" name="l00649"></a><span class="lineno">  649</span> </div>
-<div class="line"><a id="l00650" name="l00650"></a><span class="lineno">  650</span><span class="keywordflow">if</span> simEngine == <span class="stringliteral">&quot;muonDIS&quot;</span>:</div>
-<div class="line"><a id="l00651" name="l00651"></a><span class="lineno">  651</span> </div>
-<div class="line"><a id="l00652" name="l00652"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#aa74a148076990aefe36b3d123d5d8e40">  652</a></span>    temp_filename = outFile.replace(<span class="stringliteral">&quot;.root&quot;</span>, <span class="stringliteral">&quot;_tmp.root&quot;</span>)</div>
-<div class="line"><a id="l00653" name="l00653"></a><span class="lineno">  653</span> </div>
-<div class="line"><a id="l00654" name="l00654"></a><span class="lineno">  654</span>    <span class="keyword">with</span> (</div>
-<div class="line"><a id="l00655" name="l00655"></a><span class="lineno">  655</span>        ROOT.TFile.Open(outFile, <span class="stringliteral">&quot;read&quot;</span>) <span class="keyword">as</span> f_outputfile,</div>
-<div class="line"><a id="l00656" name="l00656"></a><span class="lineno">  656</span>        ROOT.TFile.Open(inputFile, <span class="stringliteral">&quot;read&quot;</span>) <span class="keyword">as</span> f_muonfile,</div>
-<div class="line"><a id="l00657" name="l00657"></a><span class="lineno">  657</span>        ROOT.TFile.Open(temp_filename, <span class="stringliteral">&quot;recreate&quot;</span>) <span class="keyword">as</span> f_temp,</div>
-<div class="line"><a id="l00658" name="l00658"></a><span class="lineno">  658</span>    ):</div>
-<div class="line"><a id="l00659" name="l00659"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#a13d134b8428e3abc45861c286b2e251e">  659</a></span>        output_tree = f_outputfile.Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
-<div class="line"><a id="l00660" name="l00660"></a><span class="lineno">  660</span> </div>
-<div class="line"><a id="l00661" name="l00661"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#a1924664424598021966cb23da8cfc1af">  661</a></span>        muondis_tree = f_muonfile.Get(<span class="stringliteral">&quot;DIS&quot;</span>)</div>
-<div class="line"><a id="l00662" name="l00662"></a><span class="lineno">  662</span> </div>
-<div class="line"><a id="l00663" name="l00663"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#a4435f2e074882181ff7ce09cef9ef113">  663</a></span>        new_tree = output_tree.CloneTree(0)</div>
-<div class="line"><a id="l00664" name="l00664"></a><span class="lineno">  664</span> </div>
-<div class="line"><a id="l00665" name="l00665"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#a1cfbffb329c1aafd6e1a04bbf6b9ad41">  665</a></span>        cross_section = array(<span class="stringliteral">&quot;f&quot;</span>, [0.0])</div>
-<div class="line"><a id="l00666" name="l00666"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#a3ecb79c114e71590f6b25ff34367d900">  666</a></span>        cross_section_leaf = new_tree.Branch(</div>
-<div class="line"><a id="l00667" name="l00667"></a><span class="lineno">  667</span>            <span class="stringliteral">&quot;CrossSection&quot;</span>, cross_section, <span class="stringliteral">&quot;CrossSection/F&quot;</span></div>
-<div class="line"><a id="l00668" name="l00668"></a><span class="lineno">  668</span>        )</div>
-<div class="line"><a id="l00669" name="l00669"></a><span class="lineno">  669</span> </div>
-<div class="line"><a id="l00670" name="l00670"></a><span class="lineno">  670</span>        <span class="keywordflow">for</span> output_event, muondis_event <span class="keywordflow">in</span> zip(output_tree, muondis_tree):</div>
-<div class="line"><a id="l00671" name="l00671"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#aaefe89450d8f306a2fdac45154ec0fb6">  671</a></span>            mu = muondis_event.InMuon[0]</div>
-<div class="line"><a id="l00672" name="l00672"></a><span class="lineno">  672</span>            cross_section[0] = mu[10]</div>
-<div class="line"><a id="l00673" name="l00673"></a><span class="lineno">  673</span>            new_tree.Fill()</div>
-<div class="line"><a id="l00674" name="l00674"></a><span class="lineno">  674</span> </div>
-<div class="line"><a id="l00675" name="l00675"></a><span class="lineno">  675</span>        new_tree.Write(<span class="stringliteral">&quot;&quot;</span>, ROOT.TObject.kOverwrite)</div>
-<div class="line"><a id="l00676" name="l00676"></a><span class="lineno">  676</span> </div>
-<div class="line"><a id="l00677" name="l00677"></a><span class="lineno">  677</span>    os.replace(temp_filename, outFile)</div>
-<div class="line"><a id="l00678" name="l00678"></a><span class="lineno">  678</span>    print(<span class="stringliteral">&quot;Successfully added DISCrossSection to the output file:&quot;</span>, outFile)</div>
-<div class="line"><a id="l00679" name="l00679"></a><span class="lineno">  679</span> </div>
-<div class="line"><a id="l00680" name="l00680"></a><span class="lineno">  680</span><span class="comment"># ------------------------------------------------------------------------</span></div>
-<div class="line"><a id="l00681" name="l00681"></a><span class="lineno">  681</span><span class="keyword">import</span> checkMagFields</div>
-<div class="foldopen" id="foldopen00682" data-start="" data-end="">
-<div class="line"><a id="l00682" name="l00682"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#a389396898b5b5a2fdae48a4fa4ab4b14">  682</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__simScript.html#a389396898b5b5a2fdae48a4fa4ab4b14">visualizeMagFields</a>():</div>
-<div class="line"><a id="l00683" name="l00683"></a><span class="lineno">  683</span> <a class="code hl_function" href="namespacecheckMagFields.html#a65e69e17f1b05eb283a8bb6d5d695249">checkMagFields.run</a>()</div>
+<div class="line"><a id="l00638" name="l00638"></a><span class="lineno">  638</span> branches.Add(ROOT.TObjString(<span class="stringliteral">&#39;UpstreamTaggerPoint&#39;</span>))</div>
+<div class="line"><a id="l00639" name="l00639"></a><span class="lineno">  639</span> branches.Add(ROOT.TObjString(<span class="stringliteral">&#39;sGeoTracks&#39;</span>))</div>
+<div class="line"><a id="l00640" name="l00640"></a><span class="lineno">  640</span> </div>
+<div class="line"><a id="l00641" name="l00641"></a><span class="lineno">  641</span> sTree.AutoSave()</div>
+<div class="line"><a id="l00642" name="l00642"></a><span class="lineno">  642</span> fSink.WriteObject(branches, <span class="stringliteral">&quot;BranchList&quot;</span>, ROOT.TObject.kSingleKey)</div>
+<div class="line"><a id="l00643" name="l00643"></a><span class="lineno">  643</span> fSink.SetOutTree(sTree)</div>
+<div class="line"><a id="l00644" name="l00644"></a><span class="lineno">  644</span> </div>
+<div class="line"><a id="l00645" name="l00645"></a><span class="lineno">  645</span> fout.Close()</div>
+<div class="line"><a id="l00646" name="l00646"></a><span class="lineno">  646</span> print(<span class="stringliteral">&quot;removed empty events, left with:&quot;</span>, nEvents)</div>
+<div class="line"><a id="l00647" name="l00647"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#a7761e3105d78ab195878b40089abdfa1">  647</a></span> rc1 = os.system(<span class="stringliteral">&quot;rm  &quot;</span>+outFile)</div>
+<div class="line"><a id="l00648" name="l00648"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#a8e3710513bb2a7ae510a9326d0bf6de5">  648</a></span> rc2 = os.system(<span class="stringliteral">&quot;mv &quot;</span>+tmpFile+<span class="stringliteral">&quot; &quot;</span>+outFile)</div>
+<div class="line"><a id="l00649" name="l00649"></a><span class="lineno">  649</span> fin.SetWritable(<span class="keyword">False</span>) <span class="comment"># bpyass flush error</span></div>
+<div class="line"><a id="l00650" name="l00650"></a><span class="lineno">  650</span> </div>
+<div class="line"><a id="l00651" name="l00651"></a><span class="lineno">  651</span><span class="keywordflow">if</span> simEngine == <span class="stringliteral">&quot;muonDIS&quot;</span>:</div>
+<div class="line"><a id="l00652" name="l00652"></a><span class="lineno">  652</span> </div>
+<div class="line"><a id="l00653" name="l00653"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#aa74a148076990aefe36b3d123d5d8e40">  653</a></span>    temp_filename = outFile.replace(<span class="stringliteral">&quot;.root&quot;</span>, <span class="stringliteral">&quot;_tmp.root&quot;</span>)</div>
+<div class="line"><a id="l00654" name="l00654"></a><span class="lineno">  654</span> </div>
+<div class="line"><a id="l00655" name="l00655"></a><span class="lineno">  655</span>    <span class="keyword">with</span> (</div>
+<div class="line"><a id="l00656" name="l00656"></a><span class="lineno">  656</span>        ROOT.TFile.Open(outFile, <span class="stringliteral">&quot;read&quot;</span>) <span class="keyword">as</span> f_outputfile,</div>
+<div class="line"><a id="l00657" name="l00657"></a><span class="lineno">  657</span>        ROOT.TFile.Open(inputFile, <span class="stringliteral">&quot;read&quot;</span>) <span class="keyword">as</span> f_muonfile,</div>
+<div class="line"><a id="l00658" name="l00658"></a><span class="lineno">  658</span>        ROOT.TFile.Open(temp_filename, <span class="stringliteral">&quot;recreate&quot;</span>) <span class="keyword">as</span> f_temp,</div>
+<div class="line"><a id="l00659" name="l00659"></a><span class="lineno">  659</span>    ):</div>
+<div class="line"><a id="l00660" name="l00660"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#a13d134b8428e3abc45861c286b2e251e">  660</a></span>        output_tree = f_outputfile.Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
+<div class="line"><a id="l00661" name="l00661"></a><span class="lineno">  661</span> </div>
+<div class="line"><a id="l00662" name="l00662"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#a1924664424598021966cb23da8cfc1af">  662</a></span>        muondis_tree = f_muonfile.Get(<span class="stringliteral">&quot;DIS&quot;</span>)</div>
+<div class="line"><a id="l00663" name="l00663"></a><span class="lineno">  663</span> </div>
+<div class="line"><a id="l00664" name="l00664"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#a4435f2e074882181ff7ce09cef9ef113">  664</a></span>        new_tree = output_tree.CloneTree(0)</div>
+<div class="line"><a id="l00665" name="l00665"></a><span class="lineno">  665</span> </div>
+<div class="line"><a id="l00666" name="l00666"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#a1cfbffb329c1aafd6e1a04bbf6b9ad41">  666</a></span>        cross_section = array(<span class="stringliteral">&quot;f&quot;</span>, [0.0])</div>
+<div class="line"><a id="l00667" name="l00667"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#a3ecb79c114e71590f6b25ff34367d900">  667</a></span>        cross_section_leaf = new_tree.Branch(</div>
+<div class="line"><a id="l00668" name="l00668"></a><span class="lineno">  668</span>            <span class="stringliteral">&quot;CrossSection&quot;</span>, cross_section, <span class="stringliteral">&quot;CrossSection/F&quot;</span></div>
+<div class="line"><a id="l00669" name="l00669"></a><span class="lineno">  669</span>        )</div>
+<div class="line"><a id="l00670" name="l00670"></a><span class="lineno">  670</span> </div>
+<div class="line"><a id="l00671" name="l00671"></a><span class="lineno">  671</span>        <span class="keywordflow">for</span> output_event, muondis_event <span class="keywordflow">in</span> zip(output_tree, muondis_tree):</div>
+<div class="line"><a id="l00672" name="l00672"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#aaefe89450d8f306a2fdac45154ec0fb6">  672</a></span>            mu = muondis_event.InMuon[0]</div>
+<div class="line"><a id="l00673" name="l00673"></a><span class="lineno">  673</span>            cross_section[0] = mu[10]</div>
+<div class="line"><a id="l00674" name="l00674"></a><span class="lineno">  674</span>            new_tree.Fill()</div>
+<div class="line"><a id="l00675" name="l00675"></a><span class="lineno">  675</span> </div>
+<div class="line"><a id="l00676" name="l00676"></a><span class="lineno">  676</span>        new_tree.Write(<span class="stringliteral">&quot;&quot;</span>, ROOT.TObject.kOverwrite)</div>
+<div class="line"><a id="l00677" name="l00677"></a><span class="lineno">  677</span> </div>
+<div class="line"><a id="l00678" name="l00678"></a><span class="lineno">  678</span>    os.replace(temp_filename, outFile)</div>
+<div class="line"><a id="l00679" name="l00679"></a><span class="lineno">  679</span>    print(<span class="stringliteral">&quot;Successfully added DISCrossSection to the output file:&quot;</span>, outFile)</div>
+<div class="line"><a id="l00680" name="l00680"></a><span class="lineno">  680</span> </div>
+<div class="line"><a id="l00681" name="l00681"></a><span class="lineno">  681</span><span class="comment"># ------------------------------------------------------------------------</span></div>
+<div class="line"><a id="l00682" name="l00682"></a><span class="lineno">  682</span><span class="keyword">import</span> checkMagFields</div>
+<div class="foldopen" id="foldopen00683" data-start="" data-end="">
+<div class="line"><a id="l00683" name="l00683"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#a389396898b5b5a2fdae48a4fa4ab4b14">  683</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__simScript.html#a389396898b5b5a2fdae48a4fa4ab4b14">visualizeMagFields</a>():</div>
+<div class="line"><a id="l00684" name="l00684"></a><span class="lineno">  684</span> <a class="code hl_function" href="namespacecheckMagFields.html#a65e69e17f1b05eb283a8bb6d5d695249">checkMagFields.run</a>()</div>
 </div>
-<div class="foldopen" id="foldopen00684" data-start="" data-end="">
-<div class="line"><a id="l00684" name="l00684"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#ac6390391d3c0b2c299be2757e56f72a4">  684</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__simScript.html#ac6390391d3c0b2c299be2757e56f72a4">checkOverlapsWithGeant4</a>():</div>
-<div class="line"><a id="l00685" name="l00685"></a><span class="lineno">  685</span> <span class="comment"># after /run/initialize, but prints warning messages, problems with TGeo volume</span></div>
-<div class="line"><a id="l00686" name="l00686"></a><span class="lineno">  686</span> mygMC = ROOT.TGeant4.GetMC()</div>
-<div class="line"><a id="l00687" name="l00687"></a><span class="lineno">  687</span> mygMC.ProcessGeantCommand(<span class="stringliteral">&quot;/geometry/test/recursion_start 0&quot;</span>)</div>
-<div class="line"><a id="l00688" name="l00688"></a><span class="lineno">  688</span> mygMC.ProcessGeantCommand(<span class="stringliteral">&quot;/geometry/test/recursion_depth 2&quot;</span>)</div>
-<div class="line"><a id="l00689" name="l00689"></a><span class="lineno">  689</span> mygMC.ProcessGeantCommand(<span class="stringliteral">&quot;/geometry/test/run&quot;</span>)</div>
+<div class="foldopen" id="foldopen00685" data-start="" data-end="">
+<div class="line"><a id="l00685" name="l00685"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#ac6390391d3c0b2c299be2757e56f72a4">  685</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__simScript.html#ac6390391d3c0b2c299be2757e56f72a4">checkOverlapsWithGeant4</a>():</div>
+<div class="line"><a id="l00686" name="l00686"></a><span class="lineno">  686</span> <span class="comment"># after /run/initialize, but prints warning messages, problems with TGeo volume</span></div>
+<div class="line"><a id="l00687" name="l00687"></a><span class="lineno">  687</span> mygMC = ROOT.TGeant4.GetMC()</div>
+<div class="line"><a id="l00688" name="l00688"></a><span class="lineno">  688</span> mygMC.ProcessGeantCommand(<span class="stringliteral">&quot;/geometry/test/recursion_start 0&quot;</span>)</div>
+<div class="line"><a id="l00689" name="l00689"></a><span class="lineno">  689</span> mygMC.ProcessGeantCommand(<span class="stringliteral">&quot;/geometry/test/recursion_depth 2&quot;</span>)</div>
+<div class="line"><a id="l00690" name="l00690"></a><span class="lineno">  690</span> mygMC.ProcessGeantCommand(<span class="stringliteral">&quot;/geometry/test/run&quot;</span>)</div>
 </div>
 <div class="ttc" id="anamespaceCMBG__conf_html_ad95691e78742115af94d2ddc4c3aeecc"><div class="ttname"><a href="namespaceCMBG__conf.html#ad95691e78742115af94d2ddc4c3aeecc">CMBG_conf.configure</a></div><div class="ttdeci">configure(CMBG, ship_geo)</div><div class="ttdef"><b>Definition</b> <a href="CMBG__conf_8py_source.html#l00004">CMBG_conf.py:4</a></div></div>
 <div class="ttc" id="anamespacecheckMagFields_html_a65e69e17f1b05eb283a8bb6d5d695249"><div class="ttname"><a href="namespacecheckMagFields.html#a65e69e17f1b05eb283a8bb6d5d695249">checkMagFields.run</a></div><div class="ttdeci">run()</div><div class="ttdef"><b>Definition</b> <a href="checkMagFields_8py_source.html#l00005">checkMagFields.py:5</a></div></div>
@@ -798,9 +799,9 @@ $(document).ready(function(){initNavTree('run__simScript_8py_source.html',''); i
 <div class="ttc" id="anamespacepythia8__conf_html_ab07a0d848feb83df22d2d5b6e85fb374"><div class="ttname"><a href="namespacepythia8__conf.html#ab07a0d848feb83df22d2d5b6e85fb374">pythia8_conf.configurerpvsusy</a></div><div class="ttdeci">configurerpvsusy(P8gen, mass, couplings, sfermionmass, benchmark, inclusive, deepCopy=False, debug=True)</div><div class="ttdef"><b>Definition</b> <a href="pythia8__conf_8py_source.html#l00011">pythia8_conf.py:11</a></div></div>
 <div class="ttc" id="anamespacepythia8__conf_html_afb2e623d52589f186d49f773cdb940cc"><div class="ttname"><a href="namespacepythia8__conf.html#afb2e623d52589f186d49f773cdb940cc">pythia8_conf.configure</a></div><div class="ttdeci">configure(P8gen, mass, production_couplings, decay_couplings, process_selection, deepCopy=False, debug=True)</div><div class="ttdef"><b>Definition</b> <a href="pythia8__conf_8py_source.html#l00129">pythia8_conf.py:130</a></div></div>
 <div class="ttc" id="anamespacepythia8darkphoton__conf_html_acd520394960a5dfa80c744de77b559f4"><div class="ttname"><a href="namespacepythia8darkphoton__conf.html#acd520394960a5dfa80c744de77b559f4">pythia8darkphoton_conf.configure</a></div><div class="ttdeci">configure(P8gen, mass, epsilon, inclusive, motherMode, deepCopy=False, debug=True)</div><div class="ttdef"><b>Definition</b> <a href="pythia8darkphoton__conf_8py_source.html#l00083">pythia8darkphoton_conf.py:83</a></div></div>
-<div class="ttc" id="anamespacerun__simScript_html_a389396898b5b5a2fdae48a4fa4ab4b14"><div class="ttname"><a href="namespacerun__simScript.html#a389396898b5b5a2fdae48a4fa4ab4b14">run_simScript.visualizeMagFields</a></div><div class="ttdeci">visualizeMagFields()</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l00682">run_simScript.py:682</a></div></div>
+<div class="ttc" id="anamespacerun__simScript_html_a389396898b5b5a2fdae48a4fa4ab4b14"><div class="ttname"><a href="namespacerun__simScript.html#a389396898b5b5a2fdae48a4fa4ab4b14">run_simScript.visualizeMagFields</a></div><div class="ttdeci">visualizeMagFields()</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l00683">run_simScript.py:683</a></div></div>
 <div class="ttc" id="anamespacerun__simScript_html_a961362661e51487d9f3bb5a388d7175b"><div class="ttname"><a href="namespacerun__simScript.html#a961362661e51487d9f3bb5a388d7175b">run_simScript.int</a></div><div class="ttdeci">int</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l00109">run_simScript.py:109</a></div></div>
-<div class="ttc" id="anamespacerun__simScript_html_ac6390391d3c0b2c299be2757e56f72a4"><div class="ttname"><a href="namespacerun__simScript.html#ac6390391d3c0b2c299be2757e56f72a4">run_simScript.checkOverlapsWithGeant4</a></div><div class="ttdeci">checkOverlapsWithGeant4()</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l00684">run_simScript.py:684</a></div></div>
+<div class="ttc" id="anamespacerun__simScript_html_ac6390391d3c0b2c299be2757e56f72a4"><div class="ttname"><a href="namespacerun__simScript.html#ac6390391d3c0b2c299be2757e56f72a4">run_simScript.checkOverlapsWithGeant4</a></div><div class="ttdeci">checkOverlapsWithGeant4()</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l00685">run_simScript.py:685</a></div></div>
 <div class="ttc" id="anamespacesaveBasicParameters_html_ae19428dcf1f80c5affea43fc209bf908"><div class="ttname"><a href="namespacesaveBasicParameters.html#ae19428dcf1f80c5affea43fc209bf908">saveBasicParameters.execute</a></div><div class="ttdeci">execute(f, ox, name='ShipGeo')</div><div class="ttdef"><b>Definition</b> <a href="saveBasicParameters_8py_source.html#l00038">saveBasicParameters.py:38</a></div></div>
 <div class="ttc" id="anamespaceshipDet__conf_html_a7f232397871353ce80c1ea03eb15bd20"><div class="ttname"><a href="namespaceshipDet__conf.html#a7f232397871353ce80c1ea03eb15bd20">shipDet_conf.configure</a></div><div class="ttdeci">configure(run, ship_geo)</div><div class="ttdef"><b>Definition</b> <a href="shipDet__conf_8py_source.html#l00275">shipDet_conf.py:275</a></div></div>
 <div class="ttc" id="anamespaceshipRoot__conf_html_a4bb207e902847385c1369c120d9063ec"><div class="ttname"><a href="namespaceshipRoot__conf.html#a4bb207e902847385c1369c120d9063ec">shipRoot_conf.configure</a></div><div class="ttdeci">configure(darkphoton=None)</div><div class="ttdef"><b>Definition</b> <a href="shipRoot__conf_8py_source.html#l00063">shipRoot_conf.py:63</a></div></div>
