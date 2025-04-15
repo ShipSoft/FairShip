@@ -17,7 +17,7 @@ class Task:
   self.sTree = main.sTree
   self.fpidArray  = ROOT.TClonesArray("pid")
   if not self.sTree.GetBranch("pid"):
-    self.pID   = self.sTree.Branch("Pid",  self.fpidArray,32000,-1)
+    self.pID   = self.sTree.Branch("Pid",  self.fpidArray)
   else:
     self.pID = self.sTree.pid
   self.reps,self.states,self.newPosDir = {},{},{}

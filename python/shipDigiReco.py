@@ -53,41 +53,41 @@ class ShipDigiReco:
 # prepare for output
 # event header
   self.header  = ROOT.FairEventHeader()
-  self.eventHeader  = self.sTree.Branch("ShipEventHeader",self.header,32000,-1)
+  self.eventHeader  = self.sTree.Branch("ShipEventHeader",self.header)
 # fitted tracks
   self.fGenFitArray = ROOT.TClonesArray("genfit::Track")
   self.fGenFitArray.BypassStreamer(ROOT.kFALSE)
   self.fitTrack2MC  = ROOT.std.vector('int')()
   self.goodTracksVect  = ROOT.std.vector('int')()
-  self.mcLink      = self.sTree.Branch("fitTrack2MC",self.fitTrack2MC,32000,-1)
-  self.fitTracks   = self.sTree.Branch("FitTracks",  self.fGenFitArray,32000,-1)
-  self.goodTracksBranch      = self.sTree.Branch("goodTracks",self.goodTracksVect,32000,-1)
+  self.mcLink      = self.sTree.Branch("fitTrack2MC",self.fitTrack2MC)
+  self.fitTracks   = self.sTree.Branch("FitTracks",  self.fGenFitArray)
+  self.goodTracksBranch      = self.sTree.Branch("goodTracks",self.goodTracksVect)
   self.fTrackletsArray = ROOT.TClonesArray("Tracklet")
-  self.Tracklets   = self.sTree.Branch("Tracklets",  self.fTrackletsArray,32000,-1)
+  self.Tracklets   = self.sTree.Branch("Tracklets",  self.fTrackletsArray)
 #
   self.digiStraw = ROOT.std.vector("strawtubesHit")()
-  self.digiStrawBranch   = self.sTree.Branch("Digi_StrawtubesHits",self.digiStraw,32000,-1)
+  self.digiStrawBranch   = self.sTree.Branch("Digi_StrawtubesHits",self.digiStraw)
   self.digiSBT    = ROOT.std.vector("vetoHit")()
-  self.digiSBTBranch=self.sTree.Branch("Digi_SBTHits",self.digiSBT,32000,-1)
+  self.digiSBTBranch=self.sTree.Branch("Digi_SBTHits",self.digiSBT)
   self.vetoHitOnTrackArray    = ROOT.TClonesArray("vetoHitOnTrack")
-  self.vetoHitOnTrackBranch=self.sTree.Branch("VetoHitOnTrack",self.vetoHitOnTrackArray,32000,-1)
+  self.vetoHitOnTrackBranch=self.sTree.Branch("VetoHitOnTrack",self.vetoHitOnTrackArray)
   self.digiSBT2MC  = ROOT.std.vector('std::vector< int >')()
-  self.mcLinkSBT   = self.sTree.Branch("digiSBT2MC",self.digiSBT2MC,32000,-1)
+  self.mcLinkSBT   = self.sTree.Branch("digiSBT2MC",self.digiSBT2MC)
   self.digiTimeDet    = ROOT.TClonesArray("TimeDetHit")
-  self.digiTimeDetBranch=self.sTree.Branch("Digi_TimeDetHits",self.digiTimeDet,32000,-1)
+  self.digiTimeDetBranch=self.sTree.Branch("Digi_TimeDetHits",self.digiTimeDet)
   self.digiUpstreamTagger    = ROOT.TClonesArray("UpstreamTaggerHit")
-  self.digiUpstreamTaggerBranch=self.sTree.Branch("Digi_UpstreamTaggerHits",self.digiUpstreamTagger,32000,-1)
+  self.digiUpstreamTaggerBranch=self.sTree.Branch("Digi_UpstreamTaggerHits",self.digiUpstreamTagger)
   self.digiMuon    = ROOT.TClonesArray("muonHit")
-  self.digiMuonBranch=self.sTree.Branch("Digi_muonHits",self.digiMuon,32000,-1)
+  self.digiMuonBranch=self.sTree.Branch("Digi_muonHits",self.digiMuon)
 # for the digitizing step
   self.v_drift = global_variables.modules["Strawtubes"].StrawVdrift()
   self.sigma_spatial = global_variables.modules["Strawtubes"].StrawSigmaSpatial()
 # optional if present, splitcalCluster
   if self.sTree.GetBranch("splitcalPoint"):
    self.digiSplitcal = ROOT.TClonesArray("splitcalHit")
-   self.digiSplitcalBranch=self.sTree.Branch("Digi_SplitcalHits",self.digiSplitcal,32000,-1)
+   self.digiSplitcalBranch=self.sTree.Branch("Digi_SplitcalHits",self.digiSplitcal)
    self.recoSplitcal = ROOT.TClonesArray("splitcalCluster")
-   self.recoSplitcalBranch=self.sTree.Branch("Reco_SplitcalClusters",self.recoSplitcal,32000,-1)
+   self.recoSplitcalBranch=self.sTree.Branch("Reco_SplitcalClusters",self.recoSplitcal)
 
 # setup ecal reconstruction
   self.caloTasks = []
@@ -159,17 +159,17 @@ class ShipDigiReco:
    self.ecalMaximums      = ecalMaximumFind.InitPython(self.ecalStructure)
    self.ecalCalib         = ecalClusterCalib.InitPython()
    self.ecalClusters      = ecalClusterFind.InitPython(self.ecalStructure, self.ecalMaximums, self.ecalCalib)
-   self.EcalClusters = self.sTree.Branch("EcalClusters",self.ecalClusters,32000,-1)
+   self.EcalClusters = self.sTree.Branch("EcalClusters",self.ecalClusters)
    self.ecalReconstructed = ecalReco.InitPython(self.sTree.EcalClusters, self.ecalStructure, self.ecalCalib)
-   self.EcalReconstructed = self.sTree.Branch("EcalReconstructed",self.ecalReconstructed,32000,-1)
+   self.EcalReconstructed = self.sTree.Branch("EcalReconstructed",self.ecalReconstructed)
    ecalMatch.InitPython(self.ecalStructure, self.ecalReconstructed, self.sTree.MCTrack)
    if global_variables.EcalDebugDraw:
      ecalDrawer.InitPython(self.sTree.MCTrack, self.sTree.EcalPoint, self.ecalStructure, self.ecalClusters)
   else:
    ecalClusters      = ROOT.TClonesArray("ecalCluster")
    ecalReconstructed = ROOT.TClonesArray("ecalReconstructed")
-   self.EcalClusters = self.sTree.Branch("EcalClusters",ecalClusters,32000,-1)
-   self.EcalReconstructed = self.sTree.Branch("EcalReconstructed",ecalReconstructed,32000,-1)
+   self.EcalClusters = self.sTree.Branch("EcalClusters",ecalClusters)
+   self.EcalReconstructed = self.sTree.Branch("EcalReconstructed",ecalReconstructed)
 #
 # init geometry and mag. field
   gMan  = ROOT.gGeoManager

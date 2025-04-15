@@ -14,7 +14,7 @@ class Task:
   self.sTree = sTree
   self.fPartArray  = ROOT.TClonesArray("ShipParticle")
   if not self.sTree.GetBranch("Particles"):
-   self.Particles   = self.sTree.Branch("Particles",  self.fPartArray,32000,-1)
+   self.Particles   = self.sTree.Branch("Particles",  self.fPartArray)
   else:
    self.Particles = self.sTree.Particles
   self.reps,self.states,self.newPosDir = {},{},{}
