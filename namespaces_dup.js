@@ -1503,6 +1503,7 @@ var namespaces_dup =
       [ "fastMuon", "namespacerun__simScript.html#af0d4ea6c5c1d66bad312d085d2391291", null ],
       [ "fGeo", "namespacerun__simScript.html#a0500b37f05de8da006a3ae2c7e60c3f5", null ],
       [ "fieldMaker", "namespacerun__simScript.html#a7b5dab5e9f50a37366549d5a006483e9", null ],
+      [ "fieldMap", "namespacerun__simScript.html#a510e4268b2f7e9ab7d72a49d8495aed1", null ],
       [ "fileType", "namespacerun__simScript.html#ad73036cf9c8764a29aeb48cf685642d4", null ],
       [ "fin", "namespacerun__simScript.html#acd3b74009edf7034331bd5acb8a5169e", null ],
       [ "fout", "namespacerun__simScript.html#a220cc43c43bf49500c5fdd5a4e9b8e44", null ],

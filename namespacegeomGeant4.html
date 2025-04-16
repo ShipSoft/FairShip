@@ -175,7 +175,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  148</span>    <span class="comment"># Set the main spectrometer field map as a global field</span></div>
 <div class="line"><span class="lineno">  149</span>    <span class="keywordflow">if</span> hasattr(shipGeo, <span class="stringliteral">&#39;Bfield&#39;</span>):</div>
 <div class="line"><span class="lineno">  150</span>      fieldsList = []</div>
-<div class="line"><span class="lineno">  151</span>      fieldMaker.defineFieldMap(<span class="stringliteral">&#39;MainSpecMap&#39;</span>, <span class="stringliteral">&#39;files/MainSpectrometerField.root&#39;</span>,</div>
+<div class="line"><span class="lineno">  151</span>      fieldMaker.defineFieldMap(<span class="stringliteral">&#39;MainSpecMap&#39;</span>, shipGeo.Bfield.fieldMap,</div>
 <div class="line"><span class="lineno">  152</span>                                ROOT.TVector3(0.0, 0.0, shipGeo.Bfield.z))</div>
 <div class="line"><span class="lineno">  153</span>      fieldsList.append(<span class="stringliteral">&#39;MainSpecMap&#39;</span>)</div>
 <div class="line"><span class="lineno">  154</span> </div>

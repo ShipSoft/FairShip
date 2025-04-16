@@ -105,6 +105,7 @@ Added</h2>
 <li><b>Corrections in MuonDIS simulation</b> The DIS interactions are now time-shifted to be consistent with the original incoming muon. Additionally, tracks from soft interactions of the original muon along with the muon's veto response are preserved (in muonDis.root) and included up to the DIS interaction point. To be noted that the muon veto points are manually added using <a class="el" href="add__muonresponse_8py.html">add_muonresponse.py</a>, which modifies the simulation file. This replaces the old method of "backward-travelling muon" to generate the incoming muon's veto response. All MuonDIS simulation scripts have been updated and consolidated within FairShip/muonDIS, ensuring consistency for new productions.</li>
 <li>Added a custom CrossSection branch to the simulation file to save the DIS cross sections from muonDIS.</li>
 <li>Added event_inspector class to experimental analysis_toolkit to streamline usage of helper functions; Added dump_event() as a start.</li>
+<li>Add (optional) MgB2 field map</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md3"></a>
 Fixed</h2>
@@ -134,6 +135,7 @@ Changed</h2>
 <li>Get rid of straw diameter dependency in scale factor</li>
 <li>Assume all tracks are muons during track fit (avoid using MC truth)</li>
 <li>Change of UBT geometry, remove implementation of RPC and setting a new scoring plane of 4×6 m</li>
+<li>Allow specifying spectrometer field map</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md5"></a>
 Removed</h2>
