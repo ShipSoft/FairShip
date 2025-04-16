@@ -602,11 +602,12 @@ def getReconstructibleTracks(iEvent, sTree, sGeo, ShipGeo):
     """
 
     TStationz = ShipGeo.TrackStation1.z
-    Zpos = TStationz - 3. /2. * ShipGeo.strawtubes.DeltazView - 1. / 2. * ShipGeo.strawtubes.DeltazLayer
-    TStation1StartZ = Zpos - ShipGeo.strawtubes.OuterStrawDiameter / 2
+    Zpos = TStationz - 3. / 2. * ShipGeo.strawtubes_geo.delta_z_view - 1. / 2. * ShipGeo.strawtubes_geo.delta_z_layer
+    TStation1StartZ = Zpos - ShipGeo.strawtubes_geo.outer_straw_diameter / 2.
 
-    Zpos = TStationz + 3. /2. * ShipGeo.strawtubes.DeltazView + 1. / 2. * ShipGeo.strawtubes.DeltazLayer
-    TStation4EndZ = Zpos + ShipGeo.strawtubes.OuterStrawDiameter / 2
+    TStationz = ShipGeo.TrackStation4.z
+    Zpos = TStationz + 3. / 2. * ShipGeo.strawtubes_geo.delta_z_view + 1. / 2. * ShipGeo.strawtubes_geo.delta_z_layer
+    TStation4EndZ = Zpos + ShipGeo.strawtubes_geo.outer_straw_diameter / 2.
 
 
     PDG=ROOT.TDatabasePDG.Instance()
