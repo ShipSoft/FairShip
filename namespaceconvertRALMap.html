@@ -146,15 +146,15 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  204</span> </div>
 <div class="line"><span class="lineno">  205</span>    <span class="comment"># Co-ordinate ranges</span></div>
 <div class="line"><span class="lineno">  206</span>    rStruct = ROOT.rangeStruct()</div>
-<div class="line"><span class="lineno">  207</span>    rangeTree.Branch(<span class="stringliteral">&#39;xMin&#39;</span>, ROOT.AddressOf(rStruct, <span class="stringliteral">&#39;xMin&#39;</span>), <span class="stringliteral">&#39;xMin/F&#39;</span>)</div>
-<div class="line"><span class="lineno">  208</span>    rangeTree.Branch(<span class="stringliteral">&#39;xMax&#39;</span>, ROOT.AddressOf(rStruct, <span class="stringliteral">&#39;xMax&#39;</span>), <span class="stringliteral">&#39;xMax/F&#39;</span>)</div>
-<div class="line"><span class="lineno">  209</span>    rangeTree.Branch(<span class="stringliteral">&#39;dx&#39;</span>, ROOT.AddressOf(rStruct, <span class="stringliteral">&#39;dx&#39;</span>), <span class="stringliteral">&#39;dx/F&#39;</span>)</div>
-<div class="line"><span class="lineno">  210</span>    rangeTree.Branch(<span class="stringliteral">&#39;yMin&#39;</span>, ROOT.AddressOf(rStruct, <span class="stringliteral">&#39;yMin&#39;</span>), <span class="stringliteral">&#39;yMin/F&#39;</span>)</div>
-<div class="line"><span class="lineno">  211</span>    rangeTree.Branch(<span class="stringliteral">&#39;yMax&#39;</span>, ROOT.AddressOf(rStruct, <span class="stringliteral">&#39;yMax&#39;</span>), <span class="stringliteral">&#39;yMax/F&#39;</span>)</div>
-<div class="line"><span class="lineno">  212</span>    rangeTree.Branch(<span class="stringliteral">&#39;dy&#39;</span>, ROOT.AddressOf(rStruct, <span class="stringliteral">&#39;dy&#39;</span>), <span class="stringliteral">&#39;dy/F&#39;</span>)</div>
-<div class="line"><span class="lineno">  213</span>    rangeTree.Branch(<span class="stringliteral">&#39;zMin&#39;</span>, ROOT.AddressOf(rStruct, <span class="stringliteral">&#39;zMin&#39;</span>), <span class="stringliteral">&#39;zMin/F&#39;</span>)</div>
-<div class="line"><span class="lineno">  214</span>    rangeTree.Branch(<span class="stringliteral">&#39;zMax&#39;</span>, ROOT.AddressOf(rStruct, <span class="stringliteral">&#39;zMax&#39;</span>), <span class="stringliteral">&#39;zMax/F&#39;</span>)</div>
-<div class="line"><span class="lineno">  215</span>    rangeTree.Branch(<span class="stringliteral">&#39;dz&#39;</span>, ROOT.AddressOf(rStruct, <span class="stringliteral">&#39;dz&#39;</span>), <span class="stringliteral">&#39;dz/F&#39;</span>)</div>
+<div class="line"><span class="lineno">  207</span>    rangeTree.Branch(<span class="stringliteral">&#39;xMin&#39;</span>, ROOT.addressof(rStruct, <span class="stringliteral">&#39;xMin&#39;</span>), <span class="stringliteral">&#39;xMin/F&#39;</span>)</div>
+<div class="line"><span class="lineno">  208</span>    rangeTree.Branch(<span class="stringliteral">&#39;xMax&#39;</span>, ROOT.addressof(rStruct, <span class="stringliteral">&#39;xMax&#39;</span>), <span class="stringliteral">&#39;xMax/F&#39;</span>)</div>
+<div class="line"><span class="lineno">  209</span>    rangeTree.Branch(<span class="stringliteral">&#39;dx&#39;</span>, ROOT.addressof(rStruct, <span class="stringliteral">&#39;dx&#39;</span>), <span class="stringliteral">&#39;dx/F&#39;</span>)</div>
+<div class="line"><span class="lineno">  210</span>    rangeTree.Branch(<span class="stringliteral">&#39;yMin&#39;</span>, ROOT.addressof(rStruct, <span class="stringliteral">&#39;yMin&#39;</span>), <span class="stringliteral">&#39;yMin/F&#39;</span>)</div>
+<div class="line"><span class="lineno">  211</span>    rangeTree.Branch(<span class="stringliteral">&#39;yMax&#39;</span>, ROOT.addressof(rStruct, <span class="stringliteral">&#39;yMax&#39;</span>), <span class="stringliteral">&#39;yMax/F&#39;</span>)</div>
+<div class="line"><span class="lineno">  212</span>    rangeTree.Branch(<span class="stringliteral">&#39;dy&#39;</span>, ROOT.addressof(rStruct, <span class="stringliteral">&#39;dy&#39;</span>), <span class="stringliteral">&#39;dy/F&#39;</span>)</div>
+<div class="line"><span class="lineno">  213</span>    rangeTree.Branch(<span class="stringliteral">&#39;zMin&#39;</span>, ROOT.addressof(rStruct, <span class="stringliteral">&#39;zMin&#39;</span>), <span class="stringliteral">&#39;zMin/F&#39;</span>)</div>
+<div class="line"><span class="lineno">  214</span>    rangeTree.Branch(<span class="stringliteral">&#39;zMax&#39;</span>, ROOT.addressof(rStruct, <span class="stringliteral">&#39;zMax&#39;</span>), <span class="stringliteral">&#39;zMax/F&#39;</span>)</div>
+<div class="line"><span class="lineno">  215</span>    rangeTree.Branch(<span class="stringliteral">&#39;dz&#39;</span>, ROOT.addressof(rStruct, <span class="stringliteral">&#39;dz&#39;</span>), <span class="stringliteral">&#39;dz/F&#39;</span>)</div>
 <div class="line"><span class="lineno">  216</span> </div>
 <div class="line"><span class="lineno">  217</span>    dataTree = ROOT.TTree(<span class="stringliteral">&#39;Data&#39;</span>, <span class="stringliteral">&#39;Data&#39;</span>)</div>
 <div class="line"><span class="lineno">  218</span>    dataTree.SetDirectory(theFile)</div>
@@ -164,9 +164,9 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  222</span>    <span class="comment"># the field bin = (iX*Ny + iY)*Nz + iZ, where Ny and Nz are the number</span></div>
 <div class="line"><span class="lineno">  223</span>    <span class="comment"># of y and z bins</span></div>
 <div class="line"><span class="lineno">  224</span>    dStruct = ROOT.dataStruct()</div>
-<div class="line"><span class="lineno">  225</span>    dataTree.Branch(<span class="stringliteral">&#39;Bx&#39;</span>, ROOT.AddressOf(dStruct, <span class="stringliteral">&#39;Bx&#39;</span>), <span class="stringliteral">&#39;Bx/F&#39;</span>)</div>
-<div class="line"><span class="lineno">  226</span>    dataTree.Branch(<span class="stringliteral">&#39;By&#39;</span>, ROOT.AddressOf(dStruct, <span class="stringliteral">&#39;By&#39;</span>), <span class="stringliteral">&#39;By/F&#39;</span>)</div>
-<div class="line"><span class="lineno">  227</span>    dataTree.Branch(<span class="stringliteral">&#39;Bz&#39;</span>, ROOT.AddressOf(dStruct, <span class="stringliteral">&#39;Bz&#39;</span>), <span class="stringliteral">&#39;Bz/F&#39;</span>)</div>
+<div class="line"><span class="lineno">  225</span>    dataTree.Branch(<span class="stringliteral">&#39;Bx&#39;</span>, ROOT.addressof(dStruct, <span class="stringliteral">&#39;Bx&#39;</span>), <span class="stringliteral">&#39;Bx/F&#39;</span>)</div>
+<div class="line"><span class="lineno">  226</span>    dataTree.Branch(<span class="stringliteral">&#39;By&#39;</span>, ROOT.addressof(dStruct, <span class="stringliteral">&#39;By&#39;</span>), <span class="stringliteral">&#39;By/F&#39;</span>)</div>
+<div class="line"><span class="lineno">  227</span>    dataTree.Branch(<span class="stringliteral">&#39;Bz&#39;</span>, ROOT.addressof(dStruct, <span class="stringliteral">&#39;Bz&#39;</span>), <span class="stringliteral">&#39;Bz/F&#39;</span>)</div>
 <div class="line"><span class="lineno">  228</span> </div>
 <div class="line"><span class="lineno">  229</span>    <span class="comment"># Open text file and process the information</span></div>
 <div class="line"><span class="lineno">  230</span>    iLine = 0</div>
