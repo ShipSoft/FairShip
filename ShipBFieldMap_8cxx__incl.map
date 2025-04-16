@@ -1,15 +1,17 @@
 <map id="field/ShipBFieldMap.cxx" name="field/ShipBFieldMap.cxx">
-<area shape="rect" id="Node000001" title=" " alt="" coords="464,5,641,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="519,5,696,31"/>
 <area shape="rect" id="Node000002" href="$ShipBFieldMap_8h.html" title=" " alt="" coords="273,79,403,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="519,33,387,77,385,72,517,28"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="565,33,395,78,394,73,563,28"/>
 <area shape="rect" id="Node000008" title=" " alt="" coords="428,79,493,104"/>
-<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="540,33,488,72,485,68,536,29"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="585,33,498,75,496,70,583,28"/>
 <area shape="rect" id="Node000009" title=" " alt="" coords="518,79,587,104"/>
-<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="555,31,555,65,550,65,550,31"/>
-<area shape="rect" id="Node000010" title=" " alt="" coords="612,79,685,104"/>
-<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="570,29,623,68,620,72,567,33"/>
-<area shape="rect" id="Node000011" title=" " alt="" coords="710,79,790,104"/>
-<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="585,28,706,71,704,76,583,33"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="600,33,572,69,568,66,596,29"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="612,79,712,104"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="618,29,647,66,643,69,614,33"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="736,79,809,104"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="635,28,734,71,732,76,633,33"/>
+<area shape="rect" id="Node000012" title=" " alt="" coords="834,79,914,104"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="651,28,821,73,820,78,649,33"/>
 <area shape="rect" id="Node000003" title=" " alt="" coords="5,152,116,177"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="294,107,120,151,118,146,293,101"/>
 <area shape="rect" id="Node000004" title=" " alt="" coords="141,152,285,177"/>

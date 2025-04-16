@@ -104,8 +104,11 @@ Added</h2>
 <li>feat(python): Add experimental script to check overlaps quickly</li>
 <li><b>Corrections in MuonDIS simulation</b> The DIS interactions are now time-shifted to be consistent with the original incoming muon. Additionally, tracks from soft interactions of the original muon along with the muon's veto response are preserved (in muonDis.root) and included up to the DIS interaction point. To be noted that the muon veto points are manually added using <a class="el" href="add__muonresponse_8py.html">add_muonresponse.py</a>, which modifies the simulation file. This replaces the old method of "backward-travelling muon" to generate the incoming muon's veto response. All MuonDIS simulation scripts have been updated and consolidated within FairShip/muonDIS, ensuring consistency for new productions.</li>
 <li>Added a custom CrossSection branch to the simulation file to save the DIS cross sections from muonDIS.</li>
+<li>Added new warm muon shield <code>warm_opt</code> in <a class="el" href="namespacegeometry__config.html">geometry_config</a></li>
+<li>Added new parameters to muon shield to support configurations from current optimisation campaign</li>
 <li>Added event_inspector class to experimental analysis_toolkit to streamline usage of helper functions; Added dump_event() as a start.</li>
 <li>Add (optional) MgB2 field map</li>
+<li><a class="el" href="classShipBFieldMap.html" title="Class that defines a (3d) magnetic field map (distances in cm, fields in tesla)">ShipBFieldMap</a>: Added LOG info and fatal</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md3"></a>
 Fixed</h2>
@@ -120,6 +123,7 @@ Fixed</h2>
 <li>fix: don't use TFile's deprecated attribute syntax</li>
 <li>fix(digi): Fix logic of SST digitisation (#662)</li>
 <li>Fix double append of recognized stracks</li>
+<li>fix(<a class="el" href="ShieldUtils_8py.html">ShieldUtils.py</a>): The fieldmap offset was calibrated with the old version of MS</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md4"></a>
 Changed</h2>
@@ -129,6 +133,7 @@ Changed</h2>
 <li>Set up of the shield name is now done using the <code>--shieldName</code> flag instead of <code>--scName</code>.</li>
 <li>Allow using standalone TPythia for use with ROOT 6.32+</li>
 <li>Use git-lfs to track ROOT files</li>
+<li><a class="el" href="namespaceshipDet__conf.html">shipDet_conf</a> behaviour no longer depends on the muon shield version.</li>
 <li>feat(digi): Use STL vectors for SST digitisation</li>
 <li>feat(digi): Use STL vectors for SBT digitisation</li>
 <li>Change max x of stereo hits to match straw length</li>
@@ -142,6 +147,11 @@ Removed</h2>
 <ul>
 <li>fix: Remove unused, unrunnable shipPatRec_prev.py</li>
 <li>feat(geometry): Dropped support for old geometries without DecayVolumeMedium explicitly set(pre 24.11 release case).</li>
+<li>MS: Removed old options 7, 9, 10</li>
+<li>MS: Removed cobalt option</li>
+<li>MS: Removed stepGeo option</li>
+<li>MS: Removed the flag constant field in Absorber (HS) -&gt; fixed to 1.7 T</li>
+<li>MS: <a class="el" href="run__simScript_8py.html">run_simScript.py</a>: The &ndash;noSC flag is removed, whether or not a configuration is SC hybrid depends on the config selected. Configurations are defined in the shield_db in <a class="el" href="geometry__config_8py.html">geometry_config.py</a></li>
 <li>Removed old nuTauTargetDesign configurations from 0 to 2. Currently supported: 3 (2018, magnetized target) and 4 (Current, not magnetized target and spectrometer)</li>
 <li>build(field,nutaudet): remove unnecessary ROOT_INCLUDE_DIR include</li>
 </ul>

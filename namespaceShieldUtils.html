@@ -120,8 +120,8 @@ Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="ShieldUtils_8py_source.html#l00001">1</a> of file <a class="el" href="ShieldUtils_8py_source.html">ShieldUtils.py</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">    1</span><span class="keyword">def </span>find_shield_center(ship_geo):</div>
 <div class="line"><span class="lineno">    2</span>    zEndOfAbsorb = ship_geo.muShield.z - ship_geo.muShield.length / 2;</div>
-<div class="line"><span class="lineno">    3</span>    dZ = [<span class="keywordtype">None</span>] * 9</div>
-<div class="line"><span class="lineno">    4</span>    Z = [<span class="keywordtype">None</span>] * 9</div>
+<div class="line"><span class="lineno">    3</span>    dZ = [<span class="keywordtype">None</span>] * 7</div>
+<div class="line"><span class="lineno">    4</span>    Z = [<span class="keywordtype">None</span>] * 7</div>
 <div class="line"><span class="lineno">    5</span>    zgap = 10.</div>
 <div class="line"><span class="lineno">    6</span>    dZ[0] = ship_geo.muShield.dZ1 - zgap / 2;</div>
 <div class="line"><span class="lineno">    7</span>    Z[0] = zEndOfAbsorb + dZ[0] + zgap;</div>
@@ -144,15 +144,10 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   24</span>    dZ[6] = ship_geo.muShield.dZ7 - zgap / 2;</div>
 <div class="line"><span class="lineno">   25</span>    Z[6] = Z[5] + dZ[5] + dZ[6] + zgap;</div>
 <div class="line"><span class="lineno">   26</span> </div>
-<div class="line"><span class="lineno">   27</span>    dZ[7] = ship_geo.muShield.dZ8 - zgap / 2;</div>
-<div class="line"><span class="lineno">   28</span>    Z[7] = Z[6] + dZ[6] + dZ[7] + zgap;</div>
-<div class="line"><span class="lineno">   29</span> </div>
-<div class="line"><span class="lineno">   30</span>    dZ[8] = 10.;</div>
-<div class="line"><span class="lineno">   31</span>    Z[8] = Z[7] + dZ[7] + dZ[8];</div>
-<div class="line"><span class="lineno">   32</span> </div>
-<div class="line"><span class="lineno">   33</span>    shield_center = (Z[2] + Z[8] + dZ[8] - dZ[2]) / 2</div>
-<div class="line"><span class="lineno">   34</span>    shield_half_lenth = abs((Z[2] - dZ[2]) - (Z[8] + dZ[8])) / 2</div>
-<div class="line"><span class="lineno">   35</span>    <span class="keywordflow">return</span> shield_center, shield_half_lenth</div>
+<div class="line"><span class="lineno">   27</span> </div>
+<div class="line"><span class="lineno">   28</span>    shield_center = (Z[1] + Z[6] + dZ[6] - dZ[1]) / 2</div>
+<div class="line"><span class="lineno">   29</span>    shield_half_lenth = abs((Z[1] - dZ[1]) - (Z[6] + dZ[6])) / 2</div>
+<div class="line"><span class="lineno">   30</span>    <span class="keywordflow">return</span> shield_center, shield_half_lenth</div>
 </div><!-- fragment -->
 </div>
 </div>
