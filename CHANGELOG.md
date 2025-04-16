@@ -130,6 +130,8 @@ it in future.
 - The decorators from decorators.py now need to be applied explicitly using the new `apply_decorators` function.
 - The --debug flag to run_simScript.py now controls the severity that FairLogger logs.
 - J/psi are no longer decayed using Geant4 when using the --EvtGenDecayer option
+* Move SST geometry parameters to yaml
+* Update strawtubes class
 
 ### Removed
 
