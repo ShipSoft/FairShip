@@ -240,6 +240,46 @@ def configure_veto(yaml_file, z0):
 
     detectorList.append(Veto)
 
+def configure_strawtubes(yaml_file, sst_box_medium):
+    with open(yaml_file) as file:
+        config = yaml.safe_load(file)
+
+    strawtubes_geo = AttrDict(config)
+
+    Strawtubes = ROOT.strawtubes(sst_box_medium)
+    Strawtubes.SetZpositions(
+        strawtubes_geo.z1Position,
+        strawtubes_geo.z2Position,
+        strawtubes_geo.z3Position,
+        strawtubes_geo.z4Position,
+    )
+    Strawtubes.SetStrawLength(strawtubes_geo.width)
+    Strawtubes.SetStrawDiameter(
+        strawtubes_geo.OuterStrawDiameter,
+        strawtubes_geo.WallThickness,
+    )
+    Strawtubes.SetStrawPitch(
+        strawtubes_geo.StrawPitch,
+        strawtubes_geo.YLayerOffset,
+    )
+    Strawtubes.SetDeltazLayer(strawtubes_geo.DeltazLayer)
+    Strawtubes.SetStrawsPerLayer(int(2 * strawtubes_geo.height / strawtubes_geo.StrawPitch))
+    Strawtubes.SetStereoAngle(strawtubes_geo.ViewAngle)
+    Strawtubes.SetWireThickness(strawtubes_geo.WireThickness)
+    Strawtubes.SetDeltazView(strawtubes_geo.DeltazView)
+    Strawtubes.SetFrameMaterial(strawtubes_geo.FrameMaterial)
+    Strawtubes.SetVacBox_x(strawtubes_geo.StationWidth)
+    Strawtubes.SetVacBox_y(strawtubes_geo.StationHeight)
+    Strawtubes.SetVacBox_z(strawtubes_geo.StationLength)
+
+    #For digitization
+    Strawtubes.SetStrawResolution(
+        strawtubes_geo.v_drift,
+        strawtubes_geo.sigma_spatial,
+    )
+
+    detectorList.append(Strawtubes)
+
 
 def configure(run, ship_geo):
     # ---- for backward compatibility ----
@@ -368,53 +408,12 @@ def configure(run, ship_geo):
         ship_geo.decayVolume.z0,
     )
 
-
-    if ship_geo.strawDesign > 1:
-        # for backward compatibility
-        if ship_geo.strawDesign == 10 and not hasattr(
-            ship_geo.strawtubes, "DeltazFrame"
-        ):
-            ship_geo.strawtubes.DeltazFrame = 2.5 * u.cm
-            ship_geo.strawtubes.FrameLateralWidth = 1.2 * u.m
-            ship_geo.strawtubes.FrameMaterial = "steel"
-        elif not hasattr(ship_geo.strawtubes, "DeltazFrame"):
-            ship_geo.strawtubes.DeltazFrame = 10.0 * u.cm
-            ship_geo.strawtubes.FrameLateralWidth = 1.0 * u.cm
-            ship_geo.strawtubes.FrameMaterial = "aluminium"
-        ship_geo.strawtubes.medium = "vacuums" if ship_geo.DecayVolumeMedium == "vacuums" else "air"
-
-        Strawtubes = ROOT.strawtubes(ship_geo.strawtubes.medium)
-        Strawtubes.SetZpositions(
-            ship_geo.TrackStation1.z,
-            ship_geo.TrackStation2.z,
-            ship_geo.TrackStation3.z,
-            ship_geo.TrackStation4.z,
-        )
-        Strawtubes.SetDeltazFrame(ship_geo.strawtubes.DeltazFrame)
-        Strawtubes.SetFrameLateralWidth(ship_geo.strawtubes.FrameLateralWidth)
-        Strawtubes.SetFrameMaterial(ship_geo.strawtubes.FrameMaterial)
-        Strawtubes.SetDeltazView(ship_geo.strawtubes.DeltazView)
-        Strawtubes.SetInnerStrawDiameter(ship_geo.strawtubes.InnerStrawDiameter)
-        Strawtubes.SetOuterStrawDiameter(ship_geo.strawtubes.OuterStrawDiameter)
-        Strawtubes.SetStrawPitch(
-            ship_geo.strawtubes.StrawPitch,
-            ship_geo.strawtubes.YLayerOffset,
-        )
-        Strawtubes.SetDeltazLayer(ship_geo.strawtubes.DeltazLayer)
-        Strawtubes.SetStrawsPerLayer(ship_geo.strawtubes.StrawsPerLayer)
-        Strawtubes.SetStereoAngle(ship_geo.strawtubes.ViewAngle)
-        Strawtubes.SetWireThickness(ship_geo.strawtubes.WireThickness)
-        Strawtubes.SetVacBox_x(ship_geo.strawtubes.VacBox_x)
-        Strawtubes.SetVacBox_y(ship_geo.strawtubes.VacBox_y)
-        Strawtubes.SetStrawLength(ship_geo.strawtubes.StrawLength)
-
-        Strawtubes.set_station_height(ship_geo.strawtubes.station_height)
-        # for the digitizing step
-        Strawtubes.SetStrawResolution(
-            ship_geo.strawtubes.v_drift,
-            ship_geo.strawtubes.sigma_spatial,
-        )
-        detectorList.append(Strawtubes)
+    #Straw tubes in decay vessel if vacuum, otherwise outside in air
+    ship_geo.strawtubes.medium = "vacuums" if ship_geo.DecayVolumeMedium == "vacuums" else "air"
+    configure_strawtubes(
+        os.path.join(os.environ["FAIRSHIP"], "geometry", "strawtubes_config.yaml"),
+        ship_geo.strawtubes.medium,
+    )
 
     if ship_geo.EcalOption == 1:  # shashlik design TP
         ecal, EcalZSize = posEcal(ship_geo.ecal.z, ship_geo.ecal.File)
