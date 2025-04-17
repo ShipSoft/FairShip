@@ -112,7 +112,7 @@ with ConfigRegistry.register_config("basic") as c:
     magnetIncrease    = 100.*u.cm
     # make z coordinates for the decay volume and tracking stations relative to T4z
     # eventually, the only parameter which needs to be changed when the active shielding lenght changes.
-    z4=2438.*u.cm+magnetIncrease+extraVesselLength
+    z4 = 2582.75*u.cm + magnetIncrease + extraVesselLength
     if strawDesign != 4 and strawDesign != 10:
      print("this design ",strawDesign," is not supported, use strawDesign = 4 or 10")
      1/0
@@ -127,8 +127,8 @@ with ConfigRegistry.register_config("basic") as c:
      c.chambers.Rmin = 245.*u.cm
      c.chambers.Rmax = 250.*u.cm
      # positions and lenghts of vacuum tube segments
-     zset=z4-4666.*u.cm-magnetIncrease-extraVesselLength
-     c.Chamber1 = AttrDict(z=zset)
+     zset = z4 - 4810.75*u.cm - magnetIncrease - extraVesselLength
+     c.Chamber1 = AttrDict(z = zset)
      zset=z4-2628.*u.cm-magnetIncrease-extraVesselLength/2.
      c.Chamber2 = AttrDict(z=zset)
      zset=z4-740.*u.cm-magnetIncrease
@@ -142,13 +142,13 @@ with ConfigRegistry.register_config("basic") as c:
 
      c.xMax = 2 * u.m  # max horizontal width at T4
      #
-     c.TrackStation4 = AttrDict(z=z4)
-     zset=z4-200.*u.cm
-     c.TrackStation3 = AttrDict(z=zset)
-     zset=z4-640.*u.cm-magnetIncrease
-     c.TrackStation2 = AttrDict(z=zset)
-     zset=z4-840.*u.cm-magnetIncrease
-     c.TrackStation1 = AttrDict(z=zset)
+     c.TrackStation4 = AttrDict(z = z4)
+     zset = z4 - 200.*u.cm
+     c.TrackStation3 = AttrDict(z = zset)
+     zset = z4 - 800.*u.cm - magnetIncrease
+     c.TrackStation2 = AttrDict(z = zset)
+     zset = z4 - 1000.*u.cm - magnetIncrease
+     c.TrackStation1 = AttrDict(z = zset)
 
     c.z = c.TrackStation2.z + 0.5 * (c.TrackStation3.z - c.TrackStation2.z)
     c.scintillator = AttrDict(z=0*u.cm)
