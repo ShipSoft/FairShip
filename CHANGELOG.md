@@ -54,6 +54,7 @@ it in future.
 * Assume all tracks are muons during track fit (avoid using MC truth)
 * Change of UBT geometry, remove implementation of RPC and setting a new scoring plane of 4×6 m
 * Allow specifying spectrometer field map
+* Update tracker station z positions (16 April 2025)
 
 ### Removed
 
