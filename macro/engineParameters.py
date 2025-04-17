@@ -10,7 +10,7 @@ import yaml
 
 
 def SetPrimGen(primGen,options,ship_geo,modules):
- 
+
  with open(options.yaml_file) as file:
   config = yaml.safe_load(file)
 
@@ -45,7 +45,7 @@ def SetPrimGen(primGen,options,ship_geo,modules):
   print('Generate ',options.nEvents,' with Genie input', ' first event',options.firstEvent)
 
  ##### nuRadiography
- 
+
  if options.simEngine == "nuRadiography":
   nuRad = AttrDict(config['NuRadio'])
   ut.checkFileExists(nuRad.inputFile)
@@ -75,7 +75,7 @@ def SetPrimGen(primGen,options,ship_geo,modules):
   primGen.AddGenerator(DISgen)
   options.nEvents = min(options.nEvents,DISgen.GetNevents())
   print('Generate ',options.nEvents,' with DIS input', ' first event',options.firstEvent)
-  
+
  ######Nuage
  # -----neutrino interactions from nuage------------------------
  if options.simEngine == "Nuage":
@@ -111,7 +111,7 @@ def SetPrimGen(primGen,options,ship_geo,modules):
   #-CAMM end broken part
 
  ######Ntuple
- 
+
  if options.simEngine == "Ntuple":
   ntuple = AttrDict(config['Ntuple'])
   # reading previously processed muon events, [-50m - 50m]
@@ -230,7 +230,7 @@ def SetPrimGen(primGen,options,ship_geo,modules):
 
 
  #### EvtCalc
-  
+
  # -----EvtCalc--------------------------------------
  if options.simEngine == "EvtCalc":
   evtcalc = AttrDict(config['EvtCalc'])
@@ -246,7 +246,7 @@ def SetPrimGen(primGen,options,ship_geo,modules):
    f"Generate {options.nEvents} with EvtCalc input. First event: {options.firstEvent}"
   )
 
-    
+
  # -----Particle Gun-----------------------
  if options.simEngine == "PG":
   pg = AttrDict(config['ParticleGun'])
@@ -256,6 +256,3 @@ def SetPrimGen(primGen,options,ship_geo,modules):
   myPgun.SetXYZ(0.*u.cm, 0.*u.cm, 0.*u.cm)
   myPgun.SetThetaRange(0,0) # // Polar angle in lab system range [degree]
   primGen.AddGenerator(myPgun)
-
-
-

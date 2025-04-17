@@ -162,7 +162,7 @@ if options.simEngine == "MuonBack":
   MCTracksWithHitsOnly = True # otherwise, output file becomes too big
 
 
-  
+
 #
 run.SetGenerator(primGen)
 # ------------------------------------------------------------------------
