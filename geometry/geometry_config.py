@@ -2,8 +2,6 @@ import shipunit as u
 import ROOT as r
 from ShipGeoConfig import AttrDict, ConfigRegistry
 # the following params should be passed through 'ConfigRegistry.loadpy' method
-# muShieldDesign = 7  #  7 = short magnet design 9 = optimised with T4 as constraint, 8=requires config file
-#                      10 = with field map for hadron absorber, 11 = 9 with field map for muon shield
 # nuTargetPassive = 1  #0 = with active layers, 1 = only passive
 # nuTauTargetDesign  =   #0 = TP, 1 = NEW with magnet, 2 = NEW without magnet, 3 = 2018 design
 
@@ -42,8 +40,6 @@ shield_db = {
         ]
     }
 }
-if "muShieldDesign" not in globals():
-    muShieldDesign = 7
 if "muShieldGeo" not in globals():
     muShieldGeo = None
 if "nuTargetPassive" not in globals():
@@ -86,7 +82,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.shieldName = shieldName
     c.SC_mag = shield_db[shieldName]['hybrid']
 
-    # global muShieldDesign, targetOpt, strawDesign, Yheight
+    # global targetOpt, strawDesign, Yheight
     c.Yheight = Yheight*u.m
     # decision by the SP
     totalLength       = 60 * u.m
@@ -296,7 +292,6 @@ with ConfigRegistry.register_config("basic") as c:
     c.decayVolume.length     =   50*u.m
 
     c.muShield       =  AttrDict(z=0*u.cm)
-    c.muShieldDesign = muShieldDesign
     c.muShield.Field = 1.7 # in units of Tesla expected by ShipMuonShield
     c.muShield.LE = 7 * u.m     # - 0.5 m air - Goliath: 4.5 m - 0.5 m air - nu-tau mu-det: 3 m - 0.5 m air. finally 10m asked by Giovanni
     c.muShield.dZ0 = 1 * u.m

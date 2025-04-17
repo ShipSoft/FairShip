@@ -300,7 +300,6 @@ def configure(run, ship_geo):
         "$FAIRSHIP/geometry/geometry_config.py",
         Yheight=ship_geo.Yheight / u.m,
         tankDesign=ship_geo.tankDesign,
-        muShieldDesign=ship_geo.muShieldDesign,
         nuTauTargetDesign=ship_geo.nuTauTargetDesign,
         muShieldGeo=ship_geo.muShieldGeo,
         SC_mag=ship_geo.SC_mag,
