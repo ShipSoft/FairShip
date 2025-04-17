@@ -1,6 +1,5 @@
 var NAVTREEINDEX26 =
 {
-"hcalInf_8cxx_source.html":[6,0,5,6],
 "hcalInf_8h.html":[6,0,5,7],
 "hcalInf_8h_source.html":[6,0,5,7],
 "hcalLightMap_8cxx.html":[6,0,5,8],
@@ -249,5 +248,6 @@ var NAVTREEINDEX26 =
 "makeCascade_8py.html#a70c92707038e355071f4b1a753e1055e":[6,0,6,14,60],
 "makeCascade_8py.html#a756f9c31660ed70bfa3f8ca13fb3c57e":[6,0,6,14,15],
 "makeCascade_8py.html#a78899eccdfbe34b35988ae859bfc43a1":[6,0,6,14,4],
-"makeCascade_8py.html#a78ae249a99e21af222779c33a741d7b8":[6,0,6,14,13]
+"makeCascade_8py.html#a78ae249a99e21af222779c33a741d7b8":[6,0,6,14,13],
+"makeCascade_8py.html#a7a8bc960c6e04868f276776273ab46a9":[6,0,6,14,14]
 };

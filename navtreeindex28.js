@@ -1,6 +1,5 @@
 var NAVTREEINDEX28 =
 {
-"md_CHANGELOG.html#autotoc_md8":[1,1,1],
 "md_CHANGELOG.html#autotoc_md9":[1,1,2],
 "md_README.html":[3],
 "md_README.html#autotoc_md23":[3,0],
@@ -249,5 +248,6 @@ var NAVTREEINDEX28 =
 "namespaceShipGeo.html#a7805271912e95e22a842d3f4d6ebb634":[4,0,83,16],
 "namespaceShipGeo.html#a8614554cef011fd9b3047a38ec9ccba2":[4,0,83,24],
 "namespaceShipGeo.html#a9f3cf1caf0964ae32250ab1b3d772930":[4,0,83,12],
-"namespaceShipGeo.html#ab148c5ec2303af858392f606376ee04d":[4,0,83,5]
+"namespaceShipGeo.html#ab148c5ec2303af858392f606376ee04d":[4,0,83,5],
+"namespaceShipGeo.html#ab23f3f0290681c76c7c7ca5fd609da40":[4,0,83,20]
 };

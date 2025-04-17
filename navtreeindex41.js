@@ -1,7 +1,5 @@
 var NAVTREEINDEX41 =
 {
-"shipRoot__conf_8py.html#a4bb207e902847385c1369c120d9063ec":[6,0,13,36,0],
-"shipRoot__conf_8py.html#a4c1ff8996fc0955c3bd4c4832c644793":[6,0,13,36,1],
 "shipRoot__conf_8py_source.html":[6,0,13,36],
 "shipStrawTracking_8py.html":[6,0,13,37],
 "shipStrawTracking_8py.html#a005e72c92291692e5a0b39ae98d0ab13":[6,0,13,37,3],
@@ -249,5 +247,7 @@ var NAVTREEINDEX41 =
 "study__GammaConv_8py.html":[6,0,9,23],
 "study__GammaConv_8py.html#a0e406399d5b657e9fc43b13fd28cfa09":[6,0,9,23,7],
 "study__GammaConv_8py.html#a10d1123a69a99bcd399ae95a19c5b21f":[6,0,9,23,31],
-"study__GammaConv_8py.html#a147a7866f4638ffd619406fd06f8cdfb":[6,0,9,23,5]
+"study__GammaConv_8py.html#a147a7866f4638ffd619406fd06f8cdfb":[6,0,9,23,5],
+"study__GammaConv_8py.html#a16cf33bc98985a325104f08b919d8ba8":[6,0,9,23,23],
+"study__GammaConv_8py.html#a1f409493f214e98b6bcf7019cb15b14d":[6,0,9,23,20]
 };

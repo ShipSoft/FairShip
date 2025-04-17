@@ -125,7 +125,6 @@ var geometry__config_8py =
     [ "MuonStation2", "geometry__config_8py.html#a240891cda011d9cb451e3871825750d5", null ],
     [ "MuonStation3", "geometry__config_8py.html#a6bf098cbc7938246af1f1721090f6f2a", null ],
     [ "muShield", "geometry__config_8py.html#aed55a053377bac249d4da00c13a0d851", null ],
-    [ "muShieldDesign", "geometry__config_8py.html#a6111b262aadff225381949b67543e03d", null ],
     [ "muShieldGeo", "geometry__config_8py.html#a4f2e79cbf37a2cfc9b80bd081cc18ca7", null ],
     [ "nECALSamplings", "geometry__config_8py.html#a1756d09dc4e7755d2dbfe1c88818a154", null ],
     [ "nHCALSamplings", "geometry__config_8py.html#ae805aa003bb27366ce86cbf2949ca925", null ],

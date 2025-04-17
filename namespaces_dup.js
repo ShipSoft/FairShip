@@ -494,7 +494,6 @@ var namespaces_dup =
       [ "MuonStation2", "namespacegeometry__config.html#a240891cda011d9cb451e3871825750d5", null ],
       [ "MuonStation3", "namespacegeometry__config.html#a6bf098cbc7938246af1f1721090f6f2a", null ],
       [ "muShield", "namespacegeometry__config.html#aed55a053377bac249d4da00c13a0d851", null ],
-      [ "muShieldDesign", "namespacegeometry__config.html#a6111b262aadff225381949b67543e03d", null ],
       [ "muShieldGeo", "namespacegeometry__config.html#a4f2e79cbf37a2cfc9b80bd081cc18ca7", null ],
       [ "nECALSamplings", "namespacegeometry__config.html#a1756d09dc4e7755d2dbfe1c88818a154", null ],
       [ "nHCALSamplings", "namespacegeometry__config.html#ae805aa003bb27366ce86cbf2949ca925", null ],
