@@ -40,7 +40,6 @@ globalDesigns = {
      '2023' : {
           'dy' : 6.,
           'dv' : 6,
-          'ds' : 8,
           'nud' : 4,
           'caloDesign' : 3,
           'strawDesign' : 10
@@ -89,8 +88,6 @@ parser.add_argument("-o", "--output",dest="outputDir",  help="Output directory",
 parser.add_argument("-Y",        dest="dy",  help="max height of vacuum tank", required=False, default=globalDesigns[default]['dy'])
 parser.add_argument("--tankDesign", dest="dv",      help="4=TP elliptical tank design, 5 = optimized conical rectangular design, 6=5 without segment-1"\
                                             ,required=False, default=globalDesigns[default]['dv'], type=int)
-parser.add_argument("--muShieldDesign", dest="ds",  help="7=short magnet design, 9=optimised with T4 as constraint, 8=requires config file\
-                                            ,10=with field map for hadron absorber", required=False, choices=range(7,11), default=globalDesigns[default]['ds'], type=int)
 parser.add_argument("--nuTauTargetDesign", dest="nud"\
   ,help="3: emulsion spectrometer and muon filter as in CDS, 4: not magnetized target and muon spectrometer for ECN3", default=globalDesigns[default]['nud'], type=int, choices=[3,4])
 parser.add_argument("--caloDesign",
@@ -199,7 +196,7 @@ ship_geo = ConfigRegistry.loadpy(
      "$FAIRSHIP/geometry/geometry_config.py",
      Yheight=options.dy,
      tankDesign=options.dv,
-     muShieldDesign=options.ds,
+     muShieldDesign=8,
      nuTauTargetDesign=options.nud,
      CaloDesign=options.caloDesign,
      strawDesign=options.strawDesign,
