@@ -55,6 +55,7 @@ it in future.
 * Change of UBT geometry, remove implementation of RPC and setting a new scoring plane of 4×6 m
 * Allow specifying spectrometer field map
 * Obtain tauMuDet z position from muonshield position and length, instead of chamber trackers
+* Update tracker station z positions (16 April 2025)
 
 ### Removed
 
