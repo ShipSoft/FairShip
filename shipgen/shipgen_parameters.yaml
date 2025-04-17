@@ -1,0 +1,59 @@
+#### Config parameters for all FairPrimaryGenerators
+
+Cosmics:
+	opt: 1 #Use cosmic generator, argument switch for cosmic generator 0 or 1
+
+Genie:
+	inputFile: "/eos/experiment/ship/data/GenieEvents/genie-nu_mu.root"
+
+NuRadio:
+	inputFile: "/eos/experiment/ship/data/GenieEvents/genie-nu_mu.root"
+
+MuonDIS:
+	inputFile: "/eos/experiment/ship/data/muonDIS/muonDis_1.root"
+
+Nuage:
+	inputFile: 'Numucc.root'
+
+Ntuple:
+	inputFile: "/eos/experiment/ship/data/Mbias/pythia8_Geant4-withCharm_onlyMuons_4magTarget.root"
+
+MuonBack:
+	DownScaleDiMuon: False
+	phiRandom: True
+	sameSeed: 0 #can be set to an integer for the muonBackground simulation with specific seed for each muon, only for experts!"
+	followMuon: True
+	fastMuon: True
+
+Pythia8:
+	inclusive: "c"    # True = all processes if "c" only ccbar -> HNL, if "b" only bbar -> HNL, if "bc" only Bc+/Bc- -> HNL, and for darkphotons: if meson = production through meson decays, pbrem = proton bremstrahlung, qcd = ffbar -> DP.
+	inputFile: "/eos/experiment/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-978Bpot.root"
+
+	#inputFile: "/eos/experiment/ship/data/Beauty/Cascade-run0-19-parp16-MSTP82-1-MSEL5-5338Bpot.root" #for inclusive=b
+	#inputFile = "$FAIRSHIP/files/Cascade-parp16-MSTP82-1-MSEL4-76Mpot_1_5000.root" #test file
+
+	charmonly: False # option to be set with inclusive to enable only charm decays, charm x-sec measurement
+
+
+	HNL: True
+	DarkPhoton: False
+	RPVSUSY: False
+
+	theMass: 1.0 #in GeV, for relevant model (DP, RPV, HNL)
+	#For HNL: Use same values for prod and decay, or set separately.
+	theProductionCouplings: [0.447e-9,7.15e-9,1.88e-9] #"couplings \'U2e,U2mu,U2tau\' or -c \'U2e,U2mu,U2tau\' to set list of HNL couplings. TP default for HNL, ctau=53.3km"
+	theDecayCouplings: [0.447e-9,7.15e-9,1.88e-9] #"couplings \'U2e,U2mu,U2tau\' or -c \'U2e,U2mu,U2tau\' to set list of HNL couplings. TP default for HNL, ctau=53.3km"
+
+	theRPVCouplings: [0,0,0] #CAMM what are good defaults??
+	RPVSUSYbench: 2 #Generate HP Susy
+
+	motherMode: 'pi0' #"Choose DP production meson source: pi0, eta, omega, eta1, eta11"
+	theDPepsilon: 0.00000008
+
+EvtCalc:
+	inputFile:"" #CAMM: need good default?
+
+ParticleGun:
+	pID: 22 #id of particle used by the gun (default=22)
+	Estart: 10 #start of energy range of particle gun (default=10 GeV)
+	Eend: 10 #end of energy range of particle gun (default=10 GeV)

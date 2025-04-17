@@ -12,15 +12,10 @@ from array import array
 
 
 mcEngine     = "TGeant4"
-simEngine    = "Pythia8"  # "Genie" # Ntuple
 
 MCTracksWithHitsOnly   = False  # copy particles which produced a hit and their history
 MCTracksWithEnergyCutOnly = True # copy particles above a certain kin energy cut
 MCTracksWithHitsOrEnergyCut = False # or of above, factor 2 file size increase compared to MCTracksWithEnergyCutOnly
-
-inputFile    = "/eos/experiment/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-978Bpot.root"
-defaultInputFile = True
-
 
 globalDesigns = {
      '2023' : {
@@ -34,28 +29,65 @@ globalDesigns = {
 default = '2023'
 
 
+
 parser = ArgumentParser()
 group = parser.add_mutually_exclusive_group()
 
 parser.add_argument("-E",        dest="simEngine",       help="Possible options: EvtCalc,Pythia6, Pythia8, PG, Genie, nuRadiography, Ntuple, MuonBack, Nuage, muonDIS, Cosmics", required=True, default='Pythia8')
-group.add_argument("-f",        dest="inputFile",       help="Input file if not default file", required=False, default=False)
-parser.add_argument("-t", "--test", dest="testFlag",  help="quick test", required=False,action="store_true")
+parser.add_argument("-n", "--nEvents",dest="nEvents",  help="Number of events to generate", required=False,  default=100, type=int)
+parser.add_argument("-i", "--firstEvent",dest="firstEvent",  help="First event of input file to use", required=False,  default=0, type=int)
+parser.add_argument("-F",        dest="deepCopy",  help="default = False: copy only stable particles to stack, except for HNL events", required=False, action="store_true")
+parser.add_argument("-s", "--seed",dest="theSeed",  help="Seed for random number. Only for experts, see TRrandom::SetSeed documentation", required=False,  default=0, type=int)
+parser.add_argument("-f",        dest="yaml_file",       help="Yaml configuration file for simEngine parameters", required=True, default="shipgen/shipgen_parameters.yaml")
+parser.add_argument("-g",        dest="geofile",       help="geofile for muon shield geometry, for experts only", required=False, default=None)
+parser.add_argument("-o", "--output",dest="outputDir",  help="Output directory", required=False,  default=".")
+parser.add_argument("-Y",        dest="dy",  help="max height of vacuum tank", required=False, default=globalDesigns[default]['dy'])
+parser.add_argument("--tankDesign", dest="dv",      help="4=TP elliptical tank design, 5 = optimized conical rectangular design, 6=5 without segment-1"\
+                                            ,required=False, default=globalDesigns[default]['dv'], type=int)
+parser.add_argument("--nuTauTargetDesign", dest="nud"\
+  ,help="3: emulsion spectrometer and muon filter as in CDS, 4: not magnetized target and muon spectrometer for ECN3", default=globalDesigns[default]['nud'], type=int, choices=[3,4])
+parser.add_argument("--caloDesign",
+                    help="0=ECAL/HCAL TP 2=splitCal  3=ECAL/ passive HCAL",
+                    default=globalDesigns[default]['caloDesign'],
+                    type=int,
+                    choices=[0,2,3])
+parser.add_argument("--strawDesign", dest="strawDesign", help="simplistic tracker design,  4=sophisticated straw tube design, horizontal wires (default), 10=2cm straw"
+                                            ,required=False, default=globalDesigns[default]['strawDesign'], type=int)
+parser.add_argument("-F",        dest="deepCopy",  help="default = False: copy only stable particles to stack, except for HNL events", required=False, action="store_true")
+parser.add_argument("--dry-run", dest="dryrun",  help="stop after initialize", required=False,action="store_true")
+parser.add_argument("-D", "--display", dest="eventDisplay", help="store trajectories", required=False, action="store_true")
+parser.add_argument("--shieldName", help="The name of the SC shield in the database. SC default: sc_v6, Warm default: warm_opt", default="sc_v6", choices=["sc_v6", "warm_opt"])
+parser.add_argument("--debug",  help="1: print weights and field 2: make overlap check", required=False, default=0, type=int, choices=range(0,3))
+parser.add_argument("--field_map", default=None, help="Specify spectrometer field map.")
+parser.add_argument(
+    "--helium",
+    dest="decayVolMed",
+    help="Set Decay Volume medium to helium. NOOP, as default is helium",
+    action="store_const",
+    const="helium",
+    default="helium"
+)
+parser.add_argument(
+    "--vacuums",
+    dest="decayVolMed",
+    help="Set Decay Volume medium to vacuum(vessel structure changes)",
+    action="store_const",
+    const="vacuums",
+    default="helium"
+)
+
+parser.add_argument("--SND", dest="SND", help="Activate SND.", action='store_true')
+parser.add_argument("--noSND", dest="SND", help="Deactivate SND. NOOP, as it currently defaults to off.", action='store_false')
+
+options = parser.parse_args()
+
+
+with open(options.yaml_file) as file:
+  config = yaml.safe_load(file)
 
 
 
-if options.inputFile:
-  if options.inputFile == "none": options.inputFile = None
-  inputFile = options.inputFile
-  defaultInputFile = False
-  if options.testFlag:
-  inputFile = "$FAIRSHIP/files/Cascade-parp16-MSTP82-1-MSEL4-76Mpot_1_5000.root"
-
-
-SetEngineParameters(options.simEngine)
-
-
-  
-  ROOT.gRandom.SetSeed(options.theSeed)  # this should be propagated via ROOT to Pythia8 and Geant4VMC
+ROOT.gRandom.SetSeed(options.theSeed)  # this should be propagated via ROOT to Pythia8 and Geant4VMC
 shipRoot_conf.configure(0)     # load basic libraries, prepare atexit for python
 # - targetOpt      = 5  # 0=solid   >0 sliced, 5: 5 pieces of tungsten, 4 H20 slits, 17: Mo + W +H2O (default)
 #   nuTauTargetDesign = 3 #3 = 2018 design, 4 = not magnetized target + spectrometer
@@ -74,9 +106,9 @@ ship_geo = ConfigRegistry.loadpy(
 
 
 # Output file name, add dy to be able to setup geometry with ambiguities.
-if simEngine == "PG": tag = simEngine + "_"+str(options.pID)+"-"+mcEngine
-else: tag = simEngine+"-"+mcEngine
-if charmonly: tag = simEngine+"CharmOnly-"+mcEngine
+if options.simEngine == "PG": tag = options.simEngine + "_"+str(config['ParticleGun']['pID'])+"-"+mcEngine
+else: tag = options.simEngine+"-"+mcEngine
+if config['Pythia8']['charmonly'] == True: tag = options.simEngine+"CharmOnly-"+mcEngine
 if options.eventDisplay: tag = tag+'_D'
 if options.dv > 4 : tag = 'conical.'+tag
 if not os.path.exists(options.outputDir):
@@ -113,9 +145,24 @@ modules = shipDet_conf.configure(run,ship_geo)
 # -----Create PrimaryGenerator--------------------------------------
 primGen = ROOT.FairPrimaryGenerator()
 
-SetPrimGen(primGen,...)
+SetPrimGen(primGen,options,ship_geo,modules)
+if options.simEngine == "nuRadiography":
+  #  add tungsten to PDG
+  pdg = ROOT.TDatabasePDG.Instance()
+  pdg.AddParticle('W','Ion', 1.71350e+02, True, 0., 74, 'XXX', 1000741840)
+  #
+  run.SetPythiaDecayer('DecayConfigPy8.C')
+ # this requires writing a C macro, would have been easier to do directly in python!
 
 
+if options.simEngine == "Nuage":
+  run.SetPythiaDecayer("DecayConfigNuAge.C")
+
+if options.simEngine == "MuonBack":
+  MCTracksWithHitsOnly = True # otherwise, output file becomes too big
+
+
+  
 #
 run.SetGenerator(primGen)
 # ------------------------------------------------------------------------
@@ -219,7 +266,7 @@ print("Parameter file is ",parFile)
 print("Real time ",rtime, " s, CPU time ",ctime,"s")
 
 # remove empty events
-if simEngine == "MuonBack":
+if options.simEngine == "MuonBack":
  tmpFile = outFile+"tmp"
  xxx = outFile.split('/')
  check = xxx[len(xxx)-1]
@@ -274,7 +321,7 @@ if simEngine == "MuonBack":
  rc2 = os.system("mv "+tmpFile+" "+outFile)
  fin.SetWritable(False) # bpyass flush error
 
-if simEngine == "muonDIS":
+if options.simEngine == "muonDIS":
 
     temp_filename = outFile.replace(".root", "_tmp.root")
 
