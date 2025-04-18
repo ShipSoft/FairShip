@@ -254,10 +254,10 @@ with ConfigRegistry.register_config("basic") as c:
     c.SplitCal.third_precision_layer=13
     c.SplitCal.ActiveECAL_gas_gap=10*u.cm
     c.SplitCal.NModulesInX = 2
-    c.SplitCal.NModulesInY = 4
+    c.SplitCal.NModulesInY = 3
     c.SplitCal.NStripsPerModule = 50
-    c.SplitCal.StripHalfWidth = 3*u.cm # c.SplitCal.XMax/(c.SplitCal.NStripsPerModule*c.SplitCal.NModulesInX)
-    c.SplitCal.StripHalfLength = 150*u.cm # c.SplitCal.YMax/c.SplitCal.NModulesInY
+    c.SplitCal.StripHalfWidth = 2 * u.cm # c.SplitCal.XMax/(c.SplitCal.NStripsPerModule*c.SplitCal.NModulesInX)
+    c.SplitCal.StripHalfLength = 100 * u.cm # c.SplitCal.YMax/c.SplitCal.NModulesInY
     c.SplitCal.SplitCalThickness=(c.SplitCal.FilterECALThickness_first-c.SplitCal.FilterECALThickness)+(c.SplitCal.FilterECALThickness+c.SplitCal.ActiveECALThickness)*c.SplitCal.nECALSamplings+c.SplitCal.BigGap
 
     zecal = 38.450 * u.m  # Relative start z of ECAL to decay vessel centre
