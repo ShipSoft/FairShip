@@ -36,7 +36,6 @@ else:
   f = ROOT.TFile(options.inputFile)
   sTree = f.Get("cbmsim")
 
-# try to figure out which ecal geo to load
 if not options.geoFile:
  options.geoFile = options.inputFile.replace('ship.','geofile_full.').replace('_rec.','.')
 else:
@@ -45,7 +44,6 @@ else:
 # new geofile, load Shipgeo dictionary written by run_simScript.py
 upkl    = Unpickler(fgeo)
 ShipGeo = upkl.load('ShipGeo')
-ecalGeoFile = ShipGeo.ecal.File
 dy = ShipGeo.Yheight/u.m
 
 # -----Create geometry----------------------------------------------
@@ -101,7 +99,7 @@ ut.bookHist(h,'Vzpull','Vz pull',100,-5.,5.)
 ut.bookHist(h,'Vxpull','Vx pull',100,-5.,5.)
 ut.bookHist(h,'Vypull','Vy pull',100,-5.,5.)
 ut.bookHist(h,'Doca','Doca between two tracks',100,0.,10.)
-for x in ['','_pi0']:
+for x in ['', '_pi0']:
  ut.bookHist(h,'IP0'+x,'Impact Parameter to target',100,0.,100.)
  ut.bookHist(h,'IP0/mass'+x,'Impact Parameter to target vs mass',100,0.,2.,100,0.,100.)
  ut.bookHist(h,'HNL'+x,'reconstructed Mass',500,0.,2.)
@@ -509,19 +507,9 @@ def makePlots():
    h['nrSBT'].Draw()
 #
    print('finished making plots')
-# calculate z front face of ecal, needed later
-top = ROOT.gGeoManager.GetTopVolume()
-ecal = None
-if top.GetNode('Ecal_1'):
- ecal = top.GetNode('Ecal_1')
- z_ecal = ecal.GetMatrix().GetTranslation()[2]
-elif top.GetNode('SplitCalDetector_1'):
- ecal = top.GetNode('SplitCalDetector_1')
- z_ecal = ecal.GetMatrix().GetTranslation()[2]
 
 # start event loop
 def myEventLoop(n):
-  global ecalReconstructed
   rc = sTree.GetEntry(n)
 # check if tracks are made from real pattern recognition
   measCut = measCutFK
@@ -534,60 +522,6 @@ def myEventLoop(n):
   if not sTree.MCTrack.GetEntries()>1: wg = 1.
   else:   wg = sTree.MCTrack[1].GetWeight()
   if not wg>0.: wg=1.
-
-# make some ecal cluster analysis if exist
-  if hasattr(sTree,"EcalClusters"):
-   if calReco:  ecalReconstructed.Delete()
-   else:        ecalReconstructed = sTree.EcalReconstructed
-   for x in caloTasks:
-    if x.GetName() == 'ecalFiller': x.Exec('start',sTree.EcalPointLite)
-    elif x.GetName() == 'ecalMatch':  x.Exec('start',ecalReconstructed,sTree.MCTrack)
-    else : x.Exec('start')
-   for aClus in ecalReconstructed:
-    mMax = aClus.MCTrack()
-    if mMax <0 or mMax > sTree.MCTrack.GetEntries():
-     aP = None # this should never happen, otherwise the ECAL MC matching has a bug
-    else: aP = sTree.MCTrack[mMax]
-    if aP:
-      tmp = PDG.GetParticle(aP.GetPdgCode())
-      if tmp: pName = 'ecalReconstructed_'+tmp.GetName()
-      else: pName = 'ecalReconstructed_'+str(aP.GetPdgCode())
-    else:
-      pName = 'ecalReconstructed_unknown'
-    if pName not in h:
-      ut.bookHist(h,pName,'x/y and energy for '+pName.split('_')[1],50,-3.,3.,50,-6.,6.)
-    rc = h[pName].Fill(aClus.X()/u.m,aClus.Y()/u.m,aClus.RecoE()/u.GeV)
-# look at distance to tracks
-    for fT in sTree.FitTracks:
-     rc,pos,mom = TrackExtrapolateTool.extrapolateToPlane(fT,z_ecal)
-     if rc:
-      pdgcode = fT.getFittedState().getPDG()
-      tmp = PDG.GetParticle(pdgcode)
-      if tmp: tName = 'ecalReconstructed_dist_'+tmp.GetName()
-      else: tName = 'ecalReconstructed_dist_'+str(aP.GetPdgCode())
-      if tName not in h:
-       p = tName.split('dist_')[1]
-       ut.bookHist(h,tName,'Ecal cluster distance t0 '+p,100,0.,100.*u.cm)
-       ut.bookHist(h,tName.replace('dist','distx'),'Ecal cluster distance to '+p+' in X ',100,-50.*u.cm,50.*u.cm)
-       ut.bookHist(h,tName.replace('dist','disty'),'Ecal cluster distance to '+p+' in Y ',100,-50.*u.cm,50.*u.cm)
-      dist = ROOT.TMath.Sqrt( (aClus.X()-pos.X())**2+(aClus.Y()-pos.Y())**2 )
-      rc = h[tName].Fill(dist)
-      rc = h[tName.replace('dist','distx')].Fill( aClus.X()-pos.X() )
-      rc = h[tName.replace('dist','disty')].Fill( aClus.Y()-pos.Y() )
-# compare with old method
-   for aClus in sTree.EcalClusters:
-     rc = h['ecalClusters'].Fill(aClus.X()/u.m,aClus.Y()/u.m,aClus.Energy()/u.GeV)
-     mMax,frac = ecalCluster2MC(aClus)
-# return MC track most contributing, and its fraction of energy
-     if mMax>0:
-      aP = sTree.MCTrack[mMax]
-      tmp = PDG.GetParticle(aP.GetPdgCode())
-      if tmp: pName = 'ecalClusters_'+tmp.GetName()
-      else: pName = 'ecalClusters_'+str(aP.GetPdgCode())
-     else:
-      pName = 'ecalClusters_unknown'
-     if pName not in h: ut.bookHist(h,pName,'x/y and energy for '+pName.split('_')[1],50,-3.,3.,50,-6.,6.)
-     rc = h[pName].Fill(aClus.X()/u.m,aClus.Y()/u.m,aClus.Energy()/u.GeV)
 
 # make some straw hit analysis
   hitlist = {}
@@ -690,6 +624,7 @@ def myEventLoop(n):
     tr = ROOT.TVector3(0,0,ShipGeo.target.z0)
 
 # look for pi0
+    """
     for pi0 in pi0Reco.findPi0(sTree,HNLPos):
        rc = h['pi0Mass'].Fill(pi0.M())
        if abs(pi0.M()-0.135)>0.02: continue
@@ -700,6 +635,7 @@ def myEventLoop(n):
        h['IP0_pi0'].Fill(dist)
        h['IP0/mass_pi0'].Fill(mass,dist)
        h['HNL_pi0'].Fill(mass)
+    """
 
     dist = ImpactParameter(tr,HNLPos,HNLMom)
     mass = HNLMom.M()
@@ -791,63 +727,10 @@ def HNLKinematics():
  for x in HNLorigin: theSum+=HNLorigin[x]
  for x in HNLorigin: print("%4i : %5.4F relative fraction: %5.4F "%(x,HNLorigin[x],HNLorigin[x]/theSum))
 #
-# initialize ecalStructure
-caloTasks = []
-calReco = False
 sTree.GetEvent(0)
-if ecal:
- ecalGeo = ecalGeoFile+'z'+str(ShipGeo.ecal.z)+".geo"
- if not ecalGeo in os.listdir(os.environ["FAIRSHIP"]+"/geometry"): shipDet_conf.makeEcalGeoFile(ShipGeo.ecal.z,ShipGeo.ecal.File)
- ecalFiller = ROOT.ecalStructureFiller("ecalFiller", 0,ecalGeo)
- ecalFiller.SetUseMCPoints(ROOT.kTRUE)
- ecalFiller.StoreTrackInformation()
- ecalStructure = ecalFiller.InitPython(sTree.EcalPointLite)
- caloTasks.append(ecalFiller)
-
- if hasattr(sTree,"EcalReconstructed"):
-  calReco = False
-  ecalReconstructed = sTree.EcalReconstructed
- else:
-  calReco = True
-  print("setup calo reconstruction of ecalReconstructed objects")
-# Calorimeter reconstruction
- #GeV -> ADC conversion
-  ecalDigi=ROOT.ecalDigi("ecalDigi",0)
-  ecalPrepare=ROOT.ecalPrepare("ecalPrepare",0)
-  ecalStructure     = ecalFiller.InitPython(sTree.EcalPointLite)
-  ecalDigi.InitPython(ecalStructure)
-  caloTasks.append(ecalDigi)
-  ecalPrepare.InitPython(ecalStructure)
-  caloTasks.append(ecalPrepare)
- # Cluster calibration
-  ecalClusterCalib=ROOT.ecalClusterCalibration("ecalClusterCalibration", 0)
- #4x4 cm cells
-  ecalCl3PhS=ROOT.TFormula("ecalCl3PhS", "[0]+x*([1]+x*([2]+x*[3]))")
-  ecalCl3PhS.SetParameters(6.77797e-04, 5.75385e+00, 3.42690e-03, -1.16383e-04)
-  ecalClusterCalib.SetStraightCalibration(3, ecalCl3PhS)
-  ecalCl3Ph=ROOT.TFormula("ecalCl3Ph", "[0]+x*([1]+x*([2]+x*[3]))+[4]*x*y+[5]*x*y*y")
-  ecalCl3Ph.SetParameters(0.000750975, 5.7552, 0.00282783, -8.0025e-05, -0.000823651, 0.000111561)
-  ecalClusterCalib.SetCalibration(3, ecalCl3Ph)
-#6x6 cm cells
-  ecalCl2PhS=ROOT.TFormula("ecalCl2PhS", "[0]+x*([1]+x*([2]+x*[3]))")
-  ecalCl2PhS.SetParameters(8.14724e-04, 5.67428e+00, 3.39030e-03, -1.28388e-04)
-  ecalClusterCalib.SetStraightCalibration(2, ecalCl2PhS)
-  ecalCl2Ph=ROOT.TFormula("ecalCl2Ph", "[0]+x*([1]+x*([2]+x*[3]))+[4]*x*y+[5]*x*y*y")
-  ecalCl2Ph.SetParameters(0.000948095, 5.67471, 0.00339177, -0.000122629, -0.000169109, 8.33448e-06)
-  ecalClusterCalib.SetCalibration(2, ecalCl2Ph)
-  caloTasks.append(ecalClusterCalib)
-  ecalReco=ROOT.ecalReco('ecalReco',0)
-  caloTasks.append(ecalReco)
-# Match reco to MC
-  ecalMatch=ROOT.ecalMatch('ecalMatch',0)
-  caloTasks.append(ecalMatch)
-  ecalCalib         = ecalClusterCalib.InitPython()
-  ecalReconstructed = ecalReco.InitPython(sTree.EcalClusters, ecalStructure, ecalCalib)
-  ecalMatch.InitPython(ecalStructure, ecalReconstructed, sTree.MCTrack)
-
 options.nEvents = min(sTree.GetEntries(),options.nEvents)
 
-import pi0Reco
+# import pi0Reco
 ut.bookHist(h,'pi0Mass','gamma gamma inv mass',100,0.,0.5)
 
 for n in range(options.nEvents):

@@ -79,6 +79,7 @@ it in future.
 * feat(geometry): Remove 2018, 2022 global designs
 * run_simScript.py: remove --muShieldDesign flag
 * Remove unused straw veto station
+* ShipAna.py: remove broken calorimetry
 
 ## 25.01
 
