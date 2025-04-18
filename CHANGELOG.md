@@ -38,6 +38,7 @@ it in future.
 * fix(digi): Fix logic of SST digitisation (#662)
 * Fix double append of recognized stracks
 * fix(ShieldUtils.py): The fieldmap offset was calibrated with the old version of MS
+* Fix splitcal strip dimensions and number of modules
 
 ### Changed
 
