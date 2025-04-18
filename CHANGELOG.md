@@ -43,6 +43,7 @@ it in future.
 * fix(ShieldUtils.py): The fieldmap offset was calibrated with the old version of MS
 * fix(ShieldUtils.py): changing code to be more pythonic, adding new element in the output tuple -- the list of the Muon Shield magnet z-coordinates, that can be used to set a location of SND inside the Muon Shield
 * fix(shipDet_conf.py): changing paths to yaml files to more pythonic (```os.path.join()``` now)
+* Fix splitcal strip dimensions and number of modules
 
 ### Changed
 
