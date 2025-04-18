@@ -63,6 +63,7 @@ it in future.
 * Obtain tauMuDet z position from muonshield position and length, instead of chamber trackers
 * Update tracker station z positions, fix UBT, TimeDet & SplitCal position (s. integration layout EDMS 3287817 v1)
 * feat(geometry): Make SplitCal the default calorimeter
+* Resize SplitCal to 4×6 m²
 
 ### Removed
 
