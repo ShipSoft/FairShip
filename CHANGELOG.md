@@ -56,6 +56,7 @@ it in future.
 * Change of UBT geometry, remove implementation of RPC and setting a new scoring plane of 4×6 m
 * Allow specifying spectrometer field map
 * feat(geometry): Make SplitCal the default calorimeter
+* Resize SplitCal to 4×6 m²
 
 ### Removed
 
