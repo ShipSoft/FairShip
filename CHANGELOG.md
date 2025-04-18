@@ -38,6 +38,7 @@ it in future.
 * fix(digi): Fix logic of SST digitisation (#662)
 * Fix double append of recognized stracks
 * fix(ShieldUtils.py): The fieldmap offset was calibrated with the old version of MS
+* Fix splitcal strip dimensions and number of modules
 
 ### Changed
 
@@ -54,6 +55,8 @@ it in future.
 * Assume all tracks are muons during track fit (avoid using MC truth)
 * Change of UBT geometry, remove implementation of RPC and setting a new scoring plane of 4×6 m
 * Allow specifying spectrometer field map
+* feat(geometry): Make SplitCal the default calorimeter
+* Resize SplitCal to 4×6 m²
 
 ### Removed
 
@@ -68,6 +71,7 @@ it in future.
 * build(field,nutaudet): remove unnecessary ROOT_INCLUDE_DIR include
 * feat(geometry): Remove 2018, 2022 global designs
 * run_simScript.py: remove --muShieldDesign flag
+* ShipAna.py: remove broken calorimetry
 
 ## 25.01
 
