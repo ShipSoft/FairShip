@@ -240,6 +240,25 @@ def configure_snd_old(yaml_file,
     detectorList.append(NuTauTT)
 
 
+def configure_snd_mtc(yaml_file):
+    with open(yaml_file) as file:
+        config = yaml.safe_load(file)
+
+    mtc_geo = AttrDict(config['MTC'])
+            # Initialize detector
+    mtc = ROOT.MTCDetector("MTC", mtc_geo.zPosition, ROOT.kTRUE)
+    mtc.SetMTCParameters(
+        mtc_geo.width,
+        mtc_geo.height,
+        mtc_geo.ironThick,
+        mtc_geo.sciFiThick,
+        mtc_geo.scintThick,
+        mtc_geo.nLayers,
+        mtc_geo.zPosition,
+        mtc_geo.fieldY
+    )
+    detectorList.append(mtc)
+
 def configure_veto(yaml_file):
     with open(yaml_file) as file:
         config = yaml.safe_load(file)
@@ -408,16 +427,22 @@ def configure(run, ship_geo):
         )  # put conditions for the design
 
     #For SND
-    if ship_geo.SND:  # kept only one old design
-        #This parameters are taken from the top geometry_config
-        #snd_zTot = 3 * u.m #space allocated to Muon spectrometer
-        #snd_zMudetC=ship_geo.Chamber1.z -ship_geo.chambers.Tub1length - snd_zTot/2 -31*u.cm
-        configure_snd_old(
-            fairship + "/geometry/snd_config_old.yaml",
-            ship_geo.tauMudet.Ztot,
-            ship_geo.tauMudet.zMudetC,
-            ship_geo.cave.floorHeightMuonShield
-        )
+    if ship_geo.SND:
+        if ship_geo.SNDDesign == 2:
+            #SND design 2 -- MTC
+            configure_snd_mtc(
+                fairship + "/geometry/MTC_config.yaml"
+            )
+        else:
+            #This parameters are taken from the top geometry_config
+            #snd_zTot = 3 * u.m #space allocated to Muon spectrometer
+            #snd_zMudetC=ship_geo.Chamber1.z -ship_geo.chambers.Tub1length - snd_zTot/2 -31*u.cm
+            configure_snd_old(
+                fairship + "/geometry/snd_config_old.yaml",
+                ship_geo.tauMudet.Ztot,
+                ship_geo.tauMudet.zMudetC,
+                ship_geo.cave.floorHeightMuonShield,
+            )
 
 
     # for backward compatibility

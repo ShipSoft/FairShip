@@ -17,4 +17,9 @@
 #pragma link C++ class Target+;
 #pragma link C++ class TargetPoint+;
 
+// 17.02.2025 Vasilisa Guliaeva & Eduard Ursov
+// Link new MTC (magnetised tracking calorimeter) modules:
+#pragma link C++ class MTCDetector+;
+#pragma link C++ class MTCdetPoint+;
+
 #endif

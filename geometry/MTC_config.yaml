@@ -1,0 +1,10 @@
+MTC:
+  width: 50                  # Active area width (cm)
+  height: 50                 # Active area height (cm)
+  ironThick: 5               # Magnetised iron thickness (cm)
+  sciFiThick: 0.97           # SciFi layer thickness (cm)
+  scintThick: 1.5            # Scintillator layer thickness (cm)
+  nLayers: 45                # Number of sandwich layers
+  zPosition: -3343.64        # Global z position (cm)
+  fieldY: -1.7               # Magnetic field strength (tesla)
+  isActive: true             # Field is on?

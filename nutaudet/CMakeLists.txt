@@ -6,6 +6,7 @@ set(INCLUDE_DIRECTORIES
 ${BASE_INCLUDE_DIRECTORIES}
 ${CMAKE_SOURCE_DIR}/shipdata
 ${CMAKE_SOURCE_DIR}/nutaudet
+${ROOT_INCLUDE_DIR}
 ${VMC_INCLUDE_DIRS}
 ${genfit2_INCDIR}
 )
@@ -32,6 +33,8 @@ EmulsionMagnet.cxx
 TargetPoint.cxx
 TargetTracker.cxx
 TTPoint.cxx
+MTCDetector.cxx
+MTCdetPoint.cxx
 )
 
 Set(HEADERS )
