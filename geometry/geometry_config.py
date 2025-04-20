@@ -78,7 +78,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.DecayVolumeMedium = DecayVolumeMedium
     c.SND = SND
     c.SNDDesign = SNDDesign
-       
+
 
     if not shieldName:
         raise ValueError("shieldName must not be empty!")

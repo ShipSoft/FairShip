@@ -101,7 +101,7 @@ Int_t MTCDetector::InitMedium(const char* name)
     return geoBuild->createMedium(ShipMedium);
 }
 
-void MTCDetector::SetMTCParameters(Double_t w, Double_t h, Double_t iron, 
+void MTCDetector::SetMTCParameters(Double_t w, Double_t h, Double_t iron,
                                   Double_t sciFi, Double_t scint, Int_t layers,
                                   Double_t z, Double_t field) {
     fWidth = w;
@@ -124,19 +124,19 @@ void MTCDetector::SetMTCParameters(Double_t w, Double_t h, Double_t iron,
 //     //   Fiber Mat 2 (V):      1.35 mm (0.135 cm)
 //     //   Upper internal iron:  3 mm  (0.3 cm)
 //     // Total = 0.3 + 0.135 + 0.1 + 0.135 + 0.3 = 1.0 cm (which should equal thickness)
-  
+
 //     Double_t lowerIronThick = 0.3;
 //     Double_t fiberMatThick  = 0.135;
 //     Double_t airGap         = 0.1;
 //     Double_t upperIronThick = 0.3;
-  
+
 //     // Mother volume for the SciFi module
 //     TGeoBBox* modMother = new TGeoBBox(Form("%s_mother", name), width/2, height/2, thickness/2);
 //     // We use the SciFi material for the mother; adjust if you have a dedicated one
 //     TGeoVolume* modMotherVol = new TGeoVolume(Form("%s_mother", name), modMother, gGeoManager->GetMedium("SciFiMat"));
 //     modMotherVol->SetLineColor(kGreen+2);
 //     modMotherVol->SetTransparency(40);
-  
+
 //     // --- Lower Internal Iron ---
 //     TGeoBBox* lowerIronBox = new TGeoBBox(Form("%s_lowerIron", name), width/2, height/2, lowerIronThick/2);
 //     TGeoVolume* lowerIronVol = new TGeoVolume(Form("%s_lowerIron", name), lowerIronBox, gGeoManager->GetMedium("iron"));
@@ -144,7 +144,7 @@ void MTCDetector::SetMTCParameters(Double_t w, Double_t h, Double_t iron,
 //     lowerIronVol->SetTransparency(20);
 //     // Position: at the bottom of the module
 //     modMotherVol->AddNode(lowerIronVol, 1, new TGeoTranslation(0, 0, -thickness/2 + lowerIronThick/2));
-  
+
 //     // --- Fiber Mat U ---
 //     TGeoBBox* fiberMatBoxU = new TGeoBBox(Form("%s_fiberMat_U", name), width/2, height/2, fiberMatThick/2);
 //     TGeoVolume* fiberMatVolU = new TGeoVolume(Form("%s_fiberMat_U", name), fiberMatBoxU, gGeoManager->GetMedium("SciFiMat"));
@@ -152,7 +152,7 @@ void MTCDetector::SetMTCParameters(Double_t w, Double_t h, Double_t iron,
 //     fiberMatVolU->SetTransparency(30);
 //     // Position: above lower iron
 //     modMotherVol->AddNode(fiberMatVolU, 1, new TGeoTranslation(0, 0, -thickness/2 + lowerIronThick + fiberMatThick/2));
-  
+
 //     // --- Fiber Mat V ---
 //     TGeoBBox* fiberMatBoxV = new TGeoBBox(Form("%s_fiberMat_V", name), width/2, height/2, fiberMatThick/2);
 //     TGeoVolume* fiberMatVolV = new TGeoVolume(Form("%s_fiberMat_V", name), fiberMatBoxV, gGeoManager->GetMedium("SciFiMat"));
@@ -160,7 +160,7 @@ void MTCDetector::SetMTCParameters(Double_t w, Double_t h, Double_t iron,
 //     fiberMatVolV->SetTransparency(30);
 //     // Position: above Fiber Mat U plus air gap
 //     modMotherVol->AddNode(fiberMatVolV, 1, new TGeoTranslation(0, 0, -thickness/2 + lowerIronThick + fiberMatThick + airGap + fiberMatThick/2));
-  
+
 //     // --- Upper Internal Iron ---
 //     TGeoBBox* upperIronBox = new TGeoBBox(Form("%s_upperIron", name), width/2, height/2, upperIronThick/2);
 //     TGeoVolume* upperIronVol = new TGeoVolume(Form("%s_upperIron", name), upperIronBox, gGeoManager->GetMedium("iron"));
@@ -168,9 +168,9 @@ void MTCDetector::SetMTCParameters(Double_t w, Double_t h, Double_t iron,
 //     upperIronVol->SetTransparency(20);
 //     // Position: at the top of the module
 //     modMotherVol->AddNode(upperIronVol, 1, new TGeoTranslation(0, 0, thickness/2 - upperIronThick/2));
-  
+
 //     // Optionally, you can add fiber placements inside the fiber mats here.
-  
+
 //     return modMotherVol;
 //   }
 
@@ -305,12 +305,12 @@ TGeoVolume* MTCDetector::CreateSciFiModule(const char* name, Double_t width, Dou
   // // --- Define rotations for fibers ---
   // // For the U fibers: rotate X by 90° then Y by +5°
   // TGeoRotation* rotFiberU = new TGeoRotation();
-  // // 
+  // //
   // rotFiberU->RotateY(fSciFiBendingAngle);
   // rotFiberU->RotateX(90.);
   // // For the V fibers: rotate X by 90° then Y by -5°
   // TGeoRotation* rotFiberV = new TGeoRotation();
-  // // 
+  // //
   // rotFiberV->RotateY(-fSciFiBendingAngle);
   // rotFiberV->RotateX(90.);
   // // --- Place fibers in the U fiber mat ---
@@ -319,7 +319,7 @@ TGeoVolume* MTCDetector::CreateSciFiModule(const char* name, Double_t width, Dou
   //   for (int j = 0; j < fNumFibers; j++) {
   //     Double_t xPos = -fSciFiActiveAreaX/2 + (j + 0.5) * fFiberPitch;
   //     // Create a combined translation+rotation
-      
+
   //     TGeoCombiTrans* ctU = new TGeoCombiTrans("", xPos, 0, zCenter, rotFiberU);
   //     sciFiLayerMotherUVol->AddNode(fiberVol, 100000000 + LayerId * 100000 + layer * fNumFibers + j, ctU);
   //     // cout << "Define Scifi Fibre: " << 100000000 + LayerId * 100000 + layer * 10000 + j << "  " << LayerId << "  " << 0 << "   " << layer << "  " << j << endl;
@@ -350,34 +350,34 @@ void MTCDetector::ConstructGeometry() {
     TGeoMedium* air      = gGeoManager->GetMedium("air");
     TGeoMedium* ironMed  = gGeoManager->GetMedium("iron");
     // For the scintillator, you may use the same medium as SciFiMat or another if defined.
-    TGeoMedium* scintMed = gGeoManager->GetMedium("SciFiMat"); 
+    TGeoMedium* scintMed = gGeoManager->GetMedium("SciFiMat");
     gGeoManager->SetVisLevel(4);
     gGeoManager->SetTopVisible();
-  
+
     // Define the module spacing based on three sublayers:
     //   fIronThick (outer iron), fSciFiThick (SciFi module/fiber module), fScintThick (scintillator)
     Double_t moduleSpacing = fIronThick + fSciFiThick + fScintThick;
     Double_t totalLength   = fLayers * moduleSpacing;
-  
+
     // --- Create an envelope volume for the detector (green, semi-transparent) ---
     TGeoBBox* envBox = new TGeoBBox("MTC_env", fWidth/2, fHeight/2, totalLength/2);
     TGeoVolume* envVol = new TGeoVolume("MTC", envBox, air);
     envVol->SetLineColor(kGreen);
     envVol->SetTransparency(50);
-  
+
     // --- Outer Iron Layer (gray) ---
     TGeoBBox* ironBox = new TGeoBBox("MTC_iron", fWidth/2, fHeight/2, fIronThick/2);
     TGeoVolume* ironVol = new TGeoVolume("MTC_iron", ironBox, ironMed);
     ironVol->SetLineColor(kGray+1);
     ironVol->SetTransparency(20);
     // (Optional: attach a magnetic field with TGeoUniformMagField if needed)
-  
+
     // // --- SciFi Module ---
     // TGeoVolume* sciFiModuleVol = CreateSciFiModule("MTC_sciFi", fWidth, fHeight, fSciFiThick);
-  
+
     // --- Scintillator Layer (blue) ---
 
-  
+
     // // --- Assemble the layers into the envelope ---
     // for (Int_t i = 0; i < fLayers; i++) {
     //   // Compute the center position (z) for the current module
@@ -394,10 +394,10 @@ void MTCDetector::ConstructGeometry() {
   for (Int_t i = 0; i < fLayers; i++) {
     // Compute the center position (z) for the current module
     Double_t zPos = -totalLength/2 + i * moduleSpacing;
-    
+
     // Place the Outer Iron layer (shifted down by half the SciFi+scint thickness)
     envVol->AddNode(ironVol, i, new TGeoTranslation(0, 0, zPos + fIronThick/2));
-    
+
     // Create a SciFi module with the current detector id 'i'
     TGeoVolume* sciFiModuleVol = CreateSciFiModule("MTC_sciFi", fWidth, fHeight, fSciFiThick, i);
     envVol->AddNode(sciFiModuleVol, i, new TGeoTranslation(0, 0, zPos + fIronThick + fSciFiThick/2));
@@ -407,7 +407,7 @@ void MTCDetector::ConstructGeometry() {
     // Place the Scintillator layer (shifted up by half the iron thickness)
     envVol->AddNode(scintVol, i, new TGeoTranslation(0, 0, zPos + fIronThick  + fSciFiThick + fScintThick/2));
   }
-  
+
     // Finally, add the envelope to the top volume with the global z offset fZCenter
     gGeoManager->GetTopVolume()->AddNode(envVol, 1, new TGeoTranslation(0, 0, fZCenter));
 
@@ -432,7 +432,7 @@ Bool_t  MTCDetector::ProcessHits(FairVolume* vol)
 
   // Create vetoPoint when exiting active volume
   if ( gMC->IsTrackExiting()    ||
-       gMC->IsTrackStop()       || 
+       gMC->IsTrackStop()       ||
        gMC->IsTrackDisappeared()   ) {
 
        if (fELoss == 0. ) { return kFALSE; } // if you do not want hits with zero eloss
@@ -482,18 +482,18 @@ void MTCDetector::Register(){
     FairRootManager::Instance()->Register(name, title, fMTCDetectorPointCollection, kTRUE);
     cout << this->GetName() << ",  Register() says: registered " << name <<" collection"<<endl;
   }
-  
+
   TClonesArray* MTCDetector::GetCollection(Int_t iColl) const
   {
       if (iColl == 0) { return fMTCDetectorPointCollection; }
       else { return NULL; }
   }
-  
+
   void MTCDetector::Reset()
   {
     fMTCDetectorPointCollection->Clear();
   }
-  
+
   void MTCDetector::EndOfEvent()
   {
     fMTCDetectorPointCollection->Clear();
