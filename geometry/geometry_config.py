@@ -112,6 +112,7 @@ with ConfigRegistry.register_config("basic") as c:
     magnetIncrease    = 100.*u.cm
     # make z coordinates for the decay volume and tracking stations relative to T4z
     # eventually, the only parameter which needs to be changed when the active shielding lenght changes.
+    c.z = 31.10 * u.m #Relative position of spectrometer magnet to decay vessel centre
     z4 = 2582.75*u.cm + magnetIncrease + extraVesselLength
     if strawDesign != 4 and strawDesign != 10:
      print("this design ",strawDesign," is not supported, use strawDesign = 4 or 10")
@@ -127,8 +128,8 @@ with ConfigRegistry.register_config("basic") as c:
      c.chambers.Rmin = 245.*u.cm
      c.chambers.Rmax = 250.*u.cm
      # positions and lenghts of vacuum tube segments
-     zset = z4 - 4810.75*u.cm - magnetIncrease - extraVesselLength
-     c.Chamber1 = AttrDict(z = zset)
+     zset = -25.40 * u.m #Relative position of UBT to decay vessel centre
+     c.Chamber1 = AttrDict(z=zset)
      zset=z4-2628.*u.cm-magnetIncrease-extraVesselLength/2.
      c.Chamber2 = AttrDict(z=zset)
      zset=z4-740.*u.cm-magnetIncrease
@@ -141,16 +142,18 @@ with ConfigRegistry.register_config("basic") as c:
      c.Chamber6 = AttrDict(z=zset)
 
      c.xMax = 2 * u.m  # max horizontal width at T4
+     TrGap = 2 * u.m #Distance between Tr1/2 and Tr3/4
+     TrMagGap = 3.5 * u.m #Distance from spectrometer magnet centre to the next tracking stations
      #
-     c.TrackStation4 = AttrDict(z = z4)
-     zset = z4 - 200.*u.cm
-     c.TrackStation3 = AttrDict(z = zset)
-     zset = z4 - 800.*u.cm - magnetIncrease
-     c.TrackStation2 = AttrDict(z = zset)
-     zset = z4 - 1000.*u.cm - magnetIncrease
-     c.TrackStation1 = AttrDict(z = zset)
+     z4 = c.z + TrMagGap + TrGap
+     c.TrackStation4 = AttrDict(z=z4)
+     z3 = c.z + TrMagGap
+     c.TrackStation3 = AttrDict(z=z3)
+     z2 = c.z - TrMagGap
+     c.TrackStation2 = AttrDict(z=z2)
+     z1 = c.z - TrMagGap - TrGap
+     c.TrackStation1 = AttrDict(z=z1)
 
-    c.z = c.TrackStation2.z + 0.5 * (c.TrackStation3.z - c.TrackStation2.z)
     c.scintillator = AttrDict(z=0*u.cm)
     c.scintillator.Rmin = 251.*u.cm
     c.scintillator.Rmax = 260.*u.cm
