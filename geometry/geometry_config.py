@@ -128,7 +128,7 @@ with ConfigRegistry.register_config("basic") as c:
      c.chambers.Rmin = 245.*u.cm
      c.chambers.Rmax = 250.*u.cm
      # positions and lenghts of vacuum tube segments
-     zset = -25.40 * u.m #Relative position of UBT to decay vessel centre
+     zset=z4-4666.*u.cm-magnetIncrease-extraVesselLength
      c.Chamber1 = AttrDict(z=zset)
      zset=z4-2628.*u.cm-magnetIncrease-extraVesselLength/2.
      c.Chamber2 = AttrDict(z=zset)
@@ -440,4 +440,4 @@ with ConfigRegistry.register_config("basic") as c:
     c.UpstreamTagger.X_Strip = 229 * u.cm  - UBT_x_crop
     c.UpstreamTagger.X_Strip64 = 1.534 * u.cm
     c.UpstreamTagger.Y_Strip64 = 111 * u.cm
-    c.UpstreamTagger.Z_Position = c.tauMudet.zMudetC + (c.tauMudet.Ztot)/2 + 12.0*u.cm
+    c.UpstreamTagger.Z_Position = -25.40 * u.m #Relative position of UBT to decay vessel centre
