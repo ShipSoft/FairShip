@@ -113,7 +113,7 @@ with ConfigRegistry.register_config("basic") as c:
     # make z coordinates for the decay volume and tracking stations relative to T4z
     # eventually, the only parameter which needs to be changed when the active shielding lenght changes.
     c.z = 31.10 * u.m #Relative position of spectrometer magnet to decay vessel centre
-    z4 = 2582.75*u.cm + magnetIncrease + extraVesselLength
+    z4=2438.*u.cm+magnetIncrease+extraVesselLength #Cautious! This is an outdated z position of Tr4!
     if strawDesign != 4 and strawDesign != 10:
      print("this design ",strawDesign," is not supported, use strawDesign = 4 or 10")
      1/0
