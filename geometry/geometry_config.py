@@ -228,8 +228,8 @@ with ConfigRegistry.register_config("basic") as c:
 
     c.SplitCal = AttrDict(z=0)
     c.SplitCal.ZStart = c.TimeDet.z + c.TimeDet.DZ + 5*u.cm
-    c.SplitCal.XMax = 480.*u.cm/2. #290.*u.cm  #half length
-    c.SplitCal.YMax = 720. * u.cm / 2. #510.*u.cm * c.Yheight / (10.*u.m)   #half length
+    c.SplitCal.XMax = 4 * u.m / 2  # half length
+    c.SplitCal.YMax = 6 * u.m / 2  # half length
     c.SplitCal.Empty = 0*u.cm
     c.SplitCal.BigGap = 100*u.cm
     c.SplitCal.ActiveECALThickness = 0.56*u.cm
@@ -251,10 +251,10 @@ with ConfigRegistry.register_config("basic") as c:
     c.SplitCal.third_precision_layer=13
     c.SplitCal.ActiveECAL_gas_gap=10*u.cm
     c.SplitCal.NModulesInX = 2
-    c.SplitCal.NModulesInY = 4
+    c.SplitCal.NModulesInY = 3
     c.SplitCal.NStripsPerModule = 50
-    c.SplitCal.StripHalfWidth = 3*u.cm # c.SplitCal.XMax/(c.SplitCal.NStripsPerModule*c.SplitCal.NModulesInX)
-    c.SplitCal.StripHalfLength = 150*u.cm # c.SplitCal.YMax/c.SplitCal.NModulesInY
+    c.SplitCal.StripHalfWidth = c.SplitCal.XMax / (c.SplitCal.NStripsPerModule * c.SplitCal.NModulesInX)
+    c.SplitCal.StripHalfLength = c.SplitCal.YMax / c.SplitCal.NModulesInY
     c.SplitCal.SplitCalThickness=(c.SplitCal.FilterECALThickness_first-c.SplitCal.FilterECALThickness)+(c.SplitCal.FilterECALThickness+c.SplitCal.ActiveECALThickness)*c.SplitCal.nECALSamplings+c.SplitCal.BigGap
 
     c.ecal  =  AttrDict(z = c.TimeDet.z + c.TimeDet.DZ  + 5*u.cm)  #
