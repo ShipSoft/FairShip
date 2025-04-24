@@ -113,7 +113,6 @@ with ConfigRegistry.register_config("basic") as c:
     # make z coordinates for the decay volume and tracking stations relative to T4z
     # eventually, the only parameter which needs to be changed when the active shielding lenght changes.
     c.z = 31.10 * u.m #Relative position of spectrometer magnet to decay vessel centre
-    z4=2438.*u.cm+magnetIncrease+extraVesselLength #Cautious! This is an outdated z position of Tr4!
     if strawDesign != 4 and strawDesign != 10:
      print("this design ",strawDesign," is not supported, use strawDesign = 4 or 10")
      1/0
@@ -128,17 +127,17 @@ with ConfigRegistry.register_config("basic") as c:
      c.chambers.Rmin = 245.*u.cm
      c.chambers.Rmax = 250.*u.cm
      # positions and lenghts of vacuum tube segments
-     zset=z4-4666.*u.cm-magnetIncrease-extraVesselLength
+     zset = -4666. * u.cm - magnetIncrease - extraVesselLength
      c.Chamber1 = AttrDict(z=zset)
-     zset=z4-2628.*u.cm-magnetIncrease-extraVesselLength/2.
+     zset = -2628. * u.cm - magnetIncrease - extraVesselLength/2.
      c.Chamber2 = AttrDict(z=zset)
-     zset=z4-740.*u.cm-magnetIncrease
+     zset = -740. * u.cm - magnetIncrease
      c.Chamber3 = AttrDict(z=zset)
-     zset=z4-420.*u.cm-magnetIncrease/2.
+     zset = -420. * u.cm - magnetIncrease/2.
      c.Chamber4 = AttrDict(z=zset)
-     zset=z4-100.*u.cm
+     zset = -100. * u.cm
      c.Chamber5 = AttrDict(z=zset)
-     zset=z4+30.*u.cm+windowBulge/2.
+     zset = 30. * u.cm + windowBulge/2.
      c.Chamber6 = AttrDict(z=zset)
 
      c.xMax = 2 * u.m  # max horizontal width at T4
@@ -210,7 +209,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.TimeDet.DZ = (c.TimeDet.dzBarRow + c.TimeDet.dzBarCol + c.TimeDet.zBar) / 2
     c.TimeDet.DX = 225 * u.cm
     c.TimeDet.DY = 325 * u.cm
-    c.TimeDet.z = c.Chamber6.z + c.chambers.Tub6length + c.TimeDet.DZ + 1*u.cm # safety margin
+    c.TimeDet.z = 37.80 * u.m #Relative position of timing detector to decay vessel centre
 
     if CaloDesign==0:
      c.HcalOption = 1
@@ -228,7 +227,7 @@ with ConfigRegistry.register_config("basic") as c:
      1/0
 
     c.SplitCal = AttrDict(z=0)
-    c.SplitCal.ZStart = c.TimeDet.z + c.TimeDet.DZ + 5*u.cm
+    c.SplitCal.ZStart = 38.45 * u.m #Relative start z of split cal to decay vessel centre
     c.SplitCal.XMax = 480.*u.cm/2. #290.*u.cm  #half length
     c.SplitCal.YMax = 720. * u.cm / 2. #510.*u.cm * c.Yheight / (10.*u.m)   #half length
     c.SplitCal.Empty = 0*u.cm
@@ -258,12 +257,12 @@ with ConfigRegistry.register_config("basic") as c:
     c.SplitCal.StripHalfLength = 150*u.cm # c.SplitCal.YMax/c.SplitCal.NModulesInY
     c.SplitCal.SplitCalThickness=(c.SplitCal.FilterECALThickness_first-c.SplitCal.FilterECALThickness)+(c.SplitCal.FilterECALThickness+c.SplitCal.ActiveECALThickness)*c.SplitCal.nECALSamplings+c.SplitCal.BigGap
 
-    c.ecal  =  AttrDict(z = c.TimeDet.z + c.TimeDet.DZ  + 5*u.cm)  #
+    c.ecal = AttrDict(z=39.35*u.m) #Relative position of ECAL to decay vessel centre
     c.ecal.File = EcalGeoFile
     hcalThickness = 232*u.cm
     if  c.HcalOption == 2: hcalThickness = 110*u.cm  # to have same interaction length as before
     if not c.HcalOption < 0:
-     c.hcal =  AttrDict(z=c.ecal.z + hcalThickness/2. + 45.*u.cm  )
+     c.hcal = AttrDict(z=40.85*u.m) #Relative position of HCAL to decay vessel centre
      c.hcal.hcalSpace = hcalThickness + 5.5*u.cm
      c.hcal.File  =  HcalGeoFile
     else:
