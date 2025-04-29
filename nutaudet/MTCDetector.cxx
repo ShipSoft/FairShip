@@ -83,14 +83,13 @@ Int_t MTCDetector::InitMedium(const char* name)
 
     FairGeoMedium* ShipMedium = media->getMedium(name);
 
-    if (!ShipMedium)
-    {
+    if (!ShipMedium) {
         LOG(FATAL) << "Material " << name << " not defined in media file.";
         return -1111;
     }
     TGeoMedium* medium = gGeoManager->GetMedium(name);
     if (medium != nullptr)
-      return ShipMedium->getMediumIndex();
+        return ShipMedium->getMediumIndex();
     return geoBuild->createMedium(ShipMedium);
 }
 
@@ -106,8 +105,6 @@ void MTCDetector::SetMTCParameters(Double_t w, Double_t h, Double_t iron,
     fZCenter = z;
     fFieldY = field;
 }
-
-
 
 
 // Updated SciFi module builder with fiber placements
@@ -127,14 +124,14 @@ AddSensitiveVolume(cellVol);
 Int_t nX = Int_t(width/cellSizeX);
 Int_t nY = Int_t(height/cellSizeY);
 
-for(Int_t i=0; i<nX; i++) {
-for(Int_t j=0; j<nY; j++) {
-Double_t x = -width/2 + cellSizeX*(i+0.5);
-Double_t y = -height/2 + cellSizeY*(j+0.5);
-motherVol->AddNode(cellVol, 30000000 + LayerId * 100000 + i*nY+j, new TGeoTranslation(x, y, 0));
-}
-}
-return motherVol;
+    for (Int_t i = 0; i < nX; i++) {
+        for (Int_t j = 0; j < nY; j++) {
+            Double_t x = -width / 2 + cellSizeX * (i + 0.5);
+            Double_t y = -height / 2 + cellSizeY * (j + 0.5);
+            motherVol->AddNode(cellVol, 30000000 + LayerId * 100000 + i * nY + j, new TGeoTranslation(x, y, 0));
+        }
+    }
+    return motherVol;
 }
 
 TGeoVolume* MTCDetector::CreateSciFiModule(const char* name, Double_t width, Double_t height, Double_t thickness, Int_t LayerId) {
@@ -151,32 +148,30 @@ TGeoVolume* MTCDetector::CreateSciFiModule(const char* name, Double_t width, Dou
   Double_t zUpperIronInt = 3.2/10;
   // Total module thickness = 0.3 + 0.135 + 0.1 + 0.135 + 0.3 ≈ 1.0 cm
 
-  // Create the mother volume for the SciFi module
-  auto modMother = new TGeoBBox(Form("%s_mother", name), width/2, height/2, thickness/2);
-  auto modMotherVol = new TGeoVolume(Form("%s_mother", name), modMother, gGeoManager->GetMedium("SciFiMat"));
-  // AddSensitiveVolume(modMotherVol);
-  modMotherVol->SetLineColor(kGreen+2);
-  modMotherVol->SetTransparency(40);
+    // Create the mother volume for the SciFi module
+    TGeoBBox* modMother = new TGeoBBox(Form("%s_mother", name), width / 2, height / 2, thickness / 2);
+    TGeoVolume* modMotherVol = new TGeoVolume(Form("%s_mother", name), modMother, gGeoManager->GetMedium("SciFiMat"));
+    modMotherVol->SetLineColor(kGreen + 2);
+    modMotherVol->SetTransparency(40);
 
-  // --- Lower Internal Iron ---
-  auto lowerIronBox = new TGeoBBox(Form("%s_lowerIron", name), width/2, height/2, lowerIronThick/2);
-  auto lowerIronVol = new TGeoVolume(Form("%s_lowerIron", name), lowerIronBox, gGeoManager->GetMedium("iron"));
-  lowerIronVol->SetLineColor(kGray+1);
-  lowerIronVol->SetTransparency(20);
-  // AddSensitiveVolume(lowerIronVol);
-  modMotherVol->AddNode(lowerIronVol, 1, new TGeoTranslation(0, 0, zLowerIronInt));
+    // --- Lower Internal Iron ---
+    TGeoBBox* lowerIronBox = new TGeoBBox(Form("%s_lowerIron", name), width / 2, height / 2, lowerIronThick / 2);
+    TGeoVolume* lowerIronVol = new TGeoVolume(Form("%s_lowerIron", name), lowerIronBox, gGeoManager->GetMedium("iron"));
+    lowerIronVol->SetLineColor(kGray + 1);
+    lowerIronVol->SetTransparency(20);
+    modMotherVol->AddNode(lowerIronVol, 1, new TGeoTranslation(0, 0, zLowerIronInt));
 
-  // --- Fiber Mat U (Lower SciFi Mat) ---
-  auto fiberMatBoxU = new TGeoBBox(Form("%s_fiberMat_U", name), width/2, height/2, fiberMatThick/2);
-  auto fiberMatVolU = new TGeoVolume(Form("%s_fiberMat_U", name), fiberMatBoxU, gGeoManager->GetMedium("SciFiMat"));
-  // AddSensitiveVolume(fiberMatVolU);
-  modMotherVol->AddNode(fiberMatVolU, 1, new TGeoTranslation(0, 0, zFiberMat1));
+    // --- Fiber Mat U (Lower SciFi Mat) ---
+    TGeoBBox* fiberMatBoxU = new TGeoBBox(Form("%s_fiberMat_U", name), width / 2, height / 2, fiberMatThick / 2);
+    TGeoVolume* fiberMatVolU =
+        new TGeoVolume(Form("%s_fiberMat_U", name), fiberMatBoxU, gGeoManager->GetMedium("SciFiMat"));
+    modMotherVol->AddNode(fiberMatVolU, 1, new TGeoTranslation(0, 0, zFiberMat1));
 
-  // --- Fiber Mat V (Upper SciFi Mat) ---
-  auto fiberMatBoxV = new TGeoBBox(Form("%s_fiberMat_V", name), width/2, height/2, fiberMatThick/2);
-  auto fiberMatVolV = new TGeoVolume(Form("%s_fiberMat_V", name), fiberMatBoxV, gGeoManager->GetMedium("SciFiMat"));
-  // AddSensitiveVolume(fiberMatVolV);
-  modMotherVol->AddNode(fiberMatVolV, 2, new TGeoTranslation(0, 0, zFiberMat2));
+    // --- Fiber Mat V (Upper SciFi Mat) ---
+    TGeoBBox* fiberMatBoxV = new TGeoBBox(Form("%s_fiberMat_V", name), width / 2, height / 2, fiberMatThick / 2);
+    TGeoVolume* fiberMatVolV =
+        new TGeoVolume(Form("%s_fiberMat_V", name), fiberMatBoxV, gGeoManager->GetMedium("SciFiMat"));
+    modMotherVol->AddNode(fiberMatVolV, 2, new TGeoTranslation(0, 0, zFiberMat2));
 
   // --- Upper Internal Iron ---
   auto upperIronBox = new TGeoBBox(Form("%s_upperIron", name), width/2, height/2, upperIronThick/2);
@@ -197,15 +192,17 @@ TGeoVolume* MTCDetector::CreateSciFiModule(const char* name, Double_t width, Dou
     fiberMatVolU->AddNode(sciFiLayerMotherUVol, 10000000 + LayerId * 100000 + j, new TGeoTranslation(0, 0, zCenter));
   }
 
-  auto sciFiLayerMotherVBox = new TGeoBBox(Form("%s_SciFiLayerMother_V", name), width/2, height/2, fiberMatThick/2 / fiber_layer_number);
-  auto sciFiLayerMotherVVol = new TGeoVolume(Form("%s_SciFiLayerMother_V", name), sciFiLayerMotherVBox, gGeoManager->GetMedium("SciFiMat"));
-  AddSensitiveVolume(sciFiLayerMotherVVol);
-  for(int j = 0; j < fiber_layer_number; j++) {
-    Double_t zCenter = -fiberMatThick/2 + (j + 0.5) * fiberMatThick/fiber_layer_number;
-    fiberMatVolV->AddNode(sciFiLayerMotherVVol, 20000000 + LayerId * 100000 + j, new TGeoTranslation(0, 0, zCenter));
-  }
-
-  return modMotherVol;
+    TGeoBBox* sciFiLayerMotherVBox = new TGeoBBox(
+        Form("%s_SciFiLayerMother_V", name), width / 2, height / 2, fiberMatThick / 2 / fiber_layer_number);
+    TGeoVolume* sciFiLayerMotherVVol =
+        new TGeoVolume(Form("%s_SciFiLayerMother_V", name), sciFiLayerMotherVBox, gGeoManager->GetMedium("SciFiMat"));
+    AddSensitiveVolume(sciFiLayerMotherVVol);
+    for (int j = 0; j < fiber_layer_number; j++) {
+        Double_t zCenter = -fiberMatThick / 2 + (j + 0.5) * fiberMatThick / fiber_layer_number;
+        fiberMatVolV->AddNode(
+            sciFiLayerMotherVVol, 20000000 + LayerId * 100000 + j, new TGeoTranslation(0, 0, zCenter));
+    }
+    return modMotherVol;
 }
 
 
@@ -239,6 +236,22 @@ void MTCDetector::ConstructGeometry() {
     ironVol->SetLineColor(kGray+1);
     ironVol->SetTransparency(20);
 
+    // --- Assemble the layers into the envelope ---
+    for (Int_t i = 0; i < fLayers; i++) {
+        // Compute the center position (z) for the current module
+        Double_t zPos = -totalLength / 2 + i * moduleSpacing;
+
+        // Place the Outer Iron layer (shifted down by half the SciFi+scint thickness)
+        envVol->AddNode(ironVol, i, new TGeoTranslation(0, 0, zPos + fIronThick / 2));
+
+        // Create a SciFi module with the current detector id 'i'
+        TGeoVolume* sciFiModuleVol = CreateSciFiModule("MTC_sciFi", fWidth, fHeight, fSciFiThick, i);
+        envVol->AddNode(sciFiModuleVol, i, new TGeoTranslation(0, 0, zPos + fIronThick + fSciFiThick / 2));
+        TGeoVolume* scintVol =
+            CreateSegmentedLayer("MTC_scint", fWidth, fHeight, fScintThick, 1.0, 1.0, scintMed, kAzure + 7, 30, i);
+        // Place the Scintillator layer (shifted up by half the iron thickness)
+        envVol->AddNode(scintVol, i, new TGeoTranslation(0, 0, zPos + fIronThick + fSciFiThick + fScintThick / 2));
+    }
 
       // --- Assemble the layers into the envelope ---
   for (Int_t i = 0; i < fLayers; i++) {
@@ -327,21 +340,81 @@ void MTCDetector::Register(){
   }
 
 
-  void MTCDetector::Reset()
-  {
-      fMTCDetectorPointCollection.clear();
-  }
-  void MTCDetector::EndOfEvent()
-  {
-     fMTCDetectorPointCollection.clear();
-  }
+        TParticle* p = gMC->GetStack()->GetCurrentTrack();
+        fTrackID = gMC->GetStack()->GetCurrentTrackNumber();
+        Int_t pdgCode = p->GetPdgCode();
+        Int_t detID;
+        Double_t x, y, z;
+        gMC->CurrentVolID(detID);
+        TLorentzVector Pos;
+        gMC->TrackPosition(Pos);
+        TLorentzVector Mom;
+        gMC->TrackMomentum(Mom);
+        if (detID / 10000000 == 3) {
+        x = (fPos.X() + Pos.X()) / 2.;
+        y = (fPos.Y() + Pos.Y()) / 2.;
+        z = (fPos.Z() + Pos.Z()) / 2.;
+        }
+        else {
+        x = fPos.X();
+        y = fPos.Y();
+        z = (fPos.Z() + Pos.Z()) / 2.;
+        }
 
-  MTCdetPoint* MTCDetector::AddHit(Int_t trackID, Int_t detID,
-    TVector3 pos, TVector3 mom,
-    Double_t time, Double_t length,
-    Double_t eLoss, Int_t pdgCode)
-  {
-    fMTCDetectorPointCollection.emplace_back(trackID, detID, pos, mom, time, length, eLoss, pdgCode);
-    // return pointer to the new element:
-    return &fMTCDetectorPointCollection.back();
-  }
+        AddHit(fTrackID,
+                detID,
+                TVector3(x, y, z),        
+                TVector3(fMom.Px(), fMom.Py(), fMom.Pz()),   // entrance momentum
+                fTime,
+                fLength,
+                fELoss,
+                pdgCode);
+        ShipStack* stack = dynamic_cast<ShipStack*>(gMC->GetStack());
+        stack->AddPoint(kMTC);
+        
+    }
+    return kTRUE;
+}
+
+void MTCDetector::Register()
+{
+    TString name = "MTCdetPoint";
+    TString title = "MTC";
+    FairRootManager::Instance()->Register(name, title, fMTCDetectorPointCollection, kTRUE);
+    LOG(DEBUG) << this->GetName() << ", Register() says: registered " << name << " collection";
+}
+
+TClonesArray* MTCDetector::GetCollection(Int_t iColl) const
+{
+    if (iColl == 0) {
+        return fMTCDetectorPointCollection;
+    } else {
+        return NULL;
+    }
+}
+
+void MTCDetector::Reset()
+{
+    fMTCDetectorPointCollection->Clear();
+}
+
+void MTCDetector::EndOfEvent()
+{
+    fMTCDetectorPointCollection->Clear();
+}
+
+MTCdetPoint* MTCDetector::AddHit(Int_t trackID,
+                                 Int_t detID,
+                                 TVector3 pos,
+                                 TVector3 mom,
+                                 Double_t time,
+                                 Double_t length,
+                                 Double_t eLoss,
+                                 Int_t pdgCode)
+{
+    TClonesArray& clref = *fMTCDetectorPointCollection;
+    Int_t size = clref.GetEntriesFast();
+    return new (clref[size]) MTCdetPoint(trackID, detID, pos, mom, time, length, eLoss, pdgCode);
+}
+
+
