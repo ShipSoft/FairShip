@@ -472,6 +472,7 @@ class DrawTracks(ROOT.FairTask):
                 "strawtubesPoint",
                 "ShipRpcPoint",
                 "TargetPoint",
+                "MTCdetPoint",
                 "TimeDetPoint",
             ]:
                 if not sTree.GetBranch(P):
@@ -1383,6 +1384,10 @@ else:
     mcHits["TargetPoints"] = ROOT.FairMCPointDraw(
         "TargetPoint", ROOT.kRed, ROOT.kFullSquare
     )
+    mcHits["MTCdetPoint"] = ROOT.FairMCPointDraw(
+        "MTCdetPoint", ROOT.kGreen, ROOT.kFullSquare
+    )
+    
 
 for x in mcHits:
     fMan.AddTask(mcHits[x])

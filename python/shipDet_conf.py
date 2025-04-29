@@ -252,8 +252,6 @@ def configure_snd_mtc(yaml_file):
         mtc_geo.height,
         mtc_geo.ironThick,
         mtc_geo.sciFiThick,
-        mtc_geo.fiberPitch,
-        mtc_geo.fiberRadius,
         mtc_geo.scintThick,
         mtc_geo.nLayers,
         mtc_geo.zPosition,

@@ -21,5 +21,5 @@
 // Link new MTC (magnetised tracking calorimeter) modules:
 #pragma link C++ class MTCDetector+;
 #pragma link C++ class MTCdetPoint+;
-
+#pragma link C++ class std::vector<MTCdetPoint>+;
 #endif
