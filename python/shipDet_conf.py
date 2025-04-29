@@ -252,6 +252,8 @@ def configure_snd_mtc(yaml_file):
         mtc_geo.height,
         mtc_geo.ironThick,
         mtc_geo.sciFiThick,
+        mtc_geo.fiberPitch,
+        mtc_geo.fiberRadius,
         mtc_geo.scintThick,
         mtc_geo.nLayers,
         mtc_geo.zPosition,
@@ -428,7 +430,7 @@ def configure(run, ship_geo):
 
     #For SND
     if ship_geo.SND:
-        if ship_geo.SNDDesign == 2:
+        if ship_geo.SND_Design == 2:
             #SND design 2 -- MTC
             configure_snd_mtc(
                 fairship + "/geometry/MTC_config.yaml"

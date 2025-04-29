@@ -29,6 +29,8 @@ class MTCDetector : public FairDetector
                           Double_t height,
                           Double_t ironThick,
                           Double_t sciFiThick,
+                          Double_t fiberPitch,
+                          Double_t fiberRadius,
                           Double_t scintThick,
                           Int_t nLayers,
                           Double_t zCenter,
@@ -43,7 +45,13 @@ class MTCDetector : public FairDetector
                                      Int_t color,
                                      Double_t transparency,
                                      Int_t LayerId);
-    TGeoVolume* CreateSciFiModule(const char* name, Double_t width, Double_t height, Double_t thickness, Int_t LayerId);
+    TGeoVolume* CreateSciFiModule(const char* name, 
+                                    Double_t width, 
+                                    Double_t height, 
+                                    Double_t thickness,  
+                                    Double_t fiberpitch,
+                                    Double_t fiberradius,
+                                    Int_t LayerId);
     virtual void ConstructGeometry();
     virtual void Initialize();
     virtual Bool_t ProcessHits(FairVolume* vol = 0);
@@ -81,6 +89,7 @@ class MTCDetector : public FairDetector
     Int_t fLayers;
     Double_t fZCenter;
     Double_t fFieldY;
+    Double_t fFiberPitch, fFiberRadius;
     TClonesArray* fMTCDetectorPointCollection;
 
     MTCDetector(const MTCDetector&);
