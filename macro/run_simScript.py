@@ -95,7 +95,7 @@ parser.add_argument("--caloDesign",
                     default=globalDesigns[default]['caloDesign'],
                     type=int,
                     choices=[0,2,3])
-parser.add_argument("--strawDesign", dest="strawDesign", help="simplistic tracker design,  4=sophisticated straw tube design, horizontal wires (default), 10=2cm straw"
+parser.add_argument("--strawDesign", dest="strawDesign", help="simplistic tracker design, 4=sophisticated straw tube design, horizontal wires, 10=straw of 2 cm diamter (default)"
                                             ,required=False, default=globalDesigns[default]['strawDesign'], type=int)
 parser.add_argument("-F",        dest="deepCopy",  help="default = False: copy only stable particles to stack, except for HNL events", required=False, action="store_true")
 parser.add_argument("-t", "--test", dest="testFlag",  help="quick test", required=False,action="store_true")

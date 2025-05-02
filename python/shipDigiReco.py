@@ -761,9 +761,6 @@ class ShipDigiReco:
     key+=1
     if not aDigi.isValid(): continue
     detID = aDigi.GetDetectorID()
-# don't use hits from straw veto
-    station = int(detID//10000000)
-    if station > 4 : continue
     global_variables.modules["Strawtubes"].StrawEndPoints(detID, start, stop)
     delt1 = (start[2]-z1)/u.speedOfLight
     t0+=aDigi.GetDigi()-delt1
@@ -786,9 +783,6 @@ class ShipDigiReco:
      key+=1
      if not aDigi.isValid(): continue
      detID = aDigi.GetDetectorID()
-# don't use hits from straw veto
-     station = int(detID//10000000)
-     if station > 4 : continue
      global_variables.modules["Strawtubes"].StrawEndPoints(detID, start, stop)
    #distance to wire
      delt1 = (start[2]-z1)/u.speedOfLight

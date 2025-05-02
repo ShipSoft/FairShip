@@ -6,7 +6,7 @@ from ShipGeoConfig import AttrDict, ConfigRegistry
 # nuTauTargetDesign  =   #0 = TP, 1 = NEW with magnet, 2 = NEW without magnet, 3 = 2018 design
 
 # targetOpt      = 5  # 0=solid   >0 sliced, 5: 5 pieces of tungsten, 4 air slits, 17: molybdenum tungsten interleaved with H20
-# strawOpt       = 0  # 0=simplistic tracking stations defined in veto.cxx  1=detailed strawtube design 4=sophisticated straw tube design, horizontal wires (default) 10=2cm straw diameter for 2018 layout
+# strawOpt       = 0  # 0=simplistic tracking stations defined in veto.cxx  1=detailed strawtube design 4=sophisticated straw tube design, horizontal wires 10=2 cm straw diameter for compact layout (default)
 # tankDesign = 5 #  4=TP elliptical tank design, 5 = optimized conical rectangular design, 6=5 without segment-1
 
 # Here you can select the MS geometry, if the MS design is using SC magnet change the hybrid to True
@@ -49,7 +49,7 @@ if "nuTauTargetDesign" not in globals():
 if "targetOpt" not in globals():
     targetOpt = 18
 if "strawDesign" not in globals():
-    strawDesign = 4
+    strawDesign = 10
 if "tankDesign" not in globals():
     tankDesign = 6
 if "CaloDesign" not in globals():
@@ -149,8 +149,6 @@ with ConfigRegistry.register_config("basic") as c:
      c.TrackStation2 = AttrDict(z=zset)
      zset=z4-840.*u.cm-magnetIncrease
      c.TrackStation1 = AttrDict(z=zset)
-     zset=z4-4406.*u.cm-magnetIncrease-extraVesselLength
-     c.vetoStation   = AttrDict(z=zset)
 
     c.z = c.TrackStation2.z + 0.5 * (c.TrackStation3.z - c.TrackStation2.z)
     c.scintillator = AttrDict(z=0*u.cm)
@@ -168,7 +166,7 @@ with ConfigRegistry.register_config("basic") as c:
      c.strawtubes.FrameMaterial      = "aluminium"
      c.strawtubes.FrameLateralWidth  = 1.*u.cm
      c.strawtubes.DeltazFrame        = 10.*u.cm
-    elif strawDesign==10:  # 10 - baseline for 2018
+    elif strawDesign==10:  # 10 - baseline
      c.strawtubes.InnerStrawDiameter = 1.9928 * u.cm
      c.strawtubes.StrawPitch = 2. * u.cm
      c.strawtubes.DeltazLayer = 1.732 * u.cm
@@ -386,16 +384,11 @@ with ConfigRegistry.register_config("basic") as c:
     if tankDesign == 5:
        zF = c.target.z0+c.zFocusX
        c.strawtubes.StrawLength12   = c.xMax*(c.TrackStation1.z-2*c.strawtubes.DeltazView-zF)/(z4-zF)
-       c.strawtubes.StrawLengthVeto = c.xMax*(c.vetoStation.z-c.strawtubes.DeltazView-zF)/(z4-zF)
        zF = c.target.z0+c.zFocusY
-       c.strawtubes.vetoydim           = c.Yheight/2.*(c.vetoStation.z-c.strawtubes.DeltazView-zF)/(z4-zF)
        c.strawtubes.tr12ydim           = c.Yheight/2.*(c.TrackStation1.z-2*c.strawtubes.DeltazView-zF)/(z4-zF)
        c.strawtubes.tr34ydim           = int(c.Yheight/2.)
     else:
        c.strawtubes.StrawLength12   = c.strawtubes.StrawLength
-       c.strawtubes.StrawLengthVeto = c.strawtubes.StrawLength
-       if tankDesign > 5: c.strawtubes.StrawLengthVeto = 0.5 # switch of veto strawtracker
-       c.strawtubes.vetoydim           = int(c.Yheight/2.)
        c.strawtubes.tr12ydim           = int(c.Yheight/2.)
        c.strawtubes.tr34ydim           = int(c.Yheight/2.)
 

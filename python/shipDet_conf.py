@@ -440,7 +440,6 @@ def configure(run, ship_geo):
 
         Strawtubes = ROOT.strawtubes(ship_geo.strawtubes.medium)
         Strawtubes.SetZpositions(
-            ship_geo.vetoStation.z,
             ship_geo.TrackStation1.z,
             ship_geo.TrackStation2.z,
             ship_geo.TrackStation3.z,
@@ -466,18 +465,9 @@ def configure(run, ship_geo):
         Strawtubes.SetVacBox_y(ship_geo.strawtubes.VacBox_y)
         Strawtubes.SetStrawLength(ship_geo.strawtubes.StrawLength)
 
-        if hasattr(ship_geo.strawtubes, "StrawLengthVeto"):
-            Strawtubes.SetStrawLengthVeto(ship_geo.strawtubes.StrawLengthVeto)
-            Strawtubes.SetStrawLength12(ship_geo.strawtubes.StrawLength12)
-            Strawtubes.SetVetoYDim(ship_geo.strawtubes.vetoydim)
-            Strawtubes.SetTr12YDim(ship_geo.strawtubes.tr12ydim)
-            Strawtubes.SetTr34YDim(ship_geo.strawtubes.tr34ydim)
-        else:
-            Strawtubes.SetStrawLengthVeto(ship_geo.strawtubes.StrawLength)
-            Strawtubes.SetStrawLength12(ship_geo.strawtubes.StrawLength)
-            Strawtubes.SetVetoYDim(ship_geo.Yheight / 2.0)
-            Strawtubes.SetTr12YDim(ship_geo.Yheight / 2.0)
-            Strawtubes.SetTr34YDim(ship_geo.Yheight / 2.0)
+        Strawtubes.SetStrawLength12(ship_geo.strawtubes.StrawLength12)
+        Strawtubes.SetTr12YDim(ship_geo.strawtubes.tr12ydim)
+        Strawtubes.SetTr34YDim(ship_geo.strawtubes.tr34ydim)
         # for the digitizing step
         Strawtubes.SetStrawResolution(
             getParameter("strawtubes.v_drift", ship_geo, latestShipGeo),
