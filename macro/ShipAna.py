@@ -212,7 +212,6 @@ def dist2InnerWall(X,Y,Z):
 def isInFiducial(X,Y,Z):
    if not fiducialCut: return True
    if Z > ShipGeo.TrackStation1.z : return False
-   if Z < ShipGeo.vetoStation.z+100.*u.cm : return False
    # typical x,y Vx resolution for exclusive HNL decays 0.3cm,0.15cm (gaussian width)
    if dist2InnerWall(X,Y,Z)<5*u.cm: return False
    return True
