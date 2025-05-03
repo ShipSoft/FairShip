@@ -28,7 +28,7 @@ strawtubesHit.cxx
 Tracklet.cxx
 )
 
-Set(LINKDEF strawtubesLinkDef.h)
+Set(LINKDEF LinkDef.h)
 Set(LIBRARY_NAME strawtubes)
 Set(DEPENDENCIES
     Base ShipData FairLogger::FairLogger
