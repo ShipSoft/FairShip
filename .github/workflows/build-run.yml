@@ -35,6 +35,10 @@ jobs:
           key: ${{ env.version }}-${{ github.sha }}
           path: sw/
 
+      - uses: root-project/gcc-problem-matcher-improved@main
+        with:
+          build-directory: /__w/FairShip/FairShip/sw/BUILD/FairShip-latest/FairShip/
+
       - name: Build
         if: steps.cache-build.outputs.cache-hit != 'true'
         run: |
