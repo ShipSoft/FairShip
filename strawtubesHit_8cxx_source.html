@@ -151,77 +151,76 @@ $(document).ready(function(){initNavTree('strawtubesHit_8cxx_source.html',''); i
 <div class="foldopen" id="foldopen00046" data-start="{" data-end="}">
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="classstrawtubesHit.html#ad978a71455b3774e04f69efb301e0cf9">   46</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classstrawtubesHit.html#ad978a71455b3774e04f69efb301e0cf9">strawtubesHit::StrawEndPoints</a>(TVector3 &amp;vbot, TVector3 &amp;vtop)</div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>{</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    Int_t statnb = <a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a>/10000000;</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    Int_t vnb =  (<a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a> - statnb*10000000)/1000000;</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    Int_t pnb =  (<a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a>- statnb*10000000 - vnb*1000000)/100000;</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    Int_t lnb =  (<a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a> - statnb*10000000 - vnb*1000000 - pnb*100000)/10000;</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    TString stat = <span class="stringliteral">&quot;Tr&quot;</span>;stat+=+statnb;stat+=<span class="stringliteral">&quot;_&quot;</span>;stat+=statnb;</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    <span class="keywordflow">if</span> (statnb==5){stat=<span class="stringliteral">&quot;Veto_5&quot;</span>;}</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    TString view;</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    <span class="keywordflow">switch</span> (vnb) {</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>          <span class="keywordflow">case</span> 0:</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>            view = <span class="stringliteral">&quot;_x1&quot;</span>;</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>                <span class="keywordflow">if</span> (statnb==5){view = <span class="stringliteral">&quot;_x&quot;</span>;}</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>            <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>          <span class="keywordflow">case</span> 1:</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>            view = <span class="stringliteral">&quot;_u&quot;</span>;</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>            <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>          <span class="keywordflow">case</span> 2:</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>            view = <span class="stringliteral">&quot;_v&quot;</span>;</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>            <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>          <span class="keywordflow">case</span> 3:</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>            view = <span class="stringliteral">&quot;_x2&quot;</span>;</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>            <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>          <span class="keywordflow">default</span>:</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>            view = <span class="stringliteral">&quot;_x1&quot;</span>;}</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    TGeoNavigator* nav = gGeoManager-&gt;GetCurrentNavigator();</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    TString prefix = <span class="stringliteral">&quot;Tr&quot;</span>;</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    <span class="keywordflow">if</span> (statnb==5){prefix=<span class="stringliteral">&quot;Veto&quot;</span>;}</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    <span class="keywordflow">else</span>{prefix+=statnb;}</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    prefix+=view;prefix+=<span class="stringliteral">&quot;_plane_&quot;</span>;prefix+=pnb;prefix+=<span class="stringliteral">&quot;_&quot;</span>;</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    TString plane = prefix;plane+=statnb;plane+=vnb;plane+=+pnb;plane+=<span class="stringliteral">&quot;00000&quot;</span>;</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    TString layer = prefix+<span class="stringliteral">&quot;layer_&quot;</span>;layer+=lnb;layer+=<span class="stringliteral">&quot;_&quot;</span>;layer+=statnb;layer+=vnb;layer+=pnb;layer+=lnb;layer+=<span class="stringliteral">&quot;0000&quot;</span>;</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    TString wire = <span class="stringliteral">&quot;wire_&quot;</span>;</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    <span class="keywordflow">if</span> (statnb==5){wire+=<span class="stringliteral">&quot;veto_&quot;</span>;}</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    wire+=(<a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a>+1000);</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    <span class="keywordflow">if</span> (statnb&lt;3){wire = <span class="stringliteral">&quot;wire_12_&quot;</span>;wire+=(<a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a>+1000);}</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    TString path = <span class="stringliteral">&quot;/&quot;</span>;path+=stat;path+=<span class="stringliteral">&quot;/&quot;</span>;path+=plane;path+=<span class="stringliteral">&quot;/&quot;</span>;path+=layer;path+=<span class="stringliteral">&quot;/&quot;</span>;path+=wire;</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    Bool_t rc = nav-&gt;cd(path);</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    <span class="keywordflow">if</span> (not rc){</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>      cout &lt;&lt; <span class="stringliteral">&quot;strawtubes::StrawDecode, TgeoNavigator failed &quot;</span>&lt;&lt;path&lt;&lt;endl;</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    }</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    TGeoNode* W = nav-&gt;GetCurrentNode();</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    TGeoTube* S = <span class="keyword">dynamic_cast&lt;</span>TGeoTube*<span class="keyword">&gt;</span>(W-&gt;GetVolume()-&gt;GetShape());</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    Double_t top[3] = {0,0,S-&gt;GetDZ()};</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    Double_t bot[3] = {0,0,-S-&gt;GetDZ()};</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    Double_t Gtop[3],Gbot[3];</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    nav-&gt;LocalToMaster(top, Gtop);   nav-&gt;LocalToMaster(bot, Gbot);</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    vtop.SetXYZ(Gtop[0],Gtop[1],Gtop[2]);</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    vbot.SetXYZ(Gbot[0],Gbot[1],Gbot[2]);</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>}</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    Int_t statnb = <a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a> / 10000000;</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    Int_t vnb = (<a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a> - statnb * 10000000) / 1000000;</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    Int_t pnb = (<a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a> - statnb * 10000000 - vnb * 1000000) / 100000;</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    Int_t lnb = (<a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a> - statnb * 10000000 - vnb * 1000000 - pnb * 100000) / 10000;</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    TString stat = <span class="stringliteral">&quot;Tr&quot;</span>; stat += statnb; stat += <span class="stringliteral">&quot;_&quot;</span>; stat += statnb;</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    TString view;</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    <span class="keywordflow">switch</span> (vnb) {</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>          <span class="keywordflow">case</span> 0:</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>            view = <span class="stringliteral">&quot;_x1&quot;</span>;</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>            <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>          <span class="keywordflow">case</span> 1:</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>            view = <span class="stringliteral">&quot;_u&quot;</span>;</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>            <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>          <span class="keywordflow">case</span> 2:</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>            view = <span class="stringliteral">&quot;_v&quot;</span>;</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>            <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>          <span class="keywordflow">case</span> 3:</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>            view = <span class="stringliteral">&quot;_x2&quot;</span>;</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>            <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>          <span class="keywordflow">default</span>:</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>            view = <span class="stringliteral">&quot;_x1&quot;</span>;</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    }</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    TGeoNavigator* nav = gGeoManager-&gt;GetCurrentNavigator();</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    TString prefix = <span class="stringliteral">&quot;Tr&quot;</span>;</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    prefix += statnb;</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    prefix += view; prefix += <span class="stringliteral">&quot;_plane_&quot;</span>; prefix += pnb; prefix += <span class="stringliteral">&quot;_&quot;</span>;</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    TString plane = prefix; plane += statnb; plane += vnb; plane += pnb; plane += <span class="stringliteral">&quot;00000&quot;</span>;</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    TString layer = prefix + <span class="stringliteral">&quot;layer_&quot;</span>; layer += lnb; layer += <span class="stringliteral">&quot;_&quot;</span>; layer += statnb; layer += vnb; layer += pnb; layer += lnb; layer += <span class="stringliteral">&quot;0000&quot;</span>;</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    TString wire = <span class="stringliteral">&quot;wire_&quot;</span>;</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    wire += (<a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a> + 1000);</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    <span class="keywordflow">if</span> (statnb &lt; 3) {</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>      wire = <span class="stringliteral">&quot;wire_12_&quot;</span>; wire += (<a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a> + 1000);</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    }</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    TString path = <span class="stringliteral">&quot;/&quot;</span>; path += stat; path += <span class="stringliteral">&quot;/&quot;</span>; path += plane; path += <span class="stringliteral">&quot;/&quot;</span>; path += layer; path += <span class="stringliteral">&quot;/&quot;</span>; path += wire;</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    Bool_t rc = nav-&gt;cd(path);</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    <span class="keywordflow">if</span> (not rc) {</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>      LOG(warning) &lt;&lt; <span class="stringliteral">&quot;strawtubes::StrawDecode, TGeoNavigator failed &quot;</span> &lt;&lt; path;</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    }</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    TGeoNode* W = nav-&gt;GetCurrentNode();</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    TGeoTube* S = <span class="keyword">dynamic_cast&lt;</span>TGeoTube*<span class="keyword">&gt;</span>(W-&gt;GetVolume()-&gt;GetShape());</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    Double_t top[3] = {0, 0, S-&gt;GetDZ()};</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    Double_t bot[3] = {0, 0, -S-&gt;GetDZ()};</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    Double_t Gtop[3], Gbot[3];</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    nav-&gt;LocalToMaster(top, Gtop); nav-&gt;LocalToMaster(bot, Gbot);</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    vtop.SetXYZ(Gtop[0], Gtop[1], Gtop[2]);</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    vbot.SetXYZ(Gbot[0], Gbot[1], Gbot[2]);</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>}</div>
 </div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span> </div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span><span class="comment">// -------------------------------------------------------------------------</span></div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span> </div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span><span class="comment">// -----   Destructor   ----------------------------------------------------</span></div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno"><a class="line" href="classstrawtubesHit.html#a9b9f739328e3fc152361a6a85a734e85">  101</a></span><a class="code hl_function" href="classstrawtubesHit.html#a9b9f739328e3fc152361a6a85a734e85">strawtubesHit::~strawtubesHit</a>() { }</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span><span class="comment">// -------------------------------------------------------------------------</span></div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span> </div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span><span class="comment">// -----   Public method Print   -------------------------------------------</span></div>
-<div class="foldopen" id="foldopen00105" data-start="{" data-end="}">
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno"><a class="line" href="classstrawtubesHit.html#a54fce890c050449cbd049eb88c8f81c4">  105</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classstrawtubesHit.html#a54fce890c050449cbd049eb88c8f81c4">strawtubesHit::Print</a>()<span class="keyword"> const</span></div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span><span class="keyword"></span>{</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>  cout &lt;&lt; <span class="stringliteral">&quot;-I- strawtubesHit: strawtubes hit &quot;</span> &lt;&lt; <span class="stringliteral">&quot; in detector &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a> &lt;&lt; endl;</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>  cout &lt;&lt; <span class="stringliteral">&quot;  TDC &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipHit.html#a1353d789e08ea991cc25a3724131c8e9">fdigi</a> &lt;&lt; <span class="stringliteral">&quot; ns&quot;</span> &lt;&lt; endl;</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>}</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span> </div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span><span class="comment">// -------------------------------------------------------------------------</span></div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span> </div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span><span class="comment">// -----   Destructor   ----------------------------------------------------</span></div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno"><a class="line" href="classstrawtubesHit.html#a9b9f739328e3fc152361a6a85a734e85">  100</a></span><a class="code hl_function" href="classstrawtubesHit.html#a9b9f739328e3fc152361a6a85a734e85">strawtubesHit::~strawtubesHit</a>() { }</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span><span class="comment">// -------------------------------------------------------------------------</span></div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> </div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span><span class="comment">// -----   Public method Print   -------------------------------------------</span></div>
+<div class="foldopen" id="foldopen00104" data-start="{" data-end="}">
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno"><a class="line" href="classstrawtubesHit.html#a54fce890c050449cbd049eb88c8f81c4">  104</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classstrawtubesHit.html#a54fce890c050449cbd049eb88c8f81c4">strawtubesHit::Print</a>()<span class="keyword"> const</span></div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span><span class="keyword"></span>{</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>  cout &lt;&lt; <span class="stringliteral">&quot;-I- strawtubesHit: strawtubes hit &quot;</span> &lt;&lt; <span class="stringliteral">&quot; in detector &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a> &lt;&lt; endl;</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>  cout &lt;&lt; <span class="stringliteral">&quot;  TDC &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipHit.html#a1353d789e08ea991cc25a3724131c8e9">fdigi</a> &lt;&lt; <span class="stringliteral">&quot; ns&quot;</span> &lt;&lt; endl;</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>}</div>
 </div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span><span class="comment">// -------------------------------------------------------------------------</span></div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span><span class="comment">// -------------------------------------------------------------------------</span></div>
 <div class="ttc" id="aclassShipHit_html"><div class="ttname"><a href="classShipHit.html">ShipHit</a></div><div class="ttdef"><b>Definition</b> <a href="ShipHit_8h_source.html#l00017">ShipHit.h:18</a></div></div>
 <div class="ttc" id="aclassShipHit_html_a1353d789e08ea991cc25a3724131c8e9"><div class="ttname"><a href="classShipHit.html#a1353d789e08ea991cc25a3724131c8e9">ShipHit::fdigi</a></div><div class="ttdeci">Float_t fdigi</div><div class="ttdoc">digitized detector hit</div><div class="ttdef"><b>Definition</b> <a href="ShipHit_8h_source.html#l00057">ShipHit.h:57</a></div></div>
 <div class="ttc" id="aclassShipHit_html_a2d5297096e3039b34c93d2bf80738b10"><div class="ttname"><a href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">ShipHit::fDetectorID</a></div><div class="ttdeci">Int_t fDetectorID</div><div class="ttdoc">Detector unique identifier.</div><div class="ttdef"><b>Definition</b> <a href="ShipHit_8h_source.html#l00058">ShipHit.h:58</a></div></div>
-<div class="ttc" id="aclassstrawtubesHit_html_a54fce890c050449cbd049eb88c8f81c4"><div class="ttname"><a href="classstrawtubesHit.html#a54fce890c050449cbd049eb88c8f81c4">strawtubesHit::Print</a></div><div class="ttdeci">virtual void Print() const</div><div class="ttdef"><b>Definition</b> <a href="strawtubesHit_8cxx_source.html#l00105">strawtubesHit.cxx:105</a></div></div>
-<div class="ttc" id="aclassstrawtubesHit_html_a9b9f739328e3fc152361a6a85a734e85"><div class="ttname"><a href="classstrawtubesHit.html#a9b9f739328e3fc152361a6a85a734e85">strawtubesHit::~strawtubesHit</a></div><div class="ttdeci">virtual ~strawtubesHit()</div><div class="ttdef"><b>Definition</b> <a href="strawtubesHit_8cxx_source.html#l00101">strawtubesHit.cxx:101</a></div></div>
+<div class="ttc" id="aclassstrawtubesHit_html_a54fce890c050449cbd049eb88c8f81c4"><div class="ttname"><a href="classstrawtubesHit.html#a54fce890c050449cbd049eb88c8f81c4">strawtubesHit::Print</a></div><div class="ttdeci">virtual void Print() const</div><div class="ttdef"><b>Definition</b> <a href="strawtubesHit_8cxx_source.html#l00104">strawtubesHit.cxx:104</a></div></div>
+<div class="ttc" id="aclassstrawtubesHit_html_a9b9f739328e3fc152361a6a85a734e85"><div class="ttname"><a href="classstrawtubesHit.html#a9b9f739328e3fc152361a6a85a734e85">strawtubesHit::~strawtubesHit</a></div><div class="ttdeci">virtual ~strawtubesHit()</div><div class="ttdef"><b>Definition</b> <a href="strawtubesHit_8cxx_source.html#l00100">strawtubesHit.cxx:100</a></div></div>
 <div class="ttc" id="aclassstrawtubesHit_html_ab170413153b77b7e0fd195f5c1022e87"><div class="ttname"><a href="classstrawtubesHit.html#ab170413153b77b7e0fd195f5c1022e87">strawtubesHit::strawtubesHit</a></div><div class="ttdeci">strawtubesHit()</div><div class="ttdef"><b>Definition</b> <a href="strawtubesHit_8cxx_source.html#l00020">strawtubesHit.cxx:20</a></div></div>
 <div class="ttc" id="aclassstrawtubesHit_html_ad978a71455b3774e04f69efb301e0cf9"><div class="ttname"><a href="classstrawtubesHit.html#ad978a71455b3774e04f69efb301e0cf9">strawtubesHit::StrawEndPoints</a></div><div class="ttdeci">void StrawEndPoints(TVector3 &amp;vbot, TVector3 &amp;vtop)</div><div class="ttdef"><b>Definition</b> <a href="strawtubesHit_8cxx_source.html#l00046">strawtubesHit.cxx:46</a></div></div>
 <div class="ttc" id="aclassstrawtubesHit_html_aec424ae83b883fc4cfbdf41df379e1d1"><div class="ttname"><a href="classstrawtubesHit.html#aec424ae83b883fc4cfbdf41df379e1d1">strawtubesHit::flag</a></div><div class="ttdeci">Float_t flag</div><div class="ttdoc">flag</div><div class="ttdef"><b>Definition</b> <a href="strawtubesHit_8h_source.html#l00037">strawtubesHit.h:37</a></div></div>

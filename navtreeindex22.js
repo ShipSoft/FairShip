@@ -1,11 +1,5 @@
 var NAVTREEINDEX22 =
 {
-"classvetoHit.html#ace3e27270dc49e73580d1f299e9c2c31":[5,0,137,16],
-"classvetoHit.html#adb60f44363a7059a2c7d3f41c1cac796":[5,0,137,10],
-"classvetoHit.html#aeb6cafbb07d8379296a9b687fc5dd333":[5,0,137,8],
-"classvetoHit.html#aed0c193a3159e56cda7377012272d233":[5,0,137,15],
-"classvetoHitOnTrack.html":[5,0,138],
-"classvetoHitOnTrack.html#a0269377ae88221e8ed503b22301034f1":[5,0,138,0],
 "classvetoHitOnTrack.html#a03b6392aa730388480b7a0b04bfd5f55":[5,0,138,4],
 "classvetoHitOnTrack.html#a264d0d86ce10318686fb0c68ae11911a":[5,0,138,3],
 "classvetoHitOnTrack.html#a278841fae93a062c3489b1ae3e39d7bf":[5,0,138,2],
@@ -249,5 +243,11 @@ var NAVTREEINDEX22 =
 "ecalModule_8cxx.html":[6,0,1,33],
 "ecalModule_8cxx_source.html":[6,0,1,33],
 "ecalModule_8h.html":[6,0,1,34],
-"ecalModule_8h_source.html":[6,0,1,34]
+"ecalModule_8h_source.html":[6,0,1,34],
+"ecalPoint_8cxx.html":[6,0,1,35],
+"ecalPoint_8cxx_source.html":[6,0,1,35],
+"ecalPoint_8h.html":[6,0,1,36],
+"ecalPoint_8h_source.html":[6,0,1,36],
+"ecalPreCluster_8h.html":[6,0,1,37],
+"ecalPreCluster_8h_source.html":[6,0,1,37]
 };

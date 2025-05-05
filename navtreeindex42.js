@@ -1,17 +1,5 @@
 var NAVTREEINDEX42 =
 {
-"study__GammaConv_8py.html#a2a14ad91e72e99a989381bafe44b0996":[6,0,9,23,24],
-"study__GammaConv_8py.html#a33f4f04fbb1ded78516a43928bc2e25d":[6,0,9,23,34],
-"study__GammaConv_8py.html#a3b1824b0e214ca5d0b3c86b95c27d4aa":[6,0,9,23,27],
-"study__GammaConv_8py.html#a3c26c243703135de75534de37178e554":[6,0,9,23,16],
-"study__GammaConv_8py.html#a3e1144f0a516f56c4b359927d9e3fe9c":[6,0,9,23,29],
-"study__GammaConv_8py.html#a44a01e2df41768e0929bf937753d45d7":[6,0,9,23,36],
-"study__GammaConv_8py.html#a46d8bcfd00ad1645018ba4ec9b12839a":[6,0,9,23,22],
-"study__GammaConv_8py.html#a48249c4eb38f3ec77516942c84aad0be":[6,0,9,23,6],
-"study__GammaConv_8py.html#a6178e60a012f4ac198fff3a25fb91f78":[6,0,9,23,28],
-"study__GammaConv_8py.html#a6d4855531bd591ee5f7b60226b127b43":[6,0,9,23,3],
-"study__GammaConv_8py.html#a80f95a5eefe6bb23071734370e2c5231":[6,0,9,23,30],
-"study__GammaConv_8py.html#a815b73364618f833b7caf3a1dc44ea68":[6,0,9,23,33],
 "study__GammaConv_8py.html#a887fe9db66201abe1eba740343200efa":[6,0,9,23,17],
 "study__GammaConv_8py.html#a8887cd40f4ca6d25bb7006bb8a3fd140":[6,0,9,23,13],
 "study__GammaConv_8py.html#a93a08957aca4b22c1589883b81af773d":[6,0,9,23,15],

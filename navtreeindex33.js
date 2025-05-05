@@ -1,17 +1,5 @@
 var NAVTREEINDEX33 =
 {
-"namespacehepunit.html#a1c8cf09001b8c68c20a10f183822978d":[4,0,43,62],
-"namespacehepunit.html#a1fbf96a628066d4949b01a2f07102da3":[4,0,43,99],
-"namespacehepunit.html#a20852c62b72b5637c98954af4db7eca3":[4,0,43,135],
-"namespacehepunit.html#a22750af9bc46a0ff7558540acb5df021":[4,0,43,113],
-"namespacehepunit.html#a22f3d9a456ae5d4c2c11f2a33396997b":[4,0,43,19],
-"namespacehepunit.html#a2327fa65e1e751ce7e30843cfebf6375":[4,0,43,65],
-"namespacehepunit.html#a2343bad128ec7df0a249a12c94fa5d0e":[4,0,43,30],
-"namespacehepunit.html#a27f71c21c4405c3989e3eb385181bad8":[4,0,43,111],
-"namespacehepunit.html#a29fcd0aaa9072d62d55b02039e7f1f8a":[4,0,43,68],
-"namespacehepunit.html#a2ed3ece3593ff0d71b333900d1a5bce8":[4,0,43,0],
-"namespacehepunit.html#a30ccce59774b9e0a2e9600ff0ae4bfc0":[4,0,43,61],
-"namespacehepunit.html#a31cd028e22a69a1f59e4766bbdac2457":[4,0,43,18],
 "namespacehepunit.html#a334aed32a35c697ce9005c637e2b6b1e":[4,0,43,67],
 "namespacehepunit.html#a37a654186e9ea4df60f5e21641ba77a3":[4,0,43,26],
 "namespacehepunit.html#a3cc2a50f8af1d756546a14bb601f0c1f":[4,0,43,52],
@@ -249,5 +237,17 @@ var NAVTREEINDEX33 =
 "namespacemakeDecay.html#af521f9274001e1b14ae2563a4b38578c":[4,0,50,20],
 "namespacemakeDecay.html#af633ec1966e205de31b9486f1f90dfff":[4,0,50,8],
 "namespacemakeDecay.html#afbe3b309da173d5ba24ea0798255ceca":[4,0,50,27],
-"namespacemakeDecay.html#afd0dfe5f4af30df1a2df036995dcfea3":[4,0,50,29]
+"namespacemakeDecay.html#afd0dfe5f4af30df1a2df036995dcfea3":[4,0,50,29],
+"namespacemakeDecay.html#afdee173103d608b5c98240c05154f34d":[4,0,50,34],
+"namespacemakeGenieEvents.html":[4,0,51],
+"namespacemakeGenieEvents.html#a0be9a4c1162c4858addc13686ca8b68f":[4,0,51,1],
+"namespacemakeGenieEvents.html#a13bca7b601cdb51ea01bf6e89e53a433":[4,0,51,0],
+"namespacemakeGenieEvents.html#a268365a8c9d624818cd82d9ed3bbe7a4":[4,0,51,10],
+"namespacemakeGenieEvents.html#a51ee08e532e9a864c9dc5b6aefd234ac":[4,0,51,4],
+"namespacemakeGenieEvents.html#a55616f7ba64e5a882f87dde2fe82881b":[4,0,51,14],
+"namespacemakeGenieEvents.html#a628fe9931f64c0ccbdd82040fc36f1cd":[4,0,51,8],
+"namespacemakeGenieEvents.html#a6497b241ab7e816e30df850dc4c27edd":[4,0,51,6],
+"namespacemakeGenieEvents.html#a66b96bd7cc1706473e5a39a29e8f5c39":[4,0,51,3],
+"namespacemakeGenieEvents.html#a6e85e1d199d5847ee0db3cfc249c493c":[4,0,51,9],
+"namespacemakeGenieEvents.html#a86deaeb240c94bdf968bc5d3c6b54efe":[4,0,51,16]
 };

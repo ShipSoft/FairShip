@@ -1,11 +1,5 @@
 var NAVTREEINDEX23 =
 {
-"ecalPoint_8cxx.html":[6,0,1,35],
-"ecalPoint_8cxx_source.html":[6,0,1,35],
-"ecalPoint_8h.html":[6,0,1,36],
-"ecalPoint_8h_source.html":[6,0,1,36],
-"ecalPreCluster_8h.html":[6,0,1,37],
-"ecalPreCluster_8h_source.html":[6,0,1,37],
 "ecalPrepare_8cxx.html":[6,0,1,38],
 "ecalPrepare_8cxx_source.html":[6,0,1,38],
 "ecalPrepare_8h.html":[6,0,1,39],
@@ -249,5 +243,11 @@ var NAVTREEINDEX23 =
 "functions_vars_c.html":[5,3,2,3],
 "functions_vars_d.html":[5,3,2,4],
 "functions_vars_e.html":[5,3,2,5],
-"functions_vars_f.html":[5,3,2,6]
+"functions_vars_f.html":[5,3,2,6],
+"functions_vars_g.html":[5,3,2,7],
+"functions_vars_h.html":[5,3,2,8],
+"functions_vars_i.html":[5,3,2,9],
+"functions_vars_j.html":[5,3,2,10],
+"functions_vars_k.html":[5,3,2,11],
+"functions_vars_l.html":[5,3,2,12]
 };
