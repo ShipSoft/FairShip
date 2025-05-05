@@ -495,7 +495,7 @@ $(document).ready(function(){initNavTree('geometry__config_8py_source.html','');
 <div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span>    <span class="comment">#CAMM - For Nu tau detector, keep only these parameters which are used by others...</span></div>
 <div class="line"><a id="l00397" name="l00397"></a><span class="lineno"><a class="line" href="namespacegeometry__config.html#ad2b8e5203a347fed1306a53a5fbb7760">  397</a></span>    c.tauMudet = <a class="code hl_class" href="classShipGeoConfig_1_1AttrDict.html">AttrDict</a>(z=0*u.cm)</div>
 <div class="line"><a id="l00398" name="l00398"></a><span class="lineno"><a class="line" href="namespacegeometry__config.html#a11ac1021f68748d13e002a5cfbb8f042">  398</a></span>    c.tauMudet.Ztot = 3 * u.m <span class="comment">#space allocated to Muon spectrometer</span></div>
-<div class="line"><a id="l00399" name="l00399"></a><span class="lineno"><a class="line" href="namespacegeometry__config.html#a90d4c464813f1c43e1ac3d7a22d740f4">  399</a></span>    c.tauMudet.zMudetC = c.Chamber1.z -c.chambers.Tub1length - c.tauMudet.Ztot/2 -31*u.cm</div>
+<div class="line"><a id="l00399" name="l00399"></a><span class="lineno"><a class="line" href="namespacegeometry__config.html#a90d4c464813f1c43e1ac3d7a22d740f4">  399</a></span>    c.tauMudet.zMudetC = c.muShield.z + c.muShield.length / 2. - c.tauMudet.Ztot / 2. - 70 * u.cm</div>
 <div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span> </div>
 <div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span> </div>
 <div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span>    <span class="comment">#Upstream Tagger</span></div>
