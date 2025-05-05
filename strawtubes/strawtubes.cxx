@@ -1,7 +1,6 @@
 // First version of the strawtracker geometry, based on NA62 straws
 // 7/10/2015
 // E. van Herwijnen eric.van.herwijnen@cern.ch
-// Veto station removed by W.-C. Marty Lee
 
 #include "strawtubes.h"
 #include "strawtubesPoint.h"
