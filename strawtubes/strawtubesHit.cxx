@@ -81,7 +81,7 @@ void strawtubesHit::StrawEndPoints(TVector3 &vbot, TVector3 &vtop)
     TString path = "/"; path += stat; path += "/"; path += plane; path += "/"; path += layer; path += "/"; path += wire;
     Bool_t rc = nav->cd(path);
     if (not rc) {
-      cout << "strawtubes::StrawDecode, TgeoNavigator failed " << path << endl;
+      LOG(warning) << "strawtubes::StrawDecode, TGeoNavigator failed " << path;
       return;
     }
     TGeoNode* W = nav->GetCurrentNode();
