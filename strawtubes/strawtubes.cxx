@@ -657,29 +657,28 @@ void strawtubes::ConstructGeometry()
 }
 // -----   Public method StrawDecode    -------------------------------------------
 // -----   returns station layer ... numbers -----------------------------------
-void strawtubes::StrawDecode(Int_t detID,int &statnb,int &vnb,int &pnb,int &lnb, int &snb)
+void strawtubes::StrawDecode(Int_t detID, int &statnb, int &vnb, int &pnb, int &lnb, int &snb)
 {
-  statnb = detID/10000000;
-  vnb =  (detID - statnb*10000000)/1000000;
-  pnb =  (detID - statnb*10000000 - vnb*1000000)/100000;
-  lnb =  (detID - statnb*10000000 - vnb*1000000 - pnb*100000)/10000;
-  snb =   detID - statnb*10000000 - vnb*1000000 - pnb*100000 - lnb*10000 - 2000;
+  statnb = detID / 10000000;
+  vnb = (detID - statnb * 10000000) / 1000000;
+  pnb = (detID - statnb * 10000000 - vnb * 1000000) / 100000;
+  lnb = (detID - statnb * 10000000 - vnb * 1000000 - pnb * 100000) / 10000;
+  snb = detID - statnb * 10000000 - vnb * 1000000 - pnb * 100000 - lnb * 10000 - 2000;
 }
 // -----   Public method StrawEndPoints    -------------------------------------------
 // -----   returns top(left) and bottom(right) coordinate of straw -----------------------------------
 void strawtubes::StrawEndPoints(Int_t fDetectorID, TVector3 &vbot, TVector3 &vtop)
 // method to get end points from TGeoNavigator
 {
-    Int_t statnb = fDetectorID/10000000;
-    Int_t vnb =  (fDetectorID - statnb*10000000)/1000000;
-    Int_t pnb =  (fDetectorID- statnb*10000000 - vnb*1000000)/100000;
-    Int_t lnb =  (fDetectorID - statnb*10000000 - vnb*1000000 - pnb*100000)/10000;
-    TString stat = "Tr";stat+=+statnb;stat+="_";stat+=statnb;
+    Int_t statnb = fDetectorID / 10000000;
+    Int_t vnb = (fDetectorID - statnb * 10000000) / 1000000;
+    Int_t pnb = (fDetectorID - statnb * 10000000 - vnb * 1000000) / 100000;
+    Int_t lnb = (fDetectorID - statnb * 10000000 - vnb * 1000000 - pnb * 100000) / 10000;
+    TString stat = "Tr"; stat += statnb; stat += "_"; stat += statnb;
     TString view;
     switch (vnb) {
 	      case 0:
 	        view = "_x1";
-                if (statnb==5){view = "_x";}
 	        break;
 	      case 1:
 	      	view = "_u";
@@ -691,79 +690,84 @@ void strawtubes::StrawEndPoints(Int_t fDetectorID, TVector3 &vbot, TVector3 &vto
 	        view = "_x2";
 	        break;
 	      default:
-	        view = "_x1";}
+	        view = "_x1";
+    }
     TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
     TString prefix = "Tr";
-    prefix+=statnb;
-    prefix+=view;prefix+="_plane_";prefix+=pnb;prefix+="_";
-    TString plane = prefix;plane+=statnb;plane+=vnb;plane+=+pnb;plane+="00000";
-    TString layer = prefix+"layer_";layer+=lnb;layer+="_";layer+=statnb;layer+=vnb;layer+=pnb;layer+=lnb;layer+="0000";
+    prefix += statnb;
+    prefix += view; prefix += "_plane_"; prefix += pnb; prefix += "_";
+    TString plane = prefix; plane += statnb; plane += vnb; plane += pnb; plane += "00000";
+    TString layer = prefix + "layer_"; layer += lnb; layer += "_"; layer += statnb; layer += vnb; layer += pnb; layer += lnb; layer += "0000";
     TString wire = "wire_";
-    wire+=(fDetectorID+1000);
-    if (statnb<3){wire = "wire_12_";wire+=(fDetectorID+1000);}
-    TString path = "/";path+=stat;path+="/";path+=plane;path+="/";path+=layer;path+="/";path+=wire;
+    wire += (fDetectorID + 1000);
+    if (statnb < 3) {
+      wire = "wire_12_"; wire += (fDetectorID + 1000);
+    }
+    TString path = "/"; path += stat; path += "/"; path += plane; path += "/"; path += layer; path += "/"; path += wire;
     Bool_t rc = nav->cd(path);
-    if (not rc){
-      cout << "strawtubes::StrawDecode, TgeoNavigator failed "<<path<<endl;
+    if (not rc) {
+      cout << "strawtubes::StrawDecode, TgeoNavigator failed " << path << endl;
       return;
     }
     TGeoNode* W = nav->GetCurrentNode();
     TGeoTube* S = dynamic_cast<TGeoTube*>(W->GetVolume()->GetShape());
-    Double_t top[3] = {0,0,S->GetDZ()};
-    Double_t bot[3] = {0,0,-S->GetDZ()};
-    Double_t Gtop[3],Gbot[3];
-    nav->LocalToMaster(top, Gtop);   nav->LocalToMaster(bot, Gbot);
-    vtop.SetXYZ(Gtop[0],Gtop[1],Gtop[2]);
-    vbot.SetXYZ(Gbot[0],Gbot[1],Gbot[2]);
+    Double_t top[3] = {0, 0, S->GetDZ()};
+    Double_t bot[3] = {0, 0, -S->GetDZ()};
+    Double_t Gtop[3], Gbot[3];
+    nav->LocalToMaster(top, Gtop); nav->LocalToMaster(bot, Gbot);
+    vtop.SetXYZ(Gtop[0], Gtop[1], Gtop[2]);
+    vbot.SetXYZ(Gbot[0], Gbot[1], Gbot[2]);
 }
 void strawtubes::StrawEndPointsOriginal(Int_t detID, TVector3 &bot, TVector3 &top)
 // method to get end points by emulating the geometry
 {
-  Double_t sinangle,cosangle;
-  Int_t statnb,vnb,pnb,lnb,snb;
-  StrawDecode(detID,statnb,vnb,pnb,lnb,snb);
+  Double_t sinangle, cosangle;
+  Int_t statnb, vnb, pnb, lnb, snb;
+  StrawDecode(detID, statnb, vnb, pnb, lnb, snb);
   switch (vnb) {
      case 0:
-       sinangle=0.;
-       cosangle=1.;
+       sinangle = 0.;
+       cosangle = 1.;
        break;
      case 1:
-       sinangle=fsinphi;
-       cosangle=fcosphi;
+       sinangle = fsinphi;
+       cosangle = fcosphi;
        break;
      case 2:
-       sinangle=-fsinphi;
-       cosangle=fcosphi;
+       sinangle = -fsinphi;
+       cosangle = fcosphi;
        break;
      case 3:
-       sinangle=0.;
-       cosangle=1.;
+       sinangle = 0.;
+       cosangle = 1.;
        break;
      default:
-       sinangle=0.;
-       cosangle=1.;
+       sinangle = 0.;
+       cosangle = 1.;
    }
 
   //cout << "DetID" << detID << " statnb "<<statnb<<" vnb " << vnb << " pnb " << pnb <<" lnb "<< lnb << " snb " << snb << endl;
   // from ConstructGeometry above
-  Double_t yDim = (fStraws_per_layer+1) * fStraw_pitch /2. ;
+  Double_t yDim = (fStraws_per_layer + 1) * fStraw_pitch /2.;
   Double_t ypos = 0.;
   Double_t xtop = 0.;
   Double_t ytop = 0.;
   Double_t xbot = 0.;
   Double_t ybot = 0.;
-  if ((statnb==1)|| (statnb==2)) {
-     ypos =  ftr12ydim-fStraw_pitch*snb-fOffset_plane12*pnb+lnb*fOffset_layer12;
-     xtop = -fStraw_length_12*cosangle - ypos*sinangle;
-     ytop = -fStraw_length_12*sinangle + ypos*cosangle;
-     xbot =  fStraw_length_12*cosangle - ypos*sinangle;
-     ybot =  fStraw_length_12*sinangle + ypos*cosangle;}
-  if ((statnb==3)|| (statnb==4)) {
-     ypos =  ftr34ydim-fStraw_pitch*snb-fOffset_plane12*pnb+lnb*fOffset_layer12;
-     xtop = -fStraw_length*cosangle - ypos*sinangle;
-     ytop = -fStraw_length*sinangle + ypos*cosangle;
-     xbot =  fStraw_length*cosangle - ypos*sinangle;
-     ybot =  fStraw_length*sinangle + ypos*cosangle; }
+  if ((statnb == 1) || (statnb == 2)) {
+     ypos = ftr12ydim - fStraw_pitch * snb - fOffset_plane12 * pnb + lnb * fOffset_layer12;
+     xtop = -fStraw_length_12 * cosangle - ypos * sinangle;
+     ytop = -fStraw_length_12 * sinangle + ypos * cosangle;
+     xbot = fStraw_length_12 * cosangle - ypos * sinangle;
+     ybot = fStraw_length_12 * sinangle + ypos * cosangle;
+  }
+  if ((statnb == 3) || (statnb == 4)) {
+     ypos = ftr34ydim - fStraw_pitch * snb - fOffset_plane12 * pnb + lnb * fOffset_layer12;
+     xtop = -fStraw_length * cosangle - ypos * sinangle;
+     ytop = -fStraw_length * sinangle + ypos * cosangle;
+     xbot = fStraw_length * cosangle - ypos * sinangle;
+     ybot = fStraw_length * sinangle + ypos * cosangle;
+  }
 
   Double_t TStationz;
   switch (statnb) {
@@ -783,10 +787,10 @@ void strawtubes::StrawEndPointsOriginal(Int_t detID, TVector3 &bot, TVector3 &to
        TStationz = fT1z;
    }
   Double_t zpos;
-  zpos = TStationz+(vnb-3./2.)*fDeltaz_view+(pnb-1./2.)*fDeltaz_plane12+(lnb-1./2.)*fDeltaz_layer12;
+  zpos = TStationz + (vnb - 3. / 2.) * fDeltaz_view + (pnb - 1. / 2.) * fDeltaz_plane12 + (lnb - 1. / 2.) * fDeltaz_layer12;
 
-  top = TVector3(xtop,ytop,zpos);
-  bot = TVector3(xbot,ybot,zpos);
+  top = TVector3(xtop, ytop, zpos);
+  bot = TVector3(xbot, ybot, zpos);
   //cout << "dets="<< xtop << " "<< xbot << " "<<  ytop << " "<< ybot<< " "<< ypos<< " "<< fStraw_length<< " "<<detID<<endl;
   //cout << "top/bot="<< snb << " "<< vnb << " "<<  pnb << " "<< lnb << " "<< ypos<< " "<< fOffset_layer12<< " "<<fOffset_plane12<<endl;
 }

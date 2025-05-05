@@ -156,7 +156,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.scintillator.Rmax = 260.*u.cm
 
     c.strawtubes = AttrDict(z=0*u.cm)
-    if strawDesign==4:
+    if strawDesign == 4:
      c.strawtubes.InnerStrawDiameter = 0.975*u.cm
      c.strawtubes.StrawPitch         = 1.76*u.cm
      c.strawtubes.DeltazLayer        = 1.1*u.cm
@@ -166,7 +166,7 @@ with ConfigRegistry.register_config("basic") as c:
      c.strawtubes.FrameMaterial      = "aluminium"
      c.strawtubes.FrameLateralWidth  = 1.*u.cm
      c.strawtubes.DeltazFrame        = 10.*u.cm
-    elif strawDesign==10:  # 10 - baseline
+    elif strawDesign == 10:  # 10 - baseline
      c.strawtubes.InnerStrawDiameter = 1.9928 * u.cm
      c.strawtubes.StrawPitch = 2. * u.cm
      c.strawtubes.DeltazLayer = 1.732 * u.cm
