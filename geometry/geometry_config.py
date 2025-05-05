@@ -403,7 +403,7 @@ with ConfigRegistry.register_config("basic") as c:
     #CAMM - For Nu tau detector, keep only these parameters which are used by others...
     c.tauMudet = AttrDict(z=0*u.cm)
     c.tauMudet.Ztot = 3 * u.m #space allocated to Muon spectrometer
-    c.tauMudet.zMudetC = c.muShield.z + c.muShield.length/2. - c.tauMudet.Ztot/2. - 70 * u.cm
+    c.tauMudet.zMudetC = c.muShield.z + c.muShield.length / 2. - c.tauMudet.Ztot / 2. - 70 * u.cm
 
 
     #Upstream Tagger
