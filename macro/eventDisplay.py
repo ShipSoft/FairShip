@@ -1387,7 +1387,7 @@ else:
     mcHits["MTCdetPoint"] = ROOT.FairMCPointDraw(
         "MTCdetPoint", ROOT.kGreen, ROOT.kFullSquare
     )
-    
+
 
 for x in mcHits:
     fMan.AddTask(mcHits[x])

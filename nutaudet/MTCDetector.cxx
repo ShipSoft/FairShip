@@ -93,7 +93,7 @@ Int_t MTCDetector::InitMedium(const char* name)
     return geoBuild->createMedium(ShipMedium);
 }
 
-void MTCDetector::SetMTCParameters(Double_t w, Double_t h, Double_t iron, 
+void MTCDetector::SetMTCParameters(Double_t w, Double_t h, Double_t iron,
                                   Double_t sciFi, Double_t scint, Int_t layers,
                                   Double_t z, Double_t field) {
     fWidth = w;
@@ -215,21 +215,21 @@ void MTCDetector::ConstructGeometry() {
     TGeoMedium* air      = gGeoManager->GetMedium("air");
     TGeoMedium* ironMed  = gGeoManager->GetMedium("iron");
     // For the scintillator, you may use the same medium as SciFiMat or another if defined.
-    TGeoMedium* scintMed = gGeoManager->GetMedium("SciFiMat"); 
+    TGeoMedium* scintMed = gGeoManager->GetMedium("SciFiMat");
     gGeoManager->SetVisLevel(4);
     gGeoManager->SetTopVisible();
-  
+
     // Define the module spacing based on three sublayers:
     //   fIronThick (outer iron), fSciFiThick (SciFi module/fiber module), fScintThick (scintillator)
     Double_t moduleSpacing = fIronThick + fSciFiThick + fScintThick;
     Double_t totalLength   = fLayers * moduleSpacing;
-  
+
     // --- Create an envelope volume for the detector (green, semi-transparent) ---
     auto envBox = new TGeoBBox("MTC_env", fWidth/2, fHeight/2, totalLength/2);
     auto envVol = new TGeoVolume("MTC", envBox, air);
     envVol->SetLineColor(kGreen);
     envVol->SetTransparency(50);
-  
+
     // --- Outer Iron Layer (gray) ---
     auto ironBox = new TGeoBBox("MTC_iron", fWidth/2, fHeight/2, fIronThick/2);
     auto ironVol = new TGeoVolume("MTC_iron", ironBox, ironMed);
@@ -257,10 +257,10 @@ void MTCDetector::ConstructGeometry() {
   for (Int_t i = 0; i < fLayers; i++) {
     // Compute the center position (z) for the current module
     Double_t zPos = -totalLength/2 + i * moduleSpacing;
-    
+
     // Place the Outer Iron layer (shifted down by half the SciFi+scint thickness)
     envVol->AddNode(ironVol, i, new TGeoTranslation(0, 0, zPos + fIronThick/2));
-    
+
     // Create a SciFi module with the current detector id 'i'
     TGeoVolume* sciFiModuleVol = CreateSciFiModule("MTC_sciFi", fWidth, fHeight, fSciFiThick, i);
     envVol->AddNode(sciFiModuleVol, i, new TGeoTranslation(0, 0, zPos + fIronThick + fSciFiThick/2));
@@ -270,7 +270,7 @@ void MTCDetector::ConstructGeometry() {
     // Place the Scintillator layer (shifted up by half the iron thickness)
     envVol->AddNode(scintVol, i, new TGeoTranslation(0, 0, zPos + fIronThick  + fSciFiThick + fScintThick/2));
   }
-  
+
     // Finally, add the envelope to the top volume with the global z offset fZCenter
     gGeoManager->GetTopVolume()->AddNode(envVol, 1, new TGeoTranslation(0, 0, fZCenter));
 
@@ -295,7 +295,7 @@ Bool_t  MTCDetector::ProcessHits(FairVolume* vol)
 
   // Create vetoPoint when exiting active volume
   if ( gMC->IsTrackExiting()    ||
-       gMC->IsTrackStop()       || 
+       gMC->IsTrackStop()       ||
        gMC->IsTrackDisappeared()   ) {
 
        if (fELoss == 0. ) { return kFALSE; } // if you do not want hits with zero eloss
@@ -363,7 +363,7 @@ void MTCDetector::Register(){
 
         AddHit(fTrackID,
                 detID,
-                TVector3(x, y, z),        
+                TVector3(x, y, z),
                 TVector3(fMom.Px(), fMom.Py(), fMom.Pz()),   // entrance momentum
                 fTime,
                 fLength,
@@ -371,7 +371,7 @@ void MTCDetector::Register(){
                 pdgCode);
         ShipStack* stack = dynamic_cast<ShipStack*>(gMC->GetStack());
         stack->AddPoint(kMTC);
-        
+
     }
     return kTRUE;
 }
@@ -416,5 +416,3 @@ MTCdetPoint* MTCDetector::AddHit(Int_t trackID,
     Int_t size = clref.GetEntriesFast();
     return new (clref[size]) MTCdetPoint(trackID, detID, pos, mom, time, length, eLoss, pdgCode);
 }
-
-

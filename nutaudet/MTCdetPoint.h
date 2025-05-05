@@ -39,7 +39,7 @@ class MTCdetPoint : public FairMCPoint
     Int_t PdgCode() const {return fPdgCode;}
 
     Int_t GetLayer();
-    
+
     Int_t GetLayerType();
     /** Copy constructor **/
     Int_t fPdgCode;
