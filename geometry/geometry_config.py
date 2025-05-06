@@ -209,7 +209,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.TimeDet.DZ = (c.TimeDet.dzBarRow + c.TimeDet.dzBarCol + c.TimeDet.zBar) / 2
     c.TimeDet.DX = 225 * u.cm
     c.TimeDet.DY = 325 * u.cm
-    c.TimeDet.z = 37.800 * u.m #Relative position of timing detector to decay vessel centre
+    c.TimeDet.z = 37.800 * u.m - c.TimeDet.dzBarRow * 3 / 2 #Relative position of first layer of timing detector to decay vessel centre
 
     if CaloDesign==0:
      c.HcalOption = 1
@@ -257,12 +257,14 @@ with ConfigRegistry.register_config("basic") as c:
     c.SplitCal.StripHalfLength = 150*u.cm # c.SplitCal.YMax/c.SplitCal.NModulesInY
     c.SplitCal.SplitCalThickness=(c.SplitCal.FilterECALThickness_first-c.SplitCal.FilterECALThickness)+(c.SplitCal.FilterECALThickness+c.SplitCal.ActiveECALThickness)*c.SplitCal.nECALSamplings+c.SplitCal.BigGap
 
-    c.ecal = AttrDict(z=39.350*u.m) #Relative position of ECAL to decay vessel centre
+    zecal = 38.450 * u.m #Relative start z of ECAL to decay vessel centre
+    c.ecal = AttrDict(z=zecal)
     c.ecal.File = EcalGeoFile
     hcalThickness = 232*u.cm
     if  c.HcalOption == 2: hcalThickness = 110*u.cm  # to have same interaction length as before
     if not c.HcalOption < 0:
-     c.hcal = AttrDict(z=40.850*u.m) #Relative position of HCAL to decay vessel centre
+     zhcal = 40.850 * u.m #Relative position of HCAL to decay vessel centre
+     c.hcal = AttrDict(z=zhcal)
      c.hcal.hcalSpace = hcalThickness + 5.5*u.cm
      c.hcal.File  =  HcalGeoFile
     else:
