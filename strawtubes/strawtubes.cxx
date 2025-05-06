@@ -15,6 +15,7 @@
 #include "FairGeoBuilder.h"
 #include "FairRun.h"
 #include "FairRuntimeDb.h"
+#include "FairLogger.h"
 #include "ShipDetectorList.h"
 #include "ShipStack.h"
 

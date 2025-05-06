@@ -3,6 +3,7 @@
 #include "TVector3.h"
 #include "FairRun.h"
 #include "FairRunSim.h"
+#include "FairLogger.h"
 #include "TMath.h"
 #include "TRandom1.h"
 #include "TRandom3.h"
