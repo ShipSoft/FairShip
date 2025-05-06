@@ -199,10 +199,6 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a7b08857abb3a29b1967b6d6cd74a2cc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8a8c80a609604c8f7a6fa3ed5a45d5d0" id="r_a8a8c80a609604c8f7a6fa3ed5a45d5d0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classshipDigiReco_1_1ShipDigiReco.html#a8a8c80a609604c8f7a6fa3ed5a45d5d0">digiTimeDetBranch</a></td></tr>
 <tr class="separator:a8a8c80a609604c8f7a6fa3ed5a45d5d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9bbd1b368dc9bc1cffcb7c0191d91987" id="r_a9bbd1b368dc9bc1cffcb7c0191d91987"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classshipDigiReco_1_1ShipDigiReco.html#a9bbd1b368dc9bc1cffcb7c0191d91987">digiUpstreamTagger</a></td></tr>
-<tr class="separator:a9bbd1b368dc9bc1cffcb7c0191d91987"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a496735b4a16841fe527ad10e110ce10e" id="r_a496735b4a16841fe527ad10e110ce10e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classshipDigiReco_1_1ShipDigiReco.html#a496735b4a16841fe527ad10e110ce10e">digiUpstreamTaggerBranch</a></td></tr>
-<tr class="separator:a496735b4a16841fe527ad10e110ce10e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aadacb85e4e2e2f265e14d63f2384458c" id="r_aadacb85e4e2e2f265e14d63f2384458c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classshipDigiReco_1_1ShipDigiReco.html#aadacb85e4e2e2f265e14d63f2384458c">digiMuon</a></td></tr>
 <tr class="separator:aadacb85e4e2e2f265e14d63f2384458c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0c8e1505db0784a59103d02da20e05dd" id="r_a0c8e1505db0784a59103d02da20e05dd"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classshipDigiReco_1_1ShipDigiReco.html#a0c8e1505db0784a59103d02da20e05dd">digiMuonBranch</a></td></tr>
@@ -369,7 +365,7 @@ Static Public Attributes</h2></td></tr>
 <div class="line"><span class="lineno">   32</span>    <span class="keywordflow">if</span> sTree.GetBranch(<span class="stringliteral">&quot;Digi_SBTHits&quot;</span>): sTree.SetBranchStatus(<span class="stringliteral">&quot;Digi_SBTHits&quot;</span>,0)</div>
 <div class="line"><span class="lineno">   33</span>    <span class="keywordflow">if</span> sTree.GetBranch(<span class="stringliteral">&quot;digiSBT2MC&quot;</span>):   sTree.SetBranchStatus(<span class="stringliteral">&quot;digiSBT2MC&quot;</span>,0)</div>
 <div class="line"><span class="lineno">   34</span>    <span class="keywordflow">if</span> sTree.GetBranch(<span class="stringliteral">&quot;Digi_TimeDetHits&quot;</span>): sTree.SetBranchStatus(<span class="stringliteral">&quot;Digi_TimeDetHits&quot;</span>,0)</div>
-<div class="line"><span class="lineno">   35</span>    <span class="keywordflow">if</span> sTree.GetBranch(<span class="stringliteral">&quot;Digi_UpstreamTaggerHits&quot;</span>): sTree.SetBranchStatus(<span class="stringliteral">&quot;Digi_UpstreamTaggerHits&quot;</span>,0)</div>
+<div class="line"><span class="lineno">   35</span>    <span class="comment">#if sTree.GetBranch(&quot;Digi_UpstreamTaggerHits&quot;): sTree.SetBranchStatus(&quot;Digi_UpstreamTaggerHits&quot;,0)</span></div>
 <div class="line"><span class="lineno">   36</span>    <span class="keywordflow">if</span> sTree.GetBranch(<span class="stringliteral">&quot;Digi_MuonHits&quot;</span>): sTree.SetBranchStatus(<span class="stringliteral">&quot;Digi_MuonHits&quot;</span>,0)</div>
 <div class="line"><span class="lineno">   37</span> </div>
 <div class="line"><span class="lineno">   38</span>    rawFile = fout.replace(<span class="stringliteral">&quot;_rec.root&quot;</span>,<span class="stringliteral">&quot;_raw.root&quot;</span>)</div>
@@ -412,8 +408,8 @@ Static Public Attributes</h2></td></tr>
 <div class="line"><span class="lineno">   75</span>  self.mcLinkSBT   = self.sTree.Branch(<span class="stringliteral">&quot;digiSBT2MC&quot;</span>,self.digiSBT2MC,32000,-1)</div>
 <div class="line"><span class="lineno">   76</span>  self.digiTimeDet    = ROOT.TClonesArray(<span class="stringliteral">&quot;TimeDetHit&quot;</span>)</div>
 <div class="line"><span class="lineno">   77</span>  self.digiTimeDetBranch=self.sTree.Branch(<span class="stringliteral">&quot;Digi_TimeDetHits&quot;</span>,self.digiTimeDet,32000,-1)</div>
-<div class="line"><span class="lineno">   78</span>  self.digiUpstreamTagger    = ROOT.TClonesArray(<span class="stringliteral">&quot;UpstreamTaggerHit&quot;</span>)</div>
-<div class="line"><span class="lineno">   79</span>  self.digiUpstreamTaggerBranch=self.sTree.Branch(<span class="stringliteral">&quot;Digi_UpstreamTaggerHits&quot;</span>,self.digiUpstreamTagger,32000,-1)</div>
+<div class="line"><span class="lineno">   78</span>  <span class="comment">#self.digiUpstreamTagger    = ROOT.TClonesArray(&quot;UpstreamTaggerHit&quot;)</span></div>
+<div class="line"><span class="lineno">   79</span>  <span class="comment">#self.digiUpstreamTaggerBranch=self.sTree.Branch(&quot;Digi_UpstreamTaggerHits&quot;,self.digiUpstreamTagger,32000,-1)</span></div>
 <div class="line"><span class="lineno">   80</span>  self.digiMuon    = ROOT.TClonesArray(<span class="stringliteral">&quot;muonHit&quot;</span>)</div>
 <div class="line"><span class="lineno">   81</span>  self.digiMuonBranch=self.sTree.Branch(<span class="stringliteral">&quot;Digi_muonHits&quot;</span>,self.digiMuon,32000,-1)</div>
 <div class="line"><span class="lineno">   82</span><span class="comment"># for the digitizing step</span></div>
@@ -1980,38 +1976,6 @@ The earliest hit per straw will be marked valid, all later ones invalid.
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="shipDigiReco_8py_source.html#l00077">77</a> of file <a class="el" href="shipDigiReco_8py_source.html">shipDigiReco.py</a>.</p>
-
-</div>
-</div>
-<a id="a9bbd1b368dc9bc1cffcb7c0191d91987" name="a9bbd1b368dc9bc1cffcb7c0191d91987"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9bbd1b368dc9bc1cffcb7c0191d91987">&#9670;&#160;</a></span>digiUpstreamTagger</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">shipDigiReco.ShipDigiReco.digiUpstreamTagger</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="shipDigiReco_8py_source.html#l00078">78</a> of file <a class="el" href="shipDigiReco_8py_source.html">shipDigiReco.py</a>.</p>
-
-</div>
-</div>
-<a id="a496735b4a16841fe527ad10e110ce10e" name="a496735b4a16841fe527ad10e110ce10e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a496735b4a16841fe527ad10e110ce10e">&#9670;&#160;</a></span>digiUpstreamTaggerBranch</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">shipDigiReco.ShipDigiReco.digiUpstreamTaggerBranch</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="shipDigiReco_8py_source.html#l00079">79</a> of file <a class="el" href="shipDigiReco_8py_source.html">shipDigiReco.py</a>.</p>
 
 </div>
 </div>

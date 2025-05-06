@@ -1,9 +1,5 @@
 var NAVTREEINDEX42 =
 {
-"study__GammaConv_8py.html#a887fe9db66201abe1eba740343200efa":[6,0,9,23,17],
-"study__GammaConv_8py.html#a8887cd40f4ca6d25bb7006bb8a3fd140":[6,0,9,23,13],
-"study__GammaConv_8py.html#a93a08957aca4b22c1589883b81af773d":[6,0,9,23,15],
-"study__GammaConv_8py.html#a9f1e7a36fb26b74b912450315ae6935d":[6,0,9,23,18],
 "study__GammaConv_8py.html#aa3fb5dea5c4b64fd422444715321fdeb":[6,0,9,23,19],
 "study__GammaConv_8py.html#aaa9e1a6c47e55c6a638ffd566ee5f0ff":[6,0,9,23,35],
 "study__GammaConv_8py.html#aab74fbaeb036251f4214e8418b60f7ea":[6,0,9,23,32],

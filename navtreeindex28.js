@@ -1,9 +1,5 @@
 var NAVTREEINDEX28 =
 {
-"md_README.html#autotoc_md30":[3,6],
-"md_README.html#autotoc_md31":[3,7],
-"md_field_2README.html":[2],
-"mergeMbias_8py.html":[6,0,6,17],
 "mergeMbias_8py.html#a06dd7f27b840c02eb67286ea82a7114e":[6,0,6,17,16],
 "mergeMbias_8py.html#a090f13dac409b4f5f13664de9ae51a36":[6,0,6,17,10],
 "mergeMbias_8py.html#a0f2c95abfd5f96e5d67ada7f740c8385":[6,0,6,17,3],
@@ -249,5 +245,9 @@ var NAVTREEINDEX28 =
 "namespaceShipGeo.html#add96bd2aa4338b135da0cfb4c11b6a1e":[4,0,83,18],
 "namespaceShipGeo.html#ae1280744dd95fc002b073b0b8bd7d82b":[4,0,83,7],
 "namespaceShipGeo.html#ae75662612a3144ba341029ad08499e4f":[4,0,83,1],
-"namespaceShipGeoConfig.html":[4,0,84]
+"namespaceShipGeoConfig.html":[4,0,84],
+"namespaceShipReco.html":[4,0,88],
+"namespaceShipReco.html#a048945b5e2e313357c8cd4ac2b1e5d81":[4,0,88,10],
+"namespaceShipReco.html#a0645db8c1347a0fcf8f6b07bed5830cb":[4,0,88,6],
+"namespaceShipReco.html#a0e633b86c4896f37150fcf869b3fd59e":[4,0,88,11]
 };

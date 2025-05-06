@@ -33,8 +33,6 @@ var classshipDigiReco_1_1ShipDigiReco =
     [ "digiStrawBranch", "classshipDigiReco_1_1ShipDigiReco.html#a054fb5dd4e26b9da98ee8ff64472c265", null ],
     [ "digiTimeDet", "classshipDigiReco_1_1ShipDigiReco.html#a7b08857abb3a29b1967b6d6cd74a2cc1", null ],
     [ "digiTimeDetBranch", "classshipDigiReco_1_1ShipDigiReco.html#a8a8c80a609604c8f7a6fa3ed5a45d5d0", null ],
-    [ "digiUpstreamTagger", "classshipDigiReco_1_1ShipDigiReco.html#a9bbd1b368dc9bc1cffcb7c0191d91987", null ],
-    [ "digiUpstreamTaggerBranch", "classshipDigiReco_1_1ShipDigiReco.html#a496735b4a16841fe527ad10e110ce10e", null ],
     [ "eventHeader", "classshipDigiReco_1_1ShipDigiReco.html#a8e5e31ba378ecc05524cf6e44bfd57e3", null ],
     [ "fGenFitArray", "classshipDigiReco_1_1ShipDigiReco.html#adb0f9a6ffec36c45b363a1088b74576b", null ],
     [ "fitTrack2MC", "classshipDigiReco_1_1ShipDigiReco.html#abe80355808dfeae8a191128858dbf486", null ],
