@@ -564,7 +564,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  459</span> </div>
 <div class="line"><span class="lineno">  460</span>    <span class="keywordtype">int</span> ribColor = 15;</div>
 <div class="line"><span class="lineno">  461</span> </div>
-<div class="line"><span class="lineno">  462</span>    <span class="keywordtype">double</span> wz = (z2 - z1);</div>
+<div class="line"><span class="lineno">  462</span>    <span class="keywordtype">double</span> wz = (<a class="code hl_variable" href="namespacegeometry__config.html#ace1d816a357936c579876a368a456bde">z2</a> - <a class="code hl_variable" href="namespacegeometry__config.html#aae8006210d25420e821c97e4a2bc6483">z1</a>);</div>
 <div class="line"><span class="lineno">  463</span>    <span class="keywordtype">double</span> slX = (<a class="code hl_function" href="classveto.html#ad4fc534ea8b0bcef379f40e3f87f38c1">wx</a>(z2) - <a class="code hl_function" href="classveto.html#ad4fc534ea8b0bcef379f40e3f87f38c1">wx</a>(z1)) / 2 / wz;</div>
 <div class="line"><span class="lineno">  464</span>    <span class="keywordtype">double</span> slY = (<a class="code hl_function" href="classveto.html#a640ca9ef4299a581706070003a0e4c7c">wy</a>(z2) - <a class="code hl_function" href="classveto.html#a640ca9ef4299a581706070003a0e4c7c">wy</a>(z1)) / 2 / wz;</div>
 <div class="line"><span class="lineno">  465</span> </div>
@@ -666,7 +666,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  566</span>    TGeoVolumeAssembly* CornerRib_R =</div>
 <div class="line"><span class="lineno">  567</span>        <a class="code hl_function" href="classveto.html#a7820d734e9112f85ad579e7f70ac7a98">GeoCornerRib</a>(name, ribThick, liscThick1, liscThick2, dZ, slY, slX, ribColor, <a class="code hl_variable" href="classveto.html#a9db9c5caed299b5a276869592041217f">supportMedIn</a>);</div>
 <div class="line"><span class="lineno">  568</span> </div>
-<div class="line"><span class="lineno">  569</span>    <span class="keywordflow">for</span> (<span class="keywordtype">double</span> zi = z1; zi &lt; z2; zi += cell_thickness_z) {</div>
+<div class="line"><span class="lineno">  569</span>    <span class="keywordflow">for</span> (<span class="keywordtype">double</span> zi = z1; zi &lt; <a class="code hl_variable" href="namespacegeometry__config.html#ace1d816a357936c579876a368a456bde">z2</a>; zi += cell_thickness_z) {</div>
 <div class="line"><span class="lineno">  570</span> </div>
 <div class="line"><span class="lineno">  571</span>        <span class="keywordtype">int</span> Zlayer = (<a class="code hl_variable" href="namespaceadd__noise__to__field.html#a4aa6f75233f1922a97b2d4c15285c18e">int</a>)zi / cell_thickness_z + 1;</div>
 <div class="line"><span class="lineno">  572</span> </div>
@@ -681,7 +681,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  582</span>                                             <a class="code hl_function" href="classveto.html#a640ca9ef4299a581706070003a0e4c7c">wy</a>(zi + ribThick) + 2 * wallThick,</div>
 <div class="line"><span class="lineno">  583</span>                                             ribColor,</div>
 <div class="line"><span class="lineno">  584</span>                                             <a class="code hl_variable" href="classveto.html#a9db9c5caed299b5a276869592041217f">supportMedIn</a>);</div>
-<div class="line"><span class="lineno">  585</span>        tZ = Zshift - wz / 2 + zi - z1 + ribThick / 2;</div>
+<div class="line"><span class="lineno">  585</span>        tZ = Zshift - wz / 2 + zi - <a class="code hl_variable" href="namespacegeometry__config.html#aae8006210d25420e821c97e4a2bc6483">z1</a> + ribThick / 2;</div>
 <div class="line"><span class="lineno">  586</span> </div>
 <div class="line"><span class="lineno">  587</span>        tVerticalRib-&gt;AddNode(TVR, 0, <span class="keyword">new</span> TGeoTranslation(0, 0, tZ));</div>
 <div class="line"><span class="lineno">  588</span> </div>
@@ -906,6 +906,8 @@ Private Attributes</h2></td></tr>
 <div class="ttc" id="aclassveto_html_ad4fc534ea8b0bcef379f40e3f87f38c1"><div class="ttname"><a href="classveto.html#ad4fc534ea8b0bcef379f40e3f87f38c1">veto::wx</a></div><div class="ttdeci">double wx(double z)</div><div class="ttdoc">slope along the width (x)</div><div class="ttdef"><b>Definition</b> <a href="veto_8cxx_source.html#l00185">veto.cxx:185</a></div></div>
 <div class="ttc" id="anamespaceShipAna_html_aa4bf87f4d17f9d38b1d8f4d009bb54b3"><div class="ttname"><a href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">ShipAna.i</a></div><div class="ttdeci">int i</div><div class="ttdef"><b>Definition</b> <a href="ShipAna_8py_source.html#l00076">ShipAna.py:76</a></div></div>
 <div class="ttc" id="anamespaceadd__noise__to__field_html_a4aa6f75233f1922a97b2d4c15285c18e"><div class="ttname"><a href="namespaceadd__noise__to__field.html#a4aa6f75233f1922a97b2d4c15285c18e">add_noise_to_field.int</a></div><div class="ttdeci">int</div><div class="ttdef"><b>Definition</b> <a href="add__noise__to__field_8py_source.html#l00057">add_noise_to_field.py:57</a></div></div>
+<div class="ttc" id="anamespacegeometry__config_html_aae8006210d25420e821c97e4a2bc6483"><div class="ttname"><a href="namespacegeometry__config.html#aae8006210d25420e821c97e4a2bc6483">geometry_config.z1</a></div><div class="ttdeci">float z1</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00153">geometry_config.py:153</a></div></div>
+<div class="ttc" id="anamespacegeometry__config_html_ace1d816a357936c579876a368a456bde"><div class="ttname"><a href="namespacegeometry__config.html#ace1d816a357936c579876a368a456bde">geometry_config.z2</a></div><div class="ttdeci">float z2</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00151">geometry_config.py:151</a></div></div>
 <div class="ttc" id="anamespacemakeCascade_html_add259298592a80ac35262a17847aee2d"><div class="ttname"><a href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">makeCascade.name</a></div><div class="ttdeci">name</div><div class="ttdef"><b>Definition</b> <a href="makeCascade_8py_source.html#l00193">makeCascade.py:193</a></div></div>
 <div class="ttc" id="anamespacestudy__muMSC_html_a235aad16d3c1f1d4e8af0c3f536aa482"><div class="ttname"><a href="namespacestudy__muMSC.html#a235aad16d3c1f1d4e8af0c3f536aa482">study_muMSC.nx</a></div><div class="ttdeci">nx</div><div class="ttdef"><b>Definition</b> <a href="study__muMSC_8py_source.html#l00124">study_muMSC.py:124</a></div></div>
 <div class="ttc" id="anamespacestudy__muMSC_html_a6b14755453040cb3f775690620e2211e"><div class="ttname"><a href="namespacestudy__muMSC.html#a6b14755453040cb3f775690620e2211e">study_muMSC.ny</a></div><div class="ttdeci">ny</div><div class="ttdef"><b>Definition</b> <a href="study__muMSC_8py_source.html#l00124">study_muMSC.py:124</a></div></div>
@@ -2395,9 +2397,9 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  829</span>    <span class="keywordtype">double</span> ribThick = <a class="code hl_variable" href="classveto.html#ad7a86d62096353655a67eaf0f1d5846b">f_RibThickness</a>;</div>
 <div class="line"><span class="lineno">  830</span> </div>
 <div class="line"><span class="lineno">  831</span>    <span class="comment">//******************************** Block1 **************************************</span></div>
-<div class="line"><span class="lineno">  832</span>    <span class="keywordtype">double</span> z1 = 0 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
-<div class="line"><span class="lineno">  833</span>    <span class="keywordtype">double</span> z2 = 800 * <a class="code hl_variable" href="ShipBellField_8cxx.html#ab05e85c22fe0c2c6ed701c357bbf1512">mm</a>;</div>
-<div class="line"><span class="lineno">  834</span>    <span class="keywordtype">double</span> wz = (z2 - z1);</div>
+<div class="line"><span class="lineno">  832</span>    <span class="keywordtype">double</span> <a class="code hl_variable" href="namespacegeometry__config.html#aae8006210d25420e821c97e4a2bc6483">z1</a> = 0 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
+<div class="line"><span class="lineno">  833</span>    <span class="keywordtype">double</span> <a class="code hl_variable" href="namespacegeometry__config.html#ace1d816a357936c579876a368a456bde">z2</a> = 800 * <a class="code hl_variable" href="ShipBellField_8cxx.html#ab05e85c22fe0c2c6ed701c357bbf1512">mm</a>;</div>
+<div class="line"><span class="lineno">  834</span>    <span class="keywordtype">double</span> wz = (<a class="code hl_variable" href="namespacegeometry__config.html#ace1d816a357936c579876a368a456bde">z2</a> - <a class="code hl_variable" href="namespacegeometry__config.html#aae8006210d25420e821c97e4a2bc6483">z1</a>);</div>
 <div class="line"><span class="lineno">  835</span> </div>
 <div class="line"><span class="lineno">  836</span>    <span class="keywordtype">double</span> slX = (<a class="code hl_function" href="classveto.html#ad4fc534ea8b0bcef379f40e3f87f38c1">wx</a>(z2) - <a class="code hl_function" href="classveto.html#ad4fc534ea8b0bcef379f40e3f87f38c1">wx</a>(z1)) / 2 / wz;</div>
 <div class="line"><span class="lineno">  837</span>    <span class="keywordtype">double</span> slY = (<a class="code hl_function" href="classveto.html#a640ca9ef4299a581706070003a0e4c7c">wy</a>(z2) - <a class="code hl_function" href="classveto.html#a640ca9ef4299a581706070003a0e4c7c">wy</a>(z1)) / 2 / wz;</div>
@@ -2427,9 +2429,9 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  861</span> </div>
 <div class="line"><span class="lineno">  862</span>    Zshift += wz / 2;</div>
 <div class="line"><span class="lineno">  863</span> </div>
-<div class="line"><span class="lineno">  864</span>    z1 = 800 * <a class="code hl_variable" href="ShipBellField_8cxx.html#ab05e85c22fe0c2c6ed701c357bbf1512">mm</a>;</div>
-<div class="line"><span class="lineno">  865</span>    z2 = 50.0 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
-<div class="line"><span class="lineno">  866</span>    wz = (z2 - z1);</div>
+<div class="line"><span class="lineno">  864</span>    <a class="code hl_variable" href="namespacegeometry__config.html#aae8006210d25420e821c97e4a2bc6483">z1</a> = 800 * <a class="code hl_variable" href="ShipBellField_8cxx.html#ab05e85c22fe0c2c6ed701c357bbf1512">mm</a>;</div>
+<div class="line"><span class="lineno">  865</span>    <a class="code hl_variable" href="namespacegeometry__config.html#ace1d816a357936c579876a368a456bde">z2</a> = 50.0 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
+<div class="line"><span class="lineno">  866</span>    wz = (<a class="code hl_variable" href="namespacegeometry__config.html#ace1d816a357936c579876a368a456bde">z2</a> - <a class="code hl_variable" href="namespacegeometry__config.html#aae8006210d25420e821c97e4a2bc6483">z1</a>);</div>
 <div class="line"><span class="lineno">  867</span> </div>
 <div class="line"><span class="lineno">  868</span>    Zshift += wz / 2;</div>
 <div class="line"><span class="lineno">  869</span> </div>
@@ -2452,7 +2454,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  886</span>             liscThick,</div>
 <div class="line"><span class="lineno">  887</span>             ribThick);</div>
 <div class="line"><span class="lineno">  888</span> </div>
-<div class="line"><span class="lineno">  889</span>    <span class="keywordtype">double</span> zi = z2;</div>
+<div class="line"><span class="lineno">  889</span>    <span class="keywordtype">double</span> zi = <a class="code hl_variable" href="namespacegeometry__config.html#ace1d816a357936c579876a368a456bde">z2</a>;</div>
 <div class="line"><span class="lineno">  890</span> </div>
 <div class="line"><span class="lineno">  891</span>    TString nameVR(<span class="stringliteral">&quot;&quot;</span>);</div>
 <div class="line"><span class="lineno">  892</span>    nameVR.Form(<span class="stringliteral">&quot;VetoVerticalRib_z%d&quot;</span>, (<span class="keywordtype">int</span>)zi);</div>
@@ -2465,7 +2467,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  899</span>                                         <a class="code hl_function" href="classveto.html#a640ca9ef4299a581706070003a0e4c7c">wy</a>(zi + ribThick) + 2 * wallThick,</div>
 <div class="line"><span class="lineno">  900</span>                                         15,</div>
 <div class="line"><span class="lineno">  901</span>                                         <a class="code hl_variable" href="classveto.html#a9db9c5caed299b5a276869592041217f">supportMedIn</a>);</div>
-<div class="line"><span class="lineno">  902</span>    <span class="keywordtype">double</span> tZ = Zshift - wz / 2 + zi - z1 + ribThick / 2;</div>
+<div class="line"><span class="lineno">  902</span>    <span class="keywordtype">double</span> tZ = Zshift - wz / 2 + zi - <a class="code hl_variable" href="namespacegeometry__config.html#aae8006210d25420e821c97e4a2bc6483">z1</a> + ribThick / 2;</div>
 <div class="line"><span class="lineno">  903</span> </div>
 <div class="line"><span class="lineno">  904</span>    tVerticalRib-&gt;AddNode(TVR, 0, <span class="keyword">new</span> TGeoTranslation(0, 0, tZ));</div>
 <div class="line"><span class="lineno">  905</span> </div>
@@ -3081,8 +3083,8 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  187</span> </div>
 <div class="line"><span class="lineno">  188</span>    <span class="keywordtype">double</span> wx1 = <a class="code hl_variable" href="classveto.html#a62521a6e7c1048f80df39c6a1ed58459">VetoStartInnerX</a>;</div>
 <div class="line"><span class="lineno">  189</span>    <span class="keywordtype">double</span> wx2 = <a class="code hl_variable" href="classveto.html#a6d6cc35b0463f6f444ce45d362d33941">VetoEndInnerX</a>;</div>
-<div class="line"><span class="lineno">  190</span>    <span class="keywordtype">double</span> z1 = 0 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
-<div class="line"><span class="lineno">  191</span>    <span class="keywordtype">double</span> z2 = 50 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
+<div class="line"><span class="lineno">  190</span>    <span class="keywordtype">double</span> <a class="code hl_variable" href="namespacegeometry__config.html#aae8006210d25420e821c97e4a2bc6483">z1</a> = 0 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
+<div class="line"><span class="lineno">  191</span>    <span class="keywordtype">double</span> <a class="code hl_variable" href="namespacegeometry__config.html#ace1d816a357936c579876a368a456bde">z2</a> = 50 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
 <div class="line"><span class="lineno">  192</span> </div>
 <div class="line"><span class="lineno">  193</span>    <span class="keywordflow">return</span> (wx1 + (z - z1) * (wx2 - wx1) / (z2 - z1));</div>
 <div class="line"><span class="lineno">  194</span>}</div>
@@ -3120,8 +3122,8 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  198</span> </div>
 <div class="line"><span class="lineno">  199</span>    <span class="keywordtype">double</span> wy1 = <a class="code hl_variable" href="classveto.html#aed67f4fe5d5e5b8c4a16a90e69e1ee17">VetoStartInnerY</a>;</div>
 <div class="line"><span class="lineno">  200</span>    <span class="keywordtype">double</span> wy2 = <a class="code hl_variable" href="classveto.html#a946270b903c1a1809619d422eef53040">VetoEndInnerY</a>;</div>
-<div class="line"><span class="lineno">  201</span>    <span class="keywordtype">double</span> z1 = 0 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
-<div class="line"><span class="lineno">  202</span>    <span class="keywordtype">double</span> z2 = 50 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
+<div class="line"><span class="lineno">  201</span>    <span class="keywordtype">double</span> <a class="code hl_variable" href="namespacegeometry__config.html#aae8006210d25420e821c97e4a2bc6483">z1</a> = 0 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
+<div class="line"><span class="lineno">  202</span>    <span class="keywordtype">double</span> <a class="code hl_variable" href="namespacegeometry__config.html#ace1d816a357936c579876a368a456bde">z2</a> = 50 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>;</div>
 <div class="line"><span class="lineno">  203</span> </div>
 <div class="line"><span class="lineno">  204</span>    <span class="keywordflow">return</span> (wy1 + (z - z1) * (wy2 - wy1) / (z2 - z1));</div>
 <div class="line"><span class="lineno">  205</span>}</div>
