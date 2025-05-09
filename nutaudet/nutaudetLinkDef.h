@@ -16,5 +16,7 @@
 #pragma link C++ class TTPoint+;
 #pragma link C++ class Target+;
 #pragma link C++ class TargetPoint+;
-
+#pragma link C++ class MTCDetector+;
+#pragma link C++ class MTCdetPoint+;
+#pragma link C++ class std::vector<MTCdetPoint>+;
 #endif
