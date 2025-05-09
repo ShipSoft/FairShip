@@ -71,7 +71,7 @@ if "shieldName" not in globals():
 if "SND" not in globals():
     SND = True
 if "SND_Design" not in globals():
-    SND_Design = 1
+    SND_design = 1
 
 with ConfigRegistry.register_config("basic") as c:
 
