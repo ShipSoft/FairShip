@@ -1,9 +1,9 @@
-#ifndef NUTAUDET_MTCDETECTOR_H_
-#define NUTAUDET_MTCDETECTOR_H_
+#ifndef MTCDETECTOR_H_
+#define MTCDETECTOR_H_
 
 #include "FairDetector.h"
 #include "FairModule.h"   // for FairModule
-#include "MTCdetPoint.h"
+#include "MtcDetPoint.h"
 #include "Rtypes.h"   // for ShipMuonShield::Class, Bool_t, etc
 #include "TClonesArray.h"
 #include "TGeoMatrix.h"
@@ -12,7 +12,7 @@
 
 #include <string>   // for string
 
-class MTCdetPoint;
+class MtcDetPoint;
 class TGeoVolume;
 class TGeoMedium;
 class FairVolume;
@@ -47,7 +47,7 @@ class MTCDetector : public FairDetector
     virtual void ConstructGeometry();
     virtual void Initialize();
     virtual Bool_t ProcessHits(FairVolume* vol = 0);
-    MTCdetPoint* AddHit(Int_t trackID,
+    MtcDetPoint* AddHit(Int_t trackID,
                         Int_t detID,
                         TVector3 pos,
                         TVector3 mom,
@@ -89,4 +89,4 @@ class MTCDetector : public FairDetector
     ClassDef(MTCDetector, 1)
 };
 
-#endif   // NUTAUDET_MTCDETECTOR_H_
+#endif   // MTCDETECTOR_H_

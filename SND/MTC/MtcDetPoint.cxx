@@ -1,16 +1,16 @@
-#include "MTCdetPoint.h"
+#include "MtcDetPoint.h"
 
 #include <iostream>
 using std::cout;
 using std::endl;
 
 // -----   Default constructor   -------------------------------------------
-MTCdetPoint::MTCdetPoint()
+MtcDetPoint::MtcDetPoint()
     : FairMCPoint()
 {}
 // -------------------------------------------------------------------------
 
-MTCdetPoint::MTCdetPoint(Int_t trackID,
+MtcDetPoint::MtcDetPoint(Int_t trackID,
                          Int_t detID,
                          TVector3 pos,
                          TVector3 mom,
@@ -25,13 +25,13 @@ MTCdetPoint::MTCdetPoint(Int_t trackID,
 // -------------------------------------------------------------------------
 
 // -----   Destructor   ----------------------------------------------------
-MTCdetPoint::~MTCdetPoint() {}
+MtcDetPoint::~MtcDetPoint() {}
 // -------------------------------------------------------------------------
 
 // -----   Public method Print   -------------------------------------------
-void MTCdetPoint::Print(const Option_t* opt) const
+void MtcDetPoint::Print(const Option_t* opt) const
 {
-    cout << "-I- MTCdetPoint: MTC point for track " << fTrackID << " in detector " << fDetectorID << endl;
+    cout << "-I- MtcDetPoint: MTC point for track " << fTrackID << " in detector " << fDetectorID << endl;
     cout << "    Position (" << fX << ", " << fY << ", " << fZ << ") cm" << endl;
     cout << "    Momentum (" << fPx << ", " << fPy << ", " << fPz << ") GeV" << endl;
     cout << "    Time " << fTime << " ns,  Length " << fLength << " cm,  Energy loss " << fELoss * 1.0e06 << " keV"
@@ -39,12 +39,12 @@ void MTCdetPoint::Print(const Option_t* opt) const
 }
 // -------------------------------------------------------------------------
 
-Int_t MTCdetPoint::GetLayer()
+Int_t MtcDetPoint::GetLayer()
 {
     return (fDetectorID / 100000) % 100;
 }
 
-Int_t MTCdetPoint::GetLayerType()
+Int_t MtcDetPoint::GetLayerType()
 {
     return fDetectorID / 10000000;
 }

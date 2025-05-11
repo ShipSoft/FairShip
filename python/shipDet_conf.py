@@ -428,7 +428,7 @@ def configure(run, ship_geo):
 
     #For SND
     if ship_geo.SND:
-        if ship_geo.SNDDesign == 2:
+        if ship_geo.SND_design == 2:
             #SND design 2 -- MTC
             configure_snd_mtc(
                 fairship + "/geometry/MTC_config.yaml"

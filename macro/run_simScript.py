@@ -123,7 +123,7 @@ parser.add_argument(
 )
 
 parser.add_argument("--SND", dest="SND", help="Activate SND.", action='store_true')
-parser.add_argument("--SNDDesign", dest="SNDDesign", help="Choose SND design among [1,2,3,...]. 1: old version, 2: MTC", type=int, choices=[1, 2], required=False, default=1)
+parser.add_argument("--SND_design", help="Choose SND design among [1,2,...]. 1: old version, 2: MTC", type=int, choices=[1, 2], default=1)
 parser.add_argument("--noSND", dest="SND", help="Deactivate SND. NOOP, as it currently defaults to off.", action='store_false')
 
 options = parser.parse_args()
@@ -203,7 +203,7 @@ ship_geo = ConfigRegistry.loadpy(
      shieldName=options.shieldName,
      DecayVolumeMedium=options.decayVolMed,
      SND=options.SND,
-     SNDDesign=options.SNDDesign
+     SND_design=options.SND_design
 )
 
 # Output file name, add dy to be able to setup geometry with ambiguities.
@@ -616,6 +616,7 @@ if simEngine == "MuonBack":
  branches.Add(ROOT.TObjString('TimeDetPoint'))
  branches.Add(ROOT.TObjString('MCEventHeader'))
  branches.Add(ROOT.TObjString('UpstreamTaggerPoint'))
+ branches.Add(ROOT.TObjString('MTCdetPoint'))
  branches.Add(ROOT.TObjString('sGeoTracks'))
 
  sTree.AutoSave()

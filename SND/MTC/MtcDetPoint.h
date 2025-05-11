@@ -1,16 +1,16 @@
-#ifndef NUTAUDET_MTCDETPOINT_H_
-#define NUTAUDET_MTCDETPOINT_H_ 1
+#ifndef MTCDET_MtcDetPoint_H_
+#define MTCDET_MtcDetPoint_H_ 1
 
 #include "FairMCPoint.h"
 #include "TObject.h"
 #include "TVector3.h"
 
-class MTCdetPoint : public FairMCPoint
+class MtcDetPoint : public FairMCPoint
 {
 
   public:
     /** Default constructor **/
-    MTCdetPoint();
+    MtcDetPoint();
 
     /** Constructor with arguments
      *@param trackID  Index of MCTrack
@@ -22,7 +22,7 @@ class MTCdetPoint : public FairMCPoint
      *@param eLoss    Energy deposit [GeV]
      **/
 
-    MTCdetPoint(Int_t trackID,
+    MtcDetPoint(Int_t trackID,
                 Int_t detID,
                 TVector3 pos,
                 TVector3 mom,
@@ -32,7 +32,7 @@ class MTCdetPoint : public FairMCPoint
                 Int_t pdgcode);
 
     /** Destructor **/
-    virtual ~MTCdetPoint();
+    virtual ~MtcDetPoint();
 
     /** Output to screen **/
     virtual void Print(const Option_t* opt) const;
@@ -44,10 +44,10 @@ class MTCdetPoint : public FairMCPoint
     /** Copy constructor **/
     Int_t fPdgCode;
 
-    MTCdetPoint(const MTCdetPoint& point);
-    MTCdetPoint operator=(const MTCdetPoint& point);
+    MtcDetPoint(const MtcDetPoint& point);
+    MtcDetPoint operator=(const MtcDetPoint& point);
 
-    ClassDef(MTCdetPoint, 1)
+    ClassDef(MtcDetPoint, 1)
 };
 
-#endif   // NUTAUDET_MTCDETPOINT_H_
+#endif   // MTCDET_MtcDetPoint_H_

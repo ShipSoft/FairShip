@@ -1,11 +1,11 @@
-# Create a library called "libnutaudet” which includes the source files given in
+# Create a library called "MTCDetector" which includes the source files given in
 # the array .
 # The extension is already found.  Any number of sources could be listed here.
 
 set(INCLUDE_DIRECTORIES
 ${BASE_INCLUDE_DIRECTORIES}
 ${CMAKE_SOURCE_DIR}/shipdata
-${CMAKE_SOURCE_DIR}/nutaudet
+${CMAKE_SOURCE_DIR}/SND/MTC
 ${VMC_INCLUDE_DIRS}
 ${genfit2_INCDIR}
 )
@@ -22,21 +22,13 @@ ${genfit2_LIBDIR}
 link_directories( ${LINK_DIRECTORIES})
 
 set(SRCS
-NuTauMudet.cxx
-ShipRpcPoint.cxx
-HPT.cxx
-HptPoint.cxx
-NutaudetContFact.cxx
-Target.cxx
-EmulsionMagnet.cxx
-TargetPoint.cxx
-TargetTracker.cxx
-TTPoint.cxx
+MTCDetector.cxx
+MtcDetPoint.cxx
 )
 
 Set(HEADERS )
-Set(LINKDEF nutaudetLinkDef.h)
-Set(LIBRARY_NAME nutaudet)
+Set(LINKDEF MTCDetectorLinkDef.h)
+Set(LIBRARY_NAME MTCDetector)
 set(DEPENDENCIES Base ShipData GeoBase ParBase Geom Core FairLogger::FairLogger)
 
 GENERATE_LIBRARY()
