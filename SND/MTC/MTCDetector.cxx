@@ -266,7 +266,7 @@ void MTCDetector::ConstructGeometry()
     ironVol->SetTransparency(20);
     // Enable the field in the iron volume
     if (fFieldY != 0) ironVol->SetField(new TGeoUniformMagField(0, fFieldY, 0));
-    
+
     // --- Assemble the layers into the envelope ---
     for (Int_t i = 0; i < fLayers; i++) {
         // Compute the center position (z) for the current module
@@ -333,7 +333,7 @@ Bool_t MTCDetector::ProcessHits(FairVolume* vol)
             y = fPos.Y();
             z = (fPos.Z() + Pos.Z()) / 2.;
             }
-    
+
         AddHit(fTrackID,
                 detID,
                 TVector3(x, y, z),
@@ -388,4 +388,3 @@ MtcDetPoint* MTCDetector::AddHit(Int_t trackID,
     Int_t size = clref.GetEntriesFast();
     return new (clref[size]) MtcDetPoint(trackID, detID, pos, mom, time, length, eLoss, pdgCode);
 }
-
