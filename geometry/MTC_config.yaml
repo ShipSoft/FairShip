@@ -5,5 +5,5 @@ MTC:
   sciFiThick: 0.97           # SciFi layer thickness (cm)
   scintThick: 1.5            # Scintillator layer thickness (cm)
   nLayers: 45                # Number of sandwich layers
-  zPosition: -3343.64        # Global z position (cm)
+  zPosition: auto        # Default: auto -- center of the last magnet or global z position in cm
   fieldY: -1.7               # Magnetic field strength (tesla)

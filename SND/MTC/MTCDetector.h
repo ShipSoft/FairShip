@@ -21,7 +21,7 @@ class TClonesArray;
 class MTCDetector : public FairDetector
 {
   public:
-    MTCDetector(const char* name, Double_t zCenter, Bool_t Active, const char* Title = "", Int_t DetId = 0);
+    MTCDetector(const char* name, Bool_t Active, const char* Title = "", Int_t DetId = 0);
     MTCDetector();
     virtual ~MTCDetector();
 

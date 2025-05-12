@@ -3,6 +3,7 @@ import ROOT
 import os
 import shipunit as u
 from ShipGeoConfig import AttrDict, ConfigRegistry
+from ShieldUtils import find_shield_center
 from array import array
 import yaml
 
@@ -240,13 +241,17 @@ def configure_snd_old(yaml_file,
     detectorList.append(NuTauTT)
 
 
-def configure_snd_mtc(yaml_file):
+def configure_snd_mtc(yaml_file, ship_geo):
     with open(yaml_file) as file:
         config = yaml.safe_load(file)
 
     mtc_geo = AttrDict(config['MTC'])
-            # Initialize detector
-    mtc = ROOT.MTCDetector("MTC", mtc_geo.zPosition, ROOT.kTRUE)
+    # Initialize detector
+    if mtc_geo.zPosition == "auto":
+        # Get the the center of the *last* magnet
+        mtc_geo.zPosition = find_shield_center(ship_geo)[2][-1]
+        print("MTC zPosition set to ", mtc_geo.zPosition)
+    mtc = ROOT.MTCDetector("MTC", ROOT.kTRUE)
     mtc.SetMTCParameters(
         mtc_geo.width,
         mtc_geo.height,
@@ -419,29 +424,30 @@ def configure(run, ship_geo):
 
     if ship_geo.DecayVolumeMedium == "helium":
         configure_veto(
-            fairship + "/geometry/veto_config_helium.yaml"
+            os.path.join(fairship, "geometry", "veto_config_helium.yaml")
         )  # put conditions for the design
     if ship_geo.DecayVolumeMedium == "vacuums":
         configure_veto(
-            fairship + "/geometry/veto_config_vacuums.yaml"
+            os.path.join(fairship, "geometry", "veto_config_vacuums.yaml")
         )  # put conditions for the design
 
-    #For SND
+    # For SND
     if ship_geo.SND:
         if ship_geo.SND_design == 2:
-            #SND design 2 -- MTC
+            # SND design 2 -- MTC
             configure_snd_mtc(
-                fairship + "/geometry/MTC_config.yaml"
+                os.path.join(fairship, "geometry", "MTC_config.yaml"),
+                ship_geo
             )
         else:
-            #This parameters are taken from the top geometry_config
-            #snd_zTot = 3 * u.m #space allocated to Muon spectrometer
-            #snd_zMudetC=ship_geo.Chamber1.z -ship_geo.chambers.Tub1length - snd_zTot/2 -31*u.cm
+            # This parameters are taken from the top geometry_config
+            # snd_zTot = 3 * u.m #space allocated to Muon spectrometer
+            # snd_zMudetC=ship_geo.Chamber1.z -ship_geo.chambers.Tub1length - snd_zTot/2 -31*u.cm
             configure_snd_old(
-                fairship + "/geometry/snd_config_old.yaml",
-                ship_geo.tauMudet.Ztot,
-                ship_geo.tauMudet.zMudetC,
-                ship_geo.cave.floorHeightMuonShield,
+            os.path.join(fairship, "geometry", "snd_config_old.yaml"),
+            ship_geo.tauMudet.Ztot,
+            ship_geo.tauMudet.zMudetC,
+            ship_geo.cave.floorHeightMuonShield,
             )
 
 

@@ -60,7 +60,7 @@ MTCDetector::MTCDetector()
     , fMTCDetectorPointCollection(new TClonesArray("MtcDetPoint"))
 {}
 
-MTCDetector::MTCDetector(const char* name, Double_t zCenter, Bool_t Active, const char* Title, Int_t DetId)
+MTCDetector::MTCDetector(const char* name, Bool_t Active, const char* Title, Int_t DetId)
     : FairDetector(name, Active, kMTC)
     , fTrackID(-1)
     , fVolumeID(-1)
@@ -69,7 +69,6 @@ MTCDetector::MTCDetector(const char* name, Double_t zCenter, Bool_t Active, cons
     , fTime(-1.)
     , fLength(-1.)
     , fELoss(-1)
-    , fZCenter(zCenter)
     , fMTCDetectorPointCollection(new TClonesArray("MtcDetPoint"))
 {}
 
@@ -265,8 +264,9 @@ void MTCDetector::ConstructGeometry()
     auto ironVol = new TGeoVolume("MTC_iron", ironBox, ironMed);
     ironVol->SetLineColor(kGray + 1);
     ironVol->SetTransparency(20);
-
-
+    // Enable the field in the iron volume
+    if (fFieldY != 0) ironVol->SetField(new TGeoUniformMagField(0, fFieldY, 0));
+    
     // --- Assemble the layers into the envelope ---
     for (Int_t i = 0; i < fLayers; i++) {
         // Compute the center position (z) for the current module
@@ -274,7 +274,6 @@ void MTCDetector::ConstructGeometry()
 
         // Place the Outer Iron layer (shifted down by half the SciFi+scint thickness)
         envVol->AddNode(ironVol, i, new TGeoTranslation(0, 0, zPos + fIronThick / 2));
-
         // Create a SciFi module with the current detector id 'i'
         TGeoVolume* sciFiModuleVol = CreateSciFiModule("MTC_sciFi", fWidth, fHeight, fSciFiThick, i);
         envVol->AddNode(sciFiModuleVol, i, new TGeoTranslation(0, 0, zPos + fIronThick + fSciFiThick / 2));
