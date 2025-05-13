@@ -70,11 +70,14 @@ if "shieldName" not in globals():
     shieldName = None
 if "SND" not in globals():
     SND = True
+if "SND_design" not in globals():
+    SND_design = 1
 
 with ConfigRegistry.register_config("basic") as c:
 
     c.DecayVolumeMedium = DecayVolumeMedium
     c.SND = SND
+    c.SND_design = SND_design
 
     if not shieldName:
         raise ValueError("shieldName must not be empty!")

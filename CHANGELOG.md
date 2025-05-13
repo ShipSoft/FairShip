@@ -24,7 +24,9 @@ it in future.
 * Added event_inspector class to experimental analysis_toolkit to streamline usage of helper functions; Added dump_event() as a start.
 * Add (optional) MgB2 field map
 * ShipBFieldMap: Added LOG info and fatal
-
+* Folder ```SND``` is added for new versions of SND integrated to the Muon Shield
+* First version of ```MTC``` (```SND/MTC```) is introduced. Scint part is fully implemented, the Sci-Fi part is implemented in simplified version. Geometrical parameters of ```MTC``` are stored in ```geometry/MTC_config.yaml``` file
+* New key for ```macro/run_simScript.py``` for choosing SND options is added: ```--SND_design```
 ### Fixed
 
 * chore: Fix file endings
@@ -38,6 +40,8 @@ it in future.
 * fix(digi): Fix logic of SST digitisation (#662)
 * Fix double append of recognized stracks
 * fix(ShieldUtils.py): The fieldmap offset was calibrated with the old version of MS
+* fix(ShieldUtils.py): changing code to be more pythonic, adding new element in the output tuple -- the list of the Muon Shield magnet z-coordinates, that can be used to set a location of SND inside the Muon Shield
+* fix(shipDet_conf.py): changing paths to yaml files to more pythonic (```os.path.join()``` now)
 
 ### Changed
 
