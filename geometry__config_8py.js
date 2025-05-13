@@ -146,6 +146,7 @@ var geometry__config_8py =
     [ "sigma_spatial", "geometry__config_8py.html#a49213a2389e9c2cd5500e5cc73b84ea9", null ],
     [ "sl", "geometry__config_8py.html#a30b1823477c4945de25d357bc327b076", null ],
     [ "SND", "geometry__config_8py.html#aaf393b00bcfc31fcc7567118169a7d4f", null ],
+    [ "SND_design", "geometry__config_8py.html#ad73ea1eb408860af8304181b37aa4674", null ],
     [ "splitCal", "geometry__config_8py.html#ab9c9be15850a1be64f82a6fe61de9f61", null ],
     [ "SplitCal", "geometry__config_8py.html#a54d2f842ba3af4748d83b7ead817016c", null ],
     [ "SplitCalThickness", "geometry__config_8py.html#a52c78d793f62fef6c754ac5c5b335de2", null ],

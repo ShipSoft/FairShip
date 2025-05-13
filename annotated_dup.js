@@ -157,6 +157,8 @@ var annotated_dup =
     [ "Hpt", "classHpt.html", "classHpt" ],
     [ "HptPoint", "classHptPoint.html", "classHptPoint" ],
     [ "MagneticSpectrometer", "classMagneticSpectrometer.html", "classMagneticSpectrometer" ],
+    [ "MTCDetector", "classMTCDetector.html", "classMTCDetector" ],
+    [ "MtcDetPoint", "classMtcDetPoint.html", "classMtcDetPoint" ],
     [ "MuDISGenerator", "classMuDISGenerator.html", "classMuDISGenerator" ],
     [ "muon", "classmuon.html", "classmuon" ],
     [ "MuonBackGenerator", "classMuonBackGenerator.html", "classMuonBackGenerator" ],

@@ -515,6 +515,7 @@ var namespaces_dup =
       [ "sigma_spatial", "namespacegeometry__config.html#a49213a2389e9c2cd5500e5cc73b84ea9", null ],
       [ "sl", "namespacegeometry__config.html#a30b1823477c4945de25d357bc327b076", null ],
       [ "SND", "namespacegeometry__config.html#aaf393b00bcfc31fcc7567118169a7d4f", null ],
+      [ "SND_design", "namespacegeometry__config.html#ad73ea1eb408860af8304181b37aa4674", null ],
       [ "splitCal", "namespacegeometry__config.html#ab9c9be15850a1be64f82a6fe61de9f61", null ],
       [ "SplitCal", "namespacegeometry__config.html#a54d2f842ba3af4748d83b7ead817016c", null ],
       [ "SplitCalThickness", "namespacegeometry__config.html#a52c78d793f62fef6c754ac5c5b335de2", null ],
@@ -1735,6 +1736,7 @@ var namespaces_dup =
     ] ],
     [ "shipDet_conf", "namespaceshipDet__conf.html", [
       [ "configure", "namespaceshipDet__conf.html#a7f232397871353ce80c1ea03eb15bd20", null ],
+      [ "configure_snd_mtc", "namespaceshipDet__conf.html#a697153d510ce945f29314cd583b91efd", null ],
       [ "configure_snd_old", "namespaceshipDet__conf.html#a6f9913f44ca120bc50d95d26f037c87c", null ],
       [ "configure_veto", "namespaceshipDet__conf.html#af01a4e9be516a731b609bca5cefc2e7a", null ],
       [ "getParameter", "namespaceshipDet__conf.html#a10ed9341e73de6c7f0b869a3bfbdf571", null ],

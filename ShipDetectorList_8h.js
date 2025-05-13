@@ -5,6 +5,7 @@ var ShipDetectorList_8h =
       [ "kTimeDet", "ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680afd52b7ba84b4518f53baf1a0ef357d87", null ],
       [ "ktauRpc", "ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680aaec86bfba5dfd7dc4b46c5a4948071a7", null ],
       [ "ktauHpt", "ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a61497344932b214083d15169b4f06e26", null ],
+      [ "kMTC", "ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680afc4e911879e9aed19f2cf5d201eab4b0", null ],
       [ "ktauTT", "ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a302708f27685969aea17b84ebf1dc7b5", null ],
       [ "ktauTarget", "ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680ac9a2f8c5f1c65083318ee7b19099c018", null ],
       [ "kStraw", "ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a95d4e15538db337d7d209dd9f84127fd", null ],

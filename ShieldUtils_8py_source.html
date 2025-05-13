@@ -98,38 +98,37 @@ $(document).ready(function(){initNavTree('ShieldUtils_8py_source.html',''); init
 </div><!--header-->
 <div class="contents">
 <a href="ShieldUtils_8py.html">Go to the documentation of this file.</a><div class="fragment"><div class="foldopen" id="foldopen00001" data-start="" data-end="">
-<div class="line"><a id="l00001" name="l00001"></a><span class="lineno"><a class="line" href="namespaceShieldUtils.html#a15add410b51d2e47e680e4949e50876c">    1</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceShieldUtils.html#a15add410b51d2e47e680e4949e50876c">find_shield_center</a>(ship_geo):</div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span>    zEndOfAbsorb = ship_geo.muShield.z - ship_geo.muShield.length / 2;</div>
+<div class="line"><a id="l00001" name="l00001"></a><span class="lineno"><a class="line" href="namespaceShieldUtils.html#a15add410b51d2e47e680e4949e50876c">    1</a></span><span class="keyword">def </span>find_shield_center(ship_geo):</div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span>    zEndOfAbsorb = ship_geo.muShield.z - ship_geo.muShield.length / 2</div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span>    dZ = [<span class="keywordtype">None</span>] * 7</div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span>    Z = [<span class="keywordtype">None</span>] * 7</div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span>    zgap = 10.</div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span>    dZ[0] = ship_geo.muShield.dZ1 - zgap / 2;</div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span>    Z[0] = zEndOfAbsorb + dZ[0] + zgap;</div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span>    dZ[0] = ship_geo.muShield.dZ1 - zgap / 2</div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span>    Z[0] = zEndOfAbsorb + dZ[0] + zgap</div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>    dZ[1] = ship_geo.muShield.dZ2 - zgap / 2;</div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>    Z[1] = Z[0] + dZ[0] + dZ[1] + zgap;</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>    dZ[1] = ship_geo.muShield.dZ2 - zgap / 2</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>    Z[1] = Z[0] + dZ[0] + dZ[1] + zgap</div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>    dZ[2] = ship_geo.muShield.dZ3 - zgap / 2;</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    Z[2] = Z[1] + dZ[1] + dZ[2] + 2 * zgap;</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>    dZ[2] = ship_geo.muShield.dZ3 - zgap / 2</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    Z[2] = Z[1] + dZ[1] + dZ[2] + 2 * zgap</div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    dZ[3] = ship_geo.muShield.dZ4 - zgap / 2;</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    Z[3] = Z[2] + dZ[2] + dZ[3] + zgap;</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    dZ[3] = ship_geo.muShield.dZ4 - zgap / 2</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    Z[3] = Z[2] + dZ[2] + dZ[3] + zgap</div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    dZ[4] = ship_geo.muShield.dZ5 - zgap / 2;</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    Z[4] = Z[3] + dZ[3] + dZ[4] + zgap;</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    dZ[4] = ship_geo.muShield.dZ5 - zgap / 2</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    Z[4] = Z[3] + dZ[3] + dZ[4] + zgap</div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    dZ[5] = ship_geo.muShield.dZ6 - zgap / 2;</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    Z[5] = Z[4] + dZ[4] + dZ[5] + zgap;</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    dZ[5] = ship_geo.muShield.dZ6 - zgap / 2</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    Z[5] = Z[4] + dZ[4] + dZ[5] + zgap</div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    dZ[6] = ship_geo.muShield.dZ7 - zgap / 2;</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    Z[6] = Z[5] + dZ[5] + dZ[6] + zgap;</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    dZ[6] = ship_geo.muShield.dZ7 - zgap / 2</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    Z[6] = Z[5] + dZ[5] + dZ[6] + zgap</div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    shield_center = (Z[1] + Z[6] + dZ[6] - dZ[1]) / 2</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    shield_half_lenth = abs((Z[1] - dZ[1]) - (Z[6] + dZ[6])) / 2</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    <span class="keywordflow">return</span> shield_center, shield_half_lenth</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    shield_half_length = abs((Z[1] - dZ[1]) - (Z[6] + dZ[6])) / 2</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    <span class="keywordflow">return</span> shield_center, shield_half_length, Z</div>
 </div>
-<div class="ttc" id="anamespaceShieldUtils_html_a15add410b51d2e47e680e4949e50876c"><div class="ttname"><a href="namespaceShieldUtils.html#a15add410b51d2e47e680e4949e50876c">ShieldUtils.find_shield_center</a></div><div class="ttdeci">find_shield_center(ship_geo)</div><div class="ttdef"><b>Definition</b> <a href="ShieldUtils_8py_source.html#l00001">ShieldUtils.py:1</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

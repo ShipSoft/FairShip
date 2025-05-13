@@ -34,6 +34,7 @@ var hierarchy =
     ] ],
     [ "FairDetector", null, [
       [ "Hpt", "classHpt.html", null ],
+      [ "MTCDetector", "classMTCDetector.html", null ],
       [ "MagneticSpectrometer", "classMagneticSpectrometer.html", null ],
       [ "NuTauMudet", "classNuTauMudet.html", null ],
       [ "Target", "classTarget.html", null ],
@@ -82,6 +83,7 @@ var hierarchy =
     ] ],
     [ "FairMCPoint", null, [
       [ "HptPoint", "classHptPoint.html", null ],
+      [ "MtcDetPoint", "classMtcDetPoint.html", null ],
       [ "ShipRpcPoint", "classShipRpcPoint.html", null ],
       [ "TTPoint", "classTTPoint.html", null ],
       [ "TargetPoint", "classTargetPoint.html", null ],

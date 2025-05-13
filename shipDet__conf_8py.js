@@ -1,6 +1,7 @@
 var shipDet__conf_8py =
 [
     [ "configure", "shipDet__conf_8py.html#a7f232397871353ce80c1ea03eb15bd20", null ],
+    [ "configure_snd_mtc", "shipDet__conf_8py.html#a697153d510ce945f29314cd583b91efd", null ],
     [ "configure_snd_old", "shipDet__conf_8py.html#a6f9913f44ca120bc50d95d26f037c87c", null ],
     [ "configure_veto", "shipDet__conf_8py.html#af01a4e9be516a731b609bca5cefc2e7a", null ],
     [ "getParameter", "shipDet__conf_8py.html#a10ed9341e73de6c7f0b869a3bfbdf571", null ],

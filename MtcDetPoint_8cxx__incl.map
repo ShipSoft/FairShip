@@ -1,0 +1,13 @@
+<map id="SND/MTC/MtcDetPoint.cxx" name="SND/MTC/MtcDetPoint.cxx">
+<area shape="rect" id="Node000001" title=" " alt="" coords="145,5,339,31"/>
+<area shape="rect" id="Node000002" href="$MtcDetPoint_8h.html" title=" " alt="" coords="125,79,239,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="234,33,203,70,198,66,230,29"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="263,79,343,104"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="254,29,286,66,282,70,250,33"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,152,116,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="164,106,93,147,91,143,161,102"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="140,152,224,177"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="185,104,185,138,179,138,179,104"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="249,152,339,177"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="201,102,265,142,262,147,199,106"/>
+</map>

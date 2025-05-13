@@ -108,6 +108,8 @@ Functions</h2></td></tr>
 <tr class="separator:adb3bdcee7cddd83b1bcc462cb4ad1144"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6f9913f44ca120bc50d95d26f037c87c" id="r_a6f9913f44ca120bc50d95d26f037c87c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceshipDet__conf.html#a6f9913f44ca120bc50d95d26f037c87c">configure_snd_old</a> (yaml_file, snd_tauMu_zTot, snd_tauMu_zMudetC, cave_floorHeightMuonShield)</td></tr>
 <tr class="separator:a6f9913f44ca120bc50d95d26f037c87c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a697153d510ce945f29314cd583b91efd" id="r_a697153d510ce945f29314cd583b91efd"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceshipDet__conf.html#a697153d510ce945f29314cd583b91efd">configure_snd_mtc</a> (yaml_file, ship_geo)</td></tr>
+<tr class="separator:a697153d510ce945f29314cd583b91efd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af01a4e9be516a731b609bca5cefc2e7a" id="r_af01a4e9be516a731b609bca5cefc2e7a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceshipDet__conf.html#af01a4e9be516a731b609bca5cefc2e7a">configure_veto</a> (yaml_file)</td></tr>
 <tr class="separator:af01a4e9be516a731b609bca5cefc2e7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7f232397871353ce80c1ea03eb15bd20" id="r_a7f232397871353ce80c1ea03eb15bd20"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceshipDet__conf.html#a7f232397871353ce80c1ea03eb15bd20">configure</a> (run, ship_geo)</td></tr>
@@ -145,323 +147,383 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipDet__conf_8py_source.html#l00275">275</a> of file <a class="el" href="shipDet__conf_8py_source.html">shipDet_conf.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  275</span><span class="keyword">def </span>configure(run, ship_geo):</div>
-<div class="line"><span class="lineno">  276</span>    <span class="comment"># ---- for backward compatibility ----</span></div>
-<div class="line"><span class="lineno">  277</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> hasattr(ship_geo, <span class="stringliteral">&quot;DecayVolumeMedium&quot;</span>):</div>
-<div class="line"><span class="lineno">  278</span>        <span class="keywordflow">raise</span> ValueError(</div>
-<div class="line"><span class="lineno">  279</span>            <span class="stringliteral">&quot;DecayVolumeMedium is not defined, possibly old (incompatible) geometry!&quot;</span></div>
-<div class="line"><span class="lineno">  280</span>        )</div>
-<div class="line"><span class="lineno">  281</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> hasattr(ship_geo, <span class="stringliteral">&quot;tankDesign&quot;</span>):</div>
-<div class="line"><span class="lineno">  282</span>        ship_geo.tankDesign = 5</div>
-<div class="line"><span class="lineno">  283</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> hasattr(ship_geo, <span class="stringliteral">&quot;muShieldGeo&quot;</span>):</div>
-<div class="line"><span class="lineno">  284</span>        ship_geo.muShieldGeo = <span class="keywordtype">None</span></div>
-<div class="line"><span class="lineno">  285</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> hasattr(ship_geo.hcal, <span class="stringliteral">&quot;File&quot;</span>):</div>
-<div class="line"><span class="lineno">  286</span>        ship_geo.hcal.File = <span class="stringliteral">&quot;hcal.geo&quot;</span></div>
-<div class="line"><span class="lineno">  287</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> hasattr(ship_geo.Bfield, <span class="stringliteral">&quot;x&quot;</span>):</div>
-<div class="line"><span class="lineno">  288</span>        ship_geo.Bfield.x = 3.0 * u.m</div>
-<div class="line"><span class="lineno">  289</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> hasattr(ship_geo, <span class="stringliteral">&quot;cave&quot;</span>):</div>
-<div class="line"><span class="lineno">  290</span>        ship_geo.cave = AttrDict(z=0 * u.cm)</div>
-<div class="line"><span class="lineno">  291</span>        ship_geo.cave.floorHeightMuonShield = 5 * u.m</div>
-<div class="line"><span class="lineno">  292</span>        ship_geo.cave.floorHeightTankA = 4.5 * u.m</div>
-<div class="line"><span class="lineno">  293</span>        ship_geo.cave.floorHeightTankB = 2.0 * u.m</div>
-<div class="line"><span class="lineno">  294</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> hasattr(ship_geo, <span class="stringliteral">&quot;EcalOption&quot;</span>):</div>
-<div class="line"><span class="lineno">  295</span>        ship_geo.EcalOption = 1</div>
-<div class="line"><span class="lineno">  296</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> hasattr(ship_geo, <span class="stringliteral">&quot;SND&quot;</span>):</div>
-<div class="line"><span class="lineno">  297</span>        ship_geo.SND = <span class="keyword">True</span></div>
-<div class="line"><span class="lineno">  298</span> </div>
-<div class="line"><span class="lineno">  299</span>    latestShipGeo = ConfigRegistry.loadpy(</div>
-<div class="line"><span class="lineno">  300</span>        <span class="stringliteral">&quot;$FAIRSHIP/geometry/geometry_config.py&quot;</span>,</div>
-<div class="line"><span class="lineno">  301</span>        Yheight=ship_geo.Yheight / u.m,</div>
-<div class="line"><span class="lineno">  302</span>        tankDesign=ship_geo.tankDesign,</div>
-<div class="line"><span class="lineno">  303</span>        nuTauTargetDesign=ship_geo.nuTauTargetDesign,</div>
-<div class="line"><span class="lineno">  304</span>        muShieldGeo=ship_geo.muShieldGeo,</div>
-<div class="line"><span class="lineno">  305</span>        SC_mag=ship_geo.SC_mag,</div>
-<div class="line"><span class="lineno">  306</span>        shieldName=ship_geo.shieldName,</div>
-<div class="line"><span class="lineno">  307</span>        DecayVolumeMedium=ship_geo.DecayVolumeMedium,</div>
-<div class="line"><span class="lineno">  308</span>    )</div>
-<div class="line"><span class="lineno">  309</span>    <span class="comment"># -----Create media-------------------------------------------------</span></div>
-<div class="line"><span class="lineno">  310</span>    run.SetMaterials(<span class="stringliteral">&quot;media.geo&quot;</span>)  <span class="comment"># Materials</span></div>
-<div class="line"><span class="lineno">  311</span>    <span class="comment"># ------------------------------------------------------------------------</span></div>
-<div class="line"><span class="lineno">  312</span> </div>
-<div class="line"><span class="lineno">  313</span>    <span class="comment"># -----Create geometry----------------------------------------------</span></div>
-<div class="line"><span class="lineno">  314</span>    cave = ROOT.ShipCave(<span class="stringliteral">&quot;CAVE&quot;</span>)</div>
-<div class="line"><span class="lineno">  315</span>    <span class="keywordflow">if</span> ship_geo.tankDesign &lt; 5:</div>
-<div class="line"><span class="lineno">  316</span>        cave.SetGeometryFileName(<span class="stringliteral">&quot;cave.geo&quot;</span>)</div>
-<div class="line"><span class="lineno">  317</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  318</span>        cave.SetGeometryFileName(<span class="stringliteral">&quot;caveWithAir.geo&quot;</span>)</div>
-<div class="line"><span class="lineno">  319</span>    detectorList.append(cave)</div>
-<div class="line"><span class="lineno">  320</span> </div>
-<div class="line"><span class="lineno">  321</span>    <span class="comment"># magnetized hadron absorber defined in ShipMuonShield</span></div>
-<div class="line"><span class="lineno">  322</span>    TargetStation = ROOT.ShipTargetStation(</div>
-<div class="line"><span class="lineno">  323</span>        <span class="stringliteral">&quot;TargetStation&quot;</span>,</div>
-<div class="line"><span class="lineno">  324</span>        ship_geo.target.length,</div>
-<div class="line"><span class="lineno">  325</span>        ship_geo.target.z,</div>
-<div class="line"><span class="lineno">  326</span>        ship_geo.targetOpt,</div>
-<div class="line"><span class="lineno">  327</span>        ship_geo.target.sl,</div>
-<div class="line"><span class="lineno">  328</span>    )</div>
-<div class="line"><span class="lineno">  329</span> </div>
-<div class="line"><span class="lineno">  330</span>    <span class="keywordflow">if</span> ship_geo.targetOpt &gt; 10:</div>
-<div class="line"><span class="lineno">  331</span>        slices_length = ROOT.std.vector(<span class="stringliteral">&quot;float&quot;</span>)()</div>
-<div class="line"><span class="lineno">  332</span>        slices_material = ROOT.std.vector(<span class="stringliteral">&quot;std::string&quot;</span>)()</div>
-<div class="line"><span class="lineno">  333</span>        <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(1, ship_geo.targetOpt + 1):</div>
-<div class="line"><span class="lineno">  334</span>            slices_length.push_back(eval(<span class="stringliteral">&quot;ship_geo.target.L&quot;</span> + str(i)))</div>
-<div class="line"><span class="lineno">  335</span>            slices_material.push_back(eval(<span class="stringliteral">&quot;ship_geo.target.M&quot;</span> + str(i)))</div>
-<div class="line"><span class="lineno">  336</span>        TargetStation.SetLayerPosMat(ship_geo.target.xy, slices_length, slices_material)</div>
-<div class="line"><span class="lineno">  337</span>    detectorList.append(TargetStation)</div>
-<div class="line"><span class="lineno">  338</span> </div>
-<div class="line"><span class="lineno">  339</span> </div>
-<div class="line"><span class="lineno">  340</span>    in_params = list(ship_geo.muShield.params)</div>
-<div class="line"><span class="lineno">  341</span> </div>
-<div class="line"><span class="lineno">  342</span>    MuonShield = ROOT.ShipMuonShield(</div>
-<div class="line"><span class="lineno">  343</span>        in_params,</div>
-<div class="line"><span class="lineno">  344</span>        ship_geo.cave.floorHeightMuonShield,</div>
-<div class="line"><span class="lineno">  345</span>        ship_geo.muShield.WithConstField,</div>
-<div class="line"><span class="lineno">  346</span>        ship_geo.SC_mag</div>
-<div class="line"><span class="lineno">  347</span>    )</div>
-<div class="line"><span class="lineno">  348</span>    detectorList.append(MuonShield)</div>
-<div class="line"><span class="lineno">  349</span> </div>
-<div class="line"><span class="lineno">  350</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> hasattr(ship_geo, <span class="stringliteral">&quot;magnetDesign&quot;</span>):</div>
-<div class="line"><span class="lineno">  351</span>        <span class="comment"># backward compatibility</span></div>
-<div class="line"><span class="lineno">  352</span>        magnet_design = 2</div>
-<div class="line"><span class="lineno">  353</span>        <span class="keywordflow">if</span> ship_geo.tankDesign == 5:</div>
-<div class="line"><span class="lineno">  354</span>            magnet_design = 3</div>
-<div class="line"><span class="lineno">  355</span>        <span class="keywordflow">if</span> ship_geo.tankDesign == 6:</div>
-<div class="line"><span class="lineno">  356</span>            magnet_design = 4</div>
-<div class="line"><span class="lineno">  357</span>        ship_geo.magnetDesign = magnet_design</div>
-<div class="line"><span class="lineno">  358</span>        ship_geo.Bfield.YokeWidth = 200.0 * u.cm</div>
-<div class="line"><span class="lineno">  359</span>        ship_geo.Bfield.YokeDepth = 200.0 * u.cm</div>
-<div class="line"><span class="lineno">  360</span>        ship_geo.Bfield.CoilThick = 25.0 * u.cm</div>
-<div class="line"><span class="lineno">  361</span>    <span class="comment"># sanity check, 2018 layout ship_geo.tankDesign == 6 has to be together with ship_geo.nuTauTargetDesign == 3</span></div>
-<div class="line"><span class="lineno">  362</span>    <span class="keywordflow">if</span> ship_geo.tankDesign != 6 <span class="keywordflow">and</span> ship_geo.nuTauTargetDesign == 3:</div>
-<div class="line"><span class="lineno">  363</span>        print(</div>
-<div class="line"><span class="lineno">  364</span>            <span class="stringliteral">&quot;version of tankDesign and nuTauTargetDesign are not compatible, should be 6 and 3, it is &quot;</span>,</div>
-<div class="line"><span class="lineno">  365</span>            ship_geo.tankDesign,</div>
-<div class="line"><span class="lineno">  366</span>            ship_geo.nuTauTargetDesign,</div>
-<div class="line"><span class="lineno">  367</span>        )</div>
-<div class="line"><span class="lineno">  368</span>        exit()</div>
-<div class="line"><span class="lineno">  369</span>    <span class="keywordflow">if</span> ship_geo.strawDesign &gt; 1:</div>
-<div class="line"><span class="lineno">  370</span>        <span class="keywordflow">if</span> ship_geo.magnetDesign &gt; 3:</div>
-<div class="line"><span class="lineno">  371</span>            B = ship_geo.Bfield</div>
-<div class="line"><span class="lineno">  372</span>            magnet = ROOT.ShipMagnet(</div>
-<div class="line"><span class="lineno">  373</span>                <span class="stringliteral">&quot;Magnet&quot;</span>,</div>
-<div class="line"><span class="lineno">  374</span>                <span class="stringliteral">&quot;SHiP Magnet&quot;</span>,</div>
-<div class="line"><span class="lineno">  375</span>                B.z,</div>
-<div class="line"><span class="lineno">  376</span>                ship_geo.magnetDesign,</div>
-<div class="line"><span class="lineno">  377</span>                B.x,</div>
-<div class="line"><span class="lineno">  378</span>                B.y,</div>
-<div class="line"><span class="lineno">  379</span>                ship_geo.cave.floorHeightTankB,</div>
-<div class="line"><span class="lineno">  380</span>                B.YokeWidth,</div>
-<div class="line"><span class="lineno">  381</span>                B.YokeDepth,</div>
-<div class="line"><span class="lineno">  382</span>                B.CoilThick,</div>
-<div class="line"><span class="lineno">  383</span>            )</div>
-<div class="line"><span class="lineno">  384</span>        <span class="comment">#                                                               xaperture,  yaperture</span></div>
-<div class="line"><span class="lineno">  385</span>        <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  386</span>            magnet = ROOT.ShipMagnet(</div>
-<div class="line"><span class="lineno">  387</span>                <span class="stringliteral">&quot;Magnet&quot;</span>,</div>
-<div class="line"><span class="lineno">  388</span>                <span class="stringliteral">&quot;SHiP Magnet&quot;</span>,</div>
-<div class="line"><span class="lineno">  389</span>                ship_geo.Bfield.z,</div>
-<div class="line"><span class="lineno">  390</span>                ship_geo.magnetDesign,</div>
-<div class="line"><span class="lineno">  391</span>                ship_geo.Bfield.x,</div>
-<div class="line"><span class="lineno">  392</span>                ship_geo.Bfield.y,</div>
-<div class="line"><span class="lineno">  393</span>                ship_geo.cave.floorHeightTankB,</div>
-<div class="line"><span class="lineno">  394</span>            )</div>
-<div class="line"><span class="lineno">  395</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  396</span>        magnet = ROOT.ShipMagnet(<span class="stringliteral">&quot;Magnet&quot;</span>, <span class="stringliteral">&quot;SHiP Magnet&quot;</span>, ship_geo.Bfield.z)</div>
-<div class="line"><span class="lineno">  397</span>    detectorList.append(magnet)</div>
-<div class="line"><span class="lineno">  398</span> </div>
-<div class="line"><span class="lineno">  399</span>    fairship = ROOT.gSystem.Getenv(<span class="stringliteral">&quot;FAIRSHIP&quot;</span>)</div>
-<div class="line"><span class="lineno">  400</span> </div>
-<div class="line"><span class="lineno">  401</span>    <span class="keywordflow">if</span> ship_geo.DecayVolumeMedium == <span class="stringliteral">&quot;helium&quot;</span>:</div>
-<div class="line"><span class="lineno">  402</span>        configure_veto(</div>
-<div class="line"><span class="lineno">  403</span>            fairship + <span class="stringliteral">&quot;/geometry/veto_config_helium.yaml&quot;</span></div>
-<div class="line"><span class="lineno">  404</span>        )  <span class="comment"># put conditions for the design</span></div>
-<div class="line"><span class="lineno">  405</span>    <span class="keywordflow">if</span> ship_geo.DecayVolumeMedium == <span class="stringliteral">&quot;vacuums&quot;</span>:</div>
-<div class="line"><span class="lineno">  406</span>        configure_veto(</div>
-<div class="line"><span class="lineno">  407</span>            fairship + <span class="stringliteral">&quot;/geometry/veto_config_vacuums.yaml&quot;</span></div>
-<div class="line"><span class="lineno">  408</span>        )  <span class="comment"># put conditions for the design</span></div>
-<div class="line"><span class="lineno">  409</span> </div>
-<div class="line"><span class="lineno">  410</span>    <span class="comment">#For SND</span></div>
-<div class="line"><span class="lineno">  411</span>    <span class="keywordflow">if</span> ship_geo.SND:  <span class="comment"># kept only one old design</span></div>
-<div class="line"><span class="lineno">  412</span>        <span class="comment">#This parameters are taken from the top geometry_config</span></div>
-<div class="line"><span class="lineno">  413</span>        <span class="comment">#snd_zTot = 3 * u.m #space allocated to Muon spectrometer</span></div>
-<div class="line"><span class="lineno">  414</span>        <span class="comment">#snd_zMudetC=ship_geo.Chamber1.z -ship_geo.chambers.Tub1length - snd_zTot/2 -31*u.cm</span></div>
-<div class="line"><span class="lineno">  415</span>        configure_snd_old(</div>
-<div class="line"><span class="lineno">  416</span>            fairship + <span class="stringliteral">&quot;/geometry/snd_config_old.yaml&quot;</span>,</div>
-<div class="line"><span class="lineno">  417</span>            ship_geo.tauMudet.Ztot,</div>
-<div class="line"><span class="lineno">  418</span>            ship_geo.tauMudet.zMudetC,</div>
-<div class="line"><span class="lineno">  419</span>            ship_geo.cave.floorHeightMuonShield</div>
-<div class="line"><span class="lineno">  420</span>        )</div>
-<div class="line"><span class="lineno">  421</span> </div>
+<p class="definition">Definition at line <a class="el" href="shipDet__conf_8py_source.html#l00299">299</a> of file <a class="el" href="shipDet__conf_8py_source.html">shipDet_conf.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  299</span><span class="keyword">def </span>configure(run, ship_geo):</div>
+<div class="line"><span class="lineno">  300</span>    <span class="comment"># ---- for backward compatibility ----</span></div>
+<div class="line"><span class="lineno">  301</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> hasattr(ship_geo, <span class="stringliteral">&quot;DecayVolumeMedium&quot;</span>):</div>
+<div class="line"><span class="lineno">  302</span>        <span class="keywordflow">raise</span> ValueError(</div>
+<div class="line"><span class="lineno">  303</span>            <span class="stringliteral">&quot;DecayVolumeMedium is not defined, possibly old (incompatible) geometry!&quot;</span></div>
+<div class="line"><span class="lineno">  304</span>        )</div>
+<div class="line"><span class="lineno">  305</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> hasattr(ship_geo, <span class="stringliteral">&quot;tankDesign&quot;</span>):</div>
+<div class="line"><span class="lineno">  306</span>        ship_geo.tankDesign = 5</div>
+<div class="line"><span class="lineno">  307</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> hasattr(ship_geo, <span class="stringliteral">&quot;muShieldGeo&quot;</span>):</div>
+<div class="line"><span class="lineno">  308</span>        ship_geo.muShieldGeo = <span class="keywordtype">None</span></div>
+<div class="line"><span class="lineno">  309</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> hasattr(ship_geo.hcal, <span class="stringliteral">&quot;File&quot;</span>):</div>
+<div class="line"><span class="lineno">  310</span>        ship_geo.hcal.File = <span class="stringliteral">&quot;hcal.geo&quot;</span></div>
+<div class="line"><span class="lineno">  311</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> hasattr(ship_geo.Bfield, <span class="stringliteral">&quot;x&quot;</span>):</div>
+<div class="line"><span class="lineno">  312</span>        ship_geo.Bfield.x = 3.0 * u.m</div>
+<div class="line"><span class="lineno">  313</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> hasattr(ship_geo, <span class="stringliteral">&quot;cave&quot;</span>):</div>
+<div class="line"><span class="lineno">  314</span>        ship_geo.cave = AttrDict(z=0 * u.cm)</div>
+<div class="line"><span class="lineno">  315</span>        ship_geo.cave.floorHeightMuonShield = 5 * u.m</div>
+<div class="line"><span class="lineno">  316</span>        ship_geo.cave.floorHeightTankA = 4.5 * u.m</div>
+<div class="line"><span class="lineno">  317</span>        ship_geo.cave.floorHeightTankB = 2.0 * u.m</div>
+<div class="line"><span class="lineno">  318</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> hasattr(ship_geo, <span class="stringliteral">&quot;EcalOption&quot;</span>):</div>
+<div class="line"><span class="lineno">  319</span>        ship_geo.EcalOption = 1</div>
+<div class="line"><span class="lineno">  320</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> hasattr(ship_geo, <span class="stringliteral">&quot;SND&quot;</span>):</div>
+<div class="line"><span class="lineno">  321</span>        ship_geo.SND = <span class="keyword">True</span></div>
+<div class="line"><span class="lineno">  322</span> </div>
+<div class="line"><span class="lineno">  323</span>    latestShipGeo = ConfigRegistry.loadpy(</div>
+<div class="line"><span class="lineno">  324</span>        <span class="stringliteral">&quot;$FAIRSHIP/geometry/geometry_config.py&quot;</span>,</div>
+<div class="line"><span class="lineno">  325</span>        Yheight=ship_geo.Yheight / u.m,</div>
+<div class="line"><span class="lineno">  326</span>        tankDesign=ship_geo.tankDesign,</div>
+<div class="line"><span class="lineno">  327</span>        nuTauTargetDesign=ship_geo.nuTauTargetDesign,</div>
+<div class="line"><span class="lineno">  328</span>        muShieldGeo=ship_geo.muShieldGeo,</div>
+<div class="line"><span class="lineno">  329</span>        SC_mag=ship_geo.SC_mag,</div>
+<div class="line"><span class="lineno">  330</span>        shieldName=ship_geo.shieldName,</div>
+<div class="line"><span class="lineno">  331</span>        DecayVolumeMedium=ship_geo.DecayVolumeMedium,</div>
+<div class="line"><span class="lineno">  332</span>    )</div>
+<div class="line"><span class="lineno">  333</span>    <span class="comment"># -----Create media-------------------------------------------------</span></div>
+<div class="line"><span class="lineno">  334</span>    run.SetMaterials(<span class="stringliteral">&quot;media.geo&quot;</span>)  <span class="comment"># Materials</span></div>
+<div class="line"><span class="lineno">  335</span>    <span class="comment"># ------------------------------------------------------------------------</span></div>
+<div class="line"><span class="lineno">  336</span> </div>
+<div class="line"><span class="lineno">  337</span>    <span class="comment"># -----Create geometry----------------------------------------------</span></div>
+<div class="line"><span class="lineno">  338</span>    cave = ROOT.ShipCave(<span class="stringliteral">&quot;CAVE&quot;</span>)</div>
+<div class="line"><span class="lineno">  339</span>    <span class="keywordflow">if</span> ship_geo.tankDesign &lt; 5:</div>
+<div class="line"><span class="lineno">  340</span>        cave.SetGeometryFileName(<span class="stringliteral">&quot;cave.geo&quot;</span>)</div>
+<div class="line"><span class="lineno">  341</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  342</span>        cave.SetGeometryFileName(<span class="stringliteral">&quot;caveWithAir.geo&quot;</span>)</div>
+<div class="line"><span class="lineno">  343</span>    detectorList.append(cave)</div>
+<div class="line"><span class="lineno">  344</span> </div>
+<div class="line"><span class="lineno">  345</span>    <span class="comment"># magnetized hadron absorber defined in ShipMuonShield</span></div>
+<div class="line"><span class="lineno">  346</span>    TargetStation = ROOT.ShipTargetStation(</div>
+<div class="line"><span class="lineno">  347</span>        <span class="stringliteral">&quot;TargetStation&quot;</span>,</div>
+<div class="line"><span class="lineno">  348</span>        ship_geo.target.length,</div>
+<div class="line"><span class="lineno">  349</span>        ship_geo.target.z,</div>
+<div class="line"><span class="lineno">  350</span>        ship_geo.targetOpt,</div>
+<div class="line"><span class="lineno">  351</span>        ship_geo.target.sl,</div>
+<div class="line"><span class="lineno">  352</span>    )</div>
+<div class="line"><span class="lineno">  353</span> </div>
+<div class="line"><span class="lineno">  354</span>    <span class="keywordflow">if</span> ship_geo.targetOpt &gt; 10:</div>
+<div class="line"><span class="lineno">  355</span>        slices_length = ROOT.std.vector(<span class="stringliteral">&quot;float&quot;</span>)()</div>
+<div class="line"><span class="lineno">  356</span>        slices_material = ROOT.std.vector(<span class="stringliteral">&quot;std::string&quot;</span>)()</div>
+<div class="line"><span class="lineno">  357</span>        <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(1, ship_geo.targetOpt + 1):</div>
+<div class="line"><span class="lineno">  358</span>            slices_length.push_back(eval(<span class="stringliteral">&quot;ship_geo.target.L&quot;</span> + str(i)))</div>
+<div class="line"><span class="lineno">  359</span>            slices_material.push_back(eval(<span class="stringliteral">&quot;ship_geo.target.M&quot;</span> + str(i)))</div>
+<div class="line"><span class="lineno">  360</span>        TargetStation.SetLayerPosMat(ship_geo.target.xy, slices_length, slices_material)</div>
+<div class="line"><span class="lineno">  361</span>    detectorList.append(TargetStation)</div>
+<div class="line"><span class="lineno">  362</span> </div>
+<div class="line"><span class="lineno">  363</span> </div>
+<div class="line"><span class="lineno">  364</span>    in_params = list(ship_geo.muShield.params)</div>
+<div class="line"><span class="lineno">  365</span> </div>
+<div class="line"><span class="lineno">  366</span>    MuonShield = ROOT.ShipMuonShield(</div>
+<div class="line"><span class="lineno">  367</span>        in_params,</div>
+<div class="line"><span class="lineno">  368</span>        ship_geo.cave.floorHeightMuonShield,</div>
+<div class="line"><span class="lineno">  369</span>        ship_geo.muShield.WithConstField,</div>
+<div class="line"><span class="lineno">  370</span>        ship_geo.SC_mag</div>
+<div class="line"><span class="lineno">  371</span>    )</div>
+<div class="line"><span class="lineno">  372</span>    detectorList.append(MuonShield)</div>
+<div class="line"><span class="lineno">  373</span> </div>
+<div class="line"><span class="lineno">  374</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> hasattr(ship_geo, <span class="stringliteral">&quot;magnetDesign&quot;</span>):</div>
+<div class="line"><span class="lineno">  375</span>        <span class="comment"># backward compatibility</span></div>
+<div class="line"><span class="lineno">  376</span>        magnet_design = 2</div>
+<div class="line"><span class="lineno">  377</span>        <span class="keywordflow">if</span> ship_geo.tankDesign == 5:</div>
+<div class="line"><span class="lineno">  378</span>            magnet_design = 3</div>
+<div class="line"><span class="lineno">  379</span>        <span class="keywordflow">if</span> ship_geo.tankDesign == 6:</div>
+<div class="line"><span class="lineno">  380</span>            magnet_design = 4</div>
+<div class="line"><span class="lineno">  381</span>        ship_geo.magnetDesign = magnet_design</div>
+<div class="line"><span class="lineno">  382</span>        ship_geo.Bfield.YokeWidth = 200.0 * u.cm</div>
+<div class="line"><span class="lineno">  383</span>        ship_geo.Bfield.YokeDepth = 200.0 * u.cm</div>
+<div class="line"><span class="lineno">  384</span>        ship_geo.Bfield.CoilThick = 25.0 * u.cm</div>
+<div class="line"><span class="lineno">  385</span>    <span class="comment"># sanity check, 2018 layout ship_geo.tankDesign == 6 has to be together with ship_geo.nuTauTargetDesign == 3</span></div>
+<div class="line"><span class="lineno">  386</span>    <span class="keywordflow">if</span> ship_geo.tankDesign != 6 <span class="keywordflow">and</span> ship_geo.nuTauTargetDesign == 3:</div>
+<div class="line"><span class="lineno">  387</span>        print(</div>
+<div class="line"><span class="lineno">  388</span>            <span class="stringliteral">&quot;version of tankDesign and nuTauTargetDesign are not compatible, should be 6 and 3, it is &quot;</span>,</div>
+<div class="line"><span class="lineno">  389</span>            ship_geo.tankDesign,</div>
+<div class="line"><span class="lineno">  390</span>            ship_geo.nuTauTargetDesign,</div>
+<div class="line"><span class="lineno">  391</span>        )</div>
+<div class="line"><span class="lineno">  392</span>        exit()</div>
+<div class="line"><span class="lineno">  393</span>    <span class="keywordflow">if</span> ship_geo.strawDesign &gt; 1:</div>
+<div class="line"><span class="lineno">  394</span>        <span class="keywordflow">if</span> ship_geo.magnetDesign &gt; 3:</div>
+<div class="line"><span class="lineno">  395</span>            B = ship_geo.Bfield</div>
+<div class="line"><span class="lineno">  396</span>            magnet = ROOT.ShipMagnet(</div>
+<div class="line"><span class="lineno">  397</span>                <span class="stringliteral">&quot;Magnet&quot;</span>,</div>
+<div class="line"><span class="lineno">  398</span>                <span class="stringliteral">&quot;SHiP Magnet&quot;</span>,</div>
+<div class="line"><span class="lineno">  399</span>                B.z,</div>
+<div class="line"><span class="lineno">  400</span>                ship_geo.magnetDesign,</div>
+<div class="line"><span class="lineno">  401</span>                B.x,</div>
+<div class="line"><span class="lineno">  402</span>                B.y,</div>
+<div class="line"><span class="lineno">  403</span>                ship_geo.cave.floorHeightTankB,</div>
+<div class="line"><span class="lineno">  404</span>                B.YokeWidth,</div>
+<div class="line"><span class="lineno">  405</span>                B.YokeDepth,</div>
+<div class="line"><span class="lineno">  406</span>                B.CoilThick,</div>
+<div class="line"><span class="lineno">  407</span>            )</div>
+<div class="line"><span class="lineno">  408</span>        <span class="comment">#                                                               xaperture,  yaperture</span></div>
+<div class="line"><span class="lineno">  409</span>        <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  410</span>            magnet = ROOT.ShipMagnet(</div>
+<div class="line"><span class="lineno">  411</span>                <span class="stringliteral">&quot;Magnet&quot;</span>,</div>
+<div class="line"><span class="lineno">  412</span>                <span class="stringliteral">&quot;SHiP Magnet&quot;</span>,</div>
+<div class="line"><span class="lineno">  413</span>                ship_geo.Bfield.z,</div>
+<div class="line"><span class="lineno">  414</span>                ship_geo.magnetDesign,</div>
+<div class="line"><span class="lineno">  415</span>                ship_geo.Bfield.x,</div>
+<div class="line"><span class="lineno">  416</span>                ship_geo.Bfield.y,</div>
+<div class="line"><span class="lineno">  417</span>                ship_geo.cave.floorHeightTankB,</div>
+<div class="line"><span class="lineno">  418</span>            )</div>
+<div class="line"><span class="lineno">  419</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  420</span>        magnet = ROOT.ShipMagnet(<span class="stringliteral">&quot;Magnet&quot;</span>, <span class="stringliteral">&quot;SHiP Magnet&quot;</span>, ship_geo.Bfield.z)</div>
+<div class="line"><span class="lineno">  421</span>    detectorList.append(magnet)</div>
 <div class="line"><span class="lineno">  422</span> </div>
-<div class="line"><span class="lineno">  423</span>    <span class="comment"># for backward compatibility</span></div>
-<div class="line"><span class="lineno">  424</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> hasattr(ship_geo.strawtubes, <span class="stringliteral">&quot;YPlaneOffset&quot;</span>):</div>
-<div class="line"><span class="lineno">  425</span>        ship_geo.strawtubes.YLayerOffset = ship_geo.strawtubes.StrawPitch / 2.0</div>
-<div class="line"><span class="lineno">  426</span>        ship_geo.strawtubes.YPlaneOffset = ship_geo.strawtubes.StrawPitch / 4.0</div>
-<div class="line"><span class="lineno">  427</span>    <span class="keywordflow">if</span> ship_geo.strawDesign &gt; 1:</div>
-<div class="line"><span class="lineno">  428</span>        <span class="comment"># for backward compatibility</span></div>
-<div class="line"><span class="lineno">  429</span>        <span class="keywordflow">if</span> ship_geo.strawDesign == 10 <span class="keywordflow">and</span> <span class="keywordflow">not</span> hasattr(</div>
-<div class="line"><span class="lineno">  430</span>            ship_geo.strawtubes, <span class="stringliteral">&quot;DeltazFrame&quot;</span></div>
-<div class="line"><span class="lineno">  431</span>        ):</div>
-<div class="line"><span class="lineno">  432</span>            ship_geo.strawtubes.DeltazFrame = 2.5 * u.cm</div>
-<div class="line"><span class="lineno">  433</span>            ship_geo.strawtubes.FrameLateralWidth = 1.2 * u.m</div>
-<div class="line"><span class="lineno">  434</span>            ship_geo.strawtubes.FrameMaterial = <span class="stringliteral">&quot;steel&quot;</span></div>
-<div class="line"><span class="lineno">  435</span>        <span class="keywordflow">elif</span> <span class="keywordflow">not</span> hasattr(ship_geo.strawtubes, <span class="stringliteral">&quot;DeltazFrame&quot;</span>):</div>
-<div class="line"><span class="lineno">  436</span>            ship_geo.strawtubes.DeltazFrame = 10.0 * u.cm</div>
-<div class="line"><span class="lineno">  437</span>            ship_geo.strawtubes.FrameLateralWidth = 1.0 * u.cm</div>
-<div class="line"><span class="lineno">  438</span>            ship_geo.strawtubes.FrameMaterial = <span class="stringliteral">&quot;aluminium&quot;</span></div>
-<div class="line"><span class="lineno">  439</span>        ship_geo.strawtubes.medium = <span class="stringliteral">&quot;vacuums&quot;</span> <span class="keywordflow">if</span> ship_geo.DecayVolumeMedium == <span class="stringliteral">&quot;vacuums&quot;</span> <span class="keywordflow">else</span> <span class="stringliteral">&quot;air&quot;</span></div>
-<div class="line"><span class="lineno">  440</span> </div>
-<div class="line"><span class="lineno">  441</span>        Strawtubes = ROOT.strawtubes(ship_geo.strawtubes.medium)</div>
-<div class="line"><span class="lineno">  442</span>        Strawtubes.SetZpositions(</div>
-<div class="line"><span class="lineno">  443</span>            ship_geo.TrackStation1.z,</div>
-<div class="line"><span class="lineno">  444</span>            ship_geo.TrackStation2.z,</div>
-<div class="line"><span class="lineno">  445</span>            ship_geo.TrackStation3.z,</div>
-<div class="line"><span class="lineno">  446</span>            ship_geo.TrackStation4.z,</div>
-<div class="line"><span class="lineno">  447</span>        )</div>
-<div class="line"><span class="lineno">  448</span>        Strawtubes.SetDeltazFrame(ship_geo.strawtubes.DeltazFrame)</div>
-<div class="line"><span class="lineno">  449</span>        Strawtubes.SetFrameLateralWidth(ship_geo.strawtubes.FrameLateralWidth)</div>
-<div class="line"><span class="lineno">  450</span>        Strawtubes.SetFrameMaterial(ship_geo.strawtubes.FrameMaterial)</div>
-<div class="line"><span class="lineno">  451</span>        Strawtubes.SetDeltazView(ship_geo.strawtubes.DeltazView)</div>
-<div class="line"><span class="lineno">  452</span>        Strawtubes.SetInnerStrawDiameter(ship_geo.strawtubes.InnerStrawDiameter)</div>
-<div class="line"><span class="lineno">  453</span>        Strawtubes.SetOuterStrawDiameter(ship_geo.strawtubes.OuterStrawDiameter)</div>
-<div class="line"><span class="lineno">  454</span>        Strawtubes.SetStrawPitch(</div>
-<div class="line"><span class="lineno">  455</span>            ship_geo.strawtubes.StrawPitch,</div>
-<div class="line"><span class="lineno">  456</span>            ship_geo.strawtubes.YLayerOffset,</div>
-<div class="line"><span class="lineno">  457</span>            ship_geo.strawtubes.YPlaneOffset,</div>
-<div class="line"><span class="lineno">  458</span>        )</div>
-<div class="line"><span class="lineno">  459</span>        Strawtubes.SetDeltazLayer(ship_geo.strawtubes.DeltazLayer)</div>
-<div class="line"><span class="lineno">  460</span>        Strawtubes.SetDeltazPlane(ship_geo.strawtubes.DeltazPlane)</div>
-<div class="line"><span class="lineno">  461</span>        Strawtubes.SetStrawsPerLayer(ship_geo.strawtubes.StrawsPerLayer)</div>
-<div class="line"><span class="lineno">  462</span>        Strawtubes.SetStereoAngle(ship_geo.strawtubes.ViewAngle)</div>
-<div class="line"><span class="lineno">  463</span>        Strawtubes.SetWireThickness(ship_geo.strawtubes.WireThickness)</div>
-<div class="line"><span class="lineno">  464</span>        Strawtubes.SetVacBox_x(ship_geo.strawtubes.VacBox_x)</div>
-<div class="line"><span class="lineno">  465</span>        Strawtubes.SetVacBox_y(ship_geo.strawtubes.VacBox_y)</div>
-<div class="line"><span class="lineno">  466</span>        Strawtubes.SetStrawLength(ship_geo.strawtubes.StrawLength)</div>
-<div class="line"><span class="lineno">  467</span> </div>
-<div class="line"><span class="lineno">  468</span>        Strawtubes.SetStrawLength12(ship_geo.strawtubes.StrawLength12)</div>
-<div class="line"><span class="lineno">  469</span>        Strawtubes.SetTr12YDim(ship_geo.strawtubes.tr12ydim)</div>
-<div class="line"><span class="lineno">  470</span>        Strawtubes.SetTr34YDim(ship_geo.strawtubes.tr34ydim)</div>
-<div class="line"><span class="lineno">  471</span>        <span class="comment"># for the digitizing step</span></div>
-<div class="line"><span class="lineno">  472</span>        Strawtubes.SetStrawResolution(</div>
-<div class="line"><span class="lineno">  473</span>            getParameter(<span class="stringliteral">&quot;strawtubes.v_drift&quot;</span>, ship_geo, latestShipGeo),</div>
-<div class="line"><span class="lineno">  474</span>            getParameter(<span class="stringliteral">&quot;strawtubes.sigma_spatial&quot;</span>, ship_geo, latestShipGeo),</div>
-<div class="line"><span class="lineno">  475</span>        )</div>
-<div class="line"><span class="lineno">  476</span>        detectorList.append(Strawtubes)</div>
-<div class="line"><span class="lineno">  477</span> </div>
-<div class="line"><span class="lineno">  478</span>    <span class="keywordflow">if</span> ship_geo.EcalOption == 1:  <span class="comment"># shashlik design TP</span></div>
-<div class="line"><span class="lineno">  479</span>        ecal, EcalZSize = posEcal(ship_geo.ecal.z, ship_geo.ecal.File)</div>
-<div class="line"><span class="lineno">  480</span>        detectorList.append(ecal)</div>
-<div class="line"><span class="lineno">  481</span> </div>
-<div class="line"><span class="lineno">  482</span>    <span class="keywordflow">if</span> ship_geo.EcalOption == 2:  <span class="comment"># splitCal with pointing information</span></div>
-<div class="line"><span class="lineno">  483</span>        SplitCal = ROOT.splitcal(<span class="stringliteral">&quot;SplitCal&quot;</span>, ROOT.kTRUE)</div>
-<div class="line"><span class="lineno">  484</span>        x = ship_geo.SplitCal</div>
-<div class="line"><span class="lineno">  485</span>        SplitCal.SetThickness(</div>
-<div class="line"><span class="lineno">  486</span>            x.ActiveECALThickness,</div>
-<div class="line"><span class="lineno">  487</span>            x.ActiveHCALThickness,</div>
-<div class="line"><span class="lineno">  488</span>            x.FilterECALThickness,</div>
-<div class="line"><span class="lineno">  489</span>            x.FilterECALThickness_first,</div>
-<div class="line"><span class="lineno">  490</span>            x.FilterHCALThickness,</div>
-<div class="line"><span class="lineno">  491</span>            x.ActiveECAL_gas_Thickness,</div>
-<div class="line"><span class="lineno">  492</span>        )</div>
-<div class="line"><span class="lineno">  493</span>        SplitCal.SetMaterial(</div>
-<div class="line"><span class="lineno">  494</span>            x.ActiveECALMaterial,</div>
-<div class="line"><span class="lineno">  495</span>            x.ActiveHCALMaterial,</div>
-<div class="line"><span class="lineno">  496</span>            x.FilterECALMaterial,</div>
-<div class="line"><span class="lineno">  497</span>            x.FilterHCALMaterial,</div>
-<div class="line"><span class="lineno">  498</span>        )</div>
-<div class="line"><span class="lineno">  499</span>        SplitCal.SetNSamplings(x.nECALSamplings, x.nHCALSamplings, x.ActiveHCAL)</div>
-<div class="line"><span class="lineno">  500</span>        SplitCal.SetZStart(x.ZStart)</div>
-<div class="line"><span class="lineno">  501</span>        SplitCal.SetXMax(x.XMax)</div>
-<div class="line"><span class="lineno">  502</span>        SplitCal.SetYMax(x.YMax)</div>
-<div class="line"><span class="lineno">  503</span>        SplitCal.SetEmpty(</div>
-<div class="line"><span class="lineno">  504</span>            x.Empty,</div>
-<div class="line"><span class="lineno">  505</span>            x.BigGap,</div>
-<div class="line"><span class="lineno">  506</span>            x.ActiveECAL_gas_gap,</div>
-<div class="line"><span class="lineno">  507</span>            x.first_precision_layer,</div>
-<div class="line"><span class="lineno">  508</span>            x.second_precision_layer,</div>
-<div class="line"><span class="lineno">  509</span>            x.third_precision_layer,</div>
-<div class="line"><span class="lineno">  510</span>            x.num_precision_layers,</div>
-<div class="line"><span class="lineno">  511</span>        )</div>
-<div class="line"><span class="lineno">  512</span>        SplitCal.SetNModules(x.NModulesInX, x.NModulesInY)</div>
-<div class="line"><span class="lineno">  513</span>        SplitCal.SetNStrips(x.NStripsPerModule)</div>
-<div class="line"><span class="lineno">  514</span>        SplitCal.SetStripSize(x.StripHalfWidth, x.StripHalfLength)</div>
-<div class="line"><span class="lineno">  515</span>        detectorList.append(SplitCal)</div>
-<div class="line"><span class="lineno">  516</span> </div>
-<div class="line"><span class="lineno">  517</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> ship_geo.HcalOption &lt; 0:</div>
-<div class="line"><span class="lineno">  518</span>        hcal, HcalZSize = posHcal(</div>
-<div class="line"><span class="lineno">  519</span>            ship_geo.hcal.z, ship_geo.hcal.File, ship_geo.HcalOption</div>
-<div class="line"><span class="lineno">  520</span>        )</div>
-<div class="line"><span class="lineno">  521</span>        <span class="keywordflow">if</span> (</div>
-<div class="line"><span class="lineno">  522</span>            ship_geo.HcalOption != 2</div>
-<div class="line"><span class="lineno">  523</span>            <span class="keywordflow">and</span> abs(ship_geo.hcal.hcalSpace - HcalZSize) &gt; 10 * u.cm</div>
-<div class="line"><span class="lineno">  524</span>        ):</div>
-<div class="line"><span class="lineno">  525</span>            print(<span class="stringliteral">&quot;mismatch between hcalsize in geo file and python configuration&quot;</span>)</div>
-<div class="line"><span class="lineno">  526</span>            print(</div>
-<div class="line"><span class="lineno">  527</span>                ship_geo.hcal.hcalSpace - HcalZSize, ship_geo.hcal.hcalSpace, HcalZSize</div>
-<div class="line"><span class="lineno">  528</span>            )</div>
-<div class="line"><span class="lineno">  529</span>        detectorList.append(hcal)</div>
-<div class="line"><span class="lineno">  530</span>    Muon = ROOT.muon(<span class="stringliteral">&quot;Muon&quot;</span>, ROOT.kTRUE)</div>
-<div class="line"><span class="lineno">  531</span>    Muon.SetZStationPositions(</div>
-<div class="line"><span class="lineno">  532</span>        ship_geo.MuonStation0.z,</div>
-<div class="line"><span class="lineno">  533</span>        ship_geo.MuonStation1.z,</div>
-<div class="line"><span class="lineno">  534</span>        ship_geo.MuonStation2.z,</div>
-<div class="line"><span class="lineno">  535</span>        ship_geo.MuonStation3.z,</div>
-<div class="line"><span class="lineno">  536</span>    )</div>
-<div class="line"><span class="lineno">  537</span>    Muon.SetZFilterPositions(</div>
-<div class="line"><span class="lineno">  538</span>        ship_geo.MuonFilter0.z, ship_geo.MuonFilter1.z, ship_geo.MuonFilter2.z</div>
-<div class="line"><span class="lineno">  539</span>    )</div>
-<div class="line"><span class="lineno">  540</span>    Muon.SetXMax(ship_geo.Muon.XMax)</div>
-<div class="line"><span class="lineno">  541</span>    Muon.SetYMax(ship_geo.Muon.YMax)</div>
-<div class="line"><span class="lineno">  542</span>    Muon.SetActiveThickness(ship_geo.Muon.ActiveThickness)</div>
-<div class="line"><span class="lineno">  543</span>    Muon.SetFilterThickness(ship_geo.Muon.FilterThickness)</div>
-<div class="line"><span class="lineno">  544</span>    detectorList.append(Muon)</div>
-<div class="line"><span class="lineno">  545</span> </div>
-<div class="line"><span class="lineno">  546</span>    upstreamTagger = ROOT.UpstreamTagger(<span class="stringliteral">&quot;UpstreamTagger&quot;</span>, ROOT.kTRUE)</div>
-<div class="line"><span class="lineno">  547</span>    upstreamTagger.SetZposition(ship_geo.UpstreamTagger.Z_Position)</div>
-<div class="line"><span class="lineno">  548</span>    detectorList.append(upstreamTagger)</div>
-<div class="line"><span class="lineno">  549</span> </div>
-<div class="line"><span class="lineno">  550</span>    timeDet = ROOT.TimeDet(<span class="stringliteral">&quot;TimeDet&quot;</span>, ROOT.kTRUE)</div>
-<div class="line"><span class="lineno">  551</span>    timeDet.SetZposition(ship_geo.TimeDet.z)</div>
-<div class="line"><span class="lineno">  552</span>    timeDet.SetBarZspacing(ship_geo.TimeDet.dzBarRow, ship_geo.TimeDet.dzBarCol)</div>
-<div class="line"><span class="lineno">  553</span>    timeDet.SetBarZ(ship_geo.TimeDet.zBar)</div>
-<div class="line"><span class="lineno">  554</span>    timeDet.SetSizeX(2 * ship_geo.TimeDet.DX)</div>
-<div class="line"><span class="lineno">  555</span>    timeDet.SetSizeY(2 * ship_geo.TimeDet.DY)</div>
-<div class="line"><span class="lineno">  556</span>    detectorList.append(timeDet)</div>
-<div class="line"><span class="lineno">  557</span> </div>
-<div class="line"><span class="lineno">  558</span>    <span class="comment"># -----   Magnetic field   -------------------------------------------</span></div>
-<div class="line"><span class="lineno">  559</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> hasattr(ship_geo.Bfield, <span class="stringliteral">&quot;fieldMap&quot;</span>):</div>
-<div class="line"><span class="lineno">  560</span>        <span class="keywordflow">if</span> ship_geo.strawDesign == 4 <span class="keywordflow">or</span> ship_geo.strawDesign == 10:</div>
-<div class="line"><span class="lineno">  561</span>            fMagField = ROOT.ShipBellField(</div>
-<div class="line"><span class="lineno">  562</span>                <span class="stringliteral">&quot;wilfried&quot;</span>,</div>
-<div class="line"><span class="lineno">  563</span>                ship_geo.Bfield.max,</div>
-<div class="line"><span class="lineno">  564</span>                ship_geo.Bfield.z,</div>
-<div class="line"><span class="lineno">  565</span>                2,</div>
-<div class="line"><span class="lineno">  566</span>                ship_geo.Yheight / 2.0 * u.m,</div>
-<div class="line"><span class="lineno">  567</span>            )</div>
-<div class="line"><span class="lineno">  568</span>        <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  569</span>            fMagField = ROOT.ShipBellField(</div>
-<div class="line"><span class="lineno">  570</span>                <span class="stringliteral">&quot;wilfried&quot;</span>,</div>
-<div class="line"><span class="lineno">  571</span>                ship_geo.Bfield.max,</div>
-<div class="line"><span class="lineno">  572</span>                ship_geo.Bfield.z,</div>
-<div class="line"><span class="lineno">  573</span>                1,</div>
-<div class="line"><span class="lineno">  574</span>                ship_geo.Yheight / 2.0 * u.m,</div>
-<div class="line"><span class="lineno">  575</span>            )</div>
-<div class="line"><span class="lineno">  576</span>        run.SetField(fMagField)</div>
-<div class="line"><span class="lineno">  577</span> </div>
-<div class="line"><span class="lineno">  578</span>    exclusionList = []</div>
-<div class="line"><span class="lineno">  579</span>    <span class="comment"># exclusionList = [&quot;Muon&quot;,&quot;Ecal&quot;,&quot;Hcal&quot;,&quot;Strawtubes&quot;,&quot;TargetTrackers&quot;,&quot;NuTauTarget&quot;,&quot;HighPrecisionTrackers&quot;,\</span></div>
-<div class="line"><span class="lineno">  580</span>    <span class="comment">#                 &quot;Veto&quot;,&quot;Magnet&quot;,&quot;MuonShield&quot;,&quot;TargetStation&quot;,&quot;NuTauMudet&quot;,&quot;EmuMagnet&quot;, &quot;TimeDet&quot;, &quot;UpstreamTagger&quot;]</span></div>
-<div class="line"><span class="lineno">  581</span> </div>
-<div class="line"><span class="lineno">  582</span>    <span class="keywordflow">for</span> x <span class="keywordflow">in</span> detectorList:</div>
-<div class="line"><span class="lineno">  583</span>        <span class="keywordflow">if</span> x.GetName() <span class="keywordflow">in</span> exclusionList:</div>
-<div class="line"><span class="lineno">  584</span>            <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  585</span>        run.AddModule(x)</div>
-<div class="line"><span class="lineno">  586</span>    <span class="comment"># return list of detector elements</span></div>
-<div class="line"><span class="lineno">  587</span>    detElements = {}</div>
-<div class="line"><span class="lineno">  588</span>    <span class="keywordflow">for</span> x <span class="keywordflow">in</span> run.GetListOfModules():</div>
-<div class="line"><span class="lineno">  589</span>        detElements[x.GetName()] = x</div>
-<div class="line"><span class="lineno">  590</span>    <span class="keywordflow">return</span> detElements</div>
+<div class="line"><span class="lineno">  423</span>    fairship = ROOT.gSystem.Getenv(<span class="stringliteral">&quot;FAIRSHIP&quot;</span>)</div>
+<div class="line"><span class="lineno">  424</span> </div>
+<div class="line"><span class="lineno">  425</span>    <span class="keywordflow">if</span> ship_geo.DecayVolumeMedium == <span class="stringliteral">&quot;helium&quot;</span>:</div>
+<div class="line"><span class="lineno">  426</span>        configure_veto(</div>
+<div class="line"><span class="lineno">  427</span>            os.path.join(fairship, <span class="stringliteral">&quot;geometry&quot;</span>, <span class="stringliteral">&quot;veto_config_helium.yaml&quot;</span>)</div>
+<div class="line"><span class="lineno">  428</span>        )  <span class="comment"># put conditions for the design</span></div>
+<div class="line"><span class="lineno">  429</span>    <span class="keywordflow">if</span> ship_geo.DecayVolumeMedium == <span class="stringliteral">&quot;vacuums&quot;</span>:</div>
+<div class="line"><span class="lineno">  430</span>        configure_veto(</div>
+<div class="line"><span class="lineno">  431</span>            os.path.join(fairship, <span class="stringliteral">&quot;geometry&quot;</span>, <span class="stringliteral">&quot;veto_config_vacuums.yaml&quot;</span>)</div>
+<div class="line"><span class="lineno">  432</span>        )  <span class="comment"># put conditions for the design</span></div>
+<div class="line"><span class="lineno">  433</span> </div>
+<div class="line"><span class="lineno">  434</span>    <span class="comment"># For SND</span></div>
+<div class="line"><span class="lineno">  435</span>    <span class="keywordflow">if</span> ship_geo.SND:</div>
+<div class="line"><span class="lineno">  436</span>        <span class="keywordflow">if</span> ship_geo.SND_design == 2:</div>
+<div class="line"><span class="lineno">  437</span>            <span class="comment"># SND design 2 -- MTC</span></div>
+<div class="line"><span class="lineno">  438</span>            configure_snd_mtc(</div>
+<div class="line"><span class="lineno">  439</span>                os.path.join(fairship, <span class="stringliteral">&quot;geometry&quot;</span>, <span class="stringliteral">&quot;MTC_config.yaml&quot;</span>),</div>
+<div class="line"><span class="lineno">  440</span>                ship_geo</div>
+<div class="line"><span class="lineno">  441</span>            )</div>
+<div class="line"><span class="lineno">  442</span>        <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  443</span>            <span class="comment"># This parameters are taken from the top geometry_config</span></div>
+<div class="line"><span class="lineno">  444</span>            <span class="comment"># snd_zTot = 3 * u.m #space allocated to Muon spectrometer</span></div>
+<div class="line"><span class="lineno">  445</span>            <span class="comment"># snd_zMudetC=ship_geo.Chamber1.z -ship_geo.chambers.Tub1length - snd_zTot/2 -31*u.cm</span></div>
+<div class="line"><span class="lineno">  446</span>            configure_snd_old(</div>
+<div class="line"><span class="lineno">  447</span>            os.path.join(fairship, <span class="stringliteral">&quot;geometry&quot;</span>, <span class="stringliteral">&quot;snd_config_old.yaml&quot;</span>),</div>
+<div class="line"><span class="lineno">  448</span>            ship_geo.tauMudet.Ztot,</div>
+<div class="line"><span class="lineno">  449</span>            ship_geo.tauMudet.zMudetC,</div>
+<div class="line"><span class="lineno">  450</span>            ship_geo.cave.floorHeightMuonShield,</div>
+<div class="line"><span class="lineno">  451</span>            )</div>
+<div class="line"><span class="lineno">  452</span> </div>
+<div class="line"><span class="lineno">  453</span> </div>
+<div class="line"><span class="lineno">  454</span>    <span class="comment"># for backward compatibility</span></div>
+<div class="line"><span class="lineno">  455</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> hasattr(ship_geo.strawtubes, <span class="stringliteral">&quot;YPlaneOffset&quot;</span>):</div>
+<div class="line"><span class="lineno">  456</span>        ship_geo.strawtubes.YLayerOffset = ship_geo.strawtubes.StrawPitch / 2.0</div>
+<div class="line"><span class="lineno">  457</span>        ship_geo.strawtubes.YPlaneOffset = ship_geo.strawtubes.StrawPitch / 4.0</div>
+<div class="line"><span class="lineno">  458</span>    <span class="keywordflow">if</span> ship_geo.strawDesign &gt; 1:</div>
+<div class="line"><span class="lineno">  459</span>        <span class="comment"># for backward compatibility</span></div>
+<div class="line"><span class="lineno">  460</span>        <span class="keywordflow">if</span> ship_geo.strawDesign == 10 <span class="keywordflow">and</span> <span class="keywordflow">not</span> hasattr(</div>
+<div class="line"><span class="lineno">  461</span>            ship_geo.strawtubes, <span class="stringliteral">&quot;DeltazFrame&quot;</span></div>
+<div class="line"><span class="lineno">  462</span>        ):</div>
+<div class="line"><span class="lineno">  463</span>            ship_geo.strawtubes.DeltazFrame = 2.5 * u.cm</div>
+<div class="line"><span class="lineno">  464</span>            ship_geo.strawtubes.FrameLateralWidth = 1.2 * u.m</div>
+<div class="line"><span class="lineno">  465</span>            ship_geo.strawtubes.FrameMaterial = <span class="stringliteral">&quot;steel&quot;</span></div>
+<div class="line"><span class="lineno">  466</span>        <span class="keywordflow">elif</span> <span class="keywordflow">not</span> hasattr(ship_geo.strawtubes, <span class="stringliteral">&quot;DeltazFrame&quot;</span>):</div>
+<div class="line"><span class="lineno">  467</span>            ship_geo.strawtubes.DeltazFrame = 10.0 * u.cm</div>
+<div class="line"><span class="lineno">  468</span>            ship_geo.strawtubes.FrameLateralWidth = 1.0 * u.cm</div>
+<div class="line"><span class="lineno">  469</span>            ship_geo.strawtubes.FrameMaterial = <span class="stringliteral">&quot;aluminium&quot;</span></div>
+<div class="line"><span class="lineno">  470</span>        ship_geo.strawtubes.medium = <span class="stringliteral">&quot;vacuums&quot;</span> <span class="keywordflow">if</span> ship_geo.DecayVolumeMedium == <span class="stringliteral">&quot;vacuums&quot;</span> <span class="keywordflow">else</span> <span class="stringliteral">&quot;air&quot;</span></div>
+<div class="line"><span class="lineno">  471</span> </div>
+<div class="line"><span class="lineno">  472</span>        Strawtubes = ROOT.strawtubes(ship_geo.strawtubes.medium)</div>
+<div class="line"><span class="lineno">  473</span>        Strawtubes.SetZpositions(</div>
+<div class="line"><span class="lineno">  474</span>            ship_geo.TrackStation1.z,</div>
+<div class="line"><span class="lineno">  475</span>            ship_geo.TrackStation2.z,</div>
+<div class="line"><span class="lineno">  476</span>            ship_geo.TrackStation3.z,</div>
+<div class="line"><span class="lineno">  477</span>            ship_geo.TrackStation4.z,</div>
+<div class="line"><span class="lineno">  478</span>        )</div>
+<div class="line"><span class="lineno">  479</span>        Strawtubes.SetDeltazFrame(ship_geo.strawtubes.DeltazFrame)</div>
+<div class="line"><span class="lineno">  480</span>        Strawtubes.SetFrameLateralWidth(ship_geo.strawtubes.FrameLateralWidth)</div>
+<div class="line"><span class="lineno">  481</span>        Strawtubes.SetFrameMaterial(ship_geo.strawtubes.FrameMaterial)</div>
+<div class="line"><span class="lineno">  482</span>        Strawtubes.SetDeltazView(ship_geo.strawtubes.DeltazView)</div>
+<div class="line"><span class="lineno">  483</span>        Strawtubes.SetInnerStrawDiameter(ship_geo.strawtubes.InnerStrawDiameter)</div>
+<div class="line"><span class="lineno">  484</span>        Strawtubes.SetOuterStrawDiameter(ship_geo.strawtubes.OuterStrawDiameter)</div>
+<div class="line"><span class="lineno">  485</span>        Strawtubes.SetStrawPitch(</div>
+<div class="line"><span class="lineno">  486</span>            ship_geo.strawtubes.StrawPitch,</div>
+<div class="line"><span class="lineno">  487</span>            ship_geo.strawtubes.YLayerOffset,</div>
+<div class="line"><span class="lineno">  488</span>            ship_geo.strawtubes.YPlaneOffset,</div>
+<div class="line"><span class="lineno">  489</span>        )</div>
+<div class="line"><span class="lineno">  490</span>        Strawtubes.SetDeltazLayer(ship_geo.strawtubes.DeltazLayer)</div>
+<div class="line"><span class="lineno">  491</span>        Strawtubes.SetDeltazPlane(ship_geo.strawtubes.DeltazPlane)</div>
+<div class="line"><span class="lineno">  492</span>        Strawtubes.SetStrawsPerLayer(ship_geo.strawtubes.StrawsPerLayer)</div>
+<div class="line"><span class="lineno">  493</span>        Strawtubes.SetStereoAngle(ship_geo.strawtubes.ViewAngle)</div>
+<div class="line"><span class="lineno">  494</span>        Strawtubes.SetWireThickness(ship_geo.strawtubes.WireThickness)</div>
+<div class="line"><span class="lineno">  495</span>        Strawtubes.SetVacBox_x(ship_geo.strawtubes.VacBox_x)</div>
+<div class="line"><span class="lineno">  496</span>        Strawtubes.SetVacBox_y(ship_geo.strawtubes.VacBox_y)</div>
+<div class="line"><span class="lineno">  497</span>        Strawtubes.SetStrawLength(ship_geo.strawtubes.StrawLength)</div>
+<div class="line"><span class="lineno">  498</span> </div>
+<div class="line"><span class="lineno">  499</span>        Strawtubes.SetStrawLength12(ship_geo.strawtubes.StrawLength12)</div>
+<div class="line"><span class="lineno">  500</span>        Strawtubes.SetTr12YDim(ship_geo.strawtubes.tr12ydim)</div>
+<div class="line"><span class="lineno">  501</span>        Strawtubes.SetTr34YDim(ship_geo.strawtubes.tr34ydim)</div>
+<div class="line"><span class="lineno">  502</span>        <span class="comment"># for the digitizing step</span></div>
+<div class="line"><span class="lineno">  503</span>        Strawtubes.SetStrawResolution(</div>
+<div class="line"><span class="lineno">  504</span>            getParameter(<span class="stringliteral">&quot;strawtubes.v_drift&quot;</span>, ship_geo, latestShipGeo),</div>
+<div class="line"><span class="lineno">  505</span>            getParameter(<span class="stringliteral">&quot;strawtubes.sigma_spatial&quot;</span>, ship_geo, latestShipGeo),</div>
+<div class="line"><span class="lineno">  506</span>        )</div>
+<div class="line"><span class="lineno">  507</span>        detectorList.append(Strawtubes)</div>
+<div class="line"><span class="lineno">  508</span> </div>
+<div class="line"><span class="lineno">  509</span>    <span class="keywordflow">if</span> ship_geo.EcalOption == 1:  <span class="comment"># shashlik design TP</span></div>
+<div class="line"><span class="lineno">  510</span>        ecal, EcalZSize = posEcal(ship_geo.ecal.z, ship_geo.ecal.File)</div>
+<div class="line"><span class="lineno">  511</span>        detectorList.append(ecal)</div>
+<div class="line"><span class="lineno">  512</span> </div>
+<div class="line"><span class="lineno">  513</span>    <span class="keywordflow">if</span> ship_geo.EcalOption == 2:  <span class="comment"># splitCal with pointing information</span></div>
+<div class="line"><span class="lineno">  514</span>        SplitCal = ROOT.splitcal(<span class="stringliteral">&quot;SplitCal&quot;</span>, ROOT.kTRUE)</div>
+<div class="line"><span class="lineno">  515</span>        x = ship_geo.SplitCal</div>
+<div class="line"><span class="lineno">  516</span>        SplitCal.SetThickness(</div>
+<div class="line"><span class="lineno">  517</span>            x.ActiveECALThickness,</div>
+<div class="line"><span class="lineno">  518</span>            x.ActiveHCALThickness,</div>
+<div class="line"><span class="lineno">  519</span>            x.FilterECALThickness,</div>
+<div class="line"><span class="lineno">  520</span>            x.FilterECALThickness_first,</div>
+<div class="line"><span class="lineno">  521</span>            x.FilterHCALThickness,</div>
+<div class="line"><span class="lineno">  522</span>            x.ActiveECAL_gas_Thickness,</div>
+<div class="line"><span class="lineno">  523</span>        )</div>
+<div class="line"><span class="lineno">  524</span>        SplitCal.SetMaterial(</div>
+<div class="line"><span class="lineno">  525</span>            x.ActiveECALMaterial,</div>
+<div class="line"><span class="lineno">  526</span>            x.ActiveHCALMaterial,</div>
+<div class="line"><span class="lineno">  527</span>            x.FilterECALMaterial,</div>
+<div class="line"><span class="lineno">  528</span>            x.FilterHCALMaterial,</div>
+<div class="line"><span class="lineno">  529</span>        )</div>
+<div class="line"><span class="lineno">  530</span>        SplitCal.SetNSamplings(x.nECALSamplings, x.nHCALSamplings, x.ActiveHCAL)</div>
+<div class="line"><span class="lineno">  531</span>        SplitCal.SetZStart(x.ZStart)</div>
+<div class="line"><span class="lineno">  532</span>        SplitCal.SetXMax(x.XMax)</div>
+<div class="line"><span class="lineno">  533</span>        SplitCal.SetYMax(x.YMax)</div>
+<div class="line"><span class="lineno">  534</span>        SplitCal.SetEmpty(</div>
+<div class="line"><span class="lineno">  535</span>            x.Empty,</div>
+<div class="line"><span class="lineno">  536</span>            x.BigGap,</div>
+<div class="line"><span class="lineno">  537</span>            x.ActiveECAL_gas_gap,</div>
+<div class="line"><span class="lineno">  538</span>            x.first_precision_layer,</div>
+<div class="line"><span class="lineno">  539</span>            x.second_precision_layer,</div>
+<div class="line"><span class="lineno">  540</span>            x.third_precision_layer,</div>
+<div class="line"><span class="lineno">  541</span>            x.num_precision_layers,</div>
+<div class="line"><span class="lineno">  542</span>        )</div>
+<div class="line"><span class="lineno">  543</span>        SplitCal.SetNModules(x.NModulesInX, x.NModulesInY)</div>
+<div class="line"><span class="lineno">  544</span>        SplitCal.SetNStrips(x.NStripsPerModule)</div>
+<div class="line"><span class="lineno">  545</span>        SplitCal.SetStripSize(x.StripHalfWidth, x.StripHalfLength)</div>
+<div class="line"><span class="lineno">  546</span>        detectorList.append(SplitCal)</div>
+<div class="line"><span class="lineno">  547</span> </div>
+<div class="line"><span class="lineno">  548</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> ship_geo.HcalOption &lt; 0:</div>
+<div class="line"><span class="lineno">  549</span>        hcal, HcalZSize = posHcal(</div>
+<div class="line"><span class="lineno">  550</span>            ship_geo.hcal.z, ship_geo.hcal.File, ship_geo.HcalOption</div>
+<div class="line"><span class="lineno">  551</span>        )</div>
+<div class="line"><span class="lineno">  552</span>        <span class="keywordflow">if</span> (</div>
+<div class="line"><span class="lineno">  553</span>            ship_geo.HcalOption != 2</div>
+<div class="line"><span class="lineno">  554</span>            <span class="keywordflow">and</span> abs(ship_geo.hcal.hcalSpace - HcalZSize) &gt; 10 * u.cm</div>
+<div class="line"><span class="lineno">  555</span>        ):</div>
+<div class="line"><span class="lineno">  556</span>            print(<span class="stringliteral">&quot;mismatch between hcalsize in geo file and python configuration&quot;</span>)</div>
+<div class="line"><span class="lineno">  557</span>            print(</div>
+<div class="line"><span class="lineno">  558</span>                ship_geo.hcal.hcalSpace - HcalZSize, ship_geo.hcal.hcalSpace, HcalZSize</div>
+<div class="line"><span class="lineno">  559</span>            )</div>
+<div class="line"><span class="lineno">  560</span>        detectorList.append(hcal)</div>
+<div class="line"><span class="lineno">  561</span>    Muon = ROOT.muon(<span class="stringliteral">&quot;Muon&quot;</span>, ROOT.kTRUE)</div>
+<div class="line"><span class="lineno">  562</span>    Muon.SetZStationPositions(</div>
+<div class="line"><span class="lineno">  563</span>        ship_geo.MuonStation0.z,</div>
+<div class="line"><span class="lineno">  564</span>        ship_geo.MuonStation1.z,</div>
+<div class="line"><span class="lineno">  565</span>        ship_geo.MuonStation2.z,</div>
+<div class="line"><span class="lineno">  566</span>        ship_geo.MuonStation3.z,</div>
+<div class="line"><span class="lineno">  567</span>    )</div>
+<div class="line"><span class="lineno">  568</span>    Muon.SetZFilterPositions(</div>
+<div class="line"><span class="lineno">  569</span>        ship_geo.MuonFilter0.z, ship_geo.MuonFilter1.z, ship_geo.MuonFilter2.z</div>
+<div class="line"><span class="lineno">  570</span>    )</div>
+<div class="line"><span class="lineno">  571</span>    Muon.SetXMax(ship_geo.Muon.XMax)</div>
+<div class="line"><span class="lineno">  572</span>    Muon.SetYMax(ship_geo.Muon.YMax)</div>
+<div class="line"><span class="lineno">  573</span>    Muon.SetActiveThickness(ship_geo.Muon.ActiveThickness)</div>
+<div class="line"><span class="lineno">  574</span>    Muon.SetFilterThickness(ship_geo.Muon.FilterThickness)</div>
+<div class="line"><span class="lineno">  575</span>    detectorList.append(Muon)</div>
+<div class="line"><span class="lineno">  576</span> </div>
+<div class="line"><span class="lineno">  577</span>    upstreamTagger = ROOT.UpstreamTagger(<span class="stringliteral">&quot;UpstreamTagger&quot;</span>, ROOT.kTRUE)</div>
+<div class="line"><span class="lineno">  578</span>    upstreamTagger.SetZposition(ship_geo.UpstreamTagger.Z_Position)</div>
+<div class="line"><span class="lineno">  579</span>    detectorList.append(upstreamTagger)</div>
+<div class="line"><span class="lineno">  580</span> </div>
+<div class="line"><span class="lineno">  581</span>    timeDet = ROOT.TimeDet(<span class="stringliteral">&quot;TimeDet&quot;</span>, ROOT.kTRUE)</div>
+<div class="line"><span class="lineno">  582</span>    timeDet.SetZposition(ship_geo.TimeDet.z)</div>
+<div class="line"><span class="lineno">  583</span>    timeDet.SetBarZspacing(ship_geo.TimeDet.dzBarRow, ship_geo.TimeDet.dzBarCol)</div>
+<div class="line"><span class="lineno">  584</span>    timeDet.SetBarZ(ship_geo.TimeDet.zBar)</div>
+<div class="line"><span class="lineno">  585</span>    timeDet.SetSizeX(2 * ship_geo.TimeDet.DX)</div>
+<div class="line"><span class="lineno">  586</span>    timeDet.SetSizeY(2 * ship_geo.TimeDet.DY)</div>
+<div class="line"><span class="lineno">  587</span>    detectorList.append(timeDet)</div>
+<div class="line"><span class="lineno">  588</span> </div>
+<div class="line"><span class="lineno">  589</span>    <span class="comment"># -----   Magnetic field   -------------------------------------------</span></div>
+<div class="line"><span class="lineno">  590</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> hasattr(ship_geo.Bfield, <span class="stringliteral">&quot;fieldMap&quot;</span>):</div>
+<div class="line"><span class="lineno">  591</span>        <span class="keywordflow">if</span> ship_geo.strawDesign == 4 <span class="keywordflow">or</span> ship_geo.strawDesign == 10:</div>
+<div class="line"><span class="lineno">  592</span>            fMagField = ROOT.ShipBellField(</div>
+<div class="line"><span class="lineno">  593</span>                <span class="stringliteral">&quot;wilfried&quot;</span>,</div>
+<div class="line"><span class="lineno">  594</span>                ship_geo.Bfield.max,</div>
+<div class="line"><span class="lineno">  595</span>                ship_geo.Bfield.z,</div>
+<div class="line"><span class="lineno">  596</span>                2,</div>
+<div class="line"><span class="lineno">  597</span>                ship_geo.Yheight / 2.0 * u.m,</div>
+<div class="line"><span class="lineno">  598</span>            )</div>
+<div class="line"><span class="lineno">  599</span>        <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  600</span>            fMagField = ROOT.ShipBellField(</div>
+<div class="line"><span class="lineno">  601</span>                <span class="stringliteral">&quot;wilfried&quot;</span>,</div>
+<div class="line"><span class="lineno">  602</span>                ship_geo.Bfield.max,</div>
+<div class="line"><span class="lineno">  603</span>                ship_geo.Bfield.z,</div>
+<div class="line"><span class="lineno">  604</span>                1,</div>
+<div class="line"><span class="lineno">  605</span>                ship_geo.Yheight / 2.0 * u.m,</div>
+<div class="line"><span class="lineno">  606</span>            )</div>
+<div class="line"><span class="lineno">  607</span>        run.SetField(fMagField)</div>
+<div class="line"><span class="lineno">  608</span> </div>
+<div class="line"><span class="lineno">  609</span>    exclusionList = []</div>
+<div class="line"><span class="lineno">  610</span>    <span class="comment"># exclusionList = [&quot;Muon&quot;,&quot;Ecal&quot;,&quot;Hcal&quot;,&quot;Strawtubes&quot;,&quot;TargetTrackers&quot;,&quot;NuTauTarget&quot;,&quot;HighPrecisionTrackers&quot;,\</span></div>
+<div class="line"><span class="lineno">  611</span>    <span class="comment">#                 &quot;Veto&quot;,&quot;Magnet&quot;,&quot;MuonShield&quot;,&quot;TargetStation&quot;,&quot;NuTauMudet&quot;,&quot;EmuMagnet&quot;, &quot;TimeDet&quot;, &quot;UpstreamTagger&quot;]</span></div>
+<div class="line"><span class="lineno">  612</span> </div>
+<div class="line"><span class="lineno">  613</span>    <span class="keywordflow">for</span> x <span class="keywordflow">in</span> detectorList:</div>
+<div class="line"><span class="lineno">  614</span>        <span class="keywordflow">if</span> x.GetName() <span class="keywordflow">in</span> exclusionList:</div>
+<div class="line"><span class="lineno">  615</span>            <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  616</span>        run.AddModule(x)</div>
+<div class="line"><span class="lineno">  617</span>    <span class="comment"># return list of detector elements</span></div>
+<div class="line"><span class="lineno">  618</span>    detElements = {}</div>
+<div class="line"><span class="lineno">  619</span>    <span class="keywordflow">for</span> x <span class="keywordflow">in</span> run.GetListOfModules():</div>
+<div class="line"><span class="lineno">  620</span>        detElements[x.GetName()] = x</div>
+<div class="line"><span class="lineno">  621</span>    <span class="keywordflow">return</span> detElements</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a697153d510ce945f29314cd583b91efd" name="a697153d510ce945f29314cd583b91efd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a697153d510ce945f29314cd583b91efd">&#9670;&#160;</a></span>configure_snd_mtc()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">shipDet_conf.configure_snd_mtc </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>yaml_file</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>ship_geo</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="shipDet__conf_8py_source.html#l00244">244</a> of file <a class="el" href="shipDet__conf_8py_source.html">shipDet_conf.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  244</span><span class="keyword">def </span>configure_snd_mtc(yaml_file, ship_geo):</div>
+<div class="line"><span class="lineno">  245</span>    <span class="keyword">with</span> open(yaml_file) <span class="keyword">as</span> file:</div>
+<div class="line"><span class="lineno">  246</span>        config = yaml.safe_load(file)</div>
+<div class="line"><span class="lineno">  247</span> </div>
+<div class="line"><span class="lineno">  248</span>    mtc_geo = AttrDict(config[<span class="stringliteral">&#39;MTC&#39;</span>])</div>
+<div class="line"><span class="lineno">  249</span>    <span class="comment"># Initialize detector</span></div>
+<div class="line"><span class="lineno">  250</span>    <span class="keywordflow">if</span> mtc_geo.zPosition == <span class="stringliteral">&quot;auto&quot;</span>:</div>
+<div class="line"><span class="lineno">  251</span>        <span class="comment"># Get the the center of the *last* magnet</span></div>
+<div class="line"><span class="lineno">  252</span>        mtc_geo.zPosition = find_shield_center(ship_geo)[2][-1]</div>
+<div class="line"><span class="lineno">  253</span>        print(<span class="stringliteral">&quot;MTC zPosition set to &quot;</span>, mtc_geo.zPosition)</div>
+<div class="line"><span class="lineno">  254</span>    mtc = ROOT.MTCDetector(<span class="stringliteral">&quot;MTC&quot;</span>, ROOT.kTRUE)</div>
+<div class="line"><span class="lineno">  255</span>    mtc.SetMTCParameters(</div>
+<div class="line"><span class="lineno">  256</span>        mtc_geo.width,</div>
+<div class="line"><span class="lineno">  257</span>        mtc_geo.height,</div>
+<div class="line"><span class="lineno">  258</span>        mtc_geo.ironThick,</div>
+<div class="line"><span class="lineno">  259</span>        mtc_geo.sciFiThick,</div>
+<div class="line"><span class="lineno">  260</span>        mtc_geo.scintThick,</div>
+<div class="line"><span class="lineno">  261</span>        mtc_geo.nLayers,</div>
+<div class="line"><span class="lineno">  262</span>        mtc_geo.zPosition,</div>
+<div class="line"><span class="lineno">  263</span>        mtc_geo.fieldY</div>
+<div class="line"><span class="lineno">  264</span>    )</div>
+<div class="line"><span class="lineno">  265</span>    detectorList.append(mtc)</div>
+<div class="line"><span class="lineno">  266</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -503,155 +565,155 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipDet__conf_8py_source.html#l00092">92</a> of file <a class="el" href="shipDet__conf_8py_source.html">shipDet_conf.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   95</span>                      cave_floorHeightMuonShield):</div>
-<div class="line"><span class="lineno">   96</span> </div>
-<div class="line"><span class="lineno">   97</span>    <span class="keyword">with</span> open(yaml_file) <span class="keyword">as</span> file:</div>
-<div class="line"><span class="lineno">   98</span>        config = yaml.safe_load(file)</div>
-<div class="line"><span class="lineno">   99</span> </div>
-<div class="line"><span class="lineno">  100</span>    tauMu_geo = AttrDict(config[<span class="stringliteral">&#39;tauMu&#39;</span>])</div>
-<div class="line"><span class="lineno">  101</span>    nuTarget_geo = AttrDict(config[<span class="stringliteral">&#39;nuTarget&#39;</span>])</div>
-<div class="line"><span class="lineno">  102</span>    nuTauTT_geo = AttrDict(config[<span class="stringliteral">&#39;nuTauTT&#39;</span>])</div>
-<div class="line"><span class="lineno">  103</span> </div>
-<div class="line"><span class="lineno">  104</span>    <span class="comment">#specific parameters</span></div>
-<div class="line"><span class="lineno">  105</span>    <span class="comment">#tauMu det</span></div>
-<div class="line"><span class="lineno">  106</span>    snd_tauMu_Xtot = tauMu_geo.XRpc + 2*tauMu_geo.XRyoke</div>
-<div class="line"><span class="lineno">  107</span>    snd_tauMu_Ytot = tauMu_geo.YRpc + 2*(tauMu_geo.CoilH+tauMu_geo.YRyoke)</div>
-<div class="line"><span class="lineno">  108</span>    <span class="comment"># nu Target Tracker</span></div>
-<div class="line"><span class="lineno">  109</span>    snd_nuTauTT_TTX = nuTauTT_geo.n_hor_planes * nuTauTT_geo.scifimat_width + 2.9 * u.cm  <span class="comment"># endpieces (~2.9cm from previous geom)</span></div>
-<div class="line"><span class="lineno">  110</span>    snd_nuTauTT_TTY = nuTauTT_geo.n_vert_planes * nuTauTT_geo.scifimat_width + 2.9 <span class="comment"># u.cm  # endpieces (~2.9cm from previous geom)</span></div>
-<div class="line"><span class="lineno">  111</span> </div>
-<div class="line"><span class="lineno">  112</span>    snd_nuTauTT_TTZ = 2 * nuTauTT_geo.support_z + 2 * nuTauTT_geo.scifimat_z + nuTauTT_geo.honeycomb_z</div>
-<div class="line"><span class="lineno">  113</span> </div>
-<div class="line"><span class="lineno">  114</span>    <span class="comment"># nuTau target</span></div>
-<div class="line"><span class="lineno">  115</span>    snd_nuTarget_BrZ = nuTarget_geo.n_plates * nuTarget_geo.LeadTh + (nuTarget_geo.n_plates+1) * (2* nuTarget_geo.EmTh + nuTarget_geo.PBTh) + nuTarget_geo.BrPackZ</div>
-<div class="line"><span class="lineno">  116</span>    snd_nuTarget_BrX = nuTarget_geo.BrPackX + nuTarget_geo.EmX</div>
-<div class="line"><span class="lineno">  117</span>    snd_nuTarget_BrY = nuTarget_geo.BrPackY + nuTarget_geo.EmY</div>
-<div class="line"><span class="lineno">  118</span> </div>
-<div class="line"><span class="lineno">  119</span>    snd_nuTarget_zdim = nuTarget_geo.wall* snd_nuTarget_BrZ + (nuTarget_geo.wall+1)*snd_nuTauTT_TTZ</div>
-<div class="line"><span class="lineno">  120</span>    snd_nuTarget_xdim = snd_nuTauTT_TTX</div>
-<div class="line"><span class="lineno">  121</span>    snd_nuTarget_ydim = snd_nuTauTT_TTY</div>
-<div class="line"><span class="lineno">  122</span> </div>
-<div class="line"><span class="lineno">  123</span>    snd_nuTarget_zC = snd_tauMu_zMudetC - snd_tauMu_zTot/2 - 20*u.cm - snd_nuTarget_zdim/2.</div>
-<div class="line"><span class="lineno">  124</span> </div>
-<div class="line"><span class="lineno">  125</span>    snd_nuTarget_PillarY = 10*u.m - snd_nuTarget_ydim/2 -nuTarget_geo.BaseY- 0.1*u.mm - cave_floorHeightMuonShield</div>
-<div class="line"><span class="lineno">  126</span> </div>
-<div class="line"><span class="lineno">  127</span>    taumuondetector = ROOT.NuTauMudet(</div>
-<div class="line"><span class="lineno">  128</span>        <span class="stringliteral">&quot;NuTauMudet&quot;</span>, snd_tauMu_zMudetC, ROOT.kTRUE</div>
-<div class="line"><span class="lineno">  129</span>    )</div>
-<div class="line"><span class="lineno">  130</span>    taumuondetector.SetDesign(4)</div>
-<div class="line"><span class="lineno">  131</span>    taumuondetector.SetTotDimensions(</div>
-<div class="line"><span class="lineno">  132</span>        snd_tauMu_Xtot, snd_tauMu_Ytot, snd_tauMu_zTot</div>
-<div class="line"><span class="lineno">  133</span>    )</div>
-<div class="line"><span class="lineno">  134</span>    taumuondetector.SetRpcDimensions(</div>
-<div class="line"><span class="lineno">  135</span>        tauMu_geo.XRpc,</div>
-<div class="line"><span class="lineno">  136</span>        tauMu_geo.YRpc,</div>
-<div class="line"><span class="lineno">  137</span>        tauMu_geo.ZRpc,</div>
-<div class="line"><span class="lineno">  138</span>    )</div>
-<div class="line"><span class="lineno">  139</span>    taumuondetector.SetGapMiddle(tauMu_geo.GapM)</div>
-<div class="line"><span class="lineno">  140</span>    taumuondetector.SetMagneticField(tauMu_geo.B)</div>
-<div class="line"><span class="lineno">  141</span>    taumuondetector.SetReturnYokeDimensions(</div>
-<div class="line"><span class="lineno">  142</span>        tauMu_geo.XRyoke,</div>
-<div class="line"><span class="lineno">  143</span>        tauMu_geo.YRyoke,</div>
-<div class="line"><span class="lineno">  144</span>        snd_tauMu_zTot,</div>
-<div class="line"><span class="lineno">  145</span>    )</div>
-<div class="line"><span class="lineno">  146</span>    taumuondetector.SetCoilParameters(</div>
-<div class="line"><span class="lineno">  147</span>        tauMu_geo.CoilH, tauMu_geo.CoilW, 1, 0.0</div>
-<div class="line"><span class="lineno">  148</span>    )  <span class="comment"># for now, only containers</span></div>
-<div class="line"><span class="lineno">  149</span>    detectorList.append(taumuondetector)</div>
-<div class="line"><span class="lineno">  150</span> </div>
+<p class="definition">Definition at line <a class="el" href="shipDet__conf_8py_source.html#l00093">93</a> of file <a class="el" href="shipDet__conf_8py_source.html">shipDet_conf.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   96</span>                      cave_floorHeightMuonShield):</div>
+<div class="line"><span class="lineno">   97</span> </div>
+<div class="line"><span class="lineno">   98</span>    <span class="keyword">with</span> open(yaml_file) <span class="keyword">as</span> file:</div>
+<div class="line"><span class="lineno">   99</span>        config = yaml.safe_load(file)</div>
+<div class="line"><span class="lineno">  100</span> </div>
+<div class="line"><span class="lineno">  101</span>    tauMu_geo = AttrDict(config[<span class="stringliteral">&#39;tauMu&#39;</span>])</div>
+<div class="line"><span class="lineno">  102</span>    nuTarget_geo = AttrDict(config[<span class="stringliteral">&#39;nuTarget&#39;</span>])</div>
+<div class="line"><span class="lineno">  103</span>    nuTauTT_geo = AttrDict(config[<span class="stringliteral">&#39;nuTauTT&#39;</span>])</div>
+<div class="line"><span class="lineno">  104</span> </div>
+<div class="line"><span class="lineno">  105</span>    <span class="comment">#specific parameters</span></div>
+<div class="line"><span class="lineno">  106</span>    <span class="comment">#tauMu det</span></div>
+<div class="line"><span class="lineno">  107</span>    snd_tauMu_Xtot = tauMu_geo.XRpc + 2*tauMu_geo.XRyoke</div>
+<div class="line"><span class="lineno">  108</span>    snd_tauMu_Ytot = tauMu_geo.YRpc + 2*(tauMu_geo.CoilH+tauMu_geo.YRyoke)</div>
+<div class="line"><span class="lineno">  109</span>    <span class="comment"># nu Target Tracker</span></div>
+<div class="line"><span class="lineno">  110</span>    snd_nuTauTT_TTX = nuTauTT_geo.n_hor_planes * nuTauTT_geo.scifimat_width + 2.9 * u.cm  <span class="comment"># endpieces (~2.9cm from previous geom)</span></div>
+<div class="line"><span class="lineno">  111</span>    snd_nuTauTT_TTY = nuTauTT_geo.n_vert_planes * nuTauTT_geo.scifimat_width + 2.9 <span class="comment"># u.cm  # endpieces (~2.9cm from previous geom)</span></div>
+<div class="line"><span class="lineno">  112</span> </div>
+<div class="line"><span class="lineno">  113</span>    snd_nuTauTT_TTZ = 2 * nuTauTT_geo.support_z + 2 * nuTauTT_geo.scifimat_z + nuTauTT_geo.honeycomb_z</div>
+<div class="line"><span class="lineno">  114</span> </div>
+<div class="line"><span class="lineno">  115</span>    <span class="comment"># nuTau target</span></div>
+<div class="line"><span class="lineno">  116</span>    snd_nuTarget_BrZ = nuTarget_geo.n_plates * nuTarget_geo.LeadTh + (nuTarget_geo.n_plates+1) * (2* nuTarget_geo.EmTh + nuTarget_geo.PBTh) + nuTarget_geo.BrPackZ</div>
+<div class="line"><span class="lineno">  117</span>    snd_nuTarget_BrX = nuTarget_geo.BrPackX + nuTarget_geo.EmX</div>
+<div class="line"><span class="lineno">  118</span>    snd_nuTarget_BrY = nuTarget_geo.BrPackY + nuTarget_geo.EmY</div>
+<div class="line"><span class="lineno">  119</span> </div>
+<div class="line"><span class="lineno">  120</span>    snd_nuTarget_zdim = nuTarget_geo.wall* snd_nuTarget_BrZ + (nuTarget_geo.wall+1)*snd_nuTauTT_TTZ</div>
+<div class="line"><span class="lineno">  121</span>    snd_nuTarget_xdim = snd_nuTauTT_TTX</div>
+<div class="line"><span class="lineno">  122</span>    snd_nuTarget_ydim = snd_nuTauTT_TTY</div>
+<div class="line"><span class="lineno">  123</span> </div>
+<div class="line"><span class="lineno">  124</span>    snd_nuTarget_zC = snd_tauMu_zMudetC - snd_tauMu_zTot/2 - 20*u.cm - snd_nuTarget_zdim/2.</div>
+<div class="line"><span class="lineno">  125</span> </div>
+<div class="line"><span class="lineno">  126</span>    snd_nuTarget_PillarY = 10*u.m - snd_nuTarget_ydim/2 -nuTarget_geo.BaseY- 0.1*u.mm - cave_floorHeightMuonShield</div>
+<div class="line"><span class="lineno">  127</span> </div>
+<div class="line"><span class="lineno">  128</span>    taumuondetector = ROOT.NuTauMudet(</div>
+<div class="line"><span class="lineno">  129</span>        <span class="stringliteral">&quot;NuTauMudet&quot;</span>, snd_tauMu_zMudetC, ROOT.kTRUE</div>
+<div class="line"><span class="lineno">  130</span>    )</div>
+<div class="line"><span class="lineno">  131</span>    taumuondetector.SetDesign(4)</div>
+<div class="line"><span class="lineno">  132</span>    taumuondetector.SetTotDimensions(</div>
+<div class="line"><span class="lineno">  133</span>        snd_tauMu_Xtot, snd_tauMu_Ytot, snd_tauMu_zTot</div>
+<div class="line"><span class="lineno">  134</span>    )</div>
+<div class="line"><span class="lineno">  135</span>    taumuondetector.SetRpcDimensions(</div>
+<div class="line"><span class="lineno">  136</span>        tauMu_geo.XRpc,</div>
+<div class="line"><span class="lineno">  137</span>        tauMu_geo.YRpc,</div>
+<div class="line"><span class="lineno">  138</span>        tauMu_geo.ZRpc,</div>
+<div class="line"><span class="lineno">  139</span>    )</div>
+<div class="line"><span class="lineno">  140</span>    taumuondetector.SetGapMiddle(tauMu_geo.GapM)</div>
+<div class="line"><span class="lineno">  141</span>    taumuondetector.SetMagneticField(tauMu_geo.B)</div>
+<div class="line"><span class="lineno">  142</span>    taumuondetector.SetReturnYokeDimensions(</div>
+<div class="line"><span class="lineno">  143</span>        tauMu_geo.XRyoke,</div>
+<div class="line"><span class="lineno">  144</span>        tauMu_geo.YRyoke,</div>
+<div class="line"><span class="lineno">  145</span>        snd_tauMu_zTot,</div>
+<div class="line"><span class="lineno">  146</span>    )</div>
+<div class="line"><span class="lineno">  147</span>    taumuondetector.SetCoilParameters(</div>
+<div class="line"><span class="lineno">  148</span>        tauMu_geo.CoilH, tauMu_geo.CoilW, 1, 0.0</div>
+<div class="line"><span class="lineno">  149</span>    )  <span class="comment"># for now, only containers</span></div>
+<div class="line"><span class="lineno">  150</span>    detectorList.append(taumuondetector)</div>
 <div class="line"><span class="lineno">  151</span> </div>
-<div class="line"><span class="lineno">  152</span>    NuTauTarget = ROOT.Target(</div>
-<div class="line"><span class="lineno">  153</span>        <span class="stringliteral">&quot;NuTauTarget&quot;</span>, nuTarget_geo.Ydist, ROOT.kTRUE</div>
-<div class="line"><span class="lineno">  154</span>    )</div>
-<div class="line"><span class="lineno">  155</span>    NuTauTarget.MakeNuTargetPassive(nuTarget_geo.nuTargetPassive)</div>
-<div class="line"><span class="lineno">  156</span>    NuTauTarget.MergeTopBot(nuTarget_geo.SingleEmFilm)</div>
-<div class="line"><span class="lineno">  157</span>    NuTauTarget.SetDetectorDesign(nuTarget_geo.Design)</div>
-<div class="line"><span class="lineno">  158</span>    NuTauTarget.SetCenterZ(snd_nuTarget_zC)</div>
-<div class="line"><span class="lineno">  159</span>    NuTauTarget.SetNumberBricks(</div>
-<div class="line"><span class="lineno">  160</span>        nuTarget_geo.col,</div>
-<div class="line"><span class="lineno">  161</span>        nuTarget_geo.row,</div>
-<div class="line"><span class="lineno">  162</span>        nuTarget_geo.wall,</div>
-<div class="line"><span class="lineno">  163</span>    )</div>
-<div class="line"><span class="lineno">  164</span>    NuTauTarget.SetDetectorDimension(</div>
-<div class="line"><span class="lineno">  165</span>        snd_nuTarget_xdim,</div>
-<div class="line"><span class="lineno">  166</span>        snd_nuTarget_ydim,</div>
-<div class="line"><span class="lineno">  167</span>        snd_nuTarget_zdim,</div>
-<div class="line"><span class="lineno">  168</span>    )</div>
-<div class="line"><span class="lineno">  169</span>    NuTauTarget.SetTargetWallDimension(</div>
-<div class="line"><span class="lineno">  170</span>        nuTarget_geo.col*snd_nuTarget_BrX,</div>
-<div class="line"><span class="lineno">  171</span>        nuTarget_geo.row*snd_nuTarget_BrY+(nuTarget_geo.row-1)*nuTarget_geo.Ydist,</div>
-<div class="line"><span class="lineno">  172</span>        snd_nuTarget_BrZ</div>
-<div class="line"><span class="lineno">  173</span>    )</div>
-<div class="line"><span class="lineno">  174</span>    NuTauTarget.SetEmulsionParam(</div>
-<div class="line"><span class="lineno">  175</span>        nuTarget_geo.EmTh,</div>
-<div class="line"><span class="lineno">  176</span>        nuTarget_geo.EmX,</div>
-<div class="line"><span class="lineno">  177</span>        nuTarget_geo.EmY,</div>
-<div class="line"><span class="lineno">  178</span>        nuTarget_geo.PBTh,</div>
-<div class="line"><span class="lineno">  179</span>        2* nuTarget_geo.EmTh + nuTarget_geo.PBTh,</div>
-<div class="line"><span class="lineno">  180</span>        nuTarget_geo.LeadTh,</div>
-<div class="line"><span class="lineno">  181</span>        nuTarget_geo.LeadTh +2* nuTarget_geo.EmTh + nuTarget_geo.PBTh,</div>
-<div class="line"><span class="lineno">  182</span>    )</div>
-<div class="line"><span class="lineno">  183</span>    NuTauTarget.SetBrickParam(</div>
-<div class="line"><span class="lineno">  184</span>        snd_nuTarget_BrX,</div>
-<div class="line"><span class="lineno">  185</span>        snd_nuTarget_BrY,</div>
-<div class="line"><span class="lineno">  186</span>        snd_nuTarget_BrZ,</div>
-<div class="line"><span class="lineno">  187</span>        nuTarget_geo.BrPackX,</div>
-<div class="line"><span class="lineno">  188</span>        nuTarget_geo.BrPackY,</div>
-<div class="line"><span class="lineno">  189</span>        nuTarget_geo.BrPackZ,</div>
-<div class="line"><span class="lineno">  190</span>        nuTarget_geo.n_plates,</div>
-<div class="line"><span class="lineno">  191</span>    )</div>
-<div class="line"><span class="lineno">  192</span>    NuTauTarget.SetCESParam(</div>
-<div class="line"><span class="lineno">  193</span>        nuTarget_geo.RohG,</div>
-<div class="line"><span class="lineno">  194</span>        nuTarget_geo.LayerCESW,</div>
-<div class="line"><span class="lineno">  195</span>        nuTarget_geo.CESW,</div>
-<div class="line"><span class="lineno">  196</span>        nuTarget_geo.CESPack,</div>
-<div class="line"><span class="lineno">  197</span>    )</div>
-<div class="line"><span class="lineno">  198</span>    NuTauTarget.SetCellParam(snd_nuTarget_BrZ)</div>
-<div class="line"><span class="lineno">  199</span>    NuTauTarget.SetPillarDimension(</div>
-<div class="line"><span class="lineno">  200</span>        nuTarget_geo.PillarX,</div>
-<div class="line"><span class="lineno">  201</span>        snd_nuTarget_PillarY,</div>
-<div class="line"><span class="lineno">  202</span>        nuTarget_geo.PillarZ</div>
-<div class="line"><span class="lineno">  203</span>    )</div>
-<div class="line"><span class="lineno">  204</span>    NuTauTarget.SetBaseDimension(</div>
-<div class="line"><span class="lineno">  205</span>        snd_nuTarget_xdim+20,</div>
-<div class="line"><span class="lineno">  206</span>        nuTarget_geo.BaseY,</div>
-<div class="line"><span class="lineno">  207</span>        snd_nuTarget_zdim+10</div>
-<div class="line"><span class="lineno">  208</span>    )</div>
-<div class="line"><span class="lineno">  209</span> </div>
-<div class="line"><span class="lineno">  210</span>    <span class="comment"># Target Tracker</span></div>
-<div class="line"><span class="lineno">  211</span>    NuTauTT = ROOT.TargetTracker(</div>
-<div class="line"><span class="lineno">  212</span>        <span class="stringliteral">&quot;TargetTrackers&quot;</span>,</div>
-<div class="line"><span class="lineno">  213</span>        snd_nuTauTT_TTX,</div>
-<div class="line"><span class="lineno">  214</span>        snd_nuTauTT_TTY,</div>
-<div class="line"><span class="lineno">  215</span>        snd_nuTauTT_TTZ,</div>
-<div class="line"><span class="lineno">  216</span>        ROOT.kTRUE,</div>
-<div class="line"><span class="lineno">  217</span>    )</div>
-<div class="line"><span class="lineno">  218</span>    NuTauTT.SetDesign(nuTauTT_geo.design)</div>
-<div class="line"><span class="lineno">  219</span>    NuTauTT.SetSciFiParam(</div>
-<div class="line"><span class="lineno">  220</span>        nuTauTT_geo.scifimat_width,</div>
-<div class="line"><span class="lineno">  221</span>        snd_nuTauTT_TTX,</div>
-<div class="line"><span class="lineno">  222</span>        snd_nuTauTT_TTY,</div>
-<div class="line"><span class="lineno">  223</span>        nuTauTT_geo.scifimat_z,</div>
-<div class="line"><span class="lineno">  224</span>        nuTauTT_geo.support_z,</div>
-<div class="line"><span class="lineno">  225</span>        nuTauTT_geo.honeycomb_z,</div>
-<div class="line"><span class="lineno">  226</span>    )</div>
-<div class="line"><span class="lineno">  227</span>    NuTauTT.SetNumberSciFi(</div>
-<div class="line"><span class="lineno">  228</span>        nuTauTT_geo.n_hor_planes, nuTauTT_geo.n_vert_planes</div>
-<div class="line"><span class="lineno">  229</span>    )</div>
-<div class="line"><span class="lineno">  230</span>    NuTauTT.SetTargetTrackerParam(</div>
-<div class="line"><span class="lineno">  231</span>        snd_nuTauTT_TTX, snd_nuTauTT_TTY, snd_nuTauTT_TTZ</div>
-<div class="line"><span class="lineno">  232</span>    )</div>
-<div class="line"><span class="lineno">  233</span>    NuTauTT.SetBrickParam(snd_nuTarget_BrZ)</div>
-<div class="line"><span class="lineno">  234</span>    NuTauTT.SetTotZDimension(snd_nuTarget_zdim)</div>
-<div class="line"><span class="lineno">  235</span>    NuTauTT.SetNumberTT(nuTarget_geo.wall+1)</div>
-<div class="line"><span class="lineno">  236</span>    <span class="comment"># method of nutau target that must be called after TT parameter definition</span></div>
-<div class="line"><span class="lineno">  237</span>    NuTauTarget.SetTTzdimension(snd_nuTauTT_TTZ)</div>
-<div class="line"><span class="lineno">  238</span> </div>
-<div class="line"><span class="lineno">  239</span>    detectorList.append(NuTauTarget)</div>
-<div class="line"><span class="lineno">  240</span>    detectorList.append(NuTauTT)</div>
-<div class="line"><span class="lineno">  241</span> </div>
+<div class="line"><span class="lineno">  152</span> </div>
+<div class="line"><span class="lineno">  153</span>    NuTauTarget = ROOT.Target(</div>
+<div class="line"><span class="lineno">  154</span>        <span class="stringliteral">&quot;NuTauTarget&quot;</span>, nuTarget_geo.Ydist, ROOT.kTRUE</div>
+<div class="line"><span class="lineno">  155</span>    )</div>
+<div class="line"><span class="lineno">  156</span>    NuTauTarget.MakeNuTargetPassive(nuTarget_geo.nuTargetPassive)</div>
+<div class="line"><span class="lineno">  157</span>    NuTauTarget.MergeTopBot(nuTarget_geo.SingleEmFilm)</div>
+<div class="line"><span class="lineno">  158</span>    NuTauTarget.SetDetectorDesign(nuTarget_geo.Design)</div>
+<div class="line"><span class="lineno">  159</span>    NuTauTarget.SetCenterZ(snd_nuTarget_zC)</div>
+<div class="line"><span class="lineno">  160</span>    NuTauTarget.SetNumberBricks(</div>
+<div class="line"><span class="lineno">  161</span>        nuTarget_geo.col,</div>
+<div class="line"><span class="lineno">  162</span>        nuTarget_geo.row,</div>
+<div class="line"><span class="lineno">  163</span>        nuTarget_geo.wall,</div>
+<div class="line"><span class="lineno">  164</span>    )</div>
+<div class="line"><span class="lineno">  165</span>    NuTauTarget.SetDetectorDimension(</div>
+<div class="line"><span class="lineno">  166</span>        snd_nuTarget_xdim,</div>
+<div class="line"><span class="lineno">  167</span>        snd_nuTarget_ydim,</div>
+<div class="line"><span class="lineno">  168</span>        snd_nuTarget_zdim,</div>
+<div class="line"><span class="lineno">  169</span>    )</div>
+<div class="line"><span class="lineno">  170</span>    NuTauTarget.SetTargetWallDimension(</div>
+<div class="line"><span class="lineno">  171</span>        nuTarget_geo.col*snd_nuTarget_BrX,</div>
+<div class="line"><span class="lineno">  172</span>        nuTarget_geo.row*snd_nuTarget_BrY+(nuTarget_geo.row-1)*nuTarget_geo.Ydist,</div>
+<div class="line"><span class="lineno">  173</span>        snd_nuTarget_BrZ</div>
+<div class="line"><span class="lineno">  174</span>    )</div>
+<div class="line"><span class="lineno">  175</span>    NuTauTarget.SetEmulsionParam(</div>
+<div class="line"><span class="lineno">  176</span>        nuTarget_geo.EmTh,</div>
+<div class="line"><span class="lineno">  177</span>        nuTarget_geo.EmX,</div>
+<div class="line"><span class="lineno">  178</span>        nuTarget_geo.EmY,</div>
+<div class="line"><span class="lineno">  179</span>        nuTarget_geo.PBTh,</div>
+<div class="line"><span class="lineno">  180</span>        2* nuTarget_geo.EmTh + nuTarget_geo.PBTh,</div>
+<div class="line"><span class="lineno">  181</span>        nuTarget_geo.LeadTh,</div>
+<div class="line"><span class="lineno">  182</span>        nuTarget_geo.LeadTh +2* nuTarget_geo.EmTh + nuTarget_geo.PBTh,</div>
+<div class="line"><span class="lineno">  183</span>    )</div>
+<div class="line"><span class="lineno">  184</span>    NuTauTarget.SetBrickParam(</div>
+<div class="line"><span class="lineno">  185</span>        snd_nuTarget_BrX,</div>
+<div class="line"><span class="lineno">  186</span>        snd_nuTarget_BrY,</div>
+<div class="line"><span class="lineno">  187</span>        snd_nuTarget_BrZ,</div>
+<div class="line"><span class="lineno">  188</span>        nuTarget_geo.BrPackX,</div>
+<div class="line"><span class="lineno">  189</span>        nuTarget_geo.BrPackY,</div>
+<div class="line"><span class="lineno">  190</span>        nuTarget_geo.BrPackZ,</div>
+<div class="line"><span class="lineno">  191</span>        nuTarget_geo.n_plates,</div>
+<div class="line"><span class="lineno">  192</span>    )</div>
+<div class="line"><span class="lineno">  193</span>    NuTauTarget.SetCESParam(</div>
+<div class="line"><span class="lineno">  194</span>        nuTarget_geo.RohG,</div>
+<div class="line"><span class="lineno">  195</span>        nuTarget_geo.LayerCESW,</div>
+<div class="line"><span class="lineno">  196</span>        nuTarget_geo.CESW,</div>
+<div class="line"><span class="lineno">  197</span>        nuTarget_geo.CESPack,</div>
+<div class="line"><span class="lineno">  198</span>    )</div>
+<div class="line"><span class="lineno">  199</span>    NuTauTarget.SetCellParam(snd_nuTarget_BrZ)</div>
+<div class="line"><span class="lineno">  200</span>    NuTauTarget.SetPillarDimension(</div>
+<div class="line"><span class="lineno">  201</span>        nuTarget_geo.PillarX,</div>
+<div class="line"><span class="lineno">  202</span>        snd_nuTarget_PillarY,</div>
+<div class="line"><span class="lineno">  203</span>        nuTarget_geo.PillarZ</div>
+<div class="line"><span class="lineno">  204</span>    )</div>
+<div class="line"><span class="lineno">  205</span>    NuTauTarget.SetBaseDimension(</div>
+<div class="line"><span class="lineno">  206</span>        snd_nuTarget_xdim+20,</div>
+<div class="line"><span class="lineno">  207</span>        nuTarget_geo.BaseY,</div>
+<div class="line"><span class="lineno">  208</span>        snd_nuTarget_zdim+10</div>
+<div class="line"><span class="lineno">  209</span>    )</div>
+<div class="line"><span class="lineno">  210</span> </div>
+<div class="line"><span class="lineno">  211</span>    <span class="comment"># Target Tracker</span></div>
+<div class="line"><span class="lineno">  212</span>    NuTauTT = ROOT.TargetTracker(</div>
+<div class="line"><span class="lineno">  213</span>        <span class="stringliteral">&quot;TargetTrackers&quot;</span>,</div>
+<div class="line"><span class="lineno">  214</span>        snd_nuTauTT_TTX,</div>
+<div class="line"><span class="lineno">  215</span>        snd_nuTauTT_TTY,</div>
+<div class="line"><span class="lineno">  216</span>        snd_nuTauTT_TTZ,</div>
+<div class="line"><span class="lineno">  217</span>        ROOT.kTRUE,</div>
+<div class="line"><span class="lineno">  218</span>    )</div>
+<div class="line"><span class="lineno">  219</span>    NuTauTT.SetDesign(nuTauTT_geo.design)</div>
+<div class="line"><span class="lineno">  220</span>    NuTauTT.SetSciFiParam(</div>
+<div class="line"><span class="lineno">  221</span>        nuTauTT_geo.scifimat_width,</div>
+<div class="line"><span class="lineno">  222</span>        snd_nuTauTT_TTX,</div>
+<div class="line"><span class="lineno">  223</span>        snd_nuTauTT_TTY,</div>
+<div class="line"><span class="lineno">  224</span>        nuTauTT_geo.scifimat_z,</div>
+<div class="line"><span class="lineno">  225</span>        nuTauTT_geo.support_z,</div>
+<div class="line"><span class="lineno">  226</span>        nuTauTT_geo.honeycomb_z,</div>
+<div class="line"><span class="lineno">  227</span>    )</div>
+<div class="line"><span class="lineno">  228</span>    NuTauTT.SetNumberSciFi(</div>
+<div class="line"><span class="lineno">  229</span>        nuTauTT_geo.n_hor_planes, nuTauTT_geo.n_vert_planes</div>
+<div class="line"><span class="lineno">  230</span>    )</div>
+<div class="line"><span class="lineno">  231</span>    NuTauTT.SetTargetTrackerParam(</div>
+<div class="line"><span class="lineno">  232</span>        snd_nuTauTT_TTX, snd_nuTauTT_TTY, snd_nuTauTT_TTZ</div>
+<div class="line"><span class="lineno">  233</span>    )</div>
+<div class="line"><span class="lineno">  234</span>    NuTauTT.SetBrickParam(snd_nuTarget_BrZ)</div>
+<div class="line"><span class="lineno">  235</span>    NuTauTT.SetTotZDimension(snd_nuTarget_zdim)</div>
+<div class="line"><span class="lineno">  236</span>    NuTauTT.SetNumberTT(nuTarget_geo.wall+1)</div>
+<div class="line"><span class="lineno">  237</span>    <span class="comment"># method of nutau target that must be called after TT parameter definition</span></div>
+<div class="line"><span class="lineno">  238</span>    NuTauTarget.SetTTzdimension(snd_nuTauTT_TTZ)</div>
+<div class="line"><span class="lineno">  239</span> </div>
+<div class="line"><span class="lineno">  240</span>    detectorList.append(NuTauTarget)</div>
+<div class="line"><span class="lineno">  241</span>    detectorList.append(NuTauTT)</div>
 <div class="line"><span class="lineno">  242</span> </div>
+<div class="line"><span class="lineno">  243</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -671,39 +733,39 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipDet__conf_8py_source.html#l00243">243</a> of file <a class="el" href="shipDet__conf_8py_source.html">shipDet_conf.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  243</span><span class="keyword">def </span>configure_veto(yaml_file):</div>
-<div class="line"><span class="lineno">  244</span>    <span class="keyword">with</span> open(yaml_file) <span class="keyword">as</span> file:</div>
-<div class="line"><span class="lineno">  245</span>        config = yaml.safe_load(file)</div>
-<div class="line"><span class="lineno">  246</span> </div>
-<div class="line"><span class="lineno">  247</span>    veto_geo = AttrDict(config)</div>
-<div class="line"><span class="lineno">  248</span> </div>
-<div class="line"><span class="lineno">  249</span>    Veto = ROOT.veto()</div>
-<div class="line"><span class="lineno">  250</span>    Veto.SetVesselDimensions(</div>
-<div class="line"><span class="lineno">  251</span>        veto_geo.xstartInner,</div>
-<div class="line"><span class="lineno">  252</span>        veto_geo.xendInner,</div>
-<div class="line"><span class="lineno">  253</span>        veto_geo.ystartInner,</div>
-<div class="line"><span class="lineno">  254</span>        veto_geo.yendInner,</div>
-<div class="line"><span class="lineno">  255</span>        veto_geo.z0,</div>
-<div class="line"><span class="lineno">  256</span>    )</div>
-<div class="line"><span class="lineno">  257</span> </div>
-<div class="line"><span class="lineno">  258</span>    Veto.SetLiquidVeto(1)</div>
-<div class="line"><span class="lineno">  259</span> </div>
-<div class="line"><span class="lineno">  260</span>    Veto.SetVesselStructure(</div>
-<div class="line"><span class="lineno">  261</span>        veto_geo.innerSupport,</div>
-<div class="line"><span class="lineno">  262</span>        veto_geo.sensitiveThickness,</div>
-<div class="line"><span class="lineno">  263</span>        veto_geo.outerSupport,</div>
-<div class="line"><span class="lineno">  264</span>        veto_geo.innerSupportMed,</div>
-<div class="line"><span class="lineno">  265</span>        veto_geo.lidThickness,</div>
-<div class="line"><span class="lineno">  266</span>        veto_geo.sensitiveMed,</div>
-<div class="line"><span class="lineno">  267</span>        veto_geo.outerSupportMed,</div>
-<div class="line"><span class="lineno">  268</span>        veto_geo.decayMed,</div>
-<div class="line"><span class="lineno">  269</span>        veto_geo.rib,</div>
-<div class="line"><span class="lineno">  270</span>    )</div>
-<div class="line"><span class="lineno">  271</span> </div>
-<div class="line"><span class="lineno">  272</span>    detectorList.append(Veto)</div>
-<div class="line"><span class="lineno">  273</span> </div>
-<div class="line"><span class="lineno">  274</span> </div>
+<p class="definition">Definition at line <a class="el" href="shipDet__conf_8py_source.html#l00267">267</a> of file <a class="el" href="shipDet__conf_8py_source.html">shipDet_conf.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  267</span><span class="keyword">def </span>configure_veto(yaml_file):</div>
+<div class="line"><span class="lineno">  268</span>    <span class="keyword">with</span> open(yaml_file) <span class="keyword">as</span> file:</div>
+<div class="line"><span class="lineno">  269</span>        config = yaml.safe_load(file)</div>
+<div class="line"><span class="lineno">  270</span> </div>
+<div class="line"><span class="lineno">  271</span>    veto_geo = AttrDict(config)</div>
+<div class="line"><span class="lineno">  272</span> </div>
+<div class="line"><span class="lineno">  273</span>    Veto = ROOT.veto()</div>
+<div class="line"><span class="lineno">  274</span>    Veto.SetVesselDimensions(</div>
+<div class="line"><span class="lineno">  275</span>        veto_geo.xstartInner,</div>
+<div class="line"><span class="lineno">  276</span>        veto_geo.xendInner,</div>
+<div class="line"><span class="lineno">  277</span>        veto_geo.ystartInner,</div>
+<div class="line"><span class="lineno">  278</span>        veto_geo.yendInner,</div>
+<div class="line"><span class="lineno">  279</span>        veto_geo.z0,</div>
+<div class="line"><span class="lineno">  280</span>    )</div>
+<div class="line"><span class="lineno">  281</span> </div>
+<div class="line"><span class="lineno">  282</span>    Veto.SetLiquidVeto(1)</div>
+<div class="line"><span class="lineno">  283</span> </div>
+<div class="line"><span class="lineno">  284</span>    Veto.SetVesselStructure(</div>
+<div class="line"><span class="lineno">  285</span>        veto_geo.innerSupport,</div>
+<div class="line"><span class="lineno">  286</span>        veto_geo.sensitiveThickness,</div>
+<div class="line"><span class="lineno">  287</span>        veto_geo.outerSupport,</div>
+<div class="line"><span class="lineno">  288</span>        veto_geo.innerSupportMed,</div>
+<div class="line"><span class="lineno">  289</span>        veto_geo.lidThickness,</div>
+<div class="line"><span class="lineno">  290</span>        veto_geo.sensitiveMed,</div>
+<div class="line"><span class="lineno">  291</span>        veto_geo.outerSupportMed,</div>
+<div class="line"><span class="lineno">  292</span>        veto_geo.decayMed,</div>
+<div class="line"><span class="lineno">  293</span>        veto_geo.rib,</div>
+<div class="line"><span class="lineno">  294</span>    )</div>
+<div class="line"><span class="lineno">  295</span> </div>
+<div class="line"><span class="lineno">  296</span>    detectorList.append(Veto)</div>
+<div class="line"><span class="lineno">  297</span> </div>
+<div class="line"><span class="lineno">  298</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -739,24 +801,24 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipDet__conf_8py_source.html#l00012">12</a> of file <a class="el" href="shipDet__conf_8py_source.html">shipDet_conf.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   12</span><span class="keyword">def </span>getParameter(x, ship_geo, latestShipGeo):</div>
-<div class="line"><span class="lineno">   13</span>    lv = x.split(<span class="stringliteral">&quot;.&quot;</span>)</div>
-<div class="line"><span class="lineno">   14</span>    last = lv[len(lv) - 1]</div>
-<div class="line"><span class="lineno">   15</span>    top = <span class="stringliteral">&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   16</span>    <span class="keywordflow">for</span> l <span class="keywordflow">in</span> range(len(lv) - 1):</div>
-<div class="line"><span class="lineno">   17</span>        top += lv[l]</div>
-<div class="line"><span class="lineno">   18</span>        <span class="keywordflow">if</span> l &lt; len(lv) - 2:</div>
-<div class="line"><span class="lineno">   19</span>            top += <span class="stringliteral">&quot;.&quot;</span></div>
-<div class="line"><span class="lineno">   20</span>    a = getattr(ship_geo, top)</div>
-<div class="line"><span class="lineno">   21</span>    <span class="keywordflow">if</span> hasattr(a, last):</div>
-<div class="line"><span class="lineno">   22</span>        <span class="keywordflow">return</span> getattr(a, last)</div>
-<div class="line"><span class="lineno">   23</span>        <span class="comment"># not in the list of recorded parameteres. probably added after</span></div>
-<div class="line"><span class="lineno">   24</span>        <span class="comment"># creation of file. Check newest geometry_config:</span></div>
-<div class="line"><span class="lineno">   25</span>    a = getattr(latestShipGeo, top)</div>
-<div class="line"><span class="lineno">   26</span>    <span class="keywordflow">return</span> getattr(a, last)</div>
-<div class="line"><span class="lineno">   27</span> </div>
+<p class="definition">Definition at line <a class="el" href="shipDet__conf_8py_source.html#l00013">13</a> of file <a class="el" href="shipDet__conf_8py_source.html">shipDet_conf.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   13</span><span class="keyword">def </span>getParameter(x, ship_geo, latestShipGeo):</div>
+<div class="line"><span class="lineno">   14</span>    lv = x.split(<span class="stringliteral">&quot;.&quot;</span>)</div>
+<div class="line"><span class="lineno">   15</span>    last = lv[len(lv) - 1]</div>
+<div class="line"><span class="lineno">   16</span>    top = <span class="stringliteral">&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   17</span>    <span class="keywordflow">for</span> l <span class="keywordflow">in</span> range(len(lv) - 1):</div>
+<div class="line"><span class="lineno">   18</span>        top += lv[l]</div>
+<div class="line"><span class="lineno">   19</span>        <span class="keywordflow">if</span> l &lt; len(lv) - 2:</div>
+<div class="line"><span class="lineno">   20</span>            top += <span class="stringliteral">&quot;.&quot;</span></div>
+<div class="line"><span class="lineno">   21</span>    a = getattr(ship_geo, top)</div>
+<div class="line"><span class="lineno">   22</span>    <span class="keywordflow">if</span> hasattr(a, last):</div>
+<div class="line"><span class="lineno">   23</span>        <span class="keywordflow">return</span> getattr(a, last)</div>
+<div class="line"><span class="lineno">   24</span>        <span class="comment"># not in the list of recorded parameteres. probably added after</span></div>
+<div class="line"><span class="lineno">   25</span>        <span class="comment"># creation of file. Check newest geometry_config:</span></div>
+<div class="line"><span class="lineno">   26</span>    a = getattr(latestShipGeo, top)</div>
+<div class="line"><span class="lineno">   27</span>    <span class="keywordflow">return</span> getattr(a, last)</div>
 <div class="line"><span class="lineno">   28</span> </div>
+<div class="line"><span class="lineno">   29</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -786,34 +848,34 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipDet__conf_8py_source.html#l00060">60</a> of file <a class="el" href="shipDet__conf_8py_source.html">shipDet_conf.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   60</span><span class="keyword">def </span>makeEcalGeoFile(z, efile):</div>
-<div class="line"><span class="lineno">   61</span>    EcalZSize = 0</div>
-<div class="line"><span class="lineno">   62</span>    sz = efile + <span class="stringliteral">&quot;z&quot;</span> + str(z) + <span class="stringliteral">&quot;.geo&quot;</span></div>
-<div class="line"><span class="lineno">   63</span>    floc = os.environ[<span class="stringliteral">&quot;FAIRSHIP&quot;</span>] + <span class="stringliteral">&quot;/geometry&quot;</span></div>
-<div class="line"><span class="lineno">   64</span>    f_ecal = floc + <span class="stringliteral">&quot;/&quot;</span> + efile</div>
-<div class="line"><span class="lineno">   65</span>    f_ecalz = floc + <span class="stringliteral">&quot;/&quot;</span> + sz</div>
-<div class="line"><span class="lineno">   66</span>    f = open(f_ecal)</div>
-<div class="line"><span class="lineno">   67</span>    rewrite = <span class="keyword">True</span></div>
-<div class="line"><span class="lineno">   68</span>    <span class="keywordflow">if</span> sz <span class="keywordflow">in</span> os.listdir(floc):</div>
-<div class="line"><span class="lineno">   69</span>        test = os.popen(<span class="stringliteral">&quot;diff &quot;</span> + f_ecal + <span class="stringliteral">&quot; &quot;</span> + f_ecalz).read()</div>
-<div class="line"><span class="lineno">   70</span>        <span class="keywordflow">if</span> str.count(test, <span class="stringliteral">&quot;---&quot;</span>) == 1 <span class="keywordflow">and</span> <span class="keywordflow">not</span> test.find(<span class="stringliteral">&quot;Position&quot;</span>) &lt; 0:</div>
-<div class="line"><span class="lineno">   71</span>            rewrite = <span class="keyword">False</span>  <span class="comment"># only different is z position</span></div>
-<div class="line"><span class="lineno">   72</span>    <span class="keywordflow">if</span> rewrite:</div>
-<div class="line"><span class="lineno">   73</span>        fn = open(f_ecalz, <span class="stringliteral">&quot;w&quot;</span>)</div>
-<div class="line"><span class="lineno">   74</span>    <span class="keywordflow">for</span> l <span class="keywordflow">in</span> f.readlines():</div>
-<div class="line"><span class="lineno">   75</span>        <span class="keywordflow">if</span> rewrite:</div>
-<div class="line"><span class="lineno">   76</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> l.find(<span class="stringliteral">&quot;ZPos&quot;</span>) &lt; 0:</div>
-<div class="line"><span class="lineno">   77</span>                l = <span class="stringliteral">&quot;ZPos=&quot;</span> + str(z) + <span class="stringliteral">&quot;    #Position of Ecal start     [cm]\n&quot;</span></div>
-<div class="line"><span class="lineno">   78</span>            fn.write(l)</div>
-<div class="line"><span class="lineno">   79</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> l.find(<span class="stringliteral">&quot;EcalZSize&quot;</span>) &lt; 0:</div>
-<div class="line"><span class="lineno">   80</span>            EcalZSize = float(l[len(<span class="stringliteral">&quot;EcalZSize&quot;</span>) + 1 :].split(<span class="stringliteral">&quot;#&quot;</span>)[0])</div>
-<div class="line"><span class="lineno">   81</span>    f.close()</div>
-<div class="line"><span class="lineno">   82</span>    <span class="keywordflow">if</span> rewrite:</div>
-<div class="line"><span class="lineno">   83</span>        fn.close()</div>
-<div class="line"><span class="lineno">   84</span>    <span class="keywordflow">return</span> EcalZSize, sz</div>
-<div class="line"><span class="lineno">   85</span> </div>
+<p class="definition">Definition at line <a class="el" href="shipDet__conf_8py_source.html#l00061">61</a> of file <a class="el" href="shipDet__conf_8py_source.html">shipDet_conf.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   61</span><span class="keyword">def </span>makeEcalGeoFile(z, efile):</div>
+<div class="line"><span class="lineno">   62</span>    EcalZSize = 0</div>
+<div class="line"><span class="lineno">   63</span>    sz = efile + <span class="stringliteral">&quot;z&quot;</span> + str(z) + <span class="stringliteral">&quot;.geo&quot;</span></div>
+<div class="line"><span class="lineno">   64</span>    floc = os.environ[<span class="stringliteral">&quot;FAIRSHIP&quot;</span>] + <span class="stringliteral">&quot;/geometry&quot;</span></div>
+<div class="line"><span class="lineno">   65</span>    f_ecal = floc + <span class="stringliteral">&quot;/&quot;</span> + efile</div>
+<div class="line"><span class="lineno">   66</span>    f_ecalz = floc + <span class="stringliteral">&quot;/&quot;</span> + sz</div>
+<div class="line"><span class="lineno">   67</span>    f = open(f_ecal)</div>
+<div class="line"><span class="lineno">   68</span>    rewrite = <span class="keyword">True</span></div>
+<div class="line"><span class="lineno">   69</span>    <span class="keywordflow">if</span> sz <span class="keywordflow">in</span> os.listdir(floc):</div>
+<div class="line"><span class="lineno">   70</span>        test = os.popen(<span class="stringliteral">&quot;diff &quot;</span> + f_ecal + <span class="stringliteral">&quot; &quot;</span> + f_ecalz).read()</div>
+<div class="line"><span class="lineno">   71</span>        <span class="keywordflow">if</span> str.count(test, <span class="stringliteral">&quot;---&quot;</span>) == 1 <span class="keywordflow">and</span> <span class="keywordflow">not</span> test.find(<span class="stringliteral">&quot;Position&quot;</span>) &lt; 0:</div>
+<div class="line"><span class="lineno">   72</span>            rewrite = <span class="keyword">False</span>  <span class="comment"># only different is z position</span></div>
+<div class="line"><span class="lineno">   73</span>    <span class="keywordflow">if</span> rewrite:</div>
+<div class="line"><span class="lineno">   74</span>        fn = open(f_ecalz, <span class="stringliteral">&quot;w&quot;</span>)</div>
+<div class="line"><span class="lineno">   75</span>    <span class="keywordflow">for</span> l <span class="keywordflow">in</span> f.readlines():</div>
+<div class="line"><span class="lineno">   76</span>        <span class="keywordflow">if</span> rewrite:</div>
+<div class="line"><span class="lineno">   77</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> l.find(<span class="stringliteral">&quot;ZPos&quot;</span>) &lt; 0:</div>
+<div class="line"><span class="lineno">   78</span>                l = <span class="stringliteral">&quot;ZPos=&quot;</span> + str(z) + <span class="stringliteral">&quot;    #Position of Ecal start     [cm]\n&quot;</span></div>
+<div class="line"><span class="lineno">   79</span>            fn.write(l)</div>
+<div class="line"><span class="lineno">   80</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> l.find(<span class="stringliteral">&quot;EcalZSize&quot;</span>) &lt; 0:</div>
+<div class="line"><span class="lineno">   81</span>            EcalZSize = float(l[len(<span class="stringliteral">&quot;EcalZSize&quot;</span>) + 1 :].split(<span class="stringliteral">&quot;#&quot;</span>)[0])</div>
+<div class="line"><span class="lineno">   82</span>    f.close()</div>
+<div class="line"><span class="lineno">   83</span>    <span class="keywordflow">if</span> rewrite:</div>
+<div class="line"><span class="lineno">   84</span>        fn.close()</div>
+<div class="line"><span class="lineno">   85</span>    <span class="keywordflow">return</span> EcalZSize, sz</div>
 <div class="line"><span class="lineno">   86</span> </div>
+<div class="line"><span class="lineno">   87</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -843,12 +905,12 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipDet__conf_8py_source.html#l00087">87</a> of file <a class="el" href="shipDet__conf_8py_source.html">shipDet_conf.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   87</span><span class="keyword">def </span>posEcal(z, efile):</div>
-<div class="line"><span class="lineno">   88</span>    EcalZSize, sz = makeEcalGeoFile(z, efile)</div>
-<div class="line"><span class="lineno">   89</span>    ecal = ROOT.ecal(<span class="stringliteral">&quot;Ecal&quot;</span>, ROOT.kTRUE, sz)</div>
-<div class="line"><span class="lineno">   90</span>    <span class="keywordflow">return</span> ecal, EcalZSize</div>
-<div class="line"><span class="lineno">   91</span> </div>
+<p class="definition">Definition at line <a class="el" href="shipDet__conf_8py_source.html#l00088">88</a> of file <a class="el" href="shipDet__conf_8py_source.html">shipDet_conf.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   88</span><span class="keyword">def </span>posEcal(z, efile):</div>
+<div class="line"><span class="lineno">   89</span>    EcalZSize, sz = makeEcalGeoFile(z, efile)</div>
+<div class="line"><span class="lineno">   90</span>    ecal = ROOT.ecal(<span class="stringliteral">&quot;Ecal&quot;</span>, ROOT.kTRUE, sz)</div>
+<div class="line"><span class="lineno">   91</span>    <span class="keywordflow">return</span> ecal, EcalZSize</div>
+<div class="line"><span class="lineno">   92</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -884,38 +946,38 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipDet__conf_8py_source.html#l00029">29</a> of file <a class="el" href="shipDet__conf_8py_source.html">shipDet_conf.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   29</span><span class="keyword">def </span>posHcal(z, hfile, HcalOption):</div>
-<div class="line"><span class="lineno">   30</span>    HcalZSize = 0</div>
-<div class="line"><span class="lineno">   31</span>    sz = hfile + <span class="stringliteral">&quot;z&quot;</span> + str(z) + <span class="stringliteral">&quot;.geo&quot;</span></div>
-<div class="line"><span class="lineno">   32</span>    floc = os.environ[<span class="stringliteral">&quot;FAIRSHIP&quot;</span>] + <span class="stringliteral">&quot;/geometry&quot;</span></div>
-<div class="line"><span class="lineno">   33</span>    f_hcal = floc + <span class="stringliteral">&quot;/&quot;</span> + hfile</div>
-<div class="line"><span class="lineno">   34</span>    f_hcalz = floc + <span class="stringliteral">&quot;/&quot;</span> + sz</div>
-<div class="line"><span class="lineno">   35</span>    f = open(f_hcal)</div>
-<div class="line"><span class="lineno">   36</span>    rewrite = <span class="keyword">True</span></div>
-<div class="line"><span class="lineno">   37</span>    <span class="keywordflow">if</span> sz <span class="keywordflow">in</span> os.listdir(floc):</div>
-<div class="line"><span class="lineno">   38</span>        test = os.popen(<span class="stringliteral">&quot;diff &quot;</span> + f_hcal + <span class="stringliteral">&quot; &quot;</span> + f_hcalz).read()</div>
-<div class="line"><span class="lineno">   39</span>        <span class="keywordflow">if</span> str.count(test, <span class="stringliteral">&quot;---&quot;</span>) == 1 <span class="keywordflow">and</span> <span class="keywordflow">not</span> test.find(<span class="stringliteral">&quot;Position&quot;</span>) &lt; 0:</div>
-<div class="line"><span class="lineno">   40</span>            rewrite = <span class="keyword">False</span>  <span class="comment"># only different is z position</span></div>
-<div class="line"><span class="lineno">   41</span>    <span class="keywordflow">if</span> rewrite:</div>
-<div class="line"><span class="lineno">   42</span>        fn = open(f_hcalz, <span class="stringliteral">&quot;w&quot;</span>)</div>
-<div class="line"><span class="lineno">   43</span>    <span class="keywordflow">for</span> l <span class="keywordflow">in</span> f.readlines():</div>
-<div class="line"><span class="lineno">   44</span>        <span class="keywordflow">if</span> rewrite:</div>
-<div class="line"><span class="lineno">   45</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> l.find(<span class="stringliteral">&quot;ZPos&quot;</span>) &lt; 0:</div>
-<div class="line"><span class="lineno">   46</span>                l = <span class="stringliteral">&quot;ZPos=&quot;</span> + str(z) + <span class="stringliteral">&quot;    #Position of Hcal  center   [cm]\n&quot;</span></div>
-<div class="line"><span class="lineno">   47</span>            fn.write(l)</div>
-<div class="line"><span class="lineno">   48</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> l.find(<span class="stringliteral">&quot;HcalZSize&quot;</span>) &lt; 0:</div>
-<div class="line"><span class="lineno">   49</span>            HcalZSize = float(l[len(<span class="stringliteral">&quot;HcalZSize&quot;</span>) + 1 :].split(<span class="stringliteral">&quot;#&quot;</span>)[0])</div>
-<div class="line"><span class="lineno">   50</span>    f.close()</div>
-<div class="line"><span class="lineno">   51</span>    <span class="keywordflow">if</span> rewrite:</div>
-<div class="line"><span class="lineno">   52</span>        fn.close()</div>
-<div class="line"><span class="lineno">   53</span>    <span class="keywordflow">if</span> HcalOption == 2:</div>
-<div class="line"><span class="lineno">   54</span>        hcal = ROOT.hcal(<span class="stringliteral">&quot;Hcal&quot;</span>, ROOT.kFALSE, sz)</div>
-<div class="line"><span class="lineno">   55</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">   56</span>        hcal = ROOT.hcal(<span class="stringliteral">&quot;Hcal&quot;</span>, ROOT.kTRUE, sz)</div>
-<div class="line"><span class="lineno">   57</span>    <span class="keywordflow">return</span> hcal, HcalZSize</div>
-<div class="line"><span class="lineno">   58</span> </div>
+<p class="definition">Definition at line <a class="el" href="shipDet__conf_8py_source.html#l00030">30</a> of file <a class="el" href="shipDet__conf_8py_source.html">shipDet_conf.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   30</span><span class="keyword">def </span>posHcal(z, hfile, HcalOption):</div>
+<div class="line"><span class="lineno">   31</span>    HcalZSize = 0</div>
+<div class="line"><span class="lineno">   32</span>    sz = hfile + <span class="stringliteral">&quot;z&quot;</span> + str(z) + <span class="stringliteral">&quot;.geo&quot;</span></div>
+<div class="line"><span class="lineno">   33</span>    floc = os.environ[<span class="stringliteral">&quot;FAIRSHIP&quot;</span>] + <span class="stringliteral">&quot;/geometry&quot;</span></div>
+<div class="line"><span class="lineno">   34</span>    f_hcal = floc + <span class="stringliteral">&quot;/&quot;</span> + hfile</div>
+<div class="line"><span class="lineno">   35</span>    f_hcalz = floc + <span class="stringliteral">&quot;/&quot;</span> + sz</div>
+<div class="line"><span class="lineno">   36</span>    f = open(f_hcal)</div>
+<div class="line"><span class="lineno">   37</span>    rewrite = <span class="keyword">True</span></div>
+<div class="line"><span class="lineno">   38</span>    <span class="keywordflow">if</span> sz <span class="keywordflow">in</span> os.listdir(floc):</div>
+<div class="line"><span class="lineno">   39</span>        test = os.popen(<span class="stringliteral">&quot;diff &quot;</span> + f_hcal + <span class="stringliteral">&quot; &quot;</span> + f_hcalz).read()</div>
+<div class="line"><span class="lineno">   40</span>        <span class="keywordflow">if</span> str.count(test, <span class="stringliteral">&quot;---&quot;</span>) == 1 <span class="keywordflow">and</span> <span class="keywordflow">not</span> test.find(<span class="stringliteral">&quot;Position&quot;</span>) &lt; 0:</div>
+<div class="line"><span class="lineno">   41</span>            rewrite = <span class="keyword">False</span>  <span class="comment"># only different is z position</span></div>
+<div class="line"><span class="lineno">   42</span>    <span class="keywordflow">if</span> rewrite:</div>
+<div class="line"><span class="lineno">   43</span>        fn = open(f_hcalz, <span class="stringliteral">&quot;w&quot;</span>)</div>
+<div class="line"><span class="lineno">   44</span>    <span class="keywordflow">for</span> l <span class="keywordflow">in</span> f.readlines():</div>
+<div class="line"><span class="lineno">   45</span>        <span class="keywordflow">if</span> rewrite:</div>
+<div class="line"><span class="lineno">   46</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> l.find(<span class="stringliteral">&quot;ZPos&quot;</span>) &lt; 0:</div>
+<div class="line"><span class="lineno">   47</span>                l = <span class="stringliteral">&quot;ZPos=&quot;</span> + str(z) + <span class="stringliteral">&quot;    #Position of Hcal  center   [cm]\n&quot;</span></div>
+<div class="line"><span class="lineno">   48</span>            fn.write(l)</div>
+<div class="line"><span class="lineno">   49</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> l.find(<span class="stringliteral">&quot;HcalZSize&quot;</span>) &lt; 0:</div>
+<div class="line"><span class="lineno">   50</span>            HcalZSize = float(l[len(<span class="stringliteral">&quot;HcalZSize&quot;</span>) + 1 :].split(<span class="stringliteral">&quot;#&quot;</span>)[0])</div>
+<div class="line"><span class="lineno">   51</span>    f.close()</div>
+<div class="line"><span class="lineno">   52</span>    <span class="keywordflow">if</span> rewrite:</div>
+<div class="line"><span class="lineno">   53</span>        fn.close()</div>
+<div class="line"><span class="lineno">   54</span>    <span class="keywordflow">if</span> HcalOption == 2:</div>
+<div class="line"><span class="lineno">   55</span>        hcal = ROOT.hcal(<span class="stringliteral">&quot;Hcal&quot;</span>, ROOT.kFALSE, sz)</div>
+<div class="line"><span class="lineno">   56</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">   57</span>        hcal = ROOT.hcal(<span class="stringliteral">&quot;Hcal&quot;</span>, ROOT.kTRUE, sz)</div>
+<div class="line"><span class="lineno">   58</span>    <span class="keywordflow">return</span> hcal, HcalZSize</div>
 <div class="line"><span class="lineno">   59</span> </div>
+<div class="line"><span class="lineno">   60</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -932,7 +994,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipDet__conf_8py_source.html#l00009">9</a> of file <a class="el" href="shipDet__conf_8py_source.html">shipDet_conf.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipDet__conf_8py_source.html#l00010">10</a> of file <a class="el" href="shipDet__conf_8py_source.html">shipDet_conf.py</a>.</p>
 
 </div>
 </div>

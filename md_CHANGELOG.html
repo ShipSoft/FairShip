@@ -109,6 +109,9 @@ Added</h2>
 <li>Added event_inspector class to experimental analysis_toolkit to streamline usage of helper functions; Added dump_event() as a start.</li>
 <li>Add (optional) MgB2 field map</li>
 <li><a class="el" href="classShipBFieldMap.html" title="Class that defines a (3d) magnetic field map (distances in cm, fields in tesla)">ShipBFieldMap</a>: Added LOG info and fatal</li>
+<li>Folder <code>SND</code> is added for new versions of SND integrated to the Muon Shield</li>
+<li>First version of <code>MTC</code> (<code>SND/MTC</code>) is introduced. Scint part is fully implemented, the Sci-Fi part is implemented in simplified version. Geometrical parameters of <code>MTC</code> are stored in <code>geometry/MTC_config.yaml</code> file</li>
+<li>New key for <code><a class="el" href="run__simScript_8py.html">macro/run_simScript.py</a></code> for choosing SND options is added: <code>--SND_design</code> </li>
 </ul>
 <h2><a class="anchor" id="autotoc_md3"></a>
 Fixed</h2>
@@ -124,6 +127,8 @@ Fixed</h2>
 <li>fix(digi): Fix logic of SST digitisation (#662)</li>
 <li>Fix double append of recognized stracks</li>
 <li>fix(<a class="el" href="ShieldUtils_8py.html">ShieldUtils.py</a>): The fieldmap offset was calibrated with the old version of MS</li>
+<li>fix(<a class="el" href="ShieldUtils_8py.html">ShieldUtils.py</a>): changing code to be more pythonic, adding new element in the output tuple &ndash; the list of the Muon Shield magnet z-coordinates, that can be used to set a location of SND inside the Muon Shield</li>
+<li>fix(<a class="el" href="shipDet__conf_8py.html">shipDet_conf.py</a>): changing paths to yaml files to more pythonic (<code>os.path.join()</code> now)</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md4"></a>
 Changed</h2>
