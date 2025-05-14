@@ -111,7 +111,7 @@ Added</h2>
 <li><a class="el" href="classShipBFieldMap.html" title="Class that defines a (3d) magnetic field map (distances in cm, fields in tesla)">ShipBFieldMap</a>: Added LOG info and fatal</li>
 <li>Folder <code>SND</code> is added for new versions of SND integrated to the Muon Shield</li>
 <li>First version of <code>MTC</code> (<code>SND/MTC</code>) is introduced. Scint part is fully implemented, the Sci-Fi part is implemented in simplified version. Geometrical parameters of <code>MTC</code> are stored in <code>geometry/MTC_config.yaml</code> file</li>
-<li>New key for <code><a class="el" href="run__simScript_8py.html">macro/run_simScript.py</a></code> for choosing SND options is added: <code>--SND_design</code> </li>
+<li>New key for <code><a class="el" href="run__simScript_8py.html">macro/run_simScript.py</a></code> for choosing SND options is added: <code>--SND_design</code></li>
 </ul>
 <h2><a class="anchor" id="autotoc_md3"></a>
 Fixed</h2>
@@ -129,6 +129,7 @@ Fixed</h2>
 <li>fix(<a class="el" href="ShieldUtils_8py.html">ShieldUtils.py</a>): The fieldmap offset was calibrated with the old version of MS</li>
 <li>fix(<a class="el" href="ShieldUtils_8py.html">ShieldUtils.py</a>): changing code to be more pythonic, adding new element in the output tuple &ndash; the list of the Muon Shield magnet z-coordinates, that can be used to set a location of SND inside the Muon Shield</li>
 <li>fix(<a class="el" href="shipDet__conf_8py.html">shipDet_conf.py</a>): changing paths to yaml files to more pythonic (<code>os.path.join()</code> now)</li>
+<li>Fix splitcal strip dimensions and number of modules</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md4"></a>
 Changed</h2>
@@ -148,6 +149,8 @@ Changed</h2>
 <li>Allow specifying spectrometer field map</li>
 <li>Obtain tauMuDet z position from muonshield position and length, instead of chamber trackers</li>
 <li>Update tracker station z positions, fix UBT, <a class="el" href="classTimeDet.html">TimeDet</a> &amp; SplitCal position (s. integration layout EDMS 3287817 v1)</li>
+<li>feat(geometry): Make SplitCal the default calorimeter</li>
+<li>Resize SplitCal to 4×6 m²</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md5"></a>
 Removed</h2>
@@ -164,6 +167,7 @@ Removed</h2>
 <li>feat(geometry): Remove 2018, 2022 global designs</li>
 <li><a class="el" href="run__simScript_8py.html">run_simScript.py</a>: remove &ndash;muShieldDesign flag</li>
 <li>Remove unused straw veto station</li>
+<li><a class="el" href="ShipAna_8py.html">ShipAna.py</a>: remove broken calorimetry</li>
 </ul>
 <h1><a class="anchor" id="autotoc_md6"></a>
 25.01</h1>
