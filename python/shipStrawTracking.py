@@ -215,7 +215,7 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method):
                 hits[key] = numpy.array(hits[key])
 
             # Decoding
-            statnb, vnb, lnb, snb = decodeDetectorID(hits['DetID'])
+            global_variables.modules["Strawtubes"].StrawDecode(hits['DetID'], statnb, vnb, lnb, snb)
             is_stereo = ((vnb == 1) + (vnb == 2))
             is_y = ((vnb == 0) + (vnb == 3))
             is_before = ((statnb == 1) + (statnb == 2))
@@ -543,34 +543,6 @@ def extrapolateToPlane(fT,z):
 
 ########################################################################################################################
 
-def decodeDetectorID(detID):
-    """
-    Decodes detector ID.
-    Parameters
-    ----------
-    detID : int or array-like
-        Detector ID values.
-    Returns
-    -------
-    statnb : int or array-like
-        Station numbers.
-    vnb : int or array-like
-        View numbers.
-    lnb : int or array-like
-        Layer numbers.
-    snb : int or array-like
-        Straw tube numbers.
-    """
-
-    statnb = detID // 10000000
-    vnb = (detID - statnb * 10000000) // 1000000
-    lnb = (detID - statnb * 10000000 - vnb * 1000000) // 10000
-    snb = detID - statnb * 10000000 - vnb * 1000000 - lnb * 10000 - 2000
-
-    return statnb, vnb, lnb, snb
-
-########################################################################################################################
-
 def fracMCsame(trackids):
     """
     Estimates max fraction of true hit labels for a recognized track.
@@ -628,9 +600,6 @@ def getReconstructibleTracks(iEvent, sTree, sGeo, ShipGeo):
         List of reconstructible track ids.
     """
 
-    VetoStationZ = ShipGeo.vetoStation.z
-    VetoStationEndZ = VetoStationZ + (ShipGeo.strawtubes.DeltazView + ShipGeo.strawtubes.OuterStrawDiameter) / 2
-
     TStationz = ShipGeo.TrackStation1.z
     Zpos = TStationz - 3. /2. * ShipGeo.strawtubes.DeltazView - 1. / 2. * ShipGeo.strawtubes.DeltazLayer
     TStation1StartZ = Zpos - ShipGeo.strawtubes.OuterStrawDiameter / 2
@@ -658,8 +627,8 @@ def getReconstructibleTracks(iEvent, sTree, sGeo, ShipGeo):
                 mothertrack = sTree.MCTrack.At(motherId)
                 mothertrackZ = mothertrack.GetStartZ()
                 #this mother track is a HNL decay
-                #track starts inside the decay volume? (after veto, before 1 st tstation)
-                if mothertrackZ < TStation1StartZ and mothertrackZ > VetoStationEndZ:
+                #track starts inside the decay volume? (before 1 st tstation)
+                if mothertrackZ < TStation1StartZ:
                     if motherId not in MCTrackIDs:
                         MCTrackIDs.append(motherId)
 
@@ -700,8 +669,6 @@ def getReconstructibleTracks(iEvent, sTree, sGeo, ShipGeo):
 
     for i in range(nHits):
         ahit = sTree.strawtubesPoint[i]
-        if (str(ahit.GetDetectorID())[:1]=="5") :
-            continue
         strawname = str(ahit.GetDetectorID())
 
         if strawname in hitstraws:
