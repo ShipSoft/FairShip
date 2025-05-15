@@ -493,7 +493,7 @@ void strawtubes::ConstructGeometry()
             TGeoCombiTrans c5(t5, r5);
             TGeoHMatrix *h5 = new TGeoHMatrix(c5);
 
-	    vac_12->AddNode(viewframe_12, statnb*10000000+vnb*1000000,h5);
+	    vac_12->AddNode(viewframe_12, statnb * 1e6 + vnb * 1e5, h5);
 	    viewframe_12->SetLineColor(kRed);
 
             for (Int_t lnb=0; lnb<2; lnb++) {
@@ -503,7 +503,7 @@ void strawtubes::ConstructGeometry()
 	      TString nmlayer_12 = nmview_12+"_layer_"; nmlayer_12 += lnb;
 	      TGeoBBox *layer_12 = new TGeoBBox("layer box_12", fStraw_length_12+eps/4, ftr12ydim+eps/4, layerwidth/2.+eps/4);
 	      TGeoVolume *layerbox_12 = new TGeoVolume(nmlayer_12, layer_12, med);
-	      vac_12->AddNode(layerbox_12, statnb*10000000+vnb*1000000+lnb*10000,new TGeoTranslation(0,0,(lnb-1./2.)*fDeltaz_layer12));
+	      vac_12->AddNode(layerbox_12, statnb * 1e6 + vnb * 1e5 + lnb * 1e4, new TGeoTranslation(0, 0, (lnb - 1. / 2.) * fDeltaz_layer12));
 
               //layer loop
 	      TGeoRotation r6s;
@@ -514,9 +514,9 @@ void strawtubes::ConstructGeometry()
                 r6s.SetAngles(90,90,0);
 	        TGeoCombiTrans c6s(t6s, r6s);
                 TGeoHMatrix *h6s = new TGeoHMatrix(c6s);
-	        layerbox_12->AddNode(straw_12,statnb*10000000+vnb*1000000+lnb*10000+1000+snb,h6s);
-	        layerbox_12->AddNode(gas_12,statnb*10000000+vnb*1000000+lnb*10000+2000+snb,h6s);
-                layerbox_12->AddNode(wire_12,statnb*10000000+vnb*1000000+lnb*10000+3000+snb,h6s);
+	        layerbox_12->AddNode(straw_12, statnb * 1e6 + vnb * 1e5 + lnb * 1e4 + 1e3 + snb, h6s);
+	        layerbox_12->AddNode(gas_12, statnb * 1e6 + vnb * 1e5 + lnb * 1e4 + 2e3 + snb, h6s);
+                layerbox_12->AddNode(wire_12, statnb * 1e6 + vnb * 1e5 + lnb * 1e4 + 3e3 + snb, h6s);
 
                 //end of straw loop
               }
@@ -572,7 +572,7 @@ void strawtubes::ConstructGeometry()
             TGeoCombiTrans c5(t5, r5);
             TGeoHMatrix *h5 = new TGeoHMatrix(c5);
 
-	    vac->AddNode(viewframe, statnb*10000000+vnb*1000000,h5);
+	    vac->AddNode(viewframe, statnb * 1e6 + vnb * 1e5, h5);
 	    viewframe->SetLineColor(kRed);
 
             for (Int_t lnb=0; lnb<2; lnb++) {
@@ -582,7 +582,7 @@ void strawtubes::ConstructGeometry()
 	      TString nmlayer = nmview+"_layer_"; nmlayer += lnb;
 	      TGeoBBox *layer = new TGeoBBox("layer box", fStraw_length+eps/4, ftr34ydim+eps/4, layerwidth/2.+eps/4);
 	      TGeoVolume *layerbox = new TGeoVolume(nmlayer, layer, med);
-	      vac->AddNode(layerbox, statnb*10000000+vnb*1000000+lnb*10000,new TGeoTranslation(0,0,(lnb-1./2.)*fDeltaz_layer12));
+	      vac->AddNode(layerbox, statnb * 1e6 + vnb * 1e5 + lnb * 1e4, new TGeoTranslation(0, 0, (lnb - 1. / 2.) * fDeltaz_layer12));
 
               //layer loop
 	      TGeoRotation r6s;
@@ -593,9 +593,9 @@ void strawtubes::ConstructGeometry()
                 r6s.SetAngles(90,90,0);
 	        TGeoCombiTrans c6s(t6s, r6s);
                 TGeoHMatrix *h6s = new TGeoHMatrix(c6s);
-	        layerbox->AddNode(straw,statnb*10000000+vnb*1000000+lnb*10000+1000+snb,h6s);
-	        layerbox->AddNode(gas,statnb*10000000+vnb*1000000+lnb*10000+2000+snb,h6s);
-                layerbox->AddNode(wire,statnb*10000000+vnb*1000000+lnb*10000+3000+snb,h6s);
+	        layerbox->AddNode(straw, statnb * 1e6 + vnb * 1e5 + lnb * 1e4 + 1e3 + snb, h6s);
+	        layerbox->AddNode(gas, statnb * 1e6 + vnb * 1e5 + lnb * 1e4 + 2e3 + snb, h6s);
+                layerbox->AddNode(wire, statnb * 1e6 + vnb * 1e5 + lnb * 1e4 + 3e3 + snb, h6s);
 
                 //end of straw loop
               }

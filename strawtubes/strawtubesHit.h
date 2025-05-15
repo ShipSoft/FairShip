@@ -36,6 +36,7 @@ class strawtubesHit : public ShipHit
     strawtubesHit& operator=(const strawtubesHit& point) = default;
 
   private:
+    Int_t statnb;   /// station number
     Float_t flag;   ///< flag
 
     ClassDef(strawtubesHit, 4);
