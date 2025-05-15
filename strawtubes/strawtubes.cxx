@@ -615,19 +615,18 @@ void strawtubes::ConstructGeometry()
 // -----   returns station layer ... numbers -----------------------------------
 void strawtubes::StrawDecode(Int_t detID, int &statnb, int &vnb, int &lnb, int &snb)
 {
-  statnb = detID / 1000000;
-  vnb = (detID - statnb * 1000000) / 100000;
-  lnb = (detID - statnb * 1000000 - vnb * 100000) / 10000;
-  snb = detID - statnb * 1000000 - vnb * 100000 - lnb * 10000 - 2000;
+  statnb = detID / 1e6;
+  vnb = (detID - statnb * 1e6) / 1e5;
+  lnb = (detID - statnb * 1e6 - vnb * 1e5) / 1e4;
+  snb = detID - statnb * 1e6 - vnb * 1e5 - lnb * 1e4 - 2000;
 }
 // -----   Public method StrawEndPoints    -------------------------------------------
 // -----   returns top(left) and bottom(right) coordinate of straw -----------------------------------
 void strawtubes::StrawEndPoints(Int_t fDetectorID, TVector3 &vbot, TVector3 &vtop)
 // method to get end points from TGeoNavigator
 {
-    Int_t statnb = fDetectorID / 1000000;
-    Int_t vnb = (fDetectorID - statnb * 1000000) / 100000;
-    Int_t lnb = (fDetectorID - statnb * 1000000 - vnb * 100000) / 10000;
+    Int_t statnb, vnb, lnb, snb;
+    StrawDecode(fDetectorID, statnb, vnb, lnb, snb);
     TString stat = "Tr"; stat += statnb; stat += "_"; stat += statnb;
     TString view;
     switch (vnb) {
