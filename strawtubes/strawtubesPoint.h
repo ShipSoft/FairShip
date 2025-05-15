@@ -25,6 +25,7 @@ class strawtubesPoint : public FairMCPoint
      **/
     strawtubesPoint(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom,
                      Double_t tof, Double_t length, Double_t eLoss, Int_t pdgcode,Double_t dist);
+    void StrawDecode(Int_t detID, int &statnb, int &vnb, int &lnb, int &snb);
 
     /** Destructor **/
     virtual ~strawtubesPoint();
@@ -33,6 +34,7 @@ class strawtubesPoint : public FairMCPoint
     virtual void Print() const;
     Int_t PdgCode() const {return fPdgCode;}
     Double_t dist2Wire() const {return fdist2Wire;}
+    Int_t GetStatnb() const {return statnb;}
 
   private:
     /** Copy constructor **/

@@ -19,15 +19,17 @@ class strawtubesHit : public ShipHit
      **/
     strawtubesHit(Int_t detID, Float_t tdc);
     strawtubesHit(strawtubesPoint* p, Double_t t0);
-    void StrawEndPoints(TVector3& vbot, TVector3& vtop);
+    void StrawDecode(Int_t detID, int &statnb, int &vnb, int &lnb, int &snb);
+    void StrawEndPoints(Int_t fDetectorID, TVector3 &vbot, TVector3 &vtop);
     /** Destructor **/
     virtual ~strawtubesHit();
 
     /** Output to screen **/
     virtual void Print() const;
-    Float_t GetTDC() const { return fdigi; }
-    void setInvalid() { flag = false; }
-    bool isValid() const { return flag; }
+    Float_t GetTDC() const {return fdigi;}
+    Int_t GetStatnb() const {return statnb;}
+    void setInvalid() {flag = false;}
+    bool isValid() const {return flag;}
 
     /** Copy constructor **/
     strawtubesHit(const strawtubesHit& point) = default;
