@@ -122,7 +122,7 @@ source /cvmfs/ship.cern.ch/$SHIP_RELEASE/setUp.sh
 Load your local FairShip environment.
 
 ```bash
-alienv enter (--shellrc) FairShip/latest
+alienv enter FairShip/latest
 ```
 
 Now you can for example simulate some events, run reconstruction and analysis:
