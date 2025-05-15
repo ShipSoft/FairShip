@@ -55,12 +55,12 @@ class ShipParticle : public TParticle
     void SetCovV(Double_t* x);
     Double_t GetDoca() const { return doca; }
     void SetDoca(Double_t x) { doca = x; }
+    ClassDefOverride(ShipParticle, 2);
 
   private:
     TMatrixDSym fCovP;
     TMatrixDSym fCovV;
     Double_t doca;
-    ClassDef(ShipParticle, 2);
 };
 
 // ==========   Inline functions   ========================================
