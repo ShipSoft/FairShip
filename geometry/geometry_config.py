@@ -1,6 +1,8 @@
 import shipunit as u
 import ROOT as r
 from ShipGeoConfig import AttrDict, ConfigRegistry
+import yaml
+
 # the following params should be passed through 'ConfigRegistry.loadpy' method
 # nuTargetPassive = 1  #0 = with active layers, 1 = only passive
 # nuTauTargetDesign  =   #0 = TP, 1 = NEW with magnet, 2 = NEW without magnet, 3 = 2018 design
@@ -73,7 +75,7 @@ if "SND" not in globals():
 if "SND_design" not in globals():
     SND_design = 1
 
-with open() as file:
+with open(targetYaml) as file:
     config = yaml.safe_load(file)
     target_geo = AttrDict(config['target'])
     
@@ -337,6 +339,15 @@ with ConfigRegistry.register_config("basic") as c:
     c.hadronAbsorber.WithConstField = True
     c.muShield.WithConstField = True
 
+    target_geo.length = (target_geo.Nplates-1)*target_geo.sl
+    for width,n in target_geo.L,target_geo.N:
+        target_geo.length += width*n 
+    # interaction point, start of target
+
+    #C-AMM: this seems completely useless, z is 0 now....right ?
+    # do we need z and z0 also, or just one of them ?
+    #target_geo.z  =  c.hadronAbsorber.z - c.hadronAbsorber.length/2. - target_geo.length/2.
+    #target_geo.z0 =  target_geo.z - target_geo.length/2.
 
 # for the digitizing step
     c.strawtubes.v_drift = 1./(30*u.ns/u.mm) # for baseline NA62 5mm radius straws)
