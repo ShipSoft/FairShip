@@ -43,9 +43,17 @@ globalDesigns = {
           'nud' : 4,
           'caloDesign' : 3,
           'strawDesign' : 10
-     }
+     },
+     '2025' : {
+          'dy' : 6.,
+          'dv' : 6,
+          'ds' : 8,
+          'nud' : 4,
+          'caloDesign' : 2,
+          'strawDesign' : 10
+     },
 }
-default = '2023'
+default = '2025'
 
 parser = ArgumentParser()
 group = parser.add_mutually_exclusive_group()
@@ -95,8 +103,8 @@ parser.add_argument("--caloDesign",
                     default=globalDesigns[default]['caloDesign'],
                     type=int,
                     choices=[0,2,3])
-parser.add_argument("--strawDesign", dest="strawDesign", help="simplistic tracker design,  4=sophisticated straw tube design, horizontal wires (default), 10=2cm straw"
-                                            ,required=False, default=globalDesigns[default]['strawDesign'], type=int)
+parser.add_argument("--strawDesign", help="Tracker design: 4=sophisticated straw tube design, horizontal wires; 10=straw of 2 cm diameter (default)",
+                    default=globalDesigns[default]['strawDesign'], type=int, choices=[4,10])
 parser.add_argument("-F",        dest="deepCopy",  help="default = False: copy only stable particles to stack, except for HNL events", required=False, action="store_true")
 parser.add_argument("-t", "--test", dest="testFlag",  help="quick test", required=False,action="store_true")
 parser.add_argument("--dry-run", dest="dryrun",  help="stop after initialize", required=False,action="store_true")
@@ -123,6 +131,7 @@ parser.add_argument(
 )
 
 parser.add_argument("--SND", dest="SND", help="Activate SND.", action='store_true')
+parser.add_argument("--SND_design", help="Choose SND design among [1,2,...]. 1: old version, 2: MTC", type=int, choices=[1, 2], default=1)
 parser.add_argument("--noSND", dest="SND", help="Deactivate SND. NOOP, as it currently defaults to off.", action='store_false')
 
 options = parser.parse_args()
@@ -202,6 +211,7 @@ ship_geo = ConfigRegistry.loadpy(
      shieldName=options.shieldName,
      DecayVolumeMedium=options.decayVolMed,
      SND=options.SND,
+     SND_design=options.SND_design
 )
 
 # Output file name, add dy to be able to setup geometry with ambiguities.
@@ -614,6 +624,7 @@ if simEngine == "MuonBack":
  branches.Add(ROOT.TObjString('TimeDetPoint'))
  branches.Add(ROOT.TObjString('MCEventHeader'))
  branches.Add(ROOT.TObjString('UpstreamTaggerPoint'))
+ branches.Add(ROOT.TObjString('MTCdetPoint'))
  branches.Add(ROOT.TObjString('sGeoTracks'))
 
  sTree.AutoSave()

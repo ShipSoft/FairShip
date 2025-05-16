@@ -46,7 +46,7 @@ class strawtubes: public FairDetector
     /**      has to be called after each event to reset the containers      */
     virtual void   Reset();
 
-    void SetZpositions(Double_t z0, Double_t z1, Double_t z2, Double_t z3, Double_t z4);
+    void SetZpositions(Double_t z1, Double_t z2, Double_t z3, Double_t z4);
     void SetStrawLength(Double_t strawlength);
     void SetInnerStrawDiameter(Double_t innerstrawdiameter);
     void SetOuterStrawDiameter(Double_t outerstrawdiameter);
@@ -61,10 +61,8 @@ class strawtubes: public FairDetector
     void SetFrameMaterial(TString framematerial);
     void SetDeltazView(Double_t deltazview);
     void SetStrawLength12(Double_t strawlength12);
-    void SetStrawLengthVeto(Double_t strawlengthveto);
     void SetVacBox_x(Double_t vacbox_x);
     void SetVacBox_y(Double_t vacbox_y);
-    void SetVetoYDim(Double_t vetoydim);
     void SetTr12YDim(Double_t tr12ydim);
     void SetTr34YDim(Double_t tr34ydim);
     void StrawDecode(Int_t detID,int &statnb,int &vnb,int &pnb,int &lnb, int &snb);
@@ -115,14 +113,12 @@ class strawtubes: public FairDetector
     Double_t     fTime;                   //!  time
     Double_t     fLength;                 //!  length
     Double_t     fELoss;                  //!  energy loss
-    Double_t     fT0z;                    //!  z-position of veto station
     Double_t     fT1z;                    //!  z-position of tracking station 1
     Double_t     fT2z;                    //!  z-position of tracking station 2
     Double_t     fT3z;                    //!  z-position of tracking station 3
     Double_t     fT4z;                    //!  z-position of tracking station 4
     Double_t     fStraw_length;           //!  Length (y) of a straw
     Double_t     fStraw_length_12;        //!  strawlength for tracking station 1 & 2
-    Double_t     fStraw_length_veto;      //!  strawlength for veto station
     Double_t     fInner_Straw_diameter;   //!  Inner Straw diameter
     Double_t     fOuter_Straw_diameter;   //!  Outer Straw diameter
     Double_t     fStraw_pitch;            //!  Distance (x) between straws in one layer
@@ -141,10 +137,8 @@ class strawtubes: public FairDetector
     Double_t     fDeltaz_view;            //!  Distance (z) between views
     Double_t     fVacBox_x;               //!  x size of station vacuumbox
     Double_t     fVacBox_y;               //!  y size of station vacuumbox
-    Double_t     fvetoydim;               //!  y size of veto station
     Double_t     ftr12ydim;               //!  y size of tr12 stations
     Double_t     ftr34ydim;               //!  y size of tr34 stations
-    Int_t        fStraws_per_layer_veto;  //!  Number of straws in one veto layer
     Int_t        fStraws_per_layer_tr12;  //!  Number of straws in one tr12 layer
     Int_t        fStraws_per_layer_tr34;  //!  Number of straws in one tr34 layer
     Double_t     v_drift;                 //! drift velocity
@@ -157,7 +151,7 @@ class strawtubes: public FairDetector
     strawtubes(const strawtubes&);
     strawtubes& operator=(const strawtubes&);
     Int_t InitMedium(const char* name);
-    ClassDef(strawtubes,5)
+    ClassDef(strawtubes, 4)
 };
 
 #endif //STRAWTUBES_H

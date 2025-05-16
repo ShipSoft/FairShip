@@ -6,7 +6,7 @@ from ShipGeoConfig import AttrDict, ConfigRegistry
 # nuTauTargetDesign  =   #0 = TP, 1 = NEW with magnet, 2 = NEW without magnet, 3 = 2018 design
 
 # targetOpt      = 5  # 0=solid   >0 sliced, 5: 5 pieces of tungsten, 4 air slits, 17: molybdenum tungsten interleaved with H20
-# strawOpt       = 0  # 0=simplistic tracking stations defined in veto.cxx  1=detailed strawtube design 4=sophisticated straw tube design, horizontal wires (default) 10=2cm straw diameter for 2018 layout
+# strawOpt       = 0  # 0=simplistic tracking stations defined in veto.cxx  1=detailed strawtube design 4=sophisticated straw tube design, horizontal wires 10=2 cm straw diameter for compact layout (default)
 # tankDesign = 5 #  4=TP elliptical tank design, 5 = optimized conical rectangular design, 6=5 without segment-1
 
 # Here you can select the MS geometry, if the MS design is using SC magnet change the hybrid to True
@@ -49,7 +49,7 @@ if "nuTauTargetDesign" not in globals():
 if "targetYaml" not in globals():
     targetYaml = r.gSystem.Getenv("FAIRSHIP") + "/geometry/target_config_old.yaml"
 if "strawDesign" not in globals():
-    strawDesign = 4
+    strawDesign = 10
 if "tankDesign" not in globals():
     tankDesign = 6
 if "CaloDesign" not in globals():
@@ -70,6 +70,8 @@ if "shieldName" not in globals():
     shieldName = None
 if "SND" not in globals():
     SND = True
+if "SND_design" not in globals():
+    SND_design = 1
 
 with open() as file:
     config = yaml.safe_load(file)
@@ -79,6 +81,7 @@ with ConfigRegistry.register_config("basic") as c:
 
     c.DecayVolumeMedium = DecayVolumeMedium
     c.SND = SND
+    c.SND_design = SND_design
 
     if not shieldName:
         raise ValueError("shieldName must not be empty!")
@@ -116,7 +119,7 @@ with ConfigRegistry.register_config("basic") as c:
     magnetIncrease    = 100.*u.cm
     # make z coordinates for the decay volume and tracking stations relative to T4z
     # eventually, the only parameter which needs to be changed when the active shielding lenght changes.
-    z4=2438.*u.cm+magnetIncrease+extraVesselLength
+    c.z = 31.450 * u.m  # Relative position of spectrometer magnet to decay vessel centre
     if strawDesign != 4 and strawDesign != 10:
      print("this design ",strawDesign," is not supported, use strawDesign = 4 or 10")
      1/0
@@ -131,38 +134,38 @@ with ConfigRegistry.register_config("basic") as c:
      c.chambers.Rmin = 245.*u.cm
      c.chambers.Rmax = 250.*u.cm
      # positions and lenghts of vacuum tube segments
-     zset=z4-4666.*u.cm-magnetIncrease-extraVesselLength
+     zset = -4666. * u.cm - magnetIncrease - extraVesselLength
      c.Chamber1 = AttrDict(z=zset)
-     zset=z4-2628.*u.cm-magnetIncrease-extraVesselLength/2.
+     zset = -2628. * u.cm - magnetIncrease - extraVesselLength / 2.
      c.Chamber2 = AttrDict(z=zset)
-     zset=z4-740.*u.cm-magnetIncrease
+     zset = -740. * u.cm - magnetIncrease
      c.Chamber3 = AttrDict(z=zset)
-     zset=z4-420.*u.cm-magnetIncrease/2.
+     zset = -420. * u.cm - magnetIncrease / 2.
      c.Chamber4 = AttrDict(z=zset)
-     zset=z4-100.*u.cm
+     zset = -100. * u.cm
      c.Chamber5 = AttrDict(z=zset)
-     zset=z4+30.*u.cm+windowBulge/2.
+     zset = 30. * u.cm + windowBulge / 2.
      c.Chamber6 = AttrDict(z=zset)
 
      c.xMax = 2 * u.m  # max horizontal width at T4
+     TrGap = 2 * u.m  # Distance between Tr1/2 and Tr3/4
+     TrMagGap = 3.5 * u.m  # Distance from spectrometer magnet centre to the next tracking stations
      #
+     z4 = c.z + TrMagGap + TrGap
      c.TrackStation4 = AttrDict(z=z4)
-     zset=z4-200.*u.cm
-     c.TrackStation3 = AttrDict(z=zset)
-     zset=z4-640.*u.cm-magnetIncrease
-     c.TrackStation2 = AttrDict(z=zset)
-     zset=z4-840.*u.cm-magnetIncrease
-     c.TrackStation1 = AttrDict(z=zset)
-     zset=z4-4406.*u.cm-magnetIncrease-extraVesselLength
-     c.vetoStation   = AttrDict(z=zset)
+     z3 = c.z + TrMagGap
+     c.TrackStation3 = AttrDict(z=z3)
+     z2 = c.z - TrMagGap
+     c.TrackStation2 = AttrDict(z=z2)
+     z1 = c.z - TrMagGap - TrGap
+     c.TrackStation1 = AttrDict(z=z1)
 
-    c.z = c.TrackStation2.z + 0.5 * (c.TrackStation3.z - c.TrackStation2.z)
     c.scintillator = AttrDict(z=0*u.cm)
     c.scintillator.Rmin = 251.*u.cm
     c.scintillator.Rmax = 260.*u.cm
 
     c.strawtubes = AttrDict(z=0*u.cm)
-    if strawDesign==4:
+    if strawDesign == 4:
      c.strawtubes.InnerStrawDiameter = 0.975*u.cm
      c.strawtubes.StrawPitch         = 1.76*u.cm
      c.strawtubes.DeltazLayer        = 1.1*u.cm
@@ -172,7 +175,7 @@ with ConfigRegistry.register_config("basic") as c:
      c.strawtubes.FrameMaterial      = "aluminium"
      c.strawtubes.FrameLateralWidth  = 1.*u.cm
      c.strawtubes.DeltazFrame        = 10.*u.cm
-    elif strawDesign==10:  # 10 - baseline for 2018
+    elif strawDesign == 10:  # 10 - baseline
      c.strawtubes.InnerStrawDiameter = 1.9928 * u.cm
      c.strawtubes.StrawPitch = 2. * u.cm
      c.strawtubes.DeltazLayer = 1.732 * u.cm
@@ -213,7 +216,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.TimeDet.DZ = (c.TimeDet.dzBarRow + c.TimeDet.dzBarCol + c.TimeDet.zBar) / 2
     c.TimeDet.DX = 225 * u.cm
     c.TimeDet.DY = 325 * u.cm
-    c.TimeDet.z = c.Chamber6.z + c.chambers.Tub6length + c.TimeDet.DZ + 1*u.cm # safety margin
+    c.TimeDet.z = 37.800 * u.m - c.TimeDet.dzBarRow * 3 / 2  # Relative position of first layer of timing detector to decay vessel centre
 
     if CaloDesign==0:
      c.HcalOption = 1
@@ -231,9 +234,9 @@ with ConfigRegistry.register_config("basic") as c:
      1/0
 
     c.SplitCal = AttrDict(z=0)
-    c.SplitCal.ZStart = c.TimeDet.z + c.TimeDet.DZ + 5*u.cm
-    c.SplitCal.XMax = 480.*u.cm/2. #290.*u.cm  #half length
-    c.SplitCal.YMax = 720. * u.cm / 2. #510.*u.cm * c.Yheight / (10.*u.m)   #half length
+    c.SplitCal.ZStart = 38.450 * u.m  # Relative start z of split cal to decay vessel centre
+    c.SplitCal.XMax = 4 * u.m / 2  # half length
+    c.SplitCal.YMax = 6 * u.m / 2  # half length
     c.SplitCal.Empty = 0*u.cm
     c.SplitCal.BigGap = 100*u.cm
     c.SplitCal.ActiveECALThickness = 0.56*u.cm
@@ -255,18 +258,20 @@ with ConfigRegistry.register_config("basic") as c:
     c.SplitCal.third_precision_layer=13
     c.SplitCal.ActiveECAL_gas_gap=10*u.cm
     c.SplitCal.NModulesInX = 2
-    c.SplitCal.NModulesInY = 4
+    c.SplitCal.NModulesInY = 3
     c.SplitCal.NStripsPerModule = 50
-    c.SplitCal.StripHalfWidth = 3*u.cm # c.SplitCal.XMax/(c.SplitCal.NStripsPerModule*c.SplitCal.NModulesInX)
-    c.SplitCal.StripHalfLength = 150*u.cm # c.SplitCal.YMax/c.SplitCal.NModulesInY
+    c.SplitCal.StripHalfWidth = c.SplitCal.XMax / (c.SplitCal.NStripsPerModule * c.SplitCal.NModulesInX)
+    c.SplitCal.StripHalfLength = c.SplitCal.YMax / c.SplitCal.NModulesInY
     c.SplitCal.SplitCalThickness=(c.SplitCal.FilterECALThickness_first-c.SplitCal.FilterECALThickness)+(c.SplitCal.FilterECALThickness+c.SplitCal.ActiveECALThickness)*c.SplitCal.nECALSamplings+c.SplitCal.BigGap
 
-    c.ecal  =  AttrDict(z = c.TimeDet.z + c.TimeDet.DZ  + 5*u.cm)  #
+    zecal = 38.450 * u.m  # Relative start z of ECAL to decay vessel centre
+    c.ecal = AttrDict(z=zecal)
     c.ecal.File = EcalGeoFile
     hcalThickness = 232*u.cm
     if  c.HcalOption == 2: hcalThickness = 110*u.cm  # to have same interaction length as before
     if not c.HcalOption < 0:
-     c.hcal =  AttrDict(z=c.ecal.z + hcalThickness/2. + 45.*u.cm  )
+     zhcal = 40.850 * u.m  # Relative position of HCAL to decay vessel centre
+     c.hcal = AttrDict(z=zhcal)
      c.hcal.hcalSpace = hcalThickness + 5.5*u.cm
      c.hcal.File  =  HcalGeoFile
     else:
@@ -339,18 +344,13 @@ with ConfigRegistry.register_config("basic") as c:
 # size of straws
     c.strawtubes.StrawLength     = c.xMax
     if tankDesign == 5:
-       zF = target_geo.z0+c.zFocusX
        c.strawtubes.StrawLength12   = c.xMax*(c.TrackStation1.z-2*c.strawtubes.DeltazView-zF)/(z4-zF)
-       c.strawtubes.StrawLengthVeto = c.xMax*(c.vetoStation.z-c.strawtubes.DeltazView-zF)/(z4-zF)
        zF = target_geo.z0+c.zFocusY
-       c.strawtubes.vetoydim           = c.Yheight/2.*(c.vetoStation.z-c.strawtubes.DeltazView-zF)/(z4-zF)
+
        c.strawtubes.tr12ydim           = c.Yheight/2.*(c.TrackStation1.z-2*c.strawtubes.DeltazView-zF)/(z4-zF)
        c.strawtubes.tr34ydim           = int(c.Yheight/2.)
     else:
        c.strawtubes.StrawLength12   = c.strawtubes.StrawLength
-       c.strawtubes.StrawLengthVeto = c.strawtubes.StrawLength
-       if tankDesign > 5: c.strawtubes.StrawLengthVeto = 0.5 # switch of veto strawtracker
-       c.strawtubes.vetoydim           = int(c.Yheight/2.)
        c.strawtubes.tr12ydim           = int(c.Yheight/2.)
        c.strawtubes.tr34ydim           = int(c.Yheight/2.)
 
@@ -358,7 +358,7 @@ with ConfigRegistry.register_config("basic") as c:
     #CAMM - For Nu tau detector, keep only these parameters which are used by others...
     c.tauMudet = AttrDict(z=0*u.cm)
     c.tauMudet.Ztot = 3 * u.m #space allocated to Muon spectrometer
-    c.tauMudet.zMudetC = c.Chamber1.z -c.chambers.Tub1length - c.tauMudet.Ztot/2 -31*u.cm
+    c.tauMudet.zMudetC = c.muShield.z + c.muShield.length / 2. - c.tauMudet.Ztot / 2. - 70 * u.cm
 
 
     #Upstream Tagger
@@ -399,4 +399,4 @@ with ConfigRegistry.register_config("basic") as c:
     c.UpstreamTagger.X_Strip = 229 * u.cm  - UBT_x_crop
     c.UpstreamTagger.X_Strip64 = 1.534 * u.cm
     c.UpstreamTagger.Y_Strip64 = 111 * u.cm
-    c.UpstreamTagger.Z_Position = c.tauMudet.zMudetC + (c.tauMudet.Ztot)/2 + 12.0*u.cm
+    c.UpstreamTagger.Z_Position = -25.400 * u.m  # Relative position of UBT to decay vessel centre
