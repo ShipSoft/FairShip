@@ -2,6 +2,8 @@
 // 7/10/2015
 // E. van Herwijnen eric.van.herwijnen@cern.ch
 // Also contains (for the moment) the veto station
+//
+// 23/08/2024 updated by W.-C. Marty Lee
 
 #include "strawtubes.h"
 #include "strawtubesPoint.h"
@@ -217,7 +219,6 @@ void strawtubes::SetStrawPitch(Double32_t strawpitch)
 {
      fStraw_pitch = strawpitch;                                 //!  Distance (x) between straws in one layer
      fOffset_layer12 = strawpitch/2;
-     fOffset_plane12 = strawpitch/4;
 }
 
 void strawtubes::SetDeltazLayer(Double32_t deltazlayer)
@@ -225,19 +226,14 @@ void strawtubes::SetDeltazLayer(Double32_t deltazlayer)
      fDeltaz_layer12 = deltazlayer;                              //! Distance (z) between layer 1&2
 }
 
-void strawtubes::SetDeltazPlane(Double32_t deltazplane)
-{
-     fDeltaz_plane12 = deltazplane;                              //! Distance (z) between plane 1&2
-}
-
 void strawtubes::SetStrawsPerLayer(Int_t strawsperlayer)
 {
      fStraws_per_layer = strawsperlayer;                         //! number of straws in one layer
 }
 
-void strawtubes::SetStereoAngle(Int_t stereoangle)
+void strawtubes::SetStereoAngle(Double_t stereoangle)
 {
-     fView_angle = stereoangle;                                  //! Stereo angle of planes in a view
+     fView_angle = stereoangle;                                  //! Stereo angle of layers in a view
 }
 
 void strawtubes::SetWireThickness(Double32_t wirethickness)
@@ -292,8 +288,6 @@ void strawtubes::ConstructGeometry()
     Double_t framewidth = 40.;
     //width of view
     Double_t viewwidth = fDeltaz_view-eps;
-    //width of plane
-    Double_t planewidth = fOuter_Straw_diameter+fDeltaz_layer12-eps;
     //width of layer
     Double_t layerwidth = fOuter_Straw_diameter;
 
@@ -319,7 +313,7 @@ void strawtubes::ConstructGeometry()
 
 
     //Veto station
-    //vnb=view number; pnb=plane number; lnb=layer number; snb=straw number
+    //vnb=view number; lnb=layer number; snb=straw number
 
     TString nmveto = "Veto";
     TStationz=fT0z;
@@ -357,7 +351,7 @@ void strawtubes::ConstructGeometry()
 
       TGeoTranslation t5p;
 
-      for (Int_t pnb=0; pnb<2; pnb++) {
+      /* for (Int_t pnb=0; pnb<2; pnb++) {
 	 //plane loop
          TString nmplane = nmview+"_plane_"; nmplane += pnb;
 	 //width of the planes: z distance between layers + outer straw diameter
@@ -369,7 +363,7 @@ void strawtubes::ConstructGeometry()
 	 planebox->SetVisibility(kFALSE);
          //planebox->VisibleDaughters(kTRUE);
 
-    /*     TGeoRotation r5l;
+         TGeoRotation r5l;
 	 TGeoTranslation t5l;
          for (Int_t lnb=0; lnb<2; lnb++) {
            TString nmlayer = nmplane+"_layer_"; nmlayer += lnb;
@@ -430,15 +424,15 @@ void strawtubes::ConstructGeometry()
 	     //end of straw loop
            }
 	   //end of layer loop
-        }*/
+        }
         //end of plane loop
-      }
+      } */
       //end of view loop
      }
      // end of veto station loop
 
     //Tracking stations
-    //statnb=station number; vnb=view number; pnb=plane number; lnb=layer number; snb=straw number
+    //statnb=station number; vnb=view number; lnb=layer number; snb=straw number
     TGeoBBox *vacbox = new TGeoBBox("vacbox",  fVacBox_x, fVacBox_y, 2.*fDeltaz_view+eps );
 
     for (Int_t statnb=0;statnb<4;statnb++) {
@@ -534,54 +528,39 @@ void strawtubes::ConstructGeometry()
                wire->SetLineColor(6);
 	       //wire->SetVisibility(kTRUE);
 
-        for (Int_t pnb=0; pnb<2; pnb++) {
-	   //plane loop
-           TString nmplane = nmview+"_plane_"; nmplane += pnb;
-	   //width of the planes: z distance between layers + outer straw diameter
-	   TGeoBBox *plane = new TGeoBBox("plane box", fStraw_length-eps, fStraw_length-eps, planewidth/2.);
-           TGeoVolume *planebox = new TGeoVolume(nmplane, plane, med);
-	   //the planebox sits in the viewframe
-	   //hence z translate the plane wrt to the view
-	   viewframe->AddNode(planebox, statnb*10000000+vnb*1000000+pnb*100000,new TGeoTranslation(0, 0,(pnb-1./2.)*fDeltaz_plane12));
-	   //planebox->SetVisibility(kFALSE);
-           //planebox->VisibleDaughters(kTRUE);
-           TGeoRotation r5l;
-	   TGeoTranslation t5l;
            for (Int_t lnb=0; lnb<2; lnb++) {
              TString nmlayer = nmplane+"_layer_"; nmlayer += lnb;
-	     //width of the layer: (plane width-2eps)/2
 	     TGeoBBox *layer = new TGeoBBox("layer box", fStraw_length-2*eps, fStraw_length-2*eps, layerwidth/2.);
              TGeoVolume *layerbox = new TGeoVolume(nmlayer, layer, med);
-	     //z translate the layerbox wrt the plane box (which is already rotated)
-	     planebox->AddNode(layerbox, statnb*10000000+vnb*1000000+pnb*100000+lnb*10000,new TGeoTranslation(0,0,(lnb-1./2.)*fDeltaz_layer12));
+	     //the layerbox sits in the viewframe
+	     //hence z translate the layer wrt the view
+	     vac->AddNode(layerbox, statnb*10000000+vnb*1000000+lnb*10000,new TGeoTranslation(0,0,(lnb-1./2.)*fDeltaz_layer12));
 	     //layerbox->SetVisibility(kTRUE);
 	     //layerbox->VisibleDaughters(kTRUE);
-	     //std::cout <<nmlayer<<" zpos "<<TStationz-(1./2.-vnb)*(fDeltaz_view)+(pnb-1./2.)*fDeltaz_plane12+(lnb-1./2.)*fDeltaz_layer12<<std::endl;
+	     //std::cout <<nmlayer<<" zpos "<<TStationz-(1./2.-vnb)*(fDeltaz_view)+(lnb-1./2.)*fDeltaz_layer12<<std::endl;
 
              //layer loop
 	     TGeoRotation r6s;
 	     TGeoTranslation t6s;
              for (Int_t snb=0; snb<fStraws_per_layer; snb++) {
                //straw loop
-	       t6s.SetTranslation(fStraw_length-fStraw_pitch*snb-8*eps+fOffset_plane12*pnb+lnb*fOffset_layer12, 0,0);
+	       t6s.SetTranslation(fStraw_length-fStraw_pitch*snb-8*eps+lnb*fOffset_layer12, 0,0);
 	       //straws are tubes defined along the z-axis, so need to rotate them first by 90 degrees around the x-axis to get them vertical
-	       //then x translate the straws according to their plane, layer and number
+	       //then x translate the straws according to their layer and number
                r6s.SetAngles(0,90,0);
 	       TGeoCombiTrans c6s(t6s, r6s);
                TGeoHMatrix *h6s = new TGeoHMatrix(c6s);
 
 
-	       layerbox->AddNode(straw,statnb*10000000+vnb*1000000+pnb*100000+lnb*10000+1000+snb,h6s);
-	       layerbox->AddNode(gas,statnb*10000000+vnb*1000000+pnb*100000+lnb*10000+2000+snb,h6s);
-               layerbox->AddNode(wire,statnb*10000000+vnb*1000000+pnb*100000+lnb*10000+3000+snb,h6s);
+	       layerbox->AddNode(straw,statnb*10000000+vnb*1000000+lnb*10000+1000+snb,h6s);
+	       layerbox->AddNode(gas,statnb*10000000+vnb*1000000+lnb*10000+2000+snb,h6s);
+               layerbox->AddNode(wire,statnb*10000000+vnb*1000000+lnb*10000+3000+snb,h6s);
 	       //only the straws are sensitive
 
 	     //end of straw loop
              }
 	  //end of layer loop
           }
-	 //end of plane loop
-         }
 	//end of view loop
         }
      //end of station

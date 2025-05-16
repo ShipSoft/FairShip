@@ -215,7 +215,7 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method):
                 hits[key] = numpy.array(hits[key])
 
             # Decoding
-            statnb, vnb, pnb, lnb, snb = decodeDetectorID(hits['DetID'])
+            statnb, vnb, lnb, snb = decodeDetectorID(hits['DetID'])
             is_stereo = ((vnb == 1) + (vnb == 2))
             is_y = ((vnb == 0) + (vnb == 3))
             is_before = ((statnb == 1) + (statnb == 2))
@@ -556,8 +556,6 @@ def decodeDetectorID(detID):
         Station numbers.
     vnb : int or array-like
         View numbers.
-    pnb : int or array-like
-        Plane numbers.
     lnb : int or array-like
         Layer numbers.
     snb : int or array-like
@@ -566,11 +564,10 @@ def decodeDetectorID(detID):
 
     statnb = detID // 10000000
     vnb = (detID - statnb * 10000000) // 1000000
-    pnb = (detID - statnb * 10000000 - vnb * 1000000) // 100000
-    lnb = (detID - statnb * 10000000 - vnb * 1000000 - pnb * 100000) // 10000
-    snb = detID - statnb * 10000000 - vnb * 1000000 - pnb * 100000 - lnb * 10000 - 2000
+    lnb = (detID - statnb * 10000000 - vnb * 1000000) // 10000
+    snb = detID - statnb * 10000000 - vnb * 1000000 - lnb * 10000 - 2000
 
-    return statnb, vnb, pnb, lnb, snb
+    return statnb, vnb, lnb, snb
 
 ########################################################################################################################
 
@@ -635,10 +632,10 @@ def getReconstructibleTracks(iEvent, sTree, sGeo, ShipGeo):
     VetoStationEndZ = VetoStationZ + (ShipGeo.strawtubes.DeltazView + ShipGeo.strawtubes.OuterStrawDiameter) / 2
 
     TStationz = ShipGeo.TrackStation1.z
-    Zpos = TStationz - 3. /2. * ShipGeo.strawtubes.DeltazView - 1. / 2. * ShipGeo.strawtubes.DeltazPlane - 1. / 2. * ShipGeo.strawtubes.DeltazLayer
+    Zpos = TStationz - 3. /2. * ShipGeo.strawtubes.DeltazView - 1. / 2. * ShipGeo.strawtubes.DeltazLayer
     TStation1StartZ = Zpos - ShipGeo.strawtubes.OuterStrawDiameter / 2
 
-    Zpos = TStationz + 3. /2. * ShipGeo.strawtubes.DeltazView + 1. / 2. * ShipGeo.strawtubes.DeltazPlane + 1. / 2. * ShipGeo.strawtubes.DeltazLayer
+    Zpos = TStationz + 3. /2. * ShipGeo.strawtubes.DeltazView + 1. / 2. * ShipGeo.strawtubes.DeltazLayer
     TStation4EndZ = Zpos + ShipGeo.strawtubes.OuterStrawDiameter / 2
 
 
