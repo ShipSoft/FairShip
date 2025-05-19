@@ -89,7 +89,8 @@ parser.add_argument("--Nuage",     dest="nuage",  help="Use Nuage, neutrino gene
 parser.add_argument("--phiRandom", dest="phiRandom",  help="only relevant for muon background generator, random phi", required=False, action="store_true")
 parser.add_argument("--Cosmics",   dest="cosmics",  help="Use cosmic generator, argument switch for cosmic generator 0 or 1", required=False,  default=None)
 parser.add_argument("--MuDIS",     dest="mudis",  help="Use muon deep inelastic scattering generator", required=False, action="store_true")
-parser.add_argument("--xRange", dest="mudis_x_range", nargs=2,
+parser.add_argument("--xRange",
+                    dest="mudis_x_range", nargs=2,
                     help="lower and upper x limit of DIS interaction in cm",
                     required=False, default=[-500, 500], type=float)
 parser.add_argument("--yRange", dest="mudis_y_range", nargs=2,

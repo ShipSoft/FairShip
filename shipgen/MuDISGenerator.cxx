@@ -259,7 +259,7 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg)
     Double_t t_muon = mu[0][11];                 // in ns
     Double_t DIS_multiplicity = 1 / mu[0][12];   // 1/nDIS
 
-// calculate start/end positions along this muon, and amout of material in between
+    // calculate start/end positions along this muon, and amout of material in between
                     
     Double_t txmu=mu[0][1]/mu[0][3];
     Double_t tymu=mu[0][2]/mu[0][3];
@@ -303,21 +303,6 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg)
       return kTRUE;
     }
 
-    /*    if (max(start[1], startY) > min(end[1], endY)) {return kTRUE;}
-    Double_t max_of_start = max(start[0], startX);
-    Double_t min_of_end = min(end[0], endX);
-    if (max_of_start > min_of_end) {return kTRUE;}
-    
-    //then find the z range of the x-axis overlap
-    Double_t z_at_max=z-(x-max_of_start)/(txmu+1e-20);
-    Double_t z_at_min=z-(x-min_of_end)/(txmu+1e-20);
-    // finally check if for the latter z range there is also an overlap in the y axis - if none, continue
-    Double_t y_at_max=y-(z-z_at_max)*tymu;
-    Double_t y_at_min=y-(z-z_at_min)*tymu;
-    if (max( min(y_at_max, y_at_min), startY) > min( max(y_at_max, y_at_min), endY)) {
-       return kTRUE;
-    }*/
-    
     LOG(DEBUG) << "MuDIS: mu xyz position " << x << ", " << y << ", " << z;
     LOG(DEBUG) << "MuDIS: mu pxyz position " << mu[0][1] << ", " << mu[0][2] << ", " << mu[0][3];
     LOG(DEBUG) << "MuDIS: mu weight*DISmultiplicity  " << w;
@@ -348,11 +333,6 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg)
 	prob2int = 0.0;
 	continue;
       }
-
-      /*if (xmu<startX || xmu>endX || ymu<startY || ymu>endY){
-	prob2int=0.;
-	continue;
-	}*/
 
       // get local material at this point
       TGeoNode* node = gGeoManager->FindNode(xmu, ymu, zmu);
