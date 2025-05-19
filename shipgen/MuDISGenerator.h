@@ -40,7 +40,12 @@ class MuDISGenerator : public FairGenerator
     Double_t MeanMaterialBudget(const Double_t* start, const Double_t* end, Double_t* mparam);
 
  protected:
-  Double_t startZ, endZ, startX, endX, startY, endY;
+  Double_t startZ;
+  Double_t endZ;
+  Double_t startX;
+  Double_t endX;
+  Double_t startY;
+  Double_t endY;
   TClonesArray* iMuon ;
   TClonesArray* dPart ;
   TClonesArray* dPartSoft ;
