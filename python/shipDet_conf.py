@@ -350,8 +350,8 @@ def configure(run, ship_geo):
 
     TargetStation = ROOT.ShipTargetStation(
         "TargetStation",
-        ship_geo.target_geo.length,
-        ship_geo.target_geo.z,
+        ship_geo.target.length,
+        ship_geo.target.z,
         targetconfig['targetOpt'],
         target_geo.sl,
     )
