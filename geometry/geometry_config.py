@@ -338,17 +338,18 @@ with ConfigRegistry.register_config("basic") as c:
 
     with open(c.targetYaml) as file:
         config = yaml.safe_load(file)
-        target_geo = AttrDict(config['target'])
+        c.target_geo = AttrDict(config['target'])
 
-    target_geo.length = (target_geo.Nplates - 1) * target_geo.sl
+    target_length = (target_geo.Nplates - 1) * target_geo.sl
     for width, n in zip(target_geo.L, target_geo.N):
-        target_geo.length += width * n
+        target_length += width * n
+    c.target_geo.length = target_length
     # interaction point, start of target
 
     #C-AMM: this seems completely useless, z is 0 now....right ?
     # do we need z and z0 also, or just one of them ?
-    #target_geo.z  =  c.hadronAbsorber.z - c.hadronAbsorber.length/2. - target_geo.length/2.
-    #target_geo.z0 =  target_geo.z - target_geo.length/2.
+    c.target_geo.z  =  c.hadronAbsorber.z - c.hadronAbsorber.length / 2. - c.target_geo.length / 2.
+    c.target_geo.z0 =  c.target_geo.z - c.target_geo.length / 2.
 
 # for the digitizing step
     c.strawtubes.v_drift = 1./(30*u.ns/u.mm) # for baseline NA62 5mm radius straws)
@@ -357,7 +358,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.strawtubes.StrawLength     = c.xMax
     if tankDesign == 5:
        c.strawtubes.StrawLength12   = c.xMax*(c.TrackStation1.z-2*c.strawtubes.DeltazView-zF)/(z4-zF)
-       zF = target_geo.z0+c.zFocusY
+       zF = c.target_geo.z0 + c.zFocusY
 
        c.strawtubes.tr12ydim           = c.Yheight/2.*(c.TrackStation1.z-2*c.strawtubes.DeltazView-zF)/(z4-zF)
        c.strawtubes.tr34ydim           = int(c.Yheight/2.)
