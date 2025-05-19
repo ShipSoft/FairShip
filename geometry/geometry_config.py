@@ -75,15 +75,12 @@ if "SND" not in globals():
 if "SND_design" not in globals():
     SND_design = 1
 
-with open(targetYaml) as file:
-    config = yaml.safe_load(file)
-    target_geo = AttrDict(config['target'])
-
 with ConfigRegistry.register_config("basic") as c:
 
     c.DecayVolumeMedium = DecayVolumeMedium
     c.SND = SND
     c.SND_design = SND_design
+    c.targetYaml = targetYaml
 
     if not shieldName:
         raise ValueError("shieldName must not be empty!")
@@ -338,6 +335,10 @@ with ConfigRegistry.register_config("basic") as c:
 
     c.hadronAbsorber.WithConstField = True
     c.muShield.WithConstField = True
+
+    with open(c.targetYaml) as file:
+        config = yaml.safe_load(file)
+        target_geo = AttrDict(config['target'])
 
     target_geo.length = (target_geo.Nplates - 1) * target_geo.sl
     for width, n in zip(target_geo.L, target_geo.N):
