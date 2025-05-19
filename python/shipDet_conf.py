@@ -359,8 +359,8 @@ def configure(run, ship_geo):
     if targetconfig['targetOpt'] > 10:
         slices_length = ROOT.std.vector("float")()
         slices_material = ROOT.std.vector("std::string")()
-        for i in range(1, target_geo.Nplates+1):
-            for j in range(1, target_geo.N[i]+1):
+        for i in range(target_geo.Nplates):
+            for j in range(target_geo.N[i]):
                 slices_length.push_back(target_geo.L[i])
                 slices_material.push_back(target_geo.M[i])
         print(slices_material,slices_length)
