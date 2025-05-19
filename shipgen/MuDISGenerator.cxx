@@ -260,14 +260,14 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg)
     Double_t DIS_multiplicity = 1 / mu[0][12];   // 1/nDIS
 
     // calculate start/end positions along this muon, and amout of material in between
-                    
+
     Double_t txmu=mu[0][1]/mu[0][3];
     Double_t tymu=mu[0][2]/mu[0][3];
     start[0]=x-(z-start[2])*txmu;
     start[1]=y-(z-start[2])*tymu;
     end[0]=x-(z-end[2])*txmu;
     end[1]=y-(z-end[2])*tymu;
-    
+
     // skip the event if the muon trajectory doesn't intersect the pre-set x-y range
     // these steps save a lot of computing time!
     // first, look for overlaps in the x or y axes - if none, continue
@@ -326,7 +326,7 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg)
       zmu=gRandom->Uniform(start[2],end[2]);
       xmu=x-(z-zmu)*txmu;
       ymu=y-(z-zmu)*tymu;
-      
+
       // check if the selected interaction position is inside the pre-set x-y range
       //if not retry! This will force the generator to simulate interactions in our selected range!!!
       if (xmu < startX || xmu > endX || ymu < startY || ymu > endY) {
