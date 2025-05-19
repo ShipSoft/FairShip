@@ -340,8 +340,8 @@ with ConfigRegistry.register_config("basic") as c:
         config = yaml.safe_load(file)
         c.target_geo = AttrDict(config['target'])
 
-    target_length = (target_geo.Nplates - 1) * target_geo.sl
-    for width, n in zip(target_geo.L, target_geo.N):
+    target_length = (c.target_geo.Nplates - 1) * c.target_geo.sl
+    for width, n in zip(c.target_geo.L, c.target_geo.N):
         target_length += width * n
     c.target_geo.length = target_length
     # interaction point, start of target
