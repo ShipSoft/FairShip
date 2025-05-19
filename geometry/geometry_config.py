@@ -78,7 +78,7 @@ if "SND_design" not in globals():
 with open(targetYaml) as file:
     config = yaml.safe_load(file)
     target_geo = AttrDict(config['target'])
-    
+
 with ConfigRegistry.register_config("basic") as c:
 
     c.DecayVolumeMedium = DecayVolumeMedium
@@ -341,7 +341,7 @@ with ConfigRegistry.register_config("basic") as c:
 
     target_geo.length = (target_geo.Nplates-1)*target_geo.sl
     for width,n in target_geo.L,target_geo.N:
-        target_geo.length += width*n 
+        target_geo.length += width*n
     # interaction point, start of target
 
     #C-AMM: this seems completely useless, z is 0 now....right ?
