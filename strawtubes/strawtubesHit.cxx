@@ -33,34 +33,24 @@ strawtubesHit::strawtubesHit(Int_t detID, Float_t tdc)
 strawtubesHit::strawtubesHit(strawtubesPoint* p, Double_t t0)
   : ShipHit()
 {
+     Int_t statnb, vnb, lnb, snb;
      TVector3 start = TVector3();
      TVector3 stop  = TVector3();
      fDetectorID = p->GetDetectorID();
-     Int_t statnb, vnb, lnb, snb;
-     StrawDecode(fDetectorID, statnb, vnb, lnb, snb);
      strawtubes* module = dynamic_cast<strawtubes*> (FairRunSim::Instance()->GetListOfModules()->FindObject("Strawtubes") );
      Double_t v_drift       = module->StrawVdrift();
      Double_t sigma_spatial = module->StrawSigmaSpatial();
+     module->StrawDecode(fDetectorID, statnb, vnb, lnb, snb);
      module->StrawEndPoints(fDetectorID,start,stop);
      Double_t t_drift = fabs( gRandom->Gaus( p->dist2Wire(), sigma_spatial ) )/v_drift;
      fdigi = t0 + p->GetTime() + t_drift + ( stop[0]-p->GetX() )/ speedOfLight;
      flag = true;
 }
-// -----   Public method StrawDecode   -----------------------------------
-// -----   returns station, view, layer, straw number   ------------------
-void strawtubesHit::StrawDecode(Int_t detID, int &statnb, int &vnb, int &lnb, int &snb)
-{
-  statnb = detID / 1e6;
-  vnb = (detID - statnb * 1e6) / 1e5;
-  lnb = (detID - statnb * 1e6 - vnb * 1e5) / 1e4;
-  snb = detID - statnb * 1e6 - vnb * 1e5 - lnb * 1e4 - 2000;
-}
-// -----   Public method StrawEndPoints   --------------------------------
-// -----   returns top (left) and bottom (right) coordinate of straw -----
-void strawtubesHit::StrawEndPoints(Int_t fDetectorID, TVector3 &vbot, TVector3 &vtop)
+void strawtubesHit::StrawEndPoints(TVector3 &vbot, TVector3 &vtop)
 {
     Int_t statnb, vnb, lnb, snb;
-    StrawDecode(fDetectorID, statnb, vnb, lnb, snb);
+    strawtubes* module = dynamic_cast<strawtubes*> (FairRunSim::Instance()->GetListOfModules()->FindObject("Strawtubes"));
+    module->StrawDecode(fDetectorID, statnb, vnb, lnb, snb);
     TString stat = "Tr"; stat += statnb; stat += "_"; stat += statnb;
     TString view;
     switch (vnb) {
@@ -85,7 +75,7 @@ void strawtubesHit::StrawEndPoints(Int_t fDetectorID, TVector3 &vbot, TVector3 &
     prefix += view; prefix += "_";
     TString layer = prefix + "layer_"; layer += lnb; layer += "_"; layer += statnb; layer += vnb; layer += lnb; layer += "0000";
     TString wire = "wire_";
-    wire += (fDetectorID + 1000);
+    wire += fDetectorID + 1e3;
     TString path = "/"; path += stat; path += "/"; path += layer; path += "/"; path += wire;
     Bool_t rc = nav->cd(path);
     if (not rc) {

@@ -505,16 +505,16 @@ void strawtubes::ConstructGeometry()
     std::cout << "tracking stations added" << std::endl;
 }
 // -----   Public method StrawDecode    -------------------------------------------
-// -----   returns station layer ... numbers -----------------------------------
+// -----   returns station, view, layer, straw number -----------------------------------
 void strawtubes::StrawDecode(Int_t detID, int &statnb, int &vnb, int &lnb, int &snb)
 {
   statnb = detID / 1e6;
   vnb = (detID - statnb * 1e6) / 1e5;
   lnb = (detID - statnb * 1e6 - vnb * 1e5) / 1e4;
-  snb = detID - statnb * 1e6 - vnb * 1e5 - lnb * 1e4 - 2000;
+  snb = detID - statnb * 1e6 - vnb * 1e5 - lnb * 1e4 - 2e3;
 }
 // -----   Public method StrawEndPoints    -------------------------------------------
-// -----   returns top(left) and bottom(right) coordinate of straw -----------------------------------
+// -----   returns top (left) and bottom (right) coordinates of straw -----------------------------------
 void strawtubes::StrawEndPoints(Int_t fDetectorID, TVector3 &vbot, TVector3 &vtop)
 // method to get end points from TGeoNavigator
 {
@@ -544,7 +544,7 @@ void strawtubes::StrawEndPoints(Int_t fDetectorID, TVector3 &vbot, TVector3 &vto
     prefix += view; prefix += "_";
     TString layer = prefix + "layer_"; layer += lnb; layer += "_"; layer += statnb; layer += vnb; layer += lnb; layer += "0000";
     TString wire = "wire_";
-    wire += (fDetectorID + 1000);
+    wire += fDetectorID + 1e3;
     TString path = "/"; path += stat; path += "/"; path += layer; path += "/"; path += wire;
     Bool_t rc = nav->cd(path);
     if (not rc) {

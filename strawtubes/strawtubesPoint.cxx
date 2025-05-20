@@ -1,4 +1,7 @@
 #include "strawtubesPoint.h"
+#include "strawtubes.h"
+#include "FairRun.h"
+#include "FairRunSim.h"
 
 #include <iostream>
 #include <math.h>
@@ -21,7 +24,8 @@ strawtubesPoint::strawtubesPoint(Int_t trackID, Int_t detID,
   : FairMCPoint(trackID, detID, pos, mom, tof, length, eLoss), fPdgCode(pdgcode), fdist2Wire(dist)
 {
   Int_t statnb, vnb, lnb, snb;
-  StrawDecode(detID, statnb, vnb, lnb, snb);
+  strawtubes* module = dynamic_cast<strawtubes*> (FairRunSim::Instance()->GetListOfModules()->FindObject("Strawtubes"));
+  module->StrawDecode(detID, statnb, vnb, lnb, snb);
 }
 // -------------------------------------------------------------------------
 
@@ -42,12 +46,3 @@ void strawtubesPoint::Print() const
        << " cm,  Energy loss " << fELoss*1.0e06 << " keV" << endl;
 }
 // -------------------------------------------------------------------------
-// -----   Public method StrawDecode   -------------------------------------
-// -----   returns station, view, layer, straw number   --------------------
-void strawtubesPoint::StrawDecode(Int_t detID, int &statnb, int &vnb, int &lnb, int &snb)
-{
-  statnb = detID / 1e6;
-  vnb = (detID - statnb * 1e6) / 1e5;
-  lnb = (detID - statnb * 1e6 - vnb * 1e5) / 1e4;
-  snb = detID - statnb * 1e6 - vnb * 1e5 - lnb * 1e4 - 2000;
-}

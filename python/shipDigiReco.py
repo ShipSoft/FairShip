@@ -835,7 +835,7 @@ class ShipDigiReco:
       atrack_smeared_hits = list(atrack_y12) + list(atrack_stereo12) + list(atrack_y34) + list(atrack_stereo34)
       for sm in atrack_smeared_hits:
         detID = sm['detID']
-        station = self.digiStraw[sm['digiHit']].GetStatnb()
+        station = self.digiStraw[sm['digiHit']].GetStation()
         trID = i_track
         # Collect hits for track fit
         if trID not in hitPosLists:
@@ -853,7 +853,7 @@ class ShipDigiReco:
   else: # do fake pattern recognition
    for sm in self.SmearedHits:
     detID = self.digiStraw[sm['digiHit']].GetDetectorID()
-    station = self.digiStraw[sm['digiHit']].GetStatnb()
+    station = self.digiStraw[sm['digiHit']].GetStation()
     trID = self.sTree.strawtubesPoint[sm['digiHit']].GetTrackID()
     if trID not in hitPosLists:
       hitPosLists[trID]     = ROOT.std.vector('TVectorD')()
