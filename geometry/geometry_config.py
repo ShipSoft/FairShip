@@ -1,3 +1,4 @@
+import os
 import shipunit as u
 import ROOT as r
 from ShipGeoConfig import AttrDict, ConfigRegistry
@@ -49,7 +50,7 @@ if "nuTargetPassive" not in globals():
 if "nuTauTargetDesign" not in globals():
     nuTauTargetDesign = 4
 if "targetYaml" not in globals():
-    targetYaml = r.gSystem.Getenv("FAIRSHIP") + "/geometry/target_config_old.yaml"
+    targetYaml = os.path.expandvars("$FAIRSHIP/geometry/target_config_old.yaml")
 if "strawDesign" not in globals():
     strawDesign = 10
 if "tankDesign" not in globals():
