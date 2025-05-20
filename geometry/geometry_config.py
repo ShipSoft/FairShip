@@ -370,17 +370,8 @@ with ConfigRegistry.register_config("basic") as c:
     c.strawtubes.v_drift = 1./(30*u.ns/u.mm) # for baseline NA62 5mm radius straws)
     c.strawtubes.sigma_spatial = 0.012*u.cm # according to Massi's TP section
 # size of straws
-    c.strawtubes.StrawLength     = c.xMax
-    if tankDesign == 5:
-       c.strawtubes.StrawLength12   = c.xMax*(c.TrackStation1.z-2*c.strawtubes.DeltazView-zF)/(z4-zF)
-       zF = c.target.z0 + c.zFocusY
-
-       c.strawtubes.tr12ydim           = c.Yheight/2.*(c.TrackStation1.z-2*c.strawtubes.DeltazView-zF)/(z4-zF)
-       c.strawtubes.tr34ydim           = int(c.Yheight/2.)
-    else:
-       c.strawtubes.StrawLength12   = c.strawtubes.StrawLength
-       c.strawtubes.tr12ydim           = int(c.Yheight/2.)
-       c.strawtubes.tr34ydim           = int(c.Yheight/2.)
+    c.strawtubes.StrawLength = c.xMax
+    c.strawtubes.trydim = int(c.Yheight / 2.)
 
 
     #CAMM - For Nu tau detector, keep only these parameters which are used by others...

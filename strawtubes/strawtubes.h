@@ -59,11 +59,9 @@ class strawtubes: public FairDetector
     void SetFrameLateralWidth(Double_t framelateralwidth);
     void SetFrameMaterial(TString framematerial);
     void SetDeltazView(Double_t deltazview);
-    void SetStrawLength12(Double_t strawlength12);
     void SetVacBox_x(Double_t vacbox_x);
     void SetVacBox_y(Double_t vacbox_y);
-    void SetTr12YDim(Double_t tr12ydim);
-    void SetTr34YDim(Double_t tr34ydim);
+    void SetTrYDim(Double_t trydim);
     void StrawDecode(Int_t detID, int &statnb, int &vnb, int &lnb, int &snb);
     void StrawEndPoints(Int_t detID, TVector3 &top, TVector3 &bot);
     void StrawEndPointsOriginal(Int_t detID, TVector3 &top, TVector3 &bot);
@@ -117,7 +115,6 @@ class strawtubes: public FairDetector
     Double_t     fT3z;                    //!  z-position of tracking station 3
     Double_t     fT4z;                    //!  z-position of tracking station 4
     Double_t     fStraw_length;           //!  Length (y) of a straw
-    Double_t     fStraw_length_12;        //!  strawlength for tracking station 1 & 2
     Double_t     fInner_Straw_diameter;   //!  Inner Straw diameter
     Double_t     fOuter_Straw_diameter;   //!  Outer Straw diameter
     Double_t     fStraw_pitch;            //!  Distance (x) between straws in one layer
@@ -134,10 +131,7 @@ class strawtubes: public FairDetector
     Double_t     fDeltaz_view;            //!  Distance (z) between views
     Double_t     fVacBox_x;               //!  x size of station vacuumbox
     Double_t     fVacBox_y;               //!  y size of station vacuumbox
-    Double_t     ftr12ydim;               //!  y size of tr12 stations
-    Double_t     ftr34ydim;               //!  y size of tr34 stations
-    Int_t        fStraws_per_layer_tr12;  //!  Number of straws in one tr12 layer
-    Int_t        fStraws_per_layer_tr34;  //!  Number of straws in one tr34 layer
+    Double_t     ftrydim;               //!  y size of stations
     Double_t     v_drift;                 //! drift velocity
     Double_t     sigma_spatial;           //! spatial resolution
     std::string fMedium;                  //! vacuum box medium

@@ -86,9 +86,6 @@ void strawtubesHit::StrawEndPoints(Int_t fDetectorID, TVector3 &vbot, TVector3 &
     TString layer = prefix + "layer_"; layer += lnb; layer += "_"; layer += statnb; layer += vnb; layer += lnb; layer += "0000";
     TString wire = "wire_";
     wire += (fDetectorID + 1000);
-    if (statnb < 3) {
-      wire = "wire_12_"; wire += (fDetectorID + 1000);
-    }
     TString path = "/"; path += stat; path += "/"; path += layer; path += "/"; path += wire;
     Bool_t rc = nav->cd(path);
     if (not rc) {
