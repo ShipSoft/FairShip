@@ -1,11 +1,5 @@
 targetOpt: 18 #equal to the number of sublayers of target
-#    if targetOpt < 10:
-#     c.target.sl            =  1*u.cm  # air slit total length
-#     c.target.length        =  50*u.cm + c.target.sl * (targetOpt-1)
-#          material,length
 target:
-    z: 0
-    z0: 0
     Nplates: 10 #number of sublayer blocks
     M:
         - "molybdenum"
