@@ -64,6 +64,7 @@ it in future.
 * Update tracker station z positions, fix UBT, TimeDet & SplitCal position (s. integration layout EDMS 3287817 v1)
 * feat(geometry): Make SplitCal the default calorimeter
 * Resize SplitCal to 4×6 m²
+* feat(geometry): Define target configuration in yaml
 
 ### Removed
 
