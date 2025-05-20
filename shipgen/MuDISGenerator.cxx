@@ -1,4 +1,5 @@
 #include "MuDISGenerator.h"
+
 #include "FairLogger.h"
 #include "FairPrimaryGenerator.h"
 #include "TFile.h"
@@ -18,7 +19,7 @@ using std::endl;
 using std::max;
 using std::min;
 
-const Double_t c_light = 29.9792458;//speed of light in cm/ns
+const Double_t c_light = 29.9792458;   // speed of light in cm/ns
 
 #include <math.h>
 
@@ -261,12 +262,12 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg)
 
     // calculate start/end positions along this muon, and amout of material in between
 
-    Double_t txmu=mu[0][1]/mu[0][3];
-    Double_t tymu=mu[0][2]/mu[0][3];
-    start[0]=x-(z-start[2])*txmu;
-    start[1]=y-(z-start[2])*tymu;
-    end[0]=x-(z-end[2])*txmu;
-    end[1]=y-(z-end[2])*tymu;
+    Double_t txmu = mu[0][1] / mu[0][3];
+    Double_t tymu = mu[0][2] / mu[0][3];
+    start[0] = x - (z - start[2]) * txmu;
+    start[1] = y - (z - start[2]) * tymu;
+    end[0] = x - (z - end[2]) * txmu;
+    end[1] = y - (z - end[2]) * tymu;
 
     // skip the event if the muon trajectory doesn't intersect the pre-set x-y range
     // these steps save a lot of computing time!
@@ -274,25 +275,25 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg)
 
     // Find the overlapping Y-range
     Double_t maxStartY = max(start[1], startY);
-    Double_t minEndY   = min(end[1], endY);
+    Double_t minEndY = min(end[1], endY);
 
     // Check if the Y ranges do not overlap — early exit if true
     if (maxStartY > minEndY) {
-      return kTRUE;
+        return kTRUE;
     }
 
     // Find the overlapping X-range
     Double_t maxStartX = max(start[0], startX);
-    Double_t minEndX   = min(end[0], endX);
+    Double_t minEndX = min(end[0], endX);
 
     // Check if the X ranges do not overlap — early exit if true
     if (maxStartX > minEndX) {
-      return kTRUE;
+        return kTRUE;
     }
 
     // Calculate the Z-coordinates corresponding to the X-overlap range
-    Double_t zAtMaxX = z - (x - maxStartX) / (txmu + 1e-20); // Avoid division by zero
-    Double_t zAtMinX = z - (x - minEndX)   / (txmu + 1e-20);
+    Double_t zAtMaxX = z - (x - maxStartX) / (txmu + 1e-20);   // Avoid division by zero
+    Double_t zAtMinX = z - (x - minEndX) / (txmu + 1e-20);
 
     // Compute Y-coordinates at the Z boundaries of the X-overlap
     Double_t yAtMaxZ = y - (z - zAtMaxX) * tymu;
@@ -300,7 +301,7 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg)
 
     // Check if Y ranges at the corresponding Z values do not overlap
     if (max(min(yAtMaxZ, yAtMinZ), startY) > min(max(yAtMaxZ, yAtMinZ), endY)) {
-      return kTRUE;
+        return kTRUE;
     }
 
     LOG(DEBUG) << "MuDIS: mu xyz position " << x << ", " << y << ", " << z;
@@ -322,33 +323,33 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg)
     LOG(DEBUG) << "Info MuDISGenerator Start prob2int while loop, bparam= " << bparam << ", " << bparam * 1.e8;
     LOG(DEBUG) << "Info MuDISGenerator What was maximum density, mparam[7]= " << mparam[7] << ", " << mparam[7] * 1.e8;
 
-    while (prob2int<gRandom->Uniform(0.,1.)) {
-      zmu=gRandom->Uniform(start[2],end[2]);
-      xmu=x-(z-zmu)*txmu;
-      ymu=y-(z-zmu)*tymu;
+    while (prob2int < gRandom->Uniform(0., 1.)) {
+        zmu = gRandom->Uniform(start[2], end[2]);
+        xmu = x - (z - zmu) * txmu;
+        ymu = y - (z - zmu) * tymu;
 
-      // check if the selected interaction position is inside the pre-set x-y range
-      //if not retry! This will force the generator to simulate interactions in our selected range!!!
-      if (xmu < startX || xmu > endX || ymu < startY || ymu > endY) {
-	prob2int = 0.0;
-	continue;
-      }
+        // check if the selected interaction position is inside the pre-set x-y range
+        // if not retry! This will force the generator to simulate interactions in our selected range!!!
+        if (xmu < startX || xmu > endX || ymu < startY || ymu > endY) {
+            prob2int = 0.0;
+            continue;
+        }
 
-      // get local material at this point
-      TGeoNode* node = gGeoManager->FindNode(xmu, ymu, zmu);
-      TGeoMaterial* mat = 0;
-      if (node && !gGeoManager->IsOutside())
-	mat = node->GetVolume()->GetMaterial();
-      LOG(DEBUG) << "Info MuDISGenerator: mat " << count << ", " << mat->GetName() << ", " << mat->GetDensity();
-      // density relative to Prob largest density along this trajectory, i.e. use rho(Pt)
-      prob2int = mat->GetDensity() / mparam[7];
-      if (prob2int > 1.) {
-	LOG(WARNING) << "MuDISGenerator: prob2int > Maximum density????";
-	LOG(WARNING) << "prob2int: " << prob2int;
-	LOG(WARNING) << "maxrho: " << mparam[7];
-	LOG(WARNING) << "material: " << mat->GetName();
-      }
-      count += 1;
+        // get local material at this point
+        TGeoNode* node = gGeoManager->FindNode(xmu, ymu, zmu);
+        TGeoMaterial* mat = 0;
+        if (node && !gGeoManager->IsOutside())
+            mat = node->GetVolume()->GetMaterial();
+        LOG(DEBUG) << "Info MuDISGenerator: mat " << count << ", " << mat->GetName() << ", " << mat->GetDensity();
+        // density relative to Prob largest density along this trajectory, i.e. use rho(Pt)
+        prob2int = mat->GetDensity() / mparam[7];
+        if (prob2int > 1.) {
+            LOG(WARNING) << "MuDISGenerator: prob2int > Maximum density????";
+            LOG(WARNING) << "prob2int: " << prob2int;
+            LOG(WARNING) << "maxrho: " << mparam[7];
+            LOG(WARNING) << "material: " << mat->GetName();
+        }
+        count += 1;
     }
 
     LOG(DEBUG) << "Info MuDISGenerator: prob2int " << prob2int << ", " << count;
