@@ -181,22 +181,18 @@ with ConfigRegistry.register_config("basic") as c:
 
     c.strawtubes = AttrDict(z=0*u.cm)
     if strawDesign == 4:
-     c.strawtubes.InnerStrawDiameter = 0.975*u.cm
-     c.strawtubes.StrawPitch         = 1.76*u.cm
-     c.strawtubes.DeltazLayer        = 1.1*u.cm
-     c.strawtubes.DeltazPlane        = 2.6*u.cm
-     c.strawtubes.YLayerOffset = c.strawtubes.StrawPitch  / 2.
-     c.strawtubes.YPlaneOffset = c.strawtubes.StrawPitch  / 4.
-     c.strawtubes.FrameMaterial      = "aluminium"
-     c.strawtubes.FrameLateralWidth  = 1.*u.cm
-     c.strawtubes.DeltazFrame        = 10.*u.cm
+     c.strawtubes.InnerStrawDiameter = 0.975 * u.cm
+     c.strawtubes.StrawPitch = 1.76 * u.cm
+     c.strawtubes.DeltazLayer = 1.1 * u.cm
+     c.strawtubes.YLayerOffset = c.strawtubes.StrawPitch / 2.
+     c.strawtubes.FrameMaterial = "aluminium"
+     c.strawtubes.FrameLateralWidth = 1. * u.cm
+     c.strawtubes.DeltazFrame = 10. * u.cm
     elif strawDesign == 10:  # 10 - baseline
      c.strawtubes.InnerStrawDiameter = 1.9928 * u.cm
      c.strawtubes.StrawPitch = 2. * u.cm
      c.strawtubes.DeltazLayer = 1.732 * u.cm
-     c.strawtubes.DeltazPlane = 0 * u.cm
      c.strawtubes.YLayerOffset = 1. * u.cm
-     c.strawtubes.YPlaneOffset = 0 * u.cm
      c.strawtubes.FrameMaterial = "steel"
      c.strawtubes.FrameLateralWidth = 0.17 * u.m
      c.strawtubes.DeltazFrame = 2.5 * u.cm
