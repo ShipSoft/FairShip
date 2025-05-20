@@ -497,9 +497,7 @@ def configure(run, ship_geo):
         Strawtubes.SetVacBox_y(ship_geo.strawtubes.VacBox_y)
         Strawtubes.SetStrawLength(ship_geo.strawtubes.StrawLength)
 
-        Strawtubes.SetStrawLength12(ship_geo.strawtubes.StrawLength12)
-        Strawtubes.SetTr12YDim(ship_geo.strawtubes.tr12ydim)
-        Strawtubes.SetTr34YDim(ship_geo.strawtubes.tr34ydim)
+        Strawtubes.SetTrYDim(ship_geo.strawtubes.trydim)
         # for the digitizing step
         Strawtubes.SetStrawResolution(
             getParameter("strawtubes.v_drift", ship_geo, latestShipGeo),
