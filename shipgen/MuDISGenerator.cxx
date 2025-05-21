@@ -14,8 +14,6 @@
 #include "TSystem.h"
 #include "TVectorD.h"
 
-using std::cout;
-using std::endl;
 using std::max;
 using std::min;
 
@@ -260,7 +258,7 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg)
     Double_t t_muon = mu[0][11];                 // in ns
     Double_t DIS_multiplicity = 1 / mu[0][12];   // 1/nDIS
 
-    // calculate start/end positions along this muon, and amout of material in between
+    // calculate start/end positions along this muon, and amount of material in between
 
     Double_t txmu = mu[0][1] / mu[0][3];
     Double_t tymu = mu[0][2] / mu[0][3];
