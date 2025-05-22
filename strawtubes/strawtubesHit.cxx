@@ -33,7 +33,7 @@ strawtubesHit::strawtubesHit(Int_t detID, Float_t tdc)
 strawtubesHit::strawtubesHit(strawtubesPoint* p, Double_t t0)
   : ShipHit()
 {
-     Int_t statnb, vnb, lnb, snb;
+     Int_t vnb, lnb, snb;
      TVector3 start = TVector3();
      TVector3 stop  = TVector3();
      fDetectorID = p->GetDetectorID();
@@ -48,7 +48,7 @@ strawtubesHit::strawtubesHit(strawtubesPoint* p, Double_t t0)
 }
 void strawtubesHit::StrawEndPoints(TVector3 &vbot, TVector3 &vtop)
 {
-    Int_t statnb, vnb, lnb, snb;
+    Int_t vnb, lnb, snb;
     strawtubes* module = dynamic_cast<strawtubes*> (FairRunSim::Instance()->GetListOfModules()->FindObject("Strawtubes"));
     module->StrawDecode(fDetectorID, statnb, vnb, lnb, snb);
     TString stat = "Tr"; stat += statnb; stat += "_"; stat += statnb;
