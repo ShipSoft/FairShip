@@ -1,5 +1,6 @@
 # analyze muon background /media/Data/HNL/PythiaGeant4Production/pythia8_Geant4_total.root
 import os,ROOT
+import ctypes
 import multiprocessing as mp
 from rootpyPickler import Unpickler
 ROOT.gInterpreter.ProcessLine('typedef double Double32_t')
@@ -445,17 +446,16 @@ def makeProd():
    if i==ncpu: break
    os.chdir('../'+prefix+str(i+1))
 
-def strawEncoding(detid):
- # statnb*10000000+vnb*1000000+pnb*100000+lnb*10000+1000+snb
- # vnb=view number; pnb=plane number; lnb=layer number; snb=straw number
- # statnb = station number. 1,2,3,4 tracking stations, 5 veto station
- vnb = ROOT.Long()
- pnb = ROOT.Long()
- lnb = ROOT.Long()
- snb = ROOT.Long()
- statnb = ROOT.Long()
- modules['Strawtubes'].StrawDecode(detid,statnb,vnb,pnb,lnb,snb)
- return [statnb,vnb,pnb,lnb,snb]
+def strawEncoding(detID):
+ # statnb * 1e6 + vnb * 1e5 + lnb * 1e4 + 1e3 + snb
+ # vnb = view number; lnb = layer number; snb = straw number
+ # statnb = station number. 1,2,3,4 tracking stations
+ vnb = ctypes.c_int()
+ lnb = ctypes.c_int()
+ snb = ctypes.c_int()
+ statnb = ctypes.c_int()
+ modules['Strawtubes'].StrawDecode(detID, statnb, vnb, lnb, snb)
+ return [statnb.value, vnb.value, lnb.value, snb.value]
 
 def detMap():
   sGeo = ROOT.gGeoManager
@@ -658,8 +658,8 @@ def executeOneFile(fn,output=None,pid=None):
      detID = ahit.GetDetectorID()
      if ahit.GetName() == 'strawtubesPoint':
       tmp = strawEncoding(detID)
-      # detName = str(tmp[0]*10000000+tmp[1]*1000000+tmp[2]*100000+tmp[3]*10000)
-      detName = "strawstation_"+str(tmp[0])
+      # detName = str(tmp[0] * 1e6 + tmp[1] * 1e5 + tmp[2] * 1e4)
+      detName = "strawstation_" + str(tmp[0])
       x = ahit.GetX()
       y = ahit.GetY()
       E = ahit.GetEnergyLoss()

@@ -1,4 +1,7 @@
 #include "strawtubesPoint.h"
+#include "strawtubes.h"
+#include "FairRun.h"
+#include "FairRunSim.h"
 
 #include <iostream>
 #include <math.h>
@@ -20,6 +23,9 @@ strawtubesPoint::strawtubesPoint(Int_t trackID, Int_t detID,
                                    Double_t eLoss,Int_t pdgcode,Double_t dist)
   : FairMCPoint(trackID, detID, pos, mom, tof, length, eLoss), fPdgCode(pdgcode), fdist2Wire(dist)
 {
+  Int_t vnb, lnb, snb;
+  strawtubes* module = dynamic_cast<strawtubes*> (FairRunSim::Instance()->GetListOfModules()->FindObject("Strawtubes"));
+  module->StrawDecode(detID, statnb, vnb, lnb, snb);
 }
 // -------------------------------------------------------------------------
 

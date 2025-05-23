@@ -4,6 +4,7 @@
 #include "ShipHit.h"
 #include "TObject.h"
 #include "TVector3.h"
+#include "strawtubes.h"
 #include "strawtubesPoint.h"
 
 class strawtubesHit : public ShipHit
@@ -19,21 +20,23 @@ class strawtubesHit : public ShipHit
      **/
     strawtubesHit(Int_t detID, Float_t tdc);
     strawtubesHit(strawtubesPoint* p, Double_t t0);
-    void StrawEndPoints(TVector3& vbot, TVector3& vtop);
+    void StrawEndPoints(TVector3 &vbot, TVector3 &vtop);
     /** Destructor **/
     virtual ~strawtubesHit();
 
     /** Output to screen **/
     virtual void Print() const;
-    Float_t GetTDC() const { return fdigi; }
-    void setInvalid() { flag = false; }
-    bool isValid() const { return flag; }
+    Float_t GetTDC() const {return fdigi;}
+    Int_t GetStation() const {return statnb;}
+    void setInvalid() {flag = false;}
+    bool isValid() const {return flag;}
 
     /** Copy constructor **/
     strawtubesHit(const strawtubesHit& point) = default;
     strawtubesHit& operator=(const strawtubesHit& point) = default;
 
   private:
+    Int_t statnb;   /// station number
     Float_t flag;   ///< flag
 
     ClassDef(strawtubesHit, 4);
