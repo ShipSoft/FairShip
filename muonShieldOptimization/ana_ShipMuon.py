@@ -1,5 +1,6 @@
 # analyze muon background /media/Data/HNL/PythiaGeant4Production/pythia8_Geant4_total.root
 import os,ROOT
+import ctypes
 import multiprocessing as mp
 from rootpyPickler import Unpickler
 ROOT.gInterpreter.ProcessLine('typedef double Double32_t')
@@ -449,12 +450,12 @@ def strawEncoding(detID):
  # statnb * 1e6 + vnb * 1e5 + lnb * 1e4 + 1e3 + snb
  # vnb = view number; lnb = layer number; snb = straw number
  # statnb = station number. 1,2,3,4 tracking stations
- vnb = ROOT.Long()
- lnb = ROOT.Long()
- snb = ROOT.Long()
- statnb = ROOT.Long()
+ vnb = ctypes.c_int()
+ lnb = ctypes.c_int()
+ snb = ctypes.c_int()
+ statnb = ctypes.c_int()
  modules['Strawtubes'].StrawDecode(detID, statnb, vnb, lnb, snb)
- return [statnb, vnb, lnb, snb]
+ return [statnb.value, vnb.value, lnb.value, snb.value]
 
 def detMap():
   sGeo = ROOT.gGeoManager
