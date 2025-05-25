@@ -59,7 +59,8 @@ def get_work_dir(run_number,tag=None):
 
 def init():
   global runnr, nev, ecut, G4only, tauOnly,JpsiMainly, work_dir,Debug,withEvtGen,boostDiMuon,\
-         boostFactor,charm,beauty,charmInputFile,nStart,storeOnlyMuons,chicc,chibb,npot,nStart,skipNeutrinos,FourDP
+         boostFactor,charm,beauty,charmInputFile,nStart,storeOnlyMuons,chicc,chibb,npot,nStart,skipNeutrinos,FourDP,\
+         DecayVolumeMedium, shieldName, WithConstShieldField, SC_key
   logger.info("SHiP proton-on-taget simulator (C) Thomas Ruf, 2017")
 
   ap = argparse.ArgumentParser(
@@ -89,6 +90,11 @@ def init():
   ap.add_argument('-I', '--InputFile', type=str, dest='charmInputFile',  default=charmInputFile, help="input file for charm/beauty decays")
   ap.add_argument('-o','--output'    , type=str, help="output directory", dest='work_dir', default=None)
   ap.add_argument('-rs','--seed', type=int, help="random seed; default value is 0, see TRrandom::SetSeed documentation", dest='seed', default=0)
+  ap.add_argument('--DecayVolumeMedium', dest='DecayVolumeMedium', help='Set Decay Volume Medium. Choices are helium (default) or vacuums helium.', default='helium', choices=['helium', 'vacuums'])
+  ap.add_argument('--shieldName', dest='shieldName', help='Name of the SC shield in the database. SC default: sc_v6, warm default: warm_opt.', default='sc_v6', choices=['sc_v6', 'warm_opt'])
+  ap.add_argument('--WithConstShieldField', dest='WithConstShieldField', help='Bool decision to set the shield field to a constant value.', default=True, choices=[True, False])
+  ap.add_argument('--SC_key', dest='SC_key', default=True, choices=[True, False])
+
   args = ap.parse_args()
   if args.debug:
       logger.setLevel(logging.DEBUG)
@@ -103,6 +109,10 @@ def init():
   storeOnlyMuons = args.storeOnlyMuons
   skipNeutrinos  = args.skipNeutrinos
   FourDP         = args.FourDP
+  DecayVolumeMedium = args.DecayVolumeMedium
+  shieldName = args.shieldName
+  WithConstShieldField = args.WithConstShieldField
+  SC_key = args.SC_key
   if G4only:
     args.charm  = False
     args.beauty = False
@@ -151,7 +161,8 @@ os.chdir(work_dir)
 # -------------------------------------------------------------------
 ROOT.gRandom.SetSeed(args.seed)  # this should be propagated via ROOT to Pythia8 and Geant4VMC
 shipRoot_conf.configure()      # load basic libraries, prepare atexit for python
-ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = dy, tankDesign = dv, muShieldDesign = ds, nuTauTargetDesign=nud)
+ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = dy, tankDesign = dv, muShieldDesign = ds, nuTauTargetDesign=nud,
+                                 DecayVolumeMedium=DecayVolumeMedium, shieldName=shieldName)
 
 txt = 'pythia8_Geant4_'
 if withEvtGen: txt = 'pythia8_evtgen_Geant4_'
@@ -187,10 +198,11 @@ TargetStation = ROOT.ShipTargetStation("TargetStation",
 TargetStation.SetLayerPosMat(ship_geo.target.xy, ship_geo.target.slices_length, ship_geo.target.slices_gap, ship_geo.target.slices_material)
 
 run.AddModule(TargetStation)
-MuonShield = ROOT.ShipMuonShield("MuonShield",ship_geo.muShieldDesign,"ShipMuonShield",ship_geo.muShield.z,ship_geo.muShield.dZ0,ship_geo.muShield.dZ1,\
-               ship_geo.muShield.dZ2,ship_geo.muShield.dZ3,ship_geo.muShield.dZ4,ship_geo.muShield.dZ5,ship_geo.muShield.dZ6,\
-               ship_geo.muShield.dZ7,ship_geo.muShield.dZ8,ship_geo.muShield.dXgap,ship_geo.muShield.LE,ship_geo.Yheight*4./10.,0.)
-MuonShield.SetSupports(False) # otherwise overlap with sensitive Plane
+# MuonShield = ROOT.ShipMuonShield("MuonShield",ship_geo.muShieldDesign,"ShipMuonShield",ship_geo.muShield.z,ship_geo.muShield.dZ0,ship_geo.muShield.dZ1,\
+#                ship_geo.muShield.dZ2,ship_geo.muShield.dZ3,ship_geo.muShield.dZ4,ship_geo.muShield.dZ5,ship_geo.muShield.dZ6,\
+#                ship_geo.muShield.dZ7,ship_geo.muShield.dZ8,ship_geo.muShield.dXgap,ship_geo.muShield.LE,ship_geo.Yheight*4./10.,0.)
+MuonShield = ROOT.ShipMuonShield(ship_geo.muShield.params, floor=5*u.m, WithConstShieldField=WithConstShieldField, SC_key=SC_key)
+# MuonShield.SetSupports(False) # otherwise overlap with sensitive Plane
 run.AddModule(MuonShield) # needs to be added because of magn hadron shield.
 sensPlane = ROOT.exitHadronAbsorber()
 sensPlane.SetEnergyCut(ecut*u.GeV)
