@@ -33,23 +33,25 @@ strawtubesHit::strawtubesHit(Int_t detID, Float_t tdc)
 strawtubesHit::strawtubesHit(strawtubesPoint* p, Double_t t0)
   : ShipHit()
 {
-     Int_t vnb, lnb, snb;
-     TVector3 start = TVector3();
-     TVector3 stop  = TVector3();
-     fDetectorID = p->GetDetectorID();
-     strawtubes* module = dynamic_cast<strawtubes*> (FairRunSim::Instance()->GetListOfModules()->FindObject("Strawtubes") );
-     Double_t v_drift       = module->StrawVdrift();
-     Double_t sigma_spatial = module->StrawSigmaSpatial();
-     module->StrawDecode(fDetectorID, statnb, vnb, lnb, snb);
-     module->StrawEndPoints(fDetectorID,start,stop);
-     Double_t t_drift = fabs( gRandom->Gaus( p->dist2Wire(), sigma_spatial ) )/v_drift;
-     fdigi = t0 + p->GetTime() + t_drift + ( stop[0]-p->GetX() )/ speedOfLight;
-     flag = true;
+    Int_t vnb, lnb, snb;
+    TVector3 start = TVector3();
+    TVector3 stop = TVector3();
+    fDetectorID = p->GetDetectorID();
+    strawtubes* module =
+        dynamic_cast<strawtubes*>(FairRunSim::Instance()->GetListOfModules()->FindObject("Strawtubes"));
+    Double_t v_drift = module->StrawVdrift();
+    Double_t sigma_spatial = module->StrawSigmaSpatial();
+    module->StrawDecode(fDetectorID, statnb, vnb, lnb, snb);
+    module->StrawEndPoints(fDetectorID, start, stop);
+    Double_t t_drift = fabs(gRandom->Gaus(p->dist2Wire(), sigma_spatial)) / v_drift;
+    fdigi = t0 + p->GetTime() + t_drift + (stop[0] - p->GetX()) / speedOfLight;
+    flag = true;
 }
 void strawtubesHit::StrawEndPoints(TVector3 &vbot, TVector3 &vtop)
 {
     Int_t vnb, lnb, snb;
-    strawtubes* module = dynamic_cast<strawtubes*> (FairRunSim::Instance()->GetListOfModules()->FindObject("Strawtubes"));
+    strawtubes* module =
+        dynamic_cast<strawtubes*>(FairRunSim::Instance()->GetListOfModules()->FindObject("Strawtubes"));
     module->StrawDecode(fDetectorID, statnb, vnb, lnb, snb);
     TString stat = "Tr"; stat += statnb; stat += "_"; stat += statnb;
     TString view;
@@ -72,11 +74,23 @@ void strawtubesHit::StrawEndPoints(TVector3 &vbot, TVector3 &vtop)
     TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
     TString prefix = "Tr";
     prefix += statnb;
-    prefix += view; prefix += "_";
-    TString layer = prefix + "layer_"; layer += lnb; layer += "_"; layer += statnb; layer += vnb; layer += lnb; layer += "0000";
+    prefix += view;
+    prefix += "_";
+    TString layer = prefix + "layer_";
+    layer += lnb;
+    layer += "_";
+    layer += statnb;
+    layer += vnb;
+    layer += lnb;
+    layer += "0000";
     TString wire = "wire_";
     wire += fDetectorID + 1e3;
-    TString path = "/"; path += stat; path += "/"; path += layer; path += "/"; path += wire;
+    TString path = "/";
+    path += stat;
+    path += "/";
+    path += layer;
+    path += "/";
+    path += wire;
     Bool_t rc = nav->cd(path);
     if (not rc) {
       LOG(warning) << "strawtubes::StrawDecode, TGeoNavigator failed " << path;

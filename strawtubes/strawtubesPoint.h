@@ -1,9 +1,7 @@
 #ifndef STRAWTUBESPOINT_H
 #define STRAWTUBESPOINT_H 1
 
-
 #include "FairMCPoint.h"
-
 #include "TObject.h"
 #include "TVector3.h"
 #include "strawtubes.h"
@@ -34,7 +32,7 @@ class strawtubesPoint : public FairMCPoint
     virtual void Print() const;
     Int_t PdgCode() const {return fPdgCode;}
     Double_t dist2Wire() const {return fdist2Wire;}
-    Int_t GetStation() const {return statnb;}
+    Int_t GetStation() const { return statnb; }
 
   private:
     /** Copy constructor **/
@@ -43,7 +41,7 @@ class strawtubesPoint : public FairMCPoint
 
     Int_t fPdgCode;
     Double_t fdist2Wire;
-    Int_t statnb; /// station number
+    Int_t statnb;   /// station number
     ClassDef(strawtubesPoint,2);
 
 
