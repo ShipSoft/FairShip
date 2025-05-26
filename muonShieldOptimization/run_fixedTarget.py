@@ -201,7 +201,7 @@ run.AddModule(TargetStation)
 # MuonShield = ROOT.ShipMuonShield("MuonShield",ship_geo.muShieldDesign,"ShipMuonShield",ship_geo.muShield.z,ship_geo.muShield.dZ0,ship_geo.muShield.dZ1,\
 #                ship_geo.muShield.dZ2,ship_geo.muShield.dZ3,ship_geo.muShield.dZ4,ship_geo.muShield.dZ5,ship_geo.muShield.dZ6,\
 #                ship_geo.muShield.dZ7,ship_geo.muShield.dZ8,ship_geo.muShield.dXgap,ship_geo.muShield.LE,ship_geo.Yheight*4./10.,0.)
-MuonShield = ROOT.ShipMuonShield(ship_geo.muShield.params, floor=5*u.m, WithConstShieldField=WithConstShieldField, SC_key=SC_key)
+MuonShield = ROOT.ShipMuonShield(ship_geo.muShield.params, floor=ship_geo.cave.floorHeightMuonShield, WithConstShieldField=WithConstShieldField, SC_key=SC_key)
 # MuonShield.SetSupports(False) # otherwise overlap with sensitive Plane
 run.AddModule(MuonShield) # needs to be added because of magn hadron shield.
 sensPlane = ROOT.exitHadronAbsorber()
