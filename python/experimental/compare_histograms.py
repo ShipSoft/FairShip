@@ -5,7 +5,6 @@ import argparse
 import uproot
 from scipy import stats
 
-
 def compare_histograms(hist1, hist2, use_ks_test=False, significance_threshold=0.05):
     """
     Compare two histograms for equality or statistical compatibility.
@@ -29,7 +28,7 @@ def compare_histograms(hist1, hist2, use_ks_test=False, significance_threshold=0
             # Perform the Kolmogorov-Smirnov test
             ks_statistic, p_value = stats.ks_2samp(hist1.values(), hist2.values())
             print(f"KS Statistic: {ks_statistic}, p-value: {p_value}")
-            if p_value < significance_threshold:
+            if p_value.all() < significance_threshold:
                 print(
                     f"Histograms '{hist1.name}' are statistically different (p < {significance_threshold})."
                 )
@@ -53,19 +52,30 @@ def main(file1_path, file2_path, use_ks_test, significance_threshold):
     use_ks_test (bool): If True, perform the Kolmogorov-Smirnov test for statistical comparison.
     significance_threshold (float): The significance threshold for the KS test.
     """
-    file1 = uproot.open(file1_path)
-    file2 = uproot.open(file2_path)
+    files = {
+        1 : uproot.open(file1_path),
+        2 : uproot.open(file2_path)
+        }
 
     # Get the list of histogram names from the first file
+    
+    def isuproothist(inkey, fileno):
+        isHist = False
+        try:
+            isHist = isinstance(files[fileno][inkey], uproot.behaviors.TH1.Histogram)
+        except uproot.deserialization.DeserializationError:
+            isHist = False
+        return isHist
+
     histograms1 = {
-        key: file1[key]
-        for key in file1.keys()
-        if isinstance(file1[key], uproot.behaviors.TH1.Histogram)
+        key: files[1][key]
+        for key in files[1].keys()
+        if isuproothist(key, 1)
     }
     histograms2 = {
-        key: file2[key]
-        for key in file2.keys()
-        if isinstance(file2[key], uproot.behaviors.TH1.Histogram)
+        key: files[2][key]
+        for key in files[2].keys()
+        if isuproothist(key, 2)
     }
 
     # Compare histograms with the same names
