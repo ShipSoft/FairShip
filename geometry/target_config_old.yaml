@@ -1,0 +1,41 @@
+targetOpt: 18 #equal to the number of sublayers of target
+target:
+    Nplates: 10 #number of sublayer blocks
+    M:
+        - "molybdenum"
+        - "molybdenum"
+        - "molybdenum"
+        - "molybdenum"
+        - "molybdenum"
+        - "tungsten"
+        - "tungsten"
+        - "tungsten"
+        - "tungsten"
+        - "tungsten"
+
+    L:
+        - 8. #*u.cm
+        - 2.5 #*u.cm
+        - 5.0 #*u.cm
+        - 6.5 #*u.cm
+        - 8. #*u.cm
+        - 5. #*u.cm
+        - 8. #*u.cm
+        - 10. #*u.cm
+        - 20. #*u.cm
+        - 35. #*u.cm
+
+    N:
+        - 1
+        - 7
+        - 2
+        - 1
+        - 2
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+
+    sl:  0.5  # [cm] H20 slit *17 times
+    xy: 30.  # [cm] full length in x and y

@@ -1,6 +1,9 @@
+import os
 import shipunit as u
 import ROOT as r
 from ShipGeoConfig import AttrDict, ConfigRegistry
+import yaml
+
 # the following params should be passed through 'ConfigRegistry.loadpy' method
 # nuTargetPassive = 1  #0 = with active layers, 1 = only passive
 # nuTauTargetDesign  =   #0 = TP, 1 = NEW with magnet, 2 = NEW without magnet, 3 = 2018 design
@@ -46,8 +49,8 @@ if "nuTargetPassive" not in globals():
     nuTargetPassive = 1
 if "nuTauTargetDesign" not in globals():
     nuTauTargetDesign = 4
-if "targetOpt" not in globals():
-    targetOpt = 18
+if "TARGET_YAML" not in globals():
+    TARGET_YAML = os.path.expandvars("$FAIRSHIP/geometry/target_config_old.yaml")
 if "strawDesign" not in globals():
     strawDesign = 10
 if "tankDesign" not in globals():
@@ -78,6 +81,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.DecayVolumeMedium = DecayVolumeMedium
     c.SND = SND
     c.SND_design = SND_design
+    c.target_yaml = TARGET_YAML
 
     if not shieldName:
         raise ValueError("shieldName must not be empty!")
@@ -333,55 +337,19 @@ with ConfigRegistry.register_config("basic") as c:
     c.hadronAbsorber.WithConstField = True
     c.muShield.WithConstField = True
 
-    c.target               =  AttrDict(z=0*u.cm)
-    c.targetOpt            =  targetOpt
-    if targetOpt < 10:
-     c.target.sl            =  1*u.cm  # air slit total length
-     c.target.length        =  50*u.cm + c.target.sl * (targetOpt-1)
-    else:
-   #          material,length
-     c.target.M1 = "molybdenum"
-     c.target.L1 = 8.*u.cm
-     c.target.M2 = "molybdenum"
-     c.target.L2 = 2.5*u.cm
-     c.target.M3 = "molybdenum"
-     c.target.L3 = 2.5*u.cm
-     c.target.M4 = "molybdenum"
-     c.target.L4 = 2.5*u.cm
-     c.target.M5 = "molybdenum"
-     c.target.L5 = 2.5*u.cm
-     c.target.M6 = "molybdenum"
-     c.target.L6 = 2.5*u.cm
-     c.target.M7 = "molybdenum"
-     c.target.L7 = 2.5*u.cm
-     c.target.M8 = "molybdenum"
-     c.target.L8 = 2.5*u.cm
-     c.target.M9 = "molybdenum"
-     c.target.L9 = 5.0*u.cm
-     c.target.M10 = "molybdenum"
-     c.target.L10 = 5.0*u.cm
-     c.target.M11 = "molybdenum"
-     c.target.L11 = 6.5*u.cm
-     c.target.M12 = "molybdenum"
-     c.target.L12 = 8.*u.cm
-     c.target.M13 = "molybdenum"
-     c.target.L13 = 8.*u.cm
-     c.target.M14 = "tungsten"
-     c.target.L14 = 5.*u.cm
-     c.target.M15 = "tungsten"
-     c.target.L15 = 8.*u.cm
-     c.target.M16 = "tungsten"
-     c.target.L16 = 10.*u.cm
-     c.target.M17 = "tungsten"
-     c.target.L17 = 20.*u.cm
-     c.target.M18 = "tungsten"
-     c.target.L18 = 35.*u.cm
-     c.target.sl  =  0.5*u.cm  # H20 slit *17 times
-     c.target.xy  = 30.*u.cm   # full length in x and y
-     c.target.length = 17*c.target.sl + c.target.L1 + 7*c.target.L2 + 3*c.target.L9 + c.target.L11 + 3*c.target.L12 + c.target.L16 + c.target.L17 + c.target.L18
+    with open(c.target_yaml) as file:
+        config = yaml.safe_load(file)
+        c.target = AttrDict(config['target'])
+
+    target_length = (c.target.Nplates - 1) * c.target.sl
+    for width, n in zip(c.target.L, c.target.N):
+        target_length += width * n
+    c.target.length = target_length
     # interaction point, start of target
-    c.target.z   =  c.hadronAbsorber.z - c.hadronAbsorber.length/2. - c.target.length/2.
-    c.target.z0  =  c.target.z - c.target.length/2.
+
+    # FIXME: Redundant after change to new coordinate system
+    c.target.z = c.hadronAbsorber.z - c.hadronAbsorber.length / 2. - c.target.length / 2.
+    c.target.z0 = c.target.z - c.target.length / 2.
 
 # for the digitizing step
     c.strawtubes.v_drift = 1./(30*u.ns/u.mm) # for baseline NA62 5mm radius straws)
@@ -389,9 +357,9 @@ with ConfigRegistry.register_config("basic") as c:
 # size of straws
     c.strawtubes.StrawLength     = c.xMax
     if tankDesign == 5:
-       zF = c.target.z0+c.zFocusX
        c.strawtubes.StrawLength12   = c.xMax*(c.TrackStation1.z-2*c.strawtubes.DeltazView-zF)/(z4-zF)
-       zF = c.target.z0+c.zFocusY
+       zF = c.target.z0 + c.zFocusY
+
        c.strawtubes.tr12ydim           = c.Yheight/2.*(c.TrackStation1.z-2*c.strawtubes.DeltazView-zF)/(z4-zF)
        c.strawtubes.tr34ydim           = int(c.Yheight/2.)
     else:
