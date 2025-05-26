@@ -248,6 +248,6 @@ var NAVTREEINDEX10 =
 "classUpstreamTaggerPoint.html#ad5c34dfe468a1022fe531c9514d0b154":[5,0,135,4],
 "classUpstreamTaggerPoint.html#ad61993f6c197a21348c9b2f741402d44":[5,0,135,9],
 "classVeto.html":[5,0,137],
-"classdarkphoton_1_1DarkPhoton.html":[4,0,18,0],
-"classdarkphoton_1_1DarkPhoton.html":[5,0,0,0]
+"classdarkphoton_1_1DarkPhoton.html":[5,0,0,0],
+"classdarkphoton_1_1DarkPhoton.html":[4,0,18,0]
 };
