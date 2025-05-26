@@ -1,6 +1,5 @@
 __author__ = 'Mikhail Hushchyn'
 
-import ctypes
 import numpy as np
 import global_variables
 
@@ -791,11 +790,6 @@ def hits_split(smeared_hits):
                                       'dist': dist2wire, 'detID': detID}, {...}, ...]
     """
 
-    statnb = ctypes.c_int()
-    vnb = ctypes.c_int()
-    lnb = ctypes.c_int()
-    snb = ctypes.c_int()
-
     smeared_hits_12y = []
     smeared_hits_12stereo = []
     smeared_hits_34y = []
@@ -806,11 +800,11 @@ def hits_split(smeared_hits):
         ahit = smeared_hits[i_hit]
 
         detID = ahit['detID']
-        global_variables.modules["Strawtubes"].StrawDecode(detID, statnb, vnb, lnb, snb)
-        is_y12 = ((statnb.value == 1) + (statnb.value == 2)) * ((vnb.value == 0) + (vnb.value == 3))
-        is_stereo12 = ((statnb.value == 1) + (statnb.value == 2)) * ((vnb.value == 1) + (vnb.value == 2))
-        is_y34 = ((statnb.value == 3) + (statnb.value == 4)) * ((vnb.value == 0) + (vnb.value == 3))
-        is_stereo34 = ((statnb.value == 3) + (statnb.value == 4)) * ((vnb.value == 1) + (vnb.value == 2))
+        decode = global_variables.modules["Strawtubes"].StrawDecode(detID)
+        is_y12 = ((decode[0] == 1) + (decode[0] == 2)) * ((decode[1] == 0) + (decode[1] == 3))
+        is_stereo12 = ((decode[0] == 1) + (decode[0] == 2)) * ((decode[1] == 1) + (decode[1] == 2))
+        is_y34 = ((decode[0] == 3) + (decode[0] == 4)) * ((decode[1] == 0) + (decode[1] == 3))
+        is_stereo34 = ((decode[0] == 3) + (decode[0] == 4)) * ((decode[1] == 1) + (decode[1] == 2))
 
         if is_y12:
             smeared_hits_12y.append(ahit)

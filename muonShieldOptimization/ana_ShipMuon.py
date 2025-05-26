@@ -1,6 +1,5 @@
 # analyze muon background /media/Data/HNL/PythiaGeant4Production/pythia8_Geant4_total.root
 import os,ROOT
-import ctypes
 import multiprocessing as mp
 from rootpyPickler import Unpickler
 ROOT.gInterpreter.ProcessLine('typedef double Double32_t')
@@ -446,17 +445,6 @@ def makeProd():
    if i==ncpu: break
    os.chdir('../'+prefix+str(i+1))
 
-def strawEncoding(detID):
- # statnb * 1e6 + vnb * 1e5 + lnb * 1e4 + 1e3 + snb
- # vnb = view number; lnb = layer number; snb = straw number
- # statnb = station number. 1,2,3,4 tracking stations
- vnb = ctypes.c_int()
- lnb = ctypes.c_int()
- snb = ctypes.c_int()
- statnb = ctypes.c_int()
- modules['Strawtubes'].StrawDecode(detID, statnb, vnb, lnb, snb)
- return [statnb.value, vnb.value, lnb.value, snb.value]
-
 def detMap():
   sGeo = ROOT.gGeoManager
   detList = {}
@@ -657,9 +645,7 @@ def executeOneFile(fn,output=None,pid=None):
      if not ahit.GetEnergyLoss()>0: continue
      detID = ahit.GetDetectorID()
      if ahit.GetName() == 'strawtubesPoint':
-      tmp = strawEncoding(detID)
-      # detName = str(tmp[0] * 1e6 + tmp[1] * 1e5 + tmp[2] * 1e4)
-      detName = "strawstation_" + str(tmp[0])
+      detName = "strawstation_" + str(ahit.GetStationNumber())
       x = ahit.GetX()
       y = ahit.GetY()
       E = ahit.GetEnergyLoss()

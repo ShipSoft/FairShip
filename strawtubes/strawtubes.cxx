@@ -33,6 +33,7 @@
 
 #include <iostream>
 #include <sstream>
+#include <tuple>
 using std::cout;
 using std::endl;
 
@@ -505,21 +506,23 @@ void strawtubes::ConstructGeometry()
     std::cout << "tracking stations added" << std::endl;
 }
 // -----   Private method StrawDecode    -------------------------------------------
-// -----   returns station, view, layer, straw number -----------------------------------
-void strawtubes::StrawDecode(Int_t detID, int& statnb, int& vnb, int& lnb, int& snb)
+// -----   returns station, view, layer, straw number in a tuple -----------------------------------
+std::tuple<Int_t, Int_t, Int_t, Int_t> strawtubes::StrawDecode(Int_t detID)
 {
+    Int_t statnb, vnb, lnb, snb;
     statnb = detID / 1e6;
     vnb = (detID - statnb * 1e6) / 1e5;
     lnb = (detID - statnb * 1e6 - vnb * 1e5) / 1e4;
     snb = detID - statnb * 1e6 - vnb * 1e5 - lnb * 1e4 - 2e3;
+
+    return std::make_tuple(statnb, vnb, lnb, snb);
 }
 // -----   Public method StrawEndPoints    -------------------------------------------
 // -----   returns top (left) and bottom (right) coordinates of straw -----------------------------------
 void strawtubes::StrawEndPoints(Int_t fDetectorID, TVector3 &vbot, TVector3 &vtop)
 // method to get end points from TGeoNavigator
 {
-    Int_t statnb, vnb, lnb, snb;
-    StrawDecode(fDetectorID, statnb, vnb, lnb, snb);
+    const auto [statnb, vnb, lnb, snb] = StrawDecode(fDetectorID);
     TString stat = "Tr"; stat += statnb; stat += "_"; stat += statnb;
     TString view;
     switch (vnb) {
@@ -576,8 +579,7 @@ void strawtubes::StrawEndPointsOriginal(Int_t detID, TVector3 &bot, TVector3 &to
 // method to get end points by emulating the geometry
 {
   Double_t sinangle, cosangle;
-  Int_t statnb, vnb, lnb, snb;
-  StrawDecode(detID, statnb, vnb, lnb, snb);
+  const auto [statnb, vnb, lnb, snb] = StrawDecode(detID);
   switch (vnb) {
      case 0:
        sinangle = 0.;

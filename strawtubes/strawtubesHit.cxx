@@ -13,6 +13,7 @@
 
 #include <iostream>
 #include <math.h>
+#include <tuple>
 using std::cout;
 using std::endl;
 
@@ -33,7 +34,6 @@ strawtubesHit::strawtubesHit(Int_t detID, Float_t tdc)
 strawtubesHit::strawtubesHit(strawtubesPoint* p, Double_t t0)
   : ShipHit()
 {
-    Int_t statnb, vnb, lnb, snb;
     TVector3 start = TVector3();
     TVector3 stop = TVector3();
     fDetectorID = p->GetDetectorID();
@@ -41,7 +41,6 @@ strawtubesHit::strawtubesHit(strawtubesPoint* p, Double_t t0)
         dynamic_cast<strawtubes*>(FairRunSim::Instance()->GetListOfModules()->FindObject("Strawtubes"));
     Double_t v_drift = module->StrawVdrift();
     Double_t sigma_spatial = module->StrawSigmaSpatial();
-    module->StrawDecode(fDetectorID, statnb, vnb, lnb, snb);
     module->StrawEndPoints(fDetectorID, start, stop);
     Double_t t_drift = fabs(gRandom->Gaus(p->dist2Wire(), sigma_spatial)) / v_drift;
     fdigi = t0 + p->GetTime() + t_drift + (stop[0] - p->GetX()) / speedOfLight;
@@ -49,10 +48,9 @@ strawtubesHit::strawtubesHit(strawtubesPoint* p, Double_t t0)
 }
 void strawtubesHit::StrawEndPoints(TVector3 &vbot, TVector3 &vtop)
 {
-    Int_t statnb, vnb, lnb, snb;
     strawtubes* module =
         dynamic_cast<strawtubes*>(FairRunSim::Instance()->GetListOfModules()->FindObject("Strawtubes"));
-    module->StrawDecode(fDetectorID, statnb, vnb, lnb, snb);
+    const auto [statnb, vnb, lnb, snb] = module->StrawDecode(fDetectorID);
     TString stat = "Tr"; stat += statnb; stat += "_"; stat += statnb;
     TString view;
     switch (vnb) {
@@ -112,6 +110,46 @@ void strawtubesHit::StrawEndPoints(TVector3 &vbot, TVector3 &vtop)
 strawtubesHit::~strawtubesHit() { }
 // -------------------------------------------------------------------------
 
+Int_t strawtubesHit::GetStationNumber()
+{
+  Int_t detID = GetDetectorID();
+  strawtubes* module =
+      dynamic_cast<strawtubes*>(FairRunSim::Instance()->GetListOfModules()->FindObject("Strawtubes"));
+  const auto decode = module->StrawDecode(detID);
+
+  return std::get<0>(decode);
+}
+
+Int_t strawtubesHit::GetViewNumber()
+{
+  Int_t detID = GetDetectorID();
+  strawtubes* module =
+      dynamic_cast<strawtubes*>(FairRunSim::Instance()->GetListOfModules()->FindObject("Strawtubes"));
+  const auto decode = module->StrawDecode(detID);
+
+  return std::get<1>(decode);
+}
+
+Int_t strawtubesHit::GetLayerNumber()
+{
+  Int_t detID = GetDetectorID();
+  strawtubes* module =
+      dynamic_cast<strawtubes*>(FairRunSim::Instance()->GetListOfModules()->FindObject("Strawtubes"));
+  const auto decode = module->StrawDecode(detID);
+
+  return std::get<2>(decode);
+}
+
+Int_t strawtubesHit::GetStrawNumber()
+{
+  Int_t detID = GetDetectorID();
+  strawtubes* module =
+      dynamic_cast<strawtubes*>(FairRunSim::Instance()->GetListOfModules()->FindObject("Strawtubes"));
+  const auto decode = module->StrawDecode(detID);
+
+  return std::get<3>(decode);
+}
+  
 // -----   Public method Print   -------------------------------------------
 void strawtubesHit::Print() const
 {

@@ -9,6 +9,7 @@
 class strawtubesPoint;
 class FairVolume;
 class TClonesArray;
+class tuple;
 
 class strawtubes: public FairDetector
 {
@@ -62,6 +63,7 @@ class strawtubes: public FairDetector
     void SetVacBox_x(Double_t vacbox_x);
     void SetVacBox_y(Double_t vacbox_y);
     void set_station_height(Double_t station_height);
+    std::tuple<Int_t, Int_t, Int_t, Int_t> StrawDecode(Int_t detID);
     void StrawEndPoints(Int_t detID, TVector3 &top, TVector3 &bot);
     void StrawEndPointsOriginal(Int_t detID, TVector3 &top, TVector3 &bot);
 // for the digitizing step
@@ -141,7 +143,6 @@ class strawtubes: public FairDetector
     strawtubes(const strawtubes&);
     strawtubes& operator=(const strawtubes&);
     Int_t InitMedium(const char* name);
-    void StrawDecode(Int_t detID, int &statnb, int &vnb, int &lnb, int &snb);
     ClassDef(strawtubes, 6)
 };
 
