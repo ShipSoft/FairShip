@@ -41,8 +41,7 @@ class strawtubesPoint : public FairMCPoint
 
     Int_t fPdgCode;
     Double_t fdist2Wire;
-    Int_t statnb;   /// station number
-    ClassDef(strawtubesPoint,2);
+    ClassDef(strawtubesPoint, 3);
 
 
 };

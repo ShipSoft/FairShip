@@ -61,8 +61,7 @@ class strawtubes: public FairDetector
     void SetDeltazView(Double_t deltazview);
     void SetVacBox_x(Double_t vacbox_x);
     void SetVacBox_y(Double_t vacbox_y);
-    void SetTrYDim(Double_t trydim);
-    void StrawDecode(Int_t detID, int& statnb, int& vnb, int& lnb, int& snb);
+    void set_station_height(Double_t station_height);
     void StrawEndPoints(Int_t detID, TVector3 &top, TVector3 &bot);
     void StrawEndPointsOriginal(Int_t detID, TVector3 &top, TVector3 &bot);
 // for the digitizing step
@@ -131,7 +130,7 @@ class strawtubes: public FairDetector
     Double_t     fDeltaz_view;            //!  Distance (z) between views
     Double_t     fVacBox_x;               //!  x size of station vacuumbox
     Double_t     fVacBox_y;               //!  y size of station vacuumbox
-    Double_t ftrydim;                     //!  y size of stations
+    Double_t fstation_height;             //!  height of stations
     Double_t     v_drift;                 //! drift velocity
     Double_t     sigma_spatial;           //! spatial resolution
     std::string fMedium;                  //! vacuum box medium
@@ -142,7 +141,8 @@ class strawtubes: public FairDetector
     strawtubes(const strawtubes&);
     strawtubes& operator=(const strawtubes&);
     Int_t InitMedium(const char* name);
-    ClassDef(strawtubes, 4)
+    void StrawDecode(Int_t detID, int &statnb, int &vnb, int &lnb, int &snb);
+    ClassDef(strawtubes, 6)
 };
 
 #endif //STRAWTUBES_H
