@@ -347,10 +347,9 @@ with ConfigRegistry.register_config("basic") as c:
     c.target.length = target_length
     # interaction point, start of target
 
-    #C-AMM: this seems completely useless, z is 0 now....right ?
-    # do we need z and z0 also, or just one of them ?
-    c.target.z  =  c.hadronAbsorber.z - c.hadronAbsorber.length / 2. - c.target.length / 2.
-    c.target.z0 =  c.target.z - c.target.length / 2.
+    # FIXME: Redundant after change to new coordinate system
+    c.target.z = c.hadronAbsorber.z - c.hadronAbsorber.length / 2. - c.target.length / 2.
+    c.target.z0 = c.target.z - c.target.length / 2.
 
 # for the digitizing step
     c.strawtubes.v_drift = 1./(30*u.ns/u.mm) # for baseline NA62 5mm radius straws)
