@@ -60,7 +60,7 @@ def get_work_dir(run_number,tag=None):
 def init():
   global runnr, nev, ecut, G4only, tauOnly,JpsiMainly, work_dir,Debug,withEvtGen,boostDiMuon,\
          boostFactor,charm,beauty,charmInputFile,nStart,storeOnlyMuons,chicc,chibb,npot,nStart,skipNeutrinos,FourDP,\
-         DecayVolumeMedium, shieldName, SC_key, AddMuonShield
+         DecayVolumeMedium, shieldName, AddMuonShield
   logger.info("SHiP proton-on-taget simulator (C) Thomas Ruf, 2017")
 
   ap = argparse.ArgumentParser(
@@ -92,7 +92,6 @@ def init():
   ap.add_argument('-rs','--seed', type=int, help="random seed; default value is 0, see TRrandom::SetSeed documentation", dest='seed', default=0)
   ap.add_argument('--DecayVolumeMedium', dest='DecayVolumeMedium', help='Set Decay Volume Medium. Choices are helium (default) or vacuums helium.', default='helium', choices=['helium', 'vacuums'])
   ap.add_argument('--shieldName', dest='shieldName', help='Name of the SC shield in the database. SC default: sc_v6, warm default: warm_opt.', default='sc_v6', choices=['sc_v6', 'warm_opt'])
-  ap.add_argument('--SC_key', dest='SC_key', default=True, action=argparse.BooleanOptionalAction)
   ap.add_argument('--AddMuonShield', dest='AddMuonShield', help='Whether or not to add the muon shield. Default set to False.', default=False, action=argparse.BooleanOptionalAction)
 
   args = ap.parse_args()
@@ -113,7 +112,6 @@ def init():
   shieldName = args.shieldName
   AddMuonShield = args.AddMuonShield
 
-  SC_key = args.SC_key
   if G4only:
     args.charm  = False
     args.beauty = False
@@ -203,7 +201,7 @@ TargetStation.SetLayerPosMat(ship_geo.target.xy, ship_geo.target.slices_length, 
 
 run.AddModule(TargetStation)
 if AddMuonShield:
-    MuonShield = ROOT.ShipMuonShield(ship_geo.muShield.params, floor=ship_geo.cave.floorHeightMuonShield, WithConstShieldField=ship_geo.muShield.WithConstField, SC_key=SC_key)
+    MuonShield = ROOT.ShipMuonShield(ship_geo.muShield.params, floor=ship_geo.cave.floorHeightMuonShield, WithConstShieldField=ship_geo.muShield.WithConstField, SC_key=ship_geo.SC_mag)
     # MuonShield.SetSupports(False) # otherwise overlap with sensitive Plane
     run.AddModule(MuonShield) # needs to be added because of magn hadron shield.
 sensPlane = ROOT.exitHadronAbsorber()
