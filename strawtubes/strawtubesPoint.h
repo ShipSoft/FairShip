@@ -4,7 +4,8 @@
 #include "FairMCPoint.h"
 #include "TObject.h"
 #include "TVector3.h"
-#include "strawtubes.h"
+
+class strawtubesHit;
 
 class strawtubesPoint : public FairMCPoint
 {
@@ -32,7 +33,6 @@ class strawtubesPoint : public FairMCPoint
     virtual void Print() const;
     Int_t PdgCode() const {return fPdgCode;}
     Double_t dist2Wire() const {return fdist2Wire;}
-    Int_t GetStation() const { return statnb; }
 
   private:
     /** Copy constructor **/

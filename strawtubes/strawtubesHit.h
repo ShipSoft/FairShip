@@ -23,10 +23,15 @@ class strawtubesHit : public ShipHit
     /** Destructor **/
     virtual ~strawtubesHit();
 
+    /** Accessors **/
+    Int_t GetStationNumber();
+    Int_t GetViewNumber();
+    Int_t GetLayerNumber();
+    Int_t GetStrawNumber();
+
     /** Output to screen **/
     virtual void Print() const;
     Float_t GetTDC() const { return fdigi; }
-    Int_t GetStation() const { return statnb; }
     void setInvalid() { flag = false; }
     bool isValid() const { return flag; }
 
