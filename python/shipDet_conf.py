@@ -343,7 +343,7 @@ def configure(run, ship_geo):
     detectorList.append(cave)
 
     # magnetized hadron absorber defined in ShipMuonShield
-    with open(ship_geo.targetYaml) as file:
+    with open(ship_geo.target_yaml) as file:
         targetconfig = yaml.safe_load(file)
         target_geo = AttrDict(targetconfig['target'])
 
