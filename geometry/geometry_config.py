@@ -49,8 +49,8 @@ if "nuTargetPassive" not in globals():
     nuTargetPassive = 1
 if "nuTauTargetDesign" not in globals():
     nuTauTargetDesign = 4
-if "targetYaml" not in globals():
-    targetYaml = os.path.expandvars("$FAIRSHIP/geometry/target_config_old.yaml")
+if "TARGET_YAML" not in globals():
+    TARGET_YAML = os.path.expandvars("$FAIRSHIP/geometry/target_config_old.yaml")
 if "strawDesign" not in globals():
     strawDesign = 10
 if "tankDesign" not in globals():
@@ -81,7 +81,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.DecayVolumeMedium = DecayVolumeMedium
     c.SND = SND
     c.SND_design = SND_design
-    c.targetYaml = targetYaml
+    c.target_yaml = TARGET_YAML
 
     if not shieldName:
         raise ValueError("shieldName must not be empty!")
@@ -337,7 +337,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.hadronAbsorber.WithConstField = True
     c.muShield.WithConstField = True
 
-    with open(c.targetYaml) as file:
+    with open(c.target_yaml) as file:
         config = yaml.safe_load(file)
         c.target = AttrDict(config['target'])
 
