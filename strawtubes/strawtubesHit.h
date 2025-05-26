@@ -4,7 +4,6 @@
 #include "ShipHit.h"
 #include "TObject.h"
 #include "TVector3.h"
-#include "strawtubes.h"
 #include "strawtubesPoint.h"
 
 class strawtubesHit : public ShipHit
@@ -36,10 +35,9 @@ class strawtubesHit : public ShipHit
     strawtubesHit& operator=(const strawtubesHit& point) = default;
 
   private:
-    Int_t statnb;   /// station number
     Float_t flag;   ///< flag
 
-    ClassDef(strawtubesHit, 4);
+    ClassDef(strawtubesHit, 5);
 };
 
 #endif   // STRAWTUBES_STRAWTUBESHIT_H_

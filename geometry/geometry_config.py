@@ -367,7 +367,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.strawtubes.sigma_spatial = 0.012*u.cm # according to Massi's TP section
 # size of straws
     c.strawtubes.StrawLength = c.xMax
-    c.strawtubes.trydim = int(c.Yheight / 2.)
+    c.strawtubes.station_height = int(c.Yheight / 2.)
 
 
     #CAMM - For Nu tau detector, keep only these parameters which are used by others...
