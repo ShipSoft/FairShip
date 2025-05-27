@@ -149,7 +149,7 @@ Int_t strawtubesHit::GetStrawNumber()
 
   return std::get<3>(decode);
 }
-  
+
 // -----   Public method Print   -------------------------------------------
 void strawtubesHit::Print() const
 {
