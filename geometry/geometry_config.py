@@ -160,10 +160,6 @@ with ConfigRegistry.register_config("basic") as c:
      z1 = c.z - TrMagGap - TrGap
      c.TrackStation1 = AttrDict(z=z1)
 
-    c.scintillator = AttrDict(z=0*u.cm)
-    c.scintillator.Rmin = 251.*u.cm
-    c.scintillator.Rmax = 260.*u.cm
-
     c.strawtubes = AttrDict(z=0*u.cm)
     if strawDesign == 4:
      c.strawtubes.InnerStrawDiameter = 0.975 * u.cm
