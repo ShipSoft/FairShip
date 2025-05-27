@@ -132,7 +132,7 @@ class strawtubes: public FairDetector
     Double_t     fDeltaz_view;            //!  Distance (z) between views
     Double_t     fVacBox_x;               //!  x size of station vacuumbox
     Double_t     fVacBox_y;               //!  y size of station vacuumbox
-    Double_t fstation_height;             //!  height of stations
+    Double_t f_station_height;            //!  height of stations
     Double_t     v_drift;                 //! drift velocity
     Double_t     sigma_spatial;           //! spatial resolution
     std::string fMedium;                  //! vacuum box medium

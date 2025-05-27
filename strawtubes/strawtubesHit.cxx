@@ -54,20 +54,20 @@ void strawtubesHit::StrawEndPoints(TVector3 &vbot, TVector3 &vtop)
     TString stat = "Tr"; stat += statnb; stat += "_"; stat += statnb;
     TString view;
     switch (vnb) {
-	      case 0:
-	        view = "_x1";
-	        break;
-	      case 1:
-	      	view = "_u";
-	        break;
+              case 0:
+                view = "_x1";
+		break;
+              case 1:
+                view = "_u";
+		break;
 	      case 2:
-	        view = "_v";
-	        break;
+                view = "_v";
+		break;
 	      case 3:
-	        view = "_x2";
-	        break;
-	      default:
-	        view = "_x1";
+                view = "_x2";
+		break;
+              default:
+		view = "_x1";
     }
     TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
     TString prefix = "Tr";
@@ -91,7 +91,7 @@ void strawtubesHit::StrawEndPoints(TVector3 &vbot, TVector3 &vtop)
     path += wire;
     Bool_t rc = nav->cd(path);
     if (not rc) {
-      LOG(warning) << "strawtubes::StrawDecode, TGeoNavigator failed " << path;
+      LOG(warning) << "strawtubes::StrawDecode, TGeoNavigator failed" << path;
       return;
     }
     TGeoNode* W = nav->GetCurrentNode();

@@ -801,6 +801,7 @@ def hits_split(smeared_hits):
 
         detID = ahit['detID']
         decode = global_variables.modules["Strawtubes"].StrawDecode(detID)
+        # StrawDecode returns a tuple of (statnb, vnb, lnb, snb).
         is_y12 = ((decode[0] == 1) + (decode[0] == 2)) * ((decode[1] == 0) + (decode[1] == 3))
         is_stereo12 = ((decode[0] == 1) + (decode[0] == 2)) * ((decode[1] == 1) + (decode[1] == 2))
         is_y34 = ((decode[0] == 3) + (decode[0] == 4)) * ((decode[1] == 0) + (decode[1] == 3))

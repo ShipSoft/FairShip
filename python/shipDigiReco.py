@@ -927,7 +927,7 @@ class ShipDigiReco:
       tp.addRawMeasurement(measurement) # package measurement in the TrackPoint
       theTrack.insertPoint(tp)  # add point to Track
       hitID += 1
-   # print "debug meas",atrack,nM,stationCrossed[atrack],self.sTree.MCTrack[atrack],pdg
+    # print("debug meas", atrack, nM, stationCrossed[atrack], self.sTree.MCTrack[atrack], pdg)
     trackCandidates.append([theTrack,atrack])
 
   for entry in trackCandidates:

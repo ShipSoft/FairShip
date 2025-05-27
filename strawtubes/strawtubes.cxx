@@ -293,7 +293,7 @@ void strawtubes::SetVacBox_y(Double_t vacbox_y)
 
 void strawtubes::set_station_height(Double_t station_height)
 {
-    fstation_height = station_height;
+    f_station_height = station_height;   //! (Half) height of station
 }
 
 
@@ -343,8 +343,8 @@ void strawtubes::ConstructGeometry()
     Double_t yDim =  (fStraws_per_layer+1) * fStraw_pitch /2. ; // put everything inside vacbox
     //arguments of box are half-lengths;
     TGeoBBox* detbox1 = new TGeoBBox(
-        "detbox1", fStraw_length + fFrame_lateral_width, fstation_height + fFrame_lateral_width, fDeltaz_frame / 2.);
-    TGeoBBox* detbox2 = new TGeoBBox("detbox2", fStraw_length + eps, fstation_height + eps, fDeltaz_frame / 2. + eps);
+        "detbox1", fStraw_length + fFrame_lateral_width, f_station_height + fFrame_lateral_width, fDeltaz_frame / 2.);
+    TGeoBBox* detbox2 = new TGeoBBox("detbox2", fStraw_length + eps, f_station_height + eps, fDeltaz_frame / 2. + eps);
 
     TGeoCompositeShape* detcomp1 = new TGeoCompositeShape("detcomp1", "detbox1-detbox2");
     // Volume: straw
@@ -378,10 +378,10 @@ void strawtubes::ConstructGeometry()
 
     Double_t x_prime =
         (fVacBox_x + 0.6 * fFrame_lateral_width + 2 * eps) * TMath::Cos(fView_angle * TMath::Pi() / 180.0)
-        + (fstation_height + fFrame_lateral_width + 2 * eps) * TMath::Sin(fView_angle * TMath::Pi() / 180.0);
+        + (f_station_height + fFrame_lateral_width + 2 * eps) * TMath::Sin(fView_angle * TMath::Pi() / 180.0);
     Double_t y_prime =
         (fVacBox_x + 0.6 * fFrame_lateral_width + 2 * eps) * TMath::Sin(fView_angle * TMath::Pi() / 180.0)
-        + (fstation_height + fFrame_lateral_width + 2 * eps) * TMath::Cos(fView_angle * TMath::Pi() / 180.0);
+        + (f_station_height + fFrame_lateral_width + 2 * eps) * TMath::Cos(fView_angle * TMath::Pi() / 180.0);
 
     TGeoBBox* vacbox = new TGeoBBox("vacbox", x_prime + eps, y_prime + eps, 2. * fDeltaz_view);
 
@@ -471,7 +471,7 @@ void strawtubes::ConstructGeometry()
                 TString nmlayer = nmview + "_layer_";
                 nmlayer += lnb;
                 TGeoBBox* layer =
-                    new TGeoBBox("layer box", fStraw_length + eps / 4, fstation_height + eps / 4, layerwidth / 2. + eps / 4);
+                    new TGeoBBox("layer box", fStraw_length + eps / 4, f_station_height + eps / 4, layerwidth / 2. + eps / 4);
                 TGeoVolume* layerbox = new TGeoVolume(nmlayer, layer, med);
 
                 // The layer box sits in the viewframe.
@@ -486,7 +486,7 @@ void strawtubes::ConstructGeometry()
                 TGeoTranslation t6s;
                 for (Int_t snb = 1; snb < fStraws_per_layer; snb++) {
                     // Straw loop
-                    t6s.SetTranslation(0, fstation_height - fStraw_pitch * snb + lnb * fOffset_layer12, 0);
+                    t6s.SetTranslation(0, f_station_height - fStraw_pitch * snb + lnb * fOffset_layer12, 0);
                     r6s.SetAngles(90, 90, 0);
                     TGeoCombiTrans c6s(t6s, r6s);
                     TGeoHMatrix* h6s = new TGeoHMatrix(c6s);
@@ -505,7 +505,7 @@ void strawtubes::ConstructGeometry()
     }
     std::cout << "tracking stations added" << std::endl;
 }
-// -----   Private method StrawDecode    -------------------------------------------
+// -----   Public method StrawDecode    -------------------------------------------
 // -----   returns station, view, layer, straw number in a tuple -----------------------------------
 std::tuple<Int_t, Int_t, Int_t, Int_t> strawtubes::StrawDecode(Int_t detID)
 {
@@ -515,7 +515,14 @@ std::tuple<Int_t, Int_t, Int_t, Int_t> strawtubes::StrawDecode(Int_t detID)
     lnb = (detID - statnb * 1e6 - vnb * 1e5) / 1e4;
     snb = detID - statnb * 1e6 - vnb * 1e5 - lnb * 1e4 - 2e3;
 
-    return std::make_tuple(statnb, vnb, lnb, snb);
+    if (statnb < 1 || statnb > 4 || vnb < 0 || vnb > 3 || lnb < 0 || lnb > 1 || snb < 1 || snb > 299) {
+      LOG(warning) << "Invalid strawtubes detID:";
+      LOG(warning) << detID << " -> station: " << statnb << ", view: " << vnb << ", layer: " << lnb << ", straw: " << snb;
+      LOG(warning) << "strawtubes detID is 7-digit!";
+      return std::make_tuple(0, -1, -1, 0);
+    } else {
+      return std::make_tuple(statnb, vnb, lnb, snb);
+    }
 }
 // -----   Public method StrawEndPoints    -------------------------------------------
 // -----   returns top (left) and bottom (right) coordinates of straw -----------------------------------
@@ -563,7 +570,7 @@ void strawtubes::StrawEndPoints(Int_t fDetectorID, TVector3 &vbot, TVector3 &vto
     path += wire;
     Bool_t rc = nav->cd(path);
     if (not rc) {
-      LOG(warning) << "strawtubes::StrawDecode, TGeoNavigator failed " << path;
+      LOG(warning) << "strawtubes::StrawDecode, TGeoNavigator failed" << path;
       return;
     }
     TGeoNode* W = nav->GetCurrentNode();
@@ -604,7 +611,7 @@ void strawtubes::StrawEndPointsOriginal(Int_t detID, TVector3 &bot, TVector3 &to
 
    //  from ConstructGeometry above
    Double_t yDim = (fStraws_per_layer + 1) * fStraw_pitch / 2.;
-   Double_t ypos = fstation_height - fStraw_pitch * snb + lnb * fOffset_layer12;
+   Double_t ypos = f_station_height - fStraw_pitch * snb + lnb * fOffset_layer12;
    Double_t xtop = -fStraw_length * cosangle - ypos * sinangle;
    Double_t ytop = -fStraw_length * sinangle + ypos * cosangle;
    Double_t xbot = fStraw_length * cosangle - ypos * sinangle;
