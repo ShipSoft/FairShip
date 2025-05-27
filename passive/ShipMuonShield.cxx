@@ -27,8 +27,11 @@ ShipMuonShield::~ShipMuonShield() {}
 ShipMuonShield::ShipMuonShield() : FairModule("ShipMuonShield", "") {}
 
 ShipMuonShield::ShipMuonShield(std::vector<double> in_params,
-Double_t floor, Double_t z, const Bool_t WithConstShieldField,  const Bool_t SC_key)
-  : FairModule("MuonShield", "ShipMuonShield")
+                               Double_t floor,
+                               Double_t z,
+                               const Bool_t WithConstShieldField,
+                               const Bool_t SC_key)
+    : FairModule("MuonShield", "ShipMuonShield")
 {
   for(size_t i = 0; i < in_params.size(); i++){
       shield_params.push_back(in_params[i]);
