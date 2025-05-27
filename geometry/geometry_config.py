@@ -188,15 +188,7 @@ with ConfigRegistry.register_config("basic") as c:
      c.chambers.Tub6length = 0.1*u.m+windowBulge/2.
      c.chambers.Rmin = 245.*u.cm
      c.chambers.Rmax = 250.*u.cm
-     # positions and lenghts of vacuum tube segments
-     zset = -4666. * u.cm - magnetIncrease - extraVesselLength
-     c.Chamber1 = AttrDict(z=zset)
-     zset = -2628. * u.cm - magnetIncrease - extraVesselLength / 2.
-     zset = -740. * u.cm - magnetIncrease
-     zset = -420. * u.cm - magnetIncrease / 2.
-     zset = -100. * u.cm
-     zset = 30. * u.cm + windowBulge / 2.
-     c.Chamber6 = AttrDict(z=zset)
+     
 
      c.xMax = 2 * u.m  # max horizontal width at T4
      TrGap = 2 * u.m  # Distance between Tr1/2 and Tr3/4
@@ -210,6 +202,10 @@ with ConfigRegistry.register_config("basic") as c:
      c.TrackStation2 = AttrDict(z=z2)
      z1 = c.z - TrMagGap - TrGap
      c.TrackStation1 = AttrDict(z=z1)
+
+     # positions and lenghts of vacuum tube segments (for backward compatibility)
+     c.Chamber1 = AttrDict(z=z4 - 4666. * u.cm - magnetIncrease - extraVesselLength)
+     c.Chamber6 = AttrDict(z=z4 + 30. * u.cm + windowBulge / 2.)
 
     c.strawtubes = AttrDict()
     if strawDesign == 4:
