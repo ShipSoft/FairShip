@@ -58,7 +58,7 @@ def main(file1_path, file2_path, use_ks_test, significance_threshold):
         }
 
     # Get the list of histogram names from the first file
-    
+
     def isuproothist(inkey, fileno):
         isHist = False
         try:
