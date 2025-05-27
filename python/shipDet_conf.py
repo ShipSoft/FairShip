@@ -446,9 +446,6 @@ def configure(run, ship_geo):
                 ship_geo
             )
         else:
-            # This parameters are taken from the top geometry_config
-            # snd_zTot = 3 * u.m #space allocated to Muon spectrometer
-            # snd_zMudetC=ship_geo.Chamber1.z -ship_geo.chambers.Tub1length - snd_zTot/2 -31*u.cm
             configure_snd_old(
             os.path.join(fairship, "geometry", "snd_config_old.yaml"),
             ship_geo.tauMudet.Ztot,
