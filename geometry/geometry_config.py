@@ -188,7 +188,7 @@ with ConfigRegistry.register_config("basic") as c:
      c.chambers.Tub6length = 0.1*u.m+windowBulge/2.
      c.chambers.Rmin = 245.*u.cm
      c.chambers.Rmax = 250.*u.cm
-     
+
 
      c.xMax = 2 * u.m  # max horizontal width at T4
      TrGap = 2 * u.m  # Distance between Tr1/2 and Tr3/4
