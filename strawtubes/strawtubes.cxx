@@ -505,7 +505,7 @@ void strawtubes::ConstructGeometry()
     }
     std::cout << "tracking stations added" << std::endl;
 }
-// -----   Private method StrawDecode    -------------------------------------------
+// -----   Public method StrawDecode    -------------------------------------------
 // -----   returns station, view, layer, straw number in a tuple -----------------------------------
 std::tuple<Int_t, Int_t, Int_t, Int_t> strawtubes::StrawDecode(Int_t detID)
 {
@@ -515,14 +515,6 @@ std::tuple<Int_t, Int_t, Int_t, Int_t> strawtubes::StrawDecode(Int_t detID)
     lnb = (detID - statnb * 1e6 - vnb * 1e5) / 1e4;
     snb = detID - statnb * 1e6 - vnb * 1e5 - lnb * 1e4 - 2e3;
 
-    return std::make_tuple(statnb, vnb, lnb, snb);
-}
-// -----   Public method StrawEndPoints    -------------------------------------------
-// -----   returns top (left) and bottom (right) coordinates of straw -----------------------------------
-void strawtubes::StrawEndPoints(Int_t fDetectorID, TVector3 &vbot, TVector3 &vtop)
-// method to get end points from TGeoNavigator
-{
-    const auto [statnb, vnb, lnb, snb] = StrawDecode(fDetectorID);
     TString stat = "Tr"; stat += statnb; stat += "_"; stat += statnb;
     TString view;
     switch (vnb) {
@@ -563,9 +555,20 @@ void strawtubes::StrawEndPoints(Int_t fDetectorID, TVector3 &vbot, TVector3 &vto
     path += wire;
     Bool_t rc = nav->cd(path);
     if (not rc) {
-      LOG(warning) << "strawtubes::StrawDecode, TGeoNavigator failed " << path;
-      return;
+      LOG(warning) << "strawtubes::StrawDecode, TGeoNavigator failed" << path;
+      LOG(warning) << "strawtubes detID is 7-digit!";
+      return std::make_tuple(0, -1, -1, 0);
+    } else {
+      return std::make_tuple(statnb, vnb, lnb, snb);
     }
+}
+// -----   Public method StrawEndPoints    -------------------------------------------
+// -----   returns top (left) and bottom (right) coordinates of straw -----------------------------------
+void strawtubes::StrawEndPoints(Int_t fDetectorID, TVector3 &vbot, TVector3 &vtop)
+// method to get end points from TGeoNavigator
+{
+    const auto [statnb, vnb, lnb, snb] = StrawDecode(fDetectorID);
+    TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
     TGeoNode* W = nav->GetCurrentNode();
     TGeoTube* S = dynamic_cast<TGeoTube*>(W->GetVolume()->GetShape());
     Double_t top[3] = {0, 0, S->GetDZ()};
