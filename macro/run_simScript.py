@@ -555,6 +555,7 @@ saveBasicParameters.execute(f"{options.outputDir}/geofile_full.{tag}.root",ship_
 
 # checking for overlaps
 if options.debug == 2:
+ ROOT.gROOT.SetWebDisplay("off")  # Workaround for https://github.com/root-project/root/issues/18881
  fGeo = ROOT.gGeoManager
  fGeo.SetNmeshPoints(10000)
  fGeo.CheckOverlaps(0.1)  # 1 micron takes 5minutes
