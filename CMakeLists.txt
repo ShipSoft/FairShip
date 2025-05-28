@@ -220,10 +220,12 @@ add_subdirectory(veto)
 add_subdirectory(TimeDet)
 add_subdirectory(UpstreamTagger)
 add_subdirectory(strawtubes)
+add_subdirectory (prestrawdetector)
 add_subdirectory(shipgen)
 add_subdirectory(field)
 add_subdirectory(muonShieldOptimization)
 add_subdirectory(tests)
+
 
 add_custom_target(
   geometry.link ALL
