@@ -91,13 +91,13 @@ parser.add_argument("--Cosmics",   dest="cosmics",  help="Use cosmic generator, 
 parser.add_argument("--MuDIS",     dest="mudis",  help="Use muon deep inelastic scattering generator", required=False, action="store_true")
 parser.add_argument("--xRange", nargs=2,
                     help="Lower and upper limits of x considered for muon DIS generator in cm",
-                    dest="x_range", default=[-5*u.m, 5*u.m], type=float)
+                    default=[-5*u.m, 5*u.m], type=float)
 parser.add_argument("--yRange", nargs=2,
                     help="Lower and upper limits of y considered for muon DIS generator in cm",
-                    dest="y_range", default=[-5*u.m, 5*u.m], type=float)
+                    default=[-5*u.m, 5*u.m], type=float)
 parser.add_argument("--zRange", nargs=2,
                     help="Lower and upper limits of z considered for muon DIS generator in cm",
-                    dest="z_range", default=[-40*u.m, 40*u.m], type=float)
+                    default=[-40*u.m, 40*u.m], type=float)
 parser.add_argument("--RpvSusy", dest="RPVSUSY",  help="Generate events based on RPV neutralino", required=False, action="store_true")
 parser.add_argument("--DarkPhoton", dest="DarkPhoton",  help="Generate dark photons", required=False, action="store_true")
 parser.add_argument("--SusyBench", dest="RPVSUSYbench",  help="Generate HP Susy", required=False, default=2)
@@ -387,14 +387,14 @@ if simEngine == "muonDIS":
  #
  # in front of UVT up to tracking station 1
 
- DISgen.SetPositions(*options.x_range, *options.y_range, *options.z_range)
+ DISgen.SetPositions(*options.xRange, *options.yRange, *options.zRange)
  DISgen.Init(inputFile,options.firstEvent)
  primGen.AddGenerator(DISgen)
  options.nEvents = min(options.nEvents,DISgen.GetNevents())
  print('Generate ',options.nEvents,' with DIS input', ' first event',options.firstEvent)
- print("MuDIS position info input [cm]:\nx_range = ", options.x_range,
-                                       " y_range = ", options.y_range,
-                                       " z_range = ", options.z_range)
+ print("MuDIS position info input [cm]:\nx_range = ", options.xRange,
+                                       " y_range = ", options.yRange,
+                                       " z_range = ", options.zRange)
 
 # -----neutrino interactions from nuage------------------------
 if simEngine == "Nuage":
