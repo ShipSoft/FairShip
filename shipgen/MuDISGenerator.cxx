@@ -244,8 +244,8 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg)
                << " fn=" << fn;
 
     // some start/end positions in z (f.i. emulsion to Tracker 1)
-    Double_t start[3] = {0., 0., startZ};
-    Double_t end[3] = {0., 0., endZ};
+    Double_t start[3] = {0., 0., start_z};
+    Double_t end[3] = {0., 0., end_z};
 
     // incoming muon  array('d',[pid,px,py,pz,E,x,y,z,w,t])
     TVectorD* mu = dynamic_cast<TVectorD*>(iMuon->AddrAt(0));
@@ -272,33 +272,33 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg)
     // first, look for overlaps in the x or y axes - if none, continue
 
     // Find the overlapping Y-range
-    Double_t maxStartY = max(start[1], startY);
-    Double_t minEndY = min(end[1], endY);
+    Double_t max_start_y = max(start[1], start_y);
+    Double_t min_end_y = min(end[1], end_y);
 
     // Check if the Y ranges do not overlap — early exit if true
-    if (maxStartY > minEndY) {
+    if (max_start_y > min_end_y) {
         return kTRUE;
     }
 
     // Find the overlapping X-range
-    Double_t maxStartX = max(start[0], startX);
-    Double_t minEndX = min(end[0], endX);
+    Double_t max_start_x = max(start[0], start_x);
+    Double_t min_end_x = min(end[0], end_x);
 
     // Check if the X ranges do not overlap — early exit if true
-    if (maxStartX > minEndX) {
+    if (max_start_x > min_end_x) {
         return kTRUE;
     }
 
     // Calculate the Z-coordinates corresponding to the X-overlap range
-    Double_t zAtMaxX = z - (x - maxStartX) / (txmu + 1e-20);   // Avoid division by zero
-    Double_t zAtMinX = z - (x - minEndX) / (txmu + 1e-20);
+    Double_t z_at_max_x = z - (x - max_start_x) / (txmu + 1e-20);   // Avoid division by zero
+    Double_t zat_min_x = z - (x - min_end_x) / (txmu + 1e-20);
 
     // Compute Y-coordinates at the Z boundaries of the X-overlap
-    Double_t yAtMaxZ = y - (z - zAtMaxX) * tymu;
-    Double_t yAtMinZ = y - (z - zAtMinX) * tymu;
+    Double_t y_at_max_z = y - (z - z_at_max_x) * tymu;
+    Double_t y_at_min_z = y - (z - zat_min_x) * tymu;
 
     // Check if Y ranges at the corresponding Z values do not overlap
-    if (max(min(yAtMaxZ, yAtMinZ), startY) > min(max(yAtMaxZ, yAtMinZ), endY)) {
+    if (max(min(y_at_max_z, y_at_min_z), start_y) > min(max(y_at_max_z, y_at_min_z), end_y)) {
         return kTRUE;
     }
 
@@ -328,7 +328,7 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg)
 
         // check if the selected interaction position is inside the pre-set x-y range
         // if not retry! This will force the generator to simulate interactions in our selected range!!!
-        if (xmu < startX || xmu > endX || ymu < startY || ymu > endY) {
+        if (xmu < start_x || xmu > end_x || ymu < start_y || ymu > end_y) {
             prob2int = 0.0;
             continue;
         }

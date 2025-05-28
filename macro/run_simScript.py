@@ -89,16 +89,15 @@ parser.add_argument("--Nuage",     dest="nuage",  help="Use Nuage, neutrino gene
 parser.add_argument("--phiRandom", dest="phiRandom",  help="only relevant for muon background generator, random phi", required=False, action="store_true")
 parser.add_argument("--Cosmics",   dest="cosmics",  help="Use cosmic generator, argument switch for cosmic generator 0 or 1", required=False,  default=None)
 parser.add_argument("--MuDIS",     dest="mudis",  help="Use muon deep inelastic scattering generator", required=False, action="store_true")
-parser.add_argument("--xRange",
-                    dest="mudis_x_range", nargs=2,
-                    help="lower and upper x limit of DIS interaction in cm",
-                    required=False, default=[-500, 500], type=float)
-parser.add_argument("--yRange", dest="mudis_y_range", nargs=2,
-                    help="lower and upper y limit of DIS interaction in cm",
-                    required=False, default=[-500, 500], type=float)
-parser.add_argument("--zRange", dest="mudis_z_range", nargs=2,
-                    help="lower and upper z limit of DIS interaction in cm",
-                    required=False, default=[-4000, 4000], type=float)
+parser.add_argument("--xRange", nargs=2,
+                    help="Lower and upper limits of x considered for muon DIS generator in cm",
+                    dest="x_range", default=[-5*u.m, 5*u.m], type=float)
+parser.add_argument("--yRange", nargs=2,
+                    help="Lower and upper limits of y considered for muon DIS generator in cm",
+                    dest="y_range", default=[-5*u.m, 5*u.m], type=float)
+parser.add_argument("--zRange", nargs=2,
+                    help="Lower and upper limits of z considered for muon DIS generator in cm",
+                    dest="z_range", default=[-40*u.m, 40*u.m], type=float)
 parser.add_argument("--RpvSusy", dest="RPVSUSY",  help="Generate events based on RPV neutralino", required=False, action="store_true")
 parser.add_argument("--DarkPhoton", dest="DarkPhoton",  help="Generate dark photons", required=False, action="store_true")
 parser.add_argument("--SusyBench", dest="RPVSUSYbench",  help="Generate HP Susy", required=False, default=2)
@@ -388,14 +387,14 @@ if simEngine == "muonDIS":
  #
  # in front of UVT up to tracking station 1
 
- DISgen.SetPositions(*options.mudis_x_range, *options.mudis_y_range, *options.mudis_z_range)
+ DISgen.SetPositions(*options.x_range, *options.y_range, *options.z_range)
  DISgen.Init(inputFile,options.firstEvent)
  primGen.AddGenerator(DISgen)
  options.nEvents = min(options.nEvents,DISgen.GetNevents())
  print('Generate ',options.nEvents,' with DIS input', ' first event',options.firstEvent)
- print("MuDIS position info input [cm]:\nx_range = ", options.mudis_x_range,
-                                       " y_range = ", options.mudis_y_range,
-                                       " z_range = ", options.mudis_z_range)
+ print("MuDIS position info input [cm]:\nx_range = ", options.x_range,
+                                       " y_range = ", options.y_range,
+                                       " z_range = ", options.z_range)
 
 # -----neutrino interactions from nuage------------------------
 if simEngine == "Nuage":
