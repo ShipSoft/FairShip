@@ -44,6 +44,7 @@ it in future.
 * fix(ShieldUtils.py): changing code to be more pythonic, adding new element in the output tuple -- the list of the Muon Shield magnet z-coordinates, that can be used to set a location of SND inside the Muon Shield
 * fix(shipDet_conf.py): changing paths to yaml files to more pythonic (```os.path.join()``` now)
 * Fix splitcal strip dimensions and number of modules
+* fix: Ensure the web viewer is disabled when checking for geometry overlaps (workaround for https://github.com/root-project/root/issues/18881)
 
 ### Changed
 
