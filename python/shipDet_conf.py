@@ -703,6 +703,10 @@ def configure(run, ship_geo):
             ship_geo.strawtubes.FrameMaterial = "aluminium"
         ship_geo.strawtubes.medium = "vacuums" if ship_geo.DecayVolumeMedium == "vaccums" else "air"
 
+        Prestrawdetector = ROOT.prestrawdetector('Prestrawdetector', True)
+        Prestrawdetector.SetZ(2586)
+        detectorList.append(Prestrawdetector)
+
         Strawtubes = ROOT.strawtubes(ship_geo.strawtubes.medium)
         Strawtubes.SetZpositions(
             ship_geo.vetoStation.z,

@@ -155,7 +155,7 @@ SetBasicVariables()
 
 # Add the FairRoot include directories to the list of libraries which are
 # external to the Ship project. For include directories in this list the
-# compiler will not generate any warnings. This is usefull since one is only
+# compiler will not generate any warnings. This is useful since one is only
 # interested about warnings from the own project. SYSTEM_INCLUDE_DIRECTORIES
 # is defined in FairMacros.cmake. In the moment the defined directories are
 # the root and boost include directories.
@@ -174,15 +174,9 @@ set(FAIRROOT_LIBRARY_PROPERTIES ${FAIRROOT_LIBRARY_PROPERTIES}
 	VERSION "${FAIRROOT_VERSION}"
 	SOVERSION "${FAIRROOT_MAJOR_VERSION}"
 )
-set(CMAKE_SHARED_LIBRARY_SUFFIX .so)
 
 SET(CBMLIBDIR ${CMAKE_BINARY_DIR}/lib)
 SET(LD_LIBRARY_PATH  ${CBMLIBDIR} ${LD_LIBRARY_PATH})
-
-#IF(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-#  SET(CMAKE_INSTALL_PREFIX "./install" CACHE PATH "FOO install prefix" FORCE)
-#  Message("Set default install path ...")
-#ENDIF(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
 
 install(DIRECTORY geometry DESTINATION pnd_install
           PATTERN ".svn" EXCLUDE
@@ -192,25 +186,14 @@ Message("-- Set check directory to FairRoot...")
 Set(CheckSrcDir "${FAIRROOTPATH}/share/fairbase/cmake/checks")
 # Set(CheckSrcDir "${CMAKE_SOURCE_DIR}/cmake/checks")
 
-# --------------- add targets for code style and submission checks -------------
-find_package(Git)
-find_package(ClangTools)
-if ("$ENV{CMAKE_EXPORT_COMPILE_COMMANDS}" STREQUAL "1" OR CLANG_TIDY_FOUND)
-  # Generate a Clang compile_commands.json "compilation database" file for use
-  # with various development tools, such as Vim's YouCompleteMe plugin.
-  # See http://clang.llvm.org/docs/JSONCompilationDatabase.html
-  set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
-endif()
-include(CppStyleGuideChecks)
+# Generate a Clang compile_commands.json "compilation database" file for use
+# with various development tools, such as Vim's YouCompleteMe plugin.
+# See http://clang.llvm.org/docs/JSONCompilationDatabase.html
+set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 
 # Recurse into the given subdirectories. This does not actually
 # cause another cmake executable to run. The same process will walk through
 # the project's entire directory structure.
-
-IF(NOT FairRoot_FOUND)
-Message("--- FairRoot not found ...")
-ENDIF (NOT FairRoot_FOUND)
-
 add_subdirectory (shipdata)
 add_subdirectory (passive)
 add_subdirectory (nutaudet)
@@ -221,32 +204,19 @@ add_subdirectory (veto)
 add_subdirectory (TimeDet)
 add_subdirectory (UpstreamTagger)
 add_subdirectory (strawtubes)
+add_subdirectory (prestrawdetector)
 add_subdirectory (muon)
 add_subdirectory (shipgen)
 add_subdirectory (field)
 add_subdirectory (pid)
 add_subdirectory (muonShieldOptimization)
 
-FIND_PATH(TEvePath NAMES TEveEventManager.h PATHS
-  ${SIMPATH}/tools/root/include
-  ${SIMPATH}/include/root
-  $ENV{ROOTSYS}/include/root
-  NO_DEFAULT_PATH
-)
-
-If(TEvePath)
-#find_package(OpenGL)
-#If (OPENGL_FOUND AND OPENGL_GLU_FOUND)
-  Message("Found TEve, so the eventdisplay will be compiled.")
-
- IF(NOT FAIRROOT_FOUND)
-  add_subdirectory (eventdisplay)
- ENDIF(NOT FAIRROOT_FOUND)
-
-EndIf(TEvePath)
-
-add_custom_target(  # make relative links to folders
-    geometry.link ALL
-    COMMAND [ -e geometry ] || python -c \"import os.path as p, os\; os.symlink(p.join(p.relpath('${CMAKE_SOURCE_DIR}', '${CMAKE_BINARY_DIR}') , 'geometry') , 'geometry') \"
-    COMMAND [ -e macro ] || python -c \"import os.path as p, os\; os.symlink(p.join(p.relpath('${CMAKE_SOURCE_DIR}', '${CMAKE_BINARY_DIR}') , 'macro') , 'macro') \"
+add_custom_target(
+  geometry.link ALL
+  COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_SOURCE_DIR}/geometry
+          ${CMAKE_BINARY_DIR}/geometry
+  COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_SOURCE_DIR}/macro
+          ${CMAKE_BINARY_DIR}/macro
+  COMMENT
+    "Creating symlinks from ${CMAKE_SOURCE_DIR} to ${CMAKE_BINARY_DIR} for geometry and macro"
 )
