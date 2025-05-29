@@ -266,26 +266,31 @@ def get_column_config(custom_config_path=None):
             "index": 0,
             "unit": u.GeV,  # Momentum in GeV
             "description": "Momentum x-component",
+            "type": "float64",
         },
         "py": {
             "index": 1,
             "unit": u.GeV,  # Momentum in GeV
             "description": "Momentum y-component",
+            "type": "float64",
         },
         "pz": {
             "index": 2,
             "unit": u.GeV,  # Momentum in GeV
             "description": "Momentum z-component",
+            "type": "float64",
         },
         "x": {
             "index": 3,
             "unit": u.m,  # Position in meters
             "description": "Position x-coordinate",
+            "type": "float64",
         },
         "y": {
             "index": 4,
             "unit": u.m,  # Position in meters
             "description": "Position y-coordinate",
+            "type": "float64",
         },
         "z": {
             "index": 5,
@@ -293,9 +298,18 @@ def get_column_config(custom_config_path=None):
             "offset": -68.500,  # Apply z-offset
             "offset_unit": u.m,
             "description": "Position z-coordinate (with detector offset)",
+            "type": "float64",
         },
-        "id": {"index": 6, "description": "Particle ID"},
-        "w": {"index": 7, "description": "Weight"},
+        "id": {
+            "index": 6,
+            "description": "Particle ID",
+            "type": "int32",
+        },
+        "w": {
+            "index": 7,
+            "description": "Weight",
+            "type": "float64",
+        },
     }
 
     return config
@@ -336,6 +350,9 @@ def apply_column_transformation(data_column, config):
     # Apply units (if not already applied above)
     if config.get("unit") is not None and "offset" not in config:
         result = result * config["unit"]
+
+    if "type" in config:
+        result = result.astype(config["type"])
 
     return result
 
