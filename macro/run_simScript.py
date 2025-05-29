@@ -9,6 +9,7 @@ import shipRoot_conf
 import rootUtils as ut
 from ShipGeoConfig import ConfigRegistry
 from argparse import ArgumentParser
+from update_from_file import update_from_file
 
 DownScaleDiMuon = False
 
@@ -211,16 +212,6 @@ if simEngine == "muonDIS" and defaultInputFile:
 if simEngine == "Nuage" and not inputFile:
  inputFile = 'Numucc.root'
 
-print("FairShip setup for",simEngine,"to produce",options.nEvents,"events")
-if (simEngine == "Ntuple" or simEngine == "MuonBack") and defaultInputFile :
-  print('input file required if simEngine = Ntuple or MuonBack')
-  print(" for example -f /eos/experiment/ship/data/Mbias/pythia8_Geant4-withCharm_onlyMuons_4magTarget.root")
-  sys.exit()
-ROOT.gRandom.SetSeed(options.theSeed)  # this should be propagated via ROOT to Pythia8 and Geant4VMC
-shipRoot_conf.configure(0)     # load basic libraries, prepare atexit for python
-# - muShieldDesign = 7  # 7 = short design+magnetized hadron absorber
-# - targetOpt      = 5  # 0=solid   >0 sliced, 5: 5 pieces of tungsten, 4 H20 slits, 17: Mo + W +H2O (default)
-#   nuTauTargetDesign = 0 # 0 = TP, 1 = NEW with magnet, 2 = NEW without magnet, 3 = 2018 design
 ship_geo = ConfigRegistry.loadpy(
      "$FAIRSHIP/geometry/geometry_config.py",
      Yheight=options.dy,
@@ -237,6 +228,19 @@ ship_geo = ConfigRegistry.loadpy(
      DecayVolumeMedium=options.decayVolMed,
      SND=options.SND,
 )
+
+update_from_file(ship_geo, options, '../sstDecouplingTools/sst.csv')
+
+print("FairShip setup for",simEngine,"to produce",options.nEvents,"events")
+if (simEngine == "Ntuple" or simEngine == "MuonBack") and defaultInputFile :
+  print('input file required if simEngine = Ntuple or MuonBack')
+  print(" for example -f /eos/experiment/ship/data/Mbias/pythia8_Geant4-withCharm_onlyMuons_4magTarget.root")
+  sys.exit()
+ROOT.gRandom.SetSeed(options.theSeed)  # this should be propagated via ROOT to Pythia8 and Geant4VMC
+shipRoot_conf.configure(0)     # load basic libraries, prepare atexit for python
+# - muShieldDesign = 7  # 7 = short design+magnetized hadron absorber
+# - targetOpt      = 5  # 0=solid   >0 sliced, 5: 5 pieces of tungsten, 4 H20 slits, 17: Mo + W +H2O (default)
+#   nuTauTargetDesign = 0 # 0 = TP, 1 = NEW with magnet, 2 = NEW without magnet, 3 = 2018 design
 
 # Output file name, add dy to be able to setup geometry with ambiguities.
 if simEngine == "PG": tag = simEngine + "_"+str(options.pID)+"-"+mcEngine

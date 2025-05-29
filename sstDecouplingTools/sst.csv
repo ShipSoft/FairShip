@@ -1,0 +1,8 @@
+key,value
+options.theSeed,0
+options.nEvents,10
+ship_geo.TrackStation1.z,2598.0
+ship_geo.TrackStation2.z,2698.0
+ship_geo.TrackStation3.z,3438.0
+ship_geo.TrackStation4.z,3538.0
+ship_geo.strawtubes.ViewAngle,4.57
