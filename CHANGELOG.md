@@ -14,6 +14,9 @@ it in future.
 
 ### Added
 
+* Add experimental script to import Muons and Matter pkl files
+* Add TTreeGenerator to read M&M ntuples
+
 ### Changed
 
 ### Fixed

@@ -185,6 +185,7 @@ parser.add_argument(
     action="store_true",
 )
 parser.add_argument("--Ntuple", dest="ntuple", help="Use ntuple as input", action="store_true")
+parser.add_argument("--ttree", help="Use TTree as input", action="store_true")
 parser.add_argument(
     "--MuonBack",
     dest="muonback",
@@ -459,7 +460,18 @@ ship_geo = geometry_config.create_config(
 )
 
 if not options.command:
-    for g in ["pythia8", "evtcalc", "pythia6", "nuradio", "ntuple", "muonback", "mudis", "fixedTarget", "cosmics"]:
+    for g in [
+        "pythia8",
+        "ttree",
+        "evtcalc",
+        "pythia6",
+        "nuradio",
+        "ntuple",
+        "muonback",
+        "mudis",
+        "fixedTarget",
+        "cosmics",
+    ]:
         if getattr(options, g):
             break
     else:
@@ -716,6 +728,18 @@ if options.nuradio:
     # this requires writing a C macro, would have been easier to do directly in python!
     # for i in [431,421,411,-431,-421,-411]:
     # ROOT.gMC.SetUserDecay(i) # Force the decay to be done w/external decayer
+if options.ttree:
+    ut.checkFileExists(inputFile)
+    primGen.SetTarget(0.0, 0.0)
+    generator = ROOT.SHiP.TTreeGenerator()
+    generator.SetTreeName("converted_ntuple")
+    if not generator.Init(inputFile, options.firstEvent):
+        raise RuntimeError(f"Failed to initialize TTreeGenerator from input: {inputFile}")
+    primGen.AddGenerator(generator)
+    ROOT.SetOwnership(generator, False)  # C++ FairPrimaryGenerator takes ownership
+    available_events = max(0, generator.GetNEvents() - options.firstEvent)
+    options.nEvents = available_events if options.nEvents == -1 else min(options.nEvents, available_events)
+    print("Process ", options.nEvents, " from input file")
 if options.ntuple:
     # reading previously processed muon events, [-50m - 50m]
     ut.checkFileExists(inputFile)
