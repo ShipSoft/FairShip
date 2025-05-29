@@ -279,6 +279,18 @@ import shipDet_conf
 modules = shipDet_conf.configure(run,ship_geo)
 # -----Create PrimaryGenerator--------------------------------------
 primGen = ROOT.FairPrimaryGenerator()
+
+# -----MyGen--------------------------------------
+
+if simEngine == "MyGen":
+    primGen.SetTarget(0.0, 0.0)
+    print(f"Opening input file for My generator: {inputFile}")
+    MyGen = ROOT.MyGenerator()
+    MyGen.Init(inputFile, options.firstEvent)
+    primGen.AddGenerator(MyGen)
+    options.nEvents = min(options.nEvents, MyGen.GetNevents())
+
+
 if simEngine == "Pythia8":
  primGen.SetTarget(ship_geo.target.z0, 0.)
 # -----Pythia8--------------------------------------
