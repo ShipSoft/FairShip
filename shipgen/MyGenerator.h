@@ -1,80 +1,40 @@
-#include <math.h>
+#ifndef MYGENERATOR_H
+#define MYGENERATOR_H 1
+
 #include "TROOT.h"
-#include "TFile.h"
-#include "FairPrimaryGenerator.h"
-#include "MyGenerator.h"
-#include "TDatabasePDG.h"               // for TDatabasePDG
-#include "TMath.h"                      // for Sqrt
+#include "FairGenerator.h"
+#include "TTree.h"                      // for TTree
+#include "FairLogger.h"                 // for FairLogger, MESSAGE_ORIGIN
 
-using std::cout;
-using std::endl;
-// read events from ntuples produced
+class FairPrimaryGenerator;
 
-// -----   Default constructor   -------------------------------------------
-MyGenerator::MyGenerator() {}
-// -------------------------------------------------------------------------
-// -----   Default constructor   -------------------------------------------
-Bool_t MyGenerator::Init(const char* fileName) {
-  return Init(fileName, 0);
-}
-// -----   Default constructor   -------------------------------------------
-Bool_t MyGenerator::Init(const char* fileName, const int firstEvent) {
-  cout << "Info MyGenerator: Opening input file " << fileName << endl;
-  fInputFile  = new TFile(fileName);
-  if (fInputFile->IsZombie()) {
-    cout << "-E MyGenerator: Error opening the Signal file" << fileName << endl;
-  }
-  fTree = (TTree *)fInputFile->Get("mytree");
-  fNevents = fTree->GetEntries();
-  fn = firstEvent;
-  fTree->SetBranchAddress("pdgcode",&id);                // particle id
-  fTree->SetBranchAddress("vx",&vx);   // position
-  fTree->SetBranchAddress("vy",&vy);
-  fTree->SetBranchAddress("vz",&vz);
-  fTree->SetBranchAddress("px",&px);   // momentum
-  fTree->SetBranchAddress("py",&py);
-  fTree->SetBranchAddress("pz",&pz);
-  cout << "Init OK" << fn << " " << fNevents << endl;
-  return kTRUE;
-}
-// -------------------------------------------------------------------------
-
-
-// -----   Destructor   ----------------------------------------------------
-MyGenerator::~MyGenerator()
+class MyGenerator : public FairGenerator
 {
- // cout << "destroy My" << endl;
- fInputFile->Close();
- fInputFile->Delete();
- delete fInputFile;
-}
-// -------------------------------------------------------------------------
+ public:
 
-// -----   Passing the event   ---------------------------------------------
-Bool_t MyGenerator::ReadEvent(FairPrimaryGenerator* cpg)
-{
-  cout <<fNevents<<endl;
-  while (fn<fNevents) {
-   fTree->GetEntry(fn);
-   fn++;
-   cout << "reading event "<<fn<<endl;
-  }
-  if (fn>=fNevents) {
-     cout << "No more input events"<<endl;
-     return kFALSE; 
-  }
+  /** default constructor **/
+  MyGenerator();
 
-  TDatabasePDG* pdgBase = TDatabasePDG::Instance();
-  Double_t mass = pdgBase->GetParticle(id)->Mass();
-  Double_t    e = TMath::Sqrt( px[0]*px[0]+py[0]*py[0]+pz[0]*pz[0]+ mass*mass );
-  cpg->AddTrack(id,px[0],py[0],pz[0],0.,0.,0.);
-  cout << vx[0]<< " " << vy[0]<< " " << vz[0]<<endl;
+  /** destructor **/
+  virtual ~MyGenerator();
 
-  return kTRUE;
-}
+  /** public method ReadEvent **/
+  Bool_t ReadEvent(FairPrimaryGenerator*);
+  virtual Bool_t Init(const char*, int); //!
+  virtual Bool_t Init(const char*); //!
+  Int_t GetNevents();
+ private:
 
-// -------------------------------------------------------------------------
-Int_t MyGenerator::GetNevents()
-{
- return fNevents;
-}
+ protected:
+
+  Float_t px[500], py[500], pz[500], vx[500], vy[500], vz[500];
+  TFile* fInputFile;
+  TTree* fTree;
+  FairLogger*  fLogger; //!   don't make it persistent, magic ROOT command
+  int fNevents;
+  int fn;
+  Int_t id;
+  ClassDef(MyGenerator,1);
+};
+
+#endif /* !MYGENERATOR_H */
