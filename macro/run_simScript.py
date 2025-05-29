@@ -86,6 +86,7 @@ parser.add_argument("-A",        dest="A",       help="b: signal from b, c: from
 parser.add_argument("--Genie",   dest="genie",   help="Genie for reading and processing neutrino interactions", required=False, action="store_true")
 parser.add_argument("--NuRadio", dest="nuradio", help="misuse GenieGenerator for neutrino radiography and geometry timing test", required=False, action="store_true")
 parser.add_argument("--Ntuple",  dest="ntuple",  help="Use ntuple as input", required=False, action="store_true")
+parser.add_argument("--MyGen",  dest="mygen",  help="Use my events as input", required=False, action="store_true")
 parser.add_argument("--MuonBack",dest="muonback",  help="Generate events from muon background file, --Cosmics=0 for cosmic generator data", required=False, action="store_true")
 parser.add_argument("--FollowMuon",dest="followMuon", help="Make muonshield active to follow muons", required=False, action="store_true")
 parser.add_argument("--FastMuon",  dest="fastMuon",  help="Only transport muons for a fast muon only background estimate", required=False, action="store_true")
@@ -163,6 +164,7 @@ if options.pg:       simEngine = "PG"
 if options.genie:    simEngine = "Genie"
 if options.nuradio:  simEngine = "nuRadiography"
 if options.ntuple:   simEngine = "Ntuple"
+if options.mygen:   simEngine = "MyGen"
 if options.muonback: simEngine = "MuonBack"
 if options.nuage:    simEngine = "Nuage"
 if options.mudis:    simEngine = "muonDIS"
@@ -232,8 +234,8 @@ ship_geo = ConfigRegistry.loadpy(
 update_from_file(ship_geo, options, os.path.expandvars('$FAIRSHIP/sstDecouplingTools/sst.csv'))
 
 print("FairShip setup for",simEngine,"to produce",options.nEvents,"events")
-if (simEngine == "Ntuple" or simEngine == "MuonBack") and defaultInputFile :
-  print('input file required if simEngine = Ntuple or MuonBack')
+if (simEngine == "Ntuple" or simEngine == "MuonBack" or simEngine == "MyGen") and defaultInputFile :
+  print('input file required if simEngine = Ntuple or MuonBack or MyGen')
   print(" for example -f /eos/experiment/ship/data/Mbias/pythia8_Geant4-withCharm_onlyMuons_4magTarget.root")
   sys.exit()
 ROOT.gRandom.SetSeed(options.theSeed)  # this should be propagated via ROOT to Pythia8 and Geant4VMC
