@@ -96,6 +96,7 @@ parser.add_argument(
     action="store_true",
 )
 parser.add_argument("--Ntuple", dest="ntuple", help="Use ntuple as input", action="store_true")
+parser.add_argument("--ttree", help="Use TTree as input", action="store_true")
 parser.add_argument(
     "--MuonBack",
     dest="muonback",
@@ -366,7 +367,18 @@ ship_geo = geometry_config.create_config(
 )
 
 if not options.command:
-    for g in ["pythia8", "evtcalc", "pythia6", "nuradio", "ntuple", "muonback", "mudis", "fixedTarget", "cosmics"]:
+    for g in [
+        "pythia8",
+        "ttree",
+        "evtcalc",
+        "pythia6",
+        "nuradio",
+        "ntuple",
+        "muonback",
+        "mudis",
+        "fixedTarget",
+        "cosmics",
+    ]:
         if getattr(options, g):
             break
     else:
@@ -580,6 +592,15 @@ if options.nuradio:
     # this requires writing a C macro, would have been easier to do directly in python!
     # for i in [431,421,411,-431,-421,-411]:
     # ROOT.gMC.SetUserDecay(i) # Force the decay to be done w/external decayer
+if options.ttree:
+    ut.checkFileExists(inputFile)
+    primGen.SetTarget(0.0, 0.0)
+    generator = ROOT.SHiP.TTreeGenerator()
+    generator.SetTreeName("converted_ntuple")
+    generator.Init(inputFile)
+    primGen.AddGenerator(generator)
+    options.nEvents = min(options.nEvents, generator.GetNEvents())
+    print("Process ", options.nEvents, " from input file")
 if options.ntuple:
     # reading previously processed muon events, [-50m - 50m]
     ut.checkFileExists(inputFile)
