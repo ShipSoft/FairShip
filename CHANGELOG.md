@@ -15,7 +15,8 @@ it in future.
 ### Added
 
 * Add new 2026_04_01_SHiP_MainSpectrometerField_V13.root fieldmap
-* feat(python): Add experimental script to import Muons and Matter pkl files
+* Add experimental script to import Muons and Matter pkl files
+* Add TTreeGenerator to read M&M ntuples
 
 ### Changed
 * Make artificial retina the baseline option for pattern recognition
