@@ -48,6 +48,7 @@ CosmicsGenerator.cxx
 MuDISGenerator.cxx
 FixedTargetGenerator.cxx
 EvtCalcGenerator.cxx
+TTreeGenerator.cxx
 )
 
 set(LINKDEF GenLinkDef.h)
