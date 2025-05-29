@@ -68,6 +68,7 @@ parser.add_argument("-A",        dest="A",       help="b: signal from b, c: from
 parser.add_argument("--Genie",   dest="genie",   help="Genie for reading and processing neutrino interactions", required=False, action="store_true")
 parser.add_argument("--NuRadio", dest="nuradio", help="misuse GenieGenerator for neutrino radiography and geometry timing test", required=False, action="store_true")
 parser.add_argument("--Ntuple",  dest="ntuple",  help="Use ntuple as input", required=False, action="store_true")
+parser.add_argument("--ttree",  help="Use TTree as input", action="store_true")
 parser.add_argument("--MuonBack",dest="muonback",  help="Generate events from muon background file, --Cosmics=0 for cosmic generator data", required=False, action="store_true")
 parser.add_argument("--FollowMuon",dest="followMuon", help="Make muonshield active to follow muons", required=False, action="store_true")
 parser.add_argument("--FastMuon",  dest="fastMuon",  help="Only transport muons for a fast muon only background estimate", required=False, action="store_true")
@@ -146,6 +147,7 @@ if options.ntuple:   simEngine = "Ntuple"
 if options.muonback: simEngine = "MuonBack"
 if options.nuage:    simEngine = "Nuage"
 if options.mudis:    simEngine = "muonDIS"
+if options.ttree:    simEngine = "ttree"
 if options.A != 'c':
      inclusive = options.A
      if options.A =='b': inputFile = "/eos/experiment/ship/data/Beauty/Cascade-run0-19-parp16-MSTP82-1-MSEL5-5338Bpot.root"
@@ -424,6 +426,14 @@ if simEngine == "nuRadiography":
  # this requires writing a C macro, would have been easier to do directly in python!
  # for i in [431,421,411,-431,-421,-411]:
  # ROOT.gMC.SetUserDecay(i) # Force the decay to be done w/external decayer
+if options.ttree:
+ ut.checkFileExists(inputFile)
+ primGen.SetTarget(0., 0.)
+ generator = ROOT.ship.TTreeGenerator(inputFile, "converted_ntuple")
+ generator.Init()
+ primGen.AddGenerator(generator)
+ options.nEvents = min(options.nEvents, generator.GetNEvents())
+ print('Process ',options.nEvents,' from input file')
 if simEngine == "Ntuple":
 # reading previously processed muon events, [-50m - 50m]
  ut.checkFileExists(inputFile)
