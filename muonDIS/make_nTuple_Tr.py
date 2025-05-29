@@ -245,10 +245,7 @@ for inputFolder in os.listdir(path):
 
         # Collect track IDs of muons which hit the Tracking Station
         for hit in event.strawtubesPoint:
-            detID = hit.GetDetectorID()
-            trackingstation_id = (
-                detID // 10000000
-            )  # will need to update if strawtubes detID is changed
+            trackingstation_id = hit.GetStationNumber()
             pid = hit.PdgCode()
             P = r.TMath.Sqrt(hit.GetPx() ** 2 + hit.GetPy() ** 2 + hit.GetPz() ** 2)
             if abs(pid) == 13 and trackingstation_id == 1 and P > P_threshold / u.GeV:
@@ -309,16 +306,13 @@ for inputFolder in os.listdir(path):
                 ubt_index += 1
 
             for hit in event.strawtubesPoint:
-                detID = hit.GetDetectorID()
                 track_id = hit.GetTrackID()
                 pid = hit.PdgCode()
 
                 P = r.TMath.Sqrt(hit.GetPx() ** 2 + hit.GetPy() ** 2 + hit.GetPz() ** 2)
                 Pt = r.TMath.Sqrt(hit.GetPx() ** 2 + hit.GetPy() ** 2)
 
-                trackingstation_id = (
-                    detID // 10000000
-                )  # will need to update if strawtubes detID is changed
+                trackingstation_id = hit.GetStationNumber()
 
                 if (
                     abs(hit.PdgCode()) == 13

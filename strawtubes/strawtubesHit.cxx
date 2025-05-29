@@ -13,6 +13,7 @@
 
 #include <iostream>
 #include <math.h>
+#include <tuple>
 using std::cout;
 using std::endl;
 
@@ -33,23 +34,23 @@ strawtubesHit::strawtubesHit(Int_t detID, Float_t tdc)
 strawtubesHit::strawtubesHit(strawtubesPoint* p, Double_t t0)
   : ShipHit()
 {
-     TVector3 start = TVector3();
-     TVector3 stop  = TVector3();
-     fDetectorID = p->GetDetectorID();
-     strawtubes* module = dynamic_cast<strawtubes*> (FairRunSim::Instance()->GetListOfModules()->FindObject("Strawtubes") );
-     Double_t v_drift       = module->StrawVdrift();
-     Double_t sigma_spatial = module->StrawSigmaSpatial();
-     module->StrawEndPoints(fDetectorID,start,stop);
-     Double_t t_drift = fabs( gRandom->Gaus( p->dist2Wire(), sigma_spatial ) )/v_drift;
-     fdigi = t0 + p->GetTime() + t_drift + ( stop[0]-p->GetX() )/ speedOfLight;
-     flag = true;
+    TVector3 start = TVector3();
+    TVector3 stop = TVector3();
+    fDetectorID = p->GetDetectorID();
+    strawtubes* module =
+        dynamic_cast<strawtubes*>(FairRunSim::Instance()->GetListOfModules()->FindObject("Strawtubes"));
+    Double_t v_drift = module->StrawVdrift();
+    Double_t sigma_spatial = module->StrawSigmaSpatial();
+    module->StrawEndPoints(fDetectorID, start, stop);
+    Double_t t_drift = fabs(gRandom->Gaus(p->dist2Wire(), sigma_spatial)) / v_drift;
+    fdigi = t0 + p->GetTime() + t_drift + (stop[0] - p->GetX()) / speedOfLight;
+    flag = true;
 }
 void strawtubesHit::StrawEndPoints(TVector3 &vbot, TVector3 &vtop)
 {
-    Int_t statnb = fDetectorID / 10000000;
-    Int_t vnb = (fDetectorID - statnb * 10000000) / 1000000;
-    Int_t pnb = (fDetectorID - statnb * 10000000 - vnb * 1000000) / 100000;
-    Int_t lnb = (fDetectorID - statnb * 10000000 - vnb * 1000000 - pnb * 100000) / 10000;
+    strawtubes* module =
+        dynamic_cast<strawtubes*>(FairRunSim::Instance()->GetListOfModules()->FindObject("Strawtubes"));
+    const auto [statnb, vnb, lnb, snb] = module->StrawDecode(fDetectorID);
     TString stat = "Tr"; stat += statnb; stat += "_"; stat += statnb;
     TString view;
     switch (vnb) {
@@ -71,15 +72,23 @@ void strawtubesHit::StrawEndPoints(TVector3 &vbot, TVector3 &vtop)
     TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
     TString prefix = "Tr";
     prefix += statnb;
-    prefix += view; prefix += "_plane_"; prefix += pnb; prefix += "_";
-    TString plane = prefix; plane += statnb; plane += vnb; plane += pnb; plane += "00000";
-    TString layer = prefix + "layer_"; layer += lnb; layer += "_"; layer += statnb; layer += vnb; layer += pnb; layer += lnb; layer += "0000";
+    prefix += view;
+    prefix += "_";
+    TString layer = prefix + "layer_";
+    layer += lnb;
+    layer += "_";
+    layer += statnb;
+    layer += vnb;
+    layer += lnb;
+    layer += "0000";
     TString wire = "wire_";
-    wire += (fDetectorID + 1000);
-    if (statnb < 3) {
-      wire = "wire_12_"; wire += (fDetectorID + 1000);
-    }
-    TString path = "/"; path += stat; path += "/"; path += plane; path += "/"; path += layer; path += "/"; path += wire;
+    wire += fDetectorID + 1e3;
+    TString path = "/";
+    path += stat;
+    path += "/";
+    path += layer;
+    path += "/";
+    path += wire;
     Bool_t rc = nav->cd(path);
     if (not rc) {
       LOG(warning) << "strawtubes::StrawDecode, TGeoNavigator failed " << path;
@@ -100,6 +109,46 @@ void strawtubesHit::StrawEndPoints(TVector3 &vbot, TVector3 &vtop)
 // -----   Destructor   ----------------------------------------------------
 strawtubesHit::~strawtubesHit() { }
 // -------------------------------------------------------------------------
+
+Int_t strawtubesHit::GetStationNumber()
+{
+  Int_t detID = GetDetectorID();
+  strawtubes* module =
+      dynamic_cast<strawtubes*>(FairRunSim::Instance()->GetListOfModules()->FindObject("Strawtubes"));
+  const auto decode = module->StrawDecode(detID);
+
+  return std::get<0>(decode);
+}
+
+Int_t strawtubesHit::GetViewNumber()
+{
+  Int_t detID = GetDetectorID();
+  strawtubes* module =
+      dynamic_cast<strawtubes*>(FairRunSim::Instance()->GetListOfModules()->FindObject("Strawtubes"));
+  const auto decode = module->StrawDecode(detID);
+
+  return std::get<1>(decode);
+}
+
+Int_t strawtubesHit::GetLayerNumber()
+{
+  Int_t detID = GetDetectorID();
+  strawtubes* module =
+      dynamic_cast<strawtubes*>(FairRunSim::Instance()->GetListOfModules()->FindObject("Strawtubes"));
+  const auto decode = module->StrawDecode(detID);
+
+  return std::get<2>(decode);
+}
+
+Int_t strawtubesHit::GetStrawNumber()
+{
+  Int_t detID = GetDetectorID();
+  strawtubes* module =
+      dynamic_cast<strawtubes*>(FairRunSim::Instance()->GetListOfModules()->FindObject("Strawtubes"));
+  const auto decode = module->StrawDecode(detID);
+
+  return std::get<3>(decode);
+}
 
 // -----   Public method Print   -------------------------------------------
 void strawtubesHit::Print() const

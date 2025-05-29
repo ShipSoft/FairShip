@@ -23,6 +23,12 @@ class strawtubesHit : public ShipHit
     /** Destructor **/
     virtual ~strawtubesHit();
 
+    /** Accessors **/
+    Int_t GetStationNumber();
+    Int_t GetViewNumber();
+    Int_t GetLayerNumber();
+    Int_t GetStrawNumber();
+
     /** Output to screen **/
     virtual void Print() const;
     Float_t GetTDC() const { return fdigi; }
@@ -36,7 +42,7 @@ class strawtubesHit : public ShipHit
   private:
     Float_t flag;   ///< flag
 
-    ClassDef(strawtubesHit, 4);
+    ClassDef(strawtubesHit, 5);
 };
 
 #endif   // STRAWTUBES_STRAWTUBESHIT_H_
