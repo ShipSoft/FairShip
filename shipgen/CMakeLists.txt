@@ -8,6 +8,7 @@ ${CMAKE_SOURCE_DIR}/generators
 ${CMAKE_SOURCE_DIR}/shipdata
 ${CMAKE_SOURCE_DIR}/veto
 ${genfit2_INCDIR}
+${TPYTHIA6_INCLUDE_DIR}
 )
 
 set(SYSTEM_INCLUDE_DIRECTORIES
@@ -42,6 +43,7 @@ DPPythia8Generator.cxx
 GenieGenerator.cxx
 NuageGenerator.cxx
 NtupleGenerator.cxx
+MyGenerator.cxx
 MuonBackGenerator.cxx
 CosmicsGenerator.cxx
 MuDISGenerator.cxx
