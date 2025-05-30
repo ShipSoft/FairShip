@@ -1,0 +1,130 @@
+#ifndef SCORINGPLANE_H
+#define SCORINGPLANE_H
+
+#include "FairDetector.h"
+#include "TVector3.h"
+#include "TLorentzVector.h"
+#include "TGeoVolume.h"
+#include "vetoPoint.h"
+#include "TNtuple.h"
+#include <map>
+
+class FairVolume;
+class TClonesArray;
+
+class ScoringPlane: public FairDetector
+{
+
+  public:
+
+    /**      Name :  Detector Name
+     *       Active: kTRUE for active detectors (ProcessHits() will be called)
+     *               kFALSE for inactive detectors
+    */
+    ScoringPlane(const char* Name, Bool_t Active, Bool_t islastdetector);
+
+    /**      Name :  Detector Name
+     *       Active: kTRUE for active detectors (ProcessHits() will be called)
+     *               kFALSE for inactive detectors
+     *       geometry: full x, y and z extents in cm are Lx, Ly, Lz
+    */
+    ScoringPlane(const char* Name, Bool_t Active, Bool_t islastdetector, 
+                       Double_t Lx, Double_t Ly, Double_t Lz);
+
+    /**      default constructor    */
+    ScoringPlane();
+
+    /**       destructor     */
+    virtual ~ScoringPlane();
+
+    /**      Initialization of the detector is done here    */
+    virtual void   Initialize();
+
+    /**       this method is called for each step during simulation
+     *       (see FairMCApplication::Stepping())
+    */
+    virtual Bool_t ProcessHits( FairVolume* v=0);
+
+    /**       Registers the produced collections in FAIRRootManager.     */
+    virtual void   Register();
+
+    /** Gets the produced collections */
+    virtual TClonesArray* GetCollection(Int_t iColl) const ;
+
+    /**      has to be called after each event to reset the containers      */
+    virtual void   Reset();
+
+    /**      Create the detector geometry        */
+    void ConstructGeometry();
+
+    /** The following methods can be implemented if you need to make
+     *  any optional action in your detector during the transport.
+    */
+
+    virtual void   CopyClones( TClonesArray* cl1,  TClonesArray* cl2 ,
+                               Int_t offset) {;}
+    virtual void   SetSpecialPhysicsCuts() {;}
+    virtual void   EndOfEvent();
+    virtual void   FinishPrimary() {;}
+    virtual void   FinishRun() {;}
+    virtual void   BeginPrimary() {;}
+    virtual void   PostTrack() {;}
+    virtual void   PreTrack();
+    virtual void   BeginEvent() {;}
+
+    vetoPoint* AddHit(Int_t trackID, Int_t detID,
+                             TVector3 pos, TVector3 mom,
+                             Double_t time, Double_t length,
+                             Double_t eLoss,Int_t pdgcode,TVector3 Lpos, TVector3 Lmom);
+    //inline void SetEnergyCut(Float_t emax) {EMax=emax;}// min energy to be copied to Geant4
+    inline void SetOnlyMuons(){fOnlyMuons=kTRUE; std::cout<<"Massi ScoringPlane.SetOnlyMuons(): fOnlyMuons="<<fOnlyMuons<<std::endl;}
+    inline void SetOpt4DP(){withNtuple=kTRUE;}
+    //inline void SkipNeutrinos(){fSkipNeutrinos=kTRUE;}
+    inline void SetXposition(Float_t x){fxPos=x;}
+    inline void SetYposition(Float_t y){fyPos=y;}
+    inline void SetZposition(Float_t z){fzPos=z;}
+    inline void SetXYZposition(Float_t x,Float_t y,Float_t z){fxPos=x;fyPos=y;fzPos=z;}
+    inline void SetIsLast(Bool_t islast){fLastDetector=islast;} // Added by Massi
+    inline void SetVetoPointName(TString nam){fVetoName=nam;} // Added by Massi
+    // kill all tracks except of muons:
+    void SetFastMuon() {fFastMuon=true; std::cout<<"Massi ScoringPlane.SetFastMuon(): fFastMuon="<<fFastMuon<<std::endl;} 
+    // make muon shield active to follow muons:
+    void SetFollowMuon() {fFollowMuon=true;std::cout<<"Massi ScoringPlane.SetFollowMuon(): fFollowMuon="<<fFollowMuon<<std::endl;} 
+
+  private:
+
+    /** Track information to be stored until the track leaves the
+    active volume.
+    */
+    Bool_t     fFastMuon, fFollowMuon;
+    Int_t          fTrackID;           //!  track index
+    Int_t          fVolumeID;          //!  volume id
+    TLorentzVector fPos;               //!  position at entrance
+    TLorentzVector fMom;               //!  momentum at entrance
+    Double_t     fTime;              //!  time
+    Double_t     fLength;            //!  length
+    Double_t     fELoss;             //!  energy loss
+    Double_t     fxPos;              //!  xPos, optional
+    Double_t     fyPos;              //!  yPos, optional
+    Double_t     fzPos;              //!  zPos, optional
+    Bool_t withNtuple;               //! special option for Dark Photon physics studies
+    TNtuple* fNtuple;               //!  
+    //Float_t EMax;  //! max energy to transport
+    Bool_t fOnlyMuons;      //! flag if only muons should be stored
+    //Bool_t fSkipNeutrinos;  //! flag if neutrinos should be ignored
+    TFile* fout; //!
+    TClonesArray* fElectrons; //!
+    Int_t index;
+    /** container for data points */
+    TClonesArray*  fScoringPlanePointCollection;
+    ClassDef(ScoringPlane, 0)
+    // massi, add this to control the stopMC:
+    Bool_t fLastDetector;  //! if True then stop processing particles after this detector 
+    Double_t     fLx;      //!  x full extent in cm 
+    Double_t     fLy;      //!  y full extent in cm 
+    Double_t     fLz;      //!  z full extent in cm 
+
+    TString fVetoName;
+};
+
+#endif //SCORINGPLANE_H
