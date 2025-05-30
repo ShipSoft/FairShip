@@ -27,6 +27,17 @@ def getParameter(x, ship_geo, latestShipGeo):
     return getattr(a, last)
 
 
+def addScoringPlane(anindex=0,xpos=0.0,ypos=0.0,zpos=0.0,xhalfw=500.0,yhalfh=500.0):
+     izstring = "ScoringPlane"+str(anindex)
+     # put the 3rd arg as True if you want to stop particles being tracked at this plane
+     scoringplane = ROOT.ScoringPlane(izstring, ROOT.kTRUE, ROOT.kFALSE,xhalfw,yhalfh,0.1)
+     scoringplane.SetVetoPointName("sco"+str(anindex)+"_")
+     #scoringplane.SetIsLast(ROOT.kFALSE) # irrelevant, just to test the new method in cxx
+     scoringplane.SetXYZposition(xpos,ypos,zpos)
+     print("    defined "+izstring+" at x,y,z = "+str(xpos)+" , "+str(ypos)+" , "+str(zpos)+" cm (halfW/halfH = "+str(xhalfw)+" , "+str(yhalfh)+")")
+     return scoringplane
+ 
+ 
 def posHcal(z, hfile, HcalOption):
     HcalZSize = 0
     sz = hfile + "z" + str(z) + ".geo"
@@ -377,6 +388,24 @@ def configure(run, ship_geo):
         ship_geo.SC_mag
     )
     detectorList.append(MuonShield)
+    
+    PutScoringPlanes = True
+    if PutScoringPlanes:
+        print("From shipDet_conf.py, configure(): add a few scoring planes for muon shield performance study")
+        ScoPlane_xpos  = [ 0., 0., 0] # cm
+        ScoPlane_ypos  = [ 0., 0., 0] # cm
+        ScoPlane_zpos  = [ship_geo.hadronAbsorber.z + 5, ship_geo.hadronAbsorber.z + 8210, ship_geo.hadronAbsorber.z + 3010] #cm  # 2587., -2623 ] # cm
+        ScoPlane_Add   = [1, 1, 1] # Add this Scoring Plane (1 or 0)
+        ScoPlane_HalfX = [50., 225., 400] # cm
+        ScoPlane_HalfY = [50., 325., 300] # cm
+    for iz in range(0,len(ScoPlane_zpos)):
+        if ScoPlane_Add[iz]:
+            scoringplane = addScoringPlane(anindex=iz,\
+                                   xpos=ScoPlane_xpos[iz],ypos=ScoPlane_ypos[iz],zpos=ScoPlane_zpos[iz],\
+                                   xhalfw=ScoPlane_HalfX[iz],yhalfh=ScoPlane_HalfY[iz])
+            detectorList.append(scoringplane)
+        else:
+            print("... ScoringPlane"+str(iz)+" is not to be defined")
 
     if not hasattr(ship_geo, "magnetDesign"):
         # backward compatibility
