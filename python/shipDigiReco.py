@@ -33,7 +33,6 @@ class ShipDigiReco:
     if sTree.GetBranch("digiSBT2MC"):   sTree.SetBranchStatus("digiSBT2MC",0)
     if sTree.GetBranch("Digi_TimeDetHits"): sTree.SetBranchStatus("Digi_TimeDetHits",0)
     #if sTree.GetBranch("Digi_UpstreamTaggerHits"): sTree.SetBranchStatus("Digi_UpstreamTaggerHits",0)
-    if sTree.GetBranch("Digi_MuonHits"): sTree.SetBranchStatus("Digi_MuonHits",0)
 
     rawFile = fout.replace("_rec.root","_raw.root")
     recf = ROOT.TFile(rawFile,"recreate")
@@ -55,12 +54,11 @@ class ShipDigiReco:
   self.header  = ROOT.FairEventHeader()
   self.eventHeader  = self.sTree.Branch("ShipEventHeader",self.header,32000,-1)
 # fitted tracks
-  self.fGenFitArray = ROOT.TClonesArray("genfit::Track")
-  self.fGenFitArray.BypassStreamer(ROOT.kFALSE)
+  self.fGenFitArray = ROOT.std.vector("genfit::Track")()
   self.fitTrack2MC  = ROOT.std.vector('int')()
   self.goodTracksVect  = ROOT.std.vector('int')()
   self.mcLink      = self.sTree.Branch("fitTrack2MC",self.fitTrack2MC,32000,-1)
-  self.fitTracks   = self.sTree.Branch("FitTracks",  self.fGenFitArray,32000,-1)
+  self.fitTracks = self.sTree.Branch("FitTracks", self.fGenFitArray)
   self.goodTracksBranch      = self.sTree.Branch("goodTracks",self.goodTracksVect,32000,-1)
   self.fTrackletsArray = ROOT.TClonesArray("Tracklet")
   self.Tracklets   = self.sTree.Branch("Tracklets",  self.fTrackletsArray,32000,-1)
@@ -69,16 +67,14 @@ class ShipDigiReco:
   self.digiStrawBranch   = self.sTree.Branch("Digi_StrawtubesHits",self.digiStraw,32000,-1)
   self.digiSBT    = ROOT.std.vector("vetoHit")()
   self.digiSBTBranch=self.sTree.Branch("Digi_SBTHits",self.digiSBT,32000,-1)
-  self.vetoHitOnTrackArray    = ROOT.TClonesArray("vetoHitOnTrack")
-  self.vetoHitOnTrackBranch=self.sTree.Branch("VetoHitOnTrack",self.vetoHitOnTrackArray,32000,-1)
+  self.vetoHitOnTrackArray = ROOT.std.vector("vetoHitOnTrack")()
+  self.vetoHitOnTrackBranch = self.sTree.Branch("VetoHitOnTrack", self.vetoHitOnTrackArray)
   self.digiSBT2MC  = ROOT.std.vector('std::vector< int >')()
   self.mcLinkSBT   = self.sTree.Branch("digiSBT2MC",self.digiSBT2MC,32000,-1)
-  self.digiTimeDet    = ROOT.TClonesArray("TimeDetHit")
-  self.digiTimeDetBranch=self.sTree.Branch("Digi_TimeDetHits",self.digiTimeDet,32000,-1)
+  self.digiTimeDet = ROOT.std.vector("TimeDetHit")()
+  self.digiTimeDetBranch = self.sTree.Branch("Digi_TimeDetHits", self.digiTimeDet)
   #self.digiUpstreamTagger    = ROOT.TClonesArray("UpstreamTaggerHit")
   #self.digiUpstreamTaggerBranch=self.sTree.Branch("Digi_UpstreamTaggerHits",self.digiUpstreamTagger,32000,-1)
-  self.digiMuon    = ROOT.TClonesArray("muonHit")
-  self.digiMuonBranch=self.sTree.Branch("Digi_muonHits",self.digiMuon,32000,-1)
 # for the digitizing step
   self.v_drift = global_variables.modules["Strawtubes"].StrawVdrift()
   self.sigma_spatial = global_variables.modules["Strawtubes"].StrawSigmaSpatial()
@@ -141,8 +137,8 @@ class ShipDigiReco:
     ecalDrawer=ROOT.ecalDrawer("clusterFinder",10)
     self.caloTasks.append(ecalDrawer)
  # add pid reco
-   import shipPid
-   self.caloTasks.append(shipPid.Task(self))
+    import shipPid
+    self.caloTasks.append(shipPid.Task(self))
 # prepare vertexing
   self.Vertexing = shipVertex.Task(global_variables.h, self.sTree)
 # setup random number generator
@@ -223,15 +219,12 @@ class ShipDigiReco:
    self.digiStraw.clear()
    self.digitize_straw_tubes()
    self.digiStrawBranch.Fill()
-   self.digiTimeDet.Delete()
-   self.digitizeTimeDet()
+   self.digiTimeDet.clear()
+   self.digitize_timing_detector()
    self.digiTimeDetBranch.Fill()
    # self.digiUpstreamTagger.Delete()
    # self.digitizeUpstreamTagger()         TR 19/6/2020 work in progress
    # self.digiUpstreamTaggerBranch.Fill()
-   self.digiMuon.Delete()
-   self.digitizeMuon()
-   self.digiMuonBranch.Fill()
    if self.sTree.GetBranch("splitcalPoint"):
     self.digiSplitcal.Delete()
     self.recoSplitcal.Delete()
@@ -635,26 +628,33 @@ class ShipDigiReco:
 
 
 
- def digitizeTimeDet(self):
-   index = 0
-   hitsPerDetId = {}
-   for aMCPoint in self.sTree.TimeDetPoint:
-     aHit = ROOT.TimeDetHit(aMCPoint,self.sTree.t0)
-     if self.digiTimeDet.GetSize() == index: self.digiTimeDet.Expand(index+1000)
-     self.digiTimeDet[index]=aHit
-     detID = aHit.GetDetectorID()
-     if aHit.isValid():
-      if detID in hitsPerDetId:
-       t = aHit.GetMeasurements()
-       ct = aHit.GetMeasurements()
-# this is not really correct, only first attempt
-# case that one measurement only is earlier not taken into account
-# SetTDC(Float_t val1, Float_t val2)
-       if  t[0]>ct[0] or t[1]>ct[1]:
- # second hit with smaller tdc
-        self.digiTimeDet[hitsPerDetId[detID]].setInvalid()
-        hitsPerDetId[detID] = index
-     index+=1
+ def digitize_timing_detector(self):
+    """Digitize timing detector MC hits.
+
+    The earliest hit per straw will be marked valid, all later ones invalid.
+    """
+    earliest_per_det_id = {}
+    for index, point in enumerate(self.sTree.TimeDetPoint):
+        hit = ROOT.TimeDetHit(point, self.sTree.t0)
+        self.digiTimeDet.push_back(hit)
+        detector_id = hit.GetDetectorID()
+        if hit.isValid():
+            if detector_id in earliest_per_det_id:
+                times = hit.GetMeasurements()
+                earliest = earliest_per_det_id[detector_id]
+                reference_times = self.digiTimeDet[earliest].GetMeasurements()
+                # this is not really correct, only first attempt
+                # case that one measurement only is earlier not taken into account
+                # SetTDC(Float_t val1, Float_t val2)
+                if reference_times[0] > times[0] or reference_times[1] > times[1]:
+                    # second hit with smaller tdc
+                    self.digiTimeDet[earliest].setInvalid()
+                    earliest_per_det_id[detector_id] = index
+                else:
+                    self.digiTimeDet[index].setInvalid()
+            else:
+                earliest_per_det_id[detector_id] = index
+
 
  def digitizeUpstreamTagger(self):
    index = 0
@@ -677,22 +677,6 @@ class ShipDigiReco:
         hitsPerDetId[detID] = index
      index+=1
 
-
- def digitizeMuon(self):
-   index = 0
-   hitsPerDetId = {}
-   for aMCPoint in self.sTree.muonPoint:
-     aHit = ROOT.muonHit(aMCPoint,self.sTree.t0)
-     if self.digiMuon.GetSize() == index: self.digiMuon.Expand(index+1000)
-     self.digiMuon[index]=aHit
-     detID = aHit.GetDetectorID()
-     if aHit.isValid():
-      if detID in hitsPerDetId:
-       if self.digiMuon[hitsPerDetId[detID]].GetDigi() > aHit.GetDigi():
- # second hit with smaller tdc
-        self.digiMuon[hitsPerDetId[detID]].setValidity(0)
-        hitsPerDetId[detID] = index
-     index+=1
 
  def digitize_SBT(self):
      """Digitize Surrounding Background Tagger MC hits.
@@ -808,7 +792,7 @@ class ShipDigiReco:
   stationCrossed = {}
   fittedtrackids=[]
   listOfIndices  = {}
-  self.fGenFitArray.Clear()
+  self.fGenFitArray.clear()
   self.fTrackletsArray.Delete()
   self.fitTrack2MC.clear()
 
@@ -819,7 +803,6 @@ class ShipDigiReco:
   else:
     self.SmearedHits = self.smearHits(global_variables.withNoStrawSmearing)
 
-  nTrack = -1
   trackCandidates = []
 
   if global_variables.realPR:
@@ -977,8 +960,7 @@ class ShipDigiReco:
       chi2 = fitStatus.getChi2() / nmeas
       global_variables.h['chi2'].Fill(chi2)
 # make track persistent
-    nTrack   = self.fGenFitArray.GetEntries()
-    self.fGenFitArray[nTrack] = theTrack
+    self.fGenFitArray.push_back(theTrack)
     # self.fitTrack2MC.push_back(atrack)
     if global_variables.debug:
      print('save track',theTrack,chi2,nmeas,fitStatus.isFitConverged())
@@ -1004,7 +986,7 @@ class ShipDigiReco:
    print('save tracklets:')
    for x in self.sTree.Tracklets:
     print(x.getType(),x.getList().size())
-  return nTrack+1
+  return self.fGenFitArray.size()
 
  def findGoodTracks(self):
    self.goodTracksVect.clear()
@@ -1045,13 +1027,10 @@ class ShipDigiReco:
    return vetoHitOnTrack
 
  def linkVetoOnTracks(self):
-   self.vetoHitOnTrackArray.Delete()
-   index = 0
-   for goodTrak in self.goodTracksVect:
-     track = self.fGenFitArray[goodTrak]
-     if self.vetoHitOnTrackArray.GetSize() == index: self.vetoHitOnTrackArray.Expand(index+1000)
-     self.vetoHitOnTrackArray[index] = self.findVetoHitOnTrack(track)
-     index+=1
+   self.vetoHitOnTrackArray.clear()
+   for good_track in self.goodTracksVect:
+     track = self.fGenFitArray[good_track]
+     self.vetoHitOnTrackArray.push_back(self.findVetoHitOnTrack(track))
    self.vetoHitOnTrackBranch.Fill()
 
  def fracMCsame(self, trackids):
