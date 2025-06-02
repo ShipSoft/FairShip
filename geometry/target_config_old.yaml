@@ -1,4 +1,4 @@
-targetOpt: 18 #equal to the number of sublayers of target
+targetVersion: 18 #CDR
 target:
     Nplates: 10 #number of sublayer blocks
     M:
@@ -25,6 +25,8 @@ target:
         - 20. #*u.cm
         - 35. #*u.cm
 
+    G:
+
     N:
         - 1
         - 7
@@ -37,5 +39,6 @@ target:
         - 1
         - 1
 
+    nS:  18  # number of sections
     sl:  0.5  # [cm] H20 slit *17 times
     xy: 30.  # [cm] full length in x and y

@@ -341,10 +341,11 @@ with ConfigRegistry.register_config("basic") as c:
         config = yaml.safe_load(file)
         c.target = AttrDict(config['target'])
 
-    target_length = (c.target.Nplates - 1) * c.target.sl
-    for width, n in zip(c.target.L, c.target.N):
-        target_length += width * n
+    target_length = 0
+    for width, gap, n in zip(c.target.L, c.target.G, c.target.N):
+        target_length += (width+gap) * n
     c.target.length = target_length
+    c.targetVersion = config['targetVersion']
     # interaction point, start of target
 
     # FIXME: Redundant after change to new coordinate system
