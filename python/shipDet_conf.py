@@ -342,29 +342,16 @@ def configure(run, ship_geo):
         cave.SetGeometryFileName("caveWithAir.geo")
     detectorList.append(cave)
 
-    # magnetized hadron absorber defined in ShipMuonShield
-    with open(ship_geo.target_yaml) as file:
-        targetconfig = yaml.safe_load(file)
-        target_geo = AttrDict(targetconfig['target'])
-
-
     TargetStation = ROOT.ShipTargetStation(
         "TargetStation",
         ship_geo.target.length,
         ship_geo.target.z,
-        targetconfig['targetOpt'],
-        target_geo.sl,
+        ship_geo.targetVersion,
+        ship_geo.target.nS
     )
 
-    if targetconfig['targetOpt'] > 10:
-        slices_length = ROOT.std.vector("float")()
-        slices_material = ROOT.std.vector("std::string")()
-        for i in range(target_geo.Nplates):
-            for j in range(target_geo.N[i]):
-                slices_length.push_back(target_geo.L[i])
-                slices_material.push_back(target_geo.M[i])
-        print(slices_material,slices_length)
-        TargetStation.SetLayerPosMat(target_geo.xy, slices_length, slices_material)
+    if ship_geo.targetVersion > 10:
+        TargetStation.SetLayerPosMat(ship_geo.target.xy, ship_geo.target.slices_length, ship_geo.target.slices_gap, ship_geo.target.slices_material)
     detectorList.append(TargetStation)
 
 

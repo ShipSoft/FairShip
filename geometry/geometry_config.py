@@ -92,7 +92,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.shieldName = shieldName
     c.SC_mag = shield_db[shieldName]['hybrid']
 
-    # global targetOpt, strawDesign, Yheight
+    # global targetVersion, strawDesign, Yheight
     c.Yheight = Yheight*u.m
     extraVesselLength = 10 * u.m
     windowBulge = 1*u.m
@@ -117,15 +117,39 @@ with ConfigRegistry.register_config("basic") as c:
     c.nuTauTargetDesign=nuTauTargetDesign
 
     with open(c.target_yaml) as file:
-        config = yaml.safe_load(file)
-        c.target = AttrDict(config['target'])
+        targetconfig = yaml.safe_load(file)
+        c.target = AttrDict(targetconfig['target'])
 
-    target_length = (c.target.Nplates - 1) * c.target.sl
-    real_target_length = (sum(c.target.N) - 1) * c.target.sl
-    for width, n in zip(c.target.L, c.target.N):
-        target_length += width * n
-        real_target_length += width * n
+    c.target.slices_length = []
+    c.target.slices_gap = []
+    c.target.slices_material = []
+    for i in range(c.target.Nplates-1):
+        if len(c.target.N)==1:
+            c.target.N.append(c.target.N[0])
+
+    for i in range(c.target.Nplates):
+        for j in range(c.target.N[i]):
+            if len(c.target.L)==1:
+                c.target.slices_length.append(c.target.L[0])
+            else:
+                c.target.slices_length.append(c.target.L[i])
+            if len(c.target.G)==1:
+                c.target.slices_gap.append(c.target.G[0])
+            else:
+                c.target.slices_gap.append(c.target.G[i])
+            if len(c.target.M)==1:
+                c.target.slices_material.append(c.target.M[0])
+            else:
+                c.target.slices_material.append(c.target.M[i])
+    #Last gap should be 0...
+    c.target.slices_gap[c.target.nS-1] = 0
+    print(c.target.slices_material,c.target.slices_length,c.target.slices_gap)
+
+    target_length = 0
+    for width, gap in zip(c.target.slices_length, c.target.slices_gap):
+        target_length += width + gap
     c.target.length = target_length
+    c.targetVersion = targetconfig['targetVersion']
     # interaction point, start of target
 
     c.target.z0 = 0  # Origin of SHiP coordinate system
@@ -164,7 +188,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.hadronAbsorber = AttrDict()
 
     c.target.prox_shld = 0.5536 * u.m
-    c.real_target_length = real_target_length
+    c.real_target_length = c.target.length
     c.hadronAbsorber.z =  c.hadronAbsorber.halflength = c.target.z0 + c.real_target_length/2
     c.muShield.z = c.hadronAbsorber.z + c.hadronAbsorber.halflength + c.target.prox_shld
     c.decayVolume = AttrDict()
