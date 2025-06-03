@@ -27,6 +27,7 @@ it in future.
 * Folder ```SND``` is added for new versions of SND integrated to the Muon Shield
 * First version of ```MTC``` (```SND/MTC```) is introduced. Scint part is fully implemented, the Sci-Fi part is implemented in simplified version. Geometrical parameters of ```MTC``` are stored in ```geometry/MTC_config.yaml``` file
 * New key for ```macro/run_simScript.py``` for choosing SND options is added: ```--SND_design```
+* Geometry_config.py: Added MS design `New_HA_Design` based on the MS `warm_opt`  with new version of HA 
 
 ### Fixed
 
