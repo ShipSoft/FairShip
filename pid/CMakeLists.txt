@@ -24,7 +24,7 @@ set(SRCS
 pid.cxx
 )
 
-Set(LINKDEF pidLinkDef.h)
+Set(LINKDEF LinkDef.h)
 Set(LIBRARY_NAME pid)
 Set(DEPENDENCIES
     Base ShipData

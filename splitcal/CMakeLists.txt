@@ -28,7 +28,7 @@ splitcalHit.cxx
 splitcalCluster.cxx
 )
 
-Set(LINKDEF splitcalLinkDef.h)
+Set(LINKDEF LinkDef.h)
 Set(LIBRARY_NAME splitcal)
 Set(DEPENDENCIES
     Base ShipData FairLogger::FairLogger

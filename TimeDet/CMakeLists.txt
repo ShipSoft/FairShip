@@ -26,7 +26,7 @@ TimeDetHit.cxx
 TimeDet.cxx
 )
 
-Set(LINKDEF TimeDetLinkDef.h)
+Set(LINKDEF LinkDef.h)
 Set(LIBRARY_NAME TimeDet)
 Set(DEPENDENCIES
     Base ShipData FairLogger::FairLogger

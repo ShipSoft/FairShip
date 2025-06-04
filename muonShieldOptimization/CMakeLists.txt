@@ -29,7 +29,7 @@ simpleTarget.cxx
 )
 
 Set(HEADERS )
-Set(LINKDEF muonShieldBackgroundLinkDef.h)
+Set(LINKDEF LinkDef.h)
 Set(LIBRARY_NAME ShipMuonShieldBackground)
 set(DEPENDENCIES Base GeoBase ParBase Geom Core FairLogger::FairLogger)
 

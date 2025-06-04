@@ -28,7 +28,7 @@ muonPoint.cxx
 muonHit.cxx
 )
 
-Set(LINKDEF muonLinkDef.h)
+Set(LINKDEF LinkDef.h)
 Set(LIBRARY_NAME muon)
 Set(DEPENDENCIES
     Base ShipData FairLogger::FairLogger

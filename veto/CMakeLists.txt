@@ -28,7 +28,7 @@ vetoHit.cxx
 vetoHitOnTrack.cxx
 )
 
-Set(LINKDEF vetoLinkDef.h)
+Set(LINKDEF LinkDef.h)
 Set(LIBRARY_NAME veto)
 Set(DEPENDENCIES
     Base ShipData FairLogger::FairLogger

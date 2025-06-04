@@ -50,7 +50,7 @@ FixedTargetGenerator.cxx
 EvtCalcGenerator.cxx
 )
 
-set(LINKDEF GenLinkDef.h)
+set(LINKDEF LinkDef.h)
 set(LIBRARY_NAME ShipGen)
 
 set(DEPENDENCIES Base ShipData EvtGen EvtGenExternal FairLogger::FairLogger)
