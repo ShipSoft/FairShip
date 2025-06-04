@@ -26,6 +26,7 @@ target:
         - 35. #*u.cm
 
     G:
+        - 0.5 # [cm] H20 slit *17 times
 
     N:
         - 1
@@ -39,6 +40,5 @@ target:
         - 1
         - 1
 
-    nS:  18  # number of sections
-    sl:  0.5  # [cm] H20 slit *17 times
+    nS: 18  # number of sections
     xy: 30.  # [cm] full length in x and y

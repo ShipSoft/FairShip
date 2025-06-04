@@ -3,24 +3,6 @@ target:
     Nplates: 19 #number of sublayer blocks = layers
     M:
         - "tungsten"
-        - "tungsten"
-        - "tungsten"
-        - "tungsten"
-        - "tungsten"
-        - "tungsten"
-        - "tungsten"
-        - "tungsten"
-        - "tungsten"
-        - "tungsten"
-        - "tungsten"
-        - "tungsten"
-        - "tungsten"
-        - "tungsten"
-        - "tungsten"
-        - "tungsten"
-        - "tungsten"
-        - "tungsten"
-        - "tungsten"
 
     L:
         - 4.5 #*u.cm
@@ -62,28 +44,9 @@ target:
         - 0.5
 	- 0.68
 	- 0.68
-
+        - 0
     N:
-        - 1
-        - 1
-        - 1
-        - 1
-        - 1
-        - 1
-        - 1
-        - 1
-        - 1
-        - 1
-        - 1
-        - 1
-        - 1
-        - 1
-        - 1
-        - 1
-        - 1
-        - 1
         - 1
 
     nS: 19
-    sl:  0.5  # [cm] H20 slit *17 times
     xy: 25.  # [cm] full length in x and y

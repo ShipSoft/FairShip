@@ -37,7 +37,6 @@ ShipTargetStation::ShipTargetStation(const char* name,
                                      const Double_t az,
 				     const TargetVersion tV,
 				     const int nS,
-				     const Double_t sl,
 				     const char* Title )
   : FairModule(name ,Title)
 {
@@ -47,7 +46,6 @@ ShipTargetStation::ShipTargetStation(const char* name,
   fTargetZ         = tz;
   fTV              = tV;
   fnS              = nS;
-  fsl              = sl;
 }
 
 ShipTargetStation::ShipTargetStation(const char* name,
@@ -55,7 +53,6 @@ ShipTargetStation::ShipTargetStation(const char* name,
 				     const Double_t tz,
 				     const TargetVersion tV,
                                      const int nS,
-				     const Double_t sl,
 				     const char* Title )
   : FairModule(name ,Title)
 {
@@ -65,7 +62,6 @@ ShipTargetStation::ShipTargetStation(const char* name,
   fTargetZ         = tz;
   fTV              = tV;
   fnS              = nS;
-  fsl              = sl;
 }
 
 // -----   Private method InitMedium
@@ -140,7 +136,7 @@ void ShipTargetStation::ConstructGeometry()
 	  slit   = gGeoManager->MakeTube(sm, cooler, 0., fDiameter/2., fG.at(i)/2.);
 	}
 	else {
-	  slit   = gGeoManager->MakeBox(sm, cooler, fDiameter/2., fDiameter/2., fsl/2.);
+	  slit   = gGeoManager->MakeBox(sm, cooler, fDiameter/2., fDiameter/2., fG.at(i)/2.);
 	}
 	slit->SetLineColor(7);  // cyan
 	tTarget->AddNode(slit, 1, new TGeoTranslation(0, 0, zPos+fL.at(i)+fG.at(i)/2.) );
@@ -150,7 +146,7 @@ void ShipTargetStation::ConstructGeometry()
       }
     }//loop on layers
   }else if(fTV > 0){
-    Double_t dZ = (fTargetLength - (fnS-1)*fsl)/float(fnS);
+    Double_t dZ = (fTargetLength - (fnS-1)*fG.at(0))/float(fnS);
     // target made of tungsten and air slits
     for (Int_t i=0; i<fnS-1; i++) {
       TString nmi = "Target_"; nmi += i;
@@ -158,10 +154,10 @@ void ShipTargetStation::ConstructGeometry()
       TGeoVolume *target = gGeoManager->MakeTube(nmi, tungsten, 0, 25, dZ/2.);
       target->SetLineColor(38);  // silver/blue
       tTarget->AddNode(target, 1, new TGeoTranslation(0, 0, zPos+dZ/2.));
-      TGeoVolume *slit   = gGeoManager->MakeTube(sm, cooler,    0, 25, fsl/2.);
+      TGeoVolume *slit   = gGeoManager->MakeTube(sm, cooler,    0, 25, fG.at(i)/2.);
       slit->SetLineColor(7);  // cyan
-      tTarget->AddNode(slit, 1, new TGeoTranslation(0, 0, zPos+dZ+fsl/2.));
-      zPos+=dZ+fsl;
+      tTarget->AddNode(slit, 1, new TGeoTranslation(0, 0, zPos+dZ+fG.at(i)/2.));
+      zPos+=dZ+fG.at(i);
     }
     TString nmi = "Target_"; nmi += fnS;
     TGeoVolume *target = gGeoManager->MakeTube(nmi, tungsten, 0, 25, dZ/2.);

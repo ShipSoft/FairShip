@@ -182,17 +182,9 @@ TargetStation = ROOT.ShipTargetStation("TargetStation",
                                        ship_geo.target.z,
                                        ship_geo.hadronAbsorber.z,
                                        ship_geo.targetVersion,
-                                       ship_geo.target.nS,
-                                       ship_geo.target.sl)
-slices_length   = ROOT.std.vector('float')()
-slices_gap   = ROOT.std.vector('float')()
-slices_material = ROOT.std.vector('std::string')()
-for i in range(ship_geo.target.Nplates):
-  for j in range(ship_geo.target.N[i]):
-    slices_length.push_back(ship_geo.target.L[i])
-    slices_gap.push_back(ship_geo.target.G[i])
-    slices_material.push_back(ship_geo.target.M[i])
-TargetStation.SetLayerPosMat(ship_geo.target.xy,slices_length,slices_gap,slices_material)
+                                       ship_geo.target.nS)
+
+TargetStation.SetLayerPosMat(ship_geo.target.xy, ship_geo.target.slices_length, ship_geo.target.slices_gap, ship_geo.target.slices_material)
 
 run.AddModule(TargetStation)
 MuonShield = ROOT.ShipMuonShield("MuonShield",ship_geo.muShieldDesign,"ShipMuonShield",ship_geo.muShield.z,ship_geo.muShield.dZ0,ship_geo.muShield.dZ1,\

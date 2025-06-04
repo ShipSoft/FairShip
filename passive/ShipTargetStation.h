@@ -26,14 +26,12 @@ public:
 		    const Double_t az,
 		    const TargetVersion tV,
 		    const int nS,
-		    const Double_t sl,
 		    const char* Title="ShipTargetStation");
   ShipTargetStation(const char* name,
 		    const Double_t tl,
 		    const Double_t tz,
 		    const TargetVersion tV,
 		    const int nS,
-		    const Double_t sl,
 		    const char* Title="ShipTargetStation");
   ShipTargetStation();
   virtual ~ShipTargetStation();
@@ -43,14 +41,13 @@ public:
 		      std::vector<float> G,
 		      std::vector<std::string> M){
     fDiameter = d;
+    //C-AMM better error reporting ?
+    assert(fL.size()==fnS);
     fL = L;
-    //variable gap sizes
-    if (G.size()>0) fG = G;
-    //fixed gap sizes
-    else fG.resize(fL.size()-1,fsl);
-    //last element should be 0...
-    fG.push_back(0);
+    assert(fM.size()==fnS);
     fM = M;
+    assert(fG.size()==fnS);
+    fG = G;
   }
   ClassDef(ShipTargetStation,5);
 protected:
@@ -65,7 +62,6 @@ protected:
   std::vector<std::string> fM; //absorber material
   Int_t InitMedium(const char* name);
   Int_t fnS;
-  Double_t fsl;
   TargetVersion fTV;
 };
 #endif //TargetStation_H
