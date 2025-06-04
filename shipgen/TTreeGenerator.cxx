@@ -103,9 +103,14 @@ Bool_t TTreeGenerator::ReadEvent(FairPrimaryGenerator* primGen)
     // Read current event
     fInputTree->GetEntry(fCurrentEvent);
 
+    int parent = -1;
+    bool wanttracking = true;
+    double e = -9e9;
+    double tof = 0.;
+
     // Add primary particle
     // Position in cm, momentum in GeV/c
-    primGen->AddTrack(fPdgId, fPx, fPy, fPz, fX, fY, fZ);
+    primGen->AddTrack(fPdgId, fPx, fPy, fPz, fX, fY, fZ, parent, wanttracking, e, tof, fWeight);
 
     // Set event weight if needed
     // Note: FairRoot may handle weights differently depending on version
