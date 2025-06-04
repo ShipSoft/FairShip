@@ -27,8 +27,11 @@ ShipMuonShield::~ShipMuonShield() {}
 ShipMuonShield::ShipMuonShield() : FairModule("ShipMuonShield", "") {}
 
 ShipMuonShield::ShipMuonShield(std::vector<double> in_params,
-Double_t floor, const Bool_t WithConstShieldField,  const Bool_t SC_key)
-  : FairModule("MuonShield", "ShipMuonShield")
+                               Double_t floor,
+                               Double_t z,
+                               const Bool_t WithConstShieldField,
+                               const Bool_t SC_key)
+    : FairModule("MuonShield", "ShipMuonShield")
 {
   for(size_t i = 0; i < in_params.size(); i++){
       shield_params.push_back(in_params[i]);
@@ -49,9 +52,7 @@ Double_t floor, const Bool_t WithConstShieldField,  const Bool_t SC_key)
 
   fFloor = floor;
 
-  Double_t Z = -25 * m - fMuonShieldLength / 2.;
-
-  zEndOfAbsorb = Z + - fMuonShieldLength / 2.;
+  zEndOfAbsorb = z - fMuonShieldLength / 2.;
 }
 
 // -----   Private method InitMedium
@@ -379,7 +380,8 @@ void ShipMuonShield::ConstructGeometry()
       ECN3_shift->RegisterYourself();
 
       auto *yoke_pit = new TGeoBBox("yoke_pit", 3.5 * m, 4.3 * m + 1 * cm, 2.5 * m);
-      auto *yoke_pit_shift = new TGeoTranslation("yoke_pit_shift", 0 * m, 0 * m, 31 * m - z_transition);
+      auto* yoke_pit_shift =
+          new TGeoTranslation("yoke_pit_shift", 0 * m, 0 * m, 65 * m);  // transition to centre of spectrometer magnet, layout version 2025-0.1, 17.02.2025
       yoke_pit_shift->RegisterYourself();
 
       auto *target_pit = new TGeoBBox("target_pit", 2 * m, 0.5 * m, 2 * m);

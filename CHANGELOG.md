@@ -67,6 +67,7 @@ it in future.
 * feat(geometry): Make SplitCal the default calorimeter
 * Resize SplitCal to 4×6 m²
 * feat(geometry): Define target configuration in yaml
+* feat(geometry): Change coordinate system to z_0 := start of target
 
 ### Removed
 
@@ -83,6 +84,7 @@ it in future.
 * run_simScript.py: remove --muShieldDesign flag
 * Remove unused straw veto station
 * ShipAna.py: remove broken calorimetry
+* feat(geometry): remove TP liquid scintillator variables
 
 ## 25.01
 
