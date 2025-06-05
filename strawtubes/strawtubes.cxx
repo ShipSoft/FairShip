@@ -296,7 +296,6 @@ void strawtubes::set_station_height(Double_t station_height)
     f_station_height = station_height;   //! (Half) height of station
 }
 
-
 void strawtubes::ConstructGeometry()
 {
   /** If you are using the standard ASCII input for the geometry
