@@ -19,7 +19,6 @@ class strawtubesHit : public ShipHit
      **/
     strawtubesHit(Int_t detID, Float_t tdc);
     strawtubesHit(strawtubesPoint* p, Double_t t0);
-    void StrawEndPoints(TVector3& vbot, TVector3& vtop);
     /** Destructor **/
     virtual ~strawtubesHit();
 

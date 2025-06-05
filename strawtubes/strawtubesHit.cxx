@@ -46,61 +46,6 @@ strawtubesHit::strawtubesHit(strawtubesPoint* p, Double_t t0)
     fdigi = t0 + p->GetTime() + t_drift + (stop[0] - p->GetX()) / speedOfLight;
     flag = true;
 }
-void strawtubesHit::StrawEndPoints(TVector3 &vbot, TVector3 &vtop)
-{
-    const auto [statnb, vnb, lnb, snb] = strawtubes::StrawDecode(fDetectorID);
-    TString stat = "Tr"; stat += statnb; stat += "_"; stat += statnb;
-    TString view;
-    switch (vnb) {
-              case 0:
-                view = "_x1";
-		break;
-              case 1:
-                view = "_u";
-		break;
-	      case 2:
-                view = "_v";
-		break;
-	      case 3:
-                view = "_x2";
-		break;
-              default:
-		view = "_x1";
-    }
-    TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
-    TString prefix = "Tr";
-    prefix += statnb;
-    prefix += view;
-    prefix += "_";
-    TString layer = prefix + "layer_";
-    layer += lnb;
-    layer += "_";
-    layer += statnb;
-    layer += vnb;
-    layer += lnb;
-    layer += "0000";
-    TString wire = "wire_";
-    wire += fDetectorID + 1e3;
-    TString path = "/";
-    path += stat;
-    path += "/";
-    path += layer;
-    path += "/";
-    path += wire;
-    Bool_t rc = nav->cd(path);
-    if (not rc) {
-      LOG(warning) << "strawtubes::StrawDecode, TGeoNavigator failed" << path;
-      return;
-    }
-    TGeoNode* W = nav->GetCurrentNode();
-    TGeoTube* S = dynamic_cast<TGeoTube*>(W->GetVolume()->GetShape());
-    Double_t top[3] = {0, 0, S->GetDZ()};
-    Double_t bot[3] = {0, 0, -S->GetDZ()};
-    Double_t Gtop[3], Gbot[3];
-    nav->LocalToMaster(top, Gtop); nav->LocalToMaster(bot, Gbot);
-    vtop.SetXYZ(Gtop[0], Gtop[1], Gtop[2]);
-    vbot.SetXYZ(Gbot[0], Gbot[1], Gbot[2]);
-}
 
 // -------------------------------------------------------------------------
 
