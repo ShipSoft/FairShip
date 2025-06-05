@@ -37,7 +37,7 @@ strawtubesHit::strawtubesHit(strawtubesPoint* p, Double_t t0)
     TVector3 start = TVector3();
     TVector3 stop = TVector3();
     fDetectorID = p->GetDetectorID();
-    strawtubes* module = 
+    strawtubes* module =
         dynamic_cast<strawtubes*>(FairRunSim::Instance()->GetListOfModules()->FindObject("Strawtubes"));
     Double_t v_drift = module->StrawVdrift();
     Double_t sigma_spatial = module->StrawSigmaSpatial();
@@ -84,7 +84,7 @@ Int_t strawtubesHit::GetStrawNumber()
 
   return std::get<3>(decode);
 }
-  
+
 // -----   Public method Print   -------------------------------------------
 void strawtubesHit::Print() const
 {
