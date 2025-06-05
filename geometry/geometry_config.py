@@ -338,7 +338,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.muShield.WithConstField = True
 
 #C-AMM additional block of Copper to add between target and hadron absorber, see edms document
-    
+
     with open(c.target_yaml) as file:
         targetconfig = yaml.safe_load(file)
         c.target = AttrDict(targetconfig['target'])
@@ -368,7 +368,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.target.slices_gap[c.target.nS-1] = 0
     print(c.target.slices_material,c.target.slices_length,c.target.slices_gap)
 
-        
+
     target_length = 0
     for width, gap in zip(c.target.slices_length,c.target.slices_gap):
         target_length += width+gap

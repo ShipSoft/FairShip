@@ -9,7 +9,7 @@
 //C-AMM inside or outside class ? Maybe outside but in another header with other similar enum for other subdetectors ?
 enum TargetVersion{
   oneBlock = 0,
-  //1 to 10 for fixed absorber+air gap structure 
+  //1 to 10 for fixed absorber+air gap structure
   old = 10,
   //Above 10 for variable sections
   CDR = 18, //tube geo
@@ -51,7 +51,7 @@ public:
   }
   ClassDef(ShipTargetStation,5);
 protected:
-  
+
   Double_t fTargetLength;       //
   Double_t fAbsorberLength;       //
   Double_t fAbsorberZ;       //

@@ -88,27 +88,27 @@ Int_t ShipTargetStation::InitMedium(const char* name)
 void ShipTargetStation::ConstructGeometry()
 {
   TGeoVolume *top=gGeoManager->GetTopVolume();
-  
+
   InitMedium("tungsten");
   TGeoMedium *tungsten =gGeoManager->GetMedium("tungsten");
   InitMedium("molybdenum");
   TGeoMedium *mo  =gGeoManager->GetMedium("molybdenum");
   InitMedium("iron");
   TGeoMedium *iron  =gGeoManager->GetMedium("iron");
-  
+
   InitMedium("H2O");
   TGeoMedium *water  = gGeoManager->GetMedium("H2O");
   InitMedium("LiqHe");
   TGeoMedium *liqHe  = gGeoManager->GetMedium("LiqHe");
-  
+
   TGeoMedium *cooler = (fTV == TargetVersion::Jun25) ? liqHe : water;
-  
+
   TGeoVolume *tTarget = new TGeoVolumeAssembly("TargetArea");
-  
+
   Double_t zPos =  0.;
   Int_t slots = fnS;
   slots = slots-1;
-  
+
   if (fTV > 10){
     TGeoVolume *target;
     TGeoVolume *slit;
@@ -119,8 +119,8 @@ void ShipTargetStation::ConstructGeometry()
       TGeoMedium *material;
       if (fM.at(i)=="molybdenum") {material = mo;};
       if (fM.at(i)=="tungsten")   {material = tungsten;};
-      
-      
+
+
       if (fTV == TargetVersion::CDR || fTV == TargetVersion::Jun25) { // new target layout
 	target = gGeoManager->MakeTube(nmi, material, 0., fDiameter/2., fL.at(i)/2.);
       }
@@ -199,7 +199,7 @@ void ShipTargetStation::ConstructGeometry()
     tTarget->AddNode(moreShielding, 1, new TGeoTranslation(0, 0, fTargetLength/2.));
   }
   top->AddNode(tTarget, 1, new TGeoTranslation(0, 0,fTargetZ - fTargetLength/2.));
-  
+
   if (fAbsorberLength>0){
     cout << "target and absorber positioned at " << fTargetZ <<" "<< fAbsorberZ << " m"<< endl;
   }else{

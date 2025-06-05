@@ -135,7 +135,7 @@ parser.add_argument("--SND_design", help="Choose SND design among [1,2,...]. 1: 
 parser.add_argument("--noSND", dest="SND", help="Deactivate SND. NOOP, as it currently defaults to off.", action='store_false')
 parser.add_argument("--TARGET_YAML", dest="TARGET_YAML", help="path to the yaml target config file", default=os.path.expandvars("$FAIRSHIP/geometry/target_config_old.yaml"))
 
-    
+
 options = parser.parse_args()
 
 if options.evtcalc:  simEngine = "EvtCalc"
