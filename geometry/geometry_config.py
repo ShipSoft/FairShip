@@ -340,8 +340,8 @@ with ConfigRegistry.register_config("basic") as c:
 #C-AMM additional block of Copper to add between target and hadron absorber, see edms document
     
     with open(c.target_yaml) as file:
-        config = yaml.safe_load(file)
-        c.target = AttrDict(config['target'])
+        targetconfig = yaml.safe_load(file)
+        c.target = AttrDict(targetconfig['target'])
 
     c.target.slices_length = r.std.vector("float")()
     c.target.slices_gap = r.std.vector("float")()
@@ -358,7 +358,7 @@ with ConfigRegistry.register_config("basic") as c:
                 c.target.slices_length.push_back(c.target.L[i])
             if len(c.target.G)==1:
                 c.target.slices_gap.push_back(c.target.G[0])
-            else
+            else:
                 c.target.slices_gap.push_back(c.target.G[i])
             if len(c.target.M)==1:
                 c.target.slices_material.push_back(c.target.M[0])
@@ -373,7 +373,7 @@ with ConfigRegistry.register_config("basic") as c:
     for width, gap in zip(c.target.slices_length,c.target.slices_gap):
         target_length += width+gap
     c.target.length = target_length
-    c.targetVersion = config['targetVersion']
+    c.targetVersion = targetconfig['targetVersion']
     # interaction point, start of target
 
     # FIXME: Redundant after change to new coordinate system

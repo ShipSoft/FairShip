@@ -357,7 +357,7 @@ def configure(run, ship_geo):
         ship_geo.target.nS
     )
 
-    if targetconfig['targetVersion'] > 10:
+    if ship_geo.targetVersion > 10:
         TargetStation.SetLayerPosMat(ship_geo.target.xy, ship_geo.target.slices_length, ship_geo.target.slices_gap, ship_geo.target.slices_material)
     detectorList.append(TargetStation)
 
