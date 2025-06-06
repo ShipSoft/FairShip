@@ -156,6 +156,7 @@ parser.add_argument("--SND", dest="SND", help="Activate SND.", action='store_tru
 parser.add_argument("--noSND", dest="SND", help="Deactivate SND. NOOP, as it currently defaults to off.", action='store_false')
 #parser.add_argument("--psdz",   dest="psdz", help="Set Prestrawdetector Z position", required=False,  default=2586., type=float)
 parser.add_argument("--decouple",   dest="decouple", help="Decoupling flag", required=False,  default=False, action='store_true')
+parser.add_argument("--useCSV",   dest="csv", help="Geometry tuning from csv flag", required=False,  default=False, action='store_true')
 
 options = parser.parse_args()
 
@@ -234,7 +235,8 @@ ship_geo = ConfigRegistry.loadpy(
 )
 ship_geo.decouple = options.decouple
 ship_geo.psd=2586.0
-update_from_file(ship_geo, options, os.path.expandvars('$FAIRSHIP/sstDecouplingTools/sst.csv'))
+if options.csv:
+    update_from_file(ship_geo, options, os.path.expandvars('$FAIRSHIP/sstDecouplingTools/sst.csv'))
 
 print("FairShip setup for",simEngine,"to produce",options.nEvents,"events")
 if (simEngine == "Ntuple" or simEngine == "MuonBack" or simEngine == "MyGen") and defaultInputFile :
