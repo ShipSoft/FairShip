@@ -704,7 +704,7 @@ def configure(run, ship_geo):
         ship_geo.strawtubes.medium = "vacuums" if ship_geo.DecayVolumeMedium == "vaccums" else "air"
 
         Prestrawdetector = ROOT.prestrawdetector('Prestrawdetector', True)
-        Prestrawdetector.SetZ(2586)
+        Prestrawdetector.SetZ(ship_geo.psd)
         detectorList.append(Prestrawdetector)
 
         Strawtubes = ROOT.strawtubes(ship_geo.strawtubes.medium)
@@ -890,8 +890,9 @@ def configure(run, ship_geo):
         run.SetField(fMagField)
     #
     exclusionList = []
-    # exclusionList = ["Muon","Ecal","Hcal","Strawtubes","TargetTrackers","NuTauTarget","HighPrecisionTrackers",\
-    #                 "Veto","Magnet","MuonShield","TargetStation","NuTauMudet","EmuMagnet", "TimeDet", "UpstreamTagger"]
+    if ship_geo.decouple:
+        exclusionList = ["Muon","Ecal","Hcal","TargetTrackers","NuTauTarget","HighPrecisionTrackers",\
+                 "Veto","MuonShield","TargetStation","NuTauMudet","EmuMagnet", "TimeDet", "UpstreamTagger"]
 
     for x in detectorList:
         if x.GetName() in exclusionList:

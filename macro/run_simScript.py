@@ -154,6 +154,8 @@ parser.add_argument(
 )
 parser.add_argument("--SND", dest="SND", help="Activate SND.", action='store_true')
 parser.add_argument("--noSND", dest="SND", help="Deactivate SND. NOOP, as it currently defaults to off.", action='store_false')
+#parser.add_argument("--psdz",   dest="psdz", help="Set Prestrawdetector Z position", required=False,  default=2586., type=float)
+parser.add_argument("--decouple",   dest="decouple", help="Decoupling flag", required=False,  default=False, action='store_true')
 
 options = parser.parse_args()
 
@@ -230,7 +232,8 @@ ship_geo = ConfigRegistry.loadpy(
      DecayVolumeMedium=options.decayVolMed,
      SND=options.SND,
 )
-
+ship_geo.decouple = options.decouple
+ship_geo.psd=2586.0
 update_from_file(ship_geo, options, os.path.expandvars('$FAIRSHIP/sstDecouplingTools/sst.csv'))
 
 print("FairShip setup for",simEngine,"to produce",options.nEvents,"events")
@@ -290,7 +293,7 @@ if simEngine == "MyGen":
     MyGen = ROOT.MyGenerator()
     MyGen.Init(inputFile, options.firstEvent)
     primGen.AddGenerator(MyGen)
-    options.nEvents = min(options.nEvents, MyGen.GetNevents())
+    options.nEvents = MyGen.GetNevents()
 
 
 if simEngine == "Pythia8":
