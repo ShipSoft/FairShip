@@ -28,6 +28,7 @@ it in future.
 * First version of ```MTC``` (```SND/MTC```) is introduced. Scint part is fully implemented, the Sci-Fi part is implemented in simplified version. Geometrical parameters of ```MTC``` are stored in ```geometry/MTC_config.yaml``` file
 * New key for ```macro/run_simScript.py``` for choosing SND options is added: ```--SND_design```
 * Geometry_config.py: Added MS design `New_HA_Design` based on the MS `warm_opt`  with new version of HA
+* Add access to decoded numbers (stations, views etc.) of strawtubes hits
 
 ### Fixed
 
@@ -67,6 +68,9 @@ it in future.
 * feat(geometry): Make SplitCal the default calorimeter
 * Resize SplitCal to 4×6 m²
 * feat(geometry): Define target configuration in yaml
+* strawtubes detID is now 7-digit! (without plane number)
+* Change strawtubes detID decode function to tuple output
+* Change seperate constructions of tracker stations 1/2 and 3/4 to being identical
 
 ### Removed
 
@@ -83,6 +87,7 @@ it in future.
 * run_simScript.py: remove --muShieldDesign flag
 * Remove unused straw veto station
 * ShipAna.py: remove broken calorimetry
+* Remove strawtubes_single class
 
 ## 25.01
 

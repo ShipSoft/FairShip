@@ -181,22 +181,18 @@ with ConfigRegistry.register_config("basic") as c:
 
     c.strawtubes = AttrDict(z=0*u.cm)
     if strawDesign == 4:
-     c.strawtubes.InnerStrawDiameter = 0.975*u.cm
-     c.strawtubes.StrawPitch         = 1.76*u.cm
-     c.strawtubes.DeltazLayer        = 1.1*u.cm
-     c.strawtubes.DeltazPlane        = 2.6*u.cm
-     c.strawtubes.YLayerOffset = c.strawtubes.StrawPitch  / 2.
-     c.strawtubes.YPlaneOffset = c.strawtubes.StrawPitch  / 4.
-     c.strawtubes.FrameMaterial      = "aluminium"
-     c.strawtubes.FrameLateralWidth  = 1.*u.cm
-     c.strawtubes.DeltazFrame        = 10.*u.cm
+     c.strawtubes.InnerStrawDiameter = 0.975 * u.cm
+     c.strawtubes.StrawPitch = 1.76 * u.cm
+     c.strawtubes.DeltazLayer = 1.1 * u.cm
+     c.strawtubes.YLayerOffset = c.strawtubes.StrawPitch / 2.
+     c.strawtubes.FrameMaterial = "aluminium"
+     c.strawtubes.FrameLateralWidth = 1. * u.cm
+     c.strawtubes.DeltazFrame = 10. * u.cm
     elif strawDesign == 10:  # 10 - baseline
      c.strawtubes.InnerStrawDiameter = 1.9928 * u.cm
      c.strawtubes.StrawPitch = 2. * u.cm
      c.strawtubes.DeltazLayer = 1.732 * u.cm
-     c.strawtubes.DeltazPlane = 0 * u.cm
      c.strawtubes.YLayerOffset = 1. * u.cm
-     c.strawtubes.YPlaneOffset = 0 * u.cm
      c.strawtubes.FrameMaterial = "steel"
      c.strawtubes.FrameLateralWidth = 0.17 * u.m
      c.strawtubes.DeltazFrame = 2.5 * u.cm
@@ -370,17 +366,8 @@ with ConfigRegistry.register_config("basic") as c:
     c.strawtubes.v_drift = 1./(30*u.ns/u.mm) # for baseline NA62 5mm radius straws)
     c.strawtubes.sigma_spatial = 0.012*u.cm # according to Massi's TP section
 # size of straws
-    c.strawtubes.StrawLength     = c.xMax
-    if tankDesign == 5:
-       c.strawtubes.StrawLength12   = c.xMax*(c.TrackStation1.z-2*c.strawtubes.DeltazView-zF)/(z4-zF)
-       zF = c.target.z0 + c.zFocusY
-
-       c.strawtubes.tr12ydim           = c.Yheight/2.*(c.TrackStation1.z-2*c.strawtubes.DeltazView-zF)/(z4-zF)
-       c.strawtubes.tr34ydim           = int(c.Yheight/2.)
-    else:
-       c.strawtubes.StrawLength12   = c.strawtubes.StrawLength
-       c.strawtubes.tr12ydim           = int(c.Yheight/2.)
-       c.strawtubes.tr34ydim           = int(c.Yheight/2.)
+    c.strawtubes.StrawLength = c.xMax
+    c.strawtubes.station_height = int(c.Yheight / 2.)
 
 
     #CAMM - For Nu tau detector, keep only these parameters which are used by others...

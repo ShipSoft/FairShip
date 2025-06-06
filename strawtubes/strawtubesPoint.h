@@ -1,11 +1,11 @@
 #ifndef STRAWTUBESPOINT_H
 #define STRAWTUBESPOINT_H 1
 
-
 #include "FairMCPoint.h"
-
 #include "TObject.h"
 #include "TVector3.h"
+
+class strawtubesHit;
 
 class strawtubesPoint : public FairMCPoint
 {
@@ -41,9 +41,7 @@ class strawtubesPoint : public FairMCPoint
 
     Int_t fPdgCode;
     Double_t fdist2Wire;
-    ClassDef(strawtubesPoint,2);
-
-
+    ClassDef(strawtubesPoint, 3);
 };
 
 #endif
