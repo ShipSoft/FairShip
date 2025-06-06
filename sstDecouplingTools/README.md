@@ -4,8 +4,8 @@ To set geometrical parameters from user csv file run the macro with `--useCSV`
 
 ### 
 
-To run simulation with events from file `--MyGen -f _filename_`.
-`_filename_` can be produced from `ship.conical.Pythia8-TGeant4.root` with `sstDecouplingTools/produce_ttree.C`
+To run simulation with events from file `--MyGen -f filename`.
+`filename` can be produced from `ship.conical.Pythia8-TGeant4.root` with `sstDecouplingTools/produce_ttree.C`
 
 ### SST decoupling
 
