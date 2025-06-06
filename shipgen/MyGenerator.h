@@ -27,7 +27,7 @@ class MyGenerator : public FairGenerator
 
  protected:
 
-  Float_t px[500], py[500], pz[500], vx[500], vy[500], vz[500];
+  Double_t px, py, pz, vx, vy, vz;
   TFile* fInputFile;
   TTree* fTree;
   FairLogger*  fLogger; //!   don't make it persistent, magic ROOT command

@@ -257,7 +257,9 @@ def configure_strawtubes(yaml_file, ship_geo):
         ship_geo.strawtubesDigi.v_drift,
         ship_geo.strawtubesDigi.sigma_spatial,
     )
-
+    Prestrawdetector = ROOT.prestrawdetector('Prestrawdetector', True)
+    Prestrawdetector.SetZ(ship_geo.psd)
+    detectorList.append(Prestrawdetector)
     detectorList.append(strawtubes)
 
 

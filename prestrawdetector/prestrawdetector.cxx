@@ -183,6 +183,9 @@ void prestrawdetector::ConstructGeometry()
     TGeoVolume *top               = gGeoManager->GetTopVolume();
     InitMedium("air");
     TGeoMedium *air               = gGeoManager->GetMedium("air");
+    InitMedium("vacuum");
+    TGeoMedium *vacuum               = gGeoManager->GetMedium("vacuum");
+
     InitMedium("ShipSens");
     TGeoMedium *Se                = gGeoManager->GetMedium("ShipSens");
     InitMedium("aluminium");

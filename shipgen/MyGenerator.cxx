@@ -54,21 +54,21 @@ MyGenerator::~MyGenerator()
 Bool_t MyGenerator::ReadEvent(FairPrimaryGenerator* cpg)
 {
   cout <<fNevents<<endl;
-  while (fn<fNevents) {
+  if (fn<fNevents) {
    fTree->GetEntry(fn);
    fn++;
    cout << "reading event "<<fn<<endl;
   }
   if (fn>=fNevents) {
      cout << "No more input events"<<endl;
-     return kFALSE; 
+     //return kFALSE; 
   }
 
   TDatabasePDG* pdgBase = TDatabasePDG::Instance();
   Double_t mass = pdgBase->GetParticle(id)->Mass();
-  Double_t    e = TMath::Sqrt( px[0]*px[0]+py[0]*py[0]+pz[0]*pz[0]+ mass*mass );
-  cpg->AddTrack(id,px[0],py[0],pz[0],0.,0.,0.);
-  cout << vx[0]<< " " << vy[0]<< " " << vz[0]<<endl;
+  Double_t    e = TMath::Sqrt( px*px+py*py+pz*pz+ mass*mass );
+  cpg->AddTrack(id, px, py, pz, vx, vy, vz);
+  cout << vx<< " " << vy<< " " << vz<<endl;
 
   return kTRUE;
 }
