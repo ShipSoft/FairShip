@@ -1,15 +1,16 @@
 #include "strawtubesHit.h"
-#include "strawtubes.h"
-#include "TVector3.h"
+
+#include "FairLogger.h"
 #include "FairRun.h"
 #include "FairRunSim.h"
-#include "FairLogger.h"
-#include "TMath.h"
-#include "TRandom1.h"
-#include "TRandom3.h"
 #include "TGeoManager.h"
 #include "TGeoShape.h"
 #include "TGeoTube.h"
+#include "TMath.h"
+#include "TRandom1.h"
+#include "TRandom3.h"
+#include "TVector3.h"
+#include "strawtubes.h"
 
 #include <iostream>
 #include <math.h>
@@ -55,34 +56,34 @@ strawtubesHit::~strawtubesHit() { }
 
 Int_t strawtubesHit::GetStationNumber()
 {
-  Int_t detID = GetDetectorID();
-  const auto decode = strawtubes::StrawDecode(detID);
+    Int_t detID = GetDetectorID();
+    const auto decode = strawtubes::StrawDecode(detID);
 
-  return std::get<0>(decode);
+    return std::get<0>(decode);
 }
 
 Int_t strawtubesHit::GetViewNumber()
 {
-  Int_t detID = GetDetectorID();
-  const auto decode = strawtubes::StrawDecode(detID);
+    Int_t detID = GetDetectorID();
+    const auto decode = strawtubes::StrawDecode(detID);
 
-  return std::get<1>(decode);
+    return std::get<1>(decode);
 }
 
 Int_t strawtubesHit::GetLayerNumber()
 {
-  Int_t detID = GetDetectorID();
-  const auto decode = strawtubes::StrawDecode(detID);
+    Int_t detID = GetDetectorID();
+    const auto decode = strawtubes::StrawDecode(detID);
 
-  return std::get<2>(decode);
+    return std::get<2>(decode);
 }
 
 Int_t strawtubesHit::GetStrawNumber()
 {
-  Int_t detID = GetDetectorID();
-  const auto decode = strawtubes::StrawDecode(detID);
+    Int_t detID = GetDetectorID();
+    const auto decode = strawtubes::StrawDecode(detID);
 
-  return std::get<3>(decode);
+    return std::get<3>(decode);
 }
 
 // -----   Public method Print   -------------------------------------------

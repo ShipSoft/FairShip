@@ -64,10 +64,14 @@ class strawtubes: public FairDetector
     void SetVacBox_y(Double_t vacbox_y);
     void set_station_height(Double_t station_height);
     static std::tuple<Int_t, Int_t, Int_t, Int_t> StrawDecode(Int_t detID);
-    static void StrawEndPoints(Int_t detID, TVector3 &top, TVector3 &bot);
+    static void StrawEndPoints(Int_t detID, TVector3& top, TVector3& bot);
     void StrawEndPointsOriginal(Int_t detID, TVector3 &top, TVector3 &bot);
 // for the digitizing step
-    void SetStrawResolution(Double_t a, Double_t b) {v_drift = a; sigma_spatial = b;}
+    void SetStrawResolution(Double_t a, Double_t b)
+    {
+        v_drift = a;
+        sigma_spatial = b;
+    }
     Double_t StrawVdrift() {return v_drift;}
     Double_t StrawSigmaSpatial() {return sigma_spatial;}
 

@@ -3,33 +3,32 @@
 // E. van Herwijnen eric.van.herwijnen@cern.ch
 
 #include "strawtubes.h"
-#include "strawtubesPoint.h"
 
-#include "FairVolume.h"
-#include "FairGeoVolume.h"
-#include "FairGeoNode.h"
-#include "FairRootManager.h"
-#include "FairGeoLoader.h"
-#include "FairGeoInterface.h"
-#include "FairGeoMedia.h"
 #include "FairGeoBuilder.h"
+#include "FairGeoInterface.h"
+#include "FairGeoLoader.h"
+#include "FairGeoMedia.h"
+#include "FairGeoNode.h"
+#include "FairGeoVolume.h"
+#include "FairLogger.h"
+#include "FairRootManager.h"
 #include "FairRun.h"
 #include "FairRuntimeDb.h"
-#include "FairLogger.h"
+#include "FairVolume.h"
 #include "ShipDetectorList.h"
 #include "ShipStack.h"
-
 #include "TClonesArray.h"
-#include "TVirtualMC.h"
-#include "TGeoManager.h"
 #include "TGeoBBox.h"
 #include "TGeoCompositeShape.h"
-#include "TGeoTube.h"
+#include "TGeoManager.h"
 #include "TGeoMaterial.h"
 #include "TGeoMedium.h"
+#include "TGeoTube.h"
 #include "TMath.h"
 #include "TParticle.h"
 #include "TVector3.h"
+#include "TVirtualMC.h"
+#include "strawtubesPoint.h"
 
 #include <iostream>
 #include <sstream>
@@ -469,8 +468,8 @@ void strawtubes::ConstructGeometry()
                 // Layer loop
                 TString nmlayer = nmview + "_layer_";
                 nmlayer += lnb;
-                TGeoBBox* layer =
-                    new TGeoBBox("layer box", fStraw_length + eps / 4, f_station_height + eps / 4, layerwidth / 2. + eps / 4);
+                TGeoBBox* layer = new TGeoBBox(
+                    "layer box", fStraw_length + eps / 4, f_station_height + eps / 4, layerwidth / 2. + eps / 4);
                 TGeoVolume* layerbox = new TGeoVolume(nmlayer, layer, med);
 
                 // The layer box sits in the viewframe.
@@ -515,12 +514,13 @@ std::tuple<Int_t, Int_t, Int_t, Int_t> strawtubes::StrawDecode(Int_t detID)
     snb = detID - statnb * 1e6 - vnb * 1e5 - lnb * 1e4 - 2e3;
 
     if (statnb < 1 || statnb > 4 || vnb < 0 || vnb > 3 || lnb < 0 || lnb > 1 || snb < 1 || snb > 299) {
-      LOG(warning) << "Invalid strawtubes detID:";
-      LOG(warning) << detID << " -> station: " << statnb << ", view: " << vnb << ", layer: " << lnb << ", straw: " << snb;
-      LOG(warning) << "strawtubes detID is 7-digit!";
-      return std::make_tuple(0, -1, -1, 0);
+        LOG(warning) << "Invalid strawtubes detID:";
+        LOG(warning) << detID << " -> station: " << statnb << ", view: " << vnb << ", layer: " << lnb
+                     << ", straw: " << snb;
+        LOG(warning) << "strawtubes detID is 7-digit!";
+        return std::make_tuple(0, -1, -1, 0);
     } else {
-      return std::make_tuple(statnb, vnb, lnb, snb);
+        return std::make_tuple(statnb, vnb, lnb, snb);
     }
 }
 // -----   Public method StrawEndPoints    -------------------------------------------
@@ -569,8 +569,8 @@ void strawtubes::StrawEndPoints(Int_t fDetectorID, TVector3 &vbot, TVector3 &vto
     path += wire;
     Bool_t rc = nav->cd(path);
     if (not rc) {
-      LOG(warning) << "strawtubes::StrawDecode, TGeoNavigator failed" << path;
-      return;
+        LOG(warning) << "strawtubes::StrawDecode, TGeoNavigator failed" << path;
+        return;
     }
     TGeoNode* W = nav->GetCurrentNode();
     TGeoTube* S = dynamic_cast<TGeoTube*>(W->GetVolume()->GetShape());
