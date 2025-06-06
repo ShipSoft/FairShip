@@ -98,7 +98,7 @@ Bool_t EvtCalcGenerator::ReadEvent(FairPrimaryGenerator* cpg)
     fTree->GetEntry(fn);
     fn++;
     if (fn % 100 == 0)
-        LOGF(info, "Info EvtCalcGenerator: event nr %s", fn);
+        LOGF(info, "Info EvtCalcGenerator: event nr %d", fn);
 
     Ndau = GetNdaughters(fTree);
     // Vertex coordinates in the SHiP reference frame, expressed in [cm]
