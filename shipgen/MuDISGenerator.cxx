@@ -14,12 +14,16 @@
 #include "TSystem.h"
 #include "TVectorD.h"
 
+using std::max;
+using std::min;
+
+const Double_t c_light = 29.9792458;   // speed of light in cm/ns
+
 #include <math.h>
 
 // MuDIS momentum GeV
 // Vertex in SI units, assume this means m
 
-const Double_t c_light = 29.9792458;              // speed of light in cm/ns
 const Double_t muon_mass = 0.10565999895334244;   // muon mass in GeV
 
 // -----   Default constructor   -------------------------------------------
@@ -45,7 +49,6 @@ Bool_t MuDISGenerator::Init(const char* fileName, const int firstEvent)
     fTree = fInputFile->Get<TTree>("DIS");
     fNevents = fTree->GetEntries();
     fn = firstEvent;
-
     fTree->SetBranchAddress("InMuon", &iMuon);   // incoming muon
     fTree->SetBranchAddress("DISParticles", &dPart);
     fTree->SetBranchAddress("SoftParticles", &dPartSoft);   // Soft interaction particles
@@ -241,8 +244,8 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg)
                << " fn=" << fn;
 
     // some start/end positions in z (f.i. emulsion to Tracker 1)
-    Double_t start[3] = {0., 0., startZ};
-    Double_t end[3] = {0., 0., endZ};
+    Double_t start[3] = {0., 0., start_z};
+    Double_t end[3] = {0., 0., end_z};
 
     // incoming muon  array('d',[pid,px,py,pz,E,x,y,z,w,t])
     TVectorD* mu = dynamic_cast<TVectorD*>(iMuon->AddrAt(0));
@@ -263,6 +266,42 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg)
     start[1] = y - (z - start[2]) * tymu;
     end[0] = x - (z - end[2]) * txmu;
     end[1] = y - (z - end[2]) * tymu;
+
+    // skip the event if the muon trajectory doesn't intersect the pre-set x-y range
+    // these steps save a lot of computing time!
+    // first, look for overlaps in the x or y axes - if none, continue
+
+    // Find the overlapping Y-range
+    Double_t max_start_y = max(start[1], start_y);
+    Double_t min_end_y = min(end[1], end_y);
+
+    // Check if the Y ranges do not overlap — early exit if true
+    if (max_start_y > min_end_y) {
+        return kTRUE;
+    }
+
+    // Find the overlapping X-range
+    Double_t max_start_x = max(start[0], start_x);
+    Double_t min_end_x = min(end[0], end_x);
+
+    // Check if the X ranges do not overlap — early exit if true
+    if (max_start_x > min_end_x) {
+        return kTRUE;
+    }
+
+    // Calculate the Z-coordinates corresponding to the X-overlap range
+    Double_t z_at_max_x = z - (x - max_start_x) / (txmu + 1e-20);   // Avoid division by zero
+    Double_t zat_min_x = z - (x - min_end_x) / (txmu + 1e-20);
+
+    // Compute Y-coordinates at the Z boundaries of the X-overlap
+    Double_t y_at_max_z = y - (z - z_at_max_x) * tymu;
+    Double_t y_at_min_z = y - (z - zat_min_x) * tymu;
+
+    // Check if Y ranges at the corresponding Z values do not overlap
+    if (max(min(y_at_max_z, y_at_min_z), start_y) > min(max(y_at_max_z, y_at_min_z), end_y)) {
+        return kTRUE;
+    }
+
     LOG(DEBUG) << "MuDIS: mu xyz position " << x << ", " << y << ", " << z;
     LOG(DEBUG) << "MuDIS: mu pxyz position " << mu[0][1] << ", " << mu[0][2] << ", " << mu[0][3];
     LOG(DEBUG) << "MuDIS: mu weight*DISmultiplicity  " << w;
@@ -286,6 +325,14 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg)
         zmu = gRandom->Uniform(start[2], end[2]);
         xmu = x - (z - zmu) * txmu;
         ymu = y - (z - zmu) * tymu;
+
+        // check if the selected interaction position is inside the pre-set x-y range
+        // if not retry! This will force the generator to simulate interactions in our selected range!!!
+        if (xmu < start_x || xmu > end_x || ymu < start_y || ymu > end_y) {
+            prob2int = 0.0;
+            continue;
+        }
+
         // get local material at this point
         TGeoNode* node = gGeoManager->FindNode(xmu, ymu, zmu);
         TGeoMaterial* mat = 0;
@@ -338,7 +385,7 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg)
     // outgoing DIS particles, [did,dpx,dpy,dpz,E], put density along trajectory as weight, g/cm^2
 
     w = mparam[0] * mparam[4];   // modify weight, by multiplying with average density * track length
-    int index = 0;
+
     for (auto&& particle : *dPart) {
         TVectorD* Part = dynamic_cast<TVectorD*>(particle);
         LOG(DEBUG) << "muon DIS Generator out part " << int((*Part)[0]);
@@ -347,7 +394,7 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg)
         LOG(DEBUG) << "muon DIS Generator out part pos " << xmu << " " << ymu << "" << zmu;
         LOG(DEBUG) << "muon DIS Generator out part w " << w;
 
-        if (index == 0) {
+        if (int(mu[0][0]) == int((*Part)[0])) {
             cpg->AddTrack(int((*Part)[0]),
                           (*Part)[1],
                           (*Part)[2],
@@ -359,12 +406,11 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg)
                           true,
                           (*Part)[4],
                           t_DIS,
-                          cross_sec);   // save DIS cross section in MCTrack[1]
+                          cross_sec);
         } else {
             cpg->AddTrack(
                 int((*Part)[0]), (*Part)[1], (*Part)[2], (*Part)[3], xmu, ymu, zmu, 0, true, (*Part)[4], t_DIS, w);
         }
-        index += 1;
     }
 
     // Soft interaction tracks
