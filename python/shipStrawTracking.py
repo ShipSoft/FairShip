@@ -215,11 +215,12 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method):
                 hits[key] = numpy.array(hits[key])
 
             # Decoding
-            global_variables.modules["Strawtubes"].StrawDecode(hits['DetID'], statnb, vnb, lnb, snb)
-            is_stereo = ((vnb == 1) + (vnb == 2))
-            is_y = ((vnb == 0) + (vnb == 3))
-            is_before = ((statnb == 1) + (statnb == 2))
-            is_after = ((statnb == 3) + (statnb == 4))
+            decode = global_variables.modules["Strawtubes"].StrawDecode(hits['DetID'])
+            # StrawDecode returns a tuple of (statnb, vnb, lnb, snb).
+            is_stereo = ((decode[1] == 1) + (decode[1] == 2))
+            is_y = ((decode[1] == 0) + (decode[1] == 3))
+            is_before = ((decode[0] == 1) + (decode[0] == 2))
+            is_after = ((decode[0] == 3) + (decode[0] == 4))
 
 
             # Metrics
