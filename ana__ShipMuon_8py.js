@@ -27,7 +27,6 @@ var ana__ShipMuon_8py =
     [ "rareEventEmulsion", "ana__ShipMuon_8py.html#a721fd3a29cb32959f2a0f11ee61f1c3a", null ],
     [ "readAndMergeHistos", "ana__ShipMuon_8py.html#a6efbf889d4a0b941bd19ab45236f002a", null ],
     [ "reDraw", "ana__ShipMuon_8py.html#a334b44193227009d4e0000713eb55812", null ],
-    [ "strawEncoding", "ana__ShipMuon_8py.html#aefd4278d4a3799fac97306279a695367", null ],
     [ "dy", "ana__ShipMuon_8py.html#a2e1edb79f1d6d21e32f27e5887643b56", null ],
     [ "ecal", "ana__ShipMuon_8py.html#a8f46377df29907eb4773e30e92e64d98", null ],
     [ "ecalGeoFile", "ana__ShipMuon_8py.html#a60f72a5cfc108a99c7f523c0ea51a51f", null ],

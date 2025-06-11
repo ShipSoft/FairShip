@@ -3,7 +3,6 @@ var shipPatRec_8py =
     [ "artificial_retina_pat_rec_stereo_views", "shipPatRec_8py.html#a2d54ac07b407e2d1f95a45c799a57a7f", null ],
     [ "artificial_retina_pat_rec_y_view", "shipPatRec_8py.html#a848914b2596b8ce24ce06d706a96cd29", null ],
     [ "artificial_retina_pattern_recognition", "shipPatRec_8py.html#aaed2c3b80a8c779802840a527d840b5c", null ],
-    [ "decodeDetectorID", "shipPatRec_8py.html#afac11c2f58e31457f72532aeec6d6e98", null ],
     [ "execute", "shipPatRec_8py.html#af0ccef68f17f3989d7870e3c793a33e1", null ],
     [ "fast_hough_pat_rec_stereo_views", "shipPatRec_8py.html#a26083157d3c5b063b6787c476ef896e6", null ],
     [ "fast_hough_pat_rec_y_view", "shipPatRec_8py.html#a9e786dcf32b59b846a190bf82d7f6f40", null ],

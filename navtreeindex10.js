@@ -1,6 +1,5 @@
 var NAVTREEINDEX10 =
 {
-"classTargetTracker.html#a8227ecd370dfb40ea0a30893a7e2616e":[5,0,125,0],
 "classTargetTracker.html#a83ade362106d160e32ae5f410f7cf97a":[5,0,125,14],
 "classTargetTracker.html#a86afa822fb9373e8359e5701ffbcfaba":[5,0,125,41],
 "classTargetTracker.html#a8797d0786b93bd3662d0a460487bc00a":[5,0,125,46],
@@ -248,6 +247,7 @@ var NAVTREEINDEX10 =
 "classUpstreamTaggerPoint.html#ad5c34dfe468a1022fe531c9514d0b154":[5,0,135,4],
 "classUpstreamTaggerPoint.html#ad61993f6c197a21348c9b2f741402d44":[5,0,135,9],
 "classVeto.html":[5,0,137],
+"classdarkphoton_1_1DarkPhoton.html":[4,0,18,0],
 "classdarkphoton_1_1DarkPhoton.html":[5,0,0,0],
-"classdarkphoton_1_1DarkPhoton.html":[4,0,18,0]
+"classdarkphoton_1_1DarkPhoton.html#a07cdd5cdf9ee19c4c686ed0ade9e8b4b":[4,0,18,0,7]
 };

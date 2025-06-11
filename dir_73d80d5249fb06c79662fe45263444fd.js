@@ -2,7 +2,6 @@ var dir_73d80d5249fb06c79662fe45263444fd =
 [
     [ "strawtubes.cxx", "strawtubes_8cxx.html", null ],
     [ "strawtubes.h", "strawtubes_8h.html", "strawtubes_8h" ],
-    [ "strawtubes_single.cxx", "strawtubes__single_8cxx.html", null ],
     [ "strawtubesContFact.cxx", "strawtubesContFact_8cxx.html", null ],
     [ "strawtubesContFact.h", "strawtubesContFact_8h.html", "strawtubesContFact_8h" ],
     [ "strawtubesHit.cxx", "strawtubesHit_8cxx.html", "strawtubesHit_8cxx" ],

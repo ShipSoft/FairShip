@@ -1,7 +1,6 @@
 var shipStrawTracking_8py =
 [
     [ "cmp", "shipStrawTracking_8py.html#a729a81fdf3b076167754cd505e3ea6fb", null ],
-    [ "decodeDetectorID", "shipStrawTracking_8py.html#ad70ba245353c85005f66d69a7da5e047", null ],
     [ "extrapolateToPlane", "shipStrawTracking_8py.html#adc66dfda583a285e93e3230b61844e05", null ],
     [ "fracMCsame", "shipStrawTracking_8py.html#a005e72c92291692e5a0b39ae98d0ab13", null ],
     [ "get_n_hits", "shipStrawTracking_8py.html#a42f7b2c895655a7254fe343ffc57bbf4", null ],

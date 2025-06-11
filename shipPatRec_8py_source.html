@@ -910,302 +910,268 @@ $(document).ready(function(){initNavTree('shipPatRec_8py_source.html',''); initR
 <div class="line"><a id="l00800" name="l00800"></a><span class="lineno">  800</span>        ahit = smeared_hits[i_hit]</div>
 <div class="line"><a id="l00801" name="l00801"></a><span class="lineno">  801</span> </div>
 <div class="line"><a id="l00802" name="l00802"></a><span class="lineno">  802</span>        detID = ahit[<span class="stringliteral">&#39;detID&#39;</span>]</div>
-<div class="line"><a id="l00803" name="l00803"></a><span class="lineno">  803</span>        statnb, vnb, pnb, lnb, snb = <a class="code hl_function" href="namespaceshipPatRec.html#afac11c2f58e31457f72532aeec6d6e98">decodeDetectorID</a>(detID)</div>
-<div class="line"><a id="l00804" name="l00804"></a><span class="lineno">  804</span>        is_y12 = ((statnb == 1) + (statnb == 2)) * ((vnb == 0) + (vnb == 3))</div>
-<div class="line"><a id="l00805" name="l00805"></a><span class="lineno">  805</span>        is_stereo12 = ((statnb == 1) + (statnb == 2)) * ((vnb == 1) + (vnb == 2))</div>
-<div class="line"><a id="l00806" name="l00806"></a><span class="lineno">  806</span>        is_y34 = ((statnb == 3) + (statnb == 4)) * ((vnb == 0) + (vnb == 3))</div>
-<div class="line"><a id="l00807" name="l00807"></a><span class="lineno">  807</span>        is_stereo34 = ((statnb == 3) + (statnb == 4)) * ((vnb == 1) + (vnb == 2))</div>
-<div class="line"><a id="l00808" name="l00808"></a><span class="lineno">  808</span> </div>
-<div class="line"><a id="l00809" name="l00809"></a><span class="lineno">  809</span>        <span class="keywordflow">if</span> is_y12:</div>
-<div class="line"><a id="l00810" name="l00810"></a><span class="lineno">  810</span>            smeared_hits_12y.append(ahit)</div>
-<div class="line"><a id="l00811" name="l00811"></a><span class="lineno">  811</span>        <span class="keywordflow">if</span> is_stereo12:</div>
-<div class="line"><a id="l00812" name="l00812"></a><span class="lineno">  812</span>            smeared_hits_12stereo.append(ahit)</div>
-<div class="line"><a id="l00813" name="l00813"></a><span class="lineno">  813</span>        <span class="keywordflow">if</span> is_y34:</div>
-<div class="line"><a id="l00814" name="l00814"></a><span class="lineno">  814</span>            smeared_hits_34y.append(ahit)</div>
-<div class="line"><a id="l00815" name="l00815"></a><span class="lineno">  815</span>        <span class="keywordflow">if</span> is_stereo34:</div>
-<div class="line"><a id="l00816" name="l00816"></a><span class="lineno">  816</span>            smeared_hits_34stereo.append(ahit)</div>
-<div class="line"><a id="l00817" name="l00817"></a><span class="lineno">  817</span> </div>
-<div class="line"><a id="l00818" name="l00818"></a><span class="lineno">  818</span>    <span class="keywordflow">return</span> smeared_hits_12y, smeared_hits_12stereo, smeared_hits_34y, smeared_hits_34stereo</div>
-<div class="line"><a id="l00819" name="l00819"></a><span class="lineno">  819</span> </div>
+<div class="line"><a id="l00803" name="l00803"></a><span class="lineno">  803</span>        decode = global_variables.modules[<span class="stringliteral">&quot;Strawtubes&quot;</span>].StrawDecode(detID)</div>
+<div class="line"><a id="l00804" name="l00804"></a><span class="lineno">  804</span>        <span class="comment"># StrawDecode returns a tuple of (statnb, vnb, lnb, snb).</span></div>
+<div class="line"><a id="l00805" name="l00805"></a><span class="lineno">  805</span>        is_y12 = ((decode[0] == 1) + (decode[0] == 2)) * ((decode[1] == 0) + (decode[1] == 3))</div>
+<div class="line"><a id="l00806" name="l00806"></a><span class="lineno">  806</span>        is_stereo12 = ((decode[0] == 1) + (decode[0] == 2)) * ((decode[1] == 1) + (decode[1] == 2))</div>
+<div class="line"><a id="l00807" name="l00807"></a><span class="lineno">  807</span>        is_y34 = ((decode[0] == 3) + (decode[0] == 4)) * ((decode[1] == 0) + (decode[1] == 3))</div>
+<div class="line"><a id="l00808" name="l00808"></a><span class="lineno">  808</span>        is_stereo34 = ((decode[0] == 3) + (decode[0] == 4)) * ((decode[1] == 1) + (decode[1] == 2))</div>
+<div class="line"><a id="l00809" name="l00809"></a><span class="lineno">  809</span> </div>
+<div class="line"><a id="l00810" name="l00810"></a><span class="lineno">  810</span>        <span class="keywordflow">if</span> is_y12:</div>
+<div class="line"><a id="l00811" name="l00811"></a><span class="lineno">  811</span>            smeared_hits_12y.append(ahit)</div>
+<div class="line"><a id="l00812" name="l00812"></a><span class="lineno">  812</span>        <span class="keywordflow">if</span> is_stereo12:</div>
+<div class="line"><a id="l00813" name="l00813"></a><span class="lineno">  813</span>            smeared_hits_12stereo.append(ahit)</div>
+<div class="line"><a id="l00814" name="l00814"></a><span class="lineno">  814</span>        <span class="keywordflow">if</span> is_y34:</div>
+<div class="line"><a id="l00815" name="l00815"></a><span class="lineno">  815</span>            smeared_hits_34y.append(ahit)</div>
+<div class="line"><a id="l00816" name="l00816"></a><span class="lineno">  816</span>        <span class="keywordflow">if</span> is_stereo34:</div>
+<div class="line"><a id="l00817" name="l00817"></a><span class="lineno">  817</span>            smeared_hits_34stereo.append(ahit)</div>
+<div class="line"><a id="l00818" name="l00818"></a><span class="lineno">  818</span> </div>
+<div class="line"><a id="l00819" name="l00819"></a><span class="lineno">  819</span>    <span class="keywordflow">return</span> smeared_hits_12y, smeared_hits_12stereo, smeared_hits_34y, smeared_hits_34stereo</div>
 <div class="line"><a id="l00820" name="l00820"></a><span class="lineno">  820</span> </div>
+<div class="line"><a id="l00821" name="l00821"></a><span class="lineno">  821</span> </div>
 </div>
-<div class="foldopen" id="foldopen00821" data-start="" data-end="">
-<div class="line"><a id="l00821" name="l00821"></a><span class="lineno"><a class="line" href="namespaceshipPatRec.html#aedb4937e3c76a49b47c4b97e1298ec06">  821</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceshipPatRec.html#aedb4937e3c76a49b47c4b97e1298ec06">reduce_clones_using_one_track_per_hit</a>(recognized_tracks, min_hits=3):</div>
-<div class="line"><a id="l00822" name="l00822"></a><span class="lineno">  822</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><a id="l00823" name="l00823"></a><span class="lineno">  823</span><span class="stringliteral">    Split hits into groups of station views.</span></div>
-<div class="line"><a id="l00824" name="l00824"></a><span class="lineno">  824</span><span class="stringliteral"></span> </div>
-<div class="line"><a id="l00825" name="l00825"></a><span class="lineno">  825</span><span class="stringliteral">    Parameters:</span></div>
-<div class="line"><a id="l00826" name="l00826"></a><span class="lineno">  826</span><span class="stringliteral">    -----------</span></div>
-<div class="line"><a id="l00827" name="l00827"></a><span class="lineno">  827</span><span class="stringliteral">    recognized_tracks : list</span></div>
-<div class="line"><a id="l00828" name="l00828"></a><span class="lineno">  828</span><span class="stringliteral">        Track hits. Tracks = [{&#39;hits_y&#39;: [hit1, hit2, hit3, ...]}, {...}, ...]</span></div>
-<div class="line"><a id="l00829" name="l00829"></a><span class="lineno">  829</span><span class="stringliteral">    min_hits : int</span></div>
-<div class="line"><a id="l00830" name="l00830"></a><span class="lineno">  830</span><span class="stringliteral">        Minimal number of hits per track.</span></div>
-<div class="line"><a id="l00831" name="l00831"></a><span class="lineno">  831</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="line"><a id="l00832" name="l00832"></a><span class="lineno">  832</span> </div>
-<div class="line"><a id="l00833" name="l00833"></a><span class="lineno">  833</span>    used_hits = []</div>
-<div class="line"><a id="l00834" name="l00834"></a><span class="lineno">  834</span>    tracks_no_clones = []</div>
-<div class="line"><a id="l00835" name="l00835"></a><span class="lineno">  835</span>    n_hits = [len(atrack[<span class="stringliteral">&#39;hits_y&#39;</span>]) <span class="keywordflow">for</span> atrack <span class="keywordflow">in</span> recognized_tracks]</div>
-<div class="line"><a id="l00836" name="l00836"></a><span class="lineno">  836</span> </div>
-<div class="line"><a id="l00837" name="l00837"></a><span class="lineno">  837</span>    <span class="keywordflow">for</span> i_track <span class="keywordflow">in</span> np.argsort(n_hits)[::-1]:</div>
-<div class="line"><a id="l00838" name="l00838"></a><span class="lineno">  838</span> </div>
-<div class="line"><a id="l00839" name="l00839"></a><span class="lineno">  839</span>        atrack = recognized_tracks[i_track]</div>
-<div class="line"><a id="l00840" name="l00840"></a><span class="lineno">  840</span>        new_track = {}</div>
-<div class="line"><a id="l00841" name="l00841"></a><span class="lineno">  841</span>        new_track[<span class="stringliteral">&#39;hits_y&#39;</span>] = []</div>
-<div class="line"><a id="l00842" name="l00842"></a><span class="lineno">  842</span> </div>
-<div class="line"><a id="l00843" name="l00843"></a><span class="lineno">  843</span>        <span class="keywordflow">for</span> i_hit <span class="keywordflow">in</span> range(len(atrack[<span class="stringliteral">&#39;hits_y&#39;</span>])):</div>
-<div class="line"><a id="l00844" name="l00844"></a><span class="lineno">  844</span>            ahit = atrack[<span class="stringliteral">&#39;hits_y&#39;</span>][i_hit]</div>
-<div class="line"><a id="l00845" name="l00845"></a><span class="lineno">  845</span>            <span class="keywordflow">if</span> ahit[<span class="stringliteral">&#39;digiHit&#39;</span>] <span class="keywordflow">not</span> <span class="keywordflow">in</span> used_hits:</div>
-<div class="line"><a id="l00846" name="l00846"></a><span class="lineno">  846</span>                new_track[<span class="stringliteral">&#39;hits_y&#39;</span>].append(ahit)</div>
-<div class="line"><a id="l00847" name="l00847"></a><span class="lineno">  847</span> </div>
-<div class="line"><a id="l00848" name="l00848"></a><span class="lineno">  848</span>        <span class="keywordflow">if</span> len(new_track[<span class="stringliteral">&#39;hits_y&#39;</span>]) &gt;= min_hits:</div>
-<div class="line"><a id="l00849" name="l00849"></a><span class="lineno">  849</span>            tracks_no_clones.append(new_track)</div>
-<div class="line"><a id="l00850" name="l00850"></a><span class="lineno">  850</span>            <span class="keywordflow">for</span> ahit <span class="keywordflow">in</span> new_track[<span class="stringliteral">&#39;hits_y&#39;</span>]:</div>
-<div class="line"><a id="l00851" name="l00851"></a><span class="lineno">  851</span>                used_hits.append(ahit[<span class="stringliteral">&#39;digiHit&#39;</span>])</div>
-<div class="line"><a id="l00852" name="l00852"></a><span class="lineno">  852</span> </div>
-<div class="line"><a id="l00853" name="l00853"></a><span class="lineno">  853</span>    <span class="keywordflow">return</span> tracks_no_clones</div>
-<div class="line"><a id="l00854" name="l00854"></a><span class="lineno">  854</span> </div>
+<div class="foldopen" id="foldopen00822" data-start="" data-end="">
+<div class="line"><a id="l00822" name="l00822"></a><span class="lineno"><a class="line" href="namespaceshipPatRec.html#aedb4937e3c76a49b47c4b97e1298ec06">  822</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceshipPatRec.html#aedb4937e3c76a49b47c4b97e1298ec06">reduce_clones_using_one_track_per_hit</a>(recognized_tracks, min_hits=3):</div>
+<div class="line"><a id="l00823" name="l00823"></a><span class="lineno">  823</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00824" name="l00824"></a><span class="lineno">  824</span><span class="stringliteral">    Split hits into groups of station views.</span></div>
+<div class="line"><a id="l00825" name="l00825"></a><span class="lineno">  825</span><span class="stringliteral"></span> </div>
+<div class="line"><a id="l00826" name="l00826"></a><span class="lineno">  826</span><span class="stringliteral">    Parameters:</span></div>
+<div class="line"><a id="l00827" name="l00827"></a><span class="lineno">  827</span><span class="stringliteral">    -----------</span></div>
+<div class="line"><a id="l00828" name="l00828"></a><span class="lineno">  828</span><span class="stringliteral">    recognized_tracks : list</span></div>
+<div class="line"><a id="l00829" name="l00829"></a><span class="lineno">  829</span><span class="stringliteral">        Track hits. Tracks = [{&#39;hits_y&#39;: [hit1, hit2, hit3, ...]}, {...}, ...]</span></div>
+<div class="line"><a id="l00830" name="l00830"></a><span class="lineno">  830</span><span class="stringliteral">    min_hits : int</span></div>
+<div class="line"><a id="l00831" name="l00831"></a><span class="lineno">  831</span><span class="stringliteral">        Minimal number of hits per track.</span></div>
+<div class="line"><a id="l00832" name="l00832"></a><span class="lineno">  832</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00833" name="l00833"></a><span class="lineno">  833</span> </div>
+<div class="line"><a id="l00834" name="l00834"></a><span class="lineno">  834</span>    used_hits = []</div>
+<div class="line"><a id="l00835" name="l00835"></a><span class="lineno">  835</span>    tracks_no_clones = []</div>
+<div class="line"><a id="l00836" name="l00836"></a><span class="lineno">  836</span>    n_hits = [len(atrack[<span class="stringliteral">&#39;hits_y&#39;</span>]) <span class="keywordflow">for</span> atrack <span class="keywordflow">in</span> recognized_tracks]</div>
+<div class="line"><a id="l00837" name="l00837"></a><span class="lineno">  837</span> </div>
+<div class="line"><a id="l00838" name="l00838"></a><span class="lineno">  838</span>    <span class="keywordflow">for</span> i_track <span class="keywordflow">in</span> np.argsort(n_hits)[::-1]:</div>
+<div class="line"><a id="l00839" name="l00839"></a><span class="lineno">  839</span> </div>
+<div class="line"><a id="l00840" name="l00840"></a><span class="lineno">  840</span>        atrack = recognized_tracks[i_track]</div>
+<div class="line"><a id="l00841" name="l00841"></a><span class="lineno">  841</span>        new_track = {}</div>
+<div class="line"><a id="l00842" name="l00842"></a><span class="lineno">  842</span>        new_track[<span class="stringliteral">&#39;hits_y&#39;</span>] = []</div>
+<div class="line"><a id="l00843" name="l00843"></a><span class="lineno">  843</span> </div>
+<div class="line"><a id="l00844" name="l00844"></a><span class="lineno">  844</span>        <span class="keywordflow">for</span> i_hit <span class="keywordflow">in</span> range(len(atrack[<span class="stringliteral">&#39;hits_y&#39;</span>])):</div>
+<div class="line"><a id="l00845" name="l00845"></a><span class="lineno">  845</span>            ahit = atrack[<span class="stringliteral">&#39;hits_y&#39;</span>][i_hit]</div>
+<div class="line"><a id="l00846" name="l00846"></a><span class="lineno">  846</span>            <span class="keywordflow">if</span> ahit[<span class="stringliteral">&#39;digiHit&#39;</span>] <span class="keywordflow">not</span> <span class="keywordflow">in</span> used_hits:</div>
+<div class="line"><a id="l00847" name="l00847"></a><span class="lineno">  847</span>                new_track[<span class="stringliteral">&#39;hits_y&#39;</span>].append(ahit)</div>
+<div class="line"><a id="l00848" name="l00848"></a><span class="lineno">  848</span> </div>
+<div class="line"><a id="l00849" name="l00849"></a><span class="lineno">  849</span>        <span class="keywordflow">if</span> len(new_track[<span class="stringliteral">&#39;hits_y&#39;</span>]) &gt;= min_hits:</div>
+<div class="line"><a id="l00850" name="l00850"></a><span class="lineno">  850</span>            tracks_no_clones.append(new_track)</div>
+<div class="line"><a id="l00851" name="l00851"></a><span class="lineno">  851</span>            <span class="keywordflow">for</span> ahit <span class="keywordflow">in</span> new_track[<span class="stringliteral">&#39;hits_y&#39;</span>]:</div>
+<div class="line"><a id="l00852" name="l00852"></a><span class="lineno">  852</span>                used_hits.append(ahit[<span class="stringliteral">&#39;digiHit&#39;</span>])</div>
+<div class="line"><a id="l00853" name="l00853"></a><span class="lineno">  853</span> </div>
+<div class="line"><a id="l00854" name="l00854"></a><span class="lineno">  854</span>    <span class="keywordflow">return</span> tracks_no_clones</div>
 <div class="line"><a id="l00855" name="l00855"></a><span class="lineno">  855</span> </div>
+<div class="line"><a id="l00856" name="l00856"></a><span class="lineno">  856</span> </div>
 </div>
-<div class="foldopen" id="foldopen00856" data-start="" data-end="">
-<div class="line"><a id="l00856" name="l00856"></a><span class="lineno"><a class="line" href="namespaceshipPatRec.html#ae6b2c397c5e235b05d0d91e0535e6e02">  856</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceshipPatRec.html#ae6b2c397c5e235b05d0d91e0535e6e02">tracks_combination_using_extrapolation</a>(recognized_tracks_12, recognized_tracks_34, z_magnet):</div>
-<div class="line"><a id="l00857" name="l00857"></a><span class="lineno">  857</span> </div>
-<div class="line"><a id="l00858" name="l00858"></a><span class="lineno">  858</span>    recognized_tracks_combo = []</div>
-<div class="line"><a id="l00859" name="l00859"></a><span class="lineno">  859</span> </div>
-<div class="line"><a id="l00860" name="l00860"></a><span class="lineno">  860</span>    i_track_y12 = []</div>
-<div class="line"><a id="l00861" name="l00861"></a><span class="lineno">  861</span>    i_track_y34 = []</div>
-<div class="line"><a id="l00862" name="l00862"></a><span class="lineno">  862</span>    deltas_y = []</div>
-<div class="line"><a id="l00863" name="l00863"></a><span class="lineno">  863</span> </div>
-<div class="line"><a id="l00864" name="l00864"></a><span class="lineno">  864</span>    <span class="keywordflow">for</span> i_12 <span class="keywordflow">in</span> range(len(recognized_tracks_12)):</div>
-<div class="line"><a id="l00865" name="l00865"></a><span class="lineno">  865</span> </div>
-<div class="line"><a id="l00866" name="l00866"></a><span class="lineno">  866</span>        atrack_12 = recognized_tracks_12[i_12]</div>
-<div class="line"><a id="l00867" name="l00867"></a><span class="lineno">  867</span>        y_center_y12 = atrack_12[<span class="stringliteral">&#39;k_y&#39;</span>] * z_magnet + atrack_12[<span class="stringliteral">&#39;b_y&#39;</span>]</div>
-<div class="line"><a id="l00868" name="l00868"></a><span class="lineno">  868</span> </div>
-<div class="line"><a id="l00869" name="l00869"></a><span class="lineno">  869</span>        <span class="keywordflow">for</span> i_34 <span class="keywordflow">in</span> range(len(recognized_tracks_34)):</div>
-<div class="line"><a id="l00870" name="l00870"></a><span class="lineno">  870</span> </div>
-<div class="line"><a id="l00871" name="l00871"></a><span class="lineno">  871</span>            atrack_34 = recognized_tracks_34[i_34]</div>
-<div class="line"><a id="l00872" name="l00872"></a><span class="lineno">  872</span>            y_center_y34 = atrack_34[<span class="stringliteral">&#39;k_y&#39;</span>] * z_magnet + atrack_34[<span class="stringliteral">&#39;b_y&#39;</span>]</div>
-<div class="line"><a id="l00873" name="l00873"></a><span class="lineno">  873</span> </div>
-<div class="line"><a id="l00874" name="l00874"></a><span class="lineno">  874</span>            i_track_y12.append(i_12)</div>
-<div class="line"><a id="l00875" name="l00875"></a><span class="lineno">  875</span>            i_track_y34.append(i_34)</div>
-<div class="line"><a id="l00876" name="l00876"></a><span class="lineno">  876</span>            deltas_y.append(abs(y_center_y12 - y_center_y34))</div>
-<div class="line"><a id="l00877" name="l00877"></a><span class="lineno">  877</span> </div>
-<div class="line"><a id="l00878" name="l00878"></a><span class="lineno">  878</span>    max_dy = 50</div>
-<div class="line"><a id="l00879" name="l00879"></a><span class="lineno">  879</span>    used_y12 = []</div>
-<div class="line"><a id="l00880" name="l00880"></a><span class="lineno">  880</span>    used_y34 = []</div>
-<div class="line"><a id="l00881" name="l00881"></a><span class="lineno">  881</span> </div>
-<div class="line"><a id="l00882" name="l00882"></a><span class="lineno">  882</span>    <span class="keywordflow">for</span> i <span class="keywordflow">in</span> np.argsort(deltas_y):</div>
-<div class="line"><a id="l00883" name="l00883"></a><span class="lineno">  883</span> </div>
-<div class="line"><a id="l00884" name="l00884"></a><span class="lineno">  884</span>        dy = deltas_y[i]</div>
-<div class="line"><a id="l00885" name="l00885"></a><span class="lineno">  885</span>        i_12 = i_track_y12[i]</div>
-<div class="line"><a id="l00886" name="l00886"></a><span class="lineno">  886</span>        i_34 = i_track_y34[i]</div>
-<div class="line"><a id="l00887" name="l00887"></a><span class="lineno">  887</span> </div>
-<div class="line"><a id="l00888" name="l00888"></a><span class="lineno">  888</span>        <span class="keywordflow">if</span> (dy &lt; max_dy) <span class="keywordflow">and</span> (i_12 <span class="keywordflow">not</span> <span class="keywordflow">in</span> used_y12) <span class="keywordflow">and</span> (i_34 <span class="keywordflow">not</span> <span class="keywordflow">in</span> used_y34):</div>
-<div class="line"><a id="l00889" name="l00889"></a><span class="lineno">  889</span>            atrack = {}</div>
-<div class="line"><a id="l00890" name="l00890"></a><span class="lineno">  890</span>            atrack[<span class="stringliteral">&#39;hits_y12&#39;</span>] = recognized_tracks_12[i_12][<span class="stringliteral">&#39;hits_y&#39;</span>]</div>
-<div class="line"><a id="l00891" name="l00891"></a><span class="lineno">  891</span>            atrack[<span class="stringliteral">&#39;hits_stereo12&#39;</span>] = recognized_tracks_12[i_12][<span class="stringliteral">&#39;hits_stereo&#39;</span>]</div>
-<div class="line"><a id="l00892" name="l00892"></a><span class="lineno">  892</span>            atrack[<span class="stringliteral">&#39;hits_y34&#39;</span>] = recognized_tracks_34[i_34][<span class="stringliteral">&#39;hits_y&#39;</span>]</div>
-<div class="line"><a id="l00893" name="l00893"></a><span class="lineno">  893</span>            atrack[<span class="stringliteral">&#39;hits_stereo34&#39;</span>] = recognized_tracks_34[i_34][<span class="stringliteral">&#39;hits_stereo&#39;</span>]</div>
-<div class="line"><a id="l00894" name="l00894"></a><span class="lineno">  894</span>            recognized_tracks_combo.append(atrack)</div>
-<div class="line"><a id="l00895" name="l00895"></a><span class="lineno">  895</span>            used_y12.append(i_12)</div>
-<div class="line"><a id="l00896" name="l00896"></a><span class="lineno">  896</span>            used_y34.append(i_34)</div>
-<div class="line"><a id="l00897" name="l00897"></a><span class="lineno">  897</span> </div>
-<div class="line"><a id="l00898" name="l00898"></a><span class="lineno">  898</span>    <span class="keywordflow">for</span> i_12 <span class="keywordflow">in</span> range(len(recognized_tracks_12)):</div>
-<div class="line"><a id="l00899" name="l00899"></a><span class="lineno">  899</span>        <span class="keywordflow">if</span> i_12 <span class="keywordflow">not</span> <span class="keywordflow">in</span> used_y12:</div>
-<div class="line"><a id="l00900" name="l00900"></a><span class="lineno">  900</span>            atrack = {}</div>
-<div class="line"><a id="l00901" name="l00901"></a><span class="lineno">  901</span>            atrack[<span class="stringliteral">&#39;hits_y12&#39;</span>] = recognized_tracks_12[i_12][<span class="stringliteral">&#39;hits_y&#39;</span>]</div>
-<div class="line"><a id="l00902" name="l00902"></a><span class="lineno">  902</span>            atrack[<span class="stringliteral">&#39;hits_stereo12&#39;</span>] = recognized_tracks_12[i_12][<span class="stringliteral">&#39;hits_stereo&#39;</span>]</div>
-<div class="line"><a id="l00903" name="l00903"></a><span class="lineno">  903</span>            atrack[<span class="stringliteral">&#39;hits_y34&#39;</span>] = []</div>
-<div class="line"><a id="l00904" name="l00904"></a><span class="lineno">  904</span>            atrack[<span class="stringliteral">&#39;hits_stereo34&#39;</span>] = []</div>
-<div class="line"><a id="l00905" name="l00905"></a><span class="lineno">  905</span>            recognized_tracks_combo.append(atrack)</div>
-<div class="line"><a id="l00906" name="l00906"></a><span class="lineno">  906</span> </div>
-<div class="line"><a id="l00907" name="l00907"></a><span class="lineno">  907</span>    <span class="keywordflow">for</span> i_34 <span class="keywordflow">in</span> range(len(recognized_tracks_34)):</div>
-<div class="line"><a id="l00908" name="l00908"></a><span class="lineno">  908</span>        <span class="keywordflow">if</span> i_34 <span class="keywordflow">not</span> <span class="keywordflow">in</span> used_y34:</div>
-<div class="line"><a id="l00909" name="l00909"></a><span class="lineno">  909</span>            atrack = {}</div>
-<div class="line"><a id="l00910" name="l00910"></a><span class="lineno">  910</span>            atrack[<span class="stringliteral">&#39;hits_y12&#39;</span>] = []</div>
-<div class="line"><a id="l00911" name="l00911"></a><span class="lineno">  911</span>            atrack[<span class="stringliteral">&#39;hits_stereo12&#39;</span>] = []</div>
-<div class="line"><a id="l00912" name="l00912"></a><span class="lineno">  912</span>            atrack[<span class="stringliteral">&#39;hits_y34&#39;</span>] = recognized_tracks_34[i_34][<span class="stringliteral">&#39;hits_y&#39;</span>]</div>
-<div class="line"><a id="l00913" name="l00913"></a><span class="lineno">  913</span>            atrack[<span class="stringliteral">&#39;hits_stereo34&#39;</span>] = recognized_tracks_34[i_34][<span class="stringliteral">&#39;hits_stereo&#39;</span>]</div>
-<div class="line"><a id="l00914" name="l00914"></a><span class="lineno">  914</span>            recognized_tracks_combo.append(atrack)</div>
-<div class="line"><a id="l00915" name="l00915"></a><span class="lineno">  915</span> </div>
-<div class="line"><a id="l00916" name="l00916"></a><span class="lineno">  916</span>    <span class="keywordflow">return</span> recognized_tracks_combo</div>
-<div class="line"><a id="l00917" name="l00917"></a><span class="lineno">  917</span> </div>
+<div class="foldopen" id="foldopen00857" data-start="" data-end="">
+<div class="line"><a id="l00857" name="l00857"></a><span class="lineno"><a class="line" href="namespaceshipPatRec.html#ae6b2c397c5e235b05d0d91e0535e6e02">  857</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceshipPatRec.html#ae6b2c397c5e235b05d0d91e0535e6e02">tracks_combination_using_extrapolation</a>(recognized_tracks_12, recognized_tracks_34, z_magnet):</div>
+<div class="line"><a id="l00858" name="l00858"></a><span class="lineno">  858</span> </div>
+<div class="line"><a id="l00859" name="l00859"></a><span class="lineno">  859</span>    recognized_tracks_combo = []</div>
+<div class="line"><a id="l00860" name="l00860"></a><span class="lineno">  860</span> </div>
+<div class="line"><a id="l00861" name="l00861"></a><span class="lineno">  861</span>    i_track_y12 = []</div>
+<div class="line"><a id="l00862" name="l00862"></a><span class="lineno">  862</span>    i_track_y34 = []</div>
+<div class="line"><a id="l00863" name="l00863"></a><span class="lineno">  863</span>    deltas_y = []</div>
+<div class="line"><a id="l00864" name="l00864"></a><span class="lineno">  864</span> </div>
+<div class="line"><a id="l00865" name="l00865"></a><span class="lineno">  865</span>    <span class="keywordflow">for</span> i_12 <span class="keywordflow">in</span> range(len(recognized_tracks_12)):</div>
+<div class="line"><a id="l00866" name="l00866"></a><span class="lineno">  866</span> </div>
+<div class="line"><a id="l00867" name="l00867"></a><span class="lineno">  867</span>        atrack_12 = recognized_tracks_12[i_12]</div>
+<div class="line"><a id="l00868" name="l00868"></a><span class="lineno">  868</span>        y_center_y12 = atrack_12[<span class="stringliteral">&#39;k_y&#39;</span>] * z_magnet + atrack_12[<span class="stringliteral">&#39;b_y&#39;</span>]</div>
+<div class="line"><a id="l00869" name="l00869"></a><span class="lineno">  869</span> </div>
+<div class="line"><a id="l00870" name="l00870"></a><span class="lineno">  870</span>        <span class="keywordflow">for</span> i_34 <span class="keywordflow">in</span> range(len(recognized_tracks_34)):</div>
+<div class="line"><a id="l00871" name="l00871"></a><span class="lineno">  871</span> </div>
+<div class="line"><a id="l00872" name="l00872"></a><span class="lineno">  872</span>            atrack_34 = recognized_tracks_34[i_34]</div>
+<div class="line"><a id="l00873" name="l00873"></a><span class="lineno">  873</span>            y_center_y34 = atrack_34[<span class="stringliteral">&#39;k_y&#39;</span>] * z_magnet + atrack_34[<span class="stringliteral">&#39;b_y&#39;</span>]</div>
+<div class="line"><a id="l00874" name="l00874"></a><span class="lineno">  874</span> </div>
+<div class="line"><a id="l00875" name="l00875"></a><span class="lineno">  875</span>            i_track_y12.append(i_12)</div>
+<div class="line"><a id="l00876" name="l00876"></a><span class="lineno">  876</span>            i_track_y34.append(i_34)</div>
+<div class="line"><a id="l00877" name="l00877"></a><span class="lineno">  877</span>            deltas_y.append(abs(y_center_y12 - y_center_y34))</div>
+<div class="line"><a id="l00878" name="l00878"></a><span class="lineno">  878</span> </div>
+<div class="line"><a id="l00879" name="l00879"></a><span class="lineno">  879</span>    max_dy = 50</div>
+<div class="line"><a id="l00880" name="l00880"></a><span class="lineno">  880</span>    used_y12 = []</div>
+<div class="line"><a id="l00881" name="l00881"></a><span class="lineno">  881</span>    used_y34 = []</div>
+<div class="line"><a id="l00882" name="l00882"></a><span class="lineno">  882</span> </div>
+<div class="line"><a id="l00883" name="l00883"></a><span class="lineno">  883</span>    <span class="keywordflow">for</span> i <span class="keywordflow">in</span> np.argsort(deltas_y):</div>
+<div class="line"><a id="l00884" name="l00884"></a><span class="lineno">  884</span> </div>
+<div class="line"><a id="l00885" name="l00885"></a><span class="lineno">  885</span>        dy = deltas_y[i]</div>
+<div class="line"><a id="l00886" name="l00886"></a><span class="lineno">  886</span>        i_12 = i_track_y12[i]</div>
+<div class="line"><a id="l00887" name="l00887"></a><span class="lineno">  887</span>        i_34 = i_track_y34[i]</div>
+<div class="line"><a id="l00888" name="l00888"></a><span class="lineno">  888</span> </div>
+<div class="line"><a id="l00889" name="l00889"></a><span class="lineno">  889</span>        <span class="keywordflow">if</span> (dy &lt; max_dy) <span class="keywordflow">and</span> (i_12 <span class="keywordflow">not</span> <span class="keywordflow">in</span> used_y12) <span class="keywordflow">and</span> (i_34 <span class="keywordflow">not</span> <span class="keywordflow">in</span> used_y34):</div>
+<div class="line"><a id="l00890" name="l00890"></a><span class="lineno">  890</span>            atrack = {}</div>
+<div class="line"><a id="l00891" name="l00891"></a><span class="lineno">  891</span>            atrack[<span class="stringliteral">&#39;hits_y12&#39;</span>] = recognized_tracks_12[i_12][<span class="stringliteral">&#39;hits_y&#39;</span>]</div>
+<div class="line"><a id="l00892" name="l00892"></a><span class="lineno">  892</span>            atrack[<span class="stringliteral">&#39;hits_stereo12&#39;</span>] = recognized_tracks_12[i_12][<span class="stringliteral">&#39;hits_stereo&#39;</span>]</div>
+<div class="line"><a id="l00893" name="l00893"></a><span class="lineno">  893</span>            atrack[<span class="stringliteral">&#39;hits_y34&#39;</span>] = recognized_tracks_34[i_34][<span class="stringliteral">&#39;hits_y&#39;</span>]</div>
+<div class="line"><a id="l00894" name="l00894"></a><span class="lineno">  894</span>            atrack[<span class="stringliteral">&#39;hits_stereo34&#39;</span>] = recognized_tracks_34[i_34][<span class="stringliteral">&#39;hits_stereo&#39;</span>]</div>
+<div class="line"><a id="l00895" name="l00895"></a><span class="lineno">  895</span>            recognized_tracks_combo.append(atrack)</div>
+<div class="line"><a id="l00896" name="l00896"></a><span class="lineno">  896</span>            used_y12.append(i_12)</div>
+<div class="line"><a id="l00897" name="l00897"></a><span class="lineno">  897</span>            used_y34.append(i_34)</div>
+<div class="line"><a id="l00898" name="l00898"></a><span class="lineno">  898</span> </div>
+<div class="line"><a id="l00899" name="l00899"></a><span class="lineno">  899</span>    <span class="keywordflow">for</span> i_12 <span class="keywordflow">in</span> range(len(recognized_tracks_12)):</div>
+<div class="line"><a id="l00900" name="l00900"></a><span class="lineno">  900</span>        <span class="keywordflow">if</span> i_12 <span class="keywordflow">not</span> <span class="keywordflow">in</span> used_y12:</div>
+<div class="line"><a id="l00901" name="l00901"></a><span class="lineno">  901</span>            atrack = {}</div>
+<div class="line"><a id="l00902" name="l00902"></a><span class="lineno">  902</span>            atrack[<span class="stringliteral">&#39;hits_y12&#39;</span>] = recognized_tracks_12[i_12][<span class="stringliteral">&#39;hits_y&#39;</span>]</div>
+<div class="line"><a id="l00903" name="l00903"></a><span class="lineno">  903</span>            atrack[<span class="stringliteral">&#39;hits_stereo12&#39;</span>] = recognized_tracks_12[i_12][<span class="stringliteral">&#39;hits_stereo&#39;</span>]</div>
+<div class="line"><a id="l00904" name="l00904"></a><span class="lineno">  904</span>            atrack[<span class="stringliteral">&#39;hits_y34&#39;</span>] = []</div>
+<div class="line"><a id="l00905" name="l00905"></a><span class="lineno">  905</span>            atrack[<span class="stringliteral">&#39;hits_stereo34&#39;</span>] = []</div>
+<div class="line"><a id="l00906" name="l00906"></a><span class="lineno">  906</span>            recognized_tracks_combo.append(atrack)</div>
+<div class="line"><a id="l00907" name="l00907"></a><span class="lineno">  907</span> </div>
+<div class="line"><a id="l00908" name="l00908"></a><span class="lineno">  908</span>    <span class="keywordflow">for</span> i_34 <span class="keywordflow">in</span> range(len(recognized_tracks_34)):</div>
+<div class="line"><a id="l00909" name="l00909"></a><span class="lineno">  909</span>        <span class="keywordflow">if</span> i_34 <span class="keywordflow">not</span> <span class="keywordflow">in</span> used_y34:</div>
+<div class="line"><a id="l00910" name="l00910"></a><span class="lineno">  910</span>            atrack = {}</div>
+<div class="line"><a id="l00911" name="l00911"></a><span class="lineno">  911</span>            atrack[<span class="stringliteral">&#39;hits_y12&#39;</span>] = []</div>
+<div class="line"><a id="l00912" name="l00912"></a><span class="lineno">  912</span>            atrack[<span class="stringliteral">&#39;hits_stereo12&#39;</span>] = []</div>
+<div class="line"><a id="l00913" name="l00913"></a><span class="lineno">  913</span>            atrack[<span class="stringliteral">&#39;hits_y34&#39;</span>] = recognized_tracks_34[i_34][<span class="stringliteral">&#39;hits_y&#39;</span>]</div>
+<div class="line"><a id="l00914" name="l00914"></a><span class="lineno">  914</span>            atrack[<span class="stringliteral">&#39;hits_stereo34&#39;</span>] = recognized_tracks_34[i_34][<span class="stringliteral">&#39;hits_stereo&#39;</span>]</div>
+<div class="line"><a id="l00915" name="l00915"></a><span class="lineno">  915</span>            recognized_tracks_combo.append(atrack)</div>
+<div class="line"><a id="l00916" name="l00916"></a><span class="lineno">  916</span> </div>
+<div class="line"><a id="l00917" name="l00917"></a><span class="lineno">  917</span>    <span class="keywordflow">return</span> recognized_tracks_combo</div>
 <div class="line"><a id="l00918" name="l00918"></a><span class="lineno">  918</span> </div>
 <div class="line"><a id="l00919" name="l00919"></a><span class="lineno">  919</span> </div>
+<div class="line"><a id="l00920" name="l00920"></a><span class="lineno">  920</span> </div>
 </div>
-<div class="foldopen" id="foldopen00920" data-start="" data-end="">
-<div class="line"><a id="l00920" name="l00920"></a><span class="lineno"><a class="line" href="namespaceshipPatRec.html#afac11c2f58e31457f72532aeec6d6e98">  920</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceshipPatRec.html#afac11c2f58e31457f72532aeec6d6e98">decodeDetectorID</a>(detID):</div>
-<div class="line"><a id="l00921" name="l00921"></a><span class="lineno">  921</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><a id="l00922" name="l00922"></a><span class="lineno">  922</span><span class="stringliteral">    Decodes detector ID.</span></div>
-<div class="line"><a id="l00923" name="l00923"></a><span class="lineno">  923</span><span class="stringliteral"></span> </div>
-<div class="line"><a id="l00924" name="l00924"></a><span class="lineno">  924</span><span class="stringliteral">    Parameters</span></div>
-<div class="line"><a id="l00925" name="l00925"></a><span class="lineno">  925</span><span class="stringliteral">    ----------</span></div>
-<div class="line"><a id="l00926" name="l00926"></a><span class="lineno">  926</span><span class="stringliteral">    detID : int or array-like</span></div>
-<div class="line"><a id="l00927" name="l00927"></a><span class="lineno">  927</span><span class="stringliteral">        Detector ID values.</span></div>
-<div class="line"><a id="l00928" name="l00928"></a><span class="lineno">  928</span><span class="stringliteral"></span> </div>
-<div class="line"><a id="l00929" name="l00929"></a><span class="lineno">  929</span><span class="stringliteral">    Returns</span></div>
-<div class="line"><a id="l00930" name="l00930"></a><span class="lineno">  930</span><span class="stringliteral">    -------</span></div>
-<div class="line"><a id="l00931" name="l00931"></a><span class="lineno">  931</span><span class="stringliteral">    statnb : int or array-like</span></div>
-<div class="line"><a id="l00932" name="l00932"></a><span class="lineno">  932</span><span class="stringliteral">        Station numbers.</span></div>
-<div class="line"><a id="l00933" name="l00933"></a><span class="lineno">  933</span><span class="stringliteral">    vnb : int or array-like</span></div>
-<div class="line"><a id="l00934" name="l00934"></a><span class="lineno">  934</span><span class="stringliteral">        View numbers.</span></div>
-<div class="line"><a id="l00935" name="l00935"></a><span class="lineno">  935</span><span class="stringliteral">    pnb : int or array-like</span></div>
-<div class="line"><a id="l00936" name="l00936"></a><span class="lineno">  936</span><span class="stringliteral">        Plane numbers.</span></div>
-<div class="line"><a id="l00937" name="l00937"></a><span class="lineno">  937</span><span class="stringliteral">    lnb : int or array-like</span></div>
-<div class="line"><a id="l00938" name="l00938"></a><span class="lineno">  938</span><span class="stringliteral">        Layer numbers.</span></div>
-<div class="line"><a id="l00939" name="l00939"></a><span class="lineno">  939</span><span class="stringliteral">    snb : int or array-like</span></div>
-<div class="line"><a id="l00940" name="l00940"></a><span class="lineno">  940</span><span class="stringliteral">        Straw tube numbers.</span></div>
-<div class="line"><a id="l00941" name="l00941"></a><span class="lineno">  941</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="foldopen" id="foldopen00921" data-start="" data-end="">
+<div class="line"><a id="l00921" name="l00921"></a><span class="lineno"><a class="line" href="namespaceshipPatRec.html#a31c3d4163ed55d9615b93dd88cfd7d82">  921</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceshipPatRec.html#a31c3d4163ed55d9615b93dd88cfd7d82">hit_in_window</a>(x, y, k_bin, b_bin, window_width=1.):</div>
+<div class="line"><a id="l00922" name="l00922"></a><span class="lineno">  922</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00923" name="l00923"></a><span class="lineno">  923</span><span class="stringliteral">        Counts hits in a bin of track parameter space (b, k).</span></div>
+<div class="line"><a id="l00924" name="l00924"></a><span class="lineno">  924</span><span class="stringliteral"></span> </div>
+<div class="line"><a id="l00925" name="l00925"></a><span class="lineno">  925</span><span class="stringliteral">        Parameters</span></div>
+<div class="line"><a id="l00926" name="l00926"></a><span class="lineno">  926</span><span class="stringliteral">        ---------</span></div>
+<div class="line"><a id="l00927" name="l00927"></a><span class="lineno">  927</span><span class="stringliteral">        x : array-like</span></div>
+<div class="line"><a id="l00928" name="l00928"></a><span class="lineno">  928</span><span class="stringliteral">            Array of x coordinates of hits.</span></div>
+<div class="line"><a id="l00929" name="l00929"></a><span class="lineno">  929</span><span class="stringliteral">        y : array-like</span></div>
+<div class="line"><a id="l00930" name="l00930"></a><span class="lineno">  930</span><span class="stringliteral">            Array of x coordinates of hits.</span></div>
+<div class="line"><a id="l00931" name="l00931"></a><span class="lineno">  931</span><span class="stringliteral">        k_bin : float</span></div>
+<div class="line"><a id="l00932" name="l00932"></a><span class="lineno">  932</span><span class="stringliteral">            Track parameter: y = k_bin * x + b_bin</span></div>
+<div class="line"><a id="l00933" name="l00933"></a><span class="lineno">  933</span><span class="stringliteral">        b_bin : float</span></div>
+<div class="line"><a id="l00934" name="l00934"></a><span class="lineno">  934</span><span class="stringliteral">            Track parameter: y = k_bin * x + b_bin</span></div>
+<div class="line"><a id="l00935" name="l00935"></a><span class="lineno">  935</span><span class="stringliteral"></span> </div>
+<div class="line"><a id="l00936" name="l00936"></a><span class="lineno">  936</span><span class="stringliteral">        Return</span></div>
+<div class="line"><a id="l00937" name="l00937"></a><span class="lineno">  937</span><span class="stringliteral">        ------</span></div>
+<div class="line"><a id="l00938" name="l00938"></a><span class="lineno">  938</span><span class="stringliteral">        track_inds : array-like</span></div>
+<div class="line"><a id="l00939" name="l00939"></a><span class="lineno">  939</span><span class="stringliteral">            Hit indexes of a track: [ind1, ind2, ...]</span></div>
+<div class="line"><a id="l00940" name="l00940"></a><span class="lineno">  940</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00941" name="l00941"></a><span class="lineno">  941</span> </div>
 <div class="line"><a id="l00942" name="l00942"></a><span class="lineno">  942</span> </div>
-<div class="line"><a id="l00943" name="l00943"></a><span class="lineno">  943</span>    statnb = detID // 10000000</div>
-<div class="line"><a id="l00944" name="l00944"></a><span class="lineno">  944</span>    vnb = (detID - statnb * 10000000) // 1000000</div>
-<div class="line"><a id="l00945" name="l00945"></a><span class="lineno">  945</span>    pnb = (detID - statnb * 10000000 - vnb * 1000000) // 100000</div>
-<div class="line"><a id="l00946" name="l00946"></a><span class="lineno">  946</span>    lnb = (detID - statnb * 10000000 - vnb * 1000000 - pnb * 100000) // 10000</div>
-<div class="line"><a id="l00947" name="l00947"></a><span class="lineno">  947</span>    snb = detID - statnb * 10000000 - vnb * 1000000 - pnb * 100000 - lnb * 10000 - 2000</div>
+<div class="line"><a id="l00943" name="l00943"></a><span class="lineno">  943</span>    y_approx = k_bin * x + b_bin</div>
+<div class="line"><a id="l00944" name="l00944"></a><span class="lineno">  944</span> </div>
+<div class="line"><a id="l00945" name="l00945"></a><span class="lineno">  945</span>    flag = <span class="keyword">False</span></div>
+<div class="line"><a id="l00946" name="l00946"></a><span class="lineno">  946</span>    <span class="keywordflow">if</span> np.abs(y_approx - y) &lt;= window_width:</div>
+<div class="line"><a id="l00947" name="l00947"></a><span class="lineno">  947</span>        flag = <span class="keyword">True</span></div>
 <div class="line"><a id="l00948" name="l00948"></a><span class="lineno">  948</span> </div>
-<div class="line"><a id="l00949" name="l00949"></a><span class="lineno">  949</span>    <span class="keywordflow">return</span> statnb, vnb, pnb, lnb, snb</div>
+<div class="line"><a id="l00949" name="l00949"></a><span class="lineno">  949</span>    <span class="keywordflow">return</span> flag</div>
 <div class="line"><a id="l00950" name="l00950"></a><span class="lineno">  950</span> </div>
 <div class="line"><a id="l00951" name="l00951"></a><span class="lineno">  951</span> </div>
-<div class="line"><a id="l00952" name="l00952"></a><span class="lineno">  952</span> </div>
 </div>
-<div class="foldopen" id="foldopen00953" data-start="" data-end="">
-<div class="line"><a id="l00953" name="l00953"></a><span class="lineno"><a class="line" href="namespaceshipPatRec.html#a31c3d4163ed55d9615b93dd88cfd7d82">  953</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceshipPatRec.html#a31c3d4163ed55d9615b93dd88cfd7d82">hit_in_window</a>(x, y, k_bin, b_bin, window_width=1.):</div>
-<div class="line"><a id="l00954" name="l00954"></a><span class="lineno">  954</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><a id="l00955" name="l00955"></a><span class="lineno">  955</span><span class="stringliteral">        Counts hits in a bin of track parameter space (b, k).</span></div>
-<div class="line"><a id="l00956" name="l00956"></a><span class="lineno">  956</span><span class="stringliteral"></span> </div>
-<div class="line"><a id="l00957" name="l00957"></a><span class="lineno">  957</span><span class="stringliteral">        Parameters</span></div>
-<div class="line"><a id="l00958" name="l00958"></a><span class="lineno">  958</span><span class="stringliteral">        ---------</span></div>
-<div class="line"><a id="l00959" name="l00959"></a><span class="lineno">  959</span><span class="stringliteral">        x : array-like</span></div>
-<div class="line"><a id="l00960" name="l00960"></a><span class="lineno">  960</span><span class="stringliteral">            Array of x coordinates of hits.</span></div>
-<div class="line"><a id="l00961" name="l00961"></a><span class="lineno">  961</span><span class="stringliteral">        y : array-like</span></div>
-<div class="line"><a id="l00962" name="l00962"></a><span class="lineno">  962</span><span class="stringliteral">            Array of x coordinates of hits.</span></div>
-<div class="line"><a id="l00963" name="l00963"></a><span class="lineno">  963</span><span class="stringliteral">        k_bin : float</span></div>
-<div class="line"><a id="l00964" name="l00964"></a><span class="lineno">  964</span><span class="stringliteral">            Track parameter: y = k_bin * x + b_bin</span></div>
-<div class="line"><a id="l00965" name="l00965"></a><span class="lineno">  965</span><span class="stringliteral">        b_bin : float</span></div>
-<div class="line"><a id="l00966" name="l00966"></a><span class="lineno">  966</span><span class="stringliteral">            Track parameter: y = k_bin * x + b_bin</span></div>
-<div class="line"><a id="l00967" name="l00967"></a><span class="lineno">  967</span><span class="stringliteral"></span> </div>
-<div class="line"><a id="l00968" name="l00968"></a><span class="lineno">  968</span><span class="stringliteral">        Return</span></div>
-<div class="line"><a id="l00969" name="l00969"></a><span class="lineno">  969</span><span class="stringliteral">        ------</span></div>
-<div class="line"><a id="l00970" name="l00970"></a><span class="lineno">  970</span><span class="stringliteral">        track_inds : array-like</span></div>
-<div class="line"><a id="l00971" name="l00971"></a><span class="lineno">  971</span><span class="stringliteral">            Hit indexes of a track: [ind1, ind2, ...]</span></div>
-<div class="line"><a id="l00972" name="l00972"></a><span class="lineno">  972</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><a id="l00973" name="l00973"></a><span class="lineno">  973</span> </div>
-<div class="line"><a id="l00974" name="l00974"></a><span class="lineno">  974</span> </div>
-<div class="line"><a id="l00975" name="l00975"></a><span class="lineno">  975</span>    y_approx = k_bin * x + b_bin</div>
-<div class="line"><a id="l00976" name="l00976"></a><span class="lineno">  976</span> </div>
-<div class="line"><a id="l00977" name="l00977"></a><span class="lineno">  977</span>    flag = <span class="keyword">False</span></div>
-<div class="line"><a id="l00978" name="l00978"></a><span class="lineno">  978</span>    <span class="keywordflow">if</span> np.abs(y_approx - y) &lt;= window_width:</div>
-<div class="line"><a id="l00979" name="l00979"></a><span class="lineno">  979</span>        flag = <span class="keyword">True</span></div>
-<div class="line"><a id="l00980" name="l00980"></a><span class="lineno">  980</span> </div>
-<div class="line"><a id="l00981" name="l00981"></a><span class="lineno">  981</span>    <span class="keywordflow">return</span> flag</div>
+<div class="foldopen" id="foldopen00952" data-start="" data-end="">
+<div class="line"><a id="l00952" name="l00952"></a><span class="lineno"><a class="line" href="namespaceshipPatRec.html#a50f1d2cf92badc6046881b76c02c5c6d">  952</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceshipPatRec.html#a50f1d2cf92badc6046881b76c02c5c6d">get_zy_projection</a>(z, xtop, ytop, xbot, ybot, k_y, b_y):</div>
+<div class="line"><a id="l00953" name="l00953"></a><span class="lineno">  953</span> </div>
+<div class="line"><a id="l00954" name="l00954"></a><span class="lineno">  954</span>    x = k_y * z + b_y</div>
+<div class="line"><a id="l00955" name="l00955"></a><span class="lineno">  955</span>    k = (ytop - ybot) / (xtop - xbot + 10**-6)</div>
+<div class="line"><a id="l00956" name="l00956"></a><span class="lineno">  956</span>    b = ytop - k * xtop</div>
+<div class="line"><a id="l00957" name="l00957"></a><span class="lineno">  957</span>    y = k * x + b</div>
+<div class="line"><a id="l00958" name="l00958"></a><span class="lineno">  958</span> </div>
+<div class="line"><a id="l00959" name="l00959"></a><span class="lineno">  959</span>    <span class="keywordflow">return</span> y</div>
+<div class="line"><a id="l00960" name="l00960"></a><span class="lineno">  960</span> </div>
+<div class="line"><a id="l00961" name="l00961"></a><span class="lineno">  961</span> </div>
+</div>
+<div class="foldopen" id="foldopen00962" data-start="" data-end="">
+<div class="line"><a id="l00962" name="l00962"></a><span class="lineno"><a class="line" href="namespaceshipPatRec.html#a1aceec100bcfa9fd13a9709544805a10">  962</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceshipPatRec.html#a1aceec100bcfa9fd13a9709544805a10">pat_rec_stereo_views</a>(SmearedHits_stereo, recognized_tracks_y, min_hits):</div>
+<div class="line"><a id="l00963" name="l00963"></a><span class="lineno">  963</span> </div>
+<div class="line"><a id="l00964" name="l00964"></a><span class="lineno">  964</span>    </div>
+<div class="line"><a id="l00965" name="l00965"></a><span class="lineno">  965</span>    recognized_tracks_stereo = []</div>
+<div class="line"><a id="l00966" name="l00966"></a><span class="lineno">  966</span>    used_hits = []</div>
+<div class="line"><a id="l00967" name="l00967"></a><span class="lineno">  967</span> </div>
+<div class="line"><a id="l00968" name="l00968"></a><span class="lineno">  968</span>    <span class="keywordflow">for</span> atrack_y <span class="keywordflow">in</span> recognized_tracks_y:</div>
+<div class="line"><a id="l00969" name="l00969"></a><span class="lineno">  969</span> </div>
+<div class="line"><a id="l00970" name="l00970"></a><span class="lineno">  970</span>        k_y = atrack_y[<span class="stringliteral">&#39;k_y&#39;</span>]</div>
+<div class="line"><a id="l00971" name="l00971"></a><span class="lineno">  971</span>        b_y = atrack_y[<span class="stringliteral">&#39;b_y&#39;</span>]</div>
+<div class="line"><a id="l00972" name="l00972"></a><span class="lineno">  972</span> </div>
+<div class="line"><a id="l00973" name="l00973"></a><span class="lineno">  973</span>        <span class="comment"># Get hit zx projections</span></div>
+<div class="line"><a id="l00974" name="l00974"></a><span class="lineno">  974</span>        <span class="keywordflow">for</span> ahit <span class="keywordflow">in</span> SmearedHits_stereo:</div>
+<div class="line"><a id="l00975" name="l00975"></a><span class="lineno">  975</span>            x_center  = <a class="code hl_function" href="namespaceshipPatRec.html#a50f1d2cf92badc6046881b76c02c5c6d">get_zy_projection</a>(ahit[<span class="stringliteral">&#39;z&#39;</span>], ahit[<span class="stringliteral">&#39;ytop&#39;</span>], ahit[<span class="stringliteral">&#39;xtop&#39;</span>],ahit[<span class="stringliteral">&#39;ybot&#39;</span>], ahit[<span class="stringliteral">&#39;xbot&#39;</span>], k_y, b_y)</div>
+<div class="line"><a id="l00976" name="l00976"></a><span class="lineno">  976</span>            ahit[<span class="stringliteral">&#39;zx_projection&#39;</span>] = x_center</div>
+<div class="line"><a id="l00977" name="l00977"></a><span class="lineno">  977</span> </div>
+<div class="line"><a id="l00978" name="l00978"></a><span class="lineno">  978</span>        long_recognized_tracks_stereo = []</div>
+<div class="line"><a id="l00979" name="l00979"></a><span class="lineno">  979</span> </div>
+<div class="line"><a id="l00980" name="l00980"></a><span class="lineno">  980</span>        <span class="keywordflow">for</span> ahit1 <span class="keywordflow">in</span> SmearedHits_stereo:</div>
+<div class="line"><a id="l00981" name="l00981"></a><span class="lineno">  981</span>            <span class="keywordflow">for</span> ahit2 <span class="keywordflow">in</span> SmearedHits_stereo:</div>
 <div class="line"><a id="l00982" name="l00982"></a><span class="lineno">  982</span> </div>
-<div class="line"><a id="l00983" name="l00983"></a><span class="lineno">  983</span> </div>
-</div>
-<div class="foldopen" id="foldopen00984" data-start="" data-end="">
-<div class="line"><a id="l00984" name="l00984"></a><span class="lineno"><a class="line" href="namespaceshipPatRec.html#a50f1d2cf92badc6046881b76c02c5c6d">  984</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceshipPatRec.html#a50f1d2cf92badc6046881b76c02c5c6d">get_zy_projection</a>(z, xtop, ytop, xbot, ybot, k_y, b_y):</div>
-<div class="line"><a id="l00985" name="l00985"></a><span class="lineno">  985</span> </div>
-<div class="line"><a id="l00986" name="l00986"></a><span class="lineno">  986</span>    x = k_y * z + b_y</div>
-<div class="line"><a id="l00987" name="l00987"></a><span class="lineno">  987</span>    k = (ytop - ybot) / (xtop - xbot + 10**-6)</div>
-<div class="line"><a id="l00988" name="l00988"></a><span class="lineno">  988</span>    b = ytop - k * xtop</div>
-<div class="line"><a id="l00989" name="l00989"></a><span class="lineno">  989</span>    y = k * x + b</div>
-<div class="line"><a id="l00990" name="l00990"></a><span class="lineno">  990</span> </div>
-<div class="line"><a id="l00991" name="l00991"></a><span class="lineno">  991</span>    <span class="keywordflow">return</span> y</div>
-<div class="line"><a id="l00992" name="l00992"></a><span class="lineno">  992</span> </div>
-<div class="line"><a id="l00993" name="l00993"></a><span class="lineno">  993</span> </div>
-</div>
-<div class="foldopen" id="foldopen00994" data-start="" data-end="">
-<div class="line"><a id="l00994" name="l00994"></a><span class="lineno"><a class="line" href="namespaceshipPatRec.html#a1aceec100bcfa9fd13a9709544805a10">  994</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceshipPatRec.html#a1aceec100bcfa9fd13a9709544805a10">pat_rec_stereo_views</a>(SmearedHits_stereo, recognized_tracks_y, min_hits):</div>
-<div class="line"><a id="l00995" name="l00995"></a><span class="lineno">  995</span> </div>
-<div class="line"><a id="l00996" name="l00996"></a><span class="lineno">  996</span>    </div>
-<div class="line"><a id="l00997" name="l00997"></a><span class="lineno">  997</span>    recognized_tracks_stereo = []</div>
-<div class="line"><a id="l00998" name="l00998"></a><span class="lineno">  998</span>    used_hits = []</div>
-<div class="line"><a id="l00999" name="l00999"></a><span class="lineno">  999</span> </div>
-<div class="line"><a id="l01000" name="l01000"></a><span class="lineno"> 1000</span>    <span class="keywordflow">for</span> atrack_y <span class="keywordflow">in</span> recognized_tracks_y:</div>
+<div class="line"><a id="l00983" name="l00983"></a><span class="lineno">  983</span>                <span class="keywordflow">if</span> ahit1[<span class="stringliteral">&#39;z&#39;</span>] &gt;= ahit2[<span class="stringliteral">&#39;z&#39;</span>]:</div>
+<div class="line"><a id="l00984" name="l00984"></a><span class="lineno">  984</span>                    <span class="keywordflow">continue</span></div>
+<div class="line"><a id="l00985" name="l00985"></a><span class="lineno">  985</span>                <span class="keywordflow">if</span> ahit1[<span class="stringliteral">&#39;detID&#39;</span>] == ahit2[<span class="stringliteral">&#39;detID&#39;</span>]:</div>
+<div class="line"><a id="l00986" name="l00986"></a><span class="lineno">  986</span>                    <span class="keywordflow">continue</span></div>
+<div class="line"><a id="l00987" name="l00987"></a><span class="lineno">  987</span>                <span class="keywordflow">if</span> ahit1[<span class="stringliteral">&#39;digiHit&#39;</span>] <span class="keywordflow">in</span> used_hits:</div>
+<div class="line"><a id="l00988" name="l00988"></a><span class="lineno">  988</span>                    <span class="keywordflow">continue</span></div>
+<div class="line"><a id="l00989" name="l00989"></a><span class="lineno">  989</span>                <span class="keywordflow">if</span> ahit2[<span class="stringliteral">&#39;digiHit&#39;</span>] <span class="keywordflow">in</span> used_hits:</div>
+<div class="line"><a id="l00990" name="l00990"></a><span class="lineno">  990</span>                    <span class="keywordflow">continue</span></div>
+<div class="line"><a id="l00991" name="l00991"></a><span class="lineno">  991</span> </div>
+<div class="line"><a id="l00992" name="l00992"></a><span class="lineno">  992</span>                <span class="keywordflow">if</span> abs(ahit1[<span class="stringliteral">&#39;zx_projection&#39;</span>]) &gt; max_x <span class="keywordflow">or</span> abs(ahit2[<span class="stringliteral">&#39;zx_projection&#39;</span>]) &gt; max_x:</div>
+<div class="line"><a id="l00993" name="l00993"></a><span class="lineno">  993</span>                    <span class="keywordflow">continue</span></div>
+<div class="line"><a id="l00994" name="l00994"></a><span class="lineno">  994</span> </div>
+<div class="line"><a id="l00995" name="l00995"></a><span class="lineno">  995</span>                k_seed = 1. * (ahit2[<span class="stringliteral">&#39;zx_projection&#39;</span>] - ahit1[<span class="stringliteral">&#39;zx_projection&#39;</span>]) / (ahit2[<span class="stringliteral">&#39;z&#39;</span>] - ahit1[<span class="stringliteral">&#39;z&#39;</span>])</div>
+<div class="line"><a id="l00996" name="l00996"></a><span class="lineno">  996</span>                b_seed = ahit1[<span class="stringliteral">&#39;zx_projection&#39;</span>] - k_seed * ahit1[<span class="stringliteral">&#39;z&#39;</span>]</div>
+<div class="line"><a id="l00997" name="l00997"></a><span class="lineno">  997</span> </div>
+<div class="line"><a id="l00998" name="l00998"></a><span class="lineno">  998</span>                atrack_stereo = {}</div>
+<div class="line"><a id="l00999" name="l00999"></a><span class="lineno">  999</span>                atrack_stereo[<span class="stringliteral">&#39;hits_stereo&#39;</span>] = [ahit1, ahit2]</div>
+<div class="line"><a id="l01000" name="l01000"></a><span class="lineno"> 1000</span>                atrack_stereo_layers = [ahit1[<span class="stringliteral">&#39;detID&#39;</span>] // 10000, ahit2[<span class="stringliteral">&#39;detID&#39;</span>] // 10000]</div>
 <div class="line"><a id="l01001" name="l01001"></a><span class="lineno"> 1001</span> </div>
-<div class="line"><a id="l01002" name="l01002"></a><span class="lineno"> 1002</span>        k_y = atrack_y[<span class="stringliteral">&#39;k_y&#39;</span>]</div>
-<div class="line"><a id="l01003" name="l01003"></a><span class="lineno"> 1003</span>        b_y = atrack_y[<span class="stringliteral">&#39;b_y&#39;</span>]</div>
-<div class="line"><a id="l01004" name="l01004"></a><span class="lineno"> 1004</span> </div>
-<div class="line"><a id="l01005" name="l01005"></a><span class="lineno"> 1005</span>        <span class="comment"># Get hit zx projections</span></div>
-<div class="line"><a id="l01006" name="l01006"></a><span class="lineno"> 1006</span>        <span class="keywordflow">for</span> ahit <span class="keywordflow">in</span> SmearedHits_stereo:</div>
-<div class="line"><a id="l01007" name="l01007"></a><span class="lineno"> 1007</span>            x_center  = <a class="code hl_function" href="namespaceshipPatRec.html#a50f1d2cf92badc6046881b76c02c5c6d">get_zy_projection</a>(ahit[<span class="stringliteral">&#39;z&#39;</span>], ahit[<span class="stringliteral">&#39;ytop&#39;</span>], ahit[<span class="stringliteral">&#39;xtop&#39;</span>],ahit[<span class="stringliteral">&#39;ybot&#39;</span>], ahit[<span class="stringliteral">&#39;xbot&#39;</span>], k_y, b_y)</div>
-<div class="line"><a id="l01008" name="l01008"></a><span class="lineno"> 1008</span>            ahit[<span class="stringliteral">&#39;zx_projection&#39;</span>] = x_center</div>
-<div class="line"><a id="l01009" name="l01009"></a><span class="lineno"> 1009</span> </div>
-<div class="line"><a id="l01010" name="l01010"></a><span class="lineno"> 1010</span>        long_recognized_tracks_stereo = []</div>
+<div class="line"><a id="l01002" name="l01002"></a><span class="lineno"> 1002</span>                <span class="keywordflow">for</span> ahit3 <span class="keywordflow">in</span> SmearedHits_stereo:</div>
+<div class="line"><a id="l01003" name="l01003"></a><span class="lineno"> 1003</span> </div>
+<div class="line"><a id="l01004" name="l01004"></a><span class="lineno"> 1004</span>                    <span class="keywordflow">if</span> ahit3[<span class="stringliteral">&#39;digiHit&#39;</span>] == ahit1[<span class="stringliteral">&#39;digiHit&#39;</span>] <span class="keywordflow">or</span> ahit3[<span class="stringliteral">&#39;digiHit&#39;</span>] == ahit2[<span class="stringliteral">&#39;digiHit&#39;</span>]:</div>
+<div class="line"><a id="l01005" name="l01005"></a><span class="lineno"> 1005</span>                        <span class="keywordflow">continue</span></div>
+<div class="line"><a id="l01006" name="l01006"></a><span class="lineno"> 1006</span>                    <span class="keywordflow">if</span> ahit3[<span class="stringliteral">&#39;digiHit&#39;</span>] <span class="keywordflow">in</span> used_hits:</div>
+<div class="line"><a id="l01007" name="l01007"></a><span class="lineno"> 1007</span>                        <span class="keywordflow">continue</span></div>
+<div class="line"><a id="l01008" name="l01008"></a><span class="lineno"> 1008</span> </div>
+<div class="line"><a id="l01009" name="l01009"></a><span class="lineno"> 1009</span>                    <span class="keywordflow">if</span> abs(ahit3[<span class="stringliteral">&#39;zx_projection&#39;</span>]) &gt; max_x:</div>
+<div class="line"><a id="l01010" name="l01010"></a><span class="lineno"> 1010</span>                        <span class="keywordflow">continue</span></div>
 <div class="line"><a id="l01011" name="l01011"></a><span class="lineno"> 1011</span> </div>
-<div class="line"><a id="l01012" name="l01012"></a><span class="lineno"> 1012</span>        <span class="keywordflow">for</span> ahit1 <span class="keywordflow">in</span> SmearedHits_stereo:</div>
-<div class="line"><a id="l01013" name="l01013"></a><span class="lineno"> 1013</span>            <span class="keywordflow">for</span> ahit2 <span class="keywordflow">in</span> SmearedHits_stereo:</div>
-<div class="line"><a id="l01014" name="l01014"></a><span class="lineno"> 1014</span> </div>
-<div class="line"><a id="l01015" name="l01015"></a><span class="lineno"> 1015</span>                <span class="keywordflow">if</span> ahit1[<span class="stringliteral">&#39;z&#39;</span>] &gt;= ahit2[<span class="stringliteral">&#39;z&#39;</span>]:</div>
-<div class="line"><a id="l01016" name="l01016"></a><span class="lineno"> 1016</span>                    <span class="keywordflow">continue</span></div>
-<div class="line"><a id="l01017" name="l01017"></a><span class="lineno"> 1017</span>                <span class="keywordflow">if</span> ahit1[<span class="stringliteral">&#39;detID&#39;</span>] == ahit2[<span class="stringliteral">&#39;detID&#39;</span>]:</div>
-<div class="line"><a id="l01018" name="l01018"></a><span class="lineno"> 1018</span>                    <span class="keywordflow">continue</span></div>
-<div class="line"><a id="l01019" name="l01019"></a><span class="lineno"> 1019</span>                <span class="keywordflow">if</span> ahit1[<span class="stringliteral">&#39;digiHit&#39;</span>] <span class="keywordflow">in</span> used_hits:</div>
-<div class="line"><a id="l01020" name="l01020"></a><span class="lineno"> 1020</span>                    <span class="keywordflow">continue</span></div>
-<div class="line"><a id="l01021" name="l01021"></a><span class="lineno"> 1021</span>                <span class="keywordflow">if</span> ahit2[<span class="stringliteral">&#39;digiHit&#39;</span>] <span class="keywordflow">in</span> used_hits:</div>
-<div class="line"><a id="l01022" name="l01022"></a><span class="lineno"> 1022</span>                    <span class="keywordflow">continue</span></div>
+<div class="line"><a id="l01012" name="l01012"></a><span class="lineno"> 1012</span>                    layer3 = ahit3[<span class="stringliteral">&#39;detID&#39;</span>] // 10000</div>
+<div class="line"><a id="l01013" name="l01013"></a><span class="lineno"> 1013</span>                    <span class="keywordflow">if</span> layer3 <span class="keywordflow">in</span> atrack_stereo_layers:</div>
+<div class="line"><a id="l01014" name="l01014"></a><span class="lineno"> 1014</span>                        <span class="keywordflow">continue</span></div>
+<div class="line"><a id="l01015" name="l01015"></a><span class="lineno"> 1015</span> </div>
+<div class="line"><a id="l01016" name="l01016"></a><span class="lineno"> 1016</span>                    in_bin = <a class="code hl_function" href="namespaceshipPatRec.html#a31c3d4163ed55d9615b93dd88cfd7d82">hit_in_window</a>(ahit3[<span class="stringliteral">&#39;z&#39;</span>], ahit3[<span class="stringliteral">&#39;zx_projection&#39;</span>], k_seed, b_seed, window_width=15. * r_scale)</div>
+<div class="line"><a id="l01017" name="l01017"></a><span class="lineno"> 1017</span>                    <span class="keywordflow">if</span> in_bin:</div>
+<div class="line"><a id="l01018" name="l01018"></a><span class="lineno"> 1018</span>                        atrack_stereo[<span class="stringliteral">&#39;hits_stereo&#39;</span>].append(ahit3)</div>
+<div class="line"><a id="l01019" name="l01019"></a><span class="lineno"> 1019</span>                        atrack_stereo_layers.append(layer3)</div>
+<div class="line"><a id="l01020" name="l01020"></a><span class="lineno"> 1020</span> </div>
+<div class="line"><a id="l01021" name="l01021"></a><span class="lineno"> 1021</span>                <span class="keywordflow">if</span> len(atrack_stereo[<span class="stringliteral">&#39;hits_stereo&#39;</span>]) &gt;= min_hits:</div>
+<div class="line"><a id="l01022" name="l01022"></a><span class="lineno"> 1022</span>                    long_recognized_tracks_stereo.append(atrack_stereo)</div>
 <div class="line"><a id="l01023" name="l01023"></a><span class="lineno"> 1023</span> </div>
-<div class="line"><a id="l01024" name="l01024"></a><span class="lineno"> 1024</span>                <span class="keywordflow">if</span> abs(ahit1[<span class="stringliteral">&#39;zx_projection&#39;</span>]) &gt; max_x <span class="keywordflow">or</span> abs(ahit2[<span class="stringliteral">&#39;zx_projection&#39;</span>]) &gt; max_x:</div>
-<div class="line"><a id="l01025" name="l01025"></a><span class="lineno"> 1025</span>                    <span class="keywordflow">continue</span></div>
-<div class="line"><a id="l01026" name="l01026"></a><span class="lineno"> 1026</span> </div>
-<div class="line"><a id="l01027" name="l01027"></a><span class="lineno"> 1027</span>                k_seed = 1. * (ahit2[<span class="stringliteral">&#39;zx_projection&#39;</span>] - ahit1[<span class="stringliteral">&#39;zx_projection&#39;</span>]) / (ahit2[<span class="stringliteral">&#39;z&#39;</span>] - ahit1[<span class="stringliteral">&#39;z&#39;</span>])</div>
-<div class="line"><a id="l01028" name="l01028"></a><span class="lineno"> 1028</span>                b_seed = ahit1[<span class="stringliteral">&#39;zx_projection&#39;</span>] - k_seed * ahit1[<span class="stringliteral">&#39;z&#39;</span>]</div>
-<div class="line"><a id="l01029" name="l01029"></a><span class="lineno"> 1029</span> </div>
-<div class="line"><a id="l01030" name="l01030"></a><span class="lineno"> 1030</span>                atrack_stereo = {}</div>
-<div class="line"><a id="l01031" name="l01031"></a><span class="lineno"> 1031</span>                atrack_stereo[<span class="stringliteral">&#39;hits_stereo&#39;</span>] = [ahit1, ahit2]</div>
-<div class="line"><a id="l01032" name="l01032"></a><span class="lineno"> 1032</span>                atrack_stereo_layers = [ahit1[<span class="stringliteral">&#39;detID&#39;</span>] // 10000, ahit2[<span class="stringliteral">&#39;detID&#39;</span>] // 10000]</div>
+<div class="line"><a id="l01024" name="l01024"></a><span class="lineno"> 1024</span> </div>
+<div class="line"><a id="l01025" name="l01025"></a><span class="lineno"> 1025</span>        <span class="comment"># Remove clones</span></div>
+<div class="line"><a id="l01026" name="l01026"></a><span class="lineno"> 1026</span>        max_track = <span class="keywordtype">None</span></div>
+<div class="line"><a id="l01027" name="l01027"></a><span class="lineno"> 1027</span>        max_n_hits = -999</div>
+<div class="line"><a id="l01028" name="l01028"></a><span class="lineno"> 1028</span> </div>
+<div class="line"><a id="l01029" name="l01029"></a><span class="lineno"> 1029</span>        <span class="keywordflow">for</span> atrack_stereo <span class="keywordflow">in</span> long_recognized_tracks_stereo:</div>
+<div class="line"><a id="l01030" name="l01030"></a><span class="lineno"> 1030</span>            <span class="keywordflow">if</span> len(atrack_stereo[<span class="stringliteral">&#39;hits_stereo&#39;</span>]) &gt; max_n_hits:</div>
+<div class="line"><a id="l01031" name="l01031"></a><span class="lineno"> 1031</span>                max_track = atrack_stereo</div>
+<div class="line"><a id="l01032" name="l01032"></a><span class="lineno"> 1032</span>                max_n_hits = len(atrack_stereo[<span class="stringliteral">&#39;hits_stereo&#39;</span>])</div>
 <div class="line"><a id="l01033" name="l01033"></a><span class="lineno"> 1033</span> </div>
-<div class="line"><a id="l01034" name="l01034"></a><span class="lineno"> 1034</span>                <span class="keywordflow">for</span> ahit3 <span class="keywordflow">in</span> SmearedHits_stereo:</div>
-<div class="line"><a id="l01035" name="l01035"></a><span class="lineno"> 1035</span> </div>
-<div class="line"><a id="l01036" name="l01036"></a><span class="lineno"> 1036</span>                    <span class="keywordflow">if</span> ahit3[<span class="stringliteral">&#39;digiHit&#39;</span>] == ahit1[<span class="stringliteral">&#39;digiHit&#39;</span>] <span class="keywordflow">or</span> ahit3[<span class="stringliteral">&#39;digiHit&#39;</span>] == ahit2[<span class="stringliteral">&#39;digiHit&#39;</span>]:</div>
-<div class="line"><a id="l01037" name="l01037"></a><span class="lineno"> 1037</span>                        <span class="keywordflow">continue</span></div>
-<div class="line"><a id="l01038" name="l01038"></a><span class="lineno"> 1038</span>                    <span class="keywordflow">if</span> ahit3[<span class="stringliteral">&#39;digiHit&#39;</span>] <span class="keywordflow">in</span> used_hits:</div>
-<div class="line"><a id="l01039" name="l01039"></a><span class="lineno"> 1039</span>                        <span class="keywordflow">continue</span></div>
-<div class="line"><a id="l01040" name="l01040"></a><span class="lineno"> 1040</span> </div>
-<div class="line"><a id="l01041" name="l01041"></a><span class="lineno"> 1041</span>                    <span class="keywordflow">if</span> abs(ahit3[<span class="stringliteral">&#39;zx_projection&#39;</span>]) &gt; max_x:</div>
-<div class="line"><a id="l01042" name="l01042"></a><span class="lineno"> 1042</span>                        <span class="keywordflow">continue</span></div>
-<div class="line"><a id="l01043" name="l01043"></a><span class="lineno"> 1043</span> </div>
-<div class="line"><a id="l01044" name="l01044"></a><span class="lineno"> 1044</span>                    layer3 = ahit3[<span class="stringliteral">&#39;detID&#39;</span>] // 10000</div>
-<div class="line"><a id="l01045" name="l01045"></a><span class="lineno"> 1045</span>                    <span class="keywordflow">if</span> layer3 <span class="keywordflow">in</span> atrack_stereo_layers:</div>
-<div class="line"><a id="l01046" name="l01046"></a><span class="lineno"> 1046</span>                        <span class="keywordflow">continue</span></div>
-<div class="line"><a id="l01047" name="l01047"></a><span class="lineno"> 1047</span> </div>
-<div class="line"><a id="l01048" name="l01048"></a><span class="lineno"> 1048</span>                    in_bin = <a class="code hl_function" href="namespaceshipPatRec.html#a31c3d4163ed55d9615b93dd88cfd7d82">hit_in_window</a>(ahit3[<span class="stringliteral">&#39;z&#39;</span>], ahit3[<span class="stringliteral">&#39;zx_projection&#39;</span>], k_seed, b_seed, window_width=15. * r_scale)</div>
-<div class="line"><a id="l01049" name="l01049"></a><span class="lineno"> 1049</span>                    <span class="keywordflow">if</span> in_bin:</div>
-<div class="line"><a id="l01050" name="l01050"></a><span class="lineno"> 1050</span>                        atrack_stereo[<span class="stringliteral">&#39;hits_stereo&#39;</span>].append(ahit3)</div>
-<div class="line"><a id="l01051" name="l01051"></a><span class="lineno"> 1051</span>                        atrack_stereo_layers.append(layer3)</div>
-<div class="line"><a id="l01052" name="l01052"></a><span class="lineno"> 1052</span> </div>
-<div class="line"><a id="l01053" name="l01053"></a><span class="lineno"> 1053</span>                <span class="keywordflow">if</span> len(atrack_stereo[<span class="stringliteral">&#39;hits_stereo&#39;</span>]) &gt;= min_hits:</div>
-<div class="line"><a id="l01054" name="l01054"></a><span class="lineno"> 1054</span>                    long_recognized_tracks_stereo.append(atrack_stereo)</div>
-<div class="line"><a id="l01055" name="l01055"></a><span class="lineno"> 1055</span> </div>
-<div class="line"><a id="l01056" name="l01056"></a><span class="lineno"> 1056</span> </div>
-<div class="line"><a id="l01057" name="l01057"></a><span class="lineno"> 1057</span>        <span class="comment"># Remove clones</span></div>
-<div class="line"><a id="l01058" name="l01058"></a><span class="lineno"> 1058</span>        max_track = <span class="keywordtype">None</span></div>
-<div class="line"><a id="l01059" name="l01059"></a><span class="lineno"> 1059</span>        max_n_hits = -999</div>
-<div class="line"><a id="l01060" name="l01060"></a><span class="lineno"> 1060</span> </div>
-<div class="line"><a id="l01061" name="l01061"></a><span class="lineno"> 1061</span>        <span class="keywordflow">for</span> atrack_stereo <span class="keywordflow">in</span> long_recognized_tracks_stereo:</div>
-<div class="line"><a id="l01062" name="l01062"></a><span class="lineno"> 1062</span>            <span class="keywordflow">if</span> len(atrack_stereo[<span class="stringliteral">&#39;hits_stereo&#39;</span>]) &gt; max_n_hits:</div>
-<div class="line"><a id="l01063" name="l01063"></a><span class="lineno"> 1063</span>                max_track = atrack_stereo</div>
-<div class="line"><a id="l01064" name="l01064"></a><span class="lineno"> 1064</span>                max_n_hits = len(atrack_stereo[<span class="stringliteral">&#39;hits_stereo&#39;</span>])</div>
-<div class="line"><a id="l01065" name="l01065"></a><span class="lineno"> 1065</span> </div>
-<div class="line"><a id="l01066" name="l01066"></a><span class="lineno"> 1066</span>        atrack = {}</div>
-<div class="line"><a id="l01067" name="l01067"></a><span class="lineno"> 1067</span>        atrack[<span class="stringliteral">&#39;hits_y&#39;</span>] = atrack_y[<span class="stringliteral">&#39;hits_y&#39;</span>]</div>
-<div class="line"><a id="l01068" name="l01068"></a><span class="lineno"> 1068</span>        atrack[<span class="stringliteral">&#39;k_y&#39;</span>] = atrack_y[<span class="stringliteral">&#39;k_y&#39;</span>]</div>
-<div class="line"><a id="l01069" name="l01069"></a><span class="lineno"> 1069</span>        atrack[<span class="stringliteral">&#39;b_y&#39;</span>] = atrack_y[<span class="stringliteral">&#39;b_y&#39;</span>]</div>
-<div class="line"><a id="l01070" name="l01070"></a><span class="lineno"> 1070</span>        atrack[<span class="stringliteral">&#39;hits_stereo&#39;</span>] = []</div>
-<div class="line"><a id="l01071" name="l01071"></a><span class="lineno"> 1071</span> </div>
-<div class="line"><a id="l01072" name="l01072"></a><span class="lineno"> 1072</span>        <span class="keywordflow">if</span> max_track <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>:</div>
-<div class="line"><a id="l01073" name="l01073"></a><span class="lineno"> 1073</span>            atrack[<span class="stringliteral">&#39;hits_stereo&#39;</span>] = max_track[<span class="stringliteral">&#39;hits_stereo&#39;</span>]</div>
-<div class="line"><a id="l01074" name="l01074"></a><span class="lineno"> 1074</span>            <span class="keywordflow">for</span> ahit <span class="keywordflow">in</span> max_track[<span class="stringliteral">&#39;hits_stereo&#39;</span>]:</div>
-<div class="line"><a id="l01075" name="l01075"></a><span class="lineno"> 1075</span>                used_hits.append(ahit[<span class="stringliteral">&#39;digiHit&#39;</span>])</div>
-<div class="line"><a id="l01076" name="l01076"></a><span class="lineno"> 1076</span> </div>
-<div class="line"><a id="l01077" name="l01077"></a><span class="lineno"> 1077</span>        recognized_tracks_stereo.append(atrack)</div>
-<div class="line"><a id="l01078" name="l01078"></a><span class="lineno"> 1078</span> </div>
-<div class="line"><a id="l01079" name="l01079"></a><span class="lineno"> 1079</span>    <span class="keywordflow">return</span> recognized_tracks_stereo</div>
+<div class="line"><a id="l01034" name="l01034"></a><span class="lineno"> 1034</span>        atrack = {}</div>
+<div class="line"><a id="l01035" name="l01035"></a><span class="lineno"> 1035</span>        atrack[<span class="stringliteral">&#39;hits_y&#39;</span>] = atrack_y[<span class="stringliteral">&#39;hits_y&#39;</span>]</div>
+<div class="line"><a id="l01036" name="l01036"></a><span class="lineno"> 1036</span>        atrack[<span class="stringliteral">&#39;k_y&#39;</span>] = atrack_y[<span class="stringliteral">&#39;k_y&#39;</span>]</div>
+<div class="line"><a id="l01037" name="l01037"></a><span class="lineno"> 1037</span>        atrack[<span class="stringliteral">&#39;b_y&#39;</span>] = atrack_y[<span class="stringliteral">&#39;b_y&#39;</span>]</div>
+<div class="line"><a id="l01038" name="l01038"></a><span class="lineno"> 1038</span>        atrack[<span class="stringliteral">&#39;hits_stereo&#39;</span>] = []</div>
+<div class="line"><a id="l01039" name="l01039"></a><span class="lineno"> 1039</span> </div>
+<div class="line"><a id="l01040" name="l01040"></a><span class="lineno"> 1040</span>        <span class="keywordflow">if</span> max_track <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>:</div>
+<div class="line"><a id="l01041" name="l01041"></a><span class="lineno"> 1041</span>            atrack[<span class="stringliteral">&#39;hits_stereo&#39;</span>] = max_track[<span class="stringliteral">&#39;hits_stereo&#39;</span>]</div>
+<div class="line"><a id="l01042" name="l01042"></a><span class="lineno"> 1042</span>            <span class="keywordflow">for</span> ahit <span class="keywordflow">in</span> max_track[<span class="stringliteral">&#39;hits_stereo&#39;</span>]:</div>
+<div class="line"><a id="l01043" name="l01043"></a><span class="lineno"> 1043</span>                used_hits.append(ahit[<span class="stringliteral">&#39;digiHit&#39;</span>])</div>
+<div class="line"><a id="l01044" name="l01044"></a><span class="lineno"> 1044</span> </div>
+<div class="line"><a id="l01045" name="l01045"></a><span class="lineno"> 1045</span>        recognized_tracks_stereo.append(atrack)</div>
+<div class="line"><a id="l01046" name="l01046"></a><span class="lineno"> 1046</span> </div>
+<div class="line"><a id="l01047" name="l01047"></a><span class="lineno"> 1047</span>    <span class="keywordflow">return</span> recognized_tracks_stereo</div>
 </div>
-<div class="ttc" id="anamespaceshipPatRec_html_a1aceec100bcfa9fd13a9709544805a10"><div class="ttname"><a href="namespaceshipPatRec.html#a1aceec100bcfa9fd13a9709544805a10">shipPatRec.pat_rec_stereo_views</a></div><div class="ttdeci">pat_rec_stereo_views(SmearedHits_stereo, recognized_tracks_y, min_hits)</div><div class="ttdef"><b>Definition</b> <a href="shipPatRec_8py_source.html#l00994">shipPatRec.py:994</a></div></div>
+<div class="ttc" id="anamespaceshipPatRec_html_a1aceec100bcfa9fd13a9709544805a10"><div class="ttname"><a href="namespaceshipPatRec.html#a1aceec100bcfa9fd13a9709544805a10">shipPatRec.pat_rec_stereo_views</a></div><div class="ttdeci">pat_rec_stereo_views(SmearedHits_stereo, recognized_tracks_y, min_hits)</div><div class="ttdef"><b>Definition</b> <a href="shipPatRec_8py_source.html#l00962">shipPatRec.py:962</a></div></div>
 <div class="ttc" id="anamespaceshipPatRec_html_a26083157d3c5b063b6787c476ef896e6"><div class="ttname"><a href="namespaceshipPatRec.html#a26083157d3c5b063b6787c476ef896e6">shipPatRec.fast_hough_pat_rec_stereo_views</a></div><div class="ttdeci">fast_hough_pat_rec_stereo_views(SmearedHits_stereo, recognized_tracks_y, min_hits)</div><div class="ttdef"><b>Definition</b> <a href="shipPatRec_8py_source.html#l00326">shipPatRec.py:326</a></div></div>
 <div class="ttc" id="anamespaceshipPatRec_html_a2d54ac07b407e2d1f95a45c799a57a7f"><div class="ttname"><a href="namespaceshipPatRec.html#a2d54ac07b407e2d1f95a45c799a57a7f">shipPatRec.artificial_retina_pat_rec_stereo_views</a></div><div class="ttdeci">artificial_retina_pat_rec_stereo_views(SmearedHits_stereo, recognized_tracks_y, min_hits)</div><div class="ttdef"><b>Definition</b> <a href="shipPatRec_8py_source.html#l00594">shipPatRec.py:594</a></div></div>
-<div class="ttc" id="anamespaceshipPatRec_html_a31c3d4163ed55d9615b93dd88cfd7d82"><div class="ttname"><a href="namespaceshipPatRec.html#a31c3d4163ed55d9615b93dd88cfd7d82">shipPatRec.hit_in_window</a></div><div class="ttdeci">hit_in_window(x, y, k_bin, b_bin, window_width=1.)</div><div class="ttdef"><b>Definition</b> <a href="shipPatRec_8py_source.html#l00953">shipPatRec.py:953</a></div></div>
+<div class="ttc" id="anamespaceshipPatRec_html_a31c3d4163ed55d9615b93dd88cfd7d82"><div class="ttname"><a href="namespaceshipPatRec.html#a31c3d4163ed55d9615b93dd88cfd7d82">shipPatRec.hit_in_window</a></div><div class="ttdeci">hit_in_window(x, y, k_bin, b_bin, window_width=1.)</div><div class="ttdef"><b>Definition</b> <a href="shipPatRec_8py_source.html#l00921">shipPatRec.py:921</a></div></div>
 <div class="ttc" id="anamespaceshipPatRec_html_a34ca2cd92dbeecb478eb4b53152a3f46"><div class="ttname"><a href="namespaceshipPatRec.html#a34ca2cd92dbeecb478eb4b53152a3f46">shipPatRec.fast_hough_transform_pattern_recognition</a></div><div class="ttdeci">fast_hough_transform_pattern_recognition(SmearedHits, ShipGeo)</div><div class="ttdoc">Fast Hough Transform.</div><div class="ttdef"><b>Definition</b> <a href="shipPatRec_8py_source.html#l00193">shipPatRec.py:193</a></div></div>
-<div class="ttc" id="anamespaceshipPatRec_html_a50f1d2cf92badc6046881b76c02c5c6d"><div class="ttname"><a href="namespaceshipPatRec.html#a50f1d2cf92badc6046881b76c02c5c6d">shipPatRec.get_zy_projection</a></div><div class="ttdeci">get_zy_projection(z, xtop, ytop, xbot, ybot, k_y, b_y)</div><div class="ttdef"><b>Definition</b> <a href="shipPatRec_8py_source.html#l00984">shipPatRec.py:984</a></div></div>
+<div class="ttc" id="anamespaceshipPatRec_html_a50f1d2cf92badc6046881b76c02c5c6d"><div class="ttname"><a href="namespaceshipPatRec.html#a50f1d2cf92badc6046881b76c02c5c6d">shipPatRec.get_zy_projection</a></div><div class="ttdeci">get_zy_projection(z, xtop, ytop, xbot, ybot, k_y, b_y)</div><div class="ttdef"><b>Definition</b> <a href="shipPatRec_8py_source.html#l00952">shipPatRec.py:952</a></div></div>
 <div class="ttc" id="anamespaceshipPatRec_html_a6633ea3c390789fb3d0e95937522f5ab"><div class="ttname"><a href="namespaceshipPatRec.html#a6633ea3c390789fb3d0e95937522f5ab">shipPatRec.finalize</a></div><div class="ttdeci">finalize()</div><div class="ttdef"><b>Definition</b> <a href="shipPatRec_8py_source.html#l00048">shipPatRec.py:48</a></div></div>
 <div class="ttc" id="anamespaceshipPatRec_html_a7a99de7d697da0d7d33bb63eb5d9493f"><div class="ttname"><a href="namespaceshipPatRec.html#a7a99de7d697da0d7d33bb63eb5d9493f">shipPatRec.pat_rec_view</a></div><div class="ttdeci">pat_rec_view(SmearedHits, min_hits)</div><div class="ttdef"><b>Definition</b> <a href="shipPatRec_8py_source.html#l00123">shipPatRec.py:123</a></div></div>
 <div class="ttc" id="anamespaceshipPatRec_html_a848914b2596b8ce24ce06d706a96cd29"><div class="ttname"><a href="namespaceshipPatRec.html#a848914b2596b8ce24ce06d706a96cd29">shipPatRec.artificial_retina_pat_rec_y_view</a></div><div class="ttdeci">artificial_retina_pat_rec_y_view(SmearedHits, min_hits)</div><div class="ttdef"><b>Definition</b> <a href="shipPatRec_8py_source.html#l00522">shipPatRec.py:522</a></div></div>
@@ -1217,11 +1183,10 @@ $(document).ready(function(){initNavTree('shipPatRec_8py_source.html',''); initR
 <div class="ttc" id="anamespaceshipPatRec_html_abcdd3acd1c7b2a34c5e80d19108840ca"><div class="ttname"><a href="namespaceshipPatRec.html#abcdd3acd1c7b2a34c5e80d19108840ca">shipPatRec.hit_in_bin</a></div><div class="ttdeci">hit_in_bin(x, y, k_bin, b_bin, k_size, b_size)</div><div class="ttdef"><b>Definition</b> <a href="shipPatRec_8py_source.html#l00415">shipPatRec.py:415</a></div></div>
 <div class="ttc" id="anamespaceshipPatRec_html_ac3ea0f3e8b39de2e6778b74f798568c2"><div class="ttname"><a href="namespaceshipPatRec.html#ac3ea0f3e8b39de2e6778b74f798568c2">shipPatRec.get_best_seed</a></div><div class="ttdeci">get_best_seed(x, y, sigma, sample_weight=None)</div><div class="ttdef"><b>Definition</b> <a href="shipPatRec_8py_source.html#l00681">shipPatRec.py:681</a></div></div>
 <div class="ttc" id="anamespaceshipPatRec_html_ac6b497d326be5e937e8965e4115a4b4d"><div class="ttname"><a href="namespaceshipPatRec.html#ac6b497d326be5e937e8965e4115a4b4d">shipPatRec.retina_grad</a></div><div class="ttdeci">retina_grad(track_prams, x, y, sigma, sample_weight=None)</div><div class="ttdef"><b>Definition</b> <a href="shipPatRec_8py_source.html#l00738">shipPatRec.py:738</a></div></div>
-<div class="ttc" id="anamespaceshipPatRec_html_ae6b2c397c5e235b05d0d91e0535e6e02"><div class="ttname"><a href="namespaceshipPatRec.html#ae6b2c397c5e235b05d0d91e0535e6e02">shipPatRec.tracks_combination_using_extrapolation</a></div><div class="ttdeci">tracks_combination_using_extrapolation(recognized_tracks_12, recognized_tracks_34, z_magnet)</div><div class="ttdef"><b>Definition</b> <a href="shipPatRec_8py_source.html#l00856">shipPatRec.py:856</a></div></div>
+<div class="ttc" id="anamespaceshipPatRec_html_ae6b2c397c5e235b05d0d91e0535e6e02"><div class="ttname"><a href="namespaceshipPatRec.html#ae6b2c397c5e235b05d0d91e0535e6e02">shipPatRec.tracks_combination_using_extrapolation</a></div><div class="ttdeci">tracks_combination_using_extrapolation(recognized_tracks_12, recognized_tracks_34, z_magnet)</div><div class="ttdef"><b>Definition</b> <a href="shipPatRec_8py_source.html#l00857">shipPatRec.py:857</a></div></div>
 <div class="ttc" id="anamespaceshipPatRec_html_aed94e63e174368fe7f1966eeda42cd0b"><div class="ttname"><a href="namespaceshipPatRec.html#aed94e63e174368fe7f1966eeda42cd0b">shipPatRec.retina_func</a></div><div class="ttdeci">retina_func(track_prams, x, y, sigma, sample_weight=None)</div><div class="ttdef"><b>Definition</b> <a href="shipPatRec_8py_source.html#l00704">shipPatRec.py:704</a></div></div>
-<div class="ttc" id="anamespaceshipPatRec_html_aedb4937e3c76a49b47c4b97e1298ec06"><div class="ttname"><a href="namespaceshipPatRec.html#aedb4937e3c76a49b47c4b97e1298ec06">shipPatRec.reduce_clones_using_one_track_per_hit</a></div><div class="ttdeci">reduce_clones_using_one_track_per_hit(recognized_tracks, min_hits=3)</div><div class="ttdef"><b>Definition</b> <a href="shipPatRec_8py_source.html#l00821">shipPatRec.py:821</a></div></div>
+<div class="ttc" id="anamespaceshipPatRec_html_aedb4937e3c76a49b47c4b97e1298ec06"><div class="ttname"><a href="namespaceshipPatRec.html#aedb4937e3c76a49b47c4b97e1298ec06">shipPatRec.reduce_clones_using_one_track_per_hit</a></div><div class="ttdeci">reduce_clones_using_one_track_per_hit(recognized_tracks, min_hits=3)</div><div class="ttdef"><b>Definition</b> <a href="shipPatRec_8py_source.html#l00822">shipPatRec.py:822</a></div></div>
 <div class="ttc" id="anamespaceshipPatRec_html_af0ccef68f17f3989d7870e3c793a33e1"><div class="ttname"><a href="namespaceshipPatRec.html#af0ccef68f17f3989d7870e3c793a33e1">shipPatRec.execute</a></div><div class="ttdeci">execute(smeared_hits, ship_geo, method='')</div><div class="ttdef"><b>Definition</b> <a href="shipPatRec_8py_source.html#l00017">shipPatRec.py:17</a></div></div>
-<div class="ttc" id="anamespaceshipPatRec_html_afac11c2f58e31457f72532aeec6d6e98"><div class="ttname"><a href="namespaceshipPatRec.html#afac11c2f58e31457f72532aeec6d6e98">shipPatRec.decodeDetectorID</a></div><div class="ttdeci">decodeDetectorID(detID)</div><div class="ttdef"><b>Definition</b> <a href="shipPatRec_8py_source.html#l00920">shipPatRec.py:920</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

@@ -877,7 +877,7 @@ $(document).ready(function(){initNavTree('shipDigiReco_8py_source.html',''); ini
 <div class="line"><a id="l00755" name="l00755"></a><span class="lineno"><a class="line" href="classshipDigiReco_1_1ShipDigiReco.html#a3934778b1ab25b924a938c42c029d31e">  755</a></span>  key = -1</div>
 <div class="line"><a id="l00756" name="l00756"></a><span class="lineno"><a class="line" href="classshipDigiReco_1_1ShipDigiReco.html#a98c520dc736ab9e9e6d18042f3b0e570">  756</a></span>  SmearedHits = []</div>
 <div class="line"><a id="l00757" name="l00757"></a><span class="lineno"><a class="line" href="classshipDigiReco_1_1ShipDigiReco.html#ac37808cf4026c7e6eb83174ec03ebcab">  757</a></span>  v_drift = global_variables.modules[<span class="stringliteral">&quot;Strawtubes&quot;</span>].StrawVdrift()</div>
-<div class="line"><a id="l00758" name="l00758"></a><span class="lineno">  758</span>  global_variables.modules[<span class="stringliteral">&quot;Strawtubes&quot;</span>].StrawEndPoints(10002001, start, stop)</div>
+<div class="line"><a id="l00758" name="l00758"></a><span class="lineno">  758</span>  global_variables.modules[<span class="stringliteral">&quot;Strawtubes&quot;</span>].StrawEndPoints(1002001, start, stop)</div>
 <div class="line"><a id="l00759" name="l00759"></a><span class="lineno"><a class="line" href="classshipDigiReco_1_1ShipDigiReco.html#a40b8edf49403a367693ff64cfaa61307">  759</a></span>  z1 = stop.z()</div>
 <div class="line"><a id="l00760" name="l00760"></a><span class="lineno">  760</span>  <span class="keywordflow">for</span> aDigi <span class="keywordflow">in</span> self.<a class="code hl_variable" href="classshipDigiReco_1_1ShipDigiReco.html#a70d787c74334688efd5d91f4dbf5467f">digiStraw</a>:</div>
 <div class="line"><a id="l00761" name="l00761"></a><span class="lineno">  761</span>    key+=1</div>
@@ -899,7 +899,7 @@ $(document).ready(function(){initNavTree('shipDigiReco_8py_source.html',''); ini
 <div class="line"><a id="l00777" name="l00777"></a><span class="lineno">  777</span>  SmearedHits = []</div>
 <div class="line"><a id="l00778" name="l00778"></a><span class="lineno">  778</span>  key = -1</div>
 <div class="line"><a id="l00779" name="l00779"></a><span class="lineno">  779</span>  v_drift = global_variables.modules[<span class="stringliteral">&quot;Strawtubes&quot;</span>].StrawVdrift()</div>
-<div class="line"><a id="l00780" name="l00780"></a><span class="lineno">  780</span>  global_variables.modules[<span class="stringliteral">&quot;Strawtubes&quot;</span>].StrawEndPoints(10002001, start, stop)</div>
+<div class="line"><a id="l00780" name="l00780"></a><span class="lineno">  780</span>  global_variables.modules[<span class="stringliteral">&quot;Strawtubes&quot;</span>].StrawEndPoints(1002001, start, stop)</div>
 <div class="line"><a id="l00781" name="l00781"></a><span class="lineno">  781</span>  z1 = stop.z()</div>
 <div class="line"><a id="l00782" name="l00782"></a><span class="lineno">  782</span>  <span class="keywordflow">for</span> aDigi <span class="keywordflow">in</span> self.<a class="code hl_variable" href="classshipDigiReco_1_1ShipDigiReco.html#a70d787c74334688efd5d91f4dbf5467f">digiStraw</a>:</div>
 <div class="line"><a id="l00783" name="l00783"></a><span class="lineno">  783</span>     key+=1</div>
@@ -958,7 +958,7 @@ $(document).ready(function(){initNavTree('shipDigiReco_8py_source.html',''); ini
 <div class="line"><a id="l00835" name="l00835"></a><span class="lineno">  835</span>      atrack_smeared_hits = list(atrack_y12) + list(atrack_stereo12) + list(atrack_y34) + list(atrack_stereo34)</div>
 <div class="line"><a id="l00836" name="l00836"></a><span class="lineno">  836</span>      <span class="keywordflow">for</span> sm <span class="keywordflow">in</span> atrack_smeared_hits:</div>
 <div class="line"><a id="l00837" name="l00837"></a><span class="lineno">  837</span>        detID = sm[<span class="stringliteral">&#39;detID&#39;</span>]</div>
-<div class="line"><a id="l00838" name="l00838"></a><span class="lineno">  838</span>        station = int(detID//10000000)</div>
+<div class="line"><a id="l00838" name="l00838"></a><span class="lineno">  838</span>        station = self.<a class="code hl_variable" href="classshipDigiReco_1_1ShipDigiReco.html#a70d787c74334688efd5d91f4dbf5467f">digiStraw</a>[sm[<span class="stringliteral">&#39;digiHit&#39;</span>]].GetStationNumber()</div>
 <div class="line"><a id="l00839" name="l00839"></a><span class="lineno">  839</span>        trID = i_track</div>
 <div class="line"><a id="l00840" name="l00840"></a><span class="lineno">  840</span>        <span class="comment"># Collect hits for track fit</span></div>
 <div class="line"><a id="l00841" name="l00841"></a><span class="lineno">  841</span>        <span class="keywordflow">if</span> trID <span class="keywordflow">not</span> <span class="keywordflow">in</span> hitPosLists:</div>
@@ -976,7 +976,7 @@ $(document).ready(function(){initNavTree('shipDigiReco_8py_source.html',''); ini
 <div class="line"><a id="l00853" name="l00853"></a><span class="lineno">  853</span>  <span class="keywordflow">else</span>: <span class="comment"># do fake pattern recognition</span></div>
 <div class="line"><a id="l00854" name="l00854"></a><span class="lineno">  854</span>   <span class="keywordflow">for</span> sm <span class="keywordflow">in</span> self.<a class="code hl_variable" href="classshipDigiReco_1_1ShipDigiReco.html#a98c520dc736ab9e9e6d18042f3b0e570">SmearedHits</a><a class="code hl_variable" href="classshipDigiReco_1_1ShipDigiReco.html#a3e5a53decbb82dbbb50af59e51d135f7">SmearedHits</a>:</div>
 <div class="line"><a id="l00855" name="l00855"></a><span class="lineno">  855</span>    detID = self.<a class="code hl_variable" href="classshipDigiReco_1_1ShipDigiReco.html#a70d787c74334688efd5d91f4dbf5467f">digiStraw</a>[sm[<span class="stringliteral">&#39;digiHit&#39;</span>]].GetDetectorID()</div>
-<div class="line"><a id="l00856" name="l00856"></a><span class="lineno">  856</span>    station = int(detID//10000000)</div>
+<div class="line"><a id="l00856" name="l00856"></a><span class="lineno">  856</span>    station = self.<a class="code hl_variable" href="classshipDigiReco_1_1ShipDigiReco.html#a70d787c74334688efd5d91f4dbf5467f">digiStraw</a>[sm[<span class="stringliteral">&#39;digiHit&#39;</span>]].GetStationNumber()</div>
 <div class="line"><a id="l00857" name="l00857"></a><span class="lineno">  857</span>    trID = self.<a class="code hl_variable" href="classshipDigiReco_1_1ShipDigiReco.html#a6f117e48c82f7d36d4e25b6119518002">sTree</a>.strawtubesPoint[sm[<span class="stringliteral">&#39;digiHit&#39;</span>]].GetTrackID()</div>
 <div class="line"><a id="l00858" name="l00858"></a><span class="lineno">  858</span>    <span class="keywordflow">if</span> trID <span class="keywordflow">not</span> <span class="keywordflow">in</span> hitPosLists:</div>
 <div class="line"><a id="l00859" name="l00859"></a><span class="lineno">  859</span>      hitPosLists[trID]     = ROOT.std.vector(<span class="stringliteral">&#39;TVectorD&#39;</span>)()</div>
@@ -1050,7 +1050,7 @@ $(document).ready(function(){initNavTree('shipDigiReco_8py_source.html',''); ini
 <div class="line"><a id="l00927" name="l00927"></a><span class="lineno">  927</span>      tp.addRawMeasurement(measurement) <span class="comment"># package measurement in the TrackPoint</span></div>
 <div class="line"><a id="l00928" name="l00928"></a><span class="lineno">  928</span>      theTrack.insertPoint(tp)  <span class="comment"># add point to Track</span></div>
 <div class="line"><a id="l00929" name="l00929"></a><span class="lineno">  929</span>      hitID += 1</div>
-<div class="line"><a id="l00930" name="l00930"></a><span class="lineno">  930</span>   <span class="comment"># print &quot;debug meas&quot;,atrack,nM,stationCrossed[atrack],self.sTree.MCTrack[atrack],pdg</span></div>
+<div class="line"><a id="l00930" name="l00930"></a><span class="lineno">  930</span>    <span class="comment"># print(&quot;debug meas&quot;, atrack, nM, stationCrossed[atrack], self.sTree.MCTrack[atrack], pdg)</span></div>
 <div class="line"><a id="l00931" name="l00931"></a><span class="lineno">  931</span>    trackCandidates.append([theTrack,atrack])</div>
 <div class="line"><a id="l00932" name="l00932"></a><span class="lineno">  932</span> </div>
 <div class="line"><a id="l00933" name="l00933"></a><span class="lineno">  933</span>  <span class="keywordflow">for</span> entry <span class="keywordflow">in</span> trackCandidates:</div>
