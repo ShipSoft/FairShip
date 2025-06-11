@@ -52,7 +52,7 @@ class ShipMuonShield : public FairModule
       std::vector<Double_t> &dY_yokeIn, std::vector<Double_t> &dY_yokeOut,
 		  std::vector<Double_t> &dZ, std::vector<Double_t> &midGapIn,
 		  std::vector<Double_t> &midGapOut,
-      std::vector<Double_t> &NI,
+      std::vector<Double_t> &Bgoal,
 		  std::vector<Double_t> &gapIn, std::vector<Double_t> &gapOut,
 		  std::vector<Double_t> &Z);
 
