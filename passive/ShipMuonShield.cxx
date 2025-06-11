@@ -273,7 +273,7 @@ Int_t ShipMuonShield::Initialize(std::vector<TString> &magnetName,
         std::vector<Double_t> &dY_yokeIn, std::vector<Double_t> &dY_yokeOut,
 				std::vector<Double_t> &dZ, std::vector<Double_t> &midGapIn,
 				std::vector<Double_t> &midGapOut,
-        std::vector<Double_t> &NI,
+        std::vector<Double_t> &Bgoal,
 				std::vector<Double_t> &gapIn, std::vector<Double_t> &gapOut,
 				std::vector<Double_t> &Z) {
   const Int_t nMagnets = 7;
@@ -282,7 +282,7 @@ Int_t ShipMuonShield::Initialize(std::vector<TString> &magnetName,
   fieldDirection.reserve(nMagnets);
   for (auto i :
        {&dXIn, &dXOut, &dYIn, &dYOut, &dZ, &midGapIn, &midGapOut,
-	&ratio_yokesIn , &ratio_yokesOut, &dY_yokeIn, &dY_yokeOut, &NI, &gapIn, &gapOut, &Z}) {
+	&ratio_yokesIn , &ratio_yokesOut, &dY_yokeIn, &dY_yokeOut, &Bgoal, &gapIn, &gapOut, &Z}) {
     i->reserve(nMagnets);
   }
 
@@ -293,9 +293,8 @@ Int_t ShipMuonShield::Initialize(std::vector<TString> &magnetName,
 
   fieldDirection = {
 FieldDirection::up,   FieldDirection::up,   FieldDirection::up,
-FieldDirection::up,   FieldDirection::up,   FieldDirection::down,
-FieldDirection::down, FieldDirection::down, FieldDirection::down,
-  };
+FieldDirection::up,   FieldDirection::down,   FieldDirection::down,
+FieldDirection::down };
 
   std::vector<Double_t> params;
   params = shield_params;
@@ -317,7 +316,7 @@ FieldDirection::down, FieldDirection::down, FieldDirection::down,
     dY_yokeOut[i] = params[offset + i * nParams + 9];
     midGapIn[i] = params[offset + i * nParams + 10];
     midGapOut[i] = params[offset + i * nParams + 11];
-    NI[i] = params[offset + i * nParams + 12];
+    Bgoal[i] = params[offset + i * nParams + 12];
   }
 
   dZ[0] = dZ1 - zgap / 2;
@@ -350,9 +349,9 @@ void ShipMuonShield::ConstructGeometry()
 
       std::vector<TString> magnetName;
       std::vector<FieldDirection> fieldDirection;
-      std::vector<Double_t> dXIn, dYIn, dXOut, dYOut, dZf, midGapIn, midGapOut, ratio_yokesIn, ratio_yokesOut, dY_yokeIn, dY_yokeOut, gapIn, gapOut, NI, Z;
+      std::vector<Double_t> dXIn, dYIn, dXOut, dYOut, dZf, midGapIn, midGapOut, ratio_yokesIn, ratio_yokesOut, dY_yokeIn, dY_yokeOut, gapIn, gapOut, Bgoal, Z;
       const Int_t nMagnets = Initialize(magnetName, fieldDirection, dXIn, dYIn, dXOut, dYOut, ratio_yokesIn, ratio_yokesOut,
-        dY_yokeIn, dY_yokeOut, dZf, midGapIn, midGapOut, NI, gapIn, gapOut, Z);
+        dY_yokeIn, dY_yokeOut, dZf, midGapIn, midGapOut, Bgoal, gapIn, gapOut, Z);
 
       // Create TCC8 tunnel around muon shield
       Double_t TCC8_length =  170 * m;
@@ -389,25 +388,10 @@ void ShipMuonShield::ConstructGeometry()
 
       std::array<double, 7> fieldScale = {{1., 1., 1., 1., 1., 1., 1.}};
       for (Int_t nM = 0; nM < (nMagnets); nM++) {
-        if (dZf[nM] < 1e-5){
+        if (dZf[nM] < 1e-5 || dXIn[nM] == 0){
                     continue;
                   }
-
-                  // Initialize the field
-                  Double_t ironField_s = fField * fieldScale[nM] * tesla;
-        // SC MAGNET
-        if (nM == 4  && fSC_mag) {
-              continue;
-            }
-            ironField_s = fField * fieldScale[nM] * tesla;
-            if (nM == 3 && fSC_mag) {
-                Double_t SC_FIELD = 5.1;
-                ironField_s = SC_FIELD * fieldScale[nM] * tesla;
-            }
-        if (nM == 0){
-          ironField_s = HA_field * fieldScale[nM] * tesla;
-        }
-        // END
+        Double_t ironField_s = Bgoal[nM] * fieldScale[nM] * tesla;
         TGeoUniformMagField *magFieldIron_s = new TGeoUniformMagField(0.,ironField_s,0.);
         TGeoUniformMagField *RetField_s     = new TGeoUniformMagField(0.,-ironField_s,0.);
         TGeoUniformMagField *ConRField_s    = new TGeoUniformMagField(-ironField_s,0.,0.);
