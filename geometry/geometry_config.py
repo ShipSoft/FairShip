@@ -104,7 +104,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.shieldName = shieldName
     c.SC_mag = shield_db[shieldName]['hybrid']
 
-    # global targetOpt, strawDesign, Yheight
+    # global targetVersion, strawDesign, Yheight
     c.Yheight = Yheight*u.m
     # decision by the SP
     totalLength       = 60 * u.m
@@ -348,14 +348,43 @@ with ConfigRegistry.register_config("basic") as c:
     c.hadronAbsorber.WithConstField = True
     c.muShield.WithConstField = True
 
-    with open(c.target_yaml) as file:
-        config = yaml.safe_load(file)
-        c.target = AttrDict(config['target'])
+#C-AMM additional block of Copper to add between target and hadron absorber, see edms document
 
-    target_length = (c.target.Nplates - 1) * c.target.sl
-    for width, n in zip(c.target.L, c.target.N):
-        target_length += width * n
+    with open(c.target_yaml) as file:
+        targetconfig = yaml.safe_load(file)
+        c.target = AttrDict(targetconfig['target'])
+
+    c.target.slices_length = r.std.vector("float")()
+    c.target.slices_gap = r.std.vector("float")()
+    c.target.slices_material = r.std.vector("std::string")()
+    for i in range(c.target.Nplates-1):
+        if len(c.target.N)==1:
+            c.target.N.append(c.target.N[0])
+
+    for i in range(c.target.Nplates):
+        for j in range(c.target.N[i]):
+            if len(c.target.L)==1:
+                c.target.slices_length.push_back(c.target.L[0])
+            else:
+                c.target.slices_length.push_back(c.target.L[i])
+            if len(c.target.G)==1:
+                c.target.slices_gap.push_back(c.target.G[0])
+            else:
+                c.target.slices_gap.push_back(c.target.G[i])
+            if len(c.target.M)==1:
+                c.target.slices_material.push_back(c.target.M[0])
+            else:
+                c.target.slices_material.push_back(c.target.M[i])
+    #Last gap should be 0...
+    c.target.slices_gap[c.target.nS-1] = 0
+    print(c.target.slices_material,c.target.slices_length,c.target.slices_gap)
+
+
+    target_length = 0
+    for width, gap in zip(c.target.slices_length,c.target.slices_gap):
+        target_length += width+gap
     c.target.length = target_length
+    c.targetVersion = targetconfig['targetVersion']
     # interaction point, start of target
 
     # FIXME: Redundant after change to new coordinate system
