@@ -458,10 +458,6 @@ def configure(run, ship_geo):
             )
 
 
-    # for backward compatibility
-    if not hasattr(ship_geo.strawtubes, "YPlaneOffset"):
-        ship_geo.strawtubes.YLayerOffset = ship_geo.strawtubes.StrawPitch / 2.0
-        ship_geo.strawtubes.YPlaneOffset = ship_geo.strawtubes.StrawPitch / 4.0
     if ship_geo.strawDesign > 1:
         # for backward compatibility
         if ship_geo.strawDesign == 10 and not hasattr(
@@ -492,10 +488,8 @@ def configure(run, ship_geo):
         Strawtubes.SetStrawPitch(
             ship_geo.strawtubes.StrawPitch,
             ship_geo.strawtubes.YLayerOffset,
-            ship_geo.strawtubes.YPlaneOffset,
         )
         Strawtubes.SetDeltazLayer(ship_geo.strawtubes.DeltazLayer)
-        Strawtubes.SetDeltazPlane(ship_geo.strawtubes.DeltazPlane)
         Strawtubes.SetStrawsPerLayer(ship_geo.strawtubes.StrawsPerLayer)
         Strawtubes.SetStereoAngle(ship_geo.strawtubes.ViewAngle)
         Strawtubes.SetWireThickness(ship_geo.strawtubes.WireThickness)
@@ -503,9 +497,7 @@ def configure(run, ship_geo):
         Strawtubes.SetVacBox_y(ship_geo.strawtubes.VacBox_y)
         Strawtubes.SetStrawLength(ship_geo.strawtubes.StrawLength)
 
-        Strawtubes.SetStrawLength12(ship_geo.strawtubes.StrawLength12)
-        Strawtubes.SetTr12YDim(ship_geo.strawtubes.tr12ydim)
-        Strawtubes.SetTr34YDim(ship_geo.strawtubes.tr34ydim)
+        Strawtubes.set_station_height(ship_geo.strawtubes.station_height)
         # for the digitizing step
         Strawtubes.SetStrawResolution(
             getParameter("strawtubes.v_drift", ship_geo, latestShipGeo),

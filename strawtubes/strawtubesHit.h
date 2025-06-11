@@ -19,9 +19,14 @@ class strawtubesHit : public ShipHit
      **/
     strawtubesHit(Int_t detID, Float_t tdc);
     strawtubesHit(strawtubesPoint* p, Double_t t0);
-    void StrawEndPoints(TVector3& vbot, TVector3& vtop);
     /** Destructor **/
     virtual ~strawtubesHit();
+
+    /** Accessors **/
+    Int_t GetStationNumber();
+    Int_t GetViewNumber();
+    Int_t GetLayerNumber();
+    Int_t GetStrawNumber();
 
     /** Output to screen **/
     virtual void Print() const;
@@ -36,7 +41,7 @@ class strawtubesHit : public ShipHit
   private:
     Float_t flag;   ///< flag
 
-    ClassDef(strawtubesHit, 4);
+    ClassDef(strawtubesHit, 5);
 };
 
 #endif   // STRAWTUBES_STRAWTUBESHIT_H_
