@@ -75,7 +75,7 @@ it in future.
 * Change seperate constructions of tracker stations 1/2 and 3/4 to being identical
 * `fWithConstShieldFiel` Defined as input flag for MS desing in `geometry_config.py`
 * MS design have B field as parameter
-* Changed the parametrization of the field in `ShipMuonShield.cxx` 
+* Changed the parametrization of the field in `ShipMuonShield.cxx`
 
 ### Removed
 
