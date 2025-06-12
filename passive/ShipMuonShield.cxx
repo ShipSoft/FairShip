@@ -363,7 +363,7 @@ void ShipMuonShield::ConstructGeometry()
       Double_t zgap = 10 * cm;
       Double_t absorber_offset = zgap;
       Double_t absorber_half_length = (dZf[0]);
-      Double_t z_transition = zEndOfAbsorb + 2 * absorber_half_length + absorber_offset + 14 * cm + TCC8_trench_length;
+      Double_t z_transition = zEndOfAbsorb + 2 * absorber_half_length + absorber_offset + 248 * cm + TCC8_trench_length;
       auto *rock = new TGeoBBox("rock", 20 * m, 20 * m, TCC8_length / 2. + ECN3_length / 2. + 5 * m);
       auto *muon_shield_cavern = new TGeoBBox("muon_shield_cavern", 4.995 * m, 3.75 * m, TCC8_length / 2.);
       auto *TCC8_shift = new TGeoTranslation("TCC8_shift", 1.435 * m, 2.05 * m, - TCC8_length / 2.);
