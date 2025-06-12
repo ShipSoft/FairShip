@@ -264,7 +264,7 @@ def configure_snd_mtc(yaml_file, ship_geo):
     )
     detectorList.append(mtc)
 
-def configure_veto(yaml_file):
+def configure_veto(yaml_file, z0):
     with open(yaml_file) as file:
         config = yaml.safe_load(file)
 
@@ -276,7 +276,7 @@ def configure_veto(yaml_file):
         veto_geo.xendInner,
         veto_geo.ystartInner,
         veto_geo.yendInner,
-        veto_geo.z0,
+        z0,
     )
 
     Veto.SetLiquidVeto(1)
@@ -373,6 +373,7 @@ def configure(run, ship_geo):
     MuonShield = ROOT.ShipMuonShield(
         in_params,
         ship_geo.cave.floorHeightMuonShield,
+        ship_geo.muShield.z,
         ship_geo.muShield.WithConstField,
         ship_geo.SC_mag
     )
@@ -427,16 +428,14 @@ def configure(run, ship_geo):
         magnet = ROOT.ShipMagnet("Magnet", "SHiP Magnet", ship_geo.Bfield.z)
     detectorList.append(magnet)
 
-    fairship = ROOT.gSystem.Getenv("FAIRSHIP")
+    fairship = os.environ["FAIRSHIP"]
 
-    if ship_geo.DecayVolumeMedium == "helium":
-        configure_veto(
-            os.path.join(fairship, "geometry", "veto_config_helium.yaml")
-        )  # put conditions for the design
-    if ship_geo.DecayVolumeMedium == "vacuums":
-        configure_veto(
-            os.path.join(fairship, "geometry", "veto_config_vacuums.yaml")
-        )  # put conditions for the design
+    configure_veto(
+        os.path.join(
+            fairship, f"geometry/veto_config_{ship_geo.DecayVolumeMedium}.yaml"
+        ),
+        ship_geo.decayVolume.z0,
+    )
 
     # For SND
     if ship_geo.SND:
@@ -447,9 +446,6 @@ def configure(run, ship_geo):
                 ship_geo
             )
         else:
-            # This parameters are taken from the top geometry_config
-            # snd_zTot = 3 * u.m #space allocated to Muon spectrometer
-            # snd_zMudetC=ship_geo.Chamber1.z -ship_geo.chambers.Tub1length - snd_zTot/2 -31*u.cm
             configure_snd_old(
             os.path.join(fairship, "geometry", "snd_config_old.yaml"),
             ship_geo.tauMudet.Ztot,

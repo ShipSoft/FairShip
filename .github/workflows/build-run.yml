@@ -56,7 +56,7 @@ jobs:
     strategy:
       matrix:
         vessel_option: [vacuums, helium]
-        SND_option: [SND, noSND]
+        SND_option: [noSND,]
         muon_shield: [warm_opt, sc_v6]
 
     steps:
@@ -125,7 +125,7 @@ jobs:
     strategy:
       matrix:
         vessel_option: [vacuums, helium]
-        SND_option: [SND, noSND]
+        SND_option: [noSND,]
         muon_shield: [warm_opt, sc_v6]
 
     steps:
