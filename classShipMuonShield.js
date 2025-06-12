@@ -6,7 +6,7 @@ var classShipMuonShield =
     [ "ConstructGeometry", "classShipMuonShield.html#a3ed6f246da768e38f2fe775dd523c0be", null ],
     [ "CreateArb8", "classShipMuonShield.html#ac3d03b895b44fbf2164d5202fd661287", null ],
     [ "CreateMagnet", "classShipMuonShield.html#adc4671e1413b00224c312f8f55ec65b7", null ],
-    [ "Initialize", "classShipMuonShield.html#a500234920c21399bd2d8de1fb1f944c3", null ],
+    [ "Initialize", "classShipMuonShield.html#a581dc74485cbcb3e8e5ee0871efe1c7a", null ],
     [ "InitMedium", "classShipMuonShield.html#ac4224450310d00f431be3d75bb3d6904", null ],
     [ "dXgap", "classShipMuonShield.html#a64f7b519e98b0e17a2caae28e7caf2fd", null ],
     [ "dZ0", "classShipMuonShield.html#a25d8a1229a943532bbc3c02ebc7f8109", null ],

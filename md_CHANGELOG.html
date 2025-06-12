@@ -134,6 +134,7 @@ Fixed</h2>
 <li>Fix splitcal strip dimensions and number of modules</li>
 <li>fix: Ensure the web viewer is disabled when checking for geometry overlaps (workaround for <a href="https://github.com/root-project/root/issues/18881">https://github.com/root-project/root/issues/18881</a>)</li>
 <li>fix(EvtCalc): Fix crash due to string formatting</li>
+<li>Fix: Field direction of first magnet section 2 was wrong</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md4"></a>
 Changed</h2>
@@ -159,6 +160,9 @@ Changed</h2>
 <li>strawtubes detID is now 7-digit! (without plane number)</li>
 <li>Change strawtubes detID decode function to tuple output</li>
 <li>Change seperate constructions of tracker stations 1/2 and 3/4 to being identical</li>
+<li><code>fWithConstShieldFiel</code> Defined as input flag for MS desing in <code><a class="el" href="geometry__config_8py.html">geometry_config.py</a></code></li>
+<li>MS design have B field as parameter</li>
+<li>Changed the parametrization of the field in <code><a class="el" href="ShipMuonShield_8cxx.html">ShipMuonShield.cxx</a></code></li>
 </ul>
 <h2><a class="anchor" id="autotoc_md5"></a>
 Removed</h2>
