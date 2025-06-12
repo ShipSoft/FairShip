@@ -173,7 +173,7 @@ with ConfigRegistry.register_config("basic") as c:
     # make z coordinates for the decay volume and tracking stations relative to T4z
     # eventually, the only parameter which needs to be changed when the active shielding lenght changes.
     c.z = 89.57 * u.m  # absolute position of spectrometer magnet
-    c.decayVolume.z = c.z - 31.450 * u.m  # Relative position of spectrometer magnet to decay vessel centre
+    c.decayVolume.z = c.z - 31.450 * u.m  # Relative position of decay vessel centre to spectrometer magnet
     c.decayVolume.z0 = c.decayVolume.z - c.decayVolume.length / 2.
     if strawDesign != 4 and strawDesign != 10:
      print("this design ",strawDesign," is not supported, use strawDesign = 4 or 10")
