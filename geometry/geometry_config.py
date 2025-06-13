@@ -121,14 +121,15 @@ with ConfigRegistry.register_config("basic") as c:
         c.target = AttrDict(config['target'])
 
     target_length = (c.target.Nplates - 1) * c.target.sl
+    real_target_length = (sum(c.target.N) - 1) * c.target.sl
     for width, n in zip(c.target.L, c.target.N):
         target_length += width * n
+        real_target_length += width * n
     c.target.length = target_length
     # interaction point, start of target
 
     c.target.z0 = 0  # Origin of SHiP coordinate system
     c.target.z = c.target.z0 + c.target.length / 2.
-
     c.chambers = AttrDict()
     magnetIncrease    = 100.*u.cm
     c.muShield = AttrDict()
@@ -161,10 +162,11 @@ with ConfigRegistry.register_config("basic") as c:
     ) + c.muShield.LE
 
     c.hadronAbsorber = AttrDict()
-    c.hadronAbsorber.length = 0 * u.m  # magnetized, counted inside muonshield
-    c.hadronAbsorber.z = c.target.z + c.hadronAbsorber.length / 2. + c.target.length / 2.
-    c.muShield.z = c.hadronAbsorber.z + c.muShield.length / 2. + c.hadronAbsorber.length / 2.
 
+    c.target.prox_shld = 0.5536 * u.m
+    c.real_target_length = real_target_length
+    c.hadronAbsorber.z =  c.hadronAbsorber.halflength = c.target.z0 + c.real_target_length/2
+    c.muShield.z = c.hadronAbsorber.z + c.hadronAbsorber.halflength + c.target.prox_shld
     c.decayVolume = AttrDict()
 
     # target absorber muon shield setup, decayVolume.length = nominal EOI length, only kept to define z=0
