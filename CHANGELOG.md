@@ -49,6 +49,9 @@ it in future.
 * fix: Ensure the web viewer is disabled when checking for geometry overlaps (workaround for https://github.com/root-project/root/issues/18881)
 * fix(EvtCalc): Fix crash due to string formatting
 * Fix: Field direction of first magnet section 2 was wrong
+* Fix: How the cavern is translated in z direction
+* Fix: Preliminary fix of the length of the Target (to be refine)
+
 
 ### Changed
 
@@ -78,6 +81,8 @@ it in future.
 * Changed the parametrization of the field in `ShipMuonShield.cxx`
 * Make the warm muon shield with new hadron absorber the default option
 * feat(geometry): Change coordinate system to z_0 := start of target
+* Insert Proximity shield in the geometry
+* Removed old stuff legacy in `shipMuonShield.cxx` (like LE and fFloor)
 
 ### Removed
 
