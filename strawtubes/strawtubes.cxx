@@ -283,8 +283,8 @@ void strawtubes::ConstructGeometry()
     TGeoMedium *Al                = gGeoManager->GetMedium("aluminium");
     InitMedium("mylar");
     TGeoMedium *mylar             = gGeoManager->GetMedium("mylar");
-    InitMedium("STTmix9010_2bar");
-    TGeoMedium *sttmix9010_2bar   = gGeoManager->GetMedium("STTmix9010_2bar");
+    InitMedium("STTmix8020_1bar");
+    TGeoMedium *sttmix8020_1bar   = gGeoManager->GetMedium("STTmix8020_1bar");
     InitMedium("tungsten");
     TGeoMedium *tungsten          = gGeoManager->GetMedium("tungsten");
     InitMedium(f_frame_material);
@@ -333,7 +333,7 @@ void strawtubes::ConstructGeometry()
     rmin = f_wire_thickness / 2. + eps;
     rmax = f_inner_straw_diameter / 2. - eps;
     TGeoTube *gas_tube = new TGeoTube("gas", rmin, rmax, straw_length - 2. * eps);
-    TGeoVolume *gas = new TGeoVolume("gas", gas_tube, sttmix9010_2bar);
+    TGeoVolume *gas = new TGeoVolume("gas", gas_tube, sttmix8020_1bar);
     gas->SetLineColor(5);
     // Only the gas is sensitive
     AddSensitiveVolume(gas);
