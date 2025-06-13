@@ -141,6 +141,7 @@ it in future.
 - J/psi are no longer decayed using Geant4 when using the --EvtGenDecayer option
 * Move SST geometry parameters to yaml
 * Update strawtubes class
+* Change SST gas mixture to Ar/CO2 80%/20% at 1 bar
 
 ### Removed
 
