@@ -176,14 +176,15 @@ cave= ROOT.ShipCave("CAVE")
 cave.SetGeometryFileName("caveWithAir.geo")
 run.AddModule(cave)
 
-TargetStation = ROOT.ShipTargetStation("TargetStation",ship_geo.target.length,ship_geo.hadronAbsorber.length,
-                                                        ship_geo.target.z,ship_geo.hadronAbsorber.z,ship_geo.targetOpt,ship_geo.target.sl)
-slices_length   = ROOT.std.vector('float')()
-slices_material = ROOT.std.vector('std::string')()
-for i in range(1,ship_geo.targetOpt+1):
-   slices_length.push_back(  eval("ship_geo.target.L"+str(i)))
-   slices_material.push_back(eval("ship_geo.target.M"+str(i)))
-TargetStation.SetLayerPosMat(ship_geo.target.xy,slices_length,slices_material)
+TargetStation = ROOT.ShipTargetStation("TargetStation",
+                                       ship_geo.target.length,
+                                       ship_geo.hadronAbsorber.length,
+                                       ship_geo.target.z,
+                                       ship_geo.hadronAbsorber.z,
+                                       ship_geo.targetVersion,
+                                       ship_geo.target.nS)
+
+TargetStation.SetLayerPosMat(ship_geo.target.xy, ship_geo.target.slices_length, ship_geo.target.slices_gap, ship_geo.target.slices_material)
 
 run.AddModule(TargetStation)
 MuonShield = ROOT.ShipMuonShield("MuonShield",ship_geo.muShieldDesign,"ShipMuonShield",ship_geo.muShield.z,ship_geo.muShield.dZ0,ship_geo.muShield.dZ1,\
