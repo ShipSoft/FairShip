@@ -286,8 +286,8 @@ void MufluxTargetStation::ConstructGeometry()
     endcap->SetLineColor(29);                      // blue-ish
     absorber->SetLineColor(42);                    // brown / light red
 
-    tTarget->AddNode(absorbercutout, 11, new TGeoTranslation(18., 97.5, fAbsorberZ - zPos));
-    tTarget->AddNode(absorber, 1, new TGeoTranslation(0., -27.5, fAbsorberZ - zPos));
+    // tTarget->AddNode(absorbercutout, 11, new TGeoTranslation(18., 97.5, fAbsorberZ - zPos));
+    // tTarget->AddNode(absorber, 1, new TGeoTranslation(0., -27.5, fAbsorberZ - zPos));
 
     // TGeoNode *node = GetNode("Absorber");
     // tTarget->ReplaceNode(node,new TGeoTube(1.,2.,10.),new TGeoTranslation(0,-100.2,12),iron); //
@@ -299,12 +299,12 @@ void MufluxTargetStation::ConstructGeometry()
     TGeoShapeAssembly* asmb = dynamic_cast<TGeoShapeAssembly*>(tTarget->GetShape());
     Double_t totLength = asmb->GetDZ();
 
-    top->AddNode(tTarget, 1, new TGeoTranslation(0, 0, fTargetZ - fTargetLength / 2. + totLength));
-    top->AddNode(ironshield, 2, new TGeoTranslation(-50., -47.5, fTargetZ - 83.49));   // 3.6
-    top->AddNode(concreteshield, 3, new TGeoTranslation(85., -47.5, fTargetZ - 83.49));
-    top->AddNode(abovetargetshield, 4, new TGeoTranslation(50., 77.5, fTargetZ - 83.49));
-    top->AddNode(aboveabovetargetshield, 5, new TGeoTranslation(-50., 165.0, fAbsorberZ - zPos - 624.5));
-    top->AddNode(aboveabsorbershield, 6, new TGeoTranslation(0., 165.0, -26.48));
+    // top->AddNode(tTarget, 1, new TGeoTranslation(0, 0, fTargetZ - fTargetLength / 2. + totLength));
+    // top->AddNode(ironshield, 2, new TGeoTranslation(-50., -47.5, fTargetZ - 83.49));   // 3.6
+    // top->AddNode(concreteshield, 3, new TGeoTranslation(85., -47.5, fTargetZ - 83.49));
+    // top->AddNode(abovetargetshield, 4, new TGeoTranslation(50., 77.5, fTargetZ - 83.49));
+    // top->AddNode(aboveabovetargetshield, 5, new TGeoTranslation(-50., 165.0, fAbsorberZ - zPos - 624.5));
+    // top->AddNode(aboveabsorbershield, 6, new TGeoTranslation(0., 165.0, -26.48));
 
     cout << "target and absorber positioned at " << fTargetZ << " " << fAbsorberZ << " m" << endl;
 }
