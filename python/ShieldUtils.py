@@ -1,10 +1,10 @@
 def find_shield_center(ship_geo):
-    zEndOfAbsorb = ship_geo.muShield.z - ship_geo.muShield.length / 2
+    zEndOfPassiveShield = ship_geo.muShield.z
     dZ = [None] * 7
     Z = [None] * 7
     zgap = 10.
     dZ[0] = ship_geo.muShield.dZ1 - zgap / 2
-    Z[0] = zEndOfAbsorb + dZ[0] + zgap
+    Z[0] = zEndOfPassiveShield + dZ[0] + zgap
 
     dZ[1] = ship_geo.muShield.dZ2 - zgap / 2
     Z[1] = Z[0] + dZ[0] + dZ[1] + zgap
