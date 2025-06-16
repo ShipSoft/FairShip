@@ -76,6 +76,7 @@ it in future.
 * `fWithConstShieldFiel` Defined as input flag for MS desing in `geometry_config.py`
 * MS design have B field as parameter
 * Changed the parametrization of the field in `ShipMuonShield.cxx`
+* Make the warm muon shield with new hadron absorber the default option
 
 ### Removed
 
