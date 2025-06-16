@@ -162,7 +162,7 @@ with ConfigRegistry.register_config("basic") as c:
     ) + c.muShield.LE
 
     c.hadronAbsorber = AttrDict()
-    
+
     c.target.prox_shld = 0.5536 * u.m
     c.real_target_length = real_target_length
     c.hadronAbsorber.z =  c.hadronAbsorber.halflength = c.target.z0 + c.real_target_length/2
