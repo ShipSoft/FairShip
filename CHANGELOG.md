@@ -93,6 +93,7 @@ it in future.
 * Remove unused straw veto station
 * ShipAna.py: remove broken calorimetry
 * Remove strawtubes_single class
+* Removed outdated version `sc_v6` since it is not fitting in the Cavern (also in the build-run)
 
 ## 25.01
 
