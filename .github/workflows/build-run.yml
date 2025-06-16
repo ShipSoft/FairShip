@@ -57,7 +57,7 @@ jobs:
       matrix:
         vessel_option: [vacuums, helium]
         SND_option: [SND, noSND]
-        muon_shield: [warm_opt, sc_v6]
+        muon_shield: [warm_opt, New_HA_Design]
 
     steps:
       - name: Checkout
@@ -126,7 +126,7 @@ jobs:
       matrix:
         vessel_option: [vacuums, helium]
         SND_option: [SND, noSND]
-        muon_shield: [warm_opt, sc_v6]
+        muon_shield: [warm_opt, New_HA_Design]
 
     steps:
       - name: Checkout
