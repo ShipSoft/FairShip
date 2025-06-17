@@ -135,6 +135,9 @@ Fixed</h2>
 <li>fix: Ensure the web viewer is disabled when checking for geometry overlaps (workaround for <a href="https://github.com/root-project/root/issues/18881">https://github.com/root-project/root/issues/18881</a>)</li>
 <li>fix(EvtCalc): Fix crash due to string formatting</li>
 <li>Fix: Field direction of first magnet section 2 was wrong</li>
+<li>Fix: How the cavern is translated in z direction</li>
+<li>Fix: Preliminary fix of the length of the <a class="el" href="classTarget.html">Target</a> (to be refine)</li>
+<li>Fix: in <code><a class="el" href="ShieldUtils_8py.html">python/ShieldUtils.py</a></code> still used old coordinate system (SND was not correctly positioned in <code><a class="el" href="shipDet__conf_8py.html">python/shipDet_conf.py</a></code>)</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md4"></a>
 Changed</h2>
@@ -164,6 +167,9 @@ Changed</h2>
 <li>MS design have B field as parameter</li>
 <li>Changed the parametrization of the field in <code><a class="el" href="ShipMuonShield_8cxx.html">ShipMuonShield.cxx</a></code></li>
 <li>Make the warm muon shield with new hadron absorber the default option</li>
+<li>feat(geometry): Change coordinate system to z_0 := start of target</li>
+<li>Insert Proximity shield in the geometry</li>
+<li>Removed old stuff legacy in <code>shipMuonShield.cxx</code> (like LE and fFloor)</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md5"></a>
 Removed</h2>
@@ -183,6 +189,7 @@ Removed</h2>
 <li><a class="el" href="ShipAna_8py.html">ShipAna.py</a>: remove broken calorimetry</li>
 <li>Remove strawtubes_single class</li>
 <li>Removed outdated version <code>sc_v6</code> since it is not fitting in the Cavern (also in the build-run)</li>
+<li>feat(geometry): remove TP liquid scintillator variables</li>
 </ul>
 <h1><a class="anchor" id="autotoc_md6"></a>
 25.01</h1>

@@ -26,7 +26,7 @@ var searchData=
   ['xffilterecalthickness_23',['xfFilterECALThickness',['../classsplitcal.html#a7f6f2d585f38b166dce6daf0328ed348',1,'splitcal']]],
   ['xfrac1_5f_24',['xFrac1_',['../classShipBFieldMap.html#ad244c2f350e52fc7cbeddaf1ddd66f2c',1,'ShipBFieldMap']]],
   ['xfrac_5f_25',['xFrac_',['../classShipBFieldMap.html#a438a731a1b08cbb15e2c43a2dff85dfa',1,'ShipBFieldMap']]],
-  ['xmax_26',['xmax',['../namespacegeometry__config.html#a437302764acd932304dabd2a65070edf',1,'geometry_config.xMax'],['../namespacegeometry__config.html#a3c7ce2f9d309441314dcc2cd986172c3',1,'geometry_config.XMax'],['../classShipGoliathField.html#ab2b98db40114d0360cd4650e603d7dce',1,'ShipGoliathField::xmax']]],
+  ['xmax_26',['xmax',['../namespacegeometry__config.html#a3c7ce2f9d309441314dcc2cd986172c3',1,'geometry_config.XMax'],['../namespacegeometry__config.html#a437302764acd932304dabd2a65070edf',1,'geometry_config.xMax'],['../classShipGoliathField.html#ab2b98db40114d0360cd4650e603d7dce',1,'ShipGoliathField::xmax']]],
   ['xmax_5f_27',['xMax_',['../classShipBFieldMap.html#a00ebcf5d5871b4d60a087710fca705a6',1,'ShipBFieldMap']]],
   ['xmin_28',['xmin',['../classShipGoliathField.html#a18c8cd8ce6af9147ce66953c365a57df',1,'ShipGoliathField']]],
   ['xmin_5f_29',['xMin_',['../classShipBFieldMap.html#a686affa4758dc834602d7274f111fa76',1,'ShipBFieldMap']]],

@@ -1,16 +1,5 @@
 var NAVTREEINDEX36 =
 {
-"namespacerun__fixedTarget.html#a5745239ac3de03e89b0deb73f59bb52f":[4,0,69,61],
-"namespacerun__fixedTarget.html#a60dc506ed774436b3860cfd1925230e3":[4,0,69,32],
-"namespacerun__fixedTarget.html#a6170ac8e4c59892f1eea779928b8cfac":[4,0,69,64],
-"namespacerun__fixedTarget.html#a62a9948af399f795f01daab99f043429":[4,0,69,13],
-"namespacerun__fixedTarget.html#a6376fe83a15eb0340f4c7576008e11da":[4,0,69,22],
-"namespacerun__fixedTarget.html#a662a9a9869bd1c3d220c638d0a0eb271":[4,0,69,2],
-"namespacerun__fixedTarget.html#a68f8e54ebe34ed88a1aff4505c32be7c":[4,0,69,70],
-"namespacerun__fixedTarget.html#a6d5cc1c228964b1f271e6a82da5c5339":[4,0,69,68],
-"namespacerun__fixedTarget.html#a7517af6118571b0b397cab0a2007b1fa":[4,0,69,30],
-"namespacerun__fixedTarget.html#a757a9cdde97d19d35c68251e46cc42b8":[4,0,69,9],
-"namespacerun__fixedTarget.html#a75f25953da0df2f57b5653ddfaebce97":[4,0,69,62],
 "namespacerun__fixedTarget.html#a7d39a894ee266a87d7f5c19418538fb6":[4,0,69,46],
 "namespacerun__fixedTarget.html#a8642064e3392ef35859d54454ea8f9da":[4,0,69,69],
 "namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5":[4,0,69,25],
@@ -249,5 +238,16 @@ var NAVTREEINDEX36 =
 "namespaceship.html#a2a557d803d7b5988f0a19b50443e1169":[4,0,79,3],
 "namespaceship.html#a83472731771521d366d09a96db58d50f":[4,0,79,6],
 "namespaceship.html#a8f34527ad339f58b12244b3376248654":[4,0,79,1],
-"namespaceship.html#a9780cccb8bc64317351d97dcce1cfc40":[4,0,79,5]
+"namespaceship.html#a9780cccb8bc64317351d97dcce1cfc40":[4,0,79,5],
+"namespaceship.html#adb89bd7baffe5ab655a1aa5bcf6f2a2e":[4,0,79,2],
+"namespaceshipDet__conf.html":[4,0,81],
+"namespaceshipDet__conf.html#a0507a6f94174d43157cb96b2984eb98d":[4,0,81,8],
+"namespaceshipDet__conf.html#a10ed9341e73de6c7f0b869a3bfbdf571":[4,0,81,4],
+"namespaceshipDet__conf.html#a39dd79c9e985fa7e9faf4c68d305525b":[4,0,81,3],
+"namespaceshipDet__conf.html#a649bb93c057238cfa3a3d4ec3206be2a":[4,0,81,7],
+"namespaceshipDet__conf.html#a697153d510ce945f29314cd583b91efd":[4,0,81,1],
+"namespaceshipDet__conf.html#a6f9913f44ca120bc50d95d26f037c87c":[4,0,81,2],
+"namespaceshipDet__conf.html#a7f232397871353ce80c1ea03eb15bd20":[4,0,81,0],
+"namespaceshipDet__conf.html#ac8f4ac2c90998d6d936e2e21c073ca5e":[4,0,81,5],
+"namespaceshipDet__conf.html#adb3bdcee7cddd83b1bcc462cb4ad1144":[4,0,81,6]
 };

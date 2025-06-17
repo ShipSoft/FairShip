@@ -101,7 +101,7 @@ var searchData=
   ['nt_98',['nt',['../namespacerun__fixedTarget.html#a3824536a9c3d7dd8855280526d9b7d95',1,'run_fixedTarget']]],
   ['ntagged_99',['ntagged',['../namespacerunPythia8.html#a4147fbd806b90468dee39fd9e8b57c9a',1,'runPythia8']]],
   ['ntest_100',['nTest',['../classCosmicsGenerator.html#aa6e595d8e91dee9dc90267e6e0384dce',1,'CosmicsGenerator']]],
-  ['ntot_101',['ntot',['../namespaceg4Ex__gap__mergeFiles.html#aebeda73a8e53a1bfc57d2e49e5525ca4',1,'g4Ex_gap_mergeFiles.ntot'],['../namespacemakeMuonDIS.html#a733fd53aa252e7e2d8d7eb70d6c37edb',1,'makeMuonDIS.nTOT']]],
+  ['ntot_101',['ntot',['../namespacemakeMuonDIS.html#a733fd53aa252e7e2d8d7eb70d6c37edb',1,'makeMuonDIS.nTOT'],['../namespaceg4Ex__gap__mergeFiles.html#aebeda73a8e53a1bfc57d2e49e5525ca4',1,'g4Ex_gap_mergeFiles.ntot']]],
   ['ntotprim_102',['ntotprim',['../classFixedTargetGenerator.html#ad0616dc329316d475f5f37fb301e4c56',1,'FixedTargetGenerator::ntotprim'],['../namespacemakeDecay.html#a6ca9ee1ac5dd881b42ce74249e60c74b',1,'makeDecay.ntotprim']]],
   ['ntree_103',['nTree',['../classFixedTargetGenerator.html#a4724b22b55854e36ae67fa2246f3cad1',1,'FixedTargetGenerator']]],
   ['ntt_104',['ntt',['../namespacerun__simScript.html#a5cb3063ad1456ecaaf5a0bbdc40746a0',1,'run_simScript']]],

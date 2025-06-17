@@ -99,12 +99,12 @@ $(document).ready(function(){initNavTree('ShieldUtils_8py_source.html',''); init
 <div class="contents">
 <a href="ShieldUtils_8py.html">Go to the documentation of this file.</a><div class="fragment"><div class="foldopen" id="foldopen00001" data-start="" data-end="">
 <div class="line"><a id="l00001" name="l00001"></a><span class="lineno"><a class="line" href="namespaceShieldUtils.html#a15add410b51d2e47e680e4949e50876c">    1</a></span><span class="keyword">def </span>find_shield_center(ship_geo):</div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span>    zEndOfAbsorb = ship_geo.muShield.z - ship_geo.muShield.length / 2</div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span>    zEndOfPassiveShield = ship_geo.muShield.z</div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span>    dZ = [<span class="keywordtype">None</span>] * 7</div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span>    Z = [<span class="keywordtype">None</span>] * 7</div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span>    zgap = 10.</div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span>    dZ[0] = ship_geo.muShield.dZ1 - zgap / 2</div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span>    Z[0] = zEndOfAbsorb + dZ[0] + zgap</div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span>    Z[0] = zEndOfPassiveShield + dZ[0] + zgap</div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>    dZ[1] = ship_geo.muShield.dZ2 - zgap / 2</div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>    Z[1] = Z[0] + dZ[0] + dZ[1] + zgap</div>

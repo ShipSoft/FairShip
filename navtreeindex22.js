@@ -1,6 +1,5 @@
 var NAVTREEINDEX22 =
 {
-"classvetoHit.html#a02dd768411f15085a2a0ab97fc250a68":[5,0,139,19],
 "classvetoHit.html#a05b5dab70909e140e471d910e4e3810a":[5,0,139,17],
 "classvetoHit.html#a0eba79d46341d7448729a86e949c768c":[5,0,139,20],
 "classvetoHit.html#a1791cec3ef66d0f4b927cc4856c0577f":[5,0,139,0],
@@ -249,5 +248,6 @@ var NAVTREEINDEX22 =
 "ecalInf_8h.html":[6,0,1,23],
 "ecalInf_8h_source.html":[6,0,1,23],
 "ecalLightMap_8cxx.html":[6,0,1,24],
-"ecalLightMap_8cxx_source.html":[6,0,1,24]
+"ecalLightMap_8cxx_source.html":[6,0,1,24],
+"ecalLightMap_8h.html":[6,0,1,25]
 };
