@@ -21,6 +21,16 @@ helium			   1  4.00    2    1.78e-4
 				   0  1  30.  .001
 				   0
 
+// Pressured gas helium for target:
+// Pressure has been estimated using rho = P*M/(R*T) -> T = 200 C = 473.5 K; P = 16 bar = 1.6e+6 Pa; M = 4.006 g/mol; R = 8,314 J/(mol*K);
+PressuredHe200		1  4.002  2    1.76e-3
+					0  1  30.  .001
+					0
+
+PressuredHe90		1  4.002  2    2.2e-3
+					0  1  30.  .001
+					0
+
 air                3  14.01  16.  39.95  7.  8.  18.  1.205e-3  .755  .231  .014
                    0  1  30.  .001
                    0
