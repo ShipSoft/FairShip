@@ -98,10 +98,10 @@ void ShipTargetStation::ConstructGeometry()
 
   InitMedium("H2O");
   TGeoMedium *water  = gGeoManager->GetMedium("H2O");
-  InitMedium("LiqHe");
-  TGeoMedium *liqHe  = gGeoManager->GetMedium("LiqHe");
+  InitMedium("PressuredHe200");
+  TGeoMedium *PressuredHe200  = gGeoManager->GetMedium("PressuredHe200");
 
-  TGeoMedium *cooler = (fTV == TargetVersion::Jun25) ? liqHe : water;
+  TGeoMedium *cooler = (fTV == TargetVersion::Jun25) ? PressuredHe200 : water;
 
   TGeoVolume *tTarget = new TGeoVolumeAssembly("TargetArea");
 

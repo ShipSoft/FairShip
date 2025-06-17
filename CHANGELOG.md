@@ -29,6 +29,7 @@ it in future.
 * New key for ```macro/run_simScript.py``` for choosing SND options is added: ```--SND_design```
 * Geometry_config.py: Added MS design `New_HA_Design` based on the MS `warm_opt`  with new version of HA
 * Add access to decoded numbers (stations, views etc.) of strawtubes hits
+* Definition of Pressured Helium for the target, two version 200 Celsius degree and 90 Celsius degree.
 
 ### Fixed
 
