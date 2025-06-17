@@ -553,7 +553,7 @@ getattr(rtdb,"print")()
 run.CreateGeometryFile(f"{options.outputDir}/geofile_full.{tag}.root")
 # save ShipGeo dictionary in geofile
 import saveBasicParameters
-saveBasicParameters.execute(f"{options.outputDir}/geofile_full.{tag}.root",ship_geo)
+#saveBasicParameters.execute(f"{options.outputDir}/geofile_full.{tag}.root",ship_geo)
 
 # checking for overlaps
 if options.debug == 2:
