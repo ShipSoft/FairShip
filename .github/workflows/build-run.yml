@@ -58,6 +58,7 @@ jobs:
         vessel_option: [vacuums, helium]
         SND_option: [noSND,]
         muon_shield: [warm_opt, New_HA_Design]
+        target: [old, Jun25]
 
     steps:
       - name: Checkout
@@ -83,7 +84,7 @@ jobs:
         run: |
           source /cvmfs/ship.cern.ch/$version/setUp.sh
           eval $(alienv load FairShip/latest)
-          python $FAIRSHIP/macro/run_simScript.py --test --${{ matrix.vessel_option }} --${{ matrix.SND_option }} --shieldName ${{ matrix.muon_shield }}
+          python $FAIRSHIP/macro/run_simScript.py --test --${{ matrix.vessel_option }} --${{ matrix.SND_option }} --shieldName ${{ matrix.muon_shield }} --TARGET_YAML=$FAIRSHIP/geometry/target_config_${{ matrix.target }}.yaml
 
       - name: Run Reco
         run: |
@@ -106,7 +107,7 @@ jobs:
       - name: Upload .root artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: root-files-${{ matrix.vessel_option }}-${{ matrix.SND_option }}-${{ matrix.muon_shield }}
+          name: root-files-${{ matrix.vessel_option }}-${{ matrix.SND_option }}-${{ matrix.muon_shield }}-${{ matrix.target }}
           path: |
             *.root
 
@@ -127,6 +128,7 @@ jobs:
         vessel_option: [vacuums, helium]
         SND_option: [noSND,]
         muon_shield: [warm_opt, New_HA_Design]
+        target: [old, Jun25]
 
     steps:
       - name: Checkout
@@ -152,7 +154,7 @@ jobs:
         run: |
           source /cvmfs/ship.cern.ch/$version/setUp.sh
           eval $(alienv load FairShip/latest)
-          python $FAIRSHIP/macro/run_simScript.py --test -n 0 --debug 2 --${{ matrix.vessel_option }} --${{ matrix.SND_option }} --shieldName ${{ matrix.muon_shield }} | tee log
+          python $FAIRSHIP/macro/run_simScript.py --test -n 0 --debug 2 --${{ matrix.vessel_option }} --${{ matrix.SND_option }} --shieldName ${{ matrix.muon_shield }} --TARGET_YAML=$FAIRSHIP/geometry/target_config_${{ matrix.target }}.yaml | tee log
           ! grep ovlp log
 
       - name: Geo information
