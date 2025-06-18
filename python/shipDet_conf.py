@@ -199,6 +199,7 @@ def configure_snd_mtc(yaml_file, ship_geo):
     mtc.SetMTCParameters(
         mtc_geo.width,
         mtc_geo.height,
+        mtc_geo.angle,
         mtc_geo.ironThick,
         mtc_geo.sciFiThick,
         mtc_geo.scintThick,

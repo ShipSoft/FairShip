@@ -24,6 +24,7 @@ link_directories( ${LINK_DIRECTORIES})
 set(SRCS
 MTCDetector.cxx
 MtcDetPoint.cxx
+MtcDetHit.cxx
 )
 
 Set(HEADERS )
