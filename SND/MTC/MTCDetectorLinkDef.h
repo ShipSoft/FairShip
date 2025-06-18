@@ -7,5 +7,6 @@
 
 #pragma link C++ class MTCDetector+;
 #pragma link C++ class MtcDetPoint+;
+#pragma link C++ class MtcDetHit + ;
 
 #endif
