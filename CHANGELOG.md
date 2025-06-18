@@ -29,6 +29,7 @@ it in future.
 * New key for ```macro/run_simScript.py``` for choosing SND options is added: ```--SND_design```
 * Geometry_config.py: Added MS design `New_HA_Design` based on the MS `warm_opt`  with new version of HA
 * Add access to decoded numbers (stations, views etc.) of strawtubes hits
+* Add June 2025 target configuration
 * Definition of Pressured Helium for the target, two version 200 Celsius degree and 90 Celsius degree.
 
 ### Fixed
@@ -77,8 +78,8 @@ it in future.
 * feat(geometry): Define target configuration in yaml
 * strawtubes detID is now 7-digit! (without plane number)
 * Change strawtubes detID decode function to tuple output
-* Change seperate constructions of tracker stations 1/2 and 3/4 to being identical
-* `fWithConstShieldFiel` Defined as input flag for MS desing in `geometry_config.py`
+* Change separate constructions of tracker stations 1/2 and 3/4 to being identical
+* `fWithConstShieldFiel` Defined as input flag for MS design in `geometry_config.py`
 * MS design have B field as parameter
 * Changed the parametrization of the field in `ShipMuonShield.cxx`
 * Make the warm muon shield with new hadron absorber the default option
