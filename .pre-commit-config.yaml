@@ -22,6 +22,7 @@ repos:
     types_or: [python, pyi, jupyter]
     args: [--fix, --show-fixes]
   - id: ruff-format
+    files: ^(python/experimental/|geometry/geometry_config\.py$)
 - repo: https://github.com/PyCQA/pydocstyle.git
   rev: 6.3.0
   hooks:
@@ -62,6 +63,6 @@ repos:
     args: [--py39-plus]
 ci:
   autofix_prs: false
-  skip: [ruff, ruff-format, pydocstyle, clang-format, cpplint, cmakelint, isort, cmake-format, codespell]
+  skip: [ruff, pydocstyle, clang-format, cpplint, cmakelint, isort, cmake-format, codespell]
   autoupdate_commit_msg: "chore(deps): update pre-commit hooks"
   autofix_commit_msg: "style: pre-commit fixes"
