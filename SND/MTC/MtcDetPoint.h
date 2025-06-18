@@ -1,5 +1,5 @@
-#ifndef MTCDET_MtcDetPoint_H_
-#define MTCDET_MtcDetPoint_H_ 1
+#ifndef MtcDetPoint_H_
+#define MtcDetPoint_H_ 1
 
 #include "FairMCPoint.h"
 #include "TObject.h"
@@ -35,19 +35,17 @@ class MtcDetPoint : public FairMCPoint
     virtual ~MtcDetPoint();
 
     /** Output to screen **/
-    virtual void Print(const Option_t* opt) const;
+    virtual void Print() const;
     Int_t PdgCode() const { return fPdgCode; }
-
+    Int_t GetStationType() const { return int(fDetectorID / 100000) % 10; }
     Int_t GetLayer();
-
     Int_t GetLayerType();
-    /** Copy constructor **/
     Int_t fPdgCode;
 
     MtcDetPoint(const MtcDetPoint& point);
     MtcDetPoint operator=(const MtcDetPoint& point);
 
-    ClassDef(MtcDetPoint, 1)
+    ClassDef(MtcDetPoint, 2)
 };
 
 #endif   // MTCDET_MtcDetPoint_H_

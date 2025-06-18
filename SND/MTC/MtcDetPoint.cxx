@@ -29,7 +29,7 @@ MtcDetPoint::~MtcDetPoint() {}
 // -------------------------------------------------------------------------
 
 // -----   Public method Print   -------------------------------------------
-void MtcDetPoint::Print(const Option_t* opt) const
+void MtcDetPoint::Print() const
 {
     cout << "-I- MtcDetPoint: MTC point for track " << fTrackID << " in detector " << fDetectorID << endl;
     cout << "    Position (" << fX << ", " << fY << ", " << fZ << ") cm" << endl;
