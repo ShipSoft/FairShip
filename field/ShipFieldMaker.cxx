@@ -951,12 +951,12 @@ void ShipFieldMaker::setAllLocalFields()
 void ShipFieldMaker::checkLocalFieldMap(TVirtualMagField*& localField, const TString& volName,
 					Double_t scale) {
 
-    // We assume that local field maps are stored using co-ordinates centred
-    // on the volume. However, GetField() uses global co-ordinates, so we need
+    // We assume that local field maps are stored using coordinates centred
+    // on the volume. However, GetField() uses global coordinates, so we need
     // to find the global volume transformation (translation and rotation) so
-    // that we can find the equivalent local co-ordinates. This also means that each
+    // that we can find the equivalent local coordinates. This also means that each
     // local volume needs to have its own lightweight field map copy, where we
-    // reuse the field map data but just change the co-ordinate transformation info
+    // reuse the field map data but just change the coordinate transformation info
 
     ShipBFieldMap* mapField = dynamic_cast<ShipBFieldMap*>(localField);
     if (mapField) {
@@ -1317,7 +1317,7 @@ void ShipFieldMaker::plotField(Int_t type, const TVector3& xAxis, const TVector3
 	    // Find out if the point is inside one of the geometry volumes
 	    Bool_t inside(kFALSE);
 
-	    // Find the geoemtry node (volume path)
+	    // Find the geometry node (volume path)
 	    TGeoNode* theNode = gGeoManager->FindNode(position[0], position[1], position[2]);
 
 	    if (theNode) {

@@ -25,7 +25,7 @@ TVirtuaMagField::Field(const Double_t* pos, Double_t* B)
 ```
 
 that is implemented in the various derived field classes finds the magnetic field components
-and stores them in the array B given the global, not local, co-ordinate position pos;
+and stores them in the array B given the global, not local, coordinate position pos;
 note that Geant4 can only use global positional coordinates for finding fields.
 
 
@@ -37,7 +37,7 @@ code do not need to be added again via either the input file or with definition 
 ShipFieldMaker, which inherits from
 [TG4VUserPostDetConstruction](https://github.com/vmc-project/geant4_vmc/blob/master/source/geometry/include/TG4VUserPostDetConstruction.h),
 is then passed onto the ROOT/Geant4 geometry [manager](https://github.com/vmc-project/geant4_vmc/blob/master/source/geometry/include/TG4GeometryManager.h)
-and the VMC fields are updated via the overriden ShipFieldMaker::Construct() function.
+and the VMC fields are updated via the overridden ShipFieldMaker::Construct() function.
 
 The run script can also generate plots of the magnitude of the magnetic field in the z-x, z-y and/or
 x-y plane using the plotField function in [ShipFieldMaker](ShipFieldMaker.h). The location of the
@@ -51,8 +51,8 @@ keywords to denote what each line represents:
 1) "FieldMap" for using field maps to represent the magnetic field
 2) "SymFieldMap" for using field maps with x-y quadrant symmetry
 3) "CopyMap" for copying a previously defined field map to another location (saving memory)
-4) "Uniform" for creating a uniform magnetic field (no co-ordinate limits)
-5) "Constant" for creating a uniform magnetic field with co-ordinate boundary limits
+4) "Uniform" for creating a uniform magnetic field (no coordinate limits)
+5) "Constant" for creating a uniform magnetic field with coordinate boundary limits
 6) "Bell" for creating the Bell shaped magnetic field distribution
 7) "Composite" for combining two or more field types/sources
 8) "Global" for setting which (single or composite) field is the global one
@@ -80,7 +80,7 @@ defineFieldMap(Name, MapFileName, TVector3(x0, y0, z0), TVector3(phi, theta, psi
 
 where Name is the descriptive name or title of the field, MapFileName is the location of
 the ROOT file containing the field map data (relative to the VMCWORKDIR directory),
-x0, y0, z0 are the offset co-ordinates in cm, and phi, theta and psi are the Euler
+x0, y0, z0 are the offset coordinates in cm, and phi, theta and psi are the Euler
 rotation angles in degrees about the z axis, the new x axis, and then the new z axis,
 in that order. The offsets and angles are optional parameters (denoted by the square
 brackets); default values are all set to zero. Note that offsets still need to be
@@ -91,7 +91,7 @@ along the local symmetry axes. For example, if there is a collection of identica
 that all use the same field map, but the magnets have different global positions and
 orientations in the geometry, then we only need to define one field map, with zero offsets
 and angles, using a binning that ensures that the map is centred and aligned along the
-local co-ordinate axes of the magnet shape. The code will then create lightweight copies
+local coordinate axes of the magnet shape. The code will then create lightweight copies
 of the field map (reusing the binning data) for each of the magnets, displaced and rotated
 to match their global positions and orientations. This occurs when the map name is used
 in either the Local or Region field-volume definitions described below. If the field map
@@ -104,7 +104,7 @@ The field is calculated by the [ShipBFieldMap](ShipBFieldMap.h) class using tril
 interpolation based on the binned map data, which is essentially a 3d histogram.
 
 The structure of the field map ROOT data file is as follows. It should contain two TTrees,
-one called Range which specifies the co-ordinate limits and bin sizes (in cm) using the
+one called Range which specifies the coordinate limits and bin sizes (in cm) using the
 following floating-point precision variables:
 
 ```
@@ -148,10 +148,10 @@ This reuses the [ShipBFieldMap](ShipBFieldMap.h) class to define a field map whe
 have x-y quadrant symmetry: Bx is antisymmetric in x and y, By is symmetric in x and y,
 while no symmetry is assumed for Bz. This implies that Bx changes sign whenever x < 0
 or y < 0; note that Bx remains unchanged when we have both x < 0 and y < 0. We only need to
-store the field components for the positive x and y quadrant co-ordinates in the ROOT file
+store the field components for the positive x and y quadrant coordinates in the ROOT file
 defined by the MapFileName string (relative to the VMCWORKDIR directory), requiring only
 roughly 25% of the memory compared to a full field map. The parameters x0, y0, z0 are the
-offset co-ordinates in cm, and phi, theta and psi are the Euler rotation angles in degrees
+offset coordinates in cm, and phi, theta and psi are the Euler rotation angles in degrees
 about the z axis, the new x axis, and then the new z axis, in that order. The offsets and
 angles are optional parameters (denoted by the square brackets) with default values equal
 to zero; offsets still need to be provided (can be set to zero) if angles are required.
@@ -170,7 +170,7 @@ defineFieldMapCopy(Name, MapToCopy, TVector3(x0, y0, z0), TVector3(phi, theta, p
 ```
 
 where Name is the new name or title of the copied map, MapToCopy is the name of the
-(previously defined) map to be copied, with the new co-ordinate offsets specified by the
+(previously defined) map to be copied, with the new coordinate offsets specified by the
 values x0, y0 and z0 (cm), as well as the optional Euler rotation angles phi, theta and
 psi (degrees), corresponding to rotations about the z, new x and new z axis, in that order.
 Note that this will reuse the field map data already stored in memory.
@@ -189,7 +189,7 @@ defineUniform(Name, TVector3(Bx, By, Bz));
 ```
 
 where Bx, By and Bz are the components of the uniform field (in Tesla),
-valid for any x,y,z co-ordinate value.
+valid for any x,y,z coordinate value.
 
 5) [Constant](ShipConstField.h)
 
@@ -203,7 +203,7 @@ or
 defineConstant(Name, TVector2(xMin, xMax), TVector2(yMin, yMax), TVector2(zMin, zMax), TVector3(Bx, By, Bz));
 ```
 
-where xMin, xMax are the global co-ordinate limits along the x axis (in cm),
+where xMin, xMax are the global coordinate limits along the x axis (in cm),
 similarly for the y and z axes, and Bx, By and Bz are the components
 of the uniform field in Tesla.
 
@@ -276,7 +276,7 @@ versions of the definition functions; the first can accept up to four
 field names (at least one name is required), while the other can accept
 a general vector of TString names. Note that there can only be one global
 field in the VMC by definition, and any previously defined global field is
-overriden.
+overridden.
 
 9) Region: linear combination of local and global fields
 

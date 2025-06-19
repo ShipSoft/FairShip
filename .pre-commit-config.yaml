@@ -46,7 +46,7 @@ repos:
   rev: "v2.4.1"
   hooks:
     - id: codespell
-      exclude: muon|ecal|hcal|field
+      exclude: muon|ecal|hcal
 - repo: https://github.com/pycqa/isort
   rev: 6.0.1
   hooks:

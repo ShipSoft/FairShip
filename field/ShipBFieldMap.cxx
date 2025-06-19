@@ -105,17 +105,17 @@ ShipBFieldMap::ShipBFieldMap(const std::string& newName, const ShipBFieldMap& rh
 void ShipBFieldMap::Field(const Double_t* position, Double_t* B)
 {
 
-    // Set the B field components given the global position co-ordinates
+    // Set the B field components given the global position coordinates
 
     // Convert the global position into a local one for the volume field.
     // Initialise the local co-ords, which will get overwritten if the
-    // co-ordinate transformation exists. For a global field, any local
+    // coordinate transformation exists. For a global field, any local
     // volume transformation is ignored
     Double_t localCoords[3] = {position[0], position[1], position[2]};
 
     if (theTrans_) {theTrans_->MasterToLocal(position, localCoords);}
 
-    // The local position co-ordinates
+    // The local position coordinates
     Float_t x = localCoords[0];
     Float_t y = localCoords[1];
     Float_t z = localCoords[2];
@@ -133,7 +133,7 @@ void ShipBFieldMap::Field(const Double_t* position, Double_t* B)
 
     if (isSymmetric_) {
 
-      // The field map co-ordinates only contain x > 0 and y > 0, i.e. we
+      // The field map coordinates only contain x > 0 and y > 0, i.e. we
       // are using x-y quadrant symmetry. If the local x or y coordinates
       // are negative we need to change their sign and keep track of the
       // adjusted sign of Bx which we use as a multiplication factor at the end
@@ -209,7 +209,7 @@ void ShipBFieldMap::initialise()
 
 	if (isCopy_ == kFALSE) {this->readMapFile();}
 
-	// Set the global co-ordinate translation and rotation info
+	// Set the global coordinate translation and rotation info
 	if (fabs(phi_) > 1e-6 || fabs(theta_) > 1e-6 || fabs(psi_) > 1e-6) {
 
 	    // We have non-zero rotation angles. Create a combined translation and rotation
@@ -284,7 +284,7 @@ void ShipBFieldMap::readRootFile() {
     if (isCopy_ == kFALSE) {
 
 	// The data is expected to contain Bx,By,Bz data values
-	// in ascending z,y,x co-ordinate order
+	// in ascending z,y,x coordinate order
 
 	TTree* dTree = dynamic_cast<TTree*>(theFile->Get("Data"));
 	if (!dTree) {

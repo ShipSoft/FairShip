@@ -2,7 +2,7 @@
 
 # Python script to convert a B field map from an ascii text file into
 # a ROOT file for FairShip. The field map needs to use a regular
-# x,y,z binning structure where the co-ordinates are assumed to
+# x,y,z binning structure where the coordinates are assumed to
 # be in ascending z, y and x, in that order. Each data line needs to
 # contain the values "x y z Bx By Bz", with the field components in Tesla.
 # Comment lines in the datafile starting with the hash symbol # are ignored.
@@ -29,7 +29,7 @@ ROOT.gROOT.ProcessLine(
        float dz;\
     };");
 
-# The field map is assumed to obey the following co-ordinate bin ordering:
+# The field map is assumed to obey the following coordinate bin ordering:
 # z is increased first, y is increased 2nd, x is increased last.
 # For the coordinate bin (iX, iY, iZ), the field bin = (iX*Ny + iY)*Nz + iZ,
 # where Ny and Nz are the number of y and z bins
@@ -64,7 +64,7 @@ def createRootMap(inFileName, rootFileName, cmScale, storeCoords):
     rangeTree = ROOT.TTree('Range', 'Range')
     rangeTree.SetDirectory(theFile)
 
-    # Co-ordinate ranges
+    # Coordinate ranges
     rStruct = ROOT.rangeStruct()
     rangeTree.Branch('xMin', ROOT.addressof(rStruct, 'xMin'), 'xMin/F')
     rangeTree.Branch('xMax', ROOT.addressof(rStruct, 'xMax'), 'xMax/F')
@@ -96,9 +96,9 @@ def createRootMap(inFileName, rootFileName, cmScale, storeCoords):
     # y0 = 0.0
     # z0 = 0.0
 
-    print (f'Centering field map using co-ordinate shift {x0} {y0} {z0} cm')
+    print (f'Centering field map using coordinate shift {x0} {y0} {z0} cm')
 
-    # Center co-ordinate range limits (cm)
+    # Center coordinate range limits (cm)
     rStruct.xMin = rStruct.xMin - x0
     rStruct.xMax = rStruct.xMax - x0
 

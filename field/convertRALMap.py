@@ -22,7 +22,7 @@ ROOT.gROOT.ProcessLine(
    float dz;\
 };");
 
-# The field map is assumed to obey the following co-ordinate bin ordering:
+# The field map is assumed to obey the following coordinate bin ordering:
 # z is increased first, y is increased 2nd, x is increased last.
 # So we only store the field components (x,y,z is known from the ordering).
 # For the coordinate bin (iX, iY, iZ), the field bin = (iX*Ny + iY)*Nz + iZ,
@@ -152,7 +152,7 @@ def createTextMap(inFileName, outFileName):
     tmpFile.close()
     inFile.close()
 
-    # Write out the map containing the co-ordinate ranges and offsets etc
+    # Write out the map containing the coordinate ranges and offsets etc
     tmpFile2 = open(tmpFileName)
     outFile = open(outFileName, 'w')
 
@@ -202,7 +202,7 @@ def createRootMap(inFileName, outFileName):
     rangeTree = ROOT.TTree('Range', 'Range')
     rangeTree.SetDirectory(theFile)
 
-    # Co-ordinate ranges
+    # Coordinate ranges
     rStruct = ROOT.rangeStruct()
     rangeTree.Branch('xMin', ROOT.addressof(rStruct, 'xMin'), 'xMin/F')
     rangeTree.Branch('xMax', ROOT.addressof(rStruct, 'xMax'), 'xMax/F')
