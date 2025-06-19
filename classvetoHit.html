@@ -449,45 +449,45 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vetoHit_8cxx_source.html#l00068">68</a> of file <a class="el" href="vetoHit_8cxx_source.html">vetoHit.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   69</span>{</div>
-<div class="line"><span class="lineno">   70</span>    TGeoNode* node;</div>
-<div class="line"><span class="lineno">   71</span>    TGeoNavigator* nav = gGeoManager-&gt;GetCurrentNavigator();</div>
-<div class="line"><span class="lineno">   72</span>    TString <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a> = <span class="stringliteral">&quot;cave/DecayVolume_1/T2_1/VetoLiSc_0/&quot;</span>;</div>
-<div class="line"><span class="lineno">   73</span>    <span class="comment">// id = ShapeType*100000 + blockNr*10000 + Zlayer*100 + number*10 + position;</span></div>
-<div class="line"><span class="lineno">   74</span> </div>
-<div class="line"><span class="lineno">   75</span>    Int_t ShapeType = <a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a> / 100000;</div>
-<div class="line"><span class="lineno">   76</span>    Int_t blockNr = (<a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a> % 100000) / 10000;</div>
-<div class="line"><span class="lineno">   77</span>    Int_t Zlayer = (<a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a> % 10000) / 100;</div>
-<div class="line"><span class="lineno">   78</span>    Int_t number = (<a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a> % 100) / 10;</div>
-<div class="line"><span class="lineno">   79</span>    <span class="comment">// Int_t position    = (fDetectorID % 10);</span></div>
-<div class="line"><span class="lineno">   80</span> </div>
-<div class="line"><span class="lineno">   81</span>    <span class="keywordflow">if</span> (ShapeType == 1)</div>
-<div class="line"><span class="lineno">   82</span>        <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a> += <span class="stringliteral">&quot;LiScX_&quot;</span>;</div>
-<div class="line"><span class="lineno">   83</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (ShapeType == 2)</div>
-<div class="line"><span class="lineno">   84</span>        <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a> += <span class="stringliteral">&quot;LiScY_&quot;</span>;</div>
-<div class="line"><span class="lineno">   85</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (ShapeType == 3)</div>
-<div class="line"><span class="lineno">   86</span>        <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a> += <span class="stringliteral">&quot;LiSc_S3_&quot;</span>;</div>
-<div class="line"><span class="lineno">   87</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (ShapeType == 4)</div>
-<div class="line"><span class="lineno">   88</span>        <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a> += <span class="stringliteral">&quot;LiSc_S4_&quot;</span>;</div>
-<div class="line"><span class="lineno">   89</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (ShapeType == 5)</div>
-<div class="line"><span class="lineno">   90</span>        <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a> += <span class="stringliteral">&quot;LiSc_S5_&quot;</span>;</div>
-<div class="line"><span class="lineno">   91</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (ShapeType == 6)</div>
-<div class="line"><span class="lineno">   92</span>        <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a> += <span class="stringliteral">&quot;LiSc_S6_&quot;</span>;</div>
-<div class="line"><span class="lineno">   93</span> </div>
-<div class="line"><span class="lineno">   94</span>    <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a> += ShapeType;</div>
-<div class="line"><span class="lineno">   95</span>    <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a> += blockNr;</div>
-<div class="line"><span class="lineno">   96</span>    <span class="keywordflow">if</span> (Zlayer &lt; 10)</div>
-<div class="line"><span class="lineno">   97</span>        <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a> += <span class="stringliteral">&quot;0&quot;</span>;</div>
-<div class="line"><span class="lineno">   98</span>    <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a> += Zlayer;</div>
-<div class="line"><span class="lineno">   99</span>    <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a> += number;</div>
-<div class="line"><span class="lineno">  100</span>    <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a> += <span class="stringliteral">&quot;0_&quot;</span>;</div>
-<div class="line"><span class="lineno">  101</span>    <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a> += <a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a>;</div>
-<div class="line"><span class="lineno">  102</span> </div>
-<div class="line"><span class="lineno">  103</span>    nav-&gt;cd(path);</div>
-<div class="line"><span class="lineno">  104</span>    node = nav-&gt;GetCurrentNode();</div>
-<div class="line"><span class="lineno">  105</span>    <span class="keywordflow">return</span> node;</div>
-<div class="line"><span class="lineno">  106</span>}</div>
+<p class="definition">Definition at line <a class="el" href="vetoHit_8cxx_source.html#l00067">67</a> of file <a class="el" href="vetoHit_8cxx_source.html">vetoHit.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   68</span>{</div>
+<div class="line"><span class="lineno">   69</span>    TGeoNode* node;</div>
+<div class="line"><span class="lineno">   70</span>    TGeoNavigator* nav = gGeoManager-&gt;GetCurrentNavigator();</div>
+<div class="line"><span class="lineno">   71</span>    TString <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a> = <span class="stringliteral">&quot;cave/DecayVolume_1/T2_1/VetoLiSc_0/&quot;</span>;</div>
+<div class="line"><span class="lineno">   72</span>    <span class="comment">// id = ShapeType*100000 + blockNr*10000 + Zlayer*100 + number*10 + position;</span></div>
+<div class="line"><span class="lineno">   73</span> </div>
+<div class="line"><span class="lineno">   74</span>    Int_t ShapeType = <a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a> / 100000;</div>
+<div class="line"><span class="lineno">   75</span>    Int_t blockNr = (<a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a> % 100000) / 10000;</div>
+<div class="line"><span class="lineno">   76</span>    Int_t Zlayer = (<a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a> % 10000) / 100;</div>
+<div class="line"><span class="lineno">   77</span>    Int_t number = (<a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a> % 100) / 10;</div>
+<div class="line"><span class="lineno">   78</span>    <span class="comment">// Int_t position    = (fDetectorID % 10);</span></div>
+<div class="line"><span class="lineno">   79</span> </div>
+<div class="line"><span class="lineno">   80</span>    <span class="keywordflow">if</span> (ShapeType == 1)</div>
+<div class="line"><span class="lineno">   81</span>        <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a> += <span class="stringliteral">&quot;LiScX_&quot;</span>;</div>
+<div class="line"><span class="lineno">   82</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (ShapeType == 2)</div>
+<div class="line"><span class="lineno">   83</span>        <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a> += <span class="stringliteral">&quot;LiScY_&quot;</span>;</div>
+<div class="line"><span class="lineno">   84</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (ShapeType == 3)</div>
+<div class="line"><span class="lineno">   85</span>        <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a> += <span class="stringliteral">&quot;LiSc_S3_&quot;</span>;</div>
+<div class="line"><span class="lineno">   86</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (ShapeType == 4)</div>
+<div class="line"><span class="lineno">   87</span>        <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a> += <span class="stringliteral">&quot;LiSc_S4_&quot;</span>;</div>
+<div class="line"><span class="lineno">   88</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (ShapeType == 5)</div>
+<div class="line"><span class="lineno">   89</span>        <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a> += <span class="stringliteral">&quot;LiSc_S5_&quot;</span>;</div>
+<div class="line"><span class="lineno">   90</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (ShapeType == 6)</div>
+<div class="line"><span class="lineno">   91</span>        <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a> += <span class="stringliteral">&quot;LiSc_S6_&quot;</span>;</div>
+<div class="line"><span class="lineno">   92</span> </div>
+<div class="line"><span class="lineno">   93</span>    <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a> += ShapeType;</div>
+<div class="line"><span class="lineno">   94</span>    <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a> += blockNr;</div>
+<div class="line"><span class="lineno">   95</span>    <span class="keywordflow">if</span> (Zlayer &lt; 10)</div>
+<div class="line"><span class="lineno">   96</span>        <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a> += <span class="stringliteral">&quot;0&quot;</span>;</div>
+<div class="line"><span class="lineno">   97</span>    <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a> += Zlayer;</div>
+<div class="line"><span class="lineno">   98</span>    <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a> += number;</div>
+<div class="line"><span class="lineno">   99</span>    <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a> += <span class="stringliteral">&quot;0_&quot;</span>;</div>
+<div class="line"><span class="lineno">  100</span>    <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">path</a> += <a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a>;</div>
+<div class="line"><span class="lineno">  101</span> </div>
+<div class="line"><span class="lineno">  102</span>    nav-&gt;cd(path);</div>
+<div class="line"><span class="lineno">  103</span>    node = nav-&gt;GetCurrentNode();</div>
+<div class="line"><span class="lineno">  104</span>    <span class="keywordflow">return</span> node;</div>
+<div class="line"><span class="lineno">  105</span>}</div>
 <div class="ttc" id="aclassShipHit_html_a2d5297096e3039b34c93d2bf80738b10"><div class="ttname"><a href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">ShipHit::fDetectorID</a></div><div class="ttdeci">Int_t fDetectorID</div><div class="ttdoc">Detector unique identifier.</div><div class="ttdef"><b>Definition</b> <a href="ShipHit_8h_source.html#l00058">ShipHit.h:58</a></div></div>
 <div class="ttc" id="anamespacemake__nTuple__SBT_html_a5296266b8955872e3259622e903275de"><div class="ttname"><a href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">make_nTuple_SBT.path</a></div><div class="ttdeci">path</div><div class="ttdef"><b>Definition</b> <a href="make__nTuple__SBT_8py_source.html#l00044">make_nTuple_SBT.py:44</a></div></div>
 </div><!-- fragment -->
@@ -537,11 +537,11 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p>Accessors </p>
 
-<p class="definition">Definition at line <a class="el" href="vetoHit_8cxx_source.html#l00053">53</a> of file <a class="el" href="vetoHit_8cxx_source.html">vetoHit.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   54</span>{</div>
-<div class="line"><span class="lineno">   55</span>    TVector3 <a class="code hl_variable" href="namespacerun__simPgun.html#ac57e22275cd6a7bdb768a9d30320595e">pos</a> = <a class="code hl_function" href="classvetoHit.html#adb60f44363a7059a2c7d3f41c1cac796">GetXYZ</a>();</div>
-<div class="line"><span class="lineno">   56</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="namespacerun__simPgun.html#ac57e22275cd6a7bdb768a9d30320595e">pos</a>.X();</div>
-<div class="line"><span class="lineno">   57</span>}</div>
+<p class="definition">Definition at line <a class="el" href="vetoHit_8cxx_source.html#l00052">52</a> of file <a class="el" href="vetoHit_8cxx_source.html">vetoHit.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   53</span>{</div>
+<div class="line"><span class="lineno">   54</span>    TVector3 <a class="code hl_variable" href="namespacerun__simPgun.html#ac57e22275cd6a7bdb768a9d30320595e">pos</a> = <a class="code hl_function" href="classvetoHit.html#adb60f44363a7059a2c7d3f41c1cac796">GetXYZ</a>();</div>
+<div class="line"><span class="lineno">   55</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="namespacerun__simPgun.html#ac57e22275cd6a7bdb768a9d30320595e">pos</a>.X();</div>
+<div class="line"><span class="lineno">   56</span>}</div>
 <div class="ttc" id="aclassvetoHit_html_adb60f44363a7059a2c7d3f41c1cac796"><div class="ttname"><a href="classvetoHit.html#adb60f44363a7059a2c7d3f41c1cac796">vetoHit::GetXYZ</a></div><div class="ttdeci">TVector3 GetXYZ()</div><div class="ttdef"><b>Definition</b> <a href="vetoHit_8cxx_source.html#l00039">vetoHit.cxx:39</a></div></div>
 <div class="ttc" id="anamespacerun__simPgun_html_ac57e22275cd6a7bdb768a9d30320595e"><div class="ttname"><a href="namespacerun__simPgun.html#ac57e22275cd6a7bdb768a9d30320595e">run_simPgun.pos</a></div><div class="ttdeci">pos</div><div class="ttdef"><b>Definition</b> <a href="run__simPgun_8py_source.html#l00084">run_simPgun.py:84</a></div></div>
 </div><!-- fragment -->
@@ -574,7 +574,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">   48</span>    TVector3 <a class="code hl_variable" href="namespacerun__simPgun.html#ac57e22275cd6a7bdb768a9d30320595e">pos</a> = TVector3(master[0], master[1], master[2]);</div>
 <div class="line"><span class="lineno">   49</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="namespacerun__simPgun.html#ac57e22275cd6a7bdb768a9d30320595e">pos</a>;</div>
 <div class="line"><span class="lineno">   50</span>}</div>
-<div class="ttc" id="aclassvetoHit_html_ab362f02181e1a36d48da920db615d723"><div class="ttname"><a href="classvetoHit.html#ab362f02181e1a36d48da920db615d723">vetoHit::GetNode</a></div><div class="ttdeci">TGeoNode * GetNode()</div><div class="ttdef"><b>Definition</b> <a href="vetoHit_8cxx_source.html#l00068">vetoHit.cxx:68</a></div></div>
+<div class="ttc" id="aclassvetoHit_html_ab362f02181e1a36d48da920db615d723"><div class="ttname"><a href="classvetoHit.html#ab362f02181e1a36d48da920db615d723">vetoHit::GetNode</a></div><div class="ttdeci">TGeoNode * GetNode()</div><div class="ttdef"><b>Definition</b> <a href="vetoHit_8cxx_source.html#l00067">vetoHit.cxx:67</a></div></div>
 <div class="ttc" id="anamespaceana__ShipMuon_html_a05e83c6aa9234009f5e43dda6be3e5f6"><div class="ttname"><a href="namespaceana__ShipMuon.html#a05e83c6aa9234009f5e43dda6be3e5f6">ana_ShipMuon.origin</a></div><div class="ttdeci">origin(sTree, it)</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l00376">ana_ShipMuon.py:376</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -594,11 +594,11 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vetoHit_8cxx_source.html#l00058">58</a> of file <a class="el" href="vetoHit_8cxx_source.html">vetoHit.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   59</span>{</div>
-<div class="line"><span class="lineno">   60</span>    TVector3 <a class="code hl_variable" href="namespacerun__simPgun.html#ac57e22275cd6a7bdb768a9d30320595e">pos</a> = <a class="code hl_function" href="classvetoHit.html#adb60f44363a7059a2c7d3f41c1cac796">GetXYZ</a>();</div>
-<div class="line"><span class="lineno">   61</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="namespacerun__simPgun.html#ac57e22275cd6a7bdb768a9d30320595e">pos</a>.Y();</div>
-<div class="line"><span class="lineno">   62</span>}</div>
+<p class="definition">Definition at line <a class="el" href="vetoHit_8cxx_source.html#l00057">57</a> of file <a class="el" href="vetoHit_8cxx_source.html">vetoHit.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   58</span>{</div>
+<div class="line"><span class="lineno">   59</span>    TVector3 <a class="code hl_variable" href="namespacerun__simPgun.html#ac57e22275cd6a7bdb768a9d30320595e">pos</a> = <a class="code hl_function" href="classvetoHit.html#adb60f44363a7059a2c7d3f41c1cac796">GetXYZ</a>();</div>
+<div class="line"><span class="lineno">   60</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="namespacerun__simPgun.html#ac57e22275cd6a7bdb768a9d30320595e">pos</a>.Y();</div>
+<div class="line"><span class="lineno">   61</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -617,11 +617,11 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vetoHit_8cxx_source.html#l00063">63</a> of file <a class="el" href="vetoHit_8cxx_source.html">vetoHit.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   64</span>{</div>
-<div class="line"><span class="lineno">   65</span>    TVector3 <a class="code hl_variable" href="namespacerun__simPgun.html#ac57e22275cd6a7bdb768a9d30320595e">pos</a> = <a class="code hl_function" href="classvetoHit.html#adb60f44363a7059a2c7d3f41c1cac796">GetXYZ</a>();</div>
-<div class="line"><span class="lineno">   66</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="namespacerun__simPgun.html#ac57e22275cd6a7bdb768a9d30320595e">pos</a>.Z();</div>
-<div class="line"><span class="lineno">   67</span>}</div>
+<p class="definition">Definition at line <a class="el" href="vetoHit_8cxx_source.html#l00062">62</a> of file <a class="el" href="vetoHit_8cxx_source.html">vetoHit.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   63</span>{</div>
+<div class="line"><span class="lineno">   64</span>    TVector3 <a class="code hl_variable" href="namespacerun__simPgun.html#ac57e22275cd6a7bdb768a9d30320595e">pos</a> = <a class="code hl_function" href="classvetoHit.html#adb60f44363a7059a2c7d3f41c1cac796">GetXYZ</a>();</div>
+<div class="line"><span class="lineno">   65</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="namespacerun__simPgun.html#ac57e22275cd6a7bdb768a9d30320595e">pos</a>.Z();</div>
+<div class="line"><span class="lineno">   66</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -704,12 +704,12 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p>Output to screen </p>
 
-<p class="definition">Definition at line <a class="el" href="vetoHit_8cxx_source.html#l00109">109</a> of file <a class="el" href="vetoHit_8cxx_source.html">vetoHit.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  110</span>{</div>
-<div class="line"><span class="lineno">  111</span>    LOG(INFO) &lt;&lt; <span class="stringliteral">&quot;vetoHit: veto hit &quot;</span></div>
-<div class="line"><span class="lineno">  112</span>              &lt;&lt; <span class="stringliteral">&quot; in detector &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a>;</div>
-<div class="line"><span class="lineno">  113</span>    LOG(INFO) &lt;&lt; <span class="stringliteral">&quot;  ADC &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipHit.html#a1353d789e08ea991cc25a3724131c8e9">fdigi</a> &lt;&lt; <span class="stringliteral">&quot; ns&quot;</span>;</div>
-<div class="line"><span class="lineno">  114</span>}</div>
+<p class="definition">Definition at line <a class="el" href="vetoHit_8cxx_source.html#l00108">108</a> of file <a class="el" href="vetoHit_8cxx_source.html">vetoHit.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  109</span>{</div>
+<div class="line"><span class="lineno">  110</span>    LOG(INFO) &lt;&lt; <span class="stringliteral">&quot;vetoHit: veto hit &quot;</span></div>
+<div class="line"><span class="lineno">  111</span>              &lt;&lt; <span class="stringliteral">&quot; in detector &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a>;</div>
+<div class="line"><span class="lineno">  112</span>    LOG(INFO) &lt;&lt; <span class="stringliteral">&quot;  ADC &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipHit.html#a1353d789e08ea991cc25a3724131c8e9">fdigi</a> &lt;&lt; <span class="stringliteral">&quot; ns&quot;</span>;</div>
+<div class="line"><span class="lineno">  113</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>

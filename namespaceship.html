@@ -141,10 +141,10 @@ template&lt;class... Types&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="logger_8hxx_source.html#l00057">57</a> of file <a class="el" href="logger_8hxx_source.html">logger.hxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   58</span>{</div>
-<div class="line"><span class="lineno">   59</span>    log&lt;fair::Severity::debug&gt;(args...);</div>
-<div class="line"><span class="lineno">   60</span>}</div>
+<p class="definition">Definition at line <a class="el" href="logger_8hxx_source.html#l00059">59</a> of file <a class="el" href="logger_8hxx_source.html">logger.hxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   60</span>{</div>
+<div class="line"><span class="lineno">   61</span>    log&lt;fair::Severity::debug&gt;(args...);</div>
+<div class="line"><span class="lineno">   62</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -166,10 +166,10 @@ template&lt;class... Types&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="logger_8hxx_source.html#l00039">39</a> of file <a class="el" href="logger_8hxx_source.html">logger.hxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   40</span>{</div>
-<div class="line"><span class="lineno">   41</span>    log&lt;fair::Severity::error&gt;(args...);</div>
-<div class="line"><span class="lineno">   42</span>}</div>
+<p class="definition">Definition at line <a class="el" href="logger_8hxx_source.html#l00041">41</a> of file <a class="el" href="logger_8hxx_source.html">logger.hxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   42</span>{</div>
+<div class="line"><span class="lineno">   43</span>    log&lt;fair::Severity::error&gt;(args...);</div>
+<div class="line"><span class="lineno">   44</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -191,10 +191,10 @@ template&lt;class... Types&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="logger_8hxx_source.html#l00033">33</a> of file <a class="el" href="logger_8hxx_source.html">logger.hxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   34</span>{</div>
-<div class="line"><span class="lineno">   35</span>    log&lt;fair::Severity::fatal&gt;(args...);</div>
-<div class="line"><span class="lineno">   36</span>}</div>
+<p class="definition">Definition at line <a class="el" href="logger_8hxx_source.html#l00035">35</a> of file <a class="el" href="logger_8hxx_source.html">logger.hxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   36</span>{</div>
+<div class="line"><span class="lineno">   37</span>    log&lt;fair::Severity::fatal&gt;(args...);</div>
+<div class="line"><span class="lineno">   38</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -216,10 +216,10 @@ template&lt;class... Types&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="logger_8hxx_source.html#l00051">51</a> of file <a class="el" href="logger_8hxx_source.html">logger.hxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   52</span>{</div>
-<div class="line"><span class="lineno">   53</span>    log&lt;fair::Severity::info&gt;(args...);</div>
-<div class="line"><span class="lineno">   54</span>}</div>
+<p class="definition">Definition at line <a class="el" href="logger_8hxx_source.html#l00053">53</a> of file <a class="el" href="logger_8hxx_source.html">logger.hxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   54</span>{</div>
+<div class="line"><span class="lineno">   55</span>    log&lt;fair::Severity::info&gt;(args...);</div>
+<div class="line"><span class="lineno">   56</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -241,11 +241,11 @@ template&lt;fair::Severity severity, class... Types&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="logger_8hxx_source.html#l00026">26</a> of file <a class="el" href="logger_8hxx_source.html">logger.hxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   27</span>{</div>
-<div class="line"><span class="lineno">   28</span>    fair::Logger <a class="code hl_namespace" href="namespacelogger.html">logger</a>(severity, __FILE__, to_string(__LINE__), __FUNCTION__);</div>
-<div class="line"><span class="lineno">   29</span>    details::log&lt;severity&gt;(<a class="code hl_namespace" href="namespacelogger.html">logger</a>.Log(), args...);</div>
-<div class="line"><span class="lineno">   30</span>}</div>
+<p class="definition">Definition at line <a class="el" href="logger_8hxx_source.html#l00028">28</a> of file <a class="el" href="logger_8hxx_source.html">logger.hxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   29</span>{</div>
+<div class="line"><span class="lineno">   30</span>    fair::Logger <a class="code hl_namespace" href="namespacelogger.html">logger</a>(severity, __FILE__, to_string(__LINE__), __FUNCTION__);</div>
+<div class="line"><span class="lineno">   31</span>    details::log&lt;severity&gt;(<a class="code hl_namespace" href="namespacelogger.html">logger</a>.Log(), args...);</div>
+<div class="line"><span class="lineno">   32</span>}</div>
 <div class="ttc" id="anamespacelogger_html"><div class="ttname"><a href="namespacelogger.html">logger</a></div><div class="ttdef"><b>Definition</b> <a href="logger_8py_source.html#l00001">logger.py:1</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -268,10 +268,10 @@ template&lt;class... Types&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="logger_8hxx_source.html#l00045">45</a> of file <a class="el" href="logger_8hxx_source.html">logger.hxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   46</span>{</div>
-<div class="line"><span class="lineno">   47</span>    log&lt;fair::Severity::warning&gt;(args...);</div>
-<div class="line"><span class="lineno">   48</span>}</div>
+<p class="definition">Definition at line <a class="el" href="logger_8hxx_source.html#l00047">47</a> of file <a class="el" href="logger_8hxx_source.html">logger.hxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   48</span>{</div>
+<div class="line"><span class="lineno">   49</span>    log&lt;fair::Severity::warning&gt;(args...);</div>
+<div class="line"><span class="lineno">   50</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
