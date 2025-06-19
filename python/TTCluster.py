@@ -84,9 +84,9 @@ cluster_width_sigma_params = 1.103, -0.0005751
 
 # The random width in the range is manually set as 1% of events
 # It covers cases where the width is 5-10
-random_width_persent = 0.01
+random_width_percent = 0.01
 
-# Possible values of LY, channel position and cluser width
+# Possible values of LY, channel position and cluster width
 ly_min = 4.5
 ly_max = 104
 chpos_min = -0.5
@@ -94,7 +94,7 @@ chpos_max = 511.5
 cluster_width_min = 1
 cluster_width_max = 10
 
-# Energy deposit converts in the light yield range linearly. Energy less then 0.18 MeV gives doesn't registered.
+# Energy deposit converts in the light yield range linearly. Energy less then 0.18 MeV isn't registered.
 # Energy more then 0.477 MeV converts randomly with approximation distribution.
 energy_range = 0.18, 0.477
 
@@ -108,19 +108,19 @@ ly_linear_params = 332.882, -58.7085
 # The coefficient between the maximums of CDF(E) and CDF(LY), a little differs
 k_cdfs_corr = 0.993076766938
 
-# The addition of a little randomness in the converting from the energy distibution to
-# the light yield distibution
+# The addition of a little randomness in the converting from the energy distribution to
+# the light yield distribution
 sigma_in_percent = 0.01
 
 # 4 sigma range includes 95% of events. It needs for creating a cluster
 sigma_from_width = 1 / 4.
 
-# The following parameters will be used in the converting from the energy distibution to
-# the light yield distibution.
+# The following parameters will be used in the converting from the energy distribution to
+# the light yield distribution.
 # Dictionaries format is following - (x_min, x_max) : (parameters), approximating function.
 
 # ly_CDF_params - approximation of CDF of the light yield distribution.
-# It is doesn't used already.
+# It isn't used yet.
 ly_CDF_params = {
 	(4.5, 13): (
 		(-13.2, 1.976),
@@ -205,7 +205,7 @@ def cm_to_channel(locpos, sipm_map=sipm_map, gaps_map=gaps_map, pitch=pitch, cha
 
 	"""
 	It converts a particle position (an event) measured in cm to a position measured
-	in channels. The SiPM map is used. The position is in the scifi modul frame.
+	in channels. The SiPM map is used. The position is in the scifi module frame.
 	"""
 
 	if reverse is True:
@@ -229,7 +229,7 @@ def channel_to_cm(channelpos, sipm_map=sipm_map, reverse=False, pitch=pitch):
 
 	"""
 	It converts a particle position measured channels to a position measured
-	in cm. The SiPM map is used. The position is in the scifi modul frame.
+	in cm. The SiPM map is used. The position is in the scifi module frame.
 	"""
 
 	if reverse is True:
@@ -261,7 +261,7 @@ def GetMatNum(DetID):
 
 	"""
 	It returns an id (number) of a scifi module. In current version one plane have 7 vertical
-	and 11 horisontal scifi assemblies.
+	and 11 horizontal scifi assemblies.
 	"""
 
 	return int(DetID % 1000 % 100)
@@ -284,7 +284,7 @@ def GetMatQty(DetID):
 
 	"""
 	It returns a number of scifi mats in a plane. In current version it is 7 for vertical
-	and 11 for horisontal scifi assemblies.
+	and 11 for horizontal scifi assemblies.
 	"""
 
 	global n_vert_planes, n_hor_planes
@@ -362,7 +362,7 @@ def cluster_width_sigma(distance, params=cluster_width_sigma_params):
 	A, B = params
 	return A + B*distance
 
-def cluster_width_random(distance, ly, persent=random_width_persent,
+def cluster_width_random(distance, ly, percent=random_width_percent,
 						 cluster_width_min=cluster_width_min, cluster_width_max=cluster_width_max):
 
 	"""
@@ -372,7 +372,7 @@ def cluster_width_random(distance, ly, persent=random_width_persent,
 
 	mean = cluster_width_mean(distance)
 	sigma = cluster_width_sigma(distance)
-	if random.random() <= persent:
+	if random.random() <= percent:
 		return random.randint(cluster_width_min, cluster_width_max)
 	random_width = int(round(random.gauss(mean - 1, sigma))) + 1
 
@@ -471,8 +471,8 @@ def cluster_generator(amplitude, width, wmp, cluster_width_max=cluster_width_max
 def is_realistic(cluster, width):
 
 	"""
-	It returns TRUE if cluster is realistic: it doesn't have a gap between numders, like
-	[..., 0, 1, 2, 0, 0, 5, 6, ...], and it doens't have the light yield less then width.
+	It returns TRUE if cluster is realistic: it doesn't have a gap between numbers, like
+	[..., 0, 1, 2, 0, 0, 5, 6, ...], and it doesn't have the light yield less then width.
 	"""
 
 	cluster_only_values = [(channel, value) for channel, value in enumerate(cluster) if value > 0]
@@ -495,7 +495,7 @@ def create_cluster(amplitude, width, wmp):
 	shifted_wmp = wmp + 0.5 # For right counting
 	cluster = cluster_generator(amplitude, width, shifted_wmp)
 
-	# Generate again if it doesn't look like real cluster
+	# Generate again if it doesn't look like a real cluster
 	while is_realistic(cluster, width) is False:
 		cluster = cluster_generator(amplitude, width, shifted_wmp)
 
