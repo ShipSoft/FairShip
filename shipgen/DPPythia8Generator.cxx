@@ -83,10 +83,11 @@ Bool_t DPPythia8Generator::Init()
     fPythia->settings.mode("Beams:idA",  fId);
     fPythia->settings.mode("Beams:idB",  2212);
     fPythia->settings.mode("Beams:frameType",  2);
-    fPythia->settings.parm("Beams:eA",fMom);  // codespell:ignore parm
-    fPythia->settings.parm("Beams:eB",0.);  // codespell:ignore parm
+    fPythia->settings.parm("Beams:eA", fMom);   // codespell:ignore parm
+    fPythia->settings.parm("Beams:eB", 0.);     // codespell:ignore parm
 
-    if (fdy) fPythia->settings.parm("PhaseSpace:mHatMin",fDPminM);  // codespell:ignore parm
+    if (fdy)
+        fPythia->settings.parm("PhaseSpace:mHatMin", fDPminM);   // codespell:ignore parm
 
   }
   else {
@@ -98,9 +99,9 @@ Bool_t DPPythia8Generator::Init()
   }
   /*if (fHadDecay) {
     std::cout << " ******************************** " << std::endl
-	      << " ** Initialise Pythia for e+e-->hadrons " << std::endl
-	      << " ******************************** " << std::endl
-	      << " Mass of the A: " << fPythia->particleData.m0(fDP) << " GeV" << std::endl;
+              << " ** Initialise Pythia for e+e-->hadrons " << std::endl
+              << " ******************************** " << std::endl
+              << " Mass of the A: " << fPythia->particleData.m0(fDP) << " GeV" << std::endl;
     fPythiaHadDecay->settings.mode("Beams:idA",  11);
     fPythiaHadDecay->settings.mode("Beams:idB",  -11);
     fPythiaHadDecay->settings.mode("Beams:frameType",  1);
@@ -249,7 +250,8 @@ Bool_t DPPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
        Double_t gam  = e/TMath::Sqrt(e*e-p*p);
        Double_t beta = p/e;
        tS = tp + LS/beta; // units ? [mm/c] + [mm/beta] (beta is dimensionless speed, and c=1 here)
-       // if one would use [s], then tS = tp/(cm*c_light) + (LS/cm)/(beta*c_light) = tS/(cm*c_light) i.e. units look consistent
+       // if one would use [s], then tS = tp/(cm*c_light) + (LS/cm)/(beta*c_light) = tS/(cm*c_light) i.e. units look
+       // consistent
        w = TMath::Exp(-LS/(beta*gam*fctau))*( (fLmax-fLmin)/(beta*gam*fctau) );
        im  = (Int_t)fPythia->event[i].mother1();
        zm  =fPythia->event[im].zProd();
@@ -319,30 +321,34 @@ Bool_t DPPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
      fPythiaHadDecay->settings.parm("Beams:eCM",20);  // codespell:ignore parm
      fPythiaHadDecay->next();
      for (int k=0; k<fPythiaHadDecay->event.size(); k++){
-       fPythia->event.append( fPythiaHadDecay->event[k].id(),fPythiaHadDecay->event[k].status() ,fPythiaHadDecay->event[k].mother1() , fPythiaHadDecay->event[k].mother2(), fPythiaHadDecay->event[k].daughter1(), fPythiaHadDecay->event[k].daughter2(), fPythiaHadDecay->event[k].col(), fPythiaHadDecay->event[k].acol(), fPythiaHadDecay->event[k].px(),  fPythiaHadDecay->event[k].py(),  fPythiaHadDecay->event[k].pz(),  fPythiaHadDecay->event[k].e(),  fPythiaHadDecay->event[k].m(), 0., 9. );
-       dec_chain.push_back( fPythia->event.size()-1 );
-       std::cout << " Adding decay product: " << k << " "
-		 << fPythiaHadDecay->event[k].id() << " "
-		 << fPythiaHadDecay->event[k].status() << " "
-		 << fPythiaHadDecay->event[k].mother1() << " "
-		 << fPythiaHadDecay->event[k].mother2() << " "
-		 << std::endl;
+       fPythia->event.append( fPythiaHadDecay->event[k].id(),fPythiaHadDecay->event[k].status()
+     ,fPythiaHadDecay->event[k].mother1() , fPythiaHadDecay->event[k].mother2(), fPythiaHadDecay->event[k].daughter1(),
+     fPythiaHadDecay->event[k].daughter2(), fPythiaHadDecay->event[k].col(), fPythiaHadDecay->event[k].acol(),
+     fPythiaHadDecay->event[k].px(),  fPythiaHadDecay->event[k].py(),  fPythiaHadDecay->event[k].pz(),
+     fPythiaHadDecay->event[k].e(),  fPythiaHadDecay->event[k].m(), 0., 9. ); dec_chain.push_back(
+     fPythia->event.size()-1 ); std::cout << " Adding decay product: " << k << " "
+                 << fPythiaHadDecay->event[k].id() << " "
+                 << fPythiaHadDecay->event[k].status() << " "
+                 << fPythiaHadDecay->event[k].mother1() << " "
+                 << fPythiaHadDecay->event[k].mother2() << " "
+                 << std::endl;
      }
      }*/
 
      // go over daughters and store them on the stack, starting from 2 to account for DP and its mother
      for(std::vector<int>::iterator it = dec_chain.begin() + 2; it != dec_chain.end(); ++it){
-     // pythia index of the particle to store
-     int k = *it;
-     // find mother position on the output stack: impy -> im
-     int impy =fPythia->event[k].mother1();
-     std::vector<int>::iterator itm = std::find( dec_chain.begin(), dec_chain.end(), impy);
-     im =-1;  // safety
-     if ( itm != dec_chain.end() )
-       im = itm - dec_chain.begin(); // convert iterator into sequence number
+         // pythia index of the particle to store
+         int k = *it;
+         // find mother position on the output stack: impy -> im
+         int impy = fPythia->event[k].mother1();
+         std::vector<int>::iterator itm = std::find(dec_chain.begin(), dec_chain.end(), impy);
+         im = -1;   // safety
+         if (itm != dec_chain.end())
+             im = itm - dec_chain.begin();   // convert iterator into sequence number
 
-     Bool_t wanttracking=false;
-     if(fPythia->event[k].isFinal()){ wanttracking=true;}
+         Bool_t wanttracking = false;
+         if (fPythia->event[k].isFinal()) {
+             wanttracking = true;}
      pz =fPythia->event[k].pz();
      px =fPythia->event[k].px();
      py =fPythia->event[k].py();

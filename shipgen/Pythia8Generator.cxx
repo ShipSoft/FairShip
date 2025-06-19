@@ -90,8 +90,8 @@ Bool_t Pythia8Generator::Init()
    fPythia->settings.mode("Beams:idA",  fId);
    fPythia->settings.mode("Beams:idB",  2212);
    fPythia->settings.mode("Beams:frameType",  2);
-   fPythia->settings.parm("Beams:eA",fMom);  // codespell:ignore parm
-   fPythia->settings.parm("Beams:eB",0.);  // codespell:ignore parm
+   fPythia->settings.parm("Beams:eA", fMom);   // codespell:ignore parm
+   fPythia->settings.parm("Beams:eB", 0.);     // codespell:ignore parm
   }
   fPythia->init();
   if (targetName!=""){
@@ -250,7 +250,7 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
     key+=addedParticles-1; // pythia counts from 1
   }
   counter+=1;
-// now the underlying event
+  // now the underlying event
   bool lx = true;
   while(lx){
     fTree->GetEntry(fn%fNevents);

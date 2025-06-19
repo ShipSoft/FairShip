@@ -388,8 +388,8 @@ void NuTauMudet::ConstructGeometry()
       //same, for the thin layers
       TGeoCompositeShape *mudetcut1 = new TGeoCompositeShape("MUDETCUT1", "(MUDETIRON1-MUDETTRIANGLE:MuDetcombright)-MUDETTRIANGLE:MuDetcombleft");
       mudetcut1->SetName("MUDETTRIANGCUT1");
-      //addition of iron support structures
-      //support layers, for thick layers upstream
+      // addition of iron support structures
+      // support layers, for thick layers upstream
       TGeoBBox *UpperSupport = new TGeoBBox(fUpSuppX/2., fUpSuppY/2.,fZFe/2.);
       UpperSupport->SetName("MUDETUPSUPPORT");
       TGeoBBox *LowerSupport = new TGeoBBox(fLowSuppX/2., fLowSuppY/2.,fZFe/2.);
@@ -431,7 +431,7 @@ void NuTauMudet::ConstructGeometry()
       laterallowleft->RegisterYourself();
       laterallowright->SetName("MuDetlaterallowright");
       laterallowright->RegisterYourself();
-      //building composite shapes, writing compositions as TString first to improve readability
+      // building composite shapes, writing compositions as TString first to improve readability
       TString *supportaddition = new TString("MUDETTRIANGCUT+MUDETUPSUPPORT:MuDetupright+MUDETUPSUPPORT:MuDetupleft+MUDETLOWSUPPORT:MuDetlowright+MUDETLOWSUPPORT:MuDetlowleft+MUDETLATERALSUPPORT:MuDetlateralupleft+MUDETLATERALSUPPORT:MuDetlateralupright+MUDETLATERALSUPPORT:MuDetlaterallowleft+MUDETLATERALSUPPORT:MuDetlaterallowright");
       TString *supportaddition1 = new TString("MUDETTRIANGCUT1+MUDETUPSUPPORT1:MuDetupright+MUDETUPSUPPORT1:MuDetupleft+MUDETLOWSUPPORT1:MuDetlowright+MUDETLOWSUPPORT1:MuDetlowleft+MUDETLOWSUPPORT1:MuDetlowleft+MUDETLATERALSUPPORT1:MuDetlateralupleft+MUDETLATERALSUPPORT1:MuDetlateralupright+MUDETLATERALSUPPORT1:MuDetlaterallowleft+MUDETLATERALSUPPORT1:MuDetlaterallowright");
       TGeoCompositeShape * SupportedIronLayer = new TGeoCompositeShape("SupportedIronLayer",supportaddition->Data());
