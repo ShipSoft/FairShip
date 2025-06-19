@@ -14,26 +14,27 @@ using namespace std;
 
 // -----  necessary functions  -----------------------------------------
 double Co3Rng::fSpectrumL(double theta, double minE, Bool_t generateP = 1){
-	// 2 Options: a) generateP, b) calcInt
-	// see doi: 10.1016/j.nuclphysbps.2005.07.056. for flux details
-	// ad a) returns a random P between minE and 100GeV taken from the
-	//       zenith angle dependent momentum distribution
-	//       Here, the inverse of the function is computed and a random
-	//       number between 0 and 1 mapped to the interval [minE, 100[ GeV
-	// ad b) return the momentum-integrated flux for a given zenith angle
-	//       from minE to 100 GeV. Result in cm-2s-1
+    // 2 Options: a) generateP, b) calcInt
+    // see doi: 10.1016/j.nuclphysbps.2005.07.056. for flux details
+    // ad a) returns a random P between minE and 100GeV taken from the
+    //       zenith angle dependent momentum distribution
+    //       Here, the inverse of the function is computed and a random
+    //       number between 0 and 1 mapped to the interval [minE, 100[ GeV
+    // ad b) return the momentum-integrated flux for a given zenith angle
+    //       from minE to 100 GeV. Result in cm-2s-1
 
-	theta = 180*theta/TMath::Pi(); // theta in degrees
-	double a = -0.8816/10000 /(1/theta  -0.1117/1000 * theta) - 0.1096 - 0.01966*TMath::Exp(-0.02040*theta);
-	double b = 0.4169/100 /(1/theta  -0.9891/10000 * theta) + 4.0395 - 4.3118*TMath::Exp(0.9235/1000*theta);
-	double btilde = b  + 1.0/TMath::Ln10();
-	double gamma = sqrt(-TMath::Ln10()*a);
-	double offset = 0.5*btilde/a;
-	double norm = TMath::Erf(gamma*(TMath::Log(100)+offset)) - TMath::Erf(gamma*(offset + TMath::Log(minE)));
+    theta = 180 * theta / TMath::Pi();   // theta in degrees
+    double a = -0.8816 / 10000 / (1 / theta - 0.1117 / 1000 * theta) - 0.1096 - 0.01966 * TMath::Exp(-0.02040 * theta);
+    double b =
+        0.4169 / 100 / (1 / theta - 0.9891 / 10000 * theta) + 4.0395 - 4.3118 * TMath::Exp(0.9235 / 1000 * theta);
+    double btilde = b + 1.0 / TMath::Ln10();
+    double gamma = sqrt(-TMath::Ln10() * a);
+    double offset = 0.5 * btilde / a;
+    double norm = TMath::Erf(gamma * (TMath::Log(100) + offset)) - TMath::Erf(gamma * (offset + TMath::Log(minE)));
 
-	if (generateP){
-		double r3 = rng->Uniform();
-		return exp(TMath::ErfInverse(r3*norm+TMath::Erf(gamma*(offset + TMath::Log(minE))))/gamma-offset);
+    if (generateP) {
+        double r3 = rng->Uniform();
+        return exp(TMath::ErfInverse(r3 * norm + TMath::Erf(gamma * (offset + TMath::Log(minE)))) / gamma - offset);
 	}
 	else{
 		double c = -0.3516/1000 * theta*theta + 0.8861/100 * theta - 2.5985 -0.8745/100000*TMath::Exp(0.1457*theta);
@@ -110,8 +111,8 @@ Bool_t CosmicsGenerator::Init(Bool_t largeMom){
 	}
 	else { // momentum range 100 GeV - 1000 GeV
 		FluxIntegral = 2*TMath::Pi()/3*fRandomEngine->fSpectrumH->Integral(100,1000);
-		cout<< "High E CM flux: "<<FluxIntegral<< "m-2s-1"<<endl;
-	}
+                cout << "High E CM flux: " << FluxIntegral << "m-2s-1" << endl;
+        }
 	weight_flux = FluxIntegral*xdist*zdist/n_EVENTS/10000;
 	nInside = 0;  nTest = 0; weighttest = 0; // book keeping
 	y = 1900; //all muons start 19m over beam axis

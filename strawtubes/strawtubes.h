@@ -130,7 +130,7 @@ class strawtubes: public FairDetector
     Double_t     fcosphi;
     Double_t     fsinphi;
     Double_t     fWire_thickness;         //!  Thickness of the wire
-    Double_t     fDeltaz_frame;           //!  Thickness (z) of the material frame
+    Double_t fDeltaz_frame;               //!  Thickness (z) of the material frame
     Double_t     fFrame_lateral_width;    //!  Width (x and y) of the material frame
     TString      fFrame_material;         //!  Material of the view frame
     Double_t     fDeltaz_view;            //!  Distance (z) between views

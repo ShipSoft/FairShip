@@ -49,15 +49,15 @@ void ShipPassiveContFact::setAllContainers()
 
 FairParSet* ShipPassiveContFact::createContainer(FairContainer* c)
 {
-  /** Calls the constructor of the corresponding parameter container.
-   * For an actual context, which is not an empty string and not the default context
-   * of this container, the name is concatenated with the context. */
- /* const char* name=c->GetName();
-  FairParSet* p=NULL;
-  if (strcmp(name,"FairGeoPassivePar")==0) {
-    p=new FairGeoPassivePar(c->getConcatName().Data(),c->GetTitle(),c->getContext());
-  }
-  return p;
-*/
-   return 0;
+    /** Calls the constructor of the corresponding parameter container.
+     * For an actual context, which is not an empty string and not the default context
+     * of this container, the name is concatenated with the context. */
+    /* const char* name=c->GetName();
+     FairParSet* p=NULL;
+     if (strcmp(name,"FairGeoPassivePar")==0) {
+       p=new FairGeoPassivePar(c->getConcatName().Data(),c->GetTitle(),c->getContext());
+     }
+     return p;
+   */
+    return 0;
 }

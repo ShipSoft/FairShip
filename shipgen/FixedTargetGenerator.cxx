@@ -126,8 +126,8 @@ Bool_t FixedTargetGenerator::Init()
    if (Option == "Primary"){
     fPythia->settings.mode("Beams:idA",  2212);
     fPythia->settings.mode("Beams:frameType",  2);
-    fPythia->settings.parm("Beams:eA",fMom);  // codespell:ignore parm
-    fPythia->settings.parm("Beams:eB",0.);  // codespell:ignore parm
+    fPythia->settings.parm("Beams:eA", fMom);   // codespell:ignore parm
+    fPythia->settings.parm("Beams:eB", 0.);     // codespell:ignore parm
    }
    if (JpsiMainly){
 // use this for all onia productions
