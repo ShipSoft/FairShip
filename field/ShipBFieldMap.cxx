@@ -133,13 +133,14 @@ void ShipBFieldMap::Field(const Double_t* position, Double_t* B)
 
     if (isSymmetric_) {
 
-      // The field map coordinates only contain x > 0 and y > 0, i.e. we
-      // are using x-y quadrant symmetry. If the local x or y coordinates
-      // are negative we need to change their sign and keep track of the
-      // adjusted sign of Bx which we use as a multiplication factor at the end
-      if (x < 0.0) {
-	x = -x; BxSign *= -1.0;
-      }
+        // The field map coordinates only contain x > 0 and y > 0, i.e. we
+        // are using x-y quadrant symmetry. If the local x or y coordinates
+        // are negative we need to change their sign and keep track of the
+        // adjusted sign of Bx which we use as a multiplication factor at the end
+        if (x < 0.0) {
+            x = -x;
+            BxSign *= -1.0;
+        }
 
       if (y < 0.0) {
           y = -y;
@@ -209,8 +210,8 @@ void ShipBFieldMap::initialise()
 
 	if (isCopy_ == kFALSE) {this->readMapFile();}
 
-	// Set the global coordinate translation and rotation info
-	if (fabs(phi_) > 1e-6 || fabs(theta_) > 1e-6 || fabs(psi_) > 1e-6) {
+        // Set the global coordinate translation and rotation info
+        if (fabs(phi_) > 1e-6 || fabs(theta_) > 1e-6 || fabs(psi_) > 1e-6) {
 
 	    // We have non-zero rotation angles. Create a combined translation and rotation
 	    TGeoTranslation tr("offsets", xOffset_, yOffset_, zOffset_);
@@ -283,10 +284,10 @@ void ShipBFieldMap::readRootFile() {
     // Make sure we don't have a copy
     if (isCopy_ == kFALSE) {
 
-	// The data is expected to contain Bx,By,Bz data values
-	// in ascending z,y,x coordinate order
+        // The data is expected to contain Bx,By,Bz data values
+        // in ascending z,y,x coordinate order
 
-	TTree* dTree = dynamic_cast<TTree*>(theFile->Get("Data"));
+        TTree* dTree = dynamic_cast<TTree*>(theFile->Get("Data"));
 	if (!dTree) {
 	    LOG(FATAL) << "ShipBFieldMap: could not find Data tree in " << mapFileName_;
 
