@@ -889,7 +889,7 @@ class ShipDigiReco:
     if global_variables.debug:
        mctrack = self.sTree.MCTrack[atrack]
     # charge = self.PDG.GetParticle(pdg).Charge()/(3.)
-    posM = ROOT.TVector3(0, 0, 0)
+    posM = ROOT.TVector3(0, 0, 5812.0) # seed is at decay vessel centre
     momM = ROOT.TVector3(0,0,3.*u.GeV)
 # approximate covariance
     covM = ROOT.TMatrixDSym(6)
