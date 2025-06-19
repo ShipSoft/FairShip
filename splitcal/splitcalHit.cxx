@@ -150,23 +150,22 @@ std::string splitcalHit::GetDetectorElementName(int& id){
 
 void splitcalHit::Decoder(std::string& encodedID, int& isPrecision, int& nLayer, int& nModuleX,  int& nModuleY, int& nStrip){
 
-  std::string subtring;
+    std::string substring;
 
-  subtring = encodedID.substr(0, 1);
-  isPrecision = atoi(subtring.c_str());
+    substring = encodedID.substr(0, 1);
+    isPrecision = atoi(substring.c_str());
 
-  subtring = encodedID.substr(1,3);
-  nLayer = atoi(subtring.c_str());
+    substring = encodedID.substr(1, 3);
+    nLayer = atoi(substring.c_str());
 
-  subtring = encodedID.substr(4,1);
-  nModuleX = atoi(subtring.c_str());
+    substring = encodedID.substr(4, 1);
+    nModuleX = atoi(substring.c_str());
 
-  subtring = encodedID.substr(5,1);
-  nModuleY = atoi(subtring.c_str());
+    substring = encodedID.substr(5, 1);
+    nModuleY = atoi(substring.c_str());
 
-  subtring = encodedID.substr(6,3);
-  nStrip = atoi(subtring.c_str());
-
+    substring = encodedID.substr(6, 3);
+    nStrip = atoi(substring.c_str());
 }
 
 void splitcalHit::Decoder(int& id, int& isPrecision, int& nLayer, int& nModuleX,  int& nModuleY, int& nStrip){
