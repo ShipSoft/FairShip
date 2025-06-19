@@ -49,7 +49,6 @@ TVector3 vetoHit::GetXYZ()
     return pos;
 }
 
-
 Double_t vetoHit::GetX()
 {
     TVector3 pos = GetXYZ();

@@ -119,7 +119,6 @@ void MTCDetector::SetMTCParameters(Double_t w,
     fFieldY = field;
 }
 
-
 // Updated SciFi module builder with fiber placements
 TGeoVolume* MTCDetector::CreateSegmentedLayer(const char* name,
                                               Double_t width,
@@ -265,7 +264,8 @@ void MTCDetector::ConstructGeometry()
     ironVol->SetLineColor(kGray + 1);
     ironVol->SetTransparency(20);
     // Enable the field in the iron volume
-    if (fFieldY != 0) ironVol->SetField(new TGeoUniformMagField(0, fFieldY, 0));
+    if (fFieldY != 0)
+        ironVol->SetField(new TGeoUniformMagField(0, fFieldY, 0));
 
     // --- Assemble the layers into the envelope ---
     for (Int_t i = 0; i < fLayers; i++) {
@@ -327,21 +327,20 @@ Bool_t MTCDetector::ProcessHits(FairVolume* vol)
             x = (fPos.X() + Pos.X()) / 2.;
             y = (fPos.Y() + Pos.Y()) / 2.;
             z = (fPos.Z() + Pos.Z()) / 2.;
-            }
-            else {
+        } else {
             x = fPos.X();
             y = fPos.Y();
             z = (fPos.Z() + Pos.Z()) / 2.;
-            }
+        }
 
         AddHit(fTrackID,
-                detID,
-                TVector3(x, y, z),
-                TVector3(fMom.Px(), fMom.Py(), fMom.Pz()),   // entrance momentum
-                fTime,
-                fLength,
-                fELoss,
-                pdgCode);
+               detID,
+               TVector3(x, y, z),
+               TVector3(fMom.Px(), fMom.Py(), fMom.Pz()),   // entrance momentum
+               fTime,
+               fLength,
+               fELoss,
+               pdgCode);
         ShipStack* stack = dynamic_cast<ShipStack*>(gMC->GetStack());
         stack->AddPoint(kMTC);
     }
