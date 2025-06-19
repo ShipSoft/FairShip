@@ -84,7 +84,7 @@ var searchData=
   ['transversalsize_81',['TransversalSize',['../classShipGoliath.html#ad987f9f8f4919b03a3e7bc567707856e',1,'ShipGoliath']]],
   ['tree_82',['tree',['../namespacemake__nTuple__SBT.html#a8f2dc368c2f1603a9d559c1d16308518',1,'make_nTuple_SBT.tree'],['../namespacemake__nTuple__Tr.html#a28818e278c469b924989f91a80f369f4',1,'make_nTuple_Tr.tree'],['../namespaceTTCluster.html#aad30624c569e5aadeb78a361b50f972b',1,'TTCluster.tree'],['../classexperimental_1_1analysis__toolkit_1_1selection__check.html#a4754e84abee1de889dc98ed51c6bddbd',1,'experimental.analysis_toolkit.selection_check.tree']]],
   ['trgap_83',['TrGap',['../namespacegeometry__config.html#abb59b82ff8843c1ac2fd46c2c798c1f8',1,'geometry_config']]],
-  ['trmaggap_84',['TrMagGap',['../namespacegeometry__config.html#a33f9ff2837553828ba873dd5c08c9c3c',1,'geometry_config']]],
+  ['trmaggap_84',['TrMagGap',['../namespacegeometry__config.html#a053adbe6840db66c4897c77920d95c3f',1,'geometry_config']]],
   ['true_85',['True',['../namespacecreate__field__perturbation.html#a13892067a995a5f65b11f874a759a3db',1,'create_field_perturbation']]],
   ['tt_5fpoints_86',['tt_points',['../namespaceTTCluster.html#aa285f06947bf67713e06e43465719d6a',1,'TTCluster']]],
   ['tt_5fraw_87',['tt_raw',['../namespaceTTCluster.html#a56ab2a96c3d2760c85996f3c0bde9bac',1,'TTCluster']]],
