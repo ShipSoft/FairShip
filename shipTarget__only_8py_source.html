@@ -113,21 +113,17 @@ $(document).ready(function(){initNavTree('shipTarget__only_8py_source.html','');
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> run.AddModule(cave)</div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> TargetStation = ROOT.ShipTargetStation(<span class="stringliteral">&quot;TargetStation&quot;</span>,ship_geo.target.length,ship_geo.hadronAbsorber.length,</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>                                                        ship_geo.target.z,ship_geo.hadronAbsorber.z,ship_geo.targetOpt,ship_geo.target.sl)</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> <span class="keywordflow">if</span> ship_geo.targetOpt&gt;10:</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>  TargetStation.SetLayerPosMat(ship_geo.target.xy,ship_geo.target.L1,ship_geo.target.M1,ship_geo.target.L2,ship_geo.target.M2,\</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>  ship_geo.target.L3,ship_geo.target.M3,ship_geo.target.L4,ship_geo.target.M4,ship_geo.target.L5,ship_geo.target.M5,\</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>  ship_geo.target.L6,ship_geo.target.M6,ship_geo.target.L7,ship_geo.target.M7,ship_geo.target.L8,ship_geo.target.M8,\</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>  ship_geo.target.L9,ship_geo.target.M9,ship_geo.target.L10,ship_geo.target.M10,ship_geo.target.L11,ship_geo.target.M11,\</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>  ship_geo.target.L12,ship_geo.target.M12,ship_geo.target.L13,ship_geo.target.M13,ship_geo.target.L14,ship_geo.target.M14,\</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>  ship_geo.target.L15,ship_geo.target.M15,ship_geo.target.L16,ship_geo.target.M16,ship_geo.target.L17,ship_geo.target.M17)</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> run.AddModule(TargetStation)</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="comment"># return list of detector elements</span></div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> detElements = {}</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> <span class="keywordflow">for</span> x <span class="keywordflow">in</span> run.GetListOfModules(): detElements[x.GetName()]=x</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> <span class="keywordflow">return</span> detElements</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>                                                        ship_geo.target.z,ship_geo.hadronAbsorber.z,ship_geo.targetVersion)</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> <span class="keywordflow">if</span> ship_geo.targetVersion&gt;10:</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>  TargetStation.SetLayerPosMat(ship_geo.target.xy, ship_geo.target.slices_length, ship_geo.target.slices_gap, ship_geo.target.slices_material)</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> run.AddModule(TargetStation)</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="comment"># return list of detector elements</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> detElements = {}</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> <span class="keywordflow">for</span> x <span class="keywordflow">in</span> run.GetListOfModules(): detElements[x.GetName()]=x</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> <span class="keywordflow">return</span> detElements</div>
 </div>
 <div class="ttc" id="anamespaceshipTarget__only_html_a22e24aa41de7d3b88c238d43f4393faa"><div class="ttname"><a href="namespaceshipTarget__only.html#a22e24aa41de7d3b88c238d43f4393faa">shipTarget_only.configure</a></div><div class="ttdeci">configure(run, ship_geo)</div><div class="ttdef"><b>Definition</b> <a href="shipTarget__only_8py_source.html#l00005">shipTarget_only.py:5</a></div></div>
 </div><!-- fragment --></div><!-- contents -->

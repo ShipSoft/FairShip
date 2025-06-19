@@ -1,5 +1,10 @@
 var NAVTREEINDEX4 =
 {
+"classGenieGenerator.html#a29396a1cf89c0f75beefde980874eefc":[5,0,57,18],
+"classGenieGenerator.html#a3b21483f03aff6002a9e41f3e97cd4e5":[5,0,57,39],
+"classGenieGenerator.html#a3dad186a6fc8348a02c5d3b5134a59ec":[5,0,57,20],
+"classGenieGenerator.html#a40473bbcd7e3415ac5cf48c15ae86bfb":[5,0,57,60],
+"classGenieGenerator.html#a41bb57daa8e796bd16961fd21c773bbb":[5,0,57,24],
 "classGenieGenerator.html#a42a8f65c60129d0af2427b04975db902":[5,0,57,11],
 "classGenieGenerator.html#a4569f26c9518a1c247b6ac4b043c4c49":[5,0,57,32],
 "classGenieGenerator.html#a4736244a825f4e9288daf95c99d4134e":[5,0,57,38],
@@ -244,10 +249,5 @@ var NAVTREEINDEX4 =
 "classMagneticSpectrometer.html#a30a545f52568b6f474347bc89e66f8a6":[5,0,71,27],
 "classMagneticSpectrometer.html#a31eaca716a6d922aa74aceff3e2098c8":[5,0,71,0],
 "classMagneticSpectrometer.html#a344ac08271bba84c47508de60a37009d":[5,0,71,65],
-"classMagneticSpectrometer.html#a362ca8c392c25ab7796143986743e1d9":[5,0,71,73],
-"classMagneticSpectrometer.html#a418bd7f6efacf510e2eccd17a08bfb42":[5,0,71,15],
-"classMagneticSpectrometer.html#a423d417337466bec75431e8c1a706357":[5,0,71,10],
-"classMagneticSpectrometer.html#a44301c8a252efec09168bfecf8236628":[5,0,71,47],
-"classMagneticSpectrometer.html#a46b6a8da8d4335e09e2de71416ed961b":[5,0,71,59],
-"classMagneticSpectrometer.html#a46e696d1a6a5ef59b7da5318ab9d017a":[5,0,71,6]
+"classMagneticSpectrometer.html#a362ca8c392c25ab7796143986743e1d9":[5,0,71,73]
 };

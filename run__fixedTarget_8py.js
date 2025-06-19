@@ -57,8 +57,6 @@ var run__fixedTarget_8py =
     [ "ship_geo", "run__fixedTarget_8py.html#a3e3246d1e1694b94a0e038535d2baed0", null ],
     [ "simEngine", "run__fixedTarget_8py.html#a563b28a8253682d6cb4581954d84da5b", null ],
     [ "skipNeutrinos", "run__fixedTarget_8py.html#aafcb841c7cc9294d64427c6765d3002a", null ],
-    [ "slices_length", "run__fixedTarget_8py.html#a48f35375814d7fff3a0e45ac538cab27", null ],
-    [ "slices_material", "run__fixedTarget_8py.html#a2830cb8e3488463be1d6c14e4785bdee", null ],
     [ "storeOnlyMuons", "run__fixedTarget_8py.html#a2f69f87598f0df34248c0b62dee21180", null ],
     [ "sTree", "run__fixedTarget_8py.html#a121ee77eefea42758a993374b2aa16ad", null ],
     [ "t", "run__fixedTarget_8py.html#a5745239ac3de03e89b0deb73f59bb52f", null ],
