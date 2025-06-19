@@ -32,7 +32,7 @@ repos:
   hooks:
   - id: clang-format
     types_or: [c++, c, cuda]
-    exclude: LinkDef.h
+    exclude: LinkDef.h|muon|hcal|ecal|shipdata|shipgen|pid|passive|nutaudet|TimeDet|UpstreamTagger|gconfig|field|splitcal|strawtubes
 - repo: https://github.com/cpplint/cpplint
   rev: 2.0.2
   hooks:
@@ -64,6 +64,6 @@ repos:
     args: [--py39-plus]
 ci:
   autofix_prs: false
-  skip: [ruff-check, pydocstyle, clang-format, cpplint, cmakelint, isort, cmake-format]
+  skip: [ruff-check, pydocstyle, cpplint, cmakelint, isort, cmake-format]
   autoupdate_commit_msg: "chore(deps): update pre-commit hooks"
   autofix_commit_msg: "style: pre-commit fixes"
