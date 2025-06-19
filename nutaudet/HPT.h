@@ -108,7 +108,7 @@ protected:
     Double_t DimY;
     Double_t DimZ;
     Double_t zSizeMudet; //dimension of the Muon Detector volume
-    Double_t fConcreteX; //dimesion of Concrete Base on which the external HPTs lie
+    Double_t fConcreteX; //dimension of Concrete Base on which the external HPTs lie
     Double_t fConcreteY;
     Double_t fConcreteZ;
 

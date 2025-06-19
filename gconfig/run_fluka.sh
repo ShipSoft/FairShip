@@ -34,7 +34,7 @@ ln -s $FLUPRO/random.dat random.dat
 # Copy the random seed
 cp $FLUPRO/random.dat old.seed
 
-# Give some meaningfull name to the output
+# Give some meaningful name to the output
 ln -s fluka.out fort.11
 
 #Link FlukaConfig.C as Config.C

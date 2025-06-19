@@ -32,7 +32,7 @@ public:
 
     /**      Create the detector geometry        */
 
-    //Set options for detector contruction (active/passive, which design)
+    //Set options for detector construction (active/passive, which design)
     void SetDetectorDesign(Int_t Design);
     void MakeNuTargetPassive(Bool_t a);
     void MergeTopBot(Bool_t SingleEmFilm);

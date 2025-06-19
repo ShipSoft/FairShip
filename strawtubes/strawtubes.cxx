@@ -267,7 +267,7 @@ void strawtubes::SetDeltazView(Double_t deltazview)
 
 void strawtubes::SetDeltazFrame(Double_t deltazframe)
 {
-        fDeltaz_frame = deltazframe;                             //! Thickness (z) of the meterial frame
+        fDeltaz_frame = deltazframe;                             //! Thickness (z) of the material frame
 }
 
 void strawtubes::SetFrameLateralWidth(Double_t framelateralwidth)

@@ -42,7 +42,7 @@ class pid : public TObject
     // fTrackPID =  1 -> it is an electron
     // fTrackPID =  2 -> it is a hadron
     // fTrackPID =  3 -> it is a muon
-    // fTrackPID = -1 -> informtion is not enough to discuss pid of the track
+    // fTrackPID = -1 -> information is not enough to discuss pid of the track
     // fTrackPID = -2 -> track is outside of pid subdetector acceptance
     // fTrackPID = -3 -> track does not satisfied "FitConverged" or "ndf > 25" cuts
     // fElectronID = -999
@@ -52,7 +52,7 @@ class pid : public TObject
     // old version of pid code
     // fElectronID (fHadronID or fMuonID) =  1 -> it is a/an electron (hadron or muon);
     // fElectronID (fHadronID or fMuonID) =  0 -> it is not a/an electron (hadron or muon);
-    // fElectronID (fHadronID or fMuonID) = -1 -> informtion is not enough to discuss;
+    // fElectronID (fHadronID or fMuonID) = -1 -> information is not enough to discuss;
     // fElectronID (fHadronID or fMuonID) = -2 -> track is outside of pid subdetector acceptance;
     // fElectronID (fHadronID or fMuonID) = -3 -> track does not satisfied "FitConverged" or "ndf > 25" cuts
     // fTrackPID = -999

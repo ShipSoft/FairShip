@@ -549,7 +549,7 @@ def fracMCsame(trackids):
     Estimates max fraction of true hit labels for a recognized track.
     trackids : array_like
         hit indexes of a recognized track
-    Retunrs
+    Returns
     -------
     frac : float
         Max fraction of true hit labels.

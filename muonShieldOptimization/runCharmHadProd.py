@@ -104,7 +104,7 @@ def compactifyCascade(run):
    f=open(path+"run"+str(i)+"/log"+str(i))
    success = False
    for l in f.readlines():
-    if not l.find('Macro finished succesfully')<0: success = True
+    if not l.find('Macro finished successfully')<0: success = True
    if not success:
      print("job not finished properly",fName)
      continue

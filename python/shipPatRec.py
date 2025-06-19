@@ -716,7 +716,7 @@ def retina_func(track_prams, x, y, sigma, sample_weight=None):
         Standard deviation of hit form a track.
     sample_weight : array-like
         Hit weights used during the track fit.
-    Retunrs
+    Returns
     -------
     retina : float
         Negative value of the artificial retina function.
@@ -750,7 +750,7 @@ def retina_grad(track_prams, x, y, sigma, sample_weight=None):
         Standard deviation of hit form a track.
     sample_weight : array-like
         Hit weights used during the track fit.
-    Retunrs
+    Returns
     -------
     retina : float
         Negative value of the artificial retina gradient.

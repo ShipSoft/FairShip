@@ -28,7 +28,7 @@ def parse_arguments():
 def main(arguments):
     logger.info("file: %s" % arguments.config_file)
     if arguments.params is not None:
-        logger.info("paramters: %s" % arguments.params)
+        logger.info("parameters: %s" % arguments.params)
     ConfigRegistry.loadpy(arguments.config_file, **arguments.params)
     # ConfigRegistry.loadpy(arguments.config_file, muShieldDesign=2, targetOpt=5)
     for k, v in ConfigRegistry().items():

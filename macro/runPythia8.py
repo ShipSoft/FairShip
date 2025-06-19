@@ -45,8 +45,8 @@ for g in generators:
    generators[g].settings.mode("Next:numberCount",options.heartbeat)
    generators[g].settings.mode("Beams:idA",  2212)
    generators[g].settings.mode("Beams:frameType",  2)
-   generators[g].settings.parm("Beams:eA",options.fMom)
-   generators[g].settings.parm("Beams:eB",0.)
+   generators[g].settings.parm("Beams:eA",options.fMom)  # codespell:ignore parm
+   generators[g].settings.parm("Beams:eB",0.)  # codespell:ignore parm
    generators[g].readString("PDF:pSet = "+options.PDFpSet)
    if options.DrellYan:
      generators[g].readString("WeakSingleBoson:ffbar2gmZ = on")

@@ -178,7 +178,7 @@ myPythia.SetMRPY(1,R)
 #histogram helper
 h={}
 
-#  initalise phase, determine chi=sigma(signal)/sigma(total) for many beam momenta.
+#  initialise phase, determine chi=sigma(signal)/sigma(total) for many beam momenta.
 #  loop over beam particles
 id=0
 nb=400
@@ -226,7 +226,7 @@ for idp in range(0,len(idbeam)):
                   myPythia.GenerateEvent()
 #   get cross-section
                h[str(id*10+2+idadd)].Fill(pbw,tp.getPyint5_XSEC(2,0))
-#   for this beam particle, do arithmetics to get chi.
+#   for this beam particle, do arithmetic to get chi.
             h[str(id*10+3+idadd)].Divide(h[str(id*10+1+idadd)],h[str(id*10+2+idadd)],1.,1.)
 #   fill with lineair function between evaluated momentum points.
             fillp1(h[str(id*10+3+idadd)])
@@ -397,6 +397,6 @@ timer.Stop()
 rtime = timer.RealTime()
 ctime = timer.CpuTime()
 print(' ')
-print("Macro finished succesfully.")
+print("Macro finished successfully.")
 print("Output file is ",  ftup.GetName())
 print("Real time ",rtime, " s, CPU time ",ctime,"s")

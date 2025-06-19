@@ -121,7 +121,7 @@ protected:
     Double_t fZcenter; //z distance of the center of the spectrometer in cm from the center of the vacuum tube
     Double_t fXtot;
     Double_t fYtot;
-    Double_t fZtot; //Dimension of the whole magnetic spectrometr (1st + 2nd arm + HPTs) alogn beam axis
+    Double_t fZtot; //Dimension of the whole magnetic spectrometr (1st + 2nd arm + HPTs) along beam axis
     Int_t fNFe, fNFethin;
     Int_t fNRpc;
     Double_t fXFe;

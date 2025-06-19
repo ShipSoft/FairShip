@@ -1,4 +1,3 @@
-# pid deffiner
 import ROOT, sys
 import shipunit as u
 import rootUtils as ut
@@ -43,8 +42,8 @@ class Task:
   self.hcal = sys.modules['__main__']. modules['Hcal']
   self.pad_size_x = 5 #cm
   self.pad_size_y = 5 #cm
-  self.dimensions_x = 300 #cm half witdth
-  self.dimensions_y = 600 #cm half witdth
+  self.dimensions_x = 300 #cm half width # TODO take from geo?
+  self.dimensions_y = 600 #cm half width # TODO take from geo?
   self.rx=250
   self.ry=500
   self.muly_acceptance = 50.0
@@ -53,7 +52,7 @@ class Task:
   self.threshold_pad_energy = 0.2
   self.Ecal_dx = 15 #cm
   self.Ecal_dy = 15 #cm
-  self.Ecal_EP_threshold_min = 0.92 #acceptence region for E over P in Ecal >  self.Ecal_EP_threshold_min
+  self.Ecal_EP_threshold_min = 0.92 #acceptance region for E over P in Ecal >  self.Ecal_EP_threshold_min
   self.Ecal_EP_threshold_max = 10
   self.Hit_number_threshold=3    #number of pad-hits around the extrapolated tracks in MuonDet
   self.hitlimit_x,self.hitlimit_y=5,5    #x-y area to check the number of pad-hits

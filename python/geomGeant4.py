@@ -181,7 +181,7 @@ def addVMCFields(shipGeo, controlFile = '', verbose = False, withVirtualMC = Tru
      geom = ROOT.TG4GeometryManager.Instance()
     # Let the geometry know about the fieldMaker object
      geom.SetUserPostDetConstruction(fieldMaker)
-    # Update the fields via the overriden ShipFieldMaker::Contruct() function
+    # Update the fields via the overridden ShipFieldMaker::Construct() function
      geom.ConstructSDandField()
 
     # Return the fieldMaker object, otherwise it will "go out of scope" and its
@@ -207,7 +207,7 @@ def printVMCFields():
          print(f'Vol is {v.GetName()}')
 
         if field:
-            # Get the field value assuming the global co-ordinate origin.
+            # Get the field value assuming the global coordinate origin.
             # This needs to be modified to use the local volume centre
             centre = array('d',[0.0, 0.0, 0.0])
             B = array('d',[0.0, 0.0, 0.0])

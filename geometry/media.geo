@@ -2207,7 +2207,7 @@ steel		  -5  54.938 28.09 51.996 58.693 55.85 25 14 24 28 26 8.02 0.02 0.01 0.19
 Al+Be             -2  26.98  9.0122  13  4  2.06  0.25  0.75
                    0  1  30.  .001
 		   0
-// the next materials were aded for Panda, and they need to be updated
+// the next materials were added for Panda, and they need to be updated
 noryl		  -3	1.008 12.01 16. 1. 6. 8. 1.39 4  5  2
    		   0  1  20.  .001
                    0
