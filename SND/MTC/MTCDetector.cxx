@@ -168,10 +168,10 @@ void MTCDetector::CreateSciFiModule(const char* name,
 {
     // Define sublayer thicknesses (in cm)
     // These values mimic the GEANT4 setup:
-    Double_t lowerIronThick = 0.3;    // 3 mm
-    fiberMatThick = 0.135;            // 1.35 mm (each fiber mat)
-    Double_t airGap = 0.1;            // 1 mm
-    Double_t upperIronThick = 0.3;    // 3 mm
+    Double_t lowerIronThick = 0.3;   // 3 mm
+    fiberMatThick = 0.135;           // 1.35 mm (each fiber mat)
+    Double_t airGap = 0.1;           // 1 mm
+    Double_t upperIronThick = 0.3;   // 3 mm
     Double_t zLowerIronInt = -3.5 / 10;
     Double_t zFiberMat1 = -1.325 / 10;
     Double_t zAirGap = -0.15 / 10;
