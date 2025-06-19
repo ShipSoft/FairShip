@@ -18,7 +18,7 @@ repos:
 - repo: https://github.com/astral-sh/ruff-pre-commit
   rev: v0.11.13
   hooks:
-  - id: ruff
+  - id: ruff-check
     types_or: [python, pyi, jupyter]
     args: [--fix, --show-fixes]
   - id: ruff-format
@@ -46,6 +46,7 @@ repos:
   rev: "v2.4.1"
   hooks:
     - id: codespell
+      exclude: muon|ecal|hcal|field|python/TTCluster.py
 - repo: https://github.com/pycqa/isort
   rev: 6.0.1
   hooks:
@@ -63,6 +64,6 @@ repos:
     args: [--py39-plus]
 ci:
   autofix_prs: false
-  skip: [ruff, pydocstyle, clang-format, cpplint, cmakelint, isort, cmake-format, codespell]
+  skip: [ruff-check, pydocstyle, clang-format, cpplint, cmakelint, isort, cmake-format]
   autoupdate_commit_msg: "chore(deps): update pre-commit hooks"
   autofix_commit_msg: "style: pre-commit fixes"
