@@ -208,7 +208,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  181</span>     geom = ROOT.TG4GeometryManager.Instance()</div>
 <div class="line"><span class="lineno">  182</span>    <span class="comment"># Let the geometry know about the fieldMaker object</span></div>
 <div class="line"><span class="lineno">  183</span>     geom.SetUserPostDetConstruction(fieldMaker)</div>
-<div class="line"><span class="lineno">  184</span>    <span class="comment"># Update the fields via the overriden ShipFieldMaker::Contruct() function</span></div>
+<div class="line"><span class="lineno">  184</span>    <span class="comment"># Update the fields via the overridden ShipFieldMaker::Construct() function</span></div>
 <div class="line"><span class="lineno">  185</span>     geom.ConstructSDandField()</div>
 <div class="line"><span class="lineno">  186</span> </div>
 <div class="line"><span class="lineno">  187</span>    <span class="comment"># Return the fieldMaker object, otherwise it will &quot;go out of scope&quot; and its</span></div>
@@ -422,7 +422,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  207</span>         print(f<span class="stringliteral">&#39;Vol is {v.GetName()}&#39;</span>)</div>
 <div class="line"><span class="lineno">  208</span> </div>
 <div class="line"><span class="lineno">  209</span>        <span class="keywordflow">if</span> field:</div>
-<div class="line"><span class="lineno">  210</span>            <span class="comment"># Get the field value assuming the global co-ordinate origin.</span></div>
+<div class="line"><span class="lineno">  210</span>            <span class="comment"># Get the field value assuming the global coordinate origin.</span></div>
 <div class="line"><span class="lineno">  211</span>            <span class="comment"># This needs to be modified to use the local volume centre</span></div>
 <div class="line"><span class="lineno">  212</span>            centre = array(<span class="stringliteral">&#39;d&#39;</span>,[0.0, 0.0, 0.0])</div>
 <div class="line"><span class="lineno">  213</span>            B = array(<span class="stringliteral">&#39;d&#39;</span>,[0.0, 0.0, 0.0])</div>

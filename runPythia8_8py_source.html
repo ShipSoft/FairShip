@@ -146,8 +146,8 @@ $(document).ready(function(){initNavTree('runPythia8_8py_source.html',''); initR
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>   generators[g].settings.mode(<span class="stringliteral">&quot;Next:numberCount&quot;</span>,options.heartbeat)</div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>   generators[g].settings.mode(<span class="stringliteral">&quot;Beams:idA&quot;</span>,  2212)</div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>   generators[g].settings.mode(<span class="stringliteral">&quot;Beams:frameType&quot;</span>,  2)</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>   generators[g].settings.parm(<span class="stringliteral">&quot;Beams:eA&quot;</span>,options.fMom)</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>   generators[g].settings.parm(<span class="stringliteral">&quot;Beams:eB&quot;</span>,0.)</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>   generators[g].settings.parm(<span class="stringliteral">&quot;Beams:eA&quot;</span>,options.fMom)  <span class="comment"># codespell:ignore parm</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>   generators[g].settings.parm(<span class="stringliteral">&quot;Beams:eB&quot;</span>,0.)  <span class="comment"># codespell:ignore parm</span></div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>   generators[g].readString(<span class="stringliteral">&quot;PDF:pSet = &quot;</span>+options.PDFpSet)</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>   <span class="keywordflow">if</span> options.DrellYan:</div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>     generators[g].readString(<span class="stringliteral">&quot;WeakSingleBoson:ffbar2gmZ = on&quot;</span>)</div>

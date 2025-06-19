@@ -1,7 +1,7 @@
 var searchData=
 [
   ['w_0',['w',['../classNtupleGenerator.html#ad7e4225758488655be034b3679318882',1,'NtupleGenerator::w'],['../classMuonBackGenerator.html#a80bbd4bdb61f50d5cb9dd0faacce82c5',1,'MuonBackGenerator::w'],['../namespacemakeMuonEM.html#a04298ed1d5fc7dbec7e764537bfec5d5',1,'makeMuonEM.w'],['../namespacemakeMuonDIS.html#a31069c861ee6564962a537e94c422254',1,'makeMuonDIS.w']]],
-  ['wallthickness_1',['WallThickness',['../namespacegeometry__config.html#ad587d8bd035f2b80e4ab452fbff9dc39',1,'geometry_config']]],
+  ['wall_5fthickness_1',['wall_thickness',['../namespacegeometry__config.html#a744ddc06a6a0a474a5c9e81840137e80',1,'geometry_config']]],
   ['wallxdim_2',['WallXDim',['../classTarget.html#a4e4dff000f17a11d625f32992a0e4dcc',1,'Target']]],
   ['wallydim_3',['WallYDim',['../classTarget.html#a993bd25c7dacd13e4929bea7d3e01ac7',1,'Target']]],
   ['wallzdim_4',['WallZDim',['../classTarget.html#ab78ce82ce4b6f4234e97b73f9376c8ab',1,'Target']]],
@@ -22,7 +22,7 @@ var searchData=
   ['width_5fcharged_5fleptons_19',['Width_charged_leptons',['../classhnl_1_1HNLbranchings.html#adbd00d7bd14e054316ff97816c41f8de',1,'hnl::HNLbranchings']]],
   ['width_5fcharged_5fmesons_20',['Width_charged_mesons',['../classhnl_1_1HNLbranchings.html#a02ca75fe5486b743101eb7cb89ea8474',1,'hnl::HNLbranchings']]],
   ['width_5fh0_5fnu_21',['Width_H0_nu',['../classhnl_1_1HNLbranchings.html#aad1b39dac0e6f2f2a478243ffa9524f8',1,'hnl::HNLbranchings']]],
-  ['width_5fh_5fl_22',['width_h_l',['../classhnl_1_1HNLbranchings.html#aaee5dabc39236bab39908054eb9846a3',1,'hnl.HNLbranchings.Width_H_l()'],['../classrpvsusy_1_1RPVSUSYbranchings.html#a74cff71935c1fbc7c02190ba0501cf31',1,'rpvsusy.RPVSUSYbranchings.Width_H_L()']]],
+  ['width_5fh_5fl_22',['width_h_l',['../classrpvsusy_1_1RPVSUSYbranchings.html#a74cff71935c1fbc7c02190ba0501cf31',1,'rpvsusy.RPVSUSYbranchings.Width_H_L()'],['../classhnl_1_1HNLbranchings.html#aaee5dabc39236bab39908054eb9846a3',1,'hnl.HNLbranchings.Width_H_l(self, H, alpha)']]],
   ['width_5fl1_5fl2_5fnu2_23',['Width_l1_l2_nu2',['../classhnl_1_1HNLbranchings.html#a13d355d713f5252ac2b7fa36ec6f7c78',1,'hnl::HNLbranchings']]],
   ['width_5fl_5fu_5fd_24',['Width_l_u_d',['../classhnl_1_1HNLbranchings.html#a9ba5fb902ef035a7c0da32e51a889744',1,'hnl::HNLbranchings']]],
   ['width_5fn_5fl_25',['Width_N_L',['../classrpvsusy_1_1RPVSUSYbranchings.html#a42844acbf1d05e2018850bf3dbca5bb7',1,'rpvsusy::RPVSUSYbranchings']]],

@@ -516,7 +516,7 @@ var namespaces_dup =
       [ "VacBox_x", "namespacegeometry__config.html#a006f4691048fc161903c9bd41808c235", null ],
       [ "VacBox_y", "namespacegeometry__config.html#a09da47eae7732b61ad0b63414d6ad789", null ],
       [ "ViewAngle", "namespacegeometry__config.html#a24a3473216f073df246d47bb6ebc31b4", null ],
-      [ "WallThickness", "namespacegeometry__config.html#ad587d8bd035f2b80e4ab452fbff9dc39", null ],
+      [ "wall_thickness", "namespacegeometry__config.html#a744ddc06a6a0a474a5c9e81840137e80", null ],
       [ "windowBulge", "namespacegeometry__config.html#a37c00ab3b5c28e8ee626d54ab14e059e", null ],
       [ "WireThickness", "namespacegeometry__config.html#a5d8ade997b17adce899808142b17513c", null ],
       [ "WithConstField", "namespacegeometry__config.html#a0a24d61ac825d1743506d0e6ac77f390", null ],

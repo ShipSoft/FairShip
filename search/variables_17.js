@@ -1,7 +1,7 @@
 var searchData=
 [
   ['w_0',['w',['../classNtupleGenerator.html#ad7e4225758488655be034b3679318882',1,'NtupleGenerator::w'],['../classMuonBackGenerator.html#a80bbd4bdb61f50d5cb9dd0faacce82c5',1,'MuonBackGenerator::w'],['../namespacemakeMuonEM.html#a04298ed1d5fc7dbec7e764537bfec5d5',1,'makeMuonEM.w'],['../namespacemakeMuonDIS.html#a31069c861ee6564962a537e94c422254',1,'makeMuonDIS.w']]],
-  ['wallthickness_1',['WallThickness',['../namespacegeometry__config.html#ad587d8bd035f2b80e4ab452fbff9dc39',1,'geometry_config']]],
+  ['wall_5fthickness_1',['wall_thickness',['../namespacegeometry__config.html#a744ddc06a6a0a474a5c9e81840137e80',1,'geometry_config']]],
   ['wallxdim_2',['WallXDim',['../classTarget.html#a4e4dff000f17a11d625f32992a0e4dcc',1,'Target']]],
   ['wallydim_3',['WallYDim',['../classTarget.html#a993bd25c7dacd13e4929bea7d3e01ac7',1,'Target']]],
   ['wallzdim_4',['WallZDim',['../classTarget.html#ab78ce82ce4b6f4234e97b73f9376c8ab',1,'Target']]],

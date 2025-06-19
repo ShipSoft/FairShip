@@ -199,7 +199,7 @@ Private Attributes</h2></td></tr>
 <p>Main constructor. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">label</td><td>A descriptive name/title/lable for the composite field </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">label</td><td>A descriptive name/title/label for the composite field </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">firstField</td><td>The first magnetic field for the composite </td></tr>
   </table>
   </dd>
@@ -212,7 +212,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">   14</span>{</div>
 <div class="line"><span class="lineno">   15</span>    <a class="code hl_variable" href="classShipCompField.html#a68334005610ba6bfd5ae8f8a1b8956f5">theFields_</a>.push_back(firstField);</div>
 <div class="line"><span class="lineno">   16</span>}</div>
-<div class="ttc" id="aclassShipCompField_html_a68334005610ba6bfd5ae8f8a1b8956f5"><div class="ttname"><a href="classShipCompField.html#a68334005610ba6bfd5ae8f8a1b8956f5">ShipCompField::theFields_</a></div><div class="ttdeci">std::vector&lt; TVirtualMagField * &gt; theFields_</div><div class="ttdoc">The vector of the various magnetic field pointers comprising the composite.</div><div class="ttdef"><b>Definition</b> <a href="ShipCompField_8h_source.html#l00076">ShipCompField.h:76</a></div></div>
+<div class="ttc" id="aclassShipCompField_html_a68334005610ba6bfd5ae8f8a1b8956f5"><div class="ttname"><a href="classShipCompField.html#a68334005610ba6bfd5ae8f8a1b8956f5">ShipCompField::theFields_</a></div><div class="ttdeci">std::vector&lt; TVirtualMagField * &gt; theFields_</div><div class="ttdoc">The vector of the various magnetic field pointers comprising the composite.</div><div class="ttdef"><b>Definition</b> <a href="ShipCompField_8h_source.html#l00075">ShipCompField.h:75</a></div></div>
 <div class="ttc" id="anamespaceTTCluster_html_acfc0471ea687acaa71061349cb0caf9e"><div class="ttname"><a href="namespaceTTCluster.html#acfc0471ea687acaa71061349cb0caf9e">TTCluster.label</a></div><div class="ttdeci">label</div><div class="ttdef"><b>Definition</b> <a href="TTCluster_8py_source.html#l00731">TTCluster.py:731</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -252,7 +252,7 @@ Private Attributes</h2></td></tr>
 <p>Secondary constructor. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">label</td><td>A descriptive name/title/lable for the composite field </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">label</td><td>A descriptive name/title/label for the composite field </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">firstField</td><td>The first magnetic field pointer for the composite </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">secondField</td><td>The second magnetic field pointer for the composite </td></tr>
   </table>
@@ -299,7 +299,7 @@ Private Attributes</h2></td></tr>
 <p>More general constructor. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">label</td><td>A descriptive name/title/lable for the composite field </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">label</td><td>A descriptive name/title/label for the composite field </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">theFields</td><td>A vector of magnetic field pointers for the composite </td></tr>
   </table>
   </dd>
@@ -443,7 +443,7 @@ Private Attributes</h2></td></tr>
 <p>The total magnetic field from all of the composite sources (linear superposition) </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">position</td><td>The x,y,z global co-ordinates of the point </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">position</td><td>The x,y,z global coordinates of the point </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">B</td><td>The x,y,z components of the magnetic field </td></tr>
   </table>
   </dd>
@@ -511,8 +511,8 @@ Private Attributes</h2></td></tr>
 <p>Get the vector of fields. </p>
 <dl class="section return"><dt>Returns</dt><dd>the vector of fields </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ShipCompField_8h_source.html#l00062">62</a> of file <a class="el" href="ShipCompField_8h_source.html">ShipCompField.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   62</span>{<span class="keywordflow">return</span> <a class="code hl_variable" href="classShipCompField.html#a68334005610ba6bfd5ae8f8a1b8956f5">theFields_</a>;}</div>
+<p class="definition">Definition at line <a class="el" href="ShipCompField_8h_source.html#l00061">61</a> of file <a class="el" href="ShipCompField_8h_source.html">ShipCompField.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   61</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classShipCompField.html#a68334005610ba6bfd5ae8f8a1b8956f5">theFields_</a>; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -542,8 +542,8 @@ Private Attributes</h2></td></tr>
 <p>Get the number of fields in the composite. </p>
 <dl class="section return"><dt>Returns</dt><dd>the number of fields used in the composite </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="ShipCompField_8h_source.html#l00056">56</a> of file <a class="el" href="ShipCompField_8h_source.html">ShipCompField.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   56</span>{<span class="keywordflow">return</span> <a class="code hl_variable" href="classShipCompField.html#a68334005610ba6bfd5ae8f8a1b8956f5">theFields_</a>.size();}</div>
+<p class="definition">Definition at line <a class="el" href="ShipCompField_8h_source.html#l00055">55</a> of file <a class="el" href="ShipCompField_8h_source.html">ShipCompField.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   55</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classShipCompField.html#a68334005610ba6bfd5ae8f8a1b8956f5">theFields_</a>.size(); }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -596,7 +596,7 @@ Private Attributes</h2></td></tr>
 
 <p>The vector of the various magnetic field pointers comprising the composite. </p>
 
-<p class="definition">Definition at line <a class="el" href="ShipCompField_8h_source.html#l00076">76</a> of file <a class="el" href="ShipCompField_8h_source.html">ShipCompField.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ShipCompField_8h_source.html#l00075">75</a> of file <a class="el" href="ShipCompField_8h_source.html">ShipCompField.h</a>.</p>
 
 </div>
 </div>

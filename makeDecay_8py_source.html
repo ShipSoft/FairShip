@@ -232,7 +232,7 @@ $(document).ready(function(){initNavTree('makeDecay_8py_source.html',''); initRe
 <div class="line"><a id="l00133" name="l00133"></a><span class="lineno"><a class="line" href="namespacemakeDecay.html#ad0cca2a83c59bb283ee59cc30dc2ea4b">  133</a></span>       par= P8.event[n]</div>
 <div class="line"><a id="l00134" name="l00134"></a><span class="lineno"><a class="line" href="namespacemakeDecay.html#a01dc90383daffd7d00a441b46189c74c">  134</a></span>       ptGM = ROOT.TMath.Sqrt(sTree.mpx*sTree.mpx+sTree.mpy*sTree.mpy)</div>
 <div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>       Ntup.Fill(par.id(),par.px(),par.py(),par.pz(),par.e(),par.m(),wspill,sTree.id,sTree.px,sTree.py,sTree.pz,sTree.E,sTree.M,ptGM,sTree.mpz)</div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>       <span class="comment">#count total muons from charm/spill, and within some angluar range..</span></div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>       <span class="comment"># count total muons from charm/spill, and within some angular range..</span></div>
 <div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>       <span class="keywordflow">if</span> idabs==16 <span class="keywordflow">or</span> idabs==14 <span class="keywordflow">or</span> idabs==12:</div>
 <div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>         idhnu=idabs+1000</div>
 <div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>         <span class="keywordflow">if</span> par.id()&lt;0: idhnu+=1000</div>

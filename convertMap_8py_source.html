@@ -101,7 +101,7 @@ $(document).ready(function(){initNavTree('convertMap_8py_source.html',''); initR
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment"># Python script to convert a B field map from an ascii text file into</span></div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment"># a ROOT file for FairShip. The field map needs to use a regular</span></div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment"># x,y,z binning structure where the co-ordinates are assumed to</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment"># x,y,z binning structure where the coordinates are assumed to</span></div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment"># be in ascending z, y and x, in that order. Each data line needs to</span></div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment"># contain the values &quot;x y z Bx By Bz&quot;, with the field components in Tesla.</span></div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="comment"># Comment lines in the datafile starting with the hash symbol # are ignored.</span></div>
@@ -126,7 +126,7 @@ $(document).ready(function(){initNavTree('convertMap_8py_source.html',''); initR
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="stringliteral">   float dz;\</span></div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="stringliteral">};&quot;</span>);</div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="comment"># The field map is assumed to obey the following co-ordinate bin ordering:</span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="comment"># The field map is assumed to obey the following coordinate bin ordering:</span></div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="comment"># z is increased first, y is increased 2nd, x is increased last.</span></div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="comment"># For the coordinate bin (iX, iY, iZ), the field bin = (iX*Ny + iY)*Nz + iZ,</span></div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="comment"># where Ny and Nz are the number of y and z bins</span></div>
@@ -166,7 +166,7 @@ $(document).ready(function(){initNavTree('convertMap_8py_source.html',''); initR
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    rangeTree = ROOT.TTree(<span class="stringliteral">&#39;Range&#39;</span>, <span class="stringliteral">&#39;Range&#39;</span>)</div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    rangeTree.SetDirectory(theFile)</div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    <span class="comment"># Co-ordinate ranges</span></div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    <span class="comment"># Coordinate ranges</span></div>
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    rStruct = ROOT.rangeStruct()</div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    rangeTree.Branch(<span class="stringliteral">&#39;xMin&#39;</span>, ROOT.addressof(rStruct, <span class="stringliteral">&#39;xMin&#39;</span>), <span class="stringliteral">&#39;xMin/F&#39;</span>)</div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    rangeTree.Branch(<span class="stringliteral">&#39;xMax&#39;</span>, ROOT.addressof(rStruct, <span class="stringliteral">&#39;xMax&#39;</span>), <span class="stringliteral">&#39;xMax/F&#39;</span>)</div>
@@ -198,9 +198,9 @@ $(document).ready(function(){initNavTree('convertMap_8py_source.html',''); initR
 <div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    <span class="comment">#y0 = 0.0</span></div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    <span class="comment">#z0 = 0.0</span></div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span> </div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    print(f<span class="stringliteral">&#39;Centering field map using co-ordinate shift {x0} {y0} {z0} cm&#39;</span>)</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    print(f<span class="stringliteral">&#39;Centering field map using coordinate shift {x0} {y0} {z0} cm&#39;</span>)</div>
 <div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    <span class="comment"># Center co-ordinate range limits (cm)</span></div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    <span class="comment"># Center coordinate range limits (cm)</span></div>
 <div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    rStruct.xMin = rStruct.xMin - x0</div>
 <div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    rStruct.xMax = rStruct.xMax - x0</div>
 <div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>

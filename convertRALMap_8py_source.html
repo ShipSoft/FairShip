@@ -121,7 +121,7 @@ $(document).ready(function(){initNavTree('convertRALMap_8py_source.html',''); in
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="stringliteral">   float dz;\</span></div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="stringliteral">};&quot;</span>);</div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="comment"># The field map is assumed to obey the following co-ordinate bin ordering:</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="comment"># The field map is assumed to obey the following coordinate bin ordering:</span></div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="comment"># z is increased first, y is increased 2nd, x is increased last.</span></div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="comment"># So we only store the field components (x,y,z is known from the ordering).</span></div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="comment"># For the coordinate bin (iX, iY, iZ), the field bin = (iX*Ny + iY)*Nz + iZ,</span></div>
@@ -254,7 +254,7 @@ $(document).ready(function(){initNavTree('convertRALMap_8py_source.html',''); in
 <div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>    tmpFile.close()</div>
 <div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>    inFile.close()</div>
 <div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span> </div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>    <span class="comment"># Write out the map containing the co-ordinate ranges and offsets etc</span></div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>    <span class="comment"># Write out the map containing the coordinate ranges and offsets etc</span></div>
 <div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>    tmpFile2 = open(tmpFileName)</div>
 <div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>    outFile = open(outFileName, <span class="stringliteral">&#39;w&#39;</span>)</div>
 <div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span> </div>
@@ -308,7 +308,7 @@ $(document).ready(function(){initNavTree('convertRALMap_8py_source.html',''); in
 <div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>    rangeTree = ROOT.TTree(<span class="stringliteral">&#39;Range&#39;</span>, <span class="stringliteral">&#39;Range&#39;</span>)</div>
 <div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>    rangeTree.SetDirectory(theFile)</div>
 <div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span> </div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>    <span class="comment"># Co-ordinate ranges</span></div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>    <span class="comment"># Coordinate ranges</span></div>
 <div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>    rStruct = ROOT.rangeStruct()</div>
 <div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>    rangeTree.Branch(<span class="stringliteral">&#39;xMin&#39;</span>, ROOT.addressof(rStruct, <span class="stringliteral">&#39;xMin&#39;</span>), <span class="stringliteral">&#39;xMin/F&#39;</span>)</div>
 <div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>    rangeTree.Branch(<span class="stringliteral">&#39;xMax&#39;</span>, ROOT.addressof(rStruct, <span class="stringliteral">&#39;xMax&#39;</span>), <span class="stringliteral">&#39;xMax/F&#39;</span>)</div>

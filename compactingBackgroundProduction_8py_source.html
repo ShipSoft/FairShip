@@ -266,7 +266,7 @@ $(document).ready(function(){initNavTree('compactingBackgroundProduction_8py_sou
 <div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>   f=open(path+<span class="stringliteral">&quot;run&quot;</span>+str(i)+<span class="stringliteral">&quot;/log&quot;</span>+str(i))</div>
 <div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>   success = <span class="keyword">False</span></div>
 <div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>   <span class="keywordflow">for</span> l <span class="keywordflow">in</span> f.readlines():</div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> l.find(<span class="stringliteral">&#39;Macro finished succesfully&#39;</span>)&lt;0: success = <span class="keyword">True</span></div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> l.find(<span class="stringliteral">&#39;Macro finished successfully&#39;</span>)&lt;0: success = <span class="keyword">True</span></div>
 <div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>   <span class="keywordflow">if</span> <span class="keywordflow">not</span> success:</div>
 <div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>     print(<span class="stringliteral">&quot;job not finished properly&quot;</span>,fName)</div>
 <div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>     <span class="keywordflow">continue</span></div>

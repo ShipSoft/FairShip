@@ -159,7 +159,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   64</span>    rangeTree = ROOT.TTree(<span class="stringliteral">&#39;Range&#39;</span>, <span class="stringliteral">&#39;Range&#39;</span>)</div>
 <div class="line"><span class="lineno">   65</span>    rangeTree.SetDirectory(theFile)</div>
 <div class="line"><span class="lineno">   66</span> </div>
-<div class="line"><span class="lineno">   67</span>    <span class="comment"># Co-ordinate ranges</span></div>
+<div class="line"><span class="lineno">   67</span>    <span class="comment"># Coordinate ranges</span></div>
 <div class="line"><span class="lineno">   68</span>    rStruct = ROOT.rangeStruct()</div>
 <div class="line"><span class="lineno">   69</span>    rangeTree.Branch(<span class="stringliteral">&#39;xMin&#39;</span>, ROOT.addressof(rStruct, <span class="stringliteral">&#39;xMin&#39;</span>), <span class="stringliteral">&#39;xMin/F&#39;</span>)</div>
 <div class="line"><span class="lineno">   70</span>    rangeTree.Branch(<span class="stringliteral">&#39;xMax&#39;</span>, ROOT.addressof(rStruct, <span class="stringliteral">&#39;xMax&#39;</span>), <span class="stringliteral">&#39;xMax/F&#39;</span>)</div>
@@ -191,9 +191,9 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   96</span>    <span class="comment">#y0 = 0.0</span></div>
 <div class="line"><span class="lineno">   97</span>    <span class="comment">#z0 = 0.0</span></div>
 <div class="line"><span class="lineno">   98</span> </div>
-<div class="line"><span class="lineno">   99</span>    print(f<span class="stringliteral">&#39;Centering field map using co-ordinate shift {x0} {y0} {z0} cm&#39;</span>)</div>
+<div class="line"><span class="lineno">   99</span>    print(f<span class="stringliteral">&#39;Centering field map using coordinate shift {x0} {y0} {z0} cm&#39;</span>)</div>
 <div class="line"><span class="lineno">  100</span> </div>
-<div class="line"><span class="lineno">  101</span>    <span class="comment"># Center co-ordinate range limits (cm)</span></div>
+<div class="line"><span class="lineno">  101</span>    <span class="comment"># Center coordinate range limits (cm)</span></div>
 <div class="line"><span class="lineno">  102</span>    rStruct.xMin = rStruct.xMin - x0</div>
 <div class="line"><span class="lineno">  103</span>    rStruct.xMax = rStruct.xMax - x0</div>
 <div class="line"><span class="lineno">  104</span> </div>

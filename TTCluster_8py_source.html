@@ -181,9 +181,9 @@ $(document).ready(function(){initNavTree('TTCluster_8py_source.html',''); initRe
 <div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
 <div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span><span class="comment"># The random width in the range is manually set as 1% of events</span></div>
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span><span class="comment"># It covers cases where the width is 5-10</span></div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno"><a class="line" href="namespaceTTCluster.html#a91193ee3bf175b1f8aa8cac0a3c04fe1">   87</a></span>random_width_persent = 0.01</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno"><a class="line" href="namespaceTTCluster.html#a9d971aae5a2aee517d1858ec6a4610a2">   87</a></span>random_width_percent = 0.01</div>
 <div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span> </div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span><span class="comment"># Possible values of LY, channel position and cluser width</span></div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span><span class="comment"># Possible values of LY, channel position and cluster width</span></div>
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno"><a class="line" href="namespaceTTCluster.html#afec92313e98c222790502daa9cd823dd">   90</a></span>ly_min = 4.5</div>
 <div class="line"><a id="l00091" name="l00091"></a><span class="lineno"><a class="line" href="namespaceTTCluster.html#afa338b42b507d34e8ea7caacb67136c8">   91</a></span>ly_max = 104</div>
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno"><a class="line" href="namespaceTTCluster.html#a7936732eaf30688647f63e1293187d16">   92</a></span>chpos_min = -0.5</div>
@@ -191,7 +191,7 @@ $(document).ready(function(){initNavTree('TTCluster_8py_source.html',''); initRe
 <div class="line"><a id="l00094" name="l00094"></a><span class="lineno"><a class="line" href="namespaceTTCluster.html#ad9a002c7eae18884bd4f4a8ecc8a8bdd">   94</a></span>cluster_width_min = 1</div>
 <div class="line"><a id="l00095" name="l00095"></a><span class="lineno"><a class="line" href="namespaceTTCluster.html#a71d82a532b85a2ffe0ccbbf769e58538">   95</a></span>cluster_width_max = 10</div>
 <div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span> </div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span><span class="comment"># Energy deposit converts in the light yield range linearly. Energy less then 0.18 MeV gives doesn&#39;t registered.</span></div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span><span class="comment"># Energy deposit converts in the light yield range linearly. Energy less then 0.18 MeV isn&#39;t registered.</span></div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span><span class="comment"># Energy more then 0.477 MeV converts randomly with approximation distribution.</span></div>
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno"><a class="line" href="namespaceTTCluster.html#acb1f411e029f616f69b67de510bf7990">   99</a></span>energy_range = 0.18, 0.477</div>
 <div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
@@ -205,19 +205,19 @@ $(document).ready(function(){initNavTree('TTCluster_8py_source.html',''); initRe
 <div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span><span class="comment"># The coefficient between the maximums of CDF(E) and CDF(LY), a little differs</span></div>
 <div class="line"><a id="l00109" name="l00109"></a><span class="lineno"><a class="line" href="namespaceTTCluster.html#a6f668bc89ae2f3000f4d97625057837a">  109</a></span>k_cdfs_corr = 0.993076766938</div>
 <div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> </div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span><span class="comment"># The addition of a little randomness in the converting from the energy distibution to</span></div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span><span class="comment"># the light yield distibution</span></div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span><span class="comment"># The addition of a little randomness in the converting from the energy distribution to</span></div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span><span class="comment"># the light yield distribution</span></div>
 <div class="line"><a id="l00113" name="l00113"></a><span class="lineno"><a class="line" href="namespaceTTCluster.html#a79775c50701d4970dfd21d08aad40265">  113</a></span>sigma_in_percent = 0.01</div>
 <div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span> </div>
 <div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span><span class="comment"># 4 sigma range includes 95% of events. It needs for creating a cluster</span></div>
 <div class="line"><a id="l00116" name="l00116"></a><span class="lineno"><a class="line" href="namespaceTTCluster.html#a1781d4cfc1306122ef071d7c61d799ea">  116</a></span>sigma_from_width = 1 / 4.</div>
 <div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span> </div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span><span class="comment"># The following parameters will be used in the converting from the energy distibution to</span></div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span><span class="comment"># the light yield distibution.</span></div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span><span class="comment"># The following parameters will be used in the converting from the energy distribution to</span></div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span><span class="comment"># the light yield distribution.</span></div>
 <div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span><span class="comment"># Dictionaries format is following - (x_min, x_max) : (parameters), approximating function.</span></div>
 <div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span> </div>
 <div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span><span class="comment"># ly_CDF_params - approximation of CDF of the light yield distribution.</span></div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span><span class="comment"># It is doesn&#39;t used already.</span></div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span><span class="comment"># It isn&#39;t used yet.</span></div>
 <div class="line"><a id="l00124" name="l00124"></a><span class="lineno"><a class="line" href="namespaceTTCluster.html#a1832ec1338e49ca9554655fd7e275602">  124</a></span>ly_CDF_params = {</div>
 <div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>    (4.5, 13): (</div>
 <div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>        (-13.2, 1.976),</div>
@@ -299,7 +299,7 @@ $(document).ready(function(){initNavTree('TTCluster_8py_source.html',''); initRe
 <div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span> </div>
 <div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
 <div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span><span class="stringliteral">    It converts a particle position (an event) measured in cm to a position measured</span></div>
-<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span><span class="stringliteral">    in channels. The SiPM map is used. The position is in the scifi modul frame.</span></div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span><span class="stringliteral">    in channels. The SiPM map is used. The position is in the scifi module frame.</span></div>
 <div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
 <div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span> </div>
 <div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>    <span class="keywordflow">if</span> reverse <span class="keywordflow">is</span> <span class="keyword">True</span>:</div>
@@ -325,7 +325,7 @@ $(document).ready(function(){initNavTree('TTCluster_8py_source.html',''); initRe
 <div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span> </div>
 <div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
 <div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span><span class="stringliteral">    It converts a particle position measured channels to a position measured</span></div>
-<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span><span class="stringliteral">    in cm. The SiPM map is used. The position is in the scifi modul frame.</span></div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span><span class="stringliteral">    in cm. The SiPM map is used. The position is in the scifi module frame.</span></div>
 <div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
 <div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span> </div>
 <div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>    <span class="keywordflow">if</span> reverse <span class="keywordflow">is</span> <span class="keyword">True</span>:</div>
@@ -361,7 +361,7 @@ $(document).ready(function(){initNavTree('TTCluster_8py_source.html',''); initRe
 <div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span> </div>
 <div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
 <div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span><span class="stringliteral">    It returns an id (number) of a scifi module. In current version one plane have 7 vertical</span></div>
-<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span><span class="stringliteral">    and 11 horisontal scifi assemblies.</span></div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span><span class="stringliteral">    and 11 horizontal scifi assemblies.</span></div>
 <div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
 <div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span> </div>
 <div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>    <span class="keywordflow">return</span> int(DetID % 1000 % 100)</div>
@@ -388,7 +388,7 @@ $(document).ready(function(){initNavTree('TTCluster_8py_source.html',''); initRe
 <div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span> </div>
 <div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
 <div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span><span class="stringliteral">    It returns a number of scifi mats in a plane. In current version it is 7 for vertical</span></div>
-<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span><span class="stringliteral">    and 11 for horisontal scifi assemblies.</span></div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span><span class="stringliteral">    and 11 for horizontal scifi assemblies.</span></div>
 <div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
 <div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span> </div>
 <div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>    <span class="keyword">global</span> n_vert_planes, n_hor_planes</div>
@@ -482,7 +482,7 @@ $(document).ready(function(){initNavTree('TTCluster_8py_source.html',''); initRe
 <div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span> </div>
 </div>
 <div class="foldopen" id="foldopen00365" data-start="" data-end="">
-<div class="line"><a id="l00365" name="l00365"></a><span class="lineno"><a class="line" href="namespaceTTCluster.html#af24499186e7c0a3bcccf54a7df1112d5">  365</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceTTCluster.html#af24499186e7c0a3bcccf54a7df1112d5">cluster_width_random</a>(distance, ly, persent=random_width_persent,</div>
+<div class="line"><a id="l00365" name="l00365"></a><span class="lineno"><a class="line" href="namespaceTTCluster.html#ada14299df43091766f32a31ddf95ba55">  365</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceTTCluster.html#ada14299df43091766f32a31ddf95ba55">cluster_width_random</a>(distance, ly, percent=random_width_percent,</div>
 <div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span>                         cluster_width_min=cluster_width_min, cluster_width_max=cluster_width_max):</div>
 <div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span> </div>
 <div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
@@ -492,7 +492,7 @@ $(document).ready(function(){initNavTree('TTCluster_8py_source.html',''); initRe
 <div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span> </div>
 <div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span>    mean = <a class="code hl_function" href="namespaceTTCluster.html#ae9bfe32200a98103d8f3bf88d54179f9">cluster_width_mean</a>(distance)</div>
 <div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span>    sigma = <a class="code hl_function" href="namespaceTTCluster.html#a12cb5323cf27706fe274e33456f2d7d9">cluster_width_sigma</a>(distance)</div>
-<div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span>    <span class="keywordflow">if</span> random.random() &lt;= persent:</div>
+<div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span>    <span class="keywordflow">if</span> random.random() &lt;= percent:</div>
 <div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span>        <span class="keywordflow">return</span> random.randint(cluster_width_min, cluster_width_max)</div>
 <div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span>    random_width = int(round(random.gauss(mean - 1, sigma))) + 1</div>
 <div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span> </div>
@@ -599,8 +599,8 @@ $(document).ready(function(){initNavTree('TTCluster_8py_source.html',''); initRe
 <div class="line"><a id="l00471" name="l00471"></a><span class="lineno"><a class="line" href="namespaceTTCluster.html#ac29d01d5a5068fa49f58eda41662ad99">  471</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceTTCluster.html#ac29d01d5a5068fa49f58eda41662ad99">is_realistic</a>(cluster, width):</div>
 <div class="line"><a id="l00472" name="l00472"></a><span class="lineno">  472</span> </div>
 <div class="line"><a id="l00473" name="l00473"></a><span class="lineno">  473</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><a id="l00474" name="l00474"></a><span class="lineno">  474</span><span class="stringliteral">    It returns TRUE if cluster is realistic: it doesn&#39;t have a gap between numders, like</span></div>
-<div class="line"><a id="l00475" name="l00475"></a><span class="lineno">  475</span><span class="stringliteral">    [..., 0, 1, 2, 0, 0, 5, 6, ...], and it doens&#39;t have the light yield less then width.</span></div>
+<div class="line"><a id="l00474" name="l00474"></a><span class="lineno">  474</span><span class="stringliteral">    It returns TRUE if cluster is realistic: it doesn&#39;t have a gap between numbers, like</span></div>
+<div class="line"><a id="l00475" name="l00475"></a><span class="lineno">  475</span><span class="stringliteral">    [..., 0, 1, 2, 0, 0, 5, 6, ...], and it doesn&#39;t have the light yield less then width.</span></div>
 <div class="line"><a id="l00476" name="l00476"></a><span class="lineno">  476</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
 <div class="line"><a id="l00477" name="l00477"></a><span class="lineno">  477</span> </div>
 <div class="line"><a id="l00478" name="l00478"></a><span class="lineno">  478</span>    cluster_only_values = [(channel, value) <span class="keywordflow">for</span> channel, value <span class="keywordflow">in</span> enumerate(cluster) <span class="keywordflow">if</span> value &gt; 0]</div>
@@ -625,7 +625,7 @@ $(document).ready(function(){initNavTree('TTCluster_8py_source.html',''); initRe
 <div class="line"><a id="l00495" name="l00495"></a><span class="lineno">  495</span>    shifted_wmp = wmp + 0.5 <span class="comment"># For right counting</span></div>
 <div class="line"><a id="l00496" name="l00496"></a><span class="lineno">  496</span>    cluster = <a class="code hl_function" href="namespaceTTCluster.html#a22f7c2e11c2d8989fa04987c79a02c79">cluster_generator</a>(amplitude, width, shifted_wmp)</div>
 <div class="line"><a id="l00497" name="l00497"></a><span class="lineno">  497</span> </div>
-<div class="line"><a id="l00498" name="l00498"></a><span class="lineno">  498</span>    <span class="comment"># Generate again if it doesn&#39;t look like real cluster</span></div>
+<div class="line"><a id="l00498" name="l00498"></a><span class="lineno">  498</span>    <span class="comment"># Generate again if it doesn&#39;t look like a real cluster</span></div>
 <div class="line"><a id="l00499" name="l00499"></a><span class="lineno">  499</span>    <span class="keywordflow">while</span> <a class="code hl_function" href="namespaceTTCluster.html#ac29d01d5a5068fa49f58eda41662ad99">is_realistic</a>(cluster, width) <span class="keywordflow">is</span> <span class="keyword">False</span>:</div>
 <div class="line"><a id="l00500" name="l00500"></a><span class="lineno">  500</span>        cluster = <a class="code hl_function" href="namespaceTTCluster.html#a22f7c2e11c2d8989fa04987c79a02c79">cluster_generator</a>(amplitude, width, shifted_wmp)</div>
 <div class="line"><a id="l00501" name="l00501"></a><span class="lineno">  501</span> </div>
@@ -735,7 +735,7 @@ $(document).ready(function(){initNavTree('TTCluster_8py_source.html',''); initRe
 <div class="line"><a id="l00594" name="l00594"></a><span class="lineno">  594</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> self.<a class="code hl_variable" href="classTTCluster_1_1TTCluster.html#a024d7880cbff9d99d161a946e6a5d457">ly_min</a> &lt; self.<a class="code hl_variable" href="classTTCluster_1_1TTCluster.html#a358ad769998f6fb63f96f69b20ed0d7c">ly</a> &lt; self.<a class="code hl_variable" href="classTTCluster_1_1TTCluster.html#a6f4df8d216c7b71af7742a1d6b3f92e8">ly_max</a>:</div>
 <div class="line"><a id="l00595" name="l00595"></a><span class="lineno">  595</span>            <span class="keywordflow">return</span> <span class="keyword">False</span></div>
 <div class="line"><a id="l00596" name="l00596"></a><span class="lineno">  596</span> </div>
-<div class="line"><a id="l00597" name="l00597"></a><span class="lineno">  597</span>        cluster_width = int(round(<a class="code hl_function" href="namespaceTTCluster.html#af24499186e7c0a3bcccf54a7df1112d5">cluster_width_random</a>(distance, ly=self.<a class="code hl_variable" href="classTTCluster_1_1TTCluster.html#a358ad769998f6fb63f96f69b20ed0d7c">ly</a>)))</div>
+<div class="line"><a id="l00597" name="l00597"></a><span class="lineno">  597</span>        cluster_width = int(round(<a class="code hl_function" href="namespaceTTCluster.html#ada14299df43091766f32a31ddf95ba55">cluster_width_random</a>(distance, ly=self.<a class="code hl_variable" href="classTTCluster_1_1TTCluster.html#a358ad769998f6fb63f96f69b20ed0d7c">ly</a>)))</div>
 <div class="line"><a id="l00598" name="l00598"></a><span class="lineno">  598</span>        cluster = <a class="code hl_function" href="namespaceTTCluster.html#af2e1f779c4e037dfc81bce045d4dbc87">create_cluster</a>(self.<a class="code hl_variable" href="classTTCluster_1_1TTCluster.html#a358ad769998f6fb63f96f69b20ed0d7c">ly</a>, cluster_width, channelpos)</div>
 <div class="line"><a id="l00599" name="l00599"></a><span class="lineno">  599</span>        wmp_of_cluster = <a class="code hl_function" href="namespaceTTCluster.html#afd6ba571117db8ee7f7cffaa128cea99">weigthed_mean_pos</a>(cluster)</div>
 <div class="line"><a id="l00600" name="l00600"></a><span class="lineno">  600</span>        recovery_localpos = <a class="code hl_function" href="namespaceTTCluster.html#aee1f15c0ba738f75e64215f13c1f7859">channel_to_cm</a>(wmp_of_cluster, reverse=is_sipm_reversed)</div>
@@ -964,9 +964,9 @@ $(document).ready(function(){initNavTree('TTCluster_8py_source.html',''); initRe
 <div class="ttc" id="anamespaceTTCluster_html_a8e89887f69c4a797cb13366f0bcb94af"><div class="ttname"><a href="namespaceTTCluster.html#a8e89887f69c4a797cb13366f0bcb94af">TTCluster.local_to_global</a></div><div class="ttdeci">local_to_global(DetID, localpos)</div><div class="ttdef"><b>Definition</b> <a href="TTCluster_8py_source.html#l00317">TTCluster.py:317</a></div></div>
 <div class="ttc" id="anamespaceTTCluster_html_abdd5a7619efa4fe429da258c816248f3"><div class="ttname"><a href="namespaceTTCluster.html#abdd5a7619efa4fe429da258c816248f3">TTCluster.ly_loss_mean</a></div><div class="ttdeci">ly_loss_mean(distance, params=ly_loss_params)</div><div class="ttdef"><b>Definition</b> <a href="TTCluster_8py_source.html#l00329">TTCluster.py:329</a></div></div>
 <div class="ttc" id="anamespaceTTCluster_html_ac29d01d5a5068fa49f58eda41662ad99"><div class="ttname"><a href="namespaceTTCluster.html#ac29d01d5a5068fa49f58eda41662ad99">TTCluster.is_realistic</a></div><div class="ttdeci">is_realistic(cluster, width)</div><div class="ttdef"><b>Definition</b> <a href="TTCluster_8py_source.html#l00471">TTCluster.py:471</a></div></div>
+<div class="ttc" id="anamespaceTTCluster_html_ada14299df43091766f32a31ddf95ba55"><div class="ttname"><a href="namespaceTTCluster.html#ada14299df43091766f32a31ddf95ba55">TTCluster.cluster_width_random</a></div><div class="ttdeci">cluster_width_random(distance, ly, percent=random_width_percent, cluster_width_min=cluster_width_min, cluster_width_max=cluster_width_max)</div><div class="ttdef"><b>Definition</b> <a href="TTCluster_8py_source.html#l00365">TTCluster.py:366</a></div></div>
 <div class="ttc" id="anamespaceTTCluster_html_ae9bfe32200a98103d8f3bf88d54179f9"><div class="ttname"><a href="namespaceTTCluster.html#ae9bfe32200a98103d8f3bf88d54179f9">TTCluster.cluster_width_mean</a></div><div class="ttdeci">cluster_width_mean(distance, params=cluster_width_mean_params)</div><div class="ttdef"><b>Definition</b> <a href="TTCluster_8py_source.html#l00347">TTCluster.py:347</a></div></div>
 <div class="ttc" id="anamespaceTTCluster_html_aee1f15c0ba738f75e64215f13c1f7859"><div class="ttname"><a href="namespaceTTCluster.html#aee1f15c0ba738f75e64215f13c1f7859">TTCluster.channel_to_cm</a></div><div class="ttdeci">channel_to_cm(channelpos, sipm_map=sipm_map, reverse=False, pitch=pitch)</div><div class="ttdef"><b>Definition</b> <a href="TTCluster_8py_source.html#l00228">TTCluster.py:228</a></div></div>
-<div class="ttc" id="anamespaceTTCluster_html_af24499186e7c0a3bcccf54a7df1112d5"><div class="ttname"><a href="namespaceTTCluster.html#af24499186e7c0a3bcccf54a7df1112d5">TTCluster.cluster_width_random</a></div><div class="ttdeci">cluster_width_random(distance, ly, persent=random_width_persent, cluster_width_min=cluster_width_min, cluster_width_max=cluster_width_max)</div><div class="ttdef"><b>Definition</b> <a href="TTCluster_8py_source.html#l00365">TTCluster.py:366</a></div></div>
 <div class="ttc" id="anamespaceTTCluster_html_af2e1f779c4e037dfc81bce045d4dbc87"><div class="ttname"><a href="namespaceTTCluster.html#af2e1f779c4e037dfc81bce045d4dbc87">TTCluster.create_cluster</a></div><div class="ttdeci">create_cluster(amplitude, width, wmp)</div><div class="ttdef"><b>Definition</b> <a href="TTCluster_8py_source.html#l00486">TTCluster.py:486</a></div></div>
 <div class="ttc" id="anamespaceTTCluster_html_af98457a9c18f4bd24398e305219408c7"><div class="ttname"><a href="namespaceTTCluster.html#af98457a9c18f4bd24398e305219408c7">TTCluster.approx_function</a></div><div class="ttdeci">approx_function(var, approx_data)</div><div class="ttdef"><b>Definition</b> <a href="TTCluster_8py_source.html#l00385">TTCluster.py:385</a></div></div>
 <div class="ttc" id="anamespaceTTCluster_html_afd6ba571117db8ee7f7cffaa128cea99"><div class="ttname"><a href="namespaceTTCluster.html#afd6ba571117db8ee7f7cffaa128cea99">TTCluster.weigthed_mean_pos</a></div><div class="ttdeci">weigthed_mean_pos(cluster)</div><div class="ttdef"><b>Definition</b> <a href="TTCluster_8py_source.html#l00504">TTCluster.py:504</a></div></div>

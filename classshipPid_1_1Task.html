@@ -547,7 +547,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00010">10</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00009">9</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a420e916777209442ceeebcd8f9badab8" name="a420e916777209442ceeebcd8f9badab8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a420e916777209442ceeebcd8f9badab8">&#9670;&#160;</a></span>__init__()</h2>
@@ -575,73 +575,73 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00013">13</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   13</span> <span class="keyword">def </span>__init__(self,main):</div>
-<div class="line"><span class="lineno">   14</span>  print(<span class="stringliteral">&quot;****************************************&quot;</span>)</div>
-<div class="line"><span class="lineno">   15</span>  print(<span class="stringliteral">&quot;*** You are using PID version 18.1.0 ***&quot;</span>)</div>
-<div class="line"><span class="lineno">   16</span>  print(<span class="stringliteral">&quot;****************************************&quot;</span>)</div>
-<div class="line"><span class="lineno">   17</span>  self.sTree = main.sTree</div>
-<div class="line"><span class="lineno">   18</span>  self.fpidArray  = ROOT.TClonesArray(<span class="stringliteral">&quot;pid&quot;</span>)</div>
-<div class="line"><span class="lineno">   19</span>  <span class="keywordflow">if</span> <span class="keywordflow">not</span> self.sTree.GetBranch(<span class="stringliteral">&quot;pid&quot;</span>):</div>
-<div class="line"><span class="lineno">   20</span>    self.pID   = self.sTree.Branch(<span class="stringliteral">&quot;Pid&quot;</span>,  self.fpidArray,32000,-1)</div>
-<div class="line"><span class="lineno">   21</span>  <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">   22</span>    self.pID = self.sTree.pid</div>
-<div class="line"><span class="lineno">   23</span>  self.reps,self.states,self.newPosDir = {},{},{}</div>
-<div class="line"><span class="lineno">   24</span>  self.PDG = ROOT.TDatabasePDG.Instance()</div>
-<div class="line"><span class="lineno">   25</span>  fGeo = ROOT.gGeoManager</div>
-<div class="line"><span class="lineno">   26</span>  top  = fGeo.GetTopVolume()</div>
-<div class="line"><span class="lineno">   27</span>  dv = top.GetNode(<span class="stringliteral">&#39;DecayVolume_1&#39;</span>)</div>
-<div class="line"><span class="lineno">   28</span>  ns = dv.GetNodes()</div>
-<div class="line"><span class="lineno">   29</span>  self.zpositions = {}</div>
-<div class="line"><span class="lineno">   30</span>  self.parallelToZ = ROOT.TVector3(0., 0., 1.)</div>
-<div class="line"><span class="lineno">   31</span>  hadron = top.GetNode(<span class="stringliteral">&quot;Hcal_1&quot;</span>)</div>
-<div class="line"><span class="lineno">   32</span>  hvol = hadron.GetVolume()</div>
-<div class="line"><span class="lineno">   33</span>  self.zpositions[<span class="stringliteral">&#39;hcal&#39;</span>] = hadron.GetMatrix().GetTranslation()[2]</div>
-<div class="line"><span class="lineno">   34</span>  ecal = top.GetNode(<span class="stringliteral">&quot;Ecal_1&quot;</span>)</div>
-<div class="line"><span class="lineno">   35</span>  evol = ecal.GetVolume()</div>
-<div class="line"><span class="lineno">   36</span>  self.zpositions[<span class="stringliteral">&#39;ecal&#39;</span>] = ecal.GetMatrix().GetTranslation()[2]</div>
-<div class="line"><span class="lineno">   37</span>  x = sys.modules[<span class="stringliteral">&#39;__main__&#39;</span>]</div>
-<div class="line"><span class="lineno">   38</span>  ShipGeo = x.ShipGeo</div>
-<div class="line"><span class="lineno">   39</span>  <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(4):</div>
-<div class="line"><span class="lineno">   40</span>   muonDet = top.GetNode(<span class="stringliteral">&#39;MuonDetector_&#39;</span>+str(i+1))</div>
-<div class="line"><span class="lineno">   41</span>   <span class="keywordflow">if</span> muonDet: self.zpositions[<span class="stringliteral">&#39;muon&#39;</span>+str(i)] = muonDet.GetMatrix().GetTranslation()[2]</div>
-<div class="line"><span class="lineno">   42</span>   <span class="keywordflow">else</span>: self.zpositions[<span class="stringliteral">&#39;muon&#39;</span>+str(i)] = ShipGeo[<span class="stringliteral">&#39;MuonStation&#39;</span>+str(i)].z</div>
-<div class="line"><span class="lineno">   43</span>  self.hcal = sys.modules[<span class="stringliteral">&#39;__main__&#39;</span>]. modules[<span class="stringliteral">&#39;Hcal&#39;</span>]</div>
-<div class="line"><span class="lineno">   44</span>  self.pad_size_x = 5 <span class="comment">#cm</span></div>
-<div class="line"><span class="lineno">   45</span>  self.pad_size_y = 5 <span class="comment">#cm</span></div>
-<div class="line"><span class="lineno">   46</span>  self.dimensions_x = 300 <span class="comment">#cm half witdth</span></div>
-<div class="line"><span class="lineno">   47</span>  self.dimensions_y = 600 <span class="comment">#cm half witdth</span></div>
-<div class="line"><span class="lineno">   48</span>  self.rx=250</div>
-<div class="line"><span class="lineno">   49</span>  self.ry=500</div>
-<div class="line"><span class="lineno">   50</span>  self.muly_acceptance = 50.0</div>
-<div class="line"><span class="lineno">   51</span>  self.ncells_x=m.floor((2*self.dimensions_x)/self.pad_size_x)</div>
-<div class="line"><span class="lineno">   52</span>  self.ncells_y=m.floor((2*self.dimensions_y)/self.pad_size_y)</div>
-<div class="line"><span class="lineno">   53</span>  self.threshold_pad_energy = 0.2</div>
-<div class="line"><span class="lineno">   54</span>  self.Ecal_dx = 15 <span class="comment">#cm</span></div>
-<div class="line"><span class="lineno">   55</span>  self.Ecal_dy = 15 <span class="comment">#cm</span></div>
-<div class="line"><span class="lineno">   56</span>  self.Ecal_EP_threshold_min = 0.92 <span class="comment">#acceptence region for E over P in Ecal &gt;  self.Ecal_EP_threshold_min</span></div>
-<div class="line"><span class="lineno">   57</span>  self.Ecal_EP_threshold_max = 10</div>
-<div class="line"><span class="lineno">   58</span>  self.Hit_number_threshold=3    <span class="comment">#number of pad-hits around the extrapolated tracks in MuonDet</span></div>
-<div class="line"><span class="lineno">   59</span>  self.hitlimit_x,self.hitlimit_y=5,5    <span class="comment">#x-y area to check the number of pad-hits</span></div>
-<div class="line"><span class="lineno">   60</span>  self.cutNdf = 25</div>
-<div class="line"><span class="lineno">   61</span> </div>
-<div class="line"><span class="lineno">   62</span>  self.P_min00,self.P_max00,self.dx00_min,self.dx00_max,self.dy00_min,self.dy00_max=-99,-99,-99,-99,-99,-99</div>
-<div class="line"><span class="lineno">   63</span>  self.P_min01,self.P_max01,self.dx01_min,self.dx01_max,self.dy01_min,self.dy01_max=-99,-99,-99,-99,-99,-99</div>
-<div class="line"><span class="lineno">   64</span>  self.P_min02,self.P_max02,self.dx02_min,self.dx02_max,self.dy02_min,self.dy02_max=-99,-99,-99,-99,-99,-99</div>
-<div class="line"><span class="lineno">   65</span>  self.P_min03,self.P_max03,self.dx03_min,self.dx03_max,self.dy03_min,self.dy03_max=-99,-99,-99,-99,-99,-99</div>
-<div class="line"><span class="lineno">   66</span> </div>
-<div class="line"><span class="lineno">   67</span>  self.P_min10,self.P_max10,self.dx10_min,self.dx10_max,self.dy10_min,self.dy10_max=  0,  8, -5,  5, -5, 5</div>
-<div class="line"><span class="lineno">   68</span>  self.P_min11,self.P_max11,self.dx11_min,self.dx11_max,self.dy11_min,self.dy11_max=-99,-99,-99,-99,-99,-99</div>
-<div class="line"><span class="lineno">   69</span>  self.P_min12,self.P_max12,self.dx12_min,self.dx12_max,self.dy12_min,self.dy12_max=-99,-99,-99,-99,-99,-99</div>
-<div class="line"><span class="lineno">   70</span>  self.P_min13,self.P_max13,self.dx13_min,self.dx13_max,self.dy13_min,self.dy13_max=-99,-99,-99,-99,-99,-99</div>
-<div class="line"><span class="lineno">   71</span> </div>
-<div class="line"><span class="lineno">   72</span>  self.P_min20,self.P_max20,self.dx20_min,self.dx20_max,self.dy20_min,self.dy20_max=  8, 13, -5,  5, -5, 5</div>
-<div class="line"><span class="lineno">   73</span>  self.P_min21,self.P_max21,self.dx21_min,self.dx21_max,self.dy21_min,self.dy21_max= 13, 20, -3,  3, -3, 3</div>
-<div class="line"><span class="lineno">   74</span>  self.P_min22,self.P_max22,self.dx22_min,self.dx22_max,self.dy22_min,self.dy22_max=-99,-99,-99,-99,-99,-99</div>
-<div class="line"><span class="lineno">   75</span> </div>
-<div class="line"><span class="lineno">   76</span>  self.P_min30,self.P_max30,self.dx30_min,self.dx30_max,self.dy30_min,self.dy30_max= 20,999, -4,  4, -4, 4</div>
-<div class="line"><span class="lineno">   77</span>  self.P_min31,self.P_max31,self.dx31_min,self.dx31_max,self.dy31_min,self.dy31_max=-99,-99,-99,-99,-99,-99</div>
-<div class="line"><span class="lineno">   78</span> </div>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00012">12</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   12</span> <span class="keyword">def </span>__init__(self,main):</div>
+<div class="line"><span class="lineno">   13</span>  print(<span class="stringliteral">&quot;****************************************&quot;</span>)</div>
+<div class="line"><span class="lineno">   14</span>  print(<span class="stringliteral">&quot;*** You are using PID version 18.1.0 ***&quot;</span>)</div>
+<div class="line"><span class="lineno">   15</span>  print(<span class="stringliteral">&quot;****************************************&quot;</span>)</div>
+<div class="line"><span class="lineno">   16</span>  self.sTree = main.sTree</div>
+<div class="line"><span class="lineno">   17</span>  self.fpidArray  = ROOT.TClonesArray(<span class="stringliteral">&quot;pid&quot;</span>)</div>
+<div class="line"><span class="lineno">   18</span>  <span class="keywordflow">if</span> <span class="keywordflow">not</span> self.sTree.GetBranch(<span class="stringliteral">&quot;pid&quot;</span>):</div>
+<div class="line"><span class="lineno">   19</span>    self.pID   = self.sTree.Branch(<span class="stringliteral">&quot;Pid&quot;</span>,  self.fpidArray,32000,-1)</div>
+<div class="line"><span class="lineno">   20</span>  <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">   21</span>    self.pID = self.sTree.pid</div>
+<div class="line"><span class="lineno">   22</span>  self.reps,self.states,self.newPosDir = {},{},{}</div>
+<div class="line"><span class="lineno">   23</span>  self.PDG = ROOT.TDatabasePDG.Instance()</div>
+<div class="line"><span class="lineno">   24</span>  fGeo = ROOT.gGeoManager</div>
+<div class="line"><span class="lineno">   25</span>  top  = fGeo.GetTopVolume()</div>
+<div class="line"><span class="lineno">   26</span>  dv = top.GetNode(<span class="stringliteral">&#39;DecayVolume_1&#39;</span>)</div>
+<div class="line"><span class="lineno">   27</span>  ns = dv.GetNodes()</div>
+<div class="line"><span class="lineno">   28</span>  self.zpositions = {}</div>
+<div class="line"><span class="lineno">   29</span>  self.parallelToZ = ROOT.TVector3(0., 0., 1.)</div>
+<div class="line"><span class="lineno">   30</span>  hadron = top.GetNode(<span class="stringliteral">&quot;Hcal_1&quot;</span>)</div>
+<div class="line"><span class="lineno">   31</span>  hvol = hadron.GetVolume()</div>
+<div class="line"><span class="lineno">   32</span>  self.zpositions[<span class="stringliteral">&#39;hcal&#39;</span>] = hadron.GetMatrix().GetTranslation()[2]</div>
+<div class="line"><span class="lineno">   33</span>  ecal = top.GetNode(<span class="stringliteral">&quot;Ecal_1&quot;</span>)</div>
+<div class="line"><span class="lineno">   34</span>  evol = ecal.GetVolume()</div>
+<div class="line"><span class="lineno">   35</span>  self.zpositions[<span class="stringliteral">&#39;ecal&#39;</span>] = ecal.GetMatrix().GetTranslation()[2]</div>
+<div class="line"><span class="lineno">   36</span>  x = sys.modules[<span class="stringliteral">&#39;__main__&#39;</span>]</div>
+<div class="line"><span class="lineno">   37</span>  ShipGeo = x.ShipGeo</div>
+<div class="line"><span class="lineno">   38</span>  <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(4):</div>
+<div class="line"><span class="lineno">   39</span>   muonDet = top.GetNode(<span class="stringliteral">&#39;MuonDetector_&#39;</span>+str(i+1))</div>
+<div class="line"><span class="lineno">   40</span>   <span class="keywordflow">if</span> muonDet: self.zpositions[<span class="stringliteral">&#39;muon&#39;</span>+str(i)] = muonDet.GetMatrix().GetTranslation()[2]</div>
+<div class="line"><span class="lineno">   41</span>   <span class="keywordflow">else</span>: self.zpositions[<span class="stringliteral">&#39;muon&#39;</span>+str(i)] = ShipGeo[<span class="stringliteral">&#39;MuonStation&#39;</span>+str(i)].z</div>
+<div class="line"><span class="lineno">   42</span>  self.hcal = sys.modules[<span class="stringliteral">&#39;__main__&#39;</span>]. modules[<span class="stringliteral">&#39;Hcal&#39;</span>]</div>
+<div class="line"><span class="lineno">   43</span>  self.pad_size_x = 5 <span class="comment">#cm</span></div>
+<div class="line"><span class="lineno">   44</span>  self.pad_size_y = 5 <span class="comment">#cm</span></div>
+<div class="line"><span class="lineno">   45</span>  self.dimensions_x = 300 <span class="comment">#cm half width # TODO take from geo?</span></div>
+<div class="line"><span class="lineno">   46</span>  self.dimensions_y = 600 <span class="comment">#cm half width # TODO take from geo?</span></div>
+<div class="line"><span class="lineno">   47</span>  self.rx=250</div>
+<div class="line"><span class="lineno">   48</span>  self.ry=500</div>
+<div class="line"><span class="lineno">   49</span>  self.muly_acceptance = 50.0</div>
+<div class="line"><span class="lineno">   50</span>  self.ncells_x=m.floor((2*self.dimensions_x)/self.pad_size_x)</div>
+<div class="line"><span class="lineno">   51</span>  self.ncells_y=m.floor((2*self.dimensions_y)/self.pad_size_y)</div>
+<div class="line"><span class="lineno">   52</span>  self.threshold_pad_energy = 0.2</div>
+<div class="line"><span class="lineno">   53</span>  self.Ecal_dx = 15 <span class="comment">#cm</span></div>
+<div class="line"><span class="lineno">   54</span>  self.Ecal_dy = 15 <span class="comment">#cm</span></div>
+<div class="line"><span class="lineno">   55</span>  self.Ecal_EP_threshold_min = 0.92 <span class="comment">#acceptance region for E over P in Ecal &gt;  self.Ecal_EP_threshold_min</span></div>
+<div class="line"><span class="lineno">   56</span>  self.Ecal_EP_threshold_max = 10</div>
+<div class="line"><span class="lineno">   57</span>  self.Hit_number_threshold=3    <span class="comment">#number of pad-hits around the extrapolated tracks in MuonDet</span></div>
+<div class="line"><span class="lineno">   58</span>  self.hitlimit_x,self.hitlimit_y=5,5    <span class="comment">#x-y area to check the number of pad-hits</span></div>
+<div class="line"><span class="lineno">   59</span>  self.cutNdf = 25</div>
+<div class="line"><span class="lineno">   60</span> </div>
+<div class="line"><span class="lineno">   61</span>  self.P_min00,self.P_max00,self.dx00_min,self.dx00_max,self.dy00_min,self.dy00_max=-99,-99,-99,-99,-99,-99</div>
+<div class="line"><span class="lineno">   62</span>  self.P_min01,self.P_max01,self.dx01_min,self.dx01_max,self.dy01_min,self.dy01_max=-99,-99,-99,-99,-99,-99</div>
+<div class="line"><span class="lineno">   63</span>  self.P_min02,self.P_max02,self.dx02_min,self.dx02_max,self.dy02_min,self.dy02_max=-99,-99,-99,-99,-99,-99</div>
+<div class="line"><span class="lineno">   64</span>  self.P_min03,self.P_max03,self.dx03_min,self.dx03_max,self.dy03_min,self.dy03_max=-99,-99,-99,-99,-99,-99</div>
+<div class="line"><span class="lineno">   65</span> </div>
+<div class="line"><span class="lineno">   66</span>  self.P_min10,self.P_max10,self.dx10_min,self.dx10_max,self.dy10_min,self.dy10_max=  0,  8, -5,  5, -5, 5</div>
+<div class="line"><span class="lineno">   67</span>  self.P_min11,self.P_max11,self.dx11_min,self.dx11_max,self.dy11_min,self.dy11_max=-99,-99,-99,-99,-99,-99</div>
+<div class="line"><span class="lineno">   68</span>  self.P_min12,self.P_max12,self.dx12_min,self.dx12_max,self.dy12_min,self.dy12_max=-99,-99,-99,-99,-99,-99</div>
+<div class="line"><span class="lineno">   69</span>  self.P_min13,self.P_max13,self.dx13_min,self.dx13_max,self.dy13_min,self.dy13_max=-99,-99,-99,-99,-99,-99</div>
+<div class="line"><span class="lineno">   70</span> </div>
+<div class="line"><span class="lineno">   71</span>  self.P_min20,self.P_max20,self.dx20_min,self.dx20_max,self.dy20_min,self.dy20_max=  8, 13, -5,  5, -5, 5</div>
+<div class="line"><span class="lineno">   72</span>  self.P_min21,self.P_max21,self.dx21_min,self.dx21_max,self.dy21_min,self.dy21_max= 13, 20, -3,  3, -3, 3</div>
+<div class="line"><span class="lineno">   73</span>  self.P_min22,self.P_max22,self.dx22_min,self.dx22_max,self.dy22_min,self.dy22_max=-99,-99,-99,-99,-99,-99</div>
+<div class="line"><span class="lineno">   74</span> </div>
+<div class="line"><span class="lineno">   75</span>  self.P_min30,self.P_max30,self.dx30_min,self.dx30_max,self.dy30_min,self.dy30_max= 20,999, -4,  4, -4, 4</div>
+<div class="line"><span class="lineno">   76</span>  self.P_min31,self.P_max31,self.dx31_min,self.dx31_max,self.dy31_min,self.dy31_max=-99,-99,-99,-99,-99,-99</div>
+<div class="line"><span class="lineno">   77</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -662,13 +662,13 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00320">320</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  320</span> <span class="keyword">def </span>elec_ID(self):</div>
-<div class="line"><span class="lineno">  321</span>    <span class="keywordflow">if</span> self.det == <span class="stringliteral">&#39;ecal&#39;</span>:</div>
-<div class="line"><span class="lineno">  322</span>     self.extrap_X_ecal = self.extrapStates[self.det][0]</div>
-<div class="line"><span class="lineno">  323</span>     self.extrap_Y_ecal = self.extrapStates[self.det][1]</div>
-<div class="line"><span class="lineno">  324</span>     extrap_Z_ecal = self.extrapStates[self.det][2]</div>
-<div class="line"><span class="lineno">  325</span> </div>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00319">319</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  319</span> <span class="keyword">def </span>elec_ID(self):</div>
+<div class="line"><span class="lineno">  320</span>    <span class="keywordflow">if</span> self.det == <span class="stringliteral">&#39;ecal&#39;</span>:</div>
+<div class="line"><span class="lineno">  321</span>     self.extrap_X_ecal = self.extrapStates[self.det][0]</div>
+<div class="line"><span class="lineno">  322</span>     self.extrap_Y_ecal = self.extrapStates[self.det][1]</div>
+<div class="line"><span class="lineno">  323</span>     extrap_Z_ecal = self.extrapStates[self.det][2]</div>
+<div class="line"><span class="lineno">  324</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -688,8 +688,8 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00079">79</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   79</span> <span class="keyword">def </span>execute(self):</div>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00078">78</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   78</span> <span class="keyword">def </span>execute(self):</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -709,13 +709,13 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00339">339</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  339</span> <span class="keyword">def </span>hcal_ID(self):</div>
-<div class="line"><span class="lineno">  340</span>    <span class="keywordflow">if</span> self.det == <span class="stringliteral">&#39;hcal&#39;</span>:</div>
-<div class="line"><span class="lineno">  341</span>      self.extrap_X_hcal = self.extrapStates[self.det][0]</div>
-<div class="line"><span class="lineno">  342</span>      self.extrap_Y_hcal = self.extrapStates[self.det][1]</div>
-<div class="line"><span class="lineno">  343</span>      extrap_Z_hcal = self.extrapStates[self.det][2]</div>
-<div class="line"><span class="lineno">  344</span> </div>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00338">338</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  338</span> <span class="keyword">def </span>hcal_ID(self):</div>
+<div class="line"><span class="lineno">  339</span>    <span class="keywordflow">if</span> self.det == <span class="stringliteral">&#39;hcal&#39;</span>:</div>
+<div class="line"><span class="lineno">  340</span>      self.extrap_X_hcal = self.extrapStates[self.det][0]</div>
+<div class="line"><span class="lineno">  341</span>      self.extrap_Y_hcal = self.extrapStates[self.det][1]</div>
+<div class="line"><span class="lineno">  342</span>      extrap_Z_hcal = self.extrapStates[self.det][2]</div>
+<div class="line"><span class="lineno">  343</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -737,8 +737,8 @@ Static Public Attributes</h2></td></tr>
 
 <p>make particles persistent ## </p>
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00084">84</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   84</span> <span class="keyword">def </span>HcalHits(self):</div>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00083">83</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   83</span> <span class="keyword">def </span>HcalHits(self):</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -758,41 +758,41 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00232">232</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  232</span> <span class="keyword">def </span>muon_ID(self):</div>
-<div class="line"><span class="lineno">  233</span>    <span class="keywordflow">if</span> self.det == <span class="stringliteral">&#39;muon0&#39;</span>:</div>
-<div class="line"><span class="lineno">  234</span>      extrap_X_mu0 = self.extrapStates[self.det][0]</div>
-<div class="line"><span class="lineno">  235</span>      extrap_Y_mu0 = self.extrapStates[self.det][1]</div>
-<div class="line"><span class="lineno">  236</span>      extrap_Z_mu0 = self.extrapStates[self.det][2]</div>
-<div class="line"><span class="lineno">  237</span>      X_pos0=extrap_X_mu0+self.dimensions_x</div>
-<div class="line"><span class="lineno">  238</span>      Y_pos0=extrap_Y_mu0+self.dimensions_y</div>
-<div class="line"><span class="lineno">  239</span>      self.pos_pad_x0=m.floor(X_pos0/self.pad_size_x)+1</div>
-<div class="line"><span class="lineno">  240</span>      self.pos_pad_y0=m.floor(Y_pos0/self.pad_size_y)+1</div>
-<div class="line"><span class="lineno">  241</span>    <span class="keywordflow">if</span> self.det == <span class="stringliteral">&#39;muon1&#39;</span>:</div>
-<div class="line"><span class="lineno">  242</span>      self.extrap_X_mu1 = self.extrapStates[self.det][0]</div>
-<div class="line"><span class="lineno">  243</span>      self.extrap_Y_mu1 = self.extrapStates[self.det][1]</div>
-<div class="line"><span class="lineno">  244</span>      extrap_Z_mu1 = self.extrapStates[self.det][2]</div>
-<div class="line"><span class="lineno">  245</span>      X_pos1=self.extrap_X_mu1+self.dimensions_x</div>
-<div class="line"><span class="lineno">  246</span>      Y_pos1=self.extrap_Y_mu1+self.dimensions_y</div>
-<div class="line"><span class="lineno">  247</span>      self.pos_pad_x1=m.floor(X_pos1/self.pad_size_x)+1</div>
-<div class="line"><span class="lineno">  248</span>      self.pos_pad_y1=m.floor(Y_pos1/self.pad_size_y)+1</div>
-<div class="line"><span class="lineno">  249</span>    <span class="keywordflow">if</span> self.det == <span class="stringliteral">&#39;muon2&#39;</span>:</div>
-<div class="line"><span class="lineno">  250</span>      extrap_X_mu2 = self.extrapStates[self.det][0]</div>
-<div class="line"><span class="lineno">  251</span>      extrap_Y_mu2 = self.extrapStates[self.det][1]</div>
-<div class="line"><span class="lineno">  252</span>      extrap_Z_mu2 = self.extrapStates[self.det][2]</div>
-<div class="line"><span class="lineno">  253</span>      X_pos2=extrap_X_mu2+self.dimensions_x</div>
-<div class="line"><span class="lineno">  254</span>      Y_pos2=extrap_Y_mu2+self.dimensions_y</div>
-<div class="line"><span class="lineno">  255</span>      self.pos_pad_x2=m.floor(X_pos2/self.pad_size_x)+1</div>
-<div class="line"><span class="lineno">  256</span>      self.pos_pad_y2=m.floor(Y_pos2/self.pad_size_y)+1</div>
-<div class="line"><span class="lineno">  257</span>    <span class="keywordflow">if</span> self.det == <span class="stringliteral">&#39;muon3&#39;</span>:</div>
-<div class="line"><span class="lineno">  258</span>      extrap_X_mu3 = self.extrapStates[self.det][0]</div>
-<div class="line"><span class="lineno">  259</span>      extrap_Y_mu3 = self.extrapStates[self.det][1]</div>
-<div class="line"><span class="lineno">  260</span>      extrap_Z_mu3 = self.extrapStates[self.det][2]</div>
-<div class="line"><span class="lineno">  261</span>      X_pos3=extrap_X_mu3+self.dimensions_x</div>
-<div class="line"><span class="lineno">  262</span>      Y_pos3=extrap_Y_mu3+self.dimensions_y</div>
-<div class="line"><span class="lineno">  263</span>      self.pos_pad_x3=m.floor(X_pos3/self.pad_size_x)+1</div>
-<div class="line"><span class="lineno">  264</span>      self.pos_pad_y3=m.floor(Y_pos3/self.pad_size_y)+1</div>
-<div class="line"><span class="lineno">  265</span> </div>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00231">231</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  231</span> <span class="keyword">def </span>muon_ID(self):</div>
+<div class="line"><span class="lineno">  232</span>    <span class="keywordflow">if</span> self.det == <span class="stringliteral">&#39;muon0&#39;</span>:</div>
+<div class="line"><span class="lineno">  233</span>      extrap_X_mu0 = self.extrapStates[self.det][0]</div>
+<div class="line"><span class="lineno">  234</span>      extrap_Y_mu0 = self.extrapStates[self.det][1]</div>
+<div class="line"><span class="lineno">  235</span>      extrap_Z_mu0 = self.extrapStates[self.det][2]</div>
+<div class="line"><span class="lineno">  236</span>      X_pos0=extrap_X_mu0+self.dimensions_x</div>
+<div class="line"><span class="lineno">  237</span>      Y_pos0=extrap_Y_mu0+self.dimensions_y</div>
+<div class="line"><span class="lineno">  238</span>      self.pos_pad_x0=m.floor(X_pos0/self.pad_size_x)+1</div>
+<div class="line"><span class="lineno">  239</span>      self.pos_pad_y0=m.floor(Y_pos0/self.pad_size_y)+1</div>
+<div class="line"><span class="lineno">  240</span>    <span class="keywordflow">if</span> self.det == <span class="stringliteral">&#39;muon1&#39;</span>:</div>
+<div class="line"><span class="lineno">  241</span>      self.extrap_X_mu1 = self.extrapStates[self.det][0]</div>
+<div class="line"><span class="lineno">  242</span>      self.extrap_Y_mu1 = self.extrapStates[self.det][1]</div>
+<div class="line"><span class="lineno">  243</span>      extrap_Z_mu1 = self.extrapStates[self.det][2]</div>
+<div class="line"><span class="lineno">  244</span>      X_pos1=self.extrap_X_mu1+self.dimensions_x</div>
+<div class="line"><span class="lineno">  245</span>      Y_pos1=self.extrap_Y_mu1+self.dimensions_y</div>
+<div class="line"><span class="lineno">  246</span>      self.pos_pad_x1=m.floor(X_pos1/self.pad_size_x)+1</div>
+<div class="line"><span class="lineno">  247</span>      self.pos_pad_y1=m.floor(Y_pos1/self.pad_size_y)+1</div>
+<div class="line"><span class="lineno">  248</span>    <span class="keywordflow">if</span> self.det == <span class="stringliteral">&#39;muon2&#39;</span>:</div>
+<div class="line"><span class="lineno">  249</span>      extrap_X_mu2 = self.extrapStates[self.det][0]</div>
+<div class="line"><span class="lineno">  250</span>      extrap_Y_mu2 = self.extrapStates[self.det][1]</div>
+<div class="line"><span class="lineno">  251</span>      extrap_Z_mu2 = self.extrapStates[self.det][2]</div>
+<div class="line"><span class="lineno">  252</span>      X_pos2=extrap_X_mu2+self.dimensions_x</div>
+<div class="line"><span class="lineno">  253</span>      Y_pos2=extrap_Y_mu2+self.dimensions_y</div>
+<div class="line"><span class="lineno">  254</span>      self.pos_pad_x2=m.floor(X_pos2/self.pad_size_x)+1</div>
+<div class="line"><span class="lineno">  255</span>      self.pos_pad_y2=m.floor(Y_pos2/self.pad_size_y)+1</div>
+<div class="line"><span class="lineno">  256</span>    <span class="keywordflow">if</span> self.det == <span class="stringliteral">&#39;muon3&#39;</span>:</div>
+<div class="line"><span class="lineno">  257</span>      extrap_X_mu3 = self.extrapStates[self.det][0]</div>
+<div class="line"><span class="lineno">  258</span>      extrap_Y_mu3 = self.extrapStates[self.det][1]</div>
+<div class="line"><span class="lineno">  259</span>      extrap_Z_mu3 = self.extrapStates[self.det][2]</div>
+<div class="line"><span class="lineno">  260</span>      X_pos3=extrap_X_mu3+self.dimensions_x</div>
+<div class="line"><span class="lineno">  261</span>      Y_pos3=extrap_Y_mu3+self.dimensions_y</div>
+<div class="line"><span class="lineno">  262</span>      self.pos_pad_x3=m.floor(X_pos3/self.pad_size_x)+1</div>
+<div class="line"><span class="lineno">  263</span>      self.pos_pad_y3=m.floor(Y_pos3/self.pad_size_y)+1</div>
+<div class="line"><span class="lineno">  264</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -812,8 +812,8 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00100">100</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  100</span> <span class="keyword">def </span>muonDigitHit(self):</div>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00099">99</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   99</span> <span class="keyword">def </span>muonDigitHit(self):</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -833,8 +833,8 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00168">168</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  168</span> <span class="keyword">def </span>PID(self):</div>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00167">167</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  167</span> <span class="keyword">def </span>PID(self):</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -854,20 +854,20 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00326">326</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  326</span> <span class="keyword">def </span>run_elec_ID(self):</div>
-<div class="line"><span class="lineno">  327</span>     <span class="keywordflow">for</span> aClus <span class="keywordflow">in</span> self.sTree.EcalReconstructed:</div>
-<div class="line"><span class="lineno">  328</span>       x1_Clus, y1_Clus, Ene1_Clus =  aClus.X(), aClus.Y(), aClus.RecoE()</div>
-<div class="line"><span class="lineno">  329</span>       Ecal_delta_x=x1_Clus - self.extrap_X_ecal</div>
-<div class="line"><span class="lineno">  330</span>       Ecal_delta_y=y1_Clus - self.extrap_Y_ecal</div>
-<div class="line"><span class="lineno">  331</span>       EP=Ene1_Clus/self.P</div>
-<div class="line"><span class="lineno">  332</span>       <span class="keywordflow">if</span> (EP&gt;self.Ecal_EP_threshold_min <span class="keywordflow">and</span> EP&lt;self.Ecal_EP_threshold_max)  <span class="keywordflow">and</span> m.fabs(Ecal_delta_x)&lt;self.Ecal_dx <span class="keywordflow">and</span> m.fabs(Ecal_delta_y)&lt;self.Ecal_dy:</div>
-<div class="line"><span class="lineno">  333</span>         self.El=<span class="keyword">True</span></div>
-<div class="line"><span class="lineno">  334</span>     <span class="keywordflow">if</span> self.pid10==<span class="keyword">False</span> <span class="keywordflow">and</span> self.pid20==<span class="keyword">False</span> <span class="keywordflow">and</span> self.pid21==<span class="keyword">False</span> <span class="keywordflow">and</span> self.pid30==<span class="keyword">False</span> <span class="keywordflow">and</span> self.El==<span class="keyword">False</span> <span class="keywordflow">and</span> self.pid_mu==<span class="keyword">False</span>: self.Hl=<span class="keyword">True</span></div>
-<div class="line"><span class="lineno">  335</span>     check_vol_ecal=(m.pow(self.extrap_X_ecal,2)/m.pow(self.rx,2))+(m.pow(self.extrap_Y_ecal,2)/m.pow(self.ry,2))</div>
-<div class="line"><span class="lineno">  336</span>     <span class="keywordflow">if</span> check_vol_ecal&gt;1:</div>
-<div class="line"><span class="lineno">  337</span>       self.vol_ecal=<span class="keyword">True</span></div>
-<div class="line"><span class="lineno">  338</span> </div>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00325">325</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  325</span> <span class="keyword">def </span>run_elec_ID(self):</div>
+<div class="line"><span class="lineno">  326</span>     <span class="keywordflow">for</span> aClus <span class="keywordflow">in</span> self.sTree.EcalReconstructed:</div>
+<div class="line"><span class="lineno">  327</span>       x1_Clus, y1_Clus, Ene1_Clus =  aClus.X(), aClus.Y(), aClus.RecoE()</div>
+<div class="line"><span class="lineno">  328</span>       Ecal_delta_x=x1_Clus - self.extrap_X_ecal</div>
+<div class="line"><span class="lineno">  329</span>       Ecal_delta_y=y1_Clus - self.extrap_Y_ecal</div>
+<div class="line"><span class="lineno">  330</span>       EP=Ene1_Clus/self.P</div>
+<div class="line"><span class="lineno">  331</span>       <span class="keywordflow">if</span> (EP&gt;self.Ecal_EP_threshold_min <span class="keywordflow">and</span> EP&lt;self.Ecal_EP_threshold_max)  <span class="keywordflow">and</span> m.fabs(Ecal_delta_x)&lt;self.Ecal_dx <span class="keywordflow">and</span> m.fabs(Ecal_delta_y)&lt;self.Ecal_dy:</div>
+<div class="line"><span class="lineno">  332</span>         self.El=<span class="keyword">True</span></div>
+<div class="line"><span class="lineno">  333</span>     <span class="keywordflow">if</span> self.pid10==<span class="keyword">False</span> <span class="keywordflow">and</span> self.pid20==<span class="keyword">False</span> <span class="keywordflow">and</span> self.pid21==<span class="keyword">False</span> <span class="keywordflow">and</span> self.pid30==<span class="keyword">False</span> <span class="keywordflow">and</span> self.El==<span class="keyword">False</span> <span class="keywordflow">and</span> self.pid_mu==<span class="keyword">False</span>: self.Hl=<span class="keyword">True</span></div>
+<div class="line"><span class="lineno">  334</span>     check_vol_ecal=(m.pow(self.extrap_X_ecal,2)/m.pow(self.rx,2))+(m.pow(self.extrap_Y_ecal,2)/m.pow(self.ry,2))</div>
+<div class="line"><span class="lineno">  335</span>     <span class="keywordflow">if</span> check_vol_ecal&gt;1:</div>
+<div class="line"><span class="lineno">  336</span>       self.vol_ecal=<span class="keyword">True</span></div>
+<div class="line"><span class="lineno">  337</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -887,23 +887,23 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00345">345</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  345</span> <span class="keyword">def </span>run_hcal_ID(self):</div>
-<div class="line"><span class="lineno">  346</span>      N1,N2,M,E_est,E_totale=0,0,0,0.,0.</div>
-<div class="line"><span class="lineno">  347</span>      self.E_tot_h1,self.E_tot_h2,self.E_tot=0.,0.,0.</div>
-<div class="line"><span class="lineno">  348</span>      <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(len(self.hcal1)):</div>
-<div class="line"><span class="lineno">  349</span>        x,y,s,E= self.hcal1[i][0], self.hcal1[i][1], self.hcal1[i][2], self.hcal1[i][3]</div>
-<div class="line"><span class="lineno">  350</span>        delta_x = x-self.extrap_X_hcal</div>
-<div class="line"><span class="lineno">  351</span>        delta_y = y-self.extrap_Y_hcal</div>
-<div class="line"><span class="lineno">  352</span>        <span class="keywordflow">if</span> (m.pow(delta_x,2)+m.pow(delta_y,2))&lt;2500 <span class="keywordflow">and</span> s==0:</div>
-<div class="line"><span class="lineno">  353</span>          self.E_tot_h1+=E</div>
-<div class="line"><span class="lineno">  354</span>        <span class="keywordflow">if</span> (m.pow(delta_x,2)+m.pow(delta_y,2))&lt;2500 <span class="keywordflow">and</span> s==1:</div>
-<div class="line"><span class="lineno">  355</span>          self.E_tot_h2+=E</div>
-<div class="line"><span class="lineno">  356</span>        E_totale+=E</div>
-<div class="line"><span class="lineno">  357</span>      self.E_tot = self.E_tot_h1+self.E_tot_h2</div>
-<div class="line"><span class="lineno">  358</span>      check_vol_hcal=(m.pow(self.extrap_X_hcal,2)/m.pow(self.rx,2))+(m.pow(self.extrap_Y_hcal,2)/m.pow(self.ry,2))</div>
-<div class="line"><span class="lineno">  359</span>      <span class="keywordflow">if</span> check_vol_hcal&gt;1:</div>
-<div class="line"><span class="lineno">  360</span>        self.vol_hcal=<span class="keyword">True</span></div>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00344">344</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  344</span> <span class="keyword">def </span>run_hcal_ID(self):</div>
+<div class="line"><span class="lineno">  345</span>      N1,N2,M,E_est,E_totale=0,0,0,0.,0.</div>
+<div class="line"><span class="lineno">  346</span>      self.E_tot_h1,self.E_tot_h2,self.E_tot=0.,0.,0.</div>
+<div class="line"><span class="lineno">  347</span>      <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(len(self.hcal1)):</div>
+<div class="line"><span class="lineno">  348</span>        x,y,s,E= self.hcal1[i][0], self.hcal1[i][1], self.hcal1[i][2], self.hcal1[i][3]</div>
+<div class="line"><span class="lineno">  349</span>        delta_x = x-self.extrap_X_hcal</div>
+<div class="line"><span class="lineno">  350</span>        delta_y = y-self.extrap_Y_hcal</div>
+<div class="line"><span class="lineno">  351</span>        <span class="keywordflow">if</span> (m.pow(delta_x,2)+m.pow(delta_y,2))&lt;2500 <span class="keywordflow">and</span> s==0:</div>
+<div class="line"><span class="lineno">  352</span>          self.E_tot_h1+=E</div>
+<div class="line"><span class="lineno">  353</span>        <span class="keywordflow">if</span> (m.pow(delta_x,2)+m.pow(delta_y,2))&lt;2500 <span class="keywordflow">and</span> s==1:</div>
+<div class="line"><span class="lineno">  354</span>          self.E_tot_h2+=E</div>
+<div class="line"><span class="lineno">  355</span>        E_totale+=E</div>
+<div class="line"><span class="lineno">  356</span>      self.E_tot = self.E_tot_h1+self.E_tot_h2</div>
+<div class="line"><span class="lineno">  357</span>      check_vol_hcal=(m.pow(self.extrap_X_hcal,2)/m.pow(self.rx,2))+(m.pow(self.extrap_Y_hcal,2)/m.pow(self.ry,2))</div>
+<div class="line"><span class="lineno">  358</span>      <span class="keywordflow">if</span> check_vol_hcal&gt;1:</div>
+<div class="line"><span class="lineno">  359</span>        self.vol_hcal=<span class="keyword">True</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -923,22 +923,22 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00266">266</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  266</span> <span class="keyword">def </span>run_muon_ID(self):</div>
-<div class="line"><span class="lineno">  267</span>     <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(len(self.list2)):</div>
-<div class="line"><span class="lineno">  268</span>        X,Y, e, Mull = self.list2[i][0], self.list2[i][1], self.list2[i][2], self.list2[i][3]</div>
-<div class="line"><span class="lineno">  269</span>        <span class="keywordflow">if</span> Mull==0:</div>
-<div class="line"><span class="lineno">  270</span>            delta_x0 = X-self.pos_pad_x0</div>
-<div class="line"><span class="lineno">  271</span>            delta_y0 = Y-self.pos_pad_y0</div>
-<div class="line"><span class="lineno">  272</span>            <span class="keywordflow">if</span> (self.P&gt;self.P_min00 <span class="keywordflow">and</span> self.P&lt;self.P_max00) <span class="keywordflow">and</span> (delta_x0&gt;self.dx00_min <span class="keywordflow">and</span> delta_x0&lt;self.dx00_max) <span class="keywordflow">and</span> (delta_y0&gt;self.dy00_min <span class="keywordflow">and</span> delta_y0&lt;self.dy00_max):</div>
-<div class="line"><span class="lineno">  273</span>              self.pid00=<span class="keyword">True</span></div>
-<div class="line"><span class="lineno">  274</span>            <span class="keywordflow">if</span> (self.P&gt;self.P_min01 <span class="keywordflow">and</span> self.P&lt;self.P_max01) <span class="keywordflow">and</span> (delta_x0&gt;self.dx01_min <span class="keywordflow">and</span> delta_x0&lt;self.dx01_max) <span class="keywordflow">and</span> (delta_y0&gt;self.dy01_min <span class="keywordflow">and</span> delta_y0&lt;self.dy01_max):</div>
-<div class="line"><span class="lineno">  275</span>              self.pid01=<span class="keyword">True</span></div>
-<div class="line"><span class="lineno">  276</span>            <span class="keywordflow">if</span> (self.P&gt;self.P_min02 <span class="keywordflow">and</span> self.P&lt;self.P_max02) <span class="keywordflow">and</span> (delta_x0&gt;self.dx02_min <span class="keywordflow">and</span> delta_x0&lt;self.dx02_max) <span class="keywordflow">and</span> (delta_y0&gt;self.dy02_min <span class="keywordflow">and</span> delta_y0&lt;self.dy02_max):</div>
-<div class="line"><span class="lineno">  277</span>              self.pid02=<span class="keyword">True</span></div>
-<div class="line"><span class="lineno">  278</span>            <span class="keywordflow">if</span> (self.P&gt;self.P_min03 <span class="keywordflow">and</span> self.P&lt;self.P_max03) <span class="keywordflow">and</span> (delta_x0&gt;self.dx03_min <span class="keywordflow">and</span> delta_x0&lt;self.dx03_max) <span class="keywordflow">and</span> (delta_y0&gt;self.dy03_min <span class="keywordflow">and</span> delta_y0&lt;self.dy03_max):</div>
-<div class="line"><span class="lineno">  279</span>              self.pid03=<span class="keyword">True</span></div>
-<div class="line"><span class="lineno">  280</span> </div>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00265">265</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  265</span> <span class="keyword">def </span>run_muon_ID(self):</div>
+<div class="line"><span class="lineno">  266</span>     <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(len(self.list2)):</div>
+<div class="line"><span class="lineno">  267</span>        X,Y, e, Mull = self.list2[i][0], self.list2[i][1], self.list2[i][2], self.list2[i][3]</div>
+<div class="line"><span class="lineno">  268</span>        <span class="keywordflow">if</span> Mull==0:</div>
+<div class="line"><span class="lineno">  269</span>            delta_x0 = X-self.pos_pad_x0</div>
+<div class="line"><span class="lineno">  270</span>            delta_y0 = Y-self.pos_pad_y0</div>
+<div class="line"><span class="lineno">  271</span>            <span class="keywordflow">if</span> (self.P&gt;self.P_min00 <span class="keywordflow">and</span> self.P&lt;self.P_max00) <span class="keywordflow">and</span> (delta_x0&gt;self.dx00_min <span class="keywordflow">and</span> delta_x0&lt;self.dx00_max) <span class="keywordflow">and</span> (delta_y0&gt;self.dy00_min <span class="keywordflow">and</span> delta_y0&lt;self.dy00_max):</div>
+<div class="line"><span class="lineno">  272</span>              self.pid00=<span class="keyword">True</span></div>
+<div class="line"><span class="lineno">  273</span>            <span class="keywordflow">if</span> (self.P&gt;self.P_min01 <span class="keywordflow">and</span> self.P&lt;self.P_max01) <span class="keywordflow">and</span> (delta_x0&gt;self.dx01_min <span class="keywordflow">and</span> delta_x0&lt;self.dx01_max) <span class="keywordflow">and</span> (delta_y0&gt;self.dy01_min <span class="keywordflow">and</span> delta_y0&lt;self.dy01_max):</div>
+<div class="line"><span class="lineno">  274</span>              self.pid01=<span class="keyword">True</span></div>
+<div class="line"><span class="lineno">  275</span>            <span class="keywordflow">if</span> (self.P&gt;self.P_min02 <span class="keywordflow">and</span> self.P&lt;self.P_max02) <span class="keywordflow">and</span> (delta_x0&gt;self.dx02_min <span class="keywordflow">and</span> delta_x0&lt;self.dx02_max) <span class="keywordflow">and</span> (delta_y0&gt;self.dy02_min <span class="keywordflow">and</span> delta_y0&lt;self.dy02_max):</div>
+<div class="line"><span class="lineno">  276</span>              self.pid02=<span class="keyword">True</span></div>
+<div class="line"><span class="lineno">  277</span>            <span class="keywordflow">if</span> (self.P&gt;self.P_min03 <span class="keywordflow">and</span> self.P&lt;self.P_max03) <span class="keywordflow">and</span> (delta_x0&gt;self.dx03_min <span class="keywordflow">and</span> delta_x0&lt;self.dx03_max) <span class="keywordflow">and</span> (delta_y0&gt;self.dy03_min <span class="keywordflow">and</span> delta_y0&lt;self.dy03_max):</div>
+<div class="line"><span class="lineno">  278</span>              self.pid03=<span class="keyword">True</span></div>
+<div class="line"><span class="lineno">  279</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -963,7 +963,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00316">316</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00315">315</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -987,7 +987,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00312">312</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00311">311</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -1011,7 +1011,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00313">313</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00312">312</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -1027,7 +1027,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00060">60</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00059">59</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -1051,7 +1051,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00284">284</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00283">283</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -1075,7 +1075,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00295">295</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00294">294</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -1099,7 +1099,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00304">304</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00303">303</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -1123,7 +1123,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00285">285</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00284">284</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -1147,7 +1147,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00296">296</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00295">295</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -1171,7 +1171,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00305">305</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00304">304</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -1187,7 +1187,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00233">233</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00232">232</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -1211,7 +1211,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00092">92</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00091">91</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -1227,7 +1227,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00046">46</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00045">45</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -1243,7 +1243,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00047">47</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00046">46</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -1259,7 +1259,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00062">62</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00061">61</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -1275,7 +1275,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00062">62</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00061">61</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -1291,7 +1291,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00063">63</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00062">62</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -1307,7 +1307,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00063">63</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00062">62</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -1323,7 +1323,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00064">64</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00063">63</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -1339,7 +1339,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00064">64</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00063">63</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -1355,7 +1355,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00065">65</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00064">64</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -1371,7 +1371,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00065">65</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00064">64</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -1387,7 +1387,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00067">67</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00066">66</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -1403,7 +1403,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00067">67</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00066">66</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -1419,7 +1419,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00068">68</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00067">67</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -1435,7 +1435,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00068">68</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00067">67</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -1451,7 +1451,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00069">69</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00068">68</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -1467,7 +1467,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00069">69</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00068">68</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -1483,7 +1483,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00070">70</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00069">69</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -1499,7 +1499,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00070">70</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00069">69</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -1515,7 +1515,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00072">72</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00071">71</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -1531,7 +1531,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00072">72</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00071">71</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -1547,7 +1547,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00073">73</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00072">72</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -1563,7 +1563,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00073">73</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00072">72</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -1579,7 +1579,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00074">74</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00073">73</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -1595,7 +1595,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00074">74</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00073">73</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -1611,7 +1611,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00076">76</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00075">75</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -1627,7 +1627,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00076">76</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00075">75</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -1643,7 +1643,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00077">77</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00076">76</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -1659,7 +1659,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00077">77</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00076">76</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -1675,7 +1675,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00062">62</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00061">61</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -1691,7 +1691,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00062">62</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00061">61</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -1707,7 +1707,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00063">63</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00062">62</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -1723,7 +1723,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00063">63</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00062">62</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -1739,7 +1739,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00064">64</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00063">63</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -1755,7 +1755,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00064">64</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00063">63</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -1771,7 +1771,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00065">65</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00064">64</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -1787,7 +1787,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00065">65</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00064">64</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -1803,7 +1803,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00067">67</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00066">66</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -1819,7 +1819,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00067">67</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00066">66</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -1835,7 +1835,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00068">68</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00067">67</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -1851,7 +1851,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00068">68</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00067">67</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -1867,7 +1867,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00069">69</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00068">68</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -1883,7 +1883,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00069">69</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00068">68</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -1899,7 +1899,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00070">70</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00069">69</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -1915,7 +1915,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00070">70</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00069">69</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -1931,7 +1931,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00072">72</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00071">71</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -1947,7 +1947,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00072">72</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00071">71</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -1963,7 +1963,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00073">73</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00072">72</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -1979,7 +1979,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00073">73</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00072">72</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -1995,7 +1995,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00074">74</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00073">73</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -2011,7 +2011,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00074">74</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00073">73</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -2027,7 +2027,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00076">76</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00075">75</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -2043,7 +2043,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00076">76</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00075">75</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -2059,7 +2059,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00077">77</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00076">76</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -2075,7 +2075,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00077">77</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00076">76</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -2099,7 +2099,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00117">117</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00116">116</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -2123,7 +2123,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00128">128</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00127">127</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -2147,7 +2147,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00139">139</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00138">138</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -2171,7 +2171,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00150">150</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00149">149</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -2195,7 +2195,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00154">154</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00153">153</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -2211,7 +2211,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00347">347</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00346">346</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -2227,7 +2227,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00347">347</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00346">346</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -2243,7 +2243,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00054">54</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00053">53</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -2259,7 +2259,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00055">55</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00054">54</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -2275,7 +2275,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00057">57</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00056">56</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -2291,7 +2291,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00056">56</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00055">55</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -2315,7 +2315,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00154">154</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00153">153</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -2331,7 +2331,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00333">333</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00332">332</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -2355,7 +2355,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00097">97</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00096">96</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -2371,7 +2371,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00322">322</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00321">321</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -2387,7 +2387,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00341">341</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00340">340</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -2403,7 +2403,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00242">242</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00241">241</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -2419,7 +2419,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00323">323</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00322">322</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -2443,7 +2443,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00183">183</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00182">182</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -2459,7 +2459,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00243">243</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00242">242</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -2483,7 +2483,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00196">196</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00195">195</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -2507,7 +2507,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00194">194</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00193">193</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -2523,7 +2523,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00018">18</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00017">17</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -2547,7 +2547,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00186">186</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00185">185</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -2563,7 +2563,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00043">43</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00042">42</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -2589,7 +2589,7 @@ Static Public Attributes</h2></td></tr>
 
 <p><a class="el" href="classhcalPoint.html">hcalPoint</a> hits ## </p>
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00086">86</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00085">85</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -2613,7 +2613,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00087">87</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00086">86</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -2629,7 +2629,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00058">58</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00057">57</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -2645,7 +2645,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00059">59</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00058">58</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -2661,7 +2661,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00059">59</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00058">58</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -2685,7 +2685,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00220">220</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00219">219</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -2709,7 +2709,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00175">175</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00174">174</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -2735,7 +2735,7 @@ Static Public Attributes</h2></td></tr>
 
 <p>merging <a class="el" href="classmuonPoint.html">muonPoint</a> hits inside each pad ## </p>
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00102">102</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00101">101</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -2759,7 +2759,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00103">103</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00102">102</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -2783,7 +2783,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00198">198</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00197">197</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -2807,7 +2807,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00110">110</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00109">109</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -2831,7 +2831,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00121">121</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00120">120</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -2855,7 +2855,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00132">132</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00131">131</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -2879,7 +2879,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00143">143</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00142">142</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -2903,7 +2903,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00155">155</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00154">154</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -2927,7 +2927,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00157">157</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00156">156</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -2943,7 +2943,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00050">50</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00049">49</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -2959,7 +2959,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00051">51</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00050">50</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -2975,7 +2975,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00052">52</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00051">51</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -2999,7 +2999,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00088">88</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00087">87</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -3023,7 +3023,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00104">104</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00103">103</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -3039,7 +3039,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00023">23</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00022">22</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -3063,7 +3063,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00191">191</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00190">190</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -3087,7 +3087,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00177">177</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00176">176</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -3111,7 +3111,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00184">184</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00183">183</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -3127,7 +3127,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00062">62</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00061">61</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -3143,7 +3143,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00063">63</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00062">62</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -3159,7 +3159,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00064">64</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00063">63</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -3175,7 +3175,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00065">65</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00064">64</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -3191,7 +3191,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00067">67</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00066">66</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -3207,7 +3207,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00068">68</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00067">67</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -3223,7 +3223,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00069">69</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00068">68</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -3239,7 +3239,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00070">70</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00069">69</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -3255,7 +3255,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00072">72</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00071">71</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -3271,7 +3271,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00073">73</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00072">72</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -3287,7 +3287,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00074">74</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00073">73</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -3303,7 +3303,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00076">76</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00075">75</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -3319,7 +3319,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00077">77</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00076">76</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -3335,7 +3335,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00062">62</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00061">61</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -3351,7 +3351,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00063">63</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00062">62</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -3367,7 +3367,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00064">64</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00063">63</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -3383,7 +3383,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00065">65</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00064">64</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -3399,7 +3399,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00067">67</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00066">66</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -3415,7 +3415,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00068">68</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00067">67</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -3431,7 +3431,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00069">69</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00068">68</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -3447,7 +3447,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00070">70</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00069">69</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -3463,7 +3463,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00072">72</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00071">71</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -3479,7 +3479,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00073">73</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00072">72</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -3495,7 +3495,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00074">74</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00073">73</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -3511,7 +3511,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00076">76</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00075">75</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -3527,7 +3527,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00077">77</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00076">76</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -3543,7 +3543,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00044">44</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00043">43</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -3559,7 +3559,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00045">45</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00044">44</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -3575,7 +3575,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00030">30</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00029">29</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -3591,7 +3591,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00024">24</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00023">23</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -3607,7 +3607,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00020">20</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00019">19</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -3623,7 +3623,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00273">273</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00272">272</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -3639,7 +3639,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00275">275</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00274">274</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -3655,7 +3655,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00277">277</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00276">276</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -3671,7 +3671,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00279">279</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00278">278</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -3695,7 +3695,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00287">287</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00286">286</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -3719,7 +3719,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00289">289</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00288">288</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -3743,7 +3743,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00291">291</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00290">290</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -3767,7 +3767,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00178">178</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00177">177</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -3791,7 +3791,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00298">298</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00297">297</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -3815,7 +3815,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00300">300</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00299">299</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -3839,7 +3839,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00302">302</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00301">301</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -3863,7 +3863,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00307">307</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00306">306</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -3887,7 +3887,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00179">179</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00178">178</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -3911,7 +3911,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00180">180</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00179">179</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -3935,7 +3935,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00188">188</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00187">187</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -3959,7 +3959,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00198">198</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00197">197</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -3983,7 +3983,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00114">114</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00113">113</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -4007,7 +4007,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00125">125</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00124">124</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -4031,7 +4031,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00136">136</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00135">135</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -4055,7 +4055,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00147">147</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00146">146</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -4079,7 +4079,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00115">115</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00114">114</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -4103,7 +4103,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00126">126</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00125">125</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -4127,7 +4127,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00137">137</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00136">136</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -4151,7 +4151,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00148">148</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00147">147</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -4167,7 +4167,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00239">239</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00238">238</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -4183,7 +4183,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00247">247</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00246">246</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -4199,7 +4199,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00255">255</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00254">254</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -4215,7 +4215,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00263">263</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00262">262</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -4231,7 +4231,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00240">240</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00239">239</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -4247,7 +4247,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00248">248</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00247">247</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -4263,7 +4263,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00256">256</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00255">255</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -4287,7 +4287,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00182">182</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00181">181</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -4313,7 +4313,7 @@ Static Public Attributes</h2></td></tr>
 
 <p>extrapolation and pid check ## </p>
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00173">173</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00172">172</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -4337,7 +4337,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00198">198</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00197">197</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -4353,7 +4353,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00023">23</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00022">22</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -4369,7 +4369,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00048">48</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00047">47</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -4385,7 +4385,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00049">49</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00048">48</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -4409,7 +4409,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00095">95</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00094">94</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -4425,7 +4425,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00023">23</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00022">22</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -4441,7 +4441,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00017">17</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00016">16</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -4457,7 +4457,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00053">53</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00052">52</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -4473,7 +4473,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00337">337</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00336">336</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -4497,7 +4497,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00181">181</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00180">180</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -4521,7 +4521,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00318">318</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00317">317</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -4545,7 +4545,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00093">93</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00092">92</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -4571,7 +4571,7 @@ Static Public Attributes</h2></td></tr>
 
 <p>print 'mu0 = ',ahit.GetX(),ahit.GetY(),ahit.GetEnergyLoss()/u.MeV,ahit.GetZ() </p>
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00112">112</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00111">111</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -4597,7 +4597,7 @@ Static Public Attributes</h2></td></tr>
 
 <p>print 'mu1 = ',ahit.GetX(),ahit.GetY(),ahit.GetEnergyLoss()/u.MeV,ahit.GetZ() </p>
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00123">123</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00122">122</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -4623,7 +4623,7 @@ Static Public Attributes</h2></td></tr>
 
 <p>print 'mu2 = ',ahit.GetX(),ahit.GetY(),ahit.GetEnergyLoss()/u.MeV,ahit.GetZ() </p>
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00134">134</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00133">133</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -4649,7 +4649,7 @@ Static Public Attributes</h2></td></tr>
 
 <p>print 'mu3 = ',ahit.GetX(),ahit.GetY(),ahit.GetEnergyLoss()/u.MeV,ahit.GetZ() </p>
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00145">145</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00144">144</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -4673,7 +4673,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00157">157</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00156">156</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -4697,7 +4697,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00094">94</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00093">93</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -4721,7 +4721,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00113">113</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00112">112</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -4745,7 +4745,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00124">124</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00123">123</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -4769,7 +4769,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00135">135</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00134">134</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -4793,7 +4793,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00146">146</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00145">145</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -4817,7 +4817,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00157">157</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00156">156</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>
@@ -4833,7 +4833,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00029">29</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipPid_8py_source.html#l00028">28</a> of file <a class="el" href="shipPid_8py_source.html">shipPid.py</a>.</p>
 
 </div>
 </div>

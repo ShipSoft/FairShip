@@ -606,8 +606,8 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  126</span>   <span class="keywordflow">if</span> (<a class="code hl_variable" href="classFixedTargetGenerator.html#ad27ea400e92d6ae34e3c8f5da1c239fb">Option</a> == <span class="stringliteral">&quot;Primary&quot;</span>){</div>
 <div class="line"><span class="lineno">  127</span>    fPythia-&gt;settings.mode(<span class="stringliteral">&quot;Beams:idA&quot;</span>,  2212);</div>
 <div class="line"><span class="lineno">  128</span>    fPythia-&gt;settings.mode(<span class="stringliteral">&quot;Beams:frameType&quot;</span>,  2);</div>
-<div class="line"><span class="lineno">  129</span>    fPythia-&gt;settings.parm(<span class="stringliteral">&quot;Beams:eA&quot;</span>,<a class="code hl_variable" href="classFixedTargetGenerator.html#acc2a9e21ec646c4000f1ab0d2c184ed4">fMom</a>);</div>
-<div class="line"><span class="lineno">  130</span>    fPythia-&gt;settings.parm(<span class="stringliteral">&quot;Beams:eB&quot;</span>,0.);</div>
+<div class="line"><span class="lineno">  129</span>    fPythia-&gt;settings.parm(<span class="stringliteral">&quot;Beams:eA&quot;</span>, <a class="code hl_variable" href="classFixedTargetGenerator.html#acc2a9e21ec646c4000f1ab0d2c184ed4">fMom</a>);   <span class="comment">// codespell:ignore parm</span></div>
+<div class="line"><span class="lineno">  130</span>    fPythia-&gt;settings.parm(<span class="stringliteral">&quot;Beams:eB&quot;</span>, 0.);     <span class="comment">// codespell:ignore parm</span></div>
 <div class="line"><span class="lineno">  131</span>   }</div>
 <div class="line"><span class="lineno">  132</span>   <span class="keywordflow">if</span> (<a class="code hl_variable" href="classFixedTargetGenerator.html#a63249b2325a26dce35d3e8a09dbdfbdb">JpsiMainly</a>){</div>
 <div class="line"><span class="lineno">  133</span><span class="comment">// use this for all onia productions</span></div>

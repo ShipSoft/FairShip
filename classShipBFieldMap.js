@@ -1,7 +1,7 @@
 var classShipBFieldMap =
 [
     [ "binPair", "classShipBFieldMap.html#a1f037b96866ce64297220a5065b24aa6", null ],
-    [ "floatArray", "classShipBFieldMap.html#a21ba2ca604f36c99d2f427934ebbd2dc", null ],
+    [ "floatArray", "classShipBFieldMap.html#a38c17ec021e162b155d75d5e00660c51", null ],
     [ "CoordAxis", "classShipBFieldMap.html#a861764baf5e15176bc69c9942c2a9c65", [
       [ "xAxis", "classShipBFieldMap.html#a861764baf5e15176bc69c9942c2a9c65ad5cd59e6ead2d6f825344e8cbf5bc68e", null ],
       [ "yAxis", "classShipBFieldMap.html#a861764baf5e15176bc69c9942c2a9c65a2a92b59da7fcc9aa9e15dcd556326087", null ],

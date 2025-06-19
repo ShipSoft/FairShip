@@ -382,7 +382,7 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">  158</span>   f=open(path+<span class="stringliteral">&quot;run&quot;</span>+str(i)+<span class="stringliteral">&quot;/log&quot;</span>+str(i))</div>
 <div class="line"><span class="lineno">  159</span>   success = <span class="keyword">False</span></div>
 <div class="line"><span class="lineno">  160</span>   <span class="keywordflow">for</span> l <span class="keywordflow">in</span> f.readlines():</div>
-<div class="line"><span class="lineno">  161</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> l.find(<span class="stringliteral">&#39;Macro finished succesfully&#39;</span>)&lt;0: success = <span class="keyword">True</span></div>
+<div class="line"><span class="lineno">  161</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> l.find(<span class="stringliteral">&#39;Macro finished successfully&#39;</span>)&lt;0: success = <span class="keyword">True</span></div>
 <div class="line"><span class="lineno">  162</span>   <span class="keywordflow">if</span> <span class="keywordflow">not</span> success:</div>
 <div class="line"><span class="lineno">  163</span>     print(<span class="stringliteral">&quot;job not finished properly&quot;</span>,fName)</div>
 <div class="line"><span class="lineno">  164</span>     <span class="keywordflow">continue</span></div>

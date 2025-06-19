@@ -148,7 +148,7 @@ var geometry__config_8py =
     [ "VacBox_x", "geometry__config_8py.html#a006f4691048fc161903c9bd41808c235", null ],
     [ "VacBox_y", "geometry__config_8py.html#a09da47eae7732b61ad0b63414d6ad789", null ],
     [ "ViewAngle", "geometry__config_8py.html#a24a3473216f073df246d47bb6ebc31b4", null ],
-    [ "WallThickness", "geometry__config_8py.html#ad587d8bd035f2b80e4ab452fbff9dc39", null ],
+    [ "wall_thickness", "geometry__config_8py.html#a744ddc06a6a0a474a5c9e81840137e80", null ],
     [ "windowBulge", "geometry__config_8py.html#a37c00ab3b5c28e8ee626d54ab14e059e", null ],
     [ "WireThickness", "geometry__config_8py.html#a5d8ade997b17adce899808142b17513c", null ],
     [ "WithConstField", "geometry__config_8py.html#a0a24d61ac825d1743506d0e6ac77f390", null ],

@@ -487,7 +487,7 @@ $(document).ready(function(){initNavTree('geometry__config_8py_source.html','');
 <div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span>    c.decayVolume.length = 50 * u.m</div>
 <div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span> </div>
 <div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span>    <span class="comment"># make z coordinates for the decay volume and tracking stations relative to T4z</span></div>
-<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span>    <span class="comment"># eventually, the only parameter which needs to be changed when the active shielding lenght changes.</span></div>
+<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span>    <span class="comment"># eventually, the only parameter which needs to be changed when the active shielding length changes.</span></div>
 <div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span>    c.z = 89.57 * u.m  <span class="comment"># absolute position of spectrometer magnet</span></div>
 <div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span>    c.decayVolume.z = (</div>
 <div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span>        c.z - 31.450 * u.m</div>
@@ -523,7 +523,7 @@ $(document).ready(function(){initNavTree('geometry__config_8py_source.html','');
 <div class="line"><a id="l00424" name="l00424"></a><span class="lineno"><a class="line" href="namespacegeometry__config.html#ac311c2947ebd2f15ed64b6e166510670">  424</a></span>        z1 = c.z - TrMagGap - TrGap</div>
 <div class="line"><a id="l00425" name="l00425"></a><span class="lineno"><a class="line" href="namespacegeometry__config.html#aa9bfd1248b082991b145128c09be5e4f">  425</a></span>        c.TrackStation1 = <a class="code hl_class" href="classShipGeoConfig_1_1AttrDict.html">AttrDict</a>(z=z1)</div>
 <div class="line"><a id="l00426" name="l00426"></a><span class="lineno">  426</span> </div>
-<div class="line"><a id="l00427" name="l00427"></a><span class="lineno">  427</span>        <span class="comment"># positions and lenghts of vacuum tube segments (for backward compatibility)</span></div>
+<div class="line"><a id="l00427" name="l00427"></a><span class="lineno">  427</span>        <span class="comment"># positions and lengths of vacuum tube segments (for backward compatibility)</span></div>
 <div class="line"><a id="l00428" name="l00428"></a><span class="lineno"><a class="line" href="namespacegeometry__config.html#ad52d24be002c9de5acc13e94d84101ee">  428</a></span>        c.Chamber1 = <a class="code hl_class" href="classShipGeoConfig_1_1AttrDict.html">AttrDict</a>(z=z4 - 4666.0 * u.cm - magnetIncrease - extraVesselLength)</div>
 <div class="line"><a id="l00429" name="l00429"></a><span class="lineno"><a class="line" href="namespacegeometry__config.html#a7e18eb2f2a30ed69f514a7b089849eda">  429</a></span>        c.Chamber6 = <a class="code hl_class" href="classShipGeoConfig_1_1AttrDict.html">AttrDict</a>(z=z4 + 30.0 * u.cm + windowBulge / 2.0)</div>
 <div class="line"><a id="l00430" name="l00430"></a><span class="lineno">  430</span> </div>
@@ -545,9 +545,9 @@ $(document).ready(function(){initNavTree('geometry__config_8py_source.html','');
 <div class="line"><a id="l00446" name="l00446"></a><span class="lineno">  446</span>        c.strawtubes.FrameLateralWidth = 0.17 * u.m</div>
 <div class="line"><a id="l00447" name="l00447"></a><span class="lineno">  447</span>        c.strawtubes.DeltazFrame = 2.5 * u.cm</div>
 <div class="line"><a id="l00448" name="l00448"></a><span class="lineno">  448</span> </div>
-<div class="line"><a id="l00449" name="l00449"></a><span class="lineno"><a class="line" href="namespacegeometry__config.html#ad587d8bd035f2b80e4ab452fbff9dc39">  449</a></span>    c.strawtubes.WallThickness = 0.0036 * u.cm</div>
+<div class="line"><a id="l00449" name="l00449"></a><span class="lineno"><a class="line" href="namespacegeometry__config.html#a744ddc06a6a0a474a5c9e81840137e80">  449</a></span>    c.strawtubes.wall_thickness = 0.0036 * u.cm</div>
 <div class="line"><a id="l00450" name="l00450"></a><span class="lineno"><a class="line" href="namespacegeometry__config.html#a944da21619bf1767dd0e9559aae56c67">  450</a></span>    c.strawtubes.OuterStrawDiameter = (</div>
-<div class="line"><a id="l00451" name="l00451"></a><span class="lineno">  451</span>        c.strawtubes.InnerStrawDiameter + 2 * c.strawtubes.WallThickness</div>
+<div class="line"><a id="l00451" name="l00451"></a><span class="lineno">  451</span>        c.strawtubes.InnerStrawDiameter + 2 * c.strawtubes.wall_thickness</div>
 <div class="line"><a id="l00452" name="l00452"></a><span class="lineno">  452</span>    )</div>
 <div class="line"><a id="l00453" name="l00453"></a><span class="lineno">  453</span> </div>
 <div class="line"><a id="l00454" name="l00454"></a><span class="lineno"><a class="line" href="namespacegeometry__config.html#a0f793e46a65aa8cc954647672303ea19">  454</a></span>    c.strawtubes.StrawsPerLayer = int(c.Yheight / c.strawtubes.StrawPitch)</div>

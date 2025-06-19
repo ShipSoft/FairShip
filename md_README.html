@@ -173,14 +173,20 @@ Run instructions</h1>
 <div class="fragment"><div class="line">alienv enter FairShip/latest</div>
 </div><!-- fragment --><p>Now you can for example simulate some events, run reconstruction and analysis:</p>
 <div class="fragment"><div class="line">python $FAIRSHIP/macro/run_simScript.py</div>
-<div class="line">&gt;&gt; Macro finished succesfully.</div>
-<div class="line">&gt;&gt; Output file is  ship.conical.Pythia8-TGeant4.root</div>
+<div class="line">&gt;&gt; [...]</div>
+<div class="line">&gt;&gt; Macro finished successfully.</div>
+<div class="line">&gt;&gt; [...]</div>
+<div class="line">&gt;&gt; Output file is  ./ship.conical.Pythia8-TGeant4.root</div>
+<div class="line">&gt;&gt; [...]</div>
 <div class="line"> </div>
 <div class="line">python $FAIRSHIP/macro/ShipReco.py -f ship.conical.Pythia8-TGeant4.root -g geofile_full.conical.Pythia8-TGeant4.root</div>
-<div class="line">&gt;&gt; finishing pyExit</div>
+<div class="line">&gt;&gt; [...]</div>
+<div class="line">&gt;&gt; finished writing tree</div>
+<div class="line">&gt;&gt; Exit normally</div>
 <div class="line"> </div>
 <div class="line">python -i $FAIRSHIP/macro/ShipAna.py -f ship.conical.Pythia8-TGeant4_rec.root -g geofile_full.conical.Pythia8-TGeant4.root</div>
 <div class="line">&gt;&gt; finished making plots</div>
+<div class="line">&gt;&gt; Exit normally</div>
 </div><!-- fragment --><p> Alternatively, you can make use of the experimental <code>analysis_toolkit</code> to run a simple pre-selection check on the events. An example script can be found in <code>$FAIRSHIP/examples/analysis_example.py</code>.</p>
 <p>Simulate MC signal events with EventCalc:</p>
 <div class="fragment"><div class="line">python $FAIRSHIP/macro/convertEvtCalc.py -f test_input.dat -o test_folder</div>

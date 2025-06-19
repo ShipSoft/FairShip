@@ -214,7 +214,7 @@ $(document).ready(function(){initNavTree('runCharmHadProd_8py_source.html',''); 
 <div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>   f=open(path+<span class="stringliteral">&quot;run&quot;</span>+str(i)+<span class="stringliteral">&quot;/log&quot;</span>+str(i))</div>
 <div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>   success = <span class="keyword">False</span></div>
 <div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>   <span class="keywordflow">for</span> l <span class="keywordflow">in</span> f.readlines():</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> l.find(<span class="stringliteral">&#39;Macro finished succesfully&#39;</span>)&lt;0: success = <span class="keyword">True</span></div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> l.find(<span class="stringliteral">&#39;Macro finished successfully&#39;</span>)&lt;0: success = <span class="keyword">True</span></div>
 <div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>   <span class="keywordflow">if</span> <span class="keywordflow">not</span> success:</div>
 <div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>     print(<span class="stringliteral">&quot;job not finished properly&quot;</span>,fName)</div>
 <div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>     <span class="keywordflow">continue</span></div>

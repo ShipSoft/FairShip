@@ -129,7 +129,7 @@ Variables</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">   28</span><span class="keyword">def </span>main(arguments):</div>
 <div class="line"><span class="lineno">   29</span>    logger.info(<span class="stringliteral">&quot;file: %s&quot;</span> % arguments.config_file)</div>
 <div class="line"><span class="lineno">   30</span>    <span class="keywordflow">if</span> arguments.params <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>:</div>
-<div class="line"><span class="lineno">   31</span>        logger.info(<span class="stringliteral">&quot;paramters: %s&quot;</span> % arguments.params)</div>
+<div class="line"><span class="lineno">   31</span>        logger.info(<span class="stringliteral">&quot;parameters: %s&quot;</span> % arguments.params)</div>
 <div class="line"><span class="lineno">   32</span>    ConfigRegistry.loadpy(arguments.config_file, **arguments.params)</div>
 <div class="line"><span class="lineno">   33</span>    <span class="comment"># ConfigRegistry.loadpy(arguments.config_file, muShieldDesign=2, targetOpt=5)</span></div>
 <div class="line"><span class="lineno">   34</span>    <span class="keywordflow">for</span> k, v <span class="keywordflow">in</span> ConfigRegistry().items():</div>
