@@ -2,7 +2,7 @@ import ROOT, os
 import shipunit as u
 
 def configure(CMBG, ship_geo):
-    #handles external variables for the Cosmic Muon Backgorund Generator within FairShip
+    #handles external variables for the Cosmic Muon Background Generator within FairShip
     Z1 = ship_geo.MuonStation3.z # 3900
     Z2 = ship_geo.vetoStation.z # -1968
     Z3 = ship_geo.chambers.Tub1length # 250

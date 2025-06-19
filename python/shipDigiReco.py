@@ -283,7 +283,7 @@ class ShipDigiReco:
    self.input_hits = list_hits_above_threshold
    list_clusters_of_hits = self.Clustering()
 
-   # step 2: to check if clusters can be split do clustering separtely in the XZ and YZ planes
+   # step 2: to check if clusters can be split do clustering separately in the XZ and YZ planes
 
    self.step = 2
    # print "--- digitizeSplitcal ==== STEP 2 ==== "

@@ -10,7 +10,7 @@ shipRoot_conf.configure()
 
 
 # IMPORTANT
-# Before runnig this script please run this command in FairShip bash if you are dealing with the neutrino detector:
+# Before running this script please run this command in FairShip bash if you are dealing with the neutrino detector:
 # export GXMLPATH='/eos/experiment/ship/user/aiuliano/GENIE_FNAL_nu_splines'
 # this will disable Genie decays for charm particles and tau
 
@@ -43,7 +43,7 @@ def get_arguments(): #available options
   ap.add_argument('-c','--crosssectiondir', type=str, help="directory with neutrino splines crosssection", dest='splinedir', default=defaultsplinedir)
   ap.add_argument('-t', '--target', type=str, help="target material", dest='target', default='iron')
   ap.add_argument('-n', '--nevents', type=int, help="number of events", dest='nevents', default=100)
-  ap.add_argument('-e', '--event-generator-list', type=str, help="event generator list", dest='evtype', default=None) # Possbile evtypes: CC, CCDIS, CCQE, CharmCCDIS, RES, CCRES, see other evtypes in $GENIE/config/EventGeneratorListAssembler.xml
+  ap.add_argument('-e', '--event-generator-list', type=str, help="event generator list", dest='evtype', default=None)  # Possible evtypes: CC, CCDIS, CCQE, CharmCCDIS, RES, CCRES, see other evtypes in $GENIE/config/EventGeneratorListAssembler.xml
   ap.add_argument("--nudet", dest="nudet", help="option for neutrino detector", required=False, action="store_true")
 
   ap1 = subparsers.add_parser('spline',help="make a new cross section spline file")

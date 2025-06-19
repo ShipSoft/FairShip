@@ -62,8 +62,8 @@ Bool_t HNLPythia8Generator::Init()
       fPythia->settings.mode("Beams:idA", fId);
       fPythia->settings.mode("Beams:idB", 2212);
       fPythia->settings.mode("Beams:frameType", 2);
-      fPythia->settings.parm("Beams:eA", fMom);
-      fPythia->settings.parm("Beams:eB", 0.);
+      fPythia->settings.parm("Beams:eA", fMom);  // codespell:ignore parm
+      fPythia->settings.parm("Beams:eB", 0.);  // codespell:ignore parm
   }
   TDatabasePDG* pdgBase = TDatabasePDG::Instance();
   Double_t root_ctau = pdgBase->GetParticle(fHNL)->Lifetime();
@@ -160,7 +160,7 @@ Bool_t HNLPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
          Double_t gam  = e/TMath::Sqrt(e*e-p*p);
          Double_t beta = p/e;
          tS = tp + LS/beta; // units ? [mm/c] + [mm/beta] (beta is dimensionless speed, and c=1 here)
-                            // if one would use [s], then tS = tp/(cm*c_light) + (LS/cm)/(beta*c_light) = tS/(cm*c_light) i.e. units look consisent
+                            // if one would use [s], then tS = tp/(cm*c_light) + (LS/cm)/(beta*c_light) = tS/(cm*c_light) i.e. units look consistent
          w = TMath::Exp(-LS/(beta*gam*fctau))*( (fLmax-fLmin)/(beta*gam*fctau) );
          im  = (Int_t)fPythia->event[i].mother1();
          zm  =fPythia->event[im].zProd();
@@ -220,7 +220,7 @@ Bool_t HNLPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
 
    // go over daughters and store them on the stack, starting from 2 to account for HNL and its mother
    for(std::vector<int>::iterator it = dec_chain.begin() + 2; it != dec_chain.end(); ++it){
-     // pythia index of the paricle to store
+     // pythia index of the particle to store
      int k = *it;
      // find mother position on the output stack: impy -> im
      int impy =fPythia->event[k].mother1();

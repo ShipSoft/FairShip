@@ -108,7 +108,7 @@ def run():
  rtime = timer.RealTime()
  ctime = timer.CpuTime()
  print(' ')
- print("Macro finished succesfully.")
+ print("Macro finished successfully.")
  print("Output file is ",  outFile)
  print("Real time ",rtime, " s, CPU time ",ctime,"s")
 

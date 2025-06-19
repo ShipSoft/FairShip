@@ -45,7 +45,7 @@ void splitcalCluster::ComputeEtaPhiE()
   // Compute energy weighted average for hits in the same layer
   // This is in preparation of the linear fit to get the cluster eta and phi
 
-  // maps to copute the weighted average of all the hits in the same layer
+  // maps to compute the weighted average of all the hits in the same layer
   std::map<int, double> mapLayerWeigthedX;
   std::map<int, double> mapLayerWeigthedY;
   std::map<int, double> mapLayerZ1;

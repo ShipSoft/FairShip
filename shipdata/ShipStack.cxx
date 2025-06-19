@@ -105,7 +105,7 @@ void ShipStack::PushTrack(Int_t toBeDone, Int_t parentId, Int_t pdgCode,
   TParticle* particle =
     new(partArray[fNParticles++]) TParticle(pdgCode, trackId, parentId,nPoints,
         daughter1Id, daughter2Id, px, py, pz, e, vx, vy, vz, time);
-// from root, how does this fit ? misuse of status and mother2 ??? status is used for trackID definetely
+// from root, how does this fit ? misuse of status and mother2 ??? status is used for trackID definitely
 // TParticle(Int_t pdg, Int_t status, Int_t mother1, Int_t mother2,
 //   Int_t daughter1, Int_t daughter2, Double_t px, Double_t py, Double_t pz, Double_t etot, Double_t vx, Double_t vy, Double_t vz, Double_t time)
   particle->SetPolarisation(polx, poly, polz);

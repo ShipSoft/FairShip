@@ -43,7 +43,7 @@ def lhcbstyleSetup():
 # "Landscape histograms":
 #
 # The style here is designed for more or less square plots.
-# For longer histograms, or canvas with many pads, adjustements are needed.
+# For longer histograms, or canvas with many pads, adjustments are needed.
 # For instance, for a canvas with 1x5 histograms:
 #  TCanvas* c1 = new TCanvas("c1", "L0 muons", 600, 800)
 #  c1.Divide(1,5)

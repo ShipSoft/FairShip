@@ -121,7 +121,7 @@ if allProds:
 # checked, 13 variables, parentid = 11
  productions["Yandex2"]     = {"stats":{10.:[1E10]},
                                "file":"Mbias/pythia8_Geant4_total_Yandex2.root" }
-# now with mu momentum at prodcution, NOT after hadron absorber
+# now with mu momentum at production, NOT after hadron absorber
 productions["Yandex3"]     = {"stats":{10.:[1E10]},
                                "file":"Mbias/pythia8_Geant4_total_Yandex3.root" }
 # checked, 13 variables, parentid = 11
@@ -375,7 +375,7 @@ def mergeWithCharm(splitOnly=False,ramOnly=False):
       cln = h[akey].Class().GetName()
       if not cln.find('TH')<0:   h[akey].Write()
      N.Close()
-    print(" progress: splitted "+opt)
+    print(" progress: split "+opt)
 def test(fname):
  h['f'] = ROOT.TFile.Open(fname)
  sTree = h['f'].FindObjectAny('pythia8-Geant4')

@@ -388,7 +388,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.decayVolume.length = 50 * u.m
 
     # make z coordinates for the decay volume and tracking stations relative to T4z
-    # eventually, the only parameter which needs to be changed when the active shielding lenght changes.
+    # eventually, the only parameter which needs to be changed when the active shielding length changes.
     c.z = 89.57 * u.m  # absolute position of spectrometer magnet
     c.decayVolume.z = (
         c.z - 31.450 * u.m
@@ -424,7 +424,7 @@ with ConfigRegistry.register_config("basic") as c:
         z1 = c.z - TrMagGap - TrGap
         c.TrackStation1 = AttrDict(z=z1)
 
-        # positions and lenghts of vacuum tube segments (for backward compatibility)
+        # positions and lengths of vacuum tube segments (for backward compatibility)
         c.Chamber1 = AttrDict(z=z4 - 4666.0 * u.cm - magnetIncrease - extraVesselLength)
         c.Chamber6 = AttrDict(z=z4 + 30.0 * u.cm + windowBulge / 2.0)
 
@@ -446,9 +446,9 @@ with ConfigRegistry.register_config("basic") as c:
         c.strawtubes.FrameLateralWidth = 0.17 * u.m
         c.strawtubes.DeltazFrame = 2.5 * u.cm
 
-    c.strawtubes.WallThickness = 0.0036 * u.cm
+    c.strawtubes.wall_thickness = 0.0036 * u.cm
     c.strawtubes.OuterStrawDiameter = (
-        c.strawtubes.InnerStrawDiameter + 2 * c.strawtubes.WallThickness
+        c.strawtubes.InnerStrawDiameter + 2 * c.strawtubes.wall_thickness
     )
 
     c.strawtubes.StrawsPerLayer = int(c.Yheight / c.strawtubes.StrawPitch)

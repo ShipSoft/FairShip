@@ -133,7 +133,7 @@ for n in range(nEvents):
        par= P8.event[n]
        ptGM = ROOT.TMath.Sqrt(sTree.mpx*sTree.mpx+sTree.mpy*sTree.mpy)
        Ntup.Fill(par.id(),par.px(),par.py(),par.pz(),par.e(),par.m(),wspill,sTree.id,sTree.px,sTree.py,sTree.pz,sTree.E,sTree.M,ptGM,sTree.mpz)
-       #count total muons from charm/spill, and within some angluar range..
+       # count total muons from charm/spill, and within some angular range..
        if idabs==16 or idabs==14 or idabs==12:
          idhnu=idabs+1000
          if par.id()<0: idhnu+=1000

@@ -21,7 +21,7 @@ def getParameter(x, ship_geo, latestShipGeo):
     a = getattr(ship_geo, top)
     if hasattr(a, last):
         return getattr(a, last)
-        # not in the list of recorded parameteres. probably added after
+        # not in the list of recorded parameters. probably added after
         # creation of file. Check newest geometry_config:
     a = getattr(latestShipGeo, top)
     return getattr(a, last)

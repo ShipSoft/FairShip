@@ -252,7 +252,7 @@ class HNLbranchings():
 
     def Integrand(self,xx,xi):
         """
-        Function to integrate needed for numerical integration using ROOT. Needed for 3-body decays trough W boson.
+        Function to integrate needed for numerical integration using ROOT. Needed for 3-body decays through W boson.
         First argument is a list of 1 number, argument. Second is the list of 3 numbers xi = mi/MN
         """
         x = xx[0]
@@ -270,7 +270,7 @@ class HNLbranchings():
 
     def I(self,x1,x2,x3):
         """
-        Numerical integral needed for 3-body decays trough W boson.
+        Numerical integral needed for 3-body decays through W boson.
         xi = mi/MN
         """
         theFunction = self.Integrand

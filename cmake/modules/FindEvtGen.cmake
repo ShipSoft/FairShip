@@ -5,7 +5,7 @@
  #         GNU Lesser General Public Licence version 3 (LGPL) version 3,        #
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
-# - Try to find EvtGen instalation
+# - Try to find EvtGen installation
 # Once done this will define
 #
 

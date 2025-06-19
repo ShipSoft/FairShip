@@ -216,7 +216,7 @@ class veto : public FairDetector
                                    Bool_t sens);
 
     /** Adds a custom block of OuterWall+InnerWall+LiSc+Support ribs for a given distance along z.
-     * Ensures consistency in implementation throught the z.
+     * Ensures consistency in implementation throughout the z.
      */
     void AddBlock(TGeoVolumeAssembly* tInnerWall,
                   TGeoVolumeAssembly* tDecayVacuum,
