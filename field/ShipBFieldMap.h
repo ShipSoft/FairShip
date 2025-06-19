@@ -22,9 +22,9 @@ class ShipBFieldMap : public TVirtualMagField
     /*!
       \param [in] label A descriptive name/title/label for this field
       \param [in] mapFileName The name of the field map file (distances in cm, fields in Tesla)
-      \param [in] xOffset The x global co-ordinate shift to position the field map (cm)
-      \param [in] yOffset The y global co-ordinate shift to position the field map (cm)
-      \param [in] zOffset The z global co-ordinate shift to position the field map (cm)
+      \param [in] xOffset The x global coordinate shift to position the field map (cm)
+      \param [in] yOffset The y global coordinate shift to position the field map (cm)
+      \param [in] zOffset The z global coordinate shift to position the field map (cm)
       \param [in] phi The first Euler rotation angle about the z axis (degrees)
       \param [in] theta The second Euler rotation angle about the new x axis (degrees)
       \param [in] psi The third Euler rotation angle about the new z axis (degrees)
@@ -41,9 +41,9 @@ class ShipBFieldMap : public TVirtualMagField
     /*!
       \param [in] rhs The ShipBFieldMap object to be copied (retaining any symmetry)
       \param [in] newName The new description or title of the field
-      \param [in] newXOffset The new global offset x co-ordinate (cm)
-      \param [in] newYOffset The new global offset y co-ordinate (cm)
-      \param [in] newZOffset The new global offset z co-ordinate (cm)
+      \param [in] newXOffset The new global offset x coordinate (cm)
+      \param [in] newYOffset The new global offset y coordinate (cm)
+      \param [in] newZOffset The new global offset z coordinate (cm)
       \param [in] newPhi The first Euler rotation angle about the z axis (degrees)
       \param [in] newTheta The second Euler rotation angle about the new x axis (degrees)
       \param [in] newPsi The third Euler rotation angle about the new z axis (degrees)
@@ -60,7 +60,7 @@ class ShipBFieldMap : public TVirtualMagField
 
     //! Implementation of evaluating the B field
     /*!
-      \param [in] position The x,y,z global co-ordinates of the point (cm)
+      \param [in] position The x,y,z global coordinates of the point (cm)
       \param [out] B The x,y,z components of the magnetic field (kGauss = 0.1 tesla)
     */
     virtual void Field(const Double_t* position, Double_t* B);
@@ -74,21 +74,21 @@ class ShipBFieldMap : public TVirtualMagField
     */
     floatArray* getFieldMap() const {return fieldMap_;}
 
-    //! Set the x global co-ordinate shift
+    //! Set the x global coordinate shift
     /*!
-      \param [in] xValue The value of the x global co-ordinate shift (cm)
+      \param [in] xValue The value of the x global coordinate shift (cm)
     */
     void SetXOffset(Float_t xValue) {xOffset_ = xValue;}
 
-    //! Set the y global co-ordinate shift
+    //! Set the y global coordinate shift
     /*!
-      \param [in] yValue The value of the y global co-ordinate shift (cm)
+      \param [in] yValue The value of the y global coordinate shift (cm)
     */
     void SetYOffset(Float_t yValue) {yOffset_ = yValue;}
 
-    //! Set the z global co-ordinate shift
+    //! Set the z global coordinate shift
     /*!
-      \param [in] zValue The value of the z global co-ordinate shift (cm)
+      \param [in] zValue The value of the z global coordinate shift (cm)
     */
     void SetZOffset(Float_t zValue) {zOffset_ = zValue;}
 
@@ -147,7 +147,7 @@ class ShipBFieldMap : public TVirtualMagField
     */
     Int_t GetNz() const {return Nz_;}
 
-    //! Get the total numer of bins
+    //! Get the total number of bins
     /*!
       \returns the total number of bins
     */
@@ -155,13 +155,13 @@ class ShipBFieldMap : public TVirtualMagField
 
     //! Get the minimum value of x for the map
     /*!
-      \returns the minimum x co-ordinate (cm)
+      \returns the minimum x coordinate (cm)
     */
     Float_t GetXMin() const {return xMin_;}
 
     //! Get the maximum value of x for the map
     /*!
-      \returns the maximum x co-ordinate (cm)
+      \returns the maximum x coordinate (cm)
     */
     Float_t GetXMax() const {return xMax_;}
 
@@ -171,21 +171,21 @@ class ShipBFieldMap : public TVirtualMagField
     */
     Float_t GetdX() const {return dx_;}
 
-     //! Get the x co-ordinate range for the map
+     //! Get the x coordinate range for the map
     /*!
-      \returns the x co-ordinate range (cm)
+      \returns the x coordinate range (cm)
     */
     Float_t GetXRange() const {return xRange_;}
 
    //! Get the minimum value of y for the map
     /*!
-      \returns the minimum y co-ordinate (cm)
+      \returns the minimum y coordinate (cm)
     */
     Float_t GetYMin() const {return yMin_;}
 
     //! Get the maximum value of y for the map
     /*!
-      \returns the maximum y co-ordinate (cm)
+      \returns the maximum y coordinate (cm)
     */
     Float_t GetYMax() const {return yMax_;}
 
@@ -195,21 +195,21 @@ class ShipBFieldMap : public TVirtualMagField
     */
     Float_t GetdY() const {return dy_;}
 
-     //! Get the y co-ordinate range for the map
+     //! Get the y coordinate range for the map
     /*!
-      \returns the y co-ordinate range (cm)
+      \returns the y coordinate range (cm)
     */
     Float_t GetYRange() const {return yRange_;}
 
     //! Get the minimum value of z for the map
     /*!
-      \returns the minimum z co-ordinate (cm)
+      \returns the minimum z coordinate (cm)
     */
     Float_t GetZMin() const {return zMin_;}
 
     //! Get the maximum value of z for the map
     /*!
-      \returns the maximum z co-ordinate (cm)
+      \returns the maximum z coordinate (cm)
     */
     Float_t GetZMax() const {return zMax_;}
 
@@ -219,27 +219,27 @@ class ShipBFieldMap : public TVirtualMagField
     */
     Float_t GetdZ() const {return dz_;}
 
-     //! Get the z co-ordinate range for the map
+     //! Get the z coordinate range for the map
     /*!
-      \returns the z co-ordinate range (cm)
+      \returns the z coordinate range (cm)
     */
     Float_t GetZRange() const {return zRange_;}
 
-    //! Get the x offset co-ordinate of the map for global positioning
+    //! Get the x offset coordinate of the map for global positioning
     /*!
-      \returns the map's x offset co-ordinate for global positioning (cm)
+      \returns the map's x offset coordinate for global positioning (cm)
     */
     Float_t GetXOffset() const {return xOffset_;}
 
-    //! Get the y offset co-ordinate of the map for global positioning
+    //! Get the y offset coordinate of the map for global positioning
     /*!
-      \returns the map's y offset co-ordinate for global positioning (cm)
+      \returns the map's y offset coordinate for global positioning (cm)
     */
     Float_t GetYOffset() const {return yOffset_;}
 
-    //! Get the z offset co-ordinate of the map for global positioning
+    //! Get the z offset coordinate of the map for global positioning
     /*!
-      \returns the map's z offset co-ordinate for global positioning (cm)
+      \returns the map's z offset coordinate for global positioning (cm)
     */
     Float_t GetZOffset() const {return zOffset_;}
 
@@ -293,7 +293,7 @@ class ShipBFieldMap : public TVirtualMagField
     //! Copy assignment operator not implemented
     ShipBFieldMap& operator=(const ShipBFieldMap& rhs);
 
-    //! Enumeration to specify the co-ordinate type
+    //! Enumeration to specify the coordinate type
     enum CoordAxis {xAxis = 0, yAxis, zAxis};
 
     //! Initialisation
@@ -313,9 +313,9 @@ class ShipBFieldMap : public TVirtualMagField
 
     //! Check to see if a point is within the map validity range
     /*!
-      \param [in] x The x co-ordinate of the point (cm)
-      \param [in] y The y co-ordinate of the point (cm)
-      \param [in] z The z co-ordinate of the point (cm)
+      \param [in] x The x coordinate of the point (cm)
+      \param [in] y The y coordinate of the point (cm)
+      \param [in] z The z coordinate of the point (cm)
       \returns true/false if the point is inside the field map range
     */
     Bool_t insideRange(Float_t x, Float_t y, Float_t z);
@@ -325,8 +325,8 @@ class ShipBFieldMap : public TVirtualMagField
 
     //! Get the bin number and fractional distance from the leftmost bin edge
     /*!
-      \param [in] x The co-ordinate component of the point (cm)
-      \param [in] theAxis The co-ordinate axis (CoordAxis enumeration for x, y or z)
+      \param [in] x The coordinate component of the point (cm)
+      \param [in] theAxis The coordinate axis (CoordAxis enumeration for x, y or z)
       \returns the bin number and fractional distance from the leftmost bin edge as a pair
     */
     binPair getBinInfo(Float_t x, CoordAxis theAxis);
@@ -343,7 +343,7 @@ class ShipBFieldMap : public TVirtualMagField
     //! Calculate the magnetic field component using trilinear interpolation.
     //! This function uses the various "binX" integers and "uFrac" variables
     /*!
-      \param [in] theAxis The co-ordinate axis (CoordAxis enumeration for x, y or z)
+      \param [in] theAxis The coordinate axis (CoordAxis enumeration for x, y or z)
       \returns the magnetic field component for the given axis
     */
     Float_t BInterCalc(CoordAxis theAxis);
@@ -382,7 +382,7 @@ class ShipBFieldMap : public TVirtualMagField
     //! The bin width along x
     Float_t dx_;
 
-    //! The co-ordinate range along x
+    //! The coordinate range along x
     Float_t xRange_;
 
     //! The minimum value of y for the map
@@ -394,7 +394,7 @@ class ShipBFieldMap : public TVirtualMagField
     //! The bin width along y
     Float_t dy_;
 
-    //! The co-ordinate range along y
+    //! The coordinate range along y
     Float_t yRange_;
 
     //! The minimum value of z for the map
@@ -406,7 +406,7 @@ class ShipBFieldMap : public TVirtualMagField
     //! The bin width along z
     Float_t dz_;
 
-    //! The co-ordinate range along z
+    //! The coordinate range along z
     Float_t zRange_;
 
     //! The x value of the positional offset for the map

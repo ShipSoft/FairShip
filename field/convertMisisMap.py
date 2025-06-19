@@ -3,7 +3,7 @@
 # Python script to convert B field maps from MISIS text files into
 # ROOT files for FairShip. Text files are assumed to contain two
 # preamble lines giving the binning details and variable names, followed
-# by data lines x y z Bx By Bz, where the co-ordinates are assumed to
+# by data lines x y z Bx By Bz, where the coordinates are assumed to
 # be in ascending z, y and x, in that order. Need distances in cm
 
 import ROOT
@@ -23,7 +23,7 @@ ROOT.gROOT.ProcessLine(
    float dz;\
 };");
 
-# The field map is assumed to obey the following co-ordinate bin ordering:
+# The field map is assumed to obey the following coordinate bin ordering:
 # z is increased first, y is increased 2nd, x is increased last.
 # So we only store the field components (x,y,z is known from the ordering).
 # For the coordinate bin (iX, iY, iZ), the field bin = (iX*Ny + iY)*Nz + iZ,
@@ -53,7 +53,7 @@ def createRootMap(inFileName, rootFileName):
     rangeTree = ROOT.TTree('Range', 'Range')
     rangeTree.SetDirectory(theFile)
 
-    # Co-ordinate ranges
+    # Coordinate ranges
     rStruct = ROOT.rangeStruct()
     rangeTree.Branch('xMin', ROOT.addressof(rStruct, 'xMin'), 'xMin/F')
     rangeTree.Branch('xMax', ROOT.addressof(rStruct, 'xMax'), 'xMax/F')
@@ -91,7 +91,7 @@ def createRootMap(inFileName, rootFileName):
     Nz = 0
     Nzy = 0
 
-    # Field centering co-ordinates
+    # Field centering coordinates
     x0 = 0.0
     y0 = 0.0
     z0 = 0.0
@@ -111,7 +111,7 @@ def createRootMap(inFileName, rootFileName):
 
                 # Bin info line assumed to be formatted as:
                 # Grid Output Min: xMin yMin zMin Max: xMax yMax zMax Grid Size: dx dy dz
-                # These co-ordinate limits are in mm, but the actual data lines use m
+                # These coordinate limits are in mm, but the actual data lines use m
 
                 print(f'sLine = {sLine}')
                 # For each value, convert from mm to cm
@@ -137,9 +137,9 @@ def createRootMap(inFileName, rootFileName):
                 y0 = 0.5*(rStruct.yMin + rStruct.yMax)
                 z0 = 0.5*(rStruct.zMin + rStruct.zMax)
 
-                print(f'Centering field map using co-ordinate shift {x0} {y0} {z0} cm')
+                print(f'Centering field map using coordinate shift {x0} {y0} {z0} cm')
 
-                # Center co-ordinate range limits (cm)
+                # Center coordinate range limits (cm)
                 rStruct.xMin = rStruct.xMin - x0
                 rStruct.xMax = rStruct.xMax - x0
 

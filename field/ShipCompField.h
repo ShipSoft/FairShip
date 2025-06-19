@@ -18,14 +18,14 @@ class ShipCompField: public TVirtualMagField
 
     //! Main constructor
     /*!
-      \param [in] label A descriptive name/title/lable for the composite field
+      \param [in] label A descriptive name/title/label for the composite field
       \param [in] firstField The first magnetic field for the composite
     */
     ShipCompField(const std::string& label, TVirtualMagField* firstField);
 
     //! Secondary constructor
     /*!
-      \param [in] label A descriptive name/title/lable for the composite field
+      \param [in] label A descriptive name/title/label for the composite field
       \param [in] firstField The first magnetic field pointer for the composite
       \param [in] secondField The second magnetic field pointer for the composite
     */
@@ -34,7 +34,7 @@ class ShipCompField: public TVirtualMagField
 
     //! More general constructor
     /*!
-      \param [in] label A descriptive name/title/lable for the composite field
+      \param [in] label A descriptive name/title/label for the composite field
       \param [in] theFields A vector of magnetic field pointers for the composite
     */
     ShipCompField(const std::string& label, const std::vector<TVirtualMagField*>& theFields);
@@ -44,7 +44,7 @@ class ShipCompField: public TVirtualMagField
 
     //! The total magnetic field from all of the composite sources (linear superposition)
     /*!
-      \param [in] position The x,y,z global co-ordinates of the point
+      \param [in] position The x,y,z global coordinates of the point
       \param [out] B The x,y,z components of the magnetic field
     */
     virtual void Field(const Double_t* position, Double_t* B);

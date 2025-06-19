@@ -2,7 +2,7 @@
   \brief Creates various magnetic fields and assigns them to geometry regions
   \author John Back <J.J.Back@warwick.ac.uk>
 
-  This inherits from TG4VUserPostDetConstruction and overloads the Contruct()
+  This inherits from TG4VUserPostDetConstruction and overloads the Construct()
   function so that the VMC (re)assigns the G4 magnetic fields to volumes using the
   input configuration file defined in this class constructor, together with
   the code below used in the addVMCFields function in python/geomGeant4.py:
@@ -247,7 +247,7 @@ class ShipFieldMaker : public TG4VUserPostDetConstruction
 
     //! Plot the magnetic field in "x-y" plane
     /*!
-      \param [in] type The co-ordinate type: 0 = x-y, 1 = z-x and 2 = z-y
+      \param [in] type The coordinate type: 0 = x-y, 1 = z-x and 2 = z-y
       \param [in] xAxis Three vector specifying the min, max and bin width of the x axis
       \param [in] yAxis Three vector specifying the min, max and bin width of the y axis
       \param [in] plotFile The name of the output file containing the plot of the magnetic field
@@ -397,7 +397,7 @@ class ShipFieldMaker : public TG4VUserPostDetConstruction
     //! Split a string
     /*!
       \param [in] theString The string to be split up
-      \param [in] splitted The delimiter that will be used to split up the string
+      \param [in] splitter The delimiter that will be used to split up the string
       \returns a vector of the delimiter-separated strings
     */
     stringVect splitString(std::string& theString, std::string& splitter) const;
