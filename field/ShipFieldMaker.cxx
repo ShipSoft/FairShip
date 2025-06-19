@@ -1317,8 +1317,8 @@ void ShipFieldMaker::plotField(Int_t type, const TVector3& xAxis, const TVector3
 	    // Find out if the point is inside one of the geometry volumes
 	    Bool_t inside(kFALSE);
 
-	    // Find the geometry node (volume path)
-	    TGeoNode* theNode = gGeoManager->FindNode(position[0], position[1], position[2]);
+            // Find the geometry node (volume path)
+            TGeoNode* theNode = gGeoManager->FindNode(position[0], position[1], position[2]);
 
 	    if (theNode) {
 
