@@ -36,7 +36,7 @@ public:
 	startY      = yS;
         endY        = yE;
     }
-    void AddBox(TVector3 dVec, TVector3 box);
+    void AddBox(TVector3 dVec, TVector3 box);   // FIXME: Unused?
     void EnableExternalDecayer(Bool_t value){fExtDecayer=value;}
 
 
@@ -59,8 +59,8 @@ protected:
     Float_t pdgf3[500];
     Float_t pxf4[500], pyf4[500], pzf4[500];
     Float_t pdgf4[500];
-    std::vector<TVector3> dVecs;
-    std::vector<TVector3> boxs;
+    std::vector<TVector3> dVecs;   // FIXME: Unused?
+    std::vector<TVector3> boxs;    // FIXME: Unused? codespell:ignore boxs
     Int_t cc;
     Int_t nf, nf2,nf3, nf4,neu;
     Int_t parent2, parent3, parent4;
