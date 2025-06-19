@@ -129,14 +129,20 @@ Now you can for example simulate some events, run reconstruction and analysis:
 
 ```bash
 python $FAIRSHIP/macro/run_simScript.py
->> Macro finished succesfully.
->> Output file is  ship.conical.Pythia8-TGeant4.root
+>> [...]
+>> Macro finished successfully.
+>> [...]
+>> Output file is  ./ship.conical.Pythia8-TGeant4.root
+>> [...]
 
 python $FAIRSHIP/macro/ShipReco.py -f ship.conical.Pythia8-TGeant4.root -g geofile_full.conical.Pythia8-TGeant4.root
->> finishing pyExit
+>> [...]
+>> finished writing tree
+>> Exit normally
 
 python -i $FAIRSHIP/macro/ShipAna.py -f ship.conical.Pythia8-TGeant4_rec.root -g geofile_full.conical.Pythia8-TGeant4.root
 >> finished making plots
+>> Exit normally
 ```
 Alternatively, you can make use of the experimental `analysis_toolkit` to run a simple pre-selection check on the events. An example script can be found in `$FAIRSHIP/examples/analysis_example.py`.
 
