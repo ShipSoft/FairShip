@@ -265,7 +265,7 @@ GenieGenerator::~GenieGenerator()
 void GenieGenerator::AddBox(TVector3 dVec, TVector3 box)
 {
   dVecs.push_back(dVec);
-  boxs.push_back(box);
+  m_boxes.push_back(box);
   cout << "Debug GenieGenerator: "<< dVec.X() << " "<<box.Z() << endl;
 }
 // -----   Passing the event   ---------------------------------------------
@@ -301,10 +301,13 @@ Bool_t GenieGenerator::OldReadEvent(FairPrimaryGenerator* cpg)
      cout << "Info GenieGenerator: vessel length heig<ht width " << Lvessel << " "<<Yvessel<< " "<< Xvessel << endl;
      cout << "Info GenieGenerator: scint thickness " << fScintDz << endl;
      cout << "Info GenieGenerator: rextra " << fScintDz/2.+2*fEntrDz_inner << " "<< 2*fEntrDz_outer << " "<<2*fEntrDz_inner << endl;
-     for(int j=0; j<boxs.size(); j++) {
-      cout << "Info GenieGenerator: nuMu X" << j << " - "<< -boxs[j].X()+dVecs[j].X() << " "<< boxs[j].X()+dVecs[j].X() << endl;
-      cout << "Info GenieGenerator: nuMu Y" << j << " - "<< -boxs[j].Y()+dVecs[j].Y() << " "<< boxs[j].Y()+dVecs[j].Y() << endl;
-      cout << "Info GenieGenerator: nuMu Z" << j << " - "<< -boxs[j].Z()+dVecs[j].Z() << " "<< boxs[j].Z()+dVecs[j].Z() << endl;
+     for (int j = 0; j < m_boxes.size(); j++) {
+         cout << "Info GenieGenerator: nuMu X" << j << " - " << -m_boxes[j].X() + dVecs[j].X() << " "
+              << m_boxes[j].X() + dVecs[j].X() << endl;
+         cout << "Info GenieGenerator: nuMu Y" << j << " - " << -m_boxes[j].Y() + dVecs[j].Y() << " "
+              << m_boxes[j].Y() + dVecs[j].Y() << endl;
+         cout << "Info GenieGenerator: nuMu Z" << j << " - " << -m_boxes[j].Z() + dVecs[j].Z() << " "
+              << m_boxes[j].Z() + dVecs[j].Z() << endl;
      }
      fFirst = kFALSE;
     }
@@ -360,10 +363,10 @@ Bool_t GenieGenerator::OldReadEvent(FairPrimaryGenerator* cpg)
       if (gRandom->Uniform(-1.,1.)>0.) y=-y;
     }else{
       //point in nu-tau detector area
-      int j =  int(gRandom->Uniform(0.,boxs.size()+0.5));
-      x=gRandom->Uniform(-boxs[j].X()+dVecs[j].X(),boxs[j].X()+dVecs[j].X());
-      y=gRandom->Uniform(-boxs[j].Y()+dVecs[j].Y(),boxs[j].Y()+dVecs[j].Y());
-      z=gRandom->Uniform(-boxs[j].Z()+dVecs[j].Z(),boxs[j].Z()+dVecs[j].Z());
+      int j = int(gRandom->Uniform(0., m_boxes.size() + 0.5));
+      x = gRandom->Uniform(-m_boxes[j].X() + dVecs[j].X(), m_boxes[j].X() + dVecs[j].X());
+      y = gRandom->Uniform(-m_boxes[j].Y() + dVecs[j].Y(), m_boxes[j].Y() + dVecs[j].Y());
+      z = gRandom->Uniform(-m_boxes[j].Z() + dVecs[j].Z(), m_boxes[j].Z() + dVecs[j].Z());
     }
 // first, incoming neutrino
     //rotate the particle

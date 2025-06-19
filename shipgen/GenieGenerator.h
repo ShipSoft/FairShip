@@ -48,7 +48,7 @@ class GenieGenerator : public FairGenerator
   Double_t Ef[500], pxf[500], pyf[500], pzf[500];
   Int_t pdgf[500];
   std::vector<TVector3> dVecs;
-  std::vector<TVector3> boxs;
+  std::vector<TVector3> m_boxes;
   Bool_t cc, nuel;
   Int_t nf,neu;
   FairLogger*  fLogger; //!   don't make it persistent, magic ROOT command
