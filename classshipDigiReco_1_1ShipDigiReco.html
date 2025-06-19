@@ -1137,7 +1137,7 @@ The earliest hit per straw will be marked valid, all later ones invalid.
 <div class="line"><span class="lineno">  889</span>    <span class="keywordflow">if</span> global_variables.debug:</div>
 <div class="line"><span class="lineno">  890</span>       mctrack = self.sTree.MCTrack[atrack]</div>
 <div class="line"><span class="lineno">  891</span>    <span class="comment"># charge = self.PDG.GetParticle(pdg).Charge()/(3.)</span></div>
-<div class="line"><span class="lineno">  892</span>    posM = ROOT.TVector3(0, 0, 0)</div>
+<div class="line"><span class="lineno">  892</span>    posM = ROOT.TVector3(0, 0, 5812.0) <span class="comment"># seed is at decay vessel centre</span></div>
 <div class="line"><span class="lineno">  893</span>    momM = ROOT.TVector3(0,0,3.*u.GeV)</div>
 <div class="line"><span class="lineno">  894</span><span class="comment"># approximate covariance</span></div>
 <div class="line"><span class="lineno">  895</span>    covM = ROOT.TMatrixDSym(6)</div>

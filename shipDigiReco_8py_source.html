@@ -1012,7 +1012,7 @@ $(document).ready(function(){initNavTree('shipDigiReco_8py_source.html',''); ini
 <div class="line"><a id="l00889" name="l00889"></a><span class="lineno">  889</span>    <span class="keywordflow">if</span> global_variables.debug:</div>
 <div class="line"><a id="l00890" name="l00890"></a><span class="lineno">  890</span>       mctrack = self.<a class="code hl_variable" href="classshipDigiReco_1_1ShipDigiReco.html#a6f117e48c82f7d36d4e25b6119518002">sTree</a>.MCTrack[atrack]</div>
 <div class="line"><a id="l00891" name="l00891"></a><span class="lineno">  891</span>    <span class="comment"># charge = self.PDG.GetParticle(pdg).Charge()/(3.)</span></div>
-<div class="line"><a id="l00892" name="l00892"></a><span class="lineno">  892</span>    posM = ROOT.TVector3(0, 0, 0)</div>
+<div class="line"><a id="l00892" name="l00892"></a><span class="lineno">  892</span>    posM = ROOT.TVector3(0, 0, 5812.0) <span class="comment"># seed is at decay vessel centre</span></div>
 <div class="line"><a id="l00893" name="l00893"></a><span class="lineno">  893</span>    momM = ROOT.TVector3(0,0,3.*u.GeV)</div>
 <div class="line"><a id="l00894" name="l00894"></a><span class="lineno">  894</span><span class="comment"># approximate covariance</span></div>
 <div class="line"><a id="l00895" name="l00895"></a><span class="lineno">  895</span>    covM = ROOT.TMatrixDSym(6)</div>
