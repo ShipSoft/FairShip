@@ -306,9 +306,6 @@ with ConfigRegistry.register_config("basic") as c:
     c.target.slices_length = []
     c.target.slices_gap = []
     c.target.slices_material = []
-    for i in range(c.target.Nplates - 1):
-        if len(c.target.N) == 1:
-            c.target.N.append(c.target.N[0])
 
     for i in range(c.target.Nplates):
         for j in range(c.target.N[i]):
