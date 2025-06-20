@@ -1,15 +1,6 @@
 #include "ShipMuonShield.h"
 
-#include "FairLogger.h"   /// for FairLogger, MESSAGE_ORIGIN
-#include "TGeoManager.h"
-#include "TObjArray.h"                  // for TObjArray
-#include "TString.h"                    // for TString
-#include "TGeoBBox.h"
-#include "TGeoTrd1.h"
-#include "TGeoCompositeShape.h"
-#include "TGeoBoolNode.h"
-#include "TGeoTube.h"
-#include "TGeoMaterial.h"
+#include "FairGeoBuilder.h"
 #include "FairGeoInterface.h"
 #include "FairGeoMedia.h"
 #include "FairLogger.h"      /// for FairLogger, MESSAGE_ORIGIN
@@ -349,9 +340,9 @@ FieldDirection::down };
 void ShipMuonShield::ConstructGeometry()
 {
     TGeoVolume *top=gGeoManager->GetTopVolume();
-    TGeoVolume *tShield = new TGeoVolumeAssembly("MuonShieldArea");
+    TGeoVolume* tShield = new TGeoVolumeAssembly("MuonShieldArea");
     InitMedium("iron");
-    TGeoMedium *iron  =gGeoManager->GetMedium("iron");
+    TGeoMedium* iron = gGeoManager->GetMedium("iron");
     InitMedium("copper");
     TGeoMedium* copper = gGeoManager->GetMedium("copper");
 
