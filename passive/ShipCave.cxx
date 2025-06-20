@@ -3,8 +3,8 @@
 
 #include "FairGeoInterface.h"   // for FairGeoInterface
 #include "FairGeoLoader.h"      // for FairGeoLoader
-#include "ShipGeoCave.h"        // for ShipGeoCave
-#include "TGeoManager.h"
+#include "FairGeoMedia.h"
+#include "ShipGeoCave.h"   // for ShipGeoCave
 #include "ShipUnit.h"
 #include "TGeoBBox.h"
 #include "TGeoCompositeShape.h"
@@ -21,6 +21,22 @@ ShipCave::ShipCave(Double_t z)
     zEndOfProxShield = z;
 }
 
+Int_t ShipCave::InitMedium(TString name)
+{
+    static FairGeoLoader* geoLoad = FairGeoLoader::Instance();
+    static FairGeoInterface* geoFace = geoLoad->getGeoInterface();
+    static FairGeoMedia* media = geoFace->getMedia();
+    static FairGeoBuilder* geoBuild = geoLoad->getGeoBuilder();
+
+    FairGeoMedium* ShipMedium = media->getMedium(name);
+
+    if (!ShipMedium)
+        Fatal("InitMedium", "Material %s not defined in media file.", name.Data());
+    TGeoMedium* medium = gGeoManager->GetMedium(name);
+    if (medium)
+        return ShipMedium->getMediumIndex();
+    return geoBuild->createMedium(ShipMedium);
+}
 
 void ShipCave::ConstructGeometry()
 {
