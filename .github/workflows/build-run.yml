@@ -84,7 +84,7 @@ jobs:
         run: |
           source /cvmfs/ship.cern.ch/$version/setUp.sh
           eval $(alienv load FairShip/latest)
-          python $FAIRSHIP/macro/run_simScript.py --test --${{ matrix.vessel_option }} --${{ matrix.SND_option }} --shieldName ${{ matrix.muon_shield }} --TARGET_YAML=$FAIRSHIP/geometry/target_config_${{ matrix.target }}.yaml
+          python $FAIRSHIP/macro/run_simScript.py --test --${{ matrix.vessel_option }} --${{ matrix.SND_option }} --shieldName ${{ matrix.muon_shield }} --target-yaml=$FAIRSHIP/geometry/target_config_${{ matrix.target }}.yaml
 
       - name: Run Reco
         run: |
@@ -154,7 +154,7 @@ jobs:
         run: |
           source /cvmfs/ship.cern.ch/$version/setUp.sh
           eval $(alienv load FairShip/latest)
-          python $FAIRSHIP/macro/run_simScript.py --test -n 0 --debug 2 --${{ matrix.vessel_option }} --${{ matrix.SND_option }} --shieldName ${{ matrix.muon_shield }} --TARGET_YAML=$FAIRSHIP/geometry/target_config_${{ matrix.target }}.yaml | tee log
+          python $FAIRSHIP/macro/run_simScript.py --test -n 0 --debug 2 --${{ matrix.vessel_option }} --${{ matrix.SND_option }} --shieldName ${{ matrix.muon_shield }} --target-yaml=$FAIRSHIP/geometry/target_config_${{ matrix.target }}.yaml | tee log
           ! grep ovlp log
 
       - name: Geo information
