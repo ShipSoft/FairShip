@@ -267,7 +267,7 @@ def configure(run, ship_geo):
     # ------------------------------------------------------------------------
 
     # -----Create geometry----------------------------------------------
-    cave = ROOT.ShipCave("CAVE")
+    cave = ROOT.ShipCave(ship_geo.muShield.z)
     cave.SetGeometryFileName("caveWithAir.geo")
     detectorList.append(cave)
 
