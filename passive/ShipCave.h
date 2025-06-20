@@ -8,6 +8,7 @@
 class ShipCave : public FairModule
 {
   public:
+    ShipCave(Double_t z);
     ShipCave(const char* name, const char* Title="Exp Cave");
     ShipCave();
     virtual ~ShipCave();
@@ -15,8 +16,10 @@ class ShipCave : public FairModule
 
 
   private:
+    Double_t zEndOfProxShield;
     Double_t world[3];
     ClassDef(ShipCave,1) //PNDCaveSD
+    Int_t InitMedium(TString name);
 };
 
 #endif //Cave_H

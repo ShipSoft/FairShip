@@ -336,11 +336,13 @@ def configure(run, ship_geo):
 
     # -----Create geometry----------------------------------------------
     cave = ROOT.ShipCave("CAVE")
+    cave = ROOT.ShipCave(ship_geo.muShield.z)
     if ship_geo.tankDesign < 5:
         cave.SetGeometryFileName("cave.geo")
     else:
         cave.SetGeometryFileName("caveWithAir.geo")
     detectorList.append(cave)
+
 
     TargetStation = ROOT.ShipTargetStation(
         "TargetStation",

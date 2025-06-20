@@ -12,16 +12,32 @@
 #include "TGeoMaterial.h"
 #include "FairGeoInterface.h"
 #include "FairGeoMedia.h"
-#include "FairGeoBuilder.h"
-#include "FairRuntimeDb.h"              // for FairRuntimeDb
+#include "FairLogger.h"      /// for FairLogger, MESSAGE_ORIGIN
+#include "FairRuntimeDb.h"   // for FairRuntimeDb
+#include "ShipUnit.h"
 #include "TFile.h"
-#include <iostream>                     // for operator<<, basic_ostream, etc
+#include "TGeoBBox.h"
+#include "TGeoBoolNode.h"
+#include "TGeoCompositeShape.h"
+#include "TGeoManager.h"
+#include "TGeoMaterial.h"
+#include "TGeoTrd1.h"
+#include "TGeoTube.h"
+#include "TObjArray.h"   // for TObjArray
+#include "TString.h"     // for TString
 
-Double_t cm = 1;
-Double_t m = 100 * cm;
-Double_t mm = 0.1 * cm;
-Double_t kilogauss = 1.;
-Double_t tesla = 10 * kilogauss;
+#include <iostream>   // for operator<<, basic_ostream, etc
+
+// Double_t cm = 1;
+// Double_t m = 100 * cm;
+// Double_t mm = 0.1 * cm;
+// Double_t kilogauss = 1.;
+// Double_t tesla = 10 * kilogauss;
+
+using ShipUnit::cm;
+using ShipUnit::m;
+using ShipUnit::mm;
+using ShipUnit::tesla;
 
 ShipMuonShield::~ShipMuonShield() {}
 ShipMuonShield::ShipMuonShield() : FairModule("ShipMuonShield", "") {}
@@ -334,12 +350,8 @@ void ShipMuonShield::ConstructGeometry()
 {
     TGeoVolume *top=gGeoManager->GetTopVolume();
     TGeoVolume *tShield = new TGeoVolumeAssembly("MuonShieldArea");
-    InitMedium("steel");
-    TGeoMedium *steel =gGeoManager->GetMedium("steel");
     InitMedium("iron");
     TGeoMedium *iron  =gGeoManager->GetMedium("iron");
-    InitMedium("Concrete");
-    TGeoMedium *concrete  =gGeoManager->GetMedium("Concrete");
     InitMedium("copper");
     TGeoMedium* copper = gGeoManager->GetMedium("copper");
 
@@ -366,41 +378,6 @@ void ShipMuonShield::ConstructGeometry()
                                       Z);
 
     // Create TCC8 tunnel around muon shield
-    Double_t TCC8_length = 170 * m;
-    // Add small stair step at the beginning of ECN3
-    Double_t stair_step_length = 0.82 * m;
-    Double_t ECN3_length = 100 * m;
-    Double_t TCC8_trench_length = 12 * m;
-    Double_t zgap = 10 * cm;
-    Double_t absorber_offset = zgap;
-    Double_t Proximity_shield_half_length = 55.36 / 2 * cm;
-    Double_t zEndOfTarget = zEndOfProxShield - 2 * Proximity_shield_half_length;
-    Double_t absorber_half_length = (dZf[0]);
-    Double_t z_transition = 20.52 * m;
-    auto* rock = new TGeoBBox("rock", 20 * m, 20 * m, TCC8_length / 2. + ECN3_length / 2. + 5 * m);
-    auto* muon_shield_cavern = new TGeoBBox("muon_shield_cavern", 4.995 * m, 3.75 * m, TCC8_length / 2.);
-    auto* TCC8_shift = new TGeoTranslation("TCC8_shift", 1.435 * m, 2.05 * m, -TCC8_length / 2.);
-    TCC8_shift->RegisterYourself();
-
-    // Create ECN3 cavern around vessel
-    auto* experiment_rock = new TGeoBBox("experiment_rock", 20 * m, 20 * m, ECN3_length / 2.);
-    auto* stair_step = new TGeoBBox("stair_step", 7.995 * m, 5.6 * m, stair_step_length / 2.);
-    auto* stair_step_shift = new TGeoTranslation("stair_step_shift", 3.435 * m, 3.04 * m, stair_step_length / 2.);
-    stair_step_shift->RegisterYourself();
-    auto* experiment_cavern =
-        new TGeoBBox("experiment_cavern", 7.995 * m, 6 * m, ECN3_length / 2. - stair_step_length / 2.);
-    auto* ECN3_shift =
-        new TGeoTranslation("ECN3_shift", 3.435 * m, 2.64 * m, ECN3_length / 2. + stair_step_length / 2.);
-    ECN3_shift->RegisterYourself();
-
-    auto* yoke_pit = new TGeoBBox("yoke_pit", 3.5 * m, 4.3 * m + 1 * cm, 2.5 * m);
-    auto* yoke_pit_shift = new TGeoTranslation("yoke_pit_shift", 0 * m, 0 * m, 89.57 * m - z_transition);
-    yoke_pit_shift->RegisterYourself();
-
-    auto* target_pit = new TGeoBBox("target_pit", 2 * m, 0.5 * m, 2 * m);
-    auto* target_pit_shift =
-        new TGeoTranslation("target_pit_shift", 0 * m, -2.2 * m, zEndOfTarget - 2 * m - z_transition);
-    target_pit_shift->RegisterYourself();
 
     std::array<double, 7> fieldScale = {{1., 1., 1., 1., 1., 1., 1.}};
     for (Int_t nM = 0; nM < (nMagnets); nM++) {
@@ -422,12 +399,11 @@ void ShipMuonShield::ConstructGeometry()
       // Place in origin of SHiP coordinate system as subnodes placed correctly
       top->AddNode(tShield, 1);
 
-      // Create the cavern
-      std::vector<TGeoTranslation*> mag_trans;
-
-      auto mag2 = new TGeoTranslation("mag2", 0, 0, -0.001*m);
-      mag2->RegisterYourself();
-      mag_trans.push_back(mag2);
+      Double_t zgap = 10 * cm;
+      Double_t absorber_offset = zgap;
+      Double_t Proximity_shield_half_length = 55.36 / 2 * cm;
+      Double_t zEndOfTarget = zEndOfProxShield - 2 * Proximity_shield_half_length;
+      Double_t absorber_half_length = (dZf[0]);
 
       // Proximity Shielding
       auto Proximity_Shielding = new TGeoBBox("Proximity_Shielding", 40 * cm, 40 * cm, Proximity_shield_half_length);
@@ -451,13 +427,12 @@ void ShipMuonShield::ConstructGeometry()
     };
       TString absorber_magnet_components;
       for (auto &&magnet_component : magnet_components) {
-	// format: "-<magnetName>_<magnet_component>:<translation>"
-	absorber_magnet_components += ("-" + absorber_magnets[0] + magnet_component + ":" + mag_trans[0]->GetName());
+          absorber_magnet_components += ("-" + absorber_magnets[0] + magnet_component);
       }
-      TGeoCompositeShape *absorberShape = new TGeoCompositeShape(
-	  "Absorber", "absorber:absorber_shift" + absorber_magnet_components); // cutting out
-								// magnet parts
-								// from absorber
+
+      TGeoCompositeShape* absorberShape =
+          new TGeoCompositeShape("Absorber", "absorber:absorber_shift" + absorber_magnet_components);
+
       TGeoVolume *absorber = new TGeoVolume("AbsorberVol", absorberShape, iron);
       absorber->SetLineColor(42); // brown / light red
       tShield->AddNode(absorber,
@@ -466,16 +441,4 @@ void ShipMuonShield::ConstructGeometry()
                                            0,
                                            zEndOfTarget + absorber_half_length + absorber_offset
                                                + 2 * Proximity_shield_half_length));   // - Passive?
-
-      auto *compRock = new TGeoCompositeShape("compRock",
-                                              "rock - muon_shield_cavern:TCC8_shift"
-                                              "- experiment_cavern:ECN3_shift"
-                                              "- stair_step:stair_step_shift"
-                                              "- yoke_pit:yoke_pit_shift"
-                                              "- target_pit:target_pit_shift"
-      );
-      auto *Cavern = new TGeoVolume("Cavern", compRock, concrete);
-      Cavern->SetLineColor(11);  // grey
-      Cavern->SetTransparency(50);
-      top->AddNode(Cavern, 1, new TGeoTranslation(0, 0, z_transition));
 }
