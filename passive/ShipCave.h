@@ -18,8 +18,7 @@ class ShipCave : public FairModule
   private:
     Double_t zEndOfProxShield;
     Double_t world[3];
-    ClassDef(ShipCave,1) //PNDCaveSD
-    Int_t InitMedium(TString name);
+    ClassDef(ShipCave, 1) Int_t InitMedium(TString name);
 };
 
 #endif //Cave_H
