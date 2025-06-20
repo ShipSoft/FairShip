@@ -1321,25 +1321,12 @@ if withGeo:
     fMan.AddTask(GTrack)
     fMan.AddTask(Track)
 
-if not fRun.GetGeoFile().FindKey("ShipGeo"):
-    # old geofile, missing Shipgeo dictionary
-    # try to figure out which ecal geo to load
-    if sGeo.GetVolume("EcalModule3"):
-        ecalGeoFile = "ecal_ellipse6x12m2.geo"
-    else:
-        ecalGeoFile = "ecal_ellipse5x10m2.geo"
-    ShipGeo = ConfigRegistry.loadpy(
-        "$FAIRSHIP/geometry/geometry_config.py",
-        Yheight=float(dy),
-        EcalGeoFile=ecalGeoFile,
-    )
-else:
-    # new geofile, load Shipgeo dictionary written by run_simScript.py
-    upkl = Unpickler(fRun.GetGeoFile())
-    ShipGeo = upkl.load("ShipGeo")
-    if hasattr(ShipGeo, "ecal"):
-        if hasattr(ShipGeo.ecal, "File"):
-            ecalGeoFile = ShipGeo.ecal.File
+# Load Shipgeo dictionary written by run_simScript.py
+upkl = Unpickler(fRun.GetGeoFile())
+ShipGeo = upkl.load("ShipGeo")
+if hasattr(ShipGeo, "ecal"):
+    if hasattr(ShipGeo.ecal, "File"):
+        ecalGeoFile = ShipGeo.ecal.File
 
 mcHits = {}
 if hasattr(ShipGeo, "MuFilter"):
