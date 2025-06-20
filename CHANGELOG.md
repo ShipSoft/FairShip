@@ -86,6 +86,7 @@ it in future.
 * feat(geometry): Change coordinate system to z_0 := start of target
 * Insert Proximity shield in the geometry
 * Removed old stuff legacy in `shipMuonShield.cxx` (like LE and fFloor)
+* Geometry: Make the tungsten target the default (Jun25 config)
 
 ### Removed
 
