@@ -31,6 +31,8 @@ install_manifest.txt
 
 # backup files
 *.*~
+*.swp
+*.swo
 
 # build directory & data directory
 build/
@@ -48,12 +50,7 @@ build/
 # FairShip-specific files
 c++
 cc
-config.sh
-lcgenv.sh
 
 # Eclipse
 *.project
 *.pydevproject
-
-# CDB
-conditionsDatabase/**/.cache/
