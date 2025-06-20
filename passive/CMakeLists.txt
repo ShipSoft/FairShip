@@ -4,6 +4,7 @@
 
 set(INCLUDE_DIRECTORIES
 ${CMAKE_SOURCE_DIR}/passive
+${CMAKE_SOURCE_DIR}/shipdata
 ${VMC_INCLUDE_DIRS}
 )
 
