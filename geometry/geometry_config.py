@@ -263,7 +263,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.SND = SND
     c.SND_design = SND_design
     c.target_yaml = TARGET_YAML
-    print("using ",c.target_yaml)
+    print("using ", c.target_yaml)
 
     if not shieldName:
         raise ValueError("shieldName must not be empty!")

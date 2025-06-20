@@ -105,7 +105,7 @@ void ShipTargetStation::ConstructGeometry()
     TGeoMedium* pressuredHe = gGeoManager->GetMedium("PressuredHe90");
 
     //CAMM- dirty fix to have pressure and temperature correct for Geant4.
-    //Should fix this properly in future... 
+    //Should fix this properly in future...
     TGeoMaterial* fixedCooler = pressuredHe->GetMaterial();
     fixedCooler->SetTemperature(heTemp);
     fixedCooler->SetPressure(heP);
@@ -117,7 +117,7 @@ void ShipTargetStation::ConstructGeometry()
 	      << " T=" << cooler->GetMaterial()->GetTemperature()
 	      << " K, P=" << cooler->GetMaterial()->GetPressure() << " MeV/mm3"
 	      << std::endl;
-    
+
     TGeoVolume* tTarget = new TGeoVolumeAssembly("TargetArea");
 
     Double_t zPos = 0.;
