@@ -98,11 +98,26 @@ void ShipTargetStation::ConstructGeometry()
 
     InitMedium("H2O");
     TGeoMedium* water = gGeoManager->GetMedium("H2O");
-    InitMedium("PressuredHe200");
-    TGeoMedium* PressuredHe200 = gGeoManager->GetMedium("PressuredHe200");
 
-    TGeoMedium* cooler = (fTV == TargetVersion::Jun25) ? PressuredHe200 : water;
+    double heTemp = 363.15; //use average 90 degrees.
+    double heP = 1.6e6*6.241509e3; //16 bar in MeV/mm3
+    InitMedium("PressuredHe90");
+    TGeoMedium* pressuredHe = gGeoManager->GetMedium("PressuredHe90");
 
+    //CAMM- dirty fix to have pressure and temperature correct for Geant4.
+    //Should fix this properly in future... 
+    TGeoMaterial* fixedCooler = pressuredHe->GetMaterial();
+    fixedCooler->SetTemperature(heTemp);
+    fixedCooler->SetPressure(heP);
+    //pressuredHe->SetMaterial(fixedCooler);
+    TGeoMedium* cooler = (fTV == TargetVersion::Jun25) ? pressuredHe : water;
+
+    std::cout << __FILE__ << " " << __LINE__ << ": " << std::endl
+	      << "-- Target cooler: " << cooler->GetName()
+	      << " T=" << cooler->GetMaterial()->GetTemperature()
+	      << " K, P=" << cooler->GetMaterial()->GetPressure() << " MeV/mm3"
+	      << std::endl;
+    
     TGeoVolume* tTarget = new TGeoVolumeAssembly("TargetArea");
 
     Double_t zPos = 0.;

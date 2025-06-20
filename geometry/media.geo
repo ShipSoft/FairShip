@@ -16,20 +16,26 @@
 //epsil - boundary crossing precision EPSIL
 //npckov - number of values used to define the optical properties of the medium.
 //----------------------------------------------------------
-// basic helium for Decay Volume; June 2024
-helium			   1  4.00    2    1.78e-4
-				   0  1  30.  .001
-				   0
+// For He gaz density, using rho = P*M/(R*T) with
+// M = 4.0026 g/mol (from https://pdg.lbl.gov/2013/AtomicNuclearProperties/HTML_PAGES/002.html)
+// R = 8.314463 J/(mol*K);
+
+// basic helium for Decay Volume; June 2025
+//T = 20 C = 293.15 K; P = 1.02 bar = 1.02e+5 J/m3
+helium			1  4.0026    2    1.675e-4
+			0  1  30.  .001
+			0
 
 // Pressured gas helium for target:
-// Pressure has been estimated using rho = P*M/(R*T) -> T = 200 C = 473.5 K; P = 16 bar = 1.6e+6 Pa; M = 4.006 g/mol; R = 8,314 J/(mol*K);
-PressuredHe200		1  4.002  2    1.76e-3
-					0  1  30.  .001
-					0
+// T = 200 C = 473.15 K; P = 16 bar = 1.6e+6 J/m3
+PressuredHe200		1  4.0026  2    1.628e-3
+			0  1  30.  .001
+			0
 
-PressuredHe90		1  4.002  2    2.2e-3
-					0  1  30.  .001
-					0
+// T = 90 C = 363.15 K; P = 16 bar = 1.6e+6 J/m3
+PressuredHe90		1  4.0026  2    2.121e-3
+			0  1  30.  .001
+			0
 
 air                3  14.01  16.  39.95  7.  8.  18.  1.205e-3  .755  .231  .014
                    0  1  30.  .001
