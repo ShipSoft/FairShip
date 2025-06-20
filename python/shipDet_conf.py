@@ -329,6 +329,9 @@ def configure(run, ship_geo):
         SC_mag=ship_geo.SC_mag,
         shieldName=ship_geo.shieldName,
         DecayVolumeMedium=ship_geo.DecayVolumeMedium,
+        SND=ship_geo.SND,
+        SND_design=ship_geo.SND_design,
+        TARGET_YAML=ship_geo.target_yaml
     )
     # -----Create media-------------------------------------------------
     run.SetMaterials("media.geo")  # Materials
