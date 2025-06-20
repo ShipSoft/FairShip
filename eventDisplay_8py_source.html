@@ -1540,379 +1540,366 @@ $(document).ready(function(){initNavTree('eventDisplay_8py_source.html',''); ini
 <div class="line"><a id="l01321" name="l01321"></a><span class="lineno"> 1321</span>    fMan.AddTask(GTrack)</div>
 <div class="line"><a id="l01322" name="l01322"></a><span class="lineno"> 1322</span>    fMan.AddTask(Track)</div>
 <div class="line"><a id="l01323" name="l01323"></a><span class="lineno"> 1323</span> </div>
-<div class="line"><a id="l01324" name="l01324"></a><span class="lineno"> 1324</span><span class="keywordflow">if</span> <span class="keywordflow">not</span> fRun.GetGeoFile().FindKey(<span class="stringliteral">&quot;ShipGeo&quot;</span>):</div>
-<div class="line"><a id="l01325" name="l01325"></a><span class="lineno"> 1325</span>    <span class="comment"># old geofile, missing Shipgeo dictionary</span></div>
-<div class="line"><a id="l01326" name="l01326"></a><span class="lineno"> 1326</span>    <span class="comment"># try to figure out which ecal geo to load</span></div>
-<div class="line"><a id="l01327" name="l01327"></a><span class="lineno"> 1327</span>    <span class="keywordflow">if</span> sGeo.GetVolume(<span class="stringliteral">&quot;EcalModule3&quot;</span>):</div>
-<div class="line"><a id="l01328" name="l01328"></a><span class="lineno"><a class="line" href="namespaceeventDisplay.html#a79fca859ca16dc5b6bd68199075b0026"> 1328</a></span>        ecalGeoFile = <span class="stringliteral">&quot;ecal_ellipse6x12m2.geo&quot;</span></div>
-<div class="line"><a id="l01329" name="l01329"></a><span class="lineno"> 1329</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l01330" name="l01330"></a><span class="lineno"> 1330</span>        ecalGeoFile = <span class="stringliteral">&quot;ecal_ellipse5x10m2.geo&quot;</span></div>
-<div class="line"><a id="l01331" name="l01331"></a><span class="lineno"><a class="line" href="namespaceeventDisplay.html#ab5912395df5c26da35a89730acf490fd"> 1331</a></span>    ShipGeo = ConfigRegistry.loadpy(</div>
-<div class="line"><a id="l01332" name="l01332"></a><span class="lineno"> 1332</span>        <span class="stringliteral">&quot;$FAIRSHIP/geometry/geometry_config.py&quot;</span>,</div>
-<div class="line"><a id="l01333" name="l01333"></a><span class="lineno"> 1333</span>        Yheight=float(dy),</div>
-<div class="line"><a id="l01334" name="l01334"></a><span class="lineno"> 1334</span>        EcalGeoFile=ecalGeoFile,</div>
+<div class="line"><a id="l01324" name="l01324"></a><span class="lineno"> 1324</span><span class="comment"># Load Shipgeo dictionary written by run_simScript.py</span></div>
+<div class="line"><a id="l01325" name="l01325"></a><span class="lineno"><a class="line" href="namespaceeventDisplay.html#af7e5e77d697afd6b5a3896db7783ea93"> 1325</a></span>upkl = <a class="code hl_class" href="classrootpyPickler_1_1Unpickler.html">Unpickler</a>(fRun.GetGeoFile())</div>
+<div class="line"><a id="l01326" name="l01326"></a><span class="lineno"><a class="line" href="namespaceeventDisplay.html#ab5912395df5c26da35a89730acf490fd"> 1326</a></span>ShipGeo = upkl.load(<span class="stringliteral">&quot;ShipGeo&quot;</span>)</div>
+<div class="line"><a id="l01327" name="l01327"></a><span class="lineno"> 1327</span><span class="keywordflow">if</span> hasattr(ShipGeo, <span class="stringliteral">&quot;ecal&quot;</span>):</div>
+<div class="line"><a id="l01328" name="l01328"></a><span class="lineno"> 1328</span>    <span class="keywordflow">if</span> hasattr(ShipGeo.ecal, <span class="stringliteral">&quot;File&quot;</span>):</div>
+<div class="line"><a id="l01329" name="l01329"></a><span class="lineno"><a class="line" href="namespaceeventDisplay.html#a57ae6d7953915b86a2c3d4190f73b33b"> 1329</a></span>        ecalGeoFile = ShipGeo.ecal.File</div>
+<div class="line"><a id="l01330" name="l01330"></a><span class="lineno"> 1330</span> </div>
+<div class="line"><a id="l01331" name="l01331"></a><span class="lineno"><a class="line" href="namespaceeventDisplay.html#a9728fd5617761ab34d547bd7db66172e"> 1331</a></span>mcHits = {}</div>
+<div class="line"><a id="l01332" name="l01332"></a><span class="lineno"> 1332</span><span class="keywordflow">if</span> hasattr(ShipGeo, <span class="stringliteral">&quot;MuFilter&quot;</span>):</div>
+<div class="line"><a id="l01333" name="l01333"></a><span class="lineno"> 1333</span>    mcHits[<span class="stringliteral">&quot;ScifiPoints&quot;</span>] = ROOT.FairMCPointDraw(</div>
+<div class="line"><a id="l01334" name="l01334"></a><span class="lineno"> 1334</span>        <span class="stringliteral">&quot;ScifiPoint&quot;</span>, ROOT.kRed, ROOT.kFullDiamond</div>
 <div class="line"><a id="l01335" name="l01335"></a><span class="lineno"> 1335</span>    )</div>
-<div class="line"><a id="l01336" name="l01336"></a><span class="lineno"> 1336</span><span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l01337" name="l01337"></a><span class="lineno"> 1337</span>    <span class="comment"># new geofile, load Shipgeo dictionary written by run_simScript.py</span></div>
-<div class="line"><a id="l01338" name="l01338"></a><span class="lineno"><a class="line" href="namespaceeventDisplay.html#af7e5e77d697afd6b5a3896db7783ea93"> 1338</a></span>    upkl = <a class="code hl_class" href="classrootpyPickler_1_1Unpickler.html">Unpickler</a>(fRun.GetGeoFile())</div>
-<div class="line"><a id="l01339" name="l01339"></a><span class="lineno"> 1339</span>    ShipGeo = upkl.load(<span class="stringliteral">&quot;ShipGeo&quot;</span>)</div>
-<div class="line"><a id="l01340" name="l01340"></a><span class="lineno"> 1340</span>    <span class="keywordflow">if</span> hasattr(ShipGeo, <span class="stringliteral">&quot;ecal&quot;</span>):</div>
-<div class="line"><a id="l01341" name="l01341"></a><span class="lineno"> 1341</span>        <span class="keywordflow">if</span> hasattr(ShipGeo.ecal, <span class="stringliteral">&quot;File&quot;</span>):</div>
-<div class="line"><a id="l01342" name="l01342"></a><span class="lineno"> 1342</span>            ecalGeoFile = ShipGeo.ecal.File</div>
-<div class="line"><a id="l01343" name="l01343"></a><span class="lineno"> 1343</span> </div>
-<div class="line"><a id="l01344" name="l01344"></a><span class="lineno"><a class="line" href="namespaceeventDisplay.html#a9728fd5617761ab34d547bd7db66172e"> 1344</a></span>mcHits = {}</div>
-<div class="line"><a id="l01345" name="l01345"></a><span class="lineno"> 1345</span><span class="keywordflow">if</span> hasattr(ShipGeo, <span class="stringliteral">&quot;MuFilter&quot;</span>):</div>
-<div class="line"><a id="l01346" name="l01346"></a><span class="lineno"> 1346</span>    mcHits[<span class="stringliteral">&quot;ScifiPoints&quot;</span>] = ROOT.FairMCPointDraw(</div>
-<div class="line"><a id="l01347" name="l01347"></a><span class="lineno"> 1347</span>        <span class="stringliteral">&quot;ScifiPoint&quot;</span>, ROOT.kRed, ROOT.kFullDiamond</div>
+<div class="line"><a id="l01336" name="l01336"></a><span class="lineno"> 1336</span>    mcHits[<span class="stringliteral">&quot;MuFilterPoints&quot;</span>] = ROOT.FairMCPointDraw(</div>
+<div class="line"><a id="l01337" name="l01337"></a><span class="lineno"> 1337</span>        <span class="stringliteral">&quot;MuFilterPoint&quot;</span>, ROOT.kGreen, ROOT.kFullCircle</div>
+<div class="line"><a id="l01338" name="l01338"></a><span class="lineno"> 1338</span>    )</div>
+<div class="line"><a id="l01339" name="l01339"></a><span class="lineno"> 1339</span>    mcHits[<span class="stringliteral">&quot;EmulsionDetPoints&quot;</span>] = ROOT.FairMCPointDraw(</div>
+<div class="line"><a id="l01340" name="l01340"></a><span class="lineno"> 1340</span>        <span class="stringliteral">&quot;EmulsionDetPoint&quot;</span>, ROOT.kMagenta, ROOT.kCircle</div>
+<div class="line"><a id="l01341" name="l01341"></a><span class="lineno"> 1341</span>    )</div>
+<div class="line"><a id="l01342" name="l01342"></a><span class="lineno"> 1342</span><span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l01343" name="l01343"></a><span class="lineno"> 1343</span>    mcHits[<span class="stringliteral">&quot;VetoPoints&quot;</span>] = ROOT.FairMCPointDraw(</div>
+<div class="line"><a id="l01344" name="l01344"></a><span class="lineno"> 1344</span>        <span class="stringliteral">&quot;vetoPoint&quot;</span>, ROOT.kBlue, ROOT.kFullDiamond</div>
+<div class="line"><a id="l01345" name="l01345"></a><span class="lineno"> 1345</span>    )</div>
+<div class="line"><a id="l01346" name="l01346"></a><span class="lineno"> 1346</span>    mcHits[<span class="stringliteral">&quot;TimeDetPoints&quot;</span>] = ROOT.FairMCPointDraw(</div>
+<div class="line"><a id="l01347" name="l01347"></a><span class="lineno"> 1347</span>        <span class="stringliteral">&quot;TimeDetPoint&quot;</span>, ROOT.kBlue, ROOT.kFullDiamond</div>
 <div class="line"><a id="l01348" name="l01348"></a><span class="lineno"> 1348</span>    )</div>
-<div class="line"><a id="l01349" name="l01349"></a><span class="lineno"> 1349</span>    mcHits[<span class="stringliteral">&quot;MuFilterPoints&quot;</span>] = ROOT.FairMCPointDraw(</div>
-<div class="line"><a id="l01350" name="l01350"></a><span class="lineno"> 1350</span>        <span class="stringliteral">&quot;MuFilterPoint&quot;</span>, ROOT.kGreen, ROOT.kFullCircle</div>
+<div class="line"><a id="l01349" name="l01349"></a><span class="lineno"> 1349</span>    mcHits[<span class="stringliteral">&quot;StrawPoints&quot;</span>] = ROOT.FairMCPointDraw(</div>
+<div class="line"><a id="l01350" name="l01350"></a><span class="lineno"> 1350</span>        <span class="stringliteral">&quot;strawtubesPoint&quot;</span>, ROOT.kGreen, ROOT.kFullCircle</div>
 <div class="line"><a id="l01351" name="l01351"></a><span class="lineno"> 1351</span>    )</div>
-<div class="line"><a id="l01352" name="l01352"></a><span class="lineno"> 1352</span>    mcHits[<span class="stringliteral">&quot;EmulsionDetPoints&quot;</span>] = ROOT.FairMCPointDraw(</div>
-<div class="line"><a id="l01353" name="l01353"></a><span class="lineno"> 1353</span>        <span class="stringliteral">&quot;EmulsionDetPoint&quot;</span>, ROOT.kMagenta, ROOT.kCircle</div>
-<div class="line"><a id="l01354" name="l01354"></a><span class="lineno"> 1354</span>    )</div>
-<div class="line"><a id="l01355" name="l01355"></a><span class="lineno"> 1355</span><span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l01356" name="l01356"></a><span class="lineno"> 1356</span>    mcHits[<span class="stringliteral">&quot;VetoPoints&quot;</span>] = ROOT.FairMCPointDraw(</div>
-<div class="line"><a id="l01357" name="l01357"></a><span class="lineno"> 1357</span>        <span class="stringliteral">&quot;vetoPoint&quot;</span>, ROOT.kBlue, ROOT.kFullDiamond</div>
-<div class="line"><a id="l01358" name="l01358"></a><span class="lineno"> 1358</span>    )</div>
-<div class="line"><a id="l01359" name="l01359"></a><span class="lineno"> 1359</span>    mcHits[<span class="stringliteral">&quot;TimeDetPoints&quot;</span>] = ROOT.FairMCPointDraw(</div>
-<div class="line"><a id="l01360" name="l01360"></a><span class="lineno"> 1360</span>        <span class="stringliteral">&quot;TimeDetPoint&quot;</span>, ROOT.kBlue, ROOT.kFullDiamond</div>
-<div class="line"><a id="l01361" name="l01361"></a><span class="lineno"> 1361</span>    )</div>
-<div class="line"><a id="l01362" name="l01362"></a><span class="lineno"> 1362</span>    mcHits[<span class="stringliteral">&quot;StrawPoints&quot;</span>] = ROOT.FairMCPointDraw(</div>
-<div class="line"><a id="l01363" name="l01363"></a><span class="lineno"> 1363</span>        <span class="stringliteral">&quot;strawtubesPoint&quot;</span>, ROOT.kGreen, ROOT.kFullCircle</div>
-<div class="line"><a id="l01364" name="l01364"></a><span class="lineno"> 1364</span>    )</div>
-<div class="line"><a id="l01365" name="l01365"></a><span class="lineno"> 1365</span>    <span class="keywordflow">if</span> hasattr(ShipGeo, <span class="stringliteral">&quot;EcalOption&quot;</span>):</div>
-<div class="line"><a id="l01366" name="l01366"></a><span class="lineno"> 1366</span>        <span class="keywordflow">if</span> ShipGeo.EcalOption == 2:</div>
-<div class="line"><a id="l01367" name="l01367"></a><span class="lineno"> 1367</span>            mcHits[<span class="stringliteral">&quot;SplitCalPoints&quot;</span>] = ROOT.FairMCPointDraw(</div>
-<div class="line"><a id="l01368" name="l01368"></a><span class="lineno"> 1368</span>                <span class="stringliteral">&quot;splitcalPoint&quot;</span>, ROOT.kRed, ROOT.kFullSquare</div>
-<div class="line"><a id="l01369" name="l01369"></a><span class="lineno"> 1369</span>            )</div>
-<div class="line"><a id="l01370" name="l01370"></a><span class="lineno"> 1370</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> hasattr(mcHits, <span class="stringliteral">&quot;SplitCalPoints&quot;</span>) <span class="keywordflow">and</span> hasattr(ShipGeo, <span class="stringliteral">&quot;HcalOption&quot;</span>):</div>
-<div class="line"><a id="l01371" name="l01371"></a><span class="lineno"> 1371</span>        mcHits[<span class="stringliteral">&quot;EcalPoints&quot;</span>] = ROOT.FairMCPointDraw(</div>
-<div class="line"><a id="l01372" name="l01372"></a><span class="lineno"> 1372</span>            <span class="stringliteral">&quot;EcalPoint&quot;</span>, ROOT.kRed, ROOT.kFullSquare</div>
-<div class="line"><a id="l01373" name="l01373"></a><span class="lineno"> 1373</span>        )</div>
-<div class="line"><a id="l01374" name="l01374"></a><span class="lineno"> 1374</span>        <span class="keywordflow">if</span> ShipGeo.HcalOption != 2:</div>
-<div class="line"><a id="l01375" name="l01375"></a><span class="lineno"> 1375</span>            mcHits[<span class="stringliteral">&quot;HcalPoints&quot;</span>] = ROOT.FairMCPointDraw(</div>
-<div class="line"><a id="l01376" name="l01376"></a><span class="lineno"> 1376</span>                <span class="stringliteral">&quot;HcalPoint&quot;</span>, ROOT.kMagenta, ROOT.kFullSquare</div>
-<div class="line"><a id="l01377" name="l01377"></a><span class="lineno"> 1377</span>            )</div>
-<div class="line"><a id="l01378" name="l01378"></a><span class="lineno"> 1378</span>    mcHits[<span class="stringliteral">&quot;MuonPoints&quot;</span>] = ROOT.FairMCPointDraw(</div>
-<div class="line"><a id="l01379" name="l01379"></a><span class="lineno"> 1379</span>        <span class="stringliteral">&quot;muonPoint&quot;</span>, ROOT.kYellow, ROOT.kFullSquare</div>
-<div class="line"><a id="l01380" name="l01380"></a><span class="lineno"> 1380</span>    )</div>
-<div class="line"><a id="l01381" name="l01381"></a><span class="lineno"> 1381</span>    mcHits[<span class="stringliteral">&quot;RpcPoints&quot;</span>] = ROOT.FairMCPointDraw(</div>
-<div class="line"><a id="l01382" name="l01382"></a><span class="lineno"> 1382</span>        <span class="stringliteral">&quot;ShipRpcPoint&quot;</span>, ROOT.kOrange, ROOT.kFullSquare</div>
-<div class="line"><a id="l01383" name="l01383"></a><span class="lineno"> 1383</span>    )</div>
-<div class="line"><a id="l01384" name="l01384"></a><span class="lineno"> 1384</span>    mcHits[<span class="stringliteral">&quot;TargetPoints&quot;</span>] = ROOT.FairMCPointDraw(</div>
-<div class="line"><a id="l01385" name="l01385"></a><span class="lineno"> 1385</span>        <span class="stringliteral">&quot;TargetPoint&quot;</span>, ROOT.kRed, ROOT.kFullSquare</div>
-<div class="line"><a id="l01386" name="l01386"></a><span class="lineno"> 1386</span>    )</div>
-<div class="line"><a id="l01387" name="l01387"></a><span class="lineno"> 1387</span>    mcHits[<span class="stringliteral">&quot;MtcDetPoint&quot;</span>] = ROOT.FairMCPointDraw(</div>
-<div class="line"><a id="l01388" name="l01388"></a><span class="lineno"> 1388</span>        <span class="stringliteral">&quot;MtcDetPoint&quot;</span>, ROOT.kGreen, ROOT.kFullSquare</div>
-<div class="line"><a id="l01389" name="l01389"></a><span class="lineno"> 1389</span>    )</div>
-<div class="line"><a id="l01390" name="l01390"></a><span class="lineno"> 1390</span> </div>
-<div class="line"><a id="l01391" name="l01391"></a><span class="lineno"> 1391</span> </div>
-<div class="line"><a id="l01392" name="l01392"></a><span class="lineno"> 1392</span><span class="keywordflow">for</span> x <span class="keywordflow">in</span> mcHits:</div>
-<div class="line"><a id="l01393" name="l01393"></a><span class="lineno"> 1393</span>    fMan.AddTask(mcHits[x])</div>
-<div class="line"><a id="l01394" name="l01394"></a><span class="lineno"> 1394</span> </div>
-<div class="line"><a id="l01395" name="l01395"></a><span class="lineno"> 1395</span>fMan.Init(</div>
-<div class="line"><a id="l01396" name="l01396"></a><span class="lineno"> 1396</span>    1, 4, 10</div>
-<div class="line"><a id="l01397" name="l01397"></a><span class="lineno"> 1397</span>)  <span class="comment"># default Init(visopt=1, vislvl=3, maxvisnds=10000), ecal display requires vislvl=4</span></div>
-<div class="line"><a id="l01398" name="l01398"></a><span class="lineno"> 1398</span><span class="comment"># visopt, set drawing mode :</span></div>
-<div class="line"><a id="l01399" name="l01399"></a><span class="lineno"> 1399</span><span class="comment"># option=0 (default) all nodes drawn down to vislevel</span></div>
-<div class="line"><a id="l01400" name="l01400"></a><span class="lineno"> 1400</span><span class="comment"># option=1           leaves and nodes at vislevel drawn</span></div>
-<div class="line"><a id="l01401" name="l01401"></a><span class="lineno"> 1401</span><span class="comment"># option=2           path is drawn</span></div>
-<div class="line"><a id="l01402" name="l01402"></a><span class="lineno"> 1402</span><span class="comment"># vislvl</span></div>
-<div class="line"><a id="l01403" name="l01403"></a><span class="lineno"> 1403</span><span class="comment">#</span></div>
-<div class="line"><a id="l01404" name="l01404"></a><span class="lineno"><a class="line" href="namespaceeventDisplay.html#a5d7afb858e8d452d220951915b2a78d8"> 1404</a></span>fRman = ROOT.FairRootManager.Instance()</div>
-<div class="line"><a id="l01405" name="l01405"></a><span class="lineno"><a class="line" href="namespaceeventDisplay.html#a7351bf0a49e1e3ac5bbcab13fd0aa4fd"> 1405</a></span>sTree = fRman.GetInChain()</div>
-<div class="line"><a id="l01406" name="l01406"></a><span class="lineno"><a class="line" href="namespaceeventDisplay.html#a601d305733db2f2b9e498c9822e9d880"> 1406</a></span>lsOfGlobals = ROOT.gROOT.GetListOfGlobals()</div>
-<div class="line"><a id="l01407" name="l01407"></a><span class="lineno"> 1407</span>lsOfGlobals.Add(sTree)</div>
-<div class="line"><a id="l01408" name="l01408"></a><span class="lineno"><a class="line" href="namespaceeventDisplay.html#aaf2053c8cc36259b66b6ae4e1874601e"> 1408</a></span>sGeo = ROOT.gGeoManager</div>
-<div class="line"><a id="l01409" name="l01409"></a><span class="lineno"><a class="line" href="namespaceeventDisplay.html#adedb83676a54edf1159c60c4e308ea97"> 1409</a></span>top = sGeo.GetTopVolume()</div>
-<div class="line"><a id="l01410" name="l01410"></a><span class="lineno"> 1410</span><span class="comment"># manipulate colors and transparency before scene created</span></div>
-<div class="line"><a id="l01411" name="l01411"></a><span class="lineno"> 1411</span><a class="code hl_function" href="namespaceeventDisplay.html#a9789b0abc463cc5892d137bb61a4f60b">speedUp</a>()</div>
-<div class="line"><a id="l01412" name="l01412"></a><span class="lineno"><a class="line" href="namespaceeventDisplay.html#ae1f86819fc86d530c056ed77c60b5a38"> 1412</a></span>gEve = ROOT.gEve</div>
-<div class="line"><a id="l01413" name="l01413"></a><span class="lineno"> 1413</span> </div>
-<div class="line"><a id="l01414" name="l01414"></a><span class="lineno"> 1414</span><span class="keywordflow">if</span> hasattr(ShipGeo, <span class="stringliteral">&quot;Bfield&quot;</span>):</div>
-<div class="line"><a id="l01415" name="l01415"></a><span class="lineno"> 1415</span>    <span class="keywordflow">if</span> hasattr(ShipGeo.Bfield, <span class="stringliteral">&quot;fieldMap&quot;</span>):</div>
-<div class="line"><a id="l01416" name="l01416"></a><span class="lineno"> 1416</span>        ROOT.gSystem.Load(<span class="stringliteral">&quot;libG4clhep.so&quot;</span>)</div>
-<div class="line"><a id="l01417" name="l01417"></a><span class="lineno"> 1417</span>        ROOT.gSystem.Load(<span class="stringliteral">&quot;libgeant4vmc.so&quot;</span>)</div>
-<div class="line"><a id="l01418" name="l01418"></a><span class="lineno"> 1418</span>        <span class="keyword">import</span> geomGeant4</div>
-<div class="line"><a id="l01419" name="l01419"></a><span class="lineno"> 1419</span> </div>
-<div class="line"><a id="l01420" name="l01420"></a><span class="lineno"><a class="line" href="namespaceeventDisplay.html#a2f0c7a90ed9aad319801864027ea3003"> 1420</a></span>        fieldMaker = <a class="code hl_function" href="namespacegeomGeant4.html#a42125a41d1dc64cb48672d7c60266ae1">geomGeant4.addVMCFields</a>(ShipGeo, <span class="stringliteral">&quot;&quot;</span>, <span class="keyword">True</span>, withVirtualMC=<span class="keyword">False</span>)</div>
-<div class="line"><a id="l01421" name="l01421"></a><span class="lineno"><a class="line" href="namespaceeventDisplay.html#adc7da68718bf676633fa343550991e61"> 1421</a></span>        bfield = ROOT.genfit.FairShipFields()</div>
-<div class="line"><a id="l01422" name="l01422"></a><span class="lineno"> 1422</span>        bfield.setField(fieldMaker.getGlobalField())</div>
-<div class="line"><a id="l01423" name="l01423"></a><span class="lineno"> 1423</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l01424" name="l01424"></a><span class="lineno"> 1424</span>        bfield = ROOT.genfit.BellField(</div>
-<div class="line"><a id="l01425" name="l01425"></a><span class="lineno"> 1425</span>            ShipGeo.Bfield.max, ShipGeo.Bfield.z, 2, ShipGeo.Bfield.y / 2.0 * u.m</div>
-<div class="line"><a id="l01426" name="l01426"></a><span class="lineno"> 1426</span>        )</div>
-<div class="line"><a id="l01427" name="l01427"></a><span class="lineno"><a class="line" href="namespaceeventDisplay.html#a2069af6c854bff3d01b689ca66f2a07b"> 1427</a></span>    geoMat = ROOT.genfit.TGeoMaterialInterface()</div>
-<div class="line"><a id="l01428" name="l01428"></a><span class="lineno"> 1428</span>    ROOT.genfit.MaterialEffects.getInstance().init(geoMat)</div>
-<div class="line"><a id="l01429" name="l01429"></a><span class="lineno"><a class="line" href="namespaceeventDisplay.html#a829e0e25dc7caafcf9c1457f3d1c5e28"> 1429</a></span>    fM = ROOT.genfit.FieldManager.getInstance()</div>
-<div class="line"><a id="l01430" name="l01430"></a><span class="lineno"> 1430</span>    fM.init(bfield)</div>
+<div class="line"><a id="l01352" name="l01352"></a><span class="lineno"> 1352</span>    <span class="keywordflow">if</span> hasattr(ShipGeo, <span class="stringliteral">&quot;EcalOption&quot;</span>):</div>
+<div class="line"><a id="l01353" name="l01353"></a><span class="lineno"> 1353</span>        <span class="keywordflow">if</span> ShipGeo.EcalOption == 2:</div>
+<div class="line"><a id="l01354" name="l01354"></a><span class="lineno"> 1354</span>            mcHits[<span class="stringliteral">&quot;SplitCalPoints&quot;</span>] = ROOT.FairMCPointDraw(</div>
+<div class="line"><a id="l01355" name="l01355"></a><span class="lineno"> 1355</span>                <span class="stringliteral">&quot;splitcalPoint&quot;</span>, ROOT.kRed, ROOT.kFullSquare</div>
+<div class="line"><a id="l01356" name="l01356"></a><span class="lineno"> 1356</span>            )</div>
+<div class="line"><a id="l01357" name="l01357"></a><span class="lineno"> 1357</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> hasattr(mcHits, <span class="stringliteral">&quot;SplitCalPoints&quot;</span>) <span class="keywordflow">and</span> hasattr(ShipGeo, <span class="stringliteral">&quot;HcalOption&quot;</span>):</div>
+<div class="line"><a id="l01358" name="l01358"></a><span class="lineno"> 1358</span>        mcHits[<span class="stringliteral">&quot;EcalPoints&quot;</span>] = ROOT.FairMCPointDraw(</div>
+<div class="line"><a id="l01359" name="l01359"></a><span class="lineno"> 1359</span>            <span class="stringliteral">&quot;EcalPoint&quot;</span>, ROOT.kRed, ROOT.kFullSquare</div>
+<div class="line"><a id="l01360" name="l01360"></a><span class="lineno"> 1360</span>        )</div>
+<div class="line"><a id="l01361" name="l01361"></a><span class="lineno"> 1361</span>        <span class="keywordflow">if</span> ShipGeo.HcalOption != 2:</div>
+<div class="line"><a id="l01362" name="l01362"></a><span class="lineno"> 1362</span>            mcHits[<span class="stringliteral">&quot;HcalPoints&quot;</span>] = ROOT.FairMCPointDraw(</div>
+<div class="line"><a id="l01363" name="l01363"></a><span class="lineno"> 1363</span>                <span class="stringliteral">&quot;HcalPoint&quot;</span>, ROOT.kMagenta, ROOT.kFullSquare</div>
+<div class="line"><a id="l01364" name="l01364"></a><span class="lineno"> 1364</span>            )</div>
+<div class="line"><a id="l01365" name="l01365"></a><span class="lineno"> 1365</span>    mcHits[<span class="stringliteral">&quot;MuonPoints&quot;</span>] = ROOT.FairMCPointDraw(</div>
+<div class="line"><a id="l01366" name="l01366"></a><span class="lineno"> 1366</span>        <span class="stringliteral">&quot;muonPoint&quot;</span>, ROOT.kYellow, ROOT.kFullSquare</div>
+<div class="line"><a id="l01367" name="l01367"></a><span class="lineno"> 1367</span>    )</div>
+<div class="line"><a id="l01368" name="l01368"></a><span class="lineno"> 1368</span>    mcHits[<span class="stringliteral">&quot;RpcPoints&quot;</span>] = ROOT.FairMCPointDraw(</div>
+<div class="line"><a id="l01369" name="l01369"></a><span class="lineno"> 1369</span>        <span class="stringliteral">&quot;ShipRpcPoint&quot;</span>, ROOT.kOrange, ROOT.kFullSquare</div>
+<div class="line"><a id="l01370" name="l01370"></a><span class="lineno"> 1370</span>    )</div>
+<div class="line"><a id="l01371" name="l01371"></a><span class="lineno"> 1371</span>    mcHits[<span class="stringliteral">&quot;TargetPoints&quot;</span>] = ROOT.FairMCPointDraw(</div>
+<div class="line"><a id="l01372" name="l01372"></a><span class="lineno"> 1372</span>        <span class="stringliteral">&quot;TargetPoint&quot;</span>, ROOT.kRed, ROOT.kFullSquare</div>
+<div class="line"><a id="l01373" name="l01373"></a><span class="lineno"> 1373</span>    )</div>
+<div class="line"><a id="l01374" name="l01374"></a><span class="lineno"> 1374</span>    mcHits[<span class="stringliteral">&quot;MtcDetPoint&quot;</span>] = ROOT.FairMCPointDraw(</div>
+<div class="line"><a id="l01375" name="l01375"></a><span class="lineno"> 1375</span>        <span class="stringliteral">&quot;MtcDetPoint&quot;</span>, ROOT.kGreen, ROOT.kFullSquare</div>
+<div class="line"><a id="l01376" name="l01376"></a><span class="lineno"> 1376</span>    )</div>
+<div class="line"><a id="l01377" name="l01377"></a><span class="lineno"> 1377</span> </div>
+<div class="line"><a id="l01378" name="l01378"></a><span class="lineno"> 1378</span> </div>
+<div class="line"><a id="l01379" name="l01379"></a><span class="lineno"> 1379</span><span class="keywordflow">for</span> x <span class="keywordflow">in</span> mcHits:</div>
+<div class="line"><a id="l01380" name="l01380"></a><span class="lineno"> 1380</span>    fMan.AddTask(mcHits[x])</div>
+<div class="line"><a id="l01381" name="l01381"></a><span class="lineno"> 1381</span> </div>
+<div class="line"><a id="l01382" name="l01382"></a><span class="lineno"> 1382</span>fMan.Init(</div>
+<div class="line"><a id="l01383" name="l01383"></a><span class="lineno"> 1383</span>    1, 4, 10</div>
+<div class="line"><a id="l01384" name="l01384"></a><span class="lineno"> 1384</span>)  <span class="comment"># default Init(visopt=1, vislvl=3, maxvisnds=10000), ecal display requires vislvl=4</span></div>
+<div class="line"><a id="l01385" name="l01385"></a><span class="lineno"> 1385</span><span class="comment"># visopt, set drawing mode :</span></div>
+<div class="line"><a id="l01386" name="l01386"></a><span class="lineno"> 1386</span><span class="comment"># option=0 (default) all nodes drawn down to vislevel</span></div>
+<div class="line"><a id="l01387" name="l01387"></a><span class="lineno"> 1387</span><span class="comment"># option=1           leaves and nodes at vislevel drawn</span></div>
+<div class="line"><a id="l01388" name="l01388"></a><span class="lineno"> 1388</span><span class="comment"># option=2           path is drawn</span></div>
+<div class="line"><a id="l01389" name="l01389"></a><span class="lineno"> 1389</span><span class="comment"># vislvl</span></div>
+<div class="line"><a id="l01390" name="l01390"></a><span class="lineno"> 1390</span><span class="comment">#</span></div>
+<div class="line"><a id="l01391" name="l01391"></a><span class="lineno"><a class="line" href="namespaceeventDisplay.html#a5d7afb858e8d452d220951915b2a78d8"> 1391</a></span>fRman = ROOT.FairRootManager.Instance()</div>
+<div class="line"><a id="l01392" name="l01392"></a><span class="lineno"><a class="line" href="namespaceeventDisplay.html#a7351bf0a49e1e3ac5bbcab13fd0aa4fd"> 1392</a></span>sTree = fRman.GetInChain()</div>
+<div class="line"><a id="l01393" name="l01393"></a><span class="lineno"><a class="line" href="namespaceeventDisplay.html#a601d305733db2f2b9e498c9822e9d880"> 1393</a></span>lsOfGlobals = ROOT.gROOT.GetListOfGlobals()</div>
+<div class="line"><a id="l01394" name="l01394"></a><span class="lineno"> 1394</span>lsOfGlobals.Add(sTree)</div>
+<div class="line"><a id="l01395" name="l01395"></a><span class="lineno"><a class="line" href="namespaceeventDisplay.html#aaf2053c8cc36259b66b6ae4e1874601e"> 1395</a></span>sGeo = ROOT.gGeoManager</div>
+<div class="line"><a id="l01396" name="l01396"></a><span class="lineno"><a class="line" href="namespaceeventDisplay.html#adedb83676a54edf1159c60c4e308ea97"> 1396</a></span>top = sGeo.GetTopVolume()</div>
+<div class="line"><a id="l01397" name="l01397"></a><span class="lineno"> 1397</span><span class="comment"># manipulate colors and transparency before scene created</span></div>
+<div class="line"><a id="l01398" name="l01398"></a><span class="lineno"> 1398</span><a class="code hl_function" href="namespaceeventDisplay.html#a9789b0abc463cc5892d137bb61a4f60b">speedUp</a>()</div>
+<div class="line"><a id="l01399" name="l01399"></a><span class="lineno"><a class="line" href="namespaceeventDisplay.html#ae1f86819fc86d530c056ed77c60b5a38"> 1399</a></span>gEve = ROOT.gEve</div>
+<div class="line"><a id="l01400" name="l01400"></a><span class="lineno"> 1400</span> </div>
+<div class="line"><a id="l01401" name="l01401"></a><span class="lineno"> 1401</span><span class="keywordflow">if</span> hasattr(ShipGeo, <span class="stringliteral">&quot;Bfield&quot;</span>):</div>
+<div class="line"><a id="l01402" name="l01402"></a><span class="lineno"> 1402</span>    <span class="keywordflow">if</span> hasattr(ShipGeo.Bfield, <span class="stringliteral">&quot;fieldMap&quot;</span>):</div>
+<div class="line"><a id="l01403" name="l01403"></a><span class="lineno"> 1403</span>        ROOT.gSystem.Load(<span class="stringliteral">&quot;libG4clhep.so&quot;</span>)</div>
+<div class="line"><a id="l01404" name="l01404"></a><span class="lineno"> 1404</span>        ROOT.gSystem.Load(<span class="stringliteral">&quot;libgeant4vmc.so&quot;</span>)</div>
+<div class="line"><a id="l01405" name="l01405"></a><span class="lineno"> 1405</span>        <span class="keyword">import</span> geomGeant4</div>
+<div class="line"><a id="l01406" name="l01406"></a><span class="lineno"> 1406</span> </div>
+<div class="line"><a id="l01407" name="l01407"></a><span class="lineno"><a class="line" href="namespaceeventDisplay.html#a2f0c7a90ed9aad319801864027ea3003"> 1407</a></span>        fieldMaker = <a class="code hl_function" href="namespacegeomGeant4.html#a42125a41d1dc64cb48672d7c60266ae1">geomGeant4.addVMCFields</a>(ShipGeo, <span class="stringliteral">&quot;&quot;</span>, <span class="keyword">True</span>, withVirtualMC=<span class="keyword">False</span>)</div>
+<div class="line"><a id="l01408" name="l01408"></a><span class="lineno"><a class="line" href="namespaceeventDisplay.html#adc7da68718bf676633fa343550991e61"> 1408</a></span>        bfield = ROOT.genfit.FairShipFields()</div>
+<div class="line"><a id="l01409" name="l01409"></a><span class="lineno"> 1409</span>        bfield.setField(fieldMaker.getGlobalField())</div>
+<div class="line"><a id="l01410" name="l01410"></a><span class="lineno"> 1410</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l01411" name="l01411"></a><span class="lineno"> 1411</span>        bfield = ROOT.genfit.BellField(</div>
+<div class="line"><a id="l01412" name="l01412"></a><span class="lineno"> 1412</span>            ShipGeo.Bfield.max, ShipGeo.Bfield.z, 2, ShipGeo.Bfield.y / 2.0 * u.m</div>
+<div class="line"><a id="l01413" name="l01413"></a><span class="lineno"> 1413</span>        )</div>
+<div class="line"><a id="l01414" name="l01414"></a><span class="lineno"><a class="line" href="namespaceeventDisplay.html#a2069af6c854bff3d01b689ca66f2a07b"> 1414</a></span>    geoMat = ROOT.genfit.TGeoMaterialInterface()</div>
+<div class="line"><a id="l01415" name="l01415"></a><span class="lineno"> 1415</span>    ROOT.genfit.MaterialEffects.getInstance().init(geoMat)</div>
+<div class="line"><a id="l01416" name="l01416"></a><span class="lineno"><a class="line" href="namespaceeventDisplay.html#a829e0e25dc7caafcf9c1457f3d1c5e28"> 1416</a></span>    fM = ROOT.genfit.FieldManager.getInstance()</div>
+<div class="line"><a id="l01417" name="l01417"></a><span class="lineno"> 1417</span>    fM.init(bfield)</div>
+<div class="line"><a id="l01418" name="l01418"></a><span class="lineno"> 1418</span> </div>
+<div class="line"><a id="l01419" name="l01419"></a><span class="lineno"> 1419</span><span class="keyword">import</span> TrackExtrapolateTool</div>
+<div class="line"><a id="l01420" name="l01420"></a><span class="lineno"> 1420</span> </div>
+<div class="line"><a id="l01421" name="l01421"></a><span class="lineno"><a class="line" href="namespaceeventDisplay.html#abe023ea1e3a4a6a7eac9907e09ed4ecc"> 1421</a></span>br = gEve.GetBrowser()</div>
+<div class="line"><a id="l01422" name="l01422"></a><span class="lineno"> 1422</span>br.HideBottomTab()  <span class="comment"># make more space for graphics</span></div>
+<div class="line"><a id="l01423" name="l01423"></a><span class="lineno"> 1423</span>br.SetWindowName(<span class="stringliteral">&quot;SHiP Eve Window&quot;</span>)</div>
+<div class="line"><a id="l01424" name="l01424"></a><span class="lineno"> 1424</span> </div>
+<div class="line"><a id="l01425" name="l01425"></a><span class="lineno"> 1425</span><span class="comment"># switchOff(&#39;RockD&#39;)</span></div>
+<div class="line"><a id="l01426" name="l01426"></a><span class="lineno"> 1426</span><span class="keywordflow">if</span> sGeo.FindVolumeFast(<span class="stringliteral">&quot;T2LiSc&quot;</span>):</div>
+<div class="line"><a id="l01427" name="l01427"></a><span class="lineno"> 1427</span>    <a class="code hl_function" href="namespaceeventDisplay.html#a173c96261cf7e6d8f123d148798a9943">hidePlasticScintillator</a>()</div>
+<div class="line"><a id="l01428" name="l01428"></a><span class="lineno"><a class="line" href="namespaceeventDisplay.html#a90f6f709f9a2e3553cddc17c5ffe8449"> 1428</a></span>rulers = <a class="code hl_class" href="classeventDisplay_1_1Rulers.html">Rulers</a>()</div>
+<div class="line"><a id="l01429" name="l01429"></a><span class="lineno"><a class="line" href="namespaceeventDisplay.html#a681445dbc58506f91aedc16be890fd0d"> 1429</a></span>SHiPDisplay = <a class="code hl_class" href="classeventDisplay_1_1EventLoop.html">EventLoop</a>()</div>
+<div class="line"><a id="l01430" name="l01430"></a><span class="lineno"> 1430</span><span class="keyword">import</span> eveGlobal</div>
 <div class="line"><a id="l01431" name="l01431"></a><span class="lineno"> 1431</span> </div>
-<div class="line"><a id="l01432" name="l01432"></a><span class="lineno"> 1432</span><span class="keyword">import</span> TrackExtrapolateTool</div>
-<div class="line"><a id="l01433" name="l01433"></a><span class="lineno"> 1433</span> </div>
-<div class="line"><a id="l01434" name="l01434"></a><span class="lineno"><a class="line" href="namespaceeventDisplay.html#abe023ea1e3a4a6a7eac9907e09ed4ecc"> 1434</a></span>br = gEve.GetBrowser()</div>
-<div class="line"><a id="l01435" name="l01435"></a><span class="lineno"> 1435</span>br.HideBottomTab()  <span class="comment"># make more space for graphics</span></div>
-<div class="line"><a id="l01436" name="l01436"></a><span class="lineno"> 1436</span>br.SetWindowName(<span class="stringliteral">&quot;SHiP Eve Window&quot;</span>)</div>
-<div class="line"><a id="l01437" name="l01437"></a><span class="lineno"> 1437</span> </div>
-<div class="line"><a id="l01438" name="l01438"></a><span class="lineno"> 1438</span><span class="comment"># switchOff(&#39;RockD&#39;)</span></div>
-<div class="line"><a id="l01439" name="l01439"></a><span class="lineno"> 1439</span><span class="keywordflow">if</span> sGeo.FindVolumeFast(<span class="stringliteral">&quot;T2LiSc&quot;</span>):</div>
-<div class="line"><a id="l01440" name="l01440"></a><span class="lineno"> 1440</span>    <a class="code hl_function" href="namespaceeventDisplay.html#a173c96261cf7e6d8f123d148798a9943">hidePlasticScintillator</a>()</div>
-<div class="line"><a id="l01441" name="l01441"></a><span class="lineno"><a class="line" href="namespaceeventDisplay.html#a90f6f709f9a2e3553cddc17c5ffe8449"> 1441</a></span>rulers = <a class="code hl_class" href="classeventDisplay_1_1Rulers.html">Rulers</a>()</div>
-<div class="line"><a id="l01442" name="l01442"></a><span class="lineno"><a class="line" href="namespaceeventDisplay.html#a681445dbc58506f91aedc16be890fd0d"> 1442</a></span>SHiPDisplay = <a class="code hl_class" href="classeventDisplay_1_1EventLoop.html">EventLoop</a>()</div>
-<div class="line"><a id="l01443" name="l01443"></a><span class="lineno"> 1443</span><span class="keyword">import</span> eveGlobal</div>
-<div class="line"><a id="l01444" name="l01444"></a><span class="lineno"> 1444</span> </div>
-<div class="line"><a id="l01445" name="l01445"></a><span class="lineno"> 1445</span>eveGlobal.SHiPDisplay = SHiPDisplay</div>
-<div class="line"><a id="l01446" name="l01446"></a><span class="lineno"> 1446</span>SHiPDisplay.SetName(<span class="stringliteral">&quot;SHiP Displayer&quot;</span>)</div>
-<div class="line"><a id="l01447" name="l01447"></a><span class="lineno"> 1447</span>lsOfGlobals.Add(SHiPDisplay)</div>
-<div class="line"><a id="l01448" name="l01448"></a><span class="lineno"> 1448</span>SHiPDisplay.InitTask()</div>
-<div class="line"><a id="l01449" name="l01449"></a><span class="lineno"> 1449</span> </div>
-<div class="line"><a id="l01450" name="l01450"></a><span class="lineno"> 1450</span><span class="comment"># SHiPDisplay.NextEvent(0)</span></div>
+<div class="line"><a id="l01432" name="l01432"></a><span class="lineno"> 1432</span>eveGlobal.SHiPDisplay = SHiPDisplay</div>
+<div class="line"><a id="l01433" name="l01433"></a><span class="lineno"> 1433</span>SHiPDisplay.SetName(<span class="stringliteral">&quot;SHiP Displayer&quot;</span>)</div>
+<div class="line"><a id="l01434" name="l01434"></a><span class="lineno"> 1434</span>lsOfGlobals.Add(SHiPDisplay)</div>
+<div class="line"><a id="l01435" name="l01435"></a><span class="lineno"> 1435</span>SHiPDisplay.InitTask()</div>
+<div class="line"><a id="l01436" name="l01436"></a><span class="lineno"> 1436</span> </div>
+<div class="line"><a id="l01437" name="l01437"></a><span class="lineno"> 1437</span><span class="comment"># SHiPDisplay.NextEvent(0)</span></div>
+<div class="line"><a id="l01438" name="l01438"></a><span class="lineno"> 1438</span> </div>
+<div class="line"><a id="l01439" name="l01439"></a><span class="lineno"> 1439</span>print(</div>
+<div class="line"><a id="l01440" name="l01440"></a><span class="lineno"> 1440</span>    <span class="stringliteral">&quot;Help on GL viewer can be found by pressing Help button followed by help on GL viewer&quot;</span></div>
+<div class="line"><a id="l01441" name="l01441"></a><span class="lineno"> 1441</span>)</div>
+<div class="line"><a id="l01442" name="l01442"></a><span class="lineno"> 1442</span>print(<span class="stringliteral">&quot;With the camera button, you can switch to different views.&quot;</span>)</div>
+<div class="line"><a id="l01443" name="l01443"></a><span class="lineno"> 1443</span><span class="comment"># short cuts</span></div>
+<div class="line"><a id="l01444" name="l01444"></a><span class="lineno"> 1444</span><span class="comment"># w go to wire frame</span></div>
+<div class="line"><a id="l01445" name="l01445"></a><span class="lineno"> 1445</span><span class="comment"># r smooth display</span></div>
+<div class="line"><a id="l01446" name="l01446"></a><span class="lineno"> 1446</span><span class="comment"># t technical display</span></div>
+<div class="line"><a id="l01447" name="l01447"></a><span class="lineno"> 1447</span><span class="comment"># e black&lt;-&gt;white background</span></div>
+<div class="line"><a id="l01448" name="l01448"></a><span class="lineno"> 1448</span><span class="comment"># j zoom in</span></div>
+<div class="line"><a id="l01449" name="l01449"></a><span class="lineno"> 1449</span><span class="comment"># k zoom out</span></div>
+<div class="line"><a id="l01450" name="l01450"></a><span class="lineno"> 1450</span><span class="comment"># d GL debug mode</span></div>
 <div class="line"><a id="l01451" name="l01451"></a><span class="lineno"> 1451</span> </div>
-<div class="line"><a id="l01452" name="l01452"></a><span class="lineno"> 1452</span>print(</div>
-<div class="line"><a id="l01453" name="l01453"></a><span class="lineno"> 1453</span>    <span class="stringliteral">&quot;Help on GL viewer can be found by pressing Help button followed by help on GL viewer&quot;</span></div>
-<div class="line"><a id="l01454" name="l01454"></a><span class="lineno"> 1454</span>)</div>
-<div class="line"><a id="l01455" name="l01455"></a><span class="lineno"> 1455</span>print(<span class="stringliteral">&quot;With the camera button, you can switch to different views.&quot;</span>)</div>
-<div class="line"><a id="l01456" name="l01456"></a><span class="lineno"> 1456</span><span class="comment"># short cuts</span></div>
-<div class="line"><a id="l01457" name="l01457"></a><span class="lineno"> 1457</span><span class="comment"># w go to wire frame</span></div>
-<div class="line"><a id="l01458" name="l01458"></a><span class="lineno"> 1458</span><span class="comment"># r smooth display</span></div>
-<div class="line"><a id="l01459" name="l01459"></a><span class="lineno"> 1459</span><span class="comment"># t technical display</span></div>
-<div class="line"><a id="l01460" name="l01460"></a><span class="lineno"> 1460</span><span class="comment"># e black&lt;-&gt;white background</span></div>
-<div class="line"><a id="l01461" name="l01461"></a><span class="lineno"> 1461</span><span class="comment"># j zoom in</span></div>
-<div class="line"><a id="l01462" name="l01462"></a><span class="lineno"> 1462</span><span class="comment"># k zoom out</span></div>
-<div class="line"><a id="l01463" name="l01463"></a><span class="lineno"> 1463</span><span class="comment"># d GL debug mode</span></div>
-<div class="line"><a id="l01464" name="l01464"></a><span class="lineno"> 1464</span> </div>
+<div class="line"><a id="l01452" name="l01452"></a><span class="lineno"> 1452</span> </div>
+<div class="line"><a id="l01453" name="l01453"></a><span class="lineno"> 1453</span><span class="comment"># fGeo.SetNsegments(10) # can help a bit in case of performance problems</span></div>
+<div class="foldopen" id="foldopen01454" data-start="" data-end="">
+<div class="line"><a id="l01454" name="l01454"></a><span class="lineno"><a class="line" href="namespaceeventDisplay.html#a7398a0b6a9859fb88b96880d2c844efc"> 1454</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceeventDisplay.html#a7398a0b6a9859fb88b96880d2c844efc">DrawCharmTracks</a>():</div>
+<div class="line"><a id="l01455" name="l01455"></a><span class="lineno"> 1455</span>    i = -1</div>
+<div class="line"><a id="l01456" name="l01456"></a><span class="lineno"> 1456</span>    <span class="keywordflow">for</span> aTrack <span class="keywordflow">in</span> sTree.MCTrack:</div>
+<div class="line"><a id="l01457" name="l01457"></a><span class="lineno"> 1457</span>        i += 1</div>
+<div class="line"><a id="l01458" name="l01458"></a><span class="lineno"> 1458</span>        <span class="keywordflow">if</span> i &lt; 2:</div>
+<div class="line"><a id="l01459" name="l01459"></a><span class="lineno"> 1459</span>            <span class="keywordflow">continue</span></div>
+<div class="line"><a id="l01460" name="l01460"></a><span class="lineno"> 1460</span>        <span class="keywordflow">if</span> aTrack.GetMotherId() == 1:</div>
+<div class="line"><a id="l01461" name="l01461"></a><span class="lineno"> 1461</span>            pa = pdg.GetParticle(sTree.MCTrack[i].GetPdgCode())</div>
+<div class="line"><a id="l01462" name="l01462"></a><span class="lineno"> 1462</span>            <span class="keywordflow">if</span> pa.Lifetime() &gt; 1.0e-12:</div>
+<div class="line"><a id="l01463" name="l01463"></a><span class="lineno"> 1463</span>                print(sTree.MCTrack[i])</div>
+<div class="line"><a id="l01464" name="l01464"></a><span class="lineno"> 1464</span>                SHiPDisplay.tracks.DrawMCTrack(i)</div>
 <div class="line"><a id="l01465" name="l01465"></a><span class="lineno"> 1465</span> </div>
-<div class="line"><a id="l01466" name="l01466"></a><span class="lineno"> 1466</span><span class="comment"># fGeo.SetNsegments(10) # can help a bit in case of performance problems</span></div>
+<div class="line"><a id="l01466" name="l01466"></a><span class="lineno"> 1466</span> </div>
+</div>
 <div class="foldopen" id="foldopen01467" data-start="" data-end="">
-<div class="line"><a id="l01467" name="l01467"></a><span class="lineno"><a class="line" href="namespaceeventDisplay.html#a7398a0b6a9859fb88b96880d2c844efc"> 1467</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceeventDisplay.html#a7398a0b6a9859fb88b96880d2c844efc">DrawCharmTracks</a>():</div>
-<div class="line"><a id="l01468" name="l01468"></a><span class="lineno"> 1468</span>    i = -1</div>
-<div class="line"><a id="l01469" name="l01469"></a><span class="lineno"> 1469</span>    <span class="keywordflow">for</span> aTrack <span class="keywordflow">in</span> sTree.MCTrack:</div>
-<div class="line"><a id="l01470" name="l01470"></a><span class="lineno"> 1470</span>        i += 1</div>
-<div class="line"><a id="l01471" name="l01471"></a><span class="lineno"> 1471</span>        <span class="keywordflow">if</span> i &lt; 2:</div>
-<div class="line"><a id="l01472" name="l01472"></a><span class="lineno"> 1472</span>            <span class="keywordflow">continue</span></div>
-<div class="line"><a id="l01473" name="l01473"></a><span class="lineno"> 1473</span>        <span class="keywordflow">if</span> aTrack.GetMotherId() == 1:</div>
-<div class="line"><a id="l01474" name="l01474"></a><span class="lineno"> 1474</span>            pa = pdg.GetParticle(sTree.MCTrack[i].GetPdgCode())</div>
-<div class="line"><a id="l01475" name="l01475"></a><span class="lineno"> 1475</span>            <span class="keywordflow">if</span> pa.Lifetime() &gt; 1.0e-12:</div>
-<div class="line"><a id="l01476" name="l01476"></a><span class="lineno"> 1476</span>                print(sTree.MCTrack[i])</div>
-<div class="line"><a id="l01477" name="l01477"></a><span class="lineno"> 1477</span>                SHiPDisplay.tracks.DrawMCTrack(i)</div>
-<div class="line"><a id="l01478" name="l01478"></a><span class="lineno"> 1478</span> </div>
-<div class="line"><a id="l01479" name="l01479"></a><span class="lineno"> 1479</span> </div>
+<div class="line"><a id="l01467" name="l01467"></a><span class="lineno"><a class="line" href="namespaceeventDisplay.html#a8430faa93ffd972b173017afa809e78a"> 1467</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceeventDisplay.html#a8430faa93ffd972b173017afa809e78a">DrawSimpleMCTracks</a>():</div>
+<div class="line"><a id="l01468" name="l01468"></a><span class="lineno"> 1468</span>    comp = SHiPDisplay.tracks.comp</div>
+<div class="line"><a id="l01469" name="l01469"></a><span class="lineno"> 1469</span>    comp.OpenCompound()</div>
+<div class="line"><a id="l01470" name="l01470"></a><span class="lineno"> 1470</span>    n = -1</div>
+<div class="line"><a id="l01471" name="l01471"></a><span class="lineno"> 1471</span>    ntot = 0</div>
+<div class="line"><a id="l01472" name="l01472"></a><span class="lineno"> 1472</span>    fPos = ROOT.TVector3()</div>
+<div class="line"><a id="l01473" name="l01473"></a><span class="lineno"> 1473</span>    fMom = ROOT.TVector3()</div>
+<div class="line"><a id="l01474" name="l01474"></a><span class="lineno"> 1474</span>    delZ = 10 * u.m</div>
+<div class="line"><a id="l01475" name="l01475"></a><span class="lineno"> 1475</span>    <span class="keywordflow">for</span> fT <span class="keywordflow">in</span> sTree.MCTrack:</div>
+<div class="line"><a id="l01476" name="l01476"></a><span class="lineno"> 1476</span>        n += 1</div>
+<div class="line"><a id="l01477" name="l01477"></a><span class="lineno"> 1477</span>        DTrack = ROOT.TEveLine()</div>
+<div class="line"><a id="l01478" name="l01478"></a><span class="lineno"> 1478</span>        DTrack.SetPickable(ROOT.kTRUE)</div>
+<div class="line"><a id="l01479" name="l01479"></a><span class="lineno"> 1479</span>        DTrack.SetTitle(fT.__repr__())</div>
+<div class="line"><a id="l01480" name="l01480"></a><span class="lineno"> 1480</span>        fT.GetStartVertex(fPos)</div>
+<div class="line"><a id="l01481" name="l01481"></a><span class="lineno"> 1481</span>        fT.GetMomentum(fMom)</div>
+<div class="line"><a id="l01482" name="l01482"></a><span class="lineno"> 1482</span>        hitlist = {}</div>
+<div class="line"><a id="l01483" name="l01483"></a><span class="lineno"> 1483</span>        hitlist[fPos.Z()] = [fPos.X(), fPos.Y()]</div>
+<div class="line"><a id="l01484" name="l01484"></a><span class="lineno"> 1484</span>        z = fPos.Z() + delZ</div>
+<div class="line"><a id="l01485" name="l01485"></a><span class="lineno"> 1485</span>        slx, sly = fMom.X() / fMom.Z(), fMom.Y() / fMom.Z()</div>
+<div class="line"><a id="l01486" name="l01486"></a><span class="lineno"> 1486</span>        hitlist[z] = [fPos.X() + slx * delZ, fPos.Y() + sly * delZ]</div>
+<div class="line"><a id="l01487" name="l01487"></a><span class="lineno"> 1487</span>        <span class="keywordflow">for</span> z <span class="keywordflow">in</span> hitlist.keys():</div>
+<div class="line"><a id="l01488" name="l01488"></a><span class="lineno"> 1488</span>            DTrack.SetNextPoint(hitlist[z][0], hitlist[z][1], z)</div>
+<div class="line"><a id="l01489" name="l01489"></a><span class="lineno"> 1489</span>        p = pdg.GetParticle(fT.GetPdgCode())</div>
+<div class="line"><a id="l01490" name="l01490"></a><span class="lineno"> 1490</span>        <span class="keywordflow">if</span> p:</div>
+<div class="line"><a id="l01491" name="l01491"></a><span class="lineno"> 1491</span>            pName = p.GetName()</div>
+<div class="line"><a id="l01492" name="l01492"></a><span class="lineno"> 1492</span>        <span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l01493" name="l01493"></a><span class="lineno"> 1493</span>            pName = str(fT.GetPdgCode())</div>
+<div class="line"><a id="l01494" name="l01494"></a><span class="lineno"> 1494</span>        DTrack.SetName(<span class="stringliteral">&quot;MCTrack_&quot;</span> + str(n) + <span class="stringliteral">&quot;_&quot;</span> + pName)</div>
+<div class="line"><a id="l01495" name="l01495"></a><span class="lineno"> 1495</span>        c = ROOT.kYellow</div>
+<div class="line"><a id="l01496" name="l01496"></a><span class="lineno"> 1496</span>        DTrack.SetMainColor(c)</div>
+<div class="line"><a id="l01497" name="l01497"></a><span class="lineno"> 1497</span>        DTrack.SetLineWidth(3)</div>
+<div class="line"><a id="l01498" name="l01498"></a><span class="lineno"> 1498</span>        comp.AddElement(DTrack)</div>
+<div class="line"><a id="l01499" name="l01499"></a><span class="lineno"> 1499</span>        ntot += 1</div>
+<div class="line"><a id="l01500" name="l01500"></a><span class="lineno"> 1500</span>    comp.CloseCompound()</div>
+<div class="line"><a id="l01501" name="l01501"></a><span class="lineno"> 1501</span>    gEve.ElementChanged(SHiPDisplay.tracks.evscene, <span class="keyword">True</span>, <span class="keyword">True</span>)</div>
+<div class="line"><a id="l01502" name="l01502"></a><span class="lineno"> 1502</span> </div>
+<div class="line"><a id="l01503" name="l01503"></a><span class="lineno"> 1503</span> </div>
 </div>
-<div class="foldopen" id="foldopen01480" data-start="" data-end="">
-<div class="line"><a id="l01480" name="l01480"></a><span class="lineno"><a class="line" href="namespaceeventDisplay.html#a8430faa93ffd972b173017afa809e78a"> 1480</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceeventDisplay.html#a8430faa93ffd972b173017afa809e78a">DrawSimpleMCTracks</a>():</div>
-<div class="line"><a id="l01481" name="l01481"></a><span class="lineno"> 1481</span>    comp = SHiPDisplay.tracks.comp</div>
-<div class="line"><a id="l01482" name="l01482"></a><span class="lineno"> 1482</span>    comp.OpenCompound()</div>
-<div class="line"><a id="l01483" name="l01483"></a><span class="lineno"> 1483</span>    n = -1</div>
-<div class="line"><a id="l01484" name="l01484"></a><span class="lineno"> 1484</span>    ntot = 0</div>
-<div class="line"><a id="l01485" name="l01485"></a><span class="lineno"> 1485</span>    fPos = ROOT.TVector3()</div>
-<div class="line"><a id="l01486" name="l01486"></a><span class="lineno"> 1486</span>    fMom = ROOT.TVector3()</div>
-<div class="line"><a id="l01487" name="l01487"></a><span class="lineno"> 1487</span>    delZ = 10 * u.m</div>
-<div class="line"><a id="l01488" name="l01488"></a><span class="lineno"> 1488</span>    <span class="keywordflow">for</span> fT <span class="keywordflow">in</span> sTree.MCTrack:</div>
-<div class="line"><a id="l01489" name="l01489"></a><span class="lineno"> 1489</span>        n += 1</div>
-<div class="line"><a id="l01490" name="l01490"></a><span class="lineno"> 1490</span>        DTrack = ROOT.TEveLine()</div>
-<div class="line"><a id="l01491" name="l01491"></a><span class="lineno"> 1491</span>        DTrack.SetPickable(ROOT.kTRUE)</div>
-<div class="line"><a id="l01492" name="l01492"></a><span class="lineno"> 1492</span>        DTrack.SetTitle(fT.__repr__())</div>
-<div class="line"><a id="l01493" name="l01493"></a><span class="lineno"> 1493</span>        fT.GetStartVertex(fPos)</div>
-<div class="line"><a id="l01494" name="l01494"></a><span class="lineno"> 1494</span>        fT.GetMomentum(fMom)</div>
-<div class="line"><a id="l01495" name="l01495"></a><span class="lineno"> 1495</span>        hitlist = {}</div>
-<div class="line"><a id="l01496" name="l01496"></a><span class="lineno"> 1496</span>        hitlist[fPos.Z()] = [fPos.X(), fPos.Y()]</div>
-<div class="line"><a id="l01497" name="l01497"></a><span class="lineno"> 1497</span>        z = fPos.Z() + delZ</div>
-<div class="line"><a id="l01498" name="l01498"></a><span class="lineno"> 1498</span>        slx, sly = fMom.X() / fMom.Z(), fMom.Y() / fMom.Z()</div>
-<div class="line"><a id="l01499" name="l01499"></a><span class="lineno"> 1499</span>        hitlist[z] = [fPos.X() + slx * delZ, fPos.Y() + sly * delZ]</div>
-<div class="line"><a id="l01500" name="l01500"></a><span class="lineno"> 1500</span>        <span class="keywordflow">for</span> z <span class="keywordflow">in</span> hitlist.keys():</div>
-<div class="line"><a id="l01501" name="l01501"></a><span class="lineno"> 1501</span>            DTrack.SetNextPoint(hitlist[z][0], hitlist[z][1], z)</div>
-<div class="line"><a id="l01502" name="l01502"></a><span class="lineno"> 1502</span>        p = pdg.GetParticle(fT.GetPdgCode())</div>
-<div class="line"><a id="l01503" name="l01503"></a><span class="lineno"> 1503</span>        <span class="keywordflow">if</span> p:</div>
-<div class="line"><a id="l01504" name="l01504"></a><span class="lineno"> 1504</span>            pName = p.GetName()</div>
-<div class="line"><a id="l01505" name="l01505"></a><span class="lineno"> 1505</span>        <span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l01506" name="l01506"></a><span class="lineno"> 1506</span>            pName = str(fT.GetPdgCode())</div>
-<div class="line"><a id="l01507" name="l01507"></a><span class="lineno"> 1507</span>        DTrack.SetName(<span class="stringliteral">&quot;MCTrack_&quot;</span> + str(n) + <span class="stringliteral">&quot;_&quot;</span> + pName)</div>
-<div class="line"><a id="l01508" name="l01508"></a><span class="lineno"> 1508</span>        c = ROOT.kYellow</div>
-<div class="line"><a id="l01509" name="l01509"></a><span class="lineno"> 1509</span>        DTrack.SetMainColor(c)</div>
-<div class="line"><a id="l01510" name="l01510"></a><span class="lineno"> 1510</span>        DTrack.SetLineWidth(3)</div>
-<div class="line"><a id="l01511" name="l01511"></a><span class="lineno"> 1511</span>        comp.AddElement(DTrack)</div>
-<div class="line"><a id="l01512" name="l01512"></a><span class="lineno"> 1512</span>        ntot += 1</div>
-<div class="line"><a id="l01513" name="l01513"></a><span class="lineno"> 1513</span>    comp.CloseCompound()</div>
-<div class="line"><a id="l01514" name="l01514"></a><span class="lineno"> 1514</span>    gEve.ElementChanged(SHiPDisplay.tracks.evscene, <span class="keyword">True</span>, <span class="keyword">True</span>)</div>
-<div class="line"><a id="l01515" name="l01515"></a><span class="lineno"> 1515</span> </div>
-<div class="line"><a id="l01516" name="l01516"></a><span class="lineno"> 1516</span> </div>
+<div class="foldopen" id="foldopen01504" data-start="" data-end="">
+<div class="line"><a id="l01504" name="l01504"></a><span class="lineno"><a class="line" href="namespaceeventDisplay.html#a23dd5bc896d44b8d1df6e9a010bceaa8"> 1504</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceeventDisplay.html#a23dd5bc896d44b8d1df6e9a010bceaa8">positionText</a>(</div>
+<div class="line"><a id="l01505" name="l01505"></a><span class="lineno"> 1505</span>    r,</div>
+<div class="line"><a id="l01506" name="l01506"></a><span class="lineno"> 1506</span>    x,</div>
+<div class="line"><a id="l01507" name="l01507"></a><span class="lineno"> 1507</span>    y,</div>
+<div class="line"><a id="l01508" name="l01508"></a><span class="lineno"> 1508</span>    z,</div>
+<div class="line"><a id="l01509" name="l01509"></a><span class="lineno"> 1509</span>    angle,</div>
+<div class="line"><a id="l01510" name="l01510"></a><span class="lineno"> 1510</span>    txt,</div>
+<div class="line"><a id="l01511" name="l01511"></a><span class="lineno"> 1511</span>    size=200,</div>
+<div class="line"><a id="l01512" name="l01512"></a><span class="lineno"> 1512</span>    color=ROOT.kBlue,</div>
+<div class="line"><a id="l01513" name="l01513"></a><span class="lineno"> 1513</span>    mode=ROOT.TGLFont.kExtrude,</div>
+<div class="line"><a id="l01514" name="l01514"></a><span class="lineno"> 1514</span>    light=ROOT.kTRUE,</div>
+<div class="line"><a id="l01515" name="l01515"></a><span class="lineno"> 1515</span>):</div>
+<div class="line"><a id="l01516" name="l01516"></a><span class="lineno"> 1516</span>    tt = ROOT.TEveText(txt)</div>
+<div class="line"><a id="l01517" name="l01517"></a><span class="lineno"> 1517</span>    tt.SetFontSize(size)</div>
+<div class="line"><a id="l01518" name="l01518"></a><span class="lineno"> 1518</span>    tt.RefMainTrans().SetPos(x, y, z)</div>
+<div class="line"><a id="l01519" name="l01519"></a><span class="lineno"> 1519</span>    tt.PtrMainTrans().RotateLF(1, 3, angle)</div>
+<div class="line"><a id="l01520" name="l01520"></a><span class="lineno"> 1520</span>    tt.SetMainColor(color)</div>
+<div class="line"><a id="l01521" name="l01521"></a><span class="lineno"> 1521</span>    tt.SetFontMode(mode)</div>
+<div class="line"><a id="l01522" name="l01522"></a><span class="lineno"> 1522</span>    tt.SetLighting(light)</div>
+<div class="line"><a id="l01523" name="l01523"></a><span class="lineno"> 1523</span>    r.AddElement(tt)</div>
+<div class="line"><a id="l01524" name="l01524"></a><span class="lineno"> 1524</span> </div>
+<div class="line"><a id="l01525" name="l01525"></a><span class="lineno"> 1525</span> </div>
 </div>
-<div class="foldopen" id="foldopen01517" data-start="" data-end="">
-<div class="line"><a id="l01517" name="l01517"></a><span class="lineno"><a class="line" href="namespaceeventDisplay.html#a23dd5bc896d44b8d1df6e9a010bceaa8"> 1517</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceeventDisplay.html#a23dd5bc896d44b8d1df6e9a010bceaa8">positionText</a>(</div>
-<div class="line"><a id="l01518" name="l01518"></a><span class="lineno"> 1518</span>    r,</div>
-<div class="line"><a id="l01519" name="l01519"></a><span class="lineno"> 1519</span>    x,</div>
-<div class="line"><a id="l01520" name="l01520"></a><span class="lineno"> 1520</span>    y,</div>
-<div class="line"><a id="l01521" name="l01521"></a><span class="lineno"> 1521</span>    z,</div>
-<div class="line"><a id="l01522" name="l01522"></a><span class="lineno"> 1522</span>    angle,</div>
-<div class="line"><a id="l01523" name="l01523"></a><span class="lineno"> 1523</span>    txt,</div>
-<div class="line"><a id="l01524" name="l01524"></a><span class="lineno"> 1524</span>    size=200,</div>
-<div class="line"><a id="l01525" name="l01525"></a><span class="lineno"> 1525</span>    color=ROOT.kBlue,</div>
-<div class="line"><a id="l01526" name="l01526"></a><span class="lineno"> 1526</span>    mode=ROOT.TGLFont.kExtrude,</div>
-<div class="line"><a id="l01527" name="l01527"></a><span class="lineno"> 1527</span>    light=ROOT.kTRUE,</div>
-<div class="line"><a id="l01528" name="l01528"></a><span class="lineno"> 1528</span>):</div>
-<div class="line"><a id="l01529" name="l01529"></a><span class="lineno"> 1529</span>    tt = ROOT.TEveText(txt)</div>
-<div class="line"><a id="l01530" name="l01530"></a><span class="lineno"> 1530</span>    tt.SetFontSize(size)</div>
-<div class="line"><a id="l01531" name="l01531"></a><span class="lineno"> 1531</span>    tt.RefMainTrans().SetPos(x, y, z)</div>
-<div class="line"><a id="l01532" name="l01532"></a><span class="lineno"> 1532</span>    tt.PtrMainTrans().RotateLF(1, 3, angle)</div>
-<div class="line"><a id="l01533" name="l01533"></a><span class="lineno"> 1533</span>    tt.SetMainColor(color)</div>
-<div class="line"><a id="l01534" name="l01534"></a><span class="lineno"> 1534</span>    tt.SetFontMode(mode)</div>
-<div class="line"><a id="l01535" name="l01535"></a><span class="lineno"> 1535</span>    tt.SetLighting(light)</div>
-<div class="line"><a id="l01536" name="l01536"></a><span class="lineno"> 1536</span>    r.AddElement(tt)</div>
-<div class="line"><a id="l01537" name="l01537"></a><span class="lineno"> 1537</span> </div>
-<div class="line"><a id="l01538" name="l01538"></a><span class="lineno"> 1538</span> </div>
-</div>
-<div class="foldopen" id="foldopen01539" data-start="" data-end="">
-<div class="line"><a id="l01539" name="l01539"></a><span class="lineno"><a class="line" href="namespaceeventDisplay.html#a2a8ec021927707ad8d187d83217ea219"> 1539</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceeventDisplay.html#a2a8ec021927707ad8d187d83217ea219">PRVersion</a>():</div>
-<div class="line"><a id="l01540" name="l01540"></a><span class="lineno"> 1540</span>    <a class="code hl_function" href="namespaceeventDisplay.html#a00384f30935b639a80646e062e75b453">readCameraSetting</a>()</div>
-<div class="line"><a id="l01541" name="l01541"></a><span class="lineno"> 1541</span>    <span class="keywordflow">for</span> x <span class="keywordflow">in</span> [</div>
-<div class="line"><a id="l01542" name="l01542"></a><span class="lineno"> 1542</span>        <span class="stringliteral">&quot;moreShieldingSide&quot;</span>,</div>
-<div class="line"><a id="l01543" name="l01543"></a><span class="lineno"> 1543</span>        <span class="stringliteral">&quot;moreShieldingTopBot&quot;</span>,</div>
-<div class="line"><a id="l01544" name="l01544"></a><span class="lineno"> 1544</span>        <span class="stringliteral">&quot;CoatWall&quot;</span>,</div>
-<div class="line"><a id="l01545" name="l01545"></a><span class="lineno"> 1545</span>        <span class="stringliteral">&quot;CoatVol&quot;</span>,</div>
-<div class="line"><a id="l01546" name="l01546"></a><span class="lineno"> 1546</span>        <span class="stringliteral">&quot;AbsorberVol&quot;</span>,</div>
-<div class="line"><a id="l01547" name="l01547"></a><span class="lineno"> 1547</span>    ]:</div>
-<div class="line"><a id="l01548" name="l01548"></a><span class="lineno"> 1548</span>        vol = ROOT.gGeoManager.FindVolumeFast(x)</div>
-<div class="line"><a id="l01549" name="l01549"></a><span class="lineno"> 1549</span>        vol.SetVisibility(0)</div>
-<div class="line"><a id="l01550" name="l01550"></a><span class="lineno"> 1550</span>    ROOT.gGeoManager.GetMaterial(<span class="stringliteral">&quot;Concrete&quot;</span>).SetTransparency(0)</div>
-<div class="line"><a id="l01551" name="l01551"></a><span class="lineno"> 1551</span>    r = rulers.ruler</div>
-<div class="line"><a id="l01552" name="l01552"></a><span class="lineno"> 1552</span>    ticks = 5</div>
-<div class="line"><a id="l01553" name="l01553"></a><span class="lineno"> 1553</span>    r.DestroyElements()</div>
-<div class="line"><a id="l01554" name="l01554"></a><span class="lineno"> 1554</span>    r.OpenCompound()</div>
-<div class="line"><a id="l01555" name="l01555"></a><span class="lineno"> 1555</span>    xpos, ypos = -500.0, -1500.0</div>
-<div class="line"><a id="l01556" name="l01556"></a><span class="lineno"> 1556</span>    zstart = ShipGeo.target.z0</div>
-<div class="line"><a id="l01557" name="l01557"></a><span class="lineno"> 1557</span>    zlength = ShipGeo.MuonStation3.z - zstart + 10 * u.m</div>
-<div class="line"><a id="l01558" name="l01558"></a><span class="lineno"> 1558</span>    z = zstart</div>
-<div class="line"><a id="l01559" name="l01559"></a><span class="lineno"> 1559</span>    <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(int(zlength / 100 / ticks)):</div>
-<div class="line"><a id="l01560" name="l01560"></a><span class="lineno"> 1560</span>        m = ROOT.TEveLine()</div>
-<div class="line"><a id="l01561" name="l01561"></a><span class="lineno"> 1561</span>        m.SetNextPoint(xpos, ypos, z)</div>
-<div class="line"><a id="l01562" name="l01562"></a><span class="lineno"> 1562</span>        m.SetNextPoint(xpos - 1 * u.m, ypos, z)</div>
-<div class="line"><a id="l01563" name="l01563"></a><span class="lineno"> 1563</span>        m.SetMainColor(ROOT.kRed)</div>
-<div class="line"><a id="l01564" name="l01564"></a><span class="lineno"> 1564</span>        m.SetLineWidth(5)</div>
-<div class="line"><a id="l01565" name="l01565"></a><span class="lineno"> 1565</span>        r.AddElement(m)</div>
-<div class="line"><a id="l01566" name="l01566"></a><span class="lineno"> 1566</span>        t1 = ROOT.TEveText(str(i * ticks) + <span class="stringliteral">&quot;m&quot;</span>)</div>
-<div class="line"><a id="l01567" name="l01567"></a><span class="lineno"> 1567</span>        t1.SetMainColor(ROOT.kGray + 3)</div>
-<div class="line"><a id="l01568" name="l01568"></a><span class="lineno"> 1568</span>        t1.SetFontSize(5)</div>
-<div class="line"><a id="l01569" name="l01569"></a><span class="lineno"> 1569</span>        t1.RefMainTrans().SetPos(xpos - 0.1 * u.m, ypos + 0.2 * u.m, z)</div>
-<div class="line"><a id="l01570" name="l01570"></a><span class="lineno"> 1570</span>        r.AddElement(t1)</div>
-<div class="line"><a id="l01571" name="l01571"></a><span class="lineno"> 1571</span>        z += ticks * u.m</div>
-<div class="line"><a id="l01572" name="l01572"></a><span class="lineno"> 1572</span>    xpos, ypos = 0.0, 0.0</div>
-<div class="line"><a id="l01573" name="l01573"></a><span class="lineno"> 1573</span>    z = ShipGeo.MuonStation3.z + 6 * u.m</div>
-<div class="line"><a id="l01574" name="l01574"></a><span class="lineno"> 1574</span>    ylength = 7 * u.m</div>
-<div class="line"><a id="l01575" name="l01575"></a><span class="lineno"> 1575</span>    ypos = -ylength</div>
-<div class="line"><a id="l01576" name="l01576"></a><span class="lineno"> 1576</span>    <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(-int(ylength / 100), int(ylength / 100), 1):</div>
-<div class="line"><a id="l01577" name="l01577"></a><span class="lineno"> 1577</span>        m = ROOT.TEveLine()</div>
-<div class="line"><a id="l01578" name="l01578"></a><span class="lineno"> 1578</span>        m.SetNextPoint(xpos, ypos, z)</div>
-<div class="line"><a id="l01579" name="l01579"></a><span class="lineno"> 1579</span>        m.SetNextPoint(xpos + 0.05 * u.m, ypos, z)</div>
-<div class="line"><a id="l01580" name="l01580"></a><span class="lineno"> 1580</span>        m.SetMainColor(ROOT.kRed)</div>
-<div class="line"><a id="l01581" name="l01581"></a><span class="lineno"> 1581</span>        m.SetLineWidth(3)</div>
-<div class="line"><a id="l01582" name="l01582"></a><span class="lineno"> 1582</span>        r.AddElement(m)</div>
-<div class="line"><a id="l01583" name="l01583"></a><span class="lineno"> 1583</span>        t1 = ROOT.TEveText(str(i) + <span class="stringliteral">&quot;m&quot;</span>)</div>
-<div class="line"><a id="l01584" name="l01584"></a><span class="lineno"> 1584</span>        t1.SetMainColor(ROOT.kGray + 3)</div>
-<div class="line"><a id="l01585" name="l01585"></a><span class="lineno"> 1585</span>        t1.SetFontSize(5)</div>
-<div class="line"><a id="l01586" name="l01586"></a><span class="lineno"> 1586</span>        t1.RefMainTrans().SetPos(xpos - 0.5 * u.m, ypos, z)</div>
-<div class="line"><a id="l01587" name="l01587"></a><span class="lineno"> 1587</span>        r.AddElement(t1)</div>
-<div class="line"><a id="l01588" name="l01588"></a><span class="lineno"> 1588</span>        ypos += 1 * u.m</div>
-<div class="line"><a id="l01589" name="l01589"></a><span class="lineno"> 1589</span>    ty = ROOT.TEveText(<span class="stringliteral">&quot;y-axis&quot;</span>)</div>
-<div class="line"><a id="l01590" name="l01590"></a><span class="lineno"> 1590</span>    ty.SetFontSize(10)</div>
-<div class="line"><a id="l01591" name="l01591"></a><span class="lineno"> 1591</span>    ty.RefMainTrans().SetPos(0.0, ypos + 1 * u.m, z)</div>
-<div class="line"><a id="l01592" name="l01592"></a><span class="lineno"> 1592</span>    ty.SetMainColor(ROOT.kRed - 2)</div>
-<div class="line"><a id="l01593" name="l01593"></a><span class="lineno"> 1593</span>    r.AddElement(ty)</div>
-<div class="line"><a id="l01594" name="l01594"></a><span class="lineno"> 1594</span>    xpos, ypos = 0.0, 0.0</div>
-<div class="line"><a id="l01595" name="l01595"></a><span class="lineno"> 1595</span>    z = ShipGeo.MuonStation3.z + 10 * u.m</div>
-<div class="line"><a id="l01596" name="l01596"></a><span class="lineno"> 1596</span>    xlength = 3 * u.m</div>
-<div class="line"><a id="l01597" name="l01597"></a><span class="lineno"> 1597</span>    xpos = -xlength</div>
-<div class="line"><a id="l01598" name="l01598"></a><span class="lineno"> 1598</span>    <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(-int(xlength / 100), int(xlength / 100), 1):</div>
-<div class="line"><a id="l01599" name="l01599"></a><span class="lineno"> 1599</span>        m = ROOT.TEveLine()</div>
-<div class="line"><a id="l01600" name="l01600"></a><span class="lineno"> 1600</span>        m.SetNextPoint(xpos, ypos, z)</div>
-<div class="line"><a id="l01601" name="l01601"></a><span class="lineno"> 1601</span>        m.SetNextPoint(xpos, ypos - 0.05 * u.m, z)</div>
-<div class="line"><a id="l01602" name="l01602"></a><span class="lineno"> 1602</span>        m.SetMainColor(ROOT.kRed)</div>
-<div class="line"><a id="l01603" name="l01603"></a><span class="lineno"> 1603</span>        m.SetLineWidth(3)</div>
-<div class="line"><a id="l01604" name="l01604"></a><span class="lineno"> 1604</span>        r.AddElement(m)</div>
-<div class="line"><a id="l01605" name="l01605"></a><span class="lineno"> 1605</span>        t1 = ROOT.TEveText(str(i) + <span class="stringliteral">&quot;m&quot;</span>)</div>
-<div class="line"><a id="l01606" name="l01606"></a><span class="lineno"> 1606</span>        t1.SetMainColor(ROOT.kGray + 3)</div>
-<div class="line"><a id="l01607" name="l01607"></a><span class="lineno"> 1607</span>        t1.SetFontSize(5)</div>
-<div class="line"><a id="l01608" name="l01608"></a><span class="lineno"> 1608</span>        t1.RefMainTrans().SetPos(xpos, ypos - 0.1 * u.m, z)</div>
-<div class="line"><a id="l01609" name="l01609"></a><span class="lineno"> 1609</span>        r.AddElement(t1)</div>
-<div class="line"><a id="l01610" name="l01610"></a><span class="lineno"> 1610</span>        xpos += 1 * u.m</div>
-<div class="line"><a id="l01611" name="l01611"></a><span class="lineno"> 1611</span>    tx = ROOT.TEveText(<span class="stringliteral">&quot;x-axis&quot;</span>)</div>
-<div class="line"><a id="l01612" name="l01612"></a><span class="lineno"> 1612</span>    tx.SetFontSize(10)</div>
-<div class="line"><a id="l01613" name="l01613"></a><span class="lineno"> 1613</span>    tx.RefMainTrans().SetPos(xpos + 1 * u.m, 0.0, z)</div>
-<div class="line"><a id="l01614" name="l01614"></a><span class="lineno"> 1614</span>    tx.SetMainColor(ROOT.kRed - 2)</div>
-<div class="line"><a id="l01615" name="l01615"></a><span class="lineno"> 1615</span>    r.AddElement(tx)</div>
-<div class="line"><a id="l01616" name="l01616"></a><span class="lineno"> 1616</span>    rotAngle = ROOT.TMath.Pi() + ROOT.TMath.PiOver2() * 5.0 / 2.0</div>
-<div class="line"><a id="l01617" name="l01617"></a><span class="lineno"> 1617</span>    <a class="code hl_function" href="namespaceeventDisplay.html#a23dd5bc896d44b8d1df6e9a010bceaa8">positionText</a>(</div>
-<div class="line"><a id="l01618" name="l01618"></a><span class="lineno"> 1618</span>        r,</div>
-<div class="line"><a id="l01619" name="l01619"></a><span class="lineno"> 1619</span>        0.0,</div>
-<div class="line"><a id="l01620" name="l01620"></a><span class="lineno"> 1620</span>        900.0,</div>
-<div class="line"><a id="l01621" name="l01621"></a><span class="lineno"> 1621</span>        ShipGeo.TrackStation1.z - 20 * u.m,</div>
-<div class="line"><a id="l01622" name="l01622"></a><span class="lineno"> 1622</span>        rotAngle,</div>
-<div class="line"><a id="l01623" name="l01623"></a><span class="lineno"> 1623</span>        <span class="stringliteral">&quot;SHiP&quot;</span>,</div>
-<div class="line"><a id="l01624" name="l01624"></a><span class="lineno"> 1624</span>        200,</div>
-<div class="line"><a id="l01625" name="l01625"></a><span class="lineno"> 1625</span>        ROOT.kOrange - 2,</div>
+<div class="foldopen" id="foldopen01526" data-start="" data-end="">
+<div class="line"><a id="l01526" name="l01526"></a><span class="lineno"><a class="line" href="namespaceeventDisplay.html#a2a8ec021927707ad8d187d83217ea219"> 1526</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceeventDisplay.html#a2a8ec021927707ad8d187d83217ea219">PRVersion</a>():</div>
+<div class="line"><a id="l01527" name="l01527"></a><span class="lineno"> 1527</span>    <a class="code hl_function" href="namespaceeventDisplay.html#a00384f30935b639a80646e062e75b453">readCameraSetting</a>()</div>
+<div class="line"><a id="l01528" name="l01528"></a><span class="lineno"> 1528</span>    <span class="keywordflow">for</span> x <span class="keywordflow">in</span> [</div>
+<div class="line"><a id="l01529" name="l01529"></a><span class="lineno"> 1529</span>        <span class="stringliteral">&quot;moreShieldingSide&quot;</span>,</div>
+<div class="line"><a id="l01530" name="l01530"></a><span class="lineno"> 1530</span>        <span class="stringliteral">&quot;moreShieldingTopBot&quot;</span>,</div>
+<div class="line"><a id="l01531" name="l01531"></a><span class="lineno"> 1531</span>        <span class="stringliteral">&quot;CoatWall&quot;</span>,</div>
+<div class="line"><a id="l01532" name="l01532"></a><span class="lineno"> 1532</span>        <span class="stringliteral">&quot;CoatVol&quot;</span>,</div>
+<div class="line"><a id="l01533" name="l01533"></a><span class="lineno"> 1533</span>        <span class="stringliteral">&quot;AbsorberVol&quot;</span>,</div>
+<div class="line"><a id="l01534" name="l01534"></a><span class="lineno"> 1534</span>    ]:</div>
+<div class="line"><a id="l01535" name="l01535"></a><span class="lineno"> 1535</span>        vol = ROOT.gGeoManager.FindVolumeFast(x)</div>
+<div class="line"><a id="l01536" name="l01536"></a><span class="lineno"> 1536</span>        vol.SetVisibility(0)</div>
+<div class="line"><a id="l01537" name="l01537"></a><span class="lineno"> 1537</span>    ROOT.gGeoManager.GetMaterial(<span class="stringliteral">&quot;Concrete&quot;</span>).SetTransparency(0)</div>
+<div class="line"><a id="l01538" name="l01538"></a><span class="lineno"> 1538</span>    r = rulers.ruler</div>
+<div class="line"><a id="l01539" name="l01539"></a><span class="lineno"> 1539</span>    ticks = 5</div>
+<div class="line"><a id="l01540" name="l01540"></a><span class="lineno"> 1540</span>    r.DestroyElements()</div>
+<div class="line"><a id="l01541" name="l01541"></a><span class="lineno"> 1541</span>    r.OpenCompound()</div>
+<div class="line"><a id="l01542" name="l01542"></a><span class="lineno"> 1542</span>    xpos, ypos = -500.0, -1500.0</div>
+<div class="line"><a id="l01543" name="l01543"></a><span class="lineno"> 1543</span>    zstart = ShipGeo.target.z0</div>
+<div class="line"><a id="l01544" name="l01544"></a><span class="lineno"> 1544</span>    zlength = ShipGeo.MuonStation3.z - zstart + 10 * u.m</div>
+<div class="line"><a id="l01545" name="l01545"></a><span class="lineno"> 1545</span>    z = zstart</div>
+<div class="line"><a id="l01546" name="l01546"></a><span class="lineno"> 1546</span>    <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(int(zlength / 100 / ticks)):</div>
+<div class="line"><a id="l01547" name="l01547"></a><span class="lineno"> 1547</span>        m = ROOT.TEveLine()</div>
+<div class="line"><a id="l01548" name="l01548"></a><span class="lineno"> 1548</span>        m.SetNextPoint(xpos, ypos, z)</div>
+<div class="line"><a id="l01549" name="l01549"></a><span class="lineno"> 1549</span>        m.SetNextPoint(xpos - 1 * u.m, ypos, z)</div>
+<div class="line"><a id="l01550" name="l01550"></a><span class="lineno"> 1550</span>        m.SetMainColor(ROOT.kRed)</div>
+<div class="line"><a id="l01551" name="l01551"></a><span class="lineno"> 1551</span>        m.SetLineWidth(5)</div>
+<div class="line"><a id="l01552" name="l01552"></a><span class="lineno"> 1552</span>        r.AddElement(m)</div>
+<div class="line"><a id="l01553" name="l01553"></a><span class="lineno"> 1553</span>        t1 = ROOT.TEveText(str(i * ticks) + <span class="stringliteral">&quot;m&quot;</span>)</div>
+<div class="line"><a id="l01554" name="l01554"></a><span class="lineno"> 1554</span>        t1.SetMainColor(ROOT.kGray + 3)</div>
+<div class="line"><a id="l01555" name="l01555"></a><span class="lineno"> 1555</span>        t1.SetFontSize(5)</div>
+<div class="line"><a id="l01556" name="l01556"></a><span class="lineno"> 1556</span>        t1.RefMainTrans().SetPos(xpos - 0.1 * u.m, ypos + 0.2 * u.m, z)</div>
+<div class="line"><a id="l01557" name="l01557"></a><span class="lineno"> 1557</span>        r.AddElement(t1)</div>
+<div class="line"><a id="l01558" name="l01558"></a><span class="lineno"> 1558</span>        z += ticks * u.m</div>
+<div class="line"><a id="l01559" name="l01559"></a><span class="lineno"> 1559</span>    xpos, ypos = 0.0, 0.0</div>
+<div class="line"><a id="l01560" name="l01560"></a><span class="lineno"> 1560</span>    z = ShipGeo.MuonStation3.z + 6 * u.m</div>
+<div class="line"><a id="l01561" name="l01561"></a><span class="lineno"> 1561</span>    ylength = 7 * u.m</div>
+<div class="line"><a id="l01562" name="l01562"></a><span class="lineno"> 1562</span>    ypos = -ylength</div>
+<div class="line"><a id="l01563" name="l01563"></a><span class="lineno"> 1563</span>    <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(-int(ylength / 100), int(ylength / 100), 1):</div>
+<div class="line"><a id="l01564" name="l01564"></a><span class="lineno"> 1564</span>        m = ROOT.TEveLine()</div>
+<div class="line"><a id="l01565" name="l01565"></a><span class="lineno"> 1565</span>        m.SetNextPoint(xpos, ypos, z)</div>
+<div class="line"><a id="l01566" name="l01566"></a><span class="lineno"> 1566</span>        m.SetNextPoint(xpos + 0.05 * u.m, ypos, z)</div>
+<div class="line"><a id="l01567" name="l01567"></a><span class="lineno"> 1567</span>        m.SetMainColor(ROOT.kRed)</div>
+<div class="line"><a id="l01568" name="l01568"></a><span class="lineno"> 1568</span>        m.SetLineWidth(3)</div>
+<div class="line"><a id="l01569" name="l01569"></a><span class="lineno"> 1569</span>        r.AddElement(m)</div>
+<div class="line"><a id="l01570" name="l01570"></a><span class="lineno"> 1570</span>        t1 = ROOT.TEveText(str(i) + <span class="stringliteral">&quot;m&quot;</span>)</div>
+<div class="line"><a id="l01571" name="l01571"></a><span class="lineno"> 1571</span>        t1.SetMainColor(ROOT.kGray + 3)</div>
+<div class="line"><a id="l01572" name="l01572"></a><span class="lineno"> 1572</span>        t1.SetFontSize(5)</div>
+<div class="line"><a id="l01573" name="l01573"></a><span class="lineno"> 1573</span>        t1.RefMainTrans().SetPos(xpos - 0.5 * u.m, ypos, z)</div>
+<div class="line"><a id="l01574" name="l01574"></a><span class="lineno"> 1574</span>        r.AddElement(t1)</div>
+<div class="line"><a id="l01575" name="l01575"></a><span class="lineno"> 1575</span>        ypos += 1 * u.m</div>
+<div class="line"><a id="l01576" name="l01576"></a><span class="lineno"> 1576</span>    ty = ROOT.TEveText(<span class="stringliteral">&quot;y-axis&quot;</span>)</div>
+<div class="line"><a id="l01577" name="l01577"></a><span class="lineno"> 1577</span>    ty.SetFontSize(10)</div>
+<div class="line"><a id="l01578" name="l01578"></a><span class="lineno"> 1578</span>    ty.RefMainTrans().SetPos(0.0, ypos + 1 * u.m, z)</div>
+<div class="line"><a id="l01579" name="l01579"></a><span class="lineno"> 1579</span>    ty.SetMainColor(ROOT.kRed - 2)</div>
+<div class="line"><a id="l01580" name="l01580"></a><span class="lineno"> 1580</span>    r.AddElement(ty)</div>
+<div class="line"><a id="l01581" name="l01581"></a><span class="lineno"> 1581</span>    xpos, ypos = 0.0, 0.0</div>
+<div class="line"><a id="l01582" name="l01582"></a><span class="lineno"> 1582</span>    z = ShipGeo.MuonStation3.z + 10 * u.m</div>
+<div class="line"><a id="l01583" name="l01583"></a><span class="lineno"> 1583</span>    xlength = 3 * u.m</div>
+<div class="line"><a id="l01584" name="l01584"></a><span class="lineno"> 1584</span>    xpos = -xlength</div>
+<div class="line"><a id="l01585" name="l01585"></a><span class="lineno"> 1585</span>    <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(-int(xlength / 100), int(xlength / 100), 1):</div>
+<div class="line"><a id="l01586" name="l01586"></a><span class="lineno"> 1586</span>        m = ROOT.TEveLine()</div>
+<div class="line"><a id="l01587" name="l01587"></a><span class="lineno"> 1587</span>        m.SetNextPoint(xpos, ypos, z)</div>
+<div class="line"><a id="l01588" name="l01588"></a><span class="lineno"> 1588</span>        m.SetNextPoint(xpos, ypos - 0.05 * u.m, z)</div>
+<div class="line"><a id="l01589" name="l01589"></a><span class="lineno"> 1589</span>        m.SetMainColor(ROOT.kRed)</div>
+<div class="line"><a id="l01590" name="l01590"></a><span class="lineno"> 1590</span>        m.SetLineWidth(3)</div>
+<div class="line"><a id="l01591" name="l01591"></a><span class="lineno"> 1591</span>        r.AddElement(m)</div>
+<div class="line"><a id="l01592" name="l01592"></a><span class="lineno"> 1592</span>        t1 = ROOT.TEveText(str(i) + <span class="stringliteral">&quot;m&quot;</span>)</div>
+<div class="line"><a id="l01593" name="l01593"></a><span class="lineno"> 1593</span>        t1.SetMainColor(ROOT.kGray + 3)</div>
+<div class="line"><a id="l01594" name="l01594"></a><span class="lineno"> 1594</span>        t1.SetFontSize(5)</div>
+<div class="line"><a id="l01595" name="l01595"></a><span class="lineno"> 1595</span>        t1.RefMainTrans().SetPos(xpos, ypos - 0.1 * u.m, z)</div>
+<div class="line"><a id="l01596" name="l01596"></a><span class="lineno"> 1596</span>        r.AddElement(t1)</div>
+<div class="line"><a id="l01597" name="l01597"></a><span class="lineno"> 1597</span>        xpos += 1 * u.m</div>
+<div class="line"><a id="l01598" name="l01598"></a><span class="lineno"> 1598</span>    tx = ROOT.TEveText(<span class="stringliteral">&quot;x-axis&quot;</span>)</div>
+<div class="line"><a id="l01599" name="l01599"></a><span class="lineno"> 1599</span>    tx.SetFontSize(10)</div>
+<div class="line"><a id="l01600" name="l01600"></a><span class="lineno"> 1600</span>    tx.RefMainTrans().SetPos(xpos + 1 * u.m, 0.0, z)</div>
+<div class="line"><a id="l01601" name="l01601"></a><span class="lineno"> 1601</span>    tx.SetMainColor(ROOT.kRed - 2)</div>
+<div class="line"><a id="l01602" name="l01602"></a><span class="lineno"> 1602</span>    r.AddElement(tx)</div>
+<div class="line"><a id="l01603" name="l01603"></a><span class="lineno"> 1603</span>    rotAngle = ROOT.TMath.Pi() + ROOT.TMath.PiOver2() * 5.0 / 2.0</div>
+<div class="line"><a id="l01604" name="l01604"></a><span class="lineno"> 1604</span>    <a class="code hl_function" href="namespaceeventDisplay.html#a23dd5bc896d44b8d1df6e9a010bceaa8">positionText</a>(</div>
+<div class="line"><a id="l01605" name="l01605"></a><span class="lineno"> 1605</span>        r,</div>
+<div class="line"><a id="l01606" name="l01606"></a><span class="lineno"> 1606</span>        0.0,</div>
+<div class="line"><a id="l01607" name="l01607"></a><span class="lineno"> 1607</span>        900.0,</div>
+<div class="line"><a id="l01608" name="l01608"></a><span class="lineno"> 1608</span>        ShipGeo.TrackStation1.z - 20 * u.m,</div>
+<div class="line"><a id="l01609" name="l01609"></a><span class="lineno"> 1609</span>        rotAngle,</div>
+<div class="line"><a id="l01610" name="l01610"></a><span class="lineno"> 1610</span>        <span class="stringliteral">&quot;SHiP&quot;</span>,</div>
+<div class="line"><a id="l01611" name="l01611"></a><span class="lineno"> 1611</span>        200,</div>
+<div class="line"><a id="l01612" name="l01612"></a><span class="lineno"> 1612</span>        ROOT.kOrange - 2,</div>
+<div class="line"><a id="l01613" name="l01613"></a><span class="lineno"> 1613</span>    )</div>
+<div class="line"><a id="l01614" name="l01614"></a><span class="lineno"> 1614</span>    <a class="code hl_function" href="namespaceeventDisplay.html#a23dd5bc896d44b8d1df6e9a010bceaa8">positionText</a>(</div>
+<div class="line"><a id="l01615" name="l01615"></a><span class="lineno"> 1615</span>        r,</div>
+<div class="line"><a id="l01616" name="l01616"></a><span class="lineno"> 1616</span>        0.0,</div>
+<div class="line"><a id="l01617" name="l01617"></a><span class="lineno"> 1617</span>        750.0,</div>
+<div class="line"><a id="l01618" name="l01618"></a><span class="lineno"> 1618</span>        ShipGeo.TrackStation1.z - 40 * u.m,</div>
+<div class="line"><a id="l01619" name="l01619"></a><span class="lineno"> 1619</span>        rotAngle,</div>
+<div class="line"><a id="l01620" name="l01620"></a><span class="lineno"> 1620</span>        <span class="stringliteral">&quot;Vacuum decay vessel&quot;</span>,</div>
+<div class="line"><a id="l01621" name="l01621"></a><span class="lineno"> 1621</span>        200,</div>
+<div class="line"><a id="l01622" name="l01622"></a><span class="lineno"> 1622</span>        ROOT.kGray + 1,</div>
+<div class="line"><a id="l01623" name="l01623"></a><span class="lineno"> 1623</span>    )</div>
+<div class="line"><a id="l01624" name="l01624"></a><span class="lineno"> 1624</span>    <a class="code hl_function" href="namespaceeventDisplay.html#a23dd5bc896d44b8d1df6e9a010bceaa8">positionText</a>(</div>
+<div class="line"><a id="l01625" name="l01625"></a><span class="lineno"> 1625</span>        r, 0.0, 100.0, ShipGeo.target.z - 6 * u.m, rotAngle, <span class="stringliteral">&quot;Target&quot;</span>, 200, ROOT.kBlue</div>
 <div class="line"><a id="l01626" name="l01626"></a><span class="lineno"> 1626</span>    )</div>
 <div class="line"><a id="l01627" name="l01627"></a><span class="lineno"> 1627</span>    <a class="code hl_function" href="namespaceeventDisplay.html#a23dd5bc896d44b8d1df6e9a010bceaa8">positionText</a>(</div>
 <div class="line"><a id="l01628" name="l01628"></a><span class="lineno"> 1628</span>        r,</div>
 <div class="line"><a id="l01629" name="l01629"></a><span class="lineno"> 1629</span>        0.0,</div>
-<div class="line"><a id="l01630" name="l01630"></a><span class="lineno"> 1630</span>        750.0,</div>
-<div class="line"><a id="l01631" name="l01631"></a><span class="lineno"> 1631</span>        ShipGeo.TrackStation1.z - 40 * u.m,</div>
+<div class="line"><a id="l01630" name="l01630"></a><span class="lineno"> 1630</span>        600.0,</div>
+<div class="line"><a id="l01631" name="l01631"></a><span class="lineno"> 1631</span>        ShipGeo.muShield.z - 10 * u.m,</div>
 <div class="line"><a id="l01632" name="l01632"></a><span class="lineno"> 1632</span>        rotAngle,</div>
-<div class="line"><a id="l01633" name="l01633"></a><span class="lineno"> 1633</span>        <span class="stringliteral">&quot;Vacuum decay vessel&quot;</span>,</div>
+<div class="line"><a id="l01633" name="l01633"></a><span class="lineno"> 1633</span>        <span class="stringliteral">&quot;Active muon shield&quot;</span>,</div>
 <div class="line"><a id="l01634" name="l01634"></a><span class="lineno"> 1634</span>        200,</div>
-<div class="line"><a id="l01635" name="l01635"></a><span class="lineno"> 1635</span>        ROOT.kGray + 1,</div>
+<div class="line"><a id="l01635" name="l01635"></a><span class="lineno"> 1635</span>        ROOT.kGreen - 2,</div>
 <div class="line"><a id="l01636" name="l01636"></a><span class="lineno"> 1636</span>    )</div>
 <div class="line"><a id="l01637" name="l01637"></a><span class="lineno"> 1637</span>    <a class="code hl_function" href="namespaceeventDisplay.html#a23dd5bc896d44b8d1df6e9a010bceaa8">positionText</a>(</div>
-<div class="line"><a id="l01638" name="l01638"></a><span class="lineno"> 1638</span>        r, 0.0, 100.0, ShipGeo.target.z - 6 * u.m, rotAngle, <span class="stringliteral">&quot;Target&quot;</span>, 200, ROOT.kBlue</div>
-<div class="line"><a id="l01639" name="l01639"></a><span class="lineno"> 1639</span>    )</div>
-<div class="line"><a id="l01640" name="l01640"></a><span class="lineno"> 1640</span>    <a class="code hl_function" href="namespaceeventDisplay.html#a23dd5bc896d44b8d1df6e9a010bceaa8">positionText</a>(</div>
-<div class="line"><a id="l01641" name="l01641"></a><span class="lineno"> 1641</span>        r,</div>
-<div class="line"><a id="l01642" name="l01642"></a><span class="lineno"> 1642</span>        0.0,</div>
-<div class="line"><a id="l01643" name="l01643"></a><span class="lineno"> 1643</span>        600.0,</div>
-<div class="line"><a id="l01644" name="l01644"></a><span class="lineno"> 1644</span>        ShipGeo.muShield.z - 10 * u.m,</div>
-<div class="line"><a id="l01645" name="l01645"></a><span class="lineno"> 1645</span>        rotAngle,</div>
-<div class="line"><a id="l01646" name="l01646"></a><span class="lineno"> 1646</span>        <span class="stringliteral">&quot;Active muon shield&quot;</span>,</div>
-<div class="line"><a id="l01647" name="l01647"></a><span class="lineno"> 1647</span>        200,</div>
-<div class="line"><a id="l01648" name="l01648"></a><span class="lineno"> 1648</span>        ROOT.kGreen - 2,</div>
-<div class="line"><a id="l01649" name="l01649"></a><span class="lineno"> 1649</span>    )</div>
-<div class="line"><a id="l01650" name="l01650"></a><span class="lineno"> 1650</span>    <a class="code hl_function" href="namespaceeventDisplay.html#a23dd5bc896d44b8d1df6e9a010bceaa8">positionText</a>(</div>
-<div class="line"><a id="l01651" name="l01651"></a><span class="lineno"> 1651</span>        r,</div>
-<div class="line"><a id="l01652" name="l01652"></a><span class="lineno"> 1652</span>        0.0,</div>
-<div class="line"><a id="l01653" name="l01653"></a><span class="lineno"> 1653</span>        600.0,</div>
-<div class="line"><a id="l01654" name="l01654"></a><span class="lineno"> 1654</span>        ShipGeo.tauMudet.zMudetC - 10 * u.m,</div>
-<div class="line"><a id="l01655" name="l01655"></a><span class="lineno"> 1655</span>        rotAngle,</div>
-<div class="line"><a id="l01656" name="l01656"></a><span class="lineno"> 1656</span>        <span class="stringliteral">&quot;Tau neutrino detector&quot;</span>,</div>
-<div class="line"><a id="l01657" name="l01657"></a><span class="lineno"> 1657</span>        200,</div>
-<div class="line"><a id="l01658" name="l01658"></a><span class="lineno"> 1658</span>        ROOT.kRed - 2,</div>
-<div class="line"><a id="l01659" name="l01659"></a><span class="lineno"> 1659</span>    )</div>
-<div class="line"><a id="l01660" name="l01660"></a><span class="lineno"> 1660</span>    <a class="code hl_function" href="namespaceeventDisplay.html#a23dd5bc896d44b8d1df6e9a010bceaa8">positionText</a>(</div>
-<div class="line"><a id="l01661" name="l01661"></a><span class="lineno"> 1661</span>        r,</div>
-<div class="line"><a id="l01662" name="l01662"></a><span class="lineno"> 1662</span>        0.0,</div>
-<div class="line"><a id="l01663" name="l01663"></a><span class="lineno"> 1663</span>        900.0,</div>
-<div class="line"><a id="l01664" name="l01664"></a><span class="lineno"> 1664</span>        ShipGeo.Bfield.z - 5 * u.m,</div>
-<div class="line"><a id="l01665" name="l01665"></a><span class="lineno"> 1665</span>        rotAngle,</div>
-<div class="line"><a id="l01666" name="l01666"></a><span class="lineno"> 1666</span>        <span class="stringliteral">&quot;Dipole Magnet&quot;</span>,</div>
-<div class="line"><a id="l01667" name="l01667"></a><span class="lineno"> 1667</span>        200,</div>
-<div class="line"><a id="l01668" name="l01668"></a><span class="lineno"> 1668</span>        ROOT.kBlue + 2,</div>
+<div class="line"><a id="l01638" name="l01638"></a><span class="lineno"> 1638</span>        r,</div>
+<div class="line"><a id="l01639" name="l01639"></a><span class="lineno"> 1639</span>        0.0,</div>
+<div class="line"><a id="l01640" name="l01640"></a><span class="lineno"> 1640</span>        600.0,</div>
+<div class="line"><a id="l01641" name="l01641"></a><span class="lineno"> 1641</span>        ShipGeo.tauMudet.zMudetC - 10 * u.m,</div>
+<div class="line"><a id="l01642" name="l01642"></a><span class="lineno"> 1642</span>        rotAngle,</div>
+<div class="line"><a id="l01643" name="l01643"></a><span class="lineno"> 1643</span>        <span class="stringliteral">&quot;Tau neutrino detector&quot;</span>,</div>
+<div class="line"><a id="l01644" name="l01644"></a><span class="lineno"> 1644</span>        200,</div>
+<div class="line"><a id="l01645" name="l01645"></a><span class="lineno"> 1645</span>        ROOT.kRed - 2,</div>
+<div class="line"><a id="l01646" name="l01646"></a><span class="lineno"> 1646</span>    )</div>
+<div class="line"><a id="l01647" name="l01647"></a><span class="lineno"> 1647</span>    <a class="code hl_function" href="namespaceeventDisplay.html#a23dd5bc896d44b8d1df6e9a010bceaa8">positionText</a>(</div>
+<div class="line"><a id="l01648" name="l01648"></a><span class="lineno"> 1648</span>        r,</div>
+<div class="line"><a id="l01649" name="l01649"></a><span class="lineno"> 1649</span>        0.0,</div>
+<div class="line"><a id="l01650" name="l01650"></a><span class="lineno"> 1650</span>        900.0,</div>
+<div class="line"><a id="l01651" name="l01651"></a><span class="lineno"> 1651</span>        ShipGeo.Bfield.z - 5 * u.m,</div>
+<div class="line"><a id="l01652" name="l01652"></a><span class="lineno"> 1652</span>        rotAngle,</div>
+<div class="line"><a id="l01653" name="l01653"></a><span class="lineno"> 1653</span>        <span class="stringliteral">&quot;Dipole Magnet&quot;</span>,</div>
+<div class="line"><a id="l01654" name="l01654"></a><span class="lineno"> 1654</span>        200,</div>
+<div class="line"><a id="l01655" name="l01655"></a><span class="lineno"> 1655</span>        ROOT.kBlue + 2,</div>
+<div class="line"><a id="l01656" name="l01656"></a><span class="lineno"> 1656</span>    )</div>
+<div class="line"><a id="l01657" name="l01657"></a><span class="lineno"> 1657</span>    <a class="code hl_function" href="namespaceeventDisplay.html#a23dd5bc896d44b8d1df6e9a010bceaa8">positionText</a>(</div>
+<div class="line"><a id="l01658" name="l01658"></a><span class="lineno"> 1658</span>        r,</div>
+<div class="line"><a id="l01659" name="l01659"></a><span class="lineno"> 1659</span>        -1500.0,</div>
+<div class="line"><a id="l01660" name="l01660"></a><span class="lineno"> 1660</span>        -800.0,</div>
+<div class="line"><a id="l01661" name="l01661"></a><span class="lineno"> 1661</span>        ShipGeo.TrackStation3.z - 2 * u.m,</div>
+<div class="line"><a id="l01662" name="l01662"></a><span class="lineno"> 1662</span>        rotAngle,</div>
+<div class="line"><a id="l01663" name="l01663"></a><span class="lineno"> 1663</span>        <span class="stringliteral">&quot;Strawtracker&quot;</span>,</div>
+<div class="line"><a id="l01664" name="l01664"></a><span class="lineno"> 1664</span>        200,</div>
+<div class="line"><a id="l01665" name="l01665"></a><span class="lineno"> 1665</span>        ROOT.kRed + 2,</div>
+<div class="line"><a id="l01666" name="l01666"></a><span class="lineno"> 1666</span>    )</div>
+<div class="line"><a id="l01667" name="l01667"></a><span class="lineno"> 1667</span>    <a class="code hl_function" href="namespaceeventDisplay.html#a23dd5bc896d44b8d1df6e9a010bceaa8">positionText</a>(</div>
+<div class="line"><a id="l01668" name="l01668"></a><span class="lineno"> 1668</span>        r, 0.0, 730.0, ShipGeo.ecal.z - 1 * u.m, rotAngle, <span class="stringliteral">&quot;Ecal&quot;</span>, 200, ROOT.kOrange</div>
 <div class="line"><a id="l01669" name="l01669"></a><span class="lineno"> 1669</span>    )</div>
 <div class="line"><a id="l01670" name="l01670"></a><span class="lineno"> 1670</span>    <a class="code hl_function" href="namespaceeventDisplay.html#a23dd5bc896d44b8d1df6e9a010bceaa8">positionText</a>(</div>
-<div class="line"><a id="l01671" name="l01671"></a><span class="lineno"> 1671</span>        r,</div>
-<div class="line"><a id="l01672" name="l01672"></a><span class="lineno"> 1672</span>        -1500.0,</div>
-<div class="line"><a id="l01673" name="l01673"></a><span class="lineno"> 1673</span>        -800.0,</div>
-<div class="line"><a id="l01674" name="l01674"></a><span class="lineno"> 1674</span>        ShipGeo.TrackStation3.z - 2 * u.m,</div>
-<div class="line"><a id="l01675" name="l01675"></a><span class="lineno"> 1675</span>        rotAngle,</div>
-<div class="line"><a id="l01676" name="l01676"></a><span class="lineno"> 1676</span>        <span class="stringliteral">&quot;Strawtracker&quot;</span>,</div>
-<div class="line"><a id="l01677" name="l01677"></a><span class="lineno"> 1677</span>        200,</div>
-<div class="line"><a id="l01678" name="l01678"></a><span class="lineno"> 1678</span>        ROOT.kRed + 2,</div>
-<div class="line"><a id="l01679" name="l01679"></a><span class="lineno"> 1679</span>    )</div>
-<div class="line"><a id="l01680" name="l01680"></a><span class="lineno"> 1680</span>    <a class="code hl_function" href="namespaceeventDisplay.html#a23dd5bc896d44b8d1df6e9a010bceaa8">positionText</a>(</div>
-<div class="line"><a id="l01681" name="l01681"></a><span class="lineno"> 1681</span>        r, 0.0, 730.0, ShipGeo.ecal.z - 1 * u.m, rotAngle, <span class="stringliteral">&quot;Ecal&quot;</span>, 200, ROOT.kOrange</div>
-<div class="line"><a id="l01682" name="l01682"></a><span class="lineno"> 1682</span>    )</div>
-<div class="line"><a id="l01683" name="l01683"></a><span class="lineno"> 1683</span>    <a class="code hl_function" href="namespaceeventDisplay.html#a23dd5bc896d44b8d1df6e9a010bceaa8">positionText</a>(</div>
-<div class="line"><a id="l01684" name="l01684"></a><span class="lineno"> 1684</span>        r, 0.0, 700.0, ShipGeo.MuonFilter2.z, rotAngle, <span class="stringliteral">&quot;Muon&quot;</span>, 200, ROOT.kGreen + 2</div>
-<div class="line"><a id="l01685" name="l01685"></a><span class="lineno"> 1685</span>    )</div>
-<div class="line"><a id="l01686" name="l01686"></a><span class="lineno"> 1686</span>    r.CloseCompound()</div>
-<div class="line"><a id="l01687" name="l01687"></a><span class="lineno"> 1687</span>    sc = gEve.GetScenes()</div>
-<div class="line"><a id="l01688" name="l01688"></a><span class="lineno"> 1688</span>    geoscene = sc.FindChild(<span class="stringliteral">&quot;Geometry scene&quot;</span>)</div>
-<div class="line"><a id="l01689" name="l01689"></a><span class="lineno"> 1689</span>    gEve.ElementChanged(geoscene, <span class="keyword">True</span>, <span class="keyword">True</span>)</div>
+<div class="line"><a id="l01671" name="l01671"></a><span class="lineno"> 1671</span>        r, 0.0, 700.0, ShipGeo.MuonFilter2.z, rotAngle, <span class="stringliteral">&quot;Muon&quot;</span>, 200, ROOT.kGreen + 2</div>
+<div class="line"><a id="l01672" name="l01672"></a><span class="lineno"> 1672</span>    )</div>
+<div class="line"><a id="l01673" name="l01673"></a><span class="lineno"> 1673</span>    r.CloseCompound()</div>
+<div class="line"><a id="l01674" name="l01674"></a><span class="lineno"> 1674</span>    sc = gEve.GetScenes()</div>
+<div class="line"><a id="l01675" name="l01675"></a><span class="lineno"> 1675</span>    geoscene = sc.FindChild(<span class="stringliteral">&quot;Geometry scene&quot;</span>)</div>
+<div class="line"><a id="l01676" name="l01676"></a><span class="lineno"> 1676</span>    gEve.ElementChanged(geoscene, <span class="keyword">True</span>, <span class="keyword">True</span>)</div>
 </div>
 <div class="ttc" id="aclasseventDisplay_1_1DrawEcalCluster_html"><div class="ttname"><a href="classeventDisplay_1_1DrawEcalCluster.html">eventDisplay.DrawEcalCluster</a></div><div class="ttdef"><b>Definition</b> <a href="eventDisplay_8py_source.html#l00231">eventDisplay.py:231</a></div></div>
 <div class="ttc" id="aclasseventDisplay_1_1DrawEcalCluster_html_a4417f4d4b477f71bd86e6d03e29cdd98"><div class="ttname"><a href="classeventDisplay_1_1DrawEcalCluster.html#a4417f4d4b477f71bd86e6d03e29cdd98">eventDisplay.DrawEcalCluster.evscene</a></div><div class="ttdeci">evscene</div><div class="ttdef"><b>Definition</b> <a href="eventDisplay_8py_source.html#l00239">eventDisplay.py:239</a></div></div>
@@ -1995,18 +1982,18 @@ $(document).ready(function(){initNavTree('eventDisplay_8py_source.html',''); ini
 <div class="ttc" id="anamespaceeventDisplay_html_a128fb44bdf5339a3a1cbee21ca8efb9a"><div class="ttname"><a href="namespaceeventDisplay.html#a128fb44bdf5339a3a1cbee21ca8efb9a">eventDisplay.switchOffRock</a></div><div class="ttdeci">switchOffRock()</div><div class="ttdef"><b>Definition</b> <a href="eventDisplay_8py_source.html#l01052">eventDisplay.py:1052</a></div></div>
 <div class="ttc" id="anamespaceeventDisplay_html_a173c96261cf7e6d8f123d148798a9943"><div class="ttname"><a href="namespaceeventDisplay.html#a173c96261cf7e6d8f123d148798a9943">eventDisplay.hidePlasticScintillator</a></div><div class="ttdeci">hidePlasticScintillator()</div><div class="ttdef"><b>Definition</b> <a href="eventDisplay_8py_source.html#l01038">eventDisplay.py:1038</a></div></div>
 <div class="ttc" id="anamespaceeventDisplay_html_a1c3ef212137b82b8b43bc64756efb78c"><div class="ttname"><a href="namespaceeventDisplay.html#a1c3ef212137b82b8b43bc64756efb78c">eventDisplay.ecalYellow</a></div><div class="ttdeci">ecalYellow()</div><div class="ttdef"><b>Definition</b> <a href="eventDisplay_8py_source.html#l01002">eventDisplay.py:1002</a></div></div>
-<div class="ttc" id="anamespaceeventDisplay_html_a23dd5bc896d44b8d1df6e9a010bceaa8"><div class="ttname"><a href="namespaceeventDisplay.html#a23dd5bc896d44b8d1df6e9a010bceaa8">eventDisplay.positionText</a></div><div class="ttdeci">positionText(r, x, y, z, angle, txt, size=200, color=ROOT.kBlue, mode=ROOT.TGLFont.kExtrude, light=ROOT.kTRUE)</div><div class="ttdef"><b>Definition</b> <a href="eventDisplay_8py_source.html#l01517">eventDisplay.py:1528</a></div></div>
+<div class="ttc" id="anamespaceeventDisplay_html_a23dd5bc896d44b8d1df6e9a010bceaa8"><div class="ttname"><a href="namespaceeventDisplay.html#a23dd5bc896d44b8d1df6e9a010bceaa8">eventDisplay.positionText</a></div><div class="ttdeci">positionText(r, x, y, z, angle, txt, size=200, color=ROOT.kBlue, mode=ROOT.TGLFont.kExtrude, light=ROOT.kTRUE)</div><div class="ttdef"><b>Definition</b> <a href="eventDisplay_8py_source.html#l01504">eventDisplay.py:1515</a></div></div>
 <div class="ttc" id="anamespaceeventDisplay_html_a275f5b9ea845e6297ed1597ec522df8d"><div class="ttname"><a href="namespaceeventDisplay.html#a275f5b9ea845e6297ed1597ec522df8d">eventDisplay.evExit</a></div><div class="ttdeci">evExit()</div><div class="ttdef"><b>Definition</b> <a href="eventDisplay_8py_source.html#l00022">eventDisplay.py:22</a></div></div>
-<div class="ttc" id="anamespaceeventDisplay_html_a2a8ec021927707ad8d187d83217ea219"><div class="ttname"><a href="namespaceeventDisplay.html#a2a8ec021927707ad8d187d83217ea219">eventDisplay.PRVersion</a></div><div class="ttdeci">PRVersion()</div><div class="ttdef"><b>Definition</b> <a href="eventDisplay_8py_source.html#l01539">eventDisplay.py:1539</a></div></div>
+<div class="ttc" id="anamespaceeventDisplay_html_a2a8ec021927707ad8d187d83217ea219"><div class="ttname"><a href="namespaceeventDisplay.html#a2a8ec021927707ad8d187d83217ea219">eventDisplay.PRVersion</a></div><div class="ttdeci">PRVersion()</div><div class="ttdef"><b>Definition</b> <a href="eventDisplay_8py_source.html#l01526">eventDisplay.py:1526</a></div></div>
 <div class="ttc" id="anamespaceeventDisplay_html_a460a9585b00a96dc6828195493230df7"><div class="ttname"><a href="namespaceeventDisplay.html#a460a9585b00a96dc6828195493230df7">eventDisplay.dump</a></div><div class="ttdeci">dump(pcut=0)</div><div class="ttdef"><b>Definition</b> <a href="eventDisplay_8py_source.html#l00125">eventDisplay.py:125</a></div></div>
 <div class="ttc" id="anamespaceeventDisplay_html_a4ddb94c5342f409ab4a75eee2bf87dcd"><div class="ttname"><a href="namespaceeventDisplay.html#a4ddb94c5342f409ab4a75eee2bf87dcd">eventDisplay.switchOff</a></div><div class="ttdeci">switchOff(tag)</div><div class="ttdef"><b>Definition</b> <a href="eventDisplay_8py_source.html#l01015">eventDisplay.py:1015</a></div></div>
 <div class="ttc" id="anamespaceeventDisplay_html_a613b9eb3e288f0545cf92d8c0d6c36b6"><div class="ttname"><a href="namespaceeventDisplay.html#a613b9eb3e288f0545cf92d8c0d6c36b6">eventDisplay.projection</a></div><div class="ttdeci">projection()</div><div class="ttdef"><b>Definition</b> <a href="eventDisplay_8py_source.html#l00897">eventDisplay.py:897</a></div></div>
 <div class="ttc" id="anamespaceeventDisplay_html_a61659f369a7696cc6be2aab6c9d30c8d"><div class="ttname"><a href="namespaceeventDisplay.html#a61659f369a7696cc6be2aab6c9d30c8d">eventDisplay.switchOffAll</a></div><div class="ttdeci">switchOffAll(exc)</div><div class="ttdef"><b>Definition</b> <a href="eventDisplay_8py_source.html#l01061">eventDisplay.py:1061</a></div></div>
 <div class="ttc" id="anamespaceeventDisplay_html_a6b6c3eee0e93e8705a50c90b752cba0b"><div class="ttname"><a href="namespaceeventDisplay.html#a6b6c3eee0e93e8705a50c90b752cba0b">eventDisplay.select</a></div><div class="ttdeci">select(pattern)</div><div class="ttdef"><b>Definition</b> <a href="eventDisplay_8py_source.html#l01095">eventDisplay.py:1095</a></div></div>
-<div class="ttc" id="anamespaceeventDisplay_html_a7398a0b6a9859fb88b96880d2c844efc"><div class="ttname"><a href="namespaceeventDisplay.html#a7398a0b6a9859fb88b96880d2c844efc">eventDisplay.DrawCharmTracks</a></div><div class="ttdeci">DrawCharmTracks()</div><div class="ttdef"><b>Definition</b> <a href="eventDisplay_8py_source.html#l01467">eventDisplay.py:1467</a></div></div>
+<div class="ttc" id="anamespaceeventDisplay_html_a7398a0b6a9859fb88b96880d2c844efc"><div class="ttname"><a href="namespaceeventDisplay.html#a7398a0b6a9859fb88b96880d2c844efc">eventDisplay.DrawCharmTracks</a></div><div class="ttdeci">DrawCharmTracks()</div><div class="ttdef"><b>Definition</b> <a href="eventDisplay_8py_source.html#l01454">eventDisplay.py:1454</a></div></div>
 <div class="ttc" id="anamespaceeventDisplay_html_a78e01621795156bec18557e8b22684c5"><div class="ttname"><a href="namespaceeventDisplay.html#a78e01621795156bec18557e8b22684c5">eventDisplay.printFittedTracks</a></div><div class="ttdeci">printFittedTracks()</div><div class="ttdef"><b>Definition</b> <a href="eventDisplay_8py_source.html#l00135">eventDisplay.py:135</a></div></div>
 <div class="ttc" id="anamespaceeventDisplay_html_a7fec3ab80ebdd5d51ce62c19fb9e5c44"><div class="ttname"><a href="namespaceeventDisplay.html#a7fec3ab80ebdd5d51ce62c19fb9e5c44">eventDisplay.switchOn</a></div><div class="ttdeci">switchOn(tag)</div><div class="ttdef"><b>Definition</b> <a href="eventDisplay_8py_source.html#l01026">eventDisplay.py:1026</a></div></div>
-<div class="ttc" id="anamespaceeventDisplay_html_a8430faa93ffd972b173017afa809e78a"><div class="ttname"><a href="namespaceeventDisplay.html#a8430faa93ffd972b173017afa809e78a">eventDisplay.DrawSimpleMCTracks</a></div><div class="ttdeci">DrawSimpleMCTracks()</div><div class="ttdef"><b>Definition</b> <a href="eventDisplay_8py_source.html#l01480">eventDisplay.py:1480</a></div></div>
+<div class="ttc" id="anamespaceeventDisplay_html_a8430faa93ffd972b173017afa809e78a"><div class="ttname"><a href="namespaceeventDisplay.html#a8430faa93ffd972b173017afa809e78a">eventDisplay.DrawSimpleMCTracks</a></div><div class="ttdeci">DrawSimpleMCTracks()</div><div class="ttdef"><b>Definition</b> <a href="eventDisplay_8py_source.html#l01467">eventDisplay.py:1467</a></div></div>
 <div class="ttc" id="anamespaceeventDisplay_html_a9789b0abc463cc5892d137bb61a4f60b"><div class="ttname"><a href="namespaceeventDisplay.html#a9789b0abc463cc5892d137bb61a4f60b">eventDisplay.speedUp</a></div><div class="ttdeci">speedUp()</div><div class="ttdef"><b>Definition</b> <a href="eventDisplay_8py_source.html#l00957">eventDisplay.py:957</a></div></div>
 <div class="ttc" id="anamespaceeventDisplay_html_aad1d1b46dfa80285b0d976103cc3af9a"><div class="ttname"><a href="namespaceeventDisplay.html#aad1d1b46dfa80285b0d976103cc3af9a">eventDisplay.debugStraw</a></div><div class="ttdeci">debugStraw(n)</div><div class="ttdef"><b>Definition</b> <a href="eventDisplay_8py_source.html#l01279">eventDisplay.py:1279</a></div></div>
 <div class="ttc" id="anamespaceeventDisplay_html_ac6f74ce8a4d1072538c53044dc79deb3"><div class="ttname"><a href="namespaceeventDisplay.html#ac6f74ce8a4d1072538c53044dc79deb3">eventDisplay.mydebug</a></div><div class="ttdeci">mydebug()</div><div class="ttdef"><b>Definition</b> <a href="eventDisplay_8py_source.html#l01230">eventDisplay.py:1230</a></div></div>
