@@ -87,6 +87,7 @@ it in future.
 * Insert Proximity shield in the geometry
 * Removed old stuff legacy in `shipMuonShield.cxx` (like LE and fFloor)
 * Event Display: Don't try to recreate geometry config
+* Geometry: Make the tungsten target the default (Jun25 config)
 
 ### Removed
 
