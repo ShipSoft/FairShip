@@ -1,6 +1,7 @@
 import ROOT,time,os,sys,random,getopt,copy
 from array import array
 import rootUtils as ut
+
 ROOT.gROOT.LoadMacro("$VMCWORKDIR/gconfig/basiclibs.C")
 ROOT.basiclibs()
 timer = ROOT.TStopwatch()
@@ -14,17 +15,17 @@ storePrimaries = False
 nevgen=100000
 Fntuple='Cascade100k-parp16-MSTP82-1-MSEL'+str(mselcb)+'-ntuple.root'
 
-print("usage: python $FAIRSHIP/macro/makeCascade.py -n (20000) -msel (4) -E (400)")
+print("usage: python $FAIRSHIP/macro/makeCascade.py -n (100000) -msel (4) -E (400)")
 
 try:
         opts, args = getopt.getopt(sys.argv[1:], "s:t:H:n:E:m:P",[\
                                    "msel=","seed=","beam="])
 except getopt.GetoptError:
         # print help information and exit:
-        print(' enter -n: number of events to produce, default 20000')
+        print(' enter -n: number of events to produce, default 100000')
         print('       -m --msel=4 (5): charm (beauty) production, default charm')
         print('       -E --beam=: energy of beam, default 400 GeV')
-        print('       -t: name of ntuple output file,    default: Cascade20k-parp16-MSTP82-1-MSEL"+msel+"-ntuple.root')
+        print('       -t: name of ntuple output file,    default: Cascade100k-parp16-MSTP82-1-MSEL"+msel+"-ntuple.root')
         print('       -s --seed: random number seed, integer, if not given, current time will be used.')
         print('       -P : store all particles produced together with charm')
         sys.exit()
