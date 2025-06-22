@@ -1,4 +1,4 @@
-import ROOT,time,os,sys,random,getopt,copy
+import ROOT,time,os,sys,random,copy,argparse
 from array import array
 import rootUtils as ut
 
@@ -7,41 +7,32 @@ ROOT.basiclibs()
 timer = ROOT.TStopwatch()
 timer.Start()
 
-R = ''
-#generate ccbar (msel=4) or bbbar(msel=5)
-mselcb=4
-pbeamh=400.
-storePrimaries = False
-nevgen=100000
-Fntuple='Cascade100k-parp16-MSTP82-1-MSEL'+str(mselcb)+'-ntuple.root'
+ap = argparse.ArgumentParser(description='Run SHiP makeCascade: generate ccbar or bbar')
+ap.add_argument('-s','--seed', action='store', dest='seed', default='', help="Random number seed, integer. If not given, current time will be used")
+ap.add_argument('-t','--Fntuple', action='store', dest='Fntuple', default='', help="name of ntuple output file, default: Cascade{nevgen}k-parp16-MSTP82-1-MSEL{mselcb}-ntuple.root")
+# ap.add_argument('-H', action='store')  -- original code refers to a H which is not used: opts, args = getopt.getopt(sys.argv[1:], "s:t:H:n:E:m:P",["msel=","seed=","beam="])
+ap.add_argument('-n','--nevgen', action='store', dest='nevgen', default=100000, help="Number of events to produce, default 100000")
+ap.add_argument('-E','--beam', type=float, action='store', dest='pbeamh', default=400.0, help="Energy of beam in GeV, default 400 GeV")
+ap.add_argument('-m','--mselcb', type=int, action='store', dest='mselcb', default=4, help="4 (5): charm (beauty) production, default charm", choices=[4, 5])
+ap.add_argument('-P','--storePrimaries', action=argparse.BooleanOptionalAction, dest='storePrimaries', default=False, 
+                help="If this argument is used, store all particles produced together with charm.")
+ap.add_argument('--target', action='store', dest='target', default='W', 
+                help="Target composition (to determine the ratio of protons in the material). Default is Tungsten (W). Only other choice is Molybdenum (Mo)", choices=['W', 'Mo'])
 
-print("usage: python $FAIRSHIP/macro/makeCascade.py -n (100000) -msel (4) -E (400)")
+args = ap.parse_args()
+nevgen = args.nevgen
+mselcb = args.mselcb
+pbeamh = args.pbeamh
+storePrimaries = args.storePrimaries
+print('storePrimaries', storePrimaries)
+Fntuple = args.Fntuple
+if Fntuple == '':
+    Fntuple = f'Cascade{nevgen}k-parp16-MSTP82-1-MSEL{mselcb}-ntuple.root"'
+R = args.seed
+if R != '':
+    R = int(R)
+target = args.target
 
-try:
-        opts, args = getopt.getopt(sys.argv[1:], "s:t:H:n:E:m:P",[\
-                                   "msel=","seed=","beam="])
-except getopt.GetoptError:
-        # print help information and exit:
-        print(' enter -n: number of events to produce, default 100000')
-        print('       -m --msel=4 (5): charm (beauty) production, default charm')
-        print('       -E --beam=: energy of beam, default 400 GeV')
-        print('       -t: name of ntuple output file,    default: Cascade100k-parp16-MSTP82-1-MSEL"+msel+"-ntuple.root')
-        print('       -s --seed: random number seed, integer, if not given, current time will be used.')
-        print('       -P : store all particles produced together with charm')
-        sys.exit()
-for o, a in opts:
-        if o in ("-n",):
-            nevgen = int(a)
-        if o in ("-E","--beam"):
-            pbeamh = float(a)
-        if o in ("-m","--msel"):
-             mselcb = int(a)
-        if o in ("-t",):
-            Fntuple = a
-        if o in ("-s","--seed"):
-            R = int(a)
-        if o in ("-P",):
-            storePrimaries = True
 print('Generate ',nevgen,' p.o.t. with msel=',mselcb,' proton beam ',pbeamh,'GeV')
 print('Output ntuples written to: ',Fntuple)
 
