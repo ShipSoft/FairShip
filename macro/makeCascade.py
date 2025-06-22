@@ -18,7 +18,7 @@ ap.add_argument('-P', '--storePrimaries', action=argparse.BooleanOptionalAction,
 ap.add_argument('--target_composition', action='store', dest='target_composition', default='W',
                 help="Target composition (to determine the ratio of protons in the material). Default is Tungsten (W). Only other choice is Molybdenum (Mo)", choices=['W', 'Mo'])
 ap.add_argument('--pythia_tune', action='store', dest='pythia_tune', default='PoorE791',
-                help="Choices of Pythia tune are PoorE791 (default, settings with default Pythia6 pdf, based on getting <pt> at 500 GeV pi-) or LHCb (settings by LHCb for Pythia 6.427)", 
+                help="Choices of Pythia tune are PoorE791 (default, settings with default Pythia6 pdf, based on getting <pt> at 500 GeV pi-) or LHCb (settings by LHCb for Pythia 6.427)",
                 choices=['PoorE791', 'LHCb'])
 # some parameters for generating the chi (sigma(signal)/sigma(total) as a function of momentum
 ap.add_argument('--nev', type=int, action='store', dest='nev', default=5000, help="Events / momentum")
