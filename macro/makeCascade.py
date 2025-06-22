@@ -8,44 +8,44 @@ timer = ROOT.TStopwatch()
 timer.Start()
 
 ap = argparse.ArgumentParser(description='Run SHiP makeCascade: generate ccbar or bbar')
-ap.add_argument('-s','--seed', action='store', dest='seed', default='', help="Random number seed, integer. If not given, current time will be used")
-ap.add_argument('-t','--Fntuple', action='store', dest='Fntuple', default='', help="Name of ntuple output file, default: Cascade{nevgen}k-parp16-MSTP82-1-MSEL{mselcb}-ntuple.root")
-# ap.add_argument('-H', action='store')  -- original code refers to a H which is not used: opts, args = getopt.getopt(sys.argv[1:], "s:t:H:n:E:m:P",["msel=","seed=","beam="])
-ap.add_argument('-n','--nevgen', action='store', dest='nevgen', default=100000, help="Number of events to produce, default 100000")
-ap.add_argument('-E','--beam', type=float, action='store', dest='pbeamh', default=400.0, help="Energy of beam in GeV, default 400 GeV")
-ap.add_argument('-m','--mselcb', type=int, action='store', dest='mselcb', default=4, help="4 (5): charm (beauty) production, default charm", choices=[4, 5])
-ap.add_argument('-P','--storePrimaries', action=argparse.BooleanOptionalAction, dest='storePrimaries', default=False, 
+ap.add_argument('-s', '--seed', action='store', dest='seed', default='', help="Random number seed, integer. If not given, current time will be used")
+ap.add_argument('-t', '--Fntuple', action='store', dest='Fntuple', default='', help="Name of ntuple output file, default: Cascade{nevgen/1000}k-parp16-MSTP82-1-MSEL{mselcb}-ntuple.root")
+ap.add_argument('-n', '--nevgen', type=int, action='store', dest='nevgen', default=100000, help="Number of events to produce, default 100000")
+ap.add_argument('-E', '--beam', type=float, action='store', dest='pbeamh', default=400.0, help="Energy of beam in GeV, default 400 GeV")
+ap.add_argument('-m', '--mselcb', type=int, action='store', dest='mselcb', default=4, help="4 (5): charm (beauty) production, default charm", choices=[4, 5])
+ap.add_argument('-P', '--storePrimaries', action=argparse.BooleanOptionalAction, dest='storePrimaries', default=False,
                 help="If this argument is used, store all particles produced together with charm.")
-ap.add_argument('--target_composition', action='store', dest='target_composition', default='W', 
+ap.add_argument('--target_composition', action='store', dest='target_composition', default='W',
                 help="Target composition (to determine the ratio of protons in the material). Default is Tungsten (W). Only other choice is Molybdenum (Mo)", choices=['W', 'Mo'])
-ap.add_argument('--pythia_tune', action='store', dest='pythia_tune', default='PoorE791', 
+ap.add_argument('--pythia_tune', action='store', dest='pythia_tune', default='PoorE791',
                 help="Choices of Pythia tune are PoorE791 (default, settings with default Pythia6 pdf, based on getting <pt> at 500 GeV pi-) or LHCb (settings by LHCb for Pythia 6.427)", 
                 choices=['PoorE791', 'LHCb'])
+# some parameters for generating the chi (sigma(signal)/sigma(total) as a function of momentum
+ap.add_argument('--nev', type=int, action='store', dest='nev', default=5000, help="Events / momentum")
+ap.add_argument('--nrpoints', type=int, action='store', dest='nrpoints', default=20, help="Number of momentum points taken to calculate sig/sigtot")
 
 args = ap.parse_args()
 nevgen = args.nevgen
 mselcb = args.mselcb
 pbeamh = args.pbeamh
 storePrimaries = args.storePrimaries
-print('storePrimaries', storePrimaries)
 Fntuple = args.Fntuple
 if Fntuple == '':
-    Fntuple = f'Cascade{nevgen}k-parp16-MSTP82-1-MSEL{mselcb}-ntuple.root'
+    Fntuple = f'Cascade{int(nevgen/1000)}k-parp16-MSTP82-1-MSEL{mselcb}-ntuple.root'
 R = args.seed
 if R != '':
     R = int(R)
 target_composition = args.target_composition
 pythia_tune = args.pythia_tune
 
-print('Generate ',nevgen,' p.o.t. with msel=',mselcb,' proton beam ',pbeamh,'GeV')
-print('Output ntuples written to: ',Fntuple)
+print(f'Generate {nevgen}  p.o.t. with msel = {mselcb} proton beam {pbeamh}GeV')
+print(f'Output ntuples written to: {Fntuple}')
 
-# some parameters for generating the chi (sigma(signal)/sigma(total) as a function of momentum
-# event/momentum, and number of momentum points taken to calculate sig/sigtot
-nev = 5000
-nrpoints = 20
+nev = args.nev
+nrpoints = args.nrpoints
+
 # cascade beam particles, anti-particles are generated automatically if they exist.
-idbeam = [2212,211,2112,321,130,310]
+idbeam = [2212, 211, 2112, 321, 130, 310]
 target = ['p+','n0']
 print(f'Chi generation with {nev} events/point, nr points={nrpoints}')
 print(f'Cascade beam particle: {idbeam}')
@@ -62,10 +62,10 @@ print(f'Target particles: {target}, fraction of protons in {target_composition}=
 # signal particles wanted (and their antis), which could decay semi-leptonically.
 if mselcb == 4:
    pbeaml = 34.
-   idsig = [411, 421, 431,4122,4132,4232,4332,4412,4414,4422,4424,4432,4434,4444]
+   idsig = [411, 421, 431, 4122, 4132, 4232, 4332, 4412, 4414, 4422, 4424, 4432, 4434, 4444]
 elif mselcb == 5:
    pbeaml = 130.
-   idsig=[511, 521, 531, 541,5122,5132,5142,5232,5242,5332,5342,5412,5414,5422,5424,5432,5434,5442,5444,5512,5514,5522,5524,5532,5534,5542,5544,5554]
+   idsig = [511, 521, 531, 541, 5122, 5132, 5142, 5232, 5242, 5332, 5342, 5412, 5414, 5422, 5424, 5432, 5434, 5442, 5444, 5512, 5514, 5522, 5524, 5532, 5534, 5542, 5544, 5554]
 else:
    print(f'Error: msel is unknown: {mselcb}, STOP program')
    sys.exit('ERROR on input, exit')
@@ -81,7 +81,7 @@ PDG.GetParticle(2112).SetName('n0')
 PDG.GetParticle(-2112).SetName('nbar0')
 PDG.GetParticle(130).SetName('KL0')
 PDG.GetParticle(310).SetName('KS0')
-#lower lowest sqrt(s) allowed for generating events
+# lower lowest sqrt(s) allowed for generating events
 myPythia.SetPARP(2, 2.)
 
 
@@ -90,15 +90,15 @@ def PoorE791_tune(P6):
     # same as that of E791: http://arxiv.org/pdf/hep-ex/9906034.pdf
     print(' ')
     print('********** PoorE791_tune **********')
-    #change pt of D's to mimic E791 data.
-    P6.SetPARP(91,1.6)
-    print('PARP(91)=',P6.GetPARP(91))
-    #what PDFs etc.. are being used:
-    print('MSTP PDF info, i.e. (51) and (52)=',P6.GetMSTP(51),P6.GetMSTP(52))
-    #set multiple interactions equal to Fortran version, i.e.=1, default=4, and adapt parp(89) accordingly
-    P6.SetMSTP(82,1)
-    P6.SetPARP(89,1000.)
-    print('And corresponding multiple parton stuff, i.e. MSTP(82),PARP(81,89,90)=',P6.GetMSTP(82),P6.GetPARP(81),P6.GetPARP(89),P6.GetPARP(90))
+    # change pt of D's to mimic E791 data.
+    P6.SetPARP(91, 1.6)
+    print(f'PARP(91)={P6.GetPARP(91)}')
+    # what PDFs etc.. are being used:
+    print('MSTP PDF info, i.e. (51) and (52)=', P6.GetMSTP(51), P6.GetMSTP(52))
+    # set multiple interactions equal to Fortran version, i.e.=1, default=4, and adapt parp(89) accordingly
+    P6.SetMSTP(82, 1)
+    P6.SetPARP(89, 1000.)
+    print('And corresponding multiple parton stuff, i.e. MSTP(82),PARP(81,89,90)=', P6.GetMSTP(82), P6.GetPARP(81), P6.GetPARP(89), P6.GetPARP(90))
     print('********** PoorE791_tune **********')
     print(' ')
 
@@ -108,15 +108,15 @@ def LHCb_tune(P6):
     # https://twiki.cern.ch/twiki/bin/view/LHCb/SettingsSim08
     print(' ')
     print('********** LHCb_tune **********')
-    #P6.SetCKIN(41,3.0)
+    # P6.SetCKIN(41,3.0)
     P6.SetMSTP(2,	2)
     P6.SetMSTP(33,	3)
-    #P6.SetMSTP(128,	2)  #store or not store
+    # P6.SetMSTP(128,	2)  # store or not store
     P6.SetMSTP(81,	21)
     P6.SetMSTP(82,	3)
     P6.SetMSTP(52,	2)
-    P6.SetMSTP(51,	10042)# (ie CTEQ6 LO fit, with LOrder alpha_S PDF from LHAPDF)
-    P6.SetMSTP(142,	0) #do not weigh events
+    P6.SetMSTP(51,	10042)  # (ie CTEQ6 LO fit, with LOrder alpha_S PDF from LHAPDF)
+    P6.SetMSTP(142,	0)  # do not weigh events
     P6.SetPARP(67,	1.0)
     P6.SetPARP(82,	4.28)
     P6.SetPARP(89,	14000)
@@ -141,22 +141,22 @@ def LHCb_tune(P6):
 
 def fillp1(hist):
     # scan filled bins in hist, and fill intermediate bins with linear interpolation
-    nb=hist.GetNbinsX()
-    i1=hist.FindBin(pbeaml,0.,0.)
-    y1=hist.GetBinContent(i1)
-    p1=hist.GetBinCenter(i1)
-    for i in range(i1+1,nb+1):
-        if hist.GetBinContent(i)>0.:
-            y2=hist.GetBinContent(i)
-            p2=hist.GetBinCenter(i)
-            tg=(y2-y1)/(p2-p1)
-            for ib in range(i1+1,i):
-                px=hist.GetBinCenter(ib)
-                yx=(px-p1)*tg+y1
-                hist.Fill(px,yx)
-                i1=i
-                y1=y2
-                p1=p2
+    nb = hist.GetNbinsX()
+    i1 = hist.FindBin(pbeaml, 0., 0.)
+    y1 = hist.GetBinContent(i1)
+    p1 = hist.GetBinCenter(i1)
+    for i in range(i1 + 1, nb + 1):
+        if hist.GetBinContent(i) > 0.:
+            y2 = hist.GetBinContent(i)
+            p2 = hist.GetBinCenter(i)
+            tg = (y2 - y1) / (p2 - p1)
+            for ib in range(i1 + 1, i):
+                px = hist.GetBinCenter(ib)
+                yx = (px - p1) * tg + y1
+                hist.Fill(px, yx)
+                i1 = i
+                y1 = y2
+                p1 = p2
 
 
 if pythia_tune == 'PoorE791':
@@ -167,20 +167,20 @@ else:
     LHCb_tune(myPythia)
     myPythia.OpenFortranFile(6, os.devnull)  # avoid any printing to the screen, only when LHAPDF is used, in LHCb tune
 
-#start with different random number for each run...
-if R == '': R = int(time.time()*100000000%900000000)
-print('Setting random number seed =',R)
-myPythia.SetMRPY(1,R)
+# start with different random number for each run...
+if R == '': R = int(time.time() * 100000000%900000000)
+print(f'Setting random number seed = {R}')
+myPythia.SetMRPY(1, R)
 
-#histogram helper
+# histogram helper
 h = {}
 
-#  initialise phase, determine chi=sigma(signal)/sigma(total) for many beam momenta.
-#  loop over beam particles
+# initialise phase, determine chi=sigma(signal)/sigma(total) for many beam momenta.
+# loop over beam particles
 id = 0
 nb = 400
 t0 = time.time()
-idhist = len(idbeam)*4*[0]
+idhist = len(idbeam) * 4 * [0]
 print('Get chi vs momentum for all beam+target particles')
 for idp in range(0, len(idbeam)):
     for idpm in [-1, 1]:  # particle or anti-particle
@@ -223,7 +223,7 @@ for idp in range(0, len(idbeam)):
                 # fill with linear function between evaluated momentum points.
                 fillp1(h[str(id * 10 + 3 + idadd)])
 
-#  collected all, now re-scale to make max chi at 400 Gev==1.
+# collected all, now re-scale to make max chi at 400 Gev==1.
 chimx = 0.
 for i in range(1, id + 1):
     for idpn in range(2):
@@ -252,7 +252,7 @@ Ntup = ROOT.TNtuple("pythia6", "pythia6 heavy flavour",\
        "id:px:py:pz:E:M:mid:mpx:mpy:mpz:mE:mM:k:a0:a1:a2:a3:a4:a5:a6:a7:a8:a9:a10:a11:a12:a13:a14:a15:\
 s0:s1:s2:s3:s4:s5:s6:s7:s8:s9:s10:s11:s12:s13:s14:s15")
 
-#make sure all particles for cascade production are stable
+# make sure all particles for cascade production are stable
 for kf in idbeam:
     kc = myPythia.Pycomp(kf)
     myPythia.SetMDCY(kc,1,0)
@@ -267,7 +267,7 @@ for iev in range(nevgen):
     nstack=0
     # put protons of energy pbeamh on the stack
     # stack: PID, px, py, pz, cascade depth, nstack of mother
-    stack[nstack] = [2212, 0., 0., pbeamh, 1, 100*[0], 100*[0]]
+    stack[nstack] = [2212, 0., 0., pbeamh, 1, 100 * [0], 100 * [0]]
     stack[nstack][5][0] = 2212
     while nstack >= 0:
         # generate a signal based on probabilities in hists i*10+8?
@@ -282,15 +282,15 @@ for iev in range(nevgen):
                 ib = h[str(idw)].FindBin(ptot, 0., 0.)
                 prbsig = h[str(idw)].GetBinContent(ib)
         if prbsig > random.random():
-# last particle on the stack as beam particle
+            # last particle on the stack as beam particle
             for k in range(1, 4):
                 myPythia.SetP(1, k, stack[nstack][k])
                 myPythia.SetP(2, k, 0.)
-#   new particle/momentum, init again: signal run.
+            # new particle/momentum, init again: signal run.
             myPythia.SetMSEL(mselcb)  # set forced ccbar or bbbar generation
             myPythia.Initialize('3MOM', PDG.GetParticle(stack[nstack][0]).GetName(), target[idpn], 0.)
             myPythia.GenerateEvent()
-#  look for the signal particles
+            # look for the signal particles
             charmFound = []
             for itrk in range(1,myPythia.GetN() + 1):
                 idabs = ROOT.TMath.Abs(myPythia.GetK(itrk, 2))
@@ -325,8 +325,8 @@ for iev in range(nevgen):
                          # boost to Cm frame for XF ccalculation of D^0
                          beta = pbeamh / (myPythia.GetP(1,4) + myPythia.GetP(2, 5))
                          gamma = (1 - beta ** 2) ** (-0.5)
-                         pbcm = -gamma * beta * myPythia.GetP(1,4) + gamma * myPythia.GetP(1, 3)
-                         pDcm = -gamma * beta * myPythia.GetP(itrk,4) + gamma * myPythia.GetP(itrk, 3)
+                         pbcm = -gamma * beta * myPythia.GetP(1, 4) + gamma * myPythia.GetP(1, 3)
+                         pDcm = -gamma * beta * myPythia.GetP(itrk, 4) + gamma * myPythia.GetP(itrk, 3)
                          xf = pDcm / pbcm
                          h['6'].Fill(xf)
             if len(charmFound) > 0 and storePrimaries:
@@ -335,44 +335,44 @@ for iev in range(nevgen):
                     if myPythia.GetK(itP, 1) == 1:
                         # store only undecayed particle and no charm found
                         # ***WARNING****: with new with new ancestor and process info (a0-15, s0-15) add to ntuple, might not work???
-                        Ntup.Fill(float(myPythia.GetK(itP,2)),float(myPythia.GetP(itP,1)),float(myPythia.GetP(itP, 2)),float(myPythia.GetP(itP, 3)),\
+                        Ntup.Fill(float(myPythia.GetK(itP,2)),float(myPythia.GetP(itP, 1)),float(myPythia.GetP(itP, 2)),float(myPythia.GetP(itP, 3)),\
                             float(myPythia.GetP(itP,4)),float(myPythia.GetP(itP, 5)),-1,\
                             float(myPythia.GetV(itP,1)-myPythia.GetV(charmFound[0], 1)),\
                             float(myPythia.GetV(itP,2)-myPythia.GetV(charmFound[0], 2)),\
                             float(myPythia.GetV(itP,3)-myPythia.GetV(charmFound[0], 3)), 0, 0, stack[nstack][4])
 
-# now generate msel=2 to add new cascade particles to the stack
+        # now generate msel=2 to add new cascade particles to the stack
         for k in range(1, 4):
-            myPythia.SetP(1,k,stack[nstack][k])
+            myPythia.SetP(1, k, stack[nstack][k])
             myPythia.SetP(2, k, 0.)
-# new particle/momentum, init again, generate total cross-section event
+        # new particle/momentum, init again, generate total cross-section event
         myPythia.SetMSEL(2)  # mbias event
         idpn = 0
         if random.random() > fracp: idpn = 1
         myPythia.Initialize('3MOM', PDG.GetParticle(stack[nstack][0]).GetName(), target[idpn], 0.)
         myPythia.GenerateEvent()
-# remove used particle from the stack, before adding new
-# first store its history: cascade depth and ancestors-list
+        # remove used particle from the stack, before adding new
+        # first store its history: cascade depth and ancestors-list
         icas = stack[nstack][4] + 1
         if icas > 98: icas = 98
         anclist = copy.copy(stack[nstack][5])
         sublist = copy.copy(stack[nstack][6])
-        #fill in interaction process of first proton
+        # fill in interaction process of first proton
         if nstack == 0: sublist[0] = myPythia.GetMSTI(1)
         nstack = nstack - 1
         for itrk in range(1, myPythia.GetN() + 1):
             if myPythia.GetK(itrk, 1) == 1:
                 ptot = ROOT.TMath.Sqrt(myPythia.GetP(itrk, 1) ** 2 + myPythia.GetP(itrk, 2) ** 2 + myPythia.GetP(itrk, 3) ** 2)
                 if ptot > pbeaml:
-#  produced particle is stable and has enough momentum, is it in the wanted list?
+                    # produced particle is stable and has enough momentum, is it in the wanted list?
                     for isig in range(len(idbeam)):
                         if ROOT.TMath.Abs(myPythia.GetK(itrk, 2)) == idbeam[isig] and nstack < 999:
                             if nstack < 999: nstack += 1
-                            #update ancestor list
+                            # update ancestor list
                             tmp=copy.copy(anclist)
                             tmp[icas-1] = myPythia.GetK(itrk, 2)
                             stmp = copy.copy(sublist)
-                            #Pythia interaction process identifier
+                            # Pythia interaction process identifier
                             stmp[icas-1] = myPythia.GetMSTI(1)
                             stack[nstack] = [myPythia.GetK(itrk, 2), myPythia.GetP(itrk, 1), myPythia.GetP(itrk, 2),myPythia.GetP(itrk, 3), icas, tmp, stmp]
 
