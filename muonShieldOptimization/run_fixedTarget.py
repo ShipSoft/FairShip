@@ -90,8 +90,8 @@ def init():
   ap.add_argument('-I', '--InputFile', type=str, dest='charmInputFile',  default=charmInputFile, help="input file for charm/beauty decays")
   ap.add_argument('-o','--output'    , type=str, help="output directory", dest='work_dir', default=None)
   ap.add_argument('-rs','--seed', type=int, help="random seed; default value is 0, see TRrandom::SetSeed documentation", dest='seed', default=0)
-  ap.add_argument('--DecayVolumeMedium', dest='DecayVolumeMedium', help='Set Decay Volume Medium. Choices are helium (default) or vacuums helium.', default='helium', choices=['helium', 'vacuums'])
-  ap.add_argument('--shieldName', dest='shieldName', help='Name of the SC shield in the database. SC default: sc_v6, warm default: warm_opt.', default='sc_v6', choices=['sc_v6', 'warm_opt'])
+  ap.add_argument('--DecayVolumeMedium', dest='DecayVolumeMedium', help='Set Decay Volume Medium. Choices are helium (default) or vacuums.', default='helium', choices=['helium', 'vacuums'])
+  ap.add_argument('--shieldName', dest='shieldName', help='Name of the shield in the database. New_HA_Design or warm_opt.', default='New_HA_Design', choices=['New_HA_Design', 'warm_opt'])
   ap.add_argument('--AddMuonShield', dest='AddMuonShield', help='Whether or not to add the muon shield. Default set to False.', default=False, action=argparse.BooleanOptionalAction)
 
   args = ap.parse_args()
@@ -191,7 +191,7 @@ run.AddModule(cave)
 
 TargetStation = ROOT.ShipTargetStation("TargetStation",
                                        ship_geo.target.length,
-                                       ship_geo.hadronAbsorber.length,
+                                       ship_geo.hadronAbsorber.halflength * 2,
                                        ship_geo.target.z,
                                        ship_geo.hadronAbsorber.z,
                                        ship_geo.targetVersion,
