@@ -16,7 +16,7 @@ ap.add_argument('-E','--beam', type=float, action='store', dest='pbeamh', defaul
 ap.add_argument('-m','--mselcb', type=int, action='store', dest='mselcb', default=4, help="4 (5): charm (beauty) production, default charm", choices=[4, 5])
 ap.add_argument('-P','--storePrimaries', action=argparse.BooleanOptionalAction, dest='storePrimaries', default=False, 
                 help="If this argument is used, store all particles produced together with charm.")
-ap.add_argument('--target', action='store', dest='target', default='W', 
+ap.add_argument('--target_composition', action='store', dest='target_composition', default='W', 
                 help="Target composition (to determine the ratio of protons in the material). Default is Tungsten (W). Only other choice is Molybdenum (Mo)", choices=['W', 'Mo'])
 
 args = ap.parse_args()
@@ -31,13 +31,12 @@ if Fntuple == '':
 R = args.seed
 if R != '':
     R = int(R)
-target = args.target
+target_composition = args.target_composition
 
 print('Generate ',nevgen,' p.o.t. with msel=',mselcb,' proton beam ',pbeamh,'GeV')
 print('Output ntuples written to: ',Fntuple)
 
-
-#some parameters for generating the chi (sigma(signal)/sigma(total) as a function of momentum
+# some parameters for generating the chi (sigma(signal)/sigma(total) as a function of momentum
 # event/momentum, and number of momentum points taken to calculate sig/sigtot
 nev=5000
 nrpoints=20
@@ -47,11 +46,13 @@ target=['p+','n0']
 print('Chi generation with ',nev,' events/point, nr points=',nrpoints)
 print('Cascade beam particle: ',idbeam)
 
-#  Assume Molybdum target, fracp is the fraction of protons in nucleus, i.e. 42/98.
-#  Used to average chi on p and n target in Pythia.
-fracp=0.43
-#
-print('Target particles: ',target,' fraction of protons in Mo=',fracp)
+# fracp is the fraction of protons in nucleus, used to average chi on p and n target in Pythia.
+if target == 'W': # target is Tungsten, fracp is 74/(184)
+    fracp=0.40
+else: # target would then be Molybdenum, fracp is 42/98
+    fracp=0.43
+
+print(f'Target particles: {target}, fraction of protons in {target_composition}={fracp}')
 
 # lower/upper momentum limit for beam, depends on msel..
 # signal particles wanted (and their antis), which could decay semi-leptonically.
