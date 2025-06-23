@@ -9,11 +9,12 @@
 #include "TDatabasePDG.h"               // for TDatabasePDG
 #include "TMath.h"                      // for Sqrt
 #include "vetoPoint.h"
-#include "ShipMCTrack.h"
-#include "TMCProcess.h"
+
 #include <algorithm>
 #include <unordered_map>
 
+using ShipUnit::cm;
+using ShipUnit::mm;
 // read events from Pythia8/Geant4 base simulation (only target + hadron absorber
 
 // -----   Default constructor   -------------------------------------------
@@ -23,19 +24,21 @@ MuonBackGenerator::MuonBackGenerator() {
 // -------------------------------------------------------------------------
 // -----   Default constructor   -------------------------------------------
 Bool_t MuonBackGenerator::Init(const char* fileName) {
-  return Init(fileName, 0, false);
+    return Init(fileName, 0);
 }
 // -----   Default constructor   -------------------------------------------
-Bool_t MuonBackGenerator::Init(const char* fileName, const int firstEvent, const Bool_t fl = false ) {
+Bool_t MuonBackGenerator::Init(const char* fileName, const int firstEvent)
+{
     LOG(info) << "Opening input file " << fileName;
     fInputFile = TFile::Open(fileName);
     if (!fInputFile) {
         LOG(fatal) << "Error opening the Signal file: " << fileName;
     }
   fn = firstEvent;
-  fPhiRandomize = fl;
+  fPaintBeam = 5 * cm;   // default value for painting beam
   fSameSeed = 0;
-  fsmearBeam = 0; // default no beam smearing, use SetSmearBeam(sb) if different, sb [cm]
+  fPhiRandomize = false;     // default value for phi randomization
+  fsmearBeam = 8 * mm;       // default value for smearing beam
   fdownScaleDiMuon = kFALSE; // only needed for muflux simulation
   fTree = fInputFile->Get<TTree>("pythia8-Geant4");
   if (fTree){
@@ -163,12 +166,14 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
     LOGF(debug, "Seed: %d", theSeed);
     gRandom->SetSeed(theSeed);
   }
-  if (fPhiRandomize){phi = gRandom->Uniform(0.,2.) * TMath::Pi();}
   if (fsmearBeam > 0) {
-     Double_t r = fsmearBeam + 0.8 * gRandom->Gaus();
-     Double_t _phi = gRandom->Uniform(0., 2.) * TMath::Pi();
-     dx = r * TMath::Cos(_phi);
-     dy = r * TMath::Sin(_phi);
+      dx = gRandom->Gaus(0, fsmearBeam);
+      dy = gRandom->Gaus(0, fsmearBeam);
+  }
+  if (fPaintBeam > 0) {
+      phi = gRandom->Uniform(0., 2 * TMath::Pi());
+      dx += fPaintBeam * TMath::Cos(phi);
+      dy += fPaintBeam * TMath::Sin(phi);
   }
   if (id==-1){
      for (unsigned i = 0; i< MCTrack->GetEntries();  i++ ){
@@ -178,10 +183,10 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
          py = track->GetPy();
          pz = track->GetPz();
          if (fPhiRandomize) {
-             Double_t phi0 = TMath::ATan2(py, px);
+             double phi_random = gRandom->Uniform(0., 2 * TMath::Pi());
              Double_t pt = track->GetPt();
-             px = pt * TMath::Cos(phi + phi0);
-             py = pt * TMath::Sin(phi + phi0);
+             px = pt * TMath::Cos(phi_random);
+             py = pt * TMath::Sin(phi_random);
        }
        vx = track->GetStartX()+dx;
        vy = track->GetStartY()+dy;
@@ -215,10 +220,11 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
   }else{
     vx += dx/100.;
     vy += dy/100.;
-    if (fPhiRandomize){
-     Double_t pt  = TMath::Sqrt( px*px+py*py );
-     px = pt*TMath::Cos(phi);
-     py = pt*TMath::Sin(phi);
+    if (fPhiRandomize) {
+	double phi_random = gRandom->Uniform(0., 2 * TMath::Pi());
+        Double_t pt = TMath::Sqrt(px * px + py * py);
+        px = pt * TMath::Cos(phi_random);
+        py = pt * TMath::Sin(phi_random);
     }
     cpg->AddTrack(int(pythiaid),px,py,pz,vx*100.,vy*100.,vz*100.,-1.,false,e,pythiaid,parentid);
     cpg->AddTrack(int(id),px,py,pz,vx*100.,vy*100.,vz*100.,-1.,true,e,tof,w);

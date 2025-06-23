@@ -55,6 +55,7 @@ it in future.
 * Fix: How the cavern is translated in z direction
 * Fix: Preliminary fix of the length of the Target (to be refine)
 * Fix: in `python/ShieldUtils.py` still used old coordinate system (SND was not correctly positioned in `python/shipDet_conf.py`)
+* Fix `beam smearing`: replace incorrect Gaussian radius with proper 2D Gaussian sampling. Ensures physical consistency; radius now follows Rayleigh distribution as expected.
 
 
 ### Changed
