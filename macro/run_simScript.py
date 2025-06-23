@@ -71,6 +71,8 @@ parser.add_argument("--MuonBack", dest="muonback", help="Generate events from mu
 parser.add_argument("--FollowMuon", dest="followMuon", help="Make muonshield active to follow muons", action="store_true")
 parser.add_argument("--FastMuon", dest="fastMuon", help="Only transport muons for a fast muon only background estimate", action="store_true")
 parser.add_argument("--phiRandom", help="only relevant for muon background generator, random phi", action="store_true")
+parser.add_argument("--SmearBeam", dest="SmearBeam",  help="Standard deviation of beam smearing (muon background only) [cm]", default=0.8, type=float)
+parser.add_argument("--PaintBeam", dest="PaintBeam",  help="Radius of beam painting (muon background only) [cm]", default=5, type=float)
 parser.add_argument("--Cosmics", dest="cosmics", help="Use cosmic generator, argument switch for cosmic generator 0 or 1", default=None)  # TODO: Understand integer options, replace with store_true?
 parser.add_argument("--MuDIS", dest="mudis", help="Use muon deep inelastic scattering generator", action="store_true")
 parser.add_argument("--RpvSusy", dest="RPVSUSY", help="Generate events based on RPV neutralino", action="store_true")
@@ -404,8 +406,10 @@ if simEngine == "MuonBack":
  #
  MuonBackgen = ROOT.MuonBackGenerator()
  # MuonBackgen.FollowAllParticles() # will follow all particles after hadron absorber, not only muons
- MuonBackgen.Init(inputFile,options.firstEvent,options.phiRandom)
- MuonBackgen.SetSmearBeam(5 * u.cm) # radius of ring, thickness 8mm
+ MuonBackgen.Init(inputFile, options.firstEvent)
+ MuonBackgen.SetPaintRadius(options.PaintBeam)
+ MuonBackgen.SetSmearBeam(options.SmearBeam)
+ MuonBackgen.SetPhiRandom(options.phiRandom)
  if DownScaleDiMuon:
     testf = ROOT.TFile.Open(inputFile)
     if not testf.FileHeader.GetTitle().find('diMu100.0')<0:
@@ -416,7 +420,7 @@ if simEngine == "MuonBack":
  primGen.AddGenerator(MuonBackgen)
  options.nEvents = min(options.nEvents,MuonBackgen.GetNevents())
  MCTracksWithHitsOnly = True # otherwise, output file becomes too big
- print('Process ',options.nEvents,' from input file, with Phi random=',options.phiRandom, ' with MCTracksWithHitsOnly',MCTracksWithHitsOnly)
+ print('Process ', options.nEvents, ' from input file, with 𝜎 = ', options.PaintBeam, ', with smear radius r = ', options.SmearBeam * u.cm, 'with MCTracksWithHitsOnly', MCTracksWithHitsOnly)
  if options.followMuon :
     options.fastMuon = True
     modules['Veto'].SetFollowMuon()

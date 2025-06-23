@@ -21,17 +21,18 @@ class MuonBackGenerator : public FairGenerator
 
   /** public method ReadEvent **/
   Bool_t ReadEvent(FairPrimaryGenerator*);
-  virtual Bool_t Init(const char*, int, const Bool_t fl); //!
+  virtual Bool_t Init(const char*, int);   //!
   virtual Bool_t Init(const char*); //!
   Int_t GetNevents();//!
-  void CloseFile();//!
-  void SetPhiRandom(Bool_t fl) { fPhiRandomize = fl; };
+  void CloseFile();   //!
   void FollowAllParticles() { followMuons = false; };
   void SetSmearBeam(Double_t sb) { fsmearBeam = sb; };
+  void SetPaintRadius(Double_t r) { fPaintBeam = r; };
   void SetSameSeed(Int_t s) {
     LOGF(info, "Seed: %d", s);
     fSameSeed = s;
   };
+  void SetPhiRandomize(Bool_t phiRandomize) { fPhiRandomize = phiRandomize; };
   Bool_t checkDiMuon(Int_t muIndex);
   void SetDownScaleDiMuon(){ fdownScaleDiMuon = kTRUE; };
 
@@ -46,6 +47,7 @@ protected:
   float f_zOffset;      //!
   int fn;
   Bool_t fPhiRandomize;
+  Double_t fPaintBeam;
   Bool_t fdownScaleDiMuon;
   Bool_t followMuons;
   Int_t fSameSeed;
