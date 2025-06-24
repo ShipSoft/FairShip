@@ -78,8 +78,8 @@ def configure_snd_old(yaml_file,
 
     with open(yaml_file) as file:
         config = yaml.safe_load(file)
-
     nuTarget_geo = AttrDict(config['nuTarget'])
+    nuTauTT_geo = AttrDict(config['nuTauTT'])
 
     #specific parameters
     # nu Target Tracker
@@ -97,10 +97,9 @@ def configure_snd_old(yaml_file,
     snd_nuTarget_xdim = snd_nuTauTT_TTX
     snd_nuTarget_ydim = snd_nuTauTT_TTY
 
-    snd_nuTarget_zC = snd_tauMu_zMudetC - snd_tauMu_zTot/2 - 20*u.cm - snd_nuTarget_zdim/2.
+    snd_nuTarget_zC = -4000
 
     snd_nuTarget_PillarY = 10*u.m - snd_nuTarget_ydim/2 -nuTarget_geo.BaseY- 0.1*u.mm - cave_floorHeightMuonShield
-
     NuTauTarget = ROOT.Target(
         "NuTauTarget", nuTarget_geo.Ydist, ROOT.kTRUE
     )
@@ -141,12 +140,6 @@ def configure_snd_old(yaml_file,
         nuTarget_geo.BrPackZ,
         nuTarget_geo.n_plates,
     )
-    NuTauTarget.SetCESParam(
-        nuTarget_geo.RohG,
-        nuTarget_geo.LayerCESW,
-        nuTarget_geo.CESW,
-        nuTarget_geo.CESPack,
-    )
     NuTauTarget.SetCellParam(snd_nuTarget_BrZ)
     NuTauTarget.SetPillarDimension(
         nuTarget_geo.PillarX,
@@ -158,7 +151,6 @@ def configure_snd_old(yaml_file,
         nuTarget_geo.BaseY,
         snd_nuTarget_zdim+10
     )
-
     # Target Tracker
     NuTauTT = ROOT.TargetTracker(
         "TargetTrackers",

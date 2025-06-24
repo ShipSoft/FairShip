@@ -43,7 +43,6 @@ public:
     void SetDetectorDimension(Double_t xdim, Double_t ydim, Double_t zdim);
     void SetEmulsionParam(Double_t EmTh, Double_t EmX, Double_t EmY, Double_t PBTh,Double_t EPlW, Double_t LeadTh, Double_t AllPW);
     void SetBrickParam(Double_t BrX, Double_t BrY, Double_t BrZ, Double_t BrPackX, Double_t BrPackY,Double_t BrPackZ, Int_t number_of_plates_);
-    void SetCESParam(Double_t RohG, Double_t LayerCESW, Double_t CESW, Double_t CESPack);
     void SetCellParam(Double_t CellW);
     void SetNumberBricks(Double_t col, Double_t row, Double_t wall);
     void SetTTzdimension(Double_t TTZ);
@@ -64,7 +63,7 @@ public:
     void SetPillarDimension(Double_t X, Double_t Y, Double_t Z);
 
 
-    void DecodeBrickID(Int_t detID, Int_t &NWall, Int_t &NRow, Int_t &NColumn, Int_t &NPlate, Bool_t &EmCES, Bool_t &EmBrick, Bool_t &EmTop);
+    void DecodeBrickID(Int_t detID, Int_t &NWall, Int_t &NRow, Int_t &NColumn, Int_t &NPlate, Bool_t &EmTop);
 
     void SetHpTParam(Int_t n, Double_t dd, Double_t DZ); //other detector's parameters (needed for positioning)
 
@@ -122,7 +121,7 @@ public:
     Target(const Target&);
     Target& operator=(const Target&);
 
-    ClassDef(Target,4)
+    ClassDef(Target,5)
 
 private:
 
@@ -147,7 +146,7 @@ protected:
 
     Bool_t fPassive; //0 = with Emulsion, 1 = only lead + rohacell
     Bool_t fsingleemulsionfilm; //0 = both top and bottom layers active, separated by plastic base; 1 = only one active layer
-    Int_t fDesign; //0=TP, 1=NewMagnet (Davide), 2=No Magnet Config
+    Int_t fDesign;
 
     //Position of the Center of the Detector
     Double_t fCenterZ;
@@ -189,17 +188,12 @@ protected:
     Double_t BrickPackageX; //dimension of the brick package along X
     Double_t BrickPackageY; //dimension of the brick package along Y
     Double_t BrickPackageZ; //dimension of the brick package along Z
-    Double_t CESPackageZ; //dimension of the CES package along Z
 
     Double_t Ydistance; //distance in Y between 2 bricks
 
     Double_t BrickZ; //dimension of the brick + package along the Z axis
     Double_t BrickY;
     Double_t BrickX;
-
-    Double_t RohacellGap; //dimension of the Rohacell Gap in CES along Z axis
-    Double_t LayerCESWidth;
-    Double_t CESWidth; //dimension of the CES along Z axis
 
     Double_t CellWidth; //dimension of Brick + CES along Z axis
 
