@@ -75,7 +75,7 @@ MtcDetHit::MtcDetHit(int SiPMChan, const std::vector<MtcDetPoint*>& points, cons
         const Float_t distance = (sipmB - impact).Mag();
 
         // Light yield before attenuation
-        Float_t ly = signal * 1e6f * 0.16f;
+        Float_t light_yield = signal * 1e6f * 0.16f;
         ly *= ly_loss(distance);
         totalLy += ly;
 
