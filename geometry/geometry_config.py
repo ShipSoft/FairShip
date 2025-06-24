@@ -253,7 +253,7 @@ if "shieldName" not in globals():
 if "SND" not in globals():
     SND = True
 if "SND_design" not in globals():
-    SND_design = 1
+    SND_design = 2
 
 with ConfigRegistry.register_config("basic") as c:
     c.DecayVolumeMedium = DecayVolumeMedium

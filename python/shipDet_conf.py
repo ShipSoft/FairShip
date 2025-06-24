@@ -74,21 +74,14 @@ def posEcal(z, efile):
     return ecal, EcalZSize
 
 def configure_snd_old(yaml_file,
-                      snd_tauMu_zTot,
-                      snd_tauMu_zMudetC,
                       cave_floorHeightMuonShield):
 
     with open(yaml_file) as file:
         config = yaml.safe_load(file)
 
-    tauMu_geo = AttrDict(config['tauMu'])
     nuTarget_geo = AttrDict(config['nuTarget'])
-    nuTauTT_geo = AttrDict(config['nuTauTT'])
 
     #specific parameters
-    #tauMu det
-    snd_tauMu_Xtot = tauMu_geo.XRpc + 2*tauMu_geo.XRyoke
-    snd_tauMu_Ytot = tauMu_geo.YRpc + 2*(tauMu_geo.CoilH+tauMu_geo.YRyoke)
     # nu Target Tracker
     snd_nuTauTT_TTX = nuTauTT_geo.n_hor_planes * nuTauTT_geo.scifimat_width + 2.9 * u.cm  # endpieces (~2.9cm from previous geom)
     snd_nuTauTT_TTY = nuTauTT_geo.n_vert_planes * nuTauTT_geo.scifimat_width + 2.9 # u.cm  # endpieces (~2.9cm from previous geom)
@@ -107,31 +100,6 @@ def configure_snd_old(yaml_file,
     snd_nuTarget_zC = snd_tauMu_zMudetC - snd_tauMu_zTot/2 - 20*u.cm - snd_nuTarget_zdim/2.
 
     snd_nuTarget_PillarY = 10*u.m - snd_nuTarget_ydim/2 -nuTarget_geo.BaseY- 0.1*u.mm - cave_floorHeightMuonShield
-
-    taumuondetector = ROOT.NuTauMudet(
-        "NuTauMudet", snd_tauMu_zMudetC, ROOT.kTRUE
-    )
-    taumuondetector.SetDesign(4)
-    taumuondetector.SetTotDimensions(
-        snd_tauMu_Xtot, snd_tauMu_Ytot, snd_tauMu_zTot
-    )
-    taumuondetector.SetRpcDimensions(
-        tauMu_geo.XRpc,
-        tauMu_geo.YRpc,
-        tauMu_geo.ZRpc,
-    )
-    taumuondetector.SetGapMiddle(tauMu_geo.GapM)
-    taumuondetector.SetMagneticField(tauMu_geo.B)
-    taumuondetector.SetReturnYokeDimensions(
-        tauMu_geo.XRyoke,
-        tauMu_geo.YRyoke,
-        snd_tauMu_zTot,
-    )
-    taumuondetector.SetCoilParameters(
-        tauMu_geo.CoilH, tauMu_geo.CoilW, 1, 0.0
-    )  # for now, only containers
-    detectorList.append(taumuondetector)
-
 
     NuTauTarget = ROOT.Target(
         "NuTauTarget", nuTarget_geo.Ydist, ROOT.kTRUE
@@ -399,8 +367,6 @@ def configure(run, ship_geo):
         else:
             configure_snd_old(
             os.path.join(fairship, "geometry", "snd_config_old.yaml"),
-            ship_geo.tauMudet.Ztot,
-            ship_geo.tauMudet.zMudetC,
             ship_geo.cave.floorHeightMuonShield,
             )
 
@@ -553,8 +519,8 @@ def configure(run, ship_geo):
         run.SetField(fMagField)
 
     exclusionList = []
-    # exclusionList = ["Muon","Ecal","Hcal","Strawtubes","TargetTrackers","NuTauTarget","HighPrecisionTrackers",\
-    #                 "Veto","Magnet","MuonShield","TargetStation","NuTauMudet","EmuMagnet", "TimeDet", "UpstreamTagger"]
+    # exclusionList = ["Muon","Ecal","Hcal","Strawtubes","TargetTrackers","NuTauTarget",\
+    #                 "Veto","Magnet","MuonShield","TargetStation", "TimeDet", "UpstreamTagger"]
 
     for x in detectorList:
         if x.GetName() in exclusionList:

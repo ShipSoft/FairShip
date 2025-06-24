@@ -196,7 +196,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 # the project's entire directory structure.
 add_subdirectory (shipdata)
 add_subdirectory (passive)
-add_subdirectory (nutaudet)
+add_subdirectory (SND/EmulsionTarget)
 add_subdirectory(SND/MTC)
 add_subdirectory (ecal)
 add_subdirectory (splitcal)
