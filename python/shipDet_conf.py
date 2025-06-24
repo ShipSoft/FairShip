@@ -74,6 +74,7 @@ def posEcal(z, efile):
     return ecal, EcalZSize
 
 def configure_snd_old(yaml_file,
+                      emulsion_target_z_end,
                       cave_floorHeightMuonShield):
 
     with open(yaml_file) as file:
@@ -97,7 +98,7 @@ def configure_snd_old(yaml_file,
     snd_nuTarget_xdim = snd_nuTauTT_TTX
     snd_nuTarget_ydim = snd_nuTauTT_TTY
 
-    snd_nuTarget_zC = -4000
+    snd_nuTarget_zC = emulsion_target_z_end - snd_nuTarget_zdim / 2.
 
     snd_nuTarget_PillarY = 10*u.m - snd_nuTarget_ydim/2 -nuTarget_geo.BaseY- 0.1*u.mm - cave_floorHeightMuonShield
     NuTauTarget = ROOT.Target(
@@ -359,6 +360,7 @@ def configure(run, ship_geo):
         else:
             configure_snd_old(
             os.path.join(fairship, "geometry", "snd_config_old.yaml"),
+            ship_geo.UpstreamTagger.Z_Position - 8 *u.cm - 5 *u.cm, #8 cm width of UpstreamTagger
             ship_geo.cave.floorHeightMuonShield,
             )
 

@@ -18,12 +18,12 @@ nuTarget:
     row: 1
     col: 1
     wall: 5
-    n_plates: 59
+    n_plates: 36
     EmX: 40. # u.cm
     EmY: 40. # u.cm
-    BrPackX: 0.1 # u.cm
-    BrPackY: 0.1 # u.cm
-    BrPackZ: 2.21 # u.cm
+    BrPackX: 0. # u.cm
+    BrPackY: 0. # u.cm
+    BrPackZ: 0. # u.cm
 
     RohG: 0 # u.cm
     LayerCESW: 0 # u.cm
@@ -47,5 +47,5 @@ nuTauTT:
     n_vert_planes: 4 # now same number, walls are squared
     scifimat_width: 13.06 # u.cm # old value 13.045
     scifimat_z: 0.145 # u.cm   # Scintillating fiber mat
-    support_z: 1.355 # u.cm     # More space for support (total TTZ 5 cm)
-    honeycomb_z: 2 # u.cm      # Airex (or Nomex)
+    support_z: 0.55 # u.cm     # Less space for support (total TTZ 3.4 cm)
+    honeycomb_z: 2.01 # u.cm      # Airex (or Nomex)
