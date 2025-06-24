@@ -514,12 +514,7 @@ TVector3 MTCDetector::GetLocalPos(Int_t fDetectorID, TVector3* glob)
     sID.Form("%i", fDetectorID);
     stationID.Form("%i", station_number);
     // Basic hierarchy: /cave/MTC_1/MTC_layer_1/MTC_sciFi_mother_1/MTC_sciFi_epoxyMat_U_1/FiberVol_101010187
-    TString path;
-    if (plane_type == 0) {
-        path = "/cave/MTC_1/MTC_layer_" + stationID + "/MTC_scifi_U_0";
-    } else {
-        path = "/cave/MTC_1/MTC_layer_" + stationID + "/MTC_scifi_V_0";
-    }
+    TString path = "/cave/MTC_1/MTC_layer_" + stationID + (plane_type == 0) ? "/MTC_scifi_U_0" : "/MTC_scifi_V_0";
     TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
     nav->cd(path);
     Double_t aglob[3];
