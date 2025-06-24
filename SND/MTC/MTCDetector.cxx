@@ -545,10 +545,7 @@ void MTCDetector::GetSiPMPosition(Int_t SiPMChan, TVector3& A, TVector3& B)
     Int_t station_number = int(SiPMChan / 1e6) % 100;
     Int_t plane_type = int(SiPMChan / 1e5) % 10;   // 0 for horizontal, 1 for vertical
     Float_t locPosition;
-    if (plane_type == 0)
-        locPosition = SiPMPos_U[locNumber];   // local position in U plane
-    else
-        locPosition = SiPMPos_V[locNumber];   // local position in V plane
+    locPosition = (plane_type == 0 ? SiPMPos_U : SiPMPos_V)[locNumber];   // local position in U/V plane
     TString stationID;
     stationID.Form("%i", station_number);
 
