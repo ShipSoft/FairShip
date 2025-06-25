@@ -19,12 +19,6 @@
 
 #include <iostream>   // for operator<<, basic_ostream, etc
 
-// Double_t cm = 1;
-// Double_t m = 100 * cm;
-// Double_t mm = 0.1 * cm;
-// Double_t kilogauss = 1.;
-// Double_t tesla = 10 * kilogauss;
-
 using ShipUnit::cm;
 using ShipUnit::m;
 using ShipUnit::mm;
@@ -52,7 +46,7 @@ ShipMuonShield::ShipMuonShield(std::vector<double> in_params,
   dZ6 = in_params[5];
   dZ7 = in_params[6];
   fMuonShieldHalfLength = dZ1 + dZ2 + dZ3 + dZ4 + dZ5 + dZ6 + dZ7;
-  zEndOfProxShield = z;
+  z_end_of_proximity_shielding = z;
 }
 
 // -----   Private method InitMedium
@@ -287,7 +281,7 @@ Int_t ShipMuonShield::Initialize(std::vector<TString> &magnetName,
     i->reserve(nMagnets);
   }
 
-  Double_t zgap = 10 * cm;  // fixed distance between magnets in Z-axis
+  Double_t z_gap = 10 * cm;   // fixed distance between magnets in Z-axis
 
   magnetName = {"MagnAbsorb", "Magn1", "Magn2", "Magn3",
     "Magn4",       "Magn5",       "Magn6"};
@@ -320,20 +314,20 @@ FieldDirection::down };
     Bgoal[i] = params[offset + i * nParams + 12];
   }
 
-  dZ[0] = dZ1 - zgap / 2;
-  Z[0] = zEndOfProxShield + dZ[0] + zgap;
-  dZ[1] = dZ2 - zgap / 2;
-  Z[1] = Z[0] + dZ[0] + dZ[1] + zgap;
-  dZ[2] = dZ3 - zgap / 2;
-  Z[2] = Z[1] + dZ[1] + dZ[2] + 2 * zgap;
-  dZ[3] = dZ4 - zgap / 2;
-  Z[3] = Z[2] + dZ[2] + dZ[3] + zgap;
-  dZ[4] = dZ5 - zgap / 2;
-  Z[4] = Z[3] + dZ[3] + dZ[4] + zgap;
-  dZ[5] = dZ6 - zgap / 2;
-  Z[5] = Z[4] + dZ[4] + dZ[5] + zgap;
-  dZ[6] = dZ7 - zgap / 2;
-  Z[6] = Z[5] + dZ[5] + dZ[6] + zgap;
+  dZ[0] = dZ1 - z_gap / 2;
+  Z[0] = z_end_of_proximity_shielding + dZ[0] + z_gap;
+  dZ[1] = dZ2 - z_gap / 2;
+  Z[1] = Z[0] + dZ[0] + dZ[1] + z_gap;
+  dZ[2] = dZ3 - z_gap / 2;
+  Z[2] = Z[1] + dZ[1] + dZ[2] + 2 * z_gap;
+  dZ[3] = dZ4 - z_gap / 2;
+  Z[3] = Z[2] + dZ[2] + dZ[3] + z_gap;
+  dZ[4] = dZ5 - z_gap / 2;
+  Z[4] = Z[3] + dZ[3] + dZ[4] + z_gap;
+  dZ[5] = dZ6 - z_gap / 2;
+  Z[5] = Z[4] + dZ[4] + dZ[5] + z_gap;
+  dZ[6] = dZ7 - z_gap / 2;
+  Z[6] = Z[5] + dZ[5] + dZ[6] + z_gap;
 
   return nMagnets;
 }
@@ -390,20 +384,20 @@ void ShipMuonShield::ConstructGeometry()
       // Place in origin of SHiP coordinate system as subnodes placed correctly
       top->AddNode(tShield, 1);
 
-      Double_t zgap = 10 * cm;
-      Double_t absorber_offset = zgap;
-      Double_t Proximity_shield_half_length = 55.36 / 2 * cm;
-      Double_t zEndOfTarget = zEndOfProxShield - 2 * Proximity_shield_half_length;
+      Double_t z_gap = 10 * cm;
+      Double_t absorber_offset = z_gap;
+      Double_t proximity_shield_half_length = 55.36 / 2 * cm;
+      Double_t z_end_of_target = z_end_of_proximity_shielding - 2 * proximity_shield_half_length;
       Double_t absorber_half_length = (dZf[0]);
 
       // Proximity Shielding
-      auto Proximity_Shielding = new TGeoBBox("Proximity_Shielding", 40 * cm, 40 * cm, Proximity_shield_half_length);
+      auto Proximity_Shielding = new TGeoBBox("Proximity_Shielding", 40 * cm, 40 * cm, proximity_shield_half_length);
       auto* Proximity_Shift = new TGeoTranslation("Proximity_Shift", 0 * m, 0 * m, 0 * m);
       Proximity_Shift->RegisterYourself();
       TGeoVolume* Proximity_Shielding_vol = new TGeoVolume("Proximity_Shielding_vol", Proximity_Shielding, copper);
       tShield->AddNode(Proximity_Shielding_vol,
                        1,
-                       new TGeoTranslation(0, 0, zEndOfTarget + Proximity_shield_half_length + 0.01 * m));
+                       new TGeoTranslation(0, 0, z_end_of_target + proximity_shield_half_length + 0.01 * m));
 
       // Absorber
 
@@ -430,6 +424,6 @@ void ShipMuonShield::ConstructGeometry()
                        1,
                        new TGeoTranslation(0,
                                            0,
-                                           zEndOfTarget + absorber_half_length + absorber_offset
-                                               + 2 * Proximity_shield_half_length));   // - Passive?
+                                           z_end_of_target + absorber_half_length + absorber_offset
+                                               + 2 * proximity_shield_half_length));   // - Passive?
 }

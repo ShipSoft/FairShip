@@ -25,11 +25,9 @@ class ShipMuonShield : public FairModule
     void ConstructGeometry();
   ClassDef(ShipMuonShield, 4)
 
-      protected
-      :
-
-      Double_t fMuonShieldHalfLength;   // FIXME: HA_field to be removed in the next workshop meeting
-    Double_t dZ0, dZ1, dZ2, dZ3, dZ4, dZ5, dZ6, dZ7, dXgap, zEndOfProxShield;
+  protected:
+    Double_t fMuonShieldHalfLength;   // FIXME: HA_field to be removed in the next workshop meeting
+    Double_t dZ0, dZ1, dZ2, dZ3, dZ4, dZ5, dZ6, dZ7, dXgap, z_end_of_proximity_shielding;
     Int_t InitMedium(TString name);
     Bool_t fWithConstShieldField;
     Bool_t fSC_mag;

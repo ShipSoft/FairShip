@@ -19,7 +19,7 @@ using ShipUnit::tesla;
 ShipCave::ShipCave(Double_t z)
     : FairModule("Cave", "ShipCave")
 {
-    zEndOfProxShield = z;
+    z_end_of_proximity_shielding = z;
 }
 
 Int_t ShipCave::InitMedium(TString name)
@@ -59,7 +59,7 @@ void ShipCave::ConstructGeometry()
     Double_t stair_step_length = 0.82 * m;
     Double_t ECN3_length = 100 * m;
     Double_t Proximity_shield_half_length = 55.36 / 2 * cm;
-    Double_t zEndOfTarget = zEndOfProxShield - 2 * Proximity_shield_half_length;
+    Double_t zEndOfTarget = z_end_of_proximity_shielding - 2 * Proximity_shield_half_length;
     Double_t z_transition = 20.52 * m;
     auto* rock = new TGeoBBox("rock", 20 * m, 20 * m, TCC8_length / 2. + ECN3_length / 2. + 5 * m);
     auto* muon_shield_cavern = new TGeoBBox("muon_shield_cavern", 4.995 * m, 3.75 * m, TCC8_length / 2.);
