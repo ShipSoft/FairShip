@@ -1,5 +1,5 @@
-#ifndef MTCDETECTOR_H_
-#define MTCDETECTOR_H_
+#ifndef SND_MTC_MTCDETECTOR_H_
+#define SND_MTC_MTCDETECTOR_H_
 
 #include "FairDetector.h"
 #include "FairModule.h"   // for FairModule
@@ -130,4 +130,4 @@ class MTCDetector : public FairDetector
     ClassDef(MTCDetector, 3)
 };
 
-#endif   // MTCDETECTOR_H_
+#endif   // SND_MTC_MTCDETECTOR_H_
