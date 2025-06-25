@@ -26,14 +26,14 @@ helium			1  4.0026    2    1.675e-4
 			0  1  30.  .001
 			0
 
-// Pressured gas helium for target:
+// Pressurised gas helium for target:
 // T = 200 C = 473.15 K; P = 16 bar = 1.6e+6 J/m3
-PressuredHe200		1  4.0026  2    1.628e-3
+PressurisedHe200		1  4.0026  2    1.628e-3
 			0  1  30.  .001
 			0
 
 // T = 90 C = 363.15 K; P = 16 bar = 1.6e+6 J/m3
-PressuredHe90		1  4.0026  2    2.121e-3
+PressurisedHe90		1  4.0026  2    2.121e-3
 			0  1  30.  .001
 			0
 
