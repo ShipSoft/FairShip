@@ -1,12 +1,10 @@
 #include "ShipTargetStation.h"
 
-#include "TGeoManager.h"
-#include "FairRun.h"                    // for FairRun
-#include "FairRuntimeDb.h"              // for FairRuntimeDb
-#include <iosfwd>                    // for ostream
-#include "TList.h"                      // for TListIter, TList (ptr only)
-#include "TObjArray.h"                  // for TObjArray
-#include "TString.h"                    // for TString
+#include "FairGeoBuilder.h"
+#include "FairGeoMedia.h"
+#include "FairLogger.h"
+#include "FairRun.h"         // for FairRun
+#include "FairRuntimeDb.h"   // for FairRuntimeDb
 #include "TGeoBBox.h"
 #include "TGeoCompositeShape.h"
 #include "TGeoShapeAssembly.h"
@@ -99,24 +97,20 @@ void ShipTargetStation::ConstructGeometry()
     InitMedium("H2O");
     TGeoMedium* water = gGeoManager->GetMedium("H2O");
 
-    double heTemp = 363.15; //use average 90 degrees.
-    double heP = 1.6e6*6.241509e3; //16 bar in MeV/mm3
-    InitMedium("PressuredHe90");
-    TGeoMedium* pressuredHe = gGeoManager->GetMedium("PressuredHe90");
+    double He_T = 363.15;               // in K, use average 90 degrees C.
+    double He_P = 1.6e6 * 6.241509e3;   // 16 bar in MeV/mm3
+    InitMedium("PressurisedHe90");
+    TGeoMedium* pressurised_He = gGeoManager->GetMedium("PressurisedHe90");
 
-    //CAMM- dirty fix to have pressure and temperature correct for Geant4.
-    //Should fix this properly in future...
-    TGeoMaterial* fixedCooler = pressuredHe->GetMaterial();
-    fixedCooler->SetTemperature(heTemp);
-    fixedCooler->SetPressure(heP);
-    //pressuredHe->SetMaterial(fixedCooler);
-    TGeoMedium* cooler = (fTV == TargetVersion::Jun25) ? pressuredHe : water;
+    // CAMM- dirty fix to have pressure and temperature correct for Geant4.
+    // Should fix this properly in future...
+    TGeoMaterial* fixedCooler = pressurised_He->GetMaterial();
+    fixedCooler->SetTemperature(He_T);
+    fixedCooler->SetPressure(He_P);
+    TGeoMedium* cooler = (fTV == TargetVersion::Jun25) ? pressurised_He : water;
 
-    std::cout << __FILE__ << " " << __LINE__ << ": " << std::endl
-	      << "-- Target cooler: " << cooler->GetName()
-	      << " T=" << cooler->GetMaterial()->GetTemperature()
-	      << " K, P=" << cooler->GetMaterial()->GetPressure() << " MeV/mm3"
-	      << std::endl;
+    LOG(INFO) << "-- Target cooler: " << cooler->GetName() << " T=" << cooler->GetMaterial()->GetTemperature()
+              << " K, P=" << cooler->GetMaterial()->GetPressure() << " MeV/mm3";
 
     TGeoVolume* tTarget = new TGeoVolumeAssembly("TargetArea");
 
