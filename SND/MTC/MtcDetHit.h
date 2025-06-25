@@ -1,5 +1,5 @@
-#ifndef MtcDetHit_H_
-#define MtcDetHit_H_ 1
+#ifndef SND_MTC_MTCDETHIT_H_
+#define SND_MTC_MTCDETHIT_H_ 1
 
 #include "MtcDetPoint.h"
 #include "ShipHit.h"
@@ -57,9 +57,9 @@ class MtcDetHit : public ShipHit
   private:
     Float_t signals = 0;
     Float_t time;
-    Float_t ly_loss(Float_t distance);
-    Float_t sipm_saturation(Float_t ly, Float_t nphe_max);
-    Float_t npix_to_qdc(Float_t npix);
+    Float_t light_attenuation(Float_t distance);
+    Float_t sipm_saturation(Float_t ly);
+    Float_t n_pixels_to_qdc(Float_t npix);
     Float_t flag;   ///< flag
 
     ClassDef(MtcDetHit, 4);

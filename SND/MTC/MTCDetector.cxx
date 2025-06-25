@@ -219,14 +219,13 @@ void MTCDetector::CreateSciFiModule(const char* name,
     // Now build the fibers inside each Epoxy block:
 
     // Common fiber parameters (cm)
-    cout << "SciFi active X: " << fSciFiActiveX << "  " << width << "  " << fSciFiBendingAngle << endl;
     fSciFiActiveY = height;
-    fFiberLength = fSciFiActiveY / cos(fSciFiBendingAngle * TMath::DegToRad());
     Int_t numFiberLayers = 6;
     Double_t layerThick = fiberMatThick / numFiberLayers;
     Double_t fFiberRadius = 0.01125;
+    fFiberLength = fSciFiActiveY / cos(fSciFiBendingAngle * TMath::DegToRad()) - 2 * fFiberRadius * sin(fSciFiBendingAngle * TMath::DegToRad());
     fFiberPitch = 0.025;
-    Int_t fNumFibers = static_cast<Int_t>(width / fFiberPitch);
+    Int_t fNumFibers = static_cast<Int_t>(fSciFiActiveX / fFiberPitch);
 
     // --- Define the SciFi fiber volume ---
     TGeoTube* fiberTube = new TGeoTube("FiberTube", 0, fFiberRadius, fFiberLength / 2);
@@ -248,8 +247,11 @@ void MTCDetector::CreateSciFiModule(const char* name,
     for (int layer = 0; layer < numFiberLayers; ++layer) {
         Double_t z0 = -fiberMatThick / 2 + (layer + 0.5) * (layerThick);
         for (int j = 0; j < fNumFibers; ++j) {
-            Double_t x0 = -width / 2 + (j + 0.5) * fFiberPitch;
+            Double_t x0 = -fSciFiActiveX / 2 + (j + 0.5) * fFiberPitch;
             if (layer % 2 == 1) {
+                if (j == fNumFibers - 1){
+                    continue; // Skip the last layer for odd layers
+                }
                 x0 += fFiberPitch / 2;
             }
             TGeoCombiTrans* ct = new TGeoCombiTrans("", x0, 0, z0, rotU);
@@ -262,8 +264,11 @@ void MTCDetector::CreateSciFiModule(const char* name,
     for (int layer = 0; layer < numFiberLayers; ++layer) {
         Double_t z0 = -fiberMatThick / 2 + (layer + 0.5) * (layerThick);
         for (int j = 0; j < fNumFibers; ++j) {
-            Double_t x0 = -width / 2 + (j + 0.5) * fFiberPitch;
+            Double_t x0 = -fSciFiActiveX / 2 + (j + 0.5) * fFiberPitch;
             if (layer % 2 == 1) {
+                if (j == fNumFibers - 1){
+                    continue; // Skip the last layer for odd layers
+                }
                 x0 += fFiberPitch / 2;
             }
             TGeoCombiTrans* ct = new TGeoCombiTrans("", x0, 0, z0, rotV);
@@ -483,12 +488,7 @@ void MTCDetector::GetPosition(Int_t fDetectorID, TVector3& A, TVector3& B)
     sID.Form("%i", fDetectorID);
     stationID.Form("%i", station_number);
     // Basic hierarchy: /cave/MTC_1/MTC_layer_1/MTC_sciFi_mother_1/MTC_sciFi_epoxyMat_U_1/FiberVol_101010187
-    TString path;
-    if (plane_type == 0) {
-        path = "/cave/MTC_1/MTC_layer_" + stationID + "/MTC_scifi_U_0" + "/MTC_epoxyMat_0" + "/FiberVol_1010";
-    } else {
-        path = "/cave/MTC_1/MTC_layer_" + stationID + "/MTC_scifi_V_0" + "/MTC_epoxyMat_0" + "/FiberVol_1011";
-    }
+    TString path = "/cave/MTC_1/MTC_layer_" + stationID + ((plane_type == 0) ? "/MTC_scifi_U_0/MTC_epoxyMat_0/FiberVol_1010" : "/MTC_scifi_V_0/MTC_epoxyMat_0/FiberVol_1011");
     path += sID(4, 5);
     TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
     nav->cd(path);
@@ -514,7 +514,7 @@ TVector3 MTCDetector::GetLocalPos(Int_t fDetectorID, TVector3* glob)
     sID.Form("%i", fDetectorID);
     stationID.Form("%i", station_number);
     // Basic hierarchy: /cave/MTC_1/MTC_layer_1/MTC_sciFi_mother_1/MTC_sciFi_epoxyMat_U_1/FiberVol_101010187
-    TString path = "/cave/MTC_1/MTC_layer_" + stationID + (plane_type == 0) ? "/MTC_scifi_U_0" : "/MTC_scifi_V_0";
+    TString path = "/cave/MTC_1/MTC_layer_" + stationID + ((plane_type == 0) ? "/MTC_scifi_U_0" : "/MTC_scifi_V_0");
     TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
     nav->cd(path);
     Double_t aglob[3];
@@ -550,12 +550,7 @@ void MTCDetector::GetSiPMPosition(Int_t SiPMChan, TVector3& A, TVector3& B)
     stationID.Form("%i", station_number);
 
     Double_t loc[3] = {0, 0, 0};
-    TString path;
-    if (plane_type == 0) {
-        path = "/cave/MTC_1/MTC_layer_" + stationID + "/MTC_scifi_U_0" + "/MTC_epoxyMat_0";
-    } else {
-        path = "/cave/MTC_1/MTC_layer_" + stationID + "/MTC_scifi_V_0" + "/MTC_epoxyMat_0";
-    }
+    TString path = "/cave/MTC_1/MTC_layer_" + stationID + ((plane_type == 0) ? "/MTC_scifi_U_0/MTC_epoxyMat_0" : "/MTC_scifi_V_0/MTC_epoxyMat_0");
     TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
     Double_t glob[3] = {0, 0, 0};
     loc[0] = locPosition;
@@ -573,6 +568,12 @@ void MTCDetector::GetSiPMPosition(Int_t SiPMChan, TVector3& A, TVector3& B)
 
 Double_t MTCDetector::ycross(Double_t a, Double_t R, Double_t x)
 {
+    /*
+     * ycross:
+     *   Compute the positive y-coordinate where the vertical line x intersects
+     *   the circle of radius R centered at (a, 0). If the line does not intersect
+     *   (i.e., (x-a)^2 > R^2), returns -1 as a flag.
+     */
     Double_t y = -1;
     Double_t A = R * R - (x - a) * (x - a);
     if (!(A < 0)) {
@@ -580,36 +581,68 @@ Double_t MTCDetector::ycross(Double_t a, Double_t R, Double_t x)
     }
     return y;
 }
+
 Double_t MTCDetector::integralSqrt(Double_t ynorm)
 {
-    Double_t y = 1. / 2. * (ynorm * TMath::Sqrt(1 - ynorm * ynorm) + TMath::ASin(ynorm));
+    /*
+     * integralSqrt:
+     *   Compute the analytic integral ∫₀^{ynorm} sqrt(1 - t^2) dt
+     *   = ½ [ ynorm * sqrt(1 - ynorm^2) + arcsin(ynorm) ].
+     *   This is used for normalizing the circular segment area.
+     */
+    Double_t y = 1. / 2. * (ynorm * TMath::Sqrt(1 - ynorm * ynorm)
+                            + TMath::ASin(ynorm));
     return y;
 }
+
 Double_t MTCDetector::fraction(Double_t R, Double_t x, Double_t y)
 {
+    /*
+     * fraction:
+     *   Compute the fraction of the circle's total area that lies on one side
+     *   of a vertical cut at horizontal distance x from the circle center,
+     *   up to the intersection height y = sqrt(R^2 - x^2).
+     *   Formula:
+     *     F = 2 R^2 ∫₀^{y/R} sqrt(1 - t^2) dt  -  2 x y
+     *     result = F / (π R^2)
+     */
     Double_t F = 2 * R * R * (integralSqrt(y / R));
     F -= (2 * x * y);
     Double_t result = F / (R * R * TMath::Pi());
     return result;
 }
+
 Double_t MTCDetector::area(Double_t a, Double_t R, Double_t xL, Double_t xR)
 {
+    /*
+     * area:
+     *   Compute the fraction of the full circle (radius R, center at (a,0))
+     *   that lies between the vertical boundaries x = xL and x = xR.
+     *   Special cases:
+     *     - If [xL, xR] fully covers the circle, returns 1.
+     *     - If neither boundary intersects the circle, returns -1 (no overlap).
+     *   Otherwise, uses ycross() to find intersection heights, fraction()
+     *   to get segment areas, and combines them to yield the net fraction.
+     */
     Double_t fracL = -1;
     Double_t fracR = -1;
     if (xL <= a - R && xR >= a + R) {
         return 1;
     }
+
     Double_t leftC = ycross(a, R, xL);
     Double_t rightC = ycross(a, R, xR);
     if (leftC < 0 && rightC < 0) {
         return -1;
     }
+
     if (!(rightC < 0)) {
         fracR = fraction(R, abs(xR - a), rightC);
     }
     if (!(leftC < 0)) {
         fracL = fraction(R, abs(xL - a), leftC);
     }
+
     Double_t theAnswer = 0;
     if (!(leftC < 0)) {
         if (xL < a) {
@@ -701,45 +734,41 @@ void MTCDetector::SiPMmapping()
         // calculate also local SiPM positions based on fibre positions and their fraction
         // probably an overkill, maximum difference between weighted average and central position < 6 micron.
         if (pair.first == std::string("SiPMmapVolU")) {
-            std::map<Int_t, std::map<Int_t, std::array<float, 2>>>::iterator it;
-            std::map<Int_t, std::array<float, 2>>::iterator itx;
-            for (it = fibresSiPM_U.begin(); it != fibresSiPM_U.end(); it++) {
-                Int_t N = it->first;
+            for (auto it : fibresSiPM_U) {
+                Int_t N = it.first;
                 Float_t m = 0;
                 Float_t w = 0;
-                for (itx = it->second.begin(); itx != it->second.end(); itx++) {
-                    m += (itx->second)[0] * (itx->second)[1];
-                    w += (itx->second)[0];
+                for (auto itx : it.second) {
+                    m += (itx.second)[0] * (itx.second)[1];
+                    w += (itx.second)[0];
                 }
                 SiPMPos_U[N] = m / w;
             }
             // make inverse mapping, which fibre is associated to which SiPMs
-            for (it = fibresSiPM_U.begin(); it != fibresSiPM_U.end(); it++) {
-                Int_t N = it->first;
-                for (itx = it->second.begin(); itx != it->second.end(); itx++) {
-                    Int_t nfibre = itx->first;
-                    siPMFibres_U[nfibre][N] = itx->second;
+            for (auto it : fibresSiPM_U) {
+                Int_t N = it.first;
+                for (auto itx : it.second) {
+                    Int_t nfibre = itx.first;
+                    siPMFibres_U[nfibre][N] = itx.second;
                 }
             }
         } else if (pair.first == std::string("SiPMmapVolV")) {
-            std::map<Int_t, std::map<Int_t, std::array<float, 2>>>::iterator it;
-            std::map<Int_t, std::array<float, 2>>::iterator itx;
-            for (it = fibresSiPM_V.begin(); it != fibresSiPM_V.end(); it++) {
-                Int_t N = it->first;
+            for (auto it : fibresSiPM_V) {
+                Int_t N = it.first;
                 Float_t m = 0;
                 Float_t w = 0;
-                for (itx = it->second.begin(); itx != it->second.end(); itx++) {
-                    m += (itx->second)[0] * (itx->second)[1];
-                    w += (itx->second)[0];
+                for (auto itx : it.second) {
+                    m += (itx.second)[0] * (itx.second)[1];
+                    w += (itx.second)[0];
                 }
                 SiPMPos_V[N] = m / w;
             }
             // make inverse mapping, which fibre is associated to which SiPMs
-            for (it = fibresSiPM_V.begin(); it != fibresSiPM_V.end(); it++) {
-                Int_t N = it->first;
-                for (itx = it->second.begin(); itx != it->second.end(); itx++) {
-                    Int_t nfibre = itx->first;
-                    siPMFibres_V[nfibre][N] = itx->second;
+            for (auto it : fibresSiPM_V) {
+                Int_t N = it.first;
+                for (auto itx : it.second) {
+                    Int_t nfibre = itx.first;
+                    siPMFibres_V[nfibre][N] = itx.second;
                 }
             }
         }

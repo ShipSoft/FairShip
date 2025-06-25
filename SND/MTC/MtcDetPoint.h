@@ -1,5 +1,5 @@
-#ifndef MtcDetPoint_H_
-#define MtcDetPoint_H_ 1
+#ifndef SND_MTC_MTCDETPOINT_H_
+#define SND_MTC_MTCDETPOINT_H_ 1
 
 #include "FairMCPoint.h"
 #include "TObject.h"
@@ -48,4 +48,4 @@ class MtcDetPoint : public FairMCPoint
     ClassDef(MtcDetPoint, 2)
 };
 
-#endif   // MTCDET_MtcDetPoint_H_
+#endif   // SND_MTC_MTCDETPOINT_H_

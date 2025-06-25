@@ -1,4 +1,5 @@
-import os,ROOT,shipVertex,shipDet_conf, SciFiMapping
+import os,ROOT,shipVertex,shipDet_conf
+import SciFiMapping
 import global_variables
 import shipPatRec
 import shipunit as u
@@ -69,7 +70,7 @@ class ShipDigiReco:
   self.digiStraw = ROOT.std.vector("strawtubesHit")()
   self.digiStrawBranch   = self.sTree.Branch("Digi_StrawtubesHits",self.digiStraw,32000,-1)
   self.digiMTC = ROOT.std.vector("MtcDetHit")()
-  self.digiMTCBranch   = self.sTree.Branch("Digi_MTCHits",self.digiMTC,32000,1)
+  self.digiMTCBranch = self.sTree.Branch("Digi_MTCHits", self.digiMTC, 32000, 1)
   self.digiSBT    = ROOT.std.vector("vetoHit")()
   self.digiSBTBranch=self.sTree.Branch("Digi_SBTHits",self.digiSBT,32000,-1)
   self.vetoHitOnTrackArray    = ROOT.TClonesArray("vetoHitOnTrack")
@@ -101,8 +102,7 @@ class ShipDigiReco:
       lsOfGlobals.Add(global_variables.modules["MTC"])
     mapping = SciFiMapping.SciFiMapping(global_variables.modules)
     mapping.make_mapping()
-    self.siPMFibres_U, self.siPMFibres_V = mapping.get_siPMFibres()
-    self.fibresSiPMU, self.fibresSiPMV = mapping.get_fibresSiPM()
+    self.sipm_to_fibre_map_U, self.sipm_to_fibre_map_V = mapping.get_sipm_to_fibre_map()
 # setup ecal reconstruction
   self.caloTasks = []
   if self.sTree.GetBranch("EcalPoint") and not self.sTree.GetBranch("splitcalPoint"):
@@ -740,10 +740,10 @@ class ShipDigiReco:
 
       if station_type == 0:
         # +5 degrees fiber station uses U fibers
-        fibre_map = self.siPMFibres_U
+        fibre_map = self.sipm_to_fibre_map_U
       elif station_type == 1:
         # -5 degrees fiber station uses V fibers
-        fibre_map = self.siPMFibres_V
+        fibre_map = self.sipm_to_fibre_map_V
       elif station_type == 2:
         # Scint Plane. Preserve the same logic as for fibre stations,
         # but use the det_id directly as the global channel.
