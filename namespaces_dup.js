@@ -1684,9 +1684,6 @@ var namespaces_dup =
     [ "shipDigiReco", "namespaceshipDigiReco.html", "namespaceshipDigiReco" ],
     [ "ShipGeo", "namespaceShipGeo.html", "namespaceShipGeo" ],
     [ "ShipGeoConfig", "namespaceShipGeoConfig.html", "namespaceShipGeoConfig" ],
-    [ "shipMuShield_only", "namespaceshipMuShield__only.html", [
-      [ "configure", "namespaceshipMuShield__only.html#acf57ba5871437fc265d1f5610ed94a03", null ]
-    ] ],
     [ "shipPatRec", "namespaceshipPatRec.html", [
       [ "artificial_retina_pat_rec_stereo_views", "namespaceshipPatRec.html#a2d54ac07b407e2d1f95a45c799a57a7f", null ],
       [ "artificial_retina_pat_rec_y_view", "namespaceshipPatRec.html#a848914b2596b8ce24ce06d706a96cd29", null ],

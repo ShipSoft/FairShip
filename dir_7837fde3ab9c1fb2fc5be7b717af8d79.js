@@ -33,7 +33,6 @@ var dir_7837fde3ab9c1fb2fc5be7b717af8d79 =
     [ "shipDigiReco.py", "shipDigiReco_8py.html", "shipDigiReco_8py" ],
     [ "ShipGeo.py", "ShipGeo_8py.html", "ShipGeo_8py" ],
     [ "ShipGeoConfig.py", "ShipGeoConfig_8py.html", "ShipGeoConfig_8py" ],
-    [ "shipMuShield_only.py", "shipMuShield__only_8py.html", "shipMuShield__only_8py" ],
     [ "shipPatRec.py", "shipPatRec_8py.html", "shipPatRec_8py" ],
     [ "shipPid.py", "shipPid_8py.html", "shipPid_8py" ],
     [ "shipRoot_conf.py", "shipRoot__conf_8py.html", "shipRoot__conf_8py" ],
