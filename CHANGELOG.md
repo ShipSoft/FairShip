@@ -32,6 +32,7 @@ it in future.
 * Add June 2025 target configuration
 * Definition of Pressured Helium for the target, two version 200 Celsius degree and 90 Celsius degree.
 * Add backport for new TFile/TDirectory `__get_item__` pythonisation
+* SND/EmulsionTarget folder, with the Target and TargetTracker classes from nutaudet
 
 ### Fixed
 
@@ -112,6 +113,8 @@ it in future.
 * Remove (broken?) support for Nuage generator
 * Remove nuTauTargetDesign variable, options
 * Remove reloading of the `geometry_config.py` in `shipDet_conf.py`
+* Remove nutaudet folder, replaced by SND folder
+* Remove deprecated NuTauDet field map
 
 ## 25.01
 
