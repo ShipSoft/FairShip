@@ -63,7 +63,7 @@ repos:
   - id: pyupgrade
     args: [--py39-plus]
 ci:
-  autofix_prs: false
+  autofix_prs: true
   skip: [ruff-check, pydocstyle, cpplint, cmakelint, isort, cmake-format]
   autoupdate_commit_msg: "chore(deps): update pre-commit hooks"
   autofix_commit_msg: "style: pre-commit fixes"
