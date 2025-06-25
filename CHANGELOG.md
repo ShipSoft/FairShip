@@ -107,6 +107,7 @@ it in future.
 * Remove strawtubes_single class
 * Removed outdated version `sc_v6` since it is not fitting in the Cavern (also in the build-run)
 * feat(geometry): remove TP liquid scintillator variables
+* Remove unused python/shipMuShield_only.py
 
 ## 25.01
 
