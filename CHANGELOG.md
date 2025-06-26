@@ -31,6 +31,7 @@ it in future.
 * Add access to decoded numbers (stations, views etc.) of strawtubes hits
 * Add June 2025 target configuration
 * Definition of Pressured Helium for the target, two version 200 Celsius degree and 90 Celsius degree.
+* Add backport for new TFile/TDirectory `__get_item__` pythonisation
 
 ### Fixed
 

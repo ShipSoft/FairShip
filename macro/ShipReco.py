@@ -21,6 +21,7 @@ import global_variables
 import rootUtils as ut
 import shipunit as u
 import shipRoot_conf
+from backports import tdirectory634
 
 shipRoot_conf.configure()
 
@@ -104,7 +105,7 @@ rtdb = run.GetRuntimeDb()
 # -----Create geometry----------------------------------------------
 modules = shipDet_conf.configure(run,ShipGeo)
 # run.Init()
-fgeo.Get("FAIRGeom")
+fgeo["FAIRGeom"]
 import geomGeant4
 
 if hasattr(ShipGeo.Bfield,"fieldMap"):
