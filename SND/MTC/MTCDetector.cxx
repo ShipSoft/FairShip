@@ -223,7 +223,8 @@ void MTCDetector::CreateSciFiModule(const char* name,
     Int_t numFiberLayers = 6;
     Double_t layerThick = fiberMatThick / numFiberLayers;
     Double_t fFiberRadius = 0.01125;
-    fFiberLength = fSciFiActiveY / cos(fSciFiBendingAngle * TMath::DegToRad()) - 2 * fFiberRadius * sin(fSciFiBendingAngle * TMath::DegToRad());
+    fFiberLength = fSciFiActiveY / cos(fSciFiBendingAngle * TMath::DegToRad())
+                   - 2 * fFiberRadius * sin(fSciFiBendingAngle * TMath::DegToRad());
     fFiberPitch = 0.025;
     Int_t fNumFibers = static_cast<Int_t>(fSciFiActiveX / fFiberPitch);
 
@@ -249,8 +250,8 @@ void MTCDetector::CreateSciFiModule(const char* name,
         for (int j = 0; j < fNumFibers; ++j) {
             Double_t x0 = -fSciFiActiveX / 2 + (j + 0.5) * fFiberPitch;
             if (layer % 2 == 1) {
-                if (j == fNumFibers - 1){
-                    continue; // Skip the last layer for odd layers
+                if (j == fNumFibers - 1) {
+                    continue;   // Skip the last layer for odd layers
                 }
                 x0 += fFiberPitch / 2;
             }
@@ -266,8 +267,8 @@ void MTCDetector::CreateSciFiModule(const char* name,
         for (int j = 0; j < fNumFibers; ++j) {
             Double_t x0 = -fSciFiActiveX / 2 + (j + 0.5) * fFiberPitch;
             if (layer % 2 == 1) {
-                if (j == fNumFibers - 1){
-                    continue; // Skip the last layer for odd layers
+                if (j == fNumFibers - 1) {
+                    continue;   // Skip the last layer for odd layers
                 }
                 x0 += fFiberPitch / 2;
             }
@@ -488,7 +489,9 @@ void MTCDetector::GetPosition(Int_t fDetectorID, TVector3& A, TVector3& B)
     sID.Form("%i", fDetectorID);
     stationID.Form("%i", station_number);
     // Basic hierarchy: /cave/MTC_1/MTC_layer_1/MTC_sciFi_mother_1/MTC_sciFi_epoxyMat_U_1/FiberVol_101010187
-    TString path = "/cave/MTC_1/MTC_layer_" + stationID + ((plane_type == 0) ? "/MTC_scifi_U_0/MTC_epoxyMat_0/FiberVol_1010" : "/MTC_scifi_V_0/MTC_epoxyMat_0/FiberVol_1011");
+    TString path = "/cave/MTC_1/MTC_layer_" + stationID
+                   + ((plane_type == 0) ? "/MTC_scifi_U_0/MTC_epoxyMat_0/FiberVol_1010"
+                                        : "/MTC_scifi_V_0/MTC_epoxyMat_0/FiberVol_1011");
     path += sID(4, 5);
     TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
     nav->cd(path);
@@ -550,7 +553,8 @@ void MTCDetector::GetSiPMPosition(Int_t SiPMChan, TVector3& A, TVector3& B)
     stationID.Form("%i", station_number);
 
     Double_t loc[3] = {0, 0, 0};
-    TString path = "/cave/MTC_1/MTC_layer_" + stationID + ((plane_type == 0) ? "/MTC_scifi_U_0/MTC_epoxyMat_0" : "/MTC_scifi_V_0/MTC_epoxyMat_0");
+    TString path = "/cave/MTC_1/MTC_layer_" + stationID
+                   + ((plane_type == 0) ? "/MTC_scifi_U_0/MTC_epoxyMat_0" : "/MTC_scifi_V_0/MTC_epoxyMat_0");
     TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
     Double_t glob[3] = {0, 0, 0};
     loc[0] = locPosition;
@@ -590,8 +594,7 @@ Double_t MTCDetector::integralSqrt(Double_t ynorm)
      *   = ½ [ ynorm * sqrt(1 - ynorm^2) + arcsin(ynorm) ].
      *   This is used for normalizing the circular segment area.
      */
-    Double_t y = 1. / 2. * (ynorm * TMath::Sqrt(1 - ynorm * ynorm)
-                            + TMath::ASin(ynorm));
+    Double_t y = 1. / 2. * (ynorm * TMath::Sqrt(1 - ynorm * ynorm) + TMath::ASin(ynorm));
     return y;
 }
 

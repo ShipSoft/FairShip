@@ -355,4 +355,3 @@ if __name__ == "__main__":
     SciFiMapping.make_mapping()
     SciFiMapping.draw_channel(101104120)  # Example channel
     SciFiMapping.draw_many_channels("scifi_mapping_all_channels.pdf")
-
