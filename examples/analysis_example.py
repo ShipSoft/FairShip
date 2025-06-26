@@ -6,6 +6,7 @@ from argparse import ArgumentParser
 import ROOT
 import rootUtils as ut
 from experimental import analysis_toolkit
+from backports import tdirectory634
 
 
 def main():
@@ -15,7 +16,7 @@ def main():
     options = parser.parse_args()
 
     f = ROOT.TFile.Open(options.path + "/ship.conical.Pythia8-TGeant4_rec.root", "read")
-    tree = f.Get("cbmsim")
+    tree = f["cbmsim"]
 
     geo_file = ROOT.TFile.Open(
         options.path + "/geofile_full.conical.Pythia8-TGeant4.root", "read"

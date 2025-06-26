@@ -6,6 +6,7 @@ import rootUtils as ut
 from array import array
 import sys
 from math import fabs
+from backports import tdirectory634
 stop  = ROOT.TVector3()
 start = ROOT.TVector3()
 
@@ -13,13 +14,13 @@ class ShipDigiReco:
  " convert FairSHiP MC hits / digitized hits to measurements"
  def __init__(self,fout,fgeo):
   self.fn = ROOT.TFile.Open(fout,'update')
-  self.sTree     = self.fn.Get("cbmsim")
+  self.sTree = self.fn["cbmsim"]
   if self.sTree.GetBranch("FitTracks"):
     print("remove RECO branches and rerun reconstruction")
     self.fn.Close()
     # make a new file without reco branches
     f = ROOT.TFile(fout)
-    sTree = f.Get("cbmsim")
+    sTree = f["cbmsim"]
     if sTree.GetBranch("FitTracks"): sTree.SetBranchStatus("FitTracks",0)
     if sTree.GetBranch("goodTracks"): sTree.SetBranchStatus("goodTracks",0)
     if sTree.GetBranch("VetoHitOnTrack"): sTree.SetBranchStatus("VetoHitOnTrack",0)
@@ -47,7 +48,7 @@ class ShipDigiReco:
     recf.Close()
     os.system('cp '+rawFile +' '+fout)
     self.fn = ROOT.TFile(fout,'update')
-    self.sTree = self.fn.Get("cbmsim")
+    self.sTree = self.fn["cbmsim"]
 #
   if self.sTree.GetBranch("GeoTracks"): self.sTree.SetBranchStatus("GeoTracks",0)
 # prepare for output

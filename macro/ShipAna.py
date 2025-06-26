@@ -9,6 +9,7 @@ from ShipGeoConfig import ConfigRegistry
 from rootpyPickler import Unpickler
 from decorators import *
 import shipRoot_conf
+from backports import tdirectory634
 from argparse import ArgumentParser
 
 shipRoot_conf.configure()
@@ -34,7 +35,7 @@ if not options.inputFile.find(',')<0 :
     sTree.AddFile(x)
 else:
   f = ROOT.TFile(options.inputFile)
-  sTree = f.Get("cbmsim")
+  sTree = f["cbmsim"]
 
 if not options.geoFile:
  options.geoFile = options.inputFile.replace('ship.','geofile_full.').replace('_rec.','.')
@@ -62,7 +63,7 @@ if hasattr(ShipGeo.Bfield,"fieldMap"):
 else:
   print("no fieldmap given, geofile too old, not anymore support")
   exit(-1)
-sGeo = fgeo.Get("FAIRGeom")
+sGeo = fgeo["FAIRGeom"]
 geoMat =  ROOT.genfit.TGeoMaterialInterface()
 ROOT.genfit.MaterialEffects.getInstance().init(geoMat)
 bfield = ROOT.genfit.FairShipFields()

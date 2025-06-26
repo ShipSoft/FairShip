@@ -9,6 +9,7 @@ import rootUtils as ut
 from ShipGeoConfig import ConfigRegistry
 from argparse import ArgumentParser
 from array import array
+from backports import tdirectory634
 DownScaleDiMuon = False
 
 # Default HNL parameters
@@ -548,7 +549,7 @@ if simEngine == "MuonBack":
     nm = ff.GetName().split('/')
     if nm[len(nm)-1] == check: fin = ff
  if not fin: fin   = ROOT.TFile.Open(outFile)
- t = fin.Get("cbmsim")
+ t = fin["cbmsim"]
  fout  = ROOT.TFile(tmpFile,'recreate')
  fSink = ROOT.FairRootFileSink(fout)
 
@@ -604,9 +605,9 @@ if simEngine == "muonDIS":
         ROOT.TFile.Open(inputFile, "read") as f_muonfile,
         ROOT.TFile.Open(temp_filename, "recreate") as f_temp,
     ):
-        output_tree = f_outputfile.Get("cbmsim")
+        output_tree = f_outputfile["cbmsim"]
 
-        muondis_tree = f_muonfile.Get("DIS")
+        muondis_tree = f_muonfile["DIS"]
 
         new_tree = output_tree.CloneTree(0)
 
