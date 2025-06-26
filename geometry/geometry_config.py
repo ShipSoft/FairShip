@@ -6,7 +6,6 @@ import yaml
 
 # the following params should be passed through 'ConfigRegistry.loadpy' method
 # nuTargetPassive = 1  #0 = with active layers, 1 = only passive
-# nuTauTargetDesign  =   #0 = TP, 1 = NEW with magnet, 2 = NEW without magnet, 3 = 2018 design
 
 # targetOpt      = 5  # 0=solid   >0 sliced, 5: 5 pieces of tungsten, 4 air slits, 17: molybdenum tungsten interleaved with H20
 # strawOpt       = 0  # 0=simplistic tracking stations defined in veto.cxx  1=detailed strawtube design 4=sophisticated straw tube design, horizontal wires 10=2 cm straw diameter for compact layout (default)
@@ -229,8 +228,6 @@ if "muShieldGeo" not in globals():
     muShieldGeo = None
 if "nuTargetPassive" not in globals():
     nuTargetPassive = 1
-if "nuTauTargetDesign" not in globals():
-    nuTauTargetDesign = 4
 if "TARGET_YAML" not in globals():
     TARGET_YAML = os.path.expandvars("$FAIRSHIP/geometry/target_config_old.yaml")
 if "strawDesign" not in globals():
@@ -296,9 +293,6 @@ with ConfigRegistry.register_config("basic") as c:
             c.cave.floorHeightTankA
         )  # avoid the gap, for 2018 geometry
     c.cave.floorHeightTankB = 2 * u.m
-    #
-    # neutrino detector
-    c.nuTauTargetDesign = nuTauTargetDesign
 
     with open(c.target_yaml) as file:
         targetconfig = yaml.safe_load(file)
