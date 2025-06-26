@@ -108,6 +108,7 @@ it in future.
 * Removed outdated version `sc_v6` since it is not fitting in the Cavern (also in the build-run)
 * feat(geometry): remove TP liquid scintillator variables
 * Remove unused python/shipMuShield_only.py
+* Remove (broken?) support for Nuage generator
 
 ## 25.01
 
