@@ -246,8 +246,6 @@ def configure(run, ship_geo):
         raise ValueError(
             "DecayVolumeMedium is not defined, possibly old (incompatible) geometry!"
         )
-    if not hasattr(ship_geo, "tankDesign"):
-        ship_geo.tankDesign = 5
     if not hasattr(ship_geo, "muShieldGeo"):
         ship_geo.muShieldGeo = None
     if not hasattr(ship_geo.hcal, "File"):
@@ -270,10 +268,7 @@ def configure(run, ship_geo):
 
     # -----Create geometry----------------------------------------------
     cave = ROOT.ShipCave("CAVE")
-    if ship_geo.tankDesign < 5:
-        cave.SetGeometryFileName("cave.geo")
-    else:
-        cave.SetGeometryFileName("caveWithAir.geo")
+    cave.SetGeometryFileName("caveWithAir.geo")
     detectorList.append(cave)
 
     TargetStation = ROOT.ShipTargetStation(
@@ -301,12 +296,7 @@ def configure(run, ship_geo):
 
     if not hasattr(ship_geo, "magnetDesign"):
         # backward compatibility
-        magnet_design = 2
-        if ship_geo.tankDesign == 5:
-            magnet_design = 3
-        if ship_geo.tankDesign == 6:
-            magnet_design = 4
-        ship_geo.magnetDesign = magnet_design
+        ship_geo.magnetDesign = 4
         ship_geo.Bfield.YokeWidth = 200.0 * u.cm
         ship_geo.Bfield.YokeDepth = 200.0 * u.cm
         ship_geo.Bfield.CoilThick = 25.0 * u.cm

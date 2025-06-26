@@ -9,7 +9,6 @@ import yaml
 
 # targetOpt      = 5  # 0=solid   >0 sliced, 5: 5 pieces of tungsten, 4 air slits, 17: molybdenum tungsten interleaved with H20
 # strawOpt       = 0  # 0=simplistic tracking stations defined in veto.cxx  1=detailed strawtube design 4=sophisticated straw tube design, horizontal wires 10=2 cm straw diameter for compact layout (default)
-# tankDesign = 5 #  4=TP elliptical tank design, 5 = optimized conical rectangular design, 6=5 without segment-1
 
 # Here you can select the MS geometry, if the MS design is using SC magnet change the hybrid to True
 # The first row is the length of the magnets
@@ -232,22 +231,14 @@ if "TARGET_YAML" not in globals():
     TARGET_YAML = os.path.expandvars("$FAIRSHIP/geometry/target_config_old.yaml")
 if "strawDesign" not in globals():
     strawDesign = 10
-if "tankDesign" not in globals():
-    tankDesign = 6
 if "CaloDesign" not in globals():
     CaloDesign = 0
 if "Yheight" not in globals():
     Yheight = 10.0
 if "EcalGeoFile" not in globals():
-    if tankDesign > 4:
-        EcalGeoFile = "ecal_rect5x10m2.geo"
-    else:
-        EcalGeoFile = "ecal_ellipse5x10m2.geo"
+    EcalGeoFile = "ecal_rect5x10m2.geo"
 if "HcalGeoFile" not in globals():
-    if tankDesign > 4:
-        HcalGeoFile = "hcal_rect.geo"
-    else:
-        HcalGeoFile = "hcal.geo"
+    HcalGeoFile = "hcal_rect.geo"
 if "shieldName" not in globals():
     shieldName = None
 if "SND" not in globals():
@@ -271,19 +262,9 @@ with ConfigRegistry.register_config("basic") as c:
     # global targetVersion, strawDesign, Yheight
     c.Yheight = Yheight * u.m
     extraVesselLength = 10 * u.m
-    windowBulge = 1 * u.m
-    if tankDesign > 5:
-        windowBulge = 25 * u.cm
-        #
-    magnet_design = 2
-    if tankDesign == 5:
-        magnet_design = 3
-    if tankDesign == 6:
-        magnet_design = 4
-        #
+    windowBulge = 25 * u.cm
     c.strawDesign = strawDesign
-    c.tankDesign = tankDesign
-    c.magnetDesign = magnet_design
+    c.magnetDesign = 4
     # cave parameters
     c.cave = AttrDict()
     c.cave.floorHeightMuonShield = 5 * u.m
