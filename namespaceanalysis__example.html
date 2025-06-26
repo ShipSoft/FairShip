@@ -117,109 +117,109 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <pre class="fragment">Sample function to analyse the pre-selection parameters.</pre> 
-<p class="definition">Definition at line <a class="el" href="analysis__example_8py_source.html#l00011">11</a> of file <a class="el" href="analysis__example_8py_source.html">analysis_example.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   11</span><span class="keyword">def </span>main():</div>
-<div class="line"><span class="lineno">   12</span>    <span class="stringliteral">&quot;&quot;&quot;Sample function to analyse the pre-selection parameters.&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   13</span>    parser = ArgumentParser(description=__doc__)</div>
-<div class="line"><span class="lineno">   14</span>    parser.add_argument(<span class="stringliteral">&quot;--path&quot;</span>, help=<span class="stringliteral">&quot;Path to simulation file&quot;</span>, default=<span class="stringliteral">&quot;./&quot;</span>)</div>
-<div class="line"><span class="lineno">   15</span>    options = parser.parse_args()</div>
-<div class="line"><span class="lineno">   16</span> </div>
-<div class="line"><span class="lineno">   17</span>    f = ROOT.TFile.Open(options.path + <span class="stringliteral">&quot;/ship.conical.Pythia8-TGeant4_rec.root&quot;</span>, <span class="stringliteral">&quot;read&quot;</span>)</div>
-<div class="line"><span class="lineno">   18</span>    tree = f.Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
-<div class="line"><span class="lineno">   19</span> </div>
-<div class="line"><span class="lineno">   20</span>    geo_file = ROOT.TFile.Open(</div>
-<div class="line"><span class="lineno">   21</span>        options.path + <span class="stringliteral">&quot;/geofile_full.conical.Pythia8-TGeant4.root&quot;</span>, <span class="stringliteral">&quot;read&quot;</span></div>
-<div class="line"><span class="lineno">   22</span>    )</div>
-<div class="line"><span class="lineno">   23</span> </div>
-<div class="line"><span class="lineno">   24</span>    selection = analysis_toolkit.selection_check(geo_file)</div>
-<div class="line"><span class="lineno">   25</span>    inspector = analysis_toolkit.event_inspector()</div>
-<div class="line"><span class="lineno">   26</span> </div>
-<div class="line"><span class="lineno">   27</span>    hist_dict = {}</div>
-<div class="line"><span class="lineno">   28</span> </div>
-<div class="line"><span class="lineno">   29</span>    ut.bookHist(hist_dict, <span class="stringliteral">&quot;event_weight&quot;</span>, <span class="stringliteral">&quot;Event weight&quot;</span>, 100, 100, 100)</div>
-<div class="line"><span class="lineno">   30</span>    ut.bookHist(</div>
-<div class="line"><span class="lineno">   31</span>        hist_dict,</div>
-<div class="line"><span class="lineno">   32</span>        <span class="stringliteral">&quot;candidate_time&quot;</span>,</div>
-<div class="line"><span class="lineno">   33</span>        <span class="stringliteral">&quot;candidate time @ decay vertex; ns&quot;</span>,</div>
-<div class="line"><span class="lineno">   34</span>        200,</div>
-<div class="line"><span class="lineno">   35</span>        100,</div>
+<p class="definition">Definition at line <a class="el" href="analysis__example_8py_source.html#l00012">12</a> of file <a class="el" href="analysis__example_8py_source.html">analysis_example.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   12</span><span class="keyword">def </span>main():</div>
+<div class="line"><span class="lineno">   13</span>    <span class="stringliteral">&quot;&quot;&quot;Sample function to analyse the pre-selection parameters.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   14</span>    parser = ArgumentParser(description=__doc__)</div>
+<div class="line"><span class="lineno">   15</span>    parser.add_argument(<span class="stringliteral">&quot;--path&quot;</span>, help=<span class="stringliteral">&quot;Path to simulation file&quot;</span>, default=<span class="stringliteral">&quot;./&quot;</span>)</div>
+<div class="line"><span class="lineno">   16</span>    options = parser.parse_args()</div>
+<div class="line"><span class="lineno">   17</span> </div>
+<div class="line"><span class="lineno">   18</span>    f = ROOT.TFile.Open(options.path + <span class="stringliteral">&quot;/ship.conical.Pythia8-TGeant4_rec.root&quot;</span>, <span class="stringliteral">&quot;read&quot;</span>)</div>
+<div class="line"><span class="lineno">   19</span>    tree = f[<span class="stringliteral">&quot;cbmsim&quot;</span>]</div>
+<div class="line"><span class="lineno">   20</span> </div>
+<div class="line"><span class="lineno">   21</span>    geo_file = ROOT.TFile.Open(</div>
+<div class="line"><span class="lineno">   22</span>        options.path + <span class="stringliteral">&quot;/geofile_full.conical.Pythia8-TGeant4.root&quot;</span>, <span class="stringliteral">&quot;read&quot;</span></div>
+<div class="line"><span class="lineno">   23</span>    )</div>
+<div class="line"><span class="lineno">   24</span> </div>
+<div class="line"><span class="lineno">   25</span>    selection = analysis_toolkit.selection_check(geo_file)</div>
+<div class="line"><span class="lineno">   26</span>    inspector = analysis_toolkit.event_inspector()</div>
+<div class="line"><span class="lineno">   27</span> </div>
+<div class="line"><span class="lineno">   28</span>    hist_dict = {}</div>
+<div class="line"><span class="lineno">   29</span> </div>
+<div class="line"><span class="lineno">   30</span>    ut.bookHist(hist_dict, <span class="stringliteral">&quot;event_weight&quot;</span>, <span class="stringliteral">&quot;Event weight&quot;</span>, 100, 100, 100)</div>
+<div class="line"><span class="lineno">   31</span>    ut.bookHist(</div>
+<div class="line"><span class="lineno">   32</span>        hist_dict,</div>
+<div class="line"><span class="lineno">   33</span>        <span class="stringliteral">&quot;candidate_time&quot;</span>,</div>
+<div class="line"><span class="lineno">   34</span>        <span class="stringliteral">&quot;candidate time @ decay vertex; ns&quot;</span>,</div>
+<div class="line"><span class="lineno">   35</span>        200,</div>
 <div class="line"><span class="lineno">   36</span>        100,</div>
-<div class="line"><span class="lineno">   37</span>    )</div>
-<div class="line"><span class="lineno">   38</span>    ut.bookHist(hist_dict, <span class="stringliteral">&quot;impact_parameter&quot;</span>, <span class="stringliteral">&quot;Impact parameter; cm&quot;</span>, 200, 100, 100)</div>
-<div class="line"><span class="lineno">   39</span>    ut.bookHist(</div>
-<div class="line"><span class="lineno">   40</span>        hist_dict, <span class="stringliteral">&quot;dist_to_innerwall&quot;</span>, <span class="stringliteral">&quot;Distance to inner wall; cm&quot;</span>, 200, 100, 100</div>
-<div class="line"><span class="lineno">   41</span>    )</div>
-<div class="line"><span class="lineno">   42</span>    ut.bookHist(</div>
-<div class="line"><span class="lineno">   43</span>        hist_dict,</div>
-<div class="line"><span class="lineno">   44</span>        <span class="stringliteral">&quot;dist_to_vesselentrance&quot;</span>,</div>
-<div class="line"><span class="lineno">   45</span>        <span class="stringliteral">&quot;Distance to Decay Vessel Entrance; cm&quot;</span>,</div>
-<div class="line"><span class="lineno">   46</span>        200,</div>
-<div class="line"><span class="lineno">   47</span>        100,</div>
+<div class="line"><span class="lineno">   37</span>        100,</div>
+<div class="line"><span class="lineno">   38</span>    )</div>
+<div class="line"><span class="lineno">   39</span>    ut.bookHist(hist_dict, <span class="stringliteral">&quot;impact_parameter&quot;</span>, <span class="stringliteral">&quot;Impact parameter; cm&quot;</span>, 200, 100, 100)</div>
+<div class="line"><span class="lineno">   40</span>    ut.bookHist(</div>
+<div class="line"><span class="lineno">   41</span>        hist_dict, <span class="stringliteral">&quot;dist_to_innerwall&quot;</span>, <span class="stringliteral">&quot;Distance to inner wall; cm&quot;</span>, 200, 100, 100</div>
+<div class="line"><span class="lineno">   42</span>    )</div>
+<div class="line"><span class="lineno">   43</span>    ut.bookHist(</div>
+<div class="line"><span class="lineno">   44</span>        hist_dict,</div>
+<div class="line"><span class="lineno">   45</span>        <span class="stringliteral">&quot;dist_to_vesselentrance&quot;</span>,</div>
+<div class="line"><span class="lineno">   46</span>        <span class="stringliteral">&quot;Distance to Decay Vessel Entrance; cm&quot;</span>,</div>
+<div class="line"><span class="lineno">   47</span>        200,</div>
 <div class="line"><span class="lineno">   48</span>        100,</div>
-<div class="line"><span class="lineno">   49</span>    )</div>
-<div class="line"><span class="lineno">   50</span>    ut.bookHist(hist_dict, <span class="stringliteral">&quot;inv_mass&quot;</span>, <span class="stringliteral">&quot;Invariant mass; GeV&quot;</span>, 200, 100, 100)</div>
-<div class="line"><span class="lineno">   51</span>    ut.bookHist(hist_dict, <span class="stringliteral">&quot;DOCA&quot;</span>, <span class="stringliteral">&quot;Distance of closest approach; cm&quot;</span>, 200, 100, 100)</div>
-<div class="line"><span class="lineno">   52</span>    ut.bookHist(</div>
-<div class="line"><span class="lineno">   53</span>        hist_dict,</div>
-<div class="line"><span class="lineno">   54</span>        <span class="stringliteral">&quot;len_Particles&quot;</span>,</div>
-<div class="line"><span class="lineno">   55</span>        <span class="stringliteral">&quot;len(tree.Particles); Number of candidates per event&quot;</span>,</div>
-<div class="line"><span class="lineno">   56</span>        200,</div>
-<div class="line"><span class="lineno">   57</span>        100,</div>
+<div class="line"><span class="lineno">   49</span>        100,</div>
+<div class="line"><span class="lineno">   50</span>    )</div>
+<div class="line"><span class="lineno">   51</span>    ut.bookHist(hist_dict, <span class="stringliteral">&quot;inv_mass&quot;</span>, <span class="stringliteral">&quot;Invariant mass; GeV&quot;</span>, 200, 100, 100)</div>
+<div class="line"><span class="lineno">   52</span>    ut.bookHist(hist_dict, <span class="stringliteral">&quot;DOCA&quot;</span>, <span class="stringliteral">&quot;Distance of closest approach; cm&quot;</span>, 200, 100, 100)</div>
+<div class="line"><span class="lineno">   53</span>    ut.bookHist(</div>
+<div class="line"><span class="lineno">   54</span>        hist_dict,</div>
+<div class="line"><span class="lineno">   55</span>        <span class="stringliteral">&quot;len_Particles&quot;</span>,</div>
+<div class="line"><span class="lineno">   56</span>        <span class="stringliteral">&quot;len(tree.Particles); Number of candidates per event&quot;</span>,</div>
+<div class="line"><span class="lineno">   57</span>        200,</div>
 <div class="line"><span class="lineno">   58</span>        100,</div>
-<div class="line"><span class="lineno">   59</span>    )</div>
-<div class="line"><span class="lineno">   60</span>    ut.bookHist(</div>
-<div class="line"><span class="lineno">   61</span>        hist_dict,</div>
-<div class="line"><span class="lineno">   62</span>        <span class="stringliteral">&quot;d_mom&quot;</span>,</div>
-<div class="line"><span class="lineno">   63</span>        <span class="stringliteral">&quot;momentum of daughters; d1 (GeV); d2 (GeV)&quot;</span>,</div>
-<div class="line"><span class="lineno">   64</span>        200,</div>
-<div class="line"><span class="lineno">   65</span>        100,</div>
+<div class="line"><span class="lineno">   59</span>        100,</div>
+<div class="line"><span class="lineno">   60</span>    )</div>
+<div class="line"><span class="lineno">   61</span>    ut.bookHist(</div>
+<div class="line"><span class="lineno">   62</span>        hist_dict,</div>
+<div class="line"><span class="lineno">   63</span>        <span class="stringliteral">&quot;d_mom&quot;</span>,</div>
+<div class="line"><span class="lineno">   64</span>        <span class="stringliteral">&quot;momentum of daughters; d1 (GeV); d2 (GeV)&quot;</span>,</div>
+<div class="line"><span class="lineno">   65</span>        200,</div>
 <div class="line"><span class="lineno">   66</span>        100,</div>
-<div class="line"><span class="lineno">   67</span>        200,</div>
-<div class="line"><span class="lineno">   68</span>        100,</div>
+<div class="line"><span class="lineno">   67</span>        100,</div>
+<div class="line"><span class="lineno">   68</span>        200,</div>
 <div class="line"><span class="lineno">   69</span>        100,</div>
-<div class="line"><span class="lineno">   70</span>    )</div>
-<div class="line"><span class="lineno">   71</span>    ut.bookHist(hist_dict, <span class="stringliteral">&quot;nDOF&quot;</span>, <span class="stringliteral">&quot;nDOF; d1; d2&quot;</span>, 200, 100, 100, 200, 100, 100)</div>
-<div class="line"><span class="lineno">   72</span>    ut.bookHist(hist_dict, <span class="stringliteral">&quot;chi2nDOF&quot;</span>, <span class="stringliteral">&quot;chi2nDOF; d1; d2&quot;</span>, 200, 100, 100, 200, 100, 100)</div>
-<div class="line"><span class="lineno">   73</span> </div>
-<div class="line"><span class="lineno">   74</span>    <span class="keywordflow">for</span> event_nr, event <span class="keywordflow">in</span> enumerate(tree):</div>
-<div class="line"><span class="lineno">   75</span>        selection.access_event(event)</div>
-<div class="line"><span class="lineno">   76</span>        <span class="keywordflow">if</span> len(event.Particles) == 0:</div>
-<div class="line"><span class="lineno">   77</span>            <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">   78</span> </div>
-<div class="line"><span class="lineno">   79</span>        print(f<span class="stringliteral">&quot;Event{event_nr}:&quot;</span>)</div>
-<div class="line"><span class="lineno">   80</span>        inspector.dump_event(event, mom_threshold=0.5)  <span class="comment"># in GeV</span></div>
-<div class="line"><span class="lineno">   81</span> </div>
-<div class="line"><span class="lineno">   82</span>        event_weight = event.MCTrack[2].GetWeight()</div>
-<div class="line"><span class="lineno">   83</span> </div>
-<div class="line"><span class="lineno">   84</span>        hist_dict[<span class="stringliteral">&quot;event_weight&quot;</span>].Fill(event_weight)</div>
-<div class="line"><span class="lineno">   85</span> </div>
-<div class="line"><span class="lineno">   86</span>        <span class="keywordflow">for</span> candidate_id_in_event, signal <span class="keywordflow">in</span> enumerate(event.Particles):</div>
-<div class="line"><span class="lineno">   87</span>            hist_dict[<span class="stringliteral">&quot;candidate_time&quot;</span>].Fill(selection.define_candidate_time(signal))</div>
-<div class="line"><span class="lineno">   88</span>            hist_dict[<span class="stringliteral">&quot;impact_parameter&quot;</span>].Fill(selection.impact_parameter(signal))</div>
-<div class="line"><span class="lineno">   89</span>            hist_dict[<span class="stringliteral">&quot;dist_to_innerwall&quot;</span>].Fill(selection.dist_to_innerwall(signal))</div>
-<div class="line"><span class="lineno">   90</span>            hist_dict[<span class="stringliteral">&quot;dist_to_vesselentrance&quot;</span>].Fill(</div>
-<div class="line"><span class="lineno">   91</span>                selection.dist_to_vesselentrance(signal)</div>
-<div class="line"><span class="lineno">   92</span>            )</div>
-<div class="line"><span class="lineno">   93</span>            hist_dict[<span class="stringliteral">&quot;DOCA&quot;</span>].Fill(selection.DOCA(signal))</div>
-<div class="line"><span class="lineno">   94</span>            hist_dict[<span class="stringliteral">&quot;inv_mass&quot;</span>].Fill(selection.invariant_mass(signal))</div>
-<div class="line"><span class="lineno">   95</span>            hist_dict[<span class="stringliteral">&quot;len_Particles&quot;</span>].Fill(len(tree.Particles))</div>
-<div class="line"><span class="lineno">   96</span>            hist_dict[<span class="stringliteral">&quot;d_mom&quot;</span>].Fill(*selection.daughtermomentum(signal))</div>
-<div class="line"><span class="lineno">   97</span>            hist_dict[<span class="stringliteral">&quot;nDOF&quot;</span>].Fill(*selection.nDOF(signal))</div>
-<div class="line"><span class="lineno">   98</span>            hist_dict[<span class="stringliteral">&quot;chi2nDOF&quot;</span>].Fill(*selection.chi2nDOF(signal))</div>
-<div class="line"><span class="lineno">   99</span> </div>
-<div class="line"><span class="lineno">  100</span>            IP_cut = 250</div>
-<div class="line"><span class="lineno">  101</span>            preselection_flag = selection.preselection_cut(</div>
-<div class="line"><span class="lineno">  102</span>                signal, IP_cut=IP_cut, show_table=<span class="keyword">False</span></div>
-<div class="line"><span class="lineno">  103</span>            )</div>
-<div class="line"><span class="lineno">  104</span> </div>
-<div class="line"><span class="lineno">  105</span>            <span class="keywordflow">if</span> preselection_flag:</div>
-<div class="line"><span class="lineno">  106</span>                print(</div>
-<div class="line"><span class="lineno">  107</span>                    f<span class="stringliteral">&quot;Event:{event_nr} Candidate_index: {candidate_id_in_event} &lt;--passes the pre-selection\n\n&quot;</span></div>
-<div class="line"><span class="lineno">  108</span>                )</div>
-<div class="line"><span class="lineno">  109</span> </div>
-<div class="line"><span class="lineno">  110</span>    ut.writeHists(hist_dict, <span class="stringliteral">&quot;preselectionparameters.root&quot;</span>)</div>
-<div class="line"><span class="lineno">  111</span> </div>
+<div class="line"><span class="lineno">   70</span>        100,</div>
+<div class="line"><span class="lineno">   71</span>    )</div>
+<div class="line"><span class="lineno">   72</span>    ut.bookHist(hist_dict, <span class="stringliteral">&quot;nDOF&quot;</span>, <span class="stringliteral">&quot;nDOF; d1; d2&quot;</span>, 200, 100, 100, 200, 100, 100)</div>
+<div class="line"><span class="lineno">   73</span>    ut.bookHist(hist_dict, <span class="stringliteral">&quot;chi2nDOF&quot;</span>, <span class="stringliteral">&quot;chi2nDOF; d1; d2&quot;</span>, 200, 100, 100, 200, 100, 100)</div>
+<div class="line"><span class="lineno">   74</span> </div>
+<div class="line"><span class="lineno">   75</span>    <span class="keywordflow">for</span> event_nr, event <span class="keywordflow">in</span> enumerate(tree):</div>
+<div class="line"><span class="lineno">   76</span>        selection.access_event(event)</div>
+<div class="line"><span class="lineno">   77</span>        <span class="keywordflow">if</span> len(event.Particles) == 0:</div>
+<div class="line"><span class="lineno">   78</span>            <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">   79</span> </div>
+<div class="line"><span class="lineno">   80</span>        print(f<span class="stringliteral">&quot;Event{event_nr}:&quot;</span>)</div>
+<div class="line"><span class="lineno">   81</span>        inspector.dump_event(event, mom_threshold=0.5)  <span class="comment"># in GeV</span></div>
+<div class="line"><span class="lineno">   82</span> </div>
+<div class="line"><span class="lineno">   83</span>        event_weight = event.MCTrack[2].GetWeight()</div>
+<div class="line"><span class="lineno">   84</span> </div>
+<div class="line"><span class="lineno">   85</span>        hist_dict[<span class="stringliteral">&quot;event_weight&quot;</span>].Fill(event_weight)</div>
+<div class="line"><span class="lineno">   86</span> </div>
+<div class="line"><span class="lineno">   87</span>        <span class="keywordflow">for</span> candidate_id_in_event, signal <span class="keywordflow">in</span> enumerate(event.Particles):</div>
+<div class="line"><span class="lineno">   88</span>            hist_dict[<span class="stringliteral">&quot;candidate_time&quot;</span>].Fill(selection.define_candidate_time(signal))</div>
+<div class="line"><span class="lineno">   89</span>            hist_dict[<span class="stringliteral">&quot;impact_parameter&quot;</span>].Fill(selection.impact_parameter(signal))</div>
+<div class="line"><span class="lineno">   90</span>            hist_dict[<span class="stringliteral">&quot;dist_to_innerwall&quot;</span>].Fill(selection.dist_to_innerwall(signal))</div>
+<div class="line"><span class="lineno">   91</span>            hist_dict[<span class="stringliteral">&quot;dist_to_vesselentrance&quot;</span>].Fill(</div>
+<div class="line"><span class="lineno">   92</span>                selection.dist_to_vesselentrance(signal)</div>
+<div class="line"><span class="lineno">   93</span>            )</div>
+<div class="line"><span class="lineno">   94</span>            hist_dict[<span class="stringliteral">&quot;DOCA&quot;</span>].Fill(selection.DOCA(signal))</div>
+<div class="line"><span class="lineno">   95</span>            hist_dict[<span class="stringliteral">&quot;inv_mass&quot;</span>].Fill(selection.invariant_mass(signal))</div>
+<div class="line"><span class="lineno">   96</span>            hist_dict[<span class="stringliteral">&quot;len_Particles&quot;</span>].Fill(len(tree.Particles))</div>
+<div class="line"><span class="lineno">   97</span>            hist_dict[<span class="stringliteral">&quot;d_mom&quot;</span>].Fill(*selection.daughtermomentum(signal))</div>
+<div class="line"><span class="lineno">   98</span>            hist_dict[<span class="stringliteral">&quot;nDOF&quot;</span>].Fill(*selection.nDOF(signal))</div>
+<div class="line"><span class="lineno">   99</span>            hist_dict[<span class="stringliteral">&quot;chi2nDOF&quot;</span>].Fill(*selection.chi2nDOF(signal))</div>
+<div class="line"><span class="lineno">  100</span> </div>
+<div class="line"><span class="lineno">  101</span>            IP_cut = 250</div>
+<div class="line"><span class="lineno">  102</span>            preselection_flag = selection.preselection_cut(</div>
+<div class="line"><span class="lineno">  103</span>                signal, IP_cut=IP_cut, show_table=<span class="keyword">False</span></div>
+<div class="line"><span class="lineno">  104</span>            )</div>
+<div class="line"><span class="lineno">  105</span> </div>
+<div class="line"><span class="lineno">  106</span>            <span class="keywordflow">if</span> preselection_flag:</div>
+<div class="line"><span class="lineno">  107</span>                print(</div>
+<div class="line"><span class="lineno">  108</span>                    f<span class="stringliteral">&quot;Event:{event_nr} Candidate_index: {candidate_id_in_event} &lt;--passes the pre-selection\n\n&quot;</span></div>
+<div class="line"><span class="lineno">  109</span>                )</div>
+<div class="line"><span class="lineno">  110</span> </div>
+<div class="line"><span class="lineno">  111</span>    ut.writeHists(hist_dict, <span class="stringliteral">&quot;preselectionparameters.root&quot;</span>)</div>
 <div class="line"><span class="lineno">  112</span> </div>
+<div class="line"><span class="lineno">  113</span> </div>
 </div><!-- fragment -->
 </div>
 </div>

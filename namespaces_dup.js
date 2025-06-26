@@ -1967,6 +1967,11 @@ var namespaces_dup =
       [ "nevents", "namespacesubmitPyG4prod.html#a39f1bf1b1d59db426b74d7f00ac547ad", null ],
       [ "path", "namespacesubmitPyG4prod.html#a2c8beaa3825810f733065f8b7afe52f5", null ]
     ] ],
+    [ "tdirectory634", "namespacetdirectory634.html", [
+      [ "_TDirectory_getitem", "namespacetdirectory634.html#ad203e5406feb380dfac0076a50b68f5e", null ],
+      [ "pythonize_tdirectory", "namespacetdirectory634.html#adbc8f78dd2cf88ec72042a64cf3b4738", null ],
+      [ "_cached_items", "namespacetdirectory634.html#af2c8e0ac0cb408377aed4b01f54a391f", null ]
+    ] ],
     [ "test_shipGeoConfig", "namespacetest__shipGeoConfig.html", "namespacetest__shipGeoConfig" ],
     [ "TrackExtrapolateTool", "namespaceTrackExtrapolateTool.html", [
       [ "cmp", "namespaceTrackExtrapolateTool.html#ab8db142297238572f1496a88dcb73c28", null ],
