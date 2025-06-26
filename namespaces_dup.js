@@ -1662,7 +1662,6 @@ var namespaces_dup =
       [ "configure_snd_mtc", "namespaceshipDet__conf.html#a697153d510ce945f29314cd583b91efd", null ],
       [ "configure_snd_old", "namespaceshipDet__conf.html#a6f9913f44ca120bc50d95d26f037c87c", null ],
       [ "configure_veto", "namespaceshipDet__conf.html#a39dd79c9e985fa7e9faf4c68d305525b", null ],
-      [ "getParameter", "namespaceshipDet__conf.html#a10ed9341e73de6c7f0b869a3bfbdf571", null ],
       [ "makeEcalGeoFile", "namespaceshipDet__conf.html#ac8f4ac2c90998d6d936e2e21c073ca5e", null ],
       [ "posEcal", "namespaceshipDet__conf.html#adb3bdcee7cddd83b1bcc462cb4ad1144", null ],
       [ "posHcal", "namespaceshipDet__conf.html#a649bb93c057238cfa3a3d4ec3206be2a", null ],

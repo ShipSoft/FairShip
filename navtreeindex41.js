@@ -1,7 +1,5 @@
 var NAVTREEINDEX41 =
 {
-"splitcal_8cxx_source.html":[6,0,17,0],
-"splitcal_8h.html":[6,0,17,1],
 "splitcal_8h_source.html":[6,0,17,1],
 "strawtubesContFact_8cxx.html":[6,0,18,2],
 "strawtubesContFact_8cxx_source.html":[6,0,18,2],
