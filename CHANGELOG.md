@@ -109,6 +109,7 @@ it in future.
 * feat(geometry): remove TP liquid scintillator variables
 * Remove unused python/shipMuShield_only.py
 * Remove (broken?) support for Nuage generator
+* Remove nuTauTargetDesign variable, options
 
 ## 25.01
 

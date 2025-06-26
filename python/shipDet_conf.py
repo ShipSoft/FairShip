@@ -324,7 +324,6 @@ def configure(run, ship_geo):
         "$FAIRSHIP/geometry/geometry_config.py",
         Yheight=ship_geo.Yheight / u.m,
         tankDesign=ship_geo.tankDesign,
-        nuTauTargetDesign=ship_geo.nuTauTargetDesign,
         muShieldGeo=ship_geo.muShieldGeo,
         SC_mag=ship_geo.SC_mag,
         shieldName=ship_geo.shieldName,
@@ -379,14 +378,6 @@ def configure(run, ship_geo):
         ship_geo.Bfield.YokeWidth = 200.0 * u.cm
         ship_geo.Bfield.YokeDepth = 200.0 * u.cm
         ship_geo.Bfield.CoilThick = 25.0 * u.cm
-    # sanity check, 2018 layout ship_geo.tankDesign == 6 has to be together with ship_geo.nuTauTargetDesign == 3
-    if ship_geo.tankDesign != 6 and ship_geo.nuTauTargetDesign == 3:
-        print(
-            "version of tankDesign and nuTauTargetDesign are not compatible, should be 6 and 3, it is ",
-            ship_geo.tankDesign,
-            ship_geo.nuTauTargetDesign,
-        )
-        exit()
     if ship_geo.strawDesign > 1:
         if ship_geo.magnetDesign > 3:
             B = ship_geo.Bfield

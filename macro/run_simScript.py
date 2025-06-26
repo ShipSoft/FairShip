@@ -40,7 +40,6 @@ globalDesigns = {
      '2023' : {
           'dy' : 6.,
           'dv' : 6,
-          'nud' : 4,
           'caloDesign' : 3,
           'strawDesign' : 10
      },
@@ -48,7 +47,6 @@ globalDesigns = {
           'dy' : 6.,
           'dv' : 6,
           'ds' : 8,
-          'nud' : 4,
           'caloDesign' : 2,
           'strawDesign' : 10
      },
@@ -94,9 +92,6 @@ parser.add_argument("-o", "--output", dest="outputDir", help="Output directory",
 parser.add_argument("-Y", dest="dy", help="max height of vacuum tank", default=globalDesigns[default]['dy'])
 parser.add_argument("--tankDesign", dest="dv", help="4=TP elliptical tank design, 5 = optimized conical rectangular design, 6=5 without segment-1",
                     default=globalDesigns[default]['dv'], type=int)  # TODO: Remove options other than 6
-parser.add_argument("--nuTauTargetDesign", dest="nud",
-                    help="3: emulsion spectrometer and muon filter as in CDS, 4: not magnetized target and muon spectrometer for ECN3",
-                    default=globalDesigns[default]['nud'], type=int, choices=[3,4])
 parser.add_argument("--caloDesign",
                     help="0=ECAL/HCAL TP 2=splitCal  3=ECAL/ passive HCAL",
                     default=globalDesigns[default]['caloDesign'],
@@ -194,12 +189,10 @@ if (simEngine == "Ntuple" or simEngine == "MuonBack") and defaultInputFile :
   sys.exit()
 ROOT.gRandom.SetSeed(options.theSeed)  # this should be propagated via ROOT to Pythia8 and Geant4VMC
 shipRoot_conf.configure(0)     # load basic libraries, prepare atexit for python
-#   nuTauTargetDesign = 3 #3 = 2018 design, 4 = not magnetized target + spectrometer
 ship_geo = ConfigRegistry.loadpy(
      "$FAIRSHIP/geometry/geometry_config.py",
      Yheight=options.dy,
      tankDesign=options.dv,
-     nuTauTargetDesign=options.nud,
      CaloDesign=options.caloDesign,
      strawDesign=options.strawDesign,
      muShieldGeo=options.geofile,
