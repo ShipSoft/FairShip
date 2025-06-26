@@ -40,13 +40,11 @@ defaultInputFile = True
 globalDesigns = {
      '2023' : {
           'dy' : 6.,
-          'dv' : 6,
           'caloDesign' : 3,
           'strawDesign' : 10
      },
      '2025' : {
           'dy' : 6.,
-          'dv' : 6,
           'ds' : 8,
           'caloDesign' : 2,
           'strawDesign' : 10
@@ -93,8 +91,6 @@ group.add_argument("-f", dest="inputFile", help="Input file if not default file"
 parser.add_argument("-g", dest="geofile", help="geofile for muon shield geometry, for experts only", default=None)
 parser.add_argument("-o", "--output", dest="outputDir", help="Output directory",  default=".")
 parser.add_argument("-Y", dest="dy", help="max height of vacuum tank", default=globalDesigns[default]['dy'])
-parser.add_argument("--tankDesign", dest="dv", help="4=TP elliptical tank design, 5 = optimized conical rectangular design, 6=5 without segment-1",
-                    default=globalDesigns[default]['dv'], type=int)  # TODO: Remove options other than 6
 parser.add_argument("--caloDesign",
                     help="0=ECAL/HCAL TP 2=splitCal  3=ECAL/ passive HCAL",
                     default=globalDesigns[default]['caloDesign'],
@@ -195,7 +191,6 @@ shipRoot_conf.configure(0)     # load basic libraries, prepare atexit for python
 ship_geo = ConfigRegistry.loadpy(
      "$FAIRSHIP/geometry/geometry_config.py",
      Yheight=options.dy,
-     tankDesign=options.dv,
      CaloDesign=options.caloDesign,
      strawDesign=options.strawDesign,
      muShieldGeo=options.geofile,
@@ -211,7 +206,7 @@ if simEngine == "PG": tag = simEngine + "_"+str(options.pID)+"-"+mcEngine
 else: tag = simEngine+"-"+mcEngine
 if charmonly: tag = simEngine+"CharmOnly-"+mcEngine
 if options.eventDisplay: tag = tag+'_D'
-if options.dv > 4 : tag = 'conical.'+tag
+tag = 'conical.'+tag
 if not os.path.exists(options.outputDir):
   os.makedirs(options.outputDir)
 outFile = f"{options.outputDir}/ship.{tag}.root"

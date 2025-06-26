@@ -116,6 +116,7 @@ it in future.
 * Remove reloading of the `geometry_config.py` in `shipDet_conf.py`
 * Remove nutaudet folder, replaced by SND folder
 * Remove deprecated NuTauDet field map
+* Remove tankDesign variable, options
 
 ## 25.01
 

@@ -189,10 +189,8 @@ def dist2InnerWall(X,Y,Z):
   dist = 0
  # return distance to inner wall perpendicular to z-axis, if outside decayVolume return 0.
   node = sGeo.FindNode(X,Y,Z)
-  if ShipGeo.tankDesign < 5:
-     if not 'cave' in node.GetName(): return dist  # TP
-  else:
-     if not 'DecayVacuum' in node.GetName(): return dist
+  if not 'DecayVacuum' in node.GetName():
+    return dist
   start = array('d',[X,Y,Z])
   nsteps = 8
   dalpha = 2*ROOT.TMath.Pi()/nsteps
@@ -203,7 +201,6 @@ def dist2InnerWall(X,Y,Z):
     sdir  = array('d',[ROOT.TMath.Sin(alpha),ROOT.TMath.Cos(alpha),0.])
     node = sGeo.InitTrack(start, sdir)
     nxt = sGeo.FindNextBoundary()
-    if ShipGeo.tankDesign < 5 and nxt.GetName().find('I')<0: return 0
     distance = sGeo.GetStep()
     if distance < minDistance  : minDistance = distance
   return minDistance
