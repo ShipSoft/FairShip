@@ -70,7 +70,7 @@ var searchData=
   ['nmeas_67',['Nmeas',['../classNtupleGenerator.html#a7caa9506516412155222b563f5245983',1,'NtupleGenerator']]],
   ['nmodulesinx_68',['NModulesInX',['../namespacegeometry__config.html#a93156db742dbfa69b739fd6bf2752018',1,'geometry_config']]],
   ['nmodulesiny_69',['NModulesInY',['../namespacegeometry__config.html#a1b6150e693a07759d44d0677a03dccff',1,'geometry_config']]],
-  ['nmu_70',['nmu',['../namespacemake__nTuple__SBT.html#a20bc34e7372638afea070927634df04f',1,'make_nTuple_SBT.nmu'],['../namespacestudy__GammaConv.html#a9f1e7a36fb26b74b912450315ae6935d',1,'study_GammaConv.nMu'],['../namespacemake__nTuple__Tr.html#ad4593ea229ee6bba97f7a6236f19e33f',1,'make_nTuple_Tr.nmu'],['../namespacerunPythia8.html#a1a8d7ca59e772a0a5007e9cb0463ac57',1,'runPythia8.nmu']]],
+  ['nmu_70',['nmu',['../namespacerunPythia8.html#a1a8d7ca59e772a0a5007e9cb0463ac57',1,'runPythia8.nmu'],['../namespacemake__nTuple__Tr.html#ad4593ea229ee6bba97f7a6236f19e33f',1,'make_nTuple_Tr.nmu'],['../namespacemake__nTuple__SBT.html#a20bc34e7372638afea070927634df04f',1,'make_nTuple_SBT.nmu'],['../namespacestudy__GammaConv.html#a9f1e7a36fb26b74b912450315ae6935d',1,'study_GammaConv.nMu']]],
   ['nmult_71',['nmult',['../namespacemakeMuonDIS.html#aef3b9e78ca5de16af53a104af60517f1',1,'makeMuonDIS.nMult'],['../namespacemakeMuonEM.html#a622d501e573a35cf9e01929c1cdbf4da',1,'makeMuonEM.nMult']]],
   ['nmuons_72',['nmuons',['../namespacemake__nTuple__SBT.html#a315942c41e02aef7640aaeff0d4d6b63',1,'make_nTuple_SBT.nmuons'],['../namespacemake__nTuple__Tr.html#a33203c22bb6011b6714a887c7850e24a',1,'make_nTuple_Tr.nmuons']]],
   ['nofield_73',['noField',['../namespaceana__ShipMuon.html#a8a1b848c8602cc3562334ec08f52aa95',1,'ana_ShipMuon']]],
@@ -98,7 +98,7 @@ var searchData=
   ['nt_95',['nt',['../namespacerun__fixedTarget.html#a3824536a9c3d7dd8855280526d9b7d95',1,'run_fixedTarget']]],
   ['ntagged_96',['ntagged',['../namespacerunPythia8.html#a4147fbd806b90468dee39fd9e8b57c9a',1,'runPythia8']]],
   ['ntest_97',['nTest',['../classCosmicsGenerator.html#aa6e595d8e91dee9dc90267e6e0384dce',1,'CosmicsGenerator']]],
-  ['ntot_98',['ntot',['../namespaceg4Ex__gap__mergeFiles.html#aebeda73a8e53a1bfc57d2e49e5525ca4',1,'g4Ex_gap_mergeFiles.ntot'],['../namespacemakeMuonDIS.html#a733fd53aa252e7e2d8d7eb70d6c37edb',1,'makeMuonDIS.nTOT']]],
+  ['ntot_98',['ntot',['../namespacemakeMuonDIS.html#a733fd53aa252e7e2d8d7eb70d6c37edb',1,'makeMuonDIS.nTOT'],['../namespaceg4Ex__gap__mergeFiles.html#aebeda73a8e53a1bfc57d2e49e5525ca4',1,'g4Ex_gap_mergeFiles.ntot']]],
   ['ntotprim_99',['ntotprim',['../namespacemakeDecay.html#a6ca9ee1ac5dd881b42ce74249e60c74b',1,'makeDecay.ntotprim'],['../classFixedTargetGenerator.html#ad0616dc329316d475f5f37fb301e4c56',1,'FixedTargetGenerator::ntotprim']]],
   ['ntree_100',['nTree',['../classFixedTargetGenerator.html#a4724b22b55854e36ae67fa2246f3cad1',1,'FixedTargetGenerator']]],
   ['ntup_101',['ntup',['../namespacemakeCascade.html#a850c7c17142d5f66455dd4491808ef25',1,'makeCascade.Ntup'],['../namespacemakeDecay.html#acdd2c7879db37638956f0510818ee455',1,'makeDecay.Ntup']]],
@@ -125,10 +125,9 @@ var searchData=
   ['nutaumudet_122',['nutaumudet',['../classNuTauMudet.html#a659fd5639a30e9a9c19b98c312f4fe31',1,'NuTauMudet::NuTauMudet(const NuTauMudet &amp;)'],['../classNuTauMudet.html#a2fa384e6530c0f54b4ad9f93c99f81b9',1,'NuTauMudet::NuTauMudet()'],['../classNuTauMudet.html#aedc2d7af6b47e25df45470795902791a',1,'NuTauMudet::NuTauMudet(const char *name, const Double_t Zcenter, Bool_t Active, const char *Title=&quot;NuTauMudet&quot;)'],['../classNuTauMudet.html',1,'NuTauMudet']]],
   ['nutaumudet_2ecxx_123',['NuTauMudet.cxx',['../NuTauMudet_8cxx.html',1,'']]],
   ['nutaumudet_2eh_124',['NuTauMudet.h',['../NuTauMudet_8h.html',1,'']]],
-  ['nutautargetdesign_125',['nuTauTargetDesign',['../namespacegeometry__config.html#ad72c520e55eb9d3c877e17357eb62364',1,'geometry_config']]],
-  ['nx_126',['nx',['../namespacestudy__muMSC.html#a235aad16d3c1f1d4e8af0c3f536aa482',1,'study_muMSC.nx'],['../namespacestudy__thinTarget.html#a61df07d66fa119dc538c7e6f040d8a3f',1,'study_thinTarget.nx']]],
-  ['nx_5f_127',['Nx_',['../classShipBFieldMap.html#a9d28380f1bd47c465a388a452419661c',1,'ShipBFieldMap']]],
-  ['ny_128',['ny',['../namespacestudy__thinTarget.html#a849b1ab78e614b9fbd49b3db06be5e9e',1,'study_thinTarget.ny'],['../namespacestudy__muMSC.html#a6b14755453040cb3f775690620e2211e',1,'study_muMSC.ny']]],
-  ['ny_5f_129',['Ny_',['../classShipBFieldMap.html#a58c5500a5534268ac9fc5ff343b8d8ba',1,'ShipBFieldMap']]],
-  ['nz_5f_130',['Nz_',['../classShipBFieldMap.html#a376afd5b8219a75317a65976fa8e41b9',1,'ShipBFieldMap']]]
+  ['nx_125',['nx',['../namespacestudy__muMSC.html#a235aad16d3c1f1d4e8af0c3f536aa482',1,'study_muMSC.nx'],['../namespacestudy__thinTarget.html#a61df07d66fa119dc538c7e6f040d8a3f',1,'study_thinTarget.nx']]],
+  ['nx_5f_126',['Nx_',['../classShipBFieldMap.html#a9d28380f1bd47c465a388a452419661c',1,'ShipBFieldMap']]],
+  ['ny_127',['ny',['../namespacestudy__thinTarget.html#a849b1ab78e614b9fbd49b3db06be5e9e',1,'study_thinTarget.ny'],['../namespacestudy__muMSC.html#a6b14755453040cb3f775690620e2211e',1,'study_muMSC.ny']]],
+  ['ny_5f_128',['Ny_',['../classShipBFieldMap.html#a58c5500a5534268ac9fc5ff343b8d8ba',1,'ShipBFieldMap']]],
+  ['nz_5f_129',['Nz_',['../classShipBFieldMap.html#a376afd5b8219a75317a65976fa8e41b9',1,'ShipBFieldMap']]]
 ];

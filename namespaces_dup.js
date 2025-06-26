@@ -460,7 +460,6 @@ var namespaces_dup =
       [ "NStripsPerModule", "namespacegeometry__config.html#a33266d79d9f71aa75eda17a80f58f302", null ],
       [ "num_precision_layers", "namespacegeometry__config.html#a5d17378c61b4b0610fabb080b5bcab6b", null ],
       [ "nuTargetPassive", "namespacegeometry__config.html#a9cb921742ba2eda9b442f24b36f43a35", null ],
-      [ "nuTauTargetDesign", "namespacegeometry__config.html#ad72c520e55eb9d3c877e17357eb62364", null ],
       [ "OuterStrawDiameter", "namespacegeometry__config.html#a944da21619bf1767dd0e9559aae56c67", null ],
       [ "params", "namespacegeometry__config.html#aa313304f40f24acaf601de3eb247e62b", null ],
       [ "prox_shld", "namespacegeometry__config.html#ad88aa697873d71db1f736f3c521f6306", null ],

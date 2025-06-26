@@ -92,7 +92,6 @@ var geometry__config_8py =
     [ "NStripsPerModule", "geometry__config_8py.html#a33266d79d9f71aa75eda17a80f58f302", null ],
     [ "num_precision_layers", "geometry__config_8py.html#a5d17378c61b4b0610fabb080b5bcab6b", null ],
     [ "nuTargetPassive", "geometry__config_8py.html#a9cb921742ba2eda9b442f24b36f43a35", null ],
-    [ "nuTauTargetDesign", "geometry__config_8py.html#ad72c520e55eb9d3c877e17357eb62364", null ],
     [ "OuterStrawDiameter", "geometry__config_8py.html#a944da21619bf1767dd0e9559aae56c67", null ],
     [ "params", "geometry__config_8py.html#aa313304f40f24acaf601de3eb247e62b", null ],
     [ "prox_shld", "geometry__config_8py.html#ad88aa697873d71db1f736f3c521f6306", null ],

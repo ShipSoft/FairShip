@@ -1,7 +1,5 @@
 var NAVTREEINDEX41 =
 {
-"strawtubesContFact_8cxx.html":[6,0,18,2],
-"strawtubesContFact_8cxx_source.html":[6,0,18,2],
 "strawtubesContFact_8h.html":[6,0,18,3],
 "strawtubesContFact_8h_source.html":[6,0,18,3],
 "strawtubesHit_8cxx.html":[6,0,18,4],

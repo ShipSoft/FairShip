@@ -1,7 +1,5 @@
 var NAVTREEINDEX40 =
 {
-"saveBasicParameters_8py.html#ae19428dcf1f80c5affea43fc209bf908":[6,0,13,27,0],
-"saveBasicParameters_8py_source.html":[6,0,13,27],
 "shipDet__conf_8py.html":[6,0,13,29],
 "shipDet__conf_8py.html#a0507a6f94174d43157cb96b2984eb98d":[6,0,13,29,8],
 "shipDet__conf_8py.html#a10ed9341e73de6c7f0b869a3bfbdf571":[6,0,13,29,4],
@@ -249,5 +247,7 @@ var NAVTREEINDEX40 =
 "splitcal_8cxx.html":[6,0,17,0],
 "splitcal_8cxx_source.html":[6,0,17,0],
 "splitcal_8h.html":[6,0,17,1],
-"splitcal_8h_source.html":[6,0,17,1]
+"splitcal_8h_source.html":[6,0,17,1],
+"strawtubesContFact_8cxx.html":[6,0,18,2],
+"strawtubesContFact_8cxx_source.html":[6,0,18,2]
 };

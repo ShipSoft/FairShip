@@ -1,6 +1,5 @@
 var NAVTREEINDEX28 =
 {
-"muonShieldOptimization_2makeMuonDIS_8py.html#a820b4fb7438d85f2cf1c7b6e808a07a5":[6,0,9,10,32],
 "muonShieldOptimization_2makeMuonDIS_8py.html#a89bb5da26bfd8081f9e2c9cca9bcf2eb":[6,0,9,10,38],
 "muonShieldOptimization_2makeMuonDIS_8py.html#a8a458fca77824c9b6c84acde6b595e52":[6,0,9,10,8],
 "muonShieldOptimization_2makeMuonDIS_8py.html#a8fe80f6234b8e9bc38b5cdf200238d32":[6,0,9,10,45],
@@ -249,5 +248,6 @@ var NAVTREEINDEX28 =
 "namespaceTTCluster.html#aaed5cbff7cd64cc78c99bb300aa7c6e6":[4,0,103,50],
 "namespaceTTCluster.html#ab6106ef02f10f6bdc0a3d08d5a104409":[4,0,103,86],
 "namespaceTTCluster.html#abdd5a7619efa4fe429da258c816248f3":[4,0,103,19],
-"namespaceTTCluster.html#ac1be9ef2630a53c3fc5a2147508d4766":[4,0,103,46]
+"namespaceTTCluster.html#ac1be9ef2630a53c3fc5a2147508d4766":[4,0,103,46],
+"namespaceTTCluster.html#ac29d01d5a5068fa49f58eda41662ad99":[4,0,103,16]
 };
