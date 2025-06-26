@@ -166,7 +166,6 @@ var annotated_dup =
     [ "muonHit", "classmuonHit.html", "classmuonHit" ],
     [ "muonPoint", "classmuonPoint.html", "classmuonPoint" ],
     [ "NtupleGenerator", "classNtupleGenerator.html", "classNtupleGenerator" ],
-    [ "NuageGenerator", "classNuageGenerator.html", "classNuageGenerator" ],
     [ "NutaudetContFact", "classNutaudetContFact.html", "classNutaudetContFact" ],
     [ "NuTauMudet", "classNuTauMudet.html", "classNuTauMudet" ],
     [ "pid", "classpid.html", "classpid" ],

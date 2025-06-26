@@ -26,7 +26,7 @@ var searchData=
   ['xffilterecalthickness_23',['xfFilterECALThickness',['../classsplitcal.html#a7f6f2d585f38b166dce6daf0328ed348',1,'splitcal']]],
   ['xfrac1_5f_24',['xFrac1_',['../classShipBFieldMap.html#ad244c2f350e52fc7cbeddaf1ddd66f2c',1,'ShipBFieldMap']]],
   ['xfrac_5f_25',['xFrac_',['../classShipBFieldMap.html#a438a731a1b08cbb15e2c43a2dff85dfa',1,'ShipBFieldMap']]],
-  ['xmax_26',['xmax',['../namespacegeometry__config.html#a3c7ce2f9d309441314dcc2cd986172c3',1,'geometry_config.XMax'],['../namespacegeometry__config.html#a437302764acd932304dabd2a65070edf',1,'geometry_config.xMax'],['../classShipGoliathField.html#ab2b98db40114d0360cd4650e603d7dce',1,'ShipGoliathField::xmax']]],
+  ['xmax_26',['xmax',['../classShipGoliathField.html#ab2b98db40114d0360cd4650e603d7dce',1,'ShipGoliathField::xmax'],['../namespacegeometry__config.html#a3c7ce2f9d309441314dcc2cd986172c3',1,'geometry_config.XMax'],['../namespacegeometry__config.html#a437302764acd932304dabd2a65070edf',1,'geometry_config.xMax']]],
   ['xmax_5f_27',['xMax_',['../classShipBFieldMap.html#a00ebcf5d5871b4d60a087710fca705a6',1,'ShipBFieldMap']]],
   ['xmin_28',['xmin',['../classShipGoliathField.html#a18c8cd8ce6af9147ce66953c365a57df',1,'ShipGoliathField']]],
   ['xmin_5f_29',['xMin_',['../classShipBFieldMap.html#a686affa4758dc834602d7274f111fa76',1,'ShipBFieldMap']]],
@@ -38,7 +38,7 @@ var searchData=
   ['xsec_35',['xsec',['../namespacemakeGenieEvents.html#ad2326314e2065ca31d7af1d9d9d441a2',1,'makeGenieEvents']]],
   ['xserial_36',['xserial',['../namespacerootpyPickler.html#a0f8c91a0848212cd180c525ebef97476',1,'rootpyPickler']]],
   ['xspace_37',['xSpace',['../namespaceadd__noise__to__field.html#ac0ccac9074ea58e6b1bd65830caa940f',1,'add_noise_to_field']]],
-  ['xvessel_38',['xvessel',['../classNuageGenerator.html#a3ebd246622186021a129717de5c0573e',1,'NuageGenerator::Xvessel'],['../classGenieGenerator.html#a40473bbcd7e3415ac5cf48c15ae86bfb',1,'GenieGenerator::Xvessel']]],
+  ['xvessel_38',['Xvessel',['../classGenieGenerator.html#a40473bbcd7e3415ac5cf48c15ae86bfb',1,'GenieGenerator']]],
   ['xx_39',['xx',['../classshipPid_1_1Task.html#a5c1511baf19f475b01a0a7587a07ab99',1,'shipPid.Task.xx'],['../namespaceana__ShipMuon.html#a04fe6357d90a9e3df96d89802a6959c4',1,'ana_ShipMuon.xx'],['../namespaceg4Ex.html#abd8cde62a307957fbb35535058451d42',1,'g4Ex.xx'],['../namespaceg4Ex__args.html#a269d9ac8bda33cc3ce8153881c64a596',1,'g4Ex_args.xx'],['../namespaceg4Ex__gap.html#a7997130f1a56bd6b1ecbcb54b415c17e',1,'g4Ex_gap.xx'],['../namespacerun__reco.html#a7e74d79c29b7ed5cbb9ac5c9787a66dc',1,'run_reco.xx']]],
   ['xxx_40',['xxx',['../namespacerun__simScript.html#a74ff17349a4760ce81e57487c477618b',1,'run_simScript']]],
   ['xz_5fpoints_41',['xz_points',['../namespaceTTCluster.html#ab6106ef02f10f6bdc0a3d08d5a104409',1,'TTCluster']]]

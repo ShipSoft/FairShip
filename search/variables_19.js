@@ -37,12 +37,12 @@ var searchData=
   ['yoff_34',['yoff',['../classFixedTargetGenerator.html#ac575dc0a0ee8177e0adf1062fabd956a',1,'FixedTargetGenerator::yOff'],['../classPythia8Generator.html#a2b7319bf5950e27d0db981ca2e5a0ae0',1,'Pythia8Generator::yOff']]],
   ['yoffset_5f_35',['yOffset_',['../classShipBFieldMap.html#aad6dc9cbfb40bb6f1ef3dd7da657be91',1,'ShipBFieldMap']]],
   ['yokedepth_36',['yokedepth',['../classShipMagnet.html#adf872166e610c6e8e9a1852213cba89c',1,'ShipMagnet::YokeDepth'],['../namespacegeometry__config.html#a444bcff207b41f8dd34d143909c8e9b8',1,'geometry_config.YokeDepth']]],
-  ['yokewidth_37',['yokewidth',['../classShipMagnet.html#a3d8c2575a8a1c3b31ee82dfc84d2ed9d',1,'ShipMagnet::YokeWidth'],['../namespacegeometry__config.html#a6957bebda6b086351e1921a503199d15',1,'geometry_config.YokeWidth']]],
+  ['yokewidth_37',['yokewidth',['../namespacegeometry__config.html#a6957bebda6b086351e1921a503199d15',1,'geometry_config.YokeWidth'],['../classShipMagnet.html#a3d8c2575a8a1c3b31ee82dfc84d2ed9d',1,'ShipMagnet::YokeWidth']]],
   ['yrange_5f_38',['yRange_',['../classShipBFieldMap.html#ad8b711298e1abff445205e57306242e1',1,'ShipBFieldMap']]],
   ['yraw_39',['Yraw',['../classTTCluster_1_1TTCluster.html#a98f2784ef77429233b4d3f2290180dfd',1,'TTCluster::TTCluster']]],
   ['yrec_40',['Yrec',['../classTTCluster_1_1TTCluster.html#a4ea7960ff74ee5cbf72093a4fa70ebca',1,'TTCluster::TTCluster']]],
   ['yspace_41',['ySpace',['../namespaceadd__noise__to__field.html#a8ad10ab502ec765188f76b5c1b807f90',1,'add_noise_to_field']]],
-  ['yvessel_42',['yvessel',['../classGenieGenerator.html#afcf19e34d58e8d82a19c9a03368f0b4a',1,'GenieGenerator::Yvessel'],['../classNuageGenerator.html#a8d385cdf256902453e0739f43ab5f3eb',1,'NuageGenerator::Yvessel']]],
+  ['yvessel_42',['Yvessel',['../classGenieGenerator.html#afcf19e34d58e8d82a19c9a03368f0b4a',1,'GenieGenerator']]],
   ['yy_43',['yy',['../classshipPid_1_1Task.html#a29002175bfbf37220b668c1a4f1a10fe',1,'shipPid::Task']]],
   ['yz_5fpoints_44',['yz_points',['../namespaceTTCluster.html#a629a4444240f0d3cae8096fd10409dbb',1,'TTCluster']]]
 ];

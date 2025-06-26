@@ -70,7 +70,6 @@ var hierarchy =
       [ "MuDISGenerator", "classMuDISGenerator.html", null ],
       [ "MuonBackGenerator", "classMuonBackGenerator.html", null ],
       [ "NtupleGenerator", "classNtupleGenerator.html", null ],
-      [ "NuageGenerator", "classNuageGenerator.html", null ],
       [ "Pythia6Generator", "classPythia6Generator.html", null ],
       [ "Pythia8Generator", "classPythia8Generator.html", null ],
       [ "tPythia6Generator", "classtPythia6Generator.html", null ]

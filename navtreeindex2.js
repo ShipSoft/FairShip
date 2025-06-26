@@ -1,9 +1,5 @@
 var NAVTREEINDEX2 =
 {
-"TTCluster_8py_source.html":[6,0,13,44],
-"TTPoint_8cxx.html":[6,0,10,21],
-"TTPoint_8cxx_source.html":[6,0,10,21],
-"TTPoint_8h.html":[6,0,10,22],
 "TTPoint_8h_source.html":[6,0,10,22],
 "TargetPoint_8cxx.html":[6,0,10,17],
 "TargetPoint_8cxx_source.html":[6,0,10,17],
@@ -249,5 +245,9 @@ var NAVTREEINDEX2 =
 "classDPPythia8Generator.html#a01a421c64a1ddc7904529672e65a6f47":[5,0,26,25],
 "classDPPythia8Generator.html#a01d5d3661051e834c473a3ed4cec5bc7":[5,0,26,23],
 "classDPPythia8Generator.html#a06cc91b1b63c798bce9d68751f843157":[5,0,26,24],
-"classDPPythia8Generator.html#a09d08c84f83ba100758a87573d2fc35f":[5,0,26,21]
+"classDPPythia8Generator.html#a09d08c84f83ba100758a87573d2fc35f":[5,0,26,21],
+"classDPPythia8Generator.html#a0ec98e4205363314266e3b2df49db2fe":[5,0,26,54],
+"classDPPythia8Generator.html#a17439775cf6134d296325698b5680142":[5,0,26,11],
+"classDPPythia8Generator.html#a200d77e55ef5523a44df85e4b831451e":[5,0,26,57],
+"classDPPythia8Generator.html#a214ac48a8b68c6f6ba7d445887d6b644":[5,0,26,12]
 };

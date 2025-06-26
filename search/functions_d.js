@@ -14,9 +14,8 @@ var searchData=
   ['nrofdp_11',['nrOfDP',['../classDPPythia8Generator.html#ac22405944fb875eafb294401d640dd3a',1,'DPPythia8Generator']]],
   ['nrofretries_12',['nrofretries',['../classDPPythia8Generator.html#a17439775cf6134d296325698b5680142',1,'DPPythia8Generator::nrOfRetries()'],['../classHNLPythia8Generator.html#a8a7f6fa2e231fc507b03d8673f6fccaa',1,'HNLPythia8Generator::nrOfRetries()'],['../classPythia8Generator.html#a348eed559b7ee6ee92142e2dca21d18a',1,'Pythia8Generator::nrOfRetries()']]],
   ['ntuplegenerator_13',['NtupleGenerator',['../classNtupleGenerator.html#a99f6acb8763351a65c08a44250d3f0c2',1,'NtupleGenerator']]],
-  ['nuagegenerator_14',['NuageGenerator',['../classNuageGenerator.html#a56d97f64e50db1579b2b6e571bb416c0',1,'NuageGenerator']]],
-  ['number_15',['Number',['../classecalCluster.html#a2df1d1ef9eb9a26dc24b932ec81600b6',1,'ecalCluster']]],
-  ['nuonly_16',['nuonly',['../classGenieGenerator.html#a1099711d1ecd43706bf9e5d131c82416',1,'GenieGenerator::NuOnly()'],['../classNuageGenerator.html#ab299e7b49ebb9ed780dfb177b41d3bed',1,'NuageGenerator::NuOnly()']]],
-  ['nutaudetcontfact_17',['NutaudetContFact',['../classNutaudetContFact.html#a9ce0fa4751cc17a7a7a0dcb7f01a2fe3',1,'NutaudetContFact']]],
-  ['nutaumudet_18',['nutaumudet',['../classNuTauMudet.html#aedc2d7af6b47e25df45470795902791a',1,'NuTauMudet::NuTauMudet(const char *name, const Double_t Zcenter, Bool_t Active, const char *Title=&quot;NuTauMudet&quot;)'],['../classNuTauMudet.html#a2fa384e6530c0f54b4ad9f93c99f81b9',1,'NuTauMudet::NuTauMudet()'],['../classNuTauMudet.html#a659fd5639a30e9a9c19b98c312f4fe31',1,'NuTauMudet::NuTauMudet(const NuTauMudet &amp;)']]]
+  ['number_14',['Number',['../classecalCluster.html#a2df1d1ef9eb9a26dc24b932ec81600b6',1,'ecalCluster']]],
+  ['nuonly_15',['NuOnly',['../classGenieGenerator.html#a1099711d1ecd43706bf9e5d131c82416',1,'GenieGenerator']]],
+  ['nutaudetcontfact_16',['NutaudetContFact',['../classNutaudetContFact.html#a9ce0fa4751cc17a7a7a0dcb7f01a2fe3',1,'NutaudetContFact']]],
+  ['nutaumudet_17',['nutaumudet',['../classNuTauMudet.html#aedc2d7af6b47e25df45470795902791a',1,'NuTauMudet::NuTauMudet(const char *name, const Double_t Zcenter, Bool_t Active, const char *Title=&quot;NuTauMudet&quot;)'],['../classNuTauMudet.html#a2fa384e6530c0f54b4ad9f93c99f81b9',1,'NuTauMudet::NuTauMudet()'],['../classNuTauMudet.html#a659fd5639a30e9a9c19b98c312f4fe31',1,'NuTauMudet::NuTauMudet(const NuTauMudet &amp;)']]]
 ];
