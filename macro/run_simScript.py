@@ -331,8 +331,17 @@ if simEngine == "PG":
   myPgun = ROOT.FairBoxGenerator(options.pID,1)
   myPgun.SetPRange(options.Estart,options.Eend)
   myPgun.SetPhiRange(0, 360) # // Azimuth angle range [degree]
-  myPgun.SetXYZ(0.*u.cm, 0.*u.cm, 0.*u.cm)
   myPgun.SetThetaRange(0,0) # // Polar angle in lab system range [degree]
+  if options.multiplePG:
+    # multiple PG sources in the x-y plane; z is always the same!
+    myPgun.SetBoxXYZ((options.Vx-options.Dx/2)*u.cm,
+                     (options.Vy-options.Dy/2)*u.cm,
+                     (options.Vx+options.Dx/2)*u.cm,
+                     (options.Vy+options.Dy/2)*u.cm,
+                     options.Vz*u.cm)
+  else:
+     # point source
+     myPgun.SetXYZ(options.Vx*u.cm, options.Vy*u.cm, options.Vz*u.cm)
   primGen.AddGenerator(myPgun)
 # -----muon DIS Background------------------------
 if simEngine == "muonDIS":
