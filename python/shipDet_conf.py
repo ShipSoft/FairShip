@@ -10,23 +10,6 @@ import yaml
 detectorList = []
 
 
-def getParameter(x, ship_geo, latestShipGeo):
-    lv = x.split(".")
-    last = lv[len(lv) - 1]
-    top = ""
-    for l in range(len(lv) - 1):
-        top += lv[l]
-        if l < len(lv) - 2:
-            top += "."
-    a = getattr(ship_geo, top)
-    if hasattr(a, last):
-        return getattr(a, last)
-        # not in the list of recorded parameters. probably added after
-        # creation of file. Check newest geometry_config:
-    a = getattr(latestShipGeo, top)
-    return getattr(a, last)
-
-
 def posHcal(z, hfile, HcalOption):
     HcalZSize = 0
     sz = hfile + "z" + str(z) + ".geo"
@@ -320,18 +303,6 @@ def configure(run, ship_geo):
     if not hasattr(ship_geo, "SND"):
         ship_geo.SND = True
 
-    latestShipGeo = ConfigRegistry.loadpy(
-        "$FAIRSHIP/geometry/geometry_config.py",
-        Yheight=ship_geo.Yheight / u.m,
-        tankDesign=ship_geo.tankDesign,
-        muShieldGeo=ship_geo.muShieldGeo,
-        SC_mag=ship_geo.SC_mag,
-        shieldName=ship_geo.shieldName,
-        DecayVolumeMedium=ship_geo.DecayVolumeMedium,
-        SND=ship_geo.SND,
-        SND_design=ship_geo.SND_design,
-        TARGET_YAML=ship_geo.target_yaml
-    )
     # -----Create media-------------------------------------------------
     run.SetMaterials("media.geo")  # Materials
     # ------------------------------------------------------------------------
@@ -476,8 +447,8 @@ def configure(run, ship_geo):
         Strawtubes.set_station_height(ship_geo.strawtubes.station_height)
         # for the digitizing step
         Strawtubes.SetStrawResolution(
-            getParameter("strawtubes.v_drift", ship_geo, latestShipGeo),
-            getParameter("strawtubes.sigma_spatial", ship_geo, latestShipGeo),
+            ship_geo.strawtubes.v_drift,
+            ship_geo.strawtubes.sigma_spatial,
         )
         detectorList.append(Strawtubes)
 

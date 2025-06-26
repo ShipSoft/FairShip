@@ -111,6 +111,7 @@ it in future.
 * Remove unused python/shipMuShield_only.py
 * Remove (broken?) support for Nuage generator
 * Remove nuTauTargetDesign variable, options
+* Remove reloading of the `geometry_config.py` in `shipDet_conf.py`
 
 ## 25.01
 
