@@ -1,5 +1,5 @@
-#ifndef MuonShield_H
-#define MuonShield_H
+#ifndef PASSIVE_SHIPMUONSHIELD_H_
+#define PASSIVE_SHIPMUONSHIELD_H_
 
 #include "FairModule.h"                 // for FairModule
 #include "FairLogger.h"
@@ -23,7 +23,6 @@ class ShipMuonShield : public FairModule
     ShipMuonShield();
     virtual ~ShipMuonShield();
     void ConstructGeometry();
-  ClassDef(ShipMuonShield, 4)
 
   protected:
     Double_t fMuonShieldHalfLength;   // FIXME: HA_field to be removed in the next workshop meeting
@@ -83,6 +82,9 @@ class ShipMuonShield : public FairModule
                       Double_t Z,
                       Bool_t NotMagnet,
                       Bool_t SC_key);
+
+  public:
+    ClassDef(ShipMuonShield, 4)
 };
 
-#endif //MuonSield_H
+#endif  // PASSIVE_SHIPMUONSHIELD_H_
