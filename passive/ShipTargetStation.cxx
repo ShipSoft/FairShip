@@ -7,14 +7,18 @@
 #include "FairRuntimeDb.h"   // for FairRuntimeDb
 #include "TGeoBBox.h"
 #include "TGeoCompositeShape.h"
+#include "TGeoManager.h"
+#include "TGeoMaterial.h"
+#include "TGeoMedium.h"
 #include "TGeoShapeAssembly.h"
 #include "TGeoTube.h"
-#include "TGeoMaterial.h"
-#include "FairGeoMedia.h"
-#include "FairGeoBuilder.h"
-#include "TGeoMedium.h"
-#include <stddef.h>                     // for NULL
-#include <iostream>                     // for operator<<, basic_ostream, etc
+#include "TList.h"       // for TListIter, TList (ptr only)
+#include "TObjArray.h"   // for TObjArray
+#include "TString.h"     // for TString
+
+#include <iosfwd>     // for ostream
+#include <iostream>   // for operator<<, basic_ostream, etc
+#include <stddef.h>   // for NULL
 
 using std::cout;
 using std::endl;
