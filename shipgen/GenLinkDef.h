@@ -13,7 +13,6 @@
 #pragma link C++ class  MuonBackGenerator+;
 #pragma link C++ class  CosmicsGenerator+;
 #pragma link C++ class  MuDISGenerator+;
-#pragma link C++ class  NuageGenerator+;
 #pragma link C++ class  FixedTargetGenerator+;
 #pragma link C++ class  EvtCalcGenerator+;
 #endif

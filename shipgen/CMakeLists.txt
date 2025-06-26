@@ -41,7 +41,6 @@ tPythia6Generator.cxx
 HNLPythia8Generator.cxx
 DPPythia8Generator.cxx
 GenieGenerator.cxx
-NuageGenerator.cxx
 NtupleGenerator.cxx
 MuonBackGenerator.cxx
 CosmicsGenerator.cxx

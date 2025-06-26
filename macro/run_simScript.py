@@ -71,7 +71,6 @@ parser.add_argument("--Ntuple", dest="ntuple", help="Use ntuple as input", actio
 parser.add_argument("--MuonBack", dest="muonback", help="Generate events from muon background file, --Cosmics=0 for cosmic generator data", action="store_true")
 parser.add_argument("--FollowMuon", dest="followMuon", help="Make muonshield active to follow muons", action="store_true")
 parser.add_argument("--FastMuon", dest="fastMuon", help="Only transport muons for a fast muon only background estimate", action="store_true")
-parser.add_argument("--Nuage", dest="nuage", help="Use Nuage, neutrino generator of OPERA", action="store_true")
 parser.add_argument("--phiRandom", help="only relevant for muon background generator, random phi", action="store_true")
 parser.add_argument("--Cosmics", dest="cosmics", help="Use cosmic generator, argument switch for cosmic generator 0 or 1", default=None)  # TODO: Understand integer options, replace with store_true?
 parser.add_argument("--MuDIS", dest="mudis", help="Use muon deep inelastic scattering generator", action="store_true")
@@ -145,7 +144,6 @@ if options.genie:    simEngine = "Genie"
 if options.nuradio:  simEngine = "nuRadiography"
 if options.ntuple:   simEngine = "Ntuple"
 if options.muonback: simEngine = "MuonBack"
-if options.nuage:    simEngine = "Nuage"
 if options.mudis:    simEngine = "muonDIS"
 if options.A != 'c':
      inclusive = options.A
@@ -189,9 +187,6 @@ if simEngine == "muonDIS" and defaultInputFile:
   print('input file required if simEngine = muonDIS')
   print(" for example -f  /eos/experiment/ship/data/muonDIS/muonDis_1.root")
   sys.exit()
-if simEngine == "Nuage" and not inputFile:
- inputFile = 'Numucc.root'
-
 print("FairShip setup for",simEngine,"to produce",options.nEvents,"events")
 if (simEngine == "Ntuple" or simEngine == "MuonBack") and defaultInputFile :
   print('input file required if simEngine = Ntuple or MuonBack')
@@ -364,38 +359,6 @@ if simEngine == "muonDIS":
  primGen.AddGenerator(DISgen)
  options.nEvents = min(options.nEvents,DISgen.GetNevents())
  print('Generate ',options.nEvents,' with DIS input', ' first event',options.firstEvent)
-# -----neutrino interactions from nuage------------------------
-if simEngine == "Nuage":
- primGen.SetTarget(0., 0.)
- Nuagegen = ROOT.NuageGenerator()
- Nuagegen.EnableExternalDecayer(1) #with 0 external decayer is disable, 1 is enabled
-
- #CAMM - This is broken now, need info from dedicated SND geo...
- print('Nuage position info input=',ship_geo.EmuMagnet.zC-ship_geo.NuTauTarget.zdim, ship_geo.EmuMagnet.zC+ship_geo.NuTauTarget.zdim)
- #--------------------------------
- #to Generate neutrino interactions in the whole neutrino target
-# Nuagegen.SetPositions(ship_geo.EmuMagnet.zC, ship_geo.NuTauTarget.zC-ship_geo.NuTauTarget.zdim/2, ship_geo.NuTauTarget.zC+ship_geo.NuTauTarget.zdim/2, -ship_geo.NuTauTarget.xdim/2, ship_geo.NuTauTarget.xdim/2, -ship_geo.NuTauTarget.ydim/2, ship_geo.NuTauTarget.ydim/2)
- #--------------------------------
- #to Generate neutrino interactions ONLY in ONE brick
- ntt = 6
- nXcells = 7
- nYcells = 3
- nZcells = ntt -1
- startx = -ship_geo.NuTauTarget.xdim/2. + nXcells*ship_geo.NuTauTarget.BrX
- endx = -ship_geo.NuTauTarget.xdim/2. + (nXcells+1)*ship_geo.NuTauTarget.BrX
- starty = -ship_geo.NuTauTarget.ydim/2. + nYcells*ship_geo.NuTauTarget.BrY
- endy = - ship_geo.NuTauTarget.ydim/2. + (nYcells+1)*ship_geo.NuTauTarget.BrY
- startz = ship_geo.EmuMagnet.zC - ship_geo.NuTauTarget.zdim/2. + ntt *ship_geo.NuTauTT.TTZ + nZcells * ship_geo.NuTauTarget.CellW
- endz = ship_geo.EmuMagnet.zC - ship_geo.NuTauTarget.zdim/2. + ntt *ship_geo.NuTauTT.TTZ + nZcells * ship_geo.NuTauTarget.CellW + ship_geo.NuTauTarget.BrZ
- Nuagegen.SetPositions(ship_geo.target.z0, startz, endz, startx, endx, starty, endy)
- #--------------------------------
- ut.checkFileExists(inputFile)
- Nuagegen.Init(inputFile,options.firstEvent)
- primGen.AddGenerator(Nuagegen)
- options.nEvents = min(options.nEvents,Nuagegen.GetNevents())
- run.SetPythiaDecayer("DecayConfigNuAge.C")
- print('Generate ',options.nEvents,' with Nuage input', ' first event',options.firstEvent)
- #-CAMM end broken part
 # -----Neutrino Background------------------------
 if simEngine == "Genie":
 # Genie
