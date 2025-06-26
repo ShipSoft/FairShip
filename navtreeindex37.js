@@ -1,6 +1,5 @@
 var NAVTREEINDEX37 =
 {
-"namespaceship.html#a83472731771521d366d09a96db58d50f":[4,0,79,6],
 "namespaceship.html#a8f34527ad339f58b12244b3376248654":[4,0,79,1],
 "namespaceship.html#a9780cccb8bc64317351d97dcce1cfc40":[4,0,79,5],
 "namespaceship.html#adb89bd7baffe5ab655a1aa5bcf6f2a2e":[4,0,79,2],
@@ -249,5 +248,6 @@ var NAVTREEINDEX37 =
 "namespacestudy__GammaConv.html#ad8e14f47dabd055e0422490317511e26":[4,0,96,25],
 "namespacestudy__GammaConv.html#adaf59a7b3e9ae10bf858a1fc94a9fbb9":[4,0,96,2],
 "namespacestudy__GammaConv.html#ade4e48b9a86cfadba1da8efe7fe47452":[4,0,96,9],
-"namespacestudy__GammaConv.html#ae5ea996dca81cea56362bb1e3000a3da":[4,0,96,11]
+"namespacestudy__GammaConv.html#ae5ea996dca81cea56362bb1e3000a3da":[4,0,96,11],
+"namespacestudy__GammaConv.html#ae7dc52662551ed7788ac46668220e4f5":[4,0,96,1]
 };

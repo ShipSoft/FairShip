@@ -1,7 +1,5 @@
 var NAVTREEINDEX42 =
 {
-"study__muMSC_8py.html#a8646d6a9906c5a607f70d3f3a31261ea":[6,0,9,25,30],
-"study__muMSC_8py.html#a8ec04a002fcb4efffbe30733b7f7b27e":[6,0,9,25,26],
 "study__muMSC_8py.html#aab2ba86175905624f247b64deb3c9426":[6,0,9,25,39],
 "study__muMSC_8py.html#ab875895aaac12abebdb76811de0cbbf6":[6,0,9,25,35],
 "study__muMSC_8py.html#aba7e32141044f4814a1fb6712863e98b":[6,0,9,25,29],
