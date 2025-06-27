@@ -45,16 +45,16 @@ class TimeDetHit : public ShipHit
     void setInvalid() {flag = false;}
     void setIsValid() {flag = true;}
     bool isValid() const {return flag;}
+    TimeDetHit(const TimeDetHit& point) = default;
+    TimeDetHit& operator=(const TimeDetHit& point) = default;
   private:
-    TimeDetHit(const TimeDetHit& point);
-    TimeDetHit operator=(const TimeDetHit& point);
     Double_t v_drift = 15.; // cm/ns
     Double_t par[4] = { 0.0272814, 109.303, 0, 0.0539487 };
 
     Float_t flag;     ///< flag
     Float_t t_1,t_2;  ///< TDC on both sides
 
-    ClassDef(TimeDetHit,1);
+    ClassDef(TimeDetHit, 2);
 
 };
 

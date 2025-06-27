@@ -14,9 +14,9 @@ class Task:
   print("*** You are using PID version 18.1.0 ***")
   print("****************************************")
   self.sTree = main.sTree
-  self.fpidArray  = ROOT.TClonesArray("pid")
+  self.fpidArray = ROOT.std.vector("pid")()
   if not self.sTree.GetBranch("pid"):
-    self.pID   = self.sTree.Branch("Pid",  self.fpidArray,32000,-1)
+    self.pID   = self.sTree.Branch("Pid", self.fpidArray)
   else:
     self.pID = self.sTree.pid
   self.reps,self.states,self.newPosDir = {},{},{}
@@ -168,7 +168,7 @@ class Task:
  ## extrapolation and pid check ##
   self.muonDigitHit()
   self.HcalHits()
-  self.fpidArray.Delete()
+  self.fpidArray.clear()
   ppid    = self.fpidArray
 
   i=-1
@@ -187,8 +187,7 @@ class Task:
       pidObject=ROOT.pid()
       pidObject.SetTrackID(i)
       pidObject.SetTrackPID(-3)
-      nPID=ppid.GetEntries()
-      ppid[nPID]=pidObject
+      self.fpidArray.push_back(pidObject)
       continue
     fittedState = fT.getFittedState()
     self.P = fittedState.getMomMag()
@@ -205,8 +204,7 @@ class Task:
     pidObject.SetTrackID(i)
     if not rc> 0:
       pidObject.SetTrackPID(-1)
-      nPID=ppid.GetEntries()
-      ppid[nPID]=pidObject
+      self.fpidArray.push_back(pidObject)
       continue
     self.run_hcal_ID()
     self.run_elec_ID()
@@ -224,8 +222,7 @@ class Task:
     if self.vol_ecal==True or self.vol_mu1==True:
       pidObject.SetTrackPID(-2)
 #      print '==== It is out of the acceptance'
-    nPID=ppid.GetEntries()
-    ppid[nPID]=pidObject
+    self.fpidArray(pidObject)
    # print "---------------- "
 
  def muon_ID(self):
