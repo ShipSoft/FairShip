@@ -33,6 +33,7 @@ it in future.
 * Definition of Pressured Helium for the target, two version 200 Celsius degree and 90 Celsius degree.
 * Add backport for new TFile/TDirectory `__get_item__` pythonisation
 * SND/EmulsionTarget folder, with the Target and TargetTracker classes from nutaudet
+* Added fibre structure for MTC and digitization. Fibre <-> SiPM mapping is done in ```SND/MTC/MTCDetector.cxx```, can be extracted and tested in ```python/SciFiMapping.py```, that is subsequently used in ```python/shipDigiReco.py```
 
 ### Fixed
 
@@ -58,7 +59,7 @@ it in future.
 * Fix: in `python/ShieldUtils.py` still used old coordinate system (SND was not correctly positioned in `python/shipDet_conf.py`)
 * Fix `beam smearing`: replace incorrect Gaussian radius with proper 2D Gaussian sampling. Ensures physical consistency; radius now follows Rayleigh distribution as expected.
 * Reconstruction: reverse nmeas > 0 check to make sure 𝜒² is defined
-
+* Fix: MTC geometry overlap
 
 ### Changed
 
