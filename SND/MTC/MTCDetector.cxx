@@ -47,6 +47,106 @@ using std::cout;
 using std::endl;
 using namespace ShipUnit;
 
+namespace
+{
+Double_t ycross(Double_t a, Double_t R, Double_t x)
+{
+    /*
+     * ycross:
+     *   Compute the positive y-coordinate where the vertical line x intersects
+     *   the circle of radius R centered at (a, 0). If the line does not intersect
+     *   (i.e., (x-a)^2 > R^2), returns -1 as a flag.
+     */
+    Double_t y = -1;
+    Double_t A = R * R - (x - a) * (x - a);
+    if (!(A < 0)) {
+        y = TMath::Sqrt(A);
+    }
+    return y;
+}
+
+Double_t integralSqrt(Double_t ynorm)
+{
+    /*
+     * integralSqrt:
+     *   Compute the analytic integral ∫₀^{ynorm} sqrt(1 - t^2) dt
+     *   = ½ [ ynorm * sqrt(1 - ynorm^2) + arcsin(ynorm) ].
+     *   This is used for normalizing the circular segment area.
+     */
+    Double_t y = 1. / 2. * (ynorm * TMath::Sqrt(1 - ynorm * ynorm) + TMath::ASin(ynorm));
+    return y;
+}
+
+Double_t fraction(Double_t R, Double_t x, Double_t y)
+{
+    /*
+     * fraction:
+     *   Compute the fraction of the circle's total area that lies on one side
+     *   of a vertical cut at horizontal distance x from the circle center,
+     *   up to the intersection height y = sqrt(R^2 - x^2).
+     *   Formula:
+     *     F = 2 R^2 ∫₀^{y/R} sqrt(1 - t^2) dt  -  2 x y
+     *     result = F / (π R^2)
+     */
+    Double_t F = 2 * R * R * (integralSqrt(y / R));
+    F -= (2 * x * y);
+    Double_t result = F / (R * R * TMath::Pi());
+    return result;
+}
+
+Double_t area(Double_t a, Double_t R, Double_t xL, Double_t xR)
+{
+    /*
+     * area:
+     *   Compute the fraction of the full circle (radius R, center at (a,0))
+     *   that lies between the vertical boundaries x = xL and x = xR.
+     *   Special cases:
+     *     - If [xL, xR] fully covers the circle, returns 1.
+     *     - If neither boundary intersects the circle, returns -1 (no overlap).
+     *   Otherwise, uses ycross() to find intersection heights, fraction()
+     *   to get segment areas, and combines them to yield the net fraction.
+     */
+    Double_t fracL = -1;
+    Double_t fracR = -1;
+    if (xL <= a - R && xR >= a + R) {
+        return 1;
+    }
+
+    Double_t leftC = ycross(a, R, xL);
+    Double_t rightC = ycross(a, R, xR);
+    if (leftC < 0 && rightC < 0) {
+        return -1;
+    }
+
+    if (!(rightC < 0)) {
+        fracR = fraction(R, abs(xR - a), rightC);
+    }
+    if (!(leftC < 0)) {
+        fracL = fraction(R, abs(xL - a), leftC);
+    }
+
+    Double_t theAnswer = 0;
+    if (!(leftC < 0)) {
+        if (xL < a) {
+            theAnswer += 1 - fracL;
+        } else {
+            theAnswer += fracL;
+        }
+        if (!(rightC < 0)) {
+            theAnswer -= 1;
+        }
+    }
+    if (!(rightC < 0)) {
+        if (xR > a) {
+            theAnswer += 1 - fracR;
+        } else {
+            theAnswer += fracR;
+        }
+    }
+    return theAnswer;
+}
+}   // namespace
+
 MTCDetector::MTCDetector()
     : FairDetector("MTC", kTRUE, kMTC)
     , fTrackID(-1)
@@ -568,103 +668,6 @@ void MTCDetector::GetSiPMPosition(Int_t SiPMChan, TVector3& A, TVector3& B)
     loc[2] = 7.47;   // hardcoded for now, for some reason required to get the correct local position
     nav->LocalToMaster(loc, glob);
     B.SetXYZ(glob[0], glob[1], glob[2]);
-}
-
-Double_t MTCDetector::ycross(Double_t a, Double_t R, Double_t x)
-{
-    /*
-     * ycross:
-     *   Compute the positive y-coordinate where the vertical line x intersects
-     *   the circle of radius R centered at (a, 0). If the line does not intersect
-     *   (i.e., (x-a)^2 > R^2), returns -1 as a flag.
-     */
-    Double_t y = -1;
-    Double_t A = R * R - (x - a) * (x - a);
-    if (!(A < 0)) {
-        y = TMath::Sqrt(A);
-    }
-    return y;
-}
-
-Double_t MTCDetector::integralSqrt(Double_t ynorm)
-{
-    /*
-     * integralSqrt:
-     *   Compute the analytic integral ∫₀^{ynorm} sqrt(1 - t^2) dt
-     *   = ½ [ ynorm * sqrt(1 - ynorm^2) + arcsin(ynorm) ].
-     *   This is used for normalizing the circular segment area.
-     */
-    Double_t y = 1. / 2. * (ynorm * TMath::Sqrt(1 - ynorm * ynorm) + TMath::ASin(ynorm));
-    return y;
-}
-
-Double_t MTCDetector::fraction(Double_t R, Double_t x, Double_t y)
-{
-    /*
-     * fraction:
-     *   Compute the fraction of the circle's total area that lies on one side
-     *   of a vertical cut at horizontal distance x from the circle center,
-     *   up to the intersection height y = sqrt(R^2 - x^2).
-     *   Formula:
-     *     F = 2 R^2 ∫₀^{y/R} sqrt(1 - t^2) dt  -  2 x y
-     *     result = F / (π R^2)
-     */
-    Double_t F = 2 * R * R * (integralSqrt(y / R));
-    F -= (2 * x * y);
-    Double_t result = F / (R * R * TMath::Pi());
-    return result;
-}
-
-Double_t MTCDetector::area(Double_t a, Double_t R, Double_t xL, Double_t xR)
-{
-    /*
-     * area:
-     *   Compute the fraction of the full circle (radius R, center at (a,0))
-     *   that lies between the vertical boundaries x = xL and x = xR.
-     *   Special cases:
-     *     - If [xL, xR] fully covers the circle, returns 1.
-     *     - If neither boundary intersects the circle, returns -1 (no overlap).
-     *   Otherwise, uses ycross() to find intersection heights, fraction()
-     *   to get segment areas, and combines them to yield the net fraction.
-     */
-    Double_t fracL = -1;
-    Double_t fracR = -1;
-    if (xL <= a - R && xR >= a + R) {
-        return 1;
-    }
-
-    Double_t leftC = ycross(a, R, xL);
-    Double_t rightC = ycross(a, R, xR);
-    if (leftC < 0 && rightC < 0) {
-        return -1;
-    }
-
-    if (!(rightC < 0)) {
-        fracR = fraction(R, abs(xR - a), rightC);
-    }
-    if (!(leftC < 0)) {
-        fracL = fraction(R, abs(xL - a), leftC);
-    }
-
-    Double_t theAnswer = 0;
-    if (!(leftC < 0)) {
-        if (xL < a) {
-            theAnswer += 1 - fracL;
-        } else {
-            theAnswer += fracL;
-        }
-        if (!(rightC < 0)) {
-            theAnswer -= 1;
-        }
-    }
-    if (!(rightC < 0)) {
-        if (xR > a) {
-            theAnswer += 1 - fracR;
-        } else {
-            theAnswer += fracR;
-        }
-    }
-    return theAnswer;
 }
 
 void MTCDetector::SiPMmapping()

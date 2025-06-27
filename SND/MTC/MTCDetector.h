@@ -61,10 +61,6 @@ class MTCDetector : public FairDetector
     TVector3 GetLocalPos(Int_t fDetectorID, TVector3* glob);
     /** mean position of fibre2 associated with SiPM channel **/
     void GetSiPMPosition(Int_t SiPMChan, TVector3& A, TVector3& B);
-    Double_t ycross(Double_t a, Double_t R, Double_t x);
-    Double_t integralSqrt(Double_t ynorm);
-    Double_t fraction(Double_t R, Double_t x, Double_t y);
-    Double_t area(Double_t a, Double_t R, Double_t xL, Double_t xR);
     void SiPMmapping();
     std::map<Int_t, std::map<Int_t, std::array<float, 2>>> GetSiPMmapU() { return fibresSiPM_U; }
     std::map<Int_t, std::map<Int_t, std::array<float, 2>>> GetFibresMapU() { return siPMFibres_U; }
