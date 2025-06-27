@@ -48,7 +48,7 @@ var searchData=
   ['ecalclusterfinder_2ecxx_45',['ecalClusterFinder.cxx',['../ecalClusterFinder_8cxx.html',1,'']]],
   ['ecalclusterfinder_2eh_46',['ecalClusterFinder.h',['../ecalClusterFinder_8h.html',1,'']]],
   ['ecalclusterprintout_47',['ecalClusterPrintOut',['../namespacedecorators.html#a631b4b158408c126035dfb24561c8598',1,'decorators']]],
-  ['ecalclusters_48',['ecalclusters',['../classshipDigiReco_1_1ShipDigiReco.html#adc6d7a038150508e20e42d5a8ddd1b8d',1,'shipDigiReco.ShipDigiReco.ecalClusters'],['../classshipDigiReco_1_1ShipDigiReco.html#a8a424c9f5ad74700d55e06165013b3aa',1,'shipDigiReco.ShipDigiReco.EcalClusters']]],
+  ['ecalclusters_48',['ecalclusters',['../classshipDigiReco_1_1ShipDigiReco.html#a8a424c9f5ad74700d55e06165013b3aa',1,'shipDigiReco.ShipDigiReco.EcalClusters'],['../classshipDigiReco_1_1ShipDigiReco.html#adc6d7a038150508e20e42d5a8ddd1b8d',1,'shipDigiReco.ShipDigiReco.ecalClusters']]],
   ['ecalclustersortprocess_49',['ecalClusterSortProcess',['../structecalClusterSortProcess.html',1,'']]],
   ['ecalcontfact_50',['ecalcontfact',['../classecalContFact.html',1,'ecalContFact'],['../classecalContFact.html#a4def4f6d3e3cdda4cb29b66ef4fa0dc4',1,'ecalContFact::ecalContFact()']]],
   ['ecalcontfact_2ecxx_51',['ecalContFact.cxx',['../ecalContFact_8cxx.html',1,'']]],
