@@ -26,9 +26,8 @@ var searchData=
   ['ecalreconstructed_23',['ecalReconstructed',['../classecalReconstructed.html',1,'']]],
   ['ecalstructure_24',['ecalStructure',['../classecalStructure.html',1,'']]],
   ['ecalstructurefiller_25',['ecalStructureFiller',['../classecalStructureFiller.html',1,'']]],
-  ['emulsionmagnet_26',['EmulsionMagnet',['../classEmulsionMagnet.html',1,'']]],
-  ['event_5finspector_27',['event_inspector',['../classexperimental_1_1analysis__toolkit_1_1event__inspector.html',1,'experimental::analysis_toolkit']]],
-  ['eventloop_28',['EventLoop',['../classeventDisplay_1_1EventLoop.html',1,'eventDisplay']]],
-  ['evtcalcgenerator_29',['EvtCalcGenerator',['../classEvtCalcGenerator.html',1,'']]],
-  ['exithadronabsorber_30',['exitHadronAbsorber',['../classexitHadronAbsorber.html',1,'']]]
+  ['event_5finspector_26',['event_inspector',['../classexperimental_1_1analysis__toolkit_1_1event__inspector.html',1,'experimental::analysis_toolkit']]],
+  ['eventloop_27',['EventLoop',['../classeventDisplay_1_1EventLoop.html',1,'eventDisplay']]],
+  ['evtcalcgenerator_28',['EvtCalcGenerator',['../classEvtCalcGenerator.html',1,'']]],
+  ['exithadronabsorber_29',['exitHadronAbsorber',['../classexitHadronAbsorber.html',1,'']]]
 ];

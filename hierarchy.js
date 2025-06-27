@@ -23,7 +23,6 @@ var hierarchy =
     [ "ecalPreCluster", "classecalPreCluster.html", null ],
     [ "experimental.analysis_toolkit.event_inspector", "classexperimental_1_1analysis__toolkit_1_1event__inspector.html", null ],
     [ "FairContFact", null, [
-      [ "NutaudetContFact", "classNutaudetContFact.html", null ],
       [ "ShipPassiveContFact", "classShipPassiveContFact.html", null ],
       [ "ecalContFact", "classecalContFact.html", null ],
       [ "hcalContFact", "classhcalContFact.html", null ],
@@ -33,10 +32,7 @@ var hierarchy =
       [ "vetoContFact", "classvetoContFact.html", null ]
     ] ],
     [ "FairDetector", null, [
-      [ "Hpt", "classHpt.html", null ],
       [ "MTCDetector", "classMTCDetector.html", null ],
-      [ "MagneticSpectrometer", "classMagneticSpectrometer.html", null ],
-      [ "NuTauMudet", "classNuTauMudet.html", null ],
       [ "Target", "classTarget.html", null ],
       [ "TargetTracker", "classTargetTracker.html", null ],
       [ "TimeDet", "classTimeDet.html", null ],
@@ -81,9 +77,7 @@ var hierarchy =
       [ "ShipGeoCave", "classShipGeoCave.html", null ]
     ] ],
     [ "FairMCPoint", null, [
-      [ "HptPoint", "classHptPoint.html", null ],
       [ "MtcDetPoint", "classMtcDetPoint.html", null ],
-      [ "ShipRpcPoint", "classShipRpcPoint.html", null ],
       [ "TTPoint", "classTTPoint.html", null ],
       [ "TargetPoint", "classTargetPoint.html", null ],
       [ "TimeDetPoint", "classTimeDetPoint.html", null ],
@@ -96,7 +90,6 @@ var hierarchy =
       [ "vetoPoint", "classvetoPoint.html", null ]
     ] ],
     [ "FairModule", null, [
-      [ "EmulsionMagnet", "classEmulsionMagnet.html", null ],
       [ "ShipCave", "classShipCave.html", null ],
       [ "ShipChamber", "classShipChamber.html", null ],
       [ "ShipGoliath", "classShipGoliath.html", null ],

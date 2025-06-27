@@ -24,9 +24,5 @@ var searchData=
   ['hepunit_2epy_21',['hepunit.py',['../hepunit_8py.html',1,'']]],
   ['hnl_2epy_22',['hnl.py',['../hnl_8py.html',1,'']]],
   ['hnlpythia8generator_2ecxx_23',['HNLPythia8Generator.cxx',['../HNLPythia8Generator_8cxx.html',1,'']]],
-  ['hnlpythia8generator_2eh_24',['HNLPythia8Generator.h',['../HNLPythia8Generator_8h.html',1,'']]],
-  ['hpt_2ecxx_25',['HPT.cxx',['../HPT_8cxx.html',1,'']]],
-  ['hpt_2eh_26',['HPT.h',['../HPT_8h.html',1,'']]],
-  ['hptpoint_2ecxx_27',['HptPoint.cxx',['../HptPoint_8cxx.html',1,'']]],
-  ['hptpoint_2eh_28',['HptPoint.h',['../HptPoint_8h.html',1,'']]]
+  ['hnlpythia8generator_2eh_24',['HNLPythia8Generator.h',['../HNLPythia8Generator_8h.html',1,'']]]
 ];

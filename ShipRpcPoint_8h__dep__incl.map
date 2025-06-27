@@ -1,9 +1,0 @@
-<map id="nutaudet/ShipRpcPoint.h" name="nutaudet/ShipRpcPoint.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="293,5,475,31"/>
-<area shape="rect" id="Node000002" href="$MagneticSpectrometer_8cxx.html" title=" " alt="" coords="5,79,264,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="331,37,176,81,174,76,330,32"/>
-<area shape="rect" id="Node000003" href="$NuTauMudet_8cxx.html" title=" " alt="" coords="288,79,480,104"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="387,44,387,79,381,79,381,44"/>
-<area shape="rect" id="Node000004" href="$ShipRpcPoint_8cxx.html" title=" " alt="" coords="505,79,701,104"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="433,32,568,76,566,81,431,37"/>
-</map>

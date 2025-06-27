@@ -1,7 +1,0 @@
-<map id="nutaudet/EmulsionMagnet.h" name="nutaudet/EmulsionMagnet.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="117,5,322,31"/>
-<area shape="rect" id="Node000002" href="$EmulsionMagnet_8cxx.html" title=" " alt="" coords="5,79,225,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="193,41,134,81,131,76,190,36"/>
-<area shape="rect" id="Node000003" href="$Target_8cxx.html" title=" " alt="" coords="249,79,400,104"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="249,36,309,76,306,81,246,41"/>
-</map>

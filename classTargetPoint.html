@@ -147,7 +147,7 @@ Private Attributes</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="TargetPoint_8h_source.html#l00010">10</a> of file <a class="el" href="TargetPoint_8h_source.html">TargetPoint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TargetPoint_8h_source.html#l00008">8</a> of file <a class="el" href="TargetPoint_8h_source.html">TargetPoint.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a4c2652fa960507f81a7bb5c2b849cebf" name="a4c2652fa960507f81a7bb5c2b849cebf"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4c2652fa960507f81a7bb5c2b849cebf">&#9670;&#160;</a></span>TargetPoint() <span class="overload">[1/3]</span></h2>
@@ -165,10 +165,9 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Default constructor </p>
 
-<p class="definition">Definition at line <a class="el" href="TargetPoint_8cxx_source.html#l00009">9</a> of file <a class="el" href="TargetPoint_8cxx_source.html">TargetPoint.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   10</span>  : FairMCPoint()</div>
-<div class="line"><span class="lineno">   11</span>{</div>
-<div class="line"><span class="lineno">   12</span>}</div>
+<p class="definition">Definition at line <a class="el" href="TargetPoint_8cxx_source.html#l00008">8</a> of file <a class="el" href="TargetPoint_8cxx_source.html">TargetPoint.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">    9</span>    : FairMCPoint()</div>
+<div class="line"><span class="lineno">   10</span>{}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -246,10 +245,11 @@ Private Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="TargetPoint_8cxx_source.html#l00028">28</a> of file <a class="el" href="TargetPoint_8cxx_source.html">TargetPoint.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   31</span>  : FairMCPoint(trackID, detID, pos, mom, tof, length, eLoss),<a class="code hl_variable" href="classTargetPoint.html#a8a8f34b2ec16c3ce6db5c448533c6f39">fPdgCode</a>(pdgcode)</div>
-<div class="line"><span class="lineno">   32</span>{  }</div>
-<div class="ttc" id="aclassTargetPoint_html_a8a8f34b2ec16c3ce6db5c448533c6f39"><div class="ttname"><a href="classTargetPoint.html#a8a8f34b2ec16c3ce6db5c448533c6f39">TargetPoint::fPdgCode</a></div><div class="ttdeci">Int_t fPdgCode</div><div class="ttdef"><b>Definition</b> <a href="TargetPoint_8h_source.html#l00050">TargetPoint.h:50</a></div></div>
+<p class="definition">Definition at line <a class="el" href="TargetPoint_8cxx_source.html#l00026">26</a> of file <a class="el" href="TargetPoint_8cxx_source.html">TargetPoint.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   34</span>    : FairMCPoint(trackID, detID, pos, mom, tof, length, eLoss)</div>
+<div class="line"><span class="lineno">   35</span>    , <a class="code hl_variable" href="classTargetPoint.html#a8a8f34b2ec16c3ce6db5c448533c6f39">fPdgCode</a>(pdgcode)</div>
+<div class="line"><span class="lineno">   36</span>{}</div>
+<div class="ttc" id="aclassTargetPoint_html_a8a8f34b2ec16c3ce6db5c448533c6f39"><div class="ttname"><a href="classTargetPoint.html#a8a8f34b2ec16c3ce6db5c448533c6f39">TargetPoint::fPdgCode</a></div><div class="ttdeci">Int_t fPdgCode</div><div class="ttdef"><b>Definition</b> <a href="TargetPoint_8h_source.html#l00048">TargetPoint.h:48</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -277,8 +277,8 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Destructor </p>
 
-<p class="definition">Definition at line <a class="el" href="TargetPoint_8cxx_source.html#l00038">38</a> of file <a class="el" href="TargetPoint_8cxx_source.html">TargetPoint.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   38</span>{ }</div>
+<p class="definition">Definition at line <a class="el" href="TargetPoint_8cxx_source.html#l00042">42</a> of file <a class="el" href="TargetPoint_8cxx_source.html">TargetPoint.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   42</span>{}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -359,8 +359,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TargetPoint_8h_source.html#l00044">44</a> of file <a class="el" href="TargetPoint_8h_source.html">TargetPoint.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   44</span>{<span class="keywordflow">return</span> <a class="code hl_variable" href="classTargetPoint.html#a8a8f34b2ec16c3ce6db5c448533c6f39">fPdgCode</a>;}</div>
+<p class="definition">Definition at line <a class="el" href="TargetPoint_8h_source.html#l00045">45</a> of file <a class="el" href="TargetPoint_8h_source.html">TargetPoint.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   45</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classTargetPoint.html#a8a8f34b2ec16c3ce6db5c448533c6f39">fPdgCode</a>; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -389,17 +389,14 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Output to screen </p>
 
-<p class="definition">Definition at line <a class="el" href="TargetPoint_8cxx_source.html#l00042">42</a> of file <a class="el" href="TargetPoint_8cxx_source.html">TargetPoint.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   43</span>{</div>
-<div class="line"><span class="lineno">   44</span>  cout &lt;&lt; <span class="stringliteral">&quot;-I- TargetPoint: ShipRpc point for track &quot;</span> &lt;&lt; fTrackID</div>
-<div class="line"><span class="lineno">   45</span>       &lt;&lt; <span class="stringliteral">&quot; in detector &quot;</span> &lt;&lt; fDetectorID &lt;&lt; endl;</div>
-<div class="line"><span class="lineno">   46</span>  cout &lt;&lt; <span class="stringliteral">&quot;    Position (&quot;</span> &lt;&lt; fX &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; fY &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; fZ</div>
-<div class="line"><span class="lineno">   47</span>       &lt;&lt; <span class="stringliteral">&quot;) cm&quot;</span> &lt;&lt; endl;</div>
-<div class="line"><span class="lineno">   48</span>  cout &lt;&lt; <span class="stringliteral">&quot;    Momentum (&quot;</span> &lt;&lt; fPx &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; fPy &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; fPz</div>
-<div class="line"><span class="lineno">   49</span>       &lt;&lt; <span class="stringliteral">&quot;) GeV&quot;</span> &lt;&lt; endl;</div>
-<div class="line"><span class="lineno">   50</span>  cout &lt;&lt; <span class="stringliteral">&quot;    Time &quot;</span> &lt;&lt; fTime &lt;&lt; <span class="stringliteral">&quot; ns,  Length &quot;</span> &lt;&lt; fLength</div>
-<div class="line"><span class="lineno">   51</span>       &lt;&lt; <span class="stringliteral">&quot; cm,  Energy loss &quot;</span> &lt;&lt; fELoss*1.0e06 &lt;&lt; <span class="stringliteral">&quot; keV&quot;</span> &lt;&lt; endl;</div>
-<div class="line"><span class="lineno">   52</span>}</div>
+<p class="definition">Definition at line <a class="el" href="TargetPoint_8cxx_source.html#l00046">46</a> of file <a class="el" href="TargetPoint_8cxx_source.html">TargetPoint.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   47</span>{</div>
+<div class="line"><span class="lineno">   48</span>    cout &lt;&lt; <span class="stringliteral">&quot;-I- TargetPoint: ShipRpc point for track &quot;</span> &lt;&lt; fTrackID &lt;&lt; <span class="stringliteral">&quot; in detector &quot;</span> &lt;&lt; fDetectorID &lt;&lt; endl;</div>
+<div class="line"><span class="lineno">   49</span>    cout &lt;&lt; <span class="stringliteral">&quot;    Position (&quot;</span> &lt;&lt; fX &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; fY &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; fZ &lt;&lt; <span class="stringliteral">&quot;) cm&quot;</span> &lt;&lt; endl;</div>
+<div class="line"><span class="lineno">   50</span>    cout &lt;&lt; <span class="stringliteral">&quot;    Momentum (&quot;</span> &lt;&lt; fPx &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; fPy &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; fPz &lt;&lt; <span class="stringliteral">&quot;) GeV&quot;</span> &lt;&lt; endl;</div>
+<div class="line"><span class="lineno">   51</span>    cout &lt;&lt; <span class="stringliteral">&quot;    Time &quot;</span> &lt;&lt; fTime &lt;&lt; <span class="stringliteral">&quot; ns,  Length &quot;</span> &lt;&lt; fLength &lt;&lt; <span class="stringliteral">&quot; cm,  Energy loss &quot;</span> &lt;&lt; fELoss * 1.0e06 &lt;&lt; <span class="stringliteral">&quot; keV&quot;</span></div>
+<div class="line"><span class="lineno">   52</span>         &lt;&lt; endl;</div>
+<div class="line"><span class="lineno">   53</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -424,13 +421,13 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TargetPoint_8h_source.html#l00050">50</a> of file <a class="el" href="TargetPoint_8h_source.html">TargetPoint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TargetPoint_8h_source.html#l00048">48</a> of file <a class="el" href="TargetPoint_8h_source.html">TargetPoint.h</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>nutaudet/<a class="el" href="TargetPoint_8h_source.html">TargetPoint.h</a></li>
-<li>nutaudet/<a class="el" href="TargetPoint_8cxx_source.html">TargetPoint.cxx</a></li>
+<li>SND/EmulsionTarget/<a class="el" href="TargetPoint_8h_source.html">TargetPoint.h</a></li>
+<li>SND/EmulsionTarget/<a class="el" href="TargetPoint_8cxx_source.html">TargetPoint.cxx</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

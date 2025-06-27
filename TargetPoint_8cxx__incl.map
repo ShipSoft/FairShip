@@ -1,13 +1,13 @@
-<map id="nutaudet/TargetPoint.cxx" name="nutaudet/TargetPoint.cxx">
-<area shape="rect" id="Node000001" title=" " alt="" coords="149,5,333,31"/>
-<area shape="rect" id="Node000002" href="$TargetPoint_8h.html" title=" " alt="" coords="129,79,235,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="233,33,202,70,198,67,229,29"/>
-<area shape="rect" id="Node000006" title=" " alt="" coords="259,79,339,104"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="252,29,283,67,279,70,248,33"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="5,152,116,177"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="164,106,93,147,91,143,161,102"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="140,152,224,177"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="185,104,185,138,179,138,179,104"/>
-<area shape="rect" id="Node000005" title=" " alt="" coords="249,152,339,177"/>
-<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="201,102,265,142,262,147,199,106"/>
+<map id="SND/EmulsionTarget/TargetPoint.cxx" name="SND/EmulsionTarget/TargetPoint.cxx">
+<area shape="rect" id="Node000001" title=" " alt="" coords="163,5,318,45"/>
+<area shape="rect" id="Node000002" href="$TargetPoint_8h.html" title=" " alt="" coords="129,93,235,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="229,47,201,84,197,80,224,44"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="259,93,339,119"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="257,44,284,80,280,84,253,47"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,167,116,192"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="164,121,93,162,91,157,161,116"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="140,167,224,192"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="185,119,185,153,179,153,179,119"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="249,167,339,192"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="201,116,265,157,262,161,199,121"/>
 </map>
