@@ -680,12 +680,12 @@ void MTCDetector::SiPMmapping()
     // Loop over both U and V planes
     std::vector<std::pair<const char*, const char*>> sipm_planes = {{"SiPMmapVolU", "MTC_scifi_U"},
                                                                     {"SiPMmapVolV", "MTC_scifi_V"}};
-    for (const auto& pair : sipm_planes) {
-        auto sipm = gGeoManager->FindVolumeFast(pair.first);
+    for (const auto& [sipm_vol, scifi_vol] : sipm_planes) {
+        auto sipm = gGeoManager->FindVolumeFast(sipm_vol);
         if (!sipm)
             continue;
         TObjArray* Nodes = sipm->GetNodes();
-        auto plane = gGeoManager->FindVolumeFast(pair.second);
+        auto plane = gGeoManager->FindVolumeFast(scifi_vol);
         if (!plane)
             continue;
         for (int imat = 0; imat < plane->GetNodes()->GetEntries(); imat++) {
@@ -724,7 +724,7 @@ void MTCDetector::SiPMmapping()
                     std::array<float, 2> Wa;
                     Wa[0] = W;
                     Wa[1] = a;
-                    if (pair.first == std::string("SiPMmapVolU")) {
+                    if (sipm_vol == std::string("SiPMmapVolU")) {
                         fibresSiPM_U[N][fID] = Wa;
                     } else {
                         fibresSiPM_V[N][fID] = Wa;
@@ -734,42 +734,36 @@ void MTCDetector::SiPMmapping()
         }
         // calculate also local SiPM positions based on fibre positions and their fraction
         // probably an overkill, maximum difference between weighted average and central position < 6 micron.
-        if (pair.first == std::string("SiPMmapVolU")) {
-            for (auto it : fibresSiPM_U) {
-                Int_t N = it.first;
+        if (sipm_vol == std::string("SiPMmapVolU")) {
+            for (auto [N, it] : fibresSiPM_U) {
                 Float_t m = 0;
                 Float_t w = 0;
-                for (auto itx : it.second) {
-                    m += (itx.second)[0] * (itx.second)[1];
-                    w += (itx.second)[0];
+                for (auto [fibre, Wa] : it) {
+                    m += Wa[0] * Wa[1];
+                    w += Wa[0];
                 }
                 SiPMPos_U[N] = m / w;
             }
             // make inverse mapping, which fibre is associated to which SiPMs
-            for (auto it : fibresSiPM_U) {
-                Int_t N = it.first;
-                for (auto itx : it.second) {
-                    Int_t nfibre = itx.first;
-                    siPMFibres_U[nfibre][N] = itx.second;
+            for (auto [N, it] : fibresSiPM_U) {
+                for (auto [nfibre, Wa] : it) {
+                    siPMFibres_U[nfibre][N] = Wa;
                 }
             }
-        } else if (pair.first == std::string("SiPMmapVolV")) {
-            for (auto it : fibresSiPM_V) {
-                Int_t N = it.first;
+        } else if (sipm_vol == std::string("SiPMmapVolV")) {
+            for (auto [N, it] : fibresSiPM_V) {
                 Float_t m = 0;
                 Float_t w = 0;
-                for (auto itx : it.second) {
-                    m += (itx.second)[0] * (itx.second)[1];
-                    w += (itx.second)[0];
+                for (auto [fibre, Wa] : it) {
+                    m += Wa[0] * Wa[1];
+                    w += Wa[0];
                 }
                 SiPMPos_V[N] = m / w;
             }
             // make inverse mapping, which fibre is associated to which SiPMs
-            for (auto it : fibresSiPM_V) {
-                Int_t N = it.first;
-                for (auto itx : it.second) {
-                    Int_t nfibre = itx.first;
-                    siPMFibres_V[nfibre][N] = itx.second;
+            for (auto [N, it] : fibresSiPM_V) {
+                for (auto [nfibre, Wa] : it) {
+                    siPMFibres_V[nfibre][N] = Wa;
                 }
             }
         }
