@@ -1,6 +1,5 @@
 var NAVTREEINDEX21 =
 {
-"ecalContFact_8h_source.html":[6,0,1,17],
 "ecalDigi_8cxx.html":[6,0,1,18],
 "ecalDigi_8cxx_source.html":[6,0,1,18],
 "ecalDigi_8h.html":[6,0,1,19],
@@ -249,5 +248,6 @@ var NAVTREEINDEX21 =
 "functions_func_i.html":[5,3,1,9],
 "functions_func_k.html":[5,3,1,10],
 "functions_func_l.html":[5,3,1,11],
-"functions_func_m.html":[5,3,1,12]
+"functions_func_m.html":[5,3,1,12],
+"functions_func_n.html":[5,3,1,13]
 };

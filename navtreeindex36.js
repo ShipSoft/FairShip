@@ -1,6 +1,5 @@
 var NAVTREEINDEX36 =
 {
-"namespacestudy__muEloss.html#a1369c82588c76bbecd67a082ab49d696":[4,0,97,14],
 "namespacestudy__muEloss.html#a2fc2d258db8b36fd0d00fd0bf696f01b":[4,0,97,6],
 "namespacestudy__muEloss.html#a39d770324b06d8dea73e880faa29b3e1":[4,0,97,12],
 "namespacestudy__muEloss.html#a429244da07783fef43e06144c7933920":[4,0,97,0],
@@ -249,5 +248,6 @@ var NAVTREEINDEX36 =
 "rootpyPickler_8py.html#ab44efd2a60d46ea21e61cf19916ef022":[6,0,12,25,11],
 "rootpyPickler_8py.html#ae429cfd7de5349512a04544726926582":[6,0,12,25,12],
 "rootpyPickler_8py.html#aec9f077aa17669ddfedbfee4a177545d":[6,0,12,25,4],
-"rootpyPickler_8py_source.html":[6,0,12,25]
+"rootpyPickler_8py_source.html":[6,0,12,25],
+"rpvsusy_8py.html":[6,0,12,27]
 };

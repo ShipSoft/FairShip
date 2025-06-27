@@ -11,7 +11,7 @@ var dir_3f060d1c8fe756af3597c9e2f80882ac =
     [ "ShipGoliath.h", "ShipGoliath_8h.html", "ShipGoliath_8h" ],
     [ "ShipMagnet.cxx", "ShipMagnet_8cxx.html", null ],
     [ "ShipMagnet.h", "ShipMagnet_8h.html", "ShipMagnet_8h" ],
-    [ "ShipMuonShield.cxx", "ShipMuonShield_8cxx.html", "ShipMuonShield_8cxx" ],
+    [ "ShipMuonShield.cxx", "ShipMuonShield_8cxx.html", null ],
     [ "ShipMuonShield.h", "ShipMuonShield_8h.html", "ShipMuonShield_8h" ],
     [ "ShipPassiveContFact.cxx", "ShipPassiveContFact_8cxx.html", null ],
     [ "ShipPassiveContFact.h", "ShipPassiveContFact_8h.html", "ShipPassiveContFact_8h" ],

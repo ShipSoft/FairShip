@@ -1,6 +1,5 @@
 <map id="ShipMuonShield" name="ShipMuonShield">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,155,132,181"/>
-<area shape="poly" id="edge2_Node000001_Node000001" title=" " alt="" coords="100,148,120,144,139,146,153,154,159,168,151,184,134,191,110,191,87,183,88,178,111,185,133,186,148,180,153,168,149,158,137,151,120,150,101,153"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,79,132,104"/>
 <area shape="rect" id="Node000002" title=" " alt="" coords="22,5,115,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="71,44,71,155,66,155,66,44"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="71,44,71,79,66,79,66,44"/>
 </map>
