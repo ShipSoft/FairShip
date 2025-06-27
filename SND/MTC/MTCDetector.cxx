@@ -40,11 +40,6 @@
 #include "TString.h"     // for TString
 #include "TVirtualMC.h"
 
-#include <iosfwd>     // for ostream
-#include <iostream>   // for operator<<, basic_ostream, etc
-#include <stddef.h>   // for NULL
-using std::cout;
-using std::endl;
 using namespace ShipUnit;
 
 namespace
@@ -674,7 +669,7 @@ void MTCDetector::SiPMmapping()
 {
     // check if containers are already filled
     if (!fibresSiPM_U.empty() || !fibresSiPM_V.empty() || !SiPMPos_U.empty() || !SiPMPos_V.empty()) {
-        cout << "SiPM mapping already done, skipping." << endl;
+        LOG(WARN) << "SiPM mapping already done, skipping.";
         return;
     }
     Float_t fibresRadius = -1;
@@ -794,7 +789,7 @@ TClonesArray* MTCDetector::GetCollection(Int_t iColl) const
     if (iColl == 0) {
         return fMTCDetectorPointCollection;
     } else {
-        return NULL;
+        return nullptr;
     }
 }
 
