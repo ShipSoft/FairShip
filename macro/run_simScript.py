@@ -57,10 +57,16 @@ group = parser.add_mutually_exclusive_group()
 parser.add_argument("--evtcalc", help="Use EventCalc", action="store_true")
 parser.add_argument("--Pythia6", dest="pythia6", help="Use Pythia6", action="store_true")
 parser.add_argument("--Pythia8", dest="pythia8", help="Use Pythia8", action="store_true")
-parser.add_argument("--PG", dest="pg", help="Use Particle Gun", action="store_true")
-parser.add_argument("--pID", help="id of particle used by the gun (default=22)", default=22, type=int)
-parser.add_argument("--Estart", help="start of energy range of particle gun (default=10 GeV)", default=10, type=float)
-parser.add_argument("--Eend", help="end of energy range of particle gun (default=10 GeV)", default=10, type=float)
+parser.add_argument("--PG",      dest="pg",      help="Use Particle Gun", required=False, action="store_true")
+parser.add_argument("--multiplePG", help="Multiple particle guns in a x-y plane at a fixed z or in a 3D volume", required=False, action="store_true")
+parser.add_argument("--pID",     dest="pID",     help="id of particle used by the gun (default=22)", required=False, default=22, type=int)
+parser.add_argument("--Estart", help="start of energy range of particle gun (default=10 GeV)", required=False, default=10, type=float)
+parser.add_argument("--Eend", help="end of energy range of particle gun (default=10 GeV)", required=False, default=10, type=float)
+parser.add_argument("--Vx", dest="Vx", help="x position of particle gun (default=0 cm)", required=False, default=0, type=float)
+parser.add_argument("--Vy", dest="Vy", help="y position of particle gun (default=0 cm)", required=False, default=0, type=float)
+parser.add_argument("--Vz", dest="Vz", help="z position of particle gun (default=0 cm)", required=False, default=0, type=float)
+parser.add_argument("--Dx", dest="Dx", help="size of the full uniform spread of PG xpos: (Vx - Dx/2, Vx + Dx/2)", required=False, type=float)
+parser.add_argument("--Dy", dest="Dy", help="size of the full uniform spread of PG ypos: (Vy - Dy/2, Vy + Dy/2)", required=False, type=float)
 parser.add_argument("-A", help="b: signal from b, c: from c (default), bc: from Bc, or inclusive", default='c')
 parser.add_argument("--Genie", dest="genie", help="Genie for reading and processing neutrino interactions", action="store_true")
 parser.add_argument("--NuRadio", dest="nuradio", help="misuse GenieGenerator for neutrino radiography and geometry timing test", action="store_true")
@@ -331,8 +337,17 @@ if simEngine == "PG":
   myPgun = ROOT.FairBoxGenerator(options.pID,1)
   myPgun.SetPRange(options.Estart,options.Eend)
   myPgun.SetPhiRange(0, 360) # // Azimuth angle range [degree]
-  myPgun.SetXYZ(0.*u.cm, 0.*u.cm, 0.*u.cm)
   myPgun.SetThetaRange(0,0) # // Polar angle in lab system range [degree]
+  if options.multiplePG:
+    # multiple PG sources in the x-y plane; z is always the same!
+    myPgun.SetBoxXYZ((options.Vx-options.Dx/2)*u.cm,
+                     (options.Vy-options.Dy/2)*u.cm,
+                     (options.Vx+options.Dx/2)*u.cm,
+                     (options.Vy+options.Dy/2)*u.cm,
+                     options.Vz*u.cm)
+  else:
+     # point source
+     myPgun.SetXYZ(options.Vx*u.cm, options.Vy*u.cm, options.Vz*u.cm)
   primGen.AddGenerator(myPgun)
 # -----muon DIS Background------------------------
 if simEngine == "muonDIS":
