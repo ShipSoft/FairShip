@@ -143,6 +143,7 @@ Fixed</h2>
 <li>Fix: Preliminary fix of the length of the <a class="el" href="classTarget.html">Target</a> (to be refine)</li>
 <li>Fix: in <code><a class="el" href="ShieldUtils_8py.html">python/ShieldUtils.py</a></code> still used old coordinate system (SND was not correctly positioned in <code><a class="el" href="shipDet__conf_8py.html">python/shipDet_conf.py</a></code>)</li>
 <li>Fix <code>beam smearing</code>: replace incorrect Gaussian radius with proper 2D Gaussian sampling. Ensures physical consistency; radius now follows Rayleigh distribution as expected.</li>
+<li>Reconstruction: reverse nmeas &gt; 0 check to make sure 𝜒² is defined</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md4"></a>
 Changed</h2>
