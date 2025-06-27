@@ -974,9 +974,10 @@ class ShipDigiReco:
       ut.reportError(error)
     nmeas = fitStatus.getNdf()
     global_variables.h['nmeas'].Fill(nmeas)
-    if nmeas > 0:
-      chi2 = fitStatus.getChi2() / nmeas
-      global_variables.h['chi2'].Fill(chi2)
+    if nmeas <= 0:
+      continue
+    chi2 = fitStatus.getChi2() / nmeas
+    global_variables.h['chi2'].Fill(chi2)
 # make track persistent
     nTrack   = self.fGenFitArray.GetEntries()
     self.fGenFitArray[nTrack] = theTrack
