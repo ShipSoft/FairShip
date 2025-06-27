@@ -182,6 +182,7 @@ var hierarchy =
     [ "rpvsusy.RPVSUSYbranchings", "classrpvsusy_1_1RPVSUSYbranchings.html", [
       [ "rpvsusy.RPVSUSY", "classrpvsusy_1_1RPVSUSY.html", null ]
     ] ],
+    [ "SciFiMapping.SciFiMapping", "classSciFiMapping_1_1SciFiMapping.html", null ],
     [ "experimental.analysis_toolkit.selection_check", "classexperimental_1_1analysis__toolkit_1_1selection__check.html", null ],
     [ "shipDigiReco.ShipDigiReco", "classshipDigiReco_1_1ShipDigiReco.html", null ],
     [ "ShipGeo.ShipGeo", "classShipGeo_1_1ShipGeo.html", null ],
@@ -206,6 +207,7 @@ var hierarchy =
     ] ],
     [ "TObject", null, [
       [ "ShipHit", "classShipHit.html", [
+        [ "MtcDetHit", "classMtcDetHit.html", null ],
         [ "TimeDetHit", "classTimeDetHit.html", null ],
         [ "UpstreamTaggerHit", "classUpstreamTaggerHit.html", null ],
         [ "muonHit", "classmuonHit.html", null ],

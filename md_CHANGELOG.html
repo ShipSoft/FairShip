@@ -118,6 +118,7 @@ Added</h2>
 <li>Definition of Pressured Helium for the target, two version 200 Celsius degree and 90 Celsius degree.</li>
 <li>Add backport for new TFile/TDirectory <code>__get_item__</code> pythonisation</li>
 <li>SND/EmulsionTarget folder, with the <a class="el" href="classTarget.html">Target</a> and <a class="el" href="classTargetTracker.html">TargetTracker</a> classes from nutaudet</li>
+<li>Added fibre structure for MTC and digitization. Fibre &lt;-&gt; SiPM mapping is done in <code><a class="el" href="MTCDetector_8cxx.html">SND/MTC/MTCDetector.cxx</a></code>, can be extracted and tested in <code><a class="el" href="SciFiMapping_8py.html">python/SciFiMapping.py</a></code>, that is subsequently used in <code><a class="el" href="shipDigiReco_8py.html">python/shipDigiReco.py</a></code></li>
 </ul>
 <h2><a class="anchor" id="autotoc_md3"></a>
 Fixed</h2>
@@ -144,6 +145,7 @@ Fixed</h2>
 <li>Fix: in <code><a class="el" href="ShieldUtils_8py.html">python/ShieldUtils.py</a></code> still used old coordinate system (SND was not correctly positioned in <code><a class="el" href="shipDet__conf_8py.html">python/shipDet_conf.py</a></code>)</li>
 <li>Fix <code>beam smearing</code>: replace incorrect Gaussian radius with proper 2D Gaussian sampling. Ensures physical consistency; radius now follows Rayleigh distribution as expected.</li>
 <li>Reconstruction: reverse nmeas &gt; 0 check to make sure 𝜒² is defined</li>
+<li>Fix: MTC geometry overlap</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md4"></a>
 Changed</h2>

@@ -1,0 +1,26 @@
+var classMtcDetHit =
+[
+    [ "MtcDetHit", "classMtcDetHit.html#aea4366661b89d585c5dc29f8f4244576", null ],
+    [ "MtcDetHit", "classMtcDetHit.html#a88f10d5d8d1014aabb62957f8f190352", null ],
+    [ "MtcDetHit", "classMtcDetHit.html#a89133eedfe37540e228fce230eb9aa3f", null ],
+    [ "~MtcDetHit", "classMtcDetHit.html#af6d452943b24eb0c09faaffd96e73dae", null ],
+    [ "ClassDef", "classMtcDetHit.html#af18ed55cd93a75b9153d620be20ba24d", null ],
+    [ "GetChannelID", "classMtcDetHit.html#aa657d1858fd8cbcd99dc2205e06896d9", null ],
+    [ "GetEnergy", "classMtcDetHit.html#abf7f07615d26100119ca2383edecb82f", null ],
+    [ "GetLayer", "classMtcDetHit.html#ab803531d00ecf81146f5a01c0ad5ddec", null ],
+    [ "GetSignal", "classMtcDetHit.html#a500bbf2b86c455194a196cb3e92f2a7b", null ],
+    [ "GetSiPM", "classMtcDetHit.html#af0df4526c61ef596d1d47e0901703e91", null ],
+    [ "GetSiPMChan", "classMtcDetHit.html#a0066c3f1c39b9501d6b4469ccda42283", null ],
+    [ "GetStationType", "classMtcDetHit.html#a995a63deb7baeb471089cb31a36cb8b1", null ],
+    [ "GetTime", "classMtcDetHit.html#af8e2bf4ab10818cb34a8376df9b0573e", null ],
+    [ "isValid", "classMtcDetHit.html#a26ef1c88fd847f7066ee1803ca51127d", null ],
+    [ "light_attenuation", "classMtcDetHit.html#ad1aad7654868df49cb2934716577c83b", null ],
+    [ "n_pixels_to_qdc", "classMtcDetHit.html#a9be3a52ee4ad0e27c5bb37511cc0309c", null ],
+    [ "operator=", "classMtcDetHit.html#a76239d9b4bb02792d840ad8db59bd2c7", null ],
+    [ "Print", "classMtcDetHit.html#a0f40c75b7158c5fbc480a63b57309b17", null ],
+    [ "setInvalid", "classMtcDetHit.html#a14407630ded1e29ab645b2099be0b619", null ],
+    [ "sipm_saturation", "classMtcDetHit.html#aed6b9da44e5c1babdb82b518f80e2855", null ],
+    [ "flag", "classMtcDetHit.html#a3ff71e7328b3d03cab06fdb0b8b0fdc6", null ],
+    [ "signals", "classMtcDetHit.html#a93c175d3d8e294206e2a8c7a8ecc9d6d", null ],
+    [ "time", "classMtcDetHit.html#ab72fd15c3c0f9519c8c5e02cd94ba392", null ]
+];

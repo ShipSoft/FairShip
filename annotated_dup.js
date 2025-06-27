@@ -68,6 +68,9 @@ var annotated_dup =
       [ "RPVSUSY", "classrpvsusy_1_1RPVSUSY.html", "classrpvsusy_1_1RPVSUSY" ],
       [ "RPVSUSYbranchings", "classrpvsusy_1_1RPVSUSYbranchings.html", "classrpvsusy_1_1RPVSUSYbranchings" ]
     ] ],
+    [ "SciFiMapping", "namespaceSciFiMapping.html", [
+      [ "SciFiMapping", "classSciFiMapping_1_1SciFiMapping.html", "classSciFiMapping_1_1SciFiMapping" ]
+    ] ],
     [ "shipDigiReco", "namespaceshipDigiReco.html", [
       [ "ShipDigiReco", "classshipDigiReco_1_1ShipDigiReco.html", "classshipDigiReco_1_1ShipDigiReco" ]
     ] ],
@@ -154,6 +157,7 @@ var annotated_dup =
     [ "hcalStructureFiller", "classhcalStructureFiller.html", "classhcalStructureFiller" ],
     [ "HNLPythia8Generator", "classHNLPythia8Generator.html", "classHNLPythia8Generator" ],
     [ "MTCDetector", "classMTCDetector.html", "classMTCDetector" ],
+    [ "MtcDetHit", "classMtcDetHit.html", "classMtcDetHit" ],
     [ "MtcDetPoint", "classMtcDetPoint.html", "classMtcDetPoint" ],
     [ "MuDISGenerator", "classMuDISGenerator.html", "classMuDISGenerator" ],
     [ "muon", "classmuon.html", "classmuon" ],

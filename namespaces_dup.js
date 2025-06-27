@@ -1594,6 +1594,7 @@ var namespaces_dup =
       [ "execute", "namespacesaveBasicParameters.html#ae19428dcf1f80c5affea43fc209bf908", null ],
       [ "retrieveGitTags", "namespacesaveBasicParameters.html#ab4a697c36be41496c6d12f0e1686a389", null ]
     ] ],
+    [ "SciFiMapping", "namespaceSciFiMapping.html", "namespaceSciFiMapping" ],
     [ "ShieldUtils", "namespaceShieldUtils.html", [
       [ "find_shield_center", "namespaceShieldUtils.html#a15add410b51d2e47e680e4949e50876c", null ]
     ] ],
