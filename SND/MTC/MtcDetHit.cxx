@@ -18,7 +18,7 @@ constexpr Float_t time_res = 150e-3f;     // 150 ps
 constexpr Float_t signal_speed = 15.0f;   // cm/ns
 const Float_t inv_signal_speed = 1.0f / signal_speed;
 // parameters for simulating the digitized information
-constexpr Float_t light_attenuation_params[4] = {20., 300.};                 // x_0, lambda
+constexpr Float_t light_attenuation_params[2] = {20., 300.};                       // x_0, lambda
 constexpr Float_t n_pixels_to_qdc_params[4] = {0.172, -1.31, 0.006, 0.33};   // A, B, sigma_A, sigma_B
 }   // namespace
 
