@@ -190,7 +190,7 @@ TargetStation = ROOT.ShipTargetStation(name="TargetStation",
                                        tl=ship_geo.target.length,
                                        al=ship_geo.hadronAbsorber.halflength * 2,
                                        tz=ship_geo.target.z,
-                                       az=ship_geo.hadronAbsorber.z,
+                                       az=ship_geo.hadronAbsorber.z + ship_geo.target.length,
                                        tV=ship_geo.targetVersion,
                                        nS=ship_geo.target.nS)
 TargetStation.SetLayerPosMat(d=ship_geo.target.xy, L=ship_geo.target.slices_length, G=ship_geo.target.slices_gap, M=ship_geo.target.slices_material)
