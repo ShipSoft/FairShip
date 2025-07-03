@@ -74,7 +74,7 @@ class Target : public FairDetector
     void SetBaseDimension(Double_t X, Double_t Y, Double_t Z);
     void SetPillarDimension(Double_t X, Double_t Y, Double_t Z);
 
-    std::tuple<Int_t, Int_t, Int_t, Int_t, Bool_t> DecodeBrickID(Int_t detID);
+    static std::tuple<Int_t, Int_t, Int_t, Int_t, Bool_t> DecodeBrickID(Int_t detID);
 
     void SetHpTParam(Int_t n, Double_t dd, Double_t DZ);   // other detector's parameters (needed for positioning)
 
