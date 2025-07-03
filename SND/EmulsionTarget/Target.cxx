@@ -48,9 +48,9 @@
 
 #include <iosfwd>     // for ostream
 #include <iostream>   // for operator<<, basic_ostream,etc
-#include <tuple>
 #include <stddef.h>   // for NULL
 #include <string.h>
+#include <tuple>
 
 using std::cout;
 using std::endl;
