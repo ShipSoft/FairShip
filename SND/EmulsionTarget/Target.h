@@ -16,6 +16,7 @@
 #include "TVector3.h"
 
 #include <string>   // for string
+#include <tuple>
 
 class TargetPoint;
 class FairVolume;
@@ -73,7 +74,7 @@ class Target : public FairDetector
     void SetBaseDimension(Double_t X, Double_t Y, Double_t Z);
     void SetPillarDimension(Double_t X, Double_t Y, Double_t Z);
 
-    void DecodeBrickID(Int_t detID, Int_t& NWall, Int_t& NRow, Int_t& NColumn, Int_t& NPlate, Bool_t& EmTop);
+    static std::tuple<Int_t, Int_t, Int_t, Int_t, Bool_t> DecodeBrickID(Int_t detID);
 
     void SetHpTParam(Int_t n, Double_t dd, Double_t DZ);   // other detector's parameters (needed for positioning)
 

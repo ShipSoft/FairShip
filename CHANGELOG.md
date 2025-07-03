@@ -93,6 +93,7 @@ it in future.
 * Removed old stuff legacy in `shipMuonShield.cxx` (like LE and fFloor)
 * Event Display: Don't try to recreate geometry config
 * Geometry: Make the tungsten target the default (Jun25 config)
+* Change EmulsionTarget detID decode function to tuple output
 
 ### Removed
 
