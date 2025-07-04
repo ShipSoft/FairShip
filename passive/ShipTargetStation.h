@@ -18,14 +18,6 @@ class ShipTargetStation : public FairModule
   public:
     ShipTargetStation(const char* name,
                       const Double_t tl,
-                      const Double_t al,
-                      const Double_t tz,
-                      const Double_t az,
-                      const TargetVersion tV,
-                      const int nS,
-                      const char* Title = "ShipTargetStation");
-    ShipTargetStation(const char* name,
-                      const Double_t tl,
                       const Double_t tz,
                       const TargetVersion tV,
                       const int nS,
@@ -48,8 +40,6 @@ class ShipTargetStation : public FairModule
 
   protected:
     Double_t fTargetLength;        //
-    Double_t fAbsorberLength;      //
-    Double_t fAbsorberZ;           //
     Double_t fTargetZ;             //
     Double_t fDiameter;            //
     std::vector<float> fL;         // absorber width per layer
