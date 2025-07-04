@@ -337,8 +337,6 @@ void ShipMuonShield::ConstructGeometry()
     TGeoVolume* tShield = new TGeoVolumeAssembly("MuonShieldArea");
     InitMedium("iron");
     TGeoMedium* iron = gGeoManager->GetMedium("iron");
-    InitMedium("copper");
-    TGeoMedium* copper = gGeoManager->GetMedium("copper");
 
     std::vector<TString> magnetName;
     std::vector<FieldDirection> fieldDirection;
@@ -386,18 +384,7 @@ void ShipMuonShield::ConstructGeometry()
 
       Double_t z_gap = 10 * cm;
       Double_t absorber_offset = z_gap;
-      Double_t proximity_shield_half_length = 55.36 / 2 * cm;
-      Double_t z_end_of_target = z_end_of_proximity_shielding - 2 * proximity_shield_half_length;
       Double_t absorber_half_length = (dZf[0]);
-
-      // Proximity Shielding
-      auto Proximity_Shielding = new TGeoBBox("Proximity_Shielding", 40 * cm, 40 * cm, proximity_shield_half_length);
-      auto* Proximity_Shift = new TGeoTranslation("Proximity_Shift", 0 * m, 0 * m, 0 * m);
-      Proximity_Shift->RegisterYourself();
-      TGeoVolume* Proximity_Shielding_vol = new TGeoVolume("Proximity_Shielding_vol", Proximity_Shielding, copper);
-      tShield->AddNode(Proximity_Shielding_vol,
-                       1,
-                       new TGeoTranslation(0, 0, z_end_of_target + proximity_shield_half_length + 0.01 * m));
 
       // Absorber
 
@@ -420,10 +407,10 @@ void ShipMuonShield::ConstructGeometry()
 
       TGeoVolume *absorber = new TGeoVolume("AbsorberVol", absorberShape, iron);
       absorber->SetLineColor(42); // brown / light red
-      tShield->AddNode(absorber,
-                       1,
-                       new TGeoTranslation(0,
-                                           0,
-                                           z_end_of_target + absorber_half_length + absorber_offset
-                                               + 2 * proximity_shield_half_length));   // - Passive?
+      tShield->AddNode(
+          absorber,
+          1,
+          new TGeoTranslation(0,
+                              0,
+                              z_end_of_proximity_shielding + absorber_half_length + absorber_offset));   // - Passive?
 }
