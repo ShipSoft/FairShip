@@ -349,9 +349,15 @@ with ConfigRegistry.register_config("basic") as c:
 
     c.hadronAbsorber = AttrDict()
 
-    c.target.prox_shld = 0.5536 * u.m
-    c.hadronAbsorber.z = c.hadronAbsorber.halflength = c.target.z0 + c.target.length / 2
-    c.muShield.z = c.hadronAbsorber.z + c.hadronAbsorber.halflength + c.target.prox_shld
+    c.hadronAbsorber.z = (
+        c.target.z0
+        + c.target.length
+        + 96.1 * u.mm  # Distance between target and proximity shielding
+        + 250 * u.mm  # Thickness of proximity shielding
+        + 207.5 * u.mm  # Distance between hadron absorber and proximity shielding
+        - 10 * u.cm  # Remove spacing internal to hadron absorber
+    )
+    c.muShield.z = c.hadronAbsorber.z
     c.decayVolume = AttrDict()
 
     # target absorber muon shield setup, decayVolume.length = nominal EOI length, only kept to define z=0
