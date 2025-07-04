@@ -1,8 +1,8 @@
 import os
+
 import shipunit as u
-import ROOT as r
-from ShipGeoConfig import AttrDict, ConfigRegistry
 import yaml
+from ShipGeoConfig import AttrDict, ConfigRegistry
 
 # the following params should be passed through 'ConfigRegistry.loadpy' method
 # nuTargetPassive = 1  #0 = with active layers, 1 = only passive
