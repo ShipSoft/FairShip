@@ -350,10 +350,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.hadronAbsorber = AttrDict()
 
     c.target.prox_shld = 0.5536 * u.m
-    c.real_target_length = c.target.length
-    c.hadronAbsorber.z = c.hadronAbsorber.halflength = (
-        c.target.z0 + c.real_target_length / 2
-    )
+    c.hadronAbsorber.z = c.hadronAbsorber.halflength = c.target.z0 + c.target.length / 2
     c.muShield.z = c.hadronAbsorber.z + c.hadronAbsorber.halflength + c.target.prox_shld
     c.decayVolume = AttrDict()
 
