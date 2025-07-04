@@ -23,32 +23,10 @@
 using std::cout;
 using std::endl;
 
-
-ShipTargetStation::~ShipTargetStation()
-{
-}
+ShipTargetStation::~ShipTargetStation() {}
 ShipTargetStation::ShipTargetStation()
-  : FairModule("ShipTargetStation", "")
-{
-}
-
-ShipTargetStation::ShipTargetStation(const char* name,
-                                     const Double_t tl,
-                                     const Double_t al,
-                                     const Double_t tz,
-                                     const Double_t az,
-                                     const TargetVersion tV,
-                                     const int nS,
-                                     const char* Title)
-    : FairModule(name, Title)
-{
-  fTargetLength    = tl;
-  fAbsorberLength  = al;
-  fAbsorberZ       = az;
-  fTargetZ         = tz;
-  fTV = tV;
-  fnS = nS;
-}
+    : FairModule("ShipTargetStation", "")
+{}
 
 ShipTargetStation::ShipTargetStation(const char* name,
                                      const Double_t tl,
@@ -58,33 +36,30 @@ ShipTargetStation::ShipTargetStation(const char* name,
                                      const char* Title)
     : FairModule(name, Title)
 {
-  fTargetLength    = tl;
-  fAbsorberLength  = 0;
-  fAbsorberZ       = 0;
-  fTargetZ         = tz;
-  fTV = tV;
-  fnS = nS;
+    fTargetLength = tl;
+    fTargetZ = tz;
+    fTV = tV;
+    fnS = nS;
 }
 
 // -----   Private method InitMedium
 Int_t ShipTargetStation::InitMedium(const char* name)
 {
-   static FairGeoLoader *geoLoad=FairGeoLoader::Instance();
-   static FairGeoInterface *geoFace=geoLoad->getGeoInterface();
-   static FairGeoMedia *media=geoFace->getMedia();
-   static FairGeoBuilder *geoBuild=geoLoad->getGeoBuilder();
+    static FairGeoLoader* geoLoad = FairGeoLoader::Instance();
+    static FairGeoInterface* geoFace = geoLoad->getGeoInterface();
+    static FairGeoMedia* media = geoFace->getMedia();
+    static FairGeoBuilder* geoBuild = geoLoad->getGeoBuilder();
 
-   FairGeoMedium *ShipMedium=media->getMedium(name);
+    FairGeoMedium* ShipMedium = media->getMedium(name);
 
-   if (!ShipMedium)
-   {
-     Fatal("InitMedium","Material %s not defined in media file.", name);
-     return -1111;
-   }
-   TGeoMedium* medium=gGeoManager->GetMedium(name);
-   if (medium!=NULL)
-     return ShipMedium->getMediumIndex();
-   return geoBuild->createMedium(ShipMedium);
+    if (!ShipMedium) {
+        Fatal("InitMedium", "Material %s not defined in media file.", name);
+        return -1111;
+    }
+    TGeoMedium* medium = gGeoManager->GetMedium(name);
+    if (medium != NULL)
+        return ShipMedium->getMediumIndex();
+    return geoBuild->createMedium(ShipMedium);
 }
 
 void ShipTargetStation::ConstructGeometry()
@@ -155,14 +130,6 @@ void ShipTargetStation::ConstructGeometry()
         }
     }   // loop on layers
 
-    if (fAbsorberLength > 0) {   // otherwise, magnetized hadron absorber defined in ShipMuonShield.cxx
-        zPos = fTargetZ - fTargetLength / 2.;
-        // Absorber made of iron
-        TGeoVolume* absorber;
-        absorber = gGeoManager->MakeTube("Absorber", iron, 0, 400, fAbsorberLength / 2.);   // 1890
-        absorber->SetLineColor(42);                                                         // brown / light red
-        tTarget->AddNode(absorber, 1, new TGeoTranslation(0, 0, fAbsorberZ - zPos));
-    }
     // put iron shielding around target
     Float_t xTot = 400. / 2.;   // all in cm
     Float_t yTot = 400. / 2.;
@@ -183,10 +150,4 @@ void ShipTargetStation::ConstructGeometry()
     tTarget->AddNode(
         moreShieldingSide, 2, new TGeoTranslation(-fDiameter / 2. - spaceSide - xTot / 2., 0., fTargetLength / 2.));
     top->AddNode(tTarget, 1, new TGeoTranslation(0, 0, fTargetZ - fTargetLength / 2.));
-
-    if (fAbsorberLength > 0) {
-        cout << "target and absorber positioned at " << fTargetZ << " " << fAbsorberZ << " m" << endl;
-    } else {
-        cout << "target at " << fTargetZ / 100. << "m " << endl;
-    }
 }

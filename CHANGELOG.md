@@ -120,6 +120,7 @@ it in future.
 * Remove deprecated NuTauDet field map
 * Remove tankDesign variable, options
 * Remove target versions older than CDR
+* Remove hadron absorber in ShipTargetStation.cxx
 
 ## 25.01
 
