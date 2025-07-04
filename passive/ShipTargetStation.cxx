@@ -152,7 +152,7 @@ void ShipTargetStation::ConstructGeometry()
     auto proximity_shielding_hole = new TGeoTube(
         "proximity_shielding_hole", 0, proximity_shielding_hole_diameter / 2, proximity_shielding_thickness_front / 2);
     auto proximity_shielding_inner_shift = new TGeoTranslation(
-        "proximity_shielding_inner_shift", 0, 0, proximity_shielding_thickness_front - proximity_shielding_thickness);
+        "proximity_shielding_inner_shift", 0, 0, (-shielding_length + proximity_shielding_thickness_front - proximity_shielding_thickness) / 2);
     proximity_shielding_inner_shift->RegisterYourself();
     auto proximity_shielding_hole_shift =
         new TGeoTranslation("proximity_shielding_hole_shift",
