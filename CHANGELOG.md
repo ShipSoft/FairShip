@@ -34,7 +34,7 @@ it in future.
 * Add backport for new TFile/TDirectory `__get_item__` pythonisation
 * SND/EmulsionTarget folder, with the Target and TargetTracker classes from nutaudet
 * Added fibre structure for MTC and digitization. Fibre <-> SiPM mapping is done in ```SND/MTC/MTCDetector.cxx```, can be extracted and tested in ```python/SciFiMapping.py```, that is subsequently used in ```python/shipDigiReco.py```
-
+* Added the whole for SND in the Muon Shield, that is created automatically if SND key is enabled (works so far for SND_design == 2)
 ### Fixed
 
 * chore: Fix file endings
