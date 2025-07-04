@@ -34,6 +34,7 @@ it in future.
 * Add backport for new TFile/TDirectory `__get_item__` pythonisation
 * SND/EmulsionTarget folder, with the Target and TargetTracker classes from nutaudet
 * Added fibre structure for MTC and digitization. Fibre <-> SiPM mapping is done in ```SND/MTC/MTCDetector.cxx```, can be extracted and tested in ```python/SciFiMapping.py```, that is subsequently used in ```python/shipDigiReco.py```
+* Implement proximity shielding design from 26/06/2025 by G. Humphreys
 
 ### Fixed
 
