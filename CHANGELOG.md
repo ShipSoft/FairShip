@@ -119,6 +119,7 @@ it in future.
 * Remove nutaudet folder, replaced by SND folder
 * Remove deprecated NuTauDet field map
 * Remove tankDesign variable, options
+* Remove target versions older than CDR
 
 ## 25.01
 

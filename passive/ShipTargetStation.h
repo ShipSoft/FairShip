@@ -1,5 +1,5 @@
-#ifndef TargetStation_H
-#define TargetStation_H
+#ifndef PASSIVE_SHIPTARGETSTATION_H_
+#define PASSIVE_SHIPTARGETSTATION_H_
 
 #include "FairModule.h"                 // for FairModule
 #include "Rtypes.h"                     // for ShipTargetStation::Class, Bool_t, etc
@@ -9,10 +9,6 @@
 // C-AMM inside or outside class ? Maybe outside but in another header with other similar enum for other subdetectors ?
 enum TargetVersion
 {
-    oneBlock = 0,
-    // 1 to 10 for fixed absorber+air gap structure
-    old = 10,
-    // Above 10 for variable sections
     CDR = 18,    // tube geo
     Jun25 = 20   // tube geo
 };
@@ -63,4 +59,4 @@ class ShipTargetStation : public FairModule
     Int_t fnS;
     TargetVersion fTV;
 };
-#endif //TargetStation_H
+#endif // PASSIVE_SHIPTARGETSTATION_H_
