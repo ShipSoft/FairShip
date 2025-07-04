@@ -1,8 +1,8 @@
 import os
+
 import shipunit as u
-import ROOT as r
-from ShipGeoConfig import AttrDict, ConfigRegistry
 import yaml
+from ShipGeoConfig import AttrDict, ConfigRegistry
 
 # the following params should be passed through 'ConfigRegistry.loadpy' method
 # nuTargetPassive = 1  #0 = with active layers, 1 = only passive
@@ -350,10 +350,7 @@ with ConfigRegistry.register_config("basic") as c:
     c.hadronAbsorber = AttrDict()
 
     c.target.prox_shld = 0.5536 * u.m
-    c.real_target_length = c.target.length
-    c.hadronAbsorber.z = c.hadronAbsorber.halflength = (
-        c.target.z0 + c.real_target_length / 2
-    )
+    c.hadronAbsorber.z = c.hadronAbsorber.halflength = c.target.z0 + c.target.length / 2
     c.muShield.z = c.hadronAbsorber.z + c.hadronAbsorber.halflength + c.target.prox_shld
     c.decayVolume = AttrDict()
 
