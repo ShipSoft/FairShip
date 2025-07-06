@@ -63,9 +63,9 @@ ap.add_argument('-f', '--force', action='store_true', help="force overwriting ou
 ap.add_argument('-r', '--run-number', type=int, dest='runnr', default=runnr)
 ap.add_argument('-e', '--ecut', type=float, help="energy cut", dest='ecut', default=ecut)
 ap.add_argument('-n', '--num-events', type=int, help="number of events to generate", dest='nev', default=nev)
-ap.add_argument('-G', '--G4only', action=argparse.BooleanOptionalAction, dest='G4only', default=False, 
+ap.add_argument('-G', '--G4only', action=argparse.BooleanOptionalAction, dest='G4only', default=False,
                 help="Whether or not to use Geant4 directly, no Pythia8 (--no-G4only or --G4only). Default set to False.")
-ap.add_argument('-P', '--PythiaDecay', action=argparse.BooleanOptionalAction, dest='pythiaDecay', default=False, 
+ap.add_argument('-P', '--PythiaDecay', action=argparse.BooleanOptionalAction, dest='pythiaDecay', default=False,
                 help="Whether or not to use Pythia8 for decays (--no-PythiaDecay or --PythiaDecay). Default set to False.")
 # ap.add_argument('-V', '--EvtGen', action='store_true', dest='withEvtGen', default=withEvtGen, help="use EvtGen for decays")
 ap.add_argument('-t', '--tau-only', action=argparse.BooleanOptionalAction, dest='tauOnly', default=False)
@@ -205,7 +205,7 @@ if AddMuonShield or AddHadronAbsorberOnly:
     #if not AddMuonShieldField:
     #    for i in range(7):
     #        ship_geo.muShield.params[7 + i * 13 + 12] = 0
-    MuonShield = ROOT.ShipMuonShield(in_params=list(ship_geo.muShield.params), z=ship_geo.muShield.z, WithConstShieldField=ship_geo.muShield.WithConstField, 
+    MuonShield = ROOT.ShipMuonShield(in_params=list(ship_geo.muShield.params), z=ship_geo.muShield.z, WithConstShieldField=ship_geo.muShield.WithConstField,
                                      SC_key=ship_geo.SC_mag, AddHadronAbsorberOnly=AddHadronAbsorberOnly, TurnFieldOff=not AddMuonShieldField)
     # MuonShield.SetSupports(False) # otherwise overlap with sensitive Plane
     run.AddModule(MuonShield) # needs to be added because of magn hadron shield.
