@@ -88,6 +88,9 @@ ap.add_argument('-rs', '--seed', type=int, help="random seed; default value is 0
 ap.add_argument('--DecayVolumeMedium', dest='DecayVolumeMedium', help='Set Decay Volume Medium. Choices are helium (default) or vacuums.', default='helium', choices=['helium', 'vacuums'])
 ap.add_argument('--shieldName', dest='shieldName', help='Name of the shield in the database. New_HA_Design or warm_opt.', default='New_HA_Design', choices=['New_HA_Design', 'warm_opt'])
 ap.add_argument('--AddMuonShield', dest='AddMuonShield', help='Whether or not to add the muon shield. Default set to False.', default=False, action=argparse.BooleanOptionalAction)
+ap.add_argument('--AddMuonShieldField', dest='AddMuonShieldField', help='Whether or not to add the muon shield magnetic field. Default set to True.', default=True, action=argparse.BooleanOptionalAction)
+ap.add_argument('--AddHadronAbsorberOnly', dest='AddHadronAbsorberOnly', help='Whether to only add the hadron absorber part of the muon shield. Default set to False.', default=False, action=argparse.BooleanOptionalAction)
+
 ap.add_argument('--TARGET_YAML', dest='TARGET_YAML', help='File for target configuration', default=os.path.expandvars('$FAIRSHIP/geometry/target_config_old.yaml'))
 
 args = ap.parse_args()
@@ -107,6 +110,9 @@ FourDP         = args.FourDP
 DecayVolumeMedium = args.DecayVolumeMedium
 shieldName = args.shieldName
 AddMuonShield = args.AddMuonShield
+AddMuonShieldField = args.AddMuonShieldField
+AddHadronAbsorberOnly = args.AddHadronAbsorberOnly
+
 TARGET_YAML = args.TARGET_YAML
 
 if G4only:
@@ -158,7 +164,7 @@ ship_geo_kwargs = {'Yheight': dy,
                    'DecayVolumeMedium': DecayVolumeMedium, 'shieldName': shieldName,
                    'TARGET_YAML': os.path.expandvars('$FAIRSHIP/geometry/target_config_Jun25.yaml')
                    }
-if AddMuonShield:
+if AddMuonShield or AddHadronAbsorberOnly:
     ship_geo_kwargs['muShieldDesign'] = ds
 ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", **ship_geo_kwargs)
 
@@ -188,17 +194,19 @@ run.AddModule(cave)
 
 TargetStation = ROOT.ShipTargetStation(name="TargetStation",
                                        tl=ship_geo.target.length,
-                                       al=ship_geo.hadronAbsorber.halflength * 2,
                                        tz=ship_geo.target.z,
-                                       az=ship_geo.hadronAbsorber.z + ship_geo.target.length,
                                        tV=ship_geo.targetVersion,
                                        nS=ship_geo.target.nS)
 TargetStation.SetLayerPosMat(d=ship_geo.target.xy, L=ship_geo.target.slices_length, G=ship_geo.target.slices_gap, M=ship_geo.target.slices_material)
 run.AddModule(TargetStation)
 
 
-if AddMuonShield:
-    MuonShield = ROOT.ShipMuonShield(in_params=list(ship_geo.muShield.params), z=ship_geo.muShield.z, WithConstShieldField=ship_geo.muShield.WithConstField, SC_key=ship_geo.SC_mag)
+if AddMuonShield or AddHadronAbsorberOnly:
+    #if not AddMuonShieldField:
+    #    for i in range(7):
+    #        ship_geo.muShield.params[7 + i * 13 + 12] = 0
+    MuonShield = ROOT.ShipMuonShield(in_params=list(ship_geo.muShield.params), z=ship_geo.muShield.z, WithConstShieldField=ship_geo.muShield.WithConstField, 
+                                     SC_key=ship_geo.SC_mag, AddHadronAbsorberOnly=AddHadronAbsorberOnly, TurnFieldOff=not AddMuonShieldField)
     # MuonShield.SetSupports(False) # otherwise overlap with sensitive Plane
     run.AddModule(MuonShield) # needs to be added because of magn hadron shield.
 sensPlane = ROOT.exitHadronAbsorber()

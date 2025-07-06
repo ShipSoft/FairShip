@@ -19,6 +19,10 @@
 
 #include <iostream>   // for operator<<, basic_ostream, etc
 
+#include <stddef.h>
+using std::cout;
+using std::endl;
+
 using ShipUnit::cm;
 using ShipUnit::m;
 using ShipUnit::mm;
@@ -47,7 +51,36 @@ ShipMuonShield::ShipMuonShield(std::vector<double> in_params,
   dZ7 = in_params[6];
   fMuonShieldHalfLength = dZ1 + dZ2 + dZ3 + dZ4 + dZ5 + dZ6 + dZ7;
   z_end_of_proximity_shielding = z;
+  fAddHadronAbsorberOnly = false;
+  fTurnFieldOff = false;
 }
+
+ShipMuonShield::ShipMuonShield(std::vector<double> in_params,
+                               Double_t z,
+                               const Bool_t WithConstShieldField,
+                               const Bool_t SC_key,
+                               const Bool_t AddHadronAbsorberOnly,
+                               const Bool_t TurnFieldOff)
+    : FairModule("MuonShield", "ShipMuonShield")
+{
+  for(size_t i = 0; i < in_params.size(); i++){
+      shield_params.push_back(in_params[i]);
+  }
+  fWithConstShieldField = WithConstShieldField;
+  fSC_mag = SC_key;
+  dZ1 = in_params[0];
+  dZ2 = in_params[1];
+  dZ3 = in_params[2];
+  dZ4 = in_params[3];
+  dZ5 = in_params[4];
+  dZ6 = in_params[5];
+  dZ7 = in_params[6];
+  fMuonShieldHalfLength = dZ1 + dZ2 + dZ3 + dZ4 + dZ5 + dZ6 + dZ7;
+  z_end_of_proximity_shielding = z;
+  fAddHadronAbsorberOnly = AddHadronAbsorberOnly;
+  fTurnFieldOff = TurnFieldOff;
+}
+
 
 // -----   Private method InitMedium
 Int_t ShipMuonShield::InitMedium(TString name)
@@ -351,60 +384,65 @@ Int_t ShipMuonShield::Initialize(std::vector<TString> &magnetName,
   LOG(INFO) << " Initialize the MS ";
   magnetName.reserve(nMagnets);
   fieldDirection.reserve(nMagnets);
-  for (auto i :
-       {&dXIn, &dXOut, &dYIn, &dYOut, &dZ, &midGapIn, &midGapOut,
-	&ratio_yokesIn , &ratio_yokesOut, &dY_yokeIn, &dY_yokeOut, &Bgoal, &gapIn, &gapOut, &Z}) {
-    i->reserve(nMagnets);
+  for (auto i : {&dXIn, &dXOut, &dYIn, &dYOut, &dZ, &midGapIn, &midGapOut, &ratio_yokesIn , &ratio_yokesOut, &dY_yokeIn, &dY_yokeOut, &Bgoal, &gapIn, &gapOut, &Z}) {
+      i->reserve(nMagnets);
   }
 
   Double_t z_gap = 10 * cm;   // fixed distance between magnets in Z-axis
 
-  magnetName = {"MagnAbsorb", "Magn1", "Magn2", "Magn3",
-    "Magn4",       "Magn5",       "Magn6"};
+  if (!fAddHadronAbsorberOnly) {
+      magnetName = {"MagnAbsorb", "Magn1", "Magn2", "Magn3",
+        "Magn4",       "Magn5",       "Magn6"};
 
-  fieldDirection = {
-FieldDirection::up,   FieldDirection::up,   FieldDirection::up,
-FieldDirection::up,   FieldDirection::down,   FieldDirection::down,
-FieldDirection::down };
+      fieldDirection = {
+           FieldDirection::up,   FieldDirection::up,   FieldDirection::up,
+           FieldDirection::up,   FieldDirection::down,   FieldDirection::down,
+           FieldDirection::down };
 
-  std::vector<Double_t> params;
-  params = shield_params;
+      std::vector<Double_t> params;
+      params = shield_params;
 
-  const int offset = nMagnets;
-  const int nParams = 13;
+      const int offset = nMagnets;
+      const int nParams = 13;
 
-
-  for (Int_t i = 0; i < nMagnets; ++i) {
-    dXIn[i] = params[offset + i * nParams + 0];
-    dXOut[i] = params[offset + i * nParams + 1];
-    dYIn[i] = params[offset + i * nParams + 2];
-    dYOut[i] = params[offset + i * nParams + 3];
-    gapIn[i] = params[offset + i * nParams + 4];
-    gapOut[i] = params[offset + i * nParams + 5];
-    ratio_yokesIn[i] = params[offset + i * nParams + 6];
-    ratio_yokesOut[i] = params[offset + i * nParams + 7];
-    dY_yokeIn[i] = params[offset + i * nParams + 8];
-    dY_yokeOut[i] = params[offset + i * nParams + 9];
-    midGapIn[i] = params[offset + i * nParams + 10];
-    midGapOut[i] = params[offset + i * nParams + 11];
-    Bgoal[i] = params[offset + i * nParams + 12];
-  }
+      for (Int_t i = 0; i < nMagnets; ++i) {
+        dXIn[i] = params[offset + i * nParams + 0];
+        dXOut[i] = params[offset + i * nParams + 1];
+        dYIn[i] = params[offset + i * nParams + 2];
+        dYOut[i] = params[offset + i * nParams + 3];
+        gapIn[i] = params[offset + i * nParams + 4];
+        gapOut[i] = params[offset + i * nParams + 5];
+        ratio_yokesIn[i] = params[offset + i * nParams + 6];
+        ratio_yokesOut[i] = params[offset + i * nParams + 7];
+        dY_yokeIn[i] = params[offset + i * nParams + 8];
+        dY_yokeOut[i] = params[offset + i * nParams + 9];
+        midGapIn[i] = params[offset + i * nParams + 10];
+        midGapOut[i] = params[offset + i * nParams + 11];
+        if (!fTurnFieldOff) {
+            Bgoal[i] = params[offset + i * nParams + 12];
+        } else {
+            Bgoal[i] = 0;
+        }
+      }
+  };
 
   dZ[0] = dZ1 - z_gap / 2;
-  Z[0] = z_end_of_proximity_shielding + dZ[0] + z_gap;
-  dZ[1] = dZ2 - z_gap / 2;
-  Z[1] = Z[0] + dZ[0] + dZ[1] + z_gap;
-  dZ[2] = dZ3 - z_gap / 2;
-  Z[2] = Z[1] + dZ[1] + dZ[2] + 2 * z_gap;
-  dZ[3] = dZ4 - z_gap / 2;
-  Z[3] = Z[2] + dZ[2] + dZ[3] + z_gap;
-  dZ[4] = dZ5 - z_gap / 2;
-  Z[4] = Z[3] + dZ[3] + dZ[4] + z_gap;
-  dZ[5] = dZ6 - z_gap / 2;
-  Z[5] = Z[4] + dZ[4] + dZ[5] + z_gap;
-  dZ[6] = dZ7 - z_gap / 2;
-  Z[6] = Z[5] + dZ[5] + dZ[6] + z_gap;
 
+  if (!fAddHadronAbsorberOnly) {
+      Z[0] = z_end_of_proximity_shielding + dZ[0] + z_gap;
+      dZ[1] = dZ2 - z_gap / 2;
+      Z[1] = Z[0] + dZ[0] + dZ[1] + z_gap;
+      dZ[2] = dZ3 - z_gap / 2;
+      Z[2] = Z[1] + dZ[1] + dZ[2] + 2 * z_gap;
+      dZ[3] = dZ4 - z_gap / 2;
+      Z[3] = Z[2] + dZ[2] + dZ[3] + z_gap;
+      dZ[4] = dZ5 - z_gap / 2;
+      Z[4] = Z[3] + dZ[3] + dZ[4] + z_gap;
+      dZ[5] = dZ6 - z_gap / 2;
+      Z[5] = Z[4] + dZ[4] + dZ[5] + z_gap;
+      dZ[6] = dZ7 - z_gap / 2;
+      Z[6] = Z[5] + dZ[5] + dZ[6] + z_gap;
+  };
   return nMagnets;
 }
 void ShipMuonShield::ConstructGeometry()
@@ -418,6 +456,7 @@ void ShipMuonShield::ConstructGeometry()
     std::vector<FieldDirection> fieldDirection;
     std::vector<Double_t> dXIn, dYIn, dXOut, dYOut, dZf, midGapIn, midGapOut, ratio_yokesIn, ratio_yokesOut, dY_yokeIn,
         dY_yokeOut, gapIn, gapOut, Bgoal, Z;
+
     const Int_t nMagnets = Initialize(magnetName,
                                       fieldDirection,
                                       dXIn,
@@ -437,56 +476,60 @@ void ShipMuonShield::ConstructGeometry()
                                       Z);
 
     // Create TCC8 tunnel around muon shield
+    if (!fAddHadronAbsorberOnly) {
+        std::array<double, 7> fieldScale = {{1., 1., 1., 1., 1., 1., 1.}};
+        for (Int_t nM = 0; nM < (nMagnets); nM++) {
+            if (dZf[nM] < 1e-5 || dXIn[nM] == 0){
+                        continue;
+                      }
+            Double_t ironField_s = Bgoal[nM] * fieldScale[nM] * tesla;
+            TGeoUniformMagField *magFieldIron_s = new TGeoUniformMagField(0.,ironField_s,0.);
+            TGeoUniformMagField *RetField_s     = new TGeoUniformMagField(0.,-ironField_s,0.);
+            TGeoUniformMagField *ConRField_s    = new TGeoUniformMagField(-ironField_s,0.,0.);
+            TGeoUniformMagField *ConLField_s    = new TGeoUniformMagField(ironField_s,0.,0.);
+            TGeoUniformMagField *fields_s[4] = {magFieldIron_s,RetField_s,ConRField_s,ConLField_s};
+            // Create the magnet
+            CreateMagnet(magnetName[nM], iron, tShield, fields_s, fieldDirection[nM],
+              dXIn[nM], dYIn[nM], dXOut[nM], dYOut[nM],  ratio_yokesIn[nM], ratio_yokesOut[nM], dY_yokeIn[nM], dY_yokeOut[nM], dZf[nM],
+              midGapIn[nM], midGapOut[nM], gapIn[nM], gapOut[nM], Z[nM], nM==0, nM == 3 && fSC_mag);
+            }
+    };
+    // Place in origin of SHiP coordinate system as subnodes placed correctly
+    if (!fAddHadronAbsorberOnly) {
+        top->AddNode(tShield, 1);
+    }
 
-    std::array<double, 7> fieldScale = {{1., 1., 1., 1., 1., 1., 1.}};
-    for (Int_t nM = 0; nM < (nMagnets); nM++) {
-        if (dZf[nM] < 1e-5 || dXIn[nM] == 0){
-                    continue;
-                  }
-        Double_t ironField_s = Bgoal[nM] * fieldScale[nM] * tesla;
-        TGeoUniformMagField *magFieldIron_s = new TGeoUniformMagField(0.,ironField_s,0.);
-        TGeoUniformMagField *RetField_s     = new TGeoUniformMagField(0.,-ironField_s,0.);
-        TGeoUniformMagField *ConRField_s    = new TGeoUniformMagField(-ironField_s,0.,0.);
-        TGeoUniformMagField *ConLField_s    = new TGeoUniformMagField(ironField_s,0.,0.);
-        TGeoUniformMagField *fields_s[4] = {magFieldIron_s,RetField_s,ConRField_s,ConLField_s};
-        // Create the magnet
-        CreateMagnet(magnetName[nM], iron, tShield, fields_s, fieldDirection[nM],
-          dXIn[nM], dYIn[nM], dXOut[nM], dYOut[nM],  ratio_yokesIn[nM], ratio_yokesOut[nM], dY_yokeIn[nM], dY_yokeOut[nM], dZf[nM],
-          midGapIn[nM], midGapOut[nM], gapIn[nM], gapOut[nM], Z[nM], nM==0, nM == 3 && fSC_mag);
-        }
+    Double_t z_gap = 10 * cm;
+    Double_t absorber_offset = z_gap;
+    Double_t absorber_half_length = (dZf[0]);
 
-      // Place in origin of SHiP coordinate system as subnodes placed correctly
-      top->AddNode(tShield, 1);
+    // Absorber
 
-      Double_t z_gap = 10 * cm;
-      Double_t absorber_offset = z_gap;
-      Double_t absorber_half_length = (dZf[0]);
+    auto abs = new TGeoBBox("absorber", 4.995 * m - 0.002 * m, 3.75 * m, absorber_half_length - 0.002 * m);
+    auto *absorber_shift = new TGeoTranslation("absorber_shift", 1.435 * m, 2.05 * m, 0);
+    absorber_shift->RegisterYourself();
 
-      // Absorber
-
-      auto abs = new TGeoBBox("absorber", 4.995 * m - 0.002 * m, 3.75 * m, absorber_half_length - 0.002 * m);
-      auto *absorber_shift = new TGeoTranslation("absorber_shift", 1.435 * m, 2.05 * m, 0);
-      absorber_shift->RegisterYourself();
-
-      const std::vector<TString> absorber_magnets = {"MagnAbsorb"};
-      const std::vector<TString> magnet_components = {
+    const std::vector<TString> absorber_magnets = {"MagnAbsorb"};
+    const std::vector<TString> magnet_components = {
         "_MiddleMagL", "_MiddleMagR",  "_MagRetL",    "_MagRetR",
         "_MagTopLeft", "_MagTopRight", "_MagBotLeft", "_MagBotRight",
     };
-      TString absorber_magnet_components;
-      for (auto &&magnet_component : magnet_components) {
-          absorber_magnet_components += ("-" + absorber_magnets[0] + magnet_component);
-      }
 
-      TGeoCompositeShape* absorberShape =
-          new TGeoCompositeShape("Absorber", "absorber:absorber_shift" + absorber_magnet_components);
+    TString absorber_magnet_components = "";
 
-      TGeoVolume *absorber = new TGeoVolume("AbsorberVol", absorberShape, iron);
-      absorber->SetLineColor(42); // brown / light red
-      tShield->AddNode(
-          absorber,
-          1,
-          new TGeoTranslation(0,
-                              0,
-                              z_end_of_proximity_shielding + absorber_half_length + absorber_offset));   // - Passive?
+    if (!fAddHadronAbsorberOnly) {
+        for (auto &&magnet_component : magnet_components) {
+            absorber_magnet_components += ("-" + absorber_magnets[0] + magnet_component);
+        }
+    };
+    TGeoCompositeShape* absorberShape = new TGeoCompositeShape("Absorber", "absorber:absorber_shift" + absorber_magnet_components);
+
+    TGeoVolume *absorber = new TGeoVolume("AbsorberVol", absorberShape, iron);
+    absorber->SetLineColor(42); // brown / light red
+    tShield->AddNode(
+        absorber,
+        1,
+        new TGeoTranslation(0,
+                            0,
+                            z_end_of_proximity_shielding + absorber_half_length + absorber_offset));   // - Passive?
 }
