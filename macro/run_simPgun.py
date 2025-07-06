@@ -1,28 +1,35 @@
+import yaml
+import ROOT,os
+import atexit
+import shipunit as u
+
+from ShipGeoConfig import ConfigRegistry, AttrDict
+
+
 mcEngine  = "TGeant4"
 simEngine = "Pgun"
 nEvents = 5
 
-import ROOT,os
 ROOT.gROOT.LoadMacro("$VMCWORKDIR/gconfig/basiclibs.C")
 ROOT.basiclibs()
 
 #-----prepare python exit-----------------------------------------------
 def pyExit():
- global run
- del run
-import atexit
+    global run
+    del run
+
 atexit.register(pyExit)
 
-#
-muShieldLength       = 7000 # m
-targetHadronAbsorber = 350  # m
-decayVolumeLength    = 5000 # m
+Yheight = 10
+DecayVolumeMedium = 'helium'
+shieldName = 'New_HA_Design'
+
 # Output file name
-tag = simEngine+"-"+mcEngine
-outFile = "ship."+tag+".root"
+tag = f'{simEngine}-{mcEngine}'
+outFile = f"ship.{tag}.root"
 os.system("rm *."+tag+".root")
 # Parameter file name
-parFile="ship.params."+tag+".root"
+parFile = f"ship.params.{tag}.root"
 
 # In general, the following parts need not be touched
 # ========================================================================
@@ -34,24 +41,28 @@ timer.Start()
 
 # -----Create simulation run----------------------------------------
 run = ROOT.FairRunSim()
-run.SetName(mcEngine)# Transport engine
+run.SetName(mcEngine) # Transport engine
 run.SetOutputFile(outFile) # Output file
+run.SetUserConfig('g4Config.C')
 rtdb = run.GetRuntimeDb()
 # ------------------------------------------------------------------------
 
 # -----Create media-------------------------------------------------
 run.SetMaterials("media.geo")  # Materials
 # ------------------------------------------------------------------------
+ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight=Yheight, DecayVolumeMedium=DecayVolumeMedium, shieldName=shieldName)
 
 # -----Create geometry----------------------------------------------
-
 cave= ROOT.ShipCave("CAVE")
-cave.SetGeometryFileName("cave.geo")
+cave.SetGeometryFileName("caveWithAir.geo")
 run.AddModule(cave)
 
-TargetStation = ROOT.ShipTargetStation("TargetStation",muShieldLength)
+TargetStation = ROOT.ShipTargetStation("TargetStation", ship_geo.target.length, ship_geo.target.z, ship_geo.targetVersion, ship_geo.target.nS)
+if ship_geo.targetVersion > 10:
+    TargetStation.SetLayerPosMat(ship_geo.target.xy, ship_geo.target.slices_length, ship_geo.target.slices_gap, ship_geo.target.slices_material)
 run.AddModule(TargetStation)
-MuonShield = ROOT.ShipMuonShield("MuonShield",1)
+
+MuonShield = ROOT.ShipMuonShield(in_params=list(ship_geo.muShield.params), z=ship_geo.muShield.z, WithConstShieldField=ship_geo.muShield.WithConstField, SC_key=ship_geo.SC_mag)
 run.AddModule(MuonShield)
 
 magnet = ROOT.ShipMagnet("Magnet")
@@ -60,13 +71,52 @@ run.AddModule(magnet)
 Chamber = ROOT.ShipChamber("Chamber")
 run.AddModule(Chamber)
 
-Veto = ROOT.veto("Veto", ROOT.kTRUE)
+fairship = os.environ["FAIRSHIP"]
+with open(f"{fairship}/geometry/veto_config_{ship_geo.DecayVolumeMedium}.yaml") as file:
+    config = yaml.safe_load(file)
+veto_geo = AttrDict(config)
+
+Veto = ROOT.veto()
+Veto.SetVesselDimensions(
+        veto_geo.xstartInner,
+        veto_geo.xendInner,
+        veto_geo.ystartInner,
+        veto_geo.yendInner,
+        ship_geo.decayVolume.z0,
+    )
+Veto.SetLiquidVeto(1)
+Veto.SetVesselStructure(
+        veto_geo.innerSupport,
+        veto_geo.sensitiveThickness,
+        veto_geo.outerSupport,
+        veto_geo.innerSupportMed,
+        veto_geo.lidThickness,
+        veto_geo.sensitiveMed,
+        veto_geo.outerSupportMed,
+        veto_geo.decayMed,
+        veto_geo.rib,
+    )
+
+# Veto = ROOT.veto()
 run.AddModule(Veto)
 
-ecal = ROOT.ecal("Ecal", ROOT.kTRUE)
+ecal = ROOT.ecal("Ecal", ROOT.kTRUE, ship_geo.ecal.File)
 run.AddModule(ecal)
 
 Muon = ROOT.muon("Muon", ROOT.kTRUE)
+Muon.SetZStationPositions(
+    ship_geo.MuonStation0.z,
+    ship_geo.MuonStation1.z,
+    ship_geo.MuonStation2.z,
+    ship_geo.MuonStation3.z,
+)
+Muon.SetZFilterPositions(
+    ship_geo.MuonFilter0.z, ship_geo.MuonFilter1.z, ship_geo.MuonFilter2.z
+)
+Muon.SetXMax(ship_geo.Muon.XMax)
+Muon.SetYMax(ship_geo.Muon.YMax)
+Muon.SetActiveThickness(ship_geo.Muon.ActiveThickness)
+Muon.SetFilterThickness(ship_geo.Muon.FilterThickness)
 run.AddModule(Muon)
 
 #-----   Magnetic field   -------------------------------------------
@@ -78,11 +128,14 @@ run.SetField(fMagField)
 
 # -----Create PrimaryGenerator--------------------------------------
 primGen = ROOT.FairPrimaryGenerator()
-pointZero =  -decayVolumeLength/2. - targetHadronAbsorber - muShieldLength - 200.
-
-mom = ROOT.TVector3(0.,0.,100.)
-pos = ROOT.TVector3(0.,0.,pointZero)
-myPgun = ROOT.FairParticleGenerator(2212,1,0.,0.,100.,0.,0.,pointZero)
+pointZero = ship_geo.target.z0
+mom = ROOT.TVector3(0., 0., 100.)
+pos = ROOT.TVector3(0., 0., pointZero)
+myPgun = ROOT.FairParticleGenerator(2212, 1, 0., 0., 100., 0., 0., pointZero)
+#myPgun = ROOT.FairBoxGenerator(2212, 1)
+#myPgun.SetPRange(10, 10)
+#myPgun.SetPhiRange(0, 360)
+#myPgun.SetThetaRange(0, 0)
 primGen.AddGenerator(myPgun)
 
 run.SetGenerator(primGen)
@@ -106,7 +159,7 @@ rtdb.saveOutput()
 rtdb.printParamContexts()
 # -----Start run----------------------------------------------------
 run.Run(nEvents)
-run.CreateGeometryFile("geofile_full."+tag+".root")
+run.CreateGeometryFile(f"geofile_full.{tag}.root")
 # ------------------------------------------------------------------------
 
 # -----Finish-------------------------------------------------------
@@ -115,38 +168,38 @@ rtime = timer.RealTime()
 ctime = timer.CpuTime()
 print(' ')
 print("Macro finished successfully.")
-print("Output file is ",  outFile)
-print("Parameter file is ",parFile)
-print("Real time ",rtime, " s, CPU time ",ctime,"s")
+print(f"Output file is {outFile}")
+print(f"Parameter file is {parFile}")
+print(f"Real time {rtime} s, CPU time {ctime} s")
 
 # ------------------------------------------------------------------------
 
 def someDebug():
- g = ROOT.gROOT
- lm = run.GetListOfModules()
- for x in lm: print(x.GetName())
- fGeo = ROOT.gGeoManager
- cave = fGeo.GetTopVolume()
- cave.Draw('ogl')
-#
- tf = g.FindObjectAny('cbmroot')
- for l in tf.GetListOfFolders(): print(l.GetName())
- l   = tf.FindObject('MCGeoTrack')
- trs = l.FindObject('GeoTracks')
- for x in trs: print(x)
- l = tf.FindObject('Stack')
- trs = l.FindObject('MCTrack')
- for x in trs: print(x)
-#
- gMC = ROOT.gMC # <ROOT.TVirtualMC* object ("TGeant4") at 0x2a5d3e8>
- fStack = gMC.GetStack()
- gMC.ProcessRun(1) # 1 event
-#
- gMC.GetMC() # <ROOT.TGeant4 object ("TGeant4")
- g4.NofVolumes()
- g4.StartGeantUI()
-#
- gPrim = run.GetPrimaryGenerator()
- mch   = gPrim.GetEvent() # <ROOT.FairMCEventHeader object ("MCEventHeader.")
- print(mch.GetEventID(),mch.GetZ())
- gPy8 = gPrim.GetListOfGenerators()[0]
+    g = ROOT.gROOT
+    lm = run.GetListOfModules()
+    for x in lm: print(x.GetName())
+    fGeo = ROOT.gGeoManager
+    cave = fGeo.GetTopVolume()
+    cave.Draw('ogl')
+
+    tf = g.FindObjectAny('cbmroot')
+    for l in tf.GetListOfFolders(): print(l.GetName())
+    l   = tf.FindObject('MCGeoTrack')
+    trs = l.FindObject('GeoTracks')
+    for x in trs: print(x)
+    l = tf.FindObject('Stack')
+    trs = l.FindObject('MCTrack')
+    for x in trs: print(x)
+
+    gMC = ROOT.gMC # <ROOT.TVirtualMC* object ("TGeant4") at 0x2a5d3e8>
+    fStack = gMC.GetStack()
+    gMC.ProcessRun(1) # 1 event
+
+    gMC.GetMC() # <ROOT.TGeant4 object ("TGeant4")
+    g4.NofVolumes()
+    g4.StartGeantUI()
+
+    gPrim = run.GetPrimaryGenerator()
+    mch   = gPrim.GetEvent() # <ROOT.FairMCEventHeader object ("MCEventHeader.")
+    print(mch.GetEventID(),mch.GetZ())
+    gPy8 = gPrim.GetListOfGenerators()[0]
