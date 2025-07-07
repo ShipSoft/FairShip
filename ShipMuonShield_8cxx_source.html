@@ -447,96 +447,83 @@ $(document).ready(function(){initNavTree('ShipMuonShield_8cxx_source.html',''); 
 <div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span>    TGeoVolume* tShield = <span class="keyword">new</span> TGeoVolumeAssembly(<span class="stringliteral">&quot;MuonShieldArea&quot;</span>);</div>
 <div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span>    <a class="code hl_function" href="classShipMuonShield.html#ac4224450310d00f431be3d75bb3d6904">InitMedium</a>(<span class="stringliteral">&quot;iron&quot;</span>);</div>
 <div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span>    TGeoMedium* iron = gGeoManager-&gt;GetMedium(<span class="stringliteral">&quot;iron&quot;</span>);</div>
-<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span>    <a class="code hl_function" href="classShipMuonShield.html#ac4224450310d00f431be3d75bb3d6904">InitMedium</a>(<span class="stringliteral">&quot;copper&quot;</span>);</div>
-<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span>    TGeoMedium* copper = gGeoManager-&gt;GetMedium(<span class="stringliteral">&quot;copper&quot;</span>);</div>
-<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span> </div>
-<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span>    std::vector&lt;TString&gt; magnetName;</div>
-<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>    std::vector&lt;FieldDirection&gt; fieldDirection;</div>
-<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>    std::vector&lt;Double_t&gt; dXIn, dYIn, dXOut, dYOut, dZf, midGapIn, midGapOut, ratio_yokesIn, ratio_yokesOut, dY_yokeIn,</div>
-<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>        dY_yokeOut, gapIn, gapOut, Bgoal, Z;</div>
-<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span>    <span class="keyword">const</span> Int_t nMagnets = <a class="code hl_function" href="classShipMuonShield.html#a581dc74485cbcb3e8e5ee0871efe1c7a">Initialize</a>(magnetName,</div>
-<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>                                      fieldDirection,</div>
-<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>                                      dXIn,</div>
-<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>                                      dYIn,</div>
-<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span>                                      dXOut,</div>
-<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span>                                      dYOut,</div>
-<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span>                                      ratio_yokesIn,</div>
-<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span>                                      ratio_yokesOut,</div>
-<div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span>                                      dY_yokeIn,</div>
-<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span>                                      dY_yokeOut,</div>
-<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span>                                      dZf,</div>
-<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span>                                      midGapIn,</div>
-<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span>                                      midGapOut,</div>
-<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span>                                      Bgoal,</div>
-<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>                                      gapIn,</div>
-<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span>                                      gapOut,</div>
-<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span>                                      Z);</div>
+<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span> </div>
+<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span>    std::vector&lt;TString&gt; magnetName;</div>
+<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span>    std::vector&lt;FieldDirection&gt; fieldDirection;</div>
+<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span>    std::vector&lt;Double_t&gt; dXIn, dYIn, dXOut, dYOut, dZf, midGapIn, midGapOut, ratio_yokesIn, ratio_yokesOut, dY_yokeIn,</div>
+<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>        dY_yokeOut, gapIn, gapOut, Bgoal, Z;</div>
+<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>    <span class="keyword">const</span> Int_t nMagnets = <a class="code hl_function" href="classShipMuonShield.html#a581dc74485cbcb3e8e5ee0871efe1c7a">Initialize</a>(magnetName,</div>
+<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>                                      fieldDirection,</div>
+<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span>                                      dXIn,</div>
+<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>                                      dYIn,</div>
+<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>                                      dXOut,</div>
+<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>                                      dYOut,</div>
+<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span>                                      ratio_yokesIn,</div>
+<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span>                                      ratio_yokesOut,</div>
+<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span>                                      dY_yokeIn,</div>
+<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span>                                      dY_yokeOut,</div>
+<div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span>                                      dZf,</div>
+<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span>                                      midGapIn,</div>
+<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span>                                      midGapOut,</div>
+<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span>                                      Bgoal,</div>
+<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span>                                      gapIn,</div>
+<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span>                                      gapOut,</div>
+<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>                                      Z);</div>
+<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span> </div>
+<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span>    <span class="comment">// Create TCC8 tunnel around muon shield</span></div>
 <div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span> </div>
-<div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span>    <span class="comment">// Create TCC8 tunnel around muon shield</span></div>
-<div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span> </div>
-<div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span>    std::array&lt;double, 7&gt; fieldScale = {{1., 1., 1., 1., 1., 1., 1.}};</div>
-<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span>    <span class="keywordflow">for</span> (Int_t nM = 0; nM &lt; (nMagnets); nM++) {</div>
-<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span>        <span class="keywordflow">if</span> (dZf[nM] &lt; 1e-5 || dXIn[nM] == 0){</div>
-<div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span>                    <span class="keywordflow">continue</span>;</div>
-<div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span>                  }</div>
-<div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span>        Double_t ironField_s = Bgoal[nM] * fieldScale[nM] * <a class="code hl_variable" href="ShipBellField_8cxx.html#a051a74c8506be0a4072e69b52b7113a8">tesla</a>;</div>
-<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span>        TGeoUniformMagField *magFieldIron_s = <span class="keyword">new</span> TGeoUniformMagField(0.,ironField_s,0.);</div>
-<div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span>        TGeoUniformMagField *RetField_s     = <span class="keyword">new</span> TGeoUniformMagField(0.,-ironField_s,0.);</div>
-<div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span>        TGeoUniformMagField *ConRField_s    = <span class="keyword">new</span> TGeoUniformMagField(-ironField_s,0.,0.);</div>
-<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span>        TGeoUniformMagField *ConLField_s    = <span class="keyword">new</span> TGeoUniformMagField(ironField_s,0.,0.);</div>
-<div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span>        TGeoUniformMagField *fields_s[4] = {magFieldIron_s,RetField_s,ConRField_s,ConLField_s};</div>
-<div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span>        <span class="comment">// Create the magnet</span></div>
-<div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span>        <a class="code hl_function" href="classShipMuonShield.html#adc4671e1413b00224c312f8f55ec65b7">CreateMagnet</a>(magnetName[nM], iron, tShield, fields_s, fieldDirection[nM],</div>
-<div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span>          dXIn[nM], dYIn[nM], dXOut[nM], dYOut[nM],  ratio_yokesIn[nM], ratio_yokesOut[nM], dY_yokeIn[nM], dY_yokeOut[nM], dZf[nM],</div>
-<div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span>          midGapIn[nM], midGapOut[nM], gapIn[nM], gapOut[nM], Z[nM], nM==0, nM == 3 &amp;&amp; <a class="code hl_variable" href="classShipMuonShield.html#a92c765f3f0e52c87e24d34520480868d">fSC_mag</a>);</div>
-<div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span>        }</div>
-<div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span> </div>
-<div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span>      <span class="comment">// Place in origin of SHiP coordinate system as subnodes placed correctly</span></div>
-<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span>      top-&gt;AddNode(tShield, 1);</div>
-<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span> </div>
-<div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span>      Double_t z_gap = 10 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a36fc4b47251281f99efceaa80c7877f0">cm</a>;</div>
-<div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span>      Double_t absorber_offset = z_gap;</div>
-<div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span>      Double_t proximity_shield_half_length = 55.36 / 2 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a36fc4b47251281f99efceaa80c7877f0">cm</a>;</div>
-<div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span>      Double_t z_end_of_target = <a class="code hl_variable" href="classShipMuonShield.html#a899926b2ae70e54e604cb8851bc69ff1">z_end_of_proximity_shielding</a> - 2 * proximity_shield_half_length;</div>
-<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span>      Double_t absorber_half_length = (dZf[0]);</div>
-<div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span> </div>
-<div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span>      <span class="comment">// Proximity Shielding</span></div>
-<div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span>      <span class="keyword">auto</span> Proximity_Shielding = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;Proximity_Shielding&quot;</span>, 40 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a36fc4b47251281f99efceaa80c7877f0">cm</a>, 40 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a36fc4b47251281f99efceaa80c7877f0">cm</a>, proximity_shield_half_length);</div>
-<div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span>      <span class="keyword">auto</span>* Proximity_Shift = <span class="keyword">new</span> TGeoTranslation(<span class="stringliteral">&quot;Proximity_Shift&quot;</span>, 0 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>, 0 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>, 0 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>);</div>
-<div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span>      Proximity_Shift-&gt;RegisterYourself();</div>
-<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span>      TGeoVolume* Proximity_Shielding_vol = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;Proximity_Shielding_vol&quot;</span>, Proximity_Shielding, copper);</div>
-<div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span>      tShield-&gt;AddNode(Proximity_Shielding_vol,</div>
-<div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span>                       1,</div>
-<div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span>                       <span class="keyword">new</span> TGeoTranslation(0, 0, z_end_of_target + proximity_shield_half_length + 0.01 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>));</div>
-<div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span> </div>
-<div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span>      <span class="comment">// Absorber</span></div>
-<div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span> </div>
-<div class="line"><a id="l00404" name="l00404"></a><span class="lineno">  404</span>      <span class="keyword">auto</span> abs = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;absorber&quot;</span>, 4.995 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a> - 0.002 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>, 3.75 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>, absorber_half_length - 0.002 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>);</div>
-<div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span>      <span class="keyword">auto</span> *absorber_shift = <span class="keyword">new</span> TGeoTranslation(<span class="stringliteral">&quot;absorber_shift&quot;</span>, 1.435 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>, 2.05 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>, 0);</div>
-<div class="line"><a id="l00406" name="l00406"></a><span class="lineno">  406</span>      absorber_shift-&gt;RegisterYourself();</div>
+<div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span>    std::array&lt;double, 7&gt; fieldScale = {{1., 1., 1., 1., 1., 1., 1.}};</div>
+<div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span>    <span class="keywordflow">for</span> (Int_t nM = 0; nM &lt; (nMagnets); nM++) {</div>
+<div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span>        <span class="keywordflow">if</span> (dZf[nM] &lt; 1e-5 || dXIn[nM] == 0){</div>
+<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span>                    <span class="keywordflow">continue</span>;</div>
+<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span>                  }</div>
+<div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span>        Double_t ironField_s = Bgoal[nM] * fieldScale[nM] * <a class="code hl_variable" href="ShipBellField_8cxx.html#a051a74c8506be0a4072e69b52b7113a8">tesla</a>;</div>
+<div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span>        TGeoUniformMagField *magFieldIron_s = <span class="keyword">new</span> TGeoUniformMagField(0.,ironField_s,0.);</div>
+<div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span>        TGeoUniformMagField *RetField_s     = <span class="keyword">new</span> TGeoUniformMagField(0.,-ironField_s,0.);</div>
+<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span>        TGeoUniformMagField *ConRField_s    = <span class="keyword">new</span> TGeoUniformMagField(-ironField_s,0.,0.);</div>
+<div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span>        TGeoUniformMagField *ConLField_s    = <span class="keyword">new</span> TGeoUniformMagField(ironField_s,0.,0.);</div>
+<div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span>        TGeoUniformMagField *fields_s[4] = {magFieldIron_s,RetField_s,ConRField_s,ConLField_s};</div>
+<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span>        <span class="comment">// Create the magnet</span></div>
+<div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span>        <a class="code hl_function" href="classShipMuonShield.html#adc4671e1413b00224c312f8f55ec65b7">CreateMagnet</a>(magnetName[nM], iron, tShield, fields_s, fieldDirection[nM],</div>
+<div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span>          dXIn[nM], dYIn[nM], dXOut[nM], dYOut[nM],  ratio_yokesIn[nM], ratio_yokesOut[nM], dY_yokeIn[nM], dY_yokeOut[nM], dZf[nM],</div>
+<div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span>          midGapIn[nM], midGapOut[nM], gapIn[nM], gapOut[nM], Z[nM], nM==0, nM == 3 &amp;&amp; <a class="code hl_variable" href="classShipMuonShield.html#a92c765f3f0e52c87e24d34520480868d">fSC_mag</a>);</div>
+<div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span>        }</div>
+<div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span> </div>
+<div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span>      <span class="comment">// Place in origin of SHiP coordinate system as subnodes placed correctly</span></div>
+<div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span>      top-&gt;AddNode(tShield, 1);</div>
+<div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span> </div>
+<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span>      Double_t z_gap = 10 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a36fc4b47251281f99efceaa80c7877f0">cm</a>;</div>
+<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span>      Double_t absorber_offset = z_gap;</div>
+<div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span>      Double_t absorber_half_length = (dZf[0]);</div>
+<div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span> </div>
+<div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span>      <span class="comment">// Absorber</span></div>
+<div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span> </div>
+<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span>      <span class="keyword">auto</span> abs = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;absorber&quot;</span>, 4.995 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a> - 0.002 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>, 3.75 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>, absorber_half_length - 0.002 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>);</div>
+<div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span>      <span class="keyword">auto</span> *absorber_shift = <span class="keyword">new</span> TGeoTranslation(<span class="stringliteral">&quot;absorber_shift&quot;</span>, 1.435 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>, 2.05 * <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>, 0);</div>
+<div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span>      absorber_shift-&gt;RegisterYourself();</div>
+<div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span> </div>
+<div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span>      <span class="keyword">const</span> std::vector&lt;TString&gt; absorber_magnets = {<span class="stringliteral">&quot;MagnAbsorb&quot;</span>};</div>
+<div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span>      <span class="keyword">const</span> std::vector&lt;TString&gt; magnet_components = {</div>
+<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span>        <span class="stringliteral">&quot;_MiddleMagL&quot;</span>, <span class="stringliteral">&quot;_MiddleMagR&quot;</span>,  <span class="stringliteral">&quot;_MagRetL&quot;</span>,    <span class="stringliteral">&quot;_MagRetR&quot;</span>,</div>
+<div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span>        <span class="stringliteral">&quot;_MagTopLeft&quot;</span>, <span class="stringliteral">&quot;_MagTopRight&quot;</span>, <span class="stringliteral">&quot;_MagBotLeft&quot;</span>, <span class="stringliteral">&quot;_MagBotRight&quot;</span>,</div>
+<div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span>    };</div>
+<div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span>      TString absorber_magnet_components;</div>
+<div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span>      <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;magnet_component : magnet_components) {</div>
+<div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span>          absorber_magnet_components += (<span class="stringliteral">&quot;-&quot;</span> + absorber_magnets[0] + magnet_component);</div>
+<div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span>      }</div>
+<div class="line"><a id="l00404" name="l00404"></a><span class="lineno">  404</span> </div>
+<div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span>      TGeoCompositeShape* absorberShape =</div>
+<div class="line"><a id="l00406" name="l00406"></a><span class="lineno">  406</span>          <span class="keyword">new</span> TGeoCompositeShape(<span class="stringliteral">&quot;Absorber&quot;</span>, <span class="stringliteral">&quot;absorber:absorber_shift&quot;</span> + absorber_magnet_components);</div>
 <div class="line"><a id="l00407" name="l00407"></a><span class="lineno">  407</span> </div>
-<div class="line"><a id="l00408" name="l00408"></a><span class="lineno">  408</span>      <span class="keyword">const</span> std::vector&lt;TString&gt; absorber_magnets = {<span class="stringliteral">&quot;MagnAbsorb&quot;</span>};</div>
-<div class="line"><a id="l00409" name="l00409"></a><span class="lineno">  409</span>      <span class="keyword">const</span> std::vector&lt;TString&gt; magnet_components = {</div>
-<div class="line"><a id="l00410" name="l00410"></a><span class="lineno">  410</span>        <span class="stringliteral">&quot;_MiddleMagL&quot;</span>, <span class="stringliteral">&quot;_MiddleMagR&quot;</span>,  <span class="stringliteral">&quot;_MagRetL&quot;</span>,    <span class="stringliteral">&quot;_MagRetR&quot;</span>,</div>
-<div class="line"><a id="l00411" name="l00411"></a><span class="lineno">  411</span>        <span class="stringliteral">&quot;_MagTopLeft&quot;</span>, <span class="stringliteral">&quot;_MagTopRight&quot;</span>, <span class="stringliteral">&quot;_MagBotLeft&quot;</span>, <span class="stringliteral">&quot;_MagBotRight&quot;</span>,</div>
-<div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span>    };</div>
-<div class="line"><a id="l00413" name="l00413"></a><span class="lineno">  413</span>      TString absorber_magnet_components;</div>
-<div class="line"><a id="l00414" name="l00414"></a><span class="lineno">  414</span>      <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;magnet_component : magnet_components) {</div>
-<div class="line"><a id="l00415" name="l00415"></a><span class="lineno">  415</span>          absorber_magnet_components += (<span class="stringliteral">&quot;-&quot;</span> + absorber_magnets[0] + magnet_component);</div>
-<div class="line"><a id="l00416" name="l00416"></a><span class="lineno">  416</span>      }</div>
-<div class="line"><a id="l00417" name="l00417"></a><span class="lineno">  417</span> </div>
-<div class="line"><a id="l00418" name="l00418"></a><span class="lineno">  418</span>      TGeoCompositeShape* absorberShape =</div>
-<div class="line"><a id="l00419" name="l00419"></a><span class="lineno">  419</span>          <span class="keyword">new</span> TGeoCompositeShape(<span class="stringliteral">&quot;Absorber&quot;</span>, <span class="stringliteral">&quot;absorber:absorber_shift&quot;</span> + absorber_magnet_components);</div>
-<div class="line"><a id="l00420" name="l00420"></a><span class="lineno">  420</span> </div>
-<div class="line"><a id="l00421" name="l00421"></a><span class="lineno">  421</span>      TGeoVolume *absorber = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;AbsorberVol&quot;</span>, absorberShape, iron);</div>
-<div class="line"><a id="l00422" name="l00422"></a><span class="lineno">  422</span>      absorber-&gt;SetLineColor(42); <span class="comment">// brown / light red</span></div>
-<div class="line"><a id="l00423" name="l00423"></a><span class="lineno">  423</span>      tShield-&gt;AddNode(absorber,</div>
-<div class="line"><a id="l00424" name="l00424"></a><span class="lineno">  424</span>                       1,</div>
-<div class="line"><a id="l00425" name="l00425"></a><span class="lineno">  425</span>                       <span class="keyword">new</span> TGeoTranslation(0,</div>
-<div class="line"><a id="l00426" name="l00426"></a><span class="lineno">  426</span>                                           0,</div>
-<div class="line"><a id="l00427" name="l00427"></a><span class="lineno">  427</span>                                           z_end_of_target + absorber_half_length + absorber_offset</div>
-<div class="line"><a id="l00428" name="l00428"></a><span class="lineno">  428</span>                                               + 2 * proximity_shield_half_length));   <span class="comment">// - Passive?</span></div>
-<div class="line"><a id="l00429" name="l00429"></a><span class="lineno">  429</span>}</div>
+<div class="line"><a id="l00408" name="l00408"></a><span class="lineno">  408</span>      TGeoVolume *absorber = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;AbsorberVol&quot;</span>, absorberShape, iron);</div>
+<div class="line"><a id="l00409" name="l00409"></a><span class="lineno">  409</span>      absorber-&gt;SetLineColor(42); <span class="comment">// brown / light red</span></div>
+<div class="line"><a id="l00410" name="l00410"></a><span class="lineno">  410</span>      tShield-&gt;AddNode(</div>
+<div class="line"><a id="l00411" name="l00411"></a><span class="lineno">  411</span>          absorber,</div>
+<div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span>          1,</div>
+<div class="line"><a id="l00413" name="l00413"></a><span class="lineno">  413</span>          <span class="keyword">new</span> TGeoTranslation(0,</div>
+<div class="line"><a id="l00414" name="l00414"></a><span class="lineno">  414</span>                              0,</div>
+<div class="line"><a id="l00415" name="l00415"></a><span class="lineno">  415</span>                              <a class="code hl_variable" href="classShipMuonShield.html#a899926b2ae70e54e604cb8851bc69ff1">z_end_of_proximity_shielding</a> + absorber_half_length + absorber_offset));   <span class="comment">// - Passive?</span></div>
+<div class="line"><a id="l00416" name="l00416"></a><span class="lineno">  416</span>}</div>
 </div>
 <div class="ttc" id="aShipBellField_8cxx_html_a051a74c8506be0a4072e69b52b7113a8"><div class="ttname"><a href="ShipBellField_8cxx.html#a051a74c8506be0a4072e69b52b7113a8">tesla</a></div><div class="ttdeci">Double_t tesla</div><div class="ttdef"><b>Definition</b> <a href="ShipBellField_8cxx_source.html#l00017">ShipBellField.cxx:17</a></div></div>
 <div class="ttc" id="aShipBellField_8cxx_html_a36fc4b47251281f99efceaa80c7877f0"><div class="ttname"><a href="ShipBellField_8cxx.html#a36fc4b47251281f99efceaa80c7877f0">cm</a></div><div class="ttdeci">Double_t cm</div><div class="ttdef"><b>Definition</b> <a href="ShipBellField_8cxx_source.html#l00019">ShipBellField.cxx:19</a></div></div>

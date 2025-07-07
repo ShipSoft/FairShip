@@ -430,7 +430,6 @@ var namespaces_dup =
       [ "FrameLateralWidth", "namespacegeometry__config.html#a50c17c03f149288ce2563105bc9b2b8f", null ],
       [ "FrameMaterial", "namespacegeometry__config.html#a8daf9800723e8c5e2f03feb744e06a53", null ],
       [ "hadronAbsorber", "namespacegeometry__config.html#a952559425cfd7873ff872d19c3b30604", null ],
-      [ "halflength", "namespacegeometry__config.html#a23ef8a00ab3503cd8a30fc503557f357", null ],
       [ "hcal", "namespacegeometry__config.html#a41d1c518e3457b2d7657c58e88114945", null ],
       [ "HcalGeoFile", "namespacegeometry__config.html#a98acef3c96750019c62ed57e988f84ce", null ],
       [ "HcalOption", "namespacegeometry__config.html#ae0a3d442ab1064fd5eb4cbaaa6e444c6", null ],
@@ -461,8 +460,6 @@ var namespaces_dup =
       [ "nuTargetPassive", "namespacegeometry__config.html#a9cb921742ba2eda9b442f24b36f43a35", null ],
       [ "OuterStrawDiameter", "namespacegeometry__config.html#a944da21619bf1767dd0e9559aae56c67", null ],
       [ "params", "namespacegeometry__config.html#aa313304f40f24acaf601de3eb247e62b", null ],
-      [ "prox_shld", "namespacegeometry__config.html#ad88aa697873d71db1f736f3c521f6306", null ],
-      [ "real_target_length", "namespacegeometry__config.html#a3289cb52c4e3316a34e1e9538f664e66", null ],
       [ "Rmax", "namespacegeometry__config.html#acc47658b55850659d147ad35f4090c8a", null ],
       [ "Rmin", "namespacegeometry__config.html#abd07326bf08db0cd152100ea4a5801ca", null ],
       [ "SC_mag", "namespacegeometry__config.html#a53008eae16ee71c7e4dc1ff4e7ced30f", null ],
@@ -1781,9 +1778,7 @@ var namespaces_dup =
       [ "red", "namespaceShipStyle.html#a3e07ec150a24cd3f2f198c40da828be7", null ],
       [ "yellow", "namespaceShipStyle.html#a2671a3ad1fd53712bdc05ebd4c87b4db", null ]
     ] ],
-    [ "shipTarget_only", "namespaceshipTarget__only.html", [
-      [ "configure", "namespaceshipTarget__only.html#a22e24aa41de7d3b88c238d43f4393faa", null ]
-    ] ],
+    [ "ShipUnit", "namespaceShipUnit.html", null ],
     [ "shipunit", "namespaceshipunit.html", [
       [ "alpha_rcl2", "namespaceshipunit.html#a852bff5f88f281cab1a9d17abbd90213", null ],
       [ "ampere", "namespaceshipunit.html#ab5bd1c925283ab8ca1bcad2691255c7f", null ],
@@ -1930,7 +1925,6 @@ var namespaces_dup =
       [ "watt", "namespaceshipunit.html#a3a4e38f77301d7b18e00c66be19bc8ea", null ],
       [ "weber", "namespaceshipunit.html#a87b678dd64f162952e6f083c4c42d7cf", null ]
     ] ],
-    [ "ShipUnit", "namespaceShipUnit.html", null ],
     [ "shipVertex", "namespaceshipVertex.html", "namespaceshipVertex" ],
     [ "shipVeto", "namespaceshipVeto.html", "namespaceshipVeto" ],
     [ "study_GammaConv", "namespacestudy__GammaConv.html", "namespacestudy__GammaConv" ],

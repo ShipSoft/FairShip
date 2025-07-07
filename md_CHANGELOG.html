@@ -119,6 +119,7 @@ Added</h2>
 <li>Add backport for new TFile/TDirectory <code>__get_item__</code> pythonisation</li>
 <li>SND/EmulsionTarget folder, with the <a class="el" href="classTarget.html">Target</a> and <a class="el" href="classTargetTracker.html">TargetTracker</a> classes from nutaudet</li>
 <li>Added fibre structure for MTC and digitization. Fibre &lt;-&gt; SiPM mapping is done in <code><a class="el" href="MTCDetector_8cxx.html">SND/MTC/MTCDetector.cxx</a></code>, can be extracted and tested in <code><a class="el" href="SciFiMapping_8py.html">python/SciFiMapping.py</a></code>, that is subsequently used in <code><a class="el" href="shipDigiReco_8py.html">python/shipDigiReco.py</a></code></li>
+<li>Implement proximity shielding design from 26/06/2025 by G. Humphreys</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md3"></a>
 Fixed</h2>
@@ -207,6 +208,8 @@ Removed</h2>
 <li>Remove nutaudet folder, replaced by SND folder</li>
 <li>Remove deprecated NuTauDet field map</li>
 <li>Remove tankDesign variable, options</li>
+<li>Remove target versions older than CDR</li>
+<li>Remove hadron absorber in <a class="el" href="ShipTargetStation_8cxx.html">ShipTargetStation.cxx</a></li>
 </ul>
 <h1><a class="anchor" id="autotoc_md6"></a>
 25.01</h1>
