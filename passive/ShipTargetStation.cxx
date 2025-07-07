@@ -130,6 +130,8 @@ void ShipTargetStation::ConstructGeometry()
 
     // Proximity shielding
 
+    double start_of_target = fTargetZ - fTargetLength / 2.;
+    fTargetLength = 1586.4 * mm;  // Make shielding independent of actual target length
     double shielding_width = 1600 * mm;
     double shielding_length = 3000 * mm;
     double proximity_shielding_height = 1126 * mm;
@@ -138,7 +140,7 @@ void ShipTargetStation::ConstructGeometry()
     double proximity_shielding_hole_diameter = 200 * mm;
     double proximity_shielding_hole_height = 735 * mm;
     double proximity_shielding_distance_after_target = 96.1 * mm;
-    double shielding_offset = fTargetLength / 2. + proximity_shielding_distance_after_target
+    double shielding_position = start_of_target + fTargetLength + proximity_shielding_distance_after_target
                                              + proximity_shielding_thickness - shielding_length / 2;
     auto proximity_shielding_envelope = new TGeoBBox("proximity_shielding_envelope",
                                                      shielding_width / 2,
@@ -168,7 +170,7 @@ void ShipTargetStation::ConstructGeometry()
     auto proximity_shielding = new TGeoVolume("proximity_shielding", proximity_shielding_shape, copper);
     auto proximity_shielding_centre =
         new TGeoTranslation(
-            0., -(proximity_shielding_hole_height - proximity_shielding_height / 2), fTargetZ + shielding_offset);
+            0., -(proximity_shielding_hole_height - proximity_shielding_height / 2), shielding_position);
 
     top->AddNode(proximity_shielding, 1, proximity_shielding_centre);
 
@@ -182,13 +184,13 @@ void ShipTargetStation::ConstructGeometry()
         1,
         new TGeoTranslation(0.,
                             top_shielding_height / 2 + proximity_shielding_height - proximity_shielding_hole_height,
-                            fTargetZ + shielding_offset));
+                            shielding_position));
     auto bottom_shielding = gGeoManager->MakeBox(
         "bottom_shielding", iron, shielding_width / 2, bottom_shielding_height / 2, shielding_length / 2);
     top->AddNode(bottom_shielding,
                  1,
                  new TGeoTranslation(
-                     0., -bottom_shielding_height / 2 - proximity_shielding_hole_height, fTargetZ + shielding_offset));
+                     0., -bottom_shielding_height / 2 - proximity_shielding_hole_height, shielding_position));
     double pedestal_length = 2170 * mm;
     double pedestal_width = 1070 * mm;
     double pedestal_height = 150 * mm;
@@ -199,7 +201,7 @@ void ShipTargetStation::ConstructGeometry()
         1,
         new TGeoTranslation(0.,
                             pedestal_height / 2 - proximity_shielding_hole_height,
-                            fTargetZ + shielding_offset - shielding_length / 2 + 565 * mm + pedestal_length / 2));
+                            shielding_position - shielding_length / 2 + 565 * mm + pedestal_length / 2));
 
-    top->AddNode(tTarget, 1, new TGeoTranslation(0, 0, fTargetZ - fTargetLength / 2.));
+    top->AddNode(tTarget, 1, new TGeoTranslation(0, 0, start_of_target));
 }
