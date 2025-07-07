@@ -537,19 +537,19 @@ Bool_t Target::ProcessHits(FairVolume* vol)
 
 std::tuple<Int_t, Int_t, Int_t, Int_t, Bool_t> Target::DecodeBrickID(Int_t detID)
 {
-    auto divt_E7 = std::div(detID,1E7);
+    auto divt_E7 = std::div(detID, 1E7);
 
     Int_t NWall = divt_E7.quot;
-    auto divt_E6 = std::div(divt_E7.rem,1E6);
-    
-    Int_t NRow =  divt_E6.quot;
+    auto divt_E6 = std::div(divt_E7.rem, 1E6);
+
+    Int_t NRow = divt_E6.quot;
     auto divt_E4 = std::div(divt_E6.rem, 1E4);
 
     Int_t NColumn = divt_E4.quot;
     auto divt_E1 = std::div(divt_E4.rem - int(1E3), 1E1);
 
     Int_t NPlate = divt_E1.quot;
-    Bool_t EmTop = (std::div(divt_E1.rem,1E0)).quot;
+    Bool_t EmTop = (std::div(divt_E1.rem, 1E0)).quot;
 
     return std::make_tuple(NWall, NRow, NColumn, NPlate, EmTop);
 }
