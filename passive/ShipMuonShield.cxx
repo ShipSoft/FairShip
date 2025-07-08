@@ -19,10 +19,6 @@
 
 #include <iostream>   // for operator<<, basic_ostream, etc
 
-#include <stddef.h>
-using std::cout;
-using std::endl;
-
 using ShipUnit::cm;
 using ShipUnit::m;
 using ShipUnit::mm;
