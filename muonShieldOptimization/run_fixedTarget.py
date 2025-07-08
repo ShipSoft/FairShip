@@ -2,6 +2,8 @@
 import ROOT,os,sys,time,shipRoot_conf
 import shipunit as u
 from ShipGeoConfig import ConfigRegistry
+from backports import tdirectory634
+
 
 mcEngine     = "TGeant4"
 simEngine    = "Pythia8"
@@ -281,7 +283,7 @@ if ROOT.gROOT.GetListOfFiles().GetEntries() > 0:
     fin = ROOT.gROOT.GetListOfFiles()[0]
 else:
     fin = ROOT.TFile.Open(outFile)
-fHeader = fin.FileHeader
+fHeader = fin["FileHeader"]
 fHeader.SetRunId(runnr)
 if charm or beauty:
     # normalization for charm
@@ -299,10 +301,11 @@ if boostFactor > 1: conditions += " X" + str(boostFactor)
 
 info += conditions
 fHeader.SetTitle(info)
-print("Data generated ", fHeader.GetTitle())
+print(f"Data generated {fHeader.GetTitle()}")
 
-nt = fin.Get('4DP')
+nt = fin.Get("4DP")
 if nt:
+    nt = fin["4DP"]
     tf = ROOT.TFile('FourDP.root','recreate')
     tnt = nt.CloneTree(0)
     for i in range(nt.GetEntries()):
@@ -311,7 +314,7 @@ if nt:
     tnt.Write()
     tf.Close()
 
-t = fin.Get("cbmsim")
+t = fin["cbmsim"]
 fout  = ROOT.TFile(tmpFile, 'recreate')
 sTree = t.CloneTree(0)
 nEvents = 0
@@ -329,7 +332,7 @@ for k in fin.GetListOfKeys():
         xcopy = x.Clone()
         rc = xcopy.Write()
 sTree.AutoSave()
-ff = fin.FileHeader.Clone(fout.GetName())
+ff = fin["FileHeader"].Clone(fout.GetName())
 fout.cd()
 ff.Write("FileHeader", ROOT.TObject.kSingleKey)
 sTree.Write()
