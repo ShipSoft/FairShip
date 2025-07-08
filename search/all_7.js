@@ -20,7 +20,7 @@ var searchData=
   ['decayvolumemed_17',['decayVolumeMed',['../classveto.html#a54394dec7154e7ba6f9c9f99f99d2fda',1,'veto']]],
   ['decayvolumemed_5fname_18',['decayVolumeMed_name',['../classveto.html#a1bc2ba89ec01c8a1b6ef9132cbebb347',1,'veto']]],
   ['decayvolumemedium_19',['DecayVolumeMedium',['../namespacegeometry__config.html#ae32968d9327248d81ca9953357f6658b',1,'geometry_config']]],
-  ['decodebrickid_20',['DecodeBrickID',['../classTarget.html#a53a5066eaff095ec2248dfdb8b89039a',1,'Target']]],
+  ['decodebrickid_20',['DecodeBrickID',['../classTarget.html#a458fa56f930bdc7a37bec488f31da5f6',1,'Target']]],
   ['decoder_21',['decoder',['../classsplitcalHit.html#ac82a3dd9456afd583bfcd665f789eb7c',1,'splitcalHit::Decoder(int &amp;id, int &amp;isPrecision, int &amp;nLayer, int &amp;nModuleX, int &amp;nMdouleY, int &amp;nStrip)'],['../classsplitcalHit.html#a8d4dca4f336ea4591a02ed72931fd783',1,'splitcalHit::Decoder(std::string &amp;encodedID, int &amp;isPrecision, int &amp;nLayer, int &amp;nModuleX, int &amp;nMdouleY, int &amp;nStrip)']]],
   ['decodettid_22',['DecodeTTID',['../classTargetTracker.html#a4405f954069f85b445d9626ef331acb6',1,'TargetTracker']]],
   ['decorators_23',['decorators',['../namespacedecorators.html',1,'']]],

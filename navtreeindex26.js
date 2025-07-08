@@ -1,6 +1,5 @@
 var NAVTREEINDEX26 =
 {
-"make__nTuple__SBT_8py.html#aa9cf75043e52a72cc8c782f2ffee5d27":[6,0,8,1,6],
 "make__nTuple__SBT_8py.html#ab0f32a0f934d148852e51ad9dc1a0b47":[6,0,8,1,18],
 "make__nTuple__SBT_8py.html#ab175100d880956574cf6aef537d972af":[6,0,8,1,21],
 "make__nTuple__SBT_8py.html#ab295e9efeb1fec2e81721b9e0f5d9220":[6,0,8,1,14],
@@ -249,5 +248,6 @@ var NAVTREEINDEX26 =
 "muon_8h_source.html":[6,0,7,1],
 "namespaceAddDiMuonDecayChannelsToG4.html":[4,0,2],
 "namespaceAddDiMuonDecayChannelsToG4.html#a3fdf0d174d3eccaaa0e4daa18e8c8119":[4,0,2,0],
-"namespaceCMBG__conf.html":[4,0,8]
+"namespaceCMBG__conf.html":[4,0,8],
+"namespaceCMBG__conf.html#ad95691e78742115af94d2ddc4c3aeecc":[4,0,8,0]
 };

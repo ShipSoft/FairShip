@@ -9,7 +9,6 @@ var classTarget =
     [ "BeginPrimary", "classTarget.html#af4bfbe96235fcfcae841e212ad92e4b3", null ],
     [ "ConstructGeometry", "classTarget.html#ada666b416896b1d1b3db18ba2adfadfc", null ],
     [ "CopyClones", "classTarget.html#a299d6a058a6e5f13dbe95e512fc288e3", null ],
-    [ "DecodeBrickID", "classTarget.html#a53a5066eaff095ec2248dfdb8b89039a", null ],
     [ "EndOfEvent", "classTarget.html#a996d57aef2076a6c7a549af07276da44", null ],
     [ "FinishPrimary", "classTarget.html#afc91d96d364a23098133b6d692605025", null ],
     [ "FinishRun", "classTarget.html#a303bd50e6d8e5dcbd201bae239b1692e", null ],

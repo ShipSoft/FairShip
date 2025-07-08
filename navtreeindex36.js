@@ -1,6 +1,5 @@
 var NAVTREEINDEX36 =
 {
-"namespaceshipunit.html#a87fd5b2db5e2548f7089becbe9817cc3":[4,0,93,29],
 "namespaceshipunit.html#a8cba2d1f5bccc613355d7856be1c1df1":[4,0,93,6],
 "namespaceshipunit.html#a8f0051d93d879e9a65f29efa9db2dc22":[4,0,93,58],
 "namespaceshipunit.html#a8f1d1bfb357bb214481b3d6953f215e2":[4,0,93,136],
@@ -249,5 +248,6 @@ var NAVTREEINDEX36 =
 "proton__bremsstrahlung_8py.html":[6,0,12,19],
 "proton__bremsstrahlung_8py.html#a02ebc2a3f305d5759d35769151edf25b":[6,0,12,19,10],
 "proton__bremsstrahlung_8py.html#a11d3365e0a7dc4fa1fac32e960395aae":[6,0,12,19,8],
-"proton__bremsstrahlung_8py.html#a3228e5455643b68bd3c3831bcb5e6fc2":[6,0,12,19,5]
+"proton__bremsstrahlung_8py.html#a3228e5455643b68bd3c3831bcb5e6fc2":[6,0,12,19,5],
+"proton__bremsstrahlung_8py.html#a337dbc03c347b16b885594190de4206f":[6,0,12,19,7]
 };

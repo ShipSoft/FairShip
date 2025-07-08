@@ -1,6 +1,5 @@
 var NAVTREEINDEX33 =
 {
-"namespacemake__nTuple__Tr.html#a5f78dbb9b68c61e5454382f8952af7a9":[4,0,48,5],
 "namespacemake__nTuple__Tr.html#a6c4da7ed03b14e089ec3167c4dc977fc":[4,0,48,19],
 "namespacemake__nTuple__Tr.html#a6c531b091b6cb065bd0240a829191cad":[4,0,48,24],
 "namespacemake__nTuple__Tr.html#a6d39cc4b19e6b04e99fd8c3788ea9db0":[4,0,48,53],
@@ -249,5 +248,6 @@ var NAVTREEINDEX33 =
 "namespacerootUtils.html#af503556d7d4590fc7e05a537f76d420f":[4,0,66,1],
 "namespacerootUtils.html#af995ab99f984b0e88bb4063e431b21dc":[4,0,66,11],
 "namespacerootpyPickler.html":[4,0,65],
-"namespacerootpyPickler.html#a016dd261e968dcb414fcdc0cd3857434":[4,0,65,8]
+"namespacerootpyPickler.html#a016dd261e968dcb414fcdc0cd3857434":[4,0,65,8],
+"namespacerootpyPickler.html#a0f8c91a0848212cd180c525ebef97476":[4,0,65,14]
 };
