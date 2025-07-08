@@ -501,7 +501,7 @@ Bool_t Target::ProcessHits(FairVolume* vol)
             // cout << i << "   " << motherV[i] << "    name = " << mumname << endl;
         }
 
-        detID = (NWall + 1) * 1E7 + (NRow + 1) * 1E6 + (NColumn + 1) * 1E4 + 1E3 + (NPlate + 1) * 1E1 + EmTop * 1;
+        detID = (NWall + 1) * 1E7 + (NRow + 1) * 1E6 + (NColumn + 1) * 1E4 + (NPlate + 1) * 1E1 + EmTop;
 
         fVolumeID = detID;
 
@@ -537,7 +537,16 @@ Bool_t Target::ProcessHits(FairVolume* vol)
 
 std::tuple<Int_t, Int_t, Int_t, Int_t, Bool_t> Target::DecodeBrickID(Int_t detID)
 {
-    auto divt_E7 = std::div(detID, 1E7);
+    //! Decode detectorID into a struct with info about the film position in the target:
+    /*
+     \param detID detectorID for the TargetPoint
+     \return a struct providing the wall, row, column and plate number (starting from 1),
+        as well as a boolean for top/bottom emulsion layer.
+        Examples:
+         11010031 -> Wall 1, Row 1, Column 1, Plate 3, true;
+         31010150 -> Wall 3, Row 1, Column 1, Plate 15, false;
+    */
+    auto divt_E7 = std::div(detID,1E7);
 
     Int_t NWall = divt_E7.quot;
     auto divt_E6 = std::div(divt_E7.rem, 1E6);
@@ -546,10 +555,10 @@ std::tuple<Int_t, Int_t, Int_t, Int_t, Bool_t> Target::DecodeBrickID(Int_t detID
     auto divt_E4 = std::div(divt_E6.rem, 1E4);
 
     Int_t NColumn = divt_E4.quot;
-    auto divt_E1 = std::div(divt_E4.rem - int(1E3), 1E1);
+    auto divt_E1 = std::div(divt_E4.rem, 1E1);
 
     Int_t NPlate = divt_E1.quot;
-    Bool_t EmTop = (std::div(divt_E1.rem, 1E0)).quot;
+    Bool_t EmTop = static_cast<Bool_t> (divt_E1.rem);
 
     return std::make_tuple(NWall, NRow, NColumn, NPlate, EmTop);
 }
