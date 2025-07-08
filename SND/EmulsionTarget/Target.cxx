@@ -546,7 +546,7 @@ std::tuple<Int_t, Int_t, Int_t, Int_t, Bool_t> Target::DecodeBrickID(Int_t detID
          11010031 -> Wall 1, Row 1, Column 1, Plate 3, true;
          31010150 -> Wall 3, Row 1, Column 1, Plate 15, false;
     */
-    auto divt_E7 = std::div(detID,1E7);
+    auto divt_E7 = std::div(detID, 1E7);
 
     Int_t NWall = divt_E7.quot;
     auto divt_E6 = std::div(divt_E7.rem, 1E6);
@@ -558,7 +558,7 @@ std::tuple<Int_t, Int_t, Int_t, Int_t, Bool_t> Target::DecodeBrickID(Int_t detID
     auto divt_E1 = std::div(divt_E4.rem, 1E1);
 
     Int_t NPlate = divt_E1.quot;
-    Bool_t EmTop = static_cast<Bool_t> (divt_E1.rem);
+    Bool_t EmTop = static_cast<Bool_t>(divt_E1.rem);
 
     return std::make_tuple(NWall, NRow, NColumn, NPlate, EmTop);
 }
