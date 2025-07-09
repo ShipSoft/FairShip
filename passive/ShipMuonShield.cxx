@@ -84,18 +84,10 @@ void ShipMuonShield::CreateArb8(TString                         arbName,
                                 TGeoVolume*                     tShield,
                                 Double_t                        x_translation,
                                 Double_t                        y_translation,
-                                Double_t                        z_translation,
-                                Bool_t                          snd_key) {
+                                Double_t                        z_translation) {
   TGeoVolume* magVol = nullptr;
 
-  if (!snd_key) {
-    // — original uncut magnet —
-    magVol = gGeoManager->MakeArb8(arbName,
-                                   medium,
-                                   dZ,
-                                   corners.data());
-  }
-  else{
+  if (snd_hole && (arbName == "Magn6_MiddleMagL" || arbName == "Magn6_MiddleMagR")){
     // 1) create the raw Arb8 volume (registers a shape named "<arbName>_shape")
     TString  shapeName = arbName + "_shape";
     gGeoManager->MakeArb8(shapeName,
@@ -105,11 +97,13 @@ void ShipMuonShield::CreateArb8(TString                         arbName,
 
     // 2) create the void‐box volume (registers a shape named "<arbName>_void")
     constexpr double eps = 0.01; // antioverlap
+    snd_hole_dx = snd_hole_dx - eps;
+    snd_hole_dy = snd_hole_dy - eps;
     TString voidName = arbName + "_void";
     gGeoManager->MakeBox(voidName,
                          medium,
-                         snd_hole_dx - eps,
-                         snd_hole_dy - eps,
+                         snd_hole_dx,
+                         snd_hole_dy,
                          dZ);
 
     // 3) figure out which way to shift the box on X
@@ -135,6 +129,14 @@ void ShipMuonShield::CreateArb8(TString                         arbName,
 
     // 6) wrap the composite in a volume
     magVol = new TGeoVolume(arbName, compShape, medium);
+  }
+
+  else {
+    // — original uncut magnet —
+    magVol = gGeoManager->MakeArb8(arbName,
+                                   medium,
+                                   dZ,
+                                   corners.data());
   }
 
   magVol->SetLineColor(color);
@@ -312,14 +314,8 @@ void ShipMuonShield::CreateMagnet(TString magnetName,TGeoMedium* medium,TGeoVolu
       CreateArb8(magnetName + str11, medium, dZ, cornersBR, color[3], fields[3], tShield,  0, 0, Z);
       break;
     case FieldDirection::down:
-      if(magnetName == "Magn6" && snd_hole){
-        CreateArb8(magnetName + str1L, medium, dZ, cornersMainL, color[1], fields[1], tShield,  0, 0, Z, true);
-        CreateArb8(magnetName + str1R, medium, dZ, cornersMainR, color[1], fields[1], tShield,  0, 0, Z, true);
-      }
-      else{
-        CreateArb8(magnetName + str1L, medium, dZ, cornersMainL, color[1], fields[1], tShield,  0, 0, Z);
-        CreateArb8(magnetName + str1R, medium, dZ, cornersMainR, color[1], fields[1], tShield,  0, 0, Z);
-      }
+      CreateArb8(magnetName + str1L, medium, dZ, cornersMainL, color[1], fields[1], tShield,  0, 0, Z);
+      CreateArb8(magnetName + str1R, medium, dZ, cornersMainR, color[1], fields[1], tShield,  0, 0, Z);
       CreateArb8(magnetName + str2, medium, dZ, cornersMainSideL, color[0], fields[0], tShield,  0, 0, Z);
       CreateArb8(magnetName + str3, medium, dZ, cornersMainSideR, color[0], fields[0], tShield,  0, 0, Z);
       CreateArb8(magnetName + str8, medium, dZ, cornersTL, color[2], fields[2], tShield,  0, 0, Z);

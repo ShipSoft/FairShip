@@ -43,8 +43,7 @@ class ShipMuonShield : public FairModule
                     TGeoVolume* top,
                     Double_t x_translation,
                     Double_t y_translation,
-                    Double_t z_translation,
-                    Bool_t snd_key = false);
+                    Double_t z_translation);
 
     Int_t Initialize(std::vector<TString>& magnetName,
                      std::vector<FieldDirection>& fieldDirection,
