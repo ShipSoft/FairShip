@@ -23,7 +23,7 @@ class ShipMuonShield : public FairModule
     ShipMuonShield();
     virtual ~ShipMuonShield();
     void ConstructGeometry();
-    void SetSNDSpace(const Bool_t hole, Double_t hole_dx, Double_t hole_dy);
+    void SetSNDSpace(Bool_t hole, Double_t hole_dx, Double_t hole_dy);
   protected:
     Double_t fMuonShieldHalfLength;   // FIXME: HA_field to be removed in the next workshop meeting
     Double_t dZ0, dZ1, dZ2, dZ3, dZ4, dZ5, dZ6, dZ7, dXgap, z_end_of_proximity_shielding;
@@ -44,7 +44,7 @@ class ShipMuonShield : public FairModule
                     Double_t x_translation,
                     Double_t y_translation,
                     Double_t z_translation,
-                    const Bool_t snd_key = false);
+                    Bool_t snd_key = false);
 
     Int_t Initialize(std::vector<TString>& magnetName,
                      std::vector<FieldDirection>& fieldDirection,

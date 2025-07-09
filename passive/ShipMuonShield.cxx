@@ -68,10 +68,10 @@ Int_t ShipMuonShield::InitMedium(TString name)
 }
 
 
-void ShipMuonShield::SetSNDSpace(const Bool_t hole, Double_t hole_dx, Double_t hole_dy)
+void ShipMuonShield::SetSNDSpace(Bool_t hole, Double_t hole_dx, Double_t hole_dy)
 {
   snd_hole = hole;
-  snd_hole_dx = hole_dx / 2.;
+  snd_hole_dx = hole_dx / 2.; // since the hole is cut in 2 halves, we need to divide the width by 2
   snd_hole_dy = hole_dy;
 }
 
@@ -85,7 +85,7 @@ void ShipMuonShield::CreateArb8(TString                         arbName,
                                 Double_t                        x_translation,
                                 Double_t                        y_translation,
                                 Double_t                        z_translation,
-                                const Bool_t                          snd_key) {
+                                Bool_t                          snd_key) {
   TGeoVolume* magVol = nullptr;
 
   if (!snd_key) {
@@ -95,7 +95,7 @@ void ShipMuonShield::CreateArb8(TString                         arbName,
                                    dZ,
                                    corners.data());
   }
-  else {
+  else{
     // 1) create the raw Arb8 volume (registers a shape named "<arbName>_shape")
     TString  shapeName = arbName + "_shape";
     gGeoManager->MakeArb8(shapeName,
@@ -104,11 +104,12 @@ void ShipMuonShield::CreateArb8(TString                         arbName,
                          corners.data());
 
     // 2) create the void‐box volume (registers a shape named "<arbName>_void")
+    constexpr double eps = 0.01; // antioverlap
     TString voidName = arbName + "_void";
     gGeoManager->MakeBox(voidName,
                          medium,
-                         snd_hole_dx,
-                         snd_hole_dy,
+                         snd_hole_dx - eps,
+                         snd_hole_dy - eps,
                          dZ);
 
     // 3) figure out which way to shift the box on X
