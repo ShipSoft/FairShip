@@ -87,37 +87,44 @@ void ShipMuonShield::CreateArb8(TString                         arbName,
                                 Double_t                        z_translation) {
   TGeoVolume* magVol = nullptr;
 
-  if (snd_hole && (arbName == "Magn6_MiddleMagL" || arbName == "Magn6_MiddleMagR")){
-    // 1) create the raw Arb8 volume (registers a shape named "<arbName>_shape")
-    TString  shapeName = arbName + "_shape";
+  if (snd_hole &&
+      (arbName == "Magn6_MiddleMagL" || arbName == "Magn6_MiddleMagR")) {
+    //
+    // 1) Raw Arb8 “shape”
+    //
+    TString shapeName = arbName + "_shape";
     gGeoManager->MakeArb8(shapeName,
                          medium,
                          dZ,
                          corners.data());
 
-    // 2) create the void‐box volume (registers a shape named "<arbName>_void")
-    constexpr double eps = 0.01; // antioverlap
-    snd_hole_dx = snd_hole_dx - eps;
-    snd_hole_dy = snd_hole_dy - eps;
+    //
+    // 2) Void box that’s 0.1 mm smaller on each half-length
+    //
+    constexpr double eps = 0.01;  // mm anti-overlap
+    double void_dx = snd_hole_dx - eps;
+    double void_dy = snd_hole_dy - eps;
     TString voidName = arbName + "_void";
     gGeoManager->MakeBox(voidName,
                          medium,
-                         snd_hole_dx,
-                         snd_hole_dy,
+                         void_dx,
+                         void_dy,
                          dZ);
 
-    // 3) figure out which way to shift the box on X
-    //    if corners[0]>0 we’re on the “left” magnet => carve +X half
-    //    otherwise we’re on the “right” magnet => carve -X half
-    Double_t shift = (corners[1] > 0 ? -snd_hole_dx : snd_hole_dx);
-
-    // 4) build & register a named translation
+    //
+    // 3) Single named translation for the subtraction
+    //
+    Double_t shift = (corners[1] > 0 ? -void_dx : void_dx);
     TString transName = arbName + "_t";
-    auto*  tr        = new TGeoTranslation(transName.Data(),
-                                           shift, 0.0, 0.0);
+    auto* tr = new TGeoTranslation(transName.Data(),
+                                   shift,
+                                   0.0,
+                                   0.0);
     tr->RegisterYourself();
 
-    // 5) build the Boolean expression and register it
+    //
+    // 4) Composite shape: <shape> minus the translated <void>
+    //
     TString compName = arbName + "_comp";
     TString expr     = TString::Format("%s - %s:%s",
                                        shapeName.Data(),
@@ -125,20 +132,23 @@ void ShipMuonShield::CreateArb8(TString                         arbName,
                                        transName.Data());
     auto* compShape = new TGeoCompositeShape(compName.Data(),
                                              expr.Data());
-    gGeoManager->GetListOfShapes()->Add(compShape);
 
-    // 6) wrap the composite in a volume
-    magVol = new TGeoVolume(arbName, compShape, medium);
+    //
+    // 5) Wrap the composite in a volume
+    //
+    magVol = new TGeoVolume(arbName,
+                            compShape,
+                            medium);
   }
-
   else {
-    // — original uncut magnet —
+    // original uncut magnet
     magVol = gGeoManager->MakeArb8(arbName,
                                    medium,
                                    dZ,
                                    corners.data());
   }
 
+  // common settings
   magVol->SetLineColor(color);
   if (fWithConstShieldField) {
     magVol->SetField(magField);
