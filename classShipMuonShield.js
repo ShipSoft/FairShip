@@ -8,6 +8,7 @@ var classShipMuonShield =
     [ "CreateMagnet", "classShipMuonShield.html#adc4671e1413b00224c312f8f55ec65b7", null ],
     [ "Initialize", "classShipMuonShield.html#a581dc74485cbcb3e8e5ee0871efe1c7a", null ],
     [ "InitMedium", "classShipMuonShield.html#ac4224450310d00f431be3d75bb3d6904", null ],
+    [ "SetSNDSpace", "classShipMuonShield.html#a8b24e309025550c4afcc38fa25799293", null ],
     [ "dXgap", "classShipMuonShield.html#a64f7b519e98b0e17a2caae28e7caf2fd", null ],
     [ "dZ0", "classShipMuonShield.html#a25d8a1229a943532bbc3c02ebc7f8109", null ],
     [ "dZ1", "classShipMuonShield.html#a0b5fdd40d2b50df6bb58faf95886a06d", null ],
@@ -21,5 +22,8 @@ var classShipMuonShield =
     [ "fSC_mag", "classShipMuonShield.html#a92c765f3f0e52c87e24d34520480868d", null ],
     [ "fWithConstShieldField", "classShipMuonShield.html#aa83bbeaa79fad431c2c5186c7df276ba", null ],
     [ "shield_params", "classShipMuonShield.html#aa20eee4086760aa148d9aca889ad0746", null ],
+    [ "snd_hole", "classShipMuonShield.html#a621dfbab4170ed79ff142d25063f5a8c", null ],
+    [ "snd_hole_dx", "classShipMuonShield.html#af69a736a23ef1339268d4bfe4a49069f", null ],
+    [ "snd_hole_dy", "classShipMuonShield.html#a9e5633e2a6bb1e1fc0587625bc227460", null ],
     [ "z_end_of_proximity_shielding", "classShipMuonShield.html#a899926b2ae70e54e604cb8851bc69ff1", null ]
 ];

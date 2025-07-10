@@ -1,5 +1,9 @@
 var NAVTREEINDEX27 =
 {
+"namespaceAddDiMuonDecayChannelsToG4.html":[4,0,2],
+"namespaceAddDiMuonDecayChannelsToG4.html#a3fdf0d174d3eccaaa0e4daa18e8c8119":[4,0,2,0],
+"namespaceCMBG__conf.html":[4,0,8],
+"namespaceCMBG__conf.html#ad95691e78742115af94d2ddc4c3aeecc":[4,0,8,0],
 "namespacePythiaList.html":[4,0,62],
 "namespacePythiaList.html#a13f7f67ea0b996cb7ac40f53ffbf1bff":[4,0,62,2],
 "namespacePythiaList.html#a405f77fe1f708bdae18e23a84469b962":[4,0,62,1],
@@ -245,9 +249,5 @@ var NAVTREEINDEX27 =
 "namespaceTTCluster.html#af0adfcf3af75877f09b122405862c6a3":[4,0,104,69],
 "namespaceTTCluster.html#af2e1f779c4e037dfc81bce045d4dbc87":[4,0,104,8],
 "namespaceTTCluster.html#af32b305974fe2a5fbca92770573f1866":[4,0,104,75],
-"namespaceTTCluster.html#af37accc8aaeaaf9429d4b1c1de746acb":[4,0,104,48],
-"namespaceTTCluster.html#af98457a9c18f4bd24398e305219408c7":[4,0,104,1],
-"namespaceTTCluster.html#afa338b42b507d34e8ea7caacb67136c8":[4,0,104,60],
-"namespaceTTCluster.html#afb544571df125a0f4e24d05ffa339117":[4,0,104,37],
-"namespaceTTCluster.html#afd6ba571117db8ee7f7cffaa128cea99":[4,0,104,20]
+"namespaceTTCluster.html#af37accc8aaeaaf9429d4b1c1de746acb":[4,0,104,48]
 };
