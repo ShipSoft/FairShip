@@ -35,7 +35,6 @@ it in future.
 * SND/EmulsionTarget folder, with the Target and TargetTracker classes from nutaudet
 * Added fibre structure for MTC and digitization. Fibre <-> SiPM mapping is done in ```SND/MTC/MTCDetector.cxx```, can be extracted and tested in ```python/SciFiMapping.py```, that is subsequently used in ```python/shipDigiReco.py```
 * Implement proximity shielding design from 26/06/2025 by G. Humphreys
-* Particle Gun has been updated: now user can set the coordinates of the PG via keys --V{x,y,z} and use --D{x,y} to uniformly smear the signal in a given x and y range
 
 ### Fixed
 
@@ -83,7 +82,6 @@ it in future.
 * feat(geometry): Make SplitCal the default calorimeter
 * Resize SplitCal to 4×6 m²
 * feat(geometry): Define target configuration in yaml
-<<<<<<< HEAD
 * strawtubes detID is now 7-digit! (without plane number)
 * Change strawtubes detID decode function to tuple output
 * Change separate constructions of tracker stations 1/2 and 3/4 to being identical
@@ -96,6 +94,7 @@ it in future.
 * Removed old stuff legacy in `shipMuonShield.cxx` (like LE and fFloor)
 * Event Display: Don't try to recreate geometry config
 * Geometry: Make the tungsten target the default (Jun25 config)
+* Change EmulsionTarget detID decode function to tuple output
 
 ### Removed
 
