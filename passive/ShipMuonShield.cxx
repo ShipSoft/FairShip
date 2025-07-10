@@ -67,20 +67,96 @@ Int_t ShipMuonShield::InitMedium(TString name)
    return geoBuild->createMedium(ShipMedium);
 }
 
-void ShipMuonShield::CreateArb8(TString arbName, TGeoMedium *medium,
-				Double_t dZ, std::array<Double_t, 16> corners,
-				Int_t color, TGeoUniformMagField *magField,
-				TGeoVolume *tShield, Double_t x_translation,
-				Double_t y_translation,
-				Double_t z_translation) {
-  TGeoVolume *magF =
-      gGeoManager->MakeArb8(arbName, medium, dZ, corners.data());
-  magF->SetLineColor(color);
-  if (fWithConstShieldField) {
-      magF->SetField(magField);
+
+void ShipMuonShield::SetSNDSpace(Bool_t hole, Double_t hole_dx, Double_t hole_dy)
+{
+  snd_hole = hole;
+  snd_hole_dx = hole_dx / 2.; // since the hole is cut in 2 halves, we need to divide the width by 2
+  snd_hole_dy = hole_dy;
+}
+
+void ShipMuonShield::CreateArb8(TString                         arbName,
+                                TGeoMedium*                     medium,
+                                Double_t                        dZ,
+                                std::array<Double_t,16>         corners,
+                                Int_t                           color,
+                                TGeoUniformMagField*            magField,
+                                TGeoVolume*                     tShield,
+                                Double_t                        x_translation,
+                                Double_t                        y_translation,
+                                Double_t                        z_translation) {
+  TGeoVolume* magVol = nullptr;
+
+  if (snd_hole &&
+      (arbName == "Magn6_MiddleMagL" || arbName == "Magn6_MiddleMagR")) {
+    //
+    // 1) Raw Arb8 “shape”
+    //
+    TString shapeName = arbName + "_shape";
+    gGeoManager->MakeArb8(shapeName,
+                         medium,
+                         dZ,
+                         corners.data());
+
+    //
+    // 2) Void box that’s 0.1 mm smaller on each half-length
+    //
+    constexpr double eps = 0.01;  // mm anti-overlap
+    double void_dx = snd_hole_dx - eps;
+    double void_dy = snd_hole_dy - eps;
+    TString voidName = arbName + "_void";
+    gGeoManager->MakeBox(voidName,
+                         medium,
+                         void_dx,
+                         void_dy,
+                         dZ);
+
+    //
+    // 3) Single named translation for the subtraction
+    //
+    Double_t shift = (corners[1] > 0 ? -void_dx : void_dx);
+    TString transName = arbName + "_t";
+    auto* tr = new TGeoTranslation(transName.Data(),
+                                   shift,
+                                   0.0,
+                                   0.0);
+    tr->RegisterYourself();
+
+    //
+    // 4) Composite shape: <shape> minus the translated <void>
+    //
+    TString compName = arbName + "_comp";
+    TString expr     = TString::Format("%s - %s:%s",
+                                       shapeName.Data(),
+                                       voidName.Data(),
+                                       transName.Data());
+    auto* compShape = new TGeoCompositeShape(compName.Data(),
+                                             expr.Data());
+
+    //
+    // 5) Wrap the composite in a volume
+    //
+    magVol = new TGeoVolume(arbName,
+                            compShape,
+                            medium);
   }
-  tShield->AddNode(magF, 1, new TGeoTranslation(x_translation, y_translation,
-						z_translation));
+  else {
+    // original uncut magnet
+    magVol = gGeoManager->MakeArb8(arbName,
+                                   medium,
+                                   dZ,
+                                   corners.data());
+  }
+
+  // common settings
+  magVol->SetLineColor(color);
+  if (fWithConstShieldField) {
+    magVol->SetField(magField);
+  }
+  tShield->AddNode(magVol, 1,
+                   new TGeoTranslation(x_translation,
+                                       y_translation,
+                                       z_translation));
 }
 
 void ShipMuonShield::CreateMagnet(TString magnetName,TGeoMedium* medium,TGeoVolume *tShield,TGeoUniformMagField *fields[4],FieldDirection fieldDirection,

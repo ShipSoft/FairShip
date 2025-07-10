@@ -189,23 +189,23 @@ def configure_snd_mtc(yaml_file, ship_geo):
     with open(yaml_file) as file:
         config = yaml.safe_load(file)
 
-    mtc_geo = AttrDict(config['MTC'])
+    ship_geo.mtc_geo = AttrDict(config['MTC'])
     # Initialize detector
-    if mtc_geo.zPosition == "auto":
+    if ship_geo.mtc_geo.zPosition == "auto":
         # Get the the center of the *last* magnet
-        mtc_geo.zPosition = find_shield_center(ship_geo)[2][-1]
-        print("MTC zPosition set to ", mtc_geo.zPosition)
+        ship_geo.mtc_geo.zPosition = find_shield_center(ship_geo)[2][-1]
+        print("MTC zPosition set to ", ship_geo.mtc_geo.zPosition)
     mtc = ROOT.MTCDetector("MTC", ROOT.kTRUE)
     mtc.SetMTCParameters(
-        mtc_geo.width,
-        mtc_geo.height,
-        mtc_geo.angle,
-        mtc_geo.ironThick,
-        mtc_geo.sciFiThick,
-        mtc_geo.scintThick,
-        mtc_geo.nLayers,
-        mtc_geo.zPosition,
-        mtc_geo.fieldY
+        ship_geo.mtc_geo.width,
+        ship_geo.mtc_geo.height,
+        ship_geo.mtc_geo.angle,
+        ship_geo.mtc_geo.ironThick,
+        ship_geo.mtc_geo.sciFiThick,
+        ship_geo.mtc_geo.scintThick,
+        ship_geo.mtc_geo.nLayers,
+        ship_geo.mtc_geo.zPosition,
+        ship_geo.mtc_geo.fieldY
     )
     detectorList.append(mtc)
 
@@ -284,14 +284,39 @@ def configure(run, ship_geo):
     detectorList.append(TargetStation)
 
 
+    # For SND
+    if ship_geo.SND:
+        if ship_geo.SND_design == 2:
+            # SND design 2 -- MTC
+            configure_snd_mtc(
+                os.path.join(os.environ["FAIRSHIP"], "geometry", "MTC_config.yaml"),
+                ship_geo
+            )
+        else:
+            configure_snd_old(
+            os.path.join(os.environ["FAIRSHIP"], "geometry", "snd_config_old.yaml"),
+            ship_geo.UpstreamTagger.Z_Position - 8 *u.cm - 5 *u.cm, #8 cm width of UpstreamTagger
+            ship_geo.cave.floorHeightMuonShield,
+            )
+
+
     in_params = list(ship_geo.muShield.params)
 
     MuonShield = ROOT.ShipMuonShield(
         in_params,
         ship_geo.muShield.z,
         ship_geo.muShield.WithConstField,
-        ship_geo.SC_mag
+        ship_geo.SC_mag,
     )
+
+    if ship_geo.SND:
+        if ship_geo.SND_design == 2:
+            # SND design 2 -- MTC
+            MuonShield.SetSNDSpace(
+                hole = True,
+                hole_dx = (ship_geo.mtc_geo.width + 5. * u.cm) / 2.,
+                hole_dy = (ship_geo.mtc_geo.height + 5. * u.cm) / 2.
+            )
     detectorList.append(MuonShield)
 
     if not hasattr(ship_geo, "magnetDesign"):
@@ -338,21 +363,6 @@ def configure(run, ship_geo):
         ),
         ship_geo.decayVolume.z0,
     )
-
-    # For SND
-    if ship_geo.SND:
-        if ship_geo.SND_design == 2:
-            # SND design 2 -- MTC
-            configure_snd_mtc(
-                os.path.join(fairship, "geometry", "MTC_config.yaml"),
-                ship_geo
-            )
-        else:
-            configure_snd_old(
-            os.path.join(fairship, "geometry", "snd_config_old.yaml"),
-            ship_geo.UpstreamTagger.Z_Position - 8 *u.cm - 5 *u.cm, #8 cm width of UpstreamTagger
-            ship_geo.cave.floorHeightMuonShield,
-            )
 
 
     if ship_geo.strawDesign > 1:
