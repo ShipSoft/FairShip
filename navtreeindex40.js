@@ -1,5 +1,9 @@
 var NAVTREEINDEX40 =
 {
+"structShipFieldMaker_1_1fieldInfo.html#a816598a56ecb7f46b26bc348734290da":[5,0,93,0,0],
+"structShipFieldMaker_1_1fieldInfo.html#aa63ca69b924db536e0c7e0da19e5e02e":[5,0,93,0,1],
+"structShipFieldMaker_1_1fieldInfo.html#ac9a321e62f357da7f2e7c7209688c217":[5,0,93,0,4],
+"structShipFieldMaker_1_1transformInfo.html":[5,0,93,1],
 "structShipFieldMaker_1_1transformInfo.html#a1662a7308aec75088911268cf82c3169":[5,0,93,1,4],
 "structShipFieldMaker_1_1transformInfo.html#a1fceff836a1b6dd65a67207c5ac1bbbf":[5,0,93,1,2],
 "structShipFieldMaker_1_1transformInfo.html#a38fd237f14541937e081c8205e668811":[5,0,93,1,5],

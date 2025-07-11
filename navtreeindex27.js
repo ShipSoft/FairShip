@@ -1,5 +1,7 @@
 var NAVTREEINDEX27 =
 {
+"muon_8h.html":[6,0,7,1],
+"muon_8h_source.html":[6,0,7,1],
 "namespaceAddDiMuonDecayChannelsToG4.html":[4,0,2],
 "namespaceAddDiMuonDecayChannelsToG4.html#a3fdf0d174d3eccaaa0e4daa18e8c8119":[4,0,2,0],
 "namespaceCMBG__conf.html":[4,0,8],
@@ -247,7 +249,5 @@ var NAVTREEINDEX27 =
 "namespaceTTCluster.html#af05869d68990a87cb0d1ce2fb244dd99":[4,0,104,29],
 "namespaceTTCluster.html#af0758d94f4130a909c5b9f98a236d15d":[4,0,104,22],
 "namespaceTTCluster.html#af0adfcf3af75877f09b122405862c6a3":[4,0,104,69],
-"namespaceTTCluster.html#af2e1f779c4e037dfc81bce045d4dbc87":[4,0,104,8],
-"namespaceTTCluster.html#af32b305974fe2a5fbca92770573f1866":[4,0,104,75],
-"namespaceTTCluster.html#af37accc8aaeaaf9429d4b1c1de746acb":[4,0,104,48]
+"namespaceTTCluster.html#af2e1f779c4e037dfc81bce045d4dbc87":[4,0,104,8]
 };

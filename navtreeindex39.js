@@ -1,5 +1,9 @@
 var NAVTREEINDEX39 =
 {
+"shipPatRec_8py.html#a1aceec100bcfa9fd13a9709544805a10":[6,0,12,35,14],
+"shipPatRec_8py.html#a1b2eef17cc3ac04669d2fa4c73c11257":[6,0,12,35,24],
+"shipPatRec_8py.html#a26083157d3c5b063b6787c476ef896e6":[6,0,12,35,4],
+"shipPatRec_8py.html#a2d54ac07b407e2d1f95a45c799a57a7f":[6,0,12,35,0],
 "shipPatRec_8py.html#a31c3d4163ed55d9615b93dd88cfd7d82":[6,0,12,35,11],
 "shipPatRec_8py.html#a34ca2cd92dbeecb478eb4b53152a3f46":[6,0,12,35,6],
 "shipPatRec_8py.html#a50f1d2cf92badc6046881b76c02c5c6d":[6,0,12,35,9],
@@ -245,9 +249,5 @@ var NAVTREEINDEX39 =
 "strawtubes_8h_source.html":[6,0,17,1],
 "structShipFieldMaker_1_1fieldInfo.html":[5,0,93,0],
 "structShipFieldMaker_1_1fieldInfo.html#a407b5fcdc9d336dba1278cbd1ed75036":[5,0,93,0,2],
-"structShipFieldMaker_1_1fieldInfo.html#a4752e530a813faaa66a4eac51a4a39a6":[5,0,93,0,3],
-"structShipFieldMaker_1_1fieldInfo.html#a816598a56ecb7f46b26bc348734290da":[5,0,93,0,0],
-"structShipFieldMaker_1_1fieldInfo.html#aa63ca69b924db536e0c7e0da19e5e02e":[5,0,93,0,1],
-"structShipFieldMaker_1_1fieldInfo.html#ac9a321e62f357da7f2e7c7209688c217":[5,0,93,0,4],
-"structShipFieldMaker_1_1transformInfo.html":[5,0,93,1]
+"structShipFieldMaker_1_1fieldInfo.html#a4752e530a813faaa66a4eac51a4a39a6":[5,0,93,0,3]
 };
