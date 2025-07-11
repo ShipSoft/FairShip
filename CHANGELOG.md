@@ -96,6 +96,7 @@ it in future.
 * Geometry: Make the tungsten target the default (Jun25 config)
 * Change EmulsionTarget detID decode function to tuple output
 * Particle Gun has been updated: now user can set the coordinates of the PG via keys --V{x,y,z} and use --D{x,y} to uniformly smear the signal in a given x and y range
++ makeCascade: Added new default target, moved to argparse
 
 ### Removed
 
