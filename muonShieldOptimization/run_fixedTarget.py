@@ -204,9 +204,15 @@ run.AddModule(TargetStation)
 
 
 if AddMuonShield or AddHadronAbsorberOnly:
-    #if not AddMuonShieldField:
-    #    for i in range(7):
-    #        ship_geo.muShield.params[7 + i * 13 + 12] = 0
+    n_magnets = 7
+    n_params = 13
+    if not AddMuonShieldField:
+        for i in range(n_magnets):
+            ship_geo.muShield.params[n_magnets + i * n_params + 12] = 0  # set B field to 0
+    if AddHadronAbsorberOnly:
+        for i in range(n_magnets):
+            ship_geo.muShield.params[n_magnets + i * n_params] = 0  # set dXIn to 0
+
     MuonShield = ROOT.ShipMuonShield(in_params=list(ship_geo.muShield.params), z=ship_geo.muShield.z, WithConstShieldField=ship_geo.muShield.WithConstField,
                                      SC_key=ship_geo.SC_mag, AddHadronAbsorberOnly=AddHadronAbsorberOnly, TurnFieldOff=not AddMuonShieldField)
     # MuonShield.SetSupports(False) # otherwise overlap with sensitive Plane

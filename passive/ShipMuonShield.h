@@ -20,7 +20,6 @@ class ShipMuonShield : public FairModule
 {
   public:
     ShipMuonShield(std::vector<double> in_params, Double_t z, const Bool_t WithConstShieldField, const Bool_t SC_key);
-    ShipMuonShield(std::vector<double> in_params, Double_t z, const Bool_t WithConstShieldField, const Bool_t SC_key, const Bool_t AddHadronAbsorberOnly, const Bool_t TurnFieldOff);
     ShipMuonShield();
     virtual ~ShipMuonShield();
     void ConstructGeometry();
@@ -31,8 +30,6 @@ class ShipMuonShield : public FairModule
     Int_t InitMedium(TString name);
     Bool_t fWithConstShieldField;
     Bool_t fSC_mag;
-    Bool_t fAddHadronAbsorberOnly;
-    Bool_t fTurnFieldOff;
     std::vector<Double_t> shield_params;
 
     void CreateArb8(TString arbName,
