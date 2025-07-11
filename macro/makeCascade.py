@@ -8,46 +8,32 @@ timer = ROOT.TStopwatch()
 timer.Start()
 
 ap = argparse.ArgumentParser(description='Run SHiP makeCascade: generate ccbar or bbar')
-ap.add_argument('-s', '--seed', action='store', dest='seed', default='', help="Random number seed, integer. If not given, current time will be used")
-ap.add_argument('-t', '--Fntuple', action='store', dest='Fntuple', default='', help="Name of ntuple output file, default: Cascade{nevgen/1000}k-parp16-MSTP82-1-MSEL{mselcb}-ntuple.root")
-ap.add_argument('-n', '--nevgen', type=int, action='store', dest='nevgen', default=100000, help="Number of events to produce, default 100000")
-ap.add_argument('-E', '--beam', type=float, action='store', dest='pbeamh', default=400.0, help="Energy of beam in GeV, default 400 GeV")
-ap.add_argument('-m', '--mselcb', type=int, action='store', dest='mselcb', default=4, help="4 (5): charm (beauty) production, default charm", choices=[4, 5])
-ap.add_argument('-P', '--storePrimaries', action=argparse.BooleanOptionalAction, dest='storePrimaries', default=False,
-                help="If this argument is used, store all particles produced together with charm.")
-ap.add_argument('--target_composition', action='store', dest='target_composition', default='W',
+ap.add_argument('-s', '--seed', type=int, default=int(time.time() * 100000000 % 900000000), help="Random number seed, integer. If not given, current time will be used")
+ap.add_argument('-t', '--Fntuple', default='', help="Name of ntuple output file, default: Cascade{nevgen/1000}k-parp16-MSTP82-1-MSEL{mselcb}-ntuple.root")
+ap.add_argument('-n', '--nevgen', type=int, default=100000, help="Number of events to produce, default 100000")
+ap.add_argument('-E', '--pbeamh', type=float, default=400.0, help="Energy of beam in GeV, default 400 GeV")
+ap.add_argument('-m', '--mselcb', type=int, default=4, help="4 (5): charm (beauty) production, default charm", choices=[4, 5])
+ap.add_argument('-P', '--storePrimaries', action=argparse.BooleanOptionalAction, default=False, help="If this argument is used, store all particles produced together with charm.")
+ap.add_argument('--target_composition', default='W',
                 help="Target composition (to determine the ratio of protons in the material). Default is Tungsten (W). Only other choice is Molybdenum (Mo)", choices=['W', 'Mo'])
-ap.add_argument('--pythia_tune', action='store', dest='pythia_tune', default='PoorE791',
+ap.add_argument('--pythia_tune', default='PoorE791',
                 help="Choices of Pythia tune are PoorE791 (default, settings with default Pythia6 pdf, based on getting <pt> at 500 GeV pi-) or LHCb (settings by LHCb for Pythia 6.427)",
                 choices=['PoorE791', 'LHCb'])
 # some parameters for generating the chi (sigma(signal)/sigma(total) as a function of momentum
-ap.add_argument('--nev', type=int, action='store', dest='nev', default=5000, help="Events / momentum")
-ap.add_argument('--nrpoints', type=int, action='store', dest='nrpoints', default=20, help="Number of momentum points taken to calculate sig/sigtot")
+ap.add_argument('--nev', type=int, default=5000, help="Events / momentum")
+ap.add_argument('--nrpoints', type=int, default=20, help="Number of momentum points taken to calculate sig/sigtot")
 
 args = ap.parse_args()
-nevgen = args.nevgen
-mselcb = args.mselcb
-pbeamh = args.pbeamh
-storePrimaries = args.storePrimaries
-Fntuple = args.Fntuple
-if Fntuple == '':
-    Fntuple = f'Cascade{int(nevgen/1000)}k-parp16-MSTP82-1-MSEL{mselcb}-ntuple.root'
-R = args.seed
-if R != '':
-    R = int(R)
-target_composition = args.target_composition
-pythia_tune = args.pythia_tune
+if args.Fntuple == '':
+    args.Fntuple = f'Cascade{int(args.nevgen/1000)}k-parp16-MSTP82-1-MSEL{args.mselcb}-ntuple.root'
 
-print(f'Generate {nevgen}  p.o.t. with msel = {mselcb} proton beam {pbeamh}GeV')
-print(f'Output ntuples written to: {Fntuple}')
-
-nev = args.nev
-nrpoints = args.nrpoints
+print(f'Generate {args.nevgen}  p.o.t. with msel = {args.mselcb} proton beam {args.pbeamh}GeV')
+print(f'Output ntuples written to: {args.Fntuple}')
 
 # cascade beam particles, anti-particles are generated automatically if they exist.
 idbeam = [2212, 211, 2112, 321, 130, 310]
 target = ['p+','n0']
-print(f'Chi generation with {nev} events/point, nr points={nrpoints}')
+print(f'Chi generation with {args.nev} events/point, nr points={args.nrpoints}')
 print(f'Cascade beam particle: {idbeam}')
 
 # fracp is the fraction of protons in nucleus, used to average chi on p and n target in Pythia.
@@ -56,18 +42,18 @@ if target == 'W': # target is Tungsten, fracp is 74/(184)
 else: # target would then be Molybdenum, fracp is 42/98
     fracp = 0.43
 
-print(f'Target particles: {target}, fraction of protons in {target_composition}={fracp}')
+print(f'Target particles: {target}, fraction of protons in {args.target_composition}={fracp}')
 
 # lower/upper momentum limit for beam, depends on msel..
 # signal particles wanted (and their antis), which could decay semi-leptonically.
-if mselcb == 4:
+if args.mselcb == 4:
    pbeaml = 34.
    idsig = [411, 421, 431, 4122, 4132, 4232, 4332, 4412, 4414, 4422, 4424, 4432, 4434, 4444]
-elif mselcb == 5:
+elif args.mselcb == 5:
    pbeaml = 130.
    idsig = [511, 521, 531, 541, 5122, 5132, 5142, 5232, 5242, 5332, 5342, 5412, 5414, 5422, 5424, 5432, 5434, 5442, 5444, 5512, 5514, 5522, 5524, 5532, 5534, 5542, 5544, 5554]
 else:
-   print(f'Error: msel is unknown: {mselcb}, STOP program')
+   print(f'Error: msel is unknown: {args.mselcb}, STOP program')
    sys.exit('ERROR on input, exit')
 
 PDG = ROOT.TDatabasePDG.Instance()
@@ -159,7 +145,7 @@ def fillp1(hist):
                 p1 = p2
 
 
-if pythia_tune == 'PoorE791':
+if args.pythia_tune == 'PoorE791':
     PoorE791_tune(myPythia)
     myPythia.OpenFortranFile(11, os.devnull)  # Pythia output to dummy (11) file (to screen use 6)
     myPythia.SetMSTU(11, 11)
@@ -168,9 +154,8 @@ else:
     myPythia.OpenFortranFile(6, os.devnull)  # avoid any printing to the screen, only when LHAPDF is used, in LHCb tune
 
 # start with different random number for each run...
-if R == '': R = int(time.time() * 100000000%900000000)
-print(f'Setting random number seed = {R}')
-myPythia.SetMRPY(1, R)
+print(f'Setting random number seed = {args.seed}')
+myPythia.SetMRPY(1, args.seed)
 
 # histogram helper
 h = {}
@@ -190,30 +175,30 @@ for idp in range(0, len(idbeam)):
             id = id + 1
             for idnp in range(2):
                 idb = id * 10 + idnp * 4
-                ut.bookHist(h, str(idb + 1), f'sigma vs p, {name} -> {target[idnp]}', nb, 0.5, pbeamh + 0.5)
-                ut.bookHist(h, str(idb + 2), f'sigma-tot vs p, {name} -> {target[idnp]}', nb, 0.5, pbeamh + 0.5)
-                ut.bookHist(h, str(idb + 3), f'chi vs p, {name}-> {target[idnp]}', nb, 0.5, pbeamh + 0.5)
-                ut.bookHist(h, str(idb + 4), f'Prob(normalised), {name} -> {target[idnp]}', nb, 0.5, pbeamh + 0.5)
+                ut.bookHist(h, str(idb + 1), f'sigma vs p, {name} -> {target[idnp]}', nb, 0.5, args.pbeamh + 0.5)
+                ut.bookHist(h, str(idb + 2), f'sigma-tot vs p, {name} -> {target[idnp]}', nb, 0.5, args.pbeamh + 0.5)
+                ut.bookHist(h, str(idb + 3), f'chi vs p, {name}-> {target[idnp]}', nb, 0.5, args.pbeamh + 0.5)
+                ut.bookHist(h, str(idb + 4), f'Prob(normalised), {name} -> {target[idnp]}', nb, 0.5, args.pbeamh + 0.5)
             # keep track of histogram<->Particle id relation.
             idhist[id] = idw
             for idpn in range(2):  # target is proton or neutron
                 idadd = idpn * 4
                 print(f'{name}, {target[idpn]}, for  chi, seconds: {time.time()-t0}')
-                for ipbeam in range(nrpoints):  # loop over beam momentum
-                    pbw = ipbeam * (pbeamh - pbeaml) / (nrpoints - 1) + pbeaml
+                for ipbeam in range(args.nrpoints):  # loop over beam momentum
+                    pbw = ipbeam * (args.pbeamh - pbeaml) / (args.nrpoints - 1) + pbeaml
                     # convert to center of a bin
                     ibin = h[str(id * 10 + 1+ idadd)].FindBin(pbw, 0., 0.)
                     pbw = h[str(id * 10 + 1 + idadd)].GetBinCenter(ibin)
                     # new particle/momentum, init again, first signal run.
-                    myPythia.SetMSEL(mselcb)  # set forced ccbar or bbbar generation
+                    myPythia.SetMSEL(args.mselcb)  # set forced ccbar or bbbar generation
                     myPythia.Initialize('FIXT', name, target[idpn], pbw)
-                    for iev in range(nev):
+                    for iev in range(args.nev):
                         myPythia.GenerateEvent()
                     # signal run finished, get cross-section
                     h[str(id * 10 + 1 + idadd)].Fill(pbw, tp.getPyint5_XSEC(2, 0))
                     myPythia.SetMSEL(2)  # now total cross-section, i.e. msel=2
                     myPythia.Initialize('FIXT', name, target[idpn], pbw)
-                    for iev in range(nev//10):
+                    for iev in range(args.nev//10):
                     # if iev%100==0: print 'generated mbias events',iev,' seconds:',time.time()-t0
                         myPythia.GenerateEvent()
                     # get cross-section
@@ -228,8 +213,8 @@ chimx = 0.
 for i in range(1, id + 1):
     for idpn in range(2):
         idw = i * 10 + idpn * 4 + 3
-        ibh = h[str(idw)].FindBin(pbeamh)
-        print(f'beam id: {i}, {idw}, {idhist[i]}, momentum: {pbeamh},chi: {h[str(idw)].GetBinContent(ibh)}, chimx: {chimx}')
+        ibh = h[str(idw)].FindBin(args.pbeamh)
+        print(f'beam id: {i}, {idw}, {idhist[i]}, momentum: {args.pbeamh},chi: {h[str(idw)].GetBinContent(ibh)}, chimx: {chimx}')
         if h[str(idw)].GetBinContent(ibh)>chimx: chimx=h[str(idw)].GetBinContent(ibh)
 chimx = 1./chimx
 for i in range(1, id + 1):
@@ -247,7 +232,7 @@ ut.bookHist(h,str(4), 'D0 pt**2', 100, 0., 18.)
 ut.bookHist(h,str(5), 'D0 pt', 100, 0., 10.)
 ut.bookHist(h,str(6), 'D0 XF', 100, -1., 1.)
 
-ftup = ROOT.TFile.Open(Fntuple, 'RECREATE')
+ftup = ROOT.TFile.Open(args.Fntuple, 'RECREATE')
 Ntup = ROOT.TNtuple("pythia6", "pythia6 heavy flavour",\
        "id:px:py:pz:E:M:mid:mpx:mpy:mpz:mE:mM:k:a0:a1:a2:a3:a4:a5:a6:a7:a8:a9:a10:a11:a12:a13:a14:a15:\
 s0:s1:s2:s3:s4:s5:s6:s7:s8:s9:s10:s11:s12:s13:s14:s15")
@@ -262,12 +247,12 @@ for kf in idsig:
     myPythia.SetMDCY(kc,1,0)
 
 stack = 1000 * [0]  # declare the stack for the cascade particles
-for iev in range(nevgen):
+for iev in range(args.nevgen):
     if iev % 1000 == 0: print('Generate event ',iev)
     nstack=0
     # put protons of energy pbeamh on the stack
     # stack: PID, px, py, pz, cascade depth, nstack of mother
-    stack[nstack] = [2212, 0., 0., pbeamh, 1, 100 * [0], 100 * [0]]
+    stack[nstack] = [2212, 0., 0., args.pbeamh, 1, 100 * [0], 100 * [0]]
     stack[nstack][5][0] = 2212
     while nstack >= 0:
         # generate a signal based on probabilities in hists i*10+8?
@@ -287,7 +272,7 @@ for iev in range(nevgen):
                 myPythia.SetP(1, k, stack[nstack][k])
                 myPythia.SetP(2, k, 0.)
             # new particle/momentum, init again: signal run.
-            myPythia.SetMSEL(mselcb)  # set forced ccbar or bbbar generation
+            myPythia.SetMSEL(args.mselcb)  # set forced ccbar or bbbar generation
             myPythia.Initialize('3MOM', PDG.GetParticle(stack[nstack][0]).GetName(), target[idpn], 0.)
             myPythia.GenerateEvent()
             # look for the signal particles
@@ -323,13 +308,13 @@ for iev in range(nevgen):
                          h['4'].Fill(pt2)
                          h['5'].Fill(ROOT.TMath.Sqrt(pt2))
                          # boost to Cm frame for XF ccalculation of D^0
-                         beta = pbeamh / (myPythia.GetP(1,4) + myPythia.GetP(2, 5))
+                         beta = args.pbeamh / (myPythia.GetP(1,4) + myPythia.GetP(2, 5))
                          gamma = (1 - beta ** 2) ** (-0.5)
                          pbcm = -gamma * beta * myPythia.GetP(1, 4) + gamma * myPythia.GetP(1, 3)
                          pDcm = -gamma * beta * myPythia.GetP(itrk, 4) + gamma * myPythia.GetP(itrk, 3)
                          xf = pDcm / pbcm
                          h['6'].Fill(xf)
-            if len(charmFound) > 0 and storePrimaries:
+            if len(charmFound) > 0 and args.storePrimaries:
                 for itP in range(1, myPythia.GetN() + 1):
                     if itP in charmFound: continue
                     if myPythia.GetK(itP, 1) == 1:
