@@ -37,7 +37,7 @@ print(f'Chi generation with {args.nev} events/point, nr points={args.nrpoints}')
 print(f'Cascade beam particle: {idbeam}')
 
 # fracp is the fraction of protons in nucleus, used to average chi on p and n target in Pythia.
-if target == 'W': # target is Tungsten, fracp is 74/(184)
+if args.target_composition == 'W': # target is Tungsten, fracp is 74/(184)
     fracp = 0.40
 else: # target would then be Molybdenum, fracp is 42/98
     fracp = 0.43
