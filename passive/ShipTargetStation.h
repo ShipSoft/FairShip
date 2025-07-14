@@ -21,6 +21,7 @@ class ShipTargetStation : public FairModule
                       const Double_t tz,
                       const TargetVersion tV,
                       const int nS,
+		      const int HeT,
                       const char* Title = "ShipTargetStation");
     ShipTargetStation();
     virtual ~ShipTargetStation();
@@ -48,5 +49,6 @@ class ShipTargetStation : public FairModule
     Int_t InitMedium(const char* name);
     Int_t fnS;
     TargetVersion fTV;
+    Int_t fHeT;
 };
 #endif // PASSIVE_SHIPTARGETSTATION_H_

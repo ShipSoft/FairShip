@@ -37,6 +37,7 @@ it in future.
 * Implement proximity shielding design from 26/06/2025 by G. Humphreys
 * Added the hole for SND in the Muon Shield, that is created automatically if SND key is enabled (works so far for SND_design == 2)
 * Implement vacuum in target facility
+* Implement target helium vessel
 
 ### Fixed
 
