@@ -18,6 +18,7 @@
 #include "TString.h"     // for TString
 
 using ShipUnit::mm;
+using ShipUnit::cm;
 
 ShipTargetStation::~ShipTargetStation() {}
 ShipTargetStation::ShipTargetStation()
@@ -73,6 +74,9 @@ void ShipTargetStation::ConstructGeometry()
 
     InitMedium("H2O");
     TGeoMedium* water = gGeoManager->GetMedium("H2O");
+
+    InitMedium("vacuums");
+    TGeoMedium* vacuum = gGeoManager->GetMedium("vacuums");
 
     double He_T = 363.15;               // in K, use average 90 degrees C.
     double He_P = 1.6e6 * 6.241509e3;   // 16 bar in MeV/mm3
@@ -140,8 +144,11 @@ void ShipTargetStation::ConstructGeometry()
     double proximity_shielding_hole_diameter = 200 * mm;
     double proximity_shielding_hole_height = 735 * mm;
     double proximity_shielding_distance_after_target = 96.1 * mm;
+    double top_shielding_height = 600 * mm;
+    double bottom_shielding_height = 545 * mm;
     double shielding_position = start_of_target + fTargetLength + proximity_shielding_distance_after_target
                                              + proximity_shielding_thickness - shielding_length / 2;
+    double target_box_shift = 14.45 * cm;
     auto proximity_shielding_envelope = new TGeoBBox("proximity_shielding_envelope",
                                                      shielding_width / 2,
                                                      proximity_shielding_height / 2,
@@ -168,40 +175,51 @@ void ShipTargetStation::ConstructGeometry()
                                "- proximity_shielding_inner:proximity_shielding_inner_shift"
                                "- proximity_shielding_hole:proximity_shielding_hole_shift");
     auto proximity_shielding = new TGeoVolume("proximity_shielding", proximity_shielding_shape, copper);
-    auto proximity_shielding_centre =
-        new TGeoTranslation(
-            0., -(proximity_shielding_hole_height - proximity_shielding_height / 2), shielding_position);
+    auto proximity_shielding_centre = new TGeoTranslation(
+        0., -(proximity_shielding_hole_height - proximity_shielding_height / 2) + target_box_shift, 0);
 
-    top->AddNode(proximity_shielding, 1, proximity_shielding_centre);
+    auto target_vacuum_box =
+        gGeoManager->MakeBox("target_vacuum_box",
+                             vacuum,
+                             shielding_width / 2,
+                             (proximity_shielding_height + top_shielding_height + bottom_shielding_height) / 2,
+                             shielding_length / 2);
+    auto vacuum_vessel_centre =
+        new TGeoTranslation(0.,
+                            // -(proximity_shielding_hole_height - proximity_shielding_height / 2)
+                            //     + (bottom_shielding_height - top_shielding_height) / 2,
+                            -target_box_shift,
+                            shielding_position);
+    top->AddNode(target_vacuum_box, 1, vacuum_vessel_centre);
+
+    target_vacuum_box->AddNode(proximity_shielding, 1, proximity_shielding_centre);
 
     // Iron shielding
-    double top_shielding_height = 600 * mm;
-    double bottom_shielding_height = 545 * mm;
     auto top_shielding = gGeoManager->MakeBox(
         "top_shielding", iron, shielding_width / 2, top_shielding_height / 2, shielding_length / 2);
-    top->AddNode(
-        top_shielding,
-        1,
-        new TGeoTranslation(0.,
-                            top_shielding_height / 2 + proximity_shielding_height - proximity_shielding_hole_height,
-                            shielding_position));
+    target_vacuum_box->AddNode(top_shielding,
+                               1,
+                               new TGeoTranslation(0.,
+                                                   top_shielding_height / 2 + proximity_shielding_height
+                                                       - proximity_shielding_hole_height + target_box_shift,
+                                                   0));
     auto bottom_shielding = gGeoManager->MakeBox(
         "bottom_shielding", iron, shielding_width / 2, bottom_shielding_height / 2, shielding_length / 2);
-    top->AddNode(bottom_shielding,
-                 1,
-                 new TGeoTranslation(
-                     0., -bottom_shielding_height / 2 - proximity_shielding_hole_height, shielding_position));
+    target_vacuum_box->AddNode(
+        bottom_shielding,
+        1,
+        new TGeoTranslation(0., -bottom_shielding_height / 2 - proximity_shielding_hole_height + target_box_shift, 0));
     double pedestal_length = 2170 * mm;
     double pedestal_width = 1070 * mm;
     double pedestal_height = 150 * mm;
     auto shielding_pedestal =
         gGeoManager->MakeBox("shielding_pedestal", iron, pedestal_width / 2, pedestal_height / 2, pedestal_length / 2);
-    top->AddNode(
+    target_vacuum_box->AddNode(
         shielding_pedestal,
         1,
         new TGeoTranslation(0.,
-                            pedestal_height / 2 - proximity_shielding_hole_height,
-                            shielding_position - shielding_length / 2 + 565 * mm + pedestal_length / 2));
+                            pedestal_height / 2 - proximity_shielding_hole_height + target_box_shift,
+                            - shielding_length / 2 + 565 * mm + pedestal_length / 2));
 
     top->AddNode(tTarget, 1, new TGeoTranslation(0, 0, start_of_target));
 }

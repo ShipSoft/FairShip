@@ -36,6 +36,8 @@ it in future.
 * Added fibre structure for MTC and digitization. Fibre <-> SiPM mapping is done in ```SND/MTC/MTCDetector.cxx```, can be extracted and tested in ```python/SciFiMapping.py```, that is subsequently used in ```python/shipDigiReco.py```
 * Implement proximity shielding design from 26/06/2025 by G. Humphreys
 * Added the hole for SND in the Muon Shield, that is created automatically if SND key is enabled (works so far for SND_design == 2)
+* Implement vacuum in target facility
+
 ### Fixed
 
 * chore: Fix file endings
