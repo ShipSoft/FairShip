@@ -101,7 +101,7 @@ void ShipTargetStation::ConstructGeometry()
               << " K, P=" << cooler->GetMaterial()->GetPressure() << " MeV/mm3, Density="
 	      << cooler->GetMaterial()->GetDensity();
 
-    
+
     TGeoVolume* tTarget = new TGeoVolumeAssembly("TargetArea");
 
 
@@ -170,7 +170,7 @@ void ShipTargetStation::ConstructGeometry()
 
     // now add the He+target to the target area.
     tTarget->AddNode(vessel, 1, new TGeoTranslation(0, 0, -1. * vessel_shift + vessel_length / 2.));
-    
+
     // Proximity shielding
 
     double start_of_target = fTargetZ - fTargetLength / 2.;
