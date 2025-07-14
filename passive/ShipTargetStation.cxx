@@ -104,43 +104,6 @@ void ShipTargetStation::ConstructGeometry()
     
     TGeoVolume* tTarget = new TGeoVolumeAssembly("TargetArea");
 
-    Double_t zPos = 0.;
-    Int_t slots = fnS;
-    slots = slots - 1;
-
-    TGeoVolume* target;
-    TGeoVolume* slit;
-    // Double_t zPos =  fTargetZ - fTargetLength/2.;
-    for (Int_t i = 0; i < fnS; i++) {   // loop on layers
-        TString nmi = "Target_";
-        nmi += i + 1;
-        TString sm = "Slit_";
-        sm += i + 1;
-        TGeoMedium* material;
-        if (fM.at(i) == "molybdenum") {
-            material = mo;
-        };
-        if (fM.at(i) == "tungsten") {
-            material = tungsten;
-        };
-
-        target = gGeoManager->MakeTube(nmi, material, 0., fDiameter / 2., fL.at(i) / 2.);
-        if (fM.at(i) == "molybdenum") {
-            target->SetLineColor(28);
-        } else {
-            target->SetLineColor(38);
-        };   // silver/blue
-        tTarget->AddNode(target, 1, new TGeoTranslation(0, 0, zPos + fL.at(i) / 2.));
-        if (i < slots) {
-            slit = gGeoManager->MakeTube(sm, cooler, 0., fDiameter / 2., fG.at(i) / 2.);
-            slit->SetLineColor(7);   // cyan
-            tTarget->AddNode(slit, 1, new TGeoTranslation(0, 0, zPos + fL.at(i) + fG.at(i) / 2.));
-            zPos += fL.at(i) + fG.at(i);
-        } else {
-            zPos += fL.at(i);
-        }
-    }   // loop on layers
-
 
     //Target vessel
     double vessel_thickness = 8 * mm;
@@ -160,7 +123,53 @@ void ShipTargetStation::ConstructGeometry()
     vessel = gGeoManager->MakeTube("TargetVesselBack", inc718, 0, vessel_diameter / 2., vessel_thickness / 2.);
     vessel->SetLineColor(28);
     tTarget->AddNode(vessel, 1, new TGeoTranslation(0, 0, -1. * vessel_shift + vessel_length + vessel_thickness/2.));
+    //He inside
+    vessel = gGeoManager->MakeTube("HeVolume", cooler, 0, vessel_diameter / 2. - vessel_thickness, vessel_length / 2.);
+    vessel->SetLineColor(7);
 
+
+    //now place target inside He volume
+    Double_t zPos = 0.;
+    Int_t slots = fnS;
+    slots = slots - 1;
+
+    TGeoVolume* target;
+    //TGeoVolume* slit;
+    // Double_t zPos =  fTargetZ - fTargetLength/2.;
+    for (Int_t i = 0; i < fnS; i++) {   // loop on layers
+        TString nmi = "Target_";
+        nmi += i + 1;
+        //TString sm = "Slit_";
+        //sm += i + 1;
+        TGeoMedium* material;
+        if (fM.at(i) == "molybdenum") {
+            material = mo;
+        };
+        if (fM.at(i) == "tungsten") {
+            material = tungsten;
+        };
+
+        target = gGeoManager->MakeTube(nmi, material, 0., fDiameter / 2., fL.at(i) / 2.);
+        if (fM.at(i) == "molybdenum") {
+            target->SetLineColor(28);
+        } else {
+            target->SetLineColor(38);
+        };   // silver/blue
+        vessel->AddNode(target, 1, new TGeoTranslation(0, 0, zPos + fL.at(i) / 2.));
+        if (i < slots) {
+	  //slits will already be filled with He, no need to define volume
+	  //  slit = gGeoManager->MakeTube(sm, cooler, 0., fDiameter / 2., fG.at(i) / 2.);
+	  //  slit->SetLineColor(7);   // cyan
+	  //  tTarget->AddNode(slit, 1, new TGeoTranslation(0, 0, zPos + fL.at(i) + fG.at(i) / 2.));
+	  zPos += fL.at(i) + fG.at(i);
+        } else {
+	  zPos += fL.at(i);
+        }
+    }   // loop on layers
+
+
+    // now add the He+target to the target area.
+    tTarget->AddNode(vessel, 1, new TGeoTranslation(0, 0, -1. * vessel_shift + vessel_length / 2.));
     
     // Proximity shielding
 
