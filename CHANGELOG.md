@@ -134,6 +134,7 @@ it in future.
 - J/psi are no longer decayed using Geant4 when using the --EvtGenDecayer option
 * Move SST geometry parameters to yaml
 * Update strawtubes class
+* Change naming convention for simulation files to `{sim,geo,params}_{uuid4}.root`
 
 ### Removed
 
