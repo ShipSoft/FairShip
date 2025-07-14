@@ -68,3 +68,4 @@ target:
 
     nS: 19
     xy: 25.  # [cm] full length in x and y
+    HeT: 90 # He temperature in Celsius degrees, integer, Medium with name PressurisedHe<value> must exist in media.geo file
