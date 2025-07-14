@@ -155,7 +155,7 @@ void ShipTargetStation::ConstructGeometry()
         } else {
             target->SetLineColor(38);
         };   // silver/blue
-        vessel->AddNode(target, 1, new TGeoTranslation(0, 0, zPos + fL.at(i) / 2.));
+        vessel->AddNode(target, 1, new TGeoTranslation(0, 0, -vessel_length/2. + vessel_shift + zPos + fL.at(i) / 2.));
         if (i < slots) {
 	  //slits will already be filled with He, no need to define volume
 	  //  slit = gGeoManager->MakeTube(sm, cooler, 0., fDiameter / 2., fG.at(i) / 2.);
