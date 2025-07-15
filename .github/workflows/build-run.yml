@@ -20,7 +20,7 @@ jobs:
         - /cvmfs/ship.cern.ch:/cvmfs/ship.cern.ch
 
     env:
-      version: 25.01
+      version: dev-root-master
 
     steps:
       - name: Checkout
@@ -51,7 +51,7 @@ jobs:
         - /cvmfs/ship.cern.ch:/cvmfs/ship.cern.ch
 
     env:
-      version: 25.01
+      version: dev-root-master
 
     strategy:
       matrix:
@@ -121,7 +121,7 @@ jobs:
         - /cvmfs/ship.cern.ch:/cvmfs/ship.cern.ch
 
     env:
-      version: 25.01
+      version: dev-root-master
 
     strategy:
       matrix:
