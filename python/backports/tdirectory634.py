@@ -39,7 +39,6 @@ def pythonize_tdirectory():
     klass.__getitem__ = _TDirectory_getitem
 
 
+# FIXME Remove when support for old ROOT versions is dropped
 if int(ROOT.gROOT.GetVersion().split('/')[0].split('.')[1]) < 32:
     pythonize_tdirectory()
-else:
-    raise DeprecationWarning("The behaviour is now included in ROOT, so using the backport is unnecessary")
