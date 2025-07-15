@@ -141,11 +141,10 @@ $(document).ready(function(){initNavTree('tdirectory634_8py_source.html',''); in
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    klass.__getitem__ = _TDirectory_getitem</div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="comment"># FIXME Remove when support for old ROOT versions is dropped</span></div>
 </div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="keywordflow">if</span> int(ROOT.gROOT.GetVersion().split(<span class="stringliteral">&#39;/&#39;</span>)[0].split(<span class="stringliteral">&#39;.&#39;</span>)[1]) &lt; 32:</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <a class="code hl_function" href="namespacetdirectory634.html#adbc8f78dd2cf88ec72042a64cf3b4738">pythonize_tdirectory</a>()</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <span class="keywordflow">raise</span> DeprecationWarning(<span class="stringliteral">&quot;The behaviour is now included in ROOT, so using the backport is unnecessary&quot;</span>)</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="keywordflow">if</span> int(ROOT.gROOT.GetVersion().split(<span class="stringliteral">&#39;/&#39;</span>)[0].split(<span class="stringliteral">&#39;.&#39;</span>)[1]) &lt; 32:</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <a class="code hl_function" href="namespacetdirectory634.html#adbc8f78dd2cf88ec72042a64cf3b4738">pythonize_tdirectory</a>()</div>
 <div class="ttc" id="anamespacetdirectory634_html_ad203e5406feb380dfac0076a50b68f5e"><div class="ttname"><a href="namespacetdirectory634.html#ad203e5406feb380dfac0076a50b68f5e">tdirectory634._TDirectory_getitem</a></div><div class="ttdeci">_TDirectory_getitem(self, key)</div><div class="ttdef"><b>Definition</b> <a href="tdirectory634_8py_source.html#l00006">tdirectory634.py:6</a></div></div>
 <div class="ttc" id="anamespacetdirectory634_html_adbc8f78dd2cf88ec72042a64cf3b4738"><div class="ttname"><a href="namespacetdirectory634.html#adbc8f78dd2cf88ec72042a64cf3b4738">tdirectory634.pythonize_tdirectory</a></div><div class="ttdeci">pythonize_tdirectory()</div><div class="ttdef"><b>Definition</b> <a href="tdirectory634_8py_source.html#l00036">tdirectory634.py:36</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
