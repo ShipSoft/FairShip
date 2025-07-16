@@ -2,9 +2,10 @@
 import argparse
 import numpy as np
 import ROOT as r
-import shipunit as u
-import rootUtils as ut
 import logger as log
+
+import fairship.core.shipunit as u
+import fairship.utils.root as ut
 
 
 def main():

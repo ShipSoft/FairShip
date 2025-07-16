@@ -1,7 +1,9 @@
 import sys
 import ROOT
-from rootpyPickler import Unpickler
-import shipRoot_conf
+
+from fairship.utils.rootpy_pickler import Unpickler
+import fairship.shipRoot_conf as shipRoot_conf
+
 shipRoot_conf.configure()
 
 fname = 'geofile_full.10.0.Pythia8-TGeant4.root'
@@ -10,7 +12,7 @@ if len(sys.argv) > 1:
 
 fgeo = ROOT.TFile(fname)
 sGeo = fgeo.Get("FAIRGeom")
-import shipDet_conf
+import fairship.shipDet_conf as shipDet_conf
 run = ROOT.FairRunSim()
 upkl = Unpickler(fgeo)
 ShipGeo = upkl.load('ShipGeo')
@@ -20,6 +22,6 @@ run.SetName('TGeant4')
 run.SetOutputFile(ROOT.TMemFile('output', 'recreate'))
 run.Init()
 run.Run(0)
-import geomGeant4
+import fairship.geomGeant4 as geomGeant4
 geomGeant4.printVMCFields()
 geomGeant4.printWeightsandFields()

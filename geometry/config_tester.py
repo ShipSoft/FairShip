@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 import os
 import json
-from ShipGeoConfig import ConfigRegistry
 import logging
 import argparse
+
+from fairship.ShipGeoConfig import ConfigRegistry
 
 logging.info("")
 logger = logging.getLogger()

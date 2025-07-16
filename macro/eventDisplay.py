@@ -3,18 +3,18 @@ import ROOT
 import os
 import tkinter
 import atexit
+from argparse import ArgumentParser
+from array import array
 
 ROOT.gROOT.ProcessLine('#include "FairEventHeader.h"')
 # only helps if class version in FairEventHeader.h is increased
 
-from argparse import ArgumentParser
-from ShipGeoConfig import ConfigRegistry
-from rootpyPickler import Unpickler
-from array import array
-import shipunit as u
-from decorators import *
-import shipRoot_conf
-import shipDet_conf
+from fairship.ShipGeoConfig import ConfigRegistry
+from fairship.utils.rootpy_pickler import Unpickler
+from fairship.utils.root_decorators import *
+import fairship.core.shipunit as u
+import fairship.shipRoot_conf as shipRoot_conf
+import fairship.shipDet_conf as shipDet_conf
 
 shipRoot_conf.configure()
 
@@ -558,7 +558,7 @@ class DrawTracks(ROOT.FairTask):
             pid = fstate.getPDG()
             zs = self.z_start
             for i in range(self.niter):
-                rc, newpos, newmom = TrackExtrapolateTool.extrapolateToPlane(fT, zs)
+                rc, newpos, newmom = extrapolateToPlane(fT, zs)
                 if rc:
                     DTrack.SetNextPoint(newpos.X(), newpos.Y(), newpos.Z())
                 else:
@@ -1286,7 +1286,8 @@ def debugStraw(n):
 
 
 # ----Load the default libraries------
-from basiclibs import *
+from fairship.utils.basiclibs import load_basic_libs
+load_basic_libs()
 
 # -----   Reconstruction run   -------------------------------------------
 fRun = ROOT.FairRunAna()
@@ -1416,7 +1417,7 @@ if hasattr(ShipGeo, "Bfield"):
     fM = ROOT.genfit.FieldManager.getInstance()
     fM.init(bfield)
 
-import TrackExtrapolateTool
+from fairship.utils.track_extrapolate import extrapolateToPlane
 
 br = gEve.GetBrowser()
 br.HideBottomTab()  # make more space for graphics
