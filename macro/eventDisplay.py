@@ -3,17 +3,17 @@ import ROOT
 import os
 import tkinter
 import atexit
+from argparse import ArgumentParser
+from array import array
 
 ROOT.gROOT.ProcessLine('#include "FairEventHeader.h"')
 # only helps if class version in FairEventHeader.h is increased
 
-from argparse import ArgumentParser
-from ShipGeoConfig import ConfigRegistry, load_from_root_file
-from array import array
-import shipunit as u
-import shipRoot_conf
-import shipDet_conf
-import decorators
+import fairship.shipunit as u
+from fairship.ShipGeoConfig import ConfigRegistry, load_from_root_file
+import fairship.shipRoot_conf as shipRoot_conf
+import fairship.shipDet_conf as shipDet_conf
+import fairship.decorators as decorators
 
 shipRoot_conf.configure()
 decorators.apply_decorators()

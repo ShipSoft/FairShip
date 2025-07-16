@@ -3,13 +3,14 @@ import os
 import sys
 import ROOT
 import ctypes
-import rootUtils as ut
-import shipunit as u
-from ShipGeoConfig import ConfigRegistry, load_from_root_file
-import shipRoot_conf
-from backports import tdirectory634
 from argparse import ArgumentParser
-import decorators
+
+import fairship.rootUtils as ut
+import fairship.shipunit as u
+from fairship.ShipGeoConfig import ConfigRegistry, load_from_root_file
+import fairship.shipRoot_conf as shipRoot_conf
+from fairship.backports import tdirectory634
+import fairship.decorators as decorators
 
 shipRoot_conf.configure()
 decorators.apply_decorators()
