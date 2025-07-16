@@ -2,14 +2,17 @@
 import os
 import sys
 import ROOT
-
-import shipunit as u
-import shipRoot_conf
-import rootUtils as ut
-from ShipGeoConfig import ConfigRegistry
 from argparse import ArgumentParser
 from array import array
-from backports import tdirectory634
+
+import fairship.core.shipunit as u
+import fairship.shipRoot_conf as shipRoot_conf
+import fairship.utils.root as ut
+from fairship.ShipGeoConfig import ConfigRegistry
+from fairship.backports import tdirectory634
+from fairship.utils.basic_parameters import save_basic_parameters
+from fairship.utils.magnetic_fields import check_magnetic_fields
+
 DownScaleDiMuon = False
 
 # Default HNL parameters
@@ -273,7 +276,7 @@ rtdb = run.GetRuntimeDb()
 # -----Create geometry----------------------------------------------
 # import shipMuShield_only as shipDet_conf # special use case for an attempt to convert active shielding geometry for use with FLUKA
 # import shipTarget_only as shipDet_conf
-import shipDet_conf
+import fairship.shipDet_conf as shipDet_conf
 modules = shipDet_conf.configure(run,ship_geo)
 # -----Create PrimaryGenerator--------------------------------------
 primGen = ROOT.FairPrimaryGenerator()
@@ -524,7 +527,7 @@ if options.eventDisplay:
   trajFilter.SetStoreSecondaries(ROOT.kTRUE)
 
 # The VMC sets the fields using the "/mcDet/setIsLocalMagField true" option in "gconfig/g4config.in"
-import geomGeant4
+import fairship.geomGeant4 as geomGeant4
 # geomGeant4.setMagnetField() # replaced by VMC, only has effect if /mcDet/setIsLocalMagField  false
 
 # Define extra VMC B fields not already set by the geometry definitions, e.g. a global field,
@@ -557,8 +560,7 @@ getattr(rtdb,"print")()
 # ------------------------------------------------------------------------
 run.CreateGeometryFile(f"{options.outputDir}/geofile_full.{tag}.root")
 # save ShipGeo dictionary in geofile
-import saveBasicParameters
-saveBasicParameters.execute(f"{options.outputDir}/geofile_full.{tag}.root",ship_geo)
+save_basic_parameters(f"{options.outputDir}/geofile_full.{tag}.root",ship_geo)
 
 # checking for overlaps
 if options.debug == 2:
@@ -675,9 +677,8 @@ if simEngine == "muonDIS":
     print("Successfully added DISCrossSection to the output file:", outFile)
 
 # ------------------------------------------------------------------------
-import checkMagFields
 def visualizeMagFields():
- checkMagFields.run()
+ check_magnetic_fields()
 def checkOverlapsWithGeant4():
  # after /run/initialize, but prints warning messages, problems with TGeo volume
  mygMC = ROOT.TGeant4.GetMC()

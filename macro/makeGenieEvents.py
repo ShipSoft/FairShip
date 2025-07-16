@@ -1,11 +1,13 @@
 #!/usr/bin/env python
 import ROOT,os,sys,time
 from subprocess import call
-import shipunit as u
-import shipRoot_conf
 import argparse
 import logging
-import genie_interface
+
+import fairship.core.shipunit as u
+import fairship.shipRoot_conf as shipRoot_conf
+import fairship.utils.genie_interface as genie_interface
+
 shipRoot_conf.configure()
 
 

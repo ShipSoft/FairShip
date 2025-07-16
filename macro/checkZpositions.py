@@ -1,5 +1,8 @@
-import ROOT,sys
-from rootpyPickler import Unpickler
+import ROOT
+import sys
+
+from fairship.utils.rootpy_pickler import Unpickler
+
 badBoys={}
 f1,f2 = sys.argv[1], sys.argv[2]
 fgeoOld=ROOT.TFile(f1)

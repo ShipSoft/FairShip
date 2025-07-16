@@ -1,5 +1,6 @@
 import os,ROOT,sys,subprocess,pickle,time,datetime
-import rootUtils as ut
+
+import fairship.utils.root as ut
 
 pdg   = ROOT.TDatabasePDG()
 charm = False

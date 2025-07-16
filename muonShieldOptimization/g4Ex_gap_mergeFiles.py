@@ -11,7 +11,9 @@ Tau      = False
 import ROOT,os
 from array import array
 from ROOT import TDatabasePDG,TMath,gDirectory
-from rootUtils import *
+
+from fairship.utils.root import *
+
 pdg  = TDatabasePDG()
 mu   = pdg.GetParticle(13)
 Mmu  = mu.Mass()

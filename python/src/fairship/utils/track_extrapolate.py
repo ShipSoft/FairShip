@@ -13,6 +13,7 @@ elif top.GetNode('SplitCalDetector_1'):    z_ecal = top.GetNode('SplitCalDetecto
 else:
   print("TrackExtraploate tool: Error, no calo present")
   z_ecal = 100*u.m
+
 def extrapolateToPlane(fT,z):
 # etrapolate to a plane perpendicular to beam direction (z)
   rc,pos,mom = False,None,None

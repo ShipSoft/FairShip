@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 import ROOT,os,sys,time
-import shipunit as u
-import shipRoot_conf
-import ShipGeoConfig
+
+import fairship.core.shipunit as u
+import fairship.shipRoot_conf as shipRoot_conf
+import fairship.ShipGeoConfig as ShipGeoConfig
 
 
 inFile ="geant.root"
