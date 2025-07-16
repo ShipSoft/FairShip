@@ -1,6 +1,6 @@
 import ROOT
 
-import fairship.shipunit as u
+import fairship.core.shipunit as u
 
 def cmp(a, b):
     return (a > b) - (a < b)

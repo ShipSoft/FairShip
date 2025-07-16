@@ -1,7 +1,7 @@
 import unittest
 import os
 
-import fairship.units as u
+import fairship.core.shipunit as u
 from fairship.ShipGeoConfig import AttrDict, ConfigRegistry
 
 
@@ -61,7 +61,7 @@ class TestStringSingleConfig(unittest.TestCase):
     def setUp(self):
         self.key = "basic"
         config = """
-import fairship.units as u
+import fairship.core.shipunit as u
 from fairship.ShipGeoConfig import AttrDict, ConfigRegistry
 
 with ConfigRegistry.register_config("basic") as c:
@@ -108,7 +108,7 @@ class TestStringConditionalConfig(unittest.TestCase):
     def setUp(self):
         self.key = "basic"
         self.config = """
-import fairship.units as u
+import fairship.core.shipunit as u
 from fairship.ShipGeoConfig import AttrDict, ConfigRegistry
 
 with ConfigRegistry.register_config("basic") as c:
@@ -160,7 +160,7 @@ with ConfigRegistry.register_config("basic") as c:
 class TestStringNewLine(unittest.TestCase):
     def setUp(self):
         self.key = "basic"
-        self.config = """import fairship.units as u\r\nfrom fairship.ShipGeoConfig import AttrDict, ConfigRegistry\r\nwith ConfigRegistry.register_config("basic") as c:\r
+        self.config = """import fairship.core.shipunit as u\r\nfrom fairship.ShipGeoConfig import AttrDict, ConfigRegistry\r\nwith ConfigRegistry.register_config("basic") as c:\r
     c.vetoStation = AttrDict(z=-2390.*u.cm)\r\n"""
         self.filename = "x.py"
         fh = open(self.filename, "w")

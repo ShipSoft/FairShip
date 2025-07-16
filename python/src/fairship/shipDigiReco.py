@@ -5,13 +5,13 @@ from array import array
 from math import fabs
 
 from fairship.backports import tdirectory634
+from fairship.scifi_mapping import SciFiMapping
 import fairship.shipVertex as shipVertex
 import fairship.shipDet_conf as shipDet_conf
-import fairship.SciFiMapping as SciFiMapping
-import fairship.global_variables as global_variables
+import fairship.core.global_variables as global_variables
 import fairship.shipPatRec as shipPatRec
-import fairship.shipunit as u
-import fairship.rootUtils as ut
+import fairship.core.shipunit as u
+import fairship.utils.root as ut
 
 stop  = ROOT.TVector3()
 start = ROOT.TVector3()
@@ -105,7 +105,7 @@ class ShipDigiReco:
     lsOfGlobals = ROOT.gROOT.GetListOfGlobals()
     if global_variables.modules["MTC"] not in lsOfGlobals:
       lsOfGlobals.Add(global_variables.modules["MTC"])
-    mapping = SciFiMapping.SciFiMapping(global_variables.modules)
+    mapping = SciFiMapping(global_variables.modules)
     mapping.make_mapping()
     self.sipm_to_fibre_map_U, self.sipm_to_fibre_map_V = mapping.get_sipm_to_fibre_map()
 # setup ecal reconstruction

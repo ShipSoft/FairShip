@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 
 import fairship.shipDet_conf as shipDet_conf
-from fairship.rootpyPickler import Unpickler
+from fairship.utils.rootpy_pickler import Unpickler
 
 
 class SciFiMapping:

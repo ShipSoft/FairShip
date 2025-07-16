@@ -1,7 +1,7 @@
 import os
 import ROOT
 
-import fairship.shipunit as u
+import fairship.core.shipunit as u
 
 def configure(CMBG, ship_geo):
     #handles external variables for the Cosmic Muon Background Generator within FairShip

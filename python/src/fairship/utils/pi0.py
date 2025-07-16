@@ -1,8 +1,8 @@
 import ROOT
 import os
 
-import fairship.shipunit as u
-import fairship.rootUtils as ut
+import fairship.core.shipunit as u
+import fairship.utils.root as ut
 
 
 def findPi0(sTree,secVertex):

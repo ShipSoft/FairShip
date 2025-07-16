@@ -5,7 +5,7 @@ import numpy as np
 import scipy.interpolate
 import ROOT
 
-import fairship.shipunit as u
+import fairship.core.shipunit as u
 
 def addHNLtoROOT(pid=9900015 ,m = 1.0, g=3.654203020370371E-21):
     pdg = ROOT.TDatabasePDG.Instance()

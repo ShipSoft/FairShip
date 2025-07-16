@@ -6,10 +6,10 @@ import ROOT
 import yaml
 from tabulate import tabulate
 
-from fairship.rootpyPickler import Unpickler
+from fairship.utils.rootpy_pickler import Unpickler
 from fairship.ShipGeoConfig import AttrDict
-import fairship.shipunit as u
-import fairship.pythia8_conf
+from fairship.configure.pythia8 import addHNLtoROOT
+import fairship.core.shipunit as u
 
 
 class selection_check:
@@ -329,7 +329,7 @@ class event_inspector:
     def __init__(self):
         """Initialize ROOT PDG database."""
         self.pdg = ROOT.TDatabasePDG.Instance()
-        pythia8_conf.addHNLtoROOT()
+        addHNLtoROOT()
 
     def dump_event(self, event, mom_threshold=0):
         """Dump the MCtruth of the event."""

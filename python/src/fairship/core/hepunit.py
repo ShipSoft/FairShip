@@ -1,19 +1,13 @@
 """
-# ==================================================================
-#   Python module
-#
-#   This module defines physical units and constants used in HEP,
-#   which are imported from CLHEP library.
-#
-#                                              Q, 2005
-# ==================================================================
+This module defines physical units and constants used in HEP,
+which are imported from CLHEP library.
+
+Q, 2005
+
+$Id: hepunit.py 66892 2013-01-17 10:57:59Z gunter $
+
+imported from "SystemOfUnits.h"
 """
-#$Id: hepunit.py 66892 2013-01-17 10:57:59Z gunter $
-
-
-# ==================================================================
-# imported from "SystemOfUnits.h"
-# ==================================================================
 millimeter  = 1.
 millimeter2 = millimeter*millimeter
 millimeter3 = millimeter*millimeter*millimeter

@@ -5,7 +5,7 @@ import os
 import sys
 from scipy.integrate import quad, dblquad
 
-from fairship.darkphoton import *
+from fairship.branching.darkphoton import alphaQED
 
 # proton mass
 mProton = 0.938272081 # GeV/c - PDG2016

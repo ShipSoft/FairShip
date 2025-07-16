@@ -1,14 +1,15 @@
-#---Enable Tab completion-----------------------------------------
+from ROOT import TFile,gROOT,TH3D,TH2D,TH1D,TCanvas,TProfile,gSystem
+import os
+import sys
+import operator
+
 try:
+  #---Enable Tab completion-----------------------------------------
   import rlcompleter, readline
   readline.parse_and_bind( 'tab: complete' )
   readline.parse_and_bind( 'set show-all-if-ambiguous On' )
 except:
   pass
-
-
-from ROOT import TFile,gROOT,TH3D,TH2D,TH1D,TCanvas,TProfile,gSystem
-import os,sys
 
 def readHists(h,fname,wanted=[]):
   if fname[0:4] == "/eos":
@@ -108,7 +109,6 @@ def setAttributes(pyl,leaves,printout=False):
 class PyListOfLeaves(dict) :
     pass
 
-import operator
 def container_sizes(sTree,perEvent=False):
  counter = {}
  print("name      ZipBytes[MB]    TotBytes[MB]    TotalSize[MB]")
