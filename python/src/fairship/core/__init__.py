@@ -1,4 +1,5 @@
 """
-Module with core types, variables and functions which are reused frequently
-throughout fairship project.
+Module with core types, variables and functions.
+
+These are reused frequently throughout fairship project.
 """
