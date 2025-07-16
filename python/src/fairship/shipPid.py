@@ -3,8 +3,8 @@ import sys
 import math as m
 import ctypes
 
-import fairship.shipunit as u
-import fairship.rootUtils as ut
+import fairship.core.shipunit as u
+import fairship.utils.root as ut
 import fairship.TrackExtrapolateTool as TrackExtrapolateTool
 import fairship.shipDet_conf as shipDet_conf
 

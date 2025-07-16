@@ -4,9 +4,9 @@ import os
 from array import array
 import yaml
 
-import fairship.shipunit as u
+import fairship.core.shipunit as u
 from fairship.ShipGeoConfig import AttrDict, ConfigRegistry
-from fairship.ShieldUtils import find_shield_center
+from fairship.utils.shield import find_shield_center
 
 detectorList = []
 

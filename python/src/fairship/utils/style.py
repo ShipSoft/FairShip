@@ -1,6 +1,5 @@
-# Global scope variables
 from ROOT import *
-from ROOT import Double
+
 lhcbstyle = TStyle()     # general lhcb style
 lhcbName  = TPaveText()  # standard lhcb text for plot
 lhcbLabel = TText  # style for Ttext

@@ -3,7 +3,7 @@ import os
 import sys
 import math
 
-import fairship.shipunit as u
+import fairship.core.shipunit as u
 import fairship.proton_bremsstrahlung as proton_bremsstrahlung
 
 

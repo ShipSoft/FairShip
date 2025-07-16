@@ -4,7 +4,7 @@ import ROOT
 
 #from fairship.settings import *
 #from fairship.functions import *
-from fairship.hnl import mass, PDGName
+from fairship.branching.hnl import mass, PDGName
 
 # constants
 alphaQED = 1./137.

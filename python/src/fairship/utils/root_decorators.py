@@ -2,7 +2,7 @@ from ctypes import c_double
 
 import ROOT
 
-import fairship.shipunit as u
+import fairship.core.shipunit as u
 
 
 def MCPointPrintOut(x):

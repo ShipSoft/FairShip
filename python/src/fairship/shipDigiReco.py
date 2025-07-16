@@ -2,7 +2,6 @@ import os
 from array import array
 import sys
 from math import fabs
-
 import ROOT
 from fairship.detectors.muonDetector import muonDetector
 from fairship.detectors.timeDetector import timeDetector
@@ -12,11 +11,11 @@ from fairship.detectors.UpstreamTaggerDetector import UpstreamTaggerDetector
 from fairship.backports import tdirectory634
 import fairship.shipVertex as shipVertex
 import fairship.shipDet_conf as shipDet_conf
-import fairship.shipunit as u
-import fairship.rootUtils as ut
-import fairship.SciFiMapping as SciFiMapping
-import fairship.global_variables as global_variables
+import fairship.core.shipunit as u
+import fairship.utils.root as ut
+import fairship.core.global_variables as global_variables
 import fairship.shipPatRec as shipPatRec
+from fairship.scifi_mapping import SciFiMapping
 
 stop  = ROOT.TVector3()
 start = ROOT.TVector3()
@@ -58,13 +57,13 @@ class ShipDigiReco:
     os.system('cp '+rawFile +' '+fout)
     self.fn = ROOT.TFile(fout,'update')
     self.sTree = self.fn["cbmsim"]
-#
+  #
   if self.sTree.GetBranch("GeoTracks"): self.sTree.SetBranchStatus("GeoTracks",0)
-# prepare for output
-# event header
+  # prepare for output
+  # event header
   self.header  = ROOT.FairEventHeader()
   self.eventHeader  = self.sTree.Branch("ShipEventHeader",self.header,32000,-1)
-# fitted tracks
+  # fitted tracks
   self.fGenFitArray = ROOT.TClonesArray("genfit::Track")
   self.fGenFitArray.BypassStreamer(ROOT.kFALSE)
   self.fitTrack2MC  = ROOT.std.vector('int')()
@@ -74,7 +73,7 @@ class ShipDigiReco:
   self.goodTracksBranch      = self.sTree.Branch("goodTracks",self.goodTracksVect,32000,-1)
   self.fTrackletsArray = ROOT.TClonesArray("Tracklet")
   self.Tracklets   = self.sTree.Branch("Tracklets",  self.fTrackletsArray,32000,-1)
-#
+  #
   self.digiStraw = ROOT.std.vector("strawtubesHit")()
   self.digiStrawBranch   = self.sTree.Branch("Digi_StrawtubesHits",self.digiStraw,32000,-1)
 
@@ -89,36 +88,46 @@ class ShipDigiReco:
   self.muonDetector = muonDetector("muon", self.sTree)
 
 
-# for the digitizing step
+  # for the digitizing step
   self.v_drift = global_variables.modules["Strawtubes"].StrawVdrift()
   self.sigma_spatial = global_variables.modules["Strawtubes"].StrawSigmaSpatial()
-# optional if present, splitcalCluster
+  # optional if present, splitcalCluster
   if self.sTree.GetBranch("splitcalPoint"):
    self.digiSplitcal = ROOT.TClonesArray("splitcalHit")
    self.digiSplitcalBranch=self.sTree.Branch("Digi_SplitcalHits",self.digiSplitcal,32000,-1)
    self.recoSplitcal = ROOT.TClonesArray("splitcalCluster")
    self.recoSplitcalBranch=self.sTree.Branch("Reco_SplitcalClusters",self.recoSplitcal,32000,-1)
 
-# prepare vertexing
+  # add MTC module to the list of globals to use it later in the MTCDetHit class. Consistent with SND@LHC approach.
+  # make SiPM to fibre mapping
+  if self.sTree.GetBranch("MTCDetPoint"):
+    lsOfGlobals = ROOT.gROOT.GetListOfGlobals()
+    if global_variables.modules["MTC"] not in lsOfGlobals:
+      lsOfGlobals.Add(global_variables.modules["MTC"])
+    mapping = SciFiMapping(global_variables.modules)
+    mapping.make_mapping()
+    self.sipm_to_fibre_map_U, self.sipm_to_fibre_map_V = mapping.get_sipm_to_fibre_map()
+
+  # prepare vertexing
   self.Vertexing = shipVertex.Task(global_variables.h, self.sTree)
-# setup random number generator
+  # setup random number generator
   self.random = ROOT.TRandom()
   ROOT.gRandom.SetSeed(13)
   self.PDG = ROOT.TDatabasePDG.Instance()
-# access ShipTree
+  # access ShipTree
   self.sTree.GetEvent(0)
-#
-# init geometry and mag. field
+  #
+  # init geometry and mag. field
   gMan  = ROOT.gGeoManager
   self.geoMat =  ROOT.genfit.TGeoMaterialInterface()
-#
+  #
   self.bfield = ROOT.genfit.FairShipFields()
   self.bfield.setField(global_variables.fieldMaker.getGlobalField())
   self.fM = ROOT.genfit.FieldManager.getInstance()
   self.fM.init(self.bfield)
   ROOT.genfit.MaterialEffects.getInstance().init(self.geoMat)
 
- # init fitter, to be done before importing shipPatRec
+   # init fitter, to be done before importing shipPatRec
   #fitter          = ROOT.genfit.KalmanFitter()
   #fitter          = ROOT.genfit.KalmanFitterRefTrack()
   self.fitter      = ROOT.genfit.DAF()
@@ -127,7 +136,7 @@ class ShipDigiReco:
     self.fitter.setDebugLvl(1) # produces lot of printout
   #set to True if "real" pattern recognition is required also
 
-# for 'real' PatRec
+  # for 'real' PatRec
   shipPatRec.initialize(fgeo)
 
  def reconstruct(self):

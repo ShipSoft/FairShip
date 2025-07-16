@@ -2,7 +2,7 @@
 import ROOT
 from array import array
 
-import fairship.shipunit as u
+import fairship.core.shipunit as u
 
 class Task:
  "initialize and give response of the veto systems"

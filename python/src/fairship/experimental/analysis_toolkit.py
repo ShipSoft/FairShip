@@ -6,8 +6,8 @@ import ROOT
 import yaml
 from fairship.ShipGeoConfig import AttrDict, load_from_root_file
 from tabulate import tabulate
-import fairship.shipunit as u
-import fairship.pythia8_conf
+import fairship.core.shipunit as u
+from fairship.configure.pythia8 import addHNLtoROOT
 
 
 class selection_check:
@@ -326,7 +326,7 @@ class event_inspector:
     def __init__(self):
         """Initialize ROOT PDG database."""
         self.pdg = ROOT.TDatabasePDG.Instance()
-        pythia8_conf.addHNLtoROOT()
+        addHNLtoROOT()
 
     def dump_event(self, event, mom_threshold=0):
         """Dump the MCtruth of the event."""

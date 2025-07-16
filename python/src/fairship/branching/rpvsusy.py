@@ -1,38 +1,33 @@
 r"""
-# ==================================================================
-#   Python module
-#
-#   This module provides methods to compute the lifetime and
-#   branching ratio of SUSY RPV neutralino given its mass and couplings as
-#   input parameters.
-#
-#   Created: 30/04/2016 Konstantinos A. Petridis (konstantinos.petridis@cern.ch)
-#
-#   Sample usage:
-#     ipython -i rpvsusy.py
-#     In [1]: b = RPVSYSY(1.,[1, 1],1e3,1,True)
-#     HNLbranchings instance initialized with couplings:
-#          \lambda_{production}       = 1GeV
-#          \lambda_{decay}            = 1GeV
-#          universal sfermion mass    = 1e3GeV
-#
-#     benchmark scenario:
-#          1 (values between 1 and 5)
-#     and mass:
-#          m = 1.0 GeV
-#     In [2]: b.computeNLifetime()
-#     Out[2]: 0.0219634078804
-#     In [3]: b.findBranchingRatio('N -> K+ mu-')
-#     Out[3]: 0.11826749348890987
-#
-# ==================================================================
+This module provides methods to compute the lifetime and
+branching ratio of SUSY RPV neutralino given its mass and couplings as
+input parameters.
+
+Created: 30/04/2016 Konstantinos A. Petridis (konstantinos.petridis@cern.ch)
+
+Sample usage:
+  ipython -i rpvsusy.py
+  In [1]: b = RPVSYSY(1.,[1, 1],1e3,1,True)
+  HNLbranchings instance initialized with couplings:
+       \lambda_{production}       = 1GeV
+       \lambda_{decay}            = 1GeV
+       universal sfermion mass    = 1e3GeV
+
+  benchmark scenario:
+       1 (values between 1 and 5)
+  and mass:
+       m = 1.0 GeV
+  In [2]: b.computeNLifetime()
+  Out[2]: 0.0219634078804
+  In [3]: b.findBranchingRatio('N -> K+ mu-')
+  Out[3]: 0.11826749348890987
 """
 
 import re
 import math
 import ROOT
 
-import fairship.shipunit as u
+import fairship.core.shipunit as u
 
 # Load PDG database
 pdg = ROOT.TDatabasePDG.Instance()

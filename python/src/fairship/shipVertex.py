@@ -7,9 +7,9 @@ import math
 import ctypes
 from array import array
 
-import fairship.global_variables as global_variables
-import fairship.shipunit as u
-import fairship.rootUtils as ut
+import fairship.core.global_variables as global_variables
+import fairship.core.shipunit as u
+import fairship.utils.root as ut
 
 class Task:
  "initialize"

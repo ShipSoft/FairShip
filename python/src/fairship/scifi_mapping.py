@@ -8,7 +8,7 @@ import ROOT
 
 import fairship.shipDet_conf as shipDet_conf
 from fairship.ShipGeoConfig import load_from_root_file
-from fairship.rootpyPickler import Unpickler
+from fairship.utils.rootpy_pickler import Unpickler
 
 
 class SciFiMapping:

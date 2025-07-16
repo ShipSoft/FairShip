@@ -8,12 +8,12 @@ from argparse import ArgumentParser
 
 # For ShipGeo
 from fairship.ShipGeoConfig import ConfigRegistry, load_from_root_file
-from fairship.rootpyPickler import Unpickler
+from fairship.utils.rootpy_pickler import Unpickler
 
 # For modules
-import fairship.rootUtils as ut
+import fairship.utils.root as ut
 import fairship.shipDet_conf as shipDet_conf
-import fairship.global_variables as global_variables
+import fairship.core.global_variables as global_variables
 
 def get_n_hits(hits):
     return len(hits)

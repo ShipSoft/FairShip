@@ -1,9 +1,9 @@
 from array import array
 import ROOT
 
-import fairship.ShieldUtils as ShieldUtils
-import fairship.shipunit as u
-import fairship.hepunit as G4Unit
+from fairship.utils.shield import find_shield_center
+import fairship.core.shipunit as u
+import fairship.core.hepunit as G4Unit
 
 ROOT.gROOT.ProcessLine('#include "Geant4/G4TransportationManager.hh"')
 ROOT.gROOT.ProcessLine('#include "Geant4/G4FieldManager.hh"')
@@ -159,7 +159,7 @@ def addVMCFields(shipGeo, controlFile = '', verbose = False, withVirtualMC = Tru
        fieldsList.append('HadronAbsorberMap')
 
       if not shipGeo.muShield.WithConstField:
-       field_center, _ = ShieldUtils.find_shield_center(shipGeo)
+       field_center, _ = find_shield_center(shipGeo)
        fieldMaker.defineFieldMap('muonShieldField', 'files/MuonShieldField.root',
                                  ROOT.TVector3(0.0, 0.0, field_center), ROOT.TVector3(0.0, 0.0, 0.0), True)
        fieldsList.append('muonShieldField')

@@ -15,11 +15,11 @@ like any other ROOT file if you don't care about the python data.)
 
 Here's an example of writing a pickle::
 
-from rootpyPickler import Pickler
+from fairship.utils.rootpyPickler import Pickler
 pkl=Pickler(file)
 pkl.dump(ShipGeo,'ShipGeo')
 
-from rootpyPickler import Unpickler
+from fairship.utils.rootpyPickler import Unpickler
 upkl    = Unpickler(f)
 ShipGeo = upkl.load('ShipGeo')
 

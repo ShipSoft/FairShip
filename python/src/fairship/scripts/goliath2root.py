@@ -6,9 +6,9 @@ import ROOT
 import os
 import sys
 
-import fairship.rootUtils as ut
-import fairship.shipunit as u
-import fairship.shipRoot_conf
+import fairship.utils.root as ut
+import fairship.core.shipunit as u
+import fairship.shipRoot_conf as shipRoot_conf
 
 h={}
 # new limits x: -1118.6, 1241.4 (59); y: -411.40, 768.60 (20); z: -2512.7, 2537.3 (101)

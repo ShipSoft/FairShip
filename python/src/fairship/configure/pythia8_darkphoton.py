@@ -2,11 +2,11 @@ import ROOT
 import os
 import sys
 
-import fairship.shipunit as u
-import fairship.readDecayTable as readDecayTable
-import fairship.darkphoton as darkphoton
+from fairship.utils.decay_table import addDarkPhotondecayChannels
+from fairship.branching.darkphoton import DarkPhoton
+from fairship.core.method_logger import MethodLogger
+import fairship.core.shipunit as u
 import fairship.proton_bremsstrahlung as proton_bremsstrahlung
-from fairship.method_logger import MethodLogger
 
 # Boundaries for production in meson decays
 # mass of the mesons
@@ -148,7 +148,7 @@ def configure(P8gen, mass, epsilon, inclusive, motherMode, deepCopy=False, debug
         P8gen.SetPbrem(proton_bremsstrahlung.hProdPDF(mass, epsilon, norm, 350, 1500))
 
     #Define dark photon
-    DP_instance = darkphoton.DarkPhoton(mass,epsilon)
+    DP_instance = DarkPhoton(mass,epsilon)
     ctau = DP_instance.cTau()
     print('ctau p8dpconf file =%3.6f cm'%ctau)
     print('Initial particle parameters for PDGID %d :'%P8gen.GetDPId())
@@ -176,7 +176,7 @@ def configure(P8gen, mass, epsilon, inclusive, motherMode, deepCopy=False, debug
     P8gen.SetParameters("Next:numberCount    =  0")
 
     # Configuring decay modes...
-    readDecayTable.addDarkPhotondecayChannels(P8gen, mass, DP_instance, conffile=os.path.expandvars('$FAIRSHIP/python/darkphotonDecaySelection.conf'), verbose=True)
+    addDarkPhotondecayChannels(P8gen, mass, DP_instance, conffile=os.path.expandvars('$FAIRSHIP/python/darkphotonDecaySelection.conf'), verbose=True)
     # Finish DP setup...
     P8gen.SetParameters(f"{P8gen.GetDPId()}:mayDecay = on")
     #P8gen.SetDPId(P8gen.GetDPId())

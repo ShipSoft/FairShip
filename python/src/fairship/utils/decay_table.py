@@ -1,21 +1,15 @@
 """
-# ==================================================================
-#   Python module
-#
-#   This module provides methods to read a configuration file
-#   storing on/off (yes/no) flags for the HNL decay channels
-#   and to pass the configured decay table to a Pythia8 generator.
-#
-#   Created: 30/12/2014 Elena Graverini (elena.graverini@cern.ch)
-#
-# ==================================================================
+This module provides methods to read a configuration file
+storing on/off (yes/no) flags for the HNL decay channels
+and to pass the configured decay table to a Pythia8 generator.
+
+Created: 30/12/2014 Elena Graverini (elena.graverini@cern.ch)
 """
 import ROOT
 import os
 import csv
 
-from fairship.hnl import PDGname
-from fairship.darkphoton import *
+from fairship.branching.hnl import PDGname
 
 pdg = ROOT.TDatabasePDG.Instance()
 
@@ -28,7 +22,7 @@ def PDGcode(particle):
     return int(tPart.PdgCode())
 
 
-def load(conffile = os.path.expandvars('$FAIRSHIP/python/DecaySelection.conf'), verbose=True):
+def load(conffile = os.path.expandvars('$FAIRSHIP/python/data/DecaySelection.conf'), verbose=True):
     f = open(conffile)
     reader = csv.reader(f, delimiter=':')
     configuredDecays = {}
@@ -46,7 +40,7 @@ def load(conffile = os.path.expandvars('$FAIRSHIP/python/DecaySelection.conf'), 
                 print('\t'+channel)
     return configuredDecays
 
-def addHNLdecayChannels(P8Gen, hnl, conffile=os.path.expandvars('$FAIRSHIP/python/DecaySelection.conf'), verbose=True):
+def addHNLdecayChannels(P8Gen, hnl, conffile=os.path.expandvars('$FAIRSHIP/python/data/DecaySelection.conf'), verbose=True):
     """
     Configures the HNL decay table in Pythia8
     Inputs:
@@ -77,7 +71,7 @@ def addHNLdecayChannels(P8Gen, hnl, conffile=os.path.expandvars('$FAIRSHIP/pytho
             P8Gen.SetParameters(f'9900015:addChannel =  1 {BR:.12} 0 {codes}')
             # print "debug readdecay table",particles,children,BR
 
-def addDarkPhotondecayChannels(P8gen, mDP, DP,conffile=os.path.expandvars('$FAIRSHIP/python/darkphotonDecaySelection.conf'), verbose=True):
+def addDarkPhotondecayChannels(P8gen, mDP, DP,conffile=os.path.expandvars('$FAIRSHIP/python/data/darkphotonDecaySelection.conf'), verbose=True):
     """
     Configures the DP decay table in Pythia8
 

@@ -1,6 +1,6 @@
 import numpy as np
 
-import fairship.global_variables as global_variables
+import fairship.core.global_variables as global_variables
 
 # Globals
 ReconstructibleMCTracks = []

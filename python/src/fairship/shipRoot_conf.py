@@ -3,8 +3,8 @@ import atexit
 import sys
 import os
 
-from fairship.pythia8_conf_utils import addHNLtoROOT
-from fairship.pythia8darkphoton_conf import addDPtoROOT
+from fairship.utils.pythia8 import addHNLtoROOT
+from fairship.configure.pythia8_darkphoton import addDPtoROOT
 
 if os.environ.get('FAIRSHIP_ROOT', '') == '':
    print("FairShip environment not found, quitting.")

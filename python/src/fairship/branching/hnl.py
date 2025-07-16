@@ -26,7 +26,7 @@ import math
 import os
 import ROOT
 
-import fairship.shipunit as u
+import fairship.core.shipunit as u
 
 # Load PDG database
 pdg = ROOT.TDatabasePDG.Instance()
@@ -189,7 +189,7 @@ class HNLbranchings():
         """
         Returns 3-loops QCD correction to HNL decay width into quarks
         """
-        alpha_s = ROOT.TGraph( os.path.expandvars('$FAIRSHIP/python/alpha_s.dat') )
+        alpha_s = ROOT.TGraph( os.path.expandvars('$FAIRSHIP/python/data/alpha_s.dat') )
         a_s = alpha_s.Eval(self.MN)
         qcd_corr = a_s / math.pi
         qcd_corr += 5.2 * (a_s / math.pi)**2.

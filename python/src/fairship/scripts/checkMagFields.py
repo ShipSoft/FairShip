@@ -1,8 +1,8 @@
 import sys
 import ROOT
 
-import fairship.rootUtils as ut
-import fairship.shipunit as u
+import fairship.utils.root as ut
+import fairship.core.shipunit as u
 
 def run():
  fGeo = ROOT.gGeoManager

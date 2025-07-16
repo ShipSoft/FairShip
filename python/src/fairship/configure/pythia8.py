@@ -2,12 +2,12 @@ import ROOT
 import os
 import yaml
 
-from fairship.pythia8_conf_utils import *
-from fairship.method_logger import MethodLogger
-import fairship.shipunit as u
-import fairship.hnl as hnl
-import fairship.rpvsusy as rpvsusy
-import fairship.readDecayTable as readDecayTable
+from fairship.utils.pythia8 import *
+from fairship.core.method_logger import MethodLogger
+from fairship.utils.decay_table import addHNLdecayChannels
+from fairship.branching.hnl import HNL
+from fairship.branching.rpvsusy import RPVSUSY
+import fairship.core.shipunit as u
 
 def configurerpvsusy(P8gen, mass, couplings, sfermionmass, benchmark, inclusive, deepCopy=False, debug=True):
     # configure pythia8 for Ship usage
@@ -30,7 +30,7 @@ def configurerpvsusy(P8gen, mass, couplings, sfermionmass, benchmark, inclusive,
     if inclusive=="c":
         P8gen.SetParameters("HardQCD::hardccbar  = on")
         # add RPVSUSY
-        rpvsusy_instance = rpvsusy.RPVSUSY(mass, couplings, sfermionmass, benchmark, debug=True)
+        rpvsusy_instance = RPVSUSY(mass, couplings, sfermionmass, benchmark, debug=True)
         ctau = rpvsusy_instance.computeNLifetime(system="FairShip") * u.c_light * u.cm
         print("RPVSUSY ctau ",ctau)
         P8gen.SetParameters(f"9900015:new = N2 N2 2 0 0 {mass:.12} 0.0 0.0 0.0 {ctau/u.mm:.12}  0   1   0   1   0")
@@ -81,7 +81,7 @@ def configurerpvsusy(P8gen, mass, couplings, sfermionmass, benchmark, inclusive,
     if inclusive=="b":
         P8gen.SetParameters("HardQCD::hardbbbar  = on")
         # add RPVSUSY
-        rpvsusy_instance = rpvsusy.RPVSUSY(mass, couplings, sfermionmass, benchmark, debug=True)
+        rpvsusy_instance = RPVSUSY(mass, couplings, sfermionmass, benchmark, debug=True)
         ctau = rpvsusy_instance.computeNLifetime(system="FairShip") * u.c_light * u.cm
         P8gen.SetParameters(f"9900015:new = N2 N2 2 0 0 {mass:.12} 0.0 0.0 0.0 {ctau/u.mm:.12}  0   1   0   1   0")
         P8gen.SetParameters("9900015:isResonance = false")
@@ -270,13 +270,13 @@ def configure(P8gen, mass, production_couplings, decay_couplings, process_select
 
 def add_hnl(P8gen, mass, decay_couplings):
     "Adds the HNL to Pythia and ROOT"
-    hnl_instance = hnl.HNL(mass, decay_couplings, debug=True)
+    hnl_instance = HNL(mass, decay_couplings, debug=True)
     ctau = hnl_instance.computeNLifetime(system="FairShip") * u.c_light * u.cm
     print(f"HNL ctau {ctau}")
     P8gen.SetParameters(f"9900015:new = N2 N2 2 0 0 {mass:.12} 0.0 0.0 0.0 {ctau/u.mm:.12}  0   1   0   1   0")
     P8gen.SetParameters("9900015:isResonance = false")
     # Configuring decay modes...
-    readDecayTable.addHNLdecayChannels(P8gen, hnl_instance, conffile=os.path.expandvars('$FAIRSHIP/python/DecaySelection.conf'), verbose=False)
+    addHNLdecayChannels(P8gen, hnl_instance, conffile=os.path.expandvars('$FAIRSHIP/python/DecaySelection.conf'), verbose=False)
     # Finish HNL setup...
     P8gen.SetParameters("9900015:mayDecay = on")
     P8gen.SetHNLId(9900015)
