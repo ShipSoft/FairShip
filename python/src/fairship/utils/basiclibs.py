@@ -1,4 +1,3 @@
-
 def load_basic_libs():
     """Loading basic libraries used with both Geant3 and Geant4"""
     from ROOT import gSystem
