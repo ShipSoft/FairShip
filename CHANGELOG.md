@@ -97,6 +97,7 @@ it in future.
 * Change EmulsionTarget detID decode function to tuple output
 * Particle Gun has been updated: now user can set the coordinates of the PG via keys --V{x,y,z} and use --D{x,y} to uniformly smear the signal in a given x and y range
 + makeCascade: Added new default target, moved to argparse
+* Change naming convention for simulation files to `{sim,geo,params}_{uuid4}.root`
 
 ### Removed
 

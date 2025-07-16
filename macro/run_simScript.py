@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import os
 import sys
+import uuid
 import ROOT
 
 import shipunit as u
@@ -241,21 +242,15 @@ ship_geo = ConfigRegistry.loadpy(
      TARGET_YAML=options.target_yaml
 )
 
-# Output file name, add dy to be able to setup geometry with ambiguities.
-if simEngine == "PG": tag = simEngine + "_"+str(options.pID)+"-"+mcEngine
-else: tag = simEngine+"-"+mcEngine
-if charmonly: tag = simEngine+"CharmOnly-"+mcEngine
-if options.eventDisplay: tag = tag+'_D'
-tag = 'conical.'+tag
+# Output file name
+# Use human-readable prefix + random UUID version 4
+run_identifier = uuid.uuid4()
 if not os.path.exists(options.outputDir):
   os.makedirs(options.outputDir)
-outFile = f"{options.outputDir}/ship.{tag}.root"
+outFile = f"{options.outputDir}/sim_{run_identifier}.root"
 
-# rm older files !!!
-for x in os.listdir(options.outputDir):
-  if not x.find(tag)<0: os.system(f"rm {options.outputDir}/{x}" )
 # Parameter file name
-parFile=f"{options.outputDir}/ship.params.{tag}.root"
+parFile=f"{options.outputDir}/params_{run_identifier}.root"
 
 # In general, the following parts need not be touched
 # ========================================================================
@@ -555,10 +550,11 @@ rtdb.saveOutput()
 rtdb.printParamContexts()
 getattr(rtdb,"print")()
 # ------------------------------------------------------------------------
-run.CreateGeometryFile(f"{options.outputDir}/geofile_full.{tag}.root")
+geofile_name = f"{options.outputDir}/geo_{run_identifier}.root"
+run.CreateGeometryFile(geofile_name)
 # save ShipGeo dictionary in geofile
 import saveBasicParameters
-saveBasicParameters.execute(f"{options.outputDir}/geofile_full.{tag}.root",ship_geo)
+saveBasicParameters.execute(geofile_name,ship_geo)
 
 # checking for overlaps
 if options.debug == 2:
