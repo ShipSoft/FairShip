@@ -29,6 +29,7 @@ ShipTargetStation::ShipTargetStation(const char* name,
                                      const Double_t tz,
                                      const TargetVersion tV,
                                      const int nS,
+				     const int HeT,
                                      const char* Title)
     : FairModule(name, Title)
 {
@@ -36,6 +37,7 @@ ShipTargetStation::ShipTargetStation(const char* name,
     fTargetZ = tz;
     fTV = tV;
     fnS = nS;
+    fHeT = HeT;
 }
 
 // -----   Private method InitMedium
@@ -73,11 +75,16 @@ void ShipTargetStation::ConstructGeometry()
 
     InitMedium("H2O");
     TGeoMedium* water = gGeoManager->GetMedium("H2O");
+    InitMedium("Inconel718");
+    TGeoMedium* inc718 = gGeoManager->GetMedium("Inconel718");
 
-    double He_T = 363.15;               // in K, use average 90 degrees C.
+    double He_T = 273.15+fHeT;               // in K, use average 90 degrees C.
     double He_P = 1.6e6 * 6.241509e3;   // 16 bar in MeV/mm3
-    InitMedium("PressurisedHe90");
-    TGeoMedium* pressurised_He = gGeoManager->GetMedium("PressurisedHe90");
+
+    std::ostringstream lHename;
+    lHename << "PressurisedHe" << fHeT;
+    InitMedium(lHename.str().c_str());
+    TGeoMedium* pressurised_He = gGeoManager->GetMedium(lHename.str().c_str());
 
     // CAMM- dirty fix to have pressure and temperature correct for Geant4.
     // Should fix this properly in future...
@@ -87,22 +94,49 @@ void ShipTargetStation::ConstructGeometry()
     TGeoMedium* cooler = (fTV == TargetVersion::Jun25) ? pressurised_He : water;
 
     LOG(INFO) << "-- Target cooler: " << cooler->GetName() << " T=" << cooler->GetMaterial()->GetTemperature()
-              << " K, P=" << cooler->GetMaterial()->GetPressure() << " MeV/mm3";
+              << " K, P=" << cooler->GetMaterial()->GetPressure() << " MeV/mm3, Density="
+	      << cooler->GetMaterial()->GetDensity();
+
 
     TGeoVolume* tTarget = new TGeoVolumeAssembly("TargetArea");
 
+
+    //Target vessel
+    double vessel_thickness = 8 * mm;
+    double vessel_diameter = fDiameter + 150 * mm;
+    double vessel_shift = 76 * mm;
+    double vessel_length = fTargetLength + 2*vessel_shift;
+
+    TGeoVolume* vessel;
+    vessel = gGeoManager->MakeTube("TargetVessel", inc718, vessel_diameter / 2. - vessel_thickness, vessel_diameter / 2., vessel_length / 2.);
+    vessel->SetLineColor(28);
+    tTarget->AddNode(vessel, 1, new TGeoTranslation(0, 0, -1. * vessel_shift + vessel_length / 2.));
+    //Front face
+    vessel = gGeoManager->MakeTube("TargetVesselFront", inc718, 0, vessel_diameter / 2., vessel_thickness / 2.);
+    vessel->SetLineColor(28);
+    tTarget->AddNode(vessel, 1, new TGeoTranslation(0, 0, -1. * vessel_shift - vessel_thickness / 2.));
+    //Back face
+    vessel = gGeoManager->MakeTube("TargetVesselBack", inc718, 0, vessel_diameter / 2., vessel_thickness / 2.);
+    vessel->SetLineColor(28);
+    tTarget->AddNode(vessel, 1, new TGeoTranslation(0, 0, -1. * vessel_shift + vessel_length + vessel_thickness/2.));
+    //He inside
+    vessel = gGeoManager->MakeTube("HeVolume", cooler, 0, vessel_diameter / 2. - vessel_thickness, vessel_length / 2.);
+    vessel->SetLineColor(7);
+
+
+    //now place target inside He volume
     Double_t zPos = 0.;
     Int_t slots = fnS;
     slots = slots - 1;
 
     TGeoVolume* target;
-    TGeoVolume* slit;
+    //TGeoVolume* slit;
     // Double_t zPos =  fTargetZ - fTargetLength/2.;
     for (Int_t i = 0; i < fnS; i++) {   // loop on layers
         TString nmi = "Target_";
         nmi += i + 1;
-        TString sm = "Slit_";
-        sm += i + 1;
+        //TString sm = "Slit_";
+        //sm += i + 1;
         TGeoMedium* material;
         if (fM.at(i) == "molybdenum") {
             material = mo;
@@ -117,16 +151,21 @@ void ShipTargetStation::ConstructGeometry()
         } else {
             target->SetLineColor(38);
         };   // silver/blue
-        tTarget->AddNode(target, 1, new TGeoTranslation(0, 0, zPos + fL.at(i) / 2.));
+        vessel->AddNode(target, 1, new TGeoTranslation(0, 0, -vessel_length/2. + vessel_shift + zPos + fL.at(i) / 2.));
         if (i < slots) {
-            slit = gGeoManager->MakeTube(sm, cooler, 0., fDiameter / 2., fG.at(i) / 2.);
-            slit->SetLineColor(7);   // cyan
-            tTarget->AddNode(slit, 1, new TGeoTranslation(0, 0, zPos + fL.at(i) + fG.at(i) / 2.));
-            zPos += fL.at(i) + fG.at(i);
+	  //slits will already be filled with He, no need to define volume
+	  //  slit = gGeoManager->MakeTube(sm, cooler, 0., fDiameter / 2., fG.at(i) / 2.);
+	  //  slit->SetLineColor(7);   // cyan
+	  //  tTarget->AddNode(slit, 1, new TGeoTranslation(0, 0, zPos + fL.at(i) + fG.at(i) / 2.));
+	  zPos += fL.at(i) + fG.at(i);
         } else {
-            zPos += fL.at(i);
+	  zPos += fL.at(i);
         }
     }   // loop on layers
+
+
+    // now add the He+target to the target area.
+    tTarget->AddNode(vessel, 1, new TGeoTranslation(0, 0, -1. * vessel_shift + vessel_length / 2.));
 
     // Proximity shielding
 
