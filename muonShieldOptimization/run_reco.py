@@ -1,5 +1,7 @@
 import os, subprocess,ROOT,time,getpass,multiprocessing
-import rootUtils as ut
+
+import fairship.utils.root as ut
+
 ncores = min(multiprocessing.cpu_count(),4)
 user   = getpass.getuser()
 # support for eos, assume: eosmount $HOME/eos

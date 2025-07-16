@@ -1,7 +1,8 @@
 import ROOT,os,random
-import shipunit as u
-import rootUtils as ut
-from ShipGeoConfig import ConfigRegistry
+
+import fairship.core.shipunit as u
+import fairship.utils.root as ut
+from fairship.ShipGeoConfig import ConfigRegistry
 
 from array import array
 pdg  = ROOT.TDatabasePDG()

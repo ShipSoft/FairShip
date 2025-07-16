@@ -17,11 +17,12 @@ def mem_monitor():
     print("memory: virtual = %5.2F MB  physical = %5.2F MB"%(vmsize/1.0E3,pmsize/1.0E3))
 
 import ROOT,os,sys
-import global_variables
-import rootUtils as ut
-import shipunit as u
-import shipRoot_conf
-from backports import tdirectory634
+
+import fairship.core.global_variables as global_variables
+import fairship.utils.root as ut
+import fairship.core.shipunit as u
+import fairship.shipRoot_conf as shipRoot_conf
+from fairship.backports import tdirectory634
 
 shipRoot_conf.configure()
 
@@ -78,7 +79,9 @@ if not options.geoFile:
 fgeo = ROOT.TFile.Open(options.geoFile)
 geoMat =  ROOT.genfit.TGeoMaterialInterface()  # if only called in ShipDigiReco -> crash, reason unknown
 
-from ShipGeoConfig import ConfigRegistry, load_from_root_file
+from fairship.ShipGeoConfig import ConfigRegistry, load_from_root_file
+from fairship.utils.rootpy_pickler import Unpickler
+
 #load Shipgeo dictionary
 ShipGeo = load_from_root_file(fgeo, 'ShipGeo')
 
@@ -91,7 +94,7 @@ if withHists:
  ut.bookHist(h, 'nmeas', 'nr measurments', 100, 0., 50.)
  ut.bookHist(h,'chi2','Chi2/DOF',100,0.,20.)
 
-import shipDet_conf
+import fairship.shipDet_conf as shipDet_conf
 run = ROOT.FairRunSim()
 run.SetName("TGeant4")  # Transport engine
 run.SetSink(ROOT.FairRootFileSink(ROOT.TMemFile('output', 'recreate')))  # Dummy output file
@@ -101,7 +104,7 @@ rtdb = run.GetRuntimeDb()
 modules = shipDet_conf.configure(run,ShipGeo)
 # run.Init()
 fgeo["FAIRGeom"]
-import geomGeant4
+import fairship.geomGeant4 as geomGeant4
 
 if hasattr(ShipGeo.Bfield,"fieldMap"):
   fieldMaker = geomGeant4.addVMCFields(ShipGeo, '', True,withVirtualMC = False)
@@ -121,7 +124,7 @@ global_variables.log = log
 global_variables.iEvent = 0
 
 # import reco tasks
-import shipDigiReco
+import fairship.shipDigiReco as shipDigiReco
 
 SHiP = shipDigiReco.ShipDigiReco(outFile,fgeo)
 options.nEvents   = min(SHiP.sTree.GetEntries(),options.nEvents)

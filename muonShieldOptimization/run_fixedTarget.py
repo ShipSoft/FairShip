@@ -1,9 +1,9 @@
 #!/usr/bin/env python
-import ROOT,os,sys,time,shipRoot_conf
-import shipunit as u
-from ShipGeoConfig import ConfigRegistry
 from backports import tdirectory634
-
+import ROOT,os,sys,time
+import fairship.shipRoot_conf as shipRoot_conf
+import fairship.core.shipunit as u
+from fairship.ShipGeoConfig import ConfigRegistry
 
 mcEngine     = "TGeant4"
 simEngine    = "Pythia8"
@@ -220,9 +220,10 @@ gMC = ROOT.TVirtualMC.GetMC()
 fStack = gMC.GetStack()
 fStack.SetMinPoints(1)
 fStack.SetEnergyCut(-1.)
-#
-import AddDiMuonDecayChannelsToG4
-AddDiMuonDecayChannelsToG4.Initialize(P8gen.GetPythia())
+
+
+from fairship.utils.muon_decay_channels import add_muon_decay_channels_to_g4
+add_muon_decay_channels_to_g4(P8gen.GetPythia())
 
 # boost gamma2muon conversion
 if args.boostFactor > 1:

@@ -5,15 +5,16 @@ import ROOT
 import ctypes
 from argparse import ArgumentParser
 
-import fairship.rootUtils as ut
-import fairship.shipunit as u
-from fairship.ShipGeoConfig import ConfigRegistry, load_from_root_file
+import fairship.utils.root as ut
+import fairship.core.shipunit as u
+from fairship.ShipGeoConfig import ConfigRegistry
+from fairship.utils.rootpy_pickler import Unpickler
+from fairship.utils.root_decorators import apply_decorators
 import fairship.shipRoot_conf as shipRoot_conf
 from fairship.backports import tdirectory634
-import fairship.decorators as decorators
 
 shipRoot_conf.configure()
-decorators.apply_decorators()
+apply_decorators()
 PDG = ROOT.TDatabasePDG.Instance()
 
 chi2CutOff  = 4.
@@ -48,7 +49,7 @@ ShipGeo = load_from_root_file(fgeo, 'ShipGeo')
 dy = ShipGeo.Yheight/u.m
 
 # -----Create geometry----------------------------------------------
-import shipDet_conf
+import fairship.shipDet_conf as shipDet_conf
 run = ROOT.FairRunSim()
 run.SetName("TGeant4")  # Transport engine
 run.SetSink(ROOT.FairRootFileSink(ROOT.TMemFile('output', 'recreate')))  # Dummy output file
@@ -57,7 +58,7 @@ rtdb = run.GetRuntimeDb()
 # -----Create geometry----------------------------------------------
 modules = shipDet_conf.configure(run,ShipGeo)
 
-import geomGeant4
+import fairship.geomGeant4 as geomGeant4
 if hasattr(ShipGeo.Bfield,"fieldMap"):
   fieldMaker = geomGeant4.addVMCFields(ShipGeo, '', True, withVirtualMC = False)
 else:
@@ -78,7 +79,7 @@ for x in ROOT.gGeoManager.GetListOfVolumes():
  i+=1
 
 # prepare veto decisions
-import shipVeto
+import fairship.shipVeto as shipVeto
 veto = shipVeto.Task(sTree)
 vetoDets={}
 log={}
@@ -121,7 +122,7 @@ ut.bookHist(h,'oa','cos opening angle',100,0.999,1.)
 ut.bookHist(h,'nrtracks','nr of tracks in signal selected',10,-0.5,9.5)
 ut.bookHist(h,'nrSBT','nr of hits in SBT',100,-0.5,99.5)
 
-import TrackExtrapolateTool
+from fairship.utils.track_extrapolate import extrapolateToPlane
 
 def VertexError(t1,t2,PosDir,CovMat,scalFac):
 # with improved Vx x,y resolution
@@ -247,7 +248,7 @@ def checkFiducialVolume(sTree,tkey,dy):
    inside = True
    if not fiducialCut: return True
    fT = sTree.FitTracks[tkey]
-   rc,pos,mom = TrackExtrapolateTool.extrapolateToPlane(fT,ShipGeo.Bfield.z)
+   rc,pos,mom = extrapolateToPlane(fT,ShipGeo.Bfield.z)
    if not rc: return False
    if not dist2InnerWall(pos.X(),pos.Y(),pos.Z())>0: return False
    return inside
@@ -638,7 +639,7 @@ def myEventLoop(n):
 # check extrapolation to TimeDet if exists
   if hasattr(ShipGeo,"TimeDet"):
    for fT in sTree.FitTracks:
-     rc,pos,mom = TrackExtrapolateTool.extrapolateToPlane(fT,ShipGeo.TimeDet.z)
+     rc,pos,mom = extrapolateToPlane(fT,ShipGeo.TimeDet.z)
      if rc:
       for aPoint in sTree.TimeDetPoint:
        h['extrapTimeDetX'].Fill(pos.X()-aPoint.GetX())

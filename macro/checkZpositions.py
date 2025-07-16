@@ -1,5 +1,9 @@
-import ROOT,sys
-from ShipGeoConfig import load_from_root_file
+import ROOT
+import sys
+
+from fairship.ShipGeoConfig import load_from_root_file
+from fairship.utils.rootpy_pickler import Unpickler
+
 badBoys={}
 f1,f2 = sys.argv[1], sys.argv[2]
 fgeoOld=ROOT.TFile(f1)

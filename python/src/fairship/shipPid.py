@@ -3,9 +3,9 @@ import sys
 import math as m
 import ctypes
 
+from fairship.utils.track_extrapolate import extrapolateToPlane
 import fairship.core.shipunit as u
 import fairship.utils.root as ut
-import fairship.TrackExtrapolateTool as TrackExtrapolateTool
 import fairship.shipDet_conf as shipDet_conf
 
 class Task:
@@ -196,7 +196,7 @@ class Task:
     self.P = fittedState.getMomMag()
     self.extrapStates = {}
     for self.det in self.zpositions:
-     rc,pos,mom = TrackExtrapolateTool.extrapolateToPlane(fT,self.zpositions[self.det])
+     rc,pos,mom = extrapolateToPlane(fT,self.zpositions[self.det])
 #     print rc
      if rc>0:
       self.extrapStates[self.det] = [pos.X(),pos.Y(),self.zpositions[self.det]]

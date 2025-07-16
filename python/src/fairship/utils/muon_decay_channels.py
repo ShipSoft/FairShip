@@ -3,8 +3,12 @@ ROOT.gROOT.ProcessLine('#include "Geant4/G4ParticleTable.hh"')
 ROOT.gROOT.ProcessLine('#include "Geant4/G4DecayTable.hh"')
 ROOT.gROOT.ProcessLine('#include "Geant4/G4PhaseSpaceDecayChannel.hh"')
 
-def Initialize(p8):
-# take decay and branching ratios from Pythia8
+def add_muon_decay_channels_to_g4(p8):
+  """
+  Adds muon decay channels to Geant4.
+
+  Takes decay and branching ratios from Pythia8.
+  """
   pt = ROOT.G4ParticleTable.GetParticleTable()
   for vreso in [223,333,113]:
    particleG4  = pt.FindParticle(vreso)

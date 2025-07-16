@@ -1,6 +1,7 @@
 import ROOT,evd_fillEnergy
 gEve=ROOT.gEve
 import eveGlobal
+
 def execute():
  if not gEve.GetViewers().FindChild('Bar Embedded Viewer side'):
   slot = ROOT.TEveWindow.CreateWindowInTab(gEve.GetBrowser().GetTabRight())

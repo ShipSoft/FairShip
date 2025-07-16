@@ -4,9 +4,10 @@
 from argparse import ArgumentParser
 
 import ROOT
-import rootUtils as ut
-from experimental import analysis_toolkit
-from backports import tdirectory634
+
+import fairship.utils.root as ut
+from fairship.experimental import analysis_toolkit
+from fairship.backports import tdirectory634
 
 
 def main():

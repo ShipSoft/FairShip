@@ -1,10 +1,13 @@
 #!/usr/bin/env python
-import ROOT,os,sys,time,shipRoot_conf
-ROOT.gROOT.ProcessLine('#include "FairModule.h"')
-time.sleep(20)
+import ROOT,os,sys,time
 
-import shipunit as u
-from ShipGeoConfig import ConfigRegistry
+import fairship.shipRoot_conf as shipRoot_conf
+
+ROOT.gROOT.ProcessLine('#include "FairModule.h"')
+time.sleep(20) # should have a comment with why
+
+import fairship.core.shipunit as u
+from fairship.ShipGeoConfig import ConfigRegistry
 
 mcEngine     = "TGeant4"
 runnr        = 1
@@ -41,7 +44,7 @@ outFile = "msc"+s+".root"
 theSeed      = 0
 ecut      = 0.0
 
-import rootUtils as ut
+import fairship.utils.root as ut
 h={}
 
 def run():

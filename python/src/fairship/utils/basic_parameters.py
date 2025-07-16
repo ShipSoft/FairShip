@@ -1,4 +1,3 @@
-# save python objects as pickle object in ROOT file
 import ROOT
 import os
 import subprocess
@@ -6,7 +5,7 @@ import subprocess
 from fairship.utils.rootpy_pickler import Pickler
 from fairship.ShipGeoConfig import AttrDict, ConfigRegistry
 
-def save(f, ox, name='ShipGeo'):
+def save_basic_parameters(f, ox, name='ShipGeo'):
     """Save geometry configuration to ROOT file as JSON string"""
     if type(ox) == str:
         ox = ConfigRegistry.register_config("basic")
@@ -30,9 +29,7 @@ def save(f, ox, name='ShipGeo'):
         fg.Close()
 
 def _retrieveGitTags(o):
-    """
-    Record some basic information about version of software:
-    """
+    """Record some basic information about version of fairship software."""
     if "FAIRSHIP_HASH" in os.environ:
         o.FairShip = os.environ['FAIRSHIP_HASH']
         o.FairRoot = os.environ['FAIRROOT_HASH']

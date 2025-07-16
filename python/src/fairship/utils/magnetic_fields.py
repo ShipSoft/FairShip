@@ -4,8 +4,9 @@ import ROOT
 import fairship.utils.root as ut
 import fairship.core.shipunit as u
 
-def run():
+def check_magnetic_fields():
  fGeo = ROOT.gGeoManager
+ # Some arcane magic here..
  run = sys.modules['__main__'].run
  if hasattr(sys.modules['__main__'],'h'): h =  sys.modules['__main__'].h
  else: h={}

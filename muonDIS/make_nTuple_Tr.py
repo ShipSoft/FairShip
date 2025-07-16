@@ -7,8 +7,9 @@ import logging
 import os
 
 import ROOT as r
-import shipunit as u
 from tabulate import tabulate
+
+import fairship.core.shipunit as u
 
 pdg = r.TDatabasePDG.Instance()
 

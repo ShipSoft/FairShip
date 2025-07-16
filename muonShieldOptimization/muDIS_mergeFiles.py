@@ -1,5 +1,7 @@
 import ROOT,os
-import rootUtils as ut
+
+import fairship.utils.root as ut
+
 h={}
 def merge():
  sTree = ROOT.TChain('DIS')

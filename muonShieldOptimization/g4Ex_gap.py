@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import os
-import saveBasicParameters
+
+from fairship.utils.basic_parameters import save_basic_parameters
 
 local = False
 if not os.uname()[1].find('ubuntu')<0: local = True
@@ -572,8 +573,7 @@ for x in myTimer:
 
 logger.info("output directory: %s" % work_dir)
 # save arguments and GIT tags
-import saveBasicParameters
-saveBasicParameters.execute(f,args,'SHiP-Params')
+save_basic_parameters(f,args,'SHiP-Params')
 
 if local:
  wrld = snoopyPhys.GetMotherLogical()
