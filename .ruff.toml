@@ -1,0 +1,9 @@
+[lint]
+select = [
+    "D", # pydocstyle
+    "E", # pycodestyle
+    "F", # Pyflakes
+    "I", # isort
+]
+
+# See https://docs.astral.sh/ruff/linter/#rule-selection
