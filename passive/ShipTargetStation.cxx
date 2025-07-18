@@ -221,5 +221,6 @@ void ShipTargetStation::ConstructGeometry()
                             pedestal_height / 2 - proximity_shielding_hole_height + target_box_shift,
                             - shielding_length / 2 + 565 * mm + pedestal_length / 2));
 
-    top->AddNode(tTarget, 1, new TGeoTranslation(0, 0, start_of_target));
+    target_vacuum_box->AddNode(
+        tTarget, 1, new TGeoTranslation(0, target_box_shift, start_of_target - shielding_position));
 }
