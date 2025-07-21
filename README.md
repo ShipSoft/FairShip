@@ -56,19 +56,24 @@ On `lxplus` this is the recommended way to use `FairShip`. CVMFS can also be set
     ```bash
     git clone https://github.com/ShipSoft/FairShip.git
     ```
+    As we are using [`git-lfs`](https://git-lfs.com/) to deal with large files for field maps etc., you might have to run 
+    ```bash
+    git lfs install
+    ```
+    if you have never used `git-lfs` on your account before.
 
-2. Make sure you can access the SHiP CVMFS Repository
+3. Make sure you can access the SHiP CVMFS Repository
     ```bash
     ls /cvmfs/ship.cern.ch
     ```
-3. Source the `setUp.sh` script from the CVMFS release you want to use (replace `$SHIP_RELEASE` with the release you want to use):
+4. Source the `setUp.sh` script from the CVMFS release you want to use (replace `$SHIP_RELEASE` with the release you want to use):
     ```bash
     source /cvmfs/ship.cern.ch/$SHIP_RELEASE/setUp.sh
     ```
     Info about different releases can be found in a [dedicated repository](https://github.com/ShipSoft/cvmfs_release).
     Please report issues with particular releases or the setup script there.
 
-4. Build the software using aliBuild
+5. Build the software using aliBuild
     ```bash
     aliBuild build FairShip --always-prefer-system --config-dir $SHIPDIST --defaults release
     ```
@@ -97,6 +102,11 @@ Commands are similar to the previous case, but without access to CVMFS you need 
     ```bash
     git clone https://github.com/ShipSoft/FairShip.git
     ```
+    As we are using [`git-lfs`](https://git-lfs.com/) to deal with large files for field maps etc., you might have to run 
+    ```bash
+    git lfs install
+    ```
+    if you have never used `git-lfs` on your account before.
 2. Clone the shipdist repository, which contains the recipes to build the software stack:
     ```bash
     git clone https://github.com/ShipSoft/shipdist.git
