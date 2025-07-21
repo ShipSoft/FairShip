@@ -56,7 +56,7 @@ On `lxplus` this is the recommended way to use `FairShip`. CVMFS can also be set
     ```bash
     git clone https://github.com/ShipSoft/FairShip.git
     ```
-    As we are using [`git-lfs`](https://git-lfs.com/) to deal with large files for field maps etc., you might have to run 
+    As we are using [`git-lfs`](https://git-lfs.com/) to deal with large files for field maps etc., you might have to run
     ```bash
     git lfs install
     ```
@@ -102,7 +102,7 @@ Commands are similar to the previous case, but without access to CVMFS you need 
     ```bash
     git clone https://github.com/ShipSoft/FairShip.git
     ```
-    As we are using [`git-lfs`](https://git-lfs.com/) to deal with large files for field maps etc., you might have to run 
+    As we are using [`git-lfs`](https://git-lfs.com/) to deal with large files for field maps etc., you might have to run
     ```bash
     git lfs install
     ```
