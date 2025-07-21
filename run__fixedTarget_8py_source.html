@@ -101,343 +101,326 @@ $(document).ready(function(){initNavTree('run__fixedTarget_8py_source.html','');
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="keyword">import</span> ROOT,os,sys,time,shipRoot_conf</div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="keyword">import</span> shipunit <span class="keyword">as</span> u</div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="keyword">from</span> ShipGeoConfig <span class="keyword">import</span> ConfigRegistry</div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a2ecf6a13590cfb316a6f17be3fb51f35">    6</a></span>mcEngine     = <span class="stringliteral">&quot;TGeant4&quot;</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a563b28a8253682d6cb4581954d84da5b">    7</a></span>simEngine    = <span class="stringliteral">&quot;Pythia8&quot;</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a3e6893aa70d0e54257f0b421c5d343f2">    8</a></span>runnr        = 1</div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a268f765c464340dfb1d5f00fb8af09fb">    9</a></span>nev          = 1000</div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="keyword">from</span> backports <span class="keyword">import</span> tdirectory634</div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a2ecf6a13590cfb316a6f17be3fb51f35">    8</a></span>mcEngine     = <span class="stringliteral">&quot;TGeant4&quot;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a563b28a8253682d6cb4581954d84da5b">    9</a></span>simEngine    = <span class="stringliteral">&quot;Pythia8&quot;</span></div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a757a9cdde97d19d35c68251e46cc42b8">   10</a></span>checkOverlap = <span class="keyword">True</span></div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#abdbb8d1672225f7915bd51324256b861">   11</a></span>G4only       = <span class="keyword">False</span></div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a2f69f87598f0df34248c0b62dee21180">   12</a></span>storeOnlyMuons = <span class="keyword">False</span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#aafcb841c7cc9294d64427c6765d3002a">   13</a></span>skipNeutrinos  = <span class="keyword">False</span></div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a6d5cc1c228964b1f271e6a82da5c5339">   14</a></span>withEvtGen     = <span class="keyword">True</span></div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a8e5d0350a5e68c2077ced5000996170b">   15</a></span>boostDiMuon    = 1.</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#afda4c96d05cd62a7414e3f74ec86261d">   16</a></span>boostFactor    = 1.</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#ad5c201a6a3ddb5d692052999055e3d96">   17</a></span>charm          = <span class="keyword">False</span></div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#ada48297e669d29303eb37e49ffd25900">   18</a></span>beauty         = <span class="keyword">False</span></div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a514900af495aa45c175f236e51727bfa">   19</a></span>chicc = 1.7e-3</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#ab969dffb54dc21603e208d542781324a">   20</a></span>chibb = 1.6e-7</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#ab26203fc1edd6be35a5c89286b1a99f0">   21</a></span>npot  = 5E13</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#aaef3f997d80426ac3f5c0fb95e1479b9">   22</a></span>nStart = 0</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a48ca2db6e91c7081abaa97f5cc87f4ed">   24</a></span>charmInputFile = ROOT.gSystem.Getenv(<span class="stringliteral">&quot;EOSSHIP&quot;</span>)+<span class="stringliteral">&quot;/eos/experiment/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-76Mpot_1.root&quot;</span></div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>nStart = 0</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a34f5375a3b50b83ee41e62f626294d87">   27</a></span>outputDir    = <span class="stringliteral">&quot;.&quot;</span></div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a8642064e3392ef35859d54454ea8f9da">   28</a></span>work_dir  = <span class="stringliteral">&quot;./&quot;</span></div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#af44a615972c5dd4e6c5b18db469e8e40">   29</a></span>ecut      = 0.5 <span class="comment"># GeV   with 1 : ~1sec / event, with 2: 0.4sec / event, 10: 0.13sec</span></div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a268fb420d1b4cf832469ab372827e014">   31</a></span>dy           = 10.</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#afca348e9bddce3413e30fd40de1ee0cd">   32</a></span>dv           = 6 <span class="comment"># 4=TP elliptical tank design, 5 = optimized conical rectangular design, 6=5 without segment-1</span></div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#aa5bc42f75f97f070ce6f0d119cb72d8a">   33</a></span>ds           = 9 <span class="comment"># 5=TP muon shield, 6=magnetized hadron, 7=short magnet design, 9=optimised with T4 as constraint, 8=requires config file</span></div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a90b38eaf17e7299111b21148575c4ff8">   34</a></span>nud          = 3 <span class="comment"># 0=TP, 1=new magnet option for short muon shield, 2= no magnet surrounding neutrino detector</span></div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="comment"># example for primary interaction, nobias: python $FAIRSHIP/muonShieldOptimization/run_fixedTarget.py -n 10000 -e 10 -f -r 10</span></div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="comment">#                                                               10000 events, energy cut 10GeV, run nr 10, override existing output folder</span></div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="comment"># example for charm decays, python $FAIRSHIP/muonShieldOptimization/run_fixedTarget.py -C -M -n 10000 -e 10  -r 60 -b 50 -f</span></div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="comment">#                                                               10000 events, charm decays, energy cut 10GeV, run nr 60, override existing output folder</span></div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="comment">#                                                               increase di-muon BRs for resonances &lt; 1.1GeV by a factor 50</span></div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="comment">#----------------------------- Yandex production ------------------------------</span></div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="keyword">import</span> shutil</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="keyword">import</span> argparse</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="keyword">import</span> logging</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>logging.info(<span class="stringliteral">&quot;&quot;</span>)</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a9faaafed66d4cddff69c9096c8ed844c">   47</a></span>logger = logging.getLogger(os.path.splitext(os.path.basename(os.sys.argv[0]))[0])</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>logger.setLevel(logging.INFO)</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
-<div class="foldopen" id="foldopen00051" data-start="" data-end="">
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#adfab540557e98157435b5bf6dd57d3fd">   51</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__fixedTarget.html#adfab540557e98157435b5bf6dd57d3fd">get_work_dir</a>(run_number,tag=None):</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <span class="keyword">import</span> socket</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  host = socket.gethostname()</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  job_base_name = os.path.splitext(os.path.basename(os.sys.argv[0]))[0]</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  <span class="keywordflow">if</span> tag:  out_dir = f<span class="stringliteral">&quot;{host}_{job_base_name}_{run_number}_{tag}&quot;</span></div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  <span class="keywordflow">else</span>:    out_dir = f<span class="stringliteral">&quot;{host}_{job_base_name}_{run_number}&quot;</span></div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  <span class="keywordflow">return</span> out_dir</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a34f5375a3b50b83ee41e62f626294d87">   11</a></span>outputDir    = <span class="stringliteral">&quot;.&quot;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a268fb420d1b4cf832469ab372827e014">   12</a></span>dy           = 6.  <span class="comment"># 10.</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#aa5bc42f75f97f070ce6f0d119cb72d8a">   13</a></span>ds           = 8  <span class="comment"># 9 # 5=TP muon shield, 6=magnetized hadron, 7=short magnet design, 9=optimised with T4 as constraint, 8=requires config file</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment"># example for primary interaction, nobias: python $FAIRSHIP/muonShieldOptimization/run_fixedTarget.py -n 10000 -e 10 -f -r 10</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment">#                                                               10000 events, energy cut 10GeV, run nr 10, override existing output folder</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment"># example for charm decays, python $FAIRSHIP/muonShieldOptimization/run_fixedTarget.py -C -M -n 10000 -e 10  -r 60 -b 50 -f</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="comment">#                                                               10000 events, charm decays, energy cut 10GeV, run nr 60, override existing output folder</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="comment">#                                                               increase di-muon BRs for resonances &lt; 1.1GeV by a factor 50</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="comment">#----------------------------- Yandex production ------------------------------</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="keyword">import</span> shutil</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="keyword">import</span> argparse</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="keyword">import</span> logging</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>logging.info(<span class="stringliteral">&quot;&quot;</span>)</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a9faaafed66d4cddff69c9096c8ed844c">   26</a></span>logger = logging.getLogger(os.path.splitext(os.path.basename(os.sys.argv[0]))[0])</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>logger.setLevel(logging.INFO)</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
+<div class="foldopen" id="foldopen00030" data-start="" data-end="">
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#adfab540557e98157435b5bf6dd57d3fd">   30</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__fixedTarget.html#adfab540557e98157435b5bf6dd57d3fd">get_work_dir</a>(run_number,tag=None):</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    <span class="keyword">import</span> socket</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    host = socket.gethostname()</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    job_base_name = os.path.splitext(os.path.basename(os.sys.argv[0]))[0]</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    <span class="keywordflow">if</span> tag:  out_dir = f<span class="stringliteral">&quot;{host}_{job_base_name}_{run_number}_{tag}&quot;</span></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="keywordflow">else</span>:    out_dir = f<span class="stringliteral">&quot;{host}_{job_base_name}_{run_number}&quot;</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <span class="keywordflow">return</span> out_dir</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
 </div>
-<div class="foldopen" id="foldopen00060" data-start="" data-end="">
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a526b7d00dfe537eca8127724eac0e35c">   60</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacerun__fixedTarget.html#a526b7d00dfe537eca8127724eac0e35c">init</a>():</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  <span class="keyword">global</span> runnr, nev, ecut, G4only, tauOnly,JpsiMainly, work_dir,Debug,withEvtGen,boostDiMuon,\</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>         boostFactor,charm,beauty,charmInputFile,nStart,storeOnlyMuons,chicc,chibb,npot,nStart,skipNeutrinos,FourDP</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  logger.info(<span class="stringliteral">&quot;SHiP proton-on-taget simulator (C) Thomas Ruf, 2017&quot;</span>)</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  ap = argparse.ArgumentParser(</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>      description=<span class="stringliteral">&#39;Run SHiP &quot;pot&quot; simulation&#39;</span>)</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  ap.add_argument(<span class="stringliteral">&#39;-d&#39;</span>, <span class="stringliteral">&#39;--debug&#39;</span>, action=<span class="stringliteral">&#39;store_true&#39;</span>, dest=<span class="stringliteral">&#39;debug&#39;</span>)</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  ap.add_argument(<span class="stringliteral">&#39;-f&#39;</span>, <span class="stringliteral">&#39;--force&#39;</span>, action=<span class="stringliteral">&#39;store_true&#39;</span>, help=<span class="stringliteral">&quot;force overwriting output directory&quot;</span>)</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  ap.add_argument(<span class="stringliteral">&#39;-r&#39;</span>, <span class="stringliteral">&#39;--run-number&#39;</span>, type=int, dest=<span class="stringliteral">&#39;runnr&#39;</span>, default=runnr)</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  ap.add_argument(<span class="stringliteral">&#39;-e&#39;</span>, <span class="stringliteral">&#39;--ecut&#39;</span>, type=float, help=<span class="stringliteral">&quot;energy cut&quot;</span>, dest=<span class="stringliteral">&#39;ecut&#39;</span>, default=ecut)</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  ap.add_argument(<span class="stringliteral">&#39;-n&#39;</span>, <span class="stringliteral">&#39;--num-events&#39;</span>, type=int, help=<span class="stringliteral">&quot;number of events to generate&quot;</span>, dest=<span class="stringliteral">&#39;nev&#39;</span>, default=nev)</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  ap.add_argument(<span class="stringliteral">&#39;-G&#39;</span>, <span class="stringliteral">&#39;--G4only&#39;</span>, action=<span class="stringliteral">&#39;store_true&#39;</span>, dest=<span class="stringliteral">&#39;G4only&#39;</span>,     default=<span class="keyword">False</span>, help=<span class="stringliteral">&quot;use Geant4 directly, no Pythia8&quot;</span>)</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  ap.add_argument(<span class="stringliteral">&#39;-P&#39;</span>, <span class="stringliteral">&#39;--PythiaDecay&#39;</span>, action=<span class="stringliteral">&#39;store_true&#39;</span>, dest=<span class="stringliteral">&#39;pythiaDecay&#39;</span>, default=<span class="keyword">False</span>,  help=<span class="stringliteral">&quot;use Pythia8 for decays&quot;</span>)</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  ap.add_argument(<span class="stringliteral">&#39;-V&#39;</span>, <span class="stringliteral">&#39;--EvtGen&#39;</span>,      action=<span class="stringliteral">&#39;store_true&#39;</span>, dest=<span class="stringliteral">&#39;withEvtGen&#39;</span>,  default=withEvtGen,   help=<span class="stringliteral">&quot;use EvtGen for decays&quot;</span>)</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  ap.add_argument(<span class="stringliteral">&#39;-t&#39;</span>, <span class="stringliteral">&#39;--tau-only&#39;</span>,     action=<span class="stringliteral">&#39;store_true&#39;</span>, dest=<span class="stringliteral">&#39;tauOnly&#39;</span>,     default=<span class="keyword">False</span>)</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  ap.add_argument(<span class="stringliteral">&#39;-J&#39;</span>, <span class="stringliteral">&#39;--Jpsi-mainly&#39;</span>,  action=<span class="stringliteral">&#39;store_true&#39;</span>, dest=<span class="stringliteral">&#39;JpsiMainly&#39;</span>,  default=<span class="keyword">False</span>)</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  ap.add_argument(<span class="stringliteral">&#39;-b&#39;</span>, <span class="stringliteral">&#39;--boostDiMuon&#39;</span>, type=float,   dest=<span class="stringliteral">&#39;boostDiMuon&#39;</span>,  default=boostDiMuon, help=<span class="stringliteral">&quot;boost Di-muon branching ratios&quot;</span>)</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>  ap.add_argument(<span class="stringliteral">&#39;-X&#39;</span>, <span class="stringliteral">&#39;--boostFactor&#39;</span>, type=float,   dest=<span class="stringliteral">&#39;boostFactor&#39;</span>,  default=boostFactor, help=<span class="stringliteral">&quot;boost Di-muon prod cross sections&quot;</span>)</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  ap.add_argument(<span class="stringliteral">&#39;-C&#39;</span>, <span class="stringliteral">&#39;--charm&#39;</span>,      action=<span class="stringliteral">&#39;store_true&#39;</span>,  dest=<span class="stringliteral">&#39;charm&#39;</span>,  default=charm, help=<span class="stringliteral">&quot;generate charm decays&quot;</span>)</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  ap.add_argument(<span class="stringliteral">&#39;-B&#39;</span>, <span class="stringliteral">&#39;--beauty&#39;</span>,     action=<span class="stringliteral">&#39;store_true&#39;</span>,  dest=<span class="stringliteral">&#39;beauty&#39;</span>, default=beauty, help=<span class="stringliteral">&quot;generate beauty decays&quot;</span>)</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  ap.add_argument(<span class="stringliteral">&#39;-M&#39;</span>, <span class="stringliteral">&#39;--storeOnlyMuons&#39;</span>,  action=<span class="stringliteral">&#39;store_true&#39;</span>,  dest=<span class="stringliteral">&#39;storeOnlyMuons&#39;</span>,  default=storeOnlyMuons, help=<span class="stringliteral">&quot;store only muons, ignore neutrinos&quot;</span>)</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  ap.add_argument(<span class="stringliteral">&#39;-N&#39;</span>, <span class="stringliteral">&#39;--skipNeutrinos&#39;</span>,  action=<span class="stringliteral">&#39;store_true&#39;</span>,  dest=<span class="stringliteral">&#39;skipNeutrinos&#39;</span>,  default=<span class="keyword">False</span>, help=<span class="stringliteral">&quot;skip neutrinos&quot;</span>)</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  ap.add_argument(<span class="stringliteral">&#39;-D&#39;</span>, <span class="stringliteral">&#39;--4darkPhoton&#39;</span>,  action=<span class="stringliteral">&#39;store_true&#39;</span>,  dest=<span class="stringliteral">&#39;FourDP&#39;</span>,  default=<span class="keyword">False</span>, help=<span class="stringliteral">&quot;enable ntuple production&quot;</span>)</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span><span class="comment"># for charm production</span></div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>  ap.add_argument(<span class="stringliteral">&#39;-cc&#39;</span>,<span class="stringliteral">&#39;--chicc&#39;</span>,action=<span class="stringliteral">&#39;store_true&#39;</span>,  dest=<span class="stringliteral">&#39;chicc&#39;</span>,  default=chicc, help=<span class="stringliteral">&quot;ccbar over mbias cross section&quot;</span>)</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>  ap.add_argument(<span class="stringliteral">&#39;-bb&#39;</span>,<span class="stringliteral">&#39;--chibb&#39;</span>,action=<span class="stringliteral">&#39;store_true&#39;</span>,  dest=<span class="stringliteral">&#39;chibb&#39;</span>,  default=chibb, help=<span class="stringliteral">&quot;bbbar over mbias cross section&quot;</span>)</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>  ap.add_argument(<span class="stringliteral">&#39;-p&#39;</span>,<span class="stringliteral">&#39;--pot&#39;</span>,action=<span class="stringliteral">&#39;store_true&#39;</span>,  dest=<span class="stringliteral">&#39;npot&#39;</span>,  default=npot, help=<span class="stringliteral">&quot;number of protons on target per spill to normalize on&quot;</span>)</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  ap.add_argument(<span class="stringliteral">&#39;-S&#39;</span>, <span class="stringliteral">&#39;--nStart&#39;</span>, type=int, help=<span class="stringliteral">&quot;first event of input file to start&quot;</span>, dest=<span class="stringliteral">&#39;nStart&#39;</span>, default=nStart)</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>  ap.add_argument(<span class="stringliteral">&#39;-I&#39;</span>, <span class="stringliteral">&#39;--InputFile&#39;</span>, type=str, dest=<span class="stringliteral">&#39;charmInputFile&#39;</span>,  default=charmInputFile, help=<span class="stringliteral">&quot;input file for charm/beauty decays&quot;</span>)</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>  ap.add_argument(<span class="stringliteral">&#39;-o&#39;</span>,<span class="stringliteral">&#39;--output&#39;</span>    , type=str, help=<span class="stringliteral">&quot;output directory&quot;</span>, dest=<span class="stringliteral">&#39;work_dir&#39;</span>, default=<span class="keywordtype">None</span>)</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  ap.add_argument(<span class="stringliteral">&#39;-rs&#39;</span>,<span class="stringliteral">&#39;--seed&#39;</span>, type=int, help=<span class="stringliteral">&quot;random seed; default value is 0, see TRrandom::SetSeed documentation&quot;</span>, dest=<span class="stringliteral">&#39;seed&#39;</span>, default=0)</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>  args = ap.parse_args()</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  <span class="keywordflow">if</span> args.debug:</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>      logger.setLevel(logging.DEBUG)</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>  runnr        = args.runnr</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>  nev          = args.nev</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>  ecut         = args.ecut</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>  tauOnly      = args.tauOnly</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>  JpsiMainly   = args.JpsiMainly</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>  G4only       = args.G4only</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>  boostFactor  = args.boostFactor</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>  boostDiMuon  = args.boostDiMuon</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>  storeOnlyMuons = args.storeOnlyMuons</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>  skipNeutrinos  = args.skipNeutrinos</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>  FourDP         = args.FourDP</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>  <span class="keywordflow">if</span> G4only:</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    args.charm  = <span class="keyword">False</span></div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    args.beauty = <span class="keyword">False</span></div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    args.withEvtGen = <span class="keyword">False</span></div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>    args.pythiaDecay = <span class="keyword">False</span></div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>  <span class="keywordflow">elif</span> args.pythiaDecay:</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    withEvtGen = <span class="keyword">False</span></div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    args.withEvtGen = <span class="keyword">False</span></div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>    logger.info(<span class="stringliteral">&quot;use Pythia8 as primary decayer&quot;</span>)</div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>  <span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>    withEvtGen = <span class="keyword">True</span></div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>    logger.info(<span class="stringliteral">&quot;use EvtGen as primary decayer&quot;</span>)</div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>  withEvtGen     = args.withEvtGen</div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>  charm  = args.charm</div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>  beauty = args.beauty</div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>  <span class="keywordflow">if</span> charm <span class="keywordflow">and</span> beauty:</div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>    logger.warn(<span class="stringliteral">&quot;charm and beauty decays are set! Beauty gets priority&quot;</span>)</div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>    charm = <span class="keyword">False</span></div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>  charmInputFile = args.charmInputFile</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>  nStart = int(args.nStart)</div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>  Debug  = args.debug</div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>  <span class="keywordflow">if</span> args.work_dir <span class="keywordflow">is</span> <span class="keywordtype">None</span>:</div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>    <span class="keywordflow">if</span> charm: args.work_dir = <a class="code hl_function" href="namespacerun__fixedTarget.html#adfab540557e98157435b5bf6dd57d3fd">get_work_dir</a>(runnr,<span class="stringliteral">&quot;charm&quot;</span>)</div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>    <span class="keywordflow">if</span> beauty: args.work_dir = <a class="code hl_function" href="namespacerun__fixedTarget.html#adfab540557e98157435b5bf6dd57d3fd">get_work_dir</a>(runnr,<span class="stringliteral">&quot;beauty&quot;</span>)</div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>    <span class="keywordflow">else</span>: args.work_dir = <a class="code hl_function" href="namespacerun__fixedTarget.html#adfab540557e98157435b5bf6dd57d3fd">get_work_dir</a>(runnr)</div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>  work_dir = args.work_dir</div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>  logger.debug(<span class="stringliteral">&quot;work_dir: %s&quot;</span> % work_dir)</div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>  logger.debug(<span class="stringliteral">&quot;command line arguments: %s&quot;</span>, args)</div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>  <span class="keywordflow">if</span> os.path.exists(work_dir):</div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>    logger.warn(<span class="stringliteral">&quot;output directory &#39;%s&#39; already exists.&quot;</span> % work_dir)</div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>    <span class="keywordflow">if</span> args.force:</div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>      logger.warn(<span class="stringliteral">&quot;...cleaning&quot;</span>)</div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>      <span class="keywordflow">for</span> root, dirs, files <span class="keywordflow">in</span> os.walk(work_dir):</div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>        <span class="keywordflow">for</span> f <span class="keywordflow">in</span> files:</div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>          os.unlink(os.path.join(root, f))</div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>        <span class="keywordflow">for</span> d <span class="keywordflow">in</span> dirs:</div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>          shutil.rmtree(os.path.join(root, d))</div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>      logger.warn(<span class="stringliteral">&quot;...use &#39;-f&#39; option to overwrite it&quot;</span>)</div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>  <span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>    os.makedirs(work_dir)</div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>  <span class="keywordflow">return</span> args</div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span> </div>
-</div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a662a9a9869bd1c3d220c638d0a0eb271">  149</a></span>args = <a class="code hl_function" href="namespacerun__fixedTarget.html#a526b7d00dfe537eca8127724eac0e35c">init</a>()</div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>os.chdir(work_dir)</div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span><span class="comment"># -------------------------------------------------------------------</span></div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>ROOT.gRandom.SetSeed(args.seed)  <span class="comment"># this should be propagated via ROOT to Pythia8 and Geant4VMC</span></div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span><a class="code hl_function" href="namespaceshipRoot__conf.html#a4bb207e902847385c1369c120d9063ec">shipRoot_conf.configure</a>()      <span class="comment"># load basic libraries, prepare atexit for python</span></div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a3e3246d1e1694b94a0e038535d2baed0">  154</a></span>ship_geo = ConfigRegistry.loadpy(<span class="stringliteral">&quot;$FAIRSHIP/geometry/geometry_config.py&quot;</span>, Yheight = dy, tankDesign = dv, muShieldDesign = ds, nuTauTargetDesign=nud)</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>logger.info(<span class="stringliteral">&quot;SHiP proton-on-taget simulator (C) Thomas Ruf, 2017&quot;</span>)</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#afd2103e61d77fb2af4fb03c269b70870">   41</a></span>ap = argparse.ArgumentParser(description=<span class="stringliteral">&#39;Run SHiP &quot;pot&quot; simulation&#39;</span>)</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#ab5d680c22d22a38d96db40834019c7bf">   42</a></span>ap.add_argument(<span class="stringliteral">&#39;-d&#39;</span>, <span class="stringliteral">&#39;--debug&#39;</span>, action=argparse.BooleanOptionalAction, default=<span class="keyword">True</span>)</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#af4484db9a4134bdc526b56578692372a">   43</a></span>ap.add_argument(<span class="stringliteral">&#39;-f&#39;</span>, <span class="stringliteral">&#39;--force&#39;</span>, action=argparse.BooleanOptionalAction, default=<span class="keyword">True</span>, help=<span class="stringliteral">&quot;force overwriting output directory&quot;</span>)</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a2d85230eb2d4d34744c25b125a697ef3">   44</a></span>ap.add_argument(<span class="stringliteral">&#39;-r&#39;</span>, <span class="stringliteral">&#39;--run-number&#39;</span>, type=int, dest=<span class="stringliteral">&#39;runnr&#39;</span>, default=1)</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#af1277424a1c78c806b635aedae63a6c4">   45</a></span>ap.add_argument(<span class="stringliteral">&#39;-e&#39;</span>, <span class="stringliteral">&#39;--ecut&#39;</span>, type=float, help=<span class="stringliteral">&quot;energy cut&quot;</span>, default=0.5)  <span class="comment"># GeV   with 1 : ~1sec / event, with 2: 0.4sec / event, 10: 0.13sec</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>ap.add_argument(<span class="stringliteral">&#39;-n&#39;</span>, <span class="stringliteral">&#39;--num-events&#39;</span>, type=int, help=<span class="stringliteral">&quot;number of events to generate&quot;</span>, dest=<span class="stringliteral">&#39;nev&#39;</span>, default=100)</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>ap.add_argument(<span class="stringliteral">&#39;-G&#39;</span>, <span class="stringliteral">&#39;--G4only&#39;</span>, action=argparse.BooleanOptionalAction, default=<span class="keyword">False</span>,</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>                help=<span class="stringliteral">&quot;Whether or not to use Geant4 directly, no Pythia8 (--no-G4only or --G4only). Default set to False.&quot;</span>)</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>ap.add_argument(<span class="stringliteral">&#39;-P&#39;</span>, <span class="stringliteral">&#39;--pythiaDecay&#39;</span>, action=argparse.BooleanOptionalAction, default=<span class="keyword">False</span>,</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>                help=<span class="stringliteral">&quot;Whether or not to use Pythia8 for decays (--no-PythiaDecay or --PythiaDecay). Default set to False.&quot;</span>)</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="comment"># ap.add_argument(&#39;-V&#39;, &#39;--EvtGen&#39;, action=&#39;store_true&#39;, dest=&#39;withEvtGen&#39;, default=withEvtGen, help=&quot;use EvtGen for decays&quot;)</span></div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>ap.add_argument(<span class="stringliteral">&#39;-t&#39;</span>, <span class="stringliteral">&#39;--tau-only&#39;</span>, action=argparse.BooleanOptionalAction, dest=<span class="stringliteral">&#39;tauOnly&#39;</span>, default=<span class="keyword">False</span>)</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>ap.add_argument(<span class="stringliteral">&#39;-J&#39;</span>, <span class="stringliteral">&#39;--Jpsi-mainly&#39;</span>, action=argparse.BooleanOptionalAction, dest=<span class="stringliteral">&#39;JpsiMainly&#39;</span>, default=<span class="keyword">False</span>)</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>ap.add_argument(<span class="stringliteral">&#39;-b&#39;</span>, <span class="stringliteral">&#39;--boostDiMuon&#39;</span>, type=float, default=1., help=<span class="stringliteral">&quot;boost Di-muon branching ratios&quot;</span>)</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>ap.add_argument(<span class="stringliteral">&#39;-X&#39;</span>, <span class="stringliteral">&#39;--boostFactor&#39;</span>, type=float, default=1., help=<span class="stringliteral">&quot;boost Di-muon prod cross sections&quot;</span>)</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#ad50662eb5b8a53f8ea74c76843ad04f6">   56</a></span>ap.add_argument(<span class="stringliteral">&#39;-C&#39;</span>, <span class="stringliteral">&#39;--charm&#39;</span>, action=argparse.BooleanOptionalAction, default=<span class="keyword">False</span>, help=<span class="stringliteral">&quot;generate charm decays&quot;</span>)</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>ap.add_argument(<span class="stringliteral">&#39;-B&#39;</span>, <span class="stringliteral">&#39;--beauty&#39;</span>, action=argparse.BooleanOptionalAction, default=<span class="keyword">False</span>, help=<span class="stringliteral">&quot;generate beauty decays&quot;</span>)</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>ap.add_argument(<span class="stringliteral">&#39;-M&#39;</span>, <span class="stringliteral">&#39;--storeOnlyMuons&#39;</span>, action=argparse.BooleanOptionalAction, default=<span class="keyword">False</span>, help=<span class="stringliteral">&quot;store only muons, ignore neutrinos&quot;</span>)</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>ap.add_argument(<span class="stringliteral">&#39;-N&#39;</span>, <span class="stringliteral">&#39;--skipNeutrinos&#39;</span>, action=argparse.BooleanOptionalAction, default=<span class="keyword">False</span>, help=<span class="stringliteral">&quot;skip neutrinos&quot;</span>)</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>ap.add_argument(<span class="stringliteral">&#39;-D&#39;</span>, <span class="stringliteral">&#39;--4darkPhoton&#39;</span>, action=argparse.BooleanOptionalAction, dest=<span class="stringliteral">&#39;FourDP&#39;</span>, default=<span class="keyword">False</span>, help=<span class="stringliteral">&quot;enable ntuple production&quot;</span>)</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="comment"># for charm production</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>ap.add_argument(<span class="stringliteral">&#39;-cc&#39;</span>, <span class="stringliteral">&#39;--chicc&#39;</span>, default=1.7e-3, help=<span class="stringliteral">&quot;ccbar over mbias cross section&quot;</span>)</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>ap.add_argument(<span class="stringliteral">&#39;-bb&#39;</span>, <span class="stringliteral">&#39;--chibb&#39;</span>, default=1.6e-7, help=<span class="stringliteral">&quot;bbbar over mbias cross section&quot;</span>)</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a6ee5460622bfbd0167ba6694bfc18f7e">   64</a></span>ap.add_argument(<span class="stringliteral">&#39;-p&#39;</span>, <span class="stringliteral">&#39;--pot&#39;</span>, dest=<span class="stringliteral">&#39;npot&#39;</span>, default=5E13, help=<span class="stringliteral">&quot;number of protons on target per spill to normalize on&quot;</span>)</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>ap.add_argument(<span class="stringliteral">&#39;-S&#39;</span>, <span class="stringliteral">&#39;--nStart&#39;</span>, type=int, help=<span class="stringliteral">&quot;first event of input file to start&quot;</span>, dest=<span class="stringliteral">&#39;nStart&#39;</span>, default=0)</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#aff2f6c052d8e7f65a00570cbf5be9305">   66</a></span>ap.add_argument(<span class="stringliteral">&#39;-I&#39;</span>, <span class="stringliteral">&#39;--InputFile&#39;</span>, type=str, dest=<span class="stringliteral">&#39;charmInputFile&#39;</span>, default=ROOT.gSystem.Getenv(<span class="stringliteral">&quot;EOSSHIP&quot;</span>)+<span class="stringliteral">&quot;/eos/experiment/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-76Mpot_1.root&quot;</span>, help=<span class="stringliteral">&quot;input file for charm/beauty decays&quot;</span>)</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>ap.add_argument(<span class="stringliteral">&#39;-o&#39;</span>, <span class="stringliteral">&#39;--output&#39;</span>, type=str, help=<span class="stringliteral">&quot;output directory&quot;</span>, dest=<span class="stringliteral">&#39;work_dir&#39;</span>, default=<span class="keywordtype">None</span>)</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>ap.add_argument(<span class="stringliteral">&#39;-rs&#39;</span>, <span class="stringliteral">&#39;--seed&#39;</span>, type=int, help=<span class="stringliteral">&quot;random seed; default value is 0, see TRrandom::SetSeed documentation&quot;</span>, default=0)</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#abd658b1a487f82668f5db9fc802218b1">   69</a></span>ap.add_argument(<span class="stringliteral">&#39;--DecayVolumeMedium&#39;</span>, help=<span class="stringliteral">&#39;Set Decay Volume Medium. Choices are helium (default) or vacuums.&#39;</span>, default=<span class="stringliteral">&#39;helium&#39;</span>, choices=[<span class="stringliteral">&#39;helium&#39;</span>, <span class="stringliteral">&#39;vacuums&#39;</span>])</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>ap.add_argument(<span class="stringliteral">&#39;--shieldName&#39;</span>, help=<span class="stringliteral">&#39;Name of the shield in the database. New_HA_Design or warm_opt.&#39;</span>, default=<span class="stringliteral">&#39;New_HA_Design&#39;</span>, choices=[<span class="stringliteral">&#39;New_HA_Design&#39;</span>, <span class="stringliteral">&#39;warm_opt&#39;</span>])</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>ap.add_argument(<span class="stringliteral">&#39;--AddMuonShield&#39;</span>, help=<span class="stringliteral">&#39;Whether or not to add the muon shield. Default set to False.&#39;</span>, default=<span class="keyword">False</span>, action=argparse.BooleanOptionalAction)</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>ap.add_argument(<span class="stringliteral">&#39;--AddMuonShieldField&#39;</span>, help=<span class="stringliteral">&#39;Whether or not to add the muon shield magnetic field. Default set to False.&#39;</span>, default=<span class="keyword">False</span>, action=argparse.BooleanOptionalAction)</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>ap.add_argument(<span class="stringliteral">&#39;--AddHadronAbsorberOnly&#39;</span>, help=<span class="stringliteral">&#39;Whether to only add the hadron absorber part of the muon shield. Default set to False.&#39;</span>, default=<span class="keyword">True</span>, action=argparse.BooleanOptionalAction)</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>ap.add_argument(<span class="stringliteral">&#39;--TARGET_YAML&#39;</span>, dest=<span class="stringliteral">&#39;TARGET_YAML&#39;</span>, help=<span class="stringliteral">&#39;File for target configuration&#39;</span>, default=os.path.expandvars(<span class="stringliteral">&#39;$FAIRSHIP/geometry/target_config_Jun25.yaml&#39;</span>))</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a662a9a9869bd1c3d220c638d0a0eb271">   77</a></span>args = ap.parse_args()</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span><span class="keywordflow">if</span> args.debug:</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    logger.setLevel(logging.DEBUG)</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span><span class="keywordflow">if</span> args.G4only:</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#ac90e8784f1df97ed6d22cbfb15202420">   83</a></span>    args.charm = <span class="keyword">False</span></div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a0c85c49a7d2a826a1546503659f48708">   84</a></span>    args.beauty = <span class="keyword">False</span></div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#afb952bca5dc9fe65f9648554f8737215">   85</a></span>    withEvtGen = <span class="keyword">False</span></div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#ac032ee804f477784e61c14479b39ee57">   86</a></span>    args.pythiaDecay = <span class="keyword">False</span></div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span><span class="keywordflow">elif</span> args.pythiaDecay:</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    withEvtGen = <span class="keyword">False</span></div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    logger.info(<span class="stringliteral">&quot;use Pythia8 as primary decayer&quot;</span>)</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span><span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    withEvtGen = <span class="keyword">True</span></div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    logger.info(<span class="stringliteral">&quot;use EvtGen as primary decayer&quot;</span>)</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span><span class="comment"># withEvtGen = args.withEvtGen</span></div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span><span class="keywordflow">if</span> args.charm <span class="keywordflow">and</span> args.beauty:</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    logger.warn(<span class="stringliteral">&quot;charm and beauty decays are set! Beauty gets priority&quot;</span>)</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    args.charm = <span class="keyword">False</span></div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#accca7dd8bbe46e322f0d0d370d827f63">   97</a></span>charmInputFile = args.charmInputFile</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span> </div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span><span class="keywordflow">if</span> args.work_dir <span class="keywordflow">is</span> <span class="keywordtype">None</span>:</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#ae13a0ef257f9f8bc0985fd40a8b0bf79">  100</a></span>    <span class="keywordflow">if</span> args.charm: args.work_dir = <a class="code hl_function" href="namespacerun__fixedTarget.html#adfab540557e98157435b5bf6dd57d3fd">get_work_dir</a>(args.runnr, <span class="stringliteral">&quot;charm&quot;</span>)</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    <span class="keywordflow">if</span> args.beauty: args.work_dir = <a class="code hl_function" href="namespacerun__fixedTarget.html#adfab540557e98157435b5bf6dd57d3fd">get_work_dir</a>(args.runnr, <span class="stringliteral">&quot;beauty&quot;</span>)</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    <span class="keywordflow">else</span>: args.work_dir = <a class="code hl_function" href="namespacerun__fixedTarget.html#adfab540557e98157435b5bf6dd57d3fd">get_work_dir</a>(args.runnr)</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span> </div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>logger.debug(<span class="stringliteral">&quot;work_dir: %s&quot;</span> % args.work_dir)</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>logger.debug(<span class="stringliteral">&quot;command line arguments: %s&quot;</span>, args)</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span><span class="keywordflow">if</span> os.path.exists(args.work_dir):</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    logger.warn(<span class="stringliteral">&quot;output directory &#39;%s&#39; already exists.&quot;</span> % args.work_dir)</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    <span class="keywordflow">if</span> args.force:</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>        logger.warn(<span class="stringliteral">&quot;...cleaning&quot;</span>)</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>        <span class="keywordflow">for</span> root, dirs, files <span class="keywordflow">in</span> os.walk(args.work_dir):</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>            <span class="keywordflow">for</span> f <span class="keywordflow">in</span> files:</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>                os.unlink(os.path.join(root, f))</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>            <span class="keywordflow">for</span> d <span class="keywordflow">in</span> dirs:</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>                shutil.rmtree(os.path.join(root, d))</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>        logger.warn(<span class="stringliteral">&quot;...use &#39;-f&#39; option to overwrite it&quot;</span>)</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span><span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    os.makedirs(args.work_dir)</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span> </div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>os.chdir(args.work_dir)</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span><span class="comment"># -------------------------------------------------------------------</span></div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>ROOT.gRandom.SetSeed(args.seed)  <span class="comment"># this should be propagated via ROOT to Pythia8 and Geant4VMC</span></div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span><a class="code hl_function" href="namespaceshipRoot__conf.html#a4bb207e902847385c1369c120d9063ec">shipRoot_conf.configure</a>()      <span class="comment"># load basic libraries, prepare atexit for python</span></div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a6da492a6b2ce007f57e5a1b618fb40e2">  124</a></span>ship_geo_kwargs = {<span class="stringliteral">&#39;Yheight&#39;</span>: dy,</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>                   <span class="stringliteral">&#39;DecayVolumeMedium&#39;</span>: args.DecayVolumeMedium, <span class="stringliteral">&#39;shieldName&#39;</span>: args.shieldName,</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>                   <span class="stringliteral">&#39;TARGET_YAML&#39;</span>: args.TARGET_YAML</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>                   }</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span><span class="keywordflow">if</span> args.AddMuonShield <span class="keywordflow">or</span> args.AddHadronAbsorberOnly:</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>    ship_geo_kwargs[<span class="stringliteral">&#39;muShieldDesign&#39;</span>] = ds</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a3e3246d1e1694b94a0e038535d2baed0">  130</a></span>ship_geo = ConfigRegistry.loadpy(<span class="stringliteral">&quot;$FAIRSHIP/geometry/geometry_config.py&quot;</span>, **ship_geo_kwargs)</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span> </div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#aa18a0e3d9b0eb89508fce88b6a8603d5">  132</a></span>txt = <span class="stringliteral">&#39;pythia8_Geant4_&#39;</span></div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span><span class="keywordflow">if</span> withEvtGen: txt = <span class="stringliteral">&#39;pythia8_evtgen_Geant4_&#39;</span></div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#ae509765a529dfe63f10403bfbb4e6c23">  134</a></span>outFile = f<span class="stringliteral">&#39;{outputDir}/{txt}{args.runnr}_{args.ecut}.root&#39;</span></div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a2e15b921db00faa3c382a285ac4d1484">  135</a></span>parFile = f<span class="stringliteral">&#39;{outputDir}/ship.params.{txt}{args.runnr}_{args.ecut}.root&#39;</span></div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span> </div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span><span class="comment"># -----Timer--------------------------------------------------------</span></div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a6170ac8e4c59892f1eea779928b8cfac">  138</a></span>timer = ROOT.TStopwatch()</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>timer.Start()</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span> </div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span><span class="comment"># -----Create simulation run----------------------------------------</span></div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a479c173f3a61466183dd11ccbd0255cd">  142</a></span>run = ROOT.FairRunSim()</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>run.SetName(mcEngine)  <span class="comment"># Transport engine</span></div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>run.SetOutputFile(outFile)  <span class="comment"># Output file</span></div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>run.SetUserConfig(<span class="stringliteral">&quot;g4Config.C&quot;</span>) <span class="comment"># user configuration file default g4Config.C</span></div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a3959a5a2f94ffc62e003bb18a59251ae">  146</a></span>rtdb = run.GetRuntimeDb()</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span> </div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span><span class="comment"># -----Materials----------------------------------------------</span></div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>run.SetMaterials(<span class="stringliteral">&quot;media.geo&quot;</span>)</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span><span class="comment"># -----Create geometry----------------------------------------------</span></div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a35a66fce1dfe0e1a63f1da4e1c02fc8c">  151</a></span>cave= ROOT.ShipCave(<span class="stringliteral">&quot;CAVE&quot;</span>)</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>cave.SetGeometryFileName(<span class="stringliteral">&quot;caveWithAir.geo&quot;</span>)</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span> </div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>run.AddModule(cave)</div>
 <div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span> </div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#aa18a0e3d9b0eb89508fce88b6a8603d5">  156</a></span>txt = <span class="stringliteral">&#39;pythia8_Geant4_&#39;</span></div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span><span class="keywordflow">if</span> withEvtGen: txt = <span class="stringliteral">&#39;pythia8_evtgen_Geant4_&#39;</span></div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#ae509765a529dfe63f10403bfbb4e6c23">  158</a></span>outFile = outputDir+<span class="stringliteral">&#39;/&#39;</span>+txt+str(runnr)+<span class="stringliteral">&#39;_&#39;</span>+str(ecut)+<span class="stringliteral">&#39;.root&#39;</span></div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a2e15b921db00faa3c382a285ac4d1484">  159</a></span>parFile = outputDir+<span class="stringliteral">&#39;/ship.params.&#39;</span>+txt+str(runnr)+<span class="stringliteral">&#39;_&#39;</span>+str(ecut)+<span class="stringliteral">&#39;.root&#39;</span></div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span> </div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span><span class="comment"># -----Timer--------------------------------------------------------</span></div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a6170ac8e4c59892f1eea779928b8cfac">  162</a></span>timer = ROOT.TStopwatch()</div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>timer.Start()</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a75f25953da0df2f57b5653ddfaebce97">  156</a></span>TargetStation = ROOT.ShipTargetStation(name=<span class="stringliteral">&quot;TargetStation&quot;</span>,</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>                                       tl=ship_geo.target.length,</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>                                       tz=ship_geo.target.z,</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>                                       tV=ship_geo.targetVersion,</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>                                       nS=ship_geo.target.nS)</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a045016c4a394a8cdd58a6cef4292de46">  161</a></span>TargetStation.SetLayerPosMat(d=ship_geo.target.xy, L=ship_geo.target.slices_length, G=ship_geo.target.slices_gap, M=ship_geo.target.slices_material)</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>run.AddModule(TargetStation)</div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span> </div>
 <div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span> </div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span><span class="comment"># -----Create simulation run----------------------------------------</span></div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a479c173f3a61466183dd11ccbd0255cd">  166</a></span>run = ROOT.FairRunSim()</div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>run.SetName(mcEngine)  <span class="comment"># Transport engine</span></div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>run.SetOutputFile(outFile)  <span class="comment"># Output file</span></div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>run.SetUserConfig(<span class="stringliteral">&quot;g4Config.C&quot;</span>) <span class="comment"># user configuration file default g4Config.C</span></div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a3959a5a2f94ffc62e003bb18a59251ae">  170</a></span>rtdb = run.GetRuntimeDb()</div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span> </div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span><span class="comment"># -----Materials----------------------------------------------</span></div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>run.SetMaterials(<span class="stringliteral">&quot;media.geo&quot;</span>)</div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span><span class="comment"># -----Create geometry----------------------------------------------</span></div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a35a66fce1dfe0e1a63f1da4e1c02fc8c">  175</a></span>cave= ROOT.ShipCave(<span class="stringliteral">&quot;CAVE&quot;</span>)</div>
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>cave.SetGeometryFileName(<span class="stringliteral">&quot;caveWithAir.geo&quot;</span>)</div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>run.AddModule(cave)</div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span> </div>
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a75f25953da0df2f57b5653ddfaebce97">  179</a></span>TargetStation = ROOT.ShipTargetStation(<span class="stringliteral">&quot;TargetStation&quot;</span>,</div>
-<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>                                       ship_geo.target.length,</div>
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>                                       ship_geo.hadronAbsorber.length,</div>
-<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>                                       ship_geo.target.z,</div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>                                       ship_geo.hadronAbsorber.z,</div>
-<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>                                       ship_geo.targetVersion,</div>
-<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>                                       ship_geo.target.nS)</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span><span class="keywordflow">if</span> args.AddMuonShield <span class="keywordflow">or</span> args.AddHadronAbsorberOnly:</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#af98c4aa8b7f1d06b5c50f7826bb9a98d">  166</a></span>    n_magnets = 7</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#acad6c0d1dfd24bba22f2eab2138afc96">  167</a></span>    n_params = 13</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> args.AddMuonShieldField:</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>        <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(n_magnets):</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>            ship_geo.muShield.params[n_magnets + i * n_params + 12] = 0  <span class="comment"># set B field to 0</span></div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>    <span class="keywordflow">if</span> args.AddHadronAbsorberOnly:</div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>        <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(1, n_magnets):</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>            ship_geo.muShield.params[n_magnets + i * n_params] = 0  <span class="comment"># set dXIn to 0</span></div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span> </div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a7517af6118571b0b397cab0a2007b1fa">  175</a></span>    MuonShield = ROOT.ShipMuonShield(in_params=list(ship_geo.muShield.params), z=ship_geo.muShield.z, WithConstShieldField=ship_geo.muShield.WithConstField,</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>                                     SC_key=ship_geo.SC_mag)</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>    <span class="comment"># MuonShield.SetSupports(False) # otherwise overlap with sensitive Plane</span></div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>    run.AddModule(MuonShield) <span class="comment"># needs to be added because of magn hadron shield.</span></div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a53b302f2c3f59692ab0a0eecce7a1829">  179</a></span>sensPlane = ROOT.exitHadronAbsorber()</div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>sensPlane.SetEnergyCut(args.ecut*u.GeV)</div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span><span class="keywordflow">if</span> args.storeOnlyMuons: sensPlane.SetOnlyMuons()</div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span><span class="keywordflow">if</span> args.skipNeutrinos: sensPlane.SkipNeutrinos()</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span><span class="keywordflow">if</span> args.FourDP: sensPlane.SetOpt4DP()  <span class="comment"># in case a ntuple should be filled with pi0,etas,omega</span></div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span><span class="comment"># sensPlane.SetZposition(0.0001*u.cm)  # if not using automatic positioning behind default magnetized hadron absorber</span></div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>run.AddModule(sensPlane)</div>
 <div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span> </div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>TargetStation.SetLayerPosMat(ship_geo.target.xy, ship_geo.target.slices_length, ship_geo.target.slices_gap, ship_geo.target.slices_material)</div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span> </div>
-<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>run.AddModule(TargetStation)</div>
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a7517af6118571b0b397cab0a2007b1fa">  190</a></span>MuonShield = ROOT.ShipMuonShield(<span class="stringliteral">&quot;MuonShield&quot;</span>,ship_geo.muShieldDesign,<span class="stringliteral">&quot;ShipMuonShield&quot;</span>,ship_geo.muShield.z,ship_geo.muShield.dZ0,ship_geo.muShield.dZ1,\</div>
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>               ship_geo.muShield.dZ2,ship_geo.muShield.dZ3,ship_geo.muShield.dZ4,ship_geo.muShield.dZ5,ship_geo.muShield.dZ6,\</div>
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>               ship_geo.muShield.dZ7,ship_geo.muShield.dZ8,ship_geo.muShield.dXgap,ship_geo.muShield.LE,ship_geo.Yheight*4./10.,0.)</div>
-<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>MuonShield.SetSupports(<span class="keyword">False</span>) <span class="comment"># otherwise overlap with sensitive Plane</span></div>
-<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>run.AddModule(MuonShield) <span class="comment"># needs to be added because of magn hadron shield.</span></div>
-<div class="line"><a id="l00195" name="l00195"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a53b302f2c3f59692ab0a0eecce7a1829">  195</a></span>sensPlane = ROOT.exitHadronAbsorber()</div>
-<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>sensPlane.SetEnergyCut(ecut*u.GeV)</div>
-<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span><span class="keywordflow">if</span> storeOnlyMuons: sensPlane.SetOnlyMuons()</div>
-<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span><span class="keywordflow">if</span> skipNeutrinos: sensPlane.SkipNeutrinos()</div>
-<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span><span class="keywordflow">if</span> FourDP: sensPlane.SetOpt4DP() <span class="comment"># in case a ntuple should be filled with pi0,etas,omega</span></div>
-<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span><span class="comment"># sensPlane.SetZposition(0.*u.cm) # if not using automatic positioning behind default magnetized hadron absorber</span></div>
-<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>run.AddModule(sensPlane)</div>
-<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span> </div>
-<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span><span class="comment"># -----Create PrimaryGenerator--------------------------------------</span></div>
-<div class="line"><a id="l00204" name="l00204"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#ad5019a2bfcd85504e1ed4b193811c920">  204</a></span>primGen = ROOT.FairPrimaryGenerator()</div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#ad5d197a44fb50031e902eba201329ecc">  205</a></span>P8gen = ROOT.FixedTargetGenerator()</div>
-<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>P8gen.SetTarget(<span class="stringliteral">&quot;/TargetArea_1&quot;</span>,0.,0.) <span class="comment"># will distribute PV inside target, beam offset x=y=0.</span></div>
-<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>P8gen.SetMom(400.*u.GeV)</div>
-<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>P8gen.SetEnergyCut(ecut*u.GeV)</div>
-<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>P8gen.SetDebug(Debug)</div>
-<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>P8gen.SetHeartBeat(100000)</div>
-<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span><span class="keywordflow">if</span> G4only: P8gen.SetG4only()</div>
-<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span><span class="keywordflow">if</span> JpsiMainly: P8gen.SetJpsiMainly()</div>
-<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span><span class="keywordflow">if</span> tauOnly:    P8gen.SetTauOnly()</div>
-<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span><span class="keywordflow">if</span> withEvtGen: P8gen.WithEvtGen()</div>
-<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span><span class="keywordflow">if</span> boostDiMuon &gt; 1:</div>
-<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span> P8gen.SetBoost(boostDiMuon) <span class="comment"># will increase BR for rare eta,omega,rho ... mesons decaying to 2 muons in Pythia8</span></div>
-<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>                            <span class="comment"># and later copied to Geant4</span></div>
-<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>P8gen.SetSeed(args.seed)</div>
-<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span><span class="comment"># for charm/beauty</span></div>
-<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span><span class="comment">#        print &#39; for experts: p pot= number of protons on target per spill to normalize on&#39;</span></div>
-<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span><span class="comment">#        print &#39;            : c chicc= ccbar over mbias cross section&#39;</span></div>
-<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span><span class="keywordflow">if</span> charm <span class="keywordflow">or</span> beauty:</div>
-<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span> print(<span class="stringliteral">&quot;--- process heavy flavours ---&quot;</span>)</div>
-<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span> P8gen.InitForCharmOrBeauty(charmInputFile,nev,npot,nStart)</div>
-<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>primGen.AddGenerator(P8gen)</div>
-<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span><span class="comment">#</span></div>
-<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>run.SetGenerator(primGen)</div>
-<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span><span class="comment"># -----Initialize simulation run------------------------------------</span></div>
-<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>run.Init()</div>
-<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span> </div>
-<div class="line"><a id="l00231" name="l00231"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">  231</a></span>gMC = ROOT.TVirtualMC.GetMC()</div>
-<div class="line"><a id="l00232" name="l00232"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a8b3958f41a9355cc2ab1476704f2a57a">  232</a></span>fStack = gMC.GetStack()</div>
-<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>fStack.SetMinPoints(1)</div>
-<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>fStack.SetEnergyCut(-1.)</div>
-<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span><span class="comment">#</span></div>
-<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span><span class="keyword">import</span> AddDiMuonDecayChannelsToG4</div>
-<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span><a class="code hl_function" href="namespaceAddDiMuonDecayChannelsToG4.html#a3fdf0d174d3eccaaa0e4daa18e8c8119">AddDiMuonDecayChannelsToG4.Initialize</a>(P8gen.GetPythia())</div>
-<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span> </div>
-<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span><span class="comment"># boost gamma2muon conversion</span></div>
-<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span><span class="keywordflow">if</span> boostFactor &gt; 1:</div>
-<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span> ROOT.gROOT.ProcessLine(<span class="stringliteral">&#39;#include &quot;Geant4/G4ProcessTable.hh&quot;&#39;</span>)</div>
-<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span> ROOT.gROOT.ProcessLine(<span class="stringliteral">&#39;#include &quot;Geant4/G4AnnihiToMuPair.hh&quot;&#39;</span>)</div>
-<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span> ROOT.gROOT.ProcessLine(<span class="stringliteral">&#39;#include &quot;Geant4/G4GammaConversionToMuons.hh&quot;&#39;</span>)</div>
-<div class="line"><a id="l00244" name="l00244"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a3f5a459d05255f9750f0c2702c91d797">  244</a></span> gProcessTable = ROOT.G4ProcessTable.GetProcessTable()</div>
-<div class="line"><a id="l00245" name="l00245"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a3ba880960fbeb4e7f53ff21552681253">  245</a></span> procAnnihil = gProcessTable.FindProcess(ROOT.G4String(<span class="stringliteral">&#39;AnnihiToMuPair&#39;</span>),ROOT.G4String(<span class="stringliteral">&#39;e+&#39;</span>))</div>
-<div class="line"><a id="l00246" name="l00246"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#ad6ca6f36ed32945c8895a26fc6d8853b">  246</a></span> procGMuPair = gProcessTable.FindProcess(ROOT.G4String(<span class="stringliteral">&#39;GammaToMuPair&#39;</span>),ROOT.G4String(<span class="stringliteral">&#39;gamma&#39;</span>))</div>
-<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span> procGMuPair.SetCrossSecFactor(boostFactor)</div>
-<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span> procAnnihil.SetCrossSecFactor(boostFactor)</div>
-<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span> </div>
-<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span><span class="comment"># -----Start run----------------------------------------------------</span></div>
-<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>run.Run(nev)</div>
-<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span> </div>
-<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span><span class="comment"># -----Finish-------------------------------------------------------</span></div>
-<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>timer.Stop()</div>
-<div class="line"><a id="l00255" name="l00255"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a377f1147cada3a57c93399ababf6e9bb">  255</a></span>rtime = timer.RealTime()</div>
-<div class="line"><a id="l00256" name="l00256"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a8dcf429ee35cfb45c4d1bb5bbf5d74fb">  256</a></span>ctime = timer.CpuTime()</div>
-<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>print(<span class="stringliteral">&#39; &#39;</span>)</div>
-<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>print(<span class="stringliteral">&quot;Macro finished successfully.&quot;</span>)</div>
-<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>print(<span class="stringliteral">&quot;Output file is &quot;</span>,  outFile)</div>
-<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>print(<span class="stringliteral">&quot;Real time &quot;</span>,rtime, <span class="stringliteral">&quot; s, CPU time &quot;</span>,ctime,<span class="stringliteral">&quot;s&quot;</span>)</div>
-<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span><span class="comment"># ---post processing--- remove empty events --- save histograms</span></div>
-<div class="line"><a id="l00262" name="l00262"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a4bae912e73b74a6d75fa0ff9f485e1c1">  262</a></span>tmpFile = outFile+<span class="stringliteral">&quot;tmp&quot;</span></div>
-<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span><span class="keywordflow">if</span> ROOT.gROOT.GetListOfFiles().GetEntries()&gt;0:</div>
-<div class="line"><a id="l00264" name="l00264"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a44a2f398422c952305b4ee8df6ee9da0">  264</a></span> fin   = ROOT.gROOT.GetListOfFiles()[0]</div>
-<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span><span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span> fin = ROOT.TFile.Open(outFile)</div>
-<div class="line"><a id="l00267" name="l00267"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#abb198cfaf268451c0899cebf70da5dc4">  267</a></span>fHeader = fin.FileHeader</div>
-<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>fHeader.SetRunId(runnr)</div>
-<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span><span class="keywordflow">if</span> charm <span class="keywordflow">or</span> beauty:</div>
-<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span><span class="comment"># normalization for charm</span></div>
-<div class="line"><a id="l00271" name="l00271"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a1f8bdd5b7146587c84fcf162730179a4">  271</a></span> poteq = P8gen.GetPotForCharm()</div>
-<div class="line"><a id="l00272" name="l00272"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a0e40cbfde3e8a01d177fa46afeeaf5ca">  272</a></span> info = <span class="stringliteral">&quot;POT equivalent = %7.3G&quot;</span>%(poteq)</div>
-<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span><span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span> info = <span class="stringliteral">&quot;POT = &quot;</span>+str(nev)</div>
-<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span> </div>
-<div class="line"><a id="l00276" name="l00276"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a62a9948af399f795f01daab99f043429">  276</a></span>conditions = <span class="stringliteral">&quot; with ecut=&quot;</span>+str(ecut)</div>
-<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span><span class="keywordflow">if</span> JpsiMainly: conditions+=<span class="stringliteral">&quot; J&quot;</span></div>
-<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span><span class="keywordflow">if</span> tauOnly:    conditions+=<span class="stringliteral">&quot; T&quot;</span></div>
-<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span><span class="keywordflow">if</span> withEvtGen: conditions+=<span class="stringliteral">&quot; V&quot;</span></div>
-<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span><span class="keywordflow">if</span> boostDiMuon &gt; 1: conditions+=<span class="stringliteral">&quot; diMu&quot;</span>+str(boostDiMuon)</div>
-<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span><span class="keywordflow">if</span> boostFactor &gt; 1: conditions+=<span class="stringliteral">&quot; X&quot;</span>+str(boostFactor)</div>
-<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span> </div>
-<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>info += conditions</div>
-<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>fHeader.SetTitle(info)</div>
-<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>print(<span class="stringliteral">&quot;Data generated &quot;</span>, fHeader.GetTitle())</div>
-<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span> </div>
-<div class="line"><a id="l00287" name="l00287"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a3824536a9c3d7dd8855280526d9b7d95">  287</a></span>nt = fin.Get(<span class="stringliteral">&#39;4DP&#39;</span>)</div>
-<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span><span class="keywordflow">if</span> nt:</div>
-<div class="line"><a id="l00289" name="l00289"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a88c2881ae5560e00e9d2f1a3662f992f">  289</a></span> tf = ROOT.TFile(<span class="stringliteral">&#39;FourDP.root&#39;</span>,<span class="stringliteral">&#39;recreate&#39;</span>)</div>
-<div class="line"><a id="l00290" name="l00290"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a8c4fa759e68132c5a6896a17a4990205">  290</a></span> tnt = nt.CloneTree(0)</div>
-<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span> <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(nt.GetEntries()):</div>
-<div class="line"><a id="l00292" name="l00292"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a0c6e1d5540b535413850b214f3d1fd40">  292</a></span>  rc = nt.GetEvent(i)</div>
-<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>  rc = tnt.Fill(nt.id,nt.px,nt.py,nt.pz,nt.x,nt.y,nt.z)</div>
-<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span> tnt.Write()</div>
-<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span> tf.Close()</div>
-<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span> </div>
-<div class="line"><a id="l00297" name="l00297"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a5745239ac3de03e89b0deb73f59bb52f">  297</a></span>t = fin.Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
-<div class="line"><a id="l00298" name="l00298"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a6376fe83a15eb0340f4c7576008e11da">  298</a></span>fout  = ROOT.TFile(tmpFile,<span class="stringliteral">&#39;recreate&#39;</span> )</div>
-<div class="line"><a id="l00299" name="l00299"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a121ee77eefea42758a993374b2aa16ad">  299</a></span>sTree = t.CloneTree(0)</div>
-<div class="line"><a id="l00300" name="l00300"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a60dc506ed774436b3860cfd1925230e3">  300</a></span>nEvents = 0</div>
-<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span><span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(t.GetEntries()):</div>
-<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>     rc = t.GetEvent(n)</div>
-<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>     <span class="keywordflow">if</span> t.vetoPoint.GetEntries()&gt;0:</div>
-<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>          rc = sTree.Fill()</div>
-<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>          nEvents+=1</div>
-<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>     <span class="comment">#t.Clear()</span></div>
-<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>fout.cd()</div>
-<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span><span class="keywordflow">for</span> k <span class="keywordflow">in</span> fin.GetListOfKeys():</div>
-<div class="line"><a id="l00309" name="l00309"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a68f8e54ebe34ed88a1aff4505c32be7c">  309</a></span> x = fin.Get(k.GetName())</div>
-<div class="line"><a id="l00310" name="l00310"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a1adb7beab2354c8d338e32e6cf8daa47">  310</a></span> className = x.Class().GetName()</div>
-<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span> <span class="keywordflow">if</span> className.find(<span class="stringliteral">&#39;TTree&#39;</span>)&lt;0 <span class="keywordflow">and</span> className.find(<span class="stringliteral">&#39;TNtuple&#39;</span>)&lt;0:</div>
-<div class="line"><a id="l00312" name="l00312"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#aac5dc4400b7f9824025dca36dcd50280">  312</a></span>   xcopy = x.Clone()</div>
-<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>   rc = xcopy.Write()</div>
-<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>sTree.AutoSave()</div>
-<div class="line"><a id="l00315" name="l00315"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a19a471f3f243f19b46791b725612a06d">  315</a></span>ff   = fin.FileHeader.Clone(fout.GetName())</div>
-<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>fout.cd()</div>
-<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>ff.Write(<span class="stringliteral">&quot;FileHeader&quot;</span>, ROOT.TObject.kSingleKey)</div>
-<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>sTree.Write()</div>
-<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span>fout.Close()</div>
-<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span> </div>
-<div class="line"><a id="l00321" name="l00321"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a7d39a894ee266a87d7f5c19418538fb6">  321</a></span>rc1 = os.system(<span class="stringliteral">&quot;rm  &quot;</span>+outFile)</div>
-<div class="line"><a id="l00322" name="l00322"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#ae9b55f55d3e626839b0c77e3491c7023">  322</a></span>rc2 = os.system(<span class="stringliteral">&quot;mv &quot;</span>+tmpFile+<span class="stringliteral">&quot; &quot;</span>+outFile)</div>
-<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>print(<span class="stringliteral">&quot;removed out file, moved tmpFile to out file&quot;</span>,rc1,rc2)</div>
-<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>fin.SetWritable(<span class="keyword">False</span>) <span class="comment"># bpyass flush error</span></div>
-<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span> </div>
-<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>print(<span class="stringliteral">&quot;Number of events produced with activity after hadron absorber:&quot;</span>,nEvents)</div>
-<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span> </div>
-<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span><span class="keywordflow">if</span> checkOverlap:</div>
-<div class="line"><a id="l00329" name="l00329"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#af57cff9c8bfaf1a590e1aa0e8c498c28">  329</a></span> sGeo = ROOT.gGeoManager</div>
-<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span> sGeo.CheckOverlaps()</div>
-<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span> sGeo.PrintOverlaps()</div>
-<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span> run.CreateGeometryFile(<span class="stringliteral">&quot;%s/geofile_full.root&quot;</span> % (outputDir))</div>
-<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span> <span class="keyword">import</span> saveBasicParameters</div>
-<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span> <a class="code hl_function" href="namespacesaveBasicParameters.html#ae19428dcf1f80c5affea43fc209bf908">saveBasicParameters.execute</a>(<span class="stringliteral">&quot;%s/geofile_full.root&quot;</span> % (outputDir),ship_geo)</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span><span class="comment"># -----Create PrimaryGenerator--------------------------------------</span></div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#ad5019a2bfcd85504e1ed4b193811c920">  188</a></span>primGen = ROOT.FairPrimaryGenerator()</div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#ad5d197a44fb50031e902eba201329ecc">  189</a></span>P8gen = ROOT.FixedTargetGenerator()</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>P8gen.SetTarget(<span class="stringliteral">&quot;/TargetArea_1&quot;</span>, 0., 0.)  <span class="comment"># will distribute PV inside target, beam offset x=y=0.</span></div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>P8gen.SetMom(400.*u.GeV)</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>P8gen.SetEnergyCut(args.ecut*u.GeV)</div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>P8gen.SetDebug(args.debug)</div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>P8gen.SetHeartBeat(100000)</div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span><span class="keywordflow">if</span> args.G4only: P8gen.SetG4only()</div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span><span class="keywordflow">if</span> args.JpsiMainly: P8gen.SetJpsiMainly()</div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span><span class="keywordflow">if</span> args.tauOnly:    P8gen.SetTauOnly()</div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span><span class="keywordflow">if</span> withEvtGen: P8gen.WithEvtGen()</div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span><span class="keywordflow">if</span> args.boostDiMuon &gt; 1:</div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>    P8gen.SetBoost(args.boostDiMuon)  <span class="comment"># will increase BR for rare eta,omega,rho ... mesons decaying to 2 muons in Pythia8</span></div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>                                 <span class="comment"># and later copied to Geant4</span></div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>P8gen.SetSeed(args.seed)</div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span><span class="comment"># for charm/beauty</span></div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span><span class="comment">#        print &#39; for experts: p pot= number of protons on target per spill to normalize on&#39;</span></div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span><span class="comment">#        print &#39;            : c chicc= ccbar over mbias cross section&#39;</span></div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span><span class="keywordflow">if</span> args.charm <span class="keywordflow">or</span> args.beauty:</div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>    print(<span class="stringliteral">&quot;--- process heavy flavours ---&quot;</span>)</div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>    P8gen.InitForCharmOrBeauty(charmInputFile, args.nev, npot, args.nStart)</div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>primGen.AddGenerator(P8gen)</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span><span class="comment">#</span></div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>run.SetGenerator(primGen)</div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span><span class="comment"># -----Initialize simulation run------------------------------------</span></div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>run.Init()</div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span> </div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a8849978ebdda515280cb5b90b4d173a5">  215</a></span>gMC = ROOT.TVirtualMC.GetMC()</div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a8b3958f41a9355cc2ab1476704f2a57a">  216</a></span>fStack = gMC.GetStack()</div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>fStack.SetMinPoints(1)</div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>fStack.SetEnergyCut(-1.)</div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span><span class="comment">#</span></div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span><span class="keyword">import</span> AddDiMuonDecayChannelsToG4</div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span><a class="code hl_function" href="namespaceAddDiMuonDecayChannelsToG4.html#a3fdf0d174d3eccaaa0e4daa18e8c8119">AddDiMuonDecayChannelsToG4.Initialize</a>(P8gen.GetPythia())</div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span> </div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span><span class="comment"># boost gamma2muon conversion</span></div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span><span class="keywordflow">if</span> args.boostFactor &gt; 1:</div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>    ROOT.gROOT.ProcessLine(<span class="stringliteral">&#39;#include &quot;Geant4/G4ProcessTable.hh&quot;&#39;</span>)</div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>    ROOT.gROOT.ProcessLine(<span class="stringliteral">&#39;#include &quot;Geant4/G4AnnihiToMuPair.hh&quot;&#39;</span>)</div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>    ROOT.gROOT.ProcessLine(<span class="stringliteral">&#39;#include &quot;Geant4/G4GammaConversionToMuons.hh&quot;&#39;</span>)</div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a3f5a459d05255f9750f0c2702c91d797">  228</a></span>    gProcessTable = ROOT.G4ProcessTable.GetProcessTable()</div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a3ba880960fbeb4e7f53ff21552681253">  229</a></span>    procAnnihil = gProcessTable.FindProcess(ROOT.G4String(<span class="stringliteral">&#39;AnnihiToMuPair&#39;</span>), ROOT.G4String(<span class="stringliteral">&#39;e+&#39;</span>))</div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#ad6ca6f36ed32945c8895a26fc6d8853b">  230</a></span>    procGMuPair = gProcessTable.FindProcess(ROOT.G4String(<span class="stringliteral">&#39;GammaToMuPair&#39;</span>), ROOT.G4String(<span class="stringliteral">&#39;gamma&#39;</span>))</div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>    procGMuPair.SetCrossSecFactor(args.boostFactor)</div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>    procAnnihil.SetCrossSecFactor(args.boostFactor)</div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span> </div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span><span class="comment"># -----Start run----------------------------------------------------</span></div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>run.Run(args.nev)</div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span> </div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span><span class="comment"># -----Finish-------------------------------------------------------</span></div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>timer.Stop()</div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a377f1147cada3a57c93399ababf6e9bb">  239</a></span>rtime = timer.RealTime()</div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a8dcf429ee35cfb45c4d1bb5bbf5d74fb">  240</a></span>ctime = timer.CpuTime()</div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>print(<span class="stringliteral">&#39; &#39;</span>)</div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>print(<span class="stringliteral">&quot;Macro finished successfully.&quot;</span>)</div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>print(f<span class="stringliteral">&quot;Output file is {outFile}&quot;</span>)</div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>print(f<span class="stringliteral">&quot;Real time {rtime} s, CPU time {ctime} s&quot;</span>)</div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span><span class="comment"># ---post processing--- remove empty events --- save histograms</span></div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a4bae912e73b74a6d75fa0ff9f485e1c1">  246</a></span>tmpFile = outFile + <span class="stringliteral">&quot;tmp&quot;</span></div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span><span class="keywordflow">if</span> ROOT.gROOT.GetListOfFiles().GetEntries() &gt; 0:</div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a44a2f398422c952305b4ee8df6ee9da0">  248</a></span>    fin = ROOT.gROOT.GetListOfFiles()[0]</div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span><span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>    fin = ROOT.TFile.Open(outFile)</div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#abb198cfaf268451c0899cebf70da5dc4">  251</a></span>fHeader = fin[<span class="stringliteral">&quot;FileHeader&quot;</span>]</div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>fHeader.SetRunId(args.runnr)</div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span><span class="keywordflow">if</span> args.charm <span class="keywordflow">or</span> args.beauty:</div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>    <span class="comment"># normalization for charm</span></div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a1f8bdd5b7146587c84fcf162730179a4">  255</a></span>    poteq = P8gen.GetPotForCharm()</div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a0e40cbfde3e8a01d177fa46afeeaf5ca">  256</a></span>    info = <span class="stringliteral">&quot;POT equivalent = %7.3G&quot;</span>%(poteq)</div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span><span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>    info = f<span class="stringliteral">&quot;POT = {args.nev}&quot;</span></div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span> </div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a62a9948af399f795f01daab99f043429">  260</a></span>conditions = <span class="stringliteral">&quot; with ecut=&quot;</span> + <a class="code hl_variable" href="namespacerun__fixedTarget.html#aff2f6c052d8e7f65a00570cbf5be9305">str</a>(args.ecut)</div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span><span class="keywordflow">if</span> args.JpsiMainly: conditions += <span class="stringliteral">&quot; J&quot;</span></div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span><span class="keywordflow">if</span> args.tauOnly:    conditions += <span class="stringliteral">&quot; T&quot;</span></div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span><span class="keywordflow">if</span> withEvtGen: conditions += <span class="stringliteral">&quot; V&quot;</span></div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span><span class="keywordflow">if</span> args.boostDiMuon &gt; 1: conditions += <span class="stringliteral">&quot; diMu&quot;</span> + <a class="code hl_variable" href="namespacerun__fixedTarget.html#aff2f6c052d8e7f65a00570cbf5be9305">str</a>(args.boostDiMuon)</div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span><span class="keywordflow">if</span> args.boostFactor &gt; 1: conditions += <span class="stringliteral">&quot; X&quot;</span> + <a class="code hl_variable" href="namespacerun__fixedTarget.html#aff2f6c052d8e7f65a00570cbf5be9305">str</a>(args.boostFactor)</div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span> </div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>info += conditions</div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>fHeader.SetTitle(info)</div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>print(f<span class="stringliteral">&quot;Data generated {fHeader.GetTitle()}&quot;</span>)</div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span> </div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a3824536a9c3d7dd8855280526d9b7d95">  271</a></span>nt = fin.Get(<span class="stringliteral">&quot;4DP&quot;</span>)</div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span><span class="keywordflow">if</span> nt:</div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>    nt = fin[<span class="stringliteral">&quot;4DP&quot;</span>]</div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a88c2881ae5560e00e9d2f1a3662f992f">  274</a></span>    tf = ROOT.TFile(<span class="stringliteral">&#39;FourDP.root&#39;</span>,<span class="stringliteral">&#39;recreate&#39;</span>)</div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a8c4fa759e68132c5a6896a17a4990205">  275</a></span>    tnt = nt.CloneTree(0)</div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>    <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(nt.GetEntries()):</div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a0c6e1d5540b535413850b214f3d1fd40">  277</a></span>        rc = nt.GetEvent(i)</div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>        rc = tnt.Fill(nt.id, nt.px, nt.py, nt.pz, nt.x, nt.y, nt.z)</div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>    tnt.Write()</div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>    tf.Close()</div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span> </div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a5745239ac3de03e89b0deb73f59bb52f">  282</a></span>t = fin[<span class="stringliteral">&quot;cbmsim&quot;</span>]</div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a6376fe83a15eb0340f4c7576008e11da">  283</a></span>fout  = ROOT.TFile(tmpFile, <span class="stringliteral">&#39;recreate&#39;</span>)</div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a121ee77eefea42758a993374b2aa16ad">  284</a></span>sTree = t.CloneTree(0)</div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a60dc506ed774436b3860cfd1925230e3">  285</a></span>nEvents = 0</div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span><span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(t.GetEntries()):</div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>    rc = t.GetEvent(n)</div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>    <span class="keywordflow">if</span> t.vetoPoint.GetEntries() &gt; 0:</div>
+<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>        rc = sTree.Fill()</div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>        nEvents += 1</div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>    <span class="comment">#t.Clear()</span></div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>fout.cd()</div>
+<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span><span class="keywordflow">for</span> k <span class="keywordflow">in</span> fin.GetListOfKeys():</div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a68f8e54ebe34ed88a1aff4505c32be7c">  294</a></span>    x = fin.Get(k.GetName())</div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a1adb7beab2354c8d338e32e6cf8daa47">  295</a></span>    className = x.Class().GetName()</div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>    <span class="keywordflow">if</span> className.find(<span class="stringliteral">&#39;TTree&#39;</span>) &lt; 0 <span class="keywordflow">and</span> className.find(<span class="stringliteral">&#39;TNtuple&#39;</span>) &lt; 0:</div>
+<div class="line"><a id="l00297" name="l00297"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#aac5dc4400b7f9824025dca36dcd50280">  297</a></span>        xcopy = x.Clone()</div>
+<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>        rc = xcopy.Write()</div>
+<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>sTree.AutoSave()</div>
+<div class="line"><a id="l00300" name="l00300"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a19a471f3f243f19b46791b725612a06d">  300</a></span>ff = fin[<span class="stringliteral">&quot;FileHeader&quot;</span>].Clone(fout.GetName())</div>
+<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>fout.cd()</div>
+<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>ff.Write(<span class="stringliteral">&quot;FileHeader&quot;</span>, ROOT.TObject.kSingleKey)</div>
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>sTree.Write()</div>
+<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>fout.Close()</div>
+<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span> </div>
+<div class="line"><a id="l00306" name="l00306"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#a7d39a894ee266a87d7f5c19418538fb6">  306</a></span>rc1 = os.system(<span class="stringliteral">&quot;rm  &quot;</span> + outFile)</div>
+<div class="line"><a id="l00307" name="l00307"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#ae9b55f55d3e626839b0c77e3491c7023">  307</a></span>rc2 = os.system(<span class="stringliteral">&quot;mv &quot;</span> + tmpFile + <span class="stringliteral">&quot; &quot;</span> + outFile)</div>
+<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>print(<span class="stringliteral">&quot;removed out file, moved tmpFile to out file&quot;</span>, rc1, rc2)</div>
+<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>fin.SetWritable(<span class="keyword">False</span>) <span class="comment"># bpyass flush error</span></div>
+<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span> </div>
+<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>print(f<span class="stringliteral">&quot;Number of events produced with activity after hadron absorber: {nEvents}&quot;</span>)</div>
+<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span> </div>
+<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span><span class="keywordflow">if</span> checkOverlap:</div>
+<div class="line"><a id="l00314" name="l00314"></a><span class="lineno"><a class="line" href="namespacerun__fixedTarget.html#af57cff9c8bfaf1a590e1aa0e8c498c28">  314</a></span>    sGeo = ROOT.gGeoManager</div>
+<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>    sGeo.CheckOverlaps()</div>
+<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>    sGeo.PrintOverlaps()</div>
+<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>    run.CreateGeometryFile(<span class="stringliteral">&quot;%s/geofile_full.root&quot;</span> % (outputDir))</div>
+<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>    <span class="keyword">import</span> saveBasicParameters</div>
+<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span>    <a class="code hl_function" href="namespacesaveBasicParameters.html#ae19428dcf1f80c5affea43fc209bf908">saveBasicParameters.execute</a>(<span class="stringliteral">&quot;%s/geofile_full.root&quot;</span> % (outputDir), ship_geo)</div>
 <div class="ttc" id="anamespaceAddDiMuonDecayChannelsToG4_html_a3fdf0d174d3eccaaa0e4daa18e8c8119"><div class="ttname"><a href="namespaceAddDiMuonDecayChannelsToG4.html#a3fdf0d174d3eccaaa0e4daa18e8c8119">AddDiMuonDecayChannelsToG4.Initialize</a></div><div class="ttdeci">Initialize(p8)</div><div class="ttdef"><b>Definition</b> <a href="AddDiMuonDecayChannelsToG4_8py_source.html#l00006">AddDiMuonDecayChannelsToG4.py:6</a></div></div>
-<div class="ttc" id="anamespacerun__fixedTarget_html_a526b7d00dfe537eca8127724eac0e35c"><div class="ttname"><a href="namespacerun__fixedTarget.html#a526b7d00dfe537eca8127724eac0e35c">run_fixedTarget.init</a></div><div class="ttdeci">init()</div><div class="ttdef"><b>Definition</b> <a href="run__fixedTarget_8py_source.html#l00060">run_fixedTarget.py:60</a></div></div>
-<div class="ttc" id="anamespacerun__fixedTarget_html_adfab540557e98157435b5bf6dd57d3fd"><div class="ttname"><a href="namespacerun__fixedTarget.html#adfab540557e98157435b5bf6dd57d3fd">run_fixedTarget.get_work_dir</a></div><div class="ttdeci">get_work_dir(run_number, tag=None)</div><div class="ttdef"><b>Definition</b> <a href="run__fixedTarget_8py_source.html#l00051">run_fixedTarget.py:51</a></div></div>
+<div class="ttc" id="anamespacerun__fixedTarget_html_adfab540557e98157435b5bf6dd57d3fd"><div class="ttname"><a href="namespacerun__fixedTarget.html#adfab540557e98157435b5bf6dd57d3fd">run_fixedTarget.get_work_dir</a></div><div class="ttdeci">get_work_dir(run_number, tag=None)</div><div class="ttdef"><b>Definition</b> <a href="run__fixedTarget_8py_source.html#l00030">run_fixedTarget.py:30</a></div></div>
+<div class="ttc" id="anamespacerun__fixedTarget_html_aff2f6c052d8e7f65a00570cbf5be9305"><div class="ttname"><a href="namespacerun__fixedTarget.html#aff2f6c052d8e7f65a00570cbf5be9305">run_fixedTarget.str</a></div><div class="ttdeci">str</div><div class="ttdef"><b>Definition</b> <a href="run__fixedTarget_8py_source.html#l00066">run_fixedTarget.py:66</a></div></div>
 <div class="ttc" id="anamespacesaveBasicParameters_html_ae19428dcf1f80c5affea43fc209bf908"><div class="ttname"><a href="namespacesaveBasicParameters.html#ae19428dcf1f80c5affea43fc209bf908">saveBasicParameters.execute</a></div><div class="ttdeci">execute(f, ox, name='ShipGeo')</div><div class="ttdef"><b>Definition</b> <a href="saveBasicParameters_8py_source.html#l00038">saveBasicParameters.py:38</a></div></div>
 <div class="ttc" id="anamespaceshipRoot__conf_html_a4bb207e902847385c1369c120d9063ec"><div class="ttname"><a href="namespaceshipRoot__conf.html#a4bb207e902847385c1369c120d9063ec">shipRoot_conf.configure</a></div><div class="ttdeci">configure(darkphoton=None)</div><div class="ttdef"><b>Definition</b> <a href="shipRoot__conf_8py_source.html#l00063">shipRoot_conf.py:63</a></div></div>
 </div><!-- fragment --></div><!-- contents -->

@@ -512,8 +512,8 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  221</span>   <span class="comment">//Add thin sensitive plane after hadron absorber</span></div>
 <div class="line"><span class="lineno">  222</span>    Float_t distance = 1.;</div>
 <div class="line"><span class="lineno">  223</span>    Double_t <a class="code hl_variable" href="namespaceana__ShipMuon.html#aed36656f690d43ae5f6faf373436b08b">local</a>[3]= {0,0,0};</div>
-<div class="line"><span class="lineno">  224</span>    <span class="keywordflow">if</span> (not nav-&gt;cd(<span class="stringliteral">&quot;/MuonShieldArea_1/CoatWall_1&quot;</span>)) {</div>
-<div class="line"><span class="lineno">  225</span>      nav-&gt;cd(<span class="stringliteral">&quot;/MuonShieldArea_1/MagnAbsorb2_MagRetL_1&quot;</span>);</div>
+<div class="line"><span class="lineno">  224</span>    <span class="keywordflow">if</span> (not nav-&gt;cd(<span class="stringliteral">&quot;/MuonShieldArea_1/AbsorberVol_1&quot;</span>)) {</div>
+<div class="line"><span class="lineno">  225</span>      nav-&gt;cd(<span class="stringliteral">&quot;/MuonShieldArea_1/MagnAbsorb_MagRetL_1&quot;</span>);</div>
 <div class="line"><span class="lineno">  226</span>      distance = -1.;}</div>
 <div class="line"><span class="lineno">  227</span>    TGeoBBox* <a class="code hl_variable" href="namespacemakeCascade.html#a14cea4d78b73e5ff8a7eefb813be9886">tmp</a> =  (TGeoBBox*)(nav-&gt;GetCurrentNode()-&gt;GetVolume()-&gt;GetShape());</div>
 <div class="line"><span class="lineno">  228</span>    <a class="code hl_variable" href="namespaceana__ShipMuon.html#aed36656f690d43ae5f6faf373436b08b">local</a>[2] = distance * <a class="code hl_variable" href="namespacemakeCascade.html#a14cea4d78b73e5ff8a7eefb813be9886">tmp</a>-&gt;GetDZ();</div>
@@ -521,7 +521,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  230</span>    nav-&gt;LocalToMaster(local,global);</div>
 <div class="line"><span class="lineno">  231</span>    zLoc = global[2] + distance * 1.*<a class="code hl_variable" href="ShipBellField_8cxx.html#a36fc4b47251281f99efceaa80c7877f0">cm</a>;</div>
 <div class="line"><span class="lineno">  232</span>   }<span class="keywordflow">else</span>{zLoc = <a class="code hl_variable" href="classexitHadronAbsorber.html#a870b8583ed055da51139171aac19ef9b">fzPos</a>;} <span class="comment">// use external input</span></div>
-<div class="line"><span class="lineno">  233</span>   TGeoVolume *<a class="code hl_variable" href="namespacerun__fixedTarget.html#a53b302f2c3f59692ab0a0eecce7a1829">sensPlane</a> = gGeoManager-&gt;MakeBox(<span class="stringliteral">&quot;sensPlane&quot;</span>,vac,10.*m-1.*mm,10.*m-1.*mm,1.*mm);</div>
+<div class="line"><span class="lineno">  233</span>   TGeoVolume *<a class="code hl_variable" href="namespacerun__fixedTarget.html#a53b302f2c3f59692ab0a0eecce7a1829">sensPlane</a> = gGeoManager-&gt;MakeBox(<span class="stringliteral">&quot;sensPlane&quot;</span>,vac,3.56*m-1.*mm,1.7*m-1.*mm,1.*mm);</div>
 <div class="line"><span class="lineno">  234</span>   nav-&gt;cd(<span class="stringliteral">&quot;/MuonShieldArea_1/&quot;</span>);</div>
 <div class="line"><span class="lineno">  235</span>   nav-&gt;GetCurrentNode()-&gt;GetVolume()-&gt;AddNode(sensPlane, 1, <span class="keyword">new</span> TGeoTranslation(0, 0, zLoc));</div>
 <div class="line"><span class="lineno">  236</span>   AddSensitiveVolume(sensPlane);</div>
@@ -530,7 +530,7 @@ Private Attributes</h2></td></tr>
 <div class="ttc" id="anamespaceana__ShipMuon_html_aed36656f690d43ae5f6faf373436b08b"><div class="ttname"><a href="namespaceana__ShipMuon.html#aed36656f690d43ae5f6faf373436b08b">ana_ShipMuon.local</a></div><div class="ttdeci">bool local</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l00006">ana_ShipMuon.py:6</a></div></div>
 <div class="ttc" id="anamespaceeventDisplay_html_adedb83676a54edf1159c60c4e308ea97"><div class="ttname"><a href="namespaceeventDisplay.html#adedb83676a54edf1159c60c4e308ea97">eventDisplay.top</a></div><div class="ttdeci">top</div><div class="ttdef"><b>Definition</b> <a href="eventDisplay_8py_source.html#l01396">eventDisplay.py:1396</a></div></div>
 <div class="ttc" id="anamespacemakeCascade_html_a14cea4d78b73e5ff8a7eefb813be9886"><div class="ttname"><a href="namespacemakeCascade.html#a14cea4d78b73e5ff8a7eefb813be9886">makeCascade.tmp</a></div><div class="ttdeci">tmp</div><div class="ttdef"><b>Definition</b> <a href="makeCascade_8py_source.html#l00357">makeCascade.py:357</a></div></div>
-<div class="ttc" id="anamespacerun__fixedTarget_html_a53b302f2c3f59692ab0a0eecce7a1829"><div class="ttname"><a href="namespacerun__fixedTarget.html#a53b302f2c3f59692ab0a0eecce7a1829">run_fixedTarget.sensPlane</a></div><div class="ttdeci">sensPlane</div><div class="ttdef"><b>Definition</b> <a href="run__fixedTarget_8py_source.html#l00195">run_fixedTarget.py:195</a></div></div>
+<div class="ttc" id="anamespacerun__fixedTarget_html_a53b302f2c3f59692ab0a0eecce7a1829"><div class="ttname"><a href="namespacerun__fixedTarget.html#a53b302f2c3f59692ab0a0eecce7a1829">run_fixedTarget.sensPlane</a></div><div class="ttdeci">sensPlane</div><div class="ttdef"><b>Definition</b> <a href="run__fixedTarget_8py_source.html#l00179">run_fixedTarget.py:179</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

@@ -724,13 +724,13 @@ John Back <a href="#" onclick="location.href='mai'+'lto:'+'J.J'+'.B'+'ack'+'@w'+
 <div class="line"><span class="lineno">  335</span>    Int_t orient = std::atoi(inputLine[4].c_str());</div>
 <div class="line"><span class="lineno">  336</span>    Double_t tubeR = std::atof(inputLine[5].c_str()); <span class="comment">// cm</span></div>
 <div class="line"><span class="lineno">  337</span> </div>
-<div class="line"><span class="lineno">  338</span>    Double_t xy(0.0), <a class="code hl_variable" href="namespacegeometry__config.html#a4487257c46b838ef1172b356289460c4">z</a>(0.0), <a class="code hl_variable" href="namespacepi0Reco.html#accfbca4f48275ff70691579da4d2b1f9">L</a>(0.0);</div>
+<div class="line"><span class="lineno">  338</span>    Double_t <a class="code hl_variable" href="namespacerun__fixedTarget.html#a166152ce7ffe503450bce030f7bfa878">xy</a>(0.0), <a class="code hl_variable" href="namespacegeometry__config.html#a4487257c46b838ef1172b356289460c4">z</a>(0.0), <a class="code hl_variable" href="namespacerun__fixedTarget.html#ad598793694cecf28b7d4f3bdb1fb94df">L</a>(0.0);</div>
 <div class="line"><span class="lineno">  339</span> </div>
 <div class="line"><span class="lineno">  340</span>    <span class="keywordflow">if</span> (nWords == 9) {</div>
 <div class="line"><span class="lineno">  341</span>        <span class="comment">// Specify &quot;target&quot; dimensions (cm)</span></div>
-<div class="line"><span class="lineno">  342</span>        xy = std::atof(inputLine[6].c_str());</div>
+<div class="line"><span class="lineno">  342</span>        <a class="code hl_variable" href="namespacerun__fixedTarget.html#a166152ce7ffe503450bce030f7bfa878">xy</a> = std::atof(inputLine[6].c_str());</div>
 <div class="line"><span class="lineno">  343</span>        <a class="code hl_variable" href="namespacegeometry__config.html#a4487257c46b838ef1172b356289460c4">z</a>  = std::atof(inputLine[7].c_str());</div>
-<div class="line"><span class="lineno">  344</span>        <a class="code hl_variable" href="namespacepi0Reco.html#accfbca4f48275ff70691579da4d2b1f9">L</a>  = std::atof(inputLine[8].c_str());</div>
+<div class="line"><span class="lineno">  344</span>        <a class="code hl_variable" href="namespacerun__fixedTarget.html#ad598793694cecf28b7d4f3bdb1fb94df">L</a>  = std::atof(inputLine[8].c_str());</div>
 <div class="line"><span class="lineno">  345</span>    }</div>
 <div class="line"><span class="lineno">  346</span> </div>
 <div class="line"><span class="lineno">  347</span>    this-&gt;<a class="code hl_function" href="classShipFieldMaker.html#ad4378f3a215dff42795254e8ae6a5c8e">defineBell</a>(name, BPeak, zMiddle, orient, tubeR, xy, z, L);</div>
@@ -746,7 +746,8 @@ John Back <a href="#" onclick="location.href='mai'+'lto:'+'J.J'+'.B'+'ack'+'@w'+
 <div class="ttc" id="aclassShipFieldMaker_html_ad4378f3a215dff42795254e8ae6a5c8e"><div class="ttname"><a href="classShipFieldMaker.html#ad4378f3a215dff42795254e8ae6a5c8e">ShipFieldMaker::defineBell</a></div><div class="ttdeci">void defineBell(const TString &amp;name, Double_t BPeak, Double_t zMiddle, Int_t orient=1, Double_t tubeR=500.0, Double_t xy=0.0, Double_t z=0.0, Double_t L=0.0)</div><div class="ttdoc">Define a Bell field.</div><div class="ttdef"><b>Definition</b> <a href="ShipFieldMaker_8cxx_source.html#l00358">ShipFieldMaker.cxx:358</a></div></div>
 <div class="ttc" id="anamespacegeometry__config_html_a4487257c46b838ef1172b356289460c4"><div class="ttname"><a href="namespacegeometry__config.html#a4487257c46b838ef1172b356289460c4">geometry_config.z</a></div><div class="ttdeci">z</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00312">geometry_config.py:312</a></div></div>
 <div class="ttc" id="anamespacemakeCascade_html_add259298592a80ac35262a17847aee2d"><div class="ttname"><a href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">makeCascade.name</a></div><div class="ttdeci">name</div><div class="ttdef"><b>Definition</b> <a href="makeCascade_8py_source.html#l00174">makeCascade.py:174</a></div></div>
-<div class="ttc" id="anamespacepi0Reco_html_accfbca4f48275ff70691579da4d2b1f9"><div class="ttname"><a href="namespacepi0Reco.html#accfbca4f48275ff70691579da4d2b1f9">pi0Reco.L</a></div><div class="ttdeci">L</div><div class="ttdef"><b>Definition</b> <a href="pi0Reco_8py_source.html#l00006">pi0Reco.py:6</a></div></div>
+<div class="ttc" id="anamespacerun__fixedTarget_html_a166152ce7ffe503450bce030f7bfa878"><div class="ttname"><a href="namespacerun__fixedTarget.html#a166152ce7ffe503450bce030f7bfa878">run_fixedTarget.xy</a></div><div class="ttdeci">xy</div><div class="ttdef"><b>Definition</b> <a href="run__fixedTarget_8py_source.html#l00161">run_fixedTarget.py:161</a></div></div>
+<div class="ttc" id="anamespacerun__fixedTarget_html_ad598793694cecf28b7d4f3bdb1fb94df"><div class="ttname"><a href="namespacerun__fixedTarget.html#ad598793694cecf28b7d4f3bdb1fb94df">run_fixedTarget.L</a></div><div class="ttdeci">L</div><div class="ttdef"><b>Definition</b> <a href="run__fixedTarget_8py_source.html#l00161">run_fixedTarget.py:161</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
