@@ -131,7 +131,8 @@ Build Instructions using CVMFS</h1>
 <p>On <code>lxplus</code> this is the recommended way to use <code>FairShip</code>. CVMFS can also be setup on your own machine (please see the <a href="https://cvmfs.readthedocs.io/en/stable/cpt-quickstart.html">CVMFS documentation</a>)</p>
 <ol type="1">
 <li>Download the FairShip software <div class="fragment"><div class="line">git clone https://github.com/ShipSoft/FairShip.git</div>
-</div><!-- fragment --></li>
+</div><!-- fragment --> As we are using <a href="https://git-lfs.com/"><code>git-lfs</code></a> to deal with large files for field maps etc., you might have to run <div class="fragment"><div class="line">git lfs install</div>
+</div><!-- fragment --> if you have never used <code>git-lfs</code> on your account before.</li>
 <li>Make sure you can access the SHiP CVMFS Repository <div class="fragment"><div class="line">ls /cvmfs/ship.cern.ch</div>
 </div><!-- fragment --></li>
 <li>Source the <code>setUp.sh</code> script from the CVMFS release you want to use (replace <code>$SHIP_RELEASE</code> with the release you want to use): <div class="fragment"><div class="line">source /cvmfs/ship.cern.ch/$SHIP_RELEASE/setUp.sh</div>
@@ -153,7 +154,8 @@ Local build, without access to CVMFS</h1>
 <ol type="1">
 <li>Install <code>alibuild</code> using <code>pipx</code> (recommended) or <code>pip</code>.</li>
 <li>Clone the FairShip repository: <div class="fragment"><div class="line">git clone https://github.com/ShipSoft/FairShip.git</div>
-</div><!-- fragment --></li>
+</div><!-- fragment --> As we are using <a href="https://git-lfs.com/"><code>git-lfs</code></a> to deal with large files for field maps etc., you might have to run <div class="fragment"><div class="line">git lfs install</div>
+</div><!-- fragment --> if you have never used <code>git-lfs</code> on your account before.</li>
 </ol>
 <ol type="1">
 <li>Clone the shipdist repository, which contains the recipes to build the software stack: <div class="fragment"><div class="line">git clone https://github.com/ShipSoft/shipdist.git</div>
