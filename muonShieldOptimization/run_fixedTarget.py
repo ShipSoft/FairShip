@@ -178,9 +178,7 @@ run.AddModule(cave)
 
 TargetStation = ROOT.ShipTargetStation("TargetStation",
                                        ship_geo.target.length,
-                                       ship_geo.hadronAbsorber.length,
                                        ship_geo.target.z,
-                                       ship_geo.hadronAbsorber.z,
                                        ship_geo.targetVersion,
                                        ship_geo.target.nS)
 
