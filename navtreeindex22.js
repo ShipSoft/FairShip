@@ -1,5 +1,6 @@
 var NAVTREEINDEX22 =
 {
+"eventDisplay_8py.html#a78e01621795156bec18557e8b22684c5":[6,0,6,9,16],
 "eventDisplay_8py.html#a7fec3ab80ebdd5d51ce62c19fb9e5c44":[6,0,6,9,31],
 "eventDisplay_8py.html#a829e0e25dc7caafcf9c1457f3d1c5e28":[6,0,6,9,40],
 "eventDisplay_8py.html#a8430faa93ffd972b173017afa809e78a":[6,0,6,9,9],
@@ -140,8 +141,8 @@ var NAVTREEINDEX22 =
 "functions_type.html":[5,3,3],
 "functions_u.html":[5,3,0,21],
 "functions_v.html":[5,3,0,22],
-"functions_vars.html":[5,3,2],
 "functions_vars.html":[5,3,2,0],
+"functions_vars.html":[5,3,2],
 "functions_vars_a.html":[5,3,2,1],
 "functions_vars_b.html":[5,3,2,2],
 "functions_vars_c.html":[5,3,2,3],
@@ -248,6 +249,5 @@ var NAVTREEINDEX22 =
 "g4Ex__args_8py.html#ad1e02232e5950530c1eb7dbe97bfcf80":[6,0,9,7,31],
 "g4Ex__args_8py.html#ae18f8e4e9cd3aa1f5d283b594acabb3b":[6,0,9,7,36],
 "g4Ex__args_8py.html#af74583bb7158747d836b27681d8572c3":[6,0,9,7,39],
-"g4Ex__args_8py.html#af7699fe366fe1724d6ae6efedb08b87e":[6,0,9,7,25],
-"g4Ex__args_8py.html#afaf654c33d762bb9634667cb60fd6f24":[6,0,9,7,10]
+"g4Ex__args_8py.html#af7699fe366fe1724d6ae6efedb08b87e":[6,0,9,7,25]
 };

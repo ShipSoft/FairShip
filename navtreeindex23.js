@@ -1,5 +1,6 @@
 var NAVTREEINDEX23 =
 {
+"g4Ex__args_8py.html#afaf654c33d762bb9634667cb60fd6f24":[6,0,9,7,10],
 "g4Ex__args_8py_source.html":[6,0,9,7],
 "g4Ex__gap_8py.html":[6,0,9,8],
 "g4Ex__gap_8py.html#a0125e075ee6e0eae9f5fbd00bc30ab24":[6,0,9,8,24],
@@ -248,6 +249,5 @@ var NAVTREEINDEX23 =
 "geometry__config_8py.html#aaf98ed91fc4c4ad210153a0f0cc0deb7":[6,0,4,1,172],
 "geometry__config_8py.html#aafe9691677faa59c83cc7f9aa4733bc1":[6,0,4,1,34],
 "geometry__config_8py.html#ab0b65497c20928e548b14ae0b109298e":[6,0,4,1,192],
-"geometry__config_8py.html#ab1175cc483cf01042167a1806dfba1a4":[6,0,4,1,112],
-"geometry__config_8py.html#ab96656f97661040298f1c3e128a9cb93":[6,0,4,1,57]
+"geometry__config_8py.html#ab1175cc483cf01042167a1806dfba1a4":[6,0,4,1,112]
 };

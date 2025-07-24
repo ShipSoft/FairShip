@@ -1,5 +1,6 @@
 var NAVTREEINDEX37 =
 {
+"pages.html":[],
 "pi0Reco_8py.html":[6,0,12,18],
 "pi0Reco_8py.html#a1aa5dc9c03ee8cd23d0c329c69e198d2":[6,0,12,18,5],
 "pi0Reco_8py.html#a41aed8de575ef23f1b6aaab756e90029":[6,0,12,18,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX37 =
 "run__fixedTarget_8py.html#a3959a5a2f94ffc62e003bb18a59251ae":[6,0,9,17,54],
 "run__fixedTarget_8py.html#a3ba880960fbeb4e7f53ff21552681253":[6,0,9,17,48],
 "run__fixedTarget_8py.html#a3e3246d1e1694b94a0e038535d2baed0":[6,0,9,17,59],
-"run__fixedTarget_8py.html#a3f5a459d05255f9750f0c2702c91d797":[6,0,9,17,29],
-"run__fixedTarget_8py.html#a44a2f398422c952305b4ee8df6ee9da0":[6,0,9,17,23]
+"run__fixedTarget_8py.html#a3f5a459d05255f9750f0c2702c91d797":[6,0,9,17,29]
 };
