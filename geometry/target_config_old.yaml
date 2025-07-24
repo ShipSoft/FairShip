@@ -42,3 +42,4 @@ target:
 
     nS: 18  # number of sections
     xy: 30.  # [cm] full length in x and y
+    HeT: 90 # Compatibility with new target, not used.
