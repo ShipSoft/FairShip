@@ -510,12 +510,15 @@ void MTCDetector::SiPMOverlap()
     Double_t fLengthScifiMat = fSciFiActiveY;
     Double_t fWidthChannel = 0.025 * 2;
     Int_t fNSiPMChan = 128;
-    Int_t fNSiPMs = 7;
+    Int_t fNSiPMs = 8;
     Int_t fNMats = 1;
-    Double_t fEdge = 0.413 - 0.025 / 2;
-    Double_t initial_shift = fFiberLength * sin(fSciFiBendingAngle * TMath::DegToRad()) / 2;
+    // Double_t fEdge = 0.413 - 0.025 / 2;
+    Double_t fEdge = - 1.2 / 2; // in case of 8 SiPMs
+    // Double_t initial_shift = fFiberLength * sin(fSciFiBendingAngle * TMath::DegToRad()) / 2;
+    Double_t initial_shift = 0.0;
     Double_t fCharr = 64 * fWidthChannel;
-    Double_t firstChannelX = -fSciFiActiveX / 2;
+    // Double_t firstChannelX = -fSciFiActiveX / 2;
+    Double_t firstChannelX = -fWidth / 2;
 
     // Contains all plane SiPMs, defined for horizontal fiber plane
     // To obtain SiPM map for vertical fiber plane rotate by 90 degrees around Z
@@ -703,7 +706,7 @@ void MTCDetector::SiPMmapping()
                     fibre->GetNumber() % 1000000 + imat * 1e4;   // local fibre number, global fibre number = SO+fID
                 TVector3 Atop, Bbot;
                 GetPosition(fibre->GetNumber(), Atop, Bbot);
-                Float_t a = Atop[0];
+                Float_t a = Bbot[0];
 
                 //  check for overlap with any of the SiPM channels in the same mat
                 for (Int_t nChan = 0; nChan < Nodes->GetEntriesFast(); nChan++) {   // 7 SiPMs total times 128 channels
