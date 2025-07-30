@@ -157,7 +157,8 @@ TargetStation = ROOT.ShipTargetStation(name="TargetStation",
                                        tl=ship_geo.target.length,
                                        tz=ship_geo.target.z,
                                        tV=ship_geo.targetVersion,
-                                       nS=ship_geo.target.nS)
+                                       nS=ship_geo.target.nS,
+                                       HeT=ship_geo.target.HeT)
 TargetStation.SetLayerPosMat(d=ship_geo.target.xy, L=ship_geo.target.slices_length, G=ship_geo.target.slices_gap, M=ship_geo.target.slices_material)
 run.AddModule(TargetStation)
 
