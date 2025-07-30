@@ -1,5 +1,5 @@
-#ifndef BOXCONTFACT_H
-#define BOXCONTFACT_H
+#ifndef CHARMDET_BOXCONTFACT_H_
+#define CHARMDET_BOXCONTFACT_H_
 
 #include "FairContFact.h"   // for FairContFact, etc
 #include "Rtypes.h"         // for ShipPassiveContFact::Class, etc
@@ -18,4 +18,4 @@ class BoxContFact : public FairContFact
     ClassDef(BoxContFact, 0)   // Factory for all Passive parameter containers
 };
 
-#endif /* !PNDPASSIVECONTFACT_H */
+#endif  // CHARMDET_BOXCONTFACT_H_

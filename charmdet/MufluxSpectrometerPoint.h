@@ -1,5 +1,5 @@
-#ifndef MUFLUXSPECTROMETERPOINT_H
-#define MUFLUXSPECTROMETERPOINT_H 1
+#ifndef CHARMDET_MUFLUXSPECTROMETERPOINT_H_
+#define CHARMDET_MUFLUXSPECTROMETERPOINT_H_
 
 #include "FairMCPoint.h"
 #include "TObject.h"
@@ -52,4 +52,4 @@ class MufluxSpectrometerPoint : public FairMCPoint
     ClassDef(MufluxSpectrometerPoint, 1)
 };
 
-#endif
+#endif  // CHARMDET_MUFLUXSPECTROMETERPOINT_H_

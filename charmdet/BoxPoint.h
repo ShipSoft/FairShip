@@ -1,5 +1,5 @@
-#ifndef BOXPOINT_H
-#define BOXPOINT_H 1
+#ifndef CHARMDET_BOXPOINT_H_
+#define CHARMDET_BOXPOINT_H_
 
 #include "FairMCPoint.h"
 #include "TObject.h"
@@ -50,4 +50,4 @@ class BoxPoint : public FairMCPoint
     ClassDef(BoxPoint, 1)
 };
 
-#endif
+#endif  // CHARMDET_BOXPOINT_H_

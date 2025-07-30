@@ -1,5 +1,5 @@
-#ifndef SCIFI_H
-#define SCIFI_H
+#ifndef CHARMDET_SCIFI_H_
+#define CHARMDET_SCIFI_H_
 
 #include "FairDetector.h"   // for FairDetector
 #include "FairModule.h"     // for FairModule
@@ -116,4 +116,4 @@ class SciFi : public FairDetector
     SciFi& operator=(const SciFi&);
     ClassDef(SciFi, 1)
 };
-#endif
+#endif  // CHARMDET_SCIFI_H_

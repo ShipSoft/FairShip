@@ -1,5 +1,5 @@
-#ifndef SCINTILLATOR_H
-#define SCINTILLATOR_H
+#ifndef CHARMDET_SCINTILLATOR_H_
+#define CHARMDET_SCINTILLATOR_H_
 
 #include "FairDetector.h"   // for FairDetector
 #include "FairModule.h"     // for FairModule
@@ -106,4 +106,4 @@ class Scintillator : public FairDetector
     Scintillator& operator=(const Scintillator&);
     ClassDef(Scintillator, 1)
 };
-#endif
+#endif  // CHARMDET_SCINTILLATOR_H_

@@ -1,5 +1,5 @@
-#ifndef MUFLUXSPECTROMETER_H
-#define MUFLUXSPECTROMETER_H
+#ifndef CHARMDET_MUFLUXSPECTROMETER_H_
+#define CHARMDET_MUFLUXSPECTROMETER_H_
 
 #include "FairDetector.h"   // for FairDetector
 #include "FairModule.h"     // for FairModule
@@ -286,4 +286,4 @@ class MufluxSpectrometer : public FairDetector
     MufluxSpectrometer& operator=(const MufluxSpectrometer&);
     ClassDef(MufluxSpectrometer, 1)
 };
-#endif
+#endif  // CHARMDET_MUFLUXSPECTROMETER_H_

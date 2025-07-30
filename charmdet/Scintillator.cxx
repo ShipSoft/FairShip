@@ -207,7 +207,7 @@ Bool_t Scintillator::ProcessHits(FairVolume* vol)
                pdgCode);
 
         // Increment number of na61 det points in TParticle
-        ShipStack* stack = (ShipStack*)gMC->GetStack();
+        ShipStack* stack = static_cast<ShipStack*>(gMC->GetStack());
         stack->AddPoint(kScintillator);
     }
 

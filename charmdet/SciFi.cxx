@@ -231,7 +231,7 @@ Bool_t SciFi::ProcessHits(FairVolume* vol)
                pdgCode);
 
         // Increment number of muon det points in TParticle
-        ShipStack* stack = (ShipStack*)gMC->GetStack();
+        ShipStack* stack = static_cast<ShipStack*>(gMC->GetStack());
         stack->AddPoint(kSciFi);
     }
 

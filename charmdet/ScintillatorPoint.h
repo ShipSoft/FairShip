@@ -1,5 +1,5 @@
-#ifndef SCINTILLATORPOINT_H
-#define SCINTILLATORPOINT_H 1
+#ifndef CHARMDET_SCINTILLATORPOINT_H_
+#define CHARMDET_SCINTILLATORPOINT_H_
 
 #include "FairMCPoint.h"
 #include "TObject.h"
@@ -48,4 +48,4 @@ class ScintillatorPoint : public FairMCPoint
     ClassDef(ScintillatorPoint, 1)
 };
 
-#endif
+#endif  // CHARMDET_SCINTILLATORPOINT_H_

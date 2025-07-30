@@ -1,5 +1,5 @@
-#ifndef SCIFIPOINT_H
-#define SCIFIPOINT_H 1
+#ifndef CHARMDET_SCIFIPOINT_H_
+#define CHARMDET_SCIFIPOINT_H_
 
 #include "FairMCPoint.h"
 #include "TObject.h"
@@ -49,4 +49,4 @@ class SciFiPoint : public FairMCPoint
     ClassDef(SciFiPoint, 1)
 };
 
-#endif
+#endif  // CHARMDET_SCIFIPOINT_H_

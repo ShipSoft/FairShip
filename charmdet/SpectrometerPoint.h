@@ -1,5 +1,5 @@
-#ifndef SPECTROMETERPOINT_H
-#define SPECTROMETERPOINT_H 1
+#ifndef CHARMDET_SPECTROMETERPOINT_H_
+#define CHARMDET_SPECTROMETERPOINT_H_
 
 #include "FairMCPoint.h"
 #include "TObject.h"
@@ -49,4 +49,4 @@ class SpectrometerPoint : public FairMCPoint
     ClassDef(SpectrometerPoint, 1)
 };
 
-#endif
+#endif  // CHARMDET_SPECTROMETERPOINT_H_
