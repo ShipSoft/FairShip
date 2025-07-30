@@ -781,13 +781,6 @@ void MufluxSpectrometer::ConstructGeometry()
     auto target = gGeoManager->MakeTube("target", tungsten, 0, 25 * cm, 75 * cm);
     top->AddNode(target, 1, new TGeoTranslation(0, 0, fgoliathcentre - 4 * m));
 
-    auto plane = gGeoManager->MakeBox("plane", Sens, 1 * m, 1 * m, 0.5 * cm);
-    AddSensitiveVolume(plane);
-    plane->SetLineColor(kBlue);
-    top->AddNode(plane, 1, new TGeoTranslation(0, 0, fgoliathcentre - 3 * m));
-    top->AddNode(plane, 2, new TGeoTranslation(0, 0, fgoliathcentre - 2.5 * m));
-    top->AddNode(plane, 3, new TGeoTranslation(0, 0, fgoliathcentre + 2.5 * m));
-    top->AddNode(plane, 4, new TGeoTranslation(0, 0, fgoliathcentre + 3 * m));
 
     //***********************************************************************************************
     //*****************************************   GOLIATH BY ANNARITA *****************************************
