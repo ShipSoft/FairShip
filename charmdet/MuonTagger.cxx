@@ -510,7 +510,7 @@ Bool_t MuonTagger::ProcessHits(FairVolume* vol)
                pdgCode);
 
         // Increment number of muon det points in TParticle
-        ShipStack* stack = (ShipStack*)gMC->GetStack();
+        ShipStack* stack = static_cast<ShipStack*>(gMC->GetStack());
         stack->AddPoint(kMuonTagger);
     }
 
@@ -598,7 +598,7 @@ void MuonTagger::EndPoints(Int_t fDetectorID, TVector3& vbot, TVector3& vtop)
     path += "/" + striptype;
     path += fDetectorID;
     Bool_t rc = nav->cd(path);
-    if (not rc) {
+    if (!rc) {
         std::cout << "MuonTagger::StripEndPoints, TGeoNavigator failed " << path << std::endl;
         return;
     }

@@ -1,5 +1,5 @@
-#ifndef PIXELMODULES_H
-#define PIXELMODULES_H
+#ifndef CHARMDET_PIXELMODULES_H_
+#define CHARMDET_PIXELMODULES_H_
 
 #include "FairDetector.h"   // for FairDetector
 #include "FairModule.h"     // for FairModule
@@ -152,4 +152,4 @@ class PixelModules : public FairDetector
     PixelModules& operator=(const PixelModules&);
     ClassDef(PixelModules, 1)
 };
-#endif
+#endif  // CHARMDET_PIXELMODULES_H_

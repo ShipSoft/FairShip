@@ -1354,7 +1354,7 @@ Bool_t MufluxSpectrometer::ProcessHits(FairVolume* vol)
         }
 
         // Increment number of muon det points in TParticle
-        ShipStack* stack = (ShipStack*)gMC->GetStack();
+        ShipStack* stack = static_cast<ShipStack*>(gMC->GetStack());
         stack->AddPoint(kMufluxSpectrometer);
     }
 
@@ -1489,7 +1489,7 @@ void MufluxSpectrometer::TubeEndPoints(Int_t fDetectorID, TVector3& vbot, TVecto
     path += wire;
 
     Bool_t rc = nav->cd(path);
-    if (not rc) {
+    if (!rc) {
         cout << "MufluxSpectrometer::TubeEndPoints, TGeoNavigator failed " << path << endl;
         return;
     }
