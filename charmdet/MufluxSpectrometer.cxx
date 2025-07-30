@@ -781,7 +781,6 @@ void MufluxSpectrometer::ConstructGeometry()
     auto target = gGeoManager->MakeTube("target", tungsten, 0, 25 * cm, 75 * cm);
     top->AddNode(target, 1, new TGeoTranslation(0, 0, fgoliathcentre - 4 * m));
 
-
     //***********************************************************************************************
     //*****************************************   GOLIATH BY ANNARITA *****************************************
     //***********************************************************************************************
