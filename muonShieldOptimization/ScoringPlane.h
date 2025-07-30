@@ -28,7 +28,7 @@ class ScoringPlane: public FairDetector
      *               kFALSE for inactive detectors
      *       geometry: full x, y and z extents in cm are Lx, Ly, Lz
     */
-    ScoringPlane(const char* Name, Bool_t Active, Bool_t islastdetector, 
+    ScoringPlane(const char* Name, Bool_t Active, Bool_t islastdetector,
                        Double_t Lx, Double_t Ly, Double_t Lz);
 
     /**      default constructor    */
@@ -87,9 +87,9 @@ class ScoringPlane: public FairDetector
     inline void SetIsLast(Bool_t islast){fLastDetector=islast;} // Added by Massi
     inline void SetVetoPointName(TString nam){fVetoName=nam;} // Added by Massi
     // kill all tracks except of muons:
-    void SetFastMuon() {fFastMuon=true; std::cout<<"Massi ScoringPlane.SetFastMuon(): fFastMuon="<<fFastMuon<<std::endl;} 
+    void SetFastMuon() {fFastMuon=true; std::cout<<"Massi ScoringPlane.SetFastMuon(): fFastMuon="<<fFastMuon<<std::endl;}
     // make muon shield active to follow muons:
-    void SetFollowMuon() {fFollowMuon=true;std::cout<<"Massi ScoringPlane.SetFollowMuon(): fFollowMuon="<<fFollowMuon<<std::endl;} 
+    void SetFollowMuon() {fFollowMuon=true;std::cout<<"Massi ScoringPlane.SetFollowMuon(): fFollowMuon="<<fFollowMuon<<std::endl;}
 
   private:
 
@@ -108,7 +108,7 @@ class ScoringPlane: public FairDetector
     Double_t     fyPos;              //!  yPos, optional
     Double_t     fzPos;              //!  zPos, optional
     Bool_t withNtuple;               //! special option for Dark Photon physics studies
-    TNtuple* fNtuple;               //!  
+    TNtuple* fNtuple;               //!
     //Float_t EMax;  //! max energy to transport
     Bool_t fOnlyMuons;      //! flag if only muons should be stored
     //Bool_t fSkipNeutrinos;  //! flag if neutrinos should be ignored
@@ -119,10 +119,10 @@ class ScoringPlane: public FairDetector
     TClonesArray*  fScoringPlanePointCollection;
     ClassDef(ScoringPlane, 0)
     // massi, add this to control the stopMC:
-    Bool_t fLastDetector;  //! if True then stop processing particles after this detector 
-    Double_t     fLx;      //!  x full extent in cm 
-    Double_t     fLy;      //!  y full extent in cm 
-    Double_t     fLz;      //!  z full extent in cm 
+    Bool_t fLastDetector;  //! if True then stop processing particles after this detector
+    Double_t     fLx;      //!  x full extent in cm
+    Double_t     fLy;      //!  y full extent in cm
+    Double_t     fLz;      //!  z full extent in cm
 
     TString fVetoName;
 };

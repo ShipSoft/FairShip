@@ -18,7 +18,7 @@ def addScoringPlane(anindex=0,xpos=0.0,ypos=0.0,zpos=0.0,xhalfw=500.0,yhalfh=500
      scoringplane.SetXYZposition(xpos,ypos,zpos)
      print("    defined "+izstring+" at x,y,z = "+str(xpos)+" , "+str(ypos)+" , "+str(zpos)+" cm (halfW/halfH = "+str(xhalfw)+" , "+str(yhalfh)+")")
      return scoringplane
- 
+
 def posHcal(z, hfile, HcalOption):
     HcalZSize = 0
     sz = hfile + "z" + str(z) + ".geo"
@@ -331,7 +331,7 @@ def configure(run, ship_geo):
                 hole_dy = (ship_geo.mtc_geo.height + 5. * u.cm) / 2.
             )
     detectorList.append(MuonShield)
-    
+
     PutScoringPlanes = True
     if PutScoringPlanes:
         print("From shipDet_conf.py, configure(): add a few scoring planes for muon shield performance study")

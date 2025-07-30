@@ -137,14 +137,14 @@ Bool_t  ScoringPlane::ProcessHits(FairVolume* vol)
 
   // Create vetoPoint when exiting active volume
   if ( gMC->IsTrackExiting()    ||
-       gMC->IsTrackStop()       || 
+       gMC->IsTrackStop()       ||
        gMC->IsTrackDisappeared()   ) {
 
        // if (fELoss == 0. ) { return kFALSE; } // if you do not want hits with zero eloss
 
        TParticle* p = gMC->GetStack()->GetCurrentTrack();
        Int_t pdgCode = p->GetPdgCode();
-       if (!(fOnlyMuons && TMath::Abs(pdgCode)!=13)){ 
+       if (!(fOnlyMuons && TMath::Abs(pdgCode)!=13)){
          fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
          Int_t detID;
          gMC->CurrentVolID(detID);
@@ -155,7 +155,7 @@ Bool_t  ScoringPlane::ProcessHits(FairVolume* vol)
          Double_t xmean = (fPos.X()+Pos.X())/2. ;
          Double_t ymean = (fPos.Y()+Pos.Y())/2. ;
          Double_t zmean = (fPos.Z()+Pos.Z())/2. ;
-         
+
          AddHit(fTrackID, detID,
             //TVector3(xmean, ymean, zmean), put entrance and exit instead
               TVector3(fPos.X(), fPos.Y(), fPos.Z()),     // entrance position
@@ -232,7 +232,7 @@ void ScoringPlane::ConstructGeometry()
       nav->cd("/MuonShieldArea_1/");
       std::cout << this->GetName() << "WARNING: Massi from ScoringPlane::ConstructGeometry() says: I don't know what we are doing in MuonShieldArea_1..." << std::endl;
    }
-   if (nav->cd("/Tunnel_1/")){ 
+   if (nav->cd("/Tunnel_1/")){
       nav->cd("/Tunnel_1/");
       std::cout << this->GetName() << "Massi from ScoringPlane::ConstructGeometry() says: cd to Tunnel_1" << std::endl;
    }
