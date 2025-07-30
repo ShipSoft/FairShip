@@ -221,26 +221,15 @@ Bool_t FixedTargetGenerator::Init()
   }
   if (targetName!=""){
    fMaterialInvestigator = new GenieGenerator();
-   TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
-   nav->cd(targetName);
-   TGeoNode* target = nav->GetCurrentNode();
-   TObjArray* nodes =  target->GetVolume()->GetNodes();
-   TGeoNode* first = (TGeoNode*)nodes->At(0);
-   Int_t ilast = nodes->GetSize()-5; // assumes that the last 5 nodes are for the shielding around the target.
-   TGeoNode* last  = (TGeoNode*)nodes->At(ilast);
-   nav->cd(targetName+"/"+first->GetName());
-   TGeoBBox* sha = (TGeoBBox*)first->GetVolume()->GetShape();
-   Double_t dz   = sha->GetDZ();
-   Double_t origin[3] = {0,0,-dz};
-   Double_t master[3] = {0,0,0};
-   nav->LocalToMaster(origin,master);
-   startZ =  master[2];
-   nav->cd(targetName+"/"+last->GetName());
-   sha = (TGeoBBox*)first->GetVolume()->GetShape();
-   dz   = sha->GetDZ();
-   origin[2] = +dz;
-   nav->LocalToMaster(origin,master);
-   endZ =  master[2];
+   TGeoVolume* top = gGeoManager->GetTopVolume();
+   TGeoNode* target = top->FindNode(targetName);
+   if (!target){
+       LOGF(error, "target not found, %s, program will crash", targetName.Data());
+   }
+   Double_t z_middle = target->GetMatrix()->GetTranslation()[2];
+   TGeoBBox* sha = (TGeoBBox*)target->GetVolume()->GetShape();
+   startZ =  z_middle - sha->GetDZ();
+   endZ   =  z_middle + sha->GetDZ();
    start[0]=xOff;
    start[1]=yOff;
    start[2]=startZ;
