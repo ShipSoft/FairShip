@@ -27,6 +27,7 @@
 #include "TROOT.h"
 #include "TH1D.h"
 #include "TH2D.h"
+#include "TFile.h"
 
 #include <iostream>
 using std::cout;
