@@ -70,9 +70,7 @@ void ShipGoliath::ConstructGeometry()
     //**************************** MAGNETS ******************************
     //*******************************************************************
 
-
-
-    TGeoRotation *r1 = new TGeoRotation();
+    auto r1 = new TGeoRotation();
     r1->SetAngles(0,90,0);
     TGeoCombiTrans t(0, 75, zCenter,r1);
     t.Print();
@@ -268,9 +266,9 @@ void ShipGoliath::ConstructGeometry()
     TGeoVolume *volLateralS2_c = new TGeoVolume("volLateralS2_c",LateralS2_c,Fe);
     volLateralS2_c->SetLineColor(kRed);
 
-    TGeoRotation *r2_c = new TGeoRotation();
+    auto r2_c = new TGeoRotation();
     r2_c->SetAngles(0,90,180);
     TGeoCombiTrans tr2_c(side1/2, 7.5, zCenter + side2/2,r2_c);
-    TGeoHMatrix *m2_c = new TGeoHMatrix(tr2_c);
+    auto m2_c = new TGeoHMatrix(tr2_c);
     top->AddNode(volLateralS2_c, 1, m2_c);
 }

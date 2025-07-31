@@ -481,7 +481,7 @@ void ShipMuonShield::ConstructGeometry()
       TGeoCompositeShape* absorberShape =
           new TGeoCompositeShape("Absorber", "absorber:absorber_shift" + absorber_magnet_components);
 
-      TGeoVolume *absorber = new TGeoVolume("AbsorberVol", absorberShape, iron);
+      auto absorber = new TGeoVolume("AbsorberVol", absorberShape, iron);
       absorber->SetLineColor(42); // brown / light red
       tShield->AddNode(
           absorber,

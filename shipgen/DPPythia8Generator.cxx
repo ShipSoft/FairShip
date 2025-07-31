@@ -112,7 +112,7 @@ Bool_t DPPythia8Generator::Init()
     fPythiaHadDecay->readString("23:onMode = off");
     fPythiaHadDecay->readString("23:onIfAny = 1 2 3 4 5");
     }*/
-  TDatabasePDG* pdgBase = TDatabasePDG::Instance();
+  auto pdgBase = TDatabasePDG::Instance();
   Double_t root_ctau = pdgBase->GetParticle(fDP)->Lifetime();
   //fPythia->particleData.readString("4900023:useBreitWigner = false");
   if ( debug ){
@@ -280,8 +280,19 @@ Bool_t DPPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
 	 //cpg->AddTrack((Int_t)fPythia->event[im].id(),pmx,pmy,pmz,xm/cm+dx,ym/cm+dy,zm/cm,0,false,em,tm/cm/c_light,w); // convert pythia's (x,y,z[mm], t[mm/c]) to ([cm], [s])
 	 //cpg->AddTrack(fDP, px, py, pz, xp/cm+dx,yp/cm+dy,zp/cm, 1,false,e,tp/cm/c_light,w);
        }else{
-	 cpg->AddTrack((Int_t)fPythia->event[im].id(),pmx,pmy,pmz,xm/cm+dx,ym/cm+dy,zm/cm,-1,false,em,tm/cm/c_light,w); // convert pythia's (x,y,z[mm], t[mm/c]) to ([cm], [s])
-	 cpg->AddTrack(fDP, px, py, pz, xp/cm+dx,yp/cm+dy,zp/cm, 0,false,e,tp/cm/c_light,w);
+           cpg->AddTrack(static_cast<Int_t>(fPythia->event[im].id()),
+                         pmx,
+                         pmy,
+                         pmz,
+                         xm / cm + dx,
+                         ym / cm + dy,
+                         zm / cm,
+                         -1,
+                         false,
+                         em,
+                         tm / cm / c_light,
+                         w);   // convert pythia's (x,y,z[mm], t[mm/c]) to ([cm], [s])
+           cpg->AddTrack(fDP, px, py, pz, xp / cm + dx, yp / cm + dy, zp / cm, 0, false, e, tp / cm / c_light, w);
        }
        // bookkeep the indices of stored particles
        dec_chain.push_back( im );

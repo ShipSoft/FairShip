@@ -35,7 +35,7 @@ Bool_t EvtCalcGenerator::Init(const char* fileName, const int firstEvent)
     branchVars.resize(nBranches);
 
     for (int i = 0; i < nBranches; ++i) {
-        auto *branch = dynamic_cast<TBranch *>(branches->At(i));
+        auto* branch = dynamic_cast<TBranch*>(branches->At(i));
         if (fTree->FindBranch(branch->GetName())) {
             fTree->SetBranchAddress(branch->GetName(), &branchVars[i]);
         }

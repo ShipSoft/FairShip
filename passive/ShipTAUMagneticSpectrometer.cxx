@@ -54,7 +54,7 @@ void ShipTAUMagneticSpectrometer::ConstructGeometry()
     Double_t d = 0;
 
     TGeoUniformMagField *magField = new TGeoUniformMagField(0.,-MagneticField,0.);
-    TGeoUniformMagField *RetField     = new TGeoUniformMagField(0.,MagneticField,0.);
+    auto RetField = new TGeoUniformMagField(0., MagneticField, 0.);
 
     TGeoBBox *Layer = new TGeoBBox(225,400,IronLenght/2);
     TGeoVolume *volLayer = new TGeoVolume("volLayer",Layer,Fe);

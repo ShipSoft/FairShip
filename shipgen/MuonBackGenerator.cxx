@@ -44,7 +44,7 @@ Bool_t MuonBackGenerator::Init(const char* fileName, const int firstEvent)
   fPhiRandomize = false;     // default value for phi randomization
   fsmearBeam = 8 * mm;       // default value for smearing beam
   fdownScaleDiMuon = kFALSE; // only needed for muflux simulation
-  fTree = fInputFile->Get<TTree>("pythia8-Geant4");
+  fTree = static_cast<TTree*>(fInputFile->Get("pythia8-Geant4"));
   if (fTree){
    fNevents = fTree->GetEntries();
    // count only events with muons
@@ -231,7 +231,7 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
         py = pt * TMath::Sin(phi_random);
     }
     cpg->AddTrack(int(pythiaid),px,py,pz,vx*100.,vy*100.,vz*100.,-1.,false,e,pythiaid,parentid);
-    cpg->AddTrack(int(id),px,py,pz,vx*100.,vy*100.,vz*100.,-1.,true,e,tof,w);
+    cpg->AddTrack(static_cast<int>(id), px, py, pz, vx * 100., vy * 100., vz * 100., -1., true, e, tof, w);
   }
   return kTRUE;
 }

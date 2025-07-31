@@ -55,7 +55,7 @@ Bool_t FixedTargetGenerator::InitForCharmOrBeauty(TString fInName, Int_t nev, Do
   nEntry = nStart;
   // open input file with charm or beauty
   fin   = TFile::Open(fInName);
-  nTree = (TNtuple*)fin->FindObjectAny("pythia6"); // old format, simple ntuple
+  nTree = static_cast<TNtuple*>(fin->FindObjectAny("pythia6"));   // old format, simple ntuple
   nEvents = nTree->GetEntries();
   nTree->SetBranchAddress("id",&n_id);
   nTree->SetBranchAddress("px",&n_px);
@@ -289,7 +289,7 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg)
       bparam = fMaterialInvestigator->MeanMaterialBudget(start, point, mparam);
       Double_t interLength = mparam[8];
       TGeoNode *node = gGeoManager->FindNode(point[0],point[1],point[2]);
-      TGeoMaterial *mat = 0;
+      TGeoMaterial* mat = nullptr;
       if (node && !gGeoManager->IsOutside()) {
          mat = node->GetVolume()->GetMaterial();
          Double_t n = mat->GetDensity()/mat->GetA();

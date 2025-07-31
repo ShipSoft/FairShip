@@ -76,7 +76,7 @@ Bool_t  exitHadronAbsorber::ProcessHits(FairVolume* vol)
       AddHit(fTrackID, 111, TVector3(fPos.X(),fPos.Y(),fPos.Z()),
            TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength,
            0,pdgCode,TVector3(p->Vx(), p->Vy(), p->Vz()),TVector3(p->Px(), p->Py(), p->Pz()) );
-      ShipStack* stack = (ShipStack*) gMC->GetStack();
+      ShipStack* stack = static_cast<ShipStack*>(gMC->GetStack());
       stack->AddPoint(kVETO);
       }
     }
@@ -224,7 +224,7 @@ void exitHadronAbsorber::ConstructGeometry()
     if (not nav->cd("/MuonShieldArea_1/AbsorberVol_1")) {
       nav->cd("/MuonShieldArea_1/MagnAbsorb_MagRetL_1");
       distance = -1.;}
-    TGeoBBox* tmp =  (TGeoBBox*)(nav->GetCurrentNode()->GetVolume()->GetShape());
+    TGeoBBox* tmp = static_cast<TGeoBBox*>((nav->GetCurrentNode()->GetVolume()->GetShape()));
     local[2] = distance * tmp->GetDZ();
     Double_t global[3] = {0,0,0};
     nav->LocalToMaster(local,global);

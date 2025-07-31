@@ -290,7 +290,7 @@ void Target::ConstructGeometry()
              << " fraction in mass of emulsion " << frac_emu << endl;
 
     TGeoMixture* emufilmmixture =
-        new TGeoMixture("EmulsionFilmMixture", 2.00);   // two nuclear emulsions separated by the plastic base
+        new TGeoMixture("EmulsionFilmMixture", 2);   // two nuclear emulsions separated by the plastic base
 
     emufilmmixture->AddElement(NEmuMat, frac_emu);
     emufilmmixture->AddElement(PBaseMat, 1. - frac_emu);
@@ -407,7 +407,7 @@ void Target::ConstructGeometry()
         d_cl_x += BrickX;
     }
     TGeoBBox* Wall = new TGeoBBox("wall", WallXDim / 2, WallYDim / 2, WallZDim / 2);
-    TGeoVolume* volWall = new TGeoVolume("Wall", Wall, air);
+    auto volWall = new TGeoVolume("Wall", Wall, air);
     volWall->SetLineColor(kGreen);
 
     Double_t d_cl_y = -WallYDim / 2;
@@ -528,7 +528,7 @@ Bool_t Target::ProcessHits(FairVolume* vol)
                pdgCode);
 
         // Increment number of muon det points in TParticle
-        ShipStack* stack = (ShipStack*)gMC->GetStack();
+        auto stack = static_cast<ShipStack*>(gMC->GetStack());
         stack->AddPoint(ktauTarget);
     }
 

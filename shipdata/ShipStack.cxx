@@ -102,9 +102,8 @@ void ShipStack::PushTrack(Int_t toBeDone, Int_t parentId, Int_t pdgCode,
   Int_t nPoints = 0;
   Int_t daughter1Id = -1;
   Int_t daughter2Id = -1;
-  TParticle* particle =
-    new(partArray[fNParticles++]) TParticle(pdgCode, trackId, parentId,nPoints,
-        daughter1Id, daughter2Id, px, py, pz, e, vx, vy, vz, time);
+  auto particle = new (partArray[fNParticles++])
+      TParticle(pdgCode, trackId, parentId, nPoints, daughter1Id, daughter2Id, px, py, pz, e, vx, vy, vz, time);
   // from root, how does this fit ? misuse of status and mother2 ??? status is used for trackID definitely
   // TParticle(Int_t pdg, Int_t status, Int_t mother1, Int_t mother2,
   //   Int_t daughter1, Int_t daughter2, Double_t px, Double_t py, Double_t pz, Double_t etot, Double_t vx, Double_t vy,
@@ -181,7 +180,7 @@ TParticle* ShipStack::PopPrimaryForTracking(Int_t iPrim)
 
   // Return the iPrim-th TParticle from the fParticle array. This should be
   // a primary.
-  TParticle* part = (TParticle*)fParticles->At(iPrim);
+  TParticle* part = static_cast<TParticle*>(fParticles->At(iPrim));
   /* do not understand the logic behind this !!! TR July 2014
     if ( ! (part->GetMother(0) < 0) ) {
     fLogger->Fatal(MESSAGE_ORIGIN, "ShipStack:: Not a primary track! %i ",iPrim);
@@ -414,7 +413,7 @@ TParticle* ShipStack::GetParticle(Int_t trackID) const
   if (trackID < 0 || trackID >= fNParticles) {
     LOGF(fatal, "ShipStack: Particle index %i out of range. Max=%i", trackID, fNParticles);
   }
-  return (TParticle*)fParticles->At(trackID);
+  return static_cast<TParticle*>(fParticles->At(trackID));
 }
 // -------------------------------------------------------------------------
 
