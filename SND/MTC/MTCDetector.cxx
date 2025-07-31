@@ -738,7 +738,7 @@ void MTCDetector::SiPMmapping()
             for (auto [N, it] : fibresSiPM_U) {
                 Float_t m = 0;
                 Float_t w = 0;
-                for (auto [fibre, Wa] : it) {
+                for (auto [current_fibre, Wa] : it) {
                     m += Wa[0] * Wa[1];
                     w += Wa[0];
                 }
@@ -754,7 +754,7 @@ void MTCDetector::SiPMmapping()
             for (auto [N, it] : fibresSiPM_V) {
                 Float_t m = 0;
                 Float_t w = 0;
-                for (auto [fibre, Wa] : it) {
+                for (auto [current_fibre, Wa] : it) {
                     m += Wa[0] * Wa[1];
                     w += Wa[0];
                 }
