@@ -1807,7 +1807,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  738</span>            <span class="keywordflow">for</span> (<span class="keyword">auto</span> [N, it] : <a class="code hl_variable" href="classMTCDetector.html#a0ea24883fdf0f624fa0fd5cf6ba9ddaa">fibresSiPM_U</a>) {</div>
 <div class="line"><span class="lineno">  739</span>                Float_t <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a> = 0;</div>
 <div class="line"><span class="lineno">  740</span>                Float_t <a class="code hl_variable" href="namespacemakeMuonDIS.html#a31069c861ee6564962a537e94c422254">w</a> = 0;</div>
-<div class="line"><span class="lineno">  741</span>                <span class="keywordflow">for</span> (<span class="keyword">auto</span> [fibre, Wa] : it) {</div>
+<div class="line"><span class="lineno">  741</span>                <span class="keywordflow">for</span> (<span class="keyword">auto</span> [current_fibre, Wa] : it) {</div>
 <div class="line"><span class="lineno">  742</span>                    <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a> += Wa[0] * Wa[1];</div>
 <div class="line"><span class="lineno">  743</span>                    <a class="code hl_variable" href="namespacemakeMuonDIS.html#a31069c861ee6564962a537e94c422254">w</a> += Wa[0];</div>
 <div class="line"><span class="lineno">  744</span>                }</div>
@@ -1823,7 +1823,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  754</span>            <span class="keywordflow">for</span> (<span class="keyword">auto</span> [N, it] : <a class="code hl_variable" href="classMTCDetector.html#a07c34fbe4b71130bd2a9b2808539455d">fibresSiPM_V</a>) {</div>
 <div class="line"><span class="lineno">  755</span>                Float_t <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a> = 0;</div>
 <div class="line"><span class="lineno">  756</span>                Float_t <a class="code hl_variable" href="namespacemakeMuonDIS.html#a31069c861ee6564962a537e94c422254">w</a> = 0;</div>
-<div class="line"><span class="lineno">  757</span>                <span class="keywordflow">for</span> (<span class="keyword">auto</span> [fibre, Wa] : it) {</div>
+<div class="line"><span class="lineno">  757</span>                <span class="keywordflow">for</span> (<span class="keyword">auto</span> [current_fibre, Wa] : it) {</div>
 <div class="line"><span class="lineno">  758</span>                    <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a> += Wa[0] * Wa[1];</div>
 <div class="line"><span class="lineno">  759</span>                    <a class="code hl_variable" href="namespacemakeMuonDIS.html#a31069c861ee6564962a537e94c422254">w</a> += Wa[0];</div>
 <div class="line"><span class="lineno">  760</span>                }</div>

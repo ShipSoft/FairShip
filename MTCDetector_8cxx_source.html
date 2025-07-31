@@ -865,7 +865,7 @@ $(document).ready(function(){initNavTree('MTCDetector_8cxx_source.html',''); ini
 <div class="line"><a id="l00738" name="l00738"></a><span class="lineno">  738</span>            <span class="keywordflow">for</span> (<span class="keyword">auto</span> [N, it] : <a class="code hl_variable" href="classMTCDetector.html#a0ea24883fdf0f624fa0fd5cf6ba9ddaa">fibresSiPM_U</a>) {</div>
 <div class="line"><a id="l00739" name="l00739"></a><span class="lineno">  739</span>                Float_t <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a> = 0;</div>
 <div class="line"><a id="l00740" name="l00740"></a><span class="lineno">  740</span>                Float_t w = 0;</div>
-<div class="line"><a id="l00741" name="l00741"></a><span class="lineno">  741</span>                <span class="keywordflow">for</span> (<span class="keyword">auto</span> [fibre, Wa] : it) {</div>
+<div class="line"><a id="l00741" name="l00741"></a><span class="lineno">  741</span>                <span class="keywordflow">for</span> (<span class="keyword">auto</span> [current_fibre, Wa] : it) {</div>
 <div class="line"><a id="l00742" name="l00742"></a><span class="lineno">  742</span>                    <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a> += Wa[0] * Wa[1];</div>
 <div class="line"><a id="l00743" name="l00743"></a><span class="lineno">  743</span>                    w += Wa[0];</div>
 <div class="line"><a id="l00744" name="l00744"></a><span class="lineno">  744</span>                }</div>
@@ -881,7 +881,7 @@ $(document).ready(function(){initNavTree('MTCDetector_8cxx_source.html',''); ini
 <div class="line"><a id="l00754" name="l00754"></a><span class="lineno">  754</span>            <span class="keywordflow">for</span> (<span class="keyword">auto</span> [N, it] : <a class="code hl_variable" href="classMTCDetector.html#a07c34fbe4b71130bd2a9b2808539455d">fibresSiPM_V</a>) {</div>
 <div class="line"><a id="l00755" name="l00755"></a><span class="lineno">  755</span>                Float_t <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a> = 0;</div>
 <div class="line"><a id="l00756" name="l00756"></a><span class="lineno">  756</span>                Float_t w = 0;</div>
-<div class="line"><a id="l00757" name="l00757"></a><span class="lineno">  757</span>                <span class="keywordflow">for</span> (<span class="keyword">auto</span> [fibre, Wa] : it) {</div>
+<div class="line"><a id="l00757" name="l00757"></a><span class="lineno">  757</span>                <span class="keywordflow">for</span> (<span class="keyword">auto</span> [current_fibre, Wa] : it) {</div>
 <div class="line"><a id="l00758" name="l00758"></a><span class="lineno">  758</span>                    <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a> += Wa[0] * Wa[1];</div>
 <div class="line"><a id="l00759" name="l00759"></a><span class="lineno">  759</span>                    w += Wa[0];</div>
 <div class="line"><a id="l00760" name="l00760"></a><span class="lineno">  760</span>                }</div>
