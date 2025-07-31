@@ -127,7 +127,7 @@ Double_t MuDISGenerator::MeanMaterialBudget(const Double_t* start, const Double_
     lparam[4] = length;
     lparam[5] = lparam[3] / lparam[2];
     if (material->IsMixture()) {
-        TGeoMixture* mixture = (TGeoMixture*)material;
+        TGeoMixture* mixture = static_cast<TGeoMixture*>(material);
         lparam[5] = 0;
         Double_t sum = 0;
         for (Int_t iel = 0; iel < mixture->GetNelements(); iel++) {
@@ -195,7 +195,7 @@ Double_t MuDISGenerator::MeanMaterialBudget(const Double_t* start, const Double_
         lparam[3] = material->GetZ();
         lparam[5] = lparam[3] / lparam[2];
         if (material->IsMixture()) {
-            TGeoMixture* mixture = (TGeoMixture*)material;
+            TGeoMixture* mixture = static_cast<TGeoMixture*>(material);
             lparam[5] = 0;
             Double_t sum = 0;
             for (Int_t iel = 0; iel < mixture->GetNelements(); iel++) {

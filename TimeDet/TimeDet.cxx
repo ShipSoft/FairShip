@@ -195,7 +195,7 @@ Bool_t  TimeDet::ProcessHits(FairVolume* vol)
 	   TVector3(Mom.Px(), Mom.Py(), Mom.Pz()) );
 
     // Increment number of veto det points in TParticle
-    ShipStack* stack = (ShipStack*) gMC->GetStack();
+    ShipStack* stack = static_cast<ShipStack*>(gMC->GetStack());
     stack->AddPoint(kTimeDet);
   }
 

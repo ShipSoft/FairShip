@@ -55,7 +55,7 @@ Bool_t FixedTargetGenerator::InitForCharmOrBeauty(TString fInName, Int_t nev, Do
   nEntry = nStart;
   // open input file with charm or beauty
   fin   = TFile::Open(fInName);
-  nTree = (TNtuple*)fin->FindObjectAny("pythia6"); // old format, simple ntuple
+  nTree = static_cast<TNtuple*>(fin->FindObjectAny("pythia6"));   // old format, simple ntuple
   nEvents = nTree->GetEntries();
   nTree->SetBranchAddress("id",&n_id);
   nTree->SetBranchAddress("px",&n_px);

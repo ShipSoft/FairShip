@@ -172,7 +172,7 @@ Bool_t  strawtubes::ProcessHits(FairVolume* vol)
      uCrossv.Print();
     }
     // Increment number of strawtubes det points in TParticle
-    ShipStack* stack = (ShipStack*) gMC->GetStack();
+    ShipStack* stack = static_cast<ShipStack*>(gMC->GetStack());
     stack->AddPoint(kStraw);
   }
   return kTRUE;

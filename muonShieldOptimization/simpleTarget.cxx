@@ -103,7 +103,7 @@ Bool_t  simpleTarget::ProcessHits(FairVolume* vol)
            fELoss,pdgCode,TVector3(Pos.X(), Pos.Y(), Pos.Z()),TVector3(Mom.Px(), Mom.Py(), Mom.Pz()) );
 
     // Increment number of veto det points in TParticle
-    ShipStack* stack = (ShipStack*) gMC->GetStack();
+    ShipStack* stack = static_cast<ShipStack*>(gMC->GetStack());
     stack->AddPoint(kVETO);
   }
 
@@ -115,7 +115,7 @@ void simpleTarget::Initialize()
 {
   FairDetector::Initialize();
   TSeqCollection* fileList=gROOT->GetListOfFiles();
-  fout = ((TFile*)fileList->At(0));
+  fout = static_cast<TFile*>(fileList->At(0));
 }
 
 void simpleTarget::EndOfEvent()

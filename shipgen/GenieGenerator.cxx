@@ -139,13 +139,13 @@ Double_t GenieGenerator::MeanMaterialBudget(const Double_t *start, const Double_
   Double_t  sigma = 1./(n*lparam[6])/mbarn;
   if (sigma > mparam[9]) mparam[9]=sigma;
   if (material->IsMixture()) {
-    TGeoMixture * mixture = (TGeoMixture*)material;
-    lparam[5] =0;
-    Double_t sum =0;
-    for (Int_t iel=0;iel<mixture->GetNelements();iel++){
-      sum  += mixture->GetWmixt()[iel];
-      lparam[5]+= mixture->GetZmixt()[iel]*mixture->GetWmixt()[iel]/mixture->GetAmixt()[iel];
-    }
+      TGeoMixture* mixture = static_cast<TGeoMixture*>(material);
+      lparam[5] = 0;
+      Double_t sum = 0;
+      for (Int_t iel = 0; iel < mixture->GetNelements(); iel++) {
+          sum += mixture->GetWmixt()[iel];
+          lparam[5] += mixture->GetZmixt()[iel] * mixture->GetWmixt()[iel] / mixture->GetAmixt()[iel];
+      }
     lparam[5]/=sum;
   }
 
@@ -209,13 +209,13 @@ Double_t GenieGenerator::MeanMaterialBudget(const Double_t *start, const Double_
     sigma = 1./(n*lparam[6])/mbarn;
     if (sigma > mparam[9]) mparam[9]=sigma;
     if (material->IsMixture()) {
-      TGeoMixture * mixture = (TGeoMixture*)material;
-      lparam[5]=0;
-      Double_t sum =0;
-      for (Int_t iel=0;iel<mixture->GetNelements();iel++){
-        sum+= mixture->GetWmixt()[iel];
-        lparam[5]+= mixture->GetZmixt()[iel]*mixture->GetWmixt()[iel]/mixture->GetAmixt()[iel];
-      }
+        TGeoMixture* mixture = static_cast<TGeoMixture*>(material);
+        lparam[5] = 0;
+        Double_t sum = 0;
+        for (Int_t iel = 0; iel < mixture->GetNelements(); iel++) {
+            sum += mixture->GetWmixt()[iel];
+            lparam[5] += mixture->GetZmixt()[iel] * mixture->GetWmixt()[iel] / mixture->GetAmixt()[iel];
+        }
       lparam[5]/=sum;
     }
     gGeoManager->FindNextBoundaryAndStep(length, kFALSE);
@@ -430,19 +430,19 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg)
 	  sprintf(ts,"%d",idhnu);
 	  //pickup corresponding (log10(p),log10(pt)) histogram
           if (fInputFile->FindObjectAny(ts)){
-           TH2F* h2tmp = (TH2F*) fInputFile->Get(ts);
-           printf("HISTID=%d, Title:%s\n",idhnu,h2tmp->GetTitle());
-	   sprintf(ts,"px_%d",idhnu);
-          //make its x-projection, to later be able to convert log10(p) to its bin-number
-           pxhist[idhnu]=h2tmp->ProjectionX(ts,1,-1);
-           Int_t nbinx=h2tmp->GetNbinsX();
-          //printf("idhnu=%d  ts=%s  nbinx=%d\n",idhnu,ts,nbinx);
-	  //project all slices on the y-axis
-           for (Int_t k=1;k<nbinx+1;k+=1){
-	    sprintf(ts,"h%d%d",idhnu,k);
-            //printf("idnu %d idhnu %d bin%d  ts=%s\n",idnu,idhnu,k,ts);
-            pyslice[idhnu][k]=h2tmp->ProjectionY(ts,k,k);
-	  }
+              TH2F* h2tmp = static_cast<TH2F*>(fInputFile->Get(ts));
+              printf("HISTID=%d, Title:%s\n", idhnu, h2tmp->GetTitle());
+              sprintf(ts, "px_%d", idhnu);
+              // make its x-projection, to later be able to convert log10(p) to its bin-number
+              pxhist[idhnu] = h2tmp->ProjectionX(ts, 1, -1);
+              Int_t nbinx = h2tmp->GetNbinsX();
+              // printf("idhnu=%d  ts=%s  nbinx=%d\n",idhnu,ts,nbinx);
+              // project all slices on the y-axis
+              for (Int_t k = 1; k < nbinx + 1; k += 1) {
+                  sprintf(ts, "h%d%d", idhnu, k);
+                  // printf("idnu %d idhnu %d bin%d  ts=%s\n",idnu,idhnu,k,ts);
+                  pyslice[idhnu][k] = h2tmp->ProjectionY(ts, k, k);
+              }
          }
 	}
       }

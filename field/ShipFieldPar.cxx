@@ -151,18 +151,18 @@ void ShipFieldPar::SetParameters(FairField* field) {
   fType = field->GetType();
 
   if ( fType == 0 ) {                                 // constant field
-    ShipConstField* fieldConst = (ShipConstField*) field;
-    fBx = fieldConst->GetBx();
-    fBy = fieldConst->GetBy();
-    fBz = fieldConst->GetBz();
-    fXmin = fieldConst->GetXmin();
-    fXmax = fieldConst->GetXmax();
-    fYmin = fieldConst->GetYmin();
-    fYmax = fieldConst->GetYmax();
-    fZmin = fieldConst->GetZmin();
-    fZmax = fieldConst->GetZmax();
-    fMapName = "";
-    fPosX = fPosY = fPosZ = fScale = 0.;
+      ShipConstField* fieldConst = static_cast<ShipConstField*>(field);
+      fBx = fieldConst->GetBx();
+      fBy = fieldConst->GetBy();
+      fBz = fieldConst->GetBz();
+      fXmin = fieldConst->GetXmin();
+      fXmax = fieldConst->GetXmax();
+      fYmin = fieldConst->GetYmin();
+      fYmax = fieldConst->GetYmax();
+      fZmin = fieldConst->GetZmin();
+      fZmax = fieldConst->GetZmax();
+      fMapName = "";
+      fPosX = fPosY = fPosZ = fScale = 0.;
   }  else {
     cerr << "-W- ShipFieldPar::SetParameters: Unknown field type "
 	 << fType << "!" << endl;

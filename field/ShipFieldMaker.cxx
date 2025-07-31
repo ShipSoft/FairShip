@@ -1129,9 +1129,9 @@ void ShipFieldMaker::findNode(TGeoVolume* aVolume, const TString& volName) {
 	    int nNodes = volNodes->GetEntries();
 	    for (int i = 0; i < nNodes; i++) {
 
-		TGeoNode* node = dynamic_cast<TGeoNode*>(volNodes->At(i));
+                TGeoNode* node = dynamic_cast<TGeoNode*>(volNodes->At(i));
 
-		if (node) {
+                if (node) {
 
 		    const TString nodeName(node->GetName());
 		    if (!nodeName.CompareTo(volName, TString::kExact)) {

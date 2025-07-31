@@ -138,7 +138,7 @@ Bool_t  splitcal::ProcessHits(FairVolume* vol)
            fELoss,pdgCode);
 
     // Increment number of splitcal det points in TParticle
-    ShipStack* stack = (ShipStack*) gMC->GetStack();
+    ShipStack* stack = static_cast<ShipStack*>(gMC->GetStack());
     stack->AddPoint(kSplitCal);
 
   }
@@ -442,7 +442,7 @@ void splitcal::ConstructGeometry()
     //    TCanvas* c1 = new TCanvas("splitcalCanvas", "", 800, 800);
     //    c1->cd();
 
-    //    TView3D* tview = (TView3D*) TView::CreateView();
+    //    TView3D* tview = static_cast<TView3D*>(TView::CreateView());
     //    tview->SetRange(-fXMax*1.2, -fYMax*1.2, 2500, fXMax*1.2, fYMax*1.2, 3800);
     //    tview->RotateView(0, 90, c1);
 

@@ -102,7 +102,7 @@ Bool_t Pythia8Generator::Init()
        LOGF(error, "target not found, %s, program will crash", targetName.Data());
    }
    Double_t z_middle = target->GetMatrix()->GetTranslation()[2];
-   TGeoBBox* sha = (TGeoBBox*)target->GetVolume()->GetShape();
+   TGeoBBox* sha = static_cast<TGeoBBox*>(target->GetVolume()->GetShape());
    startZ =  z_middle - sha->GetDZ();
    endZ   =  z_middle + sha->GetDZ();
    start[0]=xOff;

@@ -181,7 +181,7 @@ TParticle* ShipStack::PopPrimaryForTracking(Int_t iPrim)
 
   // Return the iPrim-th TParticle from the fParticle array. This should be
   // a primary.
-  TParticle* part = (TParticle*)fParticles->At(iPrim);
+  TParticle* part = static_cast<TParticle*>(fParticles->At(iPrim));
   /* do not understand the logic behind this !!! TR July 2014
     if ( ! (part->GetMother(0) < 0) ) {
     fLogger->Fatal(MESSAGE_ORIGIN, "ShipStack:: Not a primary track! %i ",iPrim);
@@ -414,7 +414,7 @@ TParticle* ShipStack::GetParticle(Int_t trackID) const
   if (trackID < 0 || trackID >= fNParticles) {
     LOGF(fatal, "ShipStack: Particle index %i out of range. Max=%i", trackID, fNParticles);
   }
-  return (TParticle*)fParticles->At(trackID);
+  return static_cast<TParticle*>(fParticles->At(trackID));
 }
 // -------------------------------------------------------------------------
 

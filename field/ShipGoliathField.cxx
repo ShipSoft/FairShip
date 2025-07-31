@@ -66,10 +66,9 @@ void ShipGoliathField::Init(const char* fieldfile){
 
   fieldmap = TFile::Open(fieldfile);
 
-
-  TH3D* histbx= (TH3D*)fieldmap->Get("Bx");
-  TH3D* histby= (TH3D*)fieldmap->Get("By");
-  TH3D* histbz= (TH3D*)fieldmap->Get("Bz");
+  TH3D* histbx = static_cast<TH3D*>(fieldmap->Get("Bx"));
+  TH3D* histby = static_cast<TH3D*>(fieldmap->Get("By"));
+  TH3D* histbz = static_cast<TH3D*>(fieldmap->Get("Bz"));
   xmin = histbx->GetXaxis()->GetXmin();
   xmax = histbx->GetXaxis()->GetXmax();
   ymin = histbx->GetYaxis()->GetXmin();

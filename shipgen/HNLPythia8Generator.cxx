@@ -43,7 +43,7 @@ Bool_t HNLPythia8Generator::Init()
           return kFALSE;
       }
 
-      fTree = fInputFile->Get<TTree>("pythia6");
+      fTree = static_cast<TTree*>(fInputFile->Get("pythia6"));
       fNevents = fTree->GetEntries();
       fn = firstEvent;
       fTree->SetBranchAddress("id", &hid);   // particle id
@@ -238,7 +238,18 @@ Bool_t HNLPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
      py =fPythia->event[k].py();
      e  =fPythia->event[k].e();
      if (fextFile && *fextFile) {im+=1;}
-     cpg->AddTrack((Int_t)fPythia->event[k].id(),px,py,pz,xS/cm,yS/cm,zS/cm,im,wanttracking,e,tS/cm/c_light,w);
+     cpg->AddTrack(static_cast<Int_t>(fPythia->event[k].id()),
+                   px,
+                   py,
+                   pz,
+                   xS / cm,
+                   yS / cm,
+                   zS / cm,
+                   im,
+                   wanttracking,
+                   e,
+                   tS / cm / c_light,
+                   w);
      // std::cout <<k<< " insert pdg =" <<fPythia->event[k].id() << " pz = " << pz << " [GeV] zS = " << zS << " [mm] tS = " << tS << "[mm/c]" <<  endl;
   }
   return kTRUE;

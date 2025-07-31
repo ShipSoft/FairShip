@@ -29,8 +29,7 @@ void ShipFieldCreator::SetParm()
 {
   FairRunAna *Run = FairRunAna::Instance();
   FairRuntimeDb *RunDB = Run->GetRuntimeDb();
-  fFieldPar = (ShipFieldPar*) RunDB->getContainer("ShipFieldPar");
-
+  fFieldPar = static_cast<ShipFieldPar*>(RunDB->getContainer("ShipFieldPar"));
 }
 
 FairField* ShipFieldCreator::createFairField()
