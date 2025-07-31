@@ -225,7 +225,7 @@ void TargetTracker::ConstructGeometry()
 
     TGeoBBox* TT_scifimat_vert_box =
         new TGeoBBox("TT_scifimat_vert_box", scifimat_width / 2, scifimat_vert / 2, scifimat_z / 2);
-    TGeoVolume* TT_scifimat_vert_volume = new TGeoVolume("TT_scifimat_vert", TT_scifimat_vert_box, SciFiMat);
+    auto TT_scifimat_vert_volume = new TGeoVolume("TT_scifimat_vert", TT_scifimat_vert_box, SciFiMat);
     TT_scifimat_vert_volume->SetLineColor(kGreen - 7);
 
     // Add SciFi mat as sensitive unit

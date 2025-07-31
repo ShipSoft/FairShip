@@ -65,7 +65,7 @@ Bool_t HNLPythia8Generator::Init()
       fPythia->settings.parm("Beams:eA", fMom);   // codespell:ignore parm
       fPythia->settings.parm("Beams:eB", 0.);     // codespell:ignore parm
   }
-  TDatabasePDG* pdgBase = TDatabasePDG::Instance();
+  auto pdgBase = TDatabasePDG::Instance();
   Double_t root_ctau = pdgBase->GetParticle(fHNL)->Lifetime();
   fctau = fPythia->particleData.tau0(fHNL); //* 3.3333e-12
   LOG(debug) << "tau root " << root_ctau << "[s] ctau root = " << root_ctau * 3e10 << "[cm]";

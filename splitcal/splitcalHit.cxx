@@ -75,7 +75,7 @@ splitcalHit::splitcalHit(splitcalPoint* p, Double_t t0)
   double zHalfLength = box->GetDZ();
 
   TGeoNode* passiveLayer = caloVolume->GetNode("ECALfilter_200000"); // they are all the same
-  TGeoBBox* boxPassive = static_cast<TGeoBBox*>(passiveLayer->GetVolume()->GetShape());
+  auto boxPassive = static_cast<TGeoBBox*>(passiveLayer->GetVolume()->GetShape());
   double zPassiveHalfLength = box->GetDZ();
 
   // std::cout<< "----------------------"<<std::endl;

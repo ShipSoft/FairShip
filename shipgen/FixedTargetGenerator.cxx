@@ -289,7 +289,7 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg)
       bparam = fMaterialInvestigator->MeanMaterialBudget(start, point, mparam);
       Double_t interLength = mparam[8];
       TGeoNode *node = gGeoManager->FindNode(point[0],point[1],point[2]);
-      TGeoMaterial *mat = 0;
+      TGeoMaterial* mat = nullptr;
       if (node && !gGeoManager->IsOutside()) {
          mat = node->GetVolume()->GetMaterial();
          Double_t n = mat->GetDensity()/mat->GetA();

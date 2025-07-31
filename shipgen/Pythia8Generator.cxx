@@ -102,7 +102,7 @@ Bool_t Pythia8Generator::Init()
        LOGF(error, "target not found, %s, program will crash", targetName.Data());
    }
    Double_t z_middle = target->GetMatrix()->GetTranslation()[2];
-   TGeoBBox* sha = static_cast<TGeoBBox*>(target->GetVolume()->GetShape());
+   auto sha = static_cast<TGeoBBox*>(target->GetVolume()->GetShape());
    startZ =  z_middle - sha->GetDZ();
    endZ   =  z_middle + sha->GetDZ();
    start[0]=xOff;
@@ -180,8 +180,8 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
       Double_t point[3]={xOff,yOff,zinter};
       bparam = fMaterialInvestigator->MeanMaterialBudget(start, point, mparam);
       Double_t interLength = mparam[8]  * intLengthFactor * 1.7; // 1.7 = interaction length / collision length from PDG Tables
-      TGeoNode *node = gGeoManager->FindNode(point[0],point[1],point[2]);
-      TGeoMaterial *mat = 0;
+      auto node = gGeoManager->FindNode(point[0], point[1], point[2]);
+      TGeoMaterial* mat = nullptr;
       if (node && !gGeoManager->IsOutside()) {
          mat = node->GetVolume()->GetMaterial();
          Double_t n = mat->GetDensity()/mat->GetA();

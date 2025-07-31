@@ -95,7 +95,7 @@ void ShipTargetStation::ConstructGeometry()
     TGeoMaterial* fixedCooler = pressurised_He->GetMaterial();
     fixedCooler->SetTemperature(He_T);
     fixedCooler->SetPressure(He_P);
-    TGeoMedium* cooler = (fTV == TargetVersion::Jun25) ? pressurised_He : water;
+    auto cooler = (fTV == TargetVersion::Jun25) ? pressurised_He : water;
 
     LOG(INFO) << "-- Target cooler: " << cooler->GetName() << " T=" << cooler->GetMaterial()->GetTemperature()
               << " K, P=" << cooler->GetMaterial()->GetPressure() << " MeV/mm3, Density="

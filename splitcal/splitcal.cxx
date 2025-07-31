@@ -430,7 +430,7 @@ void splitcal::ConstructGeometry()
 
 
     //finish assembly and position
-    TGeoShapeAssembly* asmb = dynamic_cast<TGeoShapeAssembly*>(tSplitCal->GetShape());
+    auto asmb = dynamic_cast<TGeoShapeAssembly*>(tSplitCal->GetShape());
     Double_t totLength = asmb->GetDZ();
     top->AddNode(tSplitCal, 1, new TGeoTranslation(0, 0,zStartSplitCal+totLength));
 

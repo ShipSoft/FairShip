@@ -71,7 +71,7 @@ Bool_t NtupleGenerator::ReadEvent(FairPrimaryGenerator* cpg)
   if (fn==fNevents) {
      cout << "No more input events"<<endl;
      return kFALSE; }
-  TDatabasePDG* pdgBase = TDatabasePDG::Instance();
+  auto pdgBase = TDatabasePDG::Instance();
   Double_t mass = pdgBase->GetParticle(id)->Mass();
   Double_t    e = TMath::Sqrt( px[0]*px[0]+py[0]*py[0]+pz[0]*pz[0]+ mass*mass );
   tof = 0;

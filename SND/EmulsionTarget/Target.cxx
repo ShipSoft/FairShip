@@ -407,7 +407,7 @@ void Target::ConstructGeometry()
         d_cl_x += BrickX;
     }
     TGeoBBox* Wall = new TGeoBBox("wall", WallXDim / 2, WallYDim / 2, WallZDim / 2);
-    TGeoVolume* volWall = new TGeoVolume("Wall", Wall, air);
+    auto volWall = new TGeoVolume("Wall", Wall, air);
     volWall->SetLineColor(kGreen);
 
     Double_t d_cl_y = -WallYDim / 2;
@@ -528,7 +528,7 @@ Bool_t Target::ProcessHits(FairVolume* vol)
                pdgCode);
 
         // Increment number of muon det points in TParticle
-        ShipStack* stack = static_cast<ShipStack*>(gMC->GetStack());
+        auto stack = static_cast<ShipStack*>(gMC->GetStack());
         stack->AddPoint(ktauTarget);
     }
 

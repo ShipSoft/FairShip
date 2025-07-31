@@ -127,7 +127,7 @@ Double_t MuDISGenerator::MeanMaterialBudget(const Double_t* start, const Double_
     lparam[4] = length;
     lparam[5] = lparam[3] / lparam[2];
     if (material->IsMixture()) {
-        TGeoMixture* mixture = static_cast<TGeoMixture*>(material);
+        auto mixture = static_cast<TGeoMixture*>(material);
         lparam[5] = 0;
         Double_t sum = 0;
         for (Int_t iel = 0; iel < mixture->GetNelements(); iel++) {
@@ -195,7 +195,7 @@ Double_t MuDISGenerator::MeanMaterialBudget(const Double_t* start, const Double_
         lparam[3] = material->GetZ();
         lparam[5] = lparam[3] / lparam[2];
         if (material->IsMixture()) {
-            TGeoMixture* mixture = static_cast<TGeoMixture*>(material);
+            auto mixture = static_cast<TGeoMixture*>(material);
             lparam[5] = 0;
             Double_t sum = 0;
             for (Int_t iel = 0; iel < mixture->GetNelements(); iel++) {
@@ -369,7 +369,7 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg)
 
     // Soft interaction tracks
     for (auto&& softParticle : *dPartSoft) {
-        TVectorD* SoftPart = dynamic_cast<TVectorD*>(softParticle);
+        auto SoftPart = dynamic_cast<TVectorD*>(softParticle);
         if ((*SoftPart)[7] > zmu) {
             continue;
         }   // Soft interactions after the DIS point are not saved

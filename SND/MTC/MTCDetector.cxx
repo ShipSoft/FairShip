@@ -409,7 +409,7 @@ void MTCDetector::ConstructGeometry()
         ironVol->SetField(new TGeoUniformMagField(0, fFieldY, 0));
 
     // --- Assemble the layers into the envelope ---
-    TGeoVolumeAssembly* sensitiveModule = new TGeoVolumeAssembly("MTC_layer");
+    auto sensitiveModule = new TGeoVolumeAssembly("MTC_layer");
     // Define a layer for the SciFi module
     CreateSciFiModule("MTC", sensitiveModule, fWidth, fHeight, fSciFiThick, 1);
     CreateScintModule("MTC",

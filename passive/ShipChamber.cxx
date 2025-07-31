@@ -85,7 +85,7 @@ void ShipChamber::ConstructGeometry()
     top->AddNode(tub5, 1, new TGeoTranslation(0, 0, 2270));
 
     // sixth part of vacuum chamber up to muon detector
-    TGeoVolume *tub6 = gGeoManager->MakeTube("tub6", Al, 245, 250, 20);
+    auto tub6 = gGeoManager->MakeTube("tub6", Al, 245, 250, 20);
     tub6->SetLineColor(18);
     top->AddNode(tub6, 1, new TGeoTranslation(0, 0, 2540));
 

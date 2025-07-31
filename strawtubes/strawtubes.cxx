@@ -573,7 +573,7 @@ void strawtubes::StrawEndPoints(Int_t fDetectorID, TVector3 &vbot, TVector3 &vto
         return;
     }
     TGeoNode* W = nav->GetCurrentNode();
-    TGeoTube* S = dynamic_cast<TGeoTube*>(W->GetVolume()->GetShape());
+    auto S = dynamic_cast<TGeoTube*>(W->GetVolume()->GetShape());
     Double_t top[3] = {0, 0, S->GetDZ()};
     Double_t bot[3] = {0, 0, -S->GetDZ()};
     Double_t Gtop[3], Gbot[3];

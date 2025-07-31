@@ -71,38 +71,39 @@ Int_t ShipMagnet::InitMedium(const char* name)
 TGeoVolume* ShipMagnet::MagnetSupport(Double_t hwidth,Double_t hheight,Double_t dz,Int_t colour,TGeoMedium *material)
 {
 
-      TGeoBBox *ms = new TGeoBBox("ms", hwidth,hheight-1.,dz);
-      //try to make SHiP like logo in support
-      Double_t swidth=30.; //
-       //6 cutouts from the front
-       Double_t r25=hheight-swidth/2.;
-       Double_t r1346=hwidth-swidth/2;
-       Double_t alpha=atan(hheight/hwidth)*180./TMath::Pi();
-       TGeoTubeSeg *FL1 = new TGeoTubeSeg("FL1",swidth,r1346,dz+1.,5.,alpha-5.);
-       TGeoTubeSeg *FL3 = new TGeoTubeSeg("FL3",swidth,r1346,dz+1.,180-alpha+5.,175.);
-       TGeoTubeSeg *FL4 = new TGeoTubeSeg("FL4",swidth,r1346,dz+1.,185.,180.+alpha-5.);
-       TGeoTubeSeg *FL6 = new TGeoTubeSeg("FL6",swidth,r1346,dz+1.,360.-alpha+5.,355.);
-       TGeoTubeSeg *FL2 = new TGeoTubeSeg("FL2",swidth,r25,dz+1.,alpha+5.,180-alpha-5.);
-       TGeoTubeSeg *FL5 = new TGeoTubeSeg("FL5",swidth,r25,dz+1.,180.+alpha+5.,360.-alpha-5.);
+    auto ms = new TGeoBBox("ms", hwidth, hheight - 1., dz);
+    // try to make SHiP like logo in support
+    Double_t swidth = 30.;   //
+    // 6 cutouts from the front
+    Double_t r25 = hheight - swidth / 2.;
+    Double_t r1346 = hwidth - swidth / 2;
+    Double_t alpha = atan(hheight / hwidth) * 180. / TMath::Pi();
+    auto FL1 = new TGeoTubeSeg("FL1", swidth, r1346, dz + 1., 5., alpha - 5.);
+    auto FL3 = new TGeoTubeSeg("FL3", swidth, r1346, dz + 1., 180 - alpha + 5., 175.);
+    auto FL4 = new TGeoTubeSeg("FL4", swidth, r1346, dz + 1., 185., 180. + alpha - 5.);
+    auto FL6 = new TGeoTubeSeg("FL6", swidth, r1346, dz + 1., 360. - alpha + 5., 355.);
+    auto FL2 = new TGeoTubeSeg("FL2", swidth, r25, dz + 1., alpha + 5., 180 - alpha - 5.);
+    auto FL5 = new TGeoTubeSeg("FL5", swidth, r25, dz + 1., 180. + alpha + 5., 360. - alpha - 5.);
 
-       //6 cutouts from the side
-       r1346=dz-swidth/2;
-       alpha=atan(hheight/dz)*180./TMath::Pi();
-       //cout << "magsupport: "<< swidth<<", "<<r25<<", "<< r1346<<", "<<alpha <<endl;
-       TGeoTubeSeg *SL1 = new TGeoTubeSeg("SL1",swidth,r1346,hwidth+1.,5.,alpha-5.);
-       TGeoTubeSeg *SL3 = new TGeoTubeSeg("SL3",swidth,r1346,hwidth+1.,180-alpha+5.,175.);
-       TGeoTubeSeg *SL4 = new TGeoTubeSeg("SL4",swidth,r1346,hwidth+1.,185.,180.+alpha-5.);
-       TGeoTubeSeg *SL6 = new TGeoTubeSeg("SL6",swidth,r1346,hwidth+1.,360.-alpha+5.,355.);
-       TGeoTubeSeg *SL2 = new TGeoTubeSeg("SL2",swidth,r25,hwidth+1.,alpha+5.,180-alpha-5.);
-       TGeoTubeSeg *SL5 = new TGeoTubeSeg("SL5",swidth,r25,hwidth+1.,180.+alpha+5.,360.-alpha-5.);
-       TGeoRotation *r = new TGeoRotation("r"); r->RotateY(90.); r->RegisterYourself();
+    // 6 cutouts from the side
+    r1346 = dz - swidth / 2;
+    alpha = atan(hheight / dz) * 180. / TMath::Pi();
+    // cout << "magsupport: "<< swidth<<", "<<r25<<", "<< r1346<<", "<<alpha <<endl;
+    auto SL1 = new TGeoTubeSeg("SL1", swidth, r1346, hwidth + 1., 5., alpha - 5.);
+    auto SL3 = new TGeoTubeSeg("SL3", swidth, r1346, hwidth + 1., 180 - alpha + 5., 175.);
+    auto SL4 = new TGeoTubeSeg("SL4", swidth, r1346, hwidth + 1., 185., 180. + alpha - 5.);
+    auto SL6 = new TGeoTubeSeg("SL6", swidth, r1346, hwidth + 1., 360. - alpha + 5., 355.);
+    auto SL2 = new TGeoTubeSeg("SL2", swidth, r25, hwidth + 1., alpha + 5., 180 - alpha - 5.);
+    auto SL5 = new TGeoTubeSeg("SL5", swidth, r25, hwidth + 1., 180. + alpha + 5., 360. - alpha - 5.);
+    auto r = new TGeoRotation("r");
+    r->RotateY(90.);
+    r->RegisterYourself();
 
-       TGeoCompositeShape *TS = new TGeoCompositeShape("TS",\
-        "ms-FL1-FL2-FL3-FL4-FL5-FL6-SL1:r-SL2:r-SL3:r-SL4:r-SL5:r-SL6:r");
+    auto TS = new TGeoCompositeShape("TS", "ms-FL1-FL2-FL3-FL4-FL5-FL6-SL1:r-SL2:r-SL3:r-SL4:r-SL5:r-SL6:r");
 
-       TGeoVolume *T = new TGeoVolume("TSUP", TS, material);
-       T->SetLineColor(colour);
-       return T;
+    auto T = new TGeoVolume("TSUP", TS, material);
+    T->SetLineColor(colour);
+    return T;
 }
 void ShipMagnet::ConstructGeometry()
 {
@@ -112,29 +113,29 @@ void ShipMagnet::ConstructGeometry()
     TGeoMedium *Fe =gGeoManager->GetMedium("iron");
     InitMedium("Aluminum");
     TGeoMedium *Al =gGeoManager->GetMedium("Aluminum");
-    TGeoVolumeAssembly *tMagnet = new TGeoVolumeAssembly("SHiPMagnet");
+    auto tMagnet = new TGeoVolumeAssembly("SHiPMagnet");
     top->AddNode(tMagnet, 1, new TGeoTranslation(0, 0, 0));
 
     Double_t cm  = 1;
     Double_t m   = 100*cm;
     if (fDesign==1){
     // magnet yoke
-     TGeoBBox *magyoke1 = new TGeoBBox("magyoke1", 350, 350, 125);
-     TGeoBBox *magyoke2 = new TGeoBBox("magyoke2", 250, 250, 126);
+    auto magyoke1 = new TGeoBBox("magyoke1", 350, 350, 125);
+    auto magyoke2 = new TGeoBBox("magyoke2", 250, 250, 126);
 
-     TGeoCompositeShape *magyokec = new TGeoCompositeShape("magyokec", "magyoke1-magyoke2");
-     TGeoVolume *magyoke = new TGeoVolume("magyoke", magyokec, Fe);
-     magyoke->SetLineColor(kBlue);
+    auto magyokec = new TGeoCompositeShape("magyokec", "magyoke1-magyoke2");
+    auto magyoke = new TGeoVolume("magyoke", magyokec, Fe);
+    magyoke->SetLineColor(kBlue);
     //magyoke->SetTransparency(50);
      tMagnet->AddNode(magyoke, 1, new TGeoTranslation(0, 0, 1940));
 
     // magnet
-     TGeoTubeSeg *magnet1a = new TGeoTubeSeg("magnet1a", 250, 300, 35, 45, 135);
-     TGeoTubeSeg *magnet1b = new TGeoTubeSeg("magnet1b", 250, 300, 35, 45, 135);
-     TGeoTubeSeg *magnet1c = new TGeoTubeSeg("magnet1c", 250, 270, 125, 45, 60);
-     TGeoTubeSeg *magnet1d = new TGeoTubeSeg("magnet1d", 250, 270, 125, 120, 135);
+     auto magnet1a = new TGeoTubeSeg("magnet1a", 250, 300, 35, 45, 135);
+     auto magnet1b = new TGeoTubeSeg("magnet1b", 250, 300, 35, 45, 135);
+     auto magnet1c = new TGeoTubeSeg("magnet1c", 250, 270, 125, 45, 60);
+     auto magnet1d = new TGeoTubeSeg("magnet1d", 250, 270, 125, 120, 135);
 
-    // magnet composite shape matrices
+     // magnet composite shape matrices
      TGeoTranslation *m1 = new TGeoTranslation(0, 0, 160);
      m1->SetName("m1");
      m1->RegisterYourself();
@@ -201,7 +202,7 @@ void ShipMagnet::ConstructGeometry()
      TGeoBBox *my1 = new TGeoBBox("my1", xaperture+YokeWidth,yaperture+YokeWidth,YokeDepth+0.1*cm);
      TGeoBBox *my2 = new TGeoBBox("my2", xaperture-0.1*cm,yaperture-0.1*cm,YokeDepth+1.);
      TGeoCompositeShape *myc = new TGeoCompositeShape("myc", "my1-my2");
-     TGeoVolume *magyoke = new TGeoVolume("magyoke", magyokec, Fe);
+     auto magyoke = new TGeoVolume("magyoke", magyokec, Fe);
      magyoke->SetLineColor(kBlue);
      tMagnet->AddNode(magyoke, 1, new TGeoTranslation(0, 0, fSpecMagz));
      //and the coils: top
@@ -209,7 +210,7 @@ void ShipMagnet::ConstructGeometry()
      TGeoTranslation *t1 = new TGeoTranslation("t1",xaperture,yaperture-CoilThick,0.); t1->RegisterYourself();
      TGeoTranslation *t2 = new TGeoTranslation("t2",-xaperture,yaperture-CoilThick,0.); t2->RegisterYourself();
      TGeoCompositeShape *CTop1 = new TGeoCompositeShape("CTop1", "CTop:t1-myc");
-     TGeoCompositeShape *CTop2 = new TGeoCompositeShape("CTop2", "CTop:t2-myc");
+     auto CTop2 = new TGeoCompositeShape("CTop2", "CTop:t2-myc");
      TGeoVolume *MCoil1 = new TGeoVolume("MCoil1", CTop1, Al);
      TGeoVolume *MCoil2 = new TGeoVolume("MCoil2", CTop2, Al);
      MCoil1->SetLineColor(kYellow);

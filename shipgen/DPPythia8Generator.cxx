@@ -112,7 +112,7 @@ Bool_t DPPythia8Generator::Init()
     fPythiaHadDecay->readString("23:onMode = off");
     fPythiaHadDecay->readString("23:onIfAny = 1 2 3 4 5");
     }*/
-  TDatabasePDG* pdgBase = TDatabasePDG::Instance();
+  auto pdgBase = TDatabasePDG::Instance();
   Double_t root_ctau = pdgBase->GetParticle(fDP)->Lifetime();
   //fPythia->particleData.readString("4900023:useBreitWigner = false");
   if ( debug ){
