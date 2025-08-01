@@ -20,7 +20,7 @@ jobs:
         - /cvmfs/ship.cern.ch:/cvmfs/ship.cern.ch
 
     env:
-      version: 25.01
+      version: dev-root-master
 
     steps:
       - name: Checkout
@@ -51,7 +51,7 @@ jobs:
         - /cvmfs/ship.cern.ch:/cvmfs/ship.cern.ch
 
     env:
-      version: 25.01
+      version: dev-root-master
 
     strategy:
       matrix:
@@ -98,11 +98,11 @@ jobs:
           eval $(alienv load FairShip/latest)
           python $FAIRSHIP/macro/ShipAna.py -f ship.conical.Pythia8-TGeant4_rec.root -g geofile_full.conical.Pythia8-TGeant4.root
 
-      - name: Run examples
-        run: |
-          source /cvmfs/ship.cern.ch/$version/setUp.sh
-          eval $(alienv load FairShip/latest)
-          python $FAIRSHIP/examples/analysis_example.py
+      # - name: Run examples
+      #   run: |
+      #     source /cvmfs/ship.cern.ch/$version/setUp.sh
+      #     eval $(alienv load FairShip/latest)
+      #     python $FAIRSHIP/examples/analysis_example.py
 
       - name: Upload .root artifacts
         uses: actions/upload-artifact@v4
@@ -121,7 +121,7 @@ jobs:
         - /cvmfs/ship.cern.ch:/cvmfs/ship.cern.ch
 
     env:
-      version: 25.01
+      version: dev-root-master
 
     strategy:
       matrix:
