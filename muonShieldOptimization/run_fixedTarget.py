@@ -188,8 +188,7 @@ run.AddModule(sensPlane)
 # -----Create PrimaryGenerator--------------------------------------
 primGen = ROOT.FairPrimaryGenerator()
 P8gen = ROOT.FixedTargetGenerator()
-#P8gen.SetTarget("/TargetArea_1", 0., 0.)  # will distribute PV inside target, beam offset x=y=0.
-P8gen.SetTarget("/MuonShieldArea_1", 0., 0.)
+P8gen.SetTarget("/target_vacuum_box_1", 0., 0.)  # will distribute PV inside target, beam offset x=y=0.
 P8gen.SetMom(400.*u.GeV)
 P8gen.SetEnergyCut(args.ecut*u.GeV)
 P8gen.SetDebug(args.debug)
