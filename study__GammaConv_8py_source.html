@@ -140,7 +140,7 @@ $(document).ready(function(){initNavTree('study__GammaConv_8py_source.html','');
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="comment"># -----Create simulation run----------------------------------------</span></div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="namespacestudy__GammaConv.html#aff680131360b4875e5bc81afd58165de">   42</a></span>run = ROOT.FairRunSim()</div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>run.SetName(mcEngine)  <span class="comment"># Transport engine</span></div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>run.SetOutputFile(outFile)  <span class="comment"># Output file</span></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>run.SetSink(ROOT.FairRootFileSink(outFile))  <span class="comment"># Output file</span></div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>run.SetUserConfig(<span class="stringliteral">&quot;g4Config.C&quot;</span>) <span class="comment"># user configuration file default g4Config.C</span></div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="namespacestudy__GammaConv.html#a2a14ad91e72e99a989381bafe44b0996">   46</a></span>rtdb = run.GetRuntimeDb()</div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>

@@ -167,7 +167,7 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">   32</span> </div>
 <div class="line"><span class="lineno">   33</span>    run = r.FairRunSim()</div>
 <div class="line"><span class="lineno">   34</span>    run.SetName(<span class="stringliteral">&#39;TGeant4&#39;</span>)  <span class="comment"># Transport engine</span></div>
-<div class="line"><span class="lineno">   35</span>    run.SetOutputFile(<span class="stringliteral">&quot;tmp_file&quot;</span>)  <span class="comment"># Output file</span></div>
+<div class="line"><span class="lineno">   35</span>    run.SetSink(ROOT.FairRootFileSink(<span class="stringliteral">&quot;tmp_file&quot;</span>))  <span class="comment"># Output file</span></div>
 <div class="line"><span class="lineno">   36</span>    <span class="comment"># user configuration file default g4Config.C</span></div>
 <div class="line"><span class="lineno">   37</span>    run.SetUserConfig(<span class="stringliteral">&#39;g4Config.C&#39;</span>)</div>
 <div class="line"><span class="lineno">   38</span>    modules = <a class="code hl_function" href="namespaceshipDet__conf.html#a7f232397871353ce80c1ea03eb15bd20">shipDet_conf.configure</a>(run, ship_geo)</div>

@@ -137,7 +137,7 @@ $(document).ready(function(){initNavTree('study__thinTarget_8py_source.html','')
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="namespacestudy__thinTarget.html#aa9ff8642ba3746c2603b01b6f1595c8b">   38</a></span>gFairBaseContFact = ROOT.FairBaseContFact() <span class="comment"># required by change to FairBaseContFact to avoid TList::Clear errors</span></div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="namespacestudy__thinTarget.html#a7d345676eb518ca2a793ac62d2f5f1aa">   39</a></span>run = ROOT.FairRunSim()</div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>run.SetName(mcEngine)  <span class="comment"># Transport engine</span></div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>run.SetOutputFile(outFile)  <span class="comment"># Output file</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>run.SetSink(ROOT.FairRootFileSink(outFile))  <span class="comment"># Output file</span></div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>run.SetUserConfig(<span class="stringliteral">&quot;g4Config.C&quot;</span>) <span class="comment"># user configuration file default g4Config.C</span></div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="namespacestudy__thinTarget.html#a87163e57320d77f666a40f70746316b3">   43</a></span>rtdb = run.GetRuntimeDb()</div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>

@@ -142,7 +142,7 @@ $(document).ready(function(){initNavTree('study__muMSC_8py_source.html',''); ini
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="comment"># -----Create simulation run----------------------------------------</span></div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#ac9aa76a1bc450cd56346e645ad570867">   44</a></span>run = ROOT.FairRunSim()</div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>run.SetName(mcEngine)  <span class="comment"># Transport engine</span></div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>run.SetOutputFile(outFile)  <span class="comment"># Output file</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>run.SetSink(ROOT.FairRootFileSink(outFile))  <span class="comment"># Output file</span></div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>run.SetUserConfig(<span class="stringliteral">&quot;g4Config.C&quot;</span>) <span class="comment"># user configuration file default g4Config.C</span></div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="namespacestudy__muMSC.html#ad2940d32982ebfb35486ed68163021d1">   48</a></span>rtdb = run.GetRuntimeDb()</div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>

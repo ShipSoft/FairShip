@@ -144,7 +144,7 @@ $(document).ready(function(){initNavTree('run__simEcal_8py_source.html',''); ini
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="comment"># -----Create simulation run----------------------------------------</span></div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="namespacerun__simEcal.html#a4212ccae07e1b69e69c70dc1cd3f95e2">   46</a></span>run = ROOT.FairRunSim()</div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>run.SetName(mcEngine)  <span class="comment"># Transport engine</span></div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>run.SetOutputFile(outFile)  <span class="comment"># Output file</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>run.SetSink(ROOT.FairRootFileSink(outFile))  <span class="comment"># Output file</span></div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a class="line" href="namespacerun__simEcal.html#ab781f41883a70d5ba32dbea56c8ad313">   49</a></span>rtdb = run.GetRuntimeDb()</div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="comment"># -----Create geometry----------------------------------------------</span></div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="keyword">import</span> shipDet_conf</div>

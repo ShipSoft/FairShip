@@ -120,7 +120,7 @@ $(document).ready(function(){initNavTree('run__anaEcal_8py_source.html',''); ini
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="comment"># -----Create analysis run------------------------------------------</span></div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="namespacerun__anaEcal.html#ab96b912b9404347481d82a60fd4bc7c1">   22</a></span>run=ROOT.FairRunAna()</div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>run.SetInputFile(inFile)    <span class="comment"># Input file</span></div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>run.SetOutputFile(outFile)  <span class="comment"># Output file</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>run.SetSink(ROOT.FairRootFileSink(outFile))  <span class="comment"># Output file</span></div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="comment"># -----Calorimeter part --------------------------------------------</span></div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="comment"># Creates. exports and fills calorimeter structure</span></div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="namespacerun__anaEcal.html#abea5c8a5e4fdd17ccd325b2ffc26e69d">   27</a></span>ecalFiller=ROOT.ecalStructureFiller(<span class="stringliteral">&quot;ecalFiller&quot;</span>, 1, <span class="stringliteral">&quot;ecal.geo&quot;</span>)</div>
