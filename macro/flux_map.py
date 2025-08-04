@@ -356,7 +356,7 @@ def main():
                         h['mu_ppt'].Fill(P, pt, weight)
                         h['SBT_Plastic_mu'].Fill(z, phi, weight)
                     continue
-                log.warn('Unidentified vetoPoint.')
+                log.warning('Unidentified vetoPoint.')
         if muon:
             original_muon = event.MCTrack[muonid]
             weight = original_muon.GetWeight()

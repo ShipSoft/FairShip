@@ -112,7 +112,7 @@ else:
 
  if args.nudet:
   if 'GXMLPATH' not in os.environ:
-   logging.warn('GXMLPATH is not set: Genie will decay charm and tau particles, which is usually not the desired behaviour')
+   logging.warning('GXMLPATH is not set: Genie will decay charm and tau particles, which is usually not the desired behaviour')
   else: logging.debug('GXMLPATH is set: Genie will not decay charm and tau particles')
 
  splines = args.splinedir+'/'+xsec #path of splines

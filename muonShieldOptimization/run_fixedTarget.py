@@ -92,7 +92,7 @@ else:
     logger.info("use EvtGen as primary decayer")
 # withEvtGen = args.withEvtGen
 if args.charm and args.beauty:
-    logger.warn("charm and beauty decays are set! Beauty gets priority")
+    logger.warning("charm and beauty decays are set! Beauty gets priority")
     args.charm = False
 charmInputFile = args.charmInputFile
 
@@ -104,16 +104,16 @@ if args.work_dir is None:
 logger.debug("work_dir: %s" % args.work_dir)
 logger.debug("command line arguments: %s", args)
 if os.path.exists(args.work_dir):
-    logger.warn("output directory '%s' already exists." % args.work_dir)
+    logger.warning("output directory '%s' already exists." % args.work_dir)
     if args.force:
-        logger.warn("...cleaning")
+        logger.warning("...cleaning")
         for root, dirs, files in os.walk(args.work_dir):
             for f in files:
                 os.unlink(os.path.join(root, f))
             for d in dirs:
                 shutil.rmtree(os.path.join(root, d))
     else:
-        logger.warn("...use '-f' option to overwrite it")
+        logger.warning("...use '-f' option to overwrite it")
 else:
     os.makedirs(args.work_dir)
 
