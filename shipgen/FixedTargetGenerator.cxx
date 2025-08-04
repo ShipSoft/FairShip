@@ -55,7 +55,7 @@ Bool_t FixedTargetGenerator::InitForCharmOrBeauty(TString fInName, Int_t nev, Do
   nEntry = nStart;
   // open input file with charm or beauty
   fin   = TFile::Open(fInName);
-  nTree = (TNtuple*)fin->FindObjectAny("pythia6"); // old format, simple ntuple
+  nTree = dynamic_cast<TNtuple*>(fin->FindObjectAny("pythia6"));   // old format, simple ntuple
   nEvents = nTree->GetEntries();
   nTree->SetBranchAddress("id",&n_id);
   nTree->SetBranchAddress("px",&n_px);
@@ -83,7 +83,7 @@ Bool_t FixedTargetGenerator::InitForCharmOrBeauty(TString fInName, Int_t nev, Do
 // convert pot to weight corresponding to one spill of 5e13 pot
  // get histogram with number of pot to normalise
  // pot are counted double, i.e. for each signal, i.e. pot/2.
-  Int_t nrcpot=((TH1F*)fin->Get("2"))->GetBinContent(1)/2.; // number of primary interactions
+  Int_t nrcpot = dynamic_cast<TH1F*>(fin->Get("2"))->GetBinContent(1) / 2.;   // number of primary interactions
   wspill = nrpotspill*chicc/nrcpot*nEvents/nev;
   LOG(INFO) << "Input file: " << fInName.Data() << " with " << nEvents << " entries, corresponding to nr-pot=" << (nrcpot/chicc);
   LOG(INFO) << "weight " << wspill << " corresponding to " << nrpotspill << " p.o.t. per spill for " << nev << " events to process";
@@ -225,18 +225,18 @@ Bool_t FixedTargetGenerator::Init()
    nav->cd(targetName);
    TGeoNode* target = nav->GetCurrentNode();
    TObjArray* nodes =  target->GetVolume()->GetNodes();
-   TGeoNode* first = (TGeoNode*)nodes->At(0);
+   TGeoNode* first = static_cast<TGeoNode*>(nodes->At(0));
    Int_t ilast = nodes->GetSize()-5; // assumes that the last 5 nodes are for the shielding around the target.
-   TGeoNode* last  = (TGeoNode*)nodes->At(ilast);
+   TGeoNode* last = static_cast<TGeoNode*>(nodes->At(ilast));
    nav->cd(targetName+"/"+first->GetName());
-   TGeoBBox* sha = (TGeoBBox*)first->GetVolume()->GetShape();
+   TGeoBBox* sha = static_cast<TGeoBBox*>(first->GetVolume()->GetShape());
    Double_t dz   = sha->GetDZ();
    Double_t origin[3] = {0,0,-dz};
    Double_t master[3] = {0,0,0};
    nav->LocalToMaster(origin,master);
    startZ =  master[2];
    nav->cd(targetName+"/"+last->GetName());
-   sha = (TGeoBBox*)first->GetVolume()->GetShape();
+   sha = static_cast<TGeoBBox*>(first->GetVolume()->GetShape());
    dz   = sha->GetDZ();
    origin[2] = +dz;
    nav->LocalToMaster(origin,master);
@@ -333,19 +333,31 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg)
     if (pt<1.e-5 && n_mid==2212){
      pot+=+0.5;
      ntotprim+=1;}
-    Int_t idabs=int(TMath::Abs(n_id));
+    Int_t idabs = static_cast<int>(TMath::Abs(n_id));
     if (idabs==431){ nDsprim+=1;}
     fPythiaP->event.reset();
     Int_t nID1 = n_id;
-    fPythiaP->event.append(int(n_id),1,0,0,n_px,n_py,n_pz,n_E,n_M,0.,9.);
+    fPythiaP->event.append(static_cast<int>(n_id), 1, 0, 0, n_px, n_py, n_pz, n_E, n_M, 0., 9.);
     TMCProcess procID  = kPTransportation;
     if (n_mid==2212 && (n_mpx*n_mpx+n_mpy*n_mpy)<1E-5) {procID = kPPrimary;} // probably primary and not from cascade
-    cpg->AddTrack(int(n_mid),n_mpx,n_mpy,n_mpz, xOff/cm,yOff/cm,zinter/cm,-1,kFALSE,n_mE,0.,wspill,procID);
-// second charm hadron in the event
+    cpg->AddTrack(static_cast<int>(n_mid),
+                  n_mpx,
+                  n_mpy,
+                  n_mpz,
+                  xOff / cm,
+                  yOff / cm,
+                  zinter / cm,
+                  -1,
+                  kFALSE,
+                  n_mE,
+                  0.,
+                  wspill,
+                  procID);
+    // second charm hadron in the event
     nTree->GetEvent(nEntry);
     if (nID1 * n_id > 0){LOG(INFO) << "same sign charm: " << nEntry << ", " << nID1 << ", " << n_id;}
     nEntry+=1;
-    fPythiaP->event.append(int(n_id),1,0,0,n_px,n_py,n_pz,n_E,n_M,0.,9.);
+    fPythiaP->event.append(static_cast<int>(n_id), 1, 0, 0, n_px, n_py, n_pz, n_E, n_M, 0., 9.);
     fPythiaP->next();
     fPythia = fPythiaP;
   }
