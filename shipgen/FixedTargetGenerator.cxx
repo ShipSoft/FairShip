@@ -28,7 +28,9 @@ FixedTargetGenerator::FixedTargetGenerator()
   fMom        = 400;  // proton
   fLogger = FairLogger::GetLogger();
   targetName = "";
-  xOff=0; yOff=0;
+  xOff = 0;
+  yOff = 0;
+  zOff = 0;
   tauOnly = false;
   JpsiMainly = false;
   DrellYan = false;
@@ -246,7 +248,7 @@ Bool_t FixedTargetGenerator::Init()
    endZ =  master[2];
    start[0]=xOff;
    start[1]=yOff;
-   start[2]=startZ;
+   start[2] = startZ + zOff;
    end[0]=xOff;
    end[1]=yOff;
    end[2]=endZ;
