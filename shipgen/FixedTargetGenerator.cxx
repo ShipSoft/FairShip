@@ -223,6 +223,9 @@ Bool_t FixedTargetGenerator::Init()
    fMaterialInvestigator = new GenieGenerator();
    TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
    nav->cd(targetName);
+   if (!nav) {
+       LOG(FATAL) << "Invalid target volume specified";
+   }
    TGeoNode* target = nav->GetCurrentNode();
    TObjArray* nodes =  target->GetVolume()->GetNodes();
    TGeoNode* first = static_cast<TGeoNode*>(nodes->At(0));
@@ -250,6 +253,8 @@ Bool_t FixedTargetGenerator::Init()
 //find maximum interaction length
    bparam = fMaterialInvestigator->MeanMaterialBudget(start, end, mparam);
    maxCrossSection =  mparam[9];
+  } else {
+      LOG(FATAL) << "No target set.";
   }
 
   return kTRUE;
