@@ -72,6 +72,7 @@ ap.add_argument('--AddMuonShield', help='Whether or not to add the muon shield. 
 ap.add_argument('--AddMuonShieldField', help='Whether or not to add the muon shield magnetic field. Default set to False.', default=False, action=argparse.BooleanOptionalAction)
 ap.add_argument('--AddHadronAbsorberOnly', help='Whether to only add the hadron absorber part of the muon shield. Default set to False.', default=True, action=argparse.BooleanOptionalAction)
 
+ap.add_argument('--z-offset', type=float, dest='z_offset', default=-84., help="z-offset for the FixedTargetGenerator [mm]")
 ap.add_argument('--TARGET_YAML', dest='TARGET_YAML', help='File for target configuration', default=os.path.expandvars('$FAIRSHIP/geometry/target_config_Jun25.yaml'))
 
 args = ap.parse_args()
@@ -188,6 +189,7 @@ run.AddModule(sensPlane)
 # -----Create PrimaryGenerator--------------------------------------
 primGen = ROOT.FairPrimaryGenerator()
 P8gen = ROOT.FixedTargetGenerator()
+P8gen.SetZoffset(args.z_offset*u.mm)
 P8gen.SetTarget("/target_vacuum_box_1", 0., 0.)  # will distribute PV inside target, beam offset x=y=0.
 P8gen.SetMom(400.*u.GeV)
 P8gen.SetEnergyCut(args.ecut*u.GeV)

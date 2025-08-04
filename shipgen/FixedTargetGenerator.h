@@ -1,5 +1,5 @@
-#ifndef FIXEDTARGETGENERATOR_H
-#define FIXEDTARGETGENERATOR_H 1
+#ifndef SHIPGEN_FIXEDTARGETGENERATOR_H_
+#define SHIPGEN_FIXEDTARGETGENERATOR_H_
 
 #include "TROOT.h"
 #include "FairGenerator.h"
@@ -34,6 +34,7 @@ class FixedTargetGenerator : public FairGenerator
   void UseRandom1() { fUseRandom1 = kTRUE; fUseRandom3 = kFALSE; };
   void UseRandom3() { fUseRandom1 = kFALSE; fUseRandom3 = kTRUE; };
   void SetTarget(TString s, Double_t x,Double_t y ) { targetName = s; xOff=x; yOff=y; };
+  void SetZoffset(Double_t z) { zOff = z; };
   void SetBoost(Double_t f) { fBoost  = f; }  // boost factor for rare di-muon decays
   void SetG4only() { G4only  = true; }  // only run Geant4, no pythia primary interaction
   void SetTauOnly() { tauOnly  = true; }  // only have Ds decay to tau
@@ -75,6 +76,7 @@ class FixedTargetGenerator : public FairGenerator
   TString targetName,Option;
   Double_t xOff;
   Double_t yOff;
+  Double_t zOff;
   Double_t start[3];
   Double_t end[3];
   Double_t bparam;
@@ -89,4 +91,4 @@ class FixedTargetGenerator : public FairGenerator
 
   ClassDef(FixedTargetGenerator,2);
 };
-#endif /* !FIXEDTARGETGENERATOR_H */
+#endif   // SHIPGEN_FIXEDTARGETGENERATOR_H_

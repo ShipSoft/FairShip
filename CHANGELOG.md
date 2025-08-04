@@ -38,6 +38,7 @@ it in future.
 * Added the hole for SND in the Muon Shield, that is created automatically if SND key is enabled (works so far for SND_design == 2)
 * Implement vacuum in target facility
 * Implement target helium vessel
+* feat(python): Add z-offset to FixedTargetGenerator
 
 ### Fixed
 

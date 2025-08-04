@@ -145,6 +145,7 @@ parser.add_argument("--shieldName", help="The name of the muon shield in the dat
 parser.add_argument("--MesonMother", dest="MM", help="Choose DP production meson source: pi0, eta, omega, eta1, eta11", default='pi0')
 parser.add_argument("--debug", help="1: print weights and field 2: make overlap check", default=0, type=int, choices=range(0,3))
 parser.add_argument("--field_map", default=None, help="Specify spectrometer field map.")
+parser.add_argument("--z-offset", dest="z_offset", help="z-offset for the FixedTargetGenerator [mm]", default=-84., type=float)
 parser.add_argument(
     "--helium",
     dest="decayVolMed",
@@ -336,6 +337,7 @@ if simEngine == "Pythia8":
  primGen.AddGenerator(P8gen)
 if simEngine == "FixedTarget":
  P8gen = ROOT.FixedTargetGenerator()
+ P8gen.SetZoffset(options.z_offset*u.mm)
  P8gen.SetTarget("volTarget_1",0.,0.)
  P8gen.SetMom(400.*u.GeV)
  P8gen.SetEnergyCut(0.)
