@@ -21,7 +21,7 @@ shipRoot_conf.configure()
 # -----Create analysis run------------------------------------------
 run=ROOT.FairRunAna()
 run.SetInputFile(inFile)    # Input file
-run.SetOutputFile(outFile)  # Output file
+run.SetSink(ROOT.FairRootFileSink(outFile))  # Output file
 # -----Calorimeter part --------------------------------------------
 # Creates. exports and fills calorimeter structure
 ecalFiller=ROOT.ecalStructureFiller("ecalFiller", 1, "ecal.geo")

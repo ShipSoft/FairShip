@@ -17,7 +17,7 @@ ShipGeo = upkl.load('ShipGeo')
 modules = shipDet_conf.configure(run, ShipGeo)
 run.SetUserConfig('g4Config.C')
 run.SetName('TGeant4')
-run.SetOutputFile(ROOT.TMemFile('output', 'recreate'))
+run.SetSink(ROOT.FairRootFileSink(ROOT.TMemFile('output', 'recreate')))
 run.Init()
 run.Run(0)
 import geomGeant4

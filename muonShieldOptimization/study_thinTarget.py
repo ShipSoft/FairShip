@@ -38,7 +38,7 @@ timer.Start()
 gFairBaseContFact = ROOT.FairBaseContFact() # required by change to FairBaseContFact to avoid TList::Clear errors
 run = ROOT.FairRunSim()
 run.SetName(mcEngine)  # Transport engine
-run.SetOutputFile(outFile)  # Output file
+run.SetSink(ROOT.FairRootFileSink(outFile))  # Output file
 run.SetUserConfig("g4Config.C") # user configuration file default g4Config.C
 rtdb = run.GetRuntimeDb()
 
