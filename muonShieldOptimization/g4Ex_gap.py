@@ -82,16 +82,16 @@ def init():
   logger.debug("work_dir: %s" % work_dir)
   logger.debug("command line arguments: %s", args)
   if os.path.exists(work_dir):
-    logger.warn("output directory '%s' already exists." % work_dir)
+    logger.warning("output directory '%s' already exists." % work_dir)
     if args.force:
-      logger.warn("...cleaning")
+      logger.warning("...cleaning")
       for root, dirs, files in os.walk(work_dir):
         for f in files:
           os.unlink(os.path.join(root, f))
         for d in dirs:
           shutil.rmtree(os.path.join(root, d))
     else:
-      logger.warn("...use '-f' option to overwrite it")
+      logger.warning("...use '-f' option to overwrite it")
   else:
     os.makedirs(work_dir)
   return args
