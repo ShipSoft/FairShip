@@ -338,7 +338,7 @@ if simEngine == "Pythia8":
 if simEngine == "FixedTarget":
  P8gen = ROOT.FixedTargetGenerator()
  P8gen.SetZoffset(options.z_offset*u.mm)
- P8gen.SetTarget("volTarget_1",0.,0.)
+ P8gen.SetTarget("cave_1/target_vacuum_box_1/TargetArea_1/HeVolume_1", 0. ,0.)
  P8gen.SetMom(400.*u.GeV)
  P8gen.SetEnergyCut(0.)
  P8gen.SetHeartBeat(100000)
