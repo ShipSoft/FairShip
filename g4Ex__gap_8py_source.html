@@ -184,16 +184,16 @@ $(document).ready(function(){initNavTree('g4Ex__gap_8py_source.html',''); initRe
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  logger.debug(<span class="stringliteral">&quot;work_dir: %s&quot;</span> % work_dir)</div>
 <div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  logger.debug(<span class="stringliteral">&quot;command line arguments: %s&quot;</span>, args)</div>
 <div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>  <span class="keywordflow">if</span> os.path.exists(work_dir):</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    logger.warn(<span class="stringliteral">&quot;output directory &#39;%s&#39; already exists.&quot;</span> % work_dir)</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    logger.warning(<span class="stringliteral">&quot;output directory &#39;%s&#39; already exists.&quot;</span> % work_dir)</div>
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    <span class="keywordflow">if</span> args.force:</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>      logger.warn(<span class="stringliteral">&quot;...cleaning&quot;</span>)</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>      logger.warning(<span class="stringliteral">&quot;...cleaning&quot;</span>)</div>
 <div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>      <span class="keywordflow">for</span> root, dirs, files <span class="keywordflow">in</span> os.walk(work_dir):</div>
 <div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>        <span class="keywordflow">for</span> f <span class="keywordflow">in</span> files:</div>
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>          os.unlink(os.path.join(root, f))</div>
 <div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>        <span class="keywordflow">for</span> d <span class="keywordflow">in</span> dirs:</div>
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>          shutil.rmtree(os.path.join(root, d))</div>
 <div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>      logger.warn(<span class="stringliteral">&quot;...use &#39;-f&#39; option to overwrite it&quot;</span>)</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>      logger.warning(<span class="stringliteral">&quot;...use &#39;-f&#39; option to overwrite it&quot;</span>)</div>
 <div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>  <span class="keywordflow">else</span>:</div>
 <div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    os.makedirs(work_dir)</div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>  <span class="keywordflow">return</span> args</div>

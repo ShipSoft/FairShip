@@ -472,7 +472,7 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">  356</span>                        h[<span class="stringliteral">&#39;mu_ppt&#39;</span>].Fill(P, pt, weight)</div>
 <div class="line"><span class="lineno">  357</span>                        h[<span class="stringliteral">&#39;SBT_Plastic_mu&#39;</span>].Fill(z, phi, weight)</div>
 <div class="line"><span class="lineno">  358</span>                    <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  359</span>                log.warn(<span class="stringliteral">&#39;Unidentified vetoPoint.&#39;</span>)</div>
+<div class="line"><span class="lineno">  359</span>                log.warning(<span class="stringliteral">&#39;Unidentified vetoPoint.&#39;</span>)</div>
 <div class="line"><span class="lineno">  360</span>        <span class="keywordflow">if</span> muon:</div>
 <div class="line"><span class="lineno">  361</span>            original_muon = event.MCTrack[muonid]</div>
 <div class="line"><span class="lineno">  362</span>            weight = original_muon.GetWeight()</div>
