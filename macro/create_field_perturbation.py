@@ -32,7 +32,7 @@ def create_csv_field_map(options):
 
     run = r.FairRunSim()
     run.SetName('TGeant4')  # Transport engine
-    run.SetOutputFile("tmp_file")  # Output file
+    run.SetSink(ROOT.FairRootFileSink("tmp_file"))  # Output file
     # user configuration file default g4Config.C
     run.SetUserConfig('g4Config.C')
     modules = shipDet_conf.configure(run, ship_geo)

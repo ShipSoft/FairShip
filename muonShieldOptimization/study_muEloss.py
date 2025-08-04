@@ -56,8 +56,8 @@ def run():
  gFairBaseContFact = ROOT.FairBaseContFact() # required by change to FairBaseContFact to avoid TList::Clear errors
  run = ROOT.FairRunSim()
  run.SetName(mcEngine)  # Transport engine
- if nev==0: run.SetOutputFile("dummy.root")
- else: run.SetOutputFile(outFile)  # Output file
+ if nev==0: run.SetSink(ROOT.FairRootFileSink("dummy.root"))
+ else: run.SetSink(ROOT.FairRootFileSink(outFile))  # Output file
  run.SetUserConfig("g4Config.C") # user configuration file default g4Config.C
  rtdb = run.GetRuntimeDb()
 # -----Materials----------------------------------------------

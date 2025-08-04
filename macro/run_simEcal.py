@@ -45,7 +45,7 @@ timer.Start()
 # -----Create simulation run----------------------------------------
 run = ROOT.FairRunSim()
 run.SetName(mcEngine)  # Transport engine
-run.SetOutputFile(outFile)  # Output file
+run.SetSink(ROOT.FairRootFileSink(outFile))  # Output file
 rtdb = run.GetRuntimeDb()
 # -----Create geometry----------------------------------------------
 import shipDet_conf
