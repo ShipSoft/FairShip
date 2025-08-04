@@ -29,7 +29,7 @@ FixedTargetGenerator::FixedTargetGenerator()
   fSeed = 0;
   fMom        = 400;  // proton
   fLogger = FairLogger::GetLogger();
-  targetName = "";
+  targetName = "cave_1/target_vacuum_box_1/TargetArea_1/HeVolume_1";
   xOff = 0;
   yOff = 0;
   zOff = 0;
@@ -226,8 +226,9 @@ Bool_t FixedTargetGenerator::Init()
   if (targetName!=""){
    fMaterialInvestigator = new GenieGenerator();
    TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
-   nav->cd(targetName);
-   if (!nav) {
+   if (nav->CheckPath(targetName)) {
+       nav->cd(targetName);
+   } else {
        LOG(FATAL) << "Invalid target volume specified";
    }
    TGeoNode* target = nav->GetCurrentNode();
