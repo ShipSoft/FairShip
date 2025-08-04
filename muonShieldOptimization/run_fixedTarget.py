@@ -61,7 +61,7 @@ ap.add_argument('-D', '--4darkPhoton', action=argparse.BooleanOptionalAction, de
 # for charm production
 ap.add_argument('-cc', '--chicc', default=1.7e-3, help="ccbar over mbias cross section")
 ap.add_argument('-bb', '--chibb', default=1.6e-7, help="bbbar over mbias cross section")
-ap.add_argument('-p', '--pot', dest='npot', default=5E13, help="number of protons on target per spill to normalize on")
+ap.add_argument('-p', '--pot', default=5E13, help="number of protons on target per spill to normalize on")
 ap.add_argument('-S', '--nStart', type=int, help="first event of input file to start", dest='nStart', default=0)
 ap.add_argument('-I', '--InputFile', type=str, dest='charmInputFile', default=ROOT.gSystem.Getenv("EOSSHIP")+"/eos/experiment/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-76Mpot_1.root", help="input file for charm/beauty decays")
 ap.add_argument('-o', '--output', type=str, help="output directory", dest='work_dir', default=None)
@@ -157,7 +157,8 @@ TargetStation = ROOT.ShipTargetStation(name="TargetStation",
                                        tl=ship_geo.target.length,
                                        tz=ship_geo.target.z,
                                        tV=ship_geo.targetVersion,
-                                       nS=ship_geo.target.nS)
+                                       nS=ship_geo.target.nS,
+                                       HeT=ship_geo.target.HeT)
 TargetStation.SetLayerPosMat(d=ship_geo.target.xy, L=ship_geo.target.slices_length, G=ship_geo.target.slices_gap, M=ship_geo.target.slices_material)
 run.AddModule(TargetStation)
 
@@ -187,7 +188,7 @@ run.AddModule(sensPlane)
 # -----Create PrimaryGenerator--------------------------------------
 primGen = ROOT.FairPrimaryGenerator()
 P8gen = ROOT.FixedTargetGenerator()
-P8gen.SetTarget("/TargetArea_1", 0., 0.)  # will distribute PV inside target, beam offset x=y=0.
+P8gen.SetTarget("/target_vacuum_box_1", 0., 0.)  # will distribute PV inside target, beam offset x=y=0.
 P8gen.SetMom(400.*u.GeV)
 P8gen.SetEnergyCut(args.ecut*u.GeV)
 P8gen.SetDebug(args.debug)
@@ -205,7 +206,7 @@ P8gen.SetSeed(args.seed)
 #        print '            : c chicc= ccbar over mbias cross section'
 if args.charm or args.beauty:
     print("--- process heavy flavours ---")
-    P8gen.InitForCharmOrBeauty(charmInputFile, args.nev, npot, args.nStart)
+    P8gen.InitForCharmOrBeauty(charmInputFile, args.nev, args.pot, args.nStart)
 primGen.AddGenerator(P8gen)
 #
 run.SetGenerator(primGen)
