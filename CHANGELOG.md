@@ -65,6 +65,7 @@ it in future.
 * Fix `beam smearing`: replace incorrect Gaussian radius with proper 2D Gaussian sampling. Ensures physical consistency; radius now follows Rayleigh distribution as expected.
 * Reconstruction: reverse nmeas > 0 check to make sure 𝜒² is defined
 * Fix: MTC geometry overlap
+* fix(FixedTargetGenerator): Don't assume anything about the target substructure
 
 ### Changed
 
