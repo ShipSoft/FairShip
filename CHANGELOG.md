@@ -39,6 +39,7 @@ it in future.
 * Implement vacuum in target facility
 * Implement target helium vessel
 * feat(python): Add z-offset to FixedTargetGenerator
+* Add missing --FixedTarget option to run_simScript.py
 
 ### Fixed
 

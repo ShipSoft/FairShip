@@ -113,6 +113,7 @@ parser.add_argument("--PaintBeam", dest="PaintBeam",  help="Radius of beam paint
 parser.add_argument("--Cosmics", dest="cosmics", help="Use cosmic generator, argument switch for cosmic generator 0 or 1", default=None)  # TODO: Understand integer options, replace with store_true?
 parser.add_argument("--MuDIS", dest="mudis", help="Use muon deep inelastic scattering generator", action="store_true")
 parser.add_argument("--RpvSusy", dest="RPVSUSY", help="Generate events based on RPV neutralino", action="store_true")
+parser.add_argument("--FixedTarget", dest="fixedTarget", help="Enable fixed target simulation", action="store_true")
 parser.add_argument("--DarkPhoton", help="Generate dark photons", action="store_true")
 parser.add_argument("--SusyBench", dest="RPVSUSYbench", help="Generate HP Susy", default=2)
 parser.add_argument("-m", "--mass", dest="theMass", help=f"Mass of hidden particle, default {theHNLMass} GeV for HNL, {theDPmass} GeV for DP", default=None, type=float)
@@ -179,6 +180,7 @@ if options.nuradio:  simEngine = "nuRadiography"
 if options.ntuple:   simEngine = "Ntuple"
 if options.muonback: simEngine = "MuonBack"
 if options.mudis:    simEngine = "muonDIS"
+if options.fixedTarget: simEngine = "FixedTarget"
 if options.command == "PG":       simEngine = "PG"
 if options.A != 'c':
      inclusive = options.A
