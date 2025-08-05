@@ -1,5 +1,5 @@
-#ifndef MAGNET_H
-#define MAGNET_H
+#ifndef PASSIVE_SHIPMAGNET_H_
+#define PASSIVE_SHIPMAGNET_H_
 
 #include "FairModule.h"                 // for FairModule
 #include "TGeoMedium.h"
@@ -11,7 +11,7 @@
 class ShipMagnet : public FairModule
 {
   public:
-    ShipMagnet(const char* name, const char* Title="SHiP Magnet", Double_t z=2018., Int_t c=2, Double_t dx=3, Double_t dy=5, Double_t fl=2, Double_t YW=1., Double_t YD=1., Double_t CT=1.);
+    explicit ShipMagnet(const char* name, const char* Title="SHiP Magnet", Double_t z=2018., Int_t c=2, Double_t dx=3, Double_t dy=5, Double_t fl=2, Double_t YW=1., Double_t YD=1., Double_t CT=1.);
     ShipMagnet();
     virtual ~ShipMagnet();
     void ConstructGeometry();
@@ -28,4 +28,4 @@ class ShipMagnet : public FairModule
   Int_t InitMedium(const char* name);
 };
 
-#endif //MAGNET_H
+#endif  // PASSIVE_SHIPMAGNET_H_

@@ -1,7 +1,7 @@
 /** A helper class for cluster finder
  ** Need refactoring. April 2011 //Dr.Sys **/
-#ifndef ECALPRECLUSTER_H
-#define ECALPRECLUSTER_H
+#ifndef ECAL_ECALPRECLUSTER_H_
+#define ECAL_ECALPRECLUSTER_H_
 
 #include "ecalCell.h"
 #include "ecalMaximum.h"
@@ -50,4 +50,4 @@ public:
   ecalPreCluster& operator=(const ecalPreCluster&);
 };
 
-#endif
+#endif  // ECAL_ECALPRECLUSTER_H_

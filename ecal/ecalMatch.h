@@ -1,7 +1,7 @@
 /* Matching for the calorimeter. Use photon or electron with maximum energy deposition in 3x3 cluster
  */
-#ifndef ECALMATCH
-#define ECALMATCH
+#ifndef ECAL_ECALMATCH_H_
+#define ECAL_ECALMATCH_H_
 
 #include "FairTask.h"
 
@@ -49,4 +49,4 @@ private:
   ClassDef(ecalMatch, 1)
 };
 
-#endif
+#endif  // ECAL_ECALMATCH_H_

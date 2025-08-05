@@ -46,8 +46,8 @@
 **/
 
 
-#ifndef PND_PYTHIAGENERATOR_H
-#define PND_PYTHIAGENERATOR_H
+#ifndef SHIPGEN_PYTHIA6GENERATOR_H_
+#define SHIPGEN_PYTHIA6GENERATOR_H_
 
 
 #include "FairGenerator.h"
@@ -69,7 +69,7 @@ class Pythia6Generator : public FairGenerator
   /** Standard constructor.
    ** @param fileName The input file name
    **/
-  Pythia6Generator(const char* fileName);
+  explicit Pythia6Generator(const char* fileName);
 
 
   /** Destructor. **/
@@ -104,4 +104,4 @@ class Pythia6Generator : public FairGenerator
 
 };
 
-#endif
+#endif  // SHIPGEN_PYTHIA6GENERATOR_H_

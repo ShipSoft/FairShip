@@ -1,4 +1,5 @@
-#ifndef PNDPASSIVECONTFACT_H
+#ifndef PASSIVE_SHIPPASSIVECONTFACT_H_
+#define PASSIVE_SHIPPASSIVECONTFACT_H_
 #define PNDPASSIVECONTFACT_H
 
 #include "FairContFact.h"               // for FairContFact, etc
@@ -18,4 +19,4 @@ class ShipPassiveContFact : public FairContFact
     ClassDef( ShipPassiveContFact,0) // Factory for all Passive parameter containers
 };
 
-#endif  /* !PNDPASSIVECONTFACT_H */
+#endif  // PASSIVE_SHIPPASSIVECONTFACT_H_

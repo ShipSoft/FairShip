@@ -1,5 +1,5 @@
-#ifndef PID_H
-#define PID_H
+#ifndef PID_PID_H_
+#define PID_PID_H_
 
 #include "TObject.h"
 #include "TArrayI.h"
@@ -62,4 +62,4 @@ class pid : public TObject
     ClassDef(pid,2)
 };
 
-#endif //PID_H
+#endif  // PID_PID_H_

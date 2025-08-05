@@ -1,5 +1,5 @@
-#ifndef ECALCONTFACT_H
-#define ECALCONTFACT_H
+#ifndef ECAL_ECALCONTFACT_H_
+#define ECAL_ECALCONTFACT_H_
 
 #include "FairContFact.h"
 
@@ -16,4 +16,4 @@ class ecalContFact : public FairContFact
     ClassDef( ecalContFact,0) // Factory for all ecal parameter containers
 };
 
-#endif
+#endif  // ECAL_ECALCONTFACT_H_

@@ -5,8 +5,8 @@
  **/
 
 
-#ifndef ECALDETAILED_H
-#define ECALDETAILED_H
+#ifndef ECAL_ECAL_H_
+#define ECAL_ECAL_H_
 
 
 #include "ecalPoint.h"
@@ -264,4 +264,4 @@ inline void ecal::ResetParameters()
 };
 
 
-#endif
+#endif  // ECAL_ECAL_H_

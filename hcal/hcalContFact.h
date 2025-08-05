@@ -1,5 +1,5 @@
-#ifndef HCALCONTFACT_H
-#define HCALCONTFACT_H
+#ifndef HCAL_HCALCONTFACT_H_
+#define HCAL_HCALCONTFACT_H_
 
 #include "FairContFact.h"
 
@@ -16,4 +16,4 @@ class hcalContFact : public FairContFact
     ClassDef( hcalContFact,0) // Factory for all hcal parameter containers
 };
 
-#endif
+#endif  // HCAL_HCALCONTFACT_H_

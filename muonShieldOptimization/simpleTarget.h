@@ -1,5 +1,5 @@
-#ifndef simpleTarget_H
-#define simpleTarget_H
+#ifndef MUONSHIELDOPTIMIZATION_SIMPLETARGET_H_
+#define MUONSHIELDOPTIMIZATION_SIMPLETARGET_H_
 
 #include "FairDetector.h"
 #include "TVector3.h"
@@ -97,4 +97,4 @@ class simpleTarget: public FairDetector
     ClassDef(simpleTarget, 0)
 };
 
-#endif //simpleTarget_H
+#endif  // MUONSHIELDOPTIMIZATION_SIMPLETARGET_H_

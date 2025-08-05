@@ -2,8 +2,8 @@
 generic interface to B fields of FairShip
 */
 
-#ifndef genfit_FairShipFields_h
-#define genfit_FairShipFields_h
+#ifndef FIELD_FAIRSHIPFIELDS_H_
+#define FIELD_FAIRSHIPFIELDS_H_
 
 #include "AbsBField.h"
 #include "ShipCompField.h"
@@ -35,4 +35,4 @@ class FairShipFields : public AbsBField {
 } /* End of namespace genfit */
 /** @} */
 
-#endif // genfit_FairShipFields_h
+#endif // FIELD_FAIRSHIPFIELDS_H_

@@ -1,5 +1,5 @@
-#ifndef SPLITCALHIT_H
-#define SPLITCALHIT_H 1
+#ifndef SPLITCAL_SPLITCALHIT_H_
+#define SPLITCAL_SPLITCALHIT_H_
 
 
 #include "ShipHit.h"
@@ -91,4 +91,4 @@ class splitcalHit : public ShipHit
 
 };
 
-#endif
+#endif  // SPLITCAL_SPLITCALHIT_H_

@@ -1,5 +1,5 @@
-#ifndef GOLIATH_H
-#define GOLIATH_H
+#ifndef PASSIVE_SHIPGOLIATH_H_
+#define PASSIVE_SHIPGOLIATH_H_
 
 #include "FairModule.h"                 // for FairModule
 
@@ -23,4 +23,4 @@ protected:
     Double_t GapFromTSpectro;
 };
 
-#endif //GOLIATH_H
+#endif  // PASSIVE_SHIPGOLIATH_H_

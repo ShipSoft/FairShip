@@ -3,8 +3,8 @@
 //
 //
 
-#ifndef ____ShipUnit__
-#define ____ShipUnit__
+#ifndef SHIPDATA_SHIPUNIT_H_
+#define SHIPDATA_SHIPUNIT_H_
 
 namespace ShipUnit
 {
@@ -327,4 +327,4 @@ namespace ShipUnit
 
     };
 
-#endif /* defined(____ShipUnit__) */
+#endif  // SHIPDATA_SHIPUNIT_H_ /* defined(____ShipUnit__) */

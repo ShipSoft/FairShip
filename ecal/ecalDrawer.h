@@ -4,8 +4,8 @@
  ** Idea: Select clean MC photons (e.g. without daughter particles)
  ** and find closest reconstructed photon. **/
 
-#ifndef ECALDRAWER_H
-#define ECALDRAWER_H
+#ifndef ECAL_ECALDRAWER_H_
+#define ECAL_ECALDRAWER_H_
 
 #include "FairTask.h"
 
@@ -32,7 +32,7 @@ public:
   ecalDrawer();
 
   /** Standard constructor **/
-  ecalDrawer(const char *name, const Int_t iVerbose=1);
+  explicit ecalDrawer(const char *name, const Int_t iVerbose=1);
 
   /** Destructor **/
   virtual ~ecalDrawer();
@@ -177,4 +177,4 @@ inline void HSLToRGB(Float_t h, Float_t s, Float_t l, Float_t& R, Float_t& G, Fl
   G=Hue_2_RGB(v1, v2, h);
   B=Hue_2_RGB(v1, v2, h-(1.0/3));
 }
-#endif
+#endif  // ECAL_ECALDRAWER_H_

@@ -1,5 +1,5 @@
-#ifndef ECALLIGHTMAP_H
-#define ECALLIGHTMAP_H
+#ifndef ECAL_ECALLIGHTMAP_H_
+#define ECAL_ECALLIGHTMAP_H_
 
 #include "TNamed.h"
 
@@ -7,7 +7,7 @@ class ecalLightMap : public TNamed
 {
 public:
  ecalLightMap() : TNamed(), fSSide(0.), fS(0), fSize(0), fData(NULL) {};
-  ecalLightMap(const char* fname, const char* title="Light collection efficiency map");
+  explicit ecalLightMap(const char* fname, const char* title="Light collection efficiency map");
   Double_t Data(Double_t x, Double_t y)
     {Int_t n=GetNum(x,y); if (n<0) return n; return fData[n];}
   Int_t GetNum(Double_t x, Double_t y)
@@ -42,4 +42,4 @@ private:
   ClassDef(ecalLightMap, 1)
 };
 
-#endif
+#endif  // ECAL_ECALLIGHTMAP_H_

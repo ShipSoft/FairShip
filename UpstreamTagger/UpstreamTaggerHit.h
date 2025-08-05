@@ -1,5 +1,5 @@
-#ifndef UpstreamTaggerHIT_H
-#define UpstreamTaggerHIT_H 1
+#ifndef UPSTREAMTAGGER_UPSTREAMTAGGERHIT_H_
+#define UPSTREAMTAGGER_UPSTREAMTAGGERHIT_H_
 #include "FairVolume.h"
 #include "ShipHit.h"
 #include "UpstreamTaggerPoint.h"
@@ -72,4 +72,4 @@ class UpstreamTaggerHit : public ShipHit, UpstreamTagger
 
 };
 
-#endif
+#endif  // UPSTREAMTAGGER_UPSTREAMTAGGERHIT_H_

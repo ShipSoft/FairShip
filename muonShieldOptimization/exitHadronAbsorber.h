@@ -1,5 +1,5 @@
-#ifndef EXITHADRONABSORBER_H
-#define EXITHADRONABSORBER_H
+#ifndef MUONSHIELDOPTIMIZATION_EXITHADRONABSORBER_H_
+#define MUONSHIELDOPTIMIZATION_EXITHADRONABSORBER_H_
 
 #include "FairDetector.h"
 #include "TVector3.h"
@@ -100,4 +100,4 @@ class exitHadronAbsorber: public FairDetector
     ClassDef(exitHadronAbsorber, 0)
 };
 
-#endif //EXITHADRONABSORBER_H
+#endif  // MUONSHIELDOPTIMIZATION_EXITHADRONABSORBER_H_

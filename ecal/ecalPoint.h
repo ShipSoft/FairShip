@@ -1,5 +1,5 @@
-#ifndef ECALPOINT_H
-#define ECALPOINT_H 1
+#ifndef ECAL_ECALPOINT_H_
+#define ECAL_ECALPOINT_H_ 1
 
 
 #include "FairMCPoint.h"
@@ -61,4 +61,4 @@ class ecalPoint : public FairMCPoint
 
 };
 
-#endif
+#endif  // ECAL_ECALPOINT_H_

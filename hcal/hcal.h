@@ -5,8 +5,8 @@
  **/
 
 
-#ifndef HCAL_H
-#define HCAL_H
+#ifndef HCAL_HCAL_H_
+#define HCAL_HCAL_H_
 
 
 #include "hcalPoint.h"
@@ -245,4 +245,4 @@ inline void hcal::ResetParameters()
 };
 
 
-#endif
+#endif  // HCAL_HCAL_H_

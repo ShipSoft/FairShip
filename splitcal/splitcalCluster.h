@@ -1,5 +1,5 @@
-#ifndef SPLITCALCLUSTER_H
-#define SPLITCALCLUSTER_H 1
+#ifndef SPLITCAL_SPLITCALCLUSTER_H_
+#define SPLITCAL_SPLITCALCLUSTER_H_
 
 #include "TObject.h"              //
 
@@ -29,7 +29,7 @@ class splitcalCluster : public TObject
     /** Constructors **/
     splitcalCluster();
     //splitcalCluster(boost::python::list& l);
-    splitcalCluster(splitcalHit* h);
+    explicit splitcalCluster(splitcalHit* h);
 
     /** Destructor **/
     virtual ~splitcalCluster();
@@ -91,4 +91,4 @@ class splitcalCluster : public TObject
 
 };
 
-#endif
+#endif  // SPLITCAL_SPLITCALCLUSTER_H_

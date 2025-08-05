@@ -1,5 +1,5 @@
-#ifndef PNDntGENERATOR_H
-#define PNDntGENERATOR_H 1
+#ifndef SHIPGEN_NTUPLEGENERATOR_H_
+#define SHIPGEN_NTUPLEGENERATOR_H_
 
 #include "TROOT.h"
 #include "FairGenerator.h"
@@ -38,4 +38,4 @@ class NtupleGenerator : public FairGenerator
   ClassDef(NtupleGenerator,1);
 };
 
-#endif /* !PNDntGENERATOR_H */
+#endif  // SHIPGEN_NTUPLEGENERATOR_H_ /* !PNDntGENERATOR_H */

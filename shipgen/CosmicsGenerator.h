@@ -4,8 +4,8 @@
 // -----       mailto: mfranke(at)physik.hu-berlin.de            -----
 // -------------------------------------------------------------------
 
-#ifndef PNDCoGENERATOR_H
-#define PNDCoGENERATOR_H 1
+#ifndef SHIPGEN_COSMICSGENERATOR_H_
+#define SHIPGEN_COSMICSGENERATOR_H_
 
 #include "TROOT.h"
 #include "FairGenerator.h"
@@ -69,4 +69,4 @@ class CosmicsGenerator : public FairGenerator{
 	ClassDef(CosmicsGenerator,4);
 };
 
-#endif /* !PNDCoGENERATOR_H */
+#endif  // SHIPGEN_COSMICSGENERATOR_H_ /* !PNDCoGENERATOR_H */

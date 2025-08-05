@@ -60,6 +60,6 @@ repos:
     args: [--py39-plus]
 ci:
   autofix_prs: true
-  skip: [ruff-check, cpplint, cmakelint, isort, cmake-format]
+  skip: [ruff-check, cmakelint, isort, cmake-format]
   autoupdate_commit_msg: "chore(deps): update pre-commit hooks"
   autofix_commit_msg: "style: pre-commit fixes"

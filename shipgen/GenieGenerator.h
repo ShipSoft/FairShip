@@ -1,5 +1,5 @@
-#ifndef PNDGeGENERATOR_H
-#define PNDGeGENERATOR_H 1
+#ifndef SHIPGEN_GENIEGENERATOR_H_
+#define SHIPGEN_GENIEGENERATOR_H_ 1
 
 #include "TROOT.h"
 #include "FairGenerator.h"
@@ -65,4 +65,4 @@ class GenieGenerator : public FairGenerator
   ClassDef(GenieGenerator,1);
 };
 
-#endif /* !PNDGeGENERATOR_H */
+#endif  // SHIPGEN_GENIEGENERATOR_H_ /* !PNDGeGENERATOR_H */

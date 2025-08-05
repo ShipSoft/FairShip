@@ -9,8 +9,8 @@
  **/
 
 
-#ifndef ShipGoliathField_H
-#define ShipGoliathField_H 1
+#ifndef FIELD_SHIPGOLIATHFIELD_H_
+#define FIELD_SHIPGOLIATHFIELD_H_
 
 
 #include "FairField.h"
@@ -30,7 +30,7 @@ class ShipGoliathField : public FairField
   /** Standard constructor
    ** @param name   Object name
    **/
-  ShipGoliathField(const char* name);
+    explicit ShipGoliathField(const char* name);
 
 
   /** Destructor **/
@@ -94,4 +94,4 @@ ClassDef(ShipGoliathField, 2);
 };
 
 
-#endif
+#endif  // FIELD_SHIPGOLIATHFIELD_H_

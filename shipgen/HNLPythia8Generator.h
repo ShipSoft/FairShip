@@ -1,5 +1,5 @@
-#ifndef PNDH8GENERATOR_H
-#define PNDH8GENERATOR_H 1
+#ifndef SHIPGEN_HNLPYTHIA8GENERATOR_H_
+#define SHIPGEN_HNLPYTHIA8GENERATOR_H_
 
 #include "TROOT.h"
 #include "TString.h"
@@ -100,4 +100,4 @@ class HNLPythia8Generator : public FairGenerator
   ClassDef(HNLPythia8Generator,6);
 };
 
-#endif /* !PNDH8GENERATOR_H */
+#endif  // SHIPGEN_HNLPYTHIA8GENERATOR_H_

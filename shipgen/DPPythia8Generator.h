@@ -1,4 +1,5 @@
-#ifndef DPP8GENERATOR_H
+#ifndef SHIPGEN_DPPYTHIA8GENERATOR_H_
+#define SHIPGEN_DPPYTHIA8GENERATOR_H_
 #define DPP8GENERATOR_H 1
 // Avoid the inclusion of dlfcn.h by Pyhtia.h that CINT is not able to process
 //#ifdef __CINT__
@@ -109,4 +110,4 @@ class DPPythia8Generator : public FairGenerator
   ClassDef(DPPythia8Generator,2);
 };
 
-#endif /* !PNDH8GENERATOR_H */
+#endif  // SHIPGEN_DPPYTHIA8GENERATOR_H_

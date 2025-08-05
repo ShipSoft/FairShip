@@ -1,5 +1,5 @@
-#ifndef SHIPHIT_H
-#define SHIPHIT_H 1
+#ifndef SHIPDATA_SHIPHIT_H_
+#define SHIPDATA_SHIPHIT_H_ 1
 
 #include "TObject.h"              //
 
@@ -52,7 +52,7 @@ class ShipHit : public TObject
   protected:
 #ifndef __CINT__ // for BOOST serialization
     friend class boost::serialization::access;
-#endif // for BOOST serialization
+#endif  // for BOOST serialization
 
     Float_t fdigi;   ///< digitized detector hit
     Int_t   fDetectorID;     ///< Detector unique identifier
@@ -60,4 +60,4 @@ class ShipHit : public TObject
     ClassDef(ShipHit,1);
 };
 
-#endif
+#endif  // SHIPDATA_SHIPHIT_H_

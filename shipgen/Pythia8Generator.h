@@ -1,5 +1,5 @@
-#ifndef PNDP8GENERATOR_H
-#define PNDP8GENERATOR_H 1
+#ifndef SHIPGEN_PYTHIA8GENERATOR_H_
+#define SHIPGEN_PYTHIA8GENERATOR_H_
 
 #include "TROOT.h"
 #include "FairGenerator.h"
@@ -70,4 +70,4 @@ class Pythia8Generator : public FairGenerator
   Double_t maxCrossSection;
 };
 
-#endif /* !PNDP8GENERATOR_H */
+#endif  // SHIPGEN_PYTHIA8GENERATOR_H_ /* !PNDP8GENERATOR_H */

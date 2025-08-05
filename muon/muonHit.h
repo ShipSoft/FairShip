@@ -1,5 +1,5 @@
-#ifndef MUONHIT_H
-#define MUONHIT_H 1
+#ifndef MUON_MUONHIT_H_
+#define MUON_MUONHIT_H_ 1
 
 #include "TObject.h"
 #include "TVector3.h"
@@ -52,4 +52,4 @@ class muonHit : public ShipHit
     ClassDef(muonHit,3)
 };
 
-#endif  //MUONHIT.H
+#endif  // MUON_MUONHIT_H_

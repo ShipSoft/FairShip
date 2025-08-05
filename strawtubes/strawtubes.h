@@ -1,5 +1,5 @@
-#ifndef STRAWTUBES_H
-#define STRAWTUBES_H
+#ifndef STRAWTUBES_STRAWTUBES_H_
+#define STRAWTUBES_STRAWTUBES_H_
 
 #include "FairDetector.h"
 
@@ -20,9 +20,9 @@ class strawtubes: public FairDetector
      *       Active: kTRUE for active detectors (ProcessHits() will be called)
      *               kFALSE for inactive detectors
     */
-    strawtubes(const char* Name, Bool_t Active);
+        strawtubes(const char* Name, Bool_t Active);
 
-    strawtubes(std::string medium);
+    explicit strawtubes(std::string medium);
 
     /**      default constructor    */
     strawtubes();
@@ -150,4 +150,4 @@ class strawtubes: public FairDetector
     ClassDef(strawtubes, 6)
 };
 
-#endif //STRAWTUBES_H
+#endif  // STRAWTUBES_STRAWTUBES_H_

@@ -4,8 +4,8 @@
 // -------------------------------------------------------------------------
 
 
-#ifndef ShipFieldCreator_H
-#define ShipFieldCreator_H
+#ifndef FIELD_SHIPFIELDCREATOR_H_
+#define FIELD_SHIPFIELDCREATOR_H_
 
 #include "FairFieldFactory.h"
 
@@ -31,4 +31,4 @@ class ShipFieldCreator : public FairFieldFactory
   ShipFieldCreator& operator=(const ShipFieldCreator&);
 
 };
-#endif //ShipFieldCreator_H
+#endif  // FIELD_SHIPFIELDCREATOR_H_

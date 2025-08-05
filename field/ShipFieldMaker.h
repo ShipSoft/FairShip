@@ -13,8 +13,8 @@
 
 */
 
-#ifndef ShipFieldMaker_H
-#define ShipFieldMaker_H
+#ifndef FIELD_SHIPFIELDMAKER_H_
+#define FIELD_SHIPFIELDMAKER_H_
 
 #include "ShipCompField.h"
 
@@ -38,7 +38,7 @@ class ShipFieldMaker : public TG4VUserPostDetConstruction
  public:
 
     //! Constructor
-    ShipFieldMaker(Bool_t verbose = kFALSE);
+    explicit ShipFieldMaker(Bool_t verbose = kFALSE);
 
     //! Destructor
     virtual ~ShipFieldMaker();
@@ -404,4 +404,4 @@ class ShipFieldMaker : public TG4VUserPostDetConstruction
 
 };
 
-#endif
+#endif  // FIELD_SHIPFIELDMAKER_H_

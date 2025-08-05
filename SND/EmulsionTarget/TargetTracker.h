@@ -6,8 +6,8 @@
 //
 //
 
-#ifndef TargetTracker_H
-#define TargetTracker_H
+#ifndef SND_EMULSIONTARGET_TARGETTRACKER_H_
+#define SND_EMULSIONTARGET_TARGETTRACKER_H_
 
 #include "FairDetector.h"
 #include "FairModule.h"   // for FairModule
@@ -137,4 +137,4 @@ class TargetTracker : public FairDetector
     Int_t InitMedium(const char* name);
 };
 
-#endif
+#endif   // SND_EMULSIONTARGET_TARGETTRACKER_H_

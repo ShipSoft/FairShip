@@ -10,8 +10,8 @@
  ** HCAL summable hit is a deposited energy by each tracks in HCAL module
  **/
 
-#ifndef HCALSTRUCTUREFILLER_H
-#define HCALSTRUCTUREFILLER_H
+#ifndef HCAL_HCALSTRUCTUREFILLER_H_
+#define HCAL_HCALSTRUCTUREFILLER_H_
 
 #include "FairTask.h"
 #include "TString.h"
@@ -28,7 +28,7 @@ public:
   hcalStructureFiller();
 
   /** Standard constructor **/
-  hcalStructureFiller(const char *name, const Int_t iVerbose=1, const char* fileGeo="hcal.geo");
+    explicit hcalStructureFiller(const char *name, const Int_t iVerbose=1, const char* fileGeo="hcal.geo");
 
   /** Destructor **/
   virtual ~hcalStructureFiller();
@@ -111,4 +111,4 @@ inline hcalStructure* hcalStructureFiller::GetStructure() const
   return fStr;
 }
 
-#endif
+#endif  // HCAL_HCALSTRUCTUREFILLER_H_

@@ -1,5 +1,5 @@
-#ifndef Cave_H
-#define Cave_H
+#ifndef PASSIVE_SHIPCAVE_H_
+#define PASSIVE_SHIPCAVE_H_
 
 #include "FairModule.h"                 // for FairModule
 
@@ -8,8 +8,8 @@
 class ShipCave : public FairModule
 {
   public:
-    ShipCave(Double_t z);
-    ShipCave(const char* name, const char* Title="Exp Cave");
+    explicit ShipCave(Double_t z);
+    explicit ShipCave(const char* name, const char* Title="Exp Cave");
     ShipCave();
     virtual ~ShipCave();
     virtual void ConstructGeometry();
@@ -24,4 +24,4 @@ class ShipCave : public FairModule
     ClassDef(ShipCave, 1)
 };
 
-#endif //Cave_H
+#endif  // PASSIVE_SHIPCAVE_H_

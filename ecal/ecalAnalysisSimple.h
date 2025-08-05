@@ -1,5 +1,5 @@
-#ifndef ECALANALYSISCALIB_H
-#define ECALANALYSISCALIB_H
+#ifndef ECAL_ECALANALYSISSIMPLE_H_
+#define ECAL_ECALANALYSISSIMPLE_H_
 
 #include "FairTask.h"
 
@@ -56,4 +56,4 @@ private:
   ClassDef(ecalAnalysisSimple,1)
 };
 
-#endif
+#endif  // ECAL_ECALANALYSISSIMPLE_H_

@@ -4,8 +4,8 @@
  ** ECAL structure, consisting of modules
  **/
 
-#ifndef ECALSTRUCTURE_H
-#define ECALSTRUCTURE_H
+#ifndef ECAL_ECALSTRUCTURE_H_
+#define ECAL_ECALSTRUCTURE_H_
 
 
 #include "ecalInf.h"
@@ -24,7 +24,7 @@ struct __ecalCellWrapper;
 class ecalStructure : public TNamed
 {
 public:
-  ecalStructure(ecalInf* ecalinf);
+  explicit ecalStructure(ecalInf* ecalinf);
   void SetUseMC(Int_t mc=0) {fUseMC=mc;}
   Int_t GetUseMC() const {return fUseMC;}
   void Construct();
@@ -185,4 +185,4 @@ public:
   Char_t isPsTen;
 };
 
-#endif
+#endif  // ECAL_ECALSTRUCTURE_H_

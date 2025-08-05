@@ -4,8 +4,8 @@
  ** Container of ECAL geometry parameters
  **/
 
-#ifndef ECALINF_H
-#define ECALINF_H
+#ifndef ECAL_ECALINF_H_
+#define ECAL_ECALINF_H_
 
 #include "TObjArray.h"
 #include "TString.h"
@@ -80,7 +80,7 @@ public:
 protected:
 
   /** Text file constructor **/
-  ecalInf(const char* filename);
+  explicit ecalInf(const char* filename);
   void CalculateHoleSize();
   virtual ~ecalInf();
 
@@ -171,4 +171,4 @@ inline void ecalInf::FreeInstance()
 		fInf=NULL;
 	}
 }
-#endif
+#endif  // ECAL_ECALINF_H_

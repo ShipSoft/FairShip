@@ -1,8 +1,8 @@
 // A very simple digitization scheme for Ship ECAL
 // Operate over ecalStructure
 
-#ifndef ECALDIGI_H
-#define ECALDIGI_H
+#ifndef ECAL_ECALDIGI_H_
+#define ECAL_ECALDIGI_H_
 
 #include "FairTask.h"
 
@@ -63,4 +63,4 @@ private:
   ClassDef(ecalDigi, 1);
 };
 
-#endif
+#endif  // ECAL_ECALDIGI_H_
