@@ -220,37 +220,32 @@ it in future.
 
 ### Added
 
-* New analysis toolkit prototype added as part of the 'experimental' package.
-* Simple analysis example script now available in 'examples/'
+- Add prototype of a new analysis toolkit in the `experimental` package.
+- Add a simple analysis example script in the `examples/` directory.
 
 ### Fixed
 
-* Use ConstructedAt + std::swap to replace removed pythonization for TCA
-* Octant symmetry was incorrect for B_z when using field maps (reported and fixed by M. Ferro-Luzzi)
-* Tof calculation corrected in GenieGenerator.cxx, wrong units previously used.
-* Genfit measurements now give the correct detector ID
-* Fix TEvePointSetPrintOut
-* Event Display: Fix drawing of MC and Geo tracks
-* AddressOf is outdated function in ROOT, changed with addressof (in field/)
+- Use `ConstructedAt` and `std::swap` to replace removed pythonization for `TClonesArray`.
+- Correct B_z octant symmetry for field maps.
+- Correct time-of-flight calculation in `GenieGenerator.cxx` by using correct units.
+- Ensure Genfit measurements provide the correct detector ID.
+- Fix `TEvePointSetPrintOut`.
+- Fix drawing of Monte Carlo and geometry tracks in the event display.
+- Replace outdated `AddressOf` ROOT function with `addressof` in the `field/` directory.
 
 ### Changed
-* Changed the dimension of the cave (ref. https://indico.cern.ch/event/1507466/contributions/6345273/attachments/3003438/5293503/Quick%20Update%20on%20FAIRSHIP%20geometry-1.pdf):
-	1) Updated dimensions of TCC8 and ECN3.
-	2) Added a step in ECN3.
-	3) Removed the coat of the absorber.
-	4) Modified the dimensions of the HA and absorber.
 
-* Set Decay Volume Medium as helium (previously vacuums),can be explicitly switched to vacuum with --vacuums.
-* Medium of SST boxes will be the same as DecayVolumeMedium (previously, always vacuum)
-* Don't prune tracks (before we were using the CFL option to Track::prune, see https://github.com/GenFit/GenFit/blob/e81adeb07c8643301a1d9f7ae25048557cc72dff/core/include/Track.h#L298)
-* **EventCalc LLP event generator**
-This modification to the EventCalc interface accommodates for generic N-body LLP decays.
+- Update cavern dimensions, including TCC8 and ECN3, and add a step in ECN3. The absorber coat has been removed, and the dimensions of the HA and absorber have been modified. For further details, see the presentation [here](https://indico.cern.ch/event/1507466/contributions/6345273/attachments/3003438/5293503/Quick%20Update%20on%20FAIRSHIP%20geometry-1.pdf).
+- Set the decay volume medium to helium by default, with an option to switch to vacuum using the `--vacuums` flag.
+- The medium of the SST boxes now matches the decay volume medium.
+- Disable track pruning (see #533).
+- Accommodate generic N-body LLP decays in the EventCalc interface.
 
 ### Removed
 
-* Remove Millepede
-* Remove outdated example shipEvent_ex.py
-* Remove ALPACA generator
+- Remove Millepede.
+- Remove the outdated `shipEvent_ex.py` example.
+- Remove the ALPACA generator.
 
 ## 24.11
 
