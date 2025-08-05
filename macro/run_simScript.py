@@ -236,7 +236,7 @@ ship_geo = ConfigRegistry.loadpy(
 ship_geo.decouple = options.decouple
 ship_geo.psd=2586.0
 if options.csv:
-    update_from_file(ship_geo, options, os.path.expandvars('$FAIRSHIP/sstDecouplingTools/sst.csv'))
+    update_from_file(ship_geo, options, os.path.expandvars('$FAIRSHIP/sstDecouplingTools/sst.json'))
 
 print("FairShip setup for",simEngine,"to produce",options.nEvents,"events")
 if (simEngine == "Ntuple" or simEngine == "MuonBack" or simEngine == "MyGen") and defaultInputFile :

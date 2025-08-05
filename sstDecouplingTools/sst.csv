@@ -1,5 +1,5 @@
 key,value
-options.theSeed,0
+options.theSeed,1234
 options.nEvents,10
 ship_geo.TrackStation1.z,2598.0
 ship_geo.TrackStation2.z,2698.0
