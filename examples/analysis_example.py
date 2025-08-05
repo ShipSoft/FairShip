@@ -6,21 +6,23 @@ from argparse import ArgumentParser
 import ROOT
 import rootUtils as ut
 from experimental import analysis_toolkit
-from backports import tdirectory634
 
 
 def main():
     """Sample function to analyse the pre-selection parameters."""
     parser = ArgumentParser(description=__doc__)
-    parser.add_argument("--path", help="Path to simulation file", default="./")
+    parser.add_argument(
+        "-f", "--simulation-file", help="Path to simulation file", required=True
+    )
+    parser.add_argument(
+        "-g", "--geo-file", help="Path to geometry file", required=True
+    )
     options = parser.parse_args()
 
-    f = ROOT.TFile.Open(options.path + "/ship.conical.Pythia8-TGeant4_rec.root", "read")
+    f = ROOT.TFile.Open(options.simulation_file, "read")
     tree = f["cbmsim"]
 
-    geo_file = ROOT.TFile.Open(
-        options.path + "/geofile_full.conical.Pythia8-TGeant4.root", "read"
-    )
+    geo_file = ROOT.TFile.Open(options.geo_file, "read")
 
     selection = analysis_toolkit.selection_check(geo_file)
     inspector = analysis_toolkit.event_inspector()
@@ -105,7 +107,8 @@ def main():
 
             if preselection_flag:
                 print(
-                    f"Event:{event_nr} Candidate_index: {candidate_id_in_event} <--passes the pre-selection\n\n"
+                    f"Event:{event_nr} Candidate_index: {candidate_id_in_event} "
+                    "<--passes the pre-selection\n\n"
                 )
 
     ut.writeHists(hist_dict, "preselectionparameters.root")
