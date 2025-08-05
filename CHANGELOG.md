@@ -292,53 +292,49 @@ Tagged for launch of background simulations.
 
 ## 24.10 - Freiburg
 
-Tag release to prepare for breaking changes. Last release to include charm
-cross-section measurement code, and obsolete detector configurations.
+This release prepares for breaking changes and is the last to include charm cross-section measurement code and obsolete detector configurations.
 
 ### Added
 
-* Add option for helium-filled decay volume
-* Add pre-commit config: This will be phased in to improve code quality and
-  spot issues as early as possible. Status visible in README and CI enabled for
-  new pull requests.
-* Add CHANGELOG.md
-* Add `.git-blame-ignore-revs` to allow automatic reformatting etc. without
-  polluting git blame
-* Automatically built documentation using Doxygen
-* Add CODEOWNERS file to automatically trigger reviews by the relevant experts
-* Add different configuration files for vacuum /helium for the Decay Vessel
-* Add option to enable/disable SND
+- Add an option for a helium-filled decay volume.
+- Add a pre-commit configuration to improve code quality and identify issues early.
+- Add a `CHANGELOG.md` file.
+- Add a `.git-blame-ignore-revs` file to ignore automatic reformatting in git blame.
+- Add automatically built documentation using Doxygen.
+- Add a `CODEOWNERS` file to automate review requests.
+- Add separate configuration files for vacuum and helium in the decay vessel.
+- Add an option to enable or disable the SND.
 
 ### Fixed
 
-* Remove trailing whitespace and fix line endings
-* Fix compilation warnings due to deprecations #469
-* Fix issue with SST parameters #489
-* Cleaned up Veto Implementation
-* Fix crash of event display, PID when no entrance lid present
-* Close ShipReco.py output file
-* Remove unused (silently ignored!) argument for MuDISGenerator::SetPositions
+- Remove trailing whitespace and fix line endings.
+- Fix compilation warnings from deprecations (see #469).
+- Fix an issue with SST parameters (see #489).
+- Clean up the Veto implementation.
+- Fix a crash in the event display and PID when the entrance lid is missing.
+- Ensure the `ShipReco.py` output file is closed correctly.
+- Remove an unused argument for `MuDISGenerator::SetPositions`.
 
 ### Changed
 
-* Update getGeoInformation command line interface
-* Update SST geometry constants #483
-* Housekeeping: Use same clang-format and clang-tidy config as FairRoot
-* Decay Vessel configuration now imported from a yaml file
-* Geometry of Decay Vessel updated to new design
-* Housekeeping: Bump minimum CMake version to 3.12
-* Housekeeping: Use FairRoot's `find_package2` to find ROOT, VMC, fmt
-* Housekeeping: Bump minimum ROOT version to 6.26
-* Housekeeping: Use find_package to find BOOST
-* Housekeeping: Set FairLogger dep instead of manual includes
+- Update the `getGeoInformation` command-line interface.
+- Update SST geometry constants (see #483).
+- Use the same `clang-format` and `clang-tidy` configurations as FairRoot.
+- Import the decay vessel configuration from a YAML file.
+- Update the decay vessel geometry to the new design.
+- Increase the minimum required CMake version to 3.12.
+- Use FairRoot's `find_package2` to find ROOT, VMC, and fmt.
+- Increase the minimum required ROOT version to 6.26.
+- Use `find_package` to find Boost.
+- Set the FairLogger dependency instead of using manual includes.
 
 ### Removed
 
-* Remove obsolete files related to old ways of installing or testing FairShip
-* Remove uses of future and past modules #473
-* Remove Geant3 dependency
-* Remove unimplemented event display functions (see #497)
-* Disable SND by default
-* Housekeeping: Don't use CMake commands no longer provided by FairRoot 19
-* Housekeeping: Remove old CMake for ROOT 5
-* Remove old, outdated tracking script
+- Remove obsolete installation and testing files.
+- Remove uses of `future` and `past` modules (see #473).
+- Remove the Geant3 dependency.
+- Remove unimplemented event display functions (see #497).
+- Disable the SND by default.
+- Remove CMake commands no longer provided by FairRoot 19.
+- Remove old CMake files for ROOT 5.
+- Remove an old, outdated tracking script.
