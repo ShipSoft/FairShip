@@ -113,7 +113,9 @@ jobs:
         run: |
           source /cvmfs/ship.cern.ch/$version/setUp.sh
           eval $(alienv load FairShip/latest)
-          python $FAIRSHIP/examples/analysis_example.py
+          SIM_FILE=$(grep 'Output file is' sim.log | awk '{print $4}')
+          GEO_FILE=$(grep 'Geometry file is' sim.log | awk '{print $4}')
+          python $FAIRSHIP/examples/analysis_example.py -f ${SIM_FILE%.root}_rec.root -g $GEO_FILE
 
       - name: Upload .root artifacts
         uses: actions/upload-artifact@v4
