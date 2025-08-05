@@ -1,27 +1,22 @@
-import pandas as pd
-import numpy as np
+import json
 
 def update_from_file(ship_geo, options, file):
-    
-    data = pd.read_csv(file)
+    with open(file, 'r') as f:
+        data = json.load(f)
 
-    keys = data['key'].tolist()
-    values = data['value'].tolist()
+    if 'positions' in data:
+        stations = data['positions']
+        ship_geo.TrackStation1.z=stations[0]
+        ship_geo.TrackStation2.z=stations[1]
+        ship_geo.TrackStation3.z=stations[2]
+        ship_geo.TrackStation4.z=stations[3]
+        print(f'Station Z-positions {stations}')
+    if 'angles' in data:
+        ship_geo.strawtubes.ViewAngle = data['angles']
+        print(f"ship_geo.VA was set to {data['angles']}")
+    # if 'magnetic_strength' in data:
+    #     ship_geo.magnetic_strength = data['magnetic_strength']
+    #     print(f'ship_geo.magnetic_strength was set to {data["magnetic_strength"]}')
 
-    for key, value in zip(keys, values):
-        parts = key.split(".")
-
-        target = locals()[parts[0]]
-        for part in parts[1:-1]:
-            target = getattr(target, part)
-
-        if hasattr(target, parts[-1]):
-            if parts[0] == 'options':
-                value = int(value)
-            setattr(target, parts[-1], value)
-            print(f'{key} was set to {value}')
-
-    # update dependent values
     ship_geo.z = ship_geo.TrackStation2.z + 0.5 * (ship_geo.TrackStation3.z - ship_geo.TrackStation2.z)
     ship_geo.Bfield.z = ship_geo.z
-
