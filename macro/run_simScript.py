@@ -164,12 +164,30 @@ parser.add_argument(
 )
 
 parser.add_argument("--SND", dest="SND", help="Activate SND.", action='store_true')
-parser.add_argument("--SND_design", help="Choose SND design among [1,2,...]. 1: EmulsionTarget, 2: MTC", type=int, choices=[2,], default=2)
+parser.add_argument(
+    "--SND_design",
+    help="Choose SND design(s) among [1,2,...] or 'all' to enable all. 1: EmulsionTarget, 2: MTC",
+    nargs='+',
+    default=[2],
+)
 parser.add_argument("--noSND", dest="SND", help="Deactivate SND. NOOP, as it currently defaults to off.", action='store_false')
 parser.add_argument("--target-yaml", help="Path to the yaml target config file", default=os.path.expandvars("$FAIRSHIP/geometry/target_config_Jun25.yaml"))
 
 
+
 options = parser.parse_args()
+
+# Handle SND_design: allow 'all' (case-insensitive) or list of ints
+available_snd_designs = [1, 2]  # Extend this list as new designs are added
+if any(str(x).lower() == 'all' for x in options.SND_design):
+    options.SND_design = available_snd_designs
+else:
+    try:
+        options.SND_design = [int(x) for x in options.SND_design]
+    except Exception:
+        print("Invalid value for --SND_design. Use integers or 'all'.")
+        sys.exit(1)
+
 if options.A != 'c':
      inclusive = options.A
      if options.A =='b': inputFile = "/eos/experiment/ship/data/Beauty/Cascade-run0-19-parp16-MSTP82-1-MSEL5-5338Bpot.root"
