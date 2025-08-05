@@ -14,128 +14,127 @@ it in future.
 
 ### Added
 
-* feat(python): Add experimental script to compare histograms
-* feat(python): Add experimental script to check overlaps quickly
-* **Corrections in MuonDIS simulation**
-  The DIS interactions are now time-shifted to be consistent with the original incoming muon. Additionally, tracks from soft interactions of the original muon along with the muon's veto response are preserved (in muonDis.root) and included up to the DIS interaction point. To be noted that the muon veto points are manually added using add_muonresponse.py, which modifies the simulation file. This replaces the old method of "backward-travelling muon" to generate the incoming muon's veto response. All MuonDIS simulation scripts have been updated and consolidated within FairShip/muonDIS, ensuring consistency for new productions.
-* Added a custom CrossSection branch to the simulation file to save the DIS cross sections from muonDIS.
-* Added new warm muon shield `warm_opt` in geometry_config
-* Added new parameters to muon shield to support configurations from current optimisation campaign
-* Added event_inspector class to experimental analysis_toolkit to streamline usage of helper functions; Added dump_event() as a start.
-* Add (optional) MgB2 field map
-* ShipBFieldMap: Added LOG info and fatal
-* Folder ```SND``` is added for new versions of SND integrated to the Muon Shield
-* First version of ```MTC``` (```SND/MTC```) is introduced. Scint part is fully implemented, the Sci-Fi part is implemented in simplified version. Geometrical parameters of ```MTC``` are stored in ```geometry/MTC_config.yaml``` file
-* New key for ```macro/run_simScript.py``` for choosing SND options is added: ```--SND_design```
-* Geometry_config.py: Added MS design `New_HA_Design` based on the MS `warm_opt`  with new version of HA
-* Add access to decoded numbers (stations, views etc.) of strawtubes hits
-* Add June 2025 target configuration
-* Definition of Pressured Helium for the target, two version 200 Celsius degree and 90 Celsius degree.
-* Add backport for new TFile/TDirectory `__get_item__` pythonisation
-* SND/EmulsionTarget folder, with the Target and TargetTracker classes from nutaudet
-* Added fibre structure for MTC and digitization. Fibre <-> SiPM mapping is done in ```SND/MTC/MTCDetector.cxx```, can be extracted and tested in ```python/SciFiMapping.py```, that is subsequently used in ```python/shipDigiReco.py```
-* Implement proximity shielding design from 26/06/2025 by G. Humphreys
-* Added the hole for SND in the Muon Shield, that is created automatically if SND key is enabled (works so far for SND_design == 2)
-* Implement vacuum in target facility
-* Implement target helium vessel
-* feat(python): Add z-offset to FixedTargetGenerator
-* Add missing --FixedTarget option to run_simScript.py
-* feat: Support for multiple SND designs in simulation setup
+- Add an experimental script to compare histograms.
+- Add an experimental script to quickly check for overlaps.
+- Time-shift MuonDIS interactions to be consistent with the original incoming muon. Tracks from soft interactions and the muon's veto response are now preserved.
+- Add a custom `CrossSection` branch to the simulation file to save DIS cross sections from MuonDIS.
+- Add the new `warm_opt` warm muon shield in `geometry_config`.
+- Add new parameters to the muon shield to support configurations from the current optimization campaign.
+- Add an `event_inspector` class to the experimental `analysis_toolkit` to streamline the use of helper functions.
+- Add an optional MgB2 field map.
+- Add `LOG` `info` and `fatal` to `ShipBFieldMap`.
+- Add the `SND` folder for new versions of SND integrated with the Muon Shield.
+- Introduce the first version of the `MTC` (`SND/MTC`), with a fully implemented scintillator part and a simplified Sci-Fi part. Geometrical parameters are stored in `geometry/MTC_config.yaml`.
+- Add the `--SND_design` key to `macro/run_simScript.py` to select SND options.
+- Add the `New_HA_Design` MS design in `geometry_config.py`, based on the `warm_opt` MS with a new version of HA.
+- Add access to decoded numbers (stations, views, etc.) of straw tube hits.
+- Add the June 2025 target configuration.
+- Define pressured helium for the target at 200 and 90 degrees Celsius.
+- Add a backport for the new `TFile`/`TDirectory` `__getitem__` pythonization.
+- Add the `SND/EmulsionTarget` folder with `Target` and `TargetTracker` classes from `nutaudet`.
+- Add a fibre structure for the MTC and digitization. The fibre-SiPM mapping is defined in `SND/MTC/MTCDetector.cxx` and can be tested in `python/SciFiMapping.py`.
+- Implement the proximity shielding design from 26/06/2025 by G. Humphreys.
+- Add a hole for the SND in the Muon Shield, created automatically when the SND key is enabled.
+- Implement a vacuum in the target facility.
+- Implement a target helium vessel.
+- Add a z-offset to `FixedTargetGenerator`.
+- Add missing --FixedTarget option to run_simScript.py.
+- feat: Support for multiple SND designs in simulation setup
   - The `--SND_design` option in `macro/run_simScript.py` now accepts multiple values and an 'all' option to enable all available SND designs.
   - The geometry configuration and detector setup (`geometry/geometry_config.py`, `python/shipDet_conf.py`) have been updated to instantiate all requested SND detectors.
   - This enables running with multiple SND subdetectors simultaneously and is future-proof for additional SND designs.
 
 ### Fixed
 
-* chore: Fix file endings
-* chore: trim trailing whitespace
-* Fix mismatch dimension cavern ECN3 TCC8
-* fix: use standard library to expand env
-* fix: autoload Pythia8 instead of manually loading in run_simScript.py
-* fix(geometry): fix typo of "vacuums" for strawtubes medium
-* fix(reco): Fix segmentation fault due to dummy containers (#453, #519)
-* fix: don't use TFile's deprecated attribute syntax
-* fix(digi): Fix logic of SST digitisation (#662)
-* Fix double append of recognized stracks
-* fix(ShieldUtils.py): The fieldmap offset was calibrated with the old version of MS
-* fix(ShieldUtils.py): changing code to be more pythonic, adding new element in the output tuple -- the list of the Muon Shield magnet z-coordinates, that can be used to set a location of SND inside the Muon Shield
-* fix(shipDet_conf.py): changing paths to yaml files to more pythonic (```os.path.join()``` now)
-* Fix splitcal strip dimensions and number of modules
-* fix: Ensure the web viewer is disabled when checking for geometry overlaps (workaround for https://github.com/root-project/root/issues/18881)
-* fix(EvtCalc): Fix crash due to string formatting
-* Fix: Field direction of first magnet section 2 was wrong
-* Fix: How the cavern is translated in z direction
-* Fix: Preliminary fix of the length of the Target (to be refine)
-* Fix: in `python/ShieldUtils.py` still used old coordinate system (SND was not correctly positioned in `python/shipDet_conf.py`)
-* Fix `beam smearing`: replace incorrect Gaussian radius with proper 2D Gaussian sampling. Ensures physical consistency; radius now follows Rayleigh distribution as expected.
-* Reconstruction: reverse nmeas > 0 check to make sure 𝜒² is defined
-* Fix: MTC geometry overlap
-* fix(FixedTargetGenerator): Don't assume anything about the target substructure
+- Fix file endings.
+- Trim trailing whitespace.
+- Fix a dimension mismatch in the ECN3 TCC8 cavern.
+- Use the standard library to expand environment variables.
+- Autoload Pythia8 instead of manually loading it in `run_simScript.py`.
+- Fix a typo of "vacuums" for the straw tubes medium.
+- Fix a segmentation fault due to dummy containers (see #453, #519).
+- Do not use `TFile`'s deprecated attribute syntax.
+- Fix the logic of SST digitization (see #662).
+- Fix double appending of recognized stracks.
+- The field map offset was calibrated with the old version of the MS.
+- Make the code in `ShieldUtils.py` more Pythonic and add the list of Muon Shield magnet z-coordinates to the output tuple.
+- Change paths to YAML files in `shipDet_conf.py` to be more Pythonic.
+- Fix SplitCal strip dimensions and the number of modules.
+- Ensure the web viewer is disabled when checking for geometry overlaps (workaround for [root-project/root#18881](httpshttps://github.com/root-project/root/issues/18881)).
+- Fix a crash due to string formatting in `EvtCalc`.
+- Fix the field direction of the first magnet in Section 2.
+- Fix how the cavern is translated in the z-direction.
+- Preliminarily fix the length of the target.
+- The coordinate system in `python/ShieldUtils.py` was outdated, causing incorrect SND positioning.
+- Fix beam smearing by replacing the incorrect Gaussian radius with proper 2D Gaussian sampling.
+- Reverse the `nmeas > 0` check in reconstruction to ensure that chi-squared is defined.
+- Fix an MTC geometry overlap.
+- Do not assume anything about the target substructure in `FixedTargetGenerator`.
 
 ### Changed
 
-* Don't special case EOS paths (fix #566)
-* Setting up the Muon shield geometry by ROOT files is completely replaced with the temporary solution of dict in the `geometry/geometry_config.py`.
-* Set up of the shield name is now done using the `--shieldName` flag instead of `--scName`.
-* Allow using standalone TPythia for use with ROOT 6.32+
-* Use git-lfs to track ROOT files
-* shipDet_conf behaviour no longer depends on the muon shield version.
-* feat(digi): Use STL vectors for SST digitisation
-* feat(digi): Use STL vectors for SBT digitisation
-* Change max x of stereo hits to match straw length
-* Get rid of straw diameter dependency in scale factor
-* Assume all tracks are muons during track fit (avoid using MC truth)
-* Change of UBT geometry, remove implementation of RPC and setting a new scoring plane of 4×6 m
-* Allow specifying spectrometer field map
-* Obtain tauMuDet z position from muonshield position and length, instead of chamber trackers
-* Update tracker station z positions, fix UBT, TimeDet & SplitCal position (s. integration layout EDMS 3287817 v1)
-* feat(geometry): Make SplitCal the default calorimeter
-* Resize SplitCal to 4×6 m²
-* feat(geometry): Define target configuration in yaml
-* strawtubes detID is now 7-digit! (without plane number)
-* Change strawtubes detID decode function to tuple output
-* Change separate constructions of tracker stations 1/2 and 3/4 to being identical
-* `fWithConstShieldFiel` Defined as input flag for MS design in `geometry_config.py`
-* MS design have B field as parameter
-* Changed the parametrization of the field in `ShipMuonShield.cxx`
-* Make the warm muon shield with new hadron absorber the default option
-* feat(geometry): Change coordinate system to z_0 := start of target
-* Insert Proximity shield in the geometry
-* Removed old stuff legacy in `shipMuonShield.cxx` (like LE and fFloor)
-* Event Display: Don't try to recreate geometry config
-* Geometry: Make the tungsten target the default (Jun25 config)
-* Change EmulsionTarget detID decode function to tuple output
-* Particle Gun has been updated: now user can set the coordinates of the PG via keys --V{x,y,z} and use --D{x,y} to uniformly smear the signal in a given x and y range
-+ makeCascade: Added new default target, moved to argparse
-* run_simScript.py: use options directly internally instead of using intermediate variables
+- Do not special-case EOS paths (see #566).
+- Replace the setup of the Muon Shield geometry from ROOT files with a temporary dictionary in `geometry/geometry_config.py`.
+- Use the `--shieldName` flag instead of `--scName` to set the shield name.
+- Allow using a standalone TPythia for use with ROOT 6.32+.
+- Use git-lfs to track ROOT files.
+- The behavior of `shipDet_conf` no longer depends on the muon shield version.
+- Use STL vectors for SST digitization.
+- Use STL vectors for SBT digitization.
+- Change the maximum x of stereo hits to match the straw length.
+- Remove the straw diameter dependency in the scale factor.
+- Assume all tracks are muons during the track fit.
+- Change the UBT geometry by removing the RPC implementation and setting a new scoring plane of 4x6 m.
+- Allow specifying the spectrometer field map.
+- Obtain the `tauMuDet` z-position from the muon shield position and length.
+- Update tracker station z-positions and fix the UBT, TimeDet, and SplitCal positions.
+- Make SplitCal the default calorimeter.
+- Resize SplitCal to 4x6 m².
+- Define the target configuration in a YAML file.
+- The `strawtubes` `detID` is now 7 digits.
+- Change the `strawtubes` `detID` decode function to return a tuple.
+- Constructions of tracker stations 1/2 and 3/4 are now identical.
+- `fWithConstShieldFiel` is now an input flag for the MS design in `geometry_config.py`.
+- The MS design now has the B-field as a parameter.
+- Change the field parametrization in `ShipMuonShield.cxx`.
+- Make the warm muon shield with the new hadron absorber the default option.
+- Change the coordinate system to have z=0 at the start of the target.
+- Insert a proximity shield into the geometry.
+- Remove legacy code from `shipMuonShield.cxx`.
+- Do not try to recreate the geometry config in the event display.
+- Make the tungsten target the default (Jun25 config).
+- Change the `EmulsionTarget` `detID` decode function to return a tuple.
+- The particle gun can now be configured with `--V{x,y,z}` and `--D{x,y}`.
+- `makeCascade` now has a new default target and uses `argparse`.
+- `run_simScript.py` now uses options directly instead of intermediate variables.
 
 ### Removed
 
-* fix: Remove unused, unrunnable shipPatRec_prev.py
-* feat(geometry): Dropped support for old geometries without DecayVolumeMedium explicitly set(pre 24.11 release case).
-* MS: Removed old options 7, 9, 10
-* MS: Removed cobalt option
-* MS: Removed stepGeo option
-* MS: Removed the flag constant field in Absorber (HS) -> fixed to 1.7 T
-* MS: run_simScript.py: The --noSC flag is removed, whether or not a configuration is SC hybrid depends on the config selected. Configurations are defined in the shield_db in geometry_config.py
-* Removed old nuTauTargetDesign configurations from 0 to 2. Currently supported: 3 (2018, magnetized target) and 4 (Current, not magnetized target and spectrometer)
-* build(field,nutaudet): remove unnecessary ROOT_INCLUDE_DIR include
-* feat(geometry): Remove 2018, 2022 global designs
-* run_simScript.py: remove --muShieldDesign flag
-* Remove unused straw veto station
-* ShipAna.py: remove broken calorimetry
-* Remove strawtubes_single class
-* Removed outdated version `sc_v6` since it is not fitting in the Cavern (also in the build-run)
-* feat(geometry): remove TP liquid scintillator variables
-* Remove unused python/shipMuShield_only.py
-* Remove (broken?) support for Nuage generator
-* Remove nuTauTargetDesign variable, options
-* Remove reloading of the `geometry_config.py` in `shipDet_conf.py`
-* Remove nutaudet folder, replaced by SND folder
-* Remove deprecated NuTauDet field map
-* Remove tankDesign variable, options
-* Remove target versions older than CDR
-* Remove hadron absorber in ShipTargetStation.cxx
+- Remove the unused and unrunnable `shipPatRec_prev.py`.
+- Drop support for old geometries without `DecayVolumeMedium` explicitly set.
+- Remove old MS options 7, 9, and 10.
+- Remove the cobalt MS option.
+- Remove the `stepGeo` MS option.
+- Remove the constant field flag in the Absorber (HS), now fixed to 1.7 T.
+- The `--noSC` flag in `run_simScript.py` is removed.
+- Remove old `nuTauTargetDesign` configurations 0-2.
+- Remove an unnecessary `ROOT_INCLUDE_DIR` include.
+- Remove the 2018 and 2022 global designs.
+- Remove the `--muShieldDesign` flag from `run_simScript.py`.
+- Remove the unused straw veto station.
+- Remove broken calorimetry from `ShipAna.py`.
+- Remove the `strawtubes_single` class.
+- Remove the outdated `sc_v6` version.
+- Remove TP liquid scintillator variables.
+- Remove the unused `python/shipMuShield_only.py`.
+- Remove support for the Nuage generator.
+- Remove the `nuTauTargetDesign` variable and options.
+- Remove reloading of `geometry_config.py` in `shipDet_conf.py`.
+- Remove the `nutaudet` folder, which has been replaced by the `SND` folder.
+- Remove the deprecated NuTauDet field map.
+- Remove the `tankDesign` variable and options.
+- Remove target versions older than the CDR.
+- Remove the hadron absorber in `ShipTargetStation.cxx`.
 
 ## 25.01
 
