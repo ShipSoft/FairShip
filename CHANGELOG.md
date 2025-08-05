@@ -254,41 +254,32 @@ This modification to the EventCalc interface accommodates for generic N-body LLP
 
 ## 24.11
 
-Release after first round of breaking changes. Requires CVMFS release ≥ 24.10.
-Tagged for launch of background simulations.
+This release follows the first round of breaking changes and is tagged for the launch of background simulations. It requires a CVMFS release of 24.10 or later.
 
 ### Added
 
-* **EventCalc LLP event generator**
-  This modification introduces a first implementation of the EventCalc decay
-  event sampler in FairShip for inclusive final states. For further details,
-  consult the dedicated presentation at the 30th SHiP CM
-  [here](https://indico.cern.ch/event/1448055/contributions/6142341/attachments/2939894/5165450/SHiP_collaboration_meeting_talk_MFerrillo.pdf). See also #528.
-* Add a conversion script `FairShip/macro/convertEvtCalc.py` to convert the
-  EventCalc output sampled kinematics (.dat) as input to the simulation script
-  (.root). _Remark_: This will eventually become unnecessary when this
-  conversion is implemented within the EventCalc tool itself.
+- Introduce the EventCalc LLP event generator, a decay event sampler for inclusive final states. For further details, consult the dedicated presentation at the 30th SHiP CM [here](https://indico.cern.ch/event/1448055/contributions/6142341/attachments/2939894/5165450/SHiP_collaboration_meeting_talk_MFerrillo.pdf). See also #528.
+- Add a conversion script, `FairShip/macro/convertEvtCalc.py`, to convert EventCalc's output kinematics to a format compatible with the simulation script.
 
 ### Fixed
 
-* Fix missing includes in ecalMatch and ecalReco
-* Fix compilation warnings due to unused or uninitiliazed variables #481
+- Add missing includes in `ecalMatch` and `ecalReco`.
+- Fix compilation warnings for unused or uninitialized variables (see #481).
 
 ### Changed
 
-* shipStrawTracking: Move to argparse
-* CMake: Use external genfit2
-* shipStrawTracking, shipDigiReco, shipVertex: Make compatible with current genfit
+- Migrate `shipStrawTracking` to use `argparse`.
+- Update CMake to use an external `genfit2`.
+- Ensure `shipStrawTracking`, `shipDigiReco`, and `shipVertex` are compatible with the current version of `genfit`.
 
 ### Removed
 
-* Remove obsolete renaming scripts
-* Remove online, please see charmdet and muflux branches for respective versions
-* Remove charmdet, please see charmdet branch for latest version
-* Remove preshower and CaloDesign 1 (TP+Preshower)
-* Remove bundled genfit
-* Remove conditions DB, will almost certainly look different, copy in git
-  history for reference
+- Remove obsolete renaming scripts.
+- Remove the `online` directory. For respective versions, see the `charmdet` and `muflux` branches.
+- Remove the `charmdet` directory. For the latest version, see the `charmdet` branch.
+- Remove the preshower and CaloDesign 1 (TP+Preshower).
+- Remove the bundled `genfit`.
+- Remove the conditions database.
 
 ## 24.10 - Freiburg
 
