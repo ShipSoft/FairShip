@@ -22,20 +22,20 @@ class ShipDigiReco:
     # make a new file without reco branches
     f = ROOT.TFile(fout)
     sTree = f.cbmsim
-    if sTree.GetBranch("FitTracks"): sTree.SetBranchStatus("FitTracks",0)
-    if sTree.GetBranch("goodTracks"): sTree.SetBranchStatus("goodTracks",0)
-    if sTree.GetBranch("VetoHitOnTrack"): sTree.SetBranchStatus("VetoHitOnTrack",0)
-    if sTree.GetBranch("Particles"): sTree.SetBranchStatus("Particles",0)
-    if sTree.GetBranch("fitTrack2MC"): sTree.SetBranchStatus("fitTrack2MC",0)
-    if sTree.GetBranch("EcalClusters"): sTree.SetBranchStatus("EcalClusters",0)
-    if sTree.GetBranch("EcalReconstructed"): sTree.SetBranchStatus("EcalReconstructed",0)
-    if sTree.GetBranch("Pid"): sTree.SetBranchStatus("Pid",0)
+    #if sTree.GetBranch("FitTracks"): sTree.SetBranchStatus("FitTracks",0)
+    #if sTree.GetBranch("goodTracks"): sTree.SetBranchStatus("goodTracks",0)
+    #if sTree.GetBranch("VetoHitOnTrack"): sTree.SetBranchStatus("VetoHitOnTrack",0)
+    #if sTree.GetBranch("Particles"): sTree.SetBranchStatus("Particles",0)
+    #if sTree.GetBranch("fitTrack2MC"): sTree.SetBranchStatus("fitTrack2MC",0)
+    #if sTree.GetBranch("EcalClusters"): sTree.SetBranchStatus("EcalClusters",0)
+    #if sTree.GetBranch("EcalReconstructed"): sTree.SetBranchStatus("EcalReconstructed",0)
+    #if sTree.GetBranch("Pid"): sTree.SetBranchStatus("Pid",0)
     if sTree.GetBranch("Digi_StrawtubesHits"): sTree.SetBranchStatus("Digi_StrawtubesHits",0)
-    if sTree.GetBranch("Digi_SBTHits"): sTree.SetBranchStatus("Digi_SBTHits",0)
-    if sTree.GetBranch("digiSBT2MC"):   sTree.SetBranchStatus("digiSBT2MC",0)
-    if sTree.GetBranch("Digi_TimeDetHits"): sTree.SetBranchStatus("Digi_TimeDetHits",0)
-    if sTree.GetBranch("Digi_UpstreamTaggerHits"): sTree.SetBranchStatus("Digi_UpstreamTaggerHits",0)
-    if sTree.GetBranch("Digi_MuonHits"): sTree.SetBranchStatus("Digi_MuonHits",0)
+    #if sTree.GetBranch("Digi_SBTHits"): sTree.SetBranchStatus("Digi_SBTHits",0)
+    #if sTree.GetBranch("digiSBT2MC"):   sTree.SetBranchStatus("digiSBT2MC",0)
+    #if sTree.GetBranch("Digi_TimeDetHits"): sTree.SetBranchStatus("Digi_TimeDetHits",0)
+    #if sTree.GetBranch("Digi_UpstreamTaggerHits"): sTree.SetBranchStatus("Digi_UpstreamTaggerHits",0)
+    #if sTree.GetBranch("Digi_MuonHits"): sTree.SetBranchStatus("Digi_MuonHits",0)
 
     rawFile = fout.replace("_rec.root","_raw.root")
     recf = ROOT.TFile(rawFile,"recreate")
@@ -55,6 +55,7 @@ class ShipDigiReco:
   branch_class = {"vetoPoint":"vetoPoint","ShipRpcPoint":"ShipRpcPoint","TargetPoint":"TargetPoint",\
                   "strawtubesPoint":"strawtubesPoint","EcalPointLite":"ecalPoint",\
                   "TimeDetPoint":"TimeDetPoint","muonPoint":"muonPoint","UpstreamTaggerPoint":"UpstreamTaggerPoint"}
+  branch_class = {"strawtubesPoint":"strawtubesPoint"}
   for x in branch_class:
     if not self.sTree.GetBranch(x):
      self.dummyContainers[x+"_array"] = ROOT.TClonesArray(branch_class[x])
@@ -62,48 +63,48 @@ class ShipDigiReco:
      setattr(self.sTree,x,self.dummyContainers[x+"_array"])
      self.dummyContainers[x].Fill()
 #
-  if self.sTree.GetBranch("GeoTracks"): self.sTree.SetBranchStatus("GeoTracks",0)
+  #if self.sTree.GetBranch("GeoTracks"): self.sTree.SetBranchStatus("GeoTracks",0)
 # prepare for output
 # event header
   self.header  = ROOT.FairEventHeader()
   self.eventHeader  = self.sTree.Branch("ShipEventHeader",self.header,32000,-1)
 # fitted tracks
-  self.fGenFitArray = ROOT.TClonesArray("genfit::Track")
-  self.fGenFitArray.BypassStreamer(ROOT.kFALSE)
-  self.fitTrack2MC  = ROOT.std.vector('int')()
-  self.goodTracksVect  = ROOT.std.vector('int')()
-  self.mcLink      = self.sTree.Branch("fitTrack2MC",self.fitTrack2MC,32000,-1)
-  self.fitTracks   = self.sTree.Branch("FitTracks",  self.fGenFitArray,32000,-1)
-  self.goodTracksBranch      = self.sTree.Branch("goodTracks",self.goodTracksVect,32000,-1)
-  self.fTrackletsArray = ROOT.TClonesArray("Tracklet")
-  self.Tracklets   = self.sTree.Branch("Tracklets",  self.fTrackletsArray,32000,-1)
+  #self.fGenFitArray = ROOT.TClonesArray("genfit::Track")
+  #self.fGenFitArray.BypassStreamer(ROOT.kFALSE)
+  #self.fitTrack2MC  = ROOT.std.vector('int')()
+  #self.goodTracksVect  = ROOT.std.vector('int')()
+  #self.mcLink      = self.sTree.Branch("fitTrack2MC",self.fitTrack2MC,32000,-1)
+  #self.fitTracks   = self.sTree.Branch("FitTracks",  self.fGenFitArray,32000,-1)
+  #self.goodTracksBranch      = self.sTree.Branch("goodTracks",self.goodTracksVect,32000,-1)
+  #self.fTrackletsArray = ROOT.TClonesArray("Tracklet")
+  #self.Tracklets   = self.sTree.Branch("Tracklets",  self.fTrackletsArray,32000,-1)
 #
   self.digiStraw    = ROOT.TClonesArray("strawtubesHit")
   self.digiStrawBranch   = self.sTree.Branch("Digi_StrawtubesHits",self.digiStraw,32000,-1)
-  self.digiSBT    = ROOT.TClonesArray("vetoHit")
-  self.digiSBTBranch=self.sTree.Branch("Digi_SBTHits",self.digiSBT,32000,-1)
-  self.vetoHitOnTrackArray    = ROOT.TClonesArray("vetoHitOnTrack")
-  self.vetoHitOnTrackBranch=self.sTree.Branch("VetoHitOnTrack",self.vetoHitOnTrackArray,32000,-1)
-  self.digiSBT2MC  = ROOT.std.vector('std::vector< int >')()
-  self.mcLinkSBT   = self.sTree.Branch("digiSBT2MC",self.digiSBT2MC,32000,-1)
-  self.digiTimeDet    = ROOT.TClonesArray("TimeDetHit")
-  self.digiTimeDetBranch=self.sTree.Branch("Digi_TimeDetHits",self.digiTimeDet,32000,-1)
-  self.digiUpstreamTagger    = ROOT.TClonesArray("UpstreamTaggerHit")
-  self.digiUpstreamTaggerBranch=self.sTree.Branch("Digi_UpstreamTaggerHits",self.digiUpstreamTagger,32000,-1)
-  self.digiMuon    = ROOT.TClonesArray("muonHit")
-  self.digiMuonBranch=self.sTree.Branch("Digi_muonHits",self.digiMuon,32000,-1)
+  #self.digiSBT    = ROOT.TClonesArray("vetoHit")
+  #self.digiSBTBranch=self.sTree.Branch("Digi_SBTHits",self.digiSBT,32000,-1)
+  #self.vetoHitOnTrackArray    = ROOT.TClonesArray("vetoHitOnTrack")
+  #self.vetoHitOnTrackBranch=self.sTree.Branch("VetoHitOnTrack",self.vetoHitOnTrackArray,32000,-1)
+  #self.digiSBT2MC  = ROOT.std.vector('std::vector< int >')()
+  #self.mcLinkSBT   = self.sTree.Branch("digiSBT2MC",self.digiSBT2MC,32000,-1)
+  #self.digiTimeDet    = ROOT.TClonesArray("TimeDetHit")
+  #self.digiTimeDetBranch=self.sTree.Branch("Digi_TimeDetHits",self.digiTimeDet,32000,-1)
+  #self.digiUpstreamTagger    = ROOT.TClonesArray("UpstreamTaggerHit")
+  #self.digiUpstreamTaggerBranch=self.sTree.Branch("Digi_UpstreamTaggerHits",self.digiUpstreamTagger,32000,-1)
+  #self.digiMuon    = ROOT.TClonesArray("muonHit")
+  #self.digiMuonBranch=self.sTree.Branch("Digi_muonHits",self.digiMuon,32000,-1)
 # for the digitizing step
   self.v_drift = global_variables.modules["Strawtubes"].StrawVdrift()
   self.sigma_spatial = global_variables.modules["Strawtubes"].StrawSigmaSpatial()
 # optional if present, splitcalCluster
-  if self.sTree.GetBranch("splitcalPoint"):
-   self.digiSplitcal = ROOT.TClonesArray("splitcalHit")
-   self.digiSplitcalBranch=self.sTree.Branch("Digi_SplitcalHits",self.digiSplitcal,32000,-1)
-   self.recoSplitcal = ROOT.TClonesArray("splitcalCluster")
-   self.recoSplitcalBranch=self.sTree.Branch("Reco_SplitcalClusters",self.recoSplitcal,32000,-1)
+  #if self.sTree.GetBranch("splitcalPoint"):
+   #self.digiSplitcal = ROOT.TClonesArray("splitcalHit")
+   #self.digiSplitcalBranch=self.sTree.Branch("Digi_SplitcalHits",self.digiSplitcal,32000,-1)
+   #self.recoSplitcal = ROOT.TClonesArray("splitcalCluster")
+   #self.recoSplitcalBranch=self.sTree.Branch("Reco_SplitcalClusters",self.recoSplitcal,32000,-1)
 
 # setup ecal reconstruction
-  self.caloTasks = []
+  '''self.caloTasks = []
   if self.sTree.GetBranch("EcalPoint") and not self.sTree.GetBranch("splitcalPoint"):
 # Creates. exports and fills calorimeter structure
    dflag = 10 if global_variables.debug else 0
@@ -157,13 +158,13 @@ class ShipDigiReco:
    import shipPid
    self.caloTasks.append(shipPid.Task(self))
 # prepare vertexing
-  self.Vertexing = shipVertex.Task(global_variables.h, self.sTree)
+  self.Vertexing = shipVertex.Task(global_variables.h, self.sTree)'''
 # setup random number generator
   self.random = ROOT.TRandom()
   ROOT.gRandom.SetSeed(13)
   self.PDG = ROOT.TDatabasePDG.Instance()
 # access ShipTree
-  self.sTree.GetEvent(0)
+  '''self.sTree.GetEvent(0)
   if len(self.caloTasks)>0:
    print("** initialize Calo reconstruction **")
    self.ecalStructure     = ecalFiller.InitPython(self.sTree.EcalPointLite)
@@ -183,7 +184,7 @@ class ShipDigiReco:
    ecalReconstructed = ROOT.TClonesArray("ecalReconstructed")
    self.EcalClusters = self.sTree.Branch("EcalClusters",ecalClusters,32000,-1)
    self.EcalReconstructed = self.sTree.Branch("EcalReconstructed",ecalReconstructed,32000,-1)
-#
+#'''
 # init geometry and mag. field
   gMan  = ROOT.gGeoManager
   self.geoMat =  ROOT.genfit.TGeoMaterialInterface()
@@ -197,7 +198,7 @@ class ShipDigiReco:
  # init fitter, to be done before importing shipPatRec
   #fitter          = ROOT.genfit.KalmanFitter()
   #fitter          = ROOT.genfit.KalmanFitterRefTrack()
-  self.fitter      = ROOT.genfit.DAF()
+  '''self.fitter      = ROOT.genfit.DAF()
   self.fitter.setMaxIterations(50)
   if global_variables.debug:
     self.fitter.setDebugLvl(1) # produces lot of printout
@@ -205,6 +206,7 @@ class ShipDigiReco:
 
 # for 'real' PatRec
   shipPatRec.initialize(fgeo)
+'''
 
  def reconstruct(self):
    ntracks = self.findTracks()
@@ -228,29 +230,29 @@ class ShipDigiReco:
    self.header.SetRunId( self.sTree.MCEventHeader.GetRunID() )
    self.header.SetMCEntryNumber( self.sTree.MCEventHeader.GetEventID() )  # counts from 1
    self.eventHeader.Fill()
-   self.digiSBT.Delete()
-   self.digiSBT2MC.clear()
-   self.digitizeSBT()
-   self.digiSBTBranch.Fill()
-   self.mcLinkSBT.Fill()
+   #self.digiSBT.Delete()
+   #self.digiSBT2MC.clear()
+   #self.digitizeSBT()
+   #self.digiSBTBranch.Fill()
+   #self.mcLinkSBT.Fill()
    self.digiStraw.Delete()
    self.digitizeStrawTubes()
    self.digiStrawBranch.Fill()
-   self.digiTimeDet.Delete()
-   self.digitizeTimeDet()
-   self.digiTimeDetBranch.Fill()
+   #self.digiTimeDet.Delete()
+   #self.digitizeTimeDet()
+   #self.digiTimeDetBranch.Fill()
    # self.digiUpstreamTagger.Delete()
    # self.digitizeUpstreamTagger()         TR 19/6/2020 work in progress
    # self.digiUpstreamTaggerBranch.Fill()
-   self.digiMuon.Delete()
-   self.digitizeMuon()
-   self.digiMuonBranch.Fill()
-   if self.sTree.GetBranch("splitcalPoint"):
-    self.digiSplitcal.Delete()
-    self.recoSplitcal.Delete()
-    self.digitizeSplitcal()
-    self.digiSplitcalBranch.Fill()
-    self.recoSplitcalBranch.Fill()
+   #self.digiMuon.Delete()
+   #self.digitizeMuon()
+   #self.digiMuonBranch.Fill()
+   #if self.sTree.GetBranch("splitcalPoint"):
+    #self.digiSplitcal.Delete()
+    #self.recoSplitcal.Delete()
+    #self.digitizeSplitcal()
+    #self.digiSplitcalBranch.Fill()
+    #self.recoSplitcalBranch.Fill()
 
  def digitizeSplitcal(self):
    listOfDetID = {} # the idea is to keep only one hit for each cell/strip and if more points fall in the same cell/strip just sum up the energy
@@ -1083,11 +1085,11 @@ class ShipDigiReco:
   return frac, tmax
 
  def finish(self):
-  del self.fitter
-  print('finished writing tree')
+  #del self.fitter
   self.sTree.Write()
-  ut.errorSummary()
-  ut.writeHists(global_variables.h,"recohists.root")
-  if global_variables.realPR:
-    shipPatRec.finalize()
+  print('finished writing tree')
+  #ut.errorSummary()
+  #ut.writeHists(global_variables.h,"recohists.root")
+  #if global_variables.realPR:
+    #shipPatRec.finalize()
   self.fn.Close()
