@@ -103,7 +103,7 @@ var geometry__config_8py =
     [ "slices_length", "geometry__config_8py.html#a39bd74334d3a95feb0e8046f471077fa", null ],
     [ "slices_material", "geometry__config_8py.html#a815c308a84cd27d458f0685eb5f35b6f", null ],
     [ "SND", "geometry__config_8py.html#aaf393b00bcfc31fcc7567118169a7d4f", null ],
-    [ "SND_design", "geometry__config_8py.html#ad73ea1eb408860af8304181b37aa4674", null ],
+    [ "SND_design", "geometry__config_8py.html#a2192dcfb1e10634b22488b018509143a", null ],
     [ "splitCal", "geometry__config_8py.html#ab9c9be15850a1be64f82a6fe61de9f61", null ],
     [ "SplitCal", "geometry__config_8py.html#a54d2f842ba3af4748d83b7ead817016c", null ],
     [ "SplitCalThickness", "geometry__config_8py.html#a52c78d793f62fef6c754ac5c5b335de2", null ],

@@ -14,7 +14,7 @@ var searchData=
   ['beta_11',['beta',['../namespacemakeCascade.html#aa27c1c99785df8bad2319ff9aafec366',1,'makeCascade']]],
   ['bfield_12',['bfield',['../namespaceeventDisplay.html#adc7da68718bf676633fa343550991e61',1,'eventDisplay.bfield'],['../namespaceShipAna.html#a1f85359f38d72674b0a60c4e12683bfe',1,'ShipAna.bfield'],['../namespacegeometry__config.html#a1ece433de1fccf6f1899dd722acbfbcd',1,'geometry_config.Bfield'],['../classshipDigiReco_1_1ShipDigiReco.html#a97271c1be5a7dca5054299973c3e2ec3',1,'shipDigiReco.ShipDigiReco.bfield'],['../namespaceShipGeo.html#a29678f9752710cbda1e31fbf5f86b27c',1,'ShipGeo.Bfield']]],
   ['bigeventloop_13',['BigEventLoop',['../namespaceana__ShipMuon.html#af5c301c11b322e4b80d85697a397aed8',1,'ana_ShipMuon']]],
-  ['biggap_14',['biggap',['../namespacegeometry__config.html#ad4a43d86e6d9b51db1f0486b47fdf9f3',1,'geometry_config.BigGap'],['../namespaceTTCluster.html#a16d9fb5a8b4dbfdd96619cc0cdb9f968',1,'TTCluster.biggap']]],
+  ['biggap_14',['biggap',['../namespaceTTCluster.html#a16d9fb5a8b4dbfdd96619cc0cdb9f968',1,'TTCluster.biggap'],['../namespacegeometry__config.html#ad4a43d86e6d9b51db1f0486b47fdf9f3',1,'geometry_config.BigGap']]],
   ['bina_5f_15',['binA_',['../classShipBFieldMap.html#ad67b10f1fa4750c3310cddb5368cf5db',1,'ShipBFieldMap']]],
   ['binb_5f_16',['binB_',['../classShipBFieldMap.html#a73d5de5d17d95a11c2a0c54e4667386d',1,'ShipBFieldMap']]],
   ['binc_5f_17',['binC_',['../classShipBFieldMap.html#a5dc5ff9081c108ad41ad6a97542cd3e5',1,'ShipBFieldMap']]],
