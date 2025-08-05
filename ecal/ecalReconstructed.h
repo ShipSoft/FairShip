@@ -1,5 +1,5 @@
-#ifndef ECALRECONSTRUCTED
-#define ECALRECONSTRUCTED
+#ifndef ECAL_ECALRECONSTRUCTED_H_
+#define ECAL_ECALRECONSTRUCTED_H_
 
 #include "TObject.h"
 
@@ -43,4 +43,4 @@ private:
   ClassDef(ecalReconstructed, 1)
 };
 
-#endif
+#endif  // ECAL_ECALRECONSTRUCTED_H_

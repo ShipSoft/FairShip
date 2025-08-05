@@ -1,5 +1,5 @@
-#ifndef STRAWTUBESCONTFACT_H
-#define STRAWTUBESCONTFACT_H
+#ifndef STRAWTUBES_STRAWTUBESCONTFACT_H_
+#define STRAWTUBES_STRAWTUBESCONTFACT_H_
 
 #include "FairContFact.h"
 
@@ -16,4 +16,4 @@ class strawtubesContFact : public FairContFact
     ClassDef( strawtubesContFact,0) // Factory for all strawtubes parameter containers
 };
 
-#endif
+#endif  // STRAWTUBES_STRAWTUBESCONTFACT_H_

@@ -1,5 +1,5 @@
-#ifndef UPSTREAMTAGGER_H
-#define UPSTREAMTAGGER_H
+#ifndef UPSTREAMTAGGER_UPSTREAMTAGGER_H_
+#define UPSTREAMTAGGER_UPSTREAMTAGGER_H_
 
 #include "FairDetector.h"
 #include "TVector3.h"
@@ -103,4 +103,4 @@ class UpstreamTagger: public FairDetector
     ClassDef(UpstreamTagger,1)
 };
 
-#endif //UPSTREAMTAGGER_H
+#endif  // UPSTREAMTAGGER_UPSTREAMTAGGER_H_

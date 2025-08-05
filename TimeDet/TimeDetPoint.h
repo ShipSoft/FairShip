@@ -1,5 +1,5 @@
-#ifndef TIMEDETPOINT_H
-#define TIMEDETPOINT_H 1
+#ifndef TIMEDET_TIMEDETPOINT_H_
+#define TIMEDET_TIMEDETPOINT_H_ 1
 
 
 #include "FairMCPoint.h"
@@ -51,4 +51,4 @@ class TimeDetPoint : public FairMCPoint
 
 };
 
-#endif
+#endif  // TIMEDET_TIMEDETPOINT_H_

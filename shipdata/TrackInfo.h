@@ -1,5 +1,5 @@
-#ifndef TRACKINFO_H
-#define TRACKINFO_H 1
+#ifndef SHIPDATA_TRACKINFO_H_
+#define SHIPDATA_TRACKINFO_H_
 
 #include "TObject.h"              //
 
@@ -20,7 +20,7 @@ class TrackInfo : public TObject
     /** Default constructor **/
     TrackInfo();
     /**  Standard constructor  **/
-    TrackInfo(const genfit::Track* tr);
+        explicit TrackInfo(const genfit::Track* tr);
 
     /**  Copy constructor  **/
     TrackInfo(const TrackInfo& ti);
@@ -49,7 +49,7 @@ class TrackInfo : public TObject
   protected:
 #ifndef __CINT__ // for BOOST serialization
     friend class boost::serialization::access;
-#endif // for BOOST serialization
+#endif  // for BOOST serialization
 
     std::vector<unsigned int> fDetIDs;   ///< array of measurements
     std::vector<float> fWL;
@@ -57,4 +57,4 @@ class TrackInfo : public TObject
     ClassDef(TrackInfo,1);
 };
 
-#endif
+#endif  // SHIPDATA_TRACKINFO_H_

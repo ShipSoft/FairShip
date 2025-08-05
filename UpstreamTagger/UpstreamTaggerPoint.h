@@ -1,5 +1,5 @@
-#ifndef UPSTREAMTAGGERPOINT_H
-#define UPSTREAMTAGGERPOINT_H 1
+#ifndef UPSTREAMTAGGER_UPSTREAMTAGGERPOINT_H_
+#define UPSTREAMTAGGER_UPSTREAMTAGGERPOINT_H_
 
 
 #include "FairMCPoint.h"
@@ -50,4 +50,4 @@ class UpstreamTaggerPoint : public FairMCPoint
 
 };
 
-#endif
+#endif  // UPSTREAMTAGGER_UPSTREAMTAGGERPOINT_H_

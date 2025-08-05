@@ -10,8 +10,8 @@
  ** ECAL summable hit is a deposited energy by each tracks in ECAL cell
  **/
 
-#ifndef ECALSTRUCTUREFILLER_H
-#define ECALSTRUCTUREFILLER_H
+#ifndef ECAL_ECALSTRUCTUREFILLER_H_
+#define ECAL_ECALSTRUCTUREFILLER_H_
 
 #include "FairTask.h"
 #include "TString.h"
@@ -28,7 +28,7 @@ public:
   ecalStructureFiller();
 
   /** Standard constructor **/
-  ecalStructureFiller(const char *name, const Int_t iVerbose=1, const char* fileGeo="ecal_FullMC.geo");
+  explicit ecalStructureFiller(const char *name, const Int_t iVerbose=1, const char* fileGeo="ecal_FullMC.geo");
 
   /** Destructor **/
   virtual ~ecalStructureFiller();
@@ -113,4 +113,4 @@ inline ecalStructure* ecalStructureFiller::GetStructure() const
   return fStr;
 }
 
-#endif
+#endif  // ECAL_ECALSTRUCTUREFILLER_H_

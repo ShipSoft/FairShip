@@ -1,5 +1,5 @@
-#ifndef VETOCONTFACT_H
-#define VETOCONTFACT_H
+#ifndef MUON_MUONCONTFACT_H_
+#define MUON_MUONCONTFACT_H_
 
 #include "FairContFact.h"
 
@@ -16,4 +16,4 @@ class muonContFact : public FairContFact
     ClassDef( muonContFact,0) // Factory for all muon parameter containers
 };
 
-#endif
+#endif  // MUON_MUONCONTFACT_H_

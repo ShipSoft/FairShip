@@ -1,5 +1,5 @@
-#ifndef TIMEDET_H
-#define TIMEDET_H
+#ifndef TIMEDET_TIMEDET_H_
+#define TIMEDET_TIMEDET_H_
 
 #include "FairDetector.h"
 
@@ -128,4 +128,4 @@ class TimeDet: public FairDetector
     ClassDef(TimeDet,3)
 };
 
-#endif //TIMEDET_H
+#endif  // TIMEDET_TIMEDET_H_

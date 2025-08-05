@@ -2,8 +2,8 @@
  * Operates over EcalClusters
  * Very simple at the momemnt: no real unfolding by tries to divide energy deposition in common cells. */
 
-#ifndef ECALRECO
-#define ECALRECO
+#ifndef ECAL_ECALRECO_H_
+#define ECAL_ECALRECO_H_
 
 #include "FairTask.h"
 
@@ -54,4 +54,4 @@ private:
   ClassDef(ecalReco, 1)
 };
 
-#endif
+#endif  // ECAL_ECALRECO_H_

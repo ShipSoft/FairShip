@@ -3,8 +3,8 @@
   \author John Back <J.J.Back@warwick.ac.uk>
 */
 
-#ifndef ShipBFieldMap_H
-#define ShipBFieldMap_H
+#ifndef FIELD_SHIPBFIELDMAP_H_
+#define FIELD_SHIPBFIELDMAP_H_
 
 #include "TGeoMatrix.h"
 #include "TVirtualMagField.h"
@@ -493,4 +493,4 @@ class ShipBFieldMap : public TVirtualMagField
 
 };
 
-#endif
+#endif  // FIELD_SHIPBFIELDMAP_H_

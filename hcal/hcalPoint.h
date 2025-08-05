@@ -1,5 +1,5 @@
-#ifndef HCALPOINT_H
-#define HCALPOINT_H 1
+#ifndef HCAL_HCALPOINT_H_
+#define HCAL_HCALPOINT_H_ 1
 
 
 #include "FairMCPoint.h"
@@ -61,4 +61,4 @@ class hcalPoint : public FairMCPoint
 
 };
 
-#endif
+#endif  // HCAL_HCALPOINT_H_

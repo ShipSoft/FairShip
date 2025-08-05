@@ -4,8 +4,8 @@
  ** hcalModule module
  **/
 
-#ifndef HCALMODULE_H
-#define HCALMODULE_H
+#ifndef HCAL_HCALMODULE_H_
+#define HCAL_HCALMODULE_H_
 
 #include "TObject.h"
 
@@ -16,7 +16,7 @@
 class hcalModule : public TObject
 {
 public:
-  hcalModule(Int_t modulenumber, Float_t x1=0, Float_t y1=0, Float_t x2=0, Float_t y2=0)
+  explicit hcalModule(Int_t modulenumber, Float_t x1=0, Float_t y1=0, Float_t x2=0, Float_t y2=0)
     : TObject(), fNumber(modulenumber), fX1(x1), fY1(y1), fX2(x2),
     fY2(y2), fEnergy(0), fEnergy2(0), fADC(-1111), fNeighbors()
   {};
@@ -96,4 +96,4 @@ inline void hcalModule::ResetEnergyFast()
   fADC=-1111;
 }
 
-#endif
+#endif  // HCAL_HCALMODULE_H_

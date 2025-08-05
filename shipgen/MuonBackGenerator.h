@@ -1,5 +1,5 @@
-#ifndef PNDmuGENERATOR_H
-#define PNDmuGENERATOR_H 1
+#ifndef SHIPGEN_MUONBACKGENERATOR_H_
+#define SHIPGEN_MUONBACKGENERATOR_H_ 1
 
 #include "TROOT.h"
 #include "FairGenerator.h"
@@ -55,4 +55,4 @@ protected:
   ClassDef(MuonBackGenerator,6);
 };
 
-#endif /* !PNDmuGENERATOR_H */
+#endif  // SHIPGEN_MUONBACKGENERATOR_H_ /* !PNDmuGENERATOR_H */

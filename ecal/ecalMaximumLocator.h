@@ -1,5 +1,5 @@
-#ifndef ECALMAXIMUMLOCATOR_H
-#define ECALMAXIMUMLOCATOR_H
+#ifndef ECAL_ECALMAXIMUMLOCATOR_H_
+#define ECAL_ECALMAXIMUMLOCATOR_H_
 
 #include "FairTask.h"
 
@@ -37,4 +37,4 @@ private:
   ClassDef(ecalMaximumLocator, 1);
 };
 
-#endif
+#endif  // ECAL_ECALMAXIMUMLOCATOR_H_

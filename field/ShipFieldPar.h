@@ -1,5 +1,5 @@
-#ifndef ShipFieldPar_H
-#define ShipFieldPar_H 1
+#ifndef FIELD_SHIPFIELDPAR_H_
+#define FIELD_SHIPFIELDPAR_H_
 
 #include "FairParGenericSet.h"
 
@@ -104,4 +104,4 @@ class ShipFieldPar : public FairParGenericSet
 };
 
 
-#endif
+#endif  // FIELD_SHIPFIELDPAR_H_

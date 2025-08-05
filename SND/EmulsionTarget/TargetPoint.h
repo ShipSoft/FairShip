@@ -1,5 +1,5 @@
-#ifndef TARGETPOINT_H
-#define TARGETPOINT_H 1
+#ifndef SND_EMULSIONTARGET_TARGETPOINT_H_
+#define SND_EMULSIONTARGET_TARGETPOINT_H_
 
 #include "FairMCPoint.h"
 #include "TObject.h"
@@ -55,4 +55,4 @@ class TargetPoint : public FairMCPoint
     ClassDef(TargetPoint, 2)
 };
 
-#endif
+#endif   // SND_EMULSIONTARGET_TARGETPOINT_H_

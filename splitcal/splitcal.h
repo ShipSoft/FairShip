@@ -1,5 +1,5 @@
-#ifndef SPLITCAL_H
-#define SPLITCAL_H
+#ifndef SPLITCAL_SPLITCAL_H_
+#define SPLITCAL_SPLITCAL_H_
 
 #include "FairDetector.h"
 
@@ -131,4 +131,4 @@ class splitcal: public FairDetector
     ClassDef(splitcal,1)
 };
 
-#endif //SPLITCAL_H
+#endif  // SPLITCAL_SPLITCAL_H_

@@ -1,5 +1,5 @@
-#ifndef VETOCONTFACT_H
-#define VETOCONTFACT_H
+#ifndef SPLITCAL_SPLITCALCONTFACT_H_
+#define SPLITCAL_SPLITCALCONTFACT_H_
 
 #include "FairContFact.h"
 
@@ -16,4 +16,4 @@ class splitcalContFact : public FairContFact
     ClassDef( splitcalContFact,0) // Factory for all splitcal parameter containers
 };
 
-#endif
+#endif  // SPLITCAL_SPLITCALCONTFACT_H_

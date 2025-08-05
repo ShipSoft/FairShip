@@ -6,8 +6,8 @@
 //
 //
 
-#ifndef Target_H
-#define Target_H
+#ifndef SND_EMULSIONTARGET_TARGET_H_
+#define SND_EMULSIONTARGET_TARGET_H_
 
 #include "FairDetector.h"
 #include "FairModule.h"   // for FairModule
@@ -228,4 +228,4 @@ class Target : public FairDetector
     Int_t InitMedium(const char* name);
 };
 
-#endif
+#endif   // SND_EMULSIONTARGET_TARGET_H_

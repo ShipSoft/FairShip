@@ -1,8 +1,8 @@
 /** A simple and modern version of ecalClusterFinder
  ** Produces a ecalCluster. **/
 
-#ifndef ECALCLUSTERFINDER_H
-#define ECALCLUSTERFINDER_H
+#ifndef ECAL_ECALCLUSTERFINDER_H_
+#define ECAL_ECALCLUSTERFINDER_H_
 
 #include "FairTask.h"
 #include <list>
@@ -80,4 +80,4 @@ private:
   ClassDef(ecalClusterFinder, 1)
 };
 
-#endif
+#endif  // ECAL_ECALCLUSTERFINDER_H_

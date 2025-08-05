@@ -1,5 +1,5 @@
-#ifndef MUONPOINT_H
-#define MUONPOINT_H 1
+#ifndef MUON_MUONPOINT_H_
+#define MUON_MUONPOINT_H_ 1
 
 
 #include "FairMCPoint.h"
@@ -47,4 +47,4 @@ class muonPoint : public FairMCPoint
 
 };
 
-#endif
+#endif  // MUON_MUONPOINT_H_

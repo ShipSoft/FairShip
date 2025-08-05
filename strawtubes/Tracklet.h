@@ -1,6 +1,5 @@
-#ifndef Tracklet_H
-#define Tracklet_H 1
-
+#ifndef STRAWTUBES_TRACKLET_H_
+#define STRAWTUBES_TRACKLET_H_
 #include "TObject.h"
 #include "TClonesArray.h"
 
@@ -10,7 +9,7 @@
 #ifndef __CINT__
 #include <boost/serialization/access.hpp>
 #include <boost/serialization/base_object.hpp>
-#endif //__CINT__
+#endif  // __CINT__
 /**
  *@author Thomas Ruf
  **
@@ -47,7 +46,7 @@ class Tracklet: public TObject
   protected:
 #ifndef __CINT__ // for BOOST serialization
     friend class boost::serialization::access;
-#endif // for BOOST serialization
+#endif  // for BOOST serialization
 
     std::vector<unsigned int>  aTracklet;         ///< list of indices
     Int_t flag; // reserved for type of tracklet  ///< type of tracklet
@@ -55,4 +54,4 @@ class Tracklet: public TObject
 
 };
 
-#endif
+#endif  // STRAWTUBES_TRACKLET_H_

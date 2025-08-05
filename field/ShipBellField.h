@@ -14,8 +14,8 @@
  **/
 
 
-#ifndef ShipBellField_H
-#define ShipBellField_H 1
+#ifndef FIELD_SHIPBELLFIELD_H_
+#define FIELD_SHIPBELLFIELD_H_ 1
 
 
 #include "FairField.h"
@@ -39,11 +39,11 @@ class ShipBellField : public FairField
    ** @param Zmiddle     middle of the magnet (global coordinates)
    ** @param Btube      largest radius of the tube ellips (inside)
    **/
-  ShipBellField(const char* name, Double_t Bpeak, Double_t Zmiddle,Int_t fOrient=1, Double_t Btube=500. );
+  explicit ShipBellField(const char* name, Double_t Bpeak, Double_t Zmiddle,Int_t fOrient=1, Double_t Btube=500. );
 
 
   /** Constructor from ShipFieldPar **/
-  ShipBellField(ShipFieldPar* fieldPar);
+  explicit ShipBellField(ShipFieldPar* fieldPar);
 
 
   /** Destructor **/
@@ -80,4 +80,4 @@ class ShipBellField : public FairField
 };
 
 
-#endif
+#endif  // FIELD_SHIPBELLFIELD_H_

@@ -65,4 +65,4 @@ class MtcDetHit : public ShipHit
     ClassDef(MtcDetHit, 4);
 };
 
-#endif
+#endif   // SND_MTC_MTCDETHIT_H_

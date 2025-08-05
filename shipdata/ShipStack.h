@@ -22,8 +22,8 @@
  **/
 
 
-#ifndef ShipStack_H
-#define ShipStack_H
+#ifndef SHIPDATA_SHIPSTACK_H_
+#define SHIPDATA_SHIPSTACK_H_
 
 #include "FairGenericStack.h"           // for FairGenericStack
 
@@ -51,7 +51,7 @@ class ShipStack : public FairGenericStack
     /** Default constructor
      *param size  Estimated track number
      **/
-    ShipStack(Int_t size = 100);
+    explicit ShipStack(Int_t size = 100);
 
 
     /** Destructor  **/
@@ -255,4 +255,4 @@ class ShipStack : public FairGenericStack
 
 
 
-#endif
+#endif  // SHIPDATA_SHIPSTACK_H_

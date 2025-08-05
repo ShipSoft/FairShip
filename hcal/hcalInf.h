@@ -4,8 +4,8 @@
  ** Container of HCAL geometry parameters
  **/
 
-#ifndef HCALINF_H
-#define HCALINF_H
+#ifndef HCAL_HCALINF_H_
+#define HCAL_HCALINF_H_
 
 #include "TObjArray.h"
 #include "TString.h"
@@ -81,7 +81,7 @@ public:
 protected:
 
   /** Text file constructor **/
-  hcalInf(const char* filename);
+  explicit hcalInf(const char* filename);
   void CalculateHoleSize();
   virtual ~hcalInf();
 
@@ -174,4 +174,4 @@ inline void hcalInf::FreeInstance()
     fInf=NULL;
   }
 }
-#endif
+#endif  // HCAL_HCALINF_H_

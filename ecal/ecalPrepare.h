@@ -1,8 +1,8 @@
 // Converts ADC -> energy depostion in plastic
 // Very simple realization.
 
-#ifndef ECALPREPARE_H
-#define ECALPREPARE_H
+#ifndef ECAL_ECALPREPARE_H_
+#define ECAL_ECALPREPARE_H_
 
 #include "FairTask.h"
 
@@ -58,4 +58,4 @@ private:
   ClassDef(ecalPrepare, 1);
 };
 
-#endif
+#endif  // ECAL_ECALPREPARE_H_

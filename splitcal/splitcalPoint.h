@@ -1,5 +1,5 @@
-#ifndef SPLITCALPOINT_H
-#define SPLITCALPOINT_H 1
+#ifndef SPLITCAL_SPLITCALPOINT_H_
+#define SPLITCAL_SPLITCALPOINT_H_
 
 
 #include "FairMCPoint.h"
@@ -48,4 +48,4 @@ class splitcalPoint : public FairMCPoint
 
 };
 
-#endif
+#endif  // SPLITCAL_SPLITCALPOINT_H_

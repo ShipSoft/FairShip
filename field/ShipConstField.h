@@ -13,8 +13,8 @@
  **/
 
 
-#ifndef ShipConstField_H
-#define ShipConstField_H 1
+#ifndef FIELD_SHIPCONSTFIELD_H_
+#define FIELD_SHIPCONSTFIELD_H_ 1
 
 
 #include "FairField.h"
@@ -39,13 +39,13 @@ class ShipConstField : public FairField
    ** @param zMin,zMax   z region of field (global coordinates)
    ** @param bX,bY,bZ    Field values [kG]
    **/
-  ShipConstField(const char* name, Double_t xMin, Double_t xMax,
+  explicit ShipConstField(const char* name, Double_t xMin, Double_t xMax,
 		Double_t yMin, Double_t yMax, Double_t zMin,
 		Double_t zMax, Double_t bX, Double_t bY, Double_t bZ);
 
 
   /** Constructor from ShipFieldPar **/
-  ShipConstField(ShipFieldPar* fieldPar);
+  explicit ShipConstField(ShipFieldPar* fieldPar);
 
 
   /** Destructor **/
@@ -114,4 +114,4 @@ class ShipConstField : public FairField
 };
 
 
-#endif
+#endif  // FIELD_SHIPCONSTFIELD_H_

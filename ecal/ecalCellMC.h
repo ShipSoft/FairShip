@@ -4,8 +4,8 @@
  ** ECAL cell structure, a part of ECAL module. This implementation carries an MC information
  **/
 
-#ifndef ECALCELLMC_H
-#define ECALCELLMC_H
+#ifndef ECAL_ECALCELLMC_H_
+#define ECAL_ECALCELLMC_H_
 
 /* $Id: ecalCellMC.h,v 1.9 2012/01/18 18:15:23 prokudin Exp $ */
 
@@ -18,7 +18,7 @@
 class ecalCellMC : public ecalCell
 {
 public:
-  ecalCellMC(Int_t cellnumber, Float_t x1=0, Float_t y1=0, Float_t x2=0, Float_t y2=0, Char_t type=0, Float_t energy=0);
+  explicit ecalCellMC(Int_t cellnumber, Float_t x1=0, Float_t y1=0, Float_t x2=0, Float_t y2=0, Char_t type=0, Float_t energy=0);
 
   Float_t GetTrackEnergy(Int_t num) const;
   Float_t GetTrackTime(Int_t num) const;
@@ -68,4 +68,4 @@ private:
 };
 
 
-#endif
+#endif  // ECAL_ECALCELLMC_H_

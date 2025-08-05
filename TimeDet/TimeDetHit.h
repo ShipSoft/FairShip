@@ -1,5 +1,5 @@
-#ifndef TimeDetHIT_H
-#define TimeDetHIT_H 1
+#ifndef TIMEDET_TIMEDETHIT_H_
+#define TIMEDET_TIMEDETHIT_H_
 #include "FairVolume.h"
 #include "ShipHit.h"
 #include "TimeDetPoint.h"
@@ -58,4 +58,4 @@ class TimeDetHit : public ShipHit
 
 };
 
-#endif
+#endif  // TIMEDET_TIMEDETHIT_H_

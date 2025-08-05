@@ -1,5 +1,5 @@
-#ifndef Chamber_H
-#define Chamber_H
+#ifndef PASSIVE_SHIPCHAMBER_H_
+#define PASSIVE_SHIPCHAMBER_H_
 
 #include "FairModule.h"                 // for FairModule
 
@@ -10,7 +10,7 @@
 class ShipChamber : public FairModule
 {
   public:
-    ShipChamber(const char* name, const char* Title="ShipChamber");
+    explicit ShipChamber(const char* name, const char* Title="ShipChamber");
     ShipChamber();
     virtual ~ShipChamber();
     void ConstructGeometry();
@@ -19,4 +19,4 @@ class ShipChamber : public FairModule
 
 };
 
-#endif //Chamber_H
+#endif  // PASSIVE_SHIPCHAMBER_H_

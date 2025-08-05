@@ -10,8 +10,8 @@
  **/
 
 
-#ifndef ShipMCTrack_H
-#define ShipMCTrack_H 1
+#ifndef SHIPDATA_SHIPMCTRACK_H_
+#define SHIPDATA_SHIPMCTRACK_H_ 1
 
 #include "TObject.h"                    // for TObject
 #include "ShipDetectorList.h"           // for DetectorId
@@ -34,7 +34,7 @@ class ShipMCTrack : public TObject
 
 
     /**  Standard constructor  **/
-    ShipMCTrack(Int_t pdgCode, Int_t motherID, Double_t px, Double_t py,
+    explicit ShipMCTrack(Int_t pdgCode, Int_t motherID, Double_t px, Double_t py,
                 Double_t pz, Double_t E, Double_t x, Double_t y, Double_t z,
                 Double_t t, Int_t nPoints, Double_t w);
 
@@ -43,7 +43,7 @@ class ShipMCTrack : public TObject
 
 
     /**  Constructor from TParticle  **/
-    ShipMCTrack(TParticle* particle);
+    explicit ShipMCTrack(TParticle* particle);
 
 
     /**  Destructor  **/
@@ -158,4 +158,4 @@ inline void ShipMCTrack::GetStartVertex(TVector3& vertex)
 
 
 
-#endif
+#endif  // SHIPDATA_SHIPMCTRACK_H_

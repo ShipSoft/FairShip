@@ -1,5 +1,5 @@
-#ifndef PNDP6GENERATOR_H
-#define PNDP6GENERATOR_H 1
+#ifndef SHIPGEN_TPYTHIA6GENERATOR_H_
+#define SHIPGEN_TPYTHIA6GENERATOR_H_ 1
 
 #include "TROOT.h"
 #include "FairGenerator.h"
@@ -44,4 +44,4 @@ class tPythia6Generator : public FairGenerator
   ClassDef(tPythia6Generator,1);
 };
 
-#endif /* !PNDP6GENERATOR_H */
+#endif  // SHIPGEN_TPYTHIA6GENERATOR_H_ /* !PNDP6GENERATOR_H */

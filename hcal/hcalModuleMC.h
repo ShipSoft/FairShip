@@ -4,8 +4,8 @@
  ** hcalModule module. This implementation carries an MC information
  **/
 
-#ifndef HCALMODULEMC_H
-#define HCALMODULEMC_H
+#ifndef HCAL_HCALMODULEMC_H_
+#define HCAL_HCALMODULEMC_H_
 
 /* $Id: hcalModuleMC.h,v 1.9 2012/01/18 18:15:23 prokudin Exp $ */
 
@@ -18,7 +18,7 @@
 class hcalModuleMC : public hcalModule
 {
 public:
-  hcalModuleMC(Int_t number, Float_t x1=0, Float_t y1=0, Float_t x2=0, Float_t y2=0);
+  explicit hcalModuleMC(Int_t number, Float_t x1=0, Float_t y1=0, Float_t x2=0, Float_t y2=0);
 
   Float_t GetTrackEnergy(Int_t num) const;
   Float_t GetTrackEnergy2(Int_t num) const;
@@ -60,4 +60,4 @@ private:
 };
 
 
-#endif
+#endif  // HCAL_HCALMODULEMC_H_

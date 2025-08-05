@@ -1,5 +1,5 @@
-#ifndef STRAWTUBESPOINT_H
-#define STRAWTUBESPOINT_H 1
+#ifndef STRAWTUBES_STRAWTUBESPOINT_H_
+#define STRAWTUBES_STRAWTUBESPOINT_H_
 
 #include "FairMCPoint.h"
 #include "TObject.h"
@@ -44,4 +44,4 @@ class strawtubesPoint : public FairMCPoint
     ClassDef(strawtubesPoint, 3);
 };
 
-#endif
+#endif  // STRAWTUBES_STRAWTUBESPOINT_H_

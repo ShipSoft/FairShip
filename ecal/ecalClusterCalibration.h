@@ -1,8 +1,8 @@
 // A very simple digitization scheme for Ship ECAL
 // Operate over ecalStructure
 
-#ifndef ECALCLUSTERCALIBRATION_H
-#define ECALCLUSTERCALIBRATION_H
+#ifndef ECAL_ECALCLUSTERCALIBRATION_H_
+#define ECAL_ECALCLUSTERCALIBRATION_H_
 
 #include "FairTask.h"
 
@@ -16,7 +16,7 @@ public:
   /** Default constructor **/
   ecalClusterCalibration();
   /** Standard constructor. Use this **/
-  ecalClusterCalibration(const char* name, Int_t iVerbose=0);
+  explicit ecalClusterCalibration(const char* name, Int_t iVerbose=0);
   /** Destructor **/
   virtual ~ecalClusterCalibration();
   /** Initialization of the task **/
@@ -54,4 +54,4 @@ private:
   ClassDef(ecalClusterCalibration, 1);
 };
 
-#endif
+#endif  // ECAL_ECALCLUSTERCALIBRATION_H_

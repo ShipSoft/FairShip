@@ -3,8 +3,8 @@
   \author John Back <J.J.Back@warwick.ac.uk>
 */
 
-#ifndef ShipCompField_H
-#define ShipCompField_H
+#ifndef FIELD_SHIPCOMPFIELD_H_
+#define FIELD_SHIPCOMPFIELD_H_
 
 #include "TVirtualMagField.h"
 
@@ -76,4 +76,4 @@ class ShipCompField: public TVirtualMagField
 
 };
 
-#endif
+#endif  // FIELD_SHIPCOMPFIELD_H_

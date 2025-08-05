@@ -4,8 +4,8 @@
  ** ECAL cell structure, a part of ECAL module
  **/
 
-#ifndef ECALCELL_H
-#define ECALCELL_H
+#ifndef ECAL_ECALCELL_H_
+#define ECAL_ECALCELL_H_
 
 #include "TObject.h"
 
@@ -16,7 +16,7 @@
 class ecalCell : public TObject
 {
 public:
-  ecalCell(Int_t cellnumber, Float_t x1=0, Float_t y1=0, Float_t x2=0, Float_t y2=0, Char_t type=0, Float_t energy=0)
+  explicit ecalCell(Int_t cellnumber, Float_t x1=0, Float_t y1=0, Float_t x2=0, Float_t y2=0, Char_t type=0, Float_t energy=0)
     : TObject(), fNumber(cellnumber), fX1(x1), fY1(y1), fX2(x2),
     fY2(y2), fType(type), fEnergy(energy), fADC(-1111), fNeighbors(), f5x5Cluster(),fTime(-1111)
   {};
@@ -113,4 +113,4 @@ inline void ecalCell::ResetEnergyFast()
   fTime=-1111;
 }
 
-#endif
+#endif  // ECAL_ECALCELL_H_

@@ -1,5 +1,5 @@
-#ifndef HCALANALYSISCALIB_H
-#define HCALANALYSISCALIB_H
+#ifndef HCAL_HCALANALYSISSIMPLE_H_
+#define HCAL_HCALANALYSISSIMPLE_H_
 
 #include "FairTask.h"
 
@@ -57,4 +57,4 @@ private:
   ClassDef(hcalAnalysisSimple,1)
 };
 
-#endif
+#endif  // HCAL_HCALANALYSISSIMPLE_H_

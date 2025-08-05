@@ -1,5 +1,5 @@
-#ifndef ECALANALYSISMATERIAL_H
-#define ECALANALYSISMATERIAL_H
+#ifndef ECAL_ECALANALYSISMATERIAL_H_
+#define ECAL_ECALANALYSISMATERIAL_H_
 
 #include "FairTask.h"
 
@@ -14,7 +14,7 @@ class TClonesArray;
 class ecalAnalysisMaterial : public FairTask
 {
 public:
-  ecalAnalysisMaterial(const char* name, const Int_t iVerbose=0);
+  explicit ecalAnalysisMaterial(const char* name, const Int_t iVerbose=0);
 public:
   /** Default constructor **/
   ecalAnalysisMaterial();
@@ -58,4 +58,4 @@ private:
   ClassDef(ecalAnalysisMaterial,1)
 };
 
-#endif
+#endif  // ECAL_ECALANALYSISMATERIAL_H_

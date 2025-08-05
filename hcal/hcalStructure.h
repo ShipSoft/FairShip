@@ -4,8 +4,8 @@
  ** HCAL structure, consisting of modules
  **/
 
-#ifndef HCALSTRUCTURE_H
-#define HCALSTRUCTURE_H
+#ifndef HCAL_HCALSTRUCTURE_H_
+#define HCAL_HCALSTRUCTURE_H_
 
 #include "hcalInf.h"
 #include "hcalModule.h"
@@ -20,7 +20,7 @@
 class hcalStructure : public TNamed
 {
 public:
-  hcalStructure(hcalInf* hcalinf);
+  explicit hcalStructure(hcalInf* hcalinf);
   void SetUseMC(Int_t mc=0) {fUseMC=mc;}
   Int_t GetUseMC() const {return fUseMC;}
   void Construct();
@@ -159,4 +159,4 @@ inline Int_t hcalStructure::GetHitId(Float_t x, Float_t y) const
     return -1111;
 }
 
-#endif
+#endif  // HCAL_HCALSTRUCTURE_H_

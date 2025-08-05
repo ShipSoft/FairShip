@@ -1,5 +1,5 @@
-#ifndef ECALCLUSTER_H
-#define ECALCLUSTER_H
+#ifndef ECAL_ECALCLUSTER_H_
+#define ECAL_ECALCLUSTER_H_
 
 #include "TObject.h"
 #include "TArrayI.h"
@@ -102,4 +102,4 @@ private:
   ClassDef(ecalCluster, 2)
 };
 
-#endif
+#endif  // ECAL_ECALCLUSTER_H_

@@ -1,8 +1,8 @@
-#ifndef SHIPGLOBALS_H
-#define SHIPGLOBALS_H
+#ifndef SHIPDATA_SHIPGLOBALS_H_
+#define SHIPDATA_SHIPGLOBALS_H_
 
 enum ShipGlobals {
    kShipMuonsCrossSectionFactor   =  1
  };
 
-#endif /* !SHIPGLOBALS_H */
+#endif  // SHIPDATA_SHIPGLOBALS_H_

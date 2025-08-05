@@ -1,5 +1,5 @@
-#ifndef ECALMAXIMUM_H
-#define ECALMAXIMUM_H
+#ifndef ECAL_ECALMAXIMUM_H_
+#define ECAL_ECALMAXIMUM_H_
 
 #include "TObject.h"
 
@@ -53,4 +53,4 @@ inline ecalMaximum::ecalMaximum(ecalCell* cell, Double_t cx, Double_t cy, Double
 {
   ;
 }
-#endif
+#endif  // ECAL_ECALMAXIMUM_H_

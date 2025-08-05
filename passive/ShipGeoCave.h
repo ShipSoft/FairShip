@@ -1,5 +1,5 @@
-#ifndef SNOOPYGEOCAVE_H
-#define SNOOPYGEOCAVE_H
+#ifndef PASSIVE_SHIPGEOCAVE_H_
+#define PASSIVE_SHIPGEOCAVE_H_
 
 #include "FairGeoSet.h"                 // for FairGeoSet
 
@@ -26,4 +26,4 @@ class  ShipGeoCave : public FairGeoSet
     ClassDef(ShipGeoCave,0) // Class for the geometry of CAVE
 };
 
-#endif  /* !PNDGEOCAVE_H */
+#endif  // PASSIVE_SHIPGEOCAVE_H_  /* !PNDGEOCAVE_H */

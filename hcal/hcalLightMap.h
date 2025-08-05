@@ -1,5 +1,5 @@
-#ifndef HCALLIGHTMAP_H
-#define HCALLIGHTMAP_H
+#ifndef HCAL_HCALLIGHTMAP_H_
+#define HCAL_HCALLIGHTMAP_H_
 
 #include "TNamed.h"
 
@@ -7,7 +7,7 @@ class hcalLightMap : public TNamed
 {
 public:
  hcalLightMap() : TNamed(), fSSide(0.), fS(0), fSize(0), fData(NULL) {};
-  hcalLightMap(const char* fname, const char* title="Light collection efficiency map");
+  explicit hcalLightMap(const char* fname, const char* title="Light collection efficiency map");
   Double_t Data(Double_t x, Double_t y)
     {Int_t n=GetNum(x,y); if (n<0) return n; return fData[n];}
   Int_t GetNum(Double_t x, Double_t y)
@@ -42,4 +42,4 @@ private:
   ClassDef(hcalLightMap, 1)
 };
 
-#endif
+#endif  // HCAL_HCALLIGHTMAP_H_

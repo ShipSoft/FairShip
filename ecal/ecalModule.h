@@ -5,8 +5,8 @@
  ** Useless if we have only modules with one lightisolated cell
  **/
 
-#ifndef ECALMODULE_H
-#define ECALMODULE_H
+#ifndef ECAL_ECALMODULE_H_
+#define ECAL_ECALMODULE_H_
 
 #include "ecalCell.h"
 
@@ -18,7 +18,7 @@ class ecalModule : public ecalCell
 
 public:
   // Set mc==1 to construct ecalCellMC, not ecalCell
-  ecalModule(char type=1, Int_t cellnumber=-1, Float_t x1=0, Float_t y1=0, Float_t x2=0, Float_t y2=0, Int_t mc=0,Float_t energy=0);
+  explicit ecalModule(char type=1, Int_t cellnumber=-1, Float_t x1=0, Float_t y1=0, Float_t x2=0, Float_t y2=0, Int_t mc=0,Float_t energy=0);
 
   ecalCell* Locate(Int_t x, Int_t y) const;
 
@@ -59,4 +59,4 @@ inline void ecalModule::ResetModule()
   ResetEnergyFast();
   for(UInt_t i=0;i<fCells.size();i++) fCells[i]->ResetEnergyFast();
 }
-#endif
+#endif  // ECAL_ECALMODULE_H_
