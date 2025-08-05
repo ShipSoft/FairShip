@@ -1,5 +1,7 @@
 var NAVTREEINDEX4 =
 {
+"classHNLPythia8Generator.html#a07f58b123dafc8cf52a27f957cddc3b8":[5,0,68,37],
+"classHNLPythia8Generator.html#a0c2e89ff1d4d250f5624f9e45be70cdb":[5,0,68,16],
 "classHNLPythia8Generator.html#a10cfa18bf9fcef7c426880b02a6aeb8e":[5,0,68,20],
 "classHNLPythia8Generator.html#a159fb77f0c3480cee04b466df2a0df74":[5,0,68,1],
 "classHNLPythia8Generator.html#a2156924efe22e41bda7fc3a39d922856":[5,0,68,5],
@@ -247,7 +249,5 @@ var NAVTREEINDEX4 =
 "classPythia6Generator.html":[5,0,81],
 "classPythia6Generator.html#a086ec0f2325e990962c47739f4800728":[5,0,81,9],
 "classPythia6Generator.html#a49c40788f16fd90ffcef3f1d2c205b28":[5,0,81,2],
-"classPythia6Generator.html#a4faa0fb4496325507f50d1908bf7155e":[5,0,81,8],
-"classPythia6Generator.html#a64187d5c0756ff78a09ed78561b142aa":[5,0,81,6],
-"classPythia6Generator.html#a66e68809b81680dfb99d129d3a46ff33":[5,0,81,7]
+"classPythia6Generator.html#a4faa0fb4496325507f50d1908bf7155e":[5,0,81,8]
 };

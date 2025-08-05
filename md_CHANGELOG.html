@@ -123,6 +123,7 @@ Added</h2>
 <li>Added the hole for SND in the Muon Shield, that is created automatically if SND key is enabled (works so far for SND_design == 2)</li>
 <li>Implement vacuum in target facility</li>
 <li>Implement target helium vessel</li>
+<li>feat(python): Add z-offset to <a class="el" href="classFixedTargetGenerator.html">FixedTargetGenerator</a></li>
 </ul>
 <h2><a class="anchor" id="autotoc_md3"></a>
 Fixed</h2>
@@ -150,6 +151,7 @@ Fixed</h2>
 <li>Fix <code>beam smearing</code>: replace incorrect Gaussian radius with proper 2D Gaussian sampling. Ensures physical consistency; radius now follows Rayleigh distribution as expected.</li>
 <li>Reconstruction: reverse nmeas &gt; 0 check to make sure 𝜒² is defined</li>
 <li>Fix: MTC geometry overlap</li>
+<li>fix(FixedTargetGenerator): Don't assume anything about the target substructure</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md4"></a>
 Changed</h2>

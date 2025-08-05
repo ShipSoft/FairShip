@@ -27,6 +27,7 @@ var classFixedTargetGenerator =
     [ "SetSeed", "classFixedTargetGenerator.html#af02a4e8be2c082f7cedded68b5d017b3", null ],
     [ "SetTarget", "classFixedTargetGenerator.html#a27817b46d0058181871484c840167b6d", null ],
     [ "SetTauOnly", "classFixedTargetGenerator.html#a30f5ddc7c6c99572c2eed56579936497", null ],
+    [ "SetZoffset", "classFixedTargetGenerator.html#ac08eb75875586d6458e03eb6d1c7028d", null ],
     [ "UseRandom1", "classFixedTargetGenerator.html#a19a2c4d106fac196fa4f874edc09c3b9", null ],
     [ "UseRandom3", "classFixedTargetGenerator.html#add0415acba00e5580114d0339ca14458", null ],
     [ "WithEvtGen", "classFixedTargetGenerator.html#a5ac1d30be0d2c97f573ba4bba3d3a919", null ],
@@ -88,5 +89,6 @@ var classFixedTargetGenerator =
     [ "withNtuple", "classFixedTargetGenerator.html#adbe0d15a750be256cc0dd5aa00a961cf", null ],
     [ "wspill", "classFixedTargetGenerator.html#a5c41df66f567cfaec9b1975609648829", null ],
     [ "xOff", "classFixedTargetGenerator.html#a29a0822f3d61012c5178500b3c6f9567", null ],
-    [ "yOff", "classFixedTargetGenerator.html#ac575dc0a0ee8177e0adf1062fabd956a", null ]
+    [ "yOff", "classFixedTargetGenerator.html#ac575dc0a0ee8177e0adf1062fabd956a", null ],
+    [ "zOff", "classFixedTargetGenerator.html#a717e7ae76668934e249f5d64b12a0af8", null ]
 ];

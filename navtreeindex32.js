@@ -1,5 +1,7 @@
 var NAVTREEINDEX32 =
 {
+"namespacemakeCascade.html#a850c7c17142d5f66455dd4491808ef25":[4,0,49,42],
+"namespacemakeCascade.html#a897519cb1b024b7752c61d6a5b1aa46b":[4,0,49,46],
 "namespacemakeCascade.html#a8d21a25449fa3448376eef769a3c06b9":[4,0,49,8],
 "namespacemakeCascade.html#a95ffd118cf42cfdd3012256cf4bac800":[4,0,49,29],
 "namespacemakeCascade.html#a96da43ec4f060a21c1699b1feb259be4":[4,0,49,35],
@@ -247,7 +249,5 @@ var NAVTREEINDEX32 =
 "namespacemake__nTuple__Tr.html#a330b5a34bed6a1b5fae36bf1ea628719":[4,0,48,3],
 "namespacemake__nTuple__Tr.html#a33203c22bb6011b6714a887c7850e24a":[4,0,48,23],
 "namespacemake__nTuple__Tr.html#a333d721ca87980ada69a7d5baa59c043":[4,0,48,31],
-"namespacemake__nTuple__Tr.html#a3562a98b75521c312dbf74ba57ba9332":[4,0,48,52],
-"namespacemake__nTuple__Tr.html#a37963ffded64fdce44ebb36f09f923ca":[4,0,48,46],
-"namespacemake__nTuple__Tr.html#a41d5a4b3518db7eb2d36dd59960b9ea6":[4,0,48,16]
+"namespacemake__nTuple__Tr.html#a3562a98b75521c312dbf74ba57ba9332":[4,0,48,52]
 };
