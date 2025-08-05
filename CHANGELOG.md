@@ -103,6 +103,7 @@ it in future.
 * Change EmulsionTarget detID decode function to tuple output
 * Particle Gun has been updated: now user can set the coordinates of the PG via keys --V{x,y,z} and use --D{x,y} to uniformly smear the signal in a given x and y range
 + makeCascade: Added new default target, moved to argparse
+* run_simScript.py: use options directly internally instead of using intermediate variables
 
 ### Removed
 
