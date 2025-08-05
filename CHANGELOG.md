@@ -40,6 +40,10 @@ it in future.
 * Implement target helium vessel
 * feat(python): Add z-offset to FixedTargetGenerator
 * Add missing --FixedTarget option to run_simScript.py
+* feat: Support for multiple SND designs in simulation setup
+  - The `--SND_design` option in `macro/run_simScript.py` now accepts multiple values and an 'all' option to enable all available SND designs.
+  - The geometry configuration and detector setup (`geometry/geometry_config.py`, `python/shipDet_conf.py`) have been updated to instantiate all requested SND detectors.
+  - This enables running with multiple SND subdetectors simultaneously and is future-proof for additional SND designs.
 
 ### Fixed
 

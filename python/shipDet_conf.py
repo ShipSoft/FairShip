@@ -285,20 +285,23 @@ def configure(run, ship_geo):
     detectorList.append(TargetStation)
 
 
-    # For SND
+    # For SND: support multiple designs
     if ship_geo.SND:
-        if ship_geo.SND_design == 2:
-            # SND design 2 -- MTC
-            configure_snd_mtc(
-                os.path.join(os.environ["FAIRSHIP"], "geometry", "MTC_config.yaml"),
-                ship_geo
-            )
-        else:
-            configure_snd_old(
-            os.path.join(os.environ["FAIRSHIP"], "geometry", "snd_config_old.yaml"),
-            ship_geo.UpstreamTagger.Z_Position - 8 *u.cm - 5 *u.cm, #8 cm width of UpstreamTagger
-            ship_geo.cave.floorHeightMuonShield,
-            )
+        for design in ship_geo.SND_design:
+            if design == 2:
+                # SND design 2 -- MTC
+                configure_snd_mtc(
+                    os.path.join(os.environ["FAIRSHIP"], "geometry", "MTC_config.yaml"),
+                    ship_geo
+                )
+            elif design == 1:
+                configure_snd_old(
+                    os.path.join(os.environ["FAIRSHIP"], "geometry", "snd_config_old.yaml"),
+                    ship_geo.UpstreamTagger.Z_Position - 8 *u.cm - 5 *u.cm, #8 cm width of UpstreamTagger
+                    ship_geo.cave.floorHeightMuonShield,
+                )
+            else:
+                print(f"Warning: SND design {design} is not recognized.")
 
 
     in_params = list(ship_geo.muShield.params)
@@ -311,8 +314,8 @@ def configure(run, ship_geo):
     )
 
     if ship_geo.SND:
-        if ship_geo.SND_design == 2:
-            # SND design 2 -- MTC
+        # If any SND design is 2 (MTC), set SNDSpace for MuonShield
+        if 2 in getattr(ship_geo, 'SND_design', []):
             MuonShield.SetSNDSpace(
                 hole = True,
                 hole_dx = (ship_geo.mtc_geo.width + 5. * u.cm) / 2.,

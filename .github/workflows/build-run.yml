@@ -55,7 +55,7 @@ jobs:
     strategy:
       matrix:
         vessel_option: [vacuums, helium]
-        SND_option: [2,]
+        SND_option: [all]
         muon_shield: [warm_opt, New_HA_Design]
         target: [old, Jun25]
 

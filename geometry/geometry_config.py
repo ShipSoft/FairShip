@@ -244,11 +244,15 @@ if "shieldName" not in globals():
 if "SND" not in globals():
     SND = True
 if "SND_design" not in globals():
-    SND_design = 2
+    SND_design = [2]
+
 
 with ConfigRegistry.register_config("basic") as c:
     c.DecayVolumeMedium = DecayVolumeMedium
     c.SND = SND
+    # Ensure SND_design is always a list
+    if not isinstance(SND_design, list):
+        SND_design = [SND_design]
     c.SND_design = SND_design
     c.target_yaml = TARGET_YAML
     print("Info: Target using configuration:", c.target_yaml)
