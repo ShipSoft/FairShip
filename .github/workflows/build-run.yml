@@ -29,17 +29,16 @@ jobs:
           path: FairShip
           lfs: true
 
-      - name: Cache build
-        uses: actions/cache@v4
-        with:
-          key: ${{ env.version }}-${{ github.sha }}
-          path: sw/
-
       - name: Build
-        if: steps.cache-build.outputs.cache-hit != 'true'
         run: |
           source /cvmfs/ship.cern.ch/$version/setUp.sh
           aliBuild build FairShip --always-prefer-system --config-dir $SHIPDIST --defaults release --jobs 4 --debug
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifact
+          path: sw/
 
   run-sim-chain:
     runs-on: self-hosted
@@ -67,24 +66,30 @@ jobs:
           path: FairShip
           lfs: true
 
-      - name: Cache build
-        id: cache-build
-        uses: actions/cache@v4
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
         with:
-          key: ${{ env.version }}-${{ github.sha }}
+          name: build-artifact
           path: sw/
-
-      - name: Build
-        if: steps.cache-build.outputs.cache-hit != 'true'
-        run: |
-          source /cvmfs/ship.cern.ch/$version/setUp.sh
-          aliBuild build FairShip --always-prefer-system --config-dir $SHIPDIST --defaults release --jobs 4 --debug
 
       - name: Run Sim
         run: |
           source /cvmfs/ship.cern.ch/$version/setUp.sh
           eval $(alienv load FairShip/latest)
           python $FAIRSHIP/macro/run_simScript.py --test --${{ matrix.vessel_option }} --SND --SND_design=${{ matrix.SND_option }} --shieldName ${{ matrix.muon_shield }} --target-yaml=$FAIRSHIP/geometry/target_config_${{ matrix.target }}.yaml
+
+      - name: Overlap check
+        run: |
+          source /cvmfs/ship.cern.ch/$version/setUp.sh
+          eval $(alienv load FairShip/latest)
+          python $FAIRSHIP/python/experimental/check_overlaps.py --geofile geofile_full.conical.Pythia8-TGeant4.root | tee log
+          ! grep "Overlap" log
+
+      - name: Geo information
+        run: |
+          source /cvmfs/ship.cern.ch/$version/setUp.sh
+          eval $(alienv load FairShip/latest)
+          python $FAIRSHIP/macro/getGeoInformation.py --geometry geofile_full.conical.Pythia8-TGeant4.root --level 2
 
       - name: Run Reco
         run: |
@@ -110,55 +115,3 @@ jobs:
           name: root-files-${{ matrix.vessel_option }}-${{ matrix.SND_option }}-${{ matrix.muon_shield }}-${{ matrix.target }}
           path: |
             *.root
-
-  geometry-checks:
-    runs-on: self-hosted
-    needs: build
-
-    container:
-      image: registry.cern.ch/ship/gha-runner:latest
-      volumes:
-        - /cvmfs/ship.cern.ch:/cvmfs/ship.cern.ch
-
-    env:
-      version: 25.01
-
-    strategy:
-      matrix:
-        vessel_option: [vacuums, helium]
-        SND_option: [2,]
-        muon_shield: [warm_opt, New_HA_Design]
-        target: [old, Jun25]
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          path: FairShip
-          lfs: true
-
-      - name: Cache build
-        id: cache-build
-        uses: actions/cache@v4
-        with:
-          key: ${{ env.version }}-${{ github.sha }}
-          path: sw/
-
-      - name: Build
-        if: steps.cache-build.outputs.cache-hit != 'true'
-        run: |
-          source /cvmfs/ship.cern.ch/$version/setUp.sh
-          aliBuild build FairShip --always-prefer-system --config-dir $SHIPDIST --defaults release --jobs 4 --debug
-
-      - name: Overlap check
-        run: |
-          source /cvmfs/ship.cern.ch/$version/setUp.sh
-          eval $(alienv load FairShip/latest)
-          python $FAIRSHIP/macro/run_simScript.py --test -n 0 --debug 2 --${{ matrix.vessel_option }} --SND --SND_design=${{ matrix.SND_option }} --shieldName ${{ matrix.muon_shield }} --target-yaml=$FAIRSHIP/geometry/target_config_${{ matrix.target }}.yaml | tee log
-          ! grep ovlp log
-
-      - name: Geo information
-        run: |
-          source /cvmfs/ship.cern.ch/$version/setUp.sh
-          eval $(alienv load FairShip/latest)
-          python $FAIRSHIP/macro/getGeoInformation.py --geometry geofile_full.conical.Pythia8-TGeant4.root --level 2
