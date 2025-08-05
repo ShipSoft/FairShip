@@ -5,6 +5,7 @@ from argparse import ArgumentParser
 
 import ROOT
 import rootUtils as ut
+from backports import tdirectory634  # noqa: F401
 from experimental import analysis_toolkit
 
 
