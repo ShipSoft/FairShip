@@ -77,7 +77,7 @@ Bool_t FixedTargetGenerator::InitForCharmOrBeauty(TString fInName, Int_t nev, Do
    nTree->SetBranchAddress("k",&ck);}
 // check if we deal with charm or beauty:
   nTree->GetEvent(0);
-  if (!setByHand and n_M>5){
+  if (!setByHand && n_M > 5) {
     chicc = chibb;
     LOG(INFO) << "automatic detection of beauty, configured for beauty";
     LOG(INFO) << "bb cross section / mbias " << chicc;

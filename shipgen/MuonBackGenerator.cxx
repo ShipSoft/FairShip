@@ -127,7 +127,7 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
             for (int i = 0; i < vetoPoints->GetEntries(); i++) {
                 auto* v = dynamic_cast<vetoPoint*>(vetoPoints->At(i));
                 Int_t abspid = TMath::Abs(v->PdgCode());
-                if (abspid == 13 or (not followMuons and abspid != 12 and abspid != 14)) {
+                if (abspid == 13 || (!followMuons && abspid != 12 && abspid != 14)) {
                     found = true;
                     Int_t muIndex = v->GetTrackID();
                     if (!fdownScaleDiMuon) {
@@ -201,7 +201,7 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
        for (std::pair<int, int> element : muList){
          if (element.first==i){
           wanttracking = true;
-          if (not followMuons){
+          if (!followMuons) {
               auto* v = dynamic_cast<vetoPoint*>(vetoPoints->At(element.second));
               TVector3 lpv = v->LastPoint();
               TVector3 lmv = v->LastMom();
