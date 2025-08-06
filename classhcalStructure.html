@@ -211,6 +211,9 @@ Private Attributes</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">hcalStructure::hcalStructure </td>
@@ -220,6 +223,11 @@ Private Attributes</h2></td></tr>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="hcalStructure_8cxx_source.html#l00069">69</a> of file <a class="el" href="hcalStructure_8cxx_source.html">hcalStructure.cxx</a>.</p>
@@ -1270,9 +1278,10 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  187</span>  <span class="keywordflow">else</span></div>
 <div class="line"><span class="lineno">  188</span>  {</div>
 <div class="line"><span class="lineno">  189</span>    <span class="keywordflow">for</span>(;<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>!=<a class="code hl_variable" href="classhcalStructure.html#a99102cf8c6cdc4ca1bd632588f767429">fModules</a>.end();++<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>)</div>
-<div class="line"><span class="lineno">  190</span>    ((<a class="code hl_class" href="classhcalModuleMC.html">hcalModuleMC</a>*)(*p))-&gt;ResetEnergy();</div>
+<div class="line"><span class="lineno">  190</span>        <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classhcalModuleMC.html">hcalModuleMC</a>*<span class="keyword">&gt;</span>(*p)-&gt;<a class="code hl_function" href="classhcalModuleMC.html#abdf3d80fdb0ad21960264bea9631b2b6">ResetEnergy</a>();</div>
 <div class="line"><span class="lineno">  191</span>  }</div>
 <div class="line"><span class="lineno">  192</span>}</div>
+<div class="ttc" id="aclasshcalModuleMC_html_abdf3d80fdb0ad21960264bea9631b2b6"><div class="ttname"><a href="classhcalModuleMC.html#abdf3d80fdb0ad21960264bea9631b2b6">hcalModuleMC::ResetEnergy</a></div><div class="ttdeci">void ResetEnergy()</div><div class="ttdef"><b>Definition</b> <a href="hcalModuleMC_8cxx_source.html#l00040">hcalModuleMC.cxx:40</a></div></div>
 <div class="ttc" id="anamespacemakeDecay_html_a9c90b95001a4909a6c5383da1b3066d9"><div class="ttname"><a href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">makeDecay.p</a></div><div class="ttdeci">p</div><div class="ttdef"><b>Definition</b> <a href="makeDecay_8py_source.html#l00067">makeDecay.py:67</a></div></div>
 </div><!-- fragment -->
 </div>

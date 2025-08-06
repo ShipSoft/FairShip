@@ -235,6 +235,9 @@ Private Attributes</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">ShipStack::ShipStack </td>
@@ -244,6 +247,11 @@ Private Attributes</h2></td></tr>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 <p>Default constructor param size Estimated track number </p>
 
@@ -413,14 +421,14 @@ Private Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="ShipStack_8cxx_source.html#l00374">374</a> of file <a class="el" href="ShipStack_8cxx_source.html">ShipStack.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  375</span>{</div>
-<div class="line"><span class="lineno">  376</span>  Int_t iDet = detId;</div>
-<div class="line"><span class="lineno">  377</span><span class="comment">// cout &lt;&lt; &quot;Add point for Detektor&quot; &lt;&lt; iDet &lt;&lt; endl;</span></div>
-<div class="line"><span class="lineno">  378</span>  pair&lt;Int_t, Int_t&gt; a(<a class="code hl_variable" href="classShipStack.html#afb8e3cc3f3e730bcfecc94331159f782">fCurrentTrack</a>, iDet);</div>
-<div class="line"><span class="lineno">  379</span>  <span class="keywordflow">if</span> ( <a class="code hl_variable" href="classShipStack.html#a1e50638e079c16db3e5e17d7f4e09d6d">fPointsMap</a>.find(a) == <a class="code hl_variable" href="classShipStack.html#a1e50638e079c16db3e5e17d7f4e09d6d">fPointsMap</a>.end() ) { <a class="code hl_variable" href="classShipStack.html#a1e50638e079c16db3e5e17d7f4e09d6d">fPointsMap</a>[a] = 1; }</div>
-<div class="line"><span class="lineno">  380</span>  <span class="keywordflow">else</span> { <a class="code hl_variable" href="classShipStack.html#a1e50638e079c16db3e5e17d7f4e09d6d">fPointsMap</a>[a]++; }</div>
-<div class="line"><span class="lineno">  381</span>}</div>
+<p class="definition">Definition at line <a class="el" href="ShipStack_8cxx_source.html#l00373">373</a> of file <a class="el" href="ShipStack_8cxx_source.html">ShipStack.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  374</span>{</div>
+<div class="line"><span class="lineno">  375</span>  Int_t iDet = detId;</div>
+<div class="line"><span class="lineno">  376</span><span class="comment">// cout &lt;&lt; &quot;Add point for Detektor&quot; &lt;&lt; iDet &lt;&lt; endl;</span></div>
+<div class="line"><span class="lineno">  377</span>  pair&lt;Int_t, Int_t&gt; a(<a class="code hl_variable" href="classShipStack.html#afb8e3cc3f3e730bcfecc94331159f782">fCurrentTrack</a>, iDet);</div>
+<div class="line"><span class="lineno">  378</span>  <span class="keywordflow">if</span> ( <a class="code hl_variable" href="classShipStack.html#a1e50638e079c16db3e5e17d7f4e09d6d">fPointsMap</a>.find(a) == <a class="code hl_variable" href="classShipStack.html#a1e50638e079c16db3e5e17d7f4e09d6d">fPointsMap</a>.end() ) { <a class="code hl_variable" href="classShipStack.html#a1e50638e079c16db3e5e17d7f4e09d6d">fPointsMap</a>[a] = 1; }</div>
+<div class="line"><span class="lineno">  379</span>  <span class="keywordflow">else</span> { <a class="code hl_variable" href="classShipStack.html#a1e50638e079c16db3e5e17d7f4e09d6d">fPointsMap</a>[a]++; }</div>
+<div class="line"><span class="lineno">  380</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -457,14 +465,14 @@ Private Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="ShipStack_8cxx_source.html#l00387">387</a> of file <a class="el" href="ShipStack_8cxx_source.html">ShipStack.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  388</span>{</div>
-<div class="line"><span class="lineno">  389</span>  <span class="keywordflow">if</span> ( iTrack &lt; 0 ) { <span class="keywordflow">return</span>; }</div>
-<div class="line"><span class="lineno">  390</span>  Int_t iDet = detId;</div>
-<div class="line"><span class="lineno">  391</span>  pair&lt;Int_t, Int_t&gt; a(iTrack, iDet);</div>
-<div class="line"><span class="lineno">  392</span>  <span class="keywordflow">if</span> ( <a class="code hl_variable" href="classShipStack.html#a1e50638e079c16db3e5e17d7f4e09d6d">fPointsMap</a>.find(a) == <a class="code hl_variable" href="classShipStack.html#a1e50638e079c16db3e5e17d7f4e09d6d">fPointsMap</a>.end() ) { <a class="code hl_variable" href="classShipStack.html#a1e50638e079c16db3e5e17d7f4e09d6d">fPointsMap</a>[a] = 1; }</div>
-<div class="line"><span class="lineno">  393</span>  <span class="keywordflow">else</span> { <a class="code hl_variable" href="classShipStack.html#a1e50638e079c16db3e5e17d7f4e09d6d">fPointsMap</a>[a]++; }</div>
-<div class="line"><span class="lineno">  394</span>}</div>
+<p class="definition">Definition at line <a class="el" href="ShipStack_8cxx_source.html#l00386">386</a> of file <a class="el" href="ShipStack_8cxx_source.html">ShipStack.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  387</span>{</div>
+<div class="line"><span class="lineno">  388</span>  <span class="keywordflow">if</span> ( iTrack &lt; 0 ) { <span class="keywordflow">return</span>; }</div>
+<div class="line"><span class="lineno">  389</span>  Int_t iDet = detId;</div>
+<div class="line"><span class="lineno">  390</span>  pair&lt;Int_t, Int_t&gt; a(iTrack, iDet);</div>
+<div class="line"><span class="lineno">  391</span>  <span class="keywordflow">if</span> ( <a class="code hl_variable" href="classShipStack.html#a1e50638e079c16db3e5e17d7f4e09d6d">fPointsMap</a>.find(a) == <a class="code hl_variable" href="classShipStack.html#a1e50638e079c16db3e5e17d7f4e09d6d">fPointsMap</a>.end() ) { <a class="code hl_variable" href="classShipStack.html#a1e50638e079c16db3e5e17d7f4e09d6d">fPointsMap</a>[a] = 1; }</div>
+<div class="line"><span class="lineno">  392</span>  <span class="keywordflow">else</span> { <a class="code hl_variable" href="classShipStack.html#a1e50638e079c16db3e5e17d7f4e09d6d">fPointsMap</a>[a]++; }</div>
+<div class="line"><span class="lineno">  393</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -514,32 +522,31 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  244</span>    Bool_t store = (*fStoreIter).second;</div>
 <div class="line"><span class="lineno">  245</span> </div>
 <div class="line"><span class="lineno">  246</span>    <span class="keywordflow">if</span> (store) {</div>
-<div class="line"><span class="lineno">  247</span>      <a class="code hl_class" href="classShipMCTrack.html">ShipMCTrack</a>* track =</div>
-<div class="line"><span class="lineno">  248</span>        <span class="keyword">new</span>( (*fTracks)[<a class="code hl_variable" href="classShipStack.html#a5baabd54b15eaede50ec34cf22544a71">fNTracks</a>]) <a class="code hl_class" href="classShipMCTrack.html">ShipMCTrack</a>(<a class="code hl_function" href="classShipStack.html#a77a5bbe99886c6fa1c89e922e70aaf91">GetParticle</a>(iPart));</div>
-<div class="line"><span class="lineno">  249</span>      <a class="code hl_variable" href="classShipStack.html#a62a6738cf3dc430478e9dddfb8059c5e">fIndexMap</a>[iPart] = <a class="code hl_variable" href="classShipStack.html#a5baabd54b15eaede50ec34cf22544a71">fNTracks</a>;</div>
-<div class="line"><span class="lineno">  250</span>      <span class="comment">// --&gt; Set the number of points in the detectors for this track</span></div>
-<div class="line"><span class="lineno">  251</span>      <span class="keywordflow">for</span> (Int_t iDet=<a class="code hl_enumvalue" href="ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680aa289a1b27d8c77391b88e9a794da84c2">kVETO</a>; iDet&lt;<a class="code hl_enumvalue" href="ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a614063d893e517df9b074827fa7206ca">kEndOfList</a>; iDet++) {</div>
-<div class="line"><span class="lineno">  252</span>        pair&lt;Int_t, Int_t&gt; a(iPart, iDet);</div>
-<div class="line"><span class="lineno">  253</span>        track-&gt;<a class="code hl_function" href="classShipMCTrack.html#ad2bd1b0e337f1067465c66a268101b96">SetNPoints</a>(iDet, <a class="code hl_variable" href="classShipStack.html#a1e50638e079c16db3e5e17d7f4e09d6d">fPointsMap</a>[a]);</div>
-<div class="line"><span class="lineno">  254</span>      }</div>
-<div class="line"><span class="lineno">  255</span>      <a class="code hl_variable" href="classShipStack.html#a5baabd54b15eaede50ec34cf22544a71">fNTracks</a>++;</div>
-<div class="line"><span class="lineno">  256</span>    } <span class="keywordflow">else</span> { <a class="code hl_variable" href="classShipStack.html#a62a6738cf3dc430478e9dddfb8059c5e">fIndexMap</a>[iPart] = -2; }</div>
-<div class="line"><span class="lineno">  257</span> </div>
-<div class="line"><span class="lineno">  258</span>  }</div>
-<div class="line"><span class="lineno">  259</span> </div>
-<div class="line"><span class="lineno">  260</span>  <span class="comment">// --&gt; Map index for primary mothers</span></div>
-<div class="line"><span class="lineno">  261</span>  <a class="code hl_variable" href="classShipStack.html#a62a6738cf3dc430478e9dddfb8059c5e">fIndexMap</a>[-1] = -1;</div>
-<div class="line"><span class="lineno">  262</span> </div>
-<div class="line"><span class="lineno">  263</span>  <span class="comment">// --&gt; Screen output</span></div>
-<div class="line"><span class="lineno">  264</span>  <span class="comment">//Print(1);</span></div>
-<div class="line"><span class="lineno">  265</span> </div>
-<div class="line"><span class="lineno">  266</span>}</div>
+<div class="line"><span class="lineno">  247</span>      <a class="code hl_class" href="classShipMCTrack.html">ShipMCTrack</a>* track = <span class="keyword">new</span>( (*fTracks)[<a class="code hl_variable" href="classShipStack.html#a5baabd54b15eaede50ec34cf22544a71">fNTracks</a>]) <a class="code hl_class" href="classShipMCTrack.html">ShipMCTrack</a>(<span class="keyword">dynamic_cast&lt;</span>TParticle*<span class="keyword">&gt;</span>(<a class="code hl_function" href="classShipStack.html#a77a5bbe99886c6fa1c89e922e70aaf91">GetParticle</a>(iPart)));</div>
+<div class="line"><span class="lineno">  248</span>      <a class="code hl_variable" href="classShipStack.html#a62a6738cf3dc430478e9dddfb8059c5e">fIndexMap</a>[iPart] = <a class="code hl_variable" href="classShipStack.html#a5baabd54b15eaede50ec34cf22544a71">fNTracks</a>;</div>
+<div class="line"><span class="lineno">  249</span>      <span class="comment">// --&gt; Set the number of points in the detectors for this track</span></div>
+<div class="line"><span class="lineno">  250</span>      <span class="keywordflow">for</span> (Int_t iDet=<a class="code hl_enumvalue" href="ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680aa289a1b27d8c77391b88e9a794da84c2">kVETO</a>; iDet&lt;<a class="code hl_enumvalue" href="ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a614063d893e517df9b074827fa7206ca">kEndOfList</a>; iDet++) {</div>
+<div class="line"><span class="lineno">  251</span>        pair&lt;Int_t, Int_t&gt; a(iPart, iDet);</div>
+<div class="line"><span class="lineno">  252</span>        track-&gt;<a class="code hl_function" href="classShipMCTrack.html#ad2bd1b0e337f1067465c66a268101b96">SetNPoints</a>(iDet, <a class="code hl_variable" href="classShipStack.html#a1e50638e079c16db3e5e17d7f4e09d6d">fPointsMap</a>[a]);</div>
+<div class="line"><span class="lineno">  253</span>      }</div>
+<div class="line"><span class="lineno">  254</span>      <a class="code hl_variable" href="classShipStack.html#a5baabd54b15eaede50ec34cf22544a71">fNTracks</a>++;</div>
+<div class="line"><span class="lineno">  255</span>    } <span class="keywordflow">else</span> { <a class="code hl_variable" href="classShipStack.html#a62a6738cf3dc430478e9dddfb8059c5e">fIndexMap</a>[iPart] = -2; }</div>
+<div class="line"><span class="lineno">  256</span> </div>
+<div class="line"><span class="lineno">  257</span>  }</div>
+<div class="line"><span class="lineno">  258</span> </div>
+<div class="line"><span class="lineno">  259</span>  <span class="comment">// --&gt; Map index for primary mothers</span></div>
+<div class="line"><span class="lineno">  260</span>  <a class="code hl_variable" href="classShipStack.html#a62a6738cf3dc430478e9dddfb8059c5e">fIndexMap</a>[-1] = -1;</div>
+<div class="line"><span class="lineno">  261</span> </div>
+<div class="line"><span class="lineno">  262</span>  <span class="comment">// --&gt; Screen output</span></div>
+<div class="line"><span class="lineno">  263</span>  <span class="comment">//Print(1);</span></div>
+<div class="line"><span class="lineno">  264</span> </div>
+<div class="line"><span class="lineno">  265</span>}</div>
 <div class="ttc" id="aShipDetectorList_8h_html_a1806da1a0fbae8ab81f7330906f65680a614063d893e517df9b074827fa7206ca"><div class="ttname"><a href="ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a614063d893e517df9b074827fa7206ca">kEndOfList</a></div><div class="ttdeci">@ kEndOfList</div><div class="ttdef"><b>Definition</b> <a href="ShipDetectorList_8h_source.html#l00036">ShipDetectorList.h:35</a></div></div>
 <div class="ttc" id="aShipDetectorList_8h_html_a1806da1a0fbae8ab81f7330906f65680aa289a1b27d8c77391b88e9a794da84c2"><div class="ttname"><a href="ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680aa289a1b27d8c77391b88e9a794da84c2">kVETO</a></div><div class="ttdeci">@ kVETO</div><div class="ttdef"><b>Definition</b> <a href="ShipDetectorList_8h_source.html#l00013">ShipDetectorList.h:13</a></div></div>
 <div class="ttc" id="aclassShipMCTrack_html"><div class="ttname"><a href="classShipMCTrack.html">ShipMCTrack</a></div><div class="ttdef"><b>Definition</b> <a href="ShipMCTrack_8h_source.html#l00026">ShipMCTrack.h:27</a></div></div>
 <div class="ttc" id="aclassShipMCTrack_html_ad2bd1b0e337f1067465c66a268101b96"><div class="ttname"><a href="classShipMCTrack.html#ad2bd1b0e337f1067465c66a268101b96">ShipMCTrack::SetNPoints</a></div><div class="ttdeci">void SetNPoints(Int_t iDet, Int_t np)</div><div class="ttdef"><b>Definition</b> <a href="ShipMCTrack_8cxx_source.html#l00186">ShipMCTrack.cxx:186</a></div></div>
-<div class="ttc" id="aclassShipStack_html_a77a5bbe99886c6fa1c89e922e70aaf91"><div class="ttname"><a href="classShipStack.html#a77a5bbe99886c6fa1c89e922e70aaf91">ShipStack::GetParticle</a></div><div class="ttdeci">TParticle * GetParticle(Int_t trackId) const</div><div class="ttdef"><b>Definition</b> <a href="ShipStack_8cxx_source.html#l00412">ShipStack.cxx:412</a></div></div>
-<div class="ttc" id="aclassShipStack_html_aee7fac1741182bb5ea40482c822dcc95"><div class="ttname"><a href="classShipStack.html#aee7fac1741182bb5ea40482c822dcc95">ShipStack::SelectTracks</a></div><div class="ttdeci">void SelectTracks()</div><div class="ttdef"><b>Definition</b> <a href="ShipStack_8cxx_source.html#l00424">ShipStack.cxx:424</a></div></div>
+<div class="ttc" id="aclassShipStack_html_a77a5bbe99886c6fa1c89e922e70aaf91"><div class="ttname"><a href="classShipStack.html#a77a5bbe99886c6fa1c89e922e70aaf91">ShipStack::GetParticle</a></div><div class="ttdeci">TParticle * GetParticle(Int_t trackId) const</div><div class="ttdef"><b>Definition</b> <a href="ShipStack_8cxx_source.html#l00411">ShipStack.cxx:411</a></div></div>
+<div class="ttc" id="aclassShipStack_html_aee7fac1741182bb5ea40482c822dcc95"><div class="ttname"><a href="classShipStack.html#aee7fac1741182bb5ea40482c822dcc95">ShipStack::SelectTracks</a></div><div class="ttdeci">void SelectTracks()</div><div class="ttdef"><b>Definition</b> <a href="ShipStack_8cxx_source.html#l00423">ShipStack.cxx:423</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -567,12 +574,12 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Get the track number of the parent of the current track Declared in TVirtualMCStack </p>
 
-<p class="definition">Definition at line <a class="el" href="ShipStack_8cxx_source.html#l00401">401</a> of file <a class="el" href="ShipStack_8cxx_source.html">ShipStack.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  402</span>{</div>
-<div class="line"><span class="lineno">  403</span>  TParticle* currentPart = <a class="code hl_function" href="classShipStack.html#a8c2b51030713151c6084c7caeeb54e98">GetCurrentTrack</a>();</div>
-<div class="line"><span class="lineno">  404</span>  <span class="keywordflow">if</span> ( currentPart ) { <span class="keywordflow">return</span> currentPart-&gt;GetFirstMother(); }</div>
-<div class="line"><span class="lineno">  405</span>  <span class="keywordflow">else</span> { <span class="keywordflow">return</span> -1; }</div>
-<div class="line"><span class="lineno">  406</span>}</div>
+<p class="definition">Definition at line <a class="el" href="ShipStack_8cxx_source.html#l00400">400</a> of file <a class="el" href="ShipStack_8cxx_source.html">ShipStack.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  401</span>{</div>
+<div class="line"><span class="lineno">  402</span>  TParticle* currentPart = <a class="code hl_function" href="classShipStack.html#a8c2b51030713151c6084c7caeeb54e98">GetCurrentTrack</a>();</div>
+<div class="line"><span class="lineno">  403</span>  <span class="keywordflow">if</span> ( currentPart ) { <span class="keywordflow">return</span> currentPart-&gt;GetFirstMother(); }</div>
+<div class="line"><span class="lineno">  404</span>  <span class="keywordflow">else</span> { <span class="keywordflow">return</span> -1; }</div>
+<div class="line"><span class="lineno">  405</span>}</div>
 <div class="ttc" id="aclassShipStack_html_a8c2b51030713151c6084c7caeeb54e98"><div class="ttname"><a href="classShipStack.html#a8c2b51030713151c6084c7caeeb54e98">ShipStack::GetCurrentTrack</a></div><div class="ttdeci">virtual TParticle * GetCurrentTrack() const</div><div class="ttdef"><b>Definition</b> <a href="ShipStack_8cxx_source.html#l00199">ShipStack.cxx:199</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -744,13 +751,13 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Accessors </p>
 
-<p class="definition">Definition at line <a class="el" href="ShipStack_8cxx_source.html#l00412">412</a> of file <a class="el" href="ShipStack_8cxx_source.html">ShipStack.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  413</span>{</div>
-<div class="line"><span class="lineno">  414</span>  <span class="keywordflow">if</span> (trackID &lt; 0 || trackID &gt;= <a class="code hl_variable" href="classShipStack.html#ac346e2679c303d3e053ff95fb4d01bdd">fNParticles</a>) {</div>
-<div class="line"><span class="lineno">  415</span>    LOGF(fatal, <span class="stringliteral">&quot;ShipStack: Particle index %i out of range. Max=%i&quot;</span>, trackID, <a class="code hl_variable" href="classShipStack.html#ac346e2679c303d3e053ff95fb4d01bdd">fNParticles</a>);</div>
-<div class="line"><span class="lineno">  416</span>  }</div>
-<div class="line"><span class="lineno">  417</span>  <span class="keywordflow">return</span> (TParticle*)<a class="code hl_variable" href="classShipStack.html#aecc7a6d2821762610c5b8cf735d99cd1">fParticles</a>-&gt;At(trackID);</div>
-<div class="line"><span class="lineno">  418</span>}</div>
+<p class="definition">Definition at line <a class="el" href="ShipStack_8cxx_source.html#l00411">411</a> of file <a class="el" href="ShipStack_8cxx_source.html">ShipStack.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  412</span>{</div>
+<div class="line"><span class="lineno">  413</span>  <span class="keywordflow">if</span> (trackID &lt; 0 || trackID &gt;= <a class="code hl_variable" href="classShipStack.html#ac346e2679c303d3e053ff95fb4d01bdd">fNParticles</a>) {</div>
+<div class="line"><span class="lineno">  414</span>    LOGF(fatal, <span class="stringliteral">&quot;ShipStack: Particle index %i out of range. Max=%i&quot;</span>, trackID, <a class="code hl_variable" href="classShipStack.html#ac346e2679c303d3e053ff95fb4d01bdd">fNParticles</a>);</div>
+<div class="line"><span class="lineno">  415</span>  }</div>
+<div class="line"><span class="lineno">  416</span>  <span class="keywordflow">return</span> <span class="keyword">dynamic_cast&lt;</span>TParticle*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="classShipStack.html#aecc7a6d2821762610c5b8cf735d99cd1">fParticles</a>-&gt;At(trackID));</div>
+<div class="line"><span class="lineno">  417</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -882,7 +889,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  181</span> </div>
 <div class="line"><span class="lineno">  182</span>  <span class="comment">// Return the iPrim-th TParticle from the fParticle array. This should be</span></div>
 <div class="line"><span class="lineno">  183</span>  <span class="comment">// a primary.</span></div>
-<div class="line"><span class="lineno">  184</span>  TParticle* <a class="code hl_variable" href="namespacemakeMuonDIS.html#af53ab65dcde57682f1b0355504e714c7">part</a> = (TParticle*)<a class="code hl_variable" href="classShipStack.html#aecc7a6d2821762610c5b8cf735d99cd1">fParticles</a>-&gt;At(iPrim);</div>
+<div class="line"><span class="lineno">  184</span>  TParticle* <a class="code hl_variable" href="namespacemakeMuonDIS.html#af53ab65dcde57682f1b0355504e714c7">part</a> = <span class="keyword">dynamic_cast&lt;</span>TParticle*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="classShipStack.html#aecc7a6d2821762610c5b8cf735d99cd1">fParticles</a>-&gt;At(iPrim));</div>
 <div class="line"><span class="lineno">  185</span>  <span class="comment">/* do not understand the logic behind this !!! TR July 2014</span></div>
 <div class="line"><span class="lineno">  186</span><span class="comment">    if ( ! (part-&gt;GetMother(0) &lt; 0) ) {</span></div>
 <div class="line"><span class="lineno">  187</span><span class="comment">    fLogger-&gt;Fatal(MESSAGE_ORIGIN, &quot;ShipStack:: Not a primary track! %i &quot;,iPrim);</span></div>
@@ -927,21 +934,21 @@ Private Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="ShipStack_8cxx_source.html#l00355">355</a> of file <a class="el" href="ShipStack_8cxx_source.html">ShipStack.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  356</span>{</div>
-<div class="line"><span class="lineno">  357</span>  cout &lt;&lt; <span class="stringliteral">&quot;-I- ShipStack: Number of primaries        = &quot;</span></div>
-<div class="line"><span class="lineno">  358</span>       &lt;&lt; <a class="code hl_variable" href="classShipStack.html#ae50de02e3525b59cf76b8a4867c96aa1">fNPrimaries</a> &lt;&lt; endl;</div>
-<div class="line"><span class="lineno">  359</span>  cout &lt;&lt; <span class="stringliteral">&quot;              Total number of particles  = &quot;</span></div>
-<div class="line"><span class="lineno">  360</span>       &lt;&lt; <a class="code hl_variable" href="classShipStack.html#ac346e2679c303d3e053ff95fb4d01bdd">fNParticles</a> &lt;&lt; endl;</div>
-<div class="line"><span class="lineno">  361</span>  cout &lt;&lt; <span class="stringliteral">&quot;              Number of tracks in output = &quot;</span></div>
-<div class="line"><span class="lineno">  362</span>       &lt;&lt; <a class="code hl_variable" href="classShipStack.html#a5baabd54b15eaede50ec34cf22544a71">fNTracks</a> &lt;&lt; endl;</div>
-<div class="line"><span class="lineno">  363</span>  <span class="keywordflow">if</span> (iVerbose) {</div>
-<div class="line"><span class="lineno">  364</span>    <span class="keywordflow">for</span> (Int_t iTrack=0; iTrack&lt;<a class="code hl_variable" href="classShipStack.html#a5baabd54b15eaede50ec34cf22544a71">fNTracks</a>; iTrack++) {</div>
-<div class="line"><span class="lineno">  365</span>      ((<a class="code hl_class" href="classShipMCTrack.html">ShipMCTrack</a>*) <a class="code hl_variable" href="classShipStack.html#aaa1fc6b96e6e043319c6c0264732e2b7">fTracks</a>-&gt;At(iTrack))-&gt;<a class="code hl_function" href="classShipStack.html#a983454e5afc95fa3d51bac3a19f9d7e3">Print</a>(iTrack);</div>
-<div class="line"><span class="lineno">  366</span>    }</div>
-<div class="line"><span class="lineno">  367</span>  }</div>
-<div class="line"><span class="lineno">  368</span>}</div>
-<div class="ttc" id="aclassShipStack_html_a983454e5afc95fa3d51bac3a19f9d7e3"><div class="ttname"><a href="classShipStack.html#a983454e5afc95fa3d51bac3a19f9d7e3">ShipStack::Print</a></div><div class="ttdeci">virtual void Print(Int_t iVerbose=0) const</div><div class="ttdef"><b>Definition</b> <a href="ShipStack_8cxx_source.html#l00355">ShipStack.cxx:355</a></div></div>
+<p class="definition">Definition at line <a class="el" href="ShipStack_8cxx_source.html#l00354">354</a> of file <a class="el" href="ShipStack_8cxx_source.html">ShipStack.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  355</span>{</div>
+<div class="line"><span class="lineno">  356</span>  cout &lt;&lt; <span class="stringliteral">&quot;-I- ShipStack: Number of primaries        = &quot;</span></div>
+<div class="line"><span class="lineno">  357</span>       &lt;&lt; <a class="code hl_variable" href="classShipStack.html#ae50de02e3525b59cf76b8a4867c96aa1">fNPrimaries</a> &lt;&lt; endl;</div>
+<div class="line"><span class="lineno">  358</span>  cout &lt;&lt; <span class="stringliteral">&quot;              Total number of particles  = &quot;</span></div>
+<div class="line"><span class="lineno">  359</span>       &lt;&lt; <a class="code hl_variable" href="classShipStack.html#ac346e2679c303d3e053ff95fb4d01bdd">fNParticles</a> &lt;&lt; endl;</div>
+<div class="line"><span class="lineno">  360</span>  cout &lt;&lt; <span class="stringliteral">&quot;              Number of tracks in output = &quot;</span></div>
+<div class="line"><span class="lineno">  361</span>       &lt;&lt; <a class="code hl_variable" href="classShipStack.html#a5baabd54b15eaede50ec34cf22544a71">fNTracks</a> &lt;&lt; endl;</div>
+<div class="line"><span class="lineno">  362</span>  <span class="keywordflow">if</span> (iVerbose) {</div>
+<div class="line"><span class="lineno">  363</span>    <span class="keywordflow">for</span> (Int_t iTrack=0; iTrack&lt;<a class="code hl_variable" href="classShipStack.html#a5baabd54b15eaede50ec34cf22544a71">fNTracks</a>; iTrack++) {</div>
+<div class="line"><span class="lineno">  364</span>        <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classShipMCTrack.html">ShipMCTrack</a>*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="classShipStack.html#aaa1fc6b96e6e043319c6c0264732e2b7">fTracks</a>-&gt;At(iTrack))-&gt;<a class="code hl_function" href="classShipStack.html#a983454e5afc95fa3d51bac3a19f9d7e3">Print</a>(iTrack);</div>
+<div class="line"><span class="lineno">  365</span>    }</div>
+<div class="line"><span class="lineno">  366</span>  }</div>
+<div class="line"><span class="lineno">  367</span>}</div>
+<div class="ttc" id="aclassShipStack_html_a983454e5afc95fa3d51bac3a19f9d7e3"><div class="ttname"><a href="classShipStack.html#a983454e5afc95fa3d51bac3a19f9d7e3">ShipStack::Print</a></div><div class="ttdeci">virtual void Print(Int_t iVerbose=0) const</div><div class="ttdef"><b>Definition</b> <a href="ShipStack_8cxx_source.html#l00354">ShipStack.cxx:354</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1314,10 +1321,10 @@ Private Attributes</h2></td></tr>
 <p>Register the MCTrack array to the Root Manager <br  />
  </p>
 
-<p class="definition">Definition at line <a class="el" href="ShipStack_8cxx_source.html#l00346">346</a> of file <a class="el" href="ShipStack_8cxx_source.html">ShipStack.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  347</span>{</div>
-<div class="line"><span class="lineno">  348</span>  FairRootManager::Instance()-&gt;Register(<span class="stringliteral">&quot;MCTrack&quot;</span>, <span class="stringliteral">&quot;Stack&quot;</span>, <a class="code hl_variable" href="classShipStack.html#aaa1fc6b96e6e043319c6c0264732e2b7">fTracks</a>,kTRUE);</div>
-<div class="line"><span class="lineno">  349</span>}</div>
+<p class="definition">Definition at line <a class="el" href="ShipStack_8cxx_source.html#l00345">345</a> of file <a class="el" href="ShipStack_8cxx_source.html">ShipStack.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  346</span>{</div>
+<div class="line"><span class="lineno">  347</span>  FairRootManager::Instance()-&gt;Register(<span class="stringliteral">&quot;MCTrack&quot;</span>, <span class="stringliteral">&quot;Stack&quot;</span>, <a class="code hl_variable" href="classShipStack.html#aaa1fc6b96e6e043319c6c0264732e2b7">fTracks</a>,kTRUE);</div>
+<div class="line"><span class="lineno">  348</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1345,16 +1352,16 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Resets arrays and stack and deletes particles and tracks </p>
 
-<p class="definition">Definition at line <a class="el" href="ShipStack_8cxx_source.html#l00331">331</a> of file <a class="el" href="ShipStack_8cxx_source.html">ShipStack.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  332</span>{</div>
-<div class="line"><span class="lineno">  333</span>  <a class="code hl_variable" href="classShipStack.html#a7a9f0917d52861207a590dea00aeff9d">fIndex</a> = 0;</div>
-<div class="line"><span class="lineno">  334</span>  <a class="code hl_variable" href="classShipStack.html#afb8e3cc3f3e730bcfecc94331159f782">fCurrentTrack</a> = -1;</div>
-<div class="line"><span class="lineno">  335</span>  <a class="code hl_variable" href="classShipStack.html#ae50de02e3525b59cf76b8a4867c96aa1">fNPrimaries</a> = <a class="code hl_variable" href="classShipStack.html#ac346e2679c303d3e053ff95fb4d01bdd">fNParticles</a> = <a class="code hl_variable" href="classShipStack.html#a5baabd54b15eaede50ec34cf22544a71">fNTracks</a> = 0;</div>
-<div class="line"><span class="lineno">  336</span>  <span class="keywordflow">while</span> (! <a class="code hl_variable" href="classShipStack.html#ae5e8e4e126509a118d38a1a2ac46aeea">fStack</a>.empty() ) { <a class="code hl_variable" href="classShipStack.html#ae5e8e4e126509a118d38a1a2ac46aeea">fStack</a>.pop(); }</div>
-<div class="line"><span class="lineno">  337</span>  <a class="code hl_variable" href="classShipStack.html#aecc7a6d2821762610c5b8cf735d99cd1">fParticles</a>-&gt;Clear();</div>
-<div class="line"><span class="lineno">  338</span>  <a class="code hl_variable" href="classShipStack.html#aaa1fc6b96e6e043319c6c0264732e2b7">fTracks</a>-&gt;Clear();</div>
-<div class="line"><span class="lineno">  339</span>  <a class="code hl_variable" href="classShipStack.html#a1e50638e079c16db3e5e17d7f4e09d6d">fPointsMap</a>.clear();</div>
-<div class="line"><span class="lineno">  340</span>}</div>
+<p class="definition">Definition at line <a class="el" href="ShipStack_8cxx_source.html#l00330">330</a> of file <a class="el" href="ShipStack_8cxx_source.html">ShipStack.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  331</span>{</div>
+<div class="line"><span class="lineno">  332</span>  <a class="code hl_variable" href="classShipStack.html#a7a9f0917d52861207a590dea00aeff9d">fIndex</a> = 0;</div>
+<div class="line"><span class="lineno">  333</span>  <a class="code hl_variable" href="classShipStack.html#afb8e3cc3f3e730bcfecc94331159f782">fCurrentTrack</a> = -1;</div>
+<div class="line"><span class="lineno">  334</span>  <a class="code hl_variable" href="classShipStack.html#ae50de02e3525b59cf76b8a4867c96aa1">fNPrimaries</a> = <a class="code hl_variable" href="classShipStack.html#ac346e2679c303d3e053ff95fb4d01bdd">fNParticles</a> = <a class="code hl_variable" href="classShipStack.html#a5baabd54b15eaede50ec34cf22544a71">fNTracks</a> = 0;</div>
+<div class="line"><span class="lineno">  335</span>  <span class="keywordflow">while</span> (! <a class="code hl_variable" href="classShipStack.html#ae5e8e4e126509a118d38a1a2ac46aeea">fStack</a>.empty() ) { <a class="code hl_variable" href="classShipStack.html#ae5e8e4e126509a118d38a1a2ac46aeea">fStack</a>.pop(); }</div>
+<div class="line"><span class="lineno">  336</span>  <a class="code hl_variable" href="classShipStack.html#aecc7a6d2821762610c5b8cf735d99cd1">fParticles</a>-&gt;Clear();</div>
+<div class="line"><span class="lineno">  337</span>  <a class="code hl_variable" href="classShipStack.html#aaa1fc6b96e6e043319c6c0264732e2b7">fTracks</a>-&gt;Clear();</div>
+<div class="line"><span class="lineno">  338</span>  <a class="code hl_variable" href="classShipStack.html#a1e50638e079c16db3e5e17d7f4e09d6d">fPointsMap</a>.clear();</div>
+<div class="line"><span class="lineno">  339</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1383,70 +1390,70 @@ Private Attributes</h2></td></tr>
 <p>Mark tracks for output using selection criteria <br  />
  </p>
 
-<p class="definition">Definition at line <a class="el" href="ShipStack_8cxx_source.html#l00424">424</a> of file <a class="el" href="ShipStack_8cxx_source.html">ShipStack.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  425</span>{</div>
-<div class="line"><span class="lineno">  426</span> </div>
-<div class="line"><span class="lineno">  427</span>  <span class="comment">// --&gt; Clear storage map</span></div>
-<div class="line"><span class="lineno">  428</span>  <a class="code hl_variable" href="classShipStack.html#acd889c685977b52567f8191fe1c733dc">fStoreMap</a>.clear();</div>
-<div class="line"><span class="lineno">  429</span> </div>
-<div class="line"><span class="lineno">  430</span>  <span class="comment">// --&gt; Check particles in the fParticle array</span></div>
-<div class="line"><span class="lineno">  431</span>  <span class="keywordflow">for</span> (Int_t i=0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>&lt;<a class="code hl_variable" href="classShipStack.html#ac346e2679c303d3e053ff95fb4d01bdd">fNParticles</a>; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>++) {</div>
-<div class="line"><span class="lineno">  432</span> </div>
-<div class="line"><span class="lineno">  433</span>    TParticle* thisPart = <a class="code hl_function" href="classShipStack.html#a77a5bbe99886c6fa1c89e922e70aaf91">GetParticle</a>(i);</div>
-<div class="line"><span class="lineno">  434</span>    Bool_t store = kTRUE;</div>
-<div class="line"><span class="lineno">  435</span> </div>
-<div class="line"><span class="lineno">  436</span>    <span class="comment">// --&gt; Get track parameters</span></div>
-<div class="line"><span class="lineno">  437</span>    Int_t iMother   = thisPart-&gt;GetMother(0);</div>
-<div class="line"><span class="lineno">  438</span>    TLorentzVector <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>;</div>
-<div class="line"><span class="lineno">  439</span>    thisPart-&gt;Momentum(p);</div>
-<div class="line"><span class="lineno">  440</span>    Double_t <a class="code hl_function" href="namespaceproton__bremsstrahlung.html#a346de5637f6811443ef313e5b10ef9bc">energy</a> = <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>.E();</div>
-<div class="line"><span class="lineno">  441</span>    Double_t <a class="code hl_function" href="namespacehnl.html#a852c4832dc0d284867e09f9e6b30bf9b">mass</a>   = <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>.M();</div>
-<div class="line"><span class="lineno">  442</span><span class="comment">//    Double_t mass   = thisPart-&gt;GetMass();</span></div>
-<div class="line"><span class="lineno">  443</span>    Double_t eKin = <a class="code hl_function" href="namespaceproton__bremsstrahlung.html#a346de5637f6811443ef313e5b10ef9bc">energy</a> - <a class="code hl_function" href="namespacehnl.html#a852c4832dc0d284867e09f9e6b30bf9b">mass</a>;</div>
-<div class="line"><span class="lineno">  444</span> </div>
-<div class="line"><span class="lineno">  445</span>    <span class="comment">// --&gt; Calculate number of points</span></div>
-<div class="line"><span class="lineno">  446</span>    Int_t nPoints = 0;</div>
-<div class="line"><span class="lineno">  447</span>    <span class="keywordflow">for</span> (Int_t iDet=<a class="code hl_enumvalue" href="ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680aa289a1b27d8c77391b88e9a794da84c2">kVETO</a>; iDet&lt;<a class="code hl_enumvalue" href="ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a614063d893e517df9b074827fa7206ca">kEndOfList</a>; iDet++) {</div>
-<div class="line"><span class="lineno">  448</span>      pair&lt;Int_t, Int_t&gt; a(i, iDet);</div>
-<div class="line"><span class="lineno">  449</span>      <span class="keywordflow">if</span> ( <a class="code hl_variable" href="classShipStack.html#a1e50638e079c16db3e5e17d7f4e09d6d">fPointsMap</a>.find(a) != <a class="code hl_variable" href="classShipStack.html#a1e50638e079c16db3e5e17d7f4e09d6d">fPointsMap</a>.end() ) {</div>
-<div class="line"><span class="lineno">  450</span>        nPoints += <a class="code hl_variable" href="classShipStack.html#a1e50638e079c16db3e5e17d7f4e09d6d">fPointsMap</a>[a];</div>
-<div class="line"><span class="lineno">  451</span>      }</div>
-<div class="line"><span class="lineno">  452</span>    }</div>
-<div class="line"><span class="lineno">  453</span> </div>
-<div class="line"><span class="lineno">  454</span>    <span class="comment">// --&gt; Check for cuts (store primaries in any case)</span></div>
-<div class="line"><span class="lineno">  455</span>    <span class="keywordflow">if</span> (iMother &lt; 0) { store = kTRUE; }</div>
-<div class="line"><span class="lineno">  456</span>    <span class="keywordflow">else</span> {</div>
-<div class="line"><span class="lineno">  457</span>      <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classShipStack.html#ab34f68d143d101033e8e20672904c263">fStoreSecondaries</a>) { store = kFALSE; }</div>
-<div class="line"><span class="lineno">  458</span>      <span class="keywordflow">if</span> (nPoints &lt; <a class="code hl_variable" href="classShipStack.html#a0ad36c17c90b7991bf290b644e478c3a">fMinPoints</a>) { store = kFALSE; }</div>
-<div class="line"><span class="lineno">  459</span>      <span class="keywordflow">if</span> (eKin &lt; <a class="code hl_variable" href="classShipStack.html#aa506caa3fa7bc18583f78edde6806c9d">fEnergyCut</a>) { store = kFALSE; }</div>
-<div class="line"><span class="lineno">  460</span>      <span class="keywordflow">if</span> ((nPoints &gt;= <a class="code hl_variable" href="classShipStack.html#a0ad36c17c90b7991bf290b644e478c3a">fMinPoints</a> &amp;&amp; <a class="code hl_variable" href="classShipStack.html#a0ad36c17c90b7991bf290b644e478c3a">fMinPoints</a> &gt; 0) || (eKin &gt;= <a class="code hl_variable" href="classShipStack.html#aa506caa3fa7bc18583f78edde6806c9d">fEnergyCut</a> &amp;&amp; <a class="code hl_variable" href="classShipStack.html#aa506caa3fa7bc18583f78edde6806c9d">fEnergyCut</a> &gt; 0)) {</div>
-<div class="line"><span class="lineno">  461</span>         store=kTRUE;</div>
-<div class="line"><span class="lineno">  462</span>      }</div>
-<div class="line"><span class="lineno">  463</span>    }</div>
-<div class="line"><span class="lineno">  464</span>    <span class="comment">// --&gt; Set storage flag</span></div>
-<div class="line"><span class="lineno">  465</span>    <a class="code hl_variable" href="classShipStack.html#acd889c685977b52567f8191fe1c733dc">fStoreMap</a>[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>] = store;</div>
-<div class="line"><span class="lineno">  466</span><span class="comment">// special case for Ship generators, want to keep all original particles with their mother daughter relationship</span></div>
-<div class="line"><span class="lineno">  467</span><span class="comment">// independent if tracked or not. apply a dirty trick and use second mother to identify original generator particles.</span></div>
-<div class="line"><span class="lineno">  468</span><span class="comment">// doesn&#39;t work, always true: Int_t iMother2 = GetParticle(i)-&gt;GetMother(1); maybe should set Mother2 to -1 in the generator</span></div>
-<div class="line"><span class="lineno">  469</span><span class="comment">// if (iMother == iMother2) {fStoreMap[i] = kTRUE;}</span></div>
-<div class="line"><span class="lineno">  470</span>  }</div>
-<div class="line"><span class="lineno">  471</span>  <span class="comment">// --&gt; If flag is set, flag recursively mothers of selected tracks</span></div>
-<div class="line"><span class="lineno">  472</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classShipStack.html#a10dc798825c1549b7937789e32ce776b">fStoreMothers</a>) {</div>
-<div class="line"><span class="lineno">  473</span>    <span class="keywordflow">for</span> (Int_t i=0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>&lt;<a class="code hl_variable" href="classShipStack.html#ac346e2679c303d3e053ff95fb4d01bdd">fNParticles</a>; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>++) {</div>
-<div class="line"><span class="lineno">  474</span>      <span class="keywordflow">if</span> (<a class="code hl_variable" href="classShipStack.html#acd889c685977b52567f8191fe1c733dc">fStoreMap</a>[i]) {</div>
-<div class="line"><span class="lineno">  475</span>        Int_t iMother  = <a class="code hl_function" href="classShipStack.html#a77a5bbe99886c6fa1c89e922e70aaf91">GetParticle</a>(i)-&gt;GetMother(0);</div>
-<div class="line"><span class="lineno">  476</span>    {</div>
-<div class="line"><span class="lineno">  477</span>          <span class="keywordflow">while</span>(iMother &gt;= 0)</div>
-<div class="line"><span class="lineno">  478</span>      {</div>
-<div class="line"><span class="lineno">  479</span>            <a class="code hl_variable" href="classShipStack.html#acd889c685977b52567f8191fe1c733dc">fStoreMap</a>[iMother] = kTRUE;</div>
-<div class="line"><span class="lineno">  480</span>            iMother = <a class="code hl_function" href="classShipStack.html#a77a5bbe99886c6fa1c89e922e70aaf91">GetParticle</a>(iMother)-&gt;GetMother(0);</div>
-<div class="line"><span class="lineno">  481</span>          }</div>
-<div class="line"><span class="lineno">  482</span>       }</div>
-<div class="line"><span class="lineno">  483</span>      }</div>
-<div class="line"><span class="lineno">  484</span>    }</div>
-<div class="line"><span class="lineno">  485</span>  }</div>
-<div class="line"><span class="lineno">  486</span> </div>
-<div class="line"><span class="lineno">  487</span>}</div>
+<p class="definition">Definition at line <a class="el" href="ShipStack_8cxx_source.html#l00423">423</a> of file <a class="el" href="ShipStack_8cxx_source.html">ShipStack.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  424</span>{</div>
+<div class="line"><span class="lineno">  425</span> </div>
+<div class="line"><span class="lineno">  426</span>  <span class="comment">// --&gt; Clear storage map</span></div>
+<div class="line"><span class="lineno">  427</span>  <a class="code hl_variable" href="classShipStack.html#acd889c685977b52567f8191fe1c733dc">fStoreMap</a>.clear();</div>
+<div class="line"><span class="lineno">  428</span> </div>
+<div class="line"><span class="lineno">  429</span>  <span class="comment">// --&gt; Check particles in the fParticle array</span></div>
+<div class="line"><span class="lineno">  430</span>  <span class="keywordflow">for</span> (Int_t i=0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>&lt;<a class="code hl_variable" href="classShipStack.html#ac346e2679c303d3e053ff95fb4d01bdd">fNParticles</a>; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>++) {</div>
+<div class="line"><span class="lineno">  431</span> </div>
+<div class="line"><span class="lineno">  432</span>    TParticle* thisPart = <a class="code hl_function" href="classShipStack.html#a77a5bbe99886c6fa1c89e922e70aaf91">GetParticle</a>(i);</div>
+<div class="line"><span class="lineno">  433</span>    Bool_t store = kTRUE;</div>
+<div class="line"><span class="lineno">  434</span> </div>
+<div class="line"><span class="lineno">  435</span>    <span class="comment">// --&gt; Get track parameters</span></div>
+<div class="line"><span class="lineno">  436</span>    Int_t iMother   = thisPart-&gt;GetMother(0);</div>
+<div class="line"><span class="lineno">  437</span>    TLorentzVector <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>;</div>
+<div class="line"><span class="lineno">  438</span>    thisPart-&gt;Momentum(p);</div>
+<div class="line"><span class="lineno">  439</span>    Double_t <a class="code hl_function" href="namespaceproton__bremsstrahlung.html#a346de5637f6811443ef313e5b10ef9bc">energy</a> = <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>.E();</div>
+<div class="line"><span class="lineno">  440</span>    Double_t <a class="code hl_function" href="namespacehnl.html#a852c4832dc0d284867e09f9e6b30bf9b">mass</a>   = <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>.M();</div>
+<div class="line"><span class="lineno">  441</span><span class="comment">//    Double_t mass   = thisPart-&gt;GetMass();</span></div>
+<div class="line"><span class="lineno">  442</span>    Double_t eKin = <a class="code hl_function" href="namespaceproton__bremsstrahlung.html#a346de5637f6811443ef313e5b10ef9bc">energy</a> - <a class="code hl_function" href="namespacehnl.html#a852c4832dc0d284867e09f9e6b30bf9b">mass</a>;</div>
+<div class="line"><span class="lineno">  443</span> </div>
+<div class="line"><span class="lineno">  444</span>    <span class="comment">// --&gt; Calculate number of points</span></div>
+<div class="line"><span class="lineno">  445</span>    Int_t nPoints = 0;</div>
+<div class="line"><span class="lineno">  446</span>    <span class="keywordflow">for</span> (Int_t iDet=<a class="code hl_enumvalue" href="ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680aa289a1b27d8c77391b88e9a794da84c2">kVETO</a>; iDet&lt;<a class="code hl_enumvalue" href="ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a614063d893e517df9b074827fa7206ca">kEndOfList</a>; iDet++) {</div>
+<div class="line"><span class="lineno">  447</span>      pair&lt;Int_t, Int_t&gt; a(i, iDet);</div>
+<div class="line"><span class="lineno">  448</span>      <span class="keywordflow">if</span> ( <a class="code hl_variable" href="classShipStack.html#a1e50638e079c16db3e5e17d7f4e09d6d">fPointsMap</a>.find(a) != <a class="code hl_variable" href="classShipStack.html#a1e50638e079c16db3e5e17d7f4e09d6d">fPointsMap</a>.end() ) {</div>
+<div class="line"><span class="lineno">  449</span>        nPoints += <a class="code hl_variable" href="classShipStack.html#a1e50638e079c16db3e5e17d7f4e09d6d">fPointsMap</a>[a];</div>
+<div class="line"><span class="lineno">  450</span>      }</div>
+<div class="line"><span class="lineno">  451</span>    }</div>
+<div class="line"><span class="lineno">  452</span> </div>
+<div class="line"><span class="lineno">  453</span>    <span class="comment">// --&gt; Check for cuts (store primaries in any case)</span></div>
+<div class="line"><span class="lineno">  454</span>    <span class="keywordflow">if</span> (iMother &lt; 0) { store = kTRUE; }</div>
+<div class="line"><span class="lineno">  455</span>    <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">  456</span>      <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classShipStack.html#ab34f68d143d101033e8e20672904c263">fStoreSecondaries</a>) { store = kFALSE; }</div>
+<div class="line"><span class="lineno">  457</span>      <span class="keywordflow">if</span> (nPoints &lt; <a class="code hl_variable" href="classShipStack.html#a0ad36c17c90b7991bf290b644e478c3a">fMinPoints</a>) { store = kFALSE; }</div>
+<div class="line"><span class="lineno">  458</span>      <span class="keywordflow">if</span> (eKin &lt; <a class="code hl_variable" href="classShipStack.html#aa506caa3fa7bc18583f78edde6806c9d">fEnergyCut</a>) { store = kFALSE; }</div>
+<div class="line"><span class="lineno">  459</span>      <span class="keywordflow">if</span> ((nPoints &gt;= <a class="code hl_variable" href="classShipStack.html#a0ad36c17c90b7991bf290b644e478c3a">fMinPoints</a> &amp;&amp; <a class="code hl_variable" href="classShipStack.html#a0ad36c17c90b7991bf290b644e478c3a">fMinPoints</a> &gt; 0) || (eKin &gt;= <a class="code hl_variable" href="classShipStack.html#aa506caa3fa7bc18583f78edde6806c9d">fEnergyCut</a> &amp;&amp; <a class="code hl_variable" href="classShipStack.html#aa506caa3fa7bc18583f78edde6806c9d">fEnergyCut</a> &gt; 0)) {</div>
+<div class="line"><span class="lineno">  460</span>         store=kTRUE;</div>
+<div class="line"><span class="lineno">  461</span>      }</div>
+<div class="line"><span class="lineno">  462</span>    }</div>
+<div class="line"><span class="lineno">  463</span>    <span class="comment">// --&gt; Set storage flag</span></div>
+<div class="line"><span class="lineno">  464</span>    <a class="code hl_variable" href="classShipStack.html#acd889c685977b52567f8191fe1c733dc">fStoreMap</a>[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>] = store;</div>
+<div class="line"><span class="lineno">  465</span><span class="comment">// special case for Ship generators, want to keep all original particles with their mother daughter relationship</span></div>
+<div class="line"><span class="lineno">  466</span><span class="comment">// independent if tracked or not. apply a dirty trick and use second mother to identify original generator particles.</span></div>
+<div class="line"><span class="lineno">  467</span><span class="comment">// doesn&#39;t work, always true: Int_t iMother2 = GetParticle(i)-&gt;GetMother(1); maybe should set Mother2 to -1 in the generator</span></div>
+<div class="line"><span class="lineno">  468</span><span class="comment">// if (iMother == iMother2) {fStoreMap[i] = kTRUE;}</span></div>
+<div class="line"><span class="lineno">  469</span>  }</div>
+<div class="line"><span class="lineno">  470</span>  <span class="comment">// --&gt; If flag is set, flag recursively mothers of selected tracks</span></div>
+<div class="line"><span class="lineno">  471</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classShipStack.html#a10dc798825c1549b7937789e32ce776b">fStoreMothers</a>) {</div>
+<div class="line"><span class="lineno">  472</span>    <span class="keywordflow">for</span> (Int_t i=0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>&lt;<a class="code hl_variable" href="classShipStack.html#ac346e2679c303d3e053ff95fb4d01bdd">fNParticles</a>; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>++) {</div>
+<div class="line"><span class="lineno">  473</span>      <span class="keywordflow">if</span> (<a class="code hl_variable" href="classShipStack.html#acd889c685977b52567f8191fe1c733dc">fStoreMap</a>[i]) {</div>
+<div class="line"><span class="lineno">  474</span>        Int_t iMother  = <a class="code hl_function" href="classShipStack.html#a77a5bbe99886c6fa1c89e922e70aaf91">GetParticle</a>(i)-&gt;GetMother(0);</div>
+<div class="line"><span class="lineno">  475</span>    {</div>
+<div class="line"><span class="lineno">  476</span>          <span class="keywordflow">while</span>(iMother &gt;= 0)</div>
+<div class="line"><span class="lineno">  477</span>      {</div>
+<div class="line"><span class="lineno">  478</span>            <a class="code hl_variable" href="classShipStack.html#acd889c685977b52567f8191fe1c733dc">fStoreMap</a>[iMother] = kTRUE;</div>
+<div class="line"><span class="lineno">  479</span>            iMother = <a class="code hl_function" href="classShipStack.html#a77a5bbe99886c6fa1c89e922e70aaf91">GetParticle</a>(iMother)-&gt;GetMother(0);</div>
+<div class="line"><span class="lineno">  480</span>          }</div>
+<div class="line"><span class="lineno">  481</span>       }</div>
+<div class="line"><span class="lineno">  482</span>      }</div>
+<div class="line"><span class="lineno">  483</span>    }</div>
+<div class="line"><span class="lineno">  484</span>  }</div>
+<div class="line"><span class="lineno">  485</span> </div>
+<div class="line"><span class="lineno">  486</span>}</div>
 <div class="ttc" id="anamespaceShipAna_html_aa4bf87f4d17f9d38b1d8f4d009bb54b3"><div class="ttname"><a href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">ShipAna.i</a></div><div class="ttdeci">int i</div><div class="ttdef"><b>Definition</b> <a href="ShipAna_8py_source.html#l00075">ShipAna.py:75</a></div></div>
 <div class="ttc" id="anamespacehnl_html_a852c4832dc0d284867e09f9e6b30bf9b"><div class="ttname"><a href="namespacehnl.html#a852c4832dc0d284867e09f9e6b30bf9b">hnl.mass</a></div><div class="ttdeci">mass(particle)</div><div class="ttdef"><b>Definition</b> <a href="hnl_8py_source.html#l00045">hnl.py:45</a></div></div>
 <div class="ttc" id="anamespacemakeDecay_html_a9c90b95001a4909a6c5383da1b3066d9"><div class="ttname"><a href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">makeDecay.p</a></div><div class="ttdeci">p</div><div class="ttdef"><b>Definition</b> <a href="makeDecay_8py_source.html#l00067">makeDecay.py:67</a></div></div>
@@ -1632,60 +1639,60 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Update the track index in the MCTracks and MCPoints </p>
 
-<p class="definition">Definition at line <a class="el" href="ShipStack_8cxx_source.html#l00272">272</a> of file <a class="el" href="ShipStack_8cxx_source.html">ShipStack.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  273</span>{</div>
-<div class="line"><span class="lineno">  274</span> </div>
-<div class="line"><span class="lineno">  275</span>  LOG(DEBUG) &lt;&lt; <span class="stringliteral">&quot;ShipStack: Updating track indizes...&quot;</span>;</div>
-<div class="line"><span class="lineno">  276</span>  Int_t nColl = 0;</div>
-<div class="line"><span class="lineno">  277</span> </div>
-<div class="line"><span class="lineno">  278</span>  <span class="comment">// First update mother ID in MCTracks</span></div>
-<div class="line"><span class="lineno">  279</span>  <span class="keywordflow">for</span> (Int_t i=0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>&lt;<a class="code hl_variable" href="classShipStack.html#a5baabd54b15eaede50ec34cf22544a71">fNTracks</a>; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>++) {</div>
-<div class="line"><span class="lineno">  280</span>    <a class="code hl_class" href="classShipMCTrack.html">ShipMCTrack</a>* track = (<a class="code hl_class" href="classShipMCTrack.html">ShipMCTrack</a>*)<a class="code hl_variable" href="classShipStack.html#aaa1fc6b96e6e043319c6c0264732e2b7">fTracks</a>-&gt;At(i);</div>
-<div class="line"><span class="lineno">  281</span>    Int_t iMotherOld = track-&gt;<a class="code hl_function" href="classShipMCTrack.html#ad57186961bdca404c3d47533e397a37c">GetMotherId</a>();</div>
-<div class="line"><span class="lineno">  282</span>    <a class="code hl_variable" href="classShipStack.html#ae7eaf51a084563d621313d7591eac039">fIndexIter</a> = <a class="code hl_variable" href="classShipStack.html#a62a6738cf3dc430478e9dddfb8059c5e">fIndexMap</a>.find(iMotherOld);</div>
-<div class="line"><span class="lineno">  283</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classShipStack.html#ae7eaf51a084563d621313d7591eac039">fIndexIter</a> == <a class="code hl_variable" href="classShipStack.html#a62a6738cf3dc430478e9dddfb8059c5e">fIndexMap</a>.end()) {</div>
-<div class="line"><span class="lineno">  284</span>      LOGF(fatal, <span class="stringliteral">&quot;ShipStack: Particle index %i not found in dex map! &quot;</span>, iMotherOld);</div>
-<div class="line"><span class="lineno">  285</span>    }</div>
-<div class="line"><span class="lineno">  286</span>    track-&gt;<a class="code hl_function" href="classShipMCTrack.html#aed646f8b1bc5dcbebe1f263adc503dae">SetMotherId</a>( (*fIndexIter).second );</div>
-<div class="line"><span class="lineno">  287</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="ShipStack_8cxx_source.html#l00271">271</a> of file <a class="el" href="ShipStack_8cxx_source.html">ShipStack.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  272</span>{</div>
+<div class="line"><span class="lineno">  273</span> </div>
+<div class="line"><span class="lineno">  274</span>  LOG(DEBUG) &lt;&lt; <span class="stringliteral">&quot;ShipStack: Updating track indizes...&quot;</span>;</div>
+<div class="line"><span class="lineno">  275</span>  Int_t nColl = 0;</div>
+<div class="line"><span class="lineno">  276</span> </div>
+<div class="line"><span class="lineno">  277</span>  <span class="comment">// First update mother ID in MCTracks</span></div>
+<div class="line"><span class="lineno">  278</span>  <span class="keywordflow">for</span> (Int_t i=0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>&lt;<a class="code hl_variable" href="classShipStack.html#a5baabd54b15eaede50ec34cf22544a71">fNTracks</a>; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>++) {</div>
+<div class="line"><span class="lineno">  279</span>    <a class="code hl_class" href="classShipMCTrack.html">ShipMCTrack</a>* track = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classShipMCTrack.html">ShipMCTrack</a>*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="classShipStack.html#aaa1fc6b96e6e043319c6c0264732e2b7">fTracks</a>-&gt;At(i));</div>
+<div class="line"><span class="lineno">  280</span>    Int_t iMotherOld = track-&gt;<a class="code hl_function" href="classShipMCTrack.html#ad57186961bdca404c3d47533e397a37c">GetMotherId</a>();</div>
+<div class="line"><span class="lineno">  281</span>    <a class="code hl_variable" href="classShipStack.html#ae7eaf51a084563d621313d7591eac039">fIndexIter</a> = <a class="code hl_variable" href="classShipStack.html#a62a6738cf3dc430478e9dddfb8059c5e">fIndexMap</a>.find(iMotherOld);</div>
+<div class="line"><span class="lineno">  282</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classShipStack.html#ae7eaf51a084563d621313d7591eac039">fIndexIter</a> == <a class="code hl_variable" href="classShipStack.html#a62a6738cf3dc430478e9dddfb8059c5e">fIndexMap</a>.end()) {</div>
+<div class="line"><span class="lineno">  283</span>      LOGF(fatal, <span class="stringliteral">&quot;ShipStack: Particle index %i not found in dex map! &quot;</span>, iMotherOld);</div>
+<div class="line"><span class="lineno">  284</span>    }</div>
+<div class="line"><span class="lineno">  285</span>    track-&gt;<a class="code hl_function" href="classShipMCTrack.html#aed646f8b1bc5dcbebe1f263adc503dae">SetMotherId</a>( (*fIndexIter).second );</div>
+<div class="line"><span class="lineno">  286</span>  }</div>
+<div class="line"><span class="lineno">  287</span> </div>
 <div class="line"><span class="lineno">  288</span> </div>
-<div class="line"><span class="lineno">  289</span> </div>
-<div class="line"><span class="lineno">  290</span>  <span class="keywordflow">if</span>(fDetList==0) {</div>
-<div class="line"><span class="lineno">  291</span>    <span class="comment">// Now iterate through all active detectors</span></div>
-<div class="line"><span class="lineno">  292</span>    fDetIter = detList-&gt;MakeIterator();</div>
-<div class="line"><span class="lineno">  293</span>    fDetIter-&gt;Reset();</div>
-<div class="line"><span class="lineno">  294</span>  } <span class="keywordflow">else</span> {</div>
-<div class="line"><span class="lineno">  295</span>    fDetIter-&gt;Reset();</div>
-<div class="line"><span class="lineno">  296</span>  }</div>
-<div class="line"><span class="lineno">  297</span> </div>
-<div class="line"><span class="lineno">  298</span>  FairDetector* det = NULL;</div>
-<div class="line"><span class="lineno">  299</span>  <span class="keywordflow">while</span>( (det = (FairDetector*)fDetIter-&gt;Next() ) ) {</div>
+<div class="line"><span class="lineno">  289</span>  <span class="keywordflow">if</span>(fDetList==0) {</div>
+<div class="line"><span class="lineno">  290</span>    <span class="comment">// Now iterate through all active detectors</span></div>
+<div class="line"><span class="lineno">  291</span>    fDetIter = detList-&gt;MakeIterator();</div>
+<div class="line"><span class="lineno">  292</span>    fDetIter-&gt;Reset();</div>
+<div class="line"><span class="lineno">  293</span>  } <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">  294</span>    fDetIter-&gt;Reset();</div>
+<div class="line"><span class="lineno">  295</span>  }</div>
+<div class="line"><span class="lineno">  296</span> </div>
+<div class="line"><span class="lineno">  297</span>  FairDetector* det = NULL;</div>
+<div class="line"><span class="lineno">  298</span>  <span class="keywordflow">while</span>( (det = <span class="keyword">dynamic_cast&lt;</span>FairDetector*<span class="keyword">&gt;</span>(fDetIter-&gt;Next()) ) ) {</div>
+<div class="line"><span class="lineno">  299</span> </div>
 <div class="line"><span class="lineno">  300</span> </div>
-<div class="line"><span class="lineno">  301</span> </div>
-<div class="line"><span class="lineno">  302</span>    <span class="comment">// --&gt; Get hit collections from detector</span></div>
-<div class="line"><span class="lineno">  303</span>    Int_t iColl = 0;</div>
-<div class="line"><span class="lineno">  304</span>    TClonesArray* hitArray;</div>
-<div class="line"><span class="lineno">  305</span>    <span class="keywordflow">while</span> ( (hitArray = det-&gt;GetCollection(iColl++)) ) {</div>
-<div class="line"><span class="lineno">  306</span>      nColl++;</div>
-<div class="line"><span class="lineno">  307</span>      Int_t nPoints = hitArray-&gt;GetEntriesFast();</div>
-<div class="line"><span class="lineno">  308</span> </div>
-<div class="line"><span class="lineno">  309</span>      <span class="comment">// --&gt; Update track index for all MCPoints in the collection</span></div>
-<div class="line"><span class="lineno">  310</span>      <span class="keywordflow">for</span> (Int_t iPoint=0; iPoint&lt;nPoints; iPoint++) {</div>
-<div class="line"><span class="lineno">  311</span>        FairMCPoint* point = (FairMCPoint*)hitArray-&gt;At(iPoint);</div>
-<div class="line"><span class="lineno">  312</span>        Int_t iTrack = point-&gt;GetTrackID();</div>
-<div class="line"><span class="lineno">  313</span> </div>
-<div class="line"><span class="lineno">  314</span>        <a class="code hl_variable" href="classShipStack.html#ae7eaf51a084563d621313d7591eac039">fIndexIter</a> = <a class="code hl_variable" href="classShipStack.html#a62a6738cf3dc430478e9dddfb8059c5e">fIndexMap</a>.find(iTrack);</div>
-<div class="line"><span class="lineno">  315</span>        <span class="keywordflow">if</span> (<a class="code hl_variable" href="classShipStack.html#ae7eaf51a084563d621313d7591eac039">fIndexIter</a> == <a class="code hl_variable" href="classShipStack.html#a62a6738cf3dc430478e9dddfb8059c5e">fIndexMap</a>.end()) {</div>
-<div class="line"><span class="lineno">  316</span>          LOGF(fatal, <span class="stringliteral">&quot;ShipStack: Particle index %i not found in index map! &quot;</span>, iTrack);</div>
-<div class="line"><span class="lineno">  317</span>        }</div>
-<div class="line"><span class="lineno">  318</span>        point-&gt;SetTrackID((*fIndexIter).second);</div>
-<div class="line"><span class="lineno">  319</span>        point-&gt;SetLink(FairLink(<span class="stringliteral">&quot;MCTrack&quot;</span>, (*fIndexIter).second));</div>
-<div class="line"><span class="lineno">  320</span>      }</div>
-<div class="line"><span class="lineno">  321</span> </div>
-<div class="line"><span class="lineno">  322</span>    }   <span class="comment">// Collections of this detector</span></div>
-<div class="line"><span class="lineno">  323</span>  }     <span class="comment">// List of active detectors</span></div>
-<div class="line"><span class="lineno">  324</span>  LOGF(<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a>, <span class="stringliteral">&quot;...stack and  %i collections updated.&quot;</span>, nColl);</div>
-<div class="line"><span class="lineno">  325</span>}</div>
+<div class="line"><span class="lineno">  301</span>    <span class="comment">// --&gt; Get hit collections from detector</span></div>
+<div class="line"><span class="lineno">  302</span>    Int_t iColl = 0;</div>
+<div class="line"><span class="lineno">  303</span>    TClonesArray* hitArray;</div>
+<div class="line"><span class="lineno">  304</span>    <span class="keywordflow">while</span> ( (hitArray = det-&gt;GetCollection(iColl++)) ) {</div>
+<div class="line"><span class="lineno">  305</span>      nColl++;</div>
+<div class="line"><span class="lineno">  306</span>      Int_t nPoints = hitArray-&gt;GetEntriesFast();</div>
+<div class="line"><span class="lineno">  307</span> </div>
+<div class="line"><span class="lineno">  308</span>      <span class="comment">// --&gt; Update track index for all MCPoints in the collection</span></div>
+<div class="line"><span class="lineno">  309</span>      <span class="keywordflow">for</span> (Int_t iPoint=0; iPoint&lt;nPoints; iPoint++) {</div>
+<div class="line"><span class="lineno">  310</span>        FairMCPoint* point = <span class="keyword">dynamic_cast&lt;</span>FairMCPoint*<span class="keyword">&gt;</span>(hitArray-&gt;At(iPoint));</div>
+<div class="line"><span class="lineno">  311</span>        Int_t iTrack = point-&gt;GetTrackID();</div>
+<div class="line"><span class="lineno">  312</span> </div>
+<div class="line"><span class="lineno">  313</span>        <a class="code hl_variable" href="classShipStack.html#ae7eaf51a084563d621313d7591eac039">fIndexIter</a> = <a class="code hl_variable" href="classShipStack.html#a62a6738cf3dc430478e9dddfb8059c5e">fIndexMap</a>.find(iTrack);</div>
+<div class="line"><span class="lineno">  314</span>        <span class="keywordflow">if</span> (<a class="code hl_variable" href="classShipStack.html#ae7eaf51a084563d621313d7591eac039">fIndexIter</a> == <a class="code hl_variable" href="classShipStack.html#a62a6738cf3dc430478e9dddfb8059c5e">fIndexMap</a>.end()) {</div>
+<div class="line"><span class="lineno">  315</span>          LOGF(fatal, <span class="stringliteral">&quot;ShipStack: Particle index %i not found in index map! &quot;</span>, iTrack);</div>
+<div class="line"><span class="lineno">  316</span>        }</div>
+<div class="line"><span class="lineno">  317</span>        point-&gt;SetTrackID((*fIndexIter).second);</div>
+<div class="line"><span class="lineno">  318</span>        point-&gt;SetLink(FairLink(<span class="stringliteral">&quot;MCTrack&quot;</span>, (*fIndexIter).second));</div>
+<div class="line"><span class="lineno">  319</span>      }</div>
+<div class="line"><span class="lineno">  320</span> </div>
+<div class="line"><span class="lineno">  321</span>    }   <span class="comment">// Collections of this detector</span></div>
+<div class="line"><span class="lineno">  322</span>  }     <span class="comment">// List of active detectors</span></div>
+<div class="line"><span class="lineno">  323</span>  LOGF(<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a>, <span class="stringliteral">&quot;...stack and  %i collections updated.&quot;</span>, nColl);</div>
+<div class="line"><span class="lineno">  324</span>}</div>
 <div class="ttc" id="aDPPythia8Generator_8cxx_html_a07cdd66ebb44c854868e1f85a375ac1e"><div class="ttname"><a href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a></div><div class="ttdeci">const Int_t debug</div><div class="ttdef"><b>Definition</b> <a href="DPPythia8Generator_8cxx_source.html#l00011">DPPythia8Generator.cxx:11</a></div></div>
 <div class="ttc" id="aclassShipMCTrack_html_ad57186961bdca404c3d47533e397a37c"><div class="ttname"><a href="classShipMCTrack.html#ad57186961bdca404c3d47533e397a37c">ShipMCTrack::GetMotherId</a></div><div class="ttdeci">Int_t GetMotherId() const</div><div class="ttdef"><b>Definition</b> <a href="ShipMCTrack_8h_source.html#l00059">ShipMCTrack.h:59</a></div></div>
 <div class="ttc" id="aclassShipMCTrack_html_aed646f8b1bc5dcbebe1f263adc503dae"><div class="ttname"><a href="classShipMCTrack.html#aed646f8b1bc5dcbebe1f263adc503dae">ShipMCTrack::SetMotherId</a></div><div class="ttdeci">void SetMotherId(Int_t id)</div><div class="ttdef"><b>Definition</b> <a href="ShipMCTrack_8h_source.html#l00088">ShipMCTrack.h:88</a></div></div>

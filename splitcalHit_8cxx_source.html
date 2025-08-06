@@ -173,13 +173,13 @@ $(document).ready(function(){initNavTree('splitcalHit_8cxx_source.html',''); ini
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  Double_t stripCoordinatesMaster[3] = {0.,0.,0.};</div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  navigator-&gt;LocalToMaster(stripCoordinatesLocal, stripCoordinatesMaster);</div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  TGeoBBox* box = (TGeoBBox*)strip-&gt;GetVolume()-&gt;GetShape();</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  TGeoBBox* box = <span class="keyword">dynamic_cast&lt;</span>TGeoBBox*<span class="keyword">&gt;</span>(strip-&gt;GetVolume()-&gt;GetShape());</div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  <span class="keywordtype">double</span> xHalfLength = box-&gt;GetDX();</div>
 <div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  <span class="keywordtype">double</span> yHalfLength = box-&gt;GetDY();</div>
 <div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  <span class="keywordtype">double</span> zHalfLength = box-&gt;GetDZ();</div>
 <div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
 <div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  TGeoNode* passiveLayer = caloVolume-&gt;GetNode(<span class="stringliteral">&quot;ECALfilter_200000&quot;</span>); <span class="comment">// they are all the same</span></div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>  TGeoBBox* boxPassive = (TGeoBBox*)passiveLayer-&gt;GetVolume()-&gt;GetShape();</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>  TGeoBBox* boxPassive = <span class="keyword">dynamic_cast&lt;</span>TGeoBBox*<span class="keyword">&gt;</span>(passiveLayer-&gt;GetVolume()-&gt;GetShape());</div>
 <div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  <span class="keywordtype">double</span> zPassiveHalfLength = box-&gt;GetDZ();</div>
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  <span class="comment">// std::cout&lt;&lt; &quot;----------------------&quot;&lt;&lt;std::endl;</span></div>

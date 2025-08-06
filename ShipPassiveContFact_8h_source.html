@@ -97,33 +97,34 @@ $(document).ready(function(){initNavTree('ShipPassiveContFact_8h_source.html',''
   <div class="headertitle"><div class="title">ShipPassiveContFact.h</div></div>
 </div><!--header-->
 <div class="contents">
-<a href="ShipPassiveContFact_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef PNDPASSIVECONTFACT_H</span></div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#define PNDPASSIVECONTFACT_H</span></div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &quot;FairContFact.h&quot;</span>               <span class="comment">// for FairContFact, etc</span></div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;Rtypes.h&quot;</span>                     <span class="comment">// for ShipPassiveContFact::Class, etc</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="keyword">class </span>FairParSet;</div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
-<div class="foldopen" id="foldopen00010" data-start="{" data-end="};">
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="classShipPassiveContFact.html">   10</a></span><span class="keyword">class </span><a class="code hl_class" href="classShipPassiveContFact.html">ShipPassiveContFact</a> : <span class="keyword">public</span> FairContFact</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>{</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>  <span class="keyword">private</span>:</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classShipPassiveContFact.html#ae0bf8471f0dc6fc596ed6447dda4fbd5">setAllContainers</a>();</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>  <span class="keyword">public</span>:</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    <a class="code hl_function" href="classShipPassiveContFact.html#a0684417deade8be6525105cfa1884edf">ShipPassiveContFact</a>();</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno"><a class="line" href="classShipPassiveContFact.html#ae952fbf54a669a70b9f16087b0fea1d7">   16</a></span>    <a class="code hl_function" href="classShipPassiveContFact.html#ae952fbf54a669a70b9f16087b0fea1d7">~ShipPassiveContFact</a>() {}</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    FairParSet* <a class="code hl_function" href="classShipPassiveContFact.html#afdc28f0b872e1857eb3218d4de5aee1d">createContainer</a>(FairContainer*);</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    ClassDef( <a class="code hl_class" href="classShipPassiveContFact.html">ShipPassiveContFact</a>,0) <span class="comment">// Factory for all Passive parameter containers</span></div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>};</div>
+<a href="ShipPassiveContFact_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef PASSIVE_SHIPPASSIVECONTFACT_H_</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#define PASSIVE_SHIPPASSIVECONTFACT_H_</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno"><a class="line" href="ShipPassiveContFact_8h.html#a81b0018339e59616ca88a6278f04d56d">    3</a></span><span class="preprocessor">#define PNDPASSIVECONTFACT_H</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;FairContFact.h&quot;</span>               <span class="comment">// for FairContFact, etc</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;Rtypes.h&quot;</span>                     <span class="comment">// for ShipPassiveContFact::Class, etc</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="keyword">class </span>FairParSet;</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
+<div class="foldopen" id="foldopen00011" data-start="{" data-end="};">
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno"><a class="line" href="classShipPassiveContFact.html">   11</a></span><span class="keyword">class </span><a class="code hl_class" href="classShipPassiveContFact.html">ShipPassiveContFact</a> : <span class="keyword">public</span> FairContFact</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>{</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>  <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classShipPassiveContFact.html#ae0bf8471f0dc6fc596ed6447dda4fbd5">setAllContainers</a>();</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>  <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    <a class="code hl_function" href="classShipPassiveContFact.html#a0684417deade8be6525105cfa1884edf">ShipPassiveContFact</a>();</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno"><a class="line" href="classShipPassiveContFact.html#ae952fbf54a669a70b9f16087b0fea1d7">   17</a></span>    <a class="code hl_function" href="classShipPassiveContFact.html#ae952fbf54a669a70b9f16087b0fea1d7">~ShipPassiveContFact</a>() {}</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    FairParSet* <a class="code hl_function" href="classShipPassiveContFact.html#afdc28f0b872e1857eb3218d4de5aee1d">createContainer</a>(FairContainer*);</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    ClassDef( <a class="code hl_class" href="classShipPassiveContFact.html">ShipPassiveContFact</a>,0) <span class="comment">// Factory for all Passive parameter containers</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>};</div>
 </div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#endif  </span><span class="comment">/* !PNDPASSIVECONTFACT_H */</span><span class="preprocessor"></span></div>
-<div class="ttc" id="aclassShipPassiveContFact_html"><div class="ttname"><a href="classShipPassiveContFact.html">ShipPassiveContFact</a></div><div class="ttdef"><b>Definition</b> <a href="ShipPassiveContFact_8h_source.html#l00010">ShipPassiveContFact.h:11</a></div></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#endif  </span><span class="comment">// PASSIVE_SHIPPASSIVECONTFACT_H_</span></div>
+<div class="ttc" id="aclassShipPassiveContFact_html"><div class="ttname"><a href="classShipPassiveContFact.html">ShipPassiveContFact</a></div><div class="ttdef"><b>Definition</b> <a href="ShipPassiveContFact_8h_source.html#l00011">ShipPassiveContFact.h:12</a></div></div>
 <div class="ttc" id="aclassShipPassiveContFact_html_a0684417deade8be6525105cfa1884edf"><div class="ttname"><a href="classShipPassiveContFact.html#a0684417deade8be6525105cfa1884edf">ShipPassiveContFact::ShipPassiveContFact</a></div><div class="ttdeci">ShipPassiveContFact()</div><div class="ttdef"><b>Definition</b> <a href="ShipPassiveContFact_8cxx_source.html#l00027">ShipPassiveContFact.cxx:27</a></div></div>
 <div class="ttc" id="aclassShipPassiveContFact_html_ae0bf8471f0dc6fc596ed6447dda4fbd5"><div class="ttname"><a href="classShipPassiveContFact.html#ae0bf8471f0dc6fc596ed6447dda4fbd5">ShipPassiveContFact::setAllContainers</a></div><div class="ttdeci">void setAllContainers()</div><div class="ttdef"><b>Definition</b> <a href="ShipPassiveContFact_8cxx_source.html#l00037">ShipPassiveContFact.cxx:37</a></div></div>
-<div class="ttc" id="aclassShipPassiveContFact_html_ae952fbf54a669a70b9f16087b0fea1d7"><div class="ttname"><a href="classShipPassiveContFact.html#ae952fbf54a669a70b9f16087b0fea1d7">ShipPassiveContFact::~ShipPassiveContFact</a></div><div class="ttdeci">~ShipPassiveContFact()</div><div class="ttdef"><b>Definition</b> <a href="ShipPassiveContFact_8h_source.html#l00016">ShipPassiveContFact.h:16</a></div></div>
+<div class="ttc" id="aclassShipPassiveContFact_html_ae952fbf54a669a70b9f16087b0fea1d7"><div class="ttname"><a href="classShipPassiveContFact.html#ae952fbf54a669a70b9f16087b0fea1d7">ShipPassiveContFact::~ShipPassiveContFact</a></div><div class="ttdeci">~ShipPassiveContFact()</div><div class="ttdef"><b>Definition</b> <a href="ShipPassiveContFact_8h_source.html#l00017">ShipPassiveContFact.h:17</a></div></div>
 <div class="ttc" id="aclassShipPassiveContFact_html_afdc28f0b872e1857eb3218d4de5aee1d"><div class="ttname"><a href="classShipPassiveContFact.html#afdc28f0b872e1857eb3218d4de5aee1d">ShipPassiveContFact::createContainer</a></div><div class="ttdeci">FairParSet * createContainer(FairContainer *)</div><div class="ttdef"><b>Definition</b> <a href="ShipPassiveContFact_8cxx_source.html#l00050">ShipPassiveContFact.cxx:50</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

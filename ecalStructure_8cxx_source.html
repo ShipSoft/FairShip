@@ -431,7 +431,7 @@ $(document).ready(function(){initNavTree('ecalStructure_8cxx_source.html',''); i
 <div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>  <span class="keywordflow">else</span></div>
 <div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span>  {</div>
 <div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>    <span class="keywordflow">for</span>(;p!=<a class="code hl_variable" href="classecalStructure.html#aeb9935f0c26c8fcf64a239d9c5784e27">fCells</a>.end();++p)</div>
-<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>    ((<a class="code hl_class" href="classecalCellMC.html">ecalCellMC</a>*)(*p))-&gt;ResetEnergy();</div>
+<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>        <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classecalCellMC.html">ecalCellMC</a>*<span class="keyword">&gt;</span>(*p)-&gt;<a class="code hl_function" href="classecalCellMC.html#a5c9a1d57829e35af561c8d68de13fe0b">ResetEnergy</a>();</div>
 <div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span>  }</div>
 <div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>}</div>
 </div>
@@ -525,6 +525,7 @@ $(document).ready(function(){initNavTree('ecalStructure_8cxx_source.html',''); i
 <div class="line"><a id="l00408" name="l00408"></a><span class="lineno">  408</span>}</div>
 </div>
 <div class="ttc" id="aclassecalCellMC_html"><div class="ttname"><a href="classecalCellMC.html">ecalCellMC</a></div><div class="ttdef"><b>Definition</b> <a href="ecalCellMC_8h_source.html#l00018">ecalCellMC.h:19</a></div></div>
+<div class="ttc" id="aclassecalCellMC_html_a5c9a1d57829e35af561c8d68de13fe0b"><div class="ttname"><a href="classecalCellMC.html#a5c9a1d57829e35af561c8d68de13fe0b">ecalCellMC::ResetEnergy</a></div><div class="ttdeci">void ResetEnergy()</div><div class="ttdef"><b>Definition</b> <a href="ecalCellMC_8cxx_source.html#l00040">ecalCellMC.cxx:40</a></div></div>
 <div class="ttc" id="aclassecalCell_html"><div class="ttname"><a href="classecalCell.html">ecalCell</a></div><div class="ttdef"><b>Definition</b> <a href="ecalCell_8h_source.html#l00016">ecalCell.h:17</a></div></div>
 <div class="ttc" id="aclassecalCell_html_a187565e3d58a5b062487945e2f3f0212"><div class="ttname"><a href="classecalCell.html#a187565e3d58a5b062487945e2f3f0212">ecalCell::SetNeighborsList</a></div><div class="ttdeci">void SetNeighborsList(std::list&lt; ecalCell * &gt; &amp;neib)</div><div class="ttdef"><b>Definition</b> <a href="ecalCell_8h_source.html#l00052">ecalCell.h:52</a></div></div>
 <div class="ttc" id="aclassecalCell_html_a50e8b675e3a6611bcba1c3c9549454c3"><div class="ttname"><a href="classecalCell.html#a50e8b675e3a6611bcba1c3c9549454c3">ecalCell::GetCenterX</a></div><div class="ttdeci">Float_t GetCenterX() const</div><div class="ttdef"><b>Definition</b> <a href="ecalCell_8h_source.html#l00035">ecalCell.h:35</a></div></div>

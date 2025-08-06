@@ -98,8 +98,8 @@ $(document).ready(function(){initNavTree('ecalInf_8h_source.html',''); initResiz
 </div><!--header-->
 <div class="contents">
 <a href="ecalInf_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#ifndef ECALINF_H</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#define ECALINF_H</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#ifndef ECAL_ECALINF_H_</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#define ECAL_ECALINF_H_</span></div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;TObjArray.h&quot;</span></div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &quot;TString.h&quot;</span></div>
@@ -164,7 +164,7 @@ $(document).ready(function(){initNavTree('ecalInf_8h_source.html',''); initResiz
 <div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  <span class="comment">// void CheckVariables();</span></div>
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span><span class="keyword">protected</span>:</div>
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  <a class="code hl_function" href="classecalInf.html#a53e4700d3f3d42a5fd74824c2432e41f">ecalInf</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* filename);</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  <span class="keyword">explicit</span> <a class="code hl_function" href="classecalInf.html#a53e4700d3f3d42a5fd74824c2432e41f">ecalInf</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* filename);</div>
 <div class="line"><a id="l00084" name="l00084"></a><span class="lineno"><a class="line" href="classecalInf.html#a63a888639bc808a680ffcdacbcda3183">   84</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classecalInf.html#a63a888639bc808a680ffcdacbcda3183">CalculateHoleSize</a>();</div>
 <div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>  <span class="keyword">virtual</span> <a class="code hl_function" href="classecalInf.html#a5cc0b501e58a9eb4d84cdca381368084">~ecalInf</a>();</div>
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
@@ -216,7 +216,7 @@ $(document).ready(function(){initNavTree('ecalInf_8h_source.html',''); initResiz
 <div class="line"><a id="l00155" name="l00155"></a><span class="lineno"><a class="line" href="classecalInf.html#a2303d5fffe5893a8bc8370b40cf31031">  155</a></span><span class="keyword">inline</span> <span class="keywordtype">char</span> <a class="code hl_function" href="classecalInf.html#a2303d5fffe5893a8bc8370b40cf31031">ecalInf::GetType</a>(Int_t x, Int_t y)<span class="keyword"> const</span></div>
 <div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span><span class="keyword"></span>{</div>
 <div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>  <span class="keywordflow">if</span> (x&lt;0||y&lt;0||y&gt;<a class="code hl_variable" href="classecalInf.html#a82c78b561767c4d00dac514d4e5e1adc">fEcalStr</a>.GetLast()) <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>  TObjString* str=(TObjString*)<a class="code hl_variable" href="classecalInf.html#a82c78b561767c4d00dac514d4e5e1adc">fEcalStr</a>.At(y);</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>  TObjString* str = <span class="keyword">static_cast&lt;</span>TObjString*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="classecalInf.html#a82c78b561767c4d00dac514d4e5e1adc">fEcalStr</a>.At(y));</div>
 <div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>  <span class="keywordflow">if</span> (str-&gt;GetString().Length()&lt;x) <span class="keywordflow">return</span> 0;</div>
 <div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>  <span class="keywordtype">char</span> stri[2]={str-&gt;GetString()[x],0};</div>
 <div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>  <span class="keywordflow">return</span> atoi(stri);</div>
@@ -234,7 +234,7 @@ $(document).ready(function(){initNavTree('ecalInf_8h_source.html',''); initResiz
 <div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>    }</div>
 <div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>}</div>
 </div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span><span class="preprocessor">#endif  </span><span class="comment">// ECAL_ECALINF_H_</span></div>
 <div class="ttc" id="aclassecalInf_html"><div class="ttname"><a href="classecalInf.html">ecalInf</a></div><div class="ttdef"><b>Definition</b> <a href="ecalInf_8h_source.html#l00019">ecalInf.h:20</a></div></div>
 <div class="ttc" id="aclassecalInf_html_a029749d993a50c58ab8befde377cb2fb"><div class="ttname"><a href="classecalInf.html#a029749d993a50c58ab8befde377cb2fb">ecalInf::ExcludeParameter</a></div><div class="ttdeci">Bool_t ExcludeParameter(TString parname)</div><div class="ttdef"><b>Definition</b> <a href="ecalInf_8cxx_source.html#l00260">ecalInf.cxx:260</a></div></div>
 <div class="ttc" id="aclassecalInf_html_a09a6a6363d785da82797ecde6a10f013"><div class="ttname"><a href="classecalInf.html#a09a6a6363d785da82797ecde6a10f013">ecalInf::GetModuleSize</a></div><div class="ttdeci">Double_t GetModuleSize() const</div><div class="ttdef"><b>Definition</b> <a href="ecalInf_8h_source.html#l00036">ecalInf.h:36</a></div></div>

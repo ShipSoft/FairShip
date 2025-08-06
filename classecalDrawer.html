@@ -279,44 +279,44 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Default constructor. Requirement of ROOT system </p>
 
-<p class="definition">Definition at line <a class="el" href="ecalDrawer_8cxx_source.html#l00622">622</a> of file <a class="el" href="ecalDrawer_8cxx_source.html">ecalDrawer.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  623</span>  : FairTask(),</div>
-<div class="line"><span class="lineno">  624</span>    <a class="code hl_variable" href="classecalDrawer.html#a462d0a5c3b7dddcf18cf10e3d691bb9f">fNamePrefix</a>(<span class="stringliteral">&quot;ecal&quot;</span>),</div>
-<div class="line"><span class="lineno">  625</span>    <a class="code hl_variable" href="classecalDrawer.html#ae3e0216de375345edc46b60f3d7d96d8">fC</a>(NULL),</div>
-<div class="line"><span class="lineno">  626</span>    <a class="code hl_variable" href="classecalDrawer.html#a746a9e6ee780271619dd73090ef24d4f">fCellSize</a>(8),</div>
-<div class="line"><span class="lineno">  627</span>    <a class="code hl_variable" href="classecalDrawer.html#a610979ada5c361ac714e4bd12e26e724">fCX</a>(0),</div>
-<div class="line"><span class="lineno">  628</span>    <a class="code hl_variable" href="classecalDrawer.html#a994f1ce8a827abd12ff3bffd6caffab9">fCY</a>(0),</div>
-<div class="line"><span class="lineno">  629</span>    <a class="code hl_variable" href="classecalDrawer.html#a0ee45e2bb1722fa3aac9dce47f043e49">fMaxEnergyDep</a>(0.),</div>
-<div class="line"><span class="lineno">  630</span>    <a class="code hl_variable" href="classecalDrawer.html#a8fc9d27dcb8833864243a2c4baa05d5b">fStr</a>(NULL),</div>
-<div class="line"><span class="lineno">  631</span>    <a class="code hl_variable" href="classecalDrawer.html#a3eea9fe571e245784195a5706429d577">fInf</a>(NULL),</div>
-<div class="line"><span class="lineno">  632</span>    <a class="code hl_variable" href="classecalDrawer.html#a33c7f9178a67bb6a6c6033d26fcd2def">fEdging</a>(<span class="stringliteral">&quot;&quot;</span>),</div>
-<div class="line"><span class="lineno">  633</span>    <a class="code hl_variable" href="classecalDrawer.html#a7d43225d0d60409726a8970ff6ca7266">fTxt</a>(<span class="keyword">new</span> TText()),</div>
-<div class="line"><span class="lineno">  634</span>    <a class="code hl_variable" href="classecalDrawer.html#a97b5e09fcf04dd2fea27942a8bcd8b20">fCells</a>(),</div>
-<div class="line"><span class="lineno">  635</span>    <a class="code hl_variable" href="classecalDrawer.html#a193e69f48f5d08d2d45859329dbb737a">fMCTracks</a>(NULL),</div>
-<div class="line"><span class="lineno">  636</span>    <a class="code hl_variable" href="classecalDrawer.html#a918274f1612621a2423e26dcae5bf6b8">fPoints</a>(NULL),</div>
-<div class="line"><span class="lineno">  637</span>    <a class="code hl_variable" href="classecalDrawer.html#a2f47474c61c938b4966c75a8b8a351cf">fClusters</a>(NULL),</div>
-<div class="line"><span class="lineno">  638</span>    <a class="code hl_variable" href="classecalDrawer.html#aa759cc4ce5d728c385dc88dc2086f710">fInName</a>(<span class="stringliteral">&quot;EcalReco&quot;</span>),</div>
-<div class="line"><span class="lineno">  639</span>    <a class="code hl_variable" href="classecalDrawer.html#a8b434962fef5733f9fef29f9b5a0bf83">fEventN</a>(0),</div>
-<div class="line"><span class="lineno">  640</span>    <a class="code hl_variable" href="classecalDrawer.html#a2c9b644f1638557256620df3abc73f4c">fX</a>(0.),</div>
-<div class="line"><span class="lineno">  641</span>    <a class="code hl_variable" href="classecalDrawer.html#a567b03363c69b9a354d9b915b02d47a0">fY</a>(0.),</div>
-<div class="line"><span class="lineno">  642</span>    <a class="code hl_variable" href="classecalDrawer.html#a8fe67f447e92d8fdd6cdfe519dea79e3">fZ</a>(0.),</div>
-<div class="line"><span class="lineno">  643</span>    <a class="code hl_variable" href="classecalDrawer.html#a147f443c04b1ed8bd49b487a19701c1e">fMCX</a>(0.),</div>
-<div class="line"><span class="lineno">  644</span>    <a class="code hl_variable" href="classecalDrawer.html#ad29e8a47a66c3f1419adf846a9657fd1">fMCY</a>(0.),</div>
-<div class="line"><span class="lineno">  645</span>    <a class="code hl_variable" href="classecalDrawer.html#a06e60c354d12ec905a8fdaa0ee613418">fMCZ</a>(0.),</div>
-<div class="line"><span class="lineno">  646</span>    <a class="code hl_variable" href="classecalDrawer.html#acd03233ec0de150f0f9e851496d5c56e">fMCMotherTrN</a>(0),</div>
-<div class="line"><span class="lineno">  647</span>    <a class="code hl_variable" href="classecalDrawer.html#a23eeca0f60e6cb0673169a90431c6487">fE</a>(0.),</div>
-<div class="line"><span class="lineno">  648</span>    <a class="code hl_variable" href="classecalDrawer.html#a8b5d04fcf4a07c373f780614bc9af535">fMCE</a>(0.),</div>
-<div class="line"><span class="lineno">  649</span>    <a class="code hl_variable" href="classecalDrawer.html#a86bb5f8bf7e8f3f6417cea292fbce978">fPX</a>(0.),</div>
-<div class="line"><span class="lineno">  650</span>    <a class="code hl_variable" href="classecalDrawer.html#a85ef072b87308d90b4a589934123b23b">fPY</a>(0.),</div>
-<div class="line"><span class="lineno">  651</span>    <a class="code hl_variable" href="classecalDrawer.html#ae9b858023a4be681d0f97766bc7fdac7">fPZ</a>(0.),</div>
-<div class="line"><span class="lineno">  652</span>    <a class="code hl_variable" href="classecalDrawer.html#a9d98309ca1627e79bd543cf598fd0fe8">fMCPX</a>(0.),</div>
-<div class="line"><span class="lineno">  653</span>    <a class="code hl_variable" href="classecalDrawer.html#a96434ac108e69c06602ff8043e7733de">fMCPY</a>(0.),</div>
-<div class="line"><span class="lineno">  654</span>    <a class="code hl_variable" href="classecalDrawer.html#af41ebaed1627e9310e3d4e19238962b9">fMCPZ</a>(0.),</div>
-<div class="line"><span class="lineno">  655</span>    <a class="code hl_variable" href="classecalDrawer.html#a4e5e81e99b3cb2fc5f55bce7fec089ca">fChi2</a>(0.),</div>
-<div class="line"><span class="lineno">  656</span>    <a class="code hl_variable" href="classecalDrawer.html#af08d7ce536045345a37753e6b829288b">fPdgCode</a>(0),</div>
-<div class="line"><span class="lineno">  657</span>    <a class="code hl_variable" href="classecalDrawer.html#a383a20ec18b58b8507f13bcdf279e8b7">fR</a>(0.)</div>
-<div class="line"><span class="lineno">  658</span>{</div>
-<div class="line"><span class="lineno">  659</span>}</div>
+<p class="definition">Definition at line <a class="el" href="ecalDrawer_8cxx_source.html#l00623">623</a> of file <a class="el" href="ecalDrawer_8cxx_source.html">ecalDrawer.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  624</span>  : FairTask(),</div>
+<div class="line"><span class="lineno">  625</span>    <a class="code hl_variable" href="classecalDrawer.html#a462d0a5c3b7dddcf18cf10e3d691bb9f">fNamePrefix</a>(<span class="stringliteral">&quot;ecal&quot;</span>),</div>
+<div class="line"><span class="lineno">  626</span>    <a class="code hl_variable" href="classecalDrawer.html#ae3e0216de375345edc46b60f3d7d96d8">fC</a>(NULL),</div>
+<div class="line"><span class="lineno">  627</span>    <a class="code hl_variable" href="classecalDrawer.html#a746a9e6ee780271619dd73090ef24d4f">fCellSize</a>(8),</div>
+<div class="line"><span class="lineno">  628</span>    <a class="code hl_variable" href="classecalDrawer.html#a610979ada5c361ac714e4bd12e26e724">fCX</a>(0),</div>
+<div class="line"><span class="lineno">  629</span>    <a class="code hl_variable" href="classecalDrawer.html#a994f1ce8a827abd12ff3bffd6caffab9">fCY</a>(0),</div>
+<div class="line"><span class="lineno">  630</span>    <a class="code hl_variable" href="classecalDrawer.html#a0ee45e2bb1722fa3aac9dce47f043e49">fMaxEnergyDep</a>(0.),</div>
+<div class="line"><span class="lineno">  631</span>    <a class="code hl_variable" href="classecalDrawer.html#a8fc9d27dcb8833864243a2c4baa05d5b">fStr</a>(NULL),</div>
+<div class="line"><span class="lineno">  632</span>    <a class="code hl_variable" href="classecalDrawer.html#a3eea9fe571e245784195a5706429d577">fInf</a>(NULL),</div>
+<div class="line"><span class="lineno">  633</span>    <a class="code hl_variable" href="classecalDrawer.html#a33c7f9178a67bb6a6c6033d26fcd2def">fEdging</a>(<span class="stringliteral">&quot;&quot;</span>),</div>
+<div class="line"><span class="lineno">  634</span>    <a class="code hl_variable" href="classecalDrawer.html#a7d43225d0d60409726a8970ff6ca7266">fTxt</a>(<span class="keyword">new</span> TText()),</div>
+<div class="line"><span class="lineno">  635</span>    <a class="code hl_variable" href="classecalDrawer.html#a97b5e09fcf04dd2fea27942a8bcd8b20">fCells</a>(),</div>
+<div class="line"><span class="lineno">  636</span>    <a class="code hl_variable" href="classecalDrawer.html#a193e69f48f5d08d2d45859329dbb737a">fMCTracks</a>(NULL),</div>
+<div class="line"><span class="lineno">  637</span>    <a class="code hl_variable" href="classecalDrawer.html#a918274f1612621a2423e26dcae5bf6b8">fPoints</a>(NULL),</div>
+<div class="line"><span class="lineno">  638</span>    <a class="code hl_variable" href="classecalDrawer.html#a2f47474c61c938b4966c75a8b8a351cf">fClusters</a>(NULL),</div>
+<div class="line"><span class="lineno">  639</span>    <a class="code hl_variable" href="classecalDrawer.html#aa759cc4ce5d728c385dc88dc2086f710">fInName</a>(<span class="stringliteral">&quot;EcalReco&quot;</span>),</div>
+<div class="line"><span class="lineno">  640</span>    <a class="code hl_variable" href="classecalDrawer.html#a8b434962fef5733f9fef29f9b5a0bf83">fEventN</a>(0),</div>
+<div class="line"><span class="lineno">  641</span>    <a class="code hl_variable" href="classecalDrawer.html#a2c9b644f1638557256620df3abc73f4c">fX</a>(0.),</div>
+<div class="line"><span class="lineno">  642</span>    <a class="code hl_variable" href="classecalDrawer.html#a567b03363c69b9a354d9b915b02d47a0">fY</a>(0.),</div>
+<div class="line"><span class="lineno">  643</span>    <a class="code hl_variable" href="classecalDrawer.html#a8fe67f447e92d8fdd6cdfe519dea79e3">fZ</a>(0.),</div>
+<div class="line"><span class="lineno">  644</span>    <a class="code hl_variable" href="classecalDrawer.html#a147f443c04b1ed8bd49b487a19701c1e">fMCX</a>(0.),</div>
+<div class="line"><span class="lineno">  645</span>    <a class="code hl_variable" href="classecalDrawer.html#ad29e8a47a66c3f1419adf846a9657fd1">fMCY</a>(0.),</div>
+<div class="line"><span class="lineno">  646</span>    <a class="code hl_variable" href="classecalDrawer.html#a06e60c354d12ec905a8fdaa0ee613418">fMCZ</a>(0.),</div>
+<div class="line"><span class="lineno">  647</span>    <a class="code hl_variable" href="classecalDrawer.html#acd03233ec0de150f0f9e851496d5c56e">fMCMotherTrN</a>(0),</div>
+<div class="line"><span class="lineno">  648</span>    <a class="code hl_variable" href="classecalDrawer.html#a23eeca0f60e6cb0673169a90431c6487">fE</a>(0.),</div>
+<div class="line"><span class="lineno">  649</span>    <a class="code hl_variable" href="classecalDrawer.html#a8b5d04fcf4a07c373f780614bc9af535">fMCE</a>(0.),</div>
+<div class="line"><span class="lineno">  650</span>    <a class="code hl_variable" href="classecalDrawer.html#a86bb5f8bf7e8f3f6417cea292fbce978">fPX</a>(0.),</div>
+<div class="line"><span class="lineno">  651</span>    <a class="code hl_variable" href="classecalDrawer.html#a85ef072b87308d90b4a589934123b23b">fPY</a>(0.),</div>
+<div class="line"><span class="lineno">  652</span>    <a class="code hl_variable" href="classecalDrawer.html#ae9b858023a4be681d0f97766bc7fdac7">fPZ</a>(0.),</div>
+<div class="line"><span class="lineno">  653</span>    <a class="code hl_variable" href="classecalDrawer.html#a9d98309ca1627e79bd543cf598fd0fe8">fMCPX</a>(0.),</div>
+<div class="line"><span class="lineno">  654</span>    <a class="code hl_variable" href="classecalDrawer.html#a96434ac108e69c06602ff8043e7733de">fMCPY</a>(0.),</div>
+<div class="line"><span class="lineno">  655</span>    <a class="code hl_variable" href="classecalDrawer.html#af41ebaed1627e9310e3d4e19238962b9">fMCPZ</a>(0.),</div>
+<div class="line"><span class="lineno">  656</span>    <a class="code hl_variable" href="classecalDrawer.html#a4e5e81e99b3cb2fc5f55bce7fec089ca">fChi2</a>(0.),</div>
+<div class="line"><span class="lineno">  657</span>    <a class="code hl_variable" href="classecalDrawer.html#af08d7ce536045345a37753e6b829288b">fPdgCode</a>(0),</div>
+<div class="line"><span class="lineno">  658</span>    <a class="code hl_variable" href="classecalDrawer.html#a383a20ec18b58b8507f13bcdf279e8b7">fR</a>(0.)</div>
+<div class="line"><span class="lineno">  659</span>{</div>
+<div class="line"><span class="lineno">  660</span>}</div>
 <div class="ttc" id="aclassecalDrawer_html_a06e60c354d12ec905a8fdaa0ee613418"><div class="ttname"><a href="classecalDrawer.html#a06e60c354d12ec905a8fdaa0ee613418">ecalDrawer::fMCZ</a></div><div class="ttdeci">Double_t fMCZ</div><div class="ttdef"><b>Definition</b> <a href="ecalDrawer_8h_source.html#l00104">ecalDrawer.h:104</a></div></div>
 <div class="ttc" id="aclassecalDrawer_html_a0ee45e2bb1722fa3aac9dce47f043e49"><div class="ttname"><a href="classecalDrawer.html#a0ee45e2bb1722fa3aac9dce47f043e49">ecalDrawer::fMaxEnergyDep</a></div><div class="ttdeci">Double_t fMaxEnergyDep</div><div class="ttdef"><b>Definition</b> <a href="ecalDrawer_8h_source.html#l00059">ecalDrawer.h:59</a></div></div>
 <div class="ttc" id="aclassecalDrawer_html_a147f443c04b1ed8bd49b487a19701c1e"><div class="ttname"><a href="classecalDrawer.html#a147f443c04b1ed8bd49b487a19701c1e">ecalDrawer::fMCX</a></div><div class="ttdeci">Double_t fMCX</div><div class="ttdef"><b>Definition</b> <a href="ecalDrawer_8h_source.html#l00102">ecalDrawer.h:102</a></div></div>
@@ -359,6 +359,9 @@ Private Attributes</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">ecalDrawer::ecalDrawer </td>
@@ -378,47 +381,52 @@ Private Attributes</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 <p>Standard constructor </p>
 
-<p class="definition">Definition at line <a class="el" href="ecalDrawer_8cxx_source.html#l00582">582</a> of file <a class="el" href="ecalDrawer_8cxx_source.html">ecalDrawer.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  583</span>  : FairTask(name, iVerbose),</div>
-<div class="line"><span class="lineno">  584</span>    <a class="code hl_variable" href="classecalDrawer.html#a462d0a5c3b7dddcf18cf10e3d691bb9f">fNamePrefix</a>(<span class="stringliteral">&quot;ecal&quot;</span>),</div>
-<div class="line"><span class="lineno">  585</span>    <a class="code hl_variable" href="classecalDrawer.html#ae3e0216de375345edc46b60f3d7d96d8">fC</a>(NULL),</div>
-<div class="line"><span class="lineno">  586</span>    <a class="code hl_variable" href="classecalDrawer.html#a746a9e6ee780271619dd73090ef24d4f">fCellSize</a>(8),</div>
-<div class="line"><span class="lineno">  587</span>    <a class="code hl_variable" href="classecalDrawer.html#a610979ada5c361ac714e4bd12e26e724">fCX</a>(0),</div>
-<div class="line"><span class="lineno">  588</span>    <a class="code hl_variable" href="classecalDrawer.html#a994f1ce8a827abd12ff3bffd6caffab9">fCY</a>(0),</div>
-<div class="line"><span class="lineno">  589</span>    <a class="code hl_variable" href="classecalDrawer.html#a0ee45e2bb1722fa3aac9dce47f043e49">fMaxEnergyDep</a>(0.),</div>
-<div class="line"><span class="lineno">  590</span>    <a class="code hl_variable" href="classecalDrawer.html#a8fc9d27dcb8833864243a2c4baa05d5b">fStr</a>(NULL),</div>
-<div class="line"><span class="lineno">  591</span>    <a class="code hl_variable" href="classecalDrawer.html#a3eea9fe571e245784195a5706429d577">fInf</a>(NULL),</div>
-<div class="line"><span class="lineno">  592</span>    <a class="code hl_variable" href="classecalDrawer.html#a33c7f9178a67bb6a6c6033d26fcd2def">fEdging</a>(<span class="stringliteral">&quot;&quot;</span>),</div>
-<div class="line"><span class="lineno">  593</span>    <a class="code hl_variable" href="classecalDrawer.html#a7d43225d0d60409726a8970ff6ca7266">fTxt</a>(<span class="keyword">new</span> TText()),</div>
-<div class="line"><span class="lineno">  594</span>    <a class="code hl_variable" href="classecalDrawer.html#a97b5e09fcf04dd2fea27942a8bcd8b20">fCells</a>(),</div>
-<div class="line"><span class="lineno">  595</span>    <a class="code hl_variable" href="classecalDrawer.html#a193e69f48f5d08d2d45859329dbb737a">fMCTracks</a>(NULL),</div>
-<div class="line"><span class="lineno">  596</span>    <a class="code hl_variable" href="classecalDrawer.html#a918274f1612621a2423e26dcae5bf6b8">fPoints</a>(NULL),</div>
-<div class="line"><span class="lineno">  597</span>    <a class="code hl_variable" href="classecalDrawer.html#a2f47474c61c938b4966c75a8b8a351cf">fClusters</a>(NULL),</div>
-<div class="line"><span class="lineno">  598</span>    <a class="code hl_variable" href="classecalDrawer.html#aa759cc4ce5d728c385dc88dc2086f710">fInName</a>(<span class="stringliteral">&quot;EcalReco&quot;</span>),</div>
-<div class="line"><span class="lineno">  599</span>    <a class="code hl_variable" href="classecalDrawer.html#a8b434962fef5733f9fef29f9b5a0bf83">fEventN</a>(0),</div>
-<div class="line"><span class="lineno">  600</span>    <a class="code hl_variable" href="classecalDrawer.html#a2c9b644f1638557256620df3abc73f4c">fX</a>(0.),</div>
-<div class="line"><span class="lineno">  601</span>    <a class="code hl_variable" href="classecalDrawer.html#a567b03363c69b9a354d9b915b02d47a0">fY</a>(0.),</div>
-<div class="line"><span class="lineno">  602</span>    <a class="code hl_variable" href="classecalDrawer.html#a8fe67f447e92d8fdd6cdfe519dea79e3">fZ</a>(0.),</div>
-<div class="line"><span class="lineno">  603</span>    <a class="code hl_variable" href="classecalDrawer.html#a147f443c04b1ed8bd49b487a19701c1e">fMCX</a>(0.),</div>
-<div class="line"><span class="lineno">  604</span>    <a class="code hl_variable" href="classecalDrawer.html#ad29e8a47a66c3f1419adf846a9657fd1">fMCY</a>(0.),</div>
-<div class="line"><span class="lineno">  605</span>    <a class="code hl_variable" href="classecalDrawer.html#a06e60c354d12ec905a8fdaa0ee613418">fMCZ</a>(0.),</div>
-<div class="line"><span class="lineno">  606</span>    <a class="code hl_variable" href="classecalDrawer.html#acd03233ec0de150f0f9e851496d5c56e">fMCMotherTrN</a>(0),</div>
-<div class="line"><span class="lineno">  607</span>    <a class="code hl_variable" href="classecalDrawer.html#a23eeca0f60e6cb0673169a90431c6487">fE</a>(0.),</div>
-<div class="line"><span class="lineno">  608</span>    <a class="code hl_variable" href="classecalDrawer.html#a8b5d04fcf4a07c373f780614bc9af535">fMCE</a>(0.),</div>
-<div class="line"><span class="lineno">  609</span>    <a class="code hl_variable" href="classecalDrawer.html#a86bb5f8bf7e8f3f6417cea292fbce978">fPX</a>(0.),</div>
-<div class="line"><span class="lineno">  610</span>    <a class="code hl_variable" href="classecalDrawer.html#a85ef072b87308d90b4a589934123b23b">fPY</a>(0.),</div>
-<div class="line"><span class="lineno">  611</span>    <a class="code hl_variable" href="classecalDrawer.html#ae9b858023a4be681d0f97766bc7fdac7">fPZ</a>(0.),</div>
-<div class="line"><span class="lineno">  612</span>    <a class="code hl_variable" href="classecalDrawer.html#a9d98309ca1627e79bd543cf598fd0fe8">fMCPX</a>(0.),</div>
-<div class="line"><span class="lineno">  613</span>    <a class="code hl_variable" href="classecalDrawer.html#a96434ac108e69c06602ff8043e7733de">fMCPY</a>(0.),</div>
-<div class="line"><span class="lineno">  614</span>    <a class="code hl_variable" href="classecalDrawer.html#af41ebaed1627e9310e3d4e19238962b9">fMCPZ</a>(0.),</div>
-<div class="line"><span class="lineno">  615</span>    <a class="code hl_variable" href="classecalDrawer.html#a4e5e81e99b3cb2fc5f55bce7fec089ca">fChi2</a>(0.),</div>
-<div class="line"><span class="lineno">  616</span>    <a class="code hl_variable" href="classecalDrawer.html#af08d7ce536045345a37753e6b829288b">fPdgCode</a>(0),</div>
-<div class="line"><span class="lineno">  617</span>    <a class="code hl_variable" href="classecalDrawer.html#a383a20ec18b58b8507f13bcdf279e8b7">fR</a>(0.)</div>
-<div class="line"><span class="lineno">  618</span>{</div>
-<div class="line"><span class="lineno">  619</span>}</div>
+<p class="definition">Definition at line <a class="el" href="ecalDrawer_8cxx_source.html#l00583">583</a> of file <a class="el" href="ecalDrawer_8cxx_source.html">ecalDrawer.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  584</span>  : FairTask(name, iVerbose),</div>
+<div class="line"><span class="lineno">  585</span>    <a class="code hl_variable" href="classecalDrawer.html#a462d0a5c3b7dddcf18cf10e3d691bb9f">fNamePrefix</a>(<span class="stringliteral">&quot;ecal&quot;</span>),</div>
+<div class="line"><span class="lineno">  586</span>    <a class="code hl_variable" href="classecalDrawer.html#ae3e0216de375345edc46b60f3d7d96d8">fC</a>(NULL),</div>
+<div class="line"><span class="lineno">  587</span>    <a class="code hl_variable" href="classecalDrawer.html#a746a9e6ee780271619dd73090ef24d4f">fCellSize</a>(8),</div>
+<div class="line"><span class="lineno">  588</span>    <a class="code hl_variable" href="classecalDrawer.html#a610979ada5c361ac714e4bd12e26e724">fCX</a>(0),</div>
+<div class="line"><span class="lineno">  589</span>    <a class="code hl_variable" href="classecalDrawer.html#a994f1ce8a827abd12ff3bffd6caffab9">fCY</a>(0),</div>
+<div class="line"><span class="lineno">  590</span>    <a class="code hl_variable" href="classecalDrawer.html#a0ee45e2bb1722fa3aac9dce47f043e49">fMaxEnergyDep</a>(0.),</div>
+<div class="line"><span class="lineno">  591</span>    <a class="code hl_variable" href="classecalDrawer.html#a8fc9d27dcb8833864243a2c4baa05d5b">fStr</a>(NULL),</div>
+<div class="line"><span class="lineno">  592</span>    <a class="code hl_variable" href="classecalDrawer.html#a3eea9fe571e245784195a5706429d577">fInf</a>(NULL),</div>
+<div class="line"><span class="lineno">  593</span>    <a class="code hl_variable" href="classecalDrawer.html#a33c7f9178a67bb6a6c6033d26fcd2def">fEdging</a>(<span class="stringliteral">&quot;&quot;</span>),</div>
+<div class="line"><span class="lineno">  594</span>    <a class="code hl_variable" href="classecalDrawer.html#a7d43225d0d60409726a8970ff6ca7266">fTxt</a>(<span class="keyword">new</span> TText()),</div>
+<div class="line"><span class="lineno">  595</span>    <a class="code hl_variable" href="classecalDrawer.html#a97b5e09fcf04dd2fea27942a8bcd8b20">fCells</a>(),</div>
+<div class="line"><span class="lineno">  596</span>    <a class="code hl_variable" href="classecalDrawer.html#a193e69f48f5d08d2d45859329dbb737a">fMCTracks</a>(NULL),</div>
+<div class="line"><span class="lineno">  597</span>    <a class="code hl_variable" href="classecalDrawer.html#a918274f1612621a2423e26dcae5bf6b8">fPoints</a>(NULL),</div>
+<div class="line"><span class="lineno">  598</span>    <a class="code hl_variable" href="classecalDrawer.html#a2f47474c61c938b4966c75a8b8a351cf">fClusters</a>(NULL),</div>
+<div class="line"><span class="lineno">  599</span>    <a class="code hl_variable" href="classecalDrawer.html#aa759cc4ce5d728c385dc88dc2086f710">fInName</a>(<span class="stringliteral">&quot;EcalReco&quot;</span>),</div>
+<div class="line"><span class="lineno">  600</span>    <a class="code hl_variable" href="classecalDrawer.html#a8b434962fef5733f9fef29f9b5a0bf83">fEventN</a>(0),</div>
+<div class="line"><span class="lineno">  601</span>    <a class="code hl_variable" href="classecalDrawer.html#a2c9b644f1638557256620df3abc73f4c">fX</a>(0.),</div>
+<div class="line"><span class="lineno">  602</span>    <a class="code hl_variable" href="classecalDrawer.html#a567b03363c69b9a354d9b915b02d47a0">fY</a>(0.),</div>
+<div class="line"><span class="lineno">  603</span>    <a class="code hl_variable" href="classecalDrawer.html#a8fe67f447e92d8fdd6cdfe519dea79e3">fZ</a>(0.),</div>
+<div class="line"><span class="lineno">  604</span>    <a class="code hl_variable" href="classecalDrawer.html#a147f443c04b1ed8bd49b487a19701c1e">fMCX</a>(0.),</div>
+<div class="line"><span class="lineno">  605</span>    <a class="code hl_variable" href="classecalDrawer.html#ad29e8a47a66c3f1419adf846a9657fd1">fMCY</a>(0.),</div>
+<div class="line"><span class="lineno">  606</span>    <a class="code hl_variable" href="classecalDrawer.html#a06e60c354d12ec905a8fdaa0ee613418">fMCZ</a>(0.),</div>
+<div class="line"><span class="lineno">  607</span>    <a class="code hl_variable" href="classecalDrawer.html#acd03233ec0de150f0f9e851496d5c56e">fMCMotherTrN</a>(0),</div>
+<div class="line"><span class="lineno">  608</span>    <a class="code hl_variable" href="classecalDrawer.html#a23eeca0f60e6cb0673169a90431c6487">fE</a>(0.),</div>
+<div class="line"><span class="lineno">  609</span>    <a class="code hl_variable" href="classecalDrawer.html#a8b5d04fcf4a07c373f780614bc9af535">fMCE</a>(0.),</div>
+<div class="line"><span class="lineno">  610</span>    <a class="code hl_variable" href="classecalDrawer.html#a86bb5f8bf7e8f3f6417cea292fbce978">fPX</a>(0.),</div>
+<div class="line"><span class="lineno">  611</span>    <a class="code hl_variable" href="classecalDrawer.html#a85ef072b87308d90b4a589934123b23b">fPY</a>(0.),</div>
+<div class="line"><span class="lineno">  612</span>    <a class="code hl_variable" href="classecalDrawer.html#ae9b858023a4be681d0f97766bc7fdac7">fPZ</a>(0.),</div>
+<div class="line"><span class="lineno">  613</span>    <a class="code hl_variable" href="classecalDrawer.html#a9d98309ca1627e79bd543cf598fd0fe8">fMCPX</a>(0.),</div>
+<div class="line"><span class="lineno">  614</span>    <a class="code hl_variable" href="classecalDrawer.html#a96434ac108e69c06602ff8043e7733de">fMCPY</a>(0.),</div>
+<div class="line"><span class="lineno">  615</span>    <a class="code hl_variable" href="classecalDrawer.html#af41ebaed1627e9310e3d4e19238962b9">fMCPZ</a>(0.),</div>
+<div class="line"><span class="lineno">  616</span>    <a class="code hl_variable" href="classecalDrawer.html#a4e5e81e99b3cb2fc5f55bce7fec089ca">fChi2</a>(0.),</div>
+<div class="line"><span class="lineno">  617</span>    <a class="code hl_variable" href="classecalDrawer.html#af08d7ce536045345a37753e6b829288b">fPdgCode</a>(0),</div>
+<div class="line"><span class="lineno">  618</span>    <a class="code hl_variable" href="classecalDrawer.html#a383a20ec18b58b8507f13bcdf279e8b7">fR</a>(0.)</div>
+<div class="line"><span class="lineno">  619</span>{</div>
+<div class="line"><span class="lineno">  620</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -446,13 +454,13 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Destructor </p>
 
-<p class="definition">Definition at line <a class="el" href="ecalDrawer_8cxx_source.html#l00573">573</a> of file <a class="el" href="ecalDrawer_8cxx_source.html">ecalDrawer.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  574</span>{</div>
-<div class="line"><span class="lineno">  575</span>  list&lt;ecalDrawerItem*&gt;::const_iterator <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>=<a class="code hl_variable" href="classecalDrawer.html#a97b5e09fcf04dd2fea27942a8bcd8b20">fCells</a>.begin();</div>
-<div class="line"><span class="lineno">  576</span>  <span class="keywordflow">for</span>(;<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>!=<a class="code hl_variable" href="classecalDrawer.html#a97b5e09fcf04dd2fea27942a8bcd8b20">fCells</a>.end();++<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>)</div>
-<div class="line"><span class="lineno">  577</span>    <span class="keyword">delete</span> (*p);</div>
-<div class="line"><span class="lineno">  578</span>  <span class="keyword">delete</span> <a class="code hl_variable" href="classecalDrawer.html#a7d43225d0d60409726a8970ff6ca7266">fTxt</a>;</div>
-<div class="line"><span class="lineno">  579</span>}</div>
+<p class="definition">Definition at line <a class="el" href="ecalDrawer_8cxx_source.html#l00574">574</a> of file <a class="el" href="ecalDrawer_8cxx_source.html">ecalDrawer.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  575</span>{</div>
+<div class="line"><span class="lineno">  576</span>  list&lt;ecalDrawerItem*&gt;::const_iterator <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>=<a class="code hl_variable" href="classecalDrawer.html#a97b5e09fcf04dd2fea27942a8bcd8b20">fCells</a>.begin();</div>
+<div class="line"><span class="lineno">  577</span>  <span class="keywordflow">for</span>(;<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>!=<a class="code hl_variable" href="classecalDrawer.html#a97b5e09fcf04dd2fea27942a8bcd8b20">fCells</a>.end();++<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>)</div>
+<div class="line"><span class="lineno">  578</span>    <span class="keyword">delete</span> (*p);</div>
+<div class="line"><span class="lineno">  579</span>  <span class="keyword">delete</span> <a class="code hl_variable" href="classecalDrawer.html#a7d43225d0d60409726a8970ff6ca7266">fTxt</a>;</div>
+<div class="line"><span class="lineno">  580</span>}</div>
 <div class="ttc" id="anamespacemakeDecay_html_a9c90b95001a4909a6c5383da1b3066d9"><div class="ttname"><a href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">makeDecay.p</a></div><div class="ttdeci">p</div><div class="ttdef"><b>Definition</b> <a href="makeDecay_8py_source.html#l00067">makeDecay.py:67</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -629,125 +637,125 @@ Private Attributes</h2></td></tr>
 <p>At the moment B &mdash; reconstructed energy G &mdash; energy deposited in cell R &mdash; energy deposited by photons and their e+/e- daughters</p>
 <p>Drawing</p>
 
-<p class="definition">Definition at line <a class="el" href="ecalDrawer_8cxx_source.html#l00358">358</a> of file <a class="el" href="ecalDrawer_8cxx_source.html">ecalDrawer.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  359</span>{</div>
-<div class="line"><span class="lineno">  360</span>  list&lt;ecalDrawerItem*&gt;::const_iterator <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>;</div>
-<div class="line"><span class="lineno">  361</span>  list&lt;ecalCell*&gt; clusters;</div>
-<div class="line"><span class="lineno">  362</span>  list&lt;ecalCell*&gt; maximums;</div>
-<div class="line"><span class="lineno">  363</span>  list&lt;ecalCell*&gt;::const_iterator cp;</div>
-<div class="line"><span class="lineno">  364</span>  <a class="code hl_class" href="classShipMCTrack.html">ShipMCTrack</a>* tr;</div>
-<div class="line"><span class="lineno">  365</span>  <a class="code hl_class" href="classShipMCTrack.html">ShipMCTrack</a>* tq;</div>
-<div class="line"><span class="lineno">  366</span>  Float_t <a class="code hl_variable" href="namespacegeometry__config.html#a669b957607386750ed2077d789c9434e">max</a>;</div>
-<div class="line"><span class="lineno">  367</span>  std::map&lt;Int_t, Float_t&gt;::const_iterator p1;</div>
-<div class="line"><span class="lineno">  368</span>  <a class="code hl_class" href="classecalCellMC.html">ecalCellMC</a>* <a class="code hl_variable" href="namespacehnl.html#adb7ba50b8941bf3badea16f97cb665d5">c</a>;</div>
-<div class="line"><span class="lineno">  369</span>  Int_t rn=<a class="code hl_variable" href="classecalDrawer.html#a2f47474c61c938b4966c75a8b8a351cf">fClusters</a>-&gt;GetEntriesFast();</div>
-<div class="line"><span class="lineno">  370</span>  Int_t <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>;</div>
-<div class="line"><span class="lineno">  371</span>  Int_t j;</div>
-<div class="line"><span class="lineno">  372</span>  Float_t <a class="code hl_variable" href="namespacegeometry__config.html#a1286b5c01494c311eb3a950d1ac8857c">x</a>;</div>
-<div class="line"><span class="lineno">  373</span>  Float_t <a class="code hl_variable" href="namespacegeometry__config.html#aa7c54d6eeebcc821b55222c6926f6740">y</a>;</div>
-<div class="line"><span class="lineno">  374</span>  Float_t dx;</div>
-<div class="line"><span class="lineno">  375</span>  Float_t <a class="code hl_variable" href="namespaceShipAna.html#a02a40c51d86f2bb079d5d8018e56f028">dy</a>;</div>
-<div class="line"><span class="lineno">  376</span>  Float_t <a class="code hl_variable" href="namespacehepunit.html#a15f123038d2b7d5aa5b8bafeec5e0bde">rad</a>;</div>
-<div class="line"><span class="lineno">  377</span>  Float_t <a class="code hl_variable" href="namespacemakeMuonDIS.html#a46fd07d81c633221657121b3f0589fb3">phi</a>;</div>
-<div class="line"><span class="lineno">  378</span> </div>
-<div class="line"><span class="lineno">  379</span>  clusters.clear();</div>
-<div class="line"><span class="lineno">  380</span> </div>
-<div class="line"><span class="lineno">  381</span>  <span class="keywordflow">for</span>(i=0;<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>&lt;rn;<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>++)</div>
-<div class="line"><span class="lineno">  382</span>  {</div>
-<div class="line"><span class="lineno">  383</span>    <a class="code hl_class" href="classecalCluster.html">ecalCluster</a>* cl=(<a class="code hl_class" href="classecalCluster.html">ecalCluster</a>*)<a class="code hl_variable" href="classecalDrawer.html#a2f47474c61c938b4966c75a8b8a351cf">fClusters</a>-&gt;At(i);</div>
-<div class="line"><span class="lineno">  384</span>    <span class="keywordflow">for</span>(j=0;j&lt;cl-&gt;<a class="code hl_function" href="classecalCluster.html#ac23b479e1d26b1dff2d3c280ca944fac">Size</a>();j++)</div>
-<div class="line"><span class="lineno">  385</span>      clusters.push_back(<a class="code hl_variable" href="classecalDrawer.html#a8fc9d27dcb8833864243a2c4baa05d5b">fStr</a>-&gt;<a class="code hl_function" href="classecalStructure.html#ac855bf7c93f3622af20ffde3f19a5948">GetHitCell</a>(cl-&gt;<a class="code hl_function" href="classecalCluster.html#af75224c7858215b61ca7c77620b6229e">CellNum</a>(j)));</div>
-<div class="line"><span class="lineno">  386</span>    <span class="keywordflow">for</span>(j=0;j&lt;cl-&gt;<a class="code hl_function" href="classecalCluster.html#a1fb8a8474b68d9cb4f3e461e00bd0961">Maxs</a>();j++)</div>
-<div class="line"><span class="lineno">  387</span>      maximums.push_back(<a class="code hl_variable" href="classecalDrawer.html#a8fc9d27dcb8833864243a2c4baa05d5b">fStr</a>-&gt;<a class="code hl_function" href="classecalStructure.html#ac855bf7c93f3622af20ffde3f19a5948">GetHitCell</a>(cl-&gt;<a class="code hl_function" href="classecalCluster.html#ae108500496bec0d205e6c15c3ec7546e">PeakNum</a>(j)));</div>
-<div class="line"><span class="lineno">  388</span>  }</div>
-<div class="line"><span class="lineno">  389</span> </div>
-<div class="line"><span class="lineno">  390</span>  <span class="keywordflow">for</span>(p=<a class="code hl_variable" href="classecalDrawer.html#a97b5e09fcf04dd2fea27942a8bcd8b20">fCells</a>.begin();<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>!=<a class="code hl_variable" href="classecalDrawer.html#a97b5e09fcf04dd2fea27942a8bcd8b20">fCells</a>.end();++<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>)</div>
-<div class="line"><span class="lineno">  391</span>  {</div>
-<div class="line"><span class="lineno">  392</span>    <a class="code hl_variable" href="namespacehnl.html#adb7ba50b8941bf3badea16f97cb665d5">c</a>=(<a class="code hl_class" href="classecalCellMC.html">ecalCellMC</a>*)((*p)-&gt;fCell);</div>
-<div class="line"><span class="lineno">  393</span>    (*p)-&gt;fG=<a class="code hl_variable" href="namespacehnl.html#adb7ba50b8941bf3badea16f97cb665d5">c</a>-&gt;GetEnergy();</div>
-<div class="line"><span class="lineno">  394</span>    (*p)-&gt;fR=0;</div>
-<div class="line"><span class="lineno">  395</span>    (*p)-&gt;fB=0;</div>
-<div class="line"><span class="lineno">  396</span>  }</div>
-<div class="line"><span class="lineno">  397</span><span class="comment">/*</span></div>
-<div class="line"><span class="lineno">  398</span><span class="comment">  for(p=fCells.begin();p!=fCells.end();++p)</span></div>
-<div class="line"><span class="lineno">  399</span><span class="comment">  {</span></div>
-<div class="line"><span class="lineno">  400</span><span class="comment">    c=(ecalCellMC*)((*p)-&gt;fCell);</span></div>
-<div class="line"><span class="lineno">  401</span><span class="comment">    (*p)-&gt;fG=c-&gt;GetEnergy();</span></div>
-<div class="line"><span class="lineno">  402</span><span class="comment">    (*p)-&gt;fR=0;</span></div>
-<div class="line"><span class="lineno">  403</span><span class="comment">    (*p)-&gt;fB=0;</span></div>
-<div class="line"><span class="lineno">  404</span><span class="comment">    for(p1=c-&gt;GetTrackEnergyBegin();p1!=c-&gt;GetTrackEnergyEnd();++p1)</span></div>
-<div class="line"><span class="lineno">  405</span><span class="comment">    {</span></div>
-<div class="line"><span class="lineno">  406</span><span class="comment">      tr=(ShipMCTrack*)fMCTracks-&gt;At(p1-&gt;first);</span></div>
-<div class="line"><span class="lineno">  407</span><span class="comment">      if (tr==NULL) continue;</span></div>
-<div class="line"><span class="lineno">  408</span><span class="comment">      if (tr-&gt;GetPdgCode()==22)</span></div>
-<div class="line"><span class="lineno">  409</span><span class="comment">    (*p)-&gt;fR+=p1-&gt;second;</span></div>
-<div class="line"><span class="lineno">  410</span><span class="comment">      else</span></div>
-<div class="line"><span class="lineno">  411</span><span class="comment">      if (tr-&gt;GetMotherId()&gt;=0)</span></div>
-<div class="line"><span class="lineno">  412</span><span class="comment">      {</span></div>
-<div class="line"><span class="lineno">  413</span><span class="comment">    tq=(ShipMCTrack*)fMCTracks-&gt;At(tr-&gt;GetMotherId());</span></div>
-<div class="line"><span class="lineno">  414</span><span class="comment">    if (tr-&gt;GetMotherId()==22)</span></div>
-<div class="line"><span class="lineno">  415</span><span class="comment">      (*p)-&gt;fR+=p1-&gt;second;</span></div>
-<div class="line"><span class="lineno">  416</span><span class="comment">      }</span></div>
-<div class="line"><span class="lineno">  417</span><span class="comment">    }</span></div>
-<div class="line"><span class="lineno">  418</span><span class="comment">    if (find(clusters.begin(), clusters.end(), c)==clusters.end())</span></div>
-<div class="line"><span class="lineno">  419</span><span class="comment">      continue;</span></div>
-<div class="line"><span class="lineno">  420</span><span class="comment">    for(i=0;i&lt;rn;i++)</span></div>
-<div class="line"><span class="lineno">  421</span><span class="comment">    {</span></div>
-<div class="line"><span class="lineno">  422</span><span class="comment">      r=(CbmEcalRecParticle*)fReco-&gt;At(i);</span></div>
-<div class="line"><span class="lineno">  423</span><span class="comment">      dx=x=c-&gt;GetCenterX();</span></div>
-<div class="line"><span class="lineno">  424</span><span class="comment">      dy=y=c-&gt;GetCenterY();</span></div>
-<div class="line"><span class="lineno">  425</span><span class="comment">      dx-=r-&gt;X();</span></div>
-<div class="line"><span class="lineno">  426</span><span class="comment">      dy-=r-&gt;Y();</span></div>
-<div class="line"><span class="lineno">  427</span><span class="comment">      if (TMath::Abs(dx)&gt;30) continue;</span></div>
-<div class="line"><span class="lineno">  428</span><span class="comment">      if (TMath::Abs(dy)&gt;30) continue;</span></div>
-<div class="line"><span class="lineno">  429</span><span class="comment">      rad=TMath::Sqrt(x*x+y*y);</span></div>
-<div class="line"><span class="lineno">  430</span><span class="comment">      phi=TMath::ACos(x/rad)*TMath::RadToDeg();</span></div>
-<div class="line"><span class="lineno">  431</span><span class="comment">      if (y&lt;0) phi=360-phi;</span></div>
-<div class="line"><span class="lineno">  432</span><span class="comment">//      (*p)-&gt;fB+=fShLib-&gt;GetResponse(dx, dy, phi, TMath::ATan(rad/fInf-&gt;GetZPos())*TMath::RadToDeg(), c-&gt;GetType());</span></div>
-<div class="line"><span class="lineno">  433</span><span class="comment">    }</span></div>
-<div class="line"><span class="lineno">  434</span><span class="comment">  }</span></div>
-<div class="line"><span class="lineno">  435</span><span class="comment">*/</span></div>
-<div class="line"><span class="lineno">  437</span>  <a class="code hl_variable" href="namespacegeometry__config.html#a669b957607386750ed2077d789c9434e">max</a>=0;</div>
-<div class="line"><span class="lineno">  438</span>  <span class="keywordflow">for</span>(p=<a class="code hl_variable" href="classecalDrawer.html#a97b5e09fcf04dd2fea27942a8bcd8b20">fCells</a>.begin();<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>!=<a class="code hl_variable" href="classecalDrawer.html#a97b5e09fcf04dd2fea27942a8bcd8b20">fCells</a>.end();++<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>)</div>
-<div class="line"><span class="lineno">  439</span>  {</div>
-<div class="line"><span class="lineno">  440</span>    <span class="keywordflow">if</span> (max&lt;(*p)-&gt;fR) <a class="code hl_variable" href="namespacegeometry__config.html#a669b957607386750ed2077d789c9434e">max</a>=(*p)-&gt;fR;</div>
-<div class="line"><span class="lineno">  441</span>    <span class="keywordflow">if</span> (max&lt;(*p)-&gt;fG) <a class="code hl_variable" href="namespacegeometry__config.html#a669b957607386750ed2077d789c9434e">max</a>=(*p)-&gt;fG;</div>
-<div class="line"><span class="lineno">  442</span>    <span class="keywordflow">if</span> (max&lt;(*p)-&gt;fB) <a class="code hl_variable" href="namespacegeometry__config.html#a669b957607386750ed2077d789c9434e">max</a>=(*p)-&gt;fB;</div>
-<div class="line"><span class="lineno">  443</span>  }</div>
-<div class="line"><span class="lineno">  444</span>  <span class="keywordflow">if</span> (max&gt;0)</div>
-<div class="line"><span class="lineno">  445</span>    <span class="keywordflow">for</span>(p=<a class="code hl_variable" href="classecalDrawer.html#a97b5e09fcf04dd2fea27942a8bcd8b20">fCells</a>.begin();<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>!=<a class="code hl_variable" href="classecalDrawer.html#a97b5e09fcf04dd2fea27942a8bcd8b20">fCells</a>.end();++<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>)</div>
-<div class="line"><span class="lineno">  446</span>    {</div>
-<div class="line"><span class="lineno">  447</span>      (*p)-&gt;fR/=<a class="code hl_variable" href="namespacegeometry__config.html#a669b957607386750ed2077d789c9434e">max</a>;</div>
-<div class="line"><span class="lineno">  448</span>      (*p)-&gt;fG/=<a class="code hl_variable" href="namespacegeometry__config.html#a669b957607386750ed2077d789c9434e">max</a>;</div>
-<div class="line"><span class="lineno">  449</span>      (*p)-&gt;fB/=<a class="code hl_variable" href="namespacegeometry__config.html#a669b957607386750ed2077d789c9434e">max</a>;</div>
-<div class="line"><span class="lineno">  450</span>    }</div>
-<div class="line"><span class="lineno">  451</span> </div>
-<div class="line"><span class="lineno">  456</span>  <span class="keywordflow">for</span>(p=<a class="code hl_variable" href="classecalDrawer.html#a97b5e09fcf04dd2fea27942a8bcd8b20">fCells</a>.begin();<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>!=<a class="code hl_variable" href="classecalDrawer.html#a97b5e09fcf04dd2fea27942a8bcd8b20">fCells</a>.end();++<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>)</div>
-<div class="line"><span class="lineno">  457</span>  {</div>
-<div class="line"><span class="lineno">  458</span>    Float_t <a class="code hl_variable" href="namespaceana__ShipMuon.html#a368dc3d523e04b368da1981e73859f4c">l</a>=(*p)-&gt;fG; <a class="code hl_variable" href="namespaceana__ShipMuon.html#a368dc3d523e04b368da1981e73859f4c">l</a>=TMath::Sqrt(l);</div>
-<div class="line"><span class="lineno">  459</span>    Float_t a=0;</div>
-<div class="line"><span class="lineno">  460</span>    Float_t b=((*p)-&gt;fG-(*p)-&gt;fB)/((*p)-&gt;fG+(*p)-&gt;fB);</div>
-<div class="line"><span class="lineno">  461</span>    <span class="keywordflow">if</span> ((*p)-&gt;fB==0) { b=0; }</div>
-<div class="line"><span class="lineno">  462</span>    <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  463</span>    {</div>
-<div class="line"><span class="lineno">  464</span>      <span class="keywordflow">if</span> (b&lt;-0.7) b=-0.7;</div>
-<div class="line"><span class="lineno">  465</span>      <span class="keywordflow">if</span> (b&gt;0.7) b=0.7;</div>
-<div class="line"><span class="lineno">  466</span>    }</div>
-<div class="line"><span class="lineno">  467</span>    <a class="code hl_function" href="ecalDrawer_8h.html#a2937e6ae467474b610299fdfce077e69">LabToRGB</a>(l, b, a, (*p)-&gt;fR, (*p)-&gt;fG, (*p)-&gt;fB);</div>
-<div class="line"><span class="lineno">  468</span>  }</div>
-<div class="line"><span class="lineno">  470</span>  <a class="code hl_variable" href="classecalDrawer.html#a33c7f9178a67bb6a6c6033d26fcd2def">fEdging</a>=<span class="stringliteral">&quot;#FFFFFF&quot;</span>;</div>
-<div class="line"><span class="lineno">  471</span>  <span class="keywordflow">for</span>(p=<a class="code hl_variable" href="classecalDrawer.html#a97b5e09fcf04dd2fea27942a8bcd8b20">fCells</a>.begin();<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>!=<a class="code hl_variable" href="classecalDrawer.html#a97b5e09fcf04dd2fea27942a8bcd8b20">fCells</a>.end();++<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>)</div>
-<div class="line"><span class="lineno">  472</span>    <span class="keywordflow">if</span> (find(clusters.begin(), clusters.end(), (*p)-&gt;fCell)==clusters.end())</div>
-<div class="line"><span class="lineno">  473</span>      <a class="code hl_function" href="classecalDrawer.html#acb52d5675f2c28591938c07c96d9a9de">DrawCell</a>((*p)-&gt;fCell, (*p)-&gt;fR, (*p)-&gt;fG, (*p)-&gt;fB);</div>
-<div class="line"><span class="lineno">  474</span>  <a class="code hl_variable" href="classecalDrawer.html#a33c7f9178a67bb6a6c6033d26fcd2def">fEdging</a>=<span class="stringliteral">&quot;#FF0000&quot;</span>;</div>
-<div class="line"><span class="lineno">  475</span>  <span class="keywordflow">for</span>(p=<a class="code hl_variable" href="classecalDrawer.html#a97b5e09fcf04dd2fea27942a8bcd8b20">fCells</a>.begin();<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>!=<a class="code hl_variable" href="classecalDrawer.html#a97b5e09fcf04dd2fea27942a8bcd8b20">fCells</a>.end();++<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>)</div>
-<div class="line"><span class="lineno">  476</span>    <span class="keywordflow">if</span> (find(clusters.begin(), clusters.end(), (*p)-&gt;fCell)!=clusters.end())</div>
-<div class="line"><span class="lineno">  477</span>      <a class="code hl_function" href="classecalDrawer.html#acb52d5675f2c28591938c07c96d9a9de">DrawCell</a>((*p)-&gt;fCell, (*p)-&gt;fR, (*p)-&gt;fG, (*p)-&gt;fB);</div>
-<div class="line"><span class="lineno">  478</span>  <a class="code hl_variable" href="classecalDrawer.html#a33c7f9178a67bb6a6c6033d26fcd2def">fEdging</a>=<span class="stringliteral">&quot;#00FF00&quot;</span>;</div>
-<div class="line"><span class="lineno">  479</span>  <span class="keywordflow">for</span>(p=<a class="code hl_variable" href="classecalDrawer.html#a97b5e09fcf04dd2fea27942a8bcd8b20">fCells</a>.begin();<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>!=<a class="code hl_variable" href="classecalDrawer.html#a97b5e09fcf04dd2fea27942a8bcd8b20">fCells</a>.end();++<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>)</div>
-<div class="line"><span class="lineno">  480</span>    <span class="keywordflow">if</span> (find(maximums.begin(), maximums.end(), (*p)-&gt;fCell)!=maximums.end())</div>
-<div class="line"><span class="lineno">  481</span>      <a class="code hl_function" href="classecalDrawer.html#acb52d5675f2c28591938c07c96d9a9de">DrawCell</a>((*p)-&gt;fCell, (*p)-&gt;fR, (*p)-&gt;fG, (*p)-&gt;fB);</div>
-<div class="line"><span class="lineno">  482</span>}</div>
+<p class="definition">Definition at line <a class="el" href="ecalDrawer_8cxx_source.html#l00359">359</a> of file <a class="el" href="ecalDrawer_8cxx_source.html">ecalDrawer.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  360</span>{</div>
+<div class="line"><span class="lineno">  361</span>  list&lt;ecalDrawerItem*&gt;::const_iterator <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>;</div>
+<div class="line"><span class="lineno">  362</span>  list&lt;ecalCell*&gt; clusters;</div>
+<div class="line"><span class="lineno">  363</span>  list&lt;ecalCell*&gt; maximums;</div>
+<div class="line"><span class="lineno">  364</span>  list&lt;ecalCell*&gt;::const_iterator cp;</div>
+<div class="line"><span class="lineno">  365</span>  <a class="code hl_class" href="classShipMCTrack.html">ShipMCTrack</a>* tr;</div>
+<div class="line"><span class="lineno">  366</span>  <a class="code hl_class" href="classShipMCTrack.html">ShipMCTrack</a>* tq;</div>
+<div class="line"><span class="lineno">  367</span>  Float_t <a class="code hl_variable" href="namespacegeometry__config.html#a669b957607386750ed2077d789c9434e">max</a>;</div>
+<div class="line"><span class="lineno">  368</span>  std::map&lt;Int_t, Float_t&gt;::const_iterator p1;</div>
+<div class="line"><span class="lineno">  369</span>  <a class="code hl_class" href="classecalCellMC.html">ecalCellMC</a>* <a class="code hl_variable" href="namespacehnl.html#adb7ba50b8941bf3badea16f97cb665d5">c</a>;</div>
+<div class="line"><span class="lineno">  370</span>  Int_t rn=<a class="code hl_variable" href="classecalDrawer.html#a2f47474c61c938b4966c75a8b8a351cf">fClusters</a>-&gt;GetEntriesFast();</div>
+<div class="line"><span class="lineno">  371</span>  Int_t <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>;</div>
+<div class="line"><span class="lineno">  372</span>  Int_t j;</div>
+<div class="line"><span class="lineno">  373</span>  Float_t <a class="code hl_variable" href="namespacegeometry__config.html#a1286b5c01494c311eb3a950d1ac8857c">x</a>;</div>
+<div class="line"><span class="lineno">  374</span>  Float_t <a class="code hl_variable" href="namespacegeometry__config.html#aa7c54d6eeebcc821b55222c6926f6740">y</a>;</div>
+<div class="line"><span class="lineno">  375</span>  Float_t dx;</div>
+<div class="line"><span class="lineno">  376</span>  Float_t <a class="code hl_variable" href="namespaceShipAna.html#a02a40c51d86f2bb079d5d8018e56f028">dy</a>;</div>
+<div class="line"><span class="lineno">  377</span>  Float_t <a class="code hl_variable" href="namespacehepunit.html#a15f123038d2b7d5aa5b8bafeec5e0bde">rad</a>;</div>
+<div class="line"><span class="lineno">  378</span>  Float_t <a class="code hl_variable" href="namespacemakeMuonDIS.html#a46fd07d81c633221657121b3f0589fb3">phi</a>;</div>
+<div class="line"><span class="lineno">  379</span> </div>
+<div class="line"><span class="lineno">  380</span>  clusters.clear();</div>
+<div class="line"><span class="lineno">  381</span> </div>
+<div class="line"><span class="lineno">  382</span>  <span class="keywordflow">for</span>(i=0;<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>&lt;rn;<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>++)</div>
+<div class="line"><span class="lineno">  383</span>  {</div>
+<div class="line"><span class="lineno">  384</span>    <a class="code hl_class" href="classecalCluster.html">ecalCluster</a>* cl=<span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classecalCluster.html">ecalCluster</a>*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="classecalDrawer.html#a2f47474c61c938b4966c75a8b8a351cf">fClusters</a>-&gt;At(i));</div>
+<div class="line"><span class="lineno">  385</span>    <span class="keywordflow">for</span>(j=0;j&lt;cl-&gt;<a class="code hl_function" href="classecalCluster.html#ac23b479e1d26b1dff2d3c280ca944fac">Size</a>();j++)</div>
+<div class="line"><span class="lineno">  386</span>      clusters.push_back(<a class="code hl_variable" href="classecalDrawer.html#a8fc9d27dcb8833864243a2c4baa05d5b">fStr</a>-&gt;<a class="code hl_function" href="classecalStructure.html#ac855bf7c93f3622af20ffde3f19a5948">GetHitCell</a>(cl-&gt;<a class="code hl_function" href="classecalCluster.html#af75224c7858215b61ca7c77620b6229e">CellNum</a>(j)));</div>
+<div class="line"><span class="lineno">  387</span>    <span class="keywordflow">for</span>(j=0;j&lt;cl-&gt;<a class="code hl_function" href="classecalCluster.html#a1fb8a8474b68d9cb4f3e461e00bd0961">Maxs</a>();j++)</div>
+<div class="line"><span class="lineno">  388</span>      maximums.push_back(<a class="code hl_variable" href="classecalDrawer.html#a8fc9d27dcb8833864243a2c4baa05d5b">fStr</a>-&gt;<a class="code hl_function" href="classecalStructure.html#ac855bf7c93f3622af20ffde3f19a5948">GetHitCell</a>(cl-&gt;<a class="code hl_function" href="classecalCluster.html#ae108500496bec0d205e6c15c3ec7546e">PeakNum</a>(j)));</div>
+<div class="line"><span class="lineno">  389</span>  }</div>
+<div class="line"><span class="lineno">  390</span> </div>
+<div class="line"><span class="lineno">  391</span>  <span class="keywordflow">for</span>(p=<a class="code hl_variable" href="classecalDrawer.html#a97b5e09fcf04dd2fea27942a8bcd8b20">fCells</a>.begin();<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>!=<a class="code hl_variable" href="classecalDrawer.html#a97b5e09fcf04dd2fea27942a8bcd8b20">fCells</a>.end();++<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>)</div>
+<div class="line"><span class="lineno">  392</span>  {</div>
+<div class="line"><span class="lineno">  393</span>    <a class="code hl_variable" href="namespacehnl.html#adb7ba50b8941bf3badea16f97cb665d5">c</a>=<span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classecalCellMC.html">ecalCellMC</a>*<span class="keyword">&gt;</span>((*p)-&gt;fCell);</div>
+<div class="line"><span class="lineno">  394</span>    (*p)-&gt;fG=<a class="code hl_variable" href="namespacehnl.html#adb7ba50b8941bf3badea16f97cb665d5">c</a>-&gt;GetEnergy();</div>
+<div class="line"><span class="lineno">  395</span>    (*p)-&gt;fR=0;</div>
+<div class="line"><span class="lineno">  396</span>    (*p)-&gt;fB=0;</div>
+<div class="line"><span class="lineno">  397</span>  }</div>
+<div class="line"><span class="lineno">  398</span><span class="comment">/*</span></div>
+<div class="line"><span class="lineno">  399</span><span class="comment">  for(p=fCells.begin();p!=fCells.end();++p)</span></div>
+<div class="line"><span class="lineno">  400</span><span class="comment">  {</span></div>
+<div class="line"><span class="lineno">  401</span><span class="comment">    c=dynamic_cast&lt;ecalCellMC*&gt;((*p)-&gt;fCell);</span></div>
+<div class="line"><span class="lineno">  402</span><span class="comment">    (*p)-&gt;fG=c-&gt;GetEnergy();</span></div>
+<div class="line"><span class="lineno">  403</span><span class="comment">    (*p)-&gt;fR=0;</span></div>
+<div class="line"><span class="lineno">  404</span><span class="comment">    (*p)-&gt;fB=0;</span></div>
+<div class="line"><span class="lineno">  405</span><span class="comment">    for(p1=c-&gt;GetTrackEnergyBegin();p1!=c-&gt;GetTrackEnergyEnd();++p1)</span></div>
+<div class="line"><span class="lineno">  406</span><span class="comment">    {</span></div>
+<div class="line"><span class="lineno">  407</span><span class="comment">      tr=dynamic_cast&lt;ShipMCTrack*&gt;(fMCTracks-&gt;At(p1-&gt;first));</span></div>
+<div class="line"><span class="lineno">  408</span><span class="comment">      if (tr==NULL) continue;</span></div>
+<div class="line"><span class="lineno">  409</span><span class="comment">      if (tr-&gt;GetPdgCode()==22)</span></div>
+<div class="line"><span class="lineno">  410</span><span class="comment">    (*p)-&gt;fR+=p1-&gt;second;</span></div>
+<div class="line"><span class="lineno">  411</span><span class="comment">      else</span></div>
+<div class="line"><span class="lineno">  412</span><span class="comment">      if (tr-&gt;GetMotherId()&gt;=0)</span></div>
+<div class="line"><span class="lineno">  413</span><span class="comment">      {</span></div>
+<div class="line"><span class="lineno">  414</span><span class="comment">    tq=(ShipMCTrack*)fMCTracks-&gt;At(tr-&gt;GetMotherId());</span></div>
+<div class="line"><span class="lineno">  415</span><span class="comment">    if (tr-&gt;GetMotherId()==22)</span></div>
+<div class="line"><span class="lineno">  416</span><span class="comment">      (*p)-&gt;fR+=p1-&gt;second;</span></div>
+<div class="line"><span class="lineno">  417</span><span class="comment">      }</span></div>
+<div class="line"><span class="lineno">  418</span><span class="comment">    }</span></div>
+<div class="line"><span class="lineno">  419</span><span class="comment">    if (find(clusters.begin(), clusters.end(), c)==clusters.end())</span></div>
+<div class="line"><span class="lineno">  420</span><span class="comment">      continue;</span></div>
+<div class="line"><span class="lineno">  421</span><span class="comment">    for(i=0;i&lt;rn;i++)</span></div>
+<div class="line"><span class="lineno">  422</span><span class="comment">    {</span></div>
+<div class="line"><span class="lineno">  423</span><span class="comment">      r=(CbmEcalRecParticle*)fReco-&gt;At(i);</span></div>
+<div class="line"><span class="lineno">  424</span><span class="comment">      dx=x=c-&gt;GetCenterX();</span></div>
+<div class="line"><span class="lineno">  425</span><span class="comment">      dy=y=c-&gt;GetCenterY();</span></div>
+<div class="line"><span class="lineno">  426</span><span class="comment">      dx-=r-&gt;X();</span></div>
+<div class="line"><span class="lineno">  427</span><span class="comment">      dy-=r-&gt;Y();</span></div>
+<div class="line"><span class="lineno">  428</span><span class="comment">      if (TMath::Abs(dx)&gt;30) continue;</span></div>
+<div class="line"><span class="lineno">  429</span><span class="comment">      if (TMath::Abs(dy)&gt;30) continue;</span></div>
+<div class="line"><span class="lineno">  430</span><span class="comment">      rad=TMath::Sqrt(x*x+y*y);</span></div>
+<div class="line"><span class="lineno">  431</span><span class="comment">      phi=TMath::ACos(x/rad)*TMath::RadToDeg();</span></div>
+<div class="line"><span class="lineno">  432</span><span class="comment">      if (y&lt;0) phi=360-phi;</span></div>
+<div class="line"><span class="lineno">  433</span><span class="comment">//      (*p)-&gt;fB+=fShLib-&gt;GetResponse(dx, dy, phi, TMath::ATan(rad/fInf-&gt;GetZPos())*TMath::RadToDeg(), c-&gt;GetType());</span></div>
+<div class="line"><span class="lineno">  434</span><span class="comment">    }</span></div>
+<div class="line"><span class="lineno">  435</span><span class="comment">  }</span></div>
+<div class="line"><span class="lineno">  436</span><span class="comment">*/</span></div>
+<div class="line"><span class="lineno">  438</span>  <a class="code hl_variable" href="namespacegeometry__config.html#a669b957607386750ed2077d789c9434e">max</a>=0;</div>
+<div class="line"><span class="lineno">  439</span>  <span class="keywordflow">for</span>(p=<a class="code hl_variable" href="classecalDrawer.html#a97b5e09fcf04dd2fea27942a8bcd8b20">fCells</a>.begin();<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>!=<a class="code hl_variable" href="classecalDrawer.html#a97b5e09fcf04dd2fea27942a8bcd8b20">fCells</a>.end();++<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>)</div>
+<div class="line"><span class="lineno">  440</span>  {</div>
+<div class="line"><span class="lineno">  441</span>    <span class="keywordflow">if</span> (max&lt;(*p)-&gt;fR) <a class="code hl_variable" href="namespacegeometry__config.html#a669b957607386750ed2077d789c9434e">max</a>=(*p)-&gt;fR;</div>
+<div class="line"><span class="lineno">  442</span>    <span class="keywordflow">if</span> (max&lt;(*p)-&gt;fG) <a class="code hl_variable" href="namespacegeometry__config.html#a669b957607386750ed2077d789c9434e">max</a>=(*p)-&gt;fG;</div>
+<div class="line"><span class="lineno">  443</span>    <span class="keywordflow">if</span> (max&lt;(*p)-&gt;fB) <a class="code hl_variable" href="namespacegeometry__config.html#a669b957607386750ed2077d789c9434e">max</a>=(*p)-&gt;fB;</div>
+<div class="line"><span class="lineno">  444</span>  }</div>
+<div class="line"><span class="lineno">  445</span>  <span class="keywordflow">if</span> (max&gt;0)</div>
+<div class="line"><span class="lineno">  446</span>    <span class="keywordflow">for</span>(p=<a class="code hl_variable" href="classecalDrawer.html#a97b5e09fcf04dd2fea27942a8bcd8b20">fCells</a>.begin();<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>!=<a class="code hl_variable" href="classecalDrawer.html#a97b5e09fcf04dd2fea27942a8bcd8b20">fCells</a>.end();++<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>)</div>
+<div class="line"><span class="lineno">  447</span>    {</div>
+<div class="line"><span class="lineno">  448</span>      (*p)-&gt;fR/=<a class="code hl_variable" href="namespacegeometry__config.html#a669b957607386750ed2077d789c9434e">max</a>;</div>
+<div class="line"><span class="lineno">  449</span>      (*p)-&gt;fG/=<a class="code hl_variable" href="namespacegeometry__config.html#a669b957607386750ed2077d789c9434e">max</a>;</div>
+<div class="line"><span class="lineno">  450</span>      (*p)-&gt;fB/=<a class="code hl_variable" href="namespacegeometry__config.html#a669b957607386750ed2077d789c9434e">max</a>;</div>
+<div class="line"><span class="lineno">  451</span>    }</div>
+<div class="line"><span class="lineno">  452</span> </div>
+<div class="line"><span class="lineno">  457</span>  <span class="keywordflow">for</span>(p=<a class="code hl_variable" href="classecalDrawer.html#a97b5e09fcf04dd2fea27942a8bcd8b20">fCells</a>.begin();<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>!=<a class="code hl_variable" href="classecalDrawer.html#a97b5e09fcf04dd2fea27942a8bcd8b20">fCells</a>.end();++<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>)</div>
+<div class="line"><span class="lineno">  458</span>  {</div>
+<div class="line"><span class="lineno">  459</span>    Float_t <a class="code hl_variable" href="namespaceana__ShipMuon.html#a368dc3d523e04b368da1981e73859f4c">l</a>=(*p)-&gt;fG; <a class="code hl_variable" href="namespaceana__ShipMuon.html#a368dc3d523e04b368da1981e73859f4c">l</a>=TMath::Sqrt(l);</div>
+<div class="line"><span class="lineno">  460</span>    Float_t a=0;</div>
+<div class="line"><span class="lineno">  461</span>    Float_t b=((*p)-&gt;fG-(*p)-&gt;fB)/((*p)-&gt;fG+(*p)-&gt;fB);</div>
+<div class="line"><span class="lineno">  462</span>    <span class="keywordflow">if</span> ((*p)-&gt;fB==0) { b=0; }</div>
+<div class="line"><span class="lineno">  463</span>    <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  464</span>    {</div>
+<div class="line"><span class="lineno">  465</span>      <span class="keywordflow">if</span> (b&lt;-0.7) b=-0.7;</div>
+<div class="line"><span class="lineno">  466</span>      <span class="keywordflow">if</span> (b&gt;0.7) b=0.7;</div>
+<div class="line"><span class="lineno">  467</span>    }</div>
+<div class="line"><span class="lineno">  468</span>    <a class="code hl_function" href="ecalDrawer_8h.html#a2937e6ae467474b610299fdfce077e69">LabToRGB</a>(l, b, a, (*p)-&gt;fR, (*p)-&gt;fG, (*p)-&gt;fB);</div>
+<div class="line"><span class="lineno">  469</span>  }</div>
+<div class="line"><span class="lineno">  471</span>  <a class="code hl_variable" href="classecalDrawer.html#a33c7f9178a67bb6a6c6033d26fcd2def">fEdging</a>=<span class="stringliteral">&quot;#FFFFFF&quot;</span>;</div>
+<div class="line"><span class="lineno">  472</span>  <span class="keywordflow">for</span>(p=<a class="code hl_variable" href="classecalDrawer.html#a97b5e09fcf04dd2fea27942a8bcd8b20">fCells</a>.begin();<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>!=<a class="code hl_variable" href="classecalDrawer.html#a97b5e09fcf04dd2fea27942a8bcd8b20">fCells</a>.end();++<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>)</div>
+<div class="line"><span class="lineno">  473</span>    <span class="keywordflow">if</span> (find(clusters.begin(), clusters.end(), (*p)-&gt;fCell)==clusters.end())</div>
+<div class="line"><span class="lineno">  474</span>      <a class="code hl_function" href="classecalDrawer.html#acb52d5675f2c28591938c07c96d9a9de">DrawCell</a>((*p)-&gt;fCell, (*p)-&gt;fR, (*p)-&gt;fG, (*p)-&gt;fB);</div>
+<div class="line"><span class="lineno">  475</span>  <a class="code hl_variable" href="classecalDrawer.html#a33c7f9178a67bb6a6c6033d26fcd2def">fEdging</a>=<span class="stringliteral">&quot;#FF0000&quot;</span>;</div>
+<div class="line"><span class="lineno">  476</span>  <span class="keywordflow">for</span>(p=<a class="code hl_variable" href="classecalDrawer.html#a97b5e09fcf04dd2fea27942a8bcd8b20">fCells</a>.begin();<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>!=<a class="code hl_variable" href="classecalDrawer.html#a97b5e09fcf04dd2fea27942a8bcd8b20">fCells</a>.end();++<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>)</div>
+<div class="line"><span class="lineno">  477</span>    <span class="keywordflow">if</span> (find(clusters.begin(), clusters.end(), (*p)-&gt;fCell)!=clusters.end())</div>
+<div class="line"><span class="lineno">  478</span>      <a class="code hl_function" href="classecalDrawer.html#acb52d5675f2c28591938c07c96d9a9de">DrawCell</a>((*p)-&gt;fCell, (*p)-&gt;fR, (*p)-&gt;fG, (*p)-&gt;fB);</div>
+<div class="line"><span class="lineno">  479</span>  <a class="code hl_variable" href="classecalDrawer.html#a33c7f9178a67bb6a6c6033d26fcd2def">fEdging</a>=<span class="stringliteral">&quot;#00FF00&quot;</span>;</div>
+<div class="line"><span class="lineno">  480</span>  <span class="keywordflow">for</span>(p=<a class="code hl_variable" href="classecalDrawer.html#a97b5e09fcf04dd2fea27942a8bcd8b20">fCells</a>.begin();<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>!=<a class="code hl_variable" href="classecalDrawer.html#a97b5e09fcf04dd2fea27942a8bcd8b20">fCells</a>.end();++<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>)</div>
+<div class="line"><span class="lineno">  481</span>    <span class="keywordflow">if</span> (find(maximums.begin(), maximums.end(), (*p)-&gt;fCell)!=maximums.end())</div>
+<div class="line"><span class="lineno">  482</span>      <a class="code hl_function" href="classecalDrawer.html#acb52d5675f2c28591938c07c96d9a9de">DrawCell</a>((*p)-&gt;fCell, (*p)-&gt;fR, (*p)-&gt;fG, (*p)-&gt;fB);</div>
+<div class="line"><span class="lineno">  483</span>}</div>
 <div class="ttc" id="aclassShipMCTrack_html"><div class="ttname"><a href="classShipMCTrack.html">ShipMCTrack</a></div><div class="ttdef"><b>Definition</b> <a href="ShipMCTrack_8h_source.html#l00026">ShipMCTrack.h:27</a></div></div>
 <div class="ttc" id="aclassecalCellMC_html"><div class="ttname"><a href="classecalCellMC.html">ecalCellMC</a></div><div class="ttdef"><b>Definition</b> <a href="ecalCellMC_8h_source.html#l00018">ecalCellMC.h:19</a></div></div>
 <div class="ttc" id="aclassecalCluster_html"><div class="ttname"><a href="classecalCluster.html">ecalCluster</a></div><div class="ttdef"><b>Definition</b> <a href="ecalCluster_8h_source.html#l00024">ecalCluster.h:25</a></div></div>
@@ -814,23 +822,23 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Draw chi2 for photons </p>
 
-<p class="definition">Definition at line <a class="el" href="ecalDrawer_8cxx_source.html#l00248">248</a> of file <a class="el" href="ecalDrawer_8cxx_source.html">ecalDrawer.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  249</span>{</div>
-<div class="line"><span class="lineno">  250</span>  <span class="keywordtype">char</span> stri[30];</div>
-<div class="line"><span class="lineno">  251</span>  Int_t xi=(Int_t)((x/<a class="code hl_variable" href="classecalDrawer.html#a3eea9fe571e245784195a5706429d577">fInf</a>-&gt;<a class="code hl_function" href="classecalInf.html#ae0b5d3949f203d9163dc3a2371832f71">GetEcalSize</a>(0))*<a class="code hl_variable" href="classecalDrawer.html#a610979ada5c361ac714e4bd12e26e724">fCX</a>+<a class="code hl_variable" href="classecalDrawer.html#a610979ada5c361ac714e4bd12e26e724">fCX</a>/2.0);</div>
-<div class="line"><span class="lineno">  252</span>  Int_t yi=(Int_t)((y/<a class="code hl_variable" href="classecalDrawer.html#a3eea9fe571e245784195a5706429d577">fInf</a>-&gt;<a class="code hl_function" href="classecalInf.html#ae0b5d3949f203d9163dc3a2371832f71">GetEcalSize</a>(1))*<a class="code hl_variable" href="classecalDrawer.html#a994f1ce8a827abd12ff3bffd6caffab9">fCY</a>+<a class="code hl_variable" href="classecalDrawer.html#a994f1ce8a827abd12ff3bffd6caffab9">fCY</a>/2.0);</div>
-<div class="line"><span class="lineno">  253</span>  yi-=8;</div>
-<div class="line"><span class="lineno">  254</span>  yi=<a class="code hl_variable" href="classecalDrawer.html#a994f1ce8a827abd12ff3bffd6caffab9">fCY</a>-yi-1;</div>
-<div class="line"><span class="lineno">  255</span>  xi-=6;</div>
-<div class="line"><span class="lineno">  256</span> </div>
-<div class="line"><span class="lineno">  257</span>  <span class="keywordflow">if</span> (chi2!=-1111)</div>
-<div class="line"><span class="lineno">  258</span>  {</div>
-<div class="line"><span class="lineno">  259</span>    sprintf(stri,<span class="stringliteral">&quot;%.1f&quot;</span>, chi2);</div>
-<div class="line"><span class="lineno">  260</span>    <a class="code hl_variable" href="classecalDrawer.html#ae3e0216de375345edc46b60f3d7d96d8">fC</a>-&gt;DrawText(xi, yi, stri, 8, color, <span class="stringliteral">&quot;arialbd.ttf&quot;</span>);</div>
-<div class="line"><span class="lineno">  261</span>  }</div>
-<div class="line"><span class="lineno">  262</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  263</span>    <a class="code hl_variable" href="classecalDrawer.html#ae3e0216de375345edc46b60f3d7d96d8">fC</a>-&gt;DrawText(xi, yi, <span class="stringliteral">&quot;-111&quot;</span>, 8, color, <span class="stringliteral">&quot;arialbd.ttf&quot;</span>);</div>
-<div class="line"><span class="lineno">  264</span>}</div>
+<p class="definition">Definition at line <a class="el" href="ecalDrawer_8cxx_source.html#l00249">249</a> of file <a class="el" href="ecalDrawer_8cxx_source.html">ecalDrawer.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  250</span>{</div>
+<div class="line"><span class="lineno">  251</span>  <span class="keywordtype">char</span> stri[30];</div>
+<div class="line"><span class="lineno">  252</span>  Int_t xi=(Int_t)((x/<a class="code hl_variable" href="classecalDrawer.html#a3eea9fe571e245784195a5706429d577">fInf</a>-&gt;<a class="code hl_function" href="classecalInf.html#ae0b5d3949f203d9163dc3a2371832f71">GetEcalSize</a>(0))*<a class="code hl_variable" href="classecalDrawer.html#a610979ada5c361ac714e4bd12e26e724">fCX</a>+<a class="code hl_variable" href="classecalDrawer.html#a610979ada5c361ac714e4bd12e26e724">fCX</a>/2.0);</div>
+<div class="line"><span class="lineno">  253</span>  Int_t yi=(Int_t)((y/<a class="code hl_variable" href="classecalDrawer.html#a3eea9fe571e245784195a5706429d577">fInf</a>-&gt;<a class="code hl_function" href="classecalInf.html#ae0b5d3949f203d9163dc3a2371832f71">GetEcalSize</a>(1))*<a class="code hl_variable" href="classecalDrawer.html#a994f1ce8a827abd12ff3bffd6caffab9">fCY</a>+<a class="code hl_variable" href="classecalDrawer.html#a994f1ce8a827abd12ff3bffd6caffab9">fCY</a>/2.0);</div>
+<div class="line"><span class="lineno">  254</span>  yi-=8;</div>
+<div class="line"><span class="lineno">  255</span>  yi=<a class="code hl_variable" href="classecalDrawer.html#a994f1ce8a827abd12ff3bffd6caffab9">fCY</a>-yi-1;</div>
+<div class="line"><span class="lineno">  256</span>  xi-=6;</div>
+<div class="line"><span class="lineno">  257</span> </div>
+<div class="line"><span class="lineno">  258</span>  <span class="keywordflow">if</span> (chi2!=-1111)</div>
+<div class="line"><span class="lineno">  259</span>  {</div>
+<div class="line"><span class="lineno">  260</span>    sprintf(stri,<span class="stringliteral">&quot;%.1f&quot;</span>, chi2);</div>
+<div class="line"><span class="lineno">  261</span>    <a class="code hl_variable" href="classecalDrawer.html#ae3e0216de375345edc46b60f3d7d96d8">fC</a>-&gt;DrawText(xi, yi, stri, 8, color, <span class="stringliteral">&quot;arialbd.ttf&quot;</span>);</div>
+<div class="line"><span class="lineno">  262</span>  }</div>
+<div class="line"><span class="lineno">  263</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  264</span>    <a class="code hl_variable" href="classecalDrawer.html#ae3e0216de375345edc46b60f3d7d96d8">fC</a>-&gt;DrawText(xi, yi, <span class="stringliteral">&quot;-111&quot;</span>, 8, color, <span class="stringliteral">&quot;arialbd.ttf&quot;</span>);</div>
+<div class="line"><span class="lineno">  265</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -869,31 +877,31 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Draw energy for given point </p>
 
-<p class="definition">Definition at line <a class="el" href="ecalDrawer_8cxx_source.html#l00267">267</a> of file <a class="el" href="ecalDrawer_8cxx_source.html">ecalDrawer.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  268</span>{</div>
-<div class="line"><span class="lineno">  269</span>  <span class="keywordflow">if</span> (<a class="code hl_function" href="classecalDrawer.html#ac02446c1be0f0b4f36ad89771d40f3de">GetP</a>(p)&lt;0.01) <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">  270</span>  <span class="keywordtype">char</span> stri[10];</div>
-<div class="line"><span class="lineno">  271</span>  Int_t <a class="code hl_variable" href="namespacegeometry__config.html#a1286b5c01494c311eb3a950d1ac8857c">x</a>=(Int_t)((<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetX()/<a class="code hl_variable" href="classecalDrawer.html#a3eea9fe571e245784195a5706429d577">fInf</a>-&gt;<a class="code hl_function" href="classecalInf.html#ae0b5d3949f203d9163dc3a2371832f71">GetEcalSize</a>(0))*<a class="code hl_variable" href="classecalDrawer.html#a610979ada5c361ac714e4bd12e26e724">fCX</a>+<a class="code hl_variable" href="classecalDrawer.html#a610979ada5c361ac714e4bd12e26e724">fCX</a>/2.0);</div>
-<div class="line"><span class="lineno">  272</span>  Int_t <a class="code hl_variable" href="namespacegeometry__config.html#aa7c54d6eeebcc821b55222c6926f6740">y</a>=(Int_t)((<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetY()/<a class="code hl_variable" href="classecalDrawer.html#a3eea9fe571e245784195a5706429d577">fInf</a>-&gt;<a class="code hl_function" href="classecalInf.html#ae0b5d3949f203d9163dc3a2371832f71">GetEcalSize</a>(1))*<a class="code hl_variable" href="classecalDrawer.html#a994f1ce8a827abd12ff3bffd6caffab9">fCY</a>+<a class="code hl_variable" href="classecalDrawer.html#a994f1ce8a827abd12ff3bffd6caffab9">fCY</a>/2.0);</div>
-<div class="line"><span class="lineno">  273</span>  <a class="code hl_variable" href="namespacegeometry__config.html#aa7c54d6eeebcc821b55222c6926f6740">y</a>+=9;</div>
-<div class="line"><span class="lineno">  274</span>  <a class="code hl_variable" href="namespacegeometry__config.html#aa7c54d6eeebcc821b55222c6926f6740">y</a>=<a class="code hl_variable" href="classecalDrawer.html#a994f1ce8a827abd12ff3bffd6caffab9">fCY</a>-<a class="code hl_variable" href="namespacegeometry__config.html#aa7c54d6eeebcc821b55222c6926f6740">y</a>-1;</div>
-<div class="line"><span class="lineno">  275</span>  <a class="code hl_variable" href="namespacegeometry__config.html#a1286b5c01494c311eb3a950d1ac8857c">x</a>-=6;</div>
-<div class="line"><span class="lineno">  276</span> </div>
-<div class="line"><span class="lineno">  277</span>  sprintf(stri,<span class="stringliteral">&quot;%.2f&quot;</span>, <a class="code hl_function" href="classecalDrawer.html#ac02446c1be0f0b4f36ad89771d40f3de">GetP</a>(p));</div>
-<div class="line"><span class="lineno">  278</span>  <span class="keywordflow">if</span> (stri[0]==<span class="charliteral">&#39;0&#39;</span>)</div>
-<div class="line"><span class="lineno">  279</span>  {</div>
-<div class="line"><span class="lineno">  280</span>    <a class="code hl_variable" href="namespacegeometry__config.html#a1286b5c01494c311eb3a950d1ac8857c">x</a>+=2;</div>
-<div class="line"><span class="lineno">  281</span>    stri[0]=stri[1];</div>
-<div class="line"><span class="lineno">  282</span>    stri[1]=stri[2];</div>
-<div class="line"><span class="lineno">  283</span>    stri[2]=stri[3];</div>
-<div class="line"><span class="lineno">  284</span>    stri[3]=stri[4];</div>
-<div class="line"><span class="lineno">  285</span>    stri[4]=stri[5];</div>
-<div class="line"><span class="lineno">  286</span>    stri[5]=stri[6];</div>
-<div class="line"><span class="lineno">  287</span>    stri[6]=stri[7];</div>
-<div class="line"><span class="lineno">  288</span>  }</div>
-<div class="line"><span class="lineno">  289</span>  <a class="code hl_variable" href="classecalDrawer.html#ae3e0216de375345edc46b60f3d7d96d8">fC</a>-&gt;DrawText(x, y, stri, 8, color, <span class="stringliteral">&quot;arialbd.ttf&quot;</span>);</div>
-<div class="line"><span class="lineno">  290</span>}</div>
-<div class="ttc" id="aclassecalDrawer_html_ac02446c1be0f0b4f36ad89771d40f3de"><div class="ttname"><a href="classecalDrawer.html#ac02446c1be0f0b4f36ad89771d40f3de">ecalDrawer::GetP</a></div><div class="ttdeci">Double_t GetP(ecalPoint *p)</div><div class="ttdef"><b>Definition</b> <a href="ecalDrawer_8cxx_source.html#l00238">ecalDrawer.cxx:238</a></div></div>
+<p class="definition">Definition at line <a class="el" href="ecalDrawer_8cxx_source.html#l00268">268</a> of file <a class="el" href="ecalDrawer_8cxx_source.html">ecalDrawer.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  269</span>{</div>
+<div class="line"><span class="lineno">  270</span>  <span class="keywordflow">if</span> (<a class="code hl_function" href="classecalDrawer.html#ac02446c1be0f0b4f36ad89771d40f3de">GetP</a>(p)&lt;0.01) <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">  271</span>  <span class="keywordtype">char</span> stri[10];</div>
+<div class="line"><span class="lineno">  272</span>  Int_t <a class="code hl_variable" href="namespacegeometry__config.html#a1286b5c01494c311eb3a950d1ac8857c">x</a>=(Int_t)((<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetX()/<a class="code hl_variable" href="classecalDrawer.html#a3eea9fe571e245784195a5706429d577">fInf</a>-&gt;<a class="code hl_function" href="classecalInf.html#ae0b5d3949f203d9163dc3a2371832f71">GetEcalSize</a>(0))*<a class="code hl_variable" href="classecalDrawer.html#a610979ada5c361ac714e4bd12e26e724">fCX</a>+<a class="code hl_variable" href="classecalDrawer.html#a610979ada5c361ac714e4bd12e26e724">fCX</a>/2.0);</div>
+<div class="line"><span class="lineno">  273</span>  Int_t <a class="code hl_variable" href="namespacegeometry__config.html#aa7c54d6eeebcc821b55222c6926f6740">y</a>=(Int_t)((<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetY()/<a class="code hl_variable" href="classecalDrawer.html#a3eea9fe571e245784195a5706429d577">fInf</a>-&gt;<a class="code hl_function" href="classecalInf.html#ae0b5d3949f203d9163dc3a2371832f71">GetEcalSize</a>(1))*<a class="code hl_variable" href="classecalDrawer.html#a994f1ce8a827abd12ff3bffd6caffab9">fCY</a>+<a class="code hl_variable" href="classecalDrawer.html#a994f1ce8a827abd12ff3bffd6caffab9">fCY</a>/2.0);</div>
+<div class="line"><span class="lineno">  274</span>  <a class="code hl_variable" href="namespacegeometry__config.html#aa7c54d6eeebcc821b55222c6926f6740">y</a>+=9;</div>
+<div class="line"><span class="lineno">  275</span>  <a class="code hl_variable" href="namespacegeometry__config.html#aa7c54d6eeebcc821b55222c6926f6740">y</a>=<a class="code hl_variable" href="classecalDrawer.html#a994f1ce8a827abd12ff3bffd6caffab9">fCY</a>-<a class="code hl_variable" href="namespacegeometry__config.html#aa7c54d6eeebcc821b55222c6926f6740">y</a>-1;</div>
+<div class="line"><span class="lineno">  276</span>  <a class="code hl_variable" href="namespacegeometry__config.html#a1286b5c01494c311eb3a950d1ac8857c">x</a>-=6;</div>
+<div class="line"><span class="lineno">  277</span> </div>
+<div class="line"><span class="lineno">  278</span>  sprintf(stri,<span class="stringliteral">&quot;%.2f&quot;</span>, <a class="code hl_function" href="classecalDrawer.html#ac02446c1be0f0b4f36ad89771d40f3de">GetP</a>(p));</div>
+<div class="line"><span class="lineno">  279</span>  <span class="keywordflow">if</span> (stri[0]==<span class="charliteral">&#39;0&#39;</span>)</div>
+<div class="line"><span class="lineno">  280</span>  {</div>
+<div class="line"><span class="lineno">  281</span>    <a class="code hl_variable" href="namespacegeometry__config.html#a1286b5c01494c311eb3a950d1ac8857c">x</a>+=2;</div>
+<div class="line"><span class="lineno">  282</span>    stri[0]=stri[1];</div>
+<div class="line"><span class="lineno">  283</span>    stri[1]=stri[2];</div>
+<div class="line"><span class="lineno">  284</span>    stri[2]=stri[3];</div>
+<div class="line"><span class="lineno">  285</span>    stri[3]=stri[4];</div>
+<div class="line"><span class="lineno">  286</span>    stri[4]=stri[5];</div>
+<div class="line"><span class="lineno">  287</span>    stri[5]=stri[6];</div>
+<div class="line"><span class="lineno">  288</span>    stri[6]=stri[7];</div>
+<div class="line"><span class="lineno">  289</span>  }</div>
+<div class="line"><span class="lineno">  290</span>  <a class="code hl_variable" href="classecalDrawer.html#ae3e0216de375345edc46b60f3d7d96d8">fC</a>-&gt;DrawText(x, y, stri, 8, color, <span class="stringliteral">&quot;arialbd.ttf&quot;</span>);</div>
+<div class="line"><span class="lineno">  291</span>}</div>
+<div class="ttc" id="aclassecalDrawer_html_ac02446c1be0f0b4f36ad89771d40f3de"><div class="ttname"><a href="classecalDrawer.html#ac02446c1be0f0b4f36ad89771d40f3de">ecalDrawer::GetP</a></div><div class="ttdeci">Double_t GetP(ecalPoint *p)</div><div class="ttdef"><b>Definition</b> <a href="ecalDrawer_8cxx_source.html#l00239">ecalDrawer.cxx:239</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -943,19 +951,19 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ecalDrawer_8cxx_source.html#l00306">306</a> of file <a class="el" href="ecalDrawer_8cxx_source.html">ecalDrawer.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  307</span>{</div>
-<div class="line"><span class="lineno">  308</span>  <span class="keywordflow">if</span> (p&lt;0.01) <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">  309</span>  <span class="keywordtype">char</span> stri[10];</div>
-<div class="line"><span class="lineno">  310</span>  Int_t xi=(Int_t)((x/<a class="code hl_variable" href="classecalDrawer.html#a3eea9fe571e245784195a5706429d577">fInf</a>-&gt;<a class="code hl_function" href="classecalInf.html#ae0b5d3949f203d9163dc3a2371832f71">GetEcalSize</a>(0))*<a class="code hl_variable" href="classecalDrawer.html#a610979ada5c361ac714e4bd12e26e724">fCX</a>+<a class="code hl_variable" href="classecalDrawer.html#a610979ada5c361ac714e4bd12e26e724">fCX</a>/2.0);</div>
-<div class="line"><span class="lineno">  311</span>  Int_t yi=(Int_t)((y/<a class="code hl_variable" href="classecalDrawer.html#a3eea9fe571e245784195a5706429d577">fInf</a>-&gt;<a class="code hl_function" href="classecalInf.html#ae0b5d3949f203d9163dc3a2371832f71">GetEcalSize</a>(1))*<a class="code hl_variable" href="classecalDrawer.html#a994f1ce8a827abd12ff3bffd6caffab9">fCY</a>+<a class="code hl_variable" href="classecalDrawer.html#a994f1ce8a827abd12ff3bffd6caffab9">fCY</a>/2.0);</div>
-<div class="line"><span class="lineno">  312</span>  yi-=2;</div>
-<div class="line"><span class="lineno">  313</span>  yi=<a class="code hl_variable" href="classecalDrawer.html#a994f1ce8a827abd12ff3bffd6caffab9">fCY</a>-yi-1;</div>
-<div class="line"><span class="lineno">  314</span>  xi-=6;</div>
-<div class="line"><span class="lineno">  315</span> </div>
-<div class="line"><span class="lineno">  316</span>  sprintf(stri,<span class="stringliteral">&quot;%.2f&quot;</span>, p);</div>
-<div class="line"><span class="lineno">  317</span>  <a class="code hl_variable" href="classecalDrawer.html#ae3e0216de375345edc46b60f3d7d96d8">fC</a>-&gt;DrawText(xi, yi, stri, 8, color, <span class="stringliteral">&quot;arialbd.ttf&quot;</span>);</div>
-<div class="line"><span class="lineno">  318</span>}</div>
+<p class="definition">Definition at line <a class="el" href="ecalDrawer_8cxx_source.html#l00307">307</a> of file <a class="el" href="ecalDrawer_8cxx_source.html">ecalDrawer.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  308</span>{</div>
+<div class="line"><span class="lineno">  309</span>  <span class="keywordflow">if</span> (p&lt;0.01) <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">  310</span>  <span class="keywordtype">char</span> stri[10];</div>
+<div class="line"><span class="lineno">  311</span>  Int_t xi=(Int_t)((x/<a class="code hl_variable" href="classecalDrawer.html#a3eea9fe571e245784195a5706429d577">fInf</a>-&gt;<a class="code hl_function" href="classecalInf.html#ae0b5d3949f203d9163dc3a2371832f71">GetEcalSize</a>(0))*<a class="code hl_variable" href="classecalDrawer.html#a610979ada5c361ac714e4bd12e26e724">fCX</a>+<a class="code hl_variable" href="classecalDrawer.html#a610979ada5c361ac714e4bd12e26e724">fCX</a>/2.0);</div>
+<div class="line"><span class="lineno">  312</span>  Int_t yi=(Int_t)((y/<a class="code hl_variable" href="classecalDrawer.html#a3eea9fe571e245784195a5706429d577">fInf</a>-&gt;<a class="code hl_function" href="classecalInf.html#ae0b5d3949f203d9163dc3a2371832f71">GetEcalSize</a>(1))*<a class="code hl_variable" href="classecalDrawer.html#a994f1ce8a827abd12ff3bffd6caffab9">fCY</a>+<a class="code hl_variable" href="classecalDrawer.html#a994f1ce8a827abd12ff3bffd6caffab9">fCY</a>/2.0);</div>
+<div class="line"><span class="lineno">  313</span>  yi-=2;</div>
+<div class="line"><span class="lineno">  314</span>  yi=<a class="code hl_variable" href="classecalDrawer.html#a994f1ce8a827abd12ff3bffd6caffab9">fCY</a>-yi-1;</div>
+<div class="line"><span class="lineno">  315</span>  xi-=6;</div>
+<div class="line"><span class="lineno">  316</span> </div>
+<div class="line"><span class="lineno">  317</span>  sprintf(stri,<span class="stringliteral">&quot;%.2f&quot;</span>, p);</div>
+<div class="line"><span class="lineno">  318</span>  <a class="code hl_variable" href="classecalDrawer.html#ae3e0216de375345edc46b60f3d7d96d8">fC</a>-&gt;DrawText(xi, yi, stri, 8, color, <span class="stringliteral">&quot;arialbd.ttf&quot;</span>);</div>
+<div class="line"><span class="lineno">  319</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1032,8 +1040,8 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  167</span><span class="comment">  */</span></div>
 <div class="line"><span class="lineno">  168</span>  <a class="code hl_variable" href="classecalDrawer.html#ae3e0216de375345edc46b60f3d7d96d8">fC</a>-&gt;WriteImage(name+<span class="stringliteral">&quot;.png&quot;</span>, TImage::kPng);</div>
 <div class="line"><span class="lineno">  169</span>}</div>
-<div class="ttc" id="aclassecalDrawer_html_ab1961dac9658222017415eebf983ce1c"><div class="ttname"><a href="classecalDrawer.html#ab1961dac9658222017415eebf983ce1c">ecalDrawer::DrawMC</a></div><div class="ttdeci">void DrawMC()</div><div class="ttdef"><b>Definition</b> <a href="ecalDrawer_8cxx_source.html#l00320">ecalDrawer.cxx:320</a></div></div>
-<div class="ttc" id="aclassecalDrawer_html_ac519bb8aeb9625a9eb88579c986e50bc"><div class="ttname"><a href="classecalDrawer.html#ac519bb8aeb9625a9eb88579c986e50bc">ecalDrawer::DrawCells</a></div><div class="ttdeci">void DrawCells()</div><div class="ttdef"><b>Definition</b> <a href="ecalDrawer_8cxx_source.html#l00358">ecalDrawer.cxx:358</a></div></div>
+<div class="ttc" id="aclassecalDrawer_html_ab1961dac9658222017415eebf983ce1c"><div class="ttname"><a href="classecalDrawer.html#ab1961dac9658222017415eebf983ce1c">ecalDrawer::DrawMC</a></div><div class="ttdeci">void DrawMC()</div><div class="ttdef"><b>Definition</b> <a href="ecalDrawer_8cxx_source.html#l00321">ecalDrawer.cxx:321</a></div></div>
+<div class="ttc" id="aclassecalDrawer_html_ac519bb8aeb9625a9eb88579c986e50bc"><div class="ttname"><a href="classecalDrawer.html#ac519bb8aeb9625a9eb88579c986e50bc">ecalDrawer::DrawCells</a></div><div class="ttdeci">void DrawCells()</div><div class="ttdef"><b>Definition</b> <a href="ecalDrawer_8cxx_source.html#l00359">ecalDrawer.cxx:359</a></div></div>
 <div class="ttc" id="anamespacemakeCascade_html_add259298592a80ac35262a17847aee2d"><div class="ttname"><a href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">makeCascade.name</a></div><div class="ttdeci">name</div><div class="ttdef"><b>Definition</b> <a href="makeCascade_8py_source.html#l00174">makeCascade.py:174</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -1093,12 +1101,13 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  196</span> </div>
 <div class="line"><span class="lineno">  197</span>  <span class="keywordflow">for</span>(i=0;<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>&lt;<a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a>;<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>++)</div>
 <div class="line"><span class="lineno">  198</span>  {</div>
-<div class="line"><span class="lineno">  199</span>    <a class="code hl_variable" href="namespacemakeDecay.html#afdee173103d608b5c98240c05154f34d">pt</a>=(<a class="code hl_class" href="classecalPoint.html">ecalPoint</a>*)<a class="code hl_variable" href="classecalDrawer.html#a918274f1612621a2423e26dcae5bf6b8">fPoints</a>-&gt;At(i);</div>
-<div class="line"><span class="lineno">  200</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacemakeDecay.html#afdee173103d608b5c98240c05154f34d">pt</a>-&gt;GetTrackID()==track) <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  201</span>  }</div>
-<div class="line"><span class="lineno">  202</span>  <span class="keywordflow">if</span> (i==n) <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">  203</span>  <a class="code hl_function" href="classecalDrawer.html#a8237c8833ac2af3ca2dfc86cb6ba3e7e">DrawLine</a>(x, y, <a class="code hl_variable" href="namespacemakeDecay.html#afdee173103d608b5c98240c05154f34d">pt</a>-&gt;GetX(), <a class="code hl_variable" href="namespacemakeDecay.html#afdee173103d608b5c98240c05154f34d">pt</a>-&gt;GetY(), color);</div>
-<div class="line"><span class="lineno">  204</span>}</div>
+<div class="line"><span class="lineno">  199</span>      <a class="code hl_variable" href="namespacemakeDecay.html#afdee173103d608b5c98240c05154f34d">pt</a> = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classecalPoint.html">ecalPoint</a>*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="classecalDrawer.html#a918274f1612621a2423e26dcae5bf6b8">fPoints</a>-&gt;At(i));</div>
+<div class="line"><span class="lineno">  200</span>      <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacemakeDecay.html#afdee173103d608b5c98240c05154f34d">pt</a>-&gt;GetTrackID() == track)</div>
+<div class="line"><span class="lineno">  201</span>          <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  202</span>  }</div>
+<div class="line"><span class="lineno">  203</span>  <span class="keywordflow">if</span> (i==n) <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">  204</span>  <a class="code hl_function" href="classecalDrawer.html#a8237c8833ac2af3ca2dfc86cb6ba3e7e">DrawLine</a>(x, y, <a class="code hl_variable" href="namespacemakeDecay.html#afdee173103d608b5c98240c05154f34d">pt</a>-&gt;GetX(), <a class="code hl_variable" href="namespacemakeDecay.html#afdee173103d608b5c98240c05154f34d">pt</a>-&gt;GetY(), color);</div>
+<div class="line"><span class="lineno">  205</span>}</div>
 <div class="ttc" id="aclassecalDrawer_html_a8237c8833ac2af3ca2dfc86cb6ba3e7e"><div class="ttname"><a href="classecalDrawer.html#a8237c8833ac2af3ca2dfc86cb6ba3e7e">ecalDrawer::DrawLine</a></div><div class="ttdeci">void DrawLine(Double_t x, Double_t y, const char *color, Int_t track)</div><div class="ttdef"><b>Definition</b> <a href="ecalDrawer_8cxx_source.html#l00190">ecalDrawer.cxx:190</a></div></div>
 <div class="ttc" id="aclassecalPoint_html"><div class="ttname"><a href="classecalPoint.html">ecalPoint</a></div><div class="ttdef"><b>Definition</b> <a href="ecalPoint_8h_source.html#l00012">ecalPoint.h:13</a></div></div>
 <div class="ttc" id="anamespacemakeDecay_html_af2fe9da99a6c13f5bdd6d42663620c39"><div class="ttname"><a href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">makeDecay.n</a></div><div class="ttdeci">int n</div><div class="ttdef"><b>Definition</b> <a href="makeDecay_8py_source.html#l00064">makeDecay.py:64</a></div></div>
@@ -1282,43 +1291,43 @@ Private Attributes</h2></td></tr>
 <p>Neutrons and antineutrons</p>
 <p>others</p>
 
-<p class="definition">Definition at line <a class="el" href="ecalDrawer_8cxx_source.html#l00320">320</a> of file <a class="el" href="ecalDrawer_8cxx_source.html">ecalDrawer.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  321</span>{</div>
-<div class="line"><span class="lineno">  322</span>  Int_t <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>;</div>
-<div class="line"><span class="lineno">  323</span>  Int_t pn=<a class="code hl_variable" href="classecalDrawer.html#a918274f1612621a2423e26dcae5bf6b8">fPoints</a>-&gt;GetEntriesFast();</div>
-<div class="line"><span class="lineno">  324</span>  <a class="code hl_class" href="classecalPoint.html">ecalPoint</a>* <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>;</div>
-<div class="line"><span class="lineno">  325</span> </div>
+<p class="definition">Definition at line <a class="el" href="ecalDrawer_8cxx_source.html#l00321">321</a> of file <a class="el" href="ecalDrawer_8cxx_source.html">ecalDrawer.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  322</span>{</div>
+<div class="line"><span class="lineno">  323</span>  Int_t <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>;</div>
+<div class="line"><span class="lineno">  324</span>  Int_t pn=<a class="code hl_variable" href="classecalDrawer.html#a918274f1612621a2423e26dcae5bf6b8">fPoints</a>-&gt;GetEntriesFast();</div>
+<div class="line"><span class="lineno">  325</span>  <a class="code hl_class" href="classecalPoint.html">ecalPoint</a>* <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>;</div>
 <div class="line"><span class="lineno">  326</span> </div>
-<div class="line"><span class="lineno">  327</span>  <span class="keywordflow">for</span>(i=0;<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>&lt;pn;<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>++)</div>
-<div class="line"><span class="lineno">  328</span>  {</div>
-<div class="line"><span class="lineno">  329</span>    <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>=(<a class="code hl_class" href="classecalPoint.html">ecalPoint</a>*)<a class="code hl_variable" href="classecalDrawer.html#a918274f1612621a2423e26dcae5bf6b8">fPoints</a>-&gt;At(i);</div>
-<div class="line"><span class="lineno">  330</span>    <span class="keywordflow">if</span> (!p) <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  332</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetPdgCode()==22)</div>
-<div class="line"><span class="lineno">  333</span>    {</div>
-<div class="line"><span class="lineno">  334</span>      <a class="code hl_function" href="classecalDrawer.html#a407a780cde3accf686268bc58966d20f">DrawMark</a>(<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetX(), <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetY(), <span class="stringliteral">&quot;#00FF00&quot;</span>, 1);</div>
-<div class="line"><span class="lineno">  335</span>      <a class="code hl_function" href="classecalDrawer.html#a3a80e143cc4c6093c69a89edd1cdfa83">DrawEnergy</a>(p, <span class="stringliteral">&quot;#00FF00&quot;</span>);</div>
-<div class="line"><span class="lineno">  336</span>      <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  337</span>    }</div>
-<div class="line"><span class="lineno">  338</span>    <span class="keywordflow">if</span> (TMath::Abs(<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetPdgCode())==11)</div>
-<div class="line"><span class="lineno">  339</span>    {</div>
-<div class="line"><span class="lineno">  340</span>      <a class="code hl_function" href="classecalDrawer.html#a407a780cde3accf686268bc58966d20f">DrawMark</a>(<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetX(), <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetY(), <span class="stringliteral">&quot;#FFFF00&quot;</span>, 1);</div>
-<div class="line"><span class="lineno">  341</span>      <a class="code hl_function" href="classecalDrawer.html#a3a80e143cc4c6093c69a89edd1cdfa83">DrawEnergy</a>(p, <span class="stringliteral">&quot;#FFFF00&quot;</span>);</div>
-<div class="line"><span class="lineno">  342</span>      <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  343</span>    }</div>
-<div class="line"><span class="lineno">  345</span>    <span class="keywordflow">if</span> (TMath::Abs(<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetPdgCode())==2112)</div>
-<div class="line"><span class="lineno">  346</span>    {</div>
-<div class="line"><span class="lineno">  347</span>      <a class="code hl_function" href="classecalDrawer.html#a407a780cde3accf686268bc58966d20f">DrawMark</a>(<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetX(), <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetY(), <span class="stringliteral">&quot;#FF00FF&quot;</span>, 1);</div>
-<div class="line"><span class="lineno">  348</span>      <a class="code hl_function" href="classecalDrawer.html#a3a80e143cc4c6093c69a89edd1cdfa83">DrawEnergy</a>(p, <span class="stringliteral">&quot;#FF00FF&quot;</span>);</div>
-<div class="line"><span class="lineno">  349</span>      <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  350</span>    }</div>
-<div class="line"><span class="lineno">  352</span>    <a class="code hl_function" href="classecalDrawer.html#a407a780cde3accf686268bc58966d20f">DrawMark</a>(<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetX(), <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetY(), <span class="stringliteral">&quot;#FF0000&quot;</span>, 1);</div>
-<div class="line"><span class="lineno">  353</span>    <a class="code hl_function" href="classecalDrawer.html#a3a80e143cc4c6093c69a89edd1cdfa83">DrawEnergy</a>(p, <span class="stringliteral">&quot;#FF0000&quot;</span>);</div>
-<div class="line"><span class="lineno">  354</span>    <a class="code hl_function" href="classecalDrawer.html#afa3a5c25cd5e26a023b6175424a659cf">DrawPDG</a>(p, <span class="stringliteral">&quot;#FF0000&quot;</span>);</div>
-<div class="line"><span class="lineno">  355</span>  }</div>
-<div class="line"><span class="lineno">  356</span>}</div>
-<div class="ttc" id="aclassecalDrawer_html_a3a80e143cc4c6093c69a89edd1cdfa83"><div class="ttname"><a href="classecalDrawer.html#a3a80e143cc4c6093c69a89edd1cdfa83">ecalDrawer::DrawEnergy</a></div><div class="ttdeci">void DrawEnergy(ecalPoint *p, const char *color)</div><div class="ttdef"><b>Definition</b> <a href="ecalDrawer_8cxx_source.html#l00267">ecalDrawer.cxx:267</a></div></div>
+<div class="line"><span class="lineno">  327</span> </div>
+<div class="line"><span class="lineno">  328</span>  <span class="keywordflow">for</span>(i=0;<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>&lt;pn;<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>++)</div>
+<div class="line"><span class="lineno">  329</span>  {</div>
+<div class="line"><span class="lineno">  330</span>    <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>=<span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classecalPoint.html">ecalPoint</a>*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="classecalDrawer.html#a918274f1612621a2423e26dcae5bf6b8">fPoints</a>-&gt;At(i));</div>
+<div class="line"><span class="lineno">  331</span>    <span class="keywordflow">if</span> (!p) <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">  333</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetPdgCode()==22)</div>
+<div class="line"><span class="lineno">  334</span>    {</div>
+<div class="line"><span class="lineno">  335</span>      <a class="code hl_function" href="classecalDrawer.html#a407a780cde3accf686268bc58966d20f">DrawMark</a>(<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetX(), <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetY(), <span class="stringliteral">&quot;#00FF00&quot;</span>, 1);</div>
+<div class="line"><span class="lineno">  336</span>      <a class="code hl_function" href="classecalDrawer.html#a3a80e143cc4c6093c69a89edd1cdfa83">DrawEnergy</a>(p, <span class="stringliteral">&quot;#00FF00&quot;</span>);</div>
+<div class="line"><span class="lineno">  337</span>      <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">  338</span>    }</div>
+<div class="line"><span class="lineno">  339</span>    <span class="keywordflow">if</span> (TMath::Abs(<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetPdgCode())==11)</div>
+<div class="line"><span class="lineno">  340</span>    {</div>
+<div class="line"><span class="lineno">  341</span>      <a class="code hl_function" href="classecalDrawer.html#a407a780cde3accf686268bc58966d20f">DrawMark</a>(<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetX(), <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetY(), <span class="stringliteral">&quot;#FFFF00&quot;</span>, 1);</div>
+<div class="line"><span class="lineno">  342</span>      <a class="code hl_function" href="classecalDrawer.html#a3a80e143cc4c6093c69a89edd1cdfa83">DrawEnergy</a>(p, <span class="stringliteral">&quot;#FFFF00&quot;</span>);</div>
+<div class="line"><span class="lineno">  343</span>      <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">  344</span>    }</div>
+<div class="line"><span class="lineno">  346</span>    <span class="keywordflow">if</span> (TMath::Abs(<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetPdgCode())==2112)</div>
+<div class="line"><span class="lineno">  347</span>    {</div>
+<div class="line"><span class="lineno">  348</span>      <a class="code hl_function" href="classecalDrawer.html#a407a780cde3accf686268bc58966d20f">DrawMark</a>(<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetX(), <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetY(), <span class="stringliteral">&quot;#FF00FF&quot;</span>, 1);</div>
+<div class="line"><span class="lineno">  349</span>      <a class="code hl_function" href="classecalDrawer.html#a3a80e143cc4c6093c69a89edd1cdfa83">DrawEnergy</a>(p, <span class="stringliteral">&quot;#FF00FF&quot;</span>);</div>
+<div class="line"><span class="lineno">  350</span>      <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">  351</span>    }</div>
+<div class="line"><span class="lineno">  353</span>    <a class="code hl_function" href="classecalDrawer.html#a407a780cde3accf686268bc58966d20f">DrawMark</a>(<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetX(), <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetY(), <span class="stringliteral">&quot;#FF0000&quot;</span>, 1);</div>
+<div class="line"><span class="lineno">  354</span>    <a class="code hl_function" href="classecalDrawer.html#a3a80e143cc4c6093c69a89edd1cdfa83">DrawEnergy</a>(p, <span class="stringliteral">&quot;#FF0000&quot;</span>);</div>
+<div class="line"><span class="lineno">  355</span>    <a class="code hl_function" href="classecalDrawer.html#afa3a5c25cd5e26a023b6175424a659cf">DrawPDG</a>(p, <span class="stringliteral">&quot;#FF0000&quot;</span>);</div>
+<div class="line"><span class="lineno">  356</span>  }</div>
+<div class="line"><span class="lineno">  357</span>}</div>
+<div class="ttc" id="aclassecalDrawer_html_a3a80e143cc4c6093c69a89edd1cdfa83"><div class="ttname"><a href="classecalDrawer.html#a3a80e143cc4c6093c69a89edd1cdfa83">ecalDrawer::DrawEnergy</a></div><div class="ttdeci">void DrawEnergy(ecalPoint *p, const char *color)</div><div class="ttdef"><b>Definition</b> <a href="ecalDrawer_8cxx_source.html#l00268">ecalDrawer.cxx:268</a></div></div>
 <div class="ttc" id="aclassecalDrawer_html_a407a780cde3accf686268bc58966d20f"><div class="ttname"><a href="classecalDrawer.html#a407a780cde3accf686268bc58966d20f">ecalDrawer::DrawMark</a></div><div class="ttdeci">void DrawMark(Double_t x, Double_t y, const char *color, Int_t type)</div><div class="ttdef"><b>Definition</b> <a href="ecalDrawer_8cxx_source.html#l00092">ecalDrawer.cxx:92</a></div></div>
-<div class="ttc" id="aclassecalDrawer_html_afa3a5c25cd5e26a023b6175424a659cf"><div class="ttname"><a href="classecalDrawer.html#afa3a5c25cd5e26a023b6175424a659cf">ecalDrawer::DrawPDG</a></div><div class="ttdeci">void DrawPDG(ecalPoint *p, const char *color)</div><div class="ttdef"><b>Definition</b> <a href="ecalDrawer_8cxx_source.html#l00292">ecalDrawer.cxx:292</a></div></div>
+<div class="ttc" id="aclassecalDrawer_html_afa3a5c25cd5e26a023b6175424a659cf"><div class="ttname"><a href="classecalDrawer.html#afa3a5c25cd5e26a023b6175424a659cf">ecalDrawer::DrawPDG</a></div><div class="ttdeci">void DrawPDG(ecalPoint *p, const char *color)</div><div class="ttdef"><b>Definition</b> <a href="ecalDrawer_8cxx_source.html#l00293">ecalDrawer.cxx:293</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1356,18 +1365,18 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ecalDrawer_8cxx_source.html#l00292">292</a> of file <a class="el" href="ecalDrawer_8cxx_source.html">ecalDrawer.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  293</span>{</div>
-<div class="line"><span class="lineno">  294</span>  <span class="keywordtype">char</span> stri[30];</div>
-<div class="line"><span class="lineno">  295</span>  Int_t xi=(Int_t)((<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetX()/<a class="code hl_variable" href="classecalDrawer.html#a3eea9fe571e245784195a5706429d577">fInf</a>-&gt;<a class="code hl_function" href="classecalInf.html#ae0b5d3949f203d9163dc3a2371832f71">GetEcalSize</a>(0))*<a class="code hl_variable" href="classecalDrawer.html#a610979ada5c361ac714e4bd12e26e724">fCX</a>+<a class="code hl_variable" href="classecalDrawer.html#a610979ada5c361ac714e4bd12e26e724">fCX</a>/2.0);</div>
-<div class="line"><span class="lineno">  296</span>  Int_t yi=(Int_t)((<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetY()/<a class="code hl_variable" href="classecalDrawer.html#a3eea9fe571e245784195a5706429d577">fInf</a>-&gt;<a class="code hl_function" href="classecalInf.html#ae0b5d3949f203d9163dc3a2371832f71">GetEcalSize</a>(1))*<a class="code hl_variable" href="classecalDrawer.html#a994f1ce8a827abd12ff3bffd6caffab9">fCY</a>+<a class="code hl_variable" href="classecalDrawer.html#a994f1ce8a827abd12ff3bffd6caffab9">fCY</a>/2.0);</div>
-<div class="line"><span class="lineno">  297</span>  yi-=8;</div>
-<div class="line"><span class="lineno">  298</span>  yi=<a class="code hl_variable" href="classecalDrawer.html#a994f1ce8a827abd12ff3bffd6caffab9">fCY</a>-yi-1;</div>
-<div class="line"><span class="lineno">  299</span>  xi-=6;</div>
-<div class="line"><span class="lineno">  300</span> </div>
-<div class="line"><span class="lineno">  301</span>  sprintf(stri,<span class="stringliteral">&quot;%d&quot;</span>, <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetPdgCode());</div>
-<div class="line"><span class="lineno">  302</span>  <a class="code hl_variable" href="classecalDrawer.html#ae3e0216de375345edc46b60f3d7d96d8">fC</a>-&gt;DrawText(xi, yi, stri, 8, color, <span class="stringliteral">&quot;arialbd.ttf&quot;</span>);</div>
-<div class="line"><span class="lineno">  303</span>}</div>
+<p class="definition">Definition at line <a class="el" href="ecalDrawer_8cxx_source.html#l00293">293</a> of file <a class="el" href="ecalDrawer_8cxx_source.html">ecalDrawer.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  294</span>{</div>
+<div class="line"><span class="lineno">  295</span>  <span class="keywordtype">char</span> stri[30];</div>
+<div class="line"><span class="lineno">  296</span>  Int_t xi=(Int_t)((<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetX()/<a class="code hl_variable" href="classecalDrawer.html#a3eea9fe571e245784195a5706429d577">fInf</a>-&gt;<a class="code hl_function" href="classecalInf.html#ae0b5d3949f203d9163dc3a2371832f71">GetEcalSize</a>(0))*<a class="code hl_variable" href="classecalDrawer.html#a610979ada5c361ac714e4bd12e26e724">fCX</a>+<a class="code hl_variable" href="classecalDrawer.html#a610979ada5c361ac714e4bd12e26e724">fCX</a>/2.0);</div>
+<div class="line"><span class="lineno">  297</span>  Int_t yi=(Int_t)((<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetY()/<a class="code hl_variable" href="classecalDrawer.html#a3eea9fe571e245784195a5706429d577">fInf</a>-&gt;<a class="code hl_function" href="classecalInf.html#ae0b5d3949f203d9163dc3a2371832f71">GetEcalSize</a>(1))*<a class="code hl_variable" href="classecalDrawer.html#a994f1ce8a827abd12ff3bffd6caffab9">fCY</a>+<a class="code hl_variable" href="classecalDrawer.html#a994f1ce8a827abd12ff3bffd6caffab9">fCY</a>/2.0);</div>
+<div class="line"><span class="lineno">  298</span>  yi-=8;</div>
+<div class="line"><span class="lineno">  299</span>  yi=<a class="code hl_variable" href="classecalDrawer.html#a994f1ce8a827abd12ff3bffd6caffab9">fCY</a>-yi-1;</div>
+<div class="line"><span class="lineno">  300</span>  xi-=6;</div>
+<div class="line"><span class="lineno">  301</span> </div>
+<div class="line"><span class="lineno">  302</span>  sprintf(stri,<span class="stringliteral">&quot;%d&quot;</span>, <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetPdgCode());</div>
+<div class="line"><span class="lineno">  303</span>  <a class="code hl_variable" href="classecalDrawer.html#ae3e0216de375345edc46b60f3d7d96d8">fC</a>-&gt;DrawText(xi, yi, stri, 8, color, <span class="stringliteral">&quot;arialbd.ttf&quot;</span>);</div>
+<div class="line"><span class="lineno">  304</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1427,10 +1436,10 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ecalDrawer_8cxx_source.html#l00566">566</a> of file <a class="el" href="ecalDrawer_8cxx_source.html">ecalDrawer.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  567</span>{</div>
-<div class="line"><span class="lineno">  568</span>  ;</div>
-<div class="line"><span class="lineno">  569</span>}</div>
+<p class="definition">Definition at line <a class="el" href="ecalDrawer_8cxx_source.html#l00567">567</a> of file <a class="el" href="ecalDrawer_8cxx_source.html">ecalDrawer.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  568</span>{</div>
+<div class="line"><span class="lineno">  569</span>  ;</div>
+<div class="line"><span class="lineno">  570</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1458,14 +1467,14 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ecalDrawer_8cxx_source.html#l00238">238</a> of file <a class="el" href="ecalDrawer_8cxx_source.html">ecalDrawer.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  239</span>{</div>
-<div class="line"><span class="lineno">  240</span>  Double_t <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#acb959a726115115cca6fd66067b7e986">px</a>=<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetPx();</div>
-<div class="line"><span class="lineno">  241</span>  Double_t <a class="code hl_variable" href="namespacerunPythia8.html#ad6b7ec130f84165691f3d15beb4ac6ea">py</a>=<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetPy();</div>
-<div class="line"><span class="lineno">  242</span>  Double_t <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a595c352a9b1a3ae33b95fc5937803a60">pz</a>=<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetPz();</div>
-<div class="line"><span class="lineno">  243</span> </div>
-<div class="line"><span class="lineno">  244</span>  <span class="keywordflow">return</span> TMath::Sqrt(px*px+py*py+pz*pz);</div>
-<div class="line"><span class="lineno">  245</span>}</div>
+<p class="definition">Definition at line <a class="el" href="ecalDrawer_8cxx_source.html#l00239">239</a> of file <a class="el" href="ecalDrawer_8cxx_source.html">ecalDrawer.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  240</span>{</div>
+<div class="line"><span class="lineno">  241</span>  Double_t <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#acb959a726115115cca6fd66067b7e986">px</a>=<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetPx();</div>
+<div class="line"><span class="lineno">  242</span>  Double_t <a class="code hl_variable" href="namespacerunPythia8.html#ad6b7ec130f84165691f3d15beb4ac6ea">py</a>=<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetPy();</div>
+<div class="line"><span class="lineno">  243</span>  Double_t <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a595c352a9b1a3ae33b95fc5937803a60">pz</a>=<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>-&gt;GetPz();</div>
+<div class="line"><span class="lineno">  244</span> </div>
+<div class="line"><span class="lineno">  245</span>  <span class="keywordflow">return</span> TMath::Sqrt(px*px+py*py+pz*pz);</div>
+<div class="line"><span class="lineno">  246</span>}</div>
 <div class="ttc" id="anamespacemake__nTuple__SBT_html_a595c352a9b1a3ae33b95fc5937803a60"><div class="ttname"><a href="namespacemake__nTuple__SBT.html#a595c352a9b1a3ae33b95fc5937803a60">make_nTuple_SBT.pz</a></div><div class="ttdeci">pz</div><div class="ttdef"><b>Definition</b> <a href="make__nTuple__SBT_8py_source.html#l00414">make_nTuple_SBT.py:414</a></div></div>
 <div class="ttc" id="anamespacemake__nTuple__SBT_html_acb959a726115115cca6fd66067b7e986"><div class="ttname"><a href="namespacemake__nTuple__SBT.html#acb959a726115115cca6fd66067b7e986">make_nTuple_SBT.px</a></div><div class="ttdeci">px</div><div class="ttdef"><b>Definition</b> <a href="make__nTuple__SBT_8py_source.html#l00412">make_nTuple_SBT.py:412</a></div></div>
 <div class="ttc" id="anamespacerunPythia8_html_ad6b7ec130f84165691f3d15beb4ac6ea"><div class="ttname"><a href="namespacerunPythia8.html#ad6b7ec130f84165691f3d15beb4ac6ea">runPythia8.py</a></div><div class="ttdeci">dict py</div><div class="ttdef"><b>Definition</b> <a href="runPythia8_8py_source.html#l00094">runPythia8.py:94</a></div></div>
@@ -1496,57 +1505,57 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Init </p>
 
-<p class="definition">Definition at line <a class="el" href="ecalDrawer_8cxx_source.html#l00485">485</a> of file <a class="el" href="ecalDrawer_8cxx_source.html">ecalDrawer.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  486</span>{</div>
-<div class="line"><span class="lineno">  487</span>  <a class="code hl_variable" href="classecalDrawer.html#a8b434962fef5733f9fef29f9b5a0bf83">fEventN</a>=0;</div>
-<div class="line"><span class="lineno">  488</span> </div>
+<p class="definition">Definition at line <a class="el" href="ecalDrawer_8cxx_source.html#l00486">486</a> of file <a class="el" href="ecalDrawer_8cxx_source.html">ecalDrawer.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  487</span>{</div>
+<div class="line"><span class="lineno">  488</span>  <a class="code hl_variable" href="classecalDrawer.html#a8b434962fef5733f9fef29f9b5a0bf83">fEventN</a>=0;</div>
 <div class="line"><span class="lineno">  489</span> </div>
-<div class="line"><span class="lineno">  490</span>  FairRootManager* io=FairRootManager::Instance();</div>
-<div class="line"><span class="lineno">  491</span>  <span class="keywordflow">if</span> (!io)</div>
-<div class="line"><span class="lineno">  492</span>  {</div>
-<div class="line"><span class="lineno">  493</span>    Fatal(<span class="stringliteral">&quot;Init&quot;</span>, <span class="stringliteral">&quot;Can&#39;t find IOManager.&quot;</span>);</div>
-<div class="line"><span class="lineno">  494</span>    <span class="keywordflow">return</span> kFATAL;</div>
-<div class="line"><span class="lineno">  495</span>  }</div>
-<div class="line"><span class="lineno">  496</span>  <a class="code hl_variable" href="classecalDrawer.html#a193e69f48f5d08d2d45859329dbb737a">fMCTracks</a>=(TClonesArray*)io-&gt;GetObject(<span class="stringliteral">&quot;MCTrack&quot;</span>);</div>
-<div class="line"><span class="lineno">  497</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classecalDrawer.html#a193e69f48f5d08d2d45859329dbb737a">fMCTracks</a>)</div>
-<div class="line"><span class="lineno">  498</span>  {</div>
-<div class="line"><span class="lineno">  499</span>    Fatal(<span class="stringliteral">&quot;Init&quot;</span>, <span class="stringliteral">&quot;Can&#39;t find array of MC tracks&quot;</span>);</div>
-<div class="line"><span class="lineno">  500</span>    <span class="keywordflow">return</span> kFATAL;</div>
-<div class="line"><span class="lineno">  501</span>  }</div>
-<div class="line"><span class="lineno">  502</span>  <a class="code hl_variable" href="classecalDrawer.html#a918274f1612621a2423e26dcae5bf6b8">fPoints</a>=(TClonesArray*)io-&gt;GetObject(<span class="stringliteral">&quot;EcalPoint&quot;</span>);</div>
-<div class="line"><span class="lineno">  503</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classecalDrawer.html#a918274f1612621a2423e26dcae5bf6b8">fPoints</a>)</div>
-<div class="line"><span class="lineno">  504</span>  {</div>
-<div class="line"><span class="lineno">  505</span>    Fatal(<span class="stringliteral">&quot;Init&quot;</span>, <span class="stringliteral">&quot;Can&#39;t find array of Ecal Points&quot;</span>);</div>
-<div class="line"><span class="lineno">  506</span>    <span class="keywordflow">return</span> kFATAL;</div>
-<div class="line"><span class="lineno">  507</span>  }</div>
-<div class="line"><span class="lineno">  508</span>  <a class="code hl_variable" href="classecalDrawer.html#a8fc9d27dcb8833864243a2c4baa05d5b">fStr</a>=(<a class="code hl_class" href="classecalStructure.html">ecalStructure</a>*)io-&gt;GetObject(<span class="stringliteral">&quot;EcalStructure&quot;</span>);</div>
-<div class="line"><span class="lineno">  509</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classecalDrawer.html#a8fc9d27dcb8833864243a2c4baa05d5b">fStr</a>)</div>
-<div class="line"><span class="lineno">  510</span>  {</div>
-<div class="line"><span class="lineno">  511</span>    Fatal(<span class="stringliteral">&quot;Init&quot;</span>, <span class="stringliteral">&quot;Can&#39;t find calorimeter structure for drawing&quot;</span>);</div>
-<div class="line"><span class="lineno">  512</span>    <span class="keywordflow">return</span> kFATAL;</div>
-<div class="line"><span class="lineno">  513</span>  }</div>
-<div class="line"><span class="lineno">  514</span>  <a class="code hl_variable" href="classecalDrawer.html#a2f47474c61c938b4966c75a8b8a351cf">fClusters</a>=(TClonesArray*)io-&gt;GetObject(<span class="stringliteral">&quot;EcalClusters&quot;</span>);</div>
-<div class="line"><span class="lineno">  515</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classecalDrawer.html#a2f47474c61c938b4966c75a8b8a351cf">fClusters</a>)</div>
-<div class="line"><span class="lineno">  516</span>  {</div>
-<div class="line"><span class="lineno">  517</span>    Fatal(<span class="stringliteral">&quot;Init&quot;</span>, <span class="stringliteral">&quot;Can&#39;t find array of calorimeter clusters&quot;</span>);</div>
-<div class="line"><span class="lineno">  518</span>    <span class="keywordflow">return</span> kFATAL;</div>
-<div class="line"><span class="lineno">  519</span>  }</div>
-<div class="line"><span class="lineno">  520</span>  <a class="code hl_variable" href="classecalDrawer.html#a3eea9fe571e245784195a5706429d577">fInf</a>=<a class="code hl_variable" href="classecalDrawer.html#a8fc9d27dcb8833864243a2c4baa05d5b">fStr</a>-&gt;<a class="code hl_function" href="classecalStructure.html#acfe1ac23810e6ac7daa50216e37fcc10">GetEcalInf</a>();</div>
-<div class="line"><span class="lineno">  521</span>  <a class="code hl_variable" href="classecalDrawer.html#a610979ada5c361ac714e4bd12e26e724">fCX</a>=<a class="code hl_variable" href="classecalDrawer.html#a3eea9fe571e245784195a5706429d577">fInf</a>-&gt;<a class="code hl_function" href="classecalInf.html#a431a7459c7b4ba5115e56191d2b38d07">GetXSize</a>(); <a class="code hl_variable" href="classecalDrawer.html#a994f1ce8a827abd12ff3bffd6caffab9">fCY</a>=<a class="code hl_variable" href="classecalDrawer.html#a3eea9fe571e245784195a5706429d577">fInf</a>-&gt;<a class="code hl_function" href="classecalInf.html#a09bd77fc667998bda52d9444099a5988">GetYSize</a>();</div>
-<div class="line"><span class="lineno">  522</span>  <a class="code hl_variable" href="classecalDrawer.html#a610979ada5c361ac714e4bd12e26e724">fCX</a>*=<a class="code hl_variable" href="classecalDrawer.html#a746a9e6ee780271619dd73090ef24d4f">fCellSize</a>*4+4; <a class="code hl_variable" href="classecalDrawer.html#a610979ada5c361ac714e4bd12e26e724">fCX</a>+=1;</div>
-<div class="line"><span class="lineno">  523</span>  <a class="code hl_variable" href="classecalDrawer.html#a994f1ce8a827abd12ff3bffd6caffab9">fCY</a>*=<a class="code hl_variable" href="classecalDrawer.html#a746a9e6ee780271619dd73090ef24d4f">fCellSize</a>*4+4; <a class="code hl_variable" href="classecalDrawer.html#a994f1ce8a827abd12ff3bffd6caffab9">fCY</a>+=1;</div>
-<div class="line"><span class="lineno">  524</span>  <a class="code hl_variable" href="classecalDrawer.html#ae3e0216de375345edc46b60f3d7d96d8">fC</a>=<span class="keyword">new</span> TASImage(<a class="code hl_variable" href="classecalDrawer.html#a610979ada5c361ac714e4bd12e26e724">fCX</a>, <a class="code hl_variable" href="classecalDrawer.html#a994f1ce8a827abd12ff3bffd6caffab9">fCY</a>);</div>
-<div class="line"><span class="lineno">  525</span> </div>
-<div class="line"><span class="lineno">  526</span>  list&lt;ecalCell*&gt; cells;</div>
-<div class="line"><span class="lineno">  527</span>  list&lt;ecalCell*&gt;::const_iterator <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>;</div>
-<div class="line"><span class="lineno">  528</span>  <a class="code hl_variable" href="classecalDrawer.html#a8fc9d27dcb8833864243a2c4baa05d5b">fStr</a>-&gt;<a class="code hl_function" href="classecalStructure.html#a4a5f760324a338769869cecaa0a095db">GetCells</a>(cells);</div>
-<div class="line"><span class="lineno">  529</span>  <span class="keywordflow">for</span>(p=cells.begin();<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>!=cells.end();++<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>)</div>
-<div class="line"><span class="lineno">  530</span>    <a class="code hl_variable" href="classecalDrawer.html#a97b5e09fcf04dd2fea27942a8bcd8b20">fCells</a>.push_back(<span class="keyword">new</span> <a class="code hl_class" href="classecalDrawerItem.html">ecalDrawerItem</a>((*p), 0.0, 0.0, 0.0));</div>
-<div class="line"><span class="lineno">  531</span>  <a class="code hl_variable" href="classecalDrawer.html#a7d43225d0d60409726a8970ff6ca7266">fTxt</a>-&gt;SetTextFont(43);</div>
-<div class="line"><span class="lineno">  532</span>  <a class="code hl_variable" href="classecalDrawer.html#a7d43225d0d60409726a8970ff6ca7266">fTxt</a>-&gt;SetTextSizePixels(8);</div>
-<div class="line"><span class="lineno">  533</span>  <a class="code hl_variable" href="classecalDrawer.html#a7d43225d0d60409726a8970ff6ca7266">fTxt</a>-&gt;SetTextAlign(21);</div>
-<div class="line"><span class="lineno">  534</span>  <span class="keywordflow">return</span> kSUCCESS;</div>
-<div class="line"><span class="lineno">  535</span>}</div>
+<div class="line"><span class="lineno">  490</span> </div>
+<div class="line"><span class="lineno">  491</span>  FairRootManager* io=FairRootManager::Instance();</div>
+<div class="line"><span class="lineno">  492</span>  <span class="keywordflow">if</span> (!io)</div>
+<div class="line"><span class="lineno">  493</span>  {</div>
+<div class="line"><span class="lineno">  494</span>    Fatal(<span class="stringliteral">&quot;Init&quot;</span>, <span class="stringliteral">&quot;Can&#39;t find IOManager.&quot;</span>);</div>
+<div class="line"><span class="lineno">  495</span>    <span class="keywordflow">return</span> kFATAL;</div>
+<div class="line"><span class="lineno">  496</span>  }</div>
+<div class="line"><span class="lineno">  497</span>  <a class="code hl_variable" href="classecalDrawer.html#a193e69f48f5d08d2d45859329dbb737a">fMCTracks</a> = <span class="keyword">dynamic_cast&lt;</span>TClonesArray*<span class="keyword">&gt;</span>(io-&gt;GetObject(<span class="stringliteral">&quot;MCTrack&quot;</span>));</div>
+<div class="line"><span class="lineno">  498</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classecalDrawer.html#a193e69f48f5d08d2d45859329dbb737a">fMCTracks</a>)</div>
+<div class="line"><span class="lineno">  499</span>  {</div>
+<div class="line"><span class="lineno">  500</span>    Fatal(<span class="stringliteral">&quot;Init&quot;</span>, <span class="stringliteral">&quot;Can&#39;t find array of MC tracks&quot;</span>);</div>
+<div class="line"><span class="lineno">  501</span>    <span class="keywordflow">return</span> kFATAL;</div>
+<div class="line"><span class="lineno">  502</span>  }</div>
+<div class="line"><span class="lineno">  503</span>  <a class="code hl_variable" href="classecalDrawer.html#a918274f1612621a2423e26dcae5bf6b8">fPoints</a> = <span class="keyword">dynamic_cast&lt;</span>TClonesArray*<span class="keyword">&gt;</span>(io-&gt;GetObject(<span class="stringliteral">&quot;EcalPoint&quot;</span>));</div>
+<div class="line"><span class="lineno">  504</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classecalDrawer.html#a918274f1612621a2423e26dcae5bf6b8">fPoints</a>)</div>
+<div class="line"><span class="lineno">  505</span>  {</div>
+<div class="line"><span class="lineno">  506</span>    Fatal(<span class="stringliteral">&quot;Init&quot;</span>, <span class="stringliteral">&quot;Can&#39;t find array of Ecal Points&quot;</span>);</div>
+<div class="line"><span class="lineno">  507</span>    <span class="keywordflow">return</span> kFATAL;</div>
+<div class="line"><span class="lineno">  508</span>  }</div>
+<div class="line"><span class="lineno">  509</span>  <a class="code hl_variable" href="classecalDrawer.html#a8fc9d27dcb8833864243a2c4baa05d5b">fStr</a> = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classecalStructure.html">ecalStructure</a>*<span class="keyword">&gt;</span>(io-&gt;GetObject(<span class="stringliteral">&quot;EcalStructure&quot;</span>));</div>
+<div class="line"><span class="lineno">  510</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classecalDrawer.html#a8fc9d27dcb8833864243a2c4baa05d5b">fStr</a>)</div>
+<div class="line"><span class="lineno">  511</span>  {</div>
+<div class="line"><span class="lineno">  512</span>    Fatal(<span class="stringliteral">&quot;Init&quot;</span>, <span class="stringliteral">&quot;Can&#39;t find calorimeter structure for drawing&quot;</span>);</div>
+<div class="line"><span class="lineno">  513</span>    <span class="keywordflow">return</span> kFATAL;</div>
+<div class="line"><span class="lineno">  514</span>  }</div>
+<div class="line"><span class="lineno">  515</span>  <a class="code hl_variable" href="classecalDrawer.html#a2f47474c61c938b4966c75a8b8a351cf">fClusters</a> = <span class="keyword">dynamic_cast&lt;</span>TClonesArray*<span class="keyword">&gt;</span>(io-&gt;GetObject(<span class="stringliteral">&quot;EcalClusters&quot;</span>));</div>
+<div class="line"><span class="lineno">  516</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classecalDrawer.html#a2f47474c61c938b4966c75a8b8a351cf">fClusters</a>)</div>
+<div class="line"><span class="lineno">  517</span>  {</div>
+<div class="line"><span class="lineno">  518</span>    Fatal(<span class="stringliteral">&quot;Init&quot;</span>, <span class="stringliteral">&quot;Can&#39;t find array of calorimeter clusters&quot;</span>);</div>
+<div class="line"><span class="lineno">  519</span>    <span class="keywordflow">return</span> kFATAL;</div>
+<div class="line"><span class="lineno">  520</span>  }</div>
+<div class="line"><span class="lineno">  521</span>  <a class="code hl_variable" href="classecalDrawer.html#a3eea9fe571e245784195a5706429d577">fInf</a>=<a class="code hl_variable" href="classecalDrawer.html#a8fc9d27dcb8833864243a2c4baa05d5b">fStr</a>-&gt;<a class="code hl_function" href="classecalStructure.html#acfe1ac23810e6ac7daa50216e37fcc10">GetEcalInf</a>();</div>
+<div class="line"><span class="lineno">  522</span>  <a class="code hl_variable" href="classecalDrawer.html#a610979ada5c361ac714e4bd12e26e724">fCX</a>=<a class="code hl_variable" href="classecalDrawer.html#a3eea9fe571e245784195a5706429d577">fInf</a>-&gt;<a class="code hl_function" href="classecalInf.html#a431a7459c7b4ba5115e56191d2b38d07">GetXSize</a>(); <a class="code hl_variable" href="classecalDrawer.html#a994f1ce8a827abd12ff3bffd6caffab9">fCY</a>=<a class="code hl_variable" href="classecalDrawer.html#a3eea9fe571e245784195a5706429d577">fInf</a>-&gt;<a class="code hl_function" href="classecalInf.html#a09bd77fc667998bda52d9444099a5988">GetYSize</a>();</div>
+<div class="line"><span class="lineno">  523</span>  <a class="code hl_variable" href="classecalDrawer.html#a610979ada5c361ac714e4bd12e26e724">fCX</a>*=<a class="code hl_variable" href="classecalDrawer.html#a746a9e6ee780271619dd73090ef24d4f">fCellSize</a>*4+4; <a class="code hl_variable" href="classecalDrawer.html#a610979ada5c361ac714e4bd12e26e724">fCX</a>+=1;</div>
+<div class="line"><span class="lineno">  524</span>  <a class="code hl_variable" href="classecalDrawer.html#a994f1ce8a827abd12ff3bffd6caffab9">fCY</a>*=<a class="code hl_variable" href="classecalDrawer.html#a746a9e6ee780271619dd73090ef24d4f">fCellSize</a>*4+4; <a class="code hl_variable" href="classecalDrawer.html#a994f1ce8a827abd12ff3bffd6caffab9">fCY</a>+=1;</div>
+<div class="line"><span class="lineno">  525</span>  <a class="code hl_variable" href="classecalDrawer.html#ae3e0216de375345edc46b60f3d7d96d8">fC</a>=<span class="keyword">new</span> TASImage(<a class="code hl_variable" href="classecalDrawer.html#a610979ada5c361ac714e4bd12e26e724">fCX</a>, <a class="code hl_variable" href="classecalDrawer.html#a994f1ce8a827abd12ff3bffd6caffab9">fCY</a>);</div>
+<div class="line"><span class="lineno">  526</span> </div>
+<div class="line"><span class="lineno">  527</span>  list&lt;ecalCell*&gt; cells;</div>
+<div class="line"><span class="lineno">  528</span>  list&lt;ecalCell*&gt;::const_iterator <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>;</div>
+<div class="line"><span class="lineno">  529</span>  <a class="code hl_variable" href="classecalDrawer.html#a8fc9d27dcb8833864243a2c4baa05d5b">fStr</a>-&gt;<a class="code hl_function" href="classecalStructure.html#a4a5f760324a338769869cecaa0a095db">GetCells</a>(cells);</div>
+<div class="line"><span class="lineno">  530</span>  <span class="keywordflow">for</span>(p=cells.begin();<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>!=cells.end();++<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>)</div>
+<div class="line"><span class="lineno">  531</span>    <a class="code hl_variable" href="classecalDrawer.html#a97b5e09fcf04dd2fea27942a8bcd8b20">fCells</a>.push_back(<span class="keyword">new</span> <a class="code hl_class" href="classecalDrawerItem.html">ecalDrawerItem</a>((*p), 0.0, 0.0, 0.0));</div>
+<div class="line"><span class="lineno">  532</span>  <a class="code hl_variable" href="classecalDrawer.html#a7d43225d0d60409726a8970ff6ca7266">fTxt</a>-&gt;SetTextFont(43);</div>
+<div class="line"><span class="lineno">  533</span>  <a class="code hl_variable" href="classecalDrawer.html#a7d43225d0d60409726a8970ff6ca7266">fTxt</a>-&gt;SetTextSizePixels(8);</div>
+<div class="line"><span class="lineno">  534</span>  <a class="code hl_variable" href="classecalDrawer.html#a7d43225d0d60409726a8970ff6ca7266">fTxt</a>-&gt;SetTextAlign(21);</div>
+<div class="line"><span class="lineno">  535</span>  <span class="keywordflow">return</span> kSUCCESS;</div>
+<div class="line"><span class="lineno">  536</span>}</div>
 <div class="ttc" id="aclassecalDrawerItem_html"><div class="ttname"><a href="classecalDrawerItem.html">ecalDrawerItem</a></div><div class="ttdef"><b>Definition</b> <a href="ecalDrawer_8cxx_source.html#l00027">ecalDrawer.cxx:28</a></div></div>
 <div class="ttc" id="aclassecalInf_html_a09bd77fc667998bda52d9444099a5988"><div class="ttname"><a href="classecalInf.html#a09bd77fc667998bda52d9444099a5988">ecalInf::GetYSize</a></div><div class="ttdeci">Int_t GetYSize() const</div><div class="ttdef"><b>Definition</b> <a href="ecalInf_8h_source.html#l00046">ecalInf.h:46</a></div></div>
 <div class="ttc" id="aclassecalInf_html_a431a7459c7b4ba5115e56191d2b38d07"><div class="ttname"><a href="classecalInf.html#a431a7459c7b4ba5115e56191d2b38d07">ecalInf::GetXSize</a></div><div class="ttdeci">Int_t GetXSize() const</div><div class="ttdef"><b>Definition</b> <a href="ecalInf_8h_source.html#l00045">ecalInf.h:45</a></div></div>
@@ -1594,34 +1603,34 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ecalDrawer_8cxx_source.html#l00537">537</a> of file <a class="el" href="ecalDrawer_8cxx_source.html">ecalDrawer.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  538</span>{</div>
-<div class="line"><span class="lineno">  539</span>  <a class="code hl_variable" href="classecalDrawer.html#a193e69f48f5d08d2d45859329dbb737a">fMCTracks</a>=mctracks;</div>
-<div class="line"><span class="lineno">  540</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classecalDrawer.html#a193e69f48f5d08d2d45859329dbb737a">fMCTracks</a>==NULL) <span class="keywordflow">return</span> -1111;</div>
-<div class="line"><span class="lineno">  541</span>  <a class="code hl_variable" href="classecalDrawer.html#a918274f1612621a2423e26dcae5bf6b8">fPoints</a>=ecalPoints;</div>
-<div class="line"><span class="lineno">  542</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classecalDrawer.html#a918274f1612621a2423e26dcae5bf6b8">fPoints</a>==NULL) <span class="keywordflow">return</span> -1111;</div>
-<div class="line"><span class="lineno">  543</span>  <a class="code hl_variable" href="classecalDrawer.html#a8fc9d27dcb8833864243a2c4baa05d5b">fStr</a>=structure;</div>
-<div class="line"><span class="lineno">  544</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classecalDrawer.html#a8fc9d27dcb8833864243a2c4baa05d5b">fStr</a>==NULL) <span class="keywordflow">return</span> -1111;</div>
-<div class="line"><span class="lineno">  545</span>  <a class="code hl_variable" href="classecalDrawer.html#a2f47474c61c938b4966c75a8b8a351cf">fClusters</a>=clusters;</div>
-<div class="line"><span class="lineno">  546</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classecalDrawer.html#a2f47474c61c938b4966c75a8b8a351cf">fClusters</a>==NULL) <span class="keywordflow">return</span> -1111;</div>
-<div class="line"><span class="lineno">  547</span> </div>
-<div class="line"><span class="lineno">  548</span>  <a class="code hl_variable" href="classecalDrawer.html#a3eea9fe571e245784195a5706429d577">fInf</a>=<a class="code hl_variable" href="classecalDrawer.html#a8fc9d27dcb8833864243a2c4baa05d5b">fStr</a>-&gt;<a class="code hl_function" href="classecalStructure.html#acfe1ac23810e6ac7daa50216e37fcc10">GetEcalInf</a>();</div>
-<div class="line"><span class="lineno">  549</span>  <a class="code hl_variable" href="classecalDrawer.html#a610979ada5c361ac714e4bd12e26e724">fCX</a>=<a class="code hl_variable" href="classecalDrawer.html#a3eea9fe571e245784195a5706429d577">fInf</a>-&gt;<a class="code hl_function" href="classecalInf.html#a431a7459c7b4ba5115e56191d2b38d07">GetXSize</a>(); <a class="code hl_variable" href="classecalDrawer.html#a994f1ce8a827abd12ff3bffd6caffab9">fCY</a>=<a class="code hl_variable" href="classecalDrawer.html#a3eea9fe571e245784195a5706429d577">fInf</a>-&gt;<a class="code hl_function" href="classecalInf.html#a09bd77fc667998bda52d9444099a5988">GetYSize</a>();</div>
-<div class="line"><span class="lineno">  550</span>  <a class="code hl_variable" href="classecalDrawer.html#a610979ada5c361ac714e4bd12e26e724">fCX</a>*=<a class="code hl_variable" href="classecalDrawer.html#a746a9e6ee780271619dd73090ef24d4f">fCellSize</a>*4+4; <a class="code hl_variable" href="classecalDrawer.html#a610979ada5c361ac714e4bd12e26e724">fCX</a>+=1;</div>
-<div class="line"><span class="lineno">  551</span>  <a class="code hl_variable" href="classecalDrawer.html#a994f1ce8a827abd12ff3bffd6caffab9">fCY</a>*=<a class="code hl_variable" href="classecalDrawer.html#a746a9e6ee780271619dd73090ef24d4f">fCellSize</a>*4+4; <a class="code hl_variable" href="classecalDrawer.html#a994f1ce8a827abd12ff3bffd6caffab9">fCY</a>+=1;</div>
-<div class="line"><span class="lineno">  552</span>  <a class="code hl_variable" href="classecalDrawer.html#ae3e0216de375345edc46b60f3d7d96d8">fC</a>=<span class="keyword">new</span> TASImage(<a class="code hl_variable" href="classecalDrawer.html#a610979ada5c361ac714e4bd12e26e724">fCX</a>, <a class="code hl_variable" href="classecalDrawer.html#a994f1ce8a827abd12ff3bffd6caffab9">fCY</a>);</div>
-<div class="line"><span class="lineno">  553</span> </div>
-<div class="line"><span class="lineno">  554</span>  list&lt;ecalCell*&gt; cells;</div>
-<div class="line"><span class="lineno">  555</span>  list&lt;ecalCell*&gt;::const_iterator <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>;</div>
-<div class="line"><span class="lineno">  556</span>  <a class="code hl_variable" href="classecalDrawer.html#a8fc9d27dcb8833864243a2c4baa05d5b">fStr</a>-&gt;<a class="code hl_function" href="classecalStructure.html#a4a5f760324a338769869cecaa0a095db">GetCells</a>(cells);</div>
-<div class="line"><span class="lineno">  557</span>  <span class="keywordflow">for</span>(p=cells.begin();<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>!=cells.end();++<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>)</div>
-<div class="line"><span class="lineno">  558</span>    <a class="code hl_variable" href="classecalDrawer.html#a97b5e09fcf04dd2fea27942a8bcd8b20">fCells</a>.push_back(<span class="keyword">new</span> <a class="code hl_class" href="classecalDrawerItem.html">ecalDrawerItem</a>((*p), 0.0, 0.0, 0.0));</div>
-<div class="line"><span class="lineno">  559</span>  <a class="code hl_variable" href="classecalDrawer.html#a7d43225d0d60409726a8970ff6ca7266">fTxt</a>-&gt;SetTextFont(43);</div>
-<div class="line"><span class="lineno">  560</span>  <a class="code hl_variable" href="classecalDrawer.html#a7d43225d0d60409726a8970ff6ca7266">fTxt</a>-&gt;SetTextSizePixels(8);</div>
-<div class="line"><span class="lineno">  561</span>  <a class="code hl_variable" href="classecalDrawer.html#a7d43225d0d60409726a8970ff6ca7266">fTxt</a>-&gt;SetTextAlign(21);</div>
-<div class="line"><span class="lineno">  562</span> </div>
-<div class="line"><span class="lineno">  563</span>  <span class="keywordflow">return</span> 0;</div>
-<div class="line"><span class="lineno">  564</span>}</div>
+<p class="definition">Definition at line <a class="el" href="ecalDrawer_8cxx_source.html#l00538">538</a> of file <a class="el" href="ecalDrawer_8cxx_source.html">ecalDrawer.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  539</span>{</div>
+<div class="line"><span class="lineno">  540</span>  <a class="code hl_variable" href="classecalDrawer.html#a193e69f48f5d08d2d45859329dbb737a">fMCTracks</a>=mctracks;</div>
+<div class="line"><span class="lineno">  541</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classecalDrawer.html#a193e69f48f5d08d2d45859329dbb737a">fMCTracks</a>==NULL) <span class="keywordflow">return</span> -1111;</div>
+<div class="line"><span class="lineno">  542</span>  <a class="code hl_variable" href="classecalDrawer.html#a918274f1612621a2423e26dcae5bf6b8">fPoints</a>=ecalPoints;</div>
+<div class="line"><span class="lineno">  543</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classecalDrawer.html#a918274f1612621a2423e26dcae5bf6b8">fPoints</a>==NULL) <span class="keywordflow">return</span> -1111;</div>
+<div class="line"><span class="lineno">  544</span>  <a class="code hl_variable" href="classecalDrawer.html#a8fc9d27dcb8833864243a2c4baa05d5b">fStr</a>=structure;</div>
+<div class="line"><span class="lineno">  545</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classecalDrawer.html#a8fc9d27dcb8833864243a2c4baa05d5b">fStr</a>==NULL) <span class="keywordflow">return</span> -1111;</div>
+<div class="line"><span class="lineno">  546</span>  <a class="code hl_variable" href="classecalDrawer.html#a2f47474c61c938b4966c75a8b8a351cf">fClusters</a>=clusters;</div>
+<div class="line"><span class="lineno">  547</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classecalDrawer.html#a2f47474c61c938b4966c75a8b8a351cf">fClusters</a>==NULL) <span class="keywordflow">return</span> -1111;</div>
+<div class="line"><span class="lineno">  548</span> </div>
+<div class="line"><span class="lineno">  549</span>  <a class="code hl_variable" href="classecalDrawer.html#a3eea9fe571e245784195a5706429d577">fInf</a>=<a class="code hl_variable" href="classecalDrawer.html#a8fc9d27dcb8833864243a2c4baa05d5b">fStr</a>-&gt;<a class="code hl_function" href="classecalStructure.html#acfe1ac23810e6ac7daa50216e37fcc10">GetEcalInf</a>();</div>
+<div class="line"><span class="lineno">  550</span>  <a class="code hl_variable" href="classecalDrawer.html#a610979ada5c361ac714e4bd12e26e724">fCX</a>=<a class="code hl_variable" href="classecalDrawer.html#a3eea9fe571e245784195a5706429d577">fInf</a>-&gt;<a class="code hl_function" href="classecalInf.html#a431a7459c7b4ba5115e56191d2b38d07">GetXSize</a>(); <a class="code hl_variable" href="classecalDrawer.html#a994f1ce8a827abd12ff3bffd6caffab9">fCY</a>=<a class="code hl_variable" href="classecalDrawer.html#a3eea9fe571e245784195a5706429d577">fInf</a>-&gt;<a class="code hl_function" href="classecalInf.html#a09bd77fc667998bda52d9444099a5988">GetYSize</a>();</div>
+<div class="line"><span class="lineno">  551</span>  <a class="code hl_variable" href="classecalDrawer.html#a610979ada5c361ac714e4bd12e26e724">fCX</a>*=<a class="code hl_variable" href="classecalDrawer.html#a746a9e6ee780271619dd73090ef24d4f">fCellSize</a>*4+4; <a class="code hl_variable" href="classecalDrawer.html#a610979ada5c361ac714e4bd12e26e724">fCX</a>+=1;</div>
+<div class="line"><span class="lineno">  552</span>  <a class="code hl_variable" href="classecalDrawer.html#a994f1ce8a827abd12ff3bffd6caffab9">fCY</a>*=<a class="code hl_variable" href="classecalDrawer.html#a746a9e6ee780271619dd73090ef24d4f">fCellSize</a>*4+4; <a class="code hl_variable" href="classecalDrawer.html#a994f1ce8a827abd12ff3bffd6caffab9">fCY</a>+=1;</div>
+<div class="line"><span class="lineno">  553</span>  <a class="code hl_variable" href="classecalDrawer.html#ae3e0216de375345edc46b60f3d7d96d8">fC</a>=<span class="keyword">new</span> TASImage(<a class="code hl_variable" href="classecalDrawer.html#a610979ada5c361ac714e4bd12e26e724">fCX</a>, <a class="code hl_variable" href="classecalDrawer.html#a994f1ce8a827abd12ff3bffd6caffab9">fCY</a>);</div>
+<div class="line"><span class="lineno">  554</span> </div>
+<div class="line"><span class="lineno">  555</span>  list&lt;ecalCell*&gt; cells;</div>
+<div class="line"><span class="lineno">  556</span>  list&lt;ecalCell*&gt;::const_iterator <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>;</div>
+<div class="line"><span class="lineno">  557</span>  <a class="code hl_variable" href="classecalDrawer.html#a8fc9d27dcb8833864243a2c4baa05d5b">fStr</a>-&gt;<a class="code hl_function" href="classecalStructure.html#a4a5f760324a338769869cecaa0a095db">GetCells</a>(cells);</div>
+<div class="line"><span class="lineno">  558</span>  <span class="keywordflow">for</span>(p=cells.begin();<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>!=cells.end();++<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>)</div>
+<div class="line"><span class="lineno">  559</span>    <a class="code hl_variable" href="classecalDrawer.html#a97b5e09fcf04dd2fea27942a8bcd8b20">fCells</a>.push_back(<span class="keyword">new</span> <a class="code hl_class" href="classecalDrawerItem.html">ecalDrawerItem</a>((*p), 0.0, 0.0, 0.0));</div>
+<div class="line"><span class="lineno">  560</span>  <a class="code hl_variable" href="classecalDrawer.html#a7d43225d0d60409726a8970ff6ca7266">fTxt</a>-&gt;SetTextFont(43);</div>
+<div class="line"><span class="lineno">  561</span>  <a class="code hl_variable" href="classecalDrawer.html#a7d43225d0d60409726a8970ff6ca7266">fTxt</a>-&gt;SetTextSizePixels(8);</div>
+<div class="line"><span class="lineno">  562</span>  <a class="code hl_variable" href="classecalDrawer.html#a7d43225d0d60409726a8970ff6ca7266">fTxt</a>-&gt;SetTextAlign(21);</div>
+<div class="line"><span class="lineno">  563</span> </div>
+<div class="line"><span class="lineno">  564</span>  <span class="keywordflow">return</span> 0;</div>
+<div class="line"><span class="lineno">  565</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>

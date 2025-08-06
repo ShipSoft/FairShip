@@ -97,8 +97,8 @@ $(document).ready(function(){initNavTree('hcalLightMap_8h_source.html',''); init
   <div class="headertitle"><div class="title">hcalLightMap.h</div></div>
 </div><!--header-->
 <div class="contents">
-<a href="hcalLightMap_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef HCALLIGHTMAP_H</span></div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#define HCALLIGHTMAP_H</span></div>
+<a href="hcalLightMap_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef HCAL_HCALLIGHTMAP_H_</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#define HCAL_HCALLIGHTMAP_H_</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &quot;TNamed.h&quot;</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
@@ -107,7 +107,7 @@ $(document).ready(function(){initNavTree('hcalLightMap_8h_source.html',''); init
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span>{</div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="keyword">public</span>:</div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno"><a class="line" href="classhcalLightMap.html#a1aa1cfdb7158732b42ec4621f69bf38c">    9</a></span> <a class="code hl_function" href="classhcalLightMap.html#a1aa1cfdb7158732b42ec4621f69bf38c">hcalLightMap</a>() : TNamed(), <a class="code hl_variable" href="classhcalLightMap.html#a48ed73c1ba2778728a9eaa87d15963a5">fSSide</a>(0.), <a class="code hl_variable" href="classhcalLightMap.html#a8149486962804a44ee27cd8536934efc">fS</a>(0), <a class="code hl_variable" href="classhcalLightMap.html#ad8e9f46b5dd475666fc211432f79b8a8">fSize</a>(0), <a class="code hl_variable" href="classhcalLightMap.html#acf03661f2eb212270c4576d0db712005">fData</a>(NULL) {};</div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>  <a class="code hl_function" href="classhcalLightMap.html#a1aa1cfdb7158732b42ec4621f69bf38c">hcalLightMap</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* fname, <span class="keyword">const</span> <span class="keywordtype">char</span>* title=<span class="stringliteral">&quot;Light collection efficiency map&quot;</span>);</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>  <span class="keyword">explicit</span> <a class="code hl_function" href="classhcalLightMap.html#a1aa1cfdb7158732b42ec4621f69bf38c">hcalLightMap</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* fname, <span class="keyword">const</span> <span class="keywordtype">char</span>* title=<span class="stringliteral">&quot;Light collection efficiency map&quot;</span>);</div>
 <div class="foldopen" id="foldopen00011" data-start="{" data-end="}">
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno"><a class="line" href="classhcalLightMap.html#a44ccc7e8de1b8dabc629981c22f53742">   11</a></span>  Double_t <a class="code hl_function" href="classhcalLightMap.html#a44ccc7e8de1b8dabc629981c22f53742">Data</a>(Double_t x, Double_t y)</div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>    {Int_t n=<a class="code hl_function" href="classhcalLightMap.html#a0cea1cf9d7715a003f785567e1943cd9">GetNum</a>(x,y); <span class="keywordflow">if</span> (n&lt;0) <span class="keywordflow">return</span> n; <span class="keywordflow">return</span> <a class="code hl_variable" href="classhcalLightMap.html#acf03661f2eb212270c4576d0db712005">fData</a>[n];}</div>
@@ -140,7 +140,7 @@ $(document).ready(function(){initNavTree('hcalLightMap_8h_source.html',''); init
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>};</div>
 </div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="preprocessor">#endif  </span><span class="comment">// HCAL_HCALLIGHTMAP_H_</span></div>
 <div class="ttc" id="aclasshcalLightMap_html"><div class="ttname"><a href="classhcalLightMap.html">hcalLightMap</a></div><div class="ttdef"><b>Definition</b> <a href="hcalLightMap_8h_source.html#l00006">hcalLightMap.h:7</a></div></div>
 <div class="ttc" id="aclasshcalLightMap_html_a0cea1cf9d7715a003f785567e1943cd9"><div class="ttname"><a href="classhcalLightMap.html#a0cea1cf9d7715a003f785567e1943cd9">hcalLightMap::GetNum</a></div><div class="ttdeci">Int_t GetNum(Double_t x, Double_t y)</div><div class="ttdef"><b>Definition</b> <a href="hcalLightMap_8h_source.html#l00013">hcalLightMap.h:13</a></div></div>
 <div class="ttc" id="aclasshcalLightMap_html_a1aa1cfdb7158732b42ec4621f69bf38c"><div class="ttname"><a href="classhcalLightMap.html#a1aa1cfdb7158732b42ec4621f69bf38c">hcalLightMap::hcalLightMap</a></div><div class="ttdeci">hcalLightMap()</div><div class="ttdef"><b>Definition</b> <a href="hcalLightMap_8h_source.html#l00009">hcalLightMap.h:9</a></div></div>

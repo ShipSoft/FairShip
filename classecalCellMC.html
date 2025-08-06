@@ -241,6 +241,9 @@ Private Attributes</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">ecalCellMC::ecalCellMC </td>
@@ -290,6 +293,11 @@ Private Attributes</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="ecalCellMC_8cxx_source.html#l00018">18</a> of file <a class="el" href="ecalCellMC_8cxx_source.html">ecalCellMC.cxx</a>.</p>
@@ -417,7 +425,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">   51</span>  list&lt;ecalCell*&gt; cls; <a class="code hl_function" href="classecalCell.html#a426142dfe3ceae5f12a255cc5e66cdfe">GetNeighborsList</a>(cls);</div>
 <div class="line"><span class="lineno">   52</span>  list&lt;ecalCell*&gt;::const_iterator <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>=cls.begin();</div>
 <div class="line"><span class="lineno">   53</span>  <span class="keywordflow">for</span>(;<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>!=cls.end();++<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>)</div>
-<div class="line"><span class="lineno">   54</span>    energy+=((<a class="code hl_class" href="classecalCellMC.html">ecalCellMC</a>*)(*p))-&gt;GetTrackEnergy(num);</div>
+<div class="line"><span class="lineno">   54</span>      energy += <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classecalCellMC.html">ecalCellMC</a>*<span class="keyword">&gt;</span>(*p)-&gt;<a class="code hl_function" href="classecalCellMC.html#a08ecdeca94d74ab6c46356ee55329d75">GetTrackEnergy</a>(num);</div>
 <div class="line"><span class="lineno">   55</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceproton__bremsstrahlung.html#a346de5637f6811443ef313e5b10ef9bc">energy</a>;</div>
 <div class="line"><span class="lineno">   56</span>}</div>
 <div class="ttc" id="aclassecalCellMC_html"><div class="ttname"><a href="classecalCellMC.html">ecalCellMC</a></div><div class="ttdef"><b>Definition</b> <a href="ecalCellMC_8h_source.html#l00018">ecalCellMC.h:19</a></div></div>

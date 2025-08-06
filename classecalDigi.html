@@ -612,7 +612,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">   72</span>    <span class="keywordflow">return</span> kFATAL;</div>
 <div class="line"><span class="lineno">   73</span>  }</div>
 <div class="line"><span class="lineno">   74</span> </div>
-<div class="line"><span class="lineno">   75</span>  <a class="code hl_variable" href="classecalDigi.html#a0f2bbf8e826c44d8b6c32a06d15de9e5">fStr</a>=(<a class="code hl_class" href="classecalStructure.html">ecalStructure</a>*)manager-&gt;GetObject(<span class="stringliteral">&quot;EcalStructure&quot;</span>);</div>
+<div class="line"><span class="lineno">   75</span>  <a class="code hl_variable" href="classecalDigi.html#a0f2bbf8e826c44d8b6c32a06d15de9e5">fStr</a> = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classecalStructure.html">ecalStructure</a>*<span class="keyword">&gt;</span>(manager-&gt;GetObject(<span class="stringliteral">&quot;EcalStructure&quot;</span>));</div>
 <div class="line"><span class="lineno">   76</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classecalDigi.html#a0f2bbf8e826c44d8b6c32a06d15de9e5">fStr</a>)</div>
 <div class="line"><span class="lineno">   77</span>  {</div>
 <div class="line"><span class="lineno">   78</span>    Fatal(<span class="stringliteral">&quot;Init()&quot;</span>, <span class="stringliteral">&quot;Can&#39;t find calorimeter structure in the system.&quot;</span>);</div>

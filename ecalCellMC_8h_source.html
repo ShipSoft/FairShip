@@ -98,8 +98,8 @@ $(document).ready(function(){initNavTree('ecalCellMC_8h_source.html',''); initRe
 </div><!--header-->
 <div class="contents">
 <a href="ecalCellMC_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#ifndef ECALCELLMC_H</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#define ECALCELLMC_H</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#ifndef ECAL_ECALCELLMC_H_</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#define ECAL_ECALCELLMC_H_</span></div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="comment">/* $Id: ecalCellMC.h,v 1.9 2012/01/18 18:15:23 prokudin Exp $ */</span></div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
@@ -113,7 +113,7 @@ $(document).ready(function(){initNavTree('ecalCellMC_8h_source.html',''); initRe
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="classecalCellMC.html">   18</a></span><span class="keyword">class </span><a class="code hl_class" href="classecalCellMC.html">ecalCellMC</a> : <span class="keyword">public</span> <a class="code hl_class" href="classecalCell.html">ecalCell</a></div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>{</div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>  <a class="code hl_class" href="classecalCellMC.html">ecalCellMC</a>(Int_t cellnumber, Float_t x1=0, Float_t y1=0, Float_t x2=0, Float_t y2=0, Char_t type=0, Float_t energy=0);</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>  <span class="keyword">explicit</span> <a class="code hl_class" href="classecalCellMC.html">ecalCellMC</a>(Int_t cellnumber, Float_t x1=0, Float_t y1=0, Float_t x2=0, Float_t y2=0, Char_t type=0, Float_t energy=0);</div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>  Float_t <a class="code hl_function" href="classecalCellMC.html#a08ecdeca94d74ab6c46356ee55329d75">GetTrackEnergy</a>(Int_t num) <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>  Float_t <a class="code hl_function" href="classecalCellMC.html#a2e52186ff5a7bbe032a1f71b5872df7b">GetTrackTime</a>(Int_t num) <span class="keyword">const</span>;</div>
@@ -173,7 +173,7 @@ $(document).ready(function(){initNavTree('ecalCellMC_8h_source.html',''); initRe
 </div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span><span class="preprocessor">#endif  </span><span class="comment">// ECAL_ECALCELLMC_H_</span></div>
 <div class="ttc" id="aclassecalCellMC_html"><div class="ttname"><a href="classecalCellMC.html">ecalCellMC</a></div><div class="ttdef"><b>Definition</b> <a href="ecalCellMC_8h_source.html#l00018">ecalCellMC.h:19</a></div></div>
 <div class="ttc" id="aclassecalCellMC_html_a08ecdeca94d74ab6c46356ee55329d75"><div class="ttname"><a href="classecalCellMC.html#a08ecdeca94d74ab6c46356ee55329d75">ecalCellMC::GetTrackEnergy</a></div><div class="ttdeci">Float_t GetTrackEnergy(Int_t num) const</div><div class="ttdef"><b>Definition</b> <a href="ecalCellMC_8cxx_source.html#l00033">ecalCellMC.cxx:33</a></div></div>
 <div class="ttc" id="aclassecalCellMC_html_a11b7489ab0ee0ac60da949f8e61fe29b"><div class="ttname"><a href="classecalCellMC.html#a11b7489ab0ee0ac60da949f8e61fe29b">ecalCellMC::TrackEnergySize</a></div><div class="ttdeci">Int_t TrackEnergySize() const</div><div class="ttdef"><b>Definition</b> <a href="ecalCellMC_8h_source.html#l00044">ecalCellMC.h:44</a></div></div>

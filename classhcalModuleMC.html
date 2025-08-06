@@ -233,6 +233,9 @@ Private Attributes</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">hcalModuleMC::hcalModuleMC </td>
@@ -270,6 +273,11 @@ Private Attributes</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="hcalModuleMC_8cxx_source.html#l00018">18</a> of file <a class="el" href="hcalModuleMC_8cxx_source.html">hcalModuleMC.cxx</a>.</p>
@@ -422,7 +430,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">   51</span>  list&lt;hcalModule*&gt; mdls; <a class="code hl_function" href="classhcalModule.html#a7246dd8bbff67c7ff2c484a377127310">GetNeighborsList</a>(mdls);</div>
 <div class="line"><span class="lineno">   52</span>  list&lt;hcalModule*&gt;::const_iterator <a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>=mdls.begin();</div>
 <div class="line"><span class="lineno">   53</span>  <span class="keywordflow">for</span>(;<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>!=mdls.end();++<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>)</div>
-<div class="line"><span class="lineno">   54</span>    energy+=((<a class="code hl_class" href="classhcalModuleMC.html">hcalModuleMC</a>*)(*p))-&gt;GetTrackEnergy(num);</div>
+<div class="line"><span class="lineno">   54</span>      energy += <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classhcalModuleMC.html">hcalModuleMC</a>*<span class="keyword">&gt;</span>(*p)-&gt;<a class="code hl_function" href="classhcalModuleMC.html#a594eeda29a5ffee5011e21e7a1dc62d6">GetTrackEnergy</a>(num);</div>
 <div class="line"><span class="lineno">   55</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceproton__bremsstrahlung.html#a346de5637f6811443ef313e5b10ef9bc">energy</a>;</div>
 <div class="line"><span class="lineno">   56</span>}</div>
 <div class="ttc" id="aclasshcalModuleMC_html"><div class="ttname"><a href="classhcalModuleMC.html">hcalModuleMC</a></div><div class="ttdef"><b>Definition</b> <a href="hcalModuleMC_8h_source.html#l00018">hcalModuleMC.h:19</a></div></div>

@@ -98,8 +98,8 @@ $(document).ready(function(){initNavTree('hcalModule_8h_source.html',''); initRe
 </div><!--header-->
 <div class="contents">
 <a href="hcalModule_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#ifndef HCALMODULE_H</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#define HCALMODULE_H</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#ifndef HCAL_HCALMODULE_H_</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#define HCAL_HCALMODULE_H_</span></div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;TObject.h&quot;</span></div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
@@ -112,7 +112,7 @@ $(document).ready(function(){initNavTree('hcalModule_8h_source.html',''); initRe
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>{</div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="keyword">public</span>:</div>
 <div class="foldopen" id="foldopen00019" data-start="{" data-end="}">
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno"><a class="line" href="classhcalModule.html#ae0946adbaa3f900d1d92b644e2794cb3">   19</a></span>  <a class="code hl_function" href="classhcalModule.html#ae0946adbaa3f900d1d92b644e2794cb3">hcalModule</a>(Int_t modulenumber, Float_t x1=0, Float_t y1=0, Float_t x2=0, Float_t y2=0)</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno"><a class="line" href="classhcalModule.html#ae0946adbaa3f900d1d92b644e2794cb3">   19</a></span>  <span class="keyword">explicit</span> <a class="code hl_function" href="classhcalModule.html#ae0946adbaa3f900d1d92b644e2794cb3">hcalModule</a>(Int_t modulenumber, Float_t x1=0, Float_t y1=0, Float_t x2=0, Float_t y2=0)</div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    : TObject(), <a class="code hl_variable" href="classhcalModule.html#a2066969976ad511dc98ea97832bc3e6a">fNumber</a>(modulenumber), <a class="code hl_variable" href="classhcalModule.html#a8c042cb7526dae92714db485468bb9d5">fX1</a>(x1), <a class="code hl_variable" href="classhcalModule.html#a93227a15f496d44417fd300f07483860">fY1</a>(y1), <a class="code hl_variable" href="classhcalModule.html#a6ccdacf637a3ab96e6b6d72c9cc8c2bf">fX2</a>(x2),</div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    <a class="code hl_variable" href="classhcalModule.html#a63cd8afafe8ba68900a242f82ee0a29b">fY2</a>(y2), <a class="code hl_variable" href="classhcalModule.html#a607f81efd6503f49918775ccc0ff458f">fEnergy</a>(0), <a class="code hl_variable" href="classhcalModule.html#ab261c5c37ee1373055b43c6e7e420ef3">fEnergy2</a>(0), <a class="code hl_variable" href="classhcalModule.html#aeb0e1db17cf815725b173cf8ae6363e5">fADC</a>(-1111), <a class="code hl_variable" href="classhcalModule.html#abf8470befe47a949ea8a32cc39aa2c74">fNeighbors</a>()</div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>  {};</div>
@@ -190,7 +190,7 @@ $(document).ready(function(){initNavTree('hcalModule_8h_source.html',''); initRe
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>}</div>
 </div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span> </div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span><span class="preprocessor">#endif  </span><span class="comment">// HCAL_HCALMODULE_H_</span></div>
 <div class="ttc" id="aclasshcalModule_html"><div class="ttname"><a href="classhcalModule.html">hcalModule</a></div><div class="ttdef"><b>Definition</b> <a href="hcalModule_8h_source.html#l00016">hcalModule.h:17</a></div></div>
 <div class="ttc" id="aclasshcalModule_html_a08f8fe13bce90f40fd2f04509ebc97fc"><div class="ttname"><a href="classhcalModule.html#a08f8fe13bce90f40fd2f04509ebc97fc">hcalModule::SetADC</a></div><div class="ttdeci">void SetADC(Short_t adc)</div><div class="ttdef"><b>Definition</b> <a href="hcalModule_8h_source.html#l00054">hcalModule.h:54</a></div></div>
 <div class="ttc" id="aclasshcalModule_html_a120fa04838d5678c091603684626c449"><div class="ttname"><a href="classhcalModule.html#a120fa04838d5678c091603684626c449">hcalModule::GetEnergy</a></div><div class="ttdeci">Float_t GetEnergy() const</div><div class="ttdef"><b>Definition</b> <a href="hcalModule_8h_source.html#l00041">hcalModule.h:41</a></div></div>

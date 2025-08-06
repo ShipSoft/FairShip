@@ -697,9 +697,9 @@ $(document).ready(function(){initNavTree('MTCDetector_8cxx_source.html',''); ini
 <div class="line"><a id="l00576" name="l00576"></a><span class="lineno">  576</span><span class="comment">        - 123: number of the SiPM channel (0-127, 128 channels per SiPM)</span></div>
 <div class="line"><a id="l00577" name="l00577"></a><span class="lineno">  577</span><span class="comment">    */</span></div>
 <div class="line"><a id="l00578" name="l00578"></a><span class="lineno">  578</span> </div>
-<div class="line"><a id="l00579" name="l00579"></a><span class="lineno">  579</span>    Int_t station_number = int(fDetectorID / 1e6) % 100;</div>
-<div class="line"><a id="l00580" name="l00580"></a><span class="lineno">  580</span>    Int_t plane_type = int(fDetectorID / 1e5) % 10;   <span class="comment">// 0 for horizontal, 1 for vertical</span></div>
-<div class="line"><a id="l00581" name="l00581"></a><span class="lineno">  581</span>    Int_t mat_number = int(fDetectorID / 1e4) % 10;</div>
+<div class="line"><a id="l00579" name="l00579"></a><span class="lineno">  579</span>    Int_t station_number = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(fDetectorID / 1e6) % 100;</div>
+<div class="line"><a id="l00580" name="l00580"></a><span class="lineno">  580</span>    Int_t plane_type = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(fDetectorID / 1e5) % 10;   <span class="comment">// 0 for horizontal, 1 for vertical</span></div>
+<div class="line"><a id="l00581" name="l00581"></a><span class="lineno">  581</span>    Int_t mat_number = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(fDetectorID / 1e4) % 10;</div>
 <div class="line"><a id="l00582" name="l00582"></a><span class="lineno">  582</span> </div>
 <div class="line"><a id="l00583" name="l00583"></a><span class="lineno">  583</span>    TString sID, stationID;</div>
 <div class="line"><a id="l00584" name="l00584"></a><span class="lineno">  584</span>    sID.Form(<span class="stringliteral">&quot;%i&quot;</span>, fDetectorID);</div>
@@ -727,9 +727,9 @@ $(document).ready(function(){initNavTree('MTCDetector_8cxx_source.html',''); ini
 <div class="foldopen" id="foldopen00605" data-start="{" data-end="}">
 <div class="line"><a id="l00605" name="l00605"></a><span class="lineno"><a class="line" href="classMTCDetector.html#a6ce4d31fee9bbc577bfebf3baae8bd8e">  605</a></span>TVector3 <a class="code hl_function" href="classMTCDetector.html#a6ce4d31fee9bbc577bfebf3baae8bd8e">MTCDetector::GetLocalPos</a>(Int_t fDetectorID, TVector3* glob)</div>
 <div class="line"><a id="l00606" name="l00606"></a><span class="lineno">  606</span>{</div>
-<div class="line"><a id="l00607" name="l00607"></a><span class="lineno">  607</span>    Int_t station_number = int(fDetectorID / 1e6) % 100;</div>
-<div class="line"><a id="l00608" name="l00608"></a><span class="lineno">  608</span>    Int_t plane_type = int(fDetectorID / 1e5) % 10;   <span class="comment">// 0 for horizontal, 1 for vertical</span></div>
-<div class="line"><a id="l00609" name="l00609"></a><span class="lineno">  609</span>    Int_t mat_number = int(fDetectorID / 1e4) % 10;</div>
+<div class="line"><a id="l00607" name="l00607"></a><span class="lineno">  607</span>    Int_t station_number = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(fDetectorID / 1e6) % 100;</div>
+<div class="line"><a id="l00608" name="l00608"></a><span class="lineno">  608</span>    Int_t plane_type = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(fDetectorID / 1e5) % 10;   <span class="comment">// 0 for horizontal, 1 for vertical</span></div>
+<div class="line"><a id="l00609" name="l00609"></a><span class="lineno">  609</span>    Int_t mat_number = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(fDetectorID / 1e4) % 10;</div>
 <div class="line"><a id="l00610" name="l00610"></a><span class="lineno">  610</span> </div>
 <div class="line"><a id="l00611" name="l00611"></a><span class="lineno">  611</span>    TString sID, stationID;</div>
 <div class="line"><a id="l00612" name="l00612"></a><span class="lineno">  612</span>    sID.Form(<span class="stringliteral">&quot;%i&quot;</span>, fDetectorID);</div>
@@ -765,8 +765,8 @@ $(document).ready(function(){initNavTree('MTCDetector_8cxx_source.html',''); ini
 <div class="line"><a id="l00640" name="l00640"></a><span class="lineno">  640</span><span class="comment">          - 123: number of the SiPM channel (0-127, 128 channels per SiPM)</span></div>
 <div class="line"><a id="l00641" name="l00641"></a><span class="lineno">  641</span><span class="comment">    */</span></div>
 <div class="line"><a id="l00642" name="l00642"></a><span class="lineno">  642</span>    Int_t locNumber = SiPMChan % 1000000;</div>
-<div class="line"><a id="l00643" name="l00643"></a><span class="lineno">  643</span>    Int_t station_number = int(SiPMChan / 1e6) % 100;</div>
-<div class="line"><a id="l00644" name="l00644"></a><span class="lineno">  644</span>    Int_t plane_type = int(SiPMChan / 1e5) % 10;   <span class="comment">// 0 for horizontal, 1 for vertical</span></div>
+<div class="line"><a id="l00643" name="l00643"></a><span class="lineno">  643</span>    Int_t station_number = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(SiPMChan / 1e6) % 100;</div>
+<div class="line"><a id="l00644" name="l00644"></a><span class="lineno">  644</span>    Int_t plane_type = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(SiPMChan / 1e5) % 10;   <span class="comment">// 0 for horizontal, 1 for vertical</span></div>
 <div class="line"><a id="l00645" name="l00645"></a><span class="lineno">  645</span>    Float_t locPosition;</div>
 <div class="line"><a id="l00646" name="l00646"></a><span class="lineno">  646</span>    locPosition = (plane_type == 0 ? <a class="code hl_variable" href="classMTCDetector.html#ac63835d2de4b1f8247c44dee5015612d">SiPMPos_U</a> : <a class="code hl_variable" href="classMTCDetector.html#af0d5aa1a1f53c4078c281a29ce620818">SiPMPos_V</a>)[locNumber];   <span class="comment">// local position in U/V plane</span></div>
 <div class="line"><a id="l00647" name="l00647"></a><span class="lineno">  647</span>    TString stationID;</div>

@@ -1079,9 +1079,9 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="MTCDetector_8cxx_source.html#l00605">605</a> of file <a class="el" href="MTCDetector_8cxx_source.html">MTCDetector.cxx</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  606</span>{</div>
-<div class="line"><span class="lineno">  607</span>    Int_t station_number = <a class="code hl_variable" href="namespaceadd__noise__to__field.html#a4aa6f75233f1922a97b2d4c15285c18e">int</a>(fDetectorID / 1e6) % 100;</div>
-<div class="line"><span class="lineno">  608</span>    Int_t plane_type = <a class="code hl_variable" href="namespaceadd__noise__to__field.html#a4aa6f75233f1922a97b2d4c15285c18e">int</a>(fDetectorID / 1e5) % 10;   <span class="comment">// 0 for horizontal, 1 for vertical</span></div>
-<div class="line"><span class="lineno">  609</span>    Int_t mat_number = <a class="code hl_variable" href="namespaceadd__noise__to__field.html#a4aa6f75233f1922a97b2d4c15285c18e">int</a>(fDetectorID / 1e4) % 10;</div>
+<div class="line"><span class="lineno">  607</span>    Int_t station_number = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(fDetectorID / 1e6) % 100;</div>
+<div class="line"><span class="lineno">  608</span>    Int_t plane_type = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(fDetectorID / 1e5) % 10;   <span class="comment">// 0 for horizontal, 1 for vertical</span></div>
+<div class="line"><span class="lineno">  609</span>    Int_t mat_number = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(fDetectorID / 1e4) % 10;</div>
 <div class="line"><span class="lineno">  610</span> </div>
 <div class="line"><span class="lineno">  611</span>    TString sID, stationID;</div>
 <div class="line"><span class="lineno">  612</span>    sID.Form(<span class="stringliteral">&quot;%i&quot;</span>, fDetectorID);</div>
@@ -1096,7 +1096,6 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  621</span>    nav-&gt;MasterToLocal(aglob, aloc);</div>
 <div class="line"><span class="lineno">  622</span>    <span class="keywordflow">return</span> TVector3(aloc[0], aloc[1], aloc[2]);</div>
 <div class="line"><span class="lineno">  623</span>}</div>
-<div class="ttc" id="anamespaceadd__noise__to__field_html_a4aa6f75233f1922a97b2d4c15285c18e"><div class="ttname"><a href="namespaceadd__noise__to__field.html#a4aa6f75233f1922a97b2d4c15285c18e">add_noise_to_field.int</a></div><div class="ttdeci">int</div><div class="ttdef"><b>Definition</b> <a href="add__noise__to__field_8py_source.html#l00057">add_noise_to_field.py:57</a></div></div>
 <div class="ttc" id="anamespacemake__nTuple__SBT_html_a5296266b8955872e3259622e903275de"><div class="ttname"><a href="namespacemake__nTuple__SBT.html#a5296266b8955872e3259622e903275de">make_nTuple_SBT.path</a></div><div class="ttdeci">path</div><div class="ttdef"><b>Definition</b> <a href="make__nTuple__SBT_8py_source.html#l00044">make_nTuple_SBT.py:44</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -1152,9 +1151,9 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  576</span><span class="comment">        - 123: number of the SiPM channel (0-127, 128 channels per SiPM)</span></div>
 <div class="line"><span class="lineno">  577</span><span class="comment">    */</span></div>
 <div class="line"><span class="lineno">  578</span> </div>
-<div class="line"><span class="lineno">  579</span>    Int_t station_number = <a class="code hl_variable" href="namespaceadd__noise__to__field.html#a4aa6f75233f1922a97b2d4c15285c18e">int</a>(fDetectorID / 1e6) % 100;</div>
-<div class="line"><span class="lineno">  580</span>    Int_t plane_type = <a class="code hl_variable" href="namespaceadd__noise__to__field.html#a4aa6f75233f1922a97b2d4c15285c18e">int</a>(fDetectorID / 1e5) % 10;   <span class="comment">// 0 for horizontal, 1 for vertical</span></div>
-<div class="line"><span class="lineno">  581</span>    Int_t mat_number = <a class="code hl_variable" href="namespaceadd__noise__to__field.html#a4aa6f75233f1922a97b2d4c15285c18e">int</a>(fDetectorID / 1e4) % 10;</div>
+<div class="line"><span class="lineno">  579</span>    Int_t station_number = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(fDetectorID / 1e6) % 100;</div>
+<div class="line"><span class="lineno">  580</span>    Int_t plane_type = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(fDetectorID / 1e5) % 10;   <span class="comment">// 0 for horizontal, 1 for vertical</span></div>
+<div class="line"><span class="lineno">  581</span>    Int_t mat_number = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(fDetectorID / 1e4) % 10;</div>
 <div class="line"><span class="lineno">  582</span> </div>
 <div class="line"><span class="lineno">  583</span>    TString sID, stationID;</div>
 <div class="line"><span class="lineno">  584</span>    sID.Form(<span class="stringliteral">&quot;%i&quot;</span>, fDetectorID);</div>
@@ -1349,8 +1348,8 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  640</span><span class="comment">          - 123: number of the SiPM channel (0-127, 128 channels per SiPM)</span></div>
 <div class="line"><span class="lineno">  641</span><span class="comment">    */</span></div>
 <div class="line"><span class="lineno">  642</span>    Int_t locNumber = SiPMChan % 1000000;</div>
-<div class="line"><span class="lineno">  643</span>    Int_t station_number = <a class="code hl_variable" href="namespaceadd__noise__to__field.html#a4aa6f75233f1922a97b2d4c15285c18e">int</a>(SiPMChan / 1e6) % 100;</div>
-<div class="line"><span class="lineno">  644</span>    Int_t plane_type = <a class="code hl_variable" href="namespaceadd__noise__to__field.html#a4aa6f75233f1922a97b2d4c15285c18e">int</a>(SiPMChan / 1e5) % 10;   <span class="comment">// 0 for horizontal, 1 for vertical</span></div>
+<div class="line"><span class="lineno">  643</span>    Int_t station_number = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(SiPMChan / 1e6) % 100;</div>
+<div class="line"><span class="lineno">  644</span>    Int_t plane_type = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(SiPMChan / 1e5) % 10;   <span class="comment">// 0 for horizontal, 1 for vertical</span></div>
 <div class="line"><span class="lineno">  645</span>    Float_t locPosition;</div>
 <div class="line"><span class="lineno">  646</span>    locPosition = (plane_type == 0 ? <a class="code hl_variable" href="classMTCDetector.html#ac63835d2de4b1f8247c44dee5015612d">SiPMPos_U</a> : <a class="code hl_variable" href="classMTCDetector.html#af0d5aa1a1f53c4078c281a29ce620818">SiPMPos_V</a>)[locNumber];   <span class="comment">// local position in U/V plane</span></div>
 <div class="line"><span class="lineno">  647</span>    TString stationID;</div>

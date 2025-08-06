@@ -98,8 +98,8 @@ $(document).ready(function(){initNavTree('ecalCell_8h_source.html',''); initResi
 </div><!--header-->
 <div class="contents">
 <a href="ecalCell_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#ifndef ECALCELL_H</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#define ECALCELL_H</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#ifndef ECAL_ECALCELL_H_</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#define ECAL_ECALCELL_H_</span></div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;TObject.h&quot;</span></div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
@@ -112,7 +112,7 @@ $(document).ready(function(){initNavTree('ecalCell_8h_source.html',''); initResi
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>{</div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="keyword">public</span>:</div>
 <div class="foldopen" id="foldopen00019" data-start="{" data-end="}">
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno"><a class="line" href="classecalCell.html#a573675097abd6217dff74e7c01697fea">   19</a></span>  <a class="code hl_function" href="classecalCell.html#a573675097abd6217dff74e7c01697fea">ecalCell</a>(Int_t cellnumber, Float_t x1=0, Float_t y1=0, Float_t x2=0, Float_t y2=0, Char_t type=0, Float_t energy=0)</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno"><a class="line" href="classecalCell.html#a573675097abd6217dff74e7c01697fea">   19</a></span>  <span class="keyword">explicit</span> <a class="code hl_function" href="classecalCell.html#a573675097abd6217dff74e7c01697fea">ecalCell</a>(Int_t cellnumber, Float_t x1=0, Float_t y1=0, Float_t x2=0, Float_t y2=0, Char_t type=0, Float_t energy=0)</div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    : TObject(), <a class="code hl_variable" href="classecalCell.html#afb2ab78c56f5243c1968d9d5dd39b60d">fNumber</a>(cellnumber), <a class="code hl_variable" href="classecalCell.html#a5d2cc116f4c9977fdbe79dd6a9ce9ca7">fX1</a>(x1), <a class="code hl_variable" href="classecalCell.html#a1199a69fcb2d6a2faed4ce1f7a48079e">fY1</a>(y1), <a class="code hl_variable" href="classecalCell.html#a610697bbe84af77457f15c441ff4a2a1">fX2</a>(x2),</div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    <a class="code hl_variable" href="classecalCell.html#aca19a76b12e2ee08e359021d44e756db">fY2</a>(y2), <a class="code hl_variable" href="classecalCell.html#aecd2c3dfa855f6accc2077ebecf9df1a">fType</a>(type), <a class="code hl_variable" href="classecalCell.html#a56fb4c7f850bdffacce7cad5ca7964b9">fEnergy</a>(energy), <a class="code hl_variable" href="classecalCell.html#a6c5047e11709c625a49a56a0833f872f">fADC</a>(-1111), <a class="code hl_variable" href="classecalCell.html#a8c1022e48f263bb807bc0d42dbb8e8e5">fNeighbors</a>(), <a class="code hl_variable" href="classecalCell.html#aecfd2255d163ea5d9bfac1ef938b9b10">f5x5Cluster</a>(),<a class="code hl_variable" href="classecalCell.html#a6f7f01fc15d539c4f56f4cd88ffd51b1">fTime</a>(-1111)</div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>  {};</div>
@@ -208,7 +208,7 @@ $(document).ready(function(){initNavTree('ecalCell_8h_source.html',''); initResi
 <div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>}</div>
 </div>
 <div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span> </div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span><span class="preprocessor">#endif  </span><span class="comment">// ECAL_ECALCELL_H_</span></div>
 <div class="ttc" id="aclassecalCell_html"><div class="ttname"><a href="classecalCell.html">ecalCell</a></div><div class="ttdef"><b>Definition</b> <a href="ecalCell_8h_source.html#l00016">ecalCell.h:17</a></div></div>
 <div class="ttc" id="aclassecalCell_html_a1199a69fcb2d6a2faed4ce1f7a48079e"><div class="ttname"><a href="classecalCell.html#a1199a69fcb2d6a2faed4ce1f7a48079e">ecalCell::fY1</a></div><div class="ttdeci">Float_t fY1</div><div class="ttdef"><b>Definition</b> <a href="ecalCell_8h_source.html#l00084">ecalCell.h:84</a></div></div>
 <div class="ttc" id="aclassecalCell_html_a187565e3d58a5b062487945e2f3f0212"><div class="ttname"><a href="classecalCell.html#a187565e3d58a5b062487945e2f3f0212">ecalCell::SetNeighborsList</a></div><div class="ttdeci">void SetNeighborsList(std::list&lt; ecalCell * &gt; &amp;neib)</div><div class="ttdef"><b>Definition</b> <a href="ecalCell_8h_source.html#l00052">ecalCell.h:52</a></div></div>

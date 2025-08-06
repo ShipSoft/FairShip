@@ -287,10 +287,10 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="MuDISGenerator_8cxx_source.html#l00394">394</a> of file <a class="el" href="MuDISGenerator_8cxx_source.html">MuDISGenerator.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  395</span>{</div>
-<div class="line"><span class="lineno">  396</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="classMuDISGenerator.html#a1884e25a973fb2b12c6b69525a142130">fNevents</a>;</div>
-<div class="line"><span class="lineno">  397</span>}</div>
+<p class="definition">Definition at line <a class="el" href="MuDISGenerator_8cxx_source.html#l00404">404</a> of file <a class="el" href="MuDISGenerator_8cxx_source.html">MuDISGenerator.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  405</span>{</div>
+<div class="line"><span class="lineno">  406</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="classMuDISGenerator.html#a1884e25a973fb2b12c6b69525a142130">fNevents</a>;</div>
+<div class="line"><span class="lineno">  407</span>}</div>
 <div class="ttc" id="aclassMuDISGenerator_html_a1884e25a973fb2b12c6b69525a142130"><div class="ttname"><a href="classMuDISGenerator.html#a1884e25a973fb2b12c6b69525a142130">MuDISGenerator::fNevents</a></div><div class="ttdeci">int fNevents</div><div class="ttdef"><b>Definition</b> <a href="MuDISGenerator_8h_source.html#l00047">MuDISGenerator.h:47</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -505,7 +505,7 @@ Private Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  127</span>    lparam[4] = <a class="code hl_variable" href="namespacegeometry__config.html#ae1e97f9ac5a42ab12f793064e3c3f7a2">length</a>;</div>
 <div class="line"><span class="lineno">  128</span>    lparam[5] = lparam[3] / lparam[2];</div>
 <div class="line"><span class="lineno">  129</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacestudy__GammaConv.html#afc85c748ac6d5eca2175c005a7b66d32">material</a>-&gt;IsMixture()) {</div>
-<div class="line"><span class="lineno">  130</span>        TGeoMixture* mixture = (TGeoMixture*)material;</div>
+<div class="line"><span class="lineno">  130</span>        TGeoMixture* mixture = <span class="keyword">dynamic_cast&lt;</span>TGeoMixture*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacestudy__GammaConv.html#afc85c748ac6d5eca2175c005a7b66d32">material</a>);</div>
 <div class="line"><span class="lineno">  131</span>        lparam[5] = 0;</div>
 <div class="line"><span class="lineno">  132</span>        Double_t sum = 0;</div>
 <div class="line"><span class="lineno">  133</span>        <span class="keywordflow">for</span> (Int_t iel = 0; iel &lt; mixture-&gt;GetNelements(); iel++) {</div>
@@ -573,7 +573,7 @@ Private Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  195</span>        lparam[3] = <a class="code hl_variable" href="namespacestudy__GammaConv.html#afc85c748ac6d5eca2175c005a7b66d32">material</a>-&gt;GetZ();</div>
 <div class="line"><span class="lineno">  196</span>        lparam[5] = lparam[3] / lparam[2];</div>
 <div class="line"><span class="lineno">  197</span>        <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacestudy__GammaConv.html#afc85c748ac6d5eca2175c005a7b66d32">material</a>-&gt;IsMixture()) {</div>
-<div class="line"><span class="lineno">  198</span>            TGeoMixture* mixture = (TGeoMixture*)material;</div>
+<div class="line"><span class="lineno">  198</span>            TGeoMixture* mixture = <span class="keyword">dynamic_cast&lt;</span>TGeoMixture*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacestudy__GammaConv.html#afc85c748ac6d5eca2175c005a7b66d32">material</a>);</div>
 <div class="line"><span class="lineno">  199</span>            lparam[5] = 0;</div>
 <div class="line"><span class="lineno">  200</span>            Double_t sum = 0;</div>
 <div class="line"><span class="lineno">  201</span>            <span class="keywordflow">for</span> (Int_t iel = 0; iel &lt; mixture-&gt;GetNelements(); iel++) {</div>
@@ -718,7 +718,7 @@ Private Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  322</span> </div>
 <div class="line"><span class="lineno">  323</span>    Double_t t_DIS = (t_muon + t_rmu) / 1e9;   <span class="comment">// time taken in seconds to reach [xmu,ymu,zmu]</span></div>
 <div class="line"><span class="lineno">  324</span> </div>
-<div class="line"><span class="lineno">  325</span>    cpg-&gt;AddTrack(<span class="keywordtype">int</span>(mu[0][0]),   <span class="comment">// incoming muon track ()</span></div>
+<div class="line"><span class="lineno">  325</span>    cpg-&gt;AddTrack(<span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(mu[0][0]),   <span class="comment">// incoming muon track ()</span></div>
 <div class="line"><span class="lineno">  326</span>                  <a class="code hl_variable" href="namespacemergeMbias.html#aafa78ee55d809f949885ed280052d9c3">mu</a>[0][1],</div>
 <div class="line"><span class="lineno">  327</span>                  <a class="code hl_variable" href="namespacemergeMbias.html#aafa78ee55d809f949885ed280052d9c3">mu</a>[0][2],</div>
 <div class="line"><span class="lineno">  328</span>                  <a class="code hl_variable" href="namespacemergeMbias.html#aafa78ee55d809f949885ed280052d9c3">mu</a>[0][3],</div>
@@ -744,7 +744,7 @@ Private Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  348</span>        LOG(DEBUG) &lt;&lt; <span class="stringliteral">&quot;muon DIS Generator out part w &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespacemakeMuonDIS.html#a31069c861ee6564962a537e94c422254">w</a>;</div>
 <div class="line"><span class="lineno">  349</span> </div>
 <div class="line"><span class="lineno">  350</span>        <span class="keywordflow">if</span> (index == 0) {</div>
-<div class="line"><span class="lineno">  351</span>            cpg-&gt;AddTrack(<span class="keywordtype">int</span>((*Part)[0]),</div>
+<div class="line"><span class="lineno">  351</span>            cpg-&gt;AddTrack(<span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>((*Part)[0]),</div>
 <div class="line"><span class="lineno">  352</span>                          (*Part)[1],</div>
 <div class="line"><span class="lineno">  353</span>                          (*Part)[2],</div>
 <div class="line"><span class="lineno">  354</span>                          (*Part)[3],</div>
@@ -757,35 +757,45 @@ Private Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  361</span>                          t_DIS,</div>
 <div class="line"><span class="lineno">  362</span>                          cross_sec);   <span class="comment">// save DIS cross section in MCTrack[1]</span></div>
 <div class="line"><span class="lineno">  363</span>        } <span class="keywordflow">else</span> {</div>
-<div class="line"><span class="lineno">  364</span>            cpg-&gt;AddTrack(</div>
-<div class="line"><span class="lineno">  365</span>                <span class="keywordtype">int</span>((*Part)[0]), (*Part)[1], (*Part)[2], (*Part)[3], xmu, ymu, zmu, 0, <span class="keyword">true</span>, (*Part)[4], t_DIS, w);</div>
-<div class="line"><span class="lineno">  366</span>        }</div>
-<div class="line"><span class="lineno">  367</span>        <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a1391b7407359c40dbacead1473f5a96b">index</a> += 1;</div>
-<div class="line"><span class="lineno">  368</span>    }</div>
-<div class="line"><span class="lineno">  369</span> </div>
-<div class="line"><span class="lineno">  370</span>    <span class="comment">// Soft interaction tracks</span></div>
-<div class="line"><span class="lineno">  371</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp;&amp; softParticle : *<a class="code hl_variable" href="classMuDISGenerator.html#a40d9a237ef48fea62a09f84c5ff5cf47">dPartSoft</a>) {</div>
-<div class="line"><span class="lineno">  372</span>        TVectorD* SoftPart = <span class="keyword">dynamic_cast&lt;</span>TVectorD*<span class="keyword">&gt;</span>(softParticle);</div>
-<div class="line"><span class="lineno">  373</span>        <span class="keywordflow">if</span> ((*SoftPart)[7] &gt; zmu) {</div>
-<div class="line"><span class="lineno">  374</span>            <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  375</span>        }   <span class="comment">// Soft interactions after the DIS point are not saved</span></div>
-<div class="line"><span class="lineno">  376</span>        Double_t t_soft = (*SoftPart)[8] / 1e9;   <span class="comment">// Time in seconds</span></div>
-<div class="line"><span class="lineno">  377</span>        cpg-&gt;AddTrack(<span class="keywordtype">int</span>((*SoftPart)[0]),</div>
-<div class="line"><span class="lineno">  378</span>                      (*SoftPart)[1],</div>
-<div class="line"><span class="lineno">  379</span>                      (*SoftPart)[2],</div>
-<div class="line"><span class="lineno">  380</span>                      (*SoftPart)[3],</div>
-<div class="line"><span class="lineno">  381</span>                      (*SoftPart)[5],</div>
-<div class="line"><span class="lineno">  382</span>                      (*SoftPart)[6],</div>
-<div class="line"><span class="lineno">  383</span>                      (*SoftPart)[7],</div>
-<div class="line"><span class="lineno">  384</span>                      0,</div>
-<div class="line"><span class="lineno">  385</span>                      <span class="keyword">true</span>,</div>
-<div class="line"><span class="lineno">  386</span>                      (*SoftPart)[4],</div>
-<div class="line"><span class="lineno">  387</span>                      t_soft,</div>
-<div class="line"><span class="lineno">  388</span>                      <a class="code hl_variable" href="namespacemakeMuonDIS.html#a31069c861ee6564962a537e94c422254">w</a>);</div>
-<div class="line"><span class="lineno">  389</span>    }</div>
-<div class="line"><span class="lineno">  390</span> </div>
-<div class="line"><span class="lineno">  391</span>    <span class="keywordflow">return</span> kTRUE;</div>
-<div class="line"><span class="lineno">  392</span>}</div>
+<div class="line"><span class="lineno">  364</span>            cpg-&gt;AddTrack(<span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>((*Part)[0]),</div>
+<div class="line"><span class="lineno">  365</span>                          (*Part)[1],</div>
+<div class="line"><span class="lineno">  366</span>                          (*Part)[2],</div>
+<div class="line"><span class="lineno">  367</span>                          (*Part)[3],</div>
+<div class="line"><span class="lineno">  368</span>                          xmu,</div>
+<div class="line"><span class="lineno">  369</span>                          ymu,</div>
+<div class="line"><span class="lineno">  370</span>                          zmu,</div>
+<div class="line"><span class="lineno">  371</span>                          0,</div>
+<div class="line"><span class="lineno">  372</span>                          <span class="keyword">true</span>,</div>
+<div class="line"><span class="lineno">  373</span>                          (*Part)[4],</div>
+<div class="line"><span class="lineno">  374</span>                          t_DIS,</div>
+<div class="line"><span class="lineno">  375</span>                          w);</div>
+<div class="line"><span class="lineno">  376</span>        }</div>
+<div class="line"><span class="lineno">  377</span>        <a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a1391b7407359c40dbacead1473f5a96b">index</a> += 1;</div>
+<div class="line"><span class="lineno">  378</span>    }</div>
+<div class="line"><span class="lineno">  379</span> </div>
+<div class="line"><span class="lineno">  380</span>    <span class="comment">// Soft interaction tracks</span></div>
+<div class="line"><span class="lineno">  381</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp;&amp; softParticle : *<a class="code hl_variable" href="classMuDISGenerator.html#a40d9a237ef48fea62a09f84c5ff5cf47">dPartSoft</a>) {</div>
+<div class="line"><span class="lineno">  382</span>        TVectorD* SoftPart = <span class="keyword">dynamic_cast&lt;</span>TVectorD*<span class="keyword">&gt;</span>(softParticle);</div>
+<div class="line"><span class="lineno">  383</span>        <span class="keywordflow">if</span> ((*SoftPart)[7] &gt; zmu) {</div>
+<div class="line"><span class="lineno">  384</span>            <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">  385</span>        }   <span class="comment">// Soft interactions after the DIS point are not saved</span></div>
+<div class="line"><span class="lineno">  386</span>        Double_t t_soft = (*SoftPart)[8] / 1e9;   <span class="comment">// Time in seconds</span></div>
+<div class="line"><span class="lineno">  387</span>        cpg-&gt;AddTrack(<span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>((*SoftPart)[0]),</div>
+<div class="line"><span class="lineno">  388</span>                      (*SoftPart)[1],</div>
+<div class="line"><span class="lineno">  389</span>                      (*SoftPart)[2],</div>
+<div class="line"><span class="lineno">  390</span>                      (*SoftPart)[3],</div>
+<div class="line"><span class="lineno">  391</span>                      (*SoftPart)[5],</div>
+<div class="line"><span class="lineno">  392</span>                      (*SoftPart)[6],</div>
+<div class="line"><span class="lineno">  393</span>                      (*SoftPart)[7],</div>
+<div class="line"><span class="lineno">  394</span>                      0,</div>
+<div class="line"><span class="lineno">  395</span>                      <span class="keyword">true</span>,</div>
+<div class="line"><span class="lineno">  396</span>                      (*SoftPart)[4],</div>
+<div class="line"><span class="lineno">  397</span>                      t_soft,</div>
+<div class="line"><span class="lineno">  398</span>                      <a class="code hl_variable" href="namespacemakeMuonDIS.html#a31069c861ee6564962a537e94c422254">w</a>);</div>
+<div class="line"><span class="lineno">  399</span>    }</div>
+<div class="line"><span class="lineno">  400</span> </div>
+<div class="line"><span class="lineno">  401</span>    <span class="keywordflow">return</span> kTRUE;</div>
+<div class="line"><span class="lineno">  402</span>}</div>
 <div class="ttc" id="aDPPythia8Generator_8cxx_html_a918077216eb661c02ed2a5bfd06bb77d"><div class="ttname"><a href="DPPythia8Generator_8cxx.html#a918077216eb661c02ed2a5bfd06bb77d">c_light</a></div><div class="ttdeci">const Double_t c_light</div><div class="ttdef"><b>Definition</b> <a href="DPPythia8Generator_8cxx_source.html#l00010">DPPythia8Generator.cxx:10</a></div></div>
 <div class="ttc" id="aMuDISGenerator_8cxx_html_a79e0706cf861ba822ef609537ea3241c"><div class="ttname"><a href="MuDISGenerator_8cxx.html#a79e0706cf861ba822ef609537ea3241c">muon_mass</a></div><div class="ttdeci">const Double_t muon_mass</div><div class="ttdef"><b>Definition</b> <a href="MuDISGenerator_8cxx_source.html#l00023">MuDISGenerator.cxx:23</a></div></div>
 <div class="ttc" id="aclassMuDISGenerator_html_a265ad29dfc07e699d171b204b5480eef"><div class="ttname"><a href="classMuDISGenerator.html#a265ad29dfc07e699d171b204b5480eef">MuDISGenerator::startZ</a></div><div class="ttdeci">Double_t startZ</div><div class="ttdef"><b>Definition</b> <a href="MuDISGenerator_8h_source.html#l00040">MuDISGenerator.h:40</a></div></div>

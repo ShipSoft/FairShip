@@ -254,13 +254,13 @@ $(document).ready(function(){initNavTree('muonHit_8cxx_source.html',''); initRes
 <div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>    TObjArray* nodes =  node-&gt;GetVolume()-&gt;GetNodes();</div>
 <div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span><span class="comment">//</span></div>
 <div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>    <span class="keywordflow">for</span> (Int_t i = 0; i &lt; nodes-&gt;GetEntries(); i++) {</div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>      node = (TGeoNode*)nodes-&gt;At(i);</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>      node = <span class="keyword">dynamic_cast&lt;</span>TGeoNode*<span class="keyword">&gt;</span>(nodes-&gt;At(i));</div>
 <div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>      Int_t muStNs = 0;</div>
 <div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>      <span class="keywordflow">if</span> (TString(node-&gt;GetName()).Contains(<span class="stringliteral">&quot;muondet&quot;</span>)) {</div>
 <div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>        nav-&gt;cd(muDet+<span class="stringliteral">&quot;/&quot;</span>+node-&gt;GetName());</div>
 <div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>        TGeoVolume* volu = node-&gt;GetVolume();</div>
 <div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>        muShape = node-&gt;GetVolume()-&gt;GetShape();</div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>        muonBox = (TGeoBBox*) muShape;</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>        muonBox = <span class="keyword">dynamic_cast&lt;</span>TGeoBBox*<span class="keyword">&gt;</span>(muShape);</div>
 <div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>        muStxMax.push_back(muonBox-&gt;GetDX()); muStyMax.push_back(muonBox-&gt;GetDY());</div>
 <div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>        muStzMax.push_back(muonBox-&gt;GetDZ());</div>
 <div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>        nav-&gt;LocalToMaster(loc,global); muStZpos.push_back(global[2]);</div>

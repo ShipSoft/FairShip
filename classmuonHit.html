@@ -659,13 +659,13 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  144</span>    TObjArray* nodes =  node-&gt;GetVolume()-&gt;GetNodes();</div>
 <div class="line"><span class="lineno">  145</span><span class="comment">//</span></div>
 <div class="line"><span class="lineno">  146</span>    <span class="keywordflow">for</span> (Int_t i = 0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; nodes-&gt;GetEntries(); <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>++) {</div>
-<div class="line"><span class="lineno">  147</span>      node = (TGeoNode*)nodes-&gt;At(i);</div>
+<div class="line"><span class="lineno">  147</span>      node = <span class="keyword">dynamic_cast&lt;</span>TGeoNode*<span class="keyword">&gt;</span>(nodes-&gt;At(i));</div>
 <div class="line"><span class="lineno">  148</span>      Int_t muStNs = 0;</div>
 <div class="line"><span class="lineno">  149</span>      <span class="keywordflow">if</span> (TString(node-&gt;GetName()).Contains(<span class="stringliteral">&quot;muondet&quot;</span>)) {</div>
 <div class="line"><span class="lineno">  150</span>        nav-&gt;cd(muDet+<span class="stringliteral">&quot;/&quot;</span>+node-&gt;GetName());</div>
 <div class="line"><span class="lineno">  151</span>        TGeoVolume* volu = node-&gt;GetVolume();</div>
 <div class="line"><span class="lineno">  152</span>        muShape = node-&gt;GetVolume()-&gt;GetShape();</div>
-<div class="line"><span class="lineno">  153</span>        muonBox = (TGeoBBox*) muShape;</div>
+<div class="line"><span class="lineno">  153</span>        muonBox = <span class="keyword">dynamic_cast&lt;</span>TGeoBBox*<span class="keyword">&gt;</span>(muShape);</div>
 <div class="line"><span class="lineno">  154</span>        muStxMax.push_back(muonBox-&gt;GetDX()); muStyMax.push_back(muonBox-&gt;GetDY());</div>
 <div class="line"><span class="lineno">  155</span>        muStzMax.push_back(muonBox-&gt;GetDZ());</div>
 <div class="line"><span class="lineno">  156</span>        nav-&gt;LocalToMaster(loc,global); muStZpos.push_back(global[2]);</div>

@@ -174,7 +174,7 @@ $(document).ready(function(){initNavTree('ecalDigi_8cxx_source.html',''); initRe
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    <span class="keywordflow">return</span> kFATAL;</div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  }</div>
 <div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  <a class="code hl_variable" href="classecalDigi.html#a0f2bbf8e826c44d8b6c32a06d15de9e5">fStr</a>=(<a class="code hl_class" href="classecalStructure.html">ecalStructure</a>*)manager-&gt;GetObject(<span class="stringliteral">&quot;EcalStructure&quot;</span>);</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  <a class="code hl_variable" href="classecalDigi.html#a0f2bbf8e826c44d8b6c32a06d15de9e5">fStr</a> = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classecalStructure.html">ecalStructure</a>*<span class="keyword">&gt;</span>(manager-&gt;GetObject(<span class="stringliteral">&quot;EcalStructure&quot;</span>));</div>
 <div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classecalDigi.html#a0f2bbf8e826c44d8b6c32a06d15de9e5">fStr</a>)</div>
 <div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  {</div>
 <div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    Fatal(<span class="stringliteral">&quot;Init()&quot;</span>, <span class="stringliteral">&quot;Can&#39;t find calorimeter structure in the system.&quot;</span>);</div>

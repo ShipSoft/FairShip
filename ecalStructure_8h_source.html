@@ -98,8 +98,8 @@ $(document).ready(function(){initNavTree('ecalStructure_8h_source.html',''); ini
 </div><!--header-->
 <div class="contents">
 <a href="ecalStructure_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#ifndef ECALSTRUCTURE_H</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#define ECALSTRUCTURE_H</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#ifndef ECAL_ECALSTRUCTURE_H_</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#define ECAL_ECALSTRUCTURE_H_</span></div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &quot;<a class="code" href="ecalInf_8h.html">ecalInf.h</a>&quot;</span></div>
@@ -119,7 +119,7 @@ $(document).ready(function(){initNavTree('ecalStructure_8h_source.html',''); ini
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="classecalStructure.html">   24</a></span><span class="keyword">class </span><a class="code hl_class" href="classecalStructure.html">ecalStructure</a> : <span class="keyword">public</span> TNamed</div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>{</div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>  <a class="code hl_class" href="classecalStructure.html">ecalStructure</a>(<a class="code hl_class" href="classecalInf.html">ecalInf</a>* ecalinf);</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>  <span class="keyword">explicit</span> <a class="code hl_class" href="classecalStructure.html">ecalStructure</a>(<a class="code hl_class" href="classecalInf.html">ecalInf</a>* ecalinf);</div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="classecalStructure.html#a0b303fc74d5cf2db15d2f04abde7c3b9">   28</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classecalStructure.html#a0b303fc74d5cf2db15d2f04abde7c3b9">SetUseMC</a>(Int_t mc=0) {<a class="code hl_variable" href="classecalStructure.html#a901b39158006570da260c87d2f3f2e91">fUseMC</a>=mc;}</div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="classecalStructure.html#a57f3548805ca1492cd244c4b0a11b5e0">   29</a></span>  Int_t <a class="code hl_function" href="classecalStructure.html#a57f3548805ca1492cd244c4b0a11b5e0">GetUseMC</a>()<span class="keyword"> const </span>{<span class="keywordflow">return</span> <a class="code hl_variable" href="classecalStructure.html#a901b39158006570da260c87d2f3f2e91">fUseMC</a>;}</div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classecalStructure.html#a3beb7510b81233c6034d6b7cf23f6f1a">Construct</a>();</div>
@@ -286,7 +286,7 @@ $(document).ready(function(){initNavTree('ecalStructure_8h_source.html',''); ini
 <div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>};</div>
 </div>
 <div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span> </div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span><span class="preprocessor">#endif  </span><span class="comment">// ECAL_ECALSTRUCTURE_H_</span></div>
 <div class="ttc" id="aclassecalCell_html"><div class="ttname"><a href="classecalCell.html">ecalCell</a></div><div class="ttdef"><b>Definition</b> <a href="ecalCell_8h_source.html#l00016">ecalCell.h:17</a></div></div>
 <div class="ttc" id="aclassecalCell_html_a1ca8fc7c16c602b4031ddedb49ef31a4"><div class="ttname"><a href="classecalCell.html#a1ca8fc7c16c602b4031ddedb49ef31a4">ecalCell::GetCellNumber</a></div><div class="ttdeci">Int_t GetCellNumber() const</div><div class="ttdef"><b>Definition</b> <a href="ecalCell_8h_source.html#l00040">ecalCell.h:40</a></div></div>
 <div class="ttc" id="aclassecalCell_html_a768714f8f275ff592c42dbf401e11250"><div class="ttname"><a href="classecalCell.html#a768714f8f275ff592c42dbf401e11250">ecalCell::AddEnergy</a></div><div class="ttdeci">void AddEnergy(Float_t energy)</div><div class="ttdef"><b>Definition</b> <a href="ecalCell_8h_source.html#l00068">ecalCell.h:68</a></div></div>

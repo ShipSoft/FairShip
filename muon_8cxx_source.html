@@ -235,7 +235,7 @@ $(document).ready(function(){initNavTree('muon_8cxx_source.html',''); initResiza
 <div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>           <a class="code hl_variable" href="classmuon.html#af654537fdf8800dd3c6ea1941bd2a4b3">fELoss</a>,pdgCode);</div>
 <div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span> </div>
 <div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>    <span class="comment">// Increment number of muon det points in TParticle</span></div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>    <a class="code hl_class" href="classShipStack.html">ShipStack</a>* stack = (<a class="code hl_class" href="classShipStack.html">ShipStack</a>*) gMC-&gt;GetStack();</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>    <a class="code hl_class" href="classShipStack.html">ShipStack</a>* stack = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classShipStack.html">ShipStack</a>*<span class="keyword">&gt;</span>(gMC-&gt;GetStack());</div>
 <div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>    stack-&gt;AddPoint(<a class="code hl_enumvalue" href="ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680ad41d6187de68eaadf3d275fd40f869c6">kMuon</a>);</div>
 <div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>  }</div>
 <div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span> </div>

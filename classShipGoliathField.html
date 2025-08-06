@@ -239,6 +239,9 @@ Private Attributes</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">ShipGoliathField::ShipGoliathField </td>
@@ -248,6 +251,11 @@ Private Attributes</h2></td></tr>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 <p>Standard constructor </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -344,13 +352,13 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipGoliathField_8cxx_source.html#l00128">128</a> of file <a class="el" href="ShipGoliathField_8cxx_source.html">ShipGoliathField.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  128</span>                            {</div>
-<div class="line"><span class="lineno">  129</span>  <span class="comment">//char* mypath =  std::getenv(&quot;mySHIPSOFT&quot;);</span></div>
-<div class="line"><span class="lineno">  130</span>  <span class="comment">//strcat(mypath,&quot;/FairShip/field/GoliathFieldMap.root&quot;);</span></div>
-<div class="line"><span class="lineno">  131</span>  <span class="comment">//fieldmap-&gt;Close(mypath);</span></div>
-<div class="line"><span class="lineno">  132</span>  <span class="comment">//gROOT-&gt;cd();</span></div>
-<div class="line"><span class="lineno">  133</span>}</div>
+<p class="definition">Definition at line <a class="el" href="ShipGoliathField_8cxx_source.html#l00127">127</a> of file <a class="el" href="ShipGoliathField_8cxx_source.html">ShipGoliathField.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  127</span>                            {</div>
+<div class="line"><span class="lineno">  128</span>  <span class="comment">//char* mypath =  std::getenv(&quot;mySHIPSOFT&quot;);</span></div>
+<div class="line"><span class="lineno">  129</span>  <span class="comment">//strcat(mypath,&quot;/FairShip/field/GoliathFieldMap.root&quot;);</span></div>
+<div class="line"><span class="lineno">  130</span>  <span class="comment">//fieldmap-&gt;Close(mypath);</span></div>
+<div class="line"><span class="lineno">  131</span>  <span class="comment">//gROOT-&gt;cd();</span></div>
+<div class="line"><span class="lineno">  132</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -400,22 +408,22 @@ Private Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="ShipGoliathField_8cxx_source.html#l00136">136</a> of file <a class="el" href="ShipGoliathField_8cxx_source.html">ShipGoliathField.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  136</span>                                                                    {</div>
-<div class="line"><span class="lineno">  137</span>   Double_t bx=0.;</div>
-<div class="line"><span class="lineno">  138</span>   TH3D* hbx;</div>
-<div class="line"><span class="lineno">  139</span> </div>
-<div class="line"><span class="lineno">  140</span>   <span class="keywordflow">if</span> ((x &lt; <a class="code hl_variable" href="classShipGoliathField.html#a18c8cd8ce6af9147ce66953c365a57df">xmin</a> )|| (x&gt; <a class="code hl_variable" href="classShipGoliathField.html#ab2b98db40114d0360cd4650e603d7dce">xmax</a>) || (y &lt; <a class="code hl_variable" href="classShipGoliathField.html#a86860d1886a9b94382234965caf491d7">ymin</a>) || (y&gt;<a class="code hl_variable" href="classShipGoliathField.html#a0ab242907b9a4611a8da68e9378ddedd">ymax</a>) || ((z-350.75)&lt;<a class="code hl_variable" href="classShipGoliathField.html#ac0d650d0f4768a017455765876fa087e">zmin</a>) || ((z-350.75)&gt;<a class="code hl_variable" href="classShipGoliathField.html#a3638be3087d12091cb0372b3321b2490">zmax</a>)) {</div>
-<div class="line"><span class="lineno">  141</span>       <span class="keywordflow">return</span> bx;}</div>
-<div class="line"><span class="lineno">  142</span>    <span class="comment">// FairShip: 0 after absorber -384.5&lt;target&lt;-240 -239.9&lt;absorber&lt;0&lt;T1T2&lt;121&lt;Goliath&lt;481&lt;T3T4&lt;755 766.6&lt;RPC&lt;966.6</span></div>
-<div class="line"><span class="lineno">  143</span>    hbx=<a class="code hl_function" href="classShipGoliathField.html#a57cd347072839ef0a730880379a4989f">ShipGoliathField::gethistbx</a>();</div>
-<div class="line"><span class="lineno">  144</span>    Int_t binx = hbx-&gt;GetXaxis()-&gt;FindBin(x);</div>
-<div class="line"><span class="lineno">  145</span>    Int_t biny = hbx-&gt;GetYaxis()-&gt;FindBin(y);</div>
-<div class="line"><span class="lineno">  146</span>    Int_t binz = hbx-&gt;GetZaxis()-&gt;FindBin(z - 350.75);</div>
-<div class="line"><span class="lineno">  147</span>    bx=hbx-&gt;GetBinContent(binx,biny,binz)*<a class="code hl_variable" href="classShipGoliathField.html#a0630891bc731f14ba01c9668540acaca">tesla</a>;</div>
-<div class="line"><span class="lineno">  148</span>    <span class="comment">//cout &lt;&lt; &quot;GetBX &quot; &lt;&lt; x &lt;&lt; &quot;, binx &quot; &lt;&lt; binx &lt;&lt;&quot; y &quot;&lt;&lt; y &lt;&lt; &quot; biny &quot;&lt;&lt;biny&lt;&lt;&quot; z &quot;&lt;&lt; z &lt;&lt; &quot; binz &quot;&lt;&lt;binz&lt;&lt;&quot; Bx= &quot; &lt;&lt; bx &lt;&lt;  endl;</span></div>
-<div class="line"><span class="lineno">  149</span>   <span class="keywordflow">return</span> bx;</div>
-<div class="line"><span class="lineno">  150</span>}</div>
+<p class="definition">Definition at line <a class="el" href="ShipGoliathField_8cxx_source.html#l00135">135</a> of file <a class="el" href="ShipGoliathField_8cxx_source.html">ShipGoliathField.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  135</span>                                                                    {</div>
+<div class="line"><span class="lineno">  136</span>   Double_t bx=0.;</div>
+<div class="line"><span class="lineno">  137</span>   TH3D* hbx;</div>
+<div class="line"><span class="lineno">  138</span> </div>
+<div class="line"><span class="lineno">  139</span>   <span class="keywordflow">if</span> ((x &lt; <a class="code hl_variable" href="classShipGoliathField.html#a18c8cd8ce6af9147ce66953c365a57df">xmin</a> )|| (x&gt; <a class="code hl_variable" href="classShipGoliathField.html#ab2b98db40114d0360cd4650e603d7dce">xmax</a>) || (y &lt; <a class="code hl_variable" href="classShipGoliathField.html#a86860d1886a9b94382234965caf491d7">ymin</a>) || (y&gt;<a class="code hl_variable" href="classShipGoliathField.html#a0ab242907b9a4611a8da68e9378ddedd">ymax</a>) || ((z-350.75)&lt;<a class="code hl_variable" href="classShipGoliathField.html#ac0d650d0f4768a017455765876fa087e">zmin</a>) || ((z-350.75)&gt;<a class="code hl_variable" href="classShipGoliathField.html#a3638be3087d12091cb0372b3321b2490">zmax</a>)) {</div>
+<div class="line"><span class="lineno">  140</span>       <span class="keywordflow">return</span> bx;}</div>
+<div class="line"><span class="lineno">  141</span>    <span class="comment">// FairShip: 0 after absorber -384.5&lt;target&lt;-240 -239.9&lt;absorber&lt;0&lt;T1T2&lt;121&lt;Goliath&lt;481&lt;T3T4&lt;755 766.6&lt;RPC&lt;966.6</span></div>
+<div class="line"><span class="lineno">  142</span>    hbx=<a class="code hl_function" href="classShipGoliathField.html#a57cd347072839ef0a730880379a4989f">ShipGoliathField::gethistbx</a>();</div>
+<div class="line"><span class="lineno">  143</span>    Int_t binx = hbx-&gt;GetXaxis()-&gt;FindBin(x);</div>
+<div class="line"><span class="lineno">  144</span>    Int_t biny = hbx-&gt;GetYaxis()-&gt;FindBin(y);</div>
+<div class="line"><span class="lineno">  145</span>    Int_t binz = hbx-&gt;GetZaxis()-&gt;FindBin(z - 350.75);</div>
+<div class="line"><span class="lineno">  146</span>    bx=hbx-&gt;GetBinContent(binx,biny,binz)*<a class="code hl_variable" href="classShipGoliathField.html#a0630891bc731f14ba01c9668540acaca">tesla</a>;</div>
+<div class="line"><span class="lineno">  147</span>    <span class="comment">//cout &lt;&lt; &quot;GetBX &quot; &lt;&lt; x &lt;&lt; &quot;, binx &quot; &lt;&lt; binx &lt;&lt;&quot; y &quot;&lt;&lt; y &lt;&lt; &quot; biny &quot;&lt;&lt;biny&lt;&lt;&quot; z &quot;&lt;&lt; z &lt;&lt; &quot; binz &quot;&lt;&lt;binz&lt;&lt;&quot; Bx= &quot; &lt;&lt; bx &lt;&lt;  endl;</span></div>
+<div class="line"><span class="lineno">  148</span>   <span class="keywordflow">return</span> bx;</div>
+<div class="line"><span class="lineno">  149</span>}</div>
 <div class="ttc" id="aclassShipGoliathField_html_a0630891bc731f14ba01c9668540acaca"><div class="ttname"><a href="classShipGoliathField.html#a0630891bc731f14ba01c9668540acaca">ShipGoliathField::tesla</a></div><div class="ttdeci">Float_t tesla</div><div class="ttdef"><b>Definition</b> <a href="ShipGoliathField_8h_source.html#l00073">ShipGoliathField.h:73</a></div></div>
 <div class="ttc" id="aclassShipGoliathField_html_a0ab242907b9a4611a8da68e9378ddedd"><div class="ttname"><a href="classShipGoliathField.html#a0ab242907b9a4611a8da68e9378ddedd">ShipGoliathField::ymax</a></div><div class="ttdeci">Double_t ymax</div><div class="ttdef"><b>Definition</b> <a href="ShipGoliathField_8h_source.html#l00088">ShipGoliathField.h:88</a></div></div>
 <div class="ttc" id="aclassShipGoliathField_html_a18c8cd8ce6af9147ce66953c365a57df"><div class="ttname"><a href="classShipGoliathField.html#a18c8cd8ce6af9147ce66953c365a57df">ShipGoliathField::xmin</a></div><div class="ttdeci">Double_t xmin</div><div class="ttdef"><b>Definition</b> <a href="ShipGoliathField_8h_source.html#l00088">ShipGoliathField.h:88</a></div></div>
@@ -467,20 +475,20 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipGoliathField_8cxx_source.html#l00156">156</a> of file <a class="el" href="ShipGoliathField_8cxx_source.html">ShipGoliathField.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  156</span>                                                                   {</div>
-<div class="line"><span class="lineno">  157</span>    Double_t by=0.;</div>
-<div class="line"><span class="lineno">  158</span>    TH3D* hby;</div>
-<div class="line"><span class="lineno">  159</span> </div>
-<div class="line"><span class="lineno">  160</span>   <span class="keywordflow">if</span> ((x &lt; <a class="code hl_variable" href="classShipGoliathField.html#a18c8cd8ce6af9147ce66953c365a57df">xmin</a> )|| (x&gt; <a class="code hl_variable" href="classShipGoliathField.html#ab2b98db40114d0360cd4650e603d7dce">xmax</a>) || (y &lt; <a class="code hl_variable" href="classShipGoliathField.html#a86860d1886a9b94382234965caf491d7">ymin</a>) || (y&gt;<a class="code hl_variable" href="classShipGoliathField.html#a0ab242907b9a4611a8da68e9378ddedd">ymax</a>) || ((z-350.75)&lt;<a class="code hl_variable" href="classShipGoliathField.html#ac0d650d0f4768a017455765876fa087e">zmin</a>) || ((z-350.75)&gt;<a class="code hl_variable" href="classShipGoliathField.html#a3638be3087d12091cb0372b3321b2490">zmax</a>)) {</div>
-<div class="line"><span class="lineno">  161</span>       <span class="keywordflow">return</span> by;}</div>
-<div class="line"><span class="lineno">  162</span>    hby=<a class="code hl_function" href="classShipGoliathField.html#a2ee870fd33764739e92d1c611b402bc4">ShipGoliathField::gethistby</a>();</div>
-<div class="line"><span class="lineno">  163</span>    Int_t binx = hby-&gt;GetXaxis()-&gt;FindBin(x);</div>
-<div class="line"><span class="lineno">  164</span>    Int_t biny = hby-&gt;GetYaxis()-&gt;FindBin(y);</div>
-<div class="line"><span class="lineno">  165</span>    Int_t binz = hby-&gt;GetZaxis()-&gt;FindBin(z- 350.75);</div>
-<div class="line"><span class="lineno">  166</span>    by=hby-&gt;GetBinContent(binx,biny,binz)*<a class="code hl_variable" href="classShipGoliathField.html#a0630891bc731f14ba01c9668540acaca">tesla</a>;</div>
-<div class="line"><span class="lineno">  167</span>   <span class="keywordflow">return</span> by;</div>
-<div class="line"><span class="lineno">  168</span>}</div>
+<p class="definition">Definition at line <a class="el" href="ShipGoliathField_8cxx_source.html#l00155">155</a> of file <a class="el" href="ShipGoliathField_8cxx_source.html">ShipGoliathField.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  155</span>                                                                   {</div>
+<div class="line"><span class="lineno">  156</span>    Double_t by=0.;</div>
+<div class="line"><span class="lineno">  157</span>    TH3D* hby;</div>
+<div class="line"><span class="lineno">  158</span> </div>
+<div class="line"><span class="lineno">  159</span>   <span class="keywordflow">if</span> ((x &lt; <a class="code hl_variable" href="classShipGoliathField.html#a18c8cd8ce6af9147ce66953c365a57df">xmin</a> )|| (x&gt; <a class="code hl_variable" href="classShipGoliathField.html#ab2b98db40114d0360cd4650e603d7dce">xmax</a>) || (y &lt; <a class="code hl_variable" href="classShipGoliathField.html#a86860d1886a9b94382234965caf491d7">ymin</a>) || (y&gt;<a class="code hl_variable" href="classShipGoliathField.html#a0ab242907b9a4611a8da68e9378ddedd">ymax</a>) || ((z-350.75)&lt;<a class="code hl_variable" href="classShipGoliathField.html#ac0d650d0f4768a017455765876fa087e">zmin</a>) || ((z-350.75)&gt;<a class="code hl_variable" href="classShipGoliathField.html#a3638be3087d12091cb0372b3321b2490">zmax</a>)) {</div>
+<div class="line"><span class="lineno">  160</span>       <span class="keywordflow">return</span> by;}</div>
+<div class="line"><span class="lineno">  161</span>    hby=<a class="code hl_function" href="classShipGoliathField.html#a2ee870fd33764739e92d1c611b402bc4">ShipGoliathField::gethistby</a>();</div>
+<div class="line"><span class="lineno">  162</span>    Int_t binx = hby-&gt;GetXaxis()-&gt;FindBin(x);</div>
+<div class="line"><span class="lineno">  163</span>    Int_t biny = hby-&gt;GetYaxis()-&gt;FindBin(y);</div>
+<div class="line"><span class="lineno">  164</span>    Int_t binz = hby-&gt;GetZaxis()-&gt;FindBin(z- 350.75);</div>
+<div class="line"><span class="lineno">  165</span>    by=hby-&gt;GetBinContent(binx,biny,binz)*<a class="code hl_variable" href="classShipGoliathField.html#a0630891bc731f14ba01c9668540acaca">tesla</a>;</div>
+<div class="line"><span class="lineno">  166</span>   <span class="keywordflow">return</span> by;</div>
+<div class="line"><span class="lineno">  167</span>}</div>
 <div class="ttc" id="aclassShipGoliathField_html_a2ee870fd33764739e92d1c611b402bc4"><div class="ttname"><a href="classShipGoliathField.html#a2ee870fd33764739e92d1c611b402bc4">ShipGoliathField::gethistby</a></div><div class="ttdeci">TH3D * gethistby() const</div><div class="ttdef"><b>Definition</b> <a href="ShipGoliathField_8h_source.html#l00069">ShipGoliathField.h:69</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -525,21 +533,21 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ShipGoliathField_8cxx_source.html#l00175">175</a> of file <a class="el" href="ShipGoliathField_8cxx_source.html">ShipGoliathField.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  175</span>                                                                    {</div>
-<div class="line"><span class="lineno">  176</span>    Double_t bz=0.;</div>
-<div class="line"><span class="lineno">  177</span>    TH3D* hbz;</div>
-<div class="line"><span class="lineno">  178</span> </div>
-<div class="line"><span class="lineno">  179</span>   <span class="keywordflow">if</span> ((x &lt; <a class="code hl_variable" href="classShipGoliathField.html#a18c8cd8ce6af9147ce66953c365a57df">xmin</a> )|| (x&gt; <a class="code hl_variable" href="classShipGoliathField.html#ab2b98db40114d0360cd4650e603d7dce">xmax</a>) || (y &lt; <a class="code hl_variable" href="classShipGoliathField.html#a86860d1886a9b94382234965caf491d7">ymin</a>) || (y&gt;<a class="code hl_variable" href="classShipGoliathField.html#a0ab242907b9a4611a8da68e9378ddedd">ymax</a>) || ((z-350.75)&lt;<a class="code hl_variable" href="classShipGoliathField.html#ac0d650d0f4768a017455765876fa087e">zmin</a>) || ((z-350.75)&gt;<a class="code hl_variable" href="classShipGoliathField.html#a3638be3087d12091cb0372b3321b2490">zmax</a>)) {</div>
-<div class="line"><span class="lineno">  180</span>       <span class="keywordflow">return</span> bz;}</div>
-<div class="line"><span class="lineno">  181</span> </div>
-<div class="line"><span class="lineno">  182</span>    hbz=<a class="code hl_function" href="classShipGoliathField.html#a991a953f1685a22d419a6ff325679cdf">ShipGoliathField::gethistbz</a>();</div>
-<div class="line"><span class="lineno">  183</span>    Int_t binx = hbz-&gt;GetXaxis()-&gt;FindBin(x);</div>
-<div class="line"><span class="lineno">  184</span>    Int_t biny = hbz-&gt;GetYaxis()-&gt;FindBin(y);</div>
-<div class="line"><span class="lineno">  185</span>    Int_t binz = hbz-&gt;GetZaxis()-&gt;FindBin(z- 350.75);</div>
-<div class="line"><span class="lineno">  186</span>    bz=hbz-&gt;GetBinContent(binx,biny,binz)*<a class="code hl_variable" href="classShipGoliathField.html#a0630891bc731f14ba01c9668540acaca">tesla</a>;</div>
-<div class="line"><span class="lineno">  187</span>  <span class="keywordflow">return</span> bz;</div>
-<div class="line"><span class="lineno">  188</span>}</div>
+<p class="definition">Definition at line <a class="el" href="ShipGoliathField_8cxx_source.html#l00174">174</a> of file <a class="el" href="ShipGoliathField_8cxx_source.html">ShipGoliathField.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  174</span>                                                                    {</div>
+<div class="line"><span class="lineno">  175</span>    Double_t bz=0.;</div>
+<div class="line"><span class="lineno">  176</span>    TH3D* hbz;</div>
+<div class="line"><span class="lineno">  177</span> </div>
+<div class="line"><span class="lineno">  178</span>   <span class="keywordflow">if</span> ((x &lt; <a class="code hl_variable" href="classShipGoliathField.html#a18c8cd8ce6af9147ce66953c365a57df">xmin</a> )|| (x&gt; <a class="code hl_variable" href="classShipGoliathField.html#ab2b98db40114d0360cd4650e603d7dce">xmax</a>) || (y &lt; <a class="code hl_variable" href="classShipGoliathField.html#a86860d1886a9b94382234965caf491d7">ymin</a>) || (y&gt;<a class="code hl_variable" href="classShipGoliathField.html#a0ab242907b9a4611a8da68e9378ddedd">ymax</a>) || ((z-350.75)&lt;<a class="code hl_variable" href="classShipGoliathField.html#ac0d650d0f4768a017455765876fa087e">zmin</a>) || ((z-350.75)&gt;<a class="code hl_variable" href="classShipGoliathField.html#a3638be3087d12091cb0372b3321b2490">zmax</a>)) {</div>
+<div class="line"><span class="lineno">  179</span>       <span class="keywordflow">return</span> bz;}</div>
+<div class="line"><span class="lineno">  180</span> </div>
+<div class="line"><span class="lineno">  181</span>    hbz=<a class="code hl_function" href="classShipGoliathField.html#a991a953f1685a22d419a6ff325679cdf">ShipGoliathField::gethistbz</a>();</div>
+<div class="line"><span class="lineno">  182</span>    Int_t binx = hbz-&gt;GetXaxis()-&gt;FindBin(x);</div>
+<div class="line"><span class="lineno">  183</span>    Int_t biny = hbz-&gt;GetYaxis()-&gt;FindBin(y);</div>
+<div class="line"><span class="lineno">  184</span>    Int_t binz = hbz-&gt;GetZaxis()-&gt;FindBin(z- 350.75);</div>
+<div class="line"><span class="lineno">  185</span>    bz=hbz-&gt;GetBinContent(binx,biny,binz)*<a class="code hl_variable" href="classShipGoliathField.html#a0630891bc731f14ba01c9668540acaca">tesla</a>;</div>
+<div class="line"><span class="lineno">  186</span>  <span class="keywordflow">return</span> bz;</div>
+<div class="line"><span class="lineno">  187</span>}</div>
 <div class="ttc" id="aclassShipGoliathField_html_a991a953f1685a22d419a6ff325679cdf"><div class="ttname"><a href="classShipGoliathField.html#a991a953f1685a22d419a6ff325679cdf">ShipGoliathField::gethistbz</a></div><div class="ttdeci">TH3D * gethistbz() const</div><div class="ttdef"><b>Definition</b> <a href="ShipGoliathField_8h_source.html#l00070">ShipGoliathField.h:70</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -665,30 +673,30 @@ Private Attributes</h2></td></tr>
 
 <p>return value at position </p>
 
-<p class="definition">Definition at line <a class="el" href="ShipGoliathField_8cxx_source.html#l00103">103</a> of file <a class="el" href="ShipGoliathField_8cxx_source.html">ShipGoliathField.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  103</span>                                                                                   {</div>
-<div class="line"><span class="lineno">  104</span>   std::cout&lt;&lt;<span class="stringliteral">&quot;ShipGoliathField::getpos:  GetCurrentNavigator volname &quot;</span>&lt;&lt;volname&lt;&lt;std::endl;</div>
-<div class="line"><span class="lineno">  105</span>   TGeoNavigator* nav;</div>
-<div class="line"><span class="lineno">  106</span>   <span class="keywordflow">if</span> (gGeoManager) {</div>
-<div class="line"><span class="lineno">  107</span>   nav = gGeoManager-&gt;GetCurrentNavigator();}</div>
-<div class="line"><span class="lineno">  108</span>   <span class="keywordflow">else</span> { std::cout&lt;&lt;<span class="stringliteral">&quot;No geomanager&quot;</span>&lt;&lt;std::endl;}</div>
-<div class="line"><span class="lineno">  109</span>   std::cout&lt;&lt;<span class="stringliteral">&quot;ShipGoliathField::getpos: cd to volume &quot;</span>&lt;&lt;volname&lt;&lt;std::endl;</div>
-<div class="line"><span class="lineno">  110</span>   Bool_t <a class="code hl_variable" href="namespacemakeDecay.html#a8ae49156f9341ca95732cc2c31159dda">rc</a> = nav-&gt;cd(volname);</div>
-<div class="line"><span class="lineno">  111</span>   <span class="keywordflow">if</span> (not rc){</div>
-<div class="line"><span class="lineno">  112</span>       cout &lt;&lt; <span class="stringliteral">&quot;ShipGoliathfield::getpos, TGeoNavigator failed &quot;</span>&lt;&lt;volname&lt;&lt;endl;</div>
-<div class="line"><span class="lineno">  113</span>       <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">  114</span>   }</div>
-<div class="line"><span class="lineno">  115</span>   std::cout&lt;&lt;<span class="stringliteral">&quot;ShipGoliathField::getpos GetCurrentNode&quot;</span>&lt;&lt;std::endl;</div>
-<div class="line"><span class="lineno">  116</span>   TGeoNode* W = nav-&gt;GetCurrentNode();</div>
-<div class="line"><span class="lineno">  117</span>   TGeoBBox* S = <span class="keyword">dynamic_cast&lt;</span>TGeoBBox*<span class="keyword">&gt;</span>(W-&gt;GetVolume()-&gt;GetShape());</div>
-<div class="line"><span class="lineno">  118</span>   Double_t <a class="code hl_variable" href="namespaceeventDisplay.html#adedb83676a54edf1159c60c4e308ea97">top</a>[3] = {S-&gt;GetDX(),S-&gt;GetDY(),S-&gt;GetDZ()};</div>
-<div class="line"><span class="lineno">  119</span>   Double_t bot[3] = {-S-&gt;GetDX(),-S-&gt;GetDY(),-S-&gt;GetDZ()};</div>
-<div class="line"><span class="lineno">  120</span>   Double_t Gtop[3],Gbot[3];</div>
-<div class="line"><span class="lineno">  121</span>   nav-&gt;LocalToMaster(top, Gtop);</div>
-<div class="line"><span class="lineno">  122</span>   nav-&gt;LocalToMaster(bot, Gbot);</div>
-<div class="line"><span class="lineno">  123</span>   vtop.SetXYZ(Gtop[0],Gtop[1],Gtop[2]);</div>
-<div class="line"><span class="lineno">  124</span>   vbot.SetXYZ(Gbot[0],Gbot[1],Gbot[2]);</div>
-<div class="line"><span class="lineno">  125</span>}</div>
+<p class="definition">Definition at line <a class="el" href="ShipGoliathField_8cxx_source.html#l00102">102</a> of file <a class="el" href="ShipGoliathField_8cxx_source.html">ShipGoliathField.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  102</span>                                                                                   {</div>
+<div class="line"><span class="lineno">  103</span>   std::cout&lt;&lt;<span class="stringliteral">&quot;ShipGoliathField::getpos:  GetCurrentNavigator volname &quot;</span>&lt;&lt;volname&lt;&lt;std::endl;</div>
+<div class="line"><span class="lineno">  104</span>   TGeoNavigator* nav;</div>
+<div class="line"><span class="lineno">  105</span>   <span class="keywordflow">if</span> (gGeoManager) {</div>
+<div class="line"><span class="lineno">  106</span>   nav = gGeoManager-&gt;GetCurrentNavigator();}</div>
+<div class="line"><span class="lineno">  107</span>   <span class="keywordflow">else</span> { std::cout&lt;&lt;<span class="stringliteral">&quot;No geomanager&quot;</span>&lt;&lt;std::endl;}</div>
+<div class="line"><span class="lineno">  108</span>   std::cout&lt;&lt;<span class="stringliteral">&quot;ShipGoliathField::getpos: cd to volume &quot;</span>&lt;&lt;volname&lt;&lt;std::endl;</div>
+<div class="line"><span class="lineno">  109</span>   Bool_t <a class="code hl_variable" href="namespacemakeDecay.html#a8ae49156f9341ca95732cc2c31159dda">rc</a> = nav-&gt;cd(volname);</div>
+<div class="line"><span class="lineno">  110</span>   <span class="keywordflow">if</span> (!rc) {</div>
+<div class="line"><span class="lineno">  111</span>       cout &lt;&lt; <span class="stringliteral">&quot;ShipGoliathfield::getpos, TGeoNavigator failed &quot;</span>&lt;&lt;volname&lt;&lt;endl;</div>
+<div class="line"><span class="lineno">  112</span>       <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">  113</span>   }</div>
+<div class="line"><span class="lineno">  114</span>   std::cout&lt;&lt;<span class="stringliteral">&quot;ShipGoliathField::getpos GetCurrentNode&quot;</span>&lt;&lt;std::endl;</div>
+<div class="line"><span class="lineno">  115</span>   TGeoNode* W = nav-&gt;GetCurrentNode();</div>
+<div class="line"><span class="lineno">  116</span>   TGeoBBox* S = <span class="keyword">dynamic_cast&lt;</span>TGeoBBox*<span class="keyword">&gt;</span>(W-&gt;GetVolume()-&gt;GetShape());</div>
+<div class="line"><span class="lineno">  117</span>   Double_t <a class="code hl_variable" href="namespaceeventDisplay.html#adedb83676a54edf1159c60c4e308ea97">top</a>[3] = {S-&gt;GetDX(),S-&gt;GetDY(),S-&gt;GetDZ()};</div>
+<div class="line"><span class="lineno">  118</span>   Double_t bot[3] = {-S-&gt;GetDX(),-S-&gt;GetDY(),-S-&gt;GetDZ()};</div>
+<div class="line"><span class="lineno">  119</span>   Double_t Gtop[3],Gbot[3];</div>
+<div class="line"><span class="lineno">  120</span>   nav-&gt;LocalToMaster(top, Gtop);</div>
+<div class="line"><span class="lineno">  121</span>   nav-&gt;LocalToMaster(bot, Gbot);</div>
+<div class="line"><span class="lineno">  122</span>   vtop.SetXYZ(Gtop[0],Gtop[1],Gtop[2]);</div>
+<div class="line"><span class="lineno">  123</span>   vbot.SetXYZ(Gbot[0],Gbot[1],Gbot[2]);</div>
+<div class="line"><span class="lineno">  124</span>}</div>
 <div class="ttc" id="anamespaceeventDisplay_html_adedb83676a54edf1159c60c4e308ea97"><div class="ttname"><a href="namespaceeventDisplay.html#adedb83676a54edf1159c60c4e308ea97">eventDisplay.top</a></div><div class="ttdeci">top</div><div class="ttdef"><b>Definition</b> <a href="eventDisplay_8py_source.html#l01396">eventDisplay.py:1396</a></div></div>
 <div class="ttc" id="anamespacemakeDecay_html_a8ae49156f9341ca95732cc2c31159dda"><div class="ttname"><a href="namespacemakeDecay.html#a8ae49156f9341ca95732cc2c31159dda">makeDecay.rc</a></div><div class="ttdeci">rc</div><div class="ttdef"><b>Definition</b> <a href="makeDecay_8py_source.html#l00102">makeDecay.py:102</a></div></div>
 </div><!-- fragment -->
@@ -715,38 +723,37 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">   66</span> </div>
 <div class="line"><span class="lineno">   67</span>  <a class="code hl_variable" href="classShipGoliathField.html#a46046a47eaf7bdbdf85a47ecc06ca5b2">fieldmap</a> = TFile::Open(fieldfile);</div>
 <div class="line"><span class="lineno">   68</span> </div>
-<div class="line"><span class="lineno">   69</span> </div>
-<div class="line"><span class="lineno">   70</span>  TH3D* histbx= (TH3D*)<a class="code hl_variable" href="classShipGoliathField.html#a46046a47eaf7bdbdf85a47ecc06ca5b2">fieldmap</a>-&gt;Get(<span class="stringliteral">&quot;Bx&quot;</span>);</div>
-<div class="line"><span class="lineno">   71</span>  TH3D* histby= (TH3D*)<a class="code hl_variable" href="classShipGoliathField.html#a46046a47eaf7bdbdf85a47ecc06ca5b2">fieldmap</a>-&gt;Get(<span class="stringliteral">&quot;By&quot;</span>);</div>
-<div class="line"><span class="lineno">   72</span>  TH3D* histbz= (TH3D*)<a class="code hl_variable" href="classShipGoliathField.html#a46046a47eaf7bdbdf85a47ecc06ca5b2">fieldmap</a>-&gt;Get(<span class="stringliteral">&quot;Bz&quot;</span>);</div>
-<div class="line"><span class="lineno">   73</span>  <a class="code hl_variable" href="classShipGoliathField.html#a18c8cd8ce6af9147ce66953c365a57df">xmin</a> = histbx-&gt;GetXaxis()-&gt;GetXmin();</div>
-<div class="line"><span class="lineno">   74</span>  <a class="code hl_variable" href="classShipGoliathField.html#ab2b98db40114d0360cd4650e603d7dce">xmax</a> = histbx-&gt;GetXaxis()-&gt;GetXmax();</div>
-<div class="line"><span class="lineno">   75</span>  <a class="code hl_variable" href="classShipGoliathField.html#a86860d1886a9b94382234965caf491d7">ymin</a> = histbx-&gt;GetYaxis()-&gt;GetXmin();</div>
-<div class="line"><span class="lineno">   76</span>  <a class="code hl_variable" href="classShipGoliathField.html#a0ab242907b9a4611a8da68e9378ddedd">ymax</a> = histbx-&gt;GetYaxis()-&gt;GetXmax();</div>
-<div class="line"><span class="lineno">   77</span>  <a class="code hl_variable" href="classShipGoliathField.html#ac0d650d0f4768a017455765876fa087e">zmin</a> = histbx-&gt;GetZaxis()-&gt;GetXmin();</div>
-<div class="line"><span class="lineno">   78</span>  <a class="code hl_variable" href="classShipGoliathField.html#a3638be3087d12091cb0372b3321b2490">zmax</a> = histbx-&gt;GetZaxis()-&gt;GetXmax();</div>
-<div class="line"><span class="lineno">   79</span> </div>
-<div class="line"><span class="lineno">   80</span>  <a class="code hl_function" href="classShipGoliathField.html#a991793510a1d794d2fd92fe602f2c969">ShipGoliathField::sethistbxyz</a>(histbx, histby, histbz);</div>
-<div class="line"><span class="lineno">   81</span> </div>
-<div class="line"><span class="lineno">   82</span>  <span class="comment">/*</span></div>
-<div class="line"><span class="lineno">   83</span><span class="comment">  TVector3 bot,top;</span></div>
-<div class="line"><span class="lineno">   84</span><span class="comment">  std::cout&lt;&lt;&quot;ShipGoliathField::setup: making string vector&quot;&lt;&lt;std::endl;</span></div>
-<div class="line"><span class="lineno">   85</span><span class="comment">  std::vector&lt;TString&gt; volume={&quot;/volGoliath_1/VolVacuum_1&quot;,&quot;/volGoliath_1/volLateralS1_1&quot;,&quot;/volGoliath_1/volLateralS2_1&quot;,&quot;/volGoliath_1/volLateralSurface1low_1&quot;,\</span></div>
-<div class="line"><span class="lineno">   86</span><span class="comment">  &quot;/volGoliath_1/volLateralSurface2low_1&quot;,&quot;/volGoliath_1/volLateralS1_b_1&quot;,&quot;/volGoliath_1/volLateralS2_b_1&quot;,&quot;/volGoliath_1/volLateralSurface1blow_1&quot;,\</span></div>
-<div class="line"><span class="lineno">   87</span><span class="comment">  &quot;/volGoliath_1/volLateralSurface2blow_1&quot;,&quot;/volGoliath_1/volLateralS1_d_1&quot;,&quot;/volGoliath_1/volLateralS2_d_1&quot;,&quot;/volGoliath_1/volLateralS1_c_1&quot;,\</span></div>
-<div class="line"><span class="lineno">   88</span><span class="comment">  &quot;/volGoliath_1/volLateralS2_c_1&quot;};</span></div>
-<div class="line"><span class="lineno">   89</span><span class="comment">  for (Int_t i=0;i&lt;13;i++){</span></div>
-<div class="line"><span class="lineno">   90</span><span class="comment">    std::cout&lt;&lt;&quot;ShipGoliathField::setup: getpos volume &quot;&lt;&lt;volume[i]&lt;&lt;std::endl;</span></div>
-<div class="line"><span class="lineno">   91</span><span class="comment">    ShipGoliathField::getpos(volume[i],bot,top);</span></div>
-<div class="line"><span class="lineno">   92</span><span class="comment">    for (Int_t j=0;j&lt;3;j++) {</span></div>
-<div class="line"><span class="lineno">   93</span><span class="comment">      coords[i][j]=top[j];</span></div>
-<div class="line"><span class="lineno">   94</span><span class="comment">      coords[i][j+3]=bot[j];</span></div>
-<div class="line"><span class="lineno">   95</span><span class="comment">    }</span></div>
-<div class="line"><span class="lineno">   96</span><span class="comment"></span> </div>
-<div class="line"><span class="lineno">   97</span><span class="comment">    //std::cout&lt;&lt;volume[i]&lt;&lt;&quot; &quot;&lt;&lt;coords[i][3] &lt;&lt; &quot; posX &quot; &lt;&lt; posX &lt;&lt;&quot; &quot;&lt;&lt; coords[i][0] &lt;&lt; &quot;;&quot; &lt;&lt; coords[i][4] &lt;&lt; &quot; posY &quot;&lt;&lt; posY &lt;&lt;&quot; &quot;&lt;&lt;  coords[i][1] &lt;&lt; &quot;;&quot; &lt;&lt; coords[i][5] &lt;&lt; &quot; posZ &quot; &lt;&lt; posZ&lt;&lt;&quot; &quot;&lt;&lt; coords[i][2]&lt;&lt;std::endl;</span></div>
-<div class="line"><span class="lineno">   98</span><span class="comment">  }</span></div>
-<div class="line"><span class="lineno">   99</span><span class="comment">  */</span></div>
-<div class="line"><span class="lineno">  100</span>}</div>
+<div class="line"><span class="lineno">   69</span>  TH3D* histbx = <span class="keyword">dynamic_cast&lt;</span>TH3D*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="classShipGoliathField.html#a46046a47eaf7bdbdf85a47ecc06ca5b2">fieldmap</a>-&gt;Get(<span class="stringliteral">&quot;Bx&quot;</span>));</div>
+<div class="line"><span class="lineno">   70</span>  TH3D* histby = <span class="keyword">dynamic_cast&lt;</span>TH3D*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="classShipGoliathField.html#a46046a47eaf7bdbdf85a47ecc06ca5b2">fieldmap</a>-&gt;Get(<span class="stringliteral">&quot;By&quot;</span>));</div>
+<div class="line"><span class="lineno">   71</span>  TH3D* histbz = <span class="keyword">dynamic_cast&lt;</span>TH3D*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="classShipGoliathField.html#a46046a47eaf7bdbdf85a47ecc06ca5b2">fieldmap</a>-&gt;Get(<span class="stringliteral">&quot;Bz&quot;</span>));</div>
+<div class="line"><span class="lineno">   72</span>  <a class="code hl_variable" href="classShipGoliathField.html#a18c8cd8ce6af9147ce66953c365a57df">xmin</a> = histbx-&gt;GetXaxis()-&gt;GetXmin();</div>
+<div class="line"><span class="lineno">   73</span>  <a class="code hl_variable" href="classShipGoliathField.html#ab2b98db40114d0360cd4650e603d7dce">xmax</a> = histbx-&gt;GetXaxis()-&gt;GetXmax();</div>
+<div class="line"><span class="lineno">   74</span>  <a class="code hl_variable" href="classShipGoliathField.html#a86860d1886a9b94382234965caf491d7">ymin</a> = histbx-&gt;GetYaxis()-&gt;GetXmin();</div>
+<div class="line"><span class="lineno">   75</span>  <a class="code hl_variable" href="classShipGoliathField.html#a0ab242907b9a4611a8da68e9378ddedd">ymax</a> = histbx-&gt;GetYaxis()-&gt;GetXmax();</div>
+<div class="line"><span class="lineno">   76</span>  <a class="code hl_variable" href="classShipGoliathField.html#ac0d650d0f4768a017455765876fa087e">zmin</a> = histbx-&gt;GetZaxis()-&gt;GetXmin();</div>
+<div class="line"><span class="lineno">   77</span>  <a class="code hl_variable" href="classShipGoliathField.html#a3638be3087d12091cb0372b3321b2490">zmax</a> = histbx-&gt;GetZaxis()-&gt;GetXmax();</div>
+<div class="line"><span class="lineno">   78</span> </div>
+<div class="line"><span class="lineno">   79</span>  <a class="code hl_function" href="classShipGoliathField.html#a991793510a1d794d2fd92fe602f2c969">ShipGoliathField::sethistbxyz</a>(histbx, histby, histbz);</div>
+<div class="line"><span class="lineno">   80</span> </div>
+<div class="line"><span class="lineno">   81</span>  <span class="comment">/*</span></div>
+<div class="line"><span class="lineno">   82</span><span class="comment">  TVector3 bot,top;</span></div>
+<div class="line"><span class="lineno">   83</span><span class="comment">  std::cout&lt;&lt;&quot;ShipGoliathField::setup: making string vector&quot;&lt;&lt;std::endl;</span></div>
+<div class="line"><span class="lineno">   84</span><span class="comment">  std::vector&lt;TString&gt; volume={&quot;/volGoliath_1/VolVacuum_1&quot;,&quot;/volGoliath_1/volLateralS1_1&quot;,&quot;/volGoliath_1/volLateralS2_1&quot;,&quot;/volGoliath_1/volLateralSurface1low_1&quot;,\</span></div>
+<div class="line"><span class="lineno">   85</span><span class="comment">  &quot;/volGoliath_1/volLateralSurface2low_1&quot;,&quot;/volGoliath_1/volLateralS1_b_1&quot;,&quot;/volGoliath_1/volLateralS2_b_1&quot;,&quot;/volGoliath_1/volLateralSurface1blow_1&quot;,\</span></div>
+<div class="line"><span class="lineno">   86</span><span class="comment">  &quot;/volGoliath_1/volLateralSurface2blow_1&quot;,&quot;/volGoliath_1/volLateralS1_d_1&quot;,&quot;/volGoliath_1/volLateralS2_d_1&quot;,&quot;/volGoliath_1/volLateralS1_c_1&quot;,\</span></div>
+<div class="line"><span class="lineno">   87</span><span class="comment">  &quot;/volGoliath_1/volLateralS2_c_1&quot;};</span></div>
+<div class="line"><span class="lineno">   88</span><span class="comment">  for (Int_t i=0;i&lt;13;i++){</span></div>
+<div class="line"><span class="lineno">   89</span><span class="comment">    std::cout&lt;&lt;&quot;ShipGoliathField::setup: getpos volume &quot;&lt;&lt;volume[i]&lt;&lt;std::endl;</span></div>
+<div class="line"><span class="lineno">   90</span><span class="comment">    ShipGoliathField::getpos(volume[i],bot,top);</span></div>
+<div class="line"><span class="lineno">   91</span><span class="comment">    for (Int_t j=0;j&lt;3;j++) {</span></div>
+<div class="line"><span class="lineno">   92</span><span class="comment">      coords[i][j]=top[j];</span></div>
+<div class="line"><span class="lineno">   93</span><span class="comment">      coords[i][j+3]=bot[j];</span></div>
+<div class="line"><span class="lineno">   94</span><span class="comment">    }</span></div>
+<div class="line"><span class="lineno">   95</span><span class="comment"></span> </div>
+<div class="line"><span class="lineno">   96</span><span class="comment">    //std::cout&lt;&lt;volume[i]&lt;&lt;&quot; &quot;&lt;&lt;coords[i][3] &lt;&lt; &quot; posX &quot; &lt;&lt; posX &lt;&lt;&quot; &quot;&lt;&lt; coords[i][0] &lt;&lt; &quot;;&quot; &lt;&lt; coords[i][4] &lt;&lt; &quot; posY &quot;&lt;&lt; posY &lt;&lt;&quot; &quot;&lt;&lt;  coords[i][1] &lt;&lt; &quot;;&quot; &lt;&lt; coords[i][5] &lt;&lt; &quot; posZ &quot; &lt;&lt; posZ&lt;&lt;&quot; &quot;&lt;&lt; coords[i][2]&lt;&lt;std::endl;</span></div>
+<div class="line"><span class="lineno">   97</span><span class="comment">  }</span></div>
+<div class="line"><span class="lineno">   98</span><span class="comment">  */</span></div>
+<div class="line"><span class="lineno">   99</span>}</div>
 <div class="ttc" id="aclassShipGoliathField_html_a46046a47eaf7bdbdf85a47ecc06ca5b2"><div class="ttname"><a href="classShipGoliathField.html#a46046a47eaf7bdbdf85a47ecc06ca5b2">ShipGoliathField::fieldmap</a></div><div class="ttdeci">TFile * fieldmap</div><div class="ttdef"><b>Definition</b> <a href="ShipGoliathField_8h_source.html#l00060">ShipGoliathField.h:60</a></div></div>
 <div class="ttc" id="aclassShipGoliathField_html_a991793510a1d794d2fd92fe602f2c969"><div class="ttname"><a href="classShipGoliathField.html#a991793510a1d794d2fd92fe602f2c969">ShipGoliathField::sethistbxyz</a></div><div class="ttdeci">void sethistbxyz(TH3D *histbx, TH3D *histby, TH3D *histbz)</div><div class="ttdef"><b>Definition</b> <a href="ShipGoliathField_8h_source.html#l00062">ShipGoliathField.h:62</a></div></div>
 </div><!-- fragment -->
@@ -776,17 +783,17 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Screen output </p>
 
-<p class="definition">Definition at line <a class="el" href="ShipGoliathField_8cxx_source.html#l00196">196</a> of file <a class="el" href="ShipGoliathField_8cxx_source.html">ShipGoliathField.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  196</span>                             {</div>
-<div class="line"><span class="lineno">  197</span>  cout &lt;&lt; <span class="stringliteral">&quot;======================================================&quot;</span> &lt;&lt; endl;</div>
-<div class="line"><span class="lineno">  198</span>  cout &lt;&lt; <span class="stringliteral">&quot;----  &quot;</span> &lt;&lt; fTitle &lt;&lt; <span class="stringliteral">&quot; : &quot;</span> &lt;&lt; fName &lt;&lt; endl;</div>
-<div class="line"><span class="lineno">  199</span>  cout &lt;&lt; <span class="stringliteral">&quot;----&quot;</span> &lt;&lt; endl;</div>
-<div class="line"><span class="lineno">  200</span>  cout &lt;&lt; <span class="stringliteral">&quot;----  Field type    : constant&quot;</span> &lt;&lt; endl;</div>
-<div class="line"><span class="lineno">  201</span>  cout &lt;&lt; <span class="stringliteral">&quot;----&quot;</span> &lt;&lt; endl;</div>
-<div class="line"><span class="lineno">  202</span>  cout &lt;&lt; <span class="stringliteral">&quot;----  Field regions : &quot;</span> &lt;&lt; endl;</div>
-<div class="line"><span class="lineno">  203</span>  cout.precision(4);</div>
-<div class="line"><span class="lineno">  204</span>  cout &lt;&lt; <span class="stringliteral">&quot;======================================================&quot;</span> &lt;&lt; endl;</div>
-<div class="line"><span class="lineno">  205</span>}</div>
+<p class="definition">Definition at line <a class="el" href="ShipGoliathField_8cxx_source.html#l00195">195</a> of file <a class="el" href="ShipGoliathField_8cxx_source.html">ShipGoliathField.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  195</span>                             {</div>
+<div class="line"><span class="lineno">  196</span>  cout &lt;&lt; <span class="stringliteral">&quot;======================================================&quot;</span> &lt;&lt; endl;</div>
+<div class="line"><span class="lineno">  197</span>  cout &lt;&lt; <span class="stringliteral">&quot;----  &quot;</span> &lt;&lt; fTitle &lt;&lt; <span class="stringliteral">&quot; : &quot;</span> &lt;&lt; fName &lt;&lt; endl;</div>
+<div class="line"><span class="lineno">  198</span>  cout &lt;&lt; <span class="stringliteral">&quot;----&quot;</span> &lt;&lt; endl;</div>
+<div class="line"><span class="lineno">  199</span>  cout &lt;&lt; <span class="stringliteral">&quot;----  Field type    : constant&quot;</span> &lt;&lt; endl;</div>
+<div class="line"><span class="lineno">  200</span>  cout &lt;&lt; <span class="stringliteral">&quot;----&quot;</span> &lt;&lt; endl;</div>
+<div class="line"><span class="lineno">  201</span>  cout &lt;&lt; <span class="stringliteral">&quot;----  Field regions : &quot;</span> &lt;&lt; endl;</div>
+<div class="line"><span class="lineno">  202</span>  cout.precision(4);</div>
+<div class="line"><span class="lineno">  203</span>  cout &lt;&lt; <span class="stringliteral">&quot;======================================================&quot;</span> &lt;&lt; endl;</div>
+<div class="line"><span class="lineno">  204</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>

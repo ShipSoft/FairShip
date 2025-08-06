@@ -16,6 +16,7 @@ var NAVTREEINDEX0 =
 "DPPythia8Generator_8cxx.html#a918077216eb661c02ed2a5bfd06bb77d":[6,0,14,2,0],
 "DPPythia8Generator_8cxx_source.html":[6,0,14,2],
 "DPPythia8Generator_8h.html":[6,0,14,3],
+"DPPythia8Generator_8h.html#a62ae0b2d2c2d3e23cf3fbb87c737aca3":[6,0,14,3,1],
 "DPPythia8Generator_8h_source.html":[6,0,14,3],
 "EmulsionTargetLinkDef_8h.html":[6,0,15,0,0],
 "EmulsionTargetLinkDef_8h_source.html":[6,0,15,0,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX0 =
 "ShipGeoCave_8cxx.html":[6,0,10,5],
 "ShipGeoCave_8cxx_source.html":[6,0,10,5],
 "ShipGeoCave_8h.html":[6,0,10,6],
-"ShipGeoCave_8h_source.html":[6,0,10,6],
-"ShipGeoConfig_8py.html":[6,0,12,34]
+"ShipGeoCave_8h_source.html":[6,0,10,6]
 };

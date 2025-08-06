@@ -154,7 +154,7 @@ $(document).ready(function(){initNavTree('hcalModuleMC_8cxx_source.html',''); in
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  list&lt;hcalModule*&gt; mdls; <a class="code hl_function" href="classhcalModule.html#a7246dd8bbff67c7ff2c484a377127310">GetNeighborsList</a>(mdls);</div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  list&lt;hcalModule*&gt;::const_iterator p=mdls.begin();</div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  <span class="keywordflow">for</span>(;p!=mdls.end();++p)</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    energy+=((<a class="code hl_class" href="classhcalModuleMC.html">hcalModuleMC</a>*)(*p))-&gt;GetTrackEnergy(num);</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>      energy += <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classhcalModuleMC.html">hcalModuleMC</a>*<span class="keyword">&gt;</span>(*p)-&gt;<a class="code hl_function" href="classhcalModuleMC.html#a594eeda29a5ffee5011e21e7a1dc62d6">GetTrackEnergy</a>(num);</div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  <span class="keywordflow">return</span> energy;</div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>}</div>
 </div>

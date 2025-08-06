@@ -426,13 +426,13 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">   69</span>  Double_t stripCoordinatesMaster[3] = {0.,0.,0.};</div>
 <div class="line"><span class="lineno">   70</span>  navigator-&gt;LocalToMaster(stripCoordinatesLocal, stripCoordinatesMaster);</div>
 <div class="line"><span class="lineno">   71</span> </div>
-<div class="line"><span class="lineno">   72</span>  TGeoBBox* box = (TGeoBBox*)strip-&gt;GetVolume()-&gt;GetShape();</div>
+<div class="line"><span class="lineno">   72</span>  TGeoBBox* box = <span class="keyword">dynamic_cast&lt;</span>TGeoBBox*<span class="keyword">&gt;</span>(strip-&gt;GetVolume()-&gt;GetShape());</div>
 <div class="line"><span class="lineno">   73</span>  <span class="keywordtype">double</span> xHalfLength = box-&gt;GetDX();</div>
 <div class="line"><span class="lineno">   74</span>  <span class="keywordtype">double</span> yHalfLength = box-&gt;GetDY();</div>
 <div class="line"><span class="lineno">   75</span>  <span class="keywordtype">double</span> zHalfLength = box-&gt;GetDZ();</div>
 <div class="line"><span class="lineno">   76</span> </div>
 <div class="line"><span class="lineno">   77</span>  TGeoNode* passiveLayer = caloVolume-&gt;GetNode(<span class="stringliteral">&quot;ECALfilter_200000&quot;</span>); <span class="comment">// they are all the same</span></div>
-<div class="line"><span class="lineno">   78</span>  TGeoBBox* boxPassive = (TGeoBBox*)passiveLayer-&gt;GetVolume()-&gt;GetShape();</div>
+<div class="line"><span class="lineno">   78</span>  TGeoBBox* boxPassive = <span class="keyword">dynamic_cast&lt;</span>TGeoBBox*<span class="keyword">&gt;</span>(passiveLayer-&gt;GetVolume()-&gt;GetShape());</div>
 <div class="line"><span class="lineno">   79</span>  <span class="keywordtype">double</span> zPassiveHalfLength = box-&gt;GetDZ();</div>
 <div class="line"><span class="lineno">   80</span> </div>
 <div class="line"><span class="lineno">   81</span>  <span class="comment">// std::cout&lt;&lt; &quot;----------------------&quot;&lt;&lt;std::endl;</span></div>

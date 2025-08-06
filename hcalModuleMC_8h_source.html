@@ -98,8 +98,8 @@ $(document).ready(function(){initNavTree('hcalModuleMC_8h_source.html',''); init
 </div><!--header-->
 <div class="contents">
 <a href="hcalModuleMC_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#ifndef HCALMODULEMC_H</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#define HCALMODULEMC_H</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#ifndef HCAL_HCALMODULEMC_H_</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#define HCAL_HCALMODULEMC_H_</span></div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="comment">/* $Id: hcalModuleMC.h,v 1.9 2012/01/18 18:15:23 prokudin Exp $ */</span></div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
@@ -113,7 +113,7 @@ $(document).ready(function(){initNavTree('hcalModuleMC_8h_source.html',''); init
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="classhcalModuleMC.html">   18</a></span><span class="keyword">class </span><a class="code hl_class" href="classhcalModuleMC.html">hcalModuleMC</a> : <span class="keyword">public</span> <a class="code hl_class" href="classhcalModule.html">hcalModule</a></div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>{</div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>  <a class="code hl_class" href="classhcalModuleMC.html">hcalModuleMC</a>(Int_t number, Float_t x1=0, Float_t y1=0, Float_t x2=0, Float_t y2=0);</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>  <span class="keyword">explicit</span> <a class="code hl_class" href="classhcalModuleMC.html">hcalModuleMC</a>(Int_t number, Float_t x1=0, Float_t y1=0, Float_t x2=0, Float_t y2=0);</div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>  Float_t <a class="code hl_function" href="classhcalModuleMC.html#a594eeda29a5ffee5011e21e7a1dc62d6">GetTrackEnergy</a>(Int_t num) <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>  Float_t <a class="code hl_function" href="classhcalModuleMC.html#af5a13c6e9b35fdd1ccd77bf44ec55cb3">GetTrackEnergy2</a>(Int_t num) <span class="keyword">const</span>;</div>
@@ -169,7 +169,7 @@ $(document).ready(function(){initNavTree('hcalModuleMC_8h_source.html',''); init
 </div>
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="preprocessor">#endif  </span><span class="comment">// HCAL_HCALMODULEMC_H_</span></div>
 <div class="ttc" id="aclasshcalModuleMC_html"><div class="ttname"><a href="classhcalModuleMC.html">hcalModuleMC</a></div><div class="ttdef"><b>Definition</b> <a href="hcalModuleMC_8h_source.html#l00018">hcalModuleMC.h:19</a></div></div>
 <div class="ttc" id="aclasshcalModuleMC_html_a56cf5ac59de833850569922cf2121e54"><div class="ttname"><a href="classhcalModuleMC.html#a56cf5ac59de833850569922cf2121e54">hcalModuleMC::fTrackEnergy</a></div><div class="ttdeci">std::map&lt; Int_t, Float_t &gt; fTrackEnergy</div><div class="ttdef"><b>Definition</b> <a href="hcalModuleMC_8h_source.html#l00054">hcalModuleMC.h:54</a></div></div>
 <div class="ttc" id="aclasshcalModuleMC_html_a575cfc330d509c9990deae2cd90ecd8b"><div class="ttname"><a href="classhcalModuleMC.html#a575cfc330d509c9990deae2cd90ecd8b">hcalModuleMC::GetTrackEnergy2Begin</a></div><div class="ttdeci">std::map&lt; Int_t, Float_t &gt;::const_iterator GetTrackEnergy2Begin() const</div><div class="ttdef"><b>Definition</b> <a href="hcalModuleMC_8h_source.html#l00047">hcalModuleMC.h:47</a></div></div>

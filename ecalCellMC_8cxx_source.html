@@ -154,7 +154,7 @@ $(document).ready(function(){initNavTree('ecalCellMC_8cxx_source.html',''); init
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  list&lt;ecalCell*&gt; cls; <a class="code hl_function" href="classecalCell.html#a426142dfe3ceae5f12a255cc5e66cdfe">GetNeighborsList</a>(cls);</div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  list&lt;ecalCell*&gt;::const_iterator p=cls.begin();</div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  <span class="keywordflow">for</span>(;p!=cls.end();++p)</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    energy+=((<a class="code hl_class" href="classecalCellMC.html">ecalCellMC</a>*)(*p))-&gt;GetTrackEnergy(num);</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>      energy += <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classecalCellMC.html">ecalCellMC</a>*<span class="keyword">&gt;</span>(*p)-&gt;<a class="code hl_function" href="classecalCellMC.html#a08ecdeca94d74ab6c46356ee55329d75">GetTrackEnergy</a>(num);</div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  <span class="keywordflow">return</span> energy;</div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>}</div>
 </div>

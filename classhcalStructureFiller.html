@@ -238,6 +238,9 @@ Private Attributes</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">hcalStructureFiller::hcalStructureFiller </td>
@@ -263,6 +266,11 @@ Private Attributes</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 <p>Standard constructor </p>
 
@@ -573,7 +581,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">   71</span>  }</div>
 <div class="line"><span class="lineno">   72</span>  <span class="comment">//HCAL MC points</span></div>
 <div class="line"><span class="lineno">   73</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classhcalStructureFiller.html#ab2dc8c4d0eda4edbb82fb6e94fe908d4">fUseMCPoints</a>)</div>
-<div class="line"><span class="lineno">   74</span>    <a class="code hl_variable" href="classhcalStructureFiller.html#a493b25c86b2a9a8d63a2d91f2ff74d0f">fListHCALpts</a> = (TClonesArray*)fManager-&gt;GetObject(<span class="stringliteral">&quot;HcalPointLite&quot;</span>);</div>
+<div class="line"><span class="lineno">   74</span>      <a class="code hl_variable" href="classhcalStructureFiller.html#a493b25c86b2a9a8d63a2d91f2ff74d0f">fListHCALpts</a> = <span class="keyword">dynamic_cast&lt;</span>TClonesArray*<span class="keyword">&gt;</span>(fManager-&gt;GetObject(<span class="stringliteral">&quot;HcalPointLite&quot;</span>));</div>
 <div class="line"><span class="lineno">   75</span> </div>
 <div class="line"><span class="lineno">   76</span>  <span class="comment">//fInf-&gt;CheckVariables();</span></div>
 <div class="line"><span class="lineno">   77</span>  <a class="code hl_variable" href="classhcalStructureFiller.html#a305fe5221cbaa98257d709043456fa66">fStr</a>=<span class="keyword">new</span> <a class="code hl_class" href="classhcalStructure.html">hcalStructure</a>(<a class="code hl_variable" href="classhcalStructureFiller.html#a90bfba312ed1bce1c004cc8582b6c69d">fInf</a>);</div>
@@ -630,7 +638,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  100</span> </div>
 <div class="line"><span class="lineno">  101</span>  <span class="keywordflow">for</span>(UInt_t j=0; j&lt;<a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a>; j++)</div>
 <div class="line"><span class="lineno">  102</span>  {</div>
-<div class="line"><span class="lineno">  103</span>    <a class="code hl_variable" href="namespacemakeDecay.html#afdee173103d608b5c98240c05154f34d">pt</a>=(<a class="code hl_class" href="classhcalPoint.html">hcalPoint</a>*)<a class="code hl_variable" href="classhcalStructureFiller.html#a493b25c86b2a9a8d63a2d91f2ff74d0f">fListHCALpts</a>-&gt;At(j);</div>
+<div class="line"><span class="lineno">  103</span>    <a class="code hl_variable" href="namespacemakeDecay.html#afdee173103d608b5c98240c05154f34d">pt</a>=<span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classhcalPoint.html">hcalPoint</a>*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="classhcalStructureFiller.html#a493b25c86b2a9a8d63a2d91f2ff74d0f">fListHCALpts</a>-&gt;At(j));</div>
 <div class="line"><span class="lineno">  104</span>    <span class="keyword">module</span>=fStr-&gt;GetModule(pt-&gt;GetDetectorID(), section);</div>
 <div class="line"><span class="lineno">  105</span>    cout &lt;&lt; section &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespacemakeDecay.html#afdee173103d608b5c98240c05154f34d">pt</a>-&gt;GetEnergyLoss() &lt;&lt; endl;</div>
 <div class="line"><span class="lineno">  106</span>    <span class="keywordflow">if</span> (section==0)</div>
@@ -641,8 +649,8 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  111</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classhcalStructureFiller.html#a962b010de6c992ff8fa8c8c14d056f2e">fStoreTrackInfo</a>)</div>
 <div class="line"><span class="lineno">  112</span>  <span class="keywordflow">for</span>(UInt_t j=0; j&lt;<a class="code hl_variable" href="namespacemakeDecay.html#af2fe9da99a6c13f5bdd6d42663620c39">n</a>; j++)</div>
 <div class="line"><span class="lineno">  113</span>  {</div>
-<div class="line"><span class="lineno">  114</span>    <a class="code hl_variable" href="namespacemakeDecay.html#afdee173103d608b5c98240c05154f34d">pt</a>=(<a class="code hl_class" href="classhcalPoint.html">hcalPoint</a>*)<a class="code hl_variable" href="classhcalStructureFiller.html#a493b25c86b2a9a8d63a2d91f2ff74d0f">fListHCALpts</a>-&gt;At(j);</div>
-<div class="line"><span class="lineno">  115</span>    <a class="code hl_class" href="classhcalModuleMC.html">hcalModuleMC</a>* modulemc=(<a class="code hl_class" href="classhcalModuleMC.html">hcalModuleMC</a>*)<a class="code hl_variable" href="classhcalStructureFiller.html#a305fe5221cbaa98257d709043456fa66">fStr</a>-&gt;<a class="code hl_function" href="classhcalStructure.html#a0a996a5bfa54ba8e8a787020e05495a0">GetModule</a>(<a class="code hl_variable" href="namespacemakeDecay.html#afdee173103d608b5c98240c05154f34d">pt</a>-&gt;GetDetectorID(), section);</div>
+<div class="line"><span class="lineno">  114</span>    <a class="code hl_variable" href="namespacemakeDecay.html#afdee173103d608b5c98240c05154f34d">pt</a>=<span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classhcalPoint.html">hcalPoint</a>*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="classhcalStructureFiller.html#a493b25c86b2a9a8d63a2d91f2ff74d0f">fListHCALpts</a>-&gt;At(j));</div>
+<div class="line"><span class="lineno">  115</span>    <a class="code hl_class" href="classhcalModuleMC.html">hcalModuleMC</a>* modulemc=<span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classhcalModuleMC.html">hcalModuleMC</a>*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="classhcalStructureFiller.html#a305fe5221cbaa98257d709043456fa66">fStr</a>-&gt;<a class="code hl_function" href="classhcalStructure.html#a0a996a5bfa54ba8e8a787020e05495a0">GetModule</a>(<a class="code hl_variable" href="namespacemakeDecay.html#afdee173103d608b5c98240c05154f34d">pt</a>-&gt;GetDetectorID(), section));</div>
 <div class="line"><span class="lineno">  116</span>    <span class="keywordflow">if</span> (section==0)</div>
 <div class="line"><span class="lineno">  117</span>      modulemc-&gt;<a class="code hl_function" href="classhcalModuleMC.html#adc23eaad47213cad7698de59de09fa95">AddTrackEnergy</a>(<a class="code hl_variable" href="namespacemakeDecay.html#afdee173103d608b5c98240c05154f34d">pt</a>-&gt;GetTrackID(),<a class="code hl_variable" href="namespacemakeDecay.html#afdee173103d608b5c98240c05154f34d">pt</a>-&gt;GetEnergyLoss());</div>
 <div class="line"><span class="lineno">  118</span>    <span class="keywordflow">else</span></div>

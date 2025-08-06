@@ -1,5 +1,7 @@
 var NAVTREEINDEX2 =
 {
+"Target_8cxx.html":[6,0,15,0,1],
+"Target_8cxx_source.html":[6,0,15,0,1],
 "Target_8h.html":[6,0,15,0,2],
 "Target_8h_source.html":[6,0,15,0,2],
 "TimeDetHit_8cxx.html":[6,0,18,2],
@@ -247,7 +249,5 @@ var NAVTREEINDEX2 =
 "classDPPythia8Generator.html#a3964d8dc7e41f0612c1c573af108acd5":[5,0,27,61],
 "classDPPythia8Generator.html#a454c2841047f041f11a4e9f4d6e2ab2a":[5,0,27,50],
 "classDPPythia8Generator.html#a48b1775857ce84453cf944cd7b7c83d4":[5,0,27,52],
-"classDPPythia8Generator.html#a4a6f3264f6a5711c47403386c23f50da":[5,0,27,60],
-"classDPPythia8Generator.html#a4fdfaba26931c90ec33f26418820ffef":[5,0,27,18],
-"classDPPythia8Generator.html#a5747ec819bd117b324de73185d2c62a8":[5,0,27,0]
+"classDPPythia8Generator.html#a4a6f3264f6a5711c47403386c23f50da":[5,0,27,60]
 };

@@ -97,66 +97,65 @@ $(document).ready(function(){initNavTree('Tracklet_8h_source.html',''); initResi
   <div class="headertitle"><div class="title">Tracklet.h</div></div>
 </div><!--header-->
 <div class="contents">
-<a href="Tracklet_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef Tracklet_H</span></div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#define Tracklet_H 1</span></div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &quot;TObject.h&quot;</span></div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;TClonesArray.h&quot;</span></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;stddef.h&gt;</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;Rtypes.h&quot;</span>                     <span class="comment">// for Double_t, Int_t, Double32_t, etc</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#ifndef __CINT__</span></div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &lt;boost/serialization/access.hpp&gt;</span></div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &lt;boost/serialization/base_object.hpp&gt;</span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#endif </span><span class="comment">//__CINT__</span></div>
-<div class="foldopen" id="foldopen00022" data-start="{" data-end="};">
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="classTracklet.html">   22</a></span>class Tracklet: public TObject</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>{</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>  <span class="keyword">public</span>:</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    <a class="code hl_class" href="classTracklet.html">Tracklet</a>();</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    <a class="code hl_class" href="classTracklet.html">Tracklet</a>(Int_t f, std::vector&lt;unsigned int&gt;  aT);</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    <span class="keyword">virtual</span> <a class="code hl_class" href="classTracklet.html">~Tracklet</a>();</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="classTracklet.html#afcfb858c3059d89e05a0627c3f7ed6a8">   33</a></span>    std::vector&lt;unsigned int&gt;* <a class="code hl_function" href="classTracklet.html#afcfb858c3059d89e05a0627c3f7ed6a8">getList</a>(){<span class="keywordflow">return</span> &amp;aTracklet;}</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="classTracklet.html#a7813b59027b3c7c9209b88e88dac10b7">   34</a></span>    Int_t <a class="code hl_function" href="classTracklet.html#a7813b59027b3c7c9209b88e88dac10b7">getType</a>(){<span class="keywordflow">return</span> flag;}</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="classTracklet.html#a9343e0a75113583cf1503ef8b3eb915f">   35</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classTracklet.html#a9343e0a75113583cf1503ef8b3eb915f">setType</a>(Int_t f){flag=f;}</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    Int_t link2MCTrack(TClonesArray* strawPoints, Float_t min);   <span class="comment">// give back MCTrack ID with max matched strawtubesHits</span></div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="comment">    /*** Output to screen */</span></div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="classTracklet.html#a185f6b11181f8687ea3c94bd65e7f7cd">   38</a></span>    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classTracklet.html#a185f6b11181f8687ea3c94bd65e7f7cd">Print</a>(<span class="keyword">const</span> Option_t* opt =<span class="stringliteral">&quot;&quot;</span>)<span class="keyword"> const </span>{;}</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <span class="keyword">template</span>&lt;<span class="keyword">class</span> Archive&gt;</div>
-<div class="foldopen" id="foldopen00041" data-start="{" data-end="}">
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno"><a class="line" href="classTracklet.html#a210568b37dab76e483be13094ae4bc78">   41</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classTracklet.html#a210568b37dab76e483be13094ae4bc78">serialize</a>(Archive&amp; ar, <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> version)</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    {</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>        ar&amp; boost::serialization::base_object&lt;TObject&gt;(*<span class="keyword">this</span>);</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>        ar&amp; flag;</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>        ar&amp; aTracklet;</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    }</div>
+<a href="Tracklet_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef STRAWTUBES_TRACKLET_H_</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#define STRAWTUBES_TRACKLET_H_</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &quot;TObject.h&quot;</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &quot;TClonesArray.h&quot;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;stddef.h&gt;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;Rtypes.h&quot;</span>                     <span class="comment">// for Double_t, Int_t, Double32_t, etc</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#ifndef __CINT__</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &lt;boost/serialization/access.hpp&gt;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &lt;boost/serialization/base_object.hpp&gt;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#endif  </span><span class="comment">// __CINT__</span></div>
+<div class="foldopen" id="foldopen00021" data-start="{" data-end="};">
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno"><a class="line" href="classTracklet.html">   21</a></span>class Tracklet: public TObject</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>{</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>  <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    <a class="code hl_class" href="classTracklet.html">Tracklet</a>();</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    <a class="code hl_class" href="classTracklet.html">Tracklet</a>(Int_t f, std::vector&lt;unsigned int&gt;  aT);</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    <span class="keyword">virtual</span> <a class="code hl_class" href="classTracklet.html">~Tracklet</a>();</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="classTracklet.html#afcfb858c3059d89e05a0627c3f7ed6a8">   32</a></span>    std::vector&lt;unsigned int&gt;* <a class="code hl_function" href="classTracklet.html#afcfb858c3059d89e05a0627c3f7ed6a8">getList</a>(){<span class="keywordflow">return</span> &amp;aTracklet;}</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="classTracklet.html#a7813b59027b3c7c9209b88e88dac10b7">   33</a></span>    Int_t <a class="code hl_function" href="classTracklet.html#a7813b59027b3c7c9209b88e88dac10b7">getType</a>(){<span class="keywordflow">return</span> flag;}</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="classTracklet.html#a9343e0a75113583cf1503ef8b3eb915f">   34</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classTracklet.html#a9343e0a75113583cf1503ef8b3eb915f">setType</a>(Int_t f){flag=f;}</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    Int_t link2MCTrack(TClonesArray* strawPoints, Float_t min);   <span class="comment">// give back MCTrack ID with max matched strawtubesHits</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="comment">    /*** Output to screen */</span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="classTracklet.html#a185f6b11181f8687ea3c94bd65e7f7cd">   37</a></span>    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classTracklet.html#a185f6b11181f8687ea3c94bd65e7f7cd">Print</a>(<span class="keyword">const</span> Option_t* opt =<span class="stringliteral">&quot;&quot;</span>)<span class="keyword"> const </span>{;}</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <span class="keyword">template</span>&lt;<span class="keyword">class</span> Archive&gt;</div>
+<div class="foldopen" id="foldopen00040" data-start="{" data-end="}">
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="classTracklet.html#a210568b37dab76e483be13094ae4bc78">   40</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classTracklet.html#a210568b37dab76e483be13094ae4bc78">serialize</a>(Archive&amp; ar, <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> version)</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    {</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>        ar&amp; boost::serialization::base_object&lt;TObject&gt;(*<span class="keyword">this</span>);</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>        ar&amp; flag;</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>        ar&amp; aTracklet;</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    }</div>
 </div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  <span class="keyword">protected</span>:</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="preprocessor">#ifndef __CINT__ </span><span class="comment">// for BOOST serialization</span></div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a class="line" href="classTracklet.html#ac98d07dd8f7b70e16ccb9a01abf56b9c">   49</a></span>    <span class="keyword">friend</span> <span class="keyword">class </span>boost::serialization::access;</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="preprocessor">#endif </span><span class="comment">// for BOOST serialization</span></div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno"><a class="line" href="classTracklet.html#aee1366b8fd35ca6e40bd47c9c7796ce8">   52</a></span>    std::vector&lt;unsigned int&gt;  <a class="code hl_variable" href="classTracklet.html#aee1366b8fd35ca6e40bd47c9c7796ce8">aTracklet</a>;         </div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno"><a class="line" href="classTracklet.html#a36091ef9c3080669c75435fdfa27dbd9">   53</a></span>    Int_t <a class="code hl_variable" href="classTracklet.html#a36091ef9c3080669c75435fdfa27dbd9">flag</a>; <span class="comment">// reserved for type of tracklet  ///&lt; type of tracklet</span></div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno"><a class="line" href="classTracklet.html#af64a6f30c5709cf0b1fb664e69ffbdef">   54</a></span>    <a class="code hl_function" href="classTracklet.html#af64a6f30c5709cf0b1fb664e69ffbdef">ClassDef</a>(<a class="code hl_class" href="classTracklet.html">Tracklet</a>,1);</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>};</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="keyword">protected</span>:</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="preprocessor">#ifndef __CINT__ </span><span class="comment">// for BOOST serialization</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="classTracklet.html#ac98d07dd8f7b70e16ccb9a01abf56b9c">   48</a></span>    <span class="keyword">friend</span> <span class="keyword">class </span>boost::serialization::access;</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="preprocessor">#endif  </span><span class="comment">// for BOOST serialization</span></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno"><a class="line" href="classTracklet.html#aee1366b8fd35ca6e40bd47c9c7796ce8">   51</a></span>    std::vector&lt;unsigned int&gt;  <a class="code hl_variable" href="classTracklet.html#aee1366b8fd35ca6e40bd47c9c7796ce8">aTracklet</a>;         </div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno"><a class="line" href="classTracklet.html#a36091ef9c3080669c75435fdfa27dbd9">   52</a></span>    Int_t <a class="code hl_variable" href="classTracklet.html#a36091ef9c3080669c75435fdfa27dbd9">flag</a>; <span class="comment">// reserved for type of tracklet  ///&lt; type of tracklet</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno"><a class="line" href="classTracklet.html#af64a6f30c5709cf0b1fb664e69ffbdef">   53</a></span>    <a class="code hl_function" href="classTracklet.html#af64a6f30c5709cf0b1fb664e69ffbdef">ClassDef</a>(<a class="code hl_class" href="classTracklet.html">Tracklet</a>,1);</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>};</div>
 </div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="preprocessor">#endif</span></div>
-<div class="ttc" id="aclassTracklet_html"><div class="ttname"><a href="classTracklet.html">Tracklet</a></div><div class="ttdef"><b>Definition</b> <a href="Tracklet_8h_source.html#l00022">Tracklet.h:23</a></div></div>
-<div class="ttc" id="aclassTracklet_html_a185f6b11181f8687ea3c94bd65e7f7cd"><div class="ttname"><a href="classTracklet.html#a185f6b11181f8687ea3c94bd65e7f7cd">Tracklet::Print</a></div><div class="ttdeci">virtual void Print(const Option_t *opt=&quot;&quot;) const</div><div class="ttdef"><b>Definition</b> <a href="Tracklet_8h_source.html#l00038">Tracklet.h:38</a></div></div>
-<div class="ttc" id="aclassTracklet_html_a210568b37dab76e483be13094ae4bc78"><div class="ttname"><a href="classTracklet.html#a210568b37dab76e483be13094ae4bc78">Tracklet::serialize</a></div><div class="ttdeci">void serialize(Archive &amp;ar, const unsigned int version)</div><div class="ttdef"><b>Definition</b> <a href="Tracklet_8h_source.html#l00041">Tracklet.h:41</a></div></div>
-<div class="ttc" id="aclassTracklet_html_a36091ef9c3080669c75435fdfa27dbd9"><div class="ttname"><a href="classTracklet.html#a36091ef9c3080669c75435fdfa27dbd9">Tracklet::flag</a></div><div class="ttdeci">Int_t flag</div><div class="ttdef"><b>Definition</b> <a href="Tracklet_8h_source.html#l00053">Tracklet.h:53</a></div></div>
-<div class="ttc" id="aclassTracklet_html_a7813b59027b3c7c9209b88e88dac10b7"><div class="ttname"><a href="classTracklet.html#a7813b59027b3c7c9209b88e88dac10b7">Tracklet::getType</a></div><div class="ttdeci">Int_t getType()</div><div class="ttdef"><b>Definition</b> <a href="Tracklet_8h_source.html#l00034">Tracklet.h:34</a></div></div>
-<div class="ttc" id="aclassTracklet_html_a9343e0a75113583cf1503ef8b3eb915f"><div class="ttname"><a href="classTracklet.html#a9343e0a75113583cf1503ef8b3eb915f">Tracklet::setType</a></div><div class="ttdeci">void setType(Int_t f)</div><div class="ttdef"><b>Definition</b> <a href="Tracklet_8h_source.html#l00035">Tracklet.h:35</a></div></div>
-<div class="ttc" id="aclassTracklet_html_aee1366b8fd35ca6e40bd47c9c7796ce8"><div class="ttname"><a href="classTracklet.html#aee1366b8fd35ca6e40bd47c9c7796ce8">Tracklet::aTracklet</a></div><div class="ttdeci">std::vector&lt; unsigned int &gt; aTracklet</div><div class="ttdoc">list of indices</div><div class="ttdef"><b>Definition</b> <a href="Tracklet_8h_source.html#l00052">Tracklet.h:52</a></div></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="preprocessor">#endif  </span><span class="comment">// STRAWTUBES_TRACKLET_H_</span></div>
+<div class="ttc" id="aclassTracklet_html"><div class="ttname"><a href="classTracklet.html">Tracklet</a></div><div class="ttdef"><b>Definition</b> <a href="Tracklet_8h_source.html#l00021">Tracklet.h:22</a></div></div>
+<div class="ttc" id="aclassTracklet_html_a185f6b11181f8687ea3c94bd65e7f7cd"><div class="ttname"><a href="classTracklet.html#a185f6b11181f8687ea3c94bd65e7f7cd">Tracklet::Print</a></div><div class="ttdeci">virtual void Print(const Option_t *opt=&quot;&quot;) const</div><div class="ttdef"><b>Definition</b> <a href="Tracklet_8h_source.html#l00037">Tracklet.h:37</a></div></div>
+<div class="ttc" id="aclassTracklet_html_a210568b37dab76e483be13094ae4bc78"><div class="ttname"><a href="classTracklet.html#a210568b37dab76e483be13094ae4bc78">Tracklet::serialize</a></div><div class="ttdeci">void serialize(Archive &amp;ar, const unsigned int version)</div><div class="ttdef"><b>Definition</b> <a href="Tracklet_8h_source.html#l00040">Tracklet.h:40</a></div></div>
+<div class="ttc" id="aclassTracklet_html_a36091ef9c3080669c75435fdfa27dbd9"><div class="ttname"><a href="classTracklet.html#a36091ef9c3080669c75435fdfa27dbd9">Tracklet::flag</a></div><div class="ttdeci">Int_t flag</div><div class="ttdef"><b>Definition</b> <a href="Tracklet_8h_source.html#l00052">Tracklet.h:52</a></div></div>
+<div class="ttc" id="aclassTracklet_html_a7813b59027b3c7c9209b88e88dac10b7"><div class="ttname"><a href="classTracklet.html#a7813b59027b3c7c9209b88e88dac10b7">Tracklet::getType</a></div><div class="ttdeci">Int_t getType()</div><div class="ttdef"><b>Definition</b> <a href="Tracklet_8h_source.html#l00033">Tracklet.h:33</a></div></div>
+<div class="ttc" id="aclassTracklet_html_a9343e0a75113583cf1503ef8b3eb915f"><div class="ttname"><a href="classTracklet.html#a9343e0a75113583cf1503ef8b3eb915f">Tracklet::setType</a></div><div class="ttdeci">void setType(Int_t f)</div><div class="ttdef"><b>Definition</b> <a href="Tracklet_8h_source.html#l00034">Tracklet.h:34</a></div></div>
+<div class="ttc" id="aclassTracklet_html_aee1366b8fd35ca6e40bd47c9c7796ce8"><div class="ttname"><a href="classTracklet.html#aee1366b8fd35ca6e40bd47c9c7796ce8">Tracklet::aTracklet</a></div><div class="ttdeci">std::vector&lt; unsigned int &gt; aTracklet</div><div class="ttdoc">list of indices</div><div class="ttdef"><b>Definition</b> <a href="Tracklet_8h_source.html#l00051">Tracklet.h:51</a></div></div>
 <div class="ttc" id="aclassTracklet_html_af64a6f30c5709cf0b1fb664e69ffbdef"><div class="ttname"><a href="classTracklet.html#af64a6f30c5709cf0b1fb664e69ffbdef">Tracklet::ClassDef</a></div><div class="ttdeci">ClassDef(Tracklet, 1)</div></div>
-<div class="ttc" id="aclassTracklet_html_afcfb858c3059d89e05a0627c3f7ed6a8"><div class="ttname"><a href="classTracklet.html#afcfb858c3059d89e05a0627c3f7ed6a8">Tracklet::getList</a></div><div class="ttdeci">std::vector&lt; unsigned int &gt; * getList()</div><div class="ttdef"><b>Definition</b> <a href="Tracklet_8h_source.html#l00033">Tracklet.h:33</a></div></div>
+<div class="ttc" id="aclassTracklet_html_afcfb858c3059d89e05a0627c3f7ed6a8"><div class="ttname"><a href="classTracklet.html#afcfb858c3059d89e05a0627c3f7ed6a8">Tracklet::getList</a></div><div class="ttdeci">std::vector&lt; unsigned int &gt; * getList()</div><div class="ttdef"><b>Definition</b> <a href="Tracklet_8h_source.html#l00032">Tracklet.h:32</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

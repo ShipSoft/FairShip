@@ -123,7 +123,7 @@ $(document).ready(function(){initNavTree('ecalInf_8cxx_source.html',''); initRes
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="classecalInf.html#a5cc0b501e58a9eb4d84cdca381368084">   28</a></span><a class="code hl_function" href="classecalInf.html#a5cc0b501e58a9eb4d84cdca381368084">ecalInf::~ecalInf</a>()</div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>{</div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    <span class="keywordflow">for</span>(Int_t i=0;i&lt;<a class="code hl_variable" href="classecalInf.html#a82c78b561767c4d00dac514d4e5e1adc">fEcalStr</a>.GetSize();i++)</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>        <span class="keyword">delete</span> (TObjString*)(<a class="code hl_variable" href="classecalInf.html#a82c78b561767c4d00dac514d4e5e1adc">fEcalStr</a>.At(i));</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>        <span class="keyword">delete</span> <span class="keyword">static_cast&lt;</span>TObjString*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="classecalInf.html#a82c78b561767c4d00dac514d4e5e1adc">fEcalStr</a>.At(i));</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    <a class="code hl_variable" href="classecalInf.html#a82c78b561767c4d00dac514d4e5e1adc">fEcalStr</a>.Clear();</div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>}</div>
 </div>
@@ -182,7 +182,7 @@ $(document).ready(function(){initNavTree('ecalInf_8cxx_source.html',''); initRes
 <div class="foldopen" id="foldopen00082" data-start="{" data-end="}">
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno"><a class="line" href="classecalInf.html#ab5b26766345048dd679d0dbf44c19be1">   82</a></span>Double_t <a class="code hl_function" href="classecalInf.html#ab5b26766345048dd679d0dbf44c19be1">ecalInf::GetVariableStrict</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* key)</div>
 <div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>{</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>  TObjString* value=(TObjString*)<a class="code hl_variable" href="classecalInf.html#a0d3cdebc3747b38624079c5334fd7fd6">fVariables</a>-&gt;GetValue(key);</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>  TObjString* value=<span class="keyword">static_cast&lt;</span>TObjString*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="classecalInf.html#a0d3cdebc3747b38624079c5334fd7fd6">fVariables</a>-&gt;GetValue(key));</div>
 <div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>  <span class="keywordflow">if</span> (value==NULL)</div>
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>  {</div>
 <div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    cerr &lt;&lt; <span class="stringliteral">&quot;Can&#39;t find variable named \&quot;&quot;</span> &lt;&lt; key &lt;&lt; <span class="stringliteral">&quot;\&quot;&quot;</span>;</div>
@@ -205,7 +205,7 @@ $(document).ready(function(){initNavTree('ecalInf_8cxx_source.html',''); initRes
 <div class="foldopen" id="foldopen00103" data-start="{" data-end="}">
 <div class="line"><a id="l00103" name="l00103"></a><span class="lineno"><a class="line" href="classecalInf.html#a4b61b706a65b6d943b9ca0e3298a293d">  103</a></span>TString <a class="code hl_function" href="classecalInf.html#a4b61b706a65b6d943b9ca0e3298a293d">ecalInf::GetStringVariable</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* key)</div>
 <div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>{</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>  TObjString* value=(TObjString*)<a class="code hl_variable" href="classecalInf.html#a0d3cdebc3747b38624079c5334fd7fd6">fVariables</a>-&gt;GetValue(key);</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>  TObjString* value=<span class="keyword">static_cast&lt;</span>TObjString*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="classecalInf.html#a0d3cdebc3747b38624079c5334fd7fd6">fVariables</a>-&gt;GetValue(key));</div>
 <div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>  <span class="keywordflow">if</span> (value==NULL)</div>
 <div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>  {</div>
 <div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    Fatal(<span class="stringliteral">&quot;GetStringVariable&quot;</span>,<span class="stringliteral">&quot;Can&#39;t find variable named %s.&quot;</span>, key);</div>
@@ -219,7 +219,7 @@ $(document).ready(function(){initNavTree('ecalInf_8cxx_source.html',''); initRes
 <div class="foldopen" id="foldopen00115" data-start="{" data-end="}">
 <div class="line"><a id="l00115" name="l00115"></a><span class="lineno"><a class="line" href="classecalInf.html#ad427fe42cf80aa23de0bbe38911beb26">  115</a></span>Double_t <a class="code hl_function" href="classecalInf.html#ad427fe42cf80aa23de0bbe38911beb26">ecalInf::GetVariable</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* key)</div>
 <div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>{</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>  TObjString* value=(TObjString*)<a class="code hl_variable" href="classecalInf.html#a0d3cdebc3747b38624079c5334fd7fd6">fVariables</a>-&gt;GetValue(key);</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>  TObjString* value=<span class="keyword">static_cast&lt;</span>TObjString*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="classecalInf.html#a0d3cdebc3747b38624079c5334fd7fd6">fVariables</a>-&gt;GetValue(key));</div>
 <div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>  <span class="keywordflow">if</span> (value==NULL)</div>
 <div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>    <span class="keywordflow">return</span> -1111;</div>
 <div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>  Double_t val;</div>
@@ -234,7 +234,7 @@ $(document).ready(function(){initNavTree('ecalInf_8cxx_source.html',''); initRes
 <div class="foldopen" id="foldopen00128" data-start="{" data-end="}">
 <div class="line"><a id="l00128" name="l00128"></a><span class="lineno"><a class="line" href="classecalInf.html#a91b08efc9842fd1e0bdc3cbdc21aea13">  128</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classecalInf.html#a91b08efc9842fd1e0bdc3cbdc21aea13">ecalInf::AddVariable</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* key, <span class="keyword">const</span> <span class="keywordtype">char</span>* value)</div>
 <div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>{</div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>  TObjString* skey=(TObjString*)<a class="code hl_variable" href="classecalInf.html#a0d3cdebc3747b38624079c5334fd7fd6">fVariables</a>-&gt;FindObject(key);</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>  TObjString* skey=<span class="keyword">static_cast&lt;</span>TObjString*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="classecalInf.html#a0d3cdebc3747b38624079c5334fd7fd6">fVariables</a>-&gt;FindObject(key));</div>
 <div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>  <span class="comment">//Value for this key already exists!!!</span></div>
 <div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>  <span class="keywordflow">if</span> (skey!=NULL) <span class="keywordflow">return</span>;</div>
 <div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>  skey=<span class="keyword">new</span> TObjString(key);</div>
@@ -384,7 +384,7 @@ $(document).ready(function(){initNavTree('ecalInf_8cxx_source.html',''); initRes
 <div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span><span class="comment">  {</span></div>
 <div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span><span class="comment">    TObjString* key;</span></div>
 <div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span><span class="comment">    TIterator* iter=parVariables-&gt;MakeIterator();</span></div>
-<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span><span class="comment">    while((key=(TObjString*)iter-&gt;Next())!=NULL)</span></div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span><span class="comment">    while((key=static_cast&lt;TObjString*&gt;(iter-&gt;Next()))!=NULL)</span></div>
 <div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span><span class="comment">    {</span></div>
 <div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span><span class="comment">      TObjString* first=(TObjString*)parVariables-&gt;GetValue(key-&gt;String());</span></div>
 <div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span><span class="comment">      TObjString* second=(TObjString*)fVariables-&gt;GetValue(key-&gt;String());</span></div>
@@ -426,7 +426,7 @@ $(document).ready(function(){initNavTree('ecalInf_8cxx_source.html',''); initRes
 <div class="line"><a id="l00324" name="l00324"></a><span class="lineno"><a class="line" href="classecalInf.html#ad288e55374c342c88d5c2219ba8a77d7">  324</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classecalInf.html#ad288e55374c342c88d5c2219ba8a77d7">ecalInf::InitVariables</a>()</div>
 <div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>{</div>
 <div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>  TString stri;</div>
-<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>  TObjString* str=(TObjString*)<a class="code hl_variable" href="classecalInf.html#a82c78b561767c4d00dac514d4e5e1adc">fEcalStr</a>.At(0);</div>
+<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>  TObjString* str = <span class="keyword">static_cast&lt;</span>TObjString*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="classecalInf.html#a82c78b561767c4d00dac514d4e5e1adc">fEcalStr</a>.At(0));</div>
 <div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span> </div>
 <div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>  <a class="code hl_variable" href="classecalInf.html#a6b37cd1e4f8c02875d491bdd1e715c3f">fXPos</a>=<a class="code hl_function" href="classecalInf.html#ab5b26766345048dd679d0dbf44c19be1">GetVariableStrict</a>(<span class="stringliteral">&quot;xpos&quot;</span>);</div>
 <div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>  <a class="code hl_variable" href="classecalInf.html#a66af69926d6e9bfa63390fa1e8806fed">fYPos</a>=<a class="code hl_function" href="classecalInf.html#ab5b26766345048dd679d0dbf44c19be1">GetVariableStrict</a>(<span class="stringliteral">&quot;ypos&quot;</span>);</div>
@@ -470,46 +470,45 @@ $(document).ready(function(){initNavTree('ecalInf_8cxx_source.html',''); initRes
 <div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span>  {</div>
 <div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span>    TObjString* key;</div>
 <div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span>    TIterator* iter=<a class="code hl_variable" href="classecalInf.html#a0d3cdebc3747b38624079c5334fd7fd6">fVariables</a>-&gt;MakeIterator();</div>
-<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span>    <span class="keywordflow">while</span>((key=(TObjString*)iter-&gt;Next())!=NULL)</div>
-<div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span>    {</div>
-<div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span>      TObjString* str=(TObjString*)<a class="code hl_variable" href="classecalInf.html#a0d3cdebc3747b38624079c5334fd7fd6">fVariables</a>-&gt;GetValue(key);</div>
-<div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span>      cout &lt;&lt; key-&gt;String() &lt;&lt; <span class="stringliteral">&quot;=&quot;</span> &lt;&lt; str-&gt;String() &lt;&lt; endl;</div>
-<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span>    }</div>
-<div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span>  }</div>
-<div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span>  TObjString* key;</div>
-<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span>  TIterator* iter=<a class="code hl_variable" href="classecalInf.html#a82c78b561767c4d00dac514d4e5e1adc">fEcalStr</a>.MakeIterator();</div>
-<div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span> </div>
-<div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span>  Int_t modules=0;</div>
-<div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span>  Int_t channels=0;</div>
-<div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span>  Int_t i;</div>
-<div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span>  Int_t j;</div>
-<div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span>  Int_t <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>[10];</div>
-<div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span>  <span class="keywordtype">char</span> stri[2]={0, 0};</div>
-<div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span>  TString st;</div>
-<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span>  <span class="keywordflow">for</span>(i=0;i&lt;10;i++) <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>[i]=0;</div>
-<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span> </div>
-<div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span>  <span class="keywordflow">while</span>((key=(TObjString*)iter-&gt;Next())!=NULL)</div>
-<div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span>  {</div>
-<div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span>    st=key-&gt;String();</div>
-<div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span>    cout &lt;&lt; key-&gt;String() &lt;&lt; endl;</div>
-<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span>    <span class="keywordflow">for</span>(i=0;i&lt;st.Length();i++)</div>
-<div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span>    {</div>
-<div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span>      stri[0]=st[i];</div>
-<div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span>      j=atoi(stri);</div>
-<div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span>      <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>[j]++;</div>
-<div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span>      <span class="keywordflow">if</span> (j) modules++;</div>
-<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span>      channels+=j*j;</div>
-<div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span>    }</div>
-<div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span>  }</div>
-<div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span>  cout &lt;&lt; <span class="stringliteral">&quot;Total modules:  &quot;</span> &lt;&lt; modules &lt;&lt; endl;</div>
-<div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span>  cout &lt;&lt; <span class="stringliteral">&quot;Total channels: &quot;</span> &lt;&lt; channels &lt;&lt; endl;</div>
-<div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span>  <span class="keywordflow">for</span>(i=1;i&lt;10;i++)</div>
-<div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span>  {</div>
-<div class="line"><a id="l00404" name="l00404"></a><span class="lineno">  404</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>[i]==0) <span class="keywordflow">continue</span>;</div>
-<div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span>    cout &lt;&lt; <span class="stringliteral">&quot;   Type &quot;</span> &lt;&lt; i &lt;&lt; <span class="stringliteral">&quot; : modules=&quot;</span> &lt;&lt; <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>[i] &lt;&lt; <span class="stringliteral">&quot;, channels=&quot;</span> &lt;&lt; <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>[i]*i*i &lt;&lt; endl;</div>
-<div class="line"><a id="l00406" name="l00406"></a><span class="lineno">  406</span>  }</div>
-<div class="line"><a id="l00407" name="l00407"></a><span class="lineno">  407</span> </div>
-<div class="line"><a id="l00408" name="l00408"></a><span class="lineno">  408</span>}</div>
+<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span>    <span class="keywordflow">while</span> ((key = <span class="keyword">static_cast&lt;</span>TObjString*<span class="keyword">&gt;</span>(iter-&gt;Next())) != NULL) {</div>
+<div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span>        TObjString* str = <span class="keyword">static_cast&lt;</span>TObjString*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="classecalInf.html#a0d3cdebc3747b38624079c5334fd7fd6">fVariables</a>-&gt;GetValue(key));</div>
+<div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span>        cout &lt;&lt; key-&gt;String() &lt;&lt; <span class="stringliteral">&quot;=&quot;</span> &lt;&lt; str-&gt;String() &lt;&lt; endl;</div>
+<div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span>    }</div>
+<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span>  }</div>
+<div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span>  TObjString* key;</div>
+<div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span>  TIterator* iter=<a class="code hl_variable" href="classecalInf.html#a82c78b561767c4d00dac514d4e5e1adc">fEcalStr</a>.MakeIterator();</div>
+<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span> </div>
+<div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span>  Int_t modules=0;</div>
+<div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span>  Int_t channels=0;</div>
+<div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span>  Int_t i;</div>
+<div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span>  Int_t j;</div>
+<div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span>  Int_t <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>[10];</div>
+<div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span>  <span class="keywordtype">char</span> stri[2]={0, 0};</div>
+<div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span>  TString st;</div>
+<div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span>  <span class="keywordflow">for</span>(i=0;i&lt;10;i++) <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>[i]=0;</div>
+<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span> </div>
+<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span>  <span class="keywordflow">while</span>((key=<span class="keyword">static_cast&lt;</span>TObjString*<span class="keyword">&gt;</span>(iter-&gt;Next()))!=NULL)</div>
+<div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span>  {</div>
+<div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span>    st=key-&gt;String();</div>
+<div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span>    cout &lt;&lt; key-&gt;String() &lt;&lt; endl;</div>
+<div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span>    <span class="keywordflow">for</span>(i=0;i&lt;st.Length();i++)</div>
+<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span>    {</div>
+<div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span>      stri[0]=st[i];</div>
+<div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span>      j=atoi(stri);</div>
+<div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span>      <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>[j]++;</div>
+<div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span>      <span class="keywordflow">if</span> (j) modules++;</div>
+<div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span>      channels+=j*j;</div>
+<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span>    }</div>
+<div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span>  }</div>
+<div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span>  cout &lt;&lt; <span class="stringliteral">&quot;Total modules:  &quot;</span> &lt;&lt; modules &lt;&lt; endl;</div>
+<div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span>  cout &lt;&lt; <span class="stringliteral">&quot;Total channels: &quot;</span> &lt;&lt; channels &lt;&lt; endl;</div>
+<div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span>  <span class="keywordflow">for</span>(i=1;i&lt;10;i++)</div>
+<div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span>  {</div>
+<div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>[i]==0) <span class="keywordflow">continue</span>;</div>
+<div class="line"><a id="l00404" name="l00404"></a><span class="lineno">  404</span>    cout &lt;&lt; <span class="stringliteral">&quot;   Type &quot;</span> &lt;&lt; i &lt;&lt; <span class="stringliteral">&quot; : modules=&quot;</span> &lt;&lt; <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>[i] &lt;&lt; <span class="stringliteral">&quot;, channels=&quot;</span> &lt;&lt; <a class="code hl_variable" href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a>[i]*i*i &lt;&lt; endl;</div>
+<div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span>  }</div>
+<div class="line"><a id="l00406" name="l00406"></a><span class="lineno">  406</span> </div>
+<div class="line"><a id="l00407" name="l00407"></a><span class="lineno">  407</span>}</div>
 </div>
 <div class="ttc" id="aShipBellField_8cxx_html_a42d42dd2c682d42f11de58e34c89f895"><div class="ttname"><a href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a></div><div class="ttdeci">Double_t m</div><div class="ttdef"><b>Definition</b> <a href="ShipBellField_8cxx_source.html#l00020">ShipBellField.cxx:20</a></div></div>
 <div class="ttc" id="aclassecalInf_html"><div class="ttname"><a href="classecalInf.html">ecalInf</a></div><div class="ttdef"><b>Definition</b> <a href="ecalInf_8h_source.html#l00019">ecalInf.h:20</a></div></div>

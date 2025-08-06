@@ -506,7 +506,7 @@ $(document).ready(function(){initNavTree('veto_8cxx_source.html',''); initResiza
 <div class="line"><a id="l00404" name="l00404"></a><span class="lineno">  404</span>        phi = -acos(x / r) + 2 * TMath::Pi();</div>
 <div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span> </div>
 <div class="line"><a id="l00406" name="l00406"></a><span class="lineno">  406</span>    phi = phi * 180 / TMath::Pi();</div>
-<div class="line"><a id="l00407" name="l00407"></a><span class="lineno">  407</span>    <span class="keywordflow">return</span> (<span class="keywordtype">int</span>)Z * 1000000 + (int)r * 1000 + (<span class="keywordtype">int</span>)phi;</div>
+<div class="line"><a id="l00407" name="l00407"></a><span class="lineno">  407</span>    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(Z) * 1000000 + <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(r) * 1000 + <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(phi);</div>
 <div class="line"><a id="l00408" name="l00408"></a><span class="lineno">  408</span>}</div>
 </div>
 <div class="line"><a id="l00409" name="l00409"></a><span class="lineno">  409</span> </div>
@@ -669,10 +669,10 @@ $(document).ready(function(){initNavTree('veto_8cxx_source.html',''); initResiza
 <div class="line"><a id="l00568" name="l00568"></a><span class="lineno">  568</span> </div>
 <div class="line"><a id="l00569" name="l00569"></a><span class="lineno">  569</span>    <span class="keywordflow">for</span> (<span class="keywordtype">double</span> zi = z1; zi &lt; z2; zi += cell_thickness_z) {</div>
 <div class="line"><a id="l00570" name="l00570"></a><span class="lineno">  570</span> </div>
-<div class="line"><a id="l00571" name="l00571"></a><span class="lineno">  571</span>        <span class="keywordtype">int</span> Zlayer = (int)zi / cell_thickness_z + 1;</div>
+<div class="line"><a id="l00571" name="l00571"></a><span class="lineno">  571</span>        <span class="keywordtype">int</span> Zlayer = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(zi) / cell_thickness_z + 1;</div>
 <div class="line"><a id="l00572" name="l00572"></a><span class="lineno">  572</span> </div>
 <div class="line"><a id="l00574" name="l00574"></a><span class="lineno">  574</span>        TString nameVR(<span class="stringliteral">&quot;&quot;</span>);</div>
-<div class="line"><a id="l00575" name="l00575"></a><span class="lineno">  575</span>        nameVR.Form(<span class="stringliteral">&quot;VetoVerticalRib_z%d&quot;</span>, (<span class="keywordtype">int</span>)zi);</div>
+<div class="line"><a id="l00575" name="l00575"></a><span class="lineno">  575</span>        nameVR.Form(<span class="stringliteral">&quot;VetoVerticalRib_z%d&quot;</span>, <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(zi));</div>
 <div class="line"><a id="l00576" name="l00576"></a><span class="lineno">  576</span>        TGeoVolume* TVR = <a class="code hl_function" href="classveto.html#a06e9c84e10160ef5beafe50e2e16dadb">GeoTrapezoidHollow</a>(nameVR,</div>
 <div class="line"><a id="l00577" name="l00577"></a><span class="lineno">  577</span>                                             liscThick1,</div>
 <div class="line"><a id="l00578" name="l00578"></a><span class="lineno">  578</span>                                             ribThick,</div>
@@ -990,7 +990,7 @@ $(document).ready(function(){initNavTree('veto_8cxx_source.html',''); initResiza
 <div class="line"><a id="l00889" name="l00889"></a><span class="lineno">  889</span>    <span class="keywordtype">double</span> zi = z2;</div>
 <div class="line"><a id="l00890" name="l00890"></a><span class="lineno">  890</span> </div>
 <div class="line"><a id="l00891" name="l00891"></a><span class="lineno">  891</span>    TString nameVR(<span class="stringliteral">&quot;&quot;</span>);</div>
-<div class="line"><a id="l00892" name="l00892"></a><span class="lineno">  892</span>    nameVR.Form(<span class="stringliteral">&quot;VetoVerticalRib_z%d&quot;</span>, (<span class="keywordtype">int</span>)zi);</div>
+<div class="line"><a id="l00892" name="l00892"></a><span class="lineno">  892</span>    nameVR.Form(<span class="stringliteral">&quot;VetoVerticalRib_z%d&quot;</span>, <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(zi));</div>
 <div class="line"><a id="l00893" name="l00893"></a><span class="lineno">  893</span>    TGeoVolume* TVR = <a class="code hl_function" href="classveto.html#a06e9c84e10160ef5beafe50e2e16dadb">GeoTrapezoidHollow</a>(nameVR,</div>
 <div class="line"><a id="l00894" name="l00894"></a><span class="lineno">  894</span>                                         liscThick,</div>
 <div class="line"><a id="l00895" name="l00895"></a><span class="lineno">  895</span>                                         ribThick,</div>
@@ -1084,7 +1084,7 @@ $(document).ready(function(){initNavTree('veto_8cxx_source.html',''); initResiza
 <div class="line"><a id="l00993" name="l00993"></a><span class="lineno">  993</span>               TVector3(Mom.Px(), Mom.Py(), Mom.Pz()));</div>
 <div class="line"><a id="l00994" name="l00994"></a><span class="lineno">  994</span> </div>
 <div class="line"><a id="l00995" name="l00995"></a><span class="lineno">  995</span>        <span class="comment">// Increment number of veto det points in TParticle</span></div>
-<div class="line"><a id="l00996" name="l00996"></a><span class="lineno">  996</span>        <a class="code hl_class" href="classShipStack.html">ShipStack</a>* stack = (<a class="code hl_class" href="classShipStack.html">ShipStack</a>*)gMC-&gt;GetStack();</div>
+<div class="line"><a id="l00996" name="l00996"></a><span class="lineno">  996</span>        <a class="code hl_class" href="classShipStack.html">ShipStack</a>* stack = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classShipStack.html">ShipStack</a>*<span class="keyword">&gt;</span>(gMC-&gt;GetStack());</div>
 <div class="line"><a id="l00997" name="l00997"></a><span class="lineno">  997</span>        stack-&gt;AddPoint(<a class="code hl_enumvalue" href="ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680aa289a1b27d8c77391b88e9a794da84c2">kVETO</a>);</div>
 <div class="line"><a id="l00998" name="l00998"></a><span class="lineno">  998</span>    }</div>
 <div class="line"><a id="l00999" name="l00999"></a><span class="lineno">  999</span> </div>

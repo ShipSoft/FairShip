@@ -98,8 +98,8 @@ $(document).ready(function(){initNavTree('hcalInf_8h_source.html',''); initResiz
 </div><!--header-->
 <div class="contents">
 <a href="hcalInf_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#ifndef HCALINF_H</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#define HCALINF_H</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#ifndef HCAL_HCALINF_H_</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#define HCAL_HCALINF_H_</span></div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;TObjArray.h&quot;</span></div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &quot;TString.h&quot;</span></div>
@@ -165,7 +165,7 @@ $(document).ready(function(){initNavTree('hcalInf_8h_source.html',''); initResiz
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  <span class="comment">// void CheckVariables();</span></div>
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="keyword">protected</span>:</div>
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>  <a class="code hl_function" href="classhcalInf.html#a406823801f05f04ea548391fcb123d72">hcalInf</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* filename);</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>  <span class="keyword">explicit</span> <a class="code hl_function" href="classhcalInf.html#a406823801f05f04ea548391fcb123d72">hcalInf</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* filename);</div>
 <div class="line"><a id="l00085" name="l00085"></a><span class="lineno"><a class="line" href="classhcalInf.html#a274f3e458d984664c1d365220e4f2b87">   85</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classhcalInf.html#a274f3e458d984664c1d365220e4f2b87">CalculateHoleSize</a>();</div>
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>  <span class="keyword">virtual</span> <a class="code hl_function" href="classhcalInf.html#a4457997f947278ad5050099619f84b1d">~hcalInf</a>();</div>
 <div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span> </div>
@@ -218,7 +218,7 @@ $(document).ready(function(){initNavTree('hcalInf_8h_source.html',''); initResiz
 <div class="line"><a id="l00158" name="l00158"></a><span class="lineno"><a class="line" href="classhcalInf.html#abee9619e097379803af8e180d7e22f7d">  158</a></span><span class="keyword">inline</span> <span class="keywordtype">char</span> <a class="code hl_function" href="classhcalInf.html#abee9619e097379803af8e180d7e22f7d">hcalInf::GetType</a>(Int_t x, Int_t y)<span class="keyword"> const</span></div>
 <div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span><span class="keyword"></span>{</div>
 <div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>  <span class="keywordflow">if</span> (x&lt;0||y&lt;0||y&gt;<a class="code hl_variable" href="classhcalInf.html#a1aafd2e013cb7e755cf46ad6c014abde">fHcalStr</a>.GetLast()) <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>  TObjString* str=(TObjString*)<a class="code hl_variable" href="classhcalInf.html#a1aafd2e013cb7e755cf46ad6c014abde">fHcalStr</a>.At(y);</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>  TObjString* str = <span class="keyword">static_cast&lt;</span>TObjString*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="classhcalInf.html#a1aafd2e013cb7e755cf46ad6c014abde">fHcalStr</a>.At(y));</div>
 <div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>  <span class="keywordflow">if</span> (str-&gt;GetString().Length()&lt;x) <span class="keywordflow">return</span> 0;</div>
 <div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>  <span class="keywordtype">char</span> stri[2]={str-&gt;GetString()[x],0};</div>
 <div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>  <span class="keywordflow">return</span> atoi(stri);</div>
@@ -236,7 +236,7 @@ $(document).ready(function(){initNavTree('hcalInf_8h_source.html',''); initResiz
 <div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>  }</div>
 <div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>}</div>
 </div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span><span class="preprocessor">#endif  </span><span class="comment">// HCAL_HCALINF_H_</span></div>
 <div class="ttc" id="aclasshcalInf_html"><div class="ttname"><a href="classhcalInf.html">hcalInf</a></div><div class="ttdef"><b>Definition</b> <a href="hcalInf_8h_source.html#l00019">hcalInf.h:20</a></div></div>
 <div class="ttc" id="aclasshcalInf_html_a02505655bd9b0f173213b0d53be15835"><div class="ttname"><a href="classhcalInf.html#a02505655bd9b0f173213b0d53be15835">hcalInf::fXPos</a></div><div class="ttdeci">Double_t fXPos</div><div class="ttdef"><b>Definition</b> <a href="hcalInf_8h_source.html#l00105">hcalInf.h:105</a></div></div>
 <div class="ttc" id="aclasshcalInf_html_a03acd3c5f74a87da08bac9a80be131f6"><div class="ttname"><a href="classhcalInf.html#a03acd3c5f74a87da08bac9a80be131f6">hcalInf::InitVariables</a></div><div class="ttdeci">void InitVariables()</div><div class="ttdef"><b>Definition</b> <a href="hcalInf_8cxx_source.html#l00325">hcalInf.cxx:325</a></div></div>

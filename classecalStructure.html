@@ -219,6 +219,9 @@ Private Attributes</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">ecalStructure::ecalStructure </td>
@@ -228,6 +231,11 @@ Private Attributes</h2></td></tr>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="ecalStructure_8cxx_source.html#l00070">70</a> of file <a class="el" href="ecalStructure_8cxx_source.html">ecalStructure.cxx</a>.</p>
@@ -1537,10 +1545,11 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  318</span>  <span class="keywordflow">else</span></div>
 <div class="line"><span class="lineno">  319</span>  {</div>
 <div class="line"><span class="lineno">  320</span>    <span class="keywordflow">for</span>(;<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>!=<a class="code hl_variable" href="classecalStructure.html#aeb9935f0c26c8fcf64a239d9c5784e27">fCells</a>.end();++<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>)</div>
-<div class="line"><span class="lineno">  321</span>    ((<a class="code hl_class" href="classecalCellMC.html">ecalCellMC</a>*)(*p))-&gt;ResetEnergy();</div>
+<div class="line"><span class="lineno">  321</span>        <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classecalCellMC.html">ecalCellMC</a>*<span class="keyword">&gt;</span>(*p)-&gt;<a class="code hl_function" href="classecalCellMC.html#a5c9a1d57829e35af561c8d68de13fe0b">ResetEnergy</a>();</div>
 <div class="line"><span class="lineno">  322</span>  }</div>
 <div class="line"><span class="lineno">  323</span>}</div>
 <div class="ttc" id="aclassecalCellMC_html"><div class="ttname"><a href="classecalCellMC.html">ecalCellMC</a></div><div class="ttdef"><b>Definition</b> <a href="ecalCellMC_8h_source.html#l00018">ecalCellMC.h:19</a></div></div>
+<div class="ttc" id="aclassecalCellMC_html_a5c9a1d57829e35af561c8d68de13fe0b"><div class="ttname"><a href="classecalCellMC.html#a5c9a1d57829e35af561c8d68de13fe0b">ecalCellMC::ResetEnergy</a></div><div class="ttdeci">void ResetEnergy()</div><div class="ttdef"><b>Definition</b> <a href="ecalCellMC_8cxx_source.html#l00040">ecalCellMC.cxx:40</a></div></div>
 <div class="ttc" id="anamespacemakeDecay_html_a9c90b95001a4909a6c5383da1b3066d9"><div class="ttname"><a href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">makeDecay.p</a></div><div class="ttdeci">p</div><div class="ttdef"><b>Definition</b> <a href="makeDecay_8py_source.html#l00067">makeDecay.py:67</a></div></div>
 </div><!-- fragment -->
 </div>
