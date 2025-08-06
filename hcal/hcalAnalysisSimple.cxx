@@ -34,7 +34,7 @@ void hcalAnalysisSimple::Exec(Option_t* option)
 
   for(i=0;i<n;i++)
   {
-    t=(hcalPoint*)fTracks->At(i);
+    t=dynamic_cast<hcalPoint*>(fTracks->At(i));
     fX=t->GetX();
     fY=t->GetY();
     t->Momentum(m);
@@ -142,13 +142,13 @@ hcalAnalysisSimple::hcalAnalysisSimple()
 InitStatus hcalAnalysisSimple::Init()
 {
   FairRootManager* fManager=FairRootManager::Instance();
-  fStr=(hcalStructure*)fManager->GetObject("HcalStructure");
+  fStr = dynamic_cast<hcalStructure*>(fManager->GetObject("HcalStructure"));
   if (!fStr)
   {
     Fatal("Init()", "Can't find calorimeter structure. ");
     return kFATAL;
   }
-  fTracks=(TClonesArray*)fManager->GetObject("HcalPoint");
+  fTracks = dynamic_cast<TClonesArray*>(fManager->GetObject("HcalPoint"));
   if (!fTracks)
   {
     Fatal("Init()", "Can't find array of reconstructed tracks. ");

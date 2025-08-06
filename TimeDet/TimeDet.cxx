@@ -64,8 +64,8 @@ TimeDet::TimeDet()
     fTimeDetPointCollection(new TClonesArray("TimeDetPoint"))
 {
   fNBars = fNCol * fNRow;
-  if(fNCol>1) fxOv = (fxBar*fNCol - fxSize) / (double)(fNCol-1); else fxOv = 0;
-  if(fNRow>1) fyOv = (fyBar*fNRow - fySize) / (double)(fNRow-1); else fyOv = 0;
+  if(fNCol>1) fxOv = (fxBar*fNCol - fxSize) / static_cast<double>(fNCol-1); else fxOv = 0;
+  if(fNRow>1) fyOv = (fyBar*fNRow - fySize) / static_cast<double>(fNRow-1); else fyOv = 0;
 }
 
 
@@ -98,8 +98,8 @@ TimeDet::TimeDet(const char* name, Bool_t active)
     fTimeDetPointCollection(new TClonesArray("TimeDetPoint"))
 {
   fNBars = fNCol * fNRow;
-  if(fNCol>1) fxOv = (fxBar*fNCol - fxSize) / (double)(fNCol-1); else fxOv = 0;
-  if(fNRow>1) fyOv = (fyBar*fNRow - fySize) / (double)(fNRow-1); else fyOv = 0;
+  if(fNCol>1) fxOv = (fxBar*fNCol - fxSize) / static_cast<double>(fNCol-1); else fxOv = 0;
+  if(fNRow>1) fyOv = (fyBar*fNRow - fySize) / static_cast<double>(fNRow-1); else fyOv = 0;
 
 }
 
@@ -195,7 +195,7 @@ Bool_t  TimeDet::ProcessHits(FairVolume* vol)
 	   TVector3(Mom.Px(), Mom.Py(), Mom.Pz()) );
 
     // Increment number of veto det points in TParticle
-    ShipStack* stack = (ShipStack*) gMC->GetStack();
+    ShipStack* stack = dynamic_cast<ShipStack*>(gMC->GetStack());
     stack->AddPoint(kTimeDet);
   }
 

@@ -71,7 +71,7 @@ InitStatus ecalStructureFiller::Init()
   }
   //ECAL MC points
   if (fUseMCPoints)
-    fListECALpts = (TClonesArray*)fManager->GetObject("EcalPointLite");
+      fListECALpts = dynamic_cast<TClonesArray*>(fManager->GetObject("EcalPointLite"));
 
   //fInf->CheckVariables();
   fStr=new ecalStructure(fInf);
@@ -114,7 +114,7 @@ void ecalStructureFiller::LoopForMCPoints()
 
   for(UInt_t j=0; j<n; j++)
   {
-    pt=(ecalPoint*)fListECALpts->At(j);
+    pt=dynamic_cast<ecalPoint*>(fListECALpts->At(j));
     cell=fStr->GetCell(pt->GetDetectorID(), ten);
     if (ten==0) {
 	cell->AddEnergy(pt->GetEnergyLoss());
@@ -123,8 +123,8 @@ void ecalStructureFiller::LoopForMCPoints()
   if (fStoreTrackInfo)
   for(UInt_t j=0; j<n; j++)
   {
-    pt=(ecalPoint*)fListECALpts->At(j);
-    ecalCellMC* cellmc=(ecalCellMC*)fStr->GetCell(pt->GetDetectorID(), ten);
+    pt=dynamic_cast<ecalPoint*>(fListECALpts->At(j));
+    ecalCellMC* cellmc=dynamic_cast<ecalCellMC*>(fStr->GetCell(pt->GetDetectorID(), ten));
     if (ten==0) {
         cellmc->AddTrackEnergy(pt->GetTrackID(),pt->GetEnergyLoss(), pt->GetTime());
     }

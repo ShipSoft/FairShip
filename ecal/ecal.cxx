@@ -400,7 +400,7 @@ Bool_t  ecal::ProcessHits(FairVolume* vol)
     if (gMC->IsTrackEntering()) {
       FillWallPoint();
       //cout <<"fill wallpoint "<<vol->getVolumeId()<<" "<<fStructureId<<" "<<fELoss*1e10<<endl;
-      ((ShipStack*)gMC->GetStack())->AddPoint(kecal, fTrackID);
+      dynamic_cast<ShipStack*>(gMC->GetStack())->AddPoint(kecal, fTrackID);
 
       ResetParameters();
 
@@ -504,7 +504,7 @@ Bool_t  ecal::ProcessHits(FairVolume* vol)
 //   }
 //    cout << endl;
   }
-  ((ShipStack*)gMC->GetStack())->AddPoint(kecal, fTrackID);
+  dynamic_cast<ShipStack*>(gMC->GetStack())->AddPoint(kecal, fTrackID);
 
   ResetParameters();
 
@@ -542,7 +542,7 @@ void ecal::FillWallPoint()
   // for particles with pz>0 coming through the front wall
   if (fMom.Pz() > 0 && fPos.Z() < fZEcal+0.01)
   {
-    TParticle* part=((ShipStack*)gMC->GetStack())->GetParticle(fTrackID);
+    TParticle* part=dynamic_cast<ShipStack*>(gMC->GetStack())->GetParticle(fTrackID);
     AddHit(fTrackID, fVolumeID, TVector3(fPos.X(),  fPos.Y(),  fPos.Z()),
 	   TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength,
 	   fELoss, part->GetPdgCode());
@@ -554,7 +554,7 @@ ecalPoint* ecal::FindHit(Int_t VolId, Int_t TrackId)
 {
   for(Int_t i=fFirstNumber;i<fLiteCollection->GetEntriesFast();i++)
   {
-    ecalPoint* point=(ecalPoint*)fLiteCollection->At(i);
+    ecalPoint* point=dynamic_cast<ecalPoint*>(fLiteCollection->At(i));
     if (point->GetTrackID()==TrackId&&point->GetDetectorID()==VolId)
       return point;
   }
@@ -580,7 +580,7 @@ Bool_t ecal::FillLitePoint(Int_t volnum)
   while (part->GetFirstMother()>=0&&part->Vz()>=zmin&&part->Vz()<=zmax&&TMath::Abs(part->Vx())<=xecal&&TMath::Abs(part->Vy())<=yecal)
     {
       fTrackID=part->GetFirstMother();
-      part =((ShipStack*)gMC->GetStack())->GetParticle(fTrackID);
+      part =dynamic_cast<ShipStack*>(gMC->GetStack())->GetParticle(fTrackID);
 //      cout << "-> " << part->GetFirstMother() << " : " << part->Vx() << ", " << part->Vy() << ", " << part->Vz() << endl;
     }
 //  if (part->Vz()>500)
@@ -666,7 +666,7 @@ void ecal::CopyClones(TClonesArray* cl1, TClonesArray* cl2, Int_t offset)
   if (cl1->GetClass()==ecalPoint::Class()) {
     ecalPoint* oldpoint = NULL;
     for (i=0; i<nEntries; i++) {
-      oldpoint = (ecalPoint*) cl1->At(i);
+      oldpoint = dynamic_cast<ecalPoint*>(cl1->At(i));
       index = oldpoint->GetTrackID()+offset;
       oldpoint->SetTrackID(index);
       new (clref[fPosIndex]) ecalPoint(*oldpoint);
@@ -678,7 +678,7 @@ void ecal::CopyClones(TClonesArray* cl1, TClonesArray* cl2, Int_t offset)
   else if (cl1->GetClass()==ecalPoint::Class()) {
     ecalPoint* oldpoint = NULL;
     for (i=0; i<nEntries; i++) {
-      oldpoint = (ecalPoint*) cl1->At(i);
+      oldpoint = dynamic_cast<ecalPoint*>(cl1->At(i));
       index = oldpoint->GetTrackID()+offset;
       oldpoint->SetTrackID(index);
       new (clref[fPosIndex]) ecalPoint(*oldpoint);

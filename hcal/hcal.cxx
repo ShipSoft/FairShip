@@ -361,7 +361,7 @@ Bool_t  hcal::ProcessHits(FairVolume* vol)
   if (Hcal.CompareTo(gMC->CurrentVolName())==0) {
     if (gMC->IsTrackEntering()) {
       FillWallPoint();
-      ((ShipStack*)gMC->GetStack())->AddPoint(khcal, fTrackID);
+      dynamic_cast<ShipStack*>(gMC->GetStack())->AddPoint(khcal, fTrackID);
 
       ResetParameters();
 
@@ -460,7 +460,7 @@ Bool_t  hcal::ProcessHits(FairVolume* vol)
 //   }
 //    cout << endl;
   }
-  ((ShipStack*)gMC->GetStack())->AddPoint(khcal, fTrackID);
+  dynamic_cast<ShipStack*>(gMC->GetStack())->AddPoint(khcal, fTrackID);
 
   ResetParameters();
 
@@ -498,7 +498,7 @@ void hcal::FillWallPoint()
   // for particles with pz>0 coming through the front wall
   if (fMom.Pz() > 0 && fPos.Z() < fZHcal+0.01)
   {
-    TParticle* part=((ShipStack*)gMC->GetStack())->GetParticle(fTrackID);
+    TParticle* part = dynamic_cast<ShipStack*>(gMC->GetStack())->GetParticle(fTrackID);
     AddHit(fTrackID, fVolumeID, TVector3(fPos.X(),  fPos.Y(),  fPos.Z()),
 	   TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength,
 	   fELoss, part->GetPdgCode());
@@ -510,7 +510,7 @@ hcalPoint* hcal::FindHit(Int_t VolId, Int_t TrackId)
 {
   for(Int_t i=fFirstNumber;i<fLiteCollection->GetEntriesFast();i++)
   {
-    hcalPoint* point=(hcalPoint*)fLiteCollection->At(i);
+    hcalPoint* point=dynamic_cast<hcalPoint*>(fLiteCollection->At(i));
     if (point->GetTrackID()==TrackId&&point->GetDetectorID()==VolId)
       return point;
   }
@@ -536,7 +536,7 @@ Bool_t hcal::FillLitePoint(Int_t volnum)
   while (part->GetFirstMother()>=0&&part->Vz()>=zmin&&part->Vz()<=zmax&&TMath::Abs(part->Vx())<=xhcal&&TMath::Abs(part->Vy())<=yhcal)
     {
       fTrackID=part->GetFirstMother();
-      part =((ShipStack*)gMC->GetStack())->GetParticle(fTrackID);
+      part =dynamic_cast<ShipStack*>(gMC->GetStack())->GetParticle(fTrackID);
 //      cout << "-> " << part->GetFirstMother() << " : " << part->Vx() << ", " << part->Vy() << ", " << part->Vz() << endl;
     }
 //  if (part->Vz()>500)
@@ -622,7 +622,7 @@ void hcal::CopyClones(TClonesArray* cl1, TClonesArray* cl2, Int_t offset)
   if (cl1->GetClass()==hcalPoint::Class()) {
     hcalPoint* oldpoint = NULL;
     for (i=0; i<nEntries; i++) {
-      oldpoint = (hcalPoint*) cl1->At(i);
+      oldpoint = dynamic_cast<hcalPoint*>(cl1->At(i));
       index = oldpoint->GetTrackID()+offset;
       oldpoint->SetTrackID(index);
       new (clref[fPosIndex]) hcalPoint(*oldpoint);
@@ -634,7 +634,7 @@ void hcal::CopyClones(TClonesArray* cl1, TClonesArray* cl2, Int_t offset)
   else if (cl1->GetClass()==hcalPoint::Class()) {
     hcalPoint* oldpoint = NULL;
     for (i=0; i<nEntries; i++) {
-      oldpoint = (hcalPoint*) cl1->At(i);
+      oldpoint = dynamic_cast<hcalPoint*>(cl1->At(i));
       index = oldpoint->GetTrackID()+offset;
       oldpoint->SetTrackID(index);
       new (clref[fPosIndex]) hcalPoint(*oldpoint);

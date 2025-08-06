@@ -159,7 +159,7 @@ inline char hcalInf::GetType(Int_t x, Int_t y) const
 {
   /** Returns the type of the module with position (x,y) **/
   if (x<0||y<0||y>fHcalStr.GetLast()) return 0;
-  TObjString* str=(TObjString*)fHcalStr.At(y);
+  TObjString* str = static_cast<TObjString*>(fHcalStr.At(y));
   if (str->GetString().Length()<x) return 0;
   char stri[2]={str->GetString()[x],0};
   return atoi(stri);

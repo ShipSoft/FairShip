@@ -318,7 +318,7 @@ void ecalStructure::ResetModules()
   else
   {
     for(;p!=fCells.end();++p)
-    ((ecalCellMC*)(*p))->ResetEnergy();
+        dynamic_cast<ecalCellMC*>(*p)->ResetEnergy();
   }
 }
 

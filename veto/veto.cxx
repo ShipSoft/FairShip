@@ -404,7 +404,7 @@ int veto::makeId(double z, double x, double y)
         phi = -acos(x / r) + 2 * TMath::Pi();
 
     phi = phi * 180 / TMath::Pi();
-    return (int)Z * 1000000 + (int)r * 1000 + (int)phi;
+    return static_cast<int>(Z) * 1000000 + static_cast<int>(r) * 1000 + static_cast<int>(phi);
 }
 
 int veto::liscId(TString ShapeTypeName, int blockNr, int Zlayer, int number, int position)
@@ -568,11 +568,11 @@ void veto::AddBlock(TGeoVolumeAssembly* tInnerWall,
 
     for (double zi = z1; zi < z2; zi += cell_thickness_z) {
 
-        int Zlayer = (int)zi / cell_thickness_z + 1;
+        int Zlayer = static_cast<int>(zi) / cell_thickness_z + 1;
 
         /// define & place vertical ribs
         TString nameVR("");
-        nameVR.Form("VetoVerticalRib_z%d", (int)zi);
+        nameVR.Form("VetoVerticalRib_z%d", static_cast<int>(zi));
         TGeoVolume* TVR = GeoTrapezoidHollow(nameVR,
                                              liscThick1,
                                              ribThick,
@@ -889,7 +889,7 @@ TGeoVolume* veto::MakeSegments()
     double zi = z2;
 
     TString nameVR("");
-    nameVR.Form("VetoVerticalRib_z%d", (int)zi);
+    nameVR.Form("VetoVerticalRib_z%d", static_cast<int>(zi));
     TGeoVolume* TVR = GeoTrapezoidHollow(nameVR,
                                          liscThick,
                                          ribThick,
@@ -993,7 +993,7 @@ Bool_t veto::ProcessHits(FairVolume* vol)
                TVector3(Mom.Px(), Mom.Py(), Mom.Pz()));
 
         // Increment number of veto det points in TParticle
-        ShipStack* stack = (ShipStack*)gMC->GetStack();
+        ShipStack* stack = dynamic_cast<ShipStack*>(gMC->GetStack());
         stack->AddPoint(kVETO);
     }
 

@@ -44,7 +44,7 @@ void ecalReco::Exec(Option_t* option)
 
   for(i=0;i<nc;i++)
   {
-    cls=(ecalCluster*)fClusters->At(i);
+    cls=dynamic_cast<ecalCluster*>(fClusters->At(i));
     // Clusters with single maximum. Separate code for speedup
     if (cls->Maxs()==1)
     {
@@ -266,19 +266,19 @@ InitStatus ecalReco::Init()
     Fatal("Init", "Can't find IOManager.");
     return kFATAL;
   }
-  fStr=(ecalStructure*)io->GetObject("EcalStructure");
+  fStr = dynamic_cast<ecalStructure*>(io->GetObject("EcalStructure"));
   if (!fStr)
   {
     Fatal("Init()", "Can't find calorimeter structure in the system.");
     return kFATAL;
   }
-  fCalib=(ecalClusterCalibration*)io->GetObject("ecalClusterCalibration");
+  fCalib = dynamic_cast<ecalClusterCalibration*>(io->GetObject("ecalClusterCalibration"));
   if (!fCalib)
   {
     Fatal("Init", "Can't find ecalClusterCalibration in the system.");
     return kFATAL;
   }
-  fClusters=(TClonesArray*)io->GetObject("EcalClusters");
+  fClusters = dynamic_cast<TClonesArray*>(io->GetObject("EcalClusters"));
   if (!fClusters)
   {
     Fatal("Init()", "Can't find calorimeter clusters in the system.");

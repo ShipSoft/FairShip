@@ -196,8 +196,9 @@ void ecalDrawer::DrawLine(Double_t x, Double_t y, const char* color, Int_t track
 
   for(i=0;i<n;i++)
   {
-    pt=(ecalPoint*)fPoints->At(i);
-    if (pt->GetTrackID()==track) break;
+      pt = dynamic_cast<ecalPoint*>(fPoints->At(i));
+      if (pt->GetTrackID() == track)
+          break;
   }
   if (i==n) return;
   DrawLine(x, y, pt->GetX(), pt->GetY(), color);
@@ -326,7 +327,7 @@ void ecalDrawer::DrawMC()
 
   for(i=0;i<pn;i++)
   {
-    p=(ecalPoint*)fPoints->At(i);
+    p=dynamic_cast<ecalPoint*>(fPoints->At(i));
     if (!p) continue;
     /** gammas **/
     if (p->GetPdgCode()==22)
@@ -380,7 +381,7 @@ void ecalDrawer::DrawCells()
 
   for(i=0;i<rn;i++)
   {
-    ecalCluster* cl=(ecalCluster*)fClusters->At(i);
+    ecalCluster* cl=dynamic_cast<ecalCluster*>(fClusters->At(i));
     for(j=0;j<cl->Size();j++)
       clusters.push_back(fStr->GetHitCell(cl->CellNum(j)));
     for(j=0;j<cl->Maxs();j++)
@@ -389,7 +390,7 @@ void ecalDrawer::DrawCells()
 
   for(p=fCells.begin();p!=fCells.end();++p)
   {
-    c=(ecalCellMC*)((*p)->fCell);
+    c=dynamic_cast<ecalCellMC*>((*p)->fCell);
     (*p)->fG=c->GetEnergy();
     (*p)->fR=0;
     (*p)->fB=0;
@@ -397,13 +398,13 @@ void ecalDrawer::DrawCells()
 /*
   for(p=fCells.begin();p!=fCells.end();++p)
   {
-    c=(ecalCellMC*)((*p)->fCell);
+    c=dynamic_cast<ecalCellMC*>((*p)->fCell);
     (*p)->fG=c->GetEnergy();
     (*p)->fR=0;
     (*p)->fB=0;
     for(p1=c->GetTrackEnergyBegin();p1!=c->GetTrackEnergyEnd();++p1)
     {
-      tr=(ShipMCTrack*)fMCTracks->At(p1->first);
+      tr=dynamic_cast<ShipMCTrack*>(fMCTracks->At(p1->first));
       if (tr==NULL) continue;
       if (tr->GetPdgCode()==22)
 	(*p)->fR+=p1->second;
@@ -493,25 +494,25 @@ InitStatus ecalDrawer::Init()
     Fatal("Init", "Can't find IOManager.");
     return kFATAL;
   }
-  fMCTracks=(TClonesArray*)io->GetObject("MCTrack");
+  fMCTracks = dynamic_cast<TClonesArray*>(io->GetObject("MCTrack"));
   if (!fMCTracks)
   {
     Fatal("Init", "Can't find array of MC tracks");
     return kFATAL;
   }
-  fPoints=(TClonesArray*)io->GetObject("EcalPoint");
+  fPoints = dynamic_cast<TClonesArray*>(io->GetObject("EcalPoint"));
   if (!fPoints)
   {
     Fatal("Init", "Can't find array of Ecal Points");
     return kFATAL;
   }
-  fStr=(ecalStructure*)io->GetObject("EcalStructure");
+  fStr = dynamic_cast<ecalStructure*>(io->GetObject("EcalStructure"));
   if (!fStr)
   {
     Fatal("Init", "Can't find calorimeter structure for drawing");
     return kFATAL;
   }
-  fClusters=(TClonesArray*)io->GetObject("EcalClusters");
+  fClusters = dynamic_cast<TClonesArray*>(io->GetObject("EcalClusters"));
   if (!fClusters)
   {
     Fatal("Init", "Can't find array of calorimeter clusters");

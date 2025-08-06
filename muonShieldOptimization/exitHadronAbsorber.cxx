@@ -76,7 +76,7 @@ Bool_t  exitHadronAbsorber::ProcessHits(FairVolume* vol)
       AddHit(fTrackID, 111, TVector3(fPos.X(),fPos.Y(),fPos.Z()),
            TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength,
            0,pdgCode,TVector3(p->Vx(), p->Vy(), p->Vz()),TVector3(p->Px(), p->Py(), p->Pz()) );
-      ShipStack* stack = (ShipStack*) gMC->GetStack();
+      ShipStack* stack = dynamic_cast<ShipStack*>(gMC->GetStack());
       stack->AddPoint(kVETO);
       }
     }
@@ -89,7 +89,7 @@ void exitHadronAbsorber::Initialize()
 {
   FairDetector::Initialize();
   TSeqCollection* fileList=gROOT->GetListOfFiles();
-  fout = ((TFile*)fileList->At(0));
+  fout = dynamic_cast<TFile*>(fileList->At(0));
   // book hists for Genie neutrino momentum distribution
   // add also leptons, and photon
   // add pi0 111 eta 221 eta' 331  omega 223 for DM production
@@ -155,13 +155,13 @@ void exitHadronAbsorber::PreTrack(){
          Double_t l10ptot = TMath::Min(TMath::Max(TMath::Log10(fMom.P()),-0.3),1.69999);
          Double_t l10pt   = TMath::Min(TMath::Max(TMath::Log10(fMom.Pt()),-2.),0.4999);
          TString key; key+=idhnu;
-         TH1D* h1 = (TH1D*)fout->Get(key);
+         TH1D* h1 = dynamic_cast<TH1D*>(fout->Get(key));
          if (h1){h1->Fill(fMom.P(),wspill);}
          key="";key+=idhnu+1000;
-         TH2D* h2 = (TH2D*)fout->Get(key);
+         TH2D* h2 = dynamic_cast<TH2D*>(fout->Get(key));
          if (h2){h2->Fill(l10ptot,l10pt,wspill);}
          key="";key+=idhnu+2000;
-         h2 = (TH2D*)fout->Get(key);
+         h2 = dynamic_cast<TH2D*>(fout->Get(key));
          if (h2){h2->Fill(l10ptot,l10pt,wspill);}
          if(withNtuple){
           fNtuple->Fill(pdgCode,fMom.Px(),fMom.Py(), fMom.Pz(),fPos.X(),fPos.Y(),fPos.Z());
@@ -188,14 +188,14 @@ void exitHadronAbsorber::FinishRun(){
     }
     TString key = "";key+=idhnu;
     TSeqCollection* fileList=gROOT->GetListOfFiles();
-    ((TFile*)fileList->At(0))->cd();
-    TH1D* Hidhnu = (TH1D*)fout->Get(key);
+    dynamic_cast<TFile*>(fileList->At(0))->cd();
+    TH1D* Hidhnu = dynamic_cast<TH1D*>(fout->Get(key));
     Hidhnu->Write();
     key="";key+=idhnu+1000;
-    TH2D* Hidhnu100 = (TH2D*)fout->Get(key);
+    TH2D* Hidhnu100 = dynamic_cast<TH2D*>(fout->Get(key));
     Hidhnu100->Write();
     key = "";key+=idhnu+2000;
-    TH2D* Hidhnu200 = (TH2D*)fout->Get(key);
+    TH2D* Hidhnu200 = dynamic_cast<TH2D*>(fout->Get(key));
     Hidhnu200->Write();
    }
   }
@@ -224,7 +224,7 @@ void exitHadronAbsorber::ConstructGeometry()
     if (not nav->cd("/MuonShieldArea_1/AbsorberVol_1")) {
       nav->cd("/MuonShieldArea_1/MagnAbsorb_MagRetL_1");
       distance = -1.;}
-    TGeoBBox* tmp =  (TGeoBBox*)(nav->GetCurrentNode()->GetVolume()->GetShape());
+    TGeoBBox* tmp = dynamic_cast<TGeoBBox*>(nav->GetCurrentNode()->GetVolume()->GetShape());
     local[2] = distance * tmp->GetDZ();
     Double_t global[3] = {0,0,0};
     nav->LocalToMaster(local,global);

@@ -51,6 +51,6 @@ Float_t hcalModuleMC::GetTrackClusterEnergy(Int_t num)
   list<hcalModule*> mdls; GetNeighborsList(mdls);
   list<hcalModule*>::const_iterator p=mdls.begin();
   for(;p!=mdls.end();++p)
-    energy+=((hcalModuleMC*)(*p))->GetTrackEnergy(num);
+      energy += dynamic_cast<hcalModuleMC*>(*p)->GetTrackEnergy(num);
   return energy;
 }

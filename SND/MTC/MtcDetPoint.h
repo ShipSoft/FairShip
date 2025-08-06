@@ -37,7 +37,7 @@ class MtcDetPoint : public FairMCPoint
     /** Output to screen **/
     virtual void Print() const;
     Int_t PdgCode() const { return fPdgCode; }
-    Int_t GetStationType() const { return int(fDetectorID / 100000) % 10; }
+    Int_t GetStationType() const { return static_cast<int>(fDetectorID / 100000) % 10; }
     Int_t GetLayer();
     Int_t GetLayerType();
     Int_t fPdgCode;

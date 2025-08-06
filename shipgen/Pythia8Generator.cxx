@@ -102,7 +102,7 @@ Bool_t Pythia8Generator::Init()
        LOGF(error, "target not found, %s, program will crash", targetName.Data());
    }
    Double_t z_middle = target->GetMatrix()->GetTranslation()[2];
-   TGeoBBox* sha = (TGeoBBox*)target->GetVolume()->GetShape();
+   TGeoBBox* sha = dynamic_cast<TGeoBBox*>(target->GetVolume()->GetShape());
    startZ =  z_middle - sha->GetDZ();
    endZ   =  z_middle + sha->GetDZ();
    start[0]=xOff;
@@ -141,18 +141,24 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
      fTree->GetEntry((fn+1)%fNevents);
 // check that this and next entry is charm, otherwise continue reading
      l = false;
-     if (int(mE[0])== 0){ l = true; }
+     if (static_cast<int>(mE[0]) == 0) {
+         l = true;
+     }
      bool isDs = false;
-     if ( int(fabs(hid[0]) ) == 431){ isDs = true; }
+     if (static_cast<int>(fabs(hid[0])) == 431) {
+         isDs = true;
+     }
      fTree->GetEntry(fn%fNevents);
-     if (int(mE[0])== 0){ l = true; }
+     if (static_cast<int>(mE[0]) == 0) {
+         l = true;
+     }
      fn++;
-     if ( int(fabs(hid[0]) ) == 431 || isDs ){
-       Double_t rnr = gRandom->Uniform(0,1);
-       if( rnr>fFDs ) {
-        l = true;
-        fn++;
-       }
+     if (static_cast<int>(fabs(hid[0])) == 431 || isDs) {
+         Double_t rnr = gRandom->Uniform(0, 1);
+         if (rnr > fFDs) {
+             l = true;
+             fn++;
+         }
      }
   }
   Double_t zinter=0;
@@ -203,7 +209,7 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
       fn++;
     }
     fPythia->event.reset();
-    id = (Int_t)hid[0];
+    id = static_cast<Int_t>(hid[0]);
     fPythia->event.append( id, 1, 0, 0, hpx[0],  hpy[0],  hpz[0],  hE[0],  hM[0], 0., 9. );
 //simulate displaced vertex, Pythia8 will not do it
     Double_t tau0 = fPythia->particleData.tau0(id); // ctau in mm

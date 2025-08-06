@@ -172,7 +172,7 @@ Bool_t  UpstreamTagger::ProcessHits(FairVolume* vol)
 	   TVector3(Mom.Px(), Mom.Py(), Mom.Pz()) );
 
     // Increment number of veto det points in TParticle
-    ShipStack* stack = (ShipStack*) gMC->GetStack();
+    ShipStack* stack = dynamic_cast<ShipStack*>(gMC->GetStack());
     stack->AddPoint(kUpstreamTagger);
   }
 

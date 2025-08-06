@@ -46,7 +46,7 @@ InitStatus ecalMaximumLocator::Init()
     Fatal("Init", "Can't find a Root Manager.");
     return kFATAL;
   }
-  fStr=(ecalStructure*)fManager->GetObject("EcalStructure");
+  fStr = dynamic_cast<ecalStructure*>(fManager->GetObject("EcalStructure"));
   if (!fStr)
   {
     Fatal("Init()", "Can't find calorimeter structure in the system.");

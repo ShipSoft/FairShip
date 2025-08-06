@@ -138,7 +138,7 @@ Bool_t  splitcal::ProcessHits(FairVolume* vol)
            fELoss,pdgCode);
 
     // Increment number of splitcal det points in TParticle
-    ShipStack* stack = (ShipStack*) gMC->GetStack();
+    ShipStack* stack = dynamic_cast<ShipStack*>(gMC->GetStack());
     stack->AddPoint(kSplitCal);
 
   }

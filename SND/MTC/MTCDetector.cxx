@@ -576,9 +576,9 @@ void MTCDetector::GetPosition(Int_t fDetectorID, TVector3& A, TVector3& B)
         - 123: number of the SiPM channel (0-127, 128 channels per SiPM)
     */
 
-    Int_t station_number = int(fDetectorID / 1e6) % 100;
-    Int_t plane_type = int(fDetectorID / 1e5) % 10;   // 0 for horizontal, 1 for vertical
-    Int_t mat_number = int(fDetectorID / 1e4) % 10;
+    Int_t station_number = static_cast<int>(fDetectorID / 1e6) % 100;
+    Int_t plane_type = static_cast<int>(fDetectorID / 1e5) % 10;   // 0 for horizontal, 1 for vertical
+    Int_t mat_number = static_cast<int>(fDetectorID / 1e4) % 10;
 
     TString sID, stationID;
     sID.Form("%i", fDetectorID);
@@ -604,9 +604,9 @@ void MTCDetector::GetPosition(Int_t fDetectorID, TVector3& A, TVector3& B)
 
 TVector3 MTCDetector::GetLocalPos(Int_t fDetectorID, TVector3* glob)
 {
-    Int_t station_number = int(fDetectorID / 1e6) % 100;
-    Int_t plane_type = int(fDetectorID / 1e5) % 10;   // 0 for horizontal, 1 for vertical
-    Int_t mat_number = int(fDetectorID / 1e4) % 10;
+    Int_t station_number = static_cast<int>(fDetectorID / 1e6) % 100;
+    Int_t plane_type = static_cast<int>(fDetectorID / 1e5) % 10;   // 0 for horizontal, 1 for vertical
+    Int_t mat_number = static_cast<int>(fDetectorID / 1e4) % 10;
 
     TString sID, stationID;
     sID.Form("%i", fDetectorID);
@@ -640,8 +640,8 @@ void MTCDetector::GetSiPMPosition(Int_t SiPMChan, TVector3& A, TVector3& B)
           - 123: number of the SiPM channel (0-127, 128 channels per SiPM)
     */
     Int_t locNumber = SiPMChan % 1000000;
-    Int_t station_number = int(SiPMChan / 1e6) % 100;
-    Int_t plane_type = int(SiPMChan / 1e5) % 10;   // 0 for horizontal, 1 for vertical
+    Int_t station_number = static_cast<int>(SiPMChan / 1e6) % 100;
+    Int_t plane_type = static_cast<int>(SiPMChan / 1e5) % 10;   // 0 for horizontal, 1 for vertical
     Float_t locPosition;
     locPosition = (plane_type == 0 ? SiPMPos_U : SiPMPos_V)[locNumber];   // local position in U/V plane
     TString stationID;

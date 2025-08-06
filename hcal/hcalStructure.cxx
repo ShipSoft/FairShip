@@ -187,7 +187,7 @@ void hcalStructure::ResetModules()
   else
   {
     for(;p!=fModules.end();++p)
-    ((hcalModuleMC*)(*p))->ResetEnergy();
+        dynamic_cast<hcalModuleMC*>(*p)->ResetEnergy();
   }
 }
 

@@ -126,7 +126,7 @@ Bool_t  muon::ProcessHits(FairVolume* vol)
            fELoss,pdgCode);
 
     // Increment number of muon det points in TParticle
-    ShipStack* stack = (ShipStack*) gMC->GetStack();
+    ShipStack* stack = dynamic_cast<ShipStack*>(gMC->GetStack());
     stack->AddPoint(kMuon);
   }
 
