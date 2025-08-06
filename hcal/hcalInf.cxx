@@ -28,7 +28,7 @@ Int_t hcalInf::fRefCount=0;
 hcalInf::~hcalInf()
 {
   for(Int_t i=0;i<fHcalStr.GetSize();i++)
-    delete (TObjString*)(fHcalStr.At(i));
+      delete static_cast<TObjString*>(fHcalStr.At(i));
   fHcalStr.Clear();
 }
 
@@ -81,7 +81,7 @@ int cmp_nocase(const string &s, const string &s2 )
 
 Double_t hcalInf::GetVariableStrict(const char* key)
 {
-  TObjString* value=(TObjString*)fVariables->GetValue(key);
+  TObjString* value=static_cast<TObjString*>(fVariables->GetValue(key));
   if (value==NULL)
   {
     cerr << "Can't find variable named \"" << key << "\"";
@@ -102,7 +102,7 @@ Double_t hcalInf::GetVariableStrict(const char* key)
 
 TString hcalInf::GetStringVariable(const char* key)
 {
-  TObjString* value=(TObjString*)fVariables->GetValue(key);
+  TObjString* value=static_cast<TObjString*>(fVariables->GetValue(key));
   if (value==NULL)
   {
     Fatal("GetStringVariable","Can't find variable named %s.", key);
@@ -114,7 +114,7 @@ TString hcalInf::GetStringVariable(const char* key)
 
 Double_t hcalInf::GetVariable(const char* key)
 {
-  TObjString* value=(TObjString*)fVariables->GetValue(key);
+  TObjString* value=static_cast<TObjString*>(fVariables->GetValue(key));
   if (value==NULL)
     return -1111;
   Double_t val;
@@ -127,7 +127,7 @@ Double_t hcalInf::GetVariable(const char* key)
 
 void hcalInf::AddVariable(const char* key, const char* value)
 {
-  TObjString* skey=(TObjString*)fVariables->FindObject(key);
+  TObjString* skey=static_cast<TObjString*>(fVariables->FindObject(key));
   //Value for this key already exists!!!
   if (skey!=NULL) return;
   skey=new TObjString(key);
@@ -284,7 +284,7 @@ void hcalInf::CheckVariables()
   {
     TObjString* key;
     TIterator* iter=parVariables->MakeIterator();
-    while((key=(TObjString*)iter->Next())!=NULL)
+    while((key=static_cast<TObjString*>(iter->Next()))!=NULL)
     {
       TObjString* first=(TObjString*)parVariables->GetValue(key->String());
       TObjString* second=(TObjString*)fVariables->GetValue(key->String());
@@ -325,7 +325,7 @@ void hcalInf::CheckVariables()
 void hcalInf::InitVariables()
 {
   TString stri;
-  TObjString* str=(TObjString*)fHcalStr.At(0);
+  TObjString* str = static_cast<TObjString*>(fHcalStr.At(0));
 
   fXPos=GetVariableStrict("xpos");
   fYPos=GetVariableStrict("ypos");
@@ -368,9 +368,9 @@ void hcalInf::DumpContainer() const
   {
     TObjString* key;
     TIterator* iter=fVariables->MakeIterator();
-    while((key=(TObjString*)iter->Next())!=NULL)
+    while((key=static_cast<TObjString*>(iter->Next()))!=NULL)
     {
-      TObjString* str=(TObjString*)fVariables->GetValue(key);
+      TObjString* str=static_cast<TObjString*>(fVariables->GetValue(key));
       cout << key->String() << "=" << str->String() << endl;
     }
   }
@@ -386,7 +386,7 @@ void hcalInf::DumpContainer() const
   TString st;
   for(i=0;i<10;i++) m[i]=0;
 
-  while((key=(TObjString*)iter->Next())!=NULL)
+  while((key=static_cast<TObjString*>(iter->Next()))!=NULL)
   {
     st=key->String();
     cout << key->String() << endl;

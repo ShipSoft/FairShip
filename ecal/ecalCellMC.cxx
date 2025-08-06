@@ -51,7 +51,7 @@ Float_t ecalCellMC::GetTrackClusterEnergy(Int_t num)
   list<ecalCell*> cls; GetNeighborsList(cls);
   list<ecalCell*>::const_iterator p=cls.begin();
   for(;p!=cls.end();++p)
-    energy+=((ecalCellMC*)(*p))->GetTrackEnergy(num);
+      energy += dynamic_cast<ecalCellMC*>(*p)->GetTrackEnergy(num);
   return energy;
 }
 

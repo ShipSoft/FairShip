@@ -69,13 +69,13 @@ splitcalHit::splitcalHit(splitcalPoint* p, Double_t t0)
   Double_t stripCoordinatesMaster[3] = {0.,0.,0.};
   navigator->LocalToMaster(stripCoordinatesLocal, stripCoordinatesMaster);
 
-  TGeoBBox* box = (TGeoBBox*)strip->GetVolume()->GetShape();
+  TGeoBBox* box = dynamic_cast<TGeoBBox*>(strip->GetVolume()->GetShape());
   double xHalfLength = box->GetDX();
   double yHalfLength = box->GetDY();
   double zHalfLength = box->GetDZ();
 
   TGeoNode* passiveLayer = caloVolume->GetNode("ECALfilter_200000"); // they are all the same
-  TGeoBBox* boxPassive = (TGeoBBox*)passiveLayer->GetVolume()->GetShape();
+  TGeoBBox* boxPassive = dynamic_cast<TGeoBBox*>(passiveLayer->GetVolume()->GetShape());
   double zPassiveHalfLength = box->GetDZ();
 
   // std::cout<< "----------------------"<<std::endl;

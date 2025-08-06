@@ -72,7 +72,7 @@ InitStatus ecalDigi::Init()
     return kFATAL;
   }
 
-  fStr=(ecalStructure*)manager->GetObject("EcalStructure");
+  fStr = dynamic_cast<ecalStructure*>(manager->GetObject("EcalStructure"));
   if (!fStr)
   {
     Fatal("Init()", "Can't find calorimeter structure in the system.");

@@ -181,7 +181,7 @@ TParticle* ShipStack::PopPrimaryForTracking(Int_t iPrim)
 
   // Return the iPrim-th TParticle from the fParticle array. This should be
   // a primary.
-  TParticle* part = (TParticle*)fParticles->At(iPrim);
+  TParticle* part = dynamic_cast<TParticle*>(fParticles->At(iPrim));
   /* do not understand the logic behind this !!! TR July 2014
     if ( ! (part->GetMother(0) < 0) ) {
     fLogger->Fatal(MESSAGE_ORIGIN, "ShipStack:: Not a primary track! %i ",iPrim);
@@ -244,8 +244,7 @@ void ShipStack::FillTrackArray()
     Bool_t store = (*fStoreIter).second;
 
     if (store) {
-      ShipMCTrack* track =
-        new( (*fTracks)[fNTracks]) ShipMCTrack(GetParticle(iPart));
+      ShipMCTrack* track = new( (*fTracks)[fNTracks]) ShipMCTrack(dynamic_cast<TParticle*>(GetParticle(iPart)));
       fIndexMap[iPart] = fNTracks;
       // --> Set the number of points in the detectors for this track
       for (Int_t iDet=kVETO; iDet<kEndOfList; iDet++) {
@@ -277,7 +276,7 @@ void ShipStack::UpdateTrackIndex(TRefArray* detList)
 
   // First update mother ID in MCTracks
   for (Int_t i=0; i<fNTracks; i++) {
-    ShipMCTrack* track = (ShipMCTrack*)fTracks->At(i);
+    ShipMCTrack* track = dynamic_cast<ShipMCTrack*>(fTracks->At(i));
     Int_t iMotherOld = track->GetMotherId();
     fIndexIter = fIndexMap.find(iMotherOld);
     if (fIndexIter == fIndexMap.end()) {
@@ -296,7 +295,7 @@ void ShipStack::UpdateTrackIndex(TRefArray* detList)
   }
 
   FairDetector* det = NULL;
-  while( (det = (FairDetector*)fDetIter->Next() ) ) {
+  while( (det = dynamic_cast<FairDetector*>(fDetIter->Next()) ) ) {
 
 
     // --> Get hit collections from detector
@@ -308,7 +307,7 @@ void ShipStack::UpdateTrackIndex(TRefArray* detList)
 
       // --> Update track index for all MCPoints in the collection
       for (Int_t iPoint=0; iPoint<nPoints; iPoint++) {
-        FairMCPoint* point = (FairMCPoint*)hitArray->At(iPoint);
+        FairMCPoint* point = dynamic_cast<FairMCPoint*>(hitArray->At(iPoint));
         Int_t iTrack = point->GetTrackID();
 
         fIndexIter = fIndexMap.find(iTrack);
@@ -362,7 +361,7 @@ void ShipStack::Print(Int_t iVerbose) const
        << fNTracks << endl;
   if (iVerbose) {
     for (Int_t iTrack=0; iTrack<fNTracks; iTrack++) {
-      ((ShipMCTrack*) fTracks->At(iTrack))->Print(iTrack);
+        dynamic_cast<ShipMCTrack*>(fTracks->At(iTrack))->Print(iTrack);
     }
   }
 }
@@ -414,7 +413,7 @@ TParticle* ShipStack::GetParticle(Int_t trackID) const
   if (trackID < 0 || trackID >= fNParticles) {
     LOGF(fatal, "ShipStack: Particle index %i out of range. Max=%i", trackID, fNParticles);
   }
-  return (TParticle*)fParticles->At(trackID);
+  return dynamic_cast<TParticle*>(fParticles->At(trackID));
 }
 // -------------------------------------------------------------------------
 

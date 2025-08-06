@@ -33,7 +33,7 @@ void ecalAnalysisSimple::Exec(Option_t* option)
 
   for(i=0;i<n;i++)
   {
-    t=(ecalPoint*)fTracks->At(i);
+    t=dynamic_cast<ecalPoint*>(fTracks->At(i));
     fX=t->GetX();
     fY=t->GetY();
     t->Momentum(m);
@@ -137,13 +137,13 @@ ecalAnalysisSimple::ecalAnalysisSimple()
 InitStatus ecalAnalysisSimple::Init()
 {
   FairRootManager* fManager=FairRootManager::Instance();
-  fStr=(ecalStructure*)fManager->GetObject("EcalStructure");
+  fStr = dynamic_cast<ecalStructure*>(fManager->GetObject("EcalStructure"));
   if (!fStr)
   {
     Fatal("Init()", "Can't find calorimeter structure. ");
     return kFATAL;
   }
-  fTracks=(TClonesArray*)fManager->GetObject("EcalPoint");
+  fTracks = dynamic_cast<TClonesArray*>(fManager->GetObject("EcalPoint"));
   if (!fTracks)
   {
     Fatal("Init()", "Can't find array of reconstructed tracks. ");

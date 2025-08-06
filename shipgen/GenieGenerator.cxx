@@ -139,7 +139,7 @@ Double_t GenieGenerator::MeanMaterialBudget(const Double_t *start, const Double_
   Double_t  sigma = 1./(n*lparam[6])/mbarn;
   if (sigma > mparam[9]) mparam[9]=sigma;
   if (material->IsMixture()) {
-    TGeoMixture * mixture = (TGeoMixture*)material;
+    TGeoMixture * mixture = dynamic_cast<TGeoMixture*>(material);
     lparam[5] =0;
     Double_t sum =0;
     for (Int_t iel=0;iel<mixture->GetNelements();iel++){
@@ -209,7 +209,7 @@ Double_t GenieGenerator::MeanMaterialBudget(const Double_t *start, const Double_
     sigma = 1./(n*lparam[6])/mbarn;
     if (sigma > mparam[9]) mparam[9]=sigma;
     if (material->IsMixture()) {
-      TGeoMixture * mixture = (TGeoMixture*)material;
+      TGeoMixture * mixture = dynamic_cast<TGeoMixture*>(material);
       lparam[5]=0;
       Double_t sum =0;
       for (Int_t iel=0;iel<mixture->GetNelements();iel++){
@@ -363,7 +363,7 @@ Bool_t GenieGenerator::OldReadEvent(FairPrimaryGenerator* cpg)
       if (gRandom->Uniform(-1.,1.)>0.) y=-y;
     }else{
       //point in nu-tau detector area
-      int j = int(gRandom->Uniform(0., m_boxes.size() + 0.5));
+      int j = static_cast<int>(gRandom->Uniform(0., m_boxes.size() + 0.5));
       x = gRandom->Uniform(-m_boxes[j].X() + dVecs[j].X(), m_boxes[j].X() + dVecs[j].X());
       y = gRandom->Uniform(-m_boxes[j].Y() + dVecs[j].Y(), m_boxes[j].Y() + dVecs[j].Y());
       z = gRandom->Uniform(-m_boxes[j].Z() + dVecs[j].Z(), m_boxes[j].Z() + dVecs[j].Z());
@@ -425,12 +425,12 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg)
       printf("Reading (log10(p),log10(pt)) Hists from file: %s\n",fInputFile->GetName());
       for (Int_t idnu=12;idnu<17;idnu+=2){
         for (Int_t idadd=-1;idadd<2;idadd+=2){
-  	  Int_t idhnu=idbase+idnu;
+  	  Int_t idhnu = static_cast<int>(idbase + idnu);
           if (idadd<0) idhnu+=1000;
 	  sprintf(ts,"%d",idhnu);
 	  //pickup corresponding (log10(p),log10(pt)) histogram
           if (fInputFile->FindObjectAny(ts)){
-           TH2F* h2tmp = (TH2F*) fInputFile->Get(ts);
+           TH2F* h2tmp = dynamic_cast<TH2F*>(fInputFile->Get(ts));
            printf("HISTID=%d, Title:%s\n",idhnu,h2tmp->GetTitle());
 	   sprintf(ts,"px_%d",idhnu);
           //make its x-projection, to later be able to convert log10(p) to its bin-number

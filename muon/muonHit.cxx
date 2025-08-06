@@ -144,13 +144,13 @@ void muonHit::stInit()
     TObjArray* nodes =  node->GetVolume()->GetNodes();
 //
     for (Int_t i = 0; i < nodes->GetEntries(); i++) {
-      node = (TGeoNode*)nodes->At(i);
+      node = dynamic_cast<TGeoNode*>(nodes->At(i));
       Int_t muStNs = 0;
       if (TString(node->GetName()).Contains("muondet")) {
         nav->cd(muDet+"/"+node->GetName());
         TGeoVolume* volu = node->GetVolume();
         muShape = node->GetVolume()->GetShape();
-        muonBox = (TGeoBBox*) muShape;
+        muonBox = dynamic_cast<TGeoBBox*>(muShape);
         muStxMax.push_back(muonBox->GetDX()); muStyMax.push_back(muonBox->GetDY());
         muStzMax.push_back(muonBox->GetDZ());
         nav->LocalToMaster(loc,global); muStZpos.push_back(global[2]);

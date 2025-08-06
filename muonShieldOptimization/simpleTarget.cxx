@@ -18,6 +18,7 @@
 
 #include "TClonesArray.h"
 #include "TVirtualMC.h"
+#include "TFile.h"
 #include "TGeoManager.h"
 #include "TGeoBBox.h"
 #include "TGeoEltu.h"
@@ -103,7 +104,7 @@ Bool_t  simpleTarget::ProcessHits(FairVolume* vol)
            fELoss,pdgCode,TVector3(Pos.X(), Pos.Y(), Pos.Z()),TVector3(Mom.Px(), Mom.Py(), Mom.Pz()) );
 
     // Increment number of veto det points in TParticle
-    ShipStack* stack = (ShipStack*) gMC->GetStack();
+    ShipStack* stack = dynamic_cast<ShipStack*>(gMC->GetStack());
     stack->AddPoint(kVETO);
   }
 
@@ -115,7 +116,7 @@ void simpleTarget::Initialize()
 {
   FairDetector::Initialize();
   TSeqCollection* fileList=gROOT->GetListOfFiles();
-  fout = ((TFile*)fileList->At(0));
+  fout = dynamic_cast<TFile*>(fileList->At(0));
 }
 
 void simpleTarget::EndOfEvent()

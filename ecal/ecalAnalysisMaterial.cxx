@@ -36,7 +36,7 @@ void ecalAnalysisMaterial::Exec(Option_t* option)
   {
     cout << "Size of MC points arrays differs from one" << endl;
   }
-  tr=(ShipMCTrack*)fMC->At(0);
+  tr = dynamic_cast<ShipMCTrack*>(fMC->At(0));
   fX=tr->GetPx();
   fY=tr->GetPy();
   fZ=tr->GetPz();
@@ -50,7 +50,7 @@ void ecalAnalysisMaterial::Exec(Option_t* option)
   for(i=0;i<400;i++) fX0z[i]=0;
   for(i=0;i<n;i++)
   {
-    p=(FairRadLenPoint*)fRadLen->At(i);
+    p=dynamic_cast<FairRadLenPoint*>(fRadLen->At(i));
     newp=p->GetPositionOut();
 //    cout << d.Mag() << "	" << p->GetRadLength() << "	" << newp.Z() << "	" << fX0 << endl;
     if (newp.Z()>3535) break;
@@ -116,13 +116,13 @@ InitStatus ecalAnalysisMaterial::Init()
     Fatal("Init", "Can't find a Root Manager.");
     return kFATAL;
   }
-  fMC=(TClonesArray*)fManager->GetObject("MCTrack");
+  fMC = dynamic_cast<TClonesArray*>(fManager->GetObject("MCTrack"));
   if (!fMC)
   {
     Fatal("Init", "Can't find an array of MC tracks.");
     return kFATAL;
   }
-  fRadLen=(TClonesArray*)fManager->GetObject("RadLen");
+  fRadLen = dynamic_cast<TClonesArray*>(fManager->GetObject("RadLen"));
   if (!fRadLen)
   {
     Fatal("Init", "Can't find an array of radiation length points.");

@@ -127,7 +127,7 @@ Double_t MuDISGenerator::MeanMaterialBudget(const Double_t* start, const Double_
     lparam[4] = length;
     lparam[5] = lparam[3] / lparam[2];
     if (material->IsMixture()) {
-        TGeoMixture* mixture = (TGeoMixture*)material;
+        TGeoMixture* mixture = dynamic_cast<TGeoMixture*>(material);
         lparam[5] = 0;
         Double_t sum = 0;
         for (Int_t iel = 0; iel < mixture->GetNelements(); iel++) {
@@ -195,7 +195,7 @@ Double_t MuDISGenerator::MeanMaterialBudget(const Double_t* start, const Double_
         lparam[3] = material->GetZ();
         lparam[5] = lparam[3] / lparam[2];
         if (material->IsMixture()) {
-            TGeoMixture* mixture = (TGeoMixture*)material;
+            TGeoMixture* mixture = dynamic_cast<TGeoMixture*>(material);
             lparam[5] = 0;
             Double_t sum = 0;
             for (Int_t iel = 0; iel < mixture->GetNelements(); iel++) {
@@ -322,7 +322,7 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg)
 
     Double_t t_DIS = (t_muon + t_rmu) / 1e9;   // time taken in seconds to reach [xmu,ymu,zmu]
 
-    cpg->AddTrack(int(mu[0][0]),   // incoming muon track ()
+    cpg->AddTrack(static_cast<int>(mu[0][0]),   // incoming muon track ()
                   mu[0][1],
                   mu[0][2],
                   mu[0][3],
@@ -348,7 +348,7 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg)
         LOG(DEBUG) << "muon DIS Generator out part w " << w;
 
         if (index == 0) {
-            cpg->AddTrack(int((*Part)[0]),
+            cpg->AddTrack(static_cast<int>((*Part)[0]),
                           (*Part)[1],
                           (*Part)[2],
                           (*Part)[3],
@@ -361,8 +361,18 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg)
                           t_DIS,
                           cross_sec);   // save DIS cross section in MCTrack[1]
         } else {
-            cpg->AddTrack(
-                int((*Part)[0]), (*Part)[1], (*Part)[2], (*Part)[3], xmu, ymu, zmu, 0, true, (*Part)[4], t_DIS, w);
+            cpg->AddTrack(static_cast<int>((*Part)[0]),
+                          (*Part)[1],
+                          (*Part)[2],
+                          (*Part)[3],
+                          xmu,
+                          ymu,
+                          zmu,
+                          0,
+                          true,
+                          (*Part)[4],
+                          t_DIS,
+                          w);
         }
         index += 1;
     }
@@ -374,7 +384,7 @@ Bool_t MuDISGenerator::ReadEvent(FairPrimaryGenerator* cpg)
             continue;
         }   // Soft interactions after the DIS point are not saved
         Double_t t_soft = (*SoftPart)[8] / 1e9;   // Time in seconds
-        cpg->AddTrack(int((*SoftPart)[0]),
+        cpg->AddTrack(static_cast<int>((*SoftPart)[0]),
                       (*SoftPart)[1],
                       (*SoftPart)[2],
                       (*SoftPart)[3],

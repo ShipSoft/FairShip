@@ -36,20 +36,20 @@ InitStatus ecalClusterFinder::Init()
     Fatal("Init", "Can't find IOManager.");
     return kFATAL;
   }
-  fStr=(ecalStructure*)io->GetObject("EcalStructure");
+  fStr = dynamic_cast<ecalStructure*>(io->GetObject("EcalStructure"));
   if (!fStr)
   {
     Fatal("Init()", "Can't find calorimeter structure in the system.");
     return kFATAL;
   }
   fInf=fStr->GetEcalInf();
-  fMaximums=(TClonesArray*)io->GetObject("EcalMaximums");
+  fMaximums = dynamic_cast<TClonesArray*>(io->GetObject("EcalMaximums"));
   if (!fMaximums)
   {
     Fatal("Init", "Can't find array of calorimeter maximums in the system.");
     return kFATAL;
   }
-  fCalib=(ecalClusterCalibration*)io->GetObject("ecalClusterCalibration");
+  fCalib = dynamic_cast<ecalClusterCalibration*>(io->GetObject("ecalClusterCalibration"));
   if (!fCalib)
   {
     Fatal("Init", "Can't find ecalClusterCalibration in the system.");
@@ -109,7 +109,7 @@ void ecalClusterFinder::FormPreClusters()
 
   for(;i<nm;i++)
   {
-    max=(ecalMaximum*)fMaximums->At(i);
+    max=dynamic_cast<ecalMaximum*>(fMaximums->At(i));
     if (max==NULL) continue;
     /** Remove maximums matched with charged tracks **/
     if (max->Mark()!=0) continue;

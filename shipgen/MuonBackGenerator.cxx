@@ -116,7 +116,7 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
             LOGF(info, "Reading event %i", fn);
         }
         // test if we have a muon, don't look at neutrinos:
-        if (TMath::Abs(int(id)) == 13) {
+        if (TMath::Abs(static_cast<int>(id)) == 13) {
             mass = pdgBase->GetParticle(id)->Mass();
             e = TMath::Sqrt(px * px + py * py + pz * pz + mass * mass);
             tof = 0;
@@ -230,8 +230,9 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
         px = pt * TMath::Cos(phi_random);
         py = pt * TMath::Sin(phi_random);
     }
-    cpg->AddTrack(int(pythiaid),px,py,pz,vx*100.,vy*100.,vz*100.,-1.,false,e,pythiaid,parentid);
-    cpg->AddTrack(int(id),px,py,pz,vx*100.,vy*100.,vz*100.,-1.,true,e,tof,w);
+    cpg->AddTrack(
+        static_cast<int>(pythiaid), px, py, pz, vx * 100., vy * 100., vz * 100., -1., false, e, pythiaid, parentid);
+    cpg->AddTrack(static_cast<int>(id), px, py, pz, vx * 100., vy * 100., vz * 100., -1., true, e, tof, w);
   }
   return kTRUE;
 }

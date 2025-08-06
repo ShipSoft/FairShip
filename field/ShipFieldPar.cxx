@@ -151,7 +151,7 @@ void ShipFieldPar::SetParameters(FairField* field) {
   fType = field->GetType();
 
   if ( fType == 0 ) {                                 // constant field
-    ShipConstField* fieldConst = (ShipConstField*) field;
+    ShipConstField* fieldConst = dynamic_cast<ShipConstField*>(field);
     fBx = fieldConst->GetBx();
     fBy = fieldConst->GetBy();
     fBz = fieldConst->GetBz();

@@ -108,7 +108,7 @@ Bool_t HNLPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
      if (fn==fNevents) {LOG(WARNING) << "End of input file. Rewind.";}
      fTree->GetEntry(fn%fNevents);
      fn++;
-     if ( int(fabs(hid[0]) ) != 431){ x = false; }
+     if ( static_cast<int>(fabs(hid[0]) ) != 431){ x = false; }
      else {
        Double_t rnr = gRandom->Uniform(0,1);
        if( rnr<fFDs ) { x = false; };
@@ -131,7 +131,7 @@ Bool_t HNLPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
      //fPythia->event.list();
      fnRetries+=1; // can happen if phasespace does not allow charm hadron to decay to HNL
    }else{
-   int r =  int( gRandom->Uniform(0,iHNL) );
+   int r =  static_cast<int>( gRandom->Uniform(0,iHNL) );
    // cout << " ----> debug 2 " << r  <<  endl;
    int i =  hnls[r];
          // production vertex

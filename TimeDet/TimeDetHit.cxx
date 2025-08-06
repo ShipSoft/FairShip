@@ -61,7 +61,7 @@ std::vector<double>  TimeDetHit::GetTime(Double_t x){
 }
 // ---- return mean time information
 std::vector<double>  TimeDetHit::GetTime(){
-     TGeoBBox* shape =  (TGeoBBox*)gGeoManager->GetVolume("TimeDet")->GetShape();
+     TGeoBBox* shape =  dynamic_cast<TGeoBBox*>(gGeoManager->GetVolume("TimeDet")->GetShape());
      Double_t t0  =  (t_1+t_2)/2.-shape->GetDX()/v_drift;
      Float_t lpos, lneg;
      lneg = (t_1-t0)*v_drift;

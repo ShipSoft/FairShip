@@ -24,7 +24,7 @@ Bool_t NtupleGenerator::Init(const char* fileName, const int firstEvent) {
   if (fInputFile->IsZombie()) {
     cout << "-E NtupleGenerator: Error opening the Signal file" << fileName << endl;
   }
-  fTree = (TTree *)fInputFile->Get("ntuple");
+  fTree = dynamic_cast<TTree*>(fInputFile->Get("ntuple"));
   fNevents = fTree->GetEntries();
   fn = firstEvent;
   fTree->SetBranchAddress("id",&id);                // particle id

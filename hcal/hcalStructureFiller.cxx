@@ -71,7 +71,7 @@ InitStatus hcalStructureFiller::Init()
   }
   //HCAL MC points
   if (fUseMCPoints)
-    fListHCALpts = (TClonesArray*)fManager->GetObject("HcalPointLite");
+      fListHCALpts = dynamic_cast<TClonesArray*>(fManager->GetObject("HcalPointLite"));
 
   //fInf->CheckVariables();
   fStr=new hcalStructure(fInf);
@@ -100,7 +100,7 @@ void hcalStructureFiller::LoopForMCPoints()
 
   for(UInt_t j=0; j<n; j++)
   {
-    pt=(hcalPoint*)fListHCALpts->At(j);
+    pt=dynamic_cast<hcalPoint*>(fListHCALpts->At(j));
     module=fStr->GetModule(pt->GetDetectorID(), section);
     cout << section << " " << pt->GetEnergyLoss() << endl;
     if (section==0)
@@ -111,8 +111,8 @@ void hcalStructureFiller::LoopForMCPoints()
   if (fStoreTrackInfo)
   for(UInt_t j=0; j<n; j++)
   {
-    pt=(hcalPoint*)fListHCALpts->At(j);
-    hcalModuleMC* modulemc=(hcalModuleMC*)fStr->GetModule(pt->GetDetectorID(), section);
+    pt=dynamic_cast<hcalPoint*>(fListHCALpts->At(j));
+    hcalModuleMC* modulemc=dynamic_cast<hcalModuleMC*>(fStr->GetModule(pt->GetDetectorID(), section));
     if (section==0)
       modulemc->AddTrackEnergy(pt->GetTrackID(),pt->GetEnergyLoss());
     else

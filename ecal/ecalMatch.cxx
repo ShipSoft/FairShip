@@ -38,7 +38,7 @@ void ecalMatch::Exec(Option_t* option,TClonesArray* reconstructed,TClonesArray* 
 //  if (fVerbose>0) Info("Exec", "Event %d.", fEv);
   for(i=0;i<n;i++)
   {
-    rc=(ecalReconstructed*)fReconstucted->At(i);
+    rc=dynamic_cast<ecalReconstructed*>(fReconstucted->At(i));
     cell=fStr->GetHitCell(rc->CellNum());
     cells.clear();
 
@@ -54,7 +54,7 @@ void ecalMatch::Exec(Option_t* option,TClonesArray* reconstructed,TClonesArray* 
     //Counting energy depositions for all particles
     for(p=cells.begin();p!=cells.end();++p)
     {
-      mccell=(ecalCellMC*)(*p);
+      mccell=dynamic_cast<ecalCellMC*>(*p);
       for(ep=mccell->GetTrackEnergyBegin();ep!=mccell->GetTrackEnergyEnd();++ep)
       {
 	if (e.find(ep->first)==e.end())
@@ -72,7 +72,7 @@ void ecalMatch::Exec(Option_t* option,TClonesArray* reconstructed,TClonesArray* 
       else
 	e2[ep->first]+=ep->second;
       if (ep->first<0&&fVerbose==0) continue;
-      tr=(ShipMCTrack*)fMCTracks->At(ep->first);
+      tr = dynamic_cast<ShipMCTrack*>(fMCTracks->At(ep->first));
       if (tr==NULL)
       {
 	Info("Exec", "Event %d. Can't find MCTrack %d.", fEv, ep->first);
@@ -83,7 +83,7 @@ void ecalMatch::Exec(Option_t* option,TClonesArray* reconstructed,TClonesArray* 
 	if (tr->GetPdgCode()!=22&&TMath::Abs(tr->GetPdgCode())!=11) break;
 	trn=tr->GetMotherId();
 	if (trn<0) break;
-	tr=(ShipMCTrack*)fMCTracks->At(trn);
+	tr=dynamic_cast<ShipMCTrack*>(fMCTracks->At(trn));
 	if (tr==NULL)
 	{
 	  Info("Exec", "Event %d. Can't find MCTrack %d.", fEv, ep->first);
@@ -153,19 +153,19 @@ InitStatus ecalMatch::Init()
     Fatal("Init", "Can't find IOManager.");
     return kFATAL;
   }
-  fStr=(ecalStructure*)io->GetObject("EcalStructure");
+  fStr = dynamic_cast<ecalStructure*>(io->GetObject("EcalStructure"));
   if (!fStr)
   {
     Fatal("Init()", "Can't find calorimeter structure in the system.");
     return kFATAL;
   }
-  fReconstucted=(TClonesArray*)io->GetObject("EcalReco");
+  fReconstucted = dynamic_cast<TClonesArray*>(io->GetObject("EcalReco"));
   if (!fReconstucted)
   {
     Fatal("Init", "Can't find array of reconstructed calorimeter objects in the system.");
     return kFATAL;
   }
-  fMCTracks=(TClonesArray*)io->GetObject("MCTrack");
+  fMCTracks = dynamic_cast<TClonesArray*>(io->GetObject("MCTrack"));
   if (!fMCTracks)
   {
     Fatal("Init", "Can't find array of MC tracks in the system.");
