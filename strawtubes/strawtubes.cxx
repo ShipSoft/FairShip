@@ -568,7 +568,7 @@ void strawtubes::StrawEndPoints(Int_t fDetectorID, TVector3 &vbot, TVector3 &vto
     path += "/";
     path += wire;
     Bool_t rc = nav->cd(path);
-    if (not rc) {
+    if (!rc) {
         LOG(warning) << "strawtubes::StrawDecode, TGeoNavigator failed" << path;
         return;
     }

@@ -166,7 +166,9 @@ void exitHadronAbsorber::PreTrack(){
          if(withNtuple){
           fNtuple->Fill(pdgCode,fMom.Px(),fMom.Py(), fMom.Pz(),fPos.X(),fPos.Y(),fPos.Z());
          }
-    if (fSkipNeutrinos && (idabs==12 or idabs==14 or idabs == 16 )){gMC->StopTrack();}
+         if (fSkipNeutrinos && (idabs == 12 || idabs == 14 || idabs == 16)) {
+             gMC->StopTrack();
+         }
    }
 }
 
@@ -221,9 +223,10 @@ void exitHadronAbsorber::ConstructGeometry()
    //Add thin sensitive plane after hadron absorber
     Float_t distance = 1.;
     Double_t local[3]= {0,0,0};
-    if (not nav->cd("/MuonShieldArea_1/AbsorberVol_1")) {
-      nav->cd("/MuonShieldArea_1/MagnAbsorb_MagRetL_1");
-      distance = -1.;}
+    if (!nav->cd("/MuonShieldArea_1/AbsorberVol_1")) {
+        nav->cd("/MuonShieldArea_1/MagnAbsorb_MagRetL_1");
+        distance = -1.;
+    }
     TGeoBBox* tmp = dynamic_cast<TGeoBBox*>(nav->GetCurrentNode()->GetVolume()->GetShape());
     local[2] = distance * tmp->GetDZ();
     Double_t global[3] = {0,0,0};

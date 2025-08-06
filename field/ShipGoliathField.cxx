@@ -107,7 +107,7 @@ void ShipGoliathField::getpos(TString volname, TVector3 &vbot, TVector3 &vtop) c
    else { std::cout<<"No geomanager"<<std::endl;}
    std::cout<<"ShipGoliathField::getpos: cd to volume "<<volname<<std::endl;
    Bool_t rc = nav->cd(volname);
-   if (not rc){
+   if (!rc) {
        cout << "ShipGoliathfield::getpos, TGeoNavigator failed "<<volname<<endl;
        return;
    }
