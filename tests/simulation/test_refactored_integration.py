@@ -21,10 +21,10 @@ from simulation_execution_configurator import SimulationExecutionConfiguratorFac
 
 
 class TestRefactoredIntegration(unittest.TestCase):
-    """Integration tests for the refactored simulation system"""
+    """Integration tests for the refactored simulation system."""
 
     def setUp(self):
-        """Set up test fixtures"""
+        """Set up test fixtures."""
         # Mock ROOT and related modules
         self.mock_ROOT = Mock()
         self.mock_units = Mock()
@@ -43,15 +43,36 @@ class TestRefactoredIntegration(unittest.TestCase):
 
         # Create mock options (similar to what argparse would produce)
         self.mock_options = Namespace(
-            pythia8=True, pythia6=False, fixedTarget=False, evtcalc=False,
-            command=None, mudis=False, genie=False, nuradio=False,
-            ntuple=False, muonback=False, cosmics=False,
-            RPVSUSY=False, DarkPhoton=False, deepCopy=False,
-            theMass=1.0, theDPepsilon=0.00000008, RPVSUSYbench=2,
-            firstEvent=0, nEvents=100, z_offset=-84.0,
-            eventDisplay=False, dryrun=False, debug=0, field_map=None,
-            followMuon=False, fastMuon=False, sameSeed=False,
-            PaintBeam=5.0, SmearBeam=0.8, phiRandom=False
+            pythia8=True,
+            pythia6=False,
+            fixedTarget=False,
+            evtcalc=False,
+            command=None,
+            mudis=False,
+            genie=False,
+            nuradio=False,
+            ntuple=False,
+            muonback=False,
+            cosmics=False,
+            RPVSUSY=False,
+            DarkPhoton=False,
+            deepCopy=False,
+            theMass=1.0,
+            theDPepsilon=0.00000008,
+            RPVSUSYbench=2,
+            firstEvent=0,
+            nEvents=100,
+            z_offset=-84.0,
+            eventDisplay=False,
+            dryrun=False,
+            debug=0,
+            field_map=None,
+            followMuon=False,
+            fastMuon=False,
+            sameSeed=False,
+            PaintBeam=5.0,
+            SmearBeam=0.8,
+            phiRandom=False,
         )
 
         # Mock geometry
@@ -77,7 +98,7 @@ class TestRefactoredIntegration(unittest.TestCase):
         particle_config.dp_mass = 0.2
         particle_config.production_couplings = None
         particle_config.decay_couplings = None
-        particle_config.inclusive = 'c'
+        particle_config.inclusive = "c"
         particle_config.charmonly = False
         particle_config.hnl_enabled = True
 
@@ -89,32 +110,42 @@ class TestRefactoredIntegration(unittest.TestCase):
         runtime_config.tag = "test_tag"
 
     def test_lazy_loading_integration(self):
-        """Test that lazy loading system works with configurators"""
+        """Test that lazy loading system works with configurators."""
         # Create a mock import manager
         mock_import_manager = Mock(spec=ImportManager)
         mock_import_manager.get_module.side_effect = lambda name: {
-            'ROOT': self.mock_ROOT,
-            'shipunit': self.mock_units,
-            'rootUtils': self.mock_utils,
+            "ROOT": self.mock_ROOT,
+            "shipunit": self.mock_units,
+            "rootUtils": self.mock_utils,
         }.get(name, Mock())
 
         # Test that modules can be accessed
-        ROOT = mock_import_manager.get_module('ROOT')
-        units = mock_import_manager.get_module('shipunit')
-        utils = mock_import_manager.get_module('rootUtils')
+        ROOT = mock_import_manager.get_module("ROOT")
+        units = mock_import_manager.get_module("shipunit")
+        utils = mock_import_manager.get_module("rootUtils")
 
         self.assertEqual(ROOT, self.mock_ROOT)
         self.assertEqual(units, self.mock_units)
         self.assertEqual(utils, self.mock_utils)
 
     def test_configurator_factory_integration(self):
-        """Test that configurator factories work together"""
+        """Test that configurator factories work together."""
         # Create configurators using factories
-        pythia_configurator = EnhancedSimulationConfiguratorFactory.create_pythia_configurator()
-        cosmics_configurator = EnhancedSimulationConfiguratorFactory.create_cosmics_configurator()
-        detector_configurator = EnhancedSimulationConfiguratorFactory.create_detector_configurator()
-        geometry_configurator = EnhancedSimulationConfiguratorFactory.create_geometry_configurator()
-        utility_configurator = EnhancedSimulationConfiguratorFactory.create_utility_configurator()
+        pythia_configurator = (
+            EnhancedSimulationConfiguratorFactory.create_pythia_configurator()
+        )
+        cosmics_configurator = (
+            EnhancedSimulationConfiguratorFactory.create_cosmics_configurator()
+        )
+        detector_configurator = (
+            EnhancedSimulationConfiguratorFactory.create_detector_configurator()
+        )
+        geometry_configurator = (
+            EnhancedSimulationConfiguratorFactory.create_geometry_configurator()
+        )
+        utility_configurator = (
+            EnhancedSimulationConfiguratorFactory.create_utility_configurator()
+        )
 
         # Verify they are created correctly
         self.assertIsNotNone(pythia_configurator)
@@ -124,9 +155,15 @@ class TestRefactoredIntegration(unittest.TestCase):
         self.assertIsNotNone(utility_configurator)
 
         # Test generator configurator creation
-        generator_configurator = GeneratorConfiguratorFactory.create_generator_configurator(
-            self.mock_ROOT, self.mock_units, self.mock_utils, self.mock_ship_geo,
-            pythia_configurator, cosmics_configurator
+        generator_configurator = (
+            GeneratorConfiguratorFactory.create_generator_configurator(
+                self.mock_ROOT,
+                self.mock_units,
+                self.mock_utils,
+                self.mock_ship_geo,
+                pythia_configurator,
+                cosmics_configurator,
+            )
         )
 
         self.assertIsNotNone(generator_configurator)
@@ -135,50 +172,61 @@ class TestRefactoredIntegration(unittest.TestCase):
 
         # Test simulation execution configurator creation
         execution_configurator = SimulationExecutionConfiguratorFactory.create_simulation_execution_configurator(
-            self.mock_ROOT, self.mock_units, self.mock_config_manager,
-            geometry_configurator, utility_configurator
+            self.mock_ROOT,
+            self.mock_units,
+            self.mock_config_manager,
+            geometry_configurator,
+            utility_configurator,
         )
 
         self.assertIsNotNone(execution_configurator)
         self.assertEqual(execution_configurator.ROOT, self.mock_ROOT)
 
-    @patch('enhanced_configurators.LazyPythiaConfigurator')
-    @patch('enhanced_configurators.LazyCosmicsConfigurator')
-    def test_generator_configuration_workflow(self, mock_cosmics_configurator, mock_pythia_configurator):
-        """Test the complete generator configuration workflow"""
+    @patch("enhanced_configurators.LazyPythiaConfigurator")
+    @patch("enhanced_configurators.LazyCosmicsConfigurator")
+    def test_generator_configuration_workflow(
+        self, mock_cosmics_configurator, mock_pythia_configurator
+    ):
+        """Test the complete generator configuration workflow."""
         # Create mock configurator instances
         pythia_configurator = Mock()
         cosmics_configurator = Mock()
         mock_pythia_configurator.return_value = pythia_configurator
         mock_cosmics_configurator.return_value = cosmics_configurator
 
-        generator_configurator = GeneratorConfiguratorFactory.create_generator_configurator(
-            self.mock_ROOT, self.mock_units, self.mock_utils, self.mock_ship_geo,
-            pythia_configurator, cosmics_configurator
+        generator_configurator = (
+            GeneratorConfiguratorFactory.create_generator_configurator(
+                self.mock_ROOT,
+                self.mock_units,
+                self.mock_utils,
+                self.mock_ship_geo,
+                pythia_configurator,
+                cosmics_configurator,
+            )
         )
 
         # Mock detector modules
-        mock_modules = {'Veto': Mock()}
+        mock_modules = {"Veto": Mock()}
 
         # Mock run object
         mock_run = Mock()
 
         # Configuration values for generator
         config_values = {
-            'HNL': True,
-            'inputFile': None,
-            'inclusive': 'c',
-            'charmonly': False,
-            'motherMode': 'pi0',
-            'theProductionCouplings': None,
-            'theDecayCouplings': None,
-            'theCouplings': [0.447e-9, 7.15e-9, 1.88e-9],
-            'theHNLMass': 1.0,
-            'DownScaleDiMuon': False,
-            'MCTracksWithHitsOnly': False,
-            'MCTracksWithEnergyCutOnly': False,
-            'MCTracksWithHitsOrEnergyCut': False,
-            'Opt_high': None,
+            "HNL": True,
+            "inputFile": None,
+            "inclusive": "c",
+            "charmonly": False,
+            "motherMode": "pi0",
+            "theProductionCouplings": None,
+            "theDecayCouplings": None,
+            "theCouplings": [0.447e-9, 7.15e-9, 1.88e-9],
+            "theHNLMass": 1.0,
+            "DownScaleDiMuon": False,
+            "MCTracksWithHitsOnly": False,
+            "MCTracksWithEnergyCutOnly": False,
+            "MCTracksWithHitsOrEnergyCut": False,
+            "Opt_high": None,
         }
 
         # Mock the primary generator creation
@@ -195,10 +243,12 @@ class TestRefactoredIntegration(unittest.TestCase):
         self.assertIsInstance(generators, dict)
         mock_run.SetGenerator.assert_called_with(mock_primGen)
 
-    @patch('enhanced_configurators.LazyGeometryConfigurator')
-    @patch('enhanced_configurators.LazyUtilityConfigurator')
-    def test_simulation_execution_workflow(self, mock_utility_configurator, mock_geometry_configurator):
-        """Test the complete simulation execution workflow"""
+    @patch("enhanced_configurators.LazyGeometryConfigurator")
+    @patch("enhanced_configurators.LazyUtilityConfigurator")
+    def test_simulation_execution_workflow(
+        self, mock_utility_configurator, mock_geometry_configurator
+    ):
+        """Test the complete simulation execution workflow."""
         # Create mock configurator instances
         geometry_configurator = Mock()
         utility_configurator = Mock()
@@ -206,8 +256,11 @@ class TestRefactoredIntegration(unittest.TestCase):
         mock_utility_configurator.return_value = utility_configurator
 
         execution_configurator = SimulationExecutionConfiguratorFactory.create_simulation_execution_configurator(
-            self.mock_ROOT, self.mock_units, self.mock_config_manager,
-            geometry_configurator, utility_configurator
+            self.mock_ROOT,
+            self.mock_units,
+            self.mock_config_manager,
+            geometry_configurator,
+            utility_configurator,
         )
 
         # Mock necessary objects
@@ -224,9 +277,9 @@ class TestRefactoredIntegration(unittest.TestCase):
 
         # Configuration values
         config_values = {
-            'MCTracksWithHitsOnly': False,
-            'MCTracksWithEnergyCutOnly': False,
-            'MCTracksWithHitsOrEnergyCut': False,
+            "MCTracksWithHitsOnly": False,
+            "MCTracksWithEnergyCutOnly": False,
+            "MCTracksWithHitsOrEnergyCut": False,
         }
 
         generators = {}
@@ -237,10 +290,20 @@ class TestRefactoredIntegration(unittest.TestCase):
         # Execute the workflow (will fail due to mocking, but we can test structure)
         try:
             gMC, fStack, fieldMaker = execution_configurator.execute_full_simulation(
-                mock_run, mock_rtdb, self.mock_options, config_values,
-                self.mock_ship_geo, self.mock_config_manager.runtime_config,
-                mock_timer, outFile, parFile, inputFile, generators,
-                True, False, None
+                mock_run,
+                mock_rtdb,
+                self.mock_options,
+                config_values,
+                self.mock_ship_geo,
+                self.mock_config_manager.runtime_config,
+                mock_timer,
+                outFile,
+                parFile,
+                inputFile,
+                generators,
+                True,
+                False,
+                None,
             )
         except Exception:
             # Expected due to mocking - we're testing the structure
@@ -250,7 +313,7 @@ class TestRefactoredIntegration(unittest.TestCase):
         mock_run.Init.assert_called_once()
 
     def test_configuration_value_flow(self):
-        """Test that configuration values flow correctly between components"""
+        """Test that configuration values flow correctly between components."""
         # Create a simulation configuration manager
         config_manager = ConfigurationManager()
 
@@ -267,50 +330,77 @@ class TestRefactoredIntegration(unittest.TestCase):
         self.assertEqual(config_manager.runtime_config, mock_runtime_config)
 
     def test_error_handling_integration(self):
-        """Test that error conditions are handled properly across modules"""
+        """Test that error conditions are handled properly across modules."""
         # Test dry run exit
         self.mock_options.dryrun = True
 
-        geometry_configurator = EnhancedSimulationConfiguratorFactory.create_geometry_configurator()
-        utility_configurator = EnhancedSimulationConfiguratorFactory.create_utility_configurator()
+        geometry_configurator = (
+            EnhancedSimulationConfiguratorFactory.create_geometry_configurator()
+        )
+        utility_configurator = (
+            EnhancedSimulationConfiguratorFactory.create_utility_configurator()
+        )
 
         execution_configurator = SimulationExecutionConfiguratorFactory.create_simulation_execution_configurator(
-            self.mock_ROOT, self.mock_units, self.mock_config_manager,
-            geometry_configurator, utility_configurator
+            self.mock_ROOT,
+            self.mock_units,
+            self.mock_config_manager,
+            geometry_configurator,
+            utility_configurator,
         )
 
         mock_run = Mock()
 
         # Should raise SystemExit for dry run
         with self.assertRaises(SystemExit):
-            execution_configurator.initialize_simulation_run(mock_run, self.mock_options)
+            execution_configurator.initialize_simulation_run(
+                mock_run, self.mock_options
+            )
 
         # Verify run was initialized before exit
         mock_run.Init.assert_called_once()
 
     def test_modular_design_isolation(self):
-        """Test that modules are properly isolated and can be tested independently"""
+        """Test that modules are properly isolated and can be tested independently."""
         # Test generator configurator isolation
-        pythia_configurator = EnhancedSimulationConfiguratorFactory.create_pythia_configurator()
-        cosmics_configurator = EnhancedSimulationConfiguratorFactory.create_cosmics_configurator()
+        pythia_configurator = (
+            EnhancedSimulationConfiguratorFactory.create_pythia_configurator()
+        )
+        cosmics_configurator = (
+            EnhancedSimulationConfiguratorFactory.create_cosmics_configurator()
+        )
 
         # Should be able to create generator configurator without other components
-        generator_configurator = GeneratorConfiguratorFactory.create_generator_configurator(
-            self.mock_ROOT, self.mock_units, self.mock_utils, self.mock_ship_geo,
-            pythia_configurator, cosmics_configurator
+        generator_configurator = (
+            GeneratorConfiguratorFactory.create_generator_configurator(
+                self.mock_ROOT,
+                self.mock_units,
+                self.mock_utils,
+                self.mock_ship_geo,
+                pythia_configurator,
+                cosmics_configurator,
+            )
         )
 
         # Test specific functionality in isolation
         result = generator_configurator.create_primary_generator()
         self.mock_ROOT.FairPrimaryGenerator.assert_called_once()
+        self.assertIsNotNone(result)
 
         # Test execution configurator isolation
-        geometry_configurator = EnhancedSimulationConfiguratorFactory.create_geometry_configurator()
-        utility_configurator = EnhancedSimulationConfiguratorFactory.create_utility_configurator()
+        geometry_configurator = (
+            EnhancedSimulationConfiguratorFactory.create_geometry_configurator()
+        )
+        utility_configurator = (
+            EnhancedSimulationConfiguratorFactory.create_utility_configurator()
+        )
 
         execution_configurator = SimulationExecutionConfiguratorFactory.create_simulation_execution_configurator(
-            self.mock_ROOT, self.mock_units, self.mock_config_manager,
-            geometry_configurator, utility_configurator
+            self.mock_ROOT,
+            self.mock_units,
+            self.mock_config_manager,
+            geometry_configurator,
+            utility_configurator,
         )
 
         # Test specific functionality in isolation
@@ -318,8 +408,9 @@ class TestRefactoredIntegration(unittest.TestCase):
         execution_configurator.configure_trajectory_storage(mock_run, self.mock_options)
         mock_run.SetStoreTraj.assert_called_with(False)  # eventDisplay is False
 
+
 def run_integration_tests():
-    """Run all integration tests"""
+    """Run all integration tests."""
     # Create test suite
     loader = unittest.TestLoader()
     suite = unittest.TestSuite()
@@ -334,6 +425,7 @@ def run_integration_tests():
     # Return success status
     return result.wasSuccessful()
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     success = run_integration_tests()
     sys.exit(0 if success else 1)

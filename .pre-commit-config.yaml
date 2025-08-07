@@ -22,7 +22,7 @@ repos:
     types_or: [python, pyi, jupyter]
     args: [--fix, --show-fixes]
   - id: ruff-format
-    files: ^(python/experimental/|geometry/geometry_config\.py$)
+    files: ^(python/experimental/|geometry/geometry_config\.py$|python/(lazy_loading|simulation_config|enhanced_configurators|root_initialization|generator_configurator|simulation_execution_configurator)\.py$|macro/run_simScript\.py$|tests/.*\.py$)
 - repo: https://github.com/pre-commit/mirrors-clang-format
   rev: v20.1.8
   hooks:

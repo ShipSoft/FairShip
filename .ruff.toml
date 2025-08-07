@@ -10,6 +10,20 @@ select = [
 ignore = [
     "D203", # incorrect-blank-line-before-class (conflicts with D211)
     "D213", # multi-line-summary-second-line (conflicts with D212)
+    "D107", # missing-docstring-in-init (often redundant with class docstring)
+    "D105", # missing-docstring-in-magic-method (often self-explanatory)
+    "D102", # missing-docstring-in-public-method (depends on context)
+    "E501", # line-too-long (readability is context-dependent)
+]
+
+# Per-file ignores for specific patterns
+[lint.per-file-ignores]
+"macro/run_simScript.py" = [
+    "E402", # module-level-import-not-at-top-of-file (script has organized sections)
+]
+"tests/simulation/*.py" = [
+    "D101", # missing-docstring-in-public-class (test classes are self-explanatory)
+    "D102", # missing-docstring-in-public-method (test methods are self-explanatory)
 ]
 
 # See https://docs.astral.sh/ruff/linter/#rule-selection

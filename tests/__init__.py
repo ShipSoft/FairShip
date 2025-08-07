@@ -1,3 +1,1 @@
-"""
-SHiP test package.
-"""
+"""SHiP test package."""

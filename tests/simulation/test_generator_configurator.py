@@ -1,6 +1,5 @@
 #!/usr/bin/env python
-"""Test script for the generator configurator module.
-"""
+"""Test script for the generator configurator module."""
 
 import sys
 import unittest
@@ -11,9 +10,8 @@ from generator_configurator import GeneratorConfigurator, GeneratorConfiguratorF
 
 
 class TestGeneratorConfigurator(unittest.TestCase):
-
     def setUp(self):
-        """Set up test fixtures"""
+        """Set up test fixtures."""
         self.mock_ROOT = Mock()
         self.mock_units = Mock()
         self.mock_utils = Mock()
@@ -44,9 +42,12 @@ class TestGeneratorConfigurator(unittest.TestCase):
         self.mock_units.MeV = 0.001
 
         self.configurator = GeneratorConfigurator(
-            self.mock_ROOT, self.mock_units, self.mock_utils,
-            self.mock_ship_geo, self.mock_pythia_configurator,
-            self.mock_cosmics_configurator
+            self.mock_ROOT,
+            self.mock_units,
+            self.mock_utils,
+            self.mock_ship_geo,
+            self.mock_pythia_configurator,
+            self.mock_cosmics_configurator,
         )
 
         # Set up mock options
@@ -86,32 +87,33 @@ class TestGeneratorConfigurator(unittest.TestCase):
         self.mock_options.fastMuon = False
 
     def test_create_primary_generator(self):
-        """Test primary generator creation"""
+        """Test primary generator creation."""
         result = self.configurator.create_primary_generator()
         self.mock_ROOT.FairPrimaryGenerator.assert_called_once()
+        self.assertIsNotNone(result)
 
     def test_configure_pythia8_generators_disabled(self):
-        """Test Pythia8 generator configuration when disabled"""
+        """Test Pythia8 generator configuration when disabled."""
         result = self.configurator.configure_pythia8_generators(
             Mock(), self.mock_options, {}
         )
         self.assertIsNone(result)
 
     def test_configure_pythia8_generators_hnl(self):
-        """Test Pythia8 generator configuration for HNL"""
+        """Test Pythia8 generator configuration for HNL."""
         self.mock_options.pythia8 = True
         mock_primGen = Mock()
         mock_P8gen = Mock()
         self.mock_ROOT.HNLPythia8Generator.return_value = mock_P8gen
 
         config_values = {
-            'HNL': True,
-            'inputFile': None,
-            'inclusive': 'c',
-            'charmonly': False,
-            'theProductionCouplings': None,
-            'theDecayCouplings': None,
-            'theCouplings': [0.447e-9, 7.15e-9, 1.88e-9],
+            "HNL": True,
+            "inputFile": None,
+            "inclusive": "c",
+            "charmonly": False,
+            "theProductionCouplings": None,
+            "theDecayCouplings": None,
+            "theCouplings": [0.447e-9, 7.15e-9, 1.88e-9],
         }
 
         result = self.configurator.configure_pythia8_generators(
@@ -119,12 +121,12 @@ class TestGeneratorConfigurator(unittest.TestCase):
         )
 
         self.assertEqual(result, mock_P8gen)
-        mock_primGen.SetTarget.assert_called_with(0.0, 0.)
+        mock_primGen.SetTarget.assert_called_with(0.0, 0.0)
         self.mock_ROOT.HNLPythia8Generator.assert_called_once()
         mock_P8gen.SetParameters.assert_called_with("ProcessLevel:all = off")
 
     def test_configure_particle_gun(self):
-        """Test particle gun configuration"""
+        """Test particle gun configuration."""
         self.mock_options.command = "PG"
         self.mock_options.pID = 22
         self.mock_options.Estart = 5.0
@@ -138,7 +140,9 @@ class TestGeneratorConfigurator(unittest.TestCase):
         mock_pgun = Mock()
         self.mock_ROOT.FairBoxGenerator.return_value = mock_pgun
 
-        result = self.configurator.configure_particle_gun(mock_primGen, self.mock_options)
+        result = self.configurator.configure_particle_gun(
+            mock_primGen, self.mock_options
+        )
 
         self.assertEqual(result, mock_pgun)
         self.mock_ROOT.FairBoxGenerator.assert_called_with(22, 1)
@@ -149,7 +153,7 @@ class TestGeneratorConfigurator(unittest.TestCase):
         mock_primGen.AddGenerator.assert_called_with(mock_pgun)
 
     def test_configure_particle_gun_multiple(self):
-        """Test multiple particle gun configuration"""
+        """Test multiple particle gun configuration."""
         self.mock_options.command = "PG"
         self.mock_options.multiplePG = True
         self.mock_options.Dx = 4.0
@@ -159,12 +163,15 @@ class TestGeneratorConfigurator(unittest.TestCase):
         mock_pgun = Mock()
         self.mock_ROOT.FairBoxGenerator.return_value = mock_pgun
 
-        result = self.configurator.configure_particle_gun(mock_primGen, self.mock_options)
+        result = self.configurator.configure_particle_gun(
+            mock_primGen, self.mock_options
+        )
 
         mock_pgun.SetBoxXYZ.assert_called_once()
+        self.assertEqual(result, mock_pgun)
 
     def test_configure_evtcalc_generator(self):
-        """Test EvtCalc generator configuration"""
+        """Test EvtCalc generator configuration."""
         self.mock_options.evtcalc = True
         inputFile = "/path/to/input.root"
 
@@ -186,14 +193,14 @@ class TestGeneratorConfigurator(unittest.TestCase):
         self.assertEqual(self.mock_options.nEvents, 50)
 
     def test_configure_all_generators(self):
-        """Test configuration of all generators"""
+        """Test configuration of all generators."""
         mock_run = Mock()
         config_values = {
-            'HNL': False,
-            'inputFile': None,
-            'inclusive': 'c',
-            'charmonly': False,
-            'Opt_high': None,
+            "HNL": False,
+            "inputFile": None,
+            "inclusive": "c",
+            "charmonly": False,
+            "Opt_high": None,
         }
         mock_modules = {}
 
@@ -208,10 +215,10 @@ class TestGeneratorConfigurator(unittest.TestCase):
         self.assertIsInstance(generators, dict)
         mock_run.SetGenerator.assert_called_with(mock_primGen)
 
-class TestGeneratorConfiguratorFactory(unittest.TestCase):
 
+class TestGeneratorConfiguratorFactory(unittest.TestCase):
     def test_create_generator_configurator(self):
-        """Test factory method"""
+        """Test factory method."""
         mock_ROOT = Mock()
         mock_units = Mock()
         mock_utils = Mock()
@@ -220,8 +227,12 @@ class TestGeneratorConfiguratorFactory(unittest.TestCase):
         mock_cosmics_configurator = Mock()
 
         result = GeneratorConfiguratorFactory.create_generator_configurator(
-            mock_ROOT, mock_units, mock_utils, mock_ship_geo,
-            mock_pythia_configurator, mock_cosmics_configurator
+            mock_ROOT,
+            mock_units,
+            mock_utils,
+            mock_ship_geo,
+            mock_pythia_configurator,
+            mock_cosmics_configurator,
         )
 
         self.assertIsInstance(result, GeneratorConfigurator)
@@ -230,8 +241,9 @@ class TestGeneratorConfiguratorFactory(unittest.TestCase):
         self.assertEqual(result.ut, mock_utils)
         self.assertEqual(result.ship_geo, mock_ship_geo)
 
+
 def run_tests():
-    """Run all tests"""
+    """Run all tests."""
     # Create test suite
     loader = unittest.TestLoader()
     suite = unittest.TestSuite()
@@ -247,6 +259,7 @@ def run_tests():
     # Return success status
     return result.wasSuccessful()
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     success = run_tests()
     sys.exit(0 if success else 1)

@@ -1,3 +1,1 @@
-"""
-Simulation test package for refactored components.
-"""
+"""Simulation test package for refactored components."""

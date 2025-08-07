@@ -11,9 +11,11 @@ from array import array
 
 
 class SimulationExecutionConfigurator:
-    """Main class for configuring simulation execution and post-processing"""
+    """Main class for configuring simulation execution and post-processing."""
 
-    def __init__(self, ROOT, units, config_manager, geom_configurator, utility_configurator):
+    def __init__(
+        self, ROOT, units, config_manager, geom_configurator, utility_configurator
+    ):
         """Initialize the simulation execution configurator.
 
         Args:
@@ -73,15 +75,19 @@ class SimulationExecutionConfigurator:
             config_values: Configuration values dictionary
 
         """
-        EnergyCut = 10. * self.u.MeV if options.mudis else 100. * self.u.MeV
+        EnergyCut = 10.0 * self.u.MeV if options.mudis else 100.0 * self.u.MeV
 
-        MCTracksWithHitsOnly = config_values.get('MCTracksWithHitsOnly', False)
-        MCTracksWithEnergyCutOnly = config_values.get('MCTracksWithEnergyCutOnly', False)
-        MCTracksWithHitsOrEnergyCut = config_values.get('MCTracksWithHitsOrEnergyCut', False)
+        MCTracksWithHitsOnly = config_values.get("MCTracksWithHitsOnly", False)
+        MCTracksWithEnergyCutOnly = config_values.get(
+            "MCTracksWithEnergyCutOnly", False
+        )
+        MCTracksWithHitsOrEnergyCut = config_values.get(
+            "MCTracksWithHitsOrEnergyCut", False
+        )
 
         if MCTracksWithHitsOnly:
             fStack.SetMinPoints(1)
-            fStack.SetEnergyCut(-100.*self.u.MeV)
+            fStack.SetEnergyCut(-100.0 * self.u.MeV)
         elif MCTracksWithEnergyCutOnly:
             fStack.SetMinPoints(-1)
             fStack.SetEnergyCut(EnergyCut)
@@ -90,7 +96,7 @@ class SimulationExecutionConfigurator:
             fStack.SetEnergyCut(EnergyCut)
         elif options.deepCopy:
             fStack.SetMinPoints(0)
-            fStack.SetEnergyCut(0.*self.u.MeV)
+            fStack.SetEnergyCut(0.0 * self.u.MeV)
 
     def configure_trajectory_filter(self, options, ship_geo):
         """Configure trajectory filter for event display.
@@ -104,13 +110,17 @@ class SimulationExecutionConfigurator:
             return
 
         trajFilter = self.ROOT.FairTrajFilter.Instance()
-        trajFilter.SetStepSizeCut(1*self.u.mm)
+        trajFilter.SetStepSizeCut(1 * self.u.mm)
         trajFilter.SetVertexCut(
-            -20*self.u.m, -20*self.u.m, ship_geo.target.z0-1*self.u.m,
-            20*self.u.m, 20*self.u.m, 200.*self.u.m
+            -20 * self.u.m,
+            -20 * self.u.m,
+            ship_geo.target.z0 - 1 * self.u.m,
+            20 * self.u.m,
+            20 * self.u.m,
+            200.0 * self.u.m,
         )
-        trajFilter.SetMomentumCutP(0.1*self.u.GeV)
-        trajFilter.SetEnergyCut(0., 400.*self.u.GeV)
+        trajFilter.SetMomentumCutP(0.1 * self.u.GeV)
+        trajFilter.SetEnergyCut(0.0, 400.0 * self.u.GeV)
         trajFilter.SetStorePrimaries(self.ROOT.kTRUE)
         trajFilter.SetStoreSecondaries(self.ROOT.kTRUE)
 
@@ -145,7 +155,18 @@ class SimulationExecutionConfigurator:
             self.geom_configurator.print_vmc_fields()
             self.geom_configurator.print_weights_and_fields(
                 only_with_field=True,
-                exclude=['DecayVolume','Tr1','Tr2','Tr3','Tr4','Veto','Ecal','Hcal','MuonDetector','SplitCal']
+                exclude=[
+                    "DecayVolume",
+                    "Tr1",
+                    "Tr2",
+                    "Tr3",
+                    "Tr4",
+                    "Veto",
+                    "Ecal",
+                    "Hcal",
+                    "MuonDetector",
+                    "SplitCal",
+                ],
             )
 
     def run_simulation(self, run, options):
@@ -184,7 +205,9 @@ class SimulationExecutionConfigurator:
 
         """
         run.CreateGeometryFile(runtime_config.geometry_file)
-        self.utility_configurator.save_basic_parameters(runtime_config.geometry_file, ship_geo)
+        self.utility_configurator.save_basic_parameters(
+            runtime_config.geometry_file, ship_geo
+        )
 
     def check_geometry_overlaps(self, options):
         """Check for geometry overlaps if debug mode is enabled.
@@ -209,7 +232,9 @@ class SimulationExecutionConfigurator:
             x.CheckOverlaps(0.0001)
             fGeo.PrintOverlaps()
 
-    def print_simulation_results(self, timer, outFile, parFile, generators, options, HNL):
+    def print_simulation_results(
+        self, timer, outFile, parFile, generators, options, HNL
+    ):
         """Print simulation results and timing information.
 
         Args:
@@ -225,17 +250,23 @@ class SimulationExecutionConfigurator:
         rtime = timer.RealTime()
         ctime = timer.CpuTime()
 
-        print(' ')
+        print(" ")
         print("Macro finished successfully.")
 
         # Print generator-specific statistics
-        P8gen = generators.get('pythia8', None)
+        P8gen = generators.get("pythia8", None)
         if P8gen:
             if HNL:
                 print("number of retries, events without HNL ", P8gen.nrOfRetries())
             elif options.DarkPhoton:
-                print("number of retries, events without Dark Photons ", P8gen.nrOfRetries())
-                print("total number of dark photons (including multiple meson decays per single collision) ", P8gen.nrOfDP())
+                print(
+                    "number of retries, events without Dark Photons ",
+                    P8gen.nrOfRetries(),
+                )
+                print(
+                    "total number of dark photons (including multiple meson decays per single collision) ",
+                    P8gen.nrOfDP(),
+                )
 
         print("Output file is ", outFile)
         print("Parameter file is ", parFile)
@@ -249,9 +280,9 @@ class SimulationExecutionConfigurator:
             import_manager: Import manager instance
 
         """
-        print("\n" + "="*60)
+        print("\n" + "=" * 60)
         print("SIMULATION SUMMARY")
-        print("="*60)
+        print("=" * 60)
         print(self.config_manager.get_summary())
         print()
 
@@ -275,14 +306,14 @@ class SimulationExecutionConfigurator:
             return
 
         tmpFile = outFile + "tmp"
-        xxx = outFile.split('/')
-        check = xxx[len(xxx)-1]
+        xxx = outFile.split("/")
+        check = xxx[len(xxx) - 1]
 
         # Find the file in ROOT's list
         fin = None
         for ff in self.ROOT.gROOT.GetListOfFiles():
-            nm = ff.GetName().split('/')
-            if nm[len(nm)-1] == check:
+            nm = ff.GetName().split("/")
+            if nm[len(nm) - 1] == check:
                 fin = ff
                 break
 
@@ -290,7 +321,7 @@ class SimulationExecutionConfigurator:
             fin = self.ROOT.TFile.Open(outFile)
 
         t = fin["cbmsim"]
-        fout = self.ROOT.TFile(tmpFile, 'recreate')
+        fout = self.ROOT.TFile(tmpFile, "recreate")
         fSink = self.ROOT.FairRootFileSink(fout)
 
         sTree = t.CloneTree(0)
@@ -300,8 +331,8 @@ class SimulationExecutionConfigurator:
         # Identify point containers using naming convention
         for x in sTree.GetListOfBranches():
             name = x.GetName()
-            if 'Point' in name:
-                pointContainers.append('sTree.' + name + '.GetEntries()')
+            if "Point" in name:
+                pointContainers.append("sTree." + name + ".GetEntries()")
 
         # Filter out empty events
         for n in range(t.GetEntries()):
@@ -312,17 +343,28 @@ class SimulationExecutionConfigurator:
                     empty = False
                     break
             if not empty:
-                rc = sTree.Fill()
+                rc = sTree.Fill()  # noqa: F841 - Return code not checked, could add error handling
                 nEvents += 1
 
         # Create branch list
         branches = self.ROOT.TList()
-        branches.SetName('BranchList')
+        branches.SetName("BranchList")
         branch_names = [
-            'MCTrack', 'vetoPoint', 'ShipRpcPoint', 'TargetPoint', 'TTPoint',
-            'ScoringPoint', 'strawtubesPoint', 'EcalPoint', 'sEcalPointLite',
-            'smuonPoint', 'TimeDetPoint', 'MCEventHeader', 'UpstreamTaggerPoint',
-            'MTCdetPoint', 'sGeoTracks'
+            "MCTrack",
+            "vetoPoint",
+            "ShipRpcPoint",
+            "TargetPoint",
+            "TTPoint",
+            "ScoringPoint",
+            "strawtubesPoint",
+            "EcalPoint",
+            "sEcalPointLite",
+            "smuonPoint",
+            "TimeDetPoint",
+            "MCEventHeader",
+            "UpstreamTaggerPoint",
+            "MTCdetPoint",
+            "sGeoTracks",
         ]
         for name in branch_names:
             branches.Add(self.ROOT.TObjString(name))
@@ -356,14 +398,14 @@ class SimulationExecutionConfigurator:
         with (
             self.ROOT.TFile.Open(outFile, "read") as f_outputfile,
             self.ROOT.TFile.Open(inputFile, "read") as f_muonfile,
-            self.ROOT.TFile.Open(temp_filename, "recreate") as f_temp,
+            self.ROOT.TFile.Open(temp_filename, "recreate") as f_temp,  # noqa: F841
         ):
             output_tree = f_outputfile["cbmsim"]
             muondis_tree = f_muonfile["DIS"]
             new_tree = output_tree.CloneTree(0)
 
             cross_section = array("f", [0.0])
-            cross_section_leaf = new_tree.Branch(
+            cross_section_leaf = new_tree.Branch(  # noqa: F841 - Branch accessed via tree
                 "CrossSection", cross_section, "CrossSection/F"
             )
 
@@ -377,9 +419,23 @@ class SimulationExecutionConfigurator:
         os.replace(temp_filename, outFile)
         print("Successfully added DISCrossSection to the output file:", outFile)
 
-    def execute_full_simulation(self, run, rtdb, options, config_values, ship_geo,
-                               runtime_config, timer, outFile, parFile, inputFile,
-                               generators, HNL, USING_LAZY_LOADING, import_manager):
+    def execute_full_simulation(
+        self,
+        run,
+        rtdb,
+        options,
+        config_values,
+        ship_geo,
+        runtime_config,
+        timer,
+        outFile,
+        parFile,
+        inputFile,
+        generators,
+        HNL,
+        USING_LAZY_LOADING,
+        import_manager,
+    ):
         """Execute the complete simulation workflow.
 
         Args:
@@ -441,11 +497,12 @@ class SimulationExecutionConfigurator:
 
 
 class SimulationExecutionConfiguratorFactory:
-    """Factory for creating simulation execution configurator instances"""
+    """Factory for creating simulation execution configurator instances."""
 
     @staticmethod
-    def create_simulation_execution_configurator(ROOT, units, config_manager,
-                                                geom_configurator, utility_configurator):
+    def create_simulation_execution_configurator(
+        ROOT, units, config_manager, geom_configurator, utility_configurator
+    ):
         """Create a simulation execution configurator instance.
 
         Args:
@@ -459,5 +516,6 @@ class SimulationExecutionConfiguratorFactory:
             SimulationExecutionConfigurator instance
 
         """
-        return SimulationExecutionConfigurator(ROOT, units, config_manager,
-                                             geom_configurator, utility_configurator)
+        return SimulationExecutionConfigurator(
+            ROOT, units, config_manager, geom_configurator, utility_configurator
+        )
