@@ -39,7 +39,7 @@ gFairBaseContFact = ROOT.FairBaseContFact() # required by change to FairBaseCont
 run = ROOT.FairRunSim()
 run.SetName(mcEngine)  # Transport engine
 run.SetSink(ROOT.FairRootFileSink(outFile))  # Output file
-run.SetUserConfig("g4Config.C") # user configuration file default g4Config.C
+run.SetUserConfig("g4Config.yaml") # user configuration file default g4Config.yaml
 rtdb = run.GetRuntimeDb()
 
 # -----Materials----------------------------------------------
@@ -88,6 +88,14 @@ run.SetGenerator(primGen)
 #
 run.SetGenerator(primGen)
 # -----Initialize simulation run------------------------------------
+# Create and set custom ShipStack for YAML config compatibility
+stack = ROOT.ShipStack(1000)
+stack.StoreSecondaries(ROOT.kTRUE)
+stack.SetMinPoints(0)
+# Get the Geant4 VMC instance and set our custom stack
+geant4 = ROOT.TVirtualMC.GetMC()
+if geant4:
+    geant4.SetStack(stack)
 run.Init()
 gMC = ROOT.TVirtualMC.GetMC()
 

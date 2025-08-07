@@ -285,7 +285,7 @@ timer.Start()
 run = ROOT.FairRunSim()
 run.SetName(mcEngine)  # Transport engine
 run.SetSink(ROOT.FairRootFileSink(outFile))  # Output file
-run.SetUserConfig("g4Config.C") # user configuration file default g4Config.C
+run.SetUserConfig("g4Config.yaml") # user configuration file default g4Config.yaml
 rtdb = run.GetRuntimeDb()
 # -----Create geometry----------------------------------------------
 # import shipMuShield_only as shipDet_conf # special use case for an attempt to convert active shielding geometry for use with FLUKA
@@ -511,6 +511,17 @@ run.SetGenerator(primGen)
 #--- Use it only to display but not for production!
 if options.eventDisplay: run.SetStoreTraj(ROOT.kTRUE)
 else:            run.SetStoreTraj(ROOT.kFALSE)
+
+# -----Create and set custom ShipStack for YAML config compatibility-----
+if mcEngine == "TGeant4":
+    stack = ROOT.ShipStack(1000)
+    stack.StoreSecondaries(ROOT.kTRUE)
+    stack.SetMinPoints(0)
+    # Get the Geant4 VMC instance and set our custom stack
+    geant4 = ROOT.TVirtualMC.GetMC()
+    if geant4:
+        geant4.SetStack(stack)
+
 # -----Initialize simulation run------------------------------------
 run.Init()
 if options.dryrun: # Early stop after setting up Pythia 8

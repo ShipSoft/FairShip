@@ -44,6 +44,9 @@ it in future.
   - The `--SND_design` option in `macro/run_simScript.py` now accepts multiple values and an 'all' option to enable all available SND designs.
   - The geometry configuration and detector setup (`geometry/geometry_config.py`, `python/shipDet_conf.py`) have been updated to instantiate all requested SND detectors.
   - This enables running with multiple SND subdetectors simultaneously and is future-proof for additional SND designs.
+* Added YAML configuration files for Geant4 VMC setup (`g4Config.yaml`, `g4Config_basic.yaml`) to replace deprecated C macros
+  - Includes physics lists, Monte Carlo processes/cuts, and Geant4 macro commands
+  - Maintains full compatibility with original C configuration functionality
 
 ### Fixed
 
@@ -108,6 +111,9 @@ it in future.
 * Particle Gun has been updated: now user can set the coordinates of the PG via keys --V{x,y,z} and use --D{x,y} to uniformly smear the signal in a given x and y range
 + makeCascade: Added new default target, moved to argparse
 * run_simScript.py: use options directly internally instead of using intermediate variables
+* Updated all simulation scripts to use YAML configuration (`g4Config.yaml`) instead of deprecated C macros (`g4Config.C`)
+  - Added explicit ShipStack instantiation in Python code to maintain custom stack functionality
+  - Updated 8 scripts including `run_simScript.py`, `inspectGeant4Geo.py`, and muonShieldOptimization scripts
 
 ### Removed
 
@@ -127,6 +133,7 @@ it in future.
 * Remove strawtubes_single class
 * Removed outdated version `sc_v6` since it is not fitting in the Cavern (also in the build-run)
 * feat(geometry): remove TP liquid scintillator variables
+* Removed deprecated Geant4 VMC configuration files (`g4Config.C`, `g4Config_basic.C`, `g4config.in`, `g4config_basic.in`)
 * Remove unused python/shipMuShield_only.py
 * Remove (broken?) support for Nuage generator
 * Remove nuTauTargetDesign variable, options
