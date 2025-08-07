@@ -347,7 +347,8 @@ if options.pythia8:
    primGen.SmearVertexXY(True)
   P8gen = ROOT.Pythia8Generator()
   P8gen.UseExternalFile(inputFile, options.firstEvent)
-  P8gen.SetTarget("volTarget_1",0.,0.) # will distribute PV inside target, beam offset x=y=0.
+  # Use geometry constants instead of fragile TGeo navigation
+  P8gen.SetTargetCoordinates(ship_geo.target.z0, ship_geo.target.z0 + ship_geo.target.length)
 # pion on proton 500GeV
 # P8gen.SetMom(500.*u.GeV)
 # P8gen.SetId(-211)
@@ -356,7 +357,8 @@ if options.fixedTarget:
  HNL = False
  P8gen = ROOT.FixedTargetGenerator()
  P8gen.SetZoffset(options.z_offset*u.mm)
- P8gen.SetTarget("cave_1/target_vacuum_box_1/TargetArea_1/HeVolume_1", 0. ,0.)
+ # Use geometry constants instead of fragile TGeo navigation
+ P8gen.SetTargetCoordinates(ship_geo.target.z0, ship_geo.target.z0 + ship_geo.target.length)
  P8gen.SetMom(400.*u.GeV)
  P8gen.SetEnergyCut(0.)
  P8gen.SetHeartBeat(100000)

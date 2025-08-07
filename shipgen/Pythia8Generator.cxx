@@ -26,6 +26,7 @@ Pythia8Generator::Pythia8Generator()
   fInputFile  = NULL;
   targetName = "";
   xOff=0; yOff=0;
+  targetFromGeometry = kFALSE;
   fPythia =  new Pythia8::Pythia();
 }
 // -------------------------------------------------------------------------
@@ -94,7 +95,21 @@ Bool_t Pythia8Generator::Init()
    fPythia->settings.parm("Beams:eB", 0.);     // codespell:ignore parm
   }
   fPythia->init();
-  if (targetName!=""){
+  if (targetFromGeometry) {
+   // Use geometry-based coordinates passed from run_simScript.py
+   fMaterialInvestigator = new GenieGenerator();
+   start[0]=xOff;
+   start[1]=yOff;
+   start[2]=startZ;
+   end[0]=xOff;
+   end[1]=yOff;
+   end[2]=endZ;
+   LOG(info) << "Pythia8Generator: Using geometry-based target coordinates startZ=" << startZ << " endZ=" << endZ;
+   //find maximum interaction length
+   bparam = fMaterialInvestigator->MeanMaterialBudget(start, end, mparam);
+   maxCrossSection =  mparam[9];
+  } else if (targetName!=""){
+   // Fallback to fragile TGeo navigation for backward compatibility
    fMaterialInvestigator = new GenieGenerator();
    TGeoVolume* top = gGeoManager->GetTopVolume();
    TGeoNode* target = top->FindNode(targetName);
