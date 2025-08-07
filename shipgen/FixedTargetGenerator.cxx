@@ -1,5 +1,6 @@
 #include "FixedTargetGenerator.h"
 
+#include "BeamSmearingUtils.h"
 #include "EvtGenBase/EvtRandom.hh"
 #include "EvtGenBase/EvtSimpleRandomEngine.hh"
 #include "FairMCEventHeader.h"
@@ -296,16 +297,7 @@ FixedTargetGenerator::~FixedTargetGenerator()
 Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg)
 {
     // Calculate beam smearing and painting
-    Double_t dx = 0, dy = 0;
-    if (fsmearBeam > 0) {
-        dx = gRandom->Gaus(0, fsmearBeam);
-        dy = gRandom->Gaus(0, fsmearBeam);
-    }
-    if (fPaintBeam > 0) {
-        Double_t phi = gRandom->Uniform(0., 2 * TMath::Pi());
-        dx += fPaintBeam * TMath::Cos(phi);
-        dy += fPaintBeam * TMath::Sin(phi);
-    }
+    auto [dx, dy] = CalculateBeamOffset(fsmearBeam, fPaintBeam);
 
   Double_t zinter=0;
   Double_t ZoverA = 1.;
