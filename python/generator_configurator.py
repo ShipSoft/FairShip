@@ -554,29 +554,3 @@ class GeneratorConfigurator:
         run.SetGenerator(primGen)
 
         return primGen, generators
-
-
-class GeneratorConfiguratorFactory:
-    """Factory for creating generator configurator instances."""
-
-    @staticmethod
-    def create_generator_configurator(
-        ROOT, units, utils, ship_geo, pythia_configurator, cosmics_configurator
-    ):
-        """Create a generator configurator instance.
-
-        Args:
-            ROOT: ROOT module
-            units: shipunit module
-            utils: rootUtils module
-            ship_geo: Geometry configuration
-            pythia_configurator: Pythia configurator instance
-            cosmics_configurator: Cosmics configurator instance
-
-        Returns:
-            GeneratorConfigurator instance
-
-        """
-        return GeneratorConfigurator(
-            ROOT, units, utils, ship_geo, pythia_configurator, cosmics_configurator
-        )

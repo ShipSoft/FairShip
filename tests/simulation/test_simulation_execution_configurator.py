@@ -6,10 +6,7 @@ import unittest
 from unittest.mock import Mock, patch
 
 # Import from python directory (already in PYTHONPATH in runtime environment)
-from simulation_execution_configurator import (
-    SimulationExecutionConfigurator,
-    SimulationExecutionConfiguratorFactory,
-)
+from simulation_execution_configurator import SimulationExecutionConfigurator
 
 
 class TestSimulationExecutionConfigurator(unittest.TestCase):
@@ -310,18 +307,18 @@ class TestSimulationExecutionConfigurator(unittest.TestCase):
         self.assertIn("SIMULATION SUMMARY", print_calls)
 
 
-class TestSimulationExecutionConfiguratorFactory(unittest.TestCase):
-    """Test factory class."""
+class TestSimulationExecutionConfiguratorDirectInstantiation(unittest.TestCase):
+    """Test direct instantiation."""
 
-    def test_create_simulation_execution_configurator(self):
-        """Test factory method."""
+    def test_create_simulation_execution_configurator_direct(self):
+        """Test direct instantiation."""
         mock_ROOT = Mock()
         mock_units = Mock()
         mock_config_manager = Mock()
         mock_geom_configurator = Mock()
         mock_utility_configurator = Mock()
 
-        result = SimulationExecutionConfiguratorFactory.create_simulation_execution_configurator(
+        result = SimulationExecutionConfigurator(
             mock_ROOT,
             mock_units,
             mock_config_manager,
@@ -344,7 +341,9 @@ def run_tests():
     # Add test cases
     suite.addTests(loader.loadTestsFromTestCase(TestSimulationExecutionConfigurator))
     suite.addTests(
-        loader.loadTestsFromTestCase(TestSimulationExecutionConfiguratorFactory)
+        loader.loadTestsFromTestCase(
+            TestSimulationExecutionConfiguratorDirectInstantiation
+        )
     )
 
     # Run tests

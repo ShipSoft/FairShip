@@ -494,28 +494,3 @@ class SimulationExecutionConfigurator:
         self.post_process_mudis(options, outFile, inputFile)
 
         return gMC, fStack, fieldMaker
-
-
-class SimulationExecutionConfiguratorFactory:
-    """Factory for creating simulation execution configurator instances."""
-
-    @staticmethod
-    def create_simulation_execution_configurator(
-        ROOT, units, config_manager, geom_configurator, utility_configurator
-    ):
-        """Create a simulation execution configurator instance.
-
-        Args:
-            ROOT: ROOT module
-            units: shipunit module
-            config_manager: Configuration manager instance
-            geom_configurator: Geometry configurator instance
-            utility_configurator: Utility configurator instance
-
-        Returns:
-            SimulationExecutionConfigurator instance
-
-        """
-        return SimulationExecutionConfigurator(
-            ROOT, units, config_manager, geom_configurator, utility_configurator
-        )

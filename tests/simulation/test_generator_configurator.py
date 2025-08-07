@@ -6,7 +6,7 @@ import unittest
 from unittest.mock import Mock
 
 # Import from python directory (already in PYTHONPATH in runtime environment)
-from generator_configurator import GeneratorConfigurator, GeneratorConfiguratorFactory
+from generator_configurator import GeneratorConfigurator
 
 
 class TestGeneratorConfigurator(unittest.TestCase):
@@ -216,9 +216,9 @@ class TestGeneratorConfigurator(unittest.TestCase):
         mock_run.SetGenerator.assert_called_with(mock_primGen)
 
 
-class TestGeneratorConfiguratorFactory(unittest.TestCase):
-    def test_create_generator_configurator(self):
-        """Test factory method."""
+class TestGeneratorConfiguratorDirectInstantiation(unittest.TestCase):
+    def test_create_generator_configurator_direct(self):
+        """Test direct instantiation."""
         mock_ROOT = Mock()
         mock_units = Mock()
         mock_utils = Mock()
@@ -226,7 +226,7 @@ class TestGeneratorConfiguratorFactory(unittest.TestCase):
         mock_pythia_configurator = Mock()
         mock_cosmics_configurator = Mock()
 
-        result = GeneratorConfiguratorFactory.create_generator_configurator(
+        result = GeneratorConfigurator(
             mock_ROOT,
             mock_units,
             mock_utils,
@@ -250,7 +250,9 @@ def run_tests():
 
     # Add test cases
     suite.addTests(loader.loadTestsFromTestCase(TestGeneratorConfigurator))
-    suite.addTests(loader.loadTestsFromTestCase(TestGeneratorConfiguratorFactory))
+    suite.addTests(
+        loader.loadTestsFromTestCase(TestGeneratorConfiguratorDirectInstantiation)
+    )
 
     # Run tests
     runner = unittest.TextTestRunner(verbosity=2)

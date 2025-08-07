@@ -10,14 +10,20 @@ import unittest
 from argparse import Namespace
 from unittest.mock import Mock, patch
 
-from enhanced_configurators import EnhancedSimulationConfiguratorFactory
-from generator_configurator import GeneratorConfiguratorFactory
+from enhanced_configurators import (
+    LazyCosmicsConfigurator,
+    LazyDetectorConfigurator,
+    LazyGeometryConfigurator,
+    LazyPythiaConfigurator,
+    LazyUtilityConfigurator,
+)
+from generator_configurator import GeneratorConfigurator
 
 # Import from python directory (already in PYTHONPATH in runtime environment)
 # Import all the refactored modules
 from lazy_loading import ImportManager
 from simulation_config import ConfigurationManager
-from simulation_execution_configurator import SimulationExecutionConfiguratorFactory
+from simulation_execution_configurator import SimulationExecutionConfigurator
 
 
 class TestRefactoredIntegration(unittest.TestCase):
@@ -128,24 +134,14 @@ class TestRefactoredIntegration(unittest.TestCase):
         self.assertEqual(units, self.mock_units)
         self.assertEqual(utils, self.mock_utils)
 
-    def test_configurator_factory_integration(self):
-        """Test that configurator factories work together."""
-        # Create configurators using factories
-        pythia_configurator = (
-            EnhancedSimulationConfiguratorFactory.create_pythia_configurator()
-        )
-        cosmics_configurator = (
-            EnhancedSimulationConfiguratorFactory.create_cosmics_configurator()
-        )
-        detector_configurator = (
-            EnhancedSimulationConfiguratorFactory.create_detector_configurator()
-        )
-        geometry_configurator = (
-            EnhancedSimulationConfiguratorFactory.create_geometry_configurator()
-        )
-        utility_configurator = (
-            EnhancedSimulationConfiguratorFactory.create_utility_configurator()
-        )
+    def test_configurator_direct_instantiation(self):
+        """Test that configurators can be directly instantiated."""
+        # Create configurators using direct instantiation
+        pythia_configurator = LazyPythiaConfigurator()
+        cosmics_configurator = LazyCosmicsConfigurator()
+        detector_configurator = LazyDetectorConfigurator()
+        geometry_configurator = LazyGeometryConfigurator()
+        utility_configurator = LazyUtilityConfigurator()
 
         # Verify they are created correctly
         self.assertIsNotNone(pythia_configurator)
@@ -155,15 +151,13 @@ class TestRefactoredIntegration(unittest.TestCase):
         self.assertIsNotNone(utility_configurator)
 
         # Test generator configurator creation
-        generator_configurator = (
-            GeneratorConfiguratorFactory.create_generator_configurator(
-                self.mock_ROOT,
-                self.mock_units,
-                self.mock_utils,
-                self.mock_ship_geo,
-                pythia_configurator,
-                cosmics_configurator,
-            )
+        generator_configurator = GeneratorConfigurator(
+            self.mock_ROOT,
+            self.mock_units,
+            self.mock_utils,
+            self.mock_ship_geo,
+            pythia_configurator,
+            cosmics_configurator,
         )
 
         self.assertIsNotNone(generator_configurator)
@@ -171,7 +165,7 @@ class TestRefactoredIntegration(unittest.TestCase):
         self.assertEqual(generator_configurator.u, self.mock_units)
 
         # Test simulation execution configurator creation
-        execution_configurator = SimulationExecutionConfiguratorFactory.create_simulation_execution_configurator(
+        execution_configurator = SimulationExecutionConfigurator(
             self.mock_ROOT,
             self.mock_units,
             self.mock_config_manager,
@@ -194,15 +188,13 @@ class TestRefactoredIntegration(unittest.TestCase):
         mock_pythia_configurator.return_value = pythia_configurator
         mock_cosmics_configurator.return_value = cosmics_configurator
 
-        generator_configurator = (
-            GeneratorConfiguratorFactory.create_generator_configurator(
-                self.mock_ROOT,
-                self.mock_units,
-                self.mock_utils,
-                self.mock_ship_geo,
-                pythia_configurator,
-                cosmics_configurator,
-            )
+        generator_configurator = GeneratorConfigurator(
+            self.mock_ROOT,
+            self.mock_units,
+            self.mock_utils,
+            self.mock_ship_geo,
+            pythia_configurator,
+            cosmics_configurator,
         )
 
         # Mock detector modules
@@ -255,7 +247,7 @@ class TestRefactoredIntegration(unittest.TestCase):
         mock_geometry_configurator.return_value = geometry_configurator
         mock_utility_configurator.return_value = utility_configurator
 
-        execution_configurator = SimulationExecutionConfiguratorFactory.create_simulation_execution_configurator(
+        execution_configurator = SimulationExecutionConfigurator(
             self.mock_ROOT,
             self.mock_units,
             self.mock_config_manager,
@@ -334,14 +326,10 @@ class TestRefactoredIntegration(unittest.TestCase):
         # Test dry run exit
         self.mock_options.dryrun = True
 
-        geometry_configurator = (
-            EnhancedSimulationConfiguratorFactory.create_geometry_configurator()
-        )
-        utility_configurator = (
-            EnhancedSimulationConfiguratorFactory.create_utility_configurator()
-        )
+        geometry_configurator = LazyGeometryConfigurator()
+        utility_configurator = LazyUtilityConfigurator()
 
-        execution_configurator = SimulationExecutionConfiguratorFactory.create_simulation_execution_configurator(
+        execution_configurator = SimulationExecutionConfigurator(
             self.mock_ROOT,
             self.mock_units,
             self.mock_config_manager,
@@ -363,23 +351,17 @@ class TestRefactoredIntegration(unittest.TestCase):
     def test_modular_design_isolation(self):
         """Test that modules are properly isolated and can be tested independently."""
         # Test generator configurator isolation
-        pythia_configurator = (
-            EnhancedSimulationConfiguratorFactory.create_pythia_configurator()
-        )
-        cosmics_configurator = (
-            EnhancedSimulationConfiguratorFactory.create_cosmics_configurator()
-        )
+        pythia_configurator = LazyPythiaConfigurator()
+        cosmics_configurator = LazyCosmicsConfigurator()
 
         # Should be able to create generator configurator without other components
-        generator_configurator = (
-            GeneratorConfiguratorFactory.create_generator_configurator(
-                self.mock_ROOT,
-                self.mock_units,
-                self.mock_utils,
-                self.mock_ship_geo,
-                pythia_configurator,
-                cosmics_configurator,
-            )
+        generator_configurator = GeneratorConfigurator(
+            self.mock_ROOT,
+            self.mock_units,
+            self.mock_utils,
+            self.mock_ship_geo,
+            pythia_configurator,
+            cosmics_configurator,
         )
 
         # Test specific functionality in isolation
@@ -388,14 +370,10 @@ class TestRefactoredIntegration(unittest.TestCase):
         self.assertIsNotNone(result)
 
         # Test execution configurator isolation
-        geometry_configurator = (
-            EnhancedSimulationConfiguratorFactory.create_geometry_configurator()
-        )
-        utility_configurator = (
-            EnhancedSimulationConfiguratorFactory.create_utility_configurator()
-        )
+        geometry_configurator = LazyGeometryConfigurator()
+        utility_configurator = LazyUtilityConfigurator()
 
-        execution_configurator = SimulationExecutionConfiguratorFactory.create_simulation_execution_configurator(
+        execution_configurator = SimulationExecutionConfigurator(
             self.mock_ROOT,
             self.mock_units,
             self.mock_config_manager,
