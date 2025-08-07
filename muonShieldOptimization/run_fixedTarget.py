@@ -190,7 +190,8 @@ run.AddModule(sensPlane)
 primGen = ROOT.FairPrimaryGenerator()
 P8gen = ROOT.FixedTargetGenerator()
 P8gen.SetZoffset(args.z_offset*u.mm)
-P8gen.SetTarget("cave_1/target_vacuum_box_1/TargetArea_1/HeVolume_1", 0., 0.)  # will distribute PV inside target, beam offset x=y=0.
+# Use geometry constants instead of fragile TGeo navigation
+P8gen.SetTargetCoordinates(ship_geo.target.z0, ship_geo.target.z0 + ship_geo.target.length)
 P8gen.SetMom(400.*u.GeV)
 P8gen.SetEnergyCut(args.ecut*u.GeV)
 P8gen.SetDebug(args.debug)
