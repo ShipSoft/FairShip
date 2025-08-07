@@ -1,24 +1,24 @@
 #!/usr/bin/env python
 import os
 import sys
-import ROOT
+import warnings
 
-import shipunit as u
-import shipRoot_conf
-import rootUtils as ut
-from ShipGeoConfig import ConfigRegistry
+# Suppress common ROOT/cppyy warnings that don't affect functionality
+warnings.filterwarnings("ignore", message="No precompiled header available")
+warnings.filterwarnings("ignore", message="pkg_resources is deprecated")
+
+# Core imports that are always needed
 from argparse import ArgumentParser
-from array import array
-from backports import tdirectory634
-from simulation_configurators import SimulationConfiguratorFactory
+
+# Lazy loading infrastructure
+from lazy_loading import setup_lazy_imports
+from enhanced_configurators import EnhancedSimulationConfiguratorFactory as SimulationConfiguratorFactory
 DownScaleDiMuon = False
 
-# Default HNL parameters
-theHNLMass   = 1.0*u.GeV
+# Default parameter values (will be set after lazy loading)
+theHNLMass = None
 theProductionCouplings = theDecayCouplings = None
-
-# Default dark photon parameters
-theDPmass    = 0.2*u.GeV
+theDPmass = None
 
 # Alpaca
 #motherMode = True
@@ -178,6 +178,32 @@ parser.add_argument("--target-yaml", help="Path to the yaml target config file",
 
 options = parser.parse_args()
 
+# Initialize lazy loading system with runtime options
+try:
+    import_manager = setup_lazy_imports(options)
+    # Try to access modules through the lazy loading system
+    ROOT = import_manager.get_module('ROOT')
+    u = import_manager.get_module('shipunit')
+    shipRoot_conf = import_manager.get_module('shipRoot_conf')
+    ut = import_manager.get_module('rootUtils')
+    ConfigRegistry = import_manager.get_module('ShipGeoConfig').ConfigRegistry
+    USING_LAZY_LOADING = True
+except Exception as e:
+    print(f"Warning: Lazy loading failed ({e}), falling back to direct imports")
+    # Fallback to direct imports if lazy loading fails
+    import ROOT
+    import rootUtils as ut
+    import shipunit as u
+    from ShipGeoConfig import ConfigRegistry
+    USING_LAZY_LOADING = False
+    import_manager = None
+
+# Set default parameter values now that shipunit is available
+if theHNLMass is None:
+    theHNLMass = 1.0 * u.GeV
+if theDPmass is None:
+    theDPmass = 0.2 * u.GeV
+
 # Handle SND_design: allow 'all' (case-insensitive) or list of ints
 available_snd_designs = [1, 2]  # Extend this list as new designs are added
 if any(str(x).lower() == 'all' for x in options.SND_design):
@@ -299,10 +325,10 @@ primGen = ROOT.FairPrimaryGenerator()
 if options.pythia8:
  primGen.SetTarget(ship_geo.target.z0, 0.)
 # -----Pythia8--------------------------------------
-# Create Pythia configurator once for HNL/RPVSUSY/DarkPhoton
-pythia_configurator = SimulationConfiguratorFactory.create_pythia_configurator()
+ # Create Pythia configurator once for HNL/RPVSUSY/DarkPhoton
+ pythia_configurator = SimulationConfiguratorFactory.create_pythia_configurator()
 
-if HNL or options.RPVSUSY:
+ if HNL or options.RPVSUSY:
   P8gen = ROOT.HNLPythia8Generator()
   if HNL:
    print('Generating HNL events of mass %.3f GeV'%options.theMass)
@@ -608,6 +634,13 @@ if "P8gen" in globals() :
 print("Output file is ",  outFile)
 print("Parameter file is ",parFile)
 print("Real time ",rtime, " s, CPU time ",ctime,"s")
+
+# Print lazy loading summary
+if USING_LAZY_LOADING and import_manager:
+    print("\nLazy Loading Summary:")
+    print(import_manager.get_import_summary())
+else:
+    print("\nUsed direct imports (lazy loading not available)")
 
 # remove empty events
 if options.muonback:
