@@ -375,7 +375,9 @@ timer.Start()
 run = ROOT.FairRunSim()
 run.SetName(mcEngine)  # Transport engine
 run.SetSink(ROOT.FairRootFileSink(outFile))  # Output file
-run.SetUserConfig("g4Config.C")  # user configuration file default g4Config.C
+# Use FairYamlVMCConfig for YAML configuration
+yamlConfig = ROOT.FairYamlVMCConfig("g4Config", "g4Config.yaml")
+yamlConfig.Setup()
 rtdb = run.GetRuntimeDb()
 # -----Create geometry----------------------------------------------
 # import shipMuShield_only as shipDet_conf # special use case for an attempt to convert active shielding geometry for use with FLUKA
@@ -639,11 +641,22 @@ if options.eventDisplay:
 else:
     run.SetStoreTraj(ROOT.kFALSE)
 
+
 # -----Configure external decayer globally------------------------------------
 # Override any previous SetPythiaDecayer calls if EvtGenDecayer is requested
 if options.evtgen_decayer:
     run.SetPythiaDecayer("DecayConfigTEvtGen.C")
     print("Using TEvtGenDecayer for J/psi and quarkonium decays with EvtGen")
+
+# -----Create and set custom ShipStack for YAML config compatibility-----
+if mcEngine == "TGeant4":
+    stack = ROOT.ShipStack(1000)
+    stack.StoreSecondaries(ROOT.kTRUE)
+    stack.SetMinPoints(0)
+    # Get the Geant4 VMC instance and set our custom stack
+    geant4 = ROOT.TVirtualMC.GetMC()
+    if geant4:
+        geant4.SetStack(stack)
 
 # -----Initialize simulation run------------------------------------
 run.Init()

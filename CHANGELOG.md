@@ -19,6 +19,7 @@ it in future.
 * Bump minimum ROOT version to 6.36
 * Bump minimum CMake version to 3.20 (same as ROOT)
 * Change naming convention for simulation files to `{sim,geo,params}_{uuid4}.root`, with optional `--tag` parameter to specify custom identifier
+* Use g4Config.yaml instead of deprecated .C macro for Geant4 VMC configuration
 
 ### Fixed
 
