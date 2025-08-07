@@ -10,47 +10,14 @@ warnings.filterwarnings("ignore", message="pkg_resources is deprecated")
 # Core imports that are always needed
 from argparse import ArgumentParser
 
-# Lazy loading infrastructure
+from enhanced_configurators import (
+    EnhancedSimulationConfiguratorFactory as SimulationConfiguratorFactory,
+)
+from generator_configurator import GeneratorConfiguratorFactory
+
+# Configuration and initialization infrastructure
 from lazy_loading import setup_lazy_imports
-from enhanced_configurators import EnhancedSimulationConfiguratorFactory as SimulationConfiguratorFactory
-DownScaleDiMuon = False
-
-# Default parameter values (will be set after lazy loading)
-theHNLMass = None
-theProductionCouplings = theDecayCouplings = None
-theDPmass = None
-
-# Alpaca
-#motherMode = True
-
-mcEngine     = "TGeant4"
-
-inclusive    = "c"    # True = all processes if "c" only ccbar -> HNL, if "b" only bbar -> HNL, if "bc" only Bc+/Bc- -> HNL, and for darkphotons: if meson = production through meson decays, pbrem = proton bremstrahlung, qcd = ffbar -> DP.
-
-MCTracksWithHitsOnly   = False  # copy particles which produced a hit and their history
-MCTracksWithEnergyCutOnly = True # copy particles above a certain kin energy cut
-MCTracksWithHitsOrEnergyCut = False # or of above, factor 2 file size increase compared to MCTracksWithEnergyCutOnly
-
-charmonly    = False  # option to be set with -A to enable only charm decays, charm x-sec measurement
-HNL          = True
-
-inputFile    = "/eos/experiment/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-978Bpot.root"
-defaultInputFile = True
-
-globalDesigns = {
-     '2023' : {
-          'dy' : 6.,
-          'caloDesign' : 3,
-          'strawDesign' : 10
-     },
-     '2025' : {
-          'dy' : 6.,
-          'ds' : 8,
-          'caloDesign' : 2,
-          'strawDesign' : 10
-     },
-}
-default = '2025'
+from root_initialization import initialize_simulation_environment
 
 parser = ArgumentParser()
 group = parser.add_mutually_exclusive_group()
@@ -116,7 +83,7 @@ parser.add_argument("--RpvSusy", dest="RPVSUSY", help="Generate events based on 
 parser.add_argument("--FixedTarget", dest="fixedTarget", help="Enable fixed target simulation", action="store_true")
 parser.add_argument("--DarkPhoton", help="Generate dark photons", action="store_true")
 parser.add_argument("--SusyBench", dest="RPVSUSYbench", help="Generate HP Susy", default=2)
-parser.add_argument("-m", "--mass", dest="theMass", help=f"Mass of hidden particle, default {theHNLMass} GeV for HNL, {theDPmass} GeV for DP", default=None, type=float)
+parser.add_argument("-m", "--mass", dest="theMass", help="Mass of hidden particle, default 1.0 GeV for HNL, 0.2 GeV for DP", default=None, type=float)
 parser.add_argument("-c", "--couplings", "--coupling", dest="thecouplings",  help="couplings 'U2e,U2mu,U2tau' or -c 'U2e,U2mu,U2tau' to set list of HNL couplings.\
  TP default for HNL, ctau=53.3km", default="0.447e-9,7.15e-9,1.88e-9")
 parser.add_argument("-cp", "--production-couplings", dest="theprodcouplings",  help="production couplings 'U2e,U2mu,U2tau' to set the couplings for HNL production only"\
@@ -130,14 +97,14 @@ parser.add_argument("-S", "--sameSeed",dest="sameSeed",  help="can be set to an 
 group.add_argument("-f", dest="inputFile", help="Input file if not default file", default=False)
 parser.add_argument("-g", dest="geofile", help="geofile for muon shield geometry, for experts only", default=None)
 parser.add_argument("-o", "--output", dest="outputDir", help="Output directory",  default=".")
-parser.add_argument("-Y", dest="dy", help="max height of vacuum tank", default=globalDesigns[default]['dy'])
+parser.add_argument("-Y", dest="dy", help="max height of vacuum tank", default=10)
 parser.add_argument("--caloDesign",
                     help="0=ECAL/HCAL TP 2=splitCal  3=ECAL/ passive HCAL",
-                    default=globalDesigns[default]['caloDesign'],
+                    default=3,
                     type=int,
                     choices=[0,2,3])
 parser.add_argument("--strawDesign", help="Tracker design: 4=sophisticated straw tube design, horizontal wires; 10=straw of 2 cm diameter (default)",
-                    default=globalDesigns[default]['strawDesign'], type=int, choices=[4,10])
+                    default=4, type=int, choices=[4,10])
 parser.add_argument("-F", dest="deepCopy", help="default = False: copy only stable particles to stack, except for HNL events", action="store_true")
 parser.add_argument("-t", "--test", dest="testFlag", help="quick test", action="store_true")
 parser.add_argument("--dry-run", dest="dryrun", help="stop after initialize", action="store_true")
@@ -178,10 +145,13 @@ parser.add_argument("--target-yaml", help="Path to the yaml target config file",
 
 options = parser.parse_args()
 
-# Initialize lazy loading system with runtime options
+# Initialize configuration management system
+print("Initializing simulation configuration...")
+
+# Initialize lazy loading system
 try:
     import_manager = setup_lazy_imports(options)
-    # Try to access modules through the lazy loading system
+    # Access modules through lazy loading
     ROOT = import_manager.get_module('ROOT')
     u = import_manager.get_module('shipunit')
     shipRoot_conf = import_manager.get_module('shipRoot_conf')
@@ -190,7 +160,7 @@ try:
     USING_LAZY_LOADING = True
 except Exception as e:
     print(f"Warning: Lazy loading failed ({e}), falling back to direct imports")
-    # Fallback to direct imports if lazy loading fails
+    # Fallback to direct imports
     import ROOT
     import rootUtils as ut
     import shipunit as u
@@ -198,11 +168,50 @@ except Exception as e:
     USING_LAZY_LOADING = False
     import_manager = None
 
-# Set default parameter values now that shipunit is available
-if theHNLMass is None:
-    theHNLMass = 1.0 * u.GeV
-if theDPmass is None:
-    theDPmass = 0.2 * u.GeV
+# Initialize configuration with units module
+config_manager = initialize_configuration(options, u)
+config = config_manager.simulation_config
+runtime_config = config_manager.runtime_config
+particle_config = config.particle_config
+
+# Set flag in config
+config.using_lazy_loading = USING_LAZY_LOADING
+
+# Extract commonly used values for backward compatibility
+theHNLMass = particle_config.hnl_mass
+theDPmass = particle_config.dp_mass
+
+# Override argument defaults with configuration values if not explicitly set
+if options.theMass is None:
+    # Set default mass based on particle type
+    if hasattr(options, 'DarkPhoton') and options.DarkPhoton:
+        options.theMass = theDPmass
+    else:
+        options.theMass = theHNLMass
+
+# Override design defaults with configuration values if they match hardcoded defaults
+default = config.default_design
+globalDesigns = config.global_designs
+if options.dy == 10:  # If it's still the hardcoded default
+    options.dy = globalDesigns[default]['dy']
+if options.caloDesign == 3:  # If it's still the hardcoded default
+    options.caloDesign = globalDesigns[default]['caloDesign']
+if options.strawDesign == 4:  # If it's still the hardcoded default
+    options.strawDesign = globalDesigns[default]['strawDesign']
+theProductionCouplings = particle_config.production_couplings
+theDecayCouplings = particle_config.decay_couplings
+inclusive = particle_config.inclusive
+charmonly = particle_config.charmonly
+HNL = particle_config.hnl_enabled
+mcEngine = config.mc_engine
+inputFile = config.input_file
+defaultInputFile = config.default_input_file
+MCTracksWithHitsOnly = config.mc_tracks_with_hits_only
+MCTracksWithEnergyCutOnly = config.mc_tracks_with_energy_cut_only
+MCTracksWithHitsOrEnergyCut = config.mc_tracks_with_hits_or_energy_cut
+DownScaleDiMuon = config.down_scale_dimuon
+
+print(config_manager.get_summary())
 
 # Handle SND_design: allow 'all' (case-insensitive) or list of ints
 available_snd_designs = [1, 2]  # Extend this list as new designs are added
@@ -215,35 +224,22 @@ else:
         print("Invalid value for --SND_design. Use integers or 'all'.")
         sys.exit(1)
 
-if options.A != 'c':
-     inclusive = options.A
-     if options.A =='b': inputFile = "/eos/experiment/ship/data/Beauty/Cascade-run0-19-parp16-MSTP82-1-MSEL5-5338Bpot.root"
-     if options.A.lower() == 'charmonly':
-           charmonly = True
-           HNL = False
-     if options.A not in ['b','c','bc','meson','pbrem','qcd']: inclusive = True
-if options.MM:
-     motherMode=options.MM
-if options.cosmics:
+# Additional option processing for motherMode and other special cases
+if hasattr(options, 'MM') and options.MM:
+     motherMode = options.MM
+if hasattr(options, 'cosmics') and options.cosmics:
      simEngine = "Cosmics"
      Opt_high = int(options.cosmics)
-if options.inputFile:
-  if options.inputFile == "none": options.inputFile = None
-  inputFile = options.inputFile
-  defaultInputFile = False
-if options.RPVSUSY: HNL = False
-if options.DarkPhoton: HNL = False
-if not options.theMass:
-  if options.DarkPhoton: options.theMass  = theDPmass
-  else:                  options.theMass  = theHNLMass
-if options.thecouplings:
+
+# Handle couplings for backward compatibility
+if hasattr(options, 'thecouplings') and options.thecouplings:
   theCouplings = [float(c) for c in options.thecouplings.split(",")]
-if options.theprodcouplings:
-  theProductionCouplings = [float(c) for c in options.theprodcouplings.split(",")]
-if options.thedeccouplings:
-  theDecayCouplings = [float(c) for c in options.thedeccouplings.split(",")]
-if options.testFlag:
-  inputFile = "$FAIRSHIP/files/Cascade-parp16-MSTP82-1-MSEL4-76Mpot_1_5000.root"
+else:
+  # Use configuration values
+  if theProductionCouplings == theDecayCouplings:
+    theCouplings = theProductionCouplings or [0.447e-9,7.15e-9,1.88e-9]
+  else:
+    theCouplings = theProductionCouplings or [0.447e-9,7.15e-9,1.88e-9]
 
 
 #sanity check
@@ -262,8 +258,15 @@ if (options.ntuple or options.muonback) and defaultInputFile :
   print('input file required if simEngine = Ntuple or MuonBack')
   print(" for example -f /eos/experiment/ship/data/Mbias/pythia8_Geant4-withCharm_onlyMuons_4magTarget.root")
   sys.exit()
+# Initialize ROOT and libraries through controlled initialization
 ROOT.gRandom.SetSeed(options.theSeed)  # this should be propagated via ROOT to Pythia8 and Geant4VMC
-shipRoot_conf.configure(0)     # load basic libraries, prepare atexit for python
+
+# Initialize simulation environment (ROOT libraries already loaded via lazy loading or direct import)
+init_result = initialize_simulation_environment(
+    seed=options.theSeed,
+    load_ship_libs=True,
+    config_level=0
+)
 ship_geo = ConfigRegistry.loadpy(
      "$FAIRSHIP/geometry/geometry_config.py",
      Yheight=options.dy,
@@ -277,29 +280,14 @@ ship_geo = ConfigRegistry.loadpy(
      TARGET_YAML=options.target_yaml
 )
 
-# Output file name, add dy to be able to setup geometry with ambiguities.
-if options.command == "PG":
-    tag = f"PG_{options.pID}-{mcEngine}"
-else:
-    for g in ["pythia8", "evtcalc", "pythia6", "genie", "nuradio", "ntuple", "muonback", "mudis", "fixedTarget", "cosmics"]:
-        if getattr(options, g):
-            simEngine = g.capitalize()
-            break
-    else:
-        simEngine = "Pythia8"
-    tag = f"{simEngine}-{mcEngine}"
-if charmonly: tag = simEngine+"CharmOnly-"+mcEngine
-if options.eventDisplay: tag = tag+'_D'
-tag = 'conical.'+tag
-if not os.path.exists(options.outputDir):
-  os.makedirs(options.outputDir)
-outFile = f"{options.outputDir}/ship.{tag}.root"
+# Use runtime configuration for file naming
+tag = runtime_config.tag
+outFile = runtime_config.output_file
+parFile = runtime_config.parameter_file
 
 # rm older files !!!
-for x in os.listdir(options.outputDir):
-  if not x.find(tag)<0: os.system(f"rm {options.outputDir}/{x}" )
-# Parameter file name
-parFile=f"{options.outputDir}/ship.params.{tag}.root"
+for x in os.listdir(config.output_dir):
+  if not x.find(tag)<0: os.system(f"rm {config.output_dir}/{x}" )
 
 # In general, the following parts need not be touched
 # ========================================================================
@@ -603,10 +591,10 @@ rtdb.saveOutput()
 rtdb.printParamContexts()
 getattr(rtdb,"print")()
 # ------------------------------------------------------------------------
-run.CreateGeometryFile(f"{options.outputDir}/geofile_full.{tag}.root")
+run.CreateGeometryFile(runtime_config.geometry_file)
 # save ShipGeo dictionary in geofile
 utility_configurator = SimulationConfiguratorFactory.create_utility_configurator()
-utility_configurator.save_basic_parameters(f"{options.outputDir}/geofile_full.{tag}.root",ship_geo)
+utility_configurator.save_basic_parameters(runtime_config.geometry_file, ship_geo)
 
 # checking for overlaps
 if options.debug == 2:
@@ -635,12 +623,19 @@ print("Output file is ",  outFile)
 print("Parameter file is ",parFile)
 print("Real time ",rtime, " s, CPU time ",ctime,"s")
 
-# Print lazy loading summary
+# Print comprehensive summary
+print("\n" + "="*60)
+print("SIMULATION SUMMARY")
+print("="*60)
+print(config_manager.get_summary())
+print()
 if USING_LAZY_LOADING and import_manager:
-    print("\nLazy Loading Summary:")
+    print("Lazy Loading Summary:")
     print(import_manager.get_import_summary())
+    print()
 else:
-    print("\nUsed direct imports (lazy loading not available)")
+    print("Used direct imports (lazy loading not available)")
+    print()
 
 # remove empty events
 if options.muonback:
