@@ -107,8 +107,8 @@ parser.add_argument("--MuonBack", dest="muonback", help="Generate events from mu
 parser.add_argument("--FollowMuon", dest="followMuon", help="Make muonshield active to follow muons", action="store_true")
 parser.add_argument("--FastMuon", dest="fastMuon", help="Only transport muons for a fast muon only background estimate", action="store_true")
 parser.add_argument("--phiRandom", help="only relevant for muon background generator, random phi", action="store_true")
-parser.add_argument("--SmearBeam", dest="SmearBeam",  help="Standard deviation of beam smearing (muon background only) [cm]", default=0.8, type=float)
-parser.add_argument("--PaintBeam", dest="PaintBeam",  help="Radius of beam painting (muon background only) [cm]", default=5, type=float)
+parser.add_argument("--SmearBeam", dest="SmearBeam",  help="Standard deviation of beam smearing [cm]", default=0.8, type=float)
+parser.add_argument("--PaintBeam", dest="PaintBeam",  help="Radius of beam painting [cm]", default=5, type=float)
 parser.add_argument("--Cosmics", dest="cosmics", help="Use cosmic generator, argument switch for cosmic generator 0 or 1", default=None)  # TODO: Understand integer options, replace with store_true?
 parser.add_argument("--MuDIS", dest="mudis", help="Use muon deep inelastic scattering generator", action="store_true")
 parser.add_argument("--RpvSusy", dest="RPVSUSY", help="Generate events based on RPV neutralino", action="store_true")
@@ -292,6 +292,7 @@ rtdb = run.GetRuntimeDb()
 # import shipMuShield_only as shipDet_conf # special use case for an attempt to convert active shielding geometry for use with FLUKA
 # import shipTarget_only as shipDet_conf
 import shipDet_conf
+
 modules = shipDet_conf.configure(run,ship_geo)
 # -----Create PrimaryGenerator--------------------------------------
 primGen = ROOT.FairPrimaryGenerator()
@@ -333,7 +334,8 @@ if options.pythia8:
   passDPconf = pythia8darkphoton_conf.configure(P8gen,options.theMass,options.theDPepsilon,inclusive, motherMode, options.deepCopy)
   if (passDPconf!=1): sys.exit()
  if HNL or options.RPVSUSY or options.DarkPhoton:
-  P8gen.SetSmearBeam(1*u.cm) # finite beam size
+  P8gen.SetSmearBeam(options.SmearBeam*10) # Gaussian beam smearing (convert cm to Pythia8 mm)
+  P8gen.SetPaintRadius(options.PaintBeam*10) # beam painting radius (convert cm to Pythia8 mm)
   P8gen.SetLmin((ship_geo.Chamber1.z - ship_geo.chambers.Tub1length) - ship_geo.target.z0 )
   P8gen.SetLmax(ship_geo.TrackStation1.z - ship_geo.target.z0 )
  if charmonly:
@@ -360,6 +362,8 @@ if options.fixedTarget:
  # Use geometry constants instead of fragile TGeo navigation
  P8gen.SetTargetCoordinates(ship_geo.target.z0, ship_geo.target.z0 + ship_geo.target.length)
  P8gen.SetMom(400.*u.GeV)
+ P8gen.SetSmearBeam(options.SmearBeam*u.cm) # Gaussian beam smearing
+ P8gen.SetPaintRadius(options.PaintBeam*u.cm) # beam painting radius
  P8gen.SetEnergyCut(0.)
  P8gen.SetHeartBeat(100000)
  P8gen.SetG4only()
@@ -473,8 +477,8 @@ if options.muonback:
  MuonBackgen = ROOT.MuonBackGenerator()
  # MuonBackgen.FollowAllParticles() # will follow all particles after hadron absorber, not only muons
  MuonBackgen.Init(inputFile, options.firstEvent)
- MuonBackgen.SetPaintRadius(options.PaintBeam)
- MuonBackgen.SetSmearBeam(options.SmearBeam)
+ MuonBackgen.SetPaintRadius(options.PaintBeam*u.cm)
+ MuonBackgen.SetSmearBeam(options.SmearBeam*u.cm)
  MuonBackgen.SetPhiRandom(options.phiRandom)
  if DownScaleDiMuon:
     testf = ROOT.TFile.Open(inputFile)
@@ -548,6 +552,7 @@ if options.eventDisplay:
 
 # The VMC sets the fields using the "/mcDet/setIsLocalMagField true" option in "gconfig/g4config.in"
 import geomGeant4
+
 # geomGeant4.setMagnetField() # replaced by VMC, only has effect if /mcDet/setIsLocalMagField  false
 
 # Define extra VMC B fields not already set by the geometry definitions, e.g. a global field,
@@ -581,6 +586,7 @@ getattr(rtdb,"print")()
 run.CreateGeometryFile(f"{options.outputDir}/geofile_full.{tag}.root")
 # save ShipGeo dictionary in geofile
 import saveBasicParameters
+
 saveBasicParameters.execute(f"{options.outputDir}/geofile_full.{tag}.root",ship_geo)
 
 # checking for overlaps
@@ -699,6 +705,8 @@ if options.mudis:
 
 # ------------------------------------------------------------------------
 import checkMagFields
+
+
 def visualizeMagFields():
  checkMagFields.run()
 def checkOverlapsWithGeant4():

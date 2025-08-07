@@ -1,11 +1,14 @@
-#include <math.h>
-#include "TSystem.h"
-#include "TROOT.h"
-#include "TMath.h"
-#include "FairPrimaryGenerator.h"
-#include "TDatabasePDG.h"               // for TDatabasePDG
 #include "HNLPythia8Generator.h"
-const Double_t cm = 10.; // pythia units are mm
+
+#include "FairPrimaryGenerator.h"
+#include "TDatabasePDG.h"   // for TDatabasePDG
+#include "TMath.h"
+#include "TROOT.h"
+#include "TSystem.h"
+
+#include <math.h>
+const Double_t cm = 10.;                 // pythia units are mm
+const Double_t mm = 1.;                  // pythia base unit
 const Double_t c_light = 2.99792458e+10; // speed of light in cm/sec (c_light   = 2.99792458e+8 * m/s)
 const Bool_t debug = false;
 //using namespace Pythia8;
@@ -19,6 +22,8 @@ HNLPythia8Generator::HNLPythia8Generator()
   fLmin       = 5000.*cm;    // mm minimum  decay position z  ROOT units !
   fLmax       = 12000.*cm;   // mm maximum decay position z
   fFDs        = 7.7/10.4;    // correction for Pythia6 to match measured Ds production
+  fsmearBeam = 8 * mm;       // default value for smearing beam (8 mm)
+  fPaintBeam = 5 * cm;       // default value for painting beam (5 cm)
   fextFile    = "";
   fInputFile  = NULL;
   fnRetries   = 0;
@@ -180,23 +185,47 @@ Bool_t HNLPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
 // foresee finite beam size
          Double_t dx=0;
          Double_t dy=0;
-         if (fsmearBeam>0){
-            Double_t test = fsmearBeam*fsmearBeam;
-            Double_t Rsq  = test+1.;
-            while(Rsq>test){
-               dx = gRandom->Uniform(-1.,1.) * fsmearBeam;
-               dy = gRandom->Uniform(-1.,1.) * fsmearBeam;
-               Rsq = dx*dx+dy*dy;
-            }
+         if (fsmearBeam > 0) {
+             dx = gRandom->Gaus(0, fsmearBeam);
+             dy = gRandom->Gaus(0, fsmearBeam);
+         }
+         if (fPaintBeam > 0) {
+             Double_t phi = gRandom->Uniform(0., 2 * TMath::Pi());
+             dx += fPaintBeam * TMath::Cos(phi);
+             dy += fPaintBeam * TMath::Sin(phi);
          }
          if (fextFile && *fextFile) {
 // take grand mother particle from input file, to know if primary or secondary production
-          cpg->AddTrack((Int_t)mid[0],mpx[0],mpy[0],mpz[0],xm/cm+dx,ym/cm+dy,zm/cm,-1,false,mE[0],0.,1.);
-	  cpg->AddTrack((Int_t)fPythia->event[im].id(),pmx,pmy,pmz,xm/cm+dx,ym/cm+dy,zm/cm,0,false,em,tm/cm/c_light,w); // convert pythia's (x,y,z[mm], t[mm/c]) to ([cm], [s])
-	  cpg->AddTrack(fHNL, px, py, pz, xp/cm+dx,yp/cm+dy,zp/cm, 1,false,e,tp/cm/c_light,w);
+cpg->AddTrack(
+    (Int_t)mid[0], mpx[0], mpy[0], mpz[0], xm / cm + dx / cm, ym / cm + dy / cm, zm / cm, -1, false, mE[0], 0., 1.);
+cpg->AddTrack((Int_t)fPythia->event[im].id(),
+              pmx,
+              pmy,
+              pmz,
+              xm / cm + dx / cm,
+              ym / cm + dy / cm,
+              zm / cm,
+              0,
+              false,
+              em,
+              tm / cm / c_light,
+              w);   // convert pythia's (x,y,z[mm], t[mm/c]) to ([cm], [s])
+cpg->AddTrack(fHNL, px, py, pz, xp / cm + dx / cm, yp / cm + dy / cm, zp / cm, 1, false, e, tp / cm / c_light, w);
          }else{
-	  cpg->AddTrack((Int_t)fPythia->event[im].id(),pmx,pmy,pmz,xm/cm+dx,ym/cm+dy,zm/cm,-1,false,em,tm/cm/c_light,w); // convert pythia's (x,y,z[mm], t[mm/c]) to ([cm], [s])
-	  cpg->AddTrack(fHNL, px, py, pz, xp/cm+dx,yp/cm+dy,zp/cm, 0,false,e,tp/cm/c_light,w);
+             cpg->AddTrack((Int_t)fPythia->event[im].id(),
+                           pmx,
+                           pmy,
+                           pmz,
+                           xm / cm + dx / cm,
+                           ym / cm + dy / cm,
+                           zm / cm,
+                           -1,
+                           false,
+                           em,
+                           tm / cm / c_light,
+                           w);   // convert pythia's (x,y,z[mm], t[mm/c]) to ([cm], [s])
+             cpg->AddTrack(
+                 fHNL, px, py, pz, xp / cm + dx / cm, yp / cm + dy / cm, zp / cm, 0, false, e, tp / cm / c_light, w);
          }
          // bookkeep the indices of stored particles
          dec_chain.push_back( im );
