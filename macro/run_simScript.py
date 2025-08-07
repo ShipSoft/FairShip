@@ -15,16 +15,13 @@ warnings.filterwarnings("ignore", message="pkg_resources is deprecated")
 # Core imports that are always needed
 from argparse import ArgumentParser
 
-from enhanced_configurators import (
-    EnhancedSimulationConfiguratorFactory as SimulationConfiguratorFactory,
-)
-from generator_configurator import GeneratorConfiguratorFactory
+from generator_configurator import GeneratorConfigurator
 
 # Configuration and initialization infrastructure
 from lazy_loading import setup_lazy_imports
 from root_initialization import initialize_simulation_environment
 from simulation_config import initialize_configuration
-from simulation_execution_configurator import SimulationExecutionConfiguratorFactory
+from simulation_execution_configurator import SimulationExecutionConfigurator
 
 parser = ArgumentParser()
 group = parser.add_mutually_exclusive_group()
@@ -530,13 +527,19 @@ rtdb = run.GetRuntimeDb()
 # import shipMuShield_only as shipDet_conf # special use case for an attempt to convert active shielding geometry for use with FLUKA
 # import shipTarget_only as shipDet_conf
 # Replaced direct import with configurator pattern
-det_configurator = SimulationConfiguratorFactory.create_detector_configurator()
+from enhanced_configurators import (
+    LazyCosmicsConfigurator,
+    LazyDetectorConfigurator,
+    LazyPythiaConfigurator,
+)
+
+det_configurator = LazyDetectorConfigurator()
 modules = det_configurator.configure(run, ship_geo)
 # -----Configure Primary Generators--------------------------------------
 # Create configurators
-pythia_configurator = SimulationConfiguratorFactory.create_pythia_configurator()
-cosmics_configurator = SimulationConfiguratorFactory.create_cosmics_configurator()
-generator_configurator = GeneratorConfiguratorFactory.create_generator_configurator(
+pythia_configurator = LazyPythiaConfigurator()
+cosmics_configurator = LazyCosmicsConfigurator()
+generator_configurator = GeneratorConfigurator(
     ROOT, u, ut, ship_geo, pythia_configurator, cosmics_configurator
 )
 
@@ -570,12 +573,12 @@ MCTracksWithHitsOnly = generator_config_values.get(
 
 # -----Execute Simulation--------------------------------------
 # Create configurators for simulation execution
-geom_configurator = SimulationConfiguratorFactory.create_geometry_configurator()
-utility_configurator = SimulationConfiguratorFactory.create_utility_configurator()
-execution_configurator = (
-    SimulationExecutionConfiguratorFactory.create_simulation_execution_configurator(
-        ROOT, u, config_manager, geom_configurator, utility_configurator
-    )
+from enhanced_configurators import LazyGeometryConfigurator, LazyUtilityConfigurator
+
+geom_configurator = LazyGeometryConfigurator()
+utility_configurator = LazyUtilityConfigurator()
+execution_configurator = SimulationExecutionConfigurator(
+    ROOT, u, config_manager, geom_configurator, utility_configurator
 )
 
 # Prepare execution configuration values
@@ -605,9 +608,7 @@ gMC, fStack, fieldMaker = execution_configurator.execute_full_simulation(
 
 # ------------------------------------------------------------------------
 # Create utility configurator for functions that might be called later
-utility_configurator_global = (
-    SimulationConfiguratorFactory.create_utility_configurator()
-)
+utility_configurator_global = LazyUtilityConfigurator()
 
 
 def visualizeMagFields():

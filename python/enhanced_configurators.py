@@ -80,28 +80,6 @@ class LazyDetectorConfigurator:
         shipDet_conf = self._import_manager.get_module("shipDet_conf")
         return shipDet_conf.configure(run, ship_geo)
 
-    @lazy_import_decorator(["shipDet_conf"])
-    def configure_snd_old(
-        self, yaml_file, emulsion_target_z_end, cave_floorHeightMuonShield
-    ):
-        """Configure SND old detector with lazy loading."""
-        shipDet_conf = self._import_manager.get_module("shipDet_conf")
-        return shipDet_conf.configure_snd_old(
-            yaml_file, emulsion_target_z_end, cave_floorHeightMuonShield
-        )
-
-    @lazy_import_decorator(["shipDet_conf"])
-    def configure_snd_mtc(self, yaml_file, ship_geo):
-        """Configure SND MTC detector with lazy loading."""
-        shipDet_conf = self._import_manager.get_module("shipDet_conf")
-        return shipDet_conf.configure_snd_mtc(yaml_file, ship_geo)
-
-    @lazy_import_decorator(["shipDet_conf"])
-    def configure_veto(self, yaml_file, z0):
-        """Configure veto detector with lazy loading."""
-        shipDet_conf = self._import_manager.get_module("shipDet_conf")
-        return shipDet_conf.configure_veto(yaml_file, z0)
-
 
 class LazyGeometryConfigurator:
     """Enhanced geometry configurator with lazy loading."""
