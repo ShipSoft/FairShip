@@ -55,6 +55,7 @@ it in future.
   - All generators (`MuonBackGenerator`, `HNLPythia8Generator`, `FixedTargetGenerator`) now use the same beam smearing algorithm: Gaussian smearing with `--SmearBeam` parameter and uniform circular painting with `--PaintRadius` parameter
   - The `--SmearBeam` and `--PaintBeam` command-line options in `run_simScript.py` now apply to all generators, not just muon background simulation
   - Fixed unit handling to ensure proper conversion between GEANT4 units (cm-based) and Pythia8 units (mm-based) in each generator
+  - Implemented shared `BeamSmearingUtils` utility using modern C++17 features (std::pair return and structured bindings) to eliminate code duplication
 
 ### Fixed
 

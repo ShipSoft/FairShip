@@ -69,6 +69,7 @@ MuDISGenerator.cxx
 FixedTargetGenerator.cxx
 EvtCalcGenerator.cxx
 TEvtGenDecayer.cxx
+BeamSmearingUtils.cxx
 )
 
 set(LINKDEF GenLinkDef.h)
