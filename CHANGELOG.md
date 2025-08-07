@@ -108,6 +108,16 @@ it in future.
 * Particle Gun has been updated: now user can set the coordinates of the PG via keys --V{x,y,z} and use --D{x,y} to uniformly smear the signal in a given x and y range
 + makeCascade: Added new default target, moved to argparse
 * run_simScript.py: use options directly internally instead of using intermediate variables
+* feat: Improve FixedTargetGenerator geometry handling
+  - Replace fragile hardcoded TGeo navigation paths with geometry constants from `ship_geo.target`
+  - Add `SetTargetCoordinates()` method to accept geometry-based start/end z-coordinates from `run_simScript.py`
+  - Use robust `ship_geo.target.z0` and `ship_geo.target.length` instead of brittle `"cave_1/target_vacuum_box_1/TargetArea_1/HeVolume_1"` path
+  - Maintain backward compatibility with legacy TGeo navigation as fallback
+* feat: Improve Pythia8Generator geometry handling
+  - Apply same geometry robustness improvements as FixedTargetGenerator
+  - Replace fragile `"volTarget_1"` TGeo navigation with geometry constants from `ship_geo.target`
+  - Add `SetTargetCoordinates()` method for robust geometry-based target configuration
+  - Maintain backward compatibility with legacy TGeo navigation as fallback
 
 ### Removed
 
