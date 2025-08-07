@@ -35,6 +35,12 @@ class FixedTargetGenerator : public FairGenerator
   void UseRandom3() { fUseRandom1 = kFALSE; fUseRandom3 = kTRUE; };
   void SetTarget(TString s, Double_t x,Double_t y ) { targetName = s; xOff=x; yOff=y; };
   void SetZoffset(Double_t z) { zOff = z; };
+  void SetTargetCoordinates(Double_t start_z, Double_t end_z)
+  {
+      startZ = start_z;
+      endZ = end_z;
+      targetFromGeometry = true;
+  };
   void SetBoost(Double_t f) { fBoost  = f; }  // boost factor for rare di-muon decays
   void SetG4only() { G4only  = true; }  // only run Geant4, no pythia primary interaction
   void SetTauOnly() { tauOnly  = true; }  // only have Ds decay to tau
@@ -83,6 +89,7 @@ class FixedTargetGenerator : public FairGenerator
   Double_t mparam[10];
   Double_t startZ;
   Double_t endZ;
+  Bool_t targetFromGeometry;   // flag to indicate coordinates set from geometry
   Double_t maxCrossSection;
   TFile* fin;//!
   TNtuple* nTree;//!

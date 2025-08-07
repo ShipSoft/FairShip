@@ -49,6 +49,7 @@ FixedTargetGenerator::FixedTargetGenerator()
   nrpotspill = 5.E13; // nr of protons / spill
   setByHand = kFALSE;
   Debug = kFALSE;
+  targetFromGeometry = kFALSE;
   Option = "Primary";
   wspill = 1.; // event weight == 1 for primary events
   heartbeat = 1000;
@@ -223,7 +224,21 @@ Bool_t FixedTargetGenerator::Init()
     evtgenN = new EvtGenDecays(fPythiaN, DecayFile.Data(), ParticleFile.Data(),myEvtGenPtr);
    }
   }
-  if (targetName!=""){
+  if (targetFromGeometry) {
+   // Use geometry-based coordinates passed from run_simScript.py
+   fMaterialInvestigator = new GenieGenerator();
+   start[0]=xOff;
+   start[1]=yOff;
+   start[2] = startZ + zOff;
+   end[0]=xOff;
+   end[1]=yOff;
+   end[2]=endZ;
+   LOG(INFO) << "FixedTargetGenerator: Using geometry-based target coordinates startZ=" << startZ << " endZ=" << endZ;
+   //find maximum interaction length
+   bparam = fMaterialInvestigator->MeanMaterialBudget(start, end, mparam);
+   maxCrossSection =  mparam[9];
+  } else if (targetName!=""){
+   // Fallback to fragile TGeo navigation for backward compatibility
    fMaterialInvestigator = new GenieGenerator();
    TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
    if (nav->CheckPath(targetName)) {

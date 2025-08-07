@@ -34,6 +34,12 @@ class Pythia8Generator : public FairGenerator
   void UseExternalFile(const char* x, Int_t i){ fextFile   = x; firstEvent=i; };
   void SetfFDs(Double_t z) { fFDs = z; };
   void SetTarget(TString s, Double_t x,Double_t y ) { targetName = s; xOff=x; yOff=y; };
+  void SetTargetCoordinates(Double_t start_z, Double_t end_z)
+  {
+      startZ = start_z;
+      endZ = end_z;
+      targetFromGeometry = true;
+  };
   Int_t nrOfRetries(){ return fnRetries; };
 
  private:
@@ -67,6 +73,7 @@ class Pythia8Generator : public FairGenerator
   Double_t mparam[10];
   Double_t startZ;
   Double_t endZ;
+  Bool_t targetFromGeometry;   // flag to indicate coordinates set from geometry
   Double_t maxCrossSection;
 };
 
