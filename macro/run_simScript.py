@@ -18,6 +18,8 @@ from generator_configurator import GeneratorConfiguratorFactory
 # Configuration and initialization infrastructure
 from lazy_loading import setup_lazy_imports
 from root_initialization import initialize_simulation_environment
+from simulation_config import initialize_configuration
+from simulation_execution_configurator import SimulationExecutionConfiguratorFactory
 
 parser = ArgumentParser()
 group = parser.add_mutually_exclusive_group()
@@ -308,421 +310,58 @@ rtdb = run.GetRuntimeDb()
 # Replaced direct import with configurator pattern
 det_configurator = SimulationConfiguratorFactory.create_detector_configurator()
 modules = det_configurator.configure(run,ship_geo)
-# -----Create PrimaryGenerator--------------------------------------
-primGen = ROOT.FairPrimaryGenerator()
-if options.pythia8:
- primGen.SetTarget(ship_geo.target.z0, 0.)
-# -----Pythia8--------------------------------------
- # Create Pythia configurator once for HNL/RPVSUSY/DarkPhoton
- pythia_configurator = SimulationConfiguratorFactory.create_pythia_configurator()
+# -----Configure Primary Generators--------------------------------------
+# Create configurators
+pythia_configurator = SimulationConfiguratorFactory.create_pythia_configurator()
+cosmics_configurator = SimulationConfiguratorFactory.create_cosmics_configurator()
+generator_configurator = GeneratorConfiguratorFactory.create_generator_configurator(
+    ROOT, u, ut, ship_geo, pythia_configurator, cosmics_configurator
+)
 
- if HNL or options.RPVSUSY:
-  P8gen = ROOT.HNLPythia8Generator()
-  if HNL:
-   print('Generating HNL events of mass %.3f GeV'%options.theMass)
-   if theProductionCouplings is None and theDecayCouplings is None:
-    print('and with couplings=',theCouplings)
-    theProductionCouplings = theDecayCouplings = theCouplings
-   elif theProductionCouplings is not None and theDecayCouplings is not None:
-    print('and with couplings',theProductionCouplings,'at production')
-    print('and',theDecayCouplings,'at decay')
-   else:
-    raise ValueError('Either both production and decay couplings must be specified, or neither.')
-   pythia_configurator.configure_hnl(P8gen,options.theMass,theProductionCouplings,theDecayCouplings,inclusive,options.deepCopy)
-  if options.RPVSUSY:
-   print('Generating RPVSUSY events of mass %.3f GeV'%theHNLMass)
-   print('and with couplings=[%.3f,%.3f]'%(theCouplings[0],theCouplings[1]))
-   print('and with stop mass=%.3f GeV\n'%theCouplings[2])
-   pythia_configurator.configure_rpvsusy(P8gen,options.theMass,[theCouplings[0],theCouplings[1]],
-                                theCouplings[2],options.RPVSUSYbench,inclusive,options.deepCopy)
-  P8gen.SetParameters("ProcessLevel:all = off")
-  if inputFile:
-   ut.checkFileExists(inputFile)
-# read from external file
-   P8gen.UseExternalFile(inputFile, options.firstEvent)
- if options.DarkPhoton:
-  P8gen = ROOT.DPPythia8Generator()
-  if inclusive=='qcd':
-   P8gen.SetDPId(4900023)
-  else:
-   P8gen.SetDPId(9900015)
-  passDPconf = pythia_configurator.configure_dark_photon(P8gen,options.theMass,options.theDPepsilon,inclusive, motherMode, options.deepCopy)
-  if (passDPconf!=1): sys.exit()
- if HNL or options.RPVSUSY or options.DarkPhoton:
-  P8gen.SetSmearBeam(1*u.cm) # finite beam size
-  P8gen.SetLmin((ship_geo.Chamber1.z - ship_geo.chambers.Tub1length) - ship_geo.target.z0 )
-  P8gen.SetLmax(ship_geo.TrackStation1.z - ship_geo.target.z0 )
- if charmonly:
-  primGen.SetTarget(0., 0.) #vertex is set in pythia8Generator
-  ut.checkFileExists(inputFile)
-  if ship_geo.Box.gausbeam:
-   primGen.SetBeam(0.,0., 0.5, 0.5) #more central beam, for hits in downstream detectors
-   primGen.SmearGausVertexXY(True) #sigma = x
-  else:
-   primGen.SetBeam(0.,0., ship_geo.Box.TX-1., ship_geo.Box.TY-1.) #Uniform distribution in x/y on the target (0.5 cm of margin at both sides)
-   primGen.SmearVertexXY(True)
-  P8gen = ROOT.Pythia8Generator()
-  P8gen.UseExternalFile(inputFile, options.firstEvent)
-  P8gen.SetTarget("volTarget_1",0.,0.) # will distribute PV inside target, beam offset x=y=0.
-# pion on proton 500GeV
-# P8gen.SetMom(500.*u.GeV)
-# P8gen.SetId(-211)
- primGen.AddGenerator(P8gen)
-if options.fixedTarget:
- P8gen = ROOT.FixedTargetGenerator()
- P8gen.SetZoffset(options.z_offset*u.mm)
- P8gen.SetTarget("cave_1/target_vacuum_box_1/TargetArea_1/HeVolume_1", 0. ,0.)
- P8gen.SetMom(400.*u.GeV)
- P8gen.SetEnergyCut(0.)
- P8gen.SetHeartBeat(100000)
- P8gen.SetG4only()
- primGen.AddGenerator(P8gen)
-if options.pythia6:
-# set muon interaction close to decay volume
- primGen.SetTarget(ship_geo.target.z0+ship_geo.muShield.length, 0.)
-# -----Pythia6-------------------------
- test = ROOT.TPythia6() # don't know any other way of forcing to load lib
- P6gen = ROOT.tPythia6Generator()
- P6gen.SetMom(50.*u.GeV)
- P6gen.SetTarget("gamma/mu+","n0") # default "gamma/mu-","p+"
- primGen.AddGenerator(P6gen)
+# Prepare configuration values for generator configurator
+generator_config_values = {
+    'HNL': HNL,
+    'inputFile': inputFile,
+    'inclusive': inclusive,
+    'charmonly': charmonly,
+    'motherMode': motherMode if 'motherMode' in locals() else 'pi0',
+    'theProductionCouplings': theProductionCouplings,
+    'theDecayCouplings': theDecayCouplings,
+    'theCouplings': theCouplings,
+    'theHNLMass': theHNLMass,
+    'DownScaleDiMuon': DownScaleDiMuon,
+    'MCTracksWithHitsOnly': MCTracksWithHitsOnly,
+    'MCTracksWithEnergyCutOnly': MCTracksWithEnergyCutOnly,
+    'MCTracksWithHitsOrEnergyCut': MCTracksWithHitsOrEnergyCut,
+    'Opt_high': Opt_high if 'Opt_high' in locals() else None,
+}
 
-# -----EvtCalc--------------------------------------
-if options.evtcalc:
-    primGen.SetTarget(0.0, 0.0)
-    print(f"Opening input file for EvtCalc generator: {inputFile}")
-    ut.checkFileExists(inputFile)
-    EvtCalcGen = ROOT.EvtCalcGenerator()
-    EvtCalcGen.Init(inputFile, options.firstEvent)
-    EvtCalcGen.SetPositions(zTa=ship_geo.target.z, zDV=ship_geo.decayVolume.z)
-    primGen.AddGenerator(EvtCalcGen)
-    options.nEvents = min(options.nEvents, EvtCalcGen.GetNevents())
-    print(
-        f"Generate {options.nEvents} with EvtCalc input. First event: {options.firstEvent}"
-    )
+# Configure all generators
+primGen, generators = generator_configurator.configure_all_generators(run, options, generator_config_values, modules)
 
-# -----Particle Gun-----------------------
-if options.command == "PG":
-  myPgun = ROOT.FairBoxGenerator(options.pID,1)
-  myPgun.SetPRange(options.Estart,options.Eend)
-  myPgun.SetPhiRange(0, 360) # // Azimuth angle range [degree]
-  myPgun.SetThetaRange(0,0) # // Polar angle in lab system range [degree]
-  if options.multiplePG:
-    # multiple PG sources in the x-y plane; z is always the same!
-    myPgun.SetBoxXYZ((options.Vx-options.Dx/2)*u.cm,
-                     (options.Vy-options.Dy/2)*u.cm,
-                     (options.Vx+options.Dx/2)*u.cm,
-                     (options.Vy+options.Dy/2)*u.cm,
-                     options.Vz*u.cm)
-  else:
-     # point source
-     myPgun.SetXYZ(options.Vx*u.cm, options.Vy*u.cm, options.Vz*u.cm)
-  primGen.AddGenerator(myPgun)
-# -----muon DIS Background------------------------
-if options.mudis:
- ut.checkFileExists(inputFile)
- primGen.SetTarget(0., 0.)
- DISgen = ROOT.MuDISGenerator()
- # from nu_tau detector to tracking station 2
- # mu_start, mu_end =  ship_geo.tauMudet.zMudetC,ship_geo.TrackStation2.z
- #
- # in front of UVT up to tracking station 1
- mu_start, mu_end = ship_geo.Chamber1.z-ship_geo.chambers.Tub1length-10.*u.cm,ship_geo.TrackStation1.z
- print('MuDIS position info input=',mu_start, mu_end)
- DISgen.SetPositions(mu_start, mu_end)
- DISgen.Init(inputFile,options.firstEvent)
- primGen.AddGenerator(DISgen)
- options.nEvents = min(options.nEvents,DISgen.GetNevents())
- print('Generate ',options.nEvents,' with DIS input', ' first event',options.firstEvent)
-# -----Neutrino Background------------------------
-if options.genie:
-# Genie
- ut.checkFileExists(inputFile)
- primGen.SetTarget(0., 0.) # do not interfere with GenieGenerator
- Geniegen = ROOT.GenieGenerator()
- Geniegen.Init(inputFile,options.firstEvent)
- Geniegen.SetPositions(ship_geo.target.z0, ship_geo.tauMudet.zMudetC-5*u.m, ship_geo.TrackStation2.z)
- primGen.AddGenerator(Geniegen)
- options.nEvents = min(options.nEvents,Geniegen.GetNevents())
- run.SetPythiaDecayer("DecayConfigNuAge.C")
- print('Generate ',options.nEvents,' with Genie input', ' first event',options.firstEvent)
-if options.nuradio:
- ut.checkFileExists(inputFile)
- primGen.SetTarget(0., 0.) # do not interfere with GenieGenerator
- Geniegen = ROOT.GenieGenerator()
- Geniegen.Init(inputFile,options.firstEvent)
- # Geniegen.SetPositions(ship_geo.target.z0, ship_geo.target.z0, ship_geo.MuonStation3.z)
- Geniegen.SetPositions(ship_geo.target.z0, ship_geo.tauMudet.zMudetC, ship_geo.MuonStation3.z)
- Geniegen.NuOnly()
- primGen.AddGenerator(Geniegen)
- print('Generate ',options.nEvents,' for nuRadiography', ' first event',options.firstEvent)
-#  add tungsten to PDG
- pdg = ROOT.TDatabasePDG.Instance()
- pdg.AddParticle('W','Ion', 1.71350e+02, True, 0., 74, 'XXX', 1000741840)
-#
- run.SetPythiaDecayer('DecayConfigPy8.C')
- # this requires writing a C macro, would have been easier to do directly in python!
- # for i in [431,421,411,-431,-421,-411]:
- # ROOT.gMC.SetUserDecay(i) # Force the decay to be done w/external decayer
-if options.ntuple:
-# reading previously processed muon events, [-50m - 50m]
- ut.checkFileExists(inputFile)
- primGen.SetTarget(ship_geo.target.z0+50*u.m,0.)
- Ntuplegen = ROOT.NtupleGenerator()
- Ntuplegen.Init(inputFile,options.firstEvent)
- primGen.AddGenerator(Ntuplegen)
- options.nEvents = min(options.nEvents,Ntuplegen.GetNevents())
- print('Process ',options.nEvents,' from input file')
-#
-if options.muonback:
-# reading muon tracks from previous Pythia8/Geant4 simulation with charm replaced by cascade production
- fileType = ut.checkFileExists(inputFile)
- if fileType == 'tree':
- # 2018 background production
-  primGen.SetTarget(ship_geo.target.z0+70.845*u.m,0.)
- else:
-  primGen.SetTarget(ship_geo.target.z0+50*u.m,0.)
- #
- MuonBackgen = ROOT.MuonBackGenerator()
- # MuonBackgen.FollowAllParticles() # will follow all particles after hadron absorber, not only muons
- MuonBackgen.Init(inputFile, options.firstEvent)
- MuonBackgen.SetPaintRadius(options.PaintBeam)
- MuonBackgen.SetSmearBeam(options.SmearBeam)
- MuonBackgen.SetPhiRandom(options.phiRandom)
- if DownScaleDiMuon:
-    testf = ROOT.TFile.Open(inputFile)
-    if not testf.FileHeader.GetTitle().find('diMu100.0')<0:
-        MuonBackgen.SetDownScaleDiMuon()   # avoid interference with boosted channels
-        print("MuonBackgenerator: set downscale for dimuon on")
-    testf.Close()
- if options.sameSeed: MuonBackgen.SetSameSeed(options.sameSeed)
- primGen.AddGenerator(MuonBackgen)
- options.nEvents = min(options.nEvents,MuonBackgen.GetNevents())
- MCTracksWithHitsOnly = True # otherwise, output file becomes too big
- print('Process ', options.nEvents, ' from input file, with 𝜎 = ', options.PaintBeam, ', with smear radius r = ', options.SmearBeam * u.cm, 'with MCTracksWithHitsOnly', MCTracksWithHitsOnly)
- if options.followMuon :
-    options.fastMuon = True
-    modules['Veto'].SetFollowMuon()
- if options.fastMuon :    modules['Veto'].SetFastMuon()
+# Update configuration values that may have been modified by generator setup
+MCTracksWithHitsOnly = generator_config_values.get('MCTracksWithHitsOnly', MCTracksWithHitsOnly)
 
- # optional, boost gamma2muon conversion
- # ROOT.kShipMuonsCrossSectionFactor = 100.
-#
-if options.cosmics:
- primGen.SetTarget(0., 0.)
- Cosmicsgen = ROOT.CosmicsGenerator()
- cosmics_configurator = SimulationConfiguratorFactory.create_cosmics_configurator()
- cosmics_configurator.configure(Cosmicsgen, ship_geo)
- if not Cosmicsgen.Init(Opt_high):
-      print("initialization of cosmic background generator failed ",Opt_high)
-      sys.exit(0)
- Cosmicsgen.n_EVENTS = options.nEvents
- primGen.AddGenerator(Cosmicsgen)
- print('Process ',options.nEvents,' Cosmic events with option ',Opt_high)
-
-#
-run.SetGenerator(primGen)
-# ------------------------------------------------------------------------
-
-#---Store the visualiztion info of the tracks, this make the output file very large!!
-#--- Use it only to display but not for production!
-if options.eventDisplay: run.SetStoreTraj(ROOT.kTRUE)
-else:            run.SetStoreTraj(ROOT.kFALSE)
-# -----Initialize simulation run------------------------------------
-run.Init()
-if options.dryrun: # Early stop after setting up Pythia 8
- sys.exit(0)
-gMC = ROOT.TVirtualMC.GetMC()
-fStack = gMC.GetStack()
-EnergyCut = 10. * u.MeV if options.mudis else 100. * u.MeV
-
-if MCTracksWithHitsOnly:
- fStack.SetMinPoints(1)
- fStack.SetEnergyCut(-100.*u.MeV)
-elif MCTracksWithEnergyCutOnly:
- fStack.SetMinPoints(-1)
- fStack.SetEnergyCut(EnergyCut)
-elif MCTracksWithHitsOrEnergyCut:
- fStack.SetMinPoints(1)
- fStack.SetEnergyCut(EnergyCut)
-elif options.deepCopy:
- fStack.SetMinPoints(0)
- fStack.SetEnergyCut(0.*u.MeV)
-
-if options.eventDisplay:
- # Set cuts for storing the trajectories, can only be done after initialization of run (?!)
-  trajFilter = ROOT.FairTrajFilter.Instance()
-  trajFilter.SetStepSizeCut(1*u.mm)
-  trajFilter.SetVertexCut(-20*u.m, -20*u.m,ship_geo.target.z0-1*u.m, 20*u.m, 20*u.m, 200.*u.m)
-  trajFilter.SetMomentumCutP(0.1*u.GeV)
-  trajFilter.SetEnergyCut(0., 400.*u.GeV)
-  trajFilter.SetStorePrimaries(ROOT.kTRUE)
-  trajFilter.SetStoreSecondaries(ROOT.kTRUE)
-
-# The VMC sets the fields using the "/mcDet/setIsLocalMagField true" option in "gconfig/g4config.in"
+# -----Execute Simulation--------------------------------------
+# Create configurators for simulation execution
 geom_configurator = SimulationConfiguratorFactory.create_geometry_configurator()
-# geomGeant4.setMagnetField() # replaced by VMC, only has effect if /mcDet/setIsLocalMagField  false
-
-# Define extra VMC B fields not already set by the geometry definitions, e.g. a global field,
-# any field maps, or defining if any volumes feel only the local or local+global field.
-# For now, just keep the fields already defined by the C++ code, i.e comment out the fieldMaker
-if hasattr(ship_geo.Bfield,"fieldMap"):
-     if options.field_map:
-          ship_geo.Bfield.fieldMap = options.field_map
-     fieldMaker = geom_configurator.add_vmc_fields(ship_geo, verbose=True)
-
-# Print VMC fields and associated geometry objects
-if options.debug == 1:
- geom_configurator.print_vmc_fields()
- geom_configurator.print_weights_and_fields(only_with_field = True,\
-             exclude=['DecayVolume','Tr1','Tr2','Tr3','Tr4','Veto','Ecal','Hcal','MuonDetector','SplitCal'])
-# Plot the field example
-#fieldMaker.plotField(1, ROOT.TVector3(-9000.0, 6000.0, 50.0), ROOT.TVector3(-300.0, 300.0, 6.0), 'Bzx.png')
-#fieldMaker.plotField(2, ROOT.TVector3(-9000.0, 6000.0, 50.0), ROOT.TVector3(-400.0, 400.0, 6.0), 'Bzy.png')
-
-# -----Start run----------------------------------------------------
-run.Run(options.nEvents)
-# -----Runtime database---------------------------------------------
-kParameterMerged = ROOT.kTRUE
-parOut = ROOT.FairParRootFileIo(kParameterMerged)
-parOut.open(parFile)
-rtdb.setOutput(parOut)
-rtdb.saveOutput()
-rtdb.printParamContexts()
-getattr(rtdb,"print")()
-# ------------------------------------------------------------------------
-run.CreateGeometryFile(runtime_config.geometry_file)
-# save ShipGeo dictionary in geofile
 utility_configurator = SimulationConfiguratorFactory.create_utility_configurator()
-utility_configurator.save_basic_parameters(runtime_config.geometry_file, ship_geo)
+execution_configurator = SimulationExecutionConfiguratorFactory.create_simulation_execution_configurator(
+    ROOT, u, config_manager, geom_configurator, utility_configurator
+)
 
-# checking for overlaps
-if options.debug == 2:
- ROOT.gROOT.SetWebDisplay("off")  # Workaround for https://github.com/root-project/root/issues/18881
- fGeo = ROOT.gGeoManager
- fGeo.SetNmeshPoints(10000)
- fGeo.CheckOverlaps(0.1)  # 1 micron takes 5minutes
- fGeo.PrintOverlaps()
- # check subsystems in more detail
- for x in fGeo.GetTopNode().GetNodes():
-   x.CheckOverlaps(0.0001)
-   fGeo.PrintOverlaps()
-# -----Finish-------------------------------------------------------
-timer.Stop()
-rtime = timer.RealTime()
-ctime = timer.CpuTime()
-print(' ')
-print("Macro finished successfully.")
-if "P8gen" in globals() :
-    if (HNL): print("number of retries, events without HNL ",P8gen.nrOfRetries())
-    elif (options.DarkPhoton):
-        print("number of retries, events without Dark Photons ",P8gen.nrOfRetries())
-        print("total number of dark photons (including multiple meson decays per single collision) ",P8gen.nrOfDP())
+# Prepare execution configuration values
+execution_config_values = {
+    'MCTracksWithHitsOnly': MCTracksWithHitsOnly,
+    'MCTracksWithEnergyCutOnly': MCTracksWithEnergyCutOnly,
+    'MCTracksWithHitsOrEnergyCut': MCTracksWithHitsOrEnergyCut,
+}
 
-print("Output file is ",  outFile)
-print("Parameter file is ",parFile)
-print("Real time ",rtime, " s, CPU time ",ctime,"s")
-
-# Print comprehensive summary
-print("\n" + "="*60)
-print("SIMULATION SUMMARY")
-print("="*60)
-print(config_manager.get_summary())
-print()
-if USING_LAZY_LOADING and import_manager:
-    print("Lazy Loading Summary:")
-    print(import_manager.get_import_summary())
-    print()
-else:
-    print("Used direct imports (lazy loading not available)")
-    print()
-
-# remove empty events
-if options.muonback:
- tmpFile = outFile+"tmp"
- xxx = outFile.split('/')
- check = xxx[len(xxx)-1]
- fin = False
- for ff in ROOT.gROOT.GetListOfFiles():
-    nm = ff.GetName().split('/')
-    if nm[len(nm)-1] == check: fin = ff
- if not fin: fin   = ROOT.TFile.Open(outFile)
- t = fin["cbmsim"]
- fout  = ROOT.TFile(tmpFile,'recreate')
- fSink = ROOT.FairRootFileSink(fout)
-
- sTree = t.CloneTree(0)
- nEvents = 0
- pointContainers = []
- for x in sTree.GetListOfBranches():
-   name = x.GetName()
-   if not name.find('Point')<0: pointContainers.append('sTree.'+name+'.GetEntries()') # makes use of convention that all sensitive detectors fill XXXPoint containers
- for n in range(t.GetEntries()):
-     rc = t.GetEvent(n)
-     empty = True
-     for x in pointContainers:
-        if eval(x)>0: empty = False
-     if not empty:
-        rc = sTree.Fill()
-        nEvents+=1
-
- branches = ROOT.TList()
- branches.SetName('BranchList')
- branches.Add(ROOT.TObjString('MCTrack'))
- branches.Add(ROOT.TObjString('vetoPoint'))
- branches.Add(ROOT.TObjString('ShipRpcPoint'))
- branches.Add(ROOT.TObjString('TargetPoint'))
- branches.Add(ROOT.TObjString('TTPoint'))
- branches.Add(ROOT.TObjString('ScoringPoint'))
- branches.Add(ROOT.TObjString('strawtubesPoint'))
- branches.Add(ROOT.TObjString('EcalPoint'))
- branches.Add(ROOT.TObjString('sEcalPointLite'))
- branches.Add(ROOT.TObjString('smuonPoint'))
- branches.Add(ROOT.TObjString('TimeDetPoint'))
- branches.Add(ROOT.TObjString('MCEventHeader'))
- branches.Add(ROOT.TObjString('UpstreamTaggerPoint'))
- branches.Add(ROOT.TObjString('MTCdetPoint'))
- branches.Add(ROOT.TObjString('sGeoTracks'))
-
- sTree.AutoSave()
- fSink.WriteObject(branches, "BranchList", ROOT.TObject.kSingleKey)
- fSink.SetOutTree(sTree)
-
- fout.Close()
- print("removed empty events, left with:", nEvents)
- rc1 = os.system("rm  "+outFile)
- rc2 = os.system("mv "+tmpFile+" "+outFile)
- fin.SetWritable(False) # bpyass flush error
-
-if options.mudis:
-
-    temp_filename = outFile.replace(".root", "_tmp.root")
-
-    with (
-        ROOT.TFile.Open(outFile, "read") as f_outputfile,
-        ROOT.TFile.Open(inputFile, "read") as f_muonfile,
-        ROOT.TFile.Open(temp_filename, "recreate") as f_temp,
-    ):
-        output_tree = f_outputfile["cbmsim"]
-
-        muondis_tree = f_muonfile["DIS"]
-
-        new_tree = output_tree.CloneTree(0)
-
-        cross_section = array("f", [0.0])
-        cross_section_leaf = new_tree.Branch(
-            "CrossSection", cross_section, "CrossSection/F"
-        )
-
-        for output_event, muondis_event in zip(output_tree, muondis_tree):
-            mu = muondis_event.InMuon[0]
-            cross_section[0] = mu[10]
-            new_tree.Fill()
-
-        new_tree.Write("", ROOT.TObject.kOverwrite)
-
-    os.replace(temp_filename, outFile)
-    print("Successfully added DISCrossSection to the output file:", outFile)
+# Execute the complete simulation workflow
+gMC, fStack, fieldMaker = execution_configurator.execute_full_simulation(
+    run, rtdb, options, execution_config_values, ship_geo, runtime_config,
+    timer, outFile, parFile, inputFile, generators, HNL, USING_LAZY_LOADING, import_manager
+)
 
 # ------------------------------------------------------------------------
 # Create utility configurator for functions that might be called later
