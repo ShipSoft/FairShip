@@ -13,5 +13,8 @@
 #pragma link C++ class ShipMCTrack+;
 #pragma link C++ class ShipParticle+;
 #pragma link C++ class TrackInfo+;
+#pragma link C++ namespace SHiP;
+#pragma link C++ class SHiP::VMCConfig;
+#pragma link C++ function SHiP::SetupVMCConfig;
 
 #endif

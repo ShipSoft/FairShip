@@ -51,7 +51,7 @@ gFairBaseContFact = ROOT.FairBaseContFact()  # required by change to FairBaseCon
 run = ROOT.FairRunSim()
 run.SetName(mcEngine)  # Transport engine
 run.SetSink(ROOT.FairRootFileSink(outFile))  # Output file
-run.SetUserConfig("g4Config.C")  # user configuration file default g4Config.C
+ROOT.SHiP.SetupVMCConfig()
 rtdb = run.GetRuntimeDb()
 
 # -----Materials----------------------------------------------
@@ -105,6 +105,7 @@ run.SetGenerator(primGen)
 #
 run.SetGenerator(primGen)
 # -----Initialize simulation run------------------------------------
+# ShipStack is now automatically created by SHiP::VMCConfig
 run.Init()
 gMC = ROOT.TVirtualMC.GetMC()
 

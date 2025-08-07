@@ -30,7 +30,8 @@ def main():
     run = ROOT.FairRunSim()
     run.SetName("TGeant4")  # Transport engine
     run.SetSink(ROOT.FairRootFileSink(ROOT.TMemFile("output", "recreate")))  # Dummy output file
-    run.SetUserConfig("g4Config_basic.C")  # geant4 transport not used, only needed for creating VMC field
+    ROOT.SHiP.SetupVMCConfig("g4Config", "g4Config_basic.yaml")
+    # geant4 transport not used, only needed for creating VMC field
     run.GetRuntimeDb()
     shipDet_conf.configure(run, ShipGeo)
 

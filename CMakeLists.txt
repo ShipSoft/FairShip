@@ -126,13 +126,31 @@ include(ShipMacros)
 find_package2(PUBLIC Pythia8 REQUIRED)
 find_package2(PUBLIC EvtGen REQUIRED)
 # (GENERATORS REQUIRED)
-find_package2(PUBLIC GEANT4)
+# FairRoot exported targets reference Geant4:: imported targets (e.g.
+# FairRoot::FastSim -> Geant4::G4processes). Geant4 must be found before
+# FairRoot so these targets exist when FairRootTargets.cmake is loaded.
+# The aliBuild environment uses ALL-CAPS *_ROOT variables, but CMake < 3.27
+# requires exact-case <PackageName>_ROOT (CMP0074). Bridge the naming gap.
+if(NOT Geant4_ROOT)
+  if(GEANT4_ROOT)
+    set(Geant4_ROOT "${GEANT4_ROOT}")
+  elseif(DEFINED ENV{GEANT4_ROOT})
+    set(Geant4_ROOT "$ENV{GEANT4_ROOT}")
+  endif()
+endif()
+if(NOT XercesC_ROOT)
+  if(DEFINED ENV{XERCESC_ROOT})
+    set(XercesC_ROOT "$ENV{XERCESC_ROOT}")
+  endif()
+endif()
+find_package(Geant4 REQUIRED)
 find_package2(PUBLIC GEANT4DATA)
 find_package2(PUBLIC GEANT4VMC)
 find_package2(PUBLIC HEPMC)
 find_package2(PUBLIC fmt)
 find_package2(PUBLIC FairRoot REQUIRED)
 find_package2(PUBLIC FairLogger REQUIRED)
+find_package(yaml-cpp REQUIRED)
 find_package2(PUBLIC VMC REQUIRED)
 find_package(genfit2 REQUIRED)
 

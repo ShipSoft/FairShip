@@ -16,6 +16,7 @@ FairRoot's scope-variable-driven ``GENERATE_LIBRARY()`` macro.
     ship_add_library(
       NAME <target_name>
       SOURCES <src1> [<src2> ...]
+      [NO_DICT_SRCS <src1> ...]
       LINKDEF <linkdef_file>
       DEPENDENCIES <dep1> [<dep2> ...]
       [INCLUDE_DIRECTORIES <dir1> ...]
@@ -28,6 +29,11 @@ FairRoot's scope-variable-driven ``GENERATE_LIBRARY()`` macro.
   ``SOURCES``
     List of C++ source files (``.cxx``).  Headers are derived automatically
     by replacing ``.cxx`` with ``.h``.
+
+  ``NO_DICT_SRCS``
+    Source files compiled into the library but whose headers are NOT passed
+    to rootcling for dictionary generation.  Useful when headers pull in
+    external dependencies that rootcling cannot parse.
 
   ``LINKDEF``
     Path to the ROOT LinkDef header (relative to ``CMAKE_CURRENT_SOURCE_DIR``).
@@ -56,7 +62,7 @@ function(ship_add_library)
     PARSE_ARGV 0 ARG
     ""
     "NAME;LINKDEF"
-    "SOURCES;DEPENDENCIES;INCLUDE_DIRECTORIES;SYSTEM_INCLUDE_DIRECTORIES"
+    "SOURCES;NO_DICT_SRCS;DEPENDENCIES;INCLUDE_DIRECTORIES;SYSTEM_INCLUDE_DIRECTORIES"
   )
 
   if(NOT ARG_NAME)
@@ -68,6 +74,11 @@ function(ship_add_library)
 
   # --- Derive headers from sources (.cxx -> .h) ---
   CHANGE_FILE_EXTENSION(*.cxx *.h _hdrs "${ARG_SOURCES}")
+
+  # --- Derive headers for NO_DICT_SRCS (not passed to rootcling) ---
+  if(ARG_NO_DICT_SRCS)
+    CHANGE_FILE_EXTENSION(*.cxx *.h _no_dict_hdrs "${ARG_NO_DICT_SRCS}")
+  endif()
 
   # --- Resolve dependencies ---
   set(_resolved_deps)
@@ -85,7 +96,7 @@ function(ship_add_library)
   # --- Dictionary generation setup (before add_library) ---
   # We generate the dictionary using rootcling and add it to library sources
   # directly, similar to the old GENERATE_LIBRARY macro approach.
-  set(_all_srcs ${ARG_SOURCES})
+  set(_all_srcs ${ARG_SOURCES} ${ARG_NO_DICT_SRCS})
   if(ARG_LINKDEF)
     set(_dict_basename G__${ARG_NAME})
     set(_dict_file ${CMAKE_CURRENT_BINARY_DIR}/${_dict_basename}.cxx)
@@ -173,5 +184,5 @@ function(ship_add_library)
   endif()
 
   install(TARGETS ${ARG_NAME} DESTINATION ${CMAKE_INSTALL_LIBDIR})
-  install(FILES ${_hdrs} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+  install(FILES ${_hdrs} ${_no_dict_hdrs} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 endfunction()
