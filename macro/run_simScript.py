@@ -10,6 +10,7 @@ from ShipGeoConfig import ConfigRegistry
 from argparse import ArgumentParser
 from array import array
 from backports import tdirectory634
+from simulation_configurators import SimulationConfiguratorFactory
 DownScaleDiMuon = False
 
 # Default HNL parameters
@@ -290,16 +291,19 @@ rtdb = run.GetRuntimeDb()
 # -----Create geometry----------------------------------------------
 # import shipMuShield_only as shipDet_conf # special use case for an attempt to convert active shielding geometry for use with FLUKA
 # import shipTarget_only as shipDet_conf
-import shipDet_conf
-modules = shipDet_conf.configure(run,ship_geo)
+# Replaced direct import with configurator pattern
+det_configurator = SimulationConfiguratorFactory.create_detector_configurator()
+modules = det_configurator.configure(run,ship_geo)
 # -----Create PrimaryGenerator--------------------------------------
 primGen = ROOT.FairPrimaryGenerator()
 if options.pythia8:
  primGen.SetTarget(ship_geo.target.z0, 0.)
 # -----Pythia8--------------------------------------
- if HNL or options.RPVSUSY:
+# Create Pythia configurator once for HNL/RPVSUSY/DarkPhoton
+pythia_configurator = SimulationConfiguratorFactory.create_pythia_configurator()
+
+if HNL or options.RPVSUSY:
   P8gen = ROOT.HNLPythia8Generator()
-  import pythia8_conf
   if HNL:
    print('Generating HNL events of mass %.3f GeV'%options.theMass)
    if theProductionCouplings is None and theDecayCouplings is None:
@@ -310,12 +314,12 @@ if options.pythia8:
     print('and',theDecayCouplings,'at decay')
    else:
     raise ValueError('Either both production and decay couplings must be specified, or neither.')
-   pythia8_conf.configure(P8gen,options.theMass,theProductionCouplings,theDecayCouplings,inclusive,options.deepCopy)
+   pythia_configurator.configure_hnl(P8gen,options.theMass,theProductionCouplings,theDecayCouplings,inclusive,options.deepCopy)
   if options.RPVSUSY:
    print('Generating RPVSUSY events of mass %.3f GeV'%theHNLMass)
    print('and with couplings=[%.3f,%.3f]'%(theCouplings[0],theCouplings[1]))
    print('and with stop mass=%.3f GeV\n'%theCouplings[2])
-   pythia8_conf.configurerpvsusy(P8gen,options.theMass,[theCouplings[0],theCouplings[1]],
+   pythia_configurator.configure_rpvsusy(P8gen,options.theMass,[theCouplings[0],theCouplings[1]],
                                 theCouplings[2],options.RPVSUSYbench,inclusive,options.deepCopy)
   P8gen.SetParameters("ProcessLevel:all = off")
   if inputFile:
@@ -328,8 +332,7 @@ if options.pythia8:
    P8gen.SetDPId(4900023)
   else:
    P8gen.SetDPId(9900015)
-  import pythia8darkphoton_conf
-  passDPconf = pythia8darkphoton_conf.configure(P8gen,options.theMass,options.theDPepsilon,inclusive, motherMode, options.deepCopy)
+  passDPconf = pythia_configurator.configure_dark_photon(P8gen,options.theMass,options.theDPepsilon,inclusive, motherMode, options.deepCopy)
   if (passDPconf!=1): sys.exit()
  if HNL or options.RPVSUSY or options.DarkPhoton:
   P8gen.SetSmearBeam(1*u.cm) # finite beam size
@@ -494,8 +497,8 @@ if options.muonback:
 if options.cosmics:
  primGen.SetTarget(0., 0.)
  Cosmicsgen = ROOT.CosmicsGenerator()
- import CMBG_conf
- CMBG_conf.configure(Cosmicsgen, ship_geo)
+ cosmics_configurator = SimulationConfiguratorFactory.create_cosmics_configurator()
+ cosmics_configurator.configure(Cosmicsgen, ship_geo)
  if not Cosmicsgen.Init(Opt_high):
       print("initialization of cosmic background generator failed ",Opt_high)
       sys.exit(0)
@@ -543,7 +546,7 @@ if options.eventDisplay:
   trajFilter.SetStoreSecondaries(ROOT.kTRUE)
 
 # The VMC sets the fields using the "/mcDet/setIsLocalMagField true" option in "gconfig/g4config.in"
-import geomGeant4
+geom_configurator = SimulationConfiguratorFactory.create_geometry_configurator()
 # geomGeant4.setMagnetField() # replaced by VMC, only has effect if /mcDet/setIsLocalMagField  false
 
 # Define extra VMC B fields not already set by the geometry definitions, e.g. a global field,
@@ -552,12 +555,12 @@ import geomGeant4
 if hasattr(ship_geo.Bfield,"fieldMap"):
      if options.field_map:
           ship_geo.Bfield.fieldMap = options.field_map
-     fieldMaker = geomGeant4.addVMCFields(ship_geo, verbose=True)
+     fieldMaker = geom_configurator.add_vmc_fields(ship_geo, verbose=True)
 
 # Print VMC fields and associated geometry objects
 if options.debug == 1:
- geomGeant4.printVMCFields()
- geomGeant4.printWeightsandFields(onlyWithField = True,\
+ geom_configurator.print_vmc_fields()
+ geom_configurator.print_weights_and_fields(only_with_field = True,\
              exclude=['DecayVolume','Tr1','Tr2','Tr3','Tr4','Veto','Ecal','Hcal','MuonDetector','SplitCal'])
 # Plot the field example
 #fieldMaker.plotField(1, ROOT.TVector3(-9000.0, 6000.0, 50.0), ROOT.TVector3(-300.0, 300.0, 6.0), 'Bzx.png')
@@ -576,8 +579,8 @@ getattr(rtdb,"print")()
 # ------------------------------------------------------------------------
 run.CreateGeometryFile(f"{options.outputDir}/geofile_full.{tag}.root")
 # save ShipGeo dictionary in geofile
-import saveBasicParameters
-saveBasicParameters.execute(f"{options.outputDir}/geofile_full.{tag}.root",ship_geo)
+utility_configurator = SimulationConfiguratorFactory.create_utility_configurator()
+utility_configurator.save_basic_parameters(f"{options.outputDir}/geofile_full.{tag}.root",ship_geo)
 
 # checking for overlaps
 if options.debug == 2:
@@ -694,9 +697,10 @@ if options.mudis:
     print("Successfully added DISCrossSection to the output file:", outFile)
 
 # ------------------------------------------------------------------------
-import checkMagFields
+# Create utility configurator for functions that might be called later
+utility_configurator_global = SimulationConfiguratorFactory.create_utility_configurator()
 def visualizeMagFields():
- checkMagFields.run()
+ utility_configurator_global.visualize_mag_fields()
 def checkOverlapsWithGeant4():
  # after /run/initialize, but prints warning messages, problems with TGeo volume
  mygMC = ROOT.TGeant4.GetMC()
