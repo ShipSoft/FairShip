@@ -6,4 +6,10 @@ select = [
     "I", # isort
 ]
 
+# Ignore conflicting docstring rules to avoid warnings
+ignore = [
+    "D203", # incorrect-blank-line-before-class (conflicts with D211)
+    "D213", # multi-line-summary-second-line (conflicts with D212)
+]
+
 # See https://docs.astral.sh/ruff/linter/#rule-selection
