@@ -105,7 +105,6 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
 {
     auto* pdgBase = TDatabasePDG::Instance();
     Double_t mass, e, tof, phi;
-    Double_t dx = 0, dy = 0;
     std::unordered_map<int, int> muList;
     std::unordered_map<int, std::vector<int>> moList;
     while (fn < fNevents) {
