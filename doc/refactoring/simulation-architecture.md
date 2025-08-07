@@ -19,7 +19,7 @@ The original `run_simScript.py` was a monolithic script of ~750 lines with multi
 
 **Features**:
 - On-demand module loading
-- Import error handling and fallback mechanisms  
+- Import error handling and fallback mechanisms
 - Performance tracking and reporting
 - Thread-safe import management
 
@@ -217,16 +217,26 @@ When adding new functionality:
 ## File Structure
 
 ```
-macro/
-├── run_simScript.py                      # Main refactored script (150 lines)
-├── lazy_loading.py                       # Lazy import system
-├── simulation_config.py                  # Configuration management  
-├── enhanced_configurators.py             # Configurator factories
-├── root_initialization.py                # ROOT framework setup
-├── generator_configurator.py             # Generator configuration
-├── simulation_execution_configurator.py  # Execution and post-processing
-├── test_*.py                            # Comprehensive test suite
-└── REFACTORING_README.md                # This documentation
+FairShip/
+├── macro/
+│   └── run_simScript.py                  # Main refactored script (150 lines)
+├── python/                               # Refactored modules (in PYTHONPATH)
+│   ├── lazy_loading.py                   # Lazy import system
+│   ├── simulation_config.py              # Configuration management
+│   ├── enhanced_configurators.py         # Configurator factories
+│   ├── root_initialization.py            # ROOT framework setup
+│   ├── generator_configurator.py         # Generator configuration
+│   └── simulation_execution_configurator.py  # Execution and post-processing
+├── tests/
+│   └── simulation/                       # Test suite for refactored components
+│       ├── __init__.py
+│       ├── run_tests.py                  # Test runner
+│       ├── test_generator_configurator.py
+│       ├── test_simulation_execution_configurator.py
+│       └── test_refactored_integration.py
+└── doc/
+    └── refactoring/
+        └── simulation-architecture.md    # This documentation
 ```
 
 ## Future Enhancements
