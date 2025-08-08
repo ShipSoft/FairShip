@@ -26,6 +26,7 @@ set(SRCS
 exitHadronAbsorber.cxx
 pyFairModule.cxx
 simpleTarget.cxx
+ScoringPlane.cxx
 )
 
 Set(HEADERS )
