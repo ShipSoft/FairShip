@@ -12,6 +12,7 @@
 #include <vector>
 
 class FairVolume;
+class TClonesArray;
 
 class ScoringPlane: public FairDetector
 {
@@ -50,7 +51,7 @@ class ScoringPlane: public FairDetector
     virtual void   Register();
 
     /** Gets the produced collections */
-    virtual std::vector<vetoPoint>* GetCollection(Int_t iColl) const;
+    virtual TClonesArray* GetCollection(Int_t iColl) const;
 
     /**      has to be called after each event to reset the containers      */
     virtual void   Reset();
@@ -62,7 +63,7 @@ class ScoringPlane: public FairDetector
      *  any optional action in your detector during the transport.
     */
 
-    virtual void CopyClones(std::vector<vetoPoint>* cl1, std::vector<vetoPoint>* cl2, Int_t offset) { ; }
+    virtual void CopyClones(TClonesArray* cl1, TClonesArray* cl2, Int_t offset) { ; }
     virtual void   SetSpecialPhysicsCuts() {;}
     virtual void   EndOfEvent();
     virtual void   FinishPrimary() {;}

@@ -294,10 +294,11 @@ void ScoringPlane::Register()
     // std::cout << this->GetName() << ",  Register() says: registered " << fVetoName <<" collection"<<std::endl;
 }
 
-std::vector<vetoPoint>* ScoringPlane::GetCollection(Int_t iColl) const
+TClonesArray* ScoringPlane::GetCollection(Int_t iColl) const
 {
-  if (iColl == 0) { return fScoringPlanePointCollection; }
-  else { return NULL; }
+    // STL containers are not accessible via GetCollection - return nullptr
+    // Data access should go through FairRootManager
+    return nullptr;
 }
 void ScoringPlane::Reset()
 {
