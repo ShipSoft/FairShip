@@ -286,4 +286,4 @@ class MufluxSpectrometer : public FairDetector
     MufluxSpectrometer& operator=(const MufluxSpectrometer&);
     ClassDef(MufluxSpectrometer, 1)
 };
-#endif  // CHARMDET_MUFLUXSPECTROMETER_H_
+#endif   // CHARMDET_MUFLUXSPECTROMETER_H_

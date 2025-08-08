@@ -49,4 +49,4 @@ class SciFiPoint : public FairMCPoint
     ClassDef(SciFiPoint, 1)
 };
 
-#endif  // CHARMDET_SCIFIPOINT_H_
+#endif   // CHARMDET_SCIFIPOINT_H_

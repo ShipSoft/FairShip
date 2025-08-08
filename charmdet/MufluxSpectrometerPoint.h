@@ -52,4 +52,4 @@ class MufluxSpectrometerPoint : public FairMCPoint
     ClassDef(MufluxSpectrometerPoint, 1)
 };
 
-#endif  // CHARMDET_MUFLUXSPECTROMETERPOINT_H_
+#endif   // CHARMDET_MUFLUXSPECTROMETERPOINT_H_

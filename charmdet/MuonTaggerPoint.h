@@ -50,4 +50,4 @@ class MuonTaggerPoint : public FairMCPoint
     ClassDef(MuonTaggerPoint, 1)
 };
 
-#endif  // CHARMDET_MUONTAGGERPOINT_H_
+#endif   // CHARMDET_MUONTAGGERPOINT_H_

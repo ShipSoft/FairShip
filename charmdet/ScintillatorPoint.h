@@ -48,4 +48,4 @@ class ScintillatorPoint : public FairMCPoint
     ClassDef(ScintillatorPoint, 1)
 };
 
-#endif  // CHARMDET_SCINTILLATORPOINT_H_
+#endif   // CHARMDET_SCINTILLATORPOINT_H_
