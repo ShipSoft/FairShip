@@ -158,7 +158,7 @@ Bool_t  strawtubes::ProcessHits(FairVolume* vol)
     AddHit(fTrackID, straw_uniqueId, TVector3(xmean, ymean,  zmean),
            TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, deltaTrackLength,
            fELoss,pdgCode,dist2Wire);
-    if (dist2Wire>fInner_Straw_diameter/2){
+    if (dist2Wire > f_inner_straw_diameter / 2){
      std::cout << "addhit " << dist2Wire<< " straw id " << straw_uniqueId << " pdgcode " << pdgCode<< " dot prod " << pq.Dot(uCrossv)<< std::endl;
      std::cout << " exit:" << gMC->IsTrackExiting() << " stop:" << gMC->IsTrackStop() << " disappeared:" << gMC->IsTrackDisappeared()<< std::endl;
      std::cout << " entry:" << fPos.X()<< " " << fPos.Y()<< " " << fPos.Z() << std::endl;
@@ -209,90 +209,63 @@ void strawtubes::Reset()
 {
   fstrawtubesPointCollection->Clear();
 }
-void strawtubes::SetZpositions(Double_t z1, Double_t z2, Double_t z3, Double_t z4)
+void strawtubes::SetzPositions(Double_t z1, Double_t z2, Double_t z3, Double_t z4)
 {
-     fT1z = z1;                                                 //!  z-position of tracking station 1
-     fT2z = z2;                                                 //!  z-position of tracking station 2
-     fT3z = z3;                                                 //!  z-position of tracking station 3
-     fT4z = z4;                                                 //!  z-position of tracking station 4
+     f_T1_z = z1;                                               //!  z-position of tracking station 1
+     f_T2_z = z2;                                               //!  z-position of tracking station 2
+     f_T3_z = z3;                                               //!  z-position of tracking station 3
+     f_T4_z = z4;                                               //!  z-position of tracking station 4
 }
 
-void strawtubes::SetStrawLength(Double_t strawlength)
+void strawtubes::SetApertureArea(Double_t width, Double_t height)
 {
-     fStraw_length = strawlength;                               //!  Length (y) of a straw
+     f_aperture_width = width;                                  //!  Aperture width (x)
+     f_aperture_height = height;                                //!  Aperture height (y)
 }
 
-void strawtubes::SetInnerStrawDiameter(Double_t innerstrawdiameter)
+void strawtubes::SetStrawDiameter(Double_t outer_straw_diameter, Double_t wall_thickness)
 {
-     fInner_Straw_diameter = innerstrawdiameter;                //!  Inner Straw diameter
+     f_outer_straw_diameter = outer_straw_diameter;             //!  Outer straw diameter
+     f_inner_straw_diameter =
+       outer_straw_diameter - 2 * wall_thickness;               //!  Inner straw diameter
 }
 
-void strawtubes::SetOuterStrawDiameter(Double_t outerstrawdiameter)
+void strawtubes::SetStrawPitch(Double_t straw_pitch, Double_t layer_offset)
 {
-     fOuter_Straw_diameter = outerstrawdiameter;                //!  Outer Straw diameter
+     f_straw_pitch = straw_pitch;                               //!  Distance (y) between straws in a layer
+     f_offset_layer = layer_offset;                             //!  Offset (y) of straws between layers
 }
 
-void strawtubes::SetStrawPitch(Double_t strawpitch, Double_t layer_offset)
+void strawtubes::SetDeltazLayer(Double_t delta_z_layer)
 {
-     fStraw_pitch = strawpitch;                                 //!  Distance (x) between straws in one layer
-     fOffset_layer12 = layer_offset;
+     f_delta_z_layer = delta_z_layer;                           //!  Distance (z) between layers
 }
 
-void strawtubes::SetDeltazLayer(Double_t deltazlayer)
+void strawtubes::SetStereoAngle(Double_t stereo_angle)
 {
-     fDeltaz_layer12 = deltazlayer;                              //! Distance (z) between layer 1&2
+     f_view_angle = stereo_angle;                                //!  Stereo view angle
 }
 
-void strawtubes::SetStrawsPerLayer(Int_t strawsperlayer)
+void strawtubes::SetWireThickness(Double_t wire_thickness)
 {
-     fStraws_per_layer = strawsperlayer;                         //! number of straws in one layer
+     f_wire_thickness = wire_thickness;                         //!  Sense wire thickness
 }
 
-void strawtubes::SetStereoAngle(Double_t stereoangle)
+void strawtubes::SetDeltazView(Double_t delta_z_view)
 {
-    fView_angle = stereoangle;   //! Stereo angle of layers in a view
-    fcosphi = cos(TMath::Pi() * fView_angle / 180.);
-    fsinphi = sin(TMath::Pi() * fView_angle / 180.);
+     f_delta_z_view = delta_z_view;                             //!  Distance (z) between stereo views
 }
 
-void strawtubes::SetWireThickness(Double_t wirethickness)
+void strawtubes::SetFrameMaterial(TString frame_material)
 {
-     fWire_thickness = wirethickness;                            //! Thickness of the wire
+     f_frame_material = frame_material;                         //!  Structure frame material
 }
 
-void strawtubes::SetDeltazView(Double_t deltazview)
+void strawtubes::SetStationEnvelope(Double_t x, Double_t y, Double_t z)
 {
-     fDeltaz_view = deltazview;                                  //! Distance (z) between views
-}
-
-void strawtubes::SetDeltazFrame(Double_t deltazframe)
-{
-    fDeltaz_frame = deltazframe;   //! Thickness (z) of the material frame
-}
-
-void strawtubes::SetFrameLateralWidth(Double_t framelateralwidth)
-{
-        fFrame_lateral_width = framelateralwidth;                //! Width (x and y) of the material frame
-}
-
-void strawtubes::SetFrameMaterial(TString framematerial)
-{
-        fFrame_material = framematerial;                         //! Material of the view frame
-}
-
-void strawtubes::SetVacBox_x(Double_t vacbox_x)
-{
-     fVacBox_x = vacbox_x;                               //! x size of station vacuum box
-}
-
-void strawtubes::SetVacBox_y(Double_t vacbox_y)
-{
-     fVacBox_y = vacbox_y;                               //! y size of station vacuum box
-}
-
-void strawtubes::set_station_height(Double_t station_height)
-{
-    f_station_height = station_height;   //! (Half) height of station
+     f_station_width = x;                                       //!  Station envelope width (x)
+     f_station_height = y;                                      //!  Station envelope height (y)
+     f_station_length = z;                                      //!  Station envelope length (z)
 }
 
 void strawtubes::ConstructGeometry()
@@ -314,8 +287,8 @@ void strawtubes::ConstructGeometry()
     TGeoMedium *sttmix9010_2bar   = gGeoManager->GetMedium("STTmix9010_2bar");
     InitMedium("tungsten");
     TGeoMedium *tungsten          = gGeoManager->GetMedium("tungsten");
-    InitMedium(fFrame_material);
-    TGeoMedium *FrameMatPtr       = gGeoManager->GetMedium(fFrame_material);
+    InitMedium(f_frame_material);
+    TGeoMedium *FrameMatPtr       = gGeoManager->GetMedium(f_frame_material);
     InitMedium(fMedium.c_str());
     TGeoMedium* med = gGeoManager->GetMedium(fMedium.c_str());
 
@@ -323,49 +296,46 @@ void strawtubes::ConstructGeometry()
     gGeoManager->SetTopVisible();
 
     //epsilon to avoid overlapping volumes
-    //Double_t eps=0.1;
-    Double_t eps=0.0001;
-    Double_t epsS=0.0001;
+    Double_t eps = 0.0001;
     //width of frame
-    Double_t framewidth = 40.;
+    Double_t frame_width = 40.;
     //width of view
-    Double_t viewwidth = fDeltaz_view - eps;
+    Double_t view_width = f_delta_z_view - eps;
     //width of layer
-    Double_t layerwidth = fOuter_Straw_diameter;
+    Double_t layer_width = f_outer_straw_diameter;
 
-    Double_t rmin, rmax, dx, dy, dz, z, density,a,w;
+    Double_t rmin, rmax, dx, dy, dz, z, density, a, w;
     Double_t par[20];
-    Int_t nel,numed,isvol,ifield;
+    Int_t nel, numed, isvol, ifield;
     Double_t radl, absl, TStationz;
 
-    Double_t yDim =  (fStraws_per_layer+1) * fStraw_pitch /2. ; // put everything inside vacbox
     //arguments of box are half-lengths;
     TGeoBBox* detbox1 = new TGeoBBox(
-        "detbox1", fStraw_length + fFrame_lateral_width, f_station_height + fFrame_lateral_width, fDeltaz_frame / 2.);
-    TGeoBBox* detbox2 = new TGeoBBox("detbox2", fStraw_length + eps, f_station_height + eps, fDeltaz_frame / 2. + eps);
+        "detbox1", f_station_width, f_station_height, f_station_length);
+    TGeoBBox* detbox2 = new TGeoBBox("detbox2", f_aperture_width + eps, f_aperture_height + TMath::Tan(f_view_angle * TMath::Pi() / 180.0) * f_aperture_width + eps, f_station_length + eps);
 
     TGeoCompositeShape* detcomp1 = new TGeoCompositeShape("detcomp1", "detbox1-detbox2");
     // Volume: straw
-    rmin = fInner_Straw_diameter/2.;
-    rmax = fOuter_Straw_diameter/2.;
+    rmin = f_inner_straw_diameter / 2.;
+    rmax = f_outer_straw_diameter / 2.;
     //third argument is halflength of tube
-    TGeoTube *straw_tube = new TGeoTube("straw",rmin,rmax,fStraw_length-4.*eps);
-    TGeoVolume *straw = new TGeoVolume("straw",straw_tube, mylar);
+    TGeoTube *straw_tube = new TGeoTube("straw", rmin, rmax, f_aperture_width - 4. * eps);
+    TGeoVolume *straw = new TGeoVolume("straw", straw_tube, mylar);
     straw->SetLineColor(4);
     straw->SetVisibility(kTRUE);
     // Volume: gas
-    rmin = fWire_thickness/2.+epsS;
-    rmax = fInner_Straw_diameter/2.-epsS;
-    TGeoTube *gas_tube = new TGeoTube("gas",rmin,rmax,fStraw_length-6.*eps);
-    TGeoVolume *gas = new TGeoVolume("gas",gas_tube, sttmix9010_2bar);
+    rmin = f_wire_thickness / 2. + eps;
+    rmax = f_inner_straw_diameter / 2. - eps;
+    TGeoTube *gas_tube = new TGeoTube("gas", rmin, rmax, f_aperture_width - 6. * eps);
+    TGeoVolume *gas = new TGeoVolume("gas", gas_tube, sttmix9010_2bar);
     gas->SetLineColor(5);    //only the gas is sensitive
     AddSensitiveVolume(gas);
 
     // Volume: wire
-    rmin=0.;
-    rmax = fWire_thickness/2.;
-    TGeoTube *wire_tube = new TGeoTube("wire",rmin,rmax,fStraw_length-8.*eps);
-    TGeoVolume *wire = new TGeoVolume("wire",wire_tube, tungsten);
+    rmin = 0.;
+    rmax = f_wire_thickness / 2.;
+    TGeoTube *wire_tube = new TGeoTube("wire", rmin, rmax, f_aperture_width - 8. * eps);
+    TGeoVolume *wire = new TGeoVolume("wire", wire_tube, tungsten);
     wire->SetLineColor(6);
     Int_t statnb;
 

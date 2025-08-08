@@ -240,13 +240,13 @@ def configure_veto(yaml_file, z0):
 
     detectorList.append(Veto)
 
-def configure_strawtubes(yaml_file, sst_box_medium):
+def configure_strawtubes(yaml_file, station_envelope_medium):
     with open(yaml_file) as file:
         config = yaml.safe_load(file)
 
     strawtubes_geo = AttrDict(config)
 
-    Strawtubes = ROOT.strawtubes(sst_box_medium)
+    Strawtubes = ROOT.strawtubes(station_envelope_medium)
     Strawtubes.SetZpositions(
         strawtubes_geo.z1Position,
         strawtubes_geo.z2Position,
@@ -255,22 +255,24 @@ def configure_strawtubes(yaml_file, sst_box_medium):
     )
     Strawtubes.SetStrawLength(strawtubes_geo.width)
     Strawtubes.SetStrawDiameter(
-        strawtubes_geo.OuterStrawDiameter,
-        strawtubes_geo.WallThickness,
+        strawtubes_geo.outerStrawDiameter,
+        strawtubes_geo.wallThickness,
     )
     Strawtubes.SetStrawPitch(
-        strawtubes_geo.StrawPitch,
-        strawtubes_geo.YLayerOffset,
+        strawtubes_geo.strawPitch,
+        strawtubes_geo.yLayerOffset,
     )
-    Strawtubes.SetDeltazLayer(strawtubes_geo.DeltazLayer)
-    Strawtubes.SetStrawsPerLayer(int(2 * strawtubes_geo.height / strawtubes_geo.StrawPitch))
-    Strawtubes.SetStereoAngle(strawtubes_geo.ViewAngle)
-    Strawtubes.SetWireThickness(strawtubes_geo.WireThickness)
-    Strawtubes.SetDeltazView(strawtubes_geo.DeltazView)
-    Strawtubes.SetFrameMaterial(strawtubes_geo.FrameMaterial)
-    Strawtubes.SetVacBox_x(strawtubes_geo.StationWidth)
-    Strawtubes.SetVacBox_y(strawtubes_geo.StationHeight)
-    Strawtubes.SetVacBox_z(strawtubes_geo.StationLength)
+    Strawtubes.SetDeltazLayer(strawtubes_geo.deltazLayer)
+    Strawtubes.SetStrawsPerLayer(int(2 * strawtubes_geo.height / strawtubes_geo.strawPitch))
+    Strawtubes.SetStereoAngle(strawtubes_geo.viewAngle)
+    Strawtubes.SetWireThickness(strawtubes_geo.wireThickness)
+    Strawtubes.SetDeltazView(strawtubes_geo.deltazView)
+    Strawtubes.SetFrameMaterial(strawtubes_geo.frameMaterial)
+    Strawtubes.SetStationEnvelope(
+        strawtubes_geo.stationWidth,
+        strawtubes_geo.stationHeight,
+        strawtubes_geo.stationLength,
+    )
 
     #For digitization
     Strawtubes.SetStrawResolution(
@@ -408,7 +410,7 @@ def configure(run, ship_geo):
         ship_geo.decayVolume.z0,
     )
 
-    #Straw tubes in decay vessel if vacuum, otherwise outside in air
+    # Straw tubes in decay vessel if vacuum, otherwise outside in air
     ship_geo.strawtubes.medium = "vacuums" if ship_geo.DecayVolumeMedium == "vacuums" else "air"
     configure_strawtubes(
         os.path.join(os.environ["FAIRSHIP"], "geometry", "strawtubes_config.yaml"),
