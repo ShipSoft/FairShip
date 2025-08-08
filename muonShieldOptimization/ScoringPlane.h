@@ -1,13 +1,15 @@
-#ifndef SCORINGPLANE_H
-#define SCORINGPLANE_H
+#ifndef MUONSHIELDOPTIMIZATION_SCORINGPLANE_H_
+#define MUONSHIELDOPTIMIZATION_SCORINGPLANE_H_
 
 #include "FairDetector.h"
-#include "TVector3.h"
-#include "TLorentzVector.h"
 #include "TGeoVolume.h"
-#include "vetoPoint.h"
+#include "TLorentzVector.h"
 #include "TNtuple.h"
+#include "TVector3.h"
+#include "vetoPoint.h"
+
 #include <map>
+#include <vector>
 
 class FairVolume;
 class TClonesArray;
@@ -49,7 +51,7 @@ class ScoringPlane: public FairDetector
     virtual void   Register();
 
     /** Gets the produced collections */
-    virtual TClonesArray* GetCollection(Int_t iColl) const ;
+    virtual TClonesArray* GetCollection(Int_t iColl) const;
 
     /**      has to be called after each event to reset the containers      */
     virtual void   Reset();
@@ -61,8 +63,7 @@ class ScoringPlane: public FairDetector
      *  any optional action in your detector during the transport.
     */
 
-    virtual void   CopyClones( TClonesArray* cl1,  TClonesArray* cl2 ,
-                               Int_t offset) {;}
+    virtual void CopyClones(TClonesArray* cl1, TClonesArray* cl2, Int_t offset) { ; }
     virtual void   SetSpecialPhysicsCuts() {;}
     virtual void   EndOfEvent();
     virtual void   FinishPrimary() {;}
@@ -113,10 +114,10 @@ class ScoringPlane: public FairDetector
     Bool_t fOnlyMuons;      //! flag if only muons should be stored
     //Bool_t fSkipNeutrinos;  //! flag if neutrinos should be ignored
     TFile* fout; //!
-    TClonesArray* fElectrons; //!
+    std::vector<vetoPoint>* fElectrons;   //!
     Int_t index;
     /** container for data points */
-    TClonesArray*  fScoringPlanePointCollection;
+    std::vector<vetoPoint>* fScoringPlanePointCollection;
     ClassDef(ScoringPlane, 0)
     // massi, add this to control the stopMC:
     Bool_t fLastDetector;  //! if True then stop processing particles after this detector
@@ -127,4 +128,4 @@ class ScoringPlane: public FairDetector
     TString fVetoName;
 };
 
-#endif //SCORINGPLANE_H
+#endif // MUONSHIELDOPTIMIZATION_SCORINGPLANE_H_
