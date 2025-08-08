@@ -231,6 +231,7 @@ Bool_t FixedTargetGenerator::Init()
    } else {
        LOG(FATAL) << "Invalid target volume specified";
    }
+   TGeoNode* target = nav->GetCurrentNode();
    Double_t z_middle = target->GetMatrix()->GetTranslation()[2];
    TGeoBBox* sha = (TGeoBBox*)target->GetVolume()->GetShape();
    startZ =  z_middle - sha->GetDZ();
