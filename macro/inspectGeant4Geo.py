@@ -15,9 +15,19 @@ run = ROOT.FairRunSim()
 upkl = Unpickler(fgeo)
 ShipGeo = upkl.load('ShipGeo')
 modules = shipDet_conf.configure(run, ShipGeo)
-run.SetUserConfig('g4Config.C')
+# Use FairYamlVMCConfig for YAML configuration
+yamlConfig = ROOT.FairYamlVMCConfig("g4Config", "g4Config.yaml")
+yamlConfig.Setup()
 run.SetName('TGeant4')
 run.SetSink(ROOT.FairRootFileSink(ROOT.TMemFile('output', 'recreate')))
+# Create and set custom ShipStack for YAML config compatibility
+stack = ROOT.ShipStack(1000)
+stack.StoreSecondaries(ROOT.kTRUE)
+stack.SetMinPoints(0)
+# Get the Geant4 VMC instance and set our custom stack
+geant4 = ROOT.TVirtualMC.GetMC()
+if geant4:
+    geant4.SetStack(stack)
 run.Init()
 run.Run(0)
 import geomGeant4
