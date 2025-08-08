@@ -1,5 +1,5 @@
-#ifndef MUONTAGGERPOINT_H
-#define MUONTAGGERPOINT_H 1
+#ifndef CHARMDET_MUONTAGGERPOINT_H_
+#define CHARMDET_MUONTAGGERPOINT_H_
 
 #include "FairMCPoint.h"
 #include "TObject.h"
@@ -50,4 +50,4 @@ class MuonTaggerPoint : public FairMCPoint
     ClassDef(MuonTaggerPoint, 1)
 };
 
-#endif
+#endif  // CHARMDET_MUONTAGGERPOINT_H_

@@ -1,5 +1,5 @@
-#ifndef PIXELMODULESPOINT_H
-#define PIXELMODULESPOINT_H 1
+#ifndef CHARMDET_PIXELMODULESPOINT_H_
+#define CHARMDET_PIXELMODULESPOINT_H_
 
 #include "FairMCPoint.h"
 #include "TObject.h"
@@ -49,4 +49,4 @@ class PixelModulesPoint : public FairMCPoint
     ClassDef(PixelModulesPoint, 1)
 };
 
-#endif
+#endif  // CHARMDET_PIXELMODULESPOINT_H_

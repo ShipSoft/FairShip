@@ -1,5 +1,5 @@
-#ifndef MUONTAGGER_H
-#define MUONTAGGER_H
+#ifndef CHARMDET_MUONTAGGER_H_
+#define CHARMDET_MUONTAGGER_H_
 
 #include "FairDetector.h"
 #include "FairModule.h"   // for FairModule
@@ -139,4 +139,4 @@ class MuonTagger : public FairDetector
     bool lastslabsconcrete;
 };
 
-#endif
+#endif  // CHARMDET_MUONTAGGER_H_

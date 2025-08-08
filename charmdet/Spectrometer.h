@@ -1,5 +1,5 @@
-#ifndef SPECTROMETER_H
-#define SPECTROMETER_H
+#ifndef CHARMDET_SPECTROMETER_H_
+#define CHARMDET_SPECTROMETER_H_
 
 #include "FairDetector.h"   // for FairDetector
 #include "FairModule.h"     // for FairModule
@@ -152,4 +152,4 @@ class Spectrometer : public FairDetector
     Spectrometer& operator=(const Spectrometer&);
     ClassDef(Spectrometer, 2)
 };
-#endif
+#endif  // CHARMDET_SPECTROMETER_H_

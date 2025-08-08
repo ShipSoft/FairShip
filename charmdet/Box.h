@@ -3,8 +3,8 @@
 //
 //
 
-#ifndef Box_H
-#define Box_H
+#ifndef CHARMDET_BOX_H_
+#define CHARMDET_BOX_H_
 
 #include "FairDetector.h"
 #include "FairModule.h"   // for FairModule
@@ -189,4 +189,4 @@ class Box : public FairDetector
     Double_t BrickX;
 };
 
-#endif
+#endif  // CHARMDET_BOX_H_
