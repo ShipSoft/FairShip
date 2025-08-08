@@ -39,7 +39,9 @@ gFairBaseContFact = ROOT.FairBaseContFact() # required by change to FairBaseCont
 run = ROOT.FairRunSim()
 run.SetName(mcEngine)  # Transport engine
 run.SetSink(ROOT.FairRootFileSink(outFile))  # Output file
-run.SetUserConfig("g4Config.yaml") # user configuration file default g4Config.yaml
+# Use FairYamlVMCConfig for YAML configuration
+yamlConfig = ROOT.FairYamlVMCConfig("g4Config", "g4Config.yaml")
+yamlConfig.Setup()
 rtdb = run.GetRuntimeDb()
 
 # -----Materials----------------------------------------------

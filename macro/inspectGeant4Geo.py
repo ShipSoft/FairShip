@@ -15,7 +15,9 @@ run = ROOT.FairRunSim()
 upkl = Unpickler(fgeo)
 ShipGeo = upkl.load('ShipGeo')
 modules = shipDet_conf.configure(run, ShipGeo)
-run.SetUserConfig('g4Config.yaml')
+# Use FairYamlVMCConfig for YAML configuration
+yamlConfig = ROOT.FairYamlVMCConfig("g4Config", "g4Config.yaml")
+yamlConfig.Setup()
 run.SetName('TGeant4')
 run.SetSink(ROOT.FairRootFileSink(ROOT.TMemFile('output', 'recreate')))
 # Create and set custom ShipStack for YAML config compatibility
