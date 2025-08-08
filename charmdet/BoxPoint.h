@@ -50,4 +50,4 @@ class BoxPoint : public FairMCPoint
     ClassDef(BoxPoint, 1)
 };
 
-#endif  // CHARMDET_BOXPOINT_H_
+#endif   // CHARMDET_BOXPOINT_H_

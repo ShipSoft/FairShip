@@ -49,4 +49,4 @@ class SpectrometerPoint : public FairMCPoint
     ClassDef(SpectrometerPoint, 1)
 };
 
-#endif  // CHARMDET_SPECTROMETERPOINT_H_
+#endif   // CHARMDET_SPECTROMETERPOINT_H_

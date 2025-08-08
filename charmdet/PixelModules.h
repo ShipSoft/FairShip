@@ -152,4 +152,4 @@ class PixelModules : public FairDetector
     PixelModules& operator=(const PixelModules&);
     ClassDef(PixelModules, 1)
 };
-#endif  // CHARMDET_PIXELMODULES_H_
+#endif   // CHARMDET_PIXELMODULES_H_

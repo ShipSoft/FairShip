@@ -18,4 +18,4 @@ class BoxContFact : public FairContFact
     ClassDef(BoxContFact, 0)   // Factory for all Passive parameter containers
 };
 
-#endif  // CHARMDET_BOXCONTFACT_H_
+#endif   // CHARMDET_BOXCONTFACT_H_

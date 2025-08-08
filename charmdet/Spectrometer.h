@@ -152,4 +152,4 @@ class Spectrometer : public FairDetector
     Spectrometer& operator=(const Spectrometer&);
     ClassDef(Spectrometer, 2)
 };
-#endif  // CHARMDET_SPECTROMETER_H_
+#endif   // CHARMDET_SPECTROMETER_H_

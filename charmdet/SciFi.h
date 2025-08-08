@@ -116,4 +116,4 @@ class SciFi : public FairDetector
     SciFi& operator=(const SciFi&);
     ClassDef(SciFi, 1)
 };
-#endif  // CHARMDET_SCIFI_H_
+#endif   // CHARMDET_SCIFI_H_

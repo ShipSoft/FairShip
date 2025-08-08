@@ -49,4 +49,4 @@ class PixelModulesPoint : public FairMCPoint
     ClassDef(PixelModulesPoint, 1)
 };
 
-#endif  // CHARMDET_PIXELMODULESPOINT_H_
+#endif   // CHARMDET_PIXELMODULESPOINT_H_
