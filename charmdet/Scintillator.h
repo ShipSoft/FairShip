@@ -106,4 +106,4 @@ class Scintillator : public FairDetector
     Scintillator& operator=(const Scintillator&);
     ClassDef(Scintillator, 1)
 };
-#endif  // CHARMDET_SCINTILLATOR_H_
+#endif   // CHARMDET_SCINTILLATOR_H_

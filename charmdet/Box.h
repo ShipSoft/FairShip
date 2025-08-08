@@ -189,4 +189,4 @@ class Box : public FairDetector
     Double_t BrickX;
 };
 
-#endif  // CHARMDET_BOX_H_
+#endif   // CHARMDET_BOX_H_

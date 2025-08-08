@@ -139,4 +139,4 @@ class MuonTagger : public FairDetector
     bool lastslabsconcrete;
 };
 
-#endif  // CHARMDET_MUONTAGGER_H_
+#endif   // CHARMDET_MUONTAGGER_H_
