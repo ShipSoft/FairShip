@@ -1506,6 +1506,7 @@ var namespaces_dup =
       [ "pg_parser", "namespacerun__simScript.html#a8c915c1feda8cda0b474712da99ccadb", null ],
       [ "pointContainers", "namespacerun__simScript.html#aca9cae97fbde7b554a903d47eada7864", null ],
       [ "primGen", "namespacerun__simScript.html#aaf5d00485deac08f339575f5765fb79e", null ],
+      [ "pythia8", "namespacerun__simScript.html#a8fb1d87868691be90334fae6651ab73d", null ],
       [ "rc", "namespacerun__simScript.html#af54c864cac2698e91edbcc54b4feba67", null ],
       [ "rc1", "namespacerun__simScript.html#a7761e3105d78ab195878b40089abdfa1", null ],
       [ "rc2", "namespacerun__simScript.html#a8e3710513bb2a7ae510a9326d0bf6de5", null ],
