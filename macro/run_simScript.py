@@ -260,6 +260,7 @@ else:
             break
     else:
         simEngine = "Pythia8"
+        options.pythia8 = True  # Ensure Pythia8 is enabled by default
     tag = f"{simEngine}-{mcEngine}"
 if charmonly: tag = simEngine+"CharmOnly-"+mcEngine
 if options.eventDisplay: tag = tag+'_D'
