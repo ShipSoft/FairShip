@@ -4,10 +4,10 @@
 #include "FairTask.h"
 
 #include "TString.h"
+#include "TTree.h"
 
 #include <list>
 
-class TTree;
 class hcalStructure;
 class TClonesArray;
 
