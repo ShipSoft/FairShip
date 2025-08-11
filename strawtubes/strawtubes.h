@@ -59,7 +59,6 @@ class strawtubes: public FairDetector
     void SetStationEnvelope(Double_t x, Double_t y, Double_t z);
     static std::tuple<Int_t, Int_t, Int_t, Int_t> StrawDecode(Int_t detID);
     static void StrawEndPoints(Int_t detID, TVector3& top, TVector3& bot);
-    void StrawEndPointsOriginal(Int_t detID, TVector3 &top, TVector3 &bot);
 // for the digitizing step
     void SetStrawResolution(Double_t a, Double_t b)
     {
