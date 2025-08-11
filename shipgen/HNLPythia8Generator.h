@@ -74,7 +74,6 @@ class HNLPythia8Generator : public FairGenerator
   Pythia8::Pythia* fPythia;             //!
  private:
 
-//  Pythia8::RndmEngine* fRandomEngine;  //!
     std::shared_ptr<Pythia8::RndmEngine> fRandomEngine;
 
  protected:
