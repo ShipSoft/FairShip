@@ -247,13 +247,16 @@ def configure_strawtubes(yaml_file, station_envelope_medium):
     strawtubes_geo = AttrDict(config)
 
     Strawtubes = ROOT.strawtubes(station_envelope_medium)
-    Strawtubes.SetZpositions(
+    Strawtubes.SetzPositions(
         strawtubes_geo.z1Position,
         strawtubes_geo.z2Position,
         strawtubes_geo.z3Position,
         strawtubes_geo.z4Position,
     )
-    Strawtubes.SetStrawLength(strawtubes_geo.width)
+    Strawtubes.SetApertureArea(
+        strawtubes_geo.width,
+        strawtubes_geo.height,
+    )
     Strawtubes.SetStrawDiameter(
         strawtubes_geo.outerStrawDiameter,
         strawtubes_geo.wallThickness,
@@ -263,7 +266,6 @@ def configure_strawtubes(yaml_file, station_envelope_medium):
         strawtubes_geo.yLayerOffset,
     )
     Strawtubes.SetDeltazLayer(strawtubes_geo.deltazLayer)
-    Strawtubes.SetStrawsPerLayer(int(2 * strawtubes_geo.height / strawtubes_geo.strawPitch))
     Strawtubes.SetStereoAngle(strawtubes_geo.viewAngle)
     Strawtubes.SetWireThickness(strawtubes_geo.wireThickness)
     Strawtubes.SetDeltazView(strawtubes_geo.deltazView)
@@ -274,10 +276,10 @@ def configure_strawtubes(yaml_file, station_envelope_medium):
         strawtubes_geo.stationLength,
     )
 
-    #For digitization
+    # For digitization
     Strawtubes.SetStrawResolution(
-        strawtubes_geo.v_drift,
-        strawtubes_geo.sigma_spatial,
+        strawtubes_geo.vdrift,
+        strawtubes_geo.sigmaspatial,
     )
 
     detectorList.append(Strawtubes)

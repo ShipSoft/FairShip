@@ -19,3 +19,7 @@ z4Position: 9507	# z position of station 4 in cm (centre)
 stationWidth: 300	# (x) in cm (half length)
 stationHeight: 350	# (y) in cm (half length)
 stationLength: 50	# (z) in cm (half length)
+
+# For straw tube digitization
+vdrift: 3.33e6          # Electron drift velocity in cm/s
+sigmaspatial: 0.012     # Spatial resolution in cm
