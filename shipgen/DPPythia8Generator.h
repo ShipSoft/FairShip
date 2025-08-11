@@ -78,7 +78,7 @@ class DPPythia8Generator : public FairGenerator
   //Pythia8::Pythia* fPythiaHadDecay;             //!
  private:
 
- Pythia8::RndmEngine* fRandomEngine;  //!
+ std::shared_ptr<Pythia8::RndmEngine> fRandomEngine;  //!
 
  protected:
 

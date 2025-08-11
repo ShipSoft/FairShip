@@ -38,7 +38,7 @@ class Pythia8Generator : public FairGenerator
 
  private:
 
-  Pythia8::RndmEngine* fRandomEngine;  //!
+  std::shared_ptr<Pythia8::RndmEngine> fRandomEngine;  //!
 
  protected:
 
