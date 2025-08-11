@@ -78,7 +78,7 @@ Bool_t Pythia8Generator::Init()
      Int_t n = 1;
      while(n!=0){
       n = fPythia->particleData.nextId(n);
-      Pythia8::ParticleDataEntry* p = fPythia->particleData.particleDataEntryPtr(n);
+      std::shared_ptr<Pythia8::ParticleDataEntry> p = fPythia->particleData.particleDataEntryPtr(n);
       if (p->tau0()>1){
       std::string particle = std::to_string(n)+":mayDecay = false";
       fPythia->readString(particle);
@@ -137,7 +137,7 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
   key=0;
   bool l = true;
   while(l){
-     if (fn==fNevents) {LOG(WARNING) <<  "End of input file. Rewind.";}
+     if (fn==fNevents) {LOG(warning) <<  "End of input file. Rewind.";}
      fTree->GetEntry((fn+1)%fNevents);
 // check that this and next entry is charm, otherwise continue reading
      l = false;

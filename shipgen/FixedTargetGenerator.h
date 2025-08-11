@@ -8,6 +8,7 @@
 #include "TTree.h"
 #include "TNtuple.h"
 #include "GenieGenerator.h"
+#include "Pythia8Plugins/EvtGen.h"
 
 class FairPrimaryGenerator;
 class EvtGenDecays;

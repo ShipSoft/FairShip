@@ -73,24 +73,24 @@ Bool_t FixedTargetGenerator::InitForCharmOrBeauty(TString fInName, Int_t nev, Do
   nTree->SetBranchAddress("mpz",&n_mpz);
   nTree->SetBranchAddress("mE",&n_mE);
   if (nTree->GetBranch("k")){
-   LOG(INFO) << "+++has branch+++";
+   LOG(info) << "+++has branch+++";
    nTree->SetBranchAddress("k",&ck);}
 // check if we deal with charm or beauty:
   nTree->GetEvent(0);
   if (!setByHand && n_M > 5) {
     chicc = chibb;
-    LOG(INFO) << "automatic detection of beauty, configured for beauty";
-    LOG(INFO) << "bb cross section / mbias " << chicc;
+    LOG(info) << "automatic detection of beauty, configured for beauty";
+    LOG(info) << "bb cross section / mbias " << chicc;
   }else{
-    LOG(INFO) << "cc cross section / mbias " << chicc;
+    LOG(info) << "cc cross section / mbias " << chicc;
   }
 // convert pot to weight corresponding to one spill of 5e13 pot
  // get histogram with number of pot to normalise
  // pot are counted double, i.e. for each signal, i.e. pot/2.
   Int_t nrcpot = dynamic_cast<TH1F*>(fin->Get("2"))->GetBinContent(1) / 2.;   // number of primary interactions
   wspill = nrpotspill*chicc/nrcpot*nEvents/nev;
-  LOG(INFO) << "Input file: " << fInName.Data() << " with " << nEvents << " entries, corresponding to nr-pot=" << (nrcpot/chicc);
-  LOG(INFO) << "weight " << wspill << " corresponding to " << nrpotspill << " p.o.t. per spill for " << nev << " events to process";
+  LOG(info) << "Input file: " << fInName.Data() << " with " << nEvents << " entries, corresponding to nr-pot=" << (nrcpot/chicc);
+  LOG(info) << "weight " << wspill << " corresponding to " << nrpotspill << " p.o.t. per spill for " << nev << " events to process";
 
   pot=0.;
   //Determine fDs on this file for primaries
@@ -106,7 +106,7 @@ Bool_t FixedTargetGenerator::Init()
   if (Option == "Primary" && !G4only){
    fPythiaN =  new Pythia8::Pythia();
   }else if (Option != "charm" && Option != "beauty" && !G4only) {
-   LOG(ERROR) << "Option not known "<< Option.Data() << ", abort";
+   LOG(error) << "Option not known "<< Option.Data() << ", abort";
   }
   if (fUseRandom1) fRandomEngine = std::make_shared<PyTr1Rng>();
   if (fUseRandom3) fRandomEngine = std::make_shared<PyTr3Rng>();
@@ -170,22 +170,22 @@ Bool_t FixedTargetGenerator::Init()
    Int_t n = 1;
    while(n!=0){
     n = fPythia->particleData.nextId(n);
-    ParticleDataEntry* p = fPythia->particleData.particleDataEntryPtr(n);
+    std::shared_ptr<Pythia8::ParticleDataEntry> p = fPythia->particleData.particleDataEntryPtr(n);
     if (p->tau0()>1){
-     string particle = std::to_string(n)+":mayDecay = false";
+     std::string particle = std::to_string(n)+":mayDecay = false";
      fPythia->readString(particle);
-     LOG(INFO) << "Made " << p->name().c_str() << " stable for Pythia, should decay in Geant4";
+     LOG(info) << "Made " << p->name().c_str() << " stable for Pythia, should decay in Geant4";
     }
    }
 // boost branching fraction of rare di-muon decays
 //                       eta  omega rho0  eta' phi
    if (fBoost != 1.){
-    LOG(INFO) << "Rescale BRs of dimuon decays in Pythia: " << fBoost;
+    LOG(info) << "Rescale BRs of dimuon decays in Pythia: " << fBoost;
     for (unsigned int i=0; i<r.size(); ++i) {
-     Pythia8::ParticleDataEntry* V = fPythia->particleData.particleDataEntryPtr(r[i]);
+     std::shared_ptr<Pythia8::ParticleDataEntry> V = fPythia->particleData.particleDataEntryPtr(r[i]);
      Pythia8::DecayChannel ch = V->channel(c[i]);
      if (TMath::Abs(ch.product(0))!=13 || TMath::Abs(ch.product(1))!=13){
-      LOG(INFO) << "this is not the right decay channel: " << r[i] << " " << c[i];
+      LOG(info) << "this is not the right decay channel: " << r[i] << " " << c[i];
      }else{
      TString tmp="";
      tmp+=r[i];tmp+=":";tmp+= c[i];
@@ -229,7 +229,7 @@ Bool_t FixedTargetGenerator::Init()
    if (nav->CheckPath(targetName)) {
        nav->cd(targetName);
    } else {
-       LOG(FATAL) << "Invalid target volume specified";
+       LOG(fatal) << "Invalid target volume specified";
    }
    TGeoNode* target = nav->GetCurrentNode();
    TObjArray* nodes =  target->GetVolume()->GetNodes();
@@ -259,7 +259,7 @@ Bool_t FixedTargetGenerator::Init()
    bparam = fMaterialInvestigator->MeanMaterialBudget(start, end, mparam);
    maxCrossSection =  mparam[9];
   } else {
-      LOG(FATAL) << "No target set.";
+      LOG(fatal) << "No target set.";
   }
 
   return kTRUE;
@@ -333,7 +333,7 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg)
    }
   }else{
     if (nEntry==nEvents){
-      LOG(INFO) << "Rewind input file: " << nEntry;
+      LOG(info) << "Rewind input file: " << nEntry;
       nEntry=0;}
     nTree->GetEvent(nEntry);
     nEntry+=1;
@@ -365,7 +365,7 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg)
                   procID);
     // second charm hadron in the event
     nTree->GetEvent(nEntry);
-    if (nID1 * n_id > 0){LOG(INFO) << "same sign charm: " << nEntry << ", " << nID1 << ", " << n_id;}
+    if (nID1 * n_id > 0){LOG(info) << "same sign charm: " << nEntry << ", " << nID1 << ", " << n_id;}
     nEntry+=1;
     fPythiaP->event.append(static_cast<int>(n_id), 1, 0, 0, n_px, n_py, n_pz, n_E, n_M, 0., 9.);
     fPythiaP->next();
