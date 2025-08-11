@@ -1,11 +1,10 @@
-#include "FixedTargetGenerator.h"
-
 #include "EvtGenBase/EvtRandom.hh"
 #include "EvtGenBase/EvtSimpleRandomEngine.hh"
 #include "FairMCEventHeader.h"
 #include "FairPrimaryGenerator.h"
-#include "HNLPythia8Generator.h"
 #include "Pythia8Plugins/EvtGen.h"
+#include "FixedTargetGenerator.h"
+#include "HNLPythia8Generator.h"
 #include "TGeoBBox.h"
 #include "TGeoNode.h"
 #include "TGeoVolume.h"
@@ -109,8 +108,13 @@ Bool_t FixedTargetGenerator::Init()
   }else if (Option != "charm" && Option != "beauty" && !G4only) {
    LOG(ERROR) << "Option not known "<< Option.Data() << ", abort";
   }
+#if PYTHIA_VERSION_INTEGER >= 8300
+  if (fUseRandom1) fRandomEngine = std::make_shared<PyTr1Rng>();
+  if (fUseRandom3) fRandomEngine = std::make_shared<PyTr3Rng>();
+#else
   if (fUseRandom1) fRandomEngine = new PyTr1Rng();
   if (fUseRandom3) fRandomEngine = new PyTr3Rng();
+#endif
   std::vector<int> r = { 221, 221, 223, 223,   113, 331, 333};
   std::vector<int> c = {  6 ,  7,   5 ,  7,     5,   6,   9}; // decay channel mumu mumuX
 
@@ -171,9 +175,13 @@ Bool_t FixedTargetGenerator::Init()
    Int_t n = 1;
    while(n!=0){
     n = fPythia->particleData.nextId(n);
-    ParticleDataEntry* p = fPythia->particleData.particleDataEntryPtr(n);
+#if PYTHIA_VERSION_INTEGER >= 8300
+    std::shared_ptr<Pythia8::ParticleDataEntry> p = fPythia->particleData.particleDataEntryPtr(n);
+#else
+    Pythia8::ParticleDataEntry* p = fPythia->particleData.particleDataEntryPtr(n);
+#endif
     if (p->tau0()>1){
-     string particle = std::to_string(n)+":mayDecay = false";
+     std::string particle = std::to_string(n)+":mayDecay = false";
      fPythia->readString(particle);
      LOG(INFO) << "Made " << p->name().c_str() << " stable for Pythia, should decay in Geant4";
     }
@@ -183,7 +191,11 @@ Bool_t FixedTargetGenerator::Init()
    if (fBoost != 1.){
     LOG(INFO) << "Rescale BRs of dimuon decays in Pythia: " << fBoost;
     for (unsigned int i=0; i<r.size(); ++i) {
+#if PYTHIA_VERSION_INTEGER >= 8300
+     std::shared_ptr<Pythia8::ParticleDataEntry> V = fPythia->particleData.particleDataEntryPtr(r[i]);
+#else
      Pythia8::ParticleDataEntry* V = fPythia->particleData.particleDataEntryPtr(r[i]);
+#endif
      Pythia8::DecayChannel ch = V->channel(c[i]);
      if (TMath::Abs(ch.product(0))!=13 || TMath::Abs(ch.product(1))!=13){
       LOG(INFO) << "this is not the right decay channel: " << r[i] << " " << c[i];
@@ -217,11 +229,19 @@ Bool_t FixedTargetGenerator::Init()
    EvtRandom::setRandomEngine(eng);
    EvtGen *myEvtGenPtr = new EvtGen(DecayFile.Data(), ParticleFile.Data(),eng, fsrPtrIn, &models, 1, false);
    TString UdecayFile    = getenv("FAIRSHIP");UdecayFile +="/gconfig/USERDECAY.DEC";
+#if PYTHIA_VERSION_INTEGER >= 8315
+   evtgenP = new Pythia8::EvtGenDecays(fPythiaP, DecayFile.Data(), ParticleFile.Data(),extPtr);
+#else
    evtgenP = new EvtGenDecays(fPythiaP, DecayFile.Data(), ParticleFile.Data(),myEvtGenPtr);
+#endif
    evtgenP->readDecayFile(UdecayFile.Data()); // will make update of EvtGen with user decay file
    // use one instance of EvtGen, requires patch to Pythia8Plugins/EvtGen.h
    if (Option == "Primary"){
+#if PYTHIA_VERSION_INTEGER >= 8315
+    evtgenN = new Pythia8::EvtGenDecays(fPythiaN, DecayFile.Data(), ParticleFile.Data(),extPtr);
+#else
     evtgenN = new EvtGenDecays(fPythiaN, DecayFile.Data(), ParticleFile.Data(),myEvtGenPtr);
+#endif
    }
   }
   if (targetFromGeometry) {
