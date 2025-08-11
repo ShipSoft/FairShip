@@ -44,7 +44,11 @@ class Pythia8Generator : public FairGenerator
 
  private:
 
+#if PYTHIA_VERSION_INTEGER >= 8300
+  std::shared_ptr<Pythia8::RndmEngine> fRandomEngine;  //!
+#else
   Pythia8::RndmEngine* fRandomEngine;  //!
+#endif
 
  protected:
 

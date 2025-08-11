@@ -44,6 +44,7 @@ it in future.
   - The `--SND_design` option in `macro/run_simScript.py` now accepts multiple values and an 'all' option to enable all available SND designs.
   - The geometry configuration and detector setup (`geometry/geometry_config.py`, `python/shipDet_conf.py`) have been updated to instantiate all requested SND detectors.
   - This enables running with multiple SND subdetectors simultaneously and is future-proof for additional SND designs.
+* Add support for Pythia 8.3xx. 8.2xx is still supported via preprocessor macros for the time being.
 
 ### Fixed
 
