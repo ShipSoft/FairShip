@@ -34,8 +34,8 @@ Pythia8Generator::Pythia8Generator()
 // -----   Default constructor   -------------------------------------------
 Bool_t Pythia8Generator::Init()
 {
-  if (fUseRandom1) fRandomEngine = new PyTr1Rng();
-  if (fUseRandom3) fRandomEngine = new PyTr3Rng();
+  if (fUseRandom1) fRandomEngine = std::make_shared<Pythia8::RndmEngine> (PyTr1Rng());
+  if (fUseRandom3) fRandomEngine = std::make_shared<Pythia8::RndmEngine> (PyTr3Rng());
   if (fextFile && *fextFile) {
       fInputFile = TFile::Open(fextFile);
       LOG(info) << "Open external file with charm or beauty hadrons: " << fextFile;
@@ -79,7 +79,7 @@ Bool_t Pythia8Generator::Init()
      Int_t n = 1;
      while(n!=0){
       n = fPythia->particleData.nextId(n);
-      Pythia8::ParticleDataEntry* p = fPythia->particleData.particleDataEntryPtr(n);
+      std::shared_ptr<Pythia8::ParticleDataEntry> p = fPythia->particleData.particleDataEntryPtr(n);
       if (p->tau0()>1){
       std::string particle = std::to_string(n)+":mayDecay = false";
       fPythia->readString(particle);

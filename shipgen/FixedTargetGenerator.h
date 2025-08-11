@@ -61,7 +61,7 @@ class FixedTargetGenerator : public FairGenerator
   Pythia8::Pythia* GetPythiaN() {return fPythiaN;}
  private:
 
- Pythia8::RndmEngine* fRandomEngine;  //!
+ std::shared_ptr<Pythia8::RndmEngine> fRandomEngine;  //!
 
  protected:
 
