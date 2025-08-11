@@ -108,8 +108,8 @@ Bool_t FixedTargetGenerator::Init()
   }else if (Option != "charm" && Option != "beauty" && !G4only) {
    LOG(ERROR) << "Option not known "<< Option.Data() << ", abort";
   }
-  if (fUseRandom1) fRandomEngine = new PyTr1Rng();
-  if (fUseRandom3) fRandomEngine = new PyTr3Rng();
+  if (fUseRandom1) fRandomEngine = std::make_shared<PyTr1Rng>();
+  if (fUseRandom3) fRandomEngine = std::make_shared<PyTr3Rng>();
   std::vector<int> r = { 221, 221, 223, 223,   113, 331, 333};
   std::vector<int> c = {  6 ,  7,   5 ,  7,     5,   6,   9}; // decay channel mumu mumuX
 

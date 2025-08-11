@@ -4,6 +4,7 @@
 #include "FairTask.h"
 
 #include "TString.h"
+#include "TTree.h"
 
 #include <list>
 
