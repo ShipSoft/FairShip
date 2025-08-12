@@ -8,6 +8,7 @@
 #include "TTree.h"
 #include "TNtuple.h"
 #include "GenieGenerator.h"
+#include "Pythia8Plugins/EvtGen.h"
 
 class FairPrimaryGenerator;
 class EvtGenDecays;
@@ -68,8 +69,8 @@ class FixedTargetGenerator : public FairGenerator
   FairLogger*  fLogger; //!   don't make it persistent, magic ROOT command
   Pythia8::Pythia* fPythiaN;            //!
   Pythia8::Pythia* fPythiaP;            //!
-  EvtGenDecays* evtgenN;            //!
-  EvtGenDecays* evtgenP;            //!
+  Pythia8::EvtGenDecays* evtgenN;            //!
+  Pythia8::EvtGenDecays* evtgenP;            //!
   GenieGenerator* fMaterialInvestigator;  //!
   Bool_t withNtuple;               //! special option for Dark Photon physics studies
   TNtuple* fNtuple;               //!

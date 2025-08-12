@@ -1,9 +1,8 @@
-#include "FixedTargetGenerator.h"
-
 #include "EvtGenBase/EvtRandom.hh"
 #include "EvtGenBase/EvtSimpleRandomEngine.hh"
 #include "FairMCEventHeader.h"
 #include "FairPrimaryGenerator.h"
+#include "FixedTargetGenerator.h"
 #include "HNLPythia8Generator.h"
 #include "Pythia8Plugins/EvtGen.h"
 #include "TGeoBBox.h"
@@ -216,11 +215,11 @@ Bool_t FixedTargetGenerator::Init()
    EvtRandom::setRandomEngine(eng);
    EvtGen *myEvtGenPtr = new EvtGen(DecayFile.Data(), ParticleFile.Data(),eng, fsrPtrIn, &models, 1, false);
    TString UdecayFile    = getenv("FAIRSHIP");UdecayFile +="/gconfig/USERDECAY.DEC";
-   evtgenP = new EvtGenDecays(fPythiaP, DecayFile.Data(), ParticleFile.Data(),myEvtGenPtr);
+   evtgenP = new Pythia8::EvtGenDecays(fPythiaP, DecayFile.Data(), ParticleFile.Data(),myEvtGenPtr);
    evtgenP->readDecayFile(UdecayFile.Data()); // will make update of EvtGen with user decay file
    // use one instance of EvtGen, requires patch to Pythia8Plugins/EvtGen.h
    if (Option == "Primary"){
-    evtgenN = new EvtGenDecays(fPythiaN, DecayFile.Data(), ParticleFile.Data(),myEvtGenPtr);
+    evtgenN = new Pythia8::EvtGenDecays(fPythiaN, DecayFile.Data(), ParticleFile.Data(),myEvtGenPtr);
    }
   }
   if (targetName!=""){
