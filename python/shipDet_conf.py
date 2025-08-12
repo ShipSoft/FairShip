@@ -240,46 +240,48 @@ def configure_veto(yaml_file, z0):
 
     detectorList.append(Veto)
 
-def configure_strawtubes(yaml_file, station_envelope_medium):
+def configure_strawtubes(yaml_file, ship_geo):
     with open(yaml_file) as file:
         config = yaml.safe_load(file)
 
-    strawtubes_geo = AttrDict(config)
+    ship_geo.strawtubes_geo = AttrDict(config)
 
-    Strawtubes = ROOT.strawtubes(station_envelope_medium)
+    # Straw tubes in decay vessel if vacuum, otherwise outside in air
+    ship_geo.strawtubes_geo.medium = "vacuums" if ship_geo.DecayVolumeMedium == "vacuums" else "air"
+    Strawtubes = ROOT.strawtubes(ship_geo.strawtubes_geo.medium)
     Strawtubes.SetzPositions(
-        strawtubes_geo.z1Position,
-        strawtubes_geo.z2Position,
-        strawtubes_geo.z3Position,
-        strawtubes_geo.z4Position,
+        ship_geo.strawtubes_geo.z1Position,
+        ship_geo.strawtubes_geo.z2Position,
+        ship_geo.strawtubes_geo.z3Position,
+        ship_geo.strawtubes_geo.z4Position,
     )
     Strawtubes.SetApertureArea(
-        strawtubes_geo.width,
-        strawtubes_geo.height,
+        ship_geo.strawtubes_geo.width,
+        ship_geo.strawtubes_geo.height,
     )
     Strawtubes.SetStrawDiameter(
-        strawtubes_geo.outerStrawDiameter,
-        strawtubes_geo.wallThickness,
+        ship_geo.strawtubes_geo.outerStrawDiameter,
+        ship_geo.strawtubes_geo.wallThickness,
     )
     Strawtubes.SetStrawPitch(
-        strawtubes_geo.strawPitch,
-        strawtubes_geo.yLayerOffset,
+        ship_geo.strawtubes_geo.strawPitch,
+        ship_geo.strawtubes_geo.yLayerOffset,
     )
-    Strawtubes.SetDeltazLayer(strawtubes_geo.deltazLayer)
-    Strawtubes.SetStereoAngle(strawtubes_geo.viewAngle)
-    Strawtubes.SetWireThickness(strawtubes_geo.wireThickness)
-    Strawtubes.SetDeltazView(strawtubes_geo.deltazView)
-    Strawtubes.SetFrameMaterial(strawtubes_geo.frameMaterial)
+    Strawtubes.SetDeltazLayer(ship_geo.strawtubes_geo.deltazLayer)
+    Strawtubes.SetStereoAngle(ship_geo.strawtubes_geo.viewAngle)
+    Strawtubes.SetWireThickness(ship_geo.strawtubes_geo.wireThickness)
+    Strawtubes.SetDeltazView(ship_geo.strawtubes_geo.deltazView)
+    Strawtubes.SetFrameMaterial(ship_geo.strawtubes_geo.frameMaterial)
     Strawtubes.SetStationEnvelope(
-        strawtubes_geo.stationWidth,
-        strawtubes_geo.stationHeight,
-        strawtubes_geo.stationLength,
+        ship_geo.strawtubes_geo.stationWidth,
+        ship_geo.strawtubes_geo.stationHeight,
+        ship_geo.strawtubes_geo.stationLength,
     )
 
     # For digitization
     Strawtubes.SetStrawResolution(
-        strawtubes_geo.vdrift,
-        strawtubes_geo.sigmaspatial,
+        ship_geo.strawtubes_geo.vdrift,
+        ship_geo.strawtubes_geo.sigmaspatial,
     )
 
     detectorList.append(Strawtubes)
@@ -412,11 +414,9 @@ def configure(run, ship_geo):
         ship_geo.decayVolume.z0,
     )
 
-    # Straw tubes in decay vessel if vacuum, otherwise outside in air
-    ship_geo.strawtubes.medium = "vacuums" if ship_geo.DecayVolumeMedium == "vacuums" else "air"
     configure_strawtubes(
         os.path.join(os.environ["FAIRSHIP"], "geometry", "strawtubes_config.yaml"),
-        ship_geo.strawtubes.medium,
+        ship_geo,
     )
 
     if ship_geo.EcalOption == 1:  # shashlik design TP
