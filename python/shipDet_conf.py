@@ -244,7 +244,7 @@ def configure_strawtubes(yaml_file, ship_geo):
     with open(yaml_file) as file:
         config = yaml.safe_load(file)
 
-    ship_geo.strawtubes_geo = AttrDict(config)
+    ship_geo.strawtubes_geo = AttrDict(config['SST'])
 
     # Straw tubes in decay vessel if vacuum, otherwise outside in air
     ship_geo.strawtubes_geo.medium = "vacuums" if ship_geo.DecayVolumeMedium == "vacuums" else "air"
