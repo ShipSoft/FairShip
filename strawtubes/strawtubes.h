@@ -123,7 +123,7 @@ class strawtubes: public FairDetector
     Double_t f_wire_thickness;              //!  Sense wire thickness
     TString  f_frame_material;              //!  Structure frame material
     Double_t f_delta_z_view;                //!  Distance (z) between stereo views
-    Double_t f_station_wdith;               //!  Station envelope width (x)
+    Double_t f_station_width;               //!  Station envelope width (x)
     Double_t f_station_height;              //!  Station envelope height (y)
     Double_t f_station_length;              //!  Station envelope length (z)
     Double_t v_drift;                       //! drift velocity
