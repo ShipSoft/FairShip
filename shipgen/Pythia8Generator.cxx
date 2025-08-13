@@ -39,7 +39,7 @@ Bool_t Pythia8Generator::Init()
       fInputFile = TFile::Open(fextFile);
       LOG(info) << "Open external file with charm or beauty hadrons: " << fextFile;
       if (!fInputFile) {
-          LOG(FATAL) << "Error opening input file.";
+          LOG(fatal) << "Error opening input file.";
           return kFALSE;
       }
       fTree = fInputFile->Get<TTree>("pythia6");
