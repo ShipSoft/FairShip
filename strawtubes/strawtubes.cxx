@@ -299,22 +299,26 @@ void strawtubes::ConstructGeometry()
     Double_t eps = 0.0001;
     // Straw (half) length
     Double_t straw_length = f_aperture_width + 2. * eps;
-    // Width of frame
-    Double_t frame_width = 33.;
+    // Width of frame: standard HEA 500 I-beam width
+    Double_t frame_width = 49.;
+    // Offset due to floor space limitation
+    Double_t floor_offset = 14.;
 
     Double_t rmin, rmax, T_station_z;
 
     // Arguments of boxes are half-lengths
     TGeoBBox* detbox1 = new TGeoBBox(
-        "detbox1", f_aperture_width + frame_width, f_aperture_height + frame_width, f_station_length);
+        "detbox1", f_aperture_width + frame_width, f_aperture_height + frame_width - floor_offset / 2., f_station_length);
     TGeoBBox* detbox2 = new TGeoBBox(
 	"detbox2",
 	straw_length + eps,
 	f_aperture_height + TMath::Tan(f_view_angle * TMath::Pi() / 180.0) * straw_length * 2 + f_offset_layer / TMath::Cos(f_view_angle * TMath::Pi() / 180.0) + eps,
 	f_station_length + eps);
+    TGeoTranslation* move_up = new TGeoTranslation("move_up", 0, floor_offset / 2., 0);
+    move_up->RegisterYourself();
 
     // Composite shape to create frame
-    TGeoCompositeShape* detcomp1 = new TGeoCompositeShape("detcomp1", "detbox1-detbox2");
+    TGeoCompositeShape* detcomp1 = new TGeoCompositeShape("detcomp1", "(detbox1:move_up)-detbox2");
     
     // Volume: straw
     rmin = f_inner_straw_diameter / 2.;
@@ -345,7 +349,7 @@ void strawtubes::ConstructGeometry()
     // statnb = station number; vnb = view number; lnb = layer number; snb = straw number
 
     // Station box to contain all components
-    TGeoBBox* statbox = new TGeoBBox("statbox", f_station_width, f_station_height, f_station_length);
+    TGeoBBox* statbox = new TGeoBBox("statbox", f_station_width, f_station_height - floor_offset / 2., f_station_length);
 
     f_frame_material.ToLower();
 
@@ -374,10 +378,10 @@ void strawtubes::ConstructGeometry()
 
 	TGeoVolume* vol = new TGeoVolume(nmstation, statbox, med);
 	// z-translate the station to its (absolute) position
-	top->AddNode(vol, statnb, new TGeoTranslation(0, 0, T_station_z));
+	top->AddNode(vol, statnb, new TGeoTranslation(0, floor_offset / 2., T_station_z));
 
 	TGeoVolume* statframe = new TGeoVolume(nmstation + "_frame", detcomp1, FrameMatPtr);
-	vol->AddNode(statframe, statnb * 1e6, new TGeoTranslation(0, 0, 0));
+	vol->AddNode(statframe, statnb * 1e6, new TGeoTranslation(0, -floor_offset / 2., 0));
 	statframe->SetLineColor(kRed);
 
         for (Int_t vnb = 0; vnb < 4; vnb++) {
@@ -432,7 +436,7 @@ void strawtubes::ConstructGeometry()
 
                 // The layer box sits in the viewframe.
                 // Hence, z-translate the layer w.r.t. the view
-                vol->AddNode(layerbox, statnb * 1e6 + vnb * 1e5 + lnb * 1e4, new TGeoTranslation(0, 0, (vnb - 3. / 2.) * f_delta_z_view + (lnb - 1. / 2.) * f_delta_z_layer));
+                vol->AddNode(layerbox, statnb * 1e6 + vnb * 1e5 + lnb * 1e4, new TGeoTranslation(0, -floor_offset / 2., (vnb - 3. / 2.) * f_delta_z_view + (lnb - 1. / 2.) * f_delta_z_layer));
 
                 TGeoRotation r6s;
                 TGeoTranslation t6s;
