@@ -300,14 +300,18 @@ void strawtubes::ConstructGeometry()
     // Straw (half) length
     Double_t straw_length = f_aperture_width + 2. * eps;
     // Width of frame
-    Double_t frame_width = 35.;
+    Double_t frame_width = 33.;
 
     Double_t rmin, rmax, T_station_z;
 
     // Arguments of boxes are half-lengths
     TGeoBBox* detbox1 = new TGeoBBox(
         "detbox1", f_aperture_width + frame_width, f_aperture_height + frame_width, f_station_length);
-    TGeoBBox* detbox2 = new TGeoBBox("detbox2", straw_length + eps, f_aperture_height + TMath::Tan(f_view_angle * TMath::Pi() / 180.0) * straw_length + eps, f_station_length + eps);
+    TGeoBBox* detbox2 = new TGeoBBox(
+	"detbox2",
+	straw_length + eps,
+	f_aperture_height + TMath::Tan(f_view_angle * TMath::Pi() / 180.0) * straw_length * 2 + f_offset_layer / TMath::Cos(f_view_angle * TMath::Pi() / 180.0) + eps,
+	f_station_length + eps);
 
     // Composite shape to create frame
     TGeoCompositeShape* detcomp1 = new TGeoCompositeShape("detcomp1", "detbox1-detbox2");
@@ -416,14 +420,14 @@ void strawtubes::ConstructGeometry()
 	    stereo_growth = TMath::Tan(TMath::Abs(angle) * TMath::Pi() / 180.0) * straw_length;
 	    stereo_pitch = f_straw_pitch / TMath::Cos(TMath::Abs(angle) * TMath::Pi() / 180.0);
 	    offset_layer = f_offset_layer / TMath::Cos(TMath::Abs(angle) * TMath::Pi() / 180.0);
-	    straws_per_layer = 2 * (f_aperture_height + stereo_growth) / stereo_pitch;
+	    straws_per_layer = std::ceil(2 * (f_aperture_height + stereo_growth) / stereo_pitch);
 
             for (Int_t lnb = 0; lnb < 2; lnb++) {
                 // Layer loop
                 TString nmlayer = nmview + "_layer_";
                 nmlayer += lnb;
                 TGeoBBox* layer = new TGeoBBox(
-                    "layer box", straw_length + eps / 4, f_aperture_height + stereo_growth + eps / 4, f_outer_straw_diameter / 2. + eps / 4);
+                    "layer box", straw_length + eps / 4, f_aperture_height + stereo_growth * 2 + offset_layer + eps / 4, f_outer_straw_diameter / 2. + eps / 4);
                 TGeoVolume* layerbox = new TGeoVolume(nmlayer, layer, med);
 
                 // The layer box sits in the viewframe.
@@ -432,10 +436,10 @@ void strawtubes::ConstructGeometry()
 
                 TGeoRotation r6s;
                 TGeoTranslation t6s;
-                for (Int_t snb = 1; snb < straws_per_layer; snb++) {
+                for (Int_t snb = 1; snb <= straws_per_layer; snb++) {
                     // Straw loop
 		    // y-translate the straw to its position
-                    t6s.SetTranslation(0, f_aperture_height + stereo_growth - snb * stereo_pitch + lnb * offset_layer, 0);
+		    t6s.SetTranslation(0, f_aperture_height + stereo_growth - (snb - 1. / 2.) * stereo_pitch + lnb * offset_layer, 0);
 		    // Rotate the straw with stereo angle
                     r6s.SetAngles(90 + angle, 90, 0);
                     TGeoCombiTrans c6s(t6s, r6s);
@@ -445,6 +449,17 @@ void strawtubes::ConstructGeometry()
                     layerbox->AddNode(wire, statnb * 1e6 + vnb * 1e5 + lnb * 1e4 + 3e3 + snb, h6s);
                     // End of straw loop
                 }
+
+		if (lnb == 1) {
+		   // Add one more straw at the bottom of the second layer to cover aperture entirely
+		   t6s.SetTranslation(0, f_aperture_height + stereo_growth - (straws_per_layer - 1. / 2.) * stereo_pitch - lnb * offset_layer, 0);
+                   r6s.SetAngles(90 + angle, 90, 0);
+                   TGeoCombiTrans c6s(t6s, r6s);
+                   TGeoHMatrix* h6s = new TGeoHMatrix(c6s);
+                   layerbox->AddNode(straw, statnb * 1e6 + vnb * 1e5 + lnb * 1e4 + 1e3 + straws_per_layer + 1, h6s);
+                   layerbox->AddNode(gas, statnb * 1e6 + vnb * 1e5 + lnb * 1e4 + 2e3 + straws_per_layer + 1, h6s);
+                   layerbox->AddNode(wire, statnb * 1e6 + vnb * 1e5 + lnb * 1e4 + 3e3 + straws_per_layer + 1, h6s);
+		}
                 // End of layer loop
             }
             // End of view loop
@@ -462,7 +477,7 @@ std::tuple<Int_t, Int_t, Int_t, Int_t> strawtubes::StrawDecode(Int_t detID)
     lnb = (detID - statnb * 1e6 - vnb * 1e5) / 1e4;
     snb = detID - statnb * 1e6 - vnb * 1e5 - lnb * 1e4 - 2e3;
 
-    if (statnb < 1 || statnb > 4 || vnb < 0 || vnb > 3 || lnb < 0 || lnb > 1 || snb < 1 || snb > 331) {
+    if (statnb < 1 || statnb > 4 || vnb < 0 || vnb > 3 || lnb < 0 || lnb > 1 || snb < 1 || snb > 317) {
         LOG(warning) << "Invalid strawtubes detID:";
         LOG(warning) << detID << " -> station: " << statnb << ", view: " << vnb << ", layer: " << lnb
                      << ", straw: " << snb;
