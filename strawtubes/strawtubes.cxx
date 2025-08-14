@@ -423,7 +423,7 @@ void strawtubes::ConstructGeometry()
                 TString nmlayer = nmview + "_layer_";
                 nmlayer += lnb;
                 TGeoBBox* layer = new TGeoBBox(
-                    "layer box", straw_length + eps / 4, f_aperture_height + stereo_growth + eps / 4, f_outer_straw_diameter / 2. + eps / 4);
+                    "layer box", straw_length + eps / 4, f_aperture_height + stereo_growth * 2 + eps / 4, f_outer_straw_diameter / 2. + eps / 4);
                 TGeoVolume* layerbox = new TGeoVolume(nmlayer, layer, med);
 
                 // The layer box sits in the viewframe.
@@ -432,10 +432,10 @@ void strawtubes::ConstructGeometry()
 
                 TGeoRotation r6s;
                 TGeoTranslation t6s;
-                for (Int_t snb = 1; snb < straws_per_layer; snb++) {
+                for (Int_t snb = 1; snb <= straws_per_layer; snb++) {
                     // Straw loop
 		    // y-translate the straw to its position
-                    t6s.SetTranslation(0, f_aperture_height + stereo_growth - snb * stereo_pitch + lnb * offset_layer, 0);
+		    t6s.SetTranslation(0, f_aperture_height + stereo_growth - (snb - 1. / 2.) * stereo_pitch + lnb * offset_layer, 0);
 		    // Rotate the straw with stereo angle
                     r6s.SetAngles(90 + angle, 90, 0);
                     TGeoCombiTrans c6s(t6s, r6s);
@@ -445,6 +445,17 @@ void strawtubes::ConstructGeometry()
                     layerbox->AddNode(wire, statnb * 1e6 + vnb * 1e5 + lnb * 1e4 + 3e3 + snb, h6s);
                     // End of straw loop
                 }
+
+		if (lnb == 1) {
+		   // Add one more straw at the bottom of the second layer to cover aperture entirely
+		   t6s.SetTranslation(0, f_aperture_height + stereo_growth - (straws_per_layer - 1. / 2.) * stereo_pitch - lnb * offset_layer, 0);
+                   r6s.SetAngles(90 + angle, 90, 0);
+                   TGeoCombiTrans c6s(t6s, r6s);
+                   TGeoHMatrix* h6s = new TGeoHMatrix(c6s);
+                   layerbox->AddNode(straw, statnb * 1e6 + vnb * 1e5 + lnb * 1e4 + 1e3 + straws_per_layer + 1, h6s);
+                   layerbox->AddNode(gas, statnb * 1e6 + vnb * 1e5 + lnb * 1e4 + 2e3 + straws_per_layer + 1, h6s);
+                   layerbox->AddNode(wire, statnb * 1e6 + vnb * 1e5 + lnb * 1e4 + 3e3 + straws_per_layer + 1, h6s);
+		}
                 // End of layer loop
             }
             // End of view loop
