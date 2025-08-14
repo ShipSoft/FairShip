@@ -47,6 +47,7 @@ it in future.
 * Add support for Pythia 8.3xx. 8.2xx is still supported via preprocessor macros for the time being.
 * Add dedicated --print-fields and --check-overlaps flags to run_simScript.py to use these debug tools.
 * Add EvtGenDecayer for decaying J/psi (and other particles in future) when specifying the --EvtGenDecayer option
+* Add enough straws to cover aperture entirely
 
 ### Fixed
 
