@@ -248,6 +248,13 @@ def configure_strawtubes(yaml_file, ship_geo):
 
     # Straw tubes in decay vessel if vacuum, otherwise outside in air
     ship_geo.strawtubes_geo.medium = "vacuums" if ship_geo.DecayVolumeMedium == "vacuums" else "air"
+
+    # Choose frame material
+    if ship_geo.strawDesign == 4:
+        ship_geo.strawtubes_geo.frameMaterial = "aluminium"
+    elif ship_geo.strawDesign == 10:
+        ship_geo.strawtubes_geo.frameMaterial = "steel"
+        
     Strawtubes = ROOT.strawtubes(ship_geo.strawtubes_geo.medium)
     Strawtubes.SetzPositions(
         ship_geo.strawtubes_geo.z1Position,
