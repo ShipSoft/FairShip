@@ -378,6 +378,7 @@ void strawtubes::ConstructGeometry()
 
 	TGeoVolume* vol = new TGeoVolume(nmstation, statbox, med);
 	// z-translate the station to its (absolute) position
+	// y-translate to avoid overlap with the floor
 	top->AddNode(vol, statnb, new TGeoTranslation(0, floor_offset / 2., T_station_z));
 
 	TGeoVolume* statframe = new TGeoVolume(nmstation + "_frame", detcomp1, FrameMatPtr);
@@ -424,7 +425,7 @@ void strawtubes::ConstructGeometry()
 	    stereo_growth = TMath::Tan(TMath::Abs(angle) * TMath::Pi() / 180.0) * straw_length;
 	    stereo_pitch = f_straw_pitch / TMath::Cos(TMath::Abs(angle) * TMath::Pi() / 180.0);
 	    offset_layer = f_offset_layer / TMath::Cos(TMath::Abs(angle) * TMath::Pi() / 180.0);
-	    straws_per_layer = 2 * (f_aperture_height + stereo_growth) / stereo_pitch;
+	    straws_per_layer = std::ceil(2 * (f_aperture_height + stereo_growth) / stereo_pitch);
 
             for (Int_t lnb = 0; lnb < 2; lnb++) {
                 // Layer loop
@@ -434,8 +435,8 @@ void strawtubes::ConstructGeometry()
                     "layer box", straw_length + eps / 4, f_aperture_height + stereo_growth * 2 + offset_layer + eps / 4, f_outer_straw_diameter / 2. + eps / 4);
                 TGeoVolume* layerbox = new TGeoVolume(nmlayer, layer, med);
 
-                // The layer box sits in the viewframe.
-                // Hence, z-translate the layer w.r.t. the view
+                // The layer box sits in the station frame.
+                // Hence, z-translate the layer within the station + y-translate to compensate for moving up the station.
                 vol->AddNode(layerbox, statnb * 1e6 + vnb * 1e5 + lnb * 1e4, new TGeoTranslation(0, -floor_offset / 2., (vnb - 3. / 2.) * f_delta_z_view + (lnb - 1. / 2.) * f_delta_z_layer));
 
                 TGeoRotation r6s;
@@ -481,7 +482,7 @@ std::tuple<Int_t, Int_t, Int_t, Int_t> strawtubes::StrawDecode(Int_t detID)
     lnb = (detID - statnb * 1e6 - vnb * 1e5) / 1e4;
     snb = detID - statnb * 1e6 - vnb * 1e5 - lnb * 1e4 - 2e3;
 
-    if (statnb < 1 || statnb > 4 || vnb < 0 || vnb > 3 || lnb < 0 || lnb > 1 || snb < 1 || snb > 331) {
+    if (statnb < 1 || statnb > 4 || vnb < 0 || vnb > 3 || lnb < 0 || lnb > 1 || snb < 1 || snb > 317) {
         LOG(warning) << "Invalid strawtubes detID:";
         LOG(warning) << detID << " -> station: " << statnb << ", view: " << vnb << ", layer: " << lnb
                      << ", straw: " << snb;
