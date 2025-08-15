@@ -278,10 +278,10 @@ def configure_strawtubes(yaml_file, ship_geo):
         ship_geo.strawtubes_geo.stationLength,
     )
 
-    # For digitization
+    #For digitization
     Strawtubes.SetStrawResolution(
-        ship_geo.strawtubes_geo.vdrift,
-        ship_geo.strawtubes_geo.sigmaspatial,
+        ship_geo.strawtubes.v_drift,
+        ship_geo.strawtubes.sigma_spatial,
     )
 
     detectorList.append(Strawtubes)
