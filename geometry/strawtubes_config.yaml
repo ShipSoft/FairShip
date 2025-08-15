@@ -11,11 +11,6 @@ SST:
   deltazLayer: 1.732           # Distance (z) between layers in cm
   deltazView: 12               # Distance (z) between stereo views in cm
   viewAngle: 4.57              # Stereo angle in degree
-
-  z1Position: 8407             # z position of station 1 in cm (centre)
-  z2Position: 8607             # z position of station 2 in cm (centre)
-  z3Position: 9307             # z position of station 3 in cm (centre)
-  z4Position: 9507             # z position of station 4 in cm (centre)
   stationWidth: 300            # (x) in cm (half length)
   stationHeight: 350           # (y) in cm (half length)
   stationLength: 50            # (z) in cm (half length)

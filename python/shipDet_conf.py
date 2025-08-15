@@ -257,10 +257,10 @@ def configure_strawtubes(yaml_file, ship_geo):
         
     Strawtubes = ROOT.strawtubes(ship_geo.strawtubes_geo.medium)
     Strawtubes.SetzPositions(
-        ship_geo.strawtubes_geo.z1Position,
-        ship_geo.strawtubes_geo.z2Position,
-        ship_geo.strawtubes_geo.z3Position,
-        ship_geo.strawtubes_geo.z4Position,
+        ship_geo.TrackStation1.z,
+        ship_geo.TrackStation2.z,
+        ship_geo.TrackStation3.z,
+        ship_geo.TrackStation4.z,
     )
     Strawtubes.SetApertureArea(
         ship_geo.strawtubes_geo.width,
@@ -287,8 +287,8 @@ def configure_strawtubes(yaml_file, ship_geo):
 
     #For digitization
     Strawtubes.SetStrawResolution(
-        ship_geo.strawtubes.v_drift,
-        ship_geo.strawtubes.sigma_spatial,
+        ship_geo.strawtubesDigi.v_drift,
+        ship_geo.strawtubesDigi.sigma_spatial,
     )
 
     detectorList.append(Strawtubes)

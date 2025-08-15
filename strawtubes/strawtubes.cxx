@@ -1,6 +1,6 @@
-// First version of the strawtracker geometry, based on NA62 straws
-// 7/10/2015
-// E. van Herwijnen eric.van.herwijnen@cern.ch
+// Construction of SST tracker stations
+// Last update: 15 Aug 2025
+// Contact: W.-C. Marty Lee <wei-chieh.lee@desy.de>
 
 #include "strawtubes.h"
 
