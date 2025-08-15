@@ -254,7 +254,7 @@ def configure_strawtubes(yaml_file, ship_geo):
         ship_geo.strawtubes_geo.frameMaterial = "aluminium"
     elif ship_geo.strawDesign == 10:
         ship_geo.strawtubes_geo.frameMaterial = "steel"
-        
+
     Strawtubes = ROOT.strawtubes(ship_geo.strawtubes_geo.medium)
     Strawtubes.SetzPositions(
         ship_geo.TrackStation1.z,

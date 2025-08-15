@@ -319,7 +319,7 @@ void strawtubes::ConstructGeometry()
 
     // Composite shape to create frame
     TGeoCompositeShape* detcomp1 = new TGeoCompositeShape("detcomp1", "(detbox1:move_up)-detbox2");
-    
+
     // Volume: straw
     rmin = f_inner_straw_diameter / 2.;
     rmax = f_outer_straw_diameter / 2.;
@@ -328,7 +328,7 @@ void strawtubes::ConstructGeometry()
     TGeoVolume *straw = new TGeoVolume("straw", straw_tube, mylar);
     straw->SetLineColor(4);
     straw->SetVisibility(kTRUE);
-    
+
     // Volume: gas
     rmin = f_wire_thickness / 2. + eps;
     rmax = f_inner_straw_diameter / 2. - eps;
