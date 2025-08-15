@@ -11,12 +11,6 @@ SST:
   delta_z_layer: 1.732         # Distance (z) between layers in cm
   delta_z_view: 12             # Distance (z) between stereo views in cm
   view_angle: 4.57             # Stereo angle in degree
-  frame_material: "steel"      # Structure frame material
-
-  z1_position: 8407            # z position of station 1 in cm (centre)
-  z2_position: 8607            # z position of station 2 in cm (centre)
-  z3_position: 9307            # z position of station 3 in cm (centre)
-  z4_position: 9507            # z position of station 4 in cm (centre)
   station_width: 300           # (x) in cm (half length)
   station_height: 350          # (y) in cm (half length)
   station_length: 50           # (z) in cm (half length)
