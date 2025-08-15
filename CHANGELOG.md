@@ -48,6 +48,7 @@ it in future.
 * Add dedicated --print-fields and --check-overlaps flags to run_simScript.py to use these debug tools.
 * Add EvtGenDecayer for decaying J/psi (and other particles in future) when specifying the --EvtGenDecayer option
 * Add enough straws to cover aperture entirely
+* Add SST frame option (4 = aluminium, 10 = steel [default])
 
 ### Fixed
 

@@ -8,7 +8,7 @@ from ShipGeoConfig import AttrDict, ConfigRegistry
 # nuTargetPassive = 1  #0 = with active layers, 1 = only passive
 
 # targetOpt      = 5  # 0=solid   >0 sliced, 5: 5 pieces of tungsten, 4 air slits, 17: molybdenum tungsten interleaved with H20
-# strawOpt       = 0  # 0=simplistic tracking stations defined in veto.cxx  1=detailed strawtube design 4=sophisticated straw tube design, horizontal wires 10=2 cm straw diameter for compact layout (default)
+# strawOpt       = 0  # 4=aluminium frame 10=steel frame (default)
 
 # Here you can select the MS geometry, if the MS design is using SC magnet change the hybrid to True
 # The first row is the length of the magnets
@@ -408,36 +408,6 @@ with ConfigRegistry.register_config("basic") as c:
         c.Chamber1 = AttrDict(z=z4 - 4666.0 * u.cm - magnetIncrease - extraVesselLength)
         c.Chamber6 = AttrDict(z=z4 + 30.0 * u.cm + windowBulge / 2.0)
 
-    c.strawtubes = AttrDict()
-    if strawDesign == 4:
-        c.strawtubes.InnerStrawDiameter = 0.975 * u.cm
-        c.strawtubes.StrawPitch = 1.76 * u.cm
-        c.strawtubes.DeltazLayer = 1.1 * u.cm
-        c.strawtubes.YLayerOffset = c.strawtubes.StrawPitch / 2.0
-        c.strawtubes.FrameMaterial = "aluminium"
-        c.strawtubes.FrameLateralWidth = 1.0 * u.cm
-        c.strawtubes.DeltazFrame = 10.0 * u.cm
-    elif strawDesign == 10:  # 10 - baseline
-        c.strawtubes.InnerStrawDiameter = 1.9928 * u.cm
-        c.strawtubes.StrawPitch = 2.0 * u.cm
-        c.strawtubes.DeltazLayer = 1.732 * u.cm
-        c.strawtubes.YLayerOffset = 1.0 * u.cm
-        c.strawtubes.FrameMaterial = "steel"
-        c.strawtubes.FrameLateralWidth = 0.17 * u.m
-        c.strawtubes.DeltazFrame = 2.5 * u.cm
-
-    c.strawtubes.wall_thickness = 0.0036 * u.cm
-    c.strawtubes.OuterStrawDiameter = (
-        c.strawtubes.InnerStrawDiameter + 2 * c.strawtubes.wall_thickness
-    )
-
-    c.strawtubes.StrawsPerLayer = int(c.Yheight / c.strawtubes.StrawPitch)
-    c.strawtubes.ViewAngle = 4.57
-    c.strawtubes.WireThickness = 0.003 * u.cm
-    c.strawtubes.DeltazView = 5.0 * u.cm
-    c.strawtubes.VacBox_x = 240.0 * u.cm
-    c.strawtubes.VacBox_y = 600.0 * u.cm * c.Yheight / (10.0 * u.m)
-
     c.Bfield = AttrDict()
     c.Bfield.z = c.z
     c.Bfield.max = 0  # 1.4361*u.kilogauss  # was 1.15 in EOI
@@ -563,13 +533,11 @@ with ConfigRegistry.register_config("basic") as c:
     c.muShield.WithConstField = shield_db[shieldName]["WithConstField"]
 
     # for the digitizing step
-    c.strawtubes.v_drift = 1.0 / (
+    c.strawtubesDigi = AttrDict()
+    c.strawtubesDigi.v_drift = 1.0 / (
         30 * u.ns / u.mm
     )  # for baseline NA62 5mm radius straws)
-    c.strawtubes.sigma_spatial = 0.012 * u.cm  # according to Massi's TP section
-    # size of straws
-    c.strawtubes.StrawLength = c.xMax
-    c.strawtubes.station_height = int(c.Yheight / 2.0)
+    c.strawtubesDigi.sigma_spatial = 0.012 * u.cm  # according to Massi's TP section
 
     # CAMM - For Nu tau detector, keep only these parameters which are used by others...
     c.tauMudet = AttrDict()
