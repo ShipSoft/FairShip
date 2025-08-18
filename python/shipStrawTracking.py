@@ -604,7 +604,7 @@ def getReconstructibleTracks(iEvent, sTree, sGeo, ShipGeo):
     TStationz = ShipGeo.TrackStation1.z
     Zpos = TStationz - 3. / 2. * ShipGeo.strawtubes_geo.deltazView - 1. / 2. * ShipGeo.strawtubes_geo.deltazLayer
     TStation1StartZ = Zpos - ShipGeo.strawtubes_geo.outerStrawDiameter / 2.
-    
+
     TStationz = ShipGeo.TrackStation4.z
     Zpos = TStationz + 3. / 2. * ShipGeo.strawtubes_geo.deltazView + 1. / 2. * ShipGeo.strawtubes_geo.deltazLayer
     TStation4EndZ = Zpos + ShipGeo.strawtubes_geo.outerStrawDiameter / 2.
