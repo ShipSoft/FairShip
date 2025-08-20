@@ -77,7 +77,8 @@ void ShipCave::ConstructGeometry()
         new TGeoTranslation("ECN3_shift", 3.435 * m, 2.64 * m, ECN3_length / 2. + stair_step_length / 2.);
     ECN3_shift->RegisterYourself();
 
-    auto* yoke_pit = new TGeoBBox("yoke_pit", 3.5 * m, 4.3 * m + 1 * cm, 2.5 * m);
+    Double_t yoke_pit_depth = 1 * m;
+    auto* yoke_pit = new TGeoBBox("yoke_pit", 4.2 * m, 6 * m - 2.64 * m + yoke_pit_depth, 4.5 * m);
     auto* yoke_pit_shift = new TGeoTranslation("yoke_pit_shift", 0 * m, 0 * m, 89.57 * m - z_transition);
     yoke_pit_shift->RegisterYourself();
 
