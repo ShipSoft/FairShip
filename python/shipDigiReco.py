@@ -1028,7 +1028,7 @@ class ShipDigiReco:
         tp
       ) # the measurement is told which trackpoint it belongs to
       # print measurement.getMaxDistance()
-      measurement.setMaxDistance(global_variables.ShipGeo.strawtubes.InnerStrawDiameter / 2.)
+      measurement.setMaxDistance(global_variables.ShipGeo.strawtubes_geo.outerStrawDiameter / 2. - global_variables.ShipGeo.strawtubes_geo.wallThickness)
       # measurement.setLeftRightResolution(-1)
       tp.addRawMeasurement(measurement) # package measurement in the TrackPoint
       theTrack.insertPoint(tp)  # add point to Track

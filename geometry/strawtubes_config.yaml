@@ -1,0 +1,16 @@
+# Geometry configuration of SST (strawtubes) in FairShip
+
+SST:
+  width: 200                   # Aperture width (x) in cm (half length)
+  height: 300                  # Aperture height (y) in cm (half length)
+  wireThickness: 0.003         # Sense wire thickness in cm
+  wallThickness: 0.0036        # Straw wall thickness in cm
+  outerStrawDiameter: 2        # in cm
+  strawPitch: 2                # Distance (y) between straws in a layer in cm
+  yLayerOffset: 1              # Offset (y) of straws between layers in cm
+  deltazLayer: 1.732           # Distance (z) between layers in cm
+  deltazView: 12               # Distance (z) between stereo views in cm
+  viewAngle: 4.57              # Stereo angle in degree
+  stationWidth: 300            # (x) in cm (half length)
+  stationHeight: 350           # (y) in cm (half length)
+  stationLength: 50            # (z) in cm (half length)
