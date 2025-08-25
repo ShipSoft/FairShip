@@ -339,8 +339,8 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">   77</span>        <span class="keyword">new</span> TGeoTranslation(<span class="stringliteral">&quot;ECN3_shift&quot;</span>, 3.435 * m, 2.64 * m, ECN3_length / 2. + stair_step_length / 2.);</div>
 <div class="line"><span class="lineno">   78</span>    ECN3_shift-&gt;RegisterYourself();</div>
 <div class="line"><span class="lineno">   79</span> </div>
-<div class="line"><span class="lineno">   80</span>    <span class="keyword">auto</span>* yoke_pit = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;yoke_pit&quot;</span>, 3.5 * m, 4.3 * m + 1 * cm, 2.5 * m);</div>
-<div class="line"><span class="lineno">   81</span>    <span class="keyword">auto</span>* yoke_pit_shift = <span class="keyword">new</span> TGeoTranslation(<span class="stringliteral">&quot;yoke_pit_shift&quot;</span>, 0 * m, 0 * m, 89.57 * m - z_transition);</div>
+<div class="line"><span class="lineno">   80</span>    <span class="keyword">auto</span>* yoke_pit = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;yoke_pit&quot;</span>, 4.2 * m, 0.5 * m, 4.5 * m);</div>
+<div class="line"><span class="lineno">   81</span>    <span class="keyword">auto</span>* yoke_pit_shift = <span class="keyword">new</span> TGeoTranslation(<span class="stringliteral">&quot;yoke_pit_shift&quot;</span>, 0 * m, -3.86 * m, 89.57 * m - z_transition);</div>
 <div class="line"><span class="lineno">   82</span>    yoke_pit_shift-&gt;RegisterYourself();</div>
 <div class="line"><span class="lineno">   83</span> </div>
 <div class="line"><span class="lineno">   84</span>    <span class="keyword">auto</span>* target_pit = <span class="keyword">new</span> TGeoBBox(<span class="stringliteral">&quot;target_pit&quot;</span>, 2 * m, 0.5 * m, 2 * m);</div>
