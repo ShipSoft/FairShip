@@ -25,23 +25,15 @@ def create_csv_field_map(options):
     run = r.FairRunSim()
     run.SetName("TGeant4")  # Transport engine
     run.SetSink(r.FairRootFileSink("tmp_file"))  # Output file
-    # Use FairYamlVMCConfig for YAML configuration
-    yamlConfig = r.FairYamlVMCConfig("g4Config", "g4Config.yaml")
-    yamlConfig.Setup()
+    # Use SHiP::VMCConfig for YAML configuration
+    r.gInterpreter.ProcessLine('FairRunSim::Instance()->SetSimulationConfig(std::make_unique<SHiP::VMCConfig>("g4Config", "g4Config.yaml"));')
     shipDet_conf.configure(run, ship_geo)
     primGen = r.FairPrimaryGenerator()
     primGen.SetTarget(ship_geo.target.z0 + 70.845 * u.m, 0.0)
     #
     run.SetGenerator(primGen)
     run.SetStoreTraj(r.kFALSE)
-    # Create and set custom ShipStack for YAML config compatibility
-    stack = r.ShipStack(1000)
-    stack.StoreSecondaries(r.kTRUE)
-    stack.SetMinPoints(0)
-    # Get the Geant4 VMC instance and set our custom stack
-    geant4 = r.TVirtualMC.GetMC()
-    if geant4:
-        geant4.SetStack(stack)
+    # ShipStack is now automatically created by SHiP::VMCConfig
     run.Init()
     fieldMaker = geomGeant4.addVMCFields(ship_geo, "", True)
 

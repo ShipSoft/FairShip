@@ -83,6 +83,10 @@ it in future.
   - The geometry configuration and detector setup (`geometry/geometry_config.py`, `python/shipDet_conf.py`) have been updated to instantiate all requested SND detectors.
   - This enables running with multiple SND subdetectors simultaneously and is future-proof for additional SND designs.
 * Added the hole for SND in the Muon Shield, that is created automatically if SND key is enabled (works so far for SND_design == 2)
+* Added YAML configuration files for Geant4 VMC setup (`g4Config.yaml`, `g4Config_basic.yaml`) to replace deprecated C macros
+  - Includes physics lists, Monte Carlo processes/cuts, and Geant4 macro commands
+  - Maintains full compatibility with original C configuration functionality
+* Add SHiP::VMCConfig class to setup VMC from the YAML configuration
 
 #### Geometry and Target Station
 
