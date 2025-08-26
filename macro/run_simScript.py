@@ -353,6 +353,7 @@ if options.pythia8:
 # P8gen.SetId(-211)
  primGen.AddGenerator(P8gen)
 if options.fixedTarget:
+ HNL = False
  P8gen = ROOT.FixedTargetGenerator()
  P8gen.SetZoffset(options.z_offset*u.mm)
  P8gen.SetTarget("cave_1/target_vacuum_box_1/TargetArea_1/HeVolume_1", 0. ,0.)

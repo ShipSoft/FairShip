@@ -71,6 +71,7 @@ it in future.
 * Reconstruction: reverse nmeas > 0 check to make sure 𝜒² is defined
 * Fix: MTC geometry overlap
 * fix(FixedTargetGenerator): Don't assume anything about the target substructure
+* Fix crash in run_simScript.py
 
 ### Changed
 
