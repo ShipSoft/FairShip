@@ -20,13 +20,8 @@ ${genfit2_LIBDIR}
 
 link_directories( ${LINK_DIRECTORIES})
 
-set(SRCS
-ShipHit.cxx
-ShipStack.cxx
-ShipMCTrack.cxx
-ShipParticle.cxx
-TrackInfo.cxx
-)
+set(SRCS ShipHit.cxx ShipStack.cxx ShipMCTrack.cxx ShipParticle.cxx
+         TrackInfo.cxx VMCConfig.cxx)
 
 Set(HEADERS )
 Set(LINKDEF MCStackLinkDef.h)

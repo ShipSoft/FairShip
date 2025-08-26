@@ -53,7 +53,7 @@ import shipDet_conf
 run = ROOT.FairRunSim()
 run.SetName("TGeant4")  # Transport engine
 run.SetSink(ROOT.FairRootFileSink(ROOT.TMemFile('output', 'recreate')))  # Dummy output file
-run.SetUserConfig("g4Config_basic.C") # geant4 transport not used, only needed for the mag field
+ROOT.gInterpreter.ProcessLine('FairRunSim::Instance()->SetSimulationConfig(std::make_unique<SHiP::VMCConfig>("g4Config", "g4Config_basic.yaml"));') # geant4 transport not used, only needed for the mag field
 rtdb = run.GetRuntimeDb()
 # -----Create geometry----------------------------------------------
 modules = shipDet_conf.configure(run,ShipGeo)

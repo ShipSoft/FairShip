@@ -47,6 +47,7 @@ it in future.
 * Added YAML configuration files for Geant4 VMC setup (`g4Config.yaml`, `g4Config_basic.yaml`) to replace deprecated C macros
   - Includes physics lists, Monte Carlo processes/cuts, and Geant4 macro commands
   - Maintains full compatibility with original C configuration functionality
+* Add SHiP::VMCConfig class to setup VMC from the YAML configuration
 
 ### Fixed
 

@@ -286,14 +286,14 @@ timer.Start()
 run = ROOT.FairRunSim()
 run.SetName(mcEngine)  # Transport engine
 run.SetSink(ROOT.FairRootFileSink(outFile))  # Output file
-# Use FairYamlVMCConfig for YAML configuration
-yamlConfig = ROOT.FairYamlVMCConfig("g4Config", "g4Config.yaml")
-yamlConfig.Setup()
+# Use SHiP::VMCConfig for YAML configuration via C++ interpreter
+ROOT.gInterpreter.ProcessLine('FairRunSim::Instance()->SetSimulationConfig(std::make_unique<SHiP::VMCConfig>("g4Config", "g4Config.yaml"));')
 rtdb = run.GetRuntimeDb()
 # -----Create geometry----------------------------------------------
 # import shipMuShield_only as shipDet_conf # special use case for an attempt to convert active shielding geometry for use with FLUKA
 # import shipTarget_only as shipDet_conf
 import shipDet_conf
+
 modules = shipDet_conf.configure(run,ship_geo)
 # -----Create PrimaryGenerator--------------------------------------
 primGen = ROOT.FairPrimaryGenerator()
@@ -518,15 +518,7 @@ run.SetGenerator(primGen)
 if options.eventDisplay: run.SetStoreTraj(ROOT.kTRUE)
 else:            run.SetStoreTraj(ROOT.kFALSE)
 
-# -----Create and set custom ShipStack for YAML config compatibility-----
-if mcEngine == "TGeant4":
-    stack = ROOT.ShipStack(1000)
-    stack.StoreSecondaries(ROOT.kTRUE)
-    stack.SetMinPoints(0)
-    # Get the Geant4 VMC instance and set our custom stack
-    geant4 = ROOT.TVirtualMC.GetMC()
-    if geant4:
-        geant4.SetStack(stack)
+# ShipStack is now automatically created by SHiP::VMCConfig
 
 # -----Initialize simulation run------------------------------------
 run.Init()
