@@ -199,6 +199,20 @@ Changed</h2>
 <li><a class="el" href="namespacemakeCascade.html">makeCascade</a>: Added new default target, moved to argparse</li>
 <li><a class="el" href="run__simScript_8py.html">run_simScript.py</a>: use options directly internally instead of using intermediate variables</li>
 <li>Update spectrometer yoke pit size according to EDMS no. 3309666</li>
+<li>feat: Improve <a class="el" href="classFixedTargetGenerator.html">FixedTargetGenerator</a> geometry handling<ul>
+<li>Replace fragile hardcoded TGeo navigation paths with geometry constants from <code>ship_geo.target</code></li>
+<li>Add <code>SetTargetCoordinates()</code> method to accept geometry-based start/end z-coordinates from <code><a class="el" href="run__simScript_8py.html">run_simScript.py</a></code></li>
+<li>Use robust <code>ship_geo.target.z0</code> and <code>ship_geo.target.length</code> instead of brittle <code>"cave_1/target_vacuum_box_1/TargetArea_1/HeVolume_1"</code> path</li>
+<li>Maintain backward compatibility with legacy TGeo navigation as fallback</li>
+</ul>
+</li>
+<li>feat: Improve <a class="el" href="classPythia8Generator.html">Pythia8Generator</a> geometry handling<ul>
+<li>Apply same geometry robustness improvements as <a class="el" href="classFixedTargetGenerator.html">FixedTargetGenerator</a></li>
+<li>Replace fragile <code>"volTarget_1"</code> TGeo navigation with geometry constants from <code>ship_geo.target</code></li>
+<li>Add <code>SetTargetCoordinates()</code> method for robust geometry-based target configuration</li>
+<li>Maintain backward compatibility with legacy TGeo navigation as fallback</li>
+</ul>
+</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md5"></a>
 Removed</h2>

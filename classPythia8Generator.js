@@ -12,6 +12,7 @@ var classPythia8Generator =
     [ "SetMom", "classPythia8Generator.html#a0ab8c1d670e1b28ebda9f24114f6b947", null ],
     [ "SetParameters", "classPythia8Generator.html#a33afe32a92d283ca600f91e496019958", null ],
     [ "SetTarget", "classPythia8Generator.html#a2bfe51e26063a10062ea4f18c41c6ca4", null ],
+    [ "SetTargetCoordinates", "classPythia8Generator.html#a429338489bf1d8c0e3af6d95b8d74072", null ],
     [ "UseExternalFile", "classPythia8Generator.html#acffe3c4053cea5e523e8605eb29d8e4b", null ],
     [ "UseRandom1", "classPythia8Generator.html#aceb1443f87222964e0d7885b23d85549", null ],
     [ "UseRandom3", "classPythia8Generator.html#aa66765891a7fd1913ef0c20334847dc7", null ],
@@ -53,6 +54,7 @@ var classPythia8Generator =
     [ "start", "classPythia8Generator.html#a7be219b7323a50ac6da295870c2c8eb2", null ],
     [ "startZ", "classPythia8Generator.html#a84bca5e9ce97caf243358d5419e3d045", null ],
     [ "subprocCodes", "classPythia8Generator.html#a5c42943975a845596b93d0ce864bbc64", null ],
+    [ "targetFromGeometry", "classPythia8Generator.html#a48d9f8862b0a14385ee375e90407dfb0", null ],
     [ "targetName", "classPythia8Generator.html#af9b0d7cc138e3e2cc6b19ead232a248a", null ],
     [ "xOff", "classPythia8Generator.html#a667fa3cbfa0010ff6b95f0287c2d8641", null ],
     [ "yOff", "classPythia8Generator.html#a2b7319bf5950e27d0db981ca2e5a0ae0", null ]
