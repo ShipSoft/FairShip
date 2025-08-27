@@ -398,7 +398,9 @@ it in future.
 * Remove reloading of the `geometry_config.py` in `shipDet_conf.py`
 * Removed unused run_simPgun.py
 * Remove TTCluster.py
+* Removed deprecated Geant4 VMC configuration files (`g4Config.C`, `g4Config_basic.C`, `g4config.in`, `g4config_basic.in`)
 * Remove pid class
+* Remove GCUTS (replaced by CUTGAM in Geant4)
 
 #### Build System
 
