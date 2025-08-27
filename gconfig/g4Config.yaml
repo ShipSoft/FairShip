@@ -42,4 +42,3 @@ MonteCarlo_Cut:
     DCUTM:        1.0E-3   #muon and hadron delta-rays (GeV)
     PPCUTM:       1.0E-3   #direct pair production by muons (GeV)
     TOFMAX:       1.E10    #time of flight cut (s)
-    GCUTS:        1.0E-3   #gamma transport cut (GeV)

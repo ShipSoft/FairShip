@@ -158,6 +158,7 @@ it in future.
 * Remove target versions older than CDR
 * Remove hadron absorber in ShipTargetStation.cxx
 * Removed deprecated Geant4 VMC configuration files (`g4Config.C`, `g4Config_basic.C`, `g4config.in`, `g4config_basic.in`)
+* Remove GCUTS (replaced by CUTGAM in Geant4)
 
 ## 25.01
 
