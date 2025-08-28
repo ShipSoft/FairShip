@@ -58,7 +58,8 @@ def run():
  run.SetName(mcEngine)  # Transport engine
  if nev==0: run.SetSink(ROOT.FairRootFileSink("dummy.root"))
  else: run.SetSink(ROOT.FairRootFileSink(outFile))  # Output file
- run.SetUserConfig("g4Config.C") # user configuration file default g4Config.C
+ # Use SHiP::VMCConfig for YAML configuration
+ ROOT.gInterpreter.ProcessLine('FairRunSim::Instance()->SetSimulationConfig(std::make_unique<SHiP::VMCConfig>("g4Config", "g4Config.yaml"));')
  rtdb = run.GetRuntimeDb()
 # -----Materials----------------------------------------------
  run.SetMaterials("media.geo")
@@ -86,6 +87,7 @@ def run():
 #
  run.SetGenerator(primGen)
 # -----Initialize simulation run------------------------------------
+ # ShipStack is now automatically created by SHiP::VMCConfig
  run.Init()
  if nev==0: return
  gMC = ROOT.TVirtualMC.GetMC()

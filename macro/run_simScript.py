@@ -286,12 +286,14 @@ timer.Start()
 run = ROOT.FairRunSim()
 run.SetName(mcEngine)  # Transport engine
 run.SetSink(ROOT.FairRootFileSink(outFile))  # Output file
-run.SetUserConfig("g4Config.C") # user configuration file default g4Config.C
+# Use SHiP::VMCConfig for YAML configuration via C++ interpreter
+ROOT.gInterpreter.ProcessLine('FairRunSim::Instance()->SetSimulationConfig(std::make_unique<SHiP::VMCConfig>("g4Config", "g4Config.yaml"));')
 rtdb = run.GetRuntimeDb()
 # -----Create geometry----------------------------------------------
 # import shipMuShield_only as shipDet_conf # special use case for an attempt to convert active shielding geometry for use with FLUKA
 # import shipTarget_only as shipDet_conf
 import shipDet_conf
+
 modules = shipDet_conf.configure(run,ship_geo)
 # -----Create PrimaryGenerator--------------------------------------
 primGen = ROOT.FairPrimaryGenerator()
@@ -515,6 +517,9 @@ run.SetGenerator(primGen)
 #--- Use it only to display but not for production!
 if options.eventDisplay: run.SetStoreTraj(ROOT.kTRUE)
 else:            run.SetStoreTraj(ROOT.kFALSE)
+
+# ShipStack is now automatically created by SHiP::VMCConfig
+
 # -----Initialize simulation run------------------------------------
 run.Init()
 if options.dryrun: # Early stop after setting up Pythia 8

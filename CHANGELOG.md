@@ -44,6 +44,10 @@ it in future.
   - The `--SND_design` option in `macro/run_simScript.py` now accepts multiple values and an 'all' option to enable all available SND designs.
   - The geometry configuration and detector setup (`geometry/geometry_config.py`, `python/shipDet_conf.py`) have been updated to instantiate all requested SND detectors.
   - This enables running with multiple SND subdetectors simultaneously and is future-proof for additional SND designs.
+* Added YAML configuration files for Geant4 VMC setup (`g4Config.yaml`, `g4Config_basic.yaml`) to replace deprecated C macros
+  - Includes physics lists, Monte Carlo processes/cuts, and Geant4 macro commands
+  - Maintains full compatibility with original C configuration functionality
+* Add SHiP::VMCConfig class to setup VMC from the YAML configuration
 
 ### Fixed
 
@@ -122,6 +126,9 @@ it in future.
   - Add `SetTargetCoordinates()` method for robust geometry-based target configuration
   - Maintain backward compatibility with legacy TGeo navigation as fallback
 - The decorators from decorators.py now need to be applied explicitly using the new `apply_decorators` function.
+* Updated all simulation scripts to use YAML configuration (`g4Config.yaml`) instead of deprecated C macros (`g4Config.C`)
+  - Added explicit ShipStack instantiation in Python code to maintain custom stack functionality
+  - Updated 8 scripts including `run_simScript.py`, `inspectGeant4Geo.py`, and muonShieldOptimization scripts
 
 ### Removed
 
@@ -150,6 +157,8 @@ it in future.
 * Remove tankDesign variable, options
 * Remove target versions older than CDR
 * Remove hadron absorber in ShipTargetStation.cxx
+* Removed deprecated Geant4 VMC configuration files (`g4Config.C`, `g4Config_basic.C`, `g4config.in`, `g4config_basic.in`)
+* Remove GCUTS (replaced by CUTGAM in Geant4)
 
 ## 25.01
 

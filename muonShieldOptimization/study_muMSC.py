@@ -44,7 +44,8 @@ timer.Start()
 run = ROOT.FairRunSim()
 run.SetName(mcEngine)  # Transport engine
 run.SetSink(ROOT.FairRootFileSink(outFile))  # Output file
-run.SetUserConfig("g4Config.C") # user configuration file default g4Config.C
+# Use SHiP::VMCConfig for YAML configuration
+ROOT.gInterpreter.ProcessLine('FairRunSim::Instance()->SetSimulationConfig(std::make_unique<SHiP::VMCConfig>("g4Config", "g4Config.yaml"));')
 rtdb = run.GetRuntimeDb()
 
 # -----Materials----------------------------------------------
@@ -93,6 +94,7 @@ run.SetGenerator(primGen)
 #
 run.SetGenerator(primGen)
 # -----Initialize simulation run------------------------------------
+# ShipStack is now automatically created by SHiP::VMCConfig
 run.Init()
 gMC = ROOT.TVirtualMC.GetMC()
 
