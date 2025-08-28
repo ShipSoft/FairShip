@@ -12,11 +12,12 @@ from ShipGeoConfig import ConfigRegistry
 from rootpyPickler import Unpickler
 from array import array
 import shipunit as u
-from decorators import *
 import shipRoot_conf
 import shipDet_conf
+import decorators
 
 shipRoot_conf.configure()
+decorators.apply_decorators()
 
 
 def evExit():
