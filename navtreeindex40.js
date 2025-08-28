@@ -1,7 +1,5 @@
 var NAVTREEINDEX40 =
 {
-"splitcalHit_8cxx.html":[6,0,16,6],
-"splitcalHit_8cxx.html#a2a4e3defa01c68456688479ba32a6a02":[6,0,16,6,0],
 "splitcalHit_8cxx_source.html":[6,0,16,6],
 "splitcalHit_8h.html":[6,0,16,7],
 "splitcalHit_8h_source.html":[6,0,16,7],

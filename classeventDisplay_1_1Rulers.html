@@ -133,7 +133,7 @@ Public Attributes</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01120">1120</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01121">1121</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a9804711c3a11541dd894452d2b937885" name="a9804711c3a11541dd894452d2b937885"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9804711c3a11541dd894452d2b937885">&#9670;&#160;</a></span>__init__()</h2>
@@ -151,11 +151,11 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01123">1123</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno"> 1123</span>    <span class="keyword">def </span>__init__(self):</div>
-<div class="line"><span class="lineno"> 1124</span>        self.ruler = ROOT.TEveCompound(<span class="stringliteral">&quot;Rulers&quot;</span>)</div>
-<div class="line"><span class="lineno"> 1125</span>        gEve.AddElement(self.ruler)</div>
-<div class="line"><span class="lineno"> 1126</span> </div>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01124">1124</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno"> 1124</span>    <span class="keyword">def </span>__init__(self):</div>
+<div class="line"><span class="lineno"> 1125</span>        self.ruler = ROOT.TEveCompound(<span class="stringliteral">&quot;Rulers&quot;</span>)</div>
+<div class="line"><span class="lineno"> 1126</span>        gEve.AddElement(self.ruler)</div>
+<div class="line"><span class="lineno"> 1127</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -176,11 +176,11 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01226">1226</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno"> 1226</span>    <span class="keyword">def </span>remove(self):</div>
-<div class="line"><span class="lineno"> 1227</span>        self.ruler.DestroyElements()</div>
-<div class="line"><span class="lineno"> 1228</span> </div>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01227">1227</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno"> 1227</span>    <span class="keyword">def </span>remove(self):</div>
+<div class="line"><span class="lineno"> 1228</span>        self.ruler.DestroyElements()</div>
 <div class="line"><span class="lineno"> 1229</span> </div>
+<div class="line"><span class="lineno"> 1230</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -216,106 +216,106 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01127">1127</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno"> 1127</span>    <span class="keyword">def </span>show(self, xy=0, ticks=5):</div>
-<div class="line"><span class="lineno"> 1128</span>        self.ruler.DestroyElements()</div>
-<div class="line"><span class="lineno"> 1129</span>        self.ruler.OpenCompound()</div>
-<div class="line"><span class="lineno"> 1130</span>        xpos, ypos = -500.0, -1500.0</div>
-<div class="line"><span class="lineno"> 1131</span>        zstart = ShipGeo.target.z0</div>
-<div class="line"><span class="lineno"> 1132</span>        zlength = ShipGeo.MuonStation3.z - zstart + 10 * u.m</div>
-<div class="line"><span class="lineno"> 1133</span>        a1 = ROOT.TEveLine()</div>
-<div class="line"><span class="lineno"> 1134</span>        a1.SetNextPoint(xpos, ypos, zstart)</div>
-<div class="line"><span class="lineno"> 1135</span>        a1.SetNextPoint(xpos, ypos, zstart + zlength)</div>
-<div class="line"><span class="lineno"> 1136</span>        a1.SetMainColor(ROOT.kAzure - 9)</div>
-<div class="line"><span class="lineno"> 1137</span>        a1.SetLineWidth(30)</div>
-<div class="line"><span class="lineno"> 1138</span>        <span class="comment"># self.ruler.AddElement(a1)</span></div>
-<div class="line"><span class="lineno"> 1139</span>        z = zstart</div>
-<div class="line"><span class="lineno"> 1140</span>        <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(int(zlength / 100 / ticks)):</div>
-<div class="line"><span class="lineno"> 1141</span>            m = ROOT.TEveLine()</div>
-<div class="line"><span class="lineno"> 1142</span>            m.SetNextPoint(xpos, ypos, z)</div>
-<div class="line"><span class="lineno"> 1143</span>            m.SetNextPoint(xpos - 1 * u.m, ypos, z)</div>
-<div class="line"><span class="lineno"> 1144</span>            m.SetMainColor(ROOT.kRed)</div>
-<div class="line"><span class="lineno"> 1145</span>            m.SetLineWidth(5)</div>
-<div class="line"><span class="lineno"> 1146</span>            self.ruler.AddElement(m)</div>
-<div class="line"><span class="lineno"> 1147</span>            t1 = ROOT.TEveText(str(i * ticks) + <span class="stringliteral">&quot;m&quot;</span>)</div>
-<div class="line"><span class="lineno"> 1148</span>            t1.SetMainColor(ROOT.kGray + 3)</div>
-<div class="line"><span class="lineno"> 1149</span>            t1.SetFontSize(5)</div>
-<div class="line"><span class="lineno"> 1150</span>            t1.RefMainTrans().SetPos(xpos - 0.1 * u.m, ypos + 0.2 * u.m, z)</div>
-<div class="line"><span class="lineno"> 1151</span>            self.ruler.AddElement(t1)</div>
-<div class="line"><span class="lineno"> 1152</span>            z += ticks * u.m</div>
-<div class="line"><span class="lineno"> 1153</span>        xpos, ypos = 0.0, 0.0</div>
-<div class="line"><span class="lineno"> 1154</span>        <span class="keywordflow">if</span> xy == 0:</div>
-<div class="line"><span class="lineno"> 1155</span>            z = ShipGeo.MuonStation3.z + 6 * u.m</div>
-<div class="line"><span class="lineno"> 1156</span>        <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno"> 1157</span>            z = xy</div>
-<div class="line"><span class="lineno"> 1158</span>        ylength = 7 * u.m</div>
-<div class="line"><span class="lineno"> 1159</span>        a2 = ROOT.TEveLine()</div>
-<div class="line"><span class="lineno"> 1160</span>        a2.SetNextPoint(xpos, -ylength, z)</div>
-<div class="line"><span class="lineno"> 1161</span>        a2.SetNextPoint(xpos, ylength, z)</div>
-<div class="line"><span class="lineno"> 1162</span>        a2.SetMainColor(ROOT.kAzure - 9)</div>
-<div class="line"><span class="lineno"> 1163</span>        a2.SetLineWidth(30)</div>
-<div class="line"><span class="lineno"> 1164</span>        <span class="comment"># self.ruler.AddElement(a2)</span></div>
-<div class="line"><span class="lineno"> 1165</span>        ypos = -ylength</div>
-<div class="line"><span class="lineno"> 1166</span>        <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(-int(ylength / 100), int(ylength / 100), 1):</div>
-<div class="line"><span class="lineno"> 1167</span>            m = ROOT.TEveLine()</div>
-<div class="line"><span class="lineno"> 1168</span>            m.SetNextPoint(xpos, ypos, z)</div>
-<div class="line"><span class="lineno"> 1169</span>            m.SetNextPoint(xpos + 0.05 * u.m, ypos, z)</div>
-<div class="line"><span class="lineno"> 1170</span>            m.SetMainColor(ROOT.kRed)</div>
-<div class="line"><span class="lineno"> 1171</span>            m.SetLineWidth(3)</div>
-<div class="line"><span class="lineno"> 1172</span>            self.ruler.AddElement(m)</div>
-<div class="line"><span class="lineno"> 1173</span>            t1 = ROOT.TEveText(str(i) + <span class="stringliteral">&quot;m&quot;</span>)</div>
-<div class="line"><span class="lineno"> 1174</span>            t1.SetMainColor(ROOT.kGray + 3)</div>
-<div class="line"><span class="lineno"> 1175</span>            t1.SetFontSize(5)</div>
-<div class="line"><span class="lineno"> 1176</span>            t1.RefMainTrans().SetPos(xpos - 0.5 * u.m, ypos, z)</div>
-<div class="line"><span class="lineno"> 1177</span>            self.ruler.AddElement(t1)</div>
-<div class="line"><span class="lineno"> 1178</span>            ypos += 1 * u.m</div>
-<div class="line"><span class="lineno"> 1179</span>        ty = ROOT.TEveText(<span class="stringliteral">&quot;y-axis&quot;</span>)</div>
-<div class="line"><span class="lineno"> 1180</span>        ty.SetFontSize(10)</div>
-<div class="line"><span class="lineno"> 1181</span>        ty.RefMainTrans().SetPos(0.0, ypos + 1 * u.m, z)</div>
-<div class="line"><span class="lineno"> 1182</span>        ty.SetMainColor(ROOT.kRed - 2)</div>
-<div class="line"><span class="lineno"> 1183</span>        self.ruler.AddElement(ty)</div>
-<div class="line"><span class="lineno"> 1184</span>        xpos, ypos = 0.0, 0.0</div>
-<div class="line"><span class="lineno"> 1185</span>        <span class="keywordflow">if</span> xy == 0:</div>
-<div class="line"><span class="lineno"> 1186</span>            z = ShipGeo.MuonStation3.z + 10 * u.m</div>
-<div class="line"><span class="lineno"> 1187</span>        xlength = 3 * u.m</div>
-<div class="line"><span class="lineno"> 1188</span>        a3 = ROOT.TEveLine()</div>
-<div class="line"><span class="lineno"> 1189</span>        a3.SetNextPoint(-xlength, 0, z)</div>
-<div class="line"><span class="lineno"> 1190</span>        a3.SetNextPoint(xlength, 0, z)</div>
-<div class="line"><span class="lineno"> 1191</span>        a3.SetMainColor(ROOT.kAzure - 9)</div>
-<div class="line"><span class="lineno"> 1192</span>        a3.SetLineWidth(30)</div>
-<div class="line"><span class="lineno"> 1193</span>        <span class="comment"># self.ruler.AddElement(a3)</span></div>
-<div class="line"><span class="lineno"> 1194</span>        xpos = -xlength</div>
-<div class="line"><span class="lineno"> 1195</span>        <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(-int(xlength / 100), int(xlength / 100), 1):</div>
-<div class="line"><span class="lineno"> 1196</span>            m = ROOT.TEveLine()</div>
-<div class="line"><span class="lineno"> 1197</span>            m.SetNextPoint(xpos, ypos, z)</div>
-<div class="line"><span class="lineno"> 1198</span>            m.SetNextPoint(xpos, ypos - 0.05 * u.m, z)</div>
-<div class="line"><span class="lineno"> 1199</span>            m.SetMainColor(ROOT.kRed)</div>
-<div class="line"><span class="lineno"> 1200</span>            m.SetLineWidth(3)</div>
-<div class="line"><span class="lineno"> 1201</span>            self.ruler.AddElement(m)</div>
-<div class="line"><span class="lineno"> 1202</span>            t1 = ROOT.TEveText(str(i) + <span class="stringliteral">&quot;m&quot;</span>)</div>
-<div class="line"><span class="lineno"> 1203</span>            t1.SetMainColor(ROOT.kGray + 3)</div>
-<div class="line"><span class="lineno"> 1204</span>            t1.SetFontSize(5)</div>
-<div class="line"><span class="lineno"> 1205</span>            t1.RefMainTrans().SetPos(xpos, ypos - 0.1 * u.m, z)</div>
-<div class="line"><span class="lineno"> 1206</span>            self.ruler.AddElement(t1)</div>
-<div class="line"><span class="lineno"> 1207</span>            xpos += 1 * u.m</div>
-<div class="line"><span class="lineno"> 1208</span>        tx = ROOT.TEveText(<span class="stringliteral">&quot;x-axis&quot;</span>)</div>
-<div class="line"><span class="lineno"> 1209</span>        tx.SetFontSize(10)</div>
-<div class="line"><span class="lineno"> 1210</span>        tx.RefMainTrans().SetPos(xpos + 1 * u.m, 0.0, z)</div>
-<div class="line"><span class="lineno"> 1211</span>        tx.SetMainColor(ROOT.kRed - 2)</div>
-<div class="line"><span class="lineno"> 1212</span>        self.ruler.AddElement(tx)</div>
-<div class="line"><span class="lineno"> 1213</span>        t1 = ROOT.TEveText(<span class="stringliteral">&quot;SHiP&quot;</span>)</div>
-<div class="line"><span class="lineno"> 1214</span>        t1.SetFontSize(200)</div>
-<div class="line"><span class="lineno"> 1215</span>        t1.RefMainTrans().SetPos(0.0, 600.0, ShipGeo.TrackStation1.z - 10 * u.m)</div>
-<div class="line"><span class="lineno"> 1216</span>        t1.PtrMainTrans().RotateLF(1, 3, ROOT.TMath.PiOver2())</div>
-<div class="line"><span class="lineno"> 1217</span>        t1.SetMainColor(ROOT.kOrange - 2)</div>
-<div class="line"><span class="lineno"> 1218</span>        t1.SetFontMode(ROOT.TGLFont.kExtrude)</div>
-<div class="line"><span class="lineno"> 1219</span>        t1.SetLighting(ROOT.kTRUE)</div>
-<div class="line"><span class="lineno"> 1220</span>        self.ruler.AddElement(t1)</div>
-<div class="line"><span class="lineno"> 1221</span>        self.ruler.CloseCompound()</div>
-<div class="line"><span class="lineno"> 1222</span>        sc = ROOT.gEve.GetScenes()</div>
-<div class="line"><span class="lineno"> 1223</span>        geoscene = sc.FindChild(<span class="stringliteral">&quot;Geometry scene&quot;</span>)</div>
-<div class="line"><span class="lineno"> 1224</span>        ROOT.gEve.ElementChanged(geoscene, <span class="keyword">True</span>, <span class="keyword">True</span>)</div>
-<div class="line"><span class="lineno"> 1225</span> </div>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01128">1128</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno"> 1128</span>    <span class="keyword">def </span>show(self, xy=0, ticks=5):</div>
+<div class="line"><span class="lineno"> 1129</span>        self.ruler.DestroyElements()</div>
+<div class="line"><span class="lineno"> 1130</span>        self.ruler.OpenCompound()</div>
+<div class="line"><span class="lineno"> 1131</span>        xpos, ypos = -500.0, -1500.0</div>
+<div class="line"><span class="lineno"> 1132</span>        zstart = ShipGeo.target.z0</div>
+<div class="line"><span class="lineno"> 1133</span>        zlength = ShipGeo.MuonStation3.z - zstart + 10 * u.m</div>
+<div class="line"><span class="lineno"> 1134</span>        a1 = ROOT.TEveLine()</div>
+<div class="line"><span class="lineno"> 1135</span>        a1.SetNextPoint(xpos, ypos, zstart)</div>
+<div class="line"><span class="lineno"> 1136</span>        a1.SetNextPoint(xpos, ypos, zstart + zlength)</div>
+<div class="line"><span class="lineno"> 1137</span>        a1.SetMainColor(ROOT.kAzure - 9)</div>
+<div class="line"><span class="lineno"> 1138</span>        a1.SetLineWidth(30)</div>
+<div class="line"><span class="lineno"> 1139</span>        <span class="comment"># self.ruler.AddElement(a1)</span></div>
+<div class="line"><span class="lineno"> 1140</span>        z = zstart</div>
+<div class="line"><span class="lineno"> 1141</span>        <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(int(zlength / 100 / ticks)):</div>
+<div class="line"><span class="lineno"> 1142</span>            m = ROOT.TEveLine()</div>
+<div class="line"><span class="lineno"> 1143</span>            m.SetNextPoint(xpos, ypos, z)</div>
+<div class="line"><span class="lineno"> 1144</span>            m.SetNextPoint(xpos - 1 * u.m, ypos, z)</div>
+<div class="line"><span class="lineno"> 1145</span>            m.SetMainColor(ROOT.kRed)</div>
+<div class="line"><span class="lineno"> 1146</span>            m.SetLineWidth(5)</div>
+<div class="line"><span class="lineno"> 1147</span>            self.ruler.AddElement(m)</div>
+<div class="line"><span class="lineno"> 1148</span>            t1 = ROOT.TEveText(str(i * ticks) + <span class="stringliteral">&quot;m&quot;</span>)</div>
+<div class="line"><span class="lineno"> 1149</span>            t1.SetMainColor(ROOT.kGray + 3)</div>
+<div class="line"><span class="lineno"> 1150</span>            t1.SetFontSize(5)</div>
+<div class="line"><span class="lineno"> 1151</span>            t1.RefMainTrans().SetPos(xpos - 0.1 * u.m, ypos + 0.2 * u.m, z)</div>
+<div class="line"><span class="lineno"> 1152</span>            self.ruler.AddElement(t1)</div>
+<div class="line"><span class="lineno"> 1153</span>            z += ticks * u.m</div>
+<div class="line"><span class="lineno"> 1154</span>        xpos, ypos = 0.0, 0.0</div>
+<div class="line"><span class="lineno"> 1155</span>        <span class="keywordflow">if</span> xy == 0:</div>
+<div class="line"><span class="lineno"> 1156</span>            z = ShipGeo.MuonStation3.z + 6 * u.m</div>
+<div class="line"><span class="lineno"> 1157</span>        <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno"> 1158</span>            z = xy</div>
+<div class="line"><span class="lineno"> 1159</span>        ylength = 7 * u.m</div>
+<div class="line"><span class="lineno"> 1160</span>        a2 = ROOT.TEveLine()</div>
+<div class="line"><span class="lineno"> 1161</span>        a2.SetNextPoint(xpos, -ylength, z)</div>
+<div class="line"><span class="lineno"> 1162</span>        a2.SetNextPoint(xpos, ylength, z)</div>
+<div class="line"><span class="lineno"> 1163</span>        a2.SetMainColor(ROOT.kAzure - 9)</div>
+<div class="line"><span class="lineno"> 1164</span>        a2.SetLineWidth(30)</div>
+<div class="line"><span class="lineno"> 1165</span>        <span class="comment"># self.ruler.AddElement(a2)</span></div>
+<div class="line"><span class="lineno"> 1166</span>        ypos = -ylength</div>
+<div class="line"><span class="lineno"> 1167</span>        <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(-int(ylength / 100), int(ylength / 100), 1):</div>
+<div class="line"><span class="lineno"> 1168</span>            m = ROOT.TEveLine()</div>
+<div class="line"><span class="lineno"> 1169</span>            m.SetNextPoint(xpos, ypos, z)</div>
+<div class="line"><span class="lineno"> 1170</span>            m.SetNextPoint(xpos + 0.05 * u.m, ypos, z)</div>
+<div class="line"><span class="lineno"> 1171</span>            m.SetMainColor(ROOT.kRed)</div>
+<div class="line"><span class="lineno"> 1172</span>            m.SetLineWidth(3)</div>
+<div class="line"><span class="lineno"> 1173</span>            self.ruler.AddElement(m)</div>
+<div class="line"><span class="lineno"> 1174</span>            t1 = ROOT.TEveText(str(i) + <span class="stringliteral">&quot;m&quot;</span>)</div>
+<div class="line"><span class="lineno"> 1175</span>            t1.SetMainColor(ROOT.kGray + 3)</div>
+<div class="line"><span class="lineno"> 1176</span>            t1.SetFontSize(5)</div>
+<div class="line"><span class="lineno"> 1177</span>            t1.RefMainTrans().SetPos(xpos - 0.5 * u.m, ypos, z)</div>
+<div class="line"><span class="lineno"> 1178</span>            self.ruler.AddElement(t1)</div>
+<div class="line"><span class="lineno"> 1179</span>            ypos += 1 * u.m</div>
+<div class="line"><span class="lineno"> 1180</span>        ty = ROOT.TEveText(<span class="stringliteral">&quot;y-axis&quot;</span>)</div>
+<div class="line"><span class="lineno"> 1181</span>        ty.SetFontSize(10)</div>
+<div class="line"><span class="lineno"> 1182</span>        ty.RefMainTrans().SetPos(0.0, ypos + 1 * u.m, z)</div>
+<div class="line"><span class="lineno"> 1183</span>        ty.SetMainColor(ROOT.kRed - 2)</div>
+<div class="line"><span class="lineno"> 1184</span>        self.ruler.AddElement(ty)</div>
+<div class="line"><span class="lineno"> 1185</span>        xpos, ypos = 0.0, 0.0</div>
+<div class="line"><span class="lineno"> 1186</span>        <span class="keywordflow">if</span> xy == 0:</div>
+<div class="line"><span class="lineno"> 1187</span>            z = ShipGeo.MuonStation3.z + 10 * u.m</div>
+<div class="line"><span class="lineno"> 1188</span>        xlength = 3 * u.m</div>
+<div class="line"><span class="lineno"> 1189</span>        a3 = ROOT.TEveLine()</div>
+<div class="line"><span class="lineno"> 1190</span>        a3.SetNextPoint(-xlength, 0, z)</div>
+<div class="line"><span class="lineno"> 1191</span>        a3.SetNextPoint(xlength, 0, z)</div>
+<div class="line"><span class="lineno"> 1192</span>        a3.SetMainColor(ROOT.kAzure - 9)</div>
+<div class="line"><span class="lineno"> 1193</span>        a3.SetLineWidth(30)</div>
+<div class="line"><span class="lineno"> 1194</span>        <span class="comment"># self.ruler.AddElement(a3)</span></div>
+<div class="line"><span class="lineno"> 1195</span>        xpos = -xlength</div>
+<div class="line"><span class="lineno"> 1196</span>        <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(-int(xlength / 100), int(xlength / 100), 1):</div>
+<div class="line"><span class="lineno"> 1197</span>            m = ROOT.TEveLine()</div>
+<div class="line"><span class="lineno"> 1198</span>            m.SetNextPoint(xpos, ypos, z)</div>
+<div class="line"><span class="lineno"> 1199</span>            m.SetNextPoint(xpos, ypos - 0.05 * u.m, z)</div>
+<div class="line"><span class="lineno"> 1200</span>            m.SetMainColor(ROOT.kRed)</div>
+<div class="line"><span class="lineno"> 1201</span>            m.SetLineWidth(3)</div>
+<div class="line"><span class="lineno"> 1202</span>            self.ruler.AddElement(m)</div>
+<div class="line"><span class="lineno"> 1203</span>            t1 = ROOT.TEveText(str(i) + <span class="stringliteral">&quot;m&quot;</span>)</div>
+<div class="line"><span class="lineno"> 1204</span>            t1.SetMainColor(ROOT.kGray + 3)</div>
+<div class="line"><span class="lineno"> 1205</span>            t1.SetFontSize(5)</div>
+<div class="line"><span class="lineno"> 1206</span>            t1.RefMainTrans().SetPos(xpos, ypos - 0.1 * u.m, z)</div>
+<div class="line"><span class="lineno"> 1207</span>            self.ruler.AddElement(t1)</div>
+<div class="line"><span class="lineno"> 1208</span>            xpos += 1 * u.m</div>
+<div class="line"><span class="lineno"> 1209</span>        tx = ROOT.TEveText(<span class="stringliteral">&quot;x-axis&quot;</span>)</div>
+<div class="line"><span class="lineno"> 1210</span>        tx.SetFontSize(10)</div>
+<div class="line"><span class="lineno"> 1211</span>        tx.RefMainTrans().SetPos(xpos + 1 * u.m, 0.0, z)</div>
+<div class="line"><span class="lineno"> 1212</span>        tx.SetMainColor(ROOT.kRed - 2)</div>
+<div class="line"><span class="lineno"> 1213</span>        self.ruler.AddElement(tx)</div>
+<div class="line"><span class="lineno"> 1214</span>        t1 = ROOT.TEveText(<span class="stringliteral">&quot;SHiP&quot;</span>)</div>
+<div class="line"><span class="lineno"> 1215</span>        t1.SetFontSize(200)</div>
+<div class="line"><span class="lineno"> 1216</span>        t1.RefMainTrans().SetPos(0.0, 600.0, ShipGeo.TrackStation1.z - 10 * u.m)</div>
+<div class="line"><span class="lineno"> 1217</span>        t1.PtrMainTrans().RotateLF(1, 3, ROOT.TMath.PiOver2())</div>
+<div class="line"><span class="lineno"> 1218</span>        t1.SetMainColor(ROOT.kOrange - 2)</div>
+<div class="line"><span class="lineno"> 1219</span>        t1.SetFontMode(ROOT.TGLFont.kExtrude)</div>
+<div class="line"><span class="lineno"> 1220</span>        t1.SetLighting(ROOT.kTRUE)</div>
+<div class="line"><span class="lineno"> 1221</span>        self.ruler.AddElement(t1)</div>
+<div class="line"><span class="lineno"> 1222</span>        self.ruler.CloseCompound()</div>
+<div class="line"><span class="lineno"> 1223</span>        sc = ROOT.gEve.GetScenes()</div>
+<div class="line"><span class="lineno"> 1224</span>        geoscene = sc.FindChild(<span class="stringliteral">&quot;Geometry scene&quot;</span>)</div>
+<div class="line"><span class="lineno"> 1225</span>        ROOT.gEve.ElementChanged(geoscene, <span class="keyword">True</span>, <span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno"> 1226</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -332,7 +332,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01124">1124</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l01125">1125</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
 
 </div>
 </div>

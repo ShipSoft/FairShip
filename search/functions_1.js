@@ -25,7 +25,7 @@ var searchData=
   ['addhnltoroot_22',['addHNLtoROOT',['../namespacepythia8__conf__utils.html#a27a631c6dab5a7bf24107cd9cae1af9d',1,'pythia8_conf_utils']]],
   ['addlitehit_23',['addlitehit',['../classecal.html#acc4928b162f1ccad05dff98740b71a72',1,'ecal::AddLiteHit()'],['../classhcal.html#a753740b49a8233c125eabd12378eeb3c',1,'hcal::AddLiteHit()']]],
   ['addparticle_24',['AddParticle',['../classShipStack.html#afeefa9f615a432b44382bfa42958d0f0',1,'ShipStack']]],
-  ['addpoint_25',['addpoint',['../classShipStack.html#a12a9581ffeac75755b6f68df13b98444',1,'ShipStack::AddPoint(DetectorId iDet)'],['../classShipStack.html#a8828a89301861af172a070b8439176fd',1,'ShipStack::AddPoint(DetectorId iDet, Int_t iTrack)']]],
+  ['addpoint_25',['addpoint',['../classShipStack.html#a8828a89301861af172a070b8439176fd',1,'ShipStack::AddPoint(DetectorId iDet, Int_t iTrack)'],['../classShipStack.html#a12a9581ffeac75755b6f68df13b98444',1,'ShipStack::AddPoint(DetectorId iDet)']]],
   ['addrefnodes_26',['addRefNodes',['../classShipGeoCave.html#a00b34eb817aca6d522b9935fbf62ab5d',1,'ShipGeoCave']]],
   ['addruns_27',['addRuns',['../namespacecompactingBackgroundProduction.html#a7bf2ed4dffeb4cff0e376032ba061d85',1,'compactingBackgroundProduction']]],
   ['addtrackenergy_28',['addtrackenergy',['../classhcalModuleMC.html#adc23eaad47213cad7698de59de09fa95',1,'hcalModuleMC::AddTrackEnergy()'],['../classecalCellMC.html#a9cc4c10518984675660f35e6d96a5b04',1,'ecalCellMC::AddTrackEnergy()']]],
@@ -35,9 +35,10 @@ var searchData=
   ['allowedchannels_32',['allowedchannels',['../classhnl_1_1HNLbranchings.html#aa5145ac4726dd58d3fa567c34978fee9',1,'hnl.HNLbranchings.allowedChannels()'],['../classdarkphoton_1_1DarkPhoton.html#a763bd54ae6b5c8aa971c1044fd3110ba',1,'darkphoton.DarkPhoton.allowedChannels()']]],
   ['anaeventloop_33',['AnaEventLoop',['../namespaceana__ShipMuon.html#a9e5d78be22960c716da423367a77c052',1,'ana_ShipMuon']]],
   ['analyzeconcrete_34',['analyzeConcrete',['../namespaceana__ShipMuon.html#aa5474ae4f77bab30c0eedf6af5195512',1,'ana_ShipMuon']]],
-  ['approx_5ffunction_35',['approx_function',['../namespaceTTCluster.html#af98457a9c18f4bd24398e305219408c7',1,'TTCluster']]],
-  ['artificial_5fretina_5fpat_5frec_5fstereo_5fviews_36',['artificial_retina_pat_rec_stereo_views',['../namespaceshipPatRec.html#a2d54ac07b407e2d1f95a45c799a57a7f',1,'shipPatRec']]],
-  ['artificial_5fretina_5fpat_5frec_5fy_5fview_37',['artificial_retina_pat_rec_y_view',['../namespaceshipPatRec.html#a848914b2596b8ce24ce06d706a96cd29',1,'shipPatRec']]],
-  ['artificial_5fretina_5fpattern_5frecognition_38',['artificial_retina_pattern_recognition',['../namespaceshipPatRec.html#aaed2c3b80a8c779802840a527d840b5c',1,'shipPatRec']]],
-  ['at_39',['At',['../classecalModule.html#a7b3f44ab000b554ff39aba6974b30e52',1,'ecalModule']]]
+  ['apply_5fdecorators_35',['apply_decorators',['../namespacedecorators.html#aea9fc24345edfee43b1c5dcf00417704',1,'decorators']]],
+  ['approx_5ffunction_36',['approx_function',['../namespaceTTCluster.html#af98457a9c18f4bd24398e305219408c7',1,'TTCluster']]],
+  ['artificial_5fretina_5fpat_5frec_5fstereo_5fviews_37',['artificial_retina_pat_rec_stereo_views',['../namespaceshipPatRec.html#a2d54ac07b407e2d1f95a45c799a57a7f',1,'shipPatRec']]],
+  ['artificial_5fretina_5fpat_5frec_5fy_5fview_38',['artificial_retina_pat_rec_y_view',['../namespaceshipPatRec.html#a848914b2596b8ce24ce06d706a96cd29',1,'shipPatRec']]],
+  ['artificial_5fretina_5fpattern_5frecognition_39',['artificial_retina_pattern_recognition',['../namespaceshipPatRec.html#aaed2c3b80a8c779802840a527d840b5c',1,'shipPatRec']]],
+  ['at_40',['At',['../classecalModule.html#a7b3f44ab000b554ff39aba6974b30e52',1,'ecalModule']]]
 ];

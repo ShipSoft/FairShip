@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['g_0',['g',['../namespacerunPythia8.html#ae4f2d48afcb43c984c0c0689436bac6a',1,'runPythia8.G'],['../namespacerun__fixedTarget.html#a049620ba28aeb292c74bb28518aa6c2f',1,'run_fixedTarget.G'],['../namespaceeventDisplay.html#a37c858074cda5ceaa4e360389e712bc2',1,'eventDisplay.g'],['../namespacehepunit.html#a6697c5797cea6a477c106f6e1621ed2b',1,'hepunit.g'],['../namespaceshipunit.html#aadf14123589fe6dc3ab948c527712843',1,'shipunit.g']]],
+  ['g_0',['g',['../namespaceeventDisplay.html#a37c858074cda5ceaa4e360389e712bc2',1,'eventDisplay.g'],['../namespacehepunit.html#a6697c5797cea6a477c106f6e1621ed2b',1,'hepunit.g'],['../namespaceshipunit.html#aadf14123589fe6dc3ab948c527712843',1,'shipunit.g'],['../namespacerunPythia8.html#ae4f2d48afcb43c984c0c0689436bac6a',1,'runPythia8.G'],['../namespacerun__fixedTarget.html#a049620ba28aeb292c74bb28518aa6c2f',1,'run_fixedTarget.G']]],
   ['g4ex_1',['g4Ex',['../namespaceg4Ex.html',1,'']]],
   ['g4ex_2epy_2',['g4Ex.py',['../g4Ex_8py.html',1,'']]],
   ['g4ex_5fargs_3',['g4Ex_args',['../namespaceg4Ex__args.html',1,'']]],
@@ -34,7 +34,7 @@ var searchData=
   ['geocornerlisc1_31',['GeoCornerLiSc1',['../classveto.html#a986f5434439b990aeac3d0de2ace4fd6',1,'veto']]],
   ['geocornerlisc2_32',['GeoCornerLiSc2',['../classveto.html#a5a07e040b0f2f5273891b058d69b65e7',1,'veto']]],
   ['geocornerrib_33',['GeoCornerRib',['../classveto.html#a7820d734e9112f85ad579e7f70ac7a98',1,'veto']]],
-  ['geofile_34',['geofile',['../namespaceg4Ex__gap.html#a878ba8e1b7e85e1a4ebbbc85effdc5e8',1,'g4Ex_gap.geofile'],['../namespaceShipAna.html#a2c3960bd8b86c626939fc5ade63ff3a7',1,'ShipAna.geoFile'],['../namespaceShipReco.html#a160a2a6f5f2f9e8b2f2569937f1df798',1,'ShipReco.geoFile'],['../namespaceSciFiMapping.html#a3963f93fd1393158dd0ecb6e55478e2f',1,'SciFiMapping.geoFile'],['../namespaceTTCluster.html#a126d674ea739a72078786b48ec9665da',1,'TTCluster.geofile']]],
+  ['geofile_34',['geofile',['../namespaceShipReco.html#a160a2a6f5f2f9e8b2f2569937f1df798',1,'ShipReco.geoFile'],['../namespaceg4Ex__gap.html#a878ba8e1b7e85e1a4ebbbc85effdc5e8',1,'g4Ex_gap.geofile'],['../namespaceTTCluster.html#a126d674ea739a72078786b48ec9665da',1,'TTCluster.geofile'],['../namespaceShipAna.html#a2c3960bd8b86c626939fc5ade63ff3a7',1,'ShipAna.geoFile'],['../namespaceSciFiMapping.html#a3963f93fd1393158dd0ecb6e55478e2f',1,'SciFiMapping.geoFile']]],
   ['geomat_35',['geomat',['../classshipDigiReco_1_1ShipDigiReco.html#afd9920fe2cb6185d27c48b231f96a6e4',1,'shipDigiReco.ShipDigiReco.geoMat'],['../namespaceShipAna.html#a5292f193841fd0be9f2450a1eb78d2b0',1,'ShipAna.geoMat'],['../namespaceShipReco.html#a646b2a8b1509b520851460b3d587bedd',1,'ShipReco.geoMat'],['../namespaceeventDisplay.html#a2069af6c854bff3d01b689ca66f2a07b',1,'eventDisplay.geoMat']]],
   ['geometry_5fconfig_36',['geometry_config',['../namespacegeometry__config.html',1,'']]],
   ['geometry_5fconfig_2epy_37',['geometry_config.py',['../geometry__config_8py.html',1,'']]],

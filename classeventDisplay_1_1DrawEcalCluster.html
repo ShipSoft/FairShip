@@ -141,7 +141,7 @@ Public Attributes</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00231">231</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00232">232</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a8c220d3ba4eb9c9504be05520493703c" name="a8c220d3ba4eb9c9504be05520493703c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8c220d3ba4eb9c9504be05520493703c">&#9670;&#160;</a></span>DrawParticle()</h2>
@@ -169,27 +169,27 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00288">288</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  288</span>    <span class="keyword">def </span>DrawParticle(self, n):</div>
-<div class="line"><span class="lineno">  289</span>        self.comp.OpenCompound()</div>
-<div class="line"><span class="lineno">  290</span>        DTrack = ROOT.TEveLine()</div>
-<div class="line"><span class="lineno">  291</span>        DTrack.SetPickable(ROOT.kTRUE)</div>
-<div class="line"><span class="lineno">  292</span>        DTrack.SetMainColor(ROOT.kCyan)</div>
-<div class="line"><span class="lineno">  293</span>        DTrack.SetLineWidth(4)</div>
-<div class="line"><span class="lineno">  294</span>        aP = sTree.Particles[n]</div>
-<div class="line"><span class="lineno">  295</span>        DTrack.SetTitle(aP.__repr__())</div>
-<div class="line"><span class="lineno">  296</span>        DTrack.SetName(<span class="stringliteral">&quot;Prtcle_&quot;</span> + str(n))</div>
-<div class="line"><span class="lineno">  297</span>        DTrack.SetNextPoint(aP.Vx(), aP.Vy(), aP.Vz())</div>
-<div class="line"><span class="lineno">  298</span>        lam = (self.Targetz - aP.Vz()) / aP.Pz()</div>
-<div class="line"><span class="lineno">  299</span>        DTrack.SetNextPoint(</div>
-<div class="line"><span class="lineno">  300</span>            aP.Vx() + lam * aP.Px(), aP.Vy() + lam * aP.Py(), self.Targetz</div>
-<div class="line"><span class="lineno">  301</span>        )</div>
-<div class="line"><span class="lineno">  302</span>        self.comp.AddElement(DTrack)</div>
-<div class="line"><span class="lineno">  303</span>        self.comp.CloseCompound()</div>
-<div class="line"><span class="lineno">  304</span>        gEve.ElementChanged(self.evscene, <span class="keyword">True</span>, <span class="keyword">True</span>)</div>
-<div class="line"><span class="lineno">  305</span> </div>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00289">289</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  289</span>    <span class="keyword">def </span>DrawParticle(self, n):</div>
+<div class="line"><span class="lineno">  290</span>        self.comp.OpenCompound()</div>
+<div class="line"><span class="lineno">  291</span>        DTrack = ROOT.TEveLine()</div>
+<div class="line"><span class="lineno">  292</span>        DTrack.SetPickable(ROOT.kTRUE)</div>
+<div class="line"><span class="lineno">  293</span>        DTrack.SetMainColor(ROOT.kCyan)</div>
+<div class="line"><span class="lineno">  294</span>        DTrack.SetLineWidth(4)</div>
+<div class="line"><span class="lineno">  295</span>        aP = sTree.Particles[n]</div>
+<div class="line"><span class="lineno">  296</span>        DTrack.SetTitle(aP.__repr__())</div>
+<div class="line"><span class="lineno">  297</span>        DTrack.SetName(<span class="stringliteral">&quot;Prtcle_&quot;</span> + str(n))</div>
+<div class="line"><span class="lineno">  298</span>        DTrack.SetNextPoint(aP.Vx(), aP.Vy(), aP.Vz())</div>
+<div class="line"><span class="lineno">  299</span>        lam = (self.Targetz - aP.Vz()) / aP.Pz()</div>
+<div class="line"><span class="lineno">  300</span>        DTrack.SetNextPoint(</div>
+<div class="line"><span class="lineno">  301</span>            aP.Vx() + lam * aP.Px(), aP.Vy() + lam * aP.Py(), self.Targetz</div>
+<div class="line"><span class="lineno">  302</span>        )</div>
+<div class="line"><span class="lineno">  303</span>        self.comp.AddElement(DTrack)</div>
+<div class="line"><span class="lineno">  304</span>        self.comp.CloseCompound()</div>
+<div class="line"><span class="lineno">  305</span>        gEve.ElementChanged(self.evscene, <span class="keyword">True</span>, <span class="keyword">True</span>)</div>
 <div class="line"><span class="lineno">  306</span> </div>
-<div class="line"><span class="lineno">  307</span><span class="comment">#</span></div>
+<div class="line"><span class="lineno">  307</span> </div>
+<div class="line"><span class="lineno">  308</span><span class="comment">#</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -219,48 +219,48 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00247">247</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  247</span>    <span class="keyword">def </span>ExecuteTask(self, option=&quot;&quot;):</div>
-<div class="line"><span class="lineno">  248</span>        self.comp.DestroyElements()</div>
-<div class="line"><span class="lineno">  249</span>        self.comp.OpenCompound()</div>
-<div class="line"><span class="lineno">  250</span>        cl = -1</div>
-<div class="line"><span class="lineno">  251</span>        <span class="keywordflow">for</span> aClus <span class="keywordflow">in</span> sTree.EcalClusters:</div>
-<div class="line"><span class="lineno">  252</span>            <span class="comment"># ecal cell dx=dy=2cm, dz=21.84cm</span></div>
-<div class="line"><span class="lineno">  253</span>            cl += 1</div>
-<div class="line"><span class="lineno">  254</span>            <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(aClus.Size()):</div>
-<div class="line"><span class="lineno">  255</span>                mccell = self.ecalStructure.GetHitCell(</div>
-<div class="line"><span class="lineno">  256</span>                    aClus.CellNum(i)</div>
-<div class="line"><span class="lineno">  257</span>                )  <span class="comment"># Get i&#39;th cell of the cluster.</span></div>
-<div class="line"><span class="lineno">  258</span>                <span class="keywordflow">if</span> <span class="keywordflow">not</span> mccell:</div>
-<div class="line"><span class="lineno">  259</span>                    <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  260</span>                x1, y1, x2, y2, dz = (</div>
-<div class="line"><span class="lineno">  261</span>                    mccell.X1(),</div>
-<div class="line"><span class="lineno">  262</span>                    mccell.Y1(),</div>
-<div class="line"><span class="lineno">  263</span>                    mccell.X2(),</div>
-<div class="line"><span class="lineno">  264</span>                    mccell.Y2(),</div>
-<div class="line"><span class="lineno">  265</span>                    mccell.GetEnergy() / u.GeV * 0.5 * u.m,</div>
-<div class="line"><span class="lineno">  266</span>                )</div>
-<div class="line"><span class="lineno">  267</span>                <span class="keywordflow">if</span> mccell.GetEnergy() / u.MeV &lt; 4.0:</div>
-<div class="line"><span class="lineno">  268</span>                    <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  269</span>                    <span class="comment"># ADC noise simulated Gaussian with \sigma=1 MeV</span></div>
-<div class="line"><span class="lineno">  270</span>                DClus = ROOT.TEveBox()</div>
-<div class="line"><span class="lineno">  271</span>                DClus.SetName(<span class="stringliteral">&quot;EcalCluster_&quot;</span> + str(cl) + <span class="stringliteral">&quot;_&quot;</span> + str(i))</div>
-<div class="line"><span class="lineno">  272</span>                DClus.SetPickable(ROOT.kTRUE)</div>
-<div class="line"><span class="lineno">  273</span>                DClus.SetTitle(aClus.__repr__())</div>
-<div class="line"><span class="lineno">  274</span>                DClus.SetMainColor(ROOT.kRed - 4)</div>
-<div class="line"><span class="lineno">  275</span>                DClus.SetMainTransparency(<span class="stringliteral">&quot;\x10&quot;</span>)</div>
-<div class="line"><span class="lineno">  276</span>                DClus.SetVertex(0, x1, y1, self.z_ecal)</div>
-<div class="line"><span class="lineno">  277</span>                DClus.SetVertex(1, x1, y1, self.z_ecal + dz)</div>
-<div class="line"><span class="lineno">  278</span>                DClus.SetVertex(2, x2, y1, self.z_ecal + dz)</div>
-<div class="line"><span class="lineno">  279</span>                DClus.SetVertex(3, x2, y1, self.z_ecal)</div>
-<div class="line"><span class="lineno">  280</span>                DClus.SetVertex(4, x1, y2, self.z_ecal)</div>
-<div class="line"><span class="lineno">  281</span>                DClus.SetVertex(5, x1, y2, self.z_ecal + dz)</div>
-<div class="line"><span class="lineno">  282</span>                DClus.SetVertex(6, x2, y2, self.z_ecal + dz)</div>
-<div class="line"><span class="lineno">  283</span>                DClus.SetVertex(7, x2, y2, self.z_ecal)</div>
-<div class="line"><span class="lineno">  284</span>                self.comp.AddElement(DClus)</div>
-<div class="line"><span class="lineno">  285</span>        self.comp.CloseCompound()</div>
-<div class="line"><span class="lineno">  286</span>        gEve.ElementChanged(self.evscene, <span class="keyword">True</span>, <span class="keyword">True</span>)</div>
-<div class="line"><span class="lineno">  287</span> </div>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00248">248</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  248</span>    <span class="keyword">def </span>ExecuteTask(self, option=&quot;&quot;):</div>
+<div class="line"><span class="lineno">  249</span>        self.comp.DestroyElements()</div>
+<div class="line"><span class="lineno">  250</span>        self.comp.OpenCompound()</div>
+<div class="line"><span class="lineno">  251</span>        cl = -1</div>
+<div class="line"><span class="lineno">  252</span>        <span class="keywordflow">for</span> aClus <span class="keywordflow">in</span> sTree.EcalClusters:</div>
+<div class="line"><span class="lineno">  253</span>            <span class="comment"># ecal cell dx=dy=2cm, dz=21.84cm</span></div>
+<div class="line"><span class="lineno">  254</span>            cl += 1</div>
+<div class="line"><span class="lineno">  255</span>            <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(aClus.Size()):</div>
+<div class="line"><span class="lineno">  256</span>                mccell = self.ecalStructure.GetHitCell(</div>
+<div class="line"><span class="lineno">  257</span>                    aClus.CellNum(i)</div>
+<div class="line"><span class="lineno">  258</span>                )  <span class="comment"># Get i&#39;th cell of the cluster.</span></div>
+<div class="line"><span class="lineno">  259</span>                <span class="keywordflow">if</span> <span class="keywordflow">not</span> mccell:</div>
+<div class="line"><span class="lineno">  260</span>                    <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  261</span>                x1, y1, x2, y2, dz = (</div>
+<div class="line"><span class="lineno">  262</span>                    mccell.X1(),</div>
+<div class="line"><span class="lineno">  263</span>                    mccell.Y1(),</div>
+<div class="line"><span class="lineno">  264</span>                    mccell.X2(),</div>
+<div class="line"><span class="lineno">  265</span>                    mccell.Y2(),</div>
+<div class="line"><span class="lineno">  266</span>                    mccell.GetEnergy() / u.GeV * 0.5 * u.m,</div>
+<div class="line"><span class="lineno">  267</span>                )</div>
+<div class="line"><span class="lineno">  268</span>                <span class="keywordflow">if</span> mccell.GetEnergy() / u.MeV &lt; 4.0:</div>
+<div class="line"><span class="lineno">  269</span>                    <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  270</span>                    <span class="comment"># ADC noise simulated Gaussian with \sigma=1 MeV</span></div>
+<div class="line"><span class="lineno">  271</span>                DClus = ROOT.TEveBox()</div>
+<div class="line"><span class="lineno">  272</span>                DClus.SetName(<span class="stringliteral">&quot;EcalCluster_&quot;</span> + str(cl) + <span class="stringliteral">&quot;_&quot;</span> + str(i))</div>
+<div class="line"><span class="lineno">  273</span>                DClus.SetPickable(ROOT.kTRUE)</div>
+<div class="line"><span class="lineno">  274</span>                DClus.SetTitle(aClus.__repr__())</div>
+<div class="line"><span class="lineno">  275</span>                DClus.SetMainColor(ROOT.kRed - 4)</div>
+<div class="line"><span class="lineno">  276</span>                DClus.SetMainTransparency(<span class="stringliteral">&quot;\x10&quot;</span>)</div>
+<div class="line"><span class="lineno">  277</span>                DClus.SetVertex(0, x1, y1, self.z_ecal)</div>
+<div class="line"><span class="lineno">  278</span>                DClus.SetVertex(1, x1, y1, self.z_ecal + dz)</div>
+<div class="line"><span class="lineno">  279</span>                DClus.SetVertex(2, x2, y1, self.z_ecal + dz)</div>
+<div class="line"><span class="lineno">  280</span>                DClus.SetVertex(3, x2, y1, self.z_ecal)</div>
+<div class="line"><span class="lineno">  281</span>                DClus.SetVertex(4, x1, y2, self.z_ecal)</div>
+<div class="line"><span class="lineno">  282</span>                DClus.SetVertex(5, x1, y2, self.z_ecal + dz)</div>
+<div class="line"><span class="lineno">  283</span>                DClus.SetVertex(6, x2, y2, self.z_ecal + dz)</div>
+<div class="line"><span class="lineno">  284</span>                DClus.SetVertex(7, x2, y2, self.z_ecal)</div>
+<div class="line"><span class="lineno">  285</span>                self.comp.AddElement(DClus)</div>
+<div class="line"><span class="lineno">  286</span>        self.comp.CloseCompound()</div>
+<div class="line"><span class="lineno">  287</span>        gEve.ElementChanged(self.evscene, <span class="keyword">True</span>, <span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">  288</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -280,10 +280,10 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00244">244</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  244</span>    <span class="keyword">def </span>FinishEvent(self):</div>
-<div class="line"><span class="lineno">  245</span>        <span class="keywordflow">pass</span></div>
-<div class="line"><span class="lineno">  246</span> </div>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00245">245</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  245</span>    <span class="keyword">def </span>FinishEvent(self):</div>
+<div class="line"><span class="lineno">  246</span>        <span class="keywordflow">pass</span></div>
+<div class="line"><span class="lineno">  247</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -313,17 +313,17 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00234">234</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  234</span>    <span class="keyword">def </span>InitTask(self, ecalStructure):</div>
-<div class="line"><span class="lineno">  235</span>        <span class="comment"># prepare ecal structure</span></div>
-<div class="line"><span class="lineno">  236</span>        self.comp = ROOT.TEveCompound(<span class="stringliteral">&quot;Ecal Clusters&quot;</span>)</div>
-<div class="line"><span class="lineno">  237</span>        gEve.AddElement(self.comp)</div>
-<div class="line"><span class="lineno">  238</span>        sc = gEve.GetScenes()</div>
-<div class="line"><span class="lineno">  239</span>        self.evscene = sc.FindChild(<span class="stringliteral">&quot;Event scene&quot;</span>)</div>
-<div class="line"><span class="lineno">  240</span>        mE = top.GetNode(<span class="stringliteral">&quot;Ecal_1&quot;</span>).GetMatrix()</div>
-<div class="line"><span class="lineno">  241</span>        self.z_ecal = mE.GetTranslation()[2]</div>
-<div class="line"><span class="lineno">  242</span>        self.ecalStructure = ecalStructure</div>
-<div class="line"><span class="lineno">  243</span> </div>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00235">235</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  235</span>    <span class="keyword">def </span>InitTask(self, ecalStructure):</div>
+<div class="line"><span class="lineno">  236</span>        <span class="comment"># prepare ecal structure</span></div>
+<div class="line"><span class="lineno">  237</span>        self.comp = ROOT.TEveCompound(<span class="stringliteral">&quot;Ecal Clusters&quot;</span>)</div>
+<div class="line"><span class="lineno">  238</span>        gEve.AddElement(self.comp)</div>
+<div class="line"><span class="lineno">  239</span>        sc = gEve.GetScenes()</div>
+<div class="line"><span class="lineno">  240</span>        self.evscene = sc.FindChild(<span class="stringliteral">&quot;Event scene&quot;</span>)</div>
+<div class="line"><span class="lineno">  241</span>        mE = top.GetNode(<span class="stringliteral">&quot;Ecal_1&quot;</span>).GetMatrix()</div>
+<div class="line"><span class="lineno">  242</span>        self.z_ecal = mE.GetTranslation()[2]</div>
+<div class="line"><span class="lineno">  243</span>        self.ecalStructure = ecalStructure</div>
+<div class="line"><span class="lineno">  244</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -340,7 +340,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00236">236</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00237">237</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
 
 </div>
 </div>
@@ -356,7 +356,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00242">242</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00243">243</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
 
 </div>
 </div>
@@ -372,7 +372,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00239">239</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00240">240</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
 
 </div>
 </div>
@@ -388,7 +388,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00241">241</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00242">242</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
 
 </div>
 </div>

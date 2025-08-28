@@ -98,137 +98,148 @@ $(document).ready(function(){initNavTree('decorators_8py_source.html',''); initR
 </div><!--header-->
 <div class="contents">
 <a href="decorators_8py.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno"><a class="line" href="namespacedecorators.html">    1</a></span><span class="keyword">from</span> ctypes <span class="keyword">import</span> c_double</div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="keyword">import</span> ROOT</div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="keyword">import</span> shipunit <span class="keyword">as</span> u</div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
-<div class="foldopen" id="foldopen00005" data-start="" data-end="">
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno"><a class="line" href="namespacedecorators.html#a1639e2afcc016284ccd45c276539c2ba">    5</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacedecorators.html#a1639e2afcc016284ccd45c276539c2ba">MCPointPrintOut</a>(x):</div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span>  p = ROOT.TDatabasePDG.Instance().GetParticle(x.PdgCode())</div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span>  n=<span class="stringliteral">&#39;&#39;</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>  <span class="keywordflow">if</span> p: n = p.GetName()</div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>  txt = <span class="stringliteral">&#39;(&quot;%s&quot;) X:%6.3Fcm Y:%6.3Fcm Z:%6.3Fcm dE/dx:%6.2FMeV %s&#39;</span>%(\</div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>    x.Class_Name(),x.GetX(),x.GetY(),x.GetZ(),x.GetEnergyLoss()/u.MeV,n)</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>  <span class="keywordflow">return</span> txt</div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="keyword">import</span> ROOT</div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="keyword">import</span> shipunit <span class="keyword">as</span> u</div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
+<div class="foldopen" id="foldopen00007" data-start="" data-end="">
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno"><a class="line" href="namespacedecorators.html#a1639e2afcc016284ccd45c276539c2ba">    7</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacedecorators.html#a1639e2afcc016284ccd45c276539c2ba">MCPointPrintOut</a>(x):</div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>  p = ROOT.TDatabasePDG.Instance().GetParticle(x.PdgCode())</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>  n=<span class="stringliteral">&#39;&#39;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>  <span class="keywordflow">if</span> p: n = p.GetName()</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>  txt = <span class="stringliteral">&#39;(&quot;%s&quot;) X:%6.3Fcm Y:%6.3Fcm Z:%6.3Fcm dE/dx:%6.2FMeV %s&#39;</span>%(\</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>    x.Class_Name(),x.GetX(),x.GetY(),x.GetZ(),x.GetEnergyLoss()/u.MeV,n)</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>  <span class="keywordflow">return</span> txt</div>
 </div>
-<div class="foldopen" id="foldopen00012" data-start="" data-end="">
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="namespacedecorators.html#a2ec1e32203e1b964c50333fe4ac80774">   12</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacedecorators.html#a2ec1e32203e1b964c50333fe4ac80774">MCTrackPrintOut</a>(x):</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>  c = x.GetPdgCode()</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>  p = ROOT.TDatabasePDG.Instance().GetParticle(c)</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>  n=<span class="stringliteral">&#39;&#39;</span></div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>  <span class="keywordflow">if</span> p: n = p.GetName()</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>  m = x.GetMotherId()</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>  txt = <span class="stringliteral">&#39;(&quot;ShipMCTrack&quot;) pdgCode: %7i(%10s)  Z=%6.1F m P=%6.3F GeV/c mother=%i %s&#39;</span>%(c,n,x.GetStartZ()/u.m,x.GetP(),m,x.GetProcName())</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>  <span class="keywordflow">return</span> txt</div>
+<div class="foldopen" id="foldopen00014" data-start="" data-end="">
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno"><a class="line" href="namespacedecorators.html#a2ec1e32203e1b964c50333fe4ac80774">   14</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacedecorators.html#a2ec1e32203e1b964c50333fe4ac80774">MCTrackPrintOut</a>(x):</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>  c = x.GetPdgCode()</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>  p = ROOT.TDatabasePDG.Instance().GetParticle(c)</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>  n=<span class="stringliteral">&#39;&#39;</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>  <span class="keywordflow">if</span> p: n = p.GetName()</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>  m = x.GetMotherId()</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>  txt = <span class="stringliteral">&#39;(&quot;ShipMCTrack&quot;) pdgCode: %7i(%10s)  Z=%6.1F m P=%6.3F GeV/c mother=%i %s&#39;</span>%(c,n,x.GetStartZ()/u.m,x.GetP(),m,x.GetProcName())</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>  <span class="keywordflow">return</span> txt</div>
 </div>
-<div class="foldopen" id="foldopen00020" data-start="" data-end="">
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno"><a class="line" href="namespacedecorators.html#a6c1a37b734417ff5bee5576c16a361bf">   20</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacedecorators.html#a6c1a37b734417ff5bee5576c16a361bf">vetoHitPrintOut</a>(x):</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>  txt = <span class="stringliteral">&#39;(&quot;vetoHit&quot;) detID:%7i  ADC:%5.2F TDC:%5.2F&#39;</span>%(x.GetDetectorID(),x.GetADC(),x.GetTDC())</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>  <span class="keywordflow">return</span> txt</div>
+<div class="foldopen" id="foldopen00022" data-start="" data-end="">
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="namespacedecorators.html#a6c1a37b734417ff5bee5576c16a361bf">   22</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacedecorators.html#a6c1a37b734417ff5bee5576c16a361bf">vetoHitPrintOut</a>(x):</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>  txt = <span class="stringliteral">&#39;(&quot;vetoHit&quot;) detID:%7i  ADC:%5.2F TDC:%5.2F&#39;</span>%(x.GetDetectorID(),x.GetADC(),x.GetTDC())</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>  <span class="keywordflow">return</span> txt</div>
 </div>
-<div class="foldopen" id="foldopen00023" data-start="" data-end="">
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="namespacedecorators.html#a93ba609965ce91eca0009e73b2cae94a">   23</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacedecorators.html#a93ba609965ce91eca0009e73b2cae94a">muonHitPrintOut</a>(x):</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>  txt = <span class="stringliteral">&#39;(&quot;muonHit&quot;) detID:%7i  TDC:%5.2F  isValid:%r&#39;</span>%(x.GetDetectorID(),x.GetDigi(),x.isValid())</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>  <span class="keywordflow">return</span> txt</div>
+<div class="foldopen" id="foldopen00025" data-start="" data-end="">
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="namespacedecorators.html#a93ba609965ce91eca0009e73b2cae94a">   25</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacedecorators.html#a93ba609965ce91eca0009e73b2cae94a">muonHitPrintOut</a>(x):</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>  txt = <span class="stringliteral">&#39;(&quot;muonHit&quot;) detID:%7i  TDC:%5.2F  isValid:%r&#39;</span>%(x.GetDetectorID(),x.GetDigi(),x.isValid())</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>  <span class="keywordflow">return</span> txt</div>
 </div>
-<div class="foldopen" id="foldopen00026" data-start="" data-end="">
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="namespacedecorators.html#ac67f665b749ba7095f3c3acfff538a30">   26</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacedecorators.html#ac67f665b749ba7095f3c3acfff538a30">TimeDetHitPrintOut</a>(x):</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>  t = x.GetMeasurements()</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  txt = <span class="stringliteral">&#39;(&quot;TimeDetHit&quot;) detID:%7i  TDC1:%5.2F TDC2:%5.2F  isValid:%r&#39;</span>%(x.GetDetectorID(),t[0],t[1],x.isValid())</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  <span class="keywordflow">return</span> txt</div>
+<div class="foldopen" id="foldopen00028" data-start="" data-end="">
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="namespacedecorators.html#ac67f665b749ba7095f3c3acfff538a30">   28</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacedecorators.html#ac67f665b749ba7095f3c3acfff538a30">TimeDetHitPrintOut</a>(x):</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  t = x.GetMeasurements()</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  txt = <span class="stringliteral">&#39;(&quot;TimeDetHit&quot;) detID:%7i  TDC1:%5.2F TDC2:%5.2F  isValid:%r&#39;</span>%(x.GetDetectorID(),t[0],t[1],x.isValid())</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  <span class="keywordflow">return</span> txt</div>
 </div>
-<div class="foldopen" id="foldopen00030" data-start="" data-end="">
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="namespacedecorators.html#ad60443c6f7c9480c370f7bf319b11b07">   30</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacedecorators.html#ad60443c6f7c9480c370f7bf319b11b07">FitTrackPrintOut</a>(x):</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  st = x.getFitStatus()</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  <span class="keywordflow">if</span> st.isFitConverged():</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>   chi2DoF = st.getChi2()/st.getNdf()</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>   sta = x.getFittedState()</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>   P = sta.getMomMag()</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>   txt = <span class="stringliteral">&#39;(&quot;FitTrack&quot;) chi2/dof:%3.1F  P:%5.2FGeV/c pdg:%i&#39;</span>%(chi2DoF,P,sta.getPDG())</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  <span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>   txt = <span class="stringliteral">&#39;(&quot;FitTrack&quot;) fit not converged&#39;</span></div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  <span class="keywordflow">return</span> txt</div>
+<div class="foldopen" id="foldopen00032" data-start="" data-end="">
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="namespacedecorators.html#ad60443c6f7c9480c370f7bf319b11b07">   32</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacedecorators.html#ad60443c6f7c9480c370f7bf319b11b07">FitTrackPrintOut</a>(x):</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  st = x.getFitStatus()</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  <span class="keywordflow">if</span> st.isFitConverged():</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>   chi2DoF = st.getChi2()/st.getNdf()</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>   sta = x.getFittedState()</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>   P = sta.getMomMag()</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>   txt = <span class="stringliteral">&#39;(&quot;FitTrack&quot;) chi2/dof:%3.1F  P:%5.2FGeV/c pdg:%i&#39;</span>%(chi2DoF,P,sta.getPDG())</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  <span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>   txt = <span class="stringliteral">&#39;(&quot;FitTrack&quot;) fit not converged&#39;</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <span class="keywordflow">return</span> txt</div>
 </div>
-<div class="foldopen" id="foldopen00040" data-start="" data-end="">
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="namespacedecorators.html#a17440fee74d9cf72f2cb1ef4f61120b3">   40</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacedecorators.html#a17440fee74d9cf72f2cb1ef4f61120b3">TParticlePrintOut</a>(x):</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  txt = <span class="stringliteral">&#39;(&quot;TParticle&quot;) %s  P:%5.2FGeV/c VxZ:%5.2Fm&#39;</span>%(x.GetName(),x.P(),x.Vz()/u.m)</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <span class="keywordflow">return</span> txt</div>
+<div class="foldopen" id="foldopen00042" data-start="" data-end="">
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="namespacedecorators.html#a17440fee74d9cf72f2cb1ef4f61120b3">   42</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacedecorators.html#a17440fee74d9cf72f2cb1ef4f61120b3">TParticlePrintOut</a>(x):</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  txt = <span class="stringliteral">&#39;(&quot;TParticle&quot;) %s  P:%5.2FGeV/c VxZ:%5.2Fm&#39;</span>%(x.GetName(),x.P(),x.Vz()/u.m)</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  <span class="keywordflow">return</span> txt</div>
 </div>
-<div class="foldopen" id="foldopen00043" data-start="" data-end="">
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="namespacedecorators.html#aa3f84a39dd53816eddb7e035be380d26">   43</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacedecorators.html#aa3f84a39dd53816eddb7e035be380d26">ShipParticlePrintOut</a>(x):</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  txt = <span class="stringliteral">&#39;(&quot;ShipParticle&quot;) %s M:%5.2FGeV/c2 P:%5.2FGeV/c VxZ:%5.2Fm&#39;</span>%(x.GetName(),x.GetMass(),x.P(),x.Vz()/u.m)</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  <span class="keywordflow">return</span> txt</div>
+<div class="foldopen" id="foldopen00045" data-start="" data-end="">
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="namespacedecorators.html#aa3f84a39dd53816eddb7e035be380d26">   45</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacedecorators.html#aa3f84a39dd53816eddb7e035be380d26">ShipParticlePrintOut</a>(x):</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  txt = <span class="stringliteral">&#39;(&quot;ShipParticle&quot;) %s M:%5.2FGeV/c2 P:%5.2FGeV/c VxZ:%5.2Fm&#39;</span>%(x.GetName(),x.GetMass(),x.P(),x.Vz()/u.m)</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  <span class="keywordflow">return</span> txt</div>
 </div>
-<div class="foldopen" id="foldopen00046" data-start="" data-end="">
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="namespacedecorators.html#a68e993abb3bb0be8282441f6ac0a1f4b">   46</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacedecorators.html#a68e993abb3bb0be8282441f6ac0a1f4b">ecalReconstructedPrintOut</a>(cl):</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  txt = <span class="stringliteral">&#39;(&quot;EcalCluster&quot;) E:%5.2FGeV/c X:%5.2Fm Y:%5.2Fm&#39;</span>%(cl.RecoE(),cl.X()/u.m,cl.Y()/u.m)</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  <span class="keywordflow">return</span> txt</div>
+<div class="foldopen" id="foldopen00048" data-start="" data-end="">
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="namespacedecorators.html#a68e993abb3bb0be8282441f6ac0a1f4b">   48</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacedecorators.html#a68e993abb3bb0be8282441f6ac0a1f4b">ecalReconstructedPrintOut</a>(cl):</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  txt = <span class="stringliteral">&#39;(&quot;EcalCluster&quot;) E:%5.2FGeV/c X:%5.2Fm Y:%5.2Fm&#39;</span>%(cl.RecoE(),cl.X()/u.m,cl.Y()/u.m)</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="keywordflow">return</span> txt</div>
 </div>
-<div class="foldopen" id="foldopen00049" data-start="" data-end="">
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a class="line" href="namespacedecorators.html#a631b4b158408c126035dfb24561c8598">   49</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacedecorators.html#a631b4b158408c126035dfb24561c8598">ecalClusterPrintOut</a>(cl):</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  txt = <span class="stringliteral">&#39;(&quot;EcalCluster&quot;) E:%5.2FGeV/c X:%5.2Fm Y:%5.2Fm&#39;</span>%(cl.Energy(),cl.X()/u.m,cl.Y()/u.m)</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  <span class="keywordflow">return</span> txt</div>
+<div class="foldopen" id="foldopen00051" data-start="" data-end="">
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno"><a class="line" href="namespacedecorators.html#a631b4b158408c126035dfb24561c8598">   51</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacedecorators.html#a631b4b158408c126035dfb24561c8598">ecalClusterPrintOut</a>(cl):</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  txt = <span class="stringliteral">&#39;(&quot;EcalCluster&quot;) E:%5.2FGeV/c X:%5.2Fm Y:%5.2Fm&#39;</span>%(cl.Energy(),cl.X()/u.m,cl.Y()/u.m)</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  <span class="keywordflow">return</span> txt</div>
 </div>
-<div class="foldopen" id="foldopen00052" data-start="" data-end="">
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno"><a class="line" href="namespacedecorators.html#a9aa498add33b8b9799504fffee2a48c6">   52</a></span><span class="keyword">def </span><a class="code hl_variable" href="namespacedecorators.html#ab1d023ac32c0a742814957a7e4c21a42">Dump</a>(x):</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  k=0</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  <span class="keywordflow">for</span> obj <span class="keywordflow">in</span> x:</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    print(k,obj.__repr__())</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    k+=1</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
+<div class="foldopen" id="foldopen00054" data-start="" data-end="">
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno"><a class="line" href="namespacedecorators.html#a9aa498add33b8b9799504fffee2a48c6">   54</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacedecorators.html#a9aa498add33b8b9799504fffee2a48c6">Dump</a>(x):</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  k=0</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  <span class="keywordflow">for</span> obj <span class="keywordflow">in</span> x:</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    print(k,obj.__repr__())</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    k+=1</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
 </div>
-<div class="foldopen" id="foldopen00058" data-start="" data-end="">
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno"><a class="line" href="namespacedecorators.html#ad3fec341698beffbd24e061a4e2ddb2a">   58</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacedecorators.html#ad3fec341698beffbd24e061a4e2ddb2a">TVector3PrintOut</a>(x):</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  txt = <span class="stringliteral">&#39;%9.5F,%9.5F,%9.5F&#39;</span>%(x.X(),x.Y(),x.Z())</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  <span class="keywordflow">return</span> txt</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
+<div class="foldopen" id="foldopen00060" data-start="" data-end="">
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="namespacedecorators.html#ad3fec341698beffbd24e061a4e2ddb2a">   60</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacedecorators.html#ad3fec341698beffbd24e061a4e2ddb2a">TVector3PrintOut</a>(x):</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  txt = <span class="stringliteral">&#39;%9.5F,%9.5F,%9.5F&#39;</span>%(x.X(),x.Y(),x.Z())</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  <span class="keywordflow">return</span> txt</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
 </div>
-<div class="foldopen" id="foldopen00062" data-start="" data-end="">
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno"><a class="line" href="namespacedecorators.html#a8c9da18a683720769447fdfc909a0898">   62</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacedecorators.html#a8c9da18a683720769447fdfc909a0898">TLorentzVectorPrintOut</a>(x):</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  txt = <span class="stringliteral">&#39;%9.5F,%9.5F,%9.5F,%9.5F,%9.5F&#39;</span>%(x.Px(),x.Py(),x.Pz(),x.E(),x.Mag())</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  <span class="keywordflow">return</span> txt</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
+<div class="foldopen" id="foldopen00064" data-start="" data-end="">
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno"><a class="line" href="namespacedecorators.html#a8c9da18a683720769447fdfc909a0898">   64</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacedecorators.html#a8c9da18a683720769447fdfc909a0898">TLorentzVectorPrintOut</a>(x):</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  txt = <span class="stringliteral">&#39;%9.5F,%9.5F,%9.5F,%9.5F,%9.5F&#39;</span>%(x.Px(),x.Py(),x.Pz(),x.E(),x.Mag())</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  <span class="keywordflow">return</span> txt</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
 </div>
-<div class="foldopen" id="foldopen00066" data-start="" data-end="">
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno"><a class="line" href="namespacedecorators.html#a39ea9b0935df86db925f26d35f7e1dab">   66</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacedecorators.html#a39ea9b0935df86db925f26d35f7e1dab">TEvePointSetPrintOut</a>(P):</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> x, y, z = c_double(), c_double(), c_double()</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> txt = <span class="stringliteral">&#39;&#39;</span></div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> <span class="keywordflow">if</span> P.GetN()==0: txt = <span class="stringliteral">&#39;&lt;ROOT.TEvePointSet object&gt;&#39;</span></div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(P.GetN()):</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  rc = P.GetPoint(n,x,y,z)</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  txt += f<span class="stringliteral">&#39;{n:6d} {x.value:7.1f}, {y.value:7.1f}, {z.value:9.1f} x, y, z cm\n&#39;</span></div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> <span class="keywordflow">return</span> txt</div>
+<div class="foldopen" id="foldopen00068" data-start="" data-end="">
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno"><a class="line" href="namespacedecorators.html#a39ea9b0935df86db925f26d35f7e1dab">   68</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacedecorators.html#a39ea9b0935df86db925f26d35f7e1dab">TEvePointSetPrintOut</a>(P):</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> x, y, z = c_double(), c_double(), c_double()</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> txt = <span class="stringliteral">&#39;&#39;</span></div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> <span class="keywordflow">if</span> P.GetN()==0: txt = <span class="stringliteral">&#39;&lt;ROOT.TEvePointSet object&gt;&#39;</span></div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(P.GetN()):</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  rc = P.GetPoint(n,x,y,z)</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  txt += f<span class="stringliteral">&#39;{n:6d} {x.value:7.1f}, {y.value:7.1f}, {z.value:9.1f} x, y, z cm\n&#39;</span></div>
 <div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> <span class="keywordflow">return</span> txt</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
 </div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno"><a class="line" href="namespacedecorators.html#a6ee47065a81ed3bd12cd798284605f36">   77</a></span>ROOT.FairMCPoint.__repr__ = MCPointPrintOut</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>ROOT.ShipMCTrack.__repr__ = MCTrackPrintOut</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>ROOT.genfit.Track.__repr__ = FitTrackPrintOut</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno"><a class="line" href="namespacedecorators.html#ab1d023ac32c0a742814957a7e4c21a42">   80</a></span>ROOT.TClonesArray.Dump = Dump</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>ROOT.TVector3.__repr__ = TVector3PrintOut</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>ROOT.TParticle.__repr__ = TParticlePrintOut</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>ROOT.ShipParticle.__repr__ = ShipParticlePrintOut</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>ROOT.ecalReconstructed.__repr__ = ecalReconstructedPrintOut</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>ROOT.ecalCluster.__repr__ = ecalClusterPrintOut</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>ROOT.TEvePointSet.__repr__ = TEvePointSetPrintOut</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>ROOT.vetoHit.__repr__ = vetoHitPrintOut</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>ROOT.muonHit.__repr__ = muonHitPrintOut</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>ROOT.TimeDetHit.__repr__ = TimeDetHitPrintOut</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>ROOT.TLorentzVector.__repr__ = TLorentzVectorPrintOut</div>
-<div class="ttc" id="anamespacedecorators_html_a1639e2afcc016284ccd45c276539c2ba"><div class="ttname"><a href="namespacedecorators.html#a1639e2afcc016284ccd45c276539c2ba">decorators.MCPointPrintOut</a></div><div class="ttdeci">MCPointPrintOut(x)</div><div class="ttdef"><b>Definition</b> <a href="decorators_8py_source.html#l00005">decorators.py:5</a></div></div>
-<div class="ttc" id="anamespacedecorators_html_a17440fee74d9cf72f2cb1ef4f61120b3"><div class="ttname"><a href="namespacedecorators.html#a17440fee74d9cf72f2cb1ef4f61120b3">decorators.TParticlePrintOut</a></div><div class="ttdeci">TParticlePrintOut(x)</div><div class="ttdef"><b>Definition</b> <a href="decorators_8py_source.html#l00040">decorators.py:40</a></div></div>
-<div class="ttc" id="anamespacedecorators_html_a2ec1e32203e1b964c50333fe4ac80774"><div class="ttname"><a href="namespacedecorators.html#a2ec1e32203e1b964c50333fe4ac80774">decorators.MCTrackPrintOut</a></div><div class="ttdeci">MCTrackPrintOut(x)</div><div class="ttdef"><b>Definition</b> <a href="decorators_8py_source.html#l00012">decorators.py:12</a></div></div>
-<div class="ttc" id="anamespacedecorators_html_a39ea9b0935df86db925f26d35f7e1dab"><div class="ttname"><a href="namespacedecorators.html#a39ea9b0935df86db925f26d35f7e1dab">decorators.TEvePointSetPrintOut</a></div><div class="ttdeci">TEvePointSetPrintOut(P)</div><div class="ttdef"><b>Definition</b> <a href="decorators_8py_source.html#l00066">decorators.py:66</a></div></div>
-<div class="ttc" id="anamespacedecorators_html_a631b4b158408c126035dfb24561c8598"><div class="ttname"><a href="namespacedecorators.html#a631b4b158408c126035dfb24561c8598">decorators.ecalClusterPrintOut</a></div><div class="ttdeci">ecalClusterPrintOut(cl)</div><div class="ttdef"><b>Definition</b> <a href="decorators_8py_source.html#l00049">decorators.py:49</a></div></div>
-<div class="ttc" id="anamespacedecorators_html_a68e993abb3bb0be8282441f6ac0a1f4b"><div class="ttname"><a href="namespacedecorators.html#a68e993abb3bb0be8282441f6ac0a1f4b">decorators.ecalReconstructedPrintOut</a></div><div class="ttdeci">ecalReconstructedPrintOut(cl)</div><div class="ttdef"><b>Definition</b> <a href="decorators_8py_source.html#l00046">decorators.py:46</a></div></div>
-<div class="ttc" id="anamespacedecorators_html_a6c1a37b734417ff5bee5576c16a361bf"><div class="ttname"><a href="namespacedecorators.html#a6c1a37b734417ff5bee5576c16a361bf">decorators.vetoHitPrintOut</a></div><div class="ttdeci">vetoHitPrintOut(x)</div><div class="ttdef"><b>Definition</b> <a href="decorators_8py_source.html#l00020">decorators.py:20</a></div></div>
-<div class="ttc" id="anamespacedecorators_html_a8c9da18a683720769447fdfc909a0898"><div class="ttname"><a href="namespacedecorators.html#a8c9da18a683720769447fdfc909a0898">decorators.TLorentzVectorPrintOut</a></div><div class="ttdeci">TLorentzVectorPrintOut(x)</div><div class="ttdef"><b>Definition</b> <a href="decorators_8py_source.html#l00062">decorators.py:62</a></div></div>
-<div class="ttc" id="anamespacedecorators_html_a93ba609965ce91eca0009e73b2cae94a"><div class="ttname"><a href="namespacedecorators.html#a93ba609965ce91eca0009e73b2cae94a">decorators.muonHitPrintOut</a></div><div class="ttdeci">muonHitPrintOut(x)</div><div class="ttdef"><b>Definition</b> <a href="decorators_8py_source.html#l00023">decorators.py:23</a></div></div>
-<div class="ttc" id="anamespacedecorators_html_aa3f84a39dd53816eddb7e035be380d26"><div class="ttname"><a href="namespacedecorators.html#aa3f84a39dd53816eddb7e035be380d26">decorators.ShipParticlePrintOut</a></div><div class="ttdeci">ShipParticlePrintOut(x)</div><div class="ttdef"><b>Definition</b> <a href="decorators_8py_source.html#l00043">decorators.py:43</a></div></div>
-<div class="ttc" id="anamespacedecorators_html_ab1d023ac32c0a742814957a7e4c21a42"><div class="ttname"><a href="namespacedecorators.html#ab1d023ac32c0a742814957a7e4c21a42">decorators.Dump</a></div><div class="ttdeci">Dump</div><div class="ttdef"><b>Definition</b> <a href="decorators_8py_source.html#l00080">decorators.py:80</a></div></div>
-<div class="ttc" id="anamespacedecorators_html_ac67f665b749ba7095f3c3acfff538a30"><div class="ttname"><a href="namespacedecorators.html#ac67f665b749ba7095f3c3acfff538a30">decorators.TimeDetHitPrintOut</a></div><div class="ttdeci">TimeDetHitPrintOut(x)</div><div class="ttdef"><b>Definition</b> <a href="decorators_8py_source.html#l00026">decorators.py:26</a></div></div>
-<div class="ttc" id="anamespacedecorators_html_ad3fec341698beffbd24e061a4e2ddb2a"><div class="ttname"><a href="namespacedecorators.html#ad3fec341698beffbd24e061a4e2ddb2a">decorators.TVector3PrintOut</a></div><div class="ttdeci">TVector3PrintOut(x)</div><div class="ttdef"><b>Definition</b> <a href="decorators_8py_source.html#l00058">decorators.py:58</a></div></div>
-<div class="ttc" id="anamespacedecorators_html_ad60443c6f7c9480c370f7bf319b11b07"><div class="ttname"><a href="namespacedecorators.html#ad60443c6f7c9480c370f7bf319b11b07">decorators.FitTrackPrintOut</a></div><div class="ttdeci">FitTrackPrintOut(x)</div><div class="ttdef"><b>Definition</b> <a href="decorators_8py_source.html#l00030">decorators.py:30</a></div></div>
+<div class="foldopen" id="foldopen00079" data-start="" data-end="">
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno"><a class="line" href="namespacedecorators.html#aea9fc24345edfee43b1c5dcf00417704">   79</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacedecorators.html#aea9fc24345edfee43b1c5dcf00417704">apply_decorators</a>():</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    <span class="stringliteral">&quot;&quot;&quot;Apply custom __repr__ methods to ROOT classes.</span></div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="stringliteral"></span> </div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span><span class="stringliteral">    Call this function after ROOT libraries are fully loaded to enable</span></div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span><span class="stringliteral">    enhanced string representations for ROOT objects.</span></div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    ROOT.FairMCPoint.__repr__ = MCPointPrintOut</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    ROOT.ShipMCTrack.__repr__ = MCTrackPrintOut</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    ROOT.genfit.Track.__repr__ = FitTrackPrintOut</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    ROOT.TClonesArray.Dump = Dump</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    ROOT.TVector3.__repr__ = TVector3PrintOut</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    ROOT.TParticle.__repr__ = TParticlePrintOut</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    ROOT.ShipParticle.__repr__ = ShipParticlePrintOut</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    ROOT.ecalReconstructed.__repr__ = ecalReconstructedPrintOut</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    ROOT.ecalCluster.__repr__ = ecalClusterPrintOut</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    ROOT.TEvePointSet.__repr__ = TEvePointSetPrintOut</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    ROOT.vetoHit.__repr__ = vetoHitPrintOut</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    ROOT.muonHit.__repr__ = muonHitPrintOut</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    ROOT.TimeDetHit.__repr__ = TimeDetHitPrintOut</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    ROOT.TLorentzVector.__repr__ = TLorentzVectorPrintOut</div>
+</div>
+<div class="ttc" id="anamespacedecorators_html_a1639e2afcc016284ccd45c276539c2ba"><div class="ttname"><a href="namespacedecorators.html#a1639e2afcc016284ccd45c276539c2ba">decorators.MCPointPrintOut</a></div><div class="ttdeci">MCPointPrintOut(x)</div><div class="ttdef"><b>Definition</b> <a href="decorators_8py_source.html#l00007">decorators.py:7</a></div></div>
+<div class="ttc" id="anamespacedecorators_html_a17440fee74d9cf72f2cb1ef4f61120b3"><div class="ttname"><a href="namespacedecorators.html#a17440fee74d9cf72f2cb1ef4f61120b3">decorators.TParticlePrintOut</a></div><div class="ttdeci">TParticlePrintOut(x)</div><div class="ttdef"><b>Definition</b> <a href="decorators_8py_source.html#l00042">decorators.py:42</a></div></div>
+<div class="ttc" id="anamespacedecorators_html_a2ec1e32203e1b964c50333fe4ac80774"><div class="ttname"><a href="namespacedecorators.html#a2ec1e32203e1b964c50333fe4ac80774">decorators.MCTrackPrintOut</a></div><div class="ttdeci">MCTrackPrintOut(x)</div><div class="ttdef"><b>Definition</b> <a href="decorators_8py_source.html#l00014">decorators.py:14</a></div></div>
+<div class="ttc" id="anamespacedecorators_html_a39ea9b0935df86db925f26d35f7e1dab"><div class="ttname"><a href="namespacedecorators.html#a39ea9b0935df86db925f26d35f7e1dab">decorators.TEvePointSetPrintOut</a></div><div class="ttdeci">TEvePointSetPrintOut(P)</div><div class="ttdef"><b>Definition</b> <a href="decorators_8py_source.html#l00068">decorators.py:68</a></div></div>
+<div class="ttc" id="anamespacedecorators_html_a631b4b158408c126035dfb24561c8598"><div class="ttname"><a href="namespacedecorators.html#a631b4b158408c126035dfb24561c8598">decorators.ecalClusterPrintOut</a></div><div class="ttdeci">ecalClusterPrintOut(cl)</div><div class="ttdef"><b>Definition</b> <a href="decorators_8py_source.html#l00051">decorators.py:51</a></div></div>
+<div class="ttc" id="anamespacedecorators_html_a68e993abb3bb0be8282441f6ac0a1f4b"><div class="ttname"><a href="namespacedecorators.html#a68e993abb3bb0be8282441f6ac0a1f4b">decorators.ecalReconstructedPrintOut</a></div><div class="ttdeci">ecalReconstructedPrintOut(cl)</div><div class="ttdef"><b>Definition</b> <a href="decorators_8py_source.html#l00048">decorators.py:48</a></div></div>
+<div class="ttc" id="anamespacedecorators_html_a6c1a37b734417ff5bee5576c16a361bf"><div class="ttname"><a href="namespacedecorators.html#a6c1a37b734417ff5bee5576c16a361bf">decorators.vetoHitPrintOut</a></div><div class="ttdeci">vetoHitPrintOut(x)</div><div class="ttdef"><b>Definition</b> <a href="decorators_8py_source.html#l00022">decorators.py:22</a></div></div>
+<div class="ttc" id="anamespacedecorators_html_a8c9da18a683720769447fdfc909a0898"><div class="ttname"><a href="namespacedecorators.html#a8c9da18a683720769447fdfc909a0898">decorators.TLorentzVectorPrintOut</a></div><div class="ttdeci">TLorentzVectorPrintOut(x)</div><div class="ttdef"><b>Definition</b> <a href="decorators_8py_source.html#l00064">decorators.py:64</a></div></div>
+<div class="ttc" id="anamespacedecorators_html_a93ba609965ce91eca0009e73b2cae94a"><div class="ttname"><a href="namespacedecorators.html#a93ba609965ce91eca0009e73b2cae94a">decorators.muonHitPrintOut</a></div><div class="ttdeci">muonHitPrintOut(x)</div><div class="ttdef"><b>Definition</b> <a href="decorators_8py_source.html#l00025">decorators.py:25</a></div></div>
+<div class="ttc" id="anamespacedecorators_html_a9aa498add33b8b9799504fffee2a48c6"><div class="ttname"><a href="namespacedecorators.html#a9aa498add33b8b9799504fffee2a48c6">decorators.Dump</a></div><div class="ttdeci">Dump(x)</div><div class="ttdef"><b>Definition</b> <a href="decorators_8py_source.html#l00054">decorators.py:54</a></div></div>
+<div class="ttc" id="anamespacedecorators_html_aa3f84a39dd53816eddb7e035be380d26"><div class="ttname"><a href="namespacedecorators.html#aa3f84a39dd53816eddb7e035be380d26">decorators.ShipParticlePrintOut</a></div><div class="ttdeci">ShipParticlePrintOut(x)</div><div class="ttdef"><b>Definition</b> <a href="decorators_8py_source.html#l00045">decorators.py:45</a></div></div>
+<div class="ttc" id="anamespacedecorators_html_ac67f665b749ba7095f3c3acfff538a30"><div class="ttname"><a href="namespacedecorators.html#ac67f665b749ba7095f3c3acfff538a30">decorators.TimeDetHitPrintOut</a></div><div class="ttdeci">TimeDetHitPrintOut(x)</div><div class="ttdef"><b>Definition</b> <a href="decorators_8py_source.html#l00028">decorators.py:28</a></div></div>
+<div class="ttc" id="anamespacedecorators_html_ad3fec341698beffbd24e061a4e2ddb2a"><div class="ttname"><a href="namespacedecorators.html#ad3fec341698beffbd24e061a4e2ddb2a">decorators.TVector3PrintOut</a></div><div class="ttdeci">TVector3PrintOut(x)</div><div class="ttdef"><b>Definition</b> <a href="decorators_8py_source.html#l00060">decorators.py:60</a></div></div>
+<div class="ttc" id="anamespacedecorators_html_ad60443c6f7c9480c370f7bf319b11b07"><div class="ttname"><a href="namespacedecorators.html#ad60443c6f7c9480c370f7bf319b11b07">decorators.FitTrackPrintOut</a></div><div class="ttdeci">FitTrackPrintOut(x)</div><div class="ttdef"><b>Definition</b> <a href="decorators_8py_source.html#l00032">decorators.py:32</a></div></div>
+<div class="ttc" id="anamespacedecorators_html_aea9fc24345edfee43b1c5dcf00417704"><div class="ttname"><a href="namespacedecorators.html#aea9fc24345edfee43b1c5dcf00417704">decorators.apply_decorators</a></div><div class="ttdeci">apply_decorators()</div><div class="ttdef"><b>Definition</b> <a href="decorators_8py_source.html#l00079">decorators.py:79</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

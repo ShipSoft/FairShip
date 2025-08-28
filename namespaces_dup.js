@@ -211,6 +211,7 @@ var namespaces_dup =
     ] ],
     [ "darkphoton", "namespacedarkphoton.html", "namespacedarkphoton" ],
     [ "decorators", "namespacedecorators.html", [
+      [ "apply_decorators", "namespacedecorators.html#aea9fc24345edfee43b1c5dcf00417704", null ],
       [ "Dump", "namespacedecorators.html#a9aa498add33b8b9799504fffee2a48c6", null ],
       [ "ecalClusterPrintOut", "namespacedecorators.html#a631b4b158408c126035dfb24561c8598", null ],
       [ "ecalReconstructedPrintOut", "namespacedecorators.html#a68e993abb3bb0be8282441f6ac0a1f4b", null ],
@@ -224,9 +225,7 @@ var namespaces_dup =
       [ "TLorentzVectorPrintOut", "namespacedecorators.html#a8c9da18a683720769447fdfc909a0898", null ],
       [ "TParticlePrintOut", "namespacedecorators.html#a17440fee74d9cf72f2cb1ef4f61120b3", null ],
       [ "TVector3PrintOut", "namespacedecorators.html#ad3fec341698beffbd24e061a4e2ddb2a", null ],
-      [ "vetoHitPrintOut", "namespacedecorators.html#a6c1a37b734417ff5bee5576c16a361bf", null ],
-      [ "__repr__", "namespacedecorators.html#a6ee47065a81ed3bd12cd798284605f36", null ],
-      [ "Dump", "namespacedecorators.html#ab1d023ac32c0a742814957a7e4c21a42", null ]
+      [ "vetoHitPrintOut", "namespacedecorators.html#a6c1a37b734417ff5bee5576c16a361bf", null ]
     ] ],
     [ "dpProductionRates", "namespacedpProductionRates.html", [
       [ "brMesonToDP", "namespacedpProductionRates.html#a4af6a641de251cc7f5e016751954a39d", null ],
