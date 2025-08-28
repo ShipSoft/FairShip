@@ -72,6 +72,7 @@ it in future.
 * Fix: MTC geometry overlap
 * fix(FixedTargetGenerator): Don't assume anything about the target substructure
 * Fix crash in run_simScript.py
+* Fix crash caused by decorators.py
 
 ### Changed
 
@@ -120,6 +121,7 @@ it in future.
   - Replace fragile `"volTarget_1"` TGeo navigation with geometry constants from `ship_geo.target`
   - Add `SetTargetCoordinates()` method for robust geometry-based target configuration
   - Maintain backward compatibility with legacy TGeo navigation as fallback
+- The decorators from decorators.py now need to be applied explicitly using the new `apply_decorators` function.
 
 ### Removed
 

@@ -7,12 +7,13 @@ import rootUtils as ut
 import shipunit as u
 from ShipGeoConfig import ConfigRegistry
 from rootpyPickler import Unpickler
-from decorators import *
 import shipRoot_conf
 from backports import tdirectory634
 from argparse import ArgumentParser
+import decorators
 
 shipRoot_conf.configure()
+decorators.apply_decorators()
 PDG = ROOT.TDatabasePDG.Instance()
 
 chi2CutOff  = 4.

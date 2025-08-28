@@ -1,6 +1,8 @@
 from ctypes import c_double
+
 import ROOT
 import shipunit as u
+
 
 def MCPointPrintOut(x):
   p = ROOT.TDatabasePDG.Instance().GetParticle(x.PdgCode())
@@ -74,17 +76,23 @@ def TEvePointSetPrintOut(P):
  return txt
 
 
-ROOT.FairMCPoint.__repr__ = MCPointPrintOut
-ROOT.ShipMCTrack.__repr__ = MCTrackPrintOut
-ROOT.genfit.Track.__repr__ = FitTrackPrintOut
-ROOT.TClonesArray.Dump = Dump
-ROOT.TVector3.__repr__ = TVector3PrintOut
-ROOT.TParticle.__repr__ = TParticlePrintOut
-ROOT.ShipParticle.__repr__ = ShipParticlePrintOut
-ROOT.ecalReconstructed.__repr__ = ecalReconstructedPrintOut
-ROOT.ecalCluster.__repr__ = ecalClusterPrintOut
-ROOT.TEvePointSet.__repr__ = TEvePointSetPrintOut
-ROOT.vetoHit.__repr__ = vetoHitPrintOut
-ROOT.muonHit.__repr__ = muonHitPrintOut
-ROOT.TimeDetHit.__repr__ = TimeDetHitPrintOut
-ROOT.TLorentzVector.__repr__ = TLorentzVectorPrintOut
+def apply_decorators():
+    """Apply custom __repr__ methods to ROOT classes.
+
+    Call this function after ROOT libraries are fully loaded to enable
+    enhanced string representations for ROOT objects.
+    """
+    ROOT.FairMCPoint.__repr__ = MCPointPrintOut
+    ROOT.ShipMCTrack.__repr__ = MCTrackPrintOut
+    ROOT.genfit.Track.__repr__ = FitTrackPrintOut
+    ROOT.TClonesArray.Dump = Dump
+    ROOT.TVector3.__repr__ = TVector3PrintOut
+    ROOT.TParticle.__repr__ = TParticlePrintOut
+    ROOT.ShipParticle.__repr__ = ShipParticlePrintOut
+    ROOT.ecalReconstructed.__repr__ = ecalReconstructedPrintOut
+    ROOT.ecalCluster.__repr__ = ecalClusterPrintOut
+    ROOT.TEvePointSet.__repr__ = TEvePointSetPrintOut
+    ROOT.vetoHit.__repr__ = vetoHitPrintOut
+    ROOT.muonHit.__repr__ = muonHitPrintOut
+    ROOT.TimeDetHit.__repr__ = TimeDetHitPrintOut
+    ROOT.TLorentzVector.__repr__ = TLorentzVectorPrintOut
