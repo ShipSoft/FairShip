@@ -38,6 +38,12 @@ class vetoPoint : public FairMCPoint
     /** Destructor **/
     virtual ~vetoPoint();
 
+    /** Copy constructor **/
+    vetoPoint(const vetoPoint& point) = default;
+
+    /** Assignment operator **/
+    vetoPoint& operator=(const vetoPoint& point) = default;
+
     /** Output to screen **/
     virtual void Print() const;
     Int_t PdgCode() const { return fPdgCode; }
@@ -45,11 +51,8 @@ class vetoPoint : public FairMCPoint
     TVector3 LastMom() const { return fLmom; }
 
   private:
-    /** Copy constructor **/
     Int_t fPdgCode;
     TVector3 fLpos, fLmom;
-    vetoPoint(const vetoPoint& point);
-    vetoPoint operator=(const vetoPoint& point);
 
     ClassDef(vetoPoint, 3)
 };
