@@ -31,15 +31,15 @@ HNLPythia8Generator::HNLPythia8Generator()
 Bool_t HNLPythia8Generator::Init()
 {
   if ( debug ){List(9900015);}
-  if (fUseRandom1) fRandomEngine = new PyTr1Rng();
-  if (fUseRandom3) fRandomEngine = new PyTr3Rng();
+  if (fUseRandom1) fRandomEngine = std::make_shared<PyTr1Rng>();
+  if (fUseRandom3) fRandomEngine = std::make_shared<PyTr3Rng>();
   fPythia->setRndmEnginePtr(fRandomEngine);
   fn = 0;
   if (fextFile && *fextFile) {
       fInputFile = TFile::Open(fextFile);
       LOG(info) << "Open external file with charm or beauty hadrons: " << fextFile;
       if (!fInputFile) {
-          LOG(FATAL) << "Error opening input file.";
+          LOG(fatal) << "Error opening input file.";
           return kFALSE;
       }
 
@@ -105,7 +105,7 @@ Bool_t HNLPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
 // correct for too much Ds produced by pythia6
     bool x = true;
     while(x){
-     if (fn==fNevents) {LOG(WARNING) << "End of input file. Rewind.";}
+     if (fn==fNevents) {LOG(warning) << "End of input file. Rewind.";}
      fTree->GetEntry(fn%fNevents);
      fn++;
      if ( static_cast<int>(fabs(hid[0]) ) != 431){ x = false; }

@@ -31,9 +31,9 @@ Bool_t GenieGenerator::Init(const char* fileName) {
 Bool_t GenieGenerator::Init(const char* fileName, const int firstEvent) {
   fNuOnly = false;
   fInputFile = TFile::Open(fileName);
-  LOG(INFO) << "Opening input file " << fileName;
+  LOG(info) << "Opening input file " << fileName;
   if (!fInputFile) {
-      LOG(FATAL) << "Error opening input file.";
+      LOG(fatal) << "Error opening input file.";
       return kFALSE;
   }
   fTree = dynamic_cast<TTree*>(fInputFile->Get("gst"));
@@ -311,7 +311,7 @@ Bool_t GenieGenerator::OldReadEvent(FairPrimaryGenerator* cpg)
      }
      fFirst = kFALSE;
     }
-    if (fn==fNevents) {LOG(WARNING) << "End of input file. Rewind.";}
+    if (fn==fNevents) {LOG(warning) << "End of input file. Rewind.";}
     fTree->GetEntry(fn%fNevents);
     fn++;
     if (fn%1000==0) {
@@ -449,7 +449,7 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg)
       fFirst = kFALSE;
     }
 
-    if (fn==fNevents) {LOG(WARNING) << "End of input file. Rewind.";}
+    if (fn==fNevents) {LOG(warning) << "End of input file. Rewind.";}
     fTree->GetEntry(fn%fNevents);
     fn++;
     if (fn%100==0) {

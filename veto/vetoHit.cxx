@@ -107,9 +107,9 @@ TGeoNode* vetoHit::GetNode()
 // -----   Public method Print   -------------------------------------------
 void vetoHit::Print(Int_t detID) const
 {
-    LOG(INFO) << "vetoHit: veto hit "
+    LOG(info) << "vetoHit: veto hit "
               << " in detector " << fDetectorID;
-    LOG(INFO) << "  ADC " << fdigi << " ns";
+    LOG(info) << "  ADC " << fdigi << " ns";
 }
 
 // -------------------------------------------------------------------------
