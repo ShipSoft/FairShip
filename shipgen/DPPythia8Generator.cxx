@@ -37,8 +37,13 @@ DPPythia8Generator::DPPythia8Generator()
 // -----   Default constructor   -------------------------------------------
 Bool_t DPPythia8Generator::Init()
 {
+#if PYTHIA_VERSION >= 8200
   if (fUseRandom1) fRandomEngine = std::make_shared<PyTr1Rng>();
   if (fUseRandom3) fRandomEngine = std::make_shared<PyTr3Rng>();
+#else
+  if (fUseRandom1) fRandomEngine = new PyTr1Rng();
+  if (fUseRandom3) fRandomEngine = new PyTr3Rng();
+#endif
   fPythia->setRndmEnginePtr(fRandomEngine);
   //fPythiaHadDecay->setRndmEnginePtr(fRandomEngine);
   fn = 0;

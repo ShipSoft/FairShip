@@ -33,8 +33,13 @@ Pythia8Generator::Pythia8Generator()
 // -----   Default constructor   -------------------------------------------
 Bool_t Pythia8Generator::Init()
 {
+#if PYTHIA_VERSION >= 8200
   if (fUseRandom1) fRandomEngine = std::make_shared<PyTr1Rng>();
   if (fUseRandom3) fRandomEngine = std::make_shared<PyTr3Rng>();
+#else
+  if (fUseRandom1) fRandomEngine = new PyTr1Rng();
+  if (fUseRandom3) fRandomEngine = new PyTr3Rng();
+#endif
   if (fextFile && *fextFile) {
       fInputFile = TFile::Open(fextFile);
       LOG(info) << "Open external file with charm or beauty hadrons: " << fextFile;

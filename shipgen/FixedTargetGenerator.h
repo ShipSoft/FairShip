@@ -56,7 +56,11 @@ class FixedTargetGenerator : public FairGenerator
   Pythia8::Pythia* GetPythiaN() {return fPythiaN;}
  private:
 
+#if PYTHIA_VERSION >= 8200
  std::shared_ptr<Pythia8::RndmEngine> fRandomEngine;  //!
+#else
+ Pythia8::RndmEngine* fRandomEngine;  //!
+#endif
 
  protected:
 
@@ -69,8 +73,13 @@ class FixedTargetGenerator : public FairGenerator
   FairLogger*  fLogger; //!   don't make it persistent, magic ROOT command
   Pythia8::Pythia* fPythiaN;            //!
   Pythia8::Pythia* fPythiaP;            //!
+#if PYTHIA_VERSION >= 8200
   Pythia8::EvtGenDecays* evtgenN;            //!
   Pythia8::EvtGenDecays* evtgenP;            //!
+#else
+  EvtGenDecays* evtgenN;            //!
+  EvtGenDecays* evtgenP;            //!
+#endif
   GenieGenerator* fMaterialInvestigator;  //!
   Bool_t withNtuple;               //! special option for Dark Photon physics studies
   TNtuple* fNtuple;               //!
