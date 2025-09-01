@@ -56,7 +56,7 @@ class FixedTargetGenerator : public FairGenerator
   Pythia8::Pythia* GetPythiaN() {return fPythiaN;}
  private:
 
-#if defined(PYTHIA_VERSION_INTEGER) && PYTHIA_VERSION_INTEGER >= 8200
+#if PYTHIA_VERSION_INTEGER >= 8300
  std::shared_ptr<Pythia8::RndmEngine> fRandomEngine;  //!
 #else
  Pythia8::RndmEngine* fRandomEngine;  //!
