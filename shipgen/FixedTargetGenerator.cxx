@@ -107,7 +107,7 @@ Bool_t FixedTargetGenerator::Init()
   }else if (Option != "charm" && Option != "beauty" && !G4only) {
    LOG(error) << "Option not known "<< Option.Data() << ", abort";
   }
-#if PYTHIA_VERSION_INTEGER >= 8200
+#if defined(PYTHIA_VERSION_INTEGER) && PYTHIA_VERSION_INTEGER >= 8200
   if (fUseRandom1) fRandomEngine = std::make_shared<PyTr1Rng>();
   if (fUseRandom3) fRandomEngine = std::make_shared<PyTr3Rng>();
 #else
@@ -128,7 +128,7 @@ Bool_t FixedTargetGenerator::Init()
   for(const auto& fPythia : plist) {
    if (pcount > 0 && (Option != "Primary" || G4only)){continue;}
    pcount+=1;
-#if PYTHIA_VERSION_INTEGER >= 8200
+#if defined(PYTHIA_VERSION_INTEGER) && PYTHIA_VERSION_INTEGER >= 8200
    fPythia->setRndmEnginePtr(fRandomEngine.get());
 #else
    fPythia->setRndmEnginePtr(fRandomEngine);
@@ -178,7 +178,7 @@ Bool_t FixedTargetGenerator::Init()
    Int_t n = 1;
    while(n!=0){
     n = fPythia->particleData.nextId(n);
-#if PYTHIA_VERSION_INTEGER >= 8200
+#if defined(PYTHIA_VERSION_INTEGER) && PYTHIA_VERSION_INTEGER >= 8200
     std::shared_ptr<Pythia8::ParticleDataEntry> p = fPythia->particleData.particleDataEntryPtr(n);
 #else
     Pythia8::ParticleDataEntry* p = fPythia->particleData.particleDataEntryPtr(n);
@@ -194,7 +194,7 @@ Bool_t FixedTargetGenerator::Init()
    if (fBoost != 1.){
     LOG(info) << "Rescale BRs of dimuon decays in Pythia: " << fBoost;
     for (unsigned int i=0; i<r.size(); ++i) {
-#if PYTHIA_VERSION_INTEGER >= 8200
+#if defined(PYTHIA_VERSION_INTEGER) && PYTHIA_VERSION_INTEGER >= 8200
      std::shared_ptr<Pythia8::ParticleDataEntry> V = fPythia->particleData.particleDataEntryPtr(r[i]);
 #else
      Pythia8::ParticleDataEntry* V = fPythia->particleData.particleDataEntryPtr(r[i]);

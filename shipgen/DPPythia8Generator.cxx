@@ -37,14 +37,14 @@ DPPythia8Generator::DPPythia8Generator()
 // -----   Default constructor   -------------------------------------------
 Bool_t DPPythia8Generator::Init()
 {
-#if PYTHIA_VERSION_INTEGER >= 8200
+#if defined(PYTHIA_VERSION_INTEGER) && PYTHIA_VERSION_INTEGER >= 8200
   if (fUseRandom1) fRandomEngine = std::make_shared<PyTr1Rng>();
   if (fUseRandom3) fRandomEngine = std::make_shared<PyTr3Rng>();
 #else
   if (fUseRandom1) fRandomEngine = new PyTr1Rng();
   if (fUseRandom3) fRandomEngine = new PyTr3Rng();
 #endif
-#if PYTHIA_VERSION_INTEGER >= 8200
+#if defined(PYTHIA_VERSION_INTEGER) && PYTHIA_VERSION_INTEGER >= 8200
   fPythia->setRndmEnginePtr(fRandomEngine.get());
 #else
   fPythia->setRndmEnginePtr(fRandomEngine);

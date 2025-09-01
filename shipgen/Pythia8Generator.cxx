@@ -33,7 +33,7 @@ Pythia8Generator::Pythia8Generator()
 // -----   Default constructor   -------------------------------------------
 Bool_t Pythia8Generator::Init()
 {
-#if PYTHIA_VERSION_INTEGER >= 8200
+#if defined(PYTHIA_VERSION_INTEGER) && PYTHIA_VERSION_INTEGER >= 8200
   if (fUseRandom1) fRandomEngine = std::make_shared<PyTr1Rng>();
   if (fUseRandom3) fRandomEngine = std::make_shared<PyTr3Rng>();
 #else
@@ -83,7 +83,7 @@ Bool_t Pythia8Generator::Init()
      Int_t n = 1;
      while(n!=0){
       n = fPythia->particleData.nextId(n);
-#if PYTHIA_VERSION_INTEGER >= 8200
+#if defined(PYTHIA_VERSION_INTEGER) && PYTHIA_VERSION_INTEGER >= 8200
       std::shared_ptr<Pythia8::ParticleDataEntry> p = fPythia->particleData.particleDataEntryPtr(n);
 #else
       Pythia8::ParticleDataEntry* p = fPythia->particleData.particleDataEntryPtr(n);
@@ -95,7 +95,7 @@ Bool_t Pythia8Generator::Init()
       }
      }
   } else {
-#if PYTHIA_VERSION_INTEGER >= 8200
+#if defined(PYTHIA_VERSION_INTEGER) && PYTHIA_VERSION_INTEGER >= 8200
    fPythia->setRndmEnginePtr(fRandomEngine.get());
 #else
    fPythia->setRndmEnginePtr(fRandomEngine);
