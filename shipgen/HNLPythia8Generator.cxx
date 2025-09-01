@@ -31,7 +31,7 @@ HNLPythia8Generator::HNLPythia8Generator()
 Bool_t HNLPythia8Generator::Init()
 {
   if ( debug ){List(9900015);}
-#if PYTHIA_VERSION >= 8200
+#if PYTHIA_VERSION_INTEGER >= 8200
   if (fUseRandom1) fRandomEngine = std::make_shared<PyTr1Rng>();
   if (fUseRandom3) fRandomEngine = std::make_shared<PyTr3Rng>();
 #else

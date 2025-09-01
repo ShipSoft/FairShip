@@ -56,7 +56,7 @@ class FixedTargetGenerator : public FairGenerator
   Pythia8::Pythia* GetPythiaN() {return fPythiaN;}
  private:
 
-#if PYTHIA_VERSION >= 8200
+#if PYTHIA_VERSION_INTEGER >= 8200
  std::shared_ptr<Pythia8::RndmEngine> fRandomEngine;  //!
 #else
  Pythia8::RndmEngine* fRandomEngine;  //!
@@ -73,7 +73,7 @@ class FixedTargetGenerator : public FairGenerator
   FairLogger*  fLogger; //!   don't make it persistent, magic ROOT command
   Pythia8::Pythia* fPythiaN;            //!
   Pythia8::Pythia* fPythiaP;            //!
-#if PYTHIA_VERSION >= 8200
+#if PYTHIA_VERSION_INTEGER >= 8200
   Pythia8::EvtGenDecays* evtgenN;            //!
   Pythia8::EvtGenDecays* evtgenP;            //!
 #else
