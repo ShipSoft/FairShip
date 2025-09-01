@@ -228,19 +228,11 @@ Bool_t FixedTargetGenerator::Init()
    EvtRandom::setRandomEngine(eng);
    EvtGen *myEvtGenPtr = new EvtGen(DecayFile.Data(), ParticleFile.Data(),eng, fsrPtrIn, &models, 1, false);
    TString UdecayFile    = getenv("FAIRSHIP");UdecayFile +="/gconfig/USERDECAY.DEC";
-#if PYTHIA_VERSION_INTEGER >= 8200
-   evtgenP = new Pythia8::EvtGenDecays(fPythiaP, DecayFile.Data(), ParticleFile.Data(),myEvtGenPtr);
-#else
    evtgenP = new EvtGenDecays(fPythiaP, DecayFile.Data(), ParticleFile.Data(),myEvtGenPtr);
-#endif
    evtgenP->readDecayFile(UdecayFile.Data()); // will make update of EvtGen with user decay file
    // use one instance of EvtGen, requires patch to Pythia8Plugins/EvtGen.h
    if (Option == "Primary"){
-#if PYTHIA_VERSION_INTEGER >= 8200
-    evtgenN = new Pythia8::EvtGenDecays(fPythiaN, DecayFile.Data(), ParticleFile.Data(),myEvtGenPtr);
-#else
     evtgenN = new EvtGenDecays(fPythiaN, DecayFile.Data(), ParticleFile.Data(),myEvtGenPtr);
-#endif
    }
   }
   if (targetName!=""){
