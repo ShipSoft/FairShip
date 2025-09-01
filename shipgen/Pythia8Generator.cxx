@@ -83,11 +83,7 @@ Bool_t Pythia8Generator::Init()
      Int_t n = 1;
      while(n!=0){
       n = fPythia->particleData.nextId(n);
-#if defined(PYTHIA_VERSION_INTEGER) && PYTHIA_VERSION_INTEGER >= 8200
-      std::shared_ptr<Pythia8::ParticleDataEntry> p = fPythia->particleData.particleDataEntryPtr(n);
-#else
       Pythia8::ParticleDataEntry* p = fPythia->particleData.particleDataEntryPtr(n);
-#endif
       if (p->tau0()>1){
       std::string particle = std::to_string(n)+":mayDecay = false";
       fPythia->readString(particle);
