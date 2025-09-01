@@ -38,7 +38,11 @@ Bool_t HNLPythia8Generator::Init()
   if (fUseRandom1) fRandomEngine = new PyTr1Rng();
   if (fUseRandom3) fRandomEngine = new PyTr3Rng();
 #endif
+#if PYTHIA_VERSION_INTEGER >= 8200
+  fPythia->setRndmEnginePtr(fRandomEngine.get());
+#else
   fPythia->setRndmEnginePtr(fRandomEngine);
+#endif
   fn = 0;
   if (fextFile && *fextFile) {
       fInputFile = TFile::Open(fextFile);
