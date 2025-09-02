@@ -74,7 +74,7 @@ class FixedTargetGenerator : public FairGenerator
   FairLogger*  fLogger; //!   don't make it persistent, magic ROOT command
   Pythia8::Pythia* fPythiaN;            //!
   Pythia8::Pythia* fPythiaP;            //!
-#if PYTHIA_VERSION_INTEGER >= 8300
+#if PYTHIA_VERSION_INTEGER >= 8315
   Pythia8::EvtGenDecays* evtgenN;            //!
   Pythia8::EvtGenDecays* evtgenP;            //!
 #else
