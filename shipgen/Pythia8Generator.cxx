@@ -95,11 +95,7 @@ Bool_t Pythia8Generator::Init()
       }
      }
   } else {
-#if PYTHIA_VERSION_INTEGER >= 8300
-   fPythia->setRndmEnginePtr(fRandomEngine.get());
-#else
    fPythia->setRndmEnginePtr(fRandomEngine);
-#endif
    fPythia->settings.mode("Beams:idA",  fId);
    fPythia->settings.mode("Beams:idB",  2212);
    fPythia->settings.mode("Beams:frameType",  2);

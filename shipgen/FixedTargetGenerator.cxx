@@ -128,11 +128,7 @@ Bool_t FixedTargetGenerator::Init()
   for(const auto& fPythia : plist) {
    if (pcount > 0 && (Option != "Primary" || G4only)){continue;}
    pcount+=1;
-#if PYTHIA_VERSION_INTEGER >= 8300
-   fPythia->setRndmEnginePtr(fRandomEngine.get());
-#else
    fPythia->setRndmEnginePtr(fRandomEngine);
-#endif
    fPythia->settings.mode("Random:seed",fSeed);
    fPythia->settings.mode("Next:numberCount",heartbeat);
    if (Option == "Primary"){
