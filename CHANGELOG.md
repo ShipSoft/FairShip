@@ -46,6 +46,7 @@ it in future.
   - This enables running with multiple SND subdetectors simultaneously and is future-proof for additional SND designs.
 * Add support for Pythia 8.3xx. 8.2xx is still supported via preprocessor macros for the time being.
 * Add dedicated --print-fields and --check-overlaps flags to run_simScript.py to use these debug tools.
+* Add EvtGenDecayer for decaying J/psi (and other particles in future) when specifying the --EvtGenDecayer option
 
 ### Fixed
 
@@ -77,6 +78,7 @@ it in future.
 * Fix crash caused by decorators.py
 * Use lowercase FairLogger severities (uppercase ones are deprecated)
 * Correct paths for default input files
+* Fix missing decays of J/psi by using EvtGenDecayer
 
 ### Changed
 
@@ -127,6 +129,7 @@ it in future.
   - Maintain backward compatibility with legacy TGeo navigation as fallback
 - The decorators from decorators.py now need to be applied explicitly using the new `apply_decorators` function.
 - The --debug flag to run_simScript.py now controls the severity that FairLogger logs.
+- J/psi are no longer decayed using Geant4 when using the --EvtGenDecayer option
 
 ### Removed
 

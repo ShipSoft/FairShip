@@ -68,11 +68,13 @@ CosmicsGenerator.cxx
 MuDISGenerator.cxx
 FixedTargetGenerator.cxx
 EvtCalcGenerator.cxx
+TEvtGenDecayer.cxx
 )
 
 set(LINKDEF GenLinkDef.h)
 set(LIBRARY_NAME ShipGen)
 
-set(DEPENDENCIES Base ShipData EvtGen EvtGenExternal FairLogger::FairLogger)
+set(DEPENDENCIES Base ShipData EvtGen EvtGenExternal
+                 FairLogger::FairLogger)
 
 GENERATE_LIBRARY()
