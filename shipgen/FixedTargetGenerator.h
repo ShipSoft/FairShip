@@ -12,6 +12,10 @@
 // Include EvtGen header with namespace protection
 #ifndef __ROOTCLING__
 #include "Pythia8Plugins/EvtGen.h"
+#else
+// Forward declarations for ROOT dictionary generation
+class EvtGenDecays;
+namespace Pythia8 { class EvtGenDecays; }
 #endif
 
 class FairPrimaryGenerator;
