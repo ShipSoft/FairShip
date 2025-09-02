@@ -10,7 +10,9 @@
 #include "GenieGenerator.h"
 
 // Include EvtGen header with namespace protection
+#ifndef __ROOTCLING__
 #include "Pythia8Plugins/EvtGen.h"
+#endif
 
 class FairPrimaryGenerator;
 
