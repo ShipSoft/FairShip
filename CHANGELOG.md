@@ -74,7 +74,7 @@ it in future.
 * fix(FixedTargetGenerator): Don't assume anything about the target substructure
 * Fix crash in run_simScript.py
 * Fix crash caused by decorators.py
-* Fix: Pythia changed several raw pointers to smart pointer 
+* Fix: Pythia changed several raw pointers to smart pointer
 
 ### Changed
 
