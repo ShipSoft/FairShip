@@ -109,8 +109,8 @@ Bool_t FixedTargetGenerator::Init()
   }else if (Option != "charm" && Option != "beauty" && !G4only) {
    LOG(ERROR) << "Option not known "<< Option.Data() << ", abort";
   }
-  if (fUseRandom1) fRandomEngine = new PyTr1Rng();
-  if (fUseRandom3) fRandomEngine = new PyTr3Rng();
+  if (fUseRandom1) fRandomEngine = std::make_shared<Pythia8::RndmEngine> (PyTr1Rng());
+  if (fUseRandom3) fRandomEngine = std::make_shared<Pythia8::RndmEngine> (PyTr3Rng());
   std::vector<int> r = { 221, 221, 223, 223,   113, 331, 333};
   std::vector<int> c = {  6 ,  7,   5 ,  7,     5,   6,   9}; // decay channel mumu mumuX
 
@@ -171,7 +171,7 @@ Bool_t FixedTargetGenerator::Init()
    Int_t n = 1;
    while(n!=0){
     n = fPythia->particleData.nextId(n);
-    ParticleDataEntry* p = fPythia->particleData.particleDataEntryPtr(n);
+    std::shared_ptr<Pythia8::ParticleDataEntry> p = fPythia->particleData.particleDataEntryPtr(n);
     if (p->tau0()>1){
      string particle = std::to_string(n)+":mayDecay = false";
      fPythia->readString(particle);
@@ -183,7 +183,7 @@ Bool_t FixedTargetGenerator::Init()
    if (fBoost != 1.){
     LOG(INFO) << "Rescale BRs of dimuon decays in Pythia: " << fBoost;
     for (unsigned int i=0; i<r.size(); ++i) {
-     Pythia8::ParticleDataEntry* V = fPythia->particleData.particleDataEntryPtr(r[i]);
+     std::shared_ptr<Pythia8::ParticleDataEntry> V = fPythia->particleData.particleDataEntryPtr(r[i]);
      Pythia8::DecayChannel ch = V->channel(c[i]);
      if (TMath::Abs(ch.product(0))!=13 || TMath::Abs(ch.product(1))!=13){
       LOG(INFO) << "this is not the right decay channel: " << r[i] << " " << c[i];

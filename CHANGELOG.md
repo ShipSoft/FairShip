@@ -44,6 +44,7 @@ it in future.
   - The `--SND_design` option in `macro/run_simScript.py` now accepts multiple values and an 'all' option to enable all available SND designs.
   - The geometry configuration and detector setup (`geometry/geometry_config.py`, `python/shipDet_conf.py`) have been updated to instantiate all requested SND detectors.
   - This enables running with multiple SND subdetectors simultaneously and is future-proof for additional SND designs.
+* Added ACTS reconstruction scripts and digitisation configs
 
 ### Fixed
 
@@ -73,6 +74,7 @@ it in future.
 * fix(FixedTargetGenerator): Don't assume anything about the target substructure
 * Fix crash in run_simScript.py
 * Fix crash caused by decorators.py
+* Fix: Pythia changed several raw pointers to smart pointer
 
 ### Changed
 
