@@ -251,9 +251,9 @@ def configure_strawtubes(yaml_file, ship_geo):
 
     # Choose frame material
     if ship_geo.strawDesign == 4:
-        ship_geo.strawtubes_geo.frameMaterial = "aluminium"
+        ship_geo.strawtubes_geo.frame_material = "aluminium"
     elif ship_geo.strawDesign == 10:
-        ship_geo.strawtubes_geo.frameMaterial = "steel"
+        ship_geo.strawtubes_geo.frame_material = "steel"
 
     Strawtubes = ROOT.strawtubes(ship_geo.strawtubes_geo.medium)
     Strawtubes.SetzPositions(
@@ -267,22 +267,22 @@ def configure_strawtubes(yaml_file, ship_geo):
         ship_geo.strawtubes_geo.height,
     )
     Strawtubes.SetStrawDiameter(
-        ship_geo.strawtubes_geo.outerStrawDiameter,
-        ship_geo.strawtubes_geo.wallThickness,
+        ship_geo.strawtubes_geo.outer_straw_diameter,
+        ship_geo.strawtubes_geo.wall_thickness,
     )
     Strawtubes.SetStrawPitch(
-        ship_geo.strawtubes_geo.strawPitch,
-        ship_geo.strawtubes_geo.yLayerOffset,
+        ship_geo.strawtubes_geo.straw_pitch,
+        ship_geo.strawtubes_geo.y_layer_offset,
     )
-    Strawtubes.SetDeltazLayer(ship_geo.strawtubes_geo.deltazLayer)
-    Strawtubes.SetStereoAngle(ship_geo.strawtubes_geo.viewAngle)
-    Strawtubes.SetWireThickness(ship_geo.strawtubes_geo.wireThickness)
-    Strawtubes.SetDeltazView(ship_geo.strawtubes_geo.deltazView)
-    Strawtubes.SetFrameMaterial(ship_geo.strawtubes_geo.frameMaterial)
+    Strawtubes.SetDeltazLayer(ship_geo.strawtubes_geo.delta_z_layer)
+    Strawtubes.SetStereoAngle(ship_geo.strawtubes_geo.view_angle)
+    Strawtubes.SetWireThickness(ship_geo.strawtubes_geo.wire_thickness)
+    Strawtubes.SetDeltazView(ship_geo.strawtubes_geo.delta_z_view)
+    Strawtubes.SetFrameMaterial(ship_geo.strawtubes_geo.frame_material)
     Strawtubes.SetStationEnvelope(
-        ship_geo.strawtubes_geo.stationWidth,
-        ship_geo.strawtubes_geo.stationHeight,
-        ship_geo.strawtubes_geo.stationLength,
+        ship_geo.strawtubes_geo.station_width,
+        ship_geo.strawtubes_geo.station_height,
+        ship_geo.strawtubes_geo.station_length,
     )
 
     #For digitization
