@@ -107,7 +107,7 @@ ShipMCTrack::~ShipMCTrack() { }
 // -----   Public method Print   -------------------------------------------
 void ShipMCTrack::Print(Int_t trackId) const
 {
-  LOG(DEBUG) << "Track " << trackId << ", mother : " << fMotherId << ", Type "
+  LOG(debug) << "Track " << trackId << ", mother : " << fMotherId << ", Type "
              << fPdgCode << ", momentum (" << fPx << ", " << fPy << ", "
              << fPz << ") GeV" ;
  /* LOG(DEBUG2) << "       Ref " << GetNPoints(kREF)
@@ -172,7 +172,7 @@ Int_t ShipMCTrack::GetNPoints(DetectorId detId) const
   else if ( detId == kTutDet  ) { return ( (fNPoints & ( 7 <<  1) ) >>  1); }
   else if ( detId == kFairRutherford ) { return ( (fNPoints & (31 <<  4) ) >>  4); }
   else {
-    LOG(ERROR) << "Unknown detector ID " << detId ;
+    LOG(error) << "Unknown detector ID " << detId ;
     return 0;
   }
 */
@@ -204,7 +204,7 @@ void ShipMCTrack::SetNPoints(Int_t iDet, Int_t nPoints)
     fNPoints = ( fNPoints & ( ~ ( 31 <<  4 ) ) )  |  ( nPoints <<  4 );
   }
 
-  else LOG(ERROR) << "Unknown detector ID "  << iDet ;
+  else LOG(error) << "Unknown detector ID "  << iDet ;
 */
 }
 // -------------------------------------------------------------------------

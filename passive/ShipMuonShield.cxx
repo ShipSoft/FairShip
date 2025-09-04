@@ -348,7 +348,7 @@ Int_t ShipMuonShield::Initialize(std::vector<TString> &magnetName,
 				std::vector<Double_t> &gapIn, std::vector<Double_t> &gapOut,
 				std::vector<Double_t> &Z) {
   const Int_t nMagnets = 7;
-  LOG(INFO) << " Initialize the MS ";
+  LOG(info) << " Initialize the MS ";
   magnetName.reserve(nMagnets);
   fieldDirection.reserve(nMagnets);
   for (auto i :

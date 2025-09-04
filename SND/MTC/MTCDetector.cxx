@@ -669,7 +669,7 @@ void MTCDetector::SiPMmapping()
 {
     // check if containers are already filled
     if (!fibresSiPM_U.empty() || !fibresSiPM_V.empty() || !SiPMPos_U.empty() || !SiPMPos_V.empty()) {
-        LOG(WARN) << "SiPM mapping already done, skipping.";
+        LOG(warning) << "SiPM mapping already done, skipping.";
         return;
     }
     Float_t fibresRadius = -1;
@@ -775,7 +775,7 @@ void MTCDetector::Register()
     TString name = "MtcDetPoint";
     TString title = "MTC";
     FairRootManager::Instance()->Register(name, title, fMTCDetectorPointCollection, kTRUE);
-    LOG(DEBUG) << this->GetName() << ", Register() says: registered " << name << " collection";
+    LOG(debug) << this->GetName() << ", Register() says: registered " << name << " collection";
 }
 
 TClonesArray* MTCDetector::GetCollection(Int_t iColl) const
