@@ -98,7 +98,7 @@ Bool_t DPPythia8Generator::Init()
   else {
     if (!fpbremPDF) {
       //std::cout << " Failed in retrieving dark photon PDF for production by proton bremstrahlung! Exiting..." << std::endl;
-      LOG(FATAL) << "Failed in retrieving dark photon PDF for production by proton bremstrahlung!";
+      LOG(fatal) << "Failed in retrieving dark photon PDF for production by proton bremstrahlung!";
       return kFALSE;
     }
   }
@@ -131,7 +131,7 @@ Bool_t DPPythia8Generator::Init()
   if ( debug ){std::cout<<"Pythia initialisation bool: " << initPass << std::endl;}
 
   if (!initPass) {
-    LOG(FATAL) << "Pythia initialisation failed";
+    LOG(fatal) << "Pythia initialisation failed";
     return kFALSE;
   }
 
@@ -202,7 +202,7 @@ Bool_t DPPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
        fPythia->event.append( fDP, 1, 0, 0, dpmom * sin(thetain) * cos(phiin), dpmom * sin(thetain) * sin(phiin), dpmom * cos(thetain), dpe, dpm);
      }
 
-     if (!fPythia->next()) LOG(FATAL) << "fPythia->next() failed";
+     if (!fPythia->next()) LOG(fatal) << "fPythia->next() failed";
 
      //fPythia->event.list();
      for(int i=0; i<fPythia->event.size(); i++){

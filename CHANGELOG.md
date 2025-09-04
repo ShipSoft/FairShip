@@ -74,6 +74,7 @@ it in future.
 * fix(FixedTargetGenerator): Don't assume anything about the target substructure
 * Fix crash in run_simScript.py
 * Fix crash caused by decorators.py
+* Use lowercase FairLogger severities (uppercase ones are deprecated)
 
 ### Changed
 

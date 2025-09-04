@@ -91,7 +91,7 @@ Double_t EvtCalcGenerator::GetDauPDG(const std::unique_ptr<TTree>& tree, int dau
 Bool_t EvtCalcGenerator::ReadEvent(FairPrimaryGenerator* cpg)
 {
     if (fn == fNevents) {
-        LOG(WARNING) << "End of input file. Rewind.";
+        LOG(warning) << "End of input file. Rewind.";
         fn = 0;
     }
 

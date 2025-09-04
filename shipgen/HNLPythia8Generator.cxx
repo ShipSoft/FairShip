@@ -44,7 +44,7 @@ Bool_t HNLPythia8Generator::Init()
       fInputFile = TFile::Open(fextFile);
       LOG(info) << "Open external file with charm or beauty hadrons: " << fextFile;
       if (!fInputFile) {
-          LOG(FATAL) << "Error opening input file.";
+          LOG(fatal) << "Error opening input file.";
           return kFALSE;
       }
 
@@ -110,7 +110,7 @@ Bool_t HNLPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
 // correct for too much Ds produced by pythia6
     bool x = true;
     while(x){
-     if (fn==fNevents) {LOG(WARNING) << "End of input file. Rewind.";}
+     if (fn==fNevents) {LOG(warning) << "End of input file. Rewind.";}
      fTree->GetEntry(fn%fNevents);
      fn++;
      if ( static_cast<int>(fabs(hid[0]) ) != 431){ x = false; }

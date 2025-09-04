@@ -200,7 +200,7 @@ TParticle* ShipStack::GetCurrentTrack() const
 {
   TParticle* currentPart = GetParticle(fCurrentTrack);
   if ( ! currentPart) {
-    LOG(warn) << "ShipStack: Current track not found in stack!";
+    LOG(warning) << "ShipStack: Current track not found in stack!";
   }
   return currentPart;
 }
@@ -225,7 +225,7 @@ void ShipStack::AddParticle(TParticle* oldPart)
 void ShipStack::FillTrackArray()
 {
 
-  LOG(DEBUG) << "ShipStack: Filling MCTrack array...";
+  LOG(debug) << "ShipStack: Filling MCTrack array...";
 
   // --> Reset index map and number of output tracks
   fIndexMap.clear();
@@ -271,7 +271,7 @@ void ShipStack::FillTrackArray()
 void ShipStack::UpdateTrackIndex(TRefArray* detList)
 {
 
-  LOG(DEBUG) << "ShipStack: Updating track indizes...";
+  LOG(debug) << "ShipStack: Updating track indizes...";
   Int_t nColl = 0;
 
   // First update mother ID in MCTracks
