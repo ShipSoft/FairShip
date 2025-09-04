@@ -47,25 +47,18 @@ class strawtubes: public FairDetector
     /**      has to be called after each event to reset the containers      */
     virtual void   Reset();
 
-    void SetZpositions(Double_t z1, Double_t z2, Double_t z3, Double_t z4);
-    void SetStrawLength(Double_t strawlength);
-    void SetInnerStrawDiameter(Double_t innerstrawdiameter);
-    void SetOuterStrawDiameter(Double_t outerstrawdiameter);
-    void SetStrawPitch(Double_t strawpitch, Double_t layer_offset);
-    void SetDeltazLayer(Double_t deltazlayer);
-    void SetStrawsPerLayer(Int_t strawsperlayer);
-    void SetStereoAngle(Double_t stereoangle);
-    void SetWireThickness(Double_t wirethickness);
-    void SetDeltazFrame(Double_t deltazframe);
-    void SetFrameLateralWidth(Double_t framelateralwidth);
-    void SetFrameMaterial(TString framematerial);
-    void SetDeltazView(Double_t deltazview);
-    void SetVacBox_x(Double_t vacbox_x);
-    void SetVacBox_y(Double_t vacbox_y);
-    void set_station_height(Double_t station_height);
+    void SetzPositions(Double_t z1, Double_t z2, Double_t z3, Double_t z4);
+    void SetApertureArea(Double_t width, Double_t height);
+    void SetStrawDiameter(Double_t outer_straw_diameter, Double_t wall_thickness);
+    void SetStrawPitch(Double_t straw_pitch, Double_t layer_offset);
+    void SetDeltazLayer(Double_t delta_z_layer);
+    void SetStereoAngle(Double_t stereo_angle);
+    void SetWireThickness(Double_t wire_thickness);
+    void SetFrameMaterial(TString frame_material);
+    void SetDeltazView(Double_t delta_z_view);
+    void SetStationEnvelope(Double_t x, Double_t y, Double_t z);
     static std::tuple<Int_t, Int_t, Int_t, Int_t> StrawDecode(Int_t detID);
     static void StrawEndPoints(Int_t detID, TVector3& top, TVector3& bot);
-    void StrawEndPointsOriginal(Int_t detID, TVector3 &top, TVector3 &bot);
 // for the digitizing step
     void SetStrawResolution(Double_t a, Double_t b)
     {
@@ -108,38 +101,34 @@ class strawtubes: public FairDetector
     /** Track information to be stored until the track leaves the
     active volume.
     */
-    Int_t          fTrackID;                //!  track index
-    Int_t          fVolumeID;               //!  volume id
+    Int_t fTrackID;                         //!  track index
+    Int_t fVolumeID;                        //!  volume id
     TLorentzVector fPos;                    //!  position at entrance
     TLorentzVector fMom;                    //!  momentum at entrance
-    Double_t     fTime;                   //!  time
-    Double_t     fLength;                 //!  length
-    Double_t     fELoss;                  //!  energy loss
-    Double_t     fT1z;                    //!  z-position of tracking station 1
-    Double_t     fT2z;                    //!  z-position of tracking station 2
-    Double_t     fT3z;                    //!  z-position of tracking station 3
-    Double_t     fT4z;                    //!  z-position of tracking station 4
-    Double_t fStraw_length;               //!  Length (y) of a straw
-    Double_t     fInner_Straw_diameter;   //!  Inner Straw diameter
-    Double_t     fOuter_Straw_diameter;   //!  Outer Straw diameter
-    Double_t     fStraw_pitch;            //!  Distance (x) between straws in one layer
-    Double_t fDeltaz_layer12;             //!  Distance (z) between layer 1&2
-    Double_t fOffset_layer12;             //!  Offset (x) between straws of layer2&1
-    Int_t        fStraws_per_layer;       //!  Number of straws in one layer
-    Double_t     fView_angle;             //!  Stereo angle of layers in a view
-    Double_t     fcosphi;
-    Double_t     fsinphi;
-    Double_t     fWire_thickness;         //!  Thickness of the wire
-    Double_t fDeltaz_frame;               //!  Thickness (z) of the material frame
-    Double_t     fFrame_lateral_width;    //!  Width (x and y) of the material frame
-    TString      fFrame_material;         //!  Material of the view frame
-    Double_t     fDeltaz_view;            //!  Distance (z) between views
-    Double_t     fVacBox_x;               //!  x size of station vacuumbox
-    Double_t     fVacBox_y;               //!  y size of station vacuumbox
-    Double_t f_station_height;            //!  height of stations
-    Double_t     v_drift;                 //! drift velocity
-    Double_t     sigma_spatial;           //! spatial resolution
-    std::string fMedium;                  //! vacuum box medium
+    Double_t fTime;                         //!  time
+    Double_t fLength;                       //!  length
+    Double_t fELoss;                        //!  energy loss
+    Double_t f_T1_z;                        //!  z-position of tracking station 1
+    Double_t f_T2_z;                        //!  z-position of tracking station 2
+    Double_t f_T3_z;                        //!  z-position of tracking station 3
+    Double_t f_T4_z;                        //!  z-position of tracking station 4
+    Double_t f_aperture_width;              //!  Aperture width (x)
+    Double_t f_aperture_height;             //!  Aperture height (y)
+    Double_t f_inner_straw_diameter;        //!  Inner Straw diameter
+    Double_t f_outer_straw_diameter;        //!  Outer Straw diameter
+    Double_t f_straw_pitch;                 //!  Distance (y) between straws in a layer
+    Double_t f_offset_layer;                //!  Offset (y) of straws between layers
+    Double_t f_delta_z_layer;               //!  Distance (z) between layers
+    Double_t f_view_angle;                  //!  Stereo view angle
+    Double_t f_wire_thickness;              //!  Sense wire thickness
+    TString  f_frame_material;              //!  Structure frame material
+    Double_t f_delta_z_view;                //!  Distance (z) between stereo views
+    Double_t f_station_width;               //!  Station envelope width (x)
+    Double_t f_station_height;              //!  Station envelope height (y)
+    Double_t f_station_length;              //!  Station envelope length (z)
+    Double_t v_drift;                       //! drift velocity
+    Double_t sigma_spatial;                 //! spatial resolution
+    std::string fMedium;                    //! vacuum box medium
     /** container for data points */
 
     TClonesArray* fstrawtubesPointCollection;
