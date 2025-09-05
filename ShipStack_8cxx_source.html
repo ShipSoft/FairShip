@@ -312,7 +312,7 @@ $(document).ready(function(){initNavTree('ShipStack_8cxx_source.html',''); initR
 <div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span><span class="keyword"></span>{</div>
 <div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>  TParticle* currentPart = <a class="code hl_function" href="classShipStack.html#a77a5bbe99886c6fa1c89e922e70aaf91">GetParticle</a>(<a class="code hl_variable" href="classShipStack.html#afb8e3cc3f3e730bcfecc94331159f782">fCurrentTrack</a>);</div>
 <div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>  <span class="keywordflow">if</span> ( ! currentPart) {</div>
-<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>    LOG(warn) &lt;&lt; <span class="stringliteral">&quot;ShipStack: Current track not found in stack!&quot;</span>;</div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>    LOG(warning) &lt;&lt; <span class="stringliteral">&quot;ShipStack: Current track not found in stack!&quot;</span>;</div>
 <div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>  }</div>
 <div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>  <span class="keywordflow">return</span> currentPart;</div>
 <div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>}</div>
@@ -341,7 +341,7 @@ $(document).ready(function(){initNavTree('ShipStack_8cxx_source.html',''); initR
 <div class="line"><a id="l00225" name="l00225"></a><span class="lineno"><a class="line" href="classShipStack.html#ad087bd76823bb3497575596d03c2fc36">  225</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classShipStack.html#ad087bd76823bb3497575596d03c2fc36">ShipStack::FillTrackArray</a>()</div>
 <div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>{</div>
 <div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span> </div>
-<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>  LOG(DEBUG) &lt;&lt; <span class="stringliteral">&quot;ShipStack: Filling MCTrack array...&quot;</span>;</div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>  LOG(<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a>) &lt;&lt; <span class="stringliteral">&quot;ShipStack: Filling MCTrack array...&quot;</span>;</div>
 <div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span> </div>
 <div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>  <span class="comment">// --&gt; Reset index map and number of output tracks</span></div>
 <div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>  <a class="code hl_variable" href="classShipStack.html#a62a6738cf3dc430478e9dddfb8059c5e">fIndexMap</a>.clear();</div>
@@ -389,7 +389,7 @@ $(document).ready(function(){initNavTree('ShipStack_8cxx_source.html',''); initR
 <div class="line"><a id="l00271" name="l00271"></a><span class="lineno"><a class="line" href="classShipStack.html#aacfd8ef29d3b6a7e0033076335cd7504">  271</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classShipStack.html#aacfd8ef29d3b6a7e0033076335cd7504">ShipStack::UpdateTrackIndex</a>(TRefArray* detList)</div>
 <div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>{</div>
 <div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span> </div>
-<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>  LOG(DEBUG) &lt;&lt; <span class="stringliteral">&quot;ShipStack: Updating track indizes...&quot;</span>;</div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>  LOG(<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a>) &lt;&lt; <span class="stringliteral">&quot;ShipStack: Updating track indizes...&quot;</span>;</div>
 <div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>  Int_t nColl = 0;</div>
 <div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span> </div>
 <div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>  <span class="comment">// First update mother ID in MCTracks</span></div>

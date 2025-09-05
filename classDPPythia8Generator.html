@@ -575,7 +575,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">   98</span>  <span class="keywordflow">else</span> {</div>
 <div class="line"><span class="lineno">   99</span>    <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classDPPythia8Generator.html#ada885c6f0a157ff2257c3e110df06122">fpbremPDF</a>) {</div>
 <div class="line"><span class="lineno">  100</span>      <span class="comment">//std::cout &lt;&lt; &quot; Failed in retrieving dark photon PDF for production by proton bremstrahlung! Exiting...&quot; &lt;&lt; std::endl;</span></div>
-<div class="line"><span class="lineno">  101</span>      LOG(FATAL) &lt;&lt; <span class="stringliteral">&quot;Failed in retrieving dark photon PDF for production by proton bremstrahlung!&quot;</span>;</div>
+<div class="line"><span class="lineno">  101</span>      LOG(fatal) &lt;&lt; <span class="stringliteral">&quot;Failed in retrieving dark photon PDF for production by proton bremstrahlung!&quot;</span>;</div>
 <div class="line"><span class="lineno">  102</span>      <span class="keywordflow">return</span> kFALSE;</div>
 <div class="line"><span class="lineno">  103</span>    }</div>
 <div class="line"><span class="lineno">  104</span>  }</div>
@@ -608,7 +608,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  131</span>  <span class="keywordflow">if</span> ( <a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a> ){std::cout&lt;&lt;<span class="stringliteral">&quot;Pythia initialisation bool: &quot;</span> &lt;&lt; initPass &lt;&lt; std::endl;}</div>
 <div class="line"><span class="lineno">  132</span> </div>
 <div class="line"><span class="lineno">  133</span>  <span class="keywordflow">if</span> (!initPass) {</div>
-<div class="line"><span class="lineno">  134</span>    LOG(FATAL) &lt;&lt; <span class="stringliteral">&quot;Pythia initialisation failed&quot;</span>;</div>
+<div class="line"><span class="lineno">  134</span>    LOG(fatal) &lt;&lt; <span class="stringliteral">&quot;Pythia initialisation failed&quot;</span>;</div>
 <div class="line"><span class="lineno">  135</span>    <span class="keywordflow">return</span> kFALSE;</div>
 <div class="line"><span class="lineno">  136</span>  }</div>
 <div class="line"><span class="lineno">  137</span> </div>
@@ -867,7 +867,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  202</span>       <a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event.append( <a class="code hl_variable" href="classDPPythia8Generator.html#acb5f2970c7d3531611c856faff2cacd9">fDP</a>, 1, 0, 0, dpmom * sin(thetain) * cos(phiin), dpmom * sin(thetain) * sin(phiin), dpmom * cos(thetain), dpe, dpm);</div>
 <div class="line"><span class="lineno">  203</span>     }</div>
 <div class="line"><span class="lineno">  204</span> </div>
-<div class="line"><span class="lineno">  205</span>     <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;next()) LOG(FATAL) &lt;&lt; <span class="stringliteral">&quot;fPythia-&gt;next() failed&quot;</span>;</div>
+<div class="line"><span class="lineno">  205</span>     <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;next()) LOG(fatal) &lt;&lt; <span class="stringliteral">&quot;fPythia-&gt;next() failed&quot;</span>;</div>
 <div class="line"><span class="lineno">  206</span> </div>
 <div class="line"><span class="lineno">  207</span>     <span class="comment">//fPythia-&gt;event.list();</span></div>
 <div class="line"><span class="lineno">  208</span>     <span class="keywordflow">for</span>(<span class="keywordtype">int</span> i=0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>&lt;<a class="code hl_variable" href="classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a">fPythia</a>-&gt;event.size(); <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>++){</div>

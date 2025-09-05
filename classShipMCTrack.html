@@ -720,7 +720,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  172</span><span class="comment">  else if ( detId == kTutDet  ) { return ( (fNPoints &amp; ( 7 &lt;&lt;  1) ) &gt;&gt;  1); }</span></div>
 <div class="line"><span class="lineno">  173</span><span class="comment">  else if ( detId == kFairRutherford ) { return ( (fNPoints &amp; (31 &lt;&lt;  4) ) &gt;&gt;  4); }</span></div>
 <div class="line"><span class="lineno">  174</span><span class="comment">  else {</span></div>
-<div class="line"><span class="lineno">  175</span><span class="comment">    LOG(ERROR) &lt;&lt; &quot;Unknown detector ID &quot; &lt;&lt; detId ;</span></div>
+<div class="line"><span class="lineno">  175</span><span class="comment">    LOG(error) &lt;&lt; &quot;Unknown detector ID &quot; &lt;&lt; detId ;</span></div>
 <div class="line"><span class="lineno">  176</span><span class="comment">    return 0;</span></div>
 <div class="line"><span class="lineno">  177</span><span class="comment">  }</span></div>
 <div class="line"><span class="lineno">  178</span><span class="comment">*/</span></div>
@@ -1195,7 +1195,7 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="ShipMCTrack_8cxx_source.html#l00108">108</a> of file <a class="el" href="ShipMCTrack_8cxx_source.html">ShipMCTrack.cxx</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  109</span>{</div>
-<div class="line"><span class="lineno">  110</span>  LOG(DEBUG) &lt;&lt; <span class="stringliteral">&quot;Track &quot;</span> &lt;&lt; trackId &lt;&lt; <span class="stringliteral">&quot;, mother : &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipMCTrack.html#ad7463e52adca1897421b260e1c562595">fMotherId</a> &lt;&lt; <span class="stringliteral">&quot;, Type &quot;</span></div>
+<div class="line"><span class="lineno">  110</span>  LOG(<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a>) &lt;&lt; <span class="stringliteral">&quot;Track &quot;</span> &lt;&lt; trackId &lt;&lt; <span class="stringliteral">&quot;, mother : &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipMCTrack.html#ad7463e52adca1897421b260e1c562595">fMotherId</a> &lt;&lt; <span class="stringliteral">&quot;, Type &quot;</span></div>
 <div class="line"><span class="lineno">  111</span>             &lt;&lt; <a class="code hl_variable" href="classShipMCTrack.html#a42a2dc6cfca7d9f1ca600d77e6aa8bb6">fPdgCode</a> &lt;&lt; <span class="stringliteral">&quot;, momentum (&quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipMCTrack.html#aecc08672823ccbcc4293fe13588dcff1">fPx</a> &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipMCTrack.html#a246968245bcba8db4632b4a70d1f7db5">fPy</a> &lt;&lt; <span class="stringliteral">&quot;, &quot;</span></div>
 <div class="line"><span class="lineno">  112</span>             &lt;&lt; <a class="code hl_variable" href="classShipMCTrack.html#ae8b36ccecd131c72aac5ef7938e9b438">fPz</a> &lt;&lt; <span class="stringliteral">&quot;) GeV&quot;</span> ;</div>
 <div class="line"><span class="lineno">  113</span> <span class="comment">/* LOG(DEBUG2) &lt;&lt; &quot;       Ref &quot; &lt;&lt; GetNPoints(kREF)</span></div>
@@ -1203,6 +1203,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  115</span><span class="comment">              &lt;&lt; &quot;, Rutherford &quot; &lt;&lt; GetNPoints(kFairRutherford) ;</span></div>
 <div class="line"><span class="lineno">  116</span><span class="comment">*/</span></div>
 <div class="line"><span class="lineno">  117</span>}</div>
+<div class="ttc" id="aDPPythia8Generator_8cxx_html_a07cdd66ebb44c854868e1f85a375ac1e"><div class="ttname"><a href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a></div><div class="ttdeci">const Int_t debug</div><div class="ttdef"><b>Definition</b> <a href="DPPythia8Generator_8cxx_source.html#l00011">DPPythia8Generator.cxx:11</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1285,7 +1286,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  204</span><span class="comment">    fNPoints = ( fNPoints &amp; ( ~ ( 31 &lt;&lt;  4 ) ) )  |  ( nPoints &lt;&lt;  4 );</span></div>
 <div class="line"><span class="lineno">  205</span><span class="comment">  }</span></div>
 <div class="line"><span class="lineno">  206</span><span class="comment"></span> </div>
-<div class="line"><span class="lineno">  207</span><span class="comment">  else LOG(ERROR) &lt;&lt; &quot;Unknown detector ID &quot;  &lt;&lt; iDet ;</span></div>
+<div class="line"><span class="lineno">  207</span><span class="comment">  else LOG(error) &lt;&lt; &quot;Unknown detector ID &quot;  &lt;&lt; iDet ;</span></div>
 <div class="line"><span class="lineno">  208</span><span class="comment">*/</span></div>
 <div class="line"><span class="lineno">  209</span>}</div>
 </div><!-- fragment -->

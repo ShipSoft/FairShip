@@ -490,9 +490,9 @@ Private Member Functions</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">   31</span>                                                                      {</div>
 <div class="line"><span class="lineno">   32</span>  <a class="code hl_variable" href="classGenieGenerator.html#a4569f26c9518a1c247b6ac4b043c4c49">fNuOnly</a> = <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">   33</span>  <a class="code hl_variable" href="classGenieGenerator.html#ac41eff1990b44a13c75c97dfe3e735ea">fInputFile</a> = TFile::Open(fileName);</div>
-<div class="line"><span class="lineno">   34</span>  LOG(INFO) &lt;&lt; <span class="stringliteral">&quot;Opening input file &quot;</span> &lt;&lt; fileName;</div>
+<div class="line"><span class="lineno">   34</span>  LOG(info) &lt;&lt; <span class="stringliteral">&quot;Opening input file &quot;</span> &lt;&lt; fileName;</div>
 <div class="line"><span class="lineno">   35</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classGenieGenerator.html#ac41eff1990b44a13c75c97dfe3e735ea">fInputFile</a>) {</div>
-<div class="line"><span class="lineno">   36</span>      LOG(FATAL) &lt;&lt; <span class="stringliteral">&quot;Error opening input file.&quot;</span>;</div>
+<div class="line"><span class="lineno">   36</span>      LOG(fatal) &lt;&lt; <span class="stringliteral">&quot;Error opening input file.&quot;</span>;</div>
 <div class="line"><span class="lineno">   37</span>      <span class="keywordflow">return</span> kFALSE;</div>
 <div class="line"><span class="lineno">   38</span>  }</div>
 <div class="line"><span class="lineno">   39</span>  <a class="code hl_variable" href="classGenieGenerator.html#ab6e30a2e0707acef1fcd79763ca73b22">fTree</a> = <span class="keyword">dynamic_cast&lt;</span>TTree*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="classGenieGenerator.html#ac41eff1990b44a13c75c97dfe3e735ea">fInputFile</a>-&gt;Get(<span class="stringliteral">&quot;gst&quot;</span>));</div>
@@ -848,7 +848,7 @@ Private Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  311</span>     }</div>
 <div class="line"><span class="lineno">  312</span>     <a class="code hl_variable" href="classGenieGenerator.html#aba38c73a43ff049c0a7eec47faf4de85">fFirst</a> = kFALSE;</div>
 <div class="line"><span class="lineno">  313</span>    }</div>
-<div class="line"><span class="lineno">  314</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classGenieGenerator.html#ad02010051c3bdef66eb4f82c960ae661">fn</a>==<a class="code hl_variable" href="classGenieGenerator.html#af0f84554d20d2491d7414948b5d6f2dd">fNevents</a>) {LOG(WARNING) &lt;&lt; <span class="stringliteral">&quot;End of input file. Rewind.&quot;</span>;}</div>
+<div class="line"><span class="lineno">  314</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classGenieGenerator.html#ad02010051c3bdef66eb4f82c960ae661">fn</a>==<a class="code hl_variable" href="classGenieGenerator.html#af0f84554d20d2491d7414948b5d6f2dd">fNevents</a>) {LOG(warning) &lt;&lt; <span class="stringliteral">&quot;End of input file. Rewind.&quot;</span>;}</div>
 <div class="line"><span class="lineno">  315</span>    <a class="code hl_variable" href="classGenieGenerator.html#ab6e30a2e0707acef1fcd79763ca73b22">fTree</a>-&gt;GetEntry(<a class="code hl_variable" href="classGenieGenerator.html#ad02010051c3bdef66eb4f82c960ae661">fn</a>%<a class="code hl_variable" href="classGenieGenerator.html#af0f84554d20d2491d7414948b5d6f2dd">fNevents</a>);</div>
 <div class="line"><span class="lineno">  316</span>    <a class="code hl_variable" href="classGenieGenerator.html#ad02010051c3bdef66eb4f82c960ae661">fn</a>++;</div>
 <div class="line"><span class="lineno">  317</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classGenieGenerator.html#ad02010051c3bdef66eb4f82c960ae661">fn</a>%1000==0) {</div>
@@ -1022,7 +1022,7 @@ Private Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  449</span>      <a class="code hl_variable" href="classGenieGenerator.html#aba38c73a43ff049c0a7eec47faf4de85">fFirst</a> = kFALSE;</div>
 <div class="line"><span class="lineno">  450</span>    }</div>
 <div class="line"><span class="lineno">  451</span> </div>
-<div class="line"><span class="lineno">  452</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classGenieGenerator.html#ad02010051c3bdef66eb4f82c960ae661">fn</a>==<a class="code hl_variable" href="classGenieGenerator.html#af0f84554d20d2491d7414948b5d6f2dd">fNevents</a>) {LOG(WARNING) &lt;&lt; <span class="stringliteral">&quot;End of input file. Rewind.&quot;</span>;}</div>
+<div class="line"><span class="lineno">  452</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classGenieGenerator.html#ad02010051c3bdef66eb4f82c960ae661">fn</a>==<a class="code hl_variable" href="classGenieGenerator.html#af0f84554d20d2491d7414948b5d6f2dd">fNevents</a>) {LOG(warning) &lt;&lt; <span class="stringliteral">&quot;End of input file. Rewind.&quot;</span>;}</div>
 <div class="line"><span class="lineno">  453</span>    <a class="code hl_variable" href="classGenieGenerator.html#ab6e30a2e0707acef1fcd79763ca73b22">fTree</a>-&gt;GetEntry(<a class="code hl_variable" href="classGenieGenerator.html#ad02010051c3bdef66eb4f82c960ae661">fn</a>%<a class="code hl_variable" href="classGenieGenerator.html#af0f84554d20d2491d7414948b5d6f2dd">fNevents</a>);</div>
 <div class="line"><span class="lineno">  454</span>    <a class="code hl_variable" href="classGenieGenerator.html#ad02010051c3bdef66eb4f82c960ae661">fn</a>++;</div>
 <div class="line"><span class="lineno">  455</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classGenieGenerator.html#ad02010051c3bdef66eb4f82c960ae661">fn</a>%100==0) {</div>

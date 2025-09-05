@@ -503,7 +503,7 @@ Private Attributes</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="ShipStack_8cxx_source.html#l00225">225</a> of file <a class="el" href="ShipStack_8cxx_source.html">ShipStack.cxx</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  226</span>{</div>
 <div class="line"><span class="lineno">  227</span> </div>
-<div class="line"><span class="lineno">  228</span>  LOG(DEBUG) &lt;&lt; <span class="stringliteral">&quot;ShipStack: Filling MCTrack array...&quot;</span>;</div>
+<div class="line"><span class="lineno">  228</span>  LOG(<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a>) &lt;&lt; <span class="stringliteral">&quot;ShipStack: Filling MCTrack array...&quot;</span>;</div>
 <div class="line"><span class="lineno">  229</span> </div>
 <div class="line"><span class="lineno">  230</span>  <span class="comment">// --&gt; Reset index map and number of output tracks</span></div>
 <div class="line"><span class="lineno">  231</span>  <a class="code hl_variable" href="classShipStack.html#a62a6738cf3dc430478e9dddfb8059c5e">fIndexMap</a>.clear();</div>
@@ -541,6 +541,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  263</span>  <span class="comment">//Print(1);</span></div>
 <div class="line"><span class="lineno">  264</span> </div>
 <div class="line"><span class="lineno">  265</span>}</div>
+<div class="ttc" id="aDPPythia8Generator_8cxx_html_a07cdd66ebb44c854868e1f85a375ac1e"><div class="ttname"><a href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a></div><div class="ttdeci">const Int_t debug</div><div class="ttdef"><b>Definition</b> <a href="DPPythia8Generator_8cxx_source.html#l00011">DPPythia8Generator.cxx:11</a></div></div>
 <div class="ttc" id="aShipDetectorList_8h_html_a1806da1a0fbae8ab81f7330906f65680a614063d893e517df9b074827fa7206ca"><div class="ttname"><a href="ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a614063d893e517df9b074827fa7206ca">kEndOfList</a></div><div class="ttdeci">@ kEndOfList</div><div class="ttdef"><b>Definition</b> <a href="ShipDetectorList_8h_source.html#l00036">ShipDetectorList.h:35</a></div></div>
 <div class="ttc" id="aShipDetectorList_8h_html_a1806da1a0fbae8ab81f7330906f65680aa289a1b27d8c77391b88e9a794da84c2"><div class="ttname"><a href="ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680aa289a1b27d8c77391b88e9a794da84c2">kVETO</a></div><div class="ttdeci">@ kVETO</div><div class="ttdef"><b>Definition</b> <a href="ShipDetectorList_8h_source.html#l00013">ShipDetectorList.h:13</a></div></div>
 <div class="ttc" id="aclassShipMCTrack_html"><div class="ttname"><a href="classShipMCTrack.html">ShipMCTrack</a></div><div class="ttdef"><b>Definition</b> <a href="ShipMCTrack_8h_source.html#l00026">ShipMCTrack.h:27</a></div></div>
@@ -612,7 +613,7 @@ Private Attributes</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">  200</span>{</div>
 <div class="line"><span class="lineno">  201</span>  TParticle* currentPart = <a class="code hl_function" href="classShipStack.html#a77a5bbe99886c6fa1c89e922e70aaf91">GetParticle</a>(<a class="code hl_variable" href="classShipStack.html#afb8e3cc3f3e730bcfecc94331159f782">fCurrentTrack</a>);</div>
 <div class="line"><span class="lineno">  202</span>  <span class="keywordflow">if</span> ( ! currentPart) {</div>
-<div class="line"><span class="lineno">  203</span>    LOG(warn) &lt;&lt; <span class="stringliteral">&quot;ShipStack: Current track not found in stack!&quot;</span>;</div>
+<div class="line"><span class="lineno">  203</span>    LOG(warning) &lt;&lt; <span class="stringliteral">&quot;ShipStack: Current track not found in stack!&quot;</span>;</div>
 <div class="line"><span class="lineno">  204</span>  }</div>
 <div class="line"><span class="lineno">  205</span>  <span class="keywordflow">return</span> currentPart;</div>
 <div class="line"><span class="lineno">  206</span>}</div>
@@ -1642,7 +1643,7 @@ Private Attributes</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="ShipStack_8cxx_source.html#l00271">271</a> of file <a class="el" href="ShipStack_8cxx_source.html">ShipStack.cxx</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  272</span>{</div>
 <div class="line"><span class="lineno">  273</span> </div>
-<div class="line"><span class="lineno">  274</span>  LOG(DEBUG) &lt;&lt; <span class="stringliteral">&quot;ShipStack: Updating track indizes...&quot;</span>;</div>
+<div class="line"><span class="lineno">  274</span>  LOG(<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a>) &lt;&lt; <span class="stringliteral">&quot;ShipStack: Updating track indizes...&quot;</span>;</div>
 <div class="line"><span class="lineno">  275</span>  Int_t nColl = 0;</div>
 <div class="line"><span class="lineno">  276</span> </div>
 <div class="line"><span class="lineno">  277</span>  <span class="comment">// First update mother ID in MCTracks</span></div>
@@ -1693,7 +1694,6 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  322</span>  }     <span class="comment">// List of active detectors</span></div>
 <div class="line"><span class="lineno">  323</span>  LOGF(<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a>, <span class="stringliteral">&quot;...stack and  %i collections updated.&quot;</span>, nColl);</div>
 <div class="line"><span class="lineno">  324</span>}</div>
-<div class="ttc" id="aDPPythia8Generator_8cxx_html_a07cdd66ebb44c854868e1f85a375ac1e"><div class="ttname"><a href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a></div><div class="ttdeci">const Int_t debug</div><div class="ttdef"><b>Definition</b> <a href="DPPythia8Generator_8cxx_source.html#l00011">DPPythia8Generator.cxx:11</a></div></div>
 <div class="ttc" id="aclassShipMCTrack_html_ad57186961bdca404c3d47533e397a37c"><div class="ttname"><a href="classShipMCTrack.html#ad57186961bdca404c3d47533e397a37c">ShipMCTrack::GetMotherId</a></div><div class="ttdeci">Int_t GetMotherId() const</div><div class="ttdef"><b>Definition</b> <a href="ShipMCTrack_8h_source.html#l00059">ShipMCTrack.h:59</a></div></div>
 <div class="ttc" id="aclassShipMCTrack_html_aed646f8b1bc5dcbebe1f263adc503dae"><div class="ttname"><a href="classShipMCTrack.html#aed646f8b1bc5dcbebe1f263adc503dae">ShipMCTrack::SetMotherId</a></div><div class="ttdeci">void SetMotherId(Int_t id)</div><div class="ttdef"><b>Definition</b> <a href="ShipMCTrack_8h_source.html#l00088">ShipMCTrack.h:88</a></div></div>
 </div><!-- fragment -->
