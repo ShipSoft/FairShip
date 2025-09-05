@@ -57,6 +57,7 @@ group = parser.add_mutually_exclusive_group()
 parser.add_argument("--evtcalc", help="Use EventCalc", action="store_true")
 parser.add_argument("--Pythia6", dest="pythia6", help="Use Pythia6", action="store_true")
 parser.add_argument("--Pythia8", dest="pythia8", help="Use Pythia8", action="store_true")
+parser.add_argument("--EvtGenDecayer", dest="evtgen_decayer", help="Use TEvtGenDecayer for J/psi and other quarkonium decays", action="store_true")
 # === PG subcommand ===
 subparsers = parser.add_subparsers(dest="command", help="Which mode to run")
 pg_parser = subparsers.add_parser("PG", help="Use Particle Gun")
@@ -292,6 +293,7 @@ rtdb = run.GetRuntimeDb()
 # import shipMuShield_only as shipDet_conf # special use case for an attempt to convert active shielding geometry for use with FLUKA
 # import shipTarget_only as shipDet_conf
 import shipDet_conf
+
 modules = shipDet_conf.configure(run,ship_geo)
 # -----Create PrimaryGenerator--------------------------------------
 primGen = ROOT.FairPrimaryGenerator()
@@ -515,12 +517,22 @@ run.SetGenerator(primGen)
 #--- Use it only to display but not for production!
 if options.eventDisplay: run.SetStoreTraj(ROOT.kTRUE)
 else:            run.SetStoreTraj(ROOT.kFALSE)
+
+# -----Configure external decayer globally------------------------------------
+# Override any previous SetPythiaDecayer calls if EvtGenDecayer is requested
+if options.evtgen_decayer:
+    run.SetPythiaDecayer('DecayConfigTEvtGen.C')
+    print('Using TEvtGenDecayer for J/psi and quarkonium decays with EvtGen')
+
 # -----Initialize simulation run------------------------------------
 run.Init()
 if options.dryrun: # Early stop after setting up Pythia 8
  sys.exit(0)
 gMC = ROOT.TVirtualMC.GetMC()
 fStack = gMC.GetStack()
+
+# -----J/psi external decayer configuration handled in g4config.in------------------------------------
+# VMC command /mcPhysics/setExtDecayerSelection J/psi forces external decayer usage
 EnergyCut = 10. * u.MeV if options.mudis else 100. * u.MeV
 
 if MCTracksWithHitsOnly:
@@ -548,6 +560,7 @@ if options.eventDisplay:
 
 # The VMC sets the fields using the "/mcDet/setIsLocalMagField true" option in "gconfig/g4config.in"
 import geomGeant4
+
 # geomGeant4.setMagnetField() # replaced by VMC, only has effect if /mcDet/setIsLocalMagField  false
 
 # Define extra VMC B fields not already set by the geometry definitions, e.g. a global field,
@@ -581,6 +594,7 @@ getattr(rtdb,"print")()
 run.CreateGeometryFile(f"{options.outputDir}/geofile_full.{tag}.root")
 # save ShipGeo dictionary in geofile
 import saveBasicParameters
+
 saveBasicParameters.execute(f"{options.outputDir}/geofile_full.{tag}.root",ship_geo)
 
 # checking for overlaps
@@ -699,6 +713,8 @@ if options.mudis:
 
 # ------------------------------------------------------------------------
 import checkMagFields
+
+
 def visualizeMagFields():
  checkMagFields.run()
 def checkOverlapsWithGeant4():
