@@ -351,8 +351,8 @@ if options.pythia8:
   passDPconf = pythia8darkphoton_conf.configure(P8gen,options.theMass,options.theDPepsilon,inclusive, motherMode, options.deepCopy)
   if (passDPconf!=1): sys.exit()
  if HNL or options.RPVSUSY or options.DarkPhoton:
-  P8gen.SetSmearBeam(options.SmearBeam*10) # Gaussian beam smearing (convert cm to Pythia8 mm)
-  P8gen.SetPaintRadius(options.PaintBeam*10) # beam painting radius (convert cm to Pythia8 mm)
+  P8gen.SetSmearBeam(options.SmearBeam * u.cm) # Gaussian beam smearing
+  P8gen.SetPaintRadius(options.PaintBeam * u.cm) # beam painting radius
   P8gen.SetLmin((ship_geo.Chamber1.z - ship_geo.chambers.Tub1length) - ship_geo.target.z0 )
   P8gen.SetLmax(ship_geo.TrackStation1.z - ship_geo.target.z0 )
  if charmonly:
