@@ -13,10 +13,6 @@
 
 class FairPrimaryGenerator;
 
-namespace {
-	const Double_t cm = 10.;  // Pythia8 units
-}
-
 class PyTr1Rng : public Pythia8::RndmEngine
 {
  public:
@@ -64,10 +60,10 @@ class HNLPythia8Generator : public FairGenerator
   void SetMom(Double_t mom) { fMom = mom; };
   void SetId(Double_t id) { fId  = id; };
   void SetHNLId(Int_t id) { fHNL = id; };
-  void SetLmin(Double_t z) { fLmin = z * cm; };
-  void SetLmax(Double_t z) { fLmax = z * cm; };
-  void SetSmearBeam(Double_t sb) { fsmearBeam = sb * cm; };
-  void SetPaintRadius(Double_t r) { fPaintBeam = r * cm; };
+  void SetLmin(Double_t z) { fLmin = z * 10; };  // Conversion from cm to mm
+  void SetLmax(Double_t z) { fLmax = z * 10; };  // Conversion from cm to mm
+  void SetSmearBeam(Double_t sb) { fsmearBeam = sb * 10; };  // Conversion from cm to mm
+  void SetPaintRadius(Double_t r) { fPaintBeam = r * 10; };  // Conversion from cm to mm
   void SetfFDs(Double_t z) { fFDs = z; };
   void UseRandom1() { fUseRandom1 = kTRUE; fUseRandom3 = kFALSE; };
   void UseRandom3() { fUseRandom1 = kFALSE; fUseRandom3 = kTRUE; };
