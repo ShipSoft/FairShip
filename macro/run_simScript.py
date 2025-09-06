@@ -241,6 +241,7 @@ ROOT.gRandom.SetSeed(options.theSeed)  # this should be propagated via ROOT to P
 shipRoot_conf.configure(0)     # load basic libraries, prepare atexit for python
 
 # Configure FairLogger verbosity based on debug level
+ROOT.gInterpreter.ProcessLine('#include "FairLogger.h"')
 if options.debug == 0:
     ROOT.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("info");')
 elif options.debug == 1:
