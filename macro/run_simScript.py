@@ -33,7 +33,7 @@ MCTracksWithHitsOrEnergyCut = False # or of above, factor 2 file size increase c
 charmonly    = False  # option to be set with -A to enable only charm decays, charm x-sec measurement
 HNL          = True
 
-inputFile    = "/eos/experiment/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-978Bpot.root"
+inputFile    = "$EOSSHIP/eos/experiment/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-978Bpot.root"
 defaultInputFile = True
 
 globalDesigns = {
@@ -190,7 +190,7 @@ else:
 
 if options.A != 'c':
      inclusive = options.A
-     if options.A =='b': inputFile = "/eos/experiment/ship/data/Beauty/Cascade-run0-19-parp16-MSTP82-1-MSEL5-5338Bpot.root"
+     if options.A =='b': inputFile = "$EOSSHIP/eos/experiment/ship/data/Beauty/Cascade-run0-19-parp16-MSTP82-1-MSEL5-5338Bpot.root"
      if options.A.lower() == 'charmonly':
            charmonly = True
            HNL = False
@@ -225,15 +225,15 @@ if (HNL and options.RPVSUSY) or (HNL and options.DarkPhoton) or (options.DarkPho
  sys.exit(2)
 
 if (options.genie or options.nuradio) and defaultInputFile:
-  inputFile = "/eos/experiment/ship/data/GenieEvents/genie-nu_mu.root"
+  inputFile = "$EOSSHIP/eos/experiment/ship/data/GenieEvents/genie-nu_mu.root"
 if options.mudis and defaultInputFile:
   print('input file required if simEngine = muonDIS')
-  print(" for example -f  /eos/experiment/ship/data/muonDIS/muonDis_1.root")
+  print(" for example -f  $EOSSHIP/eos/experiment/ship/data/muonDIS/muonDis_1.root")
   sys.exit()
 
 if (options.ntuple or options.muonback) and defaultInputFile :
   print('input file required if simEngine = Ntuple or MuonBack')
-  print(" for example -f /eos/experiment/ship/data/Mbias/pythia8_Geant4-withCharm_onlyMuons_4magTarget.root")
+  print(" for example -f $EOSSHIP/eos/experiment/ship/data/Mbias/pythia8_Geant4-withCharm_onlyMuons_4magTarget.root")
   sys.exit()
 ROOT.gRandom.SetSeed(options.theSeed)  # this should be propagated via ROOT to Pythia8 and Geant4VMC
 shipRoot_conf.configure(0)     # load basic libraries, prepare atexit for python
