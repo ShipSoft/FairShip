@@ -132,7 +132,7 @@ $(document).ready(function(){initNavTree('run__simScript_8py_source.html',''); i
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#a2083b32e124ebe00d7ef44712e5bacea">   33</a></span>charmonly    = <span class="keyword">False</span>  <span class="comment"># option to be set with -A to enable only charm decays, charm x-sec measurement</span></div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#a1dac2c9d322e66f5d1bcb8374999423b">   34</a></span>HNL          = <span class="keyword">True</span></div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#a65fca546a6def5dfc16a44c8b410412e">   36</a></span>inputFile    = <span class="stringliteral">&quot;/eos/experiment/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-978Bpot.root&quot;</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#a65fca546a6def5dfc16a44c8b410412e">   36</a></span>inputFile    = <span class="stringliteral">&quot;$EOSSHIP/eos/experiment/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-978Bpot.root&quot;</span></div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#a084eb019e806aaaf7f1bc12e43fd1278">   37</a></span>defaultInputFile = <span class="keyword">True</span></div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="namespacerun__simScript.html#ab3b74983cf75a74d2821ef452c77ae7a">   39</a></span>globalDesigns = {</div>
@@ -289,7 +289,7 @@ $(document).ready(function(){initNavTree('run__simScript_8py_source.html',''); i
 <div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span> </div>
 <div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span><span class="keywordflow">if</span> options.A != <span class="stringliteral">&#39;c&#39;</span>:</div>
 <div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>     inclusive = options.A</div>
-<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>     <span class="keywordflow">if</span> options.A ==<span class="stringliteral">&#39;b&#39;</span>: inputFile = <span class="stringliteral">&quot;/eos/experiment/ship/data/Beauty/Cascade-run0-19-parp16-MSTP82-1-MSEL5-5338Bpot.root&quot;</span></div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>     <span class="keywordflow">if</span> options.A ==<span class="stringliteral">&#39;b&#39;</span>: inputFile = <span class="stringliteral">&quot;$EOSSHIP/eos/experiment/ship/data/Beauty/Cascade-run0-19-parp16-MSTP82-1-MSEL5-5338Bpot.root&quot;</span></div>
 <div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>     <span class="keywordflow">if</span> options.A.lower() == <span class="stringliteral">&#39;charmonly&#39;</span>:</div>
 <div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>           charmonly = <span class="keyword">True</span></div>
 <div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>           HNL = <span class="keyword">False</span></div>
@@ -324,15 +324,15 @@ $(document).ready(function(){initNavTree('run__simScript_8py_source.html',''); i
 <div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span> sys.exit(2)</div>
 <div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span> </div>
 <div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span><span class="keywordflow">if</span> (options.genie <span class="keywordflow">or</span> options.nuradio) <span class="keywordflow">and</span> defaultInputFile:</div>
-<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>  inputFile = <span class="stringliteral">&quot;/eos/experiment/ship/data/GenieEvents/genie-nu_mu.root&quot;</span></div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>  inputFile = <span class="stringliteral">&quot;$EOSSHIP/eos/experiment/ship/data/GenieEvents/genie-nu_mu.root&quot;</span></div>
 <div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span><span class="keywordflow">if</span> options.mudis <span class="keywordflow">and</span> defaultInputFile:</div>
 <div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>  print(<span class="stringliteral">&#39;input file required if simEngine = muonDIS&#39;</span>)</div>
-<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>  print(<span class="stringliteral">&quot; for example -f  /eos/experiment/ship/data/muonDIS/muonDis_1.root&quot;</span>)</div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>  print(<span class="stringliteral">&quot; for example -f  $EOSSHIP/eos/experiment/ship/data/muonDIS/muonDis_1.root&quot;</span>)</div>
 <div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>  sys.exit()</div>
 <div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span> </div>
 <div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span><span class="keywordflow">if</span> (options.ntuple <span class="keywordflow">or</span> options.muonback) <span class="keywordflow">and</span> defaultInputFile :</div>
 <div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>  print(<span class="stringliteral">&#39;input file required if simEngine = Ntuple or MuonBack&#39;</span>)</div>
-<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>  print(<span class="stringliteral">&quot; for example -f /eos/experiment/ship/data/Mbias/pythia8_Geant4-withCharm_onlyMuons_4magTarget.root&quot;</span>)</div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>  print(<span class="stringliteral">&quot; for example -f $EOSSHIP/eos/experiment/ship/data/Mbias/pythia8_Geant4-withCharm_onlyMuons_4magTarget.root&quot;</span>)</div>
 <div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>  sys.exit()</div>
 <div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>ROOT.gRandom.SetSeed(options.theSeed)  <span class="comment"># this should be propagated via ROOT to Pythia8 and Geant4VMC</span></div>
 <div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span><a class="code hl_function" href="namespaceshipRoot__conf.html#a4bb207e902847385c1369c120d9063ec">shipRoot_conf.configure</a>(0)     <span class="comment"># load basic libraries, prepare atexit for python</span></div>
