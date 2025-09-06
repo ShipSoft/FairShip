@@ -242,13 +242,13 @@ shipRoot_conf.configure(0)     # load basic libraries, prepare atexit for python
 
 # Configure FairLogger verbosity based on debug level
 if options.debug == 0:
-    ROOT.fair.Logger.SetConsoleSeverity("info")
+    ROOT.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("info");')
 elif options.debug == 1:
-    ROOT.fair.Logger.SetConsoleSeverity("debug")
+    ROOT.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("debug");')
 elif options.debug == 2:
-    ROOT.fair.Logger.SetConsoleSeverity("debug1")
+    ROOT.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("debug1");')
 elif options.debug == 3:
-    ROOT.fair.Logger.SetConsoleSeverity("debug2")
+    ROOT.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("debug2");')
 ship_geo = ConfigRegistry.loadpy(
      "$FAIRSHIP/geometry/geometry_config.py",
      Yheight=options.dy,
