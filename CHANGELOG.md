@@ -75,6 +75,7 @@ it in future.
 * Fix crash in run_simScript.py
 * Fix crash caused by decorators.py
 * Use lowercase FairLogger severities (uppercase ones are deprecated)
+* Correct paths for default input files
 
 ### Changed
 
