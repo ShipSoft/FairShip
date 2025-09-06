@@ -143,7 +143,9 @@ parser.add_argument("--dry-run", dest="dryrun", help="stop after initialize", ac
 parser.add_argument("-D", "--display", dest="eventDisplay", help="store trajectories", action="store_true")
 parser.add_argument("--shieldName", help="The name of the muon shield in the database to use.", default="New_HA_Design", choices=["New_HA_Design", "warm_opt"])
 parser.add_argument("--MesonMother", dest="MM", help="Choose DP production meson source: pi0, eta, omega, eta1, eta11", default='pi0')
-parser.add_argument("--debug", help="1: print weights and field 2: make overlap check", default=0, type=int, choices=range(0,3))
+parser.add_argument("--debug", help="Control FairLogger verbosity: 0=info (default), 1=+debug, 2=+debug1, 3=+debug2", default=0, type=int, choices=range(0,4))
+parser.add_argument("--print-fields", help="Print VMC fields and weights information", action="store_true")
+parser.add_argument("--check-overlaps", help="Perform geometry overlap checking", action="store_true")
 parser.add_argument("--field_map", default=None, help="Specify spectrometer field map.")
 parser.add_argument("--z-offset", dest="z_offset", help="z-offset for the FixedTargetGenerator [mm]", default=-84., type=float)
 parser.add_argument(
@@ -237,6 +239,17 @@ if (options.ntuple or options.muonback) and defaultInputFile :
   sys.exit()
 ROOT.gRandom.SetSeed(options.theSeed)  # this should be propagated via ROOT to Pythia8 and Geant4VMC
 shipRoot_conf.configure(0)     # load basic libraries, prepare atexit for python
+
+# Configure FairLogger verbosity based on debug level
+ROOT.gInterpreter.ProcessLine('#include "FairLogger.h"')
+if options.debug == 0:
+    ROOT.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("info");')
+elif options.debug == 1:
+    ROOT.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("debug");')
+elif options.debug == 2:
+    ROOT.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("debug1");')
+elif options.debug == 3:
+    ROOT.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("debug2");')
 ship_geo = ConfigRegistry.loadpy(
      "$FAIRSHIP/geometry/geometry_config.py",
      Yheight=options.dy,
@@ -559,7 +572,7 @@ if hasattr(ship_geo.Bfield,"fieldMap"):
      fieldMaker = geomGeant4.addVMCFields(ship_geo, verbose=True)
 
 # Print VMC fields and associated geometry objects
-if options.debug == 1:
+if options.print_fields:
  geomGeant4.printVMCFields()
  geomGeant4.printWeightsandFields(onlyWithField = True,\
              exclude=['DecayVolume','Tr1','Tr2','Tr3','Tr4','Veto','Ecal','Hcal','MuonDetector','SplitCal'])
@@ -584,7 +597,7 @@ import saveBasicParameters
 saveBasicParameters.execute(f"{options.outputDir}/geofile_full.{tag}.root",ship_geo)
 
 # checking for overlaps
-if options.debug == 2:
+if options.check_overlaps:
  ROOT.gROOT.SetWebDisplay("off")  # Workaround for https://github.com/root-project/root/issues/18881
  fGeo = ROOT.gGeoManager
  fGeo.SetNmeshPoints(10000)

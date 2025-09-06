@@ -45,6 +45,7 @@ it in future.
   - The geometry configuration and detector setup (`geometry/geometry_config.py`, `python/shipDet_conf.py`) have been updated to instantiate all requested SND detectors.
   - This enables running with multiple SND subdetectors simultaneously and is future-proof for additional SND designs.
 * Add support for Pythia 8.3xx. 8.2xx is still supported via preprocessor macros for the time being.
+* Add dedicated --print-fields and --check-overlaps flags to run_simScript.py to use these debug tools.
 
 ### Fixed
 
@@ -125,6 +126,7 @@ it in future.
   - Add `SetTargetCoordinates()` method for robust geometry-based target configuration
   - Maintain backward compatibility with legacy TGeo navigation as fallback
 - The decorators from decorators.py now need to be applied explicitly using the new `apply_decorators` function.
+- The --debug flag to run_simScript.py now controls the severity that FairLogger logs.
 
 ### Removed
 
