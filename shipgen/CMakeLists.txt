@@ -68,6 +68,7 @@ CosmicsGenerator.cxx
 MuDISGenerator.cxx
 FixedTargetGenerator.cxx
 EvtCalcGenerator.cxx
+BeamSmearingUtils.cxx
 )
 
 set(LINKDEF GenLinkDef.h)

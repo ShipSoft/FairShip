@@ -1,3 +1,4 @@
+#include "BeamSmearingUtils.h"
 #include "EvtGenBase/EvtRandom.hh"
 #include "EvtGenBase/EvtSimpleRandomEngine.hh"
 #include "FairMCEventHeader.h"
@@ -5,6 +6,7 @@
 #include "Pythia8Plugins/EvtGen.h"
 #include "FixedTargetGenerator.h"
 #include "HNLPythia8Generator.h"
+#include "ShipUnit.h"
 #include "TGeoBBox.h"
 #include "TGeoNode.h"
 #include "TGeoVolume.h"
@@ -16,7 +18,8 @@
 #include <array>
 #include <math.h>
 
-const Double_t cm = 10.; // pythia units are mm
+using ShipUnit::cm;
+using ShipUnit::mm;
 const Double_t c_light = 2.99792458e+10; // speed of light in cm/sec (c_light   = 2.99792458e+8 * m/s)
 const Double_t mbarn = 1E-3*1E-24*TMath::Na(); // cm^2 * Avogadro
 
@@ -32,6 +35,8 @@ FixedTargetGenerator::FixedTargetGenerator()
   xOff = 0;
   yOff = 0;
   zOff = 0;
+  fsmearBeam = 8 * mm;   // default value for smearing beam (8 mm)
+  fPaintBeam = 5 * cm;   // default value for painting beam (5 cm)
   tauOnly = false;
   JpsiMainly = false;
   DrellYan = false;
@@ -311,6 +316,9 @@ FixedTargetGenerator::~FixedTargetGenerator()
 // -----   Passing the event   ---------------------------------------------
 Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg)
 {
+    // Calculate beam smearing and painting
+    auto [dx, dy] = CalculateBeamOffset(fsmearBeam, fPaintBeam);
+
   Double_t zinter=0;
   Double_t ZoverA = 1.;
   if (targetName.Data() !=""){
@@ -354,8 +362,8 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg)
   }
   Pythia8::Pythia* fPythia;
   if (G4only){
-   cpg->AddTrack(2212,0.,0.,fMom,xOff/cm,yOff/cm,start[2],-1,kTRUE,-1.,0.,1.);
-   return kTRUE;
+      cpg->AddTrack(2212, 0., 0., fMom, (xOff + dx) / cm, (yOff + dy) / cm, start[2], -1, kTRUE, -1., 0., 1.);
+      return kTRUE;
   }else if (Option == "Primary"){
    if (gRandom->Uniform(0.,1.) < ZoverA ){
     fPythiaP->next();
@@ -389,9 +397,9 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg)
                   n_mpx,
                   n_mpy,
                   n_mpz,
-                  xOff / cm,
-                  yOff / cm,
-                  zinter / cm,
+                  (xOff + dx) * cm,
+                  (yOff + dy) * cm,
+                  zinter * cm,
                   -1,
                   kFALSE,
                   n_mE,
@@ -421,9 +429,9 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg)
 // don't track underlying event
       if (fabs(id)!=13){wanttracking=kFALSE;}
      }
-     Double_t z  = fPythia->event[ii].zProd()+zinter;
-     Double_t x  = fPythia->event[ii].xProd()+xOff;
-     Double_t y  = fPythia->event[ii].yProd()+yOff;
+     Double_t z  = fPythia->event[ii].zProd() * mm + zinter * cm;
+     Double_t x = fPythia->event[ii].xProd() * mm + xOff * cm + dx * cm;
+     Double_t y = fPythia->event[ii].yProd() * mm + yOff * cm + dy * cm;
      Double_t tof = fPythia->event[ii].tProd() / (10*c_light) ; // to go from mm to s
      Double_t px = fPythia->event[ii].px();
      Double_t py = fPythia->event[ii].py();
@@ -436,14 +444,14 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg)
      }else{
       if (ii<3){im=-1;}
      }
-     cpg->AddTrack(id,px,py,pz,x/cm,y/cm,z/cm,im,wanttracking,e,tof,wspill,procID);
+     cpg->AddTrack(id,px,py,pz,x * cm, y * cm, z * cm,im,wanttracking,e,tof,wspill,procID);
      if(withNtuple){
           int idabs = TMath::Abs(id);
           if (idabs<10)  {continue;}
           if (idabs<18 || idabs==22 || idabs==111 || idabs==221 || idabs==223 || idabs==331
                  || idabs==211 || idabs==113 || idabs==333  || idabs==321   || idabs==2212 ){
           Int_t moID = fPythia->event[im+1].id();
-          fNtuple->Fill(0,id,px,py,pz,e,x/cm,y/cm,z/cm,moID);
+          fNtuple->Fill(0,id,px,py,pz,e,x * cm, y * cm, z * cm, moID);
          }
      }
     }
