@@ -1,5 +1,10 @@
 var NAVTREEINDEX4 =
 {
+"classGenieGenerator.html#aeccda1bacf472b4e29661781d21653b0":[5,0,57,15],
+"classGenieGenerator.html#af0f84554d20d2491d7414948b5d6f2dd":[5,0,57,30],
+"classGenieGenerator.html#af1307d0ee720856236260288946e290f":[5,0,57,59],
+"classGenieGenerator.html#af171ff89a6f21d1795c8cf0c225af84f":[5,0,57,53],
+"classGenieGenerator.html#afcf19e34d58e8d82a19c9a03368f0b4a":[5,0,57,61],
 "classGenieGenerator.html#afd16e50e7e921ed4b9c6d6ea270504ac":[5,0,57,49],
 "classHNLPythia8Generator.html":[5,0,68],
 "classHNLPythia8Generator.html#a00c2968af5c0aa6ec33b4a18ad064c20":[5,0,68,2],
@@ -244,10 +249,5 @@ var NAVTREEINDEX4 =
 "classPyTr1Rng.html#a5f86600df2ba2af5e47df7eba5ba1d9b":[5,0,83,1],
 "classPyTr1Rng.html#aa220f54b0c1ee99ff1a3b1199610384d":[5,0,83,3],
 "classPyTr1Rng.html#ad8db8819c40eb0932cfb12f0b8852b68":[5,0,83,2],
-"classPyTr1Rng.html#ae5b31b74b581da42c9d446268d8ed011":[5,0,83,0],
-"classPyTr3Rng.html":[5,0,84],
-"classPyTr3Rng.html#a1f30dab969858b8ed5d6195fac871302":[5,0,84,1],
-"classPyTr3Rng.html#a54228ecd0280635bce243ce860cf7885":[5,0,84,3],
-"classPyTr3Rng.html#a7180fe38e3c7311e4a742b045d8d21a5":[5,0,84,2],
-"classPyTr3Rng.html#adb49a23253cf1b70b894e15173bf8349":[5,0,84,0]
+"classPyTr1Rng.html#ae5b31b74b581da42c9d446268d8ed011":[5,0,83,0]
 };

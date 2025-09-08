@@ -243,6 +243,9 @@ var hierarchy =
       [ "ShipBFieldMap", "classShipBFieldMap.html", null ],
       [ "ShipCompField", "classShipCompField.html", null ]
     ] ],
+    [ "TVirtualMCDecayer", null, [
+      [ "TEvtGenDecayer", "classTEvtGenDecayer.html", null ]
+    ] ],
     [ "type", null, [
       [ "ShipGeoConfig._SingletonDict", "classShipGeoConfig_1_1__SingletonDict.html", [
         [ "ShipGeoConfig.ConfigRegistry", "classShipGeoConfig_1_1ConfigRegistry.html", null ]

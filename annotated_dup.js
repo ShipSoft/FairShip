@@ -207,6 +207,7 @@ var annotated_dup =
     [ "Target", "classTarget.html", "classTarget" ],
     [ "TargetPoint", "classTargetPoint.html", "classTargetPoint" ],
     [ "TargetTracker", "classTargetTracker.html", "classTargetTracker" ],
+    [ "TEvtGenDecayer", "classTEvtGenDecayer.html", "classTEvtGenDecayer" ],
     [ "TimeDet", "classTimeDet.html", "classTimeDet" ],
     [ "TimeDetHit", "classTimeDetHit.html", "classTimeDetHit" ],
     [ "TimeDetPoint", "classTimeDetPoint.html", "classTimeDetPoint" ],
