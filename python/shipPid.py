@@ -29,14 +29,12 @@ class Task:
   self.parallelToZ = ROOT.TVector3(0., 0., 1.)
   hadron = top.GetNode("Hcal_1")
   hvol = hadron.GetVolume()
-  self.zpositions['hcal'] = hadron.GetMatrix().GetTranslation()[2]
   x = sys.modules['__main__']
   ShipGeo = x.ShipGeo
   for i in range(4):
    muonDet = top.GetNode('MuonDetector_'+str(i+1))
    if muonDet: self.zpositions['muon'+str(i)] = muonDet.GetMatrix().GetTranslation()[2]
    else: self.zpositions['muon'+str(i)] = ShipGeo['MuonStation'+str(i)].z
-  self.hcal = sys.modules['__main__']. modules['Hcal']
   self.pad_size_x = 5 #cm
   self.pad_size_y = 5 #cm
   self.dimensions_x = 300 #cm half width # TODO take from geo?
@@ -73,21 +71,6 @@ class Task:
   self.PID()
   self.pID.Fill()
 
- def HcalHits(self):
- ## hcalPoint hits ##
-  self.hcal1 = []
-  self.hcal2 = []
-  self.new_hcal2 = []
-  if not  hasattr(self.sTree,'HcalPointLite'): return
-  for chit in self.sTree.HcalPointLite:
-   if not chit.GetEnergyLoss()>0: continue
-   detID = chit.GetDetectorID()
-   x = ctypes.c_float()
-   y = ctypes.c_float()
-   section = ctypes.c_int()
-   self.hcal.GetCellCoordInf(detID,x,y,section)
-   ELoss = chit.GetEnergyLoss()/u.MeV
-   if ELoss>0: self.hcal1.append([x.value,y.value,section.value,ELoss])
 
  def muonDigitHit(self):
  ## merging muonPoint hits inside each pad ##
@@ -189,7 +172,6 @@ class Task:
 #     print rc
      if rc>0:
       self.extrapStates[self.det] = [pos.X(),pos.Y(),self.zpositions[self.det]]
-      self.hcal_ID()
       self.muon_ID()
       self.elec_ID()
     pidObject=ROOT.pid()
@@ -199,7 +181,6 @@ class Task:
       nPID=ppid.GetEntries()
       ppid[nPID]=pidObject
       continue
-    self.run_hcal_ID()
     self.run_elec_ID()
     self.run_muon_ID()
     if self.El==True:
@@ -209,7 +190,7 @@ class Task:
       pidObject.SetTrackPID(3)
       self.Hl=False
  #     print '**** Is Muon'
-    if self.pid10==False and self.pid20==False and self.pid21==False and self.pid30==False and self.pid_mu==False and self.El==False and self.Hl==True and self.vol_hcal==False:
+    if self.pid10==False and self.pid20==False and self.pid21==False and self.pid30==False and self.pid_mu==False and self.El==False and self.Hl==True:
       pidObject.SetTrackPID(2)
   #      print '$$$$ Is Hadron'
     nPID=ppid.GetEntries()

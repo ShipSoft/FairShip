@@ -27,8 +27,6 @@ class ShipDigiReco:
     if sTree.GetBranch("VetoHitOnTrack"): sTree.SetBranchStatus("VetoHitOnTrack",0)
     if sTree.GetBranch("Particles"): sTree.SetBranchStatus("Particles",0)
     if sTree.GetBranch("fitTrack2MC"): sTree.SetBranchStatus("fitTrack2MC",0)
-    if sTree.GetBranch("EcalClusters"): sTree.SetBranchStatus("EcalClusters",0)
-    if sTree.GetBranch("EcalReconstructed"): sTree.SetBranchStatus("EcalReconstructed",0)
     if sTree.GetBranch("Pid"): sTree.SetBranchStatus("Pid",0)
     if sTree.GetBranch("Digi_StrawtubesHits"): sTree.SetBranchStatus("Digi_StrawtubesHits",0)
     if sTree.GetBranch("Digi_SBTHits"): sTree.SetBranchStatus("Digi_SBTHits",0)
@@ -144,9 +142,6 @@ class ShipDigiReco:
    for x in self.caloTasks:
     if hasattr(x,'execute'): x.execute()
     else : x.Exec('start')
-   if len(self.caloTasks)>0:
-    self.EcalClusters.Fill()
-    self.EcalReconstructed.Fill()
    if global_variables.vertexing:
 # now go for 2-track combinations
     self.Vertexing.execute()
