@@ -33,7 +33,6 @@ parser.add_argument("-g", "--geoFile",   dest="geoFile",   help="ROOT geofile", 
 parser.add_argument("--noVertexing",     dest="noVertexing", help="switch off vertexing", required=False, action="store_true")
 parser.add_argument("--noStrawSmearing", dest="withNoStrawSmearing", help="no smearing of distance to wire, default on", required=False, action="store_true")
 parser.add_argument("--withT0",          dest="withT0", help="simulate arbitrary T0 and correct for it", required=False, action="store_true")
-parser.add_argument("--ecalDebugDraw",   dest="EcalDebugDraw", help="switch in debog for ECAL", required=False, action="store_true")
 parser.add_argument("--saveDisk",        dest="saveDisk", help="if set, will remove input file, only rec file kept", required=False, action="store_true")
 parser.add_argument("-i", "--firstEvent",dest="firstEvent",  help="First event of input file to use", required=False,  default=0,type=int)
 parser.add_argument("--realPR",          dest="realPR",  help="Option for pattern recognition without MC truth. \n\
@@ -47,7 +46,6 @@ parser.add_argument("--Debug",           dest="Debug", help="Switch on debugging
 options = parser.parse_args()
 vertexing = not options.noVertexing
 
-if options.EcalDebugDraw: ROOT.gSystem.Load("libASImage")
 
 # need to figure out which geometry was used, only needed if no geo file
 if not options.dy:
@@ -121,7 +119,6 @@ global_variables.vertexing = vertexing
 global_variables.ecalGeoFile = ecalGeoFile
 global_variables.ShipGeo = ShipGeo
 global_variables.modules = modules
-global_variables.EcalDebugDraw = options.EcalDebugDraw
 global_variables.withNoStrawSmearing = options.withNoStrawSmearing
 global_variables.h = h
 global_variables.log = log

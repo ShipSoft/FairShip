@@ -83,8 +83,6 @@ def apply_decorators():
     ROOT.TVector3.__repr__ = TVector3PrintOut
     ROOT.TParticle.__repr__ = TParticlePrintOut
     ROOT.ShipParticle.__repr__ = ShipParticlePrintOut
-    ROOT.ecalReconstructed.__repr__ = ecalReconstructedPrintOut
-    ROOT.ecalCluster.__repr__ = ecalClusterPrintOut
     ROOT.TEvePointSet.__repr__ = TEvePointSetPrintOut
     ROOT.vetoHit.__repr__ = vetoHitPrintOut
     ROOT.muonHit.__repr__ = muonHitPrintOut
