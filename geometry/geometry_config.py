@@ -472,7 +472,6 @@ with ConfigRegistry.register_config("basic") as c:
         + c.SplitCal.BigGap
     )
 
-    
     c.MuonStation0 = AttrDict(
         z=c.SplitCal.ZStart + 10 * u.cm + c.SplitCal.SplitCalThickness
     )
