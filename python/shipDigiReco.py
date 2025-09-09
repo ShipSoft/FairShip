@@ -103,57 +103,6 @@ class ShipDigiReco:
     mapping = SciFiMapping.SciFiMapping(global_variables.modules)
     mapping.make_mapping()
     self.sipm_to_fibre_map_U, self.sipm_to_fibre_map_V = mapping.get_sipm_to_fibre_map()
-# setup ecal reconstruction
-  self.caloTasks = []
-  if self.sTree.GetBranch("EcalPoint") and not self.sTree.GetBranch("splitcalPoint"):
-# Creates. exports and fills calorimeter structure
-   dflag = 10 if global_variables.debug else 0
-   ecalGeo = global_variables.ecalGeoFile + 'z' + str(global_variables.ShipGeo.ecal.z) + ".geo"
-   if not ecalGeo in os.listdir(os.environ["FAIRSHIP"]+"/geometry"):
-     shipDet_conf.makeEcalGeoFile(global_variables.ShipGeo.ecal.z, global_variables.ShipGeo.ecal.File)
-   ecalFiller=ROOT.ecalStructureFiller("ecalFiller", dflag,ecalGeo)
-   ecalFiller.SetUseMCPoints(ROOT.kTRUE)
-   ecalFiller.StoreTrackInformation()
-   self.caloTasks.append(ecalFiller)
- #GeV -> ADC conversion
-   ecalDigi=ROOT.ecalDigi("ecalDigi",0)
-   self.caloTasks.append(ecalDigi)
- #ADC -> GeV conversion
-   ecalPrepare=ROOT.ecalPrepare("ecalPrepare",0)
-   self.caloTasks.append(ecalPrepare)
- # Maximums locator
-   ecalMaximumFind=ROOT.ecalMaximumLocator("maximumFinder",dflag)
-   self.caloTasks.append(ecalMaximumFind)
- # Cluster calibration
-   ecalClusterCalib=ROOT.ecalClusterCalibration("ecalClusterCalibration", 0)
- #4x4 cm cells
-   ecalCl3PhS=ROOT.TFormula("ecalCl3PhS", "[0]+x*([1]+x*([2]+x*[3]))")
-   ecalCl3PhS.SetParameters(6.77797e-04, 5.75385e+00, 3.42690e-03, -1.16383e-04)
-   ecalClusterCalib.SetStraightCalibration(3, ecalCl3PhS)
-   ecalCl3Ph=ROOT.TFormula("ecalCl3Ph", "[0]+x*([1]+x*([2]+x*[3]))+[4]*x*y+[5]*x*y*y")
-   ecalCl3Ph.SetParameters(0.000750975, 5.7552, 0.00282783, -8.0025e-05, -0.000823651, 0.000111561)
-   ecalClusterCalib.SetCalibration(3, ecalCl3Ph)
-#6x6 cm cells
-   ecalCl2PhS=ROOT.TFormula("ecalCl2PhS", "[0]+x*([1]+x*([2]+x*[3]))")
-   ecalCl2PhS.SetParameters(8.14724e-04, 5.67428e+00, 3.39030e-03, -1.28388e-04)
-   ecalClusterCalib.SetStraightCalibration(2, ecalCl2PhS)
-   ecalCl2Ph=ROOT.TFormula("ecalCl2Ph", "[0]+x*([1]+x*([2]+x*[3]))+[4]*x*y+[5]*x*y*y")
-   ecalCl2Ph.SetParameters(0.000948095, 5.67471, 0.00339177, -0.000122629, -0.000169109, 8.33448e-06)
-   ecalClusterCalib.SetCalibration(2, ecalCl2Ph)
-   self.caloTasks.append(ecalClusterCalib)
-# Cluster finder
-   ecalClusterFind=ROOT.ecalClusterFinder("clusterFinder",dflag)
-   self.caloTasks.append(ecalClusterFind)
-# Calorimeter reconstruction
-   ecalReco=ROOT.ecalReco('ecalReco',0)
-   self.caloTasks.append(ecalReco)
-# Match reco to MC
-   ecalMatch=ROOT.ecalMatch('ecalMatch',0)
-   self.caloTasks.append(ecalMatch)
-   if global_variables.EcalDebugDraw:
- # ecal drawer: Draws calorimeter structure, incoming particles, clusters, maximums
-    ecalDrawer=ROOT.ecalDrawer("clusterFinder",10)
-    self.caloTasks.append(ecalDrawer)
  # add pid reco
    import shipPid
    self.caloTasks.append(shipPid.Task(self))
@@ -165,25 +114,6 @@ class ShipDigiReco:
   self.PDG = ROOT.TDatabasePDG.Instance()
 # access ShipTree
   self.sTree.GetEvent(0)
-  if len(self.caloTasks)>0:
-   print("** initialize Calo reconstruction **")
-   self.ecalStructure     = ecalFiller.InitPython(self.sTree.EcalPointLite)
-   ecalDigi.InitPython(self.ecalStructure)
-   ecalPrepare.InitPython(self.ecalStructure)
-   self.ecalMaximums      = ecalMaximumFind.InitPython(self.ecalStructure)
-   self.ecalCalib         = ecalClusterCalib.InitPython()
-   self.ecalClusters      = ecalClusterFind.InitPython(self.ecalStructure, self.ecalMaximums, self.ecalCalib)
-   self.EcalClusters = self.sTree.Branch("EcalClusters",self.ecalClusters,32000,-1)
-   self.ecalReconstructed = ecalReco.InitPython(self.sTree.EcalClusters, self.ecalStructure, self.ecalCalib)
-   self.EcalReconstructed = self.sTree.Branch("EcalReconstructed",self.ecalReconstructed,32000,-1)
-   ecalMatch.InitPython(self.ecalStructure, self.ecalReconstructed, self.sTree.MCTrack)
-   if global_variables.EcalDebugDraw:
-     ecalDrawer.InitPython(self.sTree.MCTrack, self.sTree.EcalPoint, self.ecalStructure, self.ecalClusters)
-  else:
-   ecalClusters      = ROOT.TClonesArray("ecalCluster")
-   ecalReconstructed = ROOT.TClonesArray("ecalReconstructed")
-   self.EcalClusters = self.sTree.Branch("EcalClusters",ecalClusters,32000,-1)
-   self.EcalReconstructed = self.sTree.Branch("EcalReconstructed",ecalReconstructed,32000,-1)
 #
 # init geometry and mag. field
   gMan  = ROOT.gGeoManager
@@ -213,8 +143,6 @@ class ShipDigiReco:
    self.linkVetoOnTracks()
    for x in self.caloTasks:
     if hasattr(x,'execute'): x.execute()
-    elif x.GetName() == 'ecalFiller': x.Exec('start',self.sTree.EcalPointLite)
-    elif x.GetName() == 'ecalMatch':  x.Exec('start',self.ecalReconstructed, self.sTree.MCTrack)
     else : x.Exec('start')
    if len(self.caloTasks)>0:
     self.EcalClusters.Fill()

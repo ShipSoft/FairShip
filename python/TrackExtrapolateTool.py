@@ -7,11 +7,10 @@ def cmp(a, b):
 minNdf = 20
 parallelToZ = ROOT.TVector3(0., 0., 1.)
 top = ROOT.gGeoManager.GetTopVolume()
-if top.GetNode('Ecal_1'): z_ecal = top.GetNode('Ecal_1').GetMatrix().GetTranslation()[2]
-elif top.GetNode('SplitCalDetector_1'):    z_ecal = top.GetNode('SplitCalDetector_1').GetMatrix().GetTranslation()[2]
+top.GetNode('SplitCalDetector_1'):    z_splitcal = top.GetNode('SplitCalDetector_1').GetMatrix().GetTranslation()[2]
 else:
   print("TrackExtraploate tool: Error, no calo present")
-  z_ecal = 100*u.m
+  z_splitcal = 100*u.m
 def extrapolateToPlane(fT,z):
 # etrapolate to a plane perpendicular to beam direction (z)
   rc,pos,mom = False,None,None
@@ -23,7 +22,7 @@ def extrapolateToPlane(fT,z):
     fPos0,fPos1     = fstate0.getPos(),fstate1.getPos()
     if abs(z-fPos0.z()) <  abs(z-fPos1.z()): fstate = fstate0
     else:                                    fstate = fstate1
-    zs = min(z,z_ecal)
+    zs = min(z,z_splitcal)
     NewPosition = ROOT.TVector3(0., 0., zs)
     rep    = ROOT.genfit.RKTrackRep(13*cmp(fstate.getPDG(),0) )
     state  = ROOT.genfit.StateOnPlane(rep)
@@ -36,7 +35,7 @@ def extrapolateToPlane(fT,z):
     except:
       # print 'error with extrapolation: z=',z/u.m,'m',pos.X(),pos.Y(),pos.Z(),mom.X(),mom.Y(),mom.Z()
       pass
-    if not rc or z>z_ecal:
+    if not rc or z>z_splitcal:
      # use linear extrapolation
      px,py,pz  = mom.X(),mom.Y(),mom.Z()
      lam = (z-pos.Z())/pz

@@ -30,9 +30,6 @@ class Task:
   hadron = top.GetNode("Hcal_1")
   hvol = hadron.GetVolume()
   self.zpositions['hcal'] = hadron.GetMatrix().GetTranslation()[2]
-  ecal = top.GetNode("Ecal_1")
-  evol = ecal.GetVolume()
-  self.zpositions['ecal'] = ecal.GetMatrix().GetTranslation()[2]
   x = sys.modules['__main__']
   ShipGeo = x.ShipGeo
   for i in range(4):
@@ -50,10 +47,6 @@ class Task:
   self.ncells_x=m.floor((2*self.dimensions_x)/self.pad_size_x)
   self.ncells_y=m.floor((2*self.dimensions_y)/self.pad_size_y)
   self.threshold_pad_energy = 0.2
-  self.Ecal_dx = 15 #cm
-  self.Ecal_dy = 15 #cm
-  self.Ecal_EP_threshold_min = 0.92 #acceptance region for E over P in Ecal >  self.Ecal_EP_threshold_min
-  self.Ecal_EP_threshold_max = 10
   self.Hit_number_threshold=3    #number of pad-hits around the extrapolated tracks in MuonDet
   self.hitlimit_x,self.hitlimit_y=5,5    #x-y area to check the number of pad-hits
   self.cutNdf = 25
@@ -177,9 +170,7 @@ class Task:
     self.pid00,self.pid01,self.pid02,self.pid03,self.pid10,self.pid11,self.pid12,self.pid13=False,False,False,False,False,False,False,False
     self.pid20,self.pid21,self.pid22,self.pid30,self.pid31=False,False,False,False,False
     self.pid_mu=False
-    self.vol_mu1,self.vol_ecal,self.vol_hcal=False,False,False
     self.pos_pad_x0,self.pos_pad_y0,self.pos_pad_x1,self.pos_pad_y1,self.pos_pad_x2,self.pos_pad_y2,self.pos_pad_x3,self.pos_pad_y3=0,0,0,0,0,0,0,0
-    self.extrap_X_ecal,self.extrap_Y_ecal,self.extrap_X_hcal,self.extrap_Y_hcal=0.,0.,0.,0.
     self.P=0.
     i+=1
     fst = fT.getFitStatus()
@@ -211,7 +202,7 @@ class Task:
     self.run_hcal_ID()
     self.run_elec_ID()
     self.run_muon_ID()
-    if self.El==True and self.vol_ecal==False:
+    if self.El==True:
       pidObject.SetTrackPID(1)
 #      print '==== Is Electron'
     if (self.pid10==True or self.pid20==True or self.pid21==True or self.pid30==True or self.pid_mu==True) and self.El==False and self.vol_mu1==False:
@@ -221,9 +212,6 @@ class Task:
     if self.pid10==False and self.pid20==False and self.pid21==False and self.pid30==False and self.pid_mu==False and self.El==False and self.Hl==True and self.vol_hcal==False:
       pidObject.SetTrackPID(2)
   #      print '$$$$ Is Hadron'
-    if self.vol_ecal==True or self.vol_mu1==True:
-      pidObject.SetTrackPID(-2)
-#      print '==== It is out of the acceptance'
     nPID=ppid.GetEntries()
     ppid[nPID]=pidObject
    # print "---------------- "
@@ -316,44 +304,4 @@ class Task:
      if check_vol_mu1>1:
        self.vol_mu1=True
 
- def elec_ID(self):
-    if self.det == 'ecal':
-     self.extrap_X_ecal = self.extrapStates[self.det][0]
-     self.extrap_Y_ecal = self.extrapStates[self.det][1]
-     extrap_Z_ecal = self.extrapStates[self.det][2]
-
- def run_elec_ID(self):
-     for aClus in self.sTree.EcalReconstructed:
-       x1_Clus, y1_Clus, Ene1_Clus =  aClus.X(), aClus.Y(), aClus.RecoE()
-       Ecal_delta_x=x1_Clus - self.extrap_X_ecal
-       Ecal_delta_y=y1_Clus - self.extrap_Y_ecal
-       EP=Ene1_Clus/self.P
-       if (EP>self.Ecal_EP_threshold_min and EP<self.Ecal_EP_threshold_max)  and m.fabs(Ecal_delta_x)<self.Ecal_dx and m.fabs(Ecal_delta_y)<self.Ecal_dy:
-         self.El=True
-     if self.pid10==False and self.pid20==False and self.pid21==False and self.pid30==False and self.El==False and self.pid_mu==False: self.Hl=True
-     check_vol_ecal=(m.pow(self.extrap_X_ecal,2)/m.pow(self.rx,2))+(m.pow(self.extrap_Y_ecal,2)/m.pow(self.ry,2))
-     if check_vol_ecal>1:
-       self.vol_ecal=True
-
- def hcal_ID(self):
-    if self.det == 'hcal':
-      self.extrap_X_hcal = self.extrapStates[self.det][0]
-      self.extrap_Y_hcal = self.extrapStates[self.det][1]
-      extrap_Z_hcal = self.extrapStates[self.det][2]
-
- def run_hcal_ID(self):
-      N1,N2,M,E_est,E_totale=0,0,0,0.,0.
-      self.E_tot_h1,self.E_tot_h2,self.E_tot=0.,0.,0.
-      for i in range(len(self.hcal1)):
-        x,y,s,E= self.hcal1[i][0], self.hcal1[i][1], self.hcal1[i][2], self.hcal1[i][3]
-        delta_x = x-self.extrap_X_hcal
-        delta_y = y-self.extrap_Y_hcal
-        if (m.pow(delta_x,2)+m.pow(delta_y,2))<2500 and s==0:
-          self.E_tot_h1+=E
-        if (m.pow(delta_x,2)+m.pow(delta_y,2))<2500 and s==1:
-          self.E_tot_h2+=E
-        E_totale+=E
-      self.E_tot = self.E_tot_h1+self.E_tot_h2
-      check_vol_hcal=(m.pow(self.extrap_X_hcal,2)/m.pow(self.rx,2))+(m.pow(self.extrap_Y_hcal,2)/m.pow(self.ry,2))
-      if check_vol_hcal>1:
-        self.vol_hcal=True
+# e and hcal PID to be entirely rewritten

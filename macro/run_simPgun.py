@@ -63,8 +63,6 @@ run.AddModule(Chamber)
 Veto = ROOT.veto("Veto", ROOT.kTRUE)
 run.AddModule(Veto)
 
-ecal = ROOT.ecal("Ecal", ROOT.kTRUE)
-run.AddModule(ecal)
 
 Muon = ROOT.muon("Muon", ROOT.kTRUE)
 run.AddModule(Muon)
