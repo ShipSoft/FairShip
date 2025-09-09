@@ -354,9 +354,6 @@ from ShipGeoConfig import ConfigRegistry
 # init geometry and mag. field
 if not fgeo.FindKey('ShipGeo'):
  # old geofile, missing Shipgeo dictionary
- if sGeo.GetVolume('EcalModule3') :  ecalGeoFile = "ecal_ellipse6x12m2.geo"
- else: ecalGeoFile = "ecal_ellipse5x10m2.geo"
- print('found ecal geo for ',ecalGeoFile)
  # re-create geometry and mag. field
  ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = dy, EcalGeoFile = ecalGeoFile )
 else:
@@ -370,7 +367,6 @@ import shipDet_conf
 run = ROOT.FairRunSim()
 modules = shipDet_conf.configure(run,ShipGeo)
 
-ecal = modules['Ecal']
 
 rz_inter = -1.,0.
 def origin(sTree,it):
@@ -649,13 +645,6 @@ def executeOneFile(fn,output=None,pid=None):
       x = ahit.GetX()
       y = ahit.GetY()
       E = ahit.GetEnergyLoss()
-     elif ahit.GetName() == 'ecalPoint':
-      # not needed for lite collection: if abs(ahit.GetPdgCode())==12 or abs(ahit.GetPdgCode())==14  : continue
-      detName = 'Ecal'
-      ecal.GetCellCoordForPy(detID,pos)
-      x = pos.X()
-      y = pos.Y()
-      E = ahit.GetEnergyLoss()
      else:
       if detID not in logVols:
          detName = c.GetName().replace('Points','')
@@ -678,14 +667,6 @@ def executeOneFile(fn,output=None,pid=None):
        aTrack.GetMomentum(mom) # ! this is not momentum of particle at Calorimeter place
        phit   = mom.Mag()/u.GeV
      if abs(pdgID)==13: mu='_mu'
-     if ahit.GetName().find('ecal')<0:
-      rc = ahit.Momentum(mom)
-      phit = mom.Mag()/u.GeV
-     else:
-      for ahit in sTree.EcalPoint:
-        if ahit.GetTrackID() == trackID:
-         rc   = ahit.Momentum(mom)
-         phit = mom.Mag()/u.GeV
      if phit>3 and abs(pdgID)==13: mu='_muV0'
      detName = detName + mu
      if detName.find('LS')<0: rc = h[detName].Fill(x/u.m,y/u.m,w)

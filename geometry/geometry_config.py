@@ -235,10 +235,6 @@ if "CaloDesign" not in globals():
     CaloDesign = 0
 if "Yheight" not in globals():
     Yheight = 10.0
-if "EcalGeoFile" not in globals():
-    EcalGeoFile = "ecal_rect5x10m2.geo"
-if "HcalGeoFile" not in globals():
-    HcalGeoFile = "hcal_rect.geo"
 if "shieldName" not in globals():
     shieldName = None
 if "SND" not in globals():
@@ -488,11 +484,6 @@ with ConfigRegistry.register_config("basic") as c:
         + c.SplitCal.BigGap
     )
 
-    zecal = (
-        38.450 * u.m + c.decayVolume.z
-    )  # Relative start z of ECAL to decay vessel centre
-    c.ecal = AttrDict(z=zecal)
-    c.ecal.File = EcalGeoFile
     hcalThickness = 232 * u.cm
     if c.HcalOption == 2:
         hcalThickness = 110 * u.cm  # to have same interaction length as before

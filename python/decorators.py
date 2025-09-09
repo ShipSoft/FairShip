@@ -45,12 +45,6 @@ def TParticlePrintOut(x):
 def ShipParticlePrintOut(x):
   txt = '("ShipParticle") %s M:%5.2FGeV/c2 P:%5.2FGeV/c VxZ:%5.2Fm'%(x.GetName(),x.GetMass(),x.P(),x.Vz()/u.m)
   return txt
-def ecalReconstructedPrintOut(cl):
-  txt = '("EcalCluster") E:%5.2FGeV/c X:%5.2Fm Y:%5.2Fm'%(cl.RecoE(),cl.X()/u.m,cl.Y()/u.m)
-  return txt
-def ecalClusterPrintOut(cl):
-  txt = '("EcalCluster") E:%5.2FGeV/c X:%5.2Fm Y:%5.2Fm'%(cl.Energy(),cl.X()/u.m,cl.Y()/u.m)
-  return txt
 def Dump(x):
   k=0
   for obj in x:

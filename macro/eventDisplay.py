@@ -229,63 +229,6 @@ class DrawVetoDigi(ROOT.FairTask):
         gEve.ElementChanged(self.evscene, True, True)
 
 
-class DrawEcalCluster(ROOT.FairTask):
-    "My Fair Task"
-
-    def InitTask(self, ecalStructure):
-        # prepare ecal structure
-        self.comp = ROOT.TEveCompound("Ecal Clusters")
-        gEve.AddElement(self.comp)
-        sc = gEve.GetScenes()
-        self.evscene = sc.FindChild("Event scene")
-        mE = top.GetNode("Ecal_1").GetMatrix()
-        self.z_ecal = mE.GetTranslation()[2]
-        self.ecalStructure = ecalStructure
-
-    def FinishEvent(self):
-        pass
-
-    def ExecuteTask(self, option=""):
-        self.comp.DestroyElements()
-        self.comp.OpenCompound()
-        cl = -1
-        for aClus in sTree.EcalClusters:
-            # ecal cell dx=dy=2cm, dz=21.84cm
-            cl += 1
-            for i in range(aClus.Size()):
-                mccell = self.ecalStructure.GetHitCell(
-                    aClus.CellNum(i)
-                )  # Get i'th cell of the cluster.
-                if not mccell:
-                    continue
-                x1, y1, x2, y2, dz = (
-                    mccell.X1(),
-                    mccell.Y1(),
-                    mccell.X2(),
-                    mccell.Y2(),
-                    mccell.GetEnergy() / u.GeV * 0.5 * u.m,
-                )
-                if mccell.GetEnergy() / u.MeV < 4.0:
-                    continue
-                    # ADC noise simulated Gaussian with \sigma=1 MeV
-                DClus = ROOT.TEveBox()
-                DClus.SetName("EcalCluster_" + str(cl) + "_" + str(i))
-                DClus.SetPickable(ROOT.kTRUE)
-                DClus.SetTitle(aClus.__repr__())
-                DClus.SetMainColor(ROOT.kRed - 4)
-                DClus.SetMainTransparency("\x10")
-                DClus.SetVertex(0, x1, y1, self.z_ecal)
-                DClus.SetVertex(1, x1, y1, self.z_ecal + dz)
-                DClus.SetVertex(2, x2, y1, self.z_ecal + dz)
-                DClus.SetVertex(3, x2, y1, self.z_ecal)
-                DClus.SetVertex(4, x1, y2, self.z_ecal)
-                DClus.SetVertex(5, x1, y2, self.z_ecal + dz)
-                DClus.SetVertex(6, x2, y2, self.z_ecal + dz)
-                DClus.SetVertex(7, x2, y2, self.z_ecal)
-                self.comp.AddElement(DClus)
-        self.comp.CloseCompound()
-        gEve.ElementChanged(self.evscene, True, True)
-
     def DrawParticle(self, n):
         self.comp.OpenCompound()
         DTrack = ROOT.TEveLine()

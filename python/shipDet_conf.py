@@ -41,38 +41,6 @@ def posHcal(z, hfile, HcalOption):
     return hcal, HcalZSize
 
 
-def makeEcalGeoFile(z, efile):
-    EcalZSize = 0
-    sz = efile + "z" + str(z) + ".geo"
-    floc = os.environ["FAIRSHIP"] + "/geometry"
-    f_ecal = floc + "/" + efile
-    f_ecalz = floc + "/" + sz
-    f = open(f_ecal)
-    rewrite = True
-    if sz in os.listdir(floc):
-        test = os.popen("diff " + f_ecal + " " + f_ecalz).read()
-        if str.count(test, "---") == 1 and not test.find("Position") < 0:
-            rewrite = False  # only different is z position
-    if rewrite:
-        fn = open(f_ecalz, "w")
-    for l in f.readlines():
-        if rewrite:
-            if not l.find("ZPos") < 0:
-                l = "ZPos=" + str(z) + "	#Position of Ecal start		[cm]\n"
-            fn.write(l)
-        if not l.find("EcalZSize") < 0:
-            EcalZSize = float(l[len("EcalZSize") + 1 :].split("#")[0])
-    f.close()
-    if rewrite:
-        fn.close()
-    return EcalZSize, sz
-
-
-def posEcal(z, efile):
-    EcalZSize, sz = makeEcalGeoFile(z, efile)
-    ecal = ROOT.ecal("Ecal", ROOT.kTRUE, sz)
-    return ecal, EcalZSize
-
 def configure_snd_old(yaml_file,
                       emulsion_target_z_end,
                       cave_floorHeightMuonShield):
@@ -425,10 +393,6 @@ def configure(run, ship_geo):
         os.path.join(os.environ["FAIRSHIP"], "geometry", "strawtubes_config.yaml"),
         ship_geo,
     )
-
-    if ship_geo.EcalOption == 1:  # shashlik design TP
-        ecal, EcalZSize = posEcal(ship_geo.ecal.z, ship_geo.ecal.File)
-        detectorList.append(ecal)
 
     if ship_geo.EcalOption == 2:  # splitCal with pointing information
         SplitCal = ROOT.splitcal("SplitCal", ROOT.kTRUE)
