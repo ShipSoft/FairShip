@@ -134,6 +134,8 @@ Added</h2>
 <li>Add support for Pythia 8.3xx. 8.2xx is still supported via preprocessor macros for the time being.</li>
 <li>Add dedicated &ndash;print-fields and &ndash;check-overlaps flags to <a class="el" href="run__simScript_8py.html">run_simScript.py</a> to use these debug tools.</li>
 <li>Add EvtGenDecayer for decaying J/psi (and other particles in future) when specifying the &ndash;EvtGenDecayer option</li>
+<li>Add enough straws to cover aperture entirely</li>
+<li>Add SST frame option (4 = aluminium, 10 = steel [default])</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md3"></a>
 Fixed</h2>
@@ -223,6 +225,8 @@ Changed</h2>
 <li>The decorators from <a class="el" href="decorators_8py.html">decorators.py</a> now need to be applied explicitly using the new <code>apply_decorators</code> function.</li>
 <li>The &ndash;debug flag to <a class="el" href="run__simScript_8py.html">run_simScript.py</a> now controls the severity that FairLogger logs.</li>
 <li>J/psi are no longer decayed using Geant4 when using the &ndash;EvtGenDecayer option</li>
+<li>Move SST geometry parameters to yaml</li>
+<li>Update strawtubes class</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md5"></a>
 Removed</h2>
