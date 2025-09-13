@@ -113,7 +113,6 @@ ut.bookHist(h,'distu','distance to wire',100,0.,1.)
 ut.bookHist(h,'distv','distance to wire',100,0.,1.)
 ut.bookHist(h,'disty','distance to wire',100,0.,1.)
 ut.bookHist(h,'meanhits','mean number of hits / track',50,-0.5,49.5)
-ut.bookHist(h,'ecalClusters','x/y and energy',50,-3.,3.,50,-6.,6.)
 
 ut.bookHist(h,'extrapTimeDetX','extrapolation to TimeDet X',100,-10.,10.)
 ut.bookHist(h,'extrapTimeDetY','extrapolation to TimeDet Y',100,-10.,10.)
@@ -376,52 +375,7 @@ def match2HNL(p):
     if len(hnlKey) == 2:
        if hnlKey[0]==hnlKey[1]: matched = True
     return matched
-def ecalCluster2MC(aClus):
- # return MC track most contributing, and its fraction of energy
-  trackid    = ctypes.c_int()
-  energy_dep = ctypes.c_double()
-  mcLink = {}
-  for i in range( aClus.Size() ):
-    mccell = ecalStructure.GetHitCell(aClus.CellNum(i))  # Get i'th cell of the cluster.
-    for n in range( mccell.TrackEnergySize()):
-      mccell.GetTrackEnergySlow(n, trackid, energy_dep)
-      if not abs(trackid.value)<sTree.MCTrack.GetEntries(): tid = -1
-      else: tid = trackid.value
-      if tid not in mcLink: mcLink[tid]=0
-      mcLink[tid]+=energy_dep.value
-# find trackid most contributing
-  eMax,mMax = 0,-1
-  for m in mcLink:
-     if mcLink[m]>eMax:
-        eMax = mcLink[m]
-        mMax = m
-  return mMax,eMax/aClus.Energy()
-
 def makePlots():
-   ut.bookCanvas(h,key='ecalanalysis',title='cluster map',nx=800,ny=600,cx=1,cy=1)
-   cv = h['ecalanalysis'].cd(1)
-   h['ecalClusters'].Draw('colz')
-   ut.bookCanvas(h,key='ecalCluster2Track',title='Ecal cluster distances to track impact',nx=1600,ny=800,cx=4,cy=2)
-   if "ecalReconstructed_dist_mu+" in h:
-    cv = h['ecalCluster2Track'].cd(1)
-    h['ecalReconstructed_distx_mu+'].Draw()
-    cv = h['ecalCluster2Track'].cd(2)
-    h['ecalReconstructed_disty_mu+'].Draw()
-   if "ecalReconstructed_dist_pi+" in h:
-    cv = h['ecalCluster2Track'].cd(3)
-    h['ecalReconstructed_distx_pi+'].Draw()
-    cv = h['ecalCluster2Track'].cd(4)
-    h['ecalReconstructed_disty_pi+'].Draw()
-   if "ecalReconstructed_dist_mu-" in h:
-    cv = h['ecalCluster2Track'].cd(5)
-    h['ecalReconstructed_distx_mu-'].Draw()
-    cv = h['ecalCluster2Track'].cd(6)
-    h['ecalReconstructed_disty_mu-'].Draw()
-   if "ecalReconstructed_dist_pi-" in h:
-    cv = h['ecalCluster2Track'].cd(7)
-    h['ecalReconstructed_distx_pi-'].Draw()
-    cv = h['ecalCluster2Track'].cd(8)
-    h['ecalReconstructed_disty_pi-'].Draw()
 
    ut.bookCanvas(h,key='strawanalysis',title='Distance to wire and mean nr of hits',nx=1200,ny=600,cx=3,cy=1)
    cv = h['strawanalysis'].cd(1)
