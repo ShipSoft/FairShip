@@ -1,5 +1,7 @@
 var dir_077298d11411e0d78a9900d1a8de44bb =
 [
+    [ "BeamSmearingUtils.cxx", "BeamSmearingUtils_8cxx.html", "BeamSmearingUtils_8cxx" ],
+    [ "BeamSmearingUtils.h", "BeamSmearingUtils_8h.html", "BeamSmearingUtils_8h" ],
     [ "CosmicsGenerator.cxx", "CosmicsGenerator_8cxx.html", null ],
     [ "CosmicsGenerator.h", "CosmicsGenerator_8h.html", "CosmicsGenerator_8h" ],
     [ "DPPythia8Generator.cxx", "DPPythia8Generator_8cxx.html", "DPPythia8Generator_8cxx" ],

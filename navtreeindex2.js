@@ -1,5 +1,11 @@
 var NAVTREEINDEX2 =
 {
+"TTPoint_8cxx_source.html":[6,0,16,0,7],
+"TTPoint_8h.html":[6,0,16,0,8],
+"TTPoint_8h_source.html":[6,0,16,0,8],
+"TargetPoint_8cxx.html":[6,0,16,0,3],
+"TargetPoint_8cxx_source.html":[6,0,16,0,3],
+"TargetPoint_8h.html":[6,0,16,0,4],
 "TargetPoint_8h_source.html":[6,0,16,0,4],
 "TargetTracker_8cxx.html":[6,0,16,0,5],
 "TargetTracker_8cxx_source.html":[6,0,16,0,5],
@@ -243,11 +249,5 @@ var NAVTREEINDEX2 =
 "classDPPythia8Generator.html#a06cc91b1b63c798bce9d68751f843157":[5,0,27,24],
 "classDPPythia8Generator.html#a09d08c84f83ba100758a87573d2fc35f":[5,0,27,21],
 "classDPPythia8Generator.html#a0ec98e4205363314266e3b2df49db2fe":[5,0,27,54],
-"classDPPythia8Generator.html#a17439775cf6134d296325698b5680142":[5,0,27,11],
-"classDPPythia8Generator.html#a200d77e55ef5523a44df85e4b831451e":[5,0,27,57],
-"classDPPythia8Generator.html#a214ac48a8b68c6f6ba7d445887d6b644":[5,0,27,12],
-"classDPPythia8Generator.html#a21b89c3973c9c4d80da4007285b90b33":[5,0,27,14],
-"classDPPythia8Generator.html#a228d71febc1fd4db11def569a039a93a":[5,0,27,49],
-"classDPPythia8Generator.html#a2fbc6c8ec533bd12f6c37f08574e5343":[5,0,27,40],
-"classDPPythia8Generator.html#a31ea29b3c84e6554163ae50efcbba2fa":[5,0,27,28]
+"classDPPythia8Generator.html#a17439775cf6134d296325698b5680142":[5,0,27,11]
 };

@@ -136,6 +136,15 @@ Added</h2>
 <li>Add EvtGenDecayer for decaying J/psi (and other particles in future) when specifying the &ndash;EvtGenDecayer option</li>
 <li>Add enough straws to cover aperture entirely</li>
 <li>Add SST frame option (4 = aluminium, 10 = steel [default])</li>
+<li>feat: Unified beam smearing implementation across all generators<ul>
+<li>Updated <code><a class="el" href="classHNLPythia8Generator.html">HNLPythia8Generator</a></code> to use consistent Gaussian beam smearing and circular beam painting, replacing the previous uniform square implementation</li>
+<li>Added beam smearing and painting support to <code><a class="el" href="classFixedTargetGenerator.html">FixedTargetGenerator</a></code></li>
+<li>All generators (<code><a class="el" href="classMuonBackGenerator.html">MuonBackGenerator</a></code>, <code><a class="el" href="classHNLPythia8Generator.html">HNLPythia8Generator</a></code>, <code><a class="el" href="classFixedTargetGenerator.html">FixedTargetGenerator</a></code>) now use the same beam smearing algorithm: Gaussian smearing with <code>--SmearBeam</code> parameter and uniform circular painting with <code>--PaintRadius</code> parameter</li>
+<li>The <code>--SmearBeam</code> and <code>--PaintBeam</code> command-line options in <code><a class="el" href="run__simScript_8py.html">run_simScript.py</a></code> now apply to all generators, not just muon background simulation</li>
+<li>Fixed unit handling to ensure proper conversion between GEANT4 units (cm-based) and Pythia8 units (mm-based) in each generator</li>
+<li>Implemented shared <code>BeamSmearingUtils</code> utility using modern C++17 features (std::pair return and structured bindings) to eliminate code duplication</li>
+</ul>
+</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md3"></a>
 Fixed</h2>
