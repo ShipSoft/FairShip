@@ -17,7 +17,6 @@
 #include "ShipStack.h"
 
 #include "TClonesArray.h"
-#include <vector>
 #include "TVirtualMC.h"
 #include "TGeoManager.h"
 #include "TGeoBBox.h"
@@ -50,7 +49,7 @@ ScoringPlane::ScoringPlane()
     fyPos(0.0),
     fzPos(3E8),
     withNtuple(kFALSE),
-    fScoringPlanePointCollection(new std::vector<vetoPoint>()),
+    fScoringPlanePointCollection(new TClonesArray("vetoPoint")),
     fLastDetector(kFALSE),
     fFastMuon(kFALSE),
     fFollowMuon(kFALSE),
@@ -75,7 +74,7 @@ ScoringPlane::ScoringPlane(const char* name, Bool_t active, Bool_t islastdetecto
     fyPos(0.0),
     fzPos(3E8),
     withNtuple(kFALSE),
-    fScoringPlanePointCollection(new std::vector<vetoPoint>()),
+    fScoringPlanePointCollection(new TClonesArray("vetoPoint")),
     fLastDetector(islastdetector),
     fFastMuon(kFALSE),
     fFollowMuon(kFALSE),
@@ -101,7 +100,7 @@ ScoringPlane::ScoringPlane(const char* name, Bool_t active, Bool_t islastdetecto
     fyPos(0.0),
     fzPos(3E8),
     withNtuple(kFALSE),
-    fScoringPlanePointCollection(new std::vector<vetoPoint>()),
+    fScoringPlanePointCollection(new TClonesArray("vetoPoint")),
     fLastDetector(islastdetector),
     fFastMuon(kFALSE),
     fFollowMuon(kFALSE),
@@ -116,9 +115,10 @@ ScoringPlane::ScoringPlane(const char* name, Bool_t active, Bool_t islastdetecto
 
 ScoringPlane::~ScoringPlane()
 {
-    if (fScoringPlanePointCollection) {
-        delete fScoringPlanePointCollection;
-    }
+  if (fScoringPlanePointCollection) {
+    fScoringPlanePointCollection->Delete();
+    delete fScoringPlanePointCollection;
+  }
 }
 
 Bool_t  ScoringPlane::ProcessHits(FairVolume* vol)
@@ -163,7 +163,7 @@ Bool_t  ScoringPlane::ProcessHits(FairVolume* vol)
               fTime, fLength, fELoss,pdgCode,
               TVector3(Pos.X(),Pos.Y(),Pos.Z()),          // exit position
               TVector3(Mom.Px(), Mom.Py(), Mom.Pz()) );   // exit momentum
-         ShipStack* stack = dynamic_cast<ShipStack*>(gMC->GetStack());
+         ShipStack* stack = (ShipStack*) gMC->GetStack();
          stack->AddPoint(kStraw);
        }
   }
@@ -179,9 +179,8 @@ void ScoringPlane::Initialize()
 
 void ScoringPlane::EndOfEvent()
 {
-    // std::cout << this->GetName() << this->GetName() << " EndOfEvent(): point collection has " <<
-    // fScoringPlanePointCollection->size() << " entries" << std::endl;
-    fScoringPlanePointCollection->clear();
+  //std::cout << this->GetName() << this->GetName() << " EndOfEvent(): point collection has " << fScoringPlanePointCollection->GetEntries() << " entries" << std::endl;
+  fScoringPlanePointCollection->Clear();
 }
 
 void ScoringPlane::PreTrack(){
@@ -280,29 +279,31 @@ vetoPoint* ScoringPlane::AddHit(Int_t trackID, Int_t detID,
                                       Double_t time, Double_t length,
                                       Double_t eLoss, Int_t pdgCode,TVector3 Lpos, TVector3 Lmom)
 {
-    fScoringPlanePointCollection->emplace_back(trackID, detID, pos, mom, time, length, eLoss, pdgCode, Lpos, Lmom);
-    return &(fScoringPlanePointCollection->back());
+  TClonesArray& clref = *fScoringPlanePointCollection;
+  Int_t size = clref.GetEntriesFast();
+  return new(clref[size]) vetoPoint(trackID, detID, pos, mom,
+         time, length, eLoss, pdgCode,Lpos,Lmom);
 }
 
 void ScoringPlane::Register()
 {
 
-    // FairRootManager::Instance()->RegisterAny("vetoPoint", fScoringPlanePointCollection, kTRUE);
-    TString name = fVetoName + "Point";
-    TString title = fVetoName;
-    FairRootManager::Instance()->RegisterAny(name, fScoringPlanePointCollection, kTRUE);
-    // std::cout << this->GetName() << ",  Register() says: registered " << fVetoName <<" collection"<<std::endl;
+  //FairRootManager::Instance()->Register("vetoPoint", "veto",
+  //                                    fScoringPlanePointCollection, kTRUE);
+  TString name  = fVetoName+"Point";
+  TString title = fVetoName;
+  FairRootManager::Instance()->Register(name, title, fScoringPlanePointCollection, kTRUE);
+  // std::cout << this->GetName() << ",  Register() says: registered " << fVetoName <<" collection"<<std::endl;
 }
 
 TClonesArray* ScoringPlane::GetCollection(Int_t iColl) const
 {
-    // STL containers are not accessible via GetCollection - return nullptr
-    // Data access should go through FairRootManager
-    return nullptr;
+  if (iColl == 0) { return fScoringPlanePointCollection; }
+  else { return NULL; }
 }
 void ScoringPlane::Reset()
 {
-    fScoringPlanePointCollection->clear();
+  fScoringPlanePointCollection->Clear();
 }
 
 
