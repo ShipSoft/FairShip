@@ -2,7 +2,7 @@
 
 To set geometrical parameters from user csv file run the macro with `--useCSV`
 
-### 
+###
 
 To run simulation with events from file `--MyGen -f filename`.
 `filename` can be produced from `ship.conical.Pythia8-TGeant4.root` with `sstDecouplingTools/produce_ttree.C`
@@ -28,6 +28,3 @@ root $FAIRSHIP/sstDecouplingTools/produce_ttree.C
 ```
 python $FAIRSHIP/macro/run_simScript.py --useCSV --decouple --MyGen -f ./inputfile.root
 ```
-
-
-

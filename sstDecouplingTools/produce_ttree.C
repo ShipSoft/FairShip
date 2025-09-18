@@ -1,17 +1,19 @@
-#include <TFile.h>
-#include <TTree.h>
-#include <TBranch.h>
-#include <TClonesArray.h>
-#include <iostream>
 #include "FairRootManager.h"
 #include "ShipMCTrack.h"
 #include "TLorentzVector.h"
 
-// Include class definition for strawtubesPoint if available
-#include "strawtubesPoint.h"
-#include "prestrawdetectorPoint.h"
+#include <TBranch.h>
+#include <TClonesArray.h>
+#include <TFile.h>
+#include <TTree.h>
+#include <iostream>
 
-int produce_ttree() {
+// Include class definition for strawtubesPoint if available
+#include "prestrawdetectorPoint.h"
+#include "strawtubesPoint.h"
+
+int produce_ttree()
+{
     const char* input_file_name = "ship.conical.Pythia8-TGeant4.root";
     const char* output_file_name = "inputfile.root";
     const char* tree_name = "cbmsim";
@@ -60,7 +62,8 @@ int produce_ttree() {
 
         for (int j = 0; j < nPoints; ++j) {
             auto* p = dynamic_cast<prestrawdetectorPoint*>(points->At(j));
-            if (!p) continue;
+            if (!p)
+                continue;
 
             vx = p->GetX();
             vy = p->GetY();
@@ -68,7 +71,7 @@ int produce_ttree() {
             px = p->GetPx();
             py = p->GetPy();
             pz = p->GetPz();
-            pdgcode = p->PdgCode();  // or p->GetPdgCode() depending on definition
+            pdgcode = p->PdgCode();   // or p->GetPdgCode() depending on definition
 
             new_tree->Fill();
         }
