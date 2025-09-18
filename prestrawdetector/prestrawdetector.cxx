@@ -13,6 +13,8 @@
 #include "FairRuntimeDb.h"
 #include "ShipDetectorList.h"
 #include "ShipStack.h"
+#include "FairRunSim.h"
+#include "FairMCEventHeader.h"
 
 #include "TClonesArray.h"
 #include "TVirtualMC.h"
@@ -91,8 +93,14 @@ Int_t prestrawdetector::InitMedium(const char* name)
 
 Bool_t prestrawdetector::ProcessHits(FairVolume* vol)
 {
-
-  std::cout << "In PH\n";
+	float fEventT0 = 0.;
+  	if (auto* run = FairRunSim::Instance()) {
+    	if (auto* hdr = run->GetMCEventHeader()) {
+      		fEventT0 = hdr->GetT(); 
+	        std::cout << "\nto = " << fEventT0<< "\n";
+	}
+	}
+  
     /** This method is called from the MC stepping */
   //Set parameters at entrance of volume. Reset ELoss.
   if ( gMC->IsTrackEntering() ) {
@@ -106,12 +114,18 @@ Bool_t prestrawdetector::ProcessHits(FairVolume* vol)
   fELoss += gMC->Edep();
   //std::cout << gMC->IsTrackExiting()<<gMC->IsTrackStop()<<gMC->IsTrackDisappeared();
   // Create strawtubesPoint at exit of active volume
-  if ( gMC->IsTrackEntering()   ) {
+  if (gMC->IsTrackExiting()    ||
+       gMC->IsTrackStop()       ||
+       gMC->IsTrackDisappeared() ) {
     //if (fELoss == 0. ) { return kFALSE; }
+    //if (!gMC->IsTrackPrimary()) return kTRUE;
+    //if (gMC->GetStack()->GetCurrentTrackNumber() != 0) return kTRUE;
     std::cout << "Entering track was found\n";
     TParticle* p=gMC->GetStack()->GetCurrentTrack();
     Int_t pdgCode = p->GetPdgCode();
     fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
+    std::cout << "track = " << fTrackID << "\n";
+    std::cout << "pdg = " << pdgCode << "\n";
     Int_t det_uniqueId;
     gMC->CurrentVolID(det_uniqueId);
     /*if (fVolumeID == det_uniqueId) {
@@ -128,6 +142,8 @@ Bool_t prestrawdetector::ProcessHits(FairVolume* vol)
     AddHit(fTrackID, det_uniqueId, TVector3(xmean, ymean,  zmean),
            TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, deltaTrackLength,
            fELoss,pdgCode);
+    std::cout << "Stored \n";
+    std::cout << "\n fTime = " << fTime << "\n";
     // Increment number of strawtubes det points in TParticle
     /*ShipStack* stack = (ShipStack*) gMC->GetStack();
     stack->AddPoint(kStraw);*/
@@ -202,8 +218,8 @@ void prestrawdetector::ConstructGeometry()
     gGeoManager->SetTopVisible();
     Double_t eps=0.0001;
 
-    TGeoBBox* myBox = new TGeoBBox("myBox", 300, 300, 1);
-    TGeoVolume* myVol = new TGeoVolume("myVol", myBox, air);
+    TGeoBBox* myBox = new TGeoBBox("myBox", 300, 300, 1e-6);
+    TGeoVolume* myVol = new TGeoVolume("myVol", myBox, vacuum);
     myVol->SetLineColor(kYellow);
     top->AddNode(myVol, 0, new TGeoTranslation(0, 0, fPSDz));
 
@@ -217,6 +233,3 @@ void prestrawdetector::EndOfEvent()
 {
   fprestrawdetectorPointCollection->Clear();
 }
-
-
-
