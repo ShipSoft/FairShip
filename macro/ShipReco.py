@@ -138,8 +138,8 @@ for global_variables.iEvent in range(options.firstEvent, options.nEvents):
         print('event ', global_variables.iEvent)
     rc = SHiP.sTree.GetEvent(global_variables.iEvent)
     SHiP.digitize()
-    SHiP.reconstruct()
+    #SHiP.reconstruct()
  # memory monitoring
- # mem_monitor()
+mem_monitor()
 # end loop over events
 SHiP.finish()
