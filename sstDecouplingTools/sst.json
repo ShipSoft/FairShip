@@ -1,10 +1,11 @@
 {
-  "positions": [
-    2598.0,
-    2698.0,
-    3498.0,
-    3538.0
-  ],
-  "angles": 4.57,
-  "magnetic_strength": 0.45
+  "geometry": {
+    "positions": [8407.0, 8607.0, 9307.0, 9507.0],
+    "angles": 4.57,
+    "magnetic_strength": 0.45
+  },
+  "options": {
+    "theSeed": 42,
+    "nEvents": 11
+  }
 }
