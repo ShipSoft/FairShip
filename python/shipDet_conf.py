@@ -820,7 +820,7 @@ def configure(run, ship_geo):
         Prestrawdetector = ROOT.prestrawdetector('Prestrawdetector', True)
         Prestrawdetector.SetZ(ship_geo.psd)
         detectorList.append(Prestrawdetector)
-        
+
         print(ship_geo)
         Strawtubes = ROOT.strawtubes(ship_geo.strawtubes.medium)
         Strawtubes.SetZpositions(

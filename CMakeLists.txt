@@ -221,3 +221,20 @@ add_custom_target(
   COMMENT
     "Creating symlinks from ${CMAKE_SOURCE_DIR} to ${CMAKE_BINARY_DIR} for geometry and macro"
 )
+
+If(TEvePath)
+#find_package(OpenGL)
+#If (OPENGL_FOUND AND OPENGL_GLU_FOUND)
+  Message("Found TEve, so the eventdisplay will be compiled.")
+
+ IF(NOT FAIRROOT_FOUND)
+  add_subdirectory (eventdisplay)
+ ENDIF(NOT FAIRROOT_FOUND)
+
+EndIf(TEvePath)
+
+add_custom_target(  # make relative links to folders
+    geometry.link ALL
+    COMMAND [ -e geometry ] || python -c \"import os.path as p, os\; os.symlink(p.join(p.relpath('${CMAKE_SOURCE_DIR}', '${CMAKE_BINARY_DIR}') , 'geometry') , 'geometry') \"
+    COMMAND [ -e macro ] || python -c \"import os.path as p, os\; os.symlink(p.join(p.relpath('${CMAKE_SOURCE_DIR}', '${CMAKE_BINARY_DIR}') , 'macro') , 'macro') \"
+)

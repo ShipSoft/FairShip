@@ -61,7 +61,7 @@ Bool_t MyGenerator::ReadEvent(FairPrimaryGenerator* cpg)
   }
   if (fn>=fNevents) {
      cout << "No more input events"<<endl;
-     //return kFALSE; 
+     //return kFALSE;
   }
 
   TDatabasePDG* pdgBase = TDatabasePDG::Instance();

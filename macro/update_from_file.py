@@ -1,7 +1,7 @@
 import json
 
 def update_from_file(ship_geo, options, file):
-    with open(file, 'r') as f:
+    with open(file) as f:
         data = json.load(f)
 
     if 'positions' in data:
