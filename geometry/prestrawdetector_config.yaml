@@ -1,0 +1,8 @@
+# Geometry configuration of PSD (prestrawdetector) in FairShip
+
+PSD:
+  width: 300                   # Aperture width (x) in cm (half length)
+  height: 300                  # Aperture height (y) in cm (half length)
+  wall_thickness: 0.001       # Straw wall thickness in cm
+  z_position: 8350.0           # Z position in cm
+  material: "air"              # material
