@@ -437,7 +437,7 @@ def configure(run, ship_geo):
         os.path.join(os.environ["FAIRSHIP"], "geometry", "strawtubes_config.yaml"),
         ship_geo,
     )
-    if hasattr(ship_geo, "PSD"):    
+    if hasattr(ship_geo, "PSD"):
         if ship_geo.PSD:
             configure_prestrawdetector(
                 os.path.join(os.environ["FAIRSHIP"], "geometry", "prestrawdetector_config.yaml"),
