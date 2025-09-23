@@ -63,6 +63,7 @@ HNLPythia8Generator.cxx
 DPPythia8Generator.cxx
 GenieGenerator.cxx
 NtupleGenerator.cxx
+MyGenerator.cxx
 MuonBackGenerator.cxx
 CosmicsGenerator.cxx
 MuDISGenerator.cxx

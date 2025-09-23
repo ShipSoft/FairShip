@@ -11,7 +11,7 @@ from argparse import ArgumentParser
 from array import array
 from backports import tdirectory634
 DownScaleDiMuon = False
-
+from update_config import update_config
 # Default HNL parameters
 theHNLMass   = 1.0*u.GeV
 theProductionCouplings = theDecayCouplings = None
@@ -179,9 +179,17 @@ parser.add_argument(
 parser.add_argument("--noSND", dest="SND", help="Deactivate SND. NOOP, as it currently defaults to off.", action='store_false')
 parser.add_argument("--target-yaml", help="Path to the yaml target config file", default=os.path.expandvars("$FAIRSHIP/geometry/target_config_Jun25.yaml"))
 
-
+# sst-decoupling flags
+parser.add_argument("--decouple",   dest="decouple", help="Decoupling flag", required=False,  default=False, action='store_true')
+parser.add_argument("--useJSON",   dest="json", help="Geometry tuning from json file", required=False,  default=False, action='store_true')
+parser.add_argument("--prestraw",   dest="PSD", help="Prestrawdetector flag", required=False,  default=False, action='store_true')
+parser.add_argument("--ttreegen",  dest="ttreegen",  help="Use events from ttree as input", required=False, action="store_true")
 
 options = parser.parse_args()
+if options.json:
+    update_config(options, os.path.expandvars('$FAIRSHIP/sstDecouplingTools/sst.json'), 'options')
+
+
 
 # Handle SND_design: allow 'all' (case-insensitive) or list of ints
 available_snd_designs = [1, 2]  # Extend this list as new designs are added
@@ -266,12 +274,19 @@ ship_geo = ConfigRegistry.loadpy(
      SND_design=options.SND_design,
      TARGET_YAML=options.target_yaml
 )
+print(ship_geo)
+if options.json:
+    update_config(ship_geo, os.path.expandvars('$FAIRSHIP/sstDecouplingTools/sst.json'), 'geometry')
+
+if options.PSD:
+    ship_geo.PSD = options.PSD
+ship_geo.decouple = options.decouple
 
 # Output file name, add dy to be able to setup geometry with ambiguities.
 if options.command == "PG":
     tag = f"PG_{options.pID}-{mcEngine}"
 else:
-    for g in ["pythia8", "evtcalc", "pythia6", "genie", "nuradio", "ntuple", "muonback", "mudis", "fixedTarget", "cosmics"]:
+    for g in ["pythia8", "evtcalc", "pythia6", "genie", "nuradio", "ntuple", "muonback", "mudis", "fixedTarget", "cosmics", "ttreegen"]:
         if getattr(options, g):
             simEngine = g.capitalize()
             break
@@ -315,6 +330,7 @@ modules = shipDet_conf.configure(run,ship_geo)
 primGen = ROOT.FairPrimaryGenerator()
 if options.pythia8:
  primGen.SetTarget(ship_geo.target.z0, 0.)
+
 # -----Pythia8--------------------------------------
  if HNL or options.RPVSUSY:
   P8gen = ROOT.HNLPythia8Generator()
@@ -368,9 +384,9 @@ if options.pythia8:
   P8gen.UseExternalFile(inputFile, options.firstEvent)
   # Use geometry constants instead of fragile TGeo navigation
   P8gen.SetTargetCoordinates(ship_geo.target.z0, ship_geo.target.z0 + ship_geo.target.length)
-# pion on proton 500GeV
-# P8gen.SetMom(500.*u.GeV)
-# P8gen.SetId(-211)
+  # pion on proton 500GeV
+  # P8gen.SetMom(500.*u.GeV)
+  # P8gen.SetId(-211)
  primGen.AddGenerator(P8gen)
 if options.fixedTarget:
  HNL = False
@@ -395,6 +411,15 @@ if options.pythia6:
  P6gen.SetTarget("gamma/mu+","n0") # default "gamma/mu-","p+"
  primGen.AddGenerator(P6gen)
 
+# -----TTree generator--------------------------------------
+
+if options.ttreegen:
+    primGen.SetTarget(0.0, 0.0)
+    print(f"Opening input file for ttree generator: {inputFile}")
+    TtreeGen = ROOT.MyGenerator()
+    TtreeGen.Init(inputFile, options.firstEvent)
+    primGen.AddGenerator(TtreeGen)
+    options.nEvents = TtreeGen.GetNevents()
 # -----EvtCalc--------------------------------------
 if options.evtcalc:
     primGen.SetTarget(0.0, 0.0)

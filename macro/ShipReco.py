@@ -44,6 +44,8 @@ parser.add_argument("--realPR",          dest="realPR",  help="Option for patter
 parser.add_argument("-dy",               dest="dy", help="Max height of tank", required=False, default=None,type=int)
 parser.add_argument("--Debug",           dest="Debug", help="Switch on debugging", required=False, action="store_true")
 
+parser.add_argument("--digiOnly", dest="digionly", help="only digitization", default=False, required=False, action="store_true")
+
 options = parser.parse_args()
 vertexing = not options.noVertexing
 
@@ -138,8 +140,9 @@ for global_variables.iEvent in range(options.firstEvent, options.nEvents):
         print('event ', global_variables.iEvent)
     rc = SHiP.sTree.GetEvent(global_variables.iEvent)
     SHiP.digitize()
-    SHiP.reconstruct()
+    if not options.digionly:
+        SHiP.reconstruct()
  # memory monitoring
- # mem_monitor()
+mem_monitor()
 # end loop over events
 SHiP.finish()

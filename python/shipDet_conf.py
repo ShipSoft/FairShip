@@ -293,6 +293,18 @@ def configure_strawtubes(yaml_file, ship_geo):
 
     detectorList.append(Strawtubes)
 
+def configure_prestrawdetector(yaml_file, ship_geo):
+    with open(yaml_file) as file:
+        config = yaml.safe_load(file)
+
+    ship_geo.prestrawdetector_geo = AttrDict(config['PSD'])
+
+    Prestrawdetector = ROOT.prestrawdetector(ship_geo.prestrawdetector_geo.material)
+    Prestrawdetector.SetZ(ship_geo.prestrawdetector_geo.z_position)
+    Prestrawdetector.SetX(ship_geo.prestrawdetector_geo.width)
+    Prestrawdetector.SetY(ship_geo.prestrawdetector_geo.height)
+    Prestrawdetector.SetThickness(ship_geo.prestrawdetector_geo.wall_thickness)
+    detectorList.append(Prestrawdetector)
 
 def configure(run, ship_geo):
     # ---- for backward compatibility ----
@@ -425,6 +437,12 @@ def configure(run, ship_geo):
         os.path.join(os.environ["FAIRSHIP"], "geometry", "strawtubes_config.yaml"),
         ship_geo,
     )
+    if hasattr(ship_geo, "PSD"):
+        if ship_geo.PSD:
+            configure_prestrawdetector(
+                os.path.join(os.environ["FAIRSHIP"], "geometry", "prestrawdetector_config.yaml"),
+                ship_geo,
+            )
 
     if ship_geo.EcalOption == 1:  # shashlik design TP
         ecal, EcalZSize = posEcal(ship_geo.ecal.z, ship_geo.ecal.File)
@@ -527,9 +545,11 @@ def configure(run, ship_geo):
         run.SetField(fMagField)
 
     exclusionList = []
+    if ship_geo.decouple:
+        exclusionList = ["Muon","Ecal","Hcal","TargetTrackers","NuTauTarget","HighPrecisionTrackers",\
+                 "Veto","MuonShield","TargetStation","NuTauMudet","EmuMagnet", "TimeDet", "UpstreamTagger"]
     # exclusionList = ["Muon","Ecal","Hcal","Strawtubes","TargetTrackers","NuTauTarget",\
     #                 "Veto","Magnet","MuonShield","TargetStation", "TimeDet", "UpstreamTagger"]
-
     for x in detectorList:
         if x.GetName() in exclusionList:
             continue

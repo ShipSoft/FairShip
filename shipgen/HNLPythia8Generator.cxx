@@ -168,6 +168,8 @@ Bool_t HNLPythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
          xS = xp + lam * px;
          yS = yp + lam * py;
          zS = zp + lam * pz;
+	 std::cout << "HNL generated at z = " << zp << " mm, decays at z = " << zS << " mm" << std::endl;
+
          Double_t gam  = e/TMath::Sqrt(e*e-p*p);
          Double_t beta = p/e;
          tS = tp + LS / beta;   // units ? [mm/c] + [mm/beta] (beta is dimensionless speed, and c=1 here)
