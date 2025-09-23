@@ -34,7 +34,6 @@ Bool_t MyGenerator::Init(const char* fileName, const int firstEvent) {
   fTree->SetBranchAddress("px",&px);   // momentum
   fTree->SetBranchAddress("py",&py);
   fTree->SetBranchAddress("pz",&pz);
-  cout << "Init OK" << fn << " " << fNevents << endl;
   return kTRUE;
 }
 // -------------------------------------------------------------------------
@@ -68,7 +67,6 @@ Bool_t MyGenerator::ReadEvent(FairPrimaryGenerator* cpg)
   Double_t mass = pdgBase->GetParticle(id)->Mass();
   Double_t    e = TMath::Sqrt( px*px+py*py+pz*pz+ mass*mass );
   cpg->AddTrack(id, px, py, pz, vx, vy, vz);
-  cout << vx<< " " << vy<< " " << vz<<endl;
 
   return kTRUE;
 }
