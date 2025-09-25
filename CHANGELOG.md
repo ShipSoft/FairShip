@@ -56,6 +56,14 @@ it in future.
   - The `--SmearBeam` and `--PaintBeam` command-line options in `run_simScript.py` now apply to all generators, not just muon background simulation
   - Fixed unit handling to ensure proper conversion between GEANT4 units (cm-based) and Pythia8 units (mm-based) in each generator
   - Implemented shared `BeamSmearingUtils` utility using modern C++17 features (std::pair return and structured bindings) to eliminate code duplication
+* Big update of genie generation scripts `macro/makeGenieEvents.py` and `python/genie_interface.py`:
+  - Universal choice of neutrino flavor to simulate
+  - Handy way to enable/disable charm and tau decays of the products
+  - Rewriting the code with modern pythonic style preserving backward compatibility
+* Adding new keys specifically for genie regime in `macro/run_simScript.py` and copying `gst` TTree from the genie input file to the output file of the `macro/run_simScript.py`:
+  - Adjust the z range where to simulate the neutrino interactions via `--z_start_nu and `--z_end_nu` keys
+  - Replacing the `--Genie` key with `Genie` as a subparser
+  - Copying `gst` TTree is similar to `sndsw`
 
 ### Fixed
 
@@ -88,6 +96,7 @@ it in future.
 * Use lowercase FairLogger severities (uppercase ones are deprecated)
 * Correct paths for default input files
 * Fix missing decays of J/psi by using EvtGenDecayer
+* Fix: hard cast bug in genie generator: after replacing old C-style cast histogram variable got nullptr value which afterwards caused segmentation fault
 
 ### Changed
 
