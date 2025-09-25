@@ -36,7 +36,8 @@ import argparse
 import logging
 import os
 from pathlib import Path
-from typing import Dict, Mapping, Optional, Sequence
+from typing import Dict, Optional
+from collections.abc import Mapping, Sequence
 
 import ROOT  # type: ignore
 import shipRoot_conf
@@ -70,13 +71,13 @@ NUPDGLIST = [16, -16, 14, -14, 12, -12]
 # ------------------------------ Helpers ---------------------------------------
 
 
-def extract_nu_over_nubar(neutrino_flux: Path, particles: Sequence[int]) -> Dict[int, float]:
+def extract_nu_over_nubar(neutrino_flux: Path, particles: Sequence[int]) -> dict[int, float]:
     """Compute ν/ν̄ = sum(nu)/sum(nubar) from 1D flux histograms."""
     f = ROOT.TFile(str(neutrino_flux), "READ")
     if not f or f.IsZombie():
         raise FileNotFoundError(f"Cannot open flux file: {neutrino_flux}")
     try:
-        ratios: Dict[int, float] = {}
+        ratios: dict[int, float] = {}
         for pdg in particles:
             fam = abs(int(pdg))
             h_nu = f.Get(get_1D_flux_name(fam))
@@ -102,7 +103,7 @@ def _ensure_dir(path: Path) -> None:
     path.mkdir(parents=True, exist_ok=True)
 
 
-def _build_env(nudet: bool, gxmlpath: Optional[Path]) -> Optional[Mapping[str, Optional[str]]]:
+def _build_env(nudet: bool, gxmlpath: Path | None) -> Mapping[str, str | None] | None:
     """Build per-call env overrides (sets GXMLPATH only in nudet mode)."""
     if not nudet:
         return None
@@ -135,13 +136,13 @@ def make_events(
     nevents: int,
     particles: Sequence[int],
     targetcode: str,
-    process: Optional[str],
+    process: str | None,
     emin: float,
     emax: float,
     neutrino_flux: Path,
     splines: Path,
     seed: int,
-    env_vars: Optional[Mapping[str, Optional[str]]],
+    env_vars: Mapping[str, str | None] | None,
     work_dir: Path,
     nu_over_nubar: Mapping[int, float],
 ) -> None:
@@ -235,7 +236,7 @@ def _build_parser() -> argparse.ArgumentParser:
     return p
 
 
-def main(argv: Optional[Sequence[str]] = None) -> int:
+def main(argv: Sequence[str] | None = None) -> int:
     # CLI
     parser = _build_parser()
     args = parser.parse_args(argv)

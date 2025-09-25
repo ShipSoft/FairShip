@@ -35,7 +35,8 @@ import logging
 import os
 import shlex
 import subprocess
-from typing import Dict, Mapping, Optional, Sequence, Union
+from typing import Dict, Optional, Union
+from collections.abc import Mapping, Sequence
 
 import ROOT  # type: ignore
 
@@ -57,7 +58,7 @@ PathLike = Union[str, os.PathLike]
 logger = logging.getLogger(__name__)
 
 
-def _merge_env(env_vars: Optional[Mapping[str, Optional[str]]]) -> Dict[str, str]:
+def _merge_env(env_vars: Mapping[str, str | None] | None) -> dict[str, str]:
     """Merge ``env_vars`` with the current environment.
 
     Parameters
@@ -71,7 +72,7 @@ def _merge_env(env_vars: Optional[Mapping[str, Optional[str]]]) -> Dict[str, str
     dict
         The environment dict to pass into ``subprocess.run``.
     """
-    env: Dict[str, str] = dict(os.environ)
+    env: dict[str, str] = dict(os.environ)
     if env_vars:
         for k, v in env_vars.items():
             if v is None:
@@ -83,7 +84,7 @@ def _merge_env(env_vars: Optional[Mapping[str, Optional[str]]]) -> Dict[str, str
 
 def _run(
     args: Sequence[str],
-    env_vars: Optional[Mapping[str, Optional[str]]] = None,
+    env_vars: Mapping[str, str | None] | None = None,
     *,
     check: bool = True,
 ) -> subprocess.CompletedProcess:
@@ -155,10 +156,10 @@ def get_2D_flux_name(nupdg: int) -> str:
 def make_splines(
     nupdglist: Sequence[int],
     targetcode: str,
-    emax: Union[int, float],
+    emax: int | float,
     nknots: int,
     outputfile: PathLike,
-    env_vars: Optional[Mapping[str, Optional[str]]] = None,
+    env_vars: Mapping[str, str | None] | None = None,
 ) -> subprocess.CompletedProcess:
     """Generate GENIE cross-section splines via ``gmkspl``.
 
@@ -201,17 +202,17 @@ def make_splines(
 def generate_genie_events(
     nevents: int,
     nupdg: int,
-    emin: Union[int, float],
-    emax: Union[int, float],
+    emin: int | float,
+    emax: int | float,
     targetcode: str,
     inputflux: PathLike,
     spline: PathLike,
     outputfile: PathLike,
     *,
-    process: Optional[str] = None,
-    seed: Optional[int] = None,
-    irun: Optional[int] = None,
-    env_vars: Optional[Mapping[str, Optional[str]]] = None,
+    process: str | None = None,
+    seed: int | None = None,
+    irun: int | None = None,
+    env_vars: Mapping[str, str | None] | None = None,
 ) -> subprocess.CompletedProcess:
     """Run GENIE ``gevgen`` to generate events.
 
@@ -295,7 +296,7 @@ def generate_genie_events(
 def make_ntuples(
     inputfile: PathLike,
     outputfile: PathLike,
-    env_vars: Optional[Mapping[str, Optional[str]]] = None,
+    env_vars: Mapping[str, str | None] | None = None,
 ) -> subprocess.CompletedProcess:
     """Convert a GENIE ``.ghep.root`` file to GST via ``gntpc``.
 
@@ -358,9 +359,9 @@ def add_hists(inputflux: PathLike, simfile: PathLike, nupdg: int) -> None:
 
 # --------------------------- CLI ---------------------------------------------
 
-def _parse_env_kv(pairs: Sequence[str]) -> Dict[str, Optional[str]]:
+def _parse_env_kv(pairs: Sequence[str]) -> dict[str, str | None]:
     """Parse ``KEY=VAL`` pairs for ``--env`` CLI flag."""
-    out: Dict[str, Optional[str]] = {}
+    out: dict[str, str | None] = {}
     for p in pairs:
         if "=" not in p:
             raise ValueError(f"Expected KEY=VALUE, got '{p}'")
@@ -369,7 +370,7 @@ def _parse_env_kv(pairs: Sequence[str]) -> Dict[str, Optional[str]]:
     return out
 
 
-def main(argv: Optional[Sequence[str]] = None) -> int:
+def main(argv: Sequence[str] | None = None) -> int:
     """Entry point for the command-line interface."""
     import argparse
 
@@ -435,7 +436,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     logging.basicConfig(level=level, format="%(levelname)s %(name)s: %(message)s")
 
     # env merging for CLI
-    env_vars: Dict[str, Optional[str]] = {}
+    env_vars: dict[str, str | None] = {}
     if args.env:
         env_vars.update(_parse_env_kv(args.env))
     for key in args.unset:
