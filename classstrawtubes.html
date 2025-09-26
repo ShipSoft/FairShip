@@ -655,8 +655,8 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  283</span>    TGeoMedium *Al                = gGeoManager-&gt;GetMedium(<span class="stringliteral">&quot;aluminium&quot;</span>);</div>
 <div class="line"><span class="lineno">  284</span>    <a class="code hl_function" href="classstrawtubes.html#a7d7144f63ba9faaed99fc942690e0c27">InitMedium</a>(<span class="stringliteral">&quot;mylar&quot;</span>);</div>
 <div class="line"><span class="lineno">  285</span>    TGeoMedium *mylar             = gGeoManager-&gt;GetMedium(<span class="stringliteral">&quot;mylar&quot;</span>);</div>
-<div class="line"><span class="lineno">  286</span>    <a class="code hl_function" href="classstrawtubes.html#a7d7144f63ba9faaed99fc942690e0c27">InitMedium</a>(<span class="stringliteral">&quot;STTmix9010_2bar&quot;</span>);</div>
-<div class="line"><span class="lineno">  287</span>    TGeoMedium *sttmix9010_2bar   = gGeoManager-&gt;GetMedium(<span class="stringliteral">&quot;STTmix9010_2bar&quot;</span>);</div>
+<div class="line"><span class="lineno">  286</span>    <a class="code hl_function" href="classstrawtubes.html#a7d7144f63ba9faaed99fc942690e0c27">InitMedium</a>(<span class="stringliteral">&quot;STTmix8020_1bar&quot;</span>);</div>
+<div class="line"><span class="lineno">  287</span>    TGeoMedium *sttmix8020_1bar   = gGeoManager-&gt;GetMedium(<span class="stringliteral">&quot;STTmix8020_1bar&quot;</span>);</div>
 <div class="line"><span class="lineno">  288</span>    <a class="code hl_function" href="classstrawtubes.html#a7d7144f63ba9faaed99fc942690e0c27">InitMedium</a>(<span class="stringliteral">&quot;tungsten&quot;</span>);</div>
 <div class="line"><span class="lineno">  289</span>    TGeoMedium *tungsten          = gGeoManager-&gt;GetMedium(<span class="stringliteral">&quot;tungsten&quot;</span>);</div>
 <div class="line"><span class="lineno">  290</span>    <a class="code hl_function" href="classstrawtubes.html#a7d7144f63ba9faaed99fc942690e0c27">InitMedium</a>(<a class="code hl_variable" href="classstrawtubes.html#a3c4c6e033485f496b614f5253a2dc38c">f_frame_material</a>);</div>
@@ -705,7 +705,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  333</span>    rmin = <a class="code hl_variable" href="classstrawtubes.html#a2c3b2535c871522868dc3f32d3b9a68c">f_wire_thickness</a> / 2. + eps;</div>
 <div class="line"><span class="lineno">  334</span>    rmax = <a class="code hl_variable" href="classstrawtubes.html#a150665aba5f021b053f06b1259e8ccd2">f_inner_straw_diameter</a> / 2. - eps;</div>
 <div class="line"><span class="lineno">  335</span>    TGeoTube *gas_tube = <span class="keyword">new</span> TGeoTube(<span class="stringliteral">&quot;gas&quot;</span>, rmin, rmax, straw_length - 2. * eps);</div>
-<div class="line"><span class="lineno">  336</span>    TGeoVolume *gas = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;gas&quot;</span>, gas_tube, sttmix9010_2bar);</div>
+<div class="line"><span class="lineno">  336</span>    TGeoVolume *gas = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;gas&quot;</span>, gas_tube, sttmix8020_1bar);</div>
 <div class="line"><span class="lineno">  337</span>    gas-&gt;SetLineColor(5);</div>
 <div class="line"><span class="lineno">  338</span>    <span class="comment">// Only the gas is sensitive</span></div>
 <div class="line"><span class="lineno">  339</span>    AddSensitiveVolume(gas);</div>
