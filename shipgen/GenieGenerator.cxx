@@ -430,7 +430,7 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg)
 	  sprintf(ts,"%d",idhnu);
 	  //pickup corresponding (log10(p),log10(pt)) histogram
           if (fInputFile->FindObjectAny(ts)){
-           TH2F* h2tmp = dynamic_cast<TH2F*>(fInputFile->Get(ts));
+           TH2* h2tmp = dynamic_cast<TH2*>(fInputFile->Get(ts));
            printf("HISTID=%d, Title:%s\n",idhnu,h2tmp->GetTitle());
 	   sprintf(ts,"px_%d",idhnu);
           //make its x-projection, to later be able to convert log10(p) to its bin-number
