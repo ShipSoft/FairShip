@@ -22,15 +22,8 @@ shipRoot_conf.configure()
 run=ROOT.FairRunAna()
 run.SetInputFile(inFile)    # Input file
 run.SetSink(ROOT.FairRootFileSink(outFile))  # Output file
-# -----Calorimeter part --------------------------------------------
-# Creates. exports and fills calorimeter structure
-ecalFiller=ROOT.ecalStructureFiller("ecalFiller", 1, "ecal.geo")
-ecalFiller.SetUseMCPoints(ROOT.kTRUE)
-ecalFiller.StoreTrackInformation()
-run.AddTask(ecalFiller)
-# Simple analysis
-ecalAna=ROOT.ecalAnalysisSimple("simpleAna",0)
-run.AddTask(ecalAna)
+# -----Calorimeter part to be rewritten for SplitCal--------------------------------------------
+
 # -----Runtime database---------------------------------------------
 rtdb=run.GetRuntimeDb()
 kParameterMerged = ROOT.kTRUE

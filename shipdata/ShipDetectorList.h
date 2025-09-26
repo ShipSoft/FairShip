@@ -18,8 +18,6 @@ enum DetectorId
     ktauTT,
     ktauTarget,
     kStraw,
-    kecal,
-    khcal,
     kMuon,
     kPreshower,
     kTRSTATION,
