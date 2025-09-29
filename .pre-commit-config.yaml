@@ -58,6 +58,28 @@ repos:
   hooks:
   - id: pyupgrade
     args: [--py39-plus]
+- repo: https://github.com/pre-commit/mirrors-mypy
+  rev: v1.11.2
+  hooks:
+    - id: mypy
+      name: mypy (type-check)
+      types_or: [python, pyi]
+      # Same include scope as your ruff-format hook:
+      files: ^(python/experimental/|geometry/geometry_config\.py$)
+      args:
+        - --python-version=3.9
+        - --ignore-missing-imports
+        - --show-column-numbers
+        - --pretty
+        - --follow-imports=skip        # <- don't type-check imported project modules
+        - --ignore-missing-imports
+        - --disable-error-code=name-defined
+      additional_dependencies:
+        - types-PyYAML
+        - types-tabulate
+        # Helpful on older 3.9 envs:
+        - typing-extensions>=4.8
+
 ci:
   autofix_prs: true
   skip: [ruff-check, cmakelint, isort, cmake-format]
