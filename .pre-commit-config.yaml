@@ -64,8 +64,7 @@ repos:
     - id: mypy
       name: mypy (type-check)
       types_or: [python, pyi]
-      # Same include scope as your ruff-format hook:
-      files: ^(python/experimental/|geometry/geometry_config\.py$)
+      files: ^(python/experimental/|geometry/geometry_config\.py|macro/makeGenieEvents\.py|python/genie_interface\.py|python/SciFiMapping\.py$)
       args:
         - --python-version=3.9
         - --ignore-missing-imports
