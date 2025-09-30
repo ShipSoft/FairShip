@@ -355,10 +355,10 @@ def main(argv: Sequence[str] | None = None) -> int:
     nu_over_nubar = extract_nu_over_nubar(flux, particles)
 
     logging.info(
-            f"Seed: {args.seed} | "
-            f"Target: {args.target} ({targetcode}) | "
-            f"Process: {args.evtype or 'ALL'} | "
-            f"nudet={bool(args.nudet)}"
+        f"Seed: {args.seed} | "
+        f"Target: {args.target} ({targetcode}) | "
+        f"Process: {args.evtype or 'ALL'} | "
+        f"nudet={bool(args.nudet)}"
     )
     make_events(
         run=int(args.run),
