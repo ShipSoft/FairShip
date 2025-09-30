@@ -8,7 +8,7 @@ It provides:
 - Per-call environment overrides (set/unset variables like ``GXMLPATH``)
 - Helpful printing/logging of the exact command line
 
-Notes
+Notes:
 -----
 * A Python process cannot modify its parent shell environment. Use the
   ``env_vars=...`` argument to set/unset variables **for the child process**
@@ -19,7 +19,7 @@ Notes
   defined and readable; otherwise the ``--message-thresholds`` option is
   omitted.
 
-Example
+Example:
 -------
 >>> from genie_interface import generate_genie_events
 >>> generate_genie_events(
@@ -27,6 +27,7 @@ Example
 ...     inputflux="/path/flux.root", spline="/path/xsec.xml", outputfile="out",
 ...     env_vars={"GXMLPATH": "/opt/genie/config", "GENIE": "/cvmfs/.../genie"}
 ... )
+
 """
 
 from __future__ import annotations
@@ -35,8 +36,8 @@ import logging
 import os
 import shlex
 import subprocess
-from typing import Dict, Optional, Union
 from collections.abc import Mapping, Sequence
+from typing import Union
 
 import ROOT  # type: ignore
 
@@ -71,6 +72,7 @@ def _merge_env(env_vars: Mapping[str, str | None] | None) -> dict[str, str]:
     -------
     dict
         The environment dict to pass into ``subprocess.run``.
+
     """
     env: dict[str, str] = dict(os.environ)
     if env_vars:
@@ -109,6 +111,7 @@ def _run(
     ------
     subprocess.CalledProcessError
         If the command exits with non-zero status and ``check=True``.
+
     """
     env = _merge_env(env_vars)
     cmd_str = shlex.join(args)
@@ -130,6 +133,7 @@ def get_1D_flux_name(nupdg: int) -> str:
     '1012'
     >>> get_1D_flux_name(-12)   # anti-nu_e
     '2012'
+
     """
     x = ROOT.TMath.Abs(nupdg)
     return ("10" if nupdg > 0 else "20") + str(x)
@@ -148,6 +152,7 @@ def get_2D_flux_name(nupdg: int) -> str:
     '1212'
     >>> get_2D_flux_name(-12)   # anti-nu_e
     '2212'
+
     """
     x = ROOT.TMath.Abs(nupdg)
     return ("12" if nupdg > 0 else "22") + str(x)
@@ -181,6 +186,7 @@ def make_splines(
     Returns
     -------
     subprocess.CompletedProcess
+
     """
     inputnupdg = ",".join(str(p) for p in nupdglist)
     args = [
@@ -250,6 +256,7 @@ def generate_genie_events(
     If ``GENIE`` is defined in the child environment, this function will try
     to pass ``--message-thresholds $GENIE/config/Messenger_laconic.xml`` if
     the file exists; otherwise that option is omitted.
+
     """
     env = _merge_env(env_vars)
 
@@ -312,6 +319,7 @@ def make_ntuples(
     Returns
     -------
     subprocess.CompletedProcess
+
     """
     args = ["gntpc", "-i", str(inputfile), "-f", "gst", "-o", str(outputfile)]
     return _run(args, env_vars=env_vars)
@@ -335,6 +343,7 @@ def add_hists(inputflux: PathLike, simfile: PathLike, nupdg: int) -> None:
         If the requested histogram is not found in ``inputflux``.
     RuntimeError
         If ROOT fails to open either file.
+
     """
     infile = ROOT.TFile(str(inputflux), "READ")
     if not infile or infile.IsZombie():
@@ -358,6 +367,7 @@ def add_hists(inputflux: PathLike, simfile: PathLike, nupdg: int) -> None:
 
 
 # --------------------------- CLI ---------------------------------------------
+
 
 def _parse_env_kv(pairs: Sequence[str]) -> dict[str, str | None]:
     """Parse ``KEY=VAL`` pairs for ``--env`` CLI flag."""
