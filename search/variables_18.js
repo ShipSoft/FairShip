@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['x_0',['x',['../classCosmicsGenerator.html#a495048f84ef5cce2af2e08db2a79f99d',1,'CosmicsGenerator::x'],['../namespacerunPythia8.html#ad74ad296dc1b3ef42e2efe98600c7a05',1,'runPythia8.X'],['../namespacegoliath2root.html#a20b03741387d4ca6535aee570c98ac5c',1,'goliath2root.x'],['../namespacerunCharmHadProd.html#aa7d89d8b2989c7014600e67b707dea90',1,'runCharmHadProd.x'],['../namespacerun__fixedTarget.html#a68f8e54ebe34ed88a1aff4505c32be7c',1,'run_fixedTarget.x'],['../namespacemakeMuonEM.html#aed3bddf19f451fdc5e44154c54c70cf9',1,'makeMuonEM.x'],['../namespacemakeMuonDIS.html#aa6c6d09f6420f2d1506e14d119b321e9',1,'makeMuonDIS.x'],['../namespacemake__nTuple__Tr.html#a1444af2233925ecdf57d578675df6a96',1,'make_nTuple_Tr.x'],['../namespacemake__nTuple__SBT.html#a47fc320230ff839c15f5f5944f1aed33',1,'make_nTuple_SBT.x'],['../namespacegeometry__config.html#a1286b5c01494c311eb3a950d1ac8857c',1,'geometry_config.x'],['../classshipPid_1_1Task.html#ab1ddf22e2849b9840befd2007ac7f74d',1,'shipPid.Task.x']]],
+  ['x_0',['x',['../classCosmicsGenerator.html#a495048f84ef5cce2af2e08db2a79f99d',1,'CosmicsGenerator::x'],['../namespacegoliath2root.html#a20b03741387d4ca6535aee570c98ac5c',1,'goliath2root.x'],['../namespacerunCharmHadProd.html#aa7d89d8b2989c7014600e67b707dea90',1,'runCharmHadProd.x'],['../namespacerun__fixedTarget.html#a68f8e54ebe34ed88a1aff4505c32be7c',1,'run_fixedTarget.x'],['../namespacemakeMuonEM.html#aed3bddf19f451fdc5e44154c54c70cf9',1,'makeMuonEM.x'],['../namespacemakeMuonDIS.html#aa6c6d09f6420f2d1506e14d119b321e9',1,'makeMuonDIS.x'],['../namespacemake__nTuple__Tr.html#a1444af2233925ecdf57d578675df6a96',1,'make_nTuple_Tr.x'],['../namespacemake__nTuple__SBT.html#a47fc320230ff839c15f5f5944f1aed33',1,'make_nTuple_SBT.x'],['../namespacegeometry__config.html#a1286b5c01494c311eb3a950d1ac8857c',1,'geometry_config.x'],['../namespacerunPythia8.html#ad74ad296dc1b3ef42e2efe98600c7a05',1,'runPythia8.X'],['../classshipPid_1_1Task.html#ab1ddf22e2849b9840befd2007ac7f74d',1,'shipPid.Task.x']]],
   ['x0_5f_1',['x0_',['../structShipFieldMaker_1_1transformInfo.html#a3a709cf11c81f7e10e2b69f6fe93ed02',1,'ShipFieldMaker::transformInfo']]],
   ['x_5fair_2',['X_Air',['../namespacegeometry__config.html#a336ccac766388f55ab6938b605a371ef',1,'geometry_config']]],
   ['x_5faluminium_3',['X_Aluminium',['../namespacegeometry__config.html#ad577d85c194dfdadf1ae6e6d238900dc',1,'geometry_config']]],
@@ -26,7 +26,7 @@ var searchData=
   ['xffilterecalthickness_23',['xfFilterECALThickness',['../classsplitcal.html#a7f6f2d585f38b166dce6daf0328ed348',1,'splitcal']]],
   ['xfrac1_5f_24',['xFrac1_',['../classShipBFieldMap.html#ad244c2f350e52fc7cbeddaf1ddd66f2c',1,'ShipBFieldMap']]],
   ['xfrac_5f_25',['xFrac_',['../classShipBFieldMap.html#a438a731a1b08cbb15e2c43a2dff85dfa',1,'ShipBFieldMap']]],
-  ['xmax_26',['xmax',['../classShipGoliathField.html#ab2b98db40114d0360cd4650e603d7dce',1,'ShipGoliathField::xmax'],['../namespacegeometry__config.html#a437302764acd932304dabd2a65070edf',1,'geometry_config.xMax'],['../namespacegeometry__config.html#a3c7ce2f9d309441314dcc2cd986172c3',1,'geometry_config.XMax']]],
+  ['xmax_26',['xmax',['../namespacegeometry__config.html#a3c7ce2f9d309441314dcc2cd986172c3',1,'geometry_config.XMax'],['../classShipGoliathField.html#ab2b98db40114d0360cd4650e603d7dce',1,'ShipGoliathField::xmax'],['../namespacegeometry__config.html#a437302764acd932304dabd2a65070edf',1,'geometry_config.xMax']]],
   ['xmax_5f_27',['xMax_',['../classShipBFieldMap.html#a00ebcf5d5871b4d60a087710fca705a6',1,'ShipBFieldMap']]],
   ['xmin_28',['xmin',['../classShipGoliathField.html#a18c8cd8ce6af9147ce66953c365a57df',1,'ShipGoliathField']]],
   ['xmin_5f_29',['xMin_',['../classShipBFieldMap.html#a686affa4758dc834602d7274f111fa76',1,'ShipBFieldMap']]],
@@ -35,12 +35,11 @@ var searchData=
   ['xrange_5f_32',['xRange_',['../classShipBFieldMap.html#aabcbe3429ca9391b96a87e131d6affdc',1,'ShipBFieldMap']]],
   ['xraw_33',['Xraw',['../classTTCluster_1_1TTCluster.html#ad680cf3d78401fb4eee25e9895cb73fa',1,'TTCluster::TTCluster']]],
   ['xrec_34',['Xrec',['../classTTCluster_1_1TTCluster.html#a78e56150edf0037dc5183d618383ff78',1,'TTCluster::TTCluster']]],
-  ['xsec_35',['xsec',['../namespacemakeGenieEvents.html#ad2326314e2065ca31d7af1d9d9d441a2',1,'makeGenieEvents']]],
-  ['xserial_36',['xserial',['../namespacerootpyPickler.html#a0f8c91a0848212cd180c525ebef97476',1,'rootpyPickler']]],
-  ['xspace_37',['xSpace',['../namespaceadd__noise__to__field.html#ac0ccac9074ea58e6b1bd65830caa940f',1,'add_noise_to_field']]],
-  ['xvessel_38',['Xvessel',['../classGenieGenerator.html#a40473bbcd7e3415ac5cf48c15ae86bfb',1,'GenieGenerator']]],
-  ['xx_39',['xx',['../classshipPid_1_1Task.html#a5c1511baf19f475b01a0a7587a07ab99',1,'shipPid.Task.xx'],['../namespaceana__ShipMuon.html#a04fe6357d90a9e3df96d89802a6959c4',1,'ana_ShipMuon.xx'],['../namespaceg4Ex.html#abd8cde62a307957fbb35535058451d42',1,'g4Ex.xx'],['../namespaceg4Ex__args.html#a269d9ac8bda33cc3ce8153881c64a596',1,'g4Ex_args.xx'],['../namespaceg4Ex__gap.html#a7997130f1a56bd6b1ecbcb54b415c17e',1,'g4Ex_gap.xx'],['../namespacerun__reco.html#a7e74d79c29b7ed5cbb9ac5c9787a66dc',1,'run_reco.xx']]],
-  ['xxx_40',['xxx',['../namespacerun__simScript.html#a74ff17349a4760ce81e57487c477618b',1,'run_simScript']]],
-  ['xy_41',['xy',['../namespacerun__fixedTarget.html#a166152ce7ffe503450bce030f7bfa878',1,'run_fixedTarget']]],
-  ['xz_5fpoints_42',['xz_points',['../namespaceTTCluster.html#ab6106ef02f10f6bdc0a3d08d5a104409',1,'TTCluster']]]
+  ['xserial_35',['xserial',['../namespacerootpyPickler.html#a0f8c91a0848212cd180c525ebef97476',1,'rootpyPickler']]],
+  ['xspace_36',['xSpace',['../namespaceadd__noise__to__field.html#ac0ccac9074ea58e6b1bd65830caa940f',1,'add_noise_to_field']]],
+  ['xvessel_37',['Xvessel',['../classGenieGenerator.html#a40473bbcd7e3415ac5cf48c15ae86bfb',1,'GenieGenerator']]],
+  ['xx_38',['xx',['../classshipPid_1_1Task.html#a5c1511baf19f475b01a0a7587a07ab99',1,'shipPid.Task.xx'],['../namespaceana__ShipMuon.html#a04fe6357d90a9e3df96d89802a6959c4',1,'ana_ShipMuon.xx'],['../namespaceg4Ex.html#abd8cde62a307957fbb35535058451d42',1,'g4Ex.xx'],['../namespaceg4Ex__args.html#a269d9ac8bda33cc3ce8153881c64a596',1,'g4Ex_args.xx'],['../namespaceg4Ex__gap.html#a7997130f1a56bd6b1ecbcb54b415c17e',1,'g4Ex_gap.xx'],['../namespacerun__reco.html#a7e74d79c29b7ed5cbb9ac5c9787a66dc',1,'run_reco.xx']]],
+  ['xxx_39',['xxx',['../namespacerun__simScript.html#a74ff17349a4760ce81e57487c477618b',1,'run_simScript']]],
+  ['xy_40',['xy',['../namespacerun__fixedTarget.html#a166152ce7ffe503450bce030f7bfa878',1,'run_fixedTarget']]],
+  ['xz_5fpoints_41',['xz_points',['../namespaceTTCluster.html#ab6106ef02f10f6bdc0a3d08d5a104409',1,'TTCluster']]]
 ];

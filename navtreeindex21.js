@@ -1,5 +1,7 @@
 var NAVTREEINDEX21 =
 {
+"compare__histograms_8py_source.html":[6,0,13,1,3],
+"configGenieGenerator_8py.html":[6,0,13,6],
 "configGenieGenerator_8py.html#a6bcca2f64dfe6e1783a59251bb8bacac":[6,0,13,6,0],
 "configGenieGenerator_8py_source.html":[6,0,13,6],
 "config__tester_8py.html":[6,0,5,0],
@@ -247,7 +249,5 @@ var NAVTREEINDEX21 =
 "evd__nextEvent_8py.html#ae96688f184f12446cedeaec7189c3205":[6,0,7,6,0],
 "evd__nextEvent_8py_source.html":[6,0,7,6],
 "evd__transparentMode_8py.html":[6,0,7,7],
-"evd__transparentMode_8py.html#afeac3b4d7cb3334678bf667700bc0b20":[6,0,7,7,0],
-"evd__transparentMode_8py_source.html":[6,0,7,7],
-"eveGlobal_8py.html":[6,0,7,8]
+"evd__transparentMode_8py.html#afeac3b4d7cb3334678bf667700bc0b20":[6,0,7,7,0]
 };

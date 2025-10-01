@@ -1,5 +1,7 @@
 var NAVTREEINDEX4 =
 {
+"classGenieGenerator.html#abc66e4178eddb9b795e6a48922119a07":[5,0,57,36],
+"classGenieGenerator.html#ac41eff1990b44a13c75c97dfe3e735ea":[5,0,57,26],
 "classGenieGenerator.html#ac4de05620c620d858bf0fa433628b5bf":[5,0,57,13],
 "classGenieGenerator.html#ac7496dc50248fb1f924ad1d9d007a4be":[5,0,57,50],
 "classGenieGenerator.html#ac842a0ee0ecfb7fb8edbd2ee1535ad93":[5,0,57,5],
@@ -247,7 +249,5 @@ var NAVTREEINDEX4 =
 "classNtupleGenerator.html#aa3551b11b3e020743b1b659a9f66c6ae":[5,0,78,1],
 "classNtupleGenerator.html#aa7762bfc4432b95a5acd15864a594acf":[5,0,78,19],
 "classNtupleGenerator.html#aabd720a7054f77cb30adfd03f3a450e5":[5,0,78,21],
-"classNtupleGenerator.html#ab05d064a7e4ee7380e3f6bb41cb44d46":[5,0,78,7],
-"classNtupleGenerator.html#ad04714d546c086a77da097873a470fdc":[5,0,78,16],
-"classNtupleGenerator.html#ad67c1cbd710355b6b193ff6b7029193a":[5,0,78,12]
+"classNtupleGenerator.html#ab05d064a7e4ee7380e3f6bb41cb44d46":[5,0,78,7]
 };

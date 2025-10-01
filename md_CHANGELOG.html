@@ -145,6 +145,18 @@ Added</h2>
 <li>Implemented shared <code>BeamSmearingUtils</code> utility using modern C++17 features (std::pair return and structured bindings) to eliminate code duplication</li>
 </ul>
 </li>
+<li>Big update of genie generation scripts <code><a class="el" href="makeGenieEvents_8py.html">macro/makeGenieEvents.py</a></code> and <code><a class="el" href="genie__interface_8py.html">python/genie_interface.py</a></code>:<ul>
+<li>Universal choice of neutrino flavor to simulate</li>
+<li>Handy way to enable/disable charm and tau decays of the products</li>
+<li>Rewriting the code with modern pythonic style preserving backward compatibility</li>
+</ul>
+</li>
+<li>Adding new keys specifically for genie regime in <code><a class="el" href="run__simScript_8py.html">macro/run_simScript.py</a></code> and copying <code>gst</code> TTree from the genie input file to the output file of the <code><a class="el" href="run__simScript_8py.html">macro/run_simScript.py</a></code>:<ul>
+<li>Adjust the z range where to simulate the neutrino interactions via <code>--z_start_nu and</code>&ndash;z_end_nu<code>keys</code></li>
+<li><code>Replacing the</code>&ndash;Genie<code>key with</code>Genie<code>as a subparser</code></li>
+<li><code>Copying</code>gst<code>TTree is similar to</code>sndsw`</li>
+</ul>
+</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md3"></a>
 Fixed</h2>
@@ -178,6 +190,7 @@ Fixed</h2>
 <li>Use lowercase FairLogger severities (uppercase ones are deprecated)</li>
 <li>Correct paths for default input files</li>
 <li>Fix missing decays of J/psi by using EvtGenDecayer</li>
+<li>Fix: hard cast bug in genie generator: after replacing old C-style cast histogram variable got nullptr value which afterwards caused segmentation fault</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md4"></a>
 Changed</h2>
