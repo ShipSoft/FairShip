@@ -58,8 +58,8 @@ parser.add_argument("--evtcalc", help="Use EventCalc", action="store_true")
 parser.add_argument("--Pythia6", dest="pythia6", help="Use Pythia6", action="store_true")
 parser.add_argument("--Pythia8", dest="pythia8", help="Use Pythia8", action="store_true")
 parser.add_argument("--EvtGenDecayer", dest="evtgen_decayer", help="Use TEvtGenDecayer for J/psi and other quarkonium decays", action="store_true")
-# === PG subcommand ===
 subparsers = parser.add_subparsers(dest="command", help="Which mode to run")
+# === PG subcommand ===
 pg_parser = subparsers.add_parser("PG", help="Use Particle Gun")
 
 pg_parser.add_argument(
@@ -99,9 +99,19 @@ pg_parser.add_argument(
     "--Dy", dest="Dy", type=float,
     help="size of the full uniform spread of PG ypos: (Vy - Dy/2, Vy + Dy/2)"
 )
-# === Enf of PG commands ===
+# === End of PG commands ===
+# === Genie subcommand ===
+genie_parser = subparsers.add_parser("Genie", help="Genie for reading and processing neutrino interactions")
+genie_parser.add_argument(
+    "--z_start_nu", dest="z_start_nu", default=2844.2850, type=float,
+    help="Genie neutrino start z start position (default=2844.2850 cm)"
+)
+genie_parser.add_argument(
+    "--z_end_nu", dest="z_end_nu", default=3180.4350, type=float,
+    help="Genie neutrino end z position (default=3180.4350 cm)"
+)
+# === End of Genie subcommand ===
 parser.add_argument("-A", help="b: signal from b, c: from c (default), bc: from Bc, or inclusive", default='c')
-parser.add_argument("--Genie", dest="genie", help="Genie for reading and processing neutrino interactions", action="store_true")
 parser.add_argument("--NuRadio", dest="nuradio", help="misuse GenieGenerator for neutrino radiography and geometry timing test", action="store_true")
 parser.add_argument("--Ntuple", dest="ntuple", help="Use ntuple as input", action="store_true")
 parser.add_argument("--MuonBack", dest="muonback", help="Generate events from muon background file, --Cosmics=0 for cosmic generator data", action="store_true")
@@ -182,7 +192,6 @@ parser.add_argument("--target-yaml", help="Path to the yaml target config file",
 
 
 options = parser.parse_args()
-
 # Handle SND_design: allow 'all' (case-insensitive) or list of ints
 available_snd_designs = [1, 2]  # Extend this list as new designs are added
 if any(str(x).lower() == 'all' for x in options.SND_design):
@@ -230,7 +239,7 @@ if (HNL and options.RPVSUSY) or (HNL and options.DarkPhoton) or (options.DarkPho
  print("cannot have HNL and SUSY or DP at the same time, abort")
  sys.exit(2)
 
-if (options.genie or options.nuradio) and defaultInputFile:
+if (options.command == "Genie" or options.nuradio) and defaultInputFile:
   inputFile = "$EOSSHIP/eos/experiment/ship/data/GenieEvents/genie-nu_mu.root"
 if options.mudis and defaultInputFile:
   print('input file required if simEngine = muonDIS')
@@ -270,8 +279,11 @@ ship_geo = ConfigRegistry.loadpy(
 # Output file name, add dy to be able to setup geometry with ambiguities.
 if options.command == "PG":
     tag = f"PG_{options.pID}-{mcEngine}"
+elif options.command == "Genie":
+    tag = f"Genie-{mcEngine}"
+    simEngine = "Genie"
 else:
-    for g in ["pythia8", "evtcalc", "pythia6", "genie", "nuradio", "ntuple", "muonback", "mudis", "fixedTarget", "cosmics"]:
+    for g in ["pythia8", "evtcalc", "pythia6", "nuradio", "ntuple", "muonback", "mudis", "fixedTarget", "cosmics"]:
         if getattr(options, g):
             simEngine = g.capitalize()
             break
@@ -443,13 +455,13 @@ if options.mudis:
  options.nEvents = min(options.nEvents,DISgen.GetNevents())
  print('Generate ',options.nEvents,' with DIS input', ' first event',options.firstEvent)
 # -----Neutrino Background------------------------
-if options.genie:
+if options.command == "Genie":
 # Genie
  ut.checkFileExists(inputFile)
  primGen.SetTarget(0., 0.) # do not interfere with GenieGenerator
  Geniegen = ROOT.GenieGenerator()
  Geniegen.Init(inputFile,options.firstEvent)
- Geniegen.SetPositions(ship_geo.target.z0, ship_geo.tauMudet.zMudetC-5*u.m, ship_geo.TrackStation2.z)
+ Geniegen.SetPositions(ship_geo.target.z0, options.z_start_nu, options.z_end_nu)
  primGen.AddGenerator(Geniegen)
  options.nEvents = min(options.nEvents,Geniegen.GetNevents())
  run.SetPythiaDecayer("DecayConfigNuAge.C")
@@ -729,6 +741,27 @@ if options.mudis:
 
     os.replace(temp_filename, outFile)
     print("Successfully added DISCrossSection to the output file:", outFile)
+
+if options.command == "Genie":
+    # breakpoint()
+    # Copy Genie (gst TTree) information to the output file
+    f_input = ROOT.TFile.Open(inputFile, "READ")
+    print("check")
+    gst = f_input.gst
+
+    selection_string = "(Entry$ >= "+str(options.firstEvent)+")"
+    if (options.firstEvent + options.nEvents) < gst.GetEntries() :
+        selection_string += "&&(Entry$ < "+str(options.firstEvent + options.nEvents)+")"
+
+    # Reopen output file
+    f_output = ROOT.TFile.Open(outFile, "UPDATE")
+
+    # Copy only the events used in this run
+    gst_copy = gst.CopyTree(selection_string)
+    gst_copy.Write()
+
+    f_input.Close()
+    f_output.Close()
 
 # ------------------------------------------------------------------------
 import checkMagFields
