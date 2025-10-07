@@ -1,4 +1,7 @@
 #!/usr/bin/env python
+# SPDX-License-Identifier: LGPL-3.0-or-later
+# SPDX-FileCopyrightText: Copyright CERN on behalf of the SHiP Collaboration
+
 """Script to generate DIS events for muons in Pythia6, and save them to a ROOT file (along with the original muon's soft interactions)."""
 
 import argparse

@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: LGPL-3.0-or-later
+// SPDX-FileCopyrightText: Copyright CERN on behalf of the SHiP Collaboration
+
 /* Reconstruction for the calorimeter
  * Operates over EcalClusters
  * Very simple at the momemnt: no real unfolding by tries to divide energy deposition in common cells. */

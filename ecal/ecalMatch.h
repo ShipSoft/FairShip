@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: LGPL-3.0-or-later
+// SPDX-FileCopyrightText: Copyright CERN on behalf of the SHiP Collaboration
+
 /* Matching for the calorimeter. Use photon or electron with maximum energy deposition in 3x3 cluster
  */
 #ifndef ECAL_ECALMATCH_H_

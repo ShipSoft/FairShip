@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: LGPL-3.0-or-later
+// SPDX-FileCopyrightText: Copyright CERN on behalf of the SHiP Collaboration
+
 /** A helper class for cluster finder
  ** Need refactoring. April 2011 //Dr.Sys **/
 #ifndef ECAL_ECALPRECLUSTER_H_

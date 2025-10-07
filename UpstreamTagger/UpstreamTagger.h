@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: LGPL-3.0-or-later
+// SPDX-FileCopyrightText: Copyright CERN on behalf of the SHiP Collaboration
+
 #ifndef UPSTREAMTAGGER_UPSTREAMTAGGER_H_
 #define UPSTREAMTAGGER_UPSTREAMTAGGER_H_
 
