@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: LGPL-3.0-or-later
+// SPDX-FileCopyrightText: Copyright CERN on behalf of the SHiP Collaboration
+
 #ifndef SND_MTC_MTCDETPOINT_H_
 #define SND_MTC_MTCDETPOINT_H_ 1
 

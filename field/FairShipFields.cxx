@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: LGPL-3.0-or-later
+// SPDX-FileCopyrightText: Copyright CERN on behalf of the SHiP Collaboration
+
 /*
 generic interface to B fields of FairShip
 assumes that magnetic fields for tracking are global fields, not matched to a volume.

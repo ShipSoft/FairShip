@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: LGPL-3.0-or-later
+// SPDX-FileCopyrightText: Copyright CERN on behalf of the SHiP Collaboration
+
 // $Id: basiclibs.C,v 1.1.1.1 2005/06/23 07:14:09 dbertini Exp $
 //
 // Macro for loading basic libraries used with both Geant3 and Geant4

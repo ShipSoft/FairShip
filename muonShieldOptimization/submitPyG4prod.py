@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: LGPL-3.0-or-later
+# SPDX-FileCopyrightText: Copyright CERN on behalf of the SHiP Collaboration
+
 import os,time
 path = '../'
 if not os.uname()[1].find('Ubuntu')<0: path = os.environ['HNL']

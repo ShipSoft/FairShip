@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: LGPL-3.0-or-later
+// SPDX-FileCopyrightText: Copyright CERN on behalf of the SHiP Collaboration
+
 /*! \class ShipFieldMaker
   \brief Creates various magnetic fields and assigns them to geometry regions
   \author John Back <J.J.Back@warwick.ac.uk>

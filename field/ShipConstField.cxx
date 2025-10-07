@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: LGPL-3.0-or-later
+// SPDX-FileCopyrightText: Copyright CERN on behalf of the SHiP Collaboration
+
 // -------------------------------------------------------------------------
 // -----                    ShipConstField source file                  -----
 // -----                Created 06/01/04  by M. Al/Turany              -----

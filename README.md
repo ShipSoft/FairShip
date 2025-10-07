@@ -14,6 +14,7 @@
     - [Docker instructions](#docker-instructions)
     - [Troubleshooting information](#troubleshooting-information)
     - [Documentation](#documentation)
+    - [License](#license)
     - [Contributing code](#contributing-code)
 
 <!-- markdown-toc end -->
@@ -211,6 +212,12 @@ Please see the wiki for [FAQ](https://github.com/ShipSoft/FairShip/wiki/FAQ-and-
 ## Documentation
 
 An [automatic class reference](https://shipsoft.github.io/FairShip/) is built using Doxygen from comments in the C++ code. Improving the comments will improve this documentation.
+
+## License
+
+FairShip is distributed under the GNU Lesser General Public License v3.0 or later (LGPL-3.0-or-later). See the [LICENSE](LICENSE) file for details.
+
+Copyright is held by CERN on behalf of the SHiP Collaboration. Some components are distributed under different licenses and copyrights - see the individual file headers and the [LICENSES](LICENSES/) directory for details. This project follows the [REUSE specification](https://reuse.software/) for licensing information.
 
 ## Contributing code
 

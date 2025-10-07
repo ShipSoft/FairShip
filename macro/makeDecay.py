@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: LGPL-3.0-or-later
+# SPDX-FileCopyrightText: Copyright CERN on behalf of the SHiP Collaboration
+
 #Use Pythia8 to decay the signals (Charm/Beauty) as produced by makeCascade.
 #Output is an ntuple with muon/neutrinos
 import ROOT,time,os,sys,random,getopt

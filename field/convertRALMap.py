@@ -1,4 +1,7 @@
 #!/bin/python
+# SPDX-License-Identifier: LGPL-3.0-or-later
+# SPDX-FileCopyrightText: Copyright CERN on behalf of the SHiP Collaboration
+
 
 # Python script to convert B field maps into text and ROOT files for FairShip.
 # Reduce the number of decimal places to try to reduce the file size.

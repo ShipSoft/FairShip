@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: LGPL-3.0-or-later
+// SPDX-FileCopyrightText: Copyright CERN on behalf of the SHiP Collaboration
+
 #ifndef VETO_VETOHIT_H_
 #define VETO_VETOHIT_H_ 1
 #include "ShipHit.h"

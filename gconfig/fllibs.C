@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: LGPL-3.0-only
+// SPDX-FileCopyrightText: Copyright (C) 2007 Ivana Hrivnacova
+
 // $Id$
 
 //------------------------------------------------

@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: LGPL-3.0-or-later
+# SPDX-FileCopyrightText: Copyright CERN on behalf of the SHiP Collaboration
+
 import os, subprocess,ROOT,time,getpass,multiprocessing
 import rootUtils as ut
 ncores = min(multiprocessing.cpu_count(),4)

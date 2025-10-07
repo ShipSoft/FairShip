@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: LGPL-3.0-or-later
+# SPDX-FileCopyrightText: Copyright CERN on behalf of the SHiP Collaboration
+
 """Utilities to run GENIE tools with per-call environment overrides.
 
 This module wraps common GENIE command-line tools (``gmkspl``, ``gevgen``,

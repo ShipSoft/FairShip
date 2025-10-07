@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: LGPL-3.0-or-later
+# SPDX-FileCopyrightText: Copyright CERN on behalf of the SHiP Collaboration
+
 import os,ROOT,sys,subprocess,pickle,time,datetime
 import rootUtils as ut
 
