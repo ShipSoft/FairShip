@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: LGPL-3.0-or-later
+// SPDX-FileCopyrightText: Copyright CERN on behalf of the SHiP Collaboration
+
 #ifndef PASSIVE_SHIPGEOCAVE_H_
 #define PASSIVE_SHIPGEOCAVE_H_
 
