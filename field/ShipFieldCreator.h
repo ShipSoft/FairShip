@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: LGPL-3.0-or-later
+// SPDX-FileCopyrightText: Copyright CERN on behalf of the SHiP Collaboration
+
 // -------------------------------------------------------------------------
 // -----                    ShipFieldCreator header file                  -----
 // -----                Created 26/03/14  by M. Al-Turany              -----
