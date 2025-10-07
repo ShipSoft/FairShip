@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: LGPL-3.0-or-later
+# SPDX-FileCopyrightText: Copyright CERN on behalf of the SHiP Collaboration
+
 """Backport pythonisation for TDirectory introduced in ROOT 6.32."""
 import cppyy
 import ROOT

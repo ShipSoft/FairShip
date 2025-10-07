@@ -1,4 +1,7 @@
 #!/usr/bin/env python
+# SPDX-License-Identifier: LGPL-3.0-or-later
+# SPDX-FileCopyrightText: Copyright CERN on behalf of the SHiP Collaboration
+
 """Script to collect muons hitting the 1st Tracking Station (including soft interaction products) to a ROOT file."""
 
 import argparse

@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: LGPL-3.0-or-later
+# SPDX-FileCopyrightText: Copyright CERN on behalf of the SHiP Collaboration
+
 import ROOT
 path = "./"
 fs = ['ship.10.0.nuRadiography-TGeant4.root']

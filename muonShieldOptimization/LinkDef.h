@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: LGPL-3.0-or-later
+// SPDX-FileCopyrightText: Copyright CERN on behalf of the SHiP Collaboration
+
 // $Id: muonShieldBackgroundLinkDef.h,v 1  Thomas Ruf 13/6/2917 $
 
 #ifdef __CINT__

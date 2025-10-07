@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: LGPL-3.0-or-later
+// SPDX-FileCopyrightText: Copyright CERN on behalf of the SHiP Collaboration
+
 // $Id: g3Config.C,v 1.1.1.1 2005/06/23 07:14:09 dbertini Exp $
 //
 // Configuration macro for Geant3 VirtualMC

@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: LGPL-3.0-or-later
+# SPDX-FileCopyrightText: Copyright CERN on behalf of the SHiP Collaboration
+
 # The name of our project is "ShipRoot".  CMakeLists files in this project can
 # refer to the root source directory of the project as ${ShipRoot_SOURCE_DIR} or
 # as ${CMAKE_SOURCE_DIR} and to the root binary directory of the project as

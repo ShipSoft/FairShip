@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-3.0-or-later
+// SPDX-FileCopyrightText: Copyright CERN on behalf of the SHiP Collaboration
 
 // 09/07/2024
 // SBT software contact: anupama.reghunath@cern.ch

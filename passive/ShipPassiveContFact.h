@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: LGPL-3.0-or-later
+// SPDX-FileCopyrightText: Copyright CERN on behalf of the SHiP Collaboration
+
 #ifndef PASSIVE_SHIPPASSIVECONTFACT_H_
 #define PASSIVE_SHIPPASSIVECONTFACT_H_
 #define PNDPASSIVECONTFACT_H

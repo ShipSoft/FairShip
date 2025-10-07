@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: LGPL-3.0-or-later
+// SPDX-FileCopyrightText: Copyright CERN on behalf of the SHiP Collaboration
+
 #ifndef SHIPGEN_DPPYTHIA8GENERATOR_H_
 #define SHIPGEN_DPPYTHIA8GENERATOR_H_
 #define DPP8GENERATOR_H 1
