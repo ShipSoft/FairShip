@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: LGPL-3.0-or-later
+# SPDX-FileCopyrightText: Copyright CERN on behalf of the SHiP Collaboration
+
 # save python objects as pickle object in ROOT file
 from rootpyPickler import Pickler
 from ShipGeoConfig import AttrDict

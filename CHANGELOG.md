@@ -152,6 +152,7 @@ it in future.
 * Move SST geometry parameters to yaml
 * Update strawtubes class
 * Change SST gas mixture to Ar/CO2 80%/20% at 1 bar
+* FairShip is now licensed under LGPLv3+
 
 ### Removed
 

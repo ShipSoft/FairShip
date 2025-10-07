@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: LGPL-3.0-or-later
+// SPDX-FileCopyrightText: Copyright CERN on behalf of the SHiP Collaboration
+
 // Construction of SST tracker stations
 // Last update: 15 Aug 2025
 // Contact: W.-C. Marty Lee <wei-chieh.lee@desy.de>

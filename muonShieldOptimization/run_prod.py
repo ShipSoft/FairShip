@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: LGPL-3.0-or-later
+# SPDX-FileCopyrightText: Copyright CERN on behalf of the SHiP Collaboration
+
 import os,time,ROOT
 def makeProd(prefix,DY,y=False,phiRandom=False,X=None):
   ncpu = 9

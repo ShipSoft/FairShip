@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# SPDX-FileCopyrightText: Copyright 2012 the rootpy developers
+
 # Copyright 2012 the rootpy developers
 # distributed under the terms of the GNU General Public License
 # Original author: Scott Snyder scott.snyder(a)cern.ch, 2004.
