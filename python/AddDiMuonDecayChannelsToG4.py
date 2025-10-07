@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: LGPL-3.0-or-later
+# SPDX-FileCopyrightText: Copyright CERN on behalf of the SHiP Collaboration
+
 import ROOT
 ROOT.gROOT.ProcessLine('#include "Geant4/G4ParticleTable.hh"')
 ROOT.gROOT.ProcessLine('#include "Geant4/G4DecayTable.hh"')

@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: LGPL-3.0-or-later
+// SPDX-FileCopyrightText: Copyright CERN on behalf of the SHiP Collaboration
+
 /*! \class ShipCompField
   \brief Class that defines a magnetic field composed from many fields
   \author John Back <J.J.Back@warwick.ac.uk>
