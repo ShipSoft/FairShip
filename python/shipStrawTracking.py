@@ -51,6 +51,7 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method):
 
     # Prepare ShipGeo dictionary
     if not fgeo.FindKey('ShipGeo'):
+        if dy:
             ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = dy)
         else:
             ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py")
