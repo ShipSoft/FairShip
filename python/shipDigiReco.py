@@ -101,9 +101,6 @@ class ShipDigiReco:
     mapping = SciFiMapping.SciFiMapping(global_variables.modules)
     mapping.make_mapping()
     self.sipm_to_fibre_map_U, self.sipm_to_fibre_map_V = mapping.get_sipm_to_fibre_map()
- # add pid reco
-   import shipPid
-   self.caloTasks.append(shipPid.Task(self))
 # prepare vertexing
   self.Vertexing = shipVertex.Task(global_variables.h, self.sTree)
 # setup random number generator
@@ -139,9 +136,6 @@ class ShipDigiReco:
    ntracks = self.findTracks()
    nGoodTracks = self.findGoodTracks()
    self.linkVetoOnTracks()
-   for x in self.caloTasks:
-    if hasattr(x,'execute'): x.execute()
-    else : x.Exec('start')
    if global_variables.vertexing:
 # now go for 2-track combinations
     self.Vertexing.execute()
