@@ -355,12 +355,12 @@ from ShipGeoConfig import ConfigRegistry
 if not fgeo.FindKey('ShipGeo'):
  # old geofile, missing Shipgeo dictionary
  # re-create geometry and mag. field
- ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = dy, EcalGeoFile = ecalGeoFile )
+ ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = dy)
 else:
  # new geofile, load Shipgeo dictionary written by run_simScript.py
   upkl    = Unpickler(fgeo)
   ShipGeo = upkl.load('ShipGeo')
-  ecalGeoFile = ShipGeo.ecal.File
+ # ecalGeoFile = ShipGeo.ecal.File
 
 # -----Create geometry----------------------------------------------
 import shipDet_conf
