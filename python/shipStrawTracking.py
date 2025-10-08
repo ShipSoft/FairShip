@@ -53,9 +53,9 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method):
     if not fgeo.FindKey('ShipGeo'):
 
 
-            ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = dy, EcalGeoFile = ecalGeoFile)
+            ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = dy)
         else:
-            ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", EcalGeoFile = ecalGeoFile)
+            ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py")
 
     else:
         upkl    = Unpickler(fgeo)

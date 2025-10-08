@@ -83,7 +83,7 @@ from rootpyPickler import Unpickler
 #load Shipgeo dictionary
 upkl    = Unpickler(fgeo)
 ShipGeo = upkl.load('ShipGeo')
-ecalGeoFile = ShipGeo.ecal.File
+#ecalGeoFile = ShipGeo.splitcal.File
 
 h={}
 log={}
