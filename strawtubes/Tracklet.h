@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: LGPL-3.0-or-later
+// SPDX-FileCopyrightText: Copyright CERN on behalf of the SHiP Collaboration
+
 #ifndef STRAWTUBES_TRACKLET_H_
 #define STRAWTUBES_TRACKLET_H_
 #include "TObject.h"

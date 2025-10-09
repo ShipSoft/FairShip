@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: LGPL-3.0-or-later
+// SPDX-FileCopyrightText: Copyright CERN on behalf of the SHiP Collaboration
+
 /** Quality check file for calorimeter reconstruction.
  ** A try to develop a tool for comparison different reconstruction
  ** procedures.

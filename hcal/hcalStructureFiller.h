@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: LGPL-3.0-or-later
+// SPDX-FileCopyrightText: Copyright CERN on behalf of the SHiP Collaboration
+
 /** Creates a hcalStructure and fill it with Hits/SHits/MCPoints **/
 
 /**  hcalStructureFiller.h

@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: LGPL-3.0-or-later
+// SPDX-FileCopyrightText: Copyright CERN on behalf of the SHiP Collaboration
+
 #ifndef HCAL_HCALANALYSISSIMPLE_H_
 #define HCAL_HCALANALYSISSIMPLE_H_
 

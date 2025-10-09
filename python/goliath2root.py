@@ -1,4 +1,7 @@
 #!/usr/bin/env python
+# SPDX-License-Identifier: LGPL-3.0-or-later
+# SPDX-FileCopyrightText: Copyright CERN on behalf of the SHiP Collaboration
+
 # file to convert goliath fieldmap text file to root
 # EvH 11/4/2018
 

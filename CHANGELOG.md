@@ -151,6 +151,7 @@ it in future.
 * Move SST geometry parameters to yaml
 * Update strawtubes class
 * Change SST gas mixture to Ar/CO2 80%/20% at 1 bar
+* FairShip is now licensed under LGPLv3+
 
 ### Removed
 
@@ -179,6 +180,8 @@ it in future.
 * Remove tankDesign variable, options
 * Remove target versions older than CDR
 * Remove hadron absorber in ShipTargetStation.cxx
+* Remove unused files for FLUKA
+* Remove unused CMake modules
 
 ## 25.01
 
