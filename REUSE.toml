@@ -10,12 +10,6 @@ SPDX-FileCopyrightText = "CERN on behalf of the SHiP Collaboration"
 SPDX-License-Identifier = "LGPL-3.0-or-later"
 
 [[annotations]]
-path = ["cmake/modules/FindEvtGen.cmake", "cmake/modules/GenerateVersionInfo.cmake"]
-precedence = "aggregate"
-SPDX-FileCopyrightText = "Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH"
-SPDX-License-Identifier = "LGPL-3.0-only"
-
-[[annotations]]
 path = "python/rootpyPickler.py"
 precedence = "aggregate"
 SPDX-FileCopyrightText = "Copyright 2012 the rootpy developers"
