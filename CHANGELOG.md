@@ -181,6 +181,7 @@ it in future.
 * Remove target versions older than CDR
 * Remove hadron absorber in ShipTargetStation.cxx
 * Remove unused files for FLUKA
+* Remove unused CMake modules
 
 ## 25.01
 
