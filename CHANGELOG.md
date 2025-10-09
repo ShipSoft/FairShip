@@ -180,6 +180,7 @@ it in future.
 * Remove tankDesign variable, options
 * Remove target versions older than CDR
 * Remove hadron absorber in ShipTargetStation.cxx
+* Remove unused files for FLUKA
 
 ## 25.01
 

@@ -16,12 +16,6 @@ SPDX-FileCopyrightText = "Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerion
 SPDX-License-Identifier = "LGPL-3.0-only"
 
 [[annotations]]
-path = ["gconfig/fllibs.C", "gconfig/run_fluka.sh"]
-precedence = "aggregate"
-SPDX-FileCopyrightText = "Copyright (C) 2007 Ivana Hrivnacova"
-SPDX-License-Identifier = "LGPL-3.0-only"
-
-[[annotations]]
 path = "python/rootpyPickler.py"
 precedence = "aggregate"
 SPDX-FileCopyrightText = "Copyright 2012 the rootpy developers"
