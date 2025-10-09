@@ -30,7 +30,7 @@ ShipTargetStation::ShipTargetStation(const char* name,
                                      const Double_t tz,
                                      const TargetVersion tV,
                                      const int nS,
-				     const int HeT,
+				                     const int HeT,
                                      const char* Title)
     : FairModule(name, Title)
 {
@@ -130,13 +130,14 @@ void ShipTargetStation::ConstructGeometry()
 
     //now place target inside He volume
     Double_t zPos = 0.;
-    Int_t slots = fnS;
-    slots = slots - 1;
+    unsigned slots = fnS;
+    if(slots > 0)
+        slots = slots - 1;
 
     TGeoVolume* target;
     //TGeoVolume* slit;
     // Double_t zPos =  fTargetZ - fTargetLength/2.;
-    for (Int_t i = 0; i < fnS; i++) {   // loop on layers
+    for (unsigned i = 0; i < fnS; i++) {   // loop on layers
         TString nmi = "Target_";
         nmi += i + 1;
         //TString sm = "Slit_";
