@@ -606,7 +606,7 @@ if hasattr(ship_geo.Bfield,"fieldMap"):
 if options.print_fields:
  geomGeant4.printVMCFields()
  geomGeant4.printWeightsandFields(onlyWithField = True,\
-             exclude=['DecayVolume','Tr1','Tr2','Tr3','Tr4','Veto','Ecal','Hcal','MuonDetector','SplitCal'])
+             exclude=['DecayVolume','Tr1','Tr2','Tr3','Tr4','Veto','MuonDetector','SplitCal'])
 # Plot the field example
 #fieldMaker.plotField(1, ROOT.TVector3(-9000.0, 6000.0, 50.0), ROOT.TVector3(-300.0, 300.0, 6.0), 'Bzx.png')
 #fieldMaker.plotField(2, ROOT.TVector3(-9000.0, 6000.0, 50.0), ROOT.TVector3(-400.0, 400.0, 6.0), 'Bzy.png')
@@ -693,8 +693,6 @@ if options.muonback:
  branches.Add(ROOT.TObjString('TTPoint'))
  branches.Add(ROOT.TObjString('ScoringPoint'))
  branches.Add(ROOT.TObjString('strawtubesPoint'))
- branches.Add(ROOT.TObjString('EcalPoint'))
- branches.Add(ROOT.TObjString('sEcalPointLite'))
  branches.Add(ROOT.TObjString('smuonPoint'))
  branches.Add(ROOT.TObjString('TimeDetPoint'))
  branches.Add(ROOT.TObjString('MCEventHeader'))
