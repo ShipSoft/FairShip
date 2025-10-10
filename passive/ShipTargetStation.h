@@ -21,7 +21,7 @@ class ShipTargetStation : public FairModule
                       const Double_t tz,
                       const TargetVersion tV,
                       const int nS,
-		      const int HeT,
+		              const int HeT,
                       const char* Title = "ShipTargetStation");
     ShipTargetStation();
     virtual ~ShipTargetStation();
@@ -47,7 +47,7 @@ class ShipTargetStation : public FairModule
     std::vector<float> fG;         // gap after layer
     std::vector<std::string> fM;   // absorber material
     Int_t InitMedium(const char* name);
-    Int_t fnS;
+    size_t fnS;
     TargetVersion fTV;
     Int_t fHeT;
 };
