@@ -96,7 +96,6 @@ void ecalStructure::Construct()
   Float_t dy;
   Int_t i;
   Int_t j;
-  Int_t k;
   Int_t number;
   char type;
 
@@ -230,7 +229,6 @@ void ecalStructure::CreateNLists(ecalCell* cell)
   list<ecalModule*> tml;
   list<ecalModule*>::const_iterator ptml;
   list<ecalCell*>::const_iterator ptl;
-  Int_t i;
 
   neib.clear();
 
