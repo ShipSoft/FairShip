@@ -1,8 +1,8 @@
 #include "MTCDetHit.h"
 
 #include "FairRunSim.h"
-#include "MTCDetector.h"
 #include "MTCDetPoint.h"
+#include "MTCDetector.h"
 #include "TGeoBBox.h"
 #include "TGeoManager.h"
 #include "TGeoNavigator.h"
