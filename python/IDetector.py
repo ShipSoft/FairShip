@@ -44,7 +44,7 @@ class muonDetector(IDetector):
                     # second hit with smaller tdc
                         self.det[hitsPerDetId[detID]].setValidity(0)
                         hitsPerDetId[detID] = index
-            index+=1    
+            index+=1
 
 class timeDetector(IDetector):
     def __init__(self, name, intree):
