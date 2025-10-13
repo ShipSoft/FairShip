@@ -8,6 +8,7 @@ from array import array
 import sys
 from math import fabs
 from backports import tdirectory634
+from IDetector import muonDetector
 stop  = ROOT.TVector3()
 start = ROOT.TVector3()
 
@@ -81,8 +82,11 @@ class ShipDigiReco:
   self.digiTimeDetBranch=self.sTree.Branch("Digi_TimeDetHits",self.digiTimeDet,32000,-1)
   #self.digiUpstreamTagger    = ROOT.TClonesArray("UpstreamTaggerHit")
   #self.digiUpstreamTaggerBranch=self.sTree.Branch("Digi_UpstreamTaggerHits",self.digiUpstreamTagger,32000,-1)
-  self.digiMuon    = ROOT.TClonesArray("muonHit")
-  self.digiMuonBranch=self.sTree.Branch("Digi_muonHits",self.digiMuon,32000,-1)
+
+  self.muonDetector = muonDetector("muon", self.sTree)
+#  self.digiMuon    = ROOT.TClonesArray("muonHit")
+#  self.digiMuonBranch=self.sTree.Branch("Digi_muonHits",self.digiMuon,32000,-1)
+
 # for the digitizing step
   self.v_drift = global_variables.modules["Strawtubes"].StrawVdrift()
   self.sigma_spatial = global_variables.modules["Strawtubes"].StrawSigmaSpatial()
@@ -243,9 +247,10 @@ class ShipDigiReco:
    # self.digiUpstreamTagger.Delete()
    # self.digitizeUpstreamTagger()         TR 19/6/2020 work in progress
    # self.digiUpstreamTaggerBranch.Fill()
-   self.digiMuon.Delete()
-   self.digitizeMuon()
-   self.digiMuonBranch.Fill()
+   self.muonDetector.process()
+#   self.digiMuon.Delete()
+#   self.digitizeMuon()
+#   self.digiMuonBranch.Fill()
    # adding digitization of SND/MTC
    if self.sTree.GetBranch("MtcDetPoint"):
     self.digiMTC.clear()
