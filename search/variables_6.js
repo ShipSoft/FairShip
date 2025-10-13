@@ -340,7 +340,7 @@ var searchData=
   ['fnrows_337',['fNRows',['../classecal.html#a7ff026a34f22bac7ff43cfe3f314ae09',1,'ecal']]],
   ['fnrows1_338',['fNRows1',['../classecal.html#a81f49bb0853a2a0bf5435f4395859139',1,'ecal']]],
   ['fnrows2_339',['fNRows2',['../classecal.html#a9e3d7e3ba7bc6d336a962d7bd998830d',1,'ecal']]],
-  ['fns_340',['fnS',['../classShipTargetStation.html#a9e1ccb972fde1b69c0ed86f2ead55adc',1,'ShipTargetStation']]],
+  ['fns_340',['fnS',['../classShipTargetStation.html#a0e1b60ca70359f0b94fd134fc388278a',1,'ShipTargetStation']]],
   ['fnstripspermodule_341',['fNStripsPerModule',['../classsplitcal.html#a5d89c92d6b0c4b72e8de015b78b4e5f5',1,'splitcal']]],
   ['fntarget_342',['fNTarget',['../classTarget.html#a772424cc7b5b666e6c999203d8006626',1,'Target']]],
   ['fntracks_343',['fNTracks',['../classShipStack.html#a5baabd54b15eaede50ec34cf22544a71',1,'ShipStack']]],

@@ -12,7 +12,7 @@ var classShipTargetStation =
     [ "fHeT", "classShipTargetStation.html#a856acb0c269724d7759bb0eccb18d0c1", null ],
     [ "fL", "classShipTargetStation.html#acdbfb2d2e54a50f2ac44f1bbf0a62f41", null ],
     [ "fM", "classShipTargetStation.html#a5fade7fcd69f16fb0555c181335c57be", null ],
-    [ "fnS", "classShipTargetStation.html#a9e1ccb972fde1b69c0ed86f2ead55adc", null ],
+    [ "fnS", "classShipTargetStation.html#a0e1b60ca70359f0b94fd134fc388278a", null ],
     [ "fTargetLength", "classShipTargetStation.html#a4a1e9e11b6c1a71570e85f467f9f4c27", null ],
     [ "fTargetZ", "classShipTargetStation.html#abf387cb63194904a7b0a1a74c6b823f6", null ],
     [ "fTV", "classShipTargetStation.html#a34475fabb3bac8f7974c369f334964a0", null ]
