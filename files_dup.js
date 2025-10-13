@@ -2,11 +2,9 @@ var files_dup =
 [
     [ "cmake", "dir_a5bdbfbbaa7895161d62825676df7980.html", "dir_a5bdbfbbaa7895161d62825676df7980" ],
     [ "doxygen", "dir_4e8d938e9ddb5a617c200d5739d1f41a.html", null ],
-    [ "ecal", "dir_c45501c79ddec90b6b1f8a3c2e9efabb.html", "dir_c45501c79ddec90b6b1f8a3c2e9efabb" ],
     [ "examples", "dir_d28a4824dc47e487b107a5db32ef43c4.html", "dir_d28a4824dc47e487b107a5db32ef43c4" ],
     [ "field", "dir_b53ddcf3c2f78522bad11056100467d8.html", "dir_b53ddcf3c2f78522bad11056100467d8" ],
     [ "geometry", "dir_e3380d2178455503f266746fb14246a5.html", "dir_e3380d2178455503f266746fb14246a5" ],
-    [ "hcal", "dir_4b5c5316e9d796e7cb1aa4ab919c8f8c.html", "dir_4b5c5316e9d796e7cb1aa4ab919c8f8c" ],
     [ "macro", "dir_3b579af105d68949fc87077585f616df.html", "dir_3b579af105d68949fc87077585f616df" ],
     [ "muon", "dir_a0777b3b4da955210ad4fd98e1658d3d.html", "dir_a0777b3b4da955210ad4fd98e1658d3d" ],
     [ "muonDIS", "dir_8361b15a73807c2b11fd6500a4c40777.html", "dir_8361b15a73807c2b11fd6500a4c40777" ],

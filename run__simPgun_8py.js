@@ -6,7 +6,6 @@ var run__simPgun_8py =
     [ "Chamber", "run__simPgun_8py.html#ab82ef588332d6e1415aed433b8660d5c", null ],
     [ "ctime", "run__simPgun_8py.html#a14d54d7384677eb2721fdcf0b5b795bd", null ],
     [ "decayVolumeLength", "run__simPgun_8py.html#a6209a85c55fb9bebc61919090be26c9e", null ],
-    [ "ecal", "run__simPgun_8py.html#a04e80d5fa6f52b10185bf15a9e3840e8", null ],
     [ "fMagField", "run__simPgun_8py.html#ac59e2b4d137593519855603237c225bb", null ],
     [ "kParameterMerged", "run__simPgun_8py.html#a9aa4c8f9ffae88cfb5ff4f83351a3c98", null ],
     [ "magnet", "run__simPgun_8py.html#a9d3fced2daa207b832c974df3de3bd55", null ],

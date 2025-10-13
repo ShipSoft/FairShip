@@ -1,7 +1,0 @@
-<map id="ecal/ecalClusterCalibration.h" name="ecal/ecalClusterCalibration.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,215,31"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="20,79,107,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="105,32,81,69,76,66,100,30"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="131,79,182,104"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="120,30,144,66,139,69,115,32"/>
-</map>

@@ -9,8 +9,6 @@ var ShipDetectorList_8h =
       [ "ktauTT", "ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a302708f27685969aea17b84ebf1dc7b5", null ],
       [ "ktauTarget", "ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680ac9a2f8c5f1c65083318ee7b19099c018", null ],
       [ "kStraw", "ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a95d4e15538db337d7d209dd9f84127fd", null ],
-      [ "kecal", "ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680aea305633b330b30cb1743acc5d49addf", null ],
-      [ "khcal", "ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680ae935125f7213296d27a1d1f8ac651277", null ],
       [ "kMuon", "ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680ad41d6187de68eaadf3d275fd40f869c6", null ],
       [ "kPreshower", "ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a3391e9454e836493df7619c0690d3940", null ],
       [ "kTRSTATION", "ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680a3a5f17af29cf4a80d9e20f448c7fc96d", null ],

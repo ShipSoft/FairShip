@@ -14,7 +14,6 @@ var classeventDisplay_1_1DrawTracks =
     [ "parallelToZ", "classeventDisplay_1_1DrawTracks.html#a05407a3de1175ecd1c5bd31fe9db2f8f", null ],
     [ "Targetz", "classeventDisplay_1_1DrawTracks.html#a5e8df68b3f48545d8a540306fec62e3c", null ],
     [ "trackColors", "classeventDisplay_1_1DrawTracks.html#aef8affef76b4a10f839f6bafda3cfc83", null ],
-    [ "z_ecal", "classeventDisplay_1_1DrawTracks.html#a8cd99d080da84df1da5c2fa3e9a1f353", null ],
     [ "z_end", "classeventDisplay_1_1DrawTracks.html#a3631d180b23e6d941b82b6cca485efa9", null ],
     [ "z_mag", "classeventDisplay_1_1DrawTracks.html#ab8d511d75260808b3f92518f68ee3f60", null ],
     [ "z_start", "classeventDisplay_1_1DrawTracks.html#ab19b0010eecd54eb3c4dc8fa2aab9724", null ]

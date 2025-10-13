@@ -127,7 +127,7 @@ Public Attributes</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00618">618</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00553">553</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a7a856a7f2fe05017518e314ccbb8a837" name="a7a856a7f2fe05017518e314ccbb8a837"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7a856a7f2fe05017518e314ccbb8a837">&#9670;&#160;</a></span>__init__()</h2>
@@ -145,123 +145,123 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00619">619</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  619</span>    <span class="keyword">def </span>__init__(self):</div>
-<div class="line"><span class="lineno">  620</span>        self.master = tkinter.Tk()</div>
-<div class="line"><span class="lineno">  621</span>        self.master.title(<span class="stringliteral">&quot;SHiP Event Display GUI&quot;</span>)</div>
-<div class="line"><span class="lineno">  622</span>        self.master.geometry(<span class="stringliteral">&quot;320x580+165+820&quot;</span>)</div>
-<div class="line"><span class="lineno">  623</span>        self.fram1 = tkinter.Frame(self.master)</div>
-<div class="line"><span class="lineno">  624</span>        b = tkinter.Button(self.fram1, text=<span class="stringliteral">&quot;Next Event&quot;</span>, command=self.nextEvent)</div>
-<div class="line"><span class="lineno">  625</span>        b.pack(fill=tkinter.BOTH, expand=1)</div>
-<div class="line"><span class="lineno">  626</span>        label = tkinter.Label(self.fram1, text=<span class="stringliteral">&quot;Event number:&quot;</span>)</div>
-<div class="line"><span class="lineno">  627</span>        label[<span class="stringliteral">&quot;relief&quot;</span>] = tkinter.RAISED</div>
-<div class="line"><span class="lineno">  628</span>        entry = tkinter.Entry(self.fram1)</div>
-<div class="line"><span class="lineno">  629</span>        entry[<span class="stringliteral">&quot;foreground&quot;</span>] = <span class="stringliteral">&quot;blue&quot;</span></div>
-<div class="line"><span class="lineno">  630</span>        label.pack(side=tkinter.LEFT)</div>
-<div class="line"><span class="lineno">  631</span>        entry.pack(side=tkinter.RIGHT)</div>
-<div class="line"><span class="lineno">  632</span>        self.contents = tkinter.IntVar()</div>
-<div class="line"><span class="lineno">  633</span>        <span class="comment"># set it to some value</span></div>
-<div class="line"><span class="lineno">  634</span>        self.n = 0</div>
-<div class="line"><span class="lineno">  635</span>        self.contents.<a class="code hl_function" href="ecal_2CMakeLists_8txt.html#abeef922feb832eb3e7650011b889fa86">set</a>(self.n)</div>
-<div class="line"><span class="lineno">  636</span>        <span class="comment"># tell the entry widget to watch this variable</span></div>
-<div class="line"><span class="lineno">  637</span>        entry[<span class="stringliteral">&quot;textvariable&quot;</span>] = self.contents</div>
-<div class="line"><span class="lineno">  638</span>        <span class="comment"># and here we get a callback when the user hits return.</span></div>
-<div class="line"><span class="lineno">  639</span>        <span class="comment"># we will have the program print out the value of the</span></div>
-<div class="line"><span class="lineno">  640</span>        <span class="comment"># application variable when the user hits return</span></div>
-<div class="line"><span class="lineno">  641</span>        entry.bind(<span class="stringliteral">&quot;&lt;Key-Return&gt;&quot;</span>, self.nextEvent)</div>
-<div class="line"><span class="lineno">  642</span>        self.lbut = {}</div>
-<div class="line"><span class="lineno">  643</span>        x = <span class="stringliteral">&quot;withMC&quot;</span></div>
-<div class="line"><span class="lineno">  644</span>        a = tkinter.IntVar()</div>
-<div class="line"><span class="lineno">  645</span>        <span class="keywordflow">if</span> globals()[<span class="stringliteral">&quot;withMCTracks&quot;</span>]:</div>
-<div class="line"><span class="lineno">  646</span>            a.set(1)</div>
-<div class="line"><span class="lineno">  647</span>        <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  648</span>            a.set(0)</div>
-<div class="line"><span class="lineno">  649</span>        self.lbut[x] = tkinter.Checkbutton(</div>
-<div class="line"><span class="lineno">  650</span>            self.master, text=<span class="stringliteral">&quot;with MC Tracks&quot;</span>, compound=tkinter.LEFT, variable=a</div>
-<div class="line"><span class="lineno">  651</span>        )</div>
-<div class="line"><span class="lineno">  652</span>        self.lbut[x].var = a</div>
-<div class="line"><span class="lineno">  653</span>        self.lbut[x][<span class="stringliteral">&quot;command&quot;</span>] = self.toggleMCTracks</div>
-<div class="line"><span class="lineno">  654</span>        self.lbut[x].pack(side=tkinter.TOP)</div>
-<div class="line"><span class="lineno">  655</span>        self.geoscene = ROOT.gEve.GetScenes().FindChild(<span class="stringliteral">&quot;Geometry scene&quot;</span>)</div>
-<div class="line"><span class="lineno">  656</span>        <span class="keywordflow">for</span> v <span class="keywordflow">in</span> top.GetNodes():</div>
-<div class="line"><span class="lineno">  657</span>            x = v.GetName()</div>
-<div class="line"><span class="lineno">  658</span>            a = tkinter.IntVar()</div>
-<div class="line"><span class="lineno">  659</span>            assembly = <span class="stringliteral">&quot;Assembly&quot;</span> <span class="keywordflow">in</span> v.GetVolume().__str__()</div>
-<div class="line"><span class="lineno">  660</span>            <span class="keywordflow">if</span> v.IsVisible() <span class="keywordflow">or</span> (assembly <span class="keywordflow">and</span> v.IsVisDaughters()):</div>
-<div class="line"><span class="lineno">  661</span>                a.set(1)</div>
-<div class="line"><span class="lineno">  662</span>            <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  663</span>                a.set(0)</div>
-<div class="line"><span class="lineno">  664</span>            self.lbut[x] = tkinter.Checkbutton(</div>
-<div class="line"><span class="lineno">  665</span>                self.master, text=x.replace(<span class="stringliteral">&quot;_1&quot;</span>, <span class="stringliteral">&quot;&quot;</span>), compound=tkinter.LEFT, variable=a</div>
-<div class="line"><span class="lineno">  666</span>            )</div>
-<div class="line"><span class="lineno">  667</span>            self.lbut[x].var = a</div>
-<div class="line"><span class="lineno">  668</span>            self.lbut[x][<span class="stringliteral">&quot;command&quot;</span>] = <span class="keyword">lambda</span>: self.toggle(x)</div>
-<div class="line"><span class="lineno">  669</span>            self.lbut[x].pack(side=tkinter.BOTTOM)</div>
-<div class="line"><span class="lineno">  670</span>        self.fram1.pack()</div>
-<div class="line"><span class="lineno">  671</span>        <span class="comment"># add ship actions to eve display</span></div>
-<div class="line"><span class="lineno">  672</span>        gEve = ROOT.gEve</div>
-<div class="line"><span class="lineno">  673</span>        slot = ROOT.TEveWindow.CreateWindowInTab(gEve.GetBrowser().GetTabLeft())</div>
-<div class="line"><span class="lineno">  674</span>        slot.SetShowTitleBar(ROOT.kFALSE)</div>
-<div class="line"><span class="lineno">  675</span>        packs = slot.MakePack()</div>
-<div class="line"><span class="lineno">  676</span>        packs.SetShowTitleBar(ROOT.kFALSE)</div>
-<div class="line"><span class="lineno">  677</span>        packs.SetElementName(<span class="stringliteral">&quot;SHiP actions&quot;</span>)</div>
-<div class="line"><span class="lineno">  678</span>        packs.SetHorizontal()</div>
-<div class="line"><span class="lineno">  679</span>        slot = packs.NewSlot()</div>
-<div class="line"><span class="lineno">  680</span>        frame = slot.MakeFrame()</div>
-<div class="line"><span class="lineno">  681</span>        frame.SetElementName(<span class="stringliteral">&quot;commands&quot;</span>)</div>
-<div class="line"><span class="lineno">  682</span>        frame.SetShowTitleBar(ROOT.kFALSE)</div>
-<div class="line"><span class="lineno">  683</span>        cf = frame.GetGUICompositeFrame()</div>
-<div class="line"><span class="lineno">  684</span>        hf = ROOT.TGVerticalFrame(cf)</div>
-<div class="line"><span class="lineno">  685</span>        hf.SetCleanup(ROOT.kLocalCleanup)</div>
-<div class="line"><span class="lineno">  686</span>        hf.SetWidth(150)</div>
-<div class="line"><span class="lineno">  687</span>        cf.AddFrame(hf)</div>
-<div class="line"><span class="lineno">  688</span>        guiFrame = ROOT.TGVerticalFrame(hf)</div>
-<div class="line"><span class="lineno">  689</span>        hf.AddFrame(guiFrame, ROOT.TGLayoutHints(ROOT.kLHintsExpandX))</div>
-<div class="line"><span class="lineno">  690</span>        guiFrame.SetCleanup(ROOT.kDeepCleanup)</div>
-<div class="line"><span class="lineno">  691</span>        b = ROOT.TGTextButton(guiFrame, <span class="stringliteral">&quot;Add particle follower&quot;</span>)</div>
-<div class="line"><span class="lineno">  692</span>        b.SetWidth(150)</div>
-<div class="line"><span class="lineno">  693</span>        b.SetToolTipText(<span class="stringliteral">&quot;start new window with top projection and energy loss&quot;</span>)</div>
-<div class="line"><span class="lineno">  694</span>        b.SetCommand(</div>
-<div class="line"><span class="lineno">  695</span>            <span class="stringliteral">&#39;TPython::ExecScript(&quot;&#39;</span></div>
-<div class="line"><span class="lineno">  696</span>            + os.environ[<span class="stringliteral">&quot;FAIRSHIP&quot;</span>]</div>
-<div class="line"><span class="lineno">  697</span>            + <span class="stringliteral">&#39;/macro/evd_addParticleFollower.py&quot;)&#39;</span></div>
-<div class="line"><span class="lineno">  698</span>        )</div>
-<div class="line"><span class="lineno">  699</span>        guiFrame.AddFrame(b, ROOT.TGLayoutHints(ROOT.kLHintsExpandX))</div>
-<div class="line"><span class="lineno">  700</span>        bn = ROOT.TGTextButton(guiFrame, <span class="stringliteral">&quot;fill histogram&quot;</span>)</div>
-<div class="line"><span class="lineno">  701</span>        bn.SetWidth(150)</div>
-<div class="line"><span class="lineno">  702</span>        bn.SetToolTipText(<span class="stringliteral">&quot;Fill histogram with energy along flight path&quot;</span>)</div>
-<div class="line"><span class="lineno">  703</span>        bn.SetCommand(</div>
-<div class="line"><span class="lineno">  704</span>            <span class="stringliteral">&#39;TPython::ExecScript(&quot;&#39;</span></div>
-<div class="line"><span class="lineno">  705</span>            + os.environ[<span class="stringliteral">&quot;FAIRSHIP&quot;</span>]</div>
-<div class="line"><span class="lineno">  706</span>            + <span class="stringliteral">&#39;/macro/evd_fillEnergy.py&quot;)&#39;</span></div>
-<div class="line"><span class="lineno">  707</span>        )</div>
-<div class="line"><span class="lineno">  708</span>        guiFrame.AddFrame(bn, ROOT.TGLayoutHints(ROOT.kLHintsExpandX))</div>
-<div class="line"><span class="lineno">  709</span>        bt = ROOT.TGTextButton(guiFrame, <span class="stringliteral">&quot;switch transparent mode on/off&quot;</span>)</div>
-<div class="line"><span class="lineno">  710</span>        bt.SetWidth(150)</div>
-<div class="line"><span class="lineno">  711</span>        bt.SetToolTipText(</div>
-<div class="line"><span class="lineno">  712</span>            <span class="stringliteral">&quot;switch transparent mode on/off for better visibility of tracks&quot;</span></div>
-<div class="line"><span class="lineno">  713</span>        )</div>
-<div class="line"><span class="lineno">  714</span>        bt.SetCommand(</div>
-<div class="line"><span class="lineno">  715</span>            <span class="stringliteral">&#39;TPython::ExecScript(&quot;&#39;</span></div>
-<div class="line"><span class="lineno">  716</span>            + os.environ[<span class="stringliteral">&quot;FAIRSHIP&quot;</span>]</div>
-<div class="line"><span class="lineno">  717</span>            + <span class="stringliteral">&#39;/macro/evd_transparentMode.py&quot;)&#39;</span></div>
-<div class="line"><span class="lineno">  718</span>        )</div>
-<div class="line"><span class="lineno">  719</span>        guiFrame.AddFrame(bt, ROOT.TGLayoutHints(ROOT.kLHintsExpandX))</div>
-<div class="line"><span class="lineno">  720</span>        bnx = ROOT.TGTextButton(guiFrame, <span class="stringliteral">&quot;next event&quot;</span>)</div>
-<div class="line"><span class="lineno">  721</span>        bnx.SetWidth(150)</div>
-<div class="line"><span class="lineno">  722</span>        bnx.SetToolTipText(<span class="stringliteral">&quot;click for next event&quot;</span>)</div>
-<div class="line"><span class="lineno">  723</span>        bnx.SetCommand(</div>
-<div class="line"><span class="lineno">  724</span>            <span class="stringliteral">&#39;TPython::ExecScript(&quot;&#39;</span></div>
-<div class="line"><span class="lineno">  725</span>            + os.environ[<span class="stringliteral">&quot;FAIRSHIP&quot;</span>]</div>
-<div class="line"><span class="lineno">  726</span>            + <span class="stringliteral">&#39;/macro/evd_nextEvent.py&quot;)&#39;</span></div>
-<div class="line"><span class="lineno">  727</span>        )</div>
-<div class="line"><span class="lineno">  728</span>        guiFrame.AddFrame(bnx, ROOT.TGLayoutHints(ROOT.kLHintsExpandX))</div>
-<div class="line"><span class="lineno">  729</span>        <span class="comment">#</span></div>
-<div class="line"><span class="lineno">  730</span>        cf.MapSubwindows()</div>
-<div class="line"><span class="lineno">  731</span>        cf.Layout()</div>
-<div class="line"><span class="lineno">  732</span>        cf.MapWindow()</div>
-<div class="line"><span class="lineno">  733</span> </div>
-<div class="ttc" id="aecal_2CMakeLists_8txt_html_abeef922feb832eb3e7650011b889fa86"><div class="ttname"><a href="ecal_2CMakeLists_8txt.html#abeef922feb832eb3e7650011b889fa86">set</a></div><div class="ttdeci">set(INCLUDE_DIRECTORIES ${CMAKE_SOURCE_DIR}/shipdata ${CMAKE_SOURCE_DIR}/ecal ${genfit2_INCDIR}) include_directories($</div><div class="ttdef"><b>Definition</b> <a href="ecal_2CMakeLists_8txt_source.html#l00005">CMakeLists.txt:5</a></div></div>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00554">554</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  554</span>    <span class="keyword">def </span>__init__(self):</div>
+<div class="line"><span class="lineno">  555</span>        self.master = tkinter.Tk()</div>
+<div class="line"><span class="lineno">  556</span>        self.master.title(<span class="stringliteral">&quot;SHiP Event Display GUI&quot;</span>)</div>
+<div class="line"><span class="lineno">  557</span>        self.master.geometry(<span class="stringliteral">&quot;320x580+165+820&quot;</span>)</div>
+<div class="line"><span class="lineno">  558</span>        self.fram1 = tkinter.Frame(self.master)</div>
+<div class="line"><span class="lineno">  559</span>        b = tkinter.Button(self.fram1, text=<span class="stringliteral">&quot;Next Event&quot;</span>, command=self.nextEvent)</div>
+<div class="line"><span class="lineno">  560</span>        b.pack(fill=tkinter.BOTH, expand=1)</div>
+<div class="line"><span class="lineno">  561</span>        label = tkinter.Label(self.fram1, text=<span class="stringliteral">&quot;Event number:&quot;</span>)</div>
+<div class="line"><span class="lineno">  562</span>        label[<span class="stringliteral">&quot;relief&quot;</span>] = tkinter.RAISED</div>
+<div class="line"><span class="lineno">  563</span>        entry = tkinter.Entry(self.fram1)</div>
+<div class="line"><span class="lineno">  564</span>        entry[<span class="stringliteral">&quot;foreground&quot;</span>] = <span class="stringliteral">&quot;blue&quot;</span></div>
+<div class="line"><span class="lineno">  565</span>        label.pack(side=tkinter.LEFT)</div>
+<div class="line"><span class="lineno">  566</span>        entry.pack(side=tkinter.RIGHT)</div>
+<div class="line"><span class="lineno">  567</span>        self.contents = tkinter.IntVar()</div>
+<div class="line"><span class="lineno">  568</span>        <span class="comment"># set it to some value</span></div>
+<div class="line"><span class="lineno">  569</span>        self.n = 0</div>
+<div class="line"><span class="lineno">  570</span>        self.contents.<a class="code hl_function" href="field_2CMakeLists_8txt.html#a93c715d65ff81aeb3a0c7dddd7fd2ff4">set</a>(self.n)</div>
+<div class="line"><span class="lineno">  571</span>        <span class="comment"># tell the entry widget to watch this variable</span></div>
+<div class="line"><span class="lineno">  572</span>        entry[<span class="stringliteral">&quot;textvariable&quot;</span>] = self.contents</div>
+<div class="line"><span class="lineno">  573</span>        <span class="comment"># and here we get a callback when the user hits return.</span></div>
+<div class="line"><span class="lineno">  574</span>        <span class="comment"># we will have the program print out the value of the</span></div>
+<div class="line"><span class="lineno">  575</span>        <span class="comment"># application variable when the user hits return</span></div>
+<div class="line"><span class="lineno">  576</span>        entry.bind(<span class="stringliteral">&quot;&lt;Key-Return&gt;&quot;</span>, self.nextEvent)</div>
+<div class="line"><span class="lineno">  577</span>        self.lbut = {}</div>
+<div class="line"><span class="lineno">  578</span>        x = <span class="stringliteral">&quot;withMC&quot;</span></div>
+<div class="line"><span class="lineno">  579</span>        a = tkinter.IntVar()</div>
+<div class="line"><span class="lineno">  580</span>        <span class="keywordflow">if</span> globals()[<span class="stringliteral">&quot;withMCTracks&quot;</span>]:</div>
+<div class="line"><span class="lineno">  581</span>            a.set(1)</div>
+<div class="line"><span class="lineno">  582</span>        <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  583</span>            a.set(0)</div>
+<div class="line"><span class="lineno">  584</span>        self.lbut[x] = tkinter.Checkbutton(</div>
+<div class="line"><span class="lineno">  585</span>            self.master, text=<span class="stringliteral">&quot;with MC Tracks&quot;</span>, compound=tkinter.LEFT, variable=a</div>
+<div class="line"><span class="lineno">  586</span>        )</div>
+<div class="line"><span class="lineno">  587</span>        self.lbut[x].var = a</div>
+<div class="line"><span class="lineno">  588</span>        self.lbut[x][<span class="stringliteral">&quot;command&quot;</span>] = self.toggleMCTracks</div>
+<div class="line"><span class="lineno">  589</span>        self.lbut[x].pack(side=tkinter.TOP)</div>
+<div class="line"><span class="lineno">  590</span>        self.geoscene = ROOT.gEve.GetScenes().FindChild(<span class="stringliteral">&quot;Geometry scene&quot;</span>)</div>
+<div class="line"><span class="lineno">  591</span>        <span class="keywordflow">for</span> v <span class="keywordflow">in</span> top.GetNodes():</div>
+<div class="line"><span class="lineno">  592</span>            x = v.GetName()</div>
+<div class="line"><span class="lineno">  593</span>            a = tkinter.IntVar()</div>
+<div class="line"><span class="lineno">  594</span>            assembly = <span class="stringliteral">&quot;Assembly&quot;</span> <span class="keywordflow">in</span> v.GetVolume().__str__()</div>
+<div class="line"><span class="lineno">  595</span>            <span class="keywordflow">if</span> v.IsVisible() <span class="keywordflow">or</span> (assembly <span class="keywordflow">and</span> v.IsVisDaughters()):</div>
+<div class="line"><span class="lineno">  596</span>                a.set(1)</div>
+<div class="line"><span class="lineno">  597</span>            <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  598</span>                a.set(0)</div>
+<div class="line"><span class="lineno">  599</span>            self.lbut[x] = tkinter.Checkbutton(</div>
+<div class="line"><span class="lineno">  600</span>                self.master, text=x.replace(<span class="stringliteral">&quot;_1&quot;</span>, <span class="stringliteral">&quot;&quot;</span>), compound=tkinter.LEFT, variable=a</div>
+<div class="line"><span class="lineno">  601</span>            )</div>
+<div class="line"><span class="lineno">  602</span>            self.lbut[x].var = a</div>
+<div class="line"><span class="lineno">  603</span>            self.lbut[x][<span class="stringliteral">&quot;command&quot;</span>] = <span class="keyword">lambda</span>: self.toggle(x)</div>
+<div class="line"><span class="lineno">  604</span>            self.lbut[x].pack(side=tkinter.BOTTOM)</div>
+<div class="line"><span class="lineno">  605</span>        self.fram1.pack()</div>
+<div class="line"><span class="lineno">  606</span>        <span class="comment"># add ship actions to eve display</span></div>
+<div class="line"><span class="lineno">  607</span>        gEve = ROOT.gEve</div>
+<div class="line"><span class="lineno">  608</span>        slot = ROOT.TEveWindow.CreateWindowInTab(gEve.GetBrowser().GetTabLeft())</div>
+<div class="line"><span class="lineno">  609</span>        slot.SetShowTitleBar(ROOT.kFALSE)</div>
+<div class="line"><span class="lineno">  610</span>        packs = slot.MakePack()</div>
+<div class="line"><span class="lineno">  611</span>        packs.SetShowTitleBar(ROOT.kFALSE)</div>
+<div class="line"><span class="lineno">  612</span>        packs.SetElementName(<span class="stringliteral">&quot;SHiP actions&quot;</span>)</div>
+<div class="line"><span class="lineno">  613</span>        packs.SetHorizontal()</div>
+<div class="line"><span class="lineno">  614</span>        slot = packs.NewSlot()</div>
+<div class="line"><span class="lineno">  615</span>        frame = slot.MakeFrame()</div>
+<div class="line"><span class="lineno">  616</span>        frame.SetElementName(<span class="stringliteral">&quot;commands&quot;</span>)</div>
+<div class="line"><span class="lineno">  617</span>        frame.SetShowTitleBar(ROOT.kFALSE)</div>
+<div class="line"><span class="lineno">  618</span>        cf = frame.GetGUICompositeFrame()</div>
+<div class="line"><span class="lineno">  619</span>        hf = ROOT.TGVerticalFrame(cf)</div>
+<div class="line"><span class="lineno">  620</span>        hf.SetCleanup(ROOT.kLocalCleanup)</div>
+<div class="line"><span class="lineno">  621</span>        hf.SetWidth(150)</div>
+<div class="line"><span class="lineno">  622</span>        cf.AddFrame(hf)</div>
+<div class="line"><span class="lineno">  623</span>        guiFrame = ROOT.TGVerticalFrame(hf)</div>
+<div class="line"><span class="lineno">  624</span>        hf.AddFrame(guiFrame, ROOT.TGLayoutHints(ROOT.kLHintsExpandX))</div>
+<div class="line"><span class="lineno">  625</span>        guiFrame.SetCleanup(ROOT.kDeepCleanup)</div>
+<div class="line"><span class="lineno">  626</span>        b = ROOT.TGTextButton(guiFrame, <span class="stringliteral">&quot;Add particle follower&quot;</span>)</div>
+<div class="line"><span class="lineno">  627</span>        b.SetWidth(150)</div>
+<div class="line"><span class="lineno">  628</span>        b.SetToolTipText(<span class="stringliteral">&quot;start new window with top projection and energy loss&quot;</span>)</div>
+<div class="line"><span class="lineno">  629</span>        b.SetCommand(</div>
+<div class="line"><span class="lineno">  630</span>            <span class="stringliteral">&#39;TPython::ExecScript(&quot;&#39;</span></div>
+<div class="line"><span class="lineno">  631</span>            + os.environ[<span class="stringliteral">&quot;FAIRSHIP&quot;</span>]</div>
+<div class="line"><span class="lineno">  632</span>            + <span class="stringliteral">&#39;/macro/evd_addParticleFollower.py&quot;)&#39;</span></div>
+<div class="line"><span class="lineno">  633</span>        )</div>
+<div class="line"><span class="lineno">  634</span>        guiFrame.AddFrame(b, ROOT.TGLayoutHints(ROOT.kLHintsExpandX))</div>
+<div class="line"><span class="lineno">  635</span>        bn = ROOT.TGTextButton(guiFrame, <span class="stringliteral">&quot;fill histogram&quot;</span>)</div>
+<div class="line"><span class="lineno">  636</span>        bn.SetWidth(150)</div>
+<div class="line"><span class="lineno">  637</span>        bn.SetToolTipText(<span class="stringliteral">&quot;Fill histogram with energy along flight path&quot;</span>)</div>
+<div class="line"><span class="lineno">  638</span>        bn.SetCommand(</div>
+<div class="line"><span class="lineno">  639</span>            <span class="stringliteral">&#39;TPython::ExecScript(&quot;&#39;</span></div>
+<div class="line"><span class="lineno">  640</span>            + os.environ[<span class="stringliteral">&quot;FAIRSHIP&quot;</span>]</div>
+<div class="line"><span class="lineno">  641</span>            + <span class="stringliteral">&#39;/macro/evd_fillEnergy.py&quot;)&#39;</span></div>
+<div class="line"><span class="lineno">  642</span>        )</div>
+<div class="line"><span class="lineno">  643</span>        guiFrame.AddFrame(bn, ROOT.TGLayoutHints(ROOT.kLHintsExpandX))</div>
+<div class="line"><span class="lineno">  644</span>        bt = ROOT.TGTextButton(guiFrame, <span class="stringliteral">&quot;switch transparent mode on/off&quot;</span>)</div>
+<div class="line"><span class="lineno">  645</span>        bt.SetWidth(150)</div>
+<div class="line"><span class="lineno">  646</span>        bt.SetToolTipText(</div>
+<div class="line"><span class="lineno">  647</span>            <span class="stringliteral">&quot;switch transparent mode on/off for better visibility of tracks&quot;</span></div>
+<div class="line"><span class="lineno">  648</span>        )</div>
+<div class="line"><span class="lineno">  649</span>        bt.SetCommand(</div>
+<div class="line"><span class="lineno">  650</span>            <span class="stringliteral">&#39;TPython::ExecScript(&quot;&#39;</span></div>
+<div class="line"><span class="lineno">  651</span>            + os.environ[<span class="stringliteral">&quot;FAIRSHIP&quot;</span>]</div>
+<div class="line"><span class="lineno">  652</span>            + <span class="stringliteral">&#39;/macro/evd_transparentMode.py&quot;)&#39;</span></div>
+<div class="line"><span class="lineno">  653</span>        )</div>
+<div class="line"><span class="lineno">  654</span>        guiFrame.AddFrame(bt, ROOT.TGLayoutHints(ROOT.kLHintsExpandX))</div>
+<div class="line"><span class="lineno">  655</span>        bnx = ROOT.TGTextButton(guiFrame, <span class="stringliteral">&quot;next event&quot;</span>)</div>
+<div class="line"><span class="lineno">  656</span>        bnx.SetWidth(150)</div>
+<div class="line"><span class="lineno">  657</span>        bnx.SetToolTipText(<span class="stringliteral">&quot;click for next event&quot;</span>)</div>
+<div class="line"><span class="lineno">  658</span>        bnx.SetCommand(</div>
+<div class="line"><span class="lineno">  659</span>            <span class="stringliteral">&#39;TPython::ExecScript(&quot;&#39;</span></div>
+<div class="line"><span class="lineno">  660</span>            + os.environ[<span class="stringliteral">&quot;FAIRSHIP&quot;</span>]</div>
+<div class="line"><span class="lineno">  661</span>            + <span class="stringliteral">&#39;/macro/evd_nextEvent.py&quot;)&#39;</span></div>
+<div class="line"><span class="lineno">  662</span>        )</div>
+<div class="line"><span class="lineno">  663</span>        guiFrame.AddFrame(bnx, ROOT.TGLayoutHints(ROOT.kLHintsExpandX))</div>
+<div class="line"><span class="lineno">  664</span>        <span class="comment">#</span></div>
+<div class="line"><span class="lineno">  665</span>        cf.MapSubwindows()</div>
+<div class="line"><span class="lineno">  666</span>        cf.Layout()</div>
+<div class="line"><span class="lineno">  667</span>        cf.MapWindow()</div>
+<div class="line"><span class="lineno">  668</span> </div>
+<div class="ttc" id="afield_2CMakeLists_8txt_html_a93c715d65ff81aeb3a0c7dddd7fd2ff4"><div class="ttname"><a href="field_2CMakeLists_8txt.html#a93c715d65ff81aeb3a0c7dddd7fd2ff4">set</a></div><div class="ttdeci">set(INCLUDE_DIRECTORIES ${CMAKE_SOURCE_DIR}/field ${GEANT4_VMC_INCLUDE_DIR} ${GEANT4_INCLUDE_DIR} ${FAIRROOT_INCLUDE_DIR} ${VMC_INCLUDE_DIRS} ${genfit2_INCDIR}) include_directories($</div><div class="ttdef"><b>Definition</b> <a href="field_2CMakeLists_8txt_source.html#l00005">CMakeLists.txt:5</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -292,16 +292,16 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00734">734</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  734</span>    <span class="keyword">def </span>nextEvent(self, event=None):</div>
-<div class="line"><span class="lineno">  735</span>        i = int(self.contents.get())</div>
-<div class="line"><span class="lineno">  736</span>        <span class="keywordflow">if</span> i == self.n:</div>
-<div class="line"><span class="lineno">  737</span>            self.n += 1</div>
-<div class="line"><span class="lineno">  738</span>        <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  739</span>            self.n = i</div>
-<div class="line"><span class="lineno">  740</span>        self.contents.<a class="code hl_function" href="ecal_2CMakeLists_8txt.html#abeef922feb832eb3e7650011b889fa86">set</a>(self.n)</div>
-<div class="line"><span class="lineno">  741</span>        SHiPDisplay.NextEvent(self.n)</div>
-<div class="line"><span class="lineno">  742</span> </div>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00669">669</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  669</span>    <span class="keyword">def </span>nextEvent(self, event=None):</div>
+<div class="line"><span class="lineno">  670</span>        i = int(self.contents.get())</div>
+<div class="line"><span class="lineno">  671</span>        <span class="keywordflow">if</span> i == self.n:</div>
+<div class="line"><span class="lineno">  672</span>            self.n += 1</div>
+<div class="line"><span class="lineno">  673</span>        <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  674</span>            self.n = i</div>
+<div class="line"><span class="lineno">  675</span>        self.contents.<a class="code hl_function" href="field_2CMakeLists_8txt.html#a93c715d65ff81aeb3a0c7dddd7fd2ff4">set</a>(self.n)</div>
+<div class="line"><span class="lineno">  676</span>        SHiPDisplay.NextEvent(self.n)</div>
+<div class="line"><span class="lineno">  677</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -331,34 +331,34 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00757">757</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  757</span>    <span class="keyword">def </span>toggle(self, x):</div>
-<div class="line"><span class="lineno">  758</span>        v = top.GetNode(x)</div>
-<div class="line"><span class="lineno">  759</span>        assembly = <span class="stringliteral">&quot;Assembly&quot;</span> <span class="keywordflow">in</span> v.GetVolume().__str__()</div>
-<div class="line"><span class="lineno">  760</span>        <span class="keywordflow">if</span> v.IsVisible() &gt; 0 <span class="keywordflow">or</span> assembly <span class="keywordflow">and</span> v.IsVisDaughters() &gt; 0:</div>
-<div class="line"><span class="lineno">  761</span>            print(<span class="stringliteral">&quot;switch off &quot;</span>, x)</div>
-<div class="line"><span class="lineno">  762</span>            v.SetVisibility(0)</div>
-<div class="line"><span class="lineno">  763</span>            v.SetVisDaughters(0)</div>
-<div class="line"><span class="lineno">  764</span>            self.lbut[x].var.set(0)</div>
-<div class="line"><span class="lineno">  765</span>        <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  766</span>            print(<span class="stringliteral">&quot;switch on &quot;</span>, x)</div>
-<div class="line"><span class="lineno">  767</span>            <span class="keywordflow">if</span> assembly:</div>
-<div class="line"><span class="lineno">  768</span>                v.SetVisDaughters(1)</div>
-<div class="line"><span class="lineno">  769</span>            <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  770</span>                v.SetVisibility(1)</div>
-<div class="line"><span class="lineno">  771</span>            self.lbut[x].var.set(1)</div>
-<div class="line"><span class="lineno">  772</span>        gEve.ElementChanged(self.geoscene, <span class="keyword">True</span>, <span class="keyword">True</span>)</div>
-<div class="line"><span class="lineno">  773</span>        <span class="keywordflow">for</span> v <span class="keywordflow">in</span> top.GetNodes():</div>
-<div class="line"><span class="lineno">  774</span>            x = v.GetName()</div>
-<div class="line"><span class="lineno">  775</span>            <span class="keywordflow">if</span> x <span class="keywordflow">in</span> self.lbut:</div>
-<div class="line"><span class="lineno">  776</span>                assembly = <span class="stringliteral">&quot;Assembly&quot;</span> <span class="keywordflow">in</span> v.GetVolume().__str__()</div>
-<div class="line"><span class="lineno">  777</span>                <span class="keywordflow">if</span> v.IsVisible() &gt; 0 <span class="keywordflow">or</span> assembly <span class="keywordflow">and</span> v.IsVisDaughters() &gt; 0:</div>
-<div class="line"><span class="lineno">  778</span>                    self.lbut[x].var.set(1)</div>
-<div class="line"><span class="lineno">  779</span>                <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  780</span>                    self.lbut[x].var.set(0)</div>
-<div class="line"><span class="lineno">  781</span> </div>
-<div class="line"><span class="lineno">  782</span> </div>
-<div class="line"><span class="lineno">  783</span><span class="comment">#</span></div>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00692">692</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  692</span>    <span class="keyword">def </span>toggle(self, x):</div>
+<div class="line"><span class="lineno">  693</span>        v = top.GetNode(x)</div>
+<div class="line"><span class="lineno">  694</span>        assembly = <span class="stringliteral">&quot;Assembly&quot;</span> <span class="keywordflow">in</span> v.GetVolume().__str__()</div>
+<div class="line"><span class="lineno">  695</span>        <span class="keywordflow">if</span> v.IsVisible() &gt; 0 <span class="keywordflow">or</span> assembly <span class="keywordflow">and</span> v.IsVisDaughters() &gt; 0:</div>
+<div class="line"><span class="lineno">  696</span>            print(<span class="stringliteral">&quot;switch off &quot;</span>, x)</div>
+<div class="line"><span class="lineno">  697</span>            v.SetVisibility(0)</div>
+<div class="line"><span class="lineno">  698</span>            v.SetVisDaughters(0)</div>
+<div class="line"><span class="lineno">  699</span>            self.lbut[x].var.set(0)</div>
+<div class="line"><span class="lineno">  700</span>        <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  701</span>            print(<span class="stringliteral">&quot;switch on &quot;</span>, x)</div>
+<div class="line"><span class="lineno">  702</span>            <span class="keywordflow">if</span> assembly:</div>
+<div class="line"><span class="lineno">  703</span>                v.SetVisDaughters(1)</div>
+<div class="line"><span class="lineno">  704</span>            <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  705</span>                v.SetVisibility(1)</div>
+<div class="line"><span class="lineno">  706</span>            self.lbut[x].var.set(1)</div>
+<div class="line"><span class="lineno">  707</span>        gEve.ElementChanged(self.geoscene, <span class="keyword">True</span>, <span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">  708</span>        <span class="keywordflow">for</span> v <span class="keywordflow">in</span> top.GetNodes():</div>
+<div class="line"><span class="lineno">  709</span>            x = v.GetName()</div>
+<div class="line"><span class="lineno">  710</span>            <span class="keywordflow">if</span> x <span class="keywordflow">in</span> self.lbut:</div>
+<div class="line"><span class="lineno">  711</span>                assembly = <span class="stringliteral">&quot;Assembly&quot;</span> <span class="keywordflow">in</span> v.GetVolume().__str__()</div>
+<div class="line"><span class="lineno">  712</span>                <span class="keywordflow">if</span> v.IsVisible() &gt; 0 <span class="keywordflow">or</span> assembly <span class="keywordflow">and</span> v.IsVisDaughters() &gt; 0:</div>
+<div class="line"><span class="lineno">  713</span>                    self.lbut[x].var.set(1)</div>
+<div class="line"><span class="lineno">  714</span>                <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  715</span>                    self.lbut[x].var.set(0)</div>
+<div class="line"><span class="lineno">  716</span> </div>
+<div class="line"><span class="lineno">  717</span> </div>
+<div class="line"><span class="lineno">  718</span><span class="comment">#</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -378,21 +378,21 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00743">743</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  743</span>    <span class="keyword">def </span>toggleMCTracks(self):</div>
-<div class="line"><span class="lineno">  744</span>        tl = fRun.GetMainTask().GetListOfTasks()</div>
-<div class="line"><span class="lineno">  745</span>        geoTask = tl.FindObject(<span class="stringliteral">&quot;GeoTracks&quot;</span>)</div>
-<div class="line"><span class="lineno">  746</span>        <span class="keywordflow">if</span> globals()[<span class="stringliteral">&quot;withMCTracks&quot;</span>]:</div>
-<div class="line"><span class="lineno">  747</span>            globals()[<span class="stringliteral">&quot;withMCTracks&quot;</span>] = <span class="keyword">False</span></div>
-<div class="line"><span class="lineno">  748</span>            self.lbut[<span class="stringliteral">&quot;withMC&quot;</span>].var.set(1)</div>
-<div class="line"><span class="lineno">  749</span>            <span class="keywordflow">if</span> geoTask:</div>
-<div class="line"><span class="lineno">  750</span>                geoTask.SetActive(0)</div>
-<div class="line"><span class="lineno">  751</span>        <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  752</span>            globals()[<span class="stringliteral">&quot;withMCTracks&quot;</span>] = <span class="keyword">True</span></div>
-<div class="line"><span class="lineno">  753</span>            self.lbut[<span class="stringliteral">&quot;withMC&quot;</span>].var.set(0)</div>
-<div class="line"><span class="lineno">  754</span>            <span class="keywordflow">if</span> geoTask:</div>
-<div class="line"><span class="lineno">  755</span>                geoTask.SetActive(1)</div>
-<div class="line"><span class="lineno">  756</span> </div>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00678">678</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  678</span>    <span class="keyword">def </span>toggleMCTracks(self):</div>
+<div class="line"><span class="lineno">  679</span>        tl = fRun.GetMainTask().GetListOfTasks()</div>
+<div class="line"><span class="lineno">  680</span>        geoTask = tl.FindObject(<span class="stringliteral">&quot;GeoTracks&quot;</span>)</div>
+<div class="line"><span class="lineno">  681</span>        <span class="keywordflow">if</span> globals()[<span class="stringliteral">&quot;withMCTracks&quot;</span>]:</div>
+<div class="line"><span class="lineno">  682</span>            globals()[<span class="stringliteral">&quot;withMCTracks&quot;</span>] = <span class="keyword">False</span></div>
+<div class="line"><span class="lineno">  683</span>            self.lbut[<span class="stringliteral">&quot;withMC&quot;</span>].var.set(1)</div>
+<div class="line"><span class="lineno">  684</span>            <span class="keywordflow">if</span> geoTask:</div>
+<div class="line"><span class="lineno">  685</span>                geoTask.SetActive(0)</div>
+<div class="line"><span class="lineno">  686</span>        <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  687</span>            globals()[<span class="stringliteral">&quot;withMCTracks&quot;</span>] = <span class="keyword">True</span></div>
+<div class="line"><span class="lineno">  688</span>            self.lbut[<span class="stringliteral">&quot;withMC&quot;</span>].var.set(0)</div>
+<div class="line"><span class="lineno">  689</span>            <span class="keywordflow">if</span> geoTask:</div>
+<div class="line"><span class="lineno">  690</span>                geoTask.SetActive(1)</div>
+<div class="line"><span class="lineno">  691</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -409,7 +409,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00632">632</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00567">567</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
 
 </div>
 </div>
@@ -425,7 +425,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00623">623</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00558">558</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
 
 </div>
 </div>
@@ -441,7 +441,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00655">655</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00590">590</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
 
 </div>
 </div>
@@ -457,7 +457,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00642">642</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00577">577</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
 
 </div>
 </div>
@@ -473,7 +473,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00620">620</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00555">555</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
 
 </div>
 </div>
@@ -489,7 +489,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00634">634</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00569">569</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
 
 </div>
 </div>
@@ -505,7 +505,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00641">641</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00576">576</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
 
 </div>
 </div>

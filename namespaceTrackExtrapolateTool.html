@@ -111,7 +111,7 @@ Variables</h2></td></tr>
 <tr class="separator:a1104e7a5752dd65cba8fc8bdb76a5ce5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad1aa89145b6188edd90c6266aebaa095" id="r_ad1aa89145b6188edd90c6266aebaa095"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceTrackExtrapolateTool.html#ad1aa89145b6188edd90c6266aebaa095">top</a> = ROOT.gGeoManager.GetTopVolume()</td></tr>
 <tr class="separator:ad1aa89145b6188edd90c6266aebaa095"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeb68a90b815acb1e2f1453cb90bf5b60" id="r_aeb68a90b815acb1e2f1453cb90bf5b60"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceTrackExtrapolateTool.html#aeb68a90b815acb1e2f1453cb90bf5b60">z_ecal</a> = 100*u.m</td></tr>
+<tr class="memitem:aeb68a90b815acb1e2f1453cb90bf5b60" id="r_aeb68a90b815acb1e2f1453cb90bf5b60"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceTrackExtrapolateTool.html#aeb68a90b815acb1e2f1453cb90bf5b60">z_ecal</a> = top.GetNode('SplitCalDetector_1').GetMatrix().GetTranslation()[2]</td></tr>
 <tr class="separator:aeb68a90b815acb1e2f1453cb90bf5b60"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
@@ -264,12 +264,12 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int TrackExtrapolateTool.z_ecal = 100*u.m</td>
+          <td class="memname">int TrackExtrapolateTool.z_ecal = top.GetNode('SplitCalDetector_1').GetMatrix().GetTranslation()[2]</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TrackExtrapolateTool_8py_source.html#l00010">10</a> of file <a class="el" href="TrackExtrapolateTool_8py_source.html">TrackExtrapolateTool.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TrackExtrapolateTool_8py_source.html#l00011">11</a> of file <a class="el" href="TrackExtrapolateTool_8py_source.html">TrackExtrapolateTool.py</a>.</p>
 
 </div>
 </div>

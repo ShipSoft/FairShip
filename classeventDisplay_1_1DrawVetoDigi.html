@@ -125,6 +125,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a41ab9b97fccec01b4a3792f08f36e8aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1c5fa7300d8ad382d84ada3cb32023d4" id="r_a1c5fa7300d8ad382d84ada3cb32023d4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classeventDisplay_1_1DrawVetoDigi.html#a1c5fa7300d8ad382d84ada3cb32023d4">ExecuteTask</a> (self, option=&quot;&quot;)</td></tr>
 <tr class="separator:a1c5fa7300d8ad382d84ada3cb32023d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8571241aa8dfc803f7fbc505aba1a19a" id="r_a8571241aa8dfc803f7fbc505aba1a19a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classeventDisplay_1_1DrawVetoDigi.html#a8571241aa8dfc803f7fbc505aba1a19a">DrawParticle</a> (self, n)</td></tr>
+<tr class="separator:a8571241aa8dfc803f7fbc505aba1a19a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -137,6 +139,56 @@ Public Attributes</h2></td></tr>
 <div class="textblock">
 <p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00184">184</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a8571241aa8dfc803f7fbc505aba1a19a" name="a8571241aa8dfc803f7fbc505aba1a19a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8571241aa8dfc803f7fbc505aba1a19a">&#9670;&#160;</a></span>DrawParticle()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">eventDisplay.DrawVetoDigi.DrawParticle </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>n</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00232">232</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  232</span>    <span class="keyword">def </span>DrawParticle(self, n):</div>
+<div class="line"><span class="lineno">  233</span>        self.comp.OpenCompound()</div>
+<div class="line"><span class="lineno">  234</span>        DTrack = ROOT.TEveLine()</div>
+<div class="line"><span class="lineno">  235</span>        DTrack.SetPickable(ROOT.kTRUE)</div>
+<div class="line"><span class="lineno">  236</span>        DTrack.SetMainColor(ROOT.kCyan)</div>
+<div class="line"><span class="lineno">  237</span>        DTrack.SetLineWidth(4)</div>
+<div class="line"><span class="lineno">  238</span>        aP = sTree.Particles[n]</div>
+<div class="line"><span class="lineno">  239</span>        DTrack.SetTitle(aP.__repr__())</div>
+<div class="line"><span class="lineno">  240</span>        DTrack.SetName(<span class="stringliteral">&quot;Prtcle_&quot;</span> + str(n))</div>
+<div class="line"><span class="lineno">  241</span>        DTrack.SetNextPoint(aP.Vx(), aP.Vy(), aP.Vz())</div>
+<div class="line"><span class="lineno">  242</span>        lam = (self.Targetz - aP.Vz()) / aP.Pz()</div>
+<div class="line"><span class="lineno">  243</span>        DTrack.SetNextPoint(</div>
+<div class="line"><span class="lineno">  244</span>            aP.Vx() + lam * aP.Px(), aP.Vy() + lam * aP.Py(), self.Targetz</div>
+<div class="line"><span class="lineno">  245</span>        )</div>
+<div class="line"><span class="lineno">  246</span>        self.comp.AddElement(DTrack)</div>
+<div class="line"><span class="lineno">  247</span>        self.comp.CloseCompound()</div>
+<div class="line"><span class="lineno">  248</span>        gEve.ElementChanged(self.evscene, <span class="keyword">True</span>, <span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">  249</span> </div>
+<div class="line"><span class="lineno">  250</span> </div>
+<div class="line"><span class="lineno">  251</span><span class="comment">#</span></div>
+</div><!-- fragment -->
+</div>
+</div>
 <a id="a1c5fa7300d8ad382d84ada3cb32023d4" name="a1c5fa7300d8ad382d84ada3cb32023d4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1c5fa7300d8ad382d84ada3cb32023d4">&#9670;&#160;</a></span>ExecuteTask()</h2>
 

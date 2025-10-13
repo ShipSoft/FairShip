@@ -141,8 +141,6 @@ Variables</h2></td></tr>
 <tr class="separator:ab82ef588332d6e1415aed433b8660d5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3c1e1b494c5efaedab24b9997e9d2624" id="r_a3c1e1b494c5efaedab24b9997e9d2624"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__simPgun.html#a3c1e1b494c5efaedab24b9997e9d2624">Veto</a> = ROOT.veto(&quot;Veto&quot;, ROOT.kTRUE)</td></tr>
 <tr class="separator:a3c1e1b494c5efaedab24b9997e9d2624"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a04e80d5fa6f52b10185bf15a9e3840e8" id="r_a04e80d5fa6f52b10185bf15a9e3840e8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__simPgun.html#a04e80d5fa6f52b10185bf15a9e3840e8">ecal</a> = ROOT.ecal(&quot;Ecal&quot;, ROOT.kTRUE)</td></tr>
-<tr class="separator:a04e80d5fa6f52b10185bf15a9e3840e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9a2bdef345215d46ec38f7ea14b7fc3f" id="r_a9a2bdef345215d46ec38f7ea14b7fc3f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__simPgun.html#a9a2bdef345215d46ec38f7ea14b7fc3f">Muon</a> = ROOT.muon(&quot;Muon&quot;, ROOT.kTRUE)</td></tr>
 <tr class="separator:a9a2bdef345215d46ec38f7ea14b7fc3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac59e2b4d137593519855603237c225bb" id="r_ac59e2b4d137593519855603237c225bb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__simPgun.html#ac59e2b4d137593519855603237c225bb">fMagField</a> = ROOT.ShipConstField()</td></tr>
@@ -204,36 +202,36 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simPgun_8py_source.html#l00124">124</a> of file <a class="el" href="run__simPgun_8py_source.html">run_simPgun.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  124</span><span class="keyword">def </span>someDebug():</div>
-<div class="line"><span class="lineno">  125</span> g = ROOT.gROOT</div>
-<div class="line"><span class="lineno">  126</span> lm = run.GetListOfModules()</div>
-<div class="line"><span class="lineno">  127</span> <span class="keywordflow">for</span> x <span class="keywordflow">in</span> lm: print(x.GetName())</div>
-<div class="line"><span class="lineno">  128</span> fGeo = ROOT.gGeoManager</div>
-<div class="line"><span class="lineno">  129</span> cave = fGeo.GetTopVolume()</div>
-<div class="line"><span class="lineno">  130</span> cave.Draw(<span class="stringliteral">&#39;ogl&#39;</span>)</div>
-<div class="line"><span class="lineno">  131</span><span class="comment">#</span></div>
-<div class="line"><span class="lineno">  132</span> tf = g.FindObjectAny(<span class="stringliteral">&#39;cbmroot&#39;</span>)</div>
-<div class="line"><span class="lineno">  133</span> <span class="keywordflow">for</span> l <span class="keywordflow">in</span> tf.GetListOfFolders(): print(l.GetName())</div>
-<div class="line"><span class="lineno">  134</span> l   = tf.FindObject(<span class="stringliteral">&#39;MCGeoTrack&#39;</span>)</div>
-<div class="line"><span class="lineno">  135</span> trs = l.FindObject(<span class="stringliteral">&#39;GeoTracks&#39;</span>)</div>
-<div class="line"><span class="lineno">  136</span> <span class="keywordflow">for</span> x <span class="keywordflow">in</span> trs: print(x)</div>
-<div class="line"><span class="lineno">  137</span> l = tf.FindObject(<span class="stringliteral">&#39;Stack&#39;</span>)</div>
-<div class="line"><span class="lineno">  138</span> trs = l.FindObject(<span class="stringliteral">&#39;MCTrack&#39;</span>)</div>
-<div class="line"><span class="lineno">  139</span> <span class="keywordflow">for</span> x <span class="keywordflow">in</span> trs: print(x)</div>
-<div class="line"><span class="lineno">  140</span><span class="comment">#</span></div>
-<div class="line"><span class="lineno">  141</span> gMC = ROOT.gMC <span class="comment"># &lt;ROOT.TVirtualMC* object (&quot;TGeant4&quot;) at 0x2a5d3e8&gt;</span></div>
-<div class="line"><span class="lineno">  142</span> fStack = gMC.GetStack()</div>
-<div class="line"><span class="lineno">  143</span> gMC.ProcessRun(1) <span class="comment"># 1 event</span></div>
-<div class="line"><span class="lineno">  144</span><span class="comment">#</span></div>
-<div class="line"><span class="lineno">  145</span> gMC.GetMC() <span class="comment"># &lt;ROOT.TGeant4 object (&quot;TGeant4&quot;)</span></div>
-<div class="line"><span class="lineno">  146</span> g4.NofVolumes()</div>
-<div class="line"><span class="lineno">  147</span> g4.StartGeantUI()</div>
-<div class="line"><span class="lineno">  148</span><span class="comment">#</span></div>
-<div class="line"><span class="lineno">  149</span> gPrim = run.GetPrimaryGenerator()</div>
-<div class="line"><span class="lineno">  150</span> mch   = gPrim.GetEvent() <span class="comment"># &lt;ROOT.FairMCEventHeader object (&quot;MCEventHeader.&quot;)</span></div>
-<div class="line"><span class="lineno">  151</span> print(mch.GetEventID(),mch.GetZ())</div>
-<div class="line"><span class="lineno">  152</span> gPy8 = gPrim.GetListOfGenerators()[0]</div>
+<p class="definition">Definition at line <a class="el" href="run__simPgun_8py_source.html#l00122">122</a> of file <a class="el" href="run__simPgun_8py_source.html">run_simPgun.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  122</span><span class="keyword">def </span>someDebug():</div>
+<div class="line"><span class="lineno">  123</span> g = ROOT.gROOT</div>
+<div class="line"><span class="lineno">  124</span> lm = run.GetListOfModules()</div>
+<div class="line"><span class="lineno">  125</span> <span class="keywordflow">for</span> x <span class="keywordflow">in</span> lm: print(x.GetName())</div>
+<div class="line"><span class="lineno">  126</span> fGeo = ROOT.gGeoManager</div>
+<div class="line"><span class="lineno">  127</span> cave = fGeo.GetTopVolume()</div>
+<div class="line"><span class="lineno">  128</span> cave.Draw(<span class="stringliteral">&#39;ogl&#39;</span>)</div>
+<div class="line"><span class="lineno">  129</span><span class="comment">#</span></div>
+<div class="line"><span class="lineno">  130</span> tf = g.FindObjectAny(<span class="stringliteral">&#39;cbmroot&#39;</span>)</div>
+<div class="line"><span class="lineno">  131</span> <span class="keywordflow">for</span> l <span class="keywordflow">in</span> tf.GetListOfFolders(): print(l.GetName())</div>
+<div class="line"><span class="lineno">  132</span> l   = tf.FindObject(<span class="stringliteral">&#39;MCGeoTrack&#39;</span>)</div>
+<div class="line"><span class="lineno">  133</span> trs = l.FindObject(<span class="stringliteral">&#39;GeoTracks&#39;</span>)</div>
+<div class="line"><span class="lineno">  134</span> <span class="keywordflow">for</span> x <span class="keywordflow">in</span> trs: print(x)</div>
+<div class="line"><span class="lineno">  135</span> l = tf.FindObject(<span class="stringliteral">&#39;Stack&#39;</span>)</div>
+<div class="line"><span class="lineno">  136</span> trs = l.FindObject(<span class="stringliteral">&#39;MCTrack&#39;</span>)</div>
+<div class="line"><span class="lineno">  137</span> <span class="keywordflow">for</span> x <span class="keywordflow">in</span> trs: print(x)</div>
+<div class="line"><span class="lineno">  138</span><span class="comment">#</span></div>
+<div class="line"><span class="lineno">  139</span> gMC = ROOT.gMC <span class="comment"># &lt;ROOT.TVirtualMC* object (&quot;TGeant4&quot;) at 0x2a5d3e8&gt;</span></div>
+<div class="line"><span class="lineno">  140</span> fStack = gMC.GetStack()</div>
+<div class="line"><span class="lineno">  141</span> gMC.ProcessRun(1) <span class="comment"># 1 event</span></div>
+<div class="line"><span class="lineno">  142</span><span class="comment">#</span></div>
+<div class="line"><span class="lineno">  143</span> gMC.GetMC() <span class="comment"># &lt;ROOT.TGeant4 object (&quot;TGeant4&quot;)</span></div>
+<div class="line"><span class="lineno">  144</span> g4.NofVolumes()</div>
+<div class="line"><span class="lineno">  145</span> g4.StartGeantUI()</div>
+<div class="line"><span class="lineno">  146</span><span class="comment">#</span></div>
+<div class="line"><span class="lineno">  147</span> gPrim = run.GetPrimaryGenerator()</div>
+<div class="line"><span class="lineno">  148</span> mch   = gPrim.GetEvent() <span class="comment"># &lt;ROOT.FairMCEventHeader object (&quot;MCEventHeader.&quot;)</span></div>
+<div class="line"><span class="lineno">  149</span> print(mch.GetEventID(),mch.GetZ())</div>
+<div class="line"><span class="lineno">  150</span> gPy8 = gPrim.GetListOfGenerators()[0]</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -282,7 +280,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simPgun_8py_source.html#l00115">115</a> of file <a class="el" href="run__simPgun_8py_source.html">run_simPgun.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simPgun_8py_source.html#l00113">113</a> of file <a class="el" href="run__simPgun_8py_source.html">run_simPgun.py</a>.</p>
 
 </div>
 </div>
@@ -302,22 +300,6 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="a04e80d5fa6f52b10185bf15a9e3840e8" name="a04e80d5fa6f52b10185bf15a9e3840e8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a04e80d5fa6f52b10185bf15a9e3840e8">&#9670;&#160;</a></span>ecal</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">run_simPgun.ecal = ROOT.ecal(&quot;Ecal&quot;, ROOT.kTRUE)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="run__simPgun_8py_source.html#l00066">66</a> of file <a class="el" href="run__simPgun_8py_source.html">run_simPgun.py</a>.</p>
-
-</div>
-</div>
 <a id="ac59e2b4d137593519855603237c225bb" name="ac59e2b4d137593519855603237c225bb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac59e2b4d137593519855603237c225bb">&#9670;&#160;</a></span>fMagField</h2>
 
@@ -330,7 +312,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simPgun_8py_source.html#l00074">74</a> of file <a class="el" href="run__simPgun_8py_source.html">run_simPgun.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simPgun_8py_source.html#l00072">72</a> of file <a class="el" href="run__simPgun_8py_source.html">run_simPgun.py</a>.</p>
 
 </div>
 </div>
@@ -346,7 +328,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simPgun_8py_source.html#l00100">100</a> of file <a class="el" href="run__simPgun_8py_source.html">run_simPgun.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simPgun_8py_source.html#l00098">98</a> of file <a class="el" href="run__simPgun_8py_source.html">run_simPgun.py</a>.</p>
 
 </div>
 </div>
@@ -394,7 +376,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simPgun_8py_source.html#l00083">83</a> of file <a class="el" href="run__simPgun_8py_source.html">run_simPgun.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simPgun_8py_source.html#l00081">81</a> of file <a class="el" href="run__simPgun_8py_source.html">run_simPgun.py</a>.</p>
 
 </div>
 </div>
@@ -410,7 +392,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simPgun_8py_source.html#l00069">69</a> of file <a class="el" href="run__simPgun_8py_source.html">run_simPgun.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simPgun_8py_source.html#l00067">67</a> of file <a class="el" href="run__simPgun_8py_source.html">run_simPgun.py</a>.</p>
 
 </div>
 </div>
@@ -458,7 +440,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simPgun_8py_source.html#l00085">85</a> of file <a class="el" href="run__simPgun_8py_source.html">run_simPgun.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simPgun_8py_source.html#l00083">83</a> of file <a class="el" href="run__simPgun_8py_source.html">run_simPgun.py</a>.</p>
 
 </div>
 </div>
@@ -522,7 +504,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simPgun_8py_source.html#l00101">101</a> of file <a class="el" href="run__simPgun_8py_source.html">run_simPgun.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simPgun_8py_source.html#l00099">99</a> of file <a class="el" href="run__simPgun_8py_source.html">run_simPgun.py</a>.</p>
 
 </div>
 </div>
@@ -538,7 +520,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simPgun_8py_source.html#l00081">81</a> of file <a class="el" href="run__simPgun_8py_source.html">run_simPgun.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simPgun_8py_source.html#l00079">79</a> of file <a class="el" href="run__simPgun_8py_source.html">run_simPgun.py</a>.</p>
 
 </div>
 </div>
@@ -554,7 +536,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simPgun_8py_source.html#l00084">84</a> of file <a class="el" href="run__simPgun_8py_source.html">run_simPgun.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simPgun_8py_source.html#l00082">82</a> of file <a class="el" href="run__simPgun_8py_source.html">run_simPgun.py</a>.</p>
 
 </div>
 </div>
@@ -570,7 +552,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simPgun_8py_source.html#l00080">80</a> of file <a class="el" href="run__simPgun_8py_source.html">run_simPgun.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simPgun_8py_source.html#l00078">78</a> of file <a class="el" href="run__simPgun_8py_source.html">run_simPgun.py</a>.</p>
 
 </div>
 </div>
@@ -602,7 +584,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="run__simPgun_8py_source.html#l00114">114</a> of file <a class="el" href="run__simPgun_8py_source.html">run_simPgun.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="run__simPgun_8py_source.html#l00112">112</a> of file <a class="el" href="run__simPgun_8py_source.html">run_simPgun.py</a>.</p>
 
 </div>
 </div>

@@ -2,8 +2,6 @@ var decorators_8py =
 [
     [ "apply_decorators", "decorators_8py.html#aea9fc24345edfee43b1c5dcf00417704", null ],
     [ "Dump", "decorators_8py.html#a9aa498add33b8b9799504fffee2a48c6", null ],
-    [ "ecalClusterPrintOut", "decorators_8py.html#a631b4b158408c126035dfb24561c8598", null ],
-    [ "ecalReconstructedPrintOut", "decorators_8py.html#a68e993abb3bb0be8282441f6ac0a1f4b", null ],
     [ "FitTrackPrintOut", "decorators_8py.html#ad60443c6f7c9480c370f7bf319b11b07", null ],
     [ "MCPointPrintOut", "decorators_8py.html#a1639e2afcc016284ccd45c276539c2ba", null ],
     [ "MCTrackPrintOut", "decorators_8py.html#a2ec1e32203e1b964c50333fe4ac80774", null ],

@@ -4,7 +4,6 @@ var ShipAna_8py =
     [ "checkFiducialVolume", "ShipAna_8py.html#add600534e6df6909726258d95b473c75", null ],
     [ "checkHNLorigin", "ShipAna_8py.html#aa393bdafd0ce4a7a41237e3b068bcedd", null ],
     [ "dist2InnerWall", "ShipAna_8py.html#a62bc883cf46f34acd4ef73d4954837e8", null ],
-    [ "ecalCluster2MC", "ShipAna_8py.html#a65968c1d75f63677e2ac4a3c74ec887a", null ],
     [ "fitSingleGauss", "ShipAna_8py.html#add2591fbc7705442f8015a0bc6eb0d0b", null ],
     [ "getPtruthFirst", "ShipAna_8py.html#a49a051b5e84990d6249dd8f23d7c99b7", null ],
     [ "HNLKinematics", "ShipAna_8py.html#ace9d8fcbe3e1150e5f660c671c8e3a24", null ],

@@ -28,8 +28,6 @@ var ana__ShipMuon_8py =
     [ "readAndMergeHistos", "ana__ShipMuon_8py.html#a6efbf889d4a0b941bd19ab45236f002a", null ],
     [ "reDraw", "ana__ShipMuon_8py.html#a334b44193227009d4e0000713eb55812", null ],
     [ "dy", "ana__ShipMuon_8py.html#a2e1edb79f1d6d21e32f27e5887643b56", null ],
-    [ "ecal", "ana__ShipMuon_8py.html#a8f46377df29907eb4773e30e92e64d98", null ],
-    [ "ecalGeoFile", "ana__ShipMuon_8py.html#a60f72a5cfc108a99c7f523c0ea51a51f", null ],
     [ "fchain", "ana__ShipMuon_8py.html#af4039934e0ad6dd65b7c616ed8dbfa29", null ],
     [ "fchainRec", "ana__ShipMuon_8py.html#a4b0bba4dadca42515d4dfc5fc2451aa5", null ],
     [ "fgeo", "ana__ShipMuon_8py.html#ae5b4546b0f4f97e62e5801351d43b925", null ],

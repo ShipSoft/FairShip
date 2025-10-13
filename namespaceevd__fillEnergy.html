@@ -154,7 +154,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   25</span>  hitlist = {}</div>
 <div class="line"><span class="lineno">   26</span>  hitlist[fPos.Z()] = [fPos.X(), fPos.Y(), fT.GetP()]</div>
 <div class="line"><span class="lineno">   27</span><span class="comment"># loop over all sensitive volumes to find hits</span></div>
-<div class="line"><span class="lineno">   28</span>  <span class="keywordflow">for</span> P <span class="keywordflow">in</span> [<span class="stringliteral">&quot;vetoPoint&quot;</span>, <span class="stringliteral">&quot;muonPoint&quot;</span>, <span class="stringliteral">&quot;EcalPoint&quot;</span>, <span class="stringliteral">&quot;HcalPoint&quot;</span>,</div>
+<div class="line"><span class="lineno">   28</span>  <span class="keywordflow">for</span> P <span class="keywordflow">in</span> [<span class="stringliteral">&quot;vetoPoint&quot;</span>, <span class="stringliteral">&quot;muonPoint&quot;</span>,</div>
 <div class="line"><span class="lineno">   29</span>            <span class="stringliteral">&quot;strawtubesPoint&quot;</span>, <span class="stringliteral">&quot;ShipRpcPoint&quot;</span>, <span class="stringliteral">&quot;TargetPoint&quot;</span>]:</div>
 <div class="line"><span class="lineno">   30</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> sTree.GetBranch(P):</div>
 <div class="line"><span class="lineno">   31</span>      <span class="keywordflow">continue</span></div>
@@ -219,7 +219,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   81</span>    zmax = vtest.Z()</div>
 <div class="line"><span class="lineno">   82</span> </div>
 <div class="line"><span class="lineno">   83</span> </div>
-<div class="line"><span class="lineno">   84</span>    checked_muons = <a class="code hl_function" href="ecal_2CMakeLists_8txt.html#abeef922feb832eb3e7650011b889fa86">set</a>()</div>
+<div class="line"><span class="lineno">   84</span>    checked_muons = <a class="code hl_function" href="field_2CMakeLists_8txt.html#a93c715d65ff81aeb3a0c7dddd7fd2ff4">set</a>()</div>
 <div class="line"><span class="lineno">   85</span>    all_muons_hitlist = [collect_hits(lsOfGlobals, checked_muons) <span class="keywordflow">for</span> _ <span class="keywordflow">in</span> range(N_MUONS)]</div>
 <div class="line"><span class="lineno">   86</span>    all_muons_hitlist = list(filter(<span class="keyword">lambda</span> x: x, all_muons_hitlist))</div>
 <div class="line"><span class="lineno">   87</span>    trajectories = [trajectory_init(lsOfGlobals, <span class="stringliteral">&quot;SHiP MuonTraj_&quot;</span> + str(index))</div>
@@ -247,7 +247,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  109</span>    c1.Update()</div>
 <div class="line"><span class="lineno">  110</span> </div>
 <div class="line"><span class="lineno">  111</span> </div>
-<div class="ttc" id="aecal_2CMakeLists_8txt_html_abeef922feb832eb3e7650011b889fa86"><div class="ttname"><a href="ecal_2CMakeLists_8txt.html#abeef922feb832eb3e7650011b889fa86">set</a></div><div class="ttdeci">set(INCLUDE_DIRECTORIES ${CMAKE_SOURCE_DIR}/shipdata ${CMAKE_SOURCE_DIR}/ecal ${genfit2_INCDIR}) include_directories($</div><div class="ttdef"><b>Definition</b> <a href="ecal_2CMakeLists_8txt_source.html#l00005">CMakeLists.txt:5</a></div></div>
+<div class="ttc" id="afield_2CMakeLists_8txt_html_a93c715d65ff81aeb3a0c7dddd7fd2ff4"><div class="ttname"><a href="field_2CMakeLists_8txt.html#a93c715d65ff81aeb3a0c7dddd7fd2ff4">set</a></div><div class="ttdeci">set(INCLUDE_DIRECTORIES ${CMAKE_SOURCE_DIR}/field ${GEANT4_VMC_INCLUDE_DIR} ${GEANT4_INCLUDE_DIR} ${FAIRROOT_INCLUDE_DIR} ${VMC_INCLUDE_DIRS} ${genfit2_INCDIR}) include_directories($</div><div class="ttdef"><b>Definition</b> <a href="field_2CMakeLists_8txt_source.html#l00005">CMakeLists.txt:5</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

@@ -7,8 +7,6 @@ var ShipReco_8py =
     [ "default", "ShipReco_8py.html#a3a6784436be9cc0b73b71f2fb08c4dd5", null ],
     [ "dest", "ShipReco_8py.html#a663c66d4a22374970fa11dd2a5012dec", null ],
     [ "dy", "ShipReco_8py.html#a0645db8c1347a0fcf8f6b07bed5830cb", null ],
-    [ "EcalDebugDraw", "ShipReco_8py.html#ad9d57f506b94e22394f8d27afc9d4cf1", null ],
-    [ "ecalGeoFile", "ShipReco_8py.html#ae3cbbda4d1740d8302de2577abc49e8d", null ],
     [ "False", "ShipReco_8py.html#a8bcffac552effb5fb9c0c24150272cb9", null ],
     [ "fgeo", "ShipReco_8py.html#a048945b5e2e313357c8cd4ac2b1e5d81", null ],
     [ "fieldMaker", "ShipReco_8py.html#a0e633b86c4896f37150fcf869b3fd59e", null ],

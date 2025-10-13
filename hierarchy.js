@@ -1,11 +1,7 @@
 var hierarchy =
 [
-    [ "__ecalCellWrapper", "struct____ecalCellWrapper.html", null ],
     [ "AbsBField", null, [
       [ "genfit::FairShipFields", "classgenfit_1_1FairShipFields.html", null ]
-    ] ],
-    [ "std::binary_function", null, [
-      [ "ecalClusterSortProcess", "structecalClusterSortProcess.html", null ]
     ] ],
     [ "hnl.CKMmatrix", "classhnl_1_1CKMmatrix.html", null ],
     [ "Co3Rng", "classCo3Rng.html", null ],
@@ -19,13 +15,9 @@ var hierarchy =
       [ "ShipGeoConfig.ConfigRegistry", "classShipGeoConfig_1_1ConfigRegistry.html", null ],
       [ "rootUtils.PyListOfLeaves", "classrootUtils_1_1PyListOfLeaves.html", null ]
     ] ],
-    [ "ecalDrawerItem", "classecalDrawerItem.html", null ],
-    [ "ecalPreCluster", "classecalPreCluster.html", null ],
     [ "experimental.analysis_toolkit.event_inspector", "classexperimental_1_1analysis__toolkit_1_1event__inspector.html", null ],
     [ "FairContFact", null, [
       [ "ShipPassiveContFact", "classShipPassiveContFact.html", null ],
-      [ "ecalContFact", "classecalContFact.html", null ],
-      [ "hcalContFact", "classhcalContFact.html", null ],
       [ "muonContFact", "classmuonContFact.html", null ],
       [ "splitcalContFact", "classsplitcalContFact.html", null ],
       [ "strawtubesContFact", "classstrawtubesContFact.html", null ],
@@ -39,9 +31,7 @@ var hierarchy =
       [ "UpstreamTagger", "classUpstreamTagger.html", [
         [ "UpstreamTaggerHit", "classUpstreamTaggerHit.html", null ]
       ] ],
-      [ "ecal", "classecal.html", null ],
       [ "exitHadronAbsorber", "classexitHadronAbsorber.html", null ],
-      [ "hcal", "classhcal.html", null ],
       [ "muon", "classmuon.html", null ],
       [ "simpleTarget", "classsimpleTarget.html", null ],
       [ "splitcal", "classsplitcal.html", null ],
@@ -82,8 +72,6 @@ var hierarchy =
       [ "TargetPoint", "classTargetPoint.html", null ],
       [ "TimeDetPoint", "classTimeDetPoint.html", null ],
       [ "UpstreamTaggerPoint", "classUpstreamTaggerPoint.html", null ],
-      [ "ecalPoint", "classecalPoint.html", null ],
-      [ "hcalPoint", "classhcalPoint.html", null ],
       [ "muonPoint", "classmuonPoint.html", null ],
       [ "splitcalPoint", "classsplitcalPoint.html", null ],
       [ "strawtubesPoint", "classstrawtubesPoint.html", null ],
@@ -102,23 +90,7 @@ var hierarchy =
     [ "FairParGenericSet", null, [
       [ "ShipFieldPar", "classShipFieldPar.html", null ]
     ] ],
-    [ "FairTask", null, [
-      [ "ecalAnalysisMaterial", "classecalAnalysisMaterial.html", null ],
-      [ "ecalAnalysisSimple", "classecalAnalysisSimple.html", null ],
-      [ "ecalClusterCalibration", "classecalClusterCalibration.html", null ],
-      [ "ecalClusterFinder", "classecalClusterFinder.html", null ],
-      [ "ecalDigi", "classecalDigi.html", null ],
-      [ "ecalDrawer", "classecalDrawer.html", null ],
-      [ "ecalMatch", "classecalMatch.html", null ],
-      [ "ecalMaximumLocator", "classecalMaximumLocator.html", null ],
-      [ "ecalPrepare", "classecalPrepare.html", null ],
-      [ "ecalReco", "classecalReco.html", null ],
-      [ "ecalStructureFiller", "classecalStructureFiller.html", null ],
-      [ "hcalAnalysisSimple", "classhcalAnalysisSimple.html", null ],
-      [ "hcalStructureFiller", "classhcalStructureFiller.html", null ]
-    ] ],
     [ "ROOT.FairTask", null, [
-      [ "eventDisplay.DrawEcalCluster", "classeventDisplay_1_1DrawEcalCluster.html", null ],
       [ "eventDisplay.DrawTracks", "classeventDisplay_1_1DrawTracks.html", null ],
       [ "eventDisplay.DrawVetoDigi", "classeventDisplay_1_1DrawVetoDigi.html", null ],
       [ "eventDisplay.EventLoop", "classeventDisplay_1_1EventLoop.html", null ],
@@ -186,7 +158,6 @@ var hierarchy =
     [ "experimental.analysis_toolkit.selection_check", "classexperimental_1_1analysis__toolkit_1_1selection__check.html", null ],
     [ "shipDigiReco.ShipDigiReco", "classshipDigiReco_1_1ShipDigiReco.html", null ],
     [ "ShipGeo.ShipGeo", "classShipGeo_1_1ShipGeo.html", null ],
-    [ "shipPid.Task", "classshipPid_1_1Task.html", null ],
     [ "shipVertex.Task", "classshipVertex_1_1Task.html", null ],
     [ "shipVeto.Task", "classshipVeto_1_1Task.html", null ],
     [ "unittest.TestCase", null, [
@@ -198,12 +169,6 @@ var hierarchy =
     ] ],
     [ "TG4VUserPostDetConstruction", null, [
       [ "ShipFieldMaker", "classShipFieldMaker.html", null ]
-    ] ],
-    [ "TNamed", null, [
-      [ "ecalLightMap", "classecalLightMap.html", null ],
-      [ "ecalStructure", "classecalStructure.html", null ],
-      [ "hcalLightMap", "classhcalLightMap.html", null ],
-      [ "hcalStructure", "classhcalStructure.html", null ]
     ] ],
     [ "TObject", null, [
       [ "ShipHit", "classShipHit.html", [
@@ -218,18 +183,6 @@ var hierarchy =
       [ "ShipMCTrack", "classShipMCTrack.html", null ],
       [ "TrackInfo", "classTrackInfo.html", null ],
       [ "Tracklet", "classTracklet.html", null ],
-      [ "ecalCell", "classecalCell.html", [
-        [ "ecalCellMC", "classecalCellMC.html", null ],
-        [ "ecalModule", "classecalModule.html", null ]
-      ] ],
-      [ "ecalCluster", "classecalCluster.html", null ],
-      [ "ecalInf", "classecalInf.html", null ],
-      [ "ecalMaximum", "classecalMaximum.html", null ],
-      [ "ecalReconstructed", "classecalReconstructed.html", null ],
-      [ "hcalInf", "classhcalInf.html", null ],
-      [ "hcalModule", "classhcalModule.html", [
-        [ "hcalModuleMC", "classhcalModuleMC.html", null ]
-      ] ],
       [ "pid", "classpid.html", null ],
       [ "splitcalCluster", "classsplitcalCluster.html", null ],
       [ "vetoHitOnTrack", "classvetoHitOnTrack.html", null ]

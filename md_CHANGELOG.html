@@ -228,7 +228,7 @@ Changed</h2>
 <li>Change EmulsionTarget detID decode function to tuple output</li>
 <li>Particle Gun has been updated: now user can set the coordinates of the PG via keys &ndash;V{x,y,z} and use &ndash;D{x,y} to uniformly smear the signal in a given x and y range</li>
 <li><a class="el" href="namespacemakeCascade.html">makeCascade</a>: Added new default target, moved to argparse</li>
-<li><a class="el" href="run__simScript_8py.html">run_simScript.py</a>: use options directly internally instead of using intermediate variables</li>
+<li><a class="el" href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">run_simScript.py:</a> use options directly internally instead of using intermediate variables</li>
 <li>Update spectrometer yoke pit size according to EDMS no. 3309666</li>
 <li>feat: Improve <a class="el" href="classFixedTargetGenerator.html">FixedTargetGenerator</a> geometry handling<ul>
 <li>Replace fragile hardcoded TGeo navigation paths with geometry constants from <code>ship_geo.target</code></li>
@@ -260,11 +260,11 @@ Removed</h2>
 <li>MS: Removed cobalt option</li>
 <li>MS: Removed stepGeo option</li>
 <li>MS: Removed the flag constant field in Absorber (HS) -&gt; fixed to 1.7 T</li>
-<li>MS: <a class="el" href="run__simScript_8py.html">run_simScript.py</a>: The &ndash;noSC flag is removed, whether or not a configuration is SC hybrid depends on the config selected. Configurations are defined in the shield_db in <a class="el" href="geometry__config_8py.html">geometry_config.py</a></li>
+<li>MS: <a class="el" href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">run_simScript.py:</a> The &ndash;noSC flag is removed, whether or not a configuration is SC hybrid depends on the config selected. Configurations are defined in the shield_db in <a class="el" href="geometry__config_8py.html">geometry_config.py</a></li>
 <li>Removed old nuTauTargetDesign configurations from 0 to 2. Currently supported: 3 (2018, magnetized target) and 4 (Current, not magnetized target and spectrometer)</li>
 <li>build(field,nutaudet): remove unnecessary ROOT_INCLUDE_DIR include</li>
 <li>feat(geometry): Remove 2018, 2022 global designs</li>
-<li><a class="el" href="run__simScript_8py.html">run_simScript.py</a>: remove &ndash;muShieldDesign flag</li>
+<li><a class="el" href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">run_simScript.py:</a> remove &ndash;muShieldDesign flag</li>
 <li>Remove unused straw veto station</li>
 <li><a class="el" href="ShipAna_8py.html">ShipAna.py</a>: remove broken calorimetry</li>
 <li>Remove strawtubes_single class</li>
@@ -279,6 +279,7 @@ Removed</h2>
 <li>Remove tankDesign variable, options</li>
 <li>Remove target versions older than CDR</li>
 <li>Remove hadron absorber in <a class="el" href="ShipTargetStation_8cxx.html">ShipTargetStation.cxx</a></li>
+<li>Remove old ecal and hcal in all of FairSHiP, affected files are notably the entire ecal and hcal directories as well as macro/run_anaEcal.py and python/shipPid.py. <a class="el" href="geometry__config_8py.html">geometry/geometry_config.py</a>, <a class="el" href="ana__ShipMuon_8py.html">muonShieldOptimization/ana_ShipMuon.py</a>, <a class="el" href="ShipReco_8py.html">macro/ShipReco.py</a>, <a class="el" href="ShipAna_8py.html">macro/ShipAna.py</a>, <a class="el" href="shipStrawTracking_8py.html">python/shipStrawTracking.py</a> and python/shipPid.py. </li>
 </ul>
 <h1><a class="anchor" id="autotoc_md6"></a>
 25.01</h1>
@@ -327,7 +328,7 @@ Added</h2>
 <h2><a class="anchor" id="autotoc_md13"></a>
 Fixed</h2>
 <ul>
-<li>Fix missing includes in <a class="el" href="classecalMatch.html">ecalMatch</a> and <a class="el" href="classecalReco.html">ecalReco</a></li>
+<li>Fix missing includes in ecalMatch and ecalReco</li>
 <li>Fix compilation warnings due to unused or uninitiliazed variables #481</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md14"></a>

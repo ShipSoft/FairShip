@@ -1,6 +1,5 @@
 var namespaceeventDisplay =
 [
-    [ "DrawEcalCluster", "classeventDisplay_1_1DrawEcalCluster.html", "classeventDisplay_1_1DrawEcalCluster" ],
     [ "DrawTracks", "classeventDisplay_1_1DrawTracks.html", "classeventDisplay_1_1DrawTracks" ],
     [ "DrawVetoDigi", "classeventDisplay_1_1DrawVetoDigi.html", "classeventDisplay_1_1DrawVetoDigi" ],
     [ "EventLoop", "classeventDisplay_1_1EventLoop.html", "classeventDisplay_1_1EventLoop" ],
@@ -11,7 +10,6 @@ var namespaceeventDisplay =
     [ "DrawCharmTracks", "namespaceeventDisplay.html#a7398a0b6a9859fb88b96880d2c844efc", null ],
     [ "DrawSimpleMCTracks", "namespaceeventDisplay.html#a8430faa93ffd972b173017afa809e78a", null ],
     [ "dump", "namespaceeventDisplay.html#a460a9585b00a96dc6828195493230df7", null ],
-    [ "ecalYellow", "namespaceeventDisplay.html#a1c3ef212137b82b8b43bc64756efb78c", null ],
     [ "evExit", "namespaceeventDisplay.html#a275f5b9ea845e6297ed1597ec522df8d", null ],
     [ "hidePlasticScintillator", "namespaceeventDisplay.html#a173c96261cf7e6d8f123d148798a9943", null ],
     [ "mydebug", "namespaceeventDisplay.html#ac6f74ce8a4d1072538c53044dc79deb3", null ],
@@ -38,7 +36,6 @@ var namespaceeventDisplay =
     [ "br", "namespaceeventDisplay.html#abe023ea1e3a4a6a7eac9907e09ed4ecc", null ],
     [ "default", "namespaceeventDisplay.html#aa30eab6bb000aa1f7e96992071e00e97", null ],
     [ "dest", "namespaceeventDisplay.html#a62b3ef2ca1091e625b50bb4e79fe461b", null ],
-    [ "ecalGeoFile", "namespaceeventDisplay.html#a57ae6d7953915b86a2c3d4190f73b33b", null ],
     [ "fieldMaker", "namespaceeventDisplay.html#a2f0c7a90ed9aad319801864027ea3003", null ],
     [ "fM", "namespaceeventDisplay.html#a829e0e25dc7caafcf9c1457f3d1c5e28", null ],
     [ "fMan", "namespaceeventDisplay.html#a3dbb4c80da15b69f224426976aee39e5", null ],

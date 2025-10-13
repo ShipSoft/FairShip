@@ -9,8 +9,8 @@ var indexSectionsWithContent =
   6: "bfps",
   7: "bcdfst",
   8: "cdjkmuvxyz",
-  9: "beh",
-  10: "_dekp",
+  9: "b",
+  10: "dep",
   11: "cdfr"
 };
 
