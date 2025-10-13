@@ -78,14 +78,12 @@ class ShipDigiReco:
   self.vetoHitOnTrackBranch=self.sTree.Branch("VetoHitOnTrack",self.vetoHitOnTrackArray,32000,-1)
   self.digiSBT2MC  = ROOT.std.vector('std::vector< int >')()
   self.mcLinkSBT   = self.sTree.Branch("digiSBT2MC",self.digiSBT2MC,32000,-1)
-  self.digiTimeDet    = ROOT.TClonesArray("TimeDetHit")
-  self.digiTimeDetBranch=self.sTree.Branch("Digi_TimeDetHits",self.digiTimeDet,32000,-1)
+  self.timeDetector = timeDetector("TimeDet", self.sTree)
   #self.digiUpstreamTagger    = ROOT.TClonesArray("UpstreamTaggerHit")
   #self.digiUpstreamTaggerBranch=self.sTree.Branch("Digi_UpstreamTaggerHits",self.digiUpstreamTagger,32000,-1)
 
   self.muonDetector = muonDetector("muon", self.sTree)
-#  self.digiMuon    = ROOT.TClonesArray("muonHit")
-#  self.digiMuonBranch=self.sTree.Branch("Digi_muonHits",self.digiMuon,32000,-1)
+
 
 # for the digitizing step
   self.v_drift = global_variables.modules["Strawtubes"].StrawVdrift()
@@ -241,16 +239,11 @@ class ShipDigiReco:
    self.digiStraw.clear()
    self.digitize_straw_tubes()
    self.digiStrawBranch.Fill()
-   self.digiTimeDet.Delete()
-   self.digitizeTimeDet()
-   self.digiTimeDetBranch.Fill()
+   self.timeDetector.process()
    # self.digiUpstreamTagger.Delete()
    # self.digitizeUpstreamTagger()         TR 19/6/2020 work in progress
    # self.digiUpstreamTaggerBranch.Fill()
    self.muonDetector.process()
-#   self.digiMuon.Delete()
-#   self.digitizeMuon()
-#   self.digiMuonBranch.Fill()
    # adding digitization of SND/MTC
    if self.sTree.GetBranch("MtcDetPoint"):
     self.digiMTC.clear()
@@ -656,30 +649,6 @@ class ShipDigiReco:
 
    return list_neighbours
 
-
-
-
- def digitizeTimeDet(self):
-   index = 0
-   hitsPerDetId = {}
-   for aMCPoint in self.sTree.TimeDetPoint:
-     aHit = ROOT.TimeDetHit(aMCPoint,self.sTree.t0)
-     if self.digiTimeDet.GetSize() == index: self.digiTimeDet.Expand(index+1000)
-     self.digiTimeDet[index]=aHit
-     detID = aHit.GetDetectorID()
-     if aHit.isValid():
-      if detID in hitsPerDetId:
-       t = aHit.GetMeasurements()
-       ct = aHit.GetMeasurements()
-# this is not really correct, only first attempt
-# case that one measurement only is earlier not taken into account
-# SetTDC(Float_t val1, Float_t val2)
-       if  t[0]>ct[0] or t[1]>ct[1]:
- # second hit with smaller tdc
-        self.digiTimeDet[hitsPerDetId[detID]].setInvalid()
-        hitsPerDetId[detID] = index
-     index+=1
-
  def digitizeUpstreamTagger(self):
    index = 0
    hitsPerDetId = {}
@@ -698,23 +667,6 @@ class ShipDigiReco:
        if  t[0]>ct[0] or t[1]>ct[1]:
  # second hit with smaller tdc
         self.digiUpstreamTagger[hitsPerDetId[detID]].setInvalid()
-        hitsPerDetId[detID] = index
-     index+=1
-
-
- def digitizeMuon(self):
-   index = 0
-   hitsPerDetId = {}
-   for aMCPoint in self.sTree.muonPoint:
-     aHit = ROOT.muonHit(aMCPoint,self.sTree.t0)
-     if self.digiMuon.GetSize() == index: self.digiMuon.Expand(index+1000)
-     self.digiMuon[index]=aHit
-     detID = aHit.GetDetectorID()
-     if aHit.isValid():
-      if detID in hitsPerDetId:
-       if self.digiMuon[hitsPerDetId[detID]].GetDigi() > aHit.GetDigi():
- # second hit with smaller tdc
-        self.digiMuon[hitsPerDetId[detID]].setValidity(0)
         hitsPerDetId[detID] = index
      index+=1
 
