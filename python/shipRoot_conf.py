@@ -24,7 +24,6 @@ if sys.platform == 'darwin':
    ROOT.gSystem.Load('libveto')
    ROOT.gSystem.Load('libnutaudet')
    ROOT.gSystem.Load('libstrawtubes')
-   ROOT.gSystem.Load('libecal')
    ROOT.gSystem.Load('libhcal')
    ROOT.gSystem.Load('libmuon')
    ROOT.gSystem.Load('libpid')

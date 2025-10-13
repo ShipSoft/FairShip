@@ -7,8 +7,8 @@ def cmp(a, b):
 minNdf = 20
 parallelToZ = ROOT.TVector3(0., 0., 1.)
 top = ROOT.gGeoManager.GetTopVolume()
-if top.GetNode('Ecal_1'): z_ecal = top.GetNode('Ecal_1').GetMatrix().GetTranslation()[2]
-elif top.GetNode('SplitCalDetector_1'):    z_ecal = top.GetNode('SplitCalDetector_1').GetMatrix().GetTranslation()[2]
+if(top.GetNode('SplitCalDetector_1')):
+    z_ecal = top.GetNode('SplitCalDetector_1').GetMatrix().GetTranslation()[2]
 else:
   print("TrackExtraploate tool: Error, no calo present")
   z_ecal = 100*u.m

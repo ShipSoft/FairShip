@@ -235,10 +235,6 @@ if "CaloDesign" not in globals():
     CaloDesign = 0
 if "Yheight" not in globals():
     Yheight = 10.0
-if "EcalGeoFile" not in globals():
-    EcalGeoFile = "ecal_rect5x10m2.geo"
-if "HcalGeoFile" not in globals():
-    HcalGeoFile = "hcal_rect.geo"
 if "shieldName" not in globals():
     shieldName = None
 if "SND" not in globals():
@@ -433,20 +429,8 @@ with ConfigRegistry.register_config("basic") as c:
         37.800 * u.m - c.TimeDet.dzBarRow * 3 / 2 + c.decayVolume.z
     )  # Relative position of first layer of timing detector to decay vessel centre
 
-    if CaloDesign == 0:
-        c.HcalOption = 1
-        c.EcalOption = 1
-        c.splitCal = 0
-    elif CaloDesign == 3:
-        c.HcalOption = 2
-        c.EcalOption = 1
-        c.splitCal = 0
-    elif CaloDesign == 2:
-        c.HcalOption = -1
-        c.EcalOption = 2
-    else:
-        print("CaloDesign option wrong -> ", CaloDesign)
-        1 / 0
+    c.HcalOption = -1
+    c.EcalOption = 2
 
     c.SplitCal = AttrDict()
     c.SplitCal.ZStart = (
@@ -488,29 +472,9 @@ with ConfigRegistry.register_config("basic") as c:
         + c.SplitCal.BigGap
     )
 
-    zecal = (
-        38.450 * u.m + c.decayVolume.z
-    )  # Relative start z of ECAL to decay vessel centre
-    c.ecal = AttrDict(z=zecal)
-    c.ecal.File = EcalGeoFile
-    hcalThickness = 232 * u.cm
-    if c.HcalOption == 2:
-        hcalThickness = 110 * u.cm  # to have same interaction length as before
-    if not c.HcalOption < 0:
-        zhcal = (
-            40.850 * u.m + c.decayVolume.z
-        )  # Relative position of HCAL to decay vessel centre
-        c.hcal = AttrDict(z=zhcal)
-        c.hcal.hcalSpace = hcalThickness + 5.5 * u.cm
-        c.hcal.File = HcalGeoFile
-    else:
-        c.hcal = AttrDict(z=c.ecal.z)
-    if c.EcalOption == 1:
-        c.MuonStation0 = AttrDict(z=c.hcal.z + hcalThickness / 2.0 + 20.5 * u.cm)
-    if c.EcalOption == 2:
-        c.MuonStation0 = AttrDict(
-            z=c.SplitCal.ZStart + 10 * u.cm + c.SplitCal.SplitCalThickness
-        )
+    c.MuonStation0 = AttrDict(
+        z=c.SplitCal.ZStart + 10 * u.cm + c.SplitCal.SplitCalThickness
+    )
 
     c.MuonStation1 = AttrDict(z=c.MuonStation0.z + 1 * u.m)
     c.MuonStation2 = AttrDict(z=c.MuonStation0.z + 2 * u.m)

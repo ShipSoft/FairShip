@@ -229,63 +229,6 @@ class DrawVetoDigi(ROOT.FairTask):
         gEve.ElementChanged(self.evscene, True, True)
 
 
-class DrawEcalCluster(ROOT.FairTask):
-    "My Fair Task"
-
-    def InitTask(self, ecalStructure):
-        # prepare ecal structure
-        self.comp = ROOT.TEveCompound("Ecal Clusters")
-        gEve.AddElement(self.comp)
-        sc = gEve.GetScenes()
-        self.evscene = sc.FindChild("Event scene")
-        mE = top.GetNode("Ecal_1").GetMatrix()
-        self.z_ecal = mE.GetTranslation()[2]
-        self.ecalStructure = ecalStructure
-
-    def FinishEvent(self):
-        pass
-
-    def ExecuteTask(self, option=""):
-        self.comp.DestroyElements()
-        self.comp.OpenCompound()
-        cl = -1
-        for aClus in sTree.EcalClusters:
-            # ecal cell dx=dy=2cm, dz=21.84cm
-            cl += 1
-            for i in range(aClus.Size()):
-                mccell = self.ecalStructure.GetHitCell(
-                    aClus.CellNum(i)
-                )  # Get i'th cell of the cluster.
-                if not mccell:
-                    continue
-                x1, y1, x2, y2, dz = (
-                    mccell.X1(),
-                    mccell.Y1(),
-                    mccell.X2(),
-                    mccell.Y2(),
-                    mccell.GetEnergy() / u.GeV * 0.5 * u.m,
-                )
-                if mccell.GetEnergy() / u.MeV < 4.0:
-                    continue
-                    # ADC noise simulated Gaussian with \sigma=1 MeV
-                DClus = ROOT.TEveBox()
-                DClus.SetName("EcalCluster_" + str(cl) + "_" + str(i))
-                DClus.SetPickable(ROOT.kTRUE)
-                DClus.SetTitle(aClus.__repr__())
-                DClus.SetMainColor(ROOT.kRed - 4)
-                DClus.SetMainTransparency("\x10")
-                DClus.SetVertex(0, x1, y1, self.z_ecal)
-                DClus.SetVertex(1, x1, y1, self.z_ecal + dz)
-                DClus.SetVertex(2, x2, y1, self.z_ecal + dz)
-                DClus.SetVertex(3, x2, y1, self.z_ecal)
-                DClus.SetVertex(4, x1, y2, self.z_ecal)
-                DClus.SetVertex(5, x1, y2, self.z_ecal + dz)
-                DClus.SetVertex(6, x2, y2, self.z_ecal + dz)
-                DClus.SetVertex(7, x2, y2, self.z_ecal)
-                self.comp.AddElement(DClus)
-        self.comp.CloseCompound()
-        gEve.ElementChanged(self.evscene, True, True)
-
     def DrawParticle(self, n):
         self.comp.OpenCompound()
         DTrack = ROOT.TEveLine()
@@ -350,12 +293,6 @@ class DrawTracks(ROOT.FairTask):
             self.z_mag = ShipGeo["Bfield"].z
         else:
             self.z_mag = 0
-        ecalDet = top.GetNode("Ecal_1")
-        self.z_ecal = self.z_end
-        if ecalDet:
-            self.z_ecal = ecalDet.GetMatrix().GetTranslation()[2]
-        elif hasattr(ShipGeo, "ecal"):
-            self.z_ecal = ShipGeo["ecal"].z
         self.niter = 100
         self.dz = (self.z_end - self.z_start) / float(self.niter)
         self.parallelToZ = ROOT.TVector3(0.0, 0.0, 1.0)
@@ -468,8 +405,6 @@ class DrawTracks(ROOT.FairTask):
             for P in [
                 "vetoPoint",
                 "muonPoint",
-                "EcalPoint",
-                "HcalPoint",
                 "strawtubesPoint",
                 "ShipRpcPoint",
                 "TargetPoint",
@@ -789,24 +724,6 @@ class EventLoop(ROOT.FairTask):
         self.first = True
         if sGeo.GetVolume("volTarget"):
             DisplayNuDetector()
-        if sGeo.GetVolume("Ecal"):
-            # initialize ecalStructure
-            ecalGeo = ecalGeoFile + "z" + str(ShipGeo.ecal.z) + ".geo"
-            if ecalGeo not in os.listdir(os.environ["FAIRSHIP"] + "/geometry"):
-                shipDet_conf.makeEcalGeoFile(ShipGeo.ecal.z, ShipGeo.ecal.File)
-            self.ecalFiller = ROOT.ecalStructureFiller("ecalFiller", 0, ecalGeo)
-            if ecalGeoFile.find("5x10") < 0:
-                self.ecalFiller.SetUseMCPoints(ROOT.kFALSE)
-                print(
-                    "ecal cluster display disabled, seems only to work with 5x10m ecal geofile"
-                )
-            else:
-                self.ecalFiller.SetUseMCPoints(ROOT.kTRUE)
-            self.ecalFiller.StoreTrackInformation()
-            rc = sTree.GetEvent(0)
-            self.ecalStructure = self.ecalFiller.InitPython(sTree.EcalPointLite)
-            self.calos = DrawEcalCluster()
-            self.calos.InitTask(self.ecalStructure)
         self.veto = DrawVetoDigi()
         self.veto.InitTask()
         self.tracks = DrawTracks()
@@ -835,10 +752,6 @@ class EventLoop(ROOT.FairTask):
             sTree.Particles = sTree.Particles_PR
         if hasattr(self, "tracks"):
             self.tracks.ExecuteTask()
-        if sTree.FindBranch("EcalClusters"):
-            if sTree.EcalClusters.GetEntries() > 0:
-                self.ecalFiller.Exec("start", sTree.EcalPointLite)
-            self.calos.ExecuteTask()
         if sTree.FindBranch("Digi_SBTHits"):
             self.veto.ExecuteTask()
         if ROOT.gROOT.FindObject("Root Canvas EnergyLoss"):
@@ -973,17 +886,6 @@ def speedUp():
                 x.SetVisDaughters(False)
             if not nm.find("RibPhi") < 0:
                 x.SetVisDaughters(False)
-    #
-    for x in ["Ecal", "Hcal"]:
-        xvol = sGeo.GetVolume(x)
-        if not xvol:
-            continue
-        xvol.SetVisDaughters(0)
-        xvol.SetVisibility(1)
-        if x == "Ecal":
-            xvol.SetLineColor(ROOT.kYellow)
-        else:
-            xvol.SetLineColor(ROOT.kOrange + 3)
 
 
 # set display properties for tau nu target
@@ -997,20 +899,6 @@ def DisplayNuDetector():
     sc = gEve.GetScenes()
     geoscene = sc.FindChild("Geometry scene")
     gEve.ElementChanged(geoscene, True, True)
-
-
-# draw Ecal yellow instead of black
-def ecalYellow():
-    sc = gEve.GetScenes()
-    geoscene = sc.FindChild("Geometry scene")
-    ecal = top.GetNode("Ecal_1")
-    if ecal:
-        ecal.GetVolume().SetLineColor(ROOT.kYellow)
-    hcal = top.GetNode("Hcal_1")
-    if hcal:
-        hcal.GetVolume().SetLineColor(ROOT.kOrange + 3)
-    if ecal or hcal:
-        gEve.ElementChanged(geoscene, True, True)
 
 
 def switchOff(tag):
@@ -1325,9 +1213,6 @@ if withGeo:
 # Load Shipgeo dictionary written by run_simScript.py
 upkl = Unpickler(fRun.GetGeoFile())
 ShipGeo = upkl.load("ShipGeo")
-if hasattr(ShipGeo, "ecal"):
-    if hasattr(ShipGeo.ecal, "File"):
-        ecalGeoFile = ShipGeo.ecal.File
 
 mcHits = {}
 if hasattr(ShipGeo, "MuFilter"):
@@ -1350,19 +1235,6 @@ else:
     mcHits["StrawPoints"] = ROOT.FairMCPointDraw(
         "strawtubesPoint", ROOT.kGreen, ROOT.kFullCircle
     )
-    if hasattr(ShipGeo, "EcalOption"):
-        if ShipGeo.EcalOption == 2:
-            mcHits["SplitCalPoints"] = ROOT.FairMCPointDraw(
-                "splitcalPoint", ROOT.kRed, ROOT.kFullSquare
-            )
-    if not hasattr(mcHits, "SplitCalPoints") and hasattr(ShipGeo, "HcalOption"):
-        mcHits["EcalPoints"] = ROOT.FairMCPointDraw(
-            "EcalPoint", ROOT.kRed, ROOT.kFullSquare
-        )
-        if ShipGeo.HcalOption != 2:
-            mcHits["HcalPoints"] = ROOT.FairMCPointDraw(
-                "HcalPoint", ROOT.kMagenta, ROOT.kFullSquare
-            )
     mcHits["MuonPoints"] = ROOT.FairMCPointDraw(
         "muonPoint", ROOT.kYellow, ROOT.kFullSquare
     )
@@ -1664,9 +1536,6 @@ def PRVersion():
         "Strawtracker",
         200,
         ROOT.kRed + 2,
-    )
-    positionText(
-        r, 0.0, 730.0, ShipGeo.ecal.z - 1 * u.m, rotAngle, "Ecal", 200, ROOT.kOrange
     )
     positionText(
         r, 0.0, 700.0, ShipGeo.MuonFilter2.z, rotAngle, "Muon", 200, ROOT.kGreen + 2
