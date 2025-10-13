@@ -10,69 +10,6 @@ import yaml
 detectorList = []
 
 
-def posHcal(z, hfile, HcalOption):
-    HcalZSize = 0
-    sz = hfile + "z" + str(z) + ".geo"
-    floc = os.environ["FAIRSHIP"] + "/geometry"
-    f_hcal = floc + "/" + hfile
-    f_hcalz = floc + "/" + sz
-    f = open(f_hcal)
-    rewrite = True
-    if sz in os.listdir(floc):
-        test = os.popen("diff " + f_hcal + " " + f_hcalz).read()
-        if str.count(test, "---") == 1 and not test.find("Position") < 0:
-            rewrite = False  # only different is z position
-    if rewrite:
-        fn = open(f_hcalz, "w")
-    for l in f.readlines():
-        if rewrite:
-            if not l.find("ZPos") < 0:
-                l = "ZPos=" + str(z) + "	#Position of Hcal  center	[cm]\n"
-            fn.write(l)
-        if not l.find("HcalZSize") < 0:
-            HcalZSize = float(l[len("HcalZSize") + 1 :].split("#")[0])
-    f.close()
-    if rewrite:
-        fn.close()
-    if HcalOption == 2:
-        hcal = ROOT.hcal("Hcal", ROOT.kFALSE, sz)
-    else:
-        hcal = ROOT.hcal("Hcal", ROOT.kTRUE, sz)
-    return hcal, HcalZSize
-
-
-def makeEcalGeoFile(z, efile):
-    EcalZSize = 0
-    sz = efile + "z" + str(z) + ".geo"
-    floc = os.environ["FAIRSHIP"] + "/geometry"
-    f_ecal = floc + "/" + efile
-    f_ecalz = floc + "/" + sz
-    f = open(f_ecal)
-    rewrite = True
-    if sz in os.listdir(floc):
-        test = os.popen("diff " + f_ecal + " " + f_ecalz).read()
-        if str.count(test, "---") == 1 and not test.find("Position") < 0:
-            rewrite = False  # only different is z position
-    if rewrite:
-        fn = open(f_ecalz, "w")
-    for l in f.readlines():
-        if rewrite:
-            if not l.find("ZPos") < 0:
-                l = "ZPos=" + str(z) + "	#Position of Ecal start		[cm]\n"
-            fn.write(l)
-        if not l.find("EcalZSize") < 0:
-            EcalZSize = float(l[len("EcalZSize") + 1 :].split("#")[0])
-    f.close()
-    if rewrite:
-        fn.close()
-    return EcalZSize, sz
-
-
-def posEcal(z, efile):
-    EcalZSize, sz = makeEcalGeoFile(z, efile)
-    ecal = ROOT.ecal("Ecal", ROOT.kTRUE, sz)
-    return ecal, EcalZSize
-
 def configure_snd_old(yaml_file,
                       emulsion_target_z_end,
                       cave_floorHeightMuonShield):
@@ -240,6 +177,59 @@ def configure_veto(yaml_file, z0):
 
     detectorList.append(Veto)
 
+def configure_strawtubes(yaml_file, ship_geo):
+    with open(yaml_file) as file:
+        config = yaml.safe_load(file)
+
+    ship_geo.strawtubes_geo = AttrDict(config['SST'])
+
+    # Straw tubes in decay vessel if vacuum, otherwise outside in air
+    ship_geo.strawtubes_geo.medium = "vacuums" if ship_geo.DecayVolumeMedium == "vacuums" else "air"
+
+    # Choose frame material
+    if ship_geo.strawDesign == 4:
+        ship_geo.strawtubes_geo.frame_material = "aluminium"
+    elif ship_geo.strawDesign == 10:
+        ship_geo.strawtubes_geo.frame_material = "steel"
+
+    Strawtubes = ROOT.strawtubes(ship_geo.strawtubes_geo.medium)
+    Strawtubes.SetzPositions(
+        ship_geo.TrackStation1.z,
+        ship_geo.TrackStation2.z,
+        ship_geo.TrackStation3.z,
+        ship_geo.TrackStation4.z,
+    )
+    Strawtubes.SetApertureArea(
+        ship_geo.strawtubes_geo.width,
+        ship_geo.strawtubes_geo.height,
+    )
+    Strawtubes.SetStrawDiameter(
+        ship_geo.strawtubes_geo.outer_straw_diameter,
+        ship_geo.strawtubes_geo.wall_thickness,
+    )
+    Strawtubes.SetStrawPitch(
+        ship_geo.strawtubes_geo.straw_pitch,
+        ship_geo.strawtubes_geo.y_layer_offset,
+    )
+    Strawtubes.SetDeltazLayer(ship_geo.strawtubes_geo.delta_z_layer)
+    Strawtubes.SetStereoAngle(ship_geo.strawtubes_geo.view_angle)
+    Strawtubes.SetWireThickness(ship_geo.strawtubes_geo.wire_thickness)
+    Strawtubes.SetDeltazView(ship_geo.strawtubes_geo.delta_z_view)
+    Strawtubes.SetFrameMaterial(ship_geo.strawtubes_geo.frame_material)
+    Strawtubes.SetStationEnvelope(
+        ship_geo.strawtubes_geo.station_width,
+        ship_geo.strawtubes_geo.station_height,
+        ship_geo.strawtubes_geo.station_length,
+    )
+
+    #For digitization
+    Strawtubes.SetStrawResolution(
+        ship_geo.strawtubesDigi.v_drift,
+        ship_geo.strawtubesDigi.sigma_spatial,
+    )
+
+    detectorList.append(Strawtubes)
+
 
 def configure(run, ship_geo):
     # ---- for backward compatibility ----
@@ -249,8 +239,6 @@ def configure(run, ship_geo):
         )
     if not hasattr(ship_geo, "muShieldGeo"):
         ship_geo.muShieldGeo = None
-    if not hasattr(ship_geo.hcal, "File"):
-        ship_geo.hcal.File = "hcal.geo"
     if not hasattr(ship_geo.Bfield, "x"):
         ship_geo.Bfield.x = 3.0 * u.m
     if not hasattr(ship_geo, "cave"):
@@ -258,8 +246,6 @@ def configure(run, ship_geo):
         ship_geo.cave.floorHeightMuonShield = 5 * u.m
         ship_geo.cave.floorHeightTankA = 4.5 * u.m
         ship_geo.cave.floorHeightTankB = 2.0 * u.m
-    if not hasattr(ship_geo, "EcalOption"):
-        ship_geo.EcalOption = 1
     if not hasattr(ship_geo, "SND"):
         ship_geo.SND = True
 
@@ -368,57 +354,10 @@ def configure(run, ship_geo):
         ship_geo.decayVolume.z0,
     )
 
-
-    if ship_geo.strawDesign > 1:
-        # for backward compatibility
-        if ship_geo.strawDesign == 10 and not hasattr(
-            ship_geo.strawtubes, "DeltazFrame"
-        ):
-            ship_geo.strawtubes.DeltazFrame = 2.5 * u.cm
-            ship_geo.strawtubes.FrameLateralWidth = 1.2 * u.m
-            ship_geo.strawtubes.FrameMaterial = "steel"
-        elif not hasattr(ship_geo.strawtubes, "DeltazFrame"):
-            ship_geo.strawtubes.DeltazFrame = 10.0 * u.cm
-            ship_geo.strawtubes.FrameLateralWidth = 1.0 * u.cm
-            ship_geo.strawtubes.FrameMaterial = "aluminium"
-        ship_geo.strawtubes.medium = "vacuums" if ship_geo.DecayVolumeMedium == "vacuums" else "air"
-
-        Strawtubes = ROOT.strawtubes(ship_geo.strawtubes.medium)
-        Strawtubes.SetZpositions(
-            ship_geo.TrackStation1.z,
-            ship_geo.TrackStation2.z,
-            ship_geo.TrackStation3.z,
-            ship_geo.TrackStation4.z,
-        )
-        Strawtubes.SetDeltazFrame(ship_geo.strawtubes.DeltazFrame)
-        Strawtubes.SetFrameLateralWidth(ship_geo.strawtubes.FrameLateralWidth)
-        Strawtubes.SetFrameMaterial(ship_geo.strawtubes.FrameMaterial)
-        Strawtubes.SetDeltazView(ship_geo.strawtubes.DeltazView)
-        Strawtubes.SetInnerStrawDiameter(ship_geo.strawtubes.InnerStrawDiameter)
-        Strawtubes.SetOuterStrawDiameter(ship_geo.strawtubes.OuterStrawDiameter)
-        Strawtubes.SetStrawPitch(
-            ship_geo.strawtubes.StrawPitch,
-            ship_geo.strawtubes.YLayerOffset,
-        )
-        Strawtubes.SetDeltazLayer(ship_geo.strawtubes.DeltazLayer)
-        Strawtubes.SetStrawsPerLayer(ship_geo.strawtubes.StrawsPerLayer)
-        Strawtubes.SetStereoAngle(ship_geo.strawtubes.ViewAngle)
-        Strawtubes.SetWireThickness(ship_geo.strawtubes.WireThickness)
-        Strawtubes.SetVacBox_x(ship_geo.strawtubes.VacBox_x)
-        Strawtubes.SetVacBox_y(ship_geo.strawtubes.VacBox_y)
-        Strawtubes.SetStrawLength(ship_geo.strawtubes.StrawLength)
-
-        Strawtubes.set_station_height(ship_geo.strawtubes.station_height)
-        # for the digitizing step
-        Strawtubes.SetStrawResolution(
-            ship_geo.strawtubes.v_drift,
-            ship_geo.strawtubes.sigma_spatial,
-        )
-        detectorList.append(Strawtubes)
-
-    if ship_geo.EcalOption == 1:  # shashlik design TP
-        ecal, EcalZSize = posEcal(ship_geo.ecal.z, ship_geo.ecal.File)
-        detectorList.append(ecal)
+    configure_strawtubes(
+        os.path.join(os.environ["FAIRSHIP"], "geometry", "strawtubes_config.yaml"),
+        ship_geo,
+    )
 
     if ship_geo.EcalOption == 2:  # splitCal with pointing information
         SplitCal = ROOT.splitcal("SplitCal", ROOT.kTRUE)
@@ -455,19 +394,6 @@ def configure(run, ship_geo):
         SplitCal.SetStripSize(x.StripHalfWidth, x.StripHalfLength)
         detectorList.append(SplitCal)
 
-    if not ship_geo.HcalOption < 0:
-        hcal, HcalZSize = posHcal(
-            ship_geo.hcal.z, ship_geo.hcal.File, ship_geo.HcalOption
-        )
-        if (
-            ship_geo.HcalOption != 2
-            and abs(ship_geo.hcal.hcalSpace - HcalZSize) > 10 * u.cm
-        ):
-            print("mismatch between hcalsize in geo file and python configuration")
-            print(
-                ship_geo.hcal.hcalSpace - HcalZSize, ship_geo.hcal.hcalSpace, HcalZSize
-            )
-        detectorList.append(hcal)
     Muon = ROOT.muon("Muon", ROOT.kTRUE)
     Muon.SetZStationPositions(
         ship_geo.MuonStation0.z,

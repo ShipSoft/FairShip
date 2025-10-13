@@ -1,139 +1,383 @@
-#!/usr/bin/env python
-import ROOT,os,sys,time
-from subprocess import call
-import shipunit as u
-import shipRoot_conf
+"""Generate GENIE neutrino interaction events from flux histograms.
+
+This “launcher” wraps `genie_utils` (gmkspl/gevgen/gntpc helpers) and adds:
+- Argument parsing with sensible defaults and validation
+- Optional *nudet* mode (disables charm/tau decays via GXMLPATH)
+- Automatic neutrino/antineutrino scaling based on flux hist sums
+- Structured logging and robust error reporting
+
+Typical use
+-----------
+$ python $FAIRSHIP/macro/makeGenieEvents sim \
+    --seed 65539 \
+    --output ./work \
+    --filedir /eos/experiment/ship/data/Mbias/background-prod-2018 \
+    --target iron \
+    --nevents 1000 \
+    --particles 16 -16 \
+    --emin 0.5 --emax 350 \
+    --xsec-file gxspl-FNALsmall.xml \
+    --flux-file pythia8_Geant4_1.0_withCharm_nu.root \
+    --event-generator-list CC \
+    --nudet
+
+Notes
+-----
+- This tool *does not* modify your parent shell environment.
+- `--nudet` sets `GXMLPATH` for the child process only (you can override path
+  with `--gxmlpath`).
+
+"""
+
+from __future__ import annotations
+
 import argparse
 import logging
-import genie_interface
-shipRoot_conf.configure()
+from collections.abc import Mapping, Sequence
+from pathlib import Path
+
+import ROOT  # type: ignore
+import shipRoot_conf
+from genie_interface import (
+    add_hists,
+    generate_genie_events,
+    get_1D_flux_name,
+    make_ntuples,
+    make_splines,
+)
+
+# ------------------------- Defaults & Mappings --------------------------------
+
+DEFAULT_XSEC_FILE = "gxspl-FNALsmall.xml"
+DEFAULT_FLUX_FILE = "pythia8_Geant4_1.0_withCharm_nu.root"
+
+DEFAULT_SPLINE_DIR = Path(
+    "/eos/experiment/ship/user/edursov/genie/genie_xsec/v3_02_00/NULL/G1802a00000-k250-e1000/data"
+)
+DEFAULT_FILE_DIR = Path("/eos/experiment/ship/data/Mbias/background-prod-2018")
+
+TARGET_CODE = {
+    "iron": "1000260560",
+    "lead": "1000822040[0.014],1000822060[0.241],1000822070[0.221],1000822080[0.524]",
+    "tungsten": "1000741840",
+}
+
+NUPDGLIST = [16, -16, 14, -14, 12, -12]
+
+# ------------------------------ Helpers ---------------------------------------
 
 
-# IMPORTANT
-# Before running this script please run this command in FairShip bash if you are dealing with the neutrino detector:
-# export GXMLPATH='/eos/experiment/ship/user/aiuliano/GENIE_FNAL_nu_splines'
-# this will disable Genie decays for charm particles and tau
+def extract_nu_over_nubar(
+    neutrino_flux: Path, particles: Sequence[int]
+) -> dict[int, float]:
+    """Compute ν/ν̄ = sum(nu)/sum(nubar) from 1D flux histograms."""
+    f = ROOT.TFile(str(neutrino_flux), "READ")
+    if not f or f.IsZombie():
+        raise FileNotFoundError(f"Cannot open flux file: {neutrino_flux}")
+    try:
+        ratios: dict[int, float] = {}
+        for pdg in particles:
+            fam = abs(int(pdg))
+            h_nu = f.Get(get_1D_flux_name(fam))
+            h_nubar = f.Get(get_1D_flux_name(-fam))
+            if not h_nu or not h_nubar:
+                raise FileNotFoundError(
+                    f"Missing hists {get_1D_flux_name(fam)} / "
+                    f"{get_1D_flux_name(-fam)} in {neutrino_flux}"
+                )
+            s_nu = float(h_nu.GetSumOfWeights())
+            s_nubar = float(h_nubar.GetSumOfWeights())
+            if s_nubar <= 0.0:
+                raise FileNotFoundError(
+                    f"ν̄ sum of weights is zero for family {fam} in {neutrino_flux}"
+                )
+            ratios[fam] = s_nu / s_nubar
+            log_output = (
+                f"ν/ν̄ ratio for |PDG|={fam}: "
+                f"{ratios[fam]:.4f} (nu={s_nu}, nubar={s_nubar})"
+            )
+            logging.info(log_output)
+        return ratios
+    finally:
+        f.Close()
 
 
-
-xsec = "gxspl-FNAL-nuSHiP-minimal.xml"# new adapted splines from Genie site
-hfile = "pythia8_Geant4_1.0_withCharm_nu.root" #2018 background generation
-#xsec = "Nu_splines.xml"
-#hfile = "pythia8_Geant4-withCharm_onlyNeutrinos.root"
+def _ensure_dir(path: Path) -> None:
+    path.mkdir(parents=True, exist_ok=True)
 
 
-defaultsplinedir   = '/eos/experiment/ship/user/aiuliano/GENIE_FNAL_nu_splines' #path of splines
-defaultfiledir  = '/eos/experiment/ship/data/Mbias/background-prod-2018' #path of flux
+def _build_env(nudet: bool, gxmlpath: Path | None) -> Mapping[str, str | None] | None:
+    """Build per-call env overrides (sets GXMLPATH only in nudet mode)."""
+    if not nudet:
+        return None
+    val = (
+        str(gxmlpath)
+        if gxmlpath
+        else "/eos/experiment/ship/user/aiuliano/GENIE_FNAL_nu_splines"
+    )
+    return {"GXMLPATH": val}
 
 
+def _target_code(name: str) -> str:
+    code = TARGET_CODE.get(name.lower())
+    if not code:
+        raise ValueError(f"Unknown target '{name}'. Choices: {', '.join(TARGET_CODE)}")
+    return code
 
 
+def _pdg_list(particles: Sequence[int]) -> Sequence[int]:
+    return [int(p) for p in particles]
 
 
-def get_arguments(): #available options
+def make_splines_cli(target: str, work_dir: Path, nknots: int, emax: float) -> None:
+    """Build xsec splines with gmkspl and write `xsec_splines.xml` to work_dir."""
+    _ensure_dir(work_dir)
+    output = work_dir / "xsec_splines.xml"
+    make_splines(
+        nupdglist=NUPDGLIST,
+        targetcode=_target_code(target),
+        emax=emax,
+        nknots=nknots,
+        outputfile=output,
+    )
+    logging.info(f"Spline file written: {output}")
 
-  parser = argparse.ArgumentParser(
-      description='Run GENIE neutrino" simulation')
-  subparsers = parser.add_subparsers()
-  ap = subparsers.add_parser('sim',help="make genie simulation file")
 
-  ap.add_argument('-s', '--seed', type=int, dest='seed', default=65539) #default seed in $GENIE/src/Conventions/Controls.h
-  ap.add_argument('-o','--output'    , type=str, help="output directory", dest='work_dir', default=None)
-  ap.add_argument('-f','--filedir', type=str, help="directory with neutrino fluxes", dest='filedir', default=defaultfiledir)
-  ap.add_argument('-c','--crosssectiondir', type=str, help="directory with neutrino splines crosssection", dest='splinedir', default=defaultsplinedir)
-  ap.add_argument('-t', '--target', type=str, help="target material", dest='target', default='iron')
-  ap.add_argument('-n', '--nevents', type=int, help="number of events", dest='nevents', default=100)
-  ap.add_argument('-e', '--event-generator-list', type=str, help="event generator list", dest='evtype', default=None)  # Possible evtypes: CC, CCDIS, CCQE, CharmCCDIS, RES, CCRES, see other evtypes in $GENIE/config/EventGeneratorListAssembler.xml
-  ap.add_argument("--nudet", dest="nudet", help="option for neutrino detector", required=False, action="store_true")
+def make_events(
+    *,
+    run: int,
+    nevents: int,
+    particles: Sequence[int],
+    targetcode: str,
+    process: str | None,
+    emin: float,
+    emax: float,
+    neutrino_flux: Path,
+    splines: Path,
+    seed: int,
+    env_vars: Mapping[str, str | None] | None,
+    work_dir: Path,
+    nu_over_nubar: Mapping[int, float],
+) -> None:
+    """Generate events for PDGs, convert to GST, and attach 2D flux."""
+    _ensure_dir(work_dir)
+    pdg_db = ROOT.TDatabasePDG()
 
-  ap1 = subparsers.add_parser('spline',help="make a new cross section spline file")
-  ap1.add_argument('-t', '--target', type=str, help="target material", dest='target', default='iron')
-  ap1.add_argument('-o','--output'    , type=str, help="output directory", dest='work_dir', default=None)
-  args = parser.parse_args()
-  return args
+    for pdg in particles:
+        fam = abs(pdg)
+        part = pdg_db.GetParticle(int(pdg))
+        pdg_name = part.GetName() if part else str(pdg)
 
-args = get_arguments() #getting options
+        # anti-neutrinos scaled by flux ratio
+        N = int(nevents) if pdg > 0 else int(nevents / nu_over_nubar[fam])
 
-print('Target type: ', args.target)
+        out_dir = work_dir / f"genie-{pdg_name}_{N}_events"
+        _ensure_dir(out_dir)
 
-if args.target == 'iron':
- targetcode = '1000260560'
-elif args.target == 'lead':
- targetcode = '1000822040[0.014],1000822060[0.241],1000822070[0.221],1000822080[0.524]'
-elif args.target == 'tungsten':
- targetcode = '1000741840'
-else:
- print('only iron, lead and tunsgten target options available')
- 1/0
+        nudet_suffix = "_nudet" if env_vars and env_vars.get("GXMLPATH") else ""
+        filename = (
+            f"run_{run}_{pdg_name}_{N}_events_{targetcode}_{emin}_{emax}_GeV_"
+            f"{process or 'ALL'}{nudet_suffix}.ghep.root"
+        )
+        ghep_path = out_dir / filename
+        gst_path = out_dir / f"genie-{filename}"
 
-if os.path.exists(args.work_dir): #if the directory is already there, leave a warning, otherwise create it
-    print('output directory already exists.')
-else:
-    os.makedirs(args.work_dir)
+        logging.info(
+            f"Generating {N} events for PDG {pdg_name} (run={run}) -> {ghep_path}"
+        )
 
-os.chdir(args.work_dir)
+        generate_genie_events(
+            nevents=N,
+            nupdg=int(pdg),
+            emin=emin,
+            emax=emax,
+            targetcode=targetcode,
+            inputflux=str(neutrino_flux),
+            spline=str(splines),
+            outputfile=str(ghep_path),
+            process=process,
+            seed=int(seed),
+            irun=int(run),
+            env_vars=env_vars,
+        )
+        make_ntuples(str(ghep_path), str(gst_path), env_vars=env_vars)
+        add_hists(str(neutrino_flux), str(gst_path), int(pdg))
 
-def makeSplines():
- '''first step, make cross section splines if not exist'''
- nupdglist = [16,-16,14,-14,12,-12]
- genie_interface.make_splines(nupdglist, targetcode, 400, nknots = 500, outputfile = "xsec_splines.xml")
+        logging.info(f"Done PDG {pdg_name}: {ghep_path} -> {gst_path}")
 
-def makeEvents(nevents = 100):
- run = 11
- for p in pDict:
-  if p<0: print("scale number of "+sDict[p]+" events with %5.2F"%(1./nuOverNubar[abs(p)]))
-  if not sDict[p] in os.listdir('.'): call('mkdir '+sDict[p],shell = True)
-  os.chdir('./'+sDict[p])
-  # stop at 350 GeV, otherwise strange warning about "Lower energy neutrinos have a higher probability of
-  # interacting than those at higher energy. pmaxLow(E=386.715)=2.157e-13 and  pmaxHigh(E=388.044)=2.15623e-13"
-  N = nevents
-  if p<0: N = int(nevents / nuOverNubar[abs(p)])
-  genie_interface.generate_genie_events(nevents = N, nupdg = p, targetcode = targetcode, emin = 0.5, emax = 350,\
-                      inputflux = neutrinos, spline = splines, seed = args.seed, process = args.evtype, irun = run)
-  run +=1
-  os.chdir('../')
-def makeNtuples():
- for p in pDict:
-  os.chdir('./'+sDict[p])
-  genie_interface.make_ntuples("gntp.0.ghep.root","genie-"+sDict[p]+".root")
-  genie_interface.add_hists(neutrinos, "genie-"+sDict[p]+".root", p)
-  os.chdir('../')
 
-def addHists():
- for p in pDict:
-  os.chdir('./'+sDict[p])
-  genie_interface.add_hists(neutrinos, "genie-"+sDict[p]+".root", p)
-  os.chdir('../')
+# ----------------------------- CLI & main -------------------------------------
 
-if ("splinedir" not in args):
- makeSplines()
 
-else:
+def _build_parser() -> argparse.ArgumentParser:
+    p = argparse.ArgumentParser(description="Run GENIE neutrino simulation")
+    sub = p.add_subparsers(dest="cmd", required=True)
 
- if args.nudet:
-  if 'GXMLPATH' not in os.environ:
-   logging.warning('GXMLPATH is not set: Genie will decay charm and tau particles, which is usually not the desired behaviour')
-  else: logging.debug('GXMLPATH is set: Genie will not decay charm and tau particles')
+    # sim command
+    ap = sub.add_parser("sim", help="Make GENIE simulation file(s)")
+    ap.add_argument(
+        "-s", "--seed", type=int, default=65539, help="RNG seed (default: GENIE 65539)"
+    )
+    ap.add_argument(
+        "-o",
+        "--output",
+        dest="work_dir",
+        type=Path,
+        default=Path("./work"),
+        help="Output directory",
+    )
+    ap.add_argument(
+        "-f",
+        "--filedir",
+        dest="filedir",
+        type=Path,
+        default=DEFAULT_FILE_DIR,
+        help="Flux dir",
+    )
+    ap.add_argument(
+        "-c",
+        "--crosssectiondir",
+        dest="splinedir",
+        type=Path,
+        default=DEFAULT_SPLINE_DIR,
+        help="Spline dir",
+    )
+    ap.add_argument(
+        "--xsec-file",
+        type=str,
+        default=DEFAULT_XSEC_FILE,
+        help=f"Spline XML (default: {DEFAULT_XSEC_FILE})",
+    )
+    ap.add_argument(
+        "--flux-file",
+        type=str,
+        default=DEFAULT_FLUX_FILE,
+        help=f"Flux ROOT (default: {DEFAULT_FLUX_FILE})",
+    )
+    ap.add_argument(
+        "-t",
+        "--target",
+        type=str,
+        default="iron",
+        choices=sorted(TARGET_CODE),
+        help="Target material",
+    )
+    ap.add_argument(
+        "-n", "--nevents", type=int, default=100, help="Events per neutrino species"
+    )
+    ap.add_argument("--emin", type=float, default=0.5, help="Min Eν [GeV]")
+    ap.add_argument("--emax", type=float, default=350.0, help="Max Eν [GeV]")
+    ap.add_argument(
+        "-e",
+        "--event-generator-list",
+        dest="evtype",
+        type=str,
+        default=None,
+        help="GENIE generator list (e.g. CC, CCDIS, CCQE, CharmCCDIS, RES, CCRES, ...)",
+    )
+    ap.add_argument(
+        "--nudet", action="store_true", help="Disable charm & tau decays via GXMLPATH"
+    )
+    ap.add_argument(
+        "--gxmlpath", type=Path, default=None, help="Override GXMLPATH in --nudet mode"
+    )
+    ap.add_argument(
+        "-p",
+        "--particles",
+        nargs="+",
+        type=int,
+        default=NUPDGLIST,
+        help="PDGs (e.g. 16 -16 14 -14 12 -12). Default: all flavors",
+    )
+    ap.add_argument("-r", "--run", type=int, default=1, help="GENIE run number")
+    ap.add_argument(
+        "-v",
+        "--verbose",
+        action="count",
+        default=0,
+        help="Increase verbosity (-v or -vv)",
+    )
 
- splines = args.splinedir+'/'+xsec #path of splines
- neutrinos = args.filedir+'/'+hfile #path of flux
+    # spline command
+    ap1 = sub.add_parser(
+        "spline", help="Make a new cross-section spline (xsec_splines.xml)"
+    )
+    ap1.add_argument(
+        "-t", "--target", type=str, default="iron", choices=sorted(TARGET_CODE)
+    )
+    ap1.add_argument(
+        "-o", "--output", dest="work_dir", type=Path, default=Path("./work")
+    )
+    ap1.add_argument("-n", "--nknots", type=int, default=500)
+    ap1.add_argument("--emax", type=float, default=400.0)
 
- print('Seed used in this generation: ', args.seed)
- print('Splines file used', xsec)
+    return p
 
- pdg  = ROOT.TDatabasePDG()
- pDict = {}
- sDict = {}
- nuOverNubar = {}
- f = ROOT.TFile(neutrinos)
 
- for x in [16, 14,12]:
-  sDict[x] = pdg.GetParticle(x).GetName()
-  sDict[-x] = pdg.GetParticle(-x).GetName()
-  pDict[x]  = "10"+str(x)
-  pDict[-x] = "20"+str(x)
-  nuOverNubar[x] = f.Get(pDict[x]).GetSumOfWeights()/f.Get(pDict[-x]).GetSumOfWeights()
- f.Close()
+def main(argv: Sequence[str] | None = None) -> int:
+    """Launch GENIE event generation or spline creation from CLI args."""
+    # CLI
+    parser = _build_parser()
+    args = parser.parse_args(argv)
 
- makeEvents(args.nevents)
- makeNtuples()
+    # logging
+    level = logging.WARNING
+    if args.verbose == 1:
+        level = logging.INFO
+    elif args.verbose >= 2:
+        level = logging.DEBUG
+    logging.basicConfig(level=level, format="%(levelname)s %(name)s: %(message)s")
+
+    # ROOT env
+    shipRoot_conf.configure()
+
+    if args.cmd == "spline":
+        make_splines_cli(
+            target=args.target,
+            work_dir=args.work_dir,
+            nknots=args.nknots,
+            emax=args.emax,
+        )
+        return 0
+
+    # sim
+    env_vars = _build_env(nudet=bool(args.nudet), gxmlpath=args.gxmlpath)
+    targetcode = _target_code(args.target)
+
+    splines = (args.splinedir / args.xsec_file).resolve()
+    flux = (args.filedir / args.flux_file).resolve()
+    if not splines.is_file():
+        parser.error(f"Spline file not found: {splines}")
+    if not flux.is_file():
+        parser.error(f"Flux ROOT file not found: {flux}")
+
+    particles = _pdg_list(args.particles)
+    nu_over_nubar = extract_nu_over_nubar(flux, particles)
+
+    logging.info(
+        f"Seed: {args.seed} | "
+        f"Target: {args.target} ({targetcode}) | "
+        f"Process: {args.evtype or 'ALL'} | "
+        f"nudet={bool(args.nudet)}"
+    )
+    make_events(
+        run=int(args.run),
+        nevents=int(args.nevents),
+        particles=particles,
+        targetcode=targetcode,
+        process=args.evtype,
+        emin=float(args.emin),
+        emax=float(args.emax),
+        neutrino_flux=flux,
+        splines=splines,
+        seed=int(args.seed),
+        env_vars=env_vars,
+        work_dir=args.work_dir.resolve(),
+        nu_over_nubar=nu_over_nubar,
+    )
+    logging.info("Event generation completed successfully.")
+    return 0
+
+
+if __name__ == "__main__":
+    main()

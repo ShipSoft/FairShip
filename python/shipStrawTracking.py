@@ -51,17 +51,10 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method):
 
     # Prepare ShipGeo dictionary
     if not fgeo.FindKey('ShipGeo'):
-
-        if sGeo.GetVolume('EcalModule3') :
-            ecalGeoFile = "ecal_ellipse6x12m2.geo"
-        else:
-            ecalGeoFile = "ecal_ellipse5x10m2.geo"
-
         if dy:
-            ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = dy, EcalGeoFile = ecalGeoFile)
+            ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = dy)
         else:
-            ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", EcalGeoFile = ecalGeoFile)
-
+            ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py")
     else:
         upkl    = Unpickler(fgeo)
         ShipGeo = upkl.load('ShipGeo')
@@ -602,11 +595,12 @@ def getReconstructibleTracks(iEvent, sTree, sGeo, ShipGeo):
     """
 
     TStationz = ShipGeo.TrackStation1.z
-    Zpos = TStationz - 3. /2. * ShipGeo.strawtubes.DeltazView - 1. / 2. * ShipGeo.strawtubes.DeltazLayer
-    TStation1StartZ = Zpos - ShipGeo.strawtubes.OuterStrawDiameter / 2
+    Zpos = TStationz - 3. / 2. * ShipGeo.strawtubes_geo.delta_z_view - 1. / 2. * ShipGeo.strawtubes_geo.delta_z_layer
+    TStation1StartZ = Zpos - ShipGeo.strawtubes_geo.outer_straw_diameter / 2.
 
-    Zpos = TStationz + 3. /2. * ShipGeo.strawtubes.DeltazView + 1. / 2. * ShipGeo.strawtubes.DeltazLayer
-    TStation4EndZ = Zpos + ShipGeo.strawtubes.OuterStrawDiameter / 2
+    TStationz = ShipGeo.TrackStation4.z
+    Zpos = TStationz + 3. / 2. * ShipGeo.strawtubes_geo.delta_z_view + 1. / 2. * ShipGeo.strawtubes_geo.delta_z_layer
+    TStation4EndZ = Zpos + ShipGeo.strawtubes_geo.outer_straw_diameter / 2.
 
 
     PDG=ROOT.TDatabasePDG.Instance()

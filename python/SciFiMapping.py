@@ -1,27 +1,31 @@
+"""Mapping between detector modules and SciFi channels."""
+
+import argparse
+
+import matplotlib.patches as patches
+import matplotlib.pyplot as plt
 import ROOT
 import shipDet_conf
 from rootpyPickler import Unpickler
-import argparse
-import matplotlib.pyplot as plt
-import matplotlib.patches as patches
 
 
 class SciFiMapping:
+    """Mapping between detector modules and SciFi channels."""
+
     def __init__(self, modules):
-        """
-        Initialize the SciFiMapping instance with geometry modules.
+        """Initialize the SciFiMapping instance with geometry modules.
 
         Parameters
         ----------
         modules : dict
-            Dictionary of detector geometry modules, must include key 'MTC' for MTC module.
+            Dictionary of detector geometry modules, must include key 'MTC'.
+
         """
         self.modules = modules
         self.scifi = modules["MTC"]
 
     def create_fibre_to_simp_map(self):
-        """
-        Build mappings from optical fibres to SiPM channels for U and V planes.
+        """Build mappings from optical fibres to SiPM channels for U and V planes.
 
         Retrieves the U and V SiPM maps from the SciFi module and constructs
         dictionaries mapping each fibre index to its associated SiPM channels,
@@ -50,8 +54,7 @@ class SciFiMapping:
                 }
 
     def create_sipm_to_fibre_map(self):
-        """
-        Build mappings from SiPM channels to optical fibres for U and V planes.
+        """Build mappings from SiPM channels to optical fibres for U and V planes.
 
         Retrieves the U and V fibre maps from the SciFi module and constructs
         dictionaries mapping each SiPM channel index to its associated fibres,
@@ -80,8 +83,7 @@ class SciFiMapping:
                 }
 
     def make_mapping(self):
-        """
-        Execute the full mapping sequence for the SciFi detector.
+        """Execute the full mapping sequence for the SciFi detector.
 
         Calls internal methods to calculate SiPM overlap, perform the mapping
         in the SciFi module, and build both fibre-to-SiPM and SiPM-to-fibre maps.
@@ -94,30 +96,29 @@ class SciFiMapping:
         self.create_sipm_to_fibre_map()
 
     def get_sipm_to_fibre_map(self):
-        """
-        Retrieve the SiPM-to-fibre mapping dictionaries.
+        """Retrieve the SiPM-to-fibre mapping dictionaries.
 
         Returns
         -------
         tuple of dict
             (sipm_to_fibre_map_U, sipm_to_fibre_map_V)
+
         """
         return self.sipm_to_fibre_map_U, self.sipm_to_fibre_map_V
 
     def get_fibre_to_simp_map(self):
-        """
-        Retrieve the fibre-to-SiPM mapping dictionaries.
+        """Retrieve the fibre-to-SiPM mapping dictionaries.
 
         Returns
         -------
         tuple of dict
             (fibre_to_simp_map_U, fibre_to_simp_map_V)
+
         """
         return self.fibre_to_simp_map_U, self.fibre_to_simp_map_V
 
     def draw_channel(self, channel):
-        """
-        Draw a single channel mapping showing fibre positions and the SiPM sensor.
+        """Draw a single channel mapping showing fibre positions and the SiPM sensor.
 
         Parameters
         ----------
@@ -127,6 +128,7 @@ class SciFiMapping:
         Side Effects
         ------------
         Saves a PDF file named 'scifi_mapping_channel_1_{channel}.pdf' with the plot.
+
         """
         AF = ROOT.TVector3()
         BF = ROOT.TVector3()
@@ -141,7 +143,9 @@ class SciFiMapping:
         ymin = 999.0
         ymax = -999.0
         fibre_positions = []
-        fibresSiPM = self.fibre_to_simp_map_U if plane_type == 0 else self.fibre_to_simp_map_V
+        fibresSiPM = (
+            self.fibre_to_simp_map_U if plane_type == 0 else self.fibre_to_simp_map_V
+        )
         for fibre in fibresSiPM[locChannel]:
             globfiberID = (
                 fibre + 100000000 + 1000000 + 0 * 100000
@@ -197,13 +201,12 @@ class SciFiMapping:
         cmap_name="tab20",
         alpha_fibre=0.4,
     ):
-        """
-        Draw overlay plot of multiple channel mappings on a single figure.
+        """Draw overlay plot of multiple channel mappings on a single figure.
 
         Parameters
         ----------
         output_file : str, optional
-            Filename for the saved PDF plot. Default is 'scifi_mapping_all_channels.pdf'.
+            Filename for the saved PDF plot. Default: 'scifi_mapping_all_channels.pdf'.
         figsize : tuple of float, optional
             Figure size in inches. Default is (16, 16).
         dpi : int, optional
@@ -216,6 +219,7 @@ class SciFiMapping:
         Side Effects
         ------------
         Saves an overlay PDF plot with the specified filename.
+
         """
         # Prepare fig & ax
         fig, ax = plt.subplots(figsize=figsize, dpi=dpi)
@@ -248,7 +252,9 @@ class SciFiMapping:
             # collect fibre positions
             xs, ys = [], []
             for fibreID in (
-                self.fibre_to_simp_map_U if chan in channelsU else self.fibre_to_simp_map_V
+                self.fibre_to_simp_map_U
+                if chan in channelsU
+                else self.fibre_to_simp_map_V
             )[locChan]:
                 globfiberID = (
                     fibreID + 100000000 + 1000000 + 0 * 100000
@@ -351,7 +357,7 @@ if __name__ == "__main__":
     sGeo = fgeo.FAIRGeom
     top = sGeo.GetTopVolume()
     # -----Create SciFiMapping instance--------------------------------
-    SciFiMapping = SciFiMapping(modules)
-    SciFiMapping.make_mapping()
-    SciFiMapping.draw_channel(101104120)  # Example channel
-    SciFiMapping.draw_many_channels("scifi_mapping_all_channels.pdf")
+    mapping = SciFiMapping(modules)
+    mapping.make_mapping()
+    mapping.draw_channel(channel=101104120)  # Example channel
+    mapping.draw_many_channels(output_file="scifi_mapping_all_channels.pdf")

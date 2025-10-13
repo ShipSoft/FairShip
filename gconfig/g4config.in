@@ -7,6 +7,8 @@
 /mcPhysics/g4NeutronHPVerbose 0 #   - suppress the warnings about missing neutron data
 /mcPhysics/g4HadronicProcessStoreVerbose 0
 
+/mcVerbose/all 0
+
 # switch on other sources of di muon
 /physics_lists/em/PositronToMuons true
 /physics_lists/em/GammaToMuons true
@@ -28,6 +30,9 @@
 
 # Enable local magnetic fields
 /mcDet/setIsLocalMagField true
+
+# Force J/psi to use external decayer instead of GEANT4 internal decay table
+/mcPhysics/setExtDecayerSelection J/psi
 
 # Enable verbosity for VMC geometry manager
 #/mcVerbose/geometryManager 2

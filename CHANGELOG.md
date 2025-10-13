@@ -45,6 +45,25 @@ it in future.
   - The geometry configuration and detector setup (`geometry/geometry_config.py`, `python/shipDet_conf.py`) have been updated to instantiate all requested SND detectors.
   - This enables running with multiple SND subdetectors simultaneously and is future-proof for additional SND designs.
 * Add support for Pythia 8.3xx. 8.2xx is still supported via preprocessor macros for the time being.
+* Add dedicated --print-fields and --check-overlaps flags to run_simScript.py to use these debug tools.
+* Add EvtGenDecayer for decaying J/psi (and other particles in future) when specifying the --EvtGenDecayer option
+* Add enough straws to cover aperture entirely
+* Add SST frame option (4 = aluminium, 10 = steel [default])
+* feat: Unified beam smearing implementation across all generators
+  - Updated `HNLPythia8Generator` to use consistent Gaussian beam smearing and circular beam painting, replacing the previous uniform square implementation
+  - Added beam smearing and painting support to `FixedTargetGenerator`
+  - All generators (`MuonBackGenerator`, `HNLPythia8Generator`, `FixedTargetGenerator`) now use the same beam smearing algorithm: Gaussian smearing with `--SmearBeam` parameter and uniform circular painting with `--PaintRadius` parameter
+  - The `--SmearBeam` and `--PaintBeam` command-line options in `run_simScript.py` now apply to all generators, not just muon background simulation
+  - Fixed unit handling to ensure proper conversion between GEANT4 units (cm-based) and Pythia8 units (mm-based) in each generator
+  - Implemented shared `BeamSmearingUtils` utility using modern C++17 features (std::pair return and structured bindings) to eliminate code duplication
+* Big update of genie generation scripts `macro/makeGenieEvents.py` and `python/genie_interface.py`:
+  - Universal choice of neutrino flavor to simulate
+  - Handy way to enable/disable charm and tau decays of the products
+  - Rewriting the code with modern pythonic style preserving backward compatibility
+* Adding new keys specifically for genie regime in `macro/run_simScript.py` and copying `gst` TTree from the genie input file to the output file of the `macro/run_simScript.py`:
+  - Adjust the z range where to simulate the neutrino interactions via `--z_start_nu and `--z_end_nu` keys
+  - Replacing the `--Genie` key with `Genie` as a subparser
+  - Copying `gst` TTree is similar to `sndsw`
 
 ### Fixed
 
@@ -75,6 +94,9 @@ it in future.
 * Fix crash in run_simScript.py
 * Fix crash caused by decorators.py
 * Use lowercase FairLogger severities (uppercase ones are deprecated)
+* Correct paths for default input files
+* Fix missing decays of J/psi by using EvtGenDecayer
+* Fix: hard cast bug in genie generator: after replacing old C-style cast histogram variable got nullptr value which afterwards caused segmentation fault
 
 ### Changed
 
@@ -124,6 +146,11 @@ it in future.
   - Add `SetTargetCoordinates()` method for robust geometry-based target configuration
   - Maintain backward compatibility with legacy TGeo navigation as fallback
 - The decorators from decorators.py now need to be applied explicitly using the new `apply_decorators` function.
+- The --debug flag to run_simScript.py now controls the severity that FairLogger logs.
+- J/psi are no longer decayed using Geant4 when using the --EvtGenDecayer option
+* Move SST geometry parameters to yaml
+* Update strawtubes class
+* Change SST gas mixture to Ar/CO2 80%/20% at 1 bar
 
 ### Removed
 
@@ -152,7 +179,7 @@ it in future.
 * Remove tankDesign variable, options
 * Remove target versions older than CDR
 * Remove hadron absorber in ShipTargetStation.cxx
-
+* Remove old ecal and hcal in all of FairSHiP, affected files are notably the entire ecal and hcal directories as well as macro/run_anaEcal.py and python/shipPid.py. geometry/geometry_config.py, muonShieldOptimization/ana_ShipMuon.py, macro/ShipReco.py, macro/ShipAna.py, python/shipStrawTracking.py and python/shipPid.py.
 ## 25.01
 
 ### Added
