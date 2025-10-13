@@ -8,7 +8,7 @@ from array import array
 import sys
 from math import fabs
 from backports import tdirectory634
-from IDetector import muonDetector
+from IDetector import muonDetector, timeDetector
 stop  = ROOT.TVector3()
 start = ROOT.TVector3()
 
@@ -68,7 +68,7 @@ class ShipDigiReco:
 #
   self.digiStraw = ROOT.std.vector("strawtubesHit")()
   self.digiStrawBranch   = self.sTree.Branch("Digi_StrawtubesHits",self.digiStraw,32000,-1)
-  self.digiMTC = ROOT.std.vector("MtcDetHit")()
+  self.digiMTC = ROOT.std.vector("MTCDetHit")()
   self.digiMTCBranch = self.sTree.Branch("Digi_MTCHits", self.digiMTC, 32000, 1)
   self.digiSBT    = ROOT.std.vector("vetoHit")()
   self.digiSBTBranch=self.sTree.Branch("Digi_SBTHits",self.digiSBT,32000,-1)
@@ -76,6 +76,7 @@ class ShipDigiReco:
   self.vetoHitOnTrackBranch=self.sTree.Branch("VetoHitOnTrack",self.vetoHitOnTrackArray,32000,-1)
   self.digiSBT2MC  = ROOT.std.vector('std::vector< int >')()
   self.mcLinkSBT   = self.sTree.Branch("digiSBT2MC",self.digiSBT2MC,32000,-1)
+
   self.timeDetector = timeDetector("TimeDet", self.sTree)
   #self.digiUpstreamTagger    = ROOT.TClonesArray("UpstreamTaggerHit")
   #self.digiUpstreamTaggerBranch=self.sTree.Branch("Digi_UpstreamTaggerHits",self.digiUpstreamTagger,32000,-1)
@@ -96,7 +97,7 @@ class ShipDigiReco:
 
   # add MTC module to the list of globals to use it later in the MTCDetHit class. Consistent with SND@LHC approach.
   # make SiPM to fibre mapping
-  if self.sTree.GetBranch("MtcDetPoint"):
+  if self.sTree.GetBranch("MTCDetPoint"):
     lsOfGlobals = ROOT.gROOT.GetListOfGlobals()
     if global_variables.modules["MTC"] not in lsOfGlobals:
       lsOfGlobals.Add(global_variables.modules["MTC"])
@@ -162,7 +163,7 @@ class ShipDigiReco:
    # self.digiUpstreamTaggerBranch.Fill()
    self.muonDetector.process()
    # adding digitization of SND/MTC
-   if self.sTree.GetBranch("MtcDetPoint"):
+   if self.sTree.GetBranch("MTCDetPoint"):
     self.digiMTC.clear()
     self.digitize_MTC()
     self.digiMTCBranch.Fill()
@@ -607,7 +608,7 @@ class ShipDigiReco:
     hit_container = {}
     mc_points = {}
     norm = {}
-    for k, mc_point in enumerate(self.sTree.MtcDetPoint):
+    for k, mc_point in enumerate(self.sTree.MTCDetPoint):
       det_id = mc_point.GetDetectorID()
       station_type = mc_point.GetStationType() # 0 for +5 degrees, 1 for -5 degrees, 2 for scint plane, extraction: int(fDetectorID / 100000) % 10
       energy_loss = mc_point.GetEnergyLoss()
@@ -658,13 +659,13 @@ class ShipDigiReco:
         norm[global_channel] += d_e
 
     for det_id in hit_container:
-      all_points = ROOT.std.vector('MtcDetPoint*')()
+      all_points = ROOT.std.vector('MTCDetPoint*')()
       all_weights = ROOT.std.vector('Float_t')()
 
       for entry in hit_container[det_id]:
         all_points.push_back(entry[0])
         all_weights.push_back(entry[1])
-      det_hit = ROOT.MtcDetHit(det_id, all_points, all_weights)
+      det_hit = ROOT.MTCDetHit(det_id, all_points, all_weights)
       self.digiMTC.push_back(det_hit)
     # digi2MCPoints will be added later
     #   for idx, de_value in mc_points[det_id].items():
