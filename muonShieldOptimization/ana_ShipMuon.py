@@ -360,7 +360,6 @@ else:
  # new geofile, load Shipgeo dictionary written by run_simScript.py
   upkl    = Unpickler(fgeo)
   ShipGeo = upkl.load('ShipGeo')
- # ecalGeoFile = ShipGeo.ecal.File
 
 # -----Create geometry----------------------------------------------
 import shipDet_conf

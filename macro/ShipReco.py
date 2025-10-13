@@ -83,7 +83,6 @@ from rootpyPickler import Unpickler
 #load Shipgeo dictionary
 upkl    = Unpickler(fgeo)
 ShipGeo = upkl.load('ShipGeo')
-#ecalGeoFile = ShipGeo.splitcal.File
 
 h={}
 log={}
@@ -116,7 +115,6 @@ global_variables.pidProton = pidProton
 global_variables.withT0 = options.withT0
 global_variables.realPR = options.realPR
 global_variables.vertexing = vertexing
-#global_variables.ecalGeoFile = ecalGeoFile
 global_variables.ShipGeo = ShipGeo
 global_variables.modules = modules
 global_variables.withNoStrawSmearing = options.withNoStrawSmearing

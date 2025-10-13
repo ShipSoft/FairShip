@@ -179,7 +179,7 @@ it in future.
 * Remove tankDesign variable, options
 * Remove target versions older than CDR
 * Remove hadron absorber in ShipTargetStation.cxx
-* Remove old ecal and hcal in all of FairSHiP, affected files are notably the entire ecal and hcal directories, geometry/geometry_config.py, macro/SHiPReco.py, macro/SHiPAna.py, python/shipStrawTracking.py and python/shipPid.py. PID is disabled. 
+* Remove old ecal and hcal in all of FairSHiP, affected files are notably the entire ecal and hcal directories, geometry/geometry_config.py, muonShieldOptimization/ana_ShipMuon.py, macro/ShipReco.py, macro/ShipAna.py, python/shipStrawTracking.py and python/shipPid.py. PID is disabled.
 ## 25.01
 
 ### Added
