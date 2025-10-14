@@ -2,7 +2,7 @@ import ROOT
 import global_variables
 
 class IDetector:
-    def __init__(self, name, intree, branchType = 'TConesArray'):
+    def __init__(self, name, intree, branchType = 'TClonesArray'):
         self.name = name
         self.det = eval(f"ROOT.{branchType}('{name}Hit')")
         self.intree = intree
