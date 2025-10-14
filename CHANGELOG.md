@@ -64,6 +64,7 @@ it in future.
   - Adjust the z range where to simulate the neutrino interactions via `--z_start_nu and `--z_end_nu` keys
   - Replacing the `--Genie` key with `Genie` as a subparser
   - Copying `gst` TTree is similar to `sndsw`
+- Enclose target in steel (316L) cylinder
 
 ### Fixed
 
