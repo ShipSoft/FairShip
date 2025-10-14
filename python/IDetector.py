@@ -71,4 +71,3 @@ class timeDetector(IDetector):
                         self.det[hitsPerDetId[detID]].setInvalid()
                         hitsPerDetId[detID] = index
             index+=1
-
