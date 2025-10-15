@@ -8,6 +8,7 @@ from array import array
 import sys
 from math import fabs
 from backports import tdirectory634
+from IDetector import muonDetector, timeDetector
 stop  = ROOT.TVector3()
 start = ROOT.TVector3()
 
@@ -67,7 +68,7 @@ class ShipDigiReco:
 #
   self.digiStraw = ROOT.std.vector("strawtubesHit")()
   self.digiStrawBranch   = self.sTree.Branch("Digi_StrawtubesHits",self.digiStraw,32000,-1)
-  self.digiMTC = ROOT.std.vector("MtcDetHit")()
+  self.digiMTC = ROOT.std.vector("MTCDetHit")()
   self.digiMTCBranch = self.sTree.Branch("Digi_MTCHits", self.digiMTC, 32000, 1)
   self.digiSBT    = ROOT.std.vector("vetoHit")()
   self.digiSBTBranch=self.sTree.Branch("Digi_SBTHits",self.digiSBT,32000,-1)
@@ -75,12 +76,14 @@ class ShipDigiReco:
   self.vetoHitOnTrackBranch=self.sTree.Branch("VetoHitOnTrack",self.vetoHitOnTrackArray,32000,-1)
   self.digiSBT2MC  = ROOT.std.vector('std::vector< int >')()
   self.mcLinkSBT   = self.sTree.Branch("digiSBT2MC",self.digiSBT2MC,32000,-1)
-  self.digiTimeDet    = ROOT.TClonesArray("TimeDetHit")
-  self.digiTimeDetBranch=self.sTree.Branch("Digi_TimeDetHits",self.digiTimeDet,32000,-1)
+
+  self.timeDetector = timeDetector("TimeDet", self.sTree)
   #self.digiUpstreamTagger    = ROOT.TClonesArray("UpstreamTaggerHit")
   #self.digiUpstreamTaggerBranch=self.sTree.Branch("Digi_UpstreamTaggerHits",self.digiUpstreamTagger,32000,-1)
-  self.digiMuon    = ROOT.TClonesArray("muonHit")
-  self.digiMuonBranch=self.sTree.Branch("Digi_muonHits",self.digiMuon,32000,-1)
+
+  self.muonDetector = muonDetector("muon", self.sTree)
+
+
 # for the digitizing step
   self.v_drift = global_variables.modules["Strawtubes"].StrawVdrift()
   self.sigma_spatial = global_variables.modules["Strawtubes"].StrawSigmaSpatial()
@@ -94,7 +97,7 @@ class ShipDigiReco:
 
   # add MTC module to the list of globals to use it later in the MTCDetHit class. Consistent with SND@LHC approach.
   # make SiPM to fibre mapping
-  if self.sTree.GetBranch("MtcDetPoint"):
+  if self.sTree.GetBranch("MTCDetPoint"):
     lsOfGlobals = ROOT.gROOT.GetListOfGlobals()
     if global_variables.modules["MTC"] not in lsOfGlobals:
       lsOfGlobals.Add(global_variables.modules["MTC"])
@@ -154,17 +157,13 @@ class ShipDigiReco:
    self.digiStraw.clear()
    self.digitize_straw_tubes()
    self.digiStrawBranch.Fill()
-   self.digiTimeDet.Delete()
-   self.digitizeTimeDet()
-   self.digiTimeDetBranch.Fill()
+   self.timeDetector.process()
    # self.digiUpstreamTagger.Delete()
    # self.digitizeUpstreamTagger()         TR 19/6/2020 work in progress
    # self.digiUpstreamTaggerBranch.Fill()
-   self.digiMuon.Delete()
-   self.digitizeMuon()
-   self.digiMuonBranch.Fill()
+   self.muonDetector.process()
    # adding digitization of SND/MTC
-   if self.sTree.GetBranch("MtcDetPoint"):
+   if self.sTree.GetBranch("MTCDetPoint"):
     self.digiMTC.clear()
     self.digitize_MTC()
     self.digiMTCBranch.Fill()
@@ -568,30 +567,6 @@ class ShipDigiReco:
 
    return list_neighbours
 
-
-
-
- def digitizeTimeDet(self):
-   index = 0
-   hitsPerDetId = {}
-   for aMCPoint in self.sTree.TimeDetPoint:
-     aHit = ROOT.TimeDetHit(aMCPoint,self.sTree.t0)
-     if self.digiTimeDet.GetSize() == index: self.digiTimeDet.Expand(index+1000)
-     self.digiTimeDet[index]=aHit
-     detID = aHit.GetDetectorID()
-     if aHit.isValid():
-      if detID in hitsPerDetId:
-       t = aHit.GetMeasurements()
-       ct = aHit.GetMeasurements()
-# this is not really correct, only first attempt
-# case that one measurement only is earlier not taken into account
-# SetTDC(Float_t val1, Float_t val2)
-       if  t[0]>ct[0] or t[1]>ct[1]:
- # second hit with smaller tdc
-        self.digiTimeDet[hitsPerDetId[detID]].setInvalid()
-        hitsPerDetId[detID] = index
-     index+=1
-
  def digitizeUpstreamTagger(self):
    index = 0
    hitsPerDetId = {}
@@ -610,23 +585,6 @@ class ShipDigiReco:
        if  t[0]>ct[0] or t[1]>ct[1]:
  # second hit with smaller tdc
         self.digiUpstreamTagger[hitsPerDetId[detID]].setInvalid()
-        hitsPerDetId[detID] = index
-     index+=1
-
-
- def digitizeMuon(self):
-   index = 0
-   hitsPerDetId = {}
-   for aMCPoint in self.sTree.muonPoint:
-     aHit = ROOT.muonHit(aMCPoint,self.sTree.t0)
-     if self.digiMuon.GetSize() == index: self.digiMuon.Expand(index+1000)
-     self.digiMuon[index]=aHit
-     detID = aHit.GetDetectorID()
-     if aHit.isValid():
-      if detID in hitsPerDetId:
-       if self.digiMuon[hitsPerDetId[detID]].GetDigi() > aHit.GetDigi():
- # second hit with smaller tdc
-        self.digiMuon[hitsPerDetId[detID]].setValidity(0)
         hitsPerDetId[detID] = index
      index+=1
 
@@ -650,7 +608,7 @@ class ShipDigiReco:
     hit_container = {}
     mc_points = {}
     norm = {}
-    for k, mc_point in enumerate(self.sTree.MtcDetPoint):
+    for k, mc_point in enumerate(self.sTree.MTCDetPoint):
       det_id = mc_point.GetDetectorID()
       station_type = mc_point.GetStationType() # 0 for +5 degrees, 1 for -5 degrees, 2 for scint plane, extraction: int(fDetectorID / 100000) % 10
       energy_loss = mc_point.GetEnergyLoss()
@@ -701,13 +659,13 @@ class ShipDigiReco:
         norm[global_channel] += d_e
 
     for det_id in hit_container:
-      all_points = ROOT.std.vector('MtcDetPoint*')()
+      all_points = ROOT.std.vector('MTCDetPoint*')()
       all_weights = ROOT.std.vector('Float_t')()
 
       for entry in hit_container[det_id]:
         all_points.push_back(entry[0])
         all_weights.push_back(entry[1])
-      det_hit = ROOT.MtcDetHit(det_id, all_points, all_weights)
+      det_hit = ROOT.MTCDetHit(det_id, all_points, all_weights)
       self.digiMTC.push_back(det_hit)
     # digi2MCPoints will be added later
     #   for idx, de_value in mc_points[det_id].items():

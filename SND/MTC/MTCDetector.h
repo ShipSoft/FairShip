@@ -3,7 +3,7 @@
 
 #include "FairDetector.h"
 #include "FairModule.h"   // for FairModule
-#include "MtcDetPoint.h"
+#include "MTCDetPoint.h"
 #include "Rtypes.h"   // for ShipMuonShield::Class, Bool_t, etc
 #include "TClonesArray.h"
 #include "TGeoMatrix.h"
@@ -12,7 +12,7 @@
 
 #include <string>   // for string
 
-class MtcDetPoint;
+class MTCDetPoint;
 class TGeoVolume;
 class TGeoVolumeAssembly;
 class TGeoMedium;
@@ -71,7 +71,7 @@ class MTCDetector : public FairDetector
     Float_t Get_SciFiActiveX() const { return fSciFiActiveX; }
     virtual void SiPMOverlap();
     virtual Bool_t ProcessHits(FairVolume* vol = 0);
-    MtcDetPoint* AddHit(Int_t trackID,
+    MTCDetPoint* AddHit(Int_t trackID,
                         Int_t detID,
                         TVector3 pos,
                         TVector3 mom,
