@@ -15,6 +15,7 @@ enum DetectorId
     ktauRpc,
     ktauHpt,
     kMTC,
+    kSiliconTarget,
     ktauTT,
     ktauTarget,
     kStraw,
