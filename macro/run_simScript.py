@@ -182,7 +182,7 @@ parser.add_argument(
 parser.add_argument("--SND", dest="SND", help="Activate SND.", action='store_true')
 parser.add_argument(
     "--SND_design",
-    help="Choose SND design(s) among [1,2,...] or 'all' to enable all. 1: EmulsionTarget, 2: MTC",
+    help="Choose SND design(s) among [1,2,...] or 'all' to enable all. 1: EmulsionTarget, 2: MTC + SiliconTarget",
     nargs='+',
     default=[2],
 )
@@ -698,6 +698,7 @@ if options.muonback:
  branches.Add(ROOT.TObjString('MCEventHeader'))
  branches.Add(ROOT.TObjString('UpstreamTaggerPoint'))
  branches.Add(ROOT.TObjString('MTCdetPoint'))
+ branches.Add(ROOT.TObjString('SiliconTargetPoint'))
  branches.Add(ROOT.TObjString('sGeoTracks'))
 
  sTree.AutoSave()
