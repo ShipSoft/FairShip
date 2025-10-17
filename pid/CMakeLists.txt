@@ -1,33 +1,22 @@
-# Create a library called "libmuon" which includes the source files given in
-# the array .
-# The extension is already found.  Any number of sources could be listed here.
+# Create a library called "libmuon" which includes the source files given in the
+# array . The extension is already found.  Any number of sources could be listed
+# here.
 
-set(INCLUDE_DIRECTORIES
-${CMAKE_SOURCE_DIR}/shipdata
-${CMAKE_SOURCE_DIR}/pid
-${genfit2_INCDIR}
-)
+set(INCLUDE_DIRECTORIES ${CMAKE_CURRENT_SOURCE_DIR} ${genfit2_INCDIR})
 
-include_directories( ${INCLUDE_DIRECTORIES})
+include_directories(${INCLUDE_DIRECTORIES} ${CMAKE_BINARY_DIR}/include)
 include_directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
 
-set(LINK_DIRECTORIES
-${ROOT_LIBRARY_DIR}
-${FAIRROOT_LIBRARY_DIR}
-${genfit2_LIBDIR}
-)
+set(LINK_DIRECTORIES ${ROOT_LIBRARY_DIR} ${FAIRROOT_LIBRARY_DIR}
+                     ${genfit2_LIBDIR})
 
-link_directories( ${LINK_DIRECTORIES})
+link_directories(${LINK_DIRECTORIES})
 
-set(SRCS
-#Put here your sourcefiles
-pid.cxx
-)
+set(SRCS # Put here your sourcefiles
+    pid.cxx)
 
-Set(LINKDEF pidLinkDef.h)
-Set(LIBRARY_NAME pid)
-Set(DEPENDENCIES
-    Base ShipData
-)
+set(LINKDEF LinkDef.h)
+set(LIBRARY_NAME pid)
+set(DEPENDENCIES Base ShipData)
 
-GENERATE_LIBRARY()
+generate_library()
