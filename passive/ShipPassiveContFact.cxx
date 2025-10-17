@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: LGPL-3.0-or-later
+// SPDX-FileCopyrightText: Copyright CERN on behalf of the SHiP Collaboration
+
 //*-- AUTHOR : Denis Bertini
 //*-- Created : 21/06/2005
 

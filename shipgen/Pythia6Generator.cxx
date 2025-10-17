@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: LGPL-3.0-or-later
+// SPDX-FileCopyrightText: Copyright CERN on behalf of the SHiP Collaboration
+
 // -------------------------------------------------------------------------
 // -----             Pythia6Generator source file                      -----
 // -----          Created 08/08/08  by S. Spataro                      -----

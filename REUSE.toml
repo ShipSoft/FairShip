@@ -1,0 +1,16 @@
+version = 1
+SPDX-PackageName = "FairShip"
+SPDX-PackageSupplier = "CERN on behalf of the SHiP Collaboration"
+SPDX-PackageDownloadLocation = "https://github.com/SHiP-Collaboration/FairShip"
+
+[[annotations]]
+path = "**"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "CERN on behalf of the SHiP Collaboration"
+SPDX-License-Identifier = "LGPL-3.0-or-later"
+
+[[annotations]]
+path = "python/rootpyPickler.py"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "Copyright 2012 the rootpy developers"
+SPDX-License-Identifier = "GPL-3.0-or-later"
