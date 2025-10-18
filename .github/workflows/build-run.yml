@@ -29,6 +29,10 @@ jobs:
           path: FairShip
           lfs: true
 
+      - uses: root-project/gcc-problem-matcher-improved@main
+        with:
+          build-directory: ${{ github.workspace }}/FairShip
+
       - name: Build
         run: |
           source /cvmfs/ship.cern.ch/$version/setUp.sh

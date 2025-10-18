@@ -18,6 +18,7 @@ ShipHit::ShipHit(Int_t detID, Float_t digi)
    fdigi        (digi),
    fDetectorID  (detID)
 {
+    int unused_test_variable = 42;  // TODO: Remove - testing CI annotations
 }
 
 // -------------------------------------------------------------------------
