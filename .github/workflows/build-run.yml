@@ -30,8 +30,6 @@ jobs:
           lfs: true
 
       - uses: root-project/gcc-problem-matcher-improved@main
-        with:
-          build-directory: ${{ github.workspace }}
 
       - name: Build
         run: |
