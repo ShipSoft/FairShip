@@ -35,10 +35,6 @@ repos:
   hooks:
   - id: cpplint
     exclude: LinkDef.h
-- repo: https://github.com/cmake-lint/cmake-lint
-  rev: 1.4.3
-  hooks:
-  - id: cmakelint
 - repo: https://github.com/codespell-project/codespell
   rev: "v2.4.1"
   hooks:
@@ -50,10 +46,6 @@ repos:
     - id: isort
       args: [--profile=black]
       name: isort (python)
-- repo: https://github.com/cheshirekow/cmake-format-precommit
-  rev: v0.6.13
-  hooks:
-  - id: cmake-format
 - repo: https://github.com/asottile/pyupgrade
   rev: v3.21.0
   hooks:
@@ -82,6 +74,6 @@ repos:
 
 ci:
   autofix_prs: true
-  skip: [ruff-check, cmakelint, isort, cmake-format]
+  skip: [ruff-check, isort]
   autoupdate_commit_msg: "chore(deps): update pre-commit hooks"
   autofix_commit_msg: "style: pre-commit fixes"
