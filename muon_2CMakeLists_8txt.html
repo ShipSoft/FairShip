@@ -97,12 +97,12 @@ $(document).ready(function(){initNavTree('muon_2CMakeLists_8txt.html',''); initR
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a366179d7736fc6fce1f32a71ddacf66b" id="r_a366179d7736fc6fce1f32a71ddacf66b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="muon_2CMakeLists_8txt.html#a366179d7736fc6fce1f32a71ddacf66b">set</a> (INCLUDE_DIRECTORIES ${CMAKE_SOURCE_DIR}/shipdata ${CMAKE_SOURCE_DIR}/<a class="el" href="classmuon.html">muon</a> ${genfit2_INCDIR} ${VMC_INCLUDE_DIRS}) <a class="el" href="field_2CMakeLists_8txt.html#a5e5d5889be285986095018dc34620a74">include_directories</a>($</td></tr>
-<tr class="separator:a366179d7736fc6fce1f32a71ddacf66b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a664350cad60b4055802ef672cd5c89cd" id="r_a664350cad60b4055802ef672cd5c89cd"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="muon_2CMakeLists_8txt.html#a664350cad60b4055802ef672cd5c89cd">set</a> (INCLUDE_DIRECTORIES ${CMAKE_CURRENT_SOURCE_DIR} ${genfit2_INCDIR} ${VMC_INCLUDE_DIRS}) <a class="el" href="field_2CMakeLists_8txt.html#a5e5d5889be285986095018dc34620a74">include_directories</a>($</td></tr>
+<tr class="separator:a664350cad60b4055802ef672cd5c89cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a366179d7736fc6fce1f32a71ddacf66b" name="a366179d7736fc6fce1f32a71ddacf66b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a366179d7736fc6fce1f32a71ddacf66b">&#9670;&#160;</a></span>set()</h2>
+<a id="a664350cad60b4055802ef672cd5c89cd" name="a664350cad60b4055802ef672cd5c89cd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a664350cad60b4055802ef672cd5c89cd">&#9670;&#160;</a></span>set()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -110,7 +110,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">set </td>
           <td>(</td>
-          <td class="paramtype">INCLUDE_DIRECTORIES ${CMAKE_SOURCE_DIR}/shipdata ${CMAKE_SOURCE_DIR}/<a class="el" href="classmuon.html">muon</a> ${genfit2_INCDIR} ${VMC_INCLUDE_DIRS}&#160;</td>
+          <td class="paramtype">INCLUDE_DIRECTORIES ${CMAKE_CURRENT_SOURCE_DIR} ${genfit2_INCDIR} ${VMC_INCLUDE_DIRS}&#160;</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
@@ -118,15 +118,11 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="muon_2CMakeLists_8txt_source.html#l00005">5</a> of file <a class="el" href="muon_2CMakeLists_8txt_source.html">CMakeLists.txt</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">    6</span> {CMAKE_SOURCE_DIR}/shipdata</div>
-<div class="line"><span class="lineno">    7</span>${CMAKE_SOURCE_DIR}/<a class="code hl_class" href="classmuon.html">muon</a></div>
-<div class="line"><span class="lineno">    8</span>${genfit2_INCDIR}</div>
-<div class="line"><span class="lineno">    9</span>${VMC_INCLUDE_DIRS}</div>
-<div class="line"><span class="lineno">   10</span>)</div>
-<div class="line"><span class="lineno">   11</span> </div>
-<div class="line"><span class="lineno">   12</span><a class="code hl_function" href="field_2CMakeLists_8txt.html#a5e5d5889be285986095018dc34620a74">include_directories</a>(${INCLUDE_DIRECTORIES} ${FAIRROOT_INCLUDE_DIR})</div>
-<div class="ttc" id="aclassmuon_html"><div class="ttname"><a href="classmuon.html">muon</a></div><div class="ttdef"><b>Definition</b> <a href="muon_8h_source.html#l00013">muon.h:14</a></div></div>
-<div class="ttc" id="afield_2CMakeLists_8txt_html_a5e5d5889be285986095018dc34620a74"><div class="ttname"><a href="field_2CMakeLists_8txt.html#a5e5d5889be285986095018dc34620a74">include_directories</a></div><div class="ttdeci">include_directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES}) set(LINK_DIRECTORIES $</div><div class="ttdef"><b>Definition</b> <a href="field_2CMakeLists_8txt_source.html#l00016">CMakeLists.txt:16</a></div></div>
+<div class="fragment"><div class="line"><span class="lineno">    5</span>                         {CMAKE_CURRENT_SOURCE_DIR} ${genfit2_INCDIR}</div>
+<div class="line"><span class="lineno">    6</span>                        ${VMC_INCLUDE_DIRS})</div>
+<div class="line"><span class="lineno">    7</span> </div>
+<div class="line"><span class="lineno">    8</span><a class="code hl_function" href="field_2CMakeLists_8txt.html#a5e5d5889be285986095018dc34620a74">include_directories</a>(${INCLUDE_DIRECTORIES} ${FAIRROOT_INCLUDE_DIR}</div>
+<div class="ttc" id="afield_2CMakeLists_8txt_html_a5e5d5889be285986095018dc34620a74"><div class="ttname"><a href="field_2CMakeLists_8txt.html#a5e5d5889be285986095018dc34620a74">include_directories</a></div><div class="ttdeci">include_directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES}) set(LINK_DIRECTORIES $</div><div class="ttdef"><b>Definition</b> <a href="field_2CMakeLists_8txt_source.html#l00010">CMakeLists.txt:10</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

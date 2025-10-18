@@ -99,10 +99,8 @@ $(document).ready(function(){initNavTree('muonShieldOptimization_2CMakeLists_8tx
 Functions</h2></td></tr>
 <tr class="memitem:aaa76c08c9193a83a88f278825109aabf" id="r_aaa76c08c9193a83a88f278825109aabf"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="muonShieldOptimization_2CMakeLists_8txt.html#aaa76c08c9193a83a88f278825109aabf">if</a> (EXISTS &quot;$ENV{PYTHON_HOME}&quot;) set(PYTHON_LIBRARY $ENV</td></tr>
 <tr class="separator:aaa76c08c9193a83a88f278825109aabf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1823e8c1b57db8341e59b918036a2de1" id="r_a1823e8c1b57db8341e59b918036a2de1"><td class="memItemLeft" align="right" valign="top">lib&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="muonShieldOptimization_2CMakeLists_8txt.html#a1823e8c1b57db8341e59b918036a2de1">set</a> (PYTHON_INCLUDE_DIR $ENV{PYTHON_HOME}/include/python2.7) endif(EXISTS &quot;$ENV</td></tr>
-<tr class="separator:a1823e8c1b57db8341e59b918036a2de1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae664a82441ec17682534d2cadfa85a0b" id="r_ae664a82441ec17682534d2cadfa85a0b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="muonShieldOptimization_2CMakeLists_8txt.html#ae664a82441ec17682534d2cadfa85a0b">set</a> (INCLUDE_DIRECTORIES ${CMAKE_SOURCE_DIR}/muonShieldOptimization ${VMC_INCLUDE_DIRS} ${CMAKE_SOURCE_DIR}/<a class="el" href="classveto.html">veto</a> ${CMAKE_SOURCE_DIR}/shipdata ${PYTHON_INCLUDE_DIRS}) <a class="el" href="field_2CMakeLists_8txt.html#a5e5d5889be285986095018dc34620a74">include_directories</a>($</td></tr>
-<tr class="separator:ae664a82441ec17682534d2cadfa85a0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af445543c40a9d1d0574046b3f2311c94" id="r_af445543c40a9d1d0574046b3f2311c94"><td class="memItemLeft" align="right" valign="top">lib&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="muonShieldOptimization_2CMakeLists_8txt.html#af445543c40a9d1d0574046b3f2311c94">set</a> (PYTHON_INCLUDE_DIR $ENV{PYTHON_HOME}/include/python2.7) endif() find_package(PythonLibs REQUIRED) set(INCLUDE_DIRECTORIES $</td></tr>
+<tr class="separator:af445543c40a9d1d0574046b3f2311c94"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="aaa76c08c9193a83a88f278825109aabf" name="aaa76c08c9193a83a88f278825109aabf"></a>
@@ -123,38 +121,12 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="muonShieldOptimization_2CMakeLists_8txt_source.html#l00004">4</a> of file <a class="el" href="muonShieldOptimization_2CMakeLists_8txt_source.html">CMakeLists.txt</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">    4</span>               {PYTHON_HOME}<span class="stringliteral">&quot;)</span></div>
-<div class="line"><span class="lineno">    5</span><span class="stringliteral"> set(PYTHON_LIBRARY $ENV{PYTHON_HOME}/lib)</span></div>
+<div class="line"><span class="lineno">    5</span><span class="stringliteral">  set(PYTHON_LIBRARY $ENV{PYTHON_HOME}/lib)</span></div>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="ae664a82441ec17682534d2cadfa85a0b" name="ae664a82441ec17682534d2cadfa85a0b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae664a82441ec17682534d2cadfa85a0b">&#9670;&#160;</a></span>set() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">set </td>
-          <td>(</td>
-          <td class="paramtype">INCLUDE_DIRECTORIES ${CMAKE_SOURCE_DIR}/muonShieldOptimization ${VMC_INCLUDE_DIRS} ${CMAKE_SOURCE_DIR}/<a class="el" href="classveto.html">veto</a> ${CMAKE_SOURCE_DIR}/shipdata ${PYTHON_INCLUDE_DIRS}&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="muonShieldOptimization_2CMakeLists_8txt_source.html#l00010">10</a> of file <a class="el" href="muonShieldOptimization_2CMakeLists_8txt_source.html">CMakeLists.txt</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   11</span> {CMAKE_SOURCE_DIR}/muonShieldOptimization ${VMC_INCLUDE_DIRS} ${CMAKE_SOURCE_DIR}/<a class="code hl_class" href="classveto.html">veto</a> ${CMAKE_SOURCE_DIR}/shipdata ${PYTHON_INCLUDE_DIRS}</div>
-<div class="line"><span class="lineno">   12</span>)</div>
-<div class="line"><span class="lineno">   13</span> </div>
-<div class="line"><span class="lineno">   14</span><a class="code hl_function" href="field_2CMakeLists_8txt.html#a5e5d5889be285986095018dc34620a74">include_directories</a>(${INCLUDE_DIRECTORIES} ${FAIRROOT_INCLUDE_DIR})</div>
-<div class="ttc" id="aclassveto_html"><div class="ttname"><a href="classveto.html">veto</a></div><div class="ttdef"><b>Definition</b> <a href="veto_8h_source.html#l00024">veto.h:25</a></div></div>
-<div class="ttc" id="afield_2CMakeLists_8txt_html_a5e5d5889be285986095018dc34620a74"><div class="ttname"><a href="field_2CMakeLists_8txt.html#a5e5d5889be285986095018dc34620a74">include_directories</a></div><div class="ttdeci">include_directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES}) set(LINK_DIRECTORIES $</div><div class="ttdef"><b>Definition</b> <a href="field_2CMakeLists_8txt_source.html#l00016">CMakeLists.txt:16</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<a id="a1823e8c1b57db8341e59b918036a2de1" name="a1823e8c1b57db8341e59b918036a2de1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1823e8c1b57db8341e59b918036a2de1">&#9670;&#160;</a></span>set() <span class="overload">[2/2]</span></h2>
+<a id="af445543c40a9d1d0574046b3f2311c94" name="af445543c40a9d1d0574046b3f2311c94"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af445543c40a9d1d0574046b3f2311c94">&#9670;&#160;</a></span>set()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -170,8 +142,12 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="muonShieldOptimization_2CMakeLists_8txt_source.html#l00006">6</a> of file <a class="el" href="muonShieldOptimization_2CMakeLists_8txt_source.html">CMakeLists.txt</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">    6</span>                            {PYTHON_HOME}/include/python2.7)</div>
-<div class="line"><span class="lineno">    7</span>endif(EXISTS <span class="stringliteral">&quot;$ENV{PYTHON_HOME}&quot;</span>)</div>
+<div class="fragment"><div class="line"><span class="lineno">    6</span>                             {PYTHON_HOME}/include/python2.7)</div>
+<div class="line"><span class="lineno">    7</span>endif()</div>
+<div class="line"><span class="lineno">    8</span>find_package(PythonLibs REQUIRED)</div>
+<div class="line"><span class="lineno">    9</span> </div>
+<div class="line"><span class="lineno">   10</span><a class="code hl_function" href="field_2CMakeLists_8txt.html#a93c715d65ff81aeb3a0c7dddd7fd2ff4">set</a>(INCLUDE_DIRECTORIES ${CMAKE_CURRENT_SOURCE_DIR} ${VMC_INCLUDE_DIRS}</div>
+<div class="ttc" id="afield_2CMakeLists_8txt_html_a93c715d65ff81aeb3a0c7dddd7fd2ff4"><div class="ttname"><a href="field_2CMakeLists_8txt.html#a93c715d65ff81aeb3a0c7dddd7fd2ff4">set</a></div><div class="ttdeci">set(INCLUDE_DIRECTORIES ${CMAKE_SOURCE_DIR}/field ${GEANT4_VMC_INCLUDE_DIR} ${GEANT4_INCLUDE_DIR} ${FAIRROOT_INCLUDE_DIR} ${VMC_INCLUDE_DIRS} ${genfit2_INCDIR}) include_directories($</div><div class="ttdef"><b>Definition</b> <a href="field_2CMakeLists_8txt_source.html#l00005">CMakeLists.txt:5</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
