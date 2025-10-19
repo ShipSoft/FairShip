@@ -20,7 +20,6 @@ link_directories(${LINK_DIRECTORIES})
 
 set(SRCS exitHadronAbsorber.cxx pyFairModule.cxx simpleTarget.cxx)
 
-set(HEADERS)
 set(LINKDEF LinkDef.h)
 set(LIBRARY_NAME ShipMuonShieldBackground)
 set(DEPENDENCIES

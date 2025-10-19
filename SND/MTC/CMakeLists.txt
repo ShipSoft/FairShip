@@ -16,7 +16,6 @@ link_directories(${LINK_DIRECTORIES})
 
 set(SRCS MTCDetector.cxx MtcDetPoint.cxx MtcDetHit.cxx)
 
-set(HEADERS)
 set(LINKDEF MTCDetectorLinkDef.h)
 set(LIBRARY_NAME MTCDetector)
 set(DEPENDENCIES

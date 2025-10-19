@@ -77,15 +77,13 @@ macro(GENERATE_LIBRARY)
       endforeach()
 
       # Use FairRoot's dictionary generation macro
-      # FairRoot v18.8.2 uses ROOT_GENERATE_DICTIONARY() with no parameters
-      # (it reads variables from parent scope: LINKDEF, DICTIONARY, LIBRARY_NAME, HDRS, etc.)
-      # FairRoot v19+ uses fairroot_generate_dictionary() with parameters
-      if(COMMAND fairroot_generate_dictionary)
-        # FairRoot v19+
-        fairroot_generate_dictionary(${DictName} ${HDRS} LINKDEF ${Int_LINKDEF})
+      # Both FairRoot v18.8.2 and v19+ use macros with no parameters
+      # They read variables from parent scope: LINKDEF, DICTIONARY, LIBRARY_NAME, HDRS, etc.
+      if(COMMAND FAIRROOT_GENERATE_DICTIONARY)
+        # FairRoot v19+ - call without parameters
+        FAIRROOT_GENERATE_DICTIONARY()
       else()
         # FairRoot v18.8.2 - call ROOT_GENERATE_DICTIONARY without parameters
-        # It will use the variables we've already set (LINKDEF, DICTIONARY, LIBRARY_NAME, HDRS)
         ROOT_GENERATE_DICTIONARY()
       endif()
 
