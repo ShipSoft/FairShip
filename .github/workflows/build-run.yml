@@ -32,7 +32,7 @@ jobs:
       - name: Build
         run: |
           source /cvmfs/ship.cern.ch/$version/setUp.sh
-          aliBuild build FairShip --always-prefer-system --config-dir $SHIPDIST --defaults release --jobs 4 --debug
+          aliBuild build FairShip --always-prefer-system --config-dir $SHIPDIST --defaults release --jobs 4 --debug 2>&1 | tee build.log | python3 FairShip/.github/scripts/annotate_build.py
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
