@@ -97,14 +97,14 @@ $(document).ready(function(){initNavTree('CMakeLists_8txt.html',''); initResizab
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:af1fadf4818c7278298309c88c18b7f03" id="r_af1fadf4818c7278298309c88c18b7f03"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="CMakeLists_8txt.html#af1fadf4818c7278298309c88c18b7f03">cmake_minimum_required</a> (VERSION 3.12.0 FATAL_ERROR) foreach(p CMP0028 CMP0074) <a class="el" href="muonShieldOptimization_2CMakeLists_8txt.html#aaa76c08c9193a83a88f278825109aabf">if</a>(POLICY $</td></tr>
-<tr class="separator:af1fadf4818c7278298309c88c18b7f03"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a071d2bced93081501a817177d196970a" id="r_a071d2bced93081501a817177d196970a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="CMakeLists_8txt.html#a071d2bced93081501a817177d196970a">cmake_minimum_required</a> (VERSION 3.12.0 FATAL_ERROR) foreach(p CMP0028 CMP0074 CMP0144 CMP0167) <a class="el" href="muonShieldOptimization_2CMakeLists_8txt.html#aaa76c08c9193a83a88f278825109aabf">if</a>(POLICY $</td></tr>
+<tr class="separator:a071d2bced93081501a817177d196970a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a629d2bd70009326969db4d343fc015f0" id="r_a629d2bd70009326969db4d343fc015f0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="CMakeLists_8txt.html#a629d2bd70009326969db4d343fc015f0">cmake_policy</a> (SET ${p} NEW) endif() endforeach() project(ShipRoot) find_path(FAIRBASE NAMES FairRun.h PATHS $</td></tr>
 <tr class="separator:a629d2bd70009326969db4d343fc015f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="af1fadf4818c7278298309c88c18b7f03" name="af1fadf4818c7278298309c88c18b7f03"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af1fadf4818c7278298309c88c18b7f03">&#9670;&#160;</a></span>cmake_minimum_required()</h2>
+<a id="a071d2bced93081501a817177d196970a" name="a071d2bced93081501a817177d196970a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a071d2bced93081501a817177d196970a">&#9670;&#160;</a></span>cmake_minimum_required()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -120,7 +120,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="CMakeLists_8txt_source.html#l00008">8</a> of file <a class="el" href="CMakeLists_8txt_source.html">CMakeLists.txt</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   13</span>             {<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>})</div>
+<div class="fragment"><div class="line"><span class="lineno">   15</span>             {<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>})</div>
 <div class="ttc" id="anamespacemakeDecay_html_a9c90b95001a4909a6c5383da1b3066d9"><div class="ttname"><a href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">makeDecay.p</a></div><div class="ttdeci">p</div><div class="ttdef"><b>Definition</b> <a href="makeDecay_8py_source.html#l00067">makeDecay.py:67</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -141,19 +141,19 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="CMakeLists_8txt_source.html#l00014">14</a> of file <a class="el" href="CMakeLists_8txt_source.html">CMakeLists.txt</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   14</span>                      {<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>} NEW)</div>
-<div class="line"><span class="lineno">   15</span>  endif()</div>
-<div class="line"><span class="lineno">   16</span>endforeach()</div>
-<div class="line"><span class="lineno">   17</span> </div>
-<div class="line"><span class="lineno">   18</span><span class="preprocessor"># Set name of our project to &quot;ShipRoot&quot;. Has to be done after check of cmake</span></div>
-<div class="line"><span class="lineno">   19</span><span class="preprocessor"># version since this is a new feature</span></div>
-<div class="line"><span class="lineno">   20</span>project(ShipRoot)</div>
-<div class="line"><span class="lineno">   21</span> </div>
-<div class="line"><span class="lineno">   22</span>find_path(</div>
-<div class="line"><span class="lineno">   23</span>  FAIRBASE</div>
-<div class="line"><span class="lineno">   24</span>  NAMES FairRun.h</div>
-<div class="line"><span class="lineno">   25</span>  PATHS ${CMAKE_SOURCE_DIR}/base/steer ${FAIRBASE}</div>
+<p class="definition">Definition at line <a class="el" href="CMakeLists_8txt_source.html#l00016">16</a> of file <a class="el" href="CMakeLists_8txt_source.html">CMakeLists.txt</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   16</span>                      {<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>} NEW)</div>
+<div class="line"><span class="lineno">   17</span>  endif()</div>
+<div class="line"><span class="lineno">   18</span>endforeach()</div>
+<div class="line"><span class="lineno">   19</span> </div>
+<div class="line"><span class="lineno">   20</span><span class="preprocessor"># Set name of our project to &quot;ShipRoot&quot;. Has to be done after check of cmake</span></div>
+<div class="line"><span class="lineno">   21</span><span class="preprocessor"># version since this is a new feature</span></div>
+<div class="line"><span class="lineno">   22</span>project(ShipRoot)</div>
+<div class="line"><span class="lineno">   23</span> </div>
+<div class="line"><span class="lineno">   24</span>find_path(</div>
+<div class="line"><span class="lineno">   25</span>  FAIRBASE</div>
+<div class="line"><span class="lineno">   26</span>  NAMES FairRun.h</div>
+<div class="line"><span class="lineno">   27</span>  PATHS ${CMAKE_SOURCE_DIR}/base/steer ${FAIRBASE}</div>
 </div><!-- fragment -->
 </div>
 </div>
