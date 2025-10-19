@@ -17,7 +17,6 @@ link_directories(${LINK_DIRECTORIES})
 set(SRCS ShipHit.cxx ShipStack.cxx ShipMCTrack.cxx ShipParticle.cxx
          TrackInfo.cxx)
 
-set(HEADERS)
 set(LINKDEF LinkDef.h)
 set(LIBRARY_NAME ShipData)
 set(DEPENDENCIES Base EG Physics Core genfit2 FairLogger::FairLogger)

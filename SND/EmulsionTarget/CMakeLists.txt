@@ -17,7 +17,6 @@ link_directories(${LINK_DIRECTORIES})
 
 set(SRCS Target.cxx TargetPoint.cxx TargetTracker.cxx TTPoint.cxx)
 
-set(HEADERS)
 set(LINKDEF EmulsionTargetLinkDef.h)
 set(LIBRARY_NAME EmulsionTarget)
 set(DEPENDENCIES

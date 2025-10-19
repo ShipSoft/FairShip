@@ -15,7 +15,6 @@ link_directories(${LINK_DIRECTORIES})
 
 set(SRCS UpstreamTagger.cxx UpstreamTaggerPoint.cxx UpstreamTaggerHit.cxx)
 
-set(HEADERS)
 set(LINKDEF LinkDef.h)
 set(LIBRARY_NAME UpstreamTagger)
 set(DEPENDENCIES Base ShipData FairLogger::FairLogger)

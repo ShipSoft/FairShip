@@ -23,7 +23,6 @@ set(SRCS
     ShipTAUMagneticSpectrometer.cxx
     ShipGoliath.cxx)
 
-set(HEADERS)
 set(LINKDEF LinkDef.h)
 set(LIBRARY_NAME ShipPassive)
 set(DEPENDENCIES
