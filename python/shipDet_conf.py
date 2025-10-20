@@ -313,7 +313,7 @@ def configure(run, ship_geo):
             elif design == 1:
                 configure_snd_old(
                     os.path.join(os.environ["FAIRSHIP"], "geometry", "snd_config_old.yaml"),
-                    ship_geo.UpstreamTagger.Z_Position - 8 *u.cm - 5 *u.cm, #8 cm width of UpstreamTagger
+                    ship_geo.UpstreamTagger.Z_Position - 8 *u.cm - 5 *u.cm, #16 cm width of UpstreamTagger (8 cm half-width)
                     ship_geo.cave.floorHeightMuonShield,
                 )
             else:
@@ -442,6 +442,11 @@ def configure(run, ship_geo):
 
     upstreamTagger = ROOT.UpstreamTagger("UpstreamTagger", ROOT.kTRUE)
     upstreamTagger.SetZposition(ship_geo.UpstreamTagger.Z_Position)
+    upstreamTagger.SetBoxDimensions(
+        ship_geo.UpstreamTagger.BoxX,
+        ship_geo.UpstreamTagger.BoxY,
+        ship_geo.UpstreamTagger.BoxZ
+    )
     detectorList.append(upstreamTagger)
 
     timeDet = ROOT.TimeDet("TimeDet", ROOT.kTRUE)

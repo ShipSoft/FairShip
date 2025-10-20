@@ -157,6 +157,7 @@ it in future.
 * Move SST geometry parameters to yaml
 * Update strawtubes class
 * Change SST gas mixture to Ar/CO2 80%/20% at 1 bar
+* UBT box dimensions (BoxX, BoxY, BoxZ) are now configurable via geometry_config.py instead of hardcoded
 
 ### Removed
 
@@ -181,6 +182,7 @@ it in future.
 * Remove nuTauTargetDesign variable, options
 * Remove reloading of the `geometry_config.py` in `shipDet_conf.py`
 * Remove nutaudet folder, replaced by SND folder
+* Removed 38 unused RPC geometry parameters from UpstreamTagger configuration (legacy from pre-simplification)
 * Remove deprecated NuTauDet field map
 * Remove tankDesign variable, options
 * Remove target versions older than CDR
