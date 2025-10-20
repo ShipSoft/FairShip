@@ -1,7 +1,7 @@
 # analyze muon background /media/Data/HNL/PythiaGeant4Production/pythia8_Geant4_total.root
 import os,ROOT
 import multiprocessing as mp
-from rootpyPickler import Unpickler
+from ShipGeoConfig import load_from_root_file
 ROOT.gInterpreter.ProcessLine('typedef double Double32_t')
 local = False
 if not os.uname()[1].lower().find('ubuntu')< 0: local = True
@@ -358,8 +358,7 @@ if not fgeo.FindKey('ShipGeo'):
  ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = dy)
 else:
  # new geofile, load Shipgeo dictionary written by run_simScript.py
-  upkl    = Unpickler(fgeo)
-  ShipGeo = upkl.load('ShipGeo')
+  ShipGeo = load_from_root_file(fgeo, 'ShipGeo')
 
 # -----Create geometry----------------------------------------------
 import shipDet_conf
