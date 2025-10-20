@@ -146,6 +146,32 @@ def configure_snd_mtc(yaml_file, ship_geo):
     )
     detectorList.append(mtc)
 
+def configure_snd_siliconTarget(yaml_file, ship_geo):
+    with open(yaml_file) as file:
+        config = yaml.safe_load(file)
+
+    ship_geo.SiliconTarget_geo = AttrDict(config['SiliconTarget'])
+    # Initialize detector
+    if ship_geo.SiliconTarget_geo.zPosition == "auto":
+        # Get the the center of the next to last magnet (temporary placement)
+        # Offset placement of detector by 130 cm, magnet is 2* 212.54 cm, 
+        # 120 layers at 132 cm will fit.
+        ship_geo.SiliconTarget_geo.zPosition = find_shield_center(ship_geo)[2][-2] + 130
+        print("SiliconTarget zPosition set to ", ship_geo.SiliconTarget_geo.zPosition)
+    SiliconTarget = ROOT.SiliconTarget("SiliconTarget", ROOT.kTRUE)
+    SiliconTarget.SetSiliconTargetParameters(
+        ship_geo.SiliconTarget_geo.targetWidth,
+        ship_geo.SiliconTarget_geo.targetHeight,
+        ship_geo.SiliconTarget_geo.sensorWidth,
+        ship_geo.SiliconTarget_geo.sensorLength,
+        ship_geo.SiliconTarget_geo.nLayers,
+        ship_geo.SiliconTarget_geo.zPosition,
+        ship_geo.SiliconTarget_geo.targetThickness,
+        ship_geo.SiliconTarget_geo.targetSpacing,
+        ship_geo.SiliconTarget_geo.moduleOffset
+    )
+    detectorList.append(SiliconTarget)
+
 def configure_veto(yaml_file, z0):
     with open(yaml_file) as file:
         config = yaml.safe_load(file)
@@ -275,9 +301,13 @@ def configure(run, ship_geo):
     if ship_geo.SND:
         for design in ship_geo.SND_design:
             if design == 2:
-                # SND design 2 -- MTC
+                # SND design 2 -- MTC/SiliconTarget
                 configure_snd_mtc(
                     os.path.join(os.environ["FAIRSHIP"], "geometry", "MTC_config.yaml"),
+                    ship_geo
+                )
+                configure_snd_siliconTarget(
+                    os.path.join(os.environ["FAIRSHIP"], "geometry", "SiliconTarget_config.yaml"),
                     ship_geo
                 )
             elif design == 1:
@@ -444,7 +474,7 @@ def configure(run, ship_geo):
 
     exclusionList = []
     # exclusionList = ["Muon","Ecal","Hcal","Strawtubes","TargetTrackers","NuTauTarget",\
-    #                 "Veto","Magnet","MuonShield","TargetStation", "TimeDet", "UpstreamTagger"]
+    #                 "SiliconTarget","Veto","Magnet","MuonShield","TargetStation", "TimeDet", "UpstreamTagger"]
 
     for x in detectorList:
         if x.GetName() in exclusionList:
