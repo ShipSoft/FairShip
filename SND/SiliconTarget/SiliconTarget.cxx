@@ -187,7 +187,7 @@ void SiliconTarget::ConstructGeometry()
         envVol->AddNode(targetVol, i, new TGeoTranslation(0, 0, zPos + fTargetThickness / 2.));
 
         TGeoVolume* siliconPlanes = CreateSiliconPlanes("TrackerPlane", fSensorWidth, fSensorLength, fTargetSpacing - fTargetThickness - 2. * fModuleOffset, Silicon, i);
-        envVol->AddNode(siliconPlanes, i, new TGeoTranslation(0, 0, zPos + fTargetThickness / 2. + fModuleOffset));
+        envVol->AddNode(siliconPlanes, i, new TGeoTranslation(0, 0, zPos + fTargetThickness + fModuleOffset));
     }
 
     // Finally, add the envelope to the top volume with the global z offset fZCenter
