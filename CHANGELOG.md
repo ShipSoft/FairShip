@@ -114,6 +114,7 @@ it in future.
 * Fix the condition in the sipm channel <-> fiber mapping that stopped looping over channels because of the distance between a fiber and a channel. Setting a flexible condition that depends on the aggregated channel size.
 * Add flags for `python/ScifiMapping.py`
 * Fixed SiliconTarget detector identifier.
+* fix(muon): Make muonHit copy constructor public for std::vector compatibility
 
 ### Changed
 
@@ -125,9 +126,11 @@ it in future.
   - Updated naming from "Strawtubes" to "strawtubes" for consistency
   - Changed branch name from "Digi_StrawtubesHits" to "Digi_strawtubesHits"
 * Rename MtcDetPoint and MtcDetHit classes to MTCDetPoint and MTCDetHit for consistency with detector naming conventions
-* Refactor digitisation to use detector classes for MTC, muon, time, SBT, and UpstreamTagger detectors
+* Complete refactoring of all digitisation to use BaseDetector pattern (MTC, muon, time, SBT, UpstreamTagger, strawtubes, splitcal)
 * Make BaseDetector an abstract base class to enforce interface contract
 * Rewrite UpstreamTaggerHit for simplified scoring plane detector, remove RPC-specific code (#701, #354, #355)
+* Complete migration from TClonesArrays to STL vectors for all detectors (timeDetector, muonDetector, vetoHitOnTrack, strawtubes, splitcal)
+* Integrate splitcal cluster reconstruction into splitcalDetector class
 * Don't special case EOS paths (fix #566)
 * Setting up the Muon shield geometry by ROOT files is completely replaced with the temporary solution of dict in the `geometry/geometry_config.py`.
 * Set up of the shield name is now done using the `--shieldName` flag instead of `--scName`.

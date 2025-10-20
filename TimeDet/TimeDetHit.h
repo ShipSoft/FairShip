@@ -57,7 +57,7 @@ class TimeDetHit : public ShipHit
     Float_t flag;     ///< flag
     Float_t t_1,t_2;  ///< TDC on both sides
 
-    ClassDef(TimeDetHit,1);
+    ClassDef(TimeDetHit, 2);
 
 };
 

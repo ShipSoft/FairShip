@@ -12,9 +12,9 @@ class Task:
  "initialize"
  def __init__(self,hp,sTree):
   self.sTree = sTree
-  self.fPartArray  = ROOT.TClonesArray("ShipParticle")
+  self.fPartArray = ROOT.std.vector("ShipParticle")()
   if not self.sTree.GetBranch("Particles"):
-   self.Particles   = self.sTree.Branch("Particles",  self.fPartArray,32000,-1)
+      self.Particles = self.sTree.Branch("Particles", self.fPartArray)
   else:
    self.Particles = self.sTree.Particles
   self.reps,self.states,self.newPosDir = {},{},{}
@@ -74,11 +74,10 @@ class Task:
   return
 
  def TwoTrackVertex(self):
-  self.fPartArray.Delete()
+  self.fPartArray.clear()
   fittedTracks = getattr(self.sTree,self.fitTrackLoc)
   goodTracks = getattr(self.sTree,self.goodTracksLoc)
   if goodTracks.size() < 2: return
-  particles    = self.fPartArray
   PosDirCharge,CovMat,scalFac = {},{},{}
   for tr in goodTracks:
    fitStatus = fittedTracks[tr].getFitStatus()
@@ -358,8 +357,7 @@ class Task:
      particle.SetCovV(covV)
      particle.SetCovP(covP)
      particle.SetDoca(doca)
-     nParts   = particles.GetEntries()
-     particles[nParts] = particle
+     self.fPartArray.push_back(particle)
 
      #self.h['dMFit'].Fill( (1.-P.M()) )
      #self.h['MpullFit'].Fill( (1.-P.M())/ROOT.TMath.Sqrt(covP[3][3]) )

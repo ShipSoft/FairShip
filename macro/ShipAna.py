@@ -686,7 +686,7 @@ ut.bookHist(h,'pi0Mass','gamma gamma inv mass',100,0.,0.5)
 
 for n in range(options.nEvents):
  myEventLoop(n)
- sTree.FitTracks.Delete()
+ sTree.FitTracks.clear()
 makePlots()
 # output histograms
 hfile = options.inputFile.split(',')[0].replace('_rec','_ana')
