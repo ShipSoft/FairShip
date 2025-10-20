@@ -5,13 +5,10 @@
 
 veto/* @kathalbrecht  # Katharina Albrecht (HU Berlin)
 
-nutaudet/* @antonioiuliano2  # Antonio Iuliano (INFN Napoli)
-SND/* @antonioiuliano2
+SND/* @antonioiuliano2  # Antonio Iuliano (INFN Napoli)
 
 passive/ShipMuonShield.* @Gfrisella  # Guglielmo Frisella (U Zürich)
 
-ecal/* @matclim  # Matei Climescu (JGU Mainz)
-hcal/* @matclim
-splitcal/* @matclim
+splitcal/* @matclim  # Matei Climescu (JGU Mainz)
 
 strawtubes/* @wcmartylee  # Wei-Chieh Marty Lee (U Hamburg)
