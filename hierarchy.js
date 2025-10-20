@@ -25,6 +25,7 @@ var hierarchy =
     ] ],
     [ "FairDetector", null, [
       [ "MTCDetector", "classMTCDetector.html", null ],
+      [ "SiliconTarget", "classSiliconTarget.html", null ],
       [ "Target", "classTarget.html", null ],
       [ "TargetTracker", "classTargetTracker.html", null ],
       [ "TimeDet", "classTimeDet.html", null ],
@@ -68,6 +69,7 @@ var hierarchy =
     ] ],
     [ "FairMCPoint", null, [
       [ "MtcDetPoint", "classMtcDetPoint.html", null ],
+      [ "SiliconTargetPoint", "classSiliconTargetPoint.html", null ],
       [ "TTPoint", "classTTPoint.html", null ],
       [ "TargetPoint", "classTargetPoint.html", null ],
       [ "TimeDetPoint", "classTimeDetPoint.html", null ],
@@ -173,6 +175,7 @@ var hierarchy =
     [ "TObject", null, [
       [ "ShipHit", "classShipHit.html", [
         [ "MtcDetHit", "classMtcDetHit.html", null ],
+        [ "SiliconTargetHit", "classSiliconTargetHit.html", null ],
         [ "TimeDetHit", "classTimeDetHit.html", null ],
         [ "UpstreamTaggerHit", "classUpstreamTaggerHit.html", null ],
         [ "muonHit", "classmuonHit.html", null ],

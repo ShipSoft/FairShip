@@ -1,0 +1,15 @@
+<map id="SND/SiliconTarget/SiliconTargetPoint.h" name="SND/SiliconTarget/SiliconTargetPoint.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="207,5,391,45"/>
+<area shape="rect" id="Node000002" href="$SiliconTarget_8cxx.html" title=" " alt="" coords="5,181,189,221"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="194,38,165,46,138,58,113,74,93,95,84,115,83,138,92,180,87,182,77,138,79,114,88,92,110,70,135,53,163,41,192,32"/>
+<area shape="rect" id="Node000003" href="$SiliconTarget_8h.html" title=" " alt="" coords="103,93,287,133"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="267,56,219,95,216,91,263,52"/>
+<area shape="rect" id="Node000005" href="$SiliconTargetHit_8h.html" title=" " alt="" coords="311,93,495,133"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="334,52,381,91,378,95,331,56"/>
+<area shape="rect" id="Node000006" href="$SiliconTargetPoint_8cxx.html" title=" " alt="" coords="519,93,703,133"/>
+<area shape="poly" id="edge7_Node000001_Node000006" title=" " alt="" coords="381,46,543,91,542,96,380,52"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="165,144,121,183,117,179,161,140"/>
+<area shape="rect" id="Node000004" href="$SiliconTargetHit_8cxx.html" title=" " alt="" coords="277,181,461,221"/>
+<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="246,137,332,179,330,184,244,142"/>
+<area shape="poly" id="edge6_Node000005_Node000004" title=" " alt="" coords="393,147,379,182,374,180,388,145"/>
+</map>

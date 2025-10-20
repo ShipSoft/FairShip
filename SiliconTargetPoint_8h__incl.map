@@ -1,0 +1,9 @@
+<map id="SND/SiliconTarget/SiliconTargetPoint.h" name="SND/SiliconTarget/SiliconTargetPoint.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="90,5,274,45"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,93,116,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="154,48,91,88,89,84,151,43"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="140,93,224,119"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="185,46,185,79,179,79,179,46"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="249,93,339,119"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="211,43,268,83,265,87,208,48"/>
+</map>

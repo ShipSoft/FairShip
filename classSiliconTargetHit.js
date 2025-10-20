@@ -1,0 +1,26 @@
+var classSiliconTargetHit =
+[
+    [ "SiliconTargetHit", "classSiliconTargetHit.html#ae39bbd8eefb9191fe5d7b37d6458ea9e", null ],
+    [ "SiliconTargetHit", "classSiliconTargetHit.html#a2f400f95104dbe803df3275d2fe6a1e8", null ],
+    [ "~SiliconTargetHit", "classSiliconTargetHit.html#a8d530979990d6a1fb975f253aae90707", null ],
+    [ "SiliconTargetHit", "classSiliconTargetHit.html#a5389bc8422d433e48f8ba668c34ab4c3", null ],
+    [ "ClassDef", "classSiliconTargetHit.html#a7f8e947ed292feefc06932c6f159f0e0", null ],
+    [ "GetColumn", "classSiliconTargetHit.html#a09745bcf6c4f0ae7b74d958069f1ebb6", null ],
+    [ "GetLayer", "classSiliconTargetHit.html#ad946985c239c8dc5732858b833c3796d", null ],
+    [ "GetModule", "classSiliconTargetHit.html#af19fc71c07ba96678878ec4378cea88b", null ],
+    [ "GetPlane", "classSiliconTargetHit.html#a160bc1a08d3d42de0318703985049e69", null ],
+    [ "GetRow", "classSiliconTargetHit.html#a0fb610edbc4685c17b2cd0026cf1435c", null ],
+    [ "GetSignal", "classSiliconTargetHit.html#a83e52911b4b3498f81523d5bd2935d75", null ],
+    [ "GetStrip", "classSiliconTargetHit.html#adc4a98b0f655cf917d2dbe2270390903", null ],
+    [ "GetX", "classSiliconTargetHit.html#ac384bf5489db1a3c627b03ac47b7e501", null ],
+    [ "GetY", "classSiliconTargetHit.html#a3a6378e4f2981821cf3a26355683e4c2", null ],
+    [ "GetZ", "classSiliconTargetHit.html#ae631c32cb611f8d630aabec4f6c0fa36", null ],
+    [ "isValid", "classSiliconTargetHit.html#afe9367183151d164847b27991b381424", null ],
+    [ "operator=", "classSiliconTargetHit.html#a90dff85bf1518d5827dc47973d73ea70", null ],
+    [ "Print", "classSiliconTargetHit.html#a8d71b08a363f89987dcfeac3d9ae5b8c", null ],
+    [ "flag", "classSiliconTargetHit.html#ab5d9bf43eaaedb11acbe416f279322a8", null ],
+    [ "fSignal", "classSiliconTargetHit.html#a784bebb6578a12e73fb25972aec5f45b", null ],
+    [ "fX", "classSiliconTargetHit.html#a45abd01a7f87f822f26672cf19c516d3", null ],
+    [ "fY", "classSiliconTargetHit.html#a3531efd9f5b0bbb3e84fb66834697661", null ],
+    [ "fZ", "classSiliconTargetHit.html#a331f1f02a1d37e5c110e08dc8253aa28", null ]
+];

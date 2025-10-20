@@ -187,80 +187,80 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00477">477</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  477</span>    <span class="keyword">def </span>DrawFittedTracks(self, option=&quot;&quot;):</div>
-<div class="line"><span class="lineno">  478</span>        n, ntot = -1, 0</div>
-<div class="line"><span class="lineno">  479</span>        <span class="keywordflow">for</span> fT <span class="keywordflow">in</span> sTree.FitTracks:</div>
-<div class="line"><span class="lineno">  480</span>            n += 1</div>
-<div class="line"><span class="lineno">  481</span>            fst = fT.getFitStatus()</div>
-<div class="line"><span class="lineno">  482</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> fst.isFitConverged():</div>
-<div class="line"><span class="lineno">  483</span>                <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  484</span>            <span class="keywordflow">if</span> fst.getNdf() &lt; 20:</div>
-<div class="line"><span class="lineno">  485</span>                <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  486</span>            DTrack = ROOT.TEveLine()</div>
-<div class="line"><span class="lineno">  487</span>            DTrack.SetPickable(ROOT.kTRUE)</div>
-<div class="line"><span class="lineno">  488</span>            DTrack.SetTitle(fT.__repr__())</div>
-<div class="line"><span class="lineno">  489</span>            fstate = fT.getFittedState(0)</div>
-<div class="line"><span class="lineno">  490</span>            fPos = fstate.getPos()</div>
-<div class="line"><span class="lineno">  491</span>            fMom = fstate.getMom()</div>
-<div class="line"><span class="lineno">  492</span>            pos = fPos</div>
-<div class="line"><span class="lineno">  493</span>            mom = fMom</div>
-<div class="line"><span class="lineno">  494</span>            pid = fstate.getPDG()</div>
-<div class="line"><span class="lineno">  495</span>            zs = self.z_start</div>
-<div class="line"><span class="lineno">  496</span>            <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(self.niter):</div>
-<div class="line"><span class="lineno">  497</span>                rc, newpos, newmom = <a class="code hl_function" href="namespaceTrackExtrapolateTool.html#ae08f6dc2e8c443fbbea48bc074134f1a">TrackExtrapolateTool.extrapolateToPlane</a>(fT, zs)</div>
-<div class="line"><span class="lineno">  498</span>                <span class="keywordflow">if</span> rc:</div>
-<div class="line"><span class="lineno">  499</span>                    DTrack.SetNextPoint(newpos.X(), newpos.Y(), newpos.Z())</div>
-<div class="line"><span class="lineno">  500</span>                <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  501</span>                    print(<span class="stringliteral">&quot;error with extrapolation: z=&quot;</span>, zs)</div>
-<div class="line"><span class="lineno">  502</span>                    <span class="comment"># use linear extrapolation</span></div>
-<div class="line"><span class="lineno">  503</span>                    px, py, pz = mom.X(), mom.Y(), mom.Z()</div>
-<div class="line"><span class="lineno">  504</span>                    lam = (zs - pos.Z()) / pz</div>
-<div class="line"><span class="lineno">  505</span>                    DTrack.SetNextPoint(pos.X() + lam * px, pos.Y() + lam * py, zs)</div>
-<div class="line"><span class="lineno">  506</span>                zs += self.dz</div>
-<div class="line"><span class="lineno">  507</span>            DTrack.SetName(<span class="stringliteral">&quot;FitTrack_&quot;</span> + str(n))</div>
-<div class="line"><span class="lineno">  508</span>            c = ROOT.kWhite</div>
-<div class="line"><span class="lineno">  509</span>            <span class="keywordflow">if</span> abs(pid) <span class="keywordflow">in</span> self.trackColors:</div>
-<div class="line"><span class="lineno">  510</span>                c = self.trackColors[abs(pid)]</div>
-<div class="line"><span class="lineno">  511</span>            DTrack.SetMainColor(c)</div>
-<div class="line"><span class="lineno">  512</span>            DTrack.SetLineWidth(3)</div>
-<div class="line"><span class="lineno">  513</span>            self.comp.AddElement(DTrack)</div>
-<div class="line"><span class="lineno">  514</span>            ntot += 1</div>
-<div class="line"><span class="lineno">  515</span>        print(<span class="stringliteral">&quot;draw &quot;</span>, ntot, <span class="stringliteral">&quot; fitted tracks&quot;</span>)</div>
-<div class="line"><span class="lineno">  516</span>        n = -1</div>
-<div class="line"><span class="lineno">  517</span>        <span class="keywordflow">for</span> aP <span class="keywordflow">in</span> sTree.Particles:</div>
-<div class="line"><span class="lineno">  518</span>            n += 1</div>
-<div class="line"><span class="lineno">  519</span>            <span class="comment"># check fitted tracks</span></div>
-<div class="line"><span class="lineno">  520</span>            tracksOK = <span class="keyword">True</span></div>
-<div class="line"><span class="lineno">  521</span>            <span class="keywordflow">if</span> aP.GetMother(1) == 99:  <span class="comment"># DOCA is set</span></div>
-<div class="line"><span class="lineno">  522</span>                <span class="keywordflow">if</span> aP.T() &gt; 3 * u.cm:</div>
-<div class="line"><span class="lineno">  523</span>                    <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  524</span>            <span class="keywordflow">for</span> k <span class="keywordflow">in</span> range(aP.GetNDaughters()):</div>
-<div class="line"><span class="lineno">  525</span>                <span class="keywordflow">if</span> k &gt; 1:</div>
-<div class="line"><span class="lineno">  526</span>                    <span class="keywordflow">break</span>  <span class="comment"># we don&#39;t have more than 2tracks/vertex yet, no idea why ROOT sometimes comes up with 4!</span></div>
-<div class="line"><span class="lineno">  527</span>                fT = sTree.FitTracks[aP.GetDaughter(k)]</div>
-<div class="line"><span class="lineno">  528</span>                fst = fT.getFitStatus()</div>
-<div class="line"><span class="lineno">  529</span>                <span class="keywordflow">if</span> <span class="keywordflow">not</span> fst.isFitConverged():</div>
-<div class="line"><span class="lineno">  530</span>                    tracksOK = <span class="keyword">False</span></div>
-<div class="line"><span class="lineno">  531</span>                <span class="keywordflow">if</span> fst.getNdf() &lt; 20:</div>
-<div class="line"><span class="lineno">  532</span>                    tracksOK = <span class="keyword">False</span></div>
-<div class="line"><span class="lineno">  533</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> tracksOK:</div>
-<div class="line"><span class="lineno">  534</span>                <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  535</span>            DTrack = ROOT.TEveLine()</div>
-<div class="line"><span class="lineno">  536</span>            DTrack.SetPickable(ROOT.kTRUE)</div>
-<div class="line"><span class="lineno">  537</span>            DTrack.SetMainColor(ROOT.kCyan)</div>
-<div class="line"><span class="lineno">  538</span>            DTrack.SetLineWidth(4)</div>
-<div class="line"><span class="lineno">  539</span>            DTrack.SetName(<span class="stringliteral">&quot;Particle_&quot;</span> + str(n))</div>
-<div class="line"><span class="lineno">  540</span>            DTrack.SetTitle(aP.__repr__())</div>
-<div class="line"><span class="lineno">  541</span>            DTrack.SetNextPoint(aP.Vx(), aP.Vy(), aP.Vz())</div>
-<div class="line"><span class="lineno">  542</span>            lam = (self.Targetz - aP.Vz()) / aP.Pz()</div>
-<div class="line"><span class="lineno">  543</span>            DTrack.SetNextPoint(</div>
-<div class="line"><span class="lineno">  544</span>                aP.Vx() + lam * aP.Px(), aP.Vy() + lam * aP.Py(), self.Targetz</div>
-<div class="line"><span class="lineno">  545</span>            )</div>
-<div class="line"><span class="lineno">  546</span>            self.comp.AddElement(DTrack)</div>
-<div class="line"><span class="lineno">  547</span> </div>
+<p class="definition">Definition at line <a class="el" href="eventDisplay_8py_source.html#l00478">478</a> of file <a class="el" href="eventDisplay_8py_source.html">eventDisplay.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  478</span>    <span class="keyword">def </span>DrawFittedTracks(self, option=&quot;&quot;):</div>
+<div class="line"><span class="lineno">  479</span>        n, ntot = -1, 0</div>
+<div class="line"><span class="lineno">  480</span>        <span class="keywordflow">for</span> fT <span class="keywordflow">in</span> sTree.FitTracks:</div>
+<div class="line"><span class="lineno">  481</span>            n += 1</div>
+<div class="line"><span class="lineno">  482</span>            fst = fT.getFitStatus()</div>
+<div class="line"><span class="lineno">  483</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> fst.isFitConverged():</div>
+<div class="line"><span class="lineno">  484</span>                <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  485</span>            <span class="keywordflow">if</span> fst.getNdf() &lt; 20:</div>
+<div class="line"><span class="lineno">  486</span>                <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  487</span>            DTrack = ROOT.TEveLine()</div>
+<div class="line"><span class="lineno">  488</span>            DTrack.SetPickable(ROOT.kTRUE)</div>
+<div class="line"><span class="lineno">  489</span>            DTrack.SetTitle(fT.__repr__())</div>
+<div class="line"><span class="lineno">  490</span>            fstate = fT.getFittedState(0)</div>
+<div class="line"><span class="lineno">  491</span>            fPos = fstate.getPos()</div>
+<div class="line"><span class="lineno">  492</span>            fMom = fstate.getMom()</div>
+<div class="line"><span class="lineno">  493</span>            pos = fPos</div>
+<div class="line"><span class="lineno">  494</span>            mom = fMom</div>
+<div class="line"><span class="lineno">  495</span>            pid = fstate.getPDG()</div>
+<div class="line"><span class="lineno">  496</span>            zs = self.z_start</div>
+<div class="line"><span class="lineno">  497</span>            <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(self.niter):</div>
+<div class="line"><span class="lineno">  498</span>                rc, newpos, newmom = <a class="code hl_function" href="namespaceTrackExtrapolateTool.html#ae08f6dc2e8c443fbbea48bc074134f1a">TrackExtrapolateTool.extrapolateToPlane</a>(fT, zs)</div>
+<div class="line"><span class="lineno">  499</span>                <span class="keywordflow">if</span> rc:</div>
+<div class="line"><span class="lineno">  500</span>                    DTrack.SetNextPoint(newpos.X(), newpos.Y(), newpos.Z())</div>
+<div class="line"><span class="lineno">  501</span>                <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  502</span>                    print(<span class="stringliteral">&quot;error with extrapolation: z=&quot;</span>, zs)</div>
+<div class="line"><span class="lineno">  503</span>                    <span class="comment"># use linear extrapolation</span></div>
+<div class="line"><span class="lineno">  504</span>                    px, py, pz = mom.X(), mom.Y(), mom.Z()</div>
+<div class="line"><span class="lineno">  505</span>                    lam = (zs - pos.Z()) / pz</div>
+<div class="line"><span class="lineno">  506</span>                    DTrack.SetNextPoint(pos.X() + lam * px, pos.Y() + lam * py, zs)</div>
+<div class="line"><span class="lineno">  507</span>                zs += self.dz</div>
+<div class="line"><span class="lineno">  508</span>            DTrack.SetName(<span class="stringliteral">&quot;FitTrack_&quot;</span> + str(n))</div>
+<div class="line"><span class="lineno">  509</span>            c = ROOT.kWhite</div>
+<div class="line"><span class="lineno">  510</span>            <span class="keywordflow">if</span> abs(pid) <span class="keywordflow">in</span> self.trackColors:</div>
+<div class="line"><span class="lineno">  511</span>                c = self.trackColors[abs(pid)]</div>
+<div class="line"><span class="lineno">  512</span>            DTrack.SetMainColor(c)</div>
+<div class="line"><span class="lineno">  513</span>            DTrack.SetLineWidth(3)</div>
+<div class="line"><span class="lineno">  514</span>            self.comp.AddElement(DTrack)</div>
+<div class="line"><span class="lineno">  515</span>            ntot += 1</div>
+<div class="line"><span class="lineno">  516</span>        print(<span class="stringliteral">&quot;draw &quot;</span>, ntot, <span class="stringliteral">&quot; fitted tracks&quot;</span>)</div>
+<div class="line"><span class="lineno">  517</span>        n = -1</div>
+<div class="line"><span class="lineno">  518</span>        <span class="keywordflow">for</span> aP <span class="keywordflow">in</span> sTree.Particles:</div>
+<div class="line"><span class="lineno">  519</span>            n += 1</div>
+<div class="line"><span class="lineno">  520</span>            <span class="comment"># check fitted tracks</span></div>
+<div class="line"><span class="lineno">  521</span>            tracksOK = <span class="keyword">True</span></div>
+<div class="line"><span class="lineno">  522</span>            <span class="keywordflow">if</span> aP.GetMother(1) == 99:  <span class="comment"># DOCA is set</span></div>
+<div class="line"><span class="lineno">  523</span>                <span class="keywordflow">if</span> aP.T() &gt; 3 * u.cm:</div>
+<div class="line"><span class="lineno">  524</span>                    <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  525</span>            <span class="keywordflow">for</span> k <span class="keywordflow">in</span> range(aP.GetNDaughters()):</div>
+<div class="line"><span class="lineno">  526</span>                <span class="keywordflow">if</span> k &gt; 1:</div>
+<div class="line"><span class="lineno">  527</span>                    <span class="keywordflow">break</span>  <span class="comment"># we don&#39;t have more than 2tracks/vertex yet, no idea why ROOT sometimes comes up with 4!</span></div>
+<div class="line"><span class="lineno">  528</span>                fT = sTree.FitTracks[aP.GetDaughter(k)]</div>
+<div class="line"><span class="lineno">  529</span>                fst = fT.getFitStatus()</div>
+<div class="line"><span class="lineno">  530</span>                <span class="keywordflow">if</span> <span class="keywordflow">not</span> fst.isFitConverged():</div>
+<div class="line"><span class="lineno">  531</span>                    tracksOK = <span class="keyword">False</span></div>
+<div class="line"><span class="lineno">  532</span>                <span class="keywordflow">if</span> fst.getNdf() &lt; 20:</div>
+<div class="line"><span class="lineno">  533</span>                    tracksOK = <span class="keyword">False</span></div>
+<div class="line"><span class="lineno">  534</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> tracksOK:</div>
+<div class="line"><span class="lineno">  535</span>                <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  536</span>            DTrack = ROOT.TEveLine()</div>
+<div class="line"><span class="lineno">  537</span>            DTrack.SetPickable(ROOT.kTRUE)</div>
+<div class="line"><span class="lineno">  538</span>            DTrack.SetMainColor(ROOT.kCyan)</div>
+<div class="line"><span class="lineno">  539</span>            DTrack.SetLineWidth(4)</div>
+<div class="line"><span class="lineno">  540</span>            DTrack.SetName(<span class="stringliteral">&quot;Particle_&quot;</span> + str(n))</div>
+<div class="line"><span class="lineno">  541</span>            DTrack.SetTitle(aP.__repr__())</div>
+<div class="line"><span class="lineno">  542</span>            DTrack.SetNextPoint(aP.Vx(), aP.Vy(), aP.Vz())</div>
+<div class="line"><span class="lineno">  543</span>            lam = (self.Targetz - aP.Vz()) / aP.Pz()</div>
+<div class="line"><span class="lineno">  544</span>            DTrack.SetNextPoint(</div>
+<div class="line"><span class="lineno">  545</span>                aP.Vx() + lam * aP.Px(), aP.Vy() + lam * aP.Py(), self.Targetz</div>
+<div class="line"><span class="lineno">  546</span>            )</div>
+<div class="line"><span class="lineno">  547</span>            self.comp.AddElement(DTrack)</div>
 <div class="line"><span class="lineno">  548</span> </div>
-<div class="line"><span class="lineno">  549</span><span class="comment">#</span></div>
+<div class="line"><span class="lineno">  549</span> </div>
+<div class="line"><span class="lineno">  550</span><span class="comment">#</span></div>
 <div class="ttc" id="anamespaceTrackExtrapolateTool_html_ae08f6dc2e8c443fbbea48bc074134f1a"><div class="ttname"><a href="namespaceTrackExtrapolateTool.html#ae08f6dc2e8c443fbbea48bc074134f1a">TrackExtrapolateTool.extrapolateToPlane</a></div><div class="ttdeci">extrapolateToPlane(fT, z)</div><div class="ttdef"><b>Definition</b> <a href="TrackExtrapolateTool_8py_source.html#l00015">TrackExtrapolateTool.py:15</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -391,71 +391,72 @@ Public Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  409</span>                <span class="stringliteral">&quot;ShipRpcPoint&quot;</span>,</div>
 <div class="line"><span class="lineno">  410</span>                <span class="stringliteral">&quot;TargetPoint&quot;</span>,</div>
 <div class="line"><span class="lineno">  411</span>                <span class="stringliteral">&quot;MtcDetPoint&quot;</span>,</div>
-<div class="line"><span class="lineno">  412</span>                <span class="stringliteral">&quot;TimeDetPoint&quot;</span>,</div>
-<div class="line"><span class="lineno">  413</span>            ]:</div>
-<div class="line"><span class="lineno">  414</span>                <span class="keywordflow">if</span> <span class="keywordflow">not</span> sTree.GetBranch(P):</div>
-<div class="line"><span class="lineno">  415</span>                    <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  416</span>                c = eval(<span class="stringliteral">&quot;sTree.&quot;</span> + P)</div>
-<div class="line"><span class="lineno">  417</span>                <span class="keywordflow">for</span> p <span class="keywordflow">in</span> c:</div>
-<div class="line"><span class="lineno">  418</span>                    <span class="keywordflow">if</span> p.GetTrackID() == n:</div>
-<div class="line"><span class="lineno">  419</span>                        <span class="keywordflow">if</span> hasattr(p, <span class="stringliteral">&quot;LastPoint&quot;</span>):</div>
-<div class="line"><span class="lineno">  420</span>                            lp = p.LastPoint()</div>
-<div class="line"><span class="lineno">  421</span>                            <span class="keywordflow">if</span> lp.x() == lp.y() <span class="keywordflow">and</span> lp.x() == lp.z() <span class="keywordflow">and</span> lp.x() == 0:</div>
-<div class="line"><span class="lineno">  422</span>                                <span class="comment"># must be old data, don&#39;t expect hit at 0,0,0</span></div>
-<div class="line"><span class="lineno">  423</span>                                hitlist[p.GetZ()] = [p.GetX(), p.GetY()]</div>
-<div class="line"><span class="lineno">  424</span>                            <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  425</span>                                hitlist[lp.z()] = [lp.x(), lp.y()]</div>
-<div class="line"><span class="lineno">  426</span>                                hitlist[2.0 * p.GetZ() - lp.z()] = [</div>
-<div class="line"><span class="lineno">  427</span>                                    2.0 * p.GetX() - lp.x(),</div>
-<div class="line"><span class="lineno">  428</span>                                    2.0 * p.GetY() - lp.y(),</div>
-<div class="line"><span class="lineno">  429</span>                                ]</div>
-<div class="line"><span class="lineno">  430</span>                        <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  431</span>                            hitlist[p.GetZ()] = [p.GetX(), p.GetY()]</div>
-<div class="line"><span class="lineno">  432</span>            <span class="keywordflow">if</span> len(hitlist) == 1:</div>
-<div class="line"><span class="lineno">  433</span>                <span class="keywordflow">if</span> fT.GetMotherId() &lt; 0:</div>
-<div class="line"><span class="lineno">  434</span>                    <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  435</span>                <span class="keywordflow">if</span> (</div>
-<div class="line"><span class="lineno">  436</span>                    abs(sTree.MCTrack[fT.GetMotherId()].GetPdgCode())</div>
-<div class="line"><span class="lineno">  437</span>                    == options.HiddenParticleID</div>
-<div class="line"><span class="lineno">  438</span>                ):</div>
-<div class="line"><span class="lineno">  439</span>                    <span class="comment"># still would like to draw track stub</span></div>
-<div class="line"><span class="lineno">  440</span>                    <span class="comment"># check for end vertex</span></div>
-<div class="line"><span class="lineno">  441</span>                    evVx = <span class="keyword">False</span></div>
-<div class="line"><span class="lineno">  442</span>                    <span class="keywordflow">for</span> da <span class="keywordflow">in</span> sTree.MCTrack:</div>
-<div class="line"><span class="lineno">  443</span>                        <span class="keywordflow">if</span> da.GetMotherId() == n:</div>
-<div class="line"><span class="lineno">  444</span>                            evVx = <span class="keyword">True</span></div>
-<div class="line"><span class="lineno">  445</span>                            <span class="keywordflow">break</span></div>
-<div class="line"><span class="lineno">  446</span>                    <span class="keywordflow">if</span> evVx:</div>
-<div class="line"><span class="lineno">  447</span>                        hitlist[da.GetStartZ()] = [da.GetStartX(), da.GetStartY()]</div>
-<div class="line"><span class="lineno">  448</span>                    <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  449</span>                        zEx = 10 * u.m</div>
-<div class="line"><span class="lineno">  450</span>                        fT.GetMomentum(fMom)</div>
-<div class="line"><span class="lineno">  451</span>                        lam = (zEx + fPos.Z()) / fMom.Z()</div>
-<div class="line"><span class="lineno">  452</span>                        hitlist[zEx + fPos.Z()] = [</div>
-<div class="line"><span class="lineno">  453</span>                            fPos.X() + lam * fMom.X(),</div>
-<div class="line"><span class="lineno">  454</span>                            fPos.Y() + lam * fMom.Y(),</div>
-<div class="line"><span class="lineno">  455</span>                        ]</div>
-<div class="line"><span class="lineno">  456</span>            <span class="comment"># sort in z</span></div>
-<div class="line"><span class="lineno">  457</span>            lz = list(hitlist.keys())</div>
-<div class="line"><span class="lineno">  458</span>            <span class="keywordflow">if</span> len(lz) &gt; 1:</div>
-<div class="line"><span class="lineno">  459</span>                lz.sort()</div>
-<div class="line"><span class="lineno">  460</span>                <span class="keywordflow">for</span> z <span class="keywordflow">in</span> lz:</div>
-<div class="line"><span class="lineno">  461</span>                    DTrack.SetNextPoint(hitlist[z][0], hitlist[z][1], z)</div>
-<div class="line"><span class="lineno">  462</span>                p = pdg.GetParticle(fT.GetPdgCode())</div>
-<div class="line"><span class="lineno">  463</span>                <span class="keywordflow">if</span> p:</div>
-<div class="line"><span class="lineno">  464</span>                    pName = p.GetName()</div>
-<div class="line"><span class="lineno">  465</span>                <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  466</span>                    pName = str(fT.GetPdgCode())</div>
-<div class="line"><span class="lineno">  467</span>                DTrack.SetName(<span class="stringliteral">&quot;MCTrack_&quot;</span> + str(n) + <span class="stringliteral">&quot;_&quot;</span> + pName)</div>
-<div class="line"><span class="lineno">  468</span>                c = ROOT.kYellow</div>
-<div class="line"><span class="lineno">  469</span>                <span class="keywordflow">if</span> abs(fT.GetPdgCode()) == options.HiddenParticleID:</div>
-<div class="line"><span class="lineno">  470</span>                    c = ROOT.kMagenta</div>
-<div class="line"><span class="lineno">  471</span>                DTrack.SetMainColor(c)</div>
-<div class="line"><span class="lineno">  472</span>                DTrack.SetLineWidth(3)</div>
-<div class="line"><span class="lineno">  473</span>                self.comp.AddElement(DTrack)</div>
-<div class="line"><span class="lineno">  474</span>                ntot += 1</div>
-<div class="line"><span class="lineno">  475</span>        print(<span class="stringliteral">&quot;draw &quot;</span>, ntot, <span class="stringliteral">&quot; MC tracks&quot;</span>)</div>
-<div class="line"><span class="lineno">  476</span> </div>
+<div class="line"><span class="lineno">  412</span>                <span class="stringliteral">&quot;SiliconTargetPoint&quot;</span>,</div>
+<div class="line"><span class="lineno">  413</span>                <span class="stringliteral">&quot;TimeDetPoint&quot;</span>,</div>
+<div class="line"><span class="lineno">  414</span>            ]:</div>
+<div class="line"><span class="lineno">  415</span>                <span class="keywordflow">if</span> <span class="keywordflow">not</span> sTree.GetBranch(P):</div>
+<div class="line"><span class="lineno">  416</span>                    <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  417</span>                c = eval(<span class="stringliteral">&quot;sTree.&quot;</span> + P)</div>
+<div class="line"><span class="lineno">  418</span>                <span class="keywordflow">for</span> p <span class="keywordflow">in</span> c:</div>
+<div class="line"><span class="lineno">  419</span>                    <span class="keywordflow">if</span> p.GetTrackID() == n:</div>
+<div class="line"><span class="lineno">  420</span>                        <span class="keywordflow">if</span> hasattr(p, <span class="stringliteral">&quot;LastPoint&quot;</span>):</div>
+<div class="line"><span class="lineno">  421</span>                            lp = p.LastPoint()</div>
+<div class="line"><span class="lineno">  422</span>                            <span class="keywordflow">if</span> lp.x() == lp.y() <span class="keywordflow">and</span> lp.x() == lp.z() <span class="keywordflow">and</span> lp.x() == 0:</div>
+<div class="line"><span class="lineno">  423</span>                                <span class="comment"># must be old data, don&#39;t expect hit at 0,0,0</span></div>
+<div class="line"><span class="lineno">  424</span>                                hitlist[p.GetZ()] = [p.GetX(), p.GetY()]</div>
+<div class="line"><span class="lineno">  425</span>                            <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  426</span>                                hitlist[lp.z()] = [lp.x(), lp.y()]</div>
+<div class="line"><span class="lineno">  427</span>                                hitlist[2.0 * p.GetZ() - lp.z()] = [</div>
+<div class="line"><span class="lineno">  428</span>                                    2.0 * p.GetX() - lp.x(),</div>
+<div class="line"><span class="lineno">  429</span>                                    2.0 * p.GetY() - lp.y(),</div>
+<div class="line"><span class="lineno">  430</span>                                ]</div>
+<div class="line"><span class="lineno">  431</span>                        <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  432</span>                            hitlist[p.GetZ()] = [p.GetX(), p.GetY()]</div>
+<div class="line"><span class="lineno">  433</span>            <span class="keywordflow">if</span> len(hitlist) == 1:</div>
+<div class="line"><span class="lineno">  434</span>                <span class="keywordflow">if</span> fT.GetMotherId() &lt; 0:</div>
+<div class="line"><span class="lineno">  435</span>                    <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  436</span>                <span class="keywordflow">if</span> (</div>
+<div class="line"><span class="lineno">  437</span>                    abs(sTree.MCTrack[fT.GetMotherId()].GetPdgCode())</div>
+<div class="line"><span class="lineno">  438</span>                    == options.HiddenParticleID</div>
+<div class="line"><span class="lineno">  439</span>                ):</div>
+<div class="line"><span class="lineno">  440</span>                    <span class="comment"># still would like to draw track stub</span></div>
+<div class="line"><span class="lineno">  441</span>                    <span class="comment"># check for end vertex</span></div>
+<div class="line"><span class="lineno">  442</span>                    evVx = <span class="keyword">False</span></div>
+<div class="line"><span class="lineno">  443</span>                    <span class="keywordflow">for</span> da <span class="keywordflow">in</span> sTree.MCTrack:</div>
+<div class="line"><span class="lineno">  444</span>                        <span class="keywordflow">if</span> da.GetMotherId() == n:</div>
+<div class="line"><span class="lineno">  445</span>                            evVx = <span class="keyword">True</span></div>
+<div class="line"><span class="lineno">  446</span>                            <span class="keywordflow">break</span></div>
+<div class="line"><span class="lineno">  447</span>                    <span class="keywordflow">if</span> evVx:</div>
+<div class="line"><span class="lineno">  448</span>                        hitlist[da.GetStartZ()] = [da.GetStartX(), da.GetStartY()]</div>
+<div class="line"><span class="lineno">  449</span>                    <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  450</span>                        zEx = 10 * u.m</div>
+<div class="line"><span class="lineno">  451</span>                        fT.GetMomentum(fMom)</div>
+<div class="line"><span class="lineno">  452</span>                        lam = (zEx + fPos.Z()) / fMom.Z()</div>
+<div class="line"><span class="lineno">  453</span>                        hitlist[zEx + fPos.Z()] = [</div>
+<div class="line"><span class="lineno">  454</span>                            fPos.X() + lam * fMom.X(),</div>
+<div class="line"><span class="lineno">  455</span>                            fPos.Y() + lam * fMom.Y(),</div>
+<div class="line"><span class="lineno">  456</span>                        ]</div>
+<div class="line"><span class="lineno">  457</span>            <span class="comment"># sort in z</span></div>
+<div class="line"><span class="lineno">  458</span>            lz = list(hitlist.keys())</div>
+<div class="line"><span class="lineno">  459</span>            <span class="keywordflow">if</span> len(lz) &gt; 1:</div>
+<div class="line"><span class="lineno">  460</span>                lz.sort()</div>
+<div class="line"><span class="lineno">  461</span>                <span class="keywordflow">for</span> z <span class="keywordflow">in</span> lz:</div>
+<div class="line"><span class="lineno">  462</span>                    DTrack.SetNextPoint(hitlist[z][0], hitlist[z][1], z)</div>
+<div class="line"><span class="lineno">  463</span>                p = pdg.GetParticle(fT.GetPdgCode())</div>
+<div class="line"><span class="lineno">  464</span>                <span class="keywordflow">if</span> p:</div>
+<div class="line"><span class="lineno">  465</span>                    pName = p.GetName()</div>
+<div class="line"><span class="lineno">  466</span>                <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  467</span>                    pName = str(fT.GetPdgCode())</div>
+<div class="line"><span class="lineno">  468</span>                DTrack.SetName(<span class="stringliteral">&quot;MCTrack_&quot;</span> + str(n) + <span class="stringliteral">&quot;_&quot;</span> + pName)</div>
+<div class="line"><span class="lineno">  469</span>                c = ROOT.kYellow</div>
+<div class="line"><span class="lineno">  470</span>                <span class="keywordflow">if</span> abs(fT.GetPdgCode()) == options.HiddenParticleID:</div>
+<div class="line"><span class="lineno">  471</span>                    c = ROOT.kMagenta</div>
+<div class="line"><span class="lineno">  472</span>                DTrack.SetMainColor(c)</div>
+<div class="line"><span class="lineno">  473</span>                DTrack.SetLineWidth(3)</div>
+<div class="line"><span class="lineno">  474</span>                self.comp.AddElement(DTrack)</div>
+<div class="line"><span class="lineno">  475</span>                ntot += 1</div>
+<div class="line"><span class="lineno">  476</span>        print(<span class="stringliteral">&quot;draw &quot;</span>, ntot, <span class="stringliteral">&quot; MC tracks&quot;</span>)</div>
+<div class="line"><span class="lineno">  477</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
