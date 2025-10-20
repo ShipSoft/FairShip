@@ -12,6 +12,7 @@ from detectors.muonDetector import muonDetector
 from detectors.timeDetector import timeDetector
 from detectors.MTCDetector import MTCDetector
 from detectors.SBTDetector import SBTDetector
+from detectors.UpstreamTaggerDetector import UpstreamTaggerDetector
 stop  = ROOT.TVector3()
 start = ROOT.TVector3()
 
@@ -36,7 +37,7 @@ class ShipDigiReco:
     if sTree.GetBranch("Digi_SBTHits"): sTree.SetBranchStatus("Digi_SBTHits",0)
     if sTree.GetBranch("digiSBT2MC"):   sTree.SetBranchStatus("digiSBT2MC",0)
     if sTree.GetBranch("Digi_TimeDetHits"): sTree.SetBranchStatus("Digi_TimeDetHits",0)
-    #if sTree.GetBranch("Digi_UpstreamTaggerHits"): sTree.SetBranchStatus("Digi_UpstreamTaggerHits",0)
+    if sTree.GetBranch("Digi_UpstreamTaggerHits"): sTree.SetBranchStatus("Digi_UpstreamTaggerHits",0)
     if sTree.GetBranch("Digi_MuonHits"): sTree.SetBranchStatus("Digi_MuonHits",0)
 
     rawFile = fout.replace("_rec.root","_raw.root")
@@ -78,8 +79,7 @@ class ShipDigiReco:
   self.vetoHitOnTrackBranch=self.sTree.Branch("VetoHitOnTrack",self.vetoHitOnTrackArray,32000,-1)
 
   self.timeDetector = timeDetector("TimeDet", self.sTree)
-  #self.digiUpstreamTagger    = ROOT.TClonesArray("UpstreamTaggerHit")
-  #self.digiUpstreamTaggerBranch=self.sTree.Branch("Digi_UpstreamTaggerHits",self.digiUpstreamTagger,32000,-1)
+  self.upstreamTaggerDetector = UpstreamTaggerDetector("UpstreamTagger", self.sTree)
 
   self.muonDetector = muonDetector("muon", self.sTree)
 
@@ -154,9 +154,7 @@ class ShipDigiReco:
    self.digitize_straw_tubes()
    self.digiStrawBranch.Fill()
    self.timeDetector.process()
-   # self.digiUpstreamTagger.Delete()
-   # self.digitizeUpstreamTagger()         TR 19/6/2020 work in progress
-   # self.digiUpstreamTaggerBranch.Fill()
+   self.upstreamTaggerDetector.process()
    self.muonDetector.process()
    # adding digitization of SND/MTC
    if self.sTree.GetBranch("MTCDetPoint"):
@@ -561,26 +559,6 @@ class ShipDigiReco:
 
    return list_neighbours
 
- def digitizeUpstreamTagger(self):
-   index = 0
-   hitsPerDetId = {}
-   for aMCPoint in self.sTree.UpstreamTaggerPoint:
-     aHit = ROOT.UpstreamTaggerHit(aMCPoint, global_variables.modules["UpstreamTagger"], self.sTree.t0)
-     if self.digiUpstreamTagger.GetSize() == index: self.digiUpstreamTagger.Expand(index+1000)
-     self.digiUpstreamTagger[index]=aHit
-     detID = aHit.GetDetectorID()
-     if aHit.isValid():
-      if detID in hitsPerDetId:
-       t = aHit.GetMeasurements()
-       ct = aHit.GetMeasurements()
-# this is not really correct, only first attempt
-# case that one measurement only is earlier not taken into account
-# SetTDC(Float_t val1, Float_t val2)
-       if  t[0]>ct[0] or t[1]>ct[1]:
- # second hit with smaller tdc
-        self.digiUpstreamTagger[hitsPerDetId[detID]].setInvalid()
-        hitsPerDetId[detID] = index
-     index+=1
 
  def digitize_straw_tubes(self):
     """Digitize strawtube MC hits.
