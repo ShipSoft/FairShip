@@ -1,75 +1,58 @@
 #ifndef UPSTREAMTAGGER_UPSTREAMTAGGERHIT_H_
 #define UPSTREAMTAGGER_UPSTREAMTAGGERHIT_H_
-#include "FairVolume.h"
+
 #include "ShipHit.h"
-#include "UpstreamTaggerPoint.h"
-#include "UpstreamTagger.h"
-#include "TObject.h"
-#include "TGeoShape.h"
-#include "TGeoPhysicalNode.h"
+#include "TVector3.h"
 
+class UpstreamTaggerPoint;
 
-class UpstreamTaggerHit : public ShipHit, UpstreamTagger
+/**
+ * @brief Hit class for UpstreamTagger scoring plane
+ *
+ * Simple hit class for UBT scoring plane detector.
+ * Stores smeared position and time from MC truth.
+ * Does not store MC truth information directly.
+ */
+class UpstreamTaggerHit : public ShipHit
 {
   public:
-
     /** Default constructor **/
     UpstreamTaggerHit();
 
-    UpstreamTaggerHit(UpstreamTaggerPoint* p, UpstreamTagger* c, Double_t t0);
+    /** Constructor from UpstreamTaggerPoint
+     * @param p     MC point
+     * @param t0    Event time offset
+     * @param pos_res Position resolution (cm)
+     * @param time_res Time resolution (ns)
+     **/
+    UpstreamTaggerHit(UpstreamTaggerPoint* p, Double_t t0,
+                      Double_t pos_res, Double_t time_res);
 
     /** Destructor **/
     virtual ~UpstreamTaggerHit();
 
-    /** Accessors **/
-    Double_t GetX();
-    Double_t GetY();
-    Double_t GetZ();
-    TVector3 GetXYZ();
+    /** Position accessors **/
+    Double_t GetX() const { return fX; }
+    Double_t GetY() const { return fY; }
+    Double_t GetZ() const { return fZ; }
+    TVector3 GetXYZ() const { return TVector3(fX, fY, fZ); }
 
+    /** Time accessor **/
+    Double_t GetTime() const { return fTime; }
 
-    TGeoNode* GetNode(Double_t &hit_final, Int_t &mod);
-    std::vector<double> GetTime(Double_t x);
-    std::vector<double> GetTime();
-    std::vector<double> GetMeasurements();
-    /** Modifier **/
-    void SetTDC(Float_t val1, Float_t val2){t_1=val1;t_2=val2;}
-    void SetPoint(Double_t p1, Double_t p2, Double_t p3){point_final[0]=p1;point_final[1]=p2;point_final[2]=p3;}
     /** Output to screen **/
     virtual void Print() const;
 
-    void Dist(Float_t x, Float_t& lpos, Float_t& lneg);
-    void setInvalid() {flag = false;}
-    void setIsValid() {flag = true;}
-    Int_t GetModule() const {return RpcModule;}
-    Int_t GetGlass() const {return RpcGlass;}
-    Int_t GetStrip() const {return RpcStrip;}
-    Int_t GetNeighbour() const {return Rpc_NeighbourStrip;}
-    Int_t GetRpcDetector() const {return RpcDetector;}
-
-    //Rpc time is invalid if isValid returns False
-    bool isValid() const {return flag;}
   private:
-    UpstreamTaggerHit(const UpstreamTaggerHit& point);
-    UpstreamTaggerHit operator=(const UpstreamTaggerHit& point);
-    Double_t v_drift = 17.7;// cm/ns
-    Double_t T_resol = 0.283; // Rpc time resolution in ns
+    UpstreamTaggerHit(const UpstreamTaggerHit& hit);
+    UpstreamTaggerHit& operator=(const UpstreamTaggerHit& hit);
 
-    UpstreamTagger* c0;
-    Double_t point_final[3];
-    const Double_t * mom[3];
+    Double_t fX;      ///< Smeared x position (cm)
+    Double_t fY;      ///< Smeared y position (cm)
+    Double_t fZ;      ///< Smeared z position (cm)
+    Double_t fTime;   ///< Smeared time (ns)
 
-    Float_t flag;     ///< flag
-    Float_t t_1,t_2;  ///< TDC on both sides
-    Int_t RpcModule; //Rpc module
-    Int_t RpcGlass;  //Rpc glass
-    Int_t RpcStrip;  //Rpc Strip
-    Int_t RpcDetector;  //Rpc detector 1 or 2
-    Int_t Rpc_NeighbourStrip; //Neighbour strip likely to be activated
-    Double_t det_zdet1;     //!  z-position of veto station
-
-    ClassDef(UpstreamTaggerHit,1);
-
+    ClassDef(UpstreamTaggerHit, 2);
 };
 
 #endif  // UPSTREAMTAGGER_UPSTREAMTAGGERHIT_H_

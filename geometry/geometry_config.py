@@ -521,3 +521,5 @@ with ConfigRegistry.register_config("basic") as c:
     c.UpstreamTagger.Z_Position = (
         -25.400 * u.m + c.decayVolume.z
     )  # Relative position of UBT to decay vessel centre
+    c.UpstreamTagger.PositionResolution = 1.0 * u.cm  # Position smearing resolution
+    c.UpstreamTagger.TimeResolution = 0.3  # Time resolution in ns
