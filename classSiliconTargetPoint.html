@@ -262,7 +262,7 @@ Private Attributes</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">   21</span>    : FairMCPoint(trackID, detID, pos, mom, tof, length, eLoss)</div>
 <div class="line"><span class="lineno">   22</span>    , <a class="code hl_variable" href="classSiliconTargetPoint.html#ade0ede1ff632563409214991ca427a8f">fPdgCode</a>(pdgcode)</div>
 <div class="line"><span class="lineno">   23</span>{}</div>
-<div class="ttc" id="aclassSiliconTargetPoint_html_ade0ede1ff632563409214991ca427a8f"><div class="ttname"><a href="classSiliconTargetPoint.html#ade0ede1ff632563409214991ca427a8f">SiliconTargetPoint::fPdgCode</a></div><div class="ttdeci">Int_t fPdgCode</div><div class="ttdef"><b>Definition</b> <a href="SiliconTargetPoint_8h_source.html#l00051">SiliconTargetPoint.h:51</a></div></div>
+<div class="ttc" id="aclassSiliconTargetPoint_html_ade0ede1ff632563409214991ca427a8f"><div class="ttname"><a href="classSiliconTargetPoint.html#ade0ede1ff632563409214991ca427a8f">SiliconTargetPoint::fPdgCode</a></div><div class="ttdeci">Int_t fPdgCode</div><div class="ttdef"><b>Definition</b> <a href="SiliconTargetPoint_8h_source.html#l00050">SiliconTargetPoint.h:50</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -346,8 +346,7 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="SiliconTargetPoint_8h_source.html#l00044">44</a> of file <a class="el" href="SiliconTargetPoint_8h_source.html">SiliconTargetPoint.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   44</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="namespaceadd__noise__to__field.html#a4aa6f75233f1922a97b2d4c15285c18e">int</a>(fDetectorID &gt;&gt; 14) % 4; }</div>
-<div class="ttc" id="anamespaceadd__noise__to__field_html_a4aa6f75233f1922a97b2d4c15285c18e"><div class="ttname"><a href="namespaceadd__noise__to__field.html#a4aa6f75233f1922a97b2d4c15285c18e">add_noise_to_field.int</a></div><div class="ttdeci">int</div><div class="ttdef"><b>Definition</b> <a href="add__noise__to__field_8py_source.html#l00057">add_noise_to_field.py:57</a></div></div>
+<div class="fragment"><div class="line"><span class="lineno">   44</span>{ <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(fDetectorID &gt;&gt; 14) % 4; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -403,7 +402,7 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="SiliconTargetPoint_8h_source.html#l00047">47</a> of file <a class="el" href="SiliconTargetPoint_8h_source.html">SiliconTargetPoint.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   47</span>{ <span class="keywordflow">return</span>  <a class="code hl_function" href="classSiliconTargetPoint.html#ac7b8ac4e7f4a1e722a547048a813d45d">GetRow</a>() + 1 + 2 * <a class="code hl_function" href="classSiliconTargetPoint.html#a1a812dedbc1f9709e534491a91446123">GetColumn</a>(); }</div>
+<div class="fragment"><div class="line"><span class="lineno">   47</span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="classSiliconTargetPoint.html#ac7b8ac4e7f4a1e722a547048a813d45d">GetRow</a>() + 1 + 2 * <a class="code hl_function" href="classSiliconTargetPoint.html#a1a812dedbc1f9709e534491a91446123">GetColumn</a>(); }</div>
 <div class="ttc" id="aclassSiliconTargetPoint_html_a1a812dedbc1f9709e534491a91446123"><div class="ttname"><a href="classSiliconTargetPoint.html#a1a812dedbc1f9709e534491a91446123">SiliconTargetPoint::GetColumn</a></div><div class="ttdeci">int constexpr GetColumn()</div><div class="ttdef"><b>Definition</b> <a href="SiliconTargetPoint_8h_source.html#l00044">SiliconTargetPoint.h:44</a></div></div>
 <div class="ttc" id="aclassSiliconTargetPoint_html_ac7b8ac4e7f4a1e722a547048a813d45d"><div class="ttname"><a href="classSiliconTargetPoint.html#ac7b8ac4e7f4a1e722a547048a813d45d">SiliconTargetPoint::GetRow</a></div><div class="ttdeci">int constexpr GetRow()</div><div class="ttdef"><b>Definition</b> <a href="SiliconTargetPoint_8h_source.html#l00045">SiliconTargetPoint.h:45</a></div></div>
 </div><!-- fragment -->
@@ -433,7 +432,7 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="SiliconTargetPoint_8h_source.html#l00043">43</a> of file <a class="el" href="SiliconTargetPoint_8h_source.html">SiliconTargetPoint.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   43</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="namespaceadd__noise__to__field.html#a4aa6f75233f1922a97b2d4c15285c18e">int</a>(fDetectorID &gt;&gt; 16) % 2; } <span class="comment">// 0 is X-plane, 1 is Y-pane</span></div>
+<div class="fragment"><div class="line"><span class="lineno">   43</span>{ <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(fDetectorID &gt;&gt; 16) % 2; }   <span class="comment">// 0 is X-plane, 1 is Y-pane</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -461,7 +460,7 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="SiliconTargetPoint_8h_source.html#l00045">45</a> of file <a class="el" href="SiliconTargetPoint_8h_source.html">SiliconTargetPoint.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   45</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="namespaceadd__noise__to__field.html#a4aa6f75233f1922a97b2d4c15285c18e">int</a>(fDetectorID &gt;&gt; 13) % 2; }</div>
+<div class="fragment"><div class="line"><span class="lineno">   45</span>{ <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(fDetectorID &gt;&gt; 13) % 2; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -489,7 +488,7 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="SiliconTargetPoint_8h_source.html#l00046">46</a> of file <a class="el" href="SiliconTargetPoint_8h_source.html">SiliconTargetPoint.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   46</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="namespaceadd__noise__to__field.html#a4aa6f75233f1922a97b2d4c15285c18e">int</a>(fDetectorID % 4096); }</div>
+<div class="fragment"><div class="line"><span class="lineno">   46</span>{ <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(fDetectorID % 4096); }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -603,7 +602,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiliconTargetPoint_8h_source.html#l00051">51</a> of file <a class="el" href="SiliconTargetPoint_8h_source.html">SiliconTargetPoint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiliconTargetPoint_8h_source.html#l00050">50</a> of file <a class="el" href="SiliconTargetPoint_8h_source.html">SiliconTargetPoint.h</a>.</p>
 
 </div>
 </div>
