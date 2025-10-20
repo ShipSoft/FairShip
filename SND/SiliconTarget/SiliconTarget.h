@@ -2,13 +2,12 @@
 #define SND_SILICONTARGET_SILICONTARGET_H_
 
 #include "FairDetector.h"
+#include "Rtypes.h"
 #include "SiliconTargetPoint.h"
-#include "Rtypes.h"   
 #include "TClonesArray.h"
 #include "TGeoMedium.h"
 #include "TLorentzVector.h"
 #include "TVector3.h"
-
 
 class SiliconTarget : public FairDetector
 {
@@ -41,13 +40,13 @@ class SiliconTarget : public FairDetector
     virtual Bool_t ProcessHits(FairVolume* vol = 0);
 
     SiliconTargetPoint* AddHit(Int_t trackID,
-                        Int_t detID,
-                        TVector3 pos,
-                        TVector3 mom,
-                        Double_t time,
-                        Double_t length,
-                        Double_t eLoss,
-                        Int_t pdgCode);
+                               Int_t detID,
+                               TVector3 pos,
+                               TVector3 mom,
+                               Double_t time,
+                               Double_t length,
+                               Double_t eLoss,
+                               Int_t pdgCode);
 
     /** Registers the produced collections in FAIRRootManager */
     virtual void Register();

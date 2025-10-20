@@ -154,7 +154,7 @@ def configure_snd_siliconTarget(yaml_file, ship_geo):
     # Initialize detector
     if ship_geo.SiliconTarget_geo.zPosition == "auto":
         # Get the the center of the next to last magnet (temporary placement)
-        # Offset placement of detector by 130 cm, magnet is 2* 212.54 cm, 
+        # Offset placement of detector by 130 cm, magnet is 2* 212.54 cm,
         # 120 layers at 132 cm will fit.
         ship_geo.SiliconTarget_geo.zPosition = find_shield_center(ship_geo)[2][-2] + 130
         print("SiliconTarget zPosition set to ", ship_geo.SiliconTarget_geo.zPosition)

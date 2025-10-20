@@ -1,8 +1,9 @@
 #include "SiliconTarget.h"
-#include "SiliconTargetPoint.h"
+
 #include "ShipDetectorList.h"
 #include "ShipStack.h"
 #include "ShipUnit.h"
+#include "SiliconTargetPoint.h"
 
 // ROOT / TGeo headers
 #include "TGeoBBox.h"
@@ -30,7 +31,7 @@
 
 // Additional standard headers
 #include "TClonesArray.h"
-#include "TString.h"     // for TString
+#include "TString.h"   // for TString
 #include "TVirtualMC.h"
 
 using namespace ShipUnit;
@@ -48,7 +49,7 @@ SiliconTarget::SiliconTarget()
     , fSiliconTargetPointCollection(new TClonesArray("SiliconTargetPoint"))
 {}
 
-SiliconTarget::SiliconTarget(const char *name, Bool_t Active, const char *Title)
+SiliconTarget::SiliconTarget(const char* name, Bool_t Active, const char* Title)
     : FairDetector(name, Active, kSiliconTarget)
     , fTrackID(-1)
     , fPdgCode()
@@ -63,16 +64,19 @@ SiliconTarget::SiliconTarget(const char *name, Bool_t Active, const char *Title)
 
 SiliconTarget::~SiliconTarget()
 {
-   if (fSiliconTargetPointCollection) {
-      fSiliconTargetPointCollection->Delete();
-      delete fSiliconTargetPointCollection;
-   }
+    if (fSiliconTargetPointCollection) {
+        fSiliconTargetPointCollection->Delete();
+        delete fSiliconTargetPointCollection;
+    }
 }
 
-void SiliconTarget::Initialize() { FairDetector::Initialize(); }
+void SiliconTarget::Initialize()
+{
+    FairDetector::Initialize();
+}
 
 // -----   Private method InitMedium
-Int_t SiliconTarget::InitMedium(const char *name)
+Int_t SiliconTarget::InitMedium(const char* name)
 {
     static FairGeoLoader* geoLoad = FairGeoLoader::Instance();
     static FairGeoInterface* geoFace = geoLoad->getGeoInterface();
@@ -121,50 +125,55 @@ TGeoVolume* SiliconTarget::CreateSiliconPlanes(const char* name,
                                                Int_t layerId)
 {
     Double_t strip_pitch = 75.5 * um;
-    Int_t nRows = 2;    
+    Int_t nRows = 2;
     Int_t nCols = 4;
     Int_t nPlanes = 2;
 
-    TGeoBBox *SensorShape = new TGeoBBox("SensorShape", width / 2, length / 2, 0.3 * mm / 2);
-    TGeoVolume *SensorVolume = new TGeoVolume("SensorVolume", SensorShape, silicon);
+    TGeoBBox* SensorShape = new TGeoBBox("SensorShape", width / 2, length / 2, 0.3 * mm / 2);
+    TGeoVolume* SensorVolume = new TGeoVolume("SensorVolume", SensorShape, silicon);
     SensorVolume->SetLineColor(kRed);
     SensorVolume->SetTransparency(40);
 
-    auto *Strips = SensorVolume->Divide("SLICEX", 1, 1298, -width / 2, strip_pitch);
+    auto* Strips = SensorVolume->Divide("SLICEX", 1, 1298, -width / 2, strip_pitch);
     AddSensitiveVolume(Strips);
 
-    TGeoVolumeAssembly *trackingStation = new TGeoVolumeAssembly("TrackingStation");
+    TGeoVolumeAssembly* trackingStation = new TGeoVolumeAssembly("TrackingStation");
     // Each tracking station consists of X and Y planes
-    for (Int_t plane=0; plane<nPlanes; plane++) {
-        TGeoVolumeAssembly *trackerPlane = new TGeoVolumeAssembly("TrackerPlane");
+    for (Int_t plane = 0; plane < nPlanes; plane++) {
+        TGeoVolumeAssembly* trackerPlane = new TGeoVolumeAssembly("TrackerPlane");
         // Each plane consists of 8 modules
-        for (Int_t column=0; column<nCols; column++) {
-            for (Int_t row=0; row<nRows; row++) {
+        for (Int_t column = 0; column < nCols; column++) {
+            for (Int_t row = 0; row < nRows; row++) {
                 Int_t sensor_id = (layerId << 5) + (plane << 4) + (column << 2) + (row << 1);
-                //Add 1mm gap between sensors for realistic placement
-                trackerPlane->AddNode(
-                        SensorVolume, sensor_id, new TGeoTranslation((-1.5 * width - 2. * mm) + (column * width + column * 1 * mm), (length / 2. + 0.5 * mm) - row * (length + 1. * mm), 0));
-		}
-            }
-            if (plane == 0) {
-                trackingStation->AddNode(trackerPlane, plane);
-            } else if (plane == 1) {
-                //Rotate the second plane by 90 degrees and translate such that the planes are evenly spaced. 
-                trackingStation->AddNode(trackerPlane, plane, new TGeoCombiTrans(TGeoTranslation(0, 0, spacing), TGeoRotation("y_rot", 0, 0, 90)));
+                // Add 1mm gap between sensors for realistic placement
+                trackerPlane->AddNode(SensorVolume,
+                                      sensor_id,
+                                      new TGeoTranslation((-1.5 * width - 2. * mm) + (column * width + column * 1 * mm),
+                                                          (length / 2. + 0.5 * mm) - row * (length + 1. * mm),
+                                                          0));
             }
         }
+        if (plane == 0) {
+            trackingStation->AddNode(trackerPlane, plane);
+        } else if (plane == 1) {
+            // Rotate the second plane by 90 degrees and translate such that the planes are evenly spaced.
+            trackingStation->AddNode(
+                trackerPlane,
+                plane,
+                new TGeoCombiTrans(TGeoTranslation(0, 0, spacing), TGeoRotation("y_rot", 0, 0, 90)));
+        }
+    }
 
     return trackingStation;
-
 }
 void SiliconTarget::ConstructGeometry()
 {
     InitMedium("tungstenalloySND");
-    TGeoMedium *tungsten = gGeoManager->GetMedium("tungstenalloySND");
+    TGeoMedium* tungsten = gGeoManager->GetMedium("tungstenalloySND");
     InitMedium("air");
     TGeoMedium* air = gGeoManager->GetMedium("air");
     InitMedium("silicon");
-    TGeoMedium *Silicon = gGeoManager->GetMedium("silicon");
+    TGeoMedium* Silicon = gGeoManager->GetMedium("silicon");
 
     Double_t totalLength = fLayers * fTargetSpacing;
 
@@ -183,10 +192,15 @@ void SiliconTarget::ConstructGeometry()
         // Compute the center position (z) for the current W layer
         Double_t zPos = -totalLength / 2 + i * fTargetSpacing;
 
-        //Place the tungsten layer 
+        // Place the tungsten layer
         envVol->AddNode(targetVol, i, new TGeoTranslation(0, 0, zPos + fTargetThickness / 2.));
 
-        TGeoVolume* siliconPlanes = CreateSiliconPlanes("TrackerPlane", fSensorWidth, fSensorLength, fTargetSpacing - fTargetThickness - 2. * fModuleOffset, Silicon, i);
+        TGeoVolume* siliconPlanes = CreateSiliconPlanes("TrackerPlane",
+                                                        fSensorWidth,
+                                                        fSensorLength,
+                                                        fTargetSpacing - fTargetThickness - 2. * fModuleOffset,
+                                                        Silicon,
+                                                        i);
         envVol->AddNode(siliconPlanes, i, new TGeoTranslation(0, 0, zPos + fTargetThickness + fModuleOffset));
     }
 
@@ -194,12 +208,12 @@ void SiliconTarget::ConstructGeometry()
     gGeoManager->GetTopVolume()->AddNode(envVol, 1, new TGeoTranslation(0, 0, fZPosition));
 }
 
-Bool_t SiliconTarget::ProcessHits(FairVolume *vol)
+Bool_t SiliconTarget::ProcessHits(FairVolume* vol)
 {
     /** This method is called from the MC stepping */
     // Set parameters at entrance of volume. Reset ELoss.
     if (gMC->IsTrackEntering()) {
-    	fELoss = 0.;
+        fELoss = 0.;
         fTime = gMC->TrackTime() * 1.0e09;
         fLength = gMC->TrackLength();
         gMC->TrackPosition(fPos);
@@ -209,14 +223,14 @@ Bool_t SiliconTarget::ProcessHits(FairVolume *vol)
     // Sum energy loss for all steps in the active volume
     fELoss += gMC->Edep();
 
-    // Create SiliconTargetPoint at exit of active volume 
+    // Create SiliconTargetPoint at exit of active volume
     if (gMC->IsTrackExiting() || gMC->IsTrackStop() || gMC->IsTrackDisappeared()) {
 
         if (fELoss == 0.) {
             return kFALSE;
         }
 
-        TParticle *p = gMC->GetStack()->GetCurrentTrack();
+        TParticle* p = gMC->GetStack()->GetCurrentTrack();
         fTrackID = gMC->GetStack()->GetCurrentTrackNumber();
         Int_t pdgCode = p->GetPdgCode();
         TLorentzVector Pos;
@@ -237,7 +251,7 @@ Bool_t SiliconTarget::ProcessHits(FairVolume *vol)
                fELoss,
                pdgCode);
 
-        ShipStack *stack = dynamic_cast<ShipStack*>(gMC->GetStack());
+        ShipStack* stack = dynamic_cast<ShipStack*>(gMC->GetStack());
         stack->AddPoint(kSiliconTarget);
     }
     return kTRUE;
@@ -245,7 +259,7 @@ Bool_t SiliconTarget::ProcessHits(FairVolume *vol)
 
 void SiliconTarget::EndOfEvent()
 {
-   fSiliconTargetPointCollection->Clear();
+    fSiliconTargetPointCollection->Clear();
 }
 
 void SiliconTarget::Register()
@@ -256,21 +270,21 @@ void SiliconTarget::Register()
     LOG(debug) << this->GetName() << ", Register() says: registered " << name << " collection";
 }
 
-TClonesArray *SiliconTarget::GetCollection(Int_t iColl) const
+TClonesArray* SiliconTarget::GetCollection(Int_t iColl) const
 {
-   if (iColl == 0) {
-      return fSiliconTargetPointCollection;
-   } else {
-      return NULL;
-   }
+    if (iColl == 0) {
+        return fSiliconTargetPointCollection;
+    } else {
+        return NULL;
+    }
 }
 
 void SiliconTarget::Reset()
 {
-   fSiliconTargetPointCollection->Clear();
+    fSiliconTargetPointCollection->Clear();
 }
 
-SiliconTargetPoint *SiliconTarget::AddHit(Int_t trackID,
+SiliconTargetPoint* SiliconTarget::AddHit(Int_t trackID,
                                           Int_t detID,
                                           TVector3 pos,
                                           TVector3 mom,
@@ -279,7 +293,7 @@ SiliconTargetPoint *SiliconTarget::AddHit(Int_t trackID,
                                           Double_t eLoss,
                                           Int_t pdgCode)
 {
-   TClonesArray &clref = *fSiliconTargetPointCollection;
-   Int_t size = clref.GetEntriesFast();
-   return new (clref[size]) SiliconTargetPoint(trackID, detID, pos, mom, time, length, eLoss, pdgCode);
+    TClonesArray& clref = *fSiliconTargetPointCollection;
+    Int_t size = clref.GetEntriesFast();
+    return new (clref[size]) SiliconTargetPoint(trackID, detID, pos, mom, time, length, eLoss, pdgCode);
 }
