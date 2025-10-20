@@ -6,7 +6,7 @@ import matplotlib.patches as patches
 import matplotlib.pyplot as plt
 import ROOT
 import shipDet_conf
-from rootpyPickler import Unpickler
+from ShipGeoConfig import load_from_root_file
 
 
 class SciFiMapping:
@@ -340,8 +340,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     geoFile = args.geoFile
     fgeo = ROOT.TFile.Open(geoFile)
-    upkl = Unpickler(fgeo)
-    ship_geo = upkl.load("ShipGeo")
+    ship_geo = load_from_root_file(fgeo, "ShipGeo")
     # -----Create geometry----------------------------------------------
 
     run = ROOT.FairRunSim()

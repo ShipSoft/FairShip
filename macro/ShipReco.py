@@ -78,11 +78,9 @@ if not options.geoFile:
 fgeo = ROOT.TFile.Open(options.geoFile)
 geoMat =  ROOT.genfit.TGeoMaterialInterface()  # if only called in ShipDigiReco -> crash, reason unknown
 
-from ShipGeoConfig import ConfigRegistry
-from rootpyPickler import Unpickler
+from ShipGeoConfig import ConfigRegistry, load_from_root_file
 #load Shipgeo dictionary
-upkl    = Unpickler(fgeo)
-ShipGeo = upkl.load('ShipGeo')
+ShipGeo = load_from_root_file(fgeo, 'ShipGeo')
 
 h={}
 log={}

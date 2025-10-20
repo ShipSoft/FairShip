@@ -1,8 +1,8 @@
-# save python objects as pickle object in ROOT file
-from rootpyPickler import Pickler
 from ShipGeoConfig import AttrDict
 from ShipGeoConfig import ConfigRegistry
-import ROOT,os,subprocess
+import ROOT
+import os
+import subprocess
 def retrieveGitTags(o):
     # record some basic information about version of software:
     if "FAIRSHIP_HASH" in os.environ:
@@ -35,11 +35,25 @@ def retrieveGitTags(o):
         x = subprocess.check_output(['more',tmp]).replace('\n','')
         o.FairRoot = AttrDict(master=x)
     return o
-def execute(f,ox,name='ShipGeo'):
-    if type(ox) == str: ox = ConfigRegistry.register_config("basic")
+def execute(f, ox, name='ShipGeo'):
+    """Save geometry configuration to ROOT file as JSON string"""
+    if type(ox) == str:
+        ox = ConfigRegistry.register_config("basic")
     o = retrieveGitTags(ox)
-    if type(f)==str: fg = ROOT.TFile.Open(f,'update')
-    else:                  fg = f
-    pkl = Pickler(fg)
-    pkl.dump(o,name)
-    if type(f)==str: fg.Close()
+
+    if type(f) == str:
+        fg = ROOT.TFile.Open(f, 'update')
+    else:
+        fg = f
+
+    # Serialize to JSON
+    json_str = o.dumps_json()
+
+    # Save as std::string in ROOT file
+    fg.cd()
+    config_str = ROOT.std.string(json_str)
+    fg.WriteObject(config_str, name)
+    fg.Flush()
+
+    if type(f) == str:
+        fg.Close()

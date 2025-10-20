@@ -8,8 +8,7 @@ ROOT.gROOT.ProcessLine('#include "FairEventHeader.h"')
 # only helps if class version in FairEventHeader.h is increased
 
 from argparse import ArgumentParser
-from ShipGeoConfig import ConfigRegistry
-from rootpyPickler import Unpickler
+from ShipGeoConfig import ConfigRegistry, load_from_root_file
 from array import array
 import shipunit as u
 import shipRoot_conf
@@ -31,7 +30,12 @@ def evExit():
 atexit.register(evExit)
 
 fMan = None
+
+fMan = ROOT.FairEventManager()
 fRun = None
+
+# -----   Reconstruction run   -------------------------------------------
+fRun = ROOT.FairRunAna()
 pdg = ROOT.TDatabasePDG.Instance()
 g = ROOT.gROOT
 gEnv = ROOT.gEnv
@@ -1177,9 +1181,6 @@ def debugStraw(n):
 
 # ----Load the default libraries------
 from basiclibs import *
-
-# -----   Reconstruction run   -------------------------------------------
-fRun = ROOT.FairRunAna()
 if options.geoFile:
     fRun.SetGeomFile(options.geoFile)
 
@@ -1194,8 +1195,6 @@ if options.ParFile:
     parInput1 = ROOT.FairParRootFileIo()
     parInput1.open(options.ParFile)
     rtdb.setFirstInput(parInput1)
-
-fMan = ROOT.FairEventManager()
 fMan.SetMaxEnergy(400.0)  # default is 25 GeV only !
 fMan.SetMinEnergy(0.1)  #  100 MeV
 fMan.SetEvtMaxEnergy(
@@ -1212,8 +1211,7 @@ if withGeo:
     fMan.AddTask(Track)
 
 # Load Shipgeo dictionary written by run_simScript.py
-upkl = Unpickler(fRun.GetGeoFile())
-ShipGeo = upkl.load("ShipGeo")
+ShipGeo = load_from_root_file(fRun.GetGeoFile(), "ShipGeo")
 
 mcHits = {}
 if hasattr(ShipGeo, "MuFilter"):

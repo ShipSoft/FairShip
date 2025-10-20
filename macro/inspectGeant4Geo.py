@@ -1,6 +1,6 @@
 import sys
 import ROOT
-from rootpyPickler import Unpickler
+from ShipGeoConfig import load_from_root_file
 import shipRoot_conf
 shipRoot_conf.configure()
 
@@ -12,8 +12,7 @@ fgeo = ROOT.TFile(fname)
 sGeo = fgeo.Get("FAIRGeom")
 import shipDet_conf
 run = ROOT.FairRunSim()
-upkl = Unpickler(fgeo)
-ShipGeo = upkl.load('ShipGeo')
+ShipGeo = load_from_root_file(fgeo, 'ShipGeo')
 modules = shipDet_conf.configure(run, ShipGeo)
 run.SetUserConfig('g4Config.C')
 run.SetName('TGeant4')

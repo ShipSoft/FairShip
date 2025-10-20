@@ -5,8 +5,7 @@ import ROOT
 import ctypes
 import rootUtils as ut
 import shipunit as u
-from ShipGeoConfig import ConfigRegistry
-from rootpyPickler import Unpickler
+from ShipGeoConfig import ConfigRegistry, load_from_root_file
 import shipRoot_conf
 from backports import tdirectory634
 from argparse import ArgumentParser
@@ -44,8 +43,7 @@ else:
   fgeo = ROOT.TFile(options.geoFile)
 
 # new geofile, load Shipgeo dictionary written by run_simScript.py
-upkl    = Unpickler(fgeo)
-ShipGeo = upkl.load('ShipGeo')
+ShipGeo = load_from_root_file(fgeo, 'ShipGeo')
 dy = ShipGeo.Yheight/u.m
 
 # -----Create geometry----------------------------------------------

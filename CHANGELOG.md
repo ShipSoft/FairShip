@@ -160,6 +160,9 @@ it in future.
 * Update strawtubes class
 * Change SST gas mixture to Ar/CO2 80%/20% at 1 bar
 * UBT box dimensions (BoxX, BoxY, BoxZ) are now configurable via geometry_config.py instead of hardcoded
+* Configuration storage modernized from pickle to JSON
+  - Geometry configurations are now saved as JSON strings (using `std::string`) instead of pickled Python objects in ROOT files
+  - Automatic format detection: new code reads both JSON (new format) and pickle (legacy format) files without user intervention
 
 ### Removed
 

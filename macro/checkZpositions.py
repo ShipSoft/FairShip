@@ -1,13 +1,11 @@
 import ROOT,sys
-from rootpyPickler import Unpickler
+from ShipGeoConfig import load_from_root_file
 badBoys={}
 f1,f2 = sys.argv[1], sys.argv[2]
 fgeoOld=ROOT.TFile(f1)
-upkl    = Unpickler(fgeoOld)
-ShipGeoOld = upkl.load('ShipGeo')
+ShipGeoOld = load_from_root_file(fgeoOld, 'ShipGeo')
 fgeoNew=ROOT.TFile(f2)
-upkl    = Unpickler(fgeoNew)
-ShipGeoNew = upkl.load('ShipGeo')
+ShipGeoNew = load_from_root_file(fgeoNew, 'ShipGeo')
 for x in ShipGeoNew:
    if hasattr(eval('ShipGeoNew.'+x),'z'):
      zold,znew = eval('ShipGeoOld.'+x+'.z'),eval('ShipGeoNew.'+x+'.z')
