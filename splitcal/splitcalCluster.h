@@ -72,10 +72,10 @@ class splitcalCluster : public TObject
     double GetSlopeZY() {return _mZY;}
     double GetInterceptZY() {return _qZY;}
 
-  private:
     /** Copy constructor **/
-    splitcalCluster(const splitcalCluster& cluster);
-    splitcalCluster operator=(const splitcalCluster& cluster);
+    splitcalCluster(const splitcalCluster& cluster) = default;
+    splitcalCluster& operator=(const splitcalCluster& cluster) = default;
+  private:
 
     int _index;
     double _eta, _phi, _energy;

@@ -4,26 +4,31 @@ from BaseDetector import BaseDetector
 
 class timeDetector(BaseDetector):
     def __init__(self, name, intree):
-        super().__init__(name, intree)
+        super().__init__(name, intree, 'std.vector')
 
     def digitize(self):
-        index = 0
-        hitsPerDetId = {}
-        for aMCPoint in self.intree.TimeDetPoint:
-            aHit = ROOT.TimeDetHit(aMCPoint,self.intree.t0)
-            if self.det.GetSize() == index:
-                self.det.Expand(index+1000)
-            self.det[index]=aHit
-            detID = aHit.GetDetectorID()
-            if aHit.isValid():
-                if detID in hitsPerDetId:
-                    t = aHit.GetMeasurements()
-                    ct = aHit.GetMeasurements()
+        """Digitize timing detector MC hits.
+
+        The earliest hit per straw will be marked valid, all later ones invalid.
+        """
+        earliest_per_det_id = {}
+        for index, point in enumerate(self.intree.TimeDetPoint):
+            hit = ROOT.TimeDetHit(point, self.intree.t0)
+            self.det.push_back(hit)
+            detector_id = hit.GetDetectorID()
+            if hit.isValid():
+                if detector_id in earliest_per_det_id:
+                    times = hit.GetMeasurements()
+                    earliest = earliest_per_det_id[detector_id]
+                    reference_times = self.det[earliest].GetMeasurements()
                     # this is not really correct, only first attempt
                     # case that one measurement only is earlier not taken into account
                     # SetTDC(Float_t val1, Float_t val2)
-                    if  t[0]>ct[0] or t[1]>ct[1]:
+                    if reference_times[0] > times[0] or reference_times[1] > times[1]:
                         # second hit with smaller tdc
-                        self.det[hitsPerDetId[detID]].setInvalid()
-                        hitsPerDetId[detID] = index
-            index+=1
+                        self.det[earliest].setInvalid()
+                        earliest_per_det_id[detector_id] = index
+                    else:
+                        self.det[index].setInvalid()
+                else:
+                    earliest_per_det_id[detector_id] = index
