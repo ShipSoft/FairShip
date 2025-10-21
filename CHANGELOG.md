@@ -105,6 +105,7 @@ it in future.
 
 * Rename MtcDetPoint and MtcDetHit classes to MTCDetPoint and MTCDetHit for consistency with detector naming conventions
 * Refactor digitisation to use detector classes for MTC, muon, time and SBT detectors
+* Make BaseDetector an abstract base class to enforce interface contract
 * Don't special case EOS paths (fix #566)
 * Setting up the Muon shield geometry by ROOT files is completely replaced with the temporary solution of dict in the `geometry/geometry_config.py`.
 * Set up of the shield name is now done using the `--shieldName` flag instead of `--scName`.

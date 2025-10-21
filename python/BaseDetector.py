@@ -1,8 +1,9 @@
+from abc import ABC, abstractmethod
+
 import ROOT
-import global_variables
 
 
-class BaseDetector:
+class BaseDetector(ABC):
     def __init__(
         self,
         name,
@@ -46,8 +47,13 @@ class BaseDetector:
         if self.mcBranch:
             self.mcBranch.Fill()
 
+    @abstractmethod
     def digitize(self):
-        # This needs to be defined in the individual detector classes
+        """Digitize detector hits.
+
+        This method must be implemented by all detector subclasses to convert
+        MC hits into digitized detector responses.
+        """
         pass
 
     def process(self):
