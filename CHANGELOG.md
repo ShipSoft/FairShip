@@ -107,6 +107,7 @@ it in future.
 * Refactor digitisation to use detector classes for MTC, muon, time, SBT, and UpstreamTagger detectors
 * Make BaseDetector an abstract base class to enforce interface contract
 * Rewrite UpstreamTaggerHit for simplified scoring plane detector, remove RPC-specific code (#701, #354, #355)
+* Complete migration from TClonesArrays to STL vectors for all detectors (timeDetector, muonDetector, vetoHitOnTrack, splitcal)
 * Don't special case EOS paths (fix #566)
 * Setting up the Muon shield geometry by ROOT files is completely replaced with the temporary solution of dict in the `geometry/geometry_config.py`.
 * Set up of the shield name is now done using the `--shieldName` flag instead of `--scName`.
