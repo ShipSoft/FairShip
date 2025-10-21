@@ -21,9 +21,9 @@ repos:
   - id: ruff-check
     types_or: [python, pyi, jupyter]
     args: [--fix, --show-fixes]
-    files: ^(macro/makeGenieEvents\.py|python/genie_interface\.py|python/SciFiMapping\.py$)
+    files: ^(macro/makeGenieEvents\.py|python/genie_interface\.py|python/SciFiMapping\.py|python/BaseDetector\.py|python/detectors/)$
   - id: ruff-format
-    files: ^(python/experimental/|geometry/geometry_config\.py|macro/makeGenieEvents\.py|python/genie_interface\.py|python/SciFiMapping\.py$)
+    files: ^(python/experimental/|geometry/geometry_config\.py|macro/makeGenieEvents\.py|python/genie_interface\.py|python/SciFiMapping\.py|python/BaseDetector\.py|python/detectors/)$
 - repo: https://github.com/pre-commit/mirrors-clang-format
   rev: v21.1.2
   hooks:
@@ -52,7 +52,7 @@ repos:
     - id: mypy
       name: mypy (type-check)
       types_or: [python, pyi]
-      files: ^(python/experimental/|geometry/geometry_config\.py|macro/makeGenieEvents\.py|python/genie_interface\.py|python/SciFiMapping\.py$)
+      files: ^(python/experimental/|geometry/geometry_config\.py|macro/makeGenieEvents\.py|python/genie_interface\.py|python/SciFiMapping\.py|python/BaseDetector\.py|python/detectors/)$
       args:
         - --python-version=3.9
         - --ignore-missing-imports
