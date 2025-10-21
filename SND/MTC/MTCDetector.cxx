@@ -200,6 +200,8 @@ void MTCDetector::SetMTCParameters(Double_t w,
                                    Double_t angle,
                                    Double_t iron,
                                    Double_t sciFi,
+                                   Int_t num_of_channels,
+                                   Int_t num_of_agg_channels,
                                    Double_t scint,
                                    Int_t layers,
                                    Double_t z,
@@ -210,6 +212,8 @@ void MTCDetector::SetMTCParameters(Double_t w,
     fSciFiBendingAngle = angle;
     fIronThick = iron;
     fSciFiThick = sciFi;
+    fNumberofChannels = num_of_channels;
+    fChannelAggregated = num_of_agg_channels;
     fScintThick = scint;
     fLayers = layers;
     fZCenter = z;
@@ -261,19 +265,6 @@ void MTCDetector::CreateSciFiModule(const char* name,
                                     Double_t thickness,
                                     Int_t LayerId)
 {
-    // Define sublayer thicknesses (in cm)
-    // These values mimic the GEANT4 setup:
-    Double_t lowerIronThick = 0.3;   // 3 mm
-    fiberMatThick = 0.135;           // 1.35 mm (each fiber mat)
-    Double_t airGap = 0.1;           // 1 mm
-    Double_t upperIronThick = 0.3;   // 3 mm
-    Double_t zLowerIronInt = -3.5 / 10;
-    Double_t zFiberMat1 = -1.325 / 10;
-    Double_t zAirGap = -0.15 / 10;
-    Double_t zFiberMat2 = 1.025 / 10;
-    Double_t zUpperIronInt = 3.2 / 10;
-    // Total module thickness = 0.3 + 0.135 + 0.1 + 0.135 + 0.3 ≈ 1.0 cm
-
     // --- Lower Internal Iron ---
     TGeoBBox* lowerIronBox = new TGeoBBox(Form("%s_lowerIron", name), width / 2, height / 2, lowerIronThick / 2);
     TGeoVolume* lowerIronVol = new TGeoVolume(Form("%s_lowerIron", name), lowerIronBox, gGeoManager->GetMedium("iron"));
@@ -312,15 +303,11 @@ void MTCDetector::CreateSciFiModule(const char* name,
 
     // -----------------------------
     // Now build the fibers inside each Epoxy block:
-
     // Common fiber parameters (cm)
     fSciFiActiveY = height;
-    Int_t numFiberLayers = 6;
     Double_t layerThick = fiberMatThick / numFiberLayers;
-    Double_t fFiberRadius = 0.01125;
     fFiberLength = fSciFiActiveY / cos(fSciFiBendingAngle * TMath::DegToRad())
                    - 2 * fFiberRadius * sin(fSciFiBendingAngle * TMath::DegToRad());
-    fFiberPitch = 0.025;
     Int_t fNumFibers = static_cast<Int_t>(fSciFiActiveX / fFiberPitch);
 
     // --- Define the SciFi fiber volume ---
@@ -508,16 +495,12 @@ void MTCDetector::SiPMOverlap()
         return;
     }
     Double_t fLengthScifiMat = fSciFiActiveY;
-    Double_t fWidthChannel = 0.025 * 2;
-    Int_t fNSiPMChan = 128;
-    Int_t fNSiPMs = 8;
-    Int_t fNMats = 1;
-    // Double_t fEdge = 0.413 - 0.025 / 2;
-    Double_t fEdge = - 1.2 / 2; // in case of 8 SiPMs
-    // Double_t initial_shift = fFiberLength * sin(fSciFiBendingAngle * TMath::DegToRad()) / 2;
-    Double_t initial_shift = 0.0;
-    Double_t fCharr = 64 * fWidthChannel;
-    // Double_t firstChannelX = -fSciFiActiveX / 2;
+    Double_t fWidthChannel = fFiberPitch * fChannelAggregated;
+    Int_t fNSiPMChan = fNumberofChannels;
+    Int_t fNSiPMs = std::ceil(fWidth / (fNSiPMChan * fWidthChannel));
+    // define the edge shift. In case of N SiPMs, in cm. Example: for 8 SiPMs with 2 channel aggregation,
+    // fEdge = -1.2/2 cm
+    Double_t fEdge = -(fWidth - fNSiPMs * fNSiPMChan * fWidthChannel) / 2;
     Double_t firstChannelX = -fWidth / 2;
 
     // Contains all plane SiPMs, defined for horizontal fiber plane
@@ -544,10 +527,9 @@ void MTCDetector::SiPMOverlap()
     */
 
     int N = fNMats == 1 ? 1 : 0;
-    Double_t pos = fEdge + firstChannelX + initial_shift;
+    Double_t pos = fEdge + firstChannelX;
     for (int imat = 0; imat < fNMats; imat++) {
         for (int isipms = 0; isipms < fNSiPMs; isipms++) {
-            // pos+= fEdge;
             for (int ichannel = 0; ichannel < fNSiPMChan; ichannel++) {
                 // +5 degrees
                 SiPMmapVolU->AddNode(

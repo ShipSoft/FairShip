@@ -31,6 +31,8 @@ class MTCDetector : public FairDetector
                           Double_t angle,
                           Double_t ironThick,
                           Double_t sciFiThick,
+                          Int_t numOfChannels,
+                          Int_t channelAggregated,
                           Double_t scintThick,
                           Int_t nLayers,
                           Double_t zCenter,
@@ -109,9 +111,25 @@ class MTCDetector : public FairDetector
     Double_t fZCenter;
     Double_t fFieldY;
     Double_t fZEpoxyMat;
-    Double_t fiberMatThick;
+    Double_t fiberMatThick = 0.135;   // 1.35 mm
     Double_t fFiberLength;
-    Double_t fFiberPitch;
+    Double_t fFiberPitch = 0.025;   // cm
+                                    // Define sublayer thicknesses (in cm)
+    // These values mimic the GEANT4 setup:
+    Double_t lowerIronThick = 0.3;   // 3 mm
+    Double_t airGap = 0.1;           // 1 mm
+    Double_t upperIronThick = 0.3;   // 3 mm
+    Double_t zLowerIronInt = -3.5 / 10;
+    Double_t zFiberMat1 = -1.325 / 10;
+    Double_t zAirGap = -0.15 / 10;
+    Double_t zFiberMat2 = 1.025 / 10;
+    Double_t zUpperIronInt = 3.2 / 10;
+    Double_t fFiberRadius = 0.01125;   // 0.1125 mm
+    Int_t numFiberLayers = 6;          // number of fiber layers in epoxy block
+    Int_t fNumberofChannels;           // Number of SiPM channels
+    Int_t fChannelAggregated;          // Number of SiPM channels to be aggregated
+    // Total module thickness = 0.3 + 0.135 + 0.1 + 0.135 + 0.3 ≈ 1.0 cm
+    Int_t fNMats = 1;
     std::map<Int_t, std::map<Int_t, std::array<float, 2>>> fibresSiPM_U;   //! mapping of fibres to SiPM channels
     std::map<Int_t, std::map<Int_t, std::array<float, 2>>> siPMFibres_U;   //! inverse mapping
     std::map<Int_t, std::map<Int_t, std::array<float, 2>>> fibresSiPM_V;   //! mapping of fibres to SiPM channels
