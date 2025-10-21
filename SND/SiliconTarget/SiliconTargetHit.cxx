@@ -20,7 +20,7 @@ SiliconTargetHit::SiliconTargetHit(Int_t detID, const std::vector<SiliconTargetP
 {
     // Sum up signal from all points within the hit
     std::vector<double> _signals;
-    double totalSig;
+    double totalSig = 0;
 
     for (auto* point : V) {
         _signals.push_back(point->GetEnergyLoss());
@@ -29,7 +29,7 @@ SiliconTargetHit::SiliconTargetHit(Int_t detID, const std::vector<SiliconTargetP
         fZ = point->GetZ();
     }
 
-    for (int i = 0; i < _signals.size(); i++) {
+    for (unsigned i = 0; i < _signals.size(); i++) {
         totalSig += _signals[i];
     }
 
