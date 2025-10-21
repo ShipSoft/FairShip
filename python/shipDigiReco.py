@@ -1,5 +1,4 @@
 import os,ROOT,shipVertex,shipDet_conf
-import SciFiMapping
 import global_variables
 import shipPatRec
 import shipunit as u
@@ -94,16 +93,6 @@ class ShipDigiReco:
    self.recoSplitcal = ROOT.TClonesArray("splitcalCluster")
    self.recoSplitcalBranch=self.sTree.Branch("Reco_SplitcalClusters",self.recoSplitcal,32000,-1)
 
-
-  # add MTC module to the list of globals to use it later in the MTCDetHit class. Consistent with SND@LHC approach.
-  # make SiPM to fibre mapping
-  if self.sTree.GetBranch("MTCDetPoint"):
-    lsOfGlobals = ROOT.gROOT.GetListOfGlobals()
-    if global_variables.modules["MTC"] not in lsOfGlobals:
-      lsOfGlobals.Add(global_variables.modules["MTC"])
-    mapping = SciFiMapping.SciFiMapping(global_variables.modules)
-    mapping.make_mapping()
-    self.sipm_to_fibre_map_U, self.sipm_to_fibre_map_V = mapping.get_sipm_to_fibre_map()
 # prepare vertexing
   self.Vertexing = shipVertex.Task(global_variables.h, self.sTree)
 # setup random number generator
