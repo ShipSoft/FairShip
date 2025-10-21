@@ -272,7 +272,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">   20</span>{</div>
 <div class="line"><span class="lineno">   21</span>    <span class="comment">// Sum up signal from all points within the hit</span></div>
 <div class="line"><span class="lineno">   22</span>    std::vector&lt;double&gt; _signals;</div>
-<div class="line"><span class="lineno">   23</span>    <span class="keywordtype">double</span> totalSig;</div>
+<div class="line"><span class="lineno">   23</span>    <span class="keywordtype">double</span> totalSig = 0;</div>
 <div class="line"><span class="lineno">   24</span> </div>
 <div class="line"><span class="lineno">   25</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span>* point : V) {</div>
 <div class="line"><span class="lineno">   26</span>        _signals.push_back(point-&gt;GetEnergyLoss());</div>
@@ -281,7 +281,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">   29</span>        <a class="code hl_variable" href="classSiliconTargetHit.html#a331f1f02a1d37e5c110e08dc8253aa28">fZ</a> = point-&gt;GetZ();</div>
 <div class="line"><span class="lineno">   30</span>    }</div>
 <div class="line"><span class="lineno">   31</span> </div>
-<div class="line"><span class="lineno">   32</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; _signals.size(); <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>++) {</div>
+<div class="line"><span class="lineno">   32</span>    <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> i = 0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; _signals.size(); <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>++) {</div>
 <div class="line"><span class="lineno">   33</span>        totalSig += _signals[<a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>];</div>
 <div class="line"><span class="lineno">   34</span>    }</div>
 <div class="line"><span class="lineno">   35</span> </div>
