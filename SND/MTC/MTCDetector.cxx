@@ -1,7 +1,7 @@
 // MTC detector specific headers
 #include "MTCDetector.h"
 
-#include "MtcDetPoint.h"
+#include "MTCDetPoint.h"
 #include "ShipDetectorList.h"
 #include "ShipStack.h"
 #include "ShipUnit.h"
@@ -152,7 +152,7 @@ MTCDetector::MTCDetector()
     , fTime(-1.)
     , fLength(-1.)
     , fELoss(-1)
-    , fMTCDetectorPointCollection(new TClonesArray("MtcDetPoint"))
+    , fMTCDetectorPointCollection(new TClonesArray("MTCDetPoint"))
 {}
 
 MTCDetector::MTCDetector(const char* name, Bool_t Active, const char* Title, Int_t DetId)
@@ -164,7 +164,7 @@ MTCDetector::MTCDetector(const char* name, Bool_t Active, const char* Title, Int
     , fTime(-1.)
     , fLength(-1.)
     , fELoss(-1)
-    , fMTCDetectorPointCollection(new TClonesArray("MtcDetPoint"))
+    , fMTCDetectorPointCollection(new TClonesArray("MTCDetPoint"))
 {}
 
 MTCDetector::~MTCDetector()
@@ -772,7 +772,7 @@ void MTCDetector::SiPMmapping()
 
 void MTCDetector::Register()
 {
-    TString name = "MtcDetPoint";
+    TString name = "MTCDetPoint";
     TString title = "MTC";
     FairRootManager::Instance()->Register(name, title, fMTCDetectorPointCollection, kTRUE);
     LOG(debug) << this->GetName() << ", Register() says: registered " << name << " collection";
@@ -797,7 +797,7 @@ void MTCDetector::EndOfEvent()
     fMTCDetectorPointCollection->Clear();
 }
 
-MtcDetPoint* MTCDetector::AddHit(Int_t trackID,
+MTCDetPoint* MTCDetector::AddHit(Int_t trackID,
                                  Int_t detID,
                                  TVector3 pos,
                                  TVector3 mom,
@@ -809,5 +809,5 @@ MtcDetPoint* MTCDetector::AddHit(Int_t trackID,
     TClonesArray& clref = *fMTCDetectorPointCollection;
     Int_t size = clref.GetEntriesFast();
 
-    return new (clref[size]) MtcDetPoint(trackID, detID, pos, mom, time, length, eLoss, pdgCode);
+    return new (clref[size]) MTCDetPoint(trackID, detID, pos, mom, time, length, eLoss, pdgCode);
 }

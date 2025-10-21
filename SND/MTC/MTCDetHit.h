@@ -1,27 +1,27 @@
 #ifndef SND_MTC_MTCDETHIT_H_
 #define SND_MTC_MTCDETHIT_H_ 1
 
-#include "MtcDetPoint.h"
+#include "MTCDetPoint.h"
 #include "ShipHit.h"
 #include "TObject.h"
 #include "TVector3.h"
 
-class MtcDetPoint;
+class MTCDetPoint;
 class FairVolume;
 
-class MtcDetHit : public ShipHit
+class MTCDetHit : public ShipHit
 {
   public:
     /** Default constructor **/
-    MtcDetHit();
+    MTCDetHit();
     /** Copy constructor **/
-    MtcDetHit(const MtcDetHit& hit) = default;
-    MtcDetHit& operator=(const MtcDetHit& hit) = default;
-    //  Constructor from MtcDetPoint
-    MtcDetHit(int detID, const std::vector<MtcDetPoint*>&, const std::vector<Float_t>&);
+    MTCDetHit(const MTCDetHit& hit) = default;
+    MTCDetHit& operator=(const MTCDetHit& hit) = default;
+    //  Constructor from MTCDetPoint
+    MTCDetHit(int detID, const std::vector<MTCDetPoint*>&, const std::vector<Float_t>&);
 
     /** Destructor **/
-    virtual ~MtcDetHit();
+    virtual ~MTCDetHit();
 
     /** Output to screen **/
     void Print();
@@ -62,7 +62,7 @@ class MtcDetHit : public ShipHit
     Float_t n_pixels_to_qdc(Float_t npix);
     Float_t flag;   ///< flag
 
-    ClassDef(MtcDetHit, 4);
+    ClassDef(MTCDetHit, 4);
 };
 
 #endif   // SND_MTC_MTCDETHIT_H_

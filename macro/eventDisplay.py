@@ -408,7 +408,7 @@ class DrawTracks(ROOT.FairTask):
                 "strawtubesPoint",
                 "ShipRpcPoint",
                 "TargetPoint",
-                "MtcDetPoint",
+                "MTCDetPoint",
                 "SiliconTargetPoint",
                 "TimeDetPoint",
             ]:
@@ -1245,8 +1245,8 @@ else:
     mcHits["TargetPoints"] = ROOT.FairMCPointDraw(
         "TargetPoint", ROOT.kRed, ROOT.kFullSquare
     )
-    mcHits["MtcDetPoint"] = ROOT.FairMCPointDraw(
-        "MtcDetPoint", ROOT.kGreen, ROOT.kFullSquare
+    mcHits["MTCDetPoint"] = ROOT.FairMCPointDraw(
+        "MTCDetPoint", ROOT.kGreen, ROOT.kFullSquare
     )
     mcHits["SiliconTargetPoint"] = ROOT.FairMCPointDraw(
         "SiliconTargetPoint", ROOT.kCyan, ROOT.kFullSquare

@@ -14,7 +14,7 @@ set(LINK_DIRECTORIES ${ROOT_LIBRARY_DIR} ${FAIRROOT_LIBRARY_DIR}
 
 link_directories(${LINK_DIRECTORIES})
 
-set(SRCS MTCDetector.cxx MtcDetPoint.cxx MtcDetHit.cxx)
+set(SRCS MTCDetector.cxx MTCDetPoint.cxx MTCDetHit.cxx)
 
 set(LINKDEF MTCDetectorLinkDef.h)
 set(LIBRARY_NAME MTCDetector)

@@ -5,12 +5,12 @@
 #include "TObject.h"
 #include "TVector3.h"
 
-class MtcDetPoint : public FairMCPoint
+class MTCDetPoint : public FairMCPoint
 {
 
   public:
     /** Default constructor **/
-    MtcDetPoint();
+    MTCDetPoint();
 
     /** Constructor with arguments
      *@param trackID  Index of MCTrack
@@ -22,7 +22,7 @@ class MtcDetPoint : public FairMCPoint
      *@param eLoss    Energy deposit [GeV]
      **/
 
-    MtcDetPoint(Int_t trackID,
+    MTCDetPoint(Int_t trackID,
                 Int_t detID,
                 TVector3 pos,
                 TVector3 mom,
@@ -32,7 +32,7 @@ class MtcDetPoint : public FairMCPoint
                 Int_t pdgcode);
 
     /** Destructor **/
-    virtual ~MtcDetPoint();
+    virtual ~MTCDetPoint();
 
     /** Output to screen **/
     virtual void Print() const;
@@ -42,10 +42,10 @@ class MtcDetPoint : public FairMCPoint
     Int_t GetLayerType();
     Int_t fPdgCode;
 
-    MtcDetPoint(const MtcDetPoint& point);
-    MtcDetPoint operator=(const MtcDetPoint& point);
+    MTCDetPoint(const MTCDetPoint& point);
+    MTCDetPoint operator=(const MTCDetPoint& point);
 
-    ClassDef(MtcDetPoint, 2)
+    ClassDef(MTCDetPoint, 2)
 };
 
 #endif   // SND_MTC_MTCDETPOINT_H_
