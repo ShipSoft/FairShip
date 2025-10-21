@@ -1,10 +1,20 @@
 import ROOT
 import global_variables
 from BaseDetector import BaseDetector
+import SciFiMapping
 
 class MTCDetector(BaseDetector):
     def __init__(self, name, intree, branchType = 'TClonesArray', branchName = None):
         super().__init__(name, intree, branchType, branchName, splitLevel=1)
+        # add MTC module to the list of globals to use it later in the MTCDetHit class. Consistent with SND@LHC approach.
+        # make SiPM to fibre mapping
+        if intree.GetBranch("MTCDetPoint"):
+            lsOfGlobals = ROOT.gROOT.GetListOfGlobals()
+            if global_variables.modules["MTC"] not in lsOfGlobals:
+                lsOfGlobals.Add(global_variables.modules["MTC"])
+            mapping = SciFiMapping.SciFiMapping(global_variables.modules)
+            mapping.make_mapping()
+            self.sipm_to_fibre_map_U, self.sipm_to_fibre_map_V = mapping.get_sipm_to_fibre_map()
 
     def digitize(self):
         """Digitize SND/MTC MC hits.
