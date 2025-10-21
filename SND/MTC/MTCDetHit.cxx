@@ -1,8 +1,8 @@
-#include "MtcDetHit.h"
+#include "MTCDetHit.h"
 
 #include "FairRunSim.h"
+#include "MTCDetPoint.h"
 #include "MTCDetector.h"
-#include "MtcDetPoint.h"
 #include "TGeoBBox.h"
 #include "TGeoManager.h"
 #include "TGeoNavigator.h"
@@ -23,15 +23,15 @@ constexpr Float_t n_pixels_to_qdc_params[4] = {0.172, -1.31, 0.006, 0.33};   // 
 }   // namespace
 
 // -----   Default constructor   -------------------------------------------
-MtcDetHit::MtcDetHit()
+MTCDetHit::MTCDetHit()
     : ShipHit()
 {
     flag = true;
 }
 
-// Optimized MtcDetHit Constructor
+// Optimized MTCDetHit Constructor
 
-MtcDetHit::MtcDetHit(int SiPMChan, const std::vector<MtcDetPoint*>& points, const std::vector<Float_t>& weights)
+MTCDetHit::MTCDetHit(int SiPMChan, const std::vector<MTCDetPoint*>& points, const std::vector<Float_t>& weights)
 {
     // Retrieve detector once
     static auto* MTCDet = dynamic_cast<MTCDetector*>(gROOT->GetListOfGlobals()->FindObject("MTC"));
@@ -100,30 +100,30 @@ MtcDetHit::MtcDetHit(int SiPMChan, const std::vector<MtcDetPoint*>& points, cons
 }
 
 // -----   Destructor   ----------------------------------------------------
-MtcDetHit::~MtcDetHit() {}
+MTCDetHit::~MTCDetHit() {}
 // -------------------------------------------------------------------------
 
 // -----   Public method GetEnergy   -------------------------------------------
-Float_t MtcDetHit::GetEnergy()
+Float_t MTCDetHit::GetEnergy()
 {
     // to be calculated from digis and calibration constants, missing!
     return signals;
 }
 
-Float_t MtcDetHit::light_attenuation(Float_t distance)
+Float_t MTCDetHit::light_attenuation(Float_t distance)
 {
     //	It returns the light yield attenuation depending on the distance to SiPM
     return TMath::Exp(-(distance - light_attenuation_params[0]) / light_attenuation_params[1]);
 }
 
-Float_t MtcDetHit::sipm_saturation(Float_t ly)
+Float_t MTCDetHit::sipm_saturation(Float_t ly)
 {
     //	It returns the number of fired pixels per channel
     Float_t factor = 1 - TMath::Exp(-ly / n_photons_max);
     return n_photons_max * factor;
 }
 
-Float_t MtcDetHit::n_pixels_to_qdc(Float_t npix)
+Float_t MTCDetHit::n_pixels_to_qdc(Float_t npix)
 {
     //	It returns QDC per channel after Gaussian smearing of the parameters
     Float_t A = gRandom->Gaus(n_pixels_to_qdc_params[0], n_pixels_to_qdc_params[2]);
@@ -132,10 +132,10 @@ Float_t MtcDetHit::n_pixels_to_qdc(Float_t npix)
 }
 
 // -----   Public method Print   -------------------------------------------
-void MtcDetHit::Print()
+void MTCDetHit::Print()
 {
     std::cout << Form(
-        "MtcDetHit: Detector ID %d, Layer %d, Station Type %d, SiPM %d, Channel %d, Signal %.2f, Time %.3f \n",
+        "MTCDetHit: Detector ID %d, Layer %d, Station Type %d, SiPM %d, Channel %d, Signal %.2f, Time %.3f \n",
         fDetectorID,
         GetLayer(),
         GetStationType(),
