@@ -4,7 +4,9 @@ MTC:
   angle: 5                   # Tilt angle of fibers (degrees)
   ironThick: 5               # Magnetised iron thickness (cm)
   sciFiThick: 0.97           # SciFi layer thickness (cm)
+  num_of_channels: 128       # Number of channels per SiPM
+  num_of_agg_channels: 2     # Number of SiPM channels to be aggregated
   scintThick: 1.5            # Scintillator layer thickness (cm)
   nLayers: 45                # Number of sandwich layers
-  zPosition: auto        # Default: auto -- center of the last magnet or global z position in cm
+  zPosition: auto            # Default: auto -- center of the last magnet or global z position in cm
   fieldY: -1.2               # Magnetic field strength (tesla)
