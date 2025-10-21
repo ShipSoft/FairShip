@@ -3,12 +3,6 @@ var hierarchy =
     [ "AbsBField", null, [
       [ "genfit::FairShipFields", "classgenfit_1_1FairShipFields.html", null ]
     ] ],
-    [ "BaseDetector.BaseDetector", "classBaseDetector_1_1BaseDetector.html", [
-      [ "MTCDetector.MTCDetector", "classMTCDetector_1_1MTCDetector.html", null ],
-      [ "SBTDetector.SBTDetector", "classSBTDetector_1_1SBTDetector.html", null ],
-      [ "muonDetector.muonDetector", "classmuonDetector_1_1muonDetector.html", null ],
-      [ "timeDetector.timeDetector", "classtimeDetector_1_1timeDetector.html", null ]
-    ] ],
     [ "hnl.CKMmatrix", "classhnl_1_1CKMmatrix.html", null ],
     [ "Co3Rng", "classCo3Rng.html", null ],
     [ "hnl.constants", "classhnl_1_1constants.html", null ],
@@ -216,5 +210,13 @@ var hierarchy =
     [ "pickle.Unpickler", null, [
       [ "rootpyPickler.Unpickler", "classrootpyPickler_1_1Unpickler.html", null ]
     ] ],
-    [ "Veto", "classVeto.html", null ]
+    [ "Veto", "classVeto.html", null ],
+    [ "ABC", null, [
+      [ "BaseDetector.BaseDetector", "classBaseDetector_1_1BaseDetector.html", [
+        [ "MTCDetector.MTCDetector", "classMTCDetector_1_1MTCDetector.html", null ],
+        [ "SBTDetector.SBTDetector", "classSBTDetector_1_1SBTDetector.html", null ],
+        [ "muonDetector.muonDetector", "classmuonDetector_1_1muonDetector.html", null ],
+        [ "timeDetector.timeDetector", "classtimeDetector_1_1timeDetector.html", null ]
+      ] ]
+    ] ]
 ];
