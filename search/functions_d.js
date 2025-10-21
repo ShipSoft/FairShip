@@ -1,7 +1,7 @@
 var searchData=
 [
   ['n_0',['N',['../classTrackInfo.html#a562825371d5fc7be4187eac344a493c7',1,'TrackInfo']]],
-  ['n_5fpixels_5fto_5fqdc_1',['n_pixels_to_qdc',['../classMtcDetHit.html#a9be3a52ee4ad0e27c5bb37511cc0309c',1,'MtcDetHit']]],
+  ['n_5fpixels_5fto_5fqdc_1',['n_pixels_to_qdc',['../classMTCDetHit.html#a13661a6c759c125b37654095f61af4b8',1,'MTCDetHit']]],
   ['na50_2',['na50',['../namespacerunPythia8.html#ad3343bde85b5ee6fa2d1bccf80b3c16f',1,'runPythia8']]],
   ['na62_3',['NA62',['../namespacestudy__muEloss.html#a5a45c9f9e8ce3baa2b2a16606ea07d6a',1,'study_muEloss']]],
   ['ncomposite_4',['nComposite',['../classShipCompField.html#a3005035d531de7934d27eb9d8df23d5e',1,'ShipCompField']]],

@@ -1,0 +1,11 @@
+<map id="BaseDetector.BaseDetector" name="BaseDetector.BaseDetector">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,80,207,105"/>
+<area shape="rect" id="Node000002" href="$classMTCDetector_1_1MTCDetector.html" title=" " alt="" coords="263,5,457,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="153,73,254,39,298,28,299,33,255,45,154,78"/>
+<area shape="rect" id="Node000003" href="$classSBTDetector_1_1SBTDetector.html" title=" " alt="" coords="267,55,453,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="220,79,266,74,267,79,220,84"/>
+<area shape="rect" id="Node000004" href="$classmuonDetector_1_1muonDetector.html" title=" " alt="" coords="255,104,465,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="220,101,255,104,254,109,220,106"/>
+<area shape="rect" id="Node000005" href="$classtimeDetector_1_1timeDetector.html" title=" " alt="" coords="261,153,459,179"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="158,107,255,138,304,151,302,156,254,143,156,112"/>
+</map>

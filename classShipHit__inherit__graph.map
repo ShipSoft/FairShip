@@ -1,7 +1,7 @@
 <map id="ShipHit" name="ShipHit">
 <area shape="rect" id="Node000001" title=" " alt="" coords="125,179,195,204"/>
-<area shape="rect" id="Node000003" href="$classMtcDetHit.html" title=" " alt="" coords="273,5,361,31"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="166,164,193,102,214,69,241,40,271,24,274,29,244,44,218,72,197,105,171,166"/>
+<area shape="rect" id="Node000003" href="$classMTCDetHit.html" title=" " alt="" coords="271,5,363,31"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="166,164,193,102,214,69,241,40,269,25,272,29,244,44,218,72,197,105,171,166"/>
 <area shape="rect" id="Node000004" href="$classSiliconTargetHit.html" title=" " alt="" coords="255,55,379,80"/>
 <area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="173,165,202,126,241,89,263,78,266,82,244,94,206,130,178,168"/>
 <area shape="rect" id="Node000005" href="$classTimeDetHit.html" title=" " alt="" coords="268,104,365,129"/>

@@ -38,7 +38,7 @@ var searchData=
   ['sigma_5fin_5fpercent_35',['sigma_in_percent',['../namespaceTTCluster.html#a79775c50701d4970dfd21d08aad40265',1,'TTCluster']]],
   ['sigma_5fspatial_36',['sigma_spatial',['../classshipDigiReco_1_1ShipDigiReco.html#ac4b9d6d12a850cb171b440b6542646ae',1,'shipDigiReco.ShipDigiReco.sigma_spatial'],['../classstrawtubes.html#aeda099b7d2519e31ee29b16977ff04d4',1,'strawtubes::sigma_spatial'],['../namespacegeometry__config.html#a49213a2389e9c2cd5500e5cc73b84ea9',1,'geometry_config.sigma_spatial']]],
   ['signal_37',['signal',['../namespacerunPythia8.html#ad61d71e1d6b6f549424ee3d80ebab35f',1,'runPythia8']]],
-  ['signals_38',['signals',['../classMtcDetHit.html#a93c175d3d8e294206e2a8c7a8ecc9d6d',1,'MtcDetHit']]],
+  ['signals_38',['signals',['../classMTCDetHit.html#a6b33710eec297647716726c01558093c',1,'MTCDetHit']]],
   ['simengine_39',['simengine',['../namespaceeventDisplay.html#adf28bd8623ab6b58aed4be6ff3c089ba',1,'eventDisplay.simEngine'],['../namespacerun__simEcal.html#a55debef40f0e3918141f43343277a049',1,'run_simEcal.simEngine'],['../namespacerun__simPgun.html#ad6cccdc278fe8a9dcce425e2158487a2',1,'run_simPgun.simEngine'],['../namespacerun__simScript.html#a2b275b61d212c2d29227392892697e67',1,'run_simScript.simEngine'],['../namespacerun__fixedTarget.html#a563b28a8253682d6cb4581954d84da5b',1,'run_fixedTarget.simEngine']]],
   ['sipm_5fhor_5fpos_40',['sipm_hor_pos',['../classTTCluster_1_1TTCluster.html#ab86d9331a8fc8a57596e0094919e09d6',1,'TTCluster.TTCluster.sipm_hor_pos'],['../namespaceTTCluster.html#afda31970368729a026012c4087e1e869',1,'TTCluster.sipm_hor_pos']]],
   ['sipm_5fmap_41',['sipm_map',['../namespaceTTCluster.html#a582d342d7aefc9528e9b8942028f7bc1',1,'TTCluster']]],

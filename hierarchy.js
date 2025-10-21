@@ -3,6 +3,12 @@ var hierarchy =
     [ "AbsBField", null, [
       [ "genfit::FairShipFields", "classgenfit_1_1FairShipFields.html", null ]
     ] ],
+    [ "BaseDetector.BaseDetector", "classBaseDetector_1_1BaseDetector.html", [
+      [ "MTCDetector.MTCDetector", "classMTCDetector_1_1MTCDetector.html", null ],
+      [ "SBTDetector.SBTDetector", "classSBTDetector_1_1SBTDetector.html", null ],
+      [ "muonDetector.muonDetector", "classmuonDetector_1_1muonDetector.html", null ],
+      [ "timeDetector.timeDetector", "classtimeDetector_1_1timeDetector.html", null ]
+    ] ],
     [ "hnl.CKMmatrix", "classhnl_1_1CKMmatrix.html", null ],
     [ "Co3Rng", "classCo3Rng.html", null ],
     [ "hnl.constants", "classhnl_1_1constants.html", null ],
@@ -68,7 +74,7 @@ var hierarchy =
       [ "ShipGeoCave", "classShipGeoCave.html", null ]
     ] ],
     [ "FairMCPoint", null, [
-      [ "MtcDetPoint", "classMtcDetPoint.html", null ],
+      [ "MTCDetPoint", "classMTCDetPoint.html", null ],
       [ "SiliconTargetPoint", "classSiliconTargetPoint.html", null ],
       [ "TTPoint", "classTTPoint.html", null ],
       [ "TargetPoint", "classTargetPoint.html", null ],
@@ -174,7 +180,7 @@ var hierarchy =
     ] ],
     [ "TObject", null, [
       [ "ShipHit", "classShipHit.html", [
-        [ "MtcDetHit", "classMtcDetHit.html", null ],
+        [ "MTCDetHit", "classMTCDetHit.html", null ],
         [ "SiliconTargetHit", "classSiliconTargetHit.html", null ],
         [ "TimeDetHit", "classTimeDetHit.html", null ],
         [ "UpstreamTaggerHit", "classUpstreamTaggerHit.html", null ],

@@ -4,7 +4,7 @@ var classMTCDetector =
     [ "MTCDetector", "classMTCDetector.html#ae95d16080d7f14faa1866452e1271eb6", null ],
     [ "~MTCDetector", "classMTCDetector.html#aabe64c4efa495d869e106a9eb57efe87", null ],
     [ "MTCDetector", "classMTCDetector.html#ac499fb0b644efce3cd837442bbc0b2d0", null ],
-    [ "AddHit", "classMTCDetector.html#ab95f4f84370beefcaa8a58e5e8bde5ec", null ],
+    [ "AddHit", "classMTCDetector.html#ad30f725809b061545a6c7c880a25150e", null ],
     [ "ConstructGeometry", "classMTCDetector.html#a66f56f17e55ed6223cc9abba735b1e91", null ],
     [ "CreateSciFiModule", "classMTCDetector.html#a8745cfc61c044fd896b67b21cebdf066", null ],
     [ "CreateScintModule", "classMTCDetector.html#a857bede1a01f9044a12e4f55da685694", null ],

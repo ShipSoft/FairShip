@@ -117,6 +117,7 @@ var namespaces_dup =
     [ "analysis_example", "namespaceanalysis__example.html", [
       [ "main", "namespaceanalysis__example.html#a0c6c11891bec942ba89192f6fbef9a1a", null ]
     ] ],
+    [ "BaseDetector", "namespaceBaseDetector.html", "namespaceBaseDetector" ],
     [ "basiclibs", "namespacebasiclibs.html", null ],
     [ "checkMagFields", "namespacecheckMagFields.html", [
       [ "run", "namespacecheckMagFields.html#a65e69e17f1b05eb283a8bb6d5d695249", null ]
@@ -1110,6 +1111,7 @@ var namespaces_dup =
       [ "startOfTarget", "namespacemergeMbias.html#ae3db1f346012489c08f80fc35e3bdd56", null ]
     ] ],
     [ "method_logger", "namespacemethod__logger.html", "namespacemethod__logger" ],
+    [ "MTCDetector", "namespaceMTCDetector.html", "namespaceMTCDetector" ],
     [ "muDIS_mergeFiles", "namespacemuDIS__mergeFiles.html", [
       [ "hadd", "namespacemuDIS__mergeFiles.html#a1a441eb731971198a418bf5e43b8498f", null ],
       [ "makePlots", "namespacemuDIS__mergeFiles.html#ae633d630389477c65ffb7896803ee8db", null ],
@@ -1117,6 +1119,7 @@ var namespaces_dup =
       [ "test", "namespacemuDIS__mergeFiles.html#a2ad4e59b5b770f5e8954ae02a12b75c0", null ],
       [ "h", "namespacemuDIS__mergeFiles.html#a83f94c211fdeec0f62c2f112ef51da13", null ]
     ] ],
+    [ "muonDetector", "namespacemuonDetector.html", "namespacemuonDetector" ],
     [ "proton_bremsstrahlung", "namespaceproton__bremsstrahlung.html", [
       [ "dNdPdTheta", "namespaceproton__bremsstrahlung.html#ac3747a46ab38964a9676801aa3ca0cc9", null ],
       [ "dNdZdPtSquare", "namespaceproton__bremsstrahlung.html#a7a9c0c61414b735f42f7c7117a92ed28", null ],
@@ -1563,6 +1566,7 @@ var namespaces_dup =
       [ "execute", "namespacesaveBasicParameters.html#ae19428dcf1f80c5affea43fc209bf908", null ],
       [ "retrieveGitTags", "namespacesaveBasicParameters.html#ab4a697c36be41496c6d12f0e1686a389", null ]
     ] ],
+    [ "SBTDetector", "namespaceSBTDetector.html", "namespaceSBTDetector" ],
     [ "SciFiMapping", "namespaceSciFiMapping.html", "namespaceSciFiMapping" ],
     [ "ShieldUtils", "namespaceShieldUtils.html", [
       [ "find_shield_center", "namespaceShieldUtils.html#a15add410b51d2e47e680e4949e50876c", null ]
@@ -1745,7 +1749,6 @@ var namespaces_dup =
       [ "red", "namespaceShipStyle.html#a3e07ec150a24cd3f2f198c40da828be7", null ],
       [ "yellow", "namespaceShipStyle.html#a2671a3ad1fd53712bdc05ebd4c87b4db", null ]
     ] ],
-    [ "ShipUnit", "namespaceShipUnit.html", null ],
     [ "shipunit", "namespaceshipunit.html", [
       [ "alpha_rcl2", "namespaceshipunit.html#a852bff5f88f281cab1a9d17abbd90213", null ],
       [ "ampere", "namespaceshipunit.html#ab5bd1c925283ab8ca1bcad2691255c7f", null ],
@@ -1892,6 +1895,7 @@ var namespaces_dup =
       [ "watt", "namespaceshipunit.html#a3a4e38f77301d7b18e00c66be19bc8ea", null ],
       [ "weber", "namespaceshipunit.html#a87b678dd64f162952e6f083c4c42d7cf", null ]
     ] ],
+    [ "ShipUnit", "namespaceShipUnit.html", null ],
     [ "shipVertex", "namespaceshipVertex.html", "namespaceshipVertex" ],
     [ "shipVeto", "namespaceshipVeto.html", "namespaceshipVeto" ],
     [ "study_GammaConv", "namespacestudy__GammaConv.html", "namespacestudy__GammaConv" ],
@@ -1932,6 +1936,7 @@ var namespaces_dup =
       [ "_cached_items", "namespacetdirectory634.html#af2c8e0ac0cb408377aed4b01f54a391f", null ]
     ] ],
     [ "test_shipGeoConfig", "namespacetest__shipGeoConfig.html", "namespacetest__shipGeoConfig" ],
+    [ "timeDetector", "namespacetimeDetector.html", "namespacetimeDetector" ],
     [ "TrackExtrapolateTool", "namespaceTrackExtrapolateTool.html", [
       [ "cmp", "namespaceTrackExtrapolateTool.html#ab8db142297238572f1496a88dcb73c28", null ],
       [ "extrapolateToPlane", "namespaceTrackExtrapolateTool.html#ae08f6dc2e8c443fbbea48bc074134f1a", null ],

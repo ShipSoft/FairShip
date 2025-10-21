@@ -8,7 +8,7 @@ var searchData=
   ['lhcb_5ftune_5',['LHCb_tune',['../namespacemakeCascade.html#ab0b1e642f6080b1d06a39c00531c6005',1,'makeCascade']]],
   ['lhcbstylesetup_6',['lhcbstyleSetup',['../namespaceShipStyle.html#a2071b36d03cd8b7629e66b64ef7b1c07',1,'ShipStyle']]],
   ['lifetime_7',['lifetime',['../namespacerpvsusy.html#a3781638c4bf3e292c5c6a1f717cd3d73',1,'rpvsusy.lifetime()'],['../namespacehnl.html#a0f5362c95554b63c5317a978264e7ec6',1,'hnl.lifetime()'],['../classdarkphoton_1_1DarkPhoton.html#ab6fa92b1e512e95fba854069d6e0d6d0',1,'darkphoton.DarkPhoton.lifetime()']]],
-  ['light_5fattenuation_8',['light_attenuation',['../classMtcDetHit.html#ad1aad7654868df49cb2934716577c83b',1,'MtcDetHit']]],
+  ['light_5fattenuation_8',['light_attenuation',['../classMTCDetHit.html#ab928296c1f42721d6b7b91dad6de71fc',1,'MTCDetHit']]],
   ['linearregression_9',['LinearRegression',['../classsplitcalCluster.html#afa5b955621b768291b701b401604e1ab',1,'splitcalCluster']]],
   ['link2mctrack_10',['link2MCTrack',['../classTracklet.html#a4c6acb8a5decfa7032ca7fdd4a0d92ad',1,'Tracklet']]],
   ['linkvetoontracks_11',['linkVetoOnTracks',['../classshipDigiReco_1_1ShipDigiReco.html#a2147bde28b1960c7c5981e0bce385c4c',1,'shipDigiReco::ShipDigiReco']]],

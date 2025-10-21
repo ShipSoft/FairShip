@@ -1,5 +1,8 @@
 var annotated_dup =
 [
+    [ "BaseDetector", "namespaceBaseDetector.html", [
+      [ "BaseDetector", "classBaseDetector_1_1BaseDetector.html", "classBaseDetector_1_1BaseDetector" ]
+    ] ],
     [ "darkphoton", "namespacedarkphoton.html", [
       [ "DarkPhoton", "classdarkphoton_1_1DarkPhoton.html", "classdarkphoton_1_1DarkPhoton" ]
     ] ],
@@ -53,6 +56,12 @@ var annotated_dup =
     [ "method_logger", "namespacemethod__logger.html", [
       [ "MethodLogger", "classmethod__logger_1_1MethodLogger.html", "classmethod__logger_1_1MethodLogger" ]
     ] ],
+    [ "MTCDetector", "namespaceMTCDetector.html", [
+      [ "MTCDetector", "classMTCDetector_1_1MTCDetector.html", "classMTCDetector_1_1MTCDetector" ]
+    ] ],
+    [ "muonDetector", "namespacemuonDetector.html", [
+      [ "muonDetector", "classmuonDetector_1_1muonDetector.html", "classmuonDetector_1_1muonDetector" ]
+    ] ],
     [ "rootpyPickler", "namespacerootpyPickler.html", [
       [ "IO_Wrapper", "classrootpyPickler_1_1IO__Wrapper.html", "classrootpyPickler_1_1IO__Wrapper" ],
       [ "Pickler", "classrootpyPickler_1_1Pickler.html", "classrootpyPickler_1_1Pickler" ],
@@ -66,6 +75,9 @@ var annotated_dup =
       [ "constants", "classrpvsusy_1_1constants.html", "classrpvsusy_1_1constants" ],
       [ "RPVSUSY", "classrpvsusy_1_1RPVSUSY.html", "classrpvsusy_1_1RPVSUSY" ],
       [ "RPVSUSYbranchings", "classrpvsusy_1_1RPVSUSYbranchings.html", "classrpvsusy_1_1RPVSUSYbranchings" ]
+    ] ],
+    [ "SBTDetector", "namespaceSBTDetector.html", [
+      [ "SBTDetector", "classSBTDetector_1_1SBTDetector.html", "classSBTDetector_1_1SBTDetector" ]
     ] ],
     [ "SciFiMapping", "namespaceSciFiMapping.html", [
       [ "SciFiMapping", "classSciFiMapping_1_1SciFiMapping.html", "classSciFiMapping_1_1SciFiMapping" ]
@@ -104,6 +116,9 @@ var annotated_dup =
       [ "TestStringNewLine", "classtest__shipGeoConfig_1_1TestStringNewLine.html", "classtest__shipGeoConfig_1_1TestStringNewLine" ],
       [ "TestStringSingleConfig", "classtest__shipGeoConfig_1_1TestStringSingleConfig.html", "classtest__shipGeoConfig_1_1TestStringSingleConfig" ]
     ] ],
+    [ "timeDetector", "namespacetimeDetector.html", [
+      [ "timeDetector", "classtimeDetector_1_1timeDetector.html", "classtimeDetector_1_1timeDetector" ]
+    ] ],
     [ "TTCluster", "namespaceTTCluster.html", [
       [ "TTCluster", "classTTCluster_1_1TTCluster.html", "classTTCluster_1_1TTCluster" ]
     ] ],
@@ -116,8 +131,8 @@ var annotated_dup =
     [ "GenieGenerator", "classGenieGenerator.html", "classGenieGenerator" ],
     [ "HNLPythia8Generator", "classHNLPythia8Generator.html", "classHNLPythia8Generator" ],
     [ "MTCDetector", "classMTCDetector.html", "classMTCDetector" ],
-    [ "MtcDetHit", "classMtcDetHit.html", "classMtcDetHit" ],
-    [ "MtcDetPoint", "classMtcDetPoint.html", "classMtcDetPoint" ],
+    [ "MTCDetHit", "classMTCDetHit.html", "classMTCDetHit" ],
+    [ "MTCDetPoint", "classMTCDetPoint.html", "classMTCDetPoint" ],
     [ "MuDISGenerator", "classMuDISGenerator.html", "classMuDISGenerator" ],
     [ "muon", "classmuon.html", "classmuon" ],
     [ "MuonBackGenerator", "classMuonBackGenerator.html", "classMuonBackGenerator" ],

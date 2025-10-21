@@ -1,3 +1,11 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classCo3Rng.html" title=" " alt="" coords="5,5,77,31"/>
+<area shape="rect" id="Node000000" href="$classBaseDetector_1_1BaseDetector.html" title=" " alt="" coords="5,80,207,105"/>
+<area shape="rect" id="Node000001" href="$classMTCDetector_1_1MTCDetector.html" title=" " alt="" coords="263,5,457,31"/>
+<area shape="poly" id="edge2_Node000000_Node000001" title=" " alt="" coords="153,73,254,39,298,28,299,33,255,45,154,78"/>
+<area shape="rect" id="Node000002" href="$classSBTDetector_1_1SBTDetector.html" title=" " alt="" coords="267,55,453,80"/>
+<area shape="poly" id="edge3_Node000000_Node000002" title=" " alt="" coords="220,79,266,74,267,79,220,84"/>
+<area shape="rect" id="Node000003" href="$classmuonDetector_1_1muonDetector.html" title=" " alt="" coords="255,104,465,129"/>
+<area shape="poly" id="edge4_Node000000_Node000003" title=" " alt="" coords="220,101,255,104,254,109,220,106"/>
+<area shape="rect" id="Node000004" href="$classtimeDetector_1_1timeDetector.html" title=" " alt="" coords="261,153,459,179"/>
+<area shape="poly" id="edge5_Node000000_Node000004" title=" " alt="" coords="158,107,255,138,304,151,302,156,254,143,156,112"/>
 </map>
