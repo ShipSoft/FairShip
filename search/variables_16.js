@@ -1,7 +1,7 @@
 var searchData=
 [
   ['v_0',['v',['../namespaceevd__addParticleFollower.html#ae322592f9d93fa2f17428793bf6e5457',1,'evd_addParticleFollower']]],
-  ['v_5fdrift_1',['v_drift',['../classstrawtubes.html#ab683c19901a645b1f78a524a8f202384',1,'strawtubes::v_drift'],['../namespacegeometry__config.html#a2e9e67656740816331bb5c3c124ff54e',1,'geometry_config.v_drift'],['../classshipDigiReco_1_1ShipDigiReco.html#ac37808cf4026c7e6eb83174ec03ebcab',1,'shipDigiReco.ShipDigiReco.v_drift'],['../classUpstreamTaggerHit.html#a1a603196c0b927ab2a25e8caeabfea05',1,'UpstreamTaggerHit::v_drift'],['../classTimeDetHit.html#a4ca1b7b8fb70a6a2bda1f0053283f827',1,'TimeDetHit::v_drift']]],
+  ['v_5fdrift_1',['v_drift',['../classstrawtubes.html#ab683c19901a645b1f78a524a8f202384',1,'strawtubes::v_drift'],['../namespacegeometry__config.html#a2e9e67656740816331bb5c3c124ff54e',1,'geometry_config.v_drift'],['../classshipDigiReco_1_1ShipDigiReco.html#ac37808cf4026c7e6eb83174ec03ebcab',1,'shipDigiReco.ShipDigiReco.v_drift'],['../classTimeDetHit.html#a4ca1b7b8fb70a6a2bda1f0053283f827',1,'TimeDetHit::v_drift']]],
   ['vcb_2',['Vcb',['../classhnl_1_1CKMmatrix.html#a1a6b5b54eb6d777b56b7faffefac12d7',1,'hnl::CKMmatrix']]],
   ['vcd_3',['Vcd',['../classhnl_1_1CKMmatrix.html#ad4f2b26039563785f6ffd8198ad7caa1',1,'hnl::CKMmatrix']]],
   ['vcs_4',['Vcs',['../classhnl_1_1CKMmatrix.html#a924eb72749fd0270983c39f15b5bf1d0',1,'hnl::CKMmatrix']]],
@@ -39,6 +39,6 @@ var searchData=
   ['vus_36',['Vus',['../classhnl_1_1CKMmatrix.html#ae09382c9acce2c30440645a04b2be919',1,'hnl::CKMmatrix']]],
   ['vw_37',['vw',['../namespaceevd__addParticleFollower.html#a75e4d088426bf0926bdfc45d1439654b',1,'evd_addParticleFollower']]],
   ['vx_38',['vx',['../classNtupleGenerator.html#a9fc998e7717d5bad7d576d22de6ab882',1,'NtupleGenerator::vx'],['../classMuonBackGenerator.html#a78e2547b8232c32a2637e7455aa3cc38',1,'MuonBackGenerator::vx']]],
-  ['vy_39',['vy',['../classshipVertex_1_1Task.html#a86f86c96e9e76918c774d7c24b77caf7',1,'shipVertex.Task.Vy'],['../classNtupleGenerator.html#a3c31903311238df1f7755bfea8fe0b22',1,'NtupleGenerator::vy'],['../classMuonBackGenerator.html#a2e7b7dad6c5bfb503c365128a25314ca',1,'MuonBackGenerator::vy']]],
+  ['vy_39',['vy',['../classNtupleGenerator.html#a3c31903311238df1f7755bfea8fe0b22',1,'NtupleGenerator::vy'],['../classMuonBackGenerator.html#a2e7b7dad6c5bfb503c365128a25314ca',1,'MuonBackGenerator::vy'],['../classshipVertex_1_1Task.html#a86f86c96e9e76918c774d7c24b77caf7',1,'shipVertex.Task.Vy']]],
   ['vz_40',['vz',['../classNtupleGenerator.html#a328919f32abdb38bf049f902961198f6',1,'NtupleGenerator::vz'],['../classMuonBackGenerator.html#afbc5cc08f7384cb2156eabba253f6b88',1,'MuonBackGenerator::vz']]]
 ];

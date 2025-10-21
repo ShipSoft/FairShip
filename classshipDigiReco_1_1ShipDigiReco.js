@@ -5,7 +5,6 @@ var classshipDigiReco_1_1ShipDigiReco =
     [ "digitize", "classshipDigiReco_1_1ShipDigiReco.html#a5d4c27ddad83fded0826d6c23b113ef1", null ],
     [ "digitize_straw_tubes", "classshipDigiReco_1_1ShipDigiReco.html#ab37fc0e8047af7b5350db9db215ccb51", null ],
     [ "digitizeSplitcal", "classshipDigiReco_1_1ShipDigiReco.html#accb98dcca11130abe51bde4c0382e624", null ],
-    [ "digitizeUpstreamTagger", "classshipDigiReco_1_1ShipDigiReco.html#af4915e1c56812608b39b20a0d62d93f4", null ],
     [ "findGoodTracks", "classshipDigiReco_1_1ShipDigiReco.html#a82c035a6a646d5cec65dc1195a10bb44", null ],
     [ "findTracks", "classshipDigiReco_1_1ShipDigiReco.html#a690c987ca192f64c52ef6b7a38de91ec", null ],
     [ "findVetoHitOnTrack", "classshipDigiReco_1_1ShipDigiReco.html#ab7eac4365fc761471e7bca2cf2831788", null ],
@@ -53,6 +52,7 @@ var classshipDigiReco_1_1ShipDigiReco =
     [ "sTree", "classshipDigiReco_1_1ShipDigiReco.html#a6f117e48c82f7d36d4e25b6119518002", null ],
     [ "timeDetector", "classshipDigiReco_1_1ShipDigiReco.html#afd3afc44a9576c2b7d8a98c3c06e98ad", null ],
     [ "Tracklets", "classshipDigiReco_1_1ShipDigiReco.html#a2b61741c8e142e08bb64b7288fe79e36", null ],
+    [ "upstreamTaggerDetector", "classshipDigiReco_1_1ShipDigiReco.html#a730348eb662b22ed5b755ae782a92bcf", null ],
     [ "Vertexing", "classshipDigiReco_1_1ShipDigiReco.html#a6d1eda59c9098b43bb73cf17cc0877c1", null ],
     [ "vetoHitOnTrackArray", "classshipDigiReco_1_1ShipDigiReco.html#a54283f8e004587c908a80f9a2483128f", null ],
     [ "vetoHitOnTrackBranch", "classshipDigiReco_1_1ShipDigiReco.html#ac2183ffb516c391bcd688c91b35f1177", null ]

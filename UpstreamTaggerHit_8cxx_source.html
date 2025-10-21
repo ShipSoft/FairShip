@@ -98,141 +98,67 @@ $(document).ready(function(){initNavTree('UpstreamTaggerHit_8cxx_source.html',''
 </div><!--header-->
 <div class="contents">
 <a href="UpstreamTaggerHit_8cxx.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#include &quot;<a class="code" href="UpstreamTaggerHit_8h.html">UpstreamTaggerHit.h</a>&quot;</span></div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#include &quot;<a class="code" href="UpstreamTagger_8h.html">UpstreamTagger.h</a>&quot;</span></div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &quot;TVector3.h&quot;</span></div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &quot;TMath.h&quot;</span></div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;TRandom1.h&quot;</span></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;TRandom3.h&quot;</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;TGeoManager.h&quot;</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;TGeoBBox.h&quot;</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &quot;TGeoNode.h&quot;</span></div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;TRandom3.h&quot;</span></div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &lt;iostream&gt;</span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &lt;cmath&gt;</span></div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &lt;stdlib.h&gt;</span>     <span class="comment">/* srand, rand */</span></div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &lt;cstdlib&gt;</span></div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#include &lt;ctime&gt;</span></div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &lt;time.h&gt;</span>       <span class="comment">/* time */</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#include &quot;<a class="code" href="UpstreamTaggerPoint_8h.html">UpstreamTaggerPoint.h</a>&quot;</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &quot;TRandom.h&quot;</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;iostream&gt;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="keyword">using </span>std::cout;</div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="keyword">using </span>std::endl;</div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="comment">// -----   Default constructor   --------------</span></div>
+<div class="foldopen" id="foldopen00010" data-start="{" data-end="}">
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="classUpstreamTaggerHit.html#a2ff8bf1fd46d705a3684d1f9808ba1b7">   10</a></span><a class="code hl_function" href="classUpstreamTaggerHit.html#a2ff8bf1fd46d705a3684d1f9808ba1b7">UpstreamTaggerHit::UpstreamTaggerHit</a>()</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>  : <a class="code hl_class" href="classShipHit.html">ShipHit</a>(),</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>    fX(0.),</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    fY(0.),</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>    fZ(0.),</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    fTime(0.)</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>{</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>}</div>
+</div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="keyword">using </span>std::cout;</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="keyword">using </span>std::endl;</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="UpstreamTaggerHit_8cxx.html#a2a4e3defa01c68456688479ba32a6a02">   22</a></span>Double_t <a class="code hl_variable" href="UpstreamTaggerHit_8cxx.html#a2a4e3defa01c68456688479ba32a6a02">speedOfLight</a> = TMath::C() *100./1000000000.0 ; <span class="comment">// from m/sec to cm/ns</span></div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="comment">// -----   Default constructor   --------------</span></div>
-<div class="foldopen" id="foldopen00025" data-start="{" data-end="}">
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="classUpstreamTaggerHit.html#a2ff8bf1fd46d705a3684d1f9808ba1b7">   25</a></span><a class="code hl_function" href="classUpstreamTaggerHit.html#a2ff8bf1fd46d705a3684d1f9808ba1b7">UpstreamTaggerHit::UpstreamTaggerHit</a>()</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>  : <a class="code hl_class" href="classShipHit.html">ShipHit</a>()</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>{</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> <a class="code hl_variable" href="classUpstreamTaggerHit.html#a43aeb32f5f7a0f0d40b717ef682eb219">flag</a> = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>}</div>
-</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="comment">// -----   Constructor from UpstreamTaggerPoint   --------------</span></div>
+<div class="foldopen" id="foldopen00020" data-start="{" data-end="}">
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno"><a class="line" href="classUpstreamTaggerHit.html#a42e87c5138bf1f2b039b03e06e08ec61">   20</a></span><a class="code hl_function" href="classUpstreamTaggerHit.html#a2ff8bf1fd46d705a3684d1f9808ba1b7">UpstreamTaggerHit::UpstreamTaggerHit</a>(<a class="code hl_class" href="classUpstreamTaggerPoint.html">UpstreamTaggerPoint</a>* p, Double_t t0,</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>                                     Double_t pos_res, Double_t time_res)</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>  : <a class="code hl_class" href="classShipHit.html">ShipHit</a>()</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>{</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    <a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a> = p-&gt;GetDetectorID();</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    <span class="comment">// Smear position with Gaussian resolution</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    <a class="code hl_variable" href="classUpstreamTaggerHit.html#a9263a866e88731fbd12a0c9e6cbc62e7">fX</a> = gRandom-&gt;Gaus(p-&gt;GetX(), pos_res);</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    <a class="code hl_variable" href="classUpstreamTaggerHit.html#a263f47258c9d788aa521dddbd3baff7c">fY</a> = gRandom-&gt;Gaus(p-&gt;GetY(), pos_res);</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    <a class="code hl_variable" href="classUpstreamTaggerHit.html#a702720a06c10a17d7471a8b4627e6e6c">fZ</a> = gRandom-&gt;Gaus(p-&gt;GetZ(), pos_res);</div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="comment">// -----   constructor from TimeDetPoint from TimeDetHit-------------------------------</span></div>
-<div class="foldopen" id="foldopen00033" data-start="{" data-end="}">
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="classUpstreamTaggerHit.html#a61ded13291f3203b39644a320fa27d39">   33</a></span><a class="code hl_function" href="classUpstreamTaggerHit.html#a2ff8bf1fd46d705a3684d1f9808ba1b7">UpstreamTaggerHit::UpstreamTaggerHit</a>(<a class="code hl_class" href="classUpstreamTaggerPoint.html">UpstreamTaggerPoint</a>* p, <a class="code hl_class" href="classUpstreamTagger.html">UpstreamTagger</a>* c, Double_t t0)</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  : <a class="code hl_class" href="classShipHit.html">ShipHit</a>()</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>{</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>}</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    <span class="comment">// Smear time with Gaussian resolution</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    <a class="code hl_variable" href="classUpstreamTaggerHit.html#a25b7e0952c71e1c21a490b2d64661aed">fTime</a> = gRandom-&gt;Gaus(p-&gt;GetTime() + t0, time_res);</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>}</div>
 </div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="comment">// -----   Destructor   -------------------------</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="classUpstreamTaggerHit.html#a3cbbfd3e1f89a684a899f6f8582ffb9d">   36</a></span><a class="code hl_function" href="classUpstreamTaggerHit.html#a3cbbfd3e1f89a684a899f6f8582ffb9d">UpstreamTaggerHit::~UpstreamTaggerHit</a>() { }</div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="comment">// -----   Destructor   -------------------------</span></div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="classUpstreamTaggerHit.html#a3cbbfd3e1f89a684a899f6f8582ffb9d">   40</a></span><a class="code hl_function" href="classUpstreamTaggerHit.html#a3cbbfd3e1f89a684a899f6f8582ffb9d">UpstreamTaggerHit::~UpstreamTaggerHit</a>() { }</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="comment">// ---- return time information for a given track extrapolation</span></div>
-<div class="foldopen" id="foldopen00043" data-start="{" data-end="}">
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="classUpstreamTaggerHit.html#a01ad192766ac44425db38d54cb99c283">   43</a></span>std::vector&lt;double&gt;  <a class="code hl_function" href="classUpstreamTaggerHit.html#a92335746653758ad0804566cc1c51de3">UpstreamTaggerHit::GetTime</a>(Double_t x){</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="comment">// -----   Print   ------------------------------</span></div>
+<div class="foldopen" id="foldopen00039" data-start="{" data-end="}">
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="classUpstreamTaggerHit.html#a9420c4c54cff675692508a6c1f5b95e0">   39</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classUpstreamTaggerHit.html#a9420c4c54cff675692508a6c1f5b95e0">UpstreamTaggerHit::Print</a>()<span class="keyword"> const</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="keyword"></span>{</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    cout &lt;&lt; <span class="stringliteral">&quot;-I- UpstreamTaggerHit: detector &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a> &lt;&lt; endl;</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    cout &lt;&lt; <span class="stringliteral">&quot;    Position: (&quot;</span> &lt;&lt; <a class="code hl_variable" href="classUpstreamTaggerHit.html#a9263a866e88731fbd12a0c9e6cbc62e7">fX</a> &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; <a class="code hl_variable" href="classUpstreamTaggerHit.html#a263f47258c9d788aa521dddbd3baff7c">fY</a> &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; <a class="code hl_variable" href="classUpstreamTaggerHit.html#a702720a06c10a17d7471a8b4627e6e6c">fZ</a> &lt;&lt; <span class="stringliteral">&quot;) cm&quot;</span> &lt;&lt; endl;</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    cout &lt;&lt; <span class="stringliteral">&quot;    Time: &quot;</span> &lt;&lt; <a class="code hl_variable" href="classUpstreamTaggerHit.html#a25b7e0952c71e1c21a490b2d64661aed">fTime</a> &lt;&lt; <span class="stringliteral">&quot; ns&quot;</span> &lt;&lt; endl;</div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>}</div>
 </div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="comment">// ---- return mean time information</span></div>
-<div class="foldopen" id="foldopen00046" data-start="{" data-end="}">
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="classUpstreamTaggerHit.html#a92335746653758ad0804566cc1c51de3">   46</a></span>std::vector&lt;double&gt;  <a class="code hl_function" href="classUpstreamTaggerHit.html#a92335746653758ad0804566cc1c51de3">UpstreamTaggerHit::GetTime</a>(){</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>}</div>
-</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
-<div class="foldopen" id="foldopen00049" data-start="{" data-end="}">
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a class="line" href="classUpstreamTaggerHit.html#af68cf719163717748f7b28d6cd49930e">   49</a></span>std::vector&lt;double&gt; <a class="code hl_function" href="classUpstreamTaggerHit.html#af68cf719163717748f7b28d6cd49930e">UpstreamTaggerHit::GetMeasurements</a>(){</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>}</div>
-</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="comment">// distance to edges</span></div>
-<div class="foldopen" id="foldopen00053" data-start="{" data-end="}">
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno"><a class="line" href="classUpstreamTaggerHit.html#afe2baef7e2c753979e9e3fde67db65a2">   53</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classUpstreamTaggerHit.html#afe2baef7e2c753979e9e3fde67db65a2">UpstreamTaggerHit::Dist</a>(Float_t x, Float_t&amp; lpos, Float_t&amp; lneg){</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>}</div>
-</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="comment">// ----------------------------------------------</span></div>
-<div class="foldopen" id="foldopen00056" data-start="{" data-end="}">
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno"><a class="line" href="classUpstreamTaggerHit.html#ad5ffa658ce81427626a7670e9e4d8a6c">   56</a></span>TVector3 <a class="code hl_function" href="classUpstreamTaggerHit.html#ad5ffa658ce81427626a7670e9e4d8a6c">UpstreamTaggerHit::GetXYZ</a>()</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>{</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>}</div>
-</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
-<div class="foldopen" id="foldopen00061" data-start="{" data-end="}">
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno"><a class="line" href="classUpstreamTaggerHit.html#ab832ebbcd48e82dd1e4c90dafdac4d28">   61</a></span>Double_t <a class="code hl_function" href="classUpstreamTaggerHit.html#ab832ebbcd48e82dd1e4c90dafdac4d28">UpstreamTaggerHit::GetX</a>()</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>{ TVector3 pos = <a class="code hl_function" href="classUpstreamTaggerHit.html#ad5ffa658ce81427626a7670e9e4d8a6c">GetXYZ</a>();</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  <span class="keywordflow">return</span> pos.X();</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>}</div>
-</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
-<div class="foldopen" id="foldopen00067" data-start="{" data-end="}">
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno"><a class="line" href="classUpstreamTaggerHit.html#a5f065383dd77b79799fce30f9d9ff452">   67</a></span>Double_t <a class="code hl_function" href="classUpstreamTaggerHit.html#a5f065383dd77b79799fce30f9d9ff452">UpstreamTaggerHit::GetY</a>()</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>{ TVector3 pos = <a class="code hl_function" href="classUpstreamTaggerHit.html#ad5ffa658ce81427626a7670e9e4d8a6c">GetXYZ</a>();</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  <span class="keywordflow">return</span> pos.Y();</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>}</div>
-</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
-<div class="foldopen" id="foldopen00073" data-start="{" data-end="}">
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno"><a class="line" href="classUpstreamTaggerHit.html#a4df255b80c53a35271e18ac6249a9a1b">   73</a></span>Double_t <a class="code hl_function" href="classUpstreamTaggerHit.html#a4df255b80c53a35271e18ac6249a9a1b">UpstreamTaggerHit::GetZ</a>()</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>{ TVector3 pos = <a class="code hl_function" href="classUpstreamTaggerHit.html#ad5ffa658ce81427626a7670e9e4d8a6c">GetXYZ</a>();</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  <span class="keywordflow">return</span> pos.Z();</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>}</div>
-</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
-<div class="foldopen" id="foldopen00079" data-start="{" data-end="}">
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno"><a class="line" href="classUpstreamTaggerHit.html#a6b021556444ddbd886e229b1163031ee">   79</a></span>TGeoNode* <a class="code hl_function" href="classUpstreamTaggerHit.html#a6b021556444ddbd886e229b1163031ee">UpstreamTaggerHit::GetNode</a>(Double_t &amp;hit_final, Int_t &amp;mod)</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>{</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>}</div>
-</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span><span class="comment">// -----   Public method Print   -----------------------</span></div>
-<div class="foldopen" id="foldopen00084" data-start="{" data-end="}">
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno"><a class="line" href="classUpstreamTaggerHit.html#a9420c4c54cff675692508a6c1f5b95e0">   84</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classUpstreamTaggerHit.html#a9420c4c54cff675692508a6c1f5b95e0">UpstreamTaggerHit::Print</a>()<span class="keyword"> const</span></div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span><span class="keyword"></span>{</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>  cout &lt;&lt; <span class="stringliteral">&quot;-I- UpstreamTaggerHit: UpstreamTagger hit &quot;</span> &lt;&lt; <span class="stringliteral">&quot; in detector &quot;</span> &lt;&lt; <a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a> &lt;&lt; endl;</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>  cout &lt;&lt; <span class="stringliteral">&quot;  TDC left &quot;</span> &lt;&lt; <a class="code hl_variable" href="classUpstreamTaggerHit.html#a52dc47392f4693b9179824338a18ac4e">t_1</a> &lt;&lt; <span class="stringliteral">&quot; ns   TDC right &quot;</span> &lt;&lt; <a class="code hl_variable" href="classUpstreamTaggerHit.html#ad903e2a94799cc7141ed60470df5263c">t_2</a> &lt;&lt; <span class="stringliteral">&quot; ns&quot;</span> &lt;&lt; endl;</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>}</div>
-</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span> </div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span> </div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span><span class="comment">// -----------------------------------------------------</span></div>
-<div class="ttc" id="aUpstreamTaggerHit_8cxx_html_a2a4e3defa01c68456688479ba32a6a02"><div class="ttname"><a href="UpstreamTaggerHit_8cxx.html#a2a4e3defa01c68456688479ba32a6a02">speedOfLight</a></div><div class="ttdeci">Double_t speedOfLight</div><div class="ttdef"><b>Definition</b> <a href="UpstreamTaggerHit_8cxx_source.html#l00022">UpstreamTaggerHit.cxx:22</a></div></div>
 <div class="ttc" id="aUpstreamTaggerHit_8h_html"><div class="ttname"><a href="UpstreamTaggerHit_8h.html">UpstreamTaggerHit.h</a></div></div>
-<div class="ttc" id="aUpstreamTagger_8h_html"><div class="ttname"><a href="UpstreamTagger_8h.html">UpstreamTagger.h</a></div></div>
+<div class="ttc" id="aUpstreamTaggerPoint_8h_html"><div class="ttname"><a href="UpstreamTaggerPoint_8h.html">UpstreamTaggerPoint.h</a></div></div>
 <div class="ttc" id="aclassShipHit_html"><div class="ttname"><a href="classShipHit.html">ShipHit</a></div><div class="ttdef"><b>Definition</b> <a href="ShipHit_8h_source.html#l00017">ShipHit.h:18</a></div></div>
 <div class="ttc" id="aclassShipHit_html_a2d5297096e3039b34c93d2bf80738b10"><div class="ttname"><a href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">ShipHit::fDetectorID</a></div><div class="ttdeci">Int_t fDetectorID</div><div class="ttdoc">Detector unique identifier.</div><div class="ttdef"><b>Definition</b> <a href="ShipHit_8h_source.html#l00058">ShipHit.h:58</a></div></div>
-<div class="ttc" id="aclassUpstreamTaggerHit_html_a2ff8bf1fd46d705a3684d1f9808ba1b7"><div class="ttname"><a href="classUpstreamTaggerHit.html#a2ff8bf1fd46d705a3684d1f9808ba1b7">UpstreamTaggerHit::UpstreamTaggerHit</a></div><div class="ttdeci">UpstreamTaggerHit()</div><div class="ttdef"><b>Definition</b> <a href="UpstreamTaggerHit_8cxx_source.html#l00025">UpstreamTaggerHit.cxx:25</a></div></div>
-<div class="ttc" id="aclassUpstreamTaggerHit_html_a3cbbfd3e1f89a684a899f6f8582ffb9d"><div class="ttname"><a href="classUpstreamTaggerHit.html#a3cbbfd3e1f89a684a899f6f8582ffb9d">UpstreamTaggerHit::~UpstreamTaggerHit</a></div><div class="ttdeci">virtual ~UpstreamTaggerHit()</div><div class="ttdef"><b>Definition</b> <a href="UpstreamTaggerHit_8cxx_source.html#l00040">UpstreamTaggerHit.cxx:40</a></div></div>
-<div class="ttc" id="aclassUpstreamTaggerHit_html_a43aeb32f5f7a0f0d40b717ef682eb219"><div class="ttname"><a href="classUpstreamTaggerHit.html#a43aeb32f5f7a0f0d40b717ef682eb219">UpstreamTaggerHit::flag</a></div><div class="ttdeci">Float_t flag</div><div class="ttdoc">flag</div><div class="ttdef"><b>Definition</b> <a href="UpstreamTaggerHit_8h_source.html#l00062">UpstreamTaggerHit.h:62</a></div></div>
-<div class="ttc" id="aclassUpstreamTaggerHit_html_a4df255b80c53a35271e18ac6249a9a1b"><div class="ttname"><a href="classUpstreamTaggerHit.html#a4df255b80c53a35271e18ac6249a9a1b">UpstreamTaggerHit::GetZ</a></div><div class="ttdeci">Double_t GetZ()</div><div class="ttdef"><b>Definition</b> <a href="UpstreamTaggerHit_8cxx_source.html#l00073">UpstreamTaggerHit.cxx:73</a></div></div>
-<div class="ttc" id="aclassUpstreamTaggerHit_html_a52dc47392f4693b9179824338a18ac4e"><div class="ttname"><a href="classUpstreamTaggerHit.html#a52dc47392f4693b9179824338a18ac4e">UpstreamTaggerHit::t_1</a></div><div class="ttdeci">Float_t t_1</div><div class="ttdef"><b>Definition</b> <a href="UpstreamTaggerHit_8h_source.html#l00063">UpstreamTaggerHit.h:63</a></div></div>
-<div class="ttc" id="aclassUpstreamTaggerHit_html_a5f065383dd77b79799fce30f9d9ff452"><div class="ttname"><a href="classUpstreamTaggerHit.html#a5f065383dd77b79799fce30f9d9ff452">UpstreamTaggerHit::GetY</a></div><div class="ttdeci">Double_t GetY()</div><div class="ttdef"><b>Definition</b> <a href="UpstreamTaggerHit_8cxx_source.html#l00067">UpstreamTaggerHit.cxx:67</a></div></div>
-<div class="ttc" id="aclassUpstreamTaggerHit_html_a6b021556444ddbd886e229b1163031ee"><div class="ttname"><a href="classUpstreamTaggerHit.html#a6b021556444ddbd886e229b1163031ee">UpstreamTaggerHit::GetNode</a></div><div class="ttdeci">TGeoNode * GetNode(Double_t &amp;hit_final, Int_t &amp;mod)</div><div class="ttdef"><b>Definition</b> <a href="UpstreamTaggerHit_8cxx_source.html#l00079">UpstreamTaggerHit.cxx:79</a></div></div>
-<div class="ttc" id="aclassUpstreamTaggerHit_html_a92335746653758ad0804566cc1c51de3"><div class="ttname"><a href="classUpstreamTaggerHit.html#a92335746653758ad0804566cc1c51de3">UpstreamTaggerHit::GetTime</a></div><div class="ttdeci">std::vector&lt; double &gt; GetTime()</div><div class="ttdef"><b>Definition</b> <a href="UpstreamTaggerHit_8cxx_source.html#l00046">UpstreamTaggerHit.cxx:46</a></div></div>
-<div class="ttc" id="aclassUpstreamTaggerHit_html_a9420c4c54cff675692508a6c1f5b95e0"><div class="ttname"><a href="classUpstreamTaggerHit.html#a9420c4c54cff675692508a6c1f5b95e0">UpstreamTaggerHit::Print</a></div><div class="ttdeci">virtual void Print() const</div><div class="ttdef"><b>Definition</b> <a href="UpstreamTaggerHit_8cxx_source.html#l00084">UpstreamTaggerHit.cxx:84</a></div></div>
-<div class="ttc" id="aclassUpstreamTaggerHit_html_ab832ebbcd48e82dd1e4c90dafdac4d28"><div class="ttname"><a href="classUpstreamTaggerHit.html#ab832ebbcd48e82dd1e4c90dafdac4d28">UpstreamTaggerHit::GetX</a></div><div class="ttdeci">Double_t GetX()</div><div class="ttdef"><b>Definition</b> <a href="UpstreamTaggerHit_8cxx_source.html#l00061">UpstreamTaggerHit.cxx:61</a></div></div>
-<div class="ttc" id="aclassUpstreamTaggerHit_html_ad5ffa658ce81427626a7670e9e4d8a6c"><div class="ttname"><a href="classUpstreamTaggerHit.html#ad5ffa658ce81427626a7670e9e4d8a6c">UpstreamTaggerHit::GetXYZ</a></div><div class="ttdeci">TVector3 GetXYZ()</div><div class="ttdef"><b>Definition</b> <a href="UpstreamTaggerHit_8cxx_source.html#l00056">UpstreamTaggerHit.cxx:56</a></div></div>
-<div class="ttc" id="aclassUpstreamTaggerHit_html_ad903e2a94799cc7141ed60470df5263c"><div class="ttname"><a href="classUpstreamTaggerHit.html#ad903e2a94799cc7141ed60470df5263c">UpstreamTaggerHit::t_2</a></div><div class="ttdeci">Float_t t_2</div><div class="ttdoc">TDC on both sides.</div><div class="ttdef"><b>Definition</b> <a href="UpstreamTaggerHit_8h_source.html#l00063">UpstreamTaggerHit.h:63</a></div></div>
-<div class="ttc" id="aclassUpstreamTaggerHit_html_af68cf719163717748f7b28d6cd49930e"><div class="ttname"><a href="classUpstreamTaggerHit.html#af68cf719163717748f7b28d6cd49930e">UpstreamTaggerHit::GetMeasurements</a></div><div class="ttdeci">std::vector&lt; double &gt; GetMeasurements()</div><div class="ttdef"><b>Definition</b> <a href="UpstreamTaggerHit_8cxx_source.html#l00049">UpstreamTaggerHit.cxx:49</a></div></div>
-<div class="ttc" id="aclassUpstreamTaggerHit_html_afe2baef7e2c753979e9e3fde67db65a2"><div class="ttname"><a href="classUpstreamTaggerHit.html#afe2baef7e2c753979e9e3fde67db65a2">UpstreamTaggerHit::Dist</a></div><div class="ttdeci">void Dist(Float_t x, Float_t &amp;lpos, Float_t &amp;lneg)</div><div class="ttdef"><b>Definition</b> <a href="UpstreamTaggerHit_8cxx_source.html#l00053">UpstreamTaggerHit.cxx:53</a></div></div>
+<div class="ttc" id="aclassUpstreamTaggerHit_html_a25b7e0952c71e1c21a490b2d64661aed"><div class="ttname"><a href="classUpstreamTaggerHit.html#a25b7e0952c71e1c21a490b2d64661aed">UpstreamTaggerHit::fTime</a></div><div class="ttdeci">Double_t fTime</div><div class="ttdoc">Smeared time (ns)</div><div class="ttdef"><b>Definition</b> <a href="UpstreamTaggerHit_8h_source.html#l00053">UpstreamTaggerHit.h:53</a></div></div>
+<div class="ttc" id="aclassUpstreamTaggerHit_html_a263f47258c9d788aa521dddbd3baff7c"><div class="ttname"><a href="classUpstreamTaggerHit.html#a263f47258c9d788aa521dddbd3baff7c">UpstreamTaggerHit::fY</a></div><div class="ttdeci">Double_t fY</div><div class="ttdoc">Smeared y position (cm)</div><div class="ttdef"><b>Definition</b> <a href="UpstreamTaggerHit_8h_source.html#l00051">UpstreamTaggerHit.h:51</a></div></div>
+<div class="ttc" id="aclassUpstreamTaggerHit_html_a2ff8bf1fd46d705a3684d1f9808ba1b7"><div class="ttname"><a href="classUpstreamTaggerHit.html#a2ff8bf1fd46d705a3684d1f9808ba1b7">UpstreamTaggerHit::UpstreamTaggerHit</a></div><div class="ttdeci">UpstreamTaggerHit()</div><div class="ttdef"><b>Definition</b> <a href="UpstreamTaggerHit_8cxx_source.html#l00010">UpstreamTaggerHit.cxx:10</a></div></div>
+<div class="ttc" id="aclassUpstreamTaggerHit_html_a3cbbfd3e1f89a684a899f6f8582ffb9d"><div class="ttname"><a href="classUpstreamTaggerHit.html#a3cbbfd3e1f89a684a899f6f8582ffb9d">UpstreamTaggerHit::~UpstreamTaggerHit</a></div><div class="ttdeci">virtual ~UpstreamTaggerHit()</div><div class="ttdef"><b>Definition</b> <a href="UpstreamTaggerHit_8cxx_source.html#l00036">UpstreamTaggerHit.cxx:36</a></div></div>
+<div class="ttc" id="aclassUpstreamTaggerHit_html_a702720a06c10a17d7471a8b4627e6e6c"><div class="ttname"><a href="classUpstreamTaggerHit.html#a702720a06c10a17d7471a8b4627e6e6c">UpstreamTaggerHit::fZ</a></div><div class="ttdeci">Double_t fZ</div><div class="ttdoc">Smeared z position (cm)</div><div class="ttdef"><b>Definition</b> <a href="UpstreamTaggerHit_8h_source.html#l00052">UpstreamTaggerHit.h:52</a></div></div>
+<div class="ttc" id="aclassUpstreamTaggerHit_html_a9263a866e88731fbd12a0c9e6cbc62e7"><div class="ttname"><a href="classUpstreamTaggerHit.html#a9263a866e88731fbd12a0c9e6cbc62e7">UpstreamTaggerHit::fX</a></div><div class="ttdeci">Double_t fX</div><div class="ttdoc">Smeared x position (cm)</div><div class="ttdef"><b>Definition</b> <a href="UpstreamTaggerHit_8h_source.html#l00050">UpstreamTaggerHit.h:50</a></div></div>
+<div class="ttc" id="aclassUpstreamTaggerHit_html_a9420c4c54cff675692508a6c1f5b95e0"><div class="ttname"><a href="classUpstreamTaggerHit.html#a9420c4c54cff675692508a6c1f5b95e0">UpstreamTaggerHit::Print</a></div><div class="ttdeci">virtual void Print() const</div><div class="ttdef"><b>Definition</b> <a href="UpstreamTaggerHit_8cxx_source.html#l00039">UpstreamTaggerHit.cxx:39</a></div></div>
 <div class="ttc" id="aclassUpstreamTaggerPoint_html"><div class="ttname"><a href="classUpstreamTaggerPoint.html">UpstreamTaggerPoint</a></div><div class="ttdef"><b>Definition</b> <a href="UpstreamTaggerPoint_8h_source.html#l00012">UpstreamTaggerPoint.h:13</a></div></div>
-<div class="ttc" id="aclassUpstreamTagger_html"><div class="ttname"><a href="classUpstreamTagger.html">UpstreamTagger</a></div><div class="ttdef"><b>Definition</b> <a href="UpstreamTagger_8h_source.html#l00016">UpstreamTagger.h:17</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

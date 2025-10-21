@@ -29,9 +29,7 @@ var hierarchy =
       [ "Target", "classTarget.html", null ],
       [ "TargetTracker", "classTargetTracker.html", null ],
       [ "TimeDet", "classTimeDet.html", null ],
-      [ "UpstreamTagger", "classUpstreamTagger.html", [
-        [ "UpstreamTaggerHit", "classUpstreamTaggerHit.html", null ]
-      ] ],
+      [ "UpstreamTagger", "classUpstreamTagger.html", null ],
       [ "exitHadronAbsorber", "classexitHadronAbsorber.html", null ],
       [ "muon", "classmuon.html", null ],
       [ "simpleTarget", "classsimpleTarget.html", null ],
@@ -215,6 +213,7 @@ var hierarchy =
       [ "BaseDetector.BaseDetector", "classBaseDetector_1_1BaseDetector.html", [
         [ "MTCDetector.MTCDetector", "classMTCDetector_1_1MTCDetector.html", null ],
         [ "SBTDetector.SBTDetector", "classSBTDetector_1_1SBTDetector.html", null ],
+        [ "UpstreamTaggerDetector.UpstreamTaggerDetector", "classUpstreamTaggerDetector_1_1UpstreamTaggerDetector.html", null ],
         [ "muonDetector.muonDetector", "classmuonDetector_1_1muonDetector.html", null ],
         [ "timeDetector.timeDetector", "classtimeDetector_1_1timeDetector.html", null ]
       ] ]

@@ -20,6 +20,7 @@ var classUpstreamTagger =
     [ "ProcessHits", "classUpstreamTagger.html#a48eac8f58fc38385412d20a6ccf623a2", null ],
     [ "Register", "classUpstreamTagger.html#ae2da9141a4a867d330ff395ab250e374", null ],
     [ "Reset", "classUpstreamTagger.html#ab06aac93e99c2c50ea8ef21df7a2b4ba", null ],
+    [ "SetBoxDimensions", "classUpstreamTagger.html#aaabe2638167e3521f0cf988c4a903275", null ],
     [ "SetZposition", "classUpstreamTagger.html#aad4dba52a94dcb89523e540d44327955", null ],
     [ "det_zPos", "classUpstreamTagger.html#ab1b1bb2c25cc683210e456daecfecdc8", null ],
     [ "fELoss", "classUpstreamTagger.html#aa60ea3eb78f398c798217bc2f706181c", null ],
