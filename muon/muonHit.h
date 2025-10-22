@@ -37,11 +37,11 @@ class muonHit : public ShipHit
     Double_t SetMuonTimeRes(Double_t mcTime); // return tdc
     void setValidity(Bool_t isValid);
 //
-  private:
     /** Copy constructor **/
-    muonHit(const muonHit& point);
-    muonHit operator=(const muonHit& point);
+    muonHit(const muonHit& point) = default;
+    muonHit& operator=(const muonHit& point) = default;
 
+  private:
     Float_t flag;   ///< flag
 
     static bool onlyOnce;

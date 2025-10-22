@@ -72,8 +72,8 @@ class splitcalHit : public ShipHit
     double GetEnergyWeightForIndex(int index);
 
     /** Copy constructor **/
-    splitcalHit(const splitcalHit& point);
-    splitcalHit operator=(const splitcalHit& point);
+    splitcalHit(const splitcalHit& point) = default;
+    splitcalHit& operator=(const splitcalHit& point) = default;
 
   private:
 
