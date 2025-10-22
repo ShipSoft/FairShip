@@ -108,6 +108,11 @@ it in future.
 
 ### Changed
 
+* Refactor strawtubes digitisation to use dedicated detector class
+  - Created `strawtubesDetector` class inheriting from `BaseDetector`
+  - Moved digitisation logic from `ShipDigiReco` to `detectors/strawtubesDetector.py`
+  - Updated naming from "Strawtubes" to "strawtubes" for consistency
+  - Changed branch name from "Digi_StrawtubesHits" to "Digi_strawtubesHits"
 * Rename MtcDetPoint and MtcDetHit classes to MTCDetPoint and MTCDetHit for consistency with detector naming conventions
 * Refactor digitisation to use detector classes for MTC, muon, time, SBT, and UpstreamTagger detectors
 * Make BaseDetector an abstract base class to enforce interface contract
