@@ -100,6 +100,7 @@ it in future.
 * Correct paths for default input files
 * Fix missing decays of J/psi by using EvtGenDecayer
 * Fix: hard cast bug in genie generator: after replacing old C-style cast histogram variable got nullptr value which afterwards caused segmentation fault
+* fix(muon): Make muonHit copy constructor public for std::vector compatibility
 
 ### Changed
 
