@@ -1,4 +1,7 @@
-"""Base class for detector digitisation."""
+# SPDX-License-Identifier: LGPL-3.0-or-later
+# SPDX-FileCopyrightText: Copyright CERN on behalf of the SHiP Collaboration
+
+"""Base class for detector digitization."""
 
 from abc import ABC, abstractmethod
 
@@ -6,7 +9,7 @@ import ROOT
 
 
 class BaseDetector(ABC):
-    """Abstract base class for detector digitisation."""
+    """Abstract base class for detector digitization using template method pattern."""
 
     def __init__(
         self,
@@ -18,7 +21,7 @@ class BaseDetector(ABC):
         splitLevel=99,
         outtree=None,
     ):
-        """Initialise detector digitisation."""
+        """Initialize the detector digitizer."""
         self.name = name
         self.intree = intree
         # If outtree provided, use it for output; else intree for compatibility
@@ -42,13 +45,13 @@ class BaseDetector(ABC):
             )
 
     def delete(self):
-        """Clear detector containers."""
+        """Clear detector hit containers."""
         self.det.clear()
         if self.MCdet:
             self.MCdet.clear()
 
     def fill(self):
-        """Fill TTree branches."""
+        """Fill detector hit branches."""
         self.branch.Fill()
         if self.mcBranch:
             self.mcBranch.Fill()
@@ -63,7 +66,7 @@ class BaseDetector(ABC):
         pass
 
     def process(self):
-        """Process one event: delete, digitise, and fill."""
+        """Process one event: delete, digitize, and fill."""
         self.delete()
         self.digitize()
         self.fill()
