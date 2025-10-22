@@ -97,11 +97,11 @@ $(document).ready(function(){initNavTree('saveBasicParameters_8py_source.html','
   <div class="headertitle"><div class="title">saveBasicParameters.py</div></div>
 </div><!--header-->
 <div class="contents">
-<a href="saveBasicParameters_8py.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno"><a class="line" href="namespacesaveBasicParameters.html">    1</a></span><span class="comment"># save python objects as pickle object in ROOT file</span></div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="keyword">from</span> rootpyPickler <span class="keyword">import</span> Pickler</div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="keyword">from</span> ShipGeoConfig <span class="keyword">import</span> AttrDict</div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="keyword">from</span> ShipGeoConfig <span class="keyword">import</span> ConfigRegistry</div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="keyword">import</span> ROOT,os,subprocess</div>
+<a href="saveBasicParameters_8py.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno"><a class="line" href="namespacesaveBasicParameters.html">    1</a></span><span class="keyword">from</span> ShipGeoConfig <span class="keyword">import</span> AttrDict</div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="keyword">from</span> ShipGeoConfig <span class="keyword">import</span> ConfigRegistry</div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="keyword">import</span> ROOT</div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="keyword">import</span> os</div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="keyword">import</span> subprocess</div>
 <div class="foldopen" id="foldopen00006" data-start="" data-end="">
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno"><a class="line" href="namespacesaveBasicParameters.html#ab4a697c36be41496c6d12f0e1686a389">    6</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacesaveBasicParameters.html#ab4a697c36be41496c6d12f0e1686a389">retrieveGitTags</a>(o):</div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span>    <span class="comment"># record some basic information about version of software:</span></div>
@@ -137,17 +137,30 @@ $(document).ready(function(){initNavTree('saveBasicParameters_8py_source.html','
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <span class="keywordflow">return</span> o</div>
 </div>
 <div class="foldopen" id="foldopen00038" data-start="" data-end="">
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="namespacesaveBasicParameters.html#ae19428dcf1f80c5affea43fc209bf908">   38</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacesaveBasicParameters.html#ae19428dcf1f80c5affea43fc209bf908">execute</a>(f,ox,name=&#39;ShipGeo&#39;):</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <span class="keywordflow">if</span> type(ox) == str: ox = ConfigRegistry.register_config(<span class="stringliteral">&quot;basic&quot;</span>)</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    o = <a class="code hl_function" href="namespacesaveBasicParameters.html#ab4a697c36be41496c6d12f0e1686a389">retrieveGitTags</a>(ox)</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    <span class="keywordflow">if</span> type(f)==str: fg = ROOT.TFile.Open(f,<span class="stringliteral">&#39;update&#39;</span>)</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <span class="keywordflow">else</span>:                  fg = f</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    pkl = <a class="code hl_class" href="classrootpyPickler_1_1Pickler.html">Pickler</a>(fg)</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    pkl.dump(o,name)</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <span class="keywordflow">if</span> type(f)==str: fg.Close()</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="namespacesaveBasicParameters.html#ae19428dcf1f80c5affea43fc209bf908">   38</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacesaveBasicParameters.html#ae19428dcf1f80c5affea43fc209bf908">execute</a>(f, ox, name=&#39;ShipGeo&#39;):</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <span class="stringliteral">&quot;&quot;&quot;Save geometry configuration to ROOT file as JSON string&quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <span class="keywordflow">if</span> type(ox) == str:</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>        ox = ConfigRegistry.register_config(<span class="stringliteral">&quot;basic&quot;</span>)</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    o = <a class="code hl_function" href="namespacesaveBasicParameters.html#ab4a697c36be41496c6d12f0e1686a389">retrieveGitTags</a>(ox)</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <span class="keywordflow">if</span> type(f) == str:</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>        fg = ROOT.TFile.Open(f, <span class="stringliteral">&#39;update&#39;</span>)</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>        fg = f</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <span class="comment"># Serialize to JSON</span></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    json_str = o.dumps_json()</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="comment"># Save as std::string in ROOT file</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    fg.cd()</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    config_str = ROOT.std.string(json_str)</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    fg.WriteObject(config_str, name)</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    fg.Flush()</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    <span class="keywordflow">if</span> type(f) == str:</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>        fg.Close()</div>
 </div>
-<div class="ttc" id="aclassShipGeoConfig_1_1AttrDict_html"><div class="ttname"><a href="classShipGeoConfig_1_1AttrDict.html">ShipGeoConfig.AttrDict</a></div><div class="ttdef"><b>Definition</b> <a href="ShipGeoConfig_8py_source.html#l00077">ShipGeoConfig.py:77</a></div></div>
-<div class="ttc" id="aclassrootpyPickler_1_1Pickler_html"><div class="ttname"><a href="classrootpyPickler_1_1Pickler.html">rootpyPickler.Pickler</a></div><div class="ttdef"><b>Definition</b> <a href="rootpyPickler_8py_source.html#l00136">rootpyPickler.py:136</a></div></div>
+<div class="ttc" id="aclassShipGeoConfig_1_1AttrDict_html"><div class="ttname"><a href="classShipGeoConfig_1_1AttrDict.html">ShipGeoConfig.AttrDict</a></div><div class="ttdef"><b>Definition</b> <a href="ShipGeoConfig_8py_source.html#l00078">ShipGeoConfig.py:78</a></div></div>
 <div class="ttc" id="anamespacesaveBasicParameters_html_ab4a697c36be41496c6d12f0e1686a389"><div class="ttname"><a href="namespacesaveBasicParameters.html#ab4a697c36be41496c6d12f0e1686a389">saveBasicParameters.retrieveGitTags</a></div><div class="ttdeci">retrieveGitTags(o)</div><div class="ttdef"><b>Definition</b> <a href="saveBasicParameters_8py_source.html#l00006">saveBasicParameters.py:6</a></div></div>
 <div class="ttc" id="anamespacesaveBasicParameters_html_ae19428dcf1f80c5affea43fc209bf908"><div class="ttname"><a href="namespacesaveBasicParameters.html#ae19428dcf1f80c5affea43fc209bf908">saveBasicParameters.execute</a></div><div class="ttdeci">execute(f, ox, name='ShipGeo')</div><div class="ttdef"><b>Definition</b> <a href="saveBasicParameters_8py_source.html#l00038">saveBasicParameters.py:38</a></div></div>
 </div><!-- fragment --></div><!-- contents -->

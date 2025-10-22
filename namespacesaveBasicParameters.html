@@ -134,16 +134,30 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-
+<pre class="fragment">Save geometry configuration to ROOT file as JSON string</pre> 
 <p class="definition">Definition at line <a class="el" href="saveBasicParameters_8py_source.html#l00038">38</a> of file <a class="el" href="saveBasicParameters_8py_source.html">saveBasicParameters.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   38</span><span class="keyword">def </span>execute(f,ox,name=&#39;ShipGeo&#39;):</div>
-<div class="line"><span class="lineno">   39</span>    <span class="keywordflow">if</span> type(ox) == str: ox = ConfigRegistry.register_config(<span class="stringliteral">&quot;basic&quot;</span>)</div>
-<div class="line"><span class="lineno">   40</span>    o = retrieveGitTags(ox)</div>
-<div class="line"><span class="lineno">   41</span>    <span class="keywordflow">if</span> type(f)==str: fg = ROOT.TFile.Open(f,<span class="stringliteral">&#39;update&#39;</span>)</div>
-<div class="line"><span class="lineno">   42</span>    <span class="keywordflow">else</span>:                  fg = f</div>
-<div class="line"><span class="lineno">   43</span>    pkl = Pickler(fg)</div>
-<div class="line"><span class="lineno">   44</span>    pkl.dump(o,name)</div>
-<div class="line"><span class="lineno">   45</span>    <span class="keywordflow">if</span> type(f)==str: fg.Close()</div>
+<div class="fragment"><div class="line"><span class="lineno">   38</span><span class="keyword">def </span>execute(f, ox, name=&#39;ShipGeo&#39;):</div>
+<div class="line"><span class="lineno">   39</span>    <span class="stringliteral">&quot;&quot;&quot;Save geometry configuration to ROOT file as JSON string&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   40</span>    <span class="keywordflow">if</span> type(ox) == str:</div>
+<div class="line"><span class="lineno">   41</span>        ox = ConfigRegistry.register_config(<span class="stringliteral">&quot;basic&quot;</span>)</div>
+<div class="line"><span class="lineno">   42</span>    o = retrieveGitTags(ox)</div>
+<div class="line"><span class="lineno">   43</span> </div>
+<div class="line"><span class="lineno">   44</span>    <span class="keywordflow">if</span> type(f) == str:</div>
+<div class="line"><span class="lineno">   45</span>        fg = ROOT.TFile.Open(f, <span class="stringliteral">&#39;update&#39;</span>)</div>
+<div class="line"><span class="lineno">   46</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">   47</span>        fg = f</div>
+<div class="line"><span class="lineno">   48</span> </div>
+<div class="line"><span class="lineno">   49</span>    <span class="comment"># Serialize to JSON</span></div>
+<div class="line"><span class="lineno">   50</span>    json_str = o.dumps_json()</div>
+<div class="line"><span class="lineno">   51</span> </div>
+<div class="line"><span class="lineno">   52</span>    <span class="comment"># Save as std::string in ROOT file</span></div>
+<div class="line"><span class="lineno">   53</span>    fg.cd()</div>
+<div class="line"><span class="lineno">   54</span>    config_str = ROOT.std.string(json_str)</div>
+<div class="line"><span class="lineno">   55</span>    fg.WriteObject(config_str, name)</div>
+<div class="line"><span class="lineno">   56</span>    fg.Flush()</div>
+<div class="line"><span class="lineno">   57</span> </div>
+<div class="line"><span class="lineno">   58</span>    <span class="keywordflow">if</span> type(f) == str:</div>
+<div class="line"><span class="lineno">   59</span>        fg.Close()</div>
 </div><!-- fragment -->
 </div>
 </div>

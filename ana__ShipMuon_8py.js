@@ -75,7 +75,6 @@ var ana__ShipMuon_8py =
     [ "top", "ana__ShipMuon_8py.html#af3a8fb438de2e841b23dd382ed4dcdf6", null ],
     [ "totl", "ana__ShipMuon_8py.html#a47953e9e69bde55c2b11eeeae85716de", null ],
     [ "txt", "ana__ShipMuon_8py.html#a6a6d6d03ca5487761b3e7f514aa16c73", null ],
-    [ "upkl", "ana__ShipMuon_8py.html#abefbaabfb300b606c69c6126d239086e", null ],
     [ "withChain", "ana__ShipMuon_8py.html#ab54b0884f0d0e9af5430d755b0f116b8", null ],
     [ "xx", "ana__ShipMuon_8py.html#a04fe6357d90a9e3df96d89802a6959c4", null ],
     [ "zmuon", "ana__ShipMuon_8py.html#a572d7a276be83768b914021ab9f41902", null ],

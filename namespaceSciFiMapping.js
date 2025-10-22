@@ -17,6 +17,5 @@ var namespaceSciFiMapping =
     [ "sGeo", "namespaceSciFiMapping.html#afd115a916bc26005c27a865d524cd352", null ],
     [ "ship_geo", "namespaceSciFiMapping.html#a952a23c26a5134abc05d3b3eb5925649", null ],
     [ "top", "namespaceSciFiMapping.html#ae7b45f62289f6f7a88b886ce3111eaea", null ],
-    [ "type", "namespaceSciFiMapping.html#a18b78e92f4a74b5f4e586e08ec6252dc", null ],
-    [ "upkl", "namespaceSciFiMapping.html#ab4075dc17ad026f5d1c730437f4cd314", null ]
+    [ "type", "namespaceSciFiMapping.html#a18b78e92f4a74b5f4e586e08ec6252dc", null ]
 ];

@@ -5,6 +5,8 @@ var classShipGeoConfig_1_1Config =
     [ "clone", "classShipGeoConfig_1_1Config.html#af97d828baa52f9863ef6523d1a1b1849", null ],
     [ "dump", "classShipGeoConfig_1_1Config.html#a9d883b798752cf82925019434292bb86", null ],
     [ "dumps", "classShipGeoConfig_1_1Config.html#ac15d2a06d0368a622198608e4015407f", null ],
+    [ "dumps_json", "classShipGeoConfig_1_1Config.html#ac2b17b906e2f30add76ea39fffd27fe9", null ],
     [ "load", "classShipGeoConfig_1_1Config.html#aa36885fca85b2ea273ad191e3508df8f", null ],
-    [ "loads", "classShipGeoConfig_1_1Config.html#a182da0400cb9f4ce21af4fc27771f10b", null ]
+    [ "loads", "classShipGeoConfig_1_1Config.html#a182da0400cb9f4ce21af4fc27771f10b", null ],
+    [ "loads_json", "classShipGeoConfig_1_1Config.html#a99fed09e66b391e739e19fc3d051144f", null ]
 ];

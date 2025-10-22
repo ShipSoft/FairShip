@@ -50,7 +50,6 @@ var ShipAna_8py =
     [ "sTree", "ShipAna_8py.html#aa4c23cfad61e9ccae6f79cbe3a4952e4", null ],
     [ "tmp", "ShipAna_8py.html#ab3d6f30f52033bf7b1555d56d728b925", null ],
     [ "type", "ShipAna_8py.html#a26546101b50872dc842fdba6bd3ca6f8", null ],
-    [ "upkl", "ShipAna_8py.html#a218767ec8dec0c3cf740de83b9817a3e", null ],
     [ "veto", "ShipAna_8py.html#aa3c51b90659f758713d2f7958b846614", null ],
     [ "vetoDets", "ShipAna_8py.html#a474780f2864445277c34ddc7ddc8828b", null ],
     [ "volDict", "ShipAna_8py.html#a23ccb7a304d314d18d7e31877052b68a", null ]

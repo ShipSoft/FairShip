@@ -132,14 +132,10 @@ var hierarchy =
       [ "hnl.HNL", "classhnl_1_1HNL.html", null ]
     ] ],
     [ "eventDisplay.IO", "classeventDisplay_1_1IO.html", null ],
-    [ "rootpyPickler.IO_Wrapper", "classrootpyPickler_1_1IO__Wrapper.html", null ],
     [ "metaclass", null, [
       [ "ShipGeoConfig.ConfigRegistry", "classShipGeoConfig_1_1ConfigRegistry.html", null ]
     ] ],
     [ "method_logger.MethodLogger", "classmethod__logger_1_1MethodLogger.html", null ],
-    [ "pickle.Pickler", null, [
-      [ "rootpyPickler.Pickler", "classrootpyPickler_1_1Pickler.html", null ]
-    ] ],
     [ "ROOT.pyFairModule", null, [
       [ "study_GammaConv.Block", "classstudy__GammaConv_1_1Block.html", null ],
       [ "study_muMSC.Block", "classstudy__muMSC_1_1Block.html", null ],
@@ -150,7 +146,6 @@ var hierarchy =
       [ "PyTr1Rng", "classPyTr1Rng.html", null ],
       [ "PyTr3Rng", "classPyTr3Rng.html", null ]
     ] ],
-    [ "rootpyPickler.ROOT_Proxy", "classrootpyPickler_1_1ROOT__Proxy.html", null ],
     [ "rpvsusy.RPVSUSYbranchings", "classrpvsusy_1_1RPVSUSYbranchings.html", [
       [ "rpvsusy.RPVSUSY", "classrpvsusy_1_1RPVSUSY.html", null ]
     ] ],
@@ -204,9 +199,6 @@ var hierarchy =
       [ "ShipGeoConfig._SingletonDict", "classShipGeoConfig_1_1__SingletonDict.html", [
         [ "ShipGeoConfig.ConfigRegistry", "classShipGeoConfig_1_1ConfigRegistry.html", null ]
       ] ]
-    ] ],
-    [ "pickle.Unpickler", null, [
-      [ "rootpyPickler.Unpickler", "classrootpyPickler_1_1Unpickler.html", null ]
     ] ],
     [ "Veto", "classVeto.html", null ],
     [ "ABC", null, [

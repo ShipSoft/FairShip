@@ -98,24 +98,21 @@ $(document).ready(function(){initNavTree('checkZpositions_8py_source.html',''); 
 </div><!--header-->
 <div class="contents">
 <a href="checkZpositions_8py.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno"><a class="line" href="namespacecheckZpositions.html">    1</a></span><span class="keyword">import</span> ROOT,sys</div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="keyword">from</span> rootpyPickler <span class="keyword">import</span> Unpickler</div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="keyword">from</span> ShipGeoConfig <span class="keyword">import</span> load_from_root_file</div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno"><a class="line" href="namespacecheckZpositions.html#a4040402d5b3f2b28414152756c21d1dc">    3</a></span>badBoys={}</div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno"><a class="line" href="namespacecheckZpositions.html#a3e777c8f47a72a7a86c18eb6d37197ca">    4</a></span>f1,f2 = sys.argv[1], sys.argv[2]</div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno"><a class="line" href="namespacecheckZpositions.html#a8af6338ac5a1cf20ac37e2b23044596b">    5</a></span>fgeoOld=ROOT.TFile(f1)</div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno"><a class="line" href="namespacecheckZpositions.html#a3939bb02cc06ac3d1322ce214a9b42c3">    6</a></span>upkl    = <a class="code hl_class" href="classrootpyPickler_1_1Unpickler.html">Unpickler</a>(fgeoOld)</div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno"><a class="line" href="namespacecheckZpositions.html#ad76f19d29dcf49656a5149f193b9fa84">    7</a></span>ShipGeoOld = upkl.load(<span class="stringliteral">&#39;ShipGeo&#39;</span>)</div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno"><a class="line" href="namespacecheckZpositions.html#a0b40a172c1990bcb4e77bfad3643fc91">    8</a></span>fgeoNew=ROOT.TFile(f2)</div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>upkl    = <a class="code hl_class" href="classrootpyPickler_1_1Unpickler.html">Unpickler</a>(fgeoNew)</div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="namespacecheckZpositions.html#a14704aefad1faf37b6fc0cdab58c7abc">   10</a></span>ShipGeoNew = upkl.load(<span class="stringliteral">&#39;ShipGeo&#39;</span>)</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="keywordflow">for</span> x <span class="keywordflow">in</span> ShipGeoNew:</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>   <span class="keywordflow">if</span> hasattr(eval(<span class="stringliteral">&#39;ShipGeoNew.&#39;</span>+x),<span class="stringliteral">&#39;z&#39;</span>):</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno"><a class="line" href="namespacecheckZpositions.html#a766185761e35ea4bb4e8076786316d7a">   13</a></span>     zold,znew = eval(<span class="stringliteral">&#39;ShipGeoOld.&#39;</span>+x+<span class="stringliteral">&#39;.z&#39;</span>),eval(<span class="stringliteral">&#39;ShipGeoNew.&#39;</span>+x+<span class="stringliteral">&#39;.z&#39;</span>)</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>     print(x,<span class="stringliteral">&#39;z=&#39;</span>,znew, <span class="stringliteral">&#39; old:&#39;</span>, zold)</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>     <span class="keywordflow">if</span>  zold!=znew: badBoys[x]=[znew,zold]</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="keywordflow">if</span> len(badBoys)&gt;0: print(<span class="stringliteral">&quot;following differences detected:&quot;</span>)</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="keywordflow">for</span> x <span class="keywordflow">in</span> badBoys:</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>  print(x,badBoys[x])</div>
-<div class="ttc" id="aclassrootpyPickler_1_1Unpickler_html"><div class="ttname"><a href="classrootpyPickler_1_1Unpickler.html">rootpyPickler.Unpickler</a></div><div class="ttdef"><b>Definition</b> <a href="rootpyPickler_8py_source.html#l00203">rootpyPickler.py:203</a></div></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno"><a class="line" href="namespacecheckZpositions.html#ad76f19d29dcf49656a5149f193b9fa84">    6</a></span>ShipGeoOld = load_from_root_file(fgeoOld, <span class="stringliteral">&#39;ShipGeo&#39;</span>)</div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno"><a class="line" href="namespacecheckZpositions.html#a0b40a172c1990bcb4e77bfad3643fc91">    7</a></span>fgeoNew=ROOT.TFile(f2)</div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno"><a class="line" href="namespacecheckZpositions.html#a14704aefad1faf37b6fc0cdab58c7abc">    8</a></span>ShipGeoNew = load_from_root_file(fgeoNew, <span class="stringliteral">&#39;ShipGeo&#39;</span>)</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="keywordflow">for</span> x <span class="keywordflow">in</span> ShipGeoNew:</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>   <span class="keywordflow">if</span> hasattr(eval(<span class="stringliteral">&#39;ShipGeoNew.&#39;</span>+x),<span class="stringliteral">&#39;z&#39;</span>):</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno"><a class="line" href="namespacecheckZpositions.html#a766185761e35ea4bb4e8076786316d7a">   11</a></span>     zold,znew = eval(<span class="stringliteral">&#39;ShipGeoOld.&#39;</span>+x+<span class="stringliteral">&#39;.z&#39;</span>),eval(<span class="stringliteral">&#39;ShipGeoNew.&#39;</span>+x+<span class="stringliteral">&#39;.z&#39;</span>)</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>     print(x,<span class="stringliteral">&#39;z=&#39;</span>,znew, <span class="stringliteral">&#39; old:&#39;</span>, zold)</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>     <span class="keywordflow">if</span>  zold!=znew: badBoys[x]=[znew,zold]</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="keywordflow">if</span> len(badBoys)&gt;0: print(<span class="stringliteral">&quot;following differences detected:&quot;</span>)</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="keywordflow">for</span> x <span class="keywordflow">in</span> badBoys:</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>  print(x,badBoys[x])</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

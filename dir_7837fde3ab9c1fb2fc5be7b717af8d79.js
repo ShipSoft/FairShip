@@ -26,7 +26,6 @@ var dir_7837fde3ab9c1fb2fc5be7b717af8d79 =
     [ "pythia8darkphoton_conf.py", "pythia8darkphoton__conf_8py.html", "pythia8darkphoton__conf_8py" ],
     [ "PythiaList.py", "PythiaList_8py.html", "PythiaList_8py" ],
     [ "readDecayTable.py", "readDecayTable_8py.html", "readDecayTable_8py" ],
-    [ "rootpyPickler.py", "rootpyPickler_8py.html", "rootpyPickler_8py" ],
     [ "rootUtils.py", "rootUtils_8py.html", "rootUtils_8py" ],
     [ "rpvsusy.py", "rpvsusy_8py.html", "rpvsusy_8py" ],
     [ "saveBasicParameters.py", "saveBasicParameters_8py.html", "saveBasicParameters_8py" ],

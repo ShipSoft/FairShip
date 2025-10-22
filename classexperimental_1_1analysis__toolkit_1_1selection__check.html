@@ -139,7 +139,7 @@ Public Attributes</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><pre class="fragment">Class to perform various selection checks on the candidate.</pre> 
-<p class="definition">Definition at line <a class="el" href="analysis__toolkit_8py_source.html#l00014">14</a> of file <a class="el" href="analysis__toolkit_8py_source.html">analysis_toolkit.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="analysis__toolkit_8py_source.html#l00013">13</a> of file <a class="el" href="analysis__toolkit_8py_source.html">analysis_toolkit.py</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a5bf0f6bea57390e230cc9a2b46102cef" name="a5bf0f6bea57390e230cc9a2b46102cef"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5bf0f6bea57390e230cc9a2b46102cef">&#9670;&#160;</a></span>__init__()</h2>
@@ -167,25 +167,24 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <pre class="fragment">Initialize the selection_check class with geometry and configuration.</pre> 
-<p class="definition">Definition at line <a class="el" href="analysis__toolkit_8py_source.html#l00017">17</a> of file <a class="el" href="analysis__toolkit_8py_source.html">analysis_toolkit.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   17</span>    <span class="keyword">def </span>__init__(self, geo_file):</div>
-<div class="line"><span class="lineno">   18</span>        <span class="stringliteral">&quot;&quot;&quot;Initialize the selection_check class with geometry and configuration.&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   19</span>        self.geometry_manager = geo_file.Get(<span class="stringliteral">&quot;FAIRGeom&quot;</span>)</div>
-<div class="line"><span class="lineno">   20</span>        unpickler = Unpickler(geo_file)</div>
-<div class="line"><span class="lineno">   21</span>        self.ship_geo = unpickler.load(<span class="stringliteral">&quot;ShipGeo&quot;</span>)</div>
+<p class="definition">Definition at line <a class="el" href="analysis__toolkit_8py_source.html#l00016">16</a> of file <a class="el" href="analysis__toolkit_8py_source.html">analysis_toolkit.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   16</span>    <span class="keyword">def </span>__init__(self, geo_file):</div>
+<div class="line"><span class="lineno">   17</span>        <span class="stringliteral">&quot;&quot;&quot;Initialize the selection_check class with geometry and configuration.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   18</span>        self.geometry_manager = geo_file.Get(<span class="stringliteral">&quot;FAIRGeom&quot;</span>)</div>
+<div class="line"><span class="lineno">   19</span>        self.ship_geo = load_from_root_file(geo_file, <span class="stringliteral">&quot;ShipGeo&quot;</span>)</div>
+<div class="line"><span class="lineno">   20</span> </div>
+<div class="line"><span class="lineno">   21</span>        fairship = ROOT.gSystem.Getenv(<span class="stringliteral">&quot;FAIRSHIP&quot;</span>)</div>
 <div class="line"><span class="lineno">   22</span> </div>
-<div class="line"><span class="lineno">   23</span>        fairship = ROOT.gSystem.Getenv(<span class="stringliteral">&quot;FAIRSHIP&quot;</span>)</div>
-<div class="line"><span class="lineno">   24</span> </div>
-<div class="line"><span class="lineno">   25</span>        <span class="keywordflow">if</span> self.ship_geo.DecayVolumeMedium == <span class="stringliteral">&quot;helium&quot;</span>:</div>
-<div class="line"><span class="lineno">   26</span>            <span class="keyword">with</span> open(fairship + <span class="stringliteral">&quot;/geometry/veto_config_helium.yaml&quot;</span>) <span class="keyword">as</span> file:</div>
-<div class="line"><span class="lineno">   27</span>                config = yaml.safe_load(file)</div>
-<div class="line"><span class="lineno">   28</span>                self.veto_geo = AttrDict(config)</div>
-<div class="line"><span class="lineno">   29</span>                self.veto_geo.z0</div>
-<div class="line"><span class="lineno">   30</span>        <span class="keywordflow">if</span> self.ship_geo.DecayVolumeMedium == <span class="stringliteral">&quot;vacuums&quot;</span>:</div>
-<div class="line"><span class="lineno">   31</span>            <span class="keyword">with</span> open(fairship + <span class="stringliteral">&quot;/geometry/veto_config_vacuums.yaml&quot;</span>) <span class="keyword">as</span> file:</div>
-<div class="line"><span class="lineno">   32</span>                config = yaml.safe_load(file)</div>
-<div class="line"><span class="lineno">   33</span>                self.veto_geo = AttrDict(config)</div>
-<div class="line"><span class="lineno">   34</span> </div>
+<div class="line"><span class="lineno">   23</span>        <span class="keywordflow">if</span> self.ship_geo.DecayVolumeMedium == <span class="stringliteral">&quot;helium&quot;</span>:</div>
+<div class="line"><span class="lineno">   24</span>            <span class="keyword">with</span> open(fairship + <span class="stringliteral">&quot;/geometry/veto_config_helium.yaml&quot;</span>) <span class="keyword">as</span> file:</div>
+<div class="line"><span class="lineno">   25</span>                config = yaml.safe_load(file)</div>
+<div class="line"><span class="lineno">   26</span>                self.veto_geo = AttrDict(config)</div>
+<div class="line"><span class="lineno">   27</span>                self.veto_geo.z0</div>
+<div class="line"><span class="lineno">   28</span>        <span class="keywordflow">if</span> self.ship_geo.DecayVolumeMedium == <span class="stringliteral">&quot;vacuums&quot;</span>:</div>
+<div class="line"><span class="lineno">   29</span>            <span class="keyword">with</span> open(fairship + <span class="stringliteral">&quot;/geometry/veto_config_vacuums.yaml&quot;</span>) <span class="keyword">as</span> file:</div>
+<div class="line"><span class="lineno">   30</span>                config = yaml.safe_load(file)</div>
+<div class="line"><span class="lineno">   31</span>                self.veto_geo = AttrDict(config)</div>
+<div class="line"><span class="lineno">   32</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -216,11 +215,11 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <pre class="fragment">Access event data.</pre> 
-<p class="definition">Definition at line <a class="el" href="analysis__toolkit_8py_source.html#l00035">35</a> of file <a class="el" href="analysis__toolkit_8py_source.html">analysis_toolkit.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   35</span>    <span class="keyword">def </span>access_event(self, tree):</div>
-<div class="line"><span class="lineno">   36</span>        <span class="stringliteral">&quot;&quot;&quot;Access event data.&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   37</span>        self.tree = tree</div>
-<div class="line"><span class="lineno">   38</span> </div>
+<p class="definition">Definition at line <a class="el" href="analysis__toolkit_8py_source.html#l00033">33</a> of file <a class="el" href="analysis__toolkit_8py_source.html">analysis_toolkit.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   33</span>    <span class="keyword">def </span>access_event(self, tree):</div>
+<div class="line"><span class="lineno">   34</span>        <span class="stringliteral">&quot;&quot;&quot;Access event data.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   35</span>        self.tree = tree</div>
+<div class="line"><span class="lineno">   36</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -250,18 +249,18 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <pre class="fragment">Return the reduced chi^2 of the particle's daughter tracks.</pre> 
-<p class="definition">Definition at line <a class="el" href="analysis__toolkit_8py_source.html#l00199">199</a> of file <a class="el" href="analysis__toolkit_8py_source.html">analysis_toolkit.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  199</span>    <span class="keyword">def </span>chi2nDOF(self, candidate):</div>
-<div class="line"><span class="lineno">  200</span>        <span class="stringliteral">&quot;&quot;&quot;Return the reduced chi^2 of the particle&#39;s daughter tracks.&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  201</span>        t1, t2 = candidate.GetDaughter(0), candidate.GetDaughter(1)</div>
-<div class="line"><span class="lineno">  202</span> </div>
-<div class="line"><span class="lineno">  203</span>        chi2ndf = []</div>
-<div class="line"><span class="lineno">  204</span>        <span class="keywordflow">for</span> tr <span class="keywordflow">in</span> [t1, t2]:</div>
-<div class="line"><span class="lineno">  205</span>            fit_status = self.tree.FitTracks[tr].getFitStatus()</div>
-<div class="line"><span class="lineno">  206</span>            chi2ndf.append(fit_status.getChi2() / fit_status.getNdf())</div>
+<p class="definition">Definition at line <a class="el" href="analysis__toolkit_8py_source.html#l00197">197</a> of file <a class="el" href="analysis__toolkit_8py_source.html">analysis_toolkit.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  197</span>    <span class="keyword">def </span>chi2nDOF(self, candidate):</div>
+<div class="line"><span class="lineno">  198</span>        <span class="stringliteral">&quot;&quot;&quot;Return the reduced chi^2 of the particle&#39;s daughter tracks.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  199</span>        t1, t2 = candidate.GetDaughter(0), candidate.GetDaughter(1)</div>
+<div class="line"><span class="lineno">  200</span> </div>
+<div class="line"><span class="lineno">  201</span>        chi2ndf = []</div>
+<div class="line"><span class="lineno">  202</span>        <span class="keywordflow">for</span> tr <span class="keywordflow">in</span> [t1, t2]:</div>
+<div class="line"><span class="lineno">  203</span>            fit_status = self.tree.FitTracks[tr].getFitStatus()</div>
+<div class="line"><span class="lineno">  204</span>            chi2ndf.append(fit_status.getChi2() / fit_status.getNdf())</div>
+<div class="line"><span class="lineno">  205</span> </div>
+<div class="line"><span class="lineno">  206</span>        <span class="keywordflow">return</span> np.array(chi2ndf)</div>
 <div class="line"><span class="lineno">  207</span> </div>
-<div class="line"><span class="lineno">  208</span>        <span class="keywordflow">return</span> np.array(chi2ndf)</div>
-<div class="line"><span class="lineno">  209</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -291,18 +290,18 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <pre class="fragment">Return the momentum(Mag) of the particle's daughter tracks.</pre> 
-<p class="definition">Definition at line <a class="el" href="analysis__toolkit_8py_source.html#l00160">160</a> of file <a class="el" href="analysis__toolkit_8py_source.html">analysis_toolkit.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  160</span>    <span class="keyword">def </span>daughtermomentum(self, candidate):</div>
-<div class="line"><span class="lineno">  161</span>        <span class="stringliteral">&quot;&quot;&quot;Return the momentum(Mag) of the particle&#39;s daughter tracks.&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  162</span>        daughter_mom = []</div>
-<div class="line"><span class="lineno">  163</span>        t1, t2 = candidate.GetDaughter(0), candidate.GetDaughter(1)</div>
-<div class="line"><span class="lineno">  164</span>        <span class="keywordflow">for</span> trD <span class="keywordflow">in</span> [t1, t2]:</div>
-<div class="line"><span class="lineno">  165</span>            x = self.tree.FitTracks[trD]</div>
-<div class="line"><span class="lineno">  166</span>            xx = x.getFittedState()</div>
-<div class="line"><span class="lineno">  167</span>            daughter_mom.append(xx.getMom().Mag())</div>
+<p class="definition">Definition at line <a class="el" href="analysis__toolkit_8py_source.html#l00158">158</a> of file <a class="el" href="analysis__toolkit_8py_source.html">analysis_toolkit.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  158</span>    <span class="keyword">def </span>daughtermomentum(self, candidate):</div>
+<div class="line"><span class="lineno">  159</span>        <span class="stringliteral">&quot;&quot;&quot;Return the momentum(Mag) of the particle&#39;s daughter tracks.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  160</span>        daughter_mom = []</div>
+<div class="line"><span class="lineno">  161</span>        t1, t2 = candidate.GetDaughter(0), candidate.GetDaughter(1)</div>
+<div class="line"><span class="lineno">  162</span>        <span class="keywordflow">for</span> trD <span class="keywordflow">in</span> [t1, t2]:</div>
+<div class="line"><span class="lineno">  163</span>            x = self.tree.FitTracks[trD]</div>
+<div class="line"><span class="lineno">  164</span>            xx = x.getFittedState()</div>
+<div class="line"><span class="lineno">  165</span>            daughter_mom.append(xx.getMom().Mag())</div>
+<div class="line"><span class="lineno">  166</span> </div>
+<div class="line"><span class="lineno">  167</span>        <span class="keywordflow">return</span> np.array(daughter_mom)</div>
 <div class="line"><span class="lineno">  168</span> </div>
-<div class="line"><span class="lineno">  169</span>        <span class="keywordflow">return</span> np.array(daughter_mom)</div>
-<div class="line"><span class="lineno">  170</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -332,48 +331,48 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <pre class="fragment">Calculate time associated with the candidate decay vertex using strawtubes MCPoint info.</pre> 
-<p class="definition">Definition at line <a class="el" href="analysis__toolkit_8py_source.html#l00039">39</a> of file <a class="el" href="analysis__toolkit_8py_source.html">analysis_toolkit.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   39</span>    <span class="keyword">def </span>define_candidate_time(self, candidate):</div>
-<div class="line"><span class="lineno">   40</span>        <span class="stringliteral">&quot;&quot;&quot;Calculate time associated with the candidate decay vertex using strawtubes MCPoint info.&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   41</span>        t0 = self.tree.ShipEventHeader.GetEventTime()</div>
-<div class="line"><span class="lineno">   42</span>        candidate_pos = ROOT.TVector3()</div>
-<div class="line"><span class="lineno">   43</span>        candidate.GetVertex(candidate_pos)</div>
-<div class="line"><span class="lineno">   44</span> </div>
-<div class="line"><span class="lineno">   45</span>        d1, d2 = candidate.GetDaughter(0), candidate.GetDaughter(1)</div>
-<div class="line"><span class="lineno">   46</span>        d1_mc, d2_mc = self.tree.fitTrack2MC[d1], self.tree.fitTrack2MC[d2]</div>
+<p class="definition">Definition at line <a class="el" href="analysis__toolkit_8py_source.html#l00037">37</a> of file <a class="el" href="analysis__toolkit_8py_source.html">analysis_toolkit.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   37</span>    <span class="keyword">def </span>define_candidate_time(self, candidate):</div>
+<div class="line"><span class="lineno">   38</span>        <span class="stringliteral">&quot;&quot;&quot;Calculate time associated with the candidate decay vertex using strawtubes MCPoint info.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   39</span>        t0 = self.tree.ShipEventHeader.GetEventTime()</div>
+<div class="line"><span class="lineno">   40</span>        candidate_pos = ROOT.TVector3()</div>
+<div class="line"><span class="lineno">   41</span>        candidate.GetVertex(candidate_pos)</div>
+<div class="line"><span class="lineno">   42</span> </div>
+<div class="line"><span class="lineno">   43</span>        d1, d2 = candidate.GetDaughter(0), candidate.GetDaughter(1)</div>
+<div class="line"><span class="lineno">   44</span>        d1_mc, d2_mc = self.tree.fitTrack2MC[d1], self.tree.fitTrack2MC[d2]</div>
+<div class="line"><span class="lineno">   45</span> </div>
+<div class="line"><span class="lineno">   46</span>        time_vtx_from_strawhits = []</div>
 <div class="line"><span class="lineno">   47</span> </div>
-<div class="line"><span class="lineno">   48</span>        time_vtx_from_strawhits = []</div>
-<div class="line"><span class="lineno">   49</span> </div>
-<div class="line"><span class="lineno">   50</span>        <span class="keywordflow">for</span> hit <span class="keywordflow">in</span> self.tree.strawtubesPoint:</div>
-<div class="line"><span class="lineno">   51</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> (</div>
-<div class="line"><span class="lineno">   52</span>                int(str(hit.GetDetectorID())[:1]) == 1</div>
-<div class="line"><span class="lineno">   53</span>                <span class="keywordflow">or</span> int(str(hit.GetDetectorID())[:1]) == 2</div>
-<div class="line"><span class="lineno">   54</span>            ):</div>
-<div class="line"><span class="lineno">   55</span>                <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">   56</span> </div>
-<div class="line"><span class="lineno">   57</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> (hit.GetTrackID() == d1_mc <span class="keywordflow">or</span> hit.GetTrackID() == d2_mc):</div>
-<div class="line"><span class="lineno">   58</span>                <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">   48</span>        <span class="keywordflow">for</span> hit <span class="keywordflow">in</span> self.tree.strawtubesPoint:</div>
+<div class="line"><span class="lineno">   49</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> (</div>
+<div class="line"><span class="lineno">   50</span>                int(str(hit.GetDetectorID())[:1]) == 1</div>
+<div class="line"><span class="lineno">   51</span>                <span class="keywordflow">or</span> int(str(hit.GetDetectorID())[:1]) == 2</div>
+<div class="line"><span class="lineno">   52</span>            ):</div>
+<div class="line"><span class="lineno">   53</span>                <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">   54</span> </div>
+<div class="line"><span class="lineno">   55</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> (hit.GetTrackID() == d1_mc <span class="keywordflow">or</span> hit.GetTrackID() == d2_mc):</div>
+<div class="line"><span class="lineno">   56</span>                <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">   57</span> </div>
+<div class="line"><span class="lineno">   58</span>            t_straw = hit.GetTime()</div>
 <div class="line"><span class="lineno">   59</span> </div>
-<div class="line"><span class="lineno">   60</span>            t_straw = hit.GetTime()</div>
-<div class="line"><span class="lineno">   61</span> </div>
-<div class="line"><span class="lineno">   62</span>            dist = np.sqrt(</div>
-<div class="line"><span class="lineno">   63</span>                (candidate_pos.X() - hit.GetX()) ** 2</div>
-<div class="line"><span class="lineno">   64</span>                + (candidate_pos.Y() - hit.GetY()) ** 2</div>
-<div class="line"><span class="lineno">   65</span>                + (candidate_pos.Z() - hit.GetZ()) ** 2</div>
-<div class="line"><span class="lineno">   66</span>            )  <span class="comment"># distance to the vertex in cm</span></div>
-<div class="line"><span class="lineno">   67</span> </div>
-<div class="line"><span class="lineno">   68</span>            d_mom = self.tree.MCTrack[hit.GetTrackID()].GetP() / u.GeV</div>
-<div class="line"><span class="lineno">   69</span>            mass = self.tree.MCTrack[hit.GetTrackID()].GetMass()</div>
-<div class="line"><span class="lineno">   70</span>            v = u.c_light * d_mom / np.sqrt(d_mom**2 + (mass) ** 2)</div>
+<div class="line"><span class="lineno">   60</span>            dist = np.sqrt(</div>
+<div class="line"><span class="lineno">   61</span>                (candidate_pos.X() - hit.GetX()) ** 2</div>
+<div class="line"><span class="lineno">   62</span>                + (candidate_pos.Y() - hit.GetY()) ** 2</div>
+<div class="line"><span class="lineno">   63</span>                + (candidate_pos.Z() - hit.GetZ()) ** 2</div>
+<div class="line"><span class="lineno">   64</span>            )  <span class="comment"># distance to the vertex in cm</span></div>
+<div class="line"><span class="lineno">   65</span> </div>
+<div class="line"><span class="lineno">   66</span>            d_mom = self.tree.MCTrack[hit.GetTrackID()].GetP() / u.GeV</div>
+<div class="line"><span class="lineno">   67</span>            mass = self.tree.MCTrack[hit.GetTrackID()].GetMass()</div>
+<div class="line"><span class="lineno">   68</span>            v = u.c_light * d_mom / np.sqrt(d_mom**2 + (mass) ** 2)</div>
+<div class="line"><span class="lineno">   69</span> </div>
+<div class="line"><span class="lineno">   70</span>            t_vertex = t_straw - (dist / v)</div>
 <div class="line"><span class="lineno">   71</span> </div>
-<div class="line"><span class="lineno">   72</span>            t_vertex = t_straw - (dist / v)</div>
+<div class="line"><span class="lineno">   72</span>            time_vtx_from_strawhits.append(t_vertex)</div>
 <div class="line"><span class="lineno">   73</span> </div>
-<div class="line"><span class="lineno">   74</span>            time_vtx_from_strawhits.append(t_vertex)</div>
+<div class="line"><span class="lineno">   74</span>        t_vtx = np.average(time_vtx_from_strawhits) + t0</div>
 <div class="line"><span class="lineno">   75</span> </div>
-<div class="line"><span class="lineno">   76</span>        t_vtx = np.average(time_vtx_from_strawhits) + t0</div>
+<div class="line"><span class="lineno">   76</span>        <span class="keywordflow">return</span> t_vtx  <span class="comment"># units in ns</span></div>
 <div class="line"><span class="lineno">   77</span> </div>
-<div class="line"><span class="lineno">   78</span>        <span class="keywordflow">return</span> t_vtx  <span class="comment"># units in ns</span></div>
-<div class="line"><span class="lineno">   79</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -403,38 +402,38 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <pre class="fragment">Calculate the minimum distance(in XY plane) of the candidate decay vertex to the inner wall of the decay vessel. If outside the decay volume, or if distance &gt; 100cm,Return 0.</pre> 
-<p class="definition">Definition at line <a class="el" href="analysis__toolkit_8py_source.html#l00110">110</a> of file <a class="el" href="analysis__toolkit_8py_source.html">analysis_toolkit.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  110</span>    <span class="keyword">def </span>dist_to_innerwall(self, candidate):</div>
-<div class="line"><span class="lineno">  111</span>        <span class="stringliteral">&quot;&quot;&quot;Calculate the minimum distance(in XY plane) of the candidate decay vertex to the inner wall of the decay vessel. If outside the decay volume, or if distance &gt; 100cm,Return 0.&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  112</span>        candidate_pos = ROOT.TVector3()</div>
-<div class="line"><span class="lineno">  113</span>        candidate.GetVertex(candidate_pos)</div>
-<div class="line"><span class="lineno">  114</span>        position = (candidate_pos.X(), candidate_pos.Y(), candidate_pos.Z())</div>
-<div class="line"><span class="lineno">  115</span> </div>
-<div class="line"><span class="lineno">  116</span>        nsteps = 8</div>
-<div class="line"><span class="lineno">  117</span>        dalpha = 2 * ROOT.TMath.Pi() / nsteps</div>
-<div class="line"><span class="lineno">  118</span>        min_distance = float(<span class="stringliteral">&quot;inf&quot;</span>)</div>
-<div class="line"><span class="lineno">  119</span> </div>
-<div class="line"><span class="lineno">  120</span>        node = self.geometry_manager.FindNode(*position)</div>
-<div class="line"><span class="lineno">  121</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> node:</div>
-<div class="line"><span class="lineno">  122</span>            <span class="keywordflow">return</span> 0  <span class="comment"># is outside the decay volume</span></div>
-<div class="line"><span class="lineno">  123</span> </div>
-<div class="line"><span class="lineno">  124</span>        <span class="comment"># Loop over directions in the XY plane</span></div>
-<div class="line"><span class="lineno">  125</span>        <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(nsteps):</div>
-<div class="line"><span class="lineno">  126</span>            alpha = n * dalpha</div>
-<div class="line"><span class="lineno">  127</span>            direction = (</div>
-<div class="line"><span class="lineno">  128</span>                ROOT.TMath.Sin(alpha),</div>
-<div class="line"><span class="lineno">  129</span>                ROOT.TMath.Cos(alpha),</div>
-<div class="line"><span class="lineno">  130</span>                0.0,</div>
-<div class="line"><span class="lineno">  131</span>            )  <span class="comment"># Direction vector in XY plane</span></div>
-<div class="line"><span class="lineno">  132</span>            self.geometry_manager.InitTrack(*position, *direction)</div>
-<div class="line"><span class="lineno">  133</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> self.geometry_manager.FindNextBoundary():</div>
-<div class="line"><span class="lineno">  134</span>                <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  135</span>            <span class="comment"># Get the distance to the boundary and update the minimum distance</span></div>
-<div class="line"><span class="lineno">  136</span>            distance = self.geometry_manager.GetStep()</div>
-<div class="line"><span class="lineno">  137</span>            min_distance = min(min_distance, distance)</div>
+<p class="definition">Definition at line <a class="el" href="analysis__toolkit_8py_source.html#l00108">108</a> of file <a class="el" href="analysis__toolkit_8py_source.html">analysis_toolkit.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  108</span>    <span class="keyword">def </span>dist_to_innerwall(self, candidate):</div>
+<div class="line"><span class="lineno">  109</span>        <span class="stringliteral">&quot;&quot;&quot;Calculate the minimum distance(in XY plane) of the candidate decay vertex to the inner wall of the decay vessel. If outside the decay volume, or if distance &gt; 100cm,Return 0.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  110</span>        candidate_pos = ROOT.TVector3()</div>
+<div class="line"><span class="lineno">  111</span>        candidate.GetVertex(candidate_pos)</div>
+<div class="line"><span class="lineno">  112</span>        position = (candidate_pos.X(), candidate_pos.Y(), candidate_pos.Z())</div>
+<div class="line"><span class="lineno">  113</span> </div>
+<div class="line"><span class="lineno">  114</span>        nsteps = 8</div>
+<div class="line"><span class="lineno">  115</span>        dalpha = 2 * ROOT.TMath.Pi() / nsteps</div>
+<div class="line"><span class="lineno">  116</span>        min_distance = float(<span class="stringliteral">&quot;inf&quot;</span>)</div>
+<div class="line"><span class="lineno">  117</span> </div>
+<div class="line"><span class="lineno">  118</span>        node = self.geometry_manager.FindNode(*position)</div>
+<div class="line"><span class="lineno">  119</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> node:</div>
+<div class="line"><span class="lineno">  120</span>            <span class="keywordflow">return</span> 0  <span class="comment"># is outside the decay volume</span></div>
+<div class="line"><span class="lineno">  121</span> </div>
+<div class="line"><span class="lineno">  122</span>        <span class="comment"># Loop over directions in the XY plane</span></div>
+<div class="line"><span class="lineno">  123</span>        <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(nsteps):</div>
+<div class="line"><span class="lineno">  124</span>            alpha = n * dalpha</div>
+<div class="line"><span class="lineno">  125</span>            direction = (</div>
+<div class="line"><span class="lineno">  126</span>                ROOT.TMath.Sin(alpha),</div>
+<div class="line"><span class="lineno">  127</span>                ROOT.TMath.Cos(alpha),</div>
+<div class="line"><span class="lineno">  128</span>                0.0,</div>
+<div class="line"><span class="lineno">  129</span>            )  <span class="comment"># Direction vector in XY plane</span></div>
+<div class="line"><span class="lineno">  130</span>            self.geometry_manager.InitTrack(*position, *direction)</div>
+<div class="line"><span class="lineno">  131</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> self.geometry_manager.FindNextBoundary():</div>
+<div class="line"><span class="lineno">  132</span>                <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  133</span>            <span class="comment"># Get the distance to the boundary and update the minimum distance</span></div>
+<div class="line"><span class="lineno">  134</span>            distance = self.geometry_manager.GetStep()</div>
+<div class="line"><span class="lineno">  135</span>            min_distance = min(min_distance, distance)</div>
+<div class="line"><span class="lineno">  136</span> </div>
+<div class="line"><span class="lineno">  137</span>        <span class="keywordflow">return</span> min_distance <span class="keywordflow">if</span> min_distance &lt; 100 * u.m <span class="keywordflow">else</span> 0</div>
 <div class="line"><span class="lineno">  138</span> </div>
-<div class="line"><span class="lineno">  139</span>        <span class="keywordflow">return</span> min_distance <span class="keywordflow">if</span> min_distance &lt; 100 * u.m <span class="keywordflow">else</span> 0</div>
-<div class="line"><span class="lineno">  140</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -464,13 +463,13 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <pre class="fragment">Calculate the distance of the candidate decay vertex to the entrance of the decay vessel.</pre> 
-<p class="definition">Definition at line <a class="el" href="analysis__toolkit_8py_source.html#l00141">141</a> of file <a class="el" href="analysis__toolkit_8py_source.html">analysis_toolkit.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  141</span>    <span class="keyword">def </span>dist_to_vesselentrance(self, candidate):</div>
-<div class="line"><span class="lineno">  142</span>        <span class="stringliteral">&quot;&quot;&quot;Calculate the distance of the candidate decay vertex to the entrance of the decay vessel.&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  143</span>        candidate_pos = ROOT.TVector3()</div>
-<div class="line"><span class="lineno">  144</span>        candidate.GetVertex(candidate_pos)</div>
-<div class="line"><span class="lineno">  145</span>        <span class="keywordflow">return</span> candidate_pos.Z() - self.veto_geo.z0</div>
-<div class="line"><span class="lineno">  146</span> </div>
+<p class="definition">Definition at line <a class="el" href="analysis__toolkit_8py_source.html#l00139">139</a> of file <a class="el" href="analysis__toolkit_8py_source.html">analysis_toolkit.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  139</span>    <span class="keyword">def </span>dist_to_vesselentrance(self, candidate):</div>
+<div class="line"><span class="lineno">  140</span>        <span class="stringliteral">&quot;&quot;&quot;Calculate the distance of the candidate decay vertex to the entrance of the decay vessel.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  141</span>        candidate_pos = ROOT.TVector3()</div>
+<div class="line"><span class="lineno">  142</span>        candidate.GetVertex(candidate_pos)</div>
+<div class="line"><span class="lineno">  143</span>        <span class="keywordflow">return</span> candidate_pos.Z() - self.veto_geo.z0</div>
+<div class="line"><span class="lineno">  144</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -500,11 +499,11 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <pre class="fragment">Distance of Closest Approach.</pre> 
-<p class="definition">Definition at line <a class="el" href="analysis__toolkit_8py_source.html#l00175">175</a> of file <a class="el" href="analysis__toolkit_8py_source.html">analysis_toolkit.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  175</span>    <span class="keyword">def </span>DOCA(self, candidate):</div>
-<div class="line"><span class="lineno">  176</span>        <span class="stringliteral">&quot;&quot;&quot;Distance of Closest Approach.&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  177</span>        <span class="keywordflow">return</span> candidate.GetDoca()</div>
-<div class="line"><span class="lineno">  178</span> </div>
+<p class="definition">Definition at line <a class="el" href="analysis__toolkit_8py_source.html#l00173">173</a> of file <a class="el" href="analysis__toolkit_8py_source.html">analysis_toolkit.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  173</span>    <span class="keyword">def </span>DOCA(self, candidate):</div>
+<div class="line"><span class="lineno">  174</span>        <span class="stringliteral">&quot;&quot;&quot;Distance of Closest Approach.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  175</span>        <span class="keywordflow">return</span> candidate.GetDoca()</div>
+<div class="line"><span class="lineno">  176</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -534,37 +533,37 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <pre class="fragment">Calculate the impact parameter of the candidate relative to (0,0,target.z0).</pre> 
-<p class="definition">Definition at line <a class="el" href="analysis__toolkit_8py_source.html#l00080">80</a> of file <a class="el" href="analysis__toolkit_8py_source.html">analysis_toolkit.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   80</span>    <span class="keyword">def </span>impact_parameter(self, candidate):</div>
-<div class="line"><span class="lineno">   81</span>        <span class="stringliteral">&quot;&quot;&quot;Calculate the impact parameter of the candidate relative to (0,0,target.z0).&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   82</span>        candidate_pos = ROOT.TVector3()</div>
-<div class="line"><span class="lineno">   83</span>        candidate.GetVertex(candidate_pos)</div>
-<div class="line"><span class="lineno">   84</span> </div>
-<div class="line"><span class="lineno">   85</span>        candidate_mom = ROOT.TLorentzVector()</div>
-<div class="line"><span class="lineno">   86</span>        candidate.Momentum(candidate_mom)</div>
-<div class="line"><span class="lineno">   87</span>        target_point = ROOT.TVector3(0, 0, self.ship_geo.target.z0)</div>
-<div class="line"><span class="lineno">   88</span> </div>
-<div class="line"><span class="lineno">   89</span>        projection_factor = 0</div>
-<div class="line"><span class="lineno">   90</span>        <span class="keywordflow">if</span> hasattr(candidate_mom, <span class="stringliteral">&quot;P&quot;</span>):</div>
-<div class="line"><span class="lineno">   91</span>            P = candidate_mom.P()</div>
-<div class="line"><span class="lineno">   92</span>        <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">   93</span>            P = candidate_mom.Mag()</div>
-<div class="line"><span class="lineno">   94</span>        <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(3):</div>
-<div class="line"><span class="lineno">   95</span>            projection_factor += (</div>
-<div class="line"><span class="lineno">   96</span>                candidate_mom(i) / P * (target_point(i) - candidate_pos(i))</div>
-<div class="line"><span class="lineno">   97</span>            )</div>
-<div class="line"><span class="lineno">   98</span> </div>
-<div class="line"><span class="lineno">   99</span>        dist = 0</div>
-<div class="line"><span class="lineno">  100</span>        <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(3):</div>
-<div class="line"><span class="lineno">  101</span>            dist += (</div>
-<div class="line"><span class="lineno">  102</span>                target_point(i)</div>
-<div class="line"><span class="lineno">  103</span>                - candidate_pos(i)</div>
-<div class="line"><span class="lineno">  104</span>                - projection_factor * candidate_mom(i) / P</div>
-<div class="line"><span class="lineno">  105</span>            ) ** 2</div>
-<div class="line"><span class="lineno">  106</span>        dist = ROOT.TMath.Sqrt(dist)</div>
+<p class="definition">Definition at line <a class="el" href="analysis__toolkit_8py_source.html#l00078">78</a> of file <a class="el" href="analysis__toolkit_8py_source.html">analysis_toolkit.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   78</span>    <span class="keyword">def </span>impact_parameter(self, candidate):</div>
+<div class="line"><span class="lineno">   79</span>        <span class="stringliteral">&quot;&quot;&quot;Calculate the impact parameter of the candidate relative to (0,0,target.z0).&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   80</span>        candidate_pos = ROOT.TVector3()</div>
+<div class="line"><span class="lineno">   81</span>        candidate.GetVertex(candidate_pos)</div>
+<div class="line"><span class="lineno">   82</span> </div>
+<div class="line"><span class="lineno">   83</span>        candidate_mom = ROOT.TLorentzVector()</div>
+<div class="line"><span class="lineno">   84</span>        candidate.Momentum(candidate_mom)</div>
+<div class="line"><span class="lineno">   85</span>        target_point = ROOT.TVector3(0, 0, self.ship_geo.target.z0)</div>
+<div class="line"><span class="lineno">   86</span> </div>
+<div class="line"><span class="lineno">   87</span>        projection_factor = 0</div>
+<div class="line"><span class="lineno">   88</span>        <span class="keywordflow">if</span> hasattr(candidate_mom, <span class="stringliteral">&quot;P&quot;</span>):</div>
+<div class="line"><span class="lineno">   89</span>            P = candidate_mom.P()</div>
+<div class="line"><span class="lineno">   90</span>        <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">   91</span>            P = candidate_mom.Mag()</div>
+<div class="line"><span class="lineno">   92</span>        <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(3):</div>
+<div class="line"><span class="lineno">   93</span>            projection_factor += (</div>
+<div class="line"><span class="lineno">   94</span>                candidate_mom(i) / P * (target_point(i) - candidate_pos(i))</div>
+<div class="line"><span class="lineno">   95</span>            )</div>
+<div class="line"><span class="lineno">   96</span> </div>
+<div class="line"><span class="lineno">   97</span>        dist = 0</div>
+<div class="line"><span class="lineno">   98</span>        <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(3):</div>
+<div class="line"><span class="lineno">   99</span>            dist += (</div>
+<div class="line"><span class="lineno">  100</span>                target_point(i)</div>
+<div class="line"><span class="lineno">  101</span>                - candidate_pos(i)</div>
+<div class="line"><span class="lineno">  102</span>                - projection_factor * candidate_mom(i) / P</div>
+<div class="line"><span class="lineno">  103</span>            ) ** 2</div>
+<div class="line"><span class="lineno">  104</span>        dist = ROOT.TMath.Sqrt(dist)</div>
+<div class="line"><span class="lineno">  105</span> </div>
+<div class="line"><span class="lineno">  106</span>        <span class="keywordflow">return</span> dist  <span class="comment"># in cm</span></div>
 <div class="line"><span class="lineno">  107</span> </div>
-<div class="line"><span class="lineno">  108</span>        <span class="keywordflow">return</span> dist  <span class="comment"># in cm</span></div>
-<div class="line"><span class="lineno">  109</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -594,11 +593,11 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <pre class="fragment">Invariant mass of the candidate.</pre> 
-<p class="definition">Definition at line <a class="el" href="analysis__toolkit_8py_source.html#l00171">171</a> of file <a class="el" href="analysis__toolkit_8py_source.html">analysis_toolkit.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  171</span>    <span class="keyword">def </span>invariant_mass(self, candidate):</div>
-<div class="line"><span class="lineno">  172</span>        <span class="stringliteral">&quot;&quot;&quot;Invariant mass of the candidate.&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  173</span>        <span class="keywordflow">return</span> candidate.GetMass()</div>
-<div class="line"><span class="lineno">  174</span> </div>
+<p class="definition">Definition at line <a class="el" href="analysis__toolkit_8py_source.html#l00169">169</a> of file <a class="el" href="analysis__toolkit_8py_source.html">analysis_toolkit.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  169</span>    <span class="keyword">def </span>invariant_mass(self, candidate):</div>
+<div class="line"><span class="lineno">  170</span>        <span class="stringliteral">&quot;&quot;&quot;Invariant mass of the candidate.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  171</span>        <span class="keywordflow">return</span> candidate.GetMass()</div>
+<div class="line"><span class="lineno">  172</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -628,27 +627,27 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <pre class="fragment">Check if the candidate decay vertex is within the Fiducial Volume.</pre> 
-<p class="definition">Definition at line <a class="el" href="analysis__toolkit_8py_source.html#l00179">179</a> of file <a class="el" href="analysis__toolkit_8py_source.html">analysis_toolkit.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  179</span>    <span class="keyword">def </span>is_in_fiducial(self, candidate):</div>
-<div class="line"><span class="lineno">  180</span>        <span class="stringliteral">&quot;&quot;&quot;Check if the candidate decay vertex is within the Fiducial Volume.&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  181</span>        candidate_pos = ROOT.TVector3()</div>
-<div class="line"><span class="lineno">  182</span>        candidate.GetVertex(candidate_pos)</div>
-<div class="line"><span class="lineno">  183</span> </div>
-<div class="line"><span class="lineno">  184</span>        <span class="keywordflow">if</span> candidate_pos.Z() &gt; self.ship_geo.TrackStation1.z:</div>
+<p class="definition">Definition at line <a class="el" href="analysis__toolkit_8py_source.html#l00177">177</a> of file <a class="el" href="analysis__toolkit_8py_source.html">analysis_toolkit.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  177</span>    <span class="keyword">def </span>is_in_fiducial(self, candidate):</div>
+<div class="line"><span class="lineno">  178</span>        <span class="stringliteral">&quot;&quot;&quot;Check if the candidate decay vertex is within the Fiducial Volume.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  179</span>        candidate_pos = ROOT.TVector3()</div>
+<div class="line"><span class="lineno">  180</span>        candidate.GetVertex(candidate_pos)</div>
+<div class="line"><span class="lineno">  181</span> </div>
+<div class="line"><span class="lineno">  182</span>        <span class="keywordflow">if</span> candidate_pos.Z() &gt; self.ship_geo.TrackStation1.z:</div>
+<div class="line"><span class="lineno">  183</span>            <span class="keywordflow">return</span> <span class="keyword">False</span></div>
+<div class="line"><span class="lineno">  184</span>        <span class="keywordflow">if</span> candidate_pos.Z() &lt; self.veto_geo.z0:</div>
 <div class="line"><span class="lineno">  185</span>            <span class="keywordflow">return</span> <span class="keyword">False</span></div>
-<div class="line"><span class="lineno">  186</span>        <span class="keywordflow">if</span> candidate_pos.Z() &lt; self.veto_geo.z0:</div>
-<div class="line"><span class="lineno">  187</span>            <span class="keywordflow">return</span> <span class="keyword">False</span></div>
+<div class="line"><span class="lineno">  186</span> </div>
+<div class="line"><span class="lineno">  187</span>        <span class="comment"># if self.dist2InnerWall(candidate)&lt;=5*u.cm: return False</span></div>
 <div class="line"><span class="lineno">  188</span> </div>
-<div class="line"><span class="lineno">  189</span>        <span class="comment"># if self.dist2InnerWall(candidate)&lt;=5*u.cm: return False</span></div>
-<div class="line"><span class="lineno">  190</span> </div>
-<div class="line"><span class="lineno">  191</span>        vertex_node = ROOT.gGeoManager.FindNode(</div>
-<div class="line"><span class="lineno">  192</span>            candidate_pos.X(), candidate_pos.Y(), candidate_pos.Z()</div>
-<div class="line"><span class="lineno">  193</span>        )</div>
-<div class="line"><span class="lineno">  194</span>        vertex_elem = vertex_node.GetVolume().GetName()</div>
-<div class="line"><span class="lineno">  195</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> vertex_elem.startswith(<span class="stringliteral">&quot;DecayVacuum_&quot;</span>):</div>
-<div class="line"><span class="lineno">  196</span>            <span class="keywordflow">return</span> <span class="keyword">False</span></div>
-<div class="line"><span class="lineno">  197</span>        <span class="keywordflow">return</span> <span class="keyword">True</span></div>
-<div class="line"><span class="lineno">  198</span> </div>
+<div class="line"><span class="lineno">  189</span>        vertex_node = ROOT.gGeoManager.FindNode(</div>
+<div class="line"><span class="lineno">  190</span>            candidate_pos.X(), candidate_pos.Y(), candidate_pos.Z()</div>
+<div class="line"><span class="lineno">  191</span>        )</div>
+<div class="line"><span class="lineno">  192</span>        vertex_elem = vertex_node.GetVolume().GetName()</div>
+<div class="line"><span class="lineno">  193</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> vertex_elem.startswith(<span class="stringliteral">&quot;DecayVacuum_&quot;</span>):</div>
+<div class="line"><span class="lineno">  194</span>            <span class="keywordflow">return</span> <span class="keyword">False</span></div>
+<div class="line"><span class="lineno">  195</span>        <span class="keywordflow">return</span> <span class="keyword">True</span></div>
+<div class="line"><span class="lineno">  196</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -678,20 +677,20 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <pre class="fragment">Return the number of degrees of freedom (nDOF) for the particle's daughter tracks.</pre> 
-<p class="definition">Definition at line <a class="el" href="analysis__toolkit_8py_source.html#l00147">147</a> of file <a class="el" href="analysis__toolkit_8py_source.html">analysis_toolkit.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  147</span>    <span class="keyword">def </span>nDOF(self, candidate):</div>
-<div class="line"><span class="lineno">  148</span>        <span class="stringliteral">&quot;&quot;&quot;Return the number of degrees of freedom (nDOF) for the particle&#39;s daughter tracks.&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  149</span>        nmeas = []</div>
-<div class="line"><span class="lineno">  150</span>        t1, t2 = candidate.GetDaughter(0), candidate.GetDaughter(1)</div>
-<div class="line"><span class="lineno">  151</span> </div>
-<div class="line"><span class="lineno">  152</span>        <span class="keywordflow">for</span> tr <span class="keywordflow">in</span> [t1, t2]:</div>
-<div class="line"><span class="lineno">  153</span>            fit_status = self.tree.FitTracks[tr].getFitStatus()</div>
-<div class="line"><span class="lineno">  154</span>            nmeas.append(</div>
-<div class="line"><span class="lineno">  155</span>                int(round(fit_status.getNdf()))</div>
-<div class="line"><span class="lineno">  156</span>            )  <span class="comment"># nmeas.append(fit_status.getNdf())</span></div>
+<p class="definition">Definition at line <a class="el" href="analysis__toolkit_8py_source.html#l00145">145</a> of file <a class="el" href="analysis__toolkit_8py_source.html">analysis_toolkit.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  145</span>    <span class="keyword">def </span>nDOF(self, candidate):</div>
+<div class="line"><span class="lineno">  146</span>        <span class="stringliteral">&quot;&quot;&quot;Return the number of degrees of freedom (nDOF) for the particle&#39;s daughter tracks.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  147</span>        nmeas = []</div>
+<div class="line"><span class="lineno">  148</span>        t1, t2 = candidate.GetDaughter(0), candidate.GetDaughter(1)</div>
+<div class="line"><span class="lineno">  149</span> </div>
+<div class="line"><span class="lineno">  150</span>        <span class="keywordflow">for</span> tr <span class="keywordflow">in</span> [t1, t2]:</div>
+<div class="line"><span class="lineno">  151</span>            fit_status = self.tree.FitTracks[tr].getFitStatus()</div>
+<div class="line"><span class="lineno">  152</span>            nmeas.append(</div>
+<div class="line"><span class="lineno">  153</span>                int(round(fit_status.getNdf()))</div>
+<div class="line"><span class="lineno">  154</span>            )  <span class="comment"># nmeas.append(fit_status.getNdf())</span></div>
+<div class="line"><span class="lineno">  155</span> </div>
+<div class="line"><span class="lineno">  156</span>        <span class="keywordflow">return</span> np.array(nmeas)</div>
 <div class="line"><span class="lineno">  157</span> </div>
-<div class="line"><span class="lineno">  158</span>        <span class="keywordflow">return</span> np.array(nmeas)</div>
-<div class="line"><span class="lineno">  159</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -736,122 +735,122 @@ Public Attributes</h2></td></tr>
 
 show_table=True tabulates the pre-selection parameters.
 </pre> 
-<p class="definition">Definition at line <a class="el" href="analysis__toolkit_8py_source.html#l00210">210</a> of file <a class="el" href="analysis__toolkit_8py_source.html">analysis_toolkit.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  210</span>    <span class="keyword">def </span>preselection_cut(self, candidate, IP_cut=250, show_table=False):</div>
-<div class="line"><span class="lineno">  211</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  212</span><span class="stringliteral">        Umbrella method to apply the pre-selection cuts on the candidate.</span></div>
-<div class="line"><span class="lineno">  213</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  214</span><span class="stringliteral">        show_table=True tabulates the pre-selection parameters.</span></div>
-<div class="line"><span class="lineno">  215</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  216</span>        flag = <span class="keyword">True</span></div>
-<div class="line"><span class="lineno">  217</span> </div>
-<div class="line"><span class="lineno">  218</span>        <span class="keywordflow">if</span> len(self.tree.Particles) != 1:</div>
+<p class="definition">Definition at line <a class="el" href="analysis__toolkit_8py_source.html#l00208">208</a> of file <a class="el" href="analysis__toolkit_8py_source.html">analysis_toolkit.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  208</span>    <span class="keyword">def </span>preselection_cut(self, candidate, IP_cut=250, show_table=False):</div>
+<div class="line"><span class="lineno">  209</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  210</span><span class="stringliteral">        Umbrella method to apply the pre-selection cuts on the candidate.</span></div>
+<div class="line"><span class="lineno">  211</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  212</span><span class="stringliteral">        show_table=True tabulates the pre-selection parameters.</span></div>
+<div class="line"><span class="lineno">  213</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  214</span>        flag = <span class="keyword">True</span></div>
+<div class="line"><span class="lineno">  215</span> </div>
+<div class="line"><span class="lineno">  216</span>        <span class="keywordflow">if</span> len(self.tree.Particles) != 1:</div>
+<div class="line"><span class="lineno">  217</span>            flag = <span class="keyword">False</span></div>
+<div class="line"><span class="lineno">  218</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> (self.is_in_fiducial(candidate)):</div>
 <div class="line"><span class="lineno">  219</span>            flag = <span class="keyword">False</span></div>
-<div class="line"><span class="lineno">  220</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> (self.is_in_fiducial(candidate)):</div>
+<div class="line"><span class="lineno">  220</span>        <span class="keywordflow">if</span> self.dist_to_innerwall(candidate) &lt;= 5 * u.cm:</div>
 <div class="line"><span class="lineno">  221</span>            flag = <span class="keyword">False</span></div>
-<div class="line"><span class="lineno">  222</span>        <span class="keywordflow">if</span> self.dist_to_innerwall(candidate) &lt;= 5 * u.cm:</div>
+<div class="line"><span class="lineno">  222</span>        <span class="keywordflow">if</span> self.dist_to_vesselentrance(candidate) &lt;= 100 * u.cm:</div>
 <div class="line"><span class="lineno">  223</span>            flag = <span class="keyword">False</span></div>
-<div class="line"><span class="lineno">  224</span>        <span class="keywordflow">if</span> self.dist_to_vesselentrance(candidate) &lt;= 100 * u.cm:</div>
+<div class="line"><span class="lineno">  224</span>        <span class="keywordflow">if</span> self.impact_parameter(candidate) &gt;= IP_cut * u.cm:</div>
 <div class="line"><span class="lineno">  225</span>            flag = <span class="keyword">False</span></div>
-<div class="line"><span class="lineno">  226</span>        <span class="keywordflow">if</span> self.impact_parameter(candidate) &gt;= IP_cut * u.cm:</div>
+<div class="line"><span class="lineno">  226</span>        <span class="keywordflow">if</span> self.DOCA(candidate) &gt;= 1 * u.cm:</div>
 <div class="line"><span class="lineno">  227</span>            flag = <span class="keyword">False</span></div>
-<div class="line"><span class="lineno">  228</span>        <span class="keywordflow">if</span> self.DOCA(candidate) &gt;= 1 * u.cm:</div>
+<div class="line"><span class="lineno">  228</span>        <span class="keywordflow">if</span> np.any(self.nDOF(candidate) &lt;= 25):</div>
 <div class="line"><span class="lineno">  229</span>            flag = <span class="keyword">False</span></div>
-<div class="line"><span class="lineno">  230</span>        <span class="keywordflow">if</span> np.any(self.nDOF(candidate) &lt;= 25):</div>
+<div class="line"><span class="lineno">  230</span>        <span class="keywordflow">if</span> np.any(self.chi2nDOF(candidate) &gt;= 5):</div>
 <div class="line"><span class="lineno">  231</span>            flag = <span class="keyword">False</span></div>
-<div class="line"><span class="lineno">  232</span>        <span class="keywordflow">if</span> np.any(self.chi2nDOF(candidate) &gt;= 5):</div>
+<div class="line"><span class="lineno">  232</span>        <span class="keywordflow">if</span> np.any(self.daughtermomentum(candidate) &lt;= 1 * u.GeV):</div>
 <div class="line"><span class="lineno">  233</span>            flag = <span class="keyword">False</span></div>
-<div class="line"><span class="lineno">  234</span>        <span class="keywordflow">if</span> np.any(self.daughtermomentum(candidate) &lt;= 1 * u.GeV):</div>
-<div class="line"><span class="lineno">  235</span>            flag = <span class="keyword">False</span></div>
-<div class="line"><span class="lineno">  236</span> </div>
-<div class="line"><span class="lineno">  237</span>        <span class="keywordflow">if</span> show_table:</div>
-<div class="line"><span class="lineno">  238</span>            table = [</div>
-<div class="line"><span class="lineno">  239</span>                [</div>
-<div class="line"><span class="lineno">  240</span>                    <span class="stringliteral">&quot;Number of candidates in event&quot;</span>,</div>
-<div class="line"><span class="lineno">  241</span>                    len(self.tree.Particles),</div>
-<div class="line"><span class="lineno">  242</span>                    <span class="stringliteral">&quot;==1&quot;</span>,</div>
-<div class="line"><span class="lineno">  243</span>                    len(self.tree.Particles) == 1,</div>
-<div class="line"><span class="lineno">  244</span>                ],</div>
-<div class="line"><span class="lineno">  245</span>                [</div>
-<div class="line"><span class="lineno">  246</span>                    <span class="stringliteral">&quot;Time @ decay vertex (ns)&quot;</span>,</div>
-<div class="line"><span class="lineno">  247</span>                    self.define_candidate_time(candidate),</div>
-<div class="line"><span class="lineno">  248</span>                    <span class="stringliteral">&quot;&quot;</span>,</div>
-<div class="line"><span class="lineno">  249</span>                    <span class="stringliteral">&quot;&quot;</span>,</div>
-<div class="line"><span class="lineno">  250</span>                ],</div>
-<div class="line"><span class="lineno">  251</span>                [</div>
-<div class="line"><span class="lineno">  252</span>                    <span class="stringliteral">&quot;Impact Parameter (cm)&quot;</span>,</div>
-<div class="line"><span class="lineno">  253</span>                    self.impact_parameter(candidate),</div>
-<div class="line"><span class="lineno">  254</span>                    f<span class="stringliteral">&quot;IP &lt; {IP_cut * u.cm} cm&quot;</span>,</div>
-<div class="line"><span class="lineno">  255</span>                    self.impact_parameter(candidate) &lt; IP_cut * u.cm,</div>
-<div class="line"><span class="lineno">  256</span>                ],</div>
-<div class="line"><span class="lineno">  257</span>                [</div>
-<div class="line"><span class="lineno">  258</span>                    <span class="stringliteral">&quot;DOCA (cm)&quot;</span>,</div>
-<div class="line"><span class="lineno">  259</span>                    self.DOCA(candidate),</div>
-<div class="line"><span class="lineno">  260</span>                    <span class="stringliteral">&quot;DOCA &lt; 1 cm&quot;</span>,</div>
-<div class="line"><span class="lineno">  261</span>                    self.DOCA(candidate) &lt; 1 * u.cm,</div>
-<div class="line"><span class="lineno">  262</span>                ],</div>
-<div class="line"><span class="lineno">  263</span>                [</div>
-<div class="line"><span class="lineno">  264</span>                    <span class="stringliteral">&quot;Is within Fiducial Volume?&quot;</span>,</div>
+<div class="line"><span class="lineno">  234</span> </div>
+<div class="line"><span class="lineno">  235</span>        <span class="keywordflow">if</span> show_table:</div>
+<div class="line"><span class="lineno">  236</span>            table = [</div>
+<div class="line"><span class="lineno">  237</span>                [</div>
+<div class="line"><span class="lineno">  238</span>                    <span class="stringliteral">&quot;Number of candidates in event&quot;</span>,</div>
+<div class="line"><span class="lineno">  239</span>                    len(self.tree.Particles),</div>
+<div class="line"><span class="lineno">  240</span>                    <span class="stringliteral">&quot;==1&quot;</span>,</div>
+<div class="line"><span class="lineno">  241</span>                    len(self.tree.Particles) == 1,</div>
+<div class="line"><span class="lineno">  242</span>                ],</div>
+<div class="line"><span class="lineno">  243</span>                [</div>
+<div class="line"><span class="lineno">  244</span>                    <span class="stringliteral">&quot;Time @ decay vertex (ns)&quot;</span>,</div>
+<div class="line"><span class="lineno">  245</span>                    self.define_candidate_time(candidate),</div>
+<div class="line"><span class="lineno">  246</span>                    <span class="stringliteral">&quot;&quot;</span>,</div>
+<div class="line"><span class="lineno">  247</span>                    <span class="stringliteral">&quot;&quot;</span>,</div>
+<div class="line"><span class="lineno">  248</span>                ],</div>
+<div class="line"><span class="lineno">  249</span>                [</div>
+<div class="line"><span class="lineno">  250</span>                    <span class="stringliteral">&quot;Impact Parameter (cm)&quot;</span>,</div>
+<div class="line"><span class="lineno">  251</span>                    self.impact_parameter(candidate),</div>
+<div class="line"><span class="lineno">  252</span>                    f<span class="stringliteral">&quot;IP &lt; {IP_cut * u.cm} cm&quot;</span>,</div>
+<div class="line"><span class="lineno">  253</span>                    self.impact_parameter(candidate) &lt; IP_cut * u.cm,</div>
+<div class="line"><span class="lineno">  254</span>                ],</div>
+<div class="line"><span class="lineno">  255</span>                [</div>
+<div class="line"><span class="lineno">  256</span>                    <span class="stringliteral">&quot;DOCA (cm)&quot;</span>,</div>
+<div class="line"><span class="lineno">  257</span>                    self.DOCA(candidate),</div>
+<div class="line"><span class="lineno">  258</span>                    <span class="stringliteral">&quot;DOCA &lt; 1 cm&quot;</span>,</div>
+<div class="line"><span class="lineno">  259</span>                    self.DOCA(candidate) &lt; 1 * u.cm,</div>
+<div class="line"><span class="lineno">  260</span>                ],</div>
+<div class="line"><span class="lineno">  261</span>                [</div>
+<div class="line"><span class="lineno">  262</span>                    <span class="stringliteral">&quot;Is within Fiducial Volume?&quot;</span>,</div>
+<div class="line"><span class="lineno">  263</span>                    self.is_in_fiducial(candidate),</div>
+<div class="line"><span class="lineno">  264</span>                    <span class="stringliteral">&quot;True&quot;</span>,</div>
 <div class="line"><span class="lineno">  265</span>                    self.is_in_fiducial(candidate),</div>
-<div class="line"><span class="lineno">  266</span>                    <span class="stringliteral">&quot;True&quot;</span>,</div>
-<div class="line"><span class="lineno">  267</span>                    self.is_in_fiducial(candidate),</div>
-<div class="line"><span class="lineno">  268</span>                ],</div>
-<div class="line"><span class="lineno">  269</span>                [</div>
-<div class="line"><span class="lineno">  270</span>                    <span class="stringliteral">&quot;Dist2InnerWall (cm)&quot;</span>,</div>
-<div class="line"><span class="lineno">  271</span>                    self.dist_to_innerwall(candidate),</div>
-<div class="line"><span class="lineno">  272</span>                    <span class="stringliteral">&quot;&gt; 5 cm&quot;</span>,</div>
-<div class="line"><span class="lineno">  273</span>                    self.dist_to_innerwall(candidate) &gt; 5 * u.cm,</div>
-<div class="line"><span class="lineno">  274</span>                ],</div>
-<div class="line"><span class="lineno">  275</span>                [</div>
-<div class="line"><span class="lineno">  276</span>                    <span class="stringliteral">&quot;Dist2VesselEntrance (cm)&quot;</span>,</div>
-<div class="line"><span class="lineno">  277</span>                    self.dist_to_vesselentrance(candidate),</div>
-<div class="line"><span class="lineno">  278</span>                    <span class="stringliteral">&quot;&gt; 100 cm&quot;</span>,</div>
-<div class="line"><span class="lineno">  279</span>                    self.dist_to_vesselentrance(candidate) &gt; 100 * u.cm,</div>
-<div class="line"><span class="lineno">  280</span>                ],</div>
-<div class="line"><span class="lineno">  281</span>                [<span class="stringliteral">&quot;Invariant Mass (GeV)&quot;</span>, self.invariant_mass(candidate), <span class="stringliteral">&quot;&quot;</span>, <span class="stringliteral">&quot;&quot;</span>],</div>
-<div class="line"><span class="lineno">  282</span>                [</div>
-<div class="line"><span class="lineno">  283</span>                    <span class="stringliteral">&quot;Daughter Momentum [d1, d2] (GeV)&quot;</span>,</div>
-<div class="line"><span class="lineno">  284</span>                    self.daughtermomentum(candidate),</div>
-<div class="line"><span class="lineno">  285</span>                    <span class="stringliteral">&quot;&gt; 1 GeV&quot;</span>,</div>
-<div class="line"><span class="lineno">  286</span>                    np.all(self.daughtermomentum(candidate) &gt; 1 * u.GeV),</div>
-<div class="line"><span class="lineno">  287</span>                ],</div>
-<div class="line"><span class="lineno">  288</span>                [</div>
-<div class="line"><span class="lineno">  289</span>                    <span class="stringliteral">&quot;Degrees of Freedom [d1, d2]&quot;</span>,</div>
-<div class="line"><span class="lineno">  290</span>                    self.nDOF(candidate),</div>
-<div class="line"><span class="lineno">  291</span>                    <span class="stringliteral">&quot;&gt; 25&quot;</span>,</div>
-<div class="line"><span class="lineno">  292</span>                    np.all(self.nDOF(candidate) &gt; 25),</div>
-<div class="line"><span class="lineno">  293</span>                ],</div>
-<div class="line"><span class="lineno">  294</span>                [</div>
-<div class="line"><span class="lineno">  295</span>                    <span class="stringliteral">&quot;Reduced Chi^2 [d1, d2]&quot;</span>,</div>
-<div class="line"><span class="lineno">  296</span>                    self.chi2nDOF(candidate),</div>
-<div class="line"><span class="lineno">  297</span>                    <span class="stringliteral">&quot;&lt; 5&quot;</span>,</div>
-<div class="line"><span class="lineno">  298</span>                    np.all(self.chi2nDOF(candidate) &lt; 5),</div>
-<div class="line"><span class="lineno">  299</span>                ],</div>
-<div class="line"><span class="lineno">  300</span>                [<span class="stringliteral">&quot;\033[1mPre-selection passed:\033[0m&quot;</span>, <span class="stringliteral">&quot;&quot;</span>, <span class="stringliteral">&quot;&quot;</span>, flag],</div>
-<div class="line"><span class="lineno">  301</span>            ]</div>
-<div class="line"><span class="lineno">  302</span> </div>
-<div class="line"><span class="lineno">  303</span>            <span class="keywordflow">for</span> row <span class="keywordflow">in</span> table:</div>
-<div class="line"><span class="lineno">  304</span>                row[3] = (</div>
-<div class="line"><span class="lineno">  305</span>                    f<span class="stringliteral">&quot;\033[1;32m{row[3]}\033[0m&quot;</span></div>
-<div class="line"><span class="lineno">  306</span>                    <span class="keywordflow">if</span> row[3]</div>
-<div class="line"><span class="lineno">  307</span>                    <span class="keywordflow">else</span> f<span class="stringliteral">&quot;\033[1;31m{row[3]}\033[0m&quot;</span></div>
-<div class="line"><span class="lineno">  308</span>                )  <span class="comment"># Green for True, Red for False</span></div>
-<div class="line"><span class="lineno">  309</span> </div>
-<div class="line"><span class="lineno">  310</span>            print(</div>
-<div class="line"><span class="lineno">  311</span>                tabulate(</div>
-<div class="line"><span class="lineno">  312</span>                    table,</div>
-<div class="line"><span class="lineno">  313</span>                    headers=[</div>
-<div class="line"><span class="lineno">  314</span>                        <span class="stringliteral">&quot;Parameter&quot;</span>,</div>
-<div class="line"><span class="lineno">  315</span>                        <span class="stringliteral">&quot;Value&quot;</span>,</div>
-<div class="line"><span class="lineno">  316</span>                        <span class="stringliteral">&quot;Pre-selection cut&quot;</span>,</div>
-<div class="line"><span class="lineno">  317</span>                        <span class="stringliteral">&quot;Pre-selection Check&quot;</span>,</div>
-<div class="line"><span class="lineno">  318</span>                    ],</div>
-<div class="line"><span class="lineno">  319</span>                    tablefmt=<span class="stringliteral">&quot;grid&quot;</span>,</div>
-<div class="line"><span class="lineno">  320</span>                )</div>
-<div class="line"><span class="lineno">  321</span>            )</div>
-<div class="line"><span class="lineno">  322</span>        <span class="keywordflow">return</span> flag</div>
-<div class="line"><span class="lineno">  323</span> </div>
-<div class="line"><span class="lineno">  324</span> </div>
+<div class="line"><span class="lineno">  266</span>                ],</div>
+<div class="line"><span class="lineno">  267</span>                [</div>
+<div class="line"><span class="lineno">  268</span>                    <span class="stringliteral">&quot;Dist2InnerWall (cm)&quot;</span>,</div>
+<div class="line"><span class="lineno">  269</span>                    self.dist_to_innerwall(candidate),</div>
+<div class="line"><span class="lineno">  270</span>                    <span class="stringliteral">&quot;&gt; 5 cm&quot;</span>,</div>
+<div class="line"><span class="lineno">  271</span>                    self.dist_to_innerwall(candidate) &gt; 5 * u.cm,</div>
+<div class="line"><span class="lineno">  272</span>                ],</div>
+<div class="line"><span class="lineno">  273</span>                [</div>
+<div class="line"><span class="lineno">  274</span>                    <span class="stringliteral">&quot;Dist2VesselEntrance (cm)&quot;</span>,</div>
+<div class="line"><span class="lineno">  275</span>                    self.dist_to_vesselentrance(candidate),</div>
+<div class="line"><span class="lineno">  276</span>                    <span class="stringliteral">&quot;&gt; 100 cm&quot;</span>,</div>
+<div class="line"><span class="lineno">  277</span>                    self.dist_to_vesselentrance(candidate) &gt; 100 * u.cm,</div>
+<div class="line"><span class="lineno">  278</span>                ],</div>
+<div class="line"><span class="lineno">  279</span>                [<span class="stringliteral">&quot;Invariant Mass (GeV)&quot;</span>, self.invariant_mass(candidate), <span class="stringliteral">&quot;&quot;</span>, <span class="stringliteral">&quot;&quot;</span>],</div>
+<div class="line"><span class="lineno">  280</span>                [</div>
+<div class="line"><span class="lineno">  281</span>                    <span class="stringliteral">&quot;Daughter Momentum [d1, d2] (GeV)&quot;</span>,</div>
+<div class="line"><span class="lineno">  282</span>                    self.daughtermomentum(candidate),</div>
+<div class="line"><span class="lineno">  283</span>                    <span class="stringliteral">&quot;&gt; 1 GeV&quot;</span>,</div>
+<div class="line"><span class="lineno">  284</span>                    np.all(self.daughtermomentum(candidate) &gt; 1 * u.GeV),</div>
+<div class="line"><span class="lineno">  285</span>                ],</div>
+<div class="line"><span class="lineno">  286</span>                [</div>
+<div class="line"><span class="lineno">  287</span>                    <span class="stringliteral">&quot;Degrees of Freedom [d1, d2]&quot;</span>,</div>
+<div class="line"><span class="lineno">  288</span>                    self.nDOF(candidate),</div>
+<div class="line"><span class="lineno">  289</span>                    <span class="stringliteral">&quot;&gt; 25&quot;</span>,</div>
+<div class="line"><span class="lineno">  290</span>                    np.all(self.nDOF(candidate) &gt; 25),</div>
+<div class="line"><span class="lineno">  291</span>                ],</div>
+<div class="line"><span class="lineno">  292</span>                [</div>
+<div class="line"><span class="lineno">  293</span>                    <span class="stringliteral">&quot;Reduced Chi^2 [d1, d2]&quot;</span>,</div>
+<div class="line"><span class="lineno">  294</span>                    self.chi2nDOF(candidate),</div>
+<div class="line"><span class="lineno">  295</span>                    <span class="stringliteral">&quot;&lt; 5&quot;</span>,</div>
+<div class="line"><span class="lineno">  296</span>                    np.all(self.chi2nDOF(candidate) &lt; 5),</div>
+<div class="line"><span class="lineno">  297</span>                ],</div>
+<div class="line"><span class="lineno">  298</span>                [<span class="stringliteral">&quot;\033[1mPre-selection passed:\033[0m&quot;</span>, <span class="stringliteral">&quot;&quot;</span>, <span class="stringliteral">&quot;&quot;</span>, flag],</div>
+<div class="line"><span class="lineno">  299</span>            ]</div>
+<div class="line"><span class="lineno">  300</span> </div>
+<div class="line"><span class="lineno">  301</span>            <span class="keywordflow">for</span> row <span class="keywordflow">in</span> table:</div>
+<div class="line"><span class="lineno">  302</span>                row[3] = (</div>
+<div class="line"><span class="lineno">  303</span>                    f<span class="stringliteral">&quot;\033[1;32m{row[3]}\033[0m&quot;</span></div>
+<div class="line"><span class="lineno">  304</span>                    <span class="keywordflow">if</span> row[3]</div>
+<div class="line"><span class="lineno">  305</span>                    <span class="keywordflow">else</span> f<span class="stringliteral">&quot;\033[1;31m{row[3]}\033[0m&quot;</span></div>
+<div class="line"><span class="lineno">  306</span>                )  <span class="comment"># Green for True, Red for False</span></div>
+<div class="line"><span class="lineno">  307</span> </div>
+<div class="line"><span class="lineno">  308</span>            print(</div>
+<div class="line"><span class="lineno">  309</span>                tabulate(</div>
+<div class="line"><span class="lineno">  310</span>                    table,</div>
+<div class="line"><span class="lineno">  311</span>                    headers=[</div>
+<div class="line"><span class="lineno">  312</span>                        <span class="stringliteral">&quot;Parameter&quot;</span>,</div>
+<div class="line"><span class="lineno">  313</span>                        <span class="stringliteral">&quot;Value&quot;</span>,</div>
+<div class="line"><span class="lineno">  314</span>                        <span class="stringliteral">&quot;Pre-selection cut&quot;</span>,</div>
+<div class="line"><span class="lineno">  315</span>                        <span class="stringliteral">&quot;Pre-selection Check&quot;</span>,</div>
+<div class="line"><span class="lineno">  316</span>                    ],</div>
+<div class="line"><span class="lineno">  317</span>                    tablefmt=<span class="stringliteral">&quot;grid&quot;</span>,</div>
+<div class="line"><span class="lineno">  318</span>                )</div>
+<div class="line"><span class="lineno">  319</span>            )</div>
+<div class="line"><span class="lineno">  320</span>        <span class="keywordflow">return</span> flag</div>
+<div class="line"><span class="lineno">  321</span> </div>
+<div class="line"><span class="lineno">  322</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -868,7 +867,7 @@ show_table=True tabulates the pre-selection parameters.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="analysis__toolkit_8py_source.html#l00019">19</a> of file <a class="el" href="analysis__toolkit_8py_source.html">analysis_toolkit.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="analysis__toolkit_8py_source.html#l00018">18</a> of file <a class="el" href="analysis__toolkit_8py_source.html">analysis_toolkit.py</a>.</p>
 
 </div>
 </div>
@@ -884,7 +883,7 @@ show_table=True tabulates the pre-selection parameters.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="analysis__toolkit_8py_source.html#l00021">21</a> of file <a class="el" href="analysis__toolkit_8py_source.html">analysis_toolkit.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="analysis__toolkit_8py_source.html#l00019">19</a> of file <a class="el" href="analysis__toolkit_8py_source.html">analysis_toolkit.py</a>.</p>
 
 </div>
 </div>
@@ -900,7 +899,7 @@ show_table=True tabulates the pre-selection parameters.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="analysis__toolkit_8py_source.html#l00037">37</a> of file <a class="el" href="analysis__toolkit_8py_source.html">analysis_toolkit.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="analysis__toolkit_8py_source.html#l00035">35</a> of file <a class="el" href="analysis__toolkit_8py_source.html">analysis_toolkit.py</a>.</p>
 
 </div>
 </div>
@@ -916,7 +915,7 @@ show_table=True tabulates the pre-selection parameters.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="analysis__toolkit_8py_source.html#l00028">28</a> of file <a class="el" href="analysis__toolkit_8py_source.html">analysis_toolkit.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="analysis__toolkit_8py_source.html#l00026">26</a> of file <a class="el" href="analysis__toolkit_8py_source.html">analysis_toolkit.py</a>.</p>
 
 </div>
 </div>

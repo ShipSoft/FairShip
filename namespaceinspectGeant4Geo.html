@@ -105,9 +105,7 @@ Variables</h2></td></tr>
 <tr class="separator:ad3a4209be563bb7349a917104d413925"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a03bb0ea2b3838f3314e786e86914e25c" id="r_a03bb0ea2b3838f3314e786e86914e25c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceinspectGeant4Geo.html#a03bb0ea2b3838f3314e786e86914e25c">run</a> = ROOT.FairRunSim()</td></tr>
 <tr class="separator:a03bb0ea2b3838f3314e786e86914e25c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac805e20922fcef5ae243057241d11d78" id="r_ac805e20922fcef5ae243057241d11d78"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceinspectGeant4Geo.html#ac805e20922fcef5ae243057241d11d78">upkl</a> = <a class="el" href="classrootpyPickler_1_1Unpickler.html">Unpickler</a>(<a class="el" href="namespaceinspectGeant4Geo.html#a0efacb245b056a4f044ff50eb8ee0f00">fgeo</a>)</td></tr>
-<tr class="separator:ac805e20922fcef5ae243057241d11d78"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4b772d604d4af9e7575633f7cf48e7b2" id="r_a4b772d604d4af9e7575633f7cf48e7b2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceinspectGeant4Geo.html#a4b772d604d4af9e7575633f7cf48e7b2">ShipGeo</a> = upkl.load('ShipGeo')</td></tr>
+<tr class="memitem:a4b772d604d4af9e7575633f7cf48e7b2" id="r_a4b772d604d4af9e7575633f7cf48e7b2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceinspectGeant4Geo.html#a4b772d604d4af9e7575633f7cf48e7b2">ShipGeo</a> = load_from_root_file(<a class="el" href="namespaceinspectGeant4Geo.html#a0efacb245b056a4f044ff50eb8ee0f00">fgeo</a>, 'ShipGeo')</td></tr>
 <tr class="separator:a4b772d604d4af9e7575633f7cf48e7b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7b5821cffd485ff8a225c9f2df441372" id="r_a7b5821cffd485ff8a225c9f2df441372"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceinspectGeant4Geo.html#a7b5821cffd485ff8a225c9f2df441372">modules</a> = <a class="el" href="namespaceshipDet__conf.html#a7f232397871353ce80c1ea03eb15bd20">shipDet_conf.configure</a>(<a class="el" href="namespaceinspectGeant4Geo.html#a03bb0ea2b3838f3314e786e86914e25c">run</a>, <a class="el" href="namespaceinspectGeant4Geo.html#a4b772d604d4af9e7575633f7cf48e7b2">ShipGeo</a>)</td></tr>
 <tr class="separator:a7b5821cffd485ff8a225c9f2df441372"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -157,7 +155,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="inspectGeant4Geo_8py_source.html#l00017">17</a> of file <a class="el" href="inspectGeant4Geo_8py_source.html">inspectGeant4Geo.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="inspectGeant4Geo_8py_source.html#l00016">16</a> of file <a class="el" href="inspectGeant4Geo_8py_source.html">inspectGeant4Geo.py</a>.</p>
 
 </div>
 </div>
@@ -200,23 +198,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">inspectGeant4Geo.ShipGeo = upkl.load('ShipGeo')</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="inspectGeant4Geo_8py_source.html#l00016">16</a> of file <a class="el" href="inspectGeant4Geo_8py_source.html">inspectGeant4Geo.py</a>.</p>
-
-</div>
-</div>
-<a id="ac805e20922fcef5ae243057241d11d78" name="ac805e20922fcef5ae243057241d11d78"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac805e20922fcef5ae243057241d11d78">&#9670;&#160;</a></span>upkl</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">inspectGeant4Geo.upkl = <a class="el" href="classrootpyPickler_1_1Unpickler.html">Unpickler</a>(<a class="el" href="namespaceinspectGeant4Geo.html#a0efacb245b056a4f044ff50eb8ee0f00">fgeo</a>)</td>
+          <td class="memname">inspectGeant4Geo.ShipGeo = load_from_root_file(<a class="el" href="namespaceinspectGeant4Geo.html#a0efacb245b056a4f044ff50eb8ee0f00">fgeo</a>, 'ShipGeo')</td>
         </tr>
       </table>
 </div><div class="memdoc">

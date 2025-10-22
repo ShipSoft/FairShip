@@ -33,7 +33,6 @@ var ShipReco_8py =
     [ "ShipGeo", "ShipReco_8py.html#a57399f382942ed9788d85f3c9951cdeb", null ],
     [ "tmp", "ShipReco_8py.html#ac8b44ebebde083d26d062978f205ead9", null ],
     [ "type", "ShipReco_8py.html#a9a338a5daf2d5cc378b238f64e270e9a", null ],
-    [ "upkl", "ShipReco_8py.html#a7c353c3bee35021768d7e963c746d014", null ],
     [ "vertexing", "ShipReco_8py.html#a49d6219219d01a1d3260df48c2a40c09", null ],
     [ "withHists", "ShipReco_8py.html#a4cc8c323c3b85bdbb198ab178da862b7", null ],
     [ "withNoStrawSmearing", "ShipReco_8py.html#a4563247f8c82a82f64d3c921dd359728", null ],

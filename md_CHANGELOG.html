@@ -258,6 +258,11 @@ Changed</h2>
 <li>Update strawtubes class</li>
 <li>Change SST gas mixture to Ar/CO2 80%/20% at 1 bar</li>
 <li>UBT box dimensions (BoxX, BoxY, BoxZ) are now configurable via <a class="el" href="geometry__config_8py.html">geometry_config.py</a> instead of hardcoded</li>
+<li>Configuration storage modernized from pickle to JSON<ul>
+<li>Geometry configurations are now saved as JSON strings (using <code>std::string</code>) instead of pickled Python objects in ROOT files</li>
+<li>Automatic format detection: new code reads both JSON (new format) and pickle (legacy format) files without user intervention</li>
+</ul>
+</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md5"></a>
 Removed</h2>

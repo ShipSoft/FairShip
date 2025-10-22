@@ -105,13 +105,11 @@ Variables</h2></td></tr>
 <tr class="separator:a6f288b545491f59295cc51418daffef8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8af6338ac5a1cf20ac37e2b23044596b" id="r_a8af6338ac5a1cf20ac37e2b23044596b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacecheckZpositions.html#a8af6338ac5a1cf20ac37e2b23044596b">fgeoOld</a> = ROOT.TFile(<a class="el" href="namespacecheckZpositions.html#a3e777c8f47a72a7a86c18eb6d37197ca">f1</a>)</td></tr>
 <tr class="separator:a8af6338ac5a1cf20ac37e2b23044596b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3939bb02cc06ac3d1322ce214a9b42c3" id="r_a3939bb02cc06ac3d1322ce214a9b42c3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacecheckZpositions.html#a3939bb02cc06ac3d1322ce214a9b42c3">upkl</a> = <a class="el" href="classrootpyPickler_1_1Unpickler.html">Unpickler</a>(<a class="el" href="namespacecheckZpositions.html#a8af6338ac5a1cf20ac37e2b23044596b">fgeoOld</a>)</td></tr>
-<tr class="separator:a3939bb02cc06ac3d1322ce214a9b42c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad76f19d29dcf49656a5149f193b9fa84" id="r_ad76f19d29dcf49656a5149f193b9fa84"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacecheckZpositions.html#ad76f19d29dcf49656a5149f193b9fa84">ShipGeoOld</a> = upkl.load('ShipGeo')</td></tr>
+<tr class="memitem:ad76f19d29dcf49656a5149f193b9fa84" id="r_ad76f19d29dcf49656a5149f193b9fa84"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacecheckZpositions.html#ad76f19d29dcf49656a5149f193b9fa84">ShipGeoOld</a> = load_from_root_file(<a class="el" href="namespacecheckZpositions.html#a8af6338ac5a1cf20ac37e2b23044596b">fgeoOld</a>, 'ShipGeo')</td></tr>
 <tr class="separator:ad76f19d29dcf49656a5149f193b9fa84"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0b40a172c1990bcb4e77bfad3643fc91" id="r_a0b40a172c1990bcb4e77bfad3643fc91"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacecheckZpositions.html#a0b40a172c1990bcb4e77bfad3643fc91">fgeoNew</a> = ROOT.TFile(<a class="el" href="namespacecheckZpositions.html#a6f288b545491f59295cc51418daffef8">f2</a>)</td></tr>
 <tr class="separator:a0b40a172c1990bcb4e77bfad3643fc91"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a14704aefad1faf37b6fc0cdab58c7abc" id="r_a14704aefad1faf37b6fc0cdab58c7abc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacecheckZpositions.html#a14704aefad1faf37b6fc0cdab58c7abc">ShipGeoNew</a> = upkl.load('ShipGeo')</td></tr>
+<tr class="memitem:a14704aefad1faf37b6fc0cdab58c7abc" id="r_a14704aefad1faf37b6fc0cdab58c7abc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacecheckZpositions.html#a14704aefad1faf37b6fc0cdab58c7abc">ShipGeoNew</a> = load_from_root_file(<a class="el" href="namespacecheckZpositions.html#a0b40a172c1990bcb4e77bfad3643fc91">fgeoNew</a>, 'ShipGeo')</td></tr>
 <tr class="separator:a14704aefad1faf37b6fc0cdab58c7abc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0070d4bd74e3b9a7ed335c4abcff51ef" id="r_a0070d4bd74e3b9a7ed335c4abcff51ef"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacecheckZpositions.html#a0070d4bd74e3b9a7ed335c4abcff51ef">zold</a></td></tr>
 <tr class="separator:a0070d4bd74e3b9a7ed335c4abcff51ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -179,7 +177,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="checkZpositions_8py_source.html#l00008">8</a> of file <a class="el" href="checkZpositions_8py_source.html">checkZpositions.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="checkZpositions_8py_source.html#l00007">7</a> of file <a class="el" href="checkZpositions_8py_source.html">checkZpositions.py</a>.</p>
 
 </div>
 </div>
@@ -206,12 +204,12 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">checkZpositions.ShipGeoNew = upkl.load('ShipGeo')</td>
+          <td class="memname">checkZpositions.ShipGeoNew = load_from_root_file(<a class="el" href="namespacecheckZpositions.html#a0b40a172c1990bcb4e77bfad3643fc91">fgeoNew</a>, 'ShipGeo')</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="checkZpositions_8py_source.html#l00010">10</a> of file <a class="el" href="checkZpositions_8py_source.html">checkZpositions.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="checkZpositions_8py_source.html#l00008">8</a> of file <a class="el" href="checkZpositions_8py_source.html">checkZpositions.py</a>.</p>
 
 </div>
 </div>
@@ -222,23 +220,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">checkZpositions.ShipGeoOld = upkl.load('ShipGeo')</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="checkZpositions_8py_source.html#l00007">7</a> of file <a class="el" href="checkZpositions_8py_source.html">checkZpositions.py</a>.</p>
-
-</div>
-</div>
-<a id="a3939bb02cc06ac3d1322ce214a9b42c3" name="a3939bb02cc06ac3d1322ce214a9b42c3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3939bb02cc06ac3d1322ce214a9b42c3">&#9670;&#160;</a></span>upkl</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">checkZpositions.upkl = <a class="el" href="classrootpyPickler_1_1Unpickler.html">Unpickler</a>(<a class="el" href="namespacecheckZpositions.html#a8af6338ac5a1cf20ac37e2b23044596b">fgeoOld</a>)</td>
+          <td class="memname">checkZpositions.ShipGeoOld = load_from_root_file(<a class="el" href="namespacecheckZpositions.html#a8af6338ac5a1cf20ac37e2b23044596b">fgeoOld</a>, 'ShipGeo')</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -259,7 +241,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="checkZpositions_8py_source.html#l00013">13</a> of file <a class="el" href="checkZpositions_8py_source.html">checkZpositions.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="checkZpositions_8py_source.html#l00011">11</a> of file <a class="el" href="checkZpositions_8py_source.html">checkZpositions.py</a>.</p>
 
 </div>
 </div>
@@ -275,7 +257,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="checkZpositions_8py_source.html#l00013">13</a> of file <a class="el" href="checkZpositions_8py_source.html">checkZpositions.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="checkZpositions_8py_source.html#l00011">11</a> of file <a class="el" href="checkZpositions_8py_source.html">checkZpositions.py</a>.</p>
 
 </div>
 </div>

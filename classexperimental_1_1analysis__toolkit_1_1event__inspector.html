@@ -111,7 +111,7 @@ Public Attributes</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><pre class="fragment">Class to inspect MCtruth of an Event.</pre> 
-<p class="definition">Definition at line <a class="el" href="analysis__toolkit_8py_source.html#l00325">325</a> of file <a class="el" href="analysis__toolkit_8py_source.html">analysis_toolkit.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="analysis__toolkit_8py_source.html#l00323">323</a> of file <a class="el" href="analysis__toolkit_8py_source.html">analysis_toolkit.py</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a9edcfa45b96944b2b16045c4554b3d9f" name="a9edcfa45b96944b2b16045c4554b3d9f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9edcfa45b96944b2b16045c4554b3d9f">&#9670;&#160;</a></span>__init__()</h2>
@@ -129,12 +129,12 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <pre class="fragment">Initialize ROOT PDG database.</pre> 
-<p class="definition">Definition at line <a class="el" href="analysis__toolkit_8py_source.html#l00328">328</a> of file <a class="el" href="analysis__toolkit_8py_source.html">analysis_toolkit.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  328</span>    <span class="keyword">def </span>__init__(self):</div>
-<div class="line"><span class="lineno">  329</span>        <span class="stringliteral">&quot;&quot;&quot;Initialize ROOT PDG database.&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  330</span>        self.pdg = ROOT.TDatabasePDG.Instance()</div>
-<div class="line"><span class="lineno">  331</span>        pythia8_conf.addHNLtoROOT()</div>
-<div class="line"><span class="lineno">  332</span> </div>
+<p class="definition">Definition at line <a class="el" href="analysis__toolkit_8py_source.html#l00326">326</a> of file <a class="el" href="analysis__toolkit_8py_source.html">analysis_toolkit.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  326</span>    <span class="keyword">def </span>__init__(self):</div>
+<div class="line"><span class="lineno">  327</span>        <span class="stringliteral">&quot;&quot;&quot;Initialize ROOT PDG database.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  328</span>        self.pdg = ROOT.TDatabasePDG.Instance()</div>
+<div class="line"><span class="lineno">  329</span>        pythia8_conf.addHNLtoROOT()</div>
+<div class="line"><span class="lineno">  330</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -171,46 +171,46 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <pre class="fragment">Dump the MCtruth of the event.</pre> 
-<p class="definition">Definition at line <a class="el" href="analysis__toolkit_8py_source.html#l00333">333</a> of file <a class="el" href="analysis__toolkit_8py_source.html">analysis_toolkit.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  333</span>    <span class="keyword">def </span>dump_event(self, event, mom_threshold=0):</div>
-<div class="line"><span class="lineno">  334</span>        <span class="stringliteral">&quot;&quot;&quot;Dump the MCtruth of the event.&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  335</span>        headers = [</div>
-<div class="line"><span class="lineno">  336</span>            <span class="stringliteral">&quot;#&quot;</span>,</div>
-<div class="line"><span class="lineno">  337</span>            <span class="stringliteral">&quot;particle&quot;</span>,</div>
-<div class="line"><span class="lineno">  338</span>            <span class="stringliteral">&quot;pdgcode&quot;</span>,</div>
-<div class="line"><span class="lineno">  339</span>            <span class="stringliteral">&quot;mother_id&quot;</span>,</div>
-<div class="line"><span class="lineno">  340</span>            <span class="stringliteral">&quot;Momentum [Px,Py,Pz] (GeV/c)&quot;</span>,</div>
-<div class="line"><span class="lineno">  341</span>            <span class="stringliteral">&quot;StartVertex[x,y,z] (m)&quot;</span>,</div>
-<div class="line"><span class="lineno">  342</span>            <span class="stringliteral">&quot;Process&quot;</span>,</div>
-<div class="line"><span class="lineno">  343</span>            <span class="stringliteral">&quot;GetWeight()&quot;</span>,</div>
-<div class="line"><span class="lineno">  344</span>        ]</div>
-<div class="line"><span class="lineno">  345</span> </div>
-<div class="line"><span class="lineno">  346</span>        event_table = []</div>
-<div class="line"><span class="lineno">  347</span>        <span class="keywordflow">for</span> trackNr, track <span class="keywordflow">in</span> enumerate(event.MCTrack):</div>
-<div class="line"><span class="lineno">  348</span>            <span class="keywordflow">if</span> track.GetP() / u.GeV &lt; mom_threshold:</div>
-<div class="line"><span class="lineno">  349</span>                <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  350</span> </div>
-<div class="line"><span class="lineno">  351</span>            particle = self.pdg.GetParticle(track.GetPdgCode())</div>
-<div class="line"><span class="lineno">  352</span>            particlename = particle.GetName() <span class="keywordflow">if</span> particle <span class="keywordflow">else</span> <span class="stringliteral">&quot;----&quot;</span></div>
-<div class="line"><span class="lineno">  353</span> </div>
-<div class="line"><span class="lineno">  354</span>            event_table.append(</div>
-<div class="line"><span class="lineno">  355</span>                [</div>
-<div class="line"><span class="lineno">  356</span>                    trackNr,</div>
-<div class="line"><span class="lineno">  357</span>                    particlename,</div>
-<div class="line"><span class="lineno">  358</span>                    track.GetPdgCode(),</div>
-<div class="line"><span class="lineno">  359</span>                    track.GetMotherId(),</div>
-<div class="line"><span class="lineno">  360</span>                    f<span class="stringliteral">&quot;[{track.GetPx() / u.GeV:7.3f},{track.GetPy() / u.GeV:7.3f},{track.GetPz() / u.GeV:7.3f}]&quot;</span>,</div>
-<div class="line"><span class="lineno">  361</span>                    f<span class="stringliteral">&quot;[{track.GetStartX() / u.m:7.3f},{track.GetStartY() / u.m:7.3f},{track.GetStartZ() / u.m:7.3f}]&quot;</span>,</div>
-<div class="line"><span class="lineno">  362</span>                    track.GetProcName().Data(),</div>
-<div class="line"><span class="lineno">  363</span>                    track.GetWeight(),</div>
-<div class="line"><span class="lineno">  364</span>                ]</div>
-<div class="line"><span class="lineno">  365</span>            )</div>
-<div class="line"><span class="lineno">  366</span> </div>
-<div class="line"><span class="lineno">  367</span>        print(</div>
-<div class="line"><span class="lineno">  368</span>            tabulate(</div>
-<div class="line"><span class="lineno">  369</span>                event_table, headers=headers, floatfmt=<span class="stringliteral">&quot;.3f&quot;</span>, tablefmt=<span class="stringliteral">&quot;simple_outline&quot;</span></div>
-<div class="line"><span class="lineno">  370</span>            )</div>
-<div class="line"><span class="lineno">  371</span>        )</div>
+<p class="definition">Definition at line <a class="el" href="analysis__toolkit_8py_source.html#l00331">331</a> of file <a class="el" href="analysis__toolkit_8py_source.html">analysis_toolkit.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  331</span>    <span class="keyword">def </span>dump_event(self, event, mom_threshold=0):</div>
+<div class="line"><span class="lineno">  332</span>        <span class="stringliteral">&quot;&quot;&quot;Dump the MCtruth of the event.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  333</span>        headers = [</div>
+<div class="line"><span class="lineno">  334</span>            <span class="stringliteral">&quot;#&quot;</span>,</div>
+<div class="line"><span class="lineno">  335</span>            <span class="stringliteral">&quot;particle&quot;</span>,</div>
+<div class="line"><span class="lineno">  336</span>            <span class="stringliteral">&quot;pdgcode&quot;</span>,</div>
+<div class="line"><span class="lineno">  337</span>            <span class="stringliteral">&quot;mother_id&quot;</span>,</div>
+<div class="line"><span class="lineno">  338</span>            <span class="stringliteral">&quot;Momentum [Px,Py,Pz] (GeV/c)&quot;</span>,</div>
+<div class="line"><span class="lineno">  339</span>            <span class="stringliteral">&quot;StartVertex[x,y,z] (m)&quot;</span>,</div>
+<div class="line"><span class="lineno">  340</span>            <span class="stringliteral">&quot;Process&quot;</span>,</div>
+<div class="line"><span class="lineno">  341</span>            <span class="stringliteral">&quot;GetWeight()&quot;</span>,</div>
+<div class="line"><span class="lineno">  342</span>        ]</div>
+<div class="line"><span class="lineno">  343</span> </div>
+<div class="line"><span class="lineno">  344</span>        event_table = []</div>
+<div class="line"><span class="lineno">  345</span>        <span class="keywordflow">for</span> trackNr, track <span class="keywordflow">in</span> enumerate(event.MCTrack):</div>
+<div class="line"><span class="lineno">  346</span>            <span class="keywordflow">if</span> track.GetP() / u.GeV &lt; mom_threshold:</div>
+<div class="line"><span class="lineno">  347</span>                <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  348</span> </div>
+<div class="line"><span class="lineno">  349</span>            particle = self.pdg.GetParticle(track.GetPdgCode())</div>
+<div class="line"><span class="lineno">  350</span>            particlename = particle.GetName() <span class="keywordflow">if</span> particle <span class="keywordflow">else</span> <span class="stringliteral">&quot;----&quot;</span></div>
+<div class="line"><span class="lineno">  351</span> </div>
+<div class="line"><span class="lineno">  352</span>            event_table.append(</div>
+<div class="line"><span class="lineno">  353</span>                [</div>
+<div class="line"><span class="lineno">  354</span>                    trackNr,</div>
+<div class="line"><span class="lineno">  355</span>                    particlename,</div>
+<div class="line"><span class="lineno">  356</span>                    track.GetPdgCode(),</div>
+<div class="line"><span class="lineno">  357</span>                    track.GetMotherId(),</div>
+<div class="line"><span class="lineno">  358</span>                    f<span class="stringliteral">&quot;[{track.GetPx() / u.GeV:7.3f},{track.GetPy() / u.GeV:7.3f},{track.GetPz() / u.GeV:7.3f}]&quot;</span>,</div>
+<div class="line"><span class="lineno">  359</span>                    f<span class="stringliteral">&quot;[{track.GetStartX() / u.m:7.3f},{track.GetStartY() / u.m:7.3f},{track.GetStartZ() / u.m:7.3f}]&quot;</span>,</div>
+<div class="line"><span class="lineno">  360</span>                    track.GetProcName().Data(),</div>
+<div class="line"><span class="lineno">  361</span>                    track.GetWeight(),</div>
+<div class="line"><span class="lineno">  362</span>                ]</div>
+<div class="line"><span class="lineno">  363</span>            )</div>
+<div class="line"><span class="lineno">  364</span> </div>
+<div class="line"><span class="lineno">  365</span>        print(</div>
+<div class="line"><span class="lineno">  366</span>            tabulate(</div>
+<div class="line"><span class="lineno">  367</span>                event_table, headers=headers, floatfmt=<span class="stringliteral">&quot;.3f&quot;</span>, tablefmt=<span class="stringliteral">&quot;simple_outline&quot;</span></div>
+<div class="line"><span class="lineno">  368</span>            )</div>
+<div class="line"><span class="lineno">  369</span>        )</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -227,7 +227,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="analysis__toolkit_8py_source.html#l00330">330</a> of file <a class="el" href="analysis__toolkit_8py_source.html">analysis_toolkit.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="analysis__toolkit_8py_source.html#l00328">328</a> of file <a class="el" href="analysis__toolkit_8py_source.html">analysis_toolkit.py</a>.</p>
 
 </div>
 </div>

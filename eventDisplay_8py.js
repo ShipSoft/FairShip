@@ -67,7 +67,6 @@ var eventDisplay_8py =
     [ "top", "eventDisplay_8py.html#adedb83676a54edf1159c60c4e308ea97", null ],
     [ "Track", "eventDisplay_8py.html#aa3b325492b890fc1d7c96ea366d745f8", null ],
     [ "transparentMaterials", "eventDisplay_8py.html#a9fe4fda0a03e04bc5ddef143e27ab81a", null ],
-    [ "upkl", "eventDisplay_8py.html#af7e5e77d697afd6b5a3896db7783ea93", null ],
     [ "verbose", "eventDisplay_8py.html#ac3640904efec4904e652932a0c7da2e5", null ],
     [ "withGeo", "eventDisplay_8py.html#a19c17c7cc197bc1d35c2b8c087e9426f", null ],
     [ "withMCTracks", "eventDisplay_8py.html#a362e5157e1dcf1b106536f5a9cafba0b", null ]
