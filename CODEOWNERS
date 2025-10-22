@@ -4,8 +4,11 @@
 # that system.
 
 veto/* @kathalbrecht  # Katharina Albrecht (HU Berlin)
+python/detectors/SBTDetector.py @kathalbrecht  # Katharina Albrecht (HU Berlin)
 
 SND/* @antonioiuliano2  # Antonio Iuliano (INFN Napoli)
+SND/MTC/* @eduard322  # Eduard Ursov (HU Berlin)
+python/detectors/MTCDetector.py @eduard322
 
 passive/ShipMuonShield.* @Gfrisella  # Guglielmo Frisella (U Zürich)
 
