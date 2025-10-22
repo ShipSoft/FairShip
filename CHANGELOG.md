@@ -54,6 +54,7 @@ it in future.
 * Add EvtGenDecayer for decaying J/psi (and other particles in future) when specifying the --EvtGenDecayer option
 * Add enough straws to cover aperture entirely
 * Add SST frame option (4 = aluminium, 10 = steel [default])
+* Add support for old autotools-based EvtGen installations
 * feat: Unified beam smearing implementation across all generators
   - Updated `HNLPythia8Generator` to use consistent Gaussian beam smearing and circular beam painting, replacing the previous uniform square implementation
   - Added beam smearing and painting support to `FixedTargetGenerator`
