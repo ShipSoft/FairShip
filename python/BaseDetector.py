@@ -12,6 +12,7 @@ class BaseDetector(ABC):
         branchName=None,
         mcBranchType=None,
         mcBranchName=None,
+        splitLevel=-1,
     ):
         self.name = name
         self.intree = intree
@@ -21,17 +22,21 @@ class BaseDetector(ABC):
         self.mcBranch = None
         if mcBranchName:
             self.MCdet = ROOT.std.vector("std::vector< int >")()
-            self.mcBranch = self.intree.Branch(mcBranchName, self.MCdet, 32000, -1)
+            self.mcBranch = self.intree.Branch(
+                mcBranchName, self.MCdet, 32000, splitLevel
+            )
 
         if "std.vector" in branchType:
             self.det = self.det()
             self.isVector = True
         if branchName:
             self.branch = self.intree.Branch(
-                f"Digi_{branchName}Hits", self.det, 32000, -1
+                f"Digi_{branchName}Hits", self.det, 32000, splitLevel
             )
         else:
-            self.branch = self.intree.Branch(f"Digi_{name}Hits", self.det, 32000, -1)
+            self.branch = self.intree.Branch(
+                f"Digi_{name}Hits", self.det, 32000, splitLevel
+            )
 
     def delete(self):
         if self.isVector:

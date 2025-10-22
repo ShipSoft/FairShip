@@ -4,7 +4,7 @@ from BaseDetector import BaseDetector
 
 class MTCDetector(BaseDetector):
     def __init__(self, name, intree, branchType = 'TClonesArray', branchName = None):
-        super().__init__(name, intree, branchType, branchName)
+        super().__init__(name, intree, branchType, branchName, splitLevel=1)
 
     def digitize(self):
         """Digitize SND/MTC MC hits.
