@@ -49,6 +49,7 @@ it in future.
 * Add EvtGenDecayer for decaying J/psi (and other particles in future) when specifying the --EvtGenDecayer option
 * Add enough straws to cover aperture entirely
 * Add SST frame option (4 = aluminium, 10 = steel [default])
+* Add support for old autotools-based EvtGen installations
 * feat: Unified beam smearing implementation across all generators
   - Updated `HNLPythia8Generator` to use consistent Gaussian beam smearing and circular beam painting, replacing the previous uniform square implementation
   - Added beam smearing and painting support to `FixedTargetGenerator`
@@ -159,6 +160,7 @@ it in future.
 * Move SST geometry parameters to yaml
 * Update strawtubes class
 * Change SST gas mixture to Ar/CO2 80%/20% at 1 bar
+* FairShip is now licensed under LGPLv3+
 * UBT box dimensions (BoxX, BoxY, BoxZ) are now configurable via geometry_config.py instead of hardcoded
 * Configuration storage modernized from pickle to JSON
   - Geometry configurations are now saved as JSON strings (using `std::string`) instead of pickled Python objects in ROOT files
@@ -192,7 +194,10 @@ it in future.
 * Remove tankDesign variable, options
 * Remove target versions older than CDR
 * Remove hadron absorber in ShipTargetStation.cxx
-* Remove old ecal and hcal in all of FairSHiP, affected files are notably the entire ecal and hcal directories as well as macro/run_anaEcal.py and python/shipPid.py. geometry/geometry_config.py, muonShieldOptimization/ana_ShipMuon.py, macro/ShipReco.py, macro/ShipAna.py, python/shipStrawTracking.py and python/shipPid.py.
+* Remove old ecal and hcal in all of FairShip, affected files are notably the entire ecal and hcal directories as well as macro/run_anaEcal.py and python/shipPid.py. geometry/geometry_config.py, muonShieldOptimization/ana_ShipMuon.py, macro/ShipReco.py, macro/ShipAna.py, python/shipStrawTracking.py and python/shipPid.py.
+* Remove unused files for FLUKA
+* Remove unused CMake modules
+
 ## 25.01
 
 ### Added
