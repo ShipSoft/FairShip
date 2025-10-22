@@ -1,6 +1,6 @@
 var classBaseDetector_1_1BaseDetector =
 [
-    [ "__init__", "classBaseDetector_1_1BaseDetector.html#ada7ecd342e402ad574b9330c8fd13e5c", null ],
+    [ "__init__", "classBaseDetector_1_1BaseDetector.html#ad4f6e921249fbc92c0b077a786652e4f", null ],
     [ "delete", "classBaseDetector_1_1BaseDetector.html#a9849299ed6ff5da8cb6c10a61d135a9f", null ],
     [ "digitize", "classBaseDetector_1_1BaseDetector.html#ac8a54e9c12221011cdb3aa521bd386c5", null ],
     [ "fill", "classBaseDetector_1_1BaseDetector.html#a69950a475b87b1035f2cdfe6b61743b8", null ],
