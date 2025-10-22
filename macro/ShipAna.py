@@ -480,7 +480,7 @@ def myEventLoop(n):
      detID = ahit.GetDetectorID()
      top = ROOT.TVector3()
      bot = ROOT.TVector3()
-     modules["Strawtubes"].StrawEndPoints(detID,bot,top)
+     modules["strawtubes"].StrawEndPoints(detID,bot,top)
      dw  = ahit.dist2Wire()
      if detID < 50000000 :
       if abs(top.y())==abs(bot.y()): h['disty'].Fill(dw)

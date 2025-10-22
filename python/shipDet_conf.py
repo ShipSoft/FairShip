@@ -220,43 +220,43 @@ def configure_strawtubes(yaml_file, ship_geo):
     elif ship_geo.strawDesign == 10:
         ship_geo.strawtubes_geo.frame_material = "steel"
 
-    Strawtubes = ROOT.strawtubes(ship_geo.strawtubes_geo.medium)
-    Strawtubes.SetzPositions(
+    strawtubes = ROOT.strawtubes(ship_geo.strawtubes_geo.medium)
+    strawtubes.SetzPositions(
         ship_geo.TrackStation1.z,
         ship_geo.TrackStation2.z,
         ship_geo.TrackStation3.z,
         ship_geo.TrackStation4.z,
     )
-    Strawtubes.SetApertureArea(
+    strawtubes.SetApertureArea(
         ship_geo.strawtubes_geo.width,
         ship_geo.strawtubes_geo.height,
     )
-    Strawtubes.SetStrawDiameter(
+    strawtubes.SetStrawDiameter(
         ship_geo.strawtubes_geo.outer_straw_diameter,
         ship_geo.strawtubes_geo.wall_thickness,
     )
-    Strawtubes.SetStrawPitch(
+    strawtubes.SetStrawPitch(
         ship_geo.strawtubes_geo.straw_pitch,
         ship_geo.strawtubes_geo.y_layer_offset,
     )
-    Strawtubes.SetDeltazLayer(ship_geo.strawtubes_geo.delta_z_layer)
-    Strawtubes.SetStereoAngle(ship_geo.strawtubes_geo.view_angle)
-    Strawtubes.SetWireThickness(ship_geo.strawtubes_geo.wire_thickness)
-    Strawtubes.SetDeltazView(ship_geo.strawtubes_geo.delta_z_view)
-    Strawtubes.SetFrameMaterial(ship_geo.strawtubes_geo.frame_material)
-    Strawtubes.SetStationEnvelope(
+    strawtubes.SetDeltazLayer(ship_geo.strawtubes_geo.delta_z_layer)
+    strawtubes.SetStereoAngle(ship_geo.strawtubes_geo.view_angle)
+    strawtubes.SetWireThickness(ship_geo.strawtubes_geo.wire_thickness)
+    strawtubes.SetDeltazView(ship_geo.strawtubes_geo.delta_z_view)
+    strawtubes.SetFrameMaterial(ship_geo.strawtubes_geo.frame_material)
+    strawtubes.SetStationEnvelope(
         ship_geo.strawtubes_geo.station_width,
         ship_geo.strawtubes_geo.station_height,
         ship_geo.strawtubes_geo.station_length,
     )
 
     #For digitization
-    Strawtubes.SetStrawResolution(
+    strawtubes.SetStrawResolution(
         ship_geo.strawtubesDigi.v_drift,
         ship_geo.strawtubesDigi.sigma_spatial,
     )
 
-    detectorList.append(Strawtubes)
+    detectorList.append(strawtubes)
 
 
 def configure(run, ship_geo):
@@ -480,7 +480,7 @@ def configure(run, ship_geo):
         run.SetField(fMagField)
 
     exclusionList = []
-    # exclusionList = ["Muon","Ecal","Hcal","Strawtubes","TargetTrackers","NuTauTarget",\
+    # exclusionList = ["Muon","Ecal","Hcal","strawtubes","TargetTrackers","NuTauTarget",\
     #                 "SiliconTarget","Veto","Magnet","MuonShield","TargetStation", "TimeDet", "UpstreamTagger"]
 
     for x in detectorList:

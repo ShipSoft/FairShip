@@ -37,7 +37,7 @@ using std::cout;
 using std::endl;
 
 strawtubes::strawtubes()
-    : FairDetector("Strawtubes", kTRUE, kStraw)
+    : FairDetector("strawtubes", kTRUE, kStraw)
     , fTrackID(-1)
     , fVolumeID(-1)
     , fPos()
@@ -50,7 +50,7 @@ strawtubes::strawtubes()
 {}
 
 strawtubes::strawtubes(std::string medium)
-    : FairDetector("Strawtubes", kTRUE, kStraw)
+    : FairDetector("strawtubes", kTRUE, kStraw)
     , fTrackID(-1)
     , fVolumeID(-1)
     , fPos()

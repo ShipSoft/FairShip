@@ -206,7 +206,7 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method):
                 hits[key] = numpy.array(hits[key])
 
             # Decoding
-            decode = global_variables.modules["Strawtubes"].StrawDecode(hits['DetID'])
+            decode = global_variables.modules["strawtubes"].StrawDecode(hits['DetID'])
             # StrawDecode returns a tuple of (statnb, vnb, lnb, snb).
             is_stereo = ((decode[1] == 1) + (decode[1] == 2))
             is_y = ((decode[1] == 0) + (decode[1] == 3))
