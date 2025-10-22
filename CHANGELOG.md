@@ -70,6 +70,7 @@ it in future.
 
 ### Fixed
 
+* fix(digi): Make TTree branch split level configurable in BaseDetector, set splitLevel=1 for MTC
 * chore: Fix file endings
 * chore: trim trailing whitespace
 * Fix mismatch dimension cavern ECN3 TCC8
