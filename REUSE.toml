@@ -8,9 +8,3 @@ path = "**"
 precedence = "aggregate"
 SPDX-FileCopyrightText = "CERN on behalf of the SHiP Collaboration"
 SPDX-License-Identifier = "LGPL-3.0-or-later"
-
-[[annotations]]
-path = "python/rootpyPickler.py"
-precedence = "aggregate"
-SPDX-FileCopyrightText = "Copyright 2012 the rootpy developers"
-SPDX-License-Identifier = "GPL-3.0-or-later"
