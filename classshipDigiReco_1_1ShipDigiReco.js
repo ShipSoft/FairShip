@@ -45,8 +45,6 @@ var classshipDigiReco_1_1ShipDigiReco =
     [ "recoSplitcal", "classshipDigiReco_1_1ShipDigiReco.html#a5027b7b524b47b50d68b34db23eded6c", null ],
     [ "recoSplitcalBranch", "classshipDigiReco_1_1ShipDigiReco.html#a2a35cad3ff7bc8d5d42f7d8e34bcc739", null ],
     [ "sigma_spatial", "classshipDigiReco_1_1ShipDigiReco.html#ac4b9d6d12a850cb171b440b6542646ae", null ],
-    [ "sipm_to_fibre_map_U", "classshipDigiReco_1_1ShipDigiReco.html#aba06895c923844bd1dd63294b645b78c", null ],
-    [ "sipm_to_fibre_map_V", "classshipDigiReco_1_1ShipDigiReco.html#abc00490afbdee37613ea4f2621fd419c", null ],
     [ "SmearedHits", "classshipDigiReco_1_1ShipDigiReco.html#a3e5a53decbb82dbbb50af59e51d135f7", null ],
     [ "step", "classshipDigiReco_1_1ShipDigiReco.html#a567f51d240af214971ad31d3abb7a406", null ],
     [ "sTree", "classshipDigiReco_1_1ShipDigiReco.html#a6f117e48c82f7d36d4e25b6119518002", null ],

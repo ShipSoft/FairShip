@@ -159,6 +159,7 @@ Added</h2>
 </li>
 <li>Enclose target in steel (316L) cylinder</li>
 <li>First version of SND/SiliconTarget, this layout for this iteration consists of 120 3.5mm W planes with pairs of silicon planes placed 1mm from the surface of the tungsten. As a temporary solution, the detector is placed within the second last magnet of the muon shield. Configuration of detector in simScript is coupled to the SND_design == 2 along with the MTC.</li>
+<li>Add visualization methods to <a class="el" href="SciFiMapping_8py.html">SciFiMapping.py</a> to visualize Sci-Fi in MTC, including draw_channel(), draw_channel_XY(), and draw_combined_scifi_views()</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md3"></a>
 Fixed</h2>
@@ -195,6 +196,8 @@ Fixed</h2>
 <li>Correct paths for default input files</li>
 <li>Fix missing decays of J/psi by using EvtGenDecayer</li>
 <li>Fix: hard cast bug in genie generator: after replacing old C-style cast histogram variable got nullptr value which afterwards caused segmentation fault</li>
+<li>Correct extraction of SiPM channel positions in MTC</li>
+<li>Fix refactoring issue that broke MTC digitization</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md4"></a>
 Changed</h2>
