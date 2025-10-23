@@ -9,15 +9,13 @@ import ShieldUtils
 from argparse import ArgumentParser
 
 
-globalDesigns = {'dy': 10., 'dv': 6, 'ds': 9, 'nud': 3, 'strawDesign': 10}
-
 def create_csv_field_map(options):
     r.gErrorIgnoreLevel = r.kWarning
     r.gSystem.Load('libpythia8')
 
     ship_geo = geometry_config.create_config(
-        Yheight=globalDesigns["dy"],
-        strawDesign=globalDesigns["strawDesign"],
+        Yheight=10.0,
+        strawDesign=10,
         muShieldGeo=options.geofile,
         shieldName=getattr(options, 'shieldName', 'warm_opt'))
 
