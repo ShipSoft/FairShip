@@ -231,8 +231,6 @@ if "TARGET_YAML" not in globals():
     TARGET_YAML = os.path.expandvars("$FAIRSHIP/geometry/target_config_old.yaml")
 if "strawDesign" not in globals():
     strawDesign = 10
-if "CaloDesign" not in globals():
-    CaloDesign = 0
 if "Yheight" not in globals():
     Yheight = 10.0
 if "shieldName" not in globals():
