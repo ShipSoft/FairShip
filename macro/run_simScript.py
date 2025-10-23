@@ -39,13 +39,11 @@ defaultInputFile = True
 globalDesigns = {
      '2023' : {
           'dy' : 6.,
-          'caloDesign' : 3,
           'strawDesign' : 10
      },
      '2025' : {
           'dy' : 6.,
           'ds' : 8,
-          'caloDesign' : 2,
           'strawDesign' : 10
      },
 }
@@ -141,11 +139,6 @@ group.add_argument("-f", dest="inputFile", help="Input file if not default file"
 parser.add_argument("-g", dest="geofile", help="geofile for muon shield geometry, for experts only", default=None)
 parser.add_argument("-o", "--output", dest="outputDir", help="Output directory",  default=".")
 parser.add_argument("-Y", dest="dy", help="max height of vacuum tank", default=globalDesigns[default]['dy'])
-parser.add_argument("--caloDesign",
-                    help="0=ECAL/HCAL TP 2=splitCal  3=ECAL/ passive HCAL",
-                    default=globalDesigns[default]['caloDesign'],
-                    type=int,
-                    choices=[0,2,3])
 parser.add_argument("--strawDesign",
                     help="Tracker station frame material: 4=aluminium; 10=steel (default)",
                     default=globalDesigns[default]['strawDesign'],
@@ -266,7 +259,6 @@ elif options.debug == 3:
 ship_geo = ConfigRegistry.loadpy(
      "$FAIRSHIP/geometry/geometry_config.py",
      Yheight=options.dy,
-     CaloDesign=options.caloDesign,
      strawDesign=options.strawDesign,
      muShieldGeo=options.geofile,
      shieldName=options.shieldName,
