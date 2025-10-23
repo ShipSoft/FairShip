@@ -36,19 +36,6 @@ HNL          = True
 inputFile    = "$EOSSHIP/eos/experiment/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-978Bpot.root"
 defaultInputFile = True
 
-globalDesigns = {
-     '2023' : {
-          'dy' : 6.,
-          'strawDesign' : 10
-     },
-     '2025' : {
-          'dy' : 6.,
-          'ds' : 8,
-          'strawDesign' : 10
-     },
-}
-default = '2025'
-
 parser = ArgumentParser()
 group = parser.add_mutually_exclusive_group()
 
@@ -138,10 +125,10 @@ parser.add_argument("-S", "--sameSeed",dest="sameSeed",  help="can be set to an 
 group.add_argument("-f", dest="inputFile", help="Input file if not default file", default=False)
 parser.add_argument("-g", dest="geofile", help="geofile for muon shield geometry, for experts only", default=None)
 parser.add_argument("-o", "--output", dest="outputDir", help="Output directory",  default=".")
-parser.add_argument("-Y", dest="dy", help="max height of vacuum tank", default=globalDesigns[default]['dy'])
+parser.add_argument("-Y", dest="dy", help="max height of vacuum tank", default=6.0, type=float)
 parser.add_argument("--strawDesign",
                     help="Tracker station frame material: 4=aluminium; 10=steel (default)",
-                    default=globalDesigns[default]['strawDesign'],
+                    default=10,
                     type=int,
                     choices=[4,10])
 parser.add_argument("-F", dest="deepCopy", help="default = False: copy only stable particles to stack, except for HNL events", action="store_true")
