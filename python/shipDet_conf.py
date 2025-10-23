@@ -2,7 +2,7 @@
 import ROOT
 import os
 import shipunit as u
-from ShipGeoConfig import AttrDict, ConfigRegistry
+from ShipGeoConfig import AttrDict
 from ShieldUtils import find_shield_center
 from array import array
 import yaml

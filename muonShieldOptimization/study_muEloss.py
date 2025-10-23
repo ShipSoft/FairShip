@@ -4,7 +4,6 @@ ROOT.gROOT.ProcessLine('#include "FairModule.h"')
 time.sleep(20)
 
 import shipunit as u
-from ShipGeoConfig import ConfigRegistry
 
 mcEngine     = "TGeant4"
 runnr        = 1
@@ -48,7 +47,8 @@ def run():
 # -------------------------------------------------------------------
  ROOT.gRandom.SetSeed(theSeed)  # this should be propagated via ROOT to Pythia8 and Geant4VMC
  shipRoot_conf.configure()      # load basic libraries, prepare atexit for python
- # ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = 10, tankDesign = 5, muShieldDesign = 7, nuTauTargetDesign=1)
+ # import geometry_config
+ # ship_geo = geometry_config.create_config(Yheight=10, tankDesign=5, muShieldDesign=7, nuTauTargetDesign=1)
 # -----Timer--------------------------------------------------------
  timer = ROOT.TStopwatch()
  timer.Start()

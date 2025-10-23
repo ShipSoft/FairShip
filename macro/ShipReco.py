@@ -78,7 +78,7 @@ if not options.geoFile:
 fgeo = ROOT.TFile.Open(options.geoFile)
 geoMat =  ROOT.genfit.TGeoMaterialInterface()  # if only called in ShipDigiReco -> crash, reason unknown
 
-from ShipGeoConfig import ConfigRegistry, load_from_root_file
+from ShipGeoConfig import load_from_root_file
 #load Shipgeo dictionary
 ShipGeo = load_from_root_file(fgeo, 'ShipGeo')
 

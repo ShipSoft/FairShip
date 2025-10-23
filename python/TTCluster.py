@@ -8,7 +8,7 @@ import random
 import matplotlib.pyplot as plt
 
 from ROOT.TMath import Landau, Gaus, Poisson
-from ShipGeoConfig import ConfigRegistry
+import geometry_config
 
 #####################################################
 ##########  GLOBAL VALUES AND PARAMETERS ############
@@ -183,9 +183,8 @@ nud = design2018['nud']
 strawDesign = design2018['strawDesign']
 geofile = None
 
-ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight=dy,
-	tankDesign=dv, muShieldDesign=ds, nuTauTargetDesign=nud,
-	strawDesign=strawDesign, muShieldGeo=geofile)
+ship_geo = geometry_config.create_config(Yheight=dy,
+	strawDesign=strawDesign, muShieldGeo=geofile, shieldName="warm_opt")
 
 n_hor_planes = ship_geo.NuTauTT.n_hor_planes # 11
 n_vert_planes = ship_geo.NuTauTT.n_vert_planes # 7

@@ -1,7 +1,7 @@
 import ROOT,os,random
 import shipunit as u
 import rootUtils as ut
-from ShipGeoConfig import ConfigRegistry
+import geometry_config
 
 from array import array
 pdg  = ROOT.TDatabasePDG()
@@ -10,7 +10,7 @@ Mmu  = mu.Mass()
 Mmu2 = Mmu * Mmu
 rnr  = ROOT.TRandom()
 eospath = ROOT.gSystem.Getenv("EOSSHIP")+"/eos/experiment/ship/data/"
-ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = 10.)
+ship_geo = geometry_config.create_config(Yheight=10.)
 endOfHadronAbsorber = (ship_geo['hadronAbsorber'].z + ship_geo['hadronAbsorber'].length/2.) /100.
 startOfTarget       = -50. # value used for Geant4 production
 

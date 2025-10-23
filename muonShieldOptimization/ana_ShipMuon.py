@@ -350,12 +350,12 @@ else :
 import rootUtils as ut
 import shipunit as u
 PDG = ROOT.TDatabasePDG.Instance()
-from ShipGeoConfig import ConfigRegistry
+import geometry_config
 # init geometry and mag. field
 if not fgeo.FindKey('ShipGeo'):
  # old geofile, missing Shipgeo dictionary
  # re-create geometry and mag. field
- ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = dy)
+ ShipGeo = geometry_config.create_config(Yheight=dy)
 else:
  # new geofile, load Shipgeo dictionary written by run_simScript.py
   ShipGeo = load_from_root_file(fgeo, 'ShipGeo')

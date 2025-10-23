@@ -1,5 +1,4 @@
 from ShipGeoConfig import AttrDict
-from ShipGeoConfig import ConfigRegistry
 import ROOT
 import os
 import subprocess
@@ -29,7 +28,7 @@ def retrieveGitTags(o):
 def execute(f, ox, name='ShipGeo'):
     """Save geometry configuration to ROOT file as JSON string"""
     if type(ox) == str:
-        ox = ConfigRegistry.register_config("basic")
+        ox = AttrDict()
     o = retrieveGitTags(ox)
 
     if type(f) == str:

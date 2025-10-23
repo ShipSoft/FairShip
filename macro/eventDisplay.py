@@ -8,7 +8,7 @@ ROOT.gROOT.ProcessLine('#include "FairEventHeader.h"')
 # only helps if class version in FairEventHeader.h is increased
 
 from argparse import ArgumentParser
-from ShipGeoConfig import ConfigRegistry, load_from_root_file
+from ShipGeoConfig import load_from_root_file
 from array import array
 import shipunit as u
 import shipRoot_conf

@@ -6,7 +6,7 @@ import ROOT
 import shipunit as u
 import shipRoot_conf
 import rootUtils as ut
-from ShipGeoConfig import ConfigRegistry
+import geometry_config
 from argparse import ArgumentParser
 from array import array
 from backports import tdirectory634
@@ -256,8 +256,7 @@ elif options.debug == 2:
     ROOT.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("debug1");')
 elif options.debug == 3:
     ROOT.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("debug2");')
-ship_geo = ConfigRegistry.loadpy(
-     "$FAIRSHIP/geometry/geometry_config.py",
+ship_geo = geometry_config.create_config(
      Yheight=options.dy,
      strawDesign=options.strawDesign,
      muShieldGeo=options.geofile,
