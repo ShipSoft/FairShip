@@ -36,9 +36,9 @@ import logging
 from collections.abc import Mapping, Sequence
 from pathlib import Path
 
+import fairship.shipRoot_conf as shipRoot_conf
 import ROOT  # type: ignore
-import shipRoot_conf
-from genie_interface import (
+from fairship.utils.genie_interface import (
     add_hists,
     generate_genie_events,
     get_1D_flux_name,
@@ -65,6 +65,7 @@ TARGET_CODE = {
 NUPDGLIST = [16, -16, 14, -14, 12, -12]
 
 # ------------------------------ Helpers ---------------------------------------
+shipRoot_conf.configure()
 
 
 def extract_nu_over_nubar(

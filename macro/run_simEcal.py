@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 momentum = 1
 import ROOT,os,sys,time
-import shipunit as u
-import shipRoot_conf
-import ShipGeoConfig
+
+import fairship.core.shipunit as u
+import fairship.shipRoot_conf as shipRoot_conf
+import fairship.ShipGeoConfig as ShipGeoConfig
 
 mcEngine     = "TGeant3"
 simEngine    = "Pythia8"  # "Genie" # Ntuple
@@ -48,7 +49,7 @@ run.SetName(mcEngine)  # Transport engine
 run.SetSink(ROOT.FairRootFileSink(outFile))  # Output file
 rtdb = run.GetRuntimeDb()
 # -----Create geometry----------------------------------------------
-import shipDet_conf
+import fairship.shipDet_conf as shipDet_conf
 shipDet_conf.configure(run)
 # -----Create PrimaryGenerator--------------------------------------
 primGen=ROOT.FairPrimaryGenerator()

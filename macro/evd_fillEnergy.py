@@ -1,7 +1,7 @@
 import ROOT
-import shipunit as u
-import  eveGlobal
+import eveGlobal
 
+import fairship.core.shipunit as u
 
 def collect_hits(lsOfGlobals, checked_muons):
   MUON = 13

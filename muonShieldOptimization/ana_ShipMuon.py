@@ -1,7 +1,10 @@
 # analyze muon background /media/Data/HNL/PythiaGeant4Production/pythia8_Geant4_total.root
 import os,ROOT
 import multiprocessing as mp
-from ShipGeoConfig import load_from_root_file
+
+from fairship.ShipGeoConfig import load_from_root_file
+from fairship.utils.rootpy_pickler import Unpickler
+
 ROOT.gInterpreter.ProcessLine('typedef double Double32_t')
 local = False
 if not os.uname()[1].lower().find('ubuntu')< 0: local = True
@@ -347,10 +350,10 @@ else :
  inputFile1 = inputFile
  inputFile2 = inputFile.replace('.root','_D.root')
 
-import rootUtils as ut
-import shipunit as u
+import fairship.utils.root as ut
+import fairship.core.shipunit as u
 PDG = ROOT.TDatabasePDG.Instance()
-from ShipGeoConfig import ConfigRegistry
+from fairship.ShipGeoConfig import ConfigRegistry
 # init geometry and mag. field
 if not fgeo.FindKey('ShipGeo'):
  # old geofile, missing Shipgeo dictionary
@@ -361,7 +364,7 @@ else:
   ShipGeo = load_from_root_file(fgeo, 'ShipGeo')
 
 # -----Create geometry----------------------------------------------
-import shipDet_conf
+import fairship.shipDet_conf as shipDet_conf
 run = ROOT.FairRunSim()
 modules = shipDet_conf.configure(run,ShipGeo)
 

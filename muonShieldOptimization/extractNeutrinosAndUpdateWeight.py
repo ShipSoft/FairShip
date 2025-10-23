@@ -1,5 +1,7 @@
 import os,ROOT
-import rootUtils as ut
+
+import fairship.utils.root as ut
+
 path =  '/eos/experiment/ship/data/Mbias/background-prod-2018/'
 
 # should fill hisograms with neutrinos, for mbias, exclude neutrinos from charm
@@ -22,7 +24,7 @@ weightCharm1GeV = 4895.24
 # for 10GeV beauty Production 5336 Billion PoT equivalent, weight = 9.37
 weightBeauty = 9.37
 
-import rootUtils as ut
+import fairship.utils.root as ut
 h={}
 PDG = ROOT.TDatabasePDG.Instance()
 for idnu in range(12,17,2):

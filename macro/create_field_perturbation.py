@@ -1,12 +1,12 @@
 import ROOT as r
-import shipunit as u
-import geomGeant4
-from ShipGeoConfig import ConfigRegistry
-import shipDet_conf
-import saveBasicParameters
 import os
-import ShieldUtils
 from argparse import ArgumentParser
+
+import fairship.shipunit as u
+import fairship.shipDet_conf as shipDet_conf
+from fairship.utils.shield import find_shield_center
+from fairship.geomGeant4 import addVMCFields
+from fairship.ShipGeoConfig import ConfigRegistry
 
 
 globalDesigns = {'dy': 10., 'dv': 6, 'ds': 9, 'nud': 3, 'caloDesign': 3, 'strawDesign': 10}
@@ -42,9 +42,9 @@ def create_csv_field_map(options):
     run.SetGenerator(primGen)
     run.SetStoreTraj(r.kFALSE)
     run.Init()
-    fieldMaker = geomGeant4.addVMCFields(ship_geo, '', True)
+    fieldMaker = addVMCFields(ship_geo, '', True)
 
-    field_center, shield_half_length = ShieldUtils.find_shield_center(ship_geo)
+    field_center, shield_half_length = find_shield_center(ship_geo)
     print("SHIELD ONLY: CENTER: {}, HALFLENGTH: {}, half_X: {}, half_Y: {}".format(field_center,
                                                                                    shield_half_length,
                                                                                    ship_geo.muShield.half_X_max,

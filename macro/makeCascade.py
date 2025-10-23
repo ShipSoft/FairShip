@@ -1,6 +1,7 @@
 import ROOT,time,os,sys,random,copy,argparse
 from array import array
-import rootUtils as ut
+
+import fairship.utils.root as ut
 
 ROOT.gROOT.LoadMacro("$VMCWORKDIR/gconfig/basiclibs.C")
 ROOT.basiclibs()

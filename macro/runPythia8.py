@@ -1,12 +1,14 @@
 import ROOT
-import rootUtils as ut
+from argparse import ArgumentParser
 from array import array
+
+import fairship.utils.root as ut
+
 theSeed      = 0
 h = {}
 ROOT.gRandom.SetSeed(theSeed)
 ROOT.gSystem.Load("libpythia8")
 
-from argparse import ArgumentParser
 parser = ArgumentParser()
 parser.add_argument("-b", "--heartbeat",  dest="heartbeat", type=int,  help="progress report",  default=10000)
 parser.add_argument("-n", "--pot",  dest="NPoT", type=int,  help="protons on target",          default=1000000)
