@@ -1,7 +1,7 @@
 import ROOT as r
 import shipunit as u
 import geomGeant4
-from ShipGeoConfig import ConfigRegistry
+import geometry_config
 import shipDet_conf
 import saveBasicParameters
 import os
@@ -15,16 +15,11 @@ def create_csv_field_map(options):
     r.gErrorIgnoreLevel = r.kWarning
     r.gSystem.Load('libpythia8')
 
-    ship_geo = ConfigRegistry.loadpy(
-        '$FAIRSHIP/geometry/geometry_config.py',
+    ship_geo = geometry_config.create_config(
         Yheight=globalDesigns["dy"],
-        tankDesign=globalDesigns["dv"],
-        nuTauTargetDesign=globalDesigns["nud"],
         strawDesign=globalDesigns["strawDesign"],
-        muShieldDesign=options.ds,
-        muShieldStepGeo=options.muShieldStepGeo,
-        muShieldWithCobaltMagnet=options.muShieldWithCobaltMagnet,
-        muShieldGeo=options.geofile)
+        muShieldGeo=options.geofile,
+        shieldName=getattr(options, 'shieldName', 'warm_opt'))
 
     ship_geo.muShield.WithConstField = True
 

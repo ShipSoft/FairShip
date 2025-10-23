@@ -5,7 +5,7 @@ import ROOT
 import ctypes
 import rootUtils as ut
 import shipunit as u
-from ShipGeoConfig import ConfigRegistry, load_from_root_file
+from ShipGeoConfig import load_from_root_file
 import shipRoot_conf
 from backports import tdirectory634
 from argparse import ArgumentParser

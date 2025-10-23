@@ -2,9 +2,9 @@ import os
 
 import shipunit as u
 import yaml
-from ShipGeoConfig import AttrDict, ConfigRegistry
+from ShipGeoConfig import AttrDict, Config
 
-# the following params should be passed through 'ConfigRegistry.loadpy' method
+# Parameters for geometry configuration are passed to create_config() function
 # nuTargetPassive = 1  #0 = with active layers, 1 = only passive
 
 # targetOpt      = 5  # 0=solid   >0 sliced, 5: 5 pieces of tungsten, 4 air slits, 17: molybdenum tungsten interleaved with H20
@@ -223,25 +223,44 @@ shield_db = {
         ],
     },
 }
-if "muShieldGeo" not in globals():
-    muShieldGeo = None
-if "nuTargetPassive" not in globals():
-    nuTargetPassive = 1
-if "TARGET_YAML" not in globals():
-    TARGET_YAML = os.path.expandvars("$FAIRSHIP/geometry/target_config_old.yaml")
-if "strawDesign" not in globals():
-    strawDesign = 10
-if "Yheight" not in globals():
-    Yheight = 10.0
-if "shieldName" not in globals():
-    shieldName = None
-if "SND" not in globals():
-    SND = True
-if "SND_design" not in globals():
-    SND_design = [2]
 
 
-with ConfigRegistry.register_config("basic") as c:
+def create_config(
+    DecayVolumeMedium="helium",
+    Yheight=6.0,
+    strawDesign=10,
+    muShieldGeo=None,
+    shieldName="New_HA_Design",
+    nuTargetPassive=1,
+    SND=True,
+    SND_design=None,
+    TARGET_YAML=None,
+):
+    """
+    Create geometry configuration with specified parameters.
+
+    Args:
+        DecayVolumeMedium: Medium in decay volume ("helium" or "vacuums"), default: "helium"
+        Yheight: Height of vacuum tank in meters, default: 6.0
+        strawDesign: Straw tube design (4=aluminium frame, 10=steel frame), default: 10
+        muShieldGeo: Muon shield geometry file (for experts), default: None
+        shieldName: Name of shield configuration ("warm_opt" or "New_HA_Design"), default: "New_HA_Design"
+        nuTargetPassive: Target type (0=with active layers, 1=only passive), default: 1
+        SND: Enable SND detector, default: True
+        SND_design: SND design options (list of design numbers), default: [2]
+        TARGET_YAML: Path to target YAML configuration file, default: "$FAIRSHIP/geometry/target_config_old.yaml"
+
+    Returns:
+        Config: Geometry configuration object
+    """
+    # Set defaults for mutable parameters
+    if SND_design is None:
+        SND_design = [2]
+    if TARGET_YAML is None:
+        TARGET_YAML = os.path.expandvars("$FAIRSHIP/geometry/target_config_old.yaml")
+
+    # Create configuration object
+    c = Config()
     c.DecayVolumeMedium = DecayVolumeMedium
     c.SND = SND
     # Ensure SND_design is always a list
@@ -521,3 +540,9 @@ with ConfigRegistry.register_config("basic") as c:
     )  # Relative position of UBT to decay vessel centre
     c.UpstreamTagger.PositionResolution = 1.0 * u.cm  # Position smearing resolution
     c.UpstreamTagger.TimeResolution = 0.3  # Time resolution in ns
+
+    # Store parameters that might be needed for reference
+    c.muShieldGeo = muShieldGeo
+    c.nuTargetPassive = nuTargetPassive
+
+    return c

@@ -109,6 +109,8 @@ it in future.
 
 ### Changed
 
+* Replace ConfigRegistry with function-based geometry configuration API. Use `geometry_config.create_config(**params)` instead of `ConfigRegistry.loadpy()`
+* Move `geometry_config.py` from `geometry/` to `python/` directory and update all imports from `from geometry import geometry_config` to `import geometry_config`
 * Refactor strawtubes digitisation to use dedicated detector class
   - Created `strawtubesDetector` class inheriting from `BaseDetector`
   - Moved digitisation logic from `ShipDigiReco` to `detectors/strawtubesDetector.py`

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import ROOT,os,sys,time,shipRoot_conf
 import shipunit as u
-from ShipGeoConfig import ConfigRegistry
+import geometry_config
 from backports import tdirectory634
 
 
@@ -128,7 +128,7 @@ ship_geo_kwargs = {'Yheight': dy,
                    }
 if args.AddMuonShield or args.AddHadronAbsorberOnly:
     ship_geo_kwargs['muShieldDesign'] = ds
-ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", **ship_geo_kwargs)
+ship_geo = geometry_config.create_config(**ship_geo_kwargs)
 
 txt = 'pythia8_Geant4_'
 if withEvtGen: txt = 'pythia8_evtgen_Geant4_'

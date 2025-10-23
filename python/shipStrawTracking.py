@@ -6,7 +6,8 @@ import numpy
 from argparse import ArgumentParser
 
 # For ShipGeo
-from ShipGeoConfig import ConfigRegistry, load_from_root_file
+from ShipGeoConfig import load_from_root_file
+import geometry_config
 
 # For modules
 import shipDet_conf
@@ -51,9 +52,9 @@ def run_track_pattern_recognition(input_file, geo_file, output_file, method):
     # Prepare ShipGeo dictionary
     if not fgeo.FindKey('ShipGeo'):
         if dy:
-            ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight = dy)
+            ShipGeo = geometry_config.create_config(Yheight=dy)
         else:
-            ShipGeo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py")
+            ShipGeo = geometry_config.create_config()
     else:
         ShipGeo = load_from_root_file(fgeo, 'ShipGeo')
 
