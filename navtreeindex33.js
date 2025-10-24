@@ -1,5 +1,10 @@
 var NAVTREEINDEX33 =
 {
+"shipPatRec_8py.html#a50f1d2cf92badc6046881b76c02c5c6d":[6,0,11,35,9],
+"shipPatRec_8py.html#a6633ea3c390789fb3d0e95937522f5ab":[6,0,11,35,7],
+"shipPatRec_8py.html#a7a99de7d697da0d7d33bb63eb5d9493f":[6,0,11,35,15],
+"shipPatRec_8py.html#a848914b2596b8ce24ce06d706a96cd29":[6,0,11,35,1],
+"shipPatRec_8py.html#a887d7c79ae760b2046f2430639b9310d":[6,0,11,35,21],
 "shipPatRec_8py.html#a88e22572a88720d78a13055a49cc64da":[6,0,11,35,12],
 "shipPatRec_8py.html#a9e786dcf32b59b846a190bf82d7f6f40":[6,0,11,35,5],
 "shipPatRec_8py.html#aa34e686d5bd2ebf679c50e8849436da8":[6,0,11,35,19],
@@ -223,6 +228,8 @@ var NAVTREEINDEX33 =
 "strawtubesContFact_8cxx_source.html":[6,0,16,3],
 "strawtubesContFact_8h.html":[6,0,16,4],
 "strawtubesContFact_8h_source.html":[6,0,16,4],
+"strawtubesDetector_8py.html":[6,0,11,1,3],
+"strawtubesDetector_8py_source.html":[6,0,11,1,3],
 "strawtubesHit_8cxx.html":[6,0,16,5],
 "strawtubesHit_8cxx.html#a2a4e3defa01c68456688479ba32a6a02":[6,0,16,5,0],
 "strawtubesHit_8cxx_source.html":[6,0,16,5],
@@ -238,16 +245,9 @@ var NAVTREEINDEX33 =
 "strawtubes_8cxx_source.html":[6,0,16,1],
 "strawtubes_8h.html":[6,0,16,2],
 "strawtubes_8h_source.html":[6,0,16,2],
-"structShipFieldMaker_1_1fieldInfo.html":[5,0,60,0],
-"structShipFieldMaker_1_1fieldInfo.html#a407b5fcdc9d336dba1278cbd1ed75036":[5,0,60,0,2],
-"structShipFieldMaker_1_1fieldInfo.html#a4752e530a813faaa66a4eac51a4a39a6":[5,0,60,0,3],
-"structShipFieldMaker_1_1fieldInfo.html#a816598a56ecb7f46b26bc348734290da":[5,0,60,0,0],
-"structShipFieldMaker_1_1fieldInfo.html#aa63ca69b924db536e0c7e0da19e5e02e":[5,0,60,0,1],
-"structShipFieldMaker_1_1fieldInfo.html#ac9a321e62f357da7f2e7c7209688c217":[5,0,60,0,4],
-"structShipFieldMaker_1_1transformInfo.html":[5,0,60,1],
-"structShipFieldMaker_1_1transformInfo.html#a1662a7308aec75088911268cf82c3169":[5,0,60,1,4],
-"structShipFieldMaker_1_1transformInfo.html#a1fceff836a1b6dd65a67207c5ac1bbbf":[5,0,60,1,2],
-"structShipFieldMaker_1_1transformInfo.html#a38fd237f14541937e081c8205e668811":[5,0,60,1,5],
-"structShipFieldMaker_1_1transformInfo.html#a3a709cf11c81f7e10e2b69f6fe93ed02":[5,0,60,1,3],
-"structShipFieldMaker_1_1transformInfo.html#a685fb2207223e45ff16199c21e45d073":[5,0,60,1,0]
+"structShipFieldMaker_1_1fieldInfo.html":[5,0,61,0],
+"structShipFieldMaker_1_1fieldInfo.html#a407b5fcdc9d336dba1278cbd1ed75036":[5,0,61,0,2],
+"structShipFieldMaker_1_1fieldInfo.html#a4752e530a813faaa66a4eac51a4a39a6":[5,0,61,0,3],
+"structShipFieldMaker_1_1fieldInfo.html#a816598a56ecb7f46b26bc348734290da":[5,0,61,0,0],
+"structShipFieldMaker_1_1fieldInfo.html#aa63ca69b924db536e0c7e0da19e5e02e":[5,0,61,0,1]
 };

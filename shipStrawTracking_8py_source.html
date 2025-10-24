@@ -310,7 +310,7 @@ $(document).ready(function(){initNavTree('shipStrawTracking_8py_source.html','')
 <div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>                hits[key] = numpy.array(hits[key])</div>
 <div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span> </div>
 <div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>            <span class="comment"># Decoding</span></div>
-<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>            decode = global_variables.modules[<span class="stringliteral">&quot;Strawtubes&quot;</span>].StrawDecode(hits[<span class="stringliteral">&#39;DetID&#39;</span>])</div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>            decode = global_variables.modules[<span class="stringliteral">&quot;strawtubes&quot;</span>].StrawDecode(hits[<span class="stringliteral">&#39;DetID&#39;</span>])</div>
 <div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>            <span class="comment"># StrawDecode returns a tuple of (statnb, vnb, lnb, snb).</span></div>
 <div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>            is_stereo = ((decode[1] == 1) + (decode[1] == 2))</div>
 <div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>            is_y = ((decode[1] == 0) + (decode[1] == 3))</div>

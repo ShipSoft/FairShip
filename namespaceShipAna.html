@@ -797,7 +797,7 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">  480</span>     detID = ahit.GetDetectorID()</div>
 <div class="line"><span class="lineno">  481</span>     top = ROOT.TVector3()</div>
 <div class="line"><span class="lineno">  482</span>     bot = ROOT.TVector3()</div>
-<div class="line"><span class="lineno">  483</span>     modules[<span class="stringliteral">&quot;Strawtubes&quot;</span>].StrawEndPoints(detID,bot,top)</div>
+<div class="line"><span class="lineno">  483</span>     modules[<span class="stringliteral">&quot;strawtubes&quot;</span>].StrawEndPoints(detID,bot,top)</div>
 <div class="line"><span class="lineno">  484</span>     dw  = ahit.dist2Wire()</div>
 <div class="line"><span class="lineno">  485</span>     <span class="keywordflow">if</span> detID &lt; 50000000 :</div>
 <div class="line"><span class="lineno">  486</span>      <span class="keywordflow">if</span> abs(top.y())==abs(bot.y()): h[<span class="stringliteral">&#39;disty&#39;</span>].Fill(dw)</div>

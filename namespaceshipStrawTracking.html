@@ -1044,7 +1044,7 @@ method : string
 <div class="line"><span class="lineno">  206</span>                hits[key] = numpy.array(hits[key])</div>
 <div class="line"><span class="lineno">  207</span> </div>
 <div class="line"><span class="lineno">  208</span>            <span class="comment"># Decoding</span></div>
-<div class="line"><span class="lineno">  209</span>            decode = global_variables.modules[<span class="stringliteral">&quot;Strawtubes&quot;</span>].StrawDecode(hits[<span class="stringliteral">&#39;DetID&#39;</span>])</div>
+<div class="line"><span class="lineno">  209</span>            decode = global_variables.modules[<span class="stringliteral">&quot;strawtubes&quot;</span>].StrawDecode(hits[<span class="stringliteral">&#39;DetID&#39;</span>])</div>
 <div class="line"><span class="lineno">  210</span>            <span class="comment"># StrawDecode returns a tuple of (statnb, vnb, lnb, snb).</span></div>
 <div class="line"><span class="lineno">  211</span>            is_stereo = ((decode[1] == 1) + (decode[1] == 2))</div>
 <div class="line"><span class="lineno">  212</span>            is_y = ((decode[1] == 0) + (decode[1] == 3))</div>

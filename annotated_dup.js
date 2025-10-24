@@ -94,6 +94,9 @@ var annotated_dup =
     [ "shipVeto", "namespaceshipVeto.html", [
       [ "Task", "classshipVeto_1_1Task.html", "classshipVeto_1_1Task" ]
     ] ],
+    [ "strawtubesDetector", "namespacestrawtubesDetector.html", [
+      [ "strawtubesDetector", "classstrawtubesDetector_1_1strawtubesDetector.html", "classstrawtubesDetector_1_1strawtubesDetector" ]
+    ] ],
     [ "study_GammaConv", "namespacestudy__GammaConv.html", [
       [ "Block", "classstudy__GammaConv_1_1Block.html", "classstudy__GammaConv_1_1Block" ]
     ] ],

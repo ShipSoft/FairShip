@@ -328,43 +328,43 @@ $(document).ready(function(){initNavTree('shipDet__conf_8py_source.html',''); in
 <div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>    <span class="keywordflow">elif</span> ship_geo.strawDesign == 10:</div>
 <div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>        ship_geo.strawtubes_geo.frame_material = <span class="stringliteral">&quot;steel&quot;</span></div>
 <div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span> </div>
-<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>    Strawtubes = ROOT.strawtubes(ship_geo.strawtubes_geo.medium)</div>
-<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>    Strawtubes.SetzPositions(</div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>    strawtubes = ROOT.strawtubes(ship_geo.strawtubes_geo.medium)</div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>    <a class="code hl_function" href="classstrawtubes.html#a4dcefa576e08fdb969972bea8a3f8005">strawtubes.SetzPositions</a>(</div>
 <div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>        ship_geo.TrackStation1.z,</div>
 <div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>        ship_geo.TrackStation2.z,</div>
 <div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>        ship_geo.TrackStation3.z,</div>
 <div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>        ship_geo.TrackStation4.z,</div>
 <div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>    )</div>
-<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>    Strawtubes.SetApertureArea(</div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>    <a class="code hl_function" href="classstrawtubes.html#ae082472915ec60b1c47726d3d2be62b8">strawtubes.SetApertureArea</a>(</div>
 <div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>        ship_geo.strawtubes_geo.width,</div>
 <div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>        ship_geo.strawtubes_geo.height,</div>
 <div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>    )</div>
-<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>    Strawtubes.SetStrawDiameter(</div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>    <a class="code hl_function" href="classstrawtubes.html#a4a772e6383f9685b31fdcadd8cb76fc8">strawtubes.SetStrawDiameter</a>(</div>
 <div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>        ship_geo.strawtubes_geo.outer_straw_diameter,</div>
 <div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>        ship_geo.strawtubes_geo.wall_thickness,</div>
 <div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>    )</div>
-<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>    Strawtubes.SetStrawPitch(</div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>    <a class="code hl_function" href="classstrawtubes.html#a912b723aa107839839abf0d73d15e3e0">strawtubes.SetStrawPitch</a>(</div>
 <div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>        ship_geo.strawtubes_geo.straw_pitch,</div>
 <div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>        ship_geo.strawtubes_geo.y_layer_offset,</div>
 <div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>    )</div>
-<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>    Strawtubes.SetDeltazLayer(ship_geo.strawtubes_geo.delta_z_layer)</div>
-<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>    Strawtubes.SetStereoAngle(ship_geo.strawtubes_geo.view_angle)</div>
-<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>    Strawtubes.SetWireThickness(ship_geo.strawtubes_geo.wire_thickness)</div>
-<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>    Strawtubes.SetDeltazView(ship_geo.strawtubes_geo.delta_z_view)</div>
-<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>    Strawtubes.SetFrameMaterial(ship_geo.strawtubes_geo.frame_material)</div>
-<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>    Strawtubes.SetStationEnvelope(</div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>    <a class="code hl_function" href="classstrawtubes.html#a2be79eb484ab732cc6201a2746357186">strawtubes.SetDeltazLayer</a>(ship_geo.strawtubes_geo.delta_z_layer)</div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>    <a class="code hl_function" href="classstrawtubes.html#ac4010e0f100323c50e4e53f82ce9b99f">strawtubes.SetStereoAngle</a>(ship_geo.strawtubes_geo.view_angle)</div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>    <a class="code hl_function" href="classstrawtubes.html#ace8539312c83354b381d983c4c8f106f">strawtubes.SetWireThickness</a>(ship_geo.strawtubes_geo.wire_thickness)</div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>    <a class="code hl_function" href="classstrawtubes.html#a09cf73298007b72e4ee6b4734755fabc">strawtubes.SetDeltazView</a>(ship_geo.strawtubes_geo.delta_z_view)</div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>    <a class="code hl_function" href="classstrawtubes.html#abd7414ddaa5bd9dd82239c4ca571222f">strawtubes.SetFrameMaterial</a>(ship_geo.strawtubes_geo.frame_material)</div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>    <a class="code hl_function" href="classstrawtubes.html#ae3153573a7bed50c50ad22933c2a6cc2">strawtubes.SetStationEnvelope</a>(</div>
 <div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>        ship_geo.strawtubes_geo.station_width,</div>
 <div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>        ship_geo.strawtubes_geo.station_height,</div>
 <div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>        ship_geo.strawtubes_geo.station_length,</div>
 <div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>    )</div>
 <div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span> </div>
 <div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>    <span class="comment">#For digitization</span></div>
-<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>    Strawtubes.SetStrawResolution(</div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>    <a class="code hl_function" href="classstrawtubes.html#a2a193aeab8a87cec92cf43fe0d864fac">strawtubes.SetStrawResolution</a>(</div>
 <div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>        ship_geo.strawtubesDigi.v_drift,</div>
 <div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>        ship_geo.strawtubesDigi.sigma_spatial,</div>
 <div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>    )</div>
 <div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span> </div>
-<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>    detectorList.append(Strawtubes)</div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>    detectorList.append(strawtubes)</div>
 <div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span> </div>
 <div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span> </div>
 </div>
@@ -590,7 +590,7 @@ $(document).ready(function(){initNavTree('shipDet__conf_8py_source.html',''); in
 <div class="line"><a id="l00480" name="l00480"></a><span class="lineno">  480</span>        run.SetField(fMagField)</div>
 <div class="line"><a id="l00481" name="l00481"></a><span class="lineno">  481</span> </div>
 <div class="line"><a id="l00482" name="l00482"></a><span class="lineno">  482</span>    exclusionList = []</div>
-<div class="line"><a id="l00483" name="l00483"></a><span class="lineno">  483</span>    <span class="comment"># exclusionList = [&quot;Muon&quot;,&quot;Ecal&quot;,&quot;Hcal&quot;,&quot;Strawtubes&quot;,&quot;TargetTrackers&quot;,&quot;NuTauTarget&quot;,\</span></div>
+<div class="line"><a id="l00483" name="l00483"></a><span class="lineno">  483</span>    <span class="comment"># exclusionList = [&quot;Muon&quot;,&quot;Ecal&quot;,&quot;Hcal&quot;,&quot;strawtubes&quot;,&quot;TargetTrackers&quot;,&quot;NuTauTarget&quot;,\</span></div>
 <div class="line"><a id="l00484" name="l00484"></a><span class="lineno">  484</span>    <span class="comment">#                 &quot;SiliconTarget&quot;,&quot;Veto&quot;,&quot;Magnet&quot;,&quot;MuonShield&quot;,&quot;TargetStation&quot;, &quot;TimeDet&quot;, &quot;UpstreamTagger&quot;]</span></div>
 <div class="line"><a id="l00485" name="l00485"></a><span class="lineno">  485</span> </div>
 <div class="line"><a id="l00486" name="l00486"></a><span class="lineno">  486</span>    <span class="keywordflow">for</span> x <span class="keywordflow">in</span> detectorList:</div>
@@ -605,6 +605,17 @@ $(document).ready(function(){initNavTree('shipDet__conf_8py_source.html',''); in
 </div>
 <div class="ttc" id="aclassShipGeoConfig_1_1AttrDict_html"><div class="ttname"><a href="classShipGeoConfig_1_1AttrDict.html">ShipGeoConfig.AttrDict</a></div><div class="ttdef"><b>Definition</b> <a href="ShipGeoConfig_8py_source.html#l00078">ShipGeoConfig.py:78</a></div></div>
 <div class="ttc" id="aclassSiliconTarget_html_a776df0651edf60aa093675389bdf5a9e"><div class="ttname"><a href="classSiliconTarget.html#a776df0651edf60aa093675389bdf5a9e">SiliconTarget::SetSiliconTargetParameters</a></div><div class="ttdeci">void SetSiliconTargetParameters(Double_t targetWidth, Double_t targetHeight, Double_t sensorWidth, Double_t sensorLength, Int_t nLayers, Double_t zPosition, Double_t targetThickness, Double_t targetSpacing, Double_t moduleOffset)</div><div class="ttdef"><b>Definition</b> <a href="SiliconTarget_8cxx_source.html#l00098">SiliconTarget.cxx:98</a></div></div>
+<div class="ttc" id="aclassstrawtubes_html_a09cf73298007b72e4ee6b4734755fabc"><div class="ttname"><a href="classstrawtubes.html#a09cf73298007b72e4ee6b4734755fabc">strawtubes::SetDeltazView</a></div><div class="ttdeci">void SetDeltazView(Double_t delta_z_view)</div><div class="ttdef"><b>Definition</b> <a href="strawtubes_8cxx_source.html#l00254">strawtubes.cxx:254</a></div></div>
+<div class="ttc" id="aclassstrawtubes_html_a2a193aeab8a87cec92cf43fe0d864fac"><div class="ttname"><a href="classstrawtubes.html#a2a193aeab8a87cec92cf43fe0d864fac">strawtubes::SetStrawResolution</a></div><div class="ttdeci">void SetStrawResolution(Double_t a, Double_t b)</div><div class="ttdef"><b>Definition</b> <a href="strawtubes_8h_source.html#l00063">strawtubes.h:63</a></div></div>
+<div class="ttc" id="aclassstrawtubes_html_a2be79eb484ab732cc6201a2746357186"><div class="ttname"><a href="classstrawtubes.html#a2be79eb484ab732cc6201a2746357186">strawtubes::SetDeltazLayer</a></div><div class="ttdeci">void SetDeltazLayer(Double_t delta_z_layer)</div><div class="ttdef"><b>Definition</b> <a href="strawtubes_8cxx_source.html#l00239">strawtubes.cxx:239</a></div></div>
+<div class="ttc" id="aclassstrawtubes_html_a4a772e6383f9685b31fdcadd8cb76fc8"><div class="ttname"><a href="classstrawtubes.html#a4a772e6383f9685b31fdcadd8cb76fc8">strawtubes::SetStrawDiameter</a></div><div class="ttdeci">void SetStrawDiameter(Double_t outer_straw_diameter, Double_t wall_thickness)</div><div class="ttdef"><b>Definition</b> <a href="strawtubes_8cxx_source.html#l00226">strawtubes.cxx:226</a></div></div>
+<div class="ttc" id="aclassstrawtubes_html_a4dcefa576e08fdb969972bea8a3f8005"><div class="ttname"><a href="classstrawtubes.html#a4dcefa576e08fdb969972bea8a3f8005">strawtubes::SetzPositions</a></div><div class="ttdeci">void SetzPositions(Double_t z1, Double_t z2, Double_t z3, Double_t z4)</div><div class="ttdef"><b>Definition</b> <a href="strawtubes_8cxx_source.html#l00212">strawtubes.cxx:212</a></div></div>
+<div class="ttc" id="aclassstrawtubes_html_a912b723aa107839839abf0d73d15e3e0"><div class="ttname"><a href="classstrawtubes.html#a912b723aa107839839abf0d73d15e3e0">strawtubes::SetStrawPitch</a></div><div class="ttdeci">void SetStrawPitch(Double_t straw_pitch, Double_t layer_offset)</div><div class="ttdef"><b>Definition</b> <a href="strawtubes_8cxx_source.html#l00233">strawtubes.cxx:233</a></div></div>
+<div class="ttc" id="aclassstrawtubes_html_abd7414ddaa5bd9dd82239c4ca571222f"><div class="ttname"><a href="classstrawtubes.html#abd7414ddaa5bd9dd82239c4ca571222f">strawtubes::SetFrameMaterial</a></div><div class="ttdeci">void SetFrameMaterial(TString frame_material)</div><div class="ttdef"><b>Definition</b> <a href="strawtubes_8cxx_source.html#l00259">strawtubes.cxx:259</a></div></div>
+<div class="ttc" id="aclassstrawtubes_html_ac4010e0f100323c50e4e53f82ce9b99f"><div class="ttname"><a href="classstrawtubes.html#ac4010e0f100323c50e4e53f82ce9b99f">strawtubes::SetStereoAngle</a></div><div class="ttdeci">void SetStereoAngle(Double_t stereo_angle)</div><div class="ttdef"><b>Definition</b> <a href="strawtubes_8cxx_source.html#l00244">strawtubes.cxx:244</a></div></div>
+<div class="ttc" id="aclassstrawtubes_html_ace8539312c83354b381d983c4c8f106f"><div class="ttname"><a href="classstrawtubes.html#ace8539312c83354b381d983c4c8f106f">strawtubes::SetWireThickness</a></div><div class="ttdeci">void SetWireThickness(Double_t wire_thickness)</div><div class="ttdef"><b>Definition</b> <a href="strawtubes_8cxx_source.html#l00249">strawtubes.cxx:249</a></div></div>
+<div class="ttc" id="aclassstrawtubes_html_ae082472915ec60b1c47726d3d2be62b8"><div class="ttname"><a href="classstrawtubes.html#ae082472915ec60b1c47726d3d2be62b8">strawtubes::SetApertureArea</a></div><div class="ttdeci">void SetApertureArea(Double_t width, Double_t height)</div><div class="ttdef"><b>Definition</b> <a href="strawtubes_8cxx_source.html#l00220">strawtubes.cxx:220</a></div></div>
+<div class="ttc" id="aclassstrawtubes_html_ae3153573a7bed50c50ad22933c2a6cc2"><div class="ttname"><a href="classstrawtubes.html#ae3153573a7bed50c50ad22933c2a6cc2">strawtubes::SetStationEnvelope</a></div><div class="ttdeci">void SetStationEnvelope(Double_t x, Double_t y, Double_t z)</div><div class="ttdef"><b>Definition</b> <a href="strawtubes_8cxx_source.html#l00264">strawtubes.cxx:264</a></div></div>
 <div class="ttc" id="anamespaceshipDet__conf_html_a39dd79c9e985fa7e9faf4c68d305525b"><div class="ttname"><a href="namespaceshipDet__conf.html#a39dd79c9e985fa7e9faf4c68d305525b">shipDet_conf.configure_veto</a></div><div class="ttdeci">configure_veto(yaml_file, z0)</div><div class="ttdef"><b>Definition</b> <a href="shipDet__conf_8py_source.html#l00177">shipDet_conf.py:177</a></div></div>
 <div class="ttc" id="anamespaceshipDet__conf_html_a478210005461058986ea79d2f13e6ee9"><div class="ttname"><a href="namespaceshipDet__conf.html#a478210005461058986ea79d2f13e6ee9">shipDet_conf.configure_snd_old</a></div><div class="ttdeci">configure_snd_old(yaml_file, emulsion_target_z_end, cave_floorHeightMuonShield)</div><div class="ttdef"><b>Definition</b> <a href="shipDet__conf_8py_source.html#l00013">shipDet_conf.py:15</a></div></div>
 <div class="ttc" id="anamespaceshipDet__conf_html_a66d88267d500973a8eada3f77e213076"><div class="ttname"><a href="namespaceshipDet__conf.html#a66d88267d500973a8eada3f77e213076">shipDet_conf.configure_snd_siliconTarget</a></div><div class="ttdeci">configure_snd_siliconTarget(yaml_file, ship_geo)</div><div class="ttdef"><b>Definition</b> <a href="shipDet__conf_8py_source.html#l00151">shipDet_conf.py:151</a></div></div>

@@ -1712,6 +1712,7 @@ var namespaces_dup =
       [ "red", "namespaceShipStyle.html#a3e07ec150a24cd3f2f198c40da828be7", null ],
       [ "yellow", "namespaceShipStyle.html#a2671a3ad1fd53712bdc05ebd4c87b4db", null ]
     ] ],
+    [ "ShipUnit", "namespaceShipUnit.html", null ],
     [ "shipunit", "namespaceshipunit.html", [
       [ "alpha_rcl2", "namespaceshipunit.html#a852bff5f88f281cab1a9d17abbd90213", null ],
       [ "ampere", "namespaceshipunit.html#ab5bd1c925283ab8ca1bcad2691255c7f", null ],
@@ -1858,9 +1859,9 @@ var namespaces_dup =
       [ "watt", "namespaceshipunit.html#a3a4e38f77301d7b18e00c66be19bc8ea", null ],
       [ "weber", "namespaceshipunit.html#a87b678dd64f162952e6f083c4c42d7cf", null ]
     ] ],
-    [ "ShipUnit", "namespaceShipUnit.html", null ],
     [ "shipVertex", "namespaceshipVertex.html", "namespaceshipVertex" ],
     [ "shipVeto", "namespaceshipVeto.html", "namespaceshipVeto" ],
+    [ "strawtubesDetector", "namespacestrawtubesDetector.html", "namespacestrawtubesDetector" ],
     [ "study_GammaConv", "namespacestudy__GammaConv.html", "namespacestudy__GammaConv" ],
     [ "study_muEloss", "namespacestudy__muEloss.html", [
       [ "makePlot", "namespacestudy__muEloss.html#a429244da07783fef43e06144c7933920", null ],

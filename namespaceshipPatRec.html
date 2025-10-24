@@ -1313,7 +1313,7 @@ SmearedHits : list
 <div class="line"><span class="lineno">  800</span>        ahit = smeared_hits[i_hit]</div>
 <div class="line"><span class="lineno">  801</span> </div>
 <div class="line"><span class="lineno">  802</span>        detID = ahit[<span class="stringliteral">&#39;detID&#39;</span>]</div>
-<div class="line"><span class="lineno">  803</span>        decode = global_variables.modules[<span class="stringliteral">&quot;Strawtubes&quot;</span>].StrawDecode(detID)</div>
+<div class="line"><span class="lineno">  803</span>        decode = global_variables.modules[<span class="stringliteral">&quot;strawtubes&quot;</span>].StrawDecode(detID)</div>
 <div class="line"><span class="lineno">  804</span>        <span class="comment"># StrawDecode returns a tuple of (statnb, vnb, lnb, snb).</span></div>
 <div class="line"><span class="lineno">  805</span>        is_y12 = ((decode[0] == 1) + (decode[0] == 2)) * ((decode[1] == 0) + (decode[1] == 3))</div>
 <div class="line"><span class="lineno">  806</span>        is_stereo12 = ((decode[0] == 1) + (decode[0] == 2)) * ((decode[1] == 1) + (decode[1] == 2))</div>

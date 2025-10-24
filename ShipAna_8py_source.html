@@ -606,7 +606,7 @@ $(document).ready(function(){initNavTree('ShipAna_8py_source.html',''); initResi
 <div class="line"><a id="l00480" name="l00480"></a><span class="lineno">  480</span>     detID = ahit.GetDetectorID()</div>
 <div class="line"><a id="l00481" name="l00481"></a><span class="lineno">  481</span>     top = ROOT.TVector3()</div>
 <div class="line"><a id="l00482" name="l00482"></a><span class="lineno">  482</span>     bot = ROOT.TVector3()</div>
-<div class="line"><a id="l00483" name="l00483"></a><span class="lineno">  483</span>     modules[<span class="stringliteral">&quot;Strawtubes&quot;</span>].StrawEndPoints(detID,bot,top)</div>
+<div class="line"><a id="l00483" name="l00483"></a><span class="lineno">  483</span>     modules[<span class="stringliteral">&quot;strawtubes&quot;</span>].StrawEndPoints(detID,bot,top)</div>
 <div class="line"><a id="l00484" name="l00484"></a><span class="lineno">  484</span>     dw  = ahit.dist2Wire()</div>
 <div class="line"><a id="l00485" name="l00485"></a><span class="lineno">  485</span>     <span class="keywordflow">if</span> detID &lt; 50000000 :</div>
 <div class="line"><a id="l00486" name="l00486"></a><span class="lineno">  486</span>      <span class="keywordflow">if</span> abs(top.y())==abs(bot.y()): h[<span class="stringliteral">&#39;disty&#39;</span>].Fill(dw)</div>

@@ -207,6 +207,7 @@ var hierarchy =
         [ "SBTDetector.SBTDetector", "classSBTDetector_1_1SBTDetector.html", null ],
         [ "UpstreamTaggerDetector.UpstreamTaggerDetector", "classUpstreamTaggerDetector_1_1UpstreamTaggerDetector.html", null ],
         [ "muonDetector.muonDetector", "classmuonDetector_1_1muonDetector.html", null ],
+        [ "strawtubesDetector.strawtubesDetector", "classstrawtubesDetector_1_1strawtubesDetector.html", null ],
         [ "timeDetector.timeDetector", "classtimeDetector_1_1timeDetector.html", null ]
       ] ]
     ] ]

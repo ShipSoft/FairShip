@@ -202,6 +202,13 @@ Fixed</h2>
 <h2><a class="anchor" id="autotoc_md4"></a>
 Changed</h2>
 <ul>
+<li>Refactor strawtubes digitisation to use dedicated detector class<ul>
+<li>Created <code><a class="el" href="namespacestrawtubesDetector.html">strawtubesDetector</a></code> class inheriting from <code><a class="el" href="namespaceBaseDetector.html">BaseDetector</a></code></li>
+<li>Moved digitisation logic from <code>ShipDigiReco</code> to <code><a class="el" href="strawtubesDetector_8py.html">detectors/strawtubesDetector.py</a></code></li>
+<li>Updated naming from "Strawtubes" to "strawtubes" for consistency</li>
+<li>Changed branch name from "Digi_StrawtubesHits" to "Digi_strawtubesHits"</li>
+</ul>
+</li>
 <li>Rename MtcDetPoint and MtcDetHit classes to <a class="el" href="classMTCDetPoint.html">MTCDetPoint</a> and <a class="el" href="classMTCDetHit.html">MTCDetHit</a> for consistency with detector naming conventions</li>
 <li>Refactor digitisation to use detector classes for MTC, muon, time, SBT, and <a class="el" href="classUpstreamTagger.html" title="Upstream Background Tagger (UBT) detector.">UpstreamTagger</a> detectors</li>
 <li>Make <a class="el" href="namespaceBaseDetector.html">BaseDetector</a> an abstract base class to enforce interface contract</li>

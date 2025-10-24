@@ -85,13 +85,14 @@ var searchData=
   ['strawtubes_2eh_82',['strawtubes.h',['../strawtubes_8h.html',1,'']]],
   ['strawtubescontfact_2ecxx_83',['strawtubesContFact.cxx',['../strawtubesContFact_8cxx.html',1,'']]],
   ['strawtubescontfact_2eh_84',['strawtubesContFact.h',['../strawtubesContFact_8h.html',1,'']]],
-  ['strawtubeshit_2ecxx_85',['strawtubesHit.cxx',['../strawtubesHit_8cxx.html',1,'']]],
-  ['strawtubeshit_2eh_86',['strawtubesHit.h',['../strawtubesHit_8h.html',1,'']]],
-  ['strawtubespoint_2ecxx_87',['strawtubesPoint.cxx',['../strawtubesPoint_8cxx.html',1,'']]],
-  ['strawtubespoint_2eh_88',['strawtubesPoint.h',['../strawtubesPoint_8h.html',1,'']]],
-  ['study_5fgammaconv_2epy_89',['study_GammaConv.py',['../study__GammaConv_8py.html',1,'']]],
-  ['study_5fmueloss_2epy_90',['study_muEloss.py',['../study__muEloss_8py.html',1,'']]],
-  ['study_5fmumsc_2epy_91',['study_muMSC.py',['../study__muMSC_8py.html',1,'']]],
-  ['study_5fthintarget_2epy_92',['study_thinTarget.py',['../study__thinTarget_8py.html',1,'']]],
-  ['submitpyg4prod_2epy_93',['submitPyG4prod.py',['../submitPyG4prod_8py.html',1,'']]]
+  ['strawtubesdetector_2epy_85',['strawtubesDetector.py',['../strawtubesDetector_8py.html',1,'']]],
+  ['strawtubeshit_2ecxx_86',['strawtubesHit.cxx',['../strawtubesHit_8cxx.html',1,'']]],
+  ['strawtubeshit_2eh_87',['strawtubesHit.h',['../strawtubesHit_8h.html',1,'']]],
+  ['strawtubespoint_2ecxx_88',['strawtubesPoint.cxx',['../strawtubesPoint_8cxx.html',1,'']]],
+  ['strawtubespoint_2eh_89',['strawtubesPoint.h',['../strawtubesPoint_8h.html',1,'']]],
+  ['study_5fgammaconv_2epy_90',['study_GammaConv.py',['../study__GammaConv_8py.html',1,'']]],
+  ['study_5fmueloss_2epy_91',['study_muEloss.py',['../study__muEloss_8py.html',1,'']]],
+  ['study_5fmumsc_2epy_92',['study_muMSC.py',['../study__muMSC_8py.html',1,'']]],
+  ['study_5fthintarget_2epy_93',['study_thinTarget.py',['../study__thinTarget_8py.html',1,'']]],
+  ['submitpyg4prod_2epy_94',['submitPyG4prod.py',['../submitPyG4prod_8py.html',1,'']]]
 ];

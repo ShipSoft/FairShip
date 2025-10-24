@@ -38,6 +38,7 @@ var searchData=
   ['splitcalpoint_35',['splitcalPoint',['../classsplitcalPoint.html',1,'']]],
   ['strawtubes_36',['strawtubes',['../classstrawtubes.html',1,'']]],
   ['strawtubescontfact_37',['strawtubesContFact',['../classstrawtubesContFact.html',1,'']]],
-  ['strawtubeshit_38',['strawtubesHit',['../classstrawtubesHit.html',1,'']]],
-  ['strawtubespoint_39',['strawtubesPoint',['../classstrawtubesPoint.html',1,'']]]
+  ['strawtubesdetector_38',['strawtubesDetector',['../classstrawtubesDetector_1_1strawtubesDetector.html',1,'strawtubesDetector']]],
+  ['strawtubeshit_39',['strawtubesHit',['../classstrawtubesHit.html',1,'']]],
+  ['strawtubespoint_40',['strawtubesPoint',['../classstrawtubesPoint.html',1,'']]]
 ];

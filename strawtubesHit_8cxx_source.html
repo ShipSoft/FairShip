@@ -143,7 +143,7 @@ $(document).ready(function(){initNavTree('strawtubesHit_8cxx_source.html',''); i
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    TVector3 stop = TVector3();</div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a> = p-&gt;GetDetectorID();</div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    <a class="code hl_class" href="classstrawtubes.html">strawtubes</a>* <span class="keyword">module</span> =</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>        dynamic_cast&lt;strawtubes*&gt;(FairRunSim::Instance()-&gt;GetListOfModules()-&gt;FindObject(&quot;Strawtubes&quot;));</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>        dynamic_cast&lt;strawtubes*&gt;(FairRunSim::Instance()-&gt;GetListOfModules()-&gt;FindObject(&quot;strawtubes&quot;));</div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    Double_t v_drift = <span class="keyword">module</span>-&gt;StrawVdrift();</div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    Double_t sigma_spatial = <span class="keyword">module</span>-&gt;StrawSigmaSpatial();</div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <a class="code hl_function" href="classstrawtubes.html#a49574e3d2ed60566c2709b7effa6dc42">strawtubes::StrawEndPoints</a>(<a class="code hl_variable" href="classShipHit.html#a2d5297096e3039b34c93d2bf80738b10">fDetectorID</a>, start, stop);</div>
