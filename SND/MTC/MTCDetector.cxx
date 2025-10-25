@@ -219,6 +219,7 @@ void MTCDetector::SetMTCParameters(Double_t w,
     fZCenter = z;
     fFieldY = field;
     fSciFiActiveX = fWidth - fWidth * tan(fSciFiBendingAngle * TMath::DegToRad());
+    fSciFiActiveY = fHeight;
 }
 
 // Updated SciFi module builder with fiber placements
@@ -304,7 +305,6 @@ void MTCDetector::CreateSciFiModule(const char* name,
     // -----------------------------
     // Now build the fibers inside each Epoxy block:
     // Common fiber parameters (cm)
-    fSciFiActiveY = height;
     Double_t layerThick = fiberMatThick / numFiberLayers;
     fFiberLength = fSciFiActiveY / cos(fSciFiBendingAngle * TMath::DegToRad())
                    - 2 * fFiberRadius * sin(fSciFiBendingAngle * TMath::DegToRad());
@@ -496,13 +496,36 @@ void MTCDetector::SiPMOverlap()
     }
     Double_t fLengthScifiMat = fSciFiActiveY;
     Double_t fWidthChannel = fFiberPitch * fChannelAggregated;
-    Int_t fNSiPMChan = fNumberofChannels;
+    Int_t fNSiPMChan = static_cast<int>(fNumberofChannels / fChannelAggregated);
     Int_t fNSiPMs = std::ceil(fWidth / (fNSiPMChan * fWidthChannel));
     // define the edge shift. In case of N SiPMs, in cm. Example: for 8 SiPMs with 2 channel aggregation,
     // fEdge = -1.2/2 cm
-    Double_t fEdge = -(fWidth - fNSiPMs * fNSiPMChan * fWidthChannel) / 2;
+    Double_t fEdge = (fWidth - fNSiPMs * fNSiPMChan * fWidthChannel) / 2;
     Double_t firstChannelX = -fWidth / 2;
+    // Double_t fLengthScifiMat = fSciFiActiveY;
+    // Double_t fWidthChannel = 0.025 * 2;
+    // Int_t fNSiPMChan = 128;
+    // Int_t fNSiPMs = 8;
+    // Int_t fNMats = 1;
+    // // Double_t fEdge = 0.413 - 0.025 / 2;
+    // Double_t fEdge = - 1.2 / 2; // in case of 8 SiPMs
+    // // Double_t initial_shift = fFiberLength * sin(fSciFiBendingAngle * TMath::DegToRad()) / 2;
+    Double_t initial_shift = 0.0;
+    // Double_t fCharr = 64 * fWidthChannel;
+    // // Double_t firstChannelX = -fSciFiActiveX / 2;
+    // Double_t firstChannelX = -fWidth / 2;
 
+    std::cout << "SiPM Overlap parameters: " << std::endl;
+    std::cout << "  fLengthScifiMat = " << fLengthScifiMat << " cm" << std::endl;
+    std::cout << "  fWidthChannel = " << fWidthChannel << " cm" << std::endl;
+    std::cout << "  fFiberPitch" << fFiberPitch << " cm" << std::endl;
+    std::cout << "  fChannelAggregated" << fChannelAggregated << " " << std::endl;
+    std::cout << "  fNSiPMChan = " << fNSiPMChan << std::endl;
+    std::cout << "  fNSiPMs = " << fNSiPMs << std::endl;
+    std::cout << "  fNMats = " << fNMats << std::endl;
+    std::cout << "  fEdge = " << fEdge << " cm" << std::endl;
+    std::cout << "  initial_shift = " << initial_shift << " cm" << std::endl;
+    std::cout << "  firstChannelX = " << firstChannelX << " cm" << std::endl;
     // Contains all plane SiPMs, defined for horizontal fiber plane
     // To obtain SiPM map for vertical fiber plane rotate by 90 degrees around Z
     TGeoVolumeAssembly* SiPMmapVolU = new TGeoVolumeAssembly("SiPMmapVolU");
@@ -537,6 +560,8 @@ void MTCDetector::SiPMOverlap()
                 // -5 degrees
                 SiPMmapVolV->AddNode(
                     ChannelVol, 100000 * 1 + imat * 10000 + isipms * 1000 + ichannel, new TGeoTranslation(-pos, 0, 0));
+                std::cout << "SiPM Channel Global ID: " << 100000 + imat * 100000 + (isipms) * 1000 + ichannel
+                          << " at position x = " << pos << " cm" << std::endl;
                 pos += fWidthChannel;
             }
         }
@@ -689,6 +714,10 @@ void MTCDetector::SiPMmapping()
                 TVector3 Atop, Bbot;
                 GetPosition(fibre->GetNumber(), Atop, Bbot);
                 Float_t a = Bbot[0];
+                if (fID == 10800 || fID == 10801 || fID == 10799) {
+                    std::cout << "Fibre ID: " << fID << " at position a = " << a
+                              << " cm, Fiber radius: " << fibresRadius << std::endl;
+                }
 
                 //  check for overlap with any of the SiPM channels in the same mat
                 for (Int_t nChan = 0; nChan < Nodes->GetEntriesFast(); nChan++) {   // 7 SiPMs total times 128 channels
@@ -699,16 +728,37 @@ void MTCDetector::SiPMmapping()
                         TGeoBBox* B = dynamic_cast<TGeoBBox*>(vol->GetVolume()->GetShape());
                         dSiPM = B->GetDX();
                     }
-                    if (TMath::Abs(xcentre - a) > 4 * fibresRadius) {
+                    if (N == 6014 && (fID == 10800 || fID == 10801 || fID == 10799)) {
+                        std::cout << "!!!  Checking SiPM channel: " << N << " at position xcentre = " << xcentre
+                                  << " cm" << std::endl;
+                        std::cout << "    FibreID: " << fID << ", SiPM Channel: " << N << std::endl;
+                        std::cout << TMath::Abs(xcentre - a) << " > " << 4 * fibresRadius << std::endl;
+                    }
+                    if (TMath::Abs(xcentre - a) > 3 * dSiPM / 2) {
                         continue;
                     }   // no need to check further
                     Float_t W = area(a, fibresRadius, xcentre - dSiPM, xcentre + dSiPM);
+                    if (N == 6014 && (fID == 10800 || fID == 10801 || fID == 10799)) {
+                        std::cout << "  Checking SiPM channel: " << N << " at position xcentre = " << xcentre
+                                  << " cm with area = " << W << " cm" << std::endl;
+                        std::cout << "    Overlap check: fibre from " << a - fibresRadius << " to " << a + fibresRadius
+                                  << " cm, SiPM from " << xcentre - dSiPM << " to " << xcentre + dSiPM << " cm"
+                                  << std::endl;
+                        std::cout << "FiberID: " << fID << ", SiPM Channel: " << N << ", Overlap area: " << W << " cm"
+                                  << std::endl;
+                        std::cout << "Details of W calculation: " << std::endl;
+                    }
                     if (W < 0) {
                         continue;
                     }
                     std::array<float, 2> Wa;
                     Wa[0] = W;
                     Wa[1] = a;
+                    if (fID == 10800 || fID == 10801 || fID == 10799) {
+                        std::cout << "Fibre ID: " << fID << " at position a = " << a
+                                  << " cm overlaps with SiPM channel: " << N << " at position xcentre = " << xcentre
+                                  << " cm with area = " << W << " cm" << std::endl;
+                    }
                     if (sipm_vol == std::string("SiPMmapVolU")) {
                         fibresSiPM_U[N][fID] = Wa;
                     } else {
