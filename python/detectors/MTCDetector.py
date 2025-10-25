@@ -29,9 +29,10 @@ class MTCDetector(BaseDetector):
           - 1: MTC unique ID
           - 23: layer number
           - 0: station type (0 for +5 degrees, 1 for -5 degrees)
-          - 0: mat number (only 0 by June 2025)
-          - 4: SiPM number (0-N, where N is the number of SiPMs in the station)
-          - 123: number of the SiPM channel (0-127, 128 channels per SiPM)
+          - 0: mat number (only 0 by June 2025). In future, if multiple mats per station are used,
+          this number will be 0-N. Currently, this digit is allocated by SiPM channel ID!
+          - 1: SiPM number (currently fixed to 1)
+          - 123: number of the SiPM channel (0-N). The channel number depends on the fibre aggregation setting.
         """
         hit_container = {}
         mc_points = {}
