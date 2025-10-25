@@ -879,20 +879,4 @@ if __name__ == "__main__":
     # -----Create SciFiMapping instance--------------------------------
     mapping = SciFiMapping(modules)
     mapping.make_mapping()
-    # mapping.draw_channel(sGeo, 101104120)  # Example channel
-    # mapping.draw_many_channels(
-    #     sGeo,
-    #     number_of_channels=20,
-    #     output_file="scifi_mapping_all_channels.pdf",
-    #     labeling=False,
-    # )
-    # mapping.draw_channel_XY(
-    #     number_of_channels=20, output_file="scifi_mapping_all_channels_XY.pdf"
-    # )
-    # mapping.draw_channel_XY(
-    #     number_of_channels=100,
-    #     real_event=True,
-    #     x_coords=[1.0, 3.0],
-    #     output_file="scifi_channel_ribbons_XY_real_event.pdf",
-    # )
     mapping.mapping_validation()
