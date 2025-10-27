@@ -71,6 +71,7 @@ it in future.
 
 ### Fixed
 
+* fix(eventDisplay): Fix event display crash caused by premature ROOT object initialization
 * Remove SIMPATH dependency, replaced with EVTGENDATA for EvtGen data files (#648)
 * fix(digi): Make TTree branch split level configurable in BaseDetector, set splitLevel=1 for MTC
 * chore: Fix file endings

@@ -30,12 +30,7 @@ def evExit():
 atexit.register(evExit)
 
 fMan = None
-
-fMan = ROOT.FairEventManager()
 fRun = None
-
-# -----   Reconstruction run   -------------------------------------------
-fRun = ROOT.FairRunAna()
 pdg = ROOT.TDatabasePDG.Instance()
 g = ROOT.gROOT
 gEnv = ROOT.gEnv
@@ -1181,6 +1176,9 @@ def debugStraw(n):
 
 # ----Load the default libraries------
 from basiclibs import *
+
+# -----   Reconstruction run   -------------------------------------------
+fRun = ROOT.FairRunAna()
 if options.geoFile:
     fRun.SetGeomFile(options.geoFile)
 
@@ -1195,6 +1193,8 @@ if options.ParFile:
     parInput1 = ROOT.FairParRootFileIo()
     parInput1.open(options.ParFile)
     rtdb.setFirstInput(parInput1)
+
+fMan = ROOT.FairEventManager()
 fMan.SetMaxEnergy(400.0)  # default is 25 GeV only !
 fMan.SetMinEnergy(0.1)  #  100 MeV
 fMan.SetEvtMaxEnergy(
