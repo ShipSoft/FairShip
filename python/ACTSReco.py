@@ -28,11 +28,10 @@ from acts.examples.reconstruction import (
     addTrackWriters,
 )
 
+currentPath = os.path.dirname(__file__)
 fgeo = ROOT.TFile.Open(global_variables.geoFile)
 upkl = Unpickler(fgeo)
 ShipGeo = upkl.load('ShipGeo')
-#if hasattr(ShipGeo.Bfield,"fieldMap"):
-#fieldMapFile = ShipGeo.Bfield.fieldMap
 
 def runTracking():
     customLogLevel=acts.examples.defaultLogging(logLevel=acts.logging.VERBOSE)
@@ -40,7 +39,7 @@ def runTracking():
 
     if global_variables.detector == "SiliconTarget":
        field = acts.ConstantBField(acts.Vector3(0.0, 0.0, 0.0 * u.T))
-       digiConfigFile = "SiliconTarget-digi-config.json"
+       digiConfigFile = currentPath + "/SiliconTarget-digi-config.json"
        detector = acts.examples.SiTargetBuilder(fileName=str(global_variables.geoFile),
                                                 surfaceLogLevel=customLogLevel(),
                                                 layerLogLevel=customLogLevel(),
@@ -54,7 +53,7 @@ def runTracking():
                                         translateToGlobal=ROOT.TVector3(ShipGeo.Bfield.x,
                                                                         ShipGeo.Bfield.y,
                                                                         ShipGeo.Bfield.z)) 
-       digiConfigFile = "StrawTracker-digi-config.json"
+       digiConfigFile = currentPath + "/StrawTracker-digi-config.json"
        detector = acts.examples.StrawTrackerBuilder(fileName=str(global_variables.geoFile),
                                                     surfaceLogLevel=customLogLevel(),
                                                     layerLogLevel=customLogLevel(),
@@ -84,7 +83,7 @@ def runTracking():
                     level=acts.logging.INFO,
                     filePath=str(global_variables.inputFile),
                     outputSimHits="simhits",
-                    treeName="hitTree"
+                    treeName="siHits"
                 )
             )
 
@@ -100,8 +99,8 @@ def runTracking():
     addDigiParticleSelection(
         s,
         ParticleSelectorConfig(
-            pt=(0.9 * u.GeV, None),
-            measurements=(7, None),
+            pt=(1.0 * u.GeV, None),
+            measurements=(5, None),
             removeNeutral=True,
             removeSecondaries=True,
         ),
@@ -132,31 +131,34 @@ def runTracking():
             inputTracks="tracks",
             outputTracks="selected-tracks",
             selectorConfig=acts.TrackSelector.Config(
-                minMeasurements=7,
+                minMeasurements=5,
             ),
         )
     )
 
-    addTrackWriters(
-        s,
-        tracks="tracks",
+    s.addWriter(
+      acts.examples.RootTrackSummaryWriter(
+        level=acts.logging.INFO,
+        inputTracks="tracks",
+        inputParticles="particles_selected",
+        inputTrackParticleMatching="track_particle_matching",
+        treeName="tracksummary",
+        filePath=global_variables.outputFile,
         writeCovMat=True,
-        logLevel=acts.logging.VERBOSE,
-        outputDirRoot=global_variables.outputFile
-            )
+      )
+    )
 
 
     if global_variables.vertexing:
 
         s.addReader(
             acts.examples.RootVertexReader(
-                level=acts.logging.DEBUG,
+                level=acts.logging.INFO,
                 filePath=str(inputHitsPath),
                 outputVertices="vertices_generated",
                 treeName="vertices"
             )
         )
-        #s.addWhiteboardAlias("vertices_truth", "particles_generated")
 
         addVertexFitting(
             s,
@@ -165,13 +167,13 @@ def runTracking():
             outputDirRoot=global_variables.outputFile
         )
 
-
+    
     if global_variables.DQM:
 
         s.addWhiteboardAlias("tracks", "selected-tracks")
         s.addWriter(
             acts.examples.TrackFitterPerformanceWriter(
-                level=acts.logging.VERBOSE,
+                level=acts.logging.INFO,
                 inputTracks="tracks",
                 inputParticles="particles_selected",
                 inputTrackParticleMatching="track_particle_matching",
@@ -193,5 +195,5 @@ def runTracking():
                     filePath=str(global_variables.outputDir) + "/performance_vertexing.root",
                 )
             )
-
+    
     s.run()
