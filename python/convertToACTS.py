@@ -113,7 +113,7 @@ def main():
     strawHitTree.Branch('deltapz', deltapz_straw, 'deltapz/F')
     deltae_straw = array.array('f', [0])
     strawHitTree.Branch('deltae', deltae_straw, 'deltae/F')
-    
+
     #Vertex branches
     event_id_vertex = array.array('i', [0])
     vertexTree.Branch('event_id', event_id_vertex, 'event_id/i')
@@ -178,7 +178,7 @@ def main():
     particleTree.Branch('vertex_primary', vertex_primary)
     vertex_secondary = ROOT.std.vector('int')()
     particleTree.Branch('vertex_secondary', vertex_secondary)
-    particle = ROOT.std.vector('int')() 
+    particle = ROOT.std.vector('int')()
     particleTree.Branch('particle', particle)
     generation_particle = ROOT.std.vector('int')()
     particleTree.Branch('generation', generation_particle)
@@ -202,14 +202,14 @@ def main():
         detHitArray=[]
         strawHitArr=[]
         trID=[]
-        
+
         if global_variables.detector == "SiliconTarget":
             detHitArray.clear()
             trID.clear()
             detHitMap.clear()
             pointsDict = defaultdict(list)
             for index, point in enumerate(event.SiliconTargetPoint):
-                detID = point.GetDetectorID() 
+                detID = point.GetDetectorID()
                 pointsDict[detID].append(point)
 
             for index, detID in enumerate(pointsDict):
@@ -224,7 +224,7 @@ def main():
                 detHitMap[trackID].append([hit[0].GetDetectorID(),hit[0]])
             for i in detHitMap:
                 detHitMap[i].sort(key=lambda x:x[0])
-            
+
             for i in detHitMap:
                 for index, hit in enumerate(detHitMap[i]):
 
@@ -232,15 +232,15 @@ def main():
                     layerID= 6*hit.GetLayer() + 2*hit.GetPlane() + 4 #Layers correspond to planes, including W planes and navigation layers inbetween
                     event_id[0] = ievent
                     volume_id[0] = 1
-                    boundary_id[0] = 0 
+                    boundary_id[0] = 0
                     layer_id[0] = layerID
-                    approach_id[0] = 0 
+                    approach_id[0] = 0
                     sens = hit.GetModule()
                     sensitive_id[0] = sens
                     geometry_id[0] = acts.GeometryIdentifier(volume=1, layer=layerID, sensitive=sens).value
-                    barVal = acts.Barcode(primaryVertex = 1, secondaryVertex = 0, part = index, gen = 0, subpart = 0).value 
+                    barVal = acts.Barcode(primaryVertex = 1, secondaryVertex = 0, part = index, gen = 0, subpart = 0).value
                     particle_id[0] = barVal
-                    index_si[0] = index 
+                    index_si[0] = index
 
                     #SHiP coordinate system translated to reconstruction coord system
                     # z -> x
@@ -248,7 +248,7 @@ def main():
                     # x -> -z
                     tx[0] = hit.GetX() * 10 #Units cm -> mm
                     ty[0] = hit.GetY() * 10
-                    tz[0] = hit.GetZ() * 10 
+                    tz[0] = hit.GetZ() * 10
                     tt[0] = 0#hit.GetT()
                     tpx[0] = 0.
                     tpy[0] = 0.
@@ -259,7 +259,7 @@ def main():
                     deltapz[0] = 0.
                     deltae[0] = -hit.GetSignal()
 
-                    siHitTree.Fill()    
+                    siHitTree.Fill()
 
         if global_variables.detector == "StrawTracker":
             #Follow shipDigiReco method of only selecting the point with the earliest time
@@ -268,7 +268,7 @@ def main():
             strawHitArr.clear()
             earliestHitPerDet = {}
             for index, point in enumerate(event.strawtubesPoint):
-                hit = ROOT.strawtubesHit(point, t0)       
+                hit = ROOT.strawtubesHit(point, t0)
                 strawHitArr.append(hit)
                 if hit.isValid():
                     detID = hit.GetDetectorID()
@@ -289,19 +289,19 @@ def main():
 
                 event_id_straw[0] = ievent
                 volume_id_straw[0] = 1 #Will only change when we have multiple tracking volumes built in geom
-                boundary_id_straw[0] = 0 
+                boundary_id_straw[0] = 0
                 layer_id_straw[0] = layerID
-                approach_id_straw[0] = 0 
+                approach_id_straw[0] = 0
                 #Sensitive surface depends on view and layer
                 if hit.GetViewNumber() == 1 or hit.GetViewNumber() == 4:
                     sens = hit.GetStrawNumber() + hit.GetLayerNumber() * 300
                 else:
                     sens = hit.GetStrawNumber() + hit.GetLayerNumber() * 315
-                    
+
                 sensitive_id_straw[0] = sens
 
                 geometry_id_straw[0] = acts.GeometryIdentifier(volume=1, layer=layerID, sensitive=sens).value
-                particle_id_straw[0] = acts.Barcode(primaryVertex = 1, secondaryVertex = 0, part = trackID, gen = 0, subpart = 0).value 
+                particle_id_straw[0] = acts.Barcode(primaryVertex = 1, secondaryVertex = 0, part = trackID, gen = 0, subpart = 0).value
                 index_straw[0] = index
 
                 #SHiP coordinate system translated to reconstruction coord system
@@ -310,24 +310,24 @@ def main():
                 # x -> -z
                 tx_straw[0] = hit.GetY() * 10 #Units cm -> mm
                 ty_straw[0] = hit.GetZ() * 10
-                tz_straw[0] = hit.GetX() * 10 
+                tz_straw[0] = hit.GetX() * 10
                 tt_straw[0] = hit.GetTDC() #In microseconds
                 tpx_straw[0] = 0.
                 tpy_straw[0] = 0.
                 tpz_straw[0] = 0.
                 te_straw[0] = 0.
-                deltapx_straw[0] = 0. 
+                deltapx_straw[0] = 0.
                 deltapy_straw[0] = 0.
                 deltapz_straw[0] = 0.
-                deltae_straw[0] = -hit.GetEnergyLoss() 
+                deltae_straw[0] = -hit.GetEnergyLoss()
 
-                strawHitTree.Fill()    
+                strawHitTree.Fill()
 
         ##Convert SHiP MCTrack into ACTS MC particle style EDM
         for count, part in enumerate(event.MCTrack):
             event_id_particle[0] = ievent
             generation_particle.push_back(0)
-            barVal = acts.Barcode(primaryVertex = 1, secondaryVertex = 0, part = count, gen = 0, subpart = 0).value 
+            barVal = acts.Barcode(primaryVertex = 1, secondaryVertex = 0, part = count, gen = 0, subpart = 0).value
             particle_id_particle.push_back(barVal)
             particle_type.push_back(part.GetPdgCode())
             process.push_back(0) #Process not recorded, fill with zeros
@@ -339,7 +339,7 @@ def main():
             vx.push_back(part.GetStartX() * 10) #Units mm
             vy.push_back(part.GetStartY() * 10)
             vz.push_back(part.GetStartZ() * 10)
-            vt.push_back(part.GetStartT()) 
+            vt.push_back(part.GetStartT())
             px.push_back(part.GetPz())
             py.push_back(part.GetPy())
             pz.push_back(-part.GetPx())
@@ -352,17 +352,17 @@ def main():
             pt.push_back(fourVec.Pt())
             particle.push_back(count)
             sub_particle.push_back(0)
-            vertex_primary.push_back(1) 
-            vertex_secondary.push_back(0) 
+            vertex_primary.push_back(1)
+            vertex_secondary.push_back(0)
             number_of_hits.push_back(len(detHitMap[count]))
-            total_x0.push_back(0) 
-            total_l0.push_back(0) 
-            outcome.push_back(0) 
+            total_x0.push_back(0)
+            total_l0.push_back(0)
+            outcome.push_back(0)
 
             ## Fill Vertex tree here ##
             motherID = part.GetMotherId()
-            motherMap[str(motherID)].append(count) #Vector of particles grouped by mother 
-            motherMapVal[str(motherID)].append(barVal) #Vector of particles grouped by mother 
+            motherMap[str(motherID)].append(count) #Vector of particles grouped by mother
+            motherMapVal[str(motherID)].append(barVal) #Vector of particles grouped by mother
 
         particleTree.Fill()
         particle_id_particle.clear()
@@ -394,7 +394,7 @@ def main():
         for c , i in enumerate(motherMap):
             particleCodes = motherMapVal[str(i)]
             event_id_vertex[0] = ievent
-            vertexVal = acts.Barcode(primaryVertex = 1, secondaryVertex = 0, part = 0, gen = 0, subpart = 0).value 
+            vertexVal = acts.Barcode(primaryVertex = 1, secondaryVertex = 0, part = 0, gen = 0, subpart = 0).value
             vertex_id.push_back(vertexVal)
             particle_0ID = motherMap[str(i)]
             particle_0 = event.MCTrack[particle_0ID[0]]
@@ -427,7 +427,7 @@ def main():
         motherMap.clear()
         motherMapVal.clear()
 
-           
+
     outFile = global_variables.inputFile.replace('.root','_ACTS.root')
     file = ROOT.TFile(outFile,"RECREATE")
     file.WriteObject(siHitTree,"siHits")

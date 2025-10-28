@@ -49,10 +49,10 @@ def runTracking():
         return
 
     if global_variables.detector == "StrawTracker":
-       field = acts.MagneticFieldMapXyz(ShipGeo.Bfield.fieldMap, "Data", u.cm, u.T, 
+       field = acts.MagneticFieldMapXyz(ShipGeo.Bfield.fieldMap, "Data", u.cm, u.T,
                                         translateToGlobal=ROOT.TVector3(ShipGeo.Bfield.x,
                                                                         ShipGeo.Bfield.y,
-                                                                        ShipGeo.Bfield.z)) 
+                                                                        ShipGeo.Bfield.z))
        digiConfigFile = currentPath + "/StrawTracker-digi-config.json"
        detector = acts.examples.StrawTrackerBuilder(fileName=str(global_variables.geoFile),
                                                     surfaceLogLevel=customLogLevel(),
@@ -167,7 +167,7 @@ def runTracking():
             outputDirRoot=global_variables.outputFile
         )
 
-    
+
     if global_variables.DQM:
 
         s.addWhiteboardAlias("tracks", "selected-tracks")
@@ -195,5 +195,5 @@ def runTracking():
                     filePath=str(global_variables.outputDir) + "/performance_vertexing.root",
                 )
             )
-    
+
     s.run()

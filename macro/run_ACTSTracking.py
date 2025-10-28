@@ -37,18 +37,18 @@ outFile = tmp[len(tmp)-1].replace('.root','_tracked.root')
 outDir = options.inputFile.rsplit('/',1)[0]
 fullpath = options.outputDir+''+str(outFile)
 #Clone input file for writing
-os.system('cp '+options.inputFile+' '+fullpath) 
+os.system('cp '+options.inputFile+' '+fullpath)
 global_variables.outputFile = fullpath
 
 #Determine number of events to loop through
-inFile = ROOT.TFile.Open(options.inputFile) 
+inFile = ROOT.TFile.Open(options.inputFile)
 fTree = inFile.Get("cbmsim")
 global_variables.nEvents = min(fTree.GetEntries(),options.nEvents)
 inFile.Close()
 
 #If input file has not been converted to ACTS EDM then convert
 if options.inputFile.find('_ACTS.root') < 0:
-   import convertToACTS   
+   import convertToACTS
    convertToACTS.main()
    global_variables.inputFile = options.inputFile.replace('.root','_ACTS.root')
 
