@@ -124,11 +124,11 @@ class MTCDetector : public FairDetector
     Double_t zAirGap = -0.15 / 10;
     Double_t zFiberMat2 = 1.025 / 10;
     Double_t zUpperIronInt = 3.2 / 10;
-    Double_t fFiberRadius = fFiberPitch / 2;   // 0.1125 mm
-    Int_t numFiberLayers = 6;                  // number of fiber layers in epoxy block
-    Int_t fNSiPMChan;                          // Number of SiPM channels
-    Int_t fChannelAggregated;                  // Number of SiPM channels to be aggregated
-    Int_t fNSiPMs = 1;                         // Default number of SiPMs
+    Double_t fFiberRadius = 0.01125;
+    Int_t numFiberLayers = 6;   // number of fiber layers in epoxy block
+    Int_t fNSiPMChan;           // Number of SiPM channels
+    Int_t fChannelAggregated;   // Number of SiPM channels to be aggregated
+    Int_t fNSiPMs = 1;          // Default number of SiPMs
     // Total module thickness = 0.3 + 0.135 + 0.1 + 0.135 + 0.3 ≈ 1.0 cm
     Int_t fNMats = 1;
     std::map<Int_t, std::map<Int_t, std::array<float, 2>>> fibresSiPM_U;   //! mapping of fibres to SiPM channels
