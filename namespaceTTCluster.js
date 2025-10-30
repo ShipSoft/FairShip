@@ -25,7 +25,6 @@ var namespaceTTCluster =
     [ "axs", "namespaceTTCluster.html#af0758d94f4130a909c5b9f98a236d15d", null ],
     [ "biggap", "namespaceTTCluster.html#a16d9fb5a8b4dbfdd96619cc0cdb9f968", null ],
     [ "bins", "namespaceTTCluster.html#a65472a05de0b21cb4f6d667745454235", null ],
-    [ "caloDesign", "namespaceTTCluster.html#aaad0f1238d78687b6787606337c715af", null ],
     [ "CDF_integral", "namespaceTTCluster.html#ad296187bd15571a922831f422bba2348", null ],
     [ "CDF_ly_params", "namespaceTTCluster.html#ac6234bfb6de6250f2bfb4910a5734fa9", null ],
     [ "ch_max_num", "namespaceTTCluster.html#a1719a09a817ea9f613d43d5d369b06a2", null ],

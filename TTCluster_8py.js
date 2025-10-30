@@ -25,7 +25,6 @@ var TTCluster_8py =
     [ "axs", "TTCluster_8py.html#af0758d94f4130a909c5b9f98a236d15d", null ],
     [ "biggap", "TTCluster_8py.html#a16d9fb5a8b4dbfdd96619cc0cdb9f968", null ],
     [ "bins", "TTCluster_8py.html#a65472a05de0b21cb4f6d667745454235", null ],
-    [ "caloDesign", "TTCluster_8py.html#aaad0f1238d78687b6787606337c715af", null ],
     [ "CDF_integral", "TTCluster_8py.html#ad296187bd15571a922831f422bba2348", null ],
     [ "CDF_ly_params", "TTCluster_8py.html#ac6234bfb6de6250f2bfb4910a5734fa9", null ],
     [ "ch_max_num", "TTCluster_8py.html#a1719a09a817ea9f613d43d5d369b06a2", null ],

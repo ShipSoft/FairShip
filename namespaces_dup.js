@@ -383,7 +383,6 @@ var namespaces_dup =
       [ "BoxX", "namespacegeometry__config.html#ab4cad7c1cba4590ef9057646112a3052", null ],
       [ "BoxY", "namespacegeometry__config.html#a29a972d958d8de088766d84848486622", null ],
       [ "BoxZ", "namespacegeometry__config.html#ab8aee9d033e653fa9ed4ebcae281c095", null ],
-      [ "CaloDesign", "namespacegeometry__config.html#a357862a13aa35c0d3d201cd4257e38cb", null ],
       [ "cave", "namespacegeometry__config.html#a58b3fede148bd13bb7ea92e8756931f2", null ],
       [ "Chamber1", "namespacegeometry__config.html#ad52d24be002c9de5acc13e94d84101ee", null ],
       [ "Chamber6", "namespacegeometry__config.html#a7e18eb2f2a30ed69f514a7b089849eda", null ],

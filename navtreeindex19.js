@@ -1,7 +1,5 @@
 var NAVTREEINDEX19 =
 {
-"hepunit_8py.html#a27f71c21c4405c3989e3eb385181bad8":[6,0,11,16,111],
-"hepunit_8py.html#a29fcd0aaa9072d62d55b02039e7f1f8a":[6,0,11,16,68],
 "hepunit_8py.html#a2ed3ece3593ff0d71b333900d1a5bce8":[6,0,11,16,0],
 "hepunit_8py.html#a30ccce59774b9e0a2e9600ff0ae4bfc0":[6,0,11,16,61],
 "hepunit_8py.html#a31cd028e22a69a1f59e4766bbdac2457":[6,0,11,16,18],
@@ -249,5 +247,7 @@ var NAVTREEINDEX19 =
 "makeDecay_8py.html#ad0cca2a83c59bb283ee59cc30dc2ea4b":[6,0,5,15,31],
 "makeDecay_8py.html#ad422f34c01c3361b6027a63eaad5cfd7":[6,0,5,15,15],
 "makeDecay_8py.html#ad982d83e907e8531920183500c345a9d":[6,0,5,15,21],
-"makeDecay_8py.html#add06ac2e6371819c0cf24dca326d4964":[6,0,5,15,14]
+"makeDecay_8py.html#add06ac2e6371819c0cf24dca326d4964":[6,0,5,15,14],
+"makeDecay_8py.html#ae0f852e2d4a4c101cdd77eb2a675bb60":[6,0,5,15,42],
+"makeDecay_8py.html#ae12e7ac24f8d7ac07035cdaa544c73e0":[6,0,5,15,3]
 };

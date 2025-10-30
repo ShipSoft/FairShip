@@ -1,6 +1,5 @@
 var NAVTREEINDEX4 =
 {
-"classGenieGenerator.html#a41bb57daa8e796bd16961fd21c773bbb":[5,0,35,23],
 "classGenieGenerator.html#a42a8f65c60129d0af2427b04975db902":[5,0,35,11],
 "classGenieGenerator.html#a4569f26c9518a1c247b6ac4b043c4c49":[5,0,35,31],
 "classGenieGenerator.html#a4736244a825f4e9288daf95c99d4134e":[5,0,35,37],
@@ -218,8 +217,8 @@ var NAVTREEINDEX4 =
 "classMTCDetector.html#afd86dacd0abbb9628d302fa9e1bfb1f6":[5,0,37,14],
 "classMTCDetector_1_1MTCDetector.html":[5,0,10,0],
 "classMTCDetector_1_1MTCDetector.html":[4,0,57,0],
-"classMTCDetector_1_1MTCDetector.html#a3335d6637ba8bd1aeb19d80362102a41":[4,0,57,0,2],
 "classMTCDetector_1_1MTCDetector.html#a3335d6637ba8bd1aeb19d80362102a41":[5,0,10,0,2],
+"classMTCDetector_1_1MTCDetector.html#a3335d6637ba8bd1aeb19d80362102a41":[4,0,57,0,2],
 "classMTCDetector_1_1MTCDetector.html#a6f4c232cccdfab832fd25a28b80d6aa6":[5,0,10,0,1],
 "classMTCDetector_1_1MTCDetector.html#a6f4c232cccdfab832fd25a28b80d6aa6":[4,0,57,0,1],
 "classMTCDetector_1_1MTCDetector.html#a98b50b7002fa22cc17454756d01f2021":[5,0,10,0,0],
@@ -249,5 +248,6 @@ var NAVTREEINDEX4 =
 "classMuDISGenerator.html#af1bfb064f0e597bcce6f3202829b5d37":[5,0,40,9],
 "classMuonBackGenerator.html":[5,0,42],
 "classMuonBackGenerator.html#a0a690dcbbb65ecd807ce61f542660b3b":[5,0,42,28],
-"classMuonBackGenerator.html#a0ad3c77d238f0f05d72bffd583924b35":[5,0,42,11]
+"classMuonBackGenerator.html#a0ad3c77d238f0f05d72bffd583924b35":[5,0,42,11],
+"classMuonBackGenerator.html#a15b3aff65fe01c854f4f444c76291932":[5,0,42,19]
 };
