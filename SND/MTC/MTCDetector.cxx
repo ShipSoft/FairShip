@@ -494,7 +494,7 @@ void MTCDetector::SiPMOverlap()
     }
     Double_t fLengthScifiMat = fSciFiActiveY;
     Double_t fWidthChannel = fFiberPitch * fChannelAggregated;
-    Int_t fNSiPMChan = std::ceil(fWidth / fWidthChannel);
+    fNSiPMChan = std::ceil(fWidth / fWidthChannel);
     if (fNSiPMChan > 1000) {
         LOG(info) << "Number of SiPM channels exceed 1000, namely: " << fNSiPMChan;
         fNSiPMs = static_cast<int>(std::ceil(fNSiPMChan / 1000.));
@@ -530,13 +530,13 @@ void MTCDetector::SiPMOverlap()
         - 0: station type (0 for +5 degrees, 1 for -5 degrees, 2 for scint plane)
         - 5: z-layer number (0-5)
         - 1820: local fibre ID within the station
-      Example of SiPM global channel (what is seen in the output file): 123004123, where:
+      Example of SiPM global channel (what is seen in the output file): 123001123, where:
         - 1: MTC unique ID
         - 23: layer number
         - 0: station type (0 for +5 degrees, 1 for -5 degrees)
         - 0: mat number (only 0 by June 2025)
-        - 1: SiPM number (currently fixed to 1)
-        - 123: number of the SiPM channel (0-127, 128 channels per SiPM)
+        - 1: SiPM number (automatically assigned based on fibre aggregation settings)
+        - 123: number of the SiPM channel (0-N). The channel number depends on the fibre aggregation setting.
     */
 
     int N = fNMats == 1 ? 1 : 0;
@@ -565,13 +565,13 @@ void MTCDetector::GetPosition(Int_t fDetectorID, TVector3& A, TVector3& B)
         - 0: station type (0 for +5 degrees, 1 for -5 degrees, 2 for scint plane)
         - 5: z-layer number (0-5)
         - 1820: local fibre ID within the station
-      Example of SiPM global channel (what is seen in the output file): 123004123, where:
+      Example of SiPM global channel (what is seen in the output file): 123001123, where:
         - 1: MTC unique ID
         - 23: layer number
         - 0: station type (0 for +5 degrees, 1 for -5 degrees)
         - 0: mat number (only 0 by June 2025)
-        - 1: SiPM number (currently fixed to 1)
-        - 123: number of the SiPM channel (0-127, 128 channels per SiPM)
+        - 1: SiPM number (automatically assigned based on fibre aggregation settings)
+        - 123: number of the SiPM channel (0-N). The channel number depends on the fibre aggregation setting.
     */
 
     Int_t station_number = static_cast<int>(fDetectorID / 1e6) % 100;
@@ -629,13 +629,13 @@ void MTCDetector::GetSiPMPosition(Int_t SiPMChan, TVector3& A, TVector3& B)
           - 0: station type (0 for +5 degrees, 1 for -5 degrees, 2 for scint plane)
           - 5: z-layer number (0-5)
           - 1820: local fibre ID within the station
-        Example of SiPM global channel (what is seen in the output file): 123004123, where:
+        Example of SiPM global channel (what is seen in the output file): 123001123, where:
           - 1: MTC unique ID
           - 23: layer number
           - 0: station type (0 for +5 degrees, 1 for -5 degrees)
           - 0: mat number (only 0 by June 2025)
-          - 1: SiPM number (currently fixed to 1)
-          - 123: number of the SiPM channel (0-127, 128 channels per SiPM)
+          - 1: SiPM number (automatically assigned based on fibre aggregation settings)
+          - 123: number of the SiPM channel (0-N). The channel number depends on the fibre aggregation setting.
     */
     Int_t locNumber = SiPMChan % 1000000;
     Int_t station_number = static_cast<int>(SiPMChan / 1e6) % 100;
