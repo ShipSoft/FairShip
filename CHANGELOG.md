@@ -174,8 +174,8 @@ it in future.
 * Configuration storage modernized from pickle to JSON
   - Geometry configurations are now saved as JSON strings (using `std::string`) instead of pickled Python objects in ROOT files
   - Automatic format detection: new code reads both JSON (new format) and pickle (legacy format) files without user intervention
-* Changing the logic of SiPM channel encoding in MTC. Now the number of SiPM is 1 and has a number of channels that fits the width of the plane. If the number of channels exceeds 1000, iterating a SiPM digit to 1 and distributing channels among new number of SiPMs.
-* Set default paramers of MTC to 60x60 cm^2 and 4 aggregated channels according to Sep 2025 CM.
+* Change the logic of SiPM channel encoding in MTC. Now the number of SiPM is 1 and has a number of channels that fits the width of the plane. If the number of channels exceeds 1000, iterating a SiPM digit to 1 and distributing channels among new number of SiPMs.
+* Set default parameters of MTC to 60x60 cm^2 and 4 aggregated channels according to Sep 2025 CM.
 
 ### Removed
 
