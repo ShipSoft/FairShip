@@ -67,8 +67,6 @@ it in future.
 - Enclose target in steel (316L) cylinder
 * First version of SND/SiliconTarget, this layout for this iteration consists of 120 3.5mm W planes with pairs of silicon planes placed 1mm from the surface of the tungsten. As a temporary solution, the detector is placed within the second last magnet of the muon shield. Configuration of detector in simScript is coupled to the SND_design == 2 along with the MTC.
 * Add visualization methods to SciFiMapping.py to visualize Sci-Fi in MTC, including draw_channel(), draw_channel_XY(), and draw_combined_scifi_views()
-* Adding some additional methods in `python/SciFiMapping.py` to visualize Sci-Fi in MTC.
-
 
 
 ### Fixed
@@ -108,8 +106,7 @@ it in future.
 * Fix: hard cast bug in genie generator: after replacing old C-style cast histogram variable got nullptr value which afterwards caused segmentation fault
 * Correct extraction of SiPM channel positions in MTC
 * Fix refactoring issue that broke MTC digitization
-* Fix: correcting extracting a position of the SiPM channels in MTC.
-* Fix: fixing refactoring issue that caused breaking of MTC digitization
+* Fix the condition in the sipm channel <-> fiber mapping that stopped looping over channels because of the distance between a fiber and a channel. Setting a flexible condition that depends on the aggregated channel size.
 
 ### Changed
 
@@ -177,6 +174,8 @@ it in future.
 * Configuration storage modernized from pickle to JSON
   - Geometry configurations are now saved as JSON strings (using `std::string`) instead of pickled Python objects in ROOT files
   - Automatic format detection: new code reads both JSON (new format) and pickle (legacy format) files without user intervention
+* Changing the logic of SiPM channel encoding in MTC. Now the number of SiPM is 1 and has a number of channels that fits the width of the plane. If the number of channels exceeds 1000, iterating a SiPM digit to 1 and distributing channels among new number of SiPMs.
+* Set default paramers of MTC to 60x60 cm^2 and 4 aggregated channels according to Sep 2025 CM.
 
 ### Removed
 
