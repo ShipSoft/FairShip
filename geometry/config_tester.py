@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import os
 import json
-from ShipGeoConfig import ConfigRegistry
+import importlib.util
 import logging
 import argparse
 
@@ -15,7 +15,7 @@ def parse_arguments():
         description='test configuration file')
     ap.add_argument('-d', '--debug', action='store_true')
     ap.add_argument('-p', '--params', type=json.loads,
-                    help="""config parameters in json form '{"a": 1, "b": 2}' """, default=None)
+                    help="""config parameters in json form '{"a": 1, "b": 2}' """, default={})
 
     ap.add_argument('config_file', help='config file to test')
     args = ap.parse_args()
@@ -27,11 +27,19 @@ def parse_arguments():
 
 def main(arguments):
     logger.info("file: %s" % arguments.config_file)
-    if arguments.params is not None:
+    if arguments.params:
         logger.info("parameters: %s" % arguments.params)
-    ConfigRegistry.loadpy(arguments.config_file, **arguments.params)
-    # ConfigRegistry.loadpy(arguments.config_file, muShieldDesign=2, targetOpt=5)
-    for k, v in ConfigRegistry().items():
+
+    # Load the geometry config module
+    spec = importlib.util.spec_from_file_location("geometry_config", arguments.config_file)
+    geometry_config = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(geometry_config)
+
+    # Create config with parameters
+    config = geometry_config.create_config(**arguments.params)
+
+    # Print configuration
+    for k, v in config.items():
         print(f"{k}: {v}")
 
 if __name__ == '__main__':
