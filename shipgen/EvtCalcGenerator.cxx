@@ -47,7 +47,7 @@ Bool_t EvtCalcGenerator::Init(const char* fileName, const int firstEvent)
 EvtCalcGenerator::~EvtCalcGenerator() {}
 
 // -- Generalized branch access --------------------------------------------
-Double_t EvtCalcGenerator::GetBranchValue(const std::unique_ptr<TTree>& tree, int index) const {
+Double_t EvtCalcGenerator::GetBranchValue(const std::unique_ptr<TTree>& tree, unsigned index) const {
     if (index < branchVars.size()) {
         return branchVars[index];
     } else {
