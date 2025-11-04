@@ -49,7 +49,7 @@ class EvtCalcGenerator : public FairGenerator
   private:
   protected:
       // Generalized branch access
-    Double_t GetBranchValue(const std::unique_ptr<TTree>&, int) const;
+    Double_t GetBranchValue(const std::unique_ptr<TTree>&, unsigned) const;
 
     // Generalized daughter variable access
     Double_t GetDaughterValue(const std::unique_ptr<TTree>& tree, int, int) const;

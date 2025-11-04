@@ -75,7 +75,7 @@ Int_t muonHit::DetIDfromXYZ(TVector3 p)
     onlyOnce = true;
   }
     nStat = -1;
-    for(Int_t i=0; i<muStZpos.size(); i++) {
+    for(unsigned i=0; i<muStZpos.size(); i++) {
      if (abs(p.Z() - muStZpos[i]) <= muStzMax[i]) {
        nStat = i;
        break;
@@ -106,7 +106,7 @@ TVector3 muonHit::XYZfromDetID(Int_t dID)
     onlyOnce = true;
   }
     nStat = -1;
-    for(Int_t i=0; i<=muStZpos.size(); i++) {
+    for(unsigned i=0; i<=muStZpos.size(); i++) {
       if (dID < 10000*i) {
         nStat = i;
         break;
