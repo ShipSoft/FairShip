@@ -429,7 +429,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">   75</span>    <a class="code hl_variable" href="classmuonHit.html#a2dff71af657a8b9b865b12f524ce8740">onlyOnce</a> = <span class="keyword">true</span>;</div>
 <div class="line"><span class="lineno">   76</span>  }</div>
 <div class="line"><span class="lineno">   77</span>    nStat = -1;</div>
-<div class="line"><span class="lineno">   78</span>    <span class="keywordflow">for</span>(Int_t i=0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>&lt;muStZpos.size(); <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>++) {</div>
+<div class="line"><span class="lineno">   78</span>    <span class="keywordflow">for</span>(<span class="keywordtype">unsigned</span> i=0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>&lt;muStZpos.size(); <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>++) {</div>
 <div class="line"><span class="lineno">   79</span>     <span class="keywordflow">if</span> (abs(<a class="code hl_variable" href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">p</a>.Z() - muStZpos[i]) &lt;= muStzMax[i]) {</div>
 <div class="line"><span class="lineno">   80</span>       nStat = <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>;</div>
 <div class="line"><span class="lineno">   81</span>       <span class="keywordflow">break</span>;</div>
@@ -709,7 +709,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  106</span>    <a class="code hl_variable" href="classmuonHit.html#a2dff71af657a8b9b865b12f524ce8740">onlyOnce</a> = <span class="keyword">true</span>;</div>
 <div class="line"><span class="lineno">  107</span>  }</div>
 <div class="line"><span class="lineno">  108</span>    nStat = -1;</div>
-<div class="line"><span class="lineno">  109</span>    <span class="keywordflow">for</span>(Int_t i=0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>&lt;=muStZpos.size(); <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>++) {</div>
+<div class="line"><span class="lineno">  109</span>    <span class="keywordflow">for</span>(<span class="keywordtype">unsigned</span> i=0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>&lt;=muStZpos.size(); <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>++) {</div>
 <div class="line"><span class="lineno">  110</span>      <span class="keywordflow">if</span> (dID &lt; 10000*i) {</div>
 <div class="line"><span class="lineno">  111</span>        nStat = <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>;</div>
 <div class="line"><span class="lineno">  112</span>        <span class="keywordflow">break</span>;</div>

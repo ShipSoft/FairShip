@@ -13,7 +13,7 @@ var classEvtCalcGenerator =
     [ "EvtCalcGenerator", "classEvtCalcGenerator.html#a1deb006d5a0eb8b47e8a5281f5fa238e", null ],
     [ "~EvtCalcGenerator", "classEvtCalcGenerator.html#aa08fb2f1b619b937a0f83ed954d94423", null ],
     [ "ClassDef", "classEvtCalcGenerator.html#a23d5af5f4a8fa355bcc0d1329b1431b8", null ],
-    [ "GetBranchValue", "classEvtCalcGenerator.html#aff64b0b2048af29d8d03adfda1daa73a", null ],
+    [ "GetBranchValue", "classEvtCalcGenerator.html#a349c69e5e485a3e53ef790d1c864245f", null ],
     [ "GetDauE", "classEvtCalcGenerator.html#a2c90eefbf22b69eb15b52c94f4fcb46f", null ],
     [ "GetDaughterValue", "classEvtCalcGenerator.html#afbe7ab880390edb4e71de4416b6d71de", null ],
     [ "GetDauPDG", "classEvtCalcGenerator.html#a230ae1a2f467fc8c8d74c03371a1e3cd", null ],

@@ -184,8 +184,8 @@ Protected Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:aff64b0b2048af29d8d03adfda1daa73a" id="r_aff64b0b2048af29d8d03adfda1daa73a"><td class="memItemLeft" align="right" valign="top">Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEvtCalcGenerator.html#aff64b0b2048af29d8d03adfda1daa73a">GetBranchValue</a> (const std::unique_ptr&lt; TTree &gt; &amp;, int) const</td></tr>
-<tr class="separator:aff64b0b2048af29d8d03adfda1daa73a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a349c69e5e485a3e53ef790d1c864245f" id="r_a349c69e5e485a3e53ef790d1c864245f"><td class="memItemLeft" align="right" valign="top">Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEvtCalcGenerator.html#a349c69e5e485a3e53ef790d1c864245f">GetBranchValue</a> (const std::unique_ptr&lt; TTree &gt; &amp;, unsigned) const</td></tr>
+<tr class="separator:a349c69e5e485a3e53ef790d1c864245f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afbe7ab880390edb4e71de4416b6d71de" id="r_afbe7ab880390edb4e71de4416b6d71de"><td class="memItemLeft" align="right" valign="top">Double_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEvtCalcGenerator.html#afbe7ab880390edb4e71de4416b6d71de">GetDaughterValue</a> (const std::unique_ptr&lt; TTree &gt; &amp;tree, int, int) const</td></tr>
 <tr class="separator:afbe7ab880390edb4e71de4416b6d71de"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a23d5af5f4a8fa355bcc0d1329b1431b8" id="r_a23d5af5f4a8fa355bcc0d1329b1431b8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEvtCalcGenerator.html#a23d5af5f4a8fa355bcc0d1329b1431b8">ClassDef</a> (<a class="el" href="classEvtCalcGenerator.html">EvtCalcGenerator</a>, 1)</td></tr>
@@ -356,8 +356,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="aff64b0b2048af29d8d03adfda1daa73a" name="aff64b0b2048af29d8d03adfda1daa73a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aff64b0b2048af29d8d03adfda1daa73a">&#9670;&#160;</a></span>GetBranchValue()</h2>
+<a id="a349c69e5e485a3e53ef790d1c864245f" name="a349c69e5e485a3e53ef790d1c864245f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a349c69e5e485a3e53ef790d1c864245f">&#9670;&#160;</a></span>GetBranchValue()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -374,7 +374,7 @@ Protected Attributes</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int&#160;</td>
+          <td class="paramtype">unsigned&#160;</td>
           <td class="paramname"><em>index</em>&#160;</td>
         </tr>
         <tr>
@@ -391,7 +391,7 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="EvtCalcGenerator_8cxx_source.html#l00050">50</a> of file <a class="el" href="EvtCalcGenerator_8cxx_source.html">EvtCalcGenerator.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   50</span>                                                                                           {</div>
+<div class="fragment"><div class="line"><span class="lineno">   50</span>                                                                                                {</div>
 <div class="line"><span class="lineno">   51</span>    <span class="keywordflow">if</span> (index &lt; <a class="code hl_variable" href="classEvtCalcGenerator.html#a69e825e4551cfb9b96f1a79329f0fcff">branchVars</a>.size()) {</div>
 <div class="line"><span class="lineno">   52</span>        <span class="keywordflow">return</span> <a class="code hl_variable" href="classEvtCalcGenerator.html#a69e825e4551cfb9b96f1a79329f0fcff">branchVars</a>[<a class="code hl_variable" href="namespacemake__nTuple__SBT.html#a1391b7407359c40dbacead1473f5a96b">index</a>];</div>
 <div class="line"><span class="lineno">   53</span>    } <span class="keywordflow">else</span> {</div>
@@ -478,9 +478,9 @@ Protected Attributes</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="EvtCalcGenerator_8cxx_source.html#l00058">58</a> of file <a class="el" href="EvtCalcGenerator_8cxx_source.html">EvtCalcGenerator.cxx</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   58</span>                                                                                                         {</div>
 <div class="line"><span class="lineno">   59</span>    <span class="keywordtype">int</span> baseIndex = 10 + (dauID * 6);</div>
-<div class="line"><span class="lineno">   60</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="classEvtCalcGenerator.html#aff64b0b2048af29d8d03adfda1daa73a">GetBranchValue</a>(tree, baseIndex + offset);</div>
+<div class="line"><span class="lineno">   60</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="classEvtCalcGenerator.html#a349c69e5e485a3e53ef790d1c864245f">GetBranchValue</a>(tree, baseIndex + offset);</div>
 <div class="line"><span class="lineno">   61</span>}</div>
-<div class="ttc" id="aclassEvtCalcGenerator_html_aff64b0b2048af29d8d03adfda1daa73a"><div class="ttname"><a href="classEvtCalcGenerator.html#aff64b0b2048af29d8d03adfda1daa73a">EvtCalcGenerator::GetBranchValue</a></div><div class="ttdeci">Double_t GetBranchValue(const std::unique_ptr&lt; TTree &gt; &amp;, int) const</div><div class="ttdef"><b>Definition</b> <a href="EvtCalcGenerator_8cxx_source.html#l00050">EvtCalcGenerator.cxx:50</a></div></div>
+<div class="ttc" id="aclassEvtCalcGenerator_html_a349c69e5e485a3e53ef790d1c864245f"><div class="ttname"><a href="classEvtCalcGenerator.html#a349c69e5e485a3e53ef790d1c864245f">EvtCalcGenerator::GetBranchValue</a></div><div class="ttdeci">Double_t GetBranchValue(const std::unique_ptr&lt; TTree &gt; &amp;, unsigned) const</div><div class="ttdef"><b>Definition</b> <a href="EvtCalcGenerator_8cxx_source.html#l00050">EvtCalcGenerator.cxx:50</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -625,7 +625,7 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="EvtCalcGenerator_8cxx_source.html#l00081">81</a> of file <a class="el" href="EvtCalcGenerator_8cxx_source.html">EvtCalcGenerator.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   81</span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="classEvtCalcGenerator.html#aff64b0b2048af29d8d03adfda1daa73a">GetBranchValue</a>(tree, <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(<a class="code hl_enumvalue" href="classEvtCalcGenerator.html#a36d472ee9187a325919b0d50d9e3dd46afc7bafdd8919de21bdc9c27648d6659b">BranchIndices::DecayProb</a>)); }</div>
+<div class="fragment"><div class="line"><span class="lineno">   81</span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="classEvtCalcGenerator.html#a349c69e5e485a3e53ef790d1c864245f">GetBranchValue</a>(tree, <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(<a class="code hl_enumvalue" href="classEvtCalcGenerator.html#a36d472ee9187a325919b0d50d9e3dd46afc7bafdd8919de21bdc9c27648d6659b">BranchIndices::DecayProb</a>)); }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -646,7 +646,7 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="EvtCalcGenerator_8cxx_source.html#l00073">73</a> of file <a class="el" href="EvtCalcGenerator_8cxx_source.html">EvtCalcGenerator.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   73</span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="classEvtCalcGenerator.html#aff64b0b2048af29d8d03adfda1daa73a">GetBranchValue</a>(tree, <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(<a class="code hl_enumvalue" href="classEvtCalcGenerator.html#a36d472ee9187a325919b0d50d9e3dd46a81be67088223b0c52f078e7e78eca6c9">BranchIndices::MotherE</a>)); }</div>
+<div class="fragment"><div class="line"><span class="lineno">   73</span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="classEvtCalcGenerator.html#a349c69e5e485a3e53ef790d1c864245f">GetBranchValue</a>(tree, <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(<a class="code hl_enumvalue" href="classEvtCalcGenerator.html#a36d472ee9187a325919b0d50d9e3dd46a81be67088223b0c52f078e7e78eca6c9">BranchIndices::MotherE</a>)); }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -667,7 +667,7 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="EvtCalcGenerator_8cxx_source.html#l00070">70</a> of file <a class="el" href="EvtCalcGenerator_8cxx_source.html">EvtCalcGenerator.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   70</span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="classEvtCalcGenerator.html#aff64b0b2048af29d8d03adfda1daa73a">GetBranchValue</a>(tree, <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(<a class="code hl_enumvalue" href="classEvtCalcGenerator.html#a36d472ee9187a325919b0d50d9e3dd46ab213a58dc01e464add07f0652e8350e5">BranchIndices::MotherPx</a>)); }</div>
+<div class="fragment"><div class="line"><span class="lineno">   70</span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="classEvtCalcGenerator.html#a349c69e5e485a3e53ef790d1c864245f">GetBranchValue</a>(tree, <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(<a class="code hl_enumvalue" href="classEvtCalcGenerator.html#a36d472ee9187a325919b0d50d9e3dd46ab213a58dc01e464add07f0652e8350e5">BranchIndices::MotherPx</a>)); }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -688,7 +688,7 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="EvtCalcGenerator_8cxx_source.html#l00071">71</a> of file <a class="el" href="EvtCalcGenerator_8cxx_source.html">EvtCalcGenerator.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   71</span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="classEvtCalcGenerator.html#aff64b0b2048af29d8d03adfda1daa73a">GetBranchValue</a>(tree, <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(<a class="code hl_enumvalue" href="classEvtCalcGenerator.html#a36d472ee9187a325919b0d50d9e3dd46a6c174ce4ce602eed8326ed0ef77bd60a">BranchIndices::MotherPy</a>)); }</div>
+<div class="fragment"><div class="line"><span class="lineno">   71</span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="classEvtCalcGenerator.html#a349c69e5e485a3e53ef790d1c864245f">GetBranchValue</a>(tree, <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(<a class="code hl_enumvalue" href="classEvtCalcGenerator.html#a36d472ee9187a325919b0d50d9e3dd46a6c174ce4ce602eed8326ed0ef77bd60a">BranchIndices::MotherPy</a>)); }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -709,7 +709,7 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="EvtCalcGenerator_8cxx_source.html#l00072">72</a> of file <a class="el" href="EvtCalcGenerator_8cxx_source.html">EvtCalcGenerator.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   72</span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="classEvtCalcGenerator.html#aff64b0b2048af29d8d03adfda1daa73a">GetBranchValue</a>(tree, <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(<a class="code hl_enumvalue" href="classEvtCalcGenerator.html#a36d472ee9187a325919b0d50d9e3dd46afe2baf1b099de589869020c159bbf875">BranchIndices::MotherPz</a>)); }</div>
+<div class="fragment"><div class="line"><span class="lineno">   72</span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="classEvtCalcGenerator.html#a349c69e5e485a3e53ef790d1c864245f">GetBranchValue</a>(tree, <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(<a class="code hl_enumvalue" href="classEvtCalcGenerator.html#a36d472ee9187a325919b0d50d9e3dd46afe2baf1b099de589869020c159bbf875">BranchIndices::MotherPz</a>)); }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -731,7 +731,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="EvtCalcGenerator_8cxx_source.html#l00065">65</a> of file <a class="el" href="EvtCalcGenerator_8cxx_source.html">EvtCalcGenerator.cxx</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   65</span>                                                                               {</div>
-<div class="line"><span class="lineno">   66</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="classEvtCalcGenerator.html#aff64b0b2048af29d8d03adfda1daa73a">GetBranchValue</a>(tree, <a class="code hl_variable" href="classEvtCalcGenerator.html#a2b47b14da1b7ead97ad4b5bff406dd13">nBranches</a>-1);</div>
+<div class="line"><span class="lineno">   66</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="classEvtCalcGenerator.html#a349c69e5e485a3e53ef790d1c864245f">GetBranchValue</a>(tree, <a class="code hl_variable" href="classEvtCalcGenerator.html#a2b47b14da1b7ead97ad4b5bff406dd13">nBranches</a>-1);</div>
 <div class="line"><span class="lineno">   67</span>}</div>
 <div class="ttc" id="aclassEvtCalcGenerator_html_a2b47b14da1b7ead97ad4b5bff406dd13"><div class="ttname"><a href="classEvtCalcGenerator.html#a2b47b14da1b7ead97ad4b5bff406dd13">EvtCalcGenerator::nBranches</a></div><div class="ttdeci">int nBranches</div><div class="ttdef"><b>Definition</b> <a href="EvtCalcGenerator_8h_source.html#l00075">EvtCalcGenerator.h:75</a></div></div>
 </div><!-- fragment -->
@@ -783,7 +783,7 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="EvtCalcGenerator_8cxx_source.html#l00076">76</a> of file <a class="el" href="EvtCalcGenerator_8cxx_source.html">EvtCalcGenerator.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   76</span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="classEvtCalcGenerator.html#aff64b0b2048af29d8d03adfda1daa73a">GetBranchValue</a>(tree, <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(<a class="code hl_enumvalue" href="classEvtCalcGenerator.html#a36d472ee9187a325919b0d50d9e3dd46a1651982e1ef59fbc3e9db66dbe7759d5">BranchIndices::Vx</a>)); }</div>
+<div class="fragment"><div class="line"><span class="lineno">   76</span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="classEvtCalcGenerator.html#a349c69e5e485a3e53ef790d1c864245f">GetBranchValue</a>(tree, <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(<a class="code hl_enumvalue" href="classEvtCalcGenerator.html#a36d472ee9187a325919b0d50d9e3dd46a1651982e1ef59fbc3e9db66dbe7759d5">BranchIndices::Vx</a>)); }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -804,7 +804,7 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="EvtCalcGenerator_8cxx_source.html#l00077">77</a> of file <a class="el" href="EvtCalcGenerator_8cxx_source.html">EvtCalcGenerator.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   77</span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="classEvtCalcGenerator.html#aff64b0b2048af29d8d03adfda1daa73a">GetBranchValue</a>(tree, <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(<a class="code hl_enumvalue" href="classEvtCalcGenerator.html#a36d472ee9187a325919b0d50d9e3dd46a9fc401993033753787d9341db3738565">BranchIndices::Vy</a>)); }</div>
+<div class="fragment"><div class="line"><span class="lineno">   77</span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="classEvtCalcGenerator.html#a349c69e5e485a3e53ef790d1c864245f">GetBranchValue</a>(tree, <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(<a class="code hl_enumvalue" href="classEvtCalcGenerator.html#a36d472ee9187a325919b0d50d9e3dd46a9fc401993033753787d9341db3738565">BranchIndices::Vy</a>)); }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -825,7 +825,7 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="EvtCalcGenerator_8cxx_source.html#l00078">78</a> of file <a class="el" href="EvtCalcGenerator_8cxx_source.html">EvtCalcGenerator.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   78</span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="classEvtCalcGenerator.html#aff64b0b2048af29d8d03adfda1daa73a">GetBranchValue</a>(tree, <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(<a class="code hl_enumvalue" href="classEvtCalcGenerator.html#a36d472ee9187a325919b0d50d9e3dd46aca6c3e6ccbc5f7701ffc4e2efefd6812">BranchIndices::Vz</a>)); }</div>
+<div class="fragment"><div class="line"><span class="lineno">   78</span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="classEvtCalcGenerator.html#a349c69e5e485a3e53ef790d1c864245f">GetBranchValue</a>(tree, <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(<a class="code hl_enumvalue" href="classEvtCalcGenerator.html#a36d472ee9187a325919b0d50d9e3dd46aca6c3e6ccbc5f7701ffc4e2efefd6812">BranchIndices::Vz</a>)); }</div>
 </div><!-- fragment -->
 </div>
 </div>
