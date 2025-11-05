@@ -12,7 +12,6 @@ var hierarchy =
       [ "ShipGeoConfig.AttrDict", "classShipGeoConfig_1_1AttrDict.html", [
         [ "ShipGeoConfig.Config", "classShipGeoConfig_1_1Config.html", null ]
       ] ],
-      [ "ShipGeoConfig.ConfigRegistry", "classShipGeoConfig_1_1ConfigRegistry.html", null ],
       [ "rootUtils.PyListOfLeaves", "classrootUtils_1_1PyListOfLeaves.html", null ]
     ] ],
     [ "experimental.analysis_toolkit.event_inspector", "classexperimental_1_1analysis__toolkit_1_1event__inspector.html", null ],
@@ -132,9 +131,6 @@ var hierarchy =
       [ "hnl.HNL", "classhnl_1_1HNL.html", null ]
     ] ],
     [ "eventDisplay.IO", "classeventDisplay_1_1IO.html", null ],
-    [ "metaclass", null, [
-      [ "ShipGeoConfig.ConfigRegistry", "classShipGeoConfig_1_1ConfigRegistry.html", null ]
-    ] ],
     [ "method_logger.MethodLogger", "classmethod__logger_1_1MethodLogger.html", null ],
     [ "ROOT.pyFairModule", null, [
       [ "study_GammaConv.Block", "classstudy__GammaConv_1_1Block.html", null ],
@@ -155,13 +151,6 @@ var hierarchy =
     [ "ShipGeo.ShipGeo", "classShipGeo_1_1ShipGeo.html", null ],
     [ "shipVertex.Task", "classshipVertex_1_1Task.html", null ],
     [ "shipVeto.Task", "classshipVeto_1_1Task.html", null ],
-    [ "unittest.TestCase", null, [
-      [ "test_shipGeoConfig.TestInheritance", "classtest__shipGeoConfig_1_1TestInheritance.html", null ],
-      [ "test_shipGeoConfig.TestSingleConfig", "classtest__shipGeoConfig_1_1TestSingleConfig.html", null ],
-      [ "test_shipGeoConfig.TestStringConditionalConfig", "classtest__shipGeoConfig_1_1TestStringConditionalConfig.html", null ],
-      [ "test_shipGeoConfig.TestStringNewLine", "classtest__shipGeoConfig_1_1TestStringNewLine.html", null ],
-      [ "test_shipGeoConfig.TestStringSingleConfig", "classtest__shipGeoConfig_1_1TestStringSingleConfig.html", null ]
-    ] ],
     [ "TG4VUserPostDetConstruction", null, [
       [ "ShipFieldMaker", "classShipFieldMaker.html", null ]
     ] ],
@@ -194,11 +183,6 @@ var hierarchy =
     ] ],
     [ "TVirtualMCDecayer", null, [
       [ "TEvtGenDecayer", "classTEvtGenDecayer.html", null ]
-    ] ],
-    [ "type", null, [
-      [ "ShipGeoConfig._SingletonDict", "classShipGeoConfig_1_1__SingletonDict.html", [
-        [ "ShipGeoConfig.ConfigRegistry", "classShipGeoConfig_1_1ConfigRegistry.html", null ]
-      ] ]
     ] ],
     [ "Veto", "classVeto.html", null ],
     [ "ABC", null, [

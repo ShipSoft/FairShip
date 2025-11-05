@@ -100,7 +100,7 @@ $(document).ready(function(){initNavTree('config__tester_8py_source.html',''); i
 <a href="config__tester_8py.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno"><a class="line" href="namespaceconfig__tester.html">    1</a></span><span class="comment">#!/usr/bin/env python</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="keyword">import</span> os</div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="keyword">import</span> json</div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="keyword">from</span> ShipGeoConfig <span class="keyword">import</span> ConfigRegistry</div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="keyword">import</span> importlib.util</div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="keyword">import</span> logging</div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="keyword">import</span> argparse</div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
@@ -115,7 +115,7 @@ $(document).ready(function(){initNavTree('config__tester_8py_source.html',''); i
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>        description=<span class="stringliteral">&#39;test configuration file&#39;</span>)</div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    ap.add_argument(<span class="stringliteral">&#39;-d&#39;</span>, <span class="stringliteral">&#39;--debug&#39;</span>, action=<span class="stringliteral">&#39;store_true&#39;</span>)</div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    ap.add_argument(<span class="stringliteral">&#39;-p&#39;</span>, <span class="stringliteral">&#39;--params&#39;</span>, type=json.loads,</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>                    help=<span class="stringliteral">&quot;&quot;&quot;config parameters in json form &#39;{&quot;a&quot;: 1, &quot;b&quot;: 2}&#39; &quot;&quot;&quot;</span>, default=<span class="keywordtype">None</span>)</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>                    help=<span class="stringliteral">&quot;&quot;&quot;config parameters in json form &#39;{&quot;a&quot;: 1, &quot;b&quot;: 2}&#39; &quot;&quot;&quot;</span>, default={})</div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    ap.add_argument(<span class="stringliteral">&#39;config_file&#39;</span>, help=<span class="stringliteral">&#39;config file to test&#39;</span>)</div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    args = ap.parse_args()</div>
@@ -129,18 +129,26 @@ $(document).ready(function(){initNavTree('config__tester_8py_source.html',''); i
 <div class="foldopen" id="foldopen00028" data-start="" data-end="">
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="namespaceconfig__tester.html#a4d656626a69cd208a2556f73ac620313">   28</a></span><span class="keyword">def </span><a class="code hl_function" href="test__pythia__version_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a>(arguments):</div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    logger.info(<span class="stringliteral">&quot;file: %s&quot;</span> % arguments.config_file)</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    <span class="keywordflow">if</span> arguments.params <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>:</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    <span class="keywordflow">if</span> arguments.params:</div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>        logger.info(<span class="stringliteral">&quot;parameters: %s&quot;</span> % arguments.params)</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    ConfigRegistry.loadpy(arguments.config_file, **arguments.params)</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    <span class="comment"># ConfigRegistry.loadpy(arguments.config_file, muShieldDesign=2, targetOpt=5)</span></div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    <span class="keywordflow">for</span> k, v <span class="keywordflow">in</span> <a class="code hl_class" href="classShipGeoConfig_1_1ConfigRegistry.html">ConfigRegistry</a>().items():</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>        print(f<span class="stringliteral">&quot;{k}: {v}&quot;</span>)</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    <span class="comment"># Load the geometry config module</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    spec = importlib.util.spec_from_file_location(<span class="stringliteral">&quot;geometry_config&quot;</span>, arguments.config_file)</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    geometry_config = importlib.util.module_from_spec(spec)</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    spec.loader.exec_module(geometry_config)</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    <span class="comment"># Create config with parameters</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    config = <a class="code hl_function" href="namespacegeometry__config.html#a75c5d0a5585dd1291f7f73502a80afda">geometry_config.create_config</a>(**arguments.params)</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    <span class="comment"># Print configuration</span></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <span class="keywordflow">for</span> k, v <span class="keywordflow">in</span> config.items():</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>        print(f<span class="stringliteral">&quot;{k}: {v}&quot;</span>)</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
 </div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="keywordflow">if</span> __name__ == <span class="stringliteral">&#39;__main__&#39;</span>:</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    <a class="code hl_function" href="test__pythia__version_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a>(<a class="code hl_function" href="namespaceconfig__tester.html#af6ab071229fcb09f54a127736615d555">parse_arguments</a>())</div>
-<div class="ttc" id="aclassShipGeoConfig_1_1ConfigRegistry_html"><div class="ttname"><a href="classShipGeoConfig_1_1ConfigRegistry.html">ShipGeoConfig.ConfigRegistry</a></div><div class="ttdef"><b>Definition</b> <a href="ShipGeoConfig_8py_source.html#l00022">ShipGeoConfig.py:22</a></div></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="keywordflow">if</span> __name__ == <span class="stringliteral">&#39;__main__&#39;</span>:</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    <a class="code hl_function" href="test__pythia__version_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a>(<a class="code hl_function" href="namespaceconfig__tester.html#af6ab071229fcb09f54a127736615d555">parse_arguments</a>())</div>
 <div class="ttc" id="anamespaceconfig__tester_html_af6ab071229fcb09f54a127736615d555"><div class="ttname"><a href="namespaceconfig__tester.html#af6ab071229fcb09f54a127736615d555">config_tester.parse_arguments</a></div><div class="ttdeci">parse_arguments()</div><div class="ttdef"><b>Definition</b> <a href="config__tester_8py_source.html#l00013">config_tester.py:13</a></div></div>
+<div class="ttc" id="anamespacegeometry__config_html_a75c5d0a5585dd1291f7f73502a80afda"><div class="ttname"><a href="namespacegeometry__config.html#a75c5d0a5585dd1291f7f73502a80afda">geometry_config.create_config</a></div><div class="ttdeci">create_config(DecayVolumeMedium=&quot;helium&quot;, Yheight=6.0, strawDesign=10, muShieldGeo=None, shieldName=&quot;New_HA_Design&quot;, nuTargetPassive=1, SND=True, SND_design=None, TARGET_YAML=None)</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00228">geometry_config.py:238</a></div></div>
 <div class="ttc" id="atest__pythia__version_8cpp_html_ae66f6b31b5ad750f1fe042a706a4e3d4"><div class="ttname"><a href="test__pythia__version_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a></div><div class="ttdeci">int main()</div><div class="ttdef"><b>Definition</b> <a href="test__pythia__version_8cpp_source.html#l00003">test_pythia_version.cpp:3</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

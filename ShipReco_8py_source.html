@@ -179,7 +179,7 @@ $(document).ready(function(){initNavTree('ShipReco_8py_source.html',''); initRes
 <div class="line"><a id="l00078" name="l00078"></a><span class="lineno"><a class="line" href="namespaceShipReco.html#a048945b5e2e313357c8cd4ac2b1e5d81">   78</a></span>fgeo = ROOT.TFile.Open(options.geoFile)</div>
 <div class="line"><a id="l00079" name="l00079"></a><span class="lineno"><a class="line" href="namespaceShipReco.html#a646b2a8b1509b520851460b3d587bedd">   79</a></span>geoMat =  ROOT.genfit.TGeoMaterialInterface()  <span class="comment"># if only called in ShipDigiReco -&gt; crash, reason unknown</span></div>
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="keyword">from</span> ShipGeoConfig <span class="keyword">import</span> ConfigRegistry, load_from_root_file</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="keyword">from</span> ShipGeoConfig <span class="keyword">import</span> load_from_root_file</div>
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span><span class="comment">#load Shipgeo dictionary</span></div>
 <div class="line"><a id="l00083" name="l00083"></a><span class="lineno"><a class="line" href="namespaceShipReco.html#a57399f382942ed9788d85f3c9951cdeb">   83</a></span>ShipGeo = load_from_root_file(fgeo, <span class="stringliteral">&#39;ShipGeo&#39;</span>)</div>
 <div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>

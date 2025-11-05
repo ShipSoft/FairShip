@@ -128,13 +128,22 @@ Variables</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="config__tester_8py_source.html#l00028">28</a> of file <a class="el" href="config__tester_8py_source.html">config_tester.py</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   28</span><span class="keyword">def </span><a class="code hl_function" href="test__pythia__version_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a>(arguments):</div>
 <div class="line"><span class="lineno">   29</span>    logger.info(<span class="stringliteral">&quot;file: %s&quot;</span> % arguments.config_file)</div>
-<div class="line"><span class="lineno">   30</span>    <span class="keywordflow">if</span> arguments.params <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>:</div>
+<div class="line"><span class="lineno">   30</span>    <span class="keywordflow">if</span> arguments.params:</div>
 <div class="line"><span class="lineno">   31</span>        logger.info(<span class="stringliteral">&quot;parameters: %s&quot;</span> % arguments.params)</div>
-<div class="line"><span class="lineno">   32</span>    ConfigRegistry.loadpy(arguments.config_file, **arguments.params)</div>
-<div class="line"><span class="lineno">   33</span>    <span class="comment"># ConfigRegistry.loadpy(arguments.config_file, muShieldDesign=2, targetOpt=5)</span></div>
-<div class="line"><span class="lineno">   34</span>    <span class="keywordflow">for</span> k, v <span class="keywordflow">in</span> ConfigRegistry().items():</div>
-<div class="line"><span class="lineno">   35</span>        print(f<span class="stringliteral">&quot;{k}: {v}&quot;</span>)</div>
-<div class="line"><span class="lineno">   36</span> </div>
+<div class="line"><span class="lineno">   32</span> </div>
+<div class="line"><span class="lineno">   33</span>    <span class="comment"># Load the geometry config module</span></div>
+<div class="line"><span class="lineno">   34</span>    spec = importlib.util.spec_from_file_location(<span class="stringliteral">&quot;geometry_config&quot;</span>, arguments.config_file)</div>
+<div class="line"><span class="lineno">   35</span>    geometry_config = importlib.util.module_from_spec(spec)</div>
+<div class="line"><span class="lineno">   36</span>    spec.loader.exec_module(geometry_config)</div>
+<div class="line"><span class="lineno">   37</span> </div>
+<div class="line"><span class="lineno">   38</span>    <span class="comment"># Create config with parameters</span></div>
+<div class="line"><span class="lineno">   39</span>    config = <a class="code hl_function" href="namespacegeometry__config.html#a75c5d0a5585dd1291f7f73502a80afda">geometry_config.create_config</a>(**arguments.params)</div>
+<div class="line"><span class="lineno">   40</span> </div>
+<div class="line"><span class="lineno">   41</span>    <span class="comment"># Print configuration</span></div>
+<div class="line"><span class="lineno">   42</span>    <span class="keywordflow">for</span> k, v <span class="keywordflow">in</span> config.items():</div>
+<div class="line"><span class="lineno">   43</span>        print(f<span class="stringliteral">&quot;{k}: {v}&quot;</span>)</div>
+<div class="line"><span class="lineno">   44</span> </div>
+<div class="ttc" id="anamespacegeometry__config_html_a75c5d0a5585dd1291f7f73502a80afda"><div class="ttname"><a href="namespacegeometry__config.html#a75c5d0a5585dd1291f7f73502a80afda">geometry_config.create_config</a></div><div class="ttdeci">create_config(DecayVolumeMedium=&quot;helium&quot;, Yheight=6.0, strawDesign=10, muShieldGeo=None, shieldName=&quot;New_HA_Design&quot;, nuTargetPassive=1, SND=True, SND_design=None, TARGET_YAML=None)</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00228">geometry_config.py:238</a></div></div>
 <div class="ttc" id="atest__pythia__version_8cpp_html_ae66f6b31b5ad750f1fe042a706a4e3d4"><div class="ttname"><a href="test__pythia__version_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a></div><div class="ttdeci">int main()</div><div class="ttdef"><b>Definition</b> <a href="test__pythia__version_8cpp_source.html#l00003">test_pythia_version.cpp:3</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -160,7 +169,7 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">   15</span>        description=<span class="stringliteral">&#39;test configuration file&#39;</span>)</div>
 <div class="line"><span class="lineno">   16</span>    ap.add_argument(<span class="stringliteral">&#39;-d&#39;</span>, <span class="stringliteral">&#39;--debug&#39;</span>, action=<span class="stringliteral">&#39;store_true&#39;</span>)</div>
 <div class="line"><span class="lineno">   17</span>    ap.add_argument(<span class="stringliteral">&#39;-p&#39;</span>, <span class="stringliteral">&#39;--params&#39;</span>, type=json.loads,</div>
-<div class="line"><span class="lineno">   18</span>                    help=<span class="stringliteral">&quot;&quot;&quot;config parameters in json form &#39;{&quot;a&quot;: 1, &quot;b&quot;: 2}&#39; &quot;&quot;&quot;</span>, default=<span class="keywordtype">None</span>)</div>
+<div class="line"><span class="lineno">   18</span>                    help=<span class="stringliteral">&quot;&quot;&quot;config parameters in json form &#39;{&quot;a&quot;: 1, &quot;b&quot;: 2}&#39; &quot;&quot;&quot;</span>, default={})</div>
 <div class="line"><span class="lineno">   19</span> </div>
 <div class="line"><span class="lineno">   20</span>    ap.add_argument(<span class="stringliteral">&#39;config_file&#39;</span>, help=<span class="stringliteral">&#39;config file to test&#39;</span>)</div>
 <div class="line"><span class="lineno">   21</span>    args = ap.parse_args()</div>

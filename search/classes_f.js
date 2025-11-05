@@ -1,23 +1,7 @@
 var searchData=
 [
-  ['target_0',['Target',['../classTarget.html',1,'']]],
-  ['targetpoint_1',['TargetPoint',['../classTargetPoint.html',1,'']]],
-  ['targettracker_2',['TargetTracker',['../classTargetTracker.html',1,'']]],
-  ['task_3',['task',['../classshipVertex_1_1Task.html',1,'shipVertex.Task'],['../classshipVeto_1_1Task.html',1,'shipVeto.Task']]],
-  ['testinheritance_4',['TestInheritance',['../classtest__shipGeoConfig_1_1TestInheritance.html',1,'test_shipGeoConfig']]],
-  ['testsingleconfig_5',['TestSingleConfig',['../classtest__shipGeoConfig_1_1TestSingleConfig.html',1,'test_shipGeoConfig']]],
-  ['teststringconditionalconfig_6',['TestStringConditionalConfig',['../classtest__shipGeoConfig_1_1TestStringConditionalConfig.html',1,'test_shipGeoConfig']]],
-  ['teststringnewline_7',['TestStringNewLine',['../classtest__shipGeoConfig_1_1TestStringNewLine.html',1,'test_shipGeoConfig']]],
-  ['teststringsingleconfig_8',['TestStringSingleConfig',['../classtest__shipGeoConfig_1_1TestStringSingleConfig.html',1,'test_shipGeoConfig']]],
-  ['tevtgendecayer_9',['TEvtGenDecayer',['../classTEvtGenDecayer.html',1,'']]],
-  ['timedet_10',['TimeDet',['../classTimeDet.html',1,'']]],
-  ['timedetector_11',['timeDetector',['../classtimeDetector_1_1timeDetector.html',1,'timeDetector']]],
-  ['timedethit_12',['TimeDetHit',['../classTimeDetHit.html',1,'']]],
-  ['timedetpoint_13',['TimeDetPoint',['../classTimeDetPoint.html',1,'']]],
-  ['tpythia6generator_14',['tPythia6Generator',['../classtPythia6Generator.html',1,'']]],
-  ['trackinfo_15',['TrackInfo',['../classTrackInfo.html',1,'']]],
-  ['tracklet_16',['Tracklet',['../classTracklet.html',1,'']]],
-  ['transforminfo_17',['transformInfo',['../structShipFieldMaker_1_1transformInfo.html',1,'ShipFieldMaker']]],
-  ['ttcluster_18',['TTCluster',['../classTTCluster_1_1TTCluster.html',1,'TTCluster']]],
-  ['ttpoint_19',['TTPoint',['../classTTPoint.html',1,'']]]
+  ['upstreamtagger_0',['UpstreamTagger',['../classUpstreamTagger.html',1,'']]],
+  ['upstreamtaggerdetector_1',['UpstreamTaggerDetector',['../classUpstreamTaggerDetector_1_1UpstreamTaggerDetector.html',1,'UpstreamTaggerDetector']]],
+  ['upstreamtaggerhit_2',['UpstreamTaggerHit',['../classUpstreamTaggerHit.html',1,'']]],
+  ['upstreamtaggerpoint_3',['UpstreamTaggerPoint',['../classUpstreamTaggerPoint.html',1,'']]]
 ];

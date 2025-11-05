@@ -83,10 +83,8 @@ var annotated_dup =
       [ "ShipGeo", "classShipGeo_1_1ShipGeo.html", "classShipGeo_1_1ShipGeo" ]
     ] ],
     [ "ShipGeoConfig", "namespaceShipGeoConfig.html", [
-      [ "_SingletonDict", "classShipGeoConfig_1_1__SingletonDict.html", "classShipGeoConfig_1_1__SingletonDict" ],
       [ "AttrDict", "classShipGeoConfig_1_1AttrDict.html", "classShipGeoConfig_1_1AttrDict" ],
-      [ "Config", "classShipGeoConfig_1_1Config.html", "classShipGeoConfig_1_1Config" ],
-      [ "ConfigRegistry", "classShipGeoConfig_1_1ConfigRegistry.html", "classShipGeoConfig_1_1ConfigRegistry" ]
+      [ "Config", "classShipGeoConfig_1_1Config.html", "classShipGeoConfig_1_1Config" ]
     ] ],
     [ "shipVertex", "namespaceshipVertex.html", [
       [ "Task", "classshipVertex_1_1Task.html", "classshipVertex_1_1Task" ]
@@ -105,13 +103,6 @@ var annotated_dup =
     ] ],
     [ "study_thinTarget", "namespacestudy__thinTarget.html", [
       [ "Block", "classstudy__thinTarget_1_1Block.html", "classstudy__thinTarget_1_1Block" ]
-    ] ],
-    [ "test_shipGeoConfig", "namespacetest__shipGeoConfig.html", [
-      [ "TestInheritance", "classtest__shipGeoConfig_1_1TestInheritance.html", "classtest__shipGeoConfig_1_1TestInheritance" ],
-      [ "TestSingleConfig", "classtest__shipGeoConfig_1_1TestSingleConfig.html", "classtest__shipGeoConfig_1_1TestSingleConfig" ],
-      [ "TestStringConditionalConfig", "classtest__shipGeoConfig_1_1TestStringConditionalConfig.html", "classtest__shipGeoConfig_1_1TestStringConditionalConfig" ],
-      [ "TestStringNewLine", "classtest__shipGeoConfig_1_1TestStringNewLine.html", "classtest__shipGeoConfig_1_1TestStringNewLine" ],
-      [ "TestStringSingleConfig", "classtest__shipGeoConfig_1_1TestStringSingleConfig.html", "classtest__shipGeoConfig_1_1TestStringSingleConfig" ]
     ] ],
     [ "timeDetector", "namespacetimeDetector.html", [
       [ "timeDetector", "classtimeDetector_1_1timeDetector.html", "classtimeDetector_1_1timeDetector" ]
@@ -195,8 +186,8 @@ var annotated_dup =
     [ "UpstreamTagger", "classUpstreamTagger.html", "classUpstreamTagger" ],
     [ "UpstreamTaggerHit", "classUpstreamTaggerHit.html", "classUpstreamTaggerHit" ],
     [ "UpstreamTaggerPoint", "classUpstreamTaggerPoint.html", "classUpstreamTaggerPoint" ],
-    [ "veto", "classveto.html", "classveto" ],
     [ "Veto", "classVeto.html", null ],
+    [ "veto", "classveto.html", "classveto" ],
     [ "vetoContFact", "classvetoContFact.html", "classvetoContFact" ],
     [ "vetoHit", "classvetoHit.html", "classvetoHit" ],
     [ "vetoHitOnTrack", "classvetoHitOnTrack.html", "classvetoHitOnTrack" ],

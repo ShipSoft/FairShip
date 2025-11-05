@@ -127,7 +127,7 @@ Added</h2>
 <li>Add missing &ndash;FixedTarget option to <a class="el" href="run__simScript_8py.html">run_simScript.py</a></li>
 <li>feat: Support for multiple SND designs in simulation setup<ul>
 <li>The <code>--SND_design</code> option in <code><a class="el" href="run__simScript_8py.html">macro/run_simScript.py</a></code> now accepts multiple values and an 'all' option to enable all available SND designs.</li>
-<li>The geometry configuration and detector setup (<code><a class="el" href="geometry__config_8py.html">geometry/geometry_config.py</a></code>, <code><a class="el" href="shipDet__conf_8py.html">python/shipDet_conf.py</a></code>) have been updated to instantiate all requested SND detectors.</li>
+<li>The geometry configuration and detector setup (<code>geometry/geometry_config.py</code>, <code><a class="el" href="shipDet__conf_8py.html">python/shipDet_conf.py</a></code>) have been updated to instantiate all requested SND detectors.</li>
 <li>This enables running with multiple SND subdetectors simultaneously and is future-proof for additional SND designs.</li>
 </ul>
 </li>
@@ -203,6 +203,8 @@ Fixed</h2>
 <h2><a class="anchor" id="autotoc_md4"></a>
 Changed</h2>
 <ul>
+<li>Replace ConfigRegistry with function-based geometry configuration API. Use <code>geometry_config.create_config(**params)</code> instead of <code>ConfigRegistry.loadpy()</code></li>
+<li>Move <code><a class="el" href="geometry__config_8py.html">geometry_config.py</a></code> from <code>geometry/</code> to <code>python/</code> directory and update all imports from <code>from geometry import <a class="el" href="namespacegeometry__config.html">geometry_config</a></code> to <code>import <a class="el" href="namespacegeometry__config.html">geometry_config</a></code></li>
 <li>Refactor strawtubes digitisation to use dedicated detector class<ul>
 <li>Created <code><a class="el" href="namespacestrawtubesDetector.html">strawtubesDetector</a></code> class inheriting from <code><a class="el" href="namespaceBaseDetector.html">BaseDetector</a></code></li>
 <li>Moved digitisation logic from <code>ShipDigiReco</code> to <code><a class="el" href="strawtubesDetector_8py.html">detectors/strawtubesDetector.py</a></code></li>
@@ -215,7 +217,7 @@ Changed</h2>
 <li>Make <a class="el" href="namespaceBaseDetector.html">BaseDetector</a> an abstract base class to enforce interface contract</li>
 <li>Rewrite <a class="el" href="classUpstreamTaggerHit.html" title="Hit class for UpstreamTagger scoring plane.">UpstreamTaggerHit</a> for simplified scoring plane detector, remove RPC-specific code (#701, #354, #355)</li>
 <li>Don't special case EOS paths (fix #566)</li>
-<li>Setting up the Muon shield geometry by ROOT files is completely replaced with the temporary solution of dict in the <code><a class="el" href="geometry__config_8py.html">geometry/geometry_config.py</a></code>.</li>
+<li>Setting up the Muon shield geometry by ROOT files is completely replaced with the temporary solution of dict in the <code>geometry/geometry_config.py</code>.</li>
 <li>Set up of the shield name is now done using the <code>--shieldName</code> flag instead of <code>--scName</code>.</li>
 <li>Allow using standalone TPythia for use with ROOT 6.32+</li>
 <li>Use git-lfs to track ROOT files</li>
@@ -305,7 +307,7 @@ Removed</h2>
 <li>Remove tankDesign variable, options</li>
 <li>Remove target versions older than CDR</li>
 <li>Remove hadron absorber in <a class="el" href="ShipTargetStation_8cxx.html">ShipTargetStation.cxx</a></li>
-<li>Remove old ecal and hcal in all of FairSHiP, affected files are notably the entire ecal and hcal directories as well as macro/run_anaEcal.py and python/shipPid.py. <a class="el" href="geometry__config_8py.html">geometry/geometry_config.py</a>, <a class="el" href="ana__ShipMuon_8py.html">muonShieldOptimization/ana_ShipMuon.py</a>, <a class="el" href="ShipReco_8py.html">macro/ShipReco.py</a>, <a class="el" href="ShipAna_8py.html">macro/ShipAna.py</a>, <a class="el" href="shipStrawTracking_8py.html">python/shipStrawTracking.py</a> and python/shipPid.py.</li>
+<li>Remove old ecal and hcal in all of FairSHiP, affected files are notably the entire ecal and hcal directories as well as macro/run_anaEcal.py and python/shipPid.py. geometry/geometry_config.py, <a class="el" href="ana__ShipMuon_8py.html">muonShieldOptimization/ana_ShipMuon.py</a>, <a class="el" href="ShipReco_8py.html">macro/ShipReco.py</a>, <a class="el" href="ShipAna_8py.html">macro/ShipAna.py</a>, <a class="el" href="shipStrawTracking_8py.html">python/shipStrawTracking.py</a> and python/shipPid.py.</li>
 <li>Remove unused CaloDesign parameter from geometry configuration (only splitCal supported after ECAL/HCAL removal)</li>
 </ul>
 <h1><a class="anchor" id="autotoc_md6"></a>

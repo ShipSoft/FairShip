@@ -131,7 +131,7 @@ Variables</h2></td></tr>
 <tr class="separator:a9a94ea0085e090e0c8254d8a9ff77483"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1243a109cb5cb7d4aed6fb2d7117cbd9" id="r_a1243a109cb5cb7d4aed6fb2d7117cbd9"><td class="memItemLeft" align="right" valign="top">str&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemergeMbias.html#a1243a109cb5cb7d4aed6fb2d7117cbd9">eospath</a> = ROOT.gSystem.Getenv(&quot;EOSSHIP&quot;)+&quot;/eos/experiment/ship/data/&quot;</td></tr>
 <tr class="separator:a1243a109cb5cb7d4aed6fb2d7117cbd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aecbed99f072995cde06221015f615f6d" id="r_aecbed99f072995cde06221015f615f6d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemergeMbias.html#aecbed99f072995cde06221015f615f6d">ship_geo</a> = <a class="el" href="classShipGeoConfig_1_1ConfigRegistry.html#a579c538b81f23509dad5293c9c323858">ConfigRegistry.loadpy</a>(&quot;$FAIRSHIP/geometry/<a class="el" href="namespacegeometry__config.html#a4487257c46b838ef1172b356289460c4">geometry_config.py&quot;</a>, Yheight = 10.)</td></tr>
+<tr class="memitem:aecbed99f072995cde06221015f615f6d" id="r_aecbed99f072995cde06221015f615f6d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemergeMbias.html#aecbed99f072995cde06221015f615f6d">ship_geo</a> = <a class="el" href="namespacegeometry__config.html#a75c5d0a5585dd1291f7f73502a80afda">geometry_config.create_config</a>(Yheight=10.)</td></tr>
 <tr class="separator:aecbed99f072995cde06221015f615f6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac1ba9c5e18f9a604f0c372e588cc6a67" id="r_ac1ba9c5e18f9a604f0c372e588cc6a67"><td class="memItemLeft" align="right" valign="top">tuple&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemergeMbias.html#ac1ba9c5e18f9a604f0c372e588cc6a67">endOfHadronAbsorber</a> = (<a class="el" href="namespacemergeMbias.html#aecbed99f072995cde06221015f615f6d">ship_geo</a>['hadronAbsorber'].z + <a class="el" href="namespacemergeMbias.html#aecbed99f072995cde06221015f615f6d">ship_geo</a>['hadronAbsorber'].length/2.) /100.</td></tr>
 <tr class="separator:ac1ba9c5e18f9a604f0c372e588cc6a67"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1094,7 +1094,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">mergeMbias.ship_geo = <a class="el" href="classShipGeoConfig_1_1ConfigRegistry.html#a579c538b81f23509dad5293c9c323858">ConfigRegistry.loadpy</a>(&quot;$FAIRSHIP/geometry/<a class="el" href="namespacegeometry__config.html#a4487257c46b838ef1172b356289460c4">geometry_config.py&quot;</a>, Yheight = 10.)</td>
+          <td class="memname">mergeMbias.ship_geo = <a class="el" href="namespacegeometry__config.html#a75c5d0a5585dd1291f7f73502a80afda">geometry_config.create_config</a>(Yheight=10.)</td>
         </tr>
       </table>
 </div><div class="memdoc">
