@@ -107,6 +107,7 @@ it in future.
 * Correct extraction of SiPM channel positions in MTC
 * Fix refactoring issue that broke MTC digitization
 * Fix the condition in the sipm channel <-> fiber mapping that stopped looping over channels because of the distance between a fiber and a channel. Setting a flexible condition that depends on the aggregated channel size.
+* Add flags for `python/ScifiMapping.py`
 
 ### Changed
 
