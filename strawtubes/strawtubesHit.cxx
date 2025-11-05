@@ -39,7 +39,7 @@ strawtubesHit::strawtubesHit(strawtubesPoint* p, Double_t t0)
     TVector3 stop = TVector3();
     fDetectorID = p->GetDetectorID();
     strawtubes* module =
-        dynamic_cast<strawtubes*>(FairRunSim::Instance()->GetListOfModules()->FindObject("Strawtubes"));
+        dynamic_cast<strawtubes*>(FairRunSim::Instance()->GetListOfModules()->FindObject("strawtubes"));
     Double_t v_drift = module->StrawVdrift();
     Double_t sigma_spatial = module->StrawSigmaSpatial();
     strawtubes::StrawEndPoints(fDetectorID, start, stop);

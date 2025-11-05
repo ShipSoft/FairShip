@@ -8,7 +8,7 @@ from ShipGeoConfig import AttrDict, ConfigRegistry
 # nuTargetPassive = 1  #0 = with active layers, 1 = only passive
 
 # targetOpt      = 5  # 0=solid   >0 sliced, 5: 5 pieces of tungsten, 4 air slits, 17: molybdenum tungsten interleaved with H20
-# strawOpt       = 0  # 0=simplistic tracking stations defined in veto.cxx  1=detailed strawtube design 4=sophisticated straw tube design, horizontal wires 10=2 cm straw diameter for compact layout (default)
+# strawOpt       = 0  # 4=aluminium frame 10=steel frame (default)
 
 # Here you can select the MS geometry, if the MS design is using SC magnet change the hybrid to True
 # The first row is the length of the magnets
@@ -231,14 +231,8 @@ if "TARGET_YAML" not in globals():
     TARGET_YAML = os.path.expandvars("$FAIRSHIP/geometry/target_config_old.yaml")
 if "strawDesign" not in globals():
     strawDesign = 10
-if "CaloDesign" not in globals():
-    CaloDesign = 0
 if "Yheight" not in globals():
     Yheight = 10.0
-if "EcalGeoFile" not in globals():
-    EcalGeoFile = "ecal_rect5x10m2.geo"
-if "HcalGeoFile" not in globals():
-    HcalGeoFile = "hcal_rect.geo"
 if "shieldName" not in globals():
     shieldName = None
 if "SND" not in globals():
@@ -408,36 +402,6 @@ with ConfigRegistry.register_config("basic") as c:
         c.Chamber1 = AttrDict(z=z4 - 4666.0 * u.cm - magnetIncrease - extraVesselLength)
         c.Chamber6 = AttrDict(z=z4 + 30.0 * u.cm + windowBulge / 2.0)
 
-    c.strawtubes = AttrDict()
-    if strawDesign == 4:
-        c.strawtubes.InnerStrawDiameter = 0.975 * u.cm
-        c.strawtubes.StrawPitch = 1.76 * u.cm
-        c.strawtubes.DeltazLayer = 1.1 * u.cm
-        c.strawtubes.YLayerOffset = c.strawtubes.StrawPitch / 2.0
-        c.strawtubes.FrameMaterial = "aluminium"
-        c.strawtubes.FrameLateralWidth = 1.0 * u.cm
-        c.strawtubes.DeltazFrame = 10.0 * u.cm
-    elif strawDesign == 10:  # 10 - baseline
-        c.strawtubes.InnerStrawDiameter = 1.9928 * u.cm
-        c.strawtubes.StrawPitch = 2.0 * u.cm
-        c.strawtubes.DeltazLayer = 1.732 * u.cm
-        c.strawtubes.YLayerOffset = 1.0 * u.cm
-        c.strawtubes.FrameMaterial = "steel"
-        c.strawtubes.FrameLateralWidth = 0.17 * u.m
-        c.strawtubes.DeltazFrame = 2.5 * u.cm
-
-    c.strawtubes.wall_thickness = 0.0036 * u.cm
-    c.strawtubes.OuterStrawDiameter = (
-        c.strawtubes.InnerStrawDiameter + 2 * c.strawtubes.wall_thickness
-    )
-
-    c.strawtubes.StrawsPerLayer = int(c.Yheight / c.strawtubes.StrawPitch)
-    c.strawtubes.ViewAngle = 4.57
-    c.strawtubes.WireThickness = 0.003 * u.cm
-    c.strawtubes.DeltazView = 5.0 * u.cm
-    c.strawtubes.VacBox_x = 240.0 * u.cm
-    c.strawtubes.VacBox_y = 600.0 * u.cm * c.Yheight / (10.0 * u.m)
-
     c.Bfield = AttrDict()
     c.Bfield.z = c.z
     c.Bfield.max = 0  # 1.4361*u.kilogauss  # was 1.15 in EOI
@@ -463,20 +427,8 @@ with ConfigRegistry.register_config("basic") as c:
         37.800 * u.m - c.TimeDet.dzBarRow * 3 / 2 + c.decayVolume.z
     )  # Relative position of first layer of timing detector to decay vessel centre
 
-    if CaloDesign == 0:
-        c.HcalOption = 1
-        c.EcalOption = 1
-        c.splitCal = 0
-    elif CaloDesign == 3:
-        c.HcalOption = 2
-        c.EcalOption = 1
-        c.splitCal = 0
-    elif CaloDesign == 2:
-        c.HcalOption = -1
-        c.EcalOption = 2
-    else:
-        print("CaloDesign option wrong -> ", CaloDesign)
-        1 / 0
+    c.HcalOption = -1
+    c.EcalOption = 2
 
     c.SplitCal = AttrDict()
     c.SplitCal.ZStart = (
@@ -518,29 +470,9 @@ with ConfigRegistry.register_config("basic") as c:
         + c.SplitCal.BigGap
     )
 
-    zecal = (
-        38.450 * u.m + c.decayVolume.z
-    )  # Relative start z of ECAL to decay vessel centre
-    c.ecal = AttrDict(z=zecal)
-    c.ecal.File = EcalGeoFile
-    hcalThickness = 232 * u.cm
-    if c.HcalOption == 2:
-        hcalThickness = 110 * u.cm  # to have same interaction length as before
-    if not c.HcalOption < 0:
-        zhcal = (
-            40.850 * u.m + c.decayVolume.z
-        )  # Relative position of HCAL to decay vessel centre
-        c.hcal = AttrDict(z=zhcal)
-        c.hcal.hcalSpace = hcalThickness + 5.5 * u.cm
-        c.hcal.File = HcalGeoFile
-    else:
-        c.hcal = AttrDict(z=c.ecal.z)
-    if c.EcalOption == 1:
-        c.MuonStation0 = AttrDict(z=c.hcal.z + hcalThickness / 2.0 + 20.5 * u.cm)
-    if c.EcalOption == 2:
-        c.MuonStation0 = AttrDict(
-            z=c.SplitCal.ZStart + 10 * u.cm + c.SplitCal.SplitCalThickness
-        )
+    c.MuonStation0 = AttrDict(
+        z=c.SplitCal.ZStart + 10 * u.cm + c.SplitCal.SplitCalThickness
+    )
 
     c.MuonStation1 = AttrDict(z=c.MuonStation0.z + 1 * u.m)
     c.MuonStation2 = AttrDict(z=c.MuonStation0.z + 2 * u.m)
@@ -563,13 +495,11 @@ with ConfigRegistry.register_config("basic") as c:
     c.muShield.WithConstField = shield_db[shieldName]["WithConstField"]
 
     # for the digitizing step
-    c.strawtubes.v_drift = 1.0 / (
+    c.strawtubesDigi = AttrDict()
+    c.strawtubesDigi.v_drift = 1.0 / (
         30 * u.ns / u.mm
     )  # for baseline NA62 5mm radius straws)
-    c.strawtubes.sigma_spatial = 0.012 * u.cm  # according to Massi's TP section
-    # size of straws
-    c.strawtubes.StrawLength = c.xMax
-    c.strawtubes.station_height = int(c.Yheight / 2.0)
+    c.strawtubesDigi.sigma_spatial = 0.012 * u.cm  # according to Massi's TP section
 
     # CAMM - For Nu tau detector, keep only these parameters which are used by others...
     c.tauMudet = AttrDict()
@@ -579,43 +509,15 @@ with ConfigRegistry.register_config("basic") as c:
     )
 
     # Upstream Tagger
-    UBT_x_crop = 113.4 * u.cm
+    # UpstreamTagger (UBT) - Simplified scoring plane
+    # Note: UBT is implemented as a simple vacuum box
+    # Legacy RPC parameters have been removed as they are not used in the current implementation
     c.UpstreamTagger = AttrDict()
-    c.UpstreamTagger.Z_Glass = 0.2 * u.cm
-    c.UpstreamTagger.Y_Glass = 105 * u.cm
-    c.UpstreamTagger.X_Glass = 223.0 * u.cm - UBT_x_crop
-    c.UpstreamTagger.Z_Glass_Border = 0.2 * u.cm
-    c.UpstreamTagger.Y_Glass_Border = 1.0 * u.cm
-    c.UpstreamTagger.X_Glass_Border = 1.0 * u.cm
-    c.UpstreamTagger.Z_PMMA = 0.8 * u.cm
-    c.UpstreamTagger.Y_PMMA = 108 * u.cm
-    c.UpstreamTagger.X_PMMA = 226 * u.cm - UBT_x_crop
-    c.UpstreamTagger.DY_PMMA = 1.5 * u.cm
-    c.UpstreamTagger.DX_PMMA = 1.5 * u.cm
-    c.UpstreamTagger.DZ_PMMA = 0.1 * u.cm
-    c.UpstreamTagger.Z_FreonSF6 = 0.1 * u.cm
-    c.UpstreamTagger.Y_FreonSF6 = 107 * u.cm
-    c.UpstreamTagger.X_FreonSF6 = 225 * u.cm - UBT_x_crop
-    c.UpstreamTagger.Z_FreonSF6_2 = 0.8 * u.cm
-    c.UpstreamTagger.Y_FreonSF6_2 = 0.5 * u.cm
-    c.UpstreamTagger.X_FreonSF6_2 = 0.5 * u.cm
-    c.UpstreamTagger.Z_FR4 = 0.15 * u.cm
-    c.UpstreamTagger.Y_FR4 = 111 * u.cm
-    c.UpstreamTagger.X_FR4 = 229 * u.cm - UBT_x_crop
-    c.UpstreamTagger.Z_Aluminium = 1.1503 * u.cm
-    c.UpstreamTagger.Y_Aluminium = 111 * u.cm
-    c.UpstreamTagger.X_Aluminium = 233 * u.cm - UBT_x_crop
-    c.UpstreamTagger.DZ_Aluminium = 0.1 * u.cm
-    c.UpstreamTagger.DY_Aluminium = 1 * u.cm
-    c.UpstreamTagger.DX_Aluminium = 0.2 * u.cm
-    c.UpstreamTagger.Z_Air = 1.1503 * u.cm
-    c.UpstreamTagger.Y_Air = 0 * u.cm
-    c.UpstreamTagger.X_Air = 2 * u.cm
-    c.UpstreamTagger.Z_Strip = 0.0003 * u.cm
-    c.UpstreamTagger.Y_Strip = 3.1 * u.cm
-    c.UpstreamTagger.X_Strip = 229 * u.cm - UBT_x_crop
-    c.UpstreamTagger.X_Strip64 = 1.534 * u.cm
-    c.UpstreamTagger.Y_Strip64 = 111 * u.cm
+    c.UpstreamTagger.BoxX = 4.4 * u.m  # X dimension (width)
+    c.UpstreamTagger.BoxY = 6.4 * u.m  # Y dimension (height)
+    c.UpstreamTagger.BoxZ = 16.0 * u.cm  # Z dimension (thickness)
     c.UpstreamTagger.Z_Position = (
         -25.400 * u.m + c.decayVolume.z
     )  # Relative position of UBT to decay vessel centre
+    c.UpstreamTagger.PositionResolution = 1.0 * u.cm  # Position smearing resolution
+    c.UpstreamTagger.TimeResolution = 0.3  # Time resolution in ns

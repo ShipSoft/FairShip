@@ -45,7 +45,7 @@ Bool_t Pythia8Generator::Init()
       fInputFile = TFile::Open(fextFile);
       LOG(info) << "Open external file with charm or beauty hadrons: " << fextFile;
       if (!fInputFile) {
-          LOG(FATAL) << "Error opening input file.";
+          LOG(fatal) << "Error opening input file.";
           return kFALSE;
       }
       fTree = fInputFile->Get<TTree>("pythia6");
@@ -161,7 +161,7 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg)
   key=0;
   bool l = true;
   while(l){
-     if (fn==fNevents) {LOG(WARNING) <<  "End of input file. Rewind.";}
+     if (fn==fNevents) {LOG(warning) <<  "End of input file. Rewind.";}
      fTree->GetEntry((fn+1)%fNevents);
 // check that this and next entry is charm, otherwise continue reading
      l = false;

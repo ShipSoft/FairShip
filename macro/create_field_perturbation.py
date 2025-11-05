@@ -9,7 +9,7 @@ import ShieldUtils
 from argparse import ArgumentParser
 
 
-globalDesigns = {'dy': 10., 'dv': 6, 'ds': 9, 'nud': 3, 'caloDesign': 3, 'strawDesign': 10}
+globalDesigns = {'dy': 10., 'dv': 6, 'ds': 9, 'nud': 3, 'strawDesign': 10}
 
 def create_csv_field_map(options):
     r.gErrorIgnoreLevel = r.kWarning
@@ -20,7 +20,6 @@ def create_csv_field_map(options):
         Yheight=globalDesigns["dy"],
         tankDesign=globalDesigns["dv"],
         nuTauTargetDesign=globalDesigns["nud"],
-        CaloDesign=globalDesigns["caloDesign"],
         strawDesign=globalDesigns["strawDesign"],
         muShieldDesign=options.ds,
         muShieldStepGeo=options.muShieldStepGeo,

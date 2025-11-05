@@ -20,7 +20,7 @@ jobs:
         - /cvmfs/ship.cern.ch:/cvmfs/ship.cern.ch
 
     env:
-      version: 25.08
+      version: 25.09
 
     steps:
       - name: Checkout
@@ -32,7 +32,7 @@ jobs:
       - name: Build
         run: |
           source /cvmfs/ship.cern.ch/$version/setUp.sh
-          aliBuild build FairShip --always-prefer-system --config-dir $SHIPDIST --defaults release --jobs 4 --debug
+          aliBuild build FairShip --always-prefer-system --config-dir $SHIPDIST --defaults release --jobs 4 --debug 2>&1 | tee build.log | python3 FairShip/.github/scripts/annotate_build.py
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
@@ -50,7 +50,7 @@ jobs:
         - /cvmfs/ship.cern.ch:/cvmfs/ship.cern.ch
 
     env:
-      version: 25.08
+      version: 25.09
 
     strategy:
       matrix:
@@ -76,7 +76,7 @@ jobs:
         run: |
           source /cvmfs/ship.cern.ch/$version/setUp.sh
           eval $(alienv load FairShip/latest)
-          python $FAIRSHIP/macro/run_simScript.py --test --${{ matrix.vessel_option }} --SND --SND_design=${{ matrix.SND_option }} --shieldName ${{ matrix.muon_shield }} --target-yaml=$FAIRSHIP/geometry/target_config_${{ matrix.target }}.yaml
+          python $FAIRSHIP/macro/run_simScript.py --test --debug 2 --${{ matrix.vessel_option }} --SND --SND_design=${{ matrix.SND_option }} --shieldName ${{ matrix.muon_shield }} --target-yaml=$FAIRSHIP/geometry/target_config_${{ matrix.target }}.yaml --EvtGenDecayer
 
       - name: Overlap check
         run: |

@@ -40,6 +40,8 @@ class FixedTargetGenerator : public FairGenerator
   void UseRandom3() { fUseRandom1 = kFALSE; fUseRandom3 = kTRUE; };
   void SetTarget(TString s, Double_t x,Double_t y ) { targetName = s; xOff=x; yOff=y; };
   void SetZoffset(Double_t z) { zOff = z; };
+  void SetSmearBeam(Double_t sb) { fsmearBeam = sb; };
+  void SetPaintRadius(Double_t r) { fPaintBeam = r; };
   void SetTargetCoordinates(Double_t start_z, Double_t end_z)
   {
       startZ = start_z;
@@ -97,6 +99,8 @@ class FixedTargetGenerator : public FairGenerator
   Double_t xOff;
   Double_t yOff;
   Double_t zOff;
+  Double_t fsmearBeam;   // finite beam size
+  Double_t fPaintBeam;   // beam painting radius
   Double_t start[3];
   Double_t end[3];
   Double_t bparam;

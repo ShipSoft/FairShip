@@ -1,5 +1,6 @@
 #include "MuonBackGenerator.h"
 
+#include "BeamSmearingUtils.h"
 #include "FairPrimaryGenerator.h"
 #include "ShipMCTrack.h"
 #include "ShipUnit.h"
@@ -104,7 +105,6 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
 {
     auto* pdgBase = TDatabasePDG::Instance();
     Double_t mass, e, tof, phi;
-    Double_t dx = 0, dy = 0;
     std::unordered_map<int, int> muList;
     std::unordered_map<int, std::vector<int>> moList;
     while (fn < fNevents) {
@@ -146,7 +146,7 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
             for (auto it = moList.begin(); it != moList.end(); it++) {
                 if (gRandom->Uniform(0., 1.) > 0.99) {
                     std::vector<int> list = it->second;
-                    for (Int_t i = 0; i < list.size(); i++) {
+                    for (unsigned i = 0; i < list.size(); i++) {
                         auto* v = dynamic_cast<vetoPoint*>(vetoPoints->At(list.at(i)));
                         Int_t muIndex = v->GetTrackID();
                         muList.insert({muIndex, i});
@@ -170,17 +170,9 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg)
     LOGF(debug, "Seed: %d", theSeed);
     gRandom->SetSeed(theSeed);
   }
-  if (fsmearBeam > 0) {
-      dx = gRandom->Gaus(0, fsmearBeam);
-      dy = gRandom->Gaus(0, fsmearBeam);
-  }
-  if (fPaintBeam > 0) {
-      phi = gRandom->Uniform(0., 2 * TMath::Pi());
-      dx += fPaintBeam * TMath::Cos(phi);
-      dy += fPaintBeam * TMath::Sin(phi);
-  }
+  auto [dx, dy] = CalculateBeamOffset(fsmearBeam, fPaintBeam);
   if (id==-1){
-     for (unsigned i = 0; i< MCTrack->GetEntries();  i++ ){
+     for (int i = 0; i< MCTrack->GetEntries();  i++ ){
          auto* track = dynamic_cast<ShipMCTrack*>(MCTrack->At(i));
          Int_t abspid = TMath::Abs(track->GetPdgCode());
          px = track->GetPx();

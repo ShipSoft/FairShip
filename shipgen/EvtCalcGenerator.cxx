@@ -47,7 +47,7 @@ Bool_t EvtCalcGenerator::Init(const char* fileName, const int firstEvent)
 EvtCalcGenerator::~EvtCalcGenerator() {}
 
 // -- Generalized branch access --------------------------------------------
-Double_t EvtCalcGenerator::GetBranchValue(const std::unique_ptr<TTree>& tree, int index) const {
+Double_t EvtCalcGenerator::GetBranchValue(const std::unique_ptr<TTree>& tree, unsigned index) const {
     if (index < branchVars.size()) {
         return branchVars[index];
     } else {
@@ -91,7 +91,7 @@ Double_t EvtCalcGenerator::GetDauPDG(const std::unique_ptr<TTree>& tree, int dau
 Bool_t EvtCalcGenerator::ReadEvent(FairPrimaryGenerator* cpg)
 {
     if (fn == fNevents) {
-        LOG(WARNING) << "End of input file. Rewind.";
+        LOG(warning) << "End of input file. Rewind.";
         fn = 0;
     }
 

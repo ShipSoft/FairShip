@@ -45,9 +45,35 @@ it in future.
   - The geometry configuration and detector setup (`geometry/geometry_config.py`, `python/shipDet_conf.py`) have been updated to instantiate all requested SND detectors.
   - This enables running with multiple SND subdetectors simultaneously and is future-proof for additional SND designs.
 * Add support for Pythia 8.3xx. 8.2xx is still supported via preprocessor macros for the time being.
+* Add dedicated --print-fields and --check-overlaps flags to run_simScript.py to use these debug tools.
+* Add EvtGenDecayer for decaying J/psi (and other particles in future) when specifying the --EvtGenDecayer option
+* Add enough straws to cover aperture entirely
+* Add SST frame option (4 = aluminium, 10 = steel [default])
+* feat: Unified beam smearing implementation across all generators
+  - Updated `HNLPythia8Generator` to use consistent Gaussian beam smearing and circular beam painting, replacing the previous uniform square implementation
+  - Added beam smearing and painting support to `FixedTargetGenerator`
+  - All generators (`MuonBackGenerator`, `HNLPythia8Generator`, `FixedTargetGenerator`) now use the same beam smearing algorithm: Gaussian smearing with `--SmearBeam` parameter and uniform circular painting with `--PaintRadius` parameter
+  - The `--SmearBeam` and `--PaintBeam` command-line options in `run_simScript.py` now apply to all generators, not just muon background simulation
+  - Fixed unit handling to ensure proper conversion between GEANT4 units (cm-based) and Pythia8 units (mm-based) in each generator
+  - Implemented shared `BeamSmearingUtils` utility using modern C++17 features (std::pair return and structured bindings) to eliminate code duplication
+* Big update of genie generation scripts `macro/makeGenieEvents.py` and `python/genie_interface.py`:
+  - Universal choice of neutrino flavor to simulate
+  - Handy way to enable/disable charm and tau decays of the products
+  - Rewriting the code with modern pythonic style preserving backward compatibility
+* Adding new keys specifically for genie regime in `macro/run_simScript.py` and copying `gst` TTree from the genie input file to the output file of the `macro/run_simScript.py`:
+  - Adjust the z range where to simulate the neutrino interactions via `--z_start_nu and `--z_end_nu` keys
+  - Replacing the `--Genie` key with `Genie` as a subparser
+  - Copying `gst` TTree is similar to `sndsw`
+- Enclose target in steel (316L) cylinder
+* First version of SND/SiliconTarget, this layout for this iteration consists of 120 3.5mm W planes with pairs of silicon planes placed 1mm from the surface of the tungsten. As a temporary solution, the detector is placed within the second last magnet of the muon shield. Configuration of detector in simScript is coupled to the SND_design == 2 along with the MTC.
+* Add visualization methods to SciFiMapping.py to visualize Sci-Fi in MTC, including draw_channel(), draw_channel_XY(), and draw_combined_scifi_views()
+
 
 ### Fixed
 
+* fix(eventDisplay): Fix event display crash caused by premature ROOT object initialization
+* Remove SIMPATH dependency, replaced with EVTGENDATA for EvtGen data files (#648)
+* fix(digi): Make TTree branch split level configurable in BaseDetector, set splitLevel=1 for MTC
 * chore: Fix file endings
 * chore: trim trailing whitespace
 * Fix mismatch dimension cavern ECN3 TCC8
@@ -74,9 +100,24 @@ it in future.
 * fix(FixedTargetGenerator): Don't assume anything about the target substructure
 * Fix crash in run_simScript.py
 * Fix crash caused by decorators.py
+* Use lowercase FairLogger severities (uppercase ones are deprecated)
+* Correct paths for default input files
+* Fix missing decays of J/psi by using EvtGenDecayer
+* Fix: hard cast bug in genie generator: after replacing old C-style cast histogram variable got nullptr value which afterwards caused segmentation fault
+* Correct extraction of SiPM channel positions in MTC
+* Fix refactoring issue that broke MTC digitization
 
 ### Changed
 
+* Refactor strawtubes digitisation to use dedicated detector class
+  - Created `strawtubesDetector` class inheriting from `BaseDetector`
+  - Moved digitisation logic from `ShipDigiReco` to `detectors/strawtubesDetector.py`
+  - Updated naming from "Strawtubes" to "strawtubes" for consistency
+  - Changed branch name from "Digi_StrawtubesHits" to "Digi_strawtubesHits"
+* Rename MtcDetPoint and MtcDetHit classes to MTCDetPoint and MTCDetHit for consistency with detector naming conventions
+* Refactor digitisation to use detector classes for MTC, muon, time, SBT, and UpstreamTagger detectors
+* Make BaseDetector an abstract base class to enforce interface contract
+* Rewrite UpstreamTaggerHit for simplified scoring plane detector, remove RPC-specific code (#701, #354, #355)
 * Don't special case EOS paths (fix #566)
 * Setting up the Muon shield geometry by ROOT files is completely replaced with the temporary solution of dict in the `geometry/geometry_config.py`.
 * Set up of the shield name is now done using the `--shieldName` flag instead of `--scName`.
@@ -123,6 +164,15 @@ it in future.
   - Add `SetTargetCoordinates()` method for robust geometry-based target configuration
   - Maintain backward compatibility with legacy TGeo navigation as fallback
 - The decorators from decorators.py now need to be applied explicitly using the new `apply_decorators` function.
+- The --debug flag to run_simScript.py now controls the severity that FairLogger logs.
+- J/psi are no longer decayed using Geant4 when using the --EvtGenDecayer option
+* Move SST geometry parameters to yaml
+* Update strawtubes class
+* Change SST gas mixture to Ar/CO2 80%/20% at 1 bar
+* UBT box dimensions (BoxX, BoxY, BoxZ) are now configurable via geometry_config.py instead of hardcoded
+* Configuration storage modernized from pickle to JSON
+  - Geometry configurations are now saved as JSON strings (using `std::string`) instead of pickled Python objects in ROOT files
+  - Automatic format detection: new code reads both JSON (new format) and pickle (legacy format) files without user intervention
 
 ### Removed
 
@@ -147,10 +197,13 @@ it in future.
 * Remove nuTauTargetDesign variable, options
 * Remove reloading of the `geometry_config.py` in `shipDet_conf.py`
 * Remove nutaudet folder, replaced by SND folder
+* Removed 38 unused RPC geometry parameters from UpstreamTagger configuration (legacy from pre-simplification)
 * Remove deprecated NuTauDet field map
 * Remove tankDesign variable, options
 * Remove target versions older than CDR
 * Remove hadron absorber in ShipTargetStation.cxx
+* Remove old ecal and hcal in all of FairSHiP, affected files are notably the entire ecal and hcal directories as well as macro/run_anaEcal.py and python/shipPid.py. geometry/geometry_config.py, muonShieldOptimization/ana_ShipMuon.py, macro/ShipReco.py, macro/ShipAna.py, python/shipStrawTracking.py and python/shipPid.py.
+* Remove unused CaloDesign parameter from geometry configuration (only splitCal supported after ECAL/HCAL removal)
 
 ## 25.01
 

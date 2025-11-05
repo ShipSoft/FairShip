@@ -6,8 +6,7 @@ import pythia8_conf
 import ROOT
 import shipunit as u
 import yaml
-from rootpyPickler import Unpickler
-from ShipGeoConfig import AttrDict
+from ShipGeoConfig import AttrDict, load_from_root_file
 from tabulate import tabulate
 
 
@@ -17,8 +16,7 @@ class selection_check:
     def __init__(self, geo_file):
         """Initialize the selection_check class with geometry and configuration."""
         self.geometry_manager = geo_file.Get("FAIRGeom")
-        unpickler = Unpickler(geo_file)
-        self.ship_geo = unpickler.load("ShipGeo")
+        self.ship_geo = load_from_root_file(geo_file, "ShipGeo")
 
         fairship = ROOT.gSystem.Getenv("FAIRSHIP")
 

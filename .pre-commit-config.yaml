@@ -16,50 +16,59 @@ repos:
   - id: check-executables-have-shebangs
   - id: mixed-line-ending
 - repo: https://github.com/astral-sh/ruff-pre-commit
-  rev: v0.12.11
+  rev: v0.14.3
   hooks:
   - id: ruff-check
     types_or: [python, pyi, jupyter]
     args: [--fix, --show-fixes]
+    files: ^(macro/makeGenieEvents\.py|python/genie_interface\.py|python/SciFiMapping\.py|python/BaseDetector\.py|python/detectors/)$
   - id: ruff-format
-    files: ^(python/experimental/|geometry/geometry_config\.py$)
+    files: ^(python/experimental/|geometry/geometry_config\.py|macro/makeGenieEvents\.py|python/genie_interface\.py|python/SciFiMapping\.py|python/BaseDetector\.py|python/detectors/)$
 - repo: https://github.com/pre-commit/mirrors-clang-format
-  rev: v21.1.0
+  rev: v21.1.2
   hooks:
   - id: clang-format
     types_or: [c++, c, cuda]
-    exclude: LinkDef.h|muon|hcal|ecal|shipdata|shipgen|pid|passive|nutaudet|TimeDet|UpstreamTagger|gconfig|field|splitcal|strawtubes
+    exclude: LinkDef.h|muon|shipdata|shipgen|pid|passive|TimeDet|UpstreamTagger|gconfig|field|splitcal|strawtubes
 - repo: https://github.com/cpplint/cpplint
   rev: 2.0.2
   hooks:
   - id: cpplint
     exclude: LinkDef.h
-- repo: https://github.com/cmake-lint/cmake-lint
-  rev: 1.4.3
-  hooks:
-  - id: cmakelint
 - repo: https://github.com/codespell-project/codespell
   rev: "v2.4.1"
   hooks:
     - id: codespell
-      exclude: muon|ecal|hcal
-- repo: https://github.com/pycqa/isort
-  rev: 6.0.1
-  hooks:
-    - id: isort
-      args: [--profile=black]
-      name: isort (python)
-- repo: https://github.com/cheshirekow/cmake-format-precommit
-  rev: v0.6.13
-  hooks:
-  - id: cmake-format
+      exclude: muon
+      additional_dependencies: [tomli]
 - repo: https://github.com/asottile/pyupgrade
-  rev: v3.20.0
+  rev: v3.21.0
   hooks:
   - id: pyupgrade
     args: [--py39-plus]
+- repo: https://github.com/pre-commit/mirrors-mypy
+  rev: v1.18.2
+  hooks:
+    - id: mypy
+      name: mypy (type-check)
+      types_or: [python, pyi]
+      files: ^(python/experimental/|geometry/geometry_config\.py|macro/makeGenieEvents\.py|python/genie_interface\.py|python/SciFiMapping\.py|python/BaseDetector\.py|python/detectors/)$
+      args:
+        - --python-version=3.9
+        - --ignore-missing-imports
+        - --show-column-numbers
+        - --pretty
+        - --follow-imports=skip        # <- don't type-check imported project modules
+        - --ignore-missing-imports
+        - --disable-error-code=name-defined
+      additional_dependencies:
+        - types-PyYAML
+        - types-tabulate
+        # Helpful on older 3.9 envs:
+        - typing-extensions>=4.8
+
 ci:
   autofix_prs: true
-  skip: [ruff-check, cmakelint, isort, cmake-format]
+  skip: [ruff-check]
   autoupdate_commit_msg: "chore(deps): update pre-commit hooks"
   autofix_commit_msg: "style: pre-commit fixes"

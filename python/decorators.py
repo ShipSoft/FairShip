@@ -45,12 +45,6 @@ def TParticlePrintOut(x):
 def ShipParticlePrintOut(x):
   txt = '("ShipParticle") %s M:%5.2FGeV/c2 P:%5.2FGeV/c VxZ:%5.2Fm'%(x.GetName(),x.GetMass(),x.P(),x.Vz()/u.m)
   return txt
-def ecalReconstructedPrintOut(cl):
-  txt = '("EcalCluster") E:%5.2FGeV/c X:%5.2Fm Y:%5.2Fm'%(cl.RecoE(),cl.X()/u.m,cl.Y()/u.m)
-  return txt
-def ecalClusterPrintOut(cl):
-  txt = '("EcalCluster") E:%5.2FGeV/c X:%5.2Fm Y:%5.2Fm'%(cl.Energy(),cl.X()/u.m,cl.Y()/u.m)
-  return txt
 def Dump(x):
   k=0
   for obj in x:
@@ -89,8 +83,6 @@ def apply_decorators():
     ROOT.TVector3.__repr__ = TVector3PrintOut
     ROOT.TParticle.__repr__ = TParticlePrintOut
     ROOT.ShipParticle.__repr__ = ShipParticlePrintOut
-    ROOT.ecalReconstructed.__repr__ = ecalReconstructedPrintOut
-    ROOT.ecalCluster.__repr__ = ecalClusterPrintOut
     ROOT.TEvePointSet.__repr__ = TEvePointSetPrintOut
     ROOT.vetoHit.__repr__ = vetoHitPrintOut
     ROOT.muonHit.__repr__ = muonHitPrintOut

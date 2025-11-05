@@ -12,7 +12,7 @@ TrackInfo::TrackInfo()
 // -----   Standard constructor   ------------------------------------------
 TrackInfo::TrackInfo(const genfit::Track* tr)
 {
-  for (int i = 0; i<tr->getNumPointsWithMeasurement(); i+=1) {
+  for (unsigned int i = 0; i<tr->getNumPointsWithMeasurement(); i+=1) {
     genfit::TrackPoint *tp = tr->getPointWithMeasurement(i);
     genfit::AbsMeasurement* rawM = tp->getRawMeasurement();
     genfit::KalmanFitterInfo*  info = static_cast<genfit::KalmanFitterInfo*>(tp->getFitterInfo());

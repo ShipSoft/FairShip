@@ -1,3 +1,4 @@
+#include "BeamSmearingUtils.h"
 #include "EvtGenBase/EvtRandom.hh"
 #include "EvtGenBase/EvtSimpleRandomEngine.hh"
 #include "FairMCEventHeader.h"
@@ -5,6 +6,7 @@
 #include "Pythia8Plugins/EvtGen.h"
 #include "FixedTargetGenerator.h"
 #include "HNLPythia8Generator.h"
+#include "ShipUnit.h"
 #include "TGeoBBox.h"
 #include "TGeoNode.h"
 #include "TGeoVolume.h"
@@ -16,7 +18,8 @@
 #include <array>
 #include <math.h>
 
-const Double_t cm = 10.; // pythia units are mm
+using ShipUnit::cm;
+using ShipUnit::mm;
 const Double_t c_light = 2.99792458e+10; // speed of light in cm/sec (c_light   = 2.99792458e+8 * m/s)
 const Double_t mbarn = 1E-3*1E-24*TMath::Na(); // cm^2 * Avogadro
 
@@ -32,6 +35,8 @@ FixedTargetGenerator::FixedTargetGenerator()
   xOff = 0;
   yOff = 0;
   zOff = 0;
+  fsmearBeam = 8 * mm;   // default value for smearing beam (8 mm)
+  fPaintBeam = 5 * cm;   // default value for painting beam (5 cm)
   tauOnly = false;
   JpsiMainly = false;
   DrellYan = false;
@@ -73,24 +78,24 @@ Bool_t FixedTargetGenerator::InitForCharmOrBeauty(TString fInName, Int_t nev, Do
   nTree->SetBranchAddress("mpz",&n_mpz);
   nTree->SetBranchAddress("mE",&n_mE);
   if (nTree->GetBranch("k")){
-   LOG(INFO) << "+++has branch+++";
+   LOG(info) << "+++has branch+++";
    nTree->SetBranchAddress("k",&ck);}
 // check if we deal with charm or beauty:
   nTree->GetEvent(0);
   if (!setByHand && n_M > 5) {
     chicc = chibb;
-    LOG(INFO) << "automatic detection of beauty, configured for beauty";
-    LOG(INFO) << "bb cross section / mbias " << chicc;
+    LOG(info) << "automatic detection of beauty, configured for beauty";
+    LOG(info) << "bb cross section / mbias " << chicc;
   }else{
-    LOG(INFO) << "cc cross section / mbias " << chicc;
+    LOG(info) << "cc cross section / mbias " << chicc;
   }
 // convert pot to weight corresponding to one spill of 5e13 pot
  // get histogram with number of pot to normalise
  // pot are counted double, i.e. for each signal, i.e. pot/2.
   Int_t nrcpot = dynamic_cast<TH1F*>(fin->Get("2"))->GetBinContent(1) / 2.;   // number of primary interactions
   wspill = nrpotspill*chicc/nrcpot*nEvents/nev;
-  LOG(INFO) << "Input file: " << fInName.Data() << " with " << nEvents << " entries, corresponding to nr-pot=" << (nrcpot/chicc);
-  LOG(INFO) << "weight " << wspill << " corresponding to " << nrpotspill << " p.o.t. per spill for " << nev << " events to process";
+  LOG(info) << "Input file: " << fInName.Data() << " with " << nEvents << " entries, corresponding to nr-pot=" << (nrcpot/chicc);
+  LOG(info) << "weight " << wspill << " corresponding to " << nrpotspill << " p.o.t. per spill for " << nev << " events to process";
 
   pot=0.;
   //Determine fDs on this file for primaries
@@ -106,7 +111,7 @@ Bool_t FixedTargetGenerator::Init()
   if (Option == "Primary" && !G4only){
    fPythiaN =  new Pythia8::Pythia();
   }else if (Option != "charm" && Option != "beauty" && !G4only) {
-   LOG(ERROR) << "Option not known "<< Option.Data() << ", abort";
+   LOG(error) << "Option not known "<< Option.Data() << ", abort";
   }
 #if PYTHIA_VERSION_INTEGER >= 8300
   if (fUseRandom1) fRandomEngine = std::make_shared<PyTr1Rng>();
@@ -183,13 +188,13 @@ Bool_t FixedTargetGenerator::Init()
     if (p->tau0()>1){
      std::string particle = std::to_string(n)+":mayDecay = false";
      fPythia->readString(particle);
-     LOG(INFO) << "Made " << p->name().c_str() << " stable for Pythia, should decay in Geant4";
+     LOG(info) << "Made " << p->name().c_str() << " stable for Pythia, should decay in Geant4";
     }
    }
 // boost branching fraction of rare di-muon decays
 //                       eta  omega rho0  eta' phi
    if (fBoost != 1.){
-    LOG(INFO) << "Rescale BRs of dimuon decays in Pythia: " << fBoost;
+    LOG(info) << "Rescale BRs of dimuon decays in Pythia: " << fBoost;
     for (unsigned int i=0; i<r.size(); ++i) {
 #if PYTHIA_VERSION_INTEGER >= 8300
      std::shared_ptr<Pythia8::ParticleDataEntry> V = fPythia->particleData.particleDataEntryPtr(r[i]);
@@ -198,7 +203,7 @@ Bool_t FixedTargetGenerator::Init()
 #endif
      Pythia8::DecayChannel ch = V->channel(c[i]);
      if (TMath::Abs(ch.product(0))!=13 || TMath::Abs(ch.product(1))!=13){
-      LOG(INFO) << "this is not the right decay channel: " << r[i] << " " << c[i];
+      LOG(info) << "this is not the right decay channel: " << r[i] << " " << c[i];
      }else{
      TString tmp="";
      tmp+=r[i];tmp+=":";tmp+= c[i];
@@ -212,15 +217,14 @@ Bool_t FixedTargetGenerator::Init()
   }
   // Initialize EvtGen.
   if (withEvtGen){
-   TString SIMPATH=getenv("SIMPATH");
-   TString DecayFile =SIMPATH+"/share/EvtGen/DECAY.DEC";
-   TString ParticleFile =SIMPATH + "/share/EvtGen/evt.pdl";
-   if(SIMPATH == "")
-     {
-       std::cout << "Using $EVTGENDATA "<< getenv("EVTGENDATA") << std::endl;
-       DecayFile =TString(getenv("EVTGENDATA"))+"/DECAY.DEC";
-       ParticleFile =TString(getenv("EVTGENDATA"))+ "/evt.pdl";
-     }
+   // Use EVTGENDATA environment variable to find EvtGen data files
+   const char* evtgendata = getenv("EVTGENDATA");
+   if (!evtgendata) {
+     LOG(fatal) << "EVTGENDATA environment variable not set";
+   }
+   TString DecayFile = TString(evtgendata) + "/DECAY.DEC";
+   TString ParticleFile = TString(evtgendata) + "/evt.pdl";
+   std::cout << "Using $EVTGENDATA " << evtgendata << std::endl;
    EvtAbsRadCorr *fsrPtrIn = 0;
    EvtExternalGenList *extPtr = new EvtExternalGenList();
    std::list<EvtDecayBase*> models = extPtr->getListOfModels();
@@ -253,7 +257,7 @@ Bool_t FixedTargetGenerator::Init()
    end[0]=xOff;
    end[1]=yOff;
    end[2]=endZ;
-   LOG(INFO) << "FixedTargetGenerator: Using geometry-based target coordinates startZ=" << startZ << " endZ=" << endZ;
+   LOG(info) << "FixedTargetGenerator: Using geometry-based target coordinates startZ=" << startZ << " endZ=" << endZ;
    //find maximum interaction length
    bparam = fMaterialInvestigator->MeanMaterialBudget(start, end, mparam);
    maxCrossSection =  mparam[9];
@@ -264,7 +268,7 @@ Bool_t FixedTargetGenerator::Init()
    if (nav->CheckPath(targetName)) {
        nav->cd(targetName);
    } else {
-       LOG(FATAL) << "Invalid target volume specified";
+       LOG(fatal) << "Invalid target volume specified";
    }
    TGeoNode* target = nav->GetCurrentNode();
    TObjArray* nodes =  target->GetVolume()->GetNodes();
@@ -294,7 +298,7 @@ Bool_t FixedTargetGenerator::Init()
    bparam = fMaterialInvestigator->MeanMaterialBudget(start, end, mparam);
    maxCrossSection =  mparam[9];
   } else {
-      LOG(FATAL) << "No target set.";
+      LOG(fatal) << "No target set.";
   }
 
   return kTRUE;
@@ -311,6 +315,9 @@ FixedTargetGenerator::~FixedTargetGenerator()
 // -----   Passing the event   ---------------------------------------------
 Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg)
 {
+    // Calculate beam smearing and painting
+    auto [dx, dy] = CalculateBeamOffset(fsmearBeam, fPaintBeam);
+
   Double_t zinter=0;
   Double_t ZoverA = 1.;
   if (targetName.Data() !=""){
@@ -354,8 +361,8 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg)
   }
   Pythia8::Pythia* fPythia;
   if (G4only){
-   cpg->AddTrack(2212,0.,0.,fMom,xOff/cm,yOff/cm,start[2],-1,kTRUE,-1.,0.,1.);
-   return kTRUE;
+      cpg->AddTrack(2212, 0., 0., fMom, (xOff + dx) / cm, (yOff + dy) / cm, start[2], -1, kTRUE, -1., 0., 1.);
+      return kTRUE;
   }else if (Option == "Primary"){
    if (gRandom->Uniform(0.,1.) < ZoverA ){
     fPythiaP->next();
@@ -368,7 +375,7 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg)
    }
   }else{
     if (nEntry==nEvents){
-      LOG(INFO) << "Rewind input file: " << nEntry;
+      LOG(info) << "Rewind input file: " << nEntry;
       nEntry=0;}
     nTree->GetEvent(nEntry);
     nEntry+=1;
@@ -389,9 +396,9 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg)
                   n_mpx,
                   n_mpy,
                   n_mpz,
-                  xOff / cm,
-                  yOff / cm,
-                  zinter / cm,
+                  (xOff + dx) * cm,
+                  (yOff + dy) * cm,
+                  zinter * cm,
                   -1,
                   kFALSE,
                   n_mE,
@@ -400,7 +407,7 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg)
                   procID);
     // second charm hadron in the event
     nTree->GetEvent(nEntry);
-    if (nID1 * n_id > 0){LOG(INFO) << "same sign charm: " << nEntry << ", " << nID1 << ", " << n_id;}
+    if (nID1 * n_id > 0){LOG(info) << "same sign charm: " << nEntry << ", " << nID1 << ", " << n_id;}
     nEntry+=1;
     fPythiaP->event.append(static_cast<int>(n_id), 1, 0, 0, n_px, n_py, n_pz, n_E, n_M, 0., 9.);
     fPythiaP->next();
@@ -421,9 +428,9 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg)
 // don't track underlying event
       if (fabs(id)!=13){wanttracking=kFALSE;}
      }
-     Double_t z  = fPythia->event[ii].zProd()+zinter;
-     Double_t x  = fPythia->event[ii].xProd()+xOff;
-     Double_t y  = fPythia->event[ii].yProd()+yOff;
+     Double_t z  = fPythia->event[ii].zProd() * mm + zinter * cm;
+     Double_t x = fPythia->event[ii].xProd() * mm + xOff * cm + dx * cm;
+     Double_t y = fPythia->event[ii].yProd() * mm + yOff * cm + dy * cm;
      Double_t tof = fPythia->event[ii].tProd() / (10*c_light) ; // to go from mm to s
      Double_t px = fPythia->event[ii].px();
      Double_t py = fPythia->event[ii].py();
@@ -436,14 +443,14 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg)
      }else{
       if (ii<3){im=-1;}
      }
-     cpg->AddTrack(id,px,py,pz,x/cm,y/cm,z/cm,im,wanttracking,e,tof,wspill,procID);
+     cpg->AddTrack(id,px,py,pz,x * cm, y * cm, z * cm,im,wanttracking,e,tof,wspill,procID);
      if(withNtuple){
           int idabs = TMath::Abs(id);
           if (idabs<10)  {continue;}
           if (idabs<18 || idabs==22 || idabs==111 || idabs==221 || idabs==223 || idabs==331
                  || idabs==211 || idabs==113 || idabs==333  || idabs==321   || idabs==2212 ){
           Int_t moID = fPythia->event[im+1].id();
-          fNtuple->Fill(0,id,px,py,pz,e,x/cm,y/cm,z/cm,moID);
+          fNtuple->Fill(0,id,px,py,pz,e,x * cm, y * cm, z * cm, moID);
          }
      }
     }

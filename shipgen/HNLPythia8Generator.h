@@ -12,7 +12,6 @@
 #include "FairLogger.h"                 // for FairLogger, MESSAGE_ORIGIN
 
 class FairPrimaryGenerator;
-//using namespace Pythia8;
 
 class PyTr1Rng : public Pythia8::RndmEngine
 {
@@ -61,9 +60,10 @@ class HNLPythia8Generator : public FairGenerator
   void SetMom(Double_t mom) { fMom = mom; };
   void SetId(Double_t id) { fId  = id; };
   void SetHNLId(Int_t id) { fHNL = id; };
-  void SetLmin(Double_t z) { fLmin = z*10; };
-  void SetLmax(Double_t z) { fLmax = z*10; };
-  void SetSmearBeam(Double_t sb) { fsmearBeam = sb; };
+  void SetLmin(Double_t z) { fLmin = z * 10; };  // Conversion from cm to mm
+  void SetLmax(Double_t z) { fLmax = z * 10; };  // Conversion from cm to mm
+  void SetSmearBeam(Double_t sb) { fsmearBeam = sb * 10; };  // Conversion from cm to mm
+  void SetPaintRadius(Double_t r) { fPaintBeam = r * 10; };  // Conversion from cm to mm
   void SetfFDs(Double_t z) { fFDs = z; };
   void UseRandom1() { fUseRandom1 = kTRUE; fUseRandom3 = kFALSE; };
   void UseRandom3() { fUseRandom1 = kFALSE; fUseRandom3 = kTRUE; };
@@ -93,6 +93,7 @@ class HNLPythia8Generator : public FairGenerator
   Double_t fctau;      // hnl lifetime
   Double_t fFDs;       // correction for Pythia6 to match measured Ds production
   Double_t fsmearBeam; // finite beam size
+  Double_t fPaintBeam;   // beam painting radius
   const char* fextFile; // read charm and beauty hadrons from external file, decay with Pythia
   TFile* fInputFile;   //! pointer to a file
   TTree* fTree;        //!

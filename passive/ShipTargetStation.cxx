@@ -30,7 +30,7 @@ ShipTargetStation::ShipTargetStation(const char* name,
                                      const Double_t tz,
                                      const TargetVersion tV,
                                      const int nS,
-				     const int HeT,
+				                     const int HeT,
                                      const char* Title)
     : FairModule(name, Title)
 {
@@ -71,6 +71,8 @@ void ShipTargetStation::ConstructGeometry()
     TGeoMedium* mo = gGeoManager->GetMedium("molybdenum");
     InitMedium("iron");
     TGeoMedium* iron = gGeoManager->GetMedium("iron");
+    InitMedium("steel316L");
+    TGeoMedium* steel316L = gGeoManager->GetMedium("steel316L");
     InitMedium("copper");
     TGeoMedium* copper = gGeoManager->GetMedium("copper");
 
@@ -97,7 +99,7 @@ void ShipTargetStation::ConstructGeometry()
     fixedCooler->SetPressure(He_P);
     TGeoMedium* cooler = (fTV == TargetVersion::Jun25) ? pressurised_He : water;
 
-    LOG(INFO) << "-- Target cooler: " << cooler->GetName() << " T=" << cooler->GetMaterial()->GetTemperature()
+    LOG(info) << "-- Target cooler: " << cooler->GetName() << " T=" << cooler->GetMaterial()->GetTemperature()
               << " K, P=" << cooler->GetMaterial()->GetPressure() << " MeV/mm3, Density="
 	      << cooler->GetMaterial()->GetDensity();
 
@@ -127,16 +129,36 @@ void ShipTargetStation::ConstructGeometry()
     vessel = gGeoManager->MakeTube("HeVolume", cooler, 0, vessel_diameter / 2. - vessel_thickness, vessel_length / 2.);
     vessel->SetLineColor(7);
 
+    // Steel enclosure around target inside He volume
+    // Inner radius must be larger than target radius (fDiameter/2) to avoid overlaps
+    double enclosure_clearance = 2 * mm;  // Clearance between target and enclosure
+    double enclosure_inner_radius = fDiameter / 2. + enclosure_clearance;
+    double enclosure_thickness = 40 * mm;
+    double enclosure_outer_radius = enclosure_inner_radius + enclosure_thickness;
+    double enclosure_cutout_width_x = 160 * mm;  // Width in x direction
+    double enclosure_cutout_width_y = 280 * mm;  // Width in y direction
+    double enclosure_length = fTargetLength;
 
-    //now place target inside He volume
+    auto enclosure_outer_tube = new TGeoTube(
+        "enclosure_outer_tube", enclosure_inner_radius, enclosure_outer_radius, enclosure_length / 2.);
+    auto enclosure_cutout_box = new TGeoBBox(
+        "enclosure_cutout_box", enclosure_cutout_width_x / 2., enclosure_cutout_width_y / 2., enclosure_length / 2.);
+    auto enclosure_shape = new TGeoCompositeShape(
+        "enclosure_shape", "enclosure_outer_tube - enclosure_cutout_box");
+    auto enclosure = new TGeoVolume("target_enclosure", enclosure_shape, steel316L);
+    enclosure->SetLineColor(46);  // Reddish color for steel
+    vessel->AddNode(enclosure, 1, new TGeoTranslation(0, 0, -vessel_length/2. + vessel_shift + enclosure_length / 2.));
+
+    //now place target inside He volume (and inside steel enclosure)
     Double_t zPos = 0.;
-    Int_t slots = fnS;
-    slots = slots - 1;
+    unsigned slots = fnS;
+    if(slots > 0)
+        slots = slots - 1;
 
     TGeoVolume* target;
     //TGeoVolume* slit;
     // Double_t zPos =  fTargetZ - fTargetLength/2.;
-    for (Int_t i = 0; i < fnS; i++) {   // loop on layers
+    for (unsigned i = 0; i < fnS; i++) {   // loop on layers
         TString nmi = "Target_";
         nmi += i + 1;
         //TString sm = "Slit_";

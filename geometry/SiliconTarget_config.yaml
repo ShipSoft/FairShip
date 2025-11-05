@@ -1,0 +1,10 @@
+SiliconTarget:
+  targetWidth: 40 #Tungesten width (cm)
+  targetHeight: 40 #Tungsten height (cm)
+  sensorWidth: 9.8 #Sensor active area -- width (cm)
+  sensorLength: 19.52 #Sensor active area -- height (cm)
+  nLayers: 120 #Number of tungsten + silicon layers
+  zPosition: auto #Default: auto -- centre of the second to last magnet in z
+  targetThickness: 0.35 #Tungsten thickness (cm)
+  targetSpacing: 1.1 #Spacing between pairs of tungsten layers (cm)
+  moduleOffset: 0.1 #Spacing between tungsten surface and first silicon layer (cm)

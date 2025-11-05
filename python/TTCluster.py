@@ -175,17 +175,16 @@ CDF_ly_params = {
 #####  LOAD THE TARGET TRACKER GEOMETRY  #########
 ##################################################
 
-design2018 = {'dy': 10.,'dv': 6,'ds': 9,'nud': 3,'caloDesign': 3,'strawDesign': 10}
+design2018 = {'dy': 10.,'dv': 6,'ds': 9,'nud': 3,'strawDesign': 10}
 dy = design2018['dy']
 dv = design2018['dv']
 ds = design2018['ds']
 nud = design2018['nud']
-caloDesign = design2018['caloDesign']
 strawDesign = design2018['strawDesign']
 geofile = None
 
 ship_geo = ConfigRegistry.loadpy("$FAIRSHIP/geometry/geometry_config.py", Yheight=dy,
-	tankDesign=dv, muShieldDesign=ds, nuTauTargetDesign=nud, CaloDesign=caloDesign,
+	tankDesign=dv, muShieldDesign=ds, nuTauTargetDesign=nud,
 	strawDesign=strawDesign, muShieldGeo=geofile)
 
 n_hor_planes = ship_geo.NuTauTT.n_hor_planes # 11

@@ -31,9 +31,9 @@ Bool_t GenieGenerator::Init(const char* fileName) {
 Bool_t GenieGenerator::Init(const char* fileName, const int firstEvent) {
   fNuOnly = false;
   fInputFile = TFile::Open(fileName);
-  LOG(INFO) << "Opening input file " << fileName;
+  LOG(info) << "Opening input file " << fileName;
   if (!fInputFile) {
-      LOG(FATAL) << "Error opening input file.";
+      LOG(fatal) << "Error opening input file.";
       return kFALSE;
   }
   fTree = dynamic_cast<TTree*>(fInputFile->Get("gst"));
@@ -311,7 +311,7 @@ Bool_t GenieGenerator::OldReadEvent(FairPrimaryGenerator* cpg)
      }
      fFirst = kFALSE;
     }
-    if (fn==fNevents) {LOG(WARNING) << "End of input file. Rewind.";}
+    if (fn==fNevents) {LOG(warning) << "End of input file. Rewind.";}
     fTree->GetEntry(fn%fNevents);
     fn++;
     if (fn%1000==0) {
@@ -430,7 +430,7 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg)
 	  sprintf(ts,"%d",idhnu);
 	  //pickup corresponding (log10(p),log10(pt)) histogram
           if (fInputFile->FindObjectAny(ts)){
-           TH2F* h2tmp = dynamic_cast<TH2F*>(fInputFile->Get(ts));
+           TH2* h2tmp = dynamic_cast<TH2*>(fInputFile->Get(ts));
            printf("HISTID=%d, Title:%s\n",idhnu,h2tmp->GetTitle());
 	   sprintf(ts,"px_%d",idhnu);
           //make its x-projection, to later be able to convert log10(p) to its bin-number
@@ -449,7 +449,7 @@ Bool_t GenieGenerator::ReadEvent(FairPrimaryGenerator* cpg)
       fFirst = kFALSE;
     }
 
-    if (fn==fNevents) {LOG(WARNING) << "End of input file. Rewind.";}
+    if (fn==fNevents) {LOG(warning) << "End of input file. Rewind.";}
     fTree->GetEntry(fn%fNevents);
     fn++;
     if (fn%100==0) {

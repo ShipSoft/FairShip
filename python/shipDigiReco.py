@@ -1,5 +1,4 @@
 import os,ROOT,shipVertex,shipDet_conf
-import SciFiMapping
 import global_variables
 import shipPatRec
 import shipunit as u
@@ -8,6 +7,13 @@ from array import array
 import sys
 from math import fabs
 from backports import tdirectory634
+from detectors.muonDetector import muonDetector
+from detectors.timeDetector import timeDetector
+from detectors.MTCDetector import MTCDetector
+from detectors.SBTDetector import SBTDetector
+from detectors.UpstreamTaggerDetector import UpstreamTaggerDetector
+from detectors.strawtubesDetector import strawtubesDetector
+
 stop  = ROOT.TVector3()
 start = ROOT.TVector3()
 
@@ -27,14 +33,12 @@ class ShipDigiReco:
     if sTree.GetBranch("VetoHitOnTrack"): sTree.SetBranchStatus("VetoHitOnTrack",0)
     if sTree.GetBranch("Particles"): sTree.SetBranchStatus("Particles",0)
     if sTree.GetBranch("fitTrack2MC"): sTree.SetBranchStatus("fitTrack2MC",0)
-    if sTree.GetBranch("EcalClusters"): sTree.SetBranchStatus("EcalClusters",0)
-    if sTree.GetBranch("EcalReconstructed"): sTree.SetBranchStatus("EcalReconstructed",0)
     if sTree.GetBranch("Pid"): sTree.SetBranchStatus("Pid",0)
-    if sTree.GetBranch("Digi_StrawtubesHits"): sTree.SetBranchStatus("Digi_StrawtubesHits",0)
+    if sTree.GetBranch("Digi_strawtubesHits"): sTree.SetBranchStatus("Digi_strawtubesHits",0)
     if sTree.GetBranch("Digi_SBTHits"): sTree.SetBranchStatus("Digi_SBTHits",0)
     if sTree.GetBranch("digiSBT2MC"):   sTree.SetBranchStatus("digiSBT2MC",0)
     if sTree.GetBranch("Digi_TimeDetHits"): sTree.SetBranchStatus("Digi_TimeDetHits",0)
-    #if sTree.GetBranch("Digi_UpstreamTaggerHits"): sTree.SetBranchStatus("Digi_UpstreamTaggerHits",0)
+    if sTree.GetBranch("Digi_UpstreamTaggerHits"): sTree.SetBranchStatus("Digi_UpstreamTaggerHits",0)
     if sTree.GetBranch("Digi_MuonHits"): sTree.SetBranchStatus("Digi_MuonHits",0)
 
     rawFile = fout.replace("_rec.root","_raw.root")
@@ -52,6 +56,7 @@ class ShipDigiReco:
     self.sTree = self.fn["cbmsim"]
 #
   if self.sTree.GetBranch("GeoTracks"): self.sTree.SetBranchStatus("GeoTracks",0)
+
 # prepare for output
 # event header
   self.header  = ROOT.FairEventHeader()
@@ -67,25 +72,22 @@ class ShipDigiReco:
   self.fTrackletsArray = ROOT.TClonesArray("Tracklet")
   self.Tracklets   = self.sTree.Branch("Tracklets",  self.fTrackletsArray,32000,-1)
 #
-  self.digiStraw = ROOT.std.vector("strawtubesHit")()
-  self.digiStrawBranch   = self.sTree.Branch("Digi_StrawtubesHits",self.digiStraw,32000,-1)
-  self.digiMTC = ROOT.std.vector("MtcDetHit")()
-  self.digiMTCBranch = self.sTree.Branch("Digi_MTCHits", self.digiMTC, 32000, 1)
-  self.digiSBT    = ROOT.std.vector("vetoHit")()
-  self.digiSBTBranch=self.sTree.Branch("Digi_SBTHits",self.digiSBT,32000,-1)
+  self.strawtubes = strawtubesDetector("strawtubes", self.sTree, 'std.vector')
+
+  self.digiMTC = MTCDetector("MTCDet", self.sTree, 'std.vector', 'MTC')
+  self.digiSBT = SBTDetector("veto", self.sTree, 'std.vector', 'SBT', mcBranchName = "digiSBT2MC")
   self.vetoHitOnTrackArray    = ROOT.TClonesArray("vetoHitOnTrack")
   self.vetoHitOnTrackBranch=self.sTree.Branch("VetoHitOnTrack",self.vetoHitOnTrackArray,32000,-1)
-  self.digiSBT2MC  = ROOT.std.vector('std::vector< int >')()
-  self.mcLinkSBT   = self.sTree.Branch("digiSBT2MC",self.digiSBT2MC,32000,-1)
-  self.digiTimeDet    = ROOT.TClonesArray("TimeDetHit")
-  self.digiTimeDetBranch=self.sTree.Branch("Digi_TimeDetHits",self.digiTimeDet,32000,-1)
-  #self.digiUpstreamTagger    = ROOT.TClonesArray("UpstreamTaggerHit")
-  #self.digiUpstreamTaggerBranch=self.sTree.Branch("Digi_UpstreamTaggerHits",self.digiUpstreamTagger,32000,-1)
-  self.digiMuon    = ROOT.TClonesArray("muonHit")
-  self.digiMuonBranch=self.sTree.Branch("Digi_muonHits",self.digiMuon,32000,-1)
+
+  self.timeDetector = timeDetector("TimeDet", self.sTree)
+  self.upstreamTaggerDetector = UpstreamTaggerDetector("UpstreamTagger", self.sTree)
+
+  self.muonDetector = muonDetector("muon", self.sTree)
+
+
 # for the digitizing step
-  self.v_drift = global_variables.modules["Strawtubes"].StrawVdrift()
-  self.sigma_spatial = global_variables.modules["Strawtubes"].StrawSigmaSpatial()
+  self.v_drift = global_variables.modules["strawtubes"].StrawVdrift()
+  self.sigma_spatial = global_variables.modules["strawtubes"].StrawSigmaSpatial()
 # optional if present, splitcalCluster
   if self.sTree.GetBranch("splitcalPoint"):
    self.digiSplitcal = ROOT.TClonesArray("splitcalHit")
@@ -93,70 +95,6 @@ class ShipDigiReco:
    self.recoSplitcal = ROOT.TClonesArray("splitcalCluster")
    self.recoSplitcalBranch=self.sTree.Branch("Reco_SplitcalClusters",self.recoSplitcal,32000,-1)
 
-
-  # add MTC module to the list of globals to use it later in the MTCDetHit class. Consistent with SND@LHC approach.
-  # make SiPM to fibre mapping
-  if self.sTree.GetBranch("MtcDetPoint"):
-    lsOfGlobals = ROOT.gROOT.GetListOfGlobals()
-    if global_variables.modules["MTC"] not in lsOfGlobals:
-      lsOfGlobals.Add(global_variables.modules["MTC"])
-    mapping = SciFiMapping.SciFiMapping(global_variables.modules)
-    mapping.make_mapping()
-    self.sipm_to_fibre_map_U, self.sipm_to_fibre_map_V = mapping.get_sipm_to_fibre_map()
-# setup ecal reconstruction
-  self.caloTasks = []
-  if self.sTree.GetBranch("EcalPoint") and not self.sTree.GetBranch("splitcalPoint"):
-# Creates. exports and fills calorimeter structure
-   dflag = 10 if global_variables.debug else 0
-   ecalGeo = global_variables.ecalGeoFile + 'z' + str(global_variables.ShipGeo.ecal.z) + ".geo"
-   if not ecalGeo in os.listdir(os.environ["FAIRSHIP"]+"/geometry"):
-     shipDet_conf.makeEcalGeoFile(global_variables.ShipGeo.ecal.z, global_variables.ShipGeo.ecal.File)
-   ecalFiller=ROOT.ecalStructureFiller("ecalFiller", dflag,ecalGeo)
-   ecalFiller.SetUseMCPoints(ROOT.kTRUE)
-   ecalFiller.StoreTrackInformation()
-   self.caloTasks.append(ecalFiller)
- #GeV -> ADC conversion
-   ecalDigi=ROOT.ecalDigi("ecalDigi",0)
-   self.caloTasks.append(ecalDigi)
- #ADC -> GeV conversion
-   ecalPrepare=ROOT.ecalPrepare("ecalPrepare",0)
-   self.caloTasks.append(ecalPrepare)
- # Maximums locator
-   ecalMaximumFind=ROOT.ecalMaximumLocator("maximumFinder",dflag)
-   self.caloTasks.append(ecalMaximumFind)
- # Cluster calibration
-   ecalClusterCalib=ROOT.ecalClusterCalibration("ecalClusterCalibration", 0)
- #4x4 cm cells
-   ecalCl3PhS=ROOT.TFormula("ecalCl3PhS", "[0]+x*([1]+x*([2]+x*[3]))")
-   ecalCl3PhS.SetParameters(6.77797e-04, 5.75385e+00, 3.42690e-03, -1.16383e-04)
-   ecalClusterCalib.SetStraightCalibration(3, ecalCl3PhS)
-   ecalCl3Ph=ROOT.TFormula("ecalCl3Ph", "[0]+x*([1]+x*([2]+x*[3]))+[4]*x*y+[5]*x*y*y")
-   ecalCl3Ph.SetParameters(0.000750975, 5.7552, 0.00282783, -8.0025e-05, -0.000823651, 0.000111561)
-   ecalClusterCalib.SetCalibration(3, ecalCl3Ph)
-#6x6 cm cells
-   ecalCl2PhS=ROOT.TFormula("ecalCl2PhS", "[0]+x*([1]+x*([2]+x*[3]))")
-   ecalCl2PhS.SetParameters(8.14724e-04, 5.67428e+00, 3.39030e-03, -1.28388e-04)
-   ecalClusterCalib.SetStraightCalibration(2, ecalCl2PhS)
-   ecalCl2Ph=ROOT.TFormula("ecalCl2Ph", "[0]+x*([1]+x*([2]+x*[3]))+[4]*x*y+[5]*x*y*y")
-   ecalCl2Ph.SetParameters(0.000948095, 5.67471, 0.00339177, -0.000122629, -0.000169109, 8.33448e-06)
-   ecalClusterCalib.SetCalibration(2, ecalCl2Ph)
-   self.caloTasks.append(ecalClusterCalib)
-# Cluster finder
-   ecalClusterFind=ROOT.ecalClusterFinder("clusterFinder",dflag)
-   self.caloTasks.append(ecalClusterFind)
-# Calorimeter reconstruction
-   ecalReco=ROOT.ecalReco('ecalReco',0)
-   self.caloTasks.append(ecalReco)
-# Match reco to MC
-   ecalMatch=ROOT.ecalMatch('ecalMatch',0)
-   self.caloTasks.append(ecalMatch)
-   if global_variables.EcalDebugDraw:
- # ecal drawer: Draws calorimeter structure, incoming particles, clusters, maximums
-    ecalDrawer=ROOT.ecalDrawer("clusterFinder",10)
-    self.caloTasks.append(ecalDrawer)
- # add pid reco
-   import shipPid
-   self.caloTasks.append(shipPid.Task(self))
 # prepare vertexing
   self.Vertexing = shipVertex.Task(global_variables.h, self.sTree)
 # setup random number generator
@@ -165,25 +103,6 @@ class ShipDigiReco:
   self.PDG = ROOT.TDatabasePDG.Instance()
 # access ShipTree
   self.sTree.GetEvent(0)
-  if len(self.caloTasks)>0:
-   print("** initialize Calo reconstruction **")
-   self.ecalStructure     = ecalFiller.InitPython(self.sTree.EcalPointLite)
-   ecalDigi.InitPython(self.ecalStructure)
-   ecalPrepare.InitPython(self.ecalStructure)
-   self.ecalMaximums      = ecalMaximumFind.InitPython(self.ecalStructure)
-   self.ecalCalib         = ecalClusterCalib.InitPython()
-   self.ecalClusters      = ecalClusterFind.InitPython(self.ecalStructure, self.ecalMaximums, self.ecalCalib)
-   self.EcalClusters = self.sTree.Branch("EcalClusters",self.ecalClusters,32000,-1)
-   self.ecalReconstructed = ecalReco.InitPython(self.sTree.EcalClusters, self.ecalStructure, self.ecalCalib)
-   self.EcalReconstructed = self.sTree.Branch("EcalReconstructed",self.ecalReconstructed,32000,-1)
-   ecalMatch.InitPython(self.ecalStructure, self.ecalReconstructed, self.sTree.MCTrack)
-   if global_variables.EcalDebugDraw:
-     ecalDrawer.InitPython(self.sTree.MCTrack, self.sTree.EcalPoint, self.ecalStructure, self.ecalClusters)
-  else:
-   ecalClusters      = ROOT.TClonesArray("ecalCluster")
-   ecalReconstructed = ROOT.TClonesArray("ecalReconstructed")
-   self.EcalClusters = self.sTree.Branch("EcalClusters",ecalClusters,32000,-1)
-   self.EcalReconstructed = self.sTree.Branch("EcalReconstructed",ecalReconstructed,32000,-1)
 #
 # init geometry and mag. field
   gMan  = ROOT.gGeoManager
@@ -211,14 +130,6 @@ class ShipDigiReco:
    ntracks = self.findTracks()
    nGoodTracks = self.findGoodTracks()
    self.linkVetoOnTracks()
-   for x in self.caloTasks:
-    if hasattr(x,'execute'): x.execute()
-    elif x.GetName() == 'ecalFiller': x.Exec('start',self.sTree.EcalPointLite)
-    elif x.GetName() == 'ecalMatch':  x.Exec('start',self.ecalReconstructed, self.sTree.MCTrack)
-    else : x.Exec('start')
-   if len(self.caloTasks)>0:
-    self.EcalClusters.Fill()
-    self.EcalReconstructed.Fill()
    if global_variables.vertexing:
 # now go for 2-track combinations
     self.Vertexing.execute()
@@ -229,28 +140,14 @@ class ShipDigiReco:
    self.header.SetRunId( self.sTree.MCEventHeader.GetRunID() )
    self.header.SetMCEntryNumber( self.sTree.MCEventHeader.GetEventID() )  # counts from 1
    self.eventHeader.Fill()
-   self.digiSBT.clear()
-   self.digiSBT2MC.clear()
-   self.digitize_SBT()
-   self.digiSBTBranch.Fill()
-   self.mcLinkSBT.Fill()
-   self.digiStraw.clear()
-   self.digitize_straw_tubes()
-   self.digiStrawBranch.Fill()
-   self.digiTimeDet.Delete()
-   self.digitizeTimeDet()
-   self.digiTimeDetBranch.Fill()
-   # self.digiUpstreamTagger.Delete()
-   # self.digitizeUpstreamTagger()         TR 19/6/2020 work in progress
-   # self.digiUpstreamTaggerBranch.Fill()
-   self.digiMuon.Delete()
-   self.digitizeMuon()
-   self.digiMuonBranch.Fill()
+   self.digiSBT.process()
+   self.strawtubes.process()
+   self.timeDetector.process()
+   self.upstreamTaggerDetector.process()
+   self.muonDetector.process()
    # adding digitization of SND/MTC
-   if self.sTree.GetBranch("MtcDetPoint"):
-    self.digiMTC.clear()
-    self.digitize_MTC()
-    self.digiMTCBranch.Fill()
+   if self.sTree.GetBranch("MTCDetPoint"):
+    self.digiMTC.process()
    if self.sTree.GetBranch("splitcalPoint"):
     self.digiSplitcal.Delete()
     self.recoSplitcal.Delete()
@@ -652,262 +549,6 @@ class ShipDigiReco:
    return list_neighbours
 
 
-
-
- def digitizeTimeDet(self):
-   index = 0
-   hitsPerDetId = {}
-   for aMCPoint in self.sTree.TimeDetPoint:
-     aHit = ROOT.TimeDetHit(aMCPoint,self.sTree.t0)
-     if self.digiTimeDet.GetSize() == index: self.digiTimeDet.Expand(index+1000)
-     self.digiTimeDet[index]=aHit
-     detID = aHit.GetDetectorID()
-     if aHit.isValid():
-      if detID in hitsPerDetId:
-       t = aHit.GetMeasurements()
-       ct = aHit.GetMeasurements()
-# this is not really correct, only first attempt
-# case that one measurement only is earlier not taken into account
-# SetTDC(Float_t val1, Float_t val2)
-       if  t[0]>ct[0] or t[1]>ct[1]:
- # second hit with smaller tdc
-        self.digiTimeDet[hitsPerDetId[detID]].setInvalid()
-        hitsPerDetId[detID] = index
-     index+=1
-
- def digitizeUpstreamTagger(self):
-   index = 0
-   hitsPerDetId = {}
-   for aMCPoint in self.sTree.UpstreamTaggerPoint:
-     aHit = ROOT.UpstreamTaggerHit(aMCPoint, global_variables.modules["UpstreamTagger"], self.sTree.t0)
-     if self.digiUpstreamTagger.GetSize() == index: self.digiUpstreamTagger.Expand(index+1000)
-     self.digiUpstreamTagger[index]=aHit
-     detID = aHit.GetDetectorID()
-     if aHit.isValid():
-      if detID in hitsPerDetId:
-       t = aHit.GetMeasurements()
-       ct = aHit.GetMeasurements()
-# this is not really correct, only first attempt
-# case that one measurement only is earlier not taken into account
-# SetTDC(Float_t val1, Float_t val2)
-       if  t[0]>ct[0] or t[1]>ct[1]:
- # second hit with smaller tdc
-        self.digiUpstreamTagger[hitsPerDetId[detID]].setInvalid()
-        hitsPerDetId[detID] = index
-     index+=1
-
-
- def digitizeMuon(self):
-   index = 0
-   hitsPerDetId = {}
-   for aMCPoint in self.sTree.muonPoint:
-     aHit = ROOT.muonHit(aMCPoint,self.sTree.t0)
-     if self.digiMuon.GetSize() == index: self.digiMuon.Expand(index+1000)
-     self.digiMuon[index]=aHit
-     detID = aHit.GetDetectorID()
-     if aHit.isValid():
-      if detID in hitsPerDetId:
-       if self.digiMuon[hitsPerDetId[detID]].GetDigi() > aHit.GetDigi():
- # second hit with smaller tdc
-        self.digiMuon[hitsPerDetId[detID]].setValidity(0)
-        hitsPerDetId[detID] = index
-     index+=1
-
- def digitize_MTC(self):
-    """Digitize SND/MTC MC hits.
-
-    Example of fiberID: 123051820, where:
-      - 1: MTC unique ID
-      - 23: layer number
-      - 0: station type (0 for +5 degrees, 1 for -5 degrees, 2 for scint plane)
-      - 5: z-layer number (0-5)
-      - 1820: local fibre ID within the station
-    Example of SiPM global channel (what is seen in the output file): 123004123, where:
-      - 1: MTC unique ID
-      - 23: layer number
-      - 0: station type (0 for +5 degrees, 1 for -5 degrees)
-      - 0: mat number (only 0 by June 2025)
-      - 4: SiPM number (0-N, where N is the number of SiPMs in the station)
-      - 123: number of the SiPM channel (0-127, 128 channels per SiPM)
-    """
-    hit_container = {}
-    mc_points = {}
-    norm = {}
-    for k, mc_point in enumerate(self.sTree.MtcDetPoint):
-      det_id = mc_point.GetDetectorID()
-      station_type = mc_point.GetStationType() # 0 for +5 degrees, 1 for -5 degrees, 2 for scint plane, extraction: int(fDetectorID / 100000) % 10
-      energy_loss = mc_point.GetEnergyLoss()
-
-      if station_type == 0:
-        # +5 degrees fiber station uses U fibers
-        fibre_map = self.sipm_to_fibre_map_U
-      elif station_type == 1:
-        # -5 degrees fiber station uses V fibers
-        fibre_map = self.sipm_to_fibre_map_V
-      elif station_type == 2:
-        # Scint Plane. Preserve the same logic as for fibre stations,
-        # but use the det_id directly as the global channel.
-        global_channel = det_id
-        if global_channel not in hit_container:
-          hit_container[global_channel] = []
-          mc_points[global_channel] = {}
-          norm[global_channel] = 0
-
-        weight = 1
-        # Append (energy_loss, weight) instead of (mc_point, weight)
-        hit_container[global_channel].append([mc_point, weight])
-        d_e = energy_loss * weight
-        mc_points[global_channel][k] = d_e
-        norm[global_channel] += d_e
-        continue
-      else:
-          # Skip any other station_type values
-          continue
-      # For station_type 0 or 1, look up the local fibre ID
-      loc_fibre_id = det_id % 1_000_000
-      if loc_fibre_id not in fibre_map:
-        # If there is no entry for this fibre ID, skip
-        print(f"MTC digitization: no mapping found for fibre ID {loc_fibre_id} in station type {station_type}. Skipping.")
-        continue
-
-      for sipm_chan, chan_info in fibre_map[loc_fibre_id].items():
-        global_channel = (det_id // 1_000_000) * 1_000_000 + sipm_chan
-        if global_channel not in hit_container:
-          hit_container[global_channel] = []
-          mc_points[global_channel] = {}
-          norm[global_channel] = 0
-
-        weight = chan_info['weight']
-        hit_container[global_channel].append([mc_point, weight])
-        d_e = energy_loss * weight
-        mc_points[global_channel][k] = d_e
-        norm[global_channel] += d_e
-
-    for det_id in hit_container:
-      all_points = ROOT.std.vector('MtcDetPoint*')()
-      all_weights = ROOT.std.vector('Float_t')()
-
-      for entry in hit_container[det_id]:
-        all_points.push_back(entry[0])
-        all_weights.push_back(entry[1])
-      det_hit = ROOT.MtcDetHit(det_id, all_points, all_weights)
-      self.digiMTC.push_back(det_hit)
-    # digi2MCPoints will be added later
-    #   for idx, de_value in mc_points[det_id].items():
-    #     mc_links.Add(det_id, idx, de_value / norm[det_id])
-
-
-
-
-
- def digitize_SBT(self):
-     """Digitize Surrounding Background Tagger MC hits.
-
-     TDC defined as the time of the first MC hit in the cell.
-     Eloss defined as the cumulative energy deposition of MC hits in the cell.
-
-     """
-     ElossPerDetId    = {}
-     tOfFlight        = {}
-     listOfVetoPoints = {}
-     key=-1
-     for aMCPoint in self.sTree.vetoPoint:
-       key+=1
-       detID=aMCPoint.GetDetectorID()
-       Eloss=aMCPoint.GetEnergyLoss()
-       if detID not in ElossPerDetId:
-        ElossPerDetId[detID]=0
-        listOfVetoPoints[detID]=[]
-        tOfFlight[detID]=[]
-       ElossPerDetId[detID] += Eloss
-       listOfVetoPoints[detID].append(key)
-       tOfFlight[detID].append(aMCPoint.GetTime())
-     for seg in ElossPerDetId:
-       aHit = ROOT.vetoHit(seg,ElossPerDetId[seg])
-       aHit.SetTDC(min( tOfFlight[seg] ) + self.sTree.t0 )
-       if ElossPerDetId[seg]<0.045:    aHit.setInvalid()  # threshold for liquid scintillator, source Berlin group
-       self.digiSBT.push_back(aHit)
-       v = ROOT.std.vector('int')()
-       for x in listOfVetoPoints[seg]:
-           v.push_back(x)
-       self.digiSBT2MC.push_back(v)
-
- def digitize_straw_tubes(self):
-    """Digitize strawtube MC hits.
-
-    The earliest hit per straw will be marked valid, all later ones invalid.
-    """
-    earliest_per_det_id = {}
-    for index, point in enumerate(self.sTree.strawtubesPoint):
-        hit = ROOT.strawtubesHit(point , self.sTree.t0)
-        self.digiStraw.push_back(hit)
-        if hit.isValid():
-            detector_id = hit.GetDetectorID()
-            if detector_id in earliest_per_det_id:
-               earliest = earliest_per_det_id[detector_id]
-               if self.digiStraw[earliest].GetTDC() > hit.GetTDC():
-                   # second hit with smaller tdc
-                   self.digiStraw[earliest].setInvalid()
-                   earliest_per_det_id[detector_id] = index
-               else:
-                   self.digiStraw[index].setInvalid()
-            else:
-                earliest_per_det_id[detector_id] = index
-
- def withT0Estimate(self):
- # loop over all straw tdcs and make average, correct for ToF
-  n = 0
-  t0 = 0.
-  key = -1
-  SmearedHits = []
-  v_drift = global_variables.modules["Strawtubes"].StrawVdrift()
-  global_variables.modules["Strawtubes"].StrawEndPoints(1002001, start, stop)
-  z1 = stop.z()
-  for aDigi in self.digiStraw:
-    key+=1
-    if not aDigi.isValid(): continue
-    detID = aDigi.GetDetectorID()
-    global_variables.modules["Strawtubes"].StrawEndPoints(detID, start, stop)
-    delt1 = (start[2]-z1)/u.speedOfLight
-    t0+=aDigi.GetDigi()-delt1
-    SmearedHits.append( {'digiHit':key,'xtop':stop.x(),'ytop':stop.y(),'z':stop.z(),'xbot':start.x(),'ybot':start.y(),'dist':aDigi.GetDigi(), 'detID':detID} )
-    n+=1
-  if n>0: t0 = t0/n - 73.2*u.ns
-  for s in SmearedHits:
-    delt1 = (s['z']-z1)/u.speedOfLight
-    s['dist'] = (s['dist'] -delt1 -t0)*v_drift
-  return SmearedHits
-
- def smearHits(self,no_amb=None):
- # smear strawtube points
-  SmearedHits = []
-  key = -1
-  v_drift = global_variables.modules["Strawtubes"].StrawVdrift()
-  global_variables.modules["Strawtubes"].StrawEndPoints(1002001, start, stop)
-  z1 = stop.z()
-  for aDigi in self.digiStraw:
-     key+=1
-     if not aDigi.isValid(): continue
-     detID = aDigi.GetDetectorID()
-     global_variables.modules["Strawtubes"].StrawEndPoints(detID, start, stop)
-   #distance to wire
-     delt1 = (start[2]-z1)/u.speedOfLight
-     p=self.sTree.strawtubesPoint[key]
-     # use true t0  construction:
-     #     fdigi = t0 + p->GetTime() + t_drift + ( stop[0]-p->GetX() )/ speedOfLight;
-     smear = (aDigi.GetDigi() - self.sTree.t0  - p.GetTime() - ( stop[0]-p.GetX() )/ u.speedOfLight) * v_drift
-     if no_amb: smear = p.dist2Wire()
-     SmearedHits.append( {'digiHit':key,'xtop':stop.x(),'ytop':stop.y(),'z':stop.z(),'xbot':start.x(),'ybot':start.y(),'dist':smear, 'detID':detID} )
-     # Note: top.z()==bot.z() unless misaligned, so only add key 'z' to smearedHit
-     if abs(stop.y()) == abs(start.y()):
-       global_variables.h['disty'].Fill(smear)
-     elif abs(stop.y()) > abs(start.y()):
-       global_variables.h['distu'].Fill(smear)
-     elif abs(stop.y()) < abs(start.y()):
-       global_variables.h['distv'].Fill(smear)
-
-  return SmearedHits
-
  def findTracks(self):
   hitPosLists    = {}
   hit_detector_ids = {}
@@ -920,10 +561,10 @@ class ShipDigiReco:
 
 #
   if global_variables.withT0:
-    self.SmearedHits = self.withT0Estimate()
+    self.SmearedHits = self.strawtubes.withT0Estimate()
   # old procedure, not including estimation of t0
   else:
-    self.SmearedHits = self.smearHits(global_variables.withNoStrawSmearing)
+    self.SmearedHits = self.strawtubes.smearHits(global_variables.withNoStrawSmearing)
 
   nTrack = -1
   trackCandidates = []
@@ -941,7 +582,7 @@ class ShipDigiReco:
       atrack_smeared_hits = list(atrack_y12) + list(atrack_stereo12) + list(atrack_y34) + list(atrack_stereo34)
       for sm in atrack_smeared_hits:
         detID = sm['detID']
-        station = self.digiStraw[sm['digiHit']].GetStationNumber()
+        station = self.strawtubes.det[sm['digiHit']].GetStationNumber()
         trID = i_track
         # Collect hits for track fit
         if trID not in hitPosLists:
@@ -958,8 +599,8 @@ class ShipDigiReco:
         stationCrossed[trID][station] += 1
   else: # do fake pattern recognition
    for sm in self.SmearedHits:
-    detID = self.digiStraw[sm['digiHit']].GetDetectorID()
-    station = self.digiStraw[sm['digiHit']].GetStationNumber()
+    detID = self.strawtubes.det[sm['digiHit']].GetDetectorID()
+    station = self.strawtubes.det[sm['digiHit']].GetStationNumber()
     trID = self.sTree.strawtubesPoint[sm['digiHit']].GetTrackID()
     if trID not in hitPosLists:
       hitPosLists[trID]     = ROOT.std.vector('TVectorD')()
@@ -1028,7 +669,7 @@ class ShipDigiReco:
         tp
       ) # the measurement is told which trackpoint it belongs to
       # print measurement.getMaxDistance()
-      measurement.setMaxDistance(global_variables.ShipGeo.strawtubes.InnerStrawDiameter / 2.)
+      measurement.setMaxDistance(global_variables.ShipGeo.strawtubes_geo.outer_straw_diameter / 2. - global_variables.ShipGeo.strawtubes_geo.wall_thickness)
       # measurement.setLeftRightResolution(-1)
       tp.addRawMeasurement(measurement) # package measurement in the TrackPoint
       theTrack.insertPoint(tp)  # add point to Track
@@ -1134,7 +775,7 @@ class ShipDigiReco:
    rep   = ROOT.genfit.RKTrackRep(xx.getPDG())
    state = ROOT.genfit.StateOnPlane(rep)
    rep.setPosMom(state,xx.getPos(),xx.getMom())
-   for i,vetoHit in enumerate(self.digiSBT):
+   for i,vetoHit in enumerate(self.digiSBT.det):
      vetoHitPos = vetoHit.GetXYZ()
      try:
       rep.extrapolateToPoint(state,vetoHitPos,False)

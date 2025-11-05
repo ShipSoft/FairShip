@@ -234,7 +234,7 @@ void ShipBFieldMap::initialise()
 void ShipBFieldMap::readMapFile()
 {
 
-    LOG(INFO) << "ShipBFieldMap::readMapFile() creating field " << this->GetName()
+    LOG(info) << "ShipBFieldMap::readMapFile() creating field " << this->GetName()
 	     << " using file " << mapFileName_;
 
     // Check to see if we have a ROOT file
@@ -255,14 +255,14 @@ void ShipBFieldMap::readRootFile() {
     TFile* theFile = TFile::Open(mapFileName_.c_str());
 
     if (!theFile) {
-	    LOG(FATAL) << "ShipBFieldMap: could not find the file " << mapFileName_;
+	    LOG(fatal) << "ShipBFieldMap: could not find the file " << mapFileName_;
 
     }
 
     // Coordinate ranges
     TTree* rTree = dynamic_cast<TTree*>(theFile->Get("Range"));
     if (!rTree) {
-	    LOG(FATAL) << "ShipBFieldMap: could not find Range tree in " << mapFileName_;
+	    LOG(fatal) << "ShipBFieldMap: could not find Range tree in " << mapFileName_;
 
     }
 
@@ -289,7 +289,7 @@ void ShipBFieldMap::readRootFile() {
 
         TTree* dTree = dynamic_cast<TTree*>(theFile->Get("Data"));
 	if (!dTree) {
-	    LOG(FATAL) << "ShipBFieldMap: could not find Data tree in " << mapFileName_;
+	    LOG(fatal) << "ShipBFieldMap: could not find Data tree in " << mapFileName_;
 
 	}
 
@@ -306,7 +306,7 @@ void ShipBFieldMap::readRootFile() {
 
 	Int_t nEntries = dTree->GetEntries();
 	if (nEntries != N_) {
-	    LOG(FATAL) << "Expected " << N_ << " field map entries but found " << nEntries;
+	    LOG(fatal) << "Expected " << N_ << " field map entries but found " << nEntries;
 	    nEntries = 0;
 	}
 
@@ -340,7 +340,7 @@ void ShipBFieldMap::readTextFile() {
     std::ifstream getData(mapFileName_.c_str());
 
     if (!getData.is_open()) {
-        LOG(FATAL) << "Error: Cannot open magnetic field map file: " << mapFileName_;
+        LOG(fatal) << "Error: Cannot open magnetic field map file: " << mapFileName_;
     }
 
     std::string tmpString("");
@@ -424,14 +424,14 @@ void ShipBFieldMap::setLimits() {
 
     N_ = Nx_*Ny_*Nz_;
 
-    LOG(INFO) << "x limits: " << xMin_ << ", " << xMax_ << ", dx = " << dx_;
-    LOG(INFO) << "y limits: " << yMin_ << ", " << yMax_ << ", dy = " << dy_;
-    LOG(INFO) << "z limits: " << zMin_ << ", " << zMax_ << ", dz = " << dz_;
+    LOG(info) << "x limits: " << xMin_ << ", " << xMax_ << ", dx = " << dx_;
+    LOG(info) << "y limits: " << yMin_ << ", " << yMax_ << ", dy = " << dy_;
+    LOG(info) << "z limits: " << zMin_ << ", " << zMax_ << ", dz = " << dz_;
 
-    LOG(INFO) << "Offsets: x = " << xOffset_ << ", y = " << yOffset_ << ", z = " << zOffset_;
-    LOG(INFO) << "Angles : phi = " << phi_ << ", theta = " << theta_ << ", psi = " << psi_;
+    LOG(info) << "Offsets: x = " << xOffset_ << ", y = " << yOffset_ << ", z = " << zOffset_;
+    LOG(info) << "Angles : phi = " << phi_ << ", theta = " << theta_ << ", psi = " << psi_;
 
-    LOG(INFO) << "Total number of bins = " << N_ << "; Nx = " << Nx_ << ", Ny = " << Ny_ << ", Nz = " << Nz_;
+    LOG(info) << "Total number of bins = " << N_ << "; Nx = " << Nx_ << ", Ny = " << Ny_ << ", Nz = " << Nz_;
 }
 
 

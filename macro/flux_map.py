@@ -71,12 +71,6 @@ def main():
                     '{};z[cm];x[cm]'.format(
                         title), 200, -2680, -2480, 600, -300,
                     300)
-        ut.bookHist(h, f'ECAL_TP_{suffix}',
-                    f'{title};x[cm];y[cm]', 167, -501, +501, 334,
-                    -1002, 1002)
-        ut.bookHist(h, f'ECAL_Alt_{suffix}',
-                    f'{title};x[cm];y[cm]', 50, -500, +500, 100, -1000,
-                    1000)
         ut.bookHist(h, f'SBT_Liquid_{suffix}',
                     f'{title};z[cm];#phi', 100, -3000, +3000, 100,
                     -r.TMath.Pi(), r.TMath.Pi())
@@ -105,16 +99,6 @@ def main():
                     maxpt)
         ut.bookHist(h, f'mu_ppt{suffix}', '#mu#pm;p[GeV];p_t[GeV];',
                     100, 0, maxp, 100, 0, maxpt)
-    ut.bookHist(h, 'ECAL_TP_e', 'e#pm with E#geq 250 MeV;x[cm];y[cm]', 167,
-                -501, +501, 334, -1002, 1002)
-    ut.bookHist(h, 'ECAL_Alt_e', 'e#pm with E#geq 250 MeV;x[cm];y[cm]', 50,
-                -500, +500, 100, -1000, 1000)
-    ut.bookHist(h, 'ECAL_TP_gamma', '#gamma;x[cm];y[cm]', 167, -501, +501, 334,
-                -1002, 1002)
-    ut.bookHist(h, 'ECAL_Alt_gamma', '#gamma;x[cm];y[cm]', 50, -500, +500, 100,
-                -1000, 1000)
-    ut.bookHist(h, 'ECAL_e_E', 'e#pm;E[GeV/c^{2}];', 100, 0, 1)
-    ut.bookHist(h, 'ECAL_gamma_E', '#gamma;E[GeV/c^{2}];', 100, 0, 1)
     ch = r.TChain('cbmsim')
     ch.Add(args.inputfile)
     n = ch.GetEntries()
@@ -151,43 +135,6 @@ def main():
                     h['mu_p'].Fill(P, weight)
                     h['mu_pt'].Fill(pt, weight)
                     h['mu_ppt'].Fill(P, pt, weight)
-        for hit in event.EcalPoint:
-            if hit:
-                if not hit.GetEnergyLoss() > 0:
-                    continue
-                trid = hit.GetTrackID()
-                assert trid > 0
-                weight = event.MCTrack[trid].GetWeight()
-                x = hit.GetX()
-                y = hit.GetY()
-                px = hit.GetPx()
-                py = hit.GetPy()
-                pz = hit.GetPz()
-                pt = np.hypot(px, py)
-                P = np.hypot(pz, pt)
-                pid = hit.PdgCode()
-                if pid in [12, -12, 14, -14, 16, -16]:
-                    continue
-                h['ECAL_TP_all'].Fill(x, y, weight)
-                h['ECAL_Alt_all'].Fill(x, y, weight)
-                if abs(pid) == 13:
-                    muon = True
-                    muonid = trid
-                    h['mu_p'].Fill(P, weight)
-                    h['mu_pt'].Fill(pt, weight)
-                    h['mu_ppt'].Fill(P, pt, weight)
-                    h['ECAL_TP_mu'].Fill(x, y, weight)
-                    h['ECAL_Alt_mu'].Fill(x, y, weight)
-                elif abs(pid) == 11:
-                    Esq = px ** 2 + py ** 2 + pz ** 2 + 0.000511 ** 2
-                    h['ECAL_e_E'].Fill(np.sqrt(Esq), weight)
-                    h['ECAL_TP_e'].Fill(x, y, weight)
-                    h['ECAL_Alt_e'].Fill(x, y, weight)
-                elif abs(pid) == 22:
-                    Esq = px ** 2 + py ** 2 + pz ** 2
-                    h['ECAL_gamma_E'].Fill(np.sqrt(Esq), weight)
-                    h['ECAL_TP_gamma'].Fill(x, y, weight)
-                    h['ECAL_Alt_gamma'].Fill(x, y, weight)
         for hit in event.TTPoint:
             if hit:
                 if not hit.GetEnergyLoss() > 0:

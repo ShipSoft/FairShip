@@ -88,7 +88,9 @@ void ShipMuonShield::CreateArb8(TString                         arbName,
   TGeoVolume* magVol = nullptr;
 
   if (snd_hole &&
-      (arbName == "Magn6_MiddleMagL" || arbName == "Magn6_MiddleMagR")) {
+      ((arbName == "Magn6_MiddleMagL" || arbName == "Magn6_MiddleMagR")
+       || (arbName == "Magn5_MiddleMagL" || arbName == "Magn5_MiddleMagR")
+       )) {
     //
     // 1) Raw Arb8 “shape”
     //
@@ -348,7 +350,7 @@ Int_t ShipMuonShield::Initialize(std::vector<TString> &magnetName,
 				std::vector<Double_t> &gapIn, std::vector<Double_t> &gapOut,
 				std::vector<Double_t> &Z) {
   const Int_t nMagnets = 7;
-  LOG(INFO) << " Initialize the MS ";
+  LOG(info) << " Initialize the MS ";
   magnetName.reserve(nMagnets);
   fieldDirection.reserve(nMagnets);
   for (auto i :
