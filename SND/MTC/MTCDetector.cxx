@@ -306,6 +306,7 @@ void MTCDetector::CreateSciFiModule(const char* name,
     Double_t layerThick = fiberMatThick / numFiberLayers;
     fFiberLength = fSciFiActiveY / cos(fSciFiBendingAngle * TMath::DegToRad())
                    - 2 * fFiberRadius * sin(fSciFiBendingAngle * TMath::DegToRad());
+    LOG(info) << "Fiber length set to " << fFiberLength << " cm";
     Int_t fNumFibers = static_cast<Int_t>(fSciFiActiveX / fFiberPitch);
 
     // --- Define the SciFi fiber volume ---
@@ -495,13 +496,18 @@ void MTCDetector::SiPMOverlap()
     Double_t fLengthScifiMat = fSciFiActiveY;
     Double_t fWidthChannel = fFiberPitch * fChannelAggregated;
     fNSiPMChan = std::ceil(fWidth / fWidthChannel);
-    if (fNSiPMChan > 1000) {
-        LOG(info) << "Number of SiPM channels exceed 1000, namely: " << fNSiPMChan;
+    if (fNSiPMChan > kMaxChannelsPerSiPM) {
+        LOG(warn) << "Number of SiPM channels (" << fNSiPMChan << ") exceeds maximum per SiPM (" << kMaxChannelsPerSiPM
+                  << "), redistributing across multiple SiPMs";
+
         fNSiPMs = static_cast<int>(std::ceil(fNSiPMChan / 1000.));
+
         LOG(info) << "Increasing number of SiPMs up to " << fNSiPMs;
+
         // define redistribution of channels among SiPMs
         fNSiPMChan = static_cast<int>(std::ceil(fNSiPMChan / static_cast<float>(fNSiPMs)));
-        LOG(info) << "Redistributing channels, new fNSiPMChan = " << fNSiPMChan;
+
+        LOG(info) << "New fNSiPMChan = " << fNSiPMChan;
     }
     Double_t fEdge = (fWidth - fNSiPMs * fNSiPMChan * fWidthChannel) / 2;
     Double_t firstChannelX = -fWidth / 2;

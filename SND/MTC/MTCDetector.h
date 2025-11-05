@@ -129,6 +129,7 @@ class MTCDetector : public FairDetector
     Int_t fNSiPMChan;           // Number of SiPM channels
     Int_t fChannelAggregated;   // Number of SiPM channels to be aggregated
     Int_t fNSiPMs = 1;          // Default number of SiPMs
+    static constexpr Int_t kMaxChannelsPerSiPM = 1000;
     // Total module thickness = 0.3 + 0.135 + 0.1 + 0.135 + 0.3 ≈ 1.0 cm
     Int_t fNMats = 1;
     std::map<Int_t, std::map<Int_t, std::array<float, 2>>> fibresSiPM_U;   //! mapping of fibres to SiPM channels
