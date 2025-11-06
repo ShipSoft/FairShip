@@ -1,6 +1,5 @@
 var NAVTREEINDEX18 =
 {
-"goliath2root_8py.html#af5db520a2c247429ae9055945dbcc719":[6,0,11,16,4],
 "goliath2root_8py_source.html":[6,0,11,16],
 "hepunit_8py.html":[6,0,11,17],
 "hepunit_8py.html#a0497e5938a22adbf56d3c096ced7b4a6":[6,0,11,17,8],
@@ -249,5 +248,6 @@ var NAVTREEINDEX18 =
 "makeDecay_8py.html#a093ea6eb39711c567e9e0085f9bb52a9":[6,0,5,15,30],
 "makeDecay_8py.html#a1d9afd01a598d83d61bf13f290b9787c":[6,0,5,15,0],
 "makeDecay_8py.html#a38fd23c688b9219d3ed576e6c835f61f":[6,0,5,15,4],
-"makeDecay_8py.html#a47cef8e71e3ddbf835235b84b995c2dd":[6,0,5,15,23]
+"makeDecay_8py.html#a47cef8e71e3ddbf835235b84b995c2dd":[6,0,5,15,23],
+"makeDecay_8py.html#a522dc5811162059c19d2c67a581f9cef":[6,0,5,15,16]
 };

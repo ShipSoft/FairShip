@@ -36,7 +36,6 @@ var run__simScript_8py =
     [ "fStack", "run__simScript_8py.html#abe0f6f27c11e27c01a9ffffa37571906", null ],
     [ "genie_parser", "run__simScript_8py.html#a893491cd4d054b1dc81038ab02105345", null ],
     [ "Geniegen", "run__simScript_8py.html#a398412a7d37ba1709a08e7da785209eb", null ],
-    [ "globalDesigns", "run__simScript_8py.html#ab3b74983cf75a74d2821ef452c77ae7a", null ],
     [ "gMC", "run__simScript_8py.html#a671e51e119017a06d69c162c6e24b051", null ],
     [ "group", "run__simScript_8py.html#aea191c4bd8a36c3aaaf14b484e60da0e", null ],
     [ "gst", "run__simScript_8py.html#aa3e34199d5fbf0a1ded3a5a739c356da", null ],

@@ -1,7 +1,5 @@
 var NAVTREEINDEX25 =
 {
-"namespacemakeMuonDIS.html#a16de65b10d01632918b323be05dea6af":[4,0,53,42],
-"namespacemakeMuonDIS.html#a1baa1871f9caf8718228af457e8da3b3":[4,0,53,16],
 "namespacemakeMuonDIS.html#a1c41d98df6b2366cfb6b40d8604986d2":[4,0,53,1],
 "namespacemakeMuonDIS.html#a1cd7e954ef137c6b2936151af44b5624":[4,0,53,63],
 "namespacemakeMuonDIS.html#a1dcc69cdd8ec4d0fe3ab4184e237b4d9":[4,0,53,2],
@@ -200,16 +198,16 @@ var NAVTREEINDEX25 =
 "namespacemake__nTuple__Tr.html#aeadc0e8af734d6526c41c0058ad58e4e":[4,0,49,29],
 "namespacemake__nTuple__Tr.html#af42920c437a4cdd487f44e56a4ff9136":[4,0,49,42],
 "namespacemake__nTuple__Tr.html#af65bab59837200488a377add862e6881":[4,0,49,49],
-"namespacemembers.html":[4,1,0,0],
 "namespacemembers.html":[4,1,0],
+"namespacemembers.html":[4,1,0,0],
 "namespacemembers_a.html":[4,1,0,1],
 "namespacemembers_b.html":[4,1,0,2],
 "namespacemembers_c.html":[4,1,0,3],
 "namespacemembers_d.html":[4,1,0,4],
 "namespacemembers_e.html":[4,1,0,5],
 "namespacemembers_f.html":[4,1,0,6],
-"namespacemembers_func.html":[4,1,1],
 "namespacemembers_func.html":[4,1,1,0],
+"namespacemembers_func.html":[4,1,1],
 "namespacemembers_func_a.html":[4,1,1,1],
 "namespacemembers_func_b.html":[4,1,1,2],
 "namespacemembers_func_c.html":[4,1,1,3],
@@ -249,5 +247,7 @@ var NAVTREEINDEX25 =
 "namespacemembers_s.html":[4,1,0,19],
 "namespacemembers_t.html":[4,1,0,20],
 "namespacemembers_u.html":[4,1,0,21],
-"namespacemembers_v.html":[4,1,0,22]
+"namespacemembers_v.html":[4,1,0,22],
+"namespacemembers_vars.html":[4,1,2,0],
+"namespacemembers_vars.html":[4,1,2]
 };
