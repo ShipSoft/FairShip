@@ -39,8 +39,8 @@ def get_work_dir(run_number,tag=None):
 logger.info("SHiP proton-on-taget simulator (C) Thomas Ruf, 2017")
 
 ap = argparse.ArgumentParser(description='Run SHiP "pot" simulation')
-ap.add_argument('-d', '--debug', action=argparse.BooleanOptionalAction, default=True)
-ap.add_argument('-f', '--force', action=argparse.BooleanOptionalAction, default=True, help="force overwriting output directory")
+ap.add_argument('-d', '--debug', action=argparse.BooleanOptionalAction, default=False)
+ap.add_argument('-f', '--force', action=argparse.BooleanOptionalAction, default=False, help="force overwriting output directory")
 ap.add_argument('-r', '--run-number', type=int, dest='runnr', default=1)
 ap.add_argument('-e', '--ecut', type=float, help="energy cut", default=0.5)  # GeV   with 1 : ~1sec / event, with 2: 0.4sec / event, 10: 0.13sec
 ap.add_argument('-n', '--num-events', type=int, help="number of events to generate", dest='nev', default=100)
@@ -182,13 +182,22 @@ if args.AddMuonShield or args.AddHadronAbsorberOnly:
                                      SC_key=ship_geo.SC_mag)
     # MuonShield.SetSupports(False) # otherwise overlap with sensitive Plane
     run.AddModule(MuonShield) # needs to be added because of magn hadron shield.
-sensPlane = ROOT.exitHadronAbsorber()
-sensPlane.SetEnergyCut(args.ecut*u.GeV)
-if args.storeOnlyMuons: sensPlane.SetOnlyMuons()
-if args.skipNeutrinos: sensPlane.SkipNeutrinos()
-if args.FourDP: sensPlane.SetOpt4DP()  # in case a ntuple should be filled with pi0,etas,omega
-# sensPlane.SetZposition(0.0001*u.cm)  # if not using automatic positioning behind default magnetized hadron absorber
-run.AddModule(sensPlane)
+sensPlaneHA = ROOT.exitHadronAbsorber()
+sensPlaneHA.SetEnergyCut(args.ecut*u.GeV)
+sensPlaneT = ROOT.exitHadronAbsorber()
+sensPlaneT.SetEnergyCut(args.ecut*u.GeV)
+if args.storeOnlyMuons:
+    sensPlaneHA.SetOnlyMuons()
+    sensPlaneT.SetOnlyMuons()
+if args.skipNeutrinos:
+    sensPlaneHA.SkipNeutrinos()
+    sensPlaneT.SkipNeutrinos()
+if args.FourDP:
+    sensPlaneHA.SetOpt4DP()  # in case a ntuple should be filled with pi0,etas,omega
+    sensPlaneT.SetOpt4DP()  # in case a ntuple should be filled with pi0,etas,omega
+sensPlaneT.SetZposition(ship_geo.target.z0+ship_geo.target.length)  # if not using automatic positioning behind default magnetized hadron absorber
+run.AddModule(sensPlaneHA)
+run.AddModule(sensPlaneT)
 
 # -----Create PrimaryGenerator--------------------------------------
 primGen = ROOT.FairPrimaryGenerator()

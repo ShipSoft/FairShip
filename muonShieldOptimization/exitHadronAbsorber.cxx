@@ -237,6 +237,17 @@ void exitHadronAbsorber::ConstructGeometry()
    nav->cd("/MuonShieldArea_1/");
    nav->GetCurrentNode()->GetVolume()->AddNode(sensPlane, 1, new TGeoTranslation(0, 0, zLoc));
    AddSensitiveVolume(sensPlane);
+
+   if (zLoc < 250*cm){//corresponds to target...
+     //add also cylindrical sensPlane
+     // Parameters: name, medium, inner radius, outer radius, half-length (Z), phi1, phi2
+     TGeoVolume *sensPlaneCyl = gGeoManager->MakeTube("sensPlaneCyl",vac,0,12.6,zLoc/2.);
+     nav->cd("/TargetArea/");
+     nav->GetCurrentNode()->GetVolume()->AddNode(sensPlaneCyl, 1, new TGeoTranslation(0, 0, zLoc/2.));
+     AddSensitiveVolume(sensPlaneCyl); 
+   }
+
+   
 }
 
 vetoPoint* exitHadronAbsorber::AddHit(Int_t trackID, Int_t detID,
