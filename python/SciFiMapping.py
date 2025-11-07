@@ -868,7 +868,7 @@ if __name__ == "__main__":
             "draw_many_channels",
             "draw_channel_XY",
             "draw_combined_scifi_views",
-            "valditation",
+            "validation",
         ],
     )
     args = parser.parse_args()
@@ -903,7 +903,7 @@ if __name__ == "__main__":
         mapping.draw_channel_XY(number_of_channels=20, real_event=False)
     elif args.mode == "draw_combined_scifi_views":
         mapping.draw_combined_scifi_views(sGeo, number_of_channels=20)
-    elif args.mode == "valditation":
+    elif args.mode == "validation":
         mapping.mapping_validation()
     else:
         print(f"Unknown mode: {args.mode}")

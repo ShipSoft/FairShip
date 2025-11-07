@@ -500,7 +500,7 @@ void MTCDetector::SiPMOverlap()
         LOG(warn) << "Number of SiPM channels (" << fNSiPMChan << ") exceeds maximum per SiPM (" << kMaxChannelsPerSiPM
                   << "), redistributing across multiple SiPMs";
 
-        fNSiPMs = static_cast<int>(std::ceil(fNSiPMChan / 1000.));
+        fNSiPMs = static_cast<int>(std::ceil(static_cast<double>(fNSiPMChan) / kMaxChannelsPerSiPM));
 
         LOG(info) << "Increasing number of SiPMs up to " << fNSiPMs;
 
