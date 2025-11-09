@@ -237,7 +237,7 @@ void exitHadronAbsorber::ConstructGeometry()
 
    TString myname(this->GetName());
    TString shapename_prefix(myname); // Use a prefix for shapenames
-   
+
    if (fzPos>1E8){
      TGeoVolume *sensPlane = gGeoManager->MakeBox(shapename_prefix+"_box",vac,3.56*m-1.*mm,1.7*m-1.*mm,1.*mm);
      std::cout << this->GetName() << ", ConstructGeometry(): Created Box with dimensions: 3.56*m-1.*mm,1.7*m-1.*mm,1.*mm" << std::endl;
@@ -256,7 +256,7 @@ void exitHadronAbsorber::ConstructGeometry()
      std::cout << this->GetName() << ", ConstructGeometry(): Created Tube with dimensions: 12.51*cm,12.52*cm,zLoc/2." << std::endl;
      nav->cd("/target_vacuum_box_1/TargetArea_1/HeVolume_1");
      nav->GetCurrentNode()->GetVolume()->AddNode(sensPlaneCyl, 1, new TGeoTranslation(0, 0, 0));
-     AddSensitiveVolume(sensPlaneCyl); 
+     AddSensitiveVolume(sensPlaneCyl);
    }
 
 }

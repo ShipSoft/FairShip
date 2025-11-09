@@ -75,7 +75,7 @@ class exitHadronAbsorber: public FairDetector
     inline void SkipNeutrinos(){fSkipNeutrinos=kTRUE;}
     inline void SetZposition(Float_t x){fzPos=x;}
     inline void SetVetoPointName(TString nam){fVetoName=nam;}
-  
+
   private:
 
     /** Track information to be stored until the track leaves the
@@ -94,7 +94,7 @@ class exitHadronAbsorber: public FairDetector
     Bool_t fOnlyMuons;  //! flag if only muons should be stored
     Bool_t fSkipNeutrinos;  //! flag if neutrinos should be ignored
     TString fVetoName; //name to save veto collection
-  
+
     TFile* fout; //!
     TClonesArray* fElectrons; //!
     Int_t index;
