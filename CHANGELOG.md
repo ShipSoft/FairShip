@@ -14,6 +14,7 @@ it in future.
 
 ### Added
 
+* muonShieldOptimization/run_fixedTarget.py: add parameters to set beam smearing, painting and offset, and also possibility to add a sensitive plane around the target.
 * feat(python): Add experimental script to compare histograms
 * feat(python): Add experimental script to check overlaps quickly
 * **Corrections in MuonDIS simulation**
