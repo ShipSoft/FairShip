@@ -47,6 +47,7 @@ exitHadronAbsorber::exitHadronAbsorber()
     fLength(-1.),
     fOnlyMuons(kFALSE),
     fSkipNeutrinos(kFALSE),
+    fVetoName("veto"),
     fzPos(3E8),
     withNtuple(kFALSE),
     fexitHadronAbsorberPointCollection(new TClonesArray("vetoPoint"))
@@ -114,13 +115,13 @@ void exitHadronAbsorber::Initialize()
     }
     TString name=PDG->GetParticle(idw)->GetName();
     TString title = name;title+=" momentum (GeV)";
-    TString key = "";key+=idhnu;
+    TString key = fVetoName;key+=idhnu;
     TH1D* Hidhnu = new TH1D(key,title,400,0.,400.);
     title = name;title+="  log10-p vs log10-pt";
-    key = "";key+=idhnu+1000;
+    key = fVetoName;key+=idhnu+1000;
     TH2D* Hidhnu100 = new TH2D(key,title,100,-0.3,1.7,100,-2.,0.5);
     title = name;title+="  log10-p vs log10-pt";
-    key = "";key+=idhnu+2000;
+    key = fVetoName;key+=idhnu+2000;
     TH2D* Hidhnu200 = new TH2D(key,title,25,-0.3,1.7,100,-2.,0.5);
      }
    }
@@ -154,13 +155,13 @@ void exitHadronAbsorber::PreTrack(){
          if (pdgCode<0){ idhnu+=10000;}
          Double_t l10ptot = TMath::Min(TMath::Max(TMath::Log10(fMom.P()),-0.3),1.69999);
          Double_t l10pt   = TMath::Min(TMath::Max(TMath::Log10(fMom.Pt()),-2.),0.4999);
-         TString key; key+=idhnu;
+         TString key = fVetoName; key+=idhnu;
          TH1D* h1 = dynamic_cast<TH1D*>(fout->Get(key));
          if (h1){h1->Fill(fMom.P(),wspill);}
-         key="";key+=idhnu+1000;
+         key=fVetoName;key+=idhnu+1000;
          TH2D* h2 = dynamic_cast<TH2D*>(fout->Get(key));
          if (h2){h2->Fill(l10ptot,l10pt,wspill);}
-         key="";key+=idhnu+2000;
+         key=fVetoName;key+=idhnu+2000;
          h2 = dynamic_cast<TH2D*>(fout->Get(key));
          if (h2){h2->Fill(l10ptot,l10pt,wspill);}
          if(withNtuple){
@@ -188,15 +189,15 @@ void exitHadronAbsorber::FinishRun(){
      idhnu+=10000;
      idw=-idnu;
     }
-    TString key = "";key+=idhnu;
+    TString key = fVetoName;key+=idhnu;
     TSeqCollection* fileList=gROOT->GetListOfFiles();
     dynamic_cast<TFile*>(fileList->At(0))->cd();
     TH1D* Hidhnu = dynamic_cast<TH1D*>(fout->Get(key));
     Hidhnu->Write();
-    key="";key+=idhnu+1000;
+    key=fVetoName;key+=idhnu+1000;
     TH2D* Hidhnu100 = dynamic_cast<TH2D*>(fout->Get(key));
     Hidhnu100->Write();
-    key = "";key+=idhnu+2000;
+    key = fVetoName;key+=idhnu+2000;
     TH2D* Hidhnu200 = dynamic_cast<TH2D*>(fout->Get(key));
     Hidhnu200->Write();
    }
@@ -233,21 +234,31 @@ void exitHadronAbsorber::ConstructGeometry()
     nav->LocalToMaster(local,global);
     zLoc = global[2] + distance * 1.*cm;
    }else{zLoc = fzPos;} // use external input
-   TGeoVolume *sensPlane = gGeoManager->MakeBox("sensPlane",vac,3.56*m-1.*mm,1.7*m-1.*mm,1.*mm);
-   nav->cd("/MuonShieldArea_1/");
-   nav->GetCurrentNode()->GetVolume()->AddNode(sensPlane, 1, new TGeoTranslation(0, 0, zLoc));
-   AddSensitiveVolume(sensPlane);
 
-   if (zLoc < 250*cm){//corresponds to target...
+   TString myname(this->GetName());
+   TString shapename_prefix(myname); // Use a prefix for shapenames
+   
+   if (fzPos>1E8){
+     TGeoVolume *sensPlane = gGeoManager->MakeBox(shapename_prefix+"_box",vac,3.56*m-1.*mm,1.7*m-1.*mm,1.*mm);
+     std::cout << this->GetName() << ", ConstructGeometry(): Created Box with dimensions: 3.56*m-1.*mm,1.7*m-1.*mm,1.*mm" << std::endl;
+     nav->cd("/MuonShieldArea_1/");
+     //else nav->cd("/target_vacuum_box_1");
+     sensPlane->SetLineColor(kBlue - 10);
+     //nav->GetCurrentNode()->GetVolume()->AddNode(sensPlane, fzPos<250?2:1, new TGeoTranslation(0, 0, zLoc));
+     nav->GetCurrentNode()->GetVolume()->AddNode(sensPlane, 1, new TGeoTranslation(0, 0, zLoc));
+     AddSensitiveVolume(sensPlane);
+   }
+   else {
+     //if (zLoc < 250*cm){//corresponds to target...
      //add also cylindrical sensPlane
      // Parameters: name, medium, inner radius, outer radius, half-length (Z), phi1, phi2
-     TGeoVolume *sensPlaneCyl = gGeoManager->MakeTube("sensPlaneCyl",vac,0,12.6,zLoc/2.);
-     nav->cd("/TargetArea/");
-     nav->GetCurrentNode()->GetVolume()->AddNode(sensPlaneCyl, 1, new TGeoTranslation(0, 0, zLoc/2.));
+     TGeoVolume *sensPlaneCyl = gGeoManager->MakeTube(shapename_prefix+"_tube",vac,12.51*cm,12.52*cm,zLoc/2.);
+     std::cout << this->GetName() << ", ConstructGeometry(): Created Tube with dimensions: 12.51*cm,12.52*cm,zLoc/2." << std::endl;
+     nav->cd("/target_vacuum_box_1/TargetArea_1/HeVolume_1");
+     nav->GetCurrentNode()->GetVolume()->AddNode(sensPlaneCyl, 1, new TGeoTranslation(0, 0, 0));
      AddSensitiveVolume(sensPlaneCyl); 
    }
 
-   
 }
 
 vetoPoint* exitHadronAbsorber::AddHit(Int_t trackID, Int_t detID,
@@ -264,7 +275,9 @@ vetoPoint* exitHadronAbsorber::AddHit(Int_t trackID, Int_t detID,
 void exitHadronAbsorber::Register()
 {
 
-  FairRootManager::Instance()->Register("vetoPoint", "veto",
+  TString name  = fVetoName+"Point";
+  TString title = fVetoName;
+  FairRootManager::Instance()->Register(name, title,
                                         fexitHadronAbsorberPointCollection, kTRUE);
 }
 

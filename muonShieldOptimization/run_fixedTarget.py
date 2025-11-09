@@ -184,8 +184,10 @@ if args.AddMuonShield or args.AddHadronAbsorberOnly:
     run.AddModule(MuonShield) # needs to be added because of magn hadron shield.
 sensPlaneHA = ROOT.exitHadronAbsorber()
 sensPlaneHA.SetEnergyCut(args.ecut*u.GeV)
+sensPlaneHA.SetVetoPointName("PlaneHA")
 sensPlaneT = ROOT.exitHadronAbsorber()
 sensPlaneT.SetEnergyCut(args.ecut*u.GeV)
+sensPlaneT.SetVetoPointName("PlaneT")
 if args.storeOnlyMuons:
     sensPlaneHA.SetOnlyMuons()
     sensPlaneT.SetOnlyMuons()
@@ -195,7 +197,7 @@ if args.skipNeutrinos:
 if args.FourDP:
     sensPlaneHA.SetOpt4DP()  # in case a ntuple should be filled with pi0,etas,omega
     sensPlaneT.SetOpt4DP()  # in case a ntuple should be filled with pi0,etas,omega
-sensPlaneT.SetZposition(ship_geo.target.z0+ship_geo.target.length)  # if not using automatic positioning behind default magnetized hadron absorber
+sensPlaneT.SetZposition(ship_geo.target.length)  # if not using automatic positioning behind default magnetized hadron absorber
 run.AddModule(sensPlaneHA)
 run.AddModule(sensPlaneT)
 
@@ -306,7 +308,7 @@ sTree = t.CloneTree(0)
 nEvents = 0
 for n in range(t.GetEntries()):
     rc = t.GetEvent(n)
-    if t.vetoPoint.GetEntries() > 0:
+    if t.PlaneHAPoint.GetEntries() > 0 or t.PlaneTPoint.GetEntries()>0:
         rc = sTree.Fill()
         nEvents += 1
     #t.Clear()
