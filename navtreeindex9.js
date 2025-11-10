@@ -1,5 +1,8 @@
 var NAVTREEINDEX9 =
 {
+"classTarget.html#ad199f971618140a8b114f054abdbd9cc":[5,0,87,64],
+"classTarget.html#ad28e3e742d75c32839c7749b560a481f":[5,0,87,4],
+"classTarget.html#ad506f138c2ed7262d2b261b8dde9c5a6":[5,0,87,35],
 "classTarget.html#ad99b3af0e72861f3ef76849c058a1a9f":[5,0,87,77],
 "classTarget.html#ada666b416896b1d1b3db18ba2adfadfc":[5,0,87,7],
 "classTarget.html#adc70a98bae419ede25469e6792229fb7":[5,0,87,0],
@@ -246,8 +249,5 @@ var NAVTREEINDEX9 =
 "classUpstreamTagger.html#ae1ce295505f736c8e2d9c851b88b5005":[5,0,98,7],
 "classUpstreamTagger.html#ae2da9141a4a867d330ff395ab250e374":[5,0,98,18],
 "classUpstreamTagger.html#aecf5c04bdbeeee53a25e1d6d3ff8ceac":[5,0,98,3],
-"classUpstreamTagger.html#af263cdbdaff47711d2d41790b6f3e43e":[5,0,98,36],
-"classUpstreamTagger.html#afdc6668181b86ba5d7f99c80122e2d80":[5,0,98,11],
-"classUpstreamTaggerDetector_1_1UpstreamTaggerDetector.html":[5,0,27,0],
-"classUpstreamTaggerDetector_1_1UpstreamTaggerDetector.html":[4,0,106,0]
+"classUpstreamTagger.html#af263cdbdaff47711d2d41790b6f3e43e":[5,0,98,36]
 };

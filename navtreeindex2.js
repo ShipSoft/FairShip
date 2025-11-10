@@ -1,6 +1,5 @@
 var NAVTREEINDEX2 =
 {
-"TTCluster_8py.html#afa338b42b507d34e8ea7caacb67136c8":[6,0,11,44,59],
 "TTCluster_8py.html#afb544571df125a0f4e24d05ffa339117":[6,0,11,44,36],
 "TTCluster_8py.html#afd6ba571117db8ee7f7cffaa128cea99":[6,0,11,44,20],
 "TTCluster_8py.html#afda31970368729a026012c4087e1e869":[6,0,11,44,78],
@@ -215,10 +214,10 @@ var NAVTREEINDEX2 =
 "classBaseDetector_1_1BaseDetector.html#a146858d034cb57ffd0f81f4e025f9492":[4,0,5,0,6],
 "classBaseDetector_1_1BaseDetector.html#a2591a22695a96b83fadc89f75fa041de":[5,0,0,0,8],
 "classBaseDetector_1_1BaseDetector.html#a2591a22695a96b83fadc89f75fa041de":[4,0,5,0,8],
-"classBaseDetector_1_1BaseDetector.html#a444b7836488fd79f06f7edbbacf094d9":[5,0,0,0,9],
 "classBaseDetector_1_1BaseDetector.html#a444b7836488fd79f06f7edbbacf094d9":[4,0,5,0,9],
-"classBaseDetector_1_1BaseDetector.html#a44b08d07048c21b3a72e3f6c5b987950":[5,0,0,0,10],
+"classBaseDetector_1_1BaseDetector.html#a444b7836488fd79f06f7edbbacf094d9":[5,0,0,0,9],
 "classBaseDetector_1_1BaseDetector.html#a44b08d07048c21b3a72e3f6c5b987950":[4,0,5,0,10],
+"classBaseDetector_1_1BaseDetector.html#a44b08d07048c21b3a72e3f6c5b987950":[5,0,0,0,10],
 "classBaseDetector_1_1BaseDetector.html#a69950a475b87b1035f2cdfe6b61743b8":[4,0,5,0,3],
 "classBaseDetector_1_1BaseDetector.html#a69950a475b87b1035f2cdfe6b61743b8":[5,0,0,0,3],
 "classBaseDetector_1_1BaseDetector.html#a752493f22dc30c10150c780f0e1801f2":[4,0,5,0,4],
@@ -229,12 +228,12 @@ var NAVTREEINDEX2 =
 "classBaseDetector_1_1BaseDetector.html#ac54365eaaae58490fec19a48f04928b7":[5,0,0,0,7],
 "classBaseDetector_1_1BaseDetector.html#ac8a54e9c12221011cdb3aa521bd386c5":[4,0,5,0,2],
 "classBaseDetector_1_1BaseDetector.html#ac8a54e9c12221011cdb3aa521bd386c5":[5,0,0,0,2],
-"classBaseDetector_1_1BaseDetector.html#acf1f438321cfd4d51bee4d1d5a62ab39":[4,0,5,0,11],
 "classBaseDetector_1_1BaseDetector.html#acf1f438321cfd4d51bee4d1d5a62ab39":[5,0,0,0,11],
-"classBaseDetector_1_1BaseDetector.html#ad4f6e921249fbc92c0b077a786652e4f":[4,0,5,0,0],
+"classBaseDetector_1_1BaseDetector.html#acf1f438321cfd4d51bee4d1d5a62ab39":[4,0,5,0,11],
 "classBaseDetector_1_1BaseDetector.html#ad4f6e921249fbc92c0b077a786652e4f":[5,0,0,0,0],
-"classBaseDetector_1_1BaseDetector.html#ae5c0b9a7c057d0bdd36cc98786554c46":[4,0,5,0,5],
+"classBaseDetector_1_1BaseDetector.html#ad4f6e921249fbc92c0b077a786652e4f":[4,0,5,0,0],
 "classBaseDetector_1_1BaseDetector.html#ae5c0b9a7c057d0bdd36cc98786554c46":[5,0,0,0,5],
+"classBaseDetector_1_1BaseDetector.html#ae5c0b9a7c057d0bdd36cc98786554c46":[4,0,5,0,5],
 "classCo3Rng.html":[5,0,28],
 "classCo3Rng.html#a0f0dc53f94daac34c87b9707d143f74d":[5,0,28,2],
 "classCo3Rng.html#a392890680f6128c2ec0a854847845358":[5,0,28,0],
@@ -249,5 +248,6 @@ var NAVTREEINDEX2 =
 "classCosmicsGenerator.html#a0b94b15a80545d75d55bcd4a88271e63":[5,0,29,24],
 "classCosmicsGenerator.html#a202904efe730d08d5d03a1e636979e74":[5,0,29,16],
 "classCosmicsGenerator.html#a2904d7c42f935827759f35b0d18310bd":[5,0,29,6],
-"classCosmicsGenerator.html#a2afe624d5b83908e99e19dad84ab1d87":[5,0,29,25]
+"classCosmicsGenerator.html#a2afe624d5b83908e99e19dad84ab1d87":[5,0,29,25],
+"classCosmicsGenerator.html#a495048f84ef5cce2af2e08db2a79f99d":[5,0,29,23]
 };

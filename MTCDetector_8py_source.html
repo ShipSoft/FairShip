@@ -128,79 +128,80 @@ $(document).ready(function(){initNavTree('MTCDetector_8py_source.html',''); init
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="stringliteral">          - 0: station type (0 for +5 degrees, 1 for -5 degrees, 2 for scint plane)</span></div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="stringliteral">          - 5: z-layer number (0-5)</span></div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="stringliteral">          - 1820: local fibre ID within the station</span></div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="stringliteral">        Example of SiPM global channel (what is seen in the output file): 123004123, where:</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="stringliteral">        Example of SiPM global channel (what is seen in the output file): 123001123, where:</span></div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="stringliteral">          - 1: MTC unique ID</span></div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="stringliteral">          - 23: layer number</span></div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="stringliteral">          - 0: station type (0 for +5 degrees, 1 for -5 degrees)</span></div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="stringliteral">          - 0: mat number (only 0 by June 2025)</span></div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="stringliteral">          - 4: SiPM number (0-N, where N is the number of SiPMs in the station)</span></div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="stringliteral">          - 123: number of the SiPM channel (0-127, 128 channels per SiPM)</span></div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>        hit_container = {}</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>        mc_points = {}</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>        norm = {}</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>        <span class="keywordflow">for</span> k, mc_point <span class="keywordflow">in</span> enumerate(self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#ac54365eaaae58490fec19a48f04928b7">intree</a>.MTCDetPoint):</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>            det_id = mc_point.GetDetectorID()</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>            station_type = mc_point.GetStationType() <span class="comment"># 0 for +5 degrees, 1 for -5 degrees, 2 for scint plane, extraction: int(fDetectorID / 100000) % 10</span></div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>            energy_loss = mc_point.GetEnergyLoss()</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>            <span class="keywordflow">if</span> station_type == 0:</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>                <span class="comment"># +5 degrees fiber station uses U fibers</span></div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>                fibre_map = self.<a class="code hl_variable" href="classMTCDetector_1_1MTCDetector.html#a3335d6637ba8bd1aeb19d80362102a41">sipm_to_fibre_map_U</a></div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>            <span class="keywordflow">elif</span> station_type == 1:</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>                <span class="comment"># -5 degrees fiber station uses V fibers</span></div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>                fibre_map = self.<a class="code hl_variable" href="classMTCDetector_1_1MTCDetector.html#af79a6492f3950720f095380683b6da31">sipm_to_fibre_map_V</a></div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>            <span class="keywordflow">elif</span> station_type == 2:</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>                <span class="comment"># Scint Plane. Preserve the same logic as for fibre stations,</span></div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>                <span class="comment"># but use the det_id directly as the global channel.</span></div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>                global_channel = det_id</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>                <span class="keywordflow">if</span> global_channel <span class="keywordflow">not</span> <span class="keywordflow">in</span> hit_container:</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>                    hit_container[global_channel] = []</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>                    mc_points[global_channel] = {}</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>                    norm[global_channel] = 0</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>                weight = 1</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>                <span class="comment"># Append (energy_loss, weight) instead of (mc_point, weight)</span></div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>                hit_container[global_channel].append([mc_point, weight])</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>                d_e = energy_loss * weight</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>                mc_points[global_channel][k] = d_e</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>                norm[global_channel] += d_e</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>                <span class="keywordflow">continue</span></div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>            <span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>                <span class="comment"># Skip any other station_type values</span></div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>                <span class="keywordflow">continue</span></div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>            <span class="comment"># For station_type 0 or 1, look up the local fibre ID</span></div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>            loc_fibre_id = det_id % 1_000_000</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>            <span class="keywordflow">if</span> loc_fibre_id <span class="keywordflow">not</span> <span class="keywordflow">in</span> fibre_map:</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>                <span class="comment"># If there is no entry for this fibre ID, skip</span></div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>                print(f<span class="stringliteral">&quot;MTC digitization: no mapping found for fibre ID {loc_fibre_id} in station type {station_type}. Skipping.&quot;</span>)</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>                <span class="keywordflow">continue</span></div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>            <span class="keywordflow">for</span> sipm_chan, chan_info <span class="keywordflow">in</span> fibre_map[loc_fibre_id].items():</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>                global_channel = (det_id // 1_000_000) * 1_000_000 + sipm_chan</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>                <span class="keywordflow">if</span> global_channel <span class="keywordflow">not</span> <span class="keywordflow">in</span> hit_container:</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>                    hit_container[global_channel] = []</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>                    mc_points[global_channel] = {}</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>                    norm[global_channel] = 0</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>                weight = chan_info[<span class="stringliteral">&#39;weight&#39;</span>]</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>                hit_container[global_channel].append([mc_point, weight])</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>                d_e = energy_loss * weight</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>                mc_points[global_channel][k] = d_e</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>                norm[global_channel] += d_e</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span> </div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>        <span class="keywordflow">for</span> det_id <span class="keywordflow">in</span> hit_container:</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>            all_points = ROOT.std.vector(<span class="stringliteral">&#39;MTCDetPoint*&#39;</span>)()</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>            all_weights = ROOT.std.vector(<span class="stringliteral">&#39;Float_t&#39;</span>)()</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>            <span class="keywordflow">for</span> entry <span class="keywordflow">in</span> hit_container[det_id]:</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>                all_points.push_back(entry[0])</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>                all_weights.push_back(entry[1])</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>            det_hit = ROOT.MTCDetHit(det_id, all_points, all_weights)</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>            self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#a146858d034cb57ffd0f81f4e025f9492">det</a>.push_back(det_hit)</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>            <span class="comment"># digi2MCPoints will be added later</span></div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>            <span class="comment">#   for idx, de_value in mc_points[det_id].items():</span></div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>            <span class="comment">#     mc_links.Add(det_id, idx, de_value / norm[det_id])</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="stringliteral">          - 0: mat number (only 0 by June 2025). In future, if multiple mats per station are used,</span></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="stringliteral">          this number will be 0-N. Currently, this digit is allocated by SiPM channel ID!</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="stringliteral">          - 1: SiPM number (automatically assigned based on fibre aggregation settings)</span></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="stringliteral">          - 123: number of the SiPM channel (0-N). The channel number depends on the fibre aggregation setting.</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>        hit_container = {}</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>        mc_points = {}</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>        norm = {}</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>        <span class="keywordflow">for</span> k, mc_point <span class="keywordflow">in</span> enumerate(self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#ac54365eaaae58490fec19a48f04928b7">intree</a>.MTCDetPoint):</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>            det_id = mc_point.GetDetectorID()</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>            station_type = mc_point.GetStationType() <span class="comment"># 0 for +5 degrees, 1 for -5 degrees, 2 for scint plane, extraction: int(fDetectorID / 100000) % 10</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>            energy_loss = mc_point.GetEnergyLoss()</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>            <span class="keywordflow">if</span> station_type == 0:</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>                <span class="comment"># +5 degrees fiber station uses U fibers</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>                fibre_map = self.<a class="code hl_variable" href="classMTCDetector_1_1MTCDetector.html#a3335d6637ba8bd1aeb19d80362102a41">sipm_to_fibre_map_U</a></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>            <span class="keywordflow">elif</span> station_type == 1:</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>                <span class="comment"># -5 degrees fiber station uses V fibers</span></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>                fibre_map = self.<a class="code hl_variable" href="classMTCDetector_1_1MTCDetector.html#af79a6492f3950720f095380683b6da31">sipm_to_fibre_map_V</a></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>            <span class="keywordflow">elif</span> station_type == 2:</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>                <span class="comment"># Scint Plane. Preserve the same logic as for fibre stations,</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>                <span class="comment"># but use the det_id directly as the global channel.</span></div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>                global_channel = det_id</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>                <span class="keywordflow">if</span> global_channel <span class="keywordflow">not</span> <span class="keywordflow">in</span> hit_container:</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>                    hit_container[global_channel] = []</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>                    mc_points[global_channel] = {}</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>                    norm[global_channel] = 0</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>                weight = 1</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>                <span class="comment"># Append (energy_loss, weight) instead of (mc_point, weight)</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>                hit_container[global_channel].append([mc_point, weight])</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>                d_e = energy_loss * weight</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>                mc_points[global_channel][k] = d_e</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>                norm[global_channel] += d_e</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>                <span class="keywordflow">continue</span></div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>            <span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>                <span class="comment"># Skip any other station_type values</span></div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>                <span class="keywordflow">continue</span></div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>            <span class="comment"># For station_type 0 or 1, look up the local fibre ID</span></div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>            loc_fibre_id = det_id % 1_000_000</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>            <span class="keywordflow">if</span> loc_fibre_id <span class="keywordflow">not</span> <span class="keywordflow">in</span> fibre_map:</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>                <span class="comment"># If there is no entry for this fibre ID, skip</span></div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>                print(f<span class="stringliteral">&quot;MTC digitization: no mapping found for fibre ID {loc_fibre_id} in station type {station_type}. Skipping.&quot;</span>)</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>                <span class="keywordflow">continue</span></div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>            <span class="keywordflow">for</span> sipm_chan, chan_info <span class="keywordflow">in</span> fibre_map[loc_fibre_id].items():</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>                global_channel = (det_id // 1_000_000) * 1_000_000 + sipm_chan</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>                <span class="keywordflow">if</span> global_channel <span class="keywordflow">not</span> <span class="keywordflow">in</span> hit_container:</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>                    hit_container[global_channel] = []</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>                    mc_points[global_channel] = {}</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>                    norm[global_channel] = 0</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>                weight = chan_info[<span class="stringliteral">&#39;weight&#39;</span>]</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>                hit_container[global_channel].append([mc_point, weight])</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>                d_e = energy_loss * weight</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>                mc_points[global_channel][k] = d_e</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>                norm[global_channel] += d_e</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span> </div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>        <span class="keywordflow">for</span> det_id <span class="keywordflow">in</span> hit_container:</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>            all_points = ROOT.std.vector(<span class="stringliteral">&#39;MTCDetPoint*&#39;</span>)()</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>            all_weights = ROOT.std.vector(<span class="stringliteral">&#39;Float_t&#39;</span>)()</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span> </div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>            <span class="keywordflow">for</span> entry <span class="keywordflow">in</span> hit_container[det_id]:</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>                all_points.push_back(entry[0])</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>                all_weights.push_back(entry[1])</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>            det_hit = ROOT.MTCDetHit(det_id, all_points, all_weights)</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>            self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#a146858d034cb57ffd0f81f4e025f9492">det</a>.push_back(det_hit)</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>            <span class="comment"># digi2MCPoints will be added later</span></div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>            <span class="comment">#   for idx, de_value in mc_points[det_id].items():</span></div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>            <span class="comment">#     mc_links.Add(det_id, idx, de_value / norm[det_id])</span></div>
 </div>
 </div>
 <div class="ttc" id="aclassBaseDetector_1_1BaseDetector_html"><div class="ttname"><a href="classBaseDetector_1_1BaseDetector.html">BaseDetector.BaseDetector</a></div><div class="ttdef"><b>Definition</b> <a href="BaseDetector_8py_source.html#l00006">BaseDetector.py:6</a></div></div>
