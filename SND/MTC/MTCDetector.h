@@ -31,7 +31,6 @@ class MTCDetector : public FairDetector
                           Double_t angle,
                           Double_t ironThick,
                           Double_t sciFiThick,
-                          Int_t numOfChannels,
                           Int_t channelAggregated,
                           Double_t scintThick,
                           Int_t nLayers,
@@ -70,6 +69,7 @@ class MTCDetector : public FairDetector
     std::map<Int_t, std::map<Int_t, std::array<float, 2>>> GetFibresMapV() { return siPMFibres_V; }
     std::map<Int_t, float> GetSiPMPos_U() { return SiPMPos_U; }
     std::map<Int_t, float> GetSiPMPos_V() { return SiPMPos_V; }
+    Int_t Get_NSiPMChan() const { return fNSiPMChan; }
     Float_t Get_SciFiActiveX() const { return fSciFiActiveX; }
     virtual void SiPMOverlap();
     virtual Bool_t ProcessHits(FairVolume* vol = 0);
@@ -124,10 +124,12 @@ class MTCDetector : public FairDetector
     Double_t zAirGap = -0.15 / 10;
     Double_t zFiberMat2 = 1.025 / 10;
     Double_t zUpperIronInt = 3.2 / 10;
-    Double_t fFiberRadius = 0.01125;   // 0.1125 mm
-    Int_t numFiberLayers = 6;          // number of fiber layers in epoxy block
-    Int_t fNumberofChannels;           // Number of SiPM channels
-    Int_t fChannelAggregated;          // Number of SiPM channels to be aggregated
+    Double_t fFiberRadius = 0.01125;
+    Int_t numFiberLayers = 6;   // number of fiber layers in epoxy block
+    Int_t fNSiPMChan;           // Number of SiPM channels
+    Int_t fChannelAggregated;   // Number of SiPM channels to be aggregated
+    Int_t fNSiPMs = 1;          // Default number of SiPMs
+    static constexpr Int_t kMaxChannelsPerSiPM = 1000;
     // Total module thickness = 0.3 + 0.135 + 0.1 + 0.135 + 0.3 ≈ 1.0 cm
     Int_t fNMats = 1;
     std::map<Int_t, std::map<Int_t, std::array<float, 2>>> fibresSiPM_U;   //! mapping of fibres to SiPM channels

@@ -106,6 +106,8 @@ it in future.
 * Fix: hard cast bug in genie generator: after replacing old C-style cast histogram variable got nullptr value which afterwards caused segmentation fault
 * Correct extraction of SiPM channel positions in MTC
 * Fix refactoring issue that broke MTC digitization
+* Fix the condition in the sipm channel <-> fiber mapping that stopped looping over channels because of the distance between a fiber and a channel. Setting a flexible condition that depends on the aggregated channel size.
+* Add flags for `python/ScifiMapping.py`
 
 ### Changed
 
@@ -175,6 +177,8 @@ it in future.
 * Configuration storage modernized from pickle to JSON
   - Geometry configurations are now saved as JSON strings (using `std::string`) instead of pickled Python objects in ROOT files
   - Automatic format detection: new code reads both JSON (new format) and pickle (legacy format) files without user intervention
+* Change the logic of SiPM channel encoding in MTC. Now the number of SiPM is 1 and has a number of channels that fits the width of the plane. If the number of channels exceeds 1000, iterating a SiPM digit to 1 and distributing channels among new number of SiPMs.
+* Set default parameters of MTC to 60x60 cm^2 and 4 aggregated channels according to Sep 2025 CM.
 
 ### Removed
 

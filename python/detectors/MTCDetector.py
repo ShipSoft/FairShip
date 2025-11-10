@@ -25,13 +25,14 @@ class MTCDetector(BaseDetector):
           - 0: station type (0 for +5 degrees, 1 for -5 degrees, 2 for scint plane)
           - 5: z-layer number (0-5)
           - 1820: local fibre ID within the station
-        Example of SiPM global channel (what is seen in the output file): 123004123, where:
+        Example of SiPM global channel (what is seen in the output file): 123001123, where:
           - 1: MTC unique ID
           - 23: layer number
           - 0: station type (0 for +5 degrees, 1 for -5 degrees)
-          - 0: mat number (only 0 by June 2025)
-          - 4: SiPM number (0-N, where N is the number of SiPMs in the station)
-          - 123: number of the SiPM channel (0-127, 128 channels per SiPM)
+          - 0: mat number (only 0 by June 2025). In future, if multiple mats per station are used,
+          this number will be 0-N. Currently, this digit is allocated by SiPM channel ID!
+          - 1: SiPM number (automatically assigned based on fibre aggregation settings)
+          - 123: number of the SiPM channel (0-N). The channel number depends on the fibre aggregation setting.
         """
         hit_container = {}
         mc_points = {}

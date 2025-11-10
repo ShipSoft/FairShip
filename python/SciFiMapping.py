@@ -819,6 +819,34 @@ class SciFiMapping:
         plt.savefig(output_file)
         plt.close(fig)
 
+    def mapping_validation(self):
+        """Validate and print the SiPM-to-fibre and fibre-to-SiPM mappings.
+
+        Prints out the mappings for the U plane, showing fibre indices,
+        SiPM channels, weights, and x-positions for both mapping directions.
+
+        """
+        sipm_to_fiber_map_U, _ = self.get_sipm_to_fibre_map()
+        fiber_to_sipm_map_U, _ = self.get_fibre_to_simp_map()
+
+        print("Validating U plane mapping:")
+        for fiber_id, fibers in sipm_to_fiber_map_U.items():
+            for sipm_chan, chan_info in fibers.items():
+                weight = chan_info["weight"]
+                xpos = chan_info["xpos"]
+                print(
+                    f"""---- Fiber index: {fiber_id}, SiPM Channel: {sipm_chan},
+                    Weight: {weight}, X Position: {xpos}"""
+                )
+        for sipm_chan, sipm_fibers in fiber_to_sipm_map_U.items():
+            for fiber_id, fiber_info in sipm_fibers.items():
+                weight = fiber_info["weight"]
+                xpos = fiber_info["xpos"]
+                print(
+                    f"""++++ SiPM Channel: {sipm_chan}, Fiber index: {fiber_id},
+                    Weight: {weight}, X Position: {xpos}"""
+                )
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="SciFiMapping visualization tool")
@@ -829,10 +857,25 @@ if __name__ == "__main__":
         default="geofile_full.conical.PG_13-TGeant4.root",
         help="Path to the geometry ROOT file",
     )
+    parser.add_argument(
+        "--mode",
+        dest="mode",
+        type=str,
+        default="draw_many_channels",
+        help="Operation mode",
+        choices=[
+            "draw_channel",
+            "draw_many_channels",
+            "draw_channel_XY",
+            "draw_combined_scifi_views",
+            "validation",
+        ],
+    )
     args = parser.parse_args()
     geoFile = args.geoFile
     fgeo = ROOT.TFile.Open(geoFile)
     ship_geo = load_from_root_file(fgeo, "ShipGeo")
+
     # -----Create geometry----------------------------------------------
 
     run = ROOT.FairRunSim()
@@ -850,19 +893,17 @@ if __name__ == "__main__":
     # -----Create SciFiMapping instance--------------------------------
     mapping = SciFiMapping(modules)
     mapping.make_mapping()
-    mapping.draw_channel(sGeo, 101104120)  # Example channel
-    mapping.draw_many_channels(
-        sGeo,
-        number_of_channels=20,
-        output_file="scifi_mapping_all_channels.pdf",
-        labeling=False,
-    )
-    mapping.draw_channel_XY(
-        number_of_channels=20, output_file="scifi_mapping_all_channels_XY.pdf"
-    )
-    mapping.draw_channel_XY(
-        number_of_channels=100,
-        real_event=True,
-        x_coords=[1.0, 3.0],
-        output_file="scifi_channel_ribbons_XY_real_event.pdf",
-    )
+
+    if args.mode == "draw_channel":
+        test_channel = 1000000  # Example channel
+        mapping.draw_channel(sGeo, test_channel)
+    elif args.mode == "draw_many_channels":
+        mapping.draw_many_channels(sGeo, number_of_channels=20)
+    elif args.mode == "draw_channel_XY":
+        mapping.draw_channel_XY(number_of_channels=20, real_event=False)
+    elif args.mode == "draw_combined_scifi_views":
+        mapping.draw_combined_scifi_views(sGeo, number_of_channels=20)
+    elif args.mode == "validation":
+        mapping.mapping_validation()
+    else:
+        print(f"Unknown mode: {args.mode}")
