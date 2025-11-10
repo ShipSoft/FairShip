@@ -16,7 +16,7 @@ repos:
   - id: check-executables-have-shebangs
   - id: mixed-line-ending
 - repo: https://github.com/astral-sh/ruff-pre-commit
-  rev: v0.14.3
+  rev: v0.14.4
   hooks:
   - id: ruff-check
     types_or: [python, pyi, jupyter]
@@ -25,7 +25,7 @@ repos:
   - id: ruff-format
     files: ^(python/experimental/|python/geometry_config\.py|macro/makeGenieEvents\.py|python/genie_interface\.py|python/SciFiMapping\.py|python/BaseDetector\.py|python/detectors/)$
 - repo: https://github.com/pre-commit/mirrors-clang-format
-  rev: v21.1.2
+  rev: v21.1.5
   hooks:
   - id: clang-format
     types_or: [c++, c, cuda]
@@ -42,7 +42,7 @@ repos:
       exclude: muon
       additional_dependencies: [tomli]
 - repo: https://github.com/asottile/pyupgrade
-  rev: v3.21.0
+  rev: v3.21.1
   hooks:
   - id: pyupgrade
     args: [--py39-plus]
