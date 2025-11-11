@@ -242,6 +242,12 @@ Bool_t SiliconTarget::ProcessHits(FairVolume* vol)
         Double_t ymean = (fPos.Y() + Pos.Y()) / 2.;
         Double_t zmean = (fPos.Z() + Pos.Z()) / 2.;
 
+        Int_t strip_id = 0;
+        Int_t sensor_id = 0;
+        gMC->CurrentVolID(strip_id);
+        gMC->CurrentVolOffID(1, sensor_id);
+        fVolumeID = (sensor_id << 12) + strip_id;
+
         AddHit(fTrackID,
                fVolumeID,
                TVector3(xmean, ymean, zmean),

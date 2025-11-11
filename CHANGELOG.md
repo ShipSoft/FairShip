@@ -108,6 +108,7 @@ it in future.
 * Fix refactoring issue that broke MTC digitization
 * Fix the condition in the sipm channel <-> fiber mapping that stopped looping over channels because of the distance between a fiber and a channel. Setting a flexible condition that depends on the aggregated channel size.
 * Add flags for `python/ScifiMapping.py`
+* Fixed SiliconTarget detector identifier.
 
 ### Changed
 
@@ -179,6 +180,7 @@ it in future.
   - Automatic format detection: new code reads both JSON (new format) and pickle (legacy format) files without user intervention
 * Change the logic of SiPM channel encoding in MTC. Now the number of SiPM is 1 and has a number of channels that fits the width of the plane. If the number of channels exceeds 1000, iterating a SiPM digit to 1 and distributing channels among new number of SiPMs.
 * Set default parameters of MTC to 60x60 cm^2 and 4 aggregated channels according to Sep 2025 CM.
+* Placement of SiliconTarget has been shifted by 10 cm to bring the final layer to within 10 cm of the MTC.
 
 ### Removed
 
