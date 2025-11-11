@@ -75,8 +75,8 @@ def main():
         siHitTree.Branch('tpy', tpy, 'tpy/F')
         tpz = array.array('f', [0])
         siHitTree.Branch('tpz', tpz, 'tpz/F')
-        te = array.array('f', [0])
-        siHitTree.Branch('te', te, 'te/F')
+        tenergy = array.array('f', [0])
+        siHitTree.Branch('te', tenergy, 'te/F')
         deltapx = array.array('f', [0])
         siHitTree.Branch('deltapx', deltapx, 'deltapx/F')
         deltapy = array.array('f', [0])
@@ -269,7 +269,7 @@ def main():
                         tpx[0] = 0.
                         tpy[0] = 0.
                         tpz[0] = 0.
-                        te[0] = 0.
+                        tenergy[0] = 0.
                         deltapx[0] = 0.
                         deltapy[0] = 0.
                         deltapz[0] = 0.
