@@ -1,15 +1,5 @@
 var NAVTREEINDEX25 =
 {
-"namespacemakeMuonDIS.html#a16de65b10d01632918b323be05dea6af":[4,0,53,42],
-"namespacemakeMuonDIS.html#a1baa1871f9caf8718228af457e8da3b3":[4,0,53,16],
-"namespacemakeMuonDIS.html#a1c41d98df6b2366cfb6b40d8604986d2":[4,0,53,1],
-"namespacemakeMuonDIS.html#a1cd7e954ef137c6b2936151af44b5624":[4,0,53,63],
-"namespacemakeMuonDIS.html#a1dcc69cdd8ec4d0fe3ab4184e237b4d9":[4,0,53,2],
-"namespacemakeMuonDIS.html#a26aa2d2f4969d3eeb816781e0da12ee0":[4,0,53,41],
-"namespacemakeMuonDIS.html#a2b4e630f0163fb403afd6440c31de817":[4,0,53,67],
-"namespacemakeMuonDIS.html#a31069c861ee6564962a537e94c422254":[4,0,53,64],
-"namespacemakeMuonDIS.html#a321f78a1f271119e1f593edccaee7064":[4,0,53,36],
-"namespacemakeMuonDIS.html#a32a6bfe871be0dae206a851b48ff62ed":[4,0,53,28],
 "namespacemakeMuonDIS.html#a3376c7ac13d7058bff30c174977e1d6e":[4,0,53,22],
 "namespacemakeMuonDIS.html#a46fd07d81c633221657121b3f0589fb3":[4,0,53,49],
 "namespacemakeMuonDIS.html#a5617f749af576f63d0a7e52d9b085189":[4,0,53,33],
@@ -208,8 +198,8 @@ var NAVTREEINDEX25 =
 "namespacemembers_d.html":[4,1,0,4],
 "namespacemembers_e.html":[4,1,0,5],
 "namespacemembers_f.html":[4,1,0,6],
-"namespacemembers_func.html":[4,1,1,0],
 "namespacemembers_func.html":[4,1,1],
+"namespacemembers_func.html":[4,1,1,0],
 "namespacemembers_func_a.html":[4,1,1,1],
 "namespacemembers_func_b.html":[4,1,1,2],
 "namespacemembers_func_c.html":[4,1,1,3],
@@ -249,5 +239,15 @@ var NAVTREEINDEX25 =
 "namespacemembers_s.html":[4,1,0,19],
 "namespacemembers_t.html":[4,1,0,20],
 "namespacemembers_u.html":[4,1,0,21],
-"namespacemembers_v.html":[4,1,0,22]
+"namespacemembers_v.html":[4,1,0,22],
+"namespacemembers_vars.html":[4,1,2,0],
+"namespacemembers_vars.html":[4,1,2],
+"namespacemembers_vars_a.html":[4,1,2,1],
+"namespacemembers_vars_b.html":[4,1,2,2],
+"namespacemembers_vars_c.html":[4,1,2,3],
+"namespacemembers_vars_d.html":[4,1,2,4],
+"namespacemembers_vars_e.html":[4,1,2,5],
+"namespacemembers_vars_f.html":[4,1,2,6],
+"namespacemembers_vars_g.html":[4,1,2,7],
+"namespacemembers_vars_h.html":[4,1,2,8]
 };

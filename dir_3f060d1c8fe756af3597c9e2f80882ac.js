@@ -3,8 +3,6 @@ var dir_3f060d1c8fe756af3597c9e2f80882ac =
     [ "LinkDef.h", "passive_2LinkDef_8h.html", null ],
     [ "ShipCave.cxx", "ShipCave_8cxx.html", null ],
     [ "ShipCave.h", "ShipCave_8h.html", "ShipCave_8h" ],
-    [ "ShipChamber.cxx", "ShipChamber_8cxx.html", null ],
-    [ "ShipChamber.h", "ShipChamber_8h.html", "ShipChamber_8h" ],
     [ "ShipGeoCave.cxx", "ShipGeoCave_8cxx.html", null ],
     [ "ShipGeoCave.h", "ShipGeoCave_8h.html", "ShipGeoCave_8h" ],
     [ "ShipGoliath.cxx", "ShipGoliath_8cxx.html", null ],

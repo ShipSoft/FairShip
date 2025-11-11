@@ -539,11 +539,11 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="vetoHit_8cxx_source.html#l00052">52</a> of file <a class="el" href="vetoHit_8cxx_source.html">vetoHit.cxx</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   53</span>{</div>
-<div class="line"><span class="lineno">   54</span>    TVector3 <a class="code hl_variable" href="namespacerun__simPgun.html#ac57e22275cd6a7bdb768a9d30320595e">pos</a> = <a class="code hl_function" href="classvetoHit.html#adb60f44363a7059a2c7d3f41c1cac796">GetXYZ</a>();</div>
-<div class="line"><span class="lineno">   55</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="namespacerun__simPgun.html#ac57e22275cd6a7bdb768a9d30320595e">pos</a>.X();</div>
+<div class="line"><span class="lineno">   54</span>    TVector3 <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a> = <a class="code hl_function" href="classvetoHit.html#adb60f44363a7059a2c7d3f41c1cac796">GetXYZ</a>();</div>
+<div class="line"><span class="lineno">   55</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a>.X();</div>
 <div class="line"><span class="lineno">   56</span>}</div>
 <div class="ttc" id="aclassvetoHit_html_adb60f44363a7059a2c7d3f41c1cac796"><div class="ttname"><a href="classvetoHit.html#adb60f44363a7059a2c7d3f41c1cac796">vetoHit::GetXYZ</a></div><div class="ttdeci">TVector3 GetXYZ()</div><div class="ttdef"><b>Definition</b> <a href="vetoHit_8cxx_source.html#l00039">vetoHit.cxx:39</a></div></div>
-<div class="ttc" id="anamespacerun__simPgun_html_ac57e22275cd6a7bdb768a9d30320595e"><div class="ttname"><a href="namespacerun__simPgun.html#ac57e22275cd6a7bdb768a9d30320595e">run_simPgun.pos</a></div><div class="ttdeci">pos</div><div class="ttdef"><b>Definition</b> <a href="run__simPgun_8py_source.html#l00082">run_simPgun.py:82</a></div></div>
+<div class="ttc" id="anamespaceana__ShipMuon_html_ad2e89313b1af7c8c6f4c5f89f723635d"><div class="ttname"><a href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">ana_ShipMuon.pos</a></div><div class="ttdeci">pos</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l00527">ana_ShipMuon.py:527</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -571,8 +571,8 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">   45</span>    Double_t <a class="code hl_function" href="namespaceana__ShipMuon.html#a05e83c6aa9234009f5e43dda6be3e5f6">origin</a>[3] = {shape-&gt;GetOrigin()[0], shape-&gt;GetOrigin()[1], shape-&gt;GetOrigin()[2]};</div>
 <div class="line"><span class="lineno">   46</span>    Double_t master[3] = {0, 0, 0};</div>
 <div class="line"><span class="lineno">   47</span>    nav-&gt;LocalToMaster(origin, master);</div>
-<div class="line"><span class="lineno">   48</span>    TVector3 <a class="code hl_variable" href="namespacerun__simPgun.html#ac57e22275cd6a7bdb768a9d30320595e">pos</a> = TVector3(master[0], master[1], master[2]);</div>
-<div class="line"><span class="lineno">   49</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="namespacerun__simPgun.html#ac57e22275cd6a7bdb768a9d30320595e">pos</a>;</div>
+<div class="line"><span class="lineno">   48</span>    TVector3 <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a> = TVector3(master[0], master[1], master[2]);</div>
+<div class="line"><span class="lineno">   49</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a>;</div>
 <div class="line"><span class="lineno">   50</span>}</div>
 <div class="ttc" id="aclassvetoHit_html_ab362f02181e1a36d48da920db615d723"><div class="ttname"><a href="classvetoHit.html#ab362f02181e1a36d48da920db615d723">vetoHit::GetNode</a></div><div class="ttdeci">TGeoNode * GetNode()</div><div class="ttdef"><b>Definition</b> <a href="vetoHit_8cxx_source.html#l00067">vetoHit.cxx:67</a></div></div>
 <div class="ttc" id="anamespaceana__ShipMuon_html_a05e83c6aa9234009f5e43dda6be3e5f6"><div class="ttname"><a href="namespaceana__ShipMuon.html#a05e83c6aa9234009f5e43dda6be3e5f6">ana_ShipMuon.origin</a></div><div class="ttdeci">origin(sTree, it)</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l00370">ana_ShipMuon.py:370</a></div></div>
@@ -596,8 +596,8 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="vetoHit_8cxx_source.html#l00057">57</a> of file <a class="el" href="vetoHit_8cxx_source.html">vetoHit.cxx</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   58</span>{</div>
-<div class="line"><span class="lineno">   59</span>    TVector3 <a class="code hl_variable" href="namespacerun__simPgun.html#ac57e22275cd6a7bdb768a9d30320595e">pos</a> = <a class="code hl_function" href="classvetoHit.html#adb60f44363a7059a2c7d3f41c1cac796">GetXYZ</a>();</div>
-<div class="line"><span class="lineno">   60</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="namespacerun__simPgun.html#ac57e22275cd6a7bdb768a9d30320595e">pos</a>.Y();</div>
+<div class="line"><span class="lineno">   59</span>    TVector3 <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a> = <a class="code hl_function" href="classvetoHit.html#adb60f44363a7059a2c7d3f41c1cac796">GetXYZ</a>();</div>
+<div class="line"><span class="lineno">   60</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a>.Y();</div>
 <div class="line"><span class="lineno">   61</span>}</div>
 </div><!-- fragment -->
 </div>
@@ -619,8 +619,8 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="vetoHit_8cxx_source.html#l00062">62</a> of file <a class="el" href="vetoHit_8cxx_source.html">vetoHit.cxx</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   63</span>{</div>
-<div class="line"><span class="lineno">   64</span>    TVector3 <a class="code hl_variable" href="namespacerun__simPgun.html#ac57e22275cd6a7bdb768a9d30320595e">pos</a> = <a class="code hl_function" href="classvetoHit.html#adb60f44363a7059a2c7d3f41c1cac796">GetXYZ</a>();</div>
-<div class="line"><span class="lineno">   65</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="namespacerun__simPgun.html#ac57e22275cd6a7bdb768a9d30320595e">pos</a>.Z();</div>
+<div class="line"><span class="lineno">   64</span>    TVector3 <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a> = <a class="code hl_function" href="classvetoHit.html#adb60f44363a7059a2c7d3f41c1cac796">GetXYZ</a>();</div>
+<div class="line"><span class="lineno">   65</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a>.Z();</div>
 <div class="line"><span class="lineno">   66</span>}</div>
 </div><!-- fragment -->
 </div>

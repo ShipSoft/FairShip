@@ -436,13 +436,13 @@ Additional Inherited Members</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">   91</span>                                                            {</div>
 <div class="line"><span class="lineno">   92</span>     TGeoNode* node  = <a class="code hl_function" href="classTimeDetHit.html#a96bbb16b5eea078d88f315333865ffb2">GetNode</a>();</div>
 <div class="line"><span class="lineno">   93</span>     <span class="keyword">auto</span> shape =  <span class="keyword">dynamic_cast&lt;</span>TGeoBBox*<span class="keyword">&gt;</span>(node-&gt;GetVolume()-&gt;GetShape());</div>
-<div class="line"><span class="lineno">   94</span>     TVector3 <a class="code hl_variable" href="namespacerun__simPgun.html#ac57e22275cd6a7bdb768a9d30320595e">pos</a>    = <a class="code hl_function" href="classTimeDetHit.html#a28bab2e96dd5cf264c66977c595c816b">GetXYZ</a>();</div>
-<div class="line"><span class="lineno">   95</span>     lpos = TMath::Abs( <a class="code hl_variable" href="namespacerun__simPgun.html#ac57e22275cd6a7bdb768a9d30320595e">pos</a>.X() + shape-&gt;GetDX() - x );</div>
-<div class="line"><span class="lineno">   96</span>     lneg = TMath::Abs( <a class="code hl_variable" href="namespacerun__simPgun.html#ac57e22275cd6a7bdb768a9d30320595e">pos</a>.X() - shape-&gt;GetDX() - x );</div>
+<div class="line"><span class="lineno">   94</span>     TVector3 <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a>    = <a class="code hl_function" href="classTimeDetHit.html#a28bab2e96dd5cf264c66977c595c816b">GetXYZ</a>();</div>
+<div class="line"><span class="lineno">   95</span>     lpos = TMath::Abs( <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a>.X() + shape-&gt;GetDX() - x );</div>
+<div class="line"><span class="lineno">   96</span>     lneg = TMath::Abs( <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a>.X() - shape-&gt;GetDX() - x );</div>
 <div class="line"><span class="lineno">   97</span>}</div>
 <div class="ttc" id="aclassTimeDetHit_html_a28bab2e96dd5cf264c66977c595c816b"><div class="ttname"><a href="classTimeDetHit.html#a28bab2e96dd5cf264c66977c595c816b">TimeDetHit::GetXYZ</a></div><div class="ttdeci">TVector3 GetXYZ()</div><div class="ttdef"><b>Definition</b> <a href="TimeDetHit_8cxx_source.html#l00099">TimeDetHit.cxx:99</a></div></div>
 <div class="ttc" id="aclassTimeDetHit_html_a96bbb16b5eea078d88f315333865ffb2"><div class="ttname"><a href="classTimeDetHit.html#a96bbb16b5eea078d88f315333865ffb2">TimeDetHit::GetNode</a></div><div class="ttdeci">TGeoNode * GetNode()</div><div class="ttdef"><b>Definition</b> <a href="TimeDetHit_8cxx_source.html#l00130">TimeDetHit.cxx:130</a></div></div>
-<div class="ttc" id="anamespacerun__simPgun_html_ac57e22275cd6a7bdb768a9d30320595e"><div class="ttname"><a href="namespacerun__simPgun.html#ac57e22275cd6a7bdb768a9d30320595e">run_simPgun.pos</a></div><div class="ttdeci">pos</div><div class="ttdef"><b>Definition</b> <a href="run__simPgun_8py_source.html#l00082">run_simPgun.py:82</a></div></div>
+<div class="ttc" id="anamespaceana__ShipMuon_html_ad2e89313b1af7c8c6f4c5f89f723635d"><div class="ttname"><a href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">ana_ShipMuon.pos</a></div><div class="ttdeci">pos</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l00527">ana_ShipMuon.py:527</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -587,8 +587,8 @@ Additional Inherited Members</h2></td></tr>
 <p>Accessors </p>
 
 <p class="definition">Definition at line <a class="el" href="TimeDetHit_8cxx_source.html#l00112">112</a> of file <a class="el" href="TimeDetHit_8cxx_source.html">TimeDetHit.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  113</span>{ TVector3 <a class="code hl_variable" href="namespacerun__simPgun.html#ac57e22275cd6a7bdb768a9d30320595e">pos</a> = <a class="code hl_function" href="classTimeDetHit.html#a28bab2e96dd5cf264c66977c595c816b">GetXYZ</a>();</div>
-<div class="line"><span class="lineno">  114</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="namespacerun__simPgun.html#ac57e22275cd6a7bdb768a9d30320595e">pos</a>.X();</div>
+<div class="fragment"><div class="line"><span class="lineno">  113</span>{ TVector3 <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a> = <a class="code hl_function" href="classTimeDetHit.html#a28bab2e96dd5cf264c66977c595c816b">GetXYZ</a>();</div>
+<div class="line"><span class="lineno">  114</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a>.X();</div>
 <div class="line"><span class="lineno">  115</span>}</div>
 </div><!-- fragment -->
 </div>
@@ -616,8 +616,8 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  104</span>    Double_t <a class="code hl_function" href="namespaceana__ShipMuon.html#a05e83c6aa9234009f5e43dda6be3e5f6">origin</a>[3] = {shape-&gt;GetOrigin()[0],shape-&gt;GetOrigin()[1],shape-&gt;GetOrigin()[2]};</div>
 <div class="line"><span class="lineno">  105</span>    Double_t master[3] = {0,0,0};</div>
 <div class="line"><span class="lineno">  106</span>    nav-&gt;LocalToMaster(origin,master);</div>
-<div class="line"><span class="lineno">  107</span>    TVector3 <a class="code hl_variable" href="namespacerun__simPgun.html#ac57e22275cd6a7bdb768a9d30320595e">pos</a> = TVector3(master[0],master[1],master[2]);</div>
-<div class="line"><span class="lineno">  108</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="namespacerun__simPgun.html#ac57e22275cd6a7bdb768a9d30320595e">pos</a>;</div>
+<div class="line"><span class="lineno">  107</span>    TVector3 <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a> = TVector3(master[0],master[1],master[2]);</div>
+<div class="line"><span class="lineno">  108</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a>;</div>
 <div class="line"><span class="lineno">  109</span>}</div>
 <div class="ttc" id="anamespaceana__ShipMuon_html_a05e83c6aa9234009f5e43dda6be3e5f6"><div class="ttname"><a href="namespaceana__ShipMuon.html#a05e83c6aa9234009f5e43dda6be3e5f6">ana_ShipMuon.origin</a></div><div class="ttdeci">origin(sTree, it)</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l00370">ana_ShipMuon.py:370</a></div></div>
 </div><!-- fragment -->
@@ -639,8 +639,8 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="TimeDetHit_8cxx_source.html#l00118">118</a> of file <a class="el" href="TimeDetHit_8cxx_source.html">TimeDetHit.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  119</span>{ TVector3 <a class="code hl_variable" href="namespacerun__simPgun.html#ac57e22275cd6a7bdb768a9d30320595e">pos</a> = <a class="code hl_function" href="classTimeDetHit.html#a28bab2e96dd5cf264c66977c595c816b">GetXYZ</a>();</div>
-<div class="line"><span class="lineno">  120</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="namespacerun__simPgun.html#ac57e22275cd6a7bdb768a9d30320595e">pos</a>.Y();</div>
+<div class="fragment"><div class="line"><span class="lineno">  119</span>{ TVector3 <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a> = <a class="code hl_function" href="classTimeDetHit.html#a28bab2e96dd5cf264c66977c595c816b">GetXYZ</a>();</div>
+<div class="line"><span class="lineno">  120</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a>.Y();</div>
 <div class="line"><span class="lineno">  121</span>}</div>
 </div><!-- fragment -->
 </div>
@@ -661,8 +661,8 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="TimeDetHit_8cxx_source.html#l00124">124</a> of file <a class="el" href="TimeDetHit_8cxx_source.html">TimeDetHit.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  125</span>{ TVector3 <a class="code hl_variable" href="namespacerun__simPgun.html#ac57e22275cd6a7bdb768a9d30320595e">pos</a> = <a class="code hl_function" href="classTimeDetHit.html#a28bab2e96dd5cf264c66977c595c816b">GetXYZ</a>();</div>
-<div class="line"><span class="lineno">  126</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="namespacerun__simPgun.html#ac57e22275cd6a7bdb768a9d30320595e">pos</a>.Z();</div>
+<div class="fragment"><div class="line"><span class="lineno">  125</span>{ TVector3 <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a> = <a class="code hl_function" href="classTimeDetHit.html#a28bab2e96dd5cf264c66977c595c816b">GetXYZ</a>();</div>
+<div class="line"><span class="lineno">  126</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="namespaceana__ShipMuon.html#ad2e89313b1af7c8c6f4c5f89f723635d">pos</a>.Z();</div>
 <div class="line"><span class="lineno">  127</span>}</div>
 </div><!-- fragment -->
 </div>

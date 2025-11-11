@@ -9,8 +9,7 @@ var searchData=
   ['run_5fprod_2epy_6',['run_prod.py',['../run__prod_8py.html',1,'']]],
   ['run_5freco_2epy_7',['run_reco.py',['../run__reco_8py.html',1,'']]],
   ['run_5fsimecal_2epy_8',['run_simEcal.py',['../run__simEcal_8py.html',1,'']]],
-  ['run_5fsimpgun_2epy_9',['run_simPgun.py',['../run__simPgun_8py.html',1,'']]],
-  ['run_5fsimscript_2epy_10',['run_simScript.py',['../run__simScript_8py.html',1,'']]],
-  ['runcharmhadprod_2epy_11',['runCharmHadProd.py',['../runCharmHadProd_8py.html',1,'']]],
-  ['runpythia8_2epy_12',['runPythia8.py',['../runPythia8_8py.html',1,'']]]
+  ['run_5fsimscript_2epy_9',['run_simScript.py',['../run__simScript_8py.html',1,'']]],
+  ['runcharmhadprod_2epy_10',['runCharmHadProd.py',['../runCharmHadProd_8py.html',1,'']]],
+  ['runpythia8_2epy_11',['runPythia8.py',['../runPythia8_8py.html',1,'']]]
 ];

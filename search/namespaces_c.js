@@ -8,8 +8,7 @@ var searchData=
   ['run_5fprod_5',['run_prod',['../namespacerun__prod.html',1,'']]],
   ['run_5freco_6',['run_reco',['../namespacerun__reco.html',1,'']]],
   ['run_5fsimecal_7',['run_simEcal',['../namespacerun__simEcal.html',1,'']]],
-  ['run_5fsimpgun_8',['run_simPgun',['../namespacerun__simPgun.html',1,'']]],
-  ['run_5fsimscript_9',['run_simScript',['../namespacerun__simScript.html',1,'']]],
-  ['runcharmhadprod_10',['runCharmHadProd',['../namespacerunCharmHadProd.html',1,'']]],
-  ['runpythia8_11',['runPythia8',['../namespacerunPythia8.html',1,'']]]
+  ['run_5fsimscript_8',['run_simScript',['../namespacerun__simScript.html',1,'']]],
+  ['runcharmhadprod_9',['runCharmHadProd',['../namespacerunCharmHadProd.html',1,'']]],
+  ['runpythia8_10',['runPythia8',['../namespacerunPythia8.html',1,'']]]
 ];

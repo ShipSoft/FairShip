@@ -78,7 +78,6 @@ var hierarchy =
     ] ],
     [ "FairModule", null, [
       [ "ShipCave", "classShipCave.html", null ],
-      [ "ShipChamber", "classShipChamber.html", null ],
       [ "ShipGoliath", "classShipGoliath.html", null ],
       [ "ShipMagnet", "classShipMagnet.html", null ],
       [ "ShipMuonShield", "classShipMuonShield.html", null ],
