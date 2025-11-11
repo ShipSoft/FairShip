@@ -57,7 +57,7 @@ def runTracking():
        field = acts.examples.MagneticFieldMapXyz(file=str(sourcePath+"/"+ShipGeo.Bfield.fieldMap),
                                                  tree="Data", lengthUnit=u.cm, BFieldUnit = u.T,
                                                  translateToGlobal=acts.Vector3(0, 0,
-                                                                                ShipGeo.Bfield.z), 
+                                                                                ShipGeo.Bfield.z),
                                                  rotateAxis = True, firstOctant = False)
        simHitTree="strawHits"
        digiConfigFile = currentPath + "/StrawTracker-digi-config.json"
