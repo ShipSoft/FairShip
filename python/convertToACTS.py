@@ -245,7 +245,7 @@ def main():
                     for index, hit in enumerate(detHitMap[i]):
 
                         hit=hit[1]
-                        layerID= 6*hit.GetLayer() + 2*hit.GetPlane() + 4 #Layers correspond to planes, including W planes and navigation layers inbetween
+                        layerID= 6*hit.GetLayer() + 2*hit.GetPlane() + 4 #Layers correspond to planes, including W planes and navigation layers in between
                         event_id[0] = ievent
                         volume_id[0] = 1
                         boundary_id[0] = 0
