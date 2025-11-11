@@ -36,11 +36,8 @@
           "thickness": 0.3,
           "threshold": 0.0,
           "charge-smearing": { "mean" : 0.0, "stddev" : 0.00, "type" : "Gauss" }
-
         }
       }
     }
-
-  ] 
+  ]
 }
-  

@@ -75,6 +75,7 @@ it in future.
 * Add visualization methods to SciFiMapping.py to visualize Sci-Fi in MTC, including draw_channel(), draw_channel_XY(), and draw_combined_scifi_views()
 * Support using TPythia6 provided by ROOTEGPythia6 for ROOT ≥ 6.32
 
+* Added initial implementation for ACTS based track reconstruction. This iteration includes independent tracking geometries for SiliconTarget and Strawtubes.
 
 ### Fixed
 

@@ -1,7 +1,6 @@
 import sys
 import os
 import global_variables
-from rootpyPickler import Unpickler
 
 import acts
 import acts.examples
@@ -26,12 +25,15 @@ from acts.examples.reconstruction import (
     addVertexFitting,
     VertexFinder,
     addTrackWriters,
+    TrackSmearingSigmas,
 )
 
 currentPath = os.path.dirname(__file__)
+sourcePath = os.path.abspath(os.path.join(currentPath,".."))
 fgeo = ROOT.TFile.Open(global_variables.geoFile)
-upkl = Unpickler(fgeo)
-ShipGeo = upkl.load('ShipGeo')
+
+from ShipGeoConfig import ConfigRegistry, load_from_root_file
+ShipGeo = load_from_root_file(fgeo, 'ShipGeo')
 
 def runTracking():
     customLogLevel=acts.examples.defaultLogging(logLevel=acts.logging.VERBOSE)
@@ -45,16 +47,21 @@ def runTracking():
                                                 layerLogLevel=customLogLevel(),
                                                 volumeLogLevel=customLogLevel(),
                                                )
+       simHitTree="siHits"
     if global_variables.detector == "MTC":
+        #MTC setup to be updated.
         return
 
     if global_variables.detector == "StrawTracker":
-       field = acts.MagneticFieldMapXyz(ShipGeo.Bfield.fieldMap, "Data", u.cm, u.T, 
-                                        translateToGlobal=ROOT.TVector3(ShipGeo.Bfield.x,
-                                                                        ShipGeo.Bfield.y,
-                                                                        ShipGeo.Bfield.z)) 
+       #Bfield x/y non-zero, offsets manually set to zero.
+       field = acts.examples.MagneticFieldMapXyz(file=str(sourcePath+"/"+ShipGeo.Bfield.fieldMap),
+                                                 tree="Data", lengthUnit=u.cm, BFieldUnit = u.T,
+                                                 translateToGlobal=acts.Vector3(0, 0,
+                                                                                ShipGeo.Bfield.z), 
+                                                 rotateAxis = True, firstOctant = False)
+       simHitTree="strawHits"
        digiConfigFile = currentPath + "/StrawTracker-digi-config.json"
-       detector = acts.examples.StrawTrackerBuilder(fileName=str(global_variables.geoFile),
+       detector = acts.examples.StrawtubeBuilder(fileName=str(global_variables.geoFile),
                                                     surfaceLogLevel=customLogLevel(),
                                                     layerLogLevel=customLogLevel(),
                                                     volumeLogLevel=customLogLevel(),
@@ -83,7 +90,7 @@ def runTracking():
                     level=acts.logging.INFO,
                     filePath=str(global_variables.inputFile),
                     outputSimHits="simhits",
-                    treeName="siHits"
+                    treeName=simHitTree
                 )
             )
 
@@ -93,36 +100,57 @@ def runTracking():
         field,
         digiConfigFile=str(digiConfigFile),
         rnd=rnd,
-        outputDirRoot=global_variables.outputDir
+        logLevel=acts.logging.INFO,
     )
 
     addDigiParticleSelection(
         s,
         ParticleSelectorConfig(
-            pt=(1.0 * u.GeV, None),
-            measurements=(5, None),
+            pt=(global_variables.minPt * u.GeV, None),
+            measurements=(global_variables.minHits, None),
             removeNeutral=True,
             removeSecondaries=True,
         ),
     )
 
-    addSeeding(
-            s,
-            trackingGeometry,
-            field,
-            rnd=rnd,
-            inputParticles="particles_generated",
-            seedingAlgorithm=SeedingAlgorithm.TruthSmeared,
-            particleHypothesis=acts.ParticleHypothesis.muon,
-        )
-
-    reverseFilteringMomThreshold=0 * u.GeV
+    if not global_variables.realPR:
+        addSeeding(
+                s,
+                trackingGeometry,
+                field,
+                rnd=rnd,
+                inputParticles="particles_generated",
+                seedingAlgorithm=SeedingAlgorithm.TruthSmeared,
+                particleHypothesis=acts.ParticleHypothesis.muon,
+                trackSmearingSigmas=TrackSmearingSigmas(
+                    loc0=0,
+                    loc0PtA=0,
+                    loc0PtB=0,
+                    loc1=0,
+                    loc1PtA=0,
+                    loc1PtB=0,
+                    time=0,
+                    phi=0,
+                    theta=0,
+                    ptRel=0,
+                    ),
+                initialSigmas=[
+                    1 * u.mm,
+                    1 * u.mm,
+                    1 * u.degree,
+                    1 * u.degree,
+                    0 / u.GeV,
+                    1 * u.ns,
+                ],
+                initialSigmaQoverPt=0.1 / u.GeV,
+                initialSigmaPtRel=0.1,
+                initialVarInflation=[1e0, 1e0, 1e0, 1e0, 1e0, 1e0],
+            )
 
     addKalmanTracks(
         s,
         trackingGeometry,
         field,
-        reverseFilteringMomThreshold,
     )
 
     s.addAlgorithm(
@@ -131,21 +159,23 @@ def runTracking():
             inputTracks="tracks",
             outputTracks="selected-tracks",
             selectorConfig=acts.TrackSelector.Config(
-                minMeasurements=5,
+                minMeasurements=global_variables.minHits,
             ),
         )
     )
 
+    s.addWhiteboardAlias("tracks", "selected-tracks")
+
     s.addWriter(
-      acts.examples.RootTrackSummaryWriter(
-        level=acts.logging.INFO,
-        inputTracks="tracks",
-        inputParticles="particles_selected",
-        inputTrackParticleMatching="track_particle_matching",
-        treeName="tracksummary",
-        filePath=global_variables.outputFile,
-        writeCovMat=True,
-      )
+        acts.examples.RootTrackStatesWriter(
+            level=acts.logging.INFO,
+            inputTracks="tracks",
+            inputParticles="particles_selected",
+            inputTrackParticleMatching="track_particle_matching",
+            inputSimHits="simhits",
+            inputMeasurementSimHitsMap="measurement_simhits_map",
+            filePath=str(global_variables.outputDir) + "/trackstates_kf.root",
+        )
     )
 
 
@@ -167,10 +197,9 @@ def runTracking():
             outputDirRoot=global_variables.outputFile
         )
 
-    
+
     if global_variables.DQM:
 
-        s.addWhiteboardAlias("tracks", "selected-tracks")
         s.addWriter(
             acts.examples.TrackFitterPerformanceWriter(
                 level=acts.logging.INFO,
@@ -178,6 +207,17 @@ def runTracking():
                 inputParticles="particles_selected",
                 inputTrackParticleMatching="track_particle_matching",
                 filePath=str(global_variables.outputDir) + "/performance_kf.root",
+            )
+        )
+
+        s.addWriter(
+            acts.examples.RootTrackSummaryWriter(
+                level=acts.logging.INFO,
+                inputTracks="tracks",
+                inputParticles="particles_selected",
+                inputTrackParticleMatching="track_particle_matching",
+                filePath=str(global_variables.outputDir) + "/tracksummary_kf.root",
+                writeCovMat=True,
             )
         )
 
@@ -195,5 +235,5 @@ def runTracking():
                     filePath=str(global_variables.outputDir) + "/performance_vertexing.root",
                 )
             )
-    
+
     s.run()
