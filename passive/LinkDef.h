@@ -8,7 +8,6 @@
 
 #pragma link C++ class  ShipMagnet+;
 #pragma link C++ class  ShipCave+;
-#pragma link C++ class  ShipChamber+;
 #pragma link C++ class  ShipTargetStation+;
 #pragma link C++ class  ShipMuonShield+;
 #pragma link C++ class  ShipGeoCave;

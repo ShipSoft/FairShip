@@ -16,7 +16,6 @@ set(SRCS
     ShipCave.cxx
     ShipGeoCave.cxx
     ShipMagnet.cxx
-    ShipChamber.cxx
     ShipTargetStation.cxx
     ShipMuonShield.cxx
     ShipPassiveContFact.cxx
