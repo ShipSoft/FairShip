@@ -259,9 +259,9 @@ $(document).ready(function(){initNavTree('shipDet__conf_8py_source.html',''); in
 <div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>    <span class="comment"># Initialize detector</span></div>
 <div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>    <span class="keywordflow">if</span> ship_geo.SiliconTarget_geo.zPosition == <span class="stringliteral">&quot;auto&quot;</span>:</div>
 <div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>        <span class="comment"># Get the the center of the next to last magnet (temporary placement)</span></div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>        <span class="comment"># Offset placement of detector by 130 cm, magnet is 2* 212.54 cm,</span></div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>        <span class="comment"># 120 layers at 132 cm will fit.</span></div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>        ship_geo.SiliconTarget_geo.zPosition = find_shield_center(ship_geo)[2][-2] + 130</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>        <span class="comment"># Offset placement of detector by 140 cm, magnet is 2* 212.54 cm,</span></div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>        <span class="comment"># 120 layers at 132 cm will fit, with 140 cm offset final layer within 10 cm of MTC.</span></div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>        ship_geo.SiliconTarget_geo.zPosition = find_shield_center(ship_geo)[2][-2] + 140</div>
 <div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>        print(<span class="stringliteral">&quot;SiliconTarget zPosition set to &quot;</span>, ship_geo.SiliconTarget_geo.zPosition)</div>
 <div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>    SiliconTarget = ROOT.SiliconTarget(<span class="stringliteral">&quot;SiliconTarget&quot;</span>, ROOT.kTRUE)</div>
 <div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>    <a class="code hl_function" href="classSiliconTarget.html#a776df0651edf60aa093675389bdf5a9e">SiliconTarget.SetSiliconTargetParameters</a>(</div>

@@ -420,12 +420,12 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiliconTarget_8cxx_source.html#l00287">287</a> of file <a class="el" href="SiliconTarget_8cxx_source.html">SiliconTarget.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  295</span>{</div>
-<div class="line"><span class="lineno">  296</span>    TClonesArray&amp; clref = *<a class="code hl_variable" href="classSiliconTarget.html#a109a785e06b52d832c000a5c02b79593">fSiliconTargetPointCollection</a>;</div>
-<div class="line"><span class="lineno">  297</span>    Int_t size = clref.GetEntriesFast();</div>
-<div class="line"><span class="lineno">  298</span>    <span class="keywordflow">return</span> <span class="keyword">new</span> (clref[size]) <a class="code hl_class" href="classSiliconTargetPoint.html">SiliconTargetPoint</a>(trackID, detID, pos, mom, time, length, eLoss, pdgCode);</div>
-<div class="line"><span class="lineno">  299</span>}</div>
+<p class="definition">Definition at line <a class="el" href="SiliconTarget_8cxx_source.html#l00293">293</a> of file <a class="el" href="SiliconTarget_8cxx_source.html">SiliconTarget.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  301</span>{</div>
+<div class="line"><span class="lineno">  302</span>    TClonesArray&amp; clref = *<a class="code hl_variable" href="classSiliconTarget.html#a109a785e06b52d832c000a5c02b79593">fSiliconTargetPointCollection</a>;</div>
+<div class="line"><span class="lineno">  303</span>    Int_t size = clref.GetEntriesFast();</div>
+<div class="line"><span class="lineno">  304</span>    <span class="keywordflow">return</span> <span class="keyword">new</span> (clref[size]) <a class="code hl_class" href="classSiliconTargetPoint.html">SiliconTargetPoint</a>(trackID, detID, pos, mom, time, length, eLoss, pdgCode);</div>
+<div class="line"><span class="lineno">  305</span>}</div>
 <div class="ttc" id="aclassSiliconTargetPoint_html"><div class="ttname"><a href="classSiliconTargetPoint.html">SiliconTargetPoint</a></div><div class="ttdef"><b>Definition</b> <a href="SiliconTargetPoint_8h_source.html#l00008">SiliconTargetPoint.h:9</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -634,10 +634,10 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiliconTarget_8cxx_source.html#l00260">260</a> of file <a class="el" href="SiliconTarget_8cxx_source.html">SiliconTarget.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  261</span>{</div>
-<div class="line"><span class="lineno">  262</span>    <a class="code hl_variable" href="classSiliconTarget.html#a109a785e06b52d832c000a5c02b79593">fSiliconTargetPointCollection</a>-&gt;Clear();</div>
-<div class="line"><span class="lineno">  263</span>}</div>
+<p class="definition">Definition at line <a class="el" href="SiliconTarget_8cxx_source.html#l00266">266</a> of file <a class="el" href="SiliconTarget_8cxx_source.html">SiliconTarget.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  267</span>{</div>
+<div class="line"><span class="lineno">  268</span>    <a class="code hl_variable" href="classSiliconTarget.html#a109a785e06b52d832c000a5c02b79593">fSiliconTargetPointCollection</a>-&gt;Clear();</div>
+<div class="line"><span class="lineno">  269</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -666,14 +666,14 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Gets the produced collections </p>
 
-<p class="definition">Definition at line <a class="el" href="SiliconTarget_8cxx_source.html#l00273">273</a> of file <a class="el" href="SiliconTarget_8cxx_source.html">SiliconTarget.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  274</span>{</div>
-<div class="line"><span class="lineno">  275</span>    <span class="keywordflow">if</span> (iColl == 0) {</div>
-<div class="line"><span class="lineno">  276</span>        <span class="keywordflow">return</span> <a class="code hl_variable" href="classSiliconTarget.html#a109a785e06b52d832c000a5c02b79593">fSiliconTargetPointCollection</a>;</div>
-<div class="line"><span class="lineno">  277</span>    } <span class="keywordflow">else</span> {</div>
-<div class="line"><span class="lineno">  278</span>        <span class="keywordflow">return</span> NULL;</div>
-<div class="line"><span class="lineno">  279</span>    }</div>
-<div class="line"><span class="lineno">  280</span>}</div>
+<p class="definition">Definition at line <a class="el" href="SiliconTarget_8cxx_source.html#l00279">279</a> of file <a class="el" href="SiliconTarget_8cxx_source.html">SiliconTarget.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  280</span>{</div>
+<div class="line"><span class="lineno">  281</span>    <span class="keywordflow">if</span> (iColl == 0) {</div>
+<div class="line"><span class="lineno">  282</span>        <span class="keywordflow">return</span> <a class="code hl_variable" href="classSiliconTarget.html#a109a785e06b52d832c000a5c02b79593">fSiliconTargetPointCollection</a>;</div>
+<div class="line"><span class="lineno">  283</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">  284</span>        <span class="keywordflow">return</span> NULL;</div>
+<div class="line"><span class="lineno">  285</span>    }</div>
+<div class="line"><span class="lineno">  286</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -837,22 +837,28 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  242</span>        Double_t ymean = (<a class="code hl_variable" href="classSiliconTarget.html#a4123972595adcff9a813fcdbe49b3d4c">fPos</a>.Y() + Pos.Y()) / 2.;</div>
 <div class="line"><span class="lineno">  243</span>        Double_t zmean = (<a class="code hl_variable" href="classSiliconTarget.html#a4123972595adcff9a813fcdbe49b3d4c">fPos</a>.Z() + Pos.Z()) / 2.;</div>
 <div class="line"><span class="lineno">  244</span> </div>
-<div class="line"><span class="lineno">  245</span>        <a class="code hl_function" href="classSiliconTarget.html#a1f1ac59438e9d52f672e3b347dcd2eb7">AddHit</a>(<a class="code hl_variable" href="classSiliconTarget.html#a5189a9acf992e94158eb0ecec1e5a3ac">fTrackID</a>,</div>
-<div class="line"><span class="lineno">  246</span>               <a class="code hl_variable" href="classSiliconTarget.html#abc59a86b0827fa75862a62201d361f7c">fVolumeID</a>,</div>
-<div class="line"><span class="lineno">  247</span>               TVector3(xmean, ymean, zmean),</div>
-<div class="line"><span class="lineno">  248</span>               TVector3(<a class="code hl_variable" href="classSiliconTarget.html#a3e9a148b2a0932c48df6559dba1e36c2">fMom</a>.Px(), <a class="code hl_variable" href="classSiliconTarget.html#a3e9a148b2a0932c48df6559dba1e36c2">fMom</a>.Py(), <a class="code hl_variable" href="classSiliconTarget.html#a3e9a148b2a0932c48df6559dba1e36c2">fMom</a>.Pz()),</div>
-<div class="line"><span class="lineno">  249</span>               <a class="code hl_variable" href="classSiliconTarget.html#a11e319ee6568fe071ba71ff2da06e7cc">fTime</a>,</div>
-<div class="line"><span class="lineno">  250</span>               <a class="code hl_variable" href="classSiliconTarget.html#afe4561f8891977bf231298f049d2c647">fLength</a>,</div>
-<div class="line"><span class="lineno">  251</span>               <a class="code hl_variable" href="classSiliconTarget.html#a072114ed0f08ea0fe2d4843ec8a5d052">fELoss</a>,</div>
-<div class="line"><span class="lineno">  252</span>               pdgCode);</div>
-<div class="line"><span class="lineno">  253</span> </div>
-<div class="line"><span class="lineno">  254</span>        <a class="code hl_class" href="classShipStack.html">ShipStack</a>* <a class="code hl_variable" href="namespacemakeCascade.html#a15662d966fe998f4f8b9b6547975083e">stack</a> = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classShipStack.html">ShipStack</a>*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;GetStack());</div>
-<div class="line"><span class="lineno">  255</span>        <a class="code hl_variable" href="namespacemakeCascade.html#a15662d966fe998f4f8b9b6547975083e">stack</a>-&gt;AddPoint(<a class="code hl_enumvalue" href="ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680ad01ba23e1a38f6521b776677590974fb">kSiliconTarget</a>);</div>
-<div class="line"><span class="lineno">  256</span>    }</div>
-<div class="line"><span class="lineno">  257</span>    <span class="keywordflow">return</span> kTRUE;</div>
-<div class="line"><span class="lineno">  258</span>}</div>
+<div class="line"><span class="lineno">  245</span>        Int_t strip_id = 0;</div>
+<div class="line"><span class="lineno">  246</span>        Int_t sensor_id = 0;</div>
+<div class="line"><span class="lineno">  247</span>        <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;CurrentVolID(strip_id);</div>
+<div class="line"><span class="lineno">  248</span>        <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;CurrentVolOffID(1, sensor_id);</div>
+<div class="line"><span class="lineno">  249</span>        <a class="code hl_variable" href="classSiliconTarget.html#abc59a86b0827fa75862a62201d361f7c">fVolumeID</a> = (sensor_id &lt;&lt; 12) + strip_id;</div>
+<div class="line"><span class="lineno">  250</span> </div>
+<div class="line"><span class="lineno">  251</span>        <a class="code hl_function" href="classSiliconTarget.html#a1f1ac59438e9d52f672e3b347dcd2eb7">AddHit</a>(<a class="code hl_variable" href="classSiliconTarget.html#a5189a9acf992e94158eb0ecec1e5a3ac">fTrackID</a>,</div>
+<div class="line"><span class="lineno">  252</span>               <a class="code hl_variable" href="classSiliconTarget.html#abc59a86b0827fa75862a62201d361f7c">fVolumeID</a>,</div>
+<div class="line"><span class="lineno">  253</span>               TVector3(xmean, ymean, zmean),</div>
+<div class="line"><span class="lineno">  254</span>               TVector3(<a class="code hl_variable" href="classSiliconTarget.html#a3e9a148b2a0932c48df6559dba1e36c2">fMom</a>.Px(), <a class="code hl_variable" href="classSiliconTarget.html#a3e9a148b2a0932c48df6559dba1e36c2">fMom</a>.Py(), <a class="code hl_variable" href="classSiliconTarget.html#a3e9a148b2a0932c48df6559dba1e36c2">fMom</a>.Pz()),</div>
+<div class="line"><span class="lineno">  255</span>               <a class="code hl_variable" href="classSiliconTarget.html#a11e319ee6568fe071ba71ff2da06e7cc">fTime</a>,</div>
+<div class="line"><span class="lineno">  256</span>               <a class="code hl_variable" href="classSiliconTarget.html#afe4561f8891977bf231298f049d2c647">fLength</a>,</div>
+<div class="line"><span class="lineno">  257</span>               <a class="code hl_variable" href="classSiliconTarget.html#a072114ed0f08ea0fe2d4843ec8a5d052">fELoss</a>,</div>
+<div class="line"><span class="lineno">  258</span>               pdgCode);</div>
+<div class="line"><span class="lineno">  259</span> </div>
+<div class="line"><span class="lineno">  260</span>        <a class="code hl_class" href="classShipStack.html">ShipStack</a>* <a class="code hl_variable" href="namespacemakeCascade.html#a15662d966fe998f4f8b9b6547975083e">stack</a> = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classShipStack.html">ShipStack</a>*<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;GetStack());</div>
+<div class="line"><span class="lineno">  261</span>        <a class="code hl_variable" href="namespacemakeCascade.html#a15662d966fe998f4f8b9b6547975083e">stack</a>-&gt;AddPoint(<a class="code hl_enumvalue" href="ShipDetectorList_8h.html#a1806da1a0fbae8ab81f7330906f65680ad01ba23e1a38f6521b776677590974fb">kSiliconTarget</a>);</div>
+<div class="line"><span class="lineno">  262</span>    }</div>
+<div class="line"><span class="lineno">  263</span>    <span class="keywordflow">return</span> kTRUE;</div>
+<div class="line"><span class="lineno">  264</span>}</div>
 <div class="ttc" id="aclassShipStack_html"><div class="ttname"><a href="classShipStack.html">ShipStack</a></div><div class="ttdef"><b>Definition</b> <a href="ShipStack_8h_source.html#l00046">ShipStack.h:47</a></div></div>
-<div class="ttc" id="aclassSiliconTarget_html_a1f1ac59438e9d52f672e3b347dcd2eb7"><div class="ttname"><a href="classSiliconTarget.html#a1f1ac59438e9d52f672e3b347dcd2eb7">SiliconTarget::AddHit</a></div><div class="ttdeci">SiliconTargetPoint * AddHit(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom, Double_t time, Double_t length, Double_t eLoss, Int_t pdgCode)</div><div class="ttdef"><b>Definition</b> <a href="SiliconTarget_8cxx_source.html#l00287">SiliconTarget.cxx:287</a></div></div>
+<div class="ttc" id="aclassSiliconTarget_html_a1f1ac59438e9d52f672e3b347dcd2eb7"><div class="ttname"><a href="classSiliconTarget.html#a1f1ac59438e9d52f672e3b347dcd2eb7">SiliconTarget::AddHit</a></div><div class="ttdeci">SiliconTargetPoint * AddHit(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom, Double_t time, Double_t length, Double_t eLoss, Int_t pdgCode)</div><div class="ttdef"><b>Definition</b> <a href="SiliconTarget_8cxx_source.html#l00293">SiliconTarget.cxx:293</a></div></div>
 <div class="ttc" id="anamespacemakeCascade_html_a15662d966fe998f4f8b9b6547975083e"><div class="ttname"><a href="namespacemakeCascade.html#a15662d966fe998f4f8b9b6547975083e">makeCascade.stack</a></div><div class="ttdeci">int stack</div><div class="ttdef"><b>Definition</b> <a href="makeCascade_8py_source.html#l00249">makeCascade.py:249</a></div></div>
 <div class="ttc" id="anamespacemakeDecay_html_a9c90b95001a4909a6c5383da1b3066d9"><div class="ttname"><a href="namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9">makeDecay.p</a></div><div class="ttdeci">p</div><div class="ttdef"><b>Definition</b> <a href="makeDecay_8py_source.html#l00067">makeDecay.py:67</a></div></div>
 <div class="ttc" id="anamespacerun__simScript_html_a671e51e119017a06d69c162c6e24b051"><div class="ttname"><a href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">run_simScript.gMC</a></div><div class="ttdeci">gMC</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l00540">run_simScript.py:540</a></div></div>
@@ -883,13 +889,13 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Registers the produced collections in FAIRRootManager </p>
 
-<p class="definition">Definition at line <a class="el" href="SiliconTarget_8cxx_source.html#l00265">265</a> of file <a class="el" href="SiliconTarget_8cxx_source.html">SiliconTarget.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  266</span>{</div>
-<div class="line"><span class="lineno">  267</span>    TString <a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a> = <span class="stringliteral">&quot;SiliconTargetPoint&quot;</span>;</div>
-<div class="line"><span class="lineno">  268</span>    TString <a class="code hl_variable" href="namespaceextractNeutrinosAndUpdateWeight.html#a485fb7e387dc6298deaed66ee2e9e66d">title</a> = <span class="stringliteral">&quot;SiliconTarget&quot;</span>;</div>
-<div class="line"><span class="lineno">  269</span>    FairRootManager::Instance()-&gt;Register(name, title, <a class="code hl_variable" href="classSiliconTarget.html#a109a785e06b52d832c000a5c02b79593">fSiliconTargetPointCollection</a>, kTRUE);</div>
-<div class="line"><span class="lineno">  270</span>    LOG(<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a>) &lt;&lt; this-&gt;GetName() &lt;&lt; <span class="stringliteral">&quot;, Register() says: registered &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a> &lt;&lt; <span class="stringliteral">&quot; collection&quot;</span>;</div>
-<div class="line"><span class="lineno">  271</span>}</div>
+<p class="definition">Definition at line <a class="el" href="SiliconTarget_8cxx_source.html#l00271">271</a> of file <a class="el" href="SiliconTarget_8cxx_source.html">SiliconTarget.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  272</span>{</div>
+<div class="line"><span class="lineno">  273</span>    TString <a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a> = <span class="stringliteral">&quot;SiliconTargetPoint&quot;</span>;</div>
+<div class="line"><span class="lineno">  274</span>    TString <a class="code hl_variable" href="namespaceextractNeutrinosAndUpdateWeight.html#a485fb7e387dc6298deaed66ee2e9e66d">title</a> = <span class="stringliteral">&quot;SiliconTarget&quot;</span>;</div>
+<div class="line"><span class="lineno">  275</span>    FairRootManager::Instance()-&gt;Register(name, title, <a class="code hl_variable" href="classSiliconTarget.html#a109a785e06b52d832c000a5c02b79593">fSiliconTargetPointCollection</a>, kTRUE);</div>
+<div class="line"><span class="lineno">  276</span>    LOG(<a class="code hl_variable" href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a>) &lt;&lt; this-&gt;GetName() &lt;&lt; <span class="stringliteral">&quot;, Register() says: registered &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a> &lt;&lt; <span class="stringliteral">&quot; collection&quot;</span>;</div>
+<div class="line"><span class="lineno">  277</span>}</div>
 <div class="ttc" id="aDPPythia8Generator_8cxx_html_a07cdd66ebb44c854868e1f85a375ac1e"><div class="ttname"><a href="DPPythia8Generator_8cxx.html#a07cdd66ebb44c854868e1f85a375ac1e">debug</a></div><div class="ttdeci">const Int_t debug</div><div class="ttdef"><b>Definition</b> <a href="DPPythia8Generator_8cxx_source.html#l00011">DPPythia8Generator.cxx:11</a></div></div>
 <div class="ttc" id="anamespaceextractNeutrinosAndUpdateWeight_html_a485fb7e387dc6298deaed66ee2e9e66d"><div class="ttname"><a href="namespaceextractNeutrinosAndUpdateWeight.html#a485fb7e387dc6298deaed66ee2e9e66d">extractNeutrinosAndUpdateWeight.title</a></div><div class="ttdeci">str title</div><div class="ttdef"><b>Definition</b> <a href="extractNeutrinosAndUpdateWeight_8py_source.html#l00037">extractNeutrinosAndUpdateWeight.py:37</a></div></div>
 <div class="ttc" id="anamespacemakeCascade_html_add259298592a80ac35262a17847aee2d"><div class="ttname"><a href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">makeCascade.name</a></div><div class="ttdeci">name</div><div class="ttdef"><b>Definition</b> <a href="makeCascade_8py_source.html#l00174">makeCascade.py:174</a></div></div>
@@ -920,10 +926,10 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Has to be called after each event to reset the containers </p>
 
-<p class="definition">Definition at line <a class="el" href="SiliconTarget_8cxx_source.html#l00282">282</a> of file <a class="el" href="SiliconTarget_8cxx_source.html">SiliconTarget.cxx</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  283</span>{</div>
-<div class="line"><span class="lineno">  284</span>    <a class="code hl_variable" href="classSiliconTarget.html#a109a785e06b52d832c000a5c02b79593">fSiliconTargetPointCollection</a>-&gt;Clear();</div>
-<div class="line"><span class="lineno">  285</span>}</div>
+<p class="definition">Definition at line <a class="el" href="SiliconTarget_8cxx_source.html#l00288">288</a> of file <a class="el" href="SiliconTarget_8cxx_source.html">SiliconTarget.cxx</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  289</span>{</div>
+<div class="line"><span class="lineno">  290</span>    <a class="code hl_variable" href="classSiliconTarget.html#a109a785e06b52d832c000a5c02b79593">fSiliconTargetPointCollection</a>-&gt;Clear();</div>
+<div class="line"><span class="lineno">  291</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
