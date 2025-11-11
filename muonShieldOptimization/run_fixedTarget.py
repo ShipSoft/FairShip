@@ -39,8 +39,8 @@ def get_work_dir(run_number,tag=None):
 logger.info("SHiP proton-on-taget simulator (C) Thomas Ruf, 2017")
 
 ap = argparse.ArgumentParser(description='Run SHiP "pot" simulation')
-ap.add_argument('-d', '--debug', action=argparse.BooleanOptionalAction, default=True)
-ap.add_argument('-f', '--force', action=argparse.BooleanOptionalAction, default=True, help="force overwriting output directory")
+ap.add_argument('-d', '--debug', action=argparse.BooleanOptionalAction, default=False)
+ap.add_argument('-f', '--force', action=argparse.BooleanOptionalAction, default=False, help="force overwriting output directory")
 ap.add_argument('-r', '--run-number', type=int, dest='runnr', default=1)
 ap.add_argument('-e', '--ecut', type=float, help="energy cut", default=0.5)  # GeV   with 1 : ~1sec / event, with 2: 0.4sec / event, 10: 0.13sec
 ap.add_argument('-n', '--num-events', type=int, help="number of events to generate", dest='nev', default=100)
@@ -73,7 +73,13 @@ ap.add_argument('--AddMuonShieldField', help='Whether or not to add the muon shi
 ap.add_argument('--AddHadronAbsorberOnly', help='Whether to only add the hadron absorber part of the muon shield. Default set to True.', default=True, action=argparse.BooleanOptionalAction)
 
 ap.add_argument('--z-offset', type=float, dest='z_offset', default=-84., help="z-offset for the FixedTargetGenerator [mm]")
+ap.add_argument('--x-offset', type=float, dest='x_offset', default=0., help="x-offset for the FixedTargetGenerator [mm]")
+ap.add_argument('--y-offset', type=float, dest='y_offset', default=0., help="y-offset for the FixedTargetGenerator [mm]")
+ap.add_argument('--beam-smear', type=float, dest='beam_smear', default=16., help="beam smearing for the FixedTargetGenerator [mm]")
+ap.add_argument('--beam-paint', type=float, dest='beam_paint', default=50., help="beam painting radius for the FixedTargetGenerator [mm]")
 ap.add_argument('--TARGET_YAML', dest='TARGET_YAML', help='File for target configuration', default=os.path.expandvars('$FAIRSHIP/geometry/target_config_Jun25.yaml'))
+
+ap.add_argument('--AddCylindricalSensPlane', action='store_true', help="Whether or not to add cylindrical sensitive plane around the target. False by default.")
 
 args = ap.parse_args()
 if args.debug:
@@ -176,18 +182,45 @@ if args.AddMuonShield or args.AddHadronAbsorberOnly:
                                      SC_key=ship_geo.SC_mag)
     # MuonShield.SetSupports(False) # otherwise overlap with sensitive Plane
     run.AddModule(MuonShield) # needs to be added because of magn hadron shield.
-sensPlane = ROOT.exitHadronAbsorber()
-sensPlane.SetEnergyCut(args.ecut*u.GeV)
-if args.storeOnlyMuons: sensPlane.SetOnlyMuons()
-if args.skipNeutrinos: sensPlane.SkipNeutrinos()
-if args.FourDP: sensPlane.SetOpt4DP()  # in case a ntuple should be filled with pi0,etas,omega
-# sensPlane.SetZposition(0.0001*u.cm)  # if not using automatic positioning behind default magnetized hadron absorber
-run.AddModule(sensPlane)
+
+
+sensPlaneHA = ROOT.exitHadronAbsorber()
+sensPlaneHA.SetEnergyCut(args.ecut*u.GeV)
+sensPlaneHA.SetVetoPointName("PlaneHA")
+
+if args.AddCylindricalSensPlane:  # add additional sensitive plane around target
+    sensPlaneT = ROOT.exitHadronAbsorber()
+    sensPlaneT.SetEnergyCut(args.ecut*u.GeV)
+    sensPlaneT.SetVetoPointName("PlaneT")
+    sensPlaneT.SetCylindricalPlane()
+    sensPlaneT.SetZposition(ship_geo.target.length)  # if not using automatic positioning behind default magnetized hadron absorber
+
+if args.storeOnlyMuons:
+    sensPlaneHA.SetOnlyMuons()
+    if args.AddCylindricalSensPlane:
+        sensPlaneT.SetOnlyMuons()
+if args.skipNeutrinos:
+    sensPlaneHA.SkipNeutrinos()
+    if args.AddCylindricalSensPlane:
+        sensPlaneT.SkipNeutrinos()
+if args.FourDP:  # in case a ntuple should be filled with pi0,etas,omega
+    sensPlaneHA.SetOpt4DP()
+    if args.AddCylindricalSensPlane:
+        sensPlaneT.SetOpt4DP()
+
+run.AddModule(sensPlaneHA)
+
+if args.AddCylindricalSensPlane:
+    run.AddModule(sensPlaneT)
 
 # -----Create PrimaryGenerator--------------------------------------
 primGen = ROOT.FairPrimaryGenerator()
 P8gen = ROOT.FixedTargetGenerator()
 P8gen.SetZoffset(args.z_offset*u.mm)
+P8gen.SetXoffset(args.x_offset*u.mm)
+P8gen.SetYoffset(args.y_offset*u.mm)
+P8gen.SetSmearBeam(args.beam_smear*u.mm)
+P8gen.SetPaintRadius(args.beam_paint*u.mm)
 # Use geometry constants instead of fragile TGeo navigation
 P8gen.SetTargetCoordinates(ship_geo.target.z0, ship_geo.target.z0 + ship_geo.target.length)
 P8gen.SetMom(400.*u.GeV)
