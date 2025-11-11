@@ -22,7 +22,7 @@ def main():
 
     outFile = global_variables.inputFile.replace('.root','_ACTS.root')
 
-    from ShipGeoConfig import ConfigRegistry, load_from_root_file
+    from ShipGeoConfig import load_from_root_file
     import shipDet_conf
 
     #load Shipgeo dictionary

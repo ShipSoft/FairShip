@@ -32,7 +32,7 @@ currentPath = os.path.dirname(__file__)
 sourcePath = os.path.abspath(os.path.join(currentPath,".."))
 fgeo = ROOT.TFile.Open(global_variables.geoFile)
 
-from ShipGeoConfig import ConfigRegistry, load_from_root_file
+from ShipGeoConfig import load_from_root_file
 ShipGeo = load_from_root_file(fgeo, 'ShipGeo')
 
 def runTracking():
