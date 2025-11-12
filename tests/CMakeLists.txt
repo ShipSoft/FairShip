@@ -28,13 +28,13 @@ target_link_libraries(testDataClassIO
     TimeDet
     UpstreamTagger
     EmulsionTarget
-    ROOT::Core
-    ROOT::RIO
-    ROOT::Geom
-    ROOT::GenVector
-    ROOT::EG
-    ROOT::Physics
-    FairRoot::Base
+    Core
+    RIO
+    Geom
+    GenVector
+    EG
+    Physics
+    Base
     genfit2
     FairLogger::FairLogger
 )
@@ -42,41 +42,46 @@ target_link_libraries(testDataClassIO
 # Add test to CTest
 add_test(NAME DataClassIO COMMAND testDataClassIO)
 
-# Test for actual RNtuple I/O operations
-add_executable(testRNtupleIO test_rntuple_io.cxx)
+# Test for actual RNtuple I/O operations (requires ROOT >= 6.36)
+if(ROOT_VERSION VERSION_GREATER_EQUAL "6.36")
+  message(STATUS "Building RNtuple I/O test (ROOT ${ROOT_VERSION})")
+  add_executable(testRNtupleIO test_rntuple_io.cxx)
 
-target_include_directories(testRNtupleIO PRIVATE
-    ${CMAKE_SOURCE_DIR}/shipdata
-    ${CMAKE_SOURCE_DIR}/veto
-    ${CMAKE_SOURCE_DIR}/strawtubes
-    ${CMAKE_SOURCE_DIR}/splitcal
-    ${CMAKE_SOURCE_DIR}/SND/MTC
-    ${CMAKE_SOURCE_DIR}/SND/SiliconTarget
-    ${CMAKE_SOURCE_DIR}/SND/EmulsionTarget
-    ${CMAKE_SOURCE_DIR}/TimeDet
-    ${CMAKE_SOURCE_DIR}/UpstreamTagger
-)
+  target_include_directories(testRNtupleIO PRIVATE
+      ${CMAKE_SOURCE_DIR}/shipdata
+      ${CMAKE_SOURCE_DIR}/veto
+      ${CMAKE_SOURCE_DIR}/strawtubes
+      ${CMAKE_SOURCE_DIR}/splitcal
+      ${CMAKE_SOURCE_DIR}/SND/MTC
+      ${CMAKE_SOURCE_DIR}/SND/SiliconTarget
+      ${CMAKE_SOURCE_DIR}/SND/EmulsionTarget
+      ${CMAKE_SOURCE_DIR}/TimeDet
+      ${CMAKE_SOURCE_DIR}/UpstreamTagger
+  )
 
-target_link_libraries(testRNtupleIO
-    ShipData
-    veto
-    strawtubes
-    splitcal
-    MTCDetector
-    SiliconTarget
-    TimeDet
-    UpstreamTagger
-    EmulsionTarget
-    ROOT::Core
-    ROOT::RIO
-    ROOT::Geom
-    ROOT::GenVector
-    ROOT::EG
-    ROOT::Physics
-    ROOTNTuple
-    FairRoot::Base
-    genfit2
-    FairLogger::FairLogger
-)
+  target_link_libraries(testRNtupleIO
+      ShipData
+      veto
+      strawtubes
+      splitcal
+      MTCDetector
+      SiliconTarget
+      TimeDet
+      UpstreamTagger
+      EmulsionTarget
+      Core
+      RIO
+      Geom
+      GenVector
+      EG
+      Physics
+      ROOTNTuple
+      Base
+      genfit2
+      FairLogger::FairLogger
+  )
 
-add_test(NAME RNtupleIO COMMAND testRNtupleIO)
+  add_test(NAME RNtupleIO COMMAND testRNtupleIO)
+else()
+  message(STATUS "Skipping RNtuple I/O test (requires ROOT >= 6.36, found ${ROOT_VERSION})")
+endif()

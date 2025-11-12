@@ -34,6 +34,13 @@ jobs:
           source /cvmfs/ship.cern.ch/$version/setUp.sh
           aliBuild build FairShip --always-prefer-system --config-dir $SHIPDIST --defaults release --jobs 4 --debug 2>&1 | tee build.log | python3 FairShip/.github/scripts/annotate_build.py
 
+      - name: Run tests
+        run: |
+          source /cvmfs/ship.cern.ch/$version/setUp.sh
+          eval $(alienv load FairShip/latest)
+          cd sw/BUILD/FairShip-latest/FairShip
+          ctest --output-on-failure
+
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
