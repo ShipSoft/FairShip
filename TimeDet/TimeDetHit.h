@@ -25,29 +25,32 @@ class TimeDetHit : public ShipHit
     /** Destructor **/
     virtual ~TimeDetHit();
 
+    /** Copy constructor **/
+    TimeDetHit(const TimeDetHit& point) = default;
+    TimeDetHit& operator=(const TimeDetHit& point) = default;
+
     /** Accessors **/
-    Double_t GetX();
-    Double_t GetY();
-    Double_t GetZ();
-    TVector3 GetXYZ();
-    TGeoNode* GetNode();
-    std::vector<double> GetTime(Double_t x);
-    std::vector<double> GetTime();
-    std::vector<double> GetMeasurements();
+    Double_t GetX() const;
+    Double_t GetY() const;
+    Double_t GetZ() const;
+    TVector3 GetXYZ() const;
+    TGeoNode* GetNode() const;
+    std::vector<double> GetTime(Double_t x) const;
+    std::vector<double> GetTime() const;
+    std::vector<double> GetMeasurements() const;
     /** Modifier **/
     void SetTDC(Float_t val1, Float_t val2){t_1=val1;t_2=val2;}
 
     /** Output to screen **/
     virtual void Print() const;
 
-    void Dist(Float_t x, Float_t& lpos, Float_t& lneg);
-    Double_t Resol(Double_t x);
+    void Dist(Float_t x, Float_t& lpos, Float_t& lneg) const;
+    Double_t Resol(Double_t x) const;
     void setInvalid() {flag = false;}
     void setIsValid() {flag = true;}
     bool isValid() const {return flag;}
+
   private:
-    TimeDetHit(const TimeDetHit& point);
-    TimeDetHit operator=(const TimeDetHit& point);
     Double_t v_drift = 15.; // cm/ns
     Double_t par[4] = { 0.0272814, 109.303, 0, 0.0539487 };
 

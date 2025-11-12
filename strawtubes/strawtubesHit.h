@@ -23,10 +23,10 @@ class strawtubesHit : public ShipHit
     virtual ~strawtubesHit();
 
     /** Accessors **/
-    Int_t GetStationNumber();
-    Int_t GetViewNumber();
-    Int_t GetLayerNumber();
-    Int_t GetStrawNumber();
+    Int_t GetStationNumber() const;
+    Int_t GetViewNumber() const;
+    Int_t GetLayerNumber() const;
+    Int_t GetStrawNumber() const;
 
     /** Output to screen **/
     virtual void Print() const;

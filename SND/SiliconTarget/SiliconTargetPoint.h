@@ -35,24 +35,25 @@ class SiliconTargetPoint : public FairMCPoint
     /** Destructor **/
     virtual ~SiliconTargetPoint();
 
+    /** Copy constructor **/
+    SiliconTargetPoint(const SiliconTargetPoint& point) = default;
+    SiliconTargetPoint& operator=(const SiliconTargetPoint& point) = default;
+
     /** Output to screen **/
     virtual void Print() const;
     Int_t PdgCode() const { return fPdgCode; }
 
-    int constexpr GetLayer() { return floor(fDetectorID >> 17); }
-    int constexpr GetPlane() { return static_cast<int>(fDetectorID >> 16) % 2; }   // 0 is X-plane, 1 is Y-pane
-    int constexpr GetColumn() { return static_cast<int>(fDetectorID >> 14) % 4; }
-    int constexpr GetRow() { return static_cast<int>(fDetectorID >> 13) % 2; }
-    int constexpr GetStrip() { return static_cast<int>(fDetectorID % 4096); }
-    int constexpr GetModule() { return GetRow() + 1 + 2 * GetColumn(); }
+    constexpr int GetLayer() const { return floor(fDetectorID >> 17); }
+    constexpr int GetPlane() const { return static_cast<int>(fDetectorID >> 16) % 2; }   // 0 is X-plane, 1 is Y-pane
+    constexpr int GetColumn() const { return static_cast<int>(fDetectorID >> 14) % 4; }
+    constexpr int GetRow() const { return static_cast<int>(fDetectorID >> 13) % 2; }
+    constexpr int GetStrip() const { return static_cast<int>(fDetectorID % 4096); }
+    constexpr int GetModule() const { return GetRow() + 1 + 2 * GetColumn(); }
 
   private:
     Int_t fPdgCode;
 
-    SiliconTargetPoint(const SiliconTargetPoint& point);
-    SiliconTargetPoint operator=(const SiliconTargetPoint& point);
-
-    ClassDef(SiliconTargetPoint, 1)
+    ClassDef(SiliconTargetPoint, 2)
 };
 
 #endif   // SND_SILICONTARGET_SILICONTARGETPOINT_H_

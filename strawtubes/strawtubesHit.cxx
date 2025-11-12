@@ -54,7 +54,7 @@ strawtubesHit::strawtubesHit(strawtubesPoint* p, Double_t t0)
 strawtubesHit::~strawtubesHit() { }
 // -------------------------------------------------------------------------
 
-Int_t strawtubesHit::GetStationNumber()
+Int_t strawtubesHit::GetStationNumber() const
 {
     Int_t detID = GetDetectorID();
     const auto decode = strawtubes::StrawDecode(detID);
@@ -62,7 +62,7 @@ Int_t strawtubesHit::GetStationNumber()
     return std::get<0>(decode);
 }
 
-Int_t strawtubesHit::GetViewNumber()
+Int_t strawtubesHit::GetViewNumber() const
 {
     Int_t detID = GetDetectorID();
     const auto decode = strawtubes::StrawDecode(detID);
@@ -70,7 +70,7 @@ Int_t strawtubesHit::GetViewNumber()
     return std::get<1>(decode);
 }
 
-Int_t strawtubesHit::GetLayerNumber()
+Int_t strawtubesHit::GetLayerNumber() const
 {
     Int_t detID = GetDetectorID();
     const auto decode = strawtubes::StrawDecode(detID);
@@ -78,7 +78,7 @@ Int_t strawtubesHit::GetLayerNumber()
     return std::get<2>(decode);
 }
 
-Int_t strawtubesHit::GetStrawNumber()
+Int_t strawtubesHit::GetStrawNumber() const
 {
     Int_t detID = GetDetectorID();
     const auto decode = strawtubes::StrawDecode(detID);
