@@ -215,6 +215,7 @@ it in future.
 * Remove unused CaloDesign parameter from geometry configuration (only splitCal supported after ECAL/HCAL removal)
 * Removed unused class ShipChamber (leftover from TP design)
 * Removed unused run_simPgun.py
+* Remove ecal and hcal geometry files
 
 ## 25.01
 
