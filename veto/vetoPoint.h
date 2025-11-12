@@ -5,6 +5,8 @@
 #include "TObject.h"
 #include "TVector3.h"
 
+#include <array>
+
 class vetoPoint : public FairMCPoint
 {
 
@@ -38,20 +40,21 @@ class vetoPoint : public FairMCPoint
     /** Destructor **/
     virtual ~vetoPoint();
 
+    /** Copy constructor **/
+    vetoPoint(const vetoPoint& point) = default;
+    vetoPoint& operator=(const vetoPoint& point) = default;
+
     /** Output to screen **/
     virtual void Print() const;
     Int_t PdgCode() const { return fPdgCode; }
-    TVector3 LastPoint() const { return fLpos; }
-    TVector3 LastMom() const { return fLmom; }
+    TVector3 LastPoint() const { return TVector3(fLpos[0], fLpos[1], fLpos[2]); }
+    TVector3 LastMom() const { return TVector3(fLmom[0], fLmom[1], fLmom[2]); }
 
   private:
-    /** Copy constructor **/
     Int_t fPdgCode;
-    TVector3 fLpos, fLmom;
-    vetoPoint(const vetoPoint& point);
-    vetoPoint operator=(const vetoPoint& point);
+    std::array<Double_t, 3> fLpos, fLmom;
 
-    ClassDef(vetoPoint, 3)
+    ClassDef(vetoPoint, 5)
 };
 
 #endif   // VETO_VETOPOINT_H_

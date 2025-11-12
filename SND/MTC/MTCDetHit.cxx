@@ -104,7 +104,7 @@ MTCDetHit::~MTCDetHit() {}
 // -------------------------------------------------------------------------
 
 // -----   Public method GetEnergy   -------------------------------------------
-Float_t MTCDetHit::GetEnergy()
+Float_t MTCDetHit::GetEnergy() const
 {
     // to be calculated from digis and calibration constants, missing!
     return signals;

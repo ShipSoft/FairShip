@@ -31,6 +31,10 @@ class UpstreamTaggerHit : public ShipHit
     /** Destructor **/
     virtual ~UpstreamTaggerHit();
 
+    /** Copy constructor **/
+    UpstreamTaggerHit(const UpstreamTaggerHit& hit) = default;
+    UpstreamTaggerHit& operator=(const UpstreamTaggerHit& hit) = default;
+
     /** Position accessors **/
     Double_t GetX() const { return fX; }
     Double_t GetY() const { return fY; }
@@ -44,9 +48,6 @@ class UpstreamTaggerHit : public ShipHit
     virtual void Print() const;
 
   private:
-    UpstreamTaggerHit(const UpstreamTaggerHit& hit);
-    UpstreamTaggerHit& operator=(const UpstreamTaggerHit& hit);
-
     Double_t fX;      ///< Smeared x position (cm)
     Double_t fY;      ///< Smeared y position (cm)
     Double_t fZ;      ///< Smeared z position (cm)

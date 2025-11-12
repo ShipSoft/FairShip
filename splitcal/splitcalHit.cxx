@@ -175,27 +175,26 @@ void splitcalHit::Decoder(int& id, int& isPrecision, int& nLayer, int& nModuleX,
 
 }
 
+double splitcalHit::GetEnergyWeightForIndex(int index) const
+{
 
-double splitcalHit::GetEnergyWeightForIndex(int index){
-
-  int iw = 0;
-  for(size_t i=0; i<_vecClusterIndices.size(); i++) {
-    if (_vecClusterIndices.at(i) == index) {
-      iw = i;
-      break;
+    int iw = 0;
+    for (size_t i = 0; i < _vecClusterIndices.size(); i++) {
+        if (_vecClusterIndices.at(i) == index) {
+            iw = i;
+            break;
+        }
     }
-  }
-  return _vecEnergyWeights.at(iw);
+    return _vecEnergyWeights.at(iw);
 }
 
+double splitcalHit::GetEnergyForCluster(int i) const
+{
 
-double splitcalHit::GetEnergyForCluster(int i){
-
-  double unweightedEnergy = GetEnergy();
-  double weight = GetEnergyWeightForIndex(i);
-  double energy = unweightedEnergy*weight;
-  return energy;
-
+    double unweightedEnergy = GetEnergy();
+    double weight = GetEnergyWeightForIndex(i);
+    double energy = unweightedEnergy * weight;
+    return energy;
 }
 
 // -------------------------------------------------------------------------

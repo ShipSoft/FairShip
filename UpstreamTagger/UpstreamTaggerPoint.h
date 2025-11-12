@@ -1,13 +1,13 @@
 #ifndef UPSTREAMTAGGER_UPSTREAMTAGGERPOINT_H_
 #define UPSTREAMTAGGER_UPSTREAMTAGGERPOINT_H_
 
-
 #include "FairMCPoint.h"
-#include "UpstreamTaggerHit.h"
-#include "UpstreamTagger.h"
 #include "TObject.h"
 #include "TVector3.h"
+#include "UpstreamTagger.h"
+#include "UpstreamTaggerHit.h"
 
+#include <array>
 
 class UpstreamTaggerPoint : public FairMCPoint
 {
@@ -33,21 +33,21 @@ class UpstreamTaggerPoint : public FairMCPoint
     /** Destructor **/
     virtual ~UpstreamTaggerPoint();
 
+    /** Copy constructor **/
+    UpstreamTaggerPoint(const UpstreamTaggerPoint& point) = default;
+    UpstreamTaggerPoint& operator=(const UpstreamTaggerPoint& point) = default;
+
     /** Output to screen **/
     virtual void Print() const;
     Int_t PdgCode() const {return fPdgCode;}
-    TVector3 LastPoint() const {return fLpos;}
-    TVector3 LastMom() const {return fLmom;}
+    TVector3 LastPoint() const { return TVector3(fLpos[0], fLpos[1], fLpos[2]); }
+    TVector3 LastMom() const { return TVector3(fLmom[0], fLmom[1], fLmom[2]); }
 
   private:
-    /** Copy constructor **/
     Int_t fPdgCode;
-    TVector3 fLpos,fLmom;
-    UpstreamTaggerPoint(const UpstreamTaggerPoint& point);
-    UpstreamTaggerPoint operator=(const UpstreamTaggerPoint& point);
+    std::array<Double_t, 3> fLpos, fLmom;
 
-    ClassDef(UpstreamTaggerPoint,1)
-
+    ClassDef(UpstreamTaggerPoint, 3)
 };
 
 #endif  // UPSTREAMTAGGER_UPSTREAMTAGGERPOINT_H_

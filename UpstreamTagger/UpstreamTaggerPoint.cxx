@@ -13,11 +13,20 @@ UpstreamTaggerPoint::UpstreamTaggerPoint()
 // -------------------------------------------------------------------------
 
 // -----   Standard constructor   ------------------------------------------
-UpstreamTaggerPoint::UpstreamTaggerPoint(Int_t trackID, Int_t detID,
-			   TVector3 pos, TVector3 mom,
-			   Double_t tof, Double_t length,
-			   Double_t eLoss, Int_t pdgcode,TVector3 Lpos, TVector3 Lmom)
-  : FairMCPoint(trackID, detID, pos, mom, tof, length, eLoss), fPdgCode(pdgcode),fLpos(Lpos),fLmom(Lmom)
+UpstreamTaggerPoint::UpstreamTaggerPoint(Int_t trackID,
+                                         Int_t detID,
+                                         TVector3 pos,
+                                         TVector3 mom,
+                                         Double_t tof,
+                                         Double_t length,
+                                         Double_t eLoss,
+                                         Int_t pdgcode,
+                                         TVector3 Lpos,
+                                         TVector3 Lmom)
+    : FairMCPoint(trackID, detID, pos, mom, tof, length, eLoss)
+    , fPdgCode(pdgcode)
+    , fLpos{Lpos.X(), Lpos.Y(), Lpos.Z()}
+    , fLmom{Lmom.X(), Lmom.Y(), Lmom.Z()}
 {
 }
 // -------------------------------------------------------------------------
