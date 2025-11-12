@@ -34,18 +34,19 @@ class MTCDetPoint : public FairMCPoint
     /** Destructor **/
     virtual ~MTCDetPoint();
 
+    /** Copy constructor **/
+    MTCDetPoint(const MTCDetPoint& point) = default;
+    MTCDetPoint& operator=(const MTCDetPoint& point) = default;
+
     /** Output to screen **/
     virtual void Print() const;
     Int_t PdgCode() const { return fPdgCode; }
     Int_t GetStationType() const { return static_cast<int>(fDetectorID / 100000) % 10; }
-    Int_t GetLayer();
-    Int_t GetLayerType();
+    Int_t GetLayer() const;
+    Int_t GetLayerType() const;
     Int_t fPdgCode;
 
-    MTCDetPoint(const MTCDetPoint& point);
-    MTCDetPoint operator=(const MTCDetPoint& point);
-
-    ClassDef(MTCDetPoint, 2)
+    ClassDef(MTCDetPoint, 3)
 };
 
 #endif   // SND_MTC_MTCDETPOINT_H_

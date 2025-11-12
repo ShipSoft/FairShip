@@ -39,6 +39,10 @@ class TargetPoint : public FairMCPoint
     /** Destructor **/
     virtual ~TargetPoint();
 
+    /** Copy constructor **/
+    TargetPoint(const TargetPoint& point) = default;
+    TargetPoint& operator=(const TargetPoint& point) = default;
+
     /** Output to screen **/
     virtual void Print(const Option_t* opt) const;
 
@@ -47,12 +51,7 @@ class TargetPoint : public FairMCPoint
   private:
     Int_t fPdgCode;
 
-    /** Copy constructor **/
-
-    TargetPoint(const TargetPoint& point);
-    TargetPoint operator=(const TargetPoint& point);
-
-    ClassDef(TargetPoint, 2)
+    ClassDef(TargetPoint, 3)
 };
 
 #endif   // SND_EMULSIONTARGET_TARGETPOINT_H_

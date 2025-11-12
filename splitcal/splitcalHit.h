@@ -48,32 +48,32 @@ class splitcalHit : public ShipHit
     void AddClusterIndex(int i) {_vecClusterIndices.push_back(i);}
     void AddEnergyWeight(double w) {_vecEnergyWeights.push_back(w);}
 
-    double GetX() {return _x;}
-    double GetY() {return _y;}
-    double GetZ() {return _z;}
-    double GetEnergy() {return _energy;}
-    double GetEnergyForCluster(int i);
-    int GetIsPrecisionLayer() {return _isPrecisionLayer;}
-    int GetLayerNumber() {return _nLayer;}
-    int GetModuleXNumber() {return _nModuleX;}
-    int GetModuleYNumber() {return _nModuleY;}
-    int GetStripNumber() {return _nStrip;}
-    bool IsX() {return _isX;}
-    bool IsY() {return _isY;}
-    int IsUsed() {return _isUsed;}
-    double GetXError() {return _xError;}
-    double GetYError() {return _yError;}
-    double GetZError() {return _zError;}
+    double GetX() const { return _x; }
+    double GetY() const { return _y; }
+    double GetZ() const { return _z; }
+    double GetEnergy() const { return _energy; }
+    double GetEnergyForCluster(int i) const;
+    int GetIsPrecisionLayer() const { return _isPrecisionLayer; }
+    int GetLayerNumber() const { return _nLayer; }
+    int GetModuleXNumber() const { return _nModuleX; }
+    int GetModuleYNumber() const { return _nModuleY; }
+    int GetStripNumber() const { return _nStrip; }
+    bool IsX() const { return _isX; }
+    bool IsY() const { return _isY; }
+    int IsUsed() const { return _isUsed; }
+    double GetXError() const { return _xError; }
+    double GetYError() const { return _yError; }
+    double GetZError() const { return _zError; }
     /* double GetEnergyWeight() {return _energyWeight;} */
     /* int GetClusterIndex() {return _clusterIndex;} */
-    std::vector<int > GetClusterIndices() {return _vecClusterIndices;}
-    std::vector<double > GetEnergyWeights() {return _vecEnergyWeights;}
-    bool IsShared() {return GetClusterIndices().size()>1; }
-    double GetEnergyWeightForIndex(int index);
+    std::vector<int> GetClusterIndices() const { return _vecClusterIndices; }
+    std::vector<double> GetEnergyWeights() const { return _vecEnergyWeights; }
+    bool IsShared() const { return GetClusterIndices().size() > 1; }
+    double GetEnergyWeightForIndex(int index) const;
 
     /** Copy constructor **/
-    splitcalHit(const splitcalHit& point);
-    splitcalHit operator=(const splitcalHit& point);
+    splitcalHit(const splitcalHit& point) = default;
+    splitcalHit& operator=(const splitcalHit& point) = default;
 
   private:
 

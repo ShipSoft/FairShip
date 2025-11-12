@@ -23,8 +23,8 @@ vetoPoint::vetoPoint(Int_t trackID,
                      TVector3 Lmom)
     : FairMCPoint(trackID, detID, pos, mom, tof, length, eLoss)
     , fPdgCode(pdgcode)
-    , fLpos(Lpos)
-    , fLmom(Lmom)
+    , fLpos{Lpos.X(), Lpos.Y(), Lpos.Z()}
+    , fLmom{Lmom.X(), Lmom.Y(), Lmom.Z()}
 {}
 // -------------------------------------------------------------------------
 
