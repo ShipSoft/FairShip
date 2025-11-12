@@ -320,7 +320,7 @@ sTree = t.CloneTree(0)
 nEvents = 0
 for n in range(t.GetEntries()):
     rc = t.GetEvent(n)
-    if t.vetoPoint.GetEntries() > 0:
+    if t.PlaneHAPoint.GetEntries() > 0:
         rc = sTree.Fill()
         nEvents += 1
     #t.Clear()
