@@ -228,10 +228,12 @@ Bool_t FixedTargetGenerator::Init()
    EvtAbsRadCorr *fsrPtrIn = 0;
    EvtExternalGenList *extPtr = new EvtExternalGenList();
    std::list<EvtDecayBase*> models = extPtr->getListOfModels();
+#if PYTHIA_VERSION_INTEGER < 8315
  // Define the random number generator
    EvtRandomEngine* eng = new EvtSimpleRandomEngine();
    EvtRandom::setRandomEngine(eng);
    EvtGen *myEvtGenPtr = new EvtGen(DecayFile.Data(), ParticleFile.Data(),eng, fsrPtrIn, &models, 1, false);
+#endif
    TString UdecayFile    = getenv("FAIRSHIP");UdecayFile +="/gconfig/USERDECAY.DEC";
 #if PYTHIA_VERSION_INTEGER >= 8315
    evtgenP = new Pythia8::EvtGenDecays(fPythiaP, DecayFile.Data(), ParticleFile.Data(),extPtr);
