@@ -223,6 +223,15 @@ Bool_t FixedTargetGenerator::Init()
      LOG(fatal) << "EVTGENDATA environment variable not set";
    }
    TString DecayFile = TString(evtgendata) + "/DECAY.DEC";
+
+   TString merged = "DECAY_MERGED.DEC";
+   std::ofstream out(merged.Data());
+   for (auto f : {TString(getenv("EVTGENDATA")) + "/DECAY.DEC", TString(getenv("FAIRSHIP")) + "/gconfig/USERDECAY.DEC"}) {
+       std::ifstream in(f.Data());
+       out << in.rdbuf();
+   }
+   out.close();
+
    TString ParticleFile = TString(evtgendata) + "/evt.pdl";
    std::cout << "Using $EVTGENDATA " << evtgendata << std::endl;
    EvtAbsRadCorr *fsrPtrIn = 0;
@@ -236,15 +245,16 @@ Bool_t FixedTargetGenerator::Init()
 #endif
    TString UdecayFile    = getenv("FAIRSHIP");UdecayFile +="/gconfig/USERDECAY.DEC";
 #if PYTHIA_VERSION_INTEGER >= 8315
-   evtgenP = new Pythia8::EvtGenDecays(fPythiaP, DecayFile.Data(), ParticleFile.Data(),extPtr);
+   evtgenP = new Pythia8::EvtGenDecays(fPythiaP, merged.Data(), ParticleFile.Data(), extPtr);
 #else
    evtgenP = new EvtGenDecays(fPythiaP, DecayFile.Data(), ParticleFile.Data(),myEvtGenPtr);
-#endif
    evtgenP->readDecayFile(UdecayFile.Data()); // will make update of EvtGen with user decay file
+#endif
+   // evtgenP->readDecayFile(UdecayFile.Data()); // will make update of EvtGen with user decay file
    // use one instance of EvtGen, requires patch to Pythia8Plugins/EvtGen.h
    if (Option == "Primary"){
 #if PYTHIA_VERSION_INTEGER >= 8315
-    evtgenN = new Pythia8::EvtGenDecays(fPythiaN, DecayFile.Data(), ParticleFile.Data(),extPtr);
+    evtgenN = new Pythia8::EvtGenDecays(fPythiaN, DecayFile.Data(), "", extPtr);
 #else
     evtgenN = new EvtGenDecays(fPythiaN, DecayFile.Data(), ParticleFile.Data(),myEvtGenPtr);
 #endif
