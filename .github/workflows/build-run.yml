@@ -115,3 +115,41 @@ jobs:
           name: root-files-${{ matrix.vessel_option }}-${{ matrix.SND_option }}-${{ matrix.muon_shield }}-${{ matrix.target }}
           path: |
             *.root
+
+  run-fixed-target:
+    runs-on: self-hosted
+    needs: build
+
+    container:
+      image: registry.cern.ch/ship/gha-runner:latest
+      volumes:
+        - /cvmfs/ship.cern.ch:/cvmfs/ship.cern.ch
+
+    env:
+      version: 25.09
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          path: FairShip
+          lfs: true
+
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artifact
+          path: sw/
+
+      - name: Run Fixed Target Simulation
+        run: |
+          source /cvmfs/ship.cern.ch/$version/setUp.sh
+          eval $(alienv load FairShip/latest)
+          python $FAIRSHIP/muonShieldOptimization/run_fixedTarget.py -n 10 -e 10.0 -r 1
+
+      - name: Upload .root artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: root-files-fixed-target
+          path: |
+            */run_fixedTarget_1/*.root

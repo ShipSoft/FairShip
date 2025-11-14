@@ -14,6 +14,7 @@ it in future.
 
 ### Added
 
+* Add CI job to run fixed target simulation (run_fixedTarget.py)
 * feat(python): Add experimental script to compare histograms
 * feat(python): Add experimental script to check overlaps quickly
 * **Corrections in MuonDIS simulation**
