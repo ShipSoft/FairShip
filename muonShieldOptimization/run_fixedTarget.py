@@ -70,7 +70,7 @@ ap.add_argument('--DecayVolumeMedium', help='Set Decay Volume Medium. Choices ar
 ap.add_argument('--shieldName', help='Name of the shield in the database. New_HA_Design or warm_opt.', default='New_HA_Design', choices=['New_HA_Design', 'warm_opt'])
 ap.add_argument('--AddMuonShield', help='Whether or not to add the muon shield. Default set to False.', default=False, action=argparse.BooleanOptionalAction)
 ap.add_argument('--AddMuonShieldField', help='Whether or not to add the muon shield magnetic field. Default set to False.', default=False, action=argparse.BooleanOptionalAction)
-ap.add_argument('--AddHadronAbsorberOnly', help='Whether to only add the hadron absorber part of the muon shield. Default set to False.', default=True, action=argparse.BooleanOptionalAction)
+ap.add_argument('--AddHadronAbsorberOnly', help='Whether to only add the hadron absorber part of the muon shield. Default set to True.', default=True, action=argparse.BooleanOptionalAction)
 
 ap.add_argument('--z-offset', type=float, dest='z_offset', default=-84., help="z-offset for the FixedTargetGenerator [mm]")
 ap.add_argument('--TARGET_YAML', dest='TARGET_YAML', help='File for target configuration', default=os.path.expandvars('$FAIRSHIP/geometry/target_config_Jun25.yaml'))
@@ -126,8 +126,6 @@ ship_geo_kwargs = {'Yheight': dy,
                    'DecayVolumeMedium': args.DecayVolumeMedium, 'shieldName': args.shieldName,
                    'TARGET_YAML': args.TARGET_YAML
                    }
-if args.AddMuonShield or args.AddHadronAbsorberOnly:
-    ship_geo_kwargs['muShieldDesign'] = ds
 ship_geo = geometry_config.create_config(**ship_geo_kwargs)
 
 txt = 'pythia8_Geant4_'
