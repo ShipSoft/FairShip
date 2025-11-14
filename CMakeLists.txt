@@ -218,6 +218,7 @@ add_subdirectory(shipgen)
 add_subdirectory(field)
 add_subdirectory(pid)
 add_subdirectory(muonShieldOptimization)
+add_subdirectory(tests)
 
 add_custom_target(
   geometry.link ALL

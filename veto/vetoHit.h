@@ -21,11 +21,11 @@ class vetoHit : public ShipHit
     virtual ~vetoHit();
 
     /** Accessors **/
-    Double_t GetX();
-    Double_t GetY();
-    Double_t GetZ();
-    TVector3 GetXYZ();
-    TGeoNode* GetNode();
+    Double_t GetX() const;
+    Double_t GetY() const;
+    Double_t GetZ() const;
+    TVector3 GetXYZ() const;
+    TGeoNode* GetNode() const;
     /** Modifier **/
     void SetEloss(Double_t val) { fdigi = val; }
     void SetTDC(Double_t val) { ft = val; }
@@ -35,7 +35,7 @@ class vetoHit : public ShipHit
     virtual void Print(Int_t detID) const;
     Float_t GetADC() const { return fdigi; }
     Float_t GetTDC() const { return ft; }
-    Double_t GetEloss() { return fdigi; }
+    Double_t GetEloss() const { return fdigi; }
     void setInvalid() { flag = false; }
     void setIsValid() { flag = true; }
     bool isValid() const { return flag; }
