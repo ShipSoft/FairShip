@@ -70,7 +70,7 @@ ap.add_argument('--DecayVolumeMedium', help='Set Decay Volume Medium. Choices ar
 ap.add_argument('--shieldName', help='Name of the shield in the database. New_HA_Design or warm_opt.', default='New_HA_Design', choices=['New_HA_Design', 'warm_opt'])
 ap.add_argument('--AddMuonShield', help='Whether or not to add the muon shield. Default set to False.', default=False, action=argparse.BooleanOptionalAction)
 ap.add_argument('--AddMuonShieldField', help='Whether or not to add the muon shield magnetic field. Default set to False.', default=False, action=argparse.BooleanOptionalAction)
-ap.add_argument('--AddHadronAbsorberOnly', help='Whether to only add the hadron absorber part of the muon shield. Default set to False.', default=True, action=argparse.BooleanOptionalAction)
+ap.add_argument('--AddHadronAbsorberOnly', help='Whether to only add the hadron absorber part of the muon shield. Default set to False.', default=False, action=argparse.BooleanOptionalAction)
 
 ap.add_argument('--z-offset', type=float, dest='z_offset', default=-84., help="z-offset for the FixedTargetGenerator [mm]")
 ap.add_argument('--TARGET_YAML', dest='TARGET_YAML', help='File for target configuration', default=os.path.expandvars('$FAIRSHIP/geometry/target_config_Jun25.yaml'))
