@@ -1,9 +1,16 @@
+# SPDX-License-Identifier: LGPL-3.0-or-later
+# SPDX-FileCopyrightText: Copyright CERN on behalf of the SHiP Collaboration
+
+"""Base class for detector digitization."""
+
 from abc import ABC, abstractmethod
 
 import ROOT
 
 
 class BaseDetector(ABC):
+    """Abstract base class for detector digitization using template method pattern."""
+
     def __init__(
         self,
         name,
@@ -14,6 +21,7 @@ class BaseDetector(ABC):
         mcBranchName=None,
         splitLevel=-1,
     ):
+        """Initialize the detector digitizer."""
         self.name = name
         self.intree = intree
         self.isVector = False
@@ -39,6 +47,7 @@ class BaseDetector(ABC):
             )
 
     def delete(self):
+        """Clear detector hit containers."""
         if self.isVector:
             self.det.clear()
         else:
@@ -48,6 +57,7 @@ class BaseDetector(ABC):
             self.MCdet.clear()
 
     def fill(self):
+        """Fill detector hit branches."""
         self.branch.Fill()
         if self.mcBranch:
             self.mcBranch.Fill()
@@ -62,6 +72,7 @@ class BaseDetector(ABC):
         pass
 
     def process(self):
+        """Process one event: delete, digitize, and fill."""
         self.delete()
         self.digitize()
         self.fill()

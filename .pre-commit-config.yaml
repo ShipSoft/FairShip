@@ -66,7 +66,10 @@ repos:
         - types-tabulate
         # Helpful on older 3.9 envs:
         - typing-extensions>=4.8
-
+- repo: https://github.com/fsfe/reuse-tool
+  rev: v6.0.0
+  hooks:
+    - id: reuse
 ci:
   autofix_prs: true
   skip: [ruff-check]
