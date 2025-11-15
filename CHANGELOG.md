@@ -14,6 +14,7 @@ it in future.
 
 ### Added
 
++ Add option for an additional sensitive plane around the target in run_fixedTarget
 * Add CI job to run fixed target simulation (run_fixedTarget.py)
 * feat(python): Add experimental script to compare histograms
 * feat(python): Add experimental script to check overlaps quickly
@@ -72,6 +73,7 @@ it in future.
 
 ### Fixed
 
++ Fix FixedTargetGenerator to ensure it works with newer versions of Pythia
 * fix(eventDisplay): Fix event display crash caused by premature ROOT object initialization
 * Remove SIMPATH dependency, replaced with EVTGENDATA for EvtGen data files (#648)
 * fix(digi): Make TTree branch split level configurable in BaseDetector, set splitLevel=1 for MTC
