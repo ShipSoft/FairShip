@@ -66,6 +66,10 @@ repos:
         - types-tabulate
         # Helpful on older 3.9 envs:
         - typing-extensions>=4.8
+- repo: https://github.com/citation-file-format/cffconvert
+  rev: 054bda51dbe278b3e86f27c890e3f3ac877d616c
+  hooks:
+    - id: validate-cff
 
 ci:
   autofix_prs: true
