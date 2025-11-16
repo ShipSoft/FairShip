@@ -40,6 +40,8 @@ class FixedTargetGenerator : public FairGenerator
   void UseRandom3() { fUseRandom1 = kFALSE; fUseRandom3 = kTRUE; };
   void SetTarget(TString s, Double_t x,Double_t y ) { targetName = s; xOff=x; yOff=y; };
   void SetZoffset(Double_t z) { zOff = z; };
+  void SetXoffset(Double_t x) { xOff = x; };
+  void SetYoffset(Double_t y) { yOff = y; };
   void SetSmearBeam(Double_t sb) { fsmearBeam = sb; };
   void SetPaintRadius(Double_t r) { fPaintBeam = r; };
   void SetTargetCoordinates(Double_t start_z, Double_t end_z)
