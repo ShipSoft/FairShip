@@ -83,7 +83,7 @@ Bool_t  exitHadronAbsorber::ProcessHits(FairVolume* vol)
       }
     }
   }
-  gMC->StopTrack();
+  // gMC->StopTrack();
   return kTRUE;
 }
 
