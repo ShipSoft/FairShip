@@ -1,5 +1,11 @@
 var NAVTREEINDEX20 =
 {
+"mergeMbias_8py.html#af0bee5d03f6eab7bea29fc1cbb4e25ea":[6,0,5,17,20],
+"mergeMbias_8py_source.html":[6,0,5,17],
+"method__logger_8py.html":[6,0,11,20],
+"method__logger_8py_source.html":[6,0,11,20],
+"muDIS__mergeFiles_8py.html":[6,0,8,13],
+"muDIS__mergeFiles_8py.html#a1a441eb731971198a418bf5e43b8498f":[6,0,8,13,0],
 "muDIS__mergeFiles_8py.html#a2ad4e59b5b770f5e8954ae02a12b75c0":[6,0,8,13,3],
 "muDIS__mergeFiles_8py.html#a500b25fa8ced3622c7a6fb33f4a5c4a9":[6,0,8,13,2],
 "muDIS__mergeFiles_8py.html#a83f94c211fdeec0f62c2f112ef51da13":[6,0,8,13,4],
@@ -243,11 +249,5 @@ var NAVTREEINDEX20 =
 "namespaceShipReco.html#a6425d90b37c7ae2428f3b732fc2d03a4":[4,0,87,13],
 "namespaceShipReco.html#a646b2a8b1509b520851460b3d587bedd":[4,0,87,11],
 "namespaceShipReco.html#a663c66d4a22374970fa11dd2a5012dec":[4,0,87,5],
-"namespaceShipReco.html#a7b887bc3d291d74d04fcaae703a657b3":[4,0,87,21],
-"namespaceShipReco.html#a8bcffac552effb5fb9c0c24150272cb9":[4,0,87,7],
-"namespaceShipReco.html#a97c2832f133076ecaa42bca6b50069b1":[4,0,87,28],
-"namespaceShipReco.html#a9a338a5daf2d5cc378b238f64e270e9a":[4,0,87,32],
-"namespaceShipReco.html#aa37614fc3f0b1f396df209ddd402d176":[4,0,87,16],
-"namespaceShipReco.html#ab3f350587696737c07f798e0c105cde7":[4,0,87,14],
-"namespaceShipReco.html#aba8d4b220fb878568c7c6e33987a2186":[4,0,87,3]
+"namespaceShipReco.html#a7b887bc3d291d74d04fcaae703a657b3":[4,0,87,21]
 };

@@ -30,6 +30,8 @@ var classFixedTargetGenerator =
     [ "SetTarget", "classFixedTargetGenerator.html#a27817b46d0058181871484c840167b6d", null ],
     [ "SetTargetCoordinates", "classFixedTargetGenerator.html#a1d6fa3d9f1e868e48e6159bac890e070", null ],
     [ "SetTauOnly", "classFixedTargetGenerator.html#a30f5ddc7c6c99572c2eed56579936497", null ],
+    [ "SetXoffset", "classFixedTargetGenerator.html#a592c152b2886907c6b2d0a1558a9a629", null ],
+    [ "SetYoffset", "classFixedTargetGenerator.html#a815ffdb4cf11d2fa202ee28ea614d649", null ],
     [ "SetZoffset", "classFixedTargetGenerator.html#ac08eb75875586d6458e03eb6d1c7028d", null ],
     [ "UseRandom1", "classFixedTargetGenerator.html#a19a2c4d106fac196fa4f874edc09c3b9", null ],
     [ "UseRandom3", "classFixedTargetGenerator.html#add0415acba00e5580114d0339ca14458", null ],

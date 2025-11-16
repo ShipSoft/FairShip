@@ -1,5 +1,13 @@
 var NAVTREEINDEX33 =
 {
+"vetoHitOnTrack_8cxx.html":[6,0,20,7],
+"vetoHitOnTrack_8cxx_source.html":[6,0,20,7],
+"vetoHitOnTrack_8h.html":[6,0,20,8],
+"vetoHitOnTrack_8h_source.html":[6,0,20,8],
+"vetoHit_8cxx.html":[6,0,20,5],
+"vetoHit_8cxx_source.html":[6,0,20,5],
+"vetoHit_8h.html":[6,0,20,6],
+"vetoHit_8h_source.html":[6,0,20,6],
 "vetoPoint_8cxx.html":[6,0,20,9],
 "vetoPoint_8cxx_source.html":[6,0,20,9],
 "vetoPoint_8h.html":[6,0,20,10],
