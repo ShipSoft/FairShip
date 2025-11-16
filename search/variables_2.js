@@ -25,7 +25,7 @@ var searchData=
   ['boostfactor_22',['boostFactor',['../namespacestudy__GammaConv.html#ae7dc52662551ed7788ac46668220e4f5',1,'study_GammaConv']]],
   ['boxgen_23',['boxGen',['../namespacerun__simEcal.html#a9645245051a6f84c94278b8a3b08e4a3',1,'run_simEcal']]],
   ['bparam_24',['bparam',['../classFixedTargetGenerator.html#a56e1bbca0149a15f64ea79646b813823',1,'FixedTargetGenerator::bparam'],['../classPythia8Generator.html#a6cccef60f9c11c8de3e613df19421a71',1,'Pythia8Generator::bparam']]],
-  ['br_25',['br',['../namespaceg4Ex__gap__mergeFiles.html#aae067114d26712c0dfa8ef37ff4317ce',1,'g4Ex_gap_mergeFiles.BR'],['../namespaceeventDisplay.html#abe023ea1e3a4a6a7eac9907e09ed4ecc',1,'eventDisplay.br']]],
+  ['br_25',['br',['../namespaceeventDisplay.html#abe023ea1e3a4a6a7eac9907e09ed4ecc',1,'eventDisplay.br'],['../namespaceg4Ex__gap__mergeFiles.html#aae067114d26712c0dfa8ef37ff4317ce',1,'g4Ex_gap_mergeFiles.BR']]],
   ['branch_26',['branch',['../classBaseDetector_1_1BaseDetector.html#ae5c0b9a7c057d0bdd36cc98786554c46',1,'BaseDetector::BaseDetector']]],
   ['branches_27',['branches',['../namespacerun__simScript.html#aab4426f598376be65d04e68a577d8ae8',1,'run_simScript']]],
   ['branchvars_28',['branchVars',['../classEvtCalcGenerator.html#a69e825e4551cfb9b96f1a79329f0fcff',1,'EvtCalcGenerator']]],

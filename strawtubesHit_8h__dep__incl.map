@@ -1,5 +1,9 @@
 <map id="strawtubes/strawtubesHit.h" name="strawtubes/strawtubesHit.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="13,5,214,31"/>
-<area shape="rect" id="Node000002" href="$strawtubesHit_8cxx.html" title=" " alt="" coords="5,79,221,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="116,44,116,79,111,79,111,44"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="225,5,426,31"/>
+<area shape="rect" id="Node000002" href="$strawtubesHit_8cxx.html" title=" " alt="" coords="5,86,221,111"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="283,38,145,88,143,83,281,33"/>
+<area shape="rect" id="Node000003" href="$test__data__class__io_8cxx.html" title=" " alt="" coords="246,79,405,119"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="328,44,328,79,323,79,323,44"/>
+<area shape="rect" id="Node000004" href="$test__rntuple__io_8cxx.html" title=" " alt="" coords="429,79,565,119"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="364,34,457,76,455,81,361,39"/>
 </map>

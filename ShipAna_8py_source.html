@@ -756,9 +756,9 @@ $(document).ready(function(){initNavTree('ShipAna_8py_source.html',''); initResi
 <div class="line"><a id="l00630" name="l00630"></a><span class="lineno">  630</span><span class="comment">#</span></div>
 <div class="line"><a id="l00631" name="l00631"></a><span class="lineno">  631</span>    covX = HNL.GetCovV()</div>
 <div class="line"><a id="l00632" name="l00632"></a><span class="lineno">  632</span>    dist = HNL.GetDoca()</div>
-<div class="line"><a id="l00633" name="l00633"></a><span class="lineno">  633</span>    h[<span class="stringliteral">&#39;Vzpull&#39;</span>].Fill( (mctrack.GetStartZ()-HNLPos.Z())/ROOT.TMath.Sqrt(covX[2][2]) )</div>
-<div class="line"><a id="l00634" name="l00634"></a><span class="lineno">  634</span>    h[<span class="stringliteral">&#39;Vxpull&#39;</span>].Fill( (mctrack.GetStartX()-HNLPos.X())/ROOT.TMath.Sqrt(covX[0][0]) )</div>
-<div class="line"><a id="l00635" name="l00635"></a><span class="lineno">  635</span>    h[<span class="stringliteral">&#39;Vypull&#39;</span>].Fill( (mctrack.GetStartY()-HNLPos.Y())/ROOT.TMath.Sqrt(covX[1][1]) )</div>
+<div class="line"><a id="l00633" name="l00633"></a><span class="lineno">  633</span>    h[<span class="stringliteral">&#39;Vzpull&#39;</span>].Fill( (mctrack.GetStartZ()-HNLPos.Z())/ROOT.TMath.Sqrt(covX[5]) )</div>
+<div class="line"><a id="l00634" name="l00634"></a><span class="lineno">  634</span>    h[<span class="stringliteral">&#39;Vxpull&#39;</span>].Fill( (mctrack.GetStartX()-HNLPos.X())/ROOT.TMath.Sqrt(covX[0]) )</div>
+<div class="line"><a id="l00635" name="l00635"></a><span class="lineno">  635</span>    h[<span class="stringliteral">&#39;Vypull&#39;</span>].Fill( (mctrack.GetStartY()-HNLPos.Y())/ROOT.TMath.Sqrt(covX[3]) )</div>
 <div class="line"><a id="l00636" name="l00636"></a><span class="lineno">  636</span> </div>
 <div class="line"><a id="l00637" name="l00637"></a><span class="lineno">  637</span><span class="comment"># check extrapolation to TimeDet if exists</span></div>
 <div class="line"><a id="l00638" name="l00638"></a><span class="lineno">  638</span>  <span class="keywordflow">if</span> hasattr(ShipGeo,<span class="stringliteral">&quot;TimeDet&quot;</span>):</div>

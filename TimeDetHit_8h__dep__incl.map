@@ -1,5 +1,9 @@
 <map id="TimeDet/TimeDetHit.h" name="TimeDet/TimeDetHit.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="13,5,182,31"/>
-<area shape="rect" id="Node000002" href="$TimeDetHit_8cxx.html" title=" " alt="" coords="5,79,189,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="100,44,100,79,95,79,95,44"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="209,5,378,31"/>
+<area shape="rect" id="Node000002" href="$TimeDetHit_8cxx.html" title=" " alt="" coords="5,86,189,111"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="253,38,127,88,125,84,251,33"/>
+<area shape="rect" id="Node000003" href="$test__data__class__io_8cxx.html" title=" " alt="" coords="214,79,373,119"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="296,44,296,79,291,79,291,44"/>
+<area shape="rect" id="Node000004" href="$test__rntuple__io_8cxx.html" title=" " alt="" coords="397,79,533,119"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="332,34,425,76,423,81,329,39"/>
 </map>

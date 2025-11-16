@@ -1,15 +1,17 @@
 <map id="veto/vetoPoint.cxx" name="veto/vetoPoint.cxx">
-<area shape="rect" id="Node000001" title=" " alt="" coords="233,5,377,31"/>
-<area shape="rect" id="Node000002" href="$vetoPoint_8h.html" title=" " alt="" coords="134,79,230,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="286,33,215,74,212,69,284,28"/>
-<area shape="rect" id="Node000006" title=" " alt="" coords="255,79,355,104"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="307,31,307,65,302,65,302,31"/>
-<area shape="rect" id="Node000007" title=" " alt="" coords="378,79,458,104"/>
-<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="324,28,390,69,387,74,321,33"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="289,5,433,31"/>
+<area shape="rect" id="Node000002" href="$vetoPoint_8h.html" title=" " alt="" coords="190,79,286,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="342,33,271,74,268,69,340,28"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="311,79,411,104"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="363,31,363,65,358,65,358,31"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="434,79,514,104"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="380,28,446,69,443,74,377,33"/>
 <area shape="rect" id="Node000003" title=" " alt="" coords="5,152,116,177"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="164,106,93,147,91,143,161,102"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="210,106,103,149,101,144,209,102"/>
 <area shape="rect" id="Node000004" title=" " alt="" coords="140,152,224,177"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="185,104,185,138,179,138,179,104"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="231,106,202,143,197,140,227,103"/>
 <area shape="rect" id="Node000005" title=" " alt="" coords="249,152,339,177"/>
-<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="201,102,265,142,262,147,199,106"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="249,103,279,140,274,143,245,106"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="363,152,419,177"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="264,102,355,144,353,149,262,106"/>
 </map>

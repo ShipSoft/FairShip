@@ -165,14 +165,12 @@ var hierarchy =
         [ "vetoHit", "classvetoHit.html", null ]
       ] ],
       [ "ShipMCTrack", "classShipMCTrack.html", null ],
+      [ "ShipParticle", "classShipParticle.html", null ],
       [ "TrackInfo", "classTrackInfo.html", null ],
       [ "Tracklet", "classTracklet.html", null ],
       [ "pid", "classpid.html", null ],
       [ "splitcalCluster", "classsplitcalCluster.html", null ],
       [ "vetoHitOnTrack", "classvetoHitOnTrack.html", null ]
-    ] ],
-    [ "TParticle", null, [
-      [ "ShipParticle", "classShipParticle.html", null ]
     ] ],
     [ "ShipFieldMaker::transformInfo", "structShipFieldMaker_1_1transformInfo.html", null ],
     [ "TTCluster.TTCluster", "classTTCluster_1_1TTCluster.html", null ],

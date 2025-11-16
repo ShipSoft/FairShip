@@ -17,6 +17,7 @@ var files_dup =
     [ "SND", "dir_32113a12037a3d9f3997febc88bd6396.html", "dir_32113a12037a3d9f3997febc88bd6396" ],
     [ "splitcal", "dir_74c7a225f9dfa4f604ff250b2210d870.html", "dir_74c7a225f9dfa4f604ff250b2210d870" ],
     [ "strawtubes", "dir_73d80d5249fb06c79662fe45263444fd.html", "dir_73d80d5249fb06c79662fe45263444fd" ],
+    [ "tests", "dir_59425e443f801f1f2fd8bbe4959a3ccf.html", "dir_59425e443f801f1f2fd8bbe4959a3ccf" ],
     [ "TimeDet", "dir_14b8127facb850683e99630d6654b886.html", "dir_14b8127facb850683e99630d6654b886" ],
     [ "UpstreamTagger", "dir_fad65dc12642af85d79633a04051eba1.html", "dir_fad65dc12642af85d79633a04051eba1" ],
     [ "utils", "dir_cbdb8362360e11eafe2fa3bc74cf0ffd.html", "dir_cbdb8362360e11eafe2fa3bc74cf0ffd" ],

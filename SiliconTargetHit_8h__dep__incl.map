@@ -1,5 +1,9 @@
 <map id="SND/SiliconTarget/SiliconTargetHit.h" name="SND/SiliconTarget/SiliconTargetHit.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,189,45"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="201,5,385,45"/>
 <area shape="rect" id="Node000002" href="$SiliconTargetHit_8cxx.html" title=" " alt="" coords="5,93,189,133"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="100,59,100,93,95,93,95,59"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="239,53,141,96,139,91,237,48"/>
+<area shape="rect" id="Node000003" href="$test__data__class__io_8cxx.html" title=" " alt="" coords="214,93,373,133"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="296,59,296,93,291,93,291,59"/>
+<area shape="rect" id="Node000004" href="$test__rntuple__io_8cxx.html" title=" " alt="" coords="397,93,533,133"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="345,49,429,91,426,96,342,54"/>
 </map>

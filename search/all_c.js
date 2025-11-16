@@ -72,11 +72,11 @@ var searchData=
   ['isdp_69',['isDP',['../namespacedpProductionRates.html#af96ea608b61750b62af44c259f94c259',1,'dpProductionRates']]],
   ['isinfiducial_70',['isInFiducial',['../namespaceShipAna.html#a397049f8fc5e8c1e95de3f19151fed1d',1,'ShipAna']]],
   ['ispbrem_71',['IsPbrem',['../classDPPythia8Generator.html#a952b6cdbc59cc8c2edc7433614298038',1,'DPPythia8Generator']]],
-  ['isshared_72',['IsShared',['../classsplitcalHit.html#a2ff17bf930e9ea11e2a4e7f6d087fd68',1,'splitcalHit']]],
+  ['isshared_72',['IsShared',['../classsplitcalHit.html#aa52e40d0a52e47863d7debec75ef7f0f',1,'splitcalHit']]],
   ['issymmetric_5f_73',['isSymmetric_',['../classShipBFieldMap.html#aeab0b9e6d133106e4ae70efec21b32c5',1,'ShipBFieldMap']]],
-  ['isused_74',['IsUsed',['../classsplitcalHit.html#abe304d56f02bea395e3adfcd5c56bc03',1,'splitcalHit']]],
+  ['isused_74',['IsUsed',['../classsplitcalHit.html#ab2cf8abbd34e966ec5eb6f481359078e',1,'splitcalHit']]],
   ['isvalid_75',['isvalid',['../classvetoHit.html#a9e7c32279ce9d6fe142ab42c2293f035',1,'vetoHit::isValid()'],['../classTimeDetHit.html#a9bafe1f37c55cf1e0f7a9ab771712e15',1,'TimeDetHit::isValid()'],['../classMTCDetHit.html#a51adfde65e24f2895a47d43fa868aa8b',1,'MTCDetHit::isValid()'],['../classstrawtubesHit.html#a70d6a5e556c214de59d5cf9fa06e3f4a',1,'strawtubesHit::isValid()'],['../classsplitcalHit.html#a8407adce42495d3febf834606c087df5',1,'splitcalHit::isValid()'],['../classSiliconTargetHit.html#afe9367183151d164847b27991b381424',1,'SiliconTargetHit::isValid()'],['../classmuonHit.html#a4c249fd82ba5aaa64569107bc45f2550',1,'muonHit::isValid()']]],
   ['isvector_76',['isVector',['../classBaseDetector_1_1BaseDetector.html#a2591a22695a96b83fadc89f75fa041de',1,'BaseDetector::BaseDetector']]],
-  ['isx_77',['IsX',['../classsplitcalHit.html#a4d5b9d8400dc66b05e0e1034a33d7804',1,'splitcalHit']]],
-  ['isy_78',['IsY',['../classsplitcalHit.html#a63c92a8fa4f7e3eb6a6c8c8f318d477c',1,'splitcalHit']]]
+  ['isx_77',['IsX',['../classsplitcalHit.html#a7da4c21e201efc733a1b64edb02e689e',1,'splitcalHit']]],
+  ['isy_78',['IsY',['../classsplitcalHit.html#a497360c5944fa4d0d45e538f8b3ecfdb',1,'splitcalHit']]]
 ];

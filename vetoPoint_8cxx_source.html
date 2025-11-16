@@ -125,8 +125,8 @@ $(document).ready(function(){initNavTree('vetoPoint_8cxx_source.html',''); initR
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>                     TVector3 Lmom)</div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    : FairMCPoint(trackID, detID, pos, mom, tof, length, eLoss)</div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    , fPdgCode(pdgcode)</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    , fLpos(Lpos)</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    , fLmom(Lmom)</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    , fLpos{Lpos.X(), Lpos.Y(), Lpos.Z()}</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    , fLmom{Lmom.X(), Lmom.Y(), Lmom.Z()}</div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>{}</div>
 </div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="comment">// -------------------------------------------------------------------------</span></div>

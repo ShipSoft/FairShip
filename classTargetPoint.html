@@ -91,7 +91,6 @@ $(document).ready(function(){initNavTree('classTargetPoint.html',''); initResiza
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classTargetPoint-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">TargetPoint Class Reference</div></div>
@@ -128,17 +127,14 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:acb394359de85dfcf3890ef2762e60d67"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a64c72a10a334ea39ce2914d87dcddf1f" id="r_a64c72a10a334ea39ce2914d87dcddf1f"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTargetPoint.html#a64c72a10a334ea39ce2914d87dcddf1f">~TargetPoint</a> ()</td></tr>
 <tr class="separator:a64c72a10a334ea39ce2914d87dcddf1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a884906e33323d0a3175379ad255873" id="r_a0a884906e33323d0a3175379ad255873"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTargetPoint.html#a0a884906e33323d0a3175379ad255873">TargetPoint</a> (const <a class="el" href="classTargetPoint.html">TargetPoint</a> &amp;point)=default</td></tr>
+<tr class="separator:a0a884906e33323d0a3175379ad255873"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4153755688acc2bd7d81be69f959be77" id="r_a4153755688acc2bd7d81be69f959be77"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTargetPoint.html">TargetPoint</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTargetPoint.html#a4153755688acc2bd7d81be69f959be77">operator=</a> (const <a class="el" href="classTargetPoint.html">TargetPoint</a> &amp;point)=default</td></tr>
+<tr class="separator:a4153755688acc2bd7d81be69f959be77"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a536542a953eacaba010344b96b536da4" id="r_a536542a953eacaba010344b96b536da4"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTargetPoint.html#a536542a953eacaba010344b96b536da4">Print</a> (const Option_t *opt) const</td></tr>
 <tr class="separator:a536542a953eacaba010344b96b536da4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aae6de4220c96345c1d9502c8e7fd73ca" id="r_aae6de4220c96345c1d9502c8e7fd73ca"><td class="memItemLeft" align="right" valign="top">Int_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTargetPoint.html#aae6de4220c96345c1d9502c8e7fd73ca">PdgCode</a> () const</td></tr>
 <tr class="separator:aae6de4220c96345c1d9502c8e7fd73ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
-Private Member Functions</h2></td></tr>
-<tr class="memitem:a53a276830080e0158b2bd36a1f7eb0da" id="r_a53a276830080e0158b2bd36a1f7eb0da"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTargetPoint.html#a53a276830080e0158b2bd36a1f7eb0da">TargetPoint</a> (const <a class="el" href="classTargetPoint.html">TargetPoint</a> &amp;point)</td></tr>
-<tr class="separator:a53a276830080e0158b2bd36a1f7eb0da"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a844afca1901cb6ed900bcaee90dcd59c" id="r_a844afca1901cb6ed900bcaee90dcd59c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTargetPoint.html">TargetPoint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTargetPoint.html#a844afca1901cb6ed900bcaee90dcd59c">operator=</a> (const <a class="el" href="classTargetPoint.html">TargetPoint</a> &amp;point)</td></tr>
-<tr class="separator:a844afca1901cb6ed900bcaee90dcd59c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
@@ -249,7 +245,7 @@ Private Attributes</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">   34</span>    : FairMCPoint(trackID, detID, pos, mom, tof, length, eLoss)</div>
 <div class="line"><span class="lineno">   35</span>    , <a class="code hl_variable" href="classTargetPoint.html#a8a8f34b2ec16c3ce6db5c448533c6f39">fPdgCode</a>(pdgcode)</div>
 <div class="line"><span class="lineno">   36</span>{}</div>
-<div class="ttc" id="aclassTargetPoint_html_a8a8f34b2ec16c3ce6db5c448533c6f39"><div class="ttname"><a href="classTargetPoint.html#a8a8f34b2ec16c3ce6db5c448533c6f39">TargetPoint::fPdgCode</a></div><div class="ttdeci">Int_t fPdgCode</div><div class="ttdef"><b>Definition</b> <a href="TargetPoint_8h_source.html#l00048">TargetPoint.h:48</a></div></div>
+<div class="ttc" id="aclassTargetPoint_html_a8a8f34b2ec16c3ce6db5c448533c6f39"><div class="ttname"><a href="classTargetPoint.html#a8a8f34b2ec16c3ce6db5c448533c6f39">TargetPoint::fPdgCode</a></div><div class="ttdeci">Int_t fPdgCode</div><div class="ttdef"><b>Definition</b> <a href="TargetPoint_8h_source.html#l00052">TargetPoint.h:52</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -282,8 +278,8 @@ Private Attributes</h2></td></tr>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="a53a276830080e0158b2bd36a1f7eb0da" name="a53a276830080e0158b2bd36a1f7eb0da"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a53a276830080e0158b2bd36a1f7eb0da">&#9670;&#160;</a></span>TargetPoint() <span class="overload">[3/3]</span></h2>
+<a id="a0a884906e33323d0a3175379ad255873" name="a0a884906e33323d0a3175379ad255873"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0a884906e33323d0a3175379ad255873">&#9670;&#160;</a></span>TargetPoint() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -301,7 +297,7 @@ Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">default</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -310,8 +306,8 @@ Private Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a844afca1901cb6ed900bcaee90dcd59c" name="a844afca1901cb6ed900bcaee90dcd59c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a844afca1901cb6ed900bcaee90dcd59c">&#9670;&#160;</a></span>operator=()</h2>
+<a id="a4153755688acc2bd7d81be69f959be77" name="a4153755688acc2bd7d81be69f959be77"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4153755688acc2bd7d81be69f959be77">&#9670;&#160;</a></span>operator=()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -320,7 +316,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classTargetPoint.html">TargetPoint</a> TargetPoint::operator= </td>
+          <td class="memname"><a class="el" href="classTargetPoint.html">TargetPoint</a> &amp; TargetPoint::operator= </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classTargetPoint.html">TargetPoint</a> &amp;&#160;</td>
           <td class="paramname"><em>point</em></td><td>)</td>
@@ -329,7 +325,7 @@ Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">default</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -359,8 +355,8 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TargetPoint_8h_source.html#l00045">45</a> of file <a class="el" href="TargetPoint_8h_source.html">TargetPoint.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   45</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classTargetPoint.html#a8a8f34b2ec16c3ce6db5c448533c6f39">fPdgCode</a>; }</div>
+<p class="definition">Definition at line <a class="el" href="TargetPoint_8h_source.html#l00049">49</a> of file <a class="el" href="TargetPoint_8h_source.html">TargetPoint.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   49</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classTargetPoint.html#a8a8f34b2ec16c3ce6db5c448533c6f39">fPdgCode</a>; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -421,7 +417,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="TargetPoint_8h_source.html#l00048">48</a> of file <a class="el" href="TargetPoint_8h_source.html">TargetPoint.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="TargetPoint_8h_source.html#l00052">52</a> of file <a class="el" href="TargetPoint_8h_source.html">TargetPoint.h</a>.</p>
 
 </div>
 </div>

@@ -947,9 +947,9 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">  630</span><span class="comment">#</span></div>
 <div class="line"><span class="lineno">  631</span>    covX = HNL.GetCovV()</div>
 <div class="line"><span class="lineno">  632</span>    dist = HNL.GetDoca()</div>
-<div class="line"><span class="lineno">  633</span>    h[<span class="stringliteral">&#39;Vzpull&#39;</span>].Fill( (mctrack.GetStartZ()-HNLPos.Z())/ROOT.TMath.Sqrt(covX[2][2]) )</div>
-<div class="line"><span class="lineno">  634</span>    h[<span class="stringliteral">&#39;Vxpull&#39;</span>].Fill( (mctrack.GetStartX()-HNLPos.X())/ROOT.TMath.Sqrt(covX[0][0]) )</div>
-<div class="line"><span class="lineno">  635</span>    h[<span class="stringliteral">&#39;Vypull&#39;</span>].Fill( (mctrack.GetStartY()-HNLPos.Y())/ROOT.TMath.Sqrt(covX[1][1]) )</div>
+<div class="line"><span class="lineno">  633</span>    h[<span class="stringliteral">&#39;Vzpull&#39;</span>].Fill( (mctrack.GetStartZ()-HNLPos.Z())/ROOT.TMath.Sqrt(covX[5]) )</div>
+<div class="line"><span class="lineno">  634</span>    h[<span class="stringliteral">&#39;Vxpull&#39;</span>].Fill( (mctrack.GetStartX()-HNLPos.X())/ROOT.TMath.Sqrt(covX[0]) )</div>
+<div class="line"><span class="lineno">  635</span>    h[<span class="stringliteral">&#39;Vypull&#39;</span>].Fill( (mctrack.GetStartY()-HNLPos.Y())/ROOT.TMath.Sqrt(covX[3]) )</div>
 <div class="line"><span class="lineno">  636</span> </div>
 <div class="line"><span class="lineno">  637</span><span class="comment"># check extrapolation to TimeDet if exists</span></div>
 <div class="line"><span class="lineno">  638</span>  <span class="keywordflow">if</span> hasattr(ShipGeo,<span class="stringliteral">&quot;TimeDet&quot;</span>):</div>
