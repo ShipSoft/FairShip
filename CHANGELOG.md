@@ -133,6 +133,7 @@ it in future.
 * Rewrite UpstreamTaggerHit for simplified scoring plane detector, remove RPC-specific code (#701, #354, #355)
 * Complete migration from TClonesArrays to STL vectors for all detectors (timeDetector, muonDetector, vetoHitOnTrack, strawtubes, splitcal)
 * Integrate splitcal cluster reconstruction into splitcalDetector class
+* refactor(splitcal): Use value storage for both hits and clusters instead of pointer storage
 * Don't special case EOS paths (fix #566)
 * Setting up the Muon shield geometry by ROOT files is completely replaced with the temporary solution of dict in the `geometry/geometry_config.py`.
 * Set up of the shield name is now done using the `--shieldName` flag instead of `--scName`.

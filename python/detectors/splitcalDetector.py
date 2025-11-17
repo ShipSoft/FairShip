@@ -8,8 +8,8 @@ class splitcalDetector(BaseDetector):
         # Initialize base class for digitized hits
         super().__init__(name, intree, 'std.vector', 'Splitcal')
 
-        # Clusters use pointer storage as they contain internal vectors
-        self.reco = ROOT.std.vector("splitcalCluster*")()
+        # Clusters use value storage
+        self.reco = ROOT.std.vector("splitcalCluster")()
         self.recoBranch = self.intree.Branch("Reco_SplitcalClusters", self.reco, 32000, -1)
 
     def delete(self):
@@ -129,9 +129,7 @@ class splitcalDetector(BaseDetector):
                 cluster.AddHit(hit, weight)
 
             cluster.SetIndex(int(i))
-            clusterCopy = ROOT.splitcalCluster(cluster)
-            ROOT.SetOwnership(clusterCopy, False)
-            self.reco.push_back(clusterCopy)
+            self.reco.push_back(cluster)
 
     def _get_subclusters_excluding_fragments(self):
         """Merge fragments into the closest subcluster."""
