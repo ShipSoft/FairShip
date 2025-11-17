@@ -1093,311 +1093,316 @@ $(document).ready(function(){initNavTree('ana__ShipMuon_8py_source.html',''); in
 <div class="line"><a id="l00973" name="l00973"></a><span class="lineno"><a class="line" href="namespaceana__ShipMuon.html#a448c97285c62b8901b44dd14b91db739">  973</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceana__ShipMuon.html#a448c97285c62b8901b44dd14b91db739">extractMuCloseByEvents</a>(single = None):</div>
 <div class="line"><a id="l00974" name="l00974"></a><span class="lineno">  974</span> mom = ROOT.TVector3()</div>
 <div class="line"><a id="l00975" name="l00975"></a><span class="lineno">  975</span> pos = ROOT.TVector3()</div>
-<div class="line"><a id="l00976" name="l00976"></a><span class="lineno">  976</span> golmx = top.GetNode(<span class="stringliteral">&quot;volGoliath_1&quot;</span>).GetMatrix()</div>
-<div class="line"><a id="l00977" name="l00977"></a><span class="lineno">  977</span> zGol = golmx.GetTranslation()[2]</div>
-<div class="line"><a id="l00978" name="l00978"></a><span class="lineno">  978</span> <span class="keywordflow">for</span> fn <span class="keywordflow">in</span> fchainRec:</div>
-<div class="line"><a id="l00979" name="l00979"></a><span class="lineno">  979</span>  <span class="keywordflow">if</span> single :</div>
-<div class="line"><a id="l00980" name="l00980"></a><span class="lineno">  980</span>    <span class="keywordflow">if</span> fn.find(str(single)) &lt; 0 : <span class="keywordflow">continue</span></div>
-<div class="line"><a id="l00981" name="l00981"></a><span class="lineno">  981</span>  f = ROOT.TFile(fn)</div>
-<div class="line"><a id="l00982" name="l00982"></a><span class="lineno">  982</span>  <span class="keywordflow">if</span> <span class="keywordflow">not</span> f.FindObjectAny(<span class="stringliteral">&#39;cbmsim&#39;</span>):</div>
-<div class="line"><a id="l00983" name="l00983"></a><span class="lineno">  983</span>   print(<span class="stringliteral">&#39;skip file &#39;</span>,f.GetName())</div>
-<div class="line"><a id="l00984" name="l00984"></a><span class="lineno">  984</span>   <span class="keywordflow">continue</span></div>
-<div class="line"><a id="l00985" name="l00985"></a><span class="lineno">  985</span>  sTree = f.Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
-<div class="line"><a id="l00986" name="l00986"></a><span class="lineno">  986</span>  nEvents = sTree.GetEntries()</div>
-<div class="line"><a id="l00987" name="l00987"></a><span class="lineno">  987</span>  raref = ROOT.TFile(fn.replace(<span class="stringliteral">&quot;.root&quot;</span>,<span class="stringliteral">&quot;_clby.root&quot;</span>),<span class="stringliteral">&quot;recreate&quot;</span>)</div>
-<div class="line"><a id="l00988" name="l00988"></a><span class="lineno">  988</span>  newTree = sTree.CloneTree(0)</div>
-<div class="line"><a id="l00989" name="l00989"></a><span class="lineno">  989</span>  <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(nEvents):</div>
-<div class="line"><a id="l00990" name="l00990"></a><span class="lineno">  990</span>   sTree.GetEntry(n)</div>
-<div class="line"><a id="l00991" name="l00991"></a><span class="lineno">  991</span>   <span class="keywordflow">if</span> n==0 : print(<span class="stringliteral">&#39;now at event &#39;</span>,n,f.GetName())</div>
-<div class="line"><a id="l00992" name="l00992"></a><span class="lineno">  992</span><span class="comment"># look for muons p&gt;3 hitting something</span></div>
-<div class="line"><a id="l00993" name="l00993"></a><span class="lineno">  993</span>   n = 0</div>
-<div class="line"><a id="l00994" name="l00994"></a><span class="lineno">  994</span>   <span class="keywordflow">for</span> c <span class="keywordflow">in</span> [sTree.vetoPoint,sTree.strawtubesPoint,sTree.ShipRpcPoint]:</div>
-<div class="line"><a id="l00995" name="l00995"></a><span class="lineno">  995</span>    <span class="keywordflow">for</span> ahit <span class="keywordflow">in</span> c:</div>
-<div class="line"><a id="l00996" name="l00996"></a><span class="lineno">  996</span>     <span class="keywordflow">if</span> abs(ahit.PdgCode())!=13: <span class="keywordflow">continue</span></div>
-<div class="line"><a id="l00997" name="l00997"></a><span class="lineno">  997</span>     ahit.Momentum(mom)</div>
-<div class="line"><a id="l00998" name="l00998"></a><span class="lineno">  998</span>     <span class="keywordflow">if</span> mom.Mag()&lt;3. : <span class="keywordflow">continue</span></div>
-<div class="line"><a id="l00999" name="l00999"></a><span class="lineno">  999</span>     ahit.Position(pos)</div>
-<div class="line"><a id="l01000" name="l01000"></a><span class="lineno"> 1000</span>     <span class="keywordflow">if</span> pos.z()&lt;zGol : <span class="keywordflow">continue</span></div>
-<div class="line"><a id="l01001" name="l01001"></a><span class="lineno"> 1001</span>     n+=1</div>
-<div class="line"><a id="l01002" name="l01002"></a><span class="lineno"> 1002</span>   <span class="keywordflow">if</span> n &gt; 0:</div>
-<div class="line"><a id="l01003" name="l01003"></a><span class="lineno"> 1003</span>    rc = newTree.Fill()</div>
-<div class="line"><a id="l01004" name="l01004"></a><span class="lineno"> 1004</span>    <span class="comment"># print &#39;filled newTree&#39;,rc</span></div>
-<div class="line"><a id="l01005" name="l01005"></a><span class="lineno"> 1005</span>   sTree.Clear()</div>
-<div class="line"><a id="l01006" name="l01006"></a><span class="lineno"> 1006</span>  newTree.AutoSave()</div>
-<div class="line"><a id="l01007" name="l01007"></a><span class="lineno"> 1007</span>  print(<span class="stringliteral">&#39;   --&gt; events saved:&#39;</span>,newTree.GetEntries())</div>
-<div class="line"><a id="l01008" name="l01008"></a><span class="lineno"> 1008</span>  f.Close()</div>
-<div class="line"><a id="l01009" name="l01009"></a><span class="lineno"> 1009</span>  raref.Close()</div>
-<div class="line"><a id="l01010" name="l01010"></a><span class="lineno"> 1010</span><span class="comment">#</span></div>
+<div class="line"><a id="l00976" name="l00976"></a><span class="lineno">  976</span> <span class="comment"># Goliath magnet has been removed from geometry</span></div>
+<div class="line"><a id="l00977" name="l00977"></a><span class="lineno">  977</span> goliath_node = top.GetNode(<span class="stringliteral">&quot;volGoliath_1&quot;</span>)</div>
+<div class="line"><a id="l00978" name="l00978"></a><span class="lineno">  978</span> <span class="keywordflow">if</span> goliath_node:</div>
+<div class="line"><a id="l00979" name="l00979"></a><span class="lineno">  979</span>  golmx = goliath_node.GetMatrix()</div>
+<div class="line"><a id="l00980" name="l00980"></a><span class="lineno">  980</span>  zGol = golmx.GetTranslation()[2]</div>
+<div class="line"><a id="l00981" name="l00981"></a><span class="lineno">  981</span> <span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00982" name="l00982"></a><span class="lineno">  982</span>  zGol = -9999.0  <span class="comment"># No Goliath, accept all z positions</span></div>
+<div class="line"><a id="l00983" name="l00983"></a><span class="lineno">  983</span> <span class="keywordflow">for</span> fn <span class="keywordflow">in</span> fchainRec:</div>
+<div class="line"><a id="l00984" name="l00984"></a><span class="lineno">  984</span>  <span class="keywordflow">if</span> single :</div>
+<div class="line"><a id="l00985" name="l00985"></a><span class="lineno">  985</span>    <span class="keywordflow">if</span> fn.find(str(single)) &lt; 0 : <span class="keywordflow">continue</span></div>
+<div class="line"><a id="l00986" name="l00986"></a><span class="lineno">  986</span>  f = ROOT.TFile(fn)</div>
+<div class="line"><a id="l00987" name="l00987"></a><span class="lineno">  987</span>  <span class="keywordflow">if</span> <span class="keywordflow">not</span> f.FindObjectAny(<span class="stringliteral">&#39;cbmsim&#39;</span>):</div>
+<div class="line"><a id="l00988" name="l00988"></a><span class="lineno">  988</span>   print(<span class="stringliteral">&#39;skip file &#39;</span>,f.GetName())</div>
+<div class="line"><a id="l00989" name="l00989"></a><span class="lineno">  989</span>   <span class="keywordflow">continue</span></div>
+<div class="line"><a id="l00990" name="l00990"></a><span class="lineno">  990</span>  sTree = f.Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
+<div class="line"><a id="l00991" name="l00991"></a><span class="lineno">  991</span>  nEvents = sTree.GetEntries()</div>
+<div class="line"><a id="l00992" name="l00992"></a><span class="lineno">  992</span>  raref = ROOT.TFile(fn.replace(<span class="stringliteral">&quot;.root&quot;</span>,<span class="stringliteral">&quot;_clby.root&quot;</span>),<span class="stringliteral">&quot;recreate&quot;</span>)</div>
+<div class="line"><a id="l00993" name="l00993"></a><span class="lineno">  993</span>  newTree = sTree.CloneTree(0)</div>
+<div class="line"><a id="l00994" name="l00994"></a><span class="lineno">  994</span>  <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(nEvents):</div>
+<div class="line"><a id="l00995" name="l00995"></a><span class="lineno">  995</span>   sTree.GetEntry(n)</div>
+<div class="line"><a id="l00996" name="l00996"></a><span class="lineno">  996</span>   <span class="keywordflow">if</span> n==0 : print(<span class="stringliteral">&#39;now at event &#39;</span>,n,f.GetName())</div>
+<div class="line"><a id="l00997" name="l00997"></a><span class="lineno">  997</span><span class="comment"># look for muons p&gt;3 hitting something</span></div>
+<div class="line"><a id="l00998" name="l00998"></a><span class="lineno">  998</span>   n = 0</div>
+<div class="line"><a id="l00999" name="l00999"></a><span class="lineno">  999</span>   <span class="keywordflow">for</span> c <span class="keywordflow">in</span> [sTree.vetoPoint,sTree.strawtubesPoint,sTree.ShipRpcPoint]:</div>
+<div class="line"><a id="l01000" name="l01000"></a><span class="lineno"> 1000</span>    <span class="keywordflow">for</span> ahit <span class="keywordflow">in</span> c:</div>
+<div class="line"><a id="l01001" name="l01001"></a><span class="lineno"> 1001</span>     <span class="keywordflow">if</span> abs(ahit.PdgCode())!=13: <span class="keywordflow">continue</span></div>
+<div class="line"><a id="l01002" name="l01002"></a><span class="lineno"> 1002</span>     ahit.Momentum(mom)</div>
+<div class="line"><a id="l01003" name="l01003"></a><span class="lineno"> 1003</span>     <span class="keywordflow">if</span> mom.Mag()&lt;3. : <span class="keywordflow">continue</span></div>
+<div class="line"><a id="l01004" name="l01004"></a><span class="lineno"> 1004</span>     ahit.Position(pos)</div>
+<div class="line"><a id="l01005" name="l01005"></a><span class="lineno"> 1005</span>     <span class="keywordflow">if</span> pos.z()&lt;zGol : <span class="keywordflow">continue</span></div>
+<div class="line"><a id="l01006" name="l01006"></a><span class="lineno"> 1006</span>     n+=1</div>
+<div class="line"><a id="l01007" name="l01007"></a><span class="lineno"> 1007</span>   <span class="keywordflow">if</span> n &gt; 0:</div>
+<div class="line"><a id="l01008" name="l01008"></a><span class="lineno"> 1008</span>    rc = newTree.Fill()</div>
+<div class="line"><a id="l01009" name="l01009"></a><span class="lineno"> 1009</span>    <span class="comment"># print &#39;filled newTree&#39;,rc</span></div>
+<div class="line"><a id="l01010" name="l01010"></a><span class="lineno"> 1010</span>   sTree.Clear()</div>
+<div class="line"><a id="l01011" name="l01011"></a><span class="lineno"> 1011</span>  newTree.AutoSave()</div>
+<div class="line"><a id="l01012" name="l01012"></a><span class="lineno"> 1012</span>  print(<span class="stringliteral">&#39;   --&gt; events saved:&#39;</span>,newTree.GetEntries())</div>
+<div class="line"><a id="l01013" name="l01013"></a><span class="lineno"> 1013</span>  f.Close()</div>
+<div class="line"><a id="l01014" name="l01014"></a><span class="lineno"> 1014</span>  raref.Close()</div>
+<div class="line"><a id="l01015" name="l01015"></a><span class="lineno"> 1015</span><span class="comment">#</span></div>
 </div>
-<div class="foldopen" id="foldopen01011" data-start="" data-end="">
-<div class="line"><a id="l01011" name="l01011"></a><span class="lineno"><a class="line" href="namespaceana__ShipMuon.html#ae20a74ed07c2fe25038d50ffb6c6656e"> 1011</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceana__ShipMuon.html#ae20a74ed07c2fe25038d50ffb6c6656e">MergeRareEvents</a>(runs=[&#39;61&#39;,&#39;62&#39;]):</div>
-<div class="line"><a id="l01012" name="l01012"></a><span class="lineno"> 1012</span> <span class="keywordflow">for</span> prefix <span class="keywordflow">in</span> runs:</div>
-<div class="line"><a id="l01013" name="l01013"></a><span class="lineno"> 1013</span>  cmd = <span class="stringliteral">&#39;$ROOTSYS/bin/hadd rareEvents_&#39;</span>+prefix+<span class="stringliteral">&#39;.root -f &#39;</span></div>
-<div class="line"><a id="l01014" name="l01014"></a><span class="lineno"> 1014</span>  <span class="keywordflow">for</span> fn <span class="keywordflow">in</span> fchainRec:</div>
-<div class="line"><a id="l01015" name="l01015"></a><span class="lineno"> 1015</span>   <span class="keywordflow">if</span> fn.find(<span class="stringliteral">&#39;muon&#39;</span>+prefix)&lt;0 : <span class="keywordflow">continue</span></div>
-<div class="line"><a id="l01016" name="l01016"></a><span class="lineno"> 1016</span>   fr = fn.replace(<span class="stringliteral">&quot;.root&quot;</span>,<span class="stringliteral">&quot;_rare.root&quot;</span>)</div>
-<div class="line"><a id="l01017" name="l01017"></a><span class="lineno"> 1017</span>   cmd = cmd + <span class="stringliteral">&#39; &#39;</span>+ fr</div>
-<div class="line"><a id="l01018" name="l01018"></a><span class="lineno"> 1018</span>  os.system( cmd )</div>
-<div class="line"><a id="l01019" name="l01019"></a><span class="lineno"> 1019</span> </div>
-<div class="line"><a id="l01020" name="l01020"></a><span class="lineno"> 1020</span><span class="comment">#</span></div>
-</div>
-<div class="foldopen" id="foldopen01021" data-start="" data-end="">
-<div class="line"><a id="l01021" name="l01021"></a><span class="lineno"><a class="line" href="namespaceana__ShipMuon.html#a83402d7f4daf6c9a00d7d499a8c167ee"> 1021</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceana__ShipMuon.html#a83402d7f4daf6c9a00d7d499a8c167ee">persistency</a>():</div>
-<div class="line"><a id="l01022" name="l01022"></a><span class="lineno"> 1022</span>  <a class="code hl_function" href="namespaceana__ShipMuon.html#ac45faf305db48f018e61550f1bc6333d">printAndCopy</a>(prefix)</div>
-<div class="line"><a id="l01023" name="l01023"></a><span class="lineno"> 1023</span>  ut.writeHists(h,prefix+<span class="stringliteral">&quot;.root&quot;</span>,plusCanvas=<span class="keyword">True</span>)</div>
+<div class="foldopen" id="foldopen01016" data-start="" data-end="">
+<div class="line"><a id="l01016" name="l01016"></a><span class="lineno"><a class="line" href="namespaceana__ShipMuon.html#ae20a74ed07c2fe25038d50ffb6c6656e"> 1016</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceana__ShipMuon.html#ae20a74ed07c2fe25038d50ffb6c6656e">MergeRareEvents</a>(runs=[&#39;61&#39;,&#39;62&#39;]):</div>
+<div class="line"><a id="l01017" name="l01017"></a><span class="lineno"> 1017</span> <span class="keywordflow">for</span> prefix <span class="keywordflow">in</span> runs:</div>
+<div class="line"><a id="l01018" name="l01018"></a><span class="lineno"> 1018</span>  cmd = <span class="stringliteral">&#39;$ROOTSYS/bin/hadd rareEvents_&#39;</span>+prefix+<span class="stringliteral">&#39;.root -f &#39;</span></div>
+<div class="line"><a id="l01019" name="l01019"></a><span class="lineno"> 1019</span>  <span class="keywordflow">for</span> fn <span class="keywordflow">in</span> fchainRec:</div>
+<div class="line"><a id="l01020" name="l01020"></a><span class="lineno"> 1020</span>   <span class="keywordflow">if</span> fn.find(<span class="stringliteral">&#39;muon&#39;</span>+prefix)&lt;0 : <span class="keywordflow">continue</span></div>
+<div class="line"><a id="l01021" name="l01021"></a><span class="lineno"> 1021</span>   fr = fn.replace(<span class="stringliteral">&quot;.root&quot;</span>,<span class="stringliteral">&quot;_rare.root&quot;</span>)</div>
+<div class="line"><a id="l01022" name="l01022"></a><span class="lineno"> 1022</span>   cmd = cmd + <span class="stringliteral">&#39; &#39;</span>+ fr</div>
+<div class="line"><a id="l01023" name="l01023"></a><span class="lineno"> 1023</span>  os.system( cmd )</div>
 <div class="line"><a id="l01024" name="l01024"></a><span class="lineno"> 1024</span> </div>
+<div class="line"><a id="l01025" name="l01025"></a><span class="lineno"> 1025</span><span class="comment">#</span></div>
 </div>
-<div class="foldopen" id="foldopen01025" data-start="" data-end="">
-<div class="line"><a id="l01025" name="l01025"></a><span class="lineno"><a class="line" href="namespaceana__ShipMuon.html#a334b44193227009d4e0000713eb55812"> 1025</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceana__ShipMuon.html#a334b44193227009d4e0000713eb55812">reDraw</a>(fn):</div>
-<div class="line"><a id="l01026" name="l01026"></a><span class="lineno"> 1026</span>  <span class="keywordflow">if</span> fn.find(<span class="stringliteral">&#39;root&#39;</span>)&lt;0: fn=fn+<span class="stringliteral">&#39;.root&#39;</span></div>
-<div class="line"><a id="l01027" name="l01027"></a><span class="lineno"> 1027</span>  <span class="keywordflow">if</span> <span class="stringliteral">&#39;tc&#39;</span> <span class="keywordflow">not</span> <span class="keywordflow">in</span> h: h[<span class="stringliteral">&#39;tc&#39;</span>] = ROOT.TFile(fn)</div>
-<div class="line"><a id="l01028" name="l01028"></a><span class="lineno"> 1028</span>  <span class="keywordflow">for</span> x <span class="keywordflow">in</span> [<span class="stringliteral">&#39;ResultsI&#39;</span>,<span class="stringliteral">&#39;ResultsII&#39;</span>,<span class="stringliteral">&#39;ResultsImu&#39;</span>,<span class="stringliteral">&#39;ResultsImuV0&#39;</span>,<span class="stringliteral">&#39;ResultsIII&#39;</span>,<span class="stringliteral">&#39;ResultsIV&#39;</span>,<span class="stringliteral">&#39;ResultsV&#39;</span>]:</div>
-<div class="line"><a id="l01029" name="l01029"></a><span class="lineno"> 1029</span>   h[x]=h[<span class="stringliteral">&#39;tc&#39;</span>].FindObjectAny(x)</div>
-<div class="line"><a id="l01030" name="l01030"></a><span class="lineno"> 1030</span>   h[x].Draw()</div>
+<div class="foldopen" id="foldopen01026" data-start="" data-end="">
+<div class="line"><a id="l01026" name="l01026"></a><span class="lineno"><a class="line" href="namespaceana__ShipMuon.html#a83402d7f4daf6c9a00d7d499a8c167ee"> 1026</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceana__ShipMuon.html#a83402d7f4daf6c9a00d7d499a8c167ee">persistency</a>():</div>
+<div class="line"><a id="l01027" name="l01027"></a><span class="lineno"> 1027</span>  <a class="code hl_function" href="namespaceana__ShipMuon.html#ac45faf305db48f018e61550f1bc6333d">printAndCopy</a>(prefix)</div>
+<div class="line"><a id="l01028" name="l01028"></a><span class="lineno"> 1028</span>  ut.writeHists(h,prefix+<span class="stringliteral">&quot;.root&quot;</span>,plusCanvas=<span class="keyword">True</span>)</div>
+<div class="line"><a id="l01029" name="l01029"></a><span class="lineno"> 1029</span> </div>
 </div>
-<div class="foldopen" id="foldopen01031" data-start="" data-end="">
-<div class="line"><a id="l01031" name="l01031"></a><span class="lineno"><a class="line" href="namespaceana__ShipMuon.html#ac45faf305db48f018e61550f1bc6333d"> 1031</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceana__ShipMuon.html#ac45faf305db48f018e61550f1bc6333d">printAndCopy</a>(prefix=None):</div>
-<div class="line"><a id="l01032" name="l01032"></a><span class="lineno"> 1032</span>  <span class="keywordflow">if</span> <span class="keywordflow">not</span> prefix: prefix = (h[<span class="stringliteral">&#39;tc&#39;</span>].GetName()).replace(<span class="stringliteral">&#39;.root&#39;</span>,<span class="stringliteral">&#39;&#39;</span>)</div>
+<div class="foldopen" id="foldopen01030" data-start="" data-end="">
+<div class="line"><a id="l01030" name="l01030"></a><span class="lineno"><a class="line" href="namespaceana__ShipMuon.html#a334b44193227009d4e0000713eb55812"> 1030</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceana__ShipMuon.html#a334b44193227009d4e0000713eb55812">reDraw</a>(fn):</div>
+<div class="line"><a id="l01031" name="l01031"></a><span class="lineno"> 1031</span>  <span class="keywordflow">if</span> fn.find(<span class="stringliteral">&#39;root&#39;</span>)&lt;0: fn=fn+<span class="stringliteral">&#39;.root&#39;</span></div>
+<div class="line"><a id="l01032" name="l01032"></a><span class="lineno"> 1032</span>  <span class="keywordflow">if</span> <span class="stringliteral">&#39;tc&#39;</span> <span class="keywordflow">not</span> <span class="keywordflow">in</span> h: h[<span class="stringliteral">&#39;tc&#39;</span>] = ROOT.TFile(fn)</div>
 <div class="line"><a id="l01033" name="l01033"></a><span class="lineno"> 1033</span>  <span class="keywordflow">for</span> x <span class="keywordflow">in</span> [<span class="stringliteral">&#39;ResultsI&#39;</span>,<span class="stringliteral">&#39;ResultsII&#39;</span>,<span class="stringliteral">&#39;ResultsImu&#39;</span>,<span class="stringliteral">&#39;ResultsImuV0&#39;</span>,<span class="stringliteral">&#39;ResultsIII&#39;</span>,<span class="stringliteral">&#39;ResultsIV&#39;</span>,<span class="stringliteral">&#39;ResultsV&#39;</span>]:</div>
-<div class="line"><a id="l01034" name="l01034"></a><span class="lineno"> 1034</span>   h[x].Update()</div>
-<div class="line"><a id="l01035" name="l01035"></a><span class="lineno"> 1035</span>  <span class="keywordflow">if</span> <span class="keywordflow">not</span> prefix <span class="keywordflow">in</span> os.listdir(<span class="stringliteral">&#39;.&#39;</span>): os.mkdir(prefix)</div>
-<div class="line"><a id="l01036" name="l01036"></a><span class="lineno"> 1036</span>  os.chdir(prefix)</div>
-<div class="line"><a id="l01037" name="l01037"></a><span class="lineno"> 1037</span>  h[<span class="stringliteral">&#39;ResultsI&#39;</span>].Print(prefix+<span class="stringliteral">&#39;Back_occ.png&#39;</span>)</div>
-<div class="line"><a id="l01038" name="l01038"></a><span class="lineno"> 1038</span>  h[<span class="stringliteral">&#39;ResultsII&#39;</span>].Print(prefix+<span class="stringliteral">&#39;Back_depE.png&#39;</span>)</div>
-<div class="line"><a id="l01039" name="l01039"></a><span class="lineno"> 1039</span>  h[<span class="stringliteral">&#39;ResultsImu&#39;</span>].Print(prefix+<span class="stringliteral">&#39;muBack_occ.png&#39;</span>)</div>
-<div class="line"><a id="l01040" name="l01040"></a><span class="lineno"> 1040</span>  h[<span class="stringliteral">&#39;ResultsImuV0&#39;</span>].Print(prefix+<span class="stringliteral">&#39;muV0Back_occ.png&#39;</span>)</div>
-<div class="line"><a id="l01041" name="l01041"></a><span class="lineno"> 1041</span>  h[<span class="stringliteral">&#39;ResultsIII&#39;</span>].Print(prefix+<span class="stringliteral">&#39;Back_P.png&#39;</span>)</div>
-<div class="line"><a id="l01042" name="l01042"></a><span class="lineno"> 1042</span>  h[<span class="stringliteral">&#39;ResultsIV&#39;</span>].Print(prefix+<span class="stringliteral">&#39;Back_OP.png&#39;</span>)</div>
-<div class="line"><a id="l01043" name="l01043"></a><span class="lineno"> 1043</span>  h[<span class="stringliteral">&#39;ResultsV&#39;</span>].Print(prefix+<span class="stringliteral">&#39;origin.png&#39;</span>)</div>
-<div class="line"><a id="l01044" name="l01044"></a><span class="lineno"> 1044</span>  os.chdir(<span class="stringliteral">&quot;../&quot;</span>)</div>
-<div class="line"><a id="l01045" name="l01045"></a><span class="lineno"> 1045</span> </div>
-<div class="line"><a id="l01046" name="l01046"></a><span class="lineno"> 1046</span> </div>
+<div class="line"><a id="l01034" name="l01034"></a><span class="lineno"> 1034</span>   h[x]=h[<span class="stringliteral">&#39;tc&#39;</span>].FindObjectAny(x)</div>
+<div class="line"><a id="l01035" name="l01035"></a><span class="lineno"> 1035</span>   h[x].Draw()</div>
 </div>
-<div class="foldopen" id="foldopen01047" data-start="" data-end="">
-<div class="line"><a id="l01047" name="l01047"></a><span class="lineno"><a class="line" href="namespaceana__ShipMuon.html#a191d7fa5c8a5a729c2cce2b1c9c1ef67"> 1047</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceana__ShipMuon.html#a191d7fa5c8a5a729c2cce2b1c9c1ef67">drawBoth</a>(tag,hn):</div>
-<div class="line"><a id="l01048" name="l01048"></a><span class="lineno"> 1048</span>  n1 = h[hn+<span class="stringliteral">&#39;_mu&#39;</span>+tag].GetMaximum()</div>
-<div class="line"><a id="l01049" name="l01049"></a><span class="lineno"> 1049</span>  n2 = h[hn+tag].GetMaximum()</div>
-<div class="line"><a id="l01050" name="l01050"></a><span class="lineno"> 1050</span>  <span class="keywordflow">if</span> n1&gt;n2: h[hn+tag].SetMaximum(n1)</div>
-<div class="line"><a id="l01051" name="l01051"></a><span class="lineno"> 1051</span>  h[hn+<span class="stringliteral">&#39;_mu&#39;</span>+tag].SetLineColor(4)</div>
-<div class="line"><a id="l01052" name="l01052"></a><span class="lineno"> 1052</span>  h[hn+tag].SetLineColor(3)</div>
-<div class="line"><a id="l01053" name="l01053"></a><span class="lineno"> 1053</span>  h[hn+<span class="stringliteral">&#39;_mu&#39;</span>+tag].Draw()</div>
-<div class="line"><a id="l01054" name="l01054"></a><span class="lineno"> 1054</span>  h[hn+tag].Draw(<span class="stringliteral">&#39;same&#39;</span>)</div>
-<div class="line"><a id="l01055" name="l01055"></a><span class="lineno"> 1055</span> </div>
-<div class="line"><a id="l01056" name="l01056"></a><span class="lineno"> 1056</span> </div>
+<div class="foldopen" id="foldopen01036" data-start="" data-end="">
+<div class="line"><a id="l01036" name="l01036"></a><span class="lineno"><a class="line" href="namespaceana__ShipMuon.html#ac45faf305db48f018e61550f1bc6333d"> 1036</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceana__ShipMuon.html#ac45faf305db48f018e61550f1bc6333d">printAndCopy</a>(prefix=None):</div>
+<div class="line"><a id="l01037" name="l01037"></a><span class="lineno"> 1037</span>  <span class="keywordflow">if</span> <span class="keywordflow">not</span> prefix: prefix = (h[<span class="stringliteral">&#39;tc&#39;</span>].GetName()).replace(<span class="stringliteral">&#39;.root&#39;</span>,<span class="stringliteral">&#39;&#39;</span>)</div>
+<div class="line"><a id="l01038" name="l01038"></a><span class="lineno"> 1038</span>  <span class="keywordflow">for</span> x <span class="keywordflow">in</span> [<span class="stringliteral">&#39;ResultsI&#39;</span>,<span class="stringliteral">&#39;ResultsII&#39;</span>,<span class="stringliteral">&#39;ResultsImu&#39;</span>,<span class="stringliteral">&#39;ResultsImuV0&#39;</span>,<span class="stringliteral">&#39;ResultsIII&#39;</span>,<span class="stringliteral">&#39;ResultsIV&#39;</span>,<span class="stringliteral">&#39;ResultsV&#39;</span>]:</div>
+<div class="line"><a id="l01039" name="l01039"></a><span class="lineno"> 1039</span>   h[x].Update()</div>
+<div class="line"><a id="l01040" name="l01040"></a><span class="lineno"> 1040</span>  <span class="keywordflow">if</span> <span class="keywordflow">not</span> prefix <span class="keywordflow">in</span> os.listdir(<span class="stringliteral">&#39;.&#39;</span>): os.mkdir(prefix)</div>
+<div class="line"><a id="l01041" name="l01041"></a><span class="lineno"> 1041</span>  os.chdir(prefix)</div>
+<div class="line"><a id="l01042" name="l01042"></a><span class="lineno"> 1042</span>  h[<span class="stringliteral">&#39;ResultsI&#39;</span>].Print(prefix+<span class="stringliteral">&#39;Back_occ.png&#39;</span>)</div>
+<div class="line"><a id="l01043" name="l01043"></a><span class="lineno"> 1043</span>  h[<span class="stringliteral">&#39;ResultsII&#39;</span>].Print(prefix+<span class="stringliteral">&#39;Back_depE.png&#39;</span>)</div>
+<div class="line"><a id="l01044" name="l01044"></a><span class="lineno"> 1044</span>  h[<span class="stringliteral">&#39;ResultsImu&#39;</span>].Print(prefix+<span class="stringliteral">&#39;muBack_occ.png&#39;</span>)</div>
+<div class="line"><a id="l01045" name="l01045"></a><span class="lineno"> 1045</span>  h[<span class="stringliteral">&#39;ResultsImuV0&#39;</span>].Print(prefix+<span class="stringliteral">&#39;muV0Back_occ.png&#39;</span>)</div>
+<div class="line"><a id="l01046" name="l01046"></a><span class="lineno"> 1046</span>  h[<span class="stringliteral">&#39;ResultsIII&#39;</span>].Print(prefix+<span class="stringliteral">&#39;Back_P.png&#39;</span>)</div>
+<div class="line"><a id="l01047" name="l01047"></a><span class="lineno"> 1047</span>  h[<span class="stringliteral">&#39;ResultsIV&#39;</span>].Print(prefix+<span class="stringliteral">&#39;Back_OP.png&#39;</span>)</div>
+<div class="line"><a id="l01048" name="l01048"></a><span class="lineno"> 1048</span>  h[<span class="stringliteral">&#39;ResultsV&#39;</span>].Print(prefix+<span class="stringliteral">&#39;origin.png&#39;</span>)</div>
+<div class="line"><a id="l01049" name="l01049"></a><span class="lineno"> 1049</span>  os.chdir(<span class="stringliteral">&quot;../&quot;</span>)</div>
+<div class="line"><a id="l01050" name="l01050"></a><span class="lineno"> 1050</span> </div>
+<div class="line"><a id="l01051" name="l01051"></a><span class="lineno"> 1051</span> </div>
 </div>
-<div class="foldopen" id="foldopen01057" data-start="" data-end="">
-<div class="line"><a id="l01057" name="l01057"></a><span class="lineno"><a class="line" href="namespaceana__ShipMuon.html#abd28603cc8915d9166babeaf5f517f6d"> 1057</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceana__ShipMuon.html#abd28603cc8915d9166babeaf5f517f6d">debugGeoTracks</a>():</div>
-<div class="line"><a id="l01058" name="l01058"></a><span class="lineno"> 1058</span> <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(sTree.GetEntries()):</div>
-<div class="line"><a id="l01059" name="l01059"></a><span class="lineno"> 1059</span>   sTree.GetEntry(i)</div>
-<div class="line"><a id="l01060" name="l01060"></a><span class="lineno"> 1060</span>   n = 0</div>
-<div class="line"><a id="l01061" name="l01061"></a><span class="lineno"> 1061</span>   <span class="keywordflow">for</span> gt <span class="keywordflow">in</span> sTree.GeoTracks:</div>
-<div class="line"><a id="l01062" name="l01062"></a><span class="lineno"> 1062</span>     print(i,n,gt.GetFirstPoint()[2],gt.GetLastPoint()[2],gt.GetParticle().GetPdgCode(),gt.GetParticle().P())</div>
-<div class="line"><a id="l01063" name="l01063"></a><span class="lineno"> 1063</span>     n+=1</div>
+<div class="foldopen" id="foldopen01052" data-start="" data-end="">
+<div class="line"><a id="l01052" name="l01052"></a><span class="lineno"><a class="line" href="namespaceana__ShipMuon.html#a191d7fa5c8a5a729c2cce2b1c9c1ef67"> 1052</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceana__ShipMuon.html#a191d7fa5c8a5a729c2cce2b1c9c1ef67">drawBoth</a>(tag,hn):</div>
+<div class="line"><a id="l01053" name="l01053"></a><span class="lineno"> 1053</span>  n1 = h[hn+<span class="stringliteral">&#39;_mu&#39;</span>+tag].GetMaximum()</div>
+<div class="line"><a id="l01054" name="l01054"></a><span class="lineno"> 1054</span>  n2 = h[hn+tag].GetMaximum()</div>
+<div class="line"><a id="l01055" name="l01055"></a><span class="lineno"> 1055</span>  <span class="keywordflow">if</span> n1&gt;n2: h[hn+tag].SetMaximum(n1)</div>
+<div class="line"><a id="l01056" name="l01056"></a><span class="lineno"> 1056</span>  h[hn+<span class="stringliteral">&#39;_mu&#39;</span>+tag].SetLineColor(4)</div>
+<div class="line"><a id="l01057" name="l01057"></a><span class="lineno"> 1057</span>  h[hn+tag].SetLineColor(3)</div>
+<div class="line"><a id="l01058" name="l01058"></a><span class="lineno"> 1058</span>  h[hn+<span class="stringliteral">&#39;_mu&#39;</span>+tag].Draw()</div>
+<div class="line"><a id="l01059" name="l01059"></a><span class="lineno"> 1059</span>  h[hn+tag].Draw(<span class="stringliteral">&#39;same&#39;</span>)</div>
+<div class="line"><a id="l01060" name="l01060"></a><span class="lineno"> 1060</span> </div>
+<div class="line"><a id="l01061" name="l01061"></a><span class="lineno"> 1061</span> </div>
 </div>
-<div class="foldopen" id="foldopen01064" data-start="" data-end="">
-<div class="line"><a id="l01064" name="l01064"></a><span class="lineno"><a class="line" href="namespaceana__ShipMuon.html#a690095c754cbaae2670fd1b2de6f26df"> 1064</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceana__ShipMuon.html#a690095c754cbaae2670fd1b2de6f26df">eventsWithStrawPoints</a>(i):</div>
-<div class="line"><a id="l01065" name="l01065"></a><span class="lineno"> 1065</span> sTree = fchain[i].Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
-<div class="line"><a id="l01066" name="l01066"></a><span class="lineno"> 1066</span> mom = ROOT.TVector3()</div>
-<div class="line"><a id="l01067" name="l01067"></a><span class="lineno"> 1067</span> <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(sTree.GetEntries()):</div>
-<div class="line"><a id="l01068" name="l01068"></a><span class="lineno"> 1068</span>   sTree.GetEntry(i)</div>
-<div class="line"><a id="l01069" name="l01069"></a><span class="lineno"> 1069</span>   nS = sTree.strawtubesPoint.GetEntries()</div>
-<div class="line"><a id="l01070" name="l01070"></a><span class="lineno"> 1070</span>   <span class="keywordflow">if</span> nS&gt;0:</div>
-<div class="line"><a id="l01071" name="l01071"></a><span class="lineno"> 1071</span>     mu = sTree.MCTrack[0]</div>
-<div class="line"><a id="l01072" name="l01072"></a><span class="lineno"> 1072</span>     mu.GetMomentum(mom)</div>
-<div class="line"><a id="l01073" name="l01073"></a><span class="lineno"> 1073</span>     print(i,nS)</div>
-<div class="line"><a id="l01074" name="l01074"></a><span class="lineno"> 1074</span>     mom.Print()</div>
-<div class="line"><a id="l01075" name="l01075"></a><span class="lineno"> 1075</span>     sp = sTree.strawtubesPoint[(max(0,nS-3))]</div>
-<div class="line"><a id="l01076" name="l01076"></a><span class="lineno"> 1076</span>     sp.Momentum(mom)</div>
-<div class="line"><a id="l01077" name="l01077"></a><span class="lineno"> 1077</span>     mom.Print()</div>
-<div class="line"><a id="l01078" name="l01078"></a><span class="lineno"> 1078</span>     print(<span class="stringliteral">&#39;-----------------------&#39;</span>)</div>
+<div class="foldopen" id="foldopen01062" data-start="" data-end="">
+<div class="line"><a id="l01062" name="l01062"></a><span class="lineno"><a class="line" href="namespaceana__ShipMuon.html#abd28603cc8915d9166babeaf5f517f6d"> 1062</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceana__ShipMuon.html#abd28603cc8915d9166babeaf5f517f6d">debugGeoTracks</a>():</div>
+<div class="line"><a id="l01063" name="l01063"></a><span class="lineno"> 1063</span> <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(sTree.GetEntries()):</div>
+<div class="line"><a id="l01064" name="l01064"></a><span class="lineno"> 1064</span>   sTree.GetEntry(i)</div>
+<div class="line"><a id="l01065" name="l01065"></a><span class="lineno"> 1065</span>   n = 0</div>
+<div class="line"><a id="l01066" name="l01066"></a><span class="lineno"> 1066</span>   <span class="keywordflow">for</span> gt <span class="keywordflow">in</span> sTree.GeoTracks:</div>
+<div class="line"><a id="l01067" name="l01067"></a><span class="lineno"> 1067</span>     print(i,n,gt.GetFirstPoint()[2],gt.GetLastPoint()[2],gt.GetParticle().GetPdgCode(),gt.GetParticle().P())</div>
+<div class="line"><a id="l01068" name="l01068"></a><span class="lineno"> 1068</span>     n+=1</div>
 </div>
-<div class="foldopen" id="foldopen01079" data-start="" data-end="">
-<div class="line"><a id="l01079" name="l01079"></a><span class="lineno"><a class="line" href="namespaceana__ShipMuon.html#af1c35aa880b1acd4535e099f90fda11b"> 1079</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceana__ShipMuon.html#af1c35aa880b1acd4535e099f90fda11b">eventsWithEntryPoints</a>(i):</div>
-<div class="line"><a id="l01080" name="l01080"></a><span class="lineno"> 1080</span> sTree = fchain[i].Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
-<div class="line"><a id="l01081" name="l01081"></a><span class="lineno"> 1081</span> mom = ROOT.TVector3()</div>
-<div class="line"><a id="l01082" name="l01082"></a><span class="lineno"> 1082</span> <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(sTree.GetEntries()):</div>
-<div class="line"><a id="l01083" name="l01083"></a><span class="lineno"> 1083</span>   sTree.GetEntry(i)</div>
-<div class="line"><a id="l01084" name="l01084"></a><span class="lineno"> 1084</span>   np = 0</div>
-<div class="line"><a id="l01085" name="l01085"></a><span class="lineno"> 1085</span>   <span class="keywordflow">for</span> vp <span class="keywordflow">in</span> sTree.vetoPoint:</div>
-<div class="line"><a id="l01086" name="l01086"></a><span class="lineno"> 1086</span>    detName = logVols[vp. GetDetectorID()]</div>
-<div class="line"><a id="l01087" name="l01087"></a><span class="lineno"> 1087</span>    <span class="keywordflow">if</span> detName== <span class="stringliteral">&quot;VetoTimeDet&quot;</span>: np+=0 <span class="comment">#??</span></div>
-<div class="line"><a id="l01088" name="l01088"></a><span class="lineno"> 1088</span>    vp.Momentum(mom)</div>
-<div class="line"><a id="l01089" name="l01089"></a><span class="lineno"> 1089</span>    print(i,detName,vp.PdgCode())</div>
-<div class="line"><a id="l01090" name="l01090"></a><span class="lineno"> 1090</span>    mom.Print()</div>
-<div class="line"><a id="l01091" name="l01091"></a><span class="lineno"> 1091</span>    print(<span class="stringliteral">&#39;-----------------------&#39;</span>)</div>
+<div class="foldopen" id="foldopen01069" data-start="" data-end="">
+<div class="line"><a id="l01069" name="l01069"></a><span class="lineno"><a class="line" href="namespaceana__ShipMuon.html#a690095c754cbaae2670fd1b2de6f26df"> 1069</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceana__ShipMuon.html#a690095c754cbaae2670fd1b2de6f26df">eventsWithStrawPoints</a>(i):</div>
+<div class="line"><a id="l01070" name="l01070"></a><span class="lineno"> 1070</span> sTree = fchain[i].Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
+<div class="line"><a id="l01071" name="l01071"></a><span class="lineno"> 1071</span> mom = ROOT.TVector3()</div>
+<div class="line"><a id="l01072" name="l01072"></a><span class="lineno"> 1072</span> <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(sTree.GetEntries()):</div>
+<div class="line"><a id="l01073" name="l01073"></a><span class="lineno"> 1073</span>   sTree.GetEntry(i)</div>
+<div class="line"><a id="l01074" name="l01074"></a><span class="lineno"> 1074</span>   nS = sTree.strawtubesPoint.GetEntries()</div>
+<div class="line"><a id="l01075" name="l01075"></a><span class="lineno"> 1075</span>   <span class="keywordflow">if</span> nS&gt;0:</div>
+<div class="line"><a id="l01076" name="l01076"></a><span class="lineno"> 1076</span>     mu = sTree.MCTrack[0]</div>
+<div class="line"><a id="l01077" name="l01077"></a><span class="lineno"> 1077</span>     mu.GetMomentum(mom)</div>
+<div class="line"><a id="l01078" name="l01078"></a><span class="lineno"> 1078</span>     print(i,nS)</div>
+<div class="line"><a id="l01079" name="l01079"></a><span class="lineno"> 1079</span>     mom.Print()</div>
+<div class="line"><a id="l01080" name="l01080"></a><span class="lineno"> 1080</span>     sp = sTree.strawtubesPoint[(max(0,nS-3))]</div>
+<div class="line"><a id="l01081" name="l01081"></a><span class="lineno"> 1081</span>     sp.Momentum(mom)</div>
+<div class="line"><a id="l01082" name="l01082"></a><span class="lineno"> 1082</span>     mom.Print()</div>
+<div class="line"><a id="l01083" name="l01083"></a><span class="lineno"> 1083</span>     print(<span class="stringliteral">&#39;-----------------------&#39;</span>)</div>
 </div>
-<div class="foldopen" id="foldopen01092" data-start="" data-end="">
-<div class="line"><a id="l01092" name="l01092"></a><span class="lineno"><a class="line" href="namespaceana__ShipMuon.html#a39aa95b16e117a653bbae389f70cd3db"> 1092</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceana__ShipMuon.html#a39aa95b16e117a653bbae389f70cd3db">depEnergy</a>():</div>
-<div class="line"><a id="l01093" name="l01093"></a><span class="lineno"> 1093</span> <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(sTree.GetEntries()):</div>
-<div class="line"><a id="l01094" name="l01094"></a><span class="lineno"> 1094</span>  rc = sTree.GetEntry(n)</div>
-<div class="line"><a id="l01095" name="l01095"></a><span class="lineno"> 1095</span>  <span class="keywordflow">for</span> ahit <span class="keywordflow">in</span> sTree.strawtubesPoint:</div>
-<div class="line"><a id="l01096" name="l01096"></a><span class="lineno"> 1096</span>   dE = ahit.GetEnergyLoss()/u.keV</div>
-<div class="line"><a id="l01097" name="l01097"></a><span class="lineno"> 1097</span>   rc = ahit.Momentum(mom)</div>
-<div class="line"><a id="l01098" name="l01098"></a><span class="lineno"> 1098</span>   pa = PDG.GetParticle(ahit.PdgCode())</div>
-<div class="line"><a id="l01099" name="l01099"></a><span class="lineno"> 1099</span>   mpa = pa.Mass()</div>
-<div class="line"><a id="l01100" name="l01100"></a><span class="lineno"> 1100</span>   E = ROOT.TMath.Sqrt(mom.Mag2()+mpa**2)</div>
-<div class="line"><a id="l01101" name="l01101"></a><span class="lineno"> 1101</span>   ekin = E-mpa</div>
-<div class="line"><a id="l01102" name="l01102"></a><span class="lineno"> 1102</span>   rc = h[<span class="stringliteral">&#39;dE&#39;</span>].Fill(dE,ekin/u.MeV)</div>
-<div class="line"><a id="l01103" name="l01103"></a><span class="lineno"> 1103</span>  h[<span class="stringliteral">&#39;dE&#39;</span>].SetXTitle(<span class="stringliteral">&#39;keV&#39;</span>)</div>
-<div class="line"><a id="l01104" name="l01104"></a><span class="lineno"> 1104</span>  h[<span class="stringliteral">&#39;dE&#39;</span>].SetYTitle(<span class="stringliteral">&#39;MeV&#39;</span>)</div>
-<div class="line"><a id="l01105" name="l01105"></a><span class="lineno"> 1105</span> </div>
+<div class="foldopen" id="foldopen01084" data-start="" data-end="">
+<div class="line"><a id="l01084" name="l01084"></a><span class="lineno"><a class="line" href="namespaceana__ShipMuon.html#af1c35aa880b1acd4535e099f90fda11b"> 1084</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceana__ShipMuon.html#af1c35aa880b1acd4535e099f90fda11b">eventsWithEntryPoints</a>(i):</div>
+<div class="line"><a id="l01085" name="l01085"></a><span class="lineno"> 1085</span> sTree = fchain[i].Get(<span class="stringliteral">&quot;cbmsim&quot;</span>)</div>
+<div class="line"><a id="l01086" name="l01086"></a><span class="lineno"> 1086</span> mom = ROOT.TVector3()</div>
+<div class="line"><a id="l01087" name="l01087"></a><span class="lineno"> 1087</span> <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(sTree.GetEntries()):</div>
+<div class="line"><a id="l01088" name="l01088"></a><span class="lineno"> 1088</span>   sTree.GetEntry(i)</div>
+<div class="line"><a id="l01089" name="l01089"></a><span class="lineno"> 1089</span>   np = 0</div>
+<div class="line"><a id="l01090" name="l01090"></a><span class="lineno"> 1090</span>   <span class="keywordflow">for</span> vp <span class="keywordflow">in</span> sTree.vetoPoint:</div>
+<div class="line"><a id="l01091" name="l01091"></a><span class="lineno"> 1091</span>    detName = logVols[vp. GetDetectorID()]</div>
+<div class="line"><a id="l01092" name="l01092"></a><span class="lineno"> 1092</span>    <span class="keywordflow">if</span> detName== <span class="stringliteral">&quot;VetoTimeDet&quot;</span>: np+=0 <span class="comment">#??</span></div>
+<div class="line"><a id="l01093" name="l01093"></a><span class="lineno"> 1093</span>    vp.Momentum(mom)</div>
+<div class="line"><a id="l01094" name="l01094"></a><span class="lineno"> 1094</span>    print(i,detName,vp.PdgCode())</div>
+<div class="line"><a id="l01095" name="l01095"></a><span class="lineno"> 1095</span>    mom.Print()</div>
+<div class="line"><a id="l01096" name="l01096"></a><span class="lineno"> 1096</span>    print(<span class="stringliteral">&#39;-----------------------&#39;</span>)</div>
 </div>
-<div class="foldopen" id="foldopen01106" data-start="" data-end="">
-<div class="line"><a id="l01106" name="l01106"></a><span class="lineno"><a class="line" href="namespaceana__ShipMuon.html#a08c5c0daec239c1645b8abcc3522ea3b"> 1106</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceana__ShipMuon.html#a08c5c0daec239c1645b8abcc3522ea3b">originOfMuon</a>(fout,n,fn,nEvents):</div>
-<div class="line"><a id="l01107" name="l01107"></a><span class="lineno"> 1107</span>      <span class="comment"># from fn extract Yandex or CERN/cracow</span></div>
-<div class="line"><a id="l01108" name="l01108"></a><span class="lineno"> 1108</span> ncpu = 9</div>
-<div class="line"><a id="l01109" name="l01109"></a><span class="lineno"> 1109</span> x = fn.find(<span class="stringliteral">&#39;/&#39;</span>)</div>
-<div class="line"><a id="l01110" name="l01110"></a><span class="lineno"> 1110</span> ni = int(fn[x-1:x])-1</div>
-<div class="line"><a id="l01111" name="l01111"></a><span class="lineno"> 1111</span> <span class="keywordflow">if</span> nEvents &lt; 100000:</div>
-<div class="line"><a id="l01112" name="l01112"></a><span class="lineno"> 1112</span>   fm   = <span class="stringliteral">&quot;$SHIPSOFT/data/pythia8_Geant4_onlyMuons.root&quot;</span></div>
-<div class="line"><a id="l01113" name="l01113"></a><span class="lineno"> 1113</span> <span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l01114" name="l01114"></a><span class="lineno"> 1114</span>   fm = <span class="stringliteral">&quot;$SHIPSOFT/data/pythia8_Geant4_Yandex_onlyMuons.root&quot;</span></div>
-<div class="line"><a id="l01115" name="l01115"></a><span class="lineno"> 1115</span> fmuon = ROOT.TFile(fm)</div>
-<div class="line"><a id="l01116" name="l01116"></a><span class="lineno"> 1116</span> ntupl = fmuon.Get(<span class="stringliteral">&quot;pythia8-Geant4&quot;</span>)</div>
-<div class="line"><a id="l01117" name="l01117"></a><span class="lineno"> 1117</span> ntot  = ntupl.GetEntries()</div>
-<div class="line"><a id="l01118" name="l01118"></a><span class="lineno"> 1118</span> n3    = int(ntot/ncpu)</div>
-<div class="line"><a id="l01119" name="l01119"></a><span class="lineno"> 1119</span> N = n3*ni+n</div>
-<div class="line"><a id="l01120" name="l01120"></a><span class="lineno"> 1120</span> ntupl.GetEvent(N)</div>
-<div class="line"><a id="l01121" name="l01121"></a><span class="lineno"> 1121</span> P = ROOT.TMath.Sqrt(ntupl.pz*ntupl.pz+ntupl.py*ntupl.py+ntupl.px*ntupl.px)</div>
-<div class="line"><a id="l01122" name="l01122"></a><span class="lineno"> 1122</span> fout.write(<span class="stringliteral">&#39;original muon %i, %i, %8.2F \n&#39;</span>%(ntupl.parentid,ntupl.pythiaid,P) )</div>
-<div class="line"><a id="l01123" name="l01123"></a><span class="lineno"> 1123</span> fmuon.Close()</div>
-<div class="line"><a id="l01124" name="l01124"></a><span class="lineno"> 1124</span><span class="comment">#</span></div>
-<div class="line"><a id="l01125" name="l01125"></a><span class="lineno"> 1125</span><span class="comment"># BigEventLoop()</span></div>
-<div class="line"><a id="l01126" name="l01126"></a><span class="lineno"> 1126</span><span class="comment"># makePlots()</span></div>
-<div class="line"><a id="l01127" name="l01127"></a><span class="lineno"> 1127</span><span class="comment"># AnaEventLoop()</span></div>
-<div class="line"><a id="l01128" name="l01128"></a><span class="lineno"> 1128</span> </div>
-<div class="line"><a id="l01129" name="l01129"></a><span class="lineno"> 1129</span><span class="comment"># ShipAna</span></div>
+<div class="foldopen" id="foldopen01097" data-start="" data-end="">
+<div class="line"><a id="l01097" name="l01097"></a><span class="lineno"><a class="line" href="namespaceana__ShipMuon.html#a39aa95b16e117a653bbae389f70cd3db"> 1097</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceana__ShipMuon.html#a39aa95b16e117a653bbae389f70cd3db">depEnergy</a>():</div>
+<div class="line"><a id="l01098" name="l01098"></a><span class="lineno"> 1098</span> <span class="keywordflow">for</span> n <span class="keywordflow">in</span> range(sTree.GetEntries()):</div>
+<div class="line"><a id="l01099" name="l01099"></a><span class="lineno"> 1099</span>  rc = sTree.GetEntry(n)</div>
+<div class="line"><a id="l01100" name="l01100"></a><span class="lineno"> 1100</span>  <span class="keywordflow">for</span> ahit <span class="keywordflow">in</span> sTree.strawtubesPoint:</div>
+<div class="line"><a id="l01101" name="l01101"></a><span class="lineno"> 1101</span>   dE = ahit.GetEnergyLoss()/u.keV</div>
+<div class="line"><a id="l01102" name="l01102"></a><span class="lineno"> 1102</span>   rc = ahit.Momentum(mom)</div>
+<div class="line"><a id="l01103" name="l01103"></a><span class="lineno"> 1103</span>   pa = PDG.GetParticle(ahit.PdgCode())</div>
+<div class="line"><a id="l01104" name="l01104"></a><span class="lineno"> 1104</span>   mpa = pa.Mass()</div>
+<div class="line"><a id="l01105" name="l01105"></a><span class="lineno"> 1105</span>   E = ROOT.TMath.Sqrt(mom.Mag2()+mpa**2)</div>
+<div class="line"><a id="l01106" name="l01106"></a><span class="lineno"> 1106</span>   ekin = E-mpa</div>
+<div class="line"><a id="l01107" name="l01107"></a><span class="lineno"> 1107</span>   rc = h[<span class="stringliteral">&#39;dE&#39;</span>].Fill(dE,ekin/u.MeV)</div>
+<div class="line"><a id="l01108" name="l01108"></a><span class="lineno"> 1108</span>  h[<span class="stringliteral">&#39;dE&#39;</span>].SetXTitle(<span class="stringliteral">&#39;keV&#39;</span>)</div>
+<div class="line"><a id="l01109" name="l01109"></a><span class="lineno"> 1109</span>  h[<span class="stringliteral">&#39;dE&#39;</span>].SetYTitle(<span class="stringliteral">&#39;MeV&#39;</span>)</div>
+<div class="line"><a id="l01110" name="l01110"></a><span class="lineno"> 1110</span> </div>
 </div>
-<div class="foldopen" id="foldopen01130" data-start="" data-end="">
-<div class="line"><a id="l01130" name="l01130"></a><span class="lineno"><a class="line" href="namespaceana__ShipMuon.html#a594ae4989da530e88c31e94768ec94c9"> 1130</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceana__ShipMuon.html#a594ae4989da530e88c31e94768ec94c9">pers</a>():</div>
-<div class="line"><a id="l01131" name="l01131"></a><span class="lineno"> 1131</span>  xdisk = <span class="stringliteral">&#39;/media/Work/HNL/&#39;</span></div>
-<div class="line"><a id="l01132" name="l01132"></a><span class="lineno"> 1132</span>  <span class="keywordflow">for</span> x <span class="keywordflow">in</span> h:</div>
-<div class="line"><a id="l01133" name="l01133"></a><span class="lineno"> 1133</span>    <span class="keywordflow">if</span> type(h[x])==type(ROOT.TCanvas()):</div>
-<div class="line"><a id="l01134" name="l01134"></a><span class="lineno"> 1134</span>      h[x].Update()</div>
-<div class="line"><a id="l01135" name="l01135"></a><span class="lineno"> 1135</span>      tn = h[x].GetName()+<span class="stringliteral">&#39;.png&#39;</span></div>
-<div class="line"><a id="l01136" name="l01136"></a><span class="lineno"> 1136</span>      h[x].Print(tn)</div>
-<div class="line"><a id="l01137" name="l01137"></a><span class="lineno"> 1137</span>      rpath = os.path.abspath(<span class="stringliteral">&#39;.&#39;</span>).split(<span class="stringliteral">&#39;/HNL/&#39;</span>)[1]</div>
-<div class="line"><a id="l01138" name="l01138"></a><span class="lineno"> 1138</span>      lp = rpath.split(<span class="stringliteral">&#39;/&#39;</span>)</div>
-<div class="line"><a id="l01139" name="l01139"></a><span class="lineno"> 1139</span>      prefix = xdisk</div>
-<div class="line"><a id="l01140" name="l01140"></a><span class="lineno"> 1140</span>      <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(len(lp)):</div>
-<div class="line"><a id="l01141" name="l01141"></a><span class="lineno"> 1141</span>         <span class="keywordflow">if</span> <span class="keywordflow">not</span> lp[i] <span class="keywordflow">in</span> os.listdir(prefix): os.system(<span class="stringliteral">&#39;mkdir &#39;</span>+prefix+<span class="stringliteral">&#39;/&#39;</span>+lp[i])</div>
-<div class="line"><a id="l01142" name="l01142"></a><span class="lineno"> 1142</span>         prefix = prefix+<span class="stringliteral">&#39;/&#39;</span>+lp[i]</div>
-<div class="line"><a id="l01143" name="l01143"></a><span class="lineno"> 1143</span>      os.system(<span class="stringliteral">&#39;cp &#39;</span>+tn+ <span class="stringliteral">&#39; &#39;</span>+xdisk+rpath)</div>
-<div class="line"><a id="l01144" name="l01144"></a><span class="lineno"> 1144</span> </div>
+<div class="foldopen" id="foldopen01111" data-start="" data-end="">
+<div class="line"><a id="l01111" name="l01111"></a><span class="lineno"><a class="line" href="namespaceana__ShipMuon.html#a08c5c0daec239c1645b8abcc3522ea3b"> 1111</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceana__ShipMuon.html#a08c5c0daec239c1645b8abcc3522ea3b">originOfMuon</a>(fout,n,fn,nEvents):</div>
+<div class="line"><a id="l01112" name="l01112"></a><span class="lineno"> 1112</span>      <span class="comment"># from fn extract Yandex or CERN/cracow</span></div>
+<div class="line"><a id="l01113" name="l01113"></a><span class="lineno"> 1113</span> ncpu = 9</div>
+<div class="line"><a id="l01114" name="l01114"></a><span class="lineno"> 1114</span> x = fn.find(<span class="stringliteral">&#39;/&#39;</span>)</div>
+<div class="line"><a id="l01115" name="l01115"></a><span class="lineno"> 1115</span> ni = int(fn[x-1:x])-1</div>
+<div class="line"><a id="l01116" name="l01116"></a><span class="lineno"> 1116</span> <span class="keywordflow">if</span> nEvents &lt; 100000:</div>
+<div class="line"><a id="l01117" name="l01117"></a><span class="lineno"> 1117</span>   fm   = <span class="stringliteral">&quot;$SHIPSOFT/data/pythia8_Geant4_onlyMuons.root&quot;</span></div>
+<div class="line"><a id="l01118" name="l01118"></a><span class="lineno"> 1118</span> <span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l01119" name="l01119"></a><span class="lineno"> 1119</span>   fm = <span class="stringliteral">&quot;$SHIPSOFT/data/pythia8_Geant4_Yandex_onlyMuons.root&quot;</span></div>
+<div class="line"><a id="l01120" name="l01120"></a><span class="lineno"> 1120</span> fmuon = ROOT.TFile(fm)</div>
+<div class="line"><a id="l01121" name="l01121"></a><span class="lineno"> 1121</span> ntupl = fmuon.Get(<span class="stringliteral">&quot;pythia8-Geant4&quot;</span>)</div>
+<div class="line"><a id="l01122" name="l01122"></a><span class="lineno"> 1122</span> ntot  = ntupl.GetEntries()</div>
+<div class="line"><a id="l01123" name="l01123"></a><span class="lineno"> 1123</span> n3    = int(ntot/ncpu)</div>
+<div class="line"><a id="l01124" name="l01124"></a><span class="lineno"> 1124</span> N = n3*ni+n</div>
+<div class="line"><a id="l01125" name="l01125"></a><span class="lineno"> 1125</span> ntupl.GetEvent(N)</div>
+<div class="line"><a id="l01126" name="l01126"></a><span class="lineno"> 1126</span> P = ROOT.TMath.Sqrt(ntupl.pz*ntupl.pz+ntupl.py*ntupl.py+ntupl.px*ntupl.px)</div>
+<div class="line"><a id="l01127" name="l01127"></a><span class="lineno"> 1127</span> fout.write(<span class="stringliteral">&#39;original muon %i, %i, %8.2F \n&#39;</span>%(ntupl.parentid,ntupl.pythiaid,P) )</div>
+<div class="line"><a id="l01128" name="l01128"></a><span class="lineno"> 1128</span> fmuon.Close()</div>
+<div class="line"><a id="l01129" name="l01129"></a><span class="lineno"> 1129</span><span class="comment">#</span></div>
+<div class="line"><a id="l01130" name="l01130"></a><span class="lineno"> 1130</span><span class="comment"># BigEventLoop()</span></div>
+<div class="line"><a id="l01131" name="l01131"></a><span class="lineno"> 1131</span><span class="comment"># makePlots()</span></div>
+<div class="line"><a id="l01132" name="l01132"></a><span class="lineno"> 1132</span><span class="comment"># AnaEventLoop()</span></div>
+<div class="line"><a id="l01133" name="l01133"></a><span class="lineno"> 1133</span> </div>
+<div class="line"><a id="l01134" name="l01134"></a><span class="lineno"> 1134</span><span class="comment"># ShipAna</span></div>
 </div>
-<div class="line"><a id="l01145" name="l01145"></a><span class="lineno"> 1145</span><span class="keyword">from</span> operator <span class="keyword">import</span> itemgetter</div>
-<div class="foldopen" id="foldopen01146" data-start="" data-end="">
-<div class="line"><a id="l01146" name="l01146"></a><span class="lineno"><a class="line" href="namespaceana__ShipMuon.html#aa2d052ecf15487204c79ff9c2cbdb6b8"> 1146</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceana__ShipMuon.html#aa2d052ecf15487204c79ff9c2cbdb6b8">makeNicePrintout</a>(x=[&#39;rareEvents_61-62.txt&#39;,&#39;rareEvents_71-72.txt&#39;]):</div>
-<div class="line"><a id="l01147" name="l01147"></a><span class="lineno"> 1147</span> result = []</div>
-<div class="line"><a id="l01148" name="l01148"></a><span class="lineno"> 1148</span> cor = 1.</div>
-<div class="line"><a id="l01149" name="l01149"></a><span class="lineno"> 1149</span> <span class="keywordflow">for</span> fn <span class="keywordflow">in</span> x:</div>
-<div class="line"><a id="l01150" name="l01150"></a><span class="lineno"> 1150</span>  f = open(fn)</div>
-<div class="line"><a id="l01151" name="l01151"></a><span class="lineno"> 1151</span>  recTrack = <span class="keywordtype">None</span></div>
-<div class="line"><a id="l01152" name="l01152"></a><span class="lineno"> 1152</span>  <span class="keywordflow">if</span> fn==<span class="stringliteral">&quot;rareEvents_81-102.txt&quot;</span> : cor = 30.</div>
-<div class="line"><a id="l01153" name="l01153"></a><span class="lineno"> 1153</span>  <span class="keywordflow">for</span> lx <span class="keywordflow">in</span> f.readlines():</div>
-<div class="line"><a id="l01154" name="l01154"></a><span class="lineno"> 1154</span>   l = lx.replace(<span class="stringliteral">&#39;\n&#39;</span>,<span class="stringliteral">&#39;&#39;</span>)</div>
-<div class="line"><a id="l01155" name="l01155"></a><span class="lineno"> 1155</span>   <span class="keywordflow">if</span> <span class="keywordflow">not</span> l.find(<span class="stringliteral">&#39;rare event&#39;</span>)&lt;0:</div>
-<div class="line"><a id="l01156" name="l01156"></a><span class="lineno"> 1156</span>      <span class="keywordflow">if</span> recTrack: result.append(recTrack)</div>
-<div class="line"><a id="l01157" name="l01157"></a><span class="lineno"> 1157</span>      tmp = l.split(<span class="stringliteral">&#39;,&#39;</span>)</div>
-<div class="line"><a id="l01158" name="l01158"></a><span class="lineno"> 1158</span>      w   = tmp[2].replace(<span class="stringliteral">&#39; &#39;</span>,<span class="stringliteral">&#39;&#39;</span>)</div>
-<div class="line"><a id="l01159" name="l01159"></a><span class="lineno"> 1159</span>      ff  = tmp[1].split(<span class="stringliteral">&#39;/&#39;</span>)[0].replace(<span class="stringliteral">&#39; &#39;</span>,<span class="stringliteral">&#39;&#39;</span>)</div>
-<div class="line"><a id="l01160" name="l01160"></a><span class="lineno"> 1160</span>      recTrack = {<span class="stringliteral">&#39;w&#39;</span>:w,<span class="stringliteral">&#39;file&#39;</span>:ff}</div>
-<div class="line"><a id="l01161" name="l01161"></a><span class="lineno"> 1161</span>   <span class="keywordflow">elif</span> <span class="keywordflow">not</span> l.find(<span class="stringliteral">&#39;original&#39;</span>)&lt;0:</div>
+<div class="foldopen" id="foldopen01135" data-start="" data-end="">
+<div class="line"><a id="l01135" name="l01135"></a><span class="lineno"><a class="line" href="namespaceana__ShipMuon.html#a594ae4989da530e88c31e94768ec94c9"> 1135</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceana__ShipMuon.html#a594ae4989da530e88c31e94768ec94c9">pers</a>():</div>
+<div class="line"><a id="l01136" name="l01136"></a><span class="lineno"> 1136</span>  xdisk = <span class="stringliteral">&#39;/media/Work/HNL/&#39;</span></div>
+<div class="line"><a id="l01137" name="l01137"></a><span class="lineno"> 1137</span>  <span class="keywordflow">for</span> x <span class="keywordflow">in</span> h:</div>
+<div class="line"><a id="l01138" name="l01138"></a><span class="lineno"> 1138</span>    <span class="keywordflow">if</span> type(h[x])==type(ROOT.TCanvas()):</div>
+<div class="line"><a id="l01139" name="l01139"></a><span class="lineno"> 1139</span>      h[x].Update()</div>
+<div class="line"><a id="l01140" name="l01140"></a><span class="lineno"> 1140</span>      tn = h[x].GetName()+<span class="stringliteral">&#39;.png&#39;</span></div>
+<div class="line"><a id="l01141" name="l01141"></a><span class="lineno"> 1141</span>      h[x].Print(tn)</div>
+<div class="line"><a id="l01142" name="l01142"></a><span class="lineno"> 1142</span>      rpath = os.path.abspath(<span class="stringliteral">&#39;.&#39;</span>).split(<span class="stringliteral">&#39;/HNL/&#39;</span>)[1]</div>
+<div class="line"><a id="l01143" name="l01143"></a><span class="lineno"> 1143</span>      lp = rpath.split(<span class="stringliteral">&#39;/&#39;</span>)</div>
+<div class="line"><a id="l01144" name="l01144"></a><span class="lineno"> 1144</span>      prefix = xdisk</div>
+<div class="line"><a id="l01145" name="l01145"></a><span class="lineno"> 1145</span>      <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(len(lp)):</div>
+<div class="line"><a id="l01146" name="l01146"></a><span class="lineno"> 1146</span>         <span class="keywordflow">if</span> <span class="keywordflow">not</span> lp[i] <span class="keywordflow">in</span> os.listdir(prefix): os.system(<span class="stringliteral">&#39;mkdir &#39;</span>+prefix+<span class="stringliteral">&#39;/&#39;</span>+lp[i])</div>
+<div class="line"><a id="l01147" name="l01147"></a><span class="lineno"> 1147</span>         prefix = prefix+<span class="stringliteral">&#39;/&#39;</span>+lp[i]</div>
+<div class="line"><a id="l01148" name="l01148"></a><span class="lineno"> 1148</span>      os.system(<span class="stringliteral">&#39;cp &#39;</span>+tn+ <span class="stringliteral">&#39; &#39;</span>+xdisk+rpath)</div>
+<div class="line"><a id="l01149" name="l01149"></a><span class="lineno"> 1149</span> </div>
+</div>
+<div class="line"><a id="l01150" name="l01150"></a><span class="lineno"> 1150</span><span class="keyword">from</span> operator <span class="keyword">import</span> itemgetter</div>
+<div class="foldopen" id="foldopen01151" data-start="" data-end="">
+<div class="line"><a id="l01151" name="l01151"></a><span class="lineno"><a class="line" href="namespaceana__ShipMuon.html#aa2d052ecf15487204c79ff9c2cbdb6b8"> 1151</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceana__ShipMuon.html#aa2d052ecf15487204c79ff9c2cbdb6b8">makeNicePrintout</a>(x=[&#39;rareEvents_61-62.txt&#39;,&#39;rareEvents_71-72.txt&#39;]):</div>
+<div class="line"><a id="l01152" name="l01152"></a><span class="lineno"> 1152</span> result = []</div>
+<div class="line"><a id="l01153" name="l01153"></a><span class="lineno"> 1153</span> cor = 1.</div>
+<div class="line"><a id="l01154" name="l01154"></a><span class="lineno"> 1154</span> <span class="keywordflow">for</span> fn <span class="keywordflow">in</span> x:</div>
+<div class="line"><a id="l01155" name="l01155"></a><span class="lineno"> 1155</span>  f = open(fn)</div>
+<div class="line"><a id="l01156" name="l01156"></a><span class="lineno"> 1156</span>  recTrack = <span class="keywordtype">None</span></div>
+<div class="line"><a id="l01157" name="l01157"></a><span class="lineno"> 1157</span>  <span class="keywordflow">if</span> fn==<span class="stringliteral">&quot;rareEvents_81-102.txt&quot;</span> : cor = 30.</div>
+<div class="line"><a id="l01158" name="l01158"></a><span class="lineno"> 1158</span>  <span class="keywordflow">for</span> lx <span class="keywordflow">in</span> f.readlines():</div>
+<div class="line"><a id="l01159" name="l01159"></a><span class="lineno"> 1159</span>   l = lx.replace(<span class="stringliteral">&#39;\n&#39;</span>,<span class="stringliteral">&#39;&#39;</span>)</div>
+<div class="line"><a id="l01160" name="l01160"></a><span class="lineno"> 1160</span>   <span class="keywordflow">if</span> <span class="keywordflow">not</span> l.find(<span class="stringliteral">&#39;rare event&#39;</span>)&lt;0:</div>
+<div class="line"><a id="l01161" name="l01161"></a><span class="lineno"> 1161</span>      <span class="keywordflow">if</span> recTrack: result.append(recTrack)</div>
 <div class="line"><a id="l01162" name="l01162"></a><span class="lineno"> 1162</span>      tmp = l.split(<span class="stringliteral">&#39;,&#39;</span>)</div>
-<div class="line"><a id="l01163" name="l01163"></a><span class="lineno"> 1163</span>      recTrack[<span class="stringliteral">&#39;origin&#39;</span>]  = tmp[0].split(<span class="stringliteral">&#39; &#39;</span>)[2]</div>
-<div class="line"><a id="l01164" name="l01164"></a><span class="lineno"> 1164</span>      recTrack[<span class="stringliteral">&#39;pytiaid&#39;</span>] = tmp[1].replace(<span class="stringliteral">&#39; &#39;</span>,<span class="stringliteral">&#39;&#39;</span>)</div>
-<div class="line"><a id="l01165" name="l01165"></a><span class="lineno"> 1165</span>      recTrack[<span class="stringliteral">&#39;o-mom&#39;</span>]   = tmp[2].replace(<span class="stringliteral">&#39; &#39;</span>,<span class="stringliteral">&#39;&#39;</span>)</div>
-<div class="line"><a id="l01166" name="l01166"></a><span class="lineno"> 1166</span>   <span class="keywordflow">elif</span> <span class="keywordflow">not</span> l.find(<span class="stringliteral">&#39;reco &#39;</span>)&lt;0:</div>
+<div class="line"><a id="l01163" name="l01163"></a><span class="lineno"> 1163</span>      w   = tmp[2].replace(<span class="stringliteral">&#39; &#39;</span>,<span class="stringliteral">&#39;&#39;</span>)</div>
+<div class="line"><a id="l01164" name="l01164"></a><span class="lineno"> 1164</span>      ff  = tmp[1].split(<span class="stringliteral">&#39;/&#39;</span>)[0].replace(<span class="stringliteral">&#39; &#39;</span>,<span class="stringliteral">&#39;&#39;</span>)</div>
+<div class="line"><a id="l01165" name="l01165"></a><span class="lineno"> 1165</span>      recTrack = {<span class="stringliteral">&#39;w&#39;</span>:w,<span class="stringliteral">&#39;file&#39;</span>:ff}</div>
+<div class="line"><a id="l01166" name="l01166"></a><span class="lineno"> 1166</span>   <span class="keywordflow">elif</span> <span class="keywordflow">not</span> l.find(<span class="stringliteral">&#39;original&#39;</span>)&lt;0:</div>
 <div class="line"><a id="l01167" name="l01167"></a><span class="lineno"> 1167</span>      tmp = l.split(<span class="stringliteral">&#39;,&#39;</span>)</div>
-<div class="line"><a id="l01168" name="l01168"></a><span class="lineno"> 1168</span>      recTrack[<span class="stringliteral">&#39;nmeas&#39;</span>] = tmp[0].split(<span class="stringliteral">&#39; &#39;</span>)[1]</div>
-<div class="line"><a id="l01169" name="l01169"></a><span class="lineno"> 1169</span>      recTrack[<span class="stringliteral">&#39;chi2&#39;</span>] = tmp[1]</div>
-<div class="line"><a id="l01170" name="l01170"></a><span class="lineno"> 1170</span>      recTrack[<span class="stringliteral">&#39;p_rec&#39;</span>] = tmp[2].replace(<span class="stringliteral">&#39; &#39;</span>,<span class="stringliteral">&#39;&#39;</span>)</div>
-<div class="line"><a id="l01171" name="l01171"></a><span class="lineno"> 1171</span>   <span class="keywordflow">elif</span> <span class="keywordflow">not</span> l.find(<span class="stringliteral">&#39;making&#39;</span>)&lt;0:</div>
+<div class="line"><a id="l01168" name="l01168"></a><span class="lineno"> 1168</span>      recTrack[<span class="stringliteral">&#39;origin&#39;</span>]  = tmp[0].split(<span class="stringliteral">&#39; &#39;</span>)[2]</div>
+<div class="line"><a id="l01169" name="l01169"></a><span class="lineno"> 1169</span>      recTrack[<span class="stringliteral">&#39;pytiaid&#39;</span>] = tmp[1].replace(<span class="stringliteral">&#39; &#39;</span>,<span class="stringliteral">&#39;&#39;</span>)</div>
+<div class="line"><a id="l01170" name="l01170"></a><span class="lineno"> 1170</span>      recTrack[<span class="stringliteral">&#39;o-mom&#39;</span>]   = tmp[2].replace(<span class="stringliteral">&#39; &#39;</span>,<span class="stringliteral">&#39;&#39;</span>)</div>
+<div class="line"><a id="l01171" name="l01171"></a><span class="lineno"> 1171</span>   <span class="keywordflow">elif</span> <span class="keywordflow">not</span> l.find(<span class="stringliteral">&#39;reco &#39;</span>)&lt;0:</div>
 <div class="line"><a id="l01172" name="l01172"></a><span class="lineno"> 1172</span>      tmp = l.split(<span class="stringliteral">&#39;,&#39;</span>)</div>
-<div class="line"><a id="l01173" name="l01173"></a><span class="lineno"> 1173</span>      recTrack[<span class="stringliteral">&#39;p_hit&#39;</span>] = tmp[1].replace(<span class="stringliteral">&#39; &#39;</span>,<span class="stringliteral">&#39;&#39;</span>)</div>
-<div class="line"><a id="l01174" name="l01174"></a><span class="lineno"> 1174</span>      recTrack[<span class="stringliteral">&#39;fp_hit&#39;</span>] = float(tmp[1].replace(<span class="stringliteral">&#39; &#39;</span>,<span class="stringliteral">&#39;&#39;</span>))</div>
-<div class="line"><a id="l01175" name="l01175"></a><span class="lineno"> 1175</span>   <span class="keywordflow">elif</span> <span class="keywordflow">not</span> l.find(<span class="stringliteral">&#39;Ptruth&#39;</span>)&lt;0:</div>
-<div class="line"><a id="l01176" name="l01176"></a><span class="lineno"> 1176</span>      tmp = l.split(<span class="stringliteral">&#39; &#39;</span>)</div>
-<div class="line"><a id="l01177" name="l01177"></a><span class="lineno"> 1177</span>      recTrack[<span class="stringliteral">&#39;id_hit&#39;</span>] = tmp[1].replace(<span class="stringliteral">&#39; &#39;</span>,<span class="stringliteral">&#39;&#39;</span>)</div>
-<div class="line"><a id="l01178" name="l01178"></a><span class="lineno"> 1178</span> <span class="comment"># print a table</span></div>
-<div class="line"><a id="l01179" name="l01179"></a><span class="lineno"> 1179</span> print(<span class="stringliteral">&#39;%4s %8s %8s %4s %8s %8s %8s %8s %8s  %8s &#39;</span>%(<span class="stringliteral">&#39;nr&#39;</span>,<span class="stringliteral">&#39;origin&#39;</span>,<span class="stringliteral">&#39;pythiaID&#39;</span>,<span class="stringliteral">&#39;ID&#39;</span>,<span class="stringliteral">&#39;p_orig&#39;</span>,<span class="stringliteral">&#39;p_hit&#39;</span>,<span class="stringliteral">&#39;chi2&#39;</span>,<span class="stringliteral">&#39;weight&#39;</span>,<span class="stringliteral">&#39;file&#39;</span>,<span class="stringliteral">&#39;cor w&#39;</span>))</div>
-<div class="line"><a id="l01180" name="l01180"></a><span class="lineno"> 1180</span><span class="comment"># sort according to p_hit</span></div>
-<div class="line"><a id="l01181" name="l01181"></a><span class="lineno"> 1181</span> tmp = sorted(result, key=itemgetter(<span class="stringliteral">&#39;fp_hit&#39;</span>))</div>
-<div class="line"><a id="l01182" name="l01182"></a><span class="lineno"> 1182</span> muonrate1 = 0</div>
-<div class="line"><a id="l01183" name="l01183"></a><span class="lineno"> 1183</span> muonrate2 = 0</div>
-<div class="line"><a id="l01184" name="l01184"></a><span class="lineno"> 1184</span> muonrate3 = 0</div>
-<div class="line"><a id="l01185" name="l01185"></a><span class="lineno"> 1185</span> <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(len(tmp)):</div>
-<div class="line"><a id="l01186" name="l01186"></a><span class="lineno"> 1186</span>  tr = tmp[i]</div>
-<div class="line"><a id="l01187" name="l01187"></a><span class="lineno"> 1187</span>  corw = float(tr[<span class="stringliteral">&#39;w&#39;</span>])/cor</div>
-<div class="line"><a id="l01188" name="l01188"></a><span class="lineno"> 1188</span>  <span class="keywordflow">if</span> float(tr[<span class="stringliteral">&#39;p_hit&#39;</span>])&gt;1:muonrate1+=corw</div>
-<div class="line"><a id="l01189" name="l01189"></a><span class="lineno"> 1189</span>  <span class="keywordflow">if</span> float(tr[<span class="stringliteral">&#39;p_hit&#39;</span>])&gt;2:muonrate2+=corw</div>
-<div class="line"><a id="l01190" name="l01190"></a><span class="lineno"> 1190</span>  <span class="keywordflow">if</span> float(tr[<span class="stringliteral">&#39;p_hit&#39;</span>])&gt;3:muonrate3+=corw</div>
-<div class="line"><a id="l01191" name="l01191"></a><span class="lineno"> 1191</span>  print(<span class="stringliteral">&#39;%4i %8s %8s %4s %8s %8s %8s %8s %8s  %8s &#39;</span>%( i,tr[<span class="stringliteral">&#39;origin&#39;</span>],tr[<span class="stringliteral">&#39;pytiaid&#39;</span>],tr[<span class="stringliteral">&#39;id_hit&#39;</span>],tr[<span class="stringliteral">&#39;o-mom&#39;</span>],tr[<span class="stringliteral">&#39;p_hit&#39;</span>],tr[<span class="stringliteral">&#39;chi2&#39;</span>],tr[<span class="stringliteral">&#39;w&#39;</span>],tr[<span class="stringliteral">&#39;file&#39;</span>],corw))</div>
-<div class="line"><a id="l01192" name="l01192"></a><span class="lineno"> 1192</span> print(<span class="stringliteral">&quot;guestimate for muonrate above 1GeV = &quot;</span>,muonrate1)</div>
-<div class="line"><a id="l01193" name="l01193"></a><span class="lineno"> 1193</span> print(<span class="stringliteral">&quot;guestimate for muonrate above 2GeV = &quot;</span>,muonrate2)</div>
-<div class="line"><a id="l01194" name="l01194"></a><span class="lineno"> 1194</span> print(<span class="stringliteral">&quot;guestimate for muonrate above 3GeV = &quot;</span>,muonrate3)</div>
-<div class="line"><a id="l01195" name="l01195"></a><span class="lineno"> 1195</span><span class="comment">#guestimate for muonrate above 1GeV =  56025.4793333</span></div>
-<div class="line"><a id="l01196" name="l01196"></a><span class="lineno"> 1196</span><span class="comment">#guestimate for muonrate above 2GeV =  25584.9546667</span></div>
-<div class="line"><a id="l01197" name="l01197"></a><span class="lineno"> 1197</span><span class="comment">#guestimate for muonrate above 3GeV =  14792.8113333</span></div>
-<div class="line"><a id="l01198" name="l01198"></a><span class="lineno"> 1198</span> <span class="keywordflow">return</span> tmp</div>
-<div class="line"><a id="l01199" name="l01199"></a><span class="lineno"> 1199</span><span class="comment">#</span></div>
+<div class="line"><a id="l01173" name="l01173"></a><span class="lineno"> 1173</span>      recTrack[<span class="stringliteral">&#39;nmeas&#39;</span>] = tmp[0].split(<span class="stringliteral">&#39; &#39;</span>)[1]</div>
+<div class="line"><a id="l01174" name="l01174"></a><span class="lineno"> 1174</span>      recTrack[<span class="stringliteral">&#39;chi2&#39;</span>] = tmp[1]</div>
+<div class="line"><a id="l01175" name="l01175"></a><span class="lineno"> 1175</span>      recTrack[<span class="stringliteral">&#39;p_rec&#39;</span>] = tmp[2].replace(<span class="stringliteral">&#39; &#39;</span>,<span class="stringliteral">&#39;&#39;</span>)</div>
+<div class="line"><a id="l01176" name="l01176"></a><span class="lineno"> 1176</span>   <span class="keywordflow">elif</span> <span class="keywordflow">not</span> l.find(<span class="stringliteral">&#39;making&#39;</span>)&lt;0:</div>
+<div class="line"><a id="l01177" name="l01177"></a><span class="lineno"> 1177</span>      tmp = l.split(<span class="stringliteral">&#39;,&#39;</span>)</div>
+<div class="line"><a id="l01178" name="l01178"></a><span class="lineno"> 1178</span>      recTrack[<span class="stringliteral">&#39;p_hit&#39;</span>] = tmp[1].replace(<span class="stringliteral">&#39; &#39;</span>,<span class="stringliteral">&#39;&#39;</span>)</div>
+<div class="line"><a id="l01179" name="l01179"></a><span class="lineno"> 1179</span>      recTrack[<span class="stringliteral">&#39;fp_hit&#39;</span>] = float(tmp[1].replace(<span class="stringliteral">&#39; &#39;</span>,<span class="stringliteral">&#39;&#39;</span>))</div>
+<div class="line"><a id="l01180" name="l01180"></a><span class="lineno"> 1180</span>   <span class="keywordflow">elif</span> <span class="keywordflow">not</span> l.find(<span class="stringliteral">&#39;Ptruth&#39;</span>)&lt;0:</div>
+<div class="line"><a id="l01181" name="l01181"></a><span class="lineno"> 1181</span>      tmp = l.split(<span class="stringliteral">&#39; &#39;</span>)</div>
+<div class="line"><a id="l01182" name="l01182"></a><span class="lineno"> 1182</span>      recTrack[<span class="stringliteral">&#39;id_hit&#39;</span>] = tmp[1].replace(<span class="stringliteral">&#39; &#39;</span>,<span class="stringliteral">&#39;&#39;</span>)</div>
+<div class="line"><a id="l01183" name="l01183"></a><span class="lineno"> 1183</span> <span class="comment"># print a table</span></div>
+<div class="line"><a id="l01184" name="l01184"></a><span class="lineno"> 1184</span> print(<span class="stringliteral">&#39;%4s %8s %8s %4s %8s %8s %8s %8s %8s  %8s &#39;</span>%(<span class="stringliteral">&#39;nr&#39;</span>,<span class="stringliteral">&#39;origin&#39;</span>,<span class="stringliteral">&#39;pythiaID&#39;</span>,<span class="stringliteral">&#39;ID&#39;</span>,<span class="stringliteral">&#39;p_orig&#39;</span>,<span class="stringliteral">&#39;p_hit&#39;</span>,<span class="stringliteral">&#39;chi2&#39;</span>,<span class="stringliteral">&#39;weight&#39;</span>,<span class="stringliteral">&#39;file&#39;</span>,<span class="stringliteral">&#39;cor w&#39;</span>))</div>
+<div class="line"><a id="l01185" name="l01185"></a><span class="lineno"> 1185</span><span class="comment"># sort according to p_hit</span></div>
+<div class="line"><a id="l01186" name="l01186"></a><span class="lineno"> 1186</span> tmp = sorted(result, key=itemgetter(<span class="stringliteral">&#39;fp_hit&#39;</span>))</div>
+<div class="line"><a id="l01187" name="l01187"></a><span class="lineno"> 1187</span> muonrate1 = 0</div>
+<div class="line"><a id="l01188" name="l01188"></a><span class="lineno"> 1188</span> muonrate2 = 0</div>
+<div class="line"><a id="l01189" name="l01189"></a><span class="lineno"> 1189</span> muonrate3 = 0</div>
+<div class="line"><a id="l01190" name="l01190"></a><span class="lineno"> 1190</span> <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(len(tmp)):</div>
+<div class="line"><a id="l01191" name="l01191"></a><span class="lineno"> 1191</span>  tr = tmp[i]</div>
+<div class="line"><a id="l01192" name="l01192"></a><span class="lineno"> 1192</span>  corw = float(tr[<span class="stringliteral">&#39;w&#39;</span>])/cor</div>
+<div class="line"><a id="l01193" name="l01193"></a><span class="lineno"> 1193</span>  <span class="keywordflow">if</span> float(tr[<span class="stringliteral">&#39;p_hit&#39;</span>])&gt;1:muonrate1+=corw</div>
+<div class="line"><a id="l01194" name="l01194"></a><span class="lineno"> 1194</span>  <span class="keywordflow">if</span> float(tr[<span class="stringliteral">&#39;p_hit&#39;</span>])&gt;2:muonrate2+=corw</div>
+<div class="line"><a id="l01195" name="l01195"></a><span class="lineno"> 1195</span>  <span class="keywordflow">if</span> float(tr[<span class="stringliteral">&#39;p_hit&#39;</span>])&gt;3:muonrate3+=corw</div>
+<div class="line"><a id="l01196" name="l01196"></a><span class="lineno"> 1196</span>  print(<span class="stringliteral">&#39;%4i %8s %8s %4s %8s %8s %8s %8s %8s  %8s &#39;</span>%( i,tr[<span class="stringliteral">&#39;origin&#39;</span>],tr[<span class="stringliteral">&#39;pytiaid&#39;</span>],tr[<span class="stringliteral">&#39;id_hit&#39;</span>],tr[<span class="stringliteral">&#39;o-mom&#39;</span>],tr[<span class="stringliteral">&#39;p_hit&#39;</span>],tr[<span class="stringliteral">&#39;chi2&#39;</span>],tr[<span class="stringliteral">&#39;w&#39;</span>],tr[<span class="stringliteral">&#39;file&#39;</span>],corw))</div>
+<div class="line"><a id="l01197" name="l01197"></a><span class="lineno"> 1197</span> print(<span class="stringliteral">&quot;guestimate for muonrate above 1GeV = &quot;</span>,muonrate1)</div>
+<div class="line"><a id="l01198" name="l01198"></a><span class="lineno"> 1198</span> print(<span class="stringliteral">&quot;guestimate for muonrate above 2GeV = &quot;</span>,muonrate2)</div>
+<div class="line"><a id="l01199" name="l01199"></a><span class="lineno"> 1199</span> print(<span class="stringliteral">&quot;guestimate for muonrate above 3GeV = &quot;</span>,muonrate3)</div>
+<div class="line"><a id="l01200" name="l01200"></a><span class="lineno"> 1200</span><span class="comment">#guestimate for muonrate above 1GeV =  56025.4793333</span></div>
+<div class="line"><a id="l01201" name="l01201"></a><span class="lineno"> 1201</span><span class="comment">#guestimate for muonrate above 2GeV =  25584.9546667</span></div>
+<div class="line"><a id="l01202" name="l01202"></a><span class="lineno"> 1202</span><span class="comment">#guestimate for muonrate above 3GeV =  14792.8113333</span></div>
+<div class="line"><a id="l01203" name="l01203"></a><span class="lineno"> 1203</span> <span class="keywordflow">return</span> tmp</div>
+<div class="line"><a id="l01204" name="l01204"></a><span class="lineno"> 1204</span><span class="comment">#</span></div>
 </div>
-<div class="foldopen" id="foldopen01200" data-start="" data-end="">
-<div class="line"><a id="l01200" name="l01200"></a><span class="lineno"><a class="line" href="namespaceana__ShipMuon.html#a6efbf889d4a0b941bd19ab45236f002a"> 1200</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceana__ShipMuon.html#a6efbf889d4a0b941bd19ab45236f002a">readAndMergeHistos</a>(prods):</div>
-<div class="line"><a id="l01201" name="l01201"></a><span class="lineno"> 1201</span> <span class="keywordflow">for</span> p <span class="keywordflow">in</span> prods:</div>
-<div class="line"><a id="l01202" name="l01202"></a><span class="lineno"> 1202</span>   x=p</div>
-<div class="line"><a id="l01203" name="l01203"></a><span class="lineno"> 1203</span>   <span class="keywordflow">if</span> p.find(<span class="stringliteral">&#39;.root&#39;</span>)&lt;0: x=p+<span class="stringliteral">&#39;.root&#39;</span></div>
-<div class="line"><a id="l01204" name="l01204"></a><span class="lineno"> 1204</span>   ut.readHists(h,x)</div>
-<div class="line"><a id="l01205" name="l01205"></a><span class="lineno"> 1205</span><span class="comment"># make list of hists with entries</span></div>
-<div class="line"><a id="l01206" name="l01206"></a><span class="lineno"> 1206</span> k = 1</div>
-<div class="line"><a id="l01207" name="l01207"></a><span class="lineno"> 1207</span> <span class="keywordflow">for</span> x <span class="keywordflow">in</span> histlistAll:</div>
-<div class="line"><a id="l01208" name="l01208"></a><span class="lineno"> 1208</span>  <span class="keywordflow">if</span> histlistAll[x] <span class="keywordflow">in</span> h:</div>
-<div class="line"><a id="l01209" name="l01209"></a><span class="lineno"> 1209</span>   histlist[k]=histlistAll[x]</div>
-<div class="line"><a id="l01210" name="l01210"></a><span class="lineno"> 1210</span>   k+=1</div>
-<div class="line"><a id="l01211" name="l01211"></a><span class="lineno"> 1211</span> nstations = len(histlist)</div>
-<div class="line"><a id="l01212" name="l01212"></a><span class="lineno"> 1212</span> print(<span class="stringliteral">&quot;make plots for &quot;</span>,nstations)</div>
-<div class="line"><a id="l01213" name="l01213"></a><span class="lineno"> 1213</span> <a class="code hl_function" href="namespaceana__ShipMuon.html#a214a07caed5073389e6cb49969b6f075">makePlots</a>(nstations)</div>
-<div class="line"><a id="l01214" name="l01214"></a><span class="lineno"> 1214</span> <a class="code hl_function" href="namespaceana__ShipMuon.html#ac45faf305db48f018e61550f1bc6333d">printAndCopy</a>(prods[0].replace(<span class="stringliteral">&#39;.root&#39;</span>,<span class="stringliteral">&#39;&#39;</span>))</div>
-<div class="line"><a id="l01215" name="l01215"></a><span class="lineno"> 1215</span> </div>
-<div class="line"><a id="l01216" name="l01216"></a><span class="lineno"> 1216</span><span class="comment"># python -i $HNL/ana_ShipMuon.py 810 811 812 813 814 815 816 817 818 819 820 821 822 823 824 825 826 827 828 829</span></div>
-<div class="line"><a id="l01217" name="l01217"></a><span class="lineno"> 1217</span><span class="comment"># python -i $HNL/ana_ShipMuon.py 910 911 912 913 914 915 916 917 918 919 920 921 922 923 924 925 926 927 928 929</span></div>
-<div class="line"><a id="l01218" name="l01218"></a><span class="lineno"> 1218</span><span class="comment"># python -i $HNL/ana_ShipMuon.py 1012 1013 1014 1015 1016 1017 1018 1019 1022 1023 1024 1025 1026 1027 1028 1029</span></div>
-<div class="line"><a id="l01219" name="l01219"></a><span class="lineno"> 1219</span><span class="comment"># python -i $HNL/ana_ShipMuon.py 634 635 636 637 638 639 640 641 642 643</span></div>
-<div class="line"><a id="l01220" name="l01220"></a><span class="lineno"> 1220</span><span class="comment"># combine all cern-cracow</span></div>
-<div class="line"><a id="l01221" name="l01221"></a><span class="lineno"> 1221</span><span class="comment"># python -i $HNL/ana_ShipMuon.py 810 811 812 813 814 815 816 817 818 819 910 911 912 913 914 915 916 917 918 919 1012 1013 1014 1015 1016 1017 1018 1019</span></div>
-<div class="line"><a id="l01222" name="l01222"></a><span class="lineno"> 1222</span><span class="comment"># python -i $HNL/ana_ShipMuon.py 820 821 822 823 824 825 826 827 828 829 920 921 922 923 924 925 926 927 928 929 1022 1023 1024 1025 1026 1027 1028 1029</span></div>
-<div class="line"><a id="l01223" name="l01223"></a><span class="lineno"> 1223</span><span class="comment"># make muonDIS ntuple: muDISntuple(&quot;/media/Data/HNL/muonBackground/rareEvents_81-102.root&quot;) -&gt; &#39;muDISVetoCounter.root&#39;</span></div>
-<div class="line"><a id="l01224" name="l01224"></a><span class="lineno"> 1224</span><span class="comment">#                      second step python $FAIRSHIP/muonShieldOptimization/makeMuonDIS.py 1 10000 muDISVetoCounter.root</span></div>
-<div class="line"><a id="l01225" name="l01225"></a><span class="lineno"> 1225</span><span class="comment">#                      third step run_simScript.py --MuDIS -n 10 -f  muonDis_1.root</span></div>
-<div class="line"><a id="l01226" name="l01226"></a><span class="lineno"> 1226</span><span class="comment"># for concrete</span></div>
-<div class="line"><a id="l01227" name="l01227"></a><span class="lineno"> 1227</span><span class="comment"># analyzeConcrete() -&gt; muConcrete.root</span></div>
+<div class="foldopen" id="foldopen01205" data-start="" data-end="">
+<div class="line"><a id="l01205" name="l01205"></a><span class="lineno"><a class="line" href="namespaceana__ShipMuon.html#a6efbf889d4a0b941bd19ab45236f002a"> 1205</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceana__ShipMuon.html#a6efbf889d4a0b941bd19ab45236f002a">readAndMergeHistos</a>(prods):</div>
+<div class="line"><a id="l01206" name="l01206"></a><span class="lineno"> 1206</span> <span class="keywordflow">for</span> p <span class="keywordflow">in</span> prods:</div>
+<div class="line"><a id="l01207" name="l01207"></a><span class="lineno"> 1207</span>   x=p</div>
+<div class="line"><a id="l01208" name="l01208"></a><span class="lineno"> 1208</span>   <span class="keywordflow">if</span> p.find(<span class="stringliteral">&#39;.root&#39;</span>)&lt;0: x=p+<span class="stringliteral">&#39;.root&#39;</span></div>
+<div class="line"><a id="l01209" name="l01209"></a><span class="lineno"> 1209</span>   ut.readHists(h,x)</div>
+<div class="line"><a id="l01210" name="l01210"></a><span class="lineno"> 1210</span><span class="comment"># make list of hists with entries</span></div>
+<div class="line"><a id="l01211" name="l01211"></a><span class="lineno"> 1211</span> k = 1</div>
+<div class="line"><a id="l01212" name="l01212"></a><span class="lineno"> 1212</span> <span class="keywordflow">for</span> x <span class="keywordflow">in</span> histlistAll:</div>
+<div class="line"><a id="l01213" name="l01213"></a><span class="lineno"> 1213</span>  <span class="keywordflow">if</span> histlistAll[x] <span class="keywordflow">in</span> h:</div>
+<div class="line"><a id="l01214" name="l01214"></a><span class="lineno"> 1214</span>   histlist[k]=histlistAll[x]</div>
+<div class="line"><a id="l01215" name="l01215"></a><span class="lineno"> 1215</span>   k+=1</div>
+<div class="line"><a id="l01216" name="l01216"></a><span class="lineno"> 1216</span> nstations = len(histlist)</div>
+<div class="line"><a id="l01217" name="l01217"></a><span class="lineno"> 1217</span> print(<span class="stringliteral">&quot;make plots for &quot;</span>,nstations)</div>
+<div class="line"><a id="l01218" name="l01218"></a><span class="lineno"> 1218</span> <a class="code hl_function" href="namespaceana__ShipMuon.html#a214a07caed5073389e6cb49969b6f075">makePlots</a>(nstations)</div>
+<div class="line"><a id="l01219" name="l01219"></a><span class="lineno"> 1219</span> <a class="code hl_function" href="namespaceana__ShipMuon.html#ac45faf305db48f018e61550f1bc6333d">printAndCopy</a>(prods[0].replace(<span class="stringliteral">&#39;.root&#39;</span>,<span class="stringliteral">&#39;&#39;</span>))</div>
+<div class="line"><a id="l01220" name="l01220"></a><span class="lineno"> 1220</span> </div>
+<div class="line"><a id="l01221" name="l01221"></a><span class="lineno"> 1221</span><span class="comment"># python -i $HNL/ana_ShipMuon.py 810 811 812 813 814 815 816 817 818 819 820 821 822 823 824 825 826 827 828 829</span></div>
+<div class="line"><a id="l01222" name="l01222"></a><span class="lineno"> 1222</span><span class="comment"># python -i $HNL/ana_ShipMuon.py 910 911 912 913 914 915 916 917 918 919 920 921 922 923 924 925 926 927 928 929</span></div>
+<div class="line"><a id="l01223" name="l01223"></a><span class="lineno"> 1223</span><span class="comment"># python -i $HNL/ana_ShipMuon.py 1012 1013 1014 1015 1016 1017 1018 1019 1022 1023 1024 1025 1026 1027 1028 1029</span></div>
+<div class="line"><a id="l01224" name="l01224"></a><span class="lineno"> 1224</span><span class="comment"># python -i $HNL/ana_ShipMuon.py 634 635 636 637 638 639 640 641 642 643</span></div>
+<div class="line"><a id="l01225" name="l01225"></a><span class="lineno"> 1225</span><span class="comment"># combine all cern-cracow</span></div>
+<div class="line"><a id="l01226" name="l01226"></a><span class="lineno"> 1226</span><span class="comment"># python -i $HNL/ana_ShipMuon.py 810 811 812 813 814 815 816 817 818 819 910 911 912 913 914 915 916 917 918 919 1012 1013 1014 1015 1016 1017 1018 1019</span></div>
+<div class="line"><a id="l01227" name="l01227"></a><span class="lineno"> 1227</span><span class="comment"># python -i $HNL/ana_ShipMuon.py 820 821 822 823 824 825 826 827 828 829 920 921 922 923 924 925 926 927 928 929 1022 1023 1024 1025 1026 1027 1028 1029</span></div>
+<div class="line"><a id="l01228" name="l01228"></a><span class="lineno"> 1228</span><span class="comment"># make muonDIS ntuple: muDISntuple(&quot;/media/Data/HNL/muonBackground/rareEvents_81-102.root&quot;) -&gt; &#39;muDISVetoCounter.root&#39;</span></div>
+<div class="line"><a id="l01229" name="l01229"></a><span class="lineno"> 1229</span><span class="comment">#                      second step python $FAIRSHIP/muonShieldOptimization/makeMuonDIS.py 1 10000 muDISVetoCounter.root</span></div>
+<div class="line"><a id="l01230" name="l01230"></a><span class="lineno"> 1230</span><span class="comment">#                      third step run_simScript.py --MuDIS -n 10 -f  muonDis_1.root</span></div>
+<div class="line"><a id="l01231" name="l01231"></a><span class="lineno"> 1231</span><span class="comment"># for concrete</span></div>
+<div class="line"><a id="l01232" name="l01232"></a><span class="lineno"> 1232</span><span class="comment"># analyzeConcrete() -&gt; muConcrete.root</span></div>
 </div>
 <div class="ttc" id="anamespaceana__ShipMuon_html_a05e83c6aa9234009f5e43dda6be3e5f6"><div class="ttname"><a href="namespaceana__ShipMuon.html#a05e83c6aa9234009f5e43dda6be3e5f6">ana_ShipMuon.origin</a></div><div class="ttdeci">origin(sTree, it)</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l00370">ana_ShipMuon.py:370</a></div></div>
-<div class="ttc" id="anamespaceana__ShipMuon_html_a08c5c0daec239c1645b8abcc3522ea3b"><div class="ttname"><a href="namespaceana__ShipMuon.html#a08c5c0daec239c1645b8abcc3522ea3b">ana_ShipMuon.originOfMuon</a></div><div class="ttdeci">originOfMuon(fout, n, fn, nEvents)</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l01106">ana_ShipMuon.py:1106</a></div></div>
-<div class="ttc" id="anamespaceana__ShipMuon_html_a191d7fa5c8a5a729c2cce2b1c9c1ef67"><div class="ttname"><a href="namespaceana__ShipMuon.html#a191d7fa5c8a5a729c2cce2b1c9c1ef67">ana_ShipMuon.drawBoth</a></div><div class="ttdeci">drawBoth(tag, hn)</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l01047">ana_ShipMuon.py:1047</a></div></div>
+<div class="ttc" id="anamespaceana__ShipMuon_html_a08c5c0daec239c1645b8abcc3522ea3b"><div class="ttname"><a href="namespaceana__ShipMuon.html#a08c5c0daec239c1645b8abcc3522ea3b">ana_ShipMuon.originOfMuon</a></div><div class="ttdeci">originOfMuon(fout, n, fn, nEvents)</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l01111">ana_ShipMuon.py:1111</a></div></div>
+<div class="ttc" id="anamespaceana__ShipMuon_html_a191d7fa5c8a5a729c2cce2b1c9c1ef67"><div class="ttname"><a href="namespaceana__ShipMuon.html#a191d7fa5c8a5a729c2cce2b1c9c1ef67">ana_ShipMuon.drawBoth</a></div><div class="ttdeci">drawBoth(tag, hn)</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l01052">ana_ShipMuon.py:1052</a></div></div>
 <div class="ttc" id="anamespaceana__ShipMuon_html_a214a07caed5073389e6cb49969b6f075"><div class="ttname"><a href="namespaceana__ShipMuon.html#a214a07caed5073389e6cb49969b6f075">ana_ShipMuon.makePlots</a></div><div class="ttdeci">makePlots(nstations)</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l00701">ana_ShipMuon.py:701</a></div></div>
-<div class="ttc" id="anamespaceana__ShipMuon_html_a334b44193227009d4e0000713eb55812"><div class="ttname"><a href="namespaceana__ShipMuon.html#a334b44193227009d4e0000713eb55812">ana_ShipMuon.reDraw</a></div><div class="ttdeci">reDraw(fn)</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l01025">ana_ShipMuon.py:1025</a></div></div>
-<div class="ttc" id="anamespaceana__ShipMuon_html_a39aa95b16e117a653bbae389f70cd3db"><div class="ttname"><a href="namespaceana__ShipMuon.html#a39aa95b16e117a653bbae389f70cd3db">ana_ShipMuon.depEnergy</a></div><div class="ttdeci">depEnergy()</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l01092">ana_ShipMuon.py:1092</a></div></div>
+<div class="ttc" id="anamespaceana__ShipMuon_html_a334b44193227009d4e0000713eb55812"><div class="ttname"><a href="namespaceana__ShipMuon.html#a334b44193227009d4e0000713eb55812">ana_ShipMuon.reDraw</a></div><div class="ttdeci">reDraw(fn)</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l01030">ana_ShipMuon.py:1030</a></div></div>
+<div class="ttc" id="anamespaceana__ShipMuon_html_a39aa95b16e117a653bbae389f70cd3db"><div class="ttname"><a href="namespaceana__ShipMuon.html#a39aa95b16e117a653bbae389f70cd3db">ana_ShipMuon.depEnergy</a></div><div class="ttdeci">depEnergy()</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l01097">ana_ShipMuon.py:1097</a></div></div>
 <div class="ttc" id="anamespaceana__ShipMuon_html_a43898209f393d50d98938664b2348333"><div class="ttname"><a href="namespaceana__ShipMuon.html#a43898209f393d50d98938664b2348333">ana_ShipMuon.executeOneFile</a></div><div class="ttdeci">executeOneFile(fn, output=None, pid=None)</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l00606">ana_ShipMuon.py:606</a></div></div>
 <div class="ttc" id="anamespaceana__ShipMuon_html_a448c97285c62b8901b44dd14b91db739"><div class="ttname"><a href="namespaceana__ShipMuon.html#a448c97285c62b8901b44dd14b91db739">ana_ShipMuon.extractMuCloseByEvents</a></div><div class="ttdeci">extractMuCloseByEvents(single=None)</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l00973">ana_ShipMuon.py:973</a></div></div>
 <div class="ttc" id="anamespaceana__ShipMuon_html_a553b2b2d141aa8f5bb2205e7322945b4"><div class="ttname"><a href="namespaceana__ShipMuon.html#a553b2b2d141aa8f5bb2205e7322945b4">ana_ShipMuon.makeProd</a></div><div class="ttdeci">makeProd()</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l00422">ana_ShipMuon.py:422</a></div></div>
-<div class="ttc" id="anamespaceana__ShipMuon_html_a594ae4989da530e88c31e94768ec94c9"><div class="ttname"><a href="namespaceana__ShipMuon.html#a594ae4989da530e88c31e94768ec94c9">ana_ShipMuon.pers</a></div><div class="ttdeci">pers()</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l01130">ana_ShipMuon.py:1130</a></div></div>
-<div class="ttc" id="anamespaceana__ShipMuon_html_a690095c754cbaae2670fd1b2de6f26df"><div class="ttname"><a href="namespaceana__ShipMuon.html#a690095c754cbaae2670fd1b2de6f26df">ana_ShipMuon.eventsWithStrawPoints</a></div><div class="ttdeci">eventsWithStrawPoints(i)</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l01064">ana_ShipMuon.py:1064</a></div></div>
-<div class="ttc" id="anamespaceana__ShipMuon_html_a6efbf889d4a0b941bd19ab45236f002a"><div class="ttname"><a href="namespaceana__ShipMuon.html#a6efbf889d4a0b941bd19ab45236f002a">ana_ShipMuon.readAndMergeHistos</a></div><div class="ttdeci">readAndMergeHistos(prods)</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l01200">ana_ShipMuon.py:1200</a></div></div>
+<div class="ttc" id="anamespaceana__ShipMuon_html_a594ae4989da530e88c31e94768ec94c9"><div class="ttname"><a href="namespaceana__ShipMuon.html#a594ae4989da530e88c31e94768ec94c9">ana_ShipMuon.pers</a></div><div class="ttdeci">pers()</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l01135">ana_ShipMuon.py:1135</a></div></div>
+<div class="ttc" id="anamespaceana__ShipMuon_html_a690095c754cbaae2670fd1b2de6f26df"><div class="ttname"><a href="namespaceana__ShipMuon.html#a690095c754cbaae2670fd1b2de6f26df">ana_ShipMuon.eventsWithStrawPoints</a></div><div class="ttdeci">eventsWithStrawPoints(i)</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l01069">ana_ShipMuon.py:1069</a></div></div>
+<div class="ttc" id="anamespaceana__ShipMuon_html_a6efbf889d4a0b941bd19ab45236f002a"><div class="ttname"><a href="namespaceana__ShipMuon.html#a6efbf889d4a0b941bd19ab45236f002a">ana_ShipMuon.readAndMergeHistos</a></div><div class="ttdeci">readAndMergeHistos(prods)</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l01205">ana_ShipMuon.py:1205</a></div></div>
 <div class="ttc" id="anamespaceana__ShipMuon_html_a718c4bcfe673a369f6bedd9303410b93"><div class="ttname"><a href="namespaceana__ShipMuon.html#a718c4bcfe673a369f6bedd9303410b93">ana_ShipMuon.muDISntuple</a></div><div class="ttdeci">muDISntuple(fn)</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l00815">ana_ShipMuon.py:815</a></div></div>
 <div class="ttc" id="anamespaceana__ShipMuon_html_a721fd3a29cb32959f2a0f11ee61f1c3a"><div class="ttname"><a href="namespaceana__ShipMuon.html#a721fd3a29cb32959f2a0f11ee61f1c3a">ana_ShipMuon.rareEventEmulsion</a></div><div class="ttdeci">rareEventEmulsion(fname='rareEmulsion.txt')</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l00906">ana_ShipMuon.py:906</a></div></div>
 <div class="ttc" id="anamespaceana__ShipMuon_html_a7c19f0ac702070d2458480d245c643c0"><div class="ttname"><a href="namespaceana__ShipMuon.html#a7c19f0ac702070d2458480d245c643c0">ana_ShipMuon.detMap</a></div><div class="ttdeci">detMap()</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l00442">ana_ShipMuon.py:442</a></div></div>
-<div class="ttc" id="anamespaceana__ShipMuon_html_a83402d7f4daf6c9a00d7d499a8c167ee"><div class="ttname"><a href="namespaceana__ShipMuon.html#a83402d7f4daf6c9a00d7d499a8c167ee">ana_ShipMuon.persistency</a></div><div class="ttdeci">persistency()</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l01021">ana_ShipMuon.py:1021</a></div></div>
+<div class="ttc" id="anamespaceana__ShipMuon_html_a83402d7f4daf6c9a00d7d499a8c167ee"><div class="ttname"><a href="namespaceana__ShipMuon.html#a83402d7f4daf6c9a00d7d499a8c167ee">ana_ShipMuon.persistency</a></div><div class="ttdeci">persistency()</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l01026">ana_ShipMuon.py:1026</a></div></div>
 <div class="ttc" id="anamespaceana__ShipMuon_html_a94aae34452b3980e116fc9770d58e23e"><div class="ttname"><a href="namespaceana__ShipMuon.html#a94aae34452b3980e116fc9770d58e23e">ana_ShipMuon.bookHist</a></div><div class="ttdeci">bookHist(detName)</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l00478">ana_ShipMuon.py:478</a></div></div>
 <div class="ttc" id="anamespaceana__ShipMuon_html_a96703bbfa4d61f0554179042fd8b2a89"><div class="ttname"><a href="namespaceana__ShipMuon.html#a96703bbfa4d61f0554179042fd8b2a89">ana_ShipMuon.extractRareEvents</a></div><div class="ttdeci">extractRareEvents(single=None)</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l00942">ana_ShipMuon.py:942</a></div></div>
 <div class="ttc" id="anamespaceana__ShipMuon_html_a9e5d78be22960c716da423367a77c052"><div class="ttname"><a href="namespaceana__ShipMuon.html#a9e5d78be22960c716da423367a77c052">ana_ShipMuon.AnaEventLoop</a></div><div class="ttdeci">AnaEventLoop()</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l00774">ana_ShipMuon.py:774</a></div></div>
-<div class="ttc" id="anamespaceana__ShipMuon_html_aa2d052ecf15487204c79ff9c2cbdb6b8"><div class="ttname"><a href="namespaceana__ShipMuon.html#aa2d052ecf15487204c79ff9c2cbdb6b8">ana_ShipMuon.makeNicePrintout</a></div><div class="ttdeci">makeNicePrintout(x=['rareEvents_61-62.txt', 'rareEvents_71-72.txt'])</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l01146">ana_ShipMuon.py:1146</a></div></div>
+<div class="ttc" id="anamespaceana__ShipMuon_html_aa2d052ecf15487204c79ff9c2cbdb6b8"><div class="ttname"><a href="namespaceana__ShipMuon.html#aa2d052ecf15487204c79ff9c2cbdb6b8">ana_ShipMuon.makeNicePrintout</a></div><div class="ttdeci">makeNicePrintout(x=['rareEvents_61-62.txt', 'rareEvents_71-72.txt'])</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l01151">ana_ShipMuon.py:1151</a></div></div>
 <div class="ttc" id="anamespaceana__ShipMuon_html_aa5474ae4f77bab30c0eedf6af5195512"><div class="ttname"><a href="namespaceana__ShipMuon.html#aa5474ae4f77bab30c0eedf6af5195512">ana_ShipMuon.analyzeConcrete</a></div><div class="ttdeci">analyzeConcrete()</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l00839">ana_ShipMuon.py:839</a></div></div>
-<div class="ttc" id="anamespaceana__ShipMuon_html_abd28603cc8915d9166babeaf5f517f6d"><div class="ttname"><a href="namespaceana__ShipMuon.html#abd28603cc8915d9166babeaf5f517f6d">ana_ShipMuon.debugGeoTracks</a></div><div class="ttdeci">debugGeoTracks()</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l01057">ana_ShipMuon.py:1057</a></div></div>
-<div class="ttc" id="anamespaceana__ShipMuon_html_ac45faf305db48f018e61550f1bc6333d"><div class="ttname"><a href="namespaceana__ShipMuon.html#ac45faf305db48f018e61550f1bc6333d">ana_ShipMuon.printAndCopy</a></div><div class="ttdeci">printAndCopy(prefix=None)</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l01031">ana_ShipMuon.py:1031</a></div></div>
-<div class="ttc" id="anamespaceana__ShipMuon_html_ae20a74ed07c2fe25038d50ffb6c6656e"><div class="ttname"><a href="namespaceana__ShipMuon.html#ae20a74ed07c2fe25038d50ffb6c6656e">ana_ShipMuon.MergeRareEvents</a></div><div class="ttdeci">MergeRareEvents(runs=['61', '62'])</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l01011">ana_ShipMuon.py:1011</a></div></div>
+<div class="ttc" id="anamespaceana__ShipMuon_html_abd28603cc8915d9166babeaf5f517f6d"><div class="ttname"><a href="namespaceana__ShipMuon.html#abd28603cc8915d9166babeaf5f517f6d">ana_ShipMuon.debugGeoTracks</a></div><div class="ttdeci">debugGeoTracks()</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l01062">ana_ShipMuon.py:1062</a></div></div>
+<div class="ttc" id="anamespaceana__ShipMuon_html_ac45faf305db48f018e61550f1bc6333d"><div class="ttname"><a href="namespaceana__ShipMuon.html#ac45faf305db48f018e61550f1bc6333d">ana_ShipMuon.printAndCopy</a></div><div class="ttdeci">printAndCopy(prefix=None)</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l01036">ana_ShipMuon.py:1036</a></div></div>
+<div class="ttc" id="anamespaceana__ShipMuon_html_ae20a74ed07c2fe25038d50ffb6c6656e"><div class="ttname"><a href="namespaceana__ShipMuon.html#ae20a74ed07c2fe25038d50ffb6c6656e">ana_ShipMuon.MergeRareEvents</a></div><div class="ttdeci">MergeRareEvents(runs=['61', '62'])</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l01016">ana_ShipMuon.py:1016</a></div></div>
 <div class="ttc" id="anamespaceana__ShipMuon_html_ae5a96247845a40c335c5d6d3811e8517"><div class="ttname"><a href="namespaceana__ShipMuon.html#ae5a96247845a40c335c5d6d3811e8517">ana_ShipMuon.fitSingleGauss</a></div><div class="ttdeci">fitSingleGauss(x, ba=None, be=None)</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l00451">ana_ShipMuon.py:451</a></div></div>
-<div class="ttc" id="anamespaceana__ShipMuon_html_af1c35aa880b1acd4535e099f90fda11b"><div class="ttname"><a href="namespaceana__ShipMuon.html#af1c35aa880b1acd4535e099f90fda11b">ana_ShipMuon.eventsWithEntryPoints</a></div><div class="ttdeci">eventsWithEntryPoints(i)</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l01079">ana_ShipMuon.py:1079</a></div></div>
+<div class="ttc" id="anamespaceana__ShipMuon_html_af1c35aa880b1acd4535e099f90fda11b"><div class="ttname"><a href="namespaceana__ShipMuon.html#af1c35aa880b1acd4535e099f90fda11b">ana_ShipMuon.eventsWithEntryPoints</a></div><div class="ttdeci">eventsWithEntryPoints(i)</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l01084">ana_ShipMuon.py:1084</a></div></div>
 <div class="ttc" id="anamespaceana__ShipMuon_html_af5c301c11b322e4b80d85697a397aed8"><div class="ttname"><a href="namespaceana__ShipMuon.html#af5c301c11b322e4b80d85697a397aed8">ana_ShipMuon.BigEventLoop</a></div><div class="ttdeci">BigEventLoop()</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l00529">ana_ShipMuon.py:529</a></div></div>
 <div class="ttc" id="anamespacegeometry__config_html_a75c5d0a5585dd1291f7f73502a80afda"><div class="ttname"><a href="namespacegeometry__config.html#a75c5d0a5585dd1291f7f73502a80afda">geometry_config.create_config</a></div><div class="ttdeci">create_config(DecayVolumeMedium=&quot;helium&quot;, Yheight=6.0, strawDesign=10, muShieldGeo=None, shieldName=&quot;New_HA_Design&quot;, nuTargetPassive=1, SND=True, SND_design=None, TARGET_YAML=None)</div><div class="ttdef"><b>Definition</b> <a href="geometry__config_8py_source.html#l00228">geometry_config.py:238</a></div></div>
 <div class="ttc" id="anamespaceshipDet__conf_html_a7f232397871353ce80c1ea03eb15bd20"><div class="ttname"><a href="namespaceshipDet__conf.html#a7f232397871353ce80c1ea03eb15bd20">shipDet_conf.configure</a></div><div class="ttdeci">configure(run, ship_geo)</div><div class="ttdef"><b>Definition</b> <a href="shipDet__conf_8py_source.html#l00261">shipDet_conf.py:261</a></div></div>

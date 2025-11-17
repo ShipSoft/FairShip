@@ -11,7 +11,5 @@ var searchData=
   ['geomgeant4_2epy_8',['geomGeant4.py',['../geomGeant4_8py.html',1,'']]],
   ['getgeoinformation_2epy_9',['getGeoInformation.py',['../getGeoInformation_8py.html',1,'']]],
   ['getinteractionandradiationlength_2epy_10',['getInteractionAndRadiationLength.py',['../getInteractionAndRadiationLength_8py.html',1,'']]],
-  ['global_5fvariables_2epy_11',['global_variables.py',['../global__variables_8py.html',1,'']]],
-  ['goliath2root_2epy_12',['goliath2root.py',['../goliath2root_8py.html',1,'']]],
-  ['goliathfieldmap_2etxt_13',['GoliathFieldMap.txt',['../GoliathFieldMap_8txt.html',1,'']]]
+  ['global_5fvariables_2epy_11',['global_variables.py',['../global__variables_8py.html',1,'']]]
 ];

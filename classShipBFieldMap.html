@@ -2410,7 +2410,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  293</span> </div>
 <div class="line"><span class="lineno">  294</span>    }</div>
 <div class="line"><span class="lineno">  295</span> </div>
-<div class="line"><span class="lineno">  296</span>    Float_t <a class="code hl_variable" href="namespacegoliath2root.html#a08201171c49eed8adcb907dad9c5f9ed">Bx</a>, <a class="code hl_variable" href="namespacegoliath2root.html#a57049317d3e1c9bae567e13a9214fa57">By</a>, <a class="code hl_variable" href="namespacegoliath2root.html#aa1ed1b6fae74da44d96104e701884cb0">Bz</a>;</div>
+<div class="line"><span class="lineno">  296</span>    Float_t Bx, By, Bz;</div>
 <div class="line"><span class="lineno">  297</span>    <span class="comment">// Only enable the field components</span></div>
 <div class="line"><span class="lineno">  298</span>    <a class="code hl_variable" href="namespacemakeMuonDIS.html#ae1faf2036c84a3e978f199700c99fb7d">dTree</a>-&gt;SetBranchStatus(<span class="stringliteral">&quot;*&quot;</span>, 0);</div>
 <div class="line"><span class="lineno">  299</span>    <a class="code hl_variable" href="namespacemakeMuonDIS.html#ae1faf2036c84a3e978f199700c99fb7d">dTree</a>-&gt;SetBranchStatus(<span class="stringliteral">&quot;Bx&quot;</span>, 1);</div>
@@ -2435,13 +2435,13 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  318</span> </div>
 <div class="line"><span class="lineno">  319</span>        <span class="comment">// B field values are in Tesla. This means these values are multiplied</span></div>
 <div class="line"><span class="lineno">  320</span>        <span class="comment">// by a factor of ten since both FairRoot and the VMC interface use kGauss</span></div>
-<div class="line"><span class="lineno">  321</span>        <a class="code hl_variable" href="namespacegoliath2root.html#a08201171c49eed8adcb907dad9c5f9ed">Bx</a> *= <a class="code hl_variable" href="classShipBFieldMap.html#a37781644b55bd1e55b4e61661d7fa7f0">Tesla_</a>;</div>
-<div class="line"><span class="lineno">  322</span>        <a class="code hl_variable" href="namespacegoliath2root.html#a57049317d3e1c9bae567e13a9214fa57">By</a> *= <a class="code hl_variable" href="classShipBFieldMap.html#a37781644b55bd1e55b4e61661d7fa7f0">Tesla_</a>;</div>
-<div class="line"><span class="lineno">  323</span>        <a class="code hl_variable" href="namespacegoliath2root.html#aa1ed1b6fae74da44d96104e701884cb0">Bz</a> *= <a class="code hl_variable" href="classShipBFieldMap.html#a37781644b55bd1e55b4e61661d7fa7f0">Tesla_</a>;</div>
+<div class="line"><span class="lineno">  321</span>        Bx *= <a class="code hl_variable" href="classShipBFieldMap.html#a37781644b55bd1e55b4e61661d7fa7f0">Tesla_</a>;</div>
+<div class="line"><span class="lineno">  322</span>        By *= <a class="code hl_variable" href="classShipBFieldMap.html#a37781644b55bd1e55b4e61661d7fa7f0">Tesla_</a>;</div>
+<div class="line"><span class="lineno">  323</span>        Bz *= <a class="code hl_variable" href="classShipBFieldMap.html#a37781644b55bd1e55b4e61661d7fa7f0">Tesla_</a>;</div>
 <div class="line"><span class="lineno">  324</span> </div>
 <div class="line"><span class="lineno">  325</span>        <span class="comment">// Store the B field 3-vector</span></div>
 <div class="line"><span class="lineno">  326</span>        std::vector&lt;Float_t&gt; BVector(3);</div>
-<div class="line"><span class="lineno">  327</span>        BVector[0] = <a class="code hl_variable" href="namespacegoliath2root.html#a08201171c49eed8adcb907dad9c5f9ed">Bx</a>; BVector[1] = <a class="code hl_variable" href="namespacegoliath2root.html#a57049317d3e1c9bae567e13a9214fa57">By</a>; BVector[2] = <a class="code hl_variable" href="namespacegoliath2root.html#aa1ed1b6fae74da44d96104e701884cb0">Bz</a>;</div>
+<div class="line"><span class="lineno">  327</span>        BVector[0] = Bx; BVector[1] = By; BVector[2] = Bz;</div>
 <div class="line"><span class="lineno">  328</span>        <a class="code hl_variable" href="classShipBFieldMap.html#a40d2bc90d23707faac34eba21b77c5dd">fieldMap_</a>-&gt;push_back(BVector);</div>
 <div class="line"><span class="lineno">  329</span> </div>
 <div class="line"><span class="lineno">  330</span>    }</div>
@@ -2453,9 +2453,6 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  336</span>}</div>
 <div class="ttc" id="aclassShipBFieldMap_html_a48f1c63fed25d604f8f37f35127e979f"><div class="ttname"><a href="classShipBFieldMap.html#a48f1c63fed25d604f8f37f35127e979f">ShipBFieldMap::setLimits</a></div><div class="ttdeci">void setLimits()</div><div class="ttdef"><b>Definition</b> <a href="ShipBFieldMap_8cxx_source.html#l00403">ShipBFieldMap.cxx:403</a></div></div>
 <div class="ttc" id="anamespaceShipAna_html_aa4bf87f4d17f9d38b1d8f4d009bb54b3"><div class="ttname"><a href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">ShipAna.i</a></div><div class="ttdeci">int i</div><div class="ttdef"><b>Definition</b> <a href="ShipAna_8py_source.html#l00074">ShipAna.py:74</a></div></div>
-<div class="ttc" id="anamespacegoliath2root_html_a08201171c49eed8adcb907dad9c5f9ed"><div class="ttname"><a href="namespacegoliath2root.html#a08201171c49eed8adcb907dad9c5f9ed">goliath2root.Bx</a></div><div class="ttdeci">Bx</div><div class="ttdef"><b>Definition</b> <a href="goliath2root_8py_source.html#l00025">goliath2root.py:25</a></div></div>
-<div class="ttc" id="anamespacegoliath2root_html_a57049317d3e1c9bae567e13a9214fa57"><div class="ttname"><a href="namespacegoliath2root.html#a57049317d3e1c9bae567e13a9214fa57">goliath2root.By</a></div><div class="ttdeci">By</div><div class="ttdef"><b>Definition</b> <a href="goliath2root_8py_source.html#l00025">goliath2root.py:25</a></div></div>
-<div class="ttc" id="anamespacegoliath2root_html_aa1ed1b6fae74da44d96104e701884cb0"><div class="ttname"><a href="namespacegoliath2root.html#aa1ed1b6fae74da44d96104e701884cb0">goliath2root.Bz</a></div><div class="ttdeci">Bz</div><div class="ttdef"><b>Definition</b> <a href="goliath2root_8py_source.html#l00025">goliath2root.py:25</a></div></div>
 <div class="ttc" id="anamespacemakeMuonDIS_html_ae1faf2036c84a3e978f199700c99fb7d"><div class="ttname"><a href="namespacemakeMuonDIS.html#ae1faf2036c84a3e978f199700c99fb7d">makeMuonDIS.dTree</a></div><div class="ttdeci">dTree</div><div class="ttdef"><b>Definition</b> <a href="muonShieldOptimization_2makeMuonDIS_8py_source.html#l00042">makeMuonDIS.py:42</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -2514,21 +2511,21 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  363</span>    <span class="comment">// in ascending z,y,x co-ord order</span></div>
 <div class="line"><span class="lineno">  364</span>    <a class="code hl_variable" href="classShipBFieldMap.html#a40d2bc90d23707faac34eba21b77c5dd">fieldMap_</a>-&gt;reserve(<a class="code hl_variable" href="classShipBFieldMap.html#a3cba8a90fad19de37cd6589699f15256">N_</a>);</div>
 <div class="line"><span class="lineno">  365</span> </div>
-<div class="line"><span class="lineno">  366</span>    Float_t <a class="code hl_variable" href="namespacegoliath2root.html#a08201171c49eed8adcb907dad9c5f9ed">Bx</a>(0.0), <a class="code hl_variable" href="namespacegoliath2root.html#a57049317d3e1c9bae567e13a9214fa57">By</a>(0.0), <a class="code hl_variable" href="namespacegoliath2root.html#aa1ed1b6fae74da44d96104e701884cb0">Bz</a>(0.0);</div>
+<div class="line"><span class="lineno">  366</span>    Float_t Bx(0.0), By(0.0), Bz(0.0);</div>
 <div class="line"><span class="lineno">  367</span> </div>
 <div class="line"><span class="lineno">  368</span>    <span class="keywordflow">for</span> (Int_t i = 0; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a> &lt; <a class="code hl_variable" href="classShipBFieldMap.html#a3cba8a90fad19de37cd6589699f15256">N_</a>; <a class="code hl_variable" href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">i</a>++) {</div>
 <div class="line"><span class="lineno">  369</span> </div>
-<div class="line"><span class="lineno">  370</span>        getData &gt;&gt; <a class="code hl_variable" href="namespacegoliath2root.html#a08201171c49eed8adcb907dad9c5f9ed">Bx</a> &gt;&gt; <a class="code hl_variable" href="namespacegoliath2root.html#a57049317d3e1c9bae567e13a9214fa57">By</a> &gt;&gt; <a class="code hl_variable" href="namespacegoliath2root.html#aa1ed1b6fae74da44d96104e701884cb0">Bz</a>;</div>
+<div class="line"><span class="lineno">  370</span>        getData &gt;&gt; Bx &gt;&gt; By &gt;&gt; Bz;</div>
 <div class="line"><span class="lineno">  371</span> </div>
 <div class="line"><span class="lineno">  372</span>        <span class="comment">// B field values are in Tesla. This means these values are multiplied</span></div>
 <div class="line"><span class="lineno">  373</span>        <span class="comment">// by a factor of ten since both FairRoot and the VMC interface use kGauss</span></div>
-<div class="line"><span class="lineno">  374</span>        <a class="code hl_variable" href="namespacegoliath2root.html#a08201171c49eed8adcb907dad9c5f9ed">Bx</a> *= <a class="code hl_variable" href="classShipBFieldMap.html#a37781644b55bd1e55b4e61661d7fa7f0">Tesla_</a>;</div>
-<div class="line"><span class="lineno">  375</span>        <a class="code hl_variable" href="namespacegoliath2root.html#a57049317d3e1c9bae567e13a9214fa57">By</a> *= <a class="code hl_variable" href="classShipBFieldMap.html#a37781644b55bd1e55b4e61661d7fa7f0">Tesla_</a>;</div>
-<div class="line"><span class="lineno">  376</span>        <a class="code hl_variable" href="namespacegoliath2root.html#aa1ed1b6fae74da44d96104e701884cb0">Bz</a> *= <a class="code hl_variable" href="classShipBFieldMap.html#a37781644b55bd1e55b4e61661d7fa7f0">Tesla_</a>;</div>
+<div class="line"><span class="lineno">  374</span>        Bx *= <a class="code hl_variable" href="classShipBFieldMap.html#a37781644b55bd1e55b4e61661d7fa7f0">Tesla_</a>;</div>
+<div class="line"><span class="lineno">  375</span>        By *= <a class="code hl_variable" href="classShipBFieldMap.html#a37781644b55bd1e55b4e61661d7fa7f0">Tesla_</a>;</div>
+<div class="line"><span class="lineno">  376</span>        Bz *= <a class="code hl_variable" href="classShipBFieldMap.html#a37781644b55bd1e55b4e61661d7fa7f0">Tesla_</a>;</div>
 <div class="line"><span class="lineno">  377</span> </div>
 <div class="line"><span class="lineno">  378</span>        <span class="comment">// Store the B field 3-vector</span></div>
 <div class="line"><span class="lineno">  379</span>        std::vector&lt;Float_t&gt; BVector(3);</div>
-<div class="line"><span class="lineno">  380</span>        BVector[0] = <a class="code hl_variable" href="namespacegoliath2root.html#a08201171c49eed8adcb907dad9c5f9ed">Bx</a>; BVector[1] = <a class="code hl_variable" href="namespacegoliath2root.html#a57049317d3e1c9bae567e13a9214fa57">By</a>; BVector[2] = <a class="code hl_variable" href="namespacegoliath2root.html#aa1ed1b6fae74da44d96104e701884cb0">Bz</a>;</div>
+<div class="line"><span class="lineno">  380</span>        BVector[0] = Bx; BVector[1] = By; BVector[2] = Bz;</div>
 <div class="line"><span class="lineno">  381</span>        <a class="code hl_variable" href="classShipBFieldMap.html#a40d2bc90d23707faac34eba21b77c5dd">fieldMap_</a>-&gt;push_back(BVector);</div>
 <div class="line"><span class="lineno">  382</span> </div>
 <div class="line"><span class="lineno">  383</span>    }</div>

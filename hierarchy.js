@@ -38,8 +38,7 @@ var hierarchy =
     ] ],
     [ "FairField", null, [
       [ "ShipBellField", "classShipBellField.html", null ],
-      [ "ShipConstField", "classShipConstField.html", null ],
-      [ "ShipGoliathField", "classShipGoliathField.html", null ]
+      [ "ShipConstField", "classShipConstField.html", null ]
     ] ],
     [ "FairFieldFactory", null, [
       [ "ShipFieldCreator", "classShipFieldCreator.html", null ]
@@ -78,7 +77,6 @@ var hierarchy =
     ] ],
     [ "FairModule", null, [
       [ "ShipCave", "classShipCave.html", null ],
-      [ "ShipGoliath", "classShipGoliath.html", null ],
       [ "ShipMagnet", "classShipMagnet.html", null ],
       [ "ShipMuonShield", "classShipMuonShield.html", null ],
       [ "ShipTAUMagneticSpectrometer", "classShipTAUMagneticSpectrometer.html", null ],

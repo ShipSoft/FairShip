@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['z_0',['z',['../classCosmicsGenerator.html#a978ef560446fec1d7837973dc6989816',1,'CosmicsGenerator::z'],['../namespacemakeMuonEM.html#ab601c963f2068c0096eee496020b9003',1,'makeMuonEM.z'],['../namespacemakeMuonDIS.html#a2b4e630f0163fb403afd6440c31de817',1,'makeMuonDIS.z'],['../namespacemake__nTuple__Tr.html#a6d39cc4b19e6b04e99fd8c3788ea9db0',1,'make_nTuple_Tr.z'],['../namespacemake__nTuple__SBT.html#abf4155fc67a8e22daa201493ba9865cf',1,'make_nTuple_SBT.z'],['../namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed',1,'run_simScript.z'],['../namespacegoliath2root.html#a5d8543c4f200f0488b1963149a94d3d6',1,'goliath2root.z'],['../namespaceShipGeo.html#acb5debe83d69bbbba650baacafc91bde',1,'ShipGeo.z'],['../classShipGeo_1_1ShipGeo.html#a1429a9b30ab5ca82595cfbdd24bb6a7a',1,'ShipGeo.ShipGeo.z']]],
-  ['z0_1',['z0',['../classCosmicsGenerator.html#ab53157e341f5dd3de8259deb3241f8f2',1,'CosmicsGenerator::z0'],['../namespaceShipGeo.html#a26a21d07ca585442effeb59459219be4',1,'ShipGeo.z0'],['../classshipVertex_1_1Task.html#a45f7a32ea5e1ad1b8c4e02130dfb7042',1,'shipVertex.Task.z0'],['../classshipVertex_1_1Task.html#ae29c8c4c868bef6e261486de6064ebe0',1,'shipVertex.Task.z0']]],
+  ['z_0',['z',['../classCosmicsGenerator.html#a978ef560446fec1d7837973dc6989816',1,'CosmicsGenerator::z'],['../namespaceShipGeo.html#acb5debe83d69bbbba650baacafc91bde',1,'ShipGeo.z'],['../namespacemakeMuonEM.html#ab601c963f2068c0096eee496020b9003',1,'makeMuonEM.z'],['../namespacemakeMuonDIS.html#a2b4e630f0163fb403afd6440c31de817',1,'makeMuonDIS.z'],['../namespacemake__nTuple__Tr.html#a6d39cc4b19e6b04e99fd8c3788ea9db0',1,'make_nTuple_Tr.z'],['../namespacemake__nTuple__SBT.html#abf4155fc67a8e22daa201493ba9865cf',1,'make_nTuple_SBT.z'],['../namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed',1,'run_simScript.z'],['../classShipGeo_1_1ShipGeo.html#a1429a9b30ab5ca82595cfbdd24bb6a7a',1,'ShipGeo.ShipGeo.z']]],
+  ['z0_1',['z0',['../namespaceShipGeo.html#a26a21d07ca585442effeb59459219be4',1,'ShipGeo.z0'],['../classCosmicsGenerator.html#ab53157e341f5dd3de8259deb3241f8f2',1,'CosmicsGenerator::z0'],['../classshipVertex_1_1Task.html#a45f7a32ea5e1ad1b8c4e02130dfb7042',1,'shipVertex.Task.z0'],['../classshipVertex_1_1Task.html#ae29c8c4c868bef6e261486de6064ebe0',1,'shipVertex.Task.z0']]],
   ['z0_5f_2',['z0_',['../structShipFieldMaker_1_1transformInfo.html#a38fd237f14541937e081c8205e668811',1,'ShipFieldMaker::transformInfo']]],
   ['z_5fecal_3',['z_ecal',['../namespaceTrackExtrapolateTool.html#aeb68a90b815acb1e2f1453cb90bf5b60',1,'TrackExtrapolateTool']]],
   ['z_5fend_4',['z_end',['../classeventDisplay_1_1DrawTracks.html#a3631d180b23e6d941b82b6cca485efa9',1,'eventDisplay::DrawTracks']]],
@@ -20,9 +20,9 @@ var searchData=
   ['zfrac1_5f_17',['zFrac1_',['../classShipBFieldMap.html#a30473cde240111d345691dc38bbb9088',1,'ShipBFieldMap']]],
   ['zfrac_5f_18',['zFrac_',['../classShipBFieldMap.html#a008f8744e77e9f9664bc8a5c5b32f7de',1,'ShipBFieldMap']]],
   ['zlowerironint_19',['zLowerIronInt',['../classMTCDetector.html#aa8e6cab1f93701edae3f1fbd4b7cd20c',1,'MTCDetector']]],
-  ['zmax_20',['zmax',['../classShipGoliathField.html#a3638be3087d12091cb0372b3321b2490',1,'ShipGoliathField::zmax'],['../namespaceevd__addParticleFollower.html#a765a77f0aff4b62145f0224f95cb09dc',1,'evd_addParticleFollower.zmax']]],
+  ['zmax_20',['zmax',['../namespaceevd__addParticleFollower.html#a765a77f0aff4b62145f0224f95cb09dc',1,'evd_addParticleFollower']]],
   ['zmax_5f_21',['zMax_',['../classShipBFieldMap.html#adaea4a95149e4923b17e6e05c0d56c9f',1,'ShipBFieldMap']]],
-  ['zmin_22',['zmin',['../namespaceevd__addParticleFollower.html#a96a729f423bea86fb187b6785c4b257a',1,'evd_addParticleFollower.zmin'],['../classShipGoliathField.html#ac0d650d0f4768a017455765876fa087e',1,'ShipGoliathField::zmin']]],
+  ['zmin_22',['zmin',['../namespaceevd__addParticleFollower.html#a96a729f423bea86fb187b6785c4b257a',1,'evd_addParticleFollower']]],
   ['zmin_5f_23',['zMin_',['../classShipBFieldMap.html#ae1b7e7af5e9ab9b4220dafc40f5de51c',1,'ShipBFieldMap']]],
   ['zmuon_24',['zmuon',['../namespaceana__ShipMuon.html#a572d7a276be83768b914021ab9f41902',1,'ana_ShipMuon']]],
   ['znew_25',['znew',['../namespacecheckZpositions.html#a766185761e35ea4bb4e8076786316d7a',1,'checkZpositions']]],

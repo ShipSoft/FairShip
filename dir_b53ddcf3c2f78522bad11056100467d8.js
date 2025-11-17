@@ -21,7 +21,5 @@ var dir_b53ddcf3c2f78522bad11056100467d8 =
     [ "ShipFieldMaker.cxx", "ShipFieldMaker_8cxx.html", null ],
     [ "ShipFieldMaker.h", "ShipFieldMaker_8h.html", "ShipFieldMaker_8h" ],
     [ "ShipFieldPar.cxx", "ShipFieldPar_8cxx.html", "ShipFieldPar_8cxx" ],
-    [ "ShipFieldPar.h", "ShipFieldPar_8h.html", "ShipFieldPar_8h" ],
-    [ "ShipGoliathField.cxx", "ShipGoliathField_8cxx.html", null ],
-    [ "ShipGoliathField.h", "ShipGoliathField_8h.html", "ShipGoliathField_8h" ]
+    [ "ShipFieldPar.h", "ShipFieldPar_8h.html", "ShipFieldPar_8h" ]
 ];

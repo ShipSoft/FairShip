@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['y_0',['y',['../namespacegoliath2root.html#a113089170706c4ac24f53e7cc61b5895',1,'goliath2root.y'],['../namespacemakeMuonEM.html#a0d25cc9a190d0bdc64fa5cc1d7533039',1,'makeMuonEM.y'],['../namespacemakeMuonDIS.html#abc7c6de41f52743b9b4aef06f979bf8a',1,'makeMuonDIS.y'],['../namespacemake__nTuple__Tr.html#a3562a98b75521c312dbf74ba57ba9332',1,'make_nTuple_Tr.y'],['../namespacemake__nTuple__SBT.html#ab46e9a5e01d6b550aa7a5315ba9d81cf',1,'make_nTuple_SBT.y'],['../classCosmicsGenerator.html#a6be8f1021db23a5cffe07bdef2a9f49e',1,'CosmicsGenerator::y']]],
+  ['y_0',['y',['../namespacemakeMuonEM.html#a0d25cc9a190d0bdc64fa5cc1d7533039',1,'makeMuonEM.y'],['../namespacemakeMuonDIS.html#abc7c6de41f52743b9b4aef06f979bf8a',1,'makeMuonDIS.y'],['../namespacemake__nTuple__Tr.html#a3562a98b75521c312dbf74ba57ba9332',1,'make_nTuple_Tr.y'],['../namespacemake__nTuple__SBT.html#ab46e9a5e01d6b550aa7a5315ba9d81cf',1,'make_nTuple_SBT.y'],['../classCosmicsGenerator.html#a6be8f1021db23a5cffe07bdef2a9f49e',1,'CosmicsGenerator::y']]],
   ['y0_5f_1',['y0_',['../structShipFieldMaker_1_1transformInfo.html#a1662a7308aec75088911268cf82c3169',1,'ShipFieldMaker::transformInfo']]],
   ['y_5fdata_2',['y_data',['../classshipVertex_1_1Task.html#a8ca5c8775cc4a7b23568c0eeee8ec0a7',1,'shipVertex::Task']]],
   ['yandex_3',['Yandex',['../namespaceg4Ex__gap__mergeFiles.html#a6ea5fea2de017f0b639ccc3bc2e74fa1',1,'g4Ex_gap_mergeFiles']]],
@@ -16,18 +16,16 @@ var searchData=
   ['yellow_13',['yellow',['../namespaceShipStyle.html#a2671a3ad1fd53712bdc05ebd4c87b4db',1,'ShipStyle']]],
   ['yfrac1_5f_14',['yFrac1_',['../classShipBFieldMap.html#a42a02834dac9444aff3927534ac81baa',1,'ShipBFieldMap']]],
   ['yfrac_5f_15',['yFrac_',['../classShipBFieldMap.html#a5c9fa6a8d363355ead8eddb614065083',1,'ShipBFieldMap']]],
-  ['ymax_16',['ymax',['../classShipGoliathField.html#a0ab242907b9a4611a8da68e9378ddedd',1,'ShipGoliathField']]],
-  ['ymax_5f_17',['yMax_',['../classShipBFieldMap.html#ad8a1a4c88b21f29339f361d341ba1304',1,'ShipBFieldMap']]],
-  ['ymin_18',['ymin',['../classShipGoliathField.html#a86860d1886a9b94382234965caf491d7',1,'ShipGoliathField']]],
-  ['ymin_5f_19',['yMin_',['../classShipBFieldMap.html#a4529066c7dca47ed195f98f923f7c30c',1,'ShipBFieldMap']]],
-  ['yoff_20',['yoff',['../classPythia8Generator.html#a2b7319bf5950e27d0db981ca2e5a0ae0',1,'Pythia8Generator::yOff'],['../classFixedTargetGenerator.html#ac575dc0a0ee8177e0adf1062fabd956a',1,'FixedTargetGenerator::yOff']]],
-  ['yoffset_5f_21',['yOffset_',['../classShipBFieldMap.html#aad6dc9cbfb40bb6f1ef3dd7da657be91',1,'ShipBFieldMap']]],
-  ['yokedepth_22',['YokeDepth',['../classShipMagnet.html#adf872166e610c6e8e9a1852213cba89c',1,'ShipMagnet']]],
-  ['yokewidth_23',['YokeWidth',['../classShipMagnet.html#a3d8c2575a8a1c3b31ee82dfc84d2ed9d',1,'ShipMagnet']]],
-  ['yrange_5f_24',['yRange_',['../classShipBFieldMap.html#ad8b711298e1abff445205e57306242e1',1,'ShipBFieldMap']]],
-  ['yraw_25',['Yraw',['../classTTCluster_1_1TTCluster.html#a98f2784ef77429233b4d3f2290180dfd',1,'TTCluster::TTCluster']]],
-  ['yrec_26',['Yrec',['../classTTCluster_1_1TTCluster.html#a4ea7960ff74ee5cbf72093a4fa70ebca',1,'TTCluster::TTCluster']]],
-  ['yspace_27',['ySpace',['../namespaceadd__noise__to__field.html#a8ad10ab502ec765188f76b5c1b807f90',1,'add_noise_to_field']]],
-  ['yvessel_28',['Yvessel',['../classGenieGenerator.html#afcf19e34d58e8d82a19c9a03368f0b4a',1,'GenieGenerator']]],
-  ['yz_5fpoints_29',['yz_points',['../namespaceTTCluster.html#a629a4444240f0d3cae8096fd10409dbb',1,'TTCluster']]]
+  ['ymax_5f_16',['yMax_',['../classShipBFieldMap.html#ad8a1a4c88b21f29339f361d341ba1304',1,'ShipBFieldMap']]],
+  ['ymin_5f_17',['yMin_',['../classShipBFieldMap.html#a4529066c7dca47ed195f98f923f7c30c',1,'ShipBFieldMap']]],
+  ['yoff_18',['yoff',['../classFixedTargetGenerator.html#ac575dc0a0ee8177e0adf1062fabd956a',1,'FixedTargetGenerator::yOff'],['../classPythia8Generator.html#a2b7319bf5950e27d0db981ca2e5a0ae0',1,'Pythia8Generator::yOff']]],
+  ['yoffset_5f_19',['yOffset_',['../classShipBFieldMap.html#aad6dc9cbfb40bb6f1ef3dd7da657be91',1,'ShipBFieldMap']]],
+  ['yokedepth_20',['YokeDepth',['../classShipMagnet.html#adf872166e610c6e8e9a1852213cba89c',1,'ShipMagnet']]],
+  ['yokewidth_21',['YokeWidth',['../classShipMagnet.html#a3d8c2575a8a1c3b31ee82dfc84d2ed9d',1,'ShipMagnet']]],
+  ['yrange_5f_22',['yRange_',['../classShipBFieldMap.html#ad8b711298e1abff445205e57306242e1',1,'ShipBFieldMap']]],
+  ['yraw_23',['Yraw',['../classTTCluster_1_1TTCluster.html#a98f2784ef77429233b4d3f2290180dfd',1,'TTCluster::TTCluster']]],
+  ['yrec_24',['Yrec',['../classTTCluster_1_1TTCluster.html#a4ea7960ff74ee5cbf72093a4fa70ebca',1,'TTCluster::TTCluster']]],
+  ['yspace_25',['ySpace',['../namespaceadd__noise__to__field.html#a8ad10ab502ec765188f76b5c1b807f90',1,'add_noise_to_field']]],
+  ['yvessel_26',['Yvessel',['../classGenieGenerator.html#afcf19e34d58e8d82a19c9a03368f0b4a',1,'GenieGenerator']]],
+  ['yz_5fpoints_27',['yz_points',['../namespaceTTCluster.html#a629a4444240f0d3cae8096fd10409dbb',1,'TTCluster']]]
 ];

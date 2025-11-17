@@ -25,7 +25,7 @@ var searchData=
   ['boostfactor_22',['boostFactor',['../namespacestudy__GammaConv.html#ae7dc52662551ed7788ac46668220e4f5',1,'study_GammaConv']]],
   ['boxgen_23',['boxGen',['../namespacerun__simEcal.html#a9645245051a6f84c94278b8a3b08e4a3',1,'run_simEcal']]],
   ['bparam_24',['bparam',['../classFixedTargetGenerator.html#a56e1bbca0149a15f64ea79646b813823',1,'FixedTargetGenerator::bparam'],['../classPythia8Generator.html#a6cccef60f9c11c8de3e613df19421a71',1,'Pythia8Generator::bparam']]],
-  ['br_25',['br',['../namespaceeventDisplay.html#abe023ea1e3a4a6a7eac9907e09ed4ecc',1,'eventDisplay.br'],['../namespaceg4Ex__gap__mergeFiles.html#aae067114d26712c0dfa8ef37ff4317ce',1,'g4Ex_gap_mergeFiles.BR']]],
+  ['br_25',['br',['../namespaceg4Ex__gap__mergeFiles.html#aae067114d26712c0dfa8ef37ff4317ce',1,'g4Ex_gap_mergeFiles.BR'],['../namespaceeventDisplay.html#abe023ea1e3a4a6a7eac9907e09ed4ecc',1,'eventDisplay.br']]],
   ['branch_26',['branch',['../classBaseDetector_1_1BaseDetector.html#ae5c0b9a7c057d0bdd36cc98786554c46',1,'BaseDetector::BaseDetector']]],
   ['branches_27',['branches',['../namespacerun__simScript.html#aab4426f598376be65d04e68a577d8ae8',1,'run_simScript']]],
   ['branchvars_28',['branchVars',['../classEvtCalcGenerator.html#a69e825e4551cfb9b96f1a79329f0fcff',1,'EvtCalcGenerator']]],
@@ -34,8 +34,5 @@ var searchData=
   ['brickpackagez_31',['BrickPackageZ',['../classTarget.html#a510e7984b32b9bdb7d1489a18225c1e2',1,'Target']]],
   ['brickx_32',['BrickX',['../classTarget.html#a1af9e578d3fbd2e6c1faf9fa7bb453ad',1,'Target']]],
   ['bricky_33',['BrickY',['../classTarget.html#a10300065b8275b5fb309f97c56797aa5',1,'Target']]],
-  ['brickz_34',['BrickZ',['../classTarget.html#acb46fe7bb033e087857ba6316c45e016',1,'Target']]],
-  ['bx_35',['Bx',['../namespacegoliath2root.html#a08201171c49eed8adcb907dad9c5f9ed',1,'goliath2root']]],
-  ['by_36',['By',['../namespacegoliath2root.html#a57049317d3e1c9bae567e13a9214fa57',1,'goliath2root']]],
-  ['bz_37',['Bz',['../namespacegoliath2root.html#aa1ed1b6fae74da44d96104e701884cb0',1,'goliath2root']]]
+  ['brickz_34',['BrickZ',['../classTarget.html#acb46fe7bb033e087857ba6316c45e016',1,'Target']]]
 ];

@@ -1131,9 +1131,9 @@ John Back <a href="#" onclick="location.href='mai'+'lto:'+'J.J'+'.B'+'ack'+'@w'+
 <div class="line"><span class="lineno">  266</span>    Double_t zMax = std::atof(inputLine[7].c_str());</div>
 <div class="line"><span class="lineno">  267</span> </div>
 <div class="line"><span class="lineno">  268</span>    <span class="comment">// Input field in Tesla_, interface needs kGauss units</span></div>
-<div class="line"><span class="lineno">  269</span>    Double_t <a class="code hl_variable" href="namespacegoliath2root.html#a08201171c49eed8adcb907dad9c5f9ed">Bx</a> = std::atof(inputLine[8].c_str());</div>
-<div class="line"><span class="lineno">  270</span>    Double_t <a class="code hl_variable" href="namespacegoliath2root.html#a57049317d3e1c9bae567e13a9214fa57">By</a> = std::atof(inputLine[9].c_str());</div>
-<div class="line"><span class="lineno">  271</span>    Double_t <a class="code hl_variable" href="namespacegoliath2root.html#aa1ed1b6fae74da44d96104e701884cb0">Bz</a> = std::atof(inputLine[10].c_str());</div>
+<div class="line"><span class="lineno">  269</span>    Double_t Bx = std::atof(inputLine[8].c_str());</div>
+<div class="line"><span class="lineno">  270</span>    Double_t By = std::atof(inputLine[9].c_str());</div>
+<div class="line"><span class="lineno">  271</span>    Double_t Bz = std::atof(inputLine[10].c_str());</div>
 <div class="line"><span class="lineno">  272</span> </div>
 <div class="line"><span class="lineno">  273</span>    <span class="keyword">const</span> TVector2 xRange(xMin, xMax);</div>
 <div class="line"><span class="lineno">  274</span>    <span class="keyword">const</span> TVector2 yRange(yMin, yMax);</div>
@@ -1151,9 +1151,6 @@ John Back <a href="#" onclick="location.href='mai'+'lto:'+'J.J'+'.B'+'ack'+'@w'+
 <div class="line"><span class="lineno">  286</span> </div>
 <div class="line"><span class="lineno">  287</span>}</div>
 <div class="ttc" id="aclassShipFieldMaker_html_ae11b9703aa051c2cb86ef40aed49d19a"><div class="ttname"><a href="classShipFieldMaker.html#ae11b9703aa051c2cb86ef40aed49d19a">ShipFieldMaker::defineConstant</a></div><div class="ttdeci">void defineConstant(const TString &amp;name, const TVector2 &amp;xRange, const TVector2 &amp;yRange, const TVector2 &amp;zRange, const TVector3 &amp;BVector)</div><div class="ttdoc">Define a constant field.</div><div class="ttdef"><b>Definition</b> <a href="ShipFieldMaker_8cxx_source.html#l00289">ShipFieldMaker.cxx:289</a></div></div>
-<div class="ttc" id="anamespacegoliath2root_html_a08201171c49eed8adcb907dad9c5f9ed"><div class="ttname"><a href="namespacegoliath2root.html#a08201171c49eed8adcb907dad9c5f9ed">goliath2root.Bx</a></div><div class="ttdeci">Bx</div><div class="ttdef"><b>Definition</b> <a href="goliath2root_8py_source.html#l00025">goliath2root.py:25</a></div></div>
-<div class="ttc" id="anamespacegoliath2root_html_a57049317d3e1c9bae567e13a9214fa57"><div class="ttname"><a href="namespacegoliath2root.html#a57049317d3e1c9bae567e13a9214fa57">goliath2root.By</a></div><div class="ttdeci">By</div><div class="ttdef"><b>Definition</b> <a href="goliath2root_8py_source.html#l00025">goliath2root.py:25</a></div></div>
-<div class="ttc" id="anamespacegoliath2root_html_aa1ed1b6fae74da44d96104e701884cb0"><div class="ttname"><a href="namespacegoliath2root.html#aa1ed1b6fae74da44d96104e701884cb0">goliath2root.Bz</a></div><div class="ttdeci">Bz</div><div class="ttdef"><b>Definition</b> <a href="goliath2root_8py_source.html#l00025">goliath2root.py:25</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1226,9 +1223,9 @@ John Back <a href="#" onclick="location.href='mai'+'lto:'+'J.J'+'.B'+'ack'+'@w'+
 <div class="line"><span class="lineno">  300</span>    Double_t zMin = zRange.X();</div>
 <div class="line"><span class="lineno">  301</span>    Double_t zMax = zRange.Y();</div>
 <div class="line"><span class="lineno">  302</span> </div>
-<div class="line"><span class="lineno">  303</span>    Double_t <a class="code hl_variable" href="namespacegoliath2root.html#a08201171c49eed8adcb907dad9c5f9ed">Bx</a> = BVector.X()*<a class="code hl_variable" href="classShipFieldMaker.html#a86b97bf8ceebc3cc4f8d02eb72adf245">Tesla_</a>;</div>
-<div class="line"><span class="lineno">  304</span>    Double_t <a class="code hl_variable" href="namespacegoliath2root.html#a57049317d3e1c9bae567e13a9214fa57">By</a> = BVector.Y()*<a class="code hl_variable" href="classShipFieldMaker.html#a86b97bf8ceebc3cc4f8d02eb72adf245">Tesla_</a>;</div>
-<div class="line"><span class="lineno">  305</span>    Double_t <a class="code hl_variable" href="namespacegoliath2root.html#aa1ed1b6fae74da44d96104e701884cb0">Bz</a> = BVector.Z()*<a class="code hl_variable" href="classShipFieldMaker.html#a86b97bf8ceebc3cc4f8d02eb72adf245">Tesla_</a>;</div>
+<div class="line"><span class="lineno">  303</span>    Double_t Bx = BVector.X()*<a class="code hl_variable" href="classShipFieldMaker.html#a86b97bf8ceebc3cc4f8d02eb72adf245">Tesla_</a>;</div>
+<div class="line"><span class="lineno">  304</span>    Double_t By = BVector.Y()*<a class="code hl_variable" href="classShipFieldMaker.html#a86b97bf8ceebc3cc4f8d02eb72adf245">Tesla_</a>;</div>
+<div class="line"><span class="lineno">  305</span>    Double_t Bz = BVector.Z()*<a class="code hl_variable" href="classShipFieldMaker.html#a86b97bf8ceebc3cc4f8d02eb72adf245">Tesla_</a>;</div>
 <div class="line"><span class="lineno">  306</span> </div>
 <div class="line"><span class="lineno">  307</span>    <a class="code hl_class" href="classShipConstField.html">ShipConstField</a>* theField = <span class="keyword">new</span> <a class="code hl_class" href="classShipConstField.html">ShipConstField</a>(<a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a>.Data(), xMin, xMax, yMin, yMax,</div>
 <div class="line"><span class="lineno">  308</span>                              zMin, zMax, Bx, By, Bz);</div>
@@ -2100,9 +2097,9 @@ John Back <a href="#" onclick="location.href='mai'+'lto:'+'J.J'+'.B'+'ack'+'@w'+
 <div class="line"><span class="lineno">  203</span> </div>
 <div class="line"><span class="lineno">  204</span>    <span class="keyword">const</span> TString <a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a>(inputLine[1].c_str());</div>
 <div class="line"><span class="lineno">  205</span> </div>
-<div class="line"><span class="lineno">  206</span>    Double_t <a class="code hl_variable" href="namespacegoliath2root.html#a08201171c49eed8adcb907dad9c5f9ed">Bx</a> = std::atof(inputLine[2].c_str());</div>
-<div class="line"><span class="lineno">  207</span>    Double_t <a class="code hl_variable" href="namespacegoliath2root.html#a57049317d3e1c9bae567e13a9214fa57">By</a> = std::atof(inputLine[3].c_str());</div>
-<div class="line"><span class="lineno">  208</span>    Double_t <a class="code hl_variable" href="namespacegoliath2root.html#aa1ed1b6fae74da44d96104e701884cb0">Bz</a> = std::atof(inputLine[4].c_str());</div>
+<div class="line"><span class="lineno">  206</span>    Double_t Bx = std::atof(inputLine[2].c_str());</div>
+<div class="line"><span class="lineno">  207</span>    Double_t By = std::atof(inputLine[3].c_str());</div>
+<div class="line"><span class="lineno">  208</span>    Double_t Bz = std::atof(inputLine[4].c_str());</div>
 <div class="line"><span class="lineno">  209</span>    <span class="keyword">const</span> TVector3 BVector(Bx, By, Bz);</div>
 <div class="line"><span class="lineno">  210</span> </div>
 <div class="line"><span class="lineno">  211</span>    this-&gt;<a class="code hl_function" href="classShipFieldMaker.html#ab664b64d707783cf30521c2ac9bd5192">defineUniform</a>(name, BVector);</div>
@@ -2162,9 +2159,9 @@ John Back <a href="#" onclick="location.href='mai'+'lto:'+'J.J'+'.B'+'ack'+'@w'+
 <div class="line"><span class="lineno">  227</span> </div>
 <div class="line"><span class="lineno">  228</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classShipFieldMaker.html#aa6ea6ea385a201195ce579e19175072a">verbose_</a>) {std::cout&lt;&lt;<span class="stringliteral">&quot;Creating uniform field for &quot;</span>&lt;&lt;<a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a>.Data()&lt;&lt;std::endl;}</div>
 <div class="line"><span class="lineno">  229</span> </div>
-<div class="line"><span class="lineno">  230</span>    Double_t <a class="code hl_variable" href="namespacegoliath2root.html#a08201171c49eed8adcb907dad9c5f9ed">Bx</a> = BVector.X()*<a class="code hl_variable" href="classShipFieldMaker.html#a86b97bf8ceebc3cc4f8d02eb72adf245">Tesla_</a>;</div>
-<div class="line"><span class="lineno">  231</span>    Double_t <a class="code hl_variable" href="namespacegoliath2root.html#a57049317d3e1c9bae567e13a9214fa57">By</a> = BVector.Y()*<a class="code hl_variable" href="classShipFieldMaker.html#a86b97bf8ceebc3cc4f8d02eb72adf245">Tesla_</a>;</div>
-<div class="line"><span class="lineno">  232</span>    Double_t <a class="code hl_variable" href="namespacegoliath2root.html#aa1ed1b6fae74da44d96104e701884cb0">Bz</a> = BVector.Z()*<a class="code hl_variable" href="classShipFieldMaker.html#a86b97bf8ceebc3cc4f8d02eb72adf245">Tesla_</a>;</div>
+<div class="line"><span class="lineno">  230</span>    Double_t Bx = BVector.X()*<a class="code hl_variable" href="classShipFieldMaker.html#a86b97bf8ceebc3cc4f8d02eb72adf245">Tesla_</a>;</div>
+<div class="line"><span class="lineno">  231</span>    Double_t By = BVector.Y()*<a class="code hl_variable" href="classShipFieldMaker.html#a86b97bf8ceebc3cc4f8d02eb72adf245">Tesla_</a>;</div>
+<div class="line"><span class="lineno">  232</span>    Double_t Bz = BVector.Z()*<a class="code hl_variable" href="classShipFieldMaker.html#a86b97bf8ceebc3cc4f8d02eb72adf245">Tesla_</a>;</div>
 <div class="line"><span class="lineno">  233</span> </div>
 <div class="line"><span class="lineno">  234</span>    TGeoUniformMagField* uField = <span class="keyword">new</span> TGeoUniformMagField(Bx, By, Bz);</div>
 <div class="line"><span class="lineno">  235</span>    <a class="code hl_variable" href="classShipFieldMaker.html#a40345310eef6cda554678945e52a7be6">theFields_</a>[<a class="code hl_variable" href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">name</a>] = uField;</div>
