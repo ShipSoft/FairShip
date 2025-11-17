@@ -8,12 +8,7 @@ class splitcalDetector(BaseDetector):
         # Initialize base class for digitized hits
         super().__init__(name, intree, 'std.vector', 'Splitcal')
 
-        # Override to use pointer-based storage for ROOT streaming compatibility
-        # Complex objects with internal vectors can't be stored by value
-        self.det = ROOT.std.vector("splitcalHit*")()
-        self.branch = self.intree.Branch("Digi_SplitcalHits", self.det, 32000, -1)
-
-        # Add reconstruction branch for clusters (also using pointers)
+        # Clusters use pointer storage as they contain internal vectors
         self.reco = ROOT.std.vector("splitcalCluster*")()
         self.recoBranch = self.intree.Branch("Reco_SplitcalClusters", self.reco, 32000, -1)
 
@@ -35,10 +30,7 @@ class splitcalDetector(BaseDetector):
             hit = ROOT.splitcalHit(point, self.intree.t0)
             detector_id = hit.GetDetectorID()
             if detector_id not in listOfDetID:
-                # Create heap-allocated copy for pointer storage
-                hitCopy = ROOT.splitcalHit(hit)
-                ROOT.SetOwnership(hitCopy, False)  # ROOT TTree owns the object
-                self.det.push_back(hitCopy)
+                self.det.push_back(hit)
                 listOfDetID[detector_id] = len(self.det) - 1
             else:
                 indexOfExistingHit = listOfDetID[detector_id]
@@ -137,9 +129,8 @@ class splitcalDetector(BaseDetector):
                 cluster.AddHit(hit, weight)
 
             cluster.SetIndex(int(i))
-            # Create heap-allocated copy for pointer storage
             clusterCopy = ROOT.splitcalCluster(cluster)
-            ROOT.SetOwnership(clusterCopy, False)  # ROOT TTree owns the object
+            ROOT.SetOwnership(clusterCopy, False)
             self.reco.push_back(clusterCopy)
 
     def _get_subclusters_excluding_fragments(self):
