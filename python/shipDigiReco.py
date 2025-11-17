@@ -61,6 +61,8 @@ class ShipDigiReco:
   self.header  = ROOT.FairEventHeader()
   self.eventHeader  = self.sTree.Branch("ShipEventHeader",self.header,32000,-1)
 # fitted tracks
+  # Must use pointer storage: genfit::Track has circular references with TrackPoint
+  # requiring stable memory addresses (value storage would invalidate back-pointers on vector resize)
   self.fGenFitArray = ROOT.std.vector("genfit::Track*")()
   self.fitTrack2MC  = ROOT.std.vector('int')()
   self.goodTracksVect  = ROOT.std.vector('int')()
