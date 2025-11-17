@@ -83,7 +83,9 @@ Bool_t  exitHadronAbsorber::ProcessHits(FairVolume* vol)
       }
     }
   }
-  // gMC->StopTrack();
+  if ((!fCylindricalPlane) && fzPos > 1E8) {
+    gMC->StopTrack();
+  }
   return kTRUE;
 }
 
