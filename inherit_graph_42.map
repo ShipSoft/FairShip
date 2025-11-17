@@ -1,35 +1,35 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
 <area shape="rect" id="Node000000" title=" " alt="" coords="5,351,77,376"/>
 <area shape="rect" id="Node000001" href="$classShipHit.html" title=" " alt="" coords="152,177,221,203"/>
-<area shape="poly" id="edge96_Node000000_Node000001" title=" " alt="" coords="48,337,76,275,97,242,124,212,151,196,153,201,127,216,101,245,80,278,53,339"/>
+<area shape="poly" id="edge97_Node000000_Node000001" title=" " alt="" coords="48,337,76,275,97,242,124,212,151,196,153,201,127,216,101,245,80,278,53,339"/>
 <area shape="rect" id="Node000010" href="$classShipMCTrack.html" title=" " alt="" coords="134,227,239,252"/>
-<area shape="poly" id="edge105_Node000000_Node000010" title=" " alt="" coords="56,337,85,299,124,261,144,250,146,254,127,265,89,302,60,340"/>
+<area shape="poly" id="edge106_Node000000_Node000010" title=" " alt="" coords="56,337,85,299,124,261,144,250,146,254,127,265,89,302,60,340"/>
 <area shape="rect" id="Node000011" href="$classShipParticle.html" title=" " alt="" coords="137,276,236,301"/>
-<area shape="poly" id="edge106_Node000000_Node000011" title=" " alt="" coords="72,341,124,310,150,299,152,304,127,315,75,345"/>
+<area shape="poly" id="edge107_Node000000_Node000011" title=" " alt="" coords="72,341,124,310,150,299,152,304,127,315,75,345"/>
 <area shape="rect" id="Node000012" href="$classTrackInfo.html" title=" " alt="" coords="146,325,227,351"/>
-<area shape="poly" id="edge107_Node000000_Node000012" title=" " alt="" coords="90,352,145,342,146,348,91,357"/>
+<area shape="poly" id="edge108_Node000000_Node000012" title=" " alt="" coords="90,352,145,342,146,348,91,357"/>
 <area shape="rect" id="Node000013" href="$classTracklet.html" title=" " alt="" coords="150,375,223,400"/>
-<area shape="poly" id="edge108_Node000000_Node000013" title=" " alt="" coords="91,369,150,379,149,384,91,374"/>
+<area shape="poly" id="edge109_Node000000_Node000013" title=" " alt="" coords="91,369,150,379,149,384,91,374"/>
 <area shape="rect" id="Node000014" href="$classpid.html" title=" " alt="" coords="165,424,208,449"/>
-<area shape="poly" id="edge109_Node000000_Node000014" title=" " alt="" coords="75,381,127,410,166,427,164,432,124,415,73,386"/>
+<area shape="poly" id="edge110_Node000000_Node000014" title=" " alt="" coords="75,381,127,410,166,427,164,432,124,415,73,386"/>
 <area shape="rect" id="Node000015" href="$classsplitcalCluster.html" title=" " alt="" coords="129,473,244,499"/>
-<area shape="poly" id="edge110_Node000000_Node000015" title=" " alt="" coords="60,387,89,424,127,460,146,471,144,475,124,464,85,428,56,390"/>
+<area shape="poly" id="edge111_Node000000_Node000015" title=" " alt="" coords="60,387,89,424,127,460,146,471,144,475,124,464,85,428,56,390"/>
 <area shape="rect" id="Node000016" href="$classvetoHitOnTrack.html" title=" " alt="" coords="125,523,248,548"/>
-<area shape="poly" id="edge111_Node000000_Node000016" title=" " alt="" coords="53,388,81,449,101,481,127,509,144,520,141,525,124,513,97,484,76,451,49,390"/>
+<area shape="poly" id="edge112_Node000000_Node000016" title=" " alt="" coords="53,388,81,449,101,481,127,509,144,520,141,525,124,513,97,484,76,451,49,390"/>
 <area shape="rect" id="Node000002" href="$classMTCDetHit.html" title=" " alt="" coords="324,5,416,31"/>
-<area shape="poly" id="edge97_Node000001_Node000002" title=" " alt="" coords="198,164,235,102,262,69,294,40,323,26,325,30,298,44,266,72,239,105,202,167"/>
+<area shape="poly" id="edge98_Node000001_Node000002" title=" " alt="" coords="198,164,235,102,262,69,294,40,323,26,325,30,298,44,266,72,239,105,202,167"/>
 <area shape="rect" id="Node000003" href="$classSiliconTargetHit.html" title=" " alt="" coords="308,55,432,80"/>
-<area shape="poly" id="edge98_Node000001_Node000003" title=" " alt="" coords="206,165,245,126,295,89,319,78,322,82,297,94,248,130,210,169"/>
+<area shape="poly" id="edge99_Node000001_Node000003" title=" " alt="" coords="206,165,245,126,295,89,319,78,322,82,297,94,248,130,210,169"/>
 <area shape="rect" id="Node000004" href="$classTimeDetHit.html" title=" " alt="" coords="321,104,419,129"/>
-<area shape="poly" id="edge99_Node000001_Node000004" title=" " alt="" coords="225,169,295,138,327,127,329,132,297,143,228,174"/>
+<area shape="poly" id="edge100_Node000001_Node000004" title=" " alt="" coords="225,169,295,138,327,127,329,132,297,143,228,174"/>
 <area shape="rect" id="Node000005" href="$classUpstreamTaggerHit.html" title="Hit class for UpstreamTagger scoring plane." alt="" coords="296,153,444,179"/>
-<area shape="poly" id="edge100_Node000001_Node000005" title=" " alt="" coords="235,181,296,173,296,178,235,186"/>
+<area shape="poly" id="edge101_Node000001_Node000005" title=" " alt="" coords="235,181,296,173,296,178,235,186"/>
 <area shape="rect" id="Node000006" href="$classmuonHit.html" title=" " alt="" coords="331,203,409,228"/>
-<area shape="poly" id="edge101_Node000001_Node000006" title=" " alt="" coords="235,194,331,207,330,213,235,199"/>
+<area shape="poly" id="edge102_Node000001_Node000006" title=" " alt="" coords="235,194,331,207,330,213,235,199"/>
 <area shape="rect" id="Node000007" href="$classsplitcalHit.html" title=" " alt="" coords="326,252,414,277"/>
-<area shape="poly" id="edge102_Node000001_Node000007" title=" " alt="" coords="236,206,249,212,297,237,330,249,328,254,295,242,247,216,234,211"/>
+<area shape="poly" id="edge103_Node000001_Node000007" title=" " alt="" coords="236,206,249,212,297,237,330,249,328,254,295,242,247,216,234,211"/>
 <area shape="rect" id="Node000008" href="$classstrawtubesHit.html" title=" " alt="" coords="313,301,427,327"/>
-<area shape="poly" id="edge103_Node000001_Node000008" title=" " alt="" coords="236,203,250,212,266,231,274,251,282,269,298,287,319,299,317,304,294,291,277,272,269,253,262,234,246,216,233,207"/>
+<area shape="poly" id="edge104_Node000001_Node000008" title=" " alt="" coords="236,203,250,212,266,231,274,251,282,269,298,287,319,299,317,304,294,291,277,272,269,253,262,234,246,216,233,207"/>
 <area shape="rect" id="Node000009" href="$classvetoHit.html" title=" " alt="" coords="335,351,405,376"/>
-<area shape="poly" id="edge104_Node000001_Node000009" title=" " alt="" coords="235,201,250,212,263,228,270,245,274,276,279,306,286,321,298,336,315,348,336,355,334,360,313,353,294,340,281,324,274,308,269,277,264,246,258,231,246,216,232,206"/>
+<area shape="poly" id="edge105_Node000001_Node000009" title=" " alt="" coords="235,201,250,212,263,228,270,245,274,276,279,306,286,321,298,336,315,348,336,355,334,360,313,353,294,340,281,324,274,308,269,277,264,246,258,231,246,216,232,206"/>
 </map>

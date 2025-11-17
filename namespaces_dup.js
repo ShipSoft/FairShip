@@ -1689,6 +1689,7 @@ var namespaces_dup =
     [ "ShipUnit", "namespaceShipUnit.html", null ],
     [ "shipVertex", "namespaceshipVertex.html", "namespaceshipVertex" ],
     [ "shipVeto", "namespaceshipVeto.html", "namespaceshipVeto" ],
+    [ "splitcalDetector", "namespacesplitcalDetector.html", "namespacesplitcalDetector" ],
     [ "strawtubesDetector", "namespacestrawtubesDetector.html", "namespacestrawtubesDetector" ],
     [ "study_GammaConv", "namespacestudy__GammaConv.html", "namespacestudy__GammaConv" ],
     [ "study_muEloss", "namespacestudy__muEloss.html", [

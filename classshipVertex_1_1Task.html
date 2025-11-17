@@ -190,9 +190,9 @@ Static Public Attributes</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="shipVertex_8py_source.html#l00013">13</a> of file <a class="el" href="shipVertex_8py_source.html">shipVertex.py</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   13</span> <span class="keyword">def </span>__init__(self,hp,sTree):</div>
 <div class="line"><span class="lineno">   14</span>  self.sTree = sTree</div>
-<div class="line"><span class="lineno">   15</span>  self.fPartArray  = ROOT.TClonesArray(<span class="stringliteral">&quot;ShipParticle&quot;</span>)</div>
+<div class="line"><span class="lineno">   15</span>  self.fPartArray = ROOT.std.vector(<span class="stringliteral">&quot;ShipParticle&quot;</span>)()</div>
 <div class="line"><span class="lineno">   16</span>  <span class="keywordflow">if</span> <span class="keywordflow">not</span> self.sTree.GetBranch(<span class="stringliteral">&quot;Particles&quot;</span>):</div>
-<div class="line"><span class="lineno">   17</span>   self.Particles   = self.sTree.Branch(<span class="stringliteral">&quot;Particles&quot;</span>,  self.fPartArray,32000,-1)</div>
+<div class="line"><span class="lineno">   17</span>      self.Particles = self.sTree.Branch(<span class="stringliteral">&quot;Particles&quot;</span>, self.fPartArray)</div>
 <div class="line"><span class="lineno">   18</span>  <span class="keywordflow">else</span>:</div>
 <div class="line"><span class="lineno">   19</span>   self.Particles = self.sTree.Particles</div>
 <div class="line"><span class="lineno">   20</span>  self.reps,self.states,self.newPosDir = {},{},{}</div>
@@ -421,298 +421,296 @@ Static Public Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="shipVertex_8py_source.html#l00076">76</a> of file <a class="el" href="shipVertex_8py_source.html">shipVertex.py</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   76</span> <span class="keyword">def </span>TwoTrackVertex(self):</div>
-<div class="line"><span class="lineno">   77</span>  self.fPartArray.Delete()</div>
+<div class="line"><span class="lineno">   77</span>  self.fPartArray.clear()</div>
 <div class="line"><span class="lineno">   78</span>  fittedTracks = getattr(self.sTree,self.fitTrackLoc)</div>
 <div class="line"><span class="lineno">   79</span>  goodTracks = getattr(self.sTree,self.goodTracksLoc)</div>
 <div class="line"><span class="lineno">   80</span>  <span class="keywordflow">if</span> goodTracks.size() &lt; 2: <span class="keywordflow">return</span></div>
-<div class="line"><span class="lineno">   81</span>  particles    = self.fPartArray</div>
-<div class="line"><span class="lineno">   82</span>  PosDirCharge,CovMat,scalFac = {},{},{}</div>
-<div class="line"><span class="lineno">   83</span>  <span class="keywordflow">for</span> tr <span class="keywordflow">in</span> goodTracks:</div>
-<div class="line"><span class="lineno">   84</span>   fitStatus = fittedTracks[tr].getFitStatus()</div>
-<div class="line"><span class="lineno">   85</span>   xx  = fittedTracks[tr].getFittedState()</div>
-<div class="line"><span class="lineno">   86</span>   pid   = xx.getPDG()</div>
-<div class="line"><span class="lineno">   87</span>   <span class="keywordflow">if</span> <span class="keywordflow">not</span> global_variables.pidProton <span class="keywordflow">and</span> abs(pid) == 2212:</div>
-<div class="line"><span class="lineno">   88</span>     pid = int(math.copysign(211,pid))</div>
-<div class="line"><span class="lineno">   89</span>   rep   = ROOT.genfit.RKTrackRep(xx.getPDG())</div>
-<div class="line"><span class="lineno">   90</span>   state = ROOT.genfit.StateOnPlane(rep)</div>
-<div class="line"><span class="lineno">   91</span>   rep.setPosMom(state,xx.getPos(),xx.getMom())</div>
-<div class="line"><span class="lineno">   92</span>   PosDirCharge[tr] = {<span class="stringliteral">&#39;position&#39;</span>:xx.getPos(),<span class="stringliteral">&#39;direction&#39;</span>:xx.getDir(),\</div>
-<div class="line"><span class="lineno">   93</span>                          <span class="stringliteral">&#39;momentum&#39;</span>:xx.getMom(),<span class="stringliteral">&#39;charge&#39;</span>:xx.getCharge(),<span class="stringliteral">&#39;pdgCode&#39;</span>:pid,<span class="stringliteral">&#39;state&#39;</span>:xx,<span class="stringliteral">&#39;rep&#39;</span>:rep,<span class="stringliteral">&#39;newstate&#39;</span>:state}</div>
-<div class="line"><span class="lineno">   94</span>   CovMat[tr] = xx.get6DCov()</div>
-<div class="line"><span class="lineno">   95</span><span class="comment">#</span></div>
-<div class="line"><span class="lineno">   96</span>  <span class="keywordflow">if</span> len(PosDirCharge) &lt; 2: <span class="keywordflow">return</span></div>
-<div class="line"><span class="lineno">   97</span>  <span class="keywordflow">if</span> len(PosDirCharge) &gt; 4: <span class="keywordflow">return</span> <span class="comment"># abort too busy events</span></div>
-<div class="line"><span class="lineno">   98</span>  <span class="keywordflow">for</span> t1 <span class="keywordflow">in</span> PosDirCharge:</div>
-<div class="line"><span class="lineno">   99</span>   c1  = PosDirCharge[t1][<span class="stringliteral">&#39;charge&#39;</span>]</div>
-<div class="line"><span class="lineno">  100</span>   <span class="keywordflow">for</span> t2 <span class="keywordflow">in</span> PosDirCharge:</div>
-<div class="line"><span class="lineno">  101</span>     <span class="keywordflow">if</span> <span class="keywordflow">not</span> t2&gt;t1: <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  102</span>     <span class="comment"># ignore this for background studies</span></div>
-<div class="line"><span class="lineno">  103</span>     <span class="keywordflow">if</span> PosDirCharge[t2][<span class="stringliteral">&#39;charge&#39;</span>] == c1 : <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  104</span>     newPos,doca    = self.VertexError(t1,t2,PosDirCharge)</div>
-<div class="line"><span class="lineno">  105</span><span class="comment"># as we have learned, need iterative procedure</span></div>
-<div class="line"><span class="lineno">  106</span>     dz = 99999.</div>
-<div class="line"><span class="lineno">  107</span>     rc = <span class="keyword">True</span></div>
-<div class="line"><span class="lineno">  108</span>     step = 0</div>
-<div class="line"><span class="lineno">  109</span>     <span class="keywordflow">while</span> dz &gt; 0.01:</div>
-<div class="line"><span class="lineno">  110</span>      zBefore = newPos[2]</div>
-<div class="line"><span class="lineno">  111</span>     <span class="comment"># make a new rep for track 1,2</span></div>
-<div class="line"><span class="lineno">  112</span>      <span class="keywordflow">for</span> tr <span class="keywordflow">in</span> [t1,t2]:</div>
-<div class="line"><span class="lineno">  113</span>       <span class="keywordflow">try</span>:</div>
-<div class="line"><span class="lineno">  114</span>        PosDirCharge[tr][<span class="stringliteral">&#39;rep&#39;</span>].extrapolateToPoint(PosDirCharge[tr][<span class="stringliteral">&#39;newstate&#39;</span>], newPos, <span class="keyword">False</span>)</div>
-<div class="line"><span class="lineno">  115</span>       <span class="keywordflow">except</span>:</div>
-<div class="line"><span class="lineno">  116</span>        ut.reportError(<span class="stringliteral">&#39;shipVertex: extrapolation did not work&#39;</span>)</div>
-<div class="line"><span class="lineno">  117</span>        rc = <span class="keyword">False</span></div>
-<div class="line"><span class="lineno">  118</span>        <span class="keywordflow">break</span></div>
-<div class="line"><span class="lineno">  119</span>       self.newPosDir[tr] = {<span class="stringliteral">&#39;position&#39;</span>:PosDirCharge[tr][<span class="stringliteral">&#39;rep&#39;</span>].getPos(PosDirCharge[tr][<span class="stringliteral">&#39;newstate&#39;</span>]),\</div>
-<div class="line"><span class="lineno">  120</span>                             <span class="stringliteral">&#39;direction&#39;</span>:PosDirCharge[tr][<span class="stringliteral">&#39;rep&#39;</span>].getDir(PosDirCharge[tr][<span class="stringliteral">&#39;newstate&#39;</span>]),\</div>
-<div class="line"><span class="lineno">  121</span>                             <span class="stringliteral">&#39;momentum&#39;</span>:PosDirCharge[tr][<span class="stringliteral">&#39;rep&#39;</span>].getMom(PosDirCharge[tr][<span class="stringliteral">&#39;newstate&#39;</span>])}</div>
-<div class="line"><span class="lineno">  122</span>      <span class="keywordflow">if</span> <span class="keywordflow">not</span> rc: <span class="keywordflow">break</span></div>
-<div class="line"><span class="lineno">  123</span>      newPos,doca = self.VertexError(t1,t2,self.newPosDir)</div>
-<div class="line"><span class="lineno">  124</span>      dz = abs(zBefore-newPos[2])</div>
-<div class="line"><span class="lineno">  125</span>      step+=1</div>
-<div class="line"><span class="lineno">  126</span>      <span class="keywordflow">if</span> step &gt; 10:</div>
-<div class="line"><span class="lineno">  127</span>         ut.reportError(<span class="stringliteral">&quot;shipVertex: abort iteration, too many steps&quot;</span>)</div>
-<div class="line"><span class="lineno">  128</span>         <span class="keywordflow">if</span> global_variables.debug:</div>
-<div class="line"><span class="lineno">  129</span>          print(<span class="stringliteral">&#39;abort iteration, too many steps, pos=&#39;</span>,newPos[0],newPos[1],newPos[2],<span class="stringliteral">&#39; doca=&#39;</span>,doca,<span class="stringliteral">&#39;z before and dz&#39;</span>,zBefore,dz)</div>
-<div class="line"><span class="lineno">  130</span>         rc = <span class="keyword">False</span></div>
-<div class="line"><span class="lineno">  131</span>         <span class="keywordflow">break</span></div>
-<div class="line"><span class="lineno">  132</span><span class="comment">#</span></div>
-<div class="line"><span class="lineno">  133</span>     <span class="keywordflow">if</span> <span class="keywordflow">not</span> rc: <span class="keywordflow">continue</span> <span class="comment"># extrapolation failed, makes no sense to continue</span></div>
-<div class="line"><span class="lineno">  134</span><span class="comment"># now go for the last step and vertex error</span></div>
-<div class="line"><span class="lineno">  135</span>     scalFac[t1] = (PosDirCharge[t1][<span class="stringliteral">&#39;position&#39;</span>][2]-newPos[2])/PosDirCharge[t1][<span class="stringliteral">&#39;direction&#39;</span>][2]/PosDirCharge[t1][<span class="stringliteral">&#39;momentum&#39;</span>].Mag()</div>
-<div class="line"><span class="lineno">  136</span>     scalFac[t2] = (PosDirCharge[t2][<span class="stringliteral">&#39;position&#39;</span>][2]-newPos[2])/PosDirCharge[t2][<span class="stringliteral">&#39;direction&#39;</span>][2]/PosDirCharge[t2][<span class="stringliteral">&#39;momentum&#39;</span>].Mag()</div>
-<div class="line"><span class="lineno">  137</span>     HNLPos,covX,dist = self.VertexError(t1,t2,self.newPosDir,CovMat,scalFac)</div>
-<div class="line"><span class="lineno">  138</span><span class="comment"># monitor Vx resolution and pulls</span></div>
-<div class="line"><span class="lineno">  139</span>     <span class="comment">#print &quot;DEBUG&quot;,HNLPos[0],HNLPos[1],HNLPos[2],dist,covX[0][0],covX[1][1],covX[2][2]</span></div>
-<div class="line"><span class="lineno">  140</span>     <span class="comment">#print &quot;     &quot;,mctrack.GetStartX(),mctrack.GetStartY(),mctrack.GetStartZ()</span></div>
-<div class="line"><span class="lineno">  141</span><span class="comment">#   HNL true</span></div>
-<div class="line"><span class="lineno">  142</span>     <span class="keywordflow">if</span>  self.sTree.GetBranch(<span class="stringliteral">&quot;fitTrack2MC&quot;</span>):</div>
-<div class="line"><span class="lineno">  143</span>      mctrack = self.sTree.MCTrack[self.sTree.fitTrack2MC[t1]]</div>
-<div class="line"><span class="lineno">  144</span>      mctrack2 = self.sTree.MCTrack[self.sTree.fitTrack2MC[t2]]</div>
-<div class="line"><span class="lineno">  145</span>      mcHNL = self.sTree.MCTrack[mctrack.GetMotherId()]</div>
-<div class="line"><span class="lineno">  146</span>      <span class="comment">#print &quot;true vtx: &quot;,mctrack.GetStartX(),mctrack.GetStartY(),mctrack.GetStartZ()</span></div>
-<div class="line"><span class="lineno">  147</span>      <span class="comment">#print &quot;reco vtx: &quot;,HNLPos[0],HNLPos[1],HNLPos[2]</span></div>
-<div class="line"><span class="lineno">  148</span>      <span class="comment">#self.h[&#39;Vzpull&#39;].Fill( (mctrack.GetStartZ()-HNLPos[2])/ROOT.TMath.Sqrt(covX[2][2]) )</span></div>
-<div class="line"><span class="lineno">  149</span>      <span class="comment">#self.h[&#39;Vxpull&#39;].Fill( (mctrack.GetStartX()-HNLPos[0])/ROOT.TMath.Sqrt(covX[0][0]) )</span></div>
-<div class="line"><span class="lineno">  150</span>      <span class="comment">#self.h[&#39;Vypull&#39;].Fill( (mctrack.GetStartY()-HNLPos[1])/ROOT.TMath.Sqrt(covX[1][1]) )</span></div>
-<div class="line"><span class="lineno">  151</span>      <span class="comment">#self.h[&#39;dVx&#39;].Fill( (mctrack.GetStartX()-HNLPos[0]) )</span></div>
-<div class="line"><span class="lineno">  152</span>      <span class="comment">#self.h[&#39;dVy&#39;].Fill( (mctrack.GetStartY()-HNLPos[1]) )</span></div>
-<div class="line"><span class="lineno">  153</span>      <span class="comment">#self.h[&#39;dVz&#39;].Fill( (mctrack.GetStartZ()-HNLPos[2]) )</span></div>
+<div class="line"><span class="lineno">   81</span>  PosDirCharge,CovMat,scalFac = {},{},{}</div>
+<div class="line"><span class="lineno">   82</span>  <span class="keywordflow">for</span> tr <span class="keywordflow">in</span> goodTracks:</div>
+<div class="line"><span class="lineno">   83</span>   fitStatus = fittedTracks[tr].getFitStatus()</div>
+<div class="line"><span class="lineno">   84</span>   xx  = fittedTracks[tr].getFittedState()</div>
+<div class="line"><span class="lineno">   85</span>   pid   = xx.getPDG()</div>
+<div class="line"><span class="lineno">   86</span>   <span class="keywordflow">if</span> <span class="keywordflow">not</span> global_variables.pidProton <span class="keywordflow">and</span> abs(pid) == 2212:</div>
+<div class="line"><span class="lineno">   87</span>     pid = int(math.copysign(211,pid))</div>
+<div class="line"><span class="lineno">   88</span>   rep   = ROOT.genfit.RKTrackRep(xx.getPDG())</div>
+<div class="line"><span class="lineno">   89</span>   state = ROOT.genfit.StateOnPlane(rep)</div>
+<div class="line"><span class="lineno">   90</span>   rep.setPosMom(state,xx.getPos(),xx.getMom())</div>
+<div class="line"><span class="lineno">   91</span>   PosDirCharge[tr] = {<span class="stringliteral">&#39;position&#39;</span>:xx.getPos(),<span class="stringliteral">&#39;direction&#39;</span>:xx.getDir(),\</div>
+<div class="line"><span class="lineno">   92</span>                          <span class="stringliteral">&#39;momentum&#39;</span>:xx.getMom(),<span class="stringliteral">&#39;charge&#39;</span>:xx.getCharge(),<span class="stringliteral">&#39;pdgCode&#39;</span>:pid,<span class="stringliteral">&#39;state&#39;</span>:xx,<span class="stringliteral">&#39;rep&#39;</span>:rep,<span class="stringliteral">&#39;newstate&#39;</span>:state}</div>
+<div class="line"><span class="lineno">   93</span>   CovMat[tr] = xx.get6DCov()</div>
+<div class="line"><span class="lineno">   94</span><span class="comment">#</span></div>
+<div class="line"><span class="lineno">   95</span>  <span class="keywordflow">if</span> len(PosDirCharge) &lt; 2: <span class="keywordflow">return</span></div>
+<div class="line"><span class="lineno">   96</span>  <span class="keywordflow">if</span> len(PosDirCharge) &gt; 4: <span class="keywordflow">return</span> <span class="comment"># abort too busy events</span></div>
+<div class="line"><span class="lineno">   97</span>  <span class="keywordflow">for</span> t1 <span class="keywordflow">in</span> PosDirCharge:</div>
+<div class="line"><span class="lineno">   98</span>   c1  = PosDirCharge[t1][<span class="stringliteral">&#39;charge&#39;</span>]</div>
+<div class="line"><span class="lineno">   99</span>   <span class="keywordflow">for</span> t2 <span class="keywordflow">in</span> PosDirCharge:</div>
+<div class="line"><span class="lineno">  100</span>     <span class="keywordflow">if</span> <span class="keywordflow">not</span> t2&gt;t1: <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  101</span>     <span class="comment"># ignore this for background studies</span></div>
+<div class="line"><span class="lineno">  102</span>     <span class="keywordflow">if</span> PosDirCharge[t2][<span class="stringliteral">&#39;charge&#39;</span>] == c1 : <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  103</span>     newPos,doca    = self.VertexError(t1,t2,PosDirCharge)</div>
+<div class="line"><span class="lineno">  104</span><span class="comment"># as we have learned, need iterative procedure</span></div>
+<div class="line"><span class="lineno">  105</span>     dz = 99999.</div>
+<div class="line"><span class="lineno">  106</span>     rc = <span class="keyword">True</span></div>
+<div class="line"><span class="lineno">  107</span>     step = 0</div>
+<div class="line"><span class="lineno">  108</span>     <span class="keywordflow">while</span> dz &gt; 0.01:</div>
+<div class="line"><span class="lineno">  109</span>      zBefore = newPos[2]</div>
+<div class="line"><span class="lineno">  110</span>     <span class="comment"># make a new rep for track 1,2</span></div>
+<div class="line"><span class="lineno">  111</span>      <span class="keywordflow">for</span> tr <span class="keywordflow">in</span> [t1,t2]:</div>
+<div class="line"><span class="lineno">  112</span>       <span class="keywordflow">try</span>:</div>
+<div class="line"><span class="lineno">  113</span>        PosDirCharge[tr][<span class="stringliteral">&#39;rep&#39;</span>].extrapolateToPoint(PosDirCharge[tr][<span class="stringliteral">&#39;newstate&#39;</span>], newPos, <span class="keyword">False</span>)</div>
+<div class="line"><span class="lineno">  114</span>       <span class="keywordflow">except</span>:</div>
+<div class="line"><span class="lineno">  115</span>        ut.reportError(<span class="stringliteral">&#39;shipVertex: extrapolation did not work&#39;</span>)</div>
+<div class="line"><span class="lineno">  116</span>        rc = <span class="keyword">False</span></div>
+<div class="line"><span class="lineno">  117</span>        <span class="keywordflow">break</span></div>
+<div class="line"><span class="lineno">  118</span>       self.newPosDir[tr] = {<span class="stringliteral">&#39;position&#39;</span>:PosDirCharge[tr][<span class="stringliteral">&#39;rep&#39;</span>].getPos(PosDirCharge[tr][<span class="stringliteral">&#39;newstate&#39;</span>]),\</div>
+<div class="line"><span class="lineno">  119</span>                             <span class="stringliteral">&#39;direction&#39;</span>:PosDirCharge[tr][<span class="stringliteral">&#39;rep&#39;</span>].getDir(PosDirCharge[tr][<span class="stringliteral">&#39;newstate&#39;</span>]),\</div>
+<div class="line"><span class="lineno">  120</span>                             <span class="stringliteral">&#39;momentum&#39;</span>:PosDirCharge[tr][<span class="stringliteral">&#39;rep&#39;</span>].getMom(PosDirCharge[tr][<span class="stringliteral">&#39;newstate&#39;</span>])}</div>
+<div class="line"><span class="lineno">  121</span>      <span class="keywordflow">if</span> <span class="keywordflow">not</span> rc: <span class="keywordflow">break</span></div>
+<div class="line"><span class="lineno">  122</span>      newPos,doca = self.VertexError(t1,t2,self.newPosDir)</div>
+<div class="line"><span class="lineno">  123</span>      dz = abs(zBefore-newPos[2])</div>
+<div class="line"><span class="lineno">  124</span>      step+=1</div>
+<div class="line"><span class="lineno">  125</span>      <span class="keywordflow">if</span> step &gt; 10:</div>
+<div class="line"><span class="lineno">  126</span>         ut.reportError(<span class="stringliteral">&quot;shipVertex: abort iteration, too many steps&quot;</span>)</div>
+<div class="line"><span class="lineno">  127</span>         <span class="keywordflow">if</span> global_variables.debug:</div>
+<div class="line"><span class="lineno">  128</span>          print(<span class="stringliteral">&#39;abort iteration, too many steps, pos=&#39;</span>,newPos[0],newPos[1],newPos[2],<span class="stringliteral">&#39; doca=&#39;</span>,doca,<span class="stringliteral">&#39;z before and dz&#39;</span>,zBefore,dz)</div>
+<div class="line"><span class="lineno">  129</span>         rc = <span class="keyword">False</span></div>
+<div class="line"><span class="lineno">  130</span>         <span class="keywordflow">break</span></div>
+<div class="line"><span class="lineno">  131</span><span class="comment">#</span></div>
+<div class="line"><span class="lineno">  132</span>     <span class="keywordflow">if</span> <span class="keywordflow">not</span> rc: <span class="keywordflow">continue</span> <span class="comment"># extrapolation failed, makes no sense to continue</span></div>
+<div class="line"><span class="lineno">  133</span><span class="comment"># now go for the last step and vertex error</span></div>
+<div class="line"><span class="lineno">  134</span>     scalFac[t1] = (PosDirCharge[t1][<span class="stringliteral">&#39;position&#39;</span>][2]-newPos[2])/PosDirCharge[t1][<span class="stringliteral">&#39;direction&#39;</span>][2]/PosDirCharge[t1][<span class="stringliteral">&#39;momentum&#39;</span>].Mag()</div>
+<div class="line"><span class="lineno">  135</span>     scalFac[t2] = (PosDirCharge[t2][<span class="stringliteral">&#39;position&#39;</span>][2]-newPos[2])/PosDirCharge[t2][<span class="stringliteral">&#39;direction&#39;</span>][2]/PosDirCharge[t2][<span class="stringliteral">&#39;momentum&#39;</span>].Mag()</div>
+<div class="line"><span class="lineno">  136</span>     HNLPos,covX,dist = self.VertexError(t1,t2,self.newPosDir,CovMat,scalFac)</div>
+<div class="line"><span class="lineno">  137</span><span class="comment"># monitor Vx resolution and pulls</span></div>
+<div class="line"><span class="lineno">  138</span>     <span class="comment">#print &quot;DEBUG&quot;,HNLPos[0],HNLPos[1],HNLPos[2],dist,covX[0][0],covX[1][1],covX[2][2]</span></div>
+<div class="line"><span class="lineno">  139</span>     <span class="comment">#print &quot;     &quot;,mctrack.GetStartX(),mctrack.GetStartY(),mctrack.GetStartZ()</span></div>
+<div class="line"><span class="lineno">  140</span><span class="comment">#   HNL true</span></div>
+<div class="line"><span class="lineno">  141</span>     <span class="keywordflow">if</span>  self.sTree.GetBranch(<span class="stringliteral">&quot;fitTrack2MC&quot;</span>):</div>
+<div class="line"><span class="lineno">  142</span>      mctrack = self.sTree.MCTrack[self.sTree.fitTrack2MC[t1]]</div>
+<div class="line"><span class="lineno">  143</span>      mctrack2 = self.sTree.MCTrack[self.sTree.fitTrack2MC[t2]]</div>
+<div class="line"><span class="lineno">  144</span>      mcHNL = self.sTree.MCTrack[mctrack.GetMotherId()]</div>
+<div class="line"><span class="lineno">  145</span>      <span class="comment">#print &quot;true vtx: &quot;,mctrack.GetStartX(),mctrack.GetStartY(),mctrack.GetStartZ()</span></div>
+<div class="line"><span class="lineno">  146</span>      <span class="comment">#print &quot;reco vtx: &quot;,HNLPos[0],HNLPos[1],HNLPos[2]</span></div>
+<div class="line"><span class="lineno">  147</span>      <span class="comment">#self.h[&#39;Vzpull&#39;].Fill( (mctrack.GetStartZ()-HNLPos[2])/ROOT.TMath.Sqrt(covX[2][2]) )</span></div>
+<div class="line"><span class="lineno">  148</span>      <span class="comment">#self.h[&#39;Vxpull&#39;].Fill( (mctrack.GetStartX()-HNLPos[0])/ROOT.TMath.Sqrt(covX[0][0]) )</span></div>
+<div class="line"><span class="lineno">  149</span>      <span class="comment">#self.h[&#39;Vypull&#39;].Fill( (mctrack.GetStartY()-HNLPos[1])/ROOT.TMath.Sqrt(covX[1][1]) )</span></div>
+<div class="line"><span class="lineno">  150</span>      <span class="comment">#self.h[&#39;dVx&#39;].Fill( (mctrack.GetStartX()-HNLPos[0]) )</span></div>
+<div class="line"><span class="lineno">  151</span>      <span class="comment">#self.h[&#39;dVy&#39;].Fill( (mctrack.GetStartY()-HNLPos[1]) )</span></div>
+<div class="line"><span class="lineno">  152</span>      <span class="comment">#self.h[&#39;dVz&#39;].Fill( (mctrack.GetStartZ()-HNLPos[2]) )</span></div>
+<div class="line"><span class="lineno">  153</span> </div>
 <div class="line"><span class="lineno">  154</span> </div>
-<div class="line"><span class="lineno">  155</span> </div>
-<div class="line"><span class="lineno">  156</span>     <span class="comment">#print &quot;*********************************** vertex fit precise   ******************************************** &quot;</span></div>
-<div class="line"><span class="lineno">  157</span> </div>
-<div class="line"><span class="lineno">  158</span>     detPlane = ROOT.genfit.DetPlane(ROOT.TVector3(0,0,HNLPos[2]),ROOT.TVector3(1,0,0),ROOT.TVector3(0,1,0))</div>
-<div class="line"><span class="lineno">  159</span>     detPlanePtr = ROOT.genfit.SharedPlanePtr(detPlane)</div>
-<div class="line"><span class="lineno">  160</span>     st1  = fittedTracks[t1].getFittedState()</div>
-<div class="line"><span class="lineno">  161</span>     st2  = fittedTracks[t2].getFittedState()</div>
-<div class="line"><span class="lineno">  162</span>     <span class="keywordflow">try</span>:</div>
-<div class="line"><span class="lineno">  163</span>      st1.extrapolateToPlane(detPlanePtr)</div>
-<div class="line"><span class="lineno">  164</span>     <span class="keywordflow">except</span>:</div>
-<div class="line"><span class="lineno">  165</span>      ut.reportError(<span class="stringliteral">&quot;shipVertex.TwoTrackVertex: extrapolation did not work&quot;</span>)</div>
-<div class="line"><span class="lineno">  166</span>      <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  167</span>     <span class="keywordflow">try</span>:</div>
-<div class="line"><span class="lineno">  168</span>      st2.extrapolateToPlane(detPlanePtr)</div>
-<div class="line"><span class="lineno">  169</span>     <span class="keywordflow">except</span>:</div>
-<div class="line"><span class="lineno">  170</span>      ut.reportError(<span class="stringliteral">&quot;shipVertex.TwoTrackVertex: extrapolation did not work&quot;</span>)</div>
-<div class="line"><span class="lineno">  171</span>      <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  172</span>     mom1 = st1.getMom()</div>
-<div class="line"><span class="lineno">  173</span>     mom2 = st2.getMom()</div>
-<div class="line"><span class="lineno">  174</span>     cov1 = st1.getCov()</div>
-<div class="line"><span class="lineno">  175</span>     cov2 = st2.getCov()</div>
-<div class="line"><span class="lineno">  176</span>     cov = ROOT.TMatrixDSym(10)</div>
-<div class="line"><span class="lineno">  177</span>     <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(10):</div>
-<div class="line"><span class="lineno">  178</span>       <span class="keywordflow">for</span> j <span class="keywordflow">in</span> range(10):</div>
-<div class="line"><span class="lineno">  179</span>         <span class="keywordflow">if</span> i&lt;5 <span class="keywordflow">and</span> j&lt;5: cov[i][j]=cov1[i][j]</div>
-<div class="line"><span class="lineno">  180</span>         <span class="keywordflow">if</span> i&gt;4 <span class="keywordflow">and</span> j&gt;4: cov[i][j]=cov2[i-5][j-5]</div>
-<div class="line"><span class="lineno">  181</span>     covInv = ROOT.TMatrixDSym()</div>
-<div class="line"><span class="lineno">  182</span>     ROOT.genfit.tools.invertMatrix(cov,covInv)</div>
-<div class="line"><span class="lineno">  183</span> </div>
-<div class="line"><span class="lineno">  184</span>     self.y_data = np.array([0.,0.,0.,0.,0.,0.,0.,0.,0.,0.])</div>
-<div class="line"><span class="lineno">  185</span>     stVal1 = st1.getState()</div>
-<div class="line"><span class="lineno">  186</span>     stVal2 = st2.getState()</div>
-<div class="line"><span class="lineno">  187</span>     <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(5):</div>
-<div class="line"><span class="lineno">  188</span>      self.y_data[i]=stVal1[i]</div>
-<div class="line"><span class="lineno">  189</span>      self.y_data[i+5]=stVal2[i]</div>
-<div class="line"><span class="lineno">  190</span>     self.z0 = HNLPos[2]</div>
-<div class="line"><span class="lineno">  191</span>     self.Vy = np.zeros(100)</div>
-<div class="line"><span class="lineno">  192</span>     <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(100):</div>
-<div class="line"><span class="lineno">  193</span>       self.Vy[i] = covInv[i//10][i%10]</div>
-<div class="line"><span class="lineno">  194</span> </div>
-<div class="line"><span class="lineno">  195</span>     f=np.array([0.])</div>
-<div class="line"><span class="lineno">  196</span>     gMinuit = ROOT.TMinuit(9)</div>
-<div class="line"><span class="lineno">  197</span>     tempFcn = self.fcn</div>
-<div class="line"><span class="lineno">  198</span>     gMinuit.SetFCN(tempFcn)</div>
-<div class="line"><span class="lineno">  199</span>     gMinuit.SetPrintLevel(-1)<span class="comment">#minute quiet mode</span></div>
-<div class="line"><span class="lineno">  200</span>     rc = gMinuit.DefineParameter(0, <span class="stringliteral">&#39;X pos&#39;</span>,HNLPos[0], 0.1,0,0)</div>
-<div class="line"><span class="lineno">  201</span>     rc = gMinuit.DefineParameter(1, <span class="stringliteral">&#39;Y pos&#39;</span>,HNLPos[1], 0.1,0,0)</div>
-<div class="line"><span class="lineno">  202</span>     rc = gMinuit.DefineParameter(2, <span class="stringliteral">&#39;Z pos&#39;</span>,HNLPos[2], 0.1,0,0)</div>
-<div class="line"><span class="lineno">  203</span>     rc = gMinuit.DefineParameter(3, <span class="stringliteral">&#39;tan1X&#39;</span>,mom1[0]/mom1[2], 0.1,0,0)</div>
-<div class="line"><span class="lineno">  204</span>     rc = gMinuit.DefineParameter(4, <span class="stringliteral">&#39;tan1Y&#39;</span>,mom1[1]/mom1[2], 0.1,0,0)</div>
-<div class="line"><span class="lineno">  205</span>     rc = gMinuit.DefineParameter(5, <span class="stringliteral">&#39;1/mom1&#39;</span>,1./mom1.Mag(), 0.1,0,0)</div>
-<div class="line"><span class="lineno">  206</span>     rc = gMinuit.DefineParameter(6, <span class="stringliteral">&#39;tan2X&#39;</span>,mom2[0]/mom2[2], 0.1,0,0)</div>
-<div class="line"><span class="lineno">  207</span>     rc = gMinuit.DefineParameter(7, <span class="stringliteral">&#39;tan2Y&#39;</span>,mom2[1]/mom2[2], 0.1,0,0)</div>
-<div class="line"><span class="lineno">  208</span>     rc = gMinuit.DefineParameter(8, <span class="stringliteral">&#39;1/mom2&#39;</span>,1./mom2.Mag(), 0.1,0,0)</div>
-<div class="line"><span class="lineno">  209</span>     gMinuit.Clear()</div>
-<div class="line"><span class="lineno">  210</span>     gMinuit.Migrad()</div>
-<div class="line"><span class="lineno">  211</span>     <span class="keywordflow">try</span>:</div>
-<div class="line"><span class="lineno">  212</span>      tmp = array(<span class="stringliteral">&#39;d&#39;</span>,[0])</div>
-<div class="line"><span class="lineno">  213</span>      err = array(<span class="stringliteral">&#39;i&#39;</span>,[0])</div>
-<div class="line"><span class="lineno">  214</span>      gMinuit.mnexcm( <span class="stringliteral">&quot;HESSE&quot;</span>, tmp, -1, err )</div>
-<div class="line"><span class="lineno">  215</span>      <span class="comment">#gMinuit.mnexcm( &quot;MINOS&quot;, tmp, -1, err )</span></div>
-<div class="line"><span class="lineno">  216</span>     <span class="keywordflow">except</span>:</div>
-<div class="line"><span class="lineno">  217</span>       ut.reportError(<span class="stringliteral">&quot;shipVertex::minos does not work&quot;</span>)</div>
-<div class="line"><span class="lineno">  218</span>       <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  219</span>     <span class="comment">#get results from TMinuit:</span></div>
-<div class="line"><span class="lineno">  220</span>     emat = array(<span class="stringliteral">&#39;d&#39;</span>,[0,]*81)</div>
-<div class="line"><span class="lineno">  221</span>     gMinuit.mnemat(emat,9)</div>
-<div class="line"><span class="lineno">  222</span>     values = array(<span class="stringliteral">&#39;d&#39;</span>,[0,]*9)</div>
-<div class="line"><span class="lineno">  223</span>     errors = array(<span class="stringliteral">&#39;d&#39;</span>,[0,]*9)</div>
-<div class="line"><span class="lineno">  224</span>     dValue = ctypes.c_double()</div>
-<div class="line"><span class="lineno">  225</span>     dError = ctypes.c_double()</div>
-<div class="line"><span class="lineno">  226</span>     rc = gMinuit.GetParameter(0, dValue, dError)</div>
-<div class="line"><span class="lineno">  227</span>     values[0]=dValue.value</div>
-<div class="line"><span class="lineno">  228</span>     errors[0]=dError.value</div>
-<div class="line"><span class="lineno">  229</span>     rc = gMinuit.GetParameter(1, dValue, dError)</div>
-<div class="line"><span class="lineno">  230</span>     values[1]=dValue.value</div>
-<div class="line"><span class="lineno">  231</span>     errors[1]=dError.value</div>
-<div class="line"><span class="lineno">  232</span>     rc = gMinuit.GetParameter(2, dValue, dError)</div>
-<div class="line"><span class="lineno">  233</span>     values[2]=dValue.value</div>
-<div class="line"><span class="lineno">  234</span>     errors[2]=dError.value</div>
-<div class="line"><span class="lineno">  235</span>     rc = gMinuit.GetParameter(3, dValue, dError)</div>
-<div class="line"><span class="lineno">  236</span>     values[3]=dValue.value</div>
-<div class="line"><span class="lineno">  237</span>     errors[3]=dError.value</div>
-<div class="line"><span class="lineno">  238</span>     rc = gMinuit.GetParameter(4, dValue, dError)</div>
-<div class="line"><span class="lineno">  239</span>     values[4]=dValue.value</div>
-<div class="line"><span class="lineno">  240</span>     errors[4]=dError.value</div>
-<div class="line"><span class="lineno">  241</span>     rc = gMinuit.GetParameter(5, dValue, dError)</div>
-<div class="line"><span class="lineno">  242</span>     values[5]=dValue.value</div>
-<div class="line"><span class="lineno">  243</span>     errors[5]=dError.value</div>
-<div class="line"><span class="lineno">  244</span>     rc = gMinuit.GetParameter(6, dValue, dError)</div>
-<div class="line"><span class="lineno">  245</span>     values[6]=dValue.value</div>
-<div class="line"><span class="lineno">  246</span>     errors[6]=dError.value</div>
-<div class="line"><span class="lineno">  247</span>     rc = gMinuit.GetParameter(7, dValue, dError)</div>
-<div class="line"><span class="lineno">  248</span>     values[7]=dValue.value</div>
-<div class="line"><span class="lineno">  249</span>     errors[7]=dError.value</div>
-<div class="line"><span class="lineno">  250</span>     rc = gMinuit.GetParameter(8, dValue, dError)</div>
-<div class="line"><span class="lineno">  251</span>     values[8]=dValue.value</div>
-<div class="line"><span class="lineno">  252</span>     errors[8]=dError.value</div>
-<div class="line"><span class="lineno">  253</span> </div>
-<div class="line"><span class="lineno">  254</span>     xFit = values[0]</div>
-<div class="line"><span class="lineno">  255</span>     yFit = values[1]</div>
-<div class="line"><span class="lineno">  256</span>     zFit = values[2]</div>
-<div class="line"><span class="lineno">  257</span>     HNLPosFit =  ROOT.TVector3(xFit,yFit,zFit)</div>
-<div class="line"><span class="lineno">  258</span>     xFitErr = errors[0]</div>
-<div class="line"><span class="lineno">  259</span>     yFitErr = errors[1]</div>
-<div class="line"><span class="lineno">  260</span>     zFitErr = errors[2]</div>
-<div class="line"><span class="lineno">  261</span> </div>
-<div class="line"><span class="lineno">  262</span>     <span class="comment">#fixme: mass from track reconstraction needed</span></div>
-<div class="line"><span class="lineno">  263</span>     m1 = self.PDG.GetParticle(PosDirCharge[t1][<span class="stringliteral">&#39;pdgCode&#39;</span>]).Mass()</div>
-<div class="line"><span class="lineno">  264</span>     m2 = self.PDG.GetParticle(PosDirCharge[t2][<span class="stringliteral">&#39;pdgCode&#39;</span>]).Mass()</div>
-<div class="line"><span class="lineno">  265</span> </div>
-<div class="line"><span class="lineno">  266</span>     <span class="comment">#self.h[&#39;VxpullFit&#39;].Fill( (mctrack.GetStartX()-xFit)/xFitErr )</span></div>
-<div class="line"><span class="lineno">  267</span>     <span class="comment">#self.h[&#39;VypullFit&#39;].Fill( (mctrack.GetStartY()-yFit)/yFitErr )</span></div>
-<div class="line"><span class="lineno">  268</span>     <span class="comment">#self.h[&#39;VzpullFit&#39;].Fill( (mctrack.GetStartZ()-zFit)/zFitErr )</span></div>
-<div class="line"><span class="lineno">  269</span>     <span class="comment">#self.h[&#39;dVxFit&#39;].Fill( (mctrack.GetStartX()-xFit) )</span></div>
-<div class="line"><span class="lineno">  270</span>     <span class="comment">#self.h[&#39;dVyFit&#39;].Fill( (mctrack.GetStartY()-yFit) )</span></div>
-<div class="line"><span class="lineno">  271</span>     <span class="comment">#self.h[&#39;dVzFit&#39;].Fill( (mctrack.GetStartZ()-zFit) )</span></div>
-<div class="line"><span class="lineno">  272</span> </div>
-<div class="line"><span class="lineno">  273</span>     <span class="keyword">def </span>getP(fitValues,cov,m1,m2):</div>
-<div class="line"><span class="lineno">  274</span>       a3=fitValues[3]</div>
-<div class="line"><span class="lineno">  275</span>       a4=fitValues[4]</div>
-<div class="line"><span class="lineno">  276</span>       a5=fitValues[5]</div>
-<div class="line"><span class="lineno">  277</span>       a6=fitValues[6]</div>
-<div class="line"><span class="lineno">  278</span>       a7=fitValues[7]</div>
-<div class="line"><span class="lineno">  279</span>       a8=fitValues[8]</div>
-<div class="line"><span class="lineno">  280</span>       px1 = a3/(a5*ROOT.TMath.Sqrt(1 + a3**2 + a4**2))</div>
-<div class="line"><span class="lineno">  281</span>       py1 = a4/(a5*ROOT.TMath.Sqrt(1 + a3**2 + a4**2))</div>
-<div class="line"><span class="lineno">  282</span>       pz1 = 1/(a5*ROOT.TMath.Sqrt(1 + a3**2 + a4**2))</div>
-<div class="line"><span class="lineno">  283</span>       px2 = a6/(a8*ROOT.TMath.Sqrt(1 + a6**2 + a7**2))</div>
-<div class="line"><span class="lineno">  284</span>       py2 = a7/(a8*ROOT.TMath.Sqrt(1 + a6**2 + a7**2))</div>
-<div class="line"><span class="lineno">  285</span>       pz2 = 1/(a8*ROOT.TMath.Sqrt(1 + a6**2 + a7**2))</div>
-<div class="line"><span class="lineno">  286</span>       Px = px1 + px2</div>
-<div class="line"><span class="lineno">  287</span>       Py = py1 + py2</div>
-<div class="line"><span class="lineno">  288</span>       Pz = pz1 + pz2</div>
-<div class="line"><span class="lineno">  289</span>       E1 = ROOT.TMath.Sqrt(px1**2 + py1**2 + pz1**2 + m1**2)</div>
-<div class="line"><span class="lineno">  290</span>       E2 = ROOT.TMath.Sqrt(px2**2 + py2**2 + pz2**2 + m2**2)</div>
-<div class="line"><span class="lineno">  291</span>       M = ROOT.TMath.Sqrt(2*E1*E2+m1**2+m2**2-2*pz1*pz2*(1+a3*a6+a4*a7))</div>
-<div class="line"><span class="lineno">  292</span>       MM = 2*M</div>
-<div class="line"><span class="lineno">  293</span>       A5 = 1 + a3**2 + a4**2</div>
-<div class="line"><span class="lineno">  294</span>       A8 = 1 + a6**2 + a7**2</div>
-<div class="line"><span class="lineno">  295</span>       M_AtoP = ROOT.TMatrixD(4,6)</div>
-<div class="line"><span class="lineno">  296</span>       MT_AtoP = ROOT.TMatrixD(6,4)</div>
-<div class="line"><span class="lineno">  297</span>       covA = ROOT.TMatrixD(6,6)</div>
-<div class="line"><span class="lineno">  298</span>       M_AtoP[0][0] = (1.-a3*a3/A5)/(a5*ROOT.TMath.Sqrt(A5))</div>
-<div class="line"><span class="lineno">  299</span>       M_AtoP[0][1] = (-a3*a4/A5)/(a5*ROOT.TMath.Sqrt(A5))</div>
-<div class="line"><span class="lineno">  300</span>       M_AtoP[0][2] = (-a3)/(a5*a5*ROOT.TMath.Sqrt(A5))</div>
-<div class="line"><span class="lineno">  301</span>       M_AtoP[0][3] = (1.-a6*a6/A8)/(a8*ROOT.TMath.Sqrt(A8))</div>
-<div class="line"><span class="lineno">  302</span>       M_AtoP[0][4] = (-a6*a7/A8)/(a8*ROOT.TMath.Sqrt(A8))</div>
-<div class="line"><span class="lineno">  303</span>       M_AtoP[0][5] = (-a6)/(a8*a8*ROOT.TMath.Sqrt(A8))</div>
-<div class="line"><span class="lineno">  304</span> </div>
-<div class="line"><span class="lineno">  305</span>       M_AtoP[1][0] = (-a3*a4/A5)/(a5*ROOT.TMath.Sqrt(A5))</div>
-<div class="line"><span class="lineno">  306</span>       M_AtoP[1][1] = (1.-a4*a4/A5)/(a5*ROOT.TMath.Sqrt(A5))</div>
-<div class="line"><span class="lineno">  307</span>       M_AtoP[1][2] = (-a4)/(a5*a5*ROOT.TMath.Sqrt(A5))</div>
-<div class="line"><span class="lineno">  308</span>       M_AtoP[1][3] = (-a6*a7/A8)/(a8*ROOT.TMath.Sqrt(A8))</div>
-<div class="line"><span class="lineno">  309</span>       M_AtoP[1][4] = (1.-a7*a7/A8)/(a8*ROOT.TMath.Sqrt(A8))</div>
-<div class="line"><span class="lineno">  310</span>       M_AtoP[1][5] = (-a7)/(a8*a8*ROOT.TMath.Sqrt(A8))</div>
-<div class="line"><span class="lineno">  311</span> </div>
-<div class="line"><span class="lineno">  312</span>       M_AtoP[2][0] = (-a3/A5)/(a5*ROOT.TMath.Sqrt(A5))</div>
-<div class="line"><span class="lineno">  313</span>       M_AtoP[2][1] = (-a4/A5)/(a5*ROOT.TMath.Sqrt(A5))</div>
-<div class="line"><span class="lineno">  314</span>       M_AtoP[2][2] = (-1.)/(a5*a5*ROOT.TMath.Sqrt(A5))</div>
-<div class="line"><span class="lineno">  315</span>       M_AtoP[2][3] = (-a6/A8)/(a8*ROOT.TMath.Sqrt(A8))</div>
-<div class="line"><span class="lineno">  316</span>       M_AtoP[2][4] = (-a7/A8)/(a8*ROOT.TMath.Sqrt(A8))</div>
-<div class="line"><span class="lineno">  317</span>       M_AtoP[2][5] = (-1.)/(a8*a8*ROOT.TMath.Sqrt(A8))</div>
-<div class="line"><span class="lineno">  318</span> </div>
-<div class="line"><span class="lineno">  319</span>       a5a8 = a5*a8*ROOT.TMath.Sqrt(A5)*ROOT.TMath.Sqrt(A8)</div>
-<div class="line"><span class="lineno">  320</span> </div>
-<div class="line"><span class="lineno">  321</span>       M_AtoP[3][0] = (-2*a6/a5a8 + 2*a3*E2/(a5*a5*A5*E1))/MM</div>
-<div class="line"><span class="lineno">  322</span>       M_AtoP[3][1] = (-2*a7/a5a8 + 2*a4*E2/(a5*a5*A5*E1))/MM</div>
-<div class="line"><span class="lineno">  323</span>       M_AtoP[3][2] = (2*(1+a3*a6+a4*a7)/(a5*a5a8) - 2*(1.+a3*a3+a4*a4)*E2/(a5*a5*a5*A5*E1))/MM</div>
-<div class="line"><span class="lineno">  324</span>       M_AtoP[3][3] = (-2*a3/a5a8 + 2*a6*E1/(a8*a8*A8*E2))/MM</div>
-<div class="line"><span class="lineno">  325</span>       M_AtoP[3][4] = (-2*a4/a5a8 + 2*a7*E1/(a8*a8*A8*E2))/MM</div>
-<div class="line"><span class="lineno">  326</span>       M_AtoP[3][5] = (2*(1+a3*a6+a4*a7)/(a8*a5a8) - 2*(1.+a6*a6+a7*a7)*E1/(a8*a8*a8*A8*E2))/MM</div>
-<div class="line"><span class="lineno">  327</span> </div>
-<div class="line"><span class="lineno">  328</span>       <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(4):</div>
-<div class="line"><span class="lineno">  329</span>         <span class="keywordflow">for</span> j <span class="keywordflow">in</span> range(6):</div>
-<div class="line"><span class="lineno">  330</span>           MT_AtoP[j][i] = M_AtoP[i][j]</div>
-<div class="line"><span class="lineno">  331</span> </div>
-<div class="line"><span class="lineno">  332</span>       <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(36):</div>
-<div class="line"><span class="lineno">  333</span>         covA[i//6][i%6] = cov[i//6+3+(i%6+3)*9]</div>
-<div class="line"><span class="lineno">  334</span> </div>
-<div class="line"><span class="lineno">  335</span>       tmp   = ROOT.TMatrixD(4,6)</div>
-<div class="line"><span class="lineno">  336</span>       tmp.Mult(M_AtoP,covA)</div>
-<div class="line"><span class="lineno">  337</span>       covP  = ROOT.TMatrixD(4,4)</div>
-<div class="line"><span class="lineno">  338</span>       covP.Mult(tmp,MT_AtoP)</div>
-<div class="line"><span class="lineno">  339</span>       P = ROOT.TLorentzVector()</div>
-<div class="line"><span class="lineno">  340</span>       P.SetXYZM(Px,Py,Pz,M)</div>
-<div class="line"><span class="lineno">  341</span>       <span class="keywordflow">return</span> P,covP</div>
-<div class="line"><span class="lineno">  342</span> </div>
-<div class="line"><span class="lineno">  343</span>     P,covP = getP(values,emat,m1,m2)</div>
-<div class="line"><span class="lineno">  344</span>     <span class="comment">#print &quot;******************************************************************************* &quot;</span></div>
-<div class="line"><span class="lineno">  345</span> </div>
-<div class="line"><span class="lineno">  346</span>     <span class="comment">#create ship particle</span></div>
-<div class="line"><span class="lineno">  347</span>     <span class="comment">#notes:</span></div>
-<div class="line"><span class="lineno">  348</span>     <span class="comment">#P-TLorentzVector of fitted HNL prticle</span></div>
-<div class="line"><span class="lineno">  349</span>     <span class="comment">#covP - covariance matrix of HNL four-vector (Px,Py,Pz,M)</span></div>
-<div class="line"><span class="lineno">  350</span>     <span class="comment">#HNLPosFit - fited position of HNL</span></div>
-<div class="line"><span class="lineno">  351</span>     <span class="comment">#covV - comariance matrix of the vtx position</span></div>
-<div class="line"><span class="lineno">  352</span>     covV = array(<span class="stringliteral">&#39;d&#39;</span>,[emat[0],emat[1],emat[2],emat[1+9],emat[2+9],emat[2+2*9]])</div>
-<div class="line"><span class="lineno">  353</span>     covP = array(<span class="stringliteral">&#39;d&#39;</span>,[covP[0][0],covP[0][1],covP[0][2],covP[0][3],covP[1][1],covP[1][2],covP[1][3],covP[2][2],covP[2][3],covP[3][3]])</div>
-<div class="line"><span class="lineno">  354</span> </div>
-<div class="line"><span class="lineno">  355</span><span class="comment"># try to make it persistent</span></div>
-<div class="line"><span class="lineno">  356</span>     vx = ROOT.TLorentzVector(HNLPosFit,0)  <span class="comment"># time at vertex still needs to be evaluated from time of tracks and time of flight</span></div>
-<div class="line"><span class="lineno">  357</span>     particle = ROOT.ShipParticle(9900015,0,-1,-1,t1,t2,P,vx)</div>
-<div class="line"><span class="lineno">  358</span>     particle.SetCovV(covV)</div>
-<div class="line"><span class="lineno">  359</span>     particle.SetCovP(covP)</div>
-<div class="line"><span class="lineno">  360</span>     particle.SetDoca(doca)</div>
-<div class="line"><span class="lineno">  361</span>     nParts   = particles.GetEntries()</div>
-<div class="line"><span class="lineno">  362</span>     particles[nParts] = particle</div>
-<div class="line"><span class="lineno">  363</span> </div>
-<div class="line"><span class="lineno">  364</span>     <span class="comment">#self.h[&#39;dMFit&#39;].Fill( (1.-P.M()) )</span></div>
-<div class="line"><span class="lineno">  365</span>     <span class="comment">#self.h[&#39;MpullFit&#39;].Fill( (1.-P.M())/ROOT.TMath.Sqrt(covP[3][3]) )</span></div>
+<div class="line"><span class="lineno">  155</span>     <span class="comment">#print &quot;*********************************** vertex fit precise   ******************************************** &quot;</span></div>
+<div class="line"><span class="lineno">  156</span> </div>
+<div class="line"><span class="lineno">  157</span>     detPlane = ROOT.genfit.DetPlane(ROOT.TVector3(0,0,HNLPos[2]),ROOT.TVector3(1,0,0),ROOT.TVector3(0,1,0))</div>
+<div class="line"><span class="lineno">  158</span>     detPlanePtr = ROOT.genfit.SharedPlanePtr(detPlane)</div>
+<div class="line"><span class="lineno">  159</span>     st1  = fittedTracks[t1].getFittedState()</div>
+<div class="line"><span class="lineno">  160</span>     st2  = fittedTracks[t2].getFittedState()</div>
+<div class="line"><span class="lineno">  161</span>     <span class="keywordflow">try</span>:</div>
+<div class="line"><span class="lineno">  162</span>      st1.extrapolateToPlane(detPlanePtr)</div>
+<div class="line"><span class="lineno">  163</span>     <span class="keywordflow">except</span>:</div>
+<div class="line"><span class="lineno">  164</span>      ut.reportError(<span class="stringliteral">&quot;shipVertex.TwoTrackVertex: extrapolation did not work&quot;</span>)</div>
+<div class="line"><span class="lineno">  165</span>      <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  166</span>     <span class="keywordflow">try</span>:</div>
+<div class="line"><span class="lineno">  167</span>      st2.extrapolateToPlane(detPlanePtr)</div>
+<div class="line"><span class="lineno">  168</span>     <span class="keywordflow">except</span>:</div>
+<div class="line"><span class="lineno">  169</span>      ut.reportError(<span class="stringliteral">&quot;shipVertex.TwoTrackVertex: extrapolation did not work&quot;</span>)</div>
+<div class="line"><span class="lineno">  170</span>      <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  171</span>     mom1 = st1.getMom()</div>
+<div class="line"><span class="lineno">  172</span>     mom2 = st2.getMom()</div>
+<div class="line"><span class="lineno">  173</span>     cov1 = st1.getCov()</div>
+<div class="line"><span class="lineno">  174</span>     cov2 = st2.getCov()</div>
+<div class="line"><span class="lineno">  175</span>     cov = ROOT.TMatrixDSym(10)</div>
+<div class="line"><span class="lineno">  176</span>     <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(10):</div>
+<div class="line"><span class="lineno">  177</span>       <span class="keywordflow">for</span> j <span class="keywordflow">in</span> range(10):</div>
+<div class="line"><span class="lineno">  178</span>         <span class="keywordflow">if</span> i&lt;5 <span class="keywordflow">and</span> j&lt;5: cov[i][j]=cov1[i][j]</div>
+<div class="line"><span class="lineno">  179</span>         <span class="keywordflow">if</span> i&gt;4 <span class="keywordflow">and</span> j&gt;4: cov[i][j]=cov2[i-5][j-5]</div>
+<div class="line"><span class="lineno">  180</span>     covInv = ROOT.TMatrixDSym()</div>
+<div class="line"><span class="lineno">  181</span>     ROOT.genfit.tools.invertMatrix(cov,covInv)</div>
+<div class="line"><span class="lineno">  182</span> </div>
+<div class="line"><span class="lineno">  183</span>     self.y_data = np.array([0.,0.,0.,0.,0.,0.,0.,0.,0.,0.])</div>
+<div class="line"><span class="lineno">  184</span>     stVal1 = st1.getState()</div>
+<div class="line"><span class="lineno">  185</span>     stVal2 = st2.getState()</div>
+<div class="line"><span class="lineno">  186</span>     <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(5):</div>
+<div class="line"><span class="lineno">  187</span>      self.y_data[i]=stVal1[i]</div>
+<div class="line"><span class="lineno">  188</span>      self.y_data[i+5]=stVal2[i]</div>
+<div class="line"><span class="lineno">  189</span>     self.z0 = HNLPos[2]</div>
+<div class="line"><span class="lineno">  190</span>     self.Vy = np.zeros(100)</div>
+<div class="line"><span class="lineno">  191</span>     <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(100):</div>
+<div class="line"><span class="lineno">  192</span>       self.Vy[i] = covInv[i//10][i%10]</div>
+<div class="line"><span class="lineno">  193</span> </div>
+<div class="line"><span class="lineno">  194</span>     f=np.array([0.])</div>
+<div class="line"><span class="lineno">  195</span>     gMinuit = ROOT.TMinuit(9)</div>
+<div class="line"><span class="lineno">  196</span>     tempFcn = self.fcn</div>
+<div class="line"><span class="lineno">  197</span>     gMinuit.SetFCN(tempFcn)</div>
+<div class="line"><span class="lineno">  198</span>     gMinuit.SetPrintLevel(-1)<span class="comment">#minute quiet mode</span></div>
+<div class="line"><span class="lineno">  199</span>     rc = gMinuit.DefineParameter(0, <span class="stringliteral">&#39;X pos&#39;</span>,HNLPos[0], 0.1,0,0)</div>
+<div class="line"><span class="lineno">  200</span>     rc = gMinuit.DefineParameter(1, <span class="stringliteral">&#39;Y pos&#39;</span>,HNLPos[1], 0.1,0,0)</div>
+<div class="line"><span class="lineno">  201</span>     rc = gMinuit.DefineParameter(2, <span class="stringliteral">&#39;Z pos&#39;</span>,HNLPos[2], 0.1,0,0)</div>
+<div class="line"><span class="lineno">  202</span>     rc = gMinuit.DefineParameter(3, <span class="stringliteral">&#39;tan1X&#39;</span>,mom1[0]/mom1[2], 0.1,0,0)</div>
+<div class="line"><span class="lineno">  203</span>     rc = gMinuit.DefineParameter(4, <span class="stringliteral">&#39;tan1Y&#39;</span>,mom1[1]/mom1[2], 0.1,0,0)</div>
+<div class="line"><span class="lineno">  204</span>     rc = gMinuit.DefineParameter(5, <span class="stringliteral">&#39;1/mom1&#39;</span>,1./mom1.Mag(), 0.1,0,0)</div>
+<div class="line"><span class="lineno">  205</span>     rc = gMinuit.DefineParameter(6, <span class="stringliteral">&#39;tan2X&#39;</span>,mom2[0]/mom2[2], 0.1,0,0)</div>
+<div class="line"><span class="lineno">  206</span>     rc = gMinuit.DefineParameter(7, <span class="stringliteral">&#39;tan2Y&#39;</span>,mom2[1]/mom2[2], 0.1,0,0)</div>
+<div class="line"><span class="lineno">  207</span>     rc = gMinuit.DefineParameter(8, <span class="stringliteral">&#39;1/mom2&#39;</span>,1./mom2.Mag(), 0.1,0,0)</div>
+<div class="line"><span class="lineno">  208</span>     gMinuit.Clear()</div>
+<div class="line"><span class="lineno">  209</span>     gMinuit.Migrad()</div>
+<div class="line"><span class="lineno">  210</span>     <span class="keywordflow">try</span>:</div>
+<div class="line"><span class="lineno">  211</span>      tmp = array(<span class="stringliteral">&#39;d&#39;</span>,[0])</div>
+<div class="line"><span class="lineno">  212</span>      err = array(<span class="stringliteral">&#39;i&#39;</span>,[0])</div>
+<div class="line"><span class="lineno">  213</span>      gMinuit.mnexcm( <span class="stringliteral">&quot;HESSE&quot;</span>, tmp, -1, err )</div>
+<div class="line"><span class="lineno">  214</span>      <span class="comment">#gMinuit.mnexcm( &quot;MINOS&quot;, tmp, -1, err )</span></div>
+<div class="line"><span class="lineno">  215</span>     <span class="keywordflow">except</span>:</div>
+<div class="line"><span class="lineno">  216</span>       ut.reportError(<span class="stringliteral">&quot;shipVertex::minos does not work&quot;</span>)</div>
+<div class="line"><span class="lineno">  217</span>       <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  218</span>     <span class="comment">#get results from TMinuit:</span></div>
+<div class="line"><span class="lineno">  219</span>     emat = array(<span class="stringliteral">&#39;d&#39;</span>,[0,]*81)</div>
+<div class="line"><span class="lineno">  220</span>     gMinuit.mnemat(emat,9)</div>
+<div class="line"><span class="lineno">  221</span>     values = array(<span class="stringliteral">&#39;d&#39;</span>,[0,]*9)</div>
+<div class="line"><span class="lineno">  222</span>     errors = array(<span class="stringliteral">&#39;d&#39;</span>,[0,]*9)</div>
+<div class="line"><span class="lineno">  223</span>     dValue = ctypes.c_double()</div>
+<div class="line"><span class="lineno">  224</span>     dError = ctypes.c_double()</div>
+<div class="line"><span class="lineno">  225</span>     rc = gMinuit.GetParameter(0, dValue, dError)</div>
+<div class="line"><span class="lineno">  226</span>     values[0]=dValue.value</div>
+<div class="line"><span class="lineno">  227</span>     errors[0]=dError.value</div>
+<div class="line"><span class="lineno">  228</span>     rc = gMinuit.GetParameter(1, dValue, dError)</div>
+<div class="line"><span class="lineno">  229</span>     values[1]=dValue.value</div>
+<div class="line"><span class="lineno">  230</span>     errors[1]=dError.value</div>
+<div class="line"><span class="lineno">  231</span>     rc = gMinuit.GetParameter(2, dValue, dError)</div>
+<div class="line"><span class="lineno">  232</span>     values[2]=dValue.value</div>
+<div class="line"><span class="lineno">  233</span>     errors[2]=dError.value</div>
+<div class="line"><span class="lineno">  234</span>     rc = gMinuit.GetParameter(3, dValue, dError)</div>
+<div class="line"><span class="lineno">  235</span>     values[3]=dValue.value</div>
+<div class="line"><span class="lineno">  236</span>     errors[3]=dError.value</div>
+<div class="line"><span class="lineno">  237</span>     rc = gMinuit.GetParameter(4, dValue, dError)</div>
+<div class="line"><span class="lineno">  238</span>     values[4]=dValue.value</div>
+<div class="line"><span class="lineno">  239</span>     errors[4]=dError.value</div>
+<div class="line"><span class="lineno">  240</span>     rc = gMinuit.GetParameter(5, dValue, dError)</div>
+<div class="line"><span class="lineno">  241</span>     values[5]=dValue.value</div>
+<div class="line"><span class="lineno">  242</span>     errors[5]=dError.value</div>
+<div class="line"><span class="lineno">  243</span>     rc = gMinuit.GetParameter(6, dValue, dError)</div>
+<div class="line"><span class="lineno">  244</span>     values[6]=dValue.value</div>
+<div class="line"><span class="lineno">  245</span>     errors[6]=dError.value</div>
+<div class="line"><span class="lineno">  246</span>     rc = gMinuit.GetParameter(7, dValue, dError)</div>
+<div class="line"><span class="lineno">  247</span>     values[7]=dValue.value</div>
+<div class="line"><span class="lineno">  248</span>     errors[7]=dError.value</div>
+<div class="line"><span class="lineno">  249</span>     rc = gMinuit.GetParameter(8, dValue, dError)</div>
+<div class="line"><span class="lineno">  250</span>     values[8]=dValue.value</div>
+<div class="line"><span class="lineno">  251</span>     errors[8]=dError.value</div>
+<div class="line"><span class="lineno">  252</span> </div>
+<div class="line"><span class="lineno">  253</span>     xFit = values[0]</div>
+<div class="line"><span class="lineno">  254</span>     yFit = values[1]</div>
+<div class="line"><span class="lineno">  255</span>     zFit = values[2]</div>
+<div class="line"><span class="lineno">  256</span>     HNLPosFit =  ROOT.TVector3(xFit,yFit,zFit)</div>
+<div class="line"><span class="lineno">  257</span>     xFitErr = errors[0]</div>
+<div class="line"><span class="lineno">  258</span>     yFitErr = errors[1]</div>
+<div class="line"><span class="lineno">  259</span>     zFitErr = errors[2]</div>
+<div class="line"><span class="lineno">  260</span> </div>
+<div class="line"><span class="lineno">  261</span>     <span class="comment">#fixme: mass from track reconstraction needed</span></div>
+<div class="line"><span class="lineno">  262</span>     m1 = self.PDG.GetParticle(PosDirCharge[t1][<span class="stringliteral">&#39;pdgCode&#39;</span>]).Mass()</div>
+<div class="line"><span class="lineno">  263</span>     m2 = self.PDG.GetParticle(PosDirCharge[t2][<span class="stringliteral">&#39;pdgCode&#39;</span>]).Mass()</div>
+<div class="line"><span class="lineno">  264</span> </div>
+<div class="line"><span class="lineno">  265</span>     <span class="comment">#self.h[&#39;VxpullFit&#39;].Fill( (mctrack.GetStartX()-xFit)/xFitErr )</span></div>
+<div class="line"><span class="lineno">  266</span>     <span class="comment">#self.h[&#39;VypullFit&#39;].Fill( (mctrack.GetStartY()-yFit)/yFitErr )</span></div>
+<div class="line"><span class="lineno">  267</span>     <span class="comment">#self.h[&#39;VzpullFit&#39;].Fill( (mctrack.GetStartZ()-zFit)/zFitErr )</span></div>
+<div class="line"><span class="lineno">  268</span>     <span class="comment">#self.h[&#39;dVxFit&#39;].Fill( (mctrack.GetStartX()-xFit) )</span></div>
+<div class="line"><span class="lineno">  269</span>     <span class="comment">#self.h[&#39;dVyFit&#39;].Fill( (mctrack.GetStartY()-yFit) )</span></div>
+<div class="line"><span class="lineno">  270</span>     <span class="comment">#self.h[&#39;dVzFit&#39;].Fill( (mctrack.GetStartZ()-zFit) )</span></div>
+<div class="line"><span class="lineno">  271</span> </div>
+<div class="line"><span class="lineno">  272</span>     <span class="keyword">def </span>getP(fitValues,cov,m1,m2):</div>
+<div class="line"><span class="lineno">  273</span>       a3=fitValues[3]</div>
+<div class="line"><span class="lineno">  274</span>       a4=fitValues[4]</div>
+<div class="line"><span class="lineno">  275</span>       a5=fitValues[5]</div>
+<div class="line"><span class="lineno">  276</span>       a6=fitValues[6]</div>
+<div class="line"><span class="lineno">  277</span>       a7=fitValues[7]</div>
+<div class="line"><span class="lineno">  278</span>       a8=fitValues[8]</div>
+<div class="line"><span class="lineno">  279</span>       px1 = a3/(a5*ROOT.TMath.Sqrt(1 + a3**2 + a4**2))</div>
+<div class="line"><span class="lineno">  280</span>       py1 = a4/(a5*ROOT.TMath.Sqrt(1 + a3**2 + a4**2))</div>
+<div class="line"><span class="lineno">  281</span>       pz1 = 1/(a5*ROOT.TMath.Sqrt(1 + a3**2 + a4**2))</div>
+<div class="line"><span class="lineno">  282</span>       px2 = a6/(a8*ROOT.TMath.Sqrt(1 + a6**2 + a7**2))</div>
+<div class="line"><span class="lineno">  283</span>       py2 = a7/(a8*ROOT.TMath.Sqrt(1 + a6**2 + a7**2))</div>
+<div class="line"><span class="lineno">  284</span>       pz2 = 1/(a8*ROOT.TMath.Sqrt(1 + a6**2 + a7**2))</div>
+<div class="line"><span class="lineno">  285</span>       Px = px1 + px2</div>
+<div class="line"><span class="lineno">  286</span>       Py = py1 + py2</div>
+<div class="line"><span class="lineno">  287</span>       Pz = pz1 + pz2</div>
+<div class="line"><span class="lineno">  288</span>       E1 = ROOT.TMath.Sqrt(px1**2 + py1**2 + pz1**2 + m1**2)</div>
+<div class="line"><span class="lineno">  289</span>       E2 = ROOT.TMath.Sqrt(px2**2 + py2**2 + pz2**2 + m2**2)</div>
+<div class="line"><span class="lineno">  290</span>       M = ROOT.TMath.Sqrt(2*E1*E2+m1**2+m2**2-2*pz1*pz2*(1+a3*a6+a4*a7))</div>
+<div class="line"><span class="lineno">  291</span>       MM = 2*M</div>
+<div class="line"><span class="lineno">  292</span>       A5 = 1 + a3**2 + a4**2</div>
+<div class="line"><span class="lineno">  293</span>       A8 = 1 + a6**2 + a7**2</div>
+<div class="line"><span class="lineno">  294</span>       M_AtoP = ROOT.TMatrixD(4,6)</div>
+<div class="line"><span class="lineno">  295</span>       MT_AtoP = ROOT.TMatrixD(6,4)</div>
+<div class="line"><span class="lineno">  296</span>       covA = ROOT.TMatrixD(6,6)</div>
+<div class="line"><span class="lineno">  297</span>       M_AtoP[0][0] = (1.-a3*a3/A5)/(a5*ROOT.TMath.Sqrt(A5))</div>
+<div class="line"><span class="lineno">  298</span>       M_AtoP[0][1] = (-a3*a4/A5)/(a5*ROOT.TMath.Sqrt(A5))</div>
+<div class="line"><span class="lineno">  299</span>       M_AtoP[0][2] = (-a3)/(a5*a5*ROOT.TMath.Sqrt(A5))</div>
+<div class="line"><span class="lineno">  300</span>       M_AtoP[0][3] = (1.-a6*a6/A8)/(a8*ROOT.TMath.Sqrt(A8))</div>
+<div class="line"><span class="lineno">  301</span>       M_AtoP[0][4] = (-a6*a7/A8)/(a8*ROOT.TMath.Sqrt(A8))</div>
+<div class="line"><span class="lineno">  302</span>       M_AtoP[0][5] = (-a6)/(a8*a8*ROOT.TMath.Sqrt(A8))</div>
+<div class="line"><span class="lineno">  303</span> </div>
+<div class="line"><span class="lineno">  304</span>       M_AtoP[1][0] = (-a3*a4/A5)/(a5*ROOT.TMath.Sqrt(A5))</div>
+<div class="line"><span class="lineno">  305</span>       M_AtoP[1][1] = (1.-a4*a4/A5)/(a5*ROOT.TMath.Sqrt(A5))</div>
+<div class="line"><span class="lineno">  306</span>       M_AtoP[1][2] = (-a4)/(a5*a5*ROOT.TMath.Sqrt(A5))</div>
+<div class="line"><span class="lineno">  307</span>       M_AtoP[1][3] = (-a6*a7/A8)/(a8*ROOT.TMath.Sqrt(A8))</div>
+<div class="line"><span class="lineno">  308</span>       M_AtoP[1][4] = (1.-a7*a7/A8)/(a8*ROOT.TMath.Sqrt(A8))</div>
+<div class="line"><span class="lineno">  309</span>       M_AtoP[1][5] = (-a7)/(a8*a8*ROOT.TMath.Sqrt(A8))</div>
+<div class="line"><span class="lineno">  310</span> </div>
+<div class="line"><span class="lineno">  311</span>       M_AtoP[2][0] = (-a3/A5)/(a5*ROOT.TMath.Sqrt(A5))</div>
+<div class="line"><span class="lineno">  312</span>       M_AtoP[2][1] = (-a4/A5)/(a5*ROOT.TMath.Sqrt(A5))</div>
+<div class="line"><span class="lineno">  313</span>       M_AtoP[2][2] = (-1.)/(a5*a5*ROOT.TMath.Sqrt(A5))</div>
+<div class="line"><span class="lineno">  314</span>       M_AtoP[2][3] = (-a6/A8)/(a8*ROOT.TMath.Sqrt(A8))</div>
+<div class="line"><span class="lineno">  315</span>       M_AtoP[2][4] = (-a7/A8)/(a8*ROOT.TMath.Sqrt(A8))</div>
+<div class="line"><span class="lineno">  316</span>       M_AtoP[2][5] = (-1.)/(a8*a8*ROOT.TMath.Sqrt(A8))</div>
+<div class="line"><span class="lineno">  317</span> </div>
+<div class="line"><span class="lineno">  318</span>       a5a8 = a5*a8*ROOT.TMath.Sqrt(A5)*ROOT.TMath.Sqrt(A8)</div>
+<div class="line"><span class="lineno">  319</span> </div>
+<div class="line"><span class="lineno">  320</span>       M_AtoP[3][0] = (-2*a6/a5a8 + 2*a3*E2/(a5*a5*A5*E1))/MM</div>
+<div class="line"><span class="lineno">  321</span>       M_AtoP[3][1] = (-2*a7/a5a8 + 2*a4*E2/(a5*a5*A5*E1))/MM</div>
+<div class="line"><span class="lineno">  322</span>       M_AtoP[3][2] = (2*(1+a3*a6+a4*a7)/(a5*a5a8) - 2*(1.+a3*a3+a4*a4)*E2/(a5*a5*a5*A5*E1))/MM</div>
+<div class="line"><span class="lineno">  323</span>       M_AtoP[3][3] = (-2*a3/a5a8 + 2*a6*E1/(a8*a8*A8*E2))/MM</div>
+<div class="line"><span class="lineno">  324</span>       M_AtoP[3][4] = (-2*a4/a5a8 + 2*a7*E1/(a8*a8*A8*E2))/MM</div>
+<div class="line"><span class="lineno">  325</span>       M_AtoP[3][5] = (2*(1+a3*a6+a4*a7)/(a8*a5a8) - 2*(1.+a6*a6+a7*a7)*E1/(a8*a8*a8*A8*E2))/MM</div>
+<div class="line"><span class="lineno">  326</span> </div>
+<div class="line"><span class="lineno">  327</span>       <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(4):</div>
+<div class="line"><span class="lineno">  328</span>         <span class="keywordflow">for</span> j <span class="keywordflow">in</span> range(6):</div>
+<div class="line"><span class="lineno">  329</span>           MT_AtoP[j][i] = M_AtoP[i][j]</div>
+<div class="line"><span class="lineno">  330</span> </div>
+<div class="line"><span class="lineno">  331</span>       <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(36):</div>
+<div class="line"><span class="lineno">  332</span>         covA[i//6][i%6] = cov[i//6+3+(i%6+3)*9]</div>
+<div class="line"><span class="lineno">  333</span> </div>
+<div class="line"><span class="lineno">  334</span>       tmp   = ROOT.TMatrixD(4,6)</div>
+<div class="line"><span class="lineno">  335</span>       tmp.Mult(M_AtoP,covA)</div>
+<div class="line"><span class="lineno">  336</span>       covP  = ROOT.TMatrixD(4,4)</div>
+<div class="line"><span class="lineno">  337</span>       covP.Mult(tmp,MT_AtoP)</div>
+<div class="line"><span class="lineno">  338</span>       P = ROOT.TLorentzVector()</div>
+<div class="line"><span class="lineno">  339</span>       P.SetXYZM(Px,Py,Pz,M)</div>
+<div class="line"><span class="lineno">  340</span>       <span class="keywordflow">return</span> P,covP</div>
+<div class="line"><span class="lineno">  341</span> </div>
+<div class="line"><span class="lineno">  342</span>     P,covP = getP(values,emat,m1,m2)</div>
+<div class="line"><span class="lineno">  343</span>     <span class="comment">#print &quot;******************************************************************************* &quot;</span></div>
+<div class="line"><span class="lineno">  344</span> </div>
+<div class="line"><span class="lineno">  345</span>     <span class="comment">#create ship particle</span></div>
+<div class="line"><span class="lineno">  346</span>     <span class="comment">#notes:</span></div>
+<div class="line"><span class="lineno">  347</span>     <span class="comment">#P-TLorentzVector of fitted HNL prticle</span></div>
+<div class="line"><span class="lineno">  348</span>     <span class="comment">#covP - covariance matrix of HNL four-vector (Px,Py,Pz,M)</span></div>
+<div class="line"><span class="lineno">  349</span>     <span class="comment">#HNLPosFit - fited position of HNL</span></div>
+<div class="line"><span class="lineno">  350</span>     <span class="comment">#covV - comariance matrix of the vtx position</span></div>
+<div class="line"><span class="lineno">  351</span>     covV = array(<span class="stringliteral">&#39;d&#39;</span>,[emat[0],emat[1],emat[2],emat[1+9],emat[2+9],emat[2+2*9]])</div>
+<div class="line"><span class="lineno">  352</span>     covP = array(<span class="stringliteral">&#39;d&#39;</span>,[covP[0][0],covP[0][1],covP[0][2],covP[0][3],covP[1][1],covP[1][2],covP[1][3],covP[2][2],covP[2][3],covP[3][3]])</div>
+<div class="line"><span class="lineno">  353</span> </div>
+<div class="line"><span class="lineno">  354</span><span class="comment"># try to make it persistent</span></div>
+<div class="line"><span class="lineno">  355</span>     vx = ROOT.TLorentzVector(HNLPosFit,0)  <span class="comment"># time at vertex still needs to be evaluated from time of tracks and time of flight</span></div>
+<div class="line"><span class="lineno">  356</span>     particle = ROOT.ShipParticle(9900015,0,-1,-1,t1,t2,P,vx)</div>
+<div class="line"><span class="lineno">  357</span>     particle.SetCovV(covV)</div>
+<div class="line"><span class="lineno">  358</span>     particle.SetCovP(covP)</div>
+<div class="line"><span class="lineno">  359</span>     particle.SetDoca(doca)</div>
+<div class="line"><span class="lineno">  360</span>     self.fPartArray.push_back(particle)</div>
+<div class="line"><span class="lineno">  361</span> </div>
+<div class="line"><span class="lineno">  362</span>     <span class="comment">#self.h[&#39;dMFit&#39;].Fill( (1.-P.M()) )</span></div>
+<div class="line"><span class="lineno">  363</span>     <span class="comment">#self.h[&#39;MpullFit&#39;].Fill( (1.-P.M())/ROOT.TMath.Sqrt(covP[3][3]) )</span></div>
+<div class="line"><span class="lineno">  364</span> </div>
+<div class="line"><span class="lineno">  365</span>  <span class="comment">#self.h[&#39;N_Vtx&#39;].Fill(hasVertex)</span></div>
 <div class="line"><span class="lineno">  366</span> </div>
-<div class="line"><span class="lineno">  367</span>  <span class="comment">#self.h[&#39;N_Vtx&#39;].Fill(hasVertex)</span></div>
-<div class="line"><span class="lineno">  368</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -766,72 +764,72 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipVertex_8py_source.html#l00369">369</a> of file <a class="el" href="shipVertex_8py_source.html">shipVertex.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  369</span> <span class="keyword">def </span>VertexError(self,t1,t2,PosDir,CovMat=None,scalFac=None):</div>
-<div class="line"><span class="lineno">  370</span><span class="comment"># with improved Vx x,y resolution</span></div>
-<div class="line"><span class="lineno">  371</span>   a,u = PosDir[t1][<span class="stringliteral">&#39;position&#39;</span>],PosDir[t1][<span class="stringliteral">&#39;direction&#39;</span>]</div>
-<div class="line"><span class="lineno">  372</span>   c,v = PosDir[t2][<span class="stringliteral">&#39;position&#39;</span>],PosDir[t2][<span class="stringliteral">&#39;direction&#39;</span>]</div>
-<div class="line"><span class="lineno">  373</span>   Vsq = v.Dot(v)</div>
-<div class="line"><span class="lineno">  374</span>   Usq = u.Dot(u)</div>
-<div class="line"><span class="lineno">  375</span>   UV  = u.Dot(v)</div>
-<div class="line"><span class="lineno">  376</span>   ca  = c-a</div>
-<div class="line"><span class="lineno">  377</span>   denom = Usq*Vsq-UV**2</div>
-<div class="line"><span class="lineno">  378</span>   tmp2 = Vsq*u-UV*v</div>
-<div class="line"><span class="lineno">  379</span>   Va = ca.Dot(tmp2)/denom</div>
-<div class="line"><span class="lineno">  380</span>   tmp2 = UV*u-Usq*v</div>
-<div class="line"><span class="lineno">  381</span>   Vb = ca.Dot(tmp2)/denom</div>
-<div class="line"><span class="lineno">  382</span>   X = (a+c+Va*u+Vb*v) * 0.5</div>
-<div class="line"><span class="lineno">  383</span>   l1 = a - X + u*Va  <span class="comment"># l2 = c - X + v*Vb</span></div>
-<div class="line"><span class="lineno">  384</span>   dist = 2. * ROOT.TMath.Sqrt( l1.Dot(l1) )</div>
-<div class="line"><span class="lineno">  385</span>   <span class="keywordflow">if</span> <span class="keywordflow">not</span> CovMat: <span class="keywordflow">return</span> X,dist</div>
-<div class="line"><span class="lineno">  386</span>   T = ROOT.TMatrixD(3,12)</div>
-<div class="line"><span class="lineno">  387</span>   <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(3):</div>
-<div class="line"><span class="lineno">  388</span>     <span class="keywordflow">for</span> k <span class="keywordflow">in</span> range(4):</div>
-<div class="line"><span class="lineno">  389</span>       <span class="keywordflow">for</span> j <span class="keywordflow">in</span> range(3):</div>
-<div class="line"><span class="lineno">  390</span>        KD = 0</div>
-<div class="line"><span class="lineno">  391</span>        <span class="keywordflow">if</span> i==j: KD = 1</div>
-<div class="line"><span class="lineno">  392</span>        <span class="keywordflow">if</span> k==0 <span class="keywordflow">or</span> k==2:</div>
-<div class="line"><span class="lineno">  393</span>       <span class="comment"># cova and covc</span></div>
-<div class="line"><span class="lineno">  394</span>         temp  = ( u[j]*Vsq - v[j]*UV )*u[i] + (u[j]*UV-v[j]*Usq)*v[i]</div>
-<div class="line"><span class="lineno">  395</span>         sign = -1</div>
-<div class="line"><span class="lineno">  396</span>         <span class="keywordflow">if</span> k==2 : sign = +1</div>
-<div class="line"><span class="lineno">  397</span>         T[i][3*k+j] = 0.5*( KD + sign*temp/denom )</div>
-<div class="line"><span class="lineno">  398</span>        <span class="keywordflow">elif</span> k==1:</div>
-<div class="line"><span class="lineno">  399</span>       <span class="comment"># covu</span></div>
-<div class="line"><span class="lineno">  400</span>         aNAZ = denom*( ca[j]*Vsq-v.Dot(ca)*v[j] )</div>
-<div class="line"><span class="lineno">  401</span>         aZAN = ( ca.Dot(u)*Vsq-ca.Dot(v)*UV )*2*( u[j]*Vsq-v[j]*UV )</div>
-<div class="line"><span class="lineno">  402</span>         bNAZ = denom*( ca[j]*UV+(u.Dot(ca)*v[j]) - 2*ca.Dot(v)*u[j] )</div>
-<div class="line"><span class="lineno">  403</span>         bZAN = ( ca.Dot(u)*UV-ca.Dot(v)*Usq )*2*( u[j]*Vsq-v[j]*UV )</div>
-<div class="line"><span class="lineno">  404</span>         T[i][3*k+j] = 0.5*( Va*KD + u[i]/denom**2*(aNAZ-aZAN) + v[i]/denom**2*(bNAZ-bZAN) )</div>
-<div class="line"><span class="lineno">  405</span>        <span class="keywordflow">elif</span> k==3:</div>
-<div class="line"><span class="lineno">  406</span>       <span class="comment"># covv</span></div>
-<div class="line"><span class="lineno">  407</span>         aNAZ = denom*( 2*ca.Dot(u)*v[j] - ca.Dot(v)*u[j] - ca[j]*UV )</div>
-<div class="line"><span class="lineno">  408</span>         aZAN = ( ca.Dot(u)*Vsq-ca.Dot(v)*UV )*2*( v[j]*Usq-u[j]*UV )</div>
-<div class="line"><span class="lineno">  409</span>         bNAZ = denom*( ca.Dot(u)*u[j]-ca[j]*Usq )</div>
-<div class="line"><span class="lineno">  410</span>         bZAN = ( ca.Dot(u)*UV-ca.Dot(v)*Usq )*2*( v[j]*Usq-u[j]*UV )</div>
-<div class="line"><span class="lineno">  411</span>         T[i][3*k+j] = 0.5*(Vb*KD + u[i]/denom**2*(aNAZ-aZAN) + v[i]/denom**2*(bNAZ-bZAN) )</div>
-<div class="line"><span class="lineno">  412</span>   transT = ROOT.TMatrixD(12,3)</div>
-<div class="line"><span class="lineno">  413</span>   transT.Transpose(T)</div>
-<div class="line"><span class="lineno">  414</span>   CovTracks = ROOT.TMatrixD(12,12)</div>
-<div class="line"><span class="lineno">  415</span>   tlist = [t1,t2]</div>
-<div class="line"><span class="lineno">  416</span>   <span class="keywordflow">for</span> k <span class="keywordflow">in</span> range(2):</div>
-<div class="line"><span class="lineno">  417</span>     <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(6):</div>
-<div class="line"><span class="lineno">  418</span>       <span class="keywordflow">for</span> j <span class="keywordflow">in</span> range(6):</div>
-<div class="line"><span class="lineno">  419</span>        xfac = 1.</div>
-<div class="line"><span class="lineno">  420</span>        <span class="keywordflow">if</span> i&gt;2: xfac = scalFac[tlist[k]]</div>
-<div class="line"><span class="lineno">  421</span>        <span class="keywordflow">if</span> j&gt;2: xfac = xfac * scalFac[tlist[k]]</div>
-<div class="line"><span class="lineno">  422</span>        CovTracks[i+k*6][j+k*6] = CovMat[tlist[k]][i][j] * xfac</div>
-<div class="line"><span class="lineno">  423</span>        <span class="comment"># if i==5 or j==5 :  CovMat[tlist[k]][i][j] = 0 # ignore error on z-direction</span></div>
-<div class="line"><span class="lineno">  424</span>   tmp   = ROOT.TMatrixD(3,12)</div>
-<div class="line"><span class="lineno">  425</span>   tmp.Mult(T,CovTracks)</div>
-<div class="line"><span class="lineno">  426</span>   covX  = ROOT.TMatrixD(3,3)</div>
-<div class="line"><span class="lineno">  427</span>   covX.Mult(tmp,transT)</div>
-<div class="line"><span class="lineno">  428</span>   <span class="keywordflow">return</span> X,covX,dist</div>
-<div class="line"><span class="lineno">  429</span> </div>
-<div class="line"><span class="lineno">  430</span><span class="comment">#usage</span></div>
-<div class="line"><span class="lineno">  431</span><span class="comment"># import shipVertex</span></div>
-<div class="line"><span class="lineno">  432</span><span class="comment"># VertexError = shipVertex.Task()</span></div>
-<div class="line"><span class="lineno">  433</span><span class="comment"># newPos,doca = myVertexError(t1,t2,PosDirCharge)</span></div>
+<p class="definition">Definition at line <a class="el" href="shipVertex_8py_source.html#l00367">367</a> of file <a class="el" href="shipVertex_8py_source.html">shipVertex.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  367</span> <span class="keyword">def </span>VertexError(self,t1,t2,PosDir,CovMat=None,scalFac=None):</div>
+<div class="line"><span class="lineno">  368</span><span class="comment"># with improved Vx x,y resolution</span></div>
+<div class="line"><span class="lineno">  369</span>   a,u = PosDir[t1][<span class="stringliteral">&#39;position&#39;</span>],PosDir[t1][<span class="stringliteral">&#39;direction&#39;</span>]</div>
+<div class="line"><span class="lineno">  370</span>   c,v = PosDir[t2][<span class="stringliteral">&#39;position&#39;</span>],PosDir[t2][<span class="stringliteral">&#39;direction&#39;</span>]</div>
+<div class="line"><span class="lineno">  371</span>   Vsq = v.Dot(v)</div>
+<div class="line"><span class="lineno">  372</span>   Usq = u.Dot(u)</div>
+<div class="line"><span class="lineno">  373</span>   UV  = u.Dot(v)</div>
+<div class="line"><span class="lineno">  374</span>   ca  = c-a</div>
+<div class="line"><span class="lineno">  375</span>   denom = Usq*Vsq-UV**2</div>
+<div class="line"><span class="lineno">  376</span>   tmp2 = Vsq*u-UV*v</div>
+<div class="line"><span class="lineno">  377</span>   Va = ca.Dot(tmp2)/denom</div>
+<div class="line"><span class="lineno">  378</span>   tmp2 = UV*u-Usq*v</div>
+<div class="line"><span class="lineno">  379</span>   Vb = ca.Dot(tmp2)/denom</div>
+<div class="line"><span class="lineno">  380</span>   X = (a+c+Va*u+Vb*v) * 0.5</div>
+<div class="line"><span class="lineno">  381</span>   l1 = a - X + u*Va  <span class="comment"># l2 = c - X + v*Vb</span></div>
+<div class="line"><span class="lineno">  382</span>   dist = 2. * ROOT.TMath.Sqrt( l1.Dot(l1) )</div>
+<div class="line"><span class="lineno">  383</span>   <span class="keywordflow">if</span> <span class="keywordflow">not</span> CovMat: <span class="keywordflow">return</span> X,dist</div>
+<div class="line"><span class="lineno">  384</span>   T = ROOT.TMatrixD(3,12)</div>
+<div class="line"><span class="lineno">  385</span>   <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(3):</div>
+<div class="line"><span class="lineno">  386</span>     <span class="keywordflow">for</span> k <span class="keywordflow">in</span> range(4):</div>
+<div class="line"><span class="lineno">  387</span>       <span class="keywordflow">for</span> j <span class="keywordflow">in</span> range(3):</div>
+<div class="line"><span class="lineno">  388</span>        KD = 0</div>
+<div class="line"><span class="lineno">  389</span>        <span class="keywordflow">if</span> i==j: KD = 1</div>
+<div class="line"><span class="lineno">  390</span>        <span class="keywordflow">if</span> k==0 <span class="keywordflow">or</span> k==2:</div>
+<div class="line"><span class="lineno">  391</span>       <span class="comment"># cova and covc</span></div>
+<div class="line"><span class="lineno">  392</span>         temp  = ( u[j]*Vsq - v[j]*UV )*u[i] + (u[j]*UV-v[j]*Usq)*v[i]</div>
+<div class="line"><span class="lineno">  393</span>         sign = -1</div>
+<div class="line"><span class="lineno">  394</span>         <span class="keywordflow">if</span> k==2 : sign = +1</div>
+<div class="line"><span class="lineno">  395</span>         T[i][3*k+j] = 0.5*( KD + sign*temp/denom )</div>
+<div class="line"><span class="lineno">  396</span>        <span class="keywordflow">elif</span> k==1:</div>
+<div class="line"><span class="lineno">  397</span>       <span class="comment"># covu</span></div>
+<div class="line"><span class="lineno">  398</span>         aNAZ = denom*( ca[j]*Vsq-v.Dot(ca)*v[j] )</div>
+<div class="line"><span class="lineno">  399</span>         aZAN = ( ca.Dot(u)*Vsq-ca.Dot(v)*UV )*2*( u[j]*Vsq-v[j]*UV )</div>
+<div class="line"><span class="lineno">  400</span>         bNAZ = denom*( ca[j]*UV+(u.Dot(ca)*v[j]) - 2*ca.Dot(v)*u[j] )</div>
+<div class="line"><span class="lineno">  401</span>         bZAN = ( ca.Dot(u)*UV-ca.Dot(v)*Usq )*2*( u[j]*Vsq-v[j]*UV )</div>
+<div class="line"><span class="lineno">  402</span>         T[i][3*k+j] = 0.5*( Va*KD + u[i]/denom**2*(aNAZ-aZAN) + v[i]/denom**2*(bNAZ-bZAN) )</div>
+<div class="line"><span class="lineno">  403</span>        <span class="keywordflow">elif</span> k==3:</div>
+<div class="line"><span class="lineno">  404</span>       <span class="comment"># covv</span></div>
+<div class="line"><span class="lineno">  405</span>         aNAZ = denom*( 2*ca.Dot(u)*v[j] - ca.Dot(v)*u[j] - ca[j]*UV )</div>
+<div class="line"><span class="lineno">  406</span>         aZAN = ( ca.Dot(u)*Vsq-ca.Dot(v)*UV )*2*( v[j]*Usq-u[j]*UV )</div>
+<div class="line"><span class="lineno">  407</span>         bNAZ = denom*( ca.Dot(u)*u[j]-ca[j]*Usq )</div>
+<div class="line"><span class="lineno">  408</span>         bZAN = ( ca.Dot(u)*UV-ca.Dot(v)*Usq )*2*( v[j]*Usq-u[j]*UV )</div>
+<div class="line"><span class="lineno">  409</span>         T[i][3*k+j] = 0.5*(Vb*KD + u[i]/denom**2*(aNAZ-aZAN) + v[i]/denom**2*(bNAZ-bZAN) )</div>
+<div class="line"><span class="lineno">  410</span>   transT = ROOT.TMatrixD(12,3)</div>
+<div class="line"><span class="lineno">  411</span>   transT.Transpose(T)</div>
+<div class="line"><span class="lineno">  412</span>   CovTracks = ROOT.TMatrixD(12,12)</div>
+<div class="line"><span class="lineno">  413</span>   tlist = [t1,t2]</div>
+<div class="line"><span class="lineno">  414</span>   <span class="keywordflow">for</span> k <span class="keywordflow">in</span> range(2):</div>
+<div class="line"><span class="lineno">  415</span>     <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(6):</div>
+<div class="line"><span class="lineno">  416</span>       <span class="keywordflow">for</span> j <span class="keywordflow">in</span> range(6):</div>
+<div class="line"><span class="lineno">  417</span>        xfac = 1.</div>
+<div class="line"><span class="lineno">  418</span>        <span class="keywordflow">if</span> i&gt;2: xfac = scalFac[tlist[k]]</div>
+<div class="line"><span class="lineno">  419</span>        <span class="keywordflow">if</span> j&gt;2: xfac = xfac * scalFac[tlist[k]]</div>
+<div class="line"><span class="lineno">  420</span>        CovTracks[i+k*6][j+k*6] = CovMat[tlist[k]][i][j] * xfac</div>
+<div class="line"><span class="lineno">  421</span>        <span class="comment"># if i==5 or j==5 :  CovMat[tlist[k]][i][j] = 0 # ignore error on z-direction</span></div>
+<div class="line"><span class="lineno">  422</span>   tmp   = ROOT.TMatrixD(3,12)</div>
+<div class="line"><span class="lineno">  423</span>   tmp.Mult(T,CovTracks)</div>
+<div class="line"><span class="lineno">  424</span>   covX  = ROOT.TMatrixD(3,3)</div>
+<div class="line"><span class="lineno">  425</span>   covX.Mult(tmp,transT)</div>
+<div class="line"><span class="lineno">  426</span>   <span class="keywordflow">return</span> X,covX,dist</div>
+<div class="line"><span class="lineno">  427</span> </div>
+<div class="line"><span class="lineno">  428</span><span class="comment">#usage</span></div>
+<div class="line"><span class="lineno">  429</span><span class="comment"># import shipVertex</span></div>
+<div class="line"><span class="lineno">  430</span><span class="comment"># VertexError = shipVertex.Task()</span></div>
+<div class="line"><span class="lineno">  431</span><span class="comment"># newPos,doca = myVertexError(t1,t2,PosDirCharge)</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1096,7 +1094,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="shipVertex_8py_source.html#l00190">190</a> of file <a class="el" href="shipVertex_8py_source.html">shipVertex.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="shipVertex_8py_source.html#l00189">189</a> of file <a class="el" href="shipVertex_8py_source.html">shipVertex.py</a>.</p>
 
 </div>
 </div>

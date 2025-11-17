@@ -106,26 +106,31 @@ $(document).ready(function(){initNavTree('muonDetector_8py_source.html',''); ini
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno"><a class="line" href="classmuonDetector_1_1muonDetector.html">    6</a></span><span class="keyword">class </span><a class="code hl_class" href="classmuonDetector_1_1muonDetector.html">muonDetector</a>(<a class="code hl_class" href="classBaseDetector_1_1BaseDetector.html">BaseDetector</a>):</div>
 <div class="foldopen" id="foldopen00007" data-start="" data-end="">
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno"><a class="line" href="classmuonDetector_1_1muonDetector.html#a88e88ef1d7942d87d8e679d72a7334f1">    7</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classmuonDetector_1_1muonDetector.html#a88e88ef1d7942d87d8e679d72a7334f1">__init__</a>(self, name, intree):</div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>        super().<a class="code hl_function" href="classmuonDetector_1_1muonDetector.html#a88e88ef1d7942d87d8e679d72a7334f1">__init__</a>(name, intree)</div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>        super().<a class="code hl_function" href="classmuonDetector_1_1muonDetector.html#a88e88ef1d7942d87d8e679d72a7334f1">__init__</a>(name, intree, <span class="stringliteral">&#39;std.vector&#39;</span>)</div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
 </div>
 <div class="foldopen" id="foldopen00010" data-start="" data-end="">
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="classmuonDetector_1_1muonDetector.html#a2ad3bdf9d9c15f869f7f1645600a09fa">   10</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classmuonDetector_1_1muonDetector.html#a2ad3bdf9d9c15f869f7f1645600a09fa">digitize</a>(self):</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>        index = 0</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>        hitsPerDetId = {}</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>        <span class="keywordflow">for</span> aMCPoint <span class="keywordflow">in</span> self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#ac54365eaaae58490fec19a48f04928b7">intree</a>.muonPoint:</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>            aHit = ROOT.muonHit(aMCPoint,self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#ac54365eaaae58490fec19a48f04928b7">intree</a>.t0)</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>            <span class="keywordflow">if</span> self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#a146858d034cb57ffd0f81f4e025f9492">det</a>.GetSize() == index:</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>                self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#a146858d034cb57ffd0f81f4e025f9492">det</a>.Expand(index+1000)</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>            self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#a146858d034cb57ffd0f81f4e025f9492">det</a>[index]=aHit</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>            detID = aHit.GetDetectorID()</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>            <span class="keywordflow">if</span> aHit.isValid():</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>                <span class="keywordflow">if</span> detID <span class="keywordflow">in</span> hitsPerDetId:</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>                    <span class="keywordflow">if</span> self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#a146858d034cb57ffd0f81f4e025f9492">det</a>[hitsPerDetId[detID]].GetDigi() &gt; aHit.GetDigi():</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>                    <span class="comment"># second hit with smaller tdc</span></div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>                        self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#a146858d034cb57ffd0f81f4e025f9492">det</a>[hitsPerDetId[detID]].setValidity(0)</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>                        hitsPerDetId[detID] = index</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>            index+=1</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>        <span class="stringliteral">&quot;&quot;&quot;Digitize muon detector MC hits.</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="stringliteral"></span> </div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="stringliteral">        The earliest hit per detector will be marked valid, all later ones invalid.</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>        earliest_per_det_id = {}</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>        <span class="keywordflow">for</span> index, point <span class="keywordflow">in</span> enumerate(self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#ac54365eaaae58490fec19a48f04928b7">intree</a>.muonPoint):</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>            hit = ROOT.muonHit(point, self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#ac54365eaaae58490fec19a48f04928b7">intree</a>.t0)</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>            self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#a146858d034cb57ffd0f81f4e025f9492">det</a>.push_back(hit)</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>            detector_id = hit.GetDetectorID()</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>            <span class="keywordflow">if</span> hit.isValid():</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>                <span class="keywordflow">if</span> detector_id <span class="keywordflow">in</span> earliest_per_det_id:</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>                    earliest = earliest_per_det_id[detector_id]</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>                    <span class="keywordflow">if</span> self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#a146858d034cb57ffd0f81f4e025f9492">det</a>[earliest].GetDigi() &gt; hit.GetDigi():</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>                        <span class="comment"># second hit with smaller tdc</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>                        self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#a146858d034cb57ffd0f81f4e025f9492">det</a>[earliest].setValidity(0)</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>                        earliest_per_det_id[detector_id] = index</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>                    <span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>                        self.<a class="code hl_variable" href="classBaseDetector_1_1BaseDetector.html#a146858d034cb57ffd0f81f4e025f9492">det</a>[index].setValidity(0)</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>                <span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>                    earliest_per_det_id[detector_id] = index</div>
 </div>
 </div>
 <div class="ttc" id="aclassBaseDetector_1_1BaseDetector_html"><div class="ttname"><a href="classBaseDetector_1_1BaseDetector.html">BaseDetector.BaseDetector</a></div><div class="ttdef"><b>Definition</b> <a href="BaseDetector_8py_source.html#l00006">BaseDetector.py:6</a></div></div>

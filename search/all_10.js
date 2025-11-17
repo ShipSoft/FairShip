@@ -195,7 +195,7 @@ var searchData=
   ['muondetector_2epy_192',['muonDetector.py',['../muonDetector_8py.html',1,'']]],
   ['muondis_5ftree_193',['muondis_tree',['../namespacerun__simScript.html#a1924664424598021966cb23da8cfc1af',1,'run_simScript']]],
   ['muonfile_194',['muonfile',['../namespaceTTCluster.html#aa228b093471a96208a0dfd922034e239',1,'TTCluster']]],
-  ['muonhit_195',['muonhit',['../classmuonHit.html',1,'muonHit'],['../classmuonHit.html#acda1de4564b442eaccffcbe629b66bb3',1,'muonHit::muonHit(muonPoint *p, Double_t t0)'],['../classmuonHit.html#aca11da9ffa8e5cf7dde5eb2fbb05b2c8',1,'muonHit::muonHit(const muonHit &amp;point)'],['../classmuonHit.html#ad40a6173d63a87d700cbb4b02592b2f7',1,'muonHit::muonHit(Int_t detID, Float_t digi, Bool_t isValid)'],['../classmuonHit.html#abc5cda4ea87913f1a7ef63044ad18f31',1,'muonHit::muonHit()']]],
+  ['muonhit_195',['muonhit',['../classmuonHit.html',1,'muonHit'],['../classmuonHit.html#acda1de4564b442eaccffcbe629b66bb3',1,'muonHit::muonHit(muonPoint *p, Double_t t0)'],['../classmuonHit.html#adabe2b450d890c8db40296f2369c4e90',1,'muonHit::muonHit(const muonHit &amp;point)=default'],['../classmuonHit.html#ad40a6173d63a87d700cbb4b02592b2f7',1,'muonHit::muonHit(Int_t detID, Float_t digi, Bool_t isValid)'],['../classmuonHit.html#abc5cda4ea87913f1a7ef63044ad18f31',1,'muonHit::muonHit()']]],
   ['muonhit_2ecxx_196',['muonHit.cxx',['../muonHit_8cxx.html',1,'']]],
   ['muonhit_2eh_197',['muonHit.h',['../muonHit_8h.html',1,'']]],
   ['muonhitprintout_198',['muonHitPrintOut',['../namespacedecorators.html#a93ba609965ce91eca0009e73b2cae94a',1,'decorators']]],

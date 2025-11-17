@@ -25,7 +25,7 @@ var searchData=
   ['infile_22',['inFile',['../namespaceeventDisplay.html#a5a68f0a10abeb90c299b4aef44abdd5a',1,'eventDisplay']]],
   ['info_23',['info',['../namespacerun__fixedTarget.html#a0e40cbfde3e8a01d177fa46afeeaf5ca',1,'run_fixedTarget']]],
   ['initialised_5f_24',['initialised_',['../classShipBFieldMap.html#a4cab125ad21421ce5561972f64ab6fcd',1,'ShipBFieldMap']]],
-  ['input_5fhits_25',['input_hits',['../classshipDigiReco_1_1ShipDigiReco.html#aaadab32620e60f80b4d6b4bde85ceb29',1,'shipDigiReco::ShipDigiReco']]],
+  ['input_5fhits_25',['input_hits',['../classsplitcalDetector_1_1splitcalDetector.html#a7bfd26cc42f7bad16c967d4a578d9791',1,'splitcalDetector::splitcalDetector']]],
   ['inputfile_26',['inputfile',['../namespacerun__simEcal.html#a4c5f305488612c246a0fecf3a69c882a',1,'run_simEcal.inputFile'],['../namespacerun__simScript.html#a65fca546a6def5dfc16a44c8b410412e',1,'run_simScript.inputFile'],['../namespaceShipReco.html#af216c8c8b08ff8f49fcb82220bed70c4',1,'ShipReco.inputFile'],['../namespaceana__ShipMuon.html#a52725c8bc8e77006c51ea21a7ae18639',1,'ana_ShipMuon.inputFile']]],
   ['inputfile1_27',['inputFile1',['../namespaceana__ShipMuon.html#a109f65d2073ea325b2c662232e4ef799',1,'ana_ShipMuon']]],
   ['inputfile2_28',['inputFile2',['../namespaceana__ShipMuon.html#ae3a9a7555516b0383ba8c889abd14ce3',1,'ana_ShipMuon']]],

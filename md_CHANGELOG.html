@@ -167,6 +167,7 @@ Added</h2>
 <h2><a class="anchor" id="autotoc_md3"></a>
 Fixed</h2>
 <ul>
+<li>fix(digi): Fix splitcal ROOT deserialization crash by using pointer-based storage</li>
 <li>Fix <a class="el" href="classFixedTargetGenerator.html">FixedTargetGenerator</a> to ensure it works with newer versions of Pythia</li>
 <li>fix(eventDisplay): Fix event display crash caused by premature ROOT object initialization</li>
 <li>Remove SIMPATH dependency, replaced with EVTGENDATA for EvtGen data files (#648)</li>
@@ -206,6 +207,7 @@ Fixed</h2>
 <li>Fix the condition in the sipm channel &lt;-&gt; fiber mapping that stopped looping over channels because of the distance between a fiber and a channel. Setting a flexible condition that depends on the aggregated channel size.</li>
 <li>Add flags for <code>python/ScifiMapping.py</code></li>
 <li>Fixed <a class="el" href="classSiliconTarget.html">SiliconTarget</a> detector identifier.</li>
+<li>fix(muon): Make <a class="el" href="classmuonHit.html">muonHit</a> copy constructor public for std::vector compatibility</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md4"></a>
 Changed</h2>
@@ -220,9 +222,11 @@ Changed</h2>
 </ul>
 </li>
 <li>Rename MtcDetPoint and MtcDetHit classes to <a class="el" href="classMTCDetPoint.html">MTCDetPoint</a> and <a class="el" href="classMTCDetHit.html">MTCDetHit</a> for consistency with detector naming conventions</li>
-<li>Refactor digitisation to use detector classes for MTC, muon, time, SBT, and <a class="el" href="classUpstreamTagger.html" title="Upstream Background Tagger (UBT) detector.">UpstreamTagger</a> detectors</li>
+<li>Complete refactoring of all digitisation to use <a class="el" href="namespaceBaseDetector.html">BaseDetector</a> pattern (MTC, muon, time, SBT, <a class="el" href="classUpstreamTagger.html" title="Upstream Background Tagger (UBT) detector.">UpstreamTagger</a>, strawtubes, splitcal)</li>
 <li>Make <a class="el" href="namespaceBaseDetector.html">BaseDetector</a> an abstract base class to enforce interface contract</li>
 <li>Rewrite <a class="el" href="classUpstreamTaggerHit.html" title="Hit class for UpstreamTagger scoring plane.">UpstreamTaggerHit</a> for simplified scoring plane detector, remove RPC-specific code (#701, #354, #355)</li>
+<li>Complete migration from TClonesArrays to STL vectors for all detectors (<a class="el" href="namespacetimeDetector.html">timeDetector</a>, <a class="el" href="namespacemuonDetector.html">muonDetector</a>, <a class="el" href="classvetoHitOnTrack.html">vetoHitOnTrack</a>, strawtubes, splitcal)</li>
+<li>Integrate splitcal cluster reconstruction into <a class="el" href="namespacesplitcalDetector.html">splitcalDetector</a> class</li>
 <li>Don't special case EOS paths (fix #566)</li>
 <li>Setting up the Muon shield geometry by ROOT files is completely replaced with the temporary solution of dict in the <code>geometry/geometry_config.py</code>.</li>
 <li>Set up of the shield name is now done using the <code>--shieldName</code> flag instead of <code>--scName</code>.</li>
