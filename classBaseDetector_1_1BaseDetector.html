@@ -133,8 +133,8 @@ Collaboration diagram for BaseDetector.BaseDetector:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ad4f6e921249fbc92c0b077a786652e4f" id="r_ad4f6e921249fbc92c0b077a786652e4f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBaseDetector_1_1BaseDetector.html#ad4f6e921249fbc92c0b077a786652e4f">__init__</a> (self, <a class="el" href="classBaseDetector_1_1BaseDetector.html#acf1f438321cfd4d51bee4d1d5a62ab39">name</a>, <a class="el" href="classBaseDetector_1_1BaseDetector.html#ac54365eaaae58490fec19a48f04928b7">intree</a>, branchType=&quot;TClonesArray&quot;, branchName=None, mcBranchType=None, mcBranchName=None, splitLevel=-1)</td></tr>
-<tr class="separator:ad4f6e921249fbc92c0b077a786652e4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ae41d5cfca5d038c2bdfc478e5bdd5a" id="r_a7ae41d5cfca5d038c2bdfc478e5bdd5a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBaseDetector_1_1BaseDetector.html#a7ae41d5cfca5d038c2bdfc478e5bdd5a">__init__</a> (self, <a class="el" href="classBaseDetector_1_1BaseDetector.html#acf1f438321cfd4d51bee4d1d5a62ab39">name</a>, <a class="el" href="classBaseDetector_1_1BaseDetector.html#ac54365eaaae58490fec19a48f04928b7">intree</a>, branchType=&quot;TClonesArray&quot;, branchName=None, mcBranchType=None, mcBranchName=None, splitLevel=99)</td></tr>
+<tr class="separator:a7ae41d5cfca5d038c2bdfc478e5bdd5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9849299ed6ff5da8cb6c10a61d135a9f" id="r_a9849299ed6ff5da8cb6c10a61d135a9f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBaseDetector_1_1BaseDetector.html#a9849299ed6ff5da8cb6c10a61d135a9f">delete</a> (self)</td></tr>
 <tr class="separator:a9849299ed6ff5da8cb6c10a61d135a9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a69950a475b87b1035f2cdfe6b61743b8" id="r_a69950a475b87b1035f2cdfe6b61743b8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBaseDetector_1_1BaseDetector.html#a69950a475b87b1035f2cdfe6b61743b8">fill</a> (self)</td></tr>
@@ -162,11 +162,11 @@ Public Attributes</h2></td></tr>
 <tr class="separator:ae5c0b9a7c057d0bdd36cc98786554c46"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p class="definition">Definition at line <a class="el" href="BaseDetector_8py_source.html#l00006">6</a> of file <a class="el" href="BaseDetector_8py_source.html">BaseDetector.py</a>.</p>
+<div class="textblock"><pre class="fragment">Abstract base class for detector digitisation.</pre> 
+<p class="definition">Definition at line <a class="el" href="BaseDetector_8py_source.html#l00008">8</a> of file <a class="el" href="BaseDetector_8py_source.html">BaseDetector.py</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="ad4f6e921249fbc92c0b077a786652e4f" name="ad4f6e921249fbc92c0b077a786652e4f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad4f6e921249fbc92c0b077a786652e4f">&#9670;&#160;</a></span>__init__()</h2>
+<a id="a7ae41d5cfca5d038c2bdfc478e5bdd5a" name="a7ae41d5cfca5d038c2bdfc478e5bdd5a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7ae41d5cfca5d038c2bdfc478e5bdd5a">&#9670;&#160;</a></span>__init__()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -217,7 +217,7 @@ Public Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>splitLevel</em> = <code>-1</code>&#160;</td>
+          <td class="paramname"><em>splitLevel</em> = <code>99</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -226,35 +226,36 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-
+<pre class="fragment">Initialise detector digitisation.</pre> 
 <p>Reimplemented in <a class="el" href="classmuonDetector_1_1muonDetector.html#a88e88ef1d7942d87d8e679d72a7334f1">muonDetector.muonDetector</a>, <a class="el" href="classsplitcalDetector_1_1splitcalDetector.html#a065d837608fcc92bfc1327d7a686817d">splitcalDetector.splitcalDetector</a>, <a class="el" href="classtimeDetector_1_1timeDetector.html#a8edb7a73cfa3dccc65b44e095d689ebb">timeDetector.timeDetector</a>, <a class="el" href="classUpstreamTaggerDetector_1_1UpstreamTaggerDetector.html#a31eec97c6f875fa4666afcf22623bd5e">UpstreamTaggerDetector.UpstreamTaggerDetector</a>, <a class="el" href="classstrawtubesDetector_1_1strawtubesDetector.html#acaaf4e663666a3f275c8178cdaee9e9c">strawtubesDetector.strawtubesDetector</a>, <a class="el" href="classMTCDetector_1_1MTCDetector.html#a98b50b7002fa22cc17454756d01f2021">MTCDetector.MTCDetector</a>, and <a class="el" href="classSBTDetector_1_1SBTDetector.html#a36a7a37088123dd6d9f997aca3bf3d8f">SBTDetector.SBTDetector</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="BaseDetector_8py_source.html#l00007">7</a> of file <a class="el" href="BaseDetector_8py_source.html">BaseDetector.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   16</span>    ):</div>
-<div class="line"><span class="lineno">   17</span>        self.name = name</div>
-<div class="line"><span class="lineno">   18</span>        self.intree = intree</div>
-<div class="line"><span class="lineno">   19</span>        self.isVector = <span class="keyword">False</span></div>
-<div class="line"><span class="lineno">   20</span>        self.det = eval(f<span class="stringliteral">&quot;ROOT.{branchType}(&#39;{name}Hit&#39;)&quot;</span>)</div>
-<div class="line"><span class="lineno">   21</span>        self.MCdet = <span class="keywordtype">None</span></div>
-<div class="line"><span class="lineno">   22</span>        self.mcBranch = <span class="keywordtype">None</span></div>
-<div class="line"><span class="lineno">   23</span>        <span class="keywordflow">if</span> mcBranchName:</div>
-<div class="line"><span class="lineno">   24</span>            self.MCdet = ROOT.std.vector(<span class="stringliteral">&quot;std::vector&lt; int &gt;&quot;</span>)()</div>
-<div class="line"><span class="lineno">   25</span>            self.mcBranch = self.intree.Branch(</div>
-<div class="line"><span class="lineno">   26</span>                mcBranchName, self.MCdet, 32000, splitLevel</div>
-<div class="line"><span class="lineno">   27</span>            )</div>
-<div class="line"><span class="lineno">   28</span> </div>
-<div class="line"><span class="lineno">   29</span>        <span class="keywordflow">if</span> <span class="stringliteral">&quot;std.vector&quot;</span> <span class="keywordflow">in</span> branchType:</div>
-<div class="line"><span class="lineno">   30</span>            self.det = self.det()</div>
-<div class="line"><span class="lineno">   31</span>            self.isVector = <span class="keyword">True</span></div>
-<div class="line"><span class="lineno">   32</span>        <span class="keywordflow">if</span> branchName:</div>
-<div class="line"><span class="lineno">   33</span>            self.branch = self.intree.Branch(</div>
-<div class="line"><span class="lineno">   34</span>                f<span class="stringliteral">&quot;Digi_{branchName}Hits&quot;</span>, self.det, 32000, splitLevel</div>
-<div class="line"><span class="lineno">   35</span>            )</div>
-<div class="line"><span class="lineno">   36</span>        <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">   37</span>            self.branch = self.intree.Branch(</div>
-<div class="line"><span class="lineno">   38</span>                f<span class="stringliteral">&quot;Digi_{name}Hits&quot;</span>, self.det, 32000, splitLevel</div>
-<div class="line"><span class="lineno">   39</span>            )</div>
-<div class="line"><span class="lineno">   40</span> </div>
+<p class="definition">Definition at line <a class="el" href="BaseDetector_8py_source.html#l00011">11</a> of file <a class="el" href="BaseDetector_8py_source.html">BaseDetector.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   20</span>    ):</div>
+<div class="line"><span class="lineno">   21</span>        <span class="stringliteral">&quot;&quot;&quot;Initialise detector digitisation.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   22</span>        self.name = name</div>
+<div class="line"><span class="lineno">   23</span>        self.intree = intree</div>
+<div class="line"><span class="lineno">   24</span>        self.isVector = <span class="keyword">False</span></div>
+<div class="line"><span class="lineno">   25</span>        self.det = eval(f<span class="stringliteral">&quot;ROOT.{branchType}(&#39;{name}Hit&#39;)&quot;</span>)</div>
+<div class="line"><span class="lineno">   26</span>        self.MCdet = <span class="keywordtype">None</span></div>
+<div class="line"><span class="lineno">   27</span>        self.mcBranch = <span class="keywordtype">None</span></div>
+<div class="line"><span class="lineno">   28</span>        <span class="keywordflow">if</span> mcBranchName:</div>
+<div class="line"><span class="lineno">   29</span>            self.MCdet = ROOT.std.vector(<span class="stringliteral">&quot;std::vector&lt; int &gt;&quot;</span>)()</div>
+<div class="line"><span class="lineno">   30</span>            self.mcBranch = self.intree.Branch(</div>
+<div class="line"><span class="lineno">   31</span>                mcBranchName, self.MCdet, 32000, splitLevel</div>
+<div class="line"><span class="lineno">   32</span>            )</div>
+<div class="line"><span class="lineno">   33</span> </div>
+<div class="line"><span class="lineno">   34</span>        <span class="keywordflow">if</span> <span class="stringliteral">&quot;std.vector&quot;</span> <span class="keywordflow">in</span> branchType:</div>
+<div class="line"><span class="lineno">   35</span>            self.det = self.det()</div>
+<div class="line"><span class="lineno">   36</span>            self.isVector = <span class="keyword">True</span></div>
+<div class="line"><span class="lineno">   37</span>        <span class="keywordflow">if</span> branchName:</div>
+<div class="line"><span class="lineno">   38</span>            self.branch = self.intree.Branch(</div>
+<div class="line"><span class="lineno">   39</span>                f<span class="stringliteral">&quot;Digi_{branchName}Hits&quot;</span>, self.det, 32000, splitLevel</div>
+<div class="line"><span class="lineno">   40</span>            )</div>
+<div class="line"><span class="lineno">   41</span>        <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">   42</span>            self.branch = self.intree.Branch(</div>
+<div class="line"><span class="lineno">   43</span>                f<span class="stringliteral">&quot;Digi_{name}Hits&quot;</span>, self.det, 32000, splitLevel</div>
+<div class="line"><span class="lineno">   44</span>            )</div>
+<div class="line"><span class="lineno">   45</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -274,19 +275,20 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-
+<pre class="fragment">Clear detector containers.</pre> 
 <p>Reimplemented in <a class="el" href="classsplitcalDetector_1_1splitcalDetector.html#a7f157ee50338493039c29d1e7415ff57">splitcalDetector.splitcalDetector</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="BaseDetector_8py_source.html#l00041">41</a> of file <a class="el" href="BaseDetector_8py_source.html">BaseDetector.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   41</span>    <span class="keyword">def </span>delete(self):</div>
-<div class="line"><span class="lineno">   42</span>        <span class="keywordflow">if</span> self.isVector:</div>
-<div class="line"><span class="lineno">   43</span>            self.det.clear()</div>
-<div class="line"><span class="lineno">   44</span>        <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">   45</span>            self.det.Delete()</div>
-<div class="line"><span class="lineno">   46</span> </div>
-<div class="line"><span class="lineno">   47</span>        <span class="keywordflow">if</span> self.MCdet:</div>
-<div class="line"><span class="lineno">   48</span>            self.MCdet.clear()</div>
-<div class="line"><span class="lineno">   49</span> </div>
+<p class="definition">Definition at line <a class="el" href="BaseDetector_8py_source.html#l00046">46</a> of file <a class="el" href="BaseDetector_8py_source.html">BaseDetector.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   46</span>    <span class="keyword">def </span>delete(self):</div>
+<div class="line"><span class="lineno">   47</span>        <span class="stringliteral">&quot;&quot;&quot;Clear detector containers.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   48</span>        <span class="keywordflow">if</span> self.isVector:</div>
+<div class="line"><span class="lineno">   49</span>            self.det.clear()</div>
+<div class="line"><span class="lineno">   50</span>        <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">   51</span>            self.det.Delete()</div>
+<div class="line"><span class="lineno">   52</span> </div>
+<div class="line"><span class="lineno">   53</span>        <span class="keywordflow">if</span> self.MCdet:</div>
+<div class="line"><span class="lineno">   54</span>            self.MCdet.clear()</div>
+<div class="line"><span class="lineno">   55</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -312,15 +314,15 @@ MC hits into digitized detector responses.
 </pre> 
 <p>Reimplemented in <a class="el" href="classMTCDetector_1_1MTCDetector.html#a6f4c232cccdfab832fd25a28b80d6aa6">MTCDetector.MTCDetector</a>, <a class="el" href="classmuonDetector_1_1muonDetector.html#a2ad3bdf9d9c15f869f7f1645600a09fa">muonDetector.muonDetector</a>, <a class="el" href="classSBTDetector_1_1SBTDetector.html#ae6d48310b5a5d3df02fd2ee24ed21d6e">SBTDetector.SBTDetector</a>, <a class="el" href="classsplitcalDetector_1_1splitcalDetector.html#ae2bff9ed9baa836c882da943745d7503">splitcalDetector.splitcalDetector</a>, <a class="el" href="classstrawtubesDetector_1_1strawtubesDetector.html#ad0f99adb2fcd0d8f20f0ef3b3b07e210">strawtubesDetector.strawtubesDetector</a>, <a class="el" href="classtimeDetector_1_1timeDetector.html#a164829fc891ecb1fcb042e850fb9abed">timeDetector.timeDetector</a>, and <a class="el" href="classUpstreamTaggerDetector_1_1UpstreamTaggerDetector.html#a36ceb394d63e5b73d9a82146e039bb4e">UpstreamTaggerDetector.UpstreamTaggerDetector</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="BaseDetector_8py_source.html#l00056">56</a> of file <a class="el" href="BaseDetector_8py_source.html">BaseDetector.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   56</span>    <span class="keyword">def </span>digitize(self):</div>
-<div class="line"><span class="lineno">   57</span>        <span class="stringliteral">&quot;&quot;&quot;Digitize detector hits.</span></div>
-<div class="line"><span class="lineno">   58</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">   59</span><span class="stringliteral">        This method must be implemented by all detector subclasses to convert</span></div>
-<div class="line"><span class="lineno">   60</span><span class="stringliteral">        MC hits into digitized detector responses.</span></div>
-<div class="line"><span class="lineno">   61</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   62</span>        <span class="keywordflow">pass</span></div>
-<div class="line"><span class="lineno">   63</span> </div>
+<p class="definition">Definition at line <a class="el" href="BaseDetector_8py_source.html#l00063">63</a> of file <a class="el" href="BaseDetector_8py_source.html">BaseDetector.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   63</span>    <span class="keyword">def </span>digitize(self):</div>
+<div class="line"><span class="lineno">   64</span>        <span class="stringliteral">&quot;&quot;&quot;Digitize detector hits.</span></div>
+<div class="line"><span class="lineno">   65</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">   66</span><span class="stringliteral">        This method must be implemented by all detector subclasses to convert</span></div>
+<div class="line"><span class="lineno">   67</span><span class="stringliteral">        MC hits into digitized detector responses.</span></div>
+<div class="line"><span class="lineno">   68</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   69</span>        <span class="keywordflow">pass</span></div>
+<div class="line"><span class="lineno">   70</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -339,15 +341,16 @@ MC hits into digitized detector responses.
         </tr>
       </table>
 </div><div class="memdoc">
-
+<pre class="fragment">Fill TTree branches.</pre> 
 <p>Reimplemented in <a class="el" href="classsplitcalDetector_1_1splitcalDetector.html#aa68e237211745e8ce78b62dedbbbe123">splitcalDetector.splitcalDetector</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="BaseDetector_8py_source.html#l00050">50</a> of file <a class="el" href="BaseDetector_8py_source.html">BaseDetector.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   50</span>    <span class="keyword">def </span>fill(self):</div>
-<div class="line"><span class="lineno">   51</span>        self.branch.Fill()</div>
-<div class="line"><span class="lineno">   52</span>        <span class="keywordflow">if</span> self.mcBranch:</div>
-<div class="line"><span class="lineno">   53</span>            self.mcBranch.Fill()</div>
-<div class="line"><span class="lineno">   54</span> </div>
+<p class="definition">Definition at line <a class="el" href="BaseDetector_8py_source.html#l00056">56</a> of file <a class="el" href="BaseDetector_8py_source.html">BaseDetector.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   56</span>    <span class="keyword">def </span>fill(self):</div>
+<div class="line"><span class="lineno">   57</span>        <span class="stringliteral">&quot;&quot;&quot;Fill TTree branches.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   58</span>        self.branch.Fill()</div>
+<div class="line"><span class="lineno">   59</span>        <span class="keywordflow">if</span> self.mcBranch:</div>
+<div class="line"><span class="lineno">   60</span>            self.mcBranch.Fill()</div>
+<div class="line"><span class="lineno">   61</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -366,12 +369,13 @@ MC hits into digitized detector responses.
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="BaseDetector_8py_source.html#l00064">64</a> of file <a class="el" href="BaseDetector_8py_source.html">BaseDetector.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   64</span>    <span class="keyword">def </span>process(self):</div>
-<div class="line"><span class="lineno">   65</span>        self.delete()</div>
-<div class="line"><span class="lineno">   66</span>        self.digitize()</div>
-<div class="line"><span class="lineno">   67</span>        self.fill()</div>
+<pre class="fragment">Process one event: delete, digitise, and fill.</pre> 
+<p class="definition">Definition at line <a class="el" href="BaseDetector_8py_source.html#l00071">71</a> of file <a class="el" href="BaseDetector_8py_source.html">BaseDetector.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   71</span>    <span class="keyword">def </span>process(self):</div>
+<div class="line"><span class="lineno">   72</span>        <span class="stringliteral">&quot;&quot;&quot;Process one event: delete, digitise, and fill.&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   73</span>        self.delete()</div>
+<div class="line"><span class="lineno">   74</span>        self.digitize()</div>
+<div class="line"><span class="lineno">   75</span>        self.fill()</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -388,7 +392,7 @@ MC hits into digitized detector responses.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="BaseDetector_8py_source.html#l00033">33</a> of file <a class="el" href="BaseDetector_8py_source.html">BaseDetector.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="BaseDetector_8py_source.html#l00038">38</a> of file <a class="el" href="BaseDetector_8py_source.html">BaseDetector.py</a>.</p>
 
 </div>
 </div>
@@ -404,7 +408,7 @@ MC hits into digitized detector responses.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="BaseDetector_8py_source.html#l00020">20</a> of file <a class="el" href="BaseDetector_8py_source.html">BaseDetector.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="BaseDetector_8py_source.html#l00025">25</a> of file <a class="el" href="BaseDetector_8py_source.html">BaseDetector.py</a>.</p>
 
 </div>
 </div>
@@ -420,7 +424,7 @@ MC hits into digitized detector responses.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="BaseDetector_8py_source.html#l00018">18</a> of file <a class="el" href="BaseDetector_8py_source.html">BaseDetector.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="BaseDetector_8py_source.html#l00023">23</a> of file <a class="el" href="BaseDetector_8py_source.html">BaseDetector.py</a>.</p>
 
 </div>
 </div>
@@ -436,7 +440,7 @@ MC hits into digitized detector responses.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="BaseDetector_8py_source.html#l00019">19</a> of file <a class="el" href="BaseDetector_8py_source.html">BaseDetector.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="BaseDetector_8py_source.html#l00024">24</a> of file <a class="el" href="BaseDetector_8py_source.html">BaseDetector.py</a>.</p>
 
 </div>
 </div>
@@ -452,7 +456,7 @@ MC hits into digitized detector responses.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="BaseDetector_8py_source.html#l00022">22</a> of file <a class="el" href="BaseDetector_8py_source.html">BaseDetector.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="BaseDetector_8py_source.html#l00027">27</a> of file <a class="el" href="BaseDetector_8py_source.html">BaseDetector.py</a>.</p>
 
 </div>
 </div>
@@ -468,7 +472,7 @@ MC hits into digitized detector responses.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="BaseDetector_8py_source.html#l00021">21</a> of file <a class="el" href="BaseDetector_8py_source.html">BaseDetector.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="BaseDetector_8py_source.html#l00026">26</a> of file <a class="el" href="BaseDetector_8py_source.html">BaseDetector.py</a>.</p>
 
 </div>
 </div>
@@ -484,7 +488,7 @@ MC hits into digitized detector responses.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="BaseDetector_8py_source.html#l00017">17</a> of file <a class="el" href="BaseDetector_8py_source.html">BaseDetector.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="BaseDetector_8py_source.html#l00022">22</a> of file <a class="el" href="BaseDetector_8py_source.html">BaseDetector.py</a>.</p>
 
 </div>
 </div>

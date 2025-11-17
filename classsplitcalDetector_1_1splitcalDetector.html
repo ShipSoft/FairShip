@@ -214,8 +214,8 @@ Protected Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p>Reimplemented from <a class="el" href="classBaseDetector_1_1BaseDetector.html#ad4f6e921249fbc92c0b077a786652e4f">BaseDetector.BaseDetector</a>.</p>
+<pre class="fragment">Initialise detector digitisation.</pre> 
+<p>Reimplemented from <a class="el" href="classBaseDetector_1_1BaseDetector.html#a7ae41d5cfca5d038c2bdfc478e5bdd5a">BaseDetector.BaseDetector</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="splitcalDetector_8py_source.html#l00007">7</a> of file <a class="el" href="splitcalDetector_8py_source.html">splitcalDetector.py</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">    7</span>    <span class="keyword">def </span>__init__(self, name, intree):</div>
@@ -224,7 +224,7 @@ Protected Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   10</span> </div>
 <div class="line"><span class="lineno">   11</span>        <span class="comment"># Clusters use value storage</span></div>
 <div class="line"><span class="lineno">   12</span>        self.reco = ROOT.std.vector(<span class="stringliteral">&quot;splitcalCluster&quot;</span>)()</div>
-<div class="line"><span class="lineno">   13</span>        self.recoBranch = self.intree.Branch(<span class="stringliteral">&quot;Reco_SplitcalClusters&quot;</span>, self.reco, 32000, -1)</div>
+<div class="line"><span class="lineno">   13</span>        self.recoBranch = self.intree.Branch(<span class="stringliteral">&quot;Reco_SplitcalClusters&quot;</span>, self.reco)</div>
 <div class="line"><span class="lineno">   14</span> </div>
 </div><!-- fragment -->
 </div>
@@ -637,7 +637,7 @@ Protected Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-
+<pre class="fragment">Clear detector containers.</pre> 
 <p>Reimplemented from <a class="el" href="classBaseDetector_1_1BaseDetector.html#a9849299ed6ff5da8cb6c10a61d135a9f">BaseDetector.BaseDetector</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="splitcalDetector_8py_source.html#l00015">15</a> of file <a class="el" href="splitcalDetector_8py_source.html">splitcalDetector.py</a>.</p>
@@ -709,7 +709,7 @@ Protected Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-
+<pre class="fragment">Fill TTree branches.</pre> 
 <p>Reimplemented from <a class="el" href="classBaseDetector_1_1BaseDetector.html#a69950a475b87b1035f2cdfe6b61743b8">BaseDetector.BaseDetector</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="splitcalDetector_8py_source.html#l00020">20</a> of file <a class="el" href="splitcalDetector_8py_source.html">splitcalDetector.py</a>.</p>
