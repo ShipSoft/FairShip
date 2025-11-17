@@ -17,9 +17,7 @@ static ShipFieldCreator gShipFieldCreator;
 ShipFieldCreator::ShipFieldCreator()
   :FairFieldFactory(),
    fFieldPar(NULL)
-{
-	fCreator=this;
-}
+{}
 
 ShipFieldCreator::~ShipFieldCreator()
 {
