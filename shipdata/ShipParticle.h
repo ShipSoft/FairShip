@@ -124,7 +124,7 @@ class ShipParticle : public TObject
     // Distance of closest approach
     Double_t fDoca;
 
-    ClassDef(ShipParticle, 3);
+    ClassDefOverride(ShipParticle, 3);
 };
 
 #endif   // SHIPDATA_SHIPPARTICLE_H_
