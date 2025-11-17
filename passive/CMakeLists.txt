@@ -19,8 +19,7 @@ set(SRCS
     ShipTargetStation.cxx
     ShipMuonShield.cxx
     ShipPassiveContFact.cxx
-    ShipTAUMagneticSpectrometer.cxx
-    ShipGoliath.cxx)
+    ShipTAUMagneticSpectrometer.cxx)
 
 set(LINKDEF LinkDef.h)
 set(LIBRARY_NAME ShipPassive)
