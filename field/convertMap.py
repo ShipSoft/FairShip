@@ -234,5 +234,7 @@ def findRanges(inFileName, cmScale):
 
 if __name__ == "__main__":
 
-    run('GoliathFieldMap.txt', 'GoliathFieldMap.root', 0.1, True)
-    #run('BFieldTest.txt', 'BFieldTest.root', 1.0)
+    # Example usage (Goliath field map removed):
+    # run('GoliathFieldMap.txt', 'GoliathFieldMap.root', 0.1, True)
+    # run('BFieldTest.txt', 'BFieldTest.root', 1.0)
+    pass

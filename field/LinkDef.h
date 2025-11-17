@@ -11,6 +11,5 @@
 #pragma link C++ class ShipBFieldMap+;
 #pragma link C++ class ShipCompField+;
 #pragma link C++ class ShipFieldMaker+;
-#pragma link C++ class ShipGoliathField+;
 #pragma link C++ class FairShipFields+;
 #endif

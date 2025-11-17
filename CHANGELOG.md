@@ -196,6 +196,7 @@ it in future.
 
 ### Removed
 
+* Remove Goliath magnet geometry and field implementation (ShipGoliath, ShipGoliathField, and associated field maps)
 * fix: Remove unused, unrunnable shipPatRec_prev.py
 * feat(geometry): Dropped support for old geometries without DecayVolumeMedium explicitly set(pre 24.11 release case).
 * MS: Removed old options 7, 9, 10

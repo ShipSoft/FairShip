@@ -973,8 +973,13 @@ def extractRareEvents(single = None):
 def extractMuCloseByEvents(single = None):
  mom = ROOT.TVector3()
  pos = ROOT.TVector3()
- golmx = top.GetNode("volGoliath_1").GetMatrix()
- zGol = golmx.GetTranslation()[2]
+ # Goliath magnet has been removed from geometry
+ goliath_node = top.GetNode("volGoliath_1")
+ if goliath_node:
+  golmx = goliath_node.GetMatrix()
+  zGol = golmx.GetTranslation()[2]
+ else:
+  zGol = -9999.0  # No Goliath, accept all z positions
  for fn in fchainRec:
   if single :
     if fn.find(str(single)) < 0 : continue

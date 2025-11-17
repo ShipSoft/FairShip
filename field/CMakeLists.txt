@@ -23,7 +23,6 @@ set(SRCS
     ShipBFieldMap.cxx
     ShipCompField.cxx
     ShipFieldMaker.cxx
-    ShipGoliathField.cxx
     FairShipFields.cxx)
 
 set(LINKDEF LinkDef.h)
