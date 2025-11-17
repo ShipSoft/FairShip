@@ -6,6 +6,7 @@
 #include "splitcalPoint.h"
 #include "TObject.h"
 #include "TVector3.h"
+#include <vector>
 
 class splitcalHit : public ShipHit
 {
@@ -20,7 +21,7 @@ class splitcalHit : public ShipHit
      *@param flag      True/False, false if there is another hit with smaller tdc
      **/
     splitcalHit(Int_t detID, Float_t tdc);
-    splitcalHit(splitcalPoint* p, Double_t t0);
+    splitcalHit(const std::vector<splitcalPoint>& points, Double_t t0);
     /** Destructor **/
     virtual ~splitcalHit();
 
@@ -72,7 +73,7 @@ class splitcalHit : public ShipHit
     int _isPrecisionLayer, _nLayer, _nModuleX, _nModuleY, _nStrip, _isUsed;
     bool _isX, _isY;
 
-    ClassDef(splitcalHit,4);
+    ClassDef(splitcalHit,5);
 
 
 };
