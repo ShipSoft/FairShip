@@ -1,17 +1,5 @@
 var NAVTREEINDEX24 =
 {
-"namespacegoliath2root.html":[4,0,43],
-"namespacegoliath2root.html#a08201171c49eed8adcb907dad9c5f9ed":[4,0,43,0],
-"namespacegoliath2root.html#a113089170706c4ac24f53e7cc61b5895":[4,0,43,8],
-"namespacegoliath2root.html#a1cc8fa29e39b498d6e5a1d5412492277":[4,0,43,3],
-"namespacegoliath2root.html#a20b03741387d4ca6535aee570c98ac5c":[4,0,43,7],
-"namespacegoliath2root.html#a29c3f4aabb38e03d16ac9af568ae8cc3":[4,0,43,6],
-"namespacegoliath2root.html#a57049317d3e1c9bae567e13a9214fa57":[4,0,43,1],
-"namespacegoliath2root.html#a5d8543c4f200f0488b1963149a94d3d6":[4,0,43,9],
-"namespacegoliath2root.html#aa1ed1b6fae74da44d96104e701884cb0":[4,0,43,2],
-"namespacegoliath2root.html#aca851d81fa41287dd5b029da0dc8d247":[4,0,43,5],
-"namespacegoliath2root.html#af5db520a2c247429ae9055945dbcc719":[4,0,43,4],
-"namespacehepunit.html":[4,0,44],
 "namespacehepunit.html#a0497e5938a22adbf56d3c096ced7b4a6":[4,0,44,8],
 "namespacehepunit.html#a0522fceb45d64d0d4cf3bacf445ace51":[4,0,44,44],
 "namespacehepunit.html#a0624c0e8e00ef4f5877b59714cee65cf":[4,0,44,72],
@@ -249,5 +237,17 @@ var NAVTREEINDEX24 =
 "namespacemakeDecay.html#a6fe8eaf948b1566b26ae99e59d1f9f16":[4,0,51,1],
 "namespacemakeDecay.html#a71e56cc3e31edf9a03276e9c1dc39b52":[4,0,51,7],
 "namespacemakeDecay.html#a799db5ebd88d664f8f7075e2a4313c0e":[4,0,51,35],
-"namespacemakeDecay.html#a80350a40054e766036a4d5b25d89a92e":[4,0,51,39]
+"namespacemakeDecay.html#a80350a40054e766036a4d5b25d89a92e":[4,0,51,39],
+"namespacemakeDecay.html#a8718f33cd01d5a873aede1561940be4b":[4,0,51,37],
+"namespacemakeDecay.html#a8ae49156f9341ca95732cc2c31159dda":[4,0,51,38],
+"namespacemakeDecay.html#a91f378399593c38f355c60a387985f2e":[4,0,51,2],
+"namespacemakeDecay.html#a97147c649e3e1cfd894b38f64fd37533":[4,0,51,11],
+"namespacemakeDecay.html#a9c90b95001a4909a6c5383da1b3066d9":[4,0,51,28],
+"namespacemakeDecay.html#aabc207b3a8656d874bd06f6f24d1214e":[4,0,51,41],
+"namespacemakeDecay.html#aca7567b2e4113ef4a009953543cb27f9":[4,0,51,6],
+"namespacemakeDecay.html#acdd2c7879db37638956f0510818ee455":[4,0,51,26],
+"namespacemakeDecay.html#acf925e021b61620bf9945f04b14696e0":[4,0,51,12],
+"namespacemakeDecay.html#acfb6c7f34a0a85bb6fb08096c1e6cd5f":[4,0,51,13],
+"namespacemakeDecay.html#ad0633cff194d9c5881ba54524a76e89b":[4,0,51,18],
+"namespacemakeDecay.html#ad0cca2a83c59bb283ee59cc30dc2ea4b":[4,0,51,31]
 };

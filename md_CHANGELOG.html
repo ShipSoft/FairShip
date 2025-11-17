@@ -167,7 +167,8 @@ Added</h2>
 <h2><a class="anchor" id="autotoc_md3"></a>
 Fixed</h2>
 <ul>
-<li>fix(digi): Fix splitcal ROOT deserialization crash by using pointer-based storage</li>
+<li>refactor(splitcal): Replace splitcalPoint* constructor with vector-based constructor</li>
+<li>fix(splitcal): Move energy weights from Hit to Cluster, eliminating internal vectors</li>
 <li>Fix <a class="el" href="classFixedTargetGenerator.html">FixedTargetGenerator</a> to ensure it works with newer versions of Pythia</li>
 <li>fix(eventDisplay): Fix event display crash caused by premature ROOT object initialization</li>
 <li>Remove SIMPATH dependency, replaced with EVTGENDATA for EvtGen data files (#648)</li>
@@ -227,6 +228,8 @@ Changed</h2>
 <li>Rewrite <a class="el" href="classUpstreamTaggerHit.html" title="Hit class for UpstreamTagger scoring plane.">UpstreamTaggerHit</a> for simplified scoring plane detector, remove RPC-specific code (#701, #354, #355)</li>
 <li>Complete migration from TClonesArrays to STL vectors for all detectors (<a class="el" href="namespacetimeDetector.html">timeDetector</a>, <a class="el" href="namespacemuonDetector.html">muonDetector</a>, <a class="el" href="classvetoHitOnTrack.html">vetoHitOnTrack</a>, strawtubes, splitcal)</li>
 <li>Integrate splitcal cluster reconstruction into <a class="el" href="namespacesplitcalDetector.html">splitcalDetector</a> class</li>
+<li>refactor(splitcal): Use value storage for both hits and clusters instead of pointer storage</li>
+<li>refactor(splitcal): Replace TVector3 with std::array and hit pointers with indices in <a class="el" href="classsplitcalCluster.html">splitcalCluster</a> for RNtuple compatibility</li>
 <li>Don't special case EOS paths (fix #566)</li>
 <li>Setting up the Muon shield geometry by ROOT files is completely replaced with the temporary solution of dict in the <code>geometry/geometry_config.py</code>.</li>
 <li>Set up of the shield name is now done using the <code>--shieldName</code> flag instead of <code>--scName</code>.</li>

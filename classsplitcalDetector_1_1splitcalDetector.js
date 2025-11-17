@@ -9,7 +9,6 @@ var classsplitcalDetector_1_1splitcalDetector =
     [ "delete", "classsplitcalDetector_1_1splitcalDetector.html#a7f157ee50338493039c29d1e7415ff57", null ],
     [ "digitize", "classsplitcalDetector_1_1splitcalDetector.html#ae2bff9ed9baa836c882da943745d7503", null ],
     [ "fill", "classsplitcalDetector_1_1splitcalDetector.html#aa68e237211745e8ce78b62dedbbbe123", null ],
-    [ "branch", "classsplitcalDetector_1_1splitcalDetector.html#a82f1e63b83fa4edda1e1932ffef772aa", null ],
     [ "det", "classsplitcalDetector_1_1splitcalDetector.html#a6e67f1fbdc7bf994cfd44bbcb9bd7536", null ],
     [ "input_hits", "classsplitcalDetector_1_1splitcalDetector.html#a7bfd26cc42f7bad16c967d4a578d9791", null ],
     [ "list_subclusters_of_hits", "classsplitcalDetector_1_1splitcalDetector.html#a9f08393fb860da4760951d5e321d28bb", null ],

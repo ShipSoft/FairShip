@@ -1,13 +1,14 @@
 <map id="splitcal/splitcalHit.h" name="splitcal/splitcalHit.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="315,5,466,31"/>
-<area shape="rect" id="Node000002" href="$splitcalCluster_8h.html" title=" " alt="" coords="13,86,190,111"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="336,37,144,89,143,83,335,32"/>
-<area shape="rect" id="Node000004" href="$splitcalHit_8cxx.html" title=" " alt="" coords="214,86,381,111"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="368,42,313,88,309,84,365,38"/>
-<area shape="rect" id="Node000005" href="$test__data__class__io_8cxx.html" title=" " alt="" coords="405,79,563,119"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="417,38,463,76,460,81,413,42"/>
-<area shape="rect" id="Node000006" href="$test__rntuple__io_8cxx.html" title=" " alt="" coords="588,79,724,119"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="443,32,593,76,591,81,442,37"/>
-<area shape="rect" id="Node000003" href="$splitcalCluster_8cxx.html" title=" " alt="" coords="5,167,197,192"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="104,125,104,166,99,166,99,125"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="274,5,425,31"/>
+<area shape="rect" id="Node000002" href="$splitcalCluster_8h.html" title=" " alt="" coords="74,86,251,111"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="311,38,191,88,189,84,309,33"/>
+<area shape="rect" id="Node000004" href="$test__rntuple__io_8cxx.html" title=" " alt="" coords="221,167,357,207"/>
+<area shape="poly" id="edge6_Node000001_Node000004" title=" " alt="" coords="337,44,318,80,304,126,295,167,290,166,299,125,314,78,332,41"/>
+<area shape="rect" id="Node000005" href="$splitcalHit_8cxx.html" title=" " alt="" coords="327,86,494,111"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="369,40,404,84,399,87,365,43"/>
+<area shape="rect" id="Node000006" href="$test__data__class__io_8cxx.html" title=" " alt="" coords="518,79,677,119"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="399,32,539,76,537,81,397,37"/>
+<area shape="rect" id="Node000003" href="$splitcalCluster_8cxx.html" title=" " alt="" coords="5,174,197,199"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="148,124,112,175,108,172,144,121"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="193,117,263,164,260,169,190,121"/>
 </map>
