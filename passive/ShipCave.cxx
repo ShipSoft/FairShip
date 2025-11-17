@@ -61,27 +61,28 @@ void ShipCave::ConstructGeometry()
     Double_t Proximity_shield_half_length = 55.36 / 2 * cm;
     Double_t zEndOfTarget = z_end_of_proximity_shielding - 2 * Proximity_shield_half_length;
     Double_t z_transition = 20.52 * m;
-    auto* rock = new TGeoBBox("rock", 20 * m, 20 * m, TCC8_length / 2. + ECN3_length / 2. + 5 * m);
-    auto* muon_shield_cavern = new TGeoBBox("muon_shield_cavern", 4.995 * m, 3.75 * m, TCC8_length / 2.);
+    [[maybe_unused]] auto* rock = new TGeoBBox("rock", 20 * m, 20 * m, TCC8_length / 2. + ECN3_length / 2. + 5 * m);
+    [[maybe_unused]] auto* muon_shield_cavern =
+        new TGeoBBox("muon_shield_cavern", 4.995 * m, 3.75 * m, TCC8_length / 2.);
     auto* TCC8_shift = new TGeoTranslation("TCC8_shift", 1.435 * m, 2.05 * m, -TCC8_length / 2.);
     TCC8_shift->RegisterYourself();
 
     // Create ECN3 cavern around vessel
-    auto* experiment_rock = new TGeoBBox("experiment_rock", 20 * m, 20 * m, ECN3_length / 2.);
-    auto* stair_step = new TGeoBBox("stair_step", 7.995 * m, 5.6 * m, stair_step_length / 2.);
+    [[maybe_unused]] auto* experiment_rock = new TGeoBBox("experiment_rock", 20 * m, 20 * m, ECN3_length / 2.);
+    [[maybe_unused]] auto* stair_step = new TGeoBBox("stair_step", 7.995 * m, 5.6 * m, stair_step_length / 2.);
     auto* stair_step_shift = new TGeoTranslation("stair_step_shift", 3.435 * m, 3.04 * m, stair_step_length / 2.);
     stair_step_shift->RegisterYourself();
-    auto* experiment_cavern =
+    [[maybe_unused]] auto* experiment_cavern =
         new TGeoBBox("experiment_cavern", 7.995 * m, 6 * m, ECN3_length / 2. - stair_step_length / 2.);
     auto* ECN3_shift =
         new TGeoTranslation("ECN3_shift", 3.435 * m, 2.64 * m, ECN3_length / 2. + stair_step_length / 2.);
     ECN3_shift->RegisterYourself();
 
-    auto* yoke_pit = new TGeoBBox("yoke_pit", 4.2 * m, 0.5 * m, 4.5 * m);
+    [[maybe_unused]] auto* yoke_pit = new TGeoBBox("yoke_pit", 4.2 * m, 0.5 * m, 4.5 * m);
     auto* yoke_pit_shift = new TGeoTranslation("yoke_pit_shift", 0 * m, -3.86 * m, 89.57 * m - z_transition);
     yoke_pit_shift->RegisterYourself();
 
-    auto* target_pit = new TGeoBBox("target_pit", 2 * m, 0.5 * m, 2 * m);
+    [[maybe_unused]] auto* target_pit = new TGeoBBox("target_pit", 2 * m, 0.5 * m, 2 * m);
     auto* target_pit_shift =
         new TGeoTranslation("target_pit_shift", 0 * m, -2.2 * m, zEndOfTarget - 2 * m - z_transition);
     target_pit_shift->RegisterYourself();
