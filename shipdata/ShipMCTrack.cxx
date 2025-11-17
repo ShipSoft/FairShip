@@ -11,20 +11,20 @@
 
 // -----   Default constructor   -------------------------------------------
 ShipMCTrack::ShipMCTrack()
-  : TObject(),
-    fPdgCode(0),
-    fMotherId(-1),
-    fPx(0.),
-    fPy(0.),
-    fPz(0.),
-    fM(-1.),
-    fStartX(0.),
-    fStartY(0.),
-    fStartZ(0.),
-    fStartT(0.),
-    fNPoints(0),
-    fW(1.),
-    fProcID(44)
+    : TObject()
+    , fPdgCode(0)
+    , fMotherId(-1)
+    , fPx(0.)
+    , fPy(0.)
+    , fPz(0.)
+    , fM(-1.)
+    , fStartX(0.)
+    , fStartY(0.)
+    , fStartZ(0.)
+    , fStartT(0.)
+    , fW(1.)
+    , fProcID(44)
+    , fNPoints(0)
 {
 }
 // -------------------------------------------------------------------------
@@ -32,22 +32,32 @@ ShipMCTrack::ShipMCTrack()
 
 
 // -----   Standard constructor   ------------------------------------------
-ShipMCTrack::ShipMCTrack(Int_t pdgCode, Int_t motherId, Double_t px,
-                         Double_t py, Double_t pz, Double_t M, Double_t x, Double_t y,
-                         Double_t z, Double_t t, Int_t nPoints, Double_t w)
-  : TObject(),
-    fPdgCode(pdgCode),
-    fMotherId(motherId),
-    fPx(px),
-    fPy(py),
-    fPz(pz),
-    fM(M),
-    fStartX(x),
-    fStartY(y),
-    fStartZ(z),
-    fStartT(t),
-    fNPoints(nPoints),
-    fW(w)
+ShipMCTrack::ShipMCTrack(Int_t pdgCode,
+                         Int_t motherId,
+                         Double_t px,
+                         Double_t py,
+                         Double_t pz,
+                         Double_t M,
+                         Double_t x,
+                         Double_t y,
+                         Double_t z,
+                         Double_t t,
+                         Int_t nPoints,
+                         Double_t w)
+    : TObject()
+    , fPdgCode(pdgCode)
+    , fMotherId(motherId)
+    , fPx(px)
+    , fPy(py)
+    , fPz(pz)
+    , fM(M)
+    , fStartX(x)
+    , fStartY(y)
+    , fStartZ(z)
+    , fStartT(t)
+    , fW(w)
+    , fProcID(44)
+    , fNPoints(nPoints)
 {
 }
 // -------------------------------------------------------------------------
@@ -56,20 +66,20 @@ ShipMCTrack::ShipMCTrack(Int_t pdgCode, Int_t motherId, Double_t px,
 
 // -----   Copy constructor   ----------------------------------------------
 ShipMCTrack::ShipMCTrack(const ShipMCTrack& track)
-  : TObject(track),
-    fPdgCode(track.fPdgCode),
-    fMotherId(track.fMotherId),
-    fPx(track.fPx),
-    fPy(track.fPy),
-    fPz(track.fPz),
-    fM(track.fM),
-    fStartX(track.fStartX),
-    fStartY(track.fStartY),
-    fStartZ(track.fStartZ),
-    fStartT(track.fStartT),
-    fNPoints(track.fNPoints),
-    fProcID(track.GetProcID()),
-    fW(track.GetWeight())
+    : TObject(track)
+    , fPdgCode(track.fPdgCode)
+    , fMotherId(track.fMotherId)
+    , fPx(track.fPx)
+    , fPy(track.fPy)
+    , fPz(track.fPz)
+    , fM(track.fM)
+    , fStartX(track.fStartX)
+    , fStartY(track.fStartY)
+    , fStartZ(track.fStartZ)
+    , fStartT(track.fStartT)
+    , fW(track.GetWeight())
+    , fProcID(track.GetProcID())
+    , fNPoints(track.fNPoints)
 {
 }
 // -------------------------------------------------------------------------
@@ -78,20 +88,20 @@ ShipMCTrack::ShipMCTrack(const ShipMCTrack& track)
 
 // -----   Constructor from TParticle   ------------------------------------
 ShipMCTrack::ShipMCTrack(TParticle* part)
-  : TObject(),
-    fPdgCode(part->GetPdgCode()),
-    fMotherId(part->GetMother(0)),
-    fPx(part->Px()),
-    fPy(part->Py()),
-    fPz(part->Pz()),
-    fM(TMath::Sqrt( part->Energy()*part->Energy()-part->P()*part->P() )),
-    fStartX(part->Vx()),
-    fStartY(part->Vy()),
-    fStartZ(part->Vz()),
-    fStartT(part->T()*1e09),
-    fNPoints(0),
-    fProcID(part->GetUniqueID()),
-    fW(part->GetWeight())
+    : TObject()
+    , fPdgCode(part->GetPdgCode())
+    , fMotherId(part->GetMother(0))
+    , fPx(part->Px())
+    , fPy(part->Py())
+    , fPz(part->Pz())
+    , fM(TMath::Sqrt(part->Energy() * part->Energy() - part->P() * part->P()))
+    , fStartX(part->Vx())
+    , fStartY(part->Vy())
+    , fStartZ(part->Vz())
+    , fStartT(part->T() * 1e09)
+    , fW(part->GetWeight())
+    , fProcID(part->GetUniqueID())
+    , fNPoints(0)
 {
 }
 // -------------------------------------------------------------------------
