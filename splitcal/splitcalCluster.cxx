@@ -26,6 +26,7 @@ splitcalCluster::splitcalCluster()
 splitcalCluster::splitcalCluster(splitcalHit* h)
 {
   _vectorOfHits.push_back(h);
+  _hitWeights.push_back(1.0);  // Default weight is 1.0
 
   if ( _vectorOfHits.size() == 1){ //first element added to the cluster
     SetStartPoint(h);
@@ -55,8 +56,10 @@ void splitcalCluster::ComputeEtaPhiE()
 
   // loop over hits to compute cluster energy sum and to compute the coordinates weighted average per layer
   double energy = 0.;
-  for (auto hit : _vectorOfHits){
-    energy += hit->GetEnergyForCluster(_index);
+  for (size_t i = 0; i < _vectorOfHits.size(); ++i){
+    auto hit = _vectorOfHits[i];
+    double hitEnergy = hit->GetEnergy() * _hitWeights[i];  // Use weight from cluster
+    energy += hitEnergy;
     int layer = hit->GetLayerNumber();
     // hits from high precision layers give both x and y coordinates --> use if-if instead of if-else
     if (hit->IsX()){
@@ -64,8 +67,8 @@ void splitcalCluster::ComputeEtaPhiE()
 	mapLayerWeigthedX[layer] = 0.;
 	mapLayerSumWeigthsX[layer] = 0.;
       }
-      mapLayerWeigthedX[layer] += hit->GetX()*hit->GetEnergyForCluster(_index);
-      mapLayerSumWeigthsX[layer] += hit->GetEnergyForCluster(_index);
+      mapLayerWeigthedX[layer] += hit->GetX() * hitEnergy;
+      mapLayerSumWeigthsX[layer] += hitEnergy;
       mapLayerZ1[layer] = hit->GetZ();
     }
     if (hit->IsY()){
@@ -73,8 +76,8 @@ void splitcalCluster::ComputeEtaPhiE()
 	mapLayerWeigthedY[layer] = 0.;
 	mapLayerSumWeigthsY[layer] = 0.;
       }
-      mapLayerWeigthedY[layer] += hit->GetY()*hit->GetEnergyForCluster(_index);
-      mapLayerSumWeigthsY[layer] += hit->GetEnergyForCluster(_index);
+      mapLayerWeigthedY[layer] += hit->GetY() * hitEnergy;
+      mapLayerSumWeigthsY[layer] += hitEnergy;
       mapLayerZ2[layer] = hit->GetZ();
     }
   }//end loop on hit

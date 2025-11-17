@@ -3,6 +3,7 @@
 #include "TVector3.h"
 #include "FairRun.h"
 #include "FairRunSim.h"
+#include "FairLogger.h"
 #include "TMath.h"
 #include "TRandom1.h"
 #include "TRandom3.h"
@@ -38,6 +39,12 @@ splitcalHit::splitcalHit(splitcalPoint* p, Double_t t0)
 {
 
   flag = true;
+
+  // Null pointer check - prevent crash during ROOT cleanup/deserialisation
+  if (!p) {
+    LOG(error) << "splitcalHit constructor called with null splitcalPoint pointer";
+    return;
+  }
 
   double pointX =  p->GetX();
   double pointY =  p->GetY();
@@ -173,28 +180,6 @@ void splitcalHit::Decoder(int& id, int& isPrecision, int& nLayer, int& nModuleX,
   std::string encodedID = GetPaddedString(id);
   Decoder(encodedID, isPrecision, nLayer, nModuleX, nModuleY, nStrip);
 
-}
-
-double splitcalHit::GetEnergyWeightForIndex(int index) const
-{
-
-    int iw = 0;
-    for (size_t i = 0; i < _vecClusterIndices.size(); i++) {
-        if (_vecClusterIndices.at(i) == index) {
-            iw = i;
-            break;
-        }
-    }
-    return _vecEnergyWeights.at(iw);
-}
-
-double splitcalHit::GetEnergyForCluster(int i) const
-{
-
-    double unweightedEnergy = GetEnergy();
-    double weight = GetEnergyWeightForIndex(i);
-    double energy = unweightedEnergy * weight;
-    return energy;
 }
 
 // -------------------------------------------------------------------------
