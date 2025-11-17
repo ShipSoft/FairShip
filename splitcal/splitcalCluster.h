@@ -47,7 +47,10 @@ class splitcalCluster : public TObject
     void SetEndPoint(const double& x, const double& y, const double& z) {_end.SetXYZ(x,y,z);}
     void SetEndPoint(splitcalHit*& h);
     void SetVectorOfHits(std::vector<splitcalHit* >& v) {_vectorOfHits = v;}
-    void AddHit(splitcalHit* h) {_vectorOfHits.push_back(h);}
+    void AddHit(splitcalHit* h, double weight = 1.0) {
+        _vectorOfHits.push_back(h);
+        _hitWeights.push_back(weight);
+    }
 
     int GetIndex() {return _index;}
     double GetEta() {return _eta;}
@@ -82,12 +85,13 @@ class splitcalCluster : public TObject
     TVector3 _start;
     TVector3 _end;
     std::vector<splitcalHit* > _vectorOfHits;
+    std::vector<double> _hitWeights;  // Energy weight for each hit in _vectorOfHits
 
     // temporary for test
     double _mZX, _qZX;
     double _mZY, _qZY;
 
-    ClassDef(splitcalCluster,1);
+    ClassDef(splitcalCluster,2);
 
 };
 

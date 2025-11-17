@@ -112,30 +112,30 @@ class splitcalDetector(BaseDetector):
 
             # Build final clusters
             if len(list_of_subclusters_x) == 1 and len(list_of_subclusters_y) == 1:
-                list_final_clusters[index_final_cluster] = list_clusters_of_hits[i]
-                for hit in list_final_clusters[index_final_cluster]:
-                    hit.AddClusterIndex(index_final_cluster)
-                    hit.AddEnergyWeight(1.)
+                list_final_clusters[index_final_cluster] = [(hit, 1.0) for hit in list_clusters_of_hits[i]]
                 index_final_cluster += 1
             else:
                 for ix in list_of_subclusters_x:
                     for iy in list_of_subclusters_y:
+                        # Build list of (hit, weight) tuples
+                        hit_weight_list = []
                         for hit in list_of_subclusters_y[iy]:
-                            hit.AddClusterIndex(index_final_cluster)
-                            hit.AddEnergyWeight(weights_from_x_splitting[ix])
-
+                            hit_weight_list.append((hit, weights_from_x_splitting[ix]))
                         for hit in list_of_subclusters_x[ix]:
-                            hit.AddClusterIndex(index_final_cluster)
-                            hit.AddEnergyWeight(weights_from_y_splitting[iy])
+                            hit_weight_list.append((hit, weights_from_y_splitting[iy]))
 
-                        list_final_clusters[index_final_cluster] = list_of_subclusters_y[iy] + list_of_subclusters_x[ix]
+                        list_final_clusters[index_final_cluster] = hit_weight_list
                         index_final_cluster += 1
 
         # Fill cluster objects
         for i in list_final_clusters:
-            cluster = ROOT.splitcalCluster(list_final_clusters[i][0])
-            for hit in list_final_clusters[i][1:]:
-                cluster.AddHit(hit)
+            # Create empty cluster
+            cluster = ROOT.splitcalCluster()
+
+            # Add all hits with their weights
+            for hit, weight in list_final_clusters[i]:
+                cluster.AddHit(hit, weight)
+
             cluster.SetIndex(int(i))
             # Create heap-allocated copy for pointer storage
             clusterCopy = ROOT.splitcalCluster(cluster)
