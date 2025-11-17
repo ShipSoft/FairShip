@@ -4,6 +4,7 @@
 #include "TObject.h"              //
 
 #include "splitcalHit.h"
+#include <array>
 #include <vector>
 //#include <boost/python.hpp>
 
@@ -29,7 +30,6 @@ class splitcalCluster : public TObject
     /** Constructors **/
     splitcalCluster();
     //splitcalCluster(boost::python::list& l);
-    explicit splitcalCluster(splitcalHit* h);
 
     /** Destructor **/
     virtual ~splitcalCluster();
@@ -42,13 +42,11 @@ class splitcalCluster : public TObject
     void SetPhi(double& phi) {_phi = phi;}
     void SetEnergy(double& e) {_energy = e;}
     void SetIndex(int i) {_index = i;}
-    void SetStartPoint(const double& x, const double& y, const double& z) {_start.SetXYZ(x,y,z); }
-    void SetStartPoint(splitcalHit*& h);
-    void SetEndPoint(const double& x, const double& y, const double& z) {_end.SetXYZ(x,y,z);}
-    void SetEndPoint(splitcalHit*& h);
-    void SetVectorOfHits(std::vector<splitcalHit* >& v) {_vectorOfHits = v;}
-    void AddHit(splitcalHit* h, double weight = 1.0) {
-        _vectorOfHits.push_back(h);
+    void SetStartPoint(const double& x, const double& y, const double& z) {_start[0] = x; _start[1] = y; _start[2] = z; }
+    void SetEndPoint(const double& x, const double& y, const double& z) {_end[0] = x; _end[1] = y; _end[2] = z; }
+    void SetHitIndices(const std::vector<int>& v) {_hitIndices = v;}
+    void AddHit(int hitIndex, double weight = 1.0) {
+        _hitIndices.push_back(hitIndex);
         _hitWeights.push_back(weight);
     }
 
@@ -62,12 +60,13 @@ class splitcalCluster : public TObject
     double GetEx() {return GetPx();}
     double GetEy() {return GetPy();}
     double GetEz() {return GetPz();}
-    TVector3 GetStartPoint() {return _start; }
-    TVector3 GetEndPoint() {return _end; }
-    std::vector<splitcalHit* >& GetVectorOfHits() {return _vectorOfHits;}
+    TVector3 GetStartPoint() const {return TVector3(_start[0], _start[1], _start[2]); }
+    TVector3 GetEndPoint() const {return TVector3(_end[0], _end[1], _end[2]); }
+    const std::vector<int>& GetHitIndices() const {return _hitIndices;}
+    const std::vector<double>& GetHitWeights() const {return _hitWeights;}
 
     regression LinearRegression(std::vector<double >& x, std::vector<double >& y);
-    void ComputeEtaPhiE();
+    void ComputeEtaPhiE(const std::vector<splitcalHit>& hits);
 
     // temporary for test
     double GetSlopeZX() {return _mZX;}
@@ -82,16 +81,16 @@ class splitcalCluster : public TObject
 
     int _index;
     double _eta, _phi, _energy;
-    TVector3 _start;
-    TVector3 _end;
-    std::vector<splitcalHit* > _vectorOfHits;
-    std::vector<double> _hitWeights;  // Energy weight for each hit in _vectorOfHits
+    std::array<double, 3> _start;
+    std::array<double, 3> _end;
+    std::vector<int> _hitIndices;
+    std::vector<double> _hitWeights;
 
     // temporary for test
     double _mZX, _qZX;
     double _mZY, _qZY;
 
-    ClassDef(splitcalCluster,2);
+    ClassDef(splitcalCluster,3);
 
 };
 

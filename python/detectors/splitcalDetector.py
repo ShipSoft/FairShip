@@ -44,10 +44,12 @@ class splitcalDetector(BaseDetector):
         # Hit selection: select hits above noise threshold
         noise_energy_threshold = 0.002  # GeV
         list_hits_above_threshold = []
-        for hit in self.det:
+        hit_to_index = {}
+        for idx, hit in enumerate(self.det):
             if hit.GetEnergy() > noise_energy_threshold:
                 hit.SetIsUsed(0)
                 list_hits_above_threshold.append(hit)
+                hit_to_index[id(hit)] = idx
 
         if not list_hits_above_threshold:
             return
@@ -124,11 +126,13 @@ class splitcalDetector(BaseDetector):
             # Create empty cluster
             cluster = ROOT.splitcalCluster()
 
-            # Add all hits with their weights
+            # Add all hits with their weights using indices
             for hit, weight in list_final_clusters[i]:
-                cluster.AddHit(hit, weight)
+                hit_index = hit_to_index[id(hit)]
+                cluster.AddHit(hit_index, weight)
 
             cluster.SetIndex(int(i))
+            cluster.ComputeEtaPhiE(self.det)
             self.reco.push_back(cluster)
 
     def _get_subclusters_excluding_fragments(self):

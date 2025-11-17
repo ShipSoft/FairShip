@@ -31,6 +31,7 @@
 #include "TimeDetPoint.h"
 #include "UpstreamTaggerHit.h"
 #include "UpstreamTaggerPoint.h"
+#include "splitcalCluster.h"
 #include "splitcalHit.h"
 #include "splitcalPoint.h"
 #include "strawtubesHit.h"
@@ -193,6 +194,28 @@ int main(int argc, char** argv)
         objects.emplace_back(2002, 234.56f);
         total++;
         if (test_rntuple_io("splitcalHit", objects))
+            passed++;
+    }
+
+    {
+        std::vector<splitcalCluster> objects;
+        splitcalCluster cluster1;
+        cluster1.SetIndex(0);
+        cluster1.AddHit(0, 0.5);
+        cluster1.AddHit(1, 0.3);
+        cluster1.SetStartPoint(1.0, 2.0, 100.0);
+        cluster1.SetEndPoint(1.5, 2.5, 150.0);
+        objects.push_back(cluster1);
+
+        splitcalCluster cluster2;
+        cluster2.SetIndex(1);
+        cluster2.AddHit(2, 0.8);
+        cluster2.SetStartPoint(3.0, 4.0, 200.0);
+        cluster2.SetEndPoint(3.5, 4.5, 250.0);
+        objects.push_back(cluster2);
+
+        total++;
+        if (test_rntuple_io("splitcalCluster", objects))
             passed++;
     }
 
