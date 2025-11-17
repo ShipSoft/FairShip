@@ -1,9 +1,13 @@
+"""Base class for detector digitisation."""
+
 from abc import ABC, abstractmethod
 
 import ROOT
 
 
 class BaseDetector(ABC):
+    """Abstract base class for detector digitisation."""
+
     def __init__(
         self,
         name,
@@ -12,8 +16,9 @@ class BaseDetector(ABC):
         branchName=None,
         mcBranchType=None,
         mcBranchName=None,
-        splitLevel=-1,
+        splitLevel=99,
     ):
+        """Initialise detector digitisation."""
         self.name = name
         self.intree = intree
         self.isVector = False
@@ -39,6 +44,7 @@ class BaseDetector(ABC):
             )
 
     def delete(self):
+        """Clear detector containers."""
         if self.isVector:
             self.det.clear()
         else:
@@ -48,6 +54,7 @@ class BaseDetector(ABC):
             self.MCdet.clear()
 
     def fill(self):
+        """Fill TTree branches."""
         self.branch.Fill()
         if self.mcBranch:
             self.mcBranch.Fill()
@@ -62,6 +69,7 @@ class BaseDetector(ABC):
         pass
 
     def process(self):
+        """Process one event: delete, digitise, and fill."""
         self.delete()
         self.digitize()
         self.fill()

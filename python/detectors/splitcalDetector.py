@@ -10,7 +10,7 @@ class splitcalDetector(BaseDetector):
 
         # Clusters use value storage
         self.reco = ROOT.std.vector("splitcalCluster")()
-        self.recoBranch = self.intree.Branch("Reco_SplitcalClusters", self.reco, 32000, -1)
+        self.recoBranch = self.intree.Branch("Reco_SplitcalClusters", self.reco)
 
     def delete(self):
         # Override to also clear reconstruction branch
