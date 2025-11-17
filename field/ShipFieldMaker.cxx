@@ -488,7 +488,7 @@ void ShipFieldMaker::defineFieldMapCopy(const stringVect& inputLine)
 	Double_t y0 = std::atof(inputLine[4].c_str());
 	Double_t z0 = std::atof(inputLine[5].c_str());
 
-	Double_t phi(0.0), theta(0.0), psi(0.0), scale(1.0);
+        Double_t phi(0.0), theta(0.0), psi(0.0);
 
 	if (nWords == 9) {
 	    phi = std::atof(inputLine[6].c_str());
@@ -1283,10 +1283,6 @@ void ShipFieldMaker::plotField(Int_t type, const TVector3& xAxis, const TVector3
 	theHist[icomponent].SetYTitle("y (cm)");
       }
     }
-    // Get list of volumes (to check for local fields)
-    TObjArray* theVolumes = gGeoManager->GetListOfVolumes();
-    Int_t nVol(0);
-    if (theVolumes) {nVol = theVolumes->GetSize();}
 
     // Loop over "x" axis
     for (Int_t ix = 0; ix < Nx; ix++) {

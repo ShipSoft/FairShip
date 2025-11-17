@@ -362,11 +362,9 @@ void MTCDetector::CreateSciFiModule(const char* name,
 
 void MTCDetector::ConstructGeometry()
 {
-    // Initialize media (using FairROOT’s interface)
+    // Initialize media (using FairROOT's interface)
     InitMedium("SciFiMat");
-    TGeoMedium* SciFiMat = gGeoManager->GetMedium("SciFiMat");
     InitMedium("Epoxy");
-    TGeoMedium* Epoxy = gGeoManager->GetMedium("Epoxy");
     InitMedium("air");
     TGeoMedium* air = gGeoManager->GetMedium("air");
     TGeoMedium* ironMed = gGeoManager->GetMedium("iron");

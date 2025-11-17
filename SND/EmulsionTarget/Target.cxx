@@ -297,17 +297,8 @@ void Target::ConstructGeometry()
 
     TGeoMedium* Emufilm = new TGeoMedium("EmulsionFilm", 100, emufilmmixture);
 
-    InitMedium("lead");
-    TGeoMedium* lead = gGeoManager->GetMedium("lead");
-
     InitMedium("tungsten");
     TGeoMedium* tungsten = gGeoManager->GetMedium("tungsten");
-
-    InitMedium("Concrete");
-    TGeoMedium* Conc = gGeoManager->GetMedium("Concrete");
-
-    InitMedium("steel");
-    TGeoMedium* Steel = gGeoManager->GetMedium("steel");
 
     Int_t NPlates = number_of_plates;   // Number of doublets emulsion + Pb
 
@@ -319,8 +310,8 @@ void Target::ConstructGeometry()
     // Volumes definition
     //
 
-    TGeoBBox* Cell = new TGeoBBox("cell", BrickX / 2, BrickY / 2, CellWidth / 2);
-    TGeoVolume* volCell = new TGeoVolume("Cell", Cell, air);
+    [[maybe_unused]] TGeoBBox* Cell = new TGeoBBox("cell", BrickX / 2, BrickY / 2, CellWidth / 2);
+    [[maybe_unused]] TGeoVolume* volCell = new TGeoVolume("Cell", Cell, air);
 
     // Brick
     TGeoBBox* Brick = new TGeoBBox("brick", BrickX / 2, BrickY / 2, BrickZ / 2);
