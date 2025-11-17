@@ -1,14 +1,10 @@
 # Create a library called "libMuonShieldBackground" which includes the source
 # files given in the array . The extension is already found.  Any number of
 # sources could be listed here.
-if(EXISTS "$ENV{PYTHON_HOME}")
-  set(PYTHON_LIBRARY $ENV{PYTHON_HOME}/lib)
-  set(PYTHON_INCLUDE_DIR $ENV{PYTHON_HOME}/include/python2.7)
-endif()
-find_package(PythonLibs REQUIRED)
+find_package(Python3 COMPONENTS Development REQUIRED)
 
 set(INCLUDE_DIRECTORIES ${CMAKE_CURRENT_SOURCE_DIR} ${VMC_INCLUDE_DIRS}
-                        ${PYTHON_INCLUDE_DIRS})
+                        ${Python3_INCLUDE_DIRS})
 
 include_directories(${INCLUDE_DIRECTORIES} ${FAIRROOT_INCLUDE_DIR}
                     ${CMAKE_BINARY_DIR}/include)
