@@ -33,25 +33,31 @@ splitcalHit::splitcalHit(Int_t detID, Float_t tdc)
 {
  flag = true;
 }
-// -----   constructor from splitcalPoint   ------------------------------------------
-splitcalHit::splitcalHit(splitcalPoint* p, Double_t t0)
+// -----   constructor from vector of splitcalPoints   ------------------------------------------
+splitcalHit::splitcalHit(const std::vector<splitcalPoint>& points, Double_t t0)
   : ShipHit()
 {
 
   flag = true;
 
-  // Null pointer check - prevent crash during ROOT cleanup/deserialisation
-  if (!p) {
-    LOG(error) << "splitcalHit constructor called with null splitcalPoint pointer";
+  // Empty vector check
+  if (points.empty()) {
+    LOG(error) << "splitcalHit constructor called with empty splitcalPoint vector";
     return;
   }
 
-  double pointX =  p->GetX();
-  double pointY =  p->GetY();
-  double pointZ =  p->GetZ();
-  double pointT =  p->GetTime();
-  double pointE =  p->GetEnergyLoss();
-  int detID =  p->GetDetectorID();
+  // Use first point for geometry lookup and detector ID
+  const auto& firstPoint = points[0];
+  double pointX =  firstPoint.GetX();
+  double pointY =  firstPoint.GetY();
+  double pointZ =  firstPoint.GetZ();
+  int detID =  firstPoint.GetDetectorID();
+
+  // Sum energy from all points
+  double pointE = 0.0;
+  for (const auto& point : points) {
+    pointE += point.GetEnergyLoss();
+  }
 
   //fdigi = t0 + t;
   fdigi = t0 ;

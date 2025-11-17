@@ -75,7 +75,7 @@ it in future.
 
 ### Fixed
 
-* fix(splitcal): Add null pointer check to splitcalHit constructor
+* refactor(splitcal): Replace splitcalPoint* constructor with vector-based constructor
 * fix(splitcal): Move energy weights from Hit to Cluster, eliminating internal vectors
 + Fix FixedTargetGenerator to ensure it works with newer versions of Pythia
 * fix(eventDisplay): Fix event display crash caused by premature ROOT object initialization

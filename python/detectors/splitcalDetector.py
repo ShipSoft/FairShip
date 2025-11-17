@@ -24,17 +24,23 @@ class splitcalDetector(BaseDetector):
 
     def digitize(self):
         """Digitize splitcal hits and perform cluster reconstruction."""
-        # Digitization: merge hits in the same detector cell
-        listOfDetID = {}
+        # Digitization: group MC points by detector cell, then create one hit per cell
+        points_by_detID = {}
         for point in self.intree.splitcalPoint:
-            hit = ROOT.splitcalHit(point, self.intree.t0)
-            detector_id = hit.GetDetectorID()
-            if detector_id not in listOfDetID:
-                self.det.push_back(hit)
-                listOfDetID[detector_id] = len(self.det) - 1
-            else:
-                indexOfExistingHit = listOfDetID[detector_id]
-                self.det[indexOfExistingHit].UpdateEnergy(hit.GetEnergy())
+            detector_id = point.GetDetectorID()
+            if detector_id not in points_by_detID:
+                points_by_detID[detector_id] = []
+            points_by_detID[detector_id].append(point)
+
+        # Create one hit per detector cell from all points in that cell
+        for detector_id, points in points_by_detID.items():
+            # Convert Python list to std::vector for C++
+            point_vector = ROOT.std.vector('splitcalPoint')()
+            for point in points:
+                point_vector.push_back(point)
+
+            hit = ROOT.splitcalHit(point_vector, self.intree.t0)
+            self.det.push_back(hit)
 
         # Cluster reconstruction
         self._reconstruct_clusters()
