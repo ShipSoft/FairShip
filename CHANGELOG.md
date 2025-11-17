@@ -75,6 +75,7 @@ it in future.
 
 ### Fixed
 
+* fix(digi): Fix splitcal ROOT deserialization crash by using pointer-based storage
 + Fix FixedTargetGenerator to ensure it works with newer versions of Pythia
 * fix(eventDisplay): Fix event display crash caused by premature ROOT object initialization
 * Remove SIMPATH dependency, replaced with EVTGENDATA for EvtGen data files (#648)
