@@ -5,7 +5,7 @@
 
 #include "splitcalPoint.h"
 
-
+#include "FairLink.h"
 #include "FairVolume.h"
 #include "FairGeoVolume.h"
 #include "FairGeoNode.h"
@@ -176,6 +176,18 @@ void splitcal::Register()
 TClonesArray* splitcal::GetCollection(Int_t iColl) const
 {
   return nullptr;
+}
+
+void splitcal::UpdatePointTrackIndices(const std::map<Int_t, Int_t>& indexMap)
+{
+  for (auto& point : *fsplitcalPoints) {
+    Int_t oldTrackID = point.GetTrackID();
+    auto iter = indexMap.find(oldTrackID);
+    if (iter != indexMap.end()) {
+      point.SetTrackID(iter->second);
+      point.SetLink(FairLink("MCTrack", iter->second));
+    }
+  }
 }
 
 void splitcal::Reset()

@@ -9,6 +9,7 @@
 #include "UpstreamTaggerPoint.h"
 #include "UpstreamTaggerHit.h"
 
+#include "FairLink.h"
 #include "FairVolume.h"
 #include "FairGeoVolume.h"
 #include "FairGeoNode.h"
@@ -211,7 +212,17 @@ TClonesArray* UpstreamTagger::GetCollection(Int_t iColl) const
   return nullptr;
 }
 
-
+void UpstreamTagger::UpdatePointTrackIndices(const std::map<Int_t, Int_t>& indexMap)
+{
+  for (auto& point : *fUpstreamTaggerPoints) {
+    Int_t oldTrackID = point.GetTrackID();
+    auto iter = indexMap.find(oldTrackID);
+    if (iter != indexMap.end()) {
+      point.SetTrackID(iter->second);
+      point.SetLink(FairLink("MCTrack", iter->second));
+    }
+  }
+}
 
 void UpstreamTagger::Reset()
 {

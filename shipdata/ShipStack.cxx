@@ -12,6 +12,7 @@
 #include "ShipMCTrack.h"                // for ShipMCTrack
 #include "FairRootManager.h"            // for FairRootManager
 #include "FairLogger.h"                 // for FairLogger, MESSAGE_ORIGIN
+#include "ISTLPointContainer.h"         // for STL-based detector interface
 
 #include <iosfwd>                    // for ostream
 #include "TClonesArray.h"               // for TClonesArray
@@ -309,28 +310,34 @@ void ShipStack::UpdateTrackIndex(TRefArray* detList)
   FairDetector* det = NULL;
   while( (det = dynamic_cast<FairDetector*>(fDetIter->Next()) ) ) {
 
-
-    // --> Get hit collections from detector
-    Int_t iColl = 0;
-    TClonesArray* hitArray;
-    while ( (hitArray = det->GetCollection(iColl++)) ) {
+    // --> Check if detector uses STL containers (std::vector)
+    if (auto* stlDet = dynamic_cast<ISTLPointContainer*>(det)) {
+      // Use new interface for STL-based detectors
+      stlDet->UpdatePointTrackIndices(fIndexMap);
       nColl++;
-      Int_t nPoints = hitArray->GetEntriesFast();
+    } else {
+      // --> Get hit collections from detector (legacy TClonesArray approach)
+      Int_t iColl = 0;
+      TClonesArray* hitArray;
+      while ( (hitArray = det->GetCollection(iColl++)) ) {
+        nColl++;
+        Int_t nPoints = hitArray->GetEntriesFast();
 
-      // --> Update track index for all MCPoints in the collection
-      for (Int_t iPoint=0; iPoint<nPoints; iPoint++) {
-        FairMCPoint* point = dynamic_cast<FairMCPoint*>(hitArray->At(iPoint));
-        Int_t iTrack = point->GetTrackID();
+        // --> Update track index for all MCPoints in the collection
+        for (Int_t iPoint=0; iPoint<nPoints; iPoint++) {
+          FairMCPoint* point = dynamic_cast<FairMCPoint*>(hitArray->At(iPoint));
+          Int_t iTrack = point->GetTrackID();
 
-        fIndexIter = fIndexMap.find(iTrack);
-        if (fIndexIter == fIndexMap.end()) {
-          LOGF(fatal, "ShipStack: Particle index %i not found in index map! ", iTrack);
+          fIndexIter = fIndexMap.find(iTrack);
+          if (fIndexIter == fIndexMap.end()) {
+            LOGF(fatal, "ShipStack: Particle index %i not found in index map! ", iTrack);
+          }
+          point->SetTrackID((*fIndexIter).second);
+          point->SetLink(FairLink("MCTrack", (*fIndexIter).second));
         }
-        point->SetTrackID((*fIndexIter).second);
-        point->SetLink(FairLink("MCTrack", (*fIndexIter).second));
-      }
 
-    }   // Collections of this detector
+      }   // Collections of this detector
+    }
   }     // List of active detectors
   LOGF(debug, "...stack and  %i collections updated.", nColl);
 }

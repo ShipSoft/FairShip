@@ -5,6 +5,7 @@
 #define SND_SILICONTARGET_SILICONTARGET_H_
 
 #include "FairDetector.h"
+#include "ISTLPointContainer.h"
 #include "Rtypes.h"
 #include "SiliconTargetPoint.h"
 #include "TClonesArray.h"
@@ -12,9 +13,12 @@
 #include "TLorentzVector.h"
 #include "TVector3.h"
 
+#include <map>
 #include <vector>
 
-class SiliconTarget : public FairDetector
+class SiliconTarget
+    : public FairDetector
+    , public ISTLPointContainer
 {
   public:
     SiliconTarget(const char* name, Bool_t Active, const char* Title = "");
@@ -58,6 +62,10 @@ class SiliconTarget : public FairDetector
     virtual void EndOfEvent();
     /** Gets the produced collections */
     virtual TClonesArray* GetCollection(Int_t iColl) const;
+
+    /** Update track indices in point collection (for std::vector migration) */
+    void UpdatePointTrackIndices(const std::map<Int_t, Int_t>& indexMap);
+
     /** Has to be called after each event to reset the containers */
     virtual void Reset();
 
