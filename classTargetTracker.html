@@ -476,7 +476,7 @@ Private Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>This method is an example of how to add your own point of type <a class="el" href="classmuonPoint.html">muonPoint</a> to the clones array </p>
+<p>This method is an example of how to add your own point of type <a class="el" href="classTTPoint.html">TTPoint</a> to the clones array </p>
 
 <p class="definition">Definition at line <a class="el" href="TargetTracker_8cxx_source.html#l00366">366</a> of file <a class="el" href="TargetTracker_8cxx_source.html">TargetTracker.cxx</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  374</span>{</div>
@@ -1114,7 +1114,7 @@ Private Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  281</span>    <span class="comment">// Sum energy loss for all steps in the active volume</span></div>
 <div class="line"><span class="lineno">  282</span>    <a class="code hl_variable" href="classTargetTracker.html#afd174318951d346614cf0e6b22f3e859">fELoss</a> += <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;Edep();</div>
 <div class="line"><span class="lineno">  283</span> </div>
-<div class="line"><span class="lineno">  284</span>    <span class="comment">// Create muonPoint at exit of active volume</span></div>
+<div class="line"><span class="lineno">  284</span>    <span class="comment">// Create TTPoint at exit of active volume</span></div>
 <div class="line"><span class="lineno">  285</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;IsTrackExiting() || <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;IsTrackStop() || <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;IsTrackDisappeared()) {</div>
 <div class="line"><span class="lineno">  286</span>        <span class="keywordflow">if</span> (<a class="code hl_variable" href="classTargetTracker.html#afd174318951d346614cf0e6b22f3e859">fELoss</a> == 0.) {</div>
 <div class="line"><span class="lineno">  287</span>            <span class="keywordflow">return</span> kFALSE;</div>

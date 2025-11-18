@@ -406,7 +406,7 @@ $(document).ready(function(){initNavTree('TargetTracker_8cxx_source.html',''); i
 <div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>    <span class="comment">// Sum energy loss for all steps in the active volume</span></div>
 <div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>    <a class="code hl_variable" href="classTargetTracker.html#afd174318951d346614cf0e6b22f3e859">fELoss</a> += gMC-&gt;Edep();</div>
 <div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span> </div>
-<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>    <span class="comment">// Create muonPoint at exit of active volume</span></div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>    <span class="comment">// Create TTPoint at exit of active volume</span></div>
 <div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>    <span class="keywordflow">if</span> (gMC-&gt;IsTrackExiting() || gMC-&gt;IsTrackStop() || gMC-&gt;IsTrackDisappeared()) {</div>
 <div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>        <span class="keywordflow">if</span> (<a class="code hl_variable" href="classTargetTracker.html#afd174318951d346614cf0e6b22f3e859">fELoss</a> == 0.) {</div>
 <div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>            <span class="keywordflow">return</span> kFALSE;</div>

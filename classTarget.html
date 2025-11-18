@@ -552,7 +552,7 @@ Protected Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>This method is an example of how to add your own point of type <a class="el" href="classmuonPoint.html">muonPoint</a> to the clones array </p>
+<p>This method is an example of how to add your own point of type <a class="el" href="classTargetPoint.html">TargetPoint</a> to the clones array </p>
 
 <p class="definition">Definition at line <a class="el" href="Target_8cxx_source.html#l00588">588</a> of file <a class="el" href="Target_8cxx_source.html">Target.cxx</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  596</span>{</div>
@@ -1283,7 +1283,7 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  433</span>    <span class="comment">// Sum energy loss for all steps in the active volume</span></div>
 <div class="line"><span class="lineno">  434</span>    <a class="code hl_variable" href="classTarget.html#ad199f971618140a8b114f054abdbd9cc">fELoss</a> += <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;Edep();</div>
 <div class="line"><span class="lineno">  435</span> </div>
-<div class="line"><span class="lineno">  436</span>    <span class="comment">// Create muonPoint at exit of active volume</span></div>
+<div class="line"><span class="lineno">  436</span>    <span class="comment">// Create TargetPoint at exit of active volume</span></div>
 <div class="line"><span class="lineno">  437</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;IsTrackExiting() || <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;IsTrackStop() || <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;IsTrackDisappeared()) {</div>
 <div class="line"><span class="lineno">  438</span>        fTrackID = <a class="code hl_variable" href="namespacerun__simScript.html#a671e51e119017a06d69c162c6e24b051">gMC</a>-&gt;GetStack()-&gt;GetCurrentTrackNumber();</div>
 <div class="line"><span class="lineno">  439</span>        <span class="comment">// Int_t fTrackID  = gMC-&gt;GetStack()-&gt;GetCurrentTrackNumber();</span></div>
