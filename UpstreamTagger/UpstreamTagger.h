@@ -2,9 +2,13 @@
 #define UPSTREAMTAGGER_UPSTREAMTAGGER_H_
 
 #include "FairDetector.h"
+#include "ISTLPointContainer.h"
 #include "TVector3.h"
 #include "TLorentzVector.h"
 #include "ShipUnit.h"
+
+#include <map>
+#include <vector>
 
 class UpstreamTaggerPoint;
 class FairVolume;
@@ -33,7 +37,7 @@ using ShipUnit::cm;
  * - Configured via SetZposition() and SetBoxDimensions()
  */
 
-class UpstreamTagger: public FairDetector
+class UpstreamTagger: public FairDetector, public ISTLPointContainer
 {
 
   public:
@@ -63,6 +67,9 @@ class UpstreamTagger: public FairDetector
 
     /** Gets the produced collections */
     virtual TClonesArray* GetCollection(Int_t iColl) const;
+
+    /** Update track indices in point collection (for std::vector migration) */
+    void UpdatePointTrackIndices(const std::map<Int_t, Int_t>& indexMap);
 
     /** has to be called after each event to reset the containers */
     virtual void Reset();
@@ -119,7 +126,7 @@ class UpstreamTagger: public FairDetector
     TGeoVolume* UpstreamTagger_fulldet; // Timing_detector_1 object
     TGeoVolume* scoringPlaneUBText; // new scoring plane
     /** container for data points */
-    TClonesArray* fUpstreamTaggerPointCollection;
+    std::vector<UpstreamTaggerPoint>* fUpstreamTaggerPoints;
 
     UpstreamTagger(const UpstreamTagger&);
     UpstreamTagger& operator=(const UpstreamTagger&);

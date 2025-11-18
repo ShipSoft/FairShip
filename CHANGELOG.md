@@ -12,8 +12,19 @@ it in future.
 
 ## Unreleased
 
+### Changed
+
+* **Migrate detector MC point storage from TClonesArray to std::vector**
+  Ten detector classes now use `std::vector<PointType>` instead of `TClonesArray` for storing MC simulation points. This modernises the codebase with standard C++ containers, improves type safety, and leverages `FairRootManager::RegisterAny()` for ROOT I/O. Affected detectors: TimeDet, UpstreamTagger, strawtubes, splitcal, veto, Target, TargetTracker, SiliconTarget, MTCDetector, and simpleTarget.
+
+* **Migrate ShipStack MC track storage from TClonesArray to std::vector**
+  ShipStack now uses `std::vector<ShipMCTrack>` instead of `TClonesArray` for storing MC tracks written to output. This completes the migration of MC data storage to modern C++ containers and enables `RegisterAny()` for MCTrack I/O.
+* Migrate Tracklet container in shipDigiReco from TClonesArray to std::vector
+
 ### Added
 
+* **Add ISTLPointContainer interface for STL-based detector track index updating**
+  Introduces ISTLPointContainer interface enabling polymorphic track index updating for detectors using std::vector storage. ShipStack now automatically detects and handles both STL-based and TClonesArray-based detectors, ensuring MC points maintain correct track references after track filtering. Also adds missing parameterised constructors to simpleTarget and exitHadronAbsorber.
 * **Data classes now support ROOT RNtuple I/O**
   All FairShip data classes (Hits, Points, Tracks, Particles) have been refactored for ROOT RNtuple compatibility. Changes include: public copy constructors, const-correct getter methods, replacement of TVector3 storage with std::array, and complete refactoring of ShipParticle to remove TParticle inheritance. Comprehensive RNtuple I/O tests verify all 20 data classes can be written to and read from RNtuple format.
 + Add option for an additional sensitive plane around the target in run_fixedTarget

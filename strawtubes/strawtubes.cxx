@@ -4,6 +4,7 @@
 
 #include "strawtubes.h"
 
+#include "FairLink.h"
 #include "FairGeoBuilder.h"
 #include "FairGeoInterface.h"
 #include "FairGeoLoader.h"
@@ -46,7 +47,7 @@ strawtubes::strawtubes()
     , fLength(-1.)
     , fELoss(-1)
     , fMedium("air")
-    , fstrawtubesPointCollection(new TClonesArray("strawtubesPoint"))
+    , fstrawtubesPoints(nullptr)
 {}
 
 strawtubes::strawtubes(std::string medium)
@@ -59,7 +60,7 @@ strawtubes::strawtubes(std::string medium)
     , fLength(-1.)
     , fELoss(-1)
     , fMedium(medium)
-    , fstrawtubesPointCollection(new TClonesArray("strawtubesPoint"))
+    , fstrawtubesPoints(nullptr)
 {
 }
 
@@ -72,15 +73,15 @@ strawtubes::strawtubes(const char* name, Bool_t active)
     fTime(-1.),
     fLength(-1.),
     fELoss(-1),
-    fstrawtubesPointCollection(new TClonesArray("strawtubesPoint"))
+    fstrawtubesPoints(nullptr)
 {
 }
 
 strawtubes::~strawtubes()
 {
-  if (fstrawtubesPointCollection) {
-    fstrawtubesPointCollection->Delete();
-    delete fstrawtubesPointCollection;
+  if (fstrawtubesPoints) {
+    fstrawtubesPoints->clear();
+    delete fstrawtubesPoints;
   }
 }
 
@@ -180,7 +181,7 @@ Bool_t  strawtubes::ProcessHits(FairVolume* vol)
 
 void strawtubes::EndOfEvent()
 {
-  fstrawtubesPointCollection->Clear();
+  fstrawtubesPoints->clear();
 }
 
 
@@ -194,20 +195,31 @@ void strawtubes::Register()
       only during the simulation.
   */
 
-  FairRootManager::Instance()->Register("strawtubesPoint", "strawtubes",
-                                        fstrawtubesPointCollection, kTRUE);
+  fstrawtubesPoints = new std::vector<strawtubesPoint>();
+  FairRootManager::Instance()->RegisterAny("strawtubesPoint", fstrawtubesPoints, kTRUE);
 }
 
 
 TClonesArray* strawtubes::GetCollection(Int_t iColl) const
 {
-  if (iColl == 0) { return fstrawtubesPointCollection; }
-  else { return NULL; }
+  return nullptr;
+}
+
+void strawtubes::UpdatePointTrackIndices(const std::map<Int_t, Int_t>& indexMap)
+{
+  for (auto& point : *fstrawtubesPoints) {
+    Int_t oldTrackID = point.GetTrackID();
+    auto iter = indexMap.find(oldTrackID);
+    if (iter != indexMap.end()) {
+      point.SetTrackID(iter->second);
+      point.SetLink(FairLink("MCTrack", iter->second));
+    }
+  }
 }
 
 void strawtubes::Reset()
 {
-  fstrawtubesPointCollection->Clear();
+  fstrawtubesPoints->clear();
 }
 void strawtubes::SetzPositions(Double_t z1, Double_t z2, Double_t z3, Double_t z4)
 {
@@ -554,9 +566,7 @@ strawtubesPoint* strawtubes::AddHit(Int_t trackID, Int_t detID,
                                       Double_t time, Double_t length,
                                       Double_t eLoss, Int_t pdgCode, Double_t dist2Wire)
 {
-  TClonesArray& clref = *fstrawtubesPointCollection;
-  Int_t size = clref.GetEntriesFast();
-  //std::cout << "adding hit detid " <<detID<<std::endl;
-  return new(clref[size]) strawtubesPoint(trackID, detID, pos, mom,
+  fstrawtubesPoints->emplace_back(trackID, detID, pos, mom,
          time, length, eLoss, pdgCode, dist2Wire);
+  return &(fstrawtubesPoints->back());
 }
