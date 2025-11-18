@@ -4,6 +4,7 @@
 // MTC detector specific headers
 #include "MTCDetector.h"
 
+#include "FairLink.h"
 #include "MTCDetPoint.h"
 #include "ShipDetectorList.h"
 #include "ShipStack.h"
@@ -785,6 +786,18 @@ void MTCDetector::Register()
 TClonesArray* MTCDetector::GetCollection(Int_t iColl) const
 {
     return nullptr;
+}
+
+void MTCDetector::UpdatePointTrackIndices(const std::map<Int_t, Int_t>& indexMap)
+{
+    for (auto& point : *fMTCDetectorPoints) {
+        Int_t oldTrackID = point.GetTrackID();
+        auto iter = indexMap.find(oldTrackID);
+        if (iter != indexMap.end()) {
+            point.SetTrackID(iter->second);
+            point.SetLink(FairLink("MCTrack", iter->second));
+        }
+    }
 }
 
 void MTCDetector::Reset()

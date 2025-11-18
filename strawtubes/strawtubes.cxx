@@ -7,6 +7,7 @@
 
 #include "strawtubes.h"
 
+#include "FairLink.h"
 #include "FairGeoBuilder.h"
 #include "FairGeoInterface.h"
 #include "FairGeoLoader.h"
@@ -205,6 +206,18 @@ void strawtubes::Register()
 TClonesArray* strawtubes::GetCollection(Int_t iColl) const
 {
   return nullptr;
+}
+
+void strawtubes::UpdatePointTrackIndices(const std::map<Int_t, Int_t>& indexMap)
+{
+  for (auto& point : *fstrawtubesPoints) {
+    Int_t oldTrackID = point.GetTrackID();
+    auto iter = indexMap.find(oldTrackID);
+    if (iter != indexMap.end()) {
+      point.SetTrackID(iter->second);
+      point.SetLink(FairLink("MCTrack", iter->second));
+    }
+  }
 }
 
 void strawtubes::Reset()
