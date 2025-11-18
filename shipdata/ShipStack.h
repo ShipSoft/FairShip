@@ -38,8 +38,10 @@
 #include <map>                          // for map, map<>::iterator
 #include <stack>                        // for stack
 #include <utility>                      // for pair
+#include <vector>                       // for vector
 
 class TClonesArray;
+class ShipMCTrack;
 class TParticle;
 class TRefArray;
 class FairLogger;
@@ -210,7 +212,7 @@ class ShipStack : public FairGenericStack
     TClonesArray* fParticles;            //!
 
     /** Array of FairMCTracks containing the tracks written to the output **/
-    TClonesArray* fTracks;
+    std::vector<ShipMCTrack>* fTracks;
 
 
     /** STL map from particle index to storage flag  **/
