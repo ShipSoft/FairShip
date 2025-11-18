@@ -6,6 +6,7 @@
 
 #include "FairDetector.h"
 #include "FairModule.h"   // for FairModule
+#include "ISTLPointContainer.h"
 #include "MTCDetPoint.h"
 #include "Rtypes.h"   // for ShipMuonShield::Class, Bool_t, etc
 #include "TClonesArray.h"
@@ -13,6 +14,7 @@
 #include "TLorentzVector.h"
 #include "TVector3.h"
 
+#include <map>
 #include <string>   // for string
 #include <vector>
 
@@ -23,7 +25,9 @@ class TGeoMedium;
 class FairVolume;
 class TClonesArray;
 
-class MTCDetector : public FairDetector
+class MTCDetector
+    : public FairDetector
+    , public ISTLPointContainer
 {
   public:
     MTCDetector(const char* name, Bool_t Active, const char* Title = "", Int_t DetId = 0);
@@ -89,6 +93,10 @@ class MTCDetector : public FairDetector
     virtual void Register();
     virtual void EndOfEvent();
     virtual TClonesArray* GetCollection(Int_t iColl) const;
+
+    /** Update track indices in point collection (for std::vector migration) */
+    void UpdatePointTrackIndices(const std::map<Int_t, Int_t>& indexMap);
+
     virtual void Reset();
 
   private:

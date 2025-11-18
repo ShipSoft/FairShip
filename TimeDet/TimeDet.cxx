@@ -8,6 +8,7 @@
 #include "TimeDet.h"
 #include "TimeDetPoint.h"
 
+#include "FairLink.h"
 #include "FairVolume.h"
 #include "FairGeoVolume.h"
 #include "FairGeoNode.h"
@@ -232,6 +233,18 @@ void TimeDet::Register()
 TClonesArray* TimeDet::GetCollection(Int_t iColl) const
 {
   return nullptr;
+}
+
+void TimeDet::UpdatePointTrackIndices(const std::map<Int_t, Int_t>& indexMap)
+{
+  for (auto& point : *fTimeDetPoints) {
+    Int_t oldTrackID = point.GetTrackID();
+    auto iter = indexMap.find(oldTrackID);
+    if (iter != indexMap.end()) {
+      point.SetTrackID(iter->second);
+      point.SetLink(FairLink("MCTrack", iter->second));
+    }
+  }
 }
 
 

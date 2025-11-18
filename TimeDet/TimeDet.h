@@ -5,10 +5,12 @@
 #define TIMEDET_TIMEDET_H_
 
 #include "FairDetector.h"
+#include "ISTLPointContainer.h"
 
 #include "TVector3.h"
 #include "TLorentzVector.h"
 
+#include <map>
 #include <vector>
 
 class TimeDetPoint;
@@ -16,7 +18,7 @@ class FairVolume;
 class TClonesArray;
 
 
-class TimeDet: public FairDetector
+class TimeDet: public FairDetector, public ISTLPointContainer
 {
 
   public:
@@ -46,6 +48,9 @@ class TimeDet: public FairDetector
 
     /** Gets the produced collections */
     virtual TClonesArray* GetCollection(Int_t iColl) const;
+
+    /** Update track indices in point collection (for std::vector migration) */
+    void UpdatePointTrackIndices(const std::map<Int_t, Int_t>& indexMap);
 
     /** has to be called after each event to reset the containers */
     virtual void Reset();

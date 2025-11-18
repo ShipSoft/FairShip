@@ -19,6 +19,7 @@
 #include "FairGeoNode.h"
 #include "FairGeoTransform.h"
 #include "FairGeoVolume.h"
+#include "FairLink.h"
 #include "FairRootManager.h"
 #include "FairRun.h"   // for FairRun
 #include "FairRun.h"
@@ -580,6 +581,18 @@ void Target::Register()
 TClonesArray* Target::GetCollection(Int_t iColl) const
 {
     return nullptr;
+}
+
+void Target::UpdatePointTrackIndices(const std::map<Int_t, Int_t>& indexMap)
+{
+    for (auto& point : *fTargetPoints) {
+        Int_t oldTrackID = point.GetTrackID();
+        auto iter = indexMap.find(oldTrackID);
+        if (iter != indexMap.end()) {
+            point.SetTrackID(iter->second);
+            point.SetLink(FairLink("MCTrack", iter->second));
+        }
+    }
 }
 
 void Target::Reset()

@@ -3,6 +3,7 @@
 
 #include "SiliconTarget.h"
 
+#include "FairLink.h"
 #include "ShipDetectorList.h"
 #include "ShipStack.h"
 #include "ShipUnit.h"
@@ -283,6 +284,18 @@ void SiliconTarget::Register()
 TClonesArray* SiliconTarget::GetCollection(Int_t iColl) const
 {
     return nullptr;
+}
+
+void SiliconTarget::UpdatePointTrackIndices(const std::map<Int_t, Int_t>& indexMap)
+{
+    for (auto& point : *fSiliconTargetPoints) {
+        Int_t oldTrackID = point.GetTrackID();
+        auto iter = indexMap.find(oldTrackID);
+        if (iter != indexMap.end()) {
+            point.SetTrackID(iter->second);
+            point.SetLink(FairLink("MCTrack", iter->second));
+        }
+    }
 }
 
 void SiliconTarget::Reset()
