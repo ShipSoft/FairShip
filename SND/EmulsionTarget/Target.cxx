@@ -442,7 +442,7 @@ Bool_t Target::ProcessHits(FairVolume* vol)
     // Sum energy loss for all steps in the active volume
     fELoss += gMC->Edep();
 
-    // Create muonPoint at exit of active volume
+    // Create TargetPoint at exit of active volume
     if (gMC->IsTrackExiting() || gMC->IsTrackStop() || gMC->IsTrackDisappeared()) {
         fTrackID = gMC->GetStack()->GetCurrentTrackNumber();
         // Int_t fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();

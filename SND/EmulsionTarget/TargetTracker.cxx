@@ -281,7 +281,7 @@ Bool_t TargetTracker::ProcessHits(FairVolume* vol)
     // Sum energy loss for all steps in the active volume
     fELoss += gMC->Edep();
 
-    // Create muonPoint at exit of active volume
+    // Create TTPoint at exit of active volume
     if (gMC->IsTrackExiting() || gMC->IsTrackStop() || gMC->IsTrackDisappeared()) {
         if (fELoss == 0.) {
             return kFALSE;

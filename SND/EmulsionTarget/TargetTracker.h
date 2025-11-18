@@ -67,7 +67,7 @@ class TargetTracker : public FairDetector
     virtual void Reset();
 
     /**      This method is an example of how to add your own point
-     *       of type muonPoint to the clones array
+     *       of type TTPoint to the clones array
      */
 
     TTPoint* AddHit(Int_t trackID,

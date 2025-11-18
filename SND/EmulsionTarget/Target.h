@@ -96,7 +96,7 @@ class Target : public FairDetector
     virtual void Reset();
 
     /**      This method is an example of how to add your own point
-     *       of type muonPoint to the clones array
+     *       of type TargetPoint to the clones array
      */
 
     TargetPoint* AddHit(Int_t trackID,
