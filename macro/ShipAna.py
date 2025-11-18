@@ -246,7 +246,7 @@ def checkHNLorigin(sTree):
  flag = False
 # only makes sense for signal == HNL
  hnlkey = -1
- for n in range(sTree.MCTrack.GetEntries()):
+ for n in range(sTree.MCTrack.size()):
    mo = sTree.MCTrack[n].GetMotherId()
    if mo <0: continue
    if abs(sTree.MCTrack[mo].GetPdgCode()) == 9900015:
@@ -490,7 +490,8 @@ def myEventLoop(n):
   if sTree.GetBranch("fitTrack2MC_PR"):  sTree.fitTrack2MC = sTree.fitTrack2MC_PR
   if sTree.GetBranch("Particles_PR"):    sTree.Particles   = sTree.Particles_PR
   if not checkHNLorigin(sTree): return
-  if not sTree.MCTrack.GetEntries()>1: wg = 1.
+  if not sTree.MCTrack.size() > 1:
+      wg = 1.
   else:   wg = sTree.MCTrack[1].GetWeight()
   if not wg>0.: wg=1.
 
