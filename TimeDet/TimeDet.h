@@ -6,6 +6,8 @@
 #include "TVector3.h"
 #include "TLorentzVector.h"
 
+#include <vector>
+
 class TimeDetPoint;
 class FairVolume;
 class TClonesArray;
@@ -118,7 +120,7 @@ class TimeDet: public FairDetector
     TGeoVolume* fDetector; // Timing detector object
 
     /** container for data points */
-    TClonesArray* fTimeDetPointCollection;
+    std::vector<TimeDetPoint>* fTimeDetPoints;
 
     TimeDet(const TimeDet&);
     TimeDet& operator=(const TimeDet&);

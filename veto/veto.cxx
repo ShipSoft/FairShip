@@ -65,7 +65,7 @@ veto::veto()
     , fTime(-1.)
     , fLength(-1.)
     , fELoss(-1)
-    , fvetoPointCollection(new TClonesArray("vetoPoint"))
+    , fvetoPoints(nullptr)
     , fFastMuon(kFALSE)
     , fFollowMuon(kFALSE)
 {
@@ -80,9 +80,9 @@ veto::veto()
  */
 veto::~veto()
 {
-    if (fvetoPointCollection) {
-        fvetoPointCollection->Delete();
-        delete fvetoPointCollection;
+    if (fvetoPoints) {
+        fvetoPoints->clear();
+        delete fvetoPoints;
     }
 }
 
@@ -996,7 +996,7 @@ Bool_t veto::ProcessHits(FairVolume* vol)
 void veto::EndOfEvent()
 {
 
-    fvetoPointCollection->Clear();
+    fvetoPoints->clear();
 }
 
 void veto::PreTrack()
@@ -1011,25 +1011,21 @@ void veto::PreTrack()
 void veto::Register()   // create a branch in the output tree
 {
 
-    FairRootManager::Instance()->Register(
+    fvetoPoints = new std::vector<vetoPoint>();
+    FairRootManager::Instance()->RegisterAny(
         "vetoPoint",
-        "veto",
-        fvetoPointCollection,
+        fvetoPoints,
         kTRUE);   // kFALSE -> this collection will not be written to the file, will exist only during simulation.
 }
 
 TClonesArray* veto::GetCollection(Int_t iColl) const
 {
-    if (iColl == 0) {
-        return fvetoPointCollection;
-    } else {
-        return NULL;
-    }
+    return nullptr;
 }
 
 void veto::Reset()
 {
-    fvetoPointCollection->Clear();
+    fvetoPoints->clear();
 }
 
 /**
@@ -1097,7 +1093,6 @@ vetoPoint* veto::AddHit(Int_t trackID,
                         TVector3 Lpos,
                         TVector3 Lmom)
 {
-    TClonesArray& clref = *fvetoPointCollection;
-    Int_t size = clref.GetEntriesFast();
-    return new (clref[size]) vetoPoint(trackID, detID, pos, mom, time, length, eLoss, pdgCode, Lpos, Lmom);
+    fvetoPoints->emplace_back(trackID, detID, pos, mom, time, length, eLoss, pdgCode, Lpos, Lmom);
+    return &(fvetoPoints->back());
 }

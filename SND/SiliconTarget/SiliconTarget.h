@@ -9,6 +9,8 @@
 #include "TLorentzVector.h"
 #include "TVector3.h"
 
+#include <vector>
+
 class SiliconTarget : public FairDetector
 {
   public:
@@ -79,7 +81,7 @@ class SiliconTarget : public FairDetector
     Double_t fModuleOffset;
 
     /** container for data points */
-    TClonesArray* fSiliconTargetPointCollection;
+    std::vector<SiliconTargetPoint>* fSiliconTargetPoints;
 
     SiliconTarget(const SiliconTarget&);
     SiliconTarget& operator=(const SiliconTarget&);

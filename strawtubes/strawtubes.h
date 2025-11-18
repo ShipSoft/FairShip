@@ -6,6 +6,8 @@
 #include "TVector3.h"
 #include "TLorentzVector.h"
 
+#include <vector>
+
 class strawtubesPoint;
 class FairVolume;
 class TClonesArray;
@@ -131,7 +133,7 @@ class strawtubes: public FairDetector
     std::string fMedium;                    //! vacuum box medium
     /** container for data points */
 
-    TClonesArray* fstrawtubesPointCollection;
+    std::vector<strawtubesPoint>* fstrawtubesPoints;
 
     strawtubes(const strawtubes&);
     strawtubes& operator=(const strawtubes&);

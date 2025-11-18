@@ -16,6 +16,7 @@
 #include "TVector3.h"
 
 #include <string>   // for string
+#include <vector>
 
 class TTPoint;
 class FairVolume;
@@ -111,7 +112,7 @@ class TargetTracker : public FairDetector
     Double32_t fELoss;     //!  energy loss
 
     /** container for data points */
-    TClonesArray* fTTPointCollection;
+    std::vector<TTPoint>* fTTPoints;
 
   protected:
     Double_t TTrackerX;

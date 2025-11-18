@@ -11,6 +11,7 @@
 #include "TVector3.h"
 
 #include <string>   // for string
+#include <vector>
 
 class MTCDetPoint;
 class TGeoVolume;
@@ -138,7 +139,7 @@ class MTCDetector : public FairDetector
     std::map<Int_t, std::map<Int_t, std::array<float, 2>>> siPMFibres_V;   //! inverse mapping
     std::map<Int_t, float> SiPMPos_U, SiPMPos_V;                           //! local SiPM channel position
     /** container for data points */
-    TClonesArray* fMTCDetectorPointCollection;
+    std::vector<MTCDetPoint>* fMTCDetectorPoints;
 
     MTCDetector(const MTCDetector&);
     MTCDetector& operator=(const MTCDetector&);
