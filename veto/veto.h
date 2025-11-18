@@ -10,6 +10,7 @@
 #include "TVector3.h"
 
 #include <map>
+#include <vector>
 
 class vetoPoint;
 class FairVolume;
@@ -184,7 +185,7 @@ class veto : public FairDetector
     //! Flag option for Liquid Scintillator (Default=True).
     Int_t fLiquidVeto;
     /** container for data points */
-    TClonesArray* fvetoPointCollection;
+    std::vector<vetoPoint>* fvetoPoints;
 
     veto(const veto&);
     veto& operator=(const veto&);

@@ -48,7 +48,7 @@ splitcal::splitcal()
     fTime(-1.),
     fLength(-1.),
     fELoss(-1),
-    fsplitcalPointCollection(new TClonesArray("splitcalPoint"))
+    fsplitcalPoints(nullptr)
 {
 }
 
@@ -61,15 +61,15 @@ splitcal::splitcal(const char* name, Bool_t active)
     fTime(-1.),
     fLength(-1.),
     fELoss(-1),
-    fsplitcalPointCollection(new TClonesArray("splitcalPoint"))
+    fsplitcalPoints(nullptr)
 {
 }
 
 splitcal::~splitcal()
 {
-  if (fsplitcalPointCollection) {
-    fsplitcalPointCollection->Delete();
-    delete fsplitcalPointCollection;
+  if (fsplitcalPoints) {
+    fsplitcalPoints->clear();
+    delete fsplitcalPoints;
   }
 }
 
@@ -152,7 +152,7 @@ Bool_t  splitcal::ProcessHits(FairVolume* vol)
 void splitcal::EndOfEvent()
 {
 
-  fsplitcalPointCollection->Clear();
+  fsplitcalPoints->clear();
 
 }
 
@@ -167,21 +167,20 @@ void splitcal::Register()
       only during the simulation.
   */
 
-  FairRootManager::Instance()->Register("splitcalPoint", "splitcal",
-                                        fsplitcalPointCollection, kTRUE);
+  fsplitcalPoints = new std::vector<splitcalPoint>();
+  FairRootManager::Instance()->RegisterAny("splitcalPoint", fsplitcalPoints, kTRUE);
 
 }
 
 
 TClonesArray* splitcal::GetCollection(Int_t iColl) const
 {
-  if (iColl == 0) { return fsplitcalPointCollection; }
-  else { return NULL; }
+  return nullptr;
 }
 
 void splitcal::Reset()
 {
-  fsplitcalPointCollection->Clear();
+  fsplitcalPoints->clear();
 }
 
 void splitcal::SetZStart(Double_t ZStart)
@@ -448,9 +447,7 @@ splitcalPoint* splitcal::AddHit(Int_t trackID, Int_t detID,
                                       Double_t time, Double_t length,
                                       Double_t eLoss, Int_t pdgCode)
 {
-  TClonesArray& clref = *fsplitcalPointCollection;
-  Int_t size = clref.GetEntriesFast();
-  // cout << "splitcal hit called"<< pos.z()<<endl;
-  return new(clref[size]) splitcalPoint(trackID, detID, pos, mom,
+  fsplitcalPoints->emplace_back(trackID, detID, pos, mom,
          time, length, eLoss, pdgCode);
+  return &(fsplitcalPoints->back());
 }

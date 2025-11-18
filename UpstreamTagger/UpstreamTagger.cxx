@@ -60,7 +60,7 @@ UpstreamTagger::UpstreamTagger()
     UpstreamTagger_fulldet(0),
     scoringPlaneUBText(0),
   //
-    fUpstreamTaggerPointCollection(new TClonesArray("UpstreamTaggerPoint"))
+    fUpstreamTaggerPoints(nullptr)
 {
 }
 
@@ -80,7 +80,7 @@ UpstreamTagger::UpstreamTagger(const char* name, Bool_t active)
     UpstreamTagger_fulldet(0),
     scoringPlaneUBText(0), // Initialize new scoring plane to nullptr
         //
-    fUpstreamTaggerPointCollection(new TClonesArray("UpstreamTaggerPoint"))
+    fUpstreamTaggerPoints(nullptr)
 {
 }
 
@@ -93,9 +93,9 @@ void UpstreamTagger::Initialize()
 
 UpstreamTagger::~UpstreamTagger()
 {
-  if (fUpstreamTaggerPointCollection) {
-    fUpstreamTaggerPointCollection->Delete();
-    delete fUpstreamTaggerPointCollection;
+  if (fUpstreamTaggerPoints) {
+    fUpstreamTaggerPoints->clear();
+    delete fUpstreamTaggerPoints;
   }
 }
 
@@ -186,7 +186,7 @@ Bool_t  UpstreamTagger::ProcessHits(FairVolume* vol)
 
 void UpstreamTagger::EndOfEvent()
 {
-  fUpstreamTaggerPointCollection->Clear();
+  fUpstreamTaggerPoints->clear();
 }
 
 
@@ -200,23 +200,22 @@ void UpstreamTagger::Register()
       only during the simulation.
   */
 
-  FairRootManager::Instance()->Register("UpstreamTaggerPoint", "UpstreamTagger",
-                                        fUpstreamTaggerPointCollection, kTRUE);
+  fUpstreamTaggerPoints = new std::vector<UpstreamTaggerPoint>();
+  FairRootManager::Instance()->RegisterAny("UpstreamTaggerPoint", fUpstreamTaggerPoints, kTRUE);
 }
 
 
 
 TClonesArray* UpstreamTagger::GetCollection(Int_t iColl) const
 {
-  if (iColl == 0) { return fUpstreamTaggerPointCollection; }
-  else { return NULL; }
+  return nullptr;
 }
 
 
 
 void UpstreamTagger::Reset()
 {
-  fUpstreamTaggerPointCollection->Clear();
+  fUpstreamTaggerPoints->clear();
 }
 
 
@@ -258,9 +257,7 @@ UpstreamTaggerPoint* UpstreamTagger::AddHit(Int_t trackID, Int_t detID,
 			Double_t time, Double_t length,
 			Double_t eLoss, Int_t pdgCode,TVector3 Lpos, TVector3 Lmom)
 {
-  TClonesArray& clref = *fUpstreamTaggerPointCollection;
-  Int_t size = clref.GetEntriesFast();
-
-  return new(clref[size]) UpstreamTaggerPoint(trackID, detID, pos, mom,
+  fUpstreamTaggerPoints->emplace_back(trackID, detID, pos, mom,
 		         time, length, eLoss, pdgCode,Lpos,Lmom);
+  return &(fUpstreamTaggerPoints->back());
 }
