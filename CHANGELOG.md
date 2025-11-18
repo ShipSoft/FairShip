@@ -230,6 +230,7 @@ it in future.
 * Removed unused class ShipChamber (leftover from TP design)
 * Removed unused run_simPgun.py
 * Remove ecal and hcal geometry files
+* Remove simpleTarget and personal study study_muEloss.py
 
 ## 25.01
 
