@@ -30,7 +30,7 @@ ShipStack::ShipStack(Int_t size)
   : FairGenericStack(),
     fStack(),
     fParticles(new TClonesArray("TParticle", size)),
-    fTracks(new TClonesArray("ShipMCTrack", size)),
+    fTracks(nullptr),
     fStoreMap(),
     fStoreIter(),
     fIndexMap(),
@@ -46,6 +46,8 @@ ShipStack::ShipStack(Int_t size)
     fEnergyCut(0.),
     fStoreMothers(kTRUE)
 {
+  fTracks = new std::vector<ShipMCTrack>();
+  fTracks->reserve(size);
 }
 
 // -------------------------------------------------------------------------
@@ -60,7 +62,6 @@ ShipStack::~ShipStack()
     delete fParticles;
   }
   if (fTracks) {
-    fTracks->Delete();
     delete fTracks;
   }
 }
@@ -244,12 +245,13 @@ void ShipStack::FillTrackArray()
     Bool_t store = (*fStoreIter).second;
 
     if (store) {
-      ShipMCTrack* track = new( (*fTracks)[fNTracks]) ShipMCTrack(dynamic_cast<TParticle*>(GetParticle(iPart)));
+      fTracks->emplace_back(dynamic_cast<TParticle*>(GetParticle(iPart)));
+      ShipMCTrack& track = fTracks->back();
       fIndexMap[iPart] = fNTracks;
       // --> Set the number of points in the detectors for this track
       for (Int_t iDet=kVETO; iDet<kEndOfList; iDet++) {
         pair<Int_t, Int_t> a(iPart, iDet);
-        track->SetNPoints(iDet, fPointsMap[a]);
+        track.SetNPoints(iDet, fPointsMap[a]);
       }
       fNTracks++;
     } else { fIndexMap[iPart] = -2; }
@@ -276,13 +278,13 @@ void ShipStack::UpdateTrackIndex(TRefArray* detList)
 
   // First update mother ID in MCTracks
   for (Int_t i=0; i<fNTracks; i++) {
-    ShipMCTrack* track = dynamic_cast<ShipMCTrack*>(fTracks->At(i));
-    Int_t iMotherOld = track->GetMotherId();
+    ShipMCTrack& track = (*fTracks)[i];
+    Int_t iMotherOld = track.GetMotherId();
     fIndexIter = fIndexMap.find(iMotherOld);
     if (fIndexIter == fIndexMap.end()) {
       LOGF(fatal, "ShipStack: Particle index %i not found in dex map! ", iMotherOld);
     }
-    track->SetMotherId( (*fIndexIter).second );
+    track.SetMotherId( (*fIndexIter).second );
   }
 
 
@@ -334,7 +336,7 @@ void ShipStack::Reset()
   fNPrimaries = fNParticles = fNTracks = 0;
   while (! fStack.empty() ) { fStack.pop(); }
   fParticles->Clear();
-  fTracks->Clear();
+  fTracks->clear();
   fPointsMap.clear();
 }
 // -------------------------------------------------------------------------
@@ -344,7 +346,7 @@ void ShipStack::Reset()
 // -----   Public method Register   ----------------------------------------
 void ShipStack::Register()
 {
-  FairRootManager::Instance()->Register("MCTrack", "Stack", fTracks,kTRUE);
+  FairRootManager::Instance()->RegisterAny("MCTrack", fTracks, kTRUE);
 }
 // -------------------------------------------------------------------------
 
@@ -361,7 +363,7 @@ void ShipStack::Print(Int_t iVerbose) const
        << fNTracks << endl;
   if (iVerbose) {
     for (Int_t iTrack=0; iTrack<fNTracks; iTrack++) {
-        dynamic_cast<ShipMCTrack*>(fTracks->At(iTrack))->Print(iTrack);
+        (*fTracks)[iTrack].Print(iTrack);
     }
   }
 }
