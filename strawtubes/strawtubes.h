@@ -2,10 +2,12 @@
 #define STRAWTUBES_STRAWTUBES_H_
 
 #include "FairDetector.h"
+#include "ISTLPointContainer.h"
 
 #include "TVector3.h"
 #include "TLorentzVector.h"
 
+#include <map>
 #include <vector>
 
 class strawtubesPoint;
@@ -13,7 +15,7 @@ class FairVolume;
 class TClonesArray;
 class tuple;
 
-class strawtubes: public FairDetector
+class strawtubes: public FairDetector, public ISTLPointContainer
 {
 
   public:
@@ -45,6 +47,9 @@ class strawtubes: public FairDetector
 
     /** Gets the produced collections */
     virtual TClonesArray* GetCollection(Int_t iColl) const ;
+
+    /** Update track indices in point collection (for std::vector migration) */
+    void UpdatePointTrackIndices(const std::map<Int_t, Int_t>& indexMap);
 
     /**      has to be called after each event to reset the containers      */
     virtual void   Reset();

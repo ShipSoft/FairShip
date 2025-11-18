@@ -11,10 +11,12 @@
 
 #include "FairDetector.h"
 #include "FairModule.h"   // for FairModule
-#include "Rtypes.h"       // for ShipMuonShield::Class, Bool_t, etc
+#include "ISTLPointContainer.h"
+#include "Rtypes.h"   // for ShipMuonShield::Class, Bool_t, etc
 #include "TLorentzVector.h"
 #include "TVector3.h"
 
+#include <map>
 #include <string>   // for string
 #include <tuple>
 #include <vector>
@@ -23,7 +25,9 @@ class TargetPoint;
 class FairVolume;
 class TClonesArray;
 
-class Target : public FairDetector
+class Target
+    : public FairDetector
+    , public ISTLPointContainer
 {
   public:
     Target(const char* name, const Double_t Ydist, Bool_t Active, const char* Title = "NuTauTarget");
@@ -92,6 +96,9 @@ class Target : public FairDetector
 
     /** Gets the produced collections */
     virtual TClonesArray* GetCollection(Int_t iColl) const;
+
+    /** Update track indices in point collection (for std::vector migration) */
+    void UpdatePointTrackIndices(const std::map<Int_t, Int_t>& indexMap);
 
     /**      has to be called after each event to reset the containers      */
     virtual void Reset();

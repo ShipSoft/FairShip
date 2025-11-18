@@ -18,6 +18,7 @@
 #include "FairGeoMedia.h"
 #include "FairGeoNode.h"
 #include "FairGeoVolume.h"
+#include "FairLink.h"
 #include "FairLogger.h"   /// for FairLogger, MESSAGE_ORIGIN
 #include "FairRootManager.h"
 #include "FairRun.h"
@@ -1021,6 +1022,18 @@ void veto::Register()   // create a branch in the output tree
 TClonesArray* veto::GetCollection(Int_t iColl) const
 {
     return nullptr;
+}
+
+void veto::UpdatePointTrackIndices(const std::map<Int_t, Int_t>& indexMap)
+{
+    for (auto& point : *fvetoPoints) {
+        Int_t oldTrackID = point.GetTrackID();
+        auto iter = indexMap.find(oldTrackID);
+        if (iter != indexMap.end()) {
+            point.SetTrackID(iter->second);
+            point.SetLink(FairLink("MCTrack", iter->second));
+        }
+    }
 }
 
 void veto::Reset()

@@ -2,6 +2,7 @@
 #define VETO_VETO_H_
 
 #include "FairDetector.h"
+#include "ISTLPointContainer.h"
 #include "TGeoVolume.h"
 #include "TLorentzVector.h"
 #include "TVector3.h"
@@ -22,7 +23,9 @@ class TClonesArray;
  * the detector geometry, processing hits, and handling input parameters.
  */
 
-class veto : public FairDetector
+class veto
+    : public FairDetector
+    , public ISTLPointContainer
 {
 
   public:
@@ -49,6 +52,9 @@ class veto : public FairDetector
 
     /** Gets the produced collections */
     virtual TClonesArray* GetCollection(Int_t iColl) const;
+
+    /** Update track indices in point collection (for std::vector migration) */
+    void UpdatePointTrackIndices(const std::map<Int_t, Int_t>& indexMap);
 
     /**      has to be called after each event to reset the containers      */
     virtual void Reset();
