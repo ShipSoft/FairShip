@@ -19,6 +19,7 @@ it in future.
 
 * **Migrate ShipStack MC track storage from TClonesArray to std::vector**
   ShipStack now uses `std::vector<ShipMCTrack>` instead of `TClonesArray` for storing MC tracks written to output. This completes the migration of MC data storage to modern C++ containers and enables `RegisterAny()` for MCTrack I/O.
+* Migrate Tracklet container in shipDigiReco from TClonesArray to std::vector
 
 ### Added
 

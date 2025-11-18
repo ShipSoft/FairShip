@@ -4,13 +4,13 @@
 #ifndef STRAWTUBES_TRACKLET_H_
 #define STRAWTUBES_TRACKLET_H_
 #include "TObject.h"
-#include "TClonesArray.h"
 
 #include <stddef.h>
 #include <vector>
 #include "Rtypes.h"                     // for Double_t, Int_t, Double32_t, etc
 
 class strawtubesHit;
+class strawtubesPoint;
 
 /**
  *@author Thomas Ruf
@@ -39,9 +39,9 @@ class Tracklet: public TObject
     const std::vector<unsigned int>& getIndices() const {return aTracklet;}
     Int_t getType() const {return flag;}
     void setType(Int_t f){flag=f;}
-    Int_t link2MCTrack(TClonesArray* strawPoints, Float_t min);   // give back MCTrack ID with max matched strawtubesHits
+    Int_t link2MCTrack(std::vector<strawtubesPoint>* strawPoints, Float_t min);   // give back MCTrack ID with max matched strawtubesHits
 
-    /*** Output to screen */
+/*** Output to screen */
     virtual void Print(const Option_t* opt ="") const {;}
 
   protected:
