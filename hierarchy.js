@@ -31,7 +31,6 @@ var hierarchy =
       [ "UpstreamTagger", "classUpstreamTagger.html", null ],
       [ "exitHadronAbsorber", "classexitHadronAbsorber.html", null ],
       [ "muon", "classmuon.html", null ],
-      [ "simpleTarget", "classsimpleTarget.html", null ],
       [ "splitcal", "classsplitcal.html", null ],
       [ "strawtubes", "classstrawtubes.html", null ],
       [ "veto", "classveto.html", null ]

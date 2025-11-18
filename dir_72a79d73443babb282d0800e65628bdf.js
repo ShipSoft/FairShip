@@ -21,10 +21,7 @@ var dir_72a79d73443babb282d0800e65628bdf =
     [ "run_prod.py", "run__prod_8py.html", "run__prod_8py" ],
     [ "run_reco.py", "run__reco_8py.html", "run__reco_8py" ],
     [ "runCharmHadProd.py", "runCharmHadProd_8py.html", "runCharmHadProd_8py" ],
-    [ "simpleTarget.cxx", "simpleTarget_8cxx.html", null ],
-    [ "simpleTarget.h", "simpleTarget_8h.html", "simpleTarget_8h" ],
     [ "study_GammaConv.py", "study__GammaConv_8py.html", "study__GammaConv_8py" ],
-    [ "study_muEloss.py", "study__muEloss_8py.html", "study__muEloss_8py" ],
     [ "study_muMSC.py", "study__muMSC_8py.html", "study__muMSC_8py" ],
     [ "study_thinTarget.py", "study__thinTarget_8py.html", "study__thinTarget_8py" ],
     [ "submitPyG4prod.py", "submitPyG4prod_8py.html", "submitPyG4prod_8py" ]

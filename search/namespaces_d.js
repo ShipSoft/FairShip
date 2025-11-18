@@ -22,8 +22,7 @@ var searchData=
   ['splitcaldetector_19',['splitcalDetector',['../namespacesplitcalDetector.html',1,'']]],
   ['strawtubesdetector_20',['strawtubesDetector',['../namespacestrawtubesDetector.html',1,'']]],
   ['study_5fgammaconv_21',['study_GammaConv',['../namespacestudy__GammaConv.html',1,'']]],
-  ['study_5fmueloss_22',['study_muEloss',['../namespacestudy__muEloss.html',1,'']]],
-  ['study_5fmumsc_23',['study_muMSC',['../namespacestudy__muMSC.html',1,'']]],
-  ['study_5fthintarget_24',['study_thinTarget',['../namespacestudy__thinTarget.html',1,'']]],
-  ['submitpyg4prod_25',['submitPyG4prod',['../namespacesubmitPyG4prod.html',1,'']]]
+  ['study_5fmumsc_22',['study_muMSC',['../namespacestudy__muMSC.html',1,'']]],
+  ['study_5fthintarget_23',['study_thinTarget',['../namespacestudy__thinTarget.html',1,'']]],
+  ['submitpyg4prod_24',['submitPyG4prod',['../namespacesubmitPyG4prod.html',1,'']]]
 ];
