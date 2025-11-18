@@ -20,6 +20,7 @@
 
 #include <string>   // for string
 #include <tuple>
+#include <vector>
 
 class TargetPoint;
 class FairVolume;
@@ -154,7 +155,7 @@ class Target : public FairDetector
     Double32_t fELoss;     //!  energy loss
 
     /** container for data points */
-    TClonesArray* fTargetPointCollection;
+    std::vector<TargetPoint>* fTargetPoints;
 
     // switch for building the detector with active layers or with passive material only
 

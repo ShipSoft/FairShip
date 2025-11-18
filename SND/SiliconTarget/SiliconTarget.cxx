@@ -49,7 +49,7 @@ SiliconTarget::SiliconTarget()
     , fTime(-1.)
     , fLength(-1.)
     , fELoss(-1)
-    , fSiliconTargetPointCollection(new TClonesArray("SiliconTargetPoint"))
+    , fSiliconTargetPoints(nullptr)
 {}
 
 SiliconTarget::SiliconTarget(const char* name, Bool_t Active, const char* Title)
@@ -62,14 +62,14 @@ SiliconTarget::SiliconTarget(const char* name, Bool_t Active, const char* Title)
     , fTime(-1.)
     , fLength(-1.)
     , fELoss(-1)
-    , fSiliconTargetPointCollection(new TClonesArray("SiliconTargetPoint"))
+    , fSiliconTargetPoints(nullptr)
 {}
 
 SiliconTarget::~SiliconTarget()
 {
-    if (fSiliconTargetPointCollection) {
-        fSiliconTargetPointCollection->Delete();
-        delete fSiliconTargetPointCollection;
+    if (fSiliconTargetPoints) {
+        fSiliconTargetPoints->clear();
+        delete fSiliconTargetPoints;
     }
 }
 
@@ -268,29 +268,26 @@ Bool_t SiliconTarget::ProcessHits(FairVolume* vol)
 
 void SiliconTarget::EndOfEvent()
 {
-    fSiliconTargetPointCollection->Clear();
+    fSiliconTargetPoints->clear();
 }
 
 void SiliconTarget::Register()
 {
-    TString name = "SiliconTargetPoint";
-    TString title = "SiliconTarget";
-    FairRootManager::Instance()->Register(name, title, fSiliconTargetPointCollection, kTRUE);
-    LOG(debug) << this->GetName() << ", Register() says: registered " << name << " collection";
+    if (!fSiliconTargetPoints) {
+        fSiliconTargetPoints = new std::vector<SiliconTargetPoint>();
+    }
+    FairRootManager::Instance()->RegisterAny("SiliconTargetPoint", fSiliconTargetPoints, kTRUE);
+    LOG(debug) << this->GetName() << ", Register() says: registered SiliconTargetPoint collection";
 }
 
 TClonesArray* SiliconTarget::GetCollection(Int_t iColl) const
 {
-    if (iColl == 0) {
-        return fSiliconTargetPointCollection;
-    } else {
-        return NULL;
-    }
+    return nullptr;
 }
 
 void SiliconTarget::Reset()
 {
-    fSiliconTargetPointCollection->Clear();
+    fSiliconTargetPoints->clear();
 }
 
 SiliconTargetPoint* SiliconTarget::AddHit(Int_t trackID,
@@ -302,7 +299,6 @@ SiliconTargetPoint* SiliconTarget::AddHit(Int_t trackID,
                                           Double_t eLoss,
                                           Int_t pdgCode)
 {
-    TClonesArray& clref = *fSiliconTargetPointCollection;
-    Int_t size = clref.GetEntriesFast();
-    return new (clref[size]) SiliconTargetPoint(trackID, detID, pos, mom, time, length, eLoss, pdgCode);
+    fSiliconTargetPoints->emplace_back(trackID, detID, pos, mom, time, length, eLoss, pdgCode);
+    return &(fSiliconTargetPoints->back());
 }

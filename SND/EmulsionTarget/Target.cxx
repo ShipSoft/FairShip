@@ -69,7 +69,7 @@ Target::Target()
     , fTime(-1.)
     , fLength(-1.)
     , fELoss(-1)
-    , fTargetPointCollection(new TClonesArray("TargetPoint"))
+    , fTargetPoints(nullptr)
 {}
 
 Target::Target(const char* name, const Double_t Ydist, Bool_t Active, const char* Title)
@@ -81,16 +81,16 @@ Target::Target(const char* name, const Double_t Ydist, Bool_t Active, const char
     , fTime(-1.)
     , fLength(-1.)
     , fELoss(-1)
-    , fTargetPointCollection(new TClonesArray("TargetPoint"))
+    , fTargetPoints(nullptr)
 {
     Ydistance = Ydist;
 }
 
 Target::~Target()
 {
-    if (fTargetPointCollection) {
-        fTargetPointCollection->Delete();
-        delete fTargetPointCollection;
+    if (fTargetPoints) {
+        fTargetPoints->clear();
+        delete fTargetPoints;
     }
 }
 
@@ -559,7 +559,7 @@ std::tuple<Int_t, Int_t, Int_t, Int_t, Bool_t> Target::DecodeBrickID(Int_t detID
 
 void Target::EndOfEvent()
 {
-    fTargetPointCollection->Clear();
+    fTargetPoints->clear();
 }
 
 void Target::Register()
@@ -571,21 +571,20 @@ void Target::Register()
         only during the simulation.
     */
 
-    FairRootManager::Instance()->Register("TargetPoint", "Target", fTargetPointCollection, kTRUE);
+    if (!fTargetPoints) {
+        fTargetPoints = new std::vector<TargetPoint>();
+    }
+    FairRootManager::Instance()->RegisterAny("TargetPoint", fTargetPoints, kTRUE);
 }
 
 TClonesArray* Target::GetCollection(Int_t iColl) const
 {
-    if (iColl == 0) {
-        return fTargetPointCollection;
-    } else {
-        return NULL;
-    }
+    return nullptr;
 }
 
 void Target::Reset()
 {
-    fTargetPointCollection->Clear();
+    fTargetPoints->clear();
 }
 
 TargetPoint* Target::AddHit(Int_t trackID,
@@ -597,8 +596,6 @@ TargetPoint* Target::AddHit(Int_t trackID,
                             Double_t eLoss,
                             Int_t pdgCode)
 {
-    TClonesArray& clref = *fTargetPointCollection;
-    Int_t size = clref.GetEntriesFast();
-    // cout << "brick hit called"<< pos.z()<<endl;
-    return new (clref[size]) TargetPoint(trackID, detID, pos, mom, time, length, eLoss, pdgCode);
+    fTargetPoints->emplace_back(trackID, detID, pos, mom, time, length, eLoss, pdgCode);
+    return &(fTargetPoints->back());
 }
