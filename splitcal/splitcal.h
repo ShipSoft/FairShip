@@ -9,6 +9,8 @@
 #include "TVector3.h"
 #include "TLorentzVector.h"
 
+#include <vector>
+
 class splitcalPoint;
 class FairVolume;
 class TClonesArray;
@@ -125,7 +127,7 @@ class splitcal: public FairDetector
 
     /** container for data points */
 
-    TClonesArray*  fsplitcalPointCollection;
+    std::vector<splitcalPoint>* fsplitcalPoints;
 
     splitcal(const splitcal&);
     splitcal& operator=(const splitcal&);

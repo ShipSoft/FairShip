@@ -9,6 +9,8 @@
 #include "TLorentzVector.h"
 #include "ShipUnit.h"
 
+#include <vector>
+
 class UpstreamTaggerPoint;
 class FairVolume;
 class TClonesArray;
@@ -122,7 +124,7 @@ class UpstreamTagger: public FairDetector
     TGeoVolume* UpstreamTagger_fulldet; // Timing_detector_1 object
     TGeoVolume* scoringPlaneUBText; // new scoring plane
     /** container for data points */
-    TClonesArray* fUpstreamTaggerPointCollection;
+    std::vector<UpstreamTaggerPoint>* fUpstreamTaggerPoints;
 
     UpstreamTagger(const UpstreamTagger&);
     UpstreamTagger& operator=(const UpstreamTagger&);

@@ -64,7 +64,7 @@ TimeDet::TimeDet()
     //
     fDetector(0),
     //
-    fTimeDetPointCollection(new TClonesArray("TimeDetPoint"))
+    fTimeDetPoints(nullptr)
 {
   fNBars = fNCol * fNRow;
   if(fNCol>1) fxOv = (fxBar*fNCol - fxSize) / static_cast<double>(fNCol-1); else fxOv = 0;
@@ -98,7 +98,7 @@ TimeDet::TimeDet(const char* name, Bool_t active)
     //
     fDetector(0),
     //
-    fTimeDetPointCollection(new TClonesArray("TimeDetPoint"))
+    fTimeDetPoints(nullptr)
 {
   fNBars = fNCol * fNRow;
   if(fNCol>1) fxOv = (fxBar*fNCol - fxSize) / static_cast<double>(fNCol-1); else fxOv = 0;
@@ -114,9 +114,9 @@ void TimeDet::Initialize()
 
 TimeDet::~TimeDet()
 {
-  if (fTimeDetPointCollection) {
-    fTimeDetPointCollection->Delete();
-    delete fTimeDetPointCollection;
+  if (fTimeDetPoints) {
+    fTimeDetPoints->clear();
+    delete fTimeDetPoints;
   }
 }
 
@@ -209,7 +209,7 @@ Bool_t  TimeDet::ProcessHits(FairVolume* vol)
 
 void TimeDet::EndOfEvent()
 {
-  fTimeDetPointCollection->Clear();
+  fTimeDetPoints->clear();
 }
 
 
@@ -223,23 +223,22 @@ void TimeDet::Register()
       only during the simulation.
   */
 
-  FairRootManager::Instance()->Register("TimeDetPoint", "TimeDet",
-                                        fTimeDetPointCollection, kTRUE);
+  fTimeDetPoints = new std::vector<TimeDetPoint>();
+  FairRootManager::Instance()->RegisterAny("TimeDetPoint", fTimeDetPoints, kTRUE);
 }
 
 
 
 TClonesArray* TimeDet::GetCollection(Int_t iColl) const
 {
-  if (iColl == 0) { return fTimeDetPointCollection; }
-  else { return NULL; }
+  return nullptr;
 }
 
 
 
 void TimeDet::Reset()
 {
-  fTimeDetPointCollection->Clear();
+  fTimeDetPoints->clear();
 }
 
 
@@ -288,11 +287,9 @@ TimeDetPoint* TimeDet::AddHit(Int_t trackID, Int_t detID,
 			Double_t time, Double_t length,
 			Double_t eLoss, Int_t pdgCode,TVector3 Lpos, TVector3 Lmom)
 {
-  TClonesArray& clref = *fTimeDetPointCollection;
-  Int_t size = clref.GetEntriesFast();
-  // cout << "veto hit called "<< pos.z()<<endl;
-  return new(clref[size]) TimeDetPoint(trackID, detID, pos, mom,
+  fTimeDetPoints->emplace_back(trackID, detID, pos, mom,
 		         time, length, eLoss, pdgCode,Lpos,Lmom);
+  return &(fTimeDetPoints->back());
 }
 
 
